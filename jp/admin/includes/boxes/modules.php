@@ -30,26 +30,32 @@
               <tr>
               <td onmouseover="this.style.cursor='hand'" class="menuBoxHeading">
               &nbsp; 
-              <a class="menuBoxHeading_Link" href="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('selected_box')) .  'selected_box=modules');?>"><?php echo BOX_HEADING_MODULES;?></a> 
+              <a class="menuBoxHeading_Link" href="javascript:void(0);" onclick="toggle_lan('col3');"><?php echo BOX_HEADING_MODULES;?></a> 
               &nbsp; 
               </td>
               </tr>
             </table> 
-            <?php 
-            if ($selected_box == 'modules') {
+            <?php
+            if (in_array('col3', $l_select_box_arr)) {
             ?>
-            <div id="col3"> 
+            <div id="col3" style="display:block"> 
+            <?php
+            } else {
+            ?>
+            <div id="col3" style="display:none"> 
+            <?php
+            }
+            ?>
             <table cellspacing="0" cellpadding="2" border="0" width="100%"> 
               <tr>
                 <td class="menuBoxContent">
     <?php 
-    echo '<a '.(($_GET['set'] == 'payment')?'class="s_column_bar" ':'class="menuBoxContent_Link" ').'href="' . tep_href_link(FILENAME_MODULES, 'set=payment', 'NONSSL') . '">' . BOX_MODULES_PAYMENT . '</a><br>' .
-                                   '<a '.(($_GET['set'] == 'ordertotal')?'class="s_column_bar" ':'class="menuBoxContent_Link" ').'href="' .  tep_href_link(FILENAME_MODULES, 'set=ordertotal', 'NONSSL') . '" >' . BOX_MODULES_ORDER_TOTAL .  '</a><br>'.  '<a '.(($_GET['set'] == 'metaseo')?'class="s_column_bar" ':'class="menuBoxContent_Link" ').'href="' . tep_href_link(FILENAME_MODULES, 'set=metaseo', 'NONSSL') . '">' .  BOX_MODULES_METASEO . '</a><br>'; ?>
+    echo '<a href="' . tep_href_link(FILENAME_MODULES, 'set=payment', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_MODULES_PAYMENT . '</a><br>' .
+                                   '<a href="' . tep_href_link(FILENAME_MODULES, 'set=ordertotal', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_MODULES_ORDER_TOTAL . '</a><br>'.  '<a href="' . tep_href_link(FILENAME_MODULES, 'set=metaseo', 'NONSSL') . '" class="menuBoxContent_Link">' .  BOX_MODULES_METASEO . '</a><br>'; ?>
                 </td>
               </tr>
             </table>
             </div>
-            <?php }?> 
             </td>
           </tr>
 <!-- modules_eof //-->

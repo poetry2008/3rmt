@@ -50,45 +50,51 @@
               <tr>
               <td onmouseover="this.style.cursor='hand'" class="menuBoxHeading">
               &nbsp; 
-              <a class="menuBoxHeading_Link" href="<?php echo tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('selected_box')) . 'selected_box=tools');?>"><?php echo BOX_HEADING_TOOLS;?></a> 
+              <a class="menuBoxHeading_Link" href="javascript:void(0);" onclick="toggle_lan('col7');"><?php echo BOX_HEADING_TOOLS;?></a> 
               &nbsp; 
               </td>
               </tr>
             </table> 
             <?php
-            if ($selected_box == 'tools') {
+            if (in_array('col7', $l_select_box_arr)) {
             ?>
-            <div id="col7"> 
+            <div id="col7" style="display:block"> 
+            <?php
+            } else {
+            ?>
+            <div id="col7" style="display:none"> 
+            <?php
+            }
+            ?>
             <table cellspacing="0" cellpadding="2" border="0" width="100%"> 
               <tr>
                 <td class="menuBoxContent">
     <?php 
     echo 
-                   '<a '.((basename($PHP_SELF) == FILENAME_BANNER_MANAGER)?'class="s_column_bar" ':'class="menuBoxContent_Link" ').'href="' . tep_href_link(FILENAME_BANNER_MANAGER) . '">' . BOX_TOOLS_BANNER_MANAGER . '</a><br>' .
-                   '<a '.((basename($PHP_SELF) == 'bank_cl.php')?'class="s_column_bar" ':'class="menuBoxContent_Link" ').'href="' . tep_href_link('bank_cl.php') . '">銀行営業日</a><br>' .
-                   '<a '.((basename($PHP_SELF) == FILENAME_CACHE)?'class="s_column_bar" ':'class="menuBoxContent_Link" ').'href="' . tep_href_link(FILENAME_CACHE) . '">' . BOX_TOOLS_CACHE . '</a><br>' .
-                   '<a '.((basename($PHP_SELF) == FILENAME_PW_MANAGER)?'class="s_column_bar" ':'class="menuBoxContent_Link" ').'href="' . tep_href_link(FILENAME_PW_MANAGER) . '">' . 'ID管理' . '</a><br>' .
-                   '<a '.((basename($PHP_SELF) == FILENAME_DEFINE_LANGUAGE)?'class="s_column_bar" ':'class="menuBoxContent_Link" ').'href="' . tep_href_link(FILENAME_DEFINE_LANGUAGE) . '">' . BOX_TOOLS_DEFINE_LANGUAGE . '</a><br>' .
-                   '<a '.((basename($PHP_SELF) == FILENAME_MAIL)?'class="s_column_bar" ':'class="menuBoxContent_Link" ').'href="' . tep_href_link(FILENAME_MAIL) . '">' . BOX_TOOLS_MAIL . '</a><br>' .
-                   '<a '.((basename($PHP_SELF) == FILENAME_NEWSLETTERS)?'class="s_column_bar" ':'class="menuBoxContent_Link" ').'href="' . tep_href_link(FILENAME_NEWSLETTERS) . '">' . BOX_TOOLS_NEWSLETTER_MANAGER . '</a><br>' .
-                   '<a '.((basename($PHP_SELF) == FILENAME_POINT_EMAIL)?'class="s_column_bar" ':'class="menuBoxContent_Link" ').'href="' . tep_href_link(FILENAME_POINT_EMAIL) . '">' . BOX_TOOLS_POINT_EMAIL_MANAGER . '</a><br>' .
-                   '<a '.((basename($PHP_SELF) == FILENAME_WHOS_ONLINE)?'class="s_column_bar" ':'class="menuBoxContent_Link" ').'href="' . tep_href_link(FILENAME_WHOS_ONLINE) . '">' . BOX_TOOLS_WHOS_ONLINE . '</a><br>' . 
-                   '<a '.((basename($PHP_SELF) == FILENAME_COMPUTERS)?'class="s_column_bar" ':'class="menuBoxContent_Link" ').'href="' . tep_href_link(FILENAME_COMPUTERS) . '">PC管理</a><br>' . 
+                   '<a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_BANNER_MANAGER) . '">' . BOX_TOOLS_BANNER_MANAGER . '</a><br>' .
+                   '<a class="menuBoxContent_Link" href="' . tep_href_link('bank_cl.php') . '">銀行営業日</a><br>' .
+                   '<a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_CACHE) . '">' . BOX_TOOLS_CACHE . '</a><br>' .
+                   '<a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_PW_MANAGER) . '">' . 'ID管理' . '</a><br>' .
+                   '<a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_DEFINE_LANGUAGE) . '">' . BOX_TOOLS_DEFINE_LANGUAGE . '</a><br>' .
+                   '<a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_MAIL) . '">' . BOX_TOOLS_MAIL . '</a><br>' .
+                   '<a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_NEWSLETTERS) . '">' . BOX_TOOLS_NEWSLETTER_MANAGER . '</a><br>' .
+                   '<a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_POINT_EMAIL) . '">' . BOX_TOOLS_POINT_EMAIL_MANAGER . '</a><br>' .
+                   '<a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_WHOS_ONLINE) . '">' . BOX_TOOLS_WHOS_ONLINE . '</a><br>' . 
+                   '<a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_COMPUTERS) . '">PC管理</a><br>' . 
                    
-                   '<a '.((basename($PHP_SELF) == FILENAME_LATEST_NEWS)?'class="s_column_bar" ':'class="menuBoxContent_Link" ').'href="' . tep_href_link(FILENAME_LATEST_NEWS) . '">' . BOX_TOOLS_LATEST_NEWS . '</a><br>' . 
-                   '<a '.((basename($PHP_SELF) == FILENAME_CONTENTS)?'class="s_column_bar" ':'class="menuBoxContent_Link" ').'href="' . tep_href_link(FILENAME_CONTENTS) . '">' . BOX_TOOLS_CONTENTS . '</a><br>' .
-                   '<a '.((basename($PHP_SELF) == FILENAME_CATEGORIES_ADMIN)?'class="s_column_bar" ':'class="menuBoxContent_Link" ').'href="' . tep_href_link(FILENAME_PRESENT) . '" class="menuBoxContent_Link">' . BOX_TOOLS_PRESENT . '</a><br>' . 
-                   '<a '.((basename($PHP_SELF) == FILENAME_FAQ)?'class="s_column_bar" ':'class="menuBoxContent_Link" ').'href="' . tep_href_link(FILENAME_FAQ) . '">' . BOX_TOOLS_FAQ . '</a>' . 
+                   '<a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_LATEST_NEWS) . '">' . BOX_TOOLS_LATEST_NEWS . '</a><br>' . 
+                   '<a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_CONTENTS) . '">' . BOX_TOOLS_CONTENTS . '</a><br>' .
+                   '<a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_PRESENT) . '" class="menuBoxContent_Link">' . BOX_TOOLS_PRESENT . '</a><br>' . 
+                   '<a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_FAQ) . '">' . BOX_TOOLS_FAQ . '</a>' . 
                      
                    '<hr size="1">' . 
-                   '<a '.((basename($PHP_SELF) == 'mag_up.php')?'class="s_column_bar" ':'class="menuBoxContent_Link" ').'href="' .  tep_href_link('mag_up.php', '', 'NONSSL') . '">メールマガジン一括登録</a><br>' . 
-                   '<a '.((basename($PHP_SELF) == 'mag_dl.php')?'class="s_column_bar" ':'class="menuBoxContent_Link" ').'href="' . tep_href_link('mag_dl.php', '', 'NONSSL') . '">メールマガジンデータDL</a>';
+                   '<a class="menuBoxContent_Link" href="' .  tep_href_link('mag_up.php', '', 'NONSSL') . '">メールマガジン一括登録</a><br>' . 
+                   '<a class="menuBoxContent_Link" href="' . tep_href_link('mag_dl.php', '', 'NONSSL') . '">メールマガジンデータDL</a>';
               ?> 
                 </td>
               </tr>
             </table> 
             </div> 
-            <?php }?> 
             </td>
           </tr>
 <!-- tools_eof //-->

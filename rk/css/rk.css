@@ -64,6 +64,34 @@ H4 {
 	font-size:12px;
 	background: url(../images/design/contents/headding_content.gif) repeat-y;
 }
+/*faq*/
+.comment_faq {
+	width: 500px;
+ *width: 530px;
+	margin: 0px;
+	padding: 5px 15px 0px 15px;
+	overflow: hidden;
+	font-size:12px;
+	background: url(../images/design/contents/headding_content.gif) repeat-y;
+}
+.comment_faq a{ font-size:12px; margin-bottom:5px;}
+.comment_faq div{ margin-bottom:8px;}
+.faq_question_row a {
+	color:#237023;
+	font-size:12px;
+}
+.faq_ask{
+	color:#339900;
+	margin-bottom:5px;
+	font-weight: bold;
+	line-height:20px;
+	clear:both;
+	overflow:hidden;
+}
+.faq_back{ float:right;}
+.faq_answer{ line-height:20px; overflow:hidden;}
+.faq_answer img ,.faq_ask img{ margin-right:10px; float:left;}
+.faq_answer span ,.faq_ask span{float:left; overflow:hidden; width:460px;}
 .active_email input{ height: 21px; width: 370px;}
 .comment_index02, .comment_index01 {
 	width: 500px;
@@ -104,6 +132,7 @@ p.pageBottom_long {
 	margin:0;
 	padding:0;
 }
+.send_mail a { font-size:12px;}
 /* ---------------------------
 img
 --------------------------- */
@@ -887,6 +916,7 @@ Information
 	padding: 3px 5px;
 	vertical-align: top;
 }
+.information_table02 td a { font-size:11px;}
 .information_table03 {
 	width: 100%;
 	font-size: 11px;
@@ -1002,6 +1032,7 @@ footer
 .comment a {
 	color:#237023;
 }
+.comment table a{ font-size:12px;}
 .comment .main ul li a {
 	color: #336600;
 }
@@ -1011,6 +1042,7 @@ footer
 .main p a {
 	color:#06727D;
 }
+.main a { font-size:11px;}
 .main p a:hover {
 	text-decoration:underline;
 }

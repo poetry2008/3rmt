@@ -15,6 +15,7 @@ width:20%;
 .web_3_top {
 	width:100%;
 }
+.web_3_top a { font-size:12px;}
 .web_3_top h3 a{
 	padding-left:10px;
 	font-size:12px;
@@ -49,6 +50,7 @@ width:20%;
 #content{
 clear:both;
 }
+#content a { font-size:12px;}
 .search_head{
 float:right;
 width:700px;
@@ -153,12 +155,12 @@ background:#eee;
 #email{
 display:none;
 }
-#linksite{
+#linksuccess ,#linksite{
 padding-left:185px;
 padding-top:10px;
 }
 .submit_form_div{
-padding-left:185px;
+/*padding-left:185px;*/
 padding-top:10px;
 }
 #content_class{
@@ -208,3 +210,4 @@ width:47px;
 height:17px;
 background:url(images/button02.gif) no-repeat;
 }
+#sites_add a { font-size:12px;}

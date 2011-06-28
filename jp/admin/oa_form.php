@@ -41,20 +41,19 @@
 <!-- header //-->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
 <!-- header_eof //-->
-<h1>テンプレート管理</h1>
 <!-- body //-->
 <table border="0" width="100%" cellspacing="2" cellpadding="2">
-  <tr>
-    <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
+<tr>    <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
 <!-- left_navigation //-->
 <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
 <!-- left_navigation_eof //-->
     </table></td>
 <!-- body_text //-->
     <td width="100%" valign="top">
-    <table border="0" width="100%" cellspacing="0" cellpadding="2">
+    <table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
-      <td>
+    <td class="pageHeading" height="40">テンプレート管理</td>
+    <td>
         <div style="display:none;"> 
         <?php echo tep_draw_form('form', FILENAME_OA_FORM, 'type='.$_GET['type'].'&action=update&form_id='.$form_id);?> 
         <table> 
@@ -67,17 +66,30 @@
     </tr>
     <tr>
       <td>
+      	<table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+        	<td>
+        <?php 
+        if($_GET['msg'] == 'add_success'){
+          echo "<div style='color:#ff0000;'>".TEXT_ADD_FINISH."</div>";
+        }
+        ?>
+            <div class="tep_site_filter_oa">
         <?php
           $form_group_raw = tep_db_query("select ofg.id ofgid,g.id, g.name from ".TABLE_OA_GROUP." g, ".TABLE_OA_FORM_GROUP." ofg where g.id = ofg.group_id and ofg.form_id = '".$form_id."' order by ofg.ordernumber"); 
         ?>
-        <a href="<?php echo tep_href_link(FILENAME_OA_GROUP, 'pcode='.$_GET['pcode'].'&type='.$_GET['type']);?>"><?php echo ADD_GROUP;?></a> 
+        <a href="<?php echo tep_href_link(FILENAME_OA_GROUP, 'pcode='.$_GET['pcode'].'&type='.$_GET['type']);?>"><?php echo ADD_GROUP;?></a>
+        <a href="<?php echo tep_href_link(FILENAME_OA_LINK_GROUP, 'pcode='.$_GET['pcode'].'&type='.$_GET['type']);?>">テンプレート追加</a> </div>
+
+
+
 <script type='text/javascript'>
     function editorder (ele){
     x = $(ele).parent().parent();      
     oid = x.attr('id').substr(1);
     oid = parseInt(oid);
     up = false;
-    if ($(ele).val() == 'up'){
+    if ($(ele).attr('class') == 'up'){
       up  = true;
       oid -= 1;
     }else{
@@ -116,31 +128,41 @@ function ajaxUpdate(id,order){
 });
 }
 </script>
-        <table border="1"> 
-          <tr>
-            <td><?php echo GROUP_NAME;?></td> 
-            <td><?php echo GROUP_OPERATE;?></td> 
-            <td><?php echo GROUP_ORDER;?></td> 
+
+        <table border="0" width="100%" cellpadding="2" cellspacing="0"> 
+          <tr class="dataTableHeadingRow">
+            <td class="dataTableHeadingContent"><?php echo GROUP_NAME;?></td> 
+            <td class="dataTableHeadingContent"><?php echo GROUP_OPERATE;?></td> 
+            <td class="dataTableHeadingContent"><?php echo GROUP_ORDER;?></td> 
           </tr>
         <?php
             $order = 1;
+          $cunntCss = 1;
           while ($form_group_res = tep_db_fetch_array($form_group_raw)) {
-            echo '<tr id ="o'.$order.'" ` class="'.$form_group_res['ofgid'].'">'; 
+	    if ($cunntCss ==1){
+	      $css = 'oa_bg';
+	      $cunntCss = 0;
+	    }else{
+     	      $css = 'oa_bg02';
+	      $cunntCss = 1;
+	    }
+            echo '<tr id ="o'.$order.'"  class="'.$form_group_res['ofgid'].' ' .$css.' ">'; 
             $order +=1;
             echo '<td>'.$form_group_res['name'].'</td>'; 
             echo '<td>'; 
             echo '<a href="'.tep_href_link(FILENAME_OA_GROUP, 'action=edit&gid='.$form_group_res['id'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type']).'">'.GROUP_EDIT.'</a>'; 
-            echo '&nbsp;<a href="'.tep_href_link(FILENAME_OA_FORM, 'action=del_link_group&pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&gid='.$form_group_res['id']).'&fid='.$form_id.'">'.DEL_LINK_GROUP.'</a>';
+            echo '&nbsp;<a onclick="return confirm(\''.$form_group_res['name'].'を削除しますか？\')" href="'.tep_href_link(FILENAME_OA_FORM, 'action=del_link_group&pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&gid='.$form_group_res['id']).'&fid='.$form_id.'">'.DEL_LINK_GROUP.'</a>';
             echo '<td>';
-            echo '<input type="button" value="up" onclick="editorder(this)">';
-            echo '<input type="button" value="down"onclick="editorder(this)">';
+            echo '<input type="button" class="up" value="↑" onclick="editorder(this)">';
+            echo '<input type="button" class="down" value="↓" onclick="editorder(this)">';
             echo '</td>';
             echo '</td>'; 
             echo '</tr>'; 
           }
         ?>
         </table> 
-        <a href="<?php echo tep_href_link(FILENAME_MODULES, 'set=payment');?>"><input type="button" value="<?php echo IMAGE_BACK;?>"></a> 
+<input onclick='window.location.href="<?php echo tep_href_link(FILENAME_MODULES, 'set=payment&module='.$_GET['pcode']);?>"' type="button" value="<?php echo IMAGE_BACK;?>">
+	</td></tr></table>
       </td>
     </tr>
     </table>
@@ -149,7 +171,6 @@ function ajaxUpdate(id,order){
   </tr>
 </table>
 <!-- body_eof //-->
-
 <!-- footer //-->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
 <!-- footer_eof //-->

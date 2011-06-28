@@ -16,7 +16,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
 <form action="open.php" method="POST" enctype="multipart/form-data">
 <table cellpadding=2 cellspacing=1 width="100%" class="open_users">
     <tr>
-        <th width="20%">お名前:</th>
+        <th width="20%">お名前</th>
         <td>
             <?if ($thisclient && ($name=$thisclient->getName())) {
                 ?>
@@ -28,7 +28,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
         </td>
     </tr>
     <tr>
-        <th nowrap >メールアドレス:</th>
+        <th nowrap >メールアドレス</th>
         <td>
             <?if ($thisclient && ($email=$thisclient->getEmail())) {
                 ?>
@@ -40,7 +40,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
         </td>
     </tr>
     <tr>
-        <th>件名:</th>
+        <th>件名</th>
         <td>
             <input type="text" name="subject" size="35"
             value="<?=isset($info['subject'])?$info['subject']:(isset($_GET['products_name'])?$_GET['products_name'].'について':'')?>">
@@ -48,7 +48,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
         </td>
     </tr>
     <tr>
-        <th valign="top">ご質問内容: </th>
+        <th valign="top">ご質問内容</th>
         <td>
             <? if($errors['message']) {?> <font class="error"><b>&nbsp;<?=$errors['message']?></b></font><br/><?}?>
             <textarea name="message" cols="35" rows="8" style="width:85%"><?=$info['message']?></textarea></td>
@@ -58,7 +58,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
       $sql='SELECT priority_id,priority_desc FROM '.TICKET_PRIORITY_TABLE.' WHERE ispublic=1 ORDER BY priority_urgency DESC';
       if(($priorities=db_query($sql)) && db_num_rows($priorities)){ ?>
       <tr>
-        <td>重要度:</td>
+        <td>重要度</td>
         <td>
             <select name="pri">
               <?
@@ -77,7 +77,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
         
         ?>
     <tr>
-        <th>添付ファイル:</th>
+        <th>添付ファイル</th>
         <td>
             <input type="file" name="attachment"><font class="error">&nbsp;<?=$errors['attachment']?></font>
         </td>
@@ -89,7 +89,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
             $errors['captcha']='必須項目エラー';
         ?>
     <tr>
-        <th valign="top">認証コード:</th>
+        <th valign="top">認証コード</th>
         <td align="left"><img src="captcha.php" border="0" alt="img">
         <span>&nbsp;&nbsp;<input type="text" name="captcha" size="7" value="">&nbsp;<i class="captcha_comment">認証画像の内容をご入力ください.</i></span>
         <?php if($errors['captcha']){?>
@@ -102,9 +102,9 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
     <tr>
         <td></td>
         <td>
-            <input class="button" type="submit" name="submit_x" value="&#36865;&#20449;">
-            <input class="button" type="reset" value="&#12522;&#12475;&#12483;&#12488;">
-            <input class="button" type="button" name="cancel" value="&#12461;&#12515;&#12531;&#12475;&#12523;" onClick='window.location.href="<?php echo FILENAME_CONTACT_US ?>"'>
+            <input class="button" type="submit" name="submit_x" value="送信">
+            <input class="button" type="reset" value="リセット">
+            <input class="button" type="button" name="cancel" value="キャンセル" onClick='window.location.href="<?php echo FILENAME_CONTACT_US ?>"'>
         </td>
     </tr>
 </table>

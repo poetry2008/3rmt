@@ -20,8 +20,18 @@
       }
 ?> 
             <div class="comment">
-               <font color="#FFFFFF"><?php echo $seo_category['categories_header_text']; //seoフレーズ ?></font>
         <table border="0" width="100%" cellspacing="3" cellpadding="3" summary="" class="product_list_page"> 
+          <?php
+          if (!empty($seo_category['categories_header_text'])) {
+          ?>
+          <tr>
+            <td colspan="2">
+               <font color="#ffffff"><?php echo $seo_category['categories_header_text']; //seoフレーズ ?></font>
+            </td>
+          </tr>
+          <?php
+          }
+          ?>
           <tr align="center">
 <?php
     if (isset($cPath) && ereg('_', $cPath)) {
@@ -98,8 +108,18 @@
   }
 ?> 
           </tr>
+          <?php
+          if (!empty($seo_category['categories_footer_text'])) {
+          ?>
+          <tr>
+            <td colspan="2">
+              <font color="#ffffff"><?php echo $seo_category['categories_footer_text']; //seoフレーズ ?></font>
+            </td>
+          </tr>
+          <?php
+          }
+          ?>
         </table>
-      <font color="#FFFFFF"><?php echo $seo_category['categories_footer_text']; //seoフレーズ ?></font>
             </div>
 <!--            <p class="pageBottom"></p>
 -->      <?php 

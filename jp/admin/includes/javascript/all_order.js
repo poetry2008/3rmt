@@ -206,7 +206,7 @@ window.onunload=function(){
 // 自动保存
 function auto_save_questions() {
   if (auto_submit_able) {
-  $('body').css('cursor','wait');
+ $('body').css('cursor','wait');
   $('#wait').show();
   //css('top','45%').css('left','45%').css('position','absolute');
   $('#form_orders_questions').ajaxSubmit({
@@ -396,7 +396,7 @@ $(function(){
       if ($('#q_8_1').val()) {
         //保存成功自动跳转到列表
         //window.location.href=$('#back_link').attr('href');
-        window.location.href='orders.php';
+//        window.location.href='orders.php';
       }
     }
   });

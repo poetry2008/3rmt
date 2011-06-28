@@ -454,7 +454,7 @@ $basic_display=!isset($_REQUEST['advance_search'])?true:false;
             $class = ($class =='row2') ?'row1':'row2';
             } //end of while.
         else: //not tickets found!! ?> 
-            <tr class="<?=$class?>"><td colspan=8><b>該当するものはありません.</b></td></tr>
+            <tr class="<?=$class?>"><td colspan=8><b>該当するものはありません。</b></td></tr>
         <?
         endif; ?>
        </table>

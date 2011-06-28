@@ -53,6 +53,7 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
   define('FILENAME_POINT_EMAIL', 'point_email.php');
   define('FILENAME_OA_FORM', 'oa_form.php'); 
   define('FILENAME_OA_GROUP', 'oa_group.php'); 
+  define('FILENAME_OA_LINK_GROUP', 'oa_link_group.php'); 
   define('FILENAME_OA_ITEM', 'oa_item.php'); 
   define('FILENAME_PWD_LOG', 'pwd_log.php');
   define('FILENAME_PRODUCTS_PRICE','products_price.php');
@@ -357,7 +358,7 @@ while($userslist= tep_db_fetch_array($sites_id)){
 // default open navigation box
   if (!tep_session_is_registered('selected_box')) {
     tep_session_register('selected_box');
-    $selected_box = '';
+    $selected_box = 'configuration';
   }
   if (isset($_GET['selected_box']) && $_GET['selected_box']) {
     $selected_box = $_GET['selected_box'];

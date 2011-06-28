@@ -22,12 +22,12 @@ class HM_Group extends DbRecord
   function render()
   {
     echo "<tr>";
-    echo "<td class='main' valign='top'>";
+    echo "<td class='main' width='30%'>";
     echo $this->name;
     echo empty($this->name)?"":':';
     echo "</td>";
-    echo "<td class='main' >";
-    echo "<table><tr><td>";
+    echo "<td class='main'>";
+    echo "<table>";
     foreach ($this->items as $item){
       echo "<tr>";
       $item->render();
@@ -35,7 +35,7 @@ class HM_Group extends DbRecord
     }
     echo "</table>";
     echo "</td>";    
-    echo "<td class='main' align='right'><img src='images/icons/icon_cancel.gif' onclick='cleanthisrow(this)'></td>";
+    echo "<td class='main' align='right'><img class='clean' src='images/icons/icon_cancel.gif' onclick='cleanthisrow(this)'></td>";
     echo "</tr>";
   }
 }

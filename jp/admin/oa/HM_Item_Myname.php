@@ -3,20 +3,6 @@ require_once "HM_Item_Basic.php";
 class HM_Item_Myname extends HM_Item_Basic
 {
 
-    /*
-必須：○　必須
-
-項目名_____ _____　
-
-前方文字___ _______
-
-SubmitName___________　
-
-後方文字__________
-
-ステータス[連動しない▽]（可以跟其他的状态关联）
-
-     */
   var $hasRequire = true;
   var $hasThename = true;
   var $hasSelect  = true;
@@ -25,6 +11,12 @@ SubmitName___________　
   var $hasBackText  = true;  
   var $hasTheName  = true;
 
+  var $must_comment = '*チェックを入れるとこのパーツは取引完了に必要なものになる';
+  var $status_comment = '*設定されたステータスに変わると自動で値が保存される';
+  var $project_name_comment = '*○○○○：前方文字 SubmitName 後方文字';
+  var $front_comment = '*項目名：○○○○　SubmitName 後方文字';
+  var $after_comment = '*項目名： 前方文字 SubmitName ○○○○';
+  var $submit_name_comment = '*項目名： 前方文字 ○○○○ 後方文字';
   function getDefaultValue()
   {
     if ($this->loaded){
@@ -32,6 +24,14 @@ SubmitName___________　
     }else{
       return $this->defaultValue;
     }
+
+  }
+  function statusChange($order_id,$form_id,$group_id,$item_id)
+  {
+    global $ocertify;
+    $user_info = tep_get_user_info($ocertify->auth_user);
+    $value =$user_info['name'];
+    return $this->updateValue($order_id,$form_id,$group_id,$item_id,$value);
 
   }
 
@@ -50,12 +50,10 @@ SubmitName___________　
       $classrequire = '';
     }
 
-    //    echo $this->beforeInput."<input type='text' class='".$classrequire." outform'size='".$this->size."' name='".$this->formname."'
-    echo $this->beforeInput."<span id='".$this->formname."'type='text' class='".$classrequire." outform'size='".$this->size."' name='".$this->formname."' >".$this->getDefaultValue()."<span />".$this->afterInput;
-    //    echo "<input type='button' value='",$this->SubmitName,"'>";
-    if(!$this->loaded){
-    echo "<button type='button' id = '".$this->formname.'submit'."' value='$this->submitName' />$this->submitName";
-        }
+    echo $this->beforeInput."<span id='".$this->formname."'type='text' class='".$classrequire." outform'size='".$this->size."' name='".$this->formname."' >".$this->getDefaultValue()."</span >";
+    //    if(!$this->loaded){
+    echo "<button type='button' id = '".$this->formname.'submit'."' />$this->submitName</button>".$this->afterInput;
+    //        }
     echo "</td>";
   }
   function renderScript()
@@ -65,13 +63,16 @@ SubmitName___________　
 
        $(document).ready(function (){
            $("#<?php echo $this->formname;?>submit").click(function(){
-               $.ajax({
+ $.ajax({
                  url:'oa_answer_process.php?fix=user&withz=1&oID=<?php echo $_GET["oID"]?>',
                      type:'post',    
                      data:"form_id="+$('input|[name=form_id]').val()+"&<?php echo $this->formname;?>="+$('input|[name=<?php echo $this->formname;?>]').val(),
+                     beforeSend: function(){$('body').css('cursor','wait');$("#wait").show()},
                      success: function(data){
-		     $("#<?php echo $this->formname;?>").text(data);		     
-		     $("#<?php echo $this->formname;?>submit").hide();
+                               $("#<?php echo $this->formname;?>").text(data);		     
+                    		     $("#wait").hide();
+                                 checkLockOrder();
+                     //                     $("#<?php echo $this->formname;?>submit").show();
 		   }
                  });
              });
@@ -89,14 +90,6 @@ SubmitName___________　
       $item_value = unserialize($item_res->option); 
     }
     $formString  = '';
-
-    //    $formString .= "必須<input type='checkbox' name='require' ".$checked."/></br>\n";
-    //    $formString .= "项目名<input type='text' name='thename' value='".(isset($item_value['thename'])?$item_value['thename']:'')."'/></br>\n";
-    //    $formString .= "前方文字<input type='text' name='beforeInput' value='".(isset($item_value['beforeInput'])?$item_value['beforeInput']:'')."'/></br>\n";
-    //    $formString .= "SubmitName<input type='text' name='submitName'      value='".(isset($item_value['submitName'])?$item_value['submitName']:'')."'/></br>\n";
-
-    //    $formString .= "後方文字<input type='text' name='afterInput' value='".(isset($item_value['afterInput'])?$item_value['afterInput']:'')."'/></br>\n";
-    //    $formString .= "ステータス<input type='text' name='status' value='".(isset($item_value['status'])?$item_value['status']:'')."'/></br>\n";
     return $formString;
   }
 

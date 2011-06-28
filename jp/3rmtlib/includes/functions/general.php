@@ -1694,6 +1694,22 @@ function forward404Unless($condition)
       $_SERVER['SCRIPT_NAME'] = $script_name;
     }
     switch (str_replace('/', '', $_SERVER['SCRIPT_NAME'])) {
+      case FILENAME_FAQ:
+         global $current_faq_category_id;
+           if($faq_category_info = tep_get_faq_category_info($current_faq_category_id)){
+             $title = mb_substr($faq_category_info['title'],0,30,'UTF-8');
+             $keywords = $faq_category_info['keywords'];
+             $description = $faq_category_info['description'];
+           }
+        break;
+      case FILENAME_FAQ_INFO:
+         global $faq_question_id;
+           if($faq_question_info = tep_get_faq_question_info($faq_question_id)){
+             $title = mb_substr($faq_question_info['ask'],0,30,'UTF-8');
+             $keywords = $faq_question_info['keywords'];
+             $description = mb_substr($faq_question_info['answer'],0,80,'UTF-8');
+           }
+        break;
       case FILENAME_DEFAULT:
          global $cPath_array, $cPath, $seo_tags, $seo_category, $seo_manufacturers;
          if (isset($cPath_array)) {
@@ -3099,11 +3115,64 @@ function tep_get_romaji_cpath($cpath)
     $category = tep_db_fetch_array($category_query);
     return $category['romaji'];
 }
-function tep_get_pid_by_romaji($romaji, $categories_id = 0) {
+function tep_get_pid_by_romaji($romaji, $categories_id = 0, $single = false) {
   global $languages_id;
   if (empty($language)){
     $language = $languages_id;
   }
+  if ($single) {
+    $queryString = "
+        select pd.`products_id` 
+        from " . TABLE_PRODUCTS . " p, 
+             " . TABLE_PRODUCTS_DESCRIPTION . " pd,
+             " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c
+        where p.products_id = pd.products_id
+          and p.products_id = p2c.products_id
+          and p2c.categories_id = '" . $categories_id. "'
+          and pd.romaji = '" . $romaji . "' 
+          and pd.language_id = '" . (int)$language . "' 
+          and pd.site_id = '" . SITE_ID . "'" ;
+    $product_query = tep_db_query($queryString);
+    if (tep_db_num_rows($product_query)) {
+      $product = tep_db_fetch_array($product_query);
+      return $product['products_id'];
+    } else {
+      $queryString = "
+          select pd.`products_id` 
+          from " . TABLE_PRODUCTS . " p, 
+               " . TABLE_PRODUCTS_DESCRIPTION . " pd,
+               " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c
+          where p.products_id = pd.products_id
+            and p.products_id = p2c.products_id
+            and p2c.categories_id = '" . $categories_id. "'
+            and pd.romaji = '" . $romaji . "' 
+            and pd.language_id = '" . (int)$language . "' 
+            and pd.site_id = '0'" ;
+      $product_query = tep_db_query($queryString);
+      $product = tep_db_fetch_array($product_query);
+      if ($product) {
+        $queryString = "
+            select pd.`romaji` 
+            from " . TABLE_PRODUCTS . " p, 
+                 " . TABLE_PRODUCTS_DESCRIPTION . " pd,
+                 " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c
+            where p.products_id = pd.products_id
+              and p.products_id = p2c.products_id
+              and p2c.categories_id = '" . $categories_id. "'
+              and pd.products_id = '" . $product['products_id'] . "' 
+              and pd.language_id = '" . (int)$language . "' 
+              and pd.site_id = '" . SITE_ID . "'" ;
+        $or_product_query = tep_db_query($queryString); 
+        $or_product_res = tep_db_fetch_array($or_product_query); 
+        if ($or_product_res) {
+          if ($or_product_res['romaji'] != $romaji) {
+            return 0; 
+          }
+        }
+      }
+      return $product['products_id'];
+    }
+  } else {
   $queryString = "
       select pd.`products_id` 
       from " . TABLE_PRODUCTS . " p, 
@@ -3120,6 +3189,7 @@ function tep_get_pid_by_romaji($romaji, $categories_id = 0) {
   $product_query = tep_db_query($queryString);
   $product       = tep_db_fetch_array($product_query);
   return $product['products_id'];
+  }
 }
 function tep_get_cpath_by_cname($cname, $parent_id = 0)
 {
@@ -3289,7 +3359,7 @@ function tep_parseURI()
         $router = $ruler;
       }
     }
-    if (SITE_ID==5) {
+    if ((defined('SID_SYMBOL')) && SID_SYMBOL) {
       $i_pos = strpos($_SERVER['REQUEST_URI'], '/?sid=');
     } else {
       $i_pos = strpos($_SERVER['REQUEST_URI'], '/?cmd=');
@@ -3383,7 +3453,7 @@ function tep_parseURI()
       }
     }
     $tmp_router = $router; 
-    if (SITE_ID==5) {
+    if ((defined('SID_SYMBOL')) && SID_SYMBOL) {
       $i_pos = strpos($_SERVER['REQUEST_URI'], '/?sid=');
     } else {
       $i_pos = strpos($_SERVER['REQUEST_URI'], '/?cmd=');
@@ -3391,7 +3461,7 @@ function tep_parseURI()
     if ($i_pos !== false) {
       $router = 'x'; 
     }
-    if (SITE_ID >= 5) {
+    if ((defined('ROUTER_DIRECTION')) && ROUTER_DIRECTION) {
       if (($_SERVER['PHP_SELF'] == '/index.php') && $tmp_router != 'x') {
         $router = $tmp_router; 
       }
@@ -3423,7 +3493,11 @@ function tep_parseURI()
       foreach ($tmpArray as $k => $v) {
         if ($v) {
           if ($k == count($tmpArray)-1) {
-            $pid = tep_get_pid_by_romaji( urldecode(substr($v,0,-5)), $tmpArray2[count($tmpArray2)-1]?$tmpArray2[count($tmpArray2)-1]:0);
+            if ((defined('WHETHER_START')) && WHETHER_START) {
+              $pid = tep_get_pid_by_romaji( urldecode(substr($v,0,-5)), $tmpArray2[count($tmpArray2)-1]?$tmpArray2[count($tmpArray2)-1]:0, true);
+            } else {
+              $pid = tep_get_pid_by_romaji( urldecode(substr($v,0,-5)), $tmpArray2[count($tmpArray2)-1]?$tmpArray2[count($tmpArray2)-1]:0);
+            }
           } else {
             $cid = tep_get_cpath_by_cname(urldecode($v),$tmpArray2[count($tmpArray2)-1]);
             if ($cid) {
@@ -3630,17 +3704,21 @@ function PPHttpPost($methodName_, $nvpStr_) {
   return $httpParsedResponseAr;
 }
 
-function tep_get_cart_ff_products($pid, $cid_arr){
+function tep_get_cart_other_products($pid, $cid_arr){
+  $pid_str = join(',', $pid);
+  if (empty($pid_str)) {
+    $pid_str = '0'; 
+  }
   $raw = "
     select distinct(p2c.products_id)
     from products_to_tags p2t,products_to_carttag p2c, products p, products p2
-    where p2t.products_id in (".join(',',$pid).")
+    where p2t.products_id in (".$pid_str.")
       and p2c.tags_id = p2t.tags_id
       and p.products_bflag = p2c.buyflag
       and p.products_id = p2t.products_id
       and p2.products_id = p2c.products_id
       and p2.products_cartflag = '1'
-      and p2c.products_id not in (".join(',',$pid).")
+      and p2c.products_id not in (".$pid_str.")
       and p2.products_real_quantity + p2.products_virtual_quantity > p2.products_cart_min
     order by p2.products_cartorder
     limit ".CART_TAG_PRODUCTS_MAX."
@@ -3716,7 +3794,7 @@ function  tep_show_review_des($desc) {
   }
 }
 
-function tep_ff_get_categories_id_by_parent_id($categories_id, $languages_id = 4) {
+function tep_other_get_categories_id_by_parent_id($categories_id, $languages_id = 4) {
   $arr = array();
   $categories = tep_get_categories_by_parent_id($categories_id, $languages_id);
   foreach ($categories as $c){
@@ -3821,4 +3899,49 @@ function tep_check_exists_cu_email($email_address, $customer_id, $ctype)
    }
    return false;
 }
-
+function tep_get_faq_cpath_by_cname($cname, $parent_id = 0)
+{
+  //ccdd
+  $queryString = "
+      select cd.`faq_category_id` 
+      from " .  TABLE_FAQ_CATEGORIES . " c, " .  TABLE_FAQ_CATEGORIES_DESCRIPTION . " cd
+      where c.id = cd.faq_category_id
+        and c.parent_id = '".$parent_id."'
+        and cd.romaji = '" . $cname .  "' 
+        and (cd.site_id = '".SITE_ID."' or cd.site_id = '0')
+      order by cd.site_id DESC" ;
+  $category_query = tep_db_query($queryString);
+  $category = tep_db_fetch_array($category_query);
+  return $category['faq_category_id'];
+}
+function tep_get_faq_category_info($c_id){
+  $sql = "select * from ".TABLE_FAQ_CATEGORIES." fc ,"
+         .TABLE_FAQ_CATEGORIES_DESCRIPTION." fcd 
+         where fc.id = fcd.faq_category_id 
+         and fc.id = '".$c_id."' 
+         and (fcd.site_id = '".SITE_ID."' or fcd.site_id = '0')
+         order by site_id DESC";
+  $query = tep_db_query($sql);
+  return tep_db_fetch_array($query);
+}
+function tep_get_faq_question_info($q_id){
+  $sql = "select * from ".TABLE_FAQ_QUESTION." fq ,"
+         .TABLE_FAQ_QUESTION_DESCRIPTION." fqd 
+         where fq.id = fqd.faq_question_id 
+         and fq.id = '".$q_id."' 
+         and (fqd.site_id = '".SITE_ID."' or fqd.site_id = '0')
+         order by site_id DESC";
+  $query = tep_db_query($sql);
+  return tep_db_fetch_array($query);
+}
+function tep_get_faq_qid_by_qname($qname){
+ $sql = "select * from ".TABLE_FAQ_QUESTION." fq,
+        ".TABLE_FAQ_QUESTION_DESCRIPTION." fqd 
+        WHERE fq.id = fqd.faq_question_id 
+        and fqd.romaji = '".$qname."' 
+        and (fqd.site_id = '".SITE_ID."' or fqd.site_id = '0') 
+        order by fqd.site_id DESC" ;
+ $query = tep_db_query($sql);
+ $question = tep_db_fetch_array($query);
+ return $question['faq_question_id'];
+}

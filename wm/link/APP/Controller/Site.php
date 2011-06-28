@@ -645,6 +645,197 @@ class Controller_Site extends Controller_Base
       }
     }
   }
+  
+  function actionlinkcheckfinish()
+  { 
+    $week_arr = array('1'=>'月','2'=>'火','3'=>'水',
+        '4'=>'木','5'=>'金','6'=>'土',
+        '7'=>'日');
+    $preview = $_POST['preview'];
+    if ($preview == 'on')
+    {
+      $model_Class = &FLEA::getSingleton('Model_Class');
+      $class = $model_Class->find($_POST['class']);
+      $model_Setseo = FLEA::getSingleton('Model_Setseo');
+      $seo = $model_Setseo->find("action ='".$_GET['action']."'");
+      if(!$seo){
+        $seo = $model_Setseo->find("action ='index'");
+      }
+    $this->getBreadcrumb();
+    $bread =  $this->bread->trail(' &raquo; ');
+    $seo = $this->replace_seo($this->bread,$seo);
+    $top_info['h1'] = 'regist_h1';
+    $top_info['text'] = 'regist_text';
+      $viewData = array( 'hostlink' => $this->host_dir,
+          'top_info' => $top_info,
+          'bread' => $bread,
+          'seo' => $seo,
+          'fname'=>h($_POST['fname']),
+          'femail'=>h($_POST['femail']),
+          'fpass' =>h($_POST['fpass']),
+          'name' => h($_POST['name']),
+          'url'=> h(trim($_POST['url'])),
+          'comment'=>h($_POST['comment']),
+          'class' => h($_POST['class']),
+          'class_name' => $class['name'],
+          'linkpage_url' => h(trim($_POST['linkpage_url'])),
+          'to_admin' => h($_POST['to_admin']),
+          );
+
+      $this->executeView("Site".DS."linkcheckpreview.html", $viewData); 
+    }
+    else
+    {
+
+      $bln = $this->linkcheck(trim($_POST['url']), trim($_POST['linkpage_url']));
+      $bln['state']?$state='1':$state='0';
+      $bln['is_recommend']?$is_recommend='1':$is_recommend='0';
+      $data = array(
+          'id'       => (int)$_POST['id'],
+          'name'     => h($_POST['name']),
+          'url'      => h(trim($_POST['url'])),
+          'comment'  => h($_POST['comment']),
+          'class_id' => (int)$_POST['class'],
+          'linkpage_url' => trim($_POST['linkpage_url']),
+          'is_custom' => '1',
+          'state' => $state,
+          'is_recommend' => $is_recommend,
+          'to_admin' => h($_POST['to_admin']),
+          'order'    => (int)$_POST['order'],
+          );
+
+      $model_Site = &FLEA::getSingleton('Model_Site');
+      if($data['url']!=''){
+        $new_site=$model_Site->save($data);
+
+        $model_Consumer = &FLEA::getSingleton('Model_Consumer');
+        $c_data = array( 
+            'consumer_name' => h($_POST['fname']),
+            'consumer_email' => h($_POST['femail']),
+            'consumer_pass' => hash('md5', h($_POST['fpass'])),
+            'site_id' => $new_site,
+            );
+        $model_Consumer->save($c_data);
+
+    $global = &FLEA::getSingleton('Model_Global');
+    $email_foot = $global->find('name = "email_foot"');
+    $email_foot_str = str_replace("\r\n","<br>",$email_foot['value']);
+        $this->addMsg(_T($data['id']?'site_edit_success':'site_create_success')); 
+        $model_Class = &FLEA::getSingleton('Model_Class');
+        $class = $model_Class->find($_POST['class']);
+        $model_Setseo = FLEA::getSingleton('Model_Setseo');
+        $seo = $model_Setseo->find("action ='".$_GET['action']."_success'");
+        if(!$seo){
+          $seo = $model_Setseo->find("action ='index'");
+        }
+    $this->getBreadcrumb();
+    $bread =  $this->bread->trail(' &raquo; ');
+    $seo = $this->replace_seo($this->bread,$seo);
+    $top_info['h1'] = 'regist_h1';
+    $top_info['text'] = 'regist_text';
+        $viewData = array( 'hostlink' => $this->host_dir,
+            'top_info' => $top_info,
+            'bread' => $bread,
+            'seo' => $seo,
+            'id' => $new_site,
+            'fname' => h($_POST['fname']),
+            'femail' => h($_POST['femail']),
+            'fpass' => h($_POST['fpass']),
+            'name' => h($_POST['name']),
+            'url' => h($_POST['url']),
+            'comment' => h($_POST['comment']),
+            'class' => h($_POST['class']),
+            'class_name' => $class['name'],
+            'linkpage_url' => h($_POST['linkpage_url']),
+            'to_admin' => h($_POST['to_admin']),
+            );
+        $to = $c_data['consumer_email'];
+        $subject = "=?UTF-8?B?".
+          base64_encode('情報交換サイト！相互リンク集').
+          "?=";
+        //        $subject = '情報交換サイト！ 新規登録完了通知';
+        $message .= "このたびは、";
+        $message .= "相互リンク集";
+        $message .= "へのご登録ありがとうございます。<br>";
+        $message .= "<br>";
+        $message .= '登録内容は以下のとおりですので、ご確認ください。'."<br>";
+        $message .= '*************************************************'."<br>";
+        $message .= '・登録日時：';
+        $message .= date('Y/m/d')." (";
+        $message .= $week_arr[date('N')];
+        $message .= ") ".date('H:i')."<br>";
+        $message .= '・登録者のIPアドレス：'.$_SERVER['REMOTE_ADDR']."<br>";
+        $hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
+        $message .= '・登録者のホスト名：'.$hostname."<br>";
+        $message .= '・参照元：'.url('site','regist')."<br>";
+        $message .= '*************************************************'."<br>";
+        $message .= "<br>";
+        $message .= '■ID'."<br>";
+        $message .= $new_site."<br>";
+        $message .= '■お名前'."<br>";
+        $message .= $viewData['fname']."<br>";
+        $message .= '■Ｅメール'."<br>";
+        $message .= $viewData['femail']."<br>";
+        $message .= '■タイトル'."<br>";
+        $message .= $viewData['name']."<br>";
+        $message .= '■登録したカテゴリ'."<br>";
+        $message .= $viewData['class_name']."<br>";
+        $message .= "<br>";
+        $message .= '■紹介文'."<br>";
+        $message .= $viewData['comment']."<br>";
+        $message .= '■URL'."<br>";
+        $message .= $viewData['url']."<br>";
+        $message .= '■管理パスワード'."<br>";
+        $message .= $viewData['fpass']."<br>";
+        $message .= '■管理人へのメッセージ'."<br>";
+        $message .= $viewData['to_admin']."<br>";
+        $message .= "<br>";
+        $message .= '■登録内容変更用URL'."<br>";
+        $message .= url('site', 'editsite', 'id='.$new_site)."<br>";
+        $message .= "<br>";
+        $message .= '今後登録内容の修正や削除する場合には、管理パスワード'."<br>";
+        $message .=
+          'にて全て行うことができますので、パスワードは大切に保管しておいて下さい。.';
+        $message .= "<br>";
+        $message .= "<br>";
+        $message .= 'これからもどうぞよろしくお願いします。'."<br>";
+        $message .= '+-------------------------------------+'."<br>";
+        $message .= $email_foot_str."<br>";
+        $message .= '+-------------------------------------+'."<br>";
+
+        $message = wordwrap($message, 70);
+
+        $Consumer_Id = $_POST['id'];
+        /*
+           $Model_Consumer = &FLEA::getSingleton("Model_Consumer");
+           $cond = "site_id = '".$Consumer_Id."'";
+           $Consumer = $Model_Consumer->find($cond);
+           $From_Mail = $Consumer['consumer_email'];
+         */
+        /* 
+        $Model_User = &FLEA::getSingleton("Model_User");
+        $cond = "username = 'haomai'";
+        $User = $Model_User->find($cond);
+        $From_Mail = $User['email'];
+        */
+        $From_Mail_arr = $global->find('name = "send_email_admin"');
+        $From_Mail = nl2br(h($From_Mail_arr['value']));
+        $message = str_replace('<br>',"\n",$message);
+        $message = str_replace('<br />',"\n",$message);
+        $headers = 'Content-type: text/plain; charset=utf-8' . "\r\n";
+        $headers .= "Content-Transfer-Encoding: 8bit\r\n";  
+        $headers .= 'From: '.$From_Mail. "\r\n";
+
+        mail($to, $subject, $message, $headers);
+
+        $this->executeView("Site".DS."linkchecksuccess.html", $viewData); 
+
+      }else{
+        $this->addMsg(_T($data['id']?'site_edit_failed':'site_create_failed')); 
+        redirect(url('site','regist'));
+      }
+    }
+  }
 
 
   /**

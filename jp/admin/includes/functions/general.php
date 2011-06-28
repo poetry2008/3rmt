@@ -3349,7 +3349,11 @@ function tep_get_customers_fax_by_id($cid)
     while ($p = tep_db_fetch_array($orders_products_query)) {
       $products_attributes_query = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS_ATTRIBUTES." where orders_products_id='".$p['orders_products_id']."'");
 
-      $str .= '<tr><td class="main"><b>商品：</b></td><td class="main">'.$p['products_name'].'</td></tr>';
+      if($orders['orders_inputed_flag']){
+      $str .= '<tr><td class="main"><b>商品：</b><font color="red">「入」</font></td><td class="main">'.$p['products_name'].'</td></tr>';
+      }else{
+      $str .= '<tr><td class="main"><b>商品：</b><font color="red">「未」</font></td><td class="main">'.$p['products_name'].'</td></tr>';
+      }
       $str .= '<tr><td class="main"><b>個数：</b></td><td class="main">'.$p['products_quantity'].'個'.tep_get_full_count2($p['products_quantity'], $p['products_id'], $p['products_rate']).'</td></tr>';
       while($pa = tep_db_fetch_array($products_attributes_query)){
         $str .= '<tr><td class="main"><b>'.$pa['products_options'].'：</b></td><td class="main">'.$pa['products_options_values'].'</td></tr>';
@@ -3983,6 +3987,11 @@ function tep_create_products_by_site_id($pid, $site_id)
 }
 
 function tep_set_product_status_by_site_id($products_id, $status, $site_id) {
+    /*
+    if (!tep_check_products_exists($products_id,$site_id)) {
+      tep_create_products_by_site_id($products_id,$site_id);
+    }
+    */
     if ($status == '1') {
       return tep_db_query("update " . TABLE_PRODUCTS_DESCRIPTION . " set products_status = '1' where products_id = '" . $products_id . "' and site_id = '".$site_id."'");
     } elseif ($status == '2') {
@@ -5151,18 +5160,19 @@ function tep_get_user_list_by_username($name){
 
 function tep_check_order_type($oID)
 {
-   $sell_query = tep_db_query("select * from ".TABLE_ORDERS." o, ".TABLE_ORDERS_STATUS_HISTORY." h where o.orders_id = h.orders_id and o.orders_id = '".$oID."' and (!(o.payment_method like '%買い取り%') and h.orders_id not in (select orders_id from ".TABLE_ORDERS_STATUS_HISTORY." where comments like '金融機関名%支店名%'))");
-   $sell_num = tep_db_num_rows($sell_query); 
-   if ($sell_num) {
-     return 1; 
-   }
-   $buy_query = tep_db_query("select * from ".TABLE_ORDERS." o, ".TABLE_ORDERS_STATUS_HISTORY." h where o.orders_id = h.orders_id and o.orders_id = '".$oID."' and (o.payment_method like '%買い取り%')");
-   $buy_num = tep_db_num_rows($buy_query); 
-   if ($buy_num) {
-     return 2; 
-   }
-   
-   return 3;
+  $sql = "  SELECT avg( products_bflag ) bflag FROM orders_products op, products p  WHERE 1 AND p.products_id = op.products_id AND op.orders_id = '".$oID."'";
+
+  $avg  = tep_db_fetch_array(tep_db_query($sql));
+  $avg = $avg['bflag'];
+
+  if($avg == 0){
+    return 1;
+  }
+  if($avg == 1){
+    return 2;
+  }
+    return 3;
+
 }
 
 function tep_get_payment_code_by_order_id($oID)
@@ -5197,6 +5207,8 @@ function tep_get_payment_code_by_order_id($oID)
     case '支払いなし':
       return 'freepayment'; 
       break;
+      default:
+        return false;
   }
 }
 
@@ -5408,6 +5420,32 @@ function get_all_site_product_status($product_id)
     tep_db_query("delete from " . TABLE_FAQ_QUESTION_DESCRIPTION . " where 
         faq_question_id = '" . tep_db_input($product_id) . "'");
   }
+function   tep_order_status_change($oID,$status){
+  
+  $order_id = $oID;
+
+  $formtype = tep_check_order_type($order_id);
+  $payment_romaji = tep_get_payment_code_by_order_id($order_id); 
+  $oa_form_sql = "select * from ".TABLE_OA_FORM." where formtype = '".$formtype."' and payment_romaji = '".$payment_romaji."'";
+
+  $form = tep_db_fetch_object(tep_db_query($oa_form_sql), "HM_Form");
+  //如果存在，把每个元素找出来，看是否有自动更新
+  if($form){
+    $form->loadOrderValue($order_id);
+    foreach ($form->groups as $group){
+      foreach ($group->items as $item){
+        if ($item->instance->status == $status){
+          $item->instance->statusChange($order_id,$form->id,$group->id,$item->id);
+          continue;
+        }
+      }
+    }
+  }else {
+    return '';
+  }
+  return '';
+
+}
 
 
 //faq is show 
@@ -5540,7 +5578,10 @@ function tep_output_generated_faq_category_path($id, $from = 'category') {
 
     return $calculated_category_path_string;
   }
-
+function     tep_orders_finishqa($orders_id) {
+    $order = tep_db_fetch_array(tep_db_query("select * from ".TABLE_ORDERS." where orders_id='".$orders_id."'"));
+    return $order['flag_qaf'];
+}
 
   function tep_generate_faq_category_path($id, $from = 'category', $categories_array = '', $index = 0) {
     global $languages_id;

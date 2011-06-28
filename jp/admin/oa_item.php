@@ -141,7 +141,6 @@ function deltr(index)
 <!-- header //-->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
 <!-- header_eof //-->
-<h1>バーツ管理</h1>
 <!-- body //-->
 <table border="0" width="100%" cellspacing="2" cellpadding="2">
   <tr>
@@ -154,6 +153,9 @@ function deltr(index)
     <td width="100%" valign="top">
     <table border="0" width="100%" cellspacing="0" cellpadding="2">
     <tr>
+    	<td class="pageHeading" height="40">パーツ管理</td>
+     </tr>
+     <tr>
       <td>
         <?php 
         if ($_GET['action'] == 'edit') {
@@ -162,14 +164,14 @@ function deltr(index)
           echo tep_draw_form('form', FILENAME_OA_ITEM, 'gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&action=insert');
         }
         ?> 
-        <table border="1">
+        <table border="0" width="100%" cellpadding="2" cellspacing="1" class="oa_item_bg">
           <tr>
-            <td>
-            <?php echo OA_ITEM_TITLE_TEXT;?> 
+            <td width="150">
+            <?php echo OA_ITEM_TITLE_TEXT;?>
             </td>
             <td>
             <?php
-            echo tep_draw_input_field('ititle', ((isset($item_info_res['title'])?$item_info_res['title']:''))); 
+            echo tep_draw_input_field('ititle', ((isset($item_info_res['title'])?$item_info_res['title']:'')), 'size="56"'); 
             ?>
             </td>
           </tr>
@@ -236,8 +238,9 @@ function deltr(index)
             </td>
           </tr>
         </table>
-        <input type="submit" value="<?php echo IMAGE_SAVE;?>"> 
-        <a href="<?php echo tep_href_link(FILENAME_OA_GROUP, 'action=edit&gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type']);?>"><input type="button" value="<?php echo IMAGE_BACK?>"></a> 
+        <input type="submit" value="<?php echo IMAGE_SAVE;?>">
+
+<input onclick = 'window.location.href=" <?php echo tep_href_link(FILENAME_OA_GROUP, 'action=edit&gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type']);?>"' type="button" value="<?php echo IMAGE_BACK?>">
         </form> 
       </td>
     </tr>

@@ -61,6 +61,7 @@ H4 {
 	background-color:#F2F0F0;
 	line-height:20px;
 }
+.comment p a { font-size:12px;}
 .comment_index02 , .comment_index01{
 	width: 520px;
 	margin: 0;
@@ -973,6 +974,7 @@ Footer
 .comment a{
 	color:#C51138;
 }
+.comment td a { font-size:12px;}
 .comment .main ul li a{
 	 color: #A81235;
 }
@@ -982,6 +984,7 @@ Footer
 .main p a{
 	color:#06727D;
 }
+.main a{ font-size:11px;}
 .main p a:hover{
 	text-decoration:underline;
 }
@@ -1342,7 +1345,9 @@ TABLE：Info box (content)
 }
 .infoBoxContents td a{
 	color: #336600;
+	font-size:11px;
 }
+.send_mail a { font-size:12px;}
 /* ---------------------------
 Survey
 --------------------------- */

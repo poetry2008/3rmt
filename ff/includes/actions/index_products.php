@@ -3,7 +3,7 @@
   $Id$
 */
 // create column list
-    $research_caid = tep_ff_get_categories_id_by_parent_id(FF_CID); 
+    $research_caid = tep_other_get_categories_id_by_parent_id(FF_CID); 
     if (empty($research_caid)) {
       $research_caid = array(FF_CID); 
     } else {
@@ -100,6 +100,7 @@
         $listing_sql.= "
         select " . $select_column_list . " 
               p.products_id, 
+              p.products_bflag, 
               p.manufacturers_id, 
               p.products_price, 
               p.products_price_offset, 

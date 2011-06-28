@@ -2,7 +2,6 @@
 /*
   $Id$
 */
-
   require('includes/application_top.php');
 
   switch ($_GET['set']) {
@@ -194,6 +193,7 @@
       tep_redirect(tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $class));
       break;
   }
+
 $site_id = isset($_GET['site_id'])?$_GET['site_id']:'0';
 $sites = tep_get_sites();
 $ex_site = $sites[0];
@@ -239,6 +239,7 @@ $ex_site = $sites[0];
                 <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_ACTION; ?>&nbsp;</td>
               </tr>
 <?php
+
   $file_extension = substr($PHP_SELF, strrpos($PHP_SELF, '.'));
   $directory_array = array();
   if ($dir = @dir($module_directory)) {
@@ -328,6 +329,7 @@ $ex_site = $sites[0];
     }
   }
   }
+
   ksort($installed_modules);
   $check_query = tep_db_query("
       select configuration_value 
@@ -350,6 +352,7 @@ $ex_site = $sites[0];
 <?php
   $heading = array();
   $contents = array();
+
   switch (isset($_GET['action'])?$_GET['action']:'') {
     case 'edit':
       $keys = '';
@@ -466,9 +469,11 @@ $ex_site = $sites[0];
         // 临时隐藏
         $contents[] = array('align' => 'left', 'text' => '<a href="' .  tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' .  @$_GET['module'] . '&action=edit') . '">' . tep_html_element_button(IMAGE_EDIT) . '</a>');
         if ($_GET['set'] == 'payment') {
-          $link_form_str = '<a href="'.tep_href_link(FILENAME_OA_FORM, 'pcode='.$mInfo->code.'&type=1').'"><input type="button" value="'.FORM_SELL_TEXT.'"></a>'; 
-          $link_form_str .= '<a href="'.tep_href_link(FILENAME_OA_FORM, 'pcode='.$mInfo->code.'&type=2').'"><input type="button" value="'.FORM_BUY_TEXT.'"></a>'; 
-          $link_form_str .= '<a href="'.tep_href_link(FILENAME_OA_FORM, 'pcode='.$mInfo->code.'&type=3').'"><input type="button" value="'.FORM_MIX_TEXT.'"></a>'; 
+
+          $link_form_str .= '<a href="'.tep_href_link(FILENAME_OA_FORM, 'pcode='.$mInfo->code.'&type=1').'">'.tep_image_button('button_qa_sell.gif', IMAGE_EDIT).'</a>'; 
+          $link_form_str .= '<a href="'.tep_href_link(FILENAME_OA_FORM, 'pcode='.$mInfo->code.'&type=2').'">'.tep_image_button('button_qa_buy.gif', IMAGE_EDIT).'</a>'; 
+          $link_form_str .= '<a href="'.tep_href_link(FILENAME_OA_FORM, 'pcode='.$mInfo->code.'&type=3').'">'.tep_image_button('button_qa_mix.gif', IMAGE_EDIT).'</a>'; 
+     
           $contents[] = array('align' => 'left', 'text' => $link_form_str);
            
         }
@@ -493,6 +498,7 @@ $ex_site = $sites[0];
 
     echo '            </td>' . "\n";
   }
+
 ?>
           </tr>
         </table></td>
@@ -508,4 +514,5 @@ $ex_site = $sites[0];
 <br>
 </body>
 </html>
+
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

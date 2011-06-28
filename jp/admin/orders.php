@@ -2,7 +2,11 @@
 /*
    $Id$
 */
+
   require('includes/application_top.php');
+
+  require_once('oa/HM_Form.php'); 
+  require_once('oa/HM_Group.php'); 
   
   require(DIR_WS_FUNCTIONS . 'visites.php');
 
@@ -257,7 +261,6 @@
       $title    = tep_db_prepare_input($_POST['title']);
       $comments = tep_db_prepare_input($_POST['comments']);
       $site_id  = tep_get_site_id_by_orders_id($oID);
-
       $order_updated = false;
       $check_status_query = tep_db_query("
           select orders_id, 
@@ -271,6 +274,12 @@
           from " . TABLE_ORDERS . " 
           where orders_id = '" . tep_db_input($oID) . "'");
       $check_status = tep_db_fetch_array($check_status_query);
+      //oa start 如果状态发生改变，找到当前的订单的
+      if ($check_status['orders_status']!=$status){
+        tep_order_status_change($oID,$status);
+      }
+      //OA_END
+
     
     //Add Point System
     if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && MODULE_ORDER_TOTAL_POINT_ADD_STATUS != '0') {
@@ -946,7 +955,7 @@ function q_4_3(){
                 <tr>
                   <td class="main" valign="top" width="30%"><b>Referer:</b></td>
                   <td class="main"><p
-                  style="word-break:break-all;width:650px;word-wrap:break-word;overflow:hidden;display:block;"><?php echo urldecode($order->info['orders_ref']);?></p></td>
+                  style="word-break:break-all;width:250px;word-wrap:break-word;overflow:hidden;display:block;"><?php echo urldecode($order->info['orders_ref']);?></p></td>
                 </tr>
                 <?php if ($order->info['orders_ref_keywords']) { ?>
                 <tr>
@@ -1125,7 +1134,7 @@ function q_4_3(){
                 <h3>Order Answer</h3>
                 <!-- ajax submit -->
                 <form name="form_orders_questions" id='form_orders_questions' action="ajax_orders.php?action=save_questions&orders_id=<?php echo $order->info['orders_id'];?>" method='post'>
-<table width="100%">
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
   <tr>
     <td class="main" width="30%">支払方法：</td>
     <td class="main">
@@ -1503,6 +1512,7 @@ if (false) {
 <?php }?>
   </tr>
 </table>
+
 <div align="right" id="orders_questions_submit_div" style="display:none;">
   <?php if (tep_orders_finished($order->info['orders_id'])) { ?>
   <input  type="submit" id="orders_questions_submit" value="取引完了"<?php if ($oq['q_8_1']) {?> disabled="true"<?php } ?>>
@@ -1514,18 +1524,16 @@ if (false) {
                 </div>      
  <!--new order answer{{-->
                           <?php
-  require_once('oa/HM_Form.php'); 
-  require_once('oa/HM_Group.php'); 
   $order_id = $order->info['orders_id'];
   $formtype = tep_check_order_type($order_id);
-  $payment_romaji = 'buying'; 
-//  $payment_romaji = tep_get_payment_code_by_order_id($order_id); 
+  $payment_romaji = tep_get_payment_code_by_order_id($order_id); 
   $oa_form_sql = "select * from ".TABLE_OA_FORM." where formtype = '".$formtype."' and payment_romaji = '".$payment_romaji."'";
   $form = tep_db_fetch_object(tep_db_query($oa_form_sql), "HM_Form");
-  
+                       if($form){
   $form->loadOrderValue($order_id);
   $form->setAction('oa_answer_process.php?oID='.$order_id);
   $form->render();
+                       }
         ?>
     </td>
       </tr>
@@ -1668,11 +1676,11 @@ if (false) {
     <!-- orders status history -->
       <tr>
         <td class="main" align="left">
-    <table border="1" cellspacing="0" cellpadding="5" width="50%">
+    <table border="1" cellspacing="0" cellpadding="5">
       <tr>
-        <td class="smallText" align="center" width="10%"><b><?php echo TABLE_HEADING_DATE_ADDED; ?></b></td>
-        <td class="smallText" align="center" width="10%" nowrap="true"><b><?php echo TABLE_HEADING_CUSTOMER_NOTIFIED; ?></b></td>
-        <td class="smallText" align="center" width="10%" nowrap="true"><b><?php echo TABLE_HEADING_STATUS; ?></b></td>
+        <td class="smallText" align="center"><b><?php echo TABLE_HEADING_DATE_ADDED; ?></b></td>
+        <td class="smallText" align="center" nowrap="true"><b><?php echo TABLE_HEADING_CUSTOMER_NOTIFIED; ?></b></td>
+        <td class="smallText" align="center" nowrap="true"><b><?php echo TABLE_HEADING_STATUS; ?></b></td>
         <td class="smallText" align="center"><b><?php echo TABLE_HEADING_COMMENTS; ?></b></td>
       </tr>
   <?php
@@ -1682,16 +1690,16 @@ if (false) {
           $select_select = $orders_history['orders_status_id'];
           echo 
              '    <tr>' . "\n" .
-             '      <td class="smallText" align="center" width="10%">' . tep_datetime_short($orders_history['date_added']) . '</td>' . "\n" .
-             '      <td class="smallText" align="center" width="10%">';
+             '      <td class="smallText" align="center">' . tep_datetime_short($orders_history['date_added']) . '</td>' . "\n" .
+             '      <td class="smallText" align="center">';
           if ($orders_history['customer_notified'] == '1') {
             echo tep_image(DIR_WS_ICONS . 'tick.gif', ICON_TICK) . "</td>\n";
           } else {
             echo tep_image(DIR_WS_ICONS . 'cross.gif', ICON_CROSS) . "</td>\n";
           }
           echo 
-           '      <td class="smallText" width="10%">' . $orders_status_array[$orders_history['orders_status_id']] . '</td>' . "\n" .
-           '      <td class="smallText"><p style="word-break:break-all;word-wrap:break-word;overflow:hidden;display:block;width:200px;">' . nl2br(tep_db_output($orders_history['comments'])) . '&nbsp;</p></td>' . "\n" .
+           '      <td class="smallText">' . $orders_status_array[$orders_history['orders_status_id']] . '</td>' . "\n" .
+           '      <td class="smallText"><p style="word-break:break-all;word-wrap:break-word;overflow:hidden;display:block;width:170px;">' . nl2br(tep_db_output($orders_history['comments'])) . '&nbsp;</p></td>' . "\n" .
            
            '    </tr>' . "\n";
           }

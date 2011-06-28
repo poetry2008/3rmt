@@ -12,6 +12,13 @@ class HM_Item_Text extends HM_Item_Basic
   var $hasBackText  = true;  
   var $hasDefaultValue  = true;
   var $hasSize  = true;
+  
+  var $front_comment = '*例：前方文字 入力フォーム ○○○○';
+  var $after_comment = '*例：○○○○ 入力フォーム 後方文字';
+  var $default_value_comment = '*入力フォームの初期値';
+  var $size_comment = '*defaultValueの文字数制限';
+  var $must_comment = '*チェックを入れるとこのパーツは取引完了に必要なものになる';
+ 
 
   function getDefaultValue()
   {
@@ -38,7 +45,7 @@ class HM_Item_Text extends HM_Item_Basic
       $classrequire = '';
     }
     echo $this->beforeInput."<input type='text' class='".$classrequire."'size='".$this->size."' name='".$this->formname."'
-      value='".$this->getDefaultValue()."' />".$this->afterInput;
+      value='".$this->getDefaultValue()."' />"."<div>".$this->afterInput."</div>";
     echo "</td>";
   }
   function renderScript()

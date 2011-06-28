@@ -134,7 +134,7 @@ $_negorder=$negorder=="DESC"?'昇順':'降順';
             $class = ($class =='row2') ?'row1':'row2';
             } //end of while.
         else: //not tickets found!! ?> 
-            <tr class="<?=$class?>"><td colspan=7><b>該当するものはありません.</b></td></tr>
+            <tr class="<?=$class?>"><td colspan=7><b>該当するものはありません。</b></td></tr>
         <?
         endif; ?>
      </table>
@@ -142,7 +142,7 @@ $_negorder=$negorder=="DESC"?'昇順':'降順';
     <tr><td>
     <?
     if($num>0 && $pageNav->getNumPages()>1){ //if we actually had any tickets returned?>
-     <tr><td style="text-align:left;padding-left:20px">page:<?=$pageNav->getPageLinks()?>&nbsp;</td></tr>
+     <tr><td style="text-align:left;padding-left:20px; font-size:12px;">ページ:<?=$pageNav->getPageLinks()?>&nbsp;</td></tr>
     <?}?>
  </table>
 </div>

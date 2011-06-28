@@ -47,7 +47,7 @@ if (
    } 
 } else {
     if (isset($_GET['cPath']) && $cPath_array) {
-      $subcid = tep_get_categories_id_by_parent_id($cPath_array[count($cPath_array) - 1]);
+      $subcid = tep_get_categories_id_by_parent_id($cPath_array[0]);
     } else {
       $subcid = tep_rr_get_categories_id_by_parent_id(FF_CID);
     }

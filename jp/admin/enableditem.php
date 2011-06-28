@@ -2,7 +2,7 @@
 $enabled_item_array = array(
                             'Text'=>'Text', 
                             'Myname'=>'MyName', 
-                            'Autocalculate'=>'AutoCalculate',
+                                                        'Autocalculate'=>'AutoCalculate',
                             'Date'=>'Date',
                             'Specialbank'=>'RadioButton',
                             //                            'Radio'=>'RadioButton',
