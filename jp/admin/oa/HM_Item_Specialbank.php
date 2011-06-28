@@ -53,15 +53,17 @@ class HM_Item_Specialbank extends HM_Item_Basic
       }else{
       echo "<div class='checkboxs' >";
       }
-      foreach ($radio['checkboxs']  as $key2 => $checkbox){
-        if(@in_array((string)$key.'_'.$key2,$this->defaultValue)){
-          $checked = 'checked';
-        }else{
-          $checked = '';
+      if (!empty($radio['checkboxs'])) {
+        foreach ($radio['checkboxs']  as $key2 => $checkbox){
+          if(@in_array((string)$key.'_'.$key2,$this->defaultValue)){
+            $checked = 'checked';
+          }else{
+            $checked = '';
+          }
+          echo "<input id='".$this->formname.$key.'_'.$key2."' ".$checked." name='".$this->formname.$key."' type='checkbox' />  ";
+          echo $checkbox;
+          echo "\n</br>";
         }
-        echo "<input id='".$this->formname.$key.'_'.$key2."' ".$checked." name='".$this->formname.$key."' type='checkbox' />  ";
-        echo $checkbox;
-        echo "\n</br>";
       }
       echo "</div>";
       echo "</td>";

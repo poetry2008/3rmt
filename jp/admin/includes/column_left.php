@@ -76,6 +76,12 @@ function toggle_lan(sobj)
     }
   }); 
 }
+
+function redirect_new_url(new_object)
+{
+  var url_str = $(new_object).parent().attr('href');
+  window.location.href = url_str;
+}
 </script>
 <?php }?>
 <?php
