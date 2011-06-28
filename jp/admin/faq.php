@@ -894,18 +894,14 @@
     $cPath_back = isset($cPath_back) && $cPath_back ? 'cPath=' . $cPath_back : '';
                   // new faq category and new faq button
                   if($cPath){
-                    echo tep_html_button(IMAGE_BACK,
-                      tep_href_link(FILENAME_FAQ,$cPath_back.'&cID='.$current_category_id.
-                        '&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))));
+                    echo '<a href="'.tep_href_link(FILENAME_FAQ,$cPath_back.'&cID='.$current_category_id.  '&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))).'">'.tep_html_element_button(IMAGE_BACK).'<a>';
                     echo '&nbsp;';
                   }
                   if((!isset($_GET['search'])||!$_GET['search'])&&
                       $ocertify->npermission >= 10){
-                    echo tep_html_button(IMAGE_NEW_FAQ_CATEGORY,tep_href_link(FILENAME_FAQ,
-                            'cPath='.$cPath.'&action=new_faq_category'.'&site_id='.$site_id));
+                    echo '<a href="'.tep_href_link(FILENAME_FAQ, 'cPath='.$cPath.'&action=new_faq_category'.'&site_id='.$site_id).'">'.tep_html_element_button(IMAGE_NEW_FAQ_CATEGORY).'</a>';
                     echo '&nbsp;';
-                    echo tep_html_button(IMAGE_NEW_FAQ,tep_href_link(FILENAME_FAQ,
-                          'cPath='.$cPath.'&action=new_faq_question'.'&site_id='.$site_id));
+                    echo '<a href="'.tep_href_link(FILENAME_FAQ, 'cPath='.$cPath.'&action=new_faq_question'.'&site_id='.$site_id).'">'.tep_html_element_button(IMAGE_NEW_FAQ).'</a>';
                   }
 
 
@@ -932,9 +928,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
     $contents[] = array('text' => '<br>' . TEXT_HOW_TO_COPY . '<br>' . 
         tep_draw_radio_field('copy_as', 'link', true) . ' ' . TEXT_COPY_AS_LINK . '<br>' .
         tep_draw_radio_field('copy_as', 'duplicate') . ' ' . TEXT_COPY_AS_DUPLICATE);
-    $contents[] = array('align' => 'center', 'text' => '<br>' . tep_html_submit(IMAGE_COPY) .
-        tep_html_button(IMAGE_CANCEL,tep_href_link(FILENAME_FAQ, 'cPath=' . $cPath . '&qID=' 
-            . $qInfo->faq_question_id) ));
+    $contents[] = array('align' => 'center', 'text' => '<br>' . tep_html_element_submit(IMAGE_COPY) . '<a href="'.tep_href_link(FILENAME_FAQ, 'cPath=' . $cPath . '&qID=' .  $qInfo->faq_question_id).'">'.tep_html_element_button(IMAGE_CANCEL).'</a>' );
     break;
   case 'move_faq_question':
         $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_MOVE_FAQ_QUESTION . '</b>');
@@ -949,9 +943,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
         $contents[] = array('text' => '<br>' . sprintf(TEXT_MOVE, $qInfo->ask) .
             '<br>' . tep_draw_pull_down_menu('move_to_faq_category_id', tep_get_faq_category_tree(),
               $current_category_id));
-        $contents[] = array('align' => 'center', 'text' => '<br>' . tep_html_submit(IMAGE_MOVE) . 
-            tep_html_button(IMAGE_CANCEL,tep_href_link(FILENAME_FAQ, 
-                'cPath=' . $cPath . '&qID=' . $qInfo->faq_question_id)));
+        $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_MOVE) .  '<a href="'.tep_href_link(FILENAME_FAQ, 'cPath=' . $cPath . '&qID=' .  $qInfo->faq_question_id).'">'.tep_html_element_button(IMAGE_CANCEL).'</a>');
         break;
   case 'move_faq_category':
         $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_MOVE_FAQ_CATEGORY . '</b>');
@@ -963,9 +955,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
         $contents[] = array('text' => '<br>' . sprintf(TEXT_MOVE, $faq_info->title) .
             '<br>' . tep_draw_pull_down_menu('move_to_faq_category_id', 
               tep_get_faq_category_tree('0', '', $faq_info->faq_category_id), $current_category_id));
-        $contents[] = array('align' => 'center', 'text' => '<br>' .
-            tep_html_submit(IMAGE_MOVE) . tep_html_button(IMAGE_CANCEL,tep_href_link(FILENAME_FAQ,
-                'cPath=' . $cPath . '&cID=' . $faq_info->faq_category_id)));        
+        $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_MOVE) .'<a href="'.tep_href_link(FILENAME_FAQ, 'cPath=' . $cPath . '&cID=' .  $faq_info->faq_category_id).'">'.tep_html_element_button(IMAGE_CANCEL).'</a>');        
     break;
   case 'new_faq_category':
     $heading[] = array('text' => '<b>' .TEXT_INFO_HEADING_NEW_FAQ_CATEGORY.'</b>');
@@ -993,8 +983,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
     $contents[] = array('text' => $faq_category_inputs_string.
         tep_draw_hidden_field('site_id',$site_id));
     $contents[] = array('align' => 'center' ,
-        'text' => tep_html_submit(TEXT_SAVE).tep_html_button(IMAGE_CANCEL,
-          tep_href_link(FILENAME_FAQ,'cPath='.$cPath)));
+        'text' => tep_html_element_submit(TEXT_SAVE).  '<a href="'.tep_href_link(FILENAME_FAQ,'cPath='.$cPath).'">'.tep_html_element_button(IMAGE_CANCEL).'</a>');
     break;
   case 'new_faq_question':
     $heading[] = array('text' => '<b>' .TEXT_INFO_HEADING_NEW_FAQ_QUESTION.'</b>');
@@ -1021,8 +1010,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
     $contents[] = array('text' => $faq_question_inputs_string.
         tep_draw_hidden_field('site_id',$site_id));
     $contents[] = array('align' => 'center' ,
-        'text' => tep_html_submit(TEXT_SAVE).tep_html_button(IMAGE_CANCEL,
-          tep_href_link(FILENAME_FAQ,'cPath='.$cPath.'&site_id='.$site_id.'&qID='.$_GET['qID'])));
+        'text' => tep_html_element_submit(TEXT_SAVE).  '<a href="'.tep_href_link(FILENAME_FAQ,'cPath='.$cPath.'&site_id='.$site_id.'&qID='.$_GET['qID']).'">'.tep_html_element_button(IMAGE_CANCEL).'</a>');
     break;
   case 'edit_faq_category':
     $heading[] = array('text' => '<b>' .TEXT_INFO_HEADING_EDIT_FAQ_CATEGORY.'</b>');
@@ -1050,8 +1038,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       tep_draw_hidden_field('faq_category_id',$faq_info->faq_category_id).
       tep_draw_hidden_field('site_id',$site_id));
     $contents[] = array('align' => 'center' ,
-        'text' => tep_html_submit(TEXT_SAVE).tep_html_button(IMAGE_CANCEL,
-          tep_href_link(FILENAME_FAQ,'cPath='.$cPath)));
+        'text' => tep_html_element_submit(TEXT_SAVE).  '<a href="'.tep_href_link(FILENAME_FAQ,'cPath='.$cPath).'">'.tep_html_element_button(IMAGE_CANCEL).'</a>');
     break;
   case 'edit_faq_question':
     $heading[] = array('text' => '<b>' .TEXT_INFO_HEADING_EDIT_FAQ_QUESTION.'</b>');
@@ -1080,8 +1067,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       tep_draw_hidden_field('faq_question_id',$qInfo->faq_question_id).
         tep_draw_hidden_field('site_id',$site_id));
     $contents[] = array('align' => 'center' ,
-        'text' => tep_html_submit(TEXT_SAVE).tep_html_button(IMAGE_CANCEL,
-          tep_href_link(FILENAME_FAQ,'cPath='.$cPath.'&site_id='.$site_id.'&qID='.$_GET['qID'])));
+        'text' => tep_html_element_submit(TEXT_SAVE).  '<a href="'.tep_href_link(FILENAME_FAQ,'cPath='.$cPath.'&site_id='.$site_id.'&qID='.$_GET['qID']).'">'.tep_html_element_button(IMAGE_CANCEL).'</a>');
     break;
   case 'delete_faq_category':
       $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_DELETE_CATEGORY .
@@ -1101,10 +1087,8 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
                $faq_info->question_count));
       }
       $contents[] = array('align' => 'center',
-          'text' => '<br>'.tep_html_submit(IMAGE_DELETE).
-          tep_html_button(IMAGE_CANCEL,tep_href_link(FILENAME_FAQ, 'cPath=' .
-              $cPath . '&cID=' . $faq_info->faq_category_id.$dc_page))
-          );
+          'text' => '<br>'.tep_html_element_submit(IMAGE_DELETE).  '<a href="'.tep_href_link(FILENAME_FAQ, 'cPath=' .  $cPath . '&cID=' .  $faq_info->faq_category_id.$dc_page).'">'.tep_html_element_button(IMAGE_CANCEL).'</a>')
+          ;
     break;
   case 'delete_faq_category_description':
       $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_DELETE_FAQ_CATEGORY .
@@ -1125,18 +1109,10 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       $contents[] = array('text' => '<br><b>' . $faq_info->title . '</b>');
       if (isset($_GET['rdirect'])) {
         $contents[] = array('align' => 'center',
-            'text' => tep_html_submit(IMAGE_DELETE).
-            tep_html_button(IMAGE_CANCEL,tep_href_link(FILENAME_FAQ,
-                'cPath=' . $cPath . '&cID=' .
-                $faq_info->faq_category_id.'&site_id=0'.$dc_page))
-            );
+            'text' => tep_html_element_submit(IMAGE_DELETE).  '<a href="'.tep_href_link(FILENAME_FAQ, 'cPath=' . $cPath . '&cID=' .  $faq_info->faq_category_id.'&site_id=0'.$dc_page).'">'.tep_html_element_button(IMAGE_CANCEL).'</a>');
       }else{
         $contents[] = array('align' => 'center',
-            'text' => tep_html_submit(IMAGE_DELETE).
-            tep_html_button(IMAGE_CANCEL,tep_href_link(FILENAME_FAQ,
-                'cPath=' . $cPath . '&cID=' .
-                $faq_info->faq_category_id.'&site_id='.$_GET['site_id'].$dc_page))
-            );
+            'text' => tep_html_element_submit(IMAGE_DELETE).  '<a href="'.tep_href_link(FILENAME_FAQ, 'cPath=' . $cPath . '&cID=' .  $faq_info->faq_category_id.'&site_id='.$_GET['site_id'].$dc_page).'">'.tep_html_element_button(IMAGE_CANCEL).'</a>');
       }
     break;
   case 'delete_faq_question':
@@ -1163,11 +1139,8 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
 
     $contents[] = array('text' => '<br>' . $question_categories_string);
     $contents[] = array('align' => 'center',
-            'text' => tep_html_submit(IMAGE_DELETE).
-            tep_html_button(IMAGE_CANCEL,tep_href_link(FILENAME_FAQ, 'cPath='
-                . $cPath . '&qID=' . $qInfo->faq_question_id.
-                '&site_id='.$_GET['site_id'].$d_page))
-            );
+            'text' => tep_html_element_submit(IMAGE_DELETE).
+            '<a href="'.tep_href_link(FILENAME_FAQ, 'cPath=' . $cPath . '&qID=' . $qInfo->faq_question_id.  '&site_id='.$_GET['site_id'].$d_page).'">'.tep_html_element_button(IMAGE_CANCEL).'</a>');
     break;
   case 'delete_faq_question_description':
     $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_DELETE_FAQ_QUESTION . '</b>');
@@ -1187,18 +1160,12 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
     $contents[] = array('text' => '<br><b>' . $qInfo->ask . '</b>');
     if (isset($_GET['rdirect'])) {
         $contents[] = array('align' => 'center',
-            'text' => tep_html_submit(IMAGE_DELETE).
-            tep_html_button(IMAGE_CANCEL,tep_href_link(FILENAME_FAQ, 'cPath='
-                . $cPath . '&qID=' . $qInfo->faq_question_id.
-                '&site_id='.$_GET['site_id'].'&rdirect=all'.$d_page))
-            );
+            'text' => tep_html_element_submit(IMAGE_DELETE).
+            '<a href="'.tep_href_link(FILENAME_FAQ, 'cPath=' . $cPath . '&qID=' . $qInfo->faq_question_id.  '&site_id='.$_GET['site_id'].'&rdirect=all'.$d_page).'">'.tep_html_element_button(IMAGE_CANCEL).'</a>');
     }else{
         $contents[] = array('align' => 'center',
-            'text' => tep_html_submit(IMAGE_DELETE).
-            tep_html_button(IMAGE_CANCEL,tep_href_link(FILENAME_FAQ, 'cPath='
-                . $cPath . '&qID=' . $qInfo->faq_question_id.
-                '&site_id='.$_GET['site_id'].$d_page))
-            );
+            'text' => tep_html_element_submit(IMAGE_DELETE).
+            '<a href="'.tep_href_link(FILENAME_FAQ, 'cPath=' . $cPath . '&qID=' . $qInfo->faq_question_id.  '&site_id='.$_GET['site_id'].$d_page).'">'.tep_html_element_button(IMAGE_CANCEL).'</a>');
     }
     break;
   default:
@@ -1209,15 +1176,9 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
           if(empty($_GET['site_id'])){
             $contents[] = array(
                 'align' => 'left',
-                'text' =>  tep_html_button(IMAGE_EDIT,tep_href_link(FILENAME_FAQ,'cPath='. 
-                    $cPath.'&cID='.$faq_info->faq_category_id.'&action=edit_faq_category')).
-                ($ocertify->npermission == 15 ? tep_html_button(IMAGE_DELETE,
-                tep_href_link(FILENAME_FAQ,      'cPath=' . $cPath . '&cID='
-                  . $faq_info->faq_category_id . '&action=delete_faq_category')):''
-                )
-                .tep_html_button(IMAGE_MOVE,tep_href_link(FILENAME_FAQ,
-                    'cPath=' . $cPath . '&cID=' . $faq_info->faq_category_id .
-                    '&action=move_faq_category'))
+                'text' =>  '<a href="'.tep_href_link(FILENAME_FAQ,'cPath='.  $cPath.'&cID='.$faq_info->faq_category_id.'&action=edit_faq_category').'">'.tep_html_element_button(IMAGE_EDIT).'</a>'.
+                ($ocertify->npermission == 15 ? '<a href="'.tep_href_link(FILENAME_FAQ,      'cPath=' . $cPath . '&cID=' . $faq_info->faq_category_id .  '&action=delete_faq_category').'">'.tep_html_element_button(IMAGE_DELETE).'</a>':'')
+                .'<a href="'.tep_href_link(FILENAME_FAQ, 'cPath=' . $cPath . '&cID=' . $faq_info->faq_category_id .  '&action=move_faq_category').'">'.tep_html_element_button(IMAGE_MOVE).'</a>'
                 );
           }
           if (isset($_GET['site_id'])){
@@ -1228,15 +1189,8 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
               $contents[] = array('text' => '<b>'.$site['romaji'] .'</b>');
               $contents[] = array(
                   'align' => 'left',
-                  'text' => tep_html_button(IMAGE_EDIT,
-                    tep_href_link(FILENAME_FAQ, 'cPath=' . $cPath . '&cID=' .
-                      $faq_info->faq_category_id .
-                      '&action=edit_faq_category&site_id='.$site['id'])).
-                  (tep_faq_categories_description_exist($faq_info->faq_category_id,$site['id'])?
-                   tep_html_button(IMAGE_DELETE,tep_href_link(FILENAME_FAQ,'cPath='
-                       . $cPath . '&cID=' .      $faq_info->faq_category_id .
-                       '&action=delete_faq_category_description&site_id='.$site['id']))
-                   :'')
+                  'text' => '<a href="'.tep_href_link(FILENAME_FAQ, 'cPath=' . $cPath . '&cID=' .  $faq_info->faq_category_id .  '&action=edit_faq_category&site_id='.$site['id']).'">'.tep_html_element_button(IMAGE_EDIT).'</a>'.
+                  (tep_faq_categories_description_exist($faq_info->faq_category_id,$site['id'])?  '<a href="'.tep_href_link(FILENAME_FAQ,'cPath=' . $cPath . '&cID=' .      $faq_info->faq_category_id .  '&action=delete_faq_category_description&site_id='.$site['id']).'">'.tep_html_element_button(IMAGE_DELETE).'</a>' :'')
                   );
             }
           }
@@ -1253,19 +1207,15 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
         if($ocertify->npermission >= 10) {  //limit for permission
           if(empty($_GET['site_id'])){
           $contents[] = array('align' => 'left', 
-              'text' => tep_html_button(IMAGE_EDIT, tep_href_link(FILENAME_FAQ, 
-                  'cPath=' . $cPath . '&qID=' . $qInfo->faq_question_id.
-                  '&action=edit_faq_question'.'&page='.$_GET['page'])).
+              'text' => '<a href="'.tep_href_link(FILENAME_FAQ, 'cPath=' . $cPath .  '&qID=' . $qInfo->faq_question_id.  '&action=edit_faq_question'.'&page='.$_GET['page']).'">'.tep_html_element_button(IMAGE_EDIT).'</a>'.
                ($ocertify->npermission==15 ?
-                tep_html_button(IMAGE_DELETE,tep_href_link(FILENAME_FAQ,'cPath=' .
+                '<a href="'.tep_href_link(FILENAME_FAQ,'cPath=' .
                     $cPath . '&qID=' . $qInfo->faq_question_id .
-                    '&action=delete_faq_question'.'&page='.$_GET['page'])):'').
-               tep_html_button(IMAGE_MOVE,tep_href_link(FILENAME_FAQ,
+                    '&action=delete_faq_question'.'&page='.$_GET['page']).'">'.tep_html_element_button(IMAGE_DELETE).'</a>':'').
+               '<a href="'.tep_href_link(FILENAME_FAQ,
                    'cPath=' . $cPath . '&qID=' . $qInfo->faq_question_id .
-                   '&action=move_faq_question'.'&page='.$_GET['page'])).
-               tep_html_button(IMAGE_COPY_TO,tep_href_link(FILENAME_FAQ,
-                   'cPath=' . $cPath . '&qID=' . $qInfo->faq_question_id .
-                   '&action=copy_to_faq_question'.'&page='.$_GET['page']))
+                   '&action=move_faq_question'.'&page='.$_GET['page']).'">'.tep_html_element_button(IMAGE_MOVE).'</a>'.
+               '<a href="'.tep_href_link(FILENAME_FAQ, 'cPath=' . $cPath . '&qID=' . $qInfo->faq_question_id .  '&action=copy_to_faq_question'.'&page='.$_GET['page']).'">'.tep_html_element_button(IMAGE_COPY_TO).'</a>'
               );
           }
           if(isset($_GET['site_id'])){
@@ -1275,15 +1225,9 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
               }
               $contents[] = array('text' => '<b>' .$site['romaji'] .'</b>');
               $contents[] = array('align' => 'left' ,
-                  'text' => tep_html_button(IMAGE_EDIT,tep_href_link(FILENAME_FAQ,
-                      'cPath=' . $cPath . '&qID=' . $qInfo->faq_question_id .
-                      '&action=edit_faq_question'. '&site_id='.
-                      $site['id'].'&page='.$_GET['page'])).(
+                  'text' => '<a href="'.tep_href_link(FILENAME_FAQ, 'cPath=' . $cPath . '&qID=' . $qInfo->faq_question_id .  '&action=edit_faq_question'. '&site_id='.  $site['id'].'&page='.$_GET['page']).'">'.tep_html_element_button(IMAGE_EDIT).'</a>'.(
                    tep_faq_question_description_exist($qInfo->faq_question_id,$site['id'])?
-                   tep_html_button(IMAGE_DELETE,tep_href_link(FILENAME_FAQ,
-                       'cPath=' . $cPath . '&qID=' . $qInfo->faq_question_id .
-                       '&action=delete_faq_question_description&site_id='.
-                       $site['id'].'&page='.$_GET['page']))
+                   '<a href="'.tep_href_link(FILENAME_FAQ, 'cPath=' . $cPath . '&qID=' . $qInfo->faq_question_id .  '&action=delete_faq_question_description&site_id='.  $site['id'].'&page='.$_GET['page']).'">'.tep_html_element_button(IMAGE_DELETE).'</a>'
                    :'')
                   );
             }

@@ -85,8 +85,8 @@
       }
     }
     echo '<tr><td align="right">'; 
-    echo '<a href="'.tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES).'">'.tep_image_button('button_back.gif', 'back').'</a></td>';
-    echo '<td>'.tep_image_submit('button_insert.gif', IMAGE_INSERT); 
+    echo '<a href="'.tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES).'">'.tep_html_element_button(IMAGE_BACK).'</a></td>';
+    echo '<td>'.tep_html_element_submit(IMAGE_INSERT); 
     echo '</td></tr>'; 
     echo '</table>'; 
     ?>

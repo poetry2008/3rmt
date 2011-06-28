@@ -176,7 +176,7 @@ function go_option() {
                     <td colspan="3" class="main"><br><?php echo TEXT_WARNING_OF_DELETE; ?></td>
                   </tr>
                   <tr>
-                    <td align="right" colspan="3" class="main"><br><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, '&value_page=' . $value_page . '&attribute_page=' . $attribute_page, 'NONSSL') . '">'; ?><?php echo tep_image_button('button_cancel.gif', ' cancel '); ?></a>&nbsp;</td>
+                    <td align="right" colspan="3" class="main"><br><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, '&value_page=' . $value_page . '&attribute_page=' . $attribute_page, 'NONSSL') .  '">'; ?><?php echo tep_html_element_button(IMAGE_CANCEL); ?></a>&nbsp;</td>
                   </tr>
 <?php
     } else {
@@ -185,7 +185,7 @@ function go_option() {
                     <td class="main" colspan="3"><br><?php echo TEXT_OK_TO_DELETE; ?></td>
                   </tr>
                   <tr>
-                    <td class="main" align="right" colspan="3"><br><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, 'action=delete_option&option_id=' . $_GET['option_id'], 'NONSSL') . '">'; ?><?php echo tep_image_button('button_delete.gif', ' delete '); ?></a>&nbsp;&nbsp;&nbsp;<?php echo '<a href="' . tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, '&order_by=' . $order_by . '&page=' . $page, 'NONSSL') . '">'; ?><?php echo tep_image_button('button_cancel.gif', ' cancel '); ?></a>&nbsp;</td>
+                    <td class="main" align="right" colspan="3"><br><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, 'action=delete_option&option_id=' . $_GET['option_id'], 'NONSSL') . '">'; ?><?php echo tep_image_button('button_delete.gif', ' delete '); ?></a>&nbsp;&nbsp;&nbsp;<?php echo '<a href="' .  tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, '&order_by=' . $order_by . '&page=' .  $page, 'NONSSL') . '">'; ?><?php echo tep_html_element_button(IMAGE_CANCEL); ?></a>&nbsp;</td>
                   </tr>
 <?php
     }
@@ -282,14 +282,14 @@ function go_option() {
 ?>
                 <td align="center" class="smallText">&nbsp;<?php echo $options_values['products_options_id']; ?><input type="hidden" name="option_id" value="<?php echo $options_values['products_options_id']; ?>">&nbsp;</td>
                 <td class="smallText"><?php echo $inputs; ?></td>
-                <td align="center" class="smallText">&nbsp;<?php echo tep_image_submit('button_update.gif', IMAGE_UPDATE); ?>&nbsp;<?php echo '<a href="' . tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, '', 'NONSSL') . '">'; ?><?php echo tep_image_button('button_cancel.gif', IMAGE_CANCEL); ?></a>&nbsp;</td>
+                <td align="center" class="smallText">&nbsp;<?php echo tep_html_element_submit(IMAGE_UPDATE); ?>&nbsp;<?php echo '<a href="' . tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, '', 'NONSSL') . '">'; ?><?php echo tep_html_element_button(IMAGE_CANCEL); ?></a>&nbsp;</td>
 <?php
         echo '</form>' . "\n";
       } else {
 ?>
                 <td align="center" class="smallText">&nbsp;<?php echo $options_values["products_options_id"]; ?>&nbsp;</td>
                 <td class="smallText">&nbsp;<?php echo $options_values["products_options_name"]; ?>&nbsp;</td>
-                <td align="center" class="smallText">&nbsp;<?php echo '<a href="' . tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, 'action=update_option&option_id=' . $options_values['products_options_id'] . '&option_order_by=' . $option_order_by . '&option_page=' . $option_page, 'NONSSL') . '">'; ?><?php echo tep_image_button('button_edit.gif', IMAGE_UPDATE); ?></a>&nbsp;&nbsp;<?php echo '<a href="' . tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, 'action=delete_product_option&option_id=' . $options_values['products_options_id'], 'NONSSL') , '">'; ?><?php echo tep_image_button('button_delete.gif', IMAGE_DELETE); ?></a>&nbsp;</td>
+                <td align="center" class="smallText">&nbsp;<?php echo '<a href="' .  tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, 'action=update_option&option_id=' .  $options_values['products_options_id'] . '&option_order_by=' .  $option_order_by . '&option_page=' . $option_page, 'NONSSL') .  '">'; ?><?php echo tep_html_element_button(IMAGE_UPDATE); ?></a>&nbsp;&nbsp;<?php echo '<a href="' .  tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, 'action=delete_product_option&option_id=' .  $options_values['products_options_id'], 'NONSSL') , '">'; ?><?php echo tep_html_element_button(IMAGE_DELETE); ?></a>&nbsp;</td>
 <?php
       }
 ?>
@@ -316,7 +316,7 @@ function go_option() {
 ?>
                 <td align="center" class="smallText">&nbsp;<?php echo $next_id; ?>&nbsp;</td>
                 <td class="smallText"><?php echo $inputs; ?></td>
-                <td align="center" class="smallText">&nbsp;<?php echo tep_image_submit('button_insert.gif', IMAGE_INSERT); ?>&nbsp;</td>
+                <td align="center" class="smallText">&nbsp;<?php echo tep_html_element_submit(IMAGE_INSERT); ?>&nbsp;</td>
 <?php
       echo '</form>';
 ?>
@@ -389,7 +389,7 @@ function go_option() {
                     <td class="main" colspan="3"><br><?php echo TEXT_WARNING_OF_DELETE; ?></td>
                   </tr>
                   <tr>
-                    <td class="main" align="right" colspan="3"><br><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, '&value_page=' . $value_page . '&attribute_page=' . $attribute_page, 'NONSSL') . '">'; ?><?php echo tep_image_button('button_cancel.gif', ' cancel '); ?></a>&nbsp;</td>
+                    <td class="main" align="right" colspan="3"><br><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, '&value_page=' . $value_page . '&attribute_page=' . $attribute_page, 'NONSSL') .  '">'; ?><?php echo tep_html_element_button(IMAGE_CANCEL); ?></a>&nbsp;</td>
                   </tr>
 <?php
     } else {
@@ -398,7 +398,7 @@ function go_option() {
                     <td class="main" colspan="3"><br><?php echo TEXT_OK_TO_DELETE; ?></td>
                   </tr>
                   <tr>
-                    <td class="main" align="right" colspan="3"><br><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, 'action=delete_value&value_id=' . $_GET['value_id'], 'NONSSL') . '">'; ?><?php echo tep_image_button('button_delete.gif', ' delete '); ?></a>&nbsp;&nbsp;&nbsp;<?php echo '<a href="' . tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, '&option_page=' . $option_page . '&value_page=' . $value_page . '&attribute_page=' . $attribute_page, 'NONSSL') . '">'; ?><?php echo tep_image_button('button_cancel.gif', ' cancel '); ?></a>&nbsp;</td>
+                    <td class="main" align="right" colspan="3"><br><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, 'action=delete_value&value_id=' . $_GET['value_id'], 'NONSSL') . '">'; ?><?php echo tep_image_button('button_delete.gif', ' delete '); ?></a>&nbsp;&nbsp;&nbsp;<?php echo '<a href="' .  tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, '&option_page=' . $option_page .  '&value_page=' . $value_page . '&attribute_page=' . $attribute_page, 'NONSSL') . '">'; ?><?php echo tep_html_element_button(IMAGE_CANCEL); ?></a>&nbsp;</td>
                   </tr>
 <?php
     }
@@ -504,7 +504,7 @@ function go_option() {
 ?>
                 </select>&nbsp;</td>
                 <td class="smallText"><?php echo $inputs; ?></td>
-                <td align="center" class="smallText">&nbsp;<?php echo tep_image_submit('button_update.gif', IMAGE_UPDATE); ?>&nbsp;<?php echo '<a href="' . tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, '', 'NONSSL') . '">'; ?><?php echo tep_image_button('button_cancel.gif', IMAGE_CANCEL); ?></a>&nbsp;</td>
+                <td align="center" class="smallText">&nbsp;<?php echo tep_html_element_submit(IMAGE_UPDATE); ?>&nbsp;<?php echo '<a href="' . tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, '', 'NONSSL') . '">'; ?><?php echo tep_html_element_button(IMAGE_CANCEL); ?></a>&nbsp;</td>
 <?php
         echo '</form>';
       } else {
@@ -517,13 +517,14 @@ function go_option() {
                     'action=update_option_value&value_id=' .
                     $values_values['products_options_values_id'] . '&value_page=' .
                     (isset($_GET['value_page'])?$_GET['value_page']:''), 'NONSSL') .
-                '">'; ?><?php echo tep_image_button('button_edit.gif',
-  IMAGE_UPDATE); ?></a>&nbsp;&nbsp;<?php echo '<a href="' .
+                '">'; ?><?php echo tep_html_element_button(IMAGE_UPDATE); ?></a>&nbsp;&nbsp;<?php echo '<a href="' .
     tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES,
         'action=delete_option_value&value_id=' .
         $values_values['products_options_values_id'], 'NONSSL') , '">'; ?><?php echo
-    tep_image_button('button_delete.gif', IMAGE_DELETE); ?></a>&nbsp;<a href="<?php
-    echo tep_href_link('options_image.php', 'value_id='.$values_values['products_options_values_id']);?>"><?php echo tep_image_button('option_image.gif', 'image')?></a></td>
+    tep_html_element_button(IMAGE_DELETE); ?></a>&nbsp;<a href="<?php
+    echo tep_href_link('options_image.php',
+        'value_id='.$values_values['products_options_values_id']);?>"><?php echo
+    tep_html_element_button(BUTTON_IMAGE_TEXT)?></a></td>
 <?php
       }
       $max_values_id_query = tep_db_query("select max(products_options_values_id) + 1 as next_id from " . TABLE_PRODUCTS_OPTIONS_VALUES);
@@ -557,7 +558,7 @@ function go_option() {
 ?>
                 </select>&nbsp;</td>
                 <td class="smallText"><input type="hidden" name="value_id" value="<?php echo $next_id; ?>"><?php echo $inputs; ?></td>
-                <td align="center" class="smallText">&nbsp;<?php echo tep_image_submit('button_insert.gif', IMAGE_INSERT); ?>&nbsp;</td>
+                <td align="center" class="smallText">&nbsp;<?php echo tep_html_element_submit(IMAGE_INSERT); ?>&nbsp;</td>
 <?php
       echo '</form>';
 ?>
@@ -721,7 +722,7 @@ function go_option() {
       <td align="center" class="smallText">&nbsp;<input type="text" name="products_stock" value="<?php echo $attributes_values['products_stock']; ?>" size="6">&nbsp;</td>
             <!-- //products_stock -->
       <td align="center" class="smallText">&nbsp;<input type="text" name="price_prefix" value="<?php echo $attributes_values['price_prefix']; ?>" size="2">&nbsp;</td>
-            <td align="center" class="smallText">&nbsp;<?php echo tep_image_submit('button_update.gif', IMAGE_UPDATE); ?>&nbsp;<?php echo '<a href="' . tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, '&attribute_page=' . $attribute_page, 'NONSSL') . '">'; ?><?php echo tep_image_button('button_cancel.gif', IMAGE_CANCEL); ?></a>&nbsp;</td>
+            <td align="center" class="smallText">&nbsp;<?php echo tep_html_element_submit(IMAGE_UPDATE); ?>&nbsp;<?php echo '<a href="' .  tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, '&attribute_page=' .  $attribute_page, 'NONSSL') . '">'; ?><?php echo tep_html_element_button(IMAGE_CANCEL); ?></a>&nbsp;</td>
 <?php
       if (DOWNLOAD_ENABLED == 'true') {
         $download_query_raw ="select products_attributes_filename, products_attributes_maxdays, products_attributes_maxcount 
@@ -776,7 +777,7 @@ function go_option() {
             <td align="right" class="smallText">&nbsp;<?php echo $attributes_values["options_values_price"]; ?>&nbsp;</td>
             <td align="center" class="smallText">&nbsp;<?php echo isset($attributes_values['products_stock']) ? $attributes_values["products_stock"]:''; ?>&nbsp;</td>
         <td align="center" class="smallText">&nbsp;<?php echo $attributes_values["price_prefix"]; ?>&nbsp;</td>
-            <td align="center" class="smallText">&nbsp;<?php echo '<a href="' . tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, 'action=update_attribute&attribute_id=' . $attributes_values['products_attributes_id'] . '&attribute_page=' . $attribute_page, 'NONSSL') . '">'; ?><?php echo tep_image_button('button_edit.gif', IMAGE_UPDATE); ?></a>&nbsp;&nbsp;<?php echo '<a href="' . tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, 'action=delete_product_attribute&attribute_id=' . $attributes_values['products_attributes_id'] . '&attribute_page=' . $attribute_page, 'NONSSL') , '">'; ?><?php echo tep_image_button('button_delete.gif', IMAGE_DELETE); ?></a>&nbsp;</td>
+            <td align="center" class="smallText">&nbsp;<?php echo '<a href="' .  tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, 'action=update_attribute&attribute_id=' .  $attributes_values['products_attributes_id'] . '&attribute_page=' .  $attribute_page, 'NONSSL') . '">'; ?><?php echo tep_html_element_button(IMAGE_UPDATE); ?></a>&nbsp;&nbsp;<?php echo '<a href="' .  tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, 'action=delete_product_attribute&attribute_id=' .  $attributes_values['products_attributes_id'] . '&attribute_page=' .  $attribute_page, 'NONSSL') , '">'; ?><?php echo tep_html_element_button(IMAGE_DELETE); ?></a>&nbsp;</td>
 <?php
     }
     $max_attributes_id_query = tep_db_query("select max(products_attributes_id) + 1 as next_id from " . TABLE_PRODUCTS_ATTRIBUTES);
@@ -826,7 +827,7 @@ function go_option() {
             <td align="right" class="smallText">&nbsp;<input type="text" name="value_price" size="6">&nbsp;</td>
       <td align="right" class="smallText">&nbsp;<input type="text" name="products_stock" size="6">&nbsp;</td>
             <td align="right" class="smallText">&nbsp;<input type="text" name="price_prefix" size="2" value="+">&nbsp;</td>
-            <td align="center" class="smallText">&nbsp;<?php echo tep_image_submit('button_insert.gif', IMAGE_INSERT); ?>&nbsp;</td>
+            <td align="center" class="smallText">&nbsp;<?php echo tep_html_element_submit(IMAGE_INSERT); ?>&nbsp;</td>
           </tr>
 <?php
       if (DOWNLOAD_ENABLED == 'true') {

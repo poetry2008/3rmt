@@ -226,7 +226,7 @@
                 <td><?php echo tep_draw_textarea_field('text_information', 'soft', '70', '20', stripslashes($detail['text_information'])); ?></td> 
               </tr> 
               <tr> 
-                <td colspan="2" align="right" class="button_cancel"><?php echo tep_image_submit('button_save.gif', IMAGE_INSERT) . '&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_CONTENTS, 'cID=' . $cID . '&page=' . $_GET['page']) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>'; ?></td> 
+                <td colspan="2" align="right" class="button_cancel"><?php echo tep_html_element_submit(IMAGE_SAVE) . '&nbsp;&nbsp;<a href="' .  tep_href_link(FILENAME_CONTENTS, 'cID=' . $cID . '&page=' .  $_GET['page']) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>'; ?></td> 
               </tr> 
             </table> 
             <?php echo tep_draw_hidden_field('cID', $cID); ?> 
@@ -283,7 +283,7 @@
                 <td><?php echo tep_draw_textarea_field('text_information', 'soft', '70', '20', ''); ?></td> 
               </tr> 
               <tr> 
-                <td colspan="2" align="right" class="button_save"><?php echo tep_image_submit('button_save.gif', IMAGE_INSERT) . '&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_CONTENTS, 'cID=' . (isset($cID)?$cID:'') . '&page=' . (isset($_GET['page'])?$_GET['page']:'')) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>'; ?></td> 
+                <td colspan="2" align="right" class="button_save"><?php echo tep_html_element_submit(IMAGE_SAVE) . '&nbsp;&nbsp;<a href="' .  tep_href_link(FILENAME_CONTENTS, 'cID=' . (isset($cID)?$cID:'') .  '&page=' . (isset($_GET['page'])?$_GET['page']:'')) . '">' .  tep_html_element_button(IMAGE_CANCEL) . '</a>'; ?></td> 
               </tr> 
             </table> 
             </form> </td> 
@@ -369,8 +369,7 @@
                         </table></td> 
                     </tr> 
           <tr>
-            <td><a href="<?php echo tep_href_link(FILENAME_CONTENTS,
-  $site_id?'site_id='.$site_id.'&action=insert':'action=insert'); ?>"><?php echo tep_image_button('button_insert.gif', IMAGE_INSERT); ?></a></td>
+            <td><a href="<?php echo tep_href_link(FILENAME_CONTENTS, $site_id?'site_id='.$site_id.'&action=insert':'action=insert'); ?>"><?php echo tep_html_element_button(IMAGE_INSERT); ?></a></td>
           </tr>
                   </table></td> 
                 <?php
@@ -390,13 +389,13 @@
 
       $contents = array('form' => tep_draw_form('contents', FILENAME_CONTENTS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&act=deleteconfirm'));
       $contents[] = array('text' => TEXT_DELETE_INTRO . '<br><br><b>' . $c_title . '</b>');
-      $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_delete.gif', IMAGE_DELETE) . ' <a href="' . tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
+      $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_DELETE) . ' <a href="' .  tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
       break;
     default:
       if ($cID && tep_not_null($cID)) {
     $heading[] = array('text' => '<b>' . $c_title . '</b>');
 
-        $contents[] = array('align' => 'center', 'text' => '<br>このページのリンクを表示させるには以下のソースコードを表示したい箇所にコピーしてください。<br>'.tep_draw_textarea_field('link','soft',30,5,'<a href="'.tep_catalog_href_link('page.php','pID='.(isset($_GET['cID'])?$_GET['cID']:'')).'">'.$c_title.'</a>').'<br><a href="' . tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=edit') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>' . ($ocertify->npermission == 15 ? ( ' <a href="' . tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=confirm') . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a>'):''));
+        $contents[] = array('align' => 'center', 'text' => '<br>このページのリンクを表示させるには以下のソースコードを表示したい箇所にコピーしてください。<br>'.tep_draw_textarea_field('link','soft',30,5,'<a href="'.tep_catalog_href_link('page.php','pID='.(isset($_GET['cID'])?$_GET['cID']:'')).'">'.$c_title.'</a>').'<br><a href="' . tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID .  '&action=edit') . '">' . tep_html_element_button(IMAGE_EDIT) . '</a>' .  ($ocertify->npermission == 15 ? ( ' <a href="' .  tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID .  '&action=confirm') . '">' .  tep_html_element_button(IMAGE_DELETE) . '</a>'):''));
       }
       break;
   }

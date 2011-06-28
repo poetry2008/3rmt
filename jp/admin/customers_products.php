@@ -713,8 +713,8 @@ function clear_all(ele,cid) {
                 <tr>
                   <td colspan="3" align="left"></td>
                   <td colspan="4" align="right">
-                  <input type="image" src="includes/languages/japanese/images/buttons/button_print.gif" align="top">
-                  <a href="<?php echo tep_href_link(FILENAME_CUSTOMERS, str_replace('cpage', 'page', tep_get_all_get_params(array('page'))));?>"><?php echo tep_image_button('button_back.gif', IMAGE_BACK);?></a> 
+                  <?php echo tep_html_element_submit('請求書作成');?> 
+                  <a href="<?php echo tep_href_link(FILENAME_CUSTOMERS, str_replace('cpage', 'page', tep_get_all_get_params(array('page'))));?>"><?php echo tep_html_element_button(IMAGE_BACK);?></a> 
                   </td>
                 </tr>
               </table>

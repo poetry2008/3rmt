@@ -150,8 +150,7 @@ while($point_mail = tep_db_fetch_array($point_mail_query)){
                   <tr>
                     <td colspan="2" align="right">
                     <?php 
-                    echo tep_html_button(IMAGE_INSERT,tep_href_link(FILENAME_POINT_EMAIL,
-                          'page=' . $_GET['page'] . '&action=new'));
+                    echo '<a href="'.tep_href_link(FILENAME_POINT_EMAIL, 'page=' .  $_GET['page'] . '&action=new').'">'.tep_html_element_button(IMAGE_INSERT).'</a>';
                     ?></td>
                   </tr>
 <?php
@@ -183,9 +182,8 @@ while($point_mail = tep_db_fetch_array($point_mail_query)){
       $contents[] = array('text' => '<br>' . $point_mail_inputs_string);
       
       $contents[] = array('align' => 'center', 'text' => '<br>' . 
-          tep_html_submit(IMAGE_INSERT).
-          tep_html_button(IMAGE_CANCEL,tep_href_link(FILENAME_POINT_EMAIL,'page=' .
-              $_GET['page'])));
+          tep_html_element_submit(IMAGE_INSERT).
+          '<a href="'.tep_href_link(FILENAME_POINT_EMAIL,'page=' .  $_GET['page']).'">'.tep_html_element_button(IMAGE_CANCEL).'</a>');
       break;
     case 'edit':
       $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_EDIT_POINT_MAIL . '</b>');
@@ -211,9 +209,8 @@ while($point_mail = tep_db_fetch_array($point_mail_query)){
         '<br>' . $explanation;
       $contents[] = array('text' => '<br>'.$point_mail_inputs_string);
       $contents[] = array('align' => 'center' , 'text' => '<br>' .
-          tep_html_submit(IMAGE_EDIT).
-          tep_html_button(IMAGE_CANCEL,tep_href_link(FILENAME_POINT_EMAIL,'page=' .
-              $_GET['page'].'id='.$point_mail->id)));
+          tep_html_element_submit(IMAGE_EDIT).
+          '<a href="'.tep_href_link(FILENAME_POINT_EMAIL,'page=' .  $_GET['page'].'id='.$point_mail->id).'">'.tep_html_element_button(IMAGE_CANCEL).'</a>');
       break;
     case 'delete':
       $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_DELETE . '</b>');
@@ -225,9 +222,8 @@ while($point_mail = tep_db_fetch_array($point_mail_query)){
       $contents[] = array('text' => '<br><b>' .
           preg_replace("/\r\n|\n/",'<br>',$point_info->description) . '</b>');
       $contents[] = array('align' => 'center' , 'text' => '<br>' .
-          tep_html_submit(IMAGE_DELETE).
-          tep_html_button(IMAGE_CANCEL,tep_href_link(FILENAME_POINT_EMAIL,'page=' .
-              $_GET['page'].'id='.$point_mail->id)));
+          tep_html_element_submit(IMAGE_DELETE).
+          '<a href="'.tep_href_link(FILENAME_POINT_EMAIL,'page=' .  $_GET['page'].'id='.$point_mail->id).'">'.tep_html_element_button(IMAGE_CANCEL).'</a>');
       break;
     default:
   if (isset($point_info) and is_object($point_info)) {
@@ -242,10 +238,8 @@ while($point_mail = tep_db_fetch_array($point_mail_query)){
         $contents[] = array('text' => $point_mail_inputs_string);
         $contents[] = array('align' => 'center' ,
             'text' =>
-            tep_html_button(IMAGE_EDIT,tep_href_link(FILENAME_POINT_EMAIL, 'page='
-                . $_GET['page'] .'&id='.$point_info->id.'&action=edit')).
-            tep_html_button(IMAGE_DELETE,tep_href_link(FILENAME_POINT_EMAIL, 'page='
-                . $_GET['page'] .'&id='.$point_info->id.'&action=delete')));
+            '<a href="'.tep_href_link(FILENAME_POINT_EMAIL, 'page=' . $_GET['page'] .'&id='.$point_info->id.'&action=edit').'">'.tep_html_element_button(IMAGE_EDIT).'</a>'.
+            '<a href="'.tep_href_link(FILENAME_POINT_EMAIL, 'page=' . $_GET['page'] .'&id='.$point_info->id.'&action=delete').'">'.tep_html_element_button(IMAGE_DELETE).'</a>');
       }
       break;
   }

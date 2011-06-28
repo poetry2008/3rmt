@@ -198,7 +198,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 //  if (!$_GET['action']) {
 ?>
                   <tr>
-                    <td colspan="2" align="right"><?php echo '<a href="' . tep_href_link(FILENAME_TAGS, 'page=' . $_GET['page'] . '&action=new'.$sort_str) . '">' . tep_image_button('button_new_tag.gif', IMAGE_NEW_TAG) . '</a>'; ?></td>
+                    <td colspan="2" align="right"><?php echo '<a href="' .  tep_href_link(FILENAME_TAGS, 'page=' . $_GET['page'] .  '&action=new'.$sort_str) . '">' .  tep_html_element_button(BUTTON_NEW_TAG) . '</a>'; ?></td>
                   </tr>
 <?php
   }
@@ -218,7 +218,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       $contents[] = array('text' => '<br>' . TEXT_INFO_TAGS_NAME . '<br>' . tep_draw_input_field('tags_name'));
       $contents[] = array('text' => '<br>' . TEXT_INFO_TAGS_IMAGE . '<br>' . tep_draw_file_field('tags_images')) ;
       //$contents[] = array('text' => '<br>' . TEXT_INFO_TAGS_IMAGE . '<br>' . tep_draw_input_field('tags_images'));
-      $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_insert.gif', IMAGE_INSERT) . '&nbsp;<a href="' . tep_href_link(FILENAME_TAGS, 'page=' . $_GET['page'].$sort_str) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
+      $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_INSERT) . '&nbsp;<a href="' .  tep_href_link(FILENAME_TAGS, 'page=' . $_GET['page'].$sort_str) . '">' .  tep_html_element_button(IMAGE_CANCEL) . '</a>');
       break;
     case 'edit':
       $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_EDIT_TAG . '</b>');
@@ -235,7 +235,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       }
       
       //$contents[] = array('text' => '<br>' . TEXT_INFO_TAGS_IMAGE . '<br>' . tep_image(DIR_WS_CATALOG_IMAGES . $cInfo->tags_images)) ;
-      $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_update.gif', IMAGE_UPDATE) . '&nbsp;<a href="' . tep_href_link(FILENAME_TAGS, 'page=' . $_GET['page'] . '&cID=' . $cInfo->tags_id.$sort_str) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
+      $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_UPDATE) . '&nbsp;<a href="' .  tep_href_link(FILENAME_TAGS, 'page=' . $_GET['page'] . '&cID=' .  $cInfo->tags_id.$sort_str) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
       break;
     case 'delete':
       $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_DELETE_TAG . '</b>');
@@ -243,15 +243,17 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       $contents = array('form' => tep_draw_form('tags', FILENAME_TAGS, 'page=' . $_GET['page'] . '&cID=' . $cInfo->tags_id . '&action=deleteconfirm'.$sort_str));
       $contents[] = array('text' => TEXT_INFO_DELETE_INTRO);
       $contents[] = array('text' => '<br><b>' . $cInfo->tags_name . '</b>');
-      $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_delete.gif', IMAGE_DELETE) . '&nbsp;<a href="' . tep_href_link(FILENAME_TAGS, 'page=' . $_GET['page'] . '&cID=' . $cInfo->tags_id.$sort_str) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
+      $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_DELETE) . '&nbsp;<a href="' .  tep_href_link(FILENAME_TAGS, 'page=' . $_GET['page'] . '&cID=' .  $cInfo->tags_id.$sort_str) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
       break;
     default:
       if (is_object($cInfo)) {
         $heading[] = array('text' => '<b>' . $cInfo->tags_name . '</b>');
 
         $contents[] = array('align' => 'center', 'text' => 
-          '<a href="' . tep_href_link(FILENAME_TAGS, 'page=' . $_GET['page'] . '&cID=' . $cInfo->tags_id . '&action=edit'.$sort_str) . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>' 
-          . ($ocertify->npermission == 15 ? (' <a href="' . tep_href_link(FILENAME_TAGS, 'page=' . $_GET['page'] . '&cID=' . $cInfo->tags_id . '&action=delete'.$sort_str) . '">' . tep_image_button('button_delete.gif', IMAGE_DELETE) . '</a>'):'')
+          '<a href="' . tep_href_link(FILENAME_TAGS, 'page=' . $_GET['page'] .
+          '&cID=' . $cInfo->tags_id . '&action=edit'.$sort_str) . '">' .
+          tep_html_element_button(IMAGE_EDIT) . '</a>' . ($ocertify->npermission ==
+            15 ? (' <a href="' . tep_href_link(FILENAME_TAGS, 'page=' .  $_GET['page'] . '&cID=' . $cInfo->tags_id . '&action=delete'.$sort_str) .  '">' . tep_html_element_button(IMAGE_DELETE) . '</a>'):'')
         );
         $contents[] = array('text' => '<br>' . TEXT_INFO_TAGS_NAME . '<br>' . $cInfo->tags_name . '<br>');
         if ($cInfo->tags_images) {

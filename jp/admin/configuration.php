@@ -229,7 +229,7 @@ case 'edit':
     $contents[] = array('text' => TEXT_INFO_EDIT_INTRO);
     $contents[] = array('text' => '<br><b>' . $cInfo->configuration_title . '</b><br>' . $cInfo->configuration_description . '<br>' . $value_field);
   
-    $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_update.gif', IMAGE_UPDATE) . '&nbsp;<a class="new_product_reset" href="' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' . $cInfo->configuration_id) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
+    $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_UPDATE) . '&nbsp;<a class="new_product_reset" href="' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] .  '&cID=' . $cInfo->configuration_id) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
 
 //----------------------------------
 // for 3rmt {{{
@@ -298,11 +298,10 @@ case 'edit':
   if (is_numeric($fetch_result['configuration_id'])){
   $contents_site[] = array(
       'align' => 'center',
-      'text' => '<br>' . 
-      tep_image_submit('button_update.gif', IMAGE_UPDATE) .'&nbsp;<a href="' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&action=tdel&cID=' . $fetch_result['configuration_id'].'_'.$cInfo->configuration_id) . '">'.tep_image_button('button_deffect.gif',IMAGE_DEFFECT).'</a>'. '&nbsp;<a class="new_product_reset" href="' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' . $cInfo->configuration_id) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
+      'text' => '<br>' .  tep_html_element_submit(IMAGE_UPDATE) .'&nbsp;<a href="' .  tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] .  '&action=tdel&cID=' .  $fetch_result['configuration_id'].'_'.$cInfo->configuration_id) .  '">'.tep_html_element_button(IMAGE_DEFFECT).'</a>'. '&nbsp;<a class="new_product_reset" href="' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' . $cInfo->configuration_id) . '">' .  tep_html_element_button(IMAGE_CANCEL) . '</a>');
 //      $contents_site[] = array('align' => 'center', 'text' => '<br>' . '<a href="' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&action=tdel&cID=' . $fetch_result['configuration_id'].'_'.$cInfo->configuration_id) . '">'.tep_image_button('button_delete.gif',IMAGE_DELETE).'</a>');
   }else {
-    $contents_site[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_effect.gif', IMAGE_EFFECT) . '&nbsp;<a class="new_product_reset" href="' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' . $cInfo->configuration_id) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
+    $contents_site[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_EFFECT) . '&nbsp;<a class="new_product_reset" href="' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] .  '&cID=' . $cInfo->configuration_id) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
   }
   $contents_sites_array[] = $contents_site;
   
@@ -315,7 +314,7 @@ default:
 
         $heading[] = array('text' => '<b>' . $cInfo->configuration_title . '</b>');
 
-        $contents[] = array('align' => 'center', 'text' => '<a href="' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' . $cInfo->configuration_id . '&action=edit') . '">' . tep_image_button('button_edit.gif', IMAGE_EDIT) . '</a>');
+        $contents[] = array('align' => 'center', 'text' => '<a href="' .  tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' .  $cInfo->configuration_id . '&action=edit') . '">' .  tep_html_element_button(IMAGE_EDIT) . '</a>');
         $contents[] = array('text' => '<br>' . $cInfo->configuration_description);
         $contents[] = array('text' => '<br>' . TEXT_INFO_DATE_ADDED . ' ' . tep_date_short($cInfo->date_added));
         if (tep_not_null($cInfo->last_modified)) $contents[] = array('text' => TEXT_INFO_LAST_MODIFIED . ' ' . tep_date_short($cInfo->last_modified));
