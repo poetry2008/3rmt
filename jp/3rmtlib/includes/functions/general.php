@@ -3945,3 +3945,9 @@ function tep_get_faq_qid_by_qname($qname){
  $question = tep_db_fetch_array($query);
  return $question['faq_question_id'];
 }
+function tep_question_in_category_by_id($qid,$cid){
+  $pro_to_ca_query = tep_db_query("select * from ".TABLE_FAQ_QUESTION_TO_CATEGORIES." 
+      where faq_category_id = '".$cid."'
+      and faq_question_id='".$qid."'");
+  return tep_db_fetch_array($pro_to_ca_query);
+}
