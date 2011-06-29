@@ -300,8 +300,13 @@
          if($_GET['action'] == 'insert_faq_question' || ($_GET['action'] ==
                'update_faq_question' &&
                !tep_faq_question_description_exist($faq_question_id,$site_id))) {
+           if($_GET['action'] == 'insert_faq_question'){
+            $insert_sql_data = array('faq_question_id' => $faq_question_id,
+                                     'site_id' => 0);
+           }else{
             $insert_sql_data = array('faq_question_id' => $faq_question_id,
                                      'site_id' => $site_id);
+           }
             if(!tep_check_romaji($sql_data_array['romaji'])){
               $messageStack->add_session(TEXT_ROMAJI_ERROR, 'error');
               tep_redirect(tep_href_link(FILENAME_FAQ));
@@ -383,8 +388,13 @@
          if($_GET['action'] == 'insert_faq_category' || ($_GET['action'] ==
                'update_faq_category' &&
                !tep_faq_categories_description_exist($faq_category_id,$site_id))) {
+            if($_GET['action'] == 'insert_faq_category'){
+            $insert_sql_data = array('faq_category_id' => $faq_category_id,
+                                     'site_id' => 0);
+            }else{
             $insert_sql_data = array('faq_category_id' => $faq_category_id,
                                      'site_id' => $site_id);
+            }
             if(!tep_check_romaji($sql_data_array['romaji'])){
               $messageStack->add_session(TEXT_ROMAJI_ERROR, 'error');
               tep_redirect(tep_href_link(FILENAME_FAQ));
