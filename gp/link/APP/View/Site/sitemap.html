@@ -1,0 +1,227 @@
+<!--{php}-->
+echo '
+<?xml version="1.0" encoding="UTF-8"?>
+';
+<!--{/php}-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  lang="ja-JP">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<link type="text/css" rel="stylesheet" href="images/class/style.css" />
+<link type="text/css" rel="stylesheet" href="images/class/stylesheet.css" />
+<script type='text/javascript' src='public/style.js'></script>
+<script type='text/javascript' src='Script/jquery-1.4.2.js'></script>
+<!--{if $seo}-->
+<title>
+<!--{$seo.title}-->
+</title>
+<meta name="keywords" content="<!--{$seo.keywords}-->" />
+<meta name="description" content="<!--{$seo.description}-->" />
+<meta name="robots" content="<!--{$seo.robots}-->" />
+<meta name="copyright" content="<!--{$seo.copyright}-->" />
+<!--{else}-->
+<title>相互リンク集｜RMTワールドマネー</title>
+<!--{/if}-->
+</head>
+<body id='body'>
+<div class="container">
+<div id="header">
+<div class="h_title"> RMT
+  <a href="javascript:void(0);" style="cursor:hand" onKeyPress="SomeJavaScriptCode" onClick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}"> RMT総合サイト RMT学園をお気に入りに追加して下さい！
+</a>
+</div>
+<div id="title"><img src="../images/design/banner.jpg" alt="banner"></div>
+  <div id="header02">
+    <div id="header_Menu">
+  <div class="header_menu_content">
+    <table width="100%" border="0" cellpadding="0" cellspacing="0" summary="menu box">
+      <tr>
+        <td width="432">
+            <form name="quick_find" action="/advanced_search_result.php" method="get">
+              <table cellpadding="0" cellspacing="0" summary="search">
+                <tr>
+                  <td><img src="../images/design/button/search_text.gif" width="22" height="19" alt="RMT検索"></td>
+                  <td><select name="categories_id" class="header_search_select">
+                      <option value="" selected="selected">全てのゲーム</option>
+                      <option value="168">FF11 RMT</option>
+                      <option value="396">AION RMT</option>
+                      <option value="195">レッドストーン RMT</option>
+                      <option value="169">リネージュ2 RMT</option>
+                      <option value="200">CABAL RMT</option>
+                      <option value="231">SUN RMT</option>
+                      <option value="278">アトランティカ RMT</option>
+                      <option value="325">ラテール RMT</option>
+                      <option value="171">ラグナロク RMT</option>
+                      <option value="250">ルーセントハート RMT</option>
+                      <option value="468">蒼天 RMT</option>
+                      <option value="299">エミルクロニクル RMT</option>
+                      <option value="253">大航海時代 RMT</option>
+                      <option value="450">タルタロス RMT</option>
+                      <option value="444">ドラゴニカ RMT</option>
+                      <option value="431">エイカオンライン RMT</option>
+                      <option value="190">テイルズウィーバー RMT</option>
+                      <option value="462">エルソード RMT</option>
+                      <option value="319">女神転生IMAGINE RMT</option>
+                      <option value="287">クロノス RMT</option>
+                      <option value="459">ヴァルキリースカイ RMT</option>
+                      <option value="430">カナン RMT</option>
+                      <option value="308">RFonlineZ RMT</option>
+                      <option value="477">アイラオンライン</option>
+                      <option value="382">ROHAN RMT</option>
+                      <option value="453">トリックスター RMT</option>
+                      <option value="436">ファンタジーアース ゼロ RMT</option>
+                      <option value="447">アークサイン RMT</option>
+                      <option value="441">ルシエルブルー RMT</option>
+                      <option value="465">RAPPELZ RMT</option>
+                      <option value="385">WYD RMT</option>
+                      <option value="367">ミックスマスター RMT</option>
+                      <option value="425">チョコットランド RMT</option>
+                      <option value="302">デカロン RMT</option>
+                      <option value="399">SEKIHEKI RMT</option>
+                      <option value="422">MU RMT</option>
+                      <option value="337">天上碑 RMT</option>
+                      <option value="295">シャイヤ RMT</option>
+                      <option value="402">グランドファンタジア RMT</option>
+                      <option value="170">リネージュ RMT</option>
+                      <option value="292">ナイトオンライン RMT</option>
+                      <option value="222">夢世界 RMT</option>
+                      <option value="322">マスターオブエピック RMT</option>
+                      <option value="179">マビノギ RMT</option>
+                      <option value="305">ルナ トゥインクル RMT</option>
+                      <option value="209">メイプルストーリー RMT</option>
+                      <option value="410">イースオンライン RMT</option>
+                      <option value="238">十二之天 RMT</option>
+                      <option value="206">アークロード RMT</option>
+                      <option value="221">三国志 RMT</option>
+                      <option value="212">パーフェクトワールド RMT</option>
+                      <option value="331">ローズオンライン RMT</option>
+                      <option value="407">エンジェル戦記 RMT</option>
+                      <option value="281">LEGEND of CHUSEN RMT</option>
+                      <option value="286">ルナティア RMT</option>
+                      <option value="413">パンヤ RMT</option>
+                      <option value="416">プリウス RMT</option>
+                      <option value="340">オマージュ RMT</option>
+                      <option value="370">R2 RMT</option>
+                      <option value="241">パンドラサーガ RMT</option>
+                      <option value="177">PSU RMT</option>
+                      <option value="419">天地大乱 RMT</option>
+                      <option value="328">コルムオンライン RMT</option>
+                      <option value="334">グラナドエスパダ RMT</option>
+                      <option value="343">World of Warcraft RMT</option>
+                      <option value="346">ウルティマオンライン RMT</option>
+                      <option value="349">英雄オンライン RMT</option>
+                      <option value="355">ラストカオス RMT</option>
+                      <option value="358">エターナルカオスNEO RMT</option>
+                      <option value="364">フローレンシア RMT</option>
+                      <option value="373">三国無双 RMT</option>
+                      <option value="376">コンチェルトゲート RMT</option>
+                      <option value="379">TANTRA RMT</option>
+                      <option value="244">熱血江湖 RMT</option>
+                      <option value="203">ラグナロク2 RMT</option>
+                      <option value="215">モンスターハンター RMT</option>
+                      <option value="471">ブライトシャドウ RMT</option>
+                      <option value="472">三国志豪傑伝 RMT</option>
+                      <option value="247">ウェブマネー RMT</option>
+                    </select></td>
+                  <td><input type="text" name="keywords" value="RMT" class="header_search_input header_search_input01" /></td>
+                  <td><input name="imageField" type="submit" class="header_search_submit" value="" alt="検索" /></td>
+                </tr>
+              </table>
+              <input type="hidden" name="search_in_description" value="1" />
+              <input type="hidden" name="inc_subcat" value="1" />
+            </form>
+          </td>
+        <td class="header_m_login" align="right">
+        	<a href="http://3rk.maker.200.com/shopping_cart.php" class="header_menu_2">ショッピングカート</a>
+        </td>
+        <td>
+        	<a href="http://3rk.maker.200.com/checkout_products.php" class="header_menu_3">レジへ進む</a>
+        </td>
+        <td align="right">
+            <div class="header_menu_4"><span id="jk-shoppingcart" style="font-size:12px">0円</span></div>
+        </td>
+      </tr>
+    </table>
+  </div>
+    </div>
+    <div class="header_Navigation">
+      <a href="/sitemap.php">サイトマップ</a>&nbsp;&nbsp;
+            <!--{$bread}-->
+    </div>
+  </div>
+  <!--end header-->
+  <div id="content">
+    <div class="top">
+      <h1 class="link_sitmap_h1">サイトマップ</h1>
+    </div>
+    <div class="middle">
+      <!--{section name=loopClass loop=$class}-->
+      <!--{assign var='top' value=$class[loopClass]}-->
+      <div class="web-box">
+        <div class="web-tit">
+          <strong>
+          <a href='<!--{url controller=site action=class id=$class[loopClass].class_id}-->'>
+          <!--{$class[loopClass].name}-->
+          </a>
+          </strong></div>
+        <!--{section name=loopTop loop=$top.children step=5}-->
+        <!--{assign var='index' value=$smarty.section.loopTop.index}-->
+        <!--{assign var='index2' value=$smarty.section.loopTop.index+1}-->
+        <!--{assign var='index3' value=$smarty.section.loopTop.index+2}-->
+        <!--{assign var='index4' value=$smarty.section.loopTop.index+3}-->
+        <!--{assign var='index5' value=$smarty.section.loopTop.index+4}-->
+        <!--{if $smarty.section.loopTop.first}-->
+        <table class="web_3" width="100%">
+          <!--{/if}-->
+          <tr>
+            <td><!--{if $top.children[$index].name != ''}-->
+              <span class="web-ico">&nbsp;</span>
+              <a href='<!--{url controller=site action=class id=$top.children[$index].class_id}-->'>
+              <!--{$top.children[$index].name}-->
+              </a>
+              <!--{/if}-->
+            </td>
+            <td><!--{if $top.children[$index2].name != ''}-->
+              <span class="web-ico">&nbsp;</span>
+              <a href='<!--{url controller=site action=class id=$top.children[$index2].class_id}-->'>
+              <!--{$top.children[$index2].name}-->
+              </a>
+              <!--{/if}-->
+            </td>
+            <td><!--{if $top.children[$index3].name != ''}-->
+              <span class="web-ico">&nbsp;</span>
+              <a href='<!--{url controller=site action=class id=$top.children[$index3].class_id}-->'>
+              <!--{$top.children[$index3].name}-->
+              </a>
+              <!--{/if}-->
+            </td>
+            <td><!--{if $top.children[$index4].name != ''}-->
+              <span class="web-ico">&nbsp;</span>
+              <a href='<!--{url controller=site action=class id=$top.children[$index4].class_id}-->'>
+              <!--{$top.children[$index4].name}-->
+              </a>
+              <!--{/if}-->
+            </td>
+            <td><!--{if $top.children[$index5].name != ''}-->
+              <span class="web-ico">&nbsp;</span>
+              <a href='<!--{url controller=site action=class id=$top.children[$index5].class_id}-->'>
+              <!--{$top.children[$index5].name}-->
+              </a>
+              <!--{/if}-->
+            </td>
+          </tr>
+          <!--{if $smarty.section.loopTop.last}-->
+        </table>
+        <!--{/if}-->
+        <!--{/section}-->
+      </div>
+      <!--{/section}-->
+    </div>
+    <div class="bottom"></div>
+  </div>
+</div>
+<!--{include file=Site/footer.html}-->
+</div>
