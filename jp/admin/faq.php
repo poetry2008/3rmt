@@ -137,10 +137,12 @@
         $c_page = (isset($_GET['page']))?'&page='.$_GET['page']:'';
 
         $site_id = (isset($_GET['site_id']))?$_GET['site_id']:0;
+        /*
         if ($site_id == 0) {
           tep_set_all_question_status($_GET['qID'], $_GET['flag']);
           tep_redirect(tep_href_link(FILENAME_FAQ, 'cPath=' .  $_GET['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$p_page));
         }
+        */
         if ( ($_GET['flag'] == '0') || ($_GET['flag'] == '1') ) {
           if ($_GET['qID']) {
             tep_set_faq_question_status_by_site_id($_GET['qID'], $_GET['flag'],
@@ -298,8 +300,13 @@
          if($_GET['action'] == 'insert_faq_question' || ($_GET['action'] ==
                'update_faq_question' &&
                !tep_faq_question_description_exist($faq_question_id,$site_id))) {
+           if($_GET['action'] == 'insert_faq_question'){
+            $insert_sql_data = array('faq_question_id' => $faq_question_id,
+                                     'site_id' => 0);
+           }else{
             $insert_sql_data = array('faq_question_id' => $faq_question_id,
                                      'site_id' => $site_id);
+           }
             if(!tep_check_romaji($sql_data_array['romaji'])){
               $messageStack->add_session(TEXT_ROMAJI_ERROR, 'error');
               tep_redirect(tep_href_link(FILENAME_FAQ));
@@ -381,8 +388,13 @@
          if($_GET['action'] == 'insert_faq_category' || ($_GET['action'] ==
                'update_faq_category' &&
                !tep_faq_categories_description_exist($faq_category_id,$site_id))) {
+            if($_GET['action'] == 'insert_faq_category'){
+            $insert_sql_data = array('faq_category_id' => $faq_category_id,
+                                     'site_id' => 0);
+            }else{
             $insert_sql_data = array('faq_category_id' => $faq_category_id,
                                      'site_id' => $site_id);
+            }
             if(!tep_check_romaji($sql_data_array['romaji'])){
               $messageStack->add_session(TEXT_ROMAJI_ERROR, 'error');
               tep_redirect(tep_href_link(FILENAME_FAQ));

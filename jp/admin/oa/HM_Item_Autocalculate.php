@@ -63,7 +63,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
       }else{
         $check = "";
       }
-      echo "<div>";
+      echo "<div style=\"width:600px;\">";
       if($op){
       echo "<input value='".$opp['products_id']."'  
         onclick='".$this->formname."Change_option(".$opp['products_id'].",this)' 
@@ -92,7 +92,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
         echo "関連付け商品がないので手動入力してください";
       }
       $i++;
-      echo "<div>";
+      echo "</div>";
     }
   }
   function renderScript()

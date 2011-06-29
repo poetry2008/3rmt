@@ -5469,11 +5469,14 @@ function tep_set_faq_category_link_question_status($cID, $cstatus, $site_id)
   $pstatus = $cstatus;
   
   if ($site_id == 0) {
+    /*
     $site_arr[] = '0'; 
     $site_query = tep_db_query("select * from ".TABLE_SITES);
     while ($site_res = tep_db_fetch_array($site_query)) {
       $site_arr[] = $site_res['id']; 
     }
+    */
+    $site_arr = array($site_id); 
   } else {
     $site_arr = array($site_id); 
   }
