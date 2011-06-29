@@ -119,7 +119,7 @@ class HM_Form extends DbRecord
 
     }
     function INPUTtext(e){
-      return jQuery.trim(e.val()).length > 0;
+      return jQuery.trim($(e).val()).length > 0;
     }
     function disableQA()
     {
