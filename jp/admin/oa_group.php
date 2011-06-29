@@ -28,7 +28,7 @@
       case 'del':
         tep_db_query("delete from `".TABLE_OA_GROUP."` where id = '".$_GET['gid']."'");  
         tep_db_query("delete from `".TABLE_OA_FORM_GROUP."` where group_id = '".$_GET['gid']."'"); 
-        tep_redirect(tep_href_link(FILENAME_OA_GROUP, '&pcode='.$_GET['pcode'].'&type='.$_GET['type'])); 
+        tep_redirect(tep_href_link(FILENAME_OA_LINK_GROUP, '&pcode='.$_GET['pcode'].'&type='.$_GET['type'])); 
        break;
       case 'link_group': 
        if (!empty($_POST['ag'])) {
