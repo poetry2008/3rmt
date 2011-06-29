@@ -33,17 +33,24 @@ require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_FAQ_INFO);
     <!-- left_navigation_eof //-->
     </td>
     <td valign="top"  id="contents">
-    <h1 class="pageHeading"><?php echo TEXT_QUESTION_TITLE;?></h1>
+    <div class="pageHeading"><?php echo TEXT_QUESTION_TITLE;?></div>
     <div class="comment_faq">
     <?php 
     if(isset($faq_question_id)&&$faq_question_id!=''){
       $faq_question_info = tep_get_faq_question_info($faq_question_id);
     ?>
       <div class="faq_ask">
-        <img src="images/design/ask.gif" alt="question"><span><?php echo $faq_question_info['ask'];?><span>
+        <img src="images/design/ask.gif" alt="question"><h1><?php echo
+        $faq_question_info['ask'];?></h1>
       </div>
       <div class="faq_answer">
-       <img src="images/design/answer.gif" alt="ask"><span><?php echo $faq_question_info['answer'];?></span>
+       <img src="images/design/answer.gif" alt="ask"><span>
+       <?php 
+        $question_answer =
+        str_replace('#STORE_NAME#',STORE_NAME,$faq_question_info['answer']);
+        echo $question_answer;
+       ?>
+       </span>
       </div>
     <?php }?>
     </div>
