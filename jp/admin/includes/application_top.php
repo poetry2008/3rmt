@@ -382,7 +382,11 @@ while($userslist= tep_db_fetch_array($sites_id)){
   }
 //re login
 if(isset($_GET['his_url'])&&$_GET['his_url']){
-tep_redirect($_GET['his_url'],'SID='.tep_session_id);
+  $php_symbol = substr($_GET['his_url'], -4);
+  if ($php_symbol == '.php') {
+    tep_redirect($_GET['his_url'].'?SID='.tep_session_id());
+  }
+  tep_redirect($_GET['his_url'],'&SID='.tep_session_id());
 }
   
   //for sql_log
