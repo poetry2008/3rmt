@@ -839,7 +839,7 @@
                     }else{
                       echo '<a class="faq_status_link" href="javascript:viod(0);" 
                         onclick ="change_status(\''.
-                        tep_href_link(FILENAME_FAQ,'action=setflag&cID='.
+                        tep_href_link(FILENAME_FAQ,'action=setflag&qID='.
                             $_faq_info['faq_question_id'].'&flag=1&cPath='.
                             $cPath.'&site_id='.
                             ((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page)
@@ -848,7 +848,7 @@
                         .'</a>';
                       echo '<a class="faq_status_link" href="javascript:viod(0);" 
                         onclick ="change_status(\''.
-                        tep_href_link(FILENAME_FAQ,'action=setflag&cID='.
+                        tep_href_link(FILENAME_FAQ,'action=setflag&qID='.
                             $_faq_info['faq_question_id'].'&flag=0&cPath='.
                             $cPath.'&site_id='.
                             ((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page)
