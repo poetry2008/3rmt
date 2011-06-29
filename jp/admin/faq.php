@@ -137,10 +137,12 @@
         $c_page = (isset($_GET['page']))?'&page='.$_GET['page']:'';
 
         $site_id = (isset($_GET['site_id']))?$_GET['site_id']:0;
+        /*
         if ($site_id == 0) {
           tep_set_all_question_status($_GET['qID'], $_GET['flag']);
           tep_redirect(tep_href_link(FILENAME_FAQ, 'cPath=' .  $_GET['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$p_page));
         }
+        */
         if ( ($_GET['flag'] == '0') || ($_GET['flag'] == '1') ) {
           if ($_GET['qID']) {
             tep_set_faq_question_status_by_site_id($_GET['qID'], $_GET['flag'],
