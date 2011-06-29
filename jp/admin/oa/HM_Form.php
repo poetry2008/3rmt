@@ -144,6 +144,7 @@ class HM_Form extends DbRecord
                      success: function(data){
             $("#canEndDiv").hide();
             $("#wait").hide();
+            $('body').css('cursor','');
             disableQA();
             window.location.href='orders.php';
           }
@@ -197,7 +198,7 @@ class HM_Form extends DbRecord
                                $(this).find('.outform').each(function(){
                                    if($(this).attr('name').substr(0,1)!='0'){
                                      $(this).attr('name','0'+$(this).attr('name'));}});
-                               $(this).ajaxSubmit(function(){ $('#wait').hide();});
+                               $(this).ajaxSubmit(function(){ $('#wait').hide();           $('body').css('cursor','');});
 
                                $(this).find('.outform').each(function(){
                                    if($(this).attr('name').substr(0,1)=='0'){

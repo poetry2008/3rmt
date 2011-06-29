@@ -240,8 +240,8 @@ define('IMAGE_UNLOCK', 'ロック解除');
 define('IMAGE_UPDATE', '更新');
 define('IMAGE_UPDATE_CURRENCIES', '為替レートの更新');
 define('IMAGE_UPLOAD', 'アップロード');
-define('IMAGE_EFFECT', '有效');
-define('IMAGE_DEFFECT', '無效');
+define('IMAGE_EFFECT', '有効');
+define('IMAGE_DEFFECT', '無効');
 
 define('ICON_CROSS', '偽(False)');
 define('ICON_CURRENT_FOLDER', '現在のフォルダ');

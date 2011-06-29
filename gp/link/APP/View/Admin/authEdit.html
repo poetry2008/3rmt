@@ -1,0 +1,42 @@
+<!--{include file=header.html}-->
+<!--{include file=menu.html}-->
+<div class="right">
+<h3>
+ <!--{_t key='menu_AuthEdit}-->
+ </h3>
+ <div class="description"><!--{_t key='menu_AuthEdit_des}--></div>
+<form action="<!--{url controller=ActManager action=AuthEditDo controlle=$controller actio=$action}-->" method="post">
+<div>
+	<dl>
+    	<dt>content</dt>
+        <dd>
+            	<dl>
+            		<dt><!--{_t key='allow'}--></dt>
+            		
+            		<dd><input name="allow" type="radio" value="UESR_DEFINE" checked="checked" />text<input name="allowList" type="text" value="<!--{$acts.allow}-->"/></dd>
+            		<dd><input name="allow" type="radio" value="RBAC_EVERYONE" <!--{if $acts.allow eq 'RBAC_EVERYONE' }--> checked="checked" <!--{/if}--> /><!--{_t key='auth_RBACEVERYONE'}--></dd>
+           			<dd><input name="allow" type="radio" value="RBAC_HAS_ROLE" <!--{if $acts.allow eq 'RBAC_HAS_ROLE' }--> checked="checked" <!--{/if}--> /><!--{_t key='auth_RBACHASROLE'}--></dd>
+            		<dd><input name="allow" type="radio" value="RBAC_NO_ROLE" <!--{if $acts.allow eq 'RBAC_NO_ROLE' }--> checked="checked" <!--{/if}-->  /><!--{_t key='auth_RBACNOROLE'}--></dd>
+            		<dd><input name="allow" type="radio" value="RBAC_NULL" <!--{if $acts.allow eq 'RBAC_NULL' }--> checked="checked" <!--{/if}--> /><!--{_t key='auth_RBACNULL'}--></dd>
+            		
+                 </dl>   
+         </dd>
+         <dd>
+            	<dl>
+            		<dt><!--{_t key='deny'}--></dt>
+            		<dd><input name="deny" type="radio" value="UESR_DEFINE" checked="checked" />text<input name="denyList" type="text" /></dd>
+            		<dd><input name="deny" type="radio" value="RBAC_EVERYONE" <!--{if $acts.deny eq 'RBAC_EVERYONE' }--> checked="checked" <!--{/if}--> />所有人</dd>
+           			<dd><input name="deny" type="radio" value="RBAC_HAS_ROLE" <!--{if $acts.deny eq 'RBAC_HAS_ROLE' }--> checked="checked" <!--{/if}--> />管理员</dd>
+            		<dd><input name="deny" type="radio" value="RBAC_NO_ROLE" <!--{if $acts.deny eq 'RBAC_NO_ROLE' }--> checked="checked" <!--{/if}-->  />非管理员</dd>
+            		<dd><input name="deny" type="radio" value="RBAC_NULL" <!--{if $acts.deny eq 'RBAC_NULL' }--> checked="checked" <!--{/if}--> />未设置</dd>
+            		
+                 </dl>   
+        </dd>
+    </dl>
+    <dl>
+    <input type ="submit" />
+    </dl>
+</div>
+</form>
+</body>
+</html>

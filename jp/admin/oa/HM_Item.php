@@ -56,6 +56,7 @@ class HM_Item extends DbRecord
     if ($result){
     $this->instance->order_id = $order_id;
     $this->instance->loadedValue = $result['value'];
+
     $this->instance->loaded = true;
     }else {
       if (method_exists($this->instance,'initDefaultValue')){
