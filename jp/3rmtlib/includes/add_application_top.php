@@ -401,7 +401,7 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
     }
   } elseif ((defined('URL_ROMAJI_ENABLED') && URL_ROMAJI_ENABLED)) {
     //if (basename($_SERVER['SCRIPT_NAME']) == FILENAME_DEFAULT) {
-    if (SITE_ID == 6) {
+    if (SITE_ID == 6 || SITE_ID == 9) {
       if (
            basename($_SERVER['SCRIPT_NAME']) != FILENAME_LATEST_NEWS
         && basename($_SERVER['SCRIPT_NAME']) != FILENAME_REVIEWS
