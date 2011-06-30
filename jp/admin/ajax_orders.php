@@ -396,10 +396,11 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
               fcd where fc.id=fcd.faq_category_id and
               fc.parent_id='".$_POST['pid']."'      and
               fcd.romaji='".$_POST['romaji']."' and
-              fcd.site_id='".$site_id."'"; 
+              (fcd.site_id='".$site_id."' or fcd.site_id = '0' )"; 
   if(isset($_POST['cid'])&&$_POST['cid']!=''){
      $sql .= " and fc.id != '".$_POST['cid']."'";
   }
+  $sql .= " order by fcd.site_id DESC";
   if(tep_db_num_rows(tep_db_query($sql))){
     echo 'true';
   }else{
@@ -413,10 +414,11 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
               where fqd.faq_question_id=fq2c.faq_question_id and
               fq2c.faq_category_id='".$_POST['cid']."'      and
               fqd.romaji='".$_POST['romaji']."' and
-              fqd.site_id='".$site_id."'";
+              (fqd.site_id='".$site_id."' or fqd.site_id = '0' )";
   if(isset($_POST['qid'])&&$_POST['qid']!=''){
     $sql .= " and fqd.faq_question_id != '".$_POST['qid']."'"; 
   }
+  $sql .= " order by fqd.site_id DESC";
   if(tep_db_num_rows(tep_db_query($sql))){
     echo 'true';
   }else{
