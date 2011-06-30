@@ -5648,4 +5648,72 @@ function tep_get_faq_category_info($cid,$site_id=0){
           ".TABLE_FAQ_CATEGORIES_DESCRIPTION." where faq_category_id = '".$cid."' 
           and (site_id = '0' or site_id='".$site_id."') 
           order by site_id DESC "));
+}
+
+function get_all_site_faq_category_status($faq_category_id)
+{
+  $site_arr = array();
+  $site_romaji = array(); 
+  $status_arr = array();
+  $status_arr['green'] = array();
+  $status_arr['red'] = array();
+  
+  $site_arr[] = 0; 
+  $site_romaji[] = 'all';
+
+  $site_raw = tep_db_query("select * from ".TABLE_SITES." order by id asc");
+  while ($site_res = tep_db_fetch_array($site_raw)) {
+    $site_arr[] = $site_res['id']; 
+    $site_romaji[] = $site_res['romaji']; 
   }
+ 
+  foreach ($site_arr as $key => $value) {
+    $faq_category_des_raw = tep_db_query("select * from ".TABLE_FAQ_CATEGORIES_DESCRIPTION." where (site_id = '".$value."' or site_id = '0') and faq_category_id = '".$faq_category_id."' order by site_id desc limit 1"); 
+    $faq_category_des_res = tep_db_fetch_array($faq_category_des_raw); 
+    
+    switch ($faq_category_des_res['is_show']) {
+      case '0':
+        $status_arr['red'][] = $site_romaji[$key]; 
+        break;
+      default:
+        $status_arr['green'][] = $site_romaji[$key]; 
+        break;
+    }
+  }
+  
+  return $status_arr;
+}
+
+function get_all_site_faq_question_status($question_id)
+{
+  $site_arr = array();
+  $site_romaji = array(); 
+  $status_arr = array();
+  $status_arr['green'] = array();
+  $status_arr['red'] = array();
+  
+  $site_arr[] = 0; 
+  $site_romaji[] = 'all';
+
+  $site_raw = tep_db_query("select * from ".TABLE_SITES." order by id asc");
+  while ($site_res = tep_db_fetch_array($site_raw)) {
+    $site_arr[] = $site_res['id']; 
+    $site_romaji[] = $site_res['romaji']; 
+  }
+ 
+  foreach ($site_arr as $key => $value) {
+    $question_des_raw = tep_db_query("select * from ".TABLE_FAQ_QUESTION_DESCRIPTION." where (site_id = '".$value."' or site_id = '0') and faq_question_id = '".$question_id."' order by site_id desc limit 1"); 
+    $question_des_res = tep_db_fetch_array($question_des_raw); 
+    
+    switch ($question_des_res['is_show']) {
+      case '1':
+        $status_arr['green'][] = $site_romaji[$key]; 
+        break;
+      default:
+        $status_arr['red'][] = $site_romaji[$key]; 
+        break;
+    }
+  }
+  
+  return $status_arr;
+}
