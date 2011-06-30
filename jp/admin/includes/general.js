@@ -397,7 +397,22 @@ function check_toggle_status(url_str)
 
 //faq change is show 
 function change_status(url_str){
-  window.location.href = url_str;
+  //window.location.href = url_str;
+    $.ajax({
+    url: 'ajax_orders.php?action=getallpwd',
+    type: 'POST',
+    dataType: 'text',
+    async : false,
+    success: function(data) {
+      var pwd_arr = data.split(",");
+      var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n","");
+      if(in_array(pwd, pwd_arr)){
+        window.location.href = url_str+'&once_pwd='+pwd; 
+      } else {
+        window.alert("パスワードが違います"); 
+      }
+    }
+  });
 }
 function faq_c_is_set_romaji(pid,cid,site_id){
   var flag = true;
@@ -411,7 +426,7 @@ function faq_c_is_set_romaji(pid,cid,site_id){
     success: function(data) {
       if(data=='true'){
         flag = false;
-        alert("入力された文字はすでに登録されているので、別の文字で書き直してください");
+        alert("既に登録されているため使用できません。");
       }
     }
   });
@@ -448,7 +463,7 @@ function faq_q_is_set_romaji(cid,qid,site_id){
     success: function(data) {
       if(data=='true'){
         flag = false;
-        alert("入力された文字はすでに登録されているので、別の文字で書き直してください");
+        alert("既に登録されているため使用できません。");
       }
     }
   });
