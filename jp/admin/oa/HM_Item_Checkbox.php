@@ -75,7 +75,7 @@ class HM_Item_Checkbox extends HM_Item_Basic
       }else{
 	$check = '';
       }
-      echo "<input value = '".$value."' onclick='".$this->formname."Changed(this)' type='checkbox' ".$check." name='0".$this->formname."' />".$value;
+      echo "<input value = '".$value."' onchange='".$this->formname."Changed(this)' type='checkbox' ".$check." name='0".$this->formname."' />".$value;
 	  }
    echo '</br>';
    echo $this->afterInput;

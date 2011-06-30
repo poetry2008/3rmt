@@ -41,7 +41,8 @@
            $insert_group_arr = $_POST['ag'];
 	   //           tep_db_query("delete from `".TABLE_OA_FORM_GROUP."` where `form_id` = '".$form_res['id']."'"); 
            foreach ($insert_group_arr as $ikey => $ivalue) {
-             tep_db_query("insert into `".TABLE_OA_FORM_GROUP."` values(NULL, '".$form_res['id']."', '".$ivalue."',0)"); 
+             tep_db_query("insert into `".TABLE_OA_FORM_GROUP."` values(NULL,
+               '".$form_res['id']."', '".$ivalue."',".time().")"); 
            }
          }
        }

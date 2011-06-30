@@ -50,38 +50,38 @@ class HM_Form extends DbRecord
     echo '</from>';
     echo "</div>";
     ?>
-    <script type='text/javascript'>
-    <?php 
+      <script type='text/javascript'>
+      <?php 
 
-    if (tep_orders_finishqa($this->orders_id)) {
-	 echo "var finished = true;";
-       }else {
-	 echo "var finished = false;";
-       }
+      if (tep_orders_finishqa($this->orders_id)) {
+        echo "var finished = true;";
+      }else {
+        echo "var finished = false;";
+      }
     ?>
-  　var canEnd = true;
+      　var canEnd = true;
     function checkLockOrder()
-       {
-	 if (finished==true){
-	   return false;
-	 }
-         canEnd = true;
-         $('.require').each(function(){
-             if(canEnd){
-               canEnd = eval($(this).attr('tagName')+$(this).attr('type')+'Require(this)');
-             }
-           });
-	 if (canEnd == true){
-       //	   $("#canEnd").removeAttr('disabled');
-       $("#canEndDiv").show();
-	 }else{
-       //	   $("#canEnd").attr('disabled',true);
-       $("#canEndDiv").hide();
-	 }
-     //     alert('check');
-         return false;
+    {
+      if (finished==true){
+        return false;
+      }
+      canEnd = true;
+      $('.require').each(function(){
+          if(canEnd){
+          canEnd = eval($(this).attr('tagName')+$(this).attr('type')+'Require(this)');
+          }
+          });
+      if (canEnd == true){
+        //	   $("#canEnd").removeAttr('disabled');
+        $("#canEndDiv").show();
+      }else{
+        //	   $("#canEnd").attr('disabled',true);
+        $("#canEndDiv").hide();
+      }
+      //     alert('check');
+      return false;
 
-       }
+    }
     function SPANRequire(ele)
     {
       return $(ele).text().length>0;
@@ -92,7 +92,7 @@ class HM_Form extends DbRecord
     }
     function INPUTtextRequire(ele)
     {
-     return INPUThiddenRequire(ele);
+      return INPUThiddenRequire(ele);
     }
     function INPUThiddenRequire(ele)
     {
@@ -100,20 +100,20 @@ class HM_Form extends DbRecord
     }
     function cleanthisrow(ele){
       $(ele).parent().parent().children().find('input').each(
-            function(){
-              if($(this).attr("type")=='text' || $(this).attr("type") =='hidden'){
-                $(this).val('');
-              }
-              if($(this).attr('checked')!='undefined'){
-                $(this).removeAttr('checked');
-              }
-            });
+          function(){
+          if($(this).attr("type")=='text' || $(this).attr("type") =='hidden'){
+          $(this).val('');
+          }
+          if($(this).attr('checked')!='undefined'){
+          $(this).removeAttr('checked');
+          }
+          });
       $(ele).parent().parent().children().find('span').each(
-                                                            function (){
-                                                              $(this).text('');
-                                                            }
+          function (){
+          $(this).text('');
+          }
 
-                                                            );
+          );
       checkLockOrder();
       $("#qa_form").ajaxSubmit();
 
@@ -125,100 +125,102 @@ class HM_Form extends DbRecord
     {
       $("#qa_form").find('input').each(function(){
           $(this).attr('disabled',true);
-        });
+          });
       $("#qa_form").find('button').each(function(){
           $(this).attr('disabled',true);
-        });
+          });
       $("#qa_form").find('.clean').each(function(){
           $(this).hide();
-        });
+          });
 
 
     }
     function finishTheOrder()
     {
       $.ajax({
-            url:'oa_ajax.php?action=finish&oID=<?php echo $_GET["oID"]?>',
-                     type:'post',    
-                     beforeSend: function(){$('body').css('cursor','wait');$("#wait").show()},
-                     async : false,
-                     success: function(data){
-            $("#canEndDiv").hide();
-            $("#wait").hide();
-            $('body').css('cursor','');
-            disableQA();
-            window.location.href='orders.php';
-          }
-        }
-      );
-    }
-       $(document).ready(
-                         function()
-                         {
-                         <?php 
-                         if(tep_orders_finishqa($this->orders_id)) {
-                           ?>
-                           disableQA();
-                           return 0;
-                           <?
-                         }
-                         ?>
+url:'oa_ajax.php?action=finish&oID=<?php echo $_GET["oID"]?>',
+type:'post',    
+beforeSend: function(){$('body').css('cursor','wait');$("#wait").show()},
+async : false,
+success: function(data){
+$("#canEndDiv").hide();
+$("#wait").hide();
+$('body').css('cursor','');
+disableQA();
+window.location.href='orders.php';
+}
+}
+);
+      }
+  $(document).ready(
+      function()
+      {
+      <?php 
+      if(tep_orders_finishqa($this->orders_id)) {
+      ?>
+      disableQA();
+      return 0;
+      <?
+      }
+      ?>
 
-	                   //bind size fonction 
-	$("#qa_form").find("input[type=text]").each(function(){
-            if($(this).attr('size')){
-	$(this).bind('keyup',function(){
+      //bind size fonction 
+      $("#qa_form").find("input[type=text]").each(function(){
+        if($(this).attr('size')){
+        $(this).bind('keyup',function(){
           checkLockOrder();
-	      if( $(this).val().length >$(this).attr('size')){
-            //               	$(this).val($(this).val().substr(0,$(this).attr('size')));
-            $(this).parent().parent().find('.alertmsg').remove();
-            $("<span class='alertmsg'> 文字の最大入力は"+$(this).attr('size')+"です。"+$(this).attr('size')+"以内にしてください。</span>").insertAfter($(this).next());
+          if( $(this).val().length >$(this).attr('size')){
+          //               	$(this).val($(this).val().substr(0,$(this).attr('size')));
+          $(this).parent().parent().find('.alertmsg').remove();
+          $("<span class='alertmsg'> 文字の最大入力は"+$(this).attr('size')+"です。"+$(this).attr('size')+"以内にしてください。</span>").insertAfter($(this).next());
           }else{
-            $(this).parent().parent().find('.alertmsg').remove();
+          $(this).parent().parent().find('.alertmsg').remove();
           }
           checkLockOrder();
 
+          });
+        }
+        });
+  checkLockOrder();
+  $("#qa_form").find("input").each(function (){
+      $(this).keyup(function(){
+        checkLockOrder();
+        });
+
+      $(this).change(function(ele){
+        checkLockOrder();
+        //                                   alert($("input|[name=dfossrrfwwkvomzw_6_1_107]").val());
+        $("#qa_form").submit();
+        });
       });
-            }
-      });
-    checkLockOrder();
-                           $("#qa_form").find("input").each(function (){
-                               $(this).keyup(function(){
-                                   checkLockOrder();
-                                   });
-     
-                               $(this).change(function(){
-                                   checkLockOrder();
-                                   $("#qa_form").submit();
-                                   });
-                             });
-                           $("#qa_form").submit(function(){
-                               $('body').css('cursor','wait');
-                               $('#wait').show();
+  $("#qa_form").submit(function(){
 
-                               $(this).find('.outform').each(function(){
-                                   if($(this).attr('name').substr(0,1)!='0'){
-                                     $(this).attr('name','0'+$(this).attr('name'));}});
-                               $(this).ajaxSubmit(function(){ $('#wait').hide();           $('body').css('cursor','');});
+        $('body').css('cursor','wait');
+        $('#wait').show();
 
-                               $(this).find('.outform').each(function(){
-                                   if($(this).attr('name').substr(0,1)=='0'){
-                                     $(this).attr('name',$(this).attr('name').substr(1));}});
-                                 return false;
-                               });  
-                          
+        $(this).find('.outform').each(function(){
+          if($(this).attr('name').substr(0,1)!='0'){
+          $(this).attr('name','0'+$(this).attr('name'));}});
+        $(this).ajaxSubmit(function(){ $('#wait').hide();           $('body').css('cursor','');});
 
-                         }
+        $(this).find('.outform').each(function(){
+          if($(this).attr('name').substr(0,1)=='0'){
+          $(this).attr('name',$(this).attr('name').substr(1));}});
+        return false;
+        });  
 
-                         );
 
-    </script>
+      }
+
+  );
+
+  </script>
     <?php
-    
-    
-  }
-  function setAction($actionPage)
-  {
-    $this->action = $actionPage;
-  }
+
+
+      }
+function setAction($actionPage)
+{
+  $this->action = $actionPage;
+}
 }
