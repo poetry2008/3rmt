@@ -5629,3 +5629,23 @@ function     tep_orders_finishqa($orders_id) {
 
     return $categories_array;
   }
+function tep_get_faq_breadcreumb_by_cpath($cPath,$site_id=0){
+  if(isset($cPath)&&$cPath){
+    $cPath_arr = explode('_',$cPath);
+    $cPath_breadcreumb = array();
+    foreach($cPath_arr as $cid){
+      $cPath_breadcreumb_info = tep_get_faq_category_info($cid,$site_id); 
+      $cPath_breadcreumb[] = $cPath_breadcreumb_info['title'];
+    }
+      return implode('>',$cPath_breadcreumb);
+  }else{
+    return '';
+  }
+}
+
+function tep_get_faq_category_info($cid,$site_id=0){
+    return tep_db_fetch_array(tep_db_query("select * from
+          ".TABLE_FAQ_CATEGORIES_DESCRIPTION." where faq_category_id = '".$cid."' 
+          and (site_id = '0' or site_id='".$site_id."') 
+          order by site_id DESC "));
+  }

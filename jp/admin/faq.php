@@ -120,6 +120,7 @@
         else $site_arr="";
         //   $edit_per=editPermission($site_arr, $site_id);//判断是否拥有相应网站的管理权限
         forward401Unless(editPermission($site_arr, $site_id));
+        tep_insert_pwd_log($_GET['once_pwd'],$ocertify->auth_user);
         $c_page = (isset($_GET['page']))?'&page='.$_GET['page']:'';
         if($_GET['cID']&&isset($_GET['status'])&&
             ($_GET['status']==1||$_GET['status']==0)){
@@ -134,6 +135,7 @@
         else $site_arr="";
         //   $edit_per=editPermission($site_arr, $site_id);//判断是否拥有相应网站的管理权限
         forward401Unless(editPermission($site_arr, $site_id));
+        tep_insert_pwd_log($_GET['once_pwd'],$ocertify->auth_user);
         $c_page = (isset($_GET['page']))?'&page='.$_GET['page']:'';
 
         $site_id = (isset($_GET['site_id']))?$_GET['site_id']:0;
@@ -471,7 +473,16 @@
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
-            <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
+            <td class="pageHeading">
+            <div style="float:left;width:50px;" >
+            <?php echo HEADING_TITLE; ?>
+            </div>
+            <div>
+            <?php
+            echo tep_get_faq_breadcreumb_by_cpath($_GET['cPath'],$_GET['site_id']);
+            ?>
+            </div> 
+            </td>
             <td class="pageHeading" align="right">
             <?php echo tep_draw_separator('pixel_trans.gif', HEADING_IMAGE_WIDTH, HEADING_IMAGE_HEIGHT); ?>
             </td>
