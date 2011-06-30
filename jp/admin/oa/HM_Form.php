@@ -28,7 +28,7 @@ class HM_Form extends DbRecord
     $sql .=" from ".TABLE_OA_FORM_GROUP." fg,".TABLE_OA_GROUP." g ";
     $sql .=" where fg.form_id = ".$this->id;
     $sql .=" and fg.group_id= g.id ";
-    $sql .=" order by ordernumber ,id ";
+    $sql .=" order by fg.ordernumber ,fg.id ";
     $groups =  $this->getResultObjects($sql,'HM_Group');
     return $groups;
   }
