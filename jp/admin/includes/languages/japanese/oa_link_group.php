@@ -10,6 +10,7 @@
   Released under the GNU General Public License
 */
 
+define('ADD_GROUP', 'グループ作成');
 define('OA_GROUP_NAME_TEXT', 'タイトル');
 define('OA_GROUP_OPTION_TEXT', 'オプション');
 define('OA_GROUP_SORT_TEXT', '並び順');

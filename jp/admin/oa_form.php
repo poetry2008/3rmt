@@ -76,7 +76,10 @@
         ?>
             <div class="tep_site_filter_oa">
         <?php
-          $form_group_raw = tep_db_query("select ofg.id ofgid,g.id, g.name from ".TABLE_OA_GROUP." g, ".TABLE_OA_FORM_GROUP." ofg where g.id = ofg.group_id and ofg.form_id = '".$form_id."' order by ofg.ordernumber"); 
+          $form_group_raw = tep_db_query("select ofg.id ofgid,g.id, g.name from
+              ".TABLE_OA_GROUP." g, ".TABLE_OA_FORM_GROUP." ofg where g.id =
+              ofg.group_id and ofg.form_id = '".$form_id."' order by
+              ofg.ordernumber,ofg.id "); 
         ?>
         <a href="<?php echo tep_href_link(FILENAME_OA_GROUP, 'pcode='.$_GET['pcode'].'&type='.$_GET['type']);?>"><?php echo ADD_GROUP;?></a>
         <a href="<?php echo tep_href_link(FILENAME_OA_LINK_GROUP, 'pcode='.$_GET['pcode'].'&type='.$_GET['type']);?>">テンプレート追加</a> </div>

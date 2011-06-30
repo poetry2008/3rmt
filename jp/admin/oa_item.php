@@ -34,7 +34,12 @@
         $option_info_arr['mvalue'] = $va_list_arr; 
         $option_info_arr['form_id'] = $origin_form_res['id']; 
         if ($_GET['action'] == 'insert') {
-          tep_db_query("insert into `".TABLE_OA_ITEM."` values(NULL, '".$_GET['gid']."', '".tep_db_prepare_input($_POST['ititle'])."', '".tep_db_prepare_input(tep_get_random_item_name())."', '".tep_db_prepare_input($_POST['icomment'])."', '".tep_db_prepare_input(serialize($option_info_arr))."', '".tep_db_prepare_input(strtolower($_POST['itype']))."',0)"); 
+          tep_db_query("insert into `".TABLE_OA_ITEM."` values(NULL,
+            '".$_GET['gid']."', '".tep_db_prepare_input($_POST['ititle'])."',
+            '".tep_db_prepare_input(tep_get_random_item_name())."',
+            '".tep_db_prepare_input($_POST['icomment'])."',
+            '".tep_db_prepare_input(serialize($option_info_arr))."',
+            '".tep_db_prepare_input(strtolower($_POST['itype']))."',".time().")"); 
           $item_id = tep_db_insert_id(); 
           $option_info_arr['eid'] = $item_id;        
           tep_db_query("update `".TABLE_OA_ITEM."` SET `option` = '".tep_db_prepare_input(serialize($option_info_arr))."' where `id` = '".$item_id."';"); 
