@@ -390,12 +390,15 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
     echo 0;
   }
 }else if(isset($_GET['action'])&&$_GET['action'] == 'c_is_set_romaji'){
+  $romaji = $_POST['romaji'];
+  $romaji = str_replace('<11111111>','&',$romaji);
+  $romaji = str_replace('<22222222>','+',$romaji);
   $site_id = isset($_POST['site_id'])?$_POST['site_id']:0;
   $sql =  "select * from ".TABLE_FAQ_CATEGORIES." fc,
               ".TABLE_FAQ_CATEGORIES_DESCRIPTION." 
               fcd where fc.id=fcd.faq_category_id and
               fc.parent_id='".$_POST['pid']."'      and
-              fcd.romaji='".$_POST['romaji']."' and
+              fcd.romaji='".$romaji."' and
               (fcd.site_id='".$site_id."' or fcd.site_id = '0' )"; 
   if(isset($_POST['cid'])&&$_POST['cid']!=''){
      $sql .= " and fc.id != '".$_POST['cid']."'";
@@ -407,13 +410,16 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
     echo 'false';
   }
 }else if(isset($_GET['action'])&&$_GET['action'] == 'q_is_set_romaji'){
+  $romaji = $_POST['romaji'];
+  $romaji = str_replace('<11111111>','&',$romaji);
+  $romaji = str_replace('<22222222>','+',$romaji);
   $site_id = isset($_POST['site_id'])?$_POST['site_id']:0;
   $sql = "select * from  
               ".TABLE_FAQ_QUESTION_DESCRIPTION." fqd,
               ".TABLE_FAQ_QUESTION_TO_CATEGORIES." fq2c 
               where fqd.faq_question_id=fq2c.faq_question_id and
               fq2c.faq_category_id='".$_POST['cid']."'      and
-              fqd.romaji='".$_POST['romaji']."' and
+              fqd.romaji='".$romaji."' and
               (fqd.site_id='".$site_id."' or fqd.site_id = '0' )";
   if(isset($_POST['qid'])&&$_POST['qid']!=''){
     $sql .= " and fqd.faq_question_id != '".$_POST['qid']."'"; 
@@ -429,9 +435,9 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
   $romaji = str_replace('<11111111>','&',$romaji);
   $romaji = str_replace('<22222222>','+',$romaji);
   $replace_str = '\s|　|「|【|「|】|」|・|、|。';
-  if(preg_match('/[^\x{4e00}-\x{9fa5}\x{3130}-\x{318F}\x{0800}-\x{4e00}a-zA-Z0-9-\&\+＆＋]/u',$romaji)){
+  if(preg_match('/[^\x{4e00}-\x{9fa5}\x{3130}-\x{318F}\x{0800}-\x{4e00}a-zA-Z0-9-]/u',$romaji)){
   $new_romaji =
-   preg_replace('/[^\x{4e00}-\x{9fa5}\x{3130}-\x{318F}\x{0800}-\x{4e00}a-zA-Z0-9-\&\+＆＋]/u','-',$romaji);
+   preg_replace('/[^\x{4e00}-\x{9fa5}\x{3130}-\x{318F}\x{0800}-\x{4e00}a-zA-Z0-9-]/u','-',$romaji);
     if(preg_match('/'.$replace_str.'/',$new_romaji)){
       $new_romaji = preg_replace('/'.$replace_str.'/','-',$new_romaji);
     }
