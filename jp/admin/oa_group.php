@@ -8,9 +8,11 @@
     switch ($_GET['action']) {
     case 'checkname':
       if (isset($_GET['gid'])) {
-        $oa_group =  tep_db_query('select count(*) cnt from '.TABLE_OA_GROUP.' where name="'.$_GET['name'].'" and id != "'.$_GET['gid'].'"');
+        $oa_group =  tep_db_query('select count(*) cnt from '.TABLE_OA_GROUP.' where
+            name="'.$_POST['name'].'" and id != "'.$_GET['gid'].'"');
       } else {
-        $oa_group =  tep_db_query('select count(*) cnt from '.TABLE_OA_GROUP.' where name="'.$_GET['name'].'"');
+        $oa_group =  tep_db_query('select count(*) cnt from '.TABLE_OA_GROUP.' where
+            name="'.$_POST['name'].'"');
       }
       //      die('select count(*) cnt from '.TABLE_OA_GROUP.' where name="'.$_GET['name'].'"');
       $oa_group_res = tep_db_fetch_array($oa_group); 
@@ -157,16 +159,18 @@ function select_all_group()
                    <?php
                    if ($_GET['action'] == 'edit') {
                    ?>
-                   url:'oa_group.php?action=checkname&gid=<?php echo $_GET['gid'];?>&name='+$('input|[name=gname]').val(),
+                   url:'oa_group.php?action=checkname&gid=<?php echo
+                   $_GET['gid'];?>',
                    <?php
                    } else {
                    ?>
-                   url:'oa_group.php?action=checkname&name='+$('input|[name=gname]').val(),
+                   url:'oa_group.php?action=checkname',
                    <?php
                    }
                    ?>
-                   type:'get',    
-                   async : false,
+                   data: 'name='+$('input|[name=gname]').val(),
+                   type: 'POST',    
+                   async: false,
                    success: function(data){
                   if (data == 0){
                    $("#canSubmit").attr("class",'canSubmit');
