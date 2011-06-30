@@ -52,7 +52,7 @@ class HM_Item_Myname extends HM_Item_Basic
 
     echo $this->beforeInput."<span id='".$this->formname."'type='text' class='".$classrequire." outform'size='".$this->size."' name='".$this->formname."' >".$this->getDefaultValue()."</span >";
     //    if(!$this->loaded){
-    echo "<button type='button' id = '".$this->formname.'submit'."' />$this->submitName</button>".$this->afterInput;
+    echo "<button type='button' id = '".$this->formname.'submit'."' >$this->submitName</button>".$this->afterInput;
     //        }
     echo "</td>";
   }
@@ -68,6 +68,7 @@ class HM_Item_Myname extends HM_Item_Basic
                      type:'post',    
                      data:"form_id="+$('input|[name=form_id]').val()+"&<?php echo $this->formname;?>="+$('input|[name=<?php echo $this->formname;?>]').val(),
                      beforeSend: function(){$('body').css('cursor','wait');$("#wait").show()},
+                     async : false,
                      success: function(data){
                                $("#<?php echo $this->formname;?>").text(data);		     
                     		     $("#wait").hide();

@@ -114,6 +114,7 @@ $(document).ready(function() {
     <?php
     }
     ?>
+    async : false,
     success: function(msg) {
       $('#show_option').html(msg); 
     }
@@ -125,6 +126,7 @@ function change_item_type()
     url: 'item_process.php',
     type: 'POST',
     data: "type="+$('#itype').val(), 
+    async : false,
     success: function(msg) {
       $('#show_option').html(msg); 
     }

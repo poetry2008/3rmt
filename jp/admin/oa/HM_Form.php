@@ -141,6 +141,7 @@ class HM_Form extends DbRecord
             url:'oa_ajax.php?action=finish&oID=<?php echo $_GET["oID"]?>',
                      type:'post',    
                      beforeSend: function(){$('body').css('cursor','wait');$("#wait").show()},
+                     async : false,
                      success: function(data){
             $("#canEndDiv").hide();
             $("#wait").hide();

@@ -417,6 +417,7 @@ function change_status(url_str){
 function faq_c_is_set_romaji(pid,cid,site_id){
   var flag = true;
   var cromaji = $("#cromaji").val();
+  cromaji = replace_romaji(cromaji);
   $.ajax({
     url: 'ajax_orders.php?action=c_is_set_romaji',
     type: 'POST',
@@ -435,6 +436,7 @@ function faq_c_is_set_romaji(pid,cid,site_id){
 function faq_c_is_set_error_char(romaji){
   var flag = true;
   var cromaji = $("#cromaji").val();
+  cromaji = replace_romaji(cromaji);
   $.ajax({
     url: 'ajax_orders.php?action=check_romaji',
     type: 'POST',
@@ -454,6 +456,7 @@ function faq_c_is_set_error_char(romaji){
 function faq_q_is_set_romaji(cid,qid,site_id){
   var flag = true;
   var qromaji = $("#qromaji").val();
+  qromaji = replace_romaji(qromaji);
   $.ajax({
     url: 'ajax_orders.php?action=q_is_set_romaji',
     type: 'POST',
@@ -472,6 +475,7 @@ function faq_q_is_set_romaji(cid,qid,site_id){
 function faq_q_is_set_error_char(romaji){
   var flag = true;
   var qromaji = $("#qromaji").val();
+  qromaji = replace_romaji(qromaji);
   $.ajax({
     url: 'ajax_orders.php?action=check_romaji',
     type: 'POST',
@@ -507,4 +511,28 @@ function faq_question_form_validator(cid,qid,site_id){
   }else{
     return false;
   }
+}
+
+function faq_question_romaji_can_move(cid,qid,site_id,qromaji){
+  var flag = true;
+  $.ajax({
+    url: 'ajax_orders.php?action=q_is_set_romaji',
+    type: 'POST',
+    data: 'romaji='+qromaji+'&cid='+cid+'&qid='+qid+'&site_id='+site_id,
+    dataType: 'text',
+    async : false,
+    success: function(data) {
+      if(data=='true'){
+        flag = false;
+        alert("既に登録されているため使用できません。");
+      }
+    }
+  });
+  return flag;
+}
+function replace_romaji(romaji){
+  //replace & + to a string
+  romaji = romaji.replace(/\&/g,'<11111111>');
+  romaji = romaji.replace(/\+/g,'<22222222>');
+  return romaji;
 }

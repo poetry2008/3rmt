@@ -139,6 +139,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
       $("#"+pid+"<?php echo "_input_".$this->formname;?>").attr('readonly', true);
       $.ajax({
         url: 'ajax_orders.php?action=set_quantity&products_id='+pid+'&count='+($("#quantity_"+pid).html()-$("#"+pid+"<?php echo "_input_".$this->formname;?>").val()),
+        async : false,
         success: function(data) {
         }   
       }); 
@@ -147,6 +148,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
       $("#"+pid+"<?php echo "_input_".$this->formname;?>").attr('readonly', false);
       $.ajax({
         url: 'ajax_orders.php?action=set_quantity&products_id='+pid+'&count=-'+($("#quantity_"+pid).html()-$("#"+pid+"<?php echo "_input_".$this->formname;?>").val()),
+        async : false,
         success: function(data) {
         }   
       }); 

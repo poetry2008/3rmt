@@ -230,6 +230,7 @@ function ajaxUpdate(id,order){
   $.ajax({
   url: "oa_ajax.php",
   data: "id="+id+"&order="+order+"&action=updateitemorder&random="+ new Date().getTime(),
+  async : false,
   success: function(){
     $(this).addClass("done");
   }
@@ -326,6 +327,7 @@ function ajaxUpdate(id,order){
   $.ajax({
   url: "oa_ajax.php",
   data: "id="+id+"&order="+order+"&action=updategrouporder&random="+ new Date().getTime(),
+  async : false,
   success: function(){
     $(this).addClass("done");
   }

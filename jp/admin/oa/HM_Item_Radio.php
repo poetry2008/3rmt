@@ -19,7 +19,7 @@ class HM_Item_Radio extends HM_Item_Basic
       }else{
 	$check = '';
       }
-      echo "<input value = '".$value."' type='radio' ".$check." name='".$this->formname."' />".$value;
+      echo "<input value = '".$value."' type='radio' ".$check." name='".$this->formname."' >".$value;
 	  }
       echo "<br>";
       echo $this->afterInput;
@@ -35,10 +35,10 @@ class HM_Item_Radio extends HM_Item_Basic
     }
     $radios = $item_value['radios'];
     $result = '';
-    $result .= "必須<input type='checkbox' name='require' ".$checked."/></br>\n";
-    $result .= "项目名<input type='text' name='thename' value='".(isset($item_value['thename'])?$item_value['thename']:'')."'/>";
-    $result .= "前方文字<input type='text' name='beforeInput' value='".(isset($item_value['beforeInput'])?$item_value['beforeInput']:'')."'/></br>\n";
-    $result .= "後方文字<input type='text' name='afterInput' value='".(isset($item_value['afterInput'])?$item_value['afterInput']:'')."'/></br>\n";
+    $result .= "必須<input type='checkbox' name='require' ".$checked."></br>\n";
+    $result .= "项目名<input type='text' name='thename' value='".(isset($item_value['thename'])?$item_value['thename']:'')."'>";
+    $result .= "前方文字<input type='text' name='beforeInput' value='".(isset($item_value['beforeInput'])?$item_value['beforeInput']:'')."'></br>\n";
+    $result .= "後方文字<input type='text' name='afterInput' value='".(isset($item_value['afterInput'])?$item_value['afterInput']:'')."'></br>\n";
     $result .= '</br>';
     if(count($radios)){
       foreach($radios as $key=>$radio){

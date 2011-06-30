@@ -60,6 +60,7 @@ class HM_Item_Date extends HM_Item_Basic
                      type:'post',    
                      data:"form_id="+$('input|[name=form_id]').val()+"&<?php echo $this->formname;?>="+$('input|[name=<?php echo $this->formname;?>]').val(),
 		     beforeSend: function(){$('body').css('cursor','wait');$("#wait").show()},
+                     async : false,
                      success: function(data){
 
 		              $("#<?php echo $this->formname;?>showvalue").text(data);

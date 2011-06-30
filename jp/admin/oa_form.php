@@ -125,6 +125,7 @@ function ajaxUpdate(id,order){
   $.ajax({
   url: "oa_ajax.php",
   data: "id="+id+"&order="+order+"&action=updateoaorder&random="+ new Date().getTime(),
+  async : false,
   success: function(){
     $(this).addClass("done");
   }
