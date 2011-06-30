@@ -143,7 +143,7 @@ function ajaxUpdate(id,order){
 });
 }
 </script>
-<input type="button" onclick="window.location.href='<?php echo tep_href_link(FILENAME_OA_ITEM,'gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type'])?>'" value="<?php echo BUTTON_ADD_ITEM_TEXT;?>"></a> 
+<input type="button" onclick="window.location.href='<?php echo tep_href_link(FILENAME_OA_ITEM,'gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type'])?>'" value="<?php echo BUTTON_ADD_ITEM_TEXT;?>"/>
           <table border="1" width="100%" cellpadding="0" cellspacing="0">
             <tr>
               <td><?php echo TABLE_HEADING_ITEM_TITLE;?></td> 
@@ -298,6 +298,9 @@ if ($g_num % 2 == 0) {
               if (tep_db_num_rows($group_list_raw)) {
             ?>
                 <input type="submit" value="<?php echo 'テンプレート追加';?>"> 
+<input type="button" onclick="window.location.href='<?php echo
+tep_href_link(FILENAME_OA_GROUP,
+    'pcode='.$_GET['pcode'].'&type='.$_GET['type']);?>'" value="<?php echo ADD_GROUP;?>"/> 
             <?php
               }
             ?>

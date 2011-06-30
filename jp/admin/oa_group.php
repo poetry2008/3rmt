@@ -18,7 +18,9 @@
       die('');
       break;
       case 'insert':
-        tep_db_query("insert into `".TABLE_OA_GROUP."` values(NULL, '".tep_db_prepare_input($_POST['gname'])."', '".tep_db_prepare_input($_POST['goption'])."', '0')"); 
+        tep_db_query("insert into `".TABLE_OA_GROUP."` values(NULL,
+          '".tep_db_prepare_input($_POST['gname'])."',
+          '".tep_db_prepare_input($_POST['goption'])."', ".time().')'); 
         tep_redirect(tep_href_link(FILENAME_OA_GROUP, 'pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&msg=success')); 
         break;
       case 'update':
@@ -243,7 +245,8 @@ function ajaxUpdate(id,order){
               <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_OAGROUP_ORDER;?></td> 
             </tr>
             <?php
-               $has_item_raw = tep_db_query("select * from ".TABLE_OA_ITEM." where group_id = '".$_GET['gid']."' order by ordernumber"); 
+               $has_item_raw = tep_db_query("select * from ".TABLE_OA_ITEM." where
+                   group_id = '".$_GET['gid']."' order by ordernumber ,id"); 
                $i_num = 0; 
                while ($has_item_res = tep_db_fetch_array($has_item_raw)) { 
                if ($i_num % 2 == 0) {
@@ -347,7 +350,8 @@ function ajaxUpdate(id,order){
               </td>
             </tr>
             <?php
-              $group_list_raw = tep_db_query("select * from ".TABLE_OA_GROUP." order by ordernumber"); 
+              $group_list_raw = tep_db_query("select * from ".TABLE_OA_GROUP." order
+                  by ordernumber ,id "); 
               while ($group_list_res = tep_db_fetch_array($group_list_raw)) {
 ?>
                 <tr class='<?php echo $group_list_res['id']; ?>' id = 'o<?php echo $group_list_res['ordernumber'];?>'>

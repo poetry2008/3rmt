@@ -28,7 +28,7 @@ class HM_Form extends DbRecord
     $sql .=" from ".TABLE_OA_FORM_GROUP." fg,".TABLE_OA_GROUP." g ";
     $sql .=" where fg.form_id = ".$this->id;
     $sql .=" and fg.group_id= g.id ";
-    $sql .=" order by ordernumber ";
+    $sql .=" order by ordernumber ,id ";
     $groups =  $this->getResultObjects($sql,'HM_Group');
     return $groups;
   }
@@ -96,7 +96,7 @@ class HM_Form extends DbRecord
     }
     function INPUThiddenRequire(ele)
     {
-      return $(ele).val().trim().length>0;
+      return $(ele).val().length>0;
     }
     function cleanthisrow(ele){
       $(ele).parent().parent().children().find('input').each(
