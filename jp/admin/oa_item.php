@@ -28,7 +28,13 @@
           if ((preg_match('/^(na_|va_)\d{1,}/', $pskey)) || ($pskey == 'ititle') || ($pskey == 'iname') || ($pskey == 'icomment') || ($pskey == 'itype')) {
             continue; 
           }
-          $option_info_arr[$pskey] = $psvalue; 
+          if ($pskey == 'size') {
+            $arr = array('０' => '0', '１' => '1', '２' => '2', '３' => '3', '４' => '4',   '５' => '5', '６' => '6', '７' => '7', '８' => '8', '９' => '9');
+            $psvalue = strtr($psvalue, $arr); 
+            $option_info_arr[$pskey] = (int)$psvalue; 
+          } else {
+            $option_info_arr[$pskey] = $psvalue; 
+          }
         }
         $option_info_arr['mname'] = $na_list_arr; 
         $option_info_arr['mvalue'] = $va_list_arr; 
