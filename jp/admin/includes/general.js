@@ -513,23 +513,64 @@ function faq_question_form_validator(cid,qid,site_id){
   }
 }
 
-function faq_question_romaji_can_move(cid,qid,site_id,qromaji){
+function faq_category_romaji_can_move(cromaji,site_id){
   var flag = true;
+  var pid = $("select[name='move_to_faq_category_id']").val();
+  cromaji = replace_romaji(cromaji);
   $.ajax({
-    url: 'ajax_orders.php?action=q_is_set_romaji',
+    url: 'ajax_orders.php?action=c_is_set_romaji',
     type: 'POST',
-    data: 'romaji='+qromaji+'&cid='+cid+'&qid='+qid+'&site_id='+site_id,
+    data: 'romaji='+cromaji+'&pid='+pid+'&site_id='+site_id,
     dataType: 'text',
     async : false,
     success: function(data) {
       if(data=='true'){
         flag = false;
-        alert("既に登録されているため使用できません。");
+        alert("コピー先に同じURLが登録されているためコピー出来ません。");
       }
     }
   });
   return flag;
 }
+function faq_question_romaji_can_move(qromaji,site_id){
+  var flag = true;
+  var cid = $("select[name='move_to_faq_category_id']").val();
+  qromaji = replace_romaji(qromaji);
+  $.ajax({
+    url: 'ajax_orders.php?action=q_is_set_romaji',
+    type: 'POST',
+    data: 'romaji='+qromaji+'&cid='+cid+'&site_id='+site_id,
+    dataType: 'text',
+    async : false,
+    success: function(data) {
+      if(data=='true'){
+        flag = false;
+        alert("移動先に同じURLが登録されているため移動できません。");
+      }
+    }
+  });
+  return flag;
+}
+function faq_question_romaji_can_copy_to(qromaji,site_id){
+  var cid = $("select[name='faq_category_id']").val();
+  qromaji = replace_romaji(qromaji);
+  var flag = true;
+  $.ajax({
+    url: 'ajax_orders.php?action=q_is_set_romaji',
+    type: 'POST',
+    data: 'romaji='+qromaji+'&cid='+cid+'&site_id='+site_id,
+    dataType: 'text',
+    async : false,
+    success: function(data) {
+      if(data=='true'){
+        flag = false;
+        alert("移動先に同じURLが登録されているため移動できません。");
+      }
+    }
+  });
+  return flag;
+}
+
 function replace_romaji(romaji){
   //replace & + to a string
   romaji = romaji.replace(/\&/g,'<11111111>');

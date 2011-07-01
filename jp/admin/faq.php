@@ -920,7 +920,8 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
   case 'copy_to_faq_question':
     $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_COPY_TO . '</b>');
     $contents = array('form' => tep_draw_form('copy_to_faq_question', FILENAME_FAQ, 
-          'action=copy_to_faq_question_confirm&cPath=' . $cPath) . 
+          'action=copy_to_faq_question_confirm&cPath=' . $cPath,'post',
+          'onsubmit="return faq_question_romaji_can_copy_to(\''.$qInfo->ask.'\',\''.$site_id.'\')"') . 
            tep_draw_hidden_field('faq_question_id', $qInfo->faq_question_id));
     $contents[] = array('text' => TEXT_INFO_COPY_TO_INTRO);
     $contents[] = array('text' => '<br>' . TEXT_INFO_CURRENT_CATEGORIES . '<br><b>' . 
@@ -936,7 +937,8 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
   case 'move_faq_question':
         $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_MOVE_FAQ_QUESTION . '</b>');
         $contents = array('form' => tep_draw_form('faq_question', FILENAME_FAQ,
-           'action=move_faq_question_confirm&cPath=' . $cPath) . 
+           'action=move_faq_question_confirm&cPath=' . $cPath,'post', 
+          'onsubmit="return faq_question_romaji_can_move(\''.$qInfo->ask.'\',\''.$site_id.'\')"') . 
             tep_draw_hidden_field('faq_question_id', $qInfo->faq_question_id));
         $contents[] = array('text' => sprintf(TEXT_MOVE_FAQ_QUESTION_INTRO,
               $qInfo->ask));
@@ -951,7 +953,8 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
   case 'move_faq_category':
         $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_MOVE_FAQ_CATEGORY . '</b>');
         $contents = array('form' => tep_draw_form('categories', FILENAME_FAQ, 
-            'action=move_faq_category_confirm') . 
+            'action=move_faq_category_confirm','post',
+          'onsubmit="return faq_category_romaji_can_move(\''.$faq_info->romaji.'\',\''.$site_id.'\')"') . 
              tep_draw_hidden_field('faq_category_id', $faq_info->faq_category_id));
         $contents[] = array('text' => sprintf(TEXT_MOVE_CATEGORIES_INTRO,
               $faq_info->title));
