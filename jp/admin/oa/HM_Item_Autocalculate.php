@@ -76,7 +76,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
            id ='".$opp['products_id']."_input_".$this->formname."' 
            onchange='".$this->formname."Chage_span(".$opp['products_quantity'].",this,\"relate_product_".$i."\")' ";
       //判断是否 checkbox 选中来确定 是否为只读
-      if($_checked==$op['products_id']){
+      if($_checked==$opp['products_id']){
         echo " readonly='true' ";
       }
       echo " >";
