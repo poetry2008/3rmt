@@ -21,7 +21,7 @@ if (isset($body_option)) {
 }
 ?>
 <!-- header //--> 
-<?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
+ <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
 <!-- header_eof //--> 
 <!--body -->
 <div id="main">
@@ -33,9 +33,9 @@ if (isset($body_option)) {
     <?php //this show faq category ?>
     <?php if ($c_row = tep_db_fetch_array($faq_category_query)){?>
     <?php if (isset($parent_info)&&$parent_info!=null){ ?>
-    <h1 class="pageHeading"><?php echo $parent_info['title'].TEXT_QUESTION_TITLE;?></h1>
+    <h2 class="pageHeading"><?php echo $parent_info['title'].TEXT_QUESTION_TITLE;?></h2>
     <?php }else {?>
-    <h1 class="pageHeading"><?php echo TEXT_FAQ_TITLE;?></h1>
+    <h2 class="pageHeading"><?php echo TEXT_FAQ_TITLE;?></h2>
     <?php } ?>
     <div class="comment_faq">
     <div class="faq_question_row">
@@ -57,7 +57,7 @@ if (isset($body_option)) {
     //this show faq question 
     ?>
     <?php if($q_row = tep_db_fetch_array($faq_question_query)){ ?>
-    <h1 class="pageHeading"><?php echo $parent_info['title'].TEXT_QUESTION_TITLE;?></h1>
+    <h2 class="pageHeading"><?php echo $parent_info['title'].TEXT_QUESTION_TITLE;?></h2>
     <div class="comment_faq">
     <div class="faq_question_row">
     <img src="images/design/ask.gif" alt="question"><span><a href="<?php echo HTTP_SERVER.'/'.$link_url.'/'.$q_row['romaji'].'.html';?>">
