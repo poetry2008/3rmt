@@ -71,10 +71,11 @@ class HM_Item_Myname extends HM_Item_Basic
                      async : false,
                      success: function(data){
                                $("#<?php echo $this->formname;?>").text(data);		     
-                    		     $("#wait").hide();
+                               $("#wait").hide();
+                               $('body').css('cursor','');
                                  checkLockOrder();
                      //                     $("#<?php echo $this->formname;?>submit").show();
-		   }
+                          }
                  });
              });
       });

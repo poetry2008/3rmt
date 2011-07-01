@@ -2310,7 +2310,7 @@ if (false) {
                o.site_id
          from " . TABLE_ORDERS . " o " . $from_payment . "
          where 
-          (o.q_8_1 IS NULL or o.q_8_1 = '')
+          o.flag_qaf = 0 
           -- and o.orders_status != '6'
           -- and o.orders_status != '8'
           " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
@@ -2318,7 +2318,8 @@ if (false) {
          order by torihiki_date_error DESC,o.torihiki_date DESC
       ";
     }
-
+//where
+          //(o.q_8_1 IS NULL or o.q_8_1 = '')
     $orders_split = new splitPageResults($_GET['page'], MAX_DISPLAY_ORDERS_RESULTS, $orders_query_raw, $orders_query_numrows);
     //echo $orders_query_raw;
     $orders_query = tep_db_query($orders_query_raw);

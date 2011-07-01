@@ -3350,9 +3350,11 @@ function tep_get_customers_fax_by_id($cid)
       $products_attributes_query = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS_ATTRIBUTES." where orders_products_id='".$p['orders_products_id']."'");
 
       if($orders['orders_inputed_flag']){
-      $str .= '<tr><td class="main"><b>商品：</b><font color="red">「入」</font></td><td class="main">'.$p['products_name'].'</td></tr>';
+      $str .= '<tr><td class="main"><b>商品：</b><font
+        color="red">「'.$p['orders_products_id'].'」</font></td><td class="main">'.$p['products_name'].'</td></tr>';
       }else{
-      $str .= '<tr><td class="main"><b>商品：</b><font color="red">「未」</font></td><td class="main">'.$p['products_name'].'</td></tr>';
+      $str .= '<tr><td class="main"><b>商品：</b><font
+        color="red">「'.$p['orders_products_id'].'」</font></td><td class="main">'.$p['products_name'].'</td></tr>';
       }
       $str .= '<tr><td class="main"><b>個数：</b></td><td class="main">'.$p['products_quantity'].'個'.tep_get_full_count2($p['products_quantity'], $p['products_id'], $p['products_rate']).'</td></tr>';
       while($pa = tep_db_fetch_array($products_attributes_query)){

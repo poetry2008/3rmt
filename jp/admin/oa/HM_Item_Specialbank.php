@@ -111,7 +111,7 @@ class HM_Item_Specialbank extends HM_Item_Basic
           $("#<?php echo $this->formnametotal;?>").find("input").each(
                                                                       function()
                                                                       {
-                                                                        $(this).click(<?php echo $this->formname;?>onItemChanged);
+                                                                        $(this).change(<?php echo $this->formname;?>onItemChanged);
                                                                       }
                                                                       );
 
