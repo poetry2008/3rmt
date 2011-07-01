@@ -921,7 +921,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
     $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_COPY_TO . '</b>');
     $contents = array('form' => tep_draw_form('copy_to_faq_question', FILENAME_FAQ, 
           'action=copy_to_faq_question_confirm&cPath=' . $cPath,'post',
-          'onsubmit="return faq_question_romaji_can_copy_to(\''.$qInfo->ask.'\',\''.$site_id.'\')"') . 
+          'onsubmit="return faq_question_romaji_can_copy_to(\''.$qInfo->romaji.'\',\''.$site_id.'\')"') . 
            tep_draw_hidden_field('faq_question_id', $qInfo->faq_question_id));
     $contents[] = array('text' => TEXT_INFO_COPY_TO_INTRO);
     $contents[] = array('text' => '<br>' . TEXT_INFO_CURRENT_CATEGORIES . '<br><b>' . 
