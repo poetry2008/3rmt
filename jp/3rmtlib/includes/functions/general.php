@@ -3971,9 +3971,11 @@ function tep_get_faq_qid_by_qname($qname,$qpath){
      $query = tep_db_query($sql);
      $res = tep_db_fetch_array($query);
      if($res){
-       if($res['faq_question_id'] != $qname){
+       if($res['romaji'] != $qname){
          return false;
        }
+     }else{
+       return false;
      }
    }
    return $question['faq_question_id'];

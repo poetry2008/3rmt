@@ -58,6 +58,7 @@
                   <li><?php echo '<a href="' . tep_href_link(FILENAME_EMAIL_TROUBLE) . '">' . PAGE_EMAIL_TROUBLE . '</a>'; ?></li>
                   <li><?php echo '<a href="' . tep_href_link(FILENAME_BROWSER_IE6X) . '">' . PAGE_BROWSER_IE6X. '</a>'; ?></li>
                   <li><?php echo '<a href="/link/">相互リンク</a>'; ?></li>
+                  <li><?php echo '<a href="/faq/">よくある質問</a>'; ?></li>
                   <li><?php echo BOX_HEADING_INFORMATION; ?></li>
         <li class="subcategory_tree">
                 <ul>
