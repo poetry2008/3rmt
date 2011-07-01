@@ -2315,9 +2315,11 @@ if (false) {
           -- and o.orders_status != '8'
           " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
           " . $where_payment . $where_type . "
-         order by torihiki_date_error DESC,o.torihiki_date DESC
+         order by o.torihiki_date DESC
       ";
     }
+    // old sort is  order by torihiki_date_error DESC,o.torihiki_date DESC
+    // new sort is  order by o.torihiki_date DESC
 //where
           //(o.q_8_1 IS NULL or o.q_8_1 = '')
     $orders_split = new splitPageResults($_GET['page'], MAX_DISPLAY_ORDERS_RESULTS, $orders_query_raw, $orders_query_numrows);

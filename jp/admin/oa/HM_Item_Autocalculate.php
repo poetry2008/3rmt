@@ -58,12 +58,12 @@ class HM_Item_Autocalculate extends HM_Item_Basic
         $_value = 0;
       }
       //判断是否选中
-      if($_checked==$op['products_id']){
+      if($_checked==$opp['products_id']){
         $check = "checked"; 
       }else{
         $check = "";
       }
-      echo "<div style=\"width:600px;\">";
+      echo "<div class='autocalculate_div'>";
       if($op){
       echo "<input value='".$opp['products_id']."'  
         onclick='".$this->formname."Change_option(".$opp['products_id'].",this)' 
