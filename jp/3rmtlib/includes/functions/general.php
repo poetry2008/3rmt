@@ -3934,13 +3934,25 @@ function tep_get_faq_question_info($q_id){
   $query = tep_db_query($sql);
   return tep_db_fetch_array($query);
 }
-function tep_get_faq_qid_by_qname($qname){
- $sql = "select * from ".TABLE_FAQ_QUESTION." fq,
+function tep_get_faq_qid_by_qname($qname,$qpath){
+ if(isset($qpath)&&$qpath!=''){
+   $sql = "select * from ".TABLE_FAQ_QUESTION." fq,
         ".TABLE_FAQ_QUESTION_DESCRIPTION." fqd 
         WHERE fq.id = fqd.faq_question_id 
         and fqd.romaji = '".$qname."' 
         and (fqd.site_id = '".SITE_ID."' or fqd.site_id = '0') 
         order by fqd.site_id DESC" ;
+ }else{
+   $sql = "select * from ".TABLE_FAQ_QUESTION." fq,
+        ".TABLE_FAQ_QUESTION_DESCRIPTION." fqd,
+        ".TABLE_FAQ_QUESTION_TO_CATEGORIES." fq2c 
+        WHERE fq.id = fqd.faq_question_id  
+        and fq2c.faq_question_id = fqd.faq_question_id 
+        and fq2c.faq_category_id = '0'
+        and fqd.romaji = '".$qname."' 
+        and (fqd.site_id = '".SITE_ID."' or fqd.site_id = '0') 
+        order by fqd.site_id DESC" ;
+ }
  $query = tep_db_query($sql);
  $question = tep_db_fetch_array($query);
  return $question['faq_question_id'];
