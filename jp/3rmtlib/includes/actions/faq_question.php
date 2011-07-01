@@ -8,8 +8,8 @@ if(isset($_GET['question_romaji'])&&$_GET['question_romaji']!=''){
   $temp_question_info = tep_get_faq_question_info($faq_question_id);
   $link_url = 'faq';
   $link_url_arr = array();
-  $link_url_arr[] = 'faq';
-  $breadcrumb->add('faq',HTTP_SERVER.'/'.$link_url);
+  $link_url_arr[] = TEXT_FAQ;
+  $breadcrumb->add(TEXT_FAQ,HTTP_SERVER.'/'.$link_url);
   $temp_parent_id = 0;
   if(isset($_GET['qPath'])&&$_GET['qPath']!=''){
   $category_romaji_arr = explode('/',$_GET['qPath']);

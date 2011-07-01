@@ -1,8 +1,8 @@
 <?php
 $link_url = "faq";
 $link_arr = array();
-$link_arr[] = 'faq';
-$breadcrumb->add('faq',HTTP_SERVER.'/'.$link_url);
+$link_arr[] = TEXT_FAQ;
+$breadcrumb->add(TEXT_FAQ,HTTP_SERVER.'/'.$link_url);
 $parent_info = null;
 if(isset($_GET['faq_name'])&&$_GET['faq_name']!=''){
 $page=0;
