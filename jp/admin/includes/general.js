@@ -526,7 +526,7 @@ function faq_category_romaji_can_move(cromaji,site_id){
     success: function(data) {
       if(data=='true'){
         flag = false;
-        alert("コピー先に同じURLが登録されているためコピー出来ません");
+        alert("移動先に同じURLが登録されているため移動できません");
       }
     }
   });
@@ -564,7 +564,7 @@ function faq_question_romaji_can_copy_to(qromaji,site_id){
     success: function(data) {
       if(data=='true'){
         flag = false;
-        alert("移動先に同じURLが登録されているため移動できません");
+        alert("コピー先に同じURLが登録されているためコピー出来ません");
       }
     }
   });
