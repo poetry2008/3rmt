@@ -1213,3 +1213,17 @@ searching
  width:440px;
 }
 .active_email input{ width:300px;}
+.comment_faq {
+    font-size: 14px;
+	font-weight:bold;
+    margin: 0;
+    overflow: hidden;
+    padding: 5px 5px 0;
+    width: 450px;
+}
+.faq_question_row {
+    margin-bottom: 5px;
+}
+.faq_question_row span a { color:#FF4500; line-height:21px; font-size:14px;}
+.faq_back { margin-left:380px;}
+.faq_answer { padding:5px;}
