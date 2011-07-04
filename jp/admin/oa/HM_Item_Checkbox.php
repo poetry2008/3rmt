@@ -37,6 +37,7 @@ class HM_Item_Checkbox extends HM_Item_Basic
     ?>
     <script type='text/javascript'>
       function <?php echo $this->formname;?>Changed(ele){
+      $('#<?php echo $this->formname;?>real').val('');
       var <?php echo $this->formname;?>val ='';
       $("input|[name=0<?php echo $this->formname;?>]").each(function(){
 	  if($(this).attr('checked')){
@@ -68,14 +69,15 @@ class HM_Item_Checkbox extends HM_Item_Basic
      $classrequire = '';
    }   
    echo $this->beforeInput;
-   echo "<input class='".$classrequire."' id='".$this->formname."real' value = '".$this->defaultValue."' type='hidden' name = '".$this->formname."'>";
+   echo "<input class='".$classrequire."' id='".$this->formname."real' value =
+     '".$this->defaultValue."' type='hidden' name = '".$this->formname."'>";
    foreach($this->radios as $key=>$value){
      if (in_array($value,$loadArray)){
        $check = 'checked';
       }else{
 	$check = '';
       }
-      echo "<input value = '".$value."' onchange='".$this->formname."Changed(this)' type='checkbox' ".$check." name='0".$this->formname."' />".$value;
+      echo "<input value = '".$value."' onclick='".$this->formname."Changed(this)' type='checkbox' ".$check." name='0".$this->formname."' />".$value;
 	  }
    echo '</br>';
    echo $this->afterInput;

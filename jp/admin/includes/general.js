@@ -419,7 +419,7 @@ function faq_c_is_set_romaji(pid,cid,site_id){
   var cromaji = $("#cromaji").val();
   cromaji = replace_romaji(cromaji);
   $.ajax({
-    url: 'ajax_orders.php?action=c_is_set_romaji',
+    url: 'ajax_orders.php?action=faq_c_is_set_romaji',
     type: 'POST',
     data: 'romaji='+cromaji+'&cid='+cid+'&pid='+pid+'&site_id='+site_id,
     dataType: 'text',
@@ -458,7 +458,7 @@ function faq_q_is_set_romaji(cid,qid,site_id){
   var qromaji = $("#qromaji").val();
   qromaji = replace_romaji(qromaji);
   $.ajax({
-    url: 'ajax_orders.php?action=q_is_set_romaji',
+    url: 'ajax_orders.php?action=faq_q_is_set_romaji',
     type: 'POST',
     data: 'romaji='+qromaji+'&cid='+cid+'&qid='+qid+'&site_id='+site_id,
     dataType: 'text',
@@ -518,7 +518,7 @@ function faq_category_romaji_can_move(cromaji,site_id){
   var pid = $("select[name='move_to_faq_category_id']").val();
   cromaji = replace_romaji(cromaji);
   $.ajax({
-    url: 'ajax_orders.php?action=c_is_set_romaji',
+    url: 'ajax_orders.php?action=faq_c_is_set_romaji',
     type: 'POST',
     data: 'romaji='+cromaji+'&pid='+pid+'&site_id='+site_id,
     dataType: 'text',
@@ -537,7 +537,7 @@ function faq_question_romaji_can_move(qromaji,site_id){
   var cid = $("select[name='move_to_faq_category_id']").val();
   qromaji = replace_romaji(qromaji);
   $.ajax({
-    url: 'ajax_orders.php?action=q_is_set_romaji',
+    url: 'ajax_orders.php?action=faq_q_is_set_romaji',
     type: 'POST',
     data: 'romaji='+qromaji+'&cid='+cid+'&site_id='+site_id,
     dataType: 'text',
@@ -556,7 +556,7 @@ function faq_question_romaji_can_copy_to(qromaji,site_id){
   qromaji = replace_romaji(qromaji);
   var flag = true;
   $.ajax({
-    url: 'ajax_orders.php?action=q_is_set_romaji',
+    url: 'ajax_orders.php?action=faq_q_is_set_romaji',
     type: 'POST',
     data: 'romaji='+qromaji+'&cid='+cid+'&site_id='+site_id,
     dataType: 'text',
@@ -576,4 +576,84 @@ function replace_romaji(romaji){
   romaji = romaji.replace(/\&/g,'<11111111>');
   romaji = romaji.replace(/\+/g,'<22222222>');
   return romaji;
+}
+function c_is_set_error_char(){
+  var flag = true;
+  var cromaji = $("#cromaji").val();
+  cromaji = replace_romaji(cromaji);
+  $.ajax({
+    url: 'ajax_orders.php?action=check_romaji',
+    type: 'POST',
+    data: 'romaji='+cromaji,
+    dataType: 'text',
+    async : false,
+    success: function(data) {
+      if(data!=''){
+        flag = false;
+        $("#cromaji").val(data);
+        alert("禁止記号は全て「-」に置き換えられます");
+      }
+    }
+  });
+  return flag;
+}
+function p_is_set_error_char(){
+  var flag = true;
+  var qromaji = $("#promaji").val();
+  qromaji = replace_romaji(qromaji);
+  $.ajax({
+    url: 'ajax_orders.php?action=check_romaji',
+    type: 'POST',
+    data: 'romaji='+qromaji,
+    dataType: 'text',
+    async : false,
+    success: function(data) {
+      if(data!=''){
+        flag = false;
+        $("#promaji").val(data);
+        alert("禁止記号は全て「-」に置き換えられます");
+      }
+    }
+  });
+  return flag;
+}
+
+function c_is_set_romaji(pid,cid,site_id){
+  var flag = true;
+  var cromaji = $("#cromaji").val();
+  cromaji = replace_romaji(cromaji);
+  $.ajax({
+    url: 'ajax_orders.php?action=c_is_set_romaji',
+    type: 'POST',
+    data: 'romaji='+cromaji+'&cid='+cid+'&pid='+pid+'&site_id='+site_id,
+    dataType: 'text',
+    async : false,
+    success: function(data) {
+      if(data=='true'){
+        flag = false;
+        alert("既に登録されているため使用できません。");
+      }
+    }
+  });
+  return flag;
+}
+
+function p_is_set_romaji(cid,qid,site_id){
+  var flag = true;
+  var qromaji = $("#promaji").val();
+  qromaji = replace_romaji(qromaji);
+  $.ajax({
+    url: 'ajax_orders.php?action=p_is_set_romaji',
+    type: 'POST',
+    data: 'romaji='+qromaji+'&cid='+cid+'&qid='+qid+'&site_id='+site_id,
+    dataType: 'text',
+    async : false,
+    success: function(data) {
+      if(data=='true'){
+        flag = false;
+        alert("既に登録されているため使用できません。");
+      }
+    }
+  });
+  return flag;
 }

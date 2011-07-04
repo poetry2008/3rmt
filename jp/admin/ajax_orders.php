@@ -389,7 +389,7 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
   }else{
     echo 0;
   }
-}else if(isset($_GET['action'])&&$_GET['action'] == 'c_is_set_romaji'){
+}else if(isset($_GET['action'])&&$_GET['action'] == 'faq_c_is_set_romaji'){
   $romaji = $_POST['romaji'];
   $romaji = str_replace('<11111111>','&',$romaji);
   $romaji = str_replace('<22222222>','+',$romaji);
@@ -409,7 +409,7 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
   }else{
     echo 'false';
   }
-}else if(isset($_GET['action'])&&$_GET['action'] == 'q_is_set_romaji'){
+}else if(isset($_GET['action'])&&$_GET['action'] == 'faq_q_is_set_romaji'){
   $romaji = $_POST['romaji'];
   $romaji = str_replace('<11111111>','&',$romaji);
   $romaji = str_replace('<22222222>','+',$romaji);
@@ -449,5 +449,46 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
     }else{
       echo '';
     }
+  }
+}else if(isset($_GET['action'])&&$_GET['action'] == 'c_is_set_romaji'){
+  $romaji = $_POST['romaji'];
+  $romaji = str_replace('<11111111>','&',$romaji);
+  $romaji = str_replace('<22222222>','+',$romaji);
+  $site_id = isset($_POST['site_id'])?$_POST['site_id']:0;
+  $sql =  "select * from ".TABLE_CATEGORIES." c,
+              ".TABLE_CATEGORIES_DESCRIPTION." 
+              cd where c.categories_id=cd.categories_id and
+              c.parent_id='".$_POST['pid']."'      and
+              cd.romaji='".$romaji."' and
+              (cd.site_id='".$site_id."' or cd.site_id = '0' )"; 
+  if(isset($_POST['cid'])&&$_POST['cid']!=''){
+     $sql .= " and c.categories_id != '".$_POST['cid']."'";
+  }
+  $sql .= " order by cd.site_id DESC";
+  if(tep_db_num_rows(tep_db_query($sql))){
+    echo 'true';
+  }else{
+    echo 'false';
+  }
+}else if(isset($_GET['action'])&&$_GET['action'] == 'p_is_set_romaji'){
+  $romaji = $_POST['romaji'];
+  $romaji = str_replace('<11111111>','&',$romaji);
+  $romaji = str_replace('<22222222>','+',$romaji);
+  $site_id = isset($_POST['site_id'])?$_POST['site_id']:0;
+  $sql = "select * from  
+              ".TABLE_PRODUCTS_DESCRIPTION." pd,
+              ".TABLE_PRODUCTS_TO_CATEGORIES." p2c 
+              where pd.products_id=p2c.products_id and
+              p2c.categories_id='".$_POST['cid']."'      and
+              pd.romaji='".$romaji."' and
+              (pd.site_id='".$site_id."' or pd.site_id = '0' )";
+  if(isset($_POST['qid'])&&$_POST['qid']!=''){
+    $sql .= " and pd.products_id != '".$_POST['qid']."'"; 
+  }
+  $sql .= " order by pd.site_id DESC";
+  if(tep_db_num_rows(tep_db_query($sql))){
+    echo 'true';
+  }else{
+    echo 'false';
   }
 }
