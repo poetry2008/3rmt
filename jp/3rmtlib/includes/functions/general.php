@@ -3908,11 +3908,39 @@ function tep_get_faq_cpath_by_cname($cname, $parent_id = 0)
       where c.id = cd.faq_category_id
         and c.parent_id = '".$parent_id."'
         and cd.romaji = '" . $cname .  "' 
-        and (cd.site_id = '".SITE_ID."' or cd.site_id = '0')
-      order by cd.site_id DESC" ;
+        and cd.site_id = '".SITE_ID."'" ;
   $category_query = tep_db_query($queryString);
-  $category = tep_db_fetch_array($category_query);
-  return $category['faq_category_id'];
+  if(tep_db_num_rows($category_query)){
+    $category = tep_db_fetch_array($category_query);
+    return $category['faq_category_id'];
+  }else{
+    $queryString = "
+      select cd.`faq_category_id` 
+      from " .  TABLE_FAQ_CATEGORIES . " c, " .  TABLE_FAQ_CATEGORIES_DESCRIPTION . " cd
+      where c.id = cd.faq_category_id
+        and c.parent_id = '".$parent_id."'
+        and cd.romaji = '" . $cname .  "' 
+        and cd.site_id = '0'" ;
+    $category_query = tep_db_query($queryString);
+    $category = tep_db_fetch_array($category_query);
+    if($category){
+      $queryString = "
+        select cd.`faq_category_id` 
+          from " .  TABLE_FAQ_CATEGORIES . " c, " .  TABLE_FAQ_CATEGORIES_DESCRIPTION . " cd
+          where c.id = cd.faq_category_id
+          and c.parent_id = '".$parent_id."'
+          and cd.site_id = '".SITE_ID."'" ;
+      $query = tep_db_query($queryString);
+      $res = tep_db_fetch_array($query);
+      if($res){
+        if($res['romaji']!=$cname){
+          return false;
+        }
+      }
+    }
+    return $category['faq_category_id'];
+
+  }
 }
 function tep_get_faq_category_info($c_id){
   $sql = "select * from ".TABLE_FAQ_CATEGORIES." fc ,"
