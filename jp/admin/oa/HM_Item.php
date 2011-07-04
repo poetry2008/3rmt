@@ -53,10 +53,22 @@ class HM_Item extends DbRecord
     $sql .= 'and  form_id="' .$form_id.'"';
     $sql .= 'and  item_id="' .$this->id.'"';
     $result = (tep_db_fetch_array(tep_db_query($sql)));
+    //如果转变了表单类型会找不到数据
+    if(!$result){
+      $sql = 'select * from '.TABLE_OA_FORMVALUE.' where ';
+      $sql .= ' orders_id="' .$order_id.'"';
+      $sql .= 'and  group_id="' .$group_id.'"';
+      $sql .= 'and  item_id="' .$this->id.'" order by id desc limit 1';
+      $result = (tep_db_fetch_array(tep_db_query($sql)));
+      //如果有结果  把这条数据的 form_id 修改成现在的form_id
+      if($result){
+        $sql = 'update '.TABLE_OA_FORMVALUE .' set form_id="'.$form_id.'"'.' where id = '.$result['id'] ;
+        tep_db_query($sql);
+      }
+    }
     if ($result){
     $this->instance->order_id = $order_id;
     $this->instance->loadedValue = $result['value'];
-
     $this->instance->loaded = true;
     }else {
       if (method_exists($this->instance,'initDefaultValue')){
