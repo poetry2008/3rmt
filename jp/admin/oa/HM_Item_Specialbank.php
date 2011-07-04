@@ -112,6 +112,7 @@ class HM_Item_Specialbank extends HM_Item_Basic
                                                                       function()
                                                                       {
                                                                         $(this).change(<?php echo $this->formname;?>onItemChanged);
+                                                                        $(this).click(<?php echo $this->formname;?>onItemChanged);
                                                                       }
                                                                       );
 
@@ -174,4 +175,5 @@ static public function prepareForm($item_id = NULL)
 
 }
 }
+
 

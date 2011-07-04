@@ -186,7 +186,10 @@ window.location.href='orders.php';
       $(this).keyup(function(){
         checkLockOrder();
         });
-
+      $(this).click(function(ele){
+        checkLockOrder();
+        $("#qa_form").submit();
+        });
       $(this).change(function(ele){
         checkLockOrder();
         //                                   alert($("input|[name=dfossrrfwwkvomzw_6_1_107]").val());
