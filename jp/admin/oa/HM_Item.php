@@ -54,7 +54,7 @@ class HM_Item extends DbRecord
     $sql .= 'and  item_id="' .$this->id.'"';
     $result = (tep_db_fetch_array(tep_db_query($sql)));
     //如果转变了表单类型会找不到数据
-    if(!$result){
+    if(!count($result)){
       $sql = 'select * from '.TABLE_OA_FORMVALUE.' where ';
       $sql .= ' orders_id="' .$order_id.'"';
       $sql .= 'and  group_id="' .$group_id.'"';
