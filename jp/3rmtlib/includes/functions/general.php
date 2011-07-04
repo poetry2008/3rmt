@@ -3965,7 +3965,6 @@ function tep_get_faq_qid_by_qname($qname,$qpath){
         WHERE fq.id = fqd.faq_question_id  
         and fq2c.faq_question_id = fqd.faq_question_id 
         and fq2c.faq_category_id = '".$qpath."'
-        and fqd.romaji = '".$qname."' 
         and fqd.faq_question_id = '".$question['faq_question_id']."' 
         and fqd.site_id = '".SITE_ID."'" ;
      $query = tep_db_query($sql);
@@ -3974,8 +3973,6 @@ function tep_get_faq_qid_by_qname($qname,$qpath){
        if($res['romaji'] != $qname){
          return false;
        }
-     }else{
-       return false;
      }
    }
    return $question['faq_question_id'];
