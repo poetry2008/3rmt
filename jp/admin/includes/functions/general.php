@@ -5007,7 +5007,8 @@ function tep_check_best_sellers_isbuy($products_id)
 }
 
 function tep_payment_method_menu($payment_method = "") {
-  $payment_text = "銀行振込\nクレジットカード決済\n銀行振込(買い取り)\nペイパル決済\nポイント(買い取り)\n来店支払い\nコンビニ決済\nゆうちょ銀行（郵便局）\n支払いなし";
+  //$payment_text = "銀行振込\nクレジットカード決済\n銀行振込(買い取り)\nペイパル決済\nポイント(買い取り)\n来店支払い\nコンビニ決済\nゆうちょ銀行（郵便局）\n支払いなし";
+  $payment_text = tep_get_list_payment(); 
   $payment_array = explode("\n", $payment_text);
   //$payment_list[] = array('id' => '', 'text' => '支払方法を選択してください');
   for($i=0; $i<sizeof($payment_array); $i++) {
@@ -5017,7 +5018,38 @@ function tep_payment_method_menu($payment_method = "") {
   return tep_draw_pull_down_menu('payment_method', $payment_list, $payment_method);
 }
 
+function tep_get_list_payment() {
+  global $language;
 
+  $payment_directory = DIR_FS_CATALOG_MODULES .'payment/';
+  $payment_array = array();
+  $payment_list_str = '';
+  
+  if ($dh = @dir($payment_directory)) {
+    while ($payment_file = $dh->read()) {
+      if (!is_dir($payment_directory.$payment_file)) {
+        if (substr($payment_file, strrpos($payment_file, '.')) == '.php') {
+          $payment_array[] = $payment_file; 
+        }
+      }
+    }
+    sort($payment_array);
+    $dh->close();
+  }
+
+  for ($i = 0, $n = sizeof($payment_array); $i < $n; $i++) {
+    $payment_filename = $payment_array[$i]; 
+    include(DIR_WS_LANGUAGES . $language . '/modules/payment/' . $payment_filename); 
+    include($payment_directory . $payment_filename); 
+    $payment_class = substr($payment_filename, 0, strrpos($payment_filename, '.'));
+    if (tep_class_exists($payment_class)) {
+      $payment_module = new $payment_class; 
+      $payment_list_str .= $payment_module->title."\n"; 
+    }
+  }
+  
+  return mb_substr($payment_list_str, 0, -1, 'UTF-8');
+}
   function tep_get_faq_path($current_category_id = '') {
     global $cPath_array;
 
