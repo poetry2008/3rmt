@@ -5007,7 +5007,7 @@ function tep_check_best_sellers_isbuy($products_id)
 }
 
 function tep_payment_method_menu($payment_method = "") {
-  $payment_text = "銀行振込\nクレジットカード決済\n銀行振込(買い取り)\nポイント(買い取り)\n来店支払い\nコンビニ決済\nゆうちょ銀行（郵便局）\n支払いなし";
+  $payment_text = "銀行振込\nクレジットカード決済\n銀行振込(買い取り)\nペイパル決済\nポイント(買い取り)\n来店支払い\nコンビニ決済\nゆうちょ銀行（郵便局）\n支払いなし";
   $payment_array = explode("\n", $payment_text);
   //$payment_list[] = array('id' => '', 'text' => '支払方法を選択してください');
   for($i=0; $i<sizeof($payment_array); $i++) {
