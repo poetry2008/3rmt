@@ -15,7 +15,7 @@ if(isset($_GET['question_romaji'])&&$_GET['question_romaji']!=''){
       }
       $temp_category_info = tep_get_faq_category_info($temp_parent_id);
       $link_url .= '/'.urlencode($value);
-      $link_url_arr[] = $value;
+      $link_url_arr[] = urlencode($value);
       $breadcrumb->add($temp_category_info['title'],HTTP_SERVER.'/'.$link_url);
     }
     $faq_question_id = tep_get_faq_qid_by_qname($qromaji,$temp_parent_id);
