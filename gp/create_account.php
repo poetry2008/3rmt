@@ -54,9 +54,6 @@ function pass_hidd(){
   }
 ?> 
             <tr> 
-              <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-            </tr> 
-            <tr> 
               <td><?php
   if (isset($_GET['email_address'])) $email_address = tep_db_prepare_input($_GET['email_address']);
   $account['entry_country_id'] = STORE_COUNTRY;
