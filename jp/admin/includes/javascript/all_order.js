@@ -1,3 +1,13 @@
+function in_array(needle, haystack) {
+  if(typeof needle == 'string' || typeof needle == 'number') {
+    for(var i in haystack) {
+      if(haystack[i] == needle) {
+        return true;
+      }   
+    }   
+  }
+  return false;
+}
 // 被orders.php调用
 var f_flag = 'off';
 var old_color = '';
@@ -709,3 +719,21 @@ function allt(id,div_id){
       div_e.style.top=(et+20) + "px"; 
       div_e.style.display=''; 
 } 
+function once_pwd_redircet_new_url(url_str){
+  //window.location.href = url_str;
+    $.ajax({
+    url: 'ajax_orders.php?action=getallpwd',
+    type: 'POST',
+    dataType: 'text',
+    async : false,
+    success: function(data) {
+      var pwd_arr = data.split(",");
+      var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n","");
+      if(in_array(pwd, pwd_arr)){
+        window.location.href = url_str+'&once_pwd='+pwd; 
+      } else {
+        window.alert("パスワードが違います"); 
+      }
+    }
+  });
+}

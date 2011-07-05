@@ -811,8 +811,10 @@ while ($totals = tep_db_fetch_array($totals_query)) {
 }
 
   if (($action == 'edit') && isset($_GET['oID'])) {
+    if(isset($_GET['once_pwd'])&&$_GET['once_pwd']){
+      tep_insert_pwd_log($_GET['once_pwd'],$ocertify->auth_user);
+    }
     $oID = tep_db_prepare_input($_GET['oID']);
-
     $orders_query = tep_db_query("select orders_id from " . TABLE_ORDERS . " where orders_id = '" . tep_db_input($oID) . "'");
     $order_exists = true;
     if (!tep_db_num_rows($orders_query)) {
