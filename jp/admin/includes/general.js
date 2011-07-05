@@ -657,3 +657,12 @@ function p_is_set_romaji(cid,qid,site_id){
   });
   return flag;
 }
+function products_form_validator(cid,qid,site_id){
+  flag1 = p_is_set_romaji(cid,qid,site_id);
+  flag2 = p_is_set_error_char(); 
+  if(flag1&&flag2){
+    return true;
+  }else{
+    return false;
+  }
+}
