@@ -77,7 +77,7 @@
         <div class="pageHeading"><h1><?php echo HEADING_TITLE ; ?></h1></div> 
         <div class="comment"> 
         <?php echo tep_draw_form('order', tep_href_link(FILENAME_CHECKOUT_SUCCESS, 'action=update', 'SSL')); ?> 
-          <table border="0" width="100%" cellspacing="0" cellpadding="0">
+          <table border="0" width="100%" cellspacing="0" cellpadding="0" class="product_info_box">
         
       <?php
       #convenience_store

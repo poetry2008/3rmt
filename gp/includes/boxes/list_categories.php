@@ -57,7 +57,7 @@ foreach($categories as $cur_key => $cur_category) {
   <ul class='l_m_category_ul'>
     <?php foreach($categories as $key => $category) {?>
       <?php if($cPath && in_array($category['categories_id'], $id)) {?>
-        <li class='l_m_category_li2'>
+        <li>
         <?php
           $subcategories = array();
           // ccdd
