@@ -2400,7 +2400,10 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
       echo tep_draw_hidden_field('products_image3', stripslashes($products_image_name3));
       if ($products_cart_image)
       echo tep_draw_hidden_field('products_cart_image', stripslashes($products_cart_image_name));
-      echo tep_html_element_submit(IMAGE_BACK, 'name="edit"') . '&nbsp;&nbsp;';
+      echo "<a href='".
+        tep_href_link(FILENAME_CATEGORIES,tep_get_all_get_params(array('action')).'&action=new_product')."'>";
+      echo tep_html_element_button(IMAGE_BACK, ' name="edit"') . '&nbsp;&nbsp;';
+      echo "</a>";
 
       if ($_GET['pID']) {
         echo tep_html_element_submit(IMAGE_UPDATE);
