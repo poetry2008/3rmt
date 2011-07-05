@@ -27,7 +27,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder2.php'));
       </td>
       <!-- body_text //-->
       <td id="contents" valign="top">
-        <div class="pageHeading"><img align="top" alt="" src="images/menu_reorder.gif"><h1><?php echo HEADING_TITLE; ?></h1></div>
+        <div class="pageHeading"><h1><?php echo HEADING_TITLE; ?></h1></div>
         <?php if($_POST){
           $date     = tep_db_prepare_input($_POST['date']);
           $hour     = tep_db_prepare_input($_POST['hour']);
@@ -94,6 +94,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder2.php'));
           }
          }else{?>
 <div class="comment">
+<div class="comment_info_warpper">
 <?php
 echo tep_draw_form('order', tep_href_link('reorder2.php'));
 ?>
@@ -146,7 +147,7 @@ echo tep_draw_form('order', tep_href_link('reorder2.php'));
   <input type='image' src="includes/languages/japanese/images/buttons/button_reset.gif" alt="クリア" title="クリア" onClick='javascript:document.order.reset();return false;' >
 </p>
 </form>
-<?php }?></div>
+<?php }?></div></div>
 <script type="text/javascript">
 <!--
 function check(){

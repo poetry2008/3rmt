@@ -6,13 +6,8 @@
 <!-- latest_news //-->
 <div class="latest_news_box">
 <div class="pageHeading">
-<div class="pageHeading_left">
-<img src="images/menu_ico04.gif" alt="" align="top"><span><?php echo STORE_NAME;?>からのお知らせ</span>
-</div>
-    <div class="pageHeading_right">
-        <a href='<?php echo tep_href_link('latest_news.php');?>'>>>MORE</a>
-        <?php //<img src="includes/languages/japanese/images/buttons/button_more.gif" width="56" height="25" alt="more" title="more" >?>
-    </div>
+<?php echo STORE_NAME;?>からのお知らせ
+
 </div>
 <div class="comment">
     <div id="news">
@@ -57,6 +52,10 @@ $row++;
 }
     ?>
         </ul>
+            <span>
+        <a href='<?php echo tep_href_link('latest_news.php');?>'>>>MORE</a>
+        <?php //<img src="includes/languages/japanese/images/buttons/button_more.gif" width="56" height="25" alt="more" title="more" >?>
+    </span>
     </div>
 </div>
 </div>

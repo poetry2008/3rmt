@@ -123,8 +123,9 @@ function change_num(ob, targ, quan,a_quan)
     <?php if (tep_show_warning(tep_get_products_categories_id($product_info['products_id'])) or $product_info['products_status'] != '1') {
       echo '<div class="waring_product">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
     } ?>
-         <div class="pageHeading_long"><img align="top" alt="" src="images/menu_ico.gif"><span><h1><?php echo $product_info['products_name']; ?></h1></span></div>
+         <div class="pageHeading_long"><span><h1><?php echo $product_info['products_name']; ?></h1></span></div>
          <div class="comment_long">
+         <div class="comment_long_text"> 
          <h2 class="line"><?php echo ds_tep_get_categories((int)$_GET['products_id'],1); ?> <?php echo ds_tep_get_categories((int)$_GET['products_id'],2); ?></h2>
          <table width="100%"  border="0" cellpadding="0" cellspacing="0" summary="rmt">
           <tr>
@@ -539,16 +540,19 @@ while($tag = tep_db_fetch_array($tag_query)) {
         }
  ?>
  </div>
+ </div>
          <?php if($description){?>
-            <div class="pageHeading_long"><img align="top" alt="" src="images/menu_ico.gif"><h3><?php echo $product_info['products_name']; ?>について</h3></div>
+            <div class="pageHeading_long"><h3><?php echo $product_info['products_name']; ?>について</h3></div>
             <!-- 説明文　-->
-            <p class="comment_long">
-              <?php 
+            <div class="comment_long">
+            <div class="comment_long_text"> 
+            <?php 
             //Edit ds-style 2005.11.29
             //echo stripslashes($product_info['products_description']);
             echo replace_store_name($description);
             ?>
-            </p>
+            </div> 
+            </div>
          <?php }?>
         <?php
 //    $reviews = tep_db_query("select count(*) as count from " . TABLE_REVIEWS . " where products_id = '" . $_GET['products_id'] . "'");
@@ -599,8 +603,9 @@ $tag_query = tep_db_query("
 ");
 if(tep_db_num_rows($tag_query)){
 ?>
-<div class="pageHeading_long"><img align="top" src="images/menu_ico.gif" alt=""><h3><?php echo $product_info['products_name'].'に関するキーワード';?></h3></div>        
+<div class="pageHeading_long"><h3><?php echo $product_info['products_name'].'に関するキーワード';?></h3></div>        
 <div class="comment_long">
+<div class="comment_long_text">
 <?php
 $tnum = 0;
 while($tag = tep_db_fetch_array($tag_query)) {
@@ -625,6 +630,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
 $tnum++;
 }
 ?>
+</div>
 </div>
 <?php }?>
         

@@ -51,7 +51,7 @@
       <!-- body_text //-->
       <td id="contents" valign="top">
 
-      <div class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif"><h1><?php echo SEND_MAIL_HEADING_TITLE; ?></h1></div>
+      <div class="pageHeading"><h1><?php echo SEND_MAIL_HEADING_TITLE; ?></h1></div>
       <div class="comment">
       <div class="send_mail">
 <?php

@@ -25,7 +25,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
       </td>
       <!-- body_text //-->
       <td id="contents" valign="top">
-        <div class="pageHeading"><img align="top" alt="" src="images/menu_reorder.gif"><h1><?php echo HEADING_TITLE; ?></h1></div>
+        <div class="pageHeading"><h1><?php echo HEADING_TITLE; ?></h1></div>
 <?php if ($_POST) {
   include(DIR_WS_CLASSES . 'admin_order.php');
 
@@ -714,6 +714,7 @@ function orderConfirmPage(){
   // enter basic order info
   ?>
 <div class="comment">
+<div class="comment_info_box">
 <?php
 echo tep_draw_form('order', tep_href_link('reorder.php'));
 ?>
@@ -742,6 +743,7 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
 </table>
 </form>
 <?php }?>
+    </div>
     </div>
         <p class="pageBottom"></p>
       </td>

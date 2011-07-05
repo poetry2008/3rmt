@@ -55,6 +55,7 @@
   
 <?php
 if (tep_session_is_registered('customer_id')) {
+  if ($guestchk == '1') {
 ?>
 <div id="title">
   <table cellpadding="0" cellspacing="0" border="0" class="top_right">
@@ -68,43 +69,84 @@ if (tep_session_is_registered('customer_id')) {
   </a></li>
 </ul>
 </td></tr>
-  <tr><td>
-  <div class="header_list"><div class="header_list_title">小計</div><span><?php echo $currencies->format($cart->show_total());?></span></div>
-  	 </td></tr></table>
+<tr><td align="right" class="header_w_time"><img src="images/design/header_worktime.gif" alt="worktime"></td></tr>
+<tr><td align="right" class="header_w_time02"><img src="images/design/work_img01.gif" alt="３６５日年中無休"><img src="images/design/work_img02.gif" alt="ご注文は24時間受付"></td></tr>
+         </table>
     </div>
   </div>
 <?php
+ } else {
+ ?>
+   <div id="title">    
+  <table cellpadding="0" cellspacing="0" border="0" class="top_right">
+  <tr><td>
+   <ul class="login_list">
+          <li><?php echo '<a href="' . tep_href_link(FILENAME_LOGOFF, '', 'SSL') . '">' . HEADER_TITLE_LOGOFF . '</a>'."\n"; ?></li>
+        <li>|</li>
+          <li><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_NOTIFICATIONS, '', 'SSL') . '">' . MYACCOUNT_NOTIFICATION . '</a>'."\n"; ?></li>
+        <li>|</li>
+		  <li><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT_HISTORY, '', 'SSL') . '">' . MYACCOUNT_HISTORY . '</a>'."\n"; ?></li>
+        <li>|</li>
+          <li><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT_EDIT, '', 'SSL') . '">' . MYACCOUNT_EDIT . '</a>'."\n"; ?></li>
+        <li>|</li>
+          <li><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">' . HEADER_TITLE_MY_ACCOUNT . '</a>'."\n"; ?></li>
+           </ul>
+</td>
+</tr>
+<tr><td align="right" class="header_w_time"><img src="images/design/header_worktime.gif" alt="worktime"></td></tr>
+<tr><td align="right" class="header_w_time02"><img src="images/design/work_img01.gif" alt="３６５日年中無休"><img src="images/design/work_img02.gif" alt="ご注文は24時間受付"></td></tr>
+   </table> 
+           </div>
+           </div>
+ <?php
+ }
 }else {
 ?>
 <div id="title">
   <table cellpadding="0" cellspacing="0" border="0" class="top_right">
   <tr><td>
   	 <ul>
-     	<li><a href="<?php echo tep_href_link(FILENAME_CREATE_ACCOUNT,'', 'SSL');?>">無料会員登録</a></li>
-        <li>|</li>
-        <?php /*
-        <li><a href="#">ヘルプ</a></li>
-        <li>|</li>
-        */?>
-        <li><a href="<?php echo tep_href_link(FILENAME_CONTACT_US);?>">お問い合わせ</a></li>
-        <li>|</li>
-        <li><a href="<?php echo tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL');?>">カートを見る</a></li>
-        <li>|</li>
-        <li><a href="<?php echo  tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL');?>">レジへ進む  </a></li>
-        <li>|</li>
-        <li><a href="<?php echo tep_href_link(FILENAME_LOGIN, '', 'SSL');?>">ログイン</a></li>
+             <li><a href="<?php echo tep_href_link(FILENAME_LOGIN, '', 'SSL');?>"><img src="images/design/login_02.gif" alt="ログイン"></a></li>
+     	<li><a href="<?php echo tep_href_link(FILENAME_CREATE_ACCOUNT,'', 'SSL');?>"><img src="images/design/login_01.gif" alt="無料会員登録"></a></li>
  </ul>
  </td></tr>
- <tr><td>
-  <div class="header_list"><div class="header_list_title">小計</div><span><?php echo $currencies->format($cart->show_total());?></span></div>
-  </td></tr>
+<tr><td align="right" class="header_w_time"><img src="images/design/header_worktime.gif" alt="worktime"></td></tr>
+<tr><td align="right" class="header_w_time02"><img src="images/design/work_img01.gif" alt="３６５日年中無休"><img src="images/design/work_img02.gif" alt="ご注文は24時間受付"></td></tr>
   </table>
   </div>
   </div>
 <?php  } ?>
   <div class="header_Navigation">
-          <a href="<?php echo tep_href_link(FILENAME_SITEMAP,'','NONSSL');?>"><?php echo HEADER_TITLE_SITEMAP ; ?></a>
-          &nbsp;&nbsp;<?php echo $breadcrumb->trail(' &raquo; '); ?>
+  		<ul>
+        	<li><a href="#">総合TOP</a></li>
+            <li>|</li>
+            <?php
+            $summary_query = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where status = 1 and site_id = ".SITE_ID." and romaji = 'companyprofile'"); 
+            $summary_res = tep_db_fetch_array($summary_query); 
+            if ($summary_res) {
+            ?>
+            <li><a href="<?php echo info_tep_href_link($summary_res['romaji']);?>"><?php echo $summary_res['heading_title']?></a></li>
+            <li>|</li>
+            <?php
+            }
+            ?>
+            <?php
+            $faq_info_query = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where status = 1 and site_id = ".SITE_ID." and romaji = 'faq'"); 
+            $faq_info_res = tep_db_fetch_array($faq_info_query); 
+            if ($faq_info_res) {
+            ?>
+            <li><a href="<?php echo info_tep_href_link($faq_info_res['romaji']);?>"><?php echo $faq_info_res['heading_title']?></a></li>
+            <li>|</li>
+            <?php
+            }
+            ?>
+            <li><a href="<?php echo tep_href_link(FILENAME_CONTACT_US)?>"><?php echo BOX_INFORMATION_CONTACT?></a></li>
+            <li>|</li>
+            <li><a href="<?php echo tep_href_link('reorder.php')?>"><?php echo RIGHT_ORDER_TEXT;?></a></li>
+            <li>|</li>
+            <li><a href="<?php echo tep_href_link(FILENAME_SITEMAP,'','NONSSL');?>"><?php echo HEADER_TITLE_SITEMAP ; ?></a></li>
+        </ul>
+        <div class="header_bread"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
 </div>
 <?php
   if (isset($_GET['error_message']) && tep_not_null($_GET['error_message'])) {

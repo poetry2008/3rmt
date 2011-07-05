@@ -22,9 +22,9 @@
       </td>
       <!-- body_text //-->
       <td valign="top" id="contents">
-        <div class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif"><h1><?php echo HEADING_TITLE ; ?><?php echo STORE_NAME;?>の特価商品</h1></div>
+        <div class="pageHeading"><h1><?php echo HEADING_TITLE ; ?><?php echo STORE_NAME;?>の特価商品</h1></div>
         <div class="comment">
-                <table border="0" width="100%" cellspacing="0" cellpadding="0">
+                <table border="0" width="100%" class="info_middle" cellspacing="0" cellpadding="0">
 <?php
   $specials_query_raw = "
   select * 

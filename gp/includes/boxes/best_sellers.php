@@ -48,41 +48,32 @@
       limit " . MAX_DISPLAY_BESTSELLERS
         );
   }
-
+  
   if (tep_db_num_rows($best_sellers_query) >= MIN_DISPLAY_BESTSELLERS) {
 ?>
 <!-- best_sellers //-->
       <div class="ranking_warpper">
-      <div class="menu_top"><img src="images/menu_ico08.gif" alt="" align="top"><span>ランキング</span></div>
-    <?php //echo tep_image(DIR_WS_IMAGES.'design/box/ranking.gif',BOX_HEADING_BESTSELLERS,'171','39'); ?>
+      <div class="menu_top"><span>ランキング</span></div>
 <?php
   $info_box_contents = array();
   $info_box_contents[] = array('text' => BOX_HEADING_BESTSELLERS);
 
-  // new infoBoxHeading($info_box_contents, false, false);
 
   $rows = 0;
-  //$bestsellers_list = '<table border="0" width="100%" cellspacing="0" cellpadding="1">';
   while ($best_sellers = tep_db_fetch_array($best_sellers_query)) {
     $rows++;
-    // $bestsellers_list .= '<tr><td class="infoBoxContents" valign="top">' . tep_row_number_format($rows) . '.</td><td class="infoBoxContents"><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $best_sellers['products_id']) . '">' . $best_sellers['products_name'] . '</a></td></tr>';
 ?>    
 
 
-<div class="bestseller_text"><div class="bestseller_number"><?php echo tep_image(DIR_WS_IMAGES.'design/box/ranking_'.$rows.'.gif', 16, 16);?></div><a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $best_sellers['products_id']); ?>" title="<?php echo $best_sellers['products_name']; ?>"><?php echo $best_sellers['products_name']; ?></a></div> 
+<div class="bestseller_text"><div class="bestseller_number"><?php echo $rows;?></div><a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $best_sellers['products_id']); ?>" title="<?php echo $best_sellers['products_name']; ?>"><?php echo $best_sellers['products_name']; ?></a>
+<div class="bestseller_des">
+<a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .  $best_sellers['products_id']); ?>" title="<?php echo $best_sellers['products_name']; ?>"><?php echo tep_image2(DIR_WS_IMAGES.'products/'.$best_sellers['products_image'], $best_sellers['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT);?></a>
+<span>
+<?php echo mb_substr(strip_tags(replace_store_name($best_sellers['products_description'])),0, 30);?>...
+</span>
+</div> 
+</div> 
 
-
-            <?php /*
-            <div class="ranking_area_lint">
-            <table width="100%" class="ranking_area" align="center" border="0" cellpadding="0" cellspacing="0" summary="ranking">
-              <tr>
-                   <td align="center" valign="middle"><a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $best_sellers['products_id']); ?>" class="ranking_money_ico"><?php echo tep_image2(DIR_WS_IMAGES.'products/'.$best_sellers['products_image'],$best_sellers['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT); ?></a></td>
-                </tr>
-            </table>
-            </div>
-			*/ ?>
-            
-            
 <?php
     }
 ?>  

@@ -11,7 +11,7 @@
       if ($category['categories_status'] != '0') {
         echo '<div class="waring_category">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
       }
-      echo '<div class="pageHeading"><img align="top" alt="" src="images/menu_ico_a.gif"><h1>'.$seo_category['categories_name'].'</h1></div>';
+      echo '<div class="pageHeading"><h1>'.$seo_category['categories_name'].'</h1></div>';
     } elseif ($_GET['manufacturers_id']) {
       if ($category['categories_status'] != '0') {
         echo '<div class="waring_category">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
@@ -19,9 +19,15 @@
        echo '<h1 class="pageHeading">'.$seo_manufacturers['manufacturers_name'].'</h1>';
       }
 ?> 
-      <p class="comment"><?php echo $seo_category['categories_header_text']; //seoフレーズ ?></p>
+       <?php
+       if (!empty($seo_category['categories_header_text'])) {
+       ?>
+       <div class="comment"><div class="comment_info_warpper"><?php echo $seo_category['categories_header_text']; //seoフレーズ ?></div></div>
+       <?php
+       }
+       ?>
             <div class="comment">
-        <table border="0" width="100%" cellspacing="3" cellpadding="3" summary=""> 
+        <table border="0" width="100%" cellspacing="3" cellpadding="3" summary="" class="comment_info_warpper"> 
           <tr align="center">
 <?php
     if (isset($cPath) && ereg('_', $cPath)) {
@@ -100,7 +106,13 @@
           </tr>
         </table>
             </div>
-      <p class="comment"><?php echo $seo_category['categories_footer_text']; //seoフレーズ ?></p>
+            <?php
+            if (!empty($seo_category['categories_footer_text'])) {
+            ?>
+            <div class="comment"><div class="comment_info_warpper"><?php echo $seo_category['categories_footer_text']; //seoフレーズ ?></div></div>
+            <?php
+            }
+            ?>
             <p class="pageBottom"></p>
       <?php 
       $new_products_category_id = $current_category_id; 
@@ -118,8 +130,8 @@
 <?php  
   if (isset($cPath_array)) {
     if ($seo_category['seo_description']) {
-      echo '<div class="pageHeading"><img align="top" alt="" src="images/menu_ico_a.gif"><h3> ' . $seo_category['seo_name'] . 'について</h3></div>' . "\n";
-      echo '<p class="comment">' . $seo_category['seo_description'] . '</p>' . "\n"; //seoフレーズ
+      echo '<div class="pageHeading"><h3> ' . $seo_category['seo_name'] . 'について</h3></div>' . "\n";
+      echo '<div class="comment"><div class="comment_info_warpper">' .  $seo_category['seo_description'] . '</div></div>' . "\n"; //seoフレーズ
 ?>
         <p class="pageBottom"></p>
 <?php
