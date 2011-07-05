@@ -59,7 +59,7 @@ class HM_Form extends DbRecord
         echo "var finished = false;";
       }
     ?>
-      　var canEnd = true;
+  　var canEnd = true;
     function checkLockOrder()
     {
       if (finished==true){
@@ -67,7 +67,7 @@ class HM_Form extends DbRecord
       }
       canEnd = true;
       $('.require').each(function(ele){
-          if(canEnd){
+          if(canEnd == true){
           canEnd = eval($(this).attr('tagName')+$(this).attr('type')+'Require(this)');
           }
           });

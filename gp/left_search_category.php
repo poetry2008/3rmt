@@ -40,7 +40,7 @@
         $ca_list_str .= '<div class="search_list_category">'; 
       }
       
-      $ca_list_str .= '<a class="search_category_name" href="'.tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id']).'">'.$category['categories_name'].'</a><br>'; 
+      $ca_list_str .= '<a class="search_category_name" href="'.tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id']).'">'.$category['categories_name'].'</a>'; 
       
       $row++; 
       
