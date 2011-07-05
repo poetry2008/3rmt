@@ -44,7 +44,6 @@ class HM_Item_Checkbox extends HM_Item_Basic
 	    <?php echo $this->formname;?>val += '_'+$(this).val();
 	  }
 	});
-
       $('#<?php echo $this->formname;?>real').val( <?php echo $this->formname;?>val);
     }
     </script>
@@ -76,12 +75,12 @@ class HM_Item_Checkbox extends HM_Item_Basic
        {
          continue;
        }
-     if (in_array($value,$loadArray)){
+     if (in_array((string)$key,$loadArray)){
        $check = 'checked';
       }else{
 	$check = '';
       }
-      echo "<input value = '".$value."' onclick='".$this->formname."Changed(this)' type='checkbox' ".$check." name='0".$this->formname."' />".$value;
+      echo "<input value = '".$key."' onclick='".$this->formname."Changed(this)' type='checkbox' ".$check." name='0".$this->formname."' />".$value;
 	  }
    echo '</br>';
    echo $this->afterInput;
@@ -97,10 +96,6 @@ class HM_Item_Checkbox extends HM_Item_Basic
     }
     $radios = $item_value['radios'];
     $result = '';
-    //    $result .= "必須<input type='checkbox' name='require' ".$checked."/></br>\n";
-    //    $result .= "项目名<input type='text' name='thename' value='".(isset($item_value['thename'])?$item_value['thename']:'')."'/></br>\n";
-    //    $result .= "前方文字<input type='text' name='beforeInput' value='".(isset($item_value['beforeInput'])?$item_value['beforeInput']:'')."'/></br>\n";
-    //    $result .= "後方文字<input type='text' name='afterInput' value='".(isset($item_value['afterInput'])?$item_value['afterInput']:'')."'/></br>\n";
     $_result ="<script type='text/javascript' >";
     $_result .="function insertAitem(e)";
     $_result .="{";
