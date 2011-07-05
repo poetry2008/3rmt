@@ -32,10 +32,10 @@
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
         <!-- left_navigation_eof //--> </td> 
       <!-- body_text //--> 
-      <td valign="top" id="contents"> <div class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif"><h1><?php echo HEADING_TITLE ; ?></h1></div> 
+      <td valign="top" id="contents"> <div class="pageHeading"><h1><?php echo HEADING_TITLE ; ?></h1></div> 
         
         <div class="comment"> 
-          <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+          <table border="0" width="100%" cellspacing="0" cellpadding="0" class="product_info_box"> 
             <tr> 
               <td><?php
   $history_query_raw = "
@@ -110,9 +110,6 @@
                   <?php
   }
 ?> 
-                  <tr> 
-                    <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-                  </tr> 
                   <tr> 
                     <td class="smallText"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td> 
                   </tr> 

@@ -19,9 +19,10 @@
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
         <!-- left_navigation_eof //--> </td> 
       <!-- body_text //--> 
-      <td valign="top" id="contents"><div class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif"><h1><?php echo HEADING_TITLE ; ?></h1></div> 
+      <td valign="top" id="contents"><div class="pageHeading"><h1><?php echo HEADING_TITLE ; ?></h1></div> 
         
         <div class="comment"> 
+          <div class="comment_info_warpper"> 
           <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
 
 <?php
@@ -53,7 +54,7 @@
         </table></td>
       </tr>
 <?php } ?>
-    </table></div>
+    </table></div></div>
     <p class="pageBottom"></p>
     </td> 
       <!-- body_text_eof //--> 

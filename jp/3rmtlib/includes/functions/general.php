@@ -4012,3 +4012,25 @@ function tep_question_in_category_by_id($qid,$cid){
       and faq_question_id='".$qid."'");
   return tep_db_fetch_array($pro_to_ca_query);
 }
+
+function tep_reviews_random_select($query, $limit_num) {
+  $random_product = array();
+  // ccdd
+  $random_query = tep_db_query($query);
+  $num_rows = tep_db_num_rows($random_query);
+  if ($num_rows > 0) {
+    $random_row = tep_rand(0, ($num_rows - 1));
+    if ($num_rows > $limit_num) {
+      if (($num_rows - $random_row) < $limit_num) {
+        $random_row = $num_rows - $limit_num; 
+      }
+    }
+    for($i=0; $i<$limit_num; $i++) {
+      tep_db_data_seek($random_query, $random_row);
+      $random_product[] = tep_db_fetch_array($random_query);
+      $random_row++; 
+    }
+  }
+
+  return $random_product;
+}

@@ -82,9 +82,10 @@ function showimage($1) {
   ");
   $reviews_text = tep_break_string(tep_output_string_protected($reviews['reviews_text']), 60, '-<br>');
 ?> 
-        <div class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif"><h1><?php echo sprintf(HEADING_TITLE, $reviews['products_name']); ?></h1></div> 
+        <div class="pageHeading"><h1><?php echo sprintf(HEADING_TITLE, $reviews['products_name']); ?></h1></div> 
         
         <div class="comment"> 
+          <div class="comment_info_warpper"> 
           <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
             <tr> 
               <td><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
@@ -124,6 +125,7 @@ function showimage($1) {
                 </table></td> 
             </tr> 
           </table> 
+        </div>
         </div>
         <p class="pageBottom"></p>
         </td> 

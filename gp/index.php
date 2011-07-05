@@ -35,6 +35,8 @@ if(isset($_GET['cmd'])&&$_GET['cmd']){
   //}
 ?>
 <?php page_head();?>
+<script type="text/javascript" src="./js/jquery-1.3.2.min.js"></script>
+<script type="text/javascript" src="./js/search_category.js"></script>
 </head>
 <?php
   if (isset($body_option)) {
@@ -52,7 +54,7 @@ if(isset($_GET['cmd'])&&$_GET['cmd']){
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
   <!-- header_eof //-->
   <!-- body //-->
-  <table width="900" summary="container" border="0" cellpadding="0" cellspacing="0" class="side_border">
+  <table width="500" summary="container" border="0" cellpadding="0" cellspacing="0" class="side_border">
     <tr>
       <td valign="top" class="left_colum_border">
         <!-- left_navigation //-->
@@ -92,7 +94,7 @@ if ($category_depth == 'nested') {
     echo '<div class="waring_category">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
   }
 ?>
-    <div class="pageHeading_long"><img align="top" alt="" src="images/menu_ico_a.gif"><h1><?php
+    <div class="pageHeading_long"><h1><?php
   if (isset($cPath_array)) {
     echo $seo_category['categories_name'];
   } elseif ($_GET['manufacturers_id']) {
@@ -101,7 +103,7 @@ if ($category_depth == 'nested') {
     echo HEADING_TITLE;
   }
 ?></h1></div>
-    <div class="comment_long"><?php echo $seo_category['categories_header_text']; //seoフレーズ ?>
+    <div class="comment_long"><div class="comment_long_text"><?php echo $seo_category['categories_header_text']; //seoフレーズ ?>
         <?php
           $has_ca_single = false; 
         ?>
@@ -191,12 +193,13 @@ if ($category_depth == 'nested') {
       }
   ?>
   </div>
+  </div>
       <!--<div class="pageBottom_long"></div>-->
   <?php
       if (isset($cPath_array)) {
         if ($seo_category['seo_description']) {
-          echo '<div class="pageHeading_long"><img align="top" src="images/menu_ico_a.gif" alt=""><h2>'.$seo_category['seo_name'].'について</h2></div>'; 
-          echo '<div class="comment_long"><p>'.$seo_category['seo_description'].'</p></div>'; 
+          echo '<div class="pageHeading_long"><h2>'.$seo_category['seo_name'].'について</h2></div>'; 
+          echo '<div class="comment_long"><div class="comment_long_text"><p>'.$seo_category['seo_description'].'</p></div></div>'; 
         }
         if (!empty($seo_category['text_information'])) {
           echo str_replace('pageHeading', 'pageHeading_long', $seo_category['text_information']); 
@@ -210,10 +213,30 @@ if ($category_depth == 'nested') {
 } elseif($_GET['action'] && $_GET['action'] == 'select') { 
   require(DIR_WS_ACTIONS.'index_select.php');
 } else { 
+  $default_bottom = true; 
   require(DIR_WS_ACTIONS.'index_default.php');
 }
 ?> 
     </tr> 
+  <?php
+  if (isset($default_bottom)) {
+  ?>
+  <tr>
+    <td colspan="3">
+    <?php include(DIR_WS_BOXES.'information.php');?> 
+    <div class="buttom_warp02">
+    <?php if ($banner = tep_banner_exists('dynamic', 'footer')) { echo tep_display_banner('static', $banner); }?>
+    </div>
+    
+    <div class="buttom_warp03">
+    <?php echo DEFAULT_PAGE_BOTTOM_CONTENTS;?> 
+    </div>
+    
+    </td>
+  </tr>
+    <?php
+  }
+  ?>
   </table> 
   <!-- body_eof //--> 
   <!-- footer //--> 

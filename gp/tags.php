@@ -55,9 +55,10 @@ if($_GET['page'] > $all_tags_page){
 <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
 </td>
 <td id="contents" valign="top">
-<div class="pageHeading"><img align="top" src="images/menu_ico_a.gif" alt="">
+<div class="pageHeading">
 <h1><?php echo TAGS_HEADING_TITLE; ?></h1></div>
 <div class="comment">
+<div class="info_middle">
 <?php 
 if (($tags_numrows > 0 ) && ((PREV_NEXT_BAR_LOCATION == '1') || (PREV_NEXT_BAR_LOCATION == '3')))
 {
@@ -77,11 +78,6 @@ echo $tags_split->display_count($tags_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET
 </td>
 </tr>
 <tr>
-<td colspan="2">
-<?php
-echo tep_draw_separator('pixel_trans.gif', '100%', '10') . "\n";
-?>
-</td>
 </tr>
 </table>
 <?php
@@ -231,11 +227,7 @@ while ($tag = tep_db_fetch_array($tags_query))
                                 <?php
   }
 ?>
-                               <table width="100%">
-                                <tr>
-                                  <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
-                                </tr>
-                               </table>
+                               </div>
                                </div>
 </td>
 <td class="right_colum_border" width="171" valign="top">

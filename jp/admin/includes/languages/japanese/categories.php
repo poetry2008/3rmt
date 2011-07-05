@@ -210,3 +210,5 @@ define('CATEGORY_ROMAJI_ERROR_NOTICE', 'ローマ字に登録できない半角�
 define('CATEGORY_PIC_DEL_SUCDESS_NOTICE', '画像削除に成功しました');
 define('IMAGE_REVIEWS', 'レビュー');
 define('CATEGORY_JIAGE_TEXT', '価&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;格');
+define('TEXT_ROMAJI_IS_SET','重複チェック');
+define('IS_SET_ERROR_CHAR','文字列チェック');

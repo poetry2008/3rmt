@@ -44,7 +44,7 @@ function checkForm() {
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
         <!-- left_navigation_eof //--> </td> 
       <!-- body_text //--> 
-      <td valign="top" id="contents"><div class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif"><h1><?php echo HEADING_TITLE ; ?></h1></div>  
+      <td valign="top" id="contents"><div class="pageHeading"><h1><?php echo HEADING_TITLE ; ?></h1></div>  
       <?php
   if ($valid_product == false) {
 ?> 

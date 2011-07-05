@@ -1314,7 +1314,11 @@ function get_cart_products(){
               </tr>
             </table></td>
         </tr>
-        <tr><?php echo tep_draw_form('new_product', FILENAME_CATEGORIES, 'cPath=' . $cPath . '&page='.$_GET['page'].'&pID=' . (isset($_GET['pID'])?$_GET['pID']:'') . '&action=new_product_preview', 'post', 'enctype="multipart/form-data" onSubmit="return mess();"'); ?>
+        <tr><?php echo tep_draw_form('new_product', FILENAME_CATEGORIES, 'cPath=' .
+            $cPath . '&page='.$_GET['page'].'&pID=' .
+            (isset($_GET['pID'])?$_GET['pID']:'') . '&action=new_product_preview',
+            'post', 'enctype="multipart/form-data" onSubmit="return products_form_validator(\''.
+        $current_category_id.'\',\''.$pInfo->products_id.'\',\''.$site_id.'\');"'); ?>
         <input type="hidden" name="site_id" value="<?php echo $site_id;?>">
           <td><table border="0" cellspacing="0" cellpadding="2">
               <tr>
