@@ -37,8 +37,9 @@ if($cPath){
 }
 ?>
 <!-- search-->
+<div id="search">
+<div class="menu_top"><span>MENU</span></div>
 <div id='categories'>
-  <div class="menu_top"><img src="images/menu_ico1.gif" alt="" align="top"><span>MENU</span></div>
   <ul class='l_m_category_ul'>
     <?php foreach($categories as $key => $category) {?>
       <?php if($cPath && in_array($category['categories_id'], $id)) {?>
@@ -210,3 +211,4 @@ if($cPath){
         </ul>
 </div>
 <!-- categories_eof //-->
+</div>

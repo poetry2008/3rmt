@@ -33,7 +33,7 @@ if (
           and r.site_id = ".SITE_ID
         );
     if(tep_db_num_rows($reviews_query)) {
-      echo  '<div class="pageHeading_long"><img align="top" src="images/menu_ico.gif" alt=""><h3>'.$product_info['products_name'] .'のレビュー</h3></div>'."\n" . '<div class="comment_long">'."\n" ;
+      echo  '<div class="pageHeading_long"><h3>'.$product_info['products_name'] .'のレビュー</h3></div>'."\n" . '<div class="comment_long"><div class="comment_long_text">'."\n" ;
       while ($reviews = tep_db_fetch_array($reviews_query)) {
         echo '<div class="reviews_area"><p class="main">
 <b>' . sprintf(TEXT_REVIEW_BY, tep_output_string_protected($reviews['customers_name'])) . '</b>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'stars_' . $reviews['reviews_rating'] . '.gif' , sprintf(BOX_REVIEWS_TEXT_OF_5_STARS, $reviews['reviews_rating'])) . '[' . sprintf(BOX_REVIEWS_TEXT_OF_5_STARS, $reviews['reviews_rating']) . ']
@@ -43,7 +43,7 @@ if (
       //if(MAX_RANDOM_SELECT_REVIEWS > tep_db_num_rows($reviews_query)){
       //  echo '<div align="right"><a href="'tep_href_link(FILENAME_PRODUCT_REVIEWS,'products_id='.(int)$_GET['products_id']).'">レビュー一覧へ</a></div>' ;
       //}  
-      echo '</div>' . "\n";
+      echo '</div></div>' . "\n";
    } 
 } else {
     if (isset($_GET['cPath']) && $cPath_array) {
@@ -52,7 +52,7 @@ if (
 ?>
   <div class="reviews_box">
   <div class="menu_top">
-  <a href="<?php echo tep_href_link(FILENAME_REVIEWS); ?>"><img src="images/menu_ico10.gif" alt="" align="top"><span>レビュー</span>
+  <a href="<?php echo tep_href_link(FILENAME_REVIEWS); ?>"><span>レビュー</span>
   <?php //echo tep_image(DIR_WS_IMAGES.'design/box/reviews.gif',BOX_HEADING_REVIEWS,171,44); ?></a>
   </div>
     <?php
@@ -79,19 +79,16 @@ if (
       and rd.languages_id = '" . $languages_id . "' 
       and p.products_id = pd.products_id 
       and pd.language_id = '" . $languages_id . "' 
-      and r.reviews_status = '1' 
-      and r.site_id = '".SITE_ID."'";
+      and r.reviews_status = '1'";
   if (isset($subcid) && $subcid) {
     $random_select .= "and p.products_id = p2c.products_id and p2c.categories_id in (".implode(',',$subcid).") ";
   }
   if (isset($_GET['products_id'])) {
     $random_select .= " and p.products_id = '" . (int)$_GET['products_id'] . "'";
   }
-  $random_select .= "
-    order by reviews_id, psid DESC
-  ) p
+  $random_select .= " ) p
   where psid = '0'
-     or psid = '".SITE_ID."'
+     or psid = rsid 
   group by reviews_id
   having p.products_status != '0' and p.products_status != '3'
   ";
@@ -115,11 +112,11 @@ if (
     $review = htmlspecialchars($review['reviews_text']);
     $review = tep_break_string($review, 15, '-<br>');
 
-    echo '<div class="reviews_warp" align="center">';
+    echo '<div class="reviews_warp" align="center"><div class="reviews_box_info">';
       
     echo '<p class="reviews_top"><a href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS_INFO, 'products_id=' . $random_product['products_id'] . '&reviews_id=' . $random_product['reviews_id']) . '" class="reviews_img">' . tep_image(DIR_WS_IMAGES . 'products/' . $random_product['products_image'], $random_product['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a><br>'. tep_image(DIR_WS_IMAGES . 'stars_' . $random_product['reviews_rating'] . '.gif' , sprintf(BOX_REVIEWS_TEXT_OF_5_STARS, $random_product['reviews_rating']), 88, 16) . "\n".'</p>
     <table border="0" cellspacing="0" cellpadding="0" class="reviews_bottom"><tr><td><a href="' .  tep_href_link(FILENAME_PRODUCT_REVIEWS_INFO, 'products_id=' .  $random_product['products_id'] . '&reviews_id=' .  $random_product['reviews_id']) . '">' . tep_show_review_des($review) . ' ...</a></td></tr></table>'; 
-     echo '</div>'; 
+     echo '</div></div>'; 
     } 
     } elseif (isset($_GET['products_id'])) {
 // display 'write a review' box
@@ -131,12 +128,12 @@ if (
         <a href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS_WRITE, 'products_id=' . $_GET['products_id']) . '">' . BOX_REVIEWS_WRITE_REVIEW .'</a>
       </td></tr>
     </table>' . "\n";
-     echo '</div>'; 
+     echo '</div></div>'; 
   } else {
 // display 'no reviews' box
-    echo '<div class="reviews_warp" align="center">';
+    echo '<div class="reviews_warp" align="center"> <div class="reviews_box_info"> ';
     echo BOX_REVIEWS_NO_REVIEWS;
-     echo '</div>'; 
+     echo '</div></div>'; 
   }
 ?>
     </div>

@@ -41,9 +41,9 @@
       </td>
       <!-- body_text //-->
       <td valign="top" id="contents">
-      <div class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif"><h1><?php echo HEADING_TITLE ; ?></h1></div>
+      <div class="pageHeading"><h1><?php echo HEADING_TITLE ; ?></h1></div>
       <div class="comment">
-      <table width="100%" border="0" cellpadding="0" cellspacing="0" summary="table">
+      <table width="100%" border="0" cellpadding="0" cellspacing="0" summary="table" class="product_info_box">
         <tr>
           <td><?php
   $is_read_only = true;

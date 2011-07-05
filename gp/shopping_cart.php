@@ -146,10 +146,10 @@ function change_num(ob,targ, quan,a_quan)
       </td>
       <!-- body_text //-->
       <td valign="top" id="contents">
-        <div class="pageHeading"><img align="top" alt="" src="images/menu_ico_a.gif"><h1><?php echo HEADING_TITLE ; ?></h1></div>
+        <div class="pageHeading"><h1><?php echo HEADING_TITLE ; ?></h1></div>
         <div class="comment">
   <?php echo tep_draw_form('cart_quantity', tep_href_link(FILENAME_SHOPPING_CART, 'action=update_product', 'SSL')); ?> 
-          <table border="0" width="100%" cellspacing="0" cellpadding="0" summary="rmt">
+          <table border="0" width="100%" cellspacing="0" cellpadding="0" summary="rmt" class="product_info_box">
             <?php
   if ($cart->count_contents() > 0) {
 ?>

@@ -22,11 +22,11 @@
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
         <!-- left_navigation_eof //--> </td> 
       <!-- body_text //--> 
-      <td valign="top" id="contents"> <div class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif"><h1><?php echo HEADING_TITLE ; ?></h1></div> 
+      <td valign="top" id="contents"> <div class="pageHeading"><h1><?php echo HEADING_TITLE ; ?></h1></div> 
         
     
               <div class="comment"> 
-          <table border="0" width="100%" cellspacing="0" cellpadding="0" summary="table">
+          <table border="0" width="100%" cellspacing="0" class="info_middle" cellpadding="0" summary="table">
       <tr>
         <td><table border="0" width="100%" cellspacing="1" cellpadding="2" summary="table">
           <tr>

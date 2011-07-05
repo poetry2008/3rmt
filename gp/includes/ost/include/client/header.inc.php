@@ -14,8 +14,7 @@
         </td> 
         <!-- body_text //--> 
         <td valign="top" id="contents">
-          <div class="pageHeading"><img align="top" alt="img"
-          src="images/menu_ico_us.gif"><h1>お問い合わせ</h1></div> 
+          <div class="pageHeading"><h1>お問い合わせ</h1></div> 
           <div class="comment">
             <table border="0" width="100%" cellspacing="0" cellpadding="0">
               <tr>

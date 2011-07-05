@@ -429,7 +429,7 @@ define('SEND_MAIL_HEADING_TITLE', 'メール受信テスト');
 
 define('TEXT_NO_LATEST_NEWS', 'お知らせはありません');
 define('NOTICE_MUST_BUY_TEXT', 'ショッピングカートに商品が有りません、商品を入れてから押してください。');
-define('LEFT_SEARCH_TITLE', '商品検索');
+define('LEFT_SEARCH_TITLE', '検索');
 define('RIGHT_ORDER_TEXT', '再配達依頼');
 define('TEXT_TAGS', 'タグ一覧');
 define('COLUMNLEFT_SEARCH_DEFAULT_VALUE', '入力して下さい');
@@ -438,4 +438,23 @@ define('ENTRY_GUEST_EMAIL_NOT_ACTIVE', '&nbsp;<small><font color="#FF0000">認�
 define('CHECK_EMAIL_EXISTS_ERROR', 'エラーが発生しました。<br>お手数をお掛けいたしますが、こちらから<a href="'.HTTP_SERVER.'?'.tep_session_name().'='.tep_session_id().'">トップページ</a>に戻り再度やり直してください。');
 define('SENDMAIL_SUCCESS_COMMENT_TEXT', '正常に受信できる場合：「送信」後5分以内で'.STORE_NAME.'からの確認メールが届きます。<br>受信できない場合：「送信」後5分以上経過しても受信できない場合は、スパムフィルター等で受け取りを拒否されている可能性が高いです。');
 define('ALREADY_SEND_MAIL_TEXT', 'エラーが発生しました。\nお手数をお掛けいたしますが、トップページに戻り再度やり直してください');
+define('LEFT_SELECT_ALL_CATEGORY', '全てのゲーム');
+define('LEFT_TOTAL_TEXT', '合計');
+define('LEFT_PRODUCTS_NEW_PREVIEW', '新着商品一覧');
+define('LEFT_SPECIALS_PREVIEW', '特価商品一覧');
+define('LEFT_SEARCH_TOTAL_TITLE', '詳細検索');
+define('LEFT_BOX_TITLE', 'ショッピングカート');
+define('SEARCH_NO_TOP_CATEGORY', 'データがありません');
+define('INDEX_CATEGORY_BANNER_TEXT', '取扱い商品一覧');
+define('LEFT_SEARCH_CATEGORY_TITLE', '頭文字検索');
+define('LEFT_SEARCH_CATEGORY_ONE_TEXT', 'ア');
+define('LEFT_SEARCH_CATEGORY_TWO_TEXT', 'カ');
+define('LEFT_SEARCH_CATEGORY_THREE_TEXT', 'サ');
+define('LEFT_SEARCH_CATEGORY_FOUR_TEXT', 'タ');
+define('LEFT_SEARCH_CATEGORY_FIVE_TEXT', 'ナ');
+define('LEFT_SEARCH_CATEGORY_SIX_TEXT', 'ハ');
+define('LEFT_SEARCH_CATEGORY_SEVEN_TEXT', 'マ');
+define('LEFT_SEARCH_CATEGORY_EIGHT_TEXT', 'ヤ');
+define('LEFT_SEARCH_CATEGORY_NINE_TEXT', 'ラ');
+define('LEFT_SEARCH_CATEGORY_TEN_TEXT', 'ワ');
 ?>

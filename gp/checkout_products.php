@@ -103,11 +103,11 @@ foreach($cart as $key => $val){
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
         <!-- left_navigation_eof //--> </td> 
       <!-- body_text //--> 
-      <td valign="top" id="contents"> <div class="pageHeading"><img align="top" alt="" src="images/menu_ico.gif"><h1><?php echo HEADING_TITLE ; ?></h1></div> 
+      <td valign="top" id="contents"> <div class="pageHeading"><h1><?php echo HEADING_TITLE ; ?></h1></div> 
         <div class="comment"> 
           <form action="<?php echo tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL'); ?>" method="post" onSubmit="return chara_mess();">
           <input type="hidden" name="dummy" value="あいうえお眉幅">
-          <table border="0" width="100%" cellspacing="0" cellpadding="0" summary="table"> 
+          <table border="0" width="100%" cellspacing="0" cellpadding="0" summary="table" class="product_info_box"> 
             <?php
         if($error == 'T'){
       ?>

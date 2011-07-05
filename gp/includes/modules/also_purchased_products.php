@@ -40,6 +40,7 @@
 <!-- also_purchased_products //-->
 <div class="pageHeading_long"><img align="top" alt="" src="images/menu_ico.gif"><h3><?php echo $product_info['products_name'];?><?php  echo TEXT_ALSO_PURCHASED_PRODUCTS ; ?> </h3></div>
 <div class="comment_long">
+<div class="comment_long_text">
 <?php
       $row = 0;
       $col = 0;
@@ -75,6 +76,7 @@
       echo '</tr>';
   echo '</table>' ;
 ?> 
+</div>
 </div>
 <!-- also_purchased_products_eof //--> 
 <?php

@@ -99,8 +99,9 @@
 ?>
 <!-- new_products //-->
 <?php if (0 < $num_products) { ?>
-<div class="pageHeading"><img align="top" alt="" src="images/menu_ico_a.gif"><h3><?php echo $new_c_name; ?>の新着商品</h3></div>
+<div class="pageHeading"><h3><?php echo $new_c_name; ?>の新着商品</h3></div>
 <div class="comment">
+<div class="comment_info_warpper">
 <table width="100%"  border="0" cellspacing="0" cellpadding="0">
 <?php
     while ($new_products = tep_db_fetch_array($new_products_query)) {
@@ -141,6 +142,7 @@
   }
 ?>
 </table>
+</div>
 </div>
 <p class="pageBottom"></p>
 <?php 
