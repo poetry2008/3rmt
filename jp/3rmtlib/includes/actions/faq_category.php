@@ -5,6 +5,9 @@ $link_arr[] = 'faq';
 $breadcrumb->add(TEXT_FAQ,HTTP_SERVER.'/'.$link_url);
 $parent_info = null;
 if(isset($_GET['faq_name'])&&$_GET['faq_name']!=''){
+  if(!preg_match('|\/$|',$_GET['faq_name'])){
+      forward404();
+  }
 $page=0;
 $romaji_arr = explode('/',$_GET['faq_name']);
   $temp_parent_id = 0;
@@ -16,14 +19,14 @@ $romaji_arr = explode('/',$_GET['faq_name']);
       $page = $arr[1];
       continue;
     }
-    $link_url .= '/'.$value;
+    $link_url .= '/'.urlencode($value);
     $link_arr[] = $value;
     $temp_parent_id = tep_get_faq_cpath_by_cname($value,$temp_parent_id);
     if(!$temp_parent_id){
       forward404();
     }
     $temp_category_info = tep_get_faq_category_info($temp_parent_id);
-    $breadcrumb->add($temp_category_info['title'],HTTP_SERVER.'/'.$link_url);
+    $breadcrumb->add($temp_category_info['title'],HTTP_SERVER.'/'.$link_url.'/');
   }
   $parent_info = $temp_category_info;
   if(count($link_arr)>1){

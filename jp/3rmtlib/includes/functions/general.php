@@ -3929,6 +3929,7 @@ function tep_get_faq_cpath_by_cname($cname, $parent_id = 0)
           from " .  TABLE_FAQ_CATEGORIES . " c, " .  TABLE_FAQ_CATEGORIES_DESCRIPTION . " cd
           where c.id = cd.faq_category_id
           and c.parent_id = '".$parent_id."'
+          and c.id = '".$category['faq_category_id']."' 
           and cd.site_id = '".SITE_ID."'" ;
       $query = tep_db_query($queryString);
       $res = tep_db_fetch_array($query);

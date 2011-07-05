@@ -39,13 +39,15 @@ if (isset($body_option)) {
     <?php } ?>
     <div class="comment_faq">
     <div class="faq_question_row">
-    <img src="images/design/ask.gif" alt="question"><span><a href="<?php echo HTTP_SERVER.'/'.$link_url.'/'.$c_row['romaji'];?>">
+    <img src="images/design/ask.gif" alt="question"><span><a href="<?php echo
+    HTTP_SERVER.'/'.$link_url.'/'.urlencode($c_row['romaji']).'/';?>">
       <?php echo $c_row['title'];?>
     </a></span>
     </div>
     <?php while($c_row = tep_db_fetch_array($faq_category_query)){ ?>
     <div class="faq_question_row">
-     <img src="images/design/ask.gif" alt="question"><span><a href="<?php echo HTTP_SERVER.'/'.$link_url.'/'.$c_row['romaji'];?>">
+     <img src="images/design/ask.gif" alt="question"><span><a href="<?php echo
+     HTTP_SERVER.'/'.$link_url.'/'.urlencode($c_row['romaji']).'/';?>">
           <?php echo $c_row['title'];?>
         </a></span>
     </div>
@@ -60,7 +62,8 @@ if (isset($body_option)) {
     <h2 class="pageHeading"><?php echo $parent_info['title'].TEXT_QUESTION_TITLE;?></h2>
     <div class="comment_faq">
     <div class="faq_question_row">
-    <img src="images/design/ask.gif" alt="question"><span><a href="<?php echo HTTP_SERVER.'/'.$link_url.'/'.$q_row['romaji'].'.html';?>">
+    <img src="images/design/ask.gif" alt="question"><span><a href="<?php echo
+     HTTP_SERVER.'/'.$link_url.'/'.urlencode($q_row['romaji']).'.html';?>">
       <?php echo $q_row['ask'];?>
     </a></span>
     </div>
@@ -68,7 +71,8 @@ if (isset($body_option)) {
     while($q_row = tep_db_fetch_array($faq_question_query)){ 
     ?>
     <div class="faq_question_row">
-      <img src="images/design/ask.gif" alt="question"><span><a href="<?php echo HTTP_SERVER.'/'.$link_url.'/'.$q_row['romaji'].'.html';?>">
+      <img src="images/design/ask.gif" alt="question"><span><a href="<?php echo
+      HTTP_SERVER.'/'.$link_url.'/'.urlencode($q_row['romaji']).'.html';?>">
         <?php echo $q_row['ask'];?>
       </a></span>
       </div>
