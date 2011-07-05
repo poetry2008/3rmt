@@ -124,7 +124,8 @@ function hidden_payment(){
               'text' => $min_num);
   }
   // 支払方法のリスト作成
-  $payment_text = "銀行振込\nクレジットカード決済\n銀行振込(買い取り)\nペイパル決済\nポイント(買い取り)\n来店支払い\nコンビニ決済\nゆうちょ銀行（郵便局）\n支払いなし";
+  //$payment_text = "銀行振込\nクレジットカード決済\n銀行振込(買い取り)\nペイパル決済\nポイント(買い取り)\n来店支払い\nコンビニ決済\nゆうちょ銀行（郵便局）\n支払いなし";
+  $payment_text = tep_get_list_payment(); 
   $payment_array = explode("\n", $payment_text);
   $payment_list[] = array('id' => '', 'text' => '支払方法を選択してください');
   for($i=0; $i<sizeof($payment_array); $i++) {

@@ -4,6 +4,10 @@
 */
   require('includes/application_top.php');
   require_once('enableditem.php');
+function filter_trim_empty($value){
+  $value = trim($value);
+  return !empty($value);
+}
 
   $origin_form_raw = tep_db_query("select * from ".TABLE_OA_FORM." where payment_romaji = '".$_GET['pcode']."' and formtype = '".$_GET['type']."'"); 
   $origin_form_res = tep_db_fetch_array($origin_form_raw); 
@@ -39,6 +43,12 @@
         $option_info_arr['mname'] = $na_list_arr; 
         $option_info_arr['mvalue'] = $va_list_arr; 
         $option_info_arr['form_id'] = $origin_form_res['id']; 
+        //去掉 选项里的空值
+        foreach($option_info_arr as $key=>$value){
+          if (is_array($value)){
+            $option_info_arr[$key] = array_filter($value ,'filter_trim_empty');
+          }
+        }
         if ($_GET['action'] == 'insert') {
           tep_db_query("insert into `".TABLE_OA_ITEM."` values(NULL,
             '".$_GET['gid']."', '".tep_db_prepare_input($_POST['ititle'])."',

@@ -72,6 +72,10 @@ class HM_Item_Checkbox extends HM_Item_Basic
    echo "<input class='".$classrequire."' id='".$this->formname."real' value =
      '".$this->defaultValue."' type='hidden' name = '".$this->formname."'>";
    foreach($this->radios as $key=>$value){
+     if(empty($value))
+       {
+         continue;
+       }
      if (in_array($value,$loadArray)){
        $check = 'checked';
       }else{

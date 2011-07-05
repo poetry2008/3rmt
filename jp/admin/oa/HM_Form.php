@@ -66,7 +66,7 @@ class HM_Form extends DbRecord
         return false;
       }
       canEnd = true;
-      $('.require').each(function(){
+      $('.require').each(function(ele){
           if(canEnd){
           canEnd = eval($(this).attr('tagName')+$(this).attr('type')+'Require(this)');
           }
@@ -93,6 +93,10 @@ class HM_Form extends DbRecord
     function INPUTtextRequire(ele)
     {
       return INPUThiddenRequire(ele);
+    }
+    function undefinedhiddenRequire(ele)
+    {
+             return INPUThiddenRequire(ele);
     }
     function INPUThiddenRequire(ele)
     {
