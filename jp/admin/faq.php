@@ -769,7 +769,7 @@
                       order by c.sort_order,c.ask,c.faq_question_id 
                       ";
                   }
-                  define(MAX_DISPLAY_FAQ_ADMIN,5);
+                  define(MAX_DISPLAY_FAQ_ADMIN,50000);
                   $faq_split = new splitPageResults($_GET['page'],MAX_DISPLAY_FAQ_ADMIN,
                       $faq_query_raw,$faq_query_number);
                   $_faq_query = tep_db_query($faq_query_raw);
@@ -911,6 +911,13 @@
                   ?>
                 </td>
               </tr>
+              <!--
+              <tr> 
+    <td class="smallText" valign="top"><?php //echo $faq_split->display_count($faq_query_number, MAX_DISPLAY_FAQ_ADMIN, $_GET['page'], 'aaaaa'); ?>
+      <?php echo $faq_split->display_links($faq_query_number, MAX_DISPLAY_FAQ_ADMIN, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'pID'))); ?>
+    </td>
+  </tr>  
+  -->
             </table></td>
 <?php
   $heading = array();
