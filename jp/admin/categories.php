@@ -933,6 +933,7 @@
         tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $categories_id . '&pID=' . $products_id));
         break;
       case 'new_product_preview':
+        $_SESSION['product_history'] = $_POST;
         if (!isset($_GET['read'])) { 
         $romaji_error = 0; 
         $romaji_error_str = '';
@@ -1238,7 +1239,16 @@ function get_cart_products(){
 
       $products_url = $_POST['products_url'];
       $site_id = isset($_POST['site_id']) ?$_POST['site_id']:0;
-    } else {
+    } elseif ($_SESSION['product_history']){
+      $pInfo = new objectInfo($_SESSION['product_history']);
+      $products_name = $_SESSION['product_history']['products_name'];
+      $products_description = $_SESSION['product_history']['products_description'];
+
+      $products_url = $_SESSION['product_history']['products_url'];
+      $site_id = isset($_SESSION['product_history']['site_id'])?$_SESSION['product_history']['site_id']:0;
+      unset($_SESSION['product_history']);
+
+    }else{
       $pInfo = new objectInfo(array());
       $site_id = isset($_GET['site_id']) ?$_GET['site_id']:0;
     }
