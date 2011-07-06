@@ -434,10 +434,10 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
   $romaji = $_POST['romaji'];
   $romaji = str_replace('<11111111>','&',$romaji);
   $romaji = str_replace('<22222222>','+',$romaji);
-  $replace_str = '\s|　|「|【|「|】|」|・|、|。';
-  if(preg_match('/[^\x{4e00}-\x{9fa5}\x{3130}-\x{318F}\x{0800}-\x{4e00}a-zA-Z0-9-]/u',$romaji)){
+  $replace_str = '\s|　';
+  if(preg_match('/[^\x{4e00}-\x{9fa5}\x{3130}-\x{318F}\x{0800}-\x{4e00}a-zA-Z0-9-？]/u',$romaji)){
   $new_romaji =
-   preg_replace('/[^\x{4e00}-\x{9fa5}\x{3130}-\x{318F}\x{0800}-\x{4e00}a-zA-Z0-9-]/u','-',$romaji);
+   preg_replace('/[^\x{4e00}-\x{9fa5}\x{3130}-\x{318F}\x{0800}-\x{4e00}a-zA-Z0-9-？]/u','-',$romaji);
     if(preg_match('/'.$replace_str.'/',$new_romaji)){
       $new_romaji = preg_replace('/'.$replace_str.'/','-',$new_romaji);
     }

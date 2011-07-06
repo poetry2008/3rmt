@@ -72,33 +72,32 @@ if (
   if (isset($subcid) && $subcid) {
     $random_select .= "and p.products_id = p2c.products_id and p2c.categories_id in (".implode(',',$subcid).") ";
   }
-  $random_select .= " order by pd.site_id desc"; 
+  
   $info_box_contents = array();
   $random_products = tep_reviews_random_select($random_select, 3);
   
   if ($random_products) {
 // display random review box
     // ccdd
-	echo '<div class="bestseller_text">';
+	echo '<div>';
 	echo '<ul>';
     for ($ri=0; $ri<sizeof($random_products); $ri++) { 
     
     $link_path_str = tep_get_product_path($random_products[$ri]['products_id']);
     $link_path_arr = explode('_', $link_path_str);
-    $link_top_ca_query = tep_db_query("select categories_name from ".TABLE_CATEGORIES_DESCRIPTION." where (site_id = 0 or site_id = ".SITE_ID.") and categories_id = '".$link_path_arr[0]."' order by site_id desc limit 1");
+    $link_top_ca_query = tep_db_query("select categories_name from ".TABLE_CATEGORIES_DESCRIPTION." where site_id = 0 or site_id = ".SITE_ID." and categories_id = '".$link_path_arr[0]."' order by site_id desc limit 1");
     $link_top_ca_res = tep_db_fetch_array($link_top_ca_query);
-    
     if ($link_top_ca_res) {
       $site_raw = tep_db_query("select * from sites where id = '".$random_products[$ri]['rsid']."'"); 
       $site_res = tep_db_fetch_array($site_raw); 
       
       if ($site_res) {
-	    echo '<li class="text_a">';
+	    echo '<li>';
         if ($site_res['id'] == SITE_ID) {
-          echo '<div class="bestseller_text_01">'.$link_top_ca_res['categories_name'].'</div>';
+          echo '<div>'.$link_top_ca_res['categories_name'].'</div>';
 		  echo '<a href="'.tep_href_link(FILENAME_PRODUCT_REVIEWS_INFO, 'products_id=' .  $random_products[$ri]['products_id'] . '&reviews_id=' .  $random_products[$ri]['rid']).'">'.tep_href_link(FILENAME_PRODUCT_REVIEWS_INFO, 'products_id=' . $random_products[$ri]['products_id'] . '&reviews_id=' .  $random_products[$ri]['rid']).'</a>'; 
         } else {
-          echo '<div class="bestseller_text_01">'.$link_top_ca_res['categories_name'].'</div>';
+          echo '<div>'.$link_top_ca_res['categories_name'].'</div>';
 		  echo '<a href="'.$site_res['url'].'/reviews/pr-'.$random_products[$ri]['products_id'].'/'.$random_products[$ri]['rid'].'.html">'.$site_res['url'].'/reviews/pr-'.$random_products[$ri]['products_id'].'/'.$random_products[$ri]['rid'].'.html</a>'; 
         }
 		echo '</li>';
