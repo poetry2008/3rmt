@@ -19,8 +19,10 @@ $romaji_arr = explode('/',$_GET['faq_name']);
       $page = $arr[1];
       continue;
     }
+    $last_link_url = $link_url;
     $link_url .= '/'.urlencode($value);
     $link_arr[] = $value;
+    $last_faq_category_id = $temp_parent_id;
     $temp_parent_id = tep_get_faq_cpath_by_cname($value,$temp_parent_id);
     if(!$temp_parent_id){
       forward404();
@@ -61,6 +63,35 @@ $faq_category_sql = "
                       group by c.faq_category_id 
                       order by sort_order,title";
 $faq_category_query = tep_db_query($faq_category_sql);
+if( $last_faq_category_id != $temp_parent_id){
+  $last_faq_category_sql = "
+                      select * from 
+                      (
+                        select 
+                        fcd.is_show,
+                        fcd.faq_category_id,
+                        fc.parent_id,
+                        fc.sort_order,
+                        fcd.site_id,
+                        fcd.romaji,
+                        fcd.title,
+                        fcd.keywords,
+                        fcd.description 
+                        from ".TABLE_FAQ_CATEGORIES." fc, 
+                        ".TABLE_FAQ_CATEGORIES_DESCRIPTION. " fcd 
+                        where fc.parent_id = '".$last_faq_category_id."'
+                        and fc.id = fcd.faq_category_id 
+                        and fc.id != '".$current_faq_category_id."' 
+                        order by site_id DESC
+                      ) c 
+                      where (site_id = ".SITE_ID."
+                      or site_id = 0) 
+                      and is_show = '1'
+                      group by c.faq_category_id 
+                      order by sort_order,title";
+  $last_faq_category_query = tep_db_query($last_faq_category_sql);
+  $last_parent_info = tep_get_faq_category_info($last_faq_category_id);
+}
 $faq_question_sql = "select * from (
                       select 
                       fqd.is_show,
