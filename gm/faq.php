@@ -39,7 +39,7 @@ if (isset($body_option)) {
     <h2 class="pageHeading"><?php echo $parent_info['title'].TEXT_QUESTION_TITLE;?></h2>
     <?php }else {?>
     <h2 class="pageHeading"><?php echo
-      TEXT_FAQ_TITLE.'お客様から寄せられる、よくある質問とその回答';?></h2>
+      TEXT_FAQ_TITLE.'<br>'.TEXT_FAQ_TITLE_END;?></h2>
     <?php } ?>
     <div class="comment_faq">
     <table class="faq_question_row">

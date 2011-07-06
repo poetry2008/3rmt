@@ -1224,6 +1224,12 @@ searching
 .faq_question_row {
     margin-bottom: 5px;
 }
-.faq_question_row span a { color:#FF4500; line-height:21px; font-size:14px;}
+.faq_question_row_div { width:420px;}
+.faq_question_row div { float:left;}
+.faq_question_row div span a { color:#FF4500; line-height:21px; font-size:14px; width:280px;}
 .faq_back { margin-left:380px;}
 .faq_answer { padding:5px;}
+.faq_answer div { float:left;}
+.faq_answer_row { width:400px;}
+.header_Navigation { margin:5px; color:#339966; padding-top:10px;}
+.header_Navigation a { color:#339966;}
