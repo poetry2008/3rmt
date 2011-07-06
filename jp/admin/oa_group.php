@@ -66,7 +66,14 @@
 <title><?php echo TITLE; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/general.js"></script>
+<script language="javascript" src="includes/javascript/jquery.js"></script>
 <script type="text/javascript">
+	      $(document).ready(function(){
+		  $(".oa_bg02").hover(function(){$(this).removeClass('oa_bg02').addClass('dataTableRowOver')},function(){$(this).removeClass('dataTableRowOver').addClass('oa_bg02')});
+		  $(".oa_bg").hover(function(){$(this).removeClass('oa_bg').addClass('dataTableRowOver')},function(){$(this).removeClass('dataTableRowOver').addClass('oa_bg')});
+
+		});
+
 function select_all_group()
 {
    var chk_flag = document.selt_group.allgroup.checked;
@@ -150,6 +157,11 @@ function select_all_group()
                 }
                 ?>
 <script type='text/javascript'>
+	      $(document).ready(function(){
+		  $(".oa_bg02").hover(function(){$(this).removeClass('oa_bg02').addClass('dataTableRowOver')},function(){$(this).removeClass('dataTableRowOver').addClass('oa_bg02')});
+		  $(".oa_bg").hover(function(){$(this).removeClass('oa_bg').addClass('dataTableRowOver')},function(){$(this).removeClass('dataTableRowOver').addClass('oa_bg')});
+		});
+
           function checkexist()
           {
             if ($('input|[name=gname]').val().length==0){
@@ -195,6 +207,11 @@ function select_all_group()
           if ($_GET['action'] == 'edit') { 
           ?>
 <script type='text/javascript'>
+	      $(document).ready(function(){
+		  $(".oa_bg02").hover(function(){$(this).removeClass('oa_bg02').addClass('dataTableRowOver')},function(){$(this).removeClass('dataTableRowOver').addClass('oa_bg02')});
+		  $(".oa_bg").hover(function(){$(this).removeClass('oa_bg').addClass('dataTableRowOver')},function(){$(this).removeClass('dataTableRowOver').addClass('oa_bg')});
+		});
+
 
     function editorder (ele){
     x = $(ele).parent().parent();      
@@ -292,6 +309,11 @@ function ajaxUpdate(id,order){
           ?>
           <?php echo tep_draw_form('selt_group', FILENAME_OA_GROUP, 'pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&action=link_group');?> 
 <script type='text/javascript'>
+	      $(document).ready(function(){
+		  $(".oa_bg02").hover(function(){$(this).removeClass('oa_bg02').addClass('dataTableRowOver')},function(){$(this).removeClass('dataTableRowOver').addClass('oa_bg02')});
+		  $(".oa_bg").hover(function(){$(this).removeClass('oa_bg').addClass('dataTableRowOver')},function(){$(this).removeClass('dataTableRowOver').addClass('oa_bg')});
+
+		});
 
     function editorder (ele){
     x = $(ele).parent().parent();      
@@ -392,8 +414,17 @@ function ajaxUpdate(id,order){
       </tr>
       <tr>
         <td>
-  
-        <input type="button" onclick='window.location.href="<?php echo tep_href_link(FILENAME_OA_FORM,'pcode='.$_GET['pcode'].'&type='.$_GET['type']);?>"' value="<?php echo IMAGE_BACK;?>">
+  <?php 
+            if ($_GET['return']){
+?>
+<input type="button" onclick='window.location.href="<?php echo tep_href_link(FILENAME_OA_LINK_GROUP, 'pcode='.$_GET['pcode'].'&type='.$_GET['type']);?>"' value="<?php echo IMAGE_BACK;?>">
+<?php 
+            }else{
+              ?>
+              <input type="button" onclick='window.location.href="<?php echo tep_href_link(FILENAME_OA_FORM,'pcode='.$_GET['pcode'].'&type='.$_GET['type']);?>"' value="<?php echo IMAGE_BACK;?>">
+<?php 
+                }
+?>
         </td> 
       </tr>
     </table>

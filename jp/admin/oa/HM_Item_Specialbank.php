@@ -44,7 +44,7 @@ class HM_Item_Specialbank extends HM_Item_Basic
     echo "<td>"; 
     echo "<div id='".$this->formnametotal."' >";
     echo "\n";
-    echo "<input type='hidden' id='".$this->formname."' name='".$this->formname."' value='".join('|',$this->defaultValue)."' />";
+    echo "<input type='hidden' id='".$this->formname."' name='".$this->formname."' value='".@join('|',$this->defaultValue)."' />";
     echo "\n";
     echo "<table>";
     echo "\n";
