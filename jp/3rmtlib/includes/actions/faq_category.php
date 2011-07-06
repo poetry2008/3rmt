@@ -2,7 +2,7 @@
 $link_url = "faq";
 $link_arr = array();
 $link_arr[] = 'faq';
-$breadcrumb->add(TEXT_FAQ,HTTP_SERVER.'/'.$link_url);
+$breadcrumb->add(TEXT_FAQ,HTTP_SERVER.'/'.$link_url.'/');
 $parent_info = null;
 if(isset($_GET['faq_name'])&&$_GET['faq_name']!=''){
   if(!preg_match('|\/$|',$_GET['faq_name'])){
