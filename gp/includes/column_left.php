@@ -84,7 +84,7 @@ if ($_SERVER['PHP_SELF'] == '/product_info.php') {
     <div id="leftca" style="display:none;"></div> 
   <?php }?> 
   <div id="search">
-  <div class="menu_top"><span><?php echo LEFT_SEARCH_TITLE;?></span><div class="seach_more"><a href="#"><?php echo LEFT_SEARCH_TOTAL_TITLE;?></a></div></div> 
+  <div class="menu_top"><span><?php echo LEFT_SEARCH_TITLE;?></span><div class="seach_more"><a href="<?php echo tep_href_link(FILENAME_ADVANCED_SEARCH);?>"><?php echo LEFT_SEARCH_TOTAL_TITLE;?></a></div></div> 
   <?php
 echo tep_draw_form('quick_find', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, '', $request_type, false), 'get')."\n";
 ?>
