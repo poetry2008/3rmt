@@ -58,6 +58,13 @@ if (isset($body_option)) {
     </div>
     <p class="pageBottom"></p>
 
+
+    <div class="faq_back">
+      <a href="<?php echo HTTP_SERVER.'/'.implode('/',$link_url_arr).'/';?>"><img src="images/design/button/faq_back.gif" alt="<?php echo TEXT_BACK;?>">
+      </a>
+    </div>
+
+
     <?php //question list ?>
     <?php if($q_row = tep_db_fetch_array($last_faq_question_query)){ ?>
     <h2 class="pageHeading"><?php echo $parent_info['title'].TEXT_QUESTION_TITLE;?></h2>
@@ -90,10 +97,6 @@ if (isset($body_option)) {
 
 
 
-    <div class="faq_back">
-      <a href="<?php echo HTTP_SERVER.'/'.implode('/',$link_url_arr).'/';?>"><img src="images/design/button/faq_back.gif" alt="<?php echo TEXT_BACK;?>">
-      </a>
-    </div>
 </div>
 <div id='r_menu'>
 <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
