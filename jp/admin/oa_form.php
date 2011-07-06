@@ -36,12 +36,20 @@
 <title><?php echo TITLE; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/general.js"></script>
+<script language="javascript" src="includes/javascript/jquery.js"></script>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onload="SetFocus();">
 <!-- header //-->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
 <!-- header_eof //-->
 <!-- body //-->
+<script type='text/javascript'>
+	      $(document).ready(function(){
+		  $(".oa_bg02").hover(function(){$(this).removeClass('oa_bg02').addClass('dataTableRowOver')},function(){$(this).removeClass('dataTableRowOver').addClass('oa_bg02')});
+		  $(".oa_bg").hover(function(){$(this).removeClass('oa_bg').addClass('dataTableRowOver')},function(){$(this).removeClass('dataTableRowOver').addClass('oa_bg')});
+		});
+
+</script>
 <table border="0" width="100%" cellspacing="2" cellpadding="2">
 <tr>    <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
 <!-- left_navigation //-->
@@ -87,6 +95,11 @@
 
 
 <script type='text/javascript'>
+	      $(document).ready(function(){
+		  $(".oa_bg02").hover(function(){$(this).removeClass('oa_bg02').addClass('dataTableRowOver')},function(){$(this).removeClass('dataTableRowOver').addClass('oa_bg02')});
+		  $(".oa_bg").hover(function(){$(this).removeClass('oa_bg').addClass('dataTableRowOver')},function(){$(this).removeClass('dataTableRowOver').addClass('oa_bg')});
+		});
+
     function editorder (ele){
     x = $(ele).parent().parent();      
     oid = x.attr('id').substr(1);

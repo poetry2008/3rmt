@@ -254,6 +254,13 @@ function ajaxUpdate(id,order){
               <?php echo TABLE_HEADING_OAGROUP_ORDER;?> 
               </td>
             </tr>
+<script type='text/javascript'>
+	      $(document).ready(function(){
+		  $(".oa_bg02").hover(function(){$(this).removeClass('oa_bg02').addClass('dataTableRowOver')},function(){$(this).removeClass('dataTableRowOver').addClass('oa_bg02')});
+		  $(".oa_bg").hover(function(){$(this).removeClass('oa_bg').addClass('dataTableRowOver')},function(){$(this).removeClass('dataTableRowOver').addClass('oa_bg')});
+		});
+
+</script>
             <?php
                $form_has_query =  tep_db_query("select * from ".TABLE_OA_FORM." where
                    payment_romaji = '".$_GET['pcode']."' and formtype =
@@ -281,7 +288,7 @@ if ($g_num % 2 == 0) {
                 <tr class='<?php echo $group_list_res['id'].' '.$g_tr_class; ?>' id = 'o<?php echo $group_list_res['ordernumber'];?>'>
 <?php
                 $g_num++; 
-                echo '<td><input type="checkbox" name="ag[]" value="'.$group_list_res['id'].'"></td>'; 
+               echo '<td><input  class="checkbox_ag" type="checkbox" name="ag[]" value="'.$group_list_res['id'].'"></td>'; 
                 echo '<td>'.$group_list_res['name'].'</td>'; 
                 echo '<td>';
                 echo '<a href="'.tep_href_link(FILENAME_OA_GROUP, 'action=edit&gid='.$group_list_res['id'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type']).'">'.EDIT_GROUP_TEXT.'</a>'; 
@@ -296,13 +303,27 @@ if ($g_num % 2 == 0) {
               }
             ?>
             </table>
+<script type='text/javascript'>
+
+                function checkclicked(){
+
+                var couldSubmit = false;
+                $('.checkbox_ag').each(function(ele){
+                    if(this.checked==true){
+                      couldSubmit = true;
+                    }
+                  });
+                if(!couldSubmit){
+                  alert('選択されていないためテンプレートを追加できません。');
+                }
+                return couldSubmit;
+              }
+</script>
             <?php
               if (tep_db_num_rows($group_list_raw)) {
             ?>
-                <input type="submit" value="<?php echo 'テンプレート追加';?>"> 
-<input type="button" onclick="window.location.href='<?php echo
-tep_href_link(FILENAME_OA_GROUP,
-    'pcode='.$_GET['pcode'].'&type='.$_GET['type']);?>'" value="<?php echo ADD_GROUP;?>"/> 
+                <input type="submit" onclick='return checkclicked()' value="<?php echo 'テンプレート追加';?>"> 
+<input type="button" onclick="window.location.href='<?php echo tep_href_link(FILENAME_OA_GROUP, 'pcode='.$_GET['pcode'].'&return=special&type='.$_GET['type']);?>'" value="<?php echo ADD_GROUP;?>"/> 
             <?php
               }
             ?>

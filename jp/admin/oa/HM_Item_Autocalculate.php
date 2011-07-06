@@ -33,16 +33,27 @@ class HM_Item_Autocalculate extends HM_Item_Basic
     $loadArray = explode('_',$this->defaultValue);
     //对照 orders 的 关联商品 查找数据
     $orders_products_query = tep_db_query("select
-        p.products_id,op.products_quantity,op.products_name,p.relate_products_id
+        p.products_id,op.products_quantity,op.products_name,p.relate_products_id,p.products_bflag
         from ".TABLE_ORDERS_PRODUCTS." op, ".TABLE_PRODUCTS." p where
         op.products_id=p.products_id and
         op.orders_id='".$this->order_id."' order by op.products_name
         asc");
     $i = 0;
+
+    // 重新取一次 订单类型
+    $order_type =  tep_check_order_type($this->order_id);
     while ($opp = tep_db_fetch_array($orders_products_query)) {
+
+      //如果是混合订单只选择买取的产品
       $op = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS." p,
             ".TABLE_PRODUCTS_DESCRIPTION." pd where p.products_id=pd.products_id and
             pd.site_id='0' and p.products_id='".$opp['relate_products_id']."'"));
+
+      if ($order_type==3 and $op['products_bflag']!=1){
+        $i++;
+        continue;
+      }
+
       $oqp = tep_db_fetch_array(tep_db_query("select * from 
             orders_questions_products where 
             orders_id='".$this->order_id."' and 
