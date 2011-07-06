@@ -107,7 +107,7 @@ if (isset($body_option)) {
     <?php if ($last_row = tep_db_fetch_array($last_faq_category_query)){?>
     <?php if (isset($last_parent_info)&&$last_parent_info!=null){ ?>
     <h2 class="pageHeading"><?php echo
-      $last_parent_info['title'].TEXT_QUESTION_ITLE;?></h2>
+      $last_parent_info['title'].TEXT_QUESTION_TITLE;?></h2>
     <?php }else {?>
     <h2 class="pageHeading"><?php echo TEXT_FAQ_TITLE_LAST;?></h2>
     <?php } ?>
