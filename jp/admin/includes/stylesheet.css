@@ -942,7 +942,7 @@ a.s_column_bar {
 	clear:both;
 	margin:2px 0;
 }
-#canEnd{ width:80px; text-align:right; margin-right:13px;}
+#canEnd{ text-align:right; margin-right:13px;}
 .element_button { 
 	font-size:13px;
 	margin-right:5px;
@@ -956,3 +956,6 @@ a.s_column_bar {
 	padding:2px 9px\9;
 }
 .autocalculate_div{ width:600px\9;}
+.faq_page_text{
+  float:left;
+}

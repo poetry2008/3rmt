@@ -111,6 +111,7 @@ if (isset($body_option)) {
     <?php }else {?>
     <h2 class="pageHeading"><?php echo TEXT_FAQ_TITLE_LAST;?></h2>
     <?php } ?>
+    <div  style="border-bottom-style:dotted; width:94%; margin-top:10px; color:#444; margin-left:2px;"></div>
     <div class="comment_faq">
     <table class="faq_question_row">
     	<tr><td><div>
