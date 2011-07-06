@@ -31,7 +31,7 @@
         <table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
             <td>
-            <a href="javascript:void(0);" onclick="left_search_category('search_category.php?ra=r');">ok</a> 
+            <a href="javascript:void(0);" onClick="left_search_category('search_category.php?ra=r');">ok</a> 
             <div id="showca" style="display:none;"></div> 
             </td>
           </tr>

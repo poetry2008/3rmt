@@ -142,7 +142,7 @@
 ?> 
       <?php echo tep_draw_form('email_friend', tep_href_link(FILENAME_TELL_A_FRIEND, 'action=process&amp;products_id=' . $_GET['products_id'])) . tep_draw_hidden_field('products_name', $product_info['products_name']); ?> 
       <div class="comment">
-      <table width="100%" cellpadding="0" cellspacing="0" border="0" summary="table"> 
+      <table width="100%" cellpadding="0" cellspacing="0" border="0" summary="table" class="product_info_box"> 
         <tr> 
           <td class="formAreaTitle"><?php echo FORM_TITLE_CUSTOMER_DETAILS; ?></td> 
         </tr> 
