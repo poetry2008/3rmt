@@ -1228,7 +1228,7 @@ searching
 }
 .faq_question_row_div { width:420px; width:410px\9;}
 .faq_question_row div { float:left;}
-.faq_question_row div span a { color:#FF4500; line-height:21px; font-size:14px; width:280px;}
+.faq_question_row div span a { color:#FF4500; line-height:21px; font-size:14px;  width:280px; width:400px\9;}
 .faq_back { margin-left:380px;}
 .faq_answer { padding:5px;}
 .faq_answer div { float:left;}
