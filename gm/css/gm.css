@@ -283,7 +283,7 @@ SPAN.errorText {
     padding:0;
     float:left;
 }
-#m_menu { float:left; width:480px;}
+.m_menu { float:left; width:475px;}
 #l_menu ul {
     padding:0px;
     margin:-3px 0px 0px 0px;
