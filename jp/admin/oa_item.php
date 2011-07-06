@@ -262,8 +262,17 @@ function deltr(index)
           </tr>
         </table>
         <input type="submit" value="<?php echo IMAGE_SAVE;?>">
+<?php
+  if($_GET['return']=='oa_link'){
+?>
 
+<input onclick = 'window.location.href=" <?php echo tep_href_link(FILENAME_OA_LINK_GROUP, 'pcode='.$_GET['pcode'].'&type='.$_GET['type']);?>"' type="button" value="<?php echo IMAGE_BACK?>">
+<?php
+  }else{
+?>
 <input onclick = 'window.location.href=" <?php echo tep_href_link(FILENAME_OA_GROUP, 'action=edit&gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type']);?>"' type="button" value="<?php echo IMAGE_BACK?>">
+<?php
+      }?>
         </form> 
       </td>
     </tr>
