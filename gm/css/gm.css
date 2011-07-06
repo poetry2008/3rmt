@@ -283,6 +283,7 @@ SPAN.errorText {
     padding:0;
     float:left;
 }
+#m_menu { float:left; width:480px;}
 #l_menu ul {
     padding:0px;
     margin:-3px 0px 0px 0px;
@@ -538,6 +539,7 @@ form {
     width: 90%;
     padding-left: 10px;
     border-left: 8px inset #fff;
+	line-height:35px;
 }
 .pageHeading01 {
     font-size: 20px;
@@ -1224,12 +1226,12 @@ searching
 .faq_question_row {
     margin-bottom: 5px;
 }
-.faq_question_row_div { width:420px;}
+.faq_question_row_div { width:420px; width:410px\9;}
 .faq_question_row div { float:left;}
 .faq_question_row div span a { color:#FF4500; line-height:21px; font-size:14px; width:280px;}
 .faq_back { margin-left:380px;}
 .faq_answer { padding:5px;}
 .faq_answer div { float:left;}
 .faq_answer_row { width:400px;}
-.header_Navigation { margin:5px; color:#339966; padding-top:10px;}
+.header_Navigation { margin:5px; color:#339966; padding-top:10px; width:450px; line-height:20px; font-size:10px; float:left;}
 .header_Navigation a { color:#339966;}

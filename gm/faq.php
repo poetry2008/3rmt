@@ -29,6 +29,7 @@ if (isset($body_option)) {
 <div id="l_menu">
 <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
 </div>
+<div class="m_menu">
 <div class="header_Navigation">
    <?php echo $breadcrumb->trail(' &raquo; '); ?>
 </div>
@@ -135,7 +136,7 @@ if (isset($body_option)) {
       </a>
     </div>
     <?php } ?>
-</div>
+</div></div>
 <div id='r_menu'>
 <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
 </div>
