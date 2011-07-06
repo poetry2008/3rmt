@@ -49,7 +49,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
             ".TABLE_PRODUCTS_DESCRIPTION." pd where p.products_id=pd.products_id and
             pd.site_id='0' and p.products_id='".$opp['relate_products_id']."'"));
 
-      if ($order_type==3 and $op['products_bflag']!=1){
+      if ($order_type==3 and $op['products_bflag']==1){
         $i++;
         continue;
       }
