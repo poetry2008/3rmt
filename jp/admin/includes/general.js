@@ -33,7 +33,7 @@ async : false,
 success: function(data) {
 var pwd_arr = data.split(",");;
 var flag_tmp = true;
-$("input[name$=\[final_price\]]").each(function(index) {
+$(".once_pwd").each(function(index) {
   var input_name = $(this).attr('name');
   var input_val = $(this).val();
   var op_id  = input_name.replace(/[^0-9]/ig," ").replace(/(^\s*)|(\s*$)/g, "");;
@@ -105,7 +105,7 @@ async : false,
 success: function(data) {
 var pwd_arr = data.split(",");;
 var flag_tmp = true;
-$("input[name$=\[final_price\]]").each(function(index) {
+$(".once_pwd").each(function(index) {
   var input_name = $(this).attr('name');
   var input_val = $(this).val();
   var op_id  = input_name.replace(/[^0-9]/ig," ").replace(/(^\s*)|(\s*$)/g, "");;
@@ -170,7 +170,7 @@ async : false,
 success: function(data) {
 var pwd_arr = data.split(",");;
 var flag_tmp = true;
-$("input[name$=\[final_price\]]").each(function(index) {
+$(".once_pwd").each(function(index) {
   var input_name = $(this).attr('name');
   var input_val = $(this).val();
   var op_id  = input_name.replace(/[^0-9]/ig," ").replace(/(^\s*)|(\s*$)/g, "");;
@@ -254,7 +254,7 @@ async : false,
 success: function(data) {
 var pwd_arr = data.split(",");;
 var flag_tmp = true;
-$("input[name$=\[final_price\]]").each(function(index) {
+$(".once_pwd").each(function(index) {
   var input_name = $(this).attr('name');
   var input_val = $(this).val();
   var op_id  = input_name.replace(/[^0-9]/ig," ").replace(/(^\s*)|(\s*$)/g, "");;
@@ -665,4 +665,10 @@ function products_form_validator(cid,qid,site_id){
   }else{
     return false;
   }
+}
+function doubleClickme()
+{
+
+    $(".dataTableRowSelected").removeClass("dataTableRowSelected");
+    $(this).addClass("dataTableRowSelected");
 }

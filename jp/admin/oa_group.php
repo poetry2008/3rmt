@@ -68,11 +68,14 @@
 <script language="javascript" src="includes/general.js"></script>
 <script language="javascript" src="includes/javascript/jquery.js"></script>
 <script type="text/javascript">
-	      $(document).ready(function(){
-		  $(".oa_bg02").hover(function(){$(this).removeClass('oa_bg02').addClass('dataTableRowOver')},function(){$(this).removeClass('dataTableRowOver').addClass('oa_bg02')});
-		  $(".oa_bg").hover(function(){$(this).removeClass('oa_bg').addClass('dataTableRowOver')},function(){$(this).removeClass('dataTableRowOver').addClass('oa_bg')});
 
+	      $(document).ready(function(){
+		  $(".oa_bg02").dblclick(doubleClickme);
+		  $(".oa_bg").dblclick(doubleClickme);
+              $(".oa_bg02").hover(function(){if(!$(this).hasClass('dataTableRowSelected')){$(this).removeClass('oa_bg02').addClass('dataTableRowOver')}},function(){ if(!$(this).hasClass('dataTableRowSelected')){$(this).removeClass('dataTableRowOver').addClass('oa_bg02')}});
+              $(".oa_bg").hover(function(){if(!($(this).hasClass('dataTableRowSelected'))){$(this).removeClass('oa_bg').addClass('dataTableRowOver')}},function(){ if(!$(this).hasClass('dataTableRowSelected')){$(this).removeClass('dataTableRowOver').addClass('oa_bg')}});
 		});
+
 
 function select_all_group()
 {
@@ -157,10 +160,6 @@ function select_all_group()
                 }
                 ?>
 <script type='text/javascript'>
-	      $(document).ready(function(){
-		  $(".oa_bg02").hover(function(){$(this).removeClass('oa_bg02').addClass('dataTableRowOver')},function(){$(this).removeClass('dataTableRowOver').addClass('oa_bg02')});
-		  $(".oa_bg").hover(function(){$(this).removeClass('oa_bg').addClass('dataTableRowOver')},function(){$(this).removeClass('dataTableRowOver').addClass('oa_bg')});
-		});
 
           function checkexist()
           {
@@ -207,10 +206,6 @@ function select_all_group()
           if ($_GET['action'] == 'edit') { 
           ?>
 <script type='text/javascript'>
-	      $(document).ready(function(){
-		  $(".oa_bg02").hover(function(){$(this).removeClass('oa_bg02').addClass('dataTableRowOver')},function(){$(this).removeClass('dataTableRowOver').addClass('oa_bg02')});
-		  $(".oa_bg").hover(function(){$(this).removeClass('oa_bg').addClass('dataTableRowOver')},function(){$(this).removeClass('dataTableRowOver').addClass('oa_bg')});
-		});
 
 
     function editorder (ele){
@@ -309,11 +304,6 @@ function ajaxUpdate(id,order){
           ?>
           <?php echo tep_draw_form('selt_group', FILENAME_OA_GROUP, 'pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&action=link_group');?> 
 <script type='text/javascript'>
-	      $(document).ready(function(){
-		  $(".oa_bg02").hover(function(){$(this).removeClass('oa_bg02').addClass('dataTableRowOver')},function(){$(this).removeClass('dataTableRowOver').addClass('oa_bg02')});
-		  $(".oa_bg").hover(function(){$(this).removeClass('oa_bg').addClass('dataTableRowOver')},function(){$(this).removeClass('dataTableRowOver').addClass('oa_bg')});
-
-		});
 
     function editorder (ele){
     x = $(ele).parent().parent();      

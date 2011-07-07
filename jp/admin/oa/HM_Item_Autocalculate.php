@@ -70,13 +70,14 @@ class HM_Item_Autocalculate extends HM_Item_Basic
       if(is_array($checkbox_info)&&$checkbox_info!=null){
         $_checked = $checkbox_info[0]?$checkbox_info[0]:0;
         $_value = $checkbox_info[1]?$checkbox_info[1]:0;
+        $__checked = $checkbox_info[2]?$checkbox_info[2]:0;
       }else{
         $_checked = 0;
         $_value = 0;
       }
 
       //判断是否选中
-      if($_checked==$opp['products_id']){
+      if($_checked==$opp['products_id']&&$__checked==$op['products_id']){
         $check = "checked"; 
       }else{
         $check = "";
@@ -84,25 +85,25 @@ class HM_Item_Autocalculate extends HM_Item_Basic
       echo "<div class='autocalculate_div'>";
       if($op){
       echo "<input value='".$opp['products_id']."'  
-        onclick='".$this->formname."Change_option(".$opp['products_id'].",this)' 
+        onclick='".$this->formname."Change_option(".$opp['products_id'].",this,".$op['products_id'].")' 
         type='checkbox' ".$check." name='0".$this->formname."' ";
       echo "/>";
       echo $op['products_name'];
         //有关联商品的 输出
         echo " <span id ='quantity_".$opp['products_id']."' >".$opp['products_quantity']."</span> - ";
-        echo "<input type='text' value='".$_value."' 
+        echo "<input type='text' value='".intval($opp['products_quantity']-$_value)."' 
            id ='".$opp['products_id']."_input_".$this->formname."' 
-           onchange='".$this->formname."Chage_span(".$opp['products_quantity'].",this,\"relate_product_".$i."\")' ";
+           onchange='".$this->formname."Chage_span(".$opp['products_quantity'].",this,\"relate_product_".$opp['products_id']."\")' ";
       //判断是否 checkbox 选中来确定 是否为只读
-      if($_checked==$opp['products_id']){
+      if($_checked==$opp['products_id']&&$__checked==$op['products_id']){
         echo " readonly='true' ";
       }
       echo " >";
-        echo " = <span id='relate_product_".$i."'>".
-          intval($opp['products_quantity']-$_value)."</span>";
+        echo " = <span id='relate_product_".$opp['products_id']."'>".
+          $_value."</span>";
       }else{
         echo "<input value='".$opp['products_id']."'  
-        onclick='".$this->formname."Change_option(".$opp['products_id'].",this)' 
+        onclick='".$this->formname."Change_option(".$opp['products_id'].",this,".$op['products_id'].")' 
         type='checkbox' ".$check." name='0".$this->formname."' ";
         echo "/>";
         //没有关联商品的输出
@@ -128,26 +129,27 @@ class HM_Item_Autocalculate extends HM_Item_Basic
              $("#"+span_id).text(p_value-v_input);
            }
          }
-         function <?php echo $this->formname."Change_option(pid,ele)";?>{
+         function <?php echo $this->formname."Change_option(pid,ele,spid)";?>{
            var <?php echo $this->formname;?>val ='';
            //循环 checkbox 把 checkbox状态 和input 值保存起来
            $("input|[name=0<?php echo $this->formname;?>]").each(function(){
                var check_info = '';
+               var span_value = $("#quantity_"+pid).html()-$("#"+pid+"<?php echo
+                   "_input_".$this->formname;?>").val();
                if($(this).attr('checked')){
-                 if($("#"+pid+"_input_<?php echo $this->formname;?>").val()){
-                   check_info = $(this).val()+"|"+$("#"+pid+"_input_<?php echo
-                     $this->formname;?>").val();
+                 if(span_value){
+                   check_info = $(this).val()+"|"+span_value;
                  }else{
                    check_info = $(this).val()+"|"+"0";
                  }
                }else{
-                 if($("#"+pid+"_input_<?php echo $this->formname;?>").val()){
-                   check_info = "0|"+$("#"+pid+"_input_<?php echo
-                     $this->formname;?>").val();
+                 if(span_value){
+                   check_info = "0|"+span_value;
                  }else{
                    check_info = "0|"+"0";
                  }
                }
+               check_info += '|'+spid;
                <?php echo $this->formname;?>val += check_info+"_";
            });
            $('#<?php echo $this->formname;?>real').val( <?php echo
@@ -194,7 +196,26 @@ class HM_Item_Autocalculate extends HM_Item_Basic
     $this->order_id = $order_id;
   }
 
-
+  //删除时会激活这个操作 把加进的数量 再减回去
+  static public function deleteTrigger($eid)
+  {
+    $sql = 'select * from oa_formvalue where item_id ='.$eid.' ';
+    $sqlArray = array();
+    while($formvalue_res  = tep_db_fetch_array(tep_db_query($sql))){
+      $oid = $formvalue_res['orders_id'];
+      $quaArray = @explode('_',$formvalue_res['value']);
+      if(!count($quaArray)){
+        continue;
+      }else {
+        foreach( $quaArray as $key=>$value){
+          $id_to_qua = explode('|',$value);
+          $id = $id_to_qua[0];
+          $qua = $id_to_qua[1];
+          tep_db_query("update ".TABLE_PRODUCTS." set products_real_quantity=`products_real_quantity`-".(int)$qua." where products_id='".$id."'");          
+        }
+      }
+    };
+  }
   static public function prepareForm($item_id = NULL)
   {
     $item_raw = tep_db_query("select * from ".TABLE_OA_ITEM." where id = '".(int)$item_id."'"); 

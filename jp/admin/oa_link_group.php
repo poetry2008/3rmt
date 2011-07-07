@@ -256,9 +256,13 @@ function ajaxUpdate(id,order){
             </tr>
 <script type='text/javascript'>
 	      $(document).ready(function(){
-		  $(".oa_bg02").hover(function(){$(this).removeClass('oa_bg02').addClass('dataTableRowOver')},function(){$(this).removeClass('dataTableRowOver').addClass('oa_bg02')});
-		  $(".oa_bg").hover(function(){$(this).removeClass('oa_bg').addClass('dataTableRowOver')},function(){$(this).removeClass('dataTableRowOver').addClass('oa_bg')});
+		  $(".oa_bg02").dblclick(doubleClickme);
+		  $(".oa_bg").dblclick(doubleClickme);
+          $(".oa_bg02").hover(function(){if(!$(this).hasClass('dataTableRowSelected')){$(this).removeClass('oa_bg02').addClass('dataTableRowOver')}},function(){ if(!$(this).hasClass('dataTableRowSelected')){$(this).removeClass('dataTableRowOver').addClass('oa_bg02')}});
+          $(".oa_bg").hover(function(){if(!($(this).hasClass('dataTableRowSelected'))){$(this).removeClass('oa_bg').addClass('dataTableRowOver')}},function(){ if(!$(this).hasClass('dataTableRowSelected')){$(this).removeClass('dataTableRowOver').addClass('oa_bg')}});
 		});
+
+
 
 </script>
             <?php

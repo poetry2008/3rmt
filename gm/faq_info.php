@@ -67,7 +67,8 @@ if (isset($body_option)) {
 
     <?php //question list ?>
     <?php if($q_row = tep_db_fetch_array($last_faq_question_query)){ ?>
-    <h2 class="pageHeading"><?php echo $parent_info['title'].TEXT_QUESTION_TITLE;?></h2>
+    <h2 class="pageHeading"><?php echo $temp_category_info['title'].TEXT_CATEGORY_TITLE;?></h2>
+    <div  style="border-bottom-style:dotted; width:94%; margin-top:10px; color:#444; margin-left:2px;"></div>
     <div class="comment_faq">
     <table class="faq_question_row"><tr><td>
     <div>

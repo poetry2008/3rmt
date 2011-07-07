@@ -45,9 +45,13 @@
 <!-- body //-->
 <script type='text/javascript'>
 	      $(document).ready(function(){
-		  $(".oa_bg02").hover(function(){$(this).removeClass('oa_bg02').addClass('dataTableRowOver')},function(){$(this).removeClass('dataTableRowOver').addClass('oa_bg02')});
-		  $(".oa_bg").hover(function(){$(this).removeClass('oa_bg').addClass('dataTableRowOver')},function(){$(this).removeClass('dataTableRowOver').addClass('oa_bg')});
+		  $(".oa_bg02").dblclick(doubleClickme);
+		  $(".oa_bg").dblclick(doubleClickme);
+          $(".oa_bg02").hover(function(){if(!$(this).hasClass('dataTableRowSelected')){$(this).removeClass('oa_bg02').addClass('dataTableRowOver')}},function(){$(this).removeClass('dataTableRowOver').addClass('oa_bg02')});
+          $(".oa_bg").hover(function(){if(!($(this).hasClass('dataTableRowSelected'))){$(this).removeClass('oa_bg').addClass('dataTableRowOver')}},function(){ $(this).removeClass('dataTableRowOver').addClass('oa_bg')});
 		});
+
+
 
 </script>
 <table border="0" width="100%" cellspacing="2" cellpadding="2">
@@ -95,11 +99,6 @@
 
 
 <script type='text/javascript'>
-	      $(document).ready(function(){
-		  $(".oa_bg02").hover(function(){$(this).removeClass('oa_bg02').addClass('dataTableRowOver')},function(){$(this).removeClass('dataTableRowOver').addClass('oa_bg02')});
-		  $(".oa_bg").hover(function(){$(this).removeClass('oa_bg').addClass('dataTableRowOver')},function(){$(this).removeClass('dataTableRowOver').addClass('oa_bg')});
-		});
-
     function editorder (ele){
     x = $(ele).parent().parent();      
     oid = x.attr('id').substr(1);
