@@ -4,17 +4,8 @@
 */
   require('includes/application_top.php');
   require_once('enableditem.php');
-function filter_trim_empty($value){
-  $value = trim($value);
-  return !empty($value);
-}
-
-  $origin_form_raw = tep_db_query("select * from ".TABLE_OA_FORM." where payment_romaji = '".$_GET['pcode']."' and formtype = '".$_GET['type']."'"); 
-  $origin_form_res = tep_db_fetch_array($origin_form_raw); 
-  if (isset($_GET['action'])) {
-    switch ($_GET['action']) {
-      case 'insert':
-      case 'update':
+function prepareInsert()
+{
         $na_list_arr = array(); 
         $va_list_arr = array(); 
         foreach ($_POST as $pokey => $povalue) {
@@ -49,7 +40,16 @@ function filter_trim_empty($value){
             $option_info_arr[$key] = array_filter($value ,'filter_trim_empty');
           }
         }
-        if ($_GET['action'] == 'insert') {
+        $option_info_arr['eid'] = $_GET['eid'];        
+        return $option_info_arr;
+}
+function filter_trim_empty($value){
+  $value = trim($value);
+  return !empty($value);
+}
+function insertItem()
+{
+         $option_info_arr = prepareInsert();
           tep_db_query("insert into `".TABLE_OA_ITEM."` values(NULL,
             '".$_GET['gid']."', '".tep_db_prepare_input($_POST['ititle'])."',
             '".tep_db_prepare_input(tep_get_random_item_name())."',
@@ -59,40 +59,54 @@ function filter_trim_empty($value){
           $item_id = tep_db_insert_id(); 
           $option_info_arr['eid'] = $item_id;        
           tep_db_query("update `".TABLE_OA_ITEM."` SET `option` = '".tep_db_prepare_input(serialize($option_info_arr))."' where `id` = '".$item_id."';"); 
-        }
-        
-        if ($_GET['action'] == 'update') {
-          $option_info_arr['eid'] = $_GET['eid'];        
-          tep_db_query("update `".TABLE_OA_ITEM."` SET `title` = '".tep_db_prepare_input($_POST['ititle'])."', `comment` = '".tep_db_prepare_input($_POST['icomment'])."' ,`type` = '".tep_db_prepare_input(strtolower($_POST['itype']))."' , `option` = '".tep_db_prepare_input(serialize($option_info_arr))."' where `id` = '".$_GET['eid']."';"); 
-        } 
+}
+function deleteItem()
+{
+  $item_info_raw = tep_db_query("select * from ".TABLE_OA_ITEM." where id = '".$_GET['eid']."'"); 
+  $item_info_res = tep_db_fetch_array($item_info_raw); 
+  $type = ucfirst($item_info_res['type']);
+  $class= 'HM_Item_'.$type;
+  require_once "oa/".$class.'.php';
+  var_dump($class);
+  if(method_exists($class,'deleteTrigger')){
+    call_user_func(array($class,'deleteTrigger'),$_GET['eid'])     ;
+  }
+  tep_db_query("delete from ".TABLE_OA_ITEM." where id = '".$_GET['eid']."'"); 
+ }
+function updateItem()
+{
+  
+  $item_info_raw = tep_db_query("select * from ".TABLE_OA_ITEM." where id = '".$_GET['eid']."'"); 
+  $item_form_res = tep_db_fetch_array($item_info_raw); 
+  if($item_form_res['type']!=$POST['itype']){
+
+    deleteItem();
+    insertItem();
+  }else{
+  $option_info_arr = prepareInsert();
+  tep_db_query("update `".TABLE_OA_ITEM."` SET `title` = '".tep_db_prepare_input($_POST['ititle'])."', `comment` = '".tep_db_prepare_input($_POST['icomment'])."' ,`type` = '".tep_db_prepare_input(strtolower($_POST['itype']))."' , `option` = '".tep_db_prepare_input(serialize($option_info_arr))."' where `id` = '".$_GET['eid']."';");  
+  }
+
+}
+$origin_form_raw = tep_db_query("select * from ".TABLE_OA_FORM." where payment_romaji = '".$_GET['pcode']."' and formtype = '".$_GET['type']."'"); 
+
+
+  if (isset($_GET['action'])) {
+    switch ($_GET['action']) {
+      case 'insert':
+        insertItem();
+        tep_redirect(tep_href_link(FILENAME_OA_GROUP, 'action=edit&gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type'])); 
+        break;
+      case 'update':
+        updateItem();
         tep_redirect(tep_href_link(FILENAME_OA_GROUP, 'action=edit&gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type'])); 
         break;
       case 'del':
-        tep_db_query("delete from ".TABLE_OA_ITEM." where id = '".$_GET['eid']."'"); 
+        deleteItem();
         tep_redirect(tep_href_link(FILENAME_OA_GROUP, 'action=edit&gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type'])); 
         break;
     }
   }
-  /* 
-  $type_list_arr = array();
-  if ($dh = opendir(DIR_FS_ADMIN.'oa')) {
-    while (($oa_file = readdir($dh)) !== false) {
-      if ($file != "." && $file !== '..') {
-        if (is_file(DIR_FS_ADMIN.'oa/'.$oa_file)) {
-          $hi_pos = strpos($oa_file, 'HM_Item_'); 
-          if ($hi_pos !== false) {
-            $item_option_str = substr($oa_file, $hi_pos+8, -4); 
-            if (strtolower($item_option_str) == 'basic') {
-             continue; 
-            }
-            $type_list_arr[] = $item_option_str; 
-          }           
-        }           
-      }           
-    }           
-  }           
-  */ 
-  
   $sel_type_str = 'Text'; 
   if ($_GET['action'] == 'edit') {
     $item_info_raw = tep_db_query("select * from ".TABLE_OA_ITEM." where id = '".$_GET['eid']."'"); 

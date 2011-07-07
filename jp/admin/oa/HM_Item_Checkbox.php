@@ -27,7 +27,7 @@ class HM_Item_Checkbox extends HM_Item_Basic
     $radios = $item_value['radios'];
     $result = '';
     foreach($radios as $key=>$value){
-      $result.='_'.$value;
+      $result.='_'.$key;
     }
     return $this->updateValue($order_id,$form_id,$group_id,$item_id,$result);
 

@@ -666,3 +666,9 @@ function products_form_validator(cid,qid,site_id){
     return false;
   }
 }
+function doubleClickme()
+{
+
+    $(".dataTableRowSelected").removeClass("dataTableRowSelected");
+    $(this).addClass("dataTableRowSelected");
+}
