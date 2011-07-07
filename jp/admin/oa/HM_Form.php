@@ -66,6 +66,9 @@ class HM_Form extends DbRecord
         return false;
       }
       canEnd = true;
+      if($('.require').length ==0 ){
+        canEnd = true;
+      }
       $('.require').each(function(ele){
           if(canEnd == true){
           canEnd = eval($(this).attr('tagName')+$(this).attr('type')+'Require(this)');
