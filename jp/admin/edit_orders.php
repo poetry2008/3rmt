@@ -1043,7 +1043,8 @@ while ($totals = tep_db_fetch_array($totals_query)) {
     echo '      </td>' . "\n" .
          '      <td class="' . $RowStyle . '">' . $order->products[$i]['model'] . "<input name='update_products[$orders_products_id][model]' size='12' type='hidden' value='" . $order->products[$i]['model'] . "'>" . '</td>' . "\n" .
          '      <td class="' . $RowStyle . '" align="right">' . tep_display_tax_value($order->products[$i]['tax']) . "<input name='update_products[$orders_products_id][tax]' size='2' type='hidden' value='" . tep_display_tax_value($order->products[$i]['tax']) . "'>" . '%</td>' . "\n" .
-         '      <td class="' . $RowStyle . '" align="right">' . "<input name='update_products[$orders_products_id][final_price]' size='9' value='" . tep_display_currency(number_format(abs($order->products[$i]['final_price']),2)) .
+         '      <td class="' . $RowStyle . '" align="right">' . "<input
+         class='once_pwd' name='update_products[$orders_products_id][final_price]' size='9' value='" . tep_display_currency(number_format(abs($order->products[$i]['final_price']),2)) .
          "'" .' onkeyup="clearNoNum(this)" >'.  
          '<input type="hidden" name="op_id_'.$orders_products_id.'" 
          value="'.tep_get_product_by_op_id($orders_products_id).'">' . '</td>' . "\n" . 
