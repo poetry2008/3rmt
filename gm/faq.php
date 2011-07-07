@@ -29,6 +29,7 @@ if (isset($body_option)) {
 <div id="l_menu">
 <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
 </div>
+<div class="m_menu">
 <div class="header_Navigation">
    <?php echo $breadcrumb->trail(' &raquo; '); ?>
 </div>
@@ -39,7 +40,7 @@ if (isset($body_option)) {
     <h2 class="pageHeading"><?php echo $parent_info['title'].TEXT_QUESTION_TITLE;?></h2>
     <?php }else {?>
     <h2 class="pageHeading"><?php echo
-      TEXT_FAQ_TITLE.'<br>'.TEXT_FAQ_TITLE_END;?></h2>
+      TEXT_FAQ_TITLE.'</h2><br><font style="margin-left:18px;">'.TEXT_FAQ_TITLE_END.'</font>';?>
     <?php } ?>
     <div class="comment_faq">
     <table class="faq_question_row">
@@ -94,13 +95,23 @@ if (isset($body_option)) {
     </div>
     <p class="pageBottom"></p>
     <?php } ?>
+
+    <?php if($link_url != 'faq') { ?>
+    <div class="faq_back">
+      <a href="<?php echo HTTP_SERVER.'/'.implode('/',$link_arr).'/';?>"><img src="images/design/button/faq_back.gif" alt="<?php echo TEXT_BACK;?>">
+      </a>
+    </div>
+    <?php } ?>
+
     <?php //this last  show faq category ?>
     <?php if ($last_row = tep_db_fetch_array($last_faq_category_query)){?>
     <?php if (isset($last_parent_info)&&$last_parent_info!=null){ ?>
-    <h2 class="pageHeading"><?php echo $last_parent_info['title'].TEXT_QUESTION_TITLE;?></h2>
+    <h2 class="pageHeading"><?php echo
+      $last_parent_info['title'].TEXT_QUESTION_TITLE;?></h2>
     <?php }else {?>
-    <h2 class="pageHeading"><?php echo TEXT_FAQ_TITLE;?></h2>
+    <h2 class="pageHeading"><?php echo TEXT_FAQ_TITLE_LAST;?></h2>
     <?php } ?>
+    <div  style="border-bottom-style:dotted; width:94%; margin-top:10px; color:#444; margin-left:2px;"></div>
     <div class="comment_faq">
     <table class="faq_question_row">
     	<tr><td><div>
@@ -129,13 +140,7 @@ if (isset($body_option)) {
 
 
 
-    <?php if($link_url != 'faq') { ?>
-    <div class="faq_back">
-      <a href="<?php echo HTTP_SERVER.'/'.implode('/',$link_arr).'/';?>"><img src="images/design/button/faq_back.gif" alt="<?php echo TEXT_BACK;?>">
-      </a>
-    </div>
-    <?php } ?>
-</div>
+</div></div>
 <div id='r_menu'>
 <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
 </div>

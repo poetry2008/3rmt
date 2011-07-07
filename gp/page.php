@@ -68,7 +68,9 @@
     ?>
     <div class="pageHeading"><h1><?php echo PAGE_HEADING_TITLE ; ?></h1></div> 
         <div class="comment">
+        <div class="comment_info_warpper">
        <?php echo PAGE_TEXT_INFORMATION; ?>
+       </div>
        </div>
        <p class="pageBottom"></p>
      <?php
@@ -77,6 +79,7 @@
           ?>
           <div class="pageHeading"><h1><?php echo PAGE_NAVBAR_TITLE;?></h1></div> 
           <div class="comment">
+          <div class="comment_info_warpper">
           <ul class="comment_page01">
           <?php
             while ($page_info_res = tep_db_fetch_array($page_info_query)) {
@@ -84,6 +87,7 @@
             }
           ?>
           </ul>
+          </div>
           </div>
           <p class="pageBottom"></p>
           <?php

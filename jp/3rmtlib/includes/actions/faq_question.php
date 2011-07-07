@@ -4,7 +4,7 @@ if(isset($_GET['question_romaji'])&&$_GET['question_romaji']!=''){
   $link_url = 'faq';
   $link_url_arr = array();
   $link_url_arr[] = 'faq';
-  $breadcrumb->add(TEXT_FAQ,HTTP_SERVER.'/'.$link_url);
+  $breadcrumb->add(TEXT_FAQ,HTTP_SERVER.'/'.$link_url.'/');
   $temp_parent_id = 0;
   if(isset($_GET['qPath'])&&$_GET['qPath']!=''){
     $category_romaji_arr = explode('/',$_GET['qPath']);
@@ -16,7 +16,7 @@ if(isset($_GET['question_romaji'])&&$_GET['question_romaji']!=''){
       $temp_category_info = tep_get_faq_category_info($temp_parent_id);
       $link_url .= '/'.urlencode($value);
       $link_url_arr[] = urlencode($value);
-      $breadcrumb->add($temp_category_info['title'],HTTP_SERVER.'/'.$link_url);
+      $breadcrumb->add($temp_category_info['title'],HTTP_SERVER.'/'.$link_url.'/');
     }
     $faq_question_id = tep_get_faq_qid_by_qname($qromaji,$temp_parent_id);
     if(!$faq_question_id){
@@ -37,7 +37,7 @@ if(isset($_GET['question_romaji'])&&$_GET['question_romaji']!=''){
     }
     $link_url .= '/'.urlencode($temp_question_info['romaji']);
   }
-  $breadcrumb->add($temp_question_info['ask'],HTTP_SERVER.'/'.$link_url);
+  $breadcrumb->add($temp_question_info['ask'],HTTP_SERVER.'/'.$link_url.'/');
 
 //last faq
 $last_faq_question_sql = "select * from (
