@@ -59,7 +59,7 @@ class HM_Form extends DbRecord
         echo "var finished = false;";
       }
     ?>
-  　var canEnd = true;
+  　var canEnd = false;
     function checkLockOrder()
     {
       if (finished==true){
@@ -94,6 +94,11 @@ class HM_Form extends DbRecord
     {
       return INPUThiddenRequire(ele);
     }
+    function undefinedtextRequire(ele)
+    {
+             return INPUThiddenRequire(ele);
+    }
+
     function undefinedhiddenRequire(ele)
     {
              return INPUThiddenRequire(ele);

@@ -295,7 +295,7 @@ if ($g_num % 2 == 0) {
                echo '<td><input  class="checkbox_ag" type="checkbox" name="ag[]" value="'.$group_list_res['id'].'"></td>'; 
                 echo '<td>'.$group_list_res['name'].'</td>'; 
                 echo '<td>';
-                echo '<a href="'.tep_href_link(FILENAME_OA_GROUP, 'action=edit&gid='.$group_list_res['id'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type']).'">'.EDIT_GROUP_TEXT.'</a>'; 
+                echo '<a href="'.tep_href_link(FILENAME_OA_GROUP, 'action=edit&return=oa_link&gid='.$group_list_res['id'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type']).'">'.EDIT_GROUP_TEXT.'</a>'; 
                 echo '&nbsp;&nbsp;'; 
                 echo '<a onclick="return confirm(\''.$group_list_res['name'].'を削除しますか?\')"'.'href="'.tep_href_link(FILENAME_OA_GROUP, 'action=del&gid='.$group_list_res['id'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type']).'">'.DEL_GROUP_TEXT.'</a>'; 
                 echo '</td>'; 

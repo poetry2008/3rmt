@@ -201,17 +201,20 @@ class HM_Item_Autocalculate extends HM_Item_Basic
   {
     $sql = 'select * from oa_formvalue where item_id ='.$eid.' ';
     $sqlArray = array();
-    while($formvalue_res  = tep_db_fetch_array(tep_db_query($sql))){
+    $res = tep_db_query($sql);
+    while($formvalue_res  = tep_db_fetch_array($res)){
       $oid = $formvalue_res['orders_id'];
       $quaArray = @explode('_',$formvalue_res['value']);
       if(!count($quaArray)){
         continue;
       }else {
         foreach( $quaArray as $key=>$value){
+          echo $value;
           $id_to_qua = explode('|',$value);
-          $id = $id_to_qua[0];
+          $id = $id_to_qua[2];
           $qua = $id_to_qua[1];
-          tep_db_query("update ".TABLE_PRODUCTS." set products_real_quantity=`products_real_quantity`-".(int)$qua." where products_id='".$id."'");          
+          //          echo ("update ".TABLE_PRODUCTS." set products_real_quantity=`products_real_quantity`-".(int)$qua." where products_id='".$id."'");          
+          tep_db_query("update ".TABLE_PRODUCTS." set products_real_quantity=`products_real_quantity`-".(int)$qua." where products_id='".$id."'");   
         }
       }
     };
