@@ -61,12 +61,12 @@ class HM_Item_Specialbank extends HM_Item_Basic
 
     echo "<td valign='top'>";
     echo "\n";
-      echo "<div style='float:left' ><input id='".$this->formname.$key."' ".$checked." name='0".$this->formname."radio' type='radio'/>";
       if (count($radio['checkboxs'])==1){
 	$float = 'float:left;';
       }else{
 	$float = '';
       }
+      echo "<div style='".$float."' ><input id='".$this->formname.$key."' ".$checked." name='0".$this->formname."radio' type='radio'/>";
       echo $radio['text'];      
       echo "</div>";
       if (''==$checked){

@@ -194,7 +194,40 @@ class HM_Item_Autocalculate extends HM_Item_Basic
     $this->order_id = $order_id;
   }
 
+  //删除时会激活这个操作
+  //找到所有 有这个值的 order 
+  static public function deleteTrigger($eid)
+  {
+    return true;
+    $sql = 'select * from oa_formvalue where item_id ='.$eid.' ';
+    $sqlArray = array();
+    while($formvalue_res  = tep_db_fetch_array(tep_db_query($sql))){
+      $oid = $formvalue_res['orders_id'];
+      $quaArray = @explode('_',$formvalue_res['value']);
+      if(!count($quaArray)){
+        continue;
+      }else {
+        foreach( $quaArray as $key=>$value){
+          $id_to_qua = explode('|',$value);
+          $id = $id_to_qua[0];
+          $qua = $id_to_qua[1];
+          $sqlQuatly = '  select 	op.products_quantity ';
+          $sqlQuatly .= ' from orders_products op , products p  ';
+          $sqlQuatly .= ' where op.orders_id = "'. $oid.'"';
+          $sqlQuatly .= ' and p.products_id = op.products_id ';
+          $sqlQuatly .= ' and p.relate_products_id = ' .$id_to_qua[0];
+          echo $sqlQuatly;
+          $sqlArray[] = $sqlQuatly;
+        }
 
+      }
+      
+    };
+    //    var_dump($sqlArray);
+
+    //       die('xcv');
+
+  }
   static public function prepareForm($item_id = NULL)
   {
     $item_raw = tep_db_query("select * from ".TABLE_OA_ITEM." where id = '".(int)$item_id."'"); 

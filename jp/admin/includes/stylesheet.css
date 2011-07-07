@@ -295,15 +295,19 @@ body {
 /* ---------------------------
 .[TR]：一覧表データ（選択行）
 --------------------------- */
+.oa_bg{ background-color:#E0E0E0;}
+.oa_bg02{ background-color:#F0F1F1;}
+
+.dataTableRowOver {
+	background-color: #FFCC99;                      /* 背景色 */
+}
+
 .dataTableRowSelected {
-	background-color: #FFD700;                      /* 背景色 */
+	background-color: #FFD700;!important;                      /* 背景色 */
 }
 /* ---------------------------
 .[TR]：一覧表データ（カーソルが乗っている行）
 --------------------------- */
-.dataTableRowOver {
-	background-color: #FFCC99;                      /* 背景色 */
-}
 /* ---------------------------
 .[TD]：一覧表データ（コンテンツ）
 --------------------------- */
@@ -932,8 +936,6 @@ a.s_column_bar {
     padding:0 5px;
 	background-color:#ddd;
 }
-.oa_bg{ background-color:#E0E0E0;}
-.oa_bg02{ background-color:#F0F1F1;}
 .oa_item_bg{background-color:#B5B4B4;
 }
 .oa_item_bg td{background-color:#f1f1f1;}
