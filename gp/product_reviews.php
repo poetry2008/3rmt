@@ -38,7 +38,7 @@
       <td valign="top" id="contents"> <div class="pageHeading"><h1>&nbsp;<?php echo sprintf(HEADING_TITLE, $product_info['products_name']); ?></h1></div> 
         
         <div class="comment"> 
-          <div class="comment_info_warpper"> 
+          <div class="comment_info_warpper01"> 
           <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
             <tr> 
               <td>

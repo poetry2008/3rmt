@@ -16,6 +16,6 @@
         <td valign="top" id="contents">
           <div class="pageHeading"><h1>お問い合わせ</h1></div> 
           <div class="comment">
-            <table border="0" width="100%" cellspacing="0" cellpadding="0">
+            <table border="0" class="product_info_box" width="100%" cellspacing="0" cellpadding="0">
               <tr>
                 <td valign="top">

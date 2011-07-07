@@ -151,7 +151,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
       <?php echo tep_draw_form('checkout_confirmation', $form_action_url, 'post');?>
       <div class="pageHeading"><h1><?php echo HEADING_TITLE ; ?></h1></div>      
       <div class="comment">
-        <table border="0" width="100%" cellspacing="0" cellpadding="0" class="product_info_box"> 
+        <table border="0" width="100%" cellspacing="0" cellpadding="0" class="product_info_box01"> 
         <tr> 
           <td><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
               <tr> 
@@ -201,7 +201,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
             <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
           </tr> 
         <tr> 
-          <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
+          <td><table border="0" width="100%" cellspacing="1" cellpadding="2" > 
               <tr> 
                 <?php
   if ($sendto != false) {
@@ -232,7 +232,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                 <td width="<?php echo (($sendto != false) ? '70%' : '100%'); ?>" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                     <tr> 
                       <td>
-                      <table class="infoBoxContents"> 
+                      <table class="infoBoxContents01"> 
                           <?php
   if (sizeof($order->info['tax_groups']) > 1) {
 ?> 
@@ -289,10 +289,10 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
     
     
           <tr> 
-            <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
+            <td><!--<table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
                 <tr> 
-                  <td>
-<table class="infoBoxContents">
+                  <td>-->
+<table class="infoBoxContents01">
   <tr>
   <td class="main"><b><?php echo TEXT_TORIHIKI_TITLE; ?></b><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
   </tr>
@@ -320,9 +320,9 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
       </td>
       </tr>
       </table>
-    </td>
+   <!-- </td>
   </tr>
-</table>
+</table>-->
           
           </td> 
                 </tr> 
@@ -390,7 +390,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
         </tr> 
         <tr> 
           <td>
-          <table class="infoBoxContents"> 
+          <table class="infoBoxContents01"> 
               <tr> 
                 <td width="30%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                     <tr> 
@@ -506,7 +506,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
         </tr> 
         <tr> 
           <td>
-            <table class="infoBoxContents"> 
+            <table class="infoBoxContents01"> 
               <tr> 
                 <td>
                   <table border="0" cellspacing="0" cellpadding="2"> 

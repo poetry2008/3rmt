@@ -125,7 +125,7 @@ function change_num(ob, targ, quan,a_quan)
     } ?>
          <div class="pageHeading_long"><span><h1><?php echo $product_info['products_name']; ?></h1></span></div>
          <div class="comment_long">
-         <div class="comment_long_text"> 
+         <div class="comment_long_text01"> 
          <h2 class="line"><?php echo ds_tep_get_categories((int)$_GET['products_id'],1); ?> <?php echo ds_tep_get_categories((int)$_GET['products_id'],2); ?></h2>
          <table width="100%"  border="0" cellpadding="0" cellspacing="0" summary="rmt">
           <tr>
@@ -170,11 +170,11 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                 </td>
              <td><img src="images/design/spacer.gif" width="15" height="1" alt=""></td>
                 <td valign="top">
-                    <table border="0" cellpadding="0" cellspacing="0" summary="info_box" class="infoBox">
+                    <table border="0" cellpadding="0" cellspacing="0" summary="info_box" class="info_box01">
                     <tr>
                       <td>
                       <div class="product_info_box">
-                      <table summary="info_box_contents">
+                      <table summary="info_box_contents"  border="0" cellpadding="0" cellspacing="1" class="info_box_contents" >
                           <tr class="infoBoxContents">
                             <td class="main p_i_b_title">商品コード</td>
                             <td class="main"><?php if (PRODUCT_LIST_MODEL > 0){ echo $product_info['products_model'] ; }else{ echo '-' ; } ?></td>
