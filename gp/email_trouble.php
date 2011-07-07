@@ -22,7 +22,7 @@
       <div class="pageHeading"><h1><?php echo 'フリーメールでメールが受け取れない方へ'; ?></h1></div>
         <div class="comment"> 
 
-<div class="content_email01">
+<div class="product_info_box">
   <div id="bgn_content">
     <div id="wrapper_kiyaku">
   <br>

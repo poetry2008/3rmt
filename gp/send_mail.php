@@ -54,6 +54,7 @@
       <div class="pageHeading"><h1><?php echo SEND_MAIL_HEADING_TITLE; ?></h1></div>
       <div class="comment">
       <div class="send_mail">
+      <div class="product_info_box">
 <?php
   if ($success_single == false) {  
   if ($error_single == true) {
@@ -61,7 +62,7 @@
    }
    echo tep_draw_form('login', tep_href_link('send_mail.php'), 'post') . "\n";
 ?>
-      <table class="login" width="100%" cellpadding="0" cellspacing="0">
+      <table class="login" width="98%" cellpadding="0" cellspacing="0">
         <tr>
           <td valign="middle" style="font-size:11px;"><b><?php echo INPUT_SEND_MAIL; ?>:</b></td>
           <td class="login_text" valign="middle">
@@ -113,7 +114,7 @@
       if ($success_single == true) {  
          echo '<div style="width:100%;text-align:left;padding:10px 0 0 0;"><a href="'.tep_href_link(FILENAME_DEFAULT).'"><img src="includes/languages/japanese/images/buttons/button_back.gif"></a></div>';
          }
-    ?>
+    ?></div>
         </div>
         </div>
       <p class="pageBottom"></p>

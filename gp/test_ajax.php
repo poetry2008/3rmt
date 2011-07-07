@@ -26,7 +26,7 @@
       <!-- body_text //-->
       <td valign="top" id="contents">
         <div class="pageHeading">
-        <img align="top" alt="img" src="images/menu_ico.gif"><h1>text</h1></div>
+        <h1>text</h1></div>
                 <div class="comment">
         <table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>

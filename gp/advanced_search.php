@@ -121,7 +121,7 @@ function popupWindow(url) {
         <div class="pageHeading"><h1><?php echo HEADING_TITLE ; ?></h1></div> 
         
         <div class="comment"> 
-          <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+          <table border="0" width="100%" cellspacing="0" cellpadding="0" class="product_info_box"> 
             <tr> 
               <td> <table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                   <tr> 
@@ -222,7 +222,7 @@ function popupWindow(url) {
         <p class="pageBottom"></p>
          	<div class="pageHeading"><h2><?php echo HEADING_SEARCH_HELP; ?></h2></div>
             <div class="comment">
-            <table width="100%" cellspacing="0" cellpadding="3" border="0" class="infoBoxContents" summary="table">
+            <table width="100%" cellspacing="0" cellpadding="3" border="0" class="product_info_box" summary="table">
                 <tr>
                     <td><?php echo TEXT_SEARCH_HELP;?></td>
                 </tr>

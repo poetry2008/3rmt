@@ -166,7 +166,7 @@ function session_win() {
       <div class="pageHeading"><h1><?php echo HEADING_TITLE; ?></h1></div>
       <?php echo tep_draw_form('login', tep_href_link(FILENAME_LOGIN, 'action=process', 'SSL')); ?>
       <div class="comment">
-      <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" summary="content">
+      <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" summary="content" class="product_info_box">
 
 <?php
   if (isset($_GET['login']) && ($_GET['login'] == 'fail')) {

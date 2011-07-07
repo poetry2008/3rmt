@@ -54,7 +54,7 @@ function checkForm() {
     $product_info = tep_db_fetch_array($product_query);
 ?> 
       <div class="comment"><?php echo tep_draw_form('product_reviews_write', tep_href_link(FILENAME_PRODUCT_REVIEWS_WRITE, 'action=process&products_id=' . $_GET['products_id']), 'post', 'onSubmit="return checkForm();"'); ?> 
-        <table width="100%" cellpadding="0" cellspacing="0" border="0"> 
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" class="product_info_box"> 
           <tr> 
             <td>
   <?php if ($form_error === true) {?>

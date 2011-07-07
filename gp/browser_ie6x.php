@@ -29,6 +29,7 @@
         <td valign="top" id="contents">
           <div class="pageHeading"><h1><?php echo HEADING_TITLE; ?></h1></div> 
           <div class="comment">
+          <div class="product_info_box">
                   当ショッピングシステムは、ブラウザの初期設定のままで動作するように作られております。<br>
                     ショッピングができない場合は、以下の手順で設定内容をお確かめください。
                   <div class="dot">&nbsp;</div>
@@ -61,6 +62,7 @@
                   <br>セキュリティの設定画面が開きます。［アクティブ&nbsp;スクリプト］を［有効にする］にチェックしてJavaScriptを有効にします。その後［OK］ボタンをクリックしてください。<br>
                   <div class="dot">&nbsp;</div>
                   <br>以上で設定は完了です。ショッピングをお楽しみください。<br>
+          </div>
           </div>
                     <p class="pageBottom"></p>
         </td>
