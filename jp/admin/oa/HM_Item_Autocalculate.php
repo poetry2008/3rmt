@@ -91,7 +91,8 @@ class HM_Item_Autocalculate extends HM_Item_Basic
       echo $op['products_name'];
         //有关联商品的 输出
         echo " <span id ='quantity_".$opp['products_id']."' >".$opp['products_quantity']."</span> - ";
-        echo "<input type='text' value='".intval($opp['products_quantity']-$_value)."' 
+        echo "<input type='text'
+          value='".($check=="checked"?intval($opp['products_quantity']-$_value):0)."' 
            id ='".$opp['products_id']."_input_".$this->formname."' 
            onchange='".$this->formname."Chage_span(".$opp['products_quantity'].",this,\"relate_product_".$opp['products_id']."\")' ";
       //判断是否 checkbox 选中来确定 是否为只读
