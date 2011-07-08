@@ -101,7 +101,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
       }
       echo " >";
         echo " = <span id='relate_product_".$opp['products_id']."'>".
-          $_value."</span>";
+          ($check=="checked"?$_value:intval($opp['products_quantity']))."</span>";
       }else{
         echo "<input value='".$opp['products_id']."'  
         onclick='".$this->formname."Change_option(".$opp['products_id'].",this,".$op['products_id'].")' 
