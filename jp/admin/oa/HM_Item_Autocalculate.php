@@ -100,7 +100,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
         echo " readonly='true' ";
       }
       echo " >";
-        echo " = <span id='relate_product_".$opp['products_id']."'>".
+        echo " = <span id='span_relate_product_".$opp['products_id']."'>".
           ($check=="checked"?$_value:intval($opp['products_quantity']))."</span>";
       }else{
         echo "<input value='".$opp['products_id']."'  
