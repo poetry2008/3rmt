@@ -33,7 +33,21 @@ echo '
   <a href="javascript:void(0);" style="cursor:hand" onKeyPress="SomeJavaScriptCode" onClick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}"> RMT総合サイト RMT学園をお気に入りに追加して下さい！
 </a>
 </div>
-<div id="title"><img src="../images/design/banner.jpg" alt="banner"></div>
+<div id="title"><table cellspacing="0" cellpadding="0" border="0" class="top_right">
+  <tbody><tr><td height="20">
+<!--  	 <ul>
+<li><a href="<?php echo tep_href_link(FILENAME_CONTACT_US);?>">お問い合わせ</a></li>
+        <li>|</li>
+        <li><a href="<?php echo tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL');?>">カートを見る</a></li>
+        <li>|</li>
+        <li><a href="<?php echo  tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL');?>">レジへ進む
+  </a></li>
+</ul>
+--></td></tr>
+<tr><td align="right" class="header_w_time"><img alt="worktime" src="../../../images/design/header_worktime.gif"></td></tr>
+<tr><td align="right" class="header_w_time02"><img alt="３６５日年中無休" src="../../../images/design/work_img01.gif"><img alt="ご注文は24時間受付" src="../../../images/design/work_img02.gif"></td></tr>
+         </tbody></table>
+  </div>
   <div id="header02">
     <div id="header_Menu">
   <div class="header_menu_content">
@@ -43,7 +57,7 @@ echo '
             <form name="quick_find" action="/advanced_search_result.php" method="get">
               <table cellpadding="0" cellspacing="0" summary="search">
                 <tr>
-                  <td><img src="../images/design/button/search_text.gif" width="22" height="19" alt="RMT検索"></td>
+                  <td></td>
                   <td><select name="categories_id" class="header_search_select">
                       <option value="" selected="selected">全てのゲーム</option>
                       <option value="168">FF11 RMT</option>
