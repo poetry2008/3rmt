@@ -76,6 +76,7 @@ if ($w_clientip == '76011' && $w_username && $w_email && $w_money && $w_telno) {
       'date_added'    => 'now()',
       'last_modified' => 'now()'
     ));
+	$success = true;
   } else {
     // 不明
     tep_db_perform('telecom_unknow', array(
@@ -88,9 +89,12 @@ if ($w_clientip == '76011' && $w_username && $w_email && $w_money && $w_telno) {
       'type' => ($w_rel == 'yes' && $w_option =="")?'success':'null',//optionが空白の場合手動作成である
       'date_added' => 'now()',
       'last_modified' => 'now()'
+
     ));
+	$buming = true;
   }
 } else {
+       $error = true;
   // 不正
 }
 
@@ -99,3 +103,8 @@ if($w_clientip == "76011"){
 }else{
   echo "不正アクセス";
 }
+
+
+var_dump($success);
+var_dump($buming);
+var_dump($error);
