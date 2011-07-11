@@ -3,6 +3,21 @@
   $Id$
 */
 ?>
+ <table class="footer_top"> 
+  <tr>
+    <td colspan="3">
+    <?php include(DIR_WS_BOXES.'information.php');?> 
+    <div class="buttom_warp02">
+    <?php if ($banner = tep_banner_exists('dynamic', 'footer')) { echo tep_display_banner('static', $banner); }?>
+    </div>
+    
+    <div class="buttom_warp03">
+    <?php echo DEFAULT_PAGE_BOTTOM_CONTENTS;?> 
+    </div>
+    
+    </td>
+  </tr>
+ </table> 
 <div id="footer">
           <address class="footer_contacts">
         <?php echo FOOTER_TEXT_BODY . "\n"; ?><br>

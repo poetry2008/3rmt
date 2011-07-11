@@ -72,7 +72,6 @@ if (
   if (isset($subcid) && $subcid) {
     $random_select .= "and p.products_id = p2c.products_id and p2c.categories_id in (".implode(',',$subcid).") ";
   }
-  $random_select .= " order by pd.site_id desc"; 
   $info_box_contents = array();
   $random_products = tep_reviews_random_select($random_select, 3);
   
