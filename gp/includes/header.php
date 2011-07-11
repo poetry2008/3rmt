@@ -81,7 +81,7 @@ if (tep_session_is_registered('customer_id')) {
   <table cellpadding="0" cellspacing="0" border="0" class="top_right">
   <tr><td>
    <ul class="login_list">
-          <li><?php echo '<a href="' . tep_href_link(FILENAME_LOGOFF, '', 'SSL') . '">' . HEADER_TITLE_LOGOFF . '</a>'."\n"; ?></li>
+          <li><?php echo '<a href="' . tep_href_link(FILENAME_LOGOFF, '', 'SSL') .  '"><img src="images/design/login_t.gif" alt="ログアウト"></a>'."\n"; ?></li>
         <li>|</li>
           <li><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_NOTIFICATIONS, '', 'SSL') . '">' . MYACCOUNT_NOTIFICATION . '</a>'."\n"; ?></li>
         <li>|</li>

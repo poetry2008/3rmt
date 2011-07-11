@@ -54,7 +54,7 @@ A {
 A：リンク（カーソルが上に乗ったとき）
 --------------------------- */
 A:hover {
-  color: #004149;
+  color: #000;
   text-decoration: underline;
 }
 /* ---------------------------
@@ -88,7 +88,7 @@ TR.headerNavigation {
 TD：ヘッダー（ナビゲーション）
 --------------------------- */
 TD.headerNavigation {
-	font-size: 10px;
+	font-size: 12px;
 	background: #FFFFFF;
 	color: #029DBB;
 }
@@ -96,14 +96,14 @@ TD.headerNavigation {
 A：ヘッダー（ナビゲーションのリンク）
 --------------------------- */
 A.headerNavigation { 
-	color: #555;
-	font-size:10px;
+	color: #1B5086;
+	font-size:12px;
 }
 /* ---------------------------
 A：ヘッダー（ナビゲーション・カーソルが上に乗ったとき）
 --------------------------- */
 A.headerNavigation:hover {
-	color: #002226;
+	color: #444;
 }
 /* ---------------------------
 TR：ヘッダー（エラー）
@@ -461,7 +461,7 @@ SPAN.errorText {
 }
 address {
 	font-style: normal;
-	font-size: 10px;
+	font-size: 12px;
 }
 #menu a{
    color:#656565;

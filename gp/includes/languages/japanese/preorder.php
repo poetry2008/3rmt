@@ -67,6 +67,6 @@ define('TEXT_EMAIL_LINK', 'この商品の詳細は、下記のリンクをク�
 define('TEXT_EMAIL_SIGNATURE', '[ご連絡・お問い合わせ先]━━━━━━━━━━━━' . "\n"
 . '株式会社 iimy' . "\n"
 . SUPPORT_EMAIL_ADDRESS . "\n"
-. 'http://www.rmtgakuen.jp/' . "\n"
+. 'http://www.gameplanet.jp/' . "\n"
 . '━━━━━━━━━━━━━━━━━━━━━━━');
 ?>
