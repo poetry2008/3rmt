@@ -530,11 +530,11 @@ Header
 	color:#000000; 
 	text-decoration:none;
 }
-/*#title .top_right ul{ float:right;background: url(../images/design/top_right_bg.gif) no-repeat; width:480px; height:26px; padding-right:20px;}
-.top_right li{ float:right; margin:2px 3px 0 3px; font-size:12px; color:#fff;}
+#title .top_right ul{ float:right;background: url(../images/design/top_right_bg.gif) no-repeat; width:480px; width:500px\9; height:26px; padding-right:20px;}
+.top_right li{ float:right; margin:2px 3px 0 3px; margin:4px 3px 0 3px; font-size:12px; color:#fff;}
 .top_right li a{ color:#fff; font-size:12px;}
 .top_right li a:hover{ color:#000; text-decoration:underline;}
-*/.top_right .header_list{ float:right; margin-right:10px; text-align:right; width:120px;}
+.top_right .header_list{ float:right; margin-right:10px; text-align:right; width:120px;}
 .top_right .header_list span{ float:right; font-size:12px;}
 .header_list_title{ float:left; color:#990000; font-size:12px;}
 #header {
@@ -849,7 +849,7 @@ News
 	text-align:left;
 	width:170px;
 }
-.menu_top a { font-size:14px; font-weight:bold; color:#202B04;}
+.menu_top a { font-size:12px; font-weight:bold; color:#202B04;}
 .menu_top a:hover{
 	text-decoration:none;
 }
@@ -1262,7 +1262,6 @@ a.Icon:hover {
 .h_search span{ float:left; padding-top:3px;}
 .top_index_image{overflow:hidden;}
 .reviews_warp{ 
-	width:158px;  
 	background-color: #E5E5E5;
     border: 1px solid #B8B8B8;
 	padding:5px;
