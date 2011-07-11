@@ -898,7 +898,7 @@ if(isset($_GET['action'])&& $_GET['action']&&(!isset($site_id)||$site_id==0)){
 }else{
   $_action = $_GET['action'];
 }
-switch (isset($_GET['action'])? $_GET['action']:'') {
+switch (isset($_action)? $_action:'') {
   case 'new_faq_category':
     $heading[] = array('text' => '<b>' .TEXT_INFO_HEADING_NEW_FAQ_CATEGORY.'</b>');
     $contents = array('form' =>
