@@ -116,7 +116,7 @@ if (tep_session_is_registered('customer_id')) {
 <?php  } ?>
   <div class="header_Navigation">
   		<ul>
-        	<li><a href="#">総合TOP</a></li>
+        	<li><a href="javascript:void(0);">総合TOP</a></li>
             <li>|</li>
             <?php
             $summary_query = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where status = 1 and site_id = ".SITE_ID." and romaji = 'companyprofile'"); 

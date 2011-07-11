@@ -23,8 +23,6 @@ $product_list_query = mysql_query("select * from ( select distinct p.products_im
  
   while ($product_list_res = mysql_fetch_array($product_list_query)) {
     $products_id = $product_list_res['products_id'];
-    var_dump($products_id);
-    exit;
     for ($i=0; $i<155; $i++) {
       $reviews_sql = "insert reviews values(NULL, '".$products_id."', '0', 'test', '5', '".date('Y-m-d H:i:s', time())."', NULL, '5', '9', '1', '127.0.0.1')"; 
       mysql_query($reviews_sql);

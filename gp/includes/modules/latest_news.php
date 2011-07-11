@@ -5,10 +5,10 @@
 ?>
 <!-- latest_news //-->
 <div class="latest_news_box">
-<div class="pageHeading">
+<h1 class="pageHeading">
 <?php echo STORE_NAME;?>からのお知らせ
 
-</div>
+</h1>
 <div class="comment">
     <div id="news">
         <ul class="news_ul">
