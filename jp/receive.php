@@ -78,16 +78,6 @@ if ($w_clientip == '76011' && $w_username && $w_email && $w_money && $w_telno) {
     ));
 	$success = true;
   } else {
-
-    // bobhero test for chenrenzhong {{
-    tep_db_perform(TABLE_ORDERS, array(
-      'telecom_name'  => $w_username,
-      'telecom_tel'   => $w_telno,
-      'telecom_money' => $w_money,
-      'telecom_email' => $w_email,
-      'orders_status' => '30',
-    ), 'update', "orders_id='".$orders['orders_id']."'");
-    // bobhero test for chenrenzhong }}
     // 不明
     tep_db_perform('telecom_unknow', array(
       '`option`' => $w_option,
@@ -118,9 +108,8 @@ if($w_clientip == "76011"){
 var_dump($success);
 var_dump($buming);
 var_dump($error);
-echo '----------------</br>';
+echo '----------------';
 var_dump($orders);
-echo '----------------</br>';
 var_dump($orders['telecom_name']);
 var_dump($orders['telecom_tel']);
 var_dump($orders['telecom_money']);

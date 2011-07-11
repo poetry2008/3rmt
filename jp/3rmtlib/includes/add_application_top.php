@@ -751,3 +751,8 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
         }
     }
   }
+  define('TABLE_OA_GROUP', 'oa_group'); 
+  define('TABLE_OA_FORM', 'oa_form'); 
+  define('TABLE_OA_FORM_GROUP', 'oa_form_group'); 
+  define('TABLE_OA_ITEM', 'oa_item'); 
+  define('TABLE_OA_FORMVALUE', 'oa_formvalue'); 
