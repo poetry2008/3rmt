@@ -11,9 +11,7 @@ require(DIR_WS_BOXES . 'banners.php');
   //include(DIR_WS_BOXES . 'login.php');
 //define ("RIGHT_ORDER_TEXT","‘Ÿ≈‰ﬂ_“¿Óm");
   //echo '<div class="reorder"><a class="reorder_link" href="'.tep_href_link('reorder.php').'"><img src="images/design/reorder.gif" alt="'.RIGHT_ORDER_TEXT.'"></a></div>';
-  if($_SERVER['REQUEST_URI']=='/'||$_SERVER['REQUEST_URI']=='/index.php'||
-      (strpos($_SERVER['REQUEST_URI'],'index.php?cmd='))||
-      (strpos($_SERVER['REQUEST_URI'],'?cmd='))){
+  if($_SERVER['REQUEST_URI']=='/'||$_SERVER['REQUEST_URI']=='/index.php'|| (strpos($_SERVER['REQUEST_URI'],'index.php?cmd='))){
     require(DIR_WS_BOXES . 'index_reviews.php');
   } else {
     require(DIR_WS_BOXES . 'reviews.php');
