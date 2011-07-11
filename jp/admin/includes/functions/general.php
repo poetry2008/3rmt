@@ -5470,31 +5470,26 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
     tep_db_query("delete from " . TABLE_FAQ_QUESTION_DESCRIPTION . " where 
         faq_question_id = '" . tep_db_input($product_id) . "'");
   }
-  function   tep_order_status_change($oID,$status){
+function   tep_order_status_change($oID,$status){
+  require_once("oa/HM_Form.php");
+  require_once("oa/HM_Group.php");
+  $order_id = $oID;
+  $formtype = tep_check_order_type($order_id);
+  $payment_romaji = tep_get_payment_code_by_order_id($order_id); 
+  $oa_form_sql = "select * from ".TABLE_OA_FORM." where formtype = '".$formtype."' and payment_romaji = '".$payment_romaji."'";
 
-    $order_id = $oID;
-
-    $formtype = tep_check_order_type($order_id);
-    $payment_romaji = tep_get_payment_code_by_order_id($order_id); 
-    $oa_form_sql = "select * from ".TABLE_OA_FORM." where formtype = '".$formtype."' and payment_romaji = '".$payment_romaji."'";
-
-    $form = tep_db_fetch_object(tep_db_query($oa_form_sql), "HM_Form");
-    //如果存在，把每个元素找出来，看是否有自动更新
-    if($form){
-      $form->loadOrderValue($order_id);
-      foreach ($form->groups as $group){
-        foreach ($group->items as $item){
-          if ($item->instance->status == $status){
-            $item->instance->statusChange($order_id,$form->id,$group->id,$item->id);
-            continue;
-          }
+  $form = tep_db_fetch_object(tep_db_query($oa_form_sql), "HM_Form");
+  //如果存在，把每个元素找出来，看是否有自动更新
+  if($form){
+    $form->loadOrderValue($order_id);
+    foreach ($form->groups as $group){
+      foreach ($group->items as $item){
+        if ($item->instance->status == $status){
+          $item->instance->statusChange($order_id,$form->id,$group->id,$item->id);
+          continue;
         }
       }
-    }else {
-      return '';
-    }
-    return '';
-
+    }}
   }
 
 
@@ -6004,3 +5999,5 @@ function get_romaji_by_site_id($site_id) {
     return false;
   }
 }
+
+

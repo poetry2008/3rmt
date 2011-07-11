@@ -198,9 +198,15 @@ class HM_Item_Autocalculate extends HM_Item_Basic
   }
 
   //删除时会激活这个操作 把加进的数量 再减回去
-  static public function deleteTrigger($eid)
+  static public function deleteTrigger($eid,$gid=0,$form_id=0)
   {
     $sql = 'select * from oa_formvalue where item_id ='.$eid.' ';
+    if($gid){
+      $sql .= ' and group_id = '.$gid;
+    }
+    if($form_id){
+      $sql .= ' and form_id = '.$form_id;
+    }
     $sqlArray = array();
     $res = tep_db_query($sql);
     while($formvalue_res  = tep_db_fetch_array($res)){
