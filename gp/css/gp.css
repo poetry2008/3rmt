@@ -1946,10 +1946,10 @@ border:2px solid #FF8080;
 }
 .bottom_noice{ background-color:#fff;overflow-y:scroll; font-size:12px; padding:5px; line-height:20px;height:200px;}
 .buttom_menu{background: url(../images/design/buttom_menu_bg.gif) repeat-x; height:34px; padding:0 5px; font-size:14px; font-weight:bold; line-height:28px;}
-.buttom_warp02 ul{ background-color:#fff; padding:5px; overflow-y:scroll; height:234px;}
+.buttom_warp02 ul{ background-color:#fff; padding:5px;/* overflow-y:scroll;*/ height:234px;}
 .buttom_warp02 li{border-bottom:1px dashed #ccc; padding:3px 0 3px 15px; background: url(../images/design/later_news_link.gif) no-repeat 0 12px;}
 .buttom_warp02 li a{ font-size:12px;}
-.buttom_warp01 ul{ background-color:#fff; padding:5px; overflow-y:scroll; height:200px;}
+.buttom_warp01 ul{ background-color:#fff; padding:5px; height:200px;}
 .buttom_warp01 li{ border-bottom:1px dashed #ccc; padding:3px 0 3px 15px; background: url(../images/design/later_news_link.gif) no-repeat 0 12px;}
 .buttom_warp01 li a{ font-size:12px;}
 .buttom_warp03{ 

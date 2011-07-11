@@ -10,7 +10,7 @@
   define('HTTP_SERVER', 'http://3gp.kthiz.200.com'); // eg, http://localhost - should not be empty for productive servers
   define('HTTPS_SERVER', 'https://https.200.com/3gp.kthiz.200.com'); // eg, https://localhost - should not be empty for productive servers
   define('URL_ROMAJI_ENABLED', true);
-  define('ENABLE_SSL', false); // secure webserver for checkout procedure?
+  define('ENABLE_SSL', true); // secure webserver for checkout procedure?
   define('DIR_WS_CATALOG', '/'); // absolute path required
   define('DIR_WS_IMAGES', 'images/');
   define('DIR_WS_ICONS', DIR_WS_IMAGES . 'icons/');
@@ -52,4 +52,5 @@
   //define('DIR_OST',DIR_FS_DOCUMENT_ROOT.DIR_WS_INCLUDES.'ost/');
   define('DIR_OST','includes/ost/');
   define('SITE_TOPIC_ID',4); 
-
+  
+  define('RANDOM_SUB_SITE', '3id.kthiz.200.com');
