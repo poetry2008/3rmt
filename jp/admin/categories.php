@@ -224,7 +224,9 @@
           $meta_keywords          = $_POST['meta_keywords'];
           $meta_description       = $_POST['meta_description'];
           $romaji                 = $_POST['romaji'];
-
+          $character_romaji       = $_POST['character_romaji'];
+          $alpha_romaji           = $_POST['alpha_romaji'];
+          
           $language_id = $languages[$i]['id'];
           $sql_data_array = array(
                   'categories_name' => tep_db_prepare_input($categories_name_array[$language_id]),
@@ -237,6 +239,8 @@
                   'text_information' => tep_db_prepare_input($text_information[$language_id]),
                   'meta_keywords' => tep_db_prepare_input($meta_keywords[$language_id]),
                   'meta_description' => tep_db_prepare_input($meta_description[$language_id]),
+                  'character_romaji' => tep_db_prepare_input($character_romaji[$language_id]),
+                  'alpha_romaji' => tep_db_prepare_input($alpha_romaji[$language_id]),
                 );
 
           if ($_GET['action'] == 'insert_category' || ($_GET['action'] == 'update_category' && !tep_categories_description_exist($categories_id, $language_id, $site_id))) {
@@ -2547,6 +2551,8 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                c.sort_order, 
                c.date_added, 
                c.last_modified, 
+               cd.character_romaji,
+               cd.alpha_romaji,
                cd.site_id
       from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
       where
@@ -3002,7 +3008,18 @@ tep_display_google_results(FILENAME_CATEGORIES);
       value="'.TEXT_ROMAJI_IS_SET.'">'.
       '<input type="button" onclick = "c_is_set_error_char()"
       value="'.IS_SET_ERROR_CHAR.'">'.
-            '<br>'."\n".  '<br>'.CATEGORY_IMAGE_SHOW_TEXT.'<br>'.tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' .  $languages[$i]['image'], $languages[$i]['name']) .  '&nbsp;'.tep_draw_file_field('categories_image2').'<br>'."\n".  '<br>'.CATEGORY_SECOND_IMAGE_SHOW_TEXT.'<br>'.tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' .  $languages[$i]['image'], $languages[$i]['name']) .  '&nbsp;'.tep_draw_file_field('categories_image3').'<br>'.CATEGORY_INSERT_IMAGE_READ.'<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('categories_meta_text[' . $languages[$i]['id'] . ']','',30,3).  
+            '<br><br>'."\n";
+          if (!empty($_GET['cPath'])) {
+            $c_tmp_arr = explode('_', $_GET['cPath']); 
+            if (count($c_tmp_arr) == 1) {
+              $category_inputs_string .= CATEGORY_CHARACTER_ROMAJI.'<br>'.tep_draw_input_field('character_romaji['.$languages[$i]['id'].']', '', 'cromaji').'<br><br>'; 
+              $category_inputs_string .= CATEGORY_ALPHA_ROMAJI.'<br>'.tep_draw_input_field('alpha_romaji['.$languages[$i]['id'].']', '', 'alromaji').'<br>'; 
+            }
+          } else {
+              $category_inputs_string .= CATEGORY_CHARACTER_ROMAJI.'<br>'.tep_draw_input_field('character_romaji['.$languages[$i]['id'].']', '', 'cromaji').'<br><br>'; 
+              $category_inputs_string .= CATEGORY_ALPHA_ROMAJI.'<br>'.tep_draw_input_field('alpha_romaji['.$languages[$i]['id'].']', '', 'alromaji').'<br>'; 
+          }
+          $category_inputs_string .= '<br>'.CATEGORY_IMAGE_SHOW_TEXT.'<br>'.tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' .  $languages[$i]['image'], $languages[$i]['name']) .  '&nbsp;'.tep_draw_file_field('categories_image2').'<br>'."\n".  '<br>'.CATEGORY_SECOND_IMAGE_SHOW_TEXT.'<br>'.tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' .  $languages[$i]['image'], $languages[$i]['name']) .  '&nbsp;'.tep_draw_file_field('categories_image3').'<br>'.CATEGORY_INSERT_IMAGE_READ.'<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('categories_meta_text[' . $languages[$i]['id'] . ']','',30,3).  
                    '<br>'.CATEGORY_SEO_TITLE_TEXT.'<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' . tep_draw_input_field('seo_name[' . $languages[$i]['id'] . ']', '').'<br>'."\n".
                    '<br>'.CATEGORY_SEO_DES_TEXT.'<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('seo_description[' . $languages[$i]['id'] . ']','soft',30,3).
                    '<br>'.CATEGORY_HEADER_TEXT.'<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('categories_header_text[' . $languages[$i]['id'] . ']','soft',30,3).
@@ -3038,7 +3055,18 @@ tep_display_google_results(FILENAME_CATEGORIES);
       value="'.TEXT_ROMAJI_IS_SET.'">'.
       '<input type="button" onclick = "c_is_set_error_char()"
       value="'.IS_SET_ERROR_CHAR.'">'.
-'<br>'."\n".  '<br>'.tep_image(tep_get_web_upload_dir($site_id) .'categories/'.  $cInfo->categories_image2, $cInfo->categories_name).'<br>' .  tep_get_upload_dir($site_id) . 'categories/<br><b>' .  $cInfo->categories_image2 . '</b><br><br>'.CATEGORY_IMAGE_SHOW_TEXT.'<br>'.tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;'.tep_draw_file_field('categories_image2').'<br>'."\n".  '<br>'.tep_image(tep_get_web_upload_dir($site_id) . 'categories/'.  $cInfo->categories_image3, $cInfo->categories_name).'<br>' .  tep_get_upload_dir($site_id). 'categories/<br><b>' .  $cInfo->categories_image3 .  '</b><br><br>'.CATEGORY_SECOND_IMAGE_SHOW_TEXT.'<br>'.tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) .  '&nbsp;'.tep_draw_file_field('categories_image3').'<br>'.CATEGORY_META_COMMENT_TEXT.'<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('categories_meta_text[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_category_meta_text($cInfo->categories_id, $languages[$i]['id'], $site_id, true)).
+'<br><br>'."\n";
+          if (!empty($_GET['cPath'])) {
+            $c_tmp_arr = explode('_', $_GET['cPath']); 
+            if (count($c_tmp_arr) == 1) {
+              $category_inputs_string .= CATEGORY_CHARACTER_ROMAJI.'<br>'.tep_draw_input_field('character_romaji['.$languages[$i]['id'].']', $cInfo->character_romaji, 'cromaji').'<br><br>'; 
+              $category_inputs_string .= CATEGORY_ALPHA_ROMAJI.'<br>'.tep_draw_input_field('alpha_romaji['.$languages[$i]['id'].']', $cInfo->alpha_romaji, 'alromaji').'<br>'; 
+            }
+          } else {
+              $category_inputs_string .= CATEGORY_CHARACTER_ROMAJI.'<br>'.tep_draw_input_field('character_romaji['.$languages[$i]['id'].']', $cInfo->character_romaji, 'cromaji').'<br><br>'; 
+              $category_inputs_string .= CATEGORY_ALPHA_ROMAJI.'<br>'.tep_draw_input_field('alpha_romaji['.$languages[$i]['id'].']', $cInfo->alpha_romaji, 'alromaji').'<br>'; 
+          }
+          $category_inputs_string .= '<br>'.tep_image(tep_get_web_upload_dir($site_id) .'categories/'.  $cInfo->categories_image2, $cInfo->categories_name).'<br>' .  tep_get_upload_dir($site_id) . 'categories/<br><b>' .  $cInfo->categories_image2 . '</b><br><br>'.CATEGORY_IMAGE_SHOW_TEXT.'<br>'.tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;'.tep_draw_file_field('categories_image2').'<br>'."\n".  '<br>'.tep_image(tep_get_web_upload_dir($site_id) . 'categories/'.  $cInfo->categories_image3, $cInfo->categories_name).'<br>' .  tep_get_upload_dir($site_id). 'categories/<br><b>' .  $cInfo->categories_image3 .  '</b><br><br>'.CATEGORY_SECOND_IMAGE_SHOW_TEXT.'<br>'.tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) .  '&nbsp;'.tep_draw_file_field('categories_image3').'<br>'.CATEGORY_META_COMMENT_TEXT.'<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('categories_meta_text[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_category_meta_text($cInfo->categories_id, $languages[$i]['id'], $site_id, true)).
 
          '<br>'.CATEGORY_SEO_TITLE_TEXT.'<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' . tep_draw_input_field('seo_name[' . $languages[$i]['id'] . ']', tep_get_seo_name($cInfo->categories_id, $languages[$i]['id'], $site_id, true)).'<br>'."\n".
          '<br>'.CATEGORY_SEO_DES_TEXT.'<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('seo_description[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_seo_description($cInfo->categories_id, $languages[$i]['id'], $site_id, true)).
