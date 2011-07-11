@@ -6,7 +6,7 @@ class Model_FrequentSite extends FLEA_Db_TableDataGateway
     parent::FLEA_Db_TableDataGateway();
     //$this->disableLinks();
   }
-  var $tableName = 'rg_frequent_site';
+  var $tableName = 'gp_frequent_site';
   var $primaryKey = 'id';
     var $belongsTo = array(
         //关联相对应分类

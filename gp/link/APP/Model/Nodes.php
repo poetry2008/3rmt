@@ -5,7 +5,7 @@
 // Copyright (c) 2005 - 2008 QeeYuan China Inc. (http://www.qeeyuan.com)
 //
 // 许可协议，请查看源代码中附带的 LICENSE.txt 文件，
-// 或者访问 http://www.fleaphp.org/ 获得详细信息。
+// 或者访问 http://www.fleaphp.ogp/ 获得详细信息。
 /////////////////////////////////////////////////////////////////////////////
 
 /**
@@ -47,7 +47,7 @@ class Model_Nodes extends FLEA_Db_TableDataGateway
      *
      * @var string
      */
-    var $tableName = 'rg_nodes';
+    var $tableName = 'gp_nodes';
 
     /**
      * 主键字段名，在继承类中可能会被覆盖

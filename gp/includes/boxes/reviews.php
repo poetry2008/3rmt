@@ -46,9 +46,6 @@ if (
       echo '</div></div>' . "\n";
    } 
 } else {
-    if (isset($_GET['cPath']) && $cPath_array) {
-      $subcid = tep_get_categories_id_by_parent_id($cPath_array[count($cPath_array) - 1]);
-    }
 ?>
   <div class="reviews_box">
   <div class="menu_top">
@@ -56,73 +53,105 @@ if (
   <?php //echo tep_image(DIR_WS_IMAGES.'design/box/reviews.gif',BOX_HEADING_REVIEWS,171,44); ?></a>
   </div>
     <?php
-  $random_select = "";  
-  $random_select .= "select distinct(r.reviews_id) as rid , r.products_id, r.site_id as rsid from ".TABLE_REVIEWS." r, ".TABLE_PRODUCTS." p, ".TABLE_PRODUCTS_DESCRIPTION." pd 
-    ";
-  if (isset($subcid) && $subcid) {
-      $random_select .= ", " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c";
-  }
-  
-  $random_select .= " where r.reviews_status = '1' 
-    and p.products_id = r.products_id 
-    and pd.language_id = '".$languages_id."'
-    and p.products_id = pd.products_id 
-    and pd.products_status != '0' and pd.products_status != '3' ";
-  
-  if (isset($subcid) && $subcid) {
-    $random_select .= "and p.products_id = p2c.products_id and p2c.categories_id in (".implode(',',$subcid).") ";
-  }
-  $info_box_contents = array();
-  $random_products = tep_reviews_random_select($random_select, 3);
-  
-  if ($random_products) {
 // display random review box
     // ccdd
-	echo '<div class="bestseller_text">';
-	echo '<ul>';
-    for ($ri=0; $ri<sizeof($random_products); $ri++) { 
-    
-    $link_path_str = tep_get_product_path($random_products[$ri]['products_id']);
-    $link_path_arr = explode('_', $link_path_str);
-    $link_top_ca_query = tep_db_query("select categories_name from ".TABLE_CATEGORIES_DESCRIPTION." where (site_id = 0 or site_id = ".SITE_ID.") and categories_id = '".$link_path_arr[0]."' order by site_id desc limit 1");
-    $link_top_ca_res = tep_db_fetch_array($link_top_ca_query);
-    
-    if ($link_top_ca_res) {
-      $site_raw = tep_db_query("select * from sites where id = '".$random_products[$ri]['rsid']."'"); 
-      $site_res = tep_db_fetch_array($site_raw); 
-      
-      if ($site_res) {
-	    echo '<li class="text_a">';
-        if ($site_res['id'] == SITE_ID) {
-          echo '<div class="bestseller_text_01">'.$link_top_ca_res['categories_name'].'</div>';
-		  echo '<a href="'.tep_href_link(FILENAME_PRODUCT_REVIEWS_INFO, 'products_id=' .  $random_products[$ri]['products_id'] . '&reviews_id=' .  $random_products[$ri]['rid']).'">'.tep_href_link(FILENAME_PRODUCT_REVIEWS_INFO, 'products_id=' . $random_products[$ri]['products_id'] . '&reviews_id=' .  $random_products[$ri]['rid']).'</a>'; 
-        } else {
-          echo '<div class="bestseller_text_01">'.$link_top_ca_res['categories_name'].'</div>';
-		  echo '<a href="'.$site_res['url'].'/reviews/pr-'.$random_products[$ri]['products_id'].'/'.$random_products[$ri]['rid'].'.html">'.$site_res['url'].'/reviews/pr-'.$random_products[$ri]['products_id'].'/'.$random_products[$ri]['rid'].'.html</a>'; 
+        $site_list_arr = array();
+
+        $site_list_query = tep_db_query("select * from sites where id != '".SITE_ID."'"); 
+        while ($site_list_res = tep_db_fetch_array($site_list_query)) {
+          $site_list_arr[] = $site_list_res['id']; 
         }
-		echo '</li>';
-      }
-    }
-    } 
+        
+        $site_ra_arr = array(); 
+        $site_total = count($site_list_arr);
+        for ($ra_num = 0; $ra_num < 3; $ra_num++) {
+          $site_ra_num = tep_rand(0, $site_total-1); 
+          $site_ra_arr[] = $site_list_arr[$site_ra_num]; 
+        } 
+        
+        $ran_category_arr = array();
+        for ($ran_num = 0; $ran_num < 3; $ran_num++) {
+          while (true) {
+          $random_break = false; 
+          $random_category_query = tep_db_query("
+              select *, RAND() as b 
+              from (
+                select c.categories_id, 
+                       cd.categories_name, 
+                       cd.categories_status, 
+                       c.parent_id,
+                       cd.romaji, 
+                       cd.site_id,
+                       cd.categories_image2,
+                       c.sort_order
+                from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
+                where c.parent_id = '0' 
+                  and c.categories_id = cd.categories_id 
+                  and cd.language_id='" . $languages_id ."' 
+                order by site_id DESC
+              ) c 
+              where site_id = ".$site_ra_arr[$ran_num]."
+                 or site_id = 0
+              group by categories_id
+              having c.categories_status != '1' and c.categories_status != '3'  
+              order by b limit 1 
+          ");
+          $random_category_res = tep_db_fetch_array($random_category_query); 
+          if ($random_category_res) {
+            if (empty($ran_category_arr)) {
+                $ran_category_arr[$ran_num][] = $random_category_res['categories_id']; 
+                $ran_category_arr[$ran_num][] = $site_ra_arr[$ran_num]; 
+                $ran_category_arr[$ran_num][] = $random_category_res['categories_name']; 
+                $ran_category_arr[$ran_num][] = $random_category_res['romaji']; 
+                $random_break = true; 
+            } else {
+            foreach($ran_category_arr as $rkey => $rvalue) {
+              if (!(($random_category_res['categories_id'] == $rvalue[0]) && ($site_ra_arr[$ran_num] == $rvalue[1]))) {
+                $ran_category_arr[$ran_num][] = $random_category_res['categories_id']; 
+                $ran_category_arr[$ran_num][] = $site_ra_arr[$ran_num]; 
+                $ran_category_arr[$ran_num][] = $random_category_res['categories_name']; 
+                $ran_category_arr[$ran_num][] = $random_category_res['romaji']; 
+                $random_break = true; 
+                break; 
+              }
+            }
+            }
+          }
+            if ($random_break) {
+              break;            
+            }
+          }
+        }
+        echo '<div class="bestseller_text">';
+	echo '<ul>';
+    
+             foreach ($ran_category_arr as $ran_key => $ran_value) {
+	       echo '<li class="text_a">';
+               echo '<div class="bestseller_text_01">'.$ran_value[2].'</div>';
+               $url_str = ''; 
+               switch ($ran_value[1]) {
+                 case '5': 
+                   $site_info_query = tep_db_query("select * from sites where id = '5'");
+                   $site_info_res = tep_db_fetch_array($site_info_query);
+                   $url_str = 'http://'.$ran_value[3].'.'.RANDOM_SUB_SITE; 
+                   break; 
+                 case '1': 
+                 case '2': 
+                 case '3': 
+                   $site_info_query = tep_db_query("select * from sites where id = '".$ran_value[1]."'");
+                   $site_info_res = tep_db_fetch_array($site_info_query);
+                   $url_str = $site_info_res['url'].'/rmt/c-'.$ran_value[0].'.html'; 
+                   break; 
+                 default:
+                   $site_info_query = tep_db_query("select * from sites where id = '".$ran_value[1]."'");
+                   $site_info_res = tep_db_fetch_array($site_info_query); $url_str = $site_info_res['url'].'/'.$ran_value[3].'/'; 
+                   break;
+               }
+               echo '<a href="'.$url_str.'">'.$url_str.'</a>'; 
+               echo '</li>'; 
+             }
 	echo '</ul>';
 	echo '</div>';
-    } elseif (isset($_GET['products_id'])) {
-// display 'write a review' box
-    echo '<div class="reviews_warp" align="center">';
-    echo '<table border="0" cellspacing="2" cellpadding="2" width="100%">
-      <tr><td class="boxText">
-        <a href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS_WRITE, 'products_id=' . $_GET['products_id']) . '">' . tep_image(DIR_WS_IMAGES . 'box_write_review.gif', IMAGE_BUTTON_WRITE_REVIEW) . '</a>
-      </td><td class="boxText">
-        <a href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS_WRITE, 'products_id=' . $_GET['products_id']) . '">' . BOX_REVIEWS_WRITE_REVIEW .'</a>
-      </td></tr>
-    </table>' . "\n";
-     echo '</div></div>'; 
-  } else {
-// display 'no reviews' box
-    echo '<div class="reviews_warp" align="center"> <div class="reviews_box_info"> ';
-    echo BOX_REVIEWS_NO_REVIEWS;
-     echo '</div></div>'; 
-  }
 ?>
     </div>
 <!-- reviews_eof //-->

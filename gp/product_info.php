@@ -558,7 +558,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
 //    $reviews = tep_db_query("select count(*) as count from " . TABLE_REVIEWS . " where products_id = '" . $_GET['products_id'] . "'");
 //    $reviews_values = tep_db_fetch_array($reviews);
 //    if ($reviews_values['count'] > 0) {
-    include(DIR_WS_BOXES.'reviews.php') ;
+    //include(DIR_WS_BOXES.'reviews.php') ;
 ?>
 <?php
 //    }
