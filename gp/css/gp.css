@@ -1968,8 +1968,8 @@ border:2px solid #FF8080;
 .search_list_category { width:170px; float:left; margin-bottom:8px; padding-left:28px;}
 .search_list_category .search_category_name{ width:180px; display:block; font-size:14px;}
 .seach_before_info td{background: url(../images/design/seach_before_img.gif) no-repeat; width:31px; height:30px; text-align:center;}
-.seach_before_info a{ color:#FFF; font-size:12px; font-weight:bold;}
-.seach_before_info a:hover{ color: #04DBEC; font-size:12px; font-weight:bold;}
+.seach_before_info a{ color:#FFF; font-size:12px;}
+.seach_before_info a:hover{ color: #04DBEC; font-size:12px;}
 #leftca{
 	background-color:#215C9E; 
 	border:1px solid #5DA6CE; 
