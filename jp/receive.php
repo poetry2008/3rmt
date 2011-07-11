@@ -1,6 +1,7 @@
 <?php 
 require('includes/application_top.php');
 
+
 check_uri('/^\/receive.php/');
 
 header("Content-type: text/html"); 
@@ -62,6 +63,7 @@ if ($w_clientip == '76011' && $w_username && $w_email && $w_money && $w_telno) {
                           'comments' => '');
     tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
     orders_updated($orders['orders_id']);
+    tep_order_status_change($orders['orders_id'],30);
     // success
     tep_db_perform('telecom_unknow', array(
       '`option`'      => $w_option,
@@ -74,6 +76,7 @@ if ($w_clientip == '76011' && $w_username && $w_email && $w_money && $w_telno) {
       'date_added'    => 'now()',
       'last_modified' => 'now()'
     ));
+	$success = true;
   } else {
     // 不明
     tep_db_perform('telecom_unknow', array(
@@ -86,9 +89,12 @@ if ($w_clientip == '76011' && $w_username && $w_email && $w_money && $w_telno) {
       'type' => ($w_rel == 'yes' && $w_option =="")?'success':'null',//optionが空白の場合手動作成である
       'date_added' => 'now()',
       'last_modified' => 'now()'
+
     ));
+	$buming = true;
   }
 } else {
+       $error = true;
   // 不正
 }
 
@@ -97,3 +103,8 @@ if($w_clientip == "76011"){
 }else{
   echo "不正アクセス";
 }
+
+
+var_dump($success);
+var_dump($buming);
+var_dump($error);
