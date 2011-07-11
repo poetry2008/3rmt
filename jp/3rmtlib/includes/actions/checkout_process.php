@@ -348,13 +348,12 @@ function getexpress($amt,$token){
                                      'telecom_money'        => $paypalData['AMT'],
                                      'telecom_name'         => $paypalData['FIRSTNAME'] . ''. $paypalData['LASTNAME'],
                                      'telecom_tel'          => $paypalData['PHONENUM'],
-    
                                      'orders_status'        => '30',
                                      'paypal_playerid'      => $payerID,
                                      'paypal_token'         => $token,
                                      ), 'update', "orders_id='".$insert_id."'");
 }
-
+tep_order_status_change($orders['orders_id'],30);
 $customer_notification = (SEND_EMAILS == 'true') ? '1' : '0';
 $sql_data_array = array('orders_id' => $insert_id, 
                         'orders_status_id' => $order->info['order_status'], 
@@ -390,6 +389,7 @@ if ($telecom_option_ok) {
                           'customer_notified' => '0',
                           'comments' => 'checkout');
   // ccdd
+    tep_order_status_change($orders['orders_id'],30);
   tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
   orders_updated($insert_id);
 }
