@@ -66,18 +66,18 @@ if ($_SERVER['PHP_SELF'] == '/product_info.php') {
                 <td><a href="javascript:void(0);" onclick="left_search_category('left_search_category.php?ra=<?php echo LEFT_SEARCH_CATEGORY_TEN_TEXT;?>');"><?php echo LEFT_SEARCH_CATEGORY_TEN_TEXT;?></a></td>
             </tr>
             <tr>
-                <td><a href="javascript:void(0);" onclick="left_search_category('left_search_category.php?ra=a,b,c');">A~C</a></td>
-                <td><a href="javascript:void(0);" onclick="left_search_category('left_search_category.php?ra=d,e,f');">D~F</a></td>
-                <td><a href="javascript:void(0);" onclick="left_search_category('left_search_category.php?ra=g,h,i');">G~I</a></td>
-                <td><a href="javascript:void(0);" onclick="left_search_category('left_search_category.php?ra=j,k,l');">J~L</a></td>
-                <td><a href="javascript:void(0);" onclick="left_search_category('left_search_category.php?ra=m,n,o');">M~O</a></td>
+                <td><a href="javascript:void(0);" onclick="left_search_category('left_search_category.php?ra=a,b,c');">A<?php echo CONNECT_SYMBOL_TEXT;?>C</a></td>
+                <td><a href="javascript:void(0);" onclick="left_search_category('left_search_category.php?ra=d,e,f');">D<?php echo CONNECT_SYMBOL_TEXT;?>F</a></td>
+                <td><a href="javascript:void(0);" onclick="left_search_category('left_search_category.php?ra=g,h,i');">G<?php echo CONNECT_SYMBOL_TEXT;?>I</a></td>
+                <td><a href="javascript:void(0);" onclick="left_search_category('left_search_category.php?ra=j,k,l');">J<?php echo CONNECT_SYMBOL_TEXT;?>L</a></td>
+                <td><a href="javascript:void(0);" onclick="left_search_category('left_search_category.php?ra=m,n,o');">M<?php echo CONNECT_SYMBOL_TEXT;?>O</a></td>
             </tr>
             <tr>
-                <td><a href="javascript:void(0);" onclick="left_search_category('left_search_category.php?ra=p,q,r');">P~R</a></td>
-                <td><a href="javascript:void(0);" onclick="left_search_category('left_search_category.php?ra=s,t,u');">S~U</a></td>
-                <td><a href="javascript:void(0);" onclick="left_search_category('left_search_category.php?ra=v,w');">V~W</a></td>
-                <td><a href="javascript:void(0);" onclick="left_search_category('left_search_category.php?ra=x,y,z');">X~Z</a></td>
-                <td><a href="javascript:void(0);" onclick="left_search_category('left_search_category.php?ra=1,2,3,4,5,6,7,8,9');">1~9</a></td>
+                <td><a href="javascript:void(0);" onclick="left_search_category('left_search_category.php?ra=p,q,r');">P<?php echo CONNECT_SYMBOL_TEXT;?>R</a></td>
+                <td><a href="javascript:void(0);" onclick="left_search_category('left_search_category.php?ra=s,t,u');">S<?php echo CONNECT_SYMBOL_TEXT;?>U</a></td>
+                <td><a href="javascript:void(0);" onclick="left_search_category('left_search_category.php?ra=v,w');">V<?php echo CONNECT_SYMBOL_TEXT;?>W</a></td>
+                <td><a href="javascript:void(0);" onclick="left_search_category('left_search_category.php?ra=x,y,z');">X<?php echo CONNECT_SYMBOL_TEXT;?>Z</a></td>
+                <td><a href="javascript:void(0);" onclick="left_search_category('left_search_category.php?ra=1,2,3,4,5,6,7,8,9');">1<?php echo CONNECT_SYMBOL_TEXT;?>9</a></td>
             </tr>
         </table>
     </div>

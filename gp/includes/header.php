@@ -104,11 +104,9 @@ if (tep_session_is_registered('customer_id')) {
 ?>
 <div id="title">
   <table cellpadding="0" cellspacing="0" border="0" class="top_right">
-  <tr><td>
-  	 <ul>
-             <li><a href="<?php echo tep_href_link(FILENAME_LOGIN, '', 'SSL');?>"><img src="images/design/login_02.gif" alt="ログイン"></a></li>
-     	<li><a href="<?php echo tep_href_link(FILENAME_CREATE_ACCOUNT,'', 'SSL');?>"><img src="images/design/login_01.gif" alt="無料会員登録"></a></li>
- </ul>
+  <tr><td class="top_right_01">
+        <div class="top_right_02"><a href="<?php echo tep_href_link(FILENAME_LOGIN, '', 'SSL');?>"><!--<img src="images/design/login_02.gif" alt="ログイン">-->ログイン</a></div>
+     	<div class="top_right_03"><a href="<?php echo tep_href_link(FILENAME_CREATE_ACCOUNT,'', 'SSL');?>"><!--<img src="images/design/login_01.gif" alt="無料会員登録">-->無料会員登録</a></div>
  </td></tr>
 <tr><td align="right" class="header_w_time"><img src="images/design/header_worktime.gif" alt="worktime"></td></tr>
 <tr><td align="right" class="header_w_time02"><img src="images/design/work_img01.gif" alt="３６５日年中無休"><img src="images/design/work_img02.gif" alt="ご注文は24時間受付"></td></tr>
@@ -118,7 +116,7 @@ if (tep_session_is_registered('customer_id')) {
 <?php  } ?>
   <div class="header_Navigation">
   		<ul>
-        	<li><a href="#">総合TOP</a></li>
+        	<li><a href="javascript:void(0);">総合TOP</a></li>
             <li>|</li>
             <?php
             $summary_query = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where status = 1 and site_id = ".SITE_ID." and romaji = 'companyprofile'"); 

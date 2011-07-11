@@ -17,6 +17,8 @@
                cd.site_id,
                cd.romaji, 
                cd.categories_image2,
+               cd.character_romaji,
+               cd.alpha_romaji,
                c.sort_order
         from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
         where c.parent_id = '0' 
@@ -34,8 +36,12 @@
   $ca_list_str = ''; 
   $row = 0;  
   while ($category = tep_db_fetch_array($categories_query))  {
-    $ro_str = mb_substr($category['romaji'], 0, 1, 'UTF-8'); 
-    if (in_array(strtolower($ro_str), $romaji_symbol)) {
+    $ca_romaji_arr = explode(',', $category['character_romaji']);  
+    $al_romaji_arr = explode(',', $category['alpha_romaji']); 
+
+    $ins_arr = array_intersect($romaji_symbol, $ca_romaji_arr);
+    $alp_arr = array_intersect($romaji_symbol, $al_romaji_arr); 
+    if (!empty($ins_arr) || !empty($alp_arr)) {
       if ($row % 3 == 0) {
         $ca_list_str .= '<div class="search_list_category">'; 
       }
@@ -57,5 +63,4 @@
   if (empty($ca_list_str)) {
     $ca_list_str = '<font color="#ffffff">'.SEARCH_NO_TOP_CATEGORY.'</font>'; 
   }
-  
   echo $ca_str.$ca_list_str;
