@@ -1,8 +1,0 @@
-* items
-** checkbox 多选框
-*** 属性
-**** beforeText
-**** afterText
-**** children
-*** 添加方法
-**** 

@@ -1,6 +1,7 @@
 <?php 
 require('includes/application_top.php');
 
+
 check_uri('/^\/receive.php/');
 
 header("Content-type: text/html"); 
@@ -62,6 +63,7 @@ if ($w_clientip == '76011' && $w_username && $w_email && $w_money && $w_telno) {
                           'comments' => '');
     tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
     orders_updated($orders['orders_id']);
+    tep_order_status_change($orders['orders_id'],30);
     // success
     tep_db_perform('telecom_unknow', array(
       '`option`'      => $w_option,
