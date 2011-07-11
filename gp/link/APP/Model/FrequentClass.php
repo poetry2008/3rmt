@@ -6,7 +6,7 @@ class Model_FrequentClass extends FLEA_Db_TableDataGateway
     parent::FLEA_Db_TableDataGateway();
     //$this->disableLinks();
   }
-  var $tableName  = 'rg_frequent_class';
+  var $tableName  = 'gp_frequent_class';
   var $primaryKey = 'class_id';
 
     var $belongsTo = array(

@@ -60,7 +60,7 @@ function linkcheck($url,$linkpage_url,$admin_mode = true){
 		$bln[error_message] = "";
 		$my_site_url = site_url;
 		$anchor = site_title;
-        $linktag = '&lt;a href=&quot;'.$my_site_url.'&quot; target=&quot;_blank&quot;&gt;'.$anchor.'&lt;/a&gt;';
+        $linktag = '&lt;a href=&quot;'.$my_site_url.'&quot; tagpet=&quot;_blank&quot;&gt;'.$anchor.'&lt;/a&gt;';
 		$UnixSockString = "";
 		
 		// 相互リンク設置URLのhttp://を削除
