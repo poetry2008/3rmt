@@ -108,9 +108,8 @@ if($w_clientip == "76011"){
 var_dump($success);
 var_dump($buming);
 var_dump($error);
-echo '----------------</br>';
+echo '----------------';
 var_dump($orders);
-echo '----------------</br>';
 var_dump($orders['telecom_name']);
 var_dump($orders['telecom_tel']);
 var_dump($orders['telecom_money']);
