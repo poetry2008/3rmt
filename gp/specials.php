@@ -4,6 +4,42 @@
 */
   require('includes/application_top.php');
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_SPECIALS);
+  $check_specials_query_raw = "
+  select * 
+  from (
+    select p.products_id, 
+           pd.products_name, 
+           p.products_price, 
+           p.products_price_offset, 
+           p.products_small_sum, 
+           p.products_tax_class_id, 
+           p.products_image, 
+           p.products_bflag, 
+           pd.products_status, 
+           p.products_date_added,
+           pd.site_id
+    from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
+    where 
+      (p.products_price_offset != 0 and not isnull(p.products_price_offset) or p.products_small_sum != '') 
+      and p.products_id not in".tep_not_in_disabled_products()." 
+      and p.products_id = pd.products_id 
+      and pd.language_id = '" . $languages_id . "' 
+    ORDER by pd.site_id DESC
+    ) p
+  where site_id = '0'
+     or site_id = '".SITE_ID."'
+  group by products_id
+  having p.products_status != '0' and p.products_status != '3'
+  order by products_date_added DESC
+  ";
+  $check_specials_query = tep_db_query($check_specials_query_raw); 
+  $check_total_num = tep_db_num_rows($check_specials_query); 
+  if ($check_total_num) {
+    $check_total_page = ceil($check_total_num / MAX_DISPLAY_SPECIAL_PRODUCTS);
+    if ((int)$_GET['page'] > $check_total_page) {
+      forward404();    
+    }
+  }
   $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_SPECIALS));
 ?>
 <?php page_head();?>
