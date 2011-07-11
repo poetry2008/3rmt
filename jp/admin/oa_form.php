@@ -12,6 +12,23 @@
         break;
       case 'del_link_group':
         tep_db_query("delete from ".TABLE_OA_FORM_GROUP." where form_id = '".$_GET['fid']."' and group_id = '".$_GET['gid']."'"); 
+        //        select i.type ,orders_id ,$value  from oa_formvalue where form_id = $_GET['fid'] and group_id = $_GET['gid']
+        $sql = 'select id , type from '.TABLE_OA_ITEM. ' where group_id = '.$_GET['gid'];
+        $res = tep_db_query($sql);
+        while($item = tep_db_fetch_array($res)) {
+          $eid = $item['id'];
+          $class = 'HM_Item_'.ucfirst($item['type']);
+          $group_id = $_GET['gid'];
+          $form_id = $_GET['fid'];
+          require_once "oa/".$class.'.php';
+          if(method_exists($class,'deleteTrigger')){
+            call_user_func(array($class,'deleteTrigger'),$eid,$group_id,$form_id)     ;
+          }
+          tep_db_query("delete from " . TABLE_OA_FORMVALUE. " where form_id ='".$_GET['fid']."' and group_id = '".$_GET['gid']."' and item_id = '".$eid."'");
+        }
+
+
+
         tep_redirect(tep_href_link(FILENAME_OA_FORM, 'pcode='.$_GET['pcode'].'&type='.$_GET['type'])); 
         break;
     }

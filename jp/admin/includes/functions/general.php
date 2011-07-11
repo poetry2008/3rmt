@@ -5471,9 +5471,9 @@ function get_all_site_product_status($product_id)
         faq_question_id = '" . tep_db_input($product_id) . "'");
   }
 function   tep_order_status_change($oID,$status){
-  
+  require_once("oa/HM_Form.php");
+  require_once("oa/HM_Group.php");
   $order_id = $oID;
-
   $formtype = tep_check_order_type($order_id);
   $payment_romaji = tep_get_payment_code_by_order_id($order_id); 
   $oa_form_sql = "select * from ".TABLE_OA_FORM." where formtype = '".$formtype."' and payment_romaji = '".$payment_romaji."'";
@@ -5764,6 +5764,7 @@ function get_all_site_faq_question_status($question_id)
         break;
     }
   }
-  
   return $status_arr;
 }
+
+

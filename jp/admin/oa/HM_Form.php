@@ -4,23 +4,23 @@ class HM_Form extends DbRecord
 {
   var $id;
   var $groups;
-
   function __construct()
   {
-    //    $this->id = $option['id'];
     $this->groups = $this->getGroups();
   }
   function loadOrderValue($orders_id)
   {
     $id  = $this->id;
     $this->orders_id = $orders_id;
-
+    $sql = 'select orders_status from '.TABLE_ORDERS . ' where orders_id = "'.$orders_id.'"';
+    $status = tep_db_fetch_array(tep_db_query($sql));
+    $status = $status['orders_status'];
+    $this->status = $status;
     foreach ($this->groups as $gk=>$group){
       foreach ($this->groups[$gk]->items as $ikey=>$item){
         $this->groups[$gk]->items[$ikey]->loadDefaultValue($orders_id,$this->id,$this->groups[$gk]->id);
       }
     }
-    $sql = 'select * from '.TABLE_OA_FORMVALUE." where form_id = '".$this->id.'" and orders_id ="'.$orders_id.'"';
   }
   function getGroups()
   {
@@ -58,7 +58,18 @@ class HM_Form extends DbRecord
       }else {
         echo "var finished = false;";
       }
-    ?>
+    if($this->status == 6){
+      
+      ?>
+      var canceled = true;
+      <?php 
+    }else {
+    ?>    
+      var canceled = false;
+
+<?php 
+    }
+?>
   　var canEnd = false;
     function checkLockOrder()
     {
@@ -75,14 +86,11 @@ class HM_Form extends DbRecord
           }
           });
       }
-      if (canEnd == true){
-        //	   $("#canEnd").removeAttr('disabled');
+      if ((canEnd == true ) || (canceled == true)){
         $("#canEndDiv").show();
       }else{
-        //	   $("#canEnd").attr('disabled',true);
         $("#canEndDiv").hide();
       }
-      //     alert('check');
       return false;
 
     }
