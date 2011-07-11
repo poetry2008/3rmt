@@ -3612,6 +3612,9 @@ function tep_get_site_romaji_by_id($id){
 
 // 根据pid数据取得提醒商品
 function tep_get_cart_products($pid){
+  if (empty($pid)) {
+    $pid = array(0); 
+  }
   $raw = "
     select distinct(p2c.products_id)
     from products_to_tags p2t,products_to_carttag p2c, products p, products p2
