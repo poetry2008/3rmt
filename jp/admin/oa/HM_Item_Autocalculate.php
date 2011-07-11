@@ -91,16 +91,17 @@ class HM_Item_Autocalculate extends HM_Item_Basic
       echo $op['products_name'];
         //有关联商品的 输出
         echo " <span id ='quantity_".$opp['products_id']."' >".$opp['products_quantity']."</span> - ";
-        echo "<input type='text' value='".intval($opp['products_quantity']-$_value)."' 
+        echo "<input type='text'
+          value='".($check=="checked"?intval($opp['products_quantity']-$_value):0)."' 
            id ='".$opp['products_id']."_input_".$this->formname."' 
-           onchange='".$this->formname."Chage_span(".$opp['products_quantity'].",this,\"relate_product_".$opp['products_id']."\")' ";
+           onchange='".$this->formname."Chage_span(".$opp['products_quantity'].",this,\"span_relate_product_".$opp['products_id']."\")' ";
       //判断是否 checkbox 选中来确定 是否为只读
       if($_checked==$opp['products_id']&&$__checked==$op['products_id']){
         echo " readonly='true' ";
       }
       echo " >";
-        echo " = <span id='relate_product_".$opp['products_id']."'>".
-          $_value."</span>";
+        echo " = <span id='span_relate_product_".$opp['products_id']."'>".
+          ($check=="checked"?$_value:intval($opp['products_quantity']))."</span>";
       }else{
         echo "<input value='".$opp['products_id']."'  
         onclick='".$this->formname."Change_option(".$opp['products_id'].",this,".$op['products_id'].")' 

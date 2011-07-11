@@ -219,7 +219,8 @@ if ($category_depth == 'nested') {
 ?> 
     </tr> 
   <?php
-  if (isset($default_bottom)) {
+  //if (isset($default_bottom)) {
+  if (false) {
   ?>
   <tr>
     <td colspan="3">

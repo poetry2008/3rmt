@@ -7,24 +7,24 @@
 
   Released under the GNU General Public License
 */
-$libpath = "/home/bobhero/project/3rmt/jp/3rmtlib/";
+$libpath = "/home/szn/project/3rmt/jp/3rmtlib/";
 ini_set('include_path',ini_get('include_path').':'.$libpath);
 
 // Define the webserver and path parameters
 // * DIR_FS_* = Filesystem directories (local/physical)
 // * DIR_WS_* = Webserver directories (virtual/URL)
-  define('HTTP_SERVER', 'http://3jp.bobhero.200.com'); // eg, http://localhost or - https://localhost should not be empty for productive servers
-  define('HTTP_CATALOG_SERVER', 'http://3jp.bobhero.200.com');
-  define('HTTPS_CATALOG_SERVER', 'https://3jp.bobhero.200.com');
+  define('HTTP_SERVER', 'http://3jp.szn.200.com'); // eg, http://localhost or - https://localhost should not be empty for productive servers
+  define('HTTP_CATALOG_SERVER', 'http://3jp.szn.200.com');
+  define('HTTPS_CATALOG_SERVER', 'https://3jp.szn.200.com');
   define('BACKEND_LAN_URL_ENABLED',false);
   define('ENABLE_SSL_CATALOG', 'false'); // secure webserver for catalog module
 
-  define('DIR_FS_DOCUMENT_ROOT', '/home/bobhero/project/3rmt/jp/admin/'); // where the pages are located on the server
+  define('DIR_FS_DOCUMENT_ROOT', '/home/szn/project/3rmt/jp/admin/'); // where the pages are located on the server
   define('DIR_WS_ADMIN', '/admin/'); // absolute path required
-  define('DIR_FS_ADMIN', '/home/bobhero/project/3rmt/jp/admin/'); // absolute pate required
+  define('DIR_FS_ADMIN', '/home/szn/project/3rmt/jp/admin/'); // absolute pate required
 
   define('DIR_WS_CATALOG', '/'); // absolute path required
-  define('DIR_FS_CATALOG', '/home/bobhero/project/3rmt/jp/admin/'); // absolute path required
+  define('DIR_FS_CATALOG', '/home/szn/project/3rmt/jp/admin/'); // absolute path required
   define('DIR_WS_IMAGES', 'images/');
   define('DIR_WS_ICONS', DIR_WS_IMAGES . 'icons/');
 
