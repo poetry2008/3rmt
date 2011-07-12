@@ -52,7 +52,8 @@
               <tr>
                 <td class="menuBoxContent">
     <?php 
-    echo  '<a href="' . tep_href_link(FILENAME_STATS_SALES_REPORT2, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_REPORTS_SALES_REPORT2 . '</a><br>' .
+    echo '<a href="' . tep_href_link('cal_info.php', '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_CAL_SITES_INFO_TEXT . '</a><br>' .
+   '<a href="' . tep_href_link(FILENAME_STATS_SALES_REPORT2, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_REPORTS_SALES_REPORT2 . '</a><br>' .
                                    '<a href="' . tep_href_link(FILENAME_STATS_PRODUCTS_VIEWED, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_REPORTS_PRODUCTS_VIEWED . '</a><br>' .
                                    '<a href="' . tep_href_link(FILENAME_STATS_PRODUCTS_PURCHASED, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_REPORTS_PRODUCTS_PURCHASED . '</a><br>' .
                                    '<a href="' . tep_href_link(FILENAME_STATS_CUSTOMERS, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_REPORTS_ORDERS_TOTAL . '</a><br>'.
