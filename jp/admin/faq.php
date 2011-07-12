@@ -873,9 +873,9 @@ switch (isset($_action)? $_action:'') {
     $faq_category_inputs_string .= '<br>'.TEXT_NEW_FAQ_CATEGORY_TITLE.':<br>'.
       tep_draw_input_field('title','','id="title"').'<br>';
     $faq_category_inputs_string .= '<br>'.TEXT_NEW_FAQ_CATEGORY_KEYWORDS.':<br>'.
-      tep_draw_textarea_field('keywords','soft',30,3).'<br>';
+      tep_draw_textarea_field('keywords','soft',30,7).'<br>';
     $faq_category_inputs_string .= '<br>'.TEXT_NEW_FAQ_CATEGORY_DESCRIPTION.':<br>'.
-      tep_draw_textarea_field('description','soft',30,3).'<br>';
+      tep_draw_textarea_field('description','soft',30,7).'<br>';
     $faq_category_inputs_string .= '<br>'.TEXT_NEW_FAQ_CATEGORY_SORT_ORDER.':<br>'.
       tep_draw_input_field('sort_order','1000','size="2"').'<br>';
     $contents[] = array('text' => $faq_category_inputs_string.
@@ -899,11 +899,12 @@ switch (isset($_action)? $_action:'') {
       value="'.IS_SET_ERROR_CHAR.'">'.
       '<br>';
     $faq_question_inputs_string .= '<br>'.TEXT_NEW_FAQ_QUESTION_KEYWORDS.':<br>'.
-      tep_draw_textarea_field('keywords','soft',30,3).'<br>';
+      tep_draw_textarea_field('keywords','soft',30,7).'<br>';
     $faq_question_inputs_string .= '<br>'.TEXT_NEW_FAQ_QUESTION_ASK.':<br>'.
       tep_draw_input_field('ask','','id="title"').'<br>';
     $faq_question_inputs_string .= '<br>'.TEXT_NEW_FAQ_QUESTION_ANSWER.':<br>'.
-      tep_draw_textarea_field('answer','soft',30,3).'<br>';
+      '<br><b>'.TEXT_NEW_FAQ_QUESTION_ANSWER_HELP.'</b><br>'.
+      tep_draw_textarea_field('answer','soft',30,7).'<br>';
     $faq_question_inputs_string .= '<br>'.TEXT_NEW_FAQ_QUESTION_SORT_ORDER.':<br>'.
       tep_draw_input_field('sort_order','1000','size="2"').'<br>';
     $contents[] = array('text' => $faq_question_inputs_string.
@@ -928,9 +929,9 @@ switch (isset($_action)? $_action:'') {
     $faq_category_inputs_string .= '<br>'.TEXT_NEW_FAQ_CATEGORY_TITLE.':<br>'.
       tep_draw_input_field('title',$faq_info->title,'id="title"').'<br>';
     $faq_category_inputs_string .= '<br>'.TEXT_NEW_FAQ_CATEGORY_KEYWORDS.':<br>'.
-      tep_draw_textarea_field('keywords','soft',30,3,$faq_info->keywords).'<br>';
+      tep_draw_textarea_field('keywords','soft',30,7,$faq_info->keywords).'<br>';
     $faq_category_inputs_string .= '<br>'.TEXT_NEW_FAQ_CATEGORY_DESCRIPTION.':<br>'.
-      tep_draw_textarea_field('description','soft',30,3,$faq_info->description).'<br>';
+      tep_draw_textarea_field('description','soft',30,7,$faq_info->description).'<br>';
     $faq_category_inputs_string .= '<br>'.TEXT_NEW_FAQ_CATEGORY_SORT_ORDER.':<br>'.
       tep_draw_input_field('sort_order',$faq_info->sort_order,'size="2"').'<br>';
     $contents[] = array('text' => $faq_category_inputs_string.
@@ -945,7 +946,7 @@ switch (isset($_action)? $_action:'') {
         tep_draw_form('newfaqcategory',FILENAME_FAQ,'action=update_faq_question&cPath='.$cPath.
           '&site_id='.$site_id.'&qID='.$_GET['qID'],'post',
           'onsubmit="return faq_question_form_validator(\''.$current_category_id.'\',\''.$qInfo->faq_question_id.'\',\''.$site_id.'\')"'));
-    $contents[] = array('text' => TEXT_NEW_FAQ_QUESTION_INFO);
+    $contents[] = array('text' => TEXT_EDIT_FAQ_QUESTION_INFO);
     $faq_question_inputs_string = ''; 
     $faq_question_inputs_string .= '<br>URL:<br>'.
       tep_draw_input_field('romaji',$qInfo->romaji,'id="qromaji"').
@@ -956,11 +957,12 @@ switch (isset($_action)? $_action:'') {
       value="'.IS_SET_ERROR_CHAR.'">'.
       '<br>';
     $faq_question_inputs_string .= '<br>'.TEXT_NEW_FAQ_QUESTION_KEYWORDS.':<br>'.
-      tep_draw_textarea_field('keywords','soft',30,3,$qInfo->keywords).'<br>';
+      tep_draw_textarea_field('keywords','soft',30,7,$qInfo->keywords).'<br>';
     $faq_question_inputs_string .= '<br>'.TEXT_NEW_FAQ_QUESTION_ASK.':<br>'.
       tep_draw_input_field('ask',$qInfo->ask,'id="title"').'<br>';
     $faq_question_inputs_string .= '<br>'.TEXT_NEW_FAQ_QUESTION_ANSWER.':<br>'.
-      tep_draw_textarea_field('answer','soft',30,3,$qInfo->answer).'<br>';
+      '<br><b>'.TEXT_NEW_FAQ_QUESTION_ANSWER_HELP.'</b><br>'.
+      tep_draw_textarea_field('answer','soft',30,7,$qInfo->answer).'<br>';
     $faq_question_inputs_string .= '<br>'.TEXT_NEW_FAQ_QUESTION_SORT_ORDER.':<br>'.
       tep_draw_input_field('sort_order',$qInfo->sort_order,'size="2"').'<br>';
     $contents[] = array('text' => $faq_question_inputs_string.
