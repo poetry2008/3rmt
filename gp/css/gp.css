@@ -1913,7 +1913,7 @@ border:2px solid #FF8080;
 .column_m_number01 a{ font-size:28px; padding:23px; font-weight:bold; padding:22px 25px 22px 22px\9;}
 .column_m_number01 a:hover{background: url(../images/design/search_img_big02.gif) no-repeat; padding-top:10px\9; padding-right:25px\9;}
 .column_m_number02{ margin-top:20px;}
-.column_m_number02 a{ font-size:27px; padding:16px 7px; font-weight:bold;}
+.column_m_number02 a{ font-size:26px; padding:16px 7px; font-weight:bold;}
 .column_m_number02 a:hover{background: url(../images/design/search_img_big02.gif) no-repeat;}
 .header_w_time img{ margin:5px 35px 5px 0;}
 .header_w_time02 img{ margin:0 5px;}
@@ -1960,11 +1960,11 @@ border:2px solid #FF8080;
 	margin-bottom:5px;
 	margin-right:2px;
 }
-#showca{ position:absolute; top:190px; background-color:#215C9E; border:1px solid #5DA6CE; width:600px; width:650px\9; padding-left:5px;}
+#showca{ position:absolute; top:190px; background-color:#215C9E; border:1px solid #5DA6CE; width:700px; width:750px\9; padding-left:5px; line-height:25px;}
 .search_category_name{ color:#fff; font-size:12px;}
 .close_search_category{ clear:both; text-align:right;}
-.search_list_category { width:170px; float:left; margin-bottom:8px; padding-left:28px;}
-.search_list_category .search_category_name{ width:180px; display:block; font-size:14px; letter-spacing:1.5px;}
+.search_list_category { width:200px; float:left; margin-bottom:8px; padding-left:28px;}
+.search_list_category .search_category_name{ width:200px; display:block; font-size:16px; line-height:25px;}
 .seach_before_info td{background: url(../images/design/seach_before_img.gif) no-repeat; width:31px; height:30px; text-align:center;}
 .seach_before_info a{ color:#FFF; font-size:12px;}
 .seach_before_info a:hover{ color: #04DBEC; font-size:12px;}
@@ -1973,9 +1973,9 @@ border:2px solid #FF8080;
 	border:1px solid #5DA6CE; 
 	position:absolute; 
 	text-align:left; 
-	font-size:12px; 
-	width:600px; 
-	width:650px\9; 
+	font-size:16px; 
+	width:700px; 
+	width:750px\9; 
 	padding:0 0 10px 10px;
 }
 .info_middle{ background-color:#fff; padding:5px; padding:5px 0\9;}
