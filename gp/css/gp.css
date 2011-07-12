@@ -2029,3 +2029,10 @@ border:2px solid #FF8080;
 	margin-left:10px;
 	margin-top:2px;
 }
+.comment_info_warpper_td { 
+	word-wrap:break-word;
+	word-break:break-all;
+	overflow:hidden;
+	display:block;
+	width:510px;
+}
