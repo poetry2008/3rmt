@@ -39,21 +39,24 @@ if (isset($body_option)) {
     if(isset($faq_question_id)&&$faq_question_id!=''){
       $faq_question_info = tep_get_faq_question_info($faq_question_id);
     ?>
-      <h3 class="redtext">
-        <img src="images/design/ask.gif" alt="question"><?php echo
-        $faq_question_info['ask'];?>
-      </h3>
-      <table class="faq_answer"><tr><td>
-      <div>
-       <img src="images/design/answer.gif" alt="ask"></div><div class="faq_answer_row"><span>
+      <table class="redtext"><tr>
+        <td style="float:left; padding-left:5px;"><img src="images/design/ask.gif" alt="question"></td>
+        <td style="float:left; width:400px;"><?php echo
+        $faq_question_info['ask'];?></td>
+      </tr></table>
+      <div style=" border-bottom-style:dotted; width:98%; margin-top:10px; color:#444; margin-left:2px;"></div>
+      <table class="faq_answer"><tr>
+      <td style="float:left;">
+       <img src="images/design/answer.gif" alt="ask"></td><td class="faq_answer_row"><span>
        <?php 
         $question_answer =
         str_replace('#STORE_NAME#',STORE_NAME,$faq_question_info['answer']);
         echo $question_answer;
        ?>
        </span>
-      </div>
-      </td></tr></table>
+      </td>
+      </tr>
+      </table>
     <?php }?>
     </div>
     <p class="pageBottom"></p>
