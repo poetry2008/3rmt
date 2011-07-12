@@ -76,22 +76,6 @@ if($NewOid['cnt'] == 0) {
 }
   
 # load the selected shipping module(convenience_store)
-if ($payment == 'convenience_store') {
-  $convenience_sid = str_replace('-', "", $insert_id);
-  
-  //$pay_comments = '取引コード' . $convenience_sid ."\n";
-  //$pay_comments .= '郵便番号:' . $_POST['convenience_store_zip_code'] ."\n";
-  //$pay_comments .= '住所1:' . $_POST['convenience_store_address1'] ."\n";
-  //$pay_comments .= '住所2:' . $_POST['convenience_store_address2'] ."\n";
-  //$pay_comments .= '氏:' . $_POST['convenience_store_l_name'] ."\n";
-  //$pay_comments .= '名:' . $_POST['convenience_store_f_name'] ."\n";
-  //$pay_comments .= '電話番号:' . $_POST['convenience_store_tel'] ."\n";
-  //$pay_comments .= '接続URL:' . tep_href_link('convenience_store_chk.php', 'sid=' . $convenience_sid, 'SSL');
-
-  $pay_comments = 'PCメールアドレス:'.$_POST['convenience_email']; 
-  $comments = $pay_comments ."\n".$comments;
-}
-  
 require(DIR_WS_CLASSES . 'order.php');
 $order = new order;
 
@@ -186,14 +170,15 @@ if (isset($_SESSION['referer_adurl']) && $_SESSION['referer_adurl']) {
 }
 // 鬪瑚ｯ＆s明信用蜊｡ 
 if ($_SESSION['option']) {
+
 $telecom_unknow = tep_db_fetch_array(tep_db_query("select * from telecom_unknow where `option`='".$_SESSION['option']."' and rel='yes'"));
 if ($telecom_unknow) {
 $sql_data_array['telecom_name']  = $telecom_unknow['username'];
 $sql_data_array['telecom_tel']   = $telecom_unknow['telno'];
 $sql_data_array['telecom_email'] = $telecom_unknow['email'];
 $sql_data_array['telecom_money'] = $telecom_unknow['money'];
-      
 tep_db_query("update `telecom_unknow` set type='success' where `option`='".$_SESSION['option']."' and rel='yes' order by date_added limit 1");
+
 $telecom_option_ok = true;
 }
 }
@@ -217,8 +202,9 @@ if ($bflag_single == 'View') {
   $new_handle_fee = $sql_data_array['code_fee'];
 }
 // ccdd
+$sql_data_array['orders_status'] = 30;
 tep_db_perform(TABLE_ORDERS, $sql_data_array);
-  
+tep_order_status_change($orders['orders_id'],30);
 $total_data_arr = array();
 for ($i=0, $n=sizeof($order_totals); $i<$n; $i++) {
   $sql_data_array = array('orders_id' => $insert_id,
@@ -242,7 +228,6 @@ for ($i=0, $n=sizeof($order_totals); $i<$n; $i++) {
 
 //ペイパルの決済を完了させる
 function getexpress($amt,$token){
-
   $paypalData = array();
   $testcode = 1;
   global $insert_id;
@@ -346,7 +331,6 @@ function getexpress($amt,$token){
                                      'paypal_payerstatus'   => $paypalData['PAYERSTATUS'],
                                      'paypal_paymentstatus' => $paypalData['PAYMENTSTATUS'],
                                      'paypal_countrycode'   => $paypalData['COUNTRYCODE'],
-    
                                      'telecom_email'        => $paypalData['EMAIL'],
                                      'telecom_money'        => $paypalData['AMT'],
                                      'telecom_name'         => $paypalData['FIRSTNAME'] . ''. $paypalData['LASTNAME'],
@@ -392,7 +376,7 @@ if ($telecom_option_ok) {
                           'customer_notified' => '0',
                           'comments' => 'checkout');
   // ccdd
-    tep_order_status_change($orders['orders_id'],30);
+  tep_order_status_change($orders['orders_id'],30);
   tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
   orders_updated($insert_id);
 }
