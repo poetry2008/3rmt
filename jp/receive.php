@@ -44,7 +44,8 @@ if(!isset($w_option)){
 }
 */
 if ($w_clientip == '76011' && $w_username && $w_email && $w_money && $w_telno) {
-  if ($w_rel == 'yes' && $w_option != "") {//optionが空白の場合optionの検索はしない
+
+  if ($w_rel == 'yes' or  $w_option != "") {//optionが空白の場合optionの検索はしない
     $orders = tep_db_fetch_array(tep_db_query("select * from ".TABLE_ORDERS." where telecom_option='".$w_option."' and date_purchased > '".(date('Y-m-d H:i:s',time()-86400))."'"));
   }
   if ($orders&&!$orders['telecom_name']&&!$orders['telecom_tel']&&!$orders['telecom_money']&&!$orders['telecom_email']) {

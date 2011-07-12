@@ -61,8 +61,11 @@ $payment_modules = new payment($payment);
 */
   
 # OrderNo
-$insert_id = date("Ymd") . '-' . date("His") . ds_makeRandStr(2);
-
+//if(!isset($_GET['option'])){
+  $insert_id = date("Ymd") . '-' . date("His") . ds_makeRandStr(2);
+//}else {
+//  $insert_id = $_GET['option'];
+//}
 # Check
 //ccdd
 $NewOidQuery = tep_db_query("select count(*) as cnt from ".TABLE_ORDERS." where orders_id = '".$insert_id."' and site_id = '".SITE_ID."'");
@@ -929,6 +932,7 @@ unset($_SESSION['referer_adurl']);
   }
   exit;
 */
+
 tep_redirect(tep_href_link(FILENAME_CHECKOUT_SUCCESS,'','SSL'),'T');
     
 require(DIR_WS_INCLUDES . 'application_bottom.php');
