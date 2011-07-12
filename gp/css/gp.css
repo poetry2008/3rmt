@@ -406,7 +406,14 @@ UL {
 	font-size:10px;
 	line-height:10px;
 }
-.reviews_bottom a{ line-height:15px; color:#555;}
+.reviews_bottom a{ 
+    color: #555555;
+    display: block;
+    line-height: 15px;
+    overflow: hidden;
+    width: 148px;
+    word-wrap: break-word;
+}
 .reviews_bottom a:hover{ color:#990000;}
 .reviews_area{
 	border: dotted 1px #ddd;
