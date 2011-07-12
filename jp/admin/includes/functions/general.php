@@ -5473,6 +5473,12 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
 function   tep_order_status_change($oID,$status){
   require_once("oa/HM_Form.php");
   require_once("oa/HM_Group.php");
+  require_once("oa/HM_Item_Checkbox.php");
+  require_once("oa/HM_Item_Autocalculate.php");
+  require_once("oa/HM_Item_Text.php");
+  require_once("oa/HM_Item_Specialbank.php");
+  require_once("oa/HM_Item_Date.php");
+  require_once("oa/HM_Item_Myname.php");
   $order_id = $oID;
   $formtype = tep_check_order_type($order_id);
   $payment_romaji = tep_get_payment_code_by_order_id($order_id); 
@@ -5999,5 +6005,4 @@ function get_romaji_by_site_id($site_id) {
     return false;
   }
 }
-
 

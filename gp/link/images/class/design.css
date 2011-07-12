@@ -2,7 +2,7 @@
 文字装飾
 --------------------------- */
 a{
-	font-size: 10px;
+	font-size: 12px;
 }
 #a_font_12{
 	font-size: 12px;
@@ -483,25 +483,34 @@ select{
 #title {
 	margin: 0 auto;
 	width:900px;
-	height:80px;
+	height:100px;
 }
 #header {
-	width: 900px;
-	margin:0 auto;
+    background: url(../../../images/design/header_bg.jpg) no-repeat scroll 0 0 transparent;
+    height: 115px;
+    margin: 0 auto;
+    width: 900px;
 }
 #header_Menu {
 	overflow: hidden;
+	background: url(../../../images/design/header_navigation01.gif) no-repeat scroll 0 0 transparent;
+    color: #FFFFFF;
+    font-size: 12px;
+    height: 50px;
+    padding: 6px 0 0 0;
+    text-align: left;
+    width: 900px;
 }
 .header_menu_content{
-	width: 900px;
-	padding:3px 0;
+	width: 890px;
+	padding:2px 5px;
 }
 .header_search_input{
 	border: solid 1px #ddd;
 	padding: 3px 5px;
 	*padding:0;
 	height: 11px;
-	margin-right:5px;
+	margin:0 5px;
 	color: #555;
 	width: 120px;
 	font-size:12px;
@@ -514,7 +523,7 @@ select{
 	width:172px;
 }
 .header_search_submit{
-	width: 51px;
+	width: 52px;
 	border: none;
 	height:19px;
 	cursor: pointer;
@@ -528,18 +537,16 @@ select{
 .header_menu_2{
 	text-align:left;
 	padding-left:25px;
-	width:94px;
+	width:121px;
 	*width:119px;
-	margin-right:10px;
-	color:#AD0F30;
+	color:#fff;
 	background: url(../../../images/design/button/shopping_cart.gif) no-repeat;
 }
 .header_menu_3{
-	padding-left:21px;
-	width:66px;
+	padding-left:25px;
+	width:91px;
 	*width:89px;
-	margin-right:10px;
-	color:#AD0F30;
+	color:#fff;
 	background: url(../../../images/design/button/checkout.gif) no-repeat;
 }
 .header_menu_4{
@@ -556,11 +563,12 @@ padding-right:5px;
 	*width:900px;
 	height:17px;
 	*height:23px;
-	background:url(../../../images/design/header_navigation.gif) no-repeat;
-	font-size: 10px;
+/*	background:url(../../../images/design/header_navigation.gif) no-repeat;
+*/	font-size: 12px;
 	margin:0 auto 5px auto;
 	text-align:left;
 	padding:6px 0 0 10px;
+	color:#1B5086;
 }
 .header_Navigation a{
 	color: #CC0000;
@@ -1003,10 +1011,12 @@ Information
 }
 .footer_contacts{
 	letter-spacing:0.5mm;
-	padding-top:25px;
+	padding-top:20px;
+	line-height:21px;
 }
 .footer_contacts a{
-	color: #AE0E32;
+	color: #0572A9;
+	font-weight:bold;
 }
 /*link color*/
 .product_listing_content a{
@@ -1174,17 +1184,42 @@ a.Icon:hover {
 
 /* xy_rmt*/
 .h_title{
-	background-color:#BF1731;
-	font-size:10px;
-	color:#fff;
-	text-align:left;
-	font-weight: normal;
-	padding:1px 5px;
-}
-.h_title a{color:#fff;font-size:10px;}
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: normal;
+    padding: 1px 5px;
+    text-align: left;}
+.h_title a{color:#fff;font-size:12px;}
 .h_title a:hover{color:#CCC;}
 .search_info td{ padding-right:10px; color:#BF1731; font-size:10px; font-weight:bold;}
 .h_search img{ float:left; padding-right:5px;}
 .h_search span{ float:left; padding-top:3px;}
 .top_index_image{ margin-top:7px;}
 .reviews_warp{ width:168px;*width:170px; border:1px solid #ccc; font-size:10px; padding:5px 0;}
+#title .top_right {
+    float: right;
+    width: 415px;
+}
+#title .top_right ul {
+    background: url(../../../images/design/top_right_bg.gif) no-repeat scroll 0 0 transparent;
+    float: right;
+    height: 26px;
+    padding-right: 20px;
+    width: 480px;
+}
+.top_right li {
+    color: #FFFFFF;
+    float: right;
+    font-size: 12px;
+    margin: 4px 3px 0;
+}
+.top_right li a {
+    color: #FFFFFF;
+    font-size: 12px;
+}
+.header_w_time img {
+    margin: 5px 35px 5px 0;
+}
+.header_w_time02 img {
+    margin: 0 5px;
+}

@@ -2525,6 +2525,8 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                cd.categories_image2, 
                cd.categories_image3, 
                cd.categories_meta_text, 
+               cd.character_romaji,
+               cd.alpha_romaji,
                c.categories_image, 
                c.parent_id, 
                c.sort_order, 
@@ -3011,7 +3013,7 @@ tep_display_google_results(FILENAME_CATEGORIES);
             '<br><br>'."\n";
           if (!empty($_GET['cPath'])) {
             $c_tmp_arr = explode('_', $_GET['cPath']); 
-            if (count($c_tmp_arr) == 1) {
+            if (count($c_tmp_arr) == 1 && empty($_GET['cID'])) {
               $category_inputs_string .= CATEGORY_CHARACTER_ROMAJI.'<br>'.tep_draw_input_field('character_romaji['.$languages[$i]['id'].']', '', 'cromaji').'<br><br>'; 
               $category_inputs_string .= CATEGORY_ALPHA_ROMAJI.'<br>'.tep_draw_input_field('alpha_romaji['.$languages[$i]['id'].']', '', 'alromaji').'<br>'; 
             }
@@ -3058,7 +3060,7 @@ tep_display_google_results(FILENAME_CATEGORIES);
 '<br><br>'."\n";
           if (!empty($_GET['cPath'])) {
             $c_tmp_arr = explode('_', $_GET['cPath']); 
-            if (count($c_tmp_arr) == 1) {
+            if (count($c_tmp_arr) == 1 && empty($_GET['cID'])) {
               $category_inputs_string .= CATEGORY_CHARACTER_ROMAJI.'<br>'.tep_draw_input_field('character_romaji['.$languages[$i]['id'].']', $cInfo->character_romaji, 'cromaji').'<br><br>'; 
               $category_inputs_string .= CATEGORY_ALPHA_ROMAJI.'<br>'.tep_draw_input_field('alpha_romaji['.$languages[$i]['id'].']', $cInfo->alpha_romaji, 'alromaji').'<br>'; 
             }

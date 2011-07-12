@@ -14,7 +14,7 @@ return array(
        */
      //'site_url' => 'http://portal.h.200.com/',
   //'site_url' => 'http://' . $_SERVER['SERVER_NAME'] . '/',
-  'site_url' => 'http://www.rmtgakuen.jp/',
-  'host_word' => 'RMT学園',
-  'p_name' => 'RMT学園',
+  'site_url' => 'http://www.gameplanet.jp/',
+  'host_word' => 'RMT ゲームプラネット',
+  'p_name' => 'RMT ゲームプラネット',
 );

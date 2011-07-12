@@ -1,6 +1,7 @@
 <?php 
 require('includes/application_top.php');
 
+
 check_uri('/^\/receive.php/');
 
 header("Content-type: text/html"); 
@@ -43,7 +44,8 @@ if(!isset($w_option)){
 }
 */
 if ($w_clientip == '76011' && $w_username && $w_email && $w_money && $w_telno) {
-  if ($w_rel == 'yes' && $w_option != "") {//optionが空白の場合optionの検索はしない
+
+  if ($w_rel == 'yes' or  $w_option != "") {//optionが空白の場合optionの検索はしない
     $orders = tep_db_fetch_array(tep_db_query("select * from ".TABLE_ORDERS." where telecom_option='".$w_option."' and date_purchased > '".(date('Y-m-d H:i:s',time()-86400))."'"));
   }
   if ($orders&&!$orders['telecom_name']&&!$orders['telecom_tel']&&!$orders['telecom_money']&&!$orders['telecom_email']) {
@@ -62,6 +64,7 @@ if ($w_clientip == '76011' && $w_username && $w_email && $w_money && $w_telno) {
                           'comments' => '');
     tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
     orders_updated($orders['orders_id']);
+    tep_order_status_change($orders['orders_id'],30);
     // success
     tep_db_perform('telecom_unknow', array(
       '`option`'      => $w_option,
@@ -74,6 +77,7 @@ if ($w_clientip == '76011' && $w_username && $w_email && $w_money && $w_telno) {
       'date_added'    => 'now()',
       'last_modified' => 'now()'
     ));
+	$success = true;
   } else {
     // 不明
     tep_db_perform('telecom_unknow', array(
@@ -86,9 +90,12 @@ if ($w_clientip == '76011' && $w_username && $w_email && $w_money && $w_telno) {
       'type' => ($w_rel == 'yes' && $w_option =="")?'success':'null',//optionが空白の場合手動作成である
       'date_added' => 'now()',
       'last_modified' => 'now()'
+
     ));
+	$buming = true;
   }
 } else {
+       $error = true;
   // 不正
 }
 
@@ -97,3 +104,18 @@ if($w_clientip == "76011"){
 }else{
   echo "不正アクセス";
 }
+
+
+var_dump($success);
+var_dump($buming);
+var_dump($error);
+echo '----------------';
+var_dump($orders);
+var_dump($orders['telecom_name']);
+var_dump($orders['telecom_tel']);
+var_dump($orders['telecom_money']);
+var_dump($orders['telecom_email']);
+
+
+?>
+name _tel _money _email

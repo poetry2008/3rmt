@@ -3612,6 +3612,9 @@ function tep_get_site_romaji_by_id($id){
 
 // 根据pid数据取得提醒商品
 function tep_get_cart_products($pid){
+  if (empty($pid)) {
+    $pid = array(0); 
+  }
   $raw = "
     select distinct(p2c.products_id)
     from products_to_tags p2t,products_to_carttag p2c, products p, products p2
@@ -4035,3 +4038,91 @@ function tep_reviews_random_select($query, $limit_num) {
 
   return $random_product;
 }
+function   tep_order_status_change($oID,$status){
+  require_once("oa/HM_Form.php");
+  require_once("oa/HM_Group.php");
+  require_once("oa/HM_Item_Checkbox.php");
+  require_once("oa/HM_Item_Autocalculate.php");
+  require_once("oa/HM_Item_Text.php");
+  require_once("oa/HM_Item_Specialbank.php");
+  require_once("oa/HM_Item_Date.php");
+  require_once("oa/HM_Item_Myname.php");
+  $order_id = $oID;
+  $formtype = tep_check_order_type($order_id);
+  $payment_romaji = tep_get_payment_code_by_order_id($order_id); 
+  $oa_form_sql = "select * from ".TABLE_OA_FORM." where formtype = '".$formtype."' and payment_romaji = '".$payment_romaji."'";
+
+  $form = tep_db_fetch_object(tep_db_query($oa_form_sql), "HM_Form");
+  //如果存在，把每个元素找出来，看是否有自动更新
+  if($form){
+    $form->loadOrderValue($order_id);
+    foreach ($form->groups as $group){
+      foreach ($group->items as $item){
+        if ($item->instance->status == $status){
+          $item->instance->statusChange($order_id,$form->id,$group->id,$item->id);
+          continue;
+        }
+      }
+    }}
+  }
+  function tep_check_order_type($oID)
+  {
+    $sql = "  SELECT avg( products_bflag ) bflag FROM orders_products op, products p  WHERE 1 AND p.products_id = op.products_id AND op.orders_id = '".$oID."'";
+
+    $avg  = tep_db_fetch_array(tep_db_query($sql));
+    $avg = $avg['bflag'];
+
+    if($avg == 0){
+      return 1;
+    }
+    if($avg == 1){
+      return 2;
+    }
+    return 3;
+
+  }
+
+  function tep_get_payment_code_by_order_id($oID)
+  {
+    $orders_raw = tep_db_query("select * from ".TABLE_ORDERS." where orders_id = '".$oID."'");
+    $orders_res = tep_db_fetch_array($orders_raw);
+    switch($orders_res['payment_method']) {
+      case '銀行振込(買い取り)':
+        return 'buying'; 
+        break;
+      case '銀行振込':
+        return 'moneyorder'; 
+        break;
+      case 'ゆうちょ銀行（郵便局）':
+        return 'postalmoneyorder'; 
+        break;
+      case 'コンビニ決済':
+        return 'convenience_store'; 
+        break;
+      case 'クレジットカード決済':
+        return 'telecom'; 
+        break;
+      case 'ペイパル決済':
+        return 'paypal'; 
+        break;
+      case 'ポイント(買い取り)':
+        return 'buyingpoint'; 
+        break;
+      case '来店支払い':
+        return 'fetchgood'; 
+        break;
+      case '支払いなし':
+        return 'freepayment'; 
+        break;
+      default:
+        return false;
+    }
+  }
+  function tep_db_fetch_object($result, $classname = '')
+  {
+    if (empty($classname)) {
+      return mysql_fetch_object($result); 
+    }
+    return mysql_fetch_object($result, $classname); 
+  }
+
