@@ -1232,6 +1232,6 @@ searching
 .faq_back { margin-left:380px; margin-bottom:20px;}
 .faq_answer { padding:5px;}
 .faq_answer div { float:left;}
-.faq_answer_row { width:400px;}
-.header_Navigation { margin:5px; color:#339966; padding-top:10px; width:450px; line-height:20px; font-size:10px; float:left;}
+.faq_answer_row { width:400px;  word-wrap:break-word; word-break:break-all; overflow:hidden; display:block; float:left;}
+.header_Navigation { margin:5px; color:#339966; padding-top:10px; width:450px; line-height:20px; font-size:10px; float:left; word-wrap:break-word;}
 .header_Navigation a { color:#339966;}
