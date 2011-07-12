@@ -23,7 +23,7 @@
         tep_db_query("insert into `".TABLE_OA_GROUP."` values(NULL,
           '".tep_db_prepare_input($_POST['gname'])."',
           '".tep_db_prepare_input($_POST['goption'])."', ".time().')'); 
-        tep_redirect(tep_href_link(FILENAME_OA_GROUP, 'pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&msg=success')); 
+        tep_redirect(tep_href_link(FILENAME_OA_GROUP, 'pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&msg=success&return=link')); 
         break;
       case 'update':
         tep_db_query("update `".TABLE_OA_GROUP."` set `name` = '".tep_db_prepare_input($_POST['gname'])."'  where id = '".$_GET['gid']."'");        
@@ -409,12 +409,16 @@ function ajaxUpdate(id,order){
 ?>
 <input type="button" onclick='window.location.href="<?php echo tep_href_link(FILENAME_OA_LINK_GROUP, 'pcode='.$_GET['pcode'].'&type='.$_GET['type']);?>"' value="<?php echo IMAGE_BACK;?>">
 <?php 
-                }elseif($_GET['msg']=='success'){
+                }elseif($_GET['msg']=='success' and $_GET['return']!='link'){
 ?>
               <input type="button" onclick='window.location.href="<?php echo tep_href_link(FILENAME_OA_FORM,'pcode='.$_GET['pcode'].'&type='.$_GET['type']);?>"' value="<?php echo IMAGE_BACK;?>">
 
   <?php          
-            }else{
+                     }elseif($_GET['return']){
+?>
+            <input type="button" onclick='window.location.href="<?php echo tep_href_link(FILENAME_OA_LINK_GROUP, 'pcode='.$_GET['pcode'].'&type='.$_GET['type']);?>"' value="<?php echo IMAGE_BACK;?>">
+<?php
+          }else{
               ?>
               <input type="button" onclick='window.location.href="<?php echo tep_href_link(FILENAME_OA_FORM,'pcode='.$_GET['pcode'].'&type='.$_GET['type']);?>"' value="<?php echo IMAGE_BACK;?>">
 <?php 
