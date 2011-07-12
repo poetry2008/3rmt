@@ -58,7 +58,7 @@ class HM_Form extends DbRecord
       }else {
         echo "var finished = false;";
       }
-    if($this->status == 6){
+    if($this->status == 6 or $this->status == 8){
       
       ?>
       var canceled = true;
