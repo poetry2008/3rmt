@@ -128,6 +128,7 @@ A.sub:hover { color: #dddddd; text-decoration: underline; }
 
   echo '<br>';
 $sites = tep_get_sites();
+if (false) {
 foreach ($sites as $site)
   {
   $orders_contents = '';
@@ -175,6 +176,7 @@ foreach ($sites as $site)
   $box = new box;
   echo $box->menuBox($heading, $contents);
   echo '<br>';
+  }  
   }  
   $contents = array();
 
