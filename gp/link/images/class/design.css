@@ -483,7 +483,7 @@ select{
 #title {
 	margin: 0 auto;
 	width:900px;
-	height:80px;
+	height:100px;
 }
 #header {
     background: url(../../../images/design/header_bg.jpg) no-repeat scroll 0 0 transparent;
@@ -537,18 +537,16 @@ select{
 .header_menu_2{
 	text-align:left;
 	padding-left:25px;
-	width:94px;
+	width:121px;
 	*width:119px;
-	margin-right:10px;
-	color:#AD0F30;
+	color:#fff;
 	background: url(../../../images/design/button/shopping_cart.gif) no-repeat;
 }
 .header_menu_3{
-	padding-left:21px;
-	width:66px;
+	padding-left:25px;
+	width:91px;
 	*width:89px;
-	margin-right:10px;
-	color:#AD0F30;
+	color:#fff;
 	background: url(../../../images/design/button/checkout.gif) no-repeat;
 }
 .header_menu_4{
