@@ -429,3 +429,4 @@ define('CUSTOMERS_CSV_EXE_READ_ONE', '<tr> <td width="20" align="center" class="
 
 define('CUSTOMERS_CSV_EXE_READ_TWO', '<td class="menuBoxHeading">FAX番号</td> <td class="menuBoxHeading">FAX番号が入力されていれば出力します</td> </tr> <tr> <td align="center" class="infoBoxContent">P</td> <td class="menuBoxHeading">メールマガジン</td> <td class="menuBoxHeading">メールマガジンの行動区状況を出力します。<br> 購読の場合：「購読」｜未購読の場合：「未購読」</td> </tr> <tr> <td align="center" class="infoBoxContent">Q</td> <td class="menuBoxHeading">ポイント</td> <td class="menuBoxHeading">顧客の現在持っているポイント数を出力します。</td> </tr>');
 define('BOX_TOOLS_POINT_EMAIL_MANAGER','ポイントお知らせ');
+define('BOX_CAL_SITES_INFO_TEXT', '統計');

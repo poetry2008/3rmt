@@ -6006,3 +6006,20 @@ function get_romaji_by_site_id($site_id) {
   }
 }
 
+function tep_site_head_list($filename){
+  global $_GET, $_POST;
+  ?>
+    <div id="tep_site_filter">
+            <?php foreach (tep_get_sites() as $site) {?>
+              <?php if ((isset($_GET['site_id']) && $_GET['site_id'] == $site['id']) || (!isset($_GET['site_id']) && $site['id'] == 1)) {?>
+                <span class="site_filter_selected"><?php echo $site['romaji'];?></span>
+                  <?php } else {?>
+                    <span><a href="<?php 
+                        echo tep_href_link($filename, tep_get_all_get_params(array('site_id', 'page', 'oID', 'rID', 'cID', 'pID')) . 'site_id=' . $site['id']);
+                    ?>"><?php echo $site['romaji'];?></a></span>
+                      <?php }
+            }
+          ?>
+            </div>
+            <?php
+}
