@@ -6,7 +6,7 @@
 require('includes/application_top.php');
 require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_FAQ_INFO);
 require(DIR_WS_ACTIONS.'faq_question.php');
-define('FAQ_HTML_REPLACE','</td></tr><tr><td style="float:left;"><img
+define('FAQ_HTML_REPLACE','</td></tr><tr><td valign="top" style="float:left;"><img
     src="./images/a.gif" alt="" width="23" height="15"></td><td
     class="faq_answer_row">');
 ?>
@@ -49,7 +49,7 @@ if (isset($body_option)) {
       </tr></table>
       <div style=" border-bottom-style:dotted; width:98%; margin-top:10px; color:#444; margin-left:2px;"></div>
       <table class="faq_answer"><tr>
-      <td style="float:left;">
+      <td valign="top" style="float:left;">
        <img src="images/design/answer.gif" alt="ask"></td><td class="faq_answer_row"><span>
        <?php 
         $question_answer =
