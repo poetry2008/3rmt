@@ -204,7 +204,7 @@ if ($bflag_single == 'View') {
 // ccdd
 $sql_data_array['orders_status'] = 30;
 tep_db_perform(TABLE_ORDERS, $sql_data_array);
-tep_order_status_change($orders['orders_id'],30);
+tep_order_status_change($insert_id,30);
 $total_data_arr = array();
 for ($i=0, $n=sizeof($order_totals); $i<$n; $i++) {
   $sql_data_array = array('orders_id' => $insert_id,
