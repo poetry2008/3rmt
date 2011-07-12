@@ -6,6 +6,9 @@
 require('includes/application_top.php');
 require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_FAQ_INFO);
 require(DIR_WS_ACTIONS.'faq_question.php');
+define('FAQ_HTML_REPLACE','</td></tr><tr><td style="float:left;"><img
+    src="./images/a.gif" alt="" width="23" height="15"></td><td
+    class="faq_answer_row">');
 ?>
 <?php page_head();?>
 </head>
@@ -51,6 +54,7 @@ if (isset($body_option)) {
        <?php 
         $question_answer =
         str_replace('#STORE_NAME#',STORE_NAME,$faq_question_info['answer']);
+        $question_answer = str_replace('#REPLACE#',FAQ_HTML_REPLACE,$question_answer);
         echo $question_answer;
        ?>
        </span>

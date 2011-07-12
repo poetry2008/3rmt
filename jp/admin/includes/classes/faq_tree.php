@@ -51,8 +51,8 @@
                and fcd.is_show = '1'
              order by fcd.site_id DESC
             ) c
-            where site_id = '0' or site_id='".$site_id."'
-            group by faq_category_id  
+            ".((isset($site_id)&&$site_id)?" where site_id='".$site_id."'":"").
+            "group by faq_category_id  
             order by parent_id, sort_order, title");
     } else {
          $categories_query = tep_db_query("
@@ -68,9 +68,9 @@
              TABLE_FAQ_CATEGORIES_DESCRIPTION . " fcd 
              where fc.id = fcd.faq_category_id 
              order by fcd.site_id DESC
-            ) c
-            where site_id = '0' or site_id='".$site_id."'
-            group by faq_category_id
+            ) c 
+            ".((isset($site_id)&&$site_id)?" where site_id='".$site_id."'":"").
+            "group by faq_category_id
             order by parent_id, sort_order, title");
     }
          $this->data = array();
