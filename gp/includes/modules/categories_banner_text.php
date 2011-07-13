@@ -43,7 +43,7 @@ $categories_tab_query1 = tep_db_query("
     $cbt_dec = explode(',',$cbt['categories_name']);
     for($i=0; $i < sizeof($cbt_dec); $i++) {
       if($cbt_dec[$i] != ''){
-        echo strip_tags(mb_substr($cbt_dec[$i],0,36,"UTF-8")) . "\n";
+        //echo strip_tags(mb_substr($cbt_dec[$i],0,36,"UTF-8")) . "\n";
       }
     }
     echo  '</a></h3>' . "\n" . '</td>' . "\n";
