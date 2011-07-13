@@ -28,7 +28,7 @@ if ($_SERVER['PHP_SELF'] == '/product_info.php') {
 </div>
 <?php } ?>
 <?php
-if($_SERVER['REQUEST_URI']=='/'||$_SERVER['REQUEST_URI']=='/index.php'||$_SERVER['REQUEST_URI']=='/reviews/'||$_SERVER['PHP_SELF'] == '/page.php'||$_SERVER['PHP_SELF'] == '/contact_us.php'||$_SERVER['PHP_SELF'] == '/reorder.php'||$_SERVER['PHP_SELF'] == '/sitemap.php'||$_SERVER['PHP_SELF'] == '/tags.php'||$_SERVER['PHP_SELF'] == '/products_new.php'||$_SERVER['PHP_SELF'] == '/specials.php'||(strpos($_SERVER['REQUEST_URI'],'index.php?cmd='))||(strpos($_SERVER['REQUEST_URI'],'?cmd='))){
+if($_SERVER['REQUEST_URI']=='/'||$_SERVER['REQUEST_URI']=='/index.php'||$_SERVER['REQUEST_URI']=='/reviews/'||$_SERVER['PHP_SELF'] == '/page.php'||$_SERVER['PHP_SELF'] == '/contact_us.php'||$_SERVER['PHP_SELF'] == '/reorder.php'||$_SERVER['PHP_SELF'] == '/sitemap.php'||$_SERVER['PHP_SELF'] == '/tags.php'||$_SERVER['PHP_SELF'] == '/products_new.php'||$_SERVER['PHP_SELF'] == '/specials.php'||strpos($_SERVER['PHP_SELF'], 'shopping_cart.php')||(strpos($_SERVER['REQUEST_URI'],'index.php?cmd='))||(strpos($_SERVER['REQUEST_URI'],'?cmd='))){
   }else{
   $left_search_category_single = true; 
   if ( (USE_CACHE == 'true') && !SID ) {
