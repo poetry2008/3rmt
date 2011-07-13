@@ -22,10 +22,10 @@ echo "<a href='".$_POST['redirect_url']
 ."'>next</a>";
 echo "</br>";
 echo "<a target = '_blank'href='";
-echo 'http://'.$_SERVER['HTTP_HOST'].'/credit/receive.php?option='.$_POST['option'].'&clientip=76011&telno=1234567&email=makerwang@gmail.com&sendid=123&username=maker&money=10000&cont=no&rel=no';
+echo 'http://'.$_SERVER['HTTP_HOST'].'/credit/receive.php?option='.$_POST['option'].'&clientip=76011&telno=1234567&email=makerwang@gmail.com&sendid=123&username=maker&money=10000&cont=no&rel=yes';
 echo "'>";
 
-echo 'http://'.$_SERVER['HTTP_HOST'].'/credit/receive.php?option='.$_POST['option'].'&clientip=76011&telno=1234567&email=makerwang@gmail.com&sendid=123&username=maker&money=10000&cont=no&rel=no';
+echo 'http://'.$_SERVER['HTTP_HOST'].'/credit/receive.php?option='.$_POST['option'].'&clientip=76011&telno=1234567&email=makerwang@gmail.com&sendid=123&username=maker&money=10000&cont=no&rel=yes';
 echo "</a>";
 
 
