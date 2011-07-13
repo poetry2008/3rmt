@@ -6,7 +6,7 @@
   //require(DIR_WS_BOXES . 'quick_link.php');
 ?>
 <?php
-if ($_SERVER['PHP_SELF'] == '/product_info.php' || $_SERVER['PHP_SELF'] == '/product_reviews_info.php') {
+if ($_SERVER['PHP_SELF'] == '/product_reviews_info.php') {
   include(DIR_WS_BOXES . 'list_new_categories.php');
 }
 if ($_SERVER['PHP_SELF'] == '/product_info.php') {
