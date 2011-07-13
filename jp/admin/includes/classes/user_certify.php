@@ -364,6 +364,8 @@ if (!tep_session_is_registered('user_permission')) {
   $check_login_pos = strpos($_SERVER['REQUEST_URI'], 'users_login.php'); 
   if ($check_login_pos === false) {
     tep_redirect('users_login.php?his_url='.$_SERVER['REQUEST_URI']);
+  } else {
+    tep_redirect('users_login.php');
   }
 }
 $ocertify = new user_certify(session_id());     // 認証
@@ -381,6 +383,8 @@ if (isset($GLOBALS['HTTP_GET_VARS']['action']) &&
   $check_login_pos = strpos($_SERVER['REQUEST_URI'], 'users_login.php'); 
   if ($check_login_pos === false) {
     tep_redirect('users_login.php?his_url='.$PHP_SELF);
+  } else {
+    tep_redirect('users_login.php');
   }
 } 
 
