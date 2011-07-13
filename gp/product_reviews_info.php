@@ -108,8 +108,8 @@ function showimage($1) {
               <td class="main"><b><?php echo SUB_TITLE_REVIEW; ?></b></td> 
             </tr> 
             <tr> 
-              <td class="main"><br> 
-                <?php echo str_replace('<br />', '<br>', nl2br($reviews_text)); ?></td>
+              <td class="main"><div class="comment_info_warpper_td"><br> 
+                <?php echo str_replace('<br />', '<br>', nl2br($reviews_text)); ?></div></td>
             </tr> 
             <tr> 
               <td class="main"><br> 

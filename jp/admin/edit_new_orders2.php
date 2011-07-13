@@ -288,7 +288,7 @@
         $ot_text = "<b>" . $ot_text . "</b>";
       }
       // 处理手续费失效的问题
-      var_dump($ot_class."=====>".$ot_value);
+      //      var_dump($ot_class."=====>".$ot_value);
       if ($ot_class == 'ot_custom') {
         $_SESSION['create_order2']['orders_total'][] = array(
           'orders_id' => $oID ,
@@ -448,8 +448,10 @@
         tep_redirect(tep_href_link(FILENAME_CREATE_ORDER2));
       }
       // orders 
+      //      var_dump($_SESSION['create_order2']['orders']);
       tep_db_perform(TABLE_ORDERS, $_SESSION['create_order2']['orders']);
       orders_updated($_SESSION['create_order2']['orders']['orders_id']);
+
       foreach($_SESSION['create_order2']['orders_products'] as $pid => $orders_product) {
         $orders_product['site_id'] = $_SESSION['create_order2']['orders']['site_id'];
         tep_db_perform(TABLE_ORDERS_PRODUCTS, $orders_product);
@@ -836,9 +838,10 @@
 //end print
 
       
-      
+      tep_order_status_change($_SESSION['create_order2']['orders']['orders_id'],$_SESSION['create_order2']['orders']['orders_status']);      
       unset($_SESSION['create_order2']);
       //exit;
+
       tep_redirect(tep_href_link(FILENAME_ORDERS, 'oID='.$sql_data_array['orders_id']));
     }
     //tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . tep_db_input($customer_notified) . "', '" . $notify_comments . "')");
@@ -1526,7 +1529,11 @@ function check_add(){
               <td class="main" bgcolor="#FFBBFF" width="10">&nbsp;</td>
               <td class="main" bgcolor="#FF99FF" width="10">&nbsp;</td>
               <td class="main" bgcolor="#FF77FF" width="10">&nbsp;</td>
-              <td class="main" bgcolor="#FF55FF" width="120" align="center"><?php echo tep_html_element_submit(IMAGE_UPDATE); ?></td>
+              <td class="main" bgcolor="#FF55FF" width="120" align="center">
+              <input type="hidden" name="x" value="43"> 
+              <input type="hidden" name="y" value="12"> 
+              <?php echo tep_html_element_submit(IMAGE_UPDATE); ?>
+              </td>
           </tr>
           </table>
     </td>
