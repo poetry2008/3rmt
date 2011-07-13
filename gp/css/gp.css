@@ -413,6 +413,7 @@ UL {
     line-height: 15px;
     overflow: hidden;
     width: 148px;
+	width:138px\9;
     word-wrap: break-word;
 }
 .reviews_bottom a:hover{ color:#990000;}
@@ -1917,10 +1918,10 @@ border:2px solid #FF8080;
 }
 .column_middle_comment{ background-color:#fff; width:520px; padding: 12px 2px; padding:12px 2px\9;}
 .column_m_image { float:right;}
-.column_m_number01{ margin-top:20px; padding:5px; width:410px\9; padding:25px 0 25px 5px\9; margin-top:10px\9;}
+.column_m_number01{ margin-top:10px; padding:5px; padding:25px 0 25px 5px\9; margin-top:10px\9;}
 .column_m_number01 a{ font-size:28px; padding:23px; font-weight:bold; padding:22px 25px 22px 22px\9;}
-.column_m_number01 a:hover{background: url(../images/design/search_img_big02.gif) no-repeat; padding-top:10px\9; padding-right:25px\9;}
-.column_m_number02{ margin-top:20px;}
+.column_m_number01 a:hover{background: url(../images/design/search_img_big02.gif) center 10px no-repeat; background: url(../images/design/search_img_big02.gif) no-repeat\9; padding-top:10px\9; padding-right:25px\9;}
+.column_m_number02{ margin:10px 0;}
 .column_m_number02 a{ font-size:26px; padding:16px 8px; font-weight:bold;}
 .column_m_number02 a:hover{background: url(../images/design/search_img_big02.gif) no-repeat;}
 .header_w_time img{ margin:5px 35px 5px 0;}

@@ -19,7 +19,7 @@
                         <a href="javascript:void(0);" onclick="search_top_category('サ');">サ</a>
                         <a href="javascript:void(0);" onclick="search_top_category('タ');">タ</a>
                         <a href="javascript:void(0);" onclick="search_top_category('ナ');">ナ</a>
-    <br /><br />
+    <br><br><br>
                         <a href="javascript:void(0);" onclick="search_top_category('ハ');">ハ</a>
                         <a href="javascript:void(0);" onclick="search_top_category('マ');">マ</a>
                         <a href="javascript:void(0);" onclick="search_top_category('ヤ');">ヤ</a>
@@ -48,7 +48,7 @@
                         <a href="javascript:void(0);" onclick="search_top_category('g,h,i');">G～I</a>
                         <a href="javascript:void(0);" onclick="search_top_category('j,k,l');">J～L</a>
                         <a href="javascript:void(0);" onclick="search_top_category('m,n,o');">M～O</a>
-    <br /><br />
+    <br><br><br>
                         <a href="javascript:void(0);" onclick="search_top_category('p,q,r');">P～R</a>
                         <a href="javascript:void(0);" onclick="search_top_category('s,t,u');">S～U</a>
                         <a href="javascript:void(0);" onclick="search_top_category('v,w');">V～W</a>
