@@ -197,7 +197,6 @@ UL {
 .l_m_category_ul3 {
 	list-style: none outside none;
 	padding:0;
-	margin: 22px 0px 0px 0;
 	*margin: -2px 0px 0px 5px;
 }
 .l_m_category_li, .l_m_category_li2{
@@ -259,6 +258,7 @@ UL {
 	overflow: hidden;
 	clear: both;
 	width:132px;
+	width:145px\9;
 	font-size:12px;
 	padding-left:15px;
 	padding-bottom:5px;
@@ -271,6 +271,8 @@ UL {
 	color: #555;
 	margin: 0px;
 	padding: 10px 0px 0px 0px;
+	padding-top:0px\9;
+	line-height:15px\9;
 	overflow: hidden;
 	clear: both;
 }
@@ -289,11 +291,11 @@ UL {
 }
 .l_m_categories_tree3 a{
 	font-size: 12px;
-	*font-size: 9px;
+	*font-size: 12px;
 	float: right;
 	display: block;
 	padding: 2px 2px 2px 15px;
-	*padding: 2px;
+	*padding: 2px 2px 2px 15px;;
 	line-height: 10px;
 	text-align:left;
 	width:120px;
@@ -304,7 +306,6 @@ UL {
 	font-size: 12px;
 	display: block;
 	padding: 2px 2px 2px -30px;
-	*line-height: 15px;
 	color:#0066FF;
 }
 #information{

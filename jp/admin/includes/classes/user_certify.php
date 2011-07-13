@@ -341,8 +341,12 @@ function logout_user($erf='',$s_status='',$url='') {
     }
     session_regenerate_id(); 
     if($url){
-    tep_redirect('users_login.php' . ($erf ? ('?erf='.$erf.'&his_url='.$url) :
-          '?his_url='.$rul));
+      $check_login_pos = strpos($_SERVER['REQUEST_URI'], 'users_login.php'); 
+      if ($check_login_pos === false) {
+        tep_redirect('users_login.php' . ($erf ? ('?erf='.$erf.'&his_url='.$url) : '?his_url='.$rul));
+      } else {
+        tep_redirect('users_login.php' . ($erf ? ('?erf='.$erf) : ''));
+      }
     }else{
     tep_redirect('users_login.php' . ($erf ? ('?erf='.$erf) : ''));
     }
@@ -357,7 +361,12 @@ if (file_exists(DIR_WS_LANGUAGES . $language . '/user_certify.php')) {
     include(DIR_WS_LANGUAGES . $language . '/user_certify.php');
 }
 if (!tep_session_is_registered('user_permission')) {
-  tep_redirect('users_login.php?his_url='.$_SERVER['REQUEST_URI']);
+  $check_login_pos = strpos($_SERVER['REQUEST_URI'], 'users_login.php'); 
+  if ($check_login_pos === false) {
+    tep_redirect('users_login.php?his_url='.$_SERVER['REQUEST_URI']);
+  } else {
+    tep_redirect('users_login.php');
+  }
 }
 $ocertify = new user_certify(session_id());     // 認証
 if ($ocertify->isErr) { 
@@ -371,7 +380,12 @@ if ($ocertify->isErr) {
 if (isset($GLOBALS['HTTP_GET_VARS']['action']) &&
   $GLOBALS['HTTP_GET_VARS']['action']== 're_login') { 
   session_regenerate_id(); 
-  tep_redirect('users_login.php?his_url='.$PHP_SELF);
+  $check_login_pos = strpos($_SERVER['REQUEST_URI'], 'users_login.php'); 
+  if ($check_login_pos === false) {
+    tep_redirect('users_login.php?his_url='.$PHP_SELF);
+  } else {
+    tep_redirect('users_login.php');
+  }
 } 
 
 ?>
