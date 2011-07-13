@@ -202,9 +202,9 @@ if ($bflag_single == 'View') {
   $new_handle_fee = $sql_data_array['code_fee'];
 }
 // ccdd
-$sql_data_array['orders_status'] = 30;
+//$sql_data_array['orders_status'] = 30;
 tep_db_perform(TABLE_ORDERS, $sql_data_array);
-tep_order_status_change($insert_id,30);
+tep_order_status_change($insert_id,$sql_data_array['orders_status']);
 $total_data_arr = array();
 for ($i=0, $n=sizeof($order_totals); $i<$n; $i++) {
   $sql_data_array = array('orders_id' => $insert_id,
