@@ -4086,37 +4086,7 @@ function   tep_order_status_change($oID,$status){
   {
     $orders_raw = tep_db_query("select * from ".TABLE_ORDERS." where orders_id = '".$oID."'");
     $orders_res = tep_db_fetch_array($orders_raw);
-    switch($orders_res['payment_method']) {
-      case '銀行振込(買い取り)':
-        return 'buying'; 
-        break;
-      case '銀行振込':
-        return 'moneyorder'; 
-        break;
-      case 'ゆうちょ銀行（郵便局）':
-        return 'postalmoneyorder'; 
-        break;
-      case 'コンビニ決済':
-        return 'convenience_store'; 
-        break;
-      case 'クレジットカード決済':
-        return 'telecom'; 
-        break;
-      case 'ペイパル決済':
-        return 'paypal'; 
-        break;
-      case 'ポイント(買い取り)':
-        return 'buyingpoint'; 
-        break;
-      case '来店支払い':
-        return 'fetchgood'; 
-        break;
-      case '支払いなし':
-        return 'freepayment'; 
-        break;
-      default:
-        return false;
-    }
+    return $orders_res['payment_method'];
   }
   function tep_db_fetch_object($result, $classname = '')
   {
