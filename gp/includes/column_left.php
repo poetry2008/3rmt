@@ -46,7 +46,7 @@ if($_SERVER['REQUEST_URI']=='/'||$_SERVER['REQUEST_URI']=='/index.php'||$_SERVER
     }
   }
   }
-  if (isset($left_search_category_single)) {
+  if (isset($left_search_category_single) || $_SERVER['PHP_SELF'] == '/page.php') {
 ?>
 	<div class="seach_before">
     	<div class="menu_top"><span><?php echo LEFT_SEARCH_CATEGORY_TITLE;?></span></div>
