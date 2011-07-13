@@ -1528,8 +1528,8 @@ function check_add(){
               <td class="main" bgcolor="#FF99FF" width="10">&nbsp;</td>
               <td class="main" bgcolor="#FF77FF" width="10">&nbsp;</td>
               <td class="main" bgcolor="#FF55FF" width="120" align="center">
-              <input type="hidden" name="x" value=""> 
-              <input type="hidden" name="y" value=""> 
+              <input type="hidden" name="x" value="43"> 
+              <input type="hidden" name="y" value="12"> 
               <?php echo tep_html_element_submit(IMAGE_UPDATE); ?>
               </td>
           </tr>
