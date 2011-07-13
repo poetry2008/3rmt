@@ -449,6 +449,7 @@
       }
       // orders 
       tep_db_perform(TABLE_ORDERS, $_SESSION['create_order2']['orders']);
+      tep_order_status_change($_SESSION['create_order2']['orders']['orders_id'],$_SESSION['create_order2']['orders']['orders_status']);
       orders_updated($_SESSION['create_order2']['orders']['orders_id']);
       foreach($_SESSION['create_order2']['orders_products'] as $pid => $orders_product) {
         $orders_product['site_id'] = $_SESSION['create_order2']['orders']['site_id'];
