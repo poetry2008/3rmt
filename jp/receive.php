@@ -1,7 +1,6 @@
 <?php 
 require('includes/application_top.php');
 
-
 check_uri('/^\/receive.php/');
 
 header("Content-type: text/html"); 
@@ -48,6 +47,7 @@ if ($w_clientip == '76011' && $w_username && $w_email && $w_money && $w_telno) {
   if ($w_rel == 'yes' &&  $w_option != "") {//optionが空白の場合optionの検索はしない
     $orders = tep_db_fetch_array(tep_db_query("select * from ".TABLE_ORDERS." where telecom_option='".$w_option."' and date_purchased > '".(date('Y-m-d H:i:s',time()-86400))."'"));
   }
+
   if ($orders&&!$orders['telecom_name']&&!$orders['telecom_tel']&&!$orders['telecom_money']&&!$orders['telecom_email']) {
     // OK
     tep_db_perform(TABLE_ORDERS, array(
@@ -57,6 +57,7 @@ if ($w_clientip == '76011' && $w_username && $w_email && $w_money && $w_telno) {
       'telecom_email' => $w_email,
       'orders_status' => '30',
     ), 'update', "orders_id='".$orders['orders_id']."'");
+    var_dump($orders);
     $sql_data_array = array('orders_id' => $orders['orders_id'], 
                           'orders_status_id' => '30', 
                           'date_added' => 'now()', 
