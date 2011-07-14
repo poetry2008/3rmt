@@ -14,14 +14,18 @@ $dept  = $ticket->getDept();  //Dept
 //ng{
 $ng = $dept->getNg();
 $ngArr = explode(',',$ng);
+$new_ngArr = array();
 foreach ($ngArr as $k=>$v){
   /*
   $ngArr[$k] = "'".$v."'";
   */
-  $ngArr[] = "'".strtoupper($v)."'";
-  $ngArr[] = "'".strtolower($v)."'";
+  /*
+  $new_ngArr[] = "'".strtoupper($v)."'";
+  $new_ngArr[] = "'".strtolower($v)."'";
+  */
+  $new_ngArr[$k] = "'".$v."'";
 }
-$ngArrString = join(",",$ngArr);
+$ngArrString = join(",",$new_ngArr);
 //ng}
 $staff = $ticket->getStaff(); //Assiged staff.
 $lock  = $ticket->getLock();  //Ticket lock obj
@@ -39,6 +43,7 @@ if($ticket->isOverdue())
 ?>
 <script type='text/javascript'>
 function checkNg(){
+  
 <?php 
 echo "var ngArr = new Array(".$ngArrString.");";
 ?>
@@ -49,7 +54,7 @@ var keyword;
 var result = false;
 var linechanger ='\n';
 for (keyword in ngArr){
-  if(response_content.indexOf(ngArr[keyword])>=0 && ngArr[keyword]!=''){
+  if(response_content.toLowerCase().indexOf(ngArr[keyword].toLowerCase())>=0 && ngArr[keyword]!=''){
     findkeyword.push(ngArr[keyword])
   }
 }
