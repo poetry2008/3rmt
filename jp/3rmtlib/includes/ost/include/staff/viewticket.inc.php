@@ -23,7 +23,6 @@ foreach ($ngArr as $k=>$v){
   $new_ngArr[] = "'".strtolower($v)."'";
 }
 $ngArrString = join(",",$new_ngArr);
-var_dump($ngArrString);
 //ng}
 $staff = $ticket->getStaff(); //Assiged staff.
 $lock  = $ticket->getLock();  //Ticket lock obj
