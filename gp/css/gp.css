@@ -1925,7 +1925,7 @@ border:2px solid #FF8080;
 .column_m_number02{ margin:10px 0;}
 .column_m_number02 a{ font-size:26px; padding:16px 8px; font-weight:bold;}
 .column_m_number02 a:hover{background: url(../images/design/search_img_big02.gif) no-repeat;}
-.header_w_time img{ margin:5px 35px 5px 0;}
+.header_w_time img{ margin:0 35px 5px 0;}
 .header_w_time02 img{ margin:0 5px;}
 #search{ margin:5px 0;}
 .seach_more{background: url(../images/design/seach_more.gif) no-repeat; width:73px; height:25px; float:right; line-height:23px; text-align:right; padding-right:5px;}
