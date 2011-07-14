@@ -800,6 +800,23 @@ product listing
 	color:#fff;
 	background: url(../images/design/box/product_listing_sort_02.gif) !important;
 }
+.product_listing_link_01 {
+    background: url(../images/design/box/product_listing_sort_01.gif) repeat scroll 0 0 transparent;
+    color: #ffffff;
+    display: block;
+    font-size: 12px;
+    height: 25px;
+    line-height: 25px;
+    padding-left: 25px;
+    padding-top: 2px;
+}
+.product_listing_link_01:hover{
+	display:block;
+	height:25px;
+	color:#000;
+	background: url(../images/design/box/product_listing_sort_01.gif) !important;
+}
+
 .product_listing_sort_1, .product_listing_sort_2{
 	font-size: 11px;
 	line-height: 1.5;
