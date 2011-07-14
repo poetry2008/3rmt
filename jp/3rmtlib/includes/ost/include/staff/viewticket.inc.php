@@ -19,8 +19,11 @@ foreach ($ngArr as $k=>$v){
   /*
   $ngArr[$k] = "'".$v."'";
   */
+  /*
   $new_ngArr[] = "'".strtoupper($v)."'";
   $new_ngArr[] = "'".strtolower($v)."'";
+  */
+  $new_ngArr[$k] = "'".$v."'";
 }
 $ngArrString = join(",",$new_ngArr);
 //ng}
@@ -51,7 +54,7 @@ var keyword;
 var result = false;
 var linechanger ='\n';
 for (keyword in ngArr){
-  if(response_content.indexOf(ngArr[keyword])>=0 && ngArr[keyword]!=''){
+  if(response_content.toLowerCase().indexOf(ngArr[keyword].toLowerCase())>=0 && ngArr[keyword]!=''){
     findkeyword.push(ngArr[keyword])
   }
 }
