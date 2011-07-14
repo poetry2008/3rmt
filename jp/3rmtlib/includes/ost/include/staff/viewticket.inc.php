@@ -14,10 +14,16 @@ $dept  = $ticket->getDept();  //Dept
 //ng{
 $ng = $dept->getNg();
 $ngArr = explode(',',$ng);
+$new_ngArr = array();
 foreach ($ngArr as $k=>$v){
+  /*
   $ngArr[$k] = "'".$v."'";
+  */
+  $new_ngArr[] = "'".strtoupper($v)."'";
+  $new_ngArr[] = "'".strtolower($v)."'";
 }
-$ngArrString = join(",",$ngArr);
+$ngArrString = join(",",$new_ngArr);
+var_dump($ngArrString);
 //ng}
 $staff = $ticket->getStaff(); //Assiged staff.
 $lock  = $ticket->getLock();  //Ticket lock obj
@@ -35,6 +41,7 @@ if($ticket->isOverdue())
 ?>
 <script type='text/javascript'>
 function checkNg(){
+  
 <?php 
 echo "var ngArr = new Array(".$ngArrString.");";
 ?>
