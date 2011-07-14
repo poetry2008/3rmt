@@ -6,9 +6,6 @@
   //require(DIR_WS_BOXES . 'quick_link.php');
 ?>
 <?php
-if ($_SERVER['PHP_SELF'] == '/product_reviews_info.php') {
-  include(DIR_WS_BOXES . 'list_new_categories.php');
-}
 if ($_SERVER['PHP_SELF'] == '/product_info.php') {
 ?>
 <div id="search">
@@ -28,8 +25,8 @@ if ($_SERVER['PHP_SELF'] == '/product_info.php') {
 </div>
 <?php } ?>
 <?php
-if($_SERVER['REQUEST_URI']=='/'||$_SERVER['REQUEST_URI']=='/index.php'||$_SERVER['REQUEST_URI']=='/reviews/'||$_SERVER['PHP_SELF'] == '/page.php'||$_SERVER['PHP_SELF'] == '/contact_us.php'||$_SERVER['PHP_SELF'] == '/reorder.php'||$_SERVER['PHP_SELF'] == '/sitemap.php'||$_SERVER['PHP_SELF'] == '/tags.php'||$_SERVER['PHP_SELF'] == '/products_new.php'||$_SERVER['PHP_SELF'] == '/specials.php'||strpos($_SERVER['PHP_SELF'], 'shopping_cart.php')||(strpos($_SERVER['REQUEST_URI'],'index.php?cmd='))||(strpos($_SERVER['REQUEST_URI'],'?cmd='))){
-  }else{
+if($_SERVER['REQUEST_URI']=='/'||$_SERVER['REQUEST_URI']=='/index.php'||$_SERVER['REQUEST_URI']=='/reviews/'||$_SERVER['PHP_SELF'] == '/page.php'||$_SERVER['PHP_SELF'] == '/contact_us.php'||$_SERVER['PHP_SELF'] == '/reorder.php'||$_SERVER['PHP_SELF'] == '/sitemap.php'||$_SERVER['PHP_SELF'] == '/tags.php'||$_SERVER['PHP_SELF'] == '/products_new.php'||$_SERVER['PHP_SELF'] == '/specials.php'||strpos($_SERVER['PHP_SELF'], 'shopping_cart.php')||strpos($_SERVER['PHP_SELF'], 'login.php')||strpos($_SERVER['PHP_SELF'], 'send_mail.php')||strpos($_SERVER['PHP_SELF'], 'create_account.php')||strpos($_SERVER['PHP_SELF'], 'create_account_process.php')||strpos($_SERVER['PHP_SELF'], 'advanced_search.php')||strpos($_SERVER['PHP_SELF'], 'product_notifications.php')||strpos($_SERVER['PHP_SELF'], 'account.php')||strpos($_SERVER['PHP_SELF'], 'account_history.php')||strpos($_SERVER['PHP_SELF'], 'account_history_info.php')||strpos($_SERVER['PHP_SELF'], 'account_edit.php')||strpos($_SERVER['PHP_SELF'], 'account_edit_process.php')||(strpos($_SERVER['REQUEST_URI'],'index.php?cmd='))){
+}else{
   $left_search_category_single = true; 
   if ( (USE_CACHE == 'true') && !SID ) {
     if ($cPath) {
@@ -46,7 +43,7 @@ if($_SERVER['REQUEST_URI']=='/'||$_SERVER['REQUEST_URI']=='/index.php'||$_SERVER
     }
   }
   }
-  if (isset($left_search_category_single) || $_SERVER['REQUEST_URI']=='/reviews/'||$_SERVER['PHP_SELF'] == '/page.php'||$_SERVER['PHP_SELF'] == '/contact_us.php'||$_SERVER['PHP_SELF'] == '/reorder.php'||$_SERVER['PHP_SELF'] == '/sitemap.php'||$_SERVER['PHP_SELF'] == '/tags.php'||$_SERVER['PHP_SELF'] == '/products_new.php'||$_SERVER['PHP_SELF'] == '/specials.php'||strpos($_SERVER['PHP_SELF'], 'shopping_cart.php')) {
+  if (!((strpos($_SERVER['PHP_SELF'], 'index.php')) && ($category_depth == 'top') && !isset($_GET['manufacturers_id']))) {
 ?>
 	<div class="seach_before">
     	<div class="menu_top"><span><?php echo LEFT_SEARCH_CATEGORY_TITLE;?></span></div>
