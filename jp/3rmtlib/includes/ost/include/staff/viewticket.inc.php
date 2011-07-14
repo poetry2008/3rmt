@@ -15,7 +15,11 @@ $dept  = $ticket->getDept();  //Dept
 $ng = $dept->getNg();
 $ngArr = explode(',',$ng);
 foreach ($ngArr as $k=>$v){
+  /*
   $ngArr[$k] = "'".$v."'";
+  */
+  $ngArr[] = "'".strtoupper($v)."'";
+  $ngArr[] = "'".strtolower($v)."'";
 }
 $ngArrString = join(",",$ngArr);
 //ng}

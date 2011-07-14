@@ -470,9 +470,9 @@ $ex_site = $sites[0];
         $contents[] = array('align' => 'left', 'text' => '<a href="' .  tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' .  @$_GET['module'] . '&action=edit') . '">' . tep_html_element_button(IMAGE_EDIT) . '</a>');
         if ($_GET['set'] == 'payment') {
 
-          $link_form_str .= '<a href="'.tep_href_link(FILENAME_OA_FORM, 'pcode='.$mInfo->code.'&type=1').'">'.tep_html_element_button(FORM_SELL_TEXT).'</a>'; 
-          $link_form_str .= '<a href="'.tep_href_link(FILENAME_OA_FORM, 'pcode='.$mInfo->code.'&type=2').'">'.tep_html_element_button(FORM_BUY_TEXT).'</a>'; 
-          $link_form_str .= '<a href="'.tep_href_link(FILENAME_OA_FORM, 'pcode='.$mInfo->code.'&type=3').'">'.tep_html_element_button(FORM_MIX_TEXT).'</a>'; 
+          $link_form_str .= '<a href="'.tep_href_link(FILENAME_OA_FORM, 'pcode='.$mInfo->title.'&type=1').'">'.tep_html_element_button(FORM_SELL_TEXT).'</a>'; 
+          $link_form_str .= '<a href="'.tep_href_link(FILENAME_OA_FORM, 'pcode='.$mInfo->title.'&type=2').'">'.tep_html_element_button(FORM_BUY_TEXT).'</a>'; 
+          $link_form_str .= '<a href="'.tep_href_link(FILENAME_OA_FORM, 'pcode='.$mInfo->title.'&type=3').'">'.tep_html_element_button(FORM_MIX_TEXT).'</a>'; 
      
           $contents[] = array('align' => 'left', 'text' => $link_form_str);
            
