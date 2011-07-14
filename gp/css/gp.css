@@ -791,7 +791,8 @@ product listing
 	padding-left:25px;
 	background: url(../images/design/box/product_listing_sort_01.gif);
 	color:#000;
-	font-size:10px;
+	font-size:12px;
+	padding-top:2px;
 }
 .product_listing_link:hover{
 	display:block;
@@ -1905,7 +1906,7 @@ border:2px solid #FF8080;
 .s_link02{ background: url(../images/design/s_link_a02.gif) no-repeat; width:89px; height:23px; color:#FFFFFF; line-height:24px; text-align:center; float:left;}
 .s_link_hover{ background: url(../images/design/s_link_hover.gif) no-repeat; width:89px; height:23px; color:#FFFFFF; line-height:24px; text-align:center; float:left;}
 .s_link02_hover{ background: url(../images/design/s_link_hover02.gif) no-repeat; width:89px; height:23px; color:#FFFFFF; line-height:24px; text-align:center; float:left;}
-.s_link a ,.s_link02 a ,.s_link_hover a ,.s_link02_hover a{ color:#fff; font-size:12px;}
+.s_link a ,.s_link02 a ,.s_link_hover a ,.s_link02_hover a{ color:#fff; font-size:14px; font-weight:bold;}
 .top_index_warpper{ 
 	border-top:3px solid #2864B4;
 	border-left:1px solid #B8B8B8;
