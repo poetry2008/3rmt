@@ -85,7 +85,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
       echo "<div class='autocalculate_div'>";
       if($op){
       echo "<input value='".$opp['products_id']."'  
-        onclick='".$this->formname."Change_option(".$opp['products_id'].",this,".$op['products_id'].")' 
+        onchange='".$this->formname."Change_option(".$opp['products_id'].",this,".$op['products_id'].")' 
         type='checkbox' ".$check." name='0".$this->formname."' ";
       echo "/>";
       echo $op['products_name'];

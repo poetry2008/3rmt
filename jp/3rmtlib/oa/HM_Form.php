@@ -124,6 +124,8 @@ class HM_Form extends DbRecord
                                                                if($(this).attr('checked')!='undefined'){
                                                                  $(this).removeAttr('checked');
                                                                }
+                                                               $(this).trigger('change');
+                                                               
                                                              });
       $(ele).parent().parent().children().find('span').each(
                                                             function (){
