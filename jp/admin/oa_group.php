@@ -27,6 +27,9 @@
         break;
       case 'update':
         tep_db_query("update `".TABLE_OA_GROUP."` set `name` = '".tep_db_prepare_input($_POST['gname'])."'  where id = '".$_GET['gid']."'");        
+        if($_GET['return']=='oa_link'){
+        tep_redirect(tep_href_link(FILENAME_OA_GROUP, 'action=edit&gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&return=oa_link&type='.$_GET['type'])); 
+        }
         tep_redirect(tep_href_link(FILENAME_OA_GROUP, 'action=edit&gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type'])); 
        break;
       case 'del':
@@ -117,7 +120,12 @@ function select_all_group()
         <td>
           <?php
             if ($_GET['action'] == 'edit') {
+              //如果从link来，就要回link去
+              if($_GET['return'] == 'oa_link'){
+              echo tep_draw_form('oagroup', FILENAME_OA_GROUP, 'pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&action=update&return=oa_link&gid='.$_GET['gid']);          
+              }else {
               echo tep_draw_form('oagroup', FILENAME_OA_GROUP, 'pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&action=update&gid='.$_GET['gid']);          
+              }
             } else {
               echo tep_draw_form('oagroup', FILENAME_OA_GROUP, 'pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&action=insert');          
             }
