@@ -128,7 +128,11 @@ class HM_Item_Autocalculate extends HM_Item_Basic
              e_input.value = 0;
              $("#"+span_id).text(p_value);
            }else{
-             $("#"+span_id).text(p_value-v_input);
+             if(v_input!=''){
+               $("#"+span_id).text(p_value-v_input);
+             }else{
+               $("#"+span_id).text(0);
+             }
            }
          }
          function <?php echo $this->formname."Change_option(pid,ele,spid)";?>{

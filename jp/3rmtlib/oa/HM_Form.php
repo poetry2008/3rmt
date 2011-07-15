@@ -121,10 +121,11 @@ class HM_Form extends DbRecord
                                                                if($(this).attr("type")=='text' || $(this).attr("type") =='hidden'){
                                                                  $(this).val('');
                                                                }
-                                                               if($(this).attr('checked')!='undefined'){
+                                                               if(this.checked ==true ){
                                                                  $(this).removeAttr('checked');
+                                                                 $(this).trigger('change');
                                                                }
-                                                               $(this).trigger('change');
+
                                                                
                                                              });
       $(ele).parent().parent().children().find('span').each(
