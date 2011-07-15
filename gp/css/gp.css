@@ -1057,8 +1057,8 @@ Page Title
 	padding-left:20px;
 	line-height:24px;
 	margin-right:5px;
-	margin-top:5px;
-}
+/*	margin-top:5px;
+*/}
 .pageHeading_long01 {
 	background: url(../images/design/contents/headding_title_long.gif) no-repeat 0 bottom;
 	width: 690px;
@@ -1183,7 +1183,7 @@ margin-top:-10px\9;
 #ticketthread{margin:15px 0;}
 .captcha_comment{ font-size:12px;}
 .right_colum_border{ width:170px; padding-right:5px;}
-.left_colum_border{width:170px; padding-left:5px;}
+.left_colum_border{width:170px; padding-left:5px; padding-top:5px;}
 .link_banner{ margin:5px 0;}
 .side_border{ width:900px; margin:0 auto; background-color:#EDEDED;}
 .latest_news_box,.welcome_box{
@@ -1944,7 +1944,7 @@ border:2px solid #FF8080;
 .column_m_number02 a:hover{background: url(../images/design/search_img_big02.gif) no-repeat;}
 .header_w_time img{ margin:0 35px 5px 0;}
 .header_w_time02 img{ margin:0 5px;}
-#search{ margin:5px 0;}
+#search{ margin:0 0 5px 0;}
 .seach_more{background: url(../images/design/seach_more.gif) no-repeat; width:73px; height:25px; float:right; line-height:23px; text-align:right; padding-right:5px;}
 .seach_more a{ font-size:12px; color:#fff;}
 .left_total_money{ border-bottom:1px dashed #ccc; padding:5px 0; margin-bottom:5px; text-align:left;}
@@ -1987,11 +1987,19 @@ border:2px solid #FF8080;
 	margin-bottom:5px;
 	margin-right:2px;
 }
-#showca{ position:absolute; top:190px; background-color:#215C9E; border:1px solid #5DA6CE; width:750px; width:750px\9; padding-left:5px; line-height:25px;}
-.search_list_category_content { float:left; width:700px; margin-top:10px;}
+#showca{ 
+	position:absolute; 
+	top:190px; 
+	background-color:#215C9E; 
+	border:1px solid #5DA6CE; 
+	width:710px; 
+	padding-left:5px; 
+	line-height:25px;
+}
+.search_list_category_content { float:left; width:660px; margin-top:10px;}
 .search_category_name{ color:#fff; font-size:12px;}
 .close_search_category{ float:right; text-align:right;}
-.search_list_category { width:200px; float:left; margin-bottom:8px; padding-left:28px;}
+.search_list_category { width:200px; float:left; margin-bottom:8px; padding-left:18px;}
 .search_list_category .search_category_name{ width:200px; display:block; font-size:16px; line-height:25px;}
 .seach_before_info td{background: url(../images/design/seach_before_img.gif) no-repeat; width:31px; height:30px; text-align:center;}
 .seach_before_info a{ color:#FFF; font-size:12px;}
@@ -2003,7 +2011,7 @@ border:2px solid #FF8080;
 	text-align:left; 
 	font-size:16px; 
 	width:700px; 
-	width:750px\9; 
+	width:720px\9; 
 	padding:0 0 10px 10px;
 }
 .info_middle{ background-color:#fff; padding:5px; padding:5px 0\9;}
