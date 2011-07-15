@@ -192,8 +192,7 @@ class HM_Form extends DbRecord
                                   if( $(this).val().length >$(this).attr('size')){
                                     //               	$(this).val($(this).val().substr(0,$(this).attr('size')));
                                     $(this).parent().parent().find('.alertmsg').remove();
-                                    $("<span class='alertmsg'>文字の最大入力は"+$(this).attr('size')+"
-です。"+$(this).attr('size')+"以内にしてください。</span>").insertAfter($(this).next());
+                                    $("<span class='alertmsg'>文字の最大入力は"+$(this).attr('size')+"です。"+$(this).attr('size')+"以内にしてください。</span>").insertAfter($(this).next());
                                   }else{
           $(this).parent().parent().find('.alertmsg').remove();
           }
