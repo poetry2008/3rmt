@@ -451,3 +451,24 @@ define('FILENAME_PW_MANAGER_TEXT','ID管理');
 define('FILENAME_COMPUTERS_TEXT','PC管理');
 define('FILENAME_MAG_UP_TEXT','メールマガジン一括登録');
 define('FILENAME_MAG_DL_TEXT','メールマガジンデータDL');
+
+//header language
+define('HEADER_TEXT_SITE_NAME','株式会社iimy');
+define('HEADER_TEXT_LOGINED','でログインしています。');
+define('HEADER_TEXT_ORDERS','注文一覧');
+define('HEADER_TEXT_TELECOM_UNKNOW','決算履歴');
+define('HEADER_TEXT_TUTORIALS','商品調整▼');
+define('HEADER_TEXT_CATEGORIES','商品登録');
+define('HEADER_TEXT_LOGOUT','ログアウト');
+define('HEADER_TEXT_REDIRECTURL','サイトへ移動▼');
+define('HEADER_TEXT_USERS','パスワード変更');
+define('HEADER_TEXT_PW_MANAGER','ID管理');
+define('HEADER_TEXT_MANAGERMENU','ツール▼');
+define('HEADER_TEXT_MICRO_LOG','引継メモ');
+define('HEADER_TEXT_LATEST_NEWS','新着情報');
+define('HEADER_TEXT_CUSTOMERS','顧客一覧');
+define('HEADER_TEXT_CREATE_ORDER2','仕入作成');
+define('HEADER_TEXT_CREATE_ORDER','注文作成');
+define('HEADER_TEXT_ORDERMENU','注文書▼');
+define('HEADER_TEXT_INVENTORY','在庫水準');
+define('HEADER_TEXT_CATEGORIES_ADMIN','価格調整');
