@@ -52,7 +52,7 @@ function toggle_header_menu(elmnt)
   <tr>
     <td><?php echo tep_image(DIR_WS_CATALOG .DIR_WS_IMAGES . ADMINPAGE_LOGO_IMAGE, STORE_NAME, '', ''); ?></td>
     <td align="right">
-    株式会社iimy&nbsp;<b>
+    <?php echo HEADER_TEXT_SITE_NAME;?>&nbsp;<b>
     <?php
       //var_dump($ocertify->npermission);
       echo "<a href =
@@ -67,7 +67,7 @@ function toggle_header_menu(elmnt)
       }
       echo "</a>";
     ?>
-    </b>&nbsp;でログインしています。&nbsp;
+    </b>&nbsp;<?php echo HEADER_TEXT_LOGINED;?>&nbsp;
   </td>
   </tr>
 <?php
@@ -91,45 +91,65 @@ if(preg_match("/".FILENAME_ORDERS."/",$PHP_SELF)){
     echo '
       <table>
       <tr>
-      <td><a href="' . tep_href_link(FILENAME_ORDERS, '', 'NONSSL') . '" class="headerLink">注文一覧</a>&nbsp;|</td>
-          <td><a href="' . tep_href_link('telecom_unknow.php', '', 'NONSSL') . '" class="headerLink">決算履歴</a>&nbsp;|</td>
+      <td><a href="' . tep_href_link(FILENAME_ORDERS, '', 'NONSSL') . '"
+      class="headerLink">'.HEADER_TEXT_ORDERS.'</a>&nbsp;|</td>
+          <td><a href="' . tep_href_link('telecom_unknow.php', '', 'NONSSL') . '" class="headerLink"
+          >'.HEADER_TEXT_TELECOM_UNKNOW.'</a>&nbsp;|</td>
           <td align="left">
-        &nbsp;<a class="headerLink" href="javascript:void(0);" onclick="toggle_header_menu(\'tutorials\')">商品調整▼</a>&nbsp;|<br>
+        &nbsp;<a class="headerLink" href="javascript:void(0);" onclick="toggle_header_menu(\'tutorials\')"
+        >'.HEADER_TEXT_TUTORIALS.'</a>&nbsp;|<br>
         <table class="menu01" id="tutorials" cellpadding="0" cellspacing="0">
           <tr>
-            <td class="menu01"><a class="t_link01" href="'.tep_href_link(FILENAME_CATEGORIES, '', 'NONSSL').'">商品登録</a></td>
+            <td class="menu01"><a class="t_link01"
+            href="'.tep_href_link(FILENAME_CATEGORIES, '',
+      'NONSSL').'">'.HEADER_TEXT_CATEGORIES.'</a></td>
           </tr>
           <tr>
-            <td class="menu01"><a class="t_link01" href="'.tep_href_link(FILENAME_CATEGORIES_ADMIN, '', 'NONSSL').'">価格調整</a></td>
+            <td class="menu01"><a class="t_link01"
+            href="'.tep_href_link(FILENAME_CATEGORIES_ADMIN, '',
+      'NONSSL').'">'.HEADER_TEXT_CATEGORIES_ADMIN.'</a></td>
           </tr>
           <tr>
-            <td class="menu01"><a class="t_link01" href="'.tep_href_link(FILENAME_INVENTORY, '', 'NONSSL').'">在庫水準</a></td>
+            <td class="menu01"><a class="t_link01"
+            href="'.tep_href_link(FILENAME_INVENTORY, '',
+      'NONSSL').'">'.HEADER_TEXT_INVENTORY.'</a></td>
           </tr>       
         </table>
           </td>
-      <td align="left"> &nbsp;<a class="headerLink" href="javascript:void(0);" onclick="toggle_header_menu(\'ordermenu\')">注文書▼</a>&nbsp;|<br>
+      <td align="left"> &nbsp;<a class="headerLink" href="javascript:void(0);"
+      onclick="toggle_header_menu(\'ordermenu\')">'.HEADER_TEXT_ORDERMENU.'</a>&nbsp;|<br>
         <table class="menu01" id="ordermenu" cellpadding="0" cellspacing="0">
           <tr>
-            <td class="menu01"><a class="t_link01" href="'.tep_href_link('create_order.php', '', 'NONSSL').'">注文作成</a></td>
+            <td class="menu01"><a class="t_link01"
+            href="'.tep_href_link('create_order.php', '',
+      'NONSSL').'">'.HEADER_TEXT_CREATE_ORDER.'</a></td>
           </tr>
           <tr>
-            <td class="menu01"><a class="t_link01" href="'.tep_href_link('create_order2.php', '', 'NONSSL').'">仕入作成</a></td>
+            <td class="menu01"><a class="t_link01" href="'.tep_href_link('create_order2.php',
+      '', 'NONSSL').'">'.HEADER_TEXT_CREATE_ORDER2.'</a></td>
           </tr>
         </table>
       </td>
-        <td><a href="' . tep_href_link(FILENAME_CUSTOMERS, '', 'NONSSL') . '" class="headerLink">顧客一覧</a>&nbsp;|</td>
-          <td>&nbsp;<a href="' . tep_href_link(FILENAME_LATEST_NEWS, '', 'NONSSL') . '" class="headerLink">新着情報</a>&nbsp;|</td>
-          <td>&nbsp;<a href="' . tep_href_link('micro_log.php', '', 'NONSSL') . '" class="headerLink">引継メモ</a>&nbsp;|</td>
+        <td><a href="' . tep_href_link(FILENAME_CUSTOMERS, '', 'NONSSL') . '" 
+        class="headerLink">'.HEADER_TEXT_CUSTOMERS.'</a>&nbsp;|</td>
+          <td>&nbsp;<a href="' . tep_href_link(FILENAME_LATEST_NEWS, '', 'NONSSL') .
+          '" class="headerLink">'.HEADER_TEXT_LATEST_NEWS.'</a>&nbsp;|</td>
+          <td>&nbsp;<a href="' . tep_href_link('micro_log.php', '', 'NONSSL') . '" class="headerLink"
+          >'.HEADER_TEXT_MICRO_LOG.'</a>&nbsp;|</td>
 
 
       <td align="left">
-        &nbsp;<a class="headerLink" href="javascript:void(0);" onclick="toggle_header_menu(\'managermenu\')">ツール▼</a>&nbsp;|<br>
+        &nbsp;<a class="headerLink" href="javascript:void(0);"
+        onclick="toggle_header_menu(\'managermenu\')">'.HEADER_TEXT_MANAGERMENU.'</a>&nbsp;|<br>
         <table class="menu01" id="managermenu" cellpadding="0" cellspacing="0">
           <tr>
-            <td class="menu01"><a class="t_link01" href="'.tep_href_link(FILENAME_PW_MANAGER, '', 'NONSSL').'">ID管理</a></td>
+            <td class="menu01"><a class="t_link01"
+            href="'.tep_href_link(FILENAME_PW_MANAGER, '',
+      'NONSSL').'">'.HEADER_TEXT_PW_MANAGER.'</a></td>
           </tr>
           <tr>
-            <td class="menu01"><a class="t_link01" href="'.tep_href_link('users.php', '', 'NONSSL').'">パスワード変更</a></td>
+            <td class="menu01"><a class="t_link01"
+            href="'.tep_href_link('users.php', '', 'NONSSL').'">'.HEADER_TEXT_USERS.'</a></td>
           </tr>
         </table>
       </td>
@@ -138,7 +158,8 @@ if(preg_match("/".FILENAME_ORDERS."/",$PHP_SELF)){
 
       <td align="left">
       ';
-      echo '&nbsp;<a href="javascript:void(0);" class="headerLink" onclick="toggle_header_menu(\'redirecturl\')">サイトへ移動▼</a>&nbsp;|<br>'; 
+      echo '&nbsp;<a href="javascript:void(0);" class="headerLink"
+        onclick="toggle_header_menu(\'redirecturl\')">'.HEADER_TEXT_REDIRECTURL.'</a>&nbsp;|<br>'; 
       $site_link_query = tep_db_query('select * from '.TABLE_SITES);
       echo '<table id="redirecturl" cellspacing="0" cellpadding="0" class="menu01" style="visibility: hidden;">'; 
       while ($site_link = tep_db_fetch_array($site_link_query)) {
@@ -149,10 +170,12 @@ if(preg_match("/".FILENAME_ORDERS."/",$PHP_SELF)){
       echo '</table>';
       echo ' 
       <td>&nbsp;
-      <a href="' . tep_href_link(basename($GLOBALS['PHP_SELF']), '', 'NONSSL') . '?execute_logout_user=1" class="headerLink">ログアウト</a></td></tr></table>';
+      <a href="' . tep_href_link(basename($GLOBALS['PHP_SELF']), '', 'NONSSL') .
+        '?execute_logout_user=1" class="headerLink">'.HEADER_TEXT_LOGOUT.'</a></td></tr></table>';
     } else {
     echo '|&nbsp;
-      <a href="' . tep_href_link(basename($GLOBALS['PHP_SELF']), '', 'NONSSL') . '?execute_logout_user=1" class="headerLink">ログアウト</a>';
+      <a href="' . tep_href_link(basename($GLOBALS['PHP_SELF']), '', 'NONSSL') .
+        '?execute_logout_user=1" class="headerLink">'.HEADER_TEXT_LOGOUT.'</a>';
     }
     ?>
   </td>

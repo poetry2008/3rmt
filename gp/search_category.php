@@ -33,6 +33,7 @@
       order by sort_order, categories_name
   ");
   $ca_str = '<div class="close_search_category"><a href="javascript:void(0);" onclick="close_top_category(\'showca\');"><img src="images/design/box/action_stop.gif" alt=""></a></div>'; 
+  $ca_str .= '<div class="search_list_category_content">'; 
   $ca_list_str = ''; 
   $row = 0;  
   while ($category = tep_db_fetch_array($categories_query))  {
@@ -64,4 +65,4 @@
     $ca_list_str = '<font color="#ffffff">'.SEARCH_NO_TOP_CATEGORY.'</font>'; 
   }
   
-  echo $ca_str.$ca_list_str;
+  echo $ca_str.$ca_list_str.'</div>';

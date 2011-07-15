@@ -26,7 +26,7 @@ if(!defined('OSTCLIENTINC') || !is_object($ticket)) die('Kwaheri rafiki!'); //Sa
 ＜それでも届かないときは、メールアドレス変更＞<br>
 別のメールアドレスをご入力いただき、お問い合わせをお願いいたします。
 </div>
-<div style="text-align:right;padding-right:14px;"><a href="/index.php"><img alt="次に進む" src="includes/languages/japanese/images/buttons/button_continue.gif"></a></div>
+<div style="text-align:right;padding-right:14px;"><a href="/index.php"><img alt="次に進む" src="includes/languages/japanese/images/buttons/button_continue02.gif"></a></div>
 <?
 unset($_POST); //clear to avoid re-posting on back button??
 ?>

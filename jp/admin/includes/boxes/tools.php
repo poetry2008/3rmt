@@ -72,15 +72,19 @@
     <?php 
     echo 
                    '<a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_BANNER_MANAGER) . '">' . BOX_TOOLS_BANNER_MANAGER . '</a><br>' .
-                   '<a class="menuBoxContent_Link" href="' . tep_href_link('bank_cl.php') . '">銀行営業日</a><br>' .
+                   '<a class="menuBoxContent_Link" href="' .
+                   tep_href_link('bank_cl.php') . '">'.FILENAME_BANK_CL_TEXT.'</a><br>' .
                    '<a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_CACHE) . '">' . BOX_TOOLS_CACHE . '</a><br>' .
-                   '<a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_PW_MANAGER) . '">' . 'ID管理' . '</a><br>' .
+                   '<a class="menuBoxContent_Link" href="' .
+                   tep_href_link(FILENAME_PW_MANAGER) . '">'
+                   .FILENAME_PW_MANAGER_TEXT. '</a><br>' .
                    '<a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_DEFINE_LANGUAGE) . '">' . BOX_TOOLS_DEFINE_LANGUAGE . '</a><br>' .
                    '<a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_MAIL) . '">' . BOX_TOOLS_MAIL . '</a><br>' .
                    '<a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_NEWSLETTERS) . '">' . BOX_TOOLS_NEWSLETTER_MANAGER . '</a><br>' .
                    '<a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_POINT_EMAIL) . '">' . BOX_TOOLS_POINT_EMAIL_MANAGER . '</a><br>' .
                    '<a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_WHOS_ONLINE) . '">' . BOX_TOOLS_WHOS_ONLINE . '</a><br>' . 
-                   '<a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_COMPUTERS) . '">PC管理</a><br>' . 
+                   '<a class="menuBoxContent_Link" href="' .
+                   tep_href_link(FILENAME_COMPUTERS) . '">'.FILENAME_COMPUTERS_TEXT.'</a><br>' . 
                    
                    '<a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_LATEST_NEWS) . '">' . BOX_TOOLS_LATEST_NEWS . '</a><br>' . 
                    '<a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_CONTENTS) . '">' . BOX_TOOLS_CONTENTS . '</a><br>' .
@@ -88,8 +92,12 @@
                    '<a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_FAQ) . '">' . BOX_TOOLS_FAQ . '</a>' . 
                      
                    '<hr size="1">' . 
-                   '<a class="menuBoxContent_Link" href="' .  tep_href_link('mag_up.php', '', 'NONSSL') . '">メールマガジン一括登録</a><br>' . 
-                   '<a class="menuBoxContent_Link" href="' . tep_href_link('mag_dl.php', '', 'NONSSL') . '">メールマガジンデータDL</a>';
+                   '<a class="menuBoxContent_Link" href="' .
+                   tep_href_link('mag_up.php', '', 'NONSSL') .
+                   '">'.FILENAME_MAG_UP_TEXT.'</a><br>' . 
+                   '<a class="menuBoxContent_Link" href="' .
+                   tep_href_link('mag_dl.php', '', 'NONSSL') .
+                   '">'.FILENAME_MAG_DL_TEXT.'</a>';
               ?> 
                 </td>
               </tr>

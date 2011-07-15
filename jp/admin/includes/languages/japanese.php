@@ -430,3 +430,45 @@ define('CUSTOMERS_CSV_EXE_READ_ONE', '<tr> <td width="20" align="center" class="
 define('CUSTOMERS_CSV_EXE_READ_TWO', '<td class="menuBoxHeading">FAX番号</td> <td class="menuBoxHeading">FAX番号が入力されていれば出力します</td> </tr> <tr> <td align="center" class="infoBoxContent">P</td> <td class="menuBoxHeading">メールマガジン</td> <td class="menuBoxHeading">メールマガジンの行動区状況を出力します。<br> 購読の場合：「購読」｜未購読の場合：「未購読」</td> </tr> <tr> <td align="center" class="infoBoxContent">Q</td> <td class="menuBoxHeading">ポイント</td> <td class="menuBoxHeading">顧客の現在持っているポイント数を出力します。</td> </tr>');
 define('BOX_TOOLS_POINT_EMAIL_MANAGER','ポイントお知らせ');
 define('BOX_CAL_SITES_INFO_TEXT', '統計');
+
+//catalog language
+define('FILENAME_PRODUCTS_TAGS_TEXT','タグ関連設定');
+define('FILENAME_CLEATE_OROSHI_TEXT','卸業者の名前設定');
+define('FILENAME_CLEATE_DOUGYOUSYA_TEXT','同業者の名前設定');
+define('FILENAME_CATEGORIES_ADMIN_TEXT','商品卸価格管理');
+
+//coustomers language
+define('FILENAME_TELECOM_UNKNOW_TEXT','決算管理');
+define('FILENAME_BILL_TEMPLATES_TEXT','請求書のテンプレート');
+
+//reports language
+define('FILENAME_REFERER_TEXT','アクセスランキング');
+define('FILENAME_KEYWORDS_TEXT','キーワードランキング');
+
+//tools language 
+define('FILENAME_BANK_CL_TEXT','銀行営業日');
+define('FILENAME_PW_MANAGER_TEXT','ID管理');
+define('FILENAME_COMPUTERS_TEXT','PC管理');
+define('FILENAME_MAG_UP_TEXT','メールマガジン一括登録');
+define('FILENAME_MAG_DL_TEXT','メールマガジンデータDL');
+
+//header language
+define('HEADER_TEXT_SITE_NAME','株式会社iimy');
+define('HEADER_TEXT_LOGINED','でログインしています。');
+define('HEADER_TEXT_ORDERS','注文一覧');
+define('HEADER_TEXT_TELECOM_UNKNOW','決算履歴');
+define('HEADER_TEXT_TUTORIALS','商品調整▼');
+define('HEADER_TEXT_CATEGORIES','商品登録');
+define('HEADER_TEXT_LOGOUT','ログアウト');
+define('HEADER_TEXT_REDIRECTURL','サイトへ移動▼');
+define('HEADER_TEXT_USERS','パスワード変更');
+define('HEADER_TEXT_PW_MANAGER','ID管理');
+define('HEADER_TEXT_MANAGERMENU','ツール▼');
+define('HEADER_TEXT_MICRO_LOG','引継メモ');
+define('HEADER_TEXT_LATEST_NEWS','新着情報');
+define('HEADER_TEXT_CUSTOMERS','顧客一覧');
+define('HEADER_TEXT_CREATE_ORDER2','仕入作成');
+define('HEADER_TEXT_CREATE_ORDER','注文作成');
+define('HEADER_TEXT_ORDERMENU','注文書▼');
+define('HEADER_TEXT_INVENTORY','在庫水準');
+define('HEADER_TEXT_CATEGORIES_ADMIN','価格調整');
