@@ -26,7 +26,9 @@ if(isset($_GET['action'])){
     break;
   case 'finish':
     $id = $_GET['oID'];
-    $result = tep_db_query("update `".TABLE_ORDERS."` set `flag_qaf` = ".'1'." where orders_id = '".$id."'");  
+    $user_info = tep_get_user_info($ocertify->auth_user);
+    $value =$user_info['name'];
+    $result = tep_db_query("update `".TABLE_ORDERS."` set `end_user` = '".$value."', `flag_qaf` = ".'1'." where orders_id = '".$id."'");  
     break;
   }
 }

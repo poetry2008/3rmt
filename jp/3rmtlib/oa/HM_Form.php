@@ -1,5 +1,6 @@
 <?php
 require_once "DbRecord.php";
+
 class HM_Form extends DbRecord
 {
   var $id;
@@ -12,8 +13,9 @@ class HM_Form extends DbRecord
   {
     $id  = $this->id;
     $this->orders_id = $orders_id;
-    $sql = 'select orders_status from '.TABLE_ORDERS . ' where orders_id = "'.$orders_id.'"';
+    $sql = 'select orders_status,end_user from '.TABLE_ORDERS . ' where orders_id = "'.$orders_id.'"';
     $status = tep_db_fetch_array(tep_db_query($sql));
+    $this->end_user = $status['end_user'];
     $status = $status['orders_status'];
     $this->status = $status;
     foreach ($this->groups as $gk=>$group){
@@ -41,7 +43,9 @@ class HM_Form extends DbRecord
       $group->render();
     }
     echo "<tr><td class='main' colspan='3' align='right'>&nbsp;"; 
-    echo "<input type='hidden' name='form_id' value='".$this->id."' /><div id='canEndDiv'><button onclick='finishTheOrder()'  id='canEnd' >取引完了</button></div>";
+    echo "<input type='hidden' name='form_id' value='".$this->id."' /><div id='canEndDiv'>";
+    echo $this->end_user;
+    echo "<button onclick='finishTheOrder()'  id='canEnd' >取引完了</button></div>";
     echo "</td>";
     // if(!tep_orders_finishqa($this->orders_id)) {
     //echo "<button onclick='finishTheOrder()'  id='canEnd' >取引完了</button>";
@@ -50,27 +54,28 @@ class HM_Form extends DbRecord
     echo '</from>';
     echo "</div>";
     ?>
-      <script type='text/javascript'>
-      <?php 
+    <script type='text/javascript'>
+       <?php 
 
-      if (tep_orders_finishqa($this->orders_id)) {
-        echo "var finished = true;";
-      }else {
-        echo "var finished = false;";
-      }
+       if (tep_orders_finishqa($this->orders_id)) {
+         echo "var finished = true;";
+       }else {
+         echo "var finished = false;";
+       }
     if($this->status == 6 or $this->status == 8){
       
       ?>
+      disableQA();
       var canceled = true;
       <?php 
     }else {
-    ?>    
+      ?>    
       var canceled = false;
 
-<?php 
+      <?php 
     }
-?>
-  　var canEnd = false;
+    ?>
+    　var canEnd = false;
     function checkLockOrder()
     {
       if (finished==true){
@@ -80,10 +85,10 @@ class HM_Form extends DbRecord
       if($('.require').length ==0 ){
         canEnd = true;
       }else{
-      $('.require').each(function(ele){
-          if(canEnd == true){
-          canEnd = eval($(this)[0].tagName+$(this).attr('type')+'Require(this)');
-          }
+        $('.require').each(function(ele){
+            if(canEnd == true){
+              canEnd = eval($(this)[0].tagName+$(this).attr('type')+'Require(this)');
+            }
           });
       }
       if ((canEnd == true ) || (canceled == true)){
@@ -112,20 +117,20 @@ class HM_Form extends DbRecord
     }
     function cleanthisrow(ele){
       $(ele).parent().parent().children().find('input').each(
-          function(){
-          if($(this).attr("type")=='text' || $(this).attr("type") =='hidden'){
-          $(this).val('');
-          }
-          if($(this).attr('checked')!='undefined'){
-          $(this).removeAttr('checked');
-          }
-          });
+                                                             function(){
+                                                               if($(this).attr("type")=='text' || $(this).attr("type") =='hidden'){
+                                                                 $(this).val('');
+                                                               }
+                                                               if($(this).attr('checked')!='undefined'){
+                                                                 $(this).removeAttr('checked');
+                                                               }
+                                                             });
       $(ele).parent().parent().children().find('span').each(
-          function (){
-          $(this).text('');
-          }
+                                                            function (){
+                                                              $(this).text('');
+                                                            }
 
-          );
+                                                            );
       checkLockOrder();
       $("#qa_form").ajaxSubmit();
 
@@ -137,59 +142,62 @@ class HM_Form extends DbRecord
     {
       $("#qa_form").find('input').each(function(){
           $(this).attr('disabled',true);
-          });
+        });
       $("#qa_form").find('button').each(function(){
+          if($(this).attr('id')=='canEnd' && !finished){
+            return ;
+          }
           $(this).attr('disabled',true);
-          });
+        });
       $("#qa_form").find('.clean').each(function(){
           $(this).hide();
-          });
+        });
 
 
     }
     function finishTheOrder()
     {
       $.ajax({
-url:'oa_ajax.php?action=finish&oID=<?php echo $_GET["oID"]?>',
-type:'post',    
-beforeSend: function(){$('body').css('cursor','wait');$("#wait").show()},
-async : false,
-success: function(data){
-$("#canEndDiv").hide();
-$("#wait").hide();
-$('body').css('cursor','');
-disableQA();
-window.location.href='orders.php';
-}
-}
-);
-      }
-  $(document).ready(
-      function()
-      {
-      <?php 
-      if(tep_orders_finishqa($this->orders_id)) {
-      ?>
-      disableQA();
-      return 0;
-      <?
-      }
-      ?>
+        url:'oa_ajax.php?action=finish&oID=<?php echo $_GET["oID"]?>',
+            type:'post',    
+            beforeSend: function(){$('body').css('cursor','wait');$("#wait").show()},
+            async : false,
+            success: function(data){
+            $("#canEndDiv").hide();
+            $("#wait").hide();
+            $('body').css('cursor','');
+            disableQA();
+            window.location.href='orders.php';
+          }
+        }
+        );
+    }
+    $(document).ready(
+                      function()
+                      {
+                        <?php 
+                        if(tep_orders_finishqa($this->orders_id)) {
+                          ?>
+                          disableQA();
+                          return 0;
+                          <?
+                        }
+                        ?>
 
-      //bind size fonction 
-      $("#qa_form").find("input[type=text]").each(function(){
-        if($(this).attr('size')){
-        $(this).bind('keyup',function(){
-          checkLockOrder();
-          if( $(this).val().length >$(this).attr('size')){
-          //               	$(this).val($(this).val().substr(0,$(this).attr('size')));
-          $(this).parent().parent().find('.alertmsg').remove();
-          $("<span class='alertmsg'> 文字の最大入力は"+$(this).attr('size')+"です。"+$(this).attr('size')+"以内にしてください。</span>").insertAfter($(this).next());
-          }else{
+                        //bind size fonction 
+                        $("#qa_form").find("input[type=text]").each(function(){
+                            if($(this).attr('size')){
+                              $(this).bind('keyup',function(){
+                                  checkLockOrder();
+                                  if( $(this).val().length >$(this).attr('size')){
+                                    //               	$(this).val($(this).val().substr(0,$(this).attr('size')));
+                                    $(this).parent().parent().find('.alertmsg').remove();
+                                    $("<span class='alertmsg'>文字の最大入力は"+$(this).attr('size')+"
+です。"+$(this).attr('size')+"以内にしてください。</span>").insertAfter($(this).next());
+                                  }else{
           $(this).parent().parent().find('.alertmsg').remove();
           }
           checkLockOrder();
-
           });
         }
         });

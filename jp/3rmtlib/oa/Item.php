@@ -42,7 +42,7 @@ class HM_Form
   {
     $this->id = $option->id;
     if (is_array($option['subitem'])){
-      foreach ($option['subitem'] as $key=>$subitem{
+      foreach ($option['subitem'] as $key=>$subitem){
 	  if(!is_a($subitem,'HM_Form_Group')){
 	    
 	  }
