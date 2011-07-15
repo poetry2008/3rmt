@@ -362,6 +362,7 @@ if (file_exists(DIR_WS_LANGUAGES . $language . '/user_certify.php')) {
 }
 if (!tep_session_is_registered('user_permission')) {
   $check_login_pos = strpos($_SERVER['REQUEST_URI'], 'users_login.php'); 
+  session_regenerate_id(); 
   if ($check_login_pos === false) {
     tep_redirect('users_login.php?his_url='.$_SERVER['REQUEST_URI']);
   } else {
