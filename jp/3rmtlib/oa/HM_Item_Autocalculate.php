@@ -1,5 +1,6 @@
 <?php
 require_once "HM_Item_Basic.php";
+require_once DIR_WS_LANGUAGES . $language . '/oa/HM_Item_Autocalculate.php';
 class HM_Item_Autocalculate extends HM_Item_Basic
 {
   /*
@@ -8,8 +9,8 @@ class HM_Item_Autocalculate extends HM_Item_Basic
    */
   var $hasRequire = true;
   var $hasTheName = true;
-  var $must_comment = '*チェックを入れるとこのパーツは取引完了に必要なものになる ';  
-  var $project_name_comment = '*○○○○ チェックボックス';
+  var $must_comment = TEXT_AUTO_MUST_COMMENT;  
+  var $project_name_comment = TEXT_AUTO_NAME_COMMENT; 
   
   function render()
   {
@@ -110,7 +111,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
         echo "/>";
         //没有关联商品的输出
         echo $opp['products_name'];
-        echo "関連付け商品がないので手動入力してください";
+        echo TEXT_AUTO_NO_OP;
       }
       $i++;
       echo "</div>";

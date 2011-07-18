@@ -1,4 +1,5 @@
 <?php
+require_once DIR_WS_LANGUAGES . $language . '/oa/HM_Item_Basic.php';
 
 class HM_Item_Basic 
 {
@@ -40,14 +41,14 @@ class HM_Item_Basic
 
     if ($this->hasRequire){
       $checked = isset($item_value['require'])?'checked="true"':'';
-      $formString .= "<tr><td width='5%' nowrap >必須</td><td width='15%'><input type='checkbox' name='require' ".$checked."/></td><td><font size='2' color='#ff0000'>".$this->must_comment."</font></td></tr>";      
+      $formString .= "<tr><td width='5%' nowrap >".TEXT_MUSTBE."</td><td width='15%'><input type='checkbox' name='require' ".$checked."/></td><td><font size='2' color='#ff0000'>".$this->must_comment."</font></td></tr>";      
     }
     //关联状态
     if ($this->hasSelect){
       $languages_id = 4;
       $orders_statuses     = $all_orders_statuses = $orders_status_array = array();
       $orders_status_query = tep_db_query("select orders_status_id, orders_status_name from " . TABLE_ORDERS_STATUS . " where language_id = '" . $languages_id . "'");
-      $formString .="<tr><td width='5%' nowrap >ステータス</td><td width='15%'><select name='status'>";
+      $formString .="<tr><td width='5%' nowrap >".TEXT_OA_BASEIC_STATUS."</td><td width='15%'><select name='status'>";
 
       if($item_value['status'] == 'null'){
         $selcted = 'selected';
@@ -55,7 +56,7 @@ class HM_Item_Basic
         $selcted ='';
       }
 
-      $formString .= "<option ".$selcted. " value='null'".">連動しない</option>";      
+      $formString .= "<option ".$selcted. " value='null'".">".TEXT_OA_BASEIC_SELECT."</option>";      
 
       while ($orders_status = tep_db_fetch_array($orders_status_query)) {
         if($item_value['status'] == $orders_status['orders_status_id']){
@@ -69,17 +70,17 @@ class HM_Item_Basic
       //    $formString .= "<input type='text' name='status' value='".(isset($item_value['status'])?$item_value['status']:'')."'/></br>\n";
     }
     if ($this->hasTheName){
-      $formString .= "<tr><td width='5%' nowrap >項目名</td><td width='15%'><input type='text' size='40' name='thename' value='".(isset($item_value['thename'])?$item_value['thename']:'')."'/></td><td><font size='2' color='#ff0000'>".$this->project_name_comment."</font></td></tr>";
+      $formString .= "<tr><td width='5%' nowrap >".TEXT_OA_BASEIC_P_NAME."</td><td width='15%'><input type='text' size='40' name='thename' value='".(isset($item_value['thename'])?$item_value['thename']:'')."'/></td><td><font size='2' color='#ff0000'>".$this->project_name_comment."</font></td></tr>";
     }
 
     if ($this->hasFrontText){
-      $formString .= "<tr><td width='5%' nowrap >前方文字</td><td width='15%'><input type='text' size='40' name='beforeInput' size='40' value='".(isset($item_value['beforeInput'])?$item_value['beforeInput']:'')."'/></td><td><font size='2' color='#ff0000'>".$this->front_comment."</font></td></tr>";
+      $formString .= "<tr><td width='5%' nowrap >".TEXT_OA_BASEIC_F_TEXT."</td><td width='15%'><input type='text' size='40' name='beforeInput' size='40' value='".(isset($item_value['beforeInput'])?$item_value['beforeInput']:'')."'/></td><td><font size='2' color='#ff0000'>".$this->front_comment."</font></td></tr>";
     }
     if ($this->hasSubmit){
       $formString .= "<tr><td width='5%' nowrap >SubmitName</td><td width='15%'><input type='text' size='40' name='submitName' value='".(isset($item_value['submitName'])?$item_value['submitName']:'')."'/></td><td><font size='2' color='#ff0000'>".$this->submit_name_comment."</font></td></tr>";
     }
     if ($this->hasBackText){
-      $formString .= "<tr><td width='5%' nowrap >後方文字</td><td width='15%'><input type='text' size='40' name='afterInput' value='".(isset($item_value['afterInput'])?$item_value['afterInput']:'')."'/></td><td><font size='2' color='#ff0000'>".$this->after_comment."</font></td></tr>";
+      $formString .= "<tr><td width='5%' nowrap >".TEXT_OA_BASEIC_E_TEXT."</td><td width='15%'><input type='text' size='40' name='afterInput' value='".(isset($item_value['afterInput'])?$item_value['afterInput']:'')."'/></td><td><font size='2' color='#ff0000'>".$this->after_comment."</font></td></tr>";
     }
     if ($this->hasDefaultValue){
     $formString .= "<tr><td width='5%' nowrap >defaultValue</td><td width='15%'><input type='text' size='40' name='defaultValue' value='".(isset($item_value['defaultValue'])?$item_value['defaultValue']:'')."'/></td><td><font size='2' color='#ff0000'>".$this->default_value_comment."</font></td></tr>";

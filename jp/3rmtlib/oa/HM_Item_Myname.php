@@ -1,5 +1,6 @@
 <?php
 require_once "HM_Item_Basic.php";
+require_once DIR_WS_LANGUAGES . $language . '/oa/HM_Item_Myname.php';
 class HM_Item_Myname extends HM_Item_Basic
 {
 
@@ -11,12 +12,12 @@ class HM_Item_Myname extends HM_Item_Basic
   var $hasBackText  = true;  
   var $hasTheName  = true;
 
-  var $must_comment = '*チェックを入れるとこのパーツは取引完了に必要なものになる';
-  var $status_comment = '*設定されたステータスに変わると自動で値が保存される';
-  var $project_name_comment = '*○○○○：前方文字 SubmitName 後方文字';
-  var $front_comment = '*項目名：○○○○　SubmitName 後方文字';
-  var $after_comment = '*項目名： 前方文字 SubmitName ○○○○';
-  var $submit_name_comment = '*項目名： 前方文字 ○○○○ 後方文字';
+  var $must_comment = TEXT_MYNAME_MUST_COMMENT
+  var $status_comment = TEXT_MYNAME_STATUS_COMMENT
+  var $project_name_comment = TEXT_MYNAME_P_NAME_COMMENT
+  var $front_comment = TEXT_MYNAME_FRONT_COMMENT
+  var $after_comment = TEXT_MYNAME_AFTER_COMMENT;
+  var $submit_name_comment = TEXT_MYNAME_SUBMIT_NAME_COMMENT; 
   function getDefaultValue()
   {
     if ($this->loaded){

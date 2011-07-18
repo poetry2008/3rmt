@@ -1,6 +1,6 @@
 <?php
 require_once "DbRecord.php";
-
+require_once DIR_WS_LANGUAGES . $language . '/oa/HM_Form.php';
 class HM_Form extends DbRecord
 {
   var $id;
@@ -45,7 +45,7 @@ class HM_Form extends DbRecord
     echo "<tr><td class='main' colspan='3' align='right'>&nbsp;"; 
     echo "<input type='hidden' name='form_id' value='".$this->id."' /><div id='canEndDiv'>";
     echo $this->end_user;
-    echo "<button onclick='finishTheOrder()'  id='canEnd' >取引完了</button></div>";
+    echo "<button onclick='finishTheOrder()'  id='canEnd' >".OA_FORM_ORDER_FINISH."</button></div>";
     echo "</td>";
     // if(!tep_orders_finishqa($this->orders_id)) {
     //echo "<button onclick='finishTheOrder()'  id='canEnd' >取引完了</button>";
@@ -195,7 +195,10 @@ class HM_Form extends DbRecord
                                   if( $(this).val().length >$(this).attr('size')){
                                     //               	$(this).val($(this).val().substr(0,$(this).attr('size')));
                                     $(this).parent().parent().find('.alertmsg').remove();
-                                    $("<span class='alertmsg'>文字の最大入力は"+$(this).attr('size')+"です。"+$(this).attr('size')+"以内にしてください。</span>").insertAfter($(this).next());
+                                    $("<span class='alertmsg'><?php echo
+                                      OA_FORM_TEXT_MAX_INPUT;?>"+$(this).attr('size')+"<?php
+                                      echo OA_FORM_TEXT_MAX_INPUT_END;?>"+$(this).attr('size')+"<?php
+                                      echo OA_FORM_TEXT_MAX_INPUT_IN;?></span>").insertAfter($(this).next());
                                   }else{
           $(this).parent().parent().find('.alertmsg').remove();
           }

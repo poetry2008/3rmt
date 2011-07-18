@@ -1,5 +1,6 @@
 <?php
 require_once "HM_Item_Basic.php";
+require_once DIR_WS_LANGUAGES . $language . '/oa/HM_Item_Text.php';
 class HM_Item_Text extends HM_Item_Basic
 {
   //  var $hasSubmit = false;
@@ -13,11 +14,11 @@ class HM_Item_Text extends HM_Item_Basic
   var $hasDefaultValue  = true;
   var $hasSize  = true;
   
-  var $front_comment = '*例：前方文字 入力フォーム ○○○○';
-  var $after_comment = '*例：○○○○ 入力フォーム 後方文字';
-  var $default_value_comment = '*入力フォームの初期値';
-  var $size_comment = '*defaultValueの文字数制限';
-  var $must_comment = '*チェックを入れるとこのパーツは取引完了に必要なものになる';
+  var $front_comment = TEXT_TEXT_FRONT_COMMENT;
+  var $after_comment = TEXT_TEXT_AFTER_COMMENT;
+  var $default_value_comment = TEXT_TEXT_DEFAULT_VALUE_COMMENT;
+  var $size_comment = TEXT_TEXT_SIZE_COMMENT;
+  var $must_comment = TEXT_TEXT_MUST_COMMENT;
  
 
   function getDefaultValue()

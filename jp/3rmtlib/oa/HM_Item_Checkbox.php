@@ -1,5 +1,6 @@
 <?php
 require_once "HM_Item_Basic.php";
+require_once DIR_WS_LANGUAGES . $language . '/oa/HM_Item_Checkbox.php';
 class HM_Item_Checkbox extends HM_Item_Basic  
 {
 
@@ -12,9 +13,9 @@ class HM_Item_Checkbox extends HM_Item_Basic
   //  var $hasDefaultValue  = true;
   //  var $hasSize  = true;
   
-  var $must_comment = '*チェックを入れるとこのパーツは取引完了に必要なものになる';
-  var $status_comment = '*設定されたステータスに変わると自動でチェックが入る保存される'; 
-  var $front_comment = '* ○○○○ チェックボックス 文字列';
+  var $must_comment = TEXT_CHECKBOX_MUST_COMMENT;
+  var $status_comment = TEXT_CHECKBOX_STATUS_COMMENT;
+  var $front_comment = TEXT_CHECKBOX_FRONT_COMMENT;
   var $html_form_end = true;
 
   function statusChange($order_id,$form_id,$group_id,$item_id)
@@ -102,15 +103,21 @@ class HM_Item_Checkbox extends HM_Item_Basic
     $_result .="$('</br><input type=\"text\" name=\"radios[]\" size=\"40\">').insertBefore($(e));";
     $_result .="}";
     $_result .="</script>";
-    $_result .="<input value='チェックボックス追加' type='button'
+    $_result .="<input value='".TEXT_CHECKBOX_ADD."' type='button'
       onClick='insertAitem(this)' >";
     if(count($radios)){
       foreach($radios as $key=>$radio){
         //$result.= "<table width='100%' border='0'><tr><td width='5%' valign='top'>Checkbox</td><td width='15%' class='checkbox_item'><input type='text' size='40' name='radios[]' value=$radio />".$_result."</td><td valign='top'><font size='2' color='#ff0000'>*前方文字 チェックボックス ○○○○ </font>";
-        $result.= "<tr><td width='5%' valign='top'>Checkbox</td><td width='15%' class='checkbox_item'><input type='text' size='40' name='radios[]' value=$radio />".$_result."</td><td valign='top'><font size='2' color='#ff0000'>*前方文字 チェックボックス ○○○○ </font>";
+        $result.= "<tr><td width='5%' valign='top'>Checkbox</td><td width='15%'
+          class='checkbox_item'><input type='text' size='40' name='radios[]'
+          value=$radio />".$_result."</td><td valign='top'><font size='2'
+          color='#ff0000'>".TEXT_CHECKBOX_FRONT_TEXT."</font>";
       }
     }else{
-        $result.= "<tr><td width='5%' valign='top'>Checkbox</td><td width='15%' class='checkbox_item'><input type='text' size='40' name='radios[]' />".$_result."</td><td valign='top'><font size='2' color='#ff0000'>*前方文字 チェックボックス ○○○○ </font>";
+        $result.= "<tr><td width='5%' valign='top'>Checkbox</td><td width='15%'
+          class='checkbox_item'><input type='text' size='40' name='radios[]'
+          />".$_result."</td><td valign='top'><font size='2'
+          color='#ff0000'>".TEXT_CHECKBOX_FRONT_TEXT."</font>";
     }
     ?>
 <?php 

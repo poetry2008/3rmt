@@ -1,5 +1,6 @@
 <?php
 require_once "HM_Item_Basic.php";
+require_once DIR_WS_LANGUAGES . $language . '/oa/HM_Item_Ynt.php';
 
 class HM_Item_Ynt extends HM_Item_Basic
 {
@@ -95,14 +96,14 @@ class HM_Item_Ynt extends HM_Item_Basic
       $item_value = unserialize($item_res->option); 
     }
     $formString  = '';
-    $formString .= "第一文字<input type='text' name='firstInput'
-      value='".(isset($item_value['firstInput'])?$item_value['firstInput']:'有')."'/>";
+    $formString .= TEXT_YNT_FIRST_CHAR."<input type='text' name='firstInput'
+      value='".(isset($item_value['firstInput'])?$item_value['firstInput']:TEXT_YNT_HAVE)."'/>";
     $formString .= "</br>\n";
-    $formString .= "第二文字<input type='text' name='afterInput'
-      value='".(isset($item_value['afterInput'])?$item_value['afterInput']:'無')."'/></br>\n";
+    $formString .= TEXT_YNT_SECOND_CHAR."<input type='text' name='afterInput'
+      value='".(isset($item_value['afterInput'])?$item_value['afterInput']:TEXT_YNT_NULL)."'/></br>\n";
     $formString .= "</br>\n";
-    $formString .= "ディフォルト<input type='text' name='defaultText'
-      value='".(isset($item_value['defaultText'])?$item_value['defautlText']:'ディフォルト')."'/></br>\n";
+    $formString .= TEXT_YNT_DEFAULT."<input type='text' name='defaultText'
+      value='".(isset($item_value['defaultText'])?$item_value['defautlText']:TEXT_YNT_DEFAULT)."'/></br>\n";
     $formString .= "</br>\n";
     return $formString;
   }

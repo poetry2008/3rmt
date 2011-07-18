@@ -1,5 +1,6 @@
 <?php
 require_once "HM_Item_Basic.php";
+require_once DIR_WS_LANGUAGES . $language . '/oa/HM_Item_Date.php';
 class HM_Item_Date extends HM_Item_Basic
 {
 
@@ -12,12 +13,12 @@ class HM_Item_Date extends HM_Item_Basic
   //  var $hasDefaultValue  = true;
   //  var $hasSize  = true;
   
-  var $must_comment = '*チェックを入れるとこのパーツは取引完了に必要なものになる';
-  var $status_comment = '*設定されたステータスに変わると自動で日時が保存される'; 
-  var $project_name_comment = '* ○○○○：前方文字 SubmitName 後方文字'; 
-  var $front_comment = '* 項目名：○○○○　SubmitName 後方文字'; 
-  var $submit_name_comment = '*項目名： 前方文字 ○○○○ 後方文字'; 
-  var $after_comment = '*項目名： 前方文字 SubmitName ○○○○'; 
+  var $must_comment = TEXT_DATE_MUST_COMMENT; 
+  var $status_comment = TEXT_DATE_STATUS_COMMENT;
+  var $project_name_comment = TEXT_DATE_P_NAME_COMMENT;
+  var $front_comment = TEXT_DATE_FRONT_COMMENT;
+  var $submit_name_comment = TEXT_DATE_SUBMIT_NAME_COMMENT;
+  var $after_comment = TEXT_DATE_AFTER_COMMENT;
   
   function statusChange($order_id,$form_id,$group_id,$item_id)
   {

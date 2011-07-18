@@ -1,5 +1,6 @@
 <?php
 require_once "HM_Item_Basic.php";
+require_once DIR_WS_LANGUAGES . $language . '/oa/HM_Item_Specialbank.php'
 class HM_Item_Specialbank extends HM_Item_Basic
 {
 
@@ -148,6 +149,8 @@ static public function prepareForm($item_id = NULL)
   echo "<textarea name='dataoption' style='width: 600px; height:400px;'>";
   echo  $item_value['dataoption'];
   echo "</textarea>";
+  echo TEXT_SPECIALBAN_INFO;
+  /*
   echo "</br>";
   echo   '() は radio';
   echo "</br>";
@@ -167,6 +170,7 @@ static public function prepareForm($item_id = NULL)
   echo     ' []本人確認日：月日';    echo "</br>";
   echo     ' []信用調査入力';    echo "</br>";
   echo '必ず半角符号を使ってください';    echo "</br>";
+  */
 
 
 
