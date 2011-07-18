@@ -98,4 +98,67 @@ define('EMAIL_TEXT_STORE_CONFIRMATION_FOOTER',
 
 define('ENTRY_EMAIL_TITLE', 'メールタイトル：');
 define('TEXT_CODE_HANDLE_FEE', '手数料:');
+
+// old oa 
+define('TEXT_ORDER_ANSWER','Order Answer');
+define('TEXT_BUY_BANK','買取：銀行支払');
+define('TEXT_SELL_BANK','販売：銀行振込');
+define('TEXT_SELL_CARD','販売：クレカ');
+define('TEXT_CREDIT_FIND','信用調査');
+
+define('TEXT_ORDER_SAVE','保存');
+define('TEXT_ORDER_TEST_TEXT','試験運用中<font color="red">（上記の数値と一致しているか確認するように）</font>買取コピペ用:');
+define('TEXT_FEE_TEXT','この注文は5,000円未満です。買取なら手数料168円引く');
+define('TEXT_MAIL_CONTENT_INFO',' 自動的に改行して表示し、送信されるメールにも改行が入ります。');
+define('TEXT_ORDER_COPY','コピペ用:');
+define('TEXT_ORDER_LOGIN','ただ今よりログインいたします。');
+define('TEXT_ORDER_SEND_MAIL','メール送信');
+define('TEXT_ORDER_STATUS','ステータス通知');
+define('TEXT_ORDER_HAS_ERROR','間違い探しはしましたか？');
+define('TEXT_ORDER_FIND','検索 :');
+define('TEXT_ORDER_FIND_SELECT','--選択してください--');
+define('TEXT_ORDER_FIND_NAME','名前');
+define('TEXT_ORDER_FIND','検索 :');
+define('TEXT_ORDER_FIND_PRODUCT_NAME','商品名');
+define('TEXT_ORDER_FIND_MAIL_ADD','メールアドレス');
+define('TEXT_ORDER_QUERYER_NAME','確認者名:');
+define('TEXT_ORDER_OK_ORDER_NIMBER','済 受付番号:');
+define('TEXT_ORDER_BANK','銀行:');
+define('TEXT_ORDER_JNB','JNB');
+define('TEXT_ORDER_EBANK','eBank');
+define('TEXT_ORDER_POST_BANK','ゆうちょ');
+define('TEXT_EDIT_MAIL_TEXT','メール本文編集');
+define('TEXT_SELECT_MORE','複数の選択はできません。');
+define('TEXT_ORDER_SELECT','注文書はまだ選択していません。');
+define('TEXT_ORDER_WAIT','取引待ち');
+define('TEXT_ORDER_CARE','取り扱い注意');
+define('TEXT_ORDER_OROSHI','卸業者');
+define('TEXT_ORDER_CUSTOMER_INFO','顧客情報');
+define('TEXT_ORDER_HISTORY_ORDER','過去の注文');
+define('TEXT_ORDER_NEXT_ORDER','次の注文');
+define('TEXT_ORDER_ORDER_DATE','取引日');
+define('TEXT_ORDER_CONVENIENCE','コンビニ決済');
+define('TEXT_ORDER_CREDIT_CARD','クレジットカード決済');
+define('TEXT_ORDER_POST','ゆうちょ銀行（郵便局）');
+define('TEXT_ORDER_BANK_REMIT_MONEY','銀行振込');
+define('TEXT_ORDER_MIX','混');
+define('TEXT_ORDER_BUY','買');
+define('TEXT_ORDER_SELL','売');
+define('TEXT_ORDER_NOTICE','【注意】');
+define('TEXT_ORDER_AUTO_RUN_ON','現在自動リロード機能が有効になっています　→ ');
+define('TEXT_ORDER_AUTO_POWER_OFF','無効にする');
+define('TEXT_ORDER_AUTO_RUN_OFF','現在自動リロード機能が無効になっています　→ ');
+define('TEXT_ORDER_AUTO_POWER_ON','有効にする');
+define('TEXT_ORDER_SHOW_LIST','一覧に表示する');
+define('TEXT_ORDER_STATUS_SET','注文ステータス設定');
+define('TEXT_ORDER_CSV_OUTPUT','CSVエクスポート');
+define('TEXT_ORDER_DAY','日');
+define('TEXT_ORDER_MONTH','月');
+define('TEXT_ORDER_YEAR','年');
+define('TEXT_ORDER_END_DATE','終了日:');
+define('TEXT_ORDER_START_DATE','開始日:');
+define('TEXT_ORDER_SITE_TEXT','注文書サイト');
+define('TEXT_ORDER_SERVER_BUSY','ダウンロード中はサーバに対して高負荷となります。アクセスの少ない時間に実行してください。');
+define('TEXT_ORDER_DOWNLOPAD','注文データダウンロード');
+
 ?>
