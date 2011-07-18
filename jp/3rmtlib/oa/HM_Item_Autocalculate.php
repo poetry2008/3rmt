@@ -1,4 +1,5 @@
 <?php
+global $language;
 require_once "HM_Item_Basic.php";
 require_once DIR_WS_LANGUAGES . $language . '/oa/HM_Item_Autocalculate.php';
 class HM_Item_Autocalculate extends HM_Item_Basic

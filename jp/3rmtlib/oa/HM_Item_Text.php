@@ -1,4 +1,5 @@
 <?php
+global $language;
 require_once "HM_Item_Basic.php";
 require_once DIR_WS_LANGUAGES . $language . '/oa/HM_Item_Text.php';
 class HM_Item_Text extends HM_Item_Basic

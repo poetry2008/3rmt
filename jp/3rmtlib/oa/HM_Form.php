@@ -1,4 +1,5 @@
 <?php
+global $language;
 require_once "DbRecord.php";
 require_once DIR_WS_LANGUAGES . $language . '/oa/HM_Form.php';
 class HM_Form extends DbRecord
