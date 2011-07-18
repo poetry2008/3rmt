@@ -113,7 +113,7 @@
         <a href="<?php echo tep_href_link(FILENAME_OA_GROUP, 'pcode='.$_GET['pcode'].'&type='.$_GET['type']);?>"><?php echo ADD_GROUP;?></a>
         <a href="<?php echo tep_href_link(FILENAME_OA_LINK_GROUP,
         'pcode='.$_GET['pcode'].'&type='.$_GET['type']);?>">
-        <?php echo TEXT_TEMPLATE_AD;?></a> </div>
+        <?php echo TEXT_TEMPLATE_ADD;?></a> </div>
 
 
 
