@@ -12,10 +12,10 @@ class HM_Item_Myname extends HM_Item_Basic
   var $hasBackText  = true;  
   var $hasTheName  = true;
 
-  var $must_comment = TEXT_MYNAME_MUST_COMMENT
-  var $status_comment = TEXT_MYNAME_STATUS_COMMENT
-  var $project_name_comment = TEXT_MYNAME_P_NAME_COMMENT
-  var $front_comment = TEXT_MYNAME_FRONT_COMMENT
+  var $must_comment = TEXT_MYNAME_MUST_COMMENT;
+  var $status_comment = TEXT_MYNAME_STATUS_COMMENT;
+  var $project_name_comment = TEXT_MYNAME_P_NAME_COMMENT;
+  var $front_comment = TEXT_MYNAME_FRONT_COMMENT;
   var $after_comment = TEXT_MYNAME_AFTER_COMMENT;
   var $submit_name_comment = TEXT_MYNAME_SUBMIT_NAME_COMMENT; 
   function getDefaultValue()
