@@ -190,7 +190,7 @@ function deltr(index)
     <td width="100%" valign="top">
     <table border="0" width="100%" cellspacing="0" cellpadding="2">
     <tr>
-    	<td class="pageHeading" height="40">パーツ管理</td>
+    	<td class="pageHeading" height="40"><?php echo TEXT_ITEM_MANAGE;?></td>
      </tr>
      <tr>
       <td>

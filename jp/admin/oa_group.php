@@ -114,7 +114,7 @@ function select_all_group()
     <td width="100%" valign="top">
     <table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
-      <td class="pageHeading" height="40">グループ管理</td>
+      <td class="pageHeading" height="40"><?php echo TEXT_GROUP_MANAGE;?></td>
       </tr>
       <tr>
         <td>
@@ -132,7 +132,7 @@ function select_all_group()
           ?>
           <?php
           if ($_GET['msg'] == 'success') {
-            echo '<font color="#FF0000">登録完了</font>'; 
+            echo '<font color="#FF0000">'.TEXT_CREATE_OK.'</font>'; 
           }
           ?>
           <table>
@@ -159,11 +159,14 @@ function select_all_group()
                 <?php
                 if ($_GET['action'] == 'edit') {
                 ?>
-                <input id ='canSubmit' class='cannotSubmit' type="submit" onclick="return checkexist()" value="<?php echo 'グループ名変更';?>"> 
+                <input id ='canSubmit' class='cannotSubmit' type="submit"
+                onclick="return checkexist()" value="<?php echo
+                TEXT_CHANGE_GROUP_NAME;?>"> 
                 <?php
                 } else {
                 ?>
-                <input id ='canSubmit' class='cannotSubmit' type="submit" onclick="return checkexist()" value="<?php echo '新規グループ保存';?>"> 
+                <input id ='canSubmit' class='cannotSubmit' type="submit"
+                onclick="return checkexist()" value="<?php echo TEXT_NEW_GROUP_SAVE;?>"> 
                 <?php
                 }
                 ?>
@@ -194,7 +197,8 @@ function select_all_group()
                   if (data == 0){
                    $("#canSubmit").attr("class",'canSubmit');
                   }else{
-                   $("#gerror").html('<font color="#fc0000">登録されたグループ名はすでに存在していますので、別のグループ名で登録してください</fotn>'); 
+                   $("#gerror").html('<font color="#fc0000"><?php echo
+                     TEXT_GROUP_NAME_IS_SET;?></fotn>'); 
                    $("#canSubmit").attr("class",'cannotSubmit');
                   }
                 }});
@@ -295,7 +299,8 @@ function ajaxUpdate(id,order){
               </td>
               <td>
               <a href="<?php echo tep_href_link(FILENAME_OA_ITEM, 'gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&eid='.$has_item_res['id'].'&action=edit');?>"><?php echo EDIT_ITEM_LINK_TEXT;?></a> 
-              <a onclick="return confirm('<?php echo $has_item_res['title'];?>を削除しますか?')" href="<?php echo tep_href_link(FILENAME_OA_ITEM, 'gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&eid='.$has_item_res['id'].'&action=del');?>"><?php echo DEL_ITEM_LINK_TEXT;?></a> 
+              <a onclick="return confirm('<?php echo
+              $has_item_res['title'].TEXT_DELETE_CONFRIM;?>')" href="<?php echo tep_href_link(FILENAME_OA_ITEM, 'gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&eid='.$has_item_res['id'].'&action=del');?>"><?php echo DEL_ITEM_LINK_TEXT;?></a> 
               </td>
               <td><?php
             echo '<input type="button" class="up" value=\'↑\' onclick="editorder(this)">';
@@ -388,7 +393,7 @@ function ajaxUpdate(id,order){
                 echo '<td>';
                 echo '<a href="'.tep_href_link(FILENAME_OA_GROUP, 'action=edit&gid='.$group_list_res['id'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type']).'">'.EDIT_GROUP_TEXT.'</a>'; 
                 echo '&nbsp;&nbsp;'; 
-                echo '<a onclick="return confirm(\''.$group_list_res['name'].'を削除しますか?\')"'.'href="'.tep_href_link(FILENAME_OA_GROUP, 'action=del&gid='.$group_list_res['id'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type']).'">'.DEL_GROUP_TEXT.'</a>'; 
+                echo '<a onclick="return confirm(\''.$group_list_res['name'].TEXT_DELETE_CONFRIM.'\')"'.'href="'.tep_href_link(FILENAME_OA_GROUP, 'action=del&gid='.$group_list_res['id'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type']).'">'.DEL_GROUP_TEXT.'</a>'; 
                 echo '</td>'; 
                 echo '<td>';
                 echo '<input type="button" class="up" value=\'↑\' onclick="editorder(this)">';
@@ -401,7 +406,7 @@ function ajaxUpdate(id,order){
             <?php
               if (tep_db_num_rows($group_list_raw)) {
             ?>
-                <input type="submit" value="<?php echo 'テンプレート追加';?>"> 
+                <input type="submit" value="<?php echo TEXT_TEMPLATE_ADD;?>"> 
             <?php
               }
             ?>

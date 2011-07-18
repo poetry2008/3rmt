@@ -25,4 +25,9 @@ define('EDIT_GROUP_TEXT', '編集');
 define('DEL_GROUP_TEXT', '削除');
 define('TABLE_HEADING_ITEM_TYPE','タイプ');
 define('TABLE_HEADING_OAGROUP_ORDER','並び順');
+define('TEXT_TEMPLATE_ADD','テンプレート追加');
+define('TEXT_SELECT','選択されていないためテンプレートを追加できません。');
+define('TEXT_ADD_FINISH','追加完了');
+define('TEXT_DELETE_CONFRIM','を削除しますか？');
+define('TEXT_GROUP_MANAGE','グループ管理');
 ?>

@@ -90,7 +90,7 @@ function select_all_group()
 <!-- body_text //-->
     <td width="100%" valign="top">
     <table border="0" width="100%" cellspacing="0" cellpadding="2">
-    <tr><td class="pageHeading" height="40">グループ管理</td></tr>
+    <tr><td class="pageHeading" height="40"><?php echo TEXT_GROUP_MANAGE;?></td></tr>
       <tr>
         <td>
           <?php
@@ -169,7 +169,8 @@ function ajaxUpdate(id,order){
               </td>
               <td>
               <a href="<?php echo tep_href_link(FILENAME_OA_ITEM, 'gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&eid='.$has_item_res['id'].'&return=oa_link&action=edit');?>"><?php echo EDIT_ITEM_LINK_TEXT;?></a> 
-              <a onclick="return confirm('<?php echo $has_item_res['title'];?>を削除しますか?')" href="<?php echo tep_href_link(FILENAME_OA_ITEM, 'gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&eid='.$has_item_res['id'].'&action=del');?>"><?php echo DEL_ITEM_LINK_TEXT;?></a> 
+              <a onclick="return confirm('<?php echo
+              $has_item_res['title'].TEXT_DELETE_CONFRIM;?>')" href="<?php echo tep_href_link(FILENAME_OA_ITEM, 'gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&eid='.$has_item_res['id'].'&action=del');?>"><?php echo DEL_ITEM_LINK_TEXT;?></a> 
               </td>
               <td><?php
             echo '<input type="button" class="up" value=\'↑\' onclick="editorder(this)">';
@@ -236,7 +237,7 @@ function ajaxUpdate(id,order){
 </script>
            <?php
            if ($_GET['msg'] == 'success') {
-             echo '追加完了'; 
+             echo TEXT_ADD_FINISH; 
            }
            ?>
            <table border="0" width="100%" cellpadding="0" cellspacing="0">
@@ -297,7 +298,7 @@ if ($g_num % 2 == 0) {
                 echo '<td>';
                 echo '<a href="'.tep_href_link(FILENAME_OA_GROUP, 'action=edit&return=oa_link&gid='.$group_list_res['id'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type']).'">'.EDIT_GROUP_TEXT.'</a>'; 
                 echo '&nbsp;&nbsp;'; 
-                echo '<a onclick="return confirm(\''.$group_list_res['name'].'を削除しますか?\')"'.'href="'.tep_href_link(FILENAME_OA_GROUP, 'action=del&gid='.$group_list_res['id'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type']).'">'.DEL_GROUP_TEXT.'</a>'; 
+                echo '<a onclick="return confirm(\''.$group_list_res['name'].TEXT_DELETE_CONFRIM.'\')"'.'href="'.tep_href_link(FILENAME_OA_GROUP, 'action=del&gid='.$group_list_res['id'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type']).'">'.DEL_GROUP_TEXT.'</a>'; 
                 echo '</td>'; 
                 echo '<td>';
                 echo '<input type="button" class="up" value=\'↑\' onclick="editorder(this)">';
@@ -318,7 +319,7 @@ if ($g_num % 2 == 0) {
                     }
                   });
                 if(!couldSubmit){
-                  alert('選択されていないためテンプレートを追加できません。');
+                  alert('<?php echo TEXT_SELECT;?>');
                 }
                 return couldSubmit;
               }
@@ -326,7 +327,8 @@ if ($g_num % 2 == 0) {
             <?php
               if (tep_db_num_rows($group_list_raw)) {
             ?>
-                <input type="submit" onclick='return checkclicked()' value="<?php echo 'テンプレート追加';?>"> 
+                <input type="submit" onclick='return checkclicked()' value="<?php
+                echo TEXT_TEMPLATE_ADD;?>"> 
 <input type="button" onclick="window.location.href='<?php echo tep_href_link(FILENAME_OA_GROUP, 'pcode='.$_GET['pcode'].'&return=special&type='.$_GET['type']);?>'" value="<?php echo ADD_GROUP;?>"/> 
             <?php
               }

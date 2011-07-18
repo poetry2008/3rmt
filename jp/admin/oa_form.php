@@ -81,7 +81,7 @@
     <td width="100%" valign="top">
     <table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
-    <td class="pageHeading" height="40">テンプレート管理</td>
+    <td class="pageHeading" height="40"><?php echo TEXT_TEMPLATE_MANAGE;?></td>
     <td>
         <div style="display:none;"> 
         <?php echo tep_draw_form('form', FILENAME_OA_FORM, 'type='.$_GET['type'].'&action=update&form_id='.$form_id);?> 
@@ -111,7 +111,9 @@
               ofg.ordernumber,ofg.id "); 
         ?>
         <a href="<?php echo tep_href_link(FILENAME_OA_GROUP, 'pcode='.$_GET['pcode'].'&type='.$_GET['type']);?>"><?php echo ADD_GROUP;?></a>
-        <a href="<?php echo tep_href_link(FILENAME_OA_LINK_GROUP, 'pcode='.$_GET['pcode'].'&type='.$_GET['type']);?>">テンプレート追加</a> </div>
+        <a href="<?php echo tep_href_link(FILENAME_OA_LINK_GROUP,
+        'pcode='.$_GET['pcode'].'&type='.$_GET['type']);?>">
+        <?php echo TEXT_TEMPLATE_AD;?></a> </div>
 
 
 
@@ -184,7 +186,7 @@ function ajaxUpdate(id,order){
             echo '<td>'.$form_group_res['name'].'</td>'; 
             echo '<td>'; 
             echo '<a href="'.tep_href_link(FILENAME_OA_GROUP, 'action=edit&gid='.$form_group_res['id'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type']).'">'.GROUP_EDIT.'</a>'; 
-            echo '&nbsp;<a onclick="return confirm(\''.$form_group_res['name'].'を削除しますか？\')" href="'.tep_href_link(FILENAME_OA_FORM, 'action=del_link_group&pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&gid='.$form_group_res['id']).'&fid='.$form_id.'">'.DEL_LINK_GROUP.'</a>';
+            echo '&nbsp;<a onclick="return confirm(\''.$form_group_res['name'].TEXT_DELETE_CONFRIM.'\')" href="'.tep_href_link(FILENAME_OA_FORM, 'action=del_link_group&pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&gid='.$form_group_res['id']).'&fid='.$form_id.'">'.DEL_LINK_GROUP.'</a>';
             echo '<td>';
             echo '<input type="button" class="up" value="↑" onclick="editorder(this)">';
             echo '<input type="button" class="down" value="↓" onclick="editorder(this)">';
