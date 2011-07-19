@@ -1,7 +1,7 @@
 <?php
 global $language;
 require_once "HM_Item_Basic.php";
-require_once DIR_WS_LANGUAGES . $language . '/oa/HM_Item_Specialbank.php'
+require_once DIR_WS_LANGUAGES . $language . '/oa/HM_Item_Specialbank.php';
 class HM_Item_Specialbank extends HM_Item_Basic
 {
 
