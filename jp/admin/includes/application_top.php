@@ -385,8 +385,10 @@ if(isset($_GET['his_url'])&&$_GET['his_url']){
   $php_symbol = substr($_GET['his_url'], -4);
   if ($php_symbol == '.php') {
     tep_redirect($_GET['his_url'].'?SID='.tep_session_id());
+  }else{
+    $url_arr = explode('.php',$_GET['his_url']);
+    tep_redirect($url_arr[0].'.php','&SID='.tep_session_id());
   }
-  tep_redirect($_GET['his_url'],'&SID='.tep_session_id());
 }
   
   //for sql_log
