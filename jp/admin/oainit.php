@@ -157,7 +157,7 @@ echo "</br>";
 
 //选择所有现有数据 从 orders_questions 表时 一条一条循环
 $sql  = 'select oq.* ,o.* from orders_questions oq ,orders o  where o.orders_id = oq.orders_id ';
-$sql.=' and o.orders_id = "20100527-03282788"';
+//$sql.=' and o.orders_id = "20100527-03282788"';
 
 $res =tep_db_query($sql);
 $i = 0;
@@ -172,9 +172,9 @@ while($orderq = mysql_fetch_array($res)){
   $form = tep_db_fetch_object(tep_db_query($oa_form_sql), "HM_Form");
   foreach ($form->groups as $group){
     foreach ($group->items as $item){
-      echo 'method_'.$new_data[$item->title]['method'],'|||',$orderq['orders_id'],'|||',$form->id,'|||',$group->id,'|||',$item->id;
-      echo $item->title;
-      echo "\n";
+      //      echo 'method_'.$new_data[$item->title]['method'],'|||',$orderq['orders_id'],'|||',$form->id,'|||',$group->id,'|||',$item->id;
+      //      echo $item->title;
+      //      echo "\n";
       call_user_func('method_'.$new_data[$item->title]['method'],$orderq,$form->id,$group->id,$item->id);
       method_8($orderq,$form->id,$group->id,$item->id);//处理是否完成订单
     }
@@ -286,10 +286,10 @@ function method_15($order,$form_id,$group_id,$item_id){
   $value .= oa_radio($order['q_11_6'],'0_2');
   $value .= oa_radio($order['q_11_7'],'0_3');
   $value .= oa_radio($order['q_11_3'],'1');
-  $value .= oa_radio($order['q_11_8'],'0_0');
-  $value .= oa_radio($order['q_11_11'],'0_1');
-  $value .= oa_radio($order['q_11_12'],'0_2');
-  $value .= oa_radio($order['q_11_14'],'0_3');
+  $value .= oa_radio($order['q_11_8'],'1_0');
+  $value .= oa_radio($order['q_11_11'],'1_1');
+  $value .= oa_radio($order['q_11_12'],'1_2');
+  $value .= oa_radio($order['q_11_14'],'1_3');
   oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
 
 }
@@ -342,6 +342,8 @@ function method_19($order,$form_id,$group_id,$item_id){
 //                   "在庫確認");//q_10_1 checkbox 在庫確認        如果是 1 则_0 如果是null 或 0 不删 空值
 function method_20($order,$form_id,$group_id,$item_id){
   $value = oa_checkbox($order['q_10_1']);
+  oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
+  $value = oa_checkbox($order['q_2_1']);
   oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
 
 }
