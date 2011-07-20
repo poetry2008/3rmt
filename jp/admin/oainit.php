@@ -242,7 +242,7 @@ function method_7($order,$form_id,$group_id,$item_id){
 }
 //q_8_1                   "最終確認",
 function method_8($order,$form_id,$group_id,$item_id){
-  if($order['q_8_1']){
+  if(trim($order['q_8_1'])!=''){
     $sql = 'update orders set flag_qaf=1 ,end_user="'.$order['q_8_1'].'" where orders_id = "'.$order['orders_id'].'"';    
     tep_db_query($sql);
   }
@@ -280,16 +280,20 @@ function method_14($order,$form_id,$group_id,$item_id){
 
 //q_11_3 ()  q_11_4 q_11_5 q_11_6 q_11_7  q_11_3() q_11_8 q_11_11 q_11_12  q_11_14  => 信用調査:  radio 
 function method_15($order,$form_id,$group_id,$item_id){
-  $value = oa_radio($order['q_11_3'],'0');
+  $value = $order['q_11_3'].'|';
   $value .= oa_radio($order['q_11_4'],'0_0');
   $value .= oa_radio($order['q_11_5'],'0_1');
   $value .= oa_radio($order['q_11_6'],'0_2');
   $value .= oa_radio($order['q_11_7'],'0_3');
-  $value .= oa_radio($order['q_11_3'],'1');
   $value .= oa_radio($order['q_11_8'],'1_0');
   $value .= oa_radio($order['q_11_11'],'1_1');
   $value .= oa_radio($order['q_11_12'],'1_2');
   $value .= oa_radio($order['q_11_14'],'1_3');
+  //  echo $order['orders_id'];
+  //  echo "\n";
+  //  echo $value;
+  //  echo "\n";
+
   oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
 
 }
@@ -341,8 +345,8 @@ function method_19($order,$form_id,$group_id,$item_id){
 }
 //                   "在庫確認");//q_10_1 checkbox 在庫確認        如果是 1 则_0 如果是null 或 0 不删 空值
 function method_20($order,$form_id,$group_id,$item_id){
-  $value = oa_checkbox($order['q_10_1']);
-  oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
+  //  $value = oa_checkbox($order['q_10_1']);
+  //  oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
   $value = oa_checkbox($order['q_2_1']);
   oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
 
@@ -379,7 +383,7 @@ function oa_checkbox($value,$default='0',$flag = '1')
 }
 function oa_radio($value,$default=0){
   if( $value ==1 ){
-    return '|'.$default;
+    return $default.'|';
   }
   return '';
   
