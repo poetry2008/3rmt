@@ -7,6 +7,9 @@
    </body>
    <h1>NEW OA Init</h1>
    <?php
+   error_reporting(E_ALL^E_NOTICE^E_WARNING);
+ini_set("display_errors",'On');
+$start = microtime(true);
    //无用数据 
    //delete from oa_item where group_id not in (select id from oa_group ) //删除非现有组的oa_item
    $language = 'japanese';
@@ -158,6 +161,7 @@ $sql  = 'select oq.* ,o.* from orders_questions oq ,orders o  where o.orders_id 
 $res =tep_db_query($sql);
 $i = 0;
 while($orderq = mysql_fetch_array($res)){
+
   $i++;
   //取得当前订单的类型
   $order_id = $orderq['orders_id'];
@@ -174,12 +178,10 @@ while($orderq = mysql_fetch_array($res)){
       method_8($orderq,$form->id,$group->id,$item->id);//处理是否完成订单
     }
   }
-
-
   //取得订单的form
   //取得订单的group
   //每个group再取得对应的 item 根据每个item 的名 找到对应的 字段 然后进行给值
-  
+
 
 }
 echo "</br>";
@@ -380,6 +382,9 @@ function oa_radio($value,$default=0){
   
 }
 
+$end = microtime(true);
+echo ($end-$start).'<br />';//显示执行switch所用时间
+echo 'pre record' .($end-$start)/$i;
 ?>
 </body>
 </html>
