@@ -22,7 +22,7 @@ class HM_Group extends DbRecord
   function render()
   {
     echo "<tr>";
-    echo "<td class='main' width='30%' nowrap>";
+    echo "<td class='main' width='30%' valign='top' nowrap>";
     echo $this->name;
     echo empty($this->name)?"":':';
     echo "</td>";
