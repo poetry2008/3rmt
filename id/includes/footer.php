@@ -25,7 +25,7 @@
         <?php //echo FOOTER_TEXT_BODY . "\n"; ?><br>
               Copyright&nbsp;&copy;&nbsp;2011&nbsp;&nbsp;<a class="bold" href="<?php echo tep_href_link(FILENAME_DEFAULT);?>"><?php echo TITLE;?></a>
             </address>
-            <?php if ($banner = tep_banner_exists('dynamic', 'footer')) { echo  '<div align="center">' . "\n" . tep_display_banner('static', $banner) . '</div>'; }?>
+            <?php if ($banner = tep_banner_exists('dynamic', 'footer')) { echo  '<div align="center" class="info_foot02">' . "\n" . tep_display_banner('static', $banner) . '</div>'; }?>
 
 <?php 
 // 显示SQL执行记录
