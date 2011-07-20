@@ -95,7 +95,9 @@ $item_to_q = array(
                    "残量入力（販売）",
                    "信用判定",
                    "サイト入力",
-                   "在庫確認");
+                   "在庫確認",
+                   "金額確認",
+);
 foreach($item_to_q as $key=>$item){
   $sql = 'select * from oa_item where trim(title) ="'.trim($item).'"';
   $res = tep_db_query($sql);
@@ -340,7 +342,11 @@ function method_20($order,$form_id,$group_id,$item_id){
   oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
 
 }
-
+//q_11_15  金額確認
+function method_21($order,$form_id,$group_id,$item_id){
+  $value = oa_checkbox($order['q_11_15']);
+  oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
+}
 
 
 
