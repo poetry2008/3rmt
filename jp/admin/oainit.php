@@ -345,10 +345,15 @@ function method_19($order,$form_id,$group_id,$item_id){
 }
 //                   "在庫確認");//q_10_1 checkbox 在庫確認        如果是 1 则_0 如果是null 或 0 不删 空值
 function method_20($order,$form_id,$group_id,$item_id){
-  //  $value = oa_checkbox($order['q_10_1']);
-  //  oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
-  $value = oa_checkbox($order['q_2_1']);
-  oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
+
+  if($order['payment_method']=="銀行振込(買い取り)" or $order['payment_method']=="銀行振込")
+    {
+      $value = oa_checkbox($order['q_2_1']);
+      oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
+    }else{
+      $value = oa_checkbox($order['q_10_1']);
+      oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
+  }
 
 }
 //q_11_15  金額確認
