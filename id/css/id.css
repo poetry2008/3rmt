@@ -1054,14 +1054,14 @@ footer
 }
 .footer_5 {
 	width: 900px;
-	height:100px;
+	height:106px;
 	background: url(../images/design/box/footer_07.gif) repeat-x;
 }
 .info_foot02 {
     color: #000000;
     font-size: 11px;
     line-height: 16px;
-	padding-top:2px;
+	padding-top:3px;
 }
 .info_foot02 a { color:#AE0E30; padding:0 2px;}
 .footer_games_box {
