@@ -126,6 +126,7 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
 
 
 // define the database table names used in the project
+  define('TABLE_PWD_CHECK', 'pwd_check');
   define('TABLE_FAQ_CATEGORIES', 'faq_categories');
   define('TABLE_FAQ_QUESTION',  'faq_question');
   define('TABLE_FAQ_CATEGORIES_DESCRIPTION', 'faq_categories_description');
