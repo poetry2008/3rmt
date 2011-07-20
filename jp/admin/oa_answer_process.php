@@ -29,7 +29,7 @@
   $ids = explode('_',$key);
   $item_id = $ids['3'];
   $group_id = $ids['2'];
-  tep_db_query("delete from ".TABLE_OA_FORMVALUE." where orders_id = '".$_GET['oID']."' and name='".$key."'"); 
+  tep_db_query("delete from ".TABLE_OA_FORMVALUE." where orders_id = '".$_GET['oID']."' and form_id='".$form_id."'"." and item_id='".$item_id."'"." and group_id = '".$group_id."'");
   //针对 date 做特殊处理
   if($_GET['fix']=='date'){
   $value = date('Y/m/d H:i',time());
