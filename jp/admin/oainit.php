@@ -349,10 +349,10 @@ function method_20($order,$form_id,$group_id,$item_id){
   if($order['payment_method']=="銀行振込(買い取り)" or $order['payment_method']=="銀行振込")
     {
 
-      $value = oa_checkbox($order['q_2_1'],'1');
+      $value = oa_checkbox($order['q_2_1'],'0','0');
       oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
     }else{
-    $value = oa_checkbox($order['q_10_1'],'1');
+    $value = oa_checkbox($order['q_10_1'],'0','0');
       oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
   }
 
