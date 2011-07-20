@@ -157,7 +157,8 @@ echo "</br>";
 
 //选择所有现有数据 从 orders_questions 表时 一条一条循环
 $sql  = 'select oq.* ,o.* from orders_questions oq ,orders o  where o.orders_id = oq.orders_id ';
-//$sql.=' and o.orders_id = "20110715-09594800"';
+$sql.=' and o.orders_id = "20100527-03282788"';
+
 $res =tep_db_query($sql);
 $i = 0;
 while($orderq = mysql_fetch_array($res)){
@@ -171,9 +172,9 @@ while($orderq = mysql_fetch_array($res)){
   $form = tep_db_fetch_object(tep_db_query($oa_form_sql), "HM_Form");
   foreach ($form->groups as $group){
     foreach ($group->items as $item){
-      //            echo 'method_'.$new_data[$item->title]['method'],'|||',$orderq['orders_id'],'|||',$form->id,'|||',$group->id,'|||',$item->id;
-      //            echo $item->title;
-      //            echo "\n";
+      echo 'method_'.$new_data[$item->title]['method'],'|||',$orderq['orders_id'],'|||',$form->id,'|||',$group->id,'|||',$item->id;
+      echo $item->title;
+      echo "\n";
       call_user_func('method_'.$new_data[$item->title]['method'],$orderq,$form->id,$group->id,$item->id);
       method_8($orderq,$form->id,$group->id,$item->id);//处理是否完成订单
     }
