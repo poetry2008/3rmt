@@ -387,7 +387,11 @@ if(isset($_GET['his_url'])&&$_GET['his_url']){
     tep_redirect($_GET['his_url'].'?SID='.tep_session_id());
   }else{
     $url_arr = explode('.php',$_GET['his_url']);
+    if($url_arr[0] == '/admin'|| $url_arr[0] == '/admin/'){
+    tep_redirect($url_arr[0].'index.php','&SID='.tep_session_id());
+    }else{
     tep_redirect($url_arr[0].'.php','&SID='.tep_session_id());
+    }
   }
 }
   
