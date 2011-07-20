@@ -491,4 +491,21 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
   }else{
     echo 'false';
   }
+}else if(isset($_GET['action'])&&$_GET['action'] == 'pwd_check_save'){
+  if(isset($_POST['check_str'])&&$_POST['check_str']){
+    $check_arr = explode(',',$_POST['check_str']);
+    if(in_array('admin',$check_arr)){
+      tep_db_query("TRUNCATE TABLE ".TABLE_PWD_CHECK);
+      foreach($check_arr as $value){
+        $sql = "insert into ".TABLE_PWD_CHECK."
+          (`check_value`)VALUES ('".$value."')";
+        tep_db_query($sql);
+      }
+      echo "true";
+    }else{
+      echo "noadmin";
+    }
+  }else{
+    echo "noall";
+  }
 }
