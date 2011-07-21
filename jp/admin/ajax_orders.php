@@ -502,6 +502,14 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
         tep_db_query($sql);
       }
       echo "true";
+    }else if(count($check_arr)==1&&$check_arr[0]=='onetime'){
+      tep_db_query("TRUNCATE TABLE ".TABLE_PWD_CHECK);
+      foreach($check_arr as $value){
+        $sql = "insert into ".TABLE_PWD_CHECK."
+          (`check_value`)VALUES ('".$value."')";
+        tep_db_query($sql);
+      }
+      echo "true";
     }else{
       echo "noadmin";
     }
