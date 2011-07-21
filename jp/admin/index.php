@@ -88,9 +88,6 @@ A.sub:hover { color: #dddddd; text-decoration: underline; }
 //--></style>
 </head>
 <body>
-<script language="javascript">
-alert('test 1');
-</script>
 <table width="700" height="100%" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr>
     <td><table border="0" width="700" height="390" cellspacing="0" cellpadding="1">
