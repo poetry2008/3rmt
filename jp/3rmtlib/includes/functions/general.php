@@ -4053,7 +4053,7 @@ function   tep_order_status_change($oID,$status){
   $oa_form_sql = "select * from ".TABLE_OA_FORM." where formtype = '".$formtype."' and payment_romaji = '".$payment_romaji."'";
   
   if ($status == 9) {
-    $update_confirm_payment_time = tep_db_query("update `".TABLE_ORDERS."` set `confirm_payment_time` = '".date('Y-m-d H:i:s', time())."' where `orders_id` = '".$oID."'");
+    tep_db_query("update `".TABLE_ORDERS."` set `confirm_payment_time` = '".date('Y-m-d H:i:s', time())."' where `orders_id` = '".$oID."'");
   }
 
   $form = tep_db_fetch_object(tep_db_query($oa_form_sql), "HM_Form");
