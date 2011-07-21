@@ -3345,7 +3345,7 @@ function tep_get_orders_products_string($orders) {
     if ($orders['confirm_payment_time'] != '0000-00-00 00:00:00') {
       $time_arr = explode(' ', $orders['confirm_payment_time']);  
       $date_arr = explode('-', $time_arr[0]);
-      $time_str = $date_arr[0].'年'.$date_arr[1].'月'.$date_arr[2].'日';
+      $time_str = $date_arr[0].'年'.$date_arr[1].'月'.$date_arr[2].'日'.'&nbsp;'.$time_arr[1];
     } else {
       $time_str = '入金まだ'; 
     }
