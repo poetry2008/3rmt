@@ -673,6 +673,20 @@ function q_4_3(){
     }
   }
 }
+
+function del_confirm_payment_time(oid)
+{
+  if (window.confirm('<?php echo NOTICE_DEL_CONFIRM_PAYEMENT_TIME;?>')) {
+    $.ajax({
+      type:"POST", 
+      url:"<?php echo tep_href_link('handle_payment_time.php')?>",
+      data:"oID="+oid, 
+      success:function(msg) {
+        alert('<?php echo NOTICE_DEL_CONFIRM_PAYMENT_TIME_SUCCESS;?>'); 
+      }
+    }); 
+  }
+}
 </script>
 </head>
 <body>
@@ -1725,8 +1739,12 @@ echo TEXT_BUY_BANK;
           } else {
             echo tep_image(DIR_WS_ICONS . 'cross.gif', ICON_CROSS) . "</td>\n";
           }
-          echo 
-           '      <td class="smallText">' . $orders_status_array[$orders_history['orders_status_id']] . '</td>' . "\n" .
+          echo '      <td class="smallText">' .  $orders_status_array[$orders_history['orders_status_id']];
+          if ($orders_history['orders_status_id'] == '9') {
+            echo '&nbsp;&nbsp;&nbsp;'; 
+            echo '<input type="button" class="element_button" onclick="del_confirm_payment_time(\''.$oID.'\');" value="'.DEL_CONFIRM_PAYMENT_TIME.'">'; 
+          }
+          echo '</td>' . "\n" .
            '      <td class="smallText"><p style="word-break:break-all;word-wrap:break-word;overflow:hidden;display:block;width:170px;">' . nl2br(tep_db_output($orders_history['comments'])) . '&nbsp;</p></td>' . "\n" .
            
            '    </tr>' . "\n";
@@ -2150,6 +2168,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
                o.customers_email_address,
                o.orders_comment,
                o.torihiki_houhou,
+               o.confirm_payment_time, 
                o.site_id
         from " . TABLE_ORDERS . " o " . $from_payment . "
         where o.customers_email_address = '" . tep_db_input($cEmail) . "' 
@@ -2179,6 +2198,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
                o.customers_email_address,
                o.torihiki_houhou,
                o.orders_comment,
+               o.confirm_payment_time, 
                o.site_id
         from " . TABLE_ORDERS . " o " . $from_payment . "
         where o.customers_id = '" . tep_db_input($cID) . "' 
@@ -2208,6 +2228,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
                o.torihiki_houhou,
                o.customers_email_address,
                o.orders_comment,
+               o.confirm_payment_time, 
                o.site_id
         from " . TABLE_ORDERS . " o " . $from_payment . "
         where 
@@ -2243,6 +2264,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
                o.customers_email_address,
                o.torihiki_houhou,
                o.orders_comment,
+               o.confirm_payment_time, 
                o.site_id
         from " . TABLE_ORDERS . " o " . $from_payment . "
         where 1=1 
@@ -2302,6 +2324,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
                o.customers_email_address,
                o.torihiki_houhou,
                o.orders_comment,
+               o.confirm_payment_time, 
                o.site_id
         from " . TABLE_ORDERS . " o " . $from_payment . ", " . TABLE_ORDERS_PRODUCTS . " op 
         where o.orders_id = op.orders_id
@@ -2360,6 +2383,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
                o.customers_email_address,
                o.orders_comment,
                o.torihiki_houhou,
+               o.confirm_payment_time, 
                o.site_id
          from " . TABLE_ORDERS . " o " . $from_payment . "
          where 
@@ -2411,7 +2435,6 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
     #}
     $next_mark = '';
   }
-  
   if ( (isset($oInfo) && is_object($oInfo)) && ($orders['orders_id'] == $oInfo->orders_id) ) {
     echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRowSelected" onmouseover="showOrdersInfo(\''.tep_get_orders_products_string($orders).'\',this);this.style.cursor=\'hand\'" onmouseout="hideOrdersInfo()" ondblclick="window.location.href=\''.tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']).'\'">' . "\n";
   } else {
