@@ -3340,7 +3340,8 @@ function tep_get_orders_products_string($orders) {
   $str .= '<tr><td colspan="2">&nbsp;</td></tr>';
   $str .= '<tr><td class="main" width="60"><b>支払方法：</b></td><td class="main" style="color:darkred;"><b>'.$orders['payment_method'].'</b></td></tr>';
   if ($orders['payment_method'] != '銀行振込(買い取り)') {
-    $str .= '<tr><td class="main"><b>入金日：</b></td><td class="main" style="color:red;"><b>'.($pay_time?date('m月d日',strtotime($pay_time)):'入金まだ').'</b></td></tr>';
+    //$str .= '<tr><td class="main"><b>入金日：</b></td><td class="main" style="color:red;"><b>'.($pay_time?date('m月d日',strtotime($pay_time)):'入金まだ').'</b></td></tr>';
+    $str .= '<tr><td class="main"><b>入金日：</b></td><td class="main" style="color:red;"><b>'.(($orders['confirm_payment_time'] != '0000-00-00 00:00:00')?$orders['confirm_payment_time']:'入金まだ').'</b></td></tr>';
   }
   $str .= '<tr><td colspan="2">&nbsp;</td></tr>';
   $str .= '<tr><td class="main"><b>オプション：</b></td><td class="main" style="color:blue;"><b>'.$orders['torihiki_houhou'].'</b></td></tr>';
@@ -5453,7 +5454,11 @@ function   tep_order_status_change($oID,$status){
   $formtype = tep_check_order_type($order_id);
   $payment_romaji = tep_get_payment_code_by_order_id($order_id); 
   $oa_form_sql = "select * from ".TABLE_OA_FORM." where formtype = '".$formtype."' and payment_romaji = '".$payment_romaji."'";
-
+ 
+  if ($status == 9) {
+    $update_confirm_payment_time = tep_db_query("update `".TABLE_ORDERS."` set `confirm_payment_time` = '".date('Y-m-d H:i:s', time())."' where `orders_id` = '".$oID."'");
+  }
+  
   $form = tep_db_fetch_object(tep_db_query($oa_form_sql), "HM_Form");
   //如果存在，把每个元素找出来，看是否有自动更新
   if($form){
