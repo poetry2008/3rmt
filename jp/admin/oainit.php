@@ -249,14 +249,29 @@ function method_8($order,$form_id,$group_id,$item_id){
   }
     
   if ($order['payment_method'] != '銀行振込(買い取り)') {
-    if ($order['orders_questions_type'] == '2') {
-      $pay_time = $order['q_4_3'] && $order['q_4_3'] != '0000-00-00' && $order['q_4_2'] ? $order['q_4_3'] : false;
+    $order_status_query = tep_db_query("select * from orders_status_history where orders_id = '".$order['orders_id']."'"); 
+    $order_status_res =  tep_db_fetch_array($order_status_query);
+    
+    $whether_update_payment = false;
+    if ($order_status_res) {
+      if ($order_status_res['orders_status_id'] == 9) {
+        tep_db_query("update `orders` set `confirm_payment_time` = '".$order_status_res['date_added']."' where orders_id = '".$order['orders_id']."'"); 
+      } else {
+        $whether_update_payment = true;
+      }
     } else {
-      $pay_time = $order['q_3_2'] && $order['q_3_1'] && $order['q_3_4'] ? $order['q_3_2'] : false;
+      $whether_update_payment = true;
     }
-    if ($pay_time) {
-      $confirm_payment_time = date('Y-m-d H:i:s', strtotime($pay_time)); 
-      tep_db_query("update `orders` set `confirm_payment_time` = '".$pay_time."' where orders_id = '".$order['orders_id']."'"); 
+    if ($whether_update_payment) {
+      if ($order['orders_questions_type'] == '2') {
+        $pay_time = $order['q_4_3'] && $order['q_4_3'] != '0000-00-00' && $order['q_4_2'] ? $order['q_4_3'] : false;
+      } else {
+        $pay_time = $order['q_3_2'] && $order['q_3_1'] && $order['q_3_4'] ? $order['q_3_2'] : false;
+      }
+      if ($pay_time) {
+        $confirm_payment_time = date('Y-m-d H:i:s', strtotime($pay_time)); 
+        tep_db_query("update `orders` set `confirm_payment_time` = '".$pay_time."' where orders_id = '".$order['orders_id']."'"); 
+      }
     }
   }
 }
