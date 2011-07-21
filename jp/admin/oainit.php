@@ -312,14 +312,16 @@ function method_15($order,$form_id,$group_id,$item_id){
 
 }
 //q_6_1  checkbox 残量入力(买)：   根据买卖有不同  如果是买的话  
-//q_6_1  checkbox 残量入力(买)：   根据买卖有不同  如果是买的话   如果是 1 则_0 如果是null 或 0 不删 空值
+
 function method_16($order,$form_id,$group_id,$item_id){
   $value = oa_checkbox($order['q_6_1'],'0','0');
   $value = '_0';
   oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
 }
+//q_6_1  checkbox 残量入力(买)：   根据买卖有不同  如果是买的话   如果是 1 则_0 如果是null 或 0 不删 空值
 function method_17($order,$form_id,$group_id,$item_id){
   $value = oa_checkbox($order['q_6_1'],'0','0');
+  $value = '_0';
   oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
 }
 
