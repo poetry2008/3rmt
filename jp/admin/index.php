@@ -66,6 +66,7 @@ while($userslist= tep_db_fetch_array($sites_id)){
 <html <?php echo HTML_PARAMS; ?>>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
+<script language="javascript" src="includes/javascript/jquery.js"></script>
 <title><?php echo TITLE; ?></title>
 <style type="text/css">
 <!--
@@ -87,6 +88,9 @@ A.sub:hover { color: #dddddd; text-decoration: underline; }
 //--></style>
 </head>
 <body>
+<script language="javascript">
+alert('test 1');
+</script>
 <table width="700" height="100%" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr>
     <td><table border="0" width="700" height="390" cellspacing="0" cellpadding="1">
