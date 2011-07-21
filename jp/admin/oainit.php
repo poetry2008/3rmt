@@ -202,7 +202,8 @@ function method_0($order,$form_id,$group_id,$item_id){
 }
 //q_1_1  checkbox 備考の有無：     如果是 1 则_0 如果是null 或 0 不删 空值
 function method_1($order,$form_id,$group_id,$item_id){
-  $value = oa_checkbox($order['q_1_1'],'0','0');
+  //  $value = oa_checkbox($order['q_1_1'],'0','0');
+  $value = '_0';
   oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
 }
 //q_15_3 q_15_4 q_15_5                    "振込先選択",
