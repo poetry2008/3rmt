@@ -7,6 +7,9 @@
    </body>
    <h1>NEW OA Init</h1>
    <?php
+   error_reporting(E_ALL^E_NOTICE^E_WARNING);
+ini_set("display_errors",'On');
+$start = microtime(true);
    //无用数据 
    //delete from oa_item where group_id not in (select id from oa_group ) //删除非现有组的oa_item
    $language = 'japanese';
@@ -95,7 +98,9 @@ $item_to_q = array(
                    "残量入力（販売）",
                    "信用判定",
                    "サイト入力",
-                   "在庫確認");
+                   "在庫確認",
+                   "金額確認",
+);
 foreach($item_to_q as $key=>$item){
   $sql = 'select * from oa_item where trim(title) ="'.trim($item).'"';
   $res = tep_db_query($sql);
@@ -152,10 +157,12 @@ echo "</br>";
 
 //选择所有现有数据 从 orders_questions 表时 一条一条循环
 $sql  = 'select oq.* ,o.* from orders_questions oq ,orders o  where o.orders_id = oq.orders_id ';
-//$sql.=' and o.orders_id = "20110715-09594800"';
+//$sql.=' and o.orders_id = "20100527-03282788"';
+
 $res =tep_db_query($sql);
 $i = 0;
 while($orderq = mysql_fetch_array($res)){
+
   $i++;
   //取得当前订单的类型
   $order_id = $orderq['orders_id'];
@@ -165,19 +172,17 @@ while($orderq = mysql_fetch_array($res)){
   $form = tep_db_fetch_object(tep_db_query($oa_form_sql), "HM_Form");
   foreach ($form->groups as $group){
     foreach ($group->items as $item){
-      //            echo 'method_'.$new_data[$item->title]['method'],'|||',$orderq['orders_id'],'|||',$form->id,'|||',$group->id,'|||',$item->id;
-      //            echo $item->title;
-      //            echo "\n";
+      //      echo 'method_'.$new_data[$item->title]['method'],'|||',$orderq['orders_id'],'|||',$form->id,'|||',$group->id,'|||',$item->id;
+      //      echo $item->title;
+      //      echo "\n";
       call_user_func('method_'.$new_data[$item->title]['method'],$orderq,$form->id,$group->id,$item->id);
       method_8($orderq,$form->id,$group->id,$item->id);//处理是否完成订单
     }
   }
-
-
   //取得订单的form
   //取得订单的group
   //每个group再取得对应的 item 根据每个item 的名 找到对应的 字段 然后进行给值
-  
+
 
 }
 echo "</br>";
@@ -237,7 +242,7 @@ function method_7($order,$form_id,$group_id,$item_id){
 }
 //q_8_1                   "最終確認",
 function method_8($order,$form_id,$group_id,$item_id){
-  if($order['q_8_1']){
+  if(trim($order['q_8_1'])!=''){
     $sql = 'update orders set flag_qaf=1 ,end_user="'.$order['q_8_1'].'" where orders_id = "'.$order['orders_id'].'"';    
     tep_db_query($sql);
   }
@@ -275,16 +280,20 @@ function method_14($order,$form_id,$group_id,$item_id){
 
 //q_11_3 ()  q_11_4 q_11_5 q_11_6 q_11_7  q_11_3() q_11_8 q_11_11 q_11_12  q_11_14  => 信用調査:  radio 
 function method_15($order,$form_id,$group_id,$item_id){
-  $value = oa_radio($order['q_11_3'],'0');
+  $value = $order['q_11_3'].'|';
   $value .= oa_radio($order['q_11_4'],'0_0');
   $value .= oa_radio($order['q_11_5'],'0_1');
   $value .= oa_radio($order['q_11_6'],'0_2');
   $value .= oa_radio($order['q_11_7'],'0_3');
-  $value .= oa_radio($order['q_11_3'],'1');
-  $value .= oa_radio($order['q_11_8'],'0_0');
-  $value .= oa_radio($order['q_11_11'],'0_1');
-  $value .= oa_radio($order['q_11_12'],'0_2');
-  $value .= oa_radio($order['q_11_14'],'0_3');
+  $value .= oa_radio($order['q_11_8'],'1_0');
+  $value .= oa_radio($order['q_11_11'],'1_1');
+  $value .= oa_radio($order['q_11_12'],'1_2');
+  $value .= oa_radio($order['q_11_14'],'1_3');
+  //  echo $order['orders_id'];
+  //  echo "\n";
+  //  echo $value;
+  //  echo "\n";
+
   oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
 
 }
@@ -336,11 +345,23 @@ function method_19($order,$form_id,$group_id,$item_id){
 }
 //                   "在庫確認");//q_10_1 checkbox 在庫確認        如果是 1 则_0 如果是null 或 0 不删 空值
 function method_20($order,$form_id,$group_id,$item_id){
-  $value = oa_checkbox($order['q_10_1']);
-  oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
+
+  if($order['payment_method']=="銀行振込(買い取り)" or $order['payment_method']=="銀行振込")
+    {
+
+      $value = oa_checkbox($order['q_2_1'],'0','0');
+      oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
+    }else{
+    $value = oa_checkbox($order['q_10_1'],'0','0');
+      oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
+  }
 
 }
-
+//q_11_15  金額確認
+function method_21($order,$form_id,$group_id,$item_id){
+  $value = oa_checkbox($order['q_11_15']);
+  oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
+}
 
 
 
@@ -368,12 +389,15 @@ function oa_checkbox($value,$default='0',$flag = '1')
 }
 function oa_radio($value,$default=0){
   if( $value ==1 ){
-    return '|'.$default;
+    return $default.'|';
   }
   return '';
   
 }
 
+$end = microtime(true);
+echo ($end-$start).'<br />';//显示执行switch所用时间
+echo 'pre record' .($end-$start)/$i;
 ?>
 </body>
 </html>
