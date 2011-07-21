@@ -249,16 +249,12 @@ function method_8($order,$form_id,$group_id,$item_id){
   }
     
   if ($order['payment_method'] != '銀行振込(買い取り)') {
-    $order_status_query = tep_db_query("select * from orders_status_history where orders_id = '".$order['orders_id']."'"); 
+    $order_status_query = tep_db_query("select * from orders_status_history where orders_id = '".$order['orders_id']."' and orders_status_id = '9'"); 
     $order_status_res =  tep_db_fetch_array($order_status_query);
     
     $whether_update_payment = false;
     if ($order_status_res) {
-      if ($order_status_res['orders_status_id'] == 9) {
-        tep_db_query("update `orders` set `confirm_payment_time` = '".$order_status_res['date_added']."' where orders_id = '".$order['orders_id']."'"); 
-      } else {
-        $whether_update_payment = true;
-      }
+      tep_db_query("update `orders` set `confirm_payment_time` = '".$order_status_res['date_added']."' where orders_id = '".$order['orders_id']."'"); 
     } else {
       $whether_update_payment = true;
     }
