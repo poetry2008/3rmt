@@ -692,6 +692,8 @@ function del_confirm_payment_time(oid)
             data:"oID="+oid+"&once_pwd="+pwd, 
             success:function(msg) {
               alert('<?php echo NOTICE_DEL_CONFIRM_PAYMENT_TIME_SUCCESS;?>'); 
+              window.location.href = window.location.href; 
+              window.location.reload; 
             }
           }); 
         }
@@ -1754,7 +1756,9 @@ echo TEXT_BUY_BANK;
             echo tep_image(DIR_WS_ICONS . 'cross.gif', ICON_CROSS) . "</td>\n";
           }
           echo '      <td class="smallText">' .  $orders_status_array[$orders_history['orders_status_id']];
-          if ($orders_history['orders_status_id'] == '9') {
+          $order_confirm_payment_raw = tep_db_query("select * from ".TABLE_ORDERS." where orders_id = '".tep_db_input($oID)."'"); 
+          $order_confirm_payment_res = tep_db_fetch_array($order_confirm_payment_raw); 
+          if ($orders_history['orders_status_id'] == '9' && $order_confirm_payment_res['confirm_payment_time'] != '0000-00-00 00:00:00') {
             echo '&nbsp;&nbsp;&nbsp;'; 
             echo '<input type="button" class="element_button" onclick="del_confirm_payment_time(\''.$oID.'\');" value="'.DEL_CONFIRM_PAYMENT_TIME.'">'; 
           }
