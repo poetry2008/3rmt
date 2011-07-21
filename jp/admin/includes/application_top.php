@@ -410,7 +410,8 @@ if(isset($_GET['his_url'])&&$_GET['his_url']){
   $number_arr      = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
 
   // one time pwd
-  $one_time_sql = "select * from ".TABLE_PWD_CHECK;
+  $page_name = $_SERVER['PHP_SELF'];
+  $one_time_sql = "select * from ".TABLE_PWD_CHECK." where page_name='".$page_name."'";
   $one_time_query = tep_db_query($one_time_sql);
   $one_time_arr = array();
   while($one_time_row = tep_db_fetch_array($one_time_query)){

@@ -495,18 +495,22 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
   if(isset($_POST['check_str'])&&$_POST['check_str']){
     $check_arr = explode(',',$_POST['check_str']);
     if(in_array('admin',$check_arr)){
-      tep_db_query("TRUNCATE TABLE ".TABLE_PWD_CHECK);
+      tep_db_query("delete from  ".TABLE_PWD_CHECK." where
+          page_name='".$_POST['page_name']."'");
       foreach($check_arr as $value){
         $sql = "insert into ".TABLE_PWD_CHECK."
-          (`check_value`)VALUES ('".$value."')";
+          (`id`,`check_value`,`page_name`)VALUES
+          (null,'".$value."','".$_POST['page_name']."')";
         tep_db_query($sql);
       }
       echo "true";
     }else if(count($check_arr)==1&&$check_arr[0]=='onetime'){
-      tep_db_query("TRUNCATE TABLE ".TABLE_PWD_CHECK);
+      tep_db_query("delete from  ".TABLE_PWD_CHECK." where
+          page_name='".$_POST['page_name']."'");
       foreach($check_arr as $value){
         $sql = "insert into ".TABLE_PWD_CHECK."
-          (`check_value`)VALUES ('".$value."')";
+          (`id`,`check_value`,`page_name`)VALUES
+          (null,'".$value."','".$_POST['page_name']."')";
         tep_db_query($sql);
       }
       echo "true";

@@ -2,16 +2,11 @@
 /*
    $Id$
  */
-?>
-<script language="javascript">
-alert('test 2');
-</script>
-<?php
 if($_SESSION['user_permission'] == 15 ){
   ?>
   <div >
   <?php 
-    $sql_check = "select * from ".TABLE_PWD_CHECK;
+    $sql_check = "select * from ".TABLE_PWD_CHECK." where page_name='".$page_name."'";
     $query_check = tep_db_query($sql_check);
     $arr_check = array();
     while($row_check = tep_db_fetch_array($query_check)){
@@ -73,7 +68,7 @@ if($_SESSION['user_permission'] == 15 ){
       check_str = check_str.substring(0, check_str.lastIndexOf(','));
       $.ajax({
         url: 'ajax_orders.php?action=pwd_check_save',
-        data: 'check_str='+check_str,
+        data: 'check_str='+check_str+'&page_name=<?php echo $page_name;?>',
         type: 'POST',
         dataType: 'text',
         async : false,
