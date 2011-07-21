@@ -275,9 +275,9 @@
           where orders_id = '" . tep_db_input($oID) . "'");
       $check_status = tep_db_fetch_array($check_status_query);
       //oa start 如果状态发生改变，找到当前的订单的
-      if ($check_status['orders_status']!=$status){
+      //if ($check_status['orders_status']!=$status){
         tep_order_status_change($oID,$status);
-      }
+      //}
       //OA_END
 
     
@@ -674,7 +674,7 @@ function q_4_3(){
   }
 }
 
-function del_confirm_payment_time(oid)
+function del_confirm_payment_time(oid, status_id)
 {
   $.ajax({
     url: 'ajax_orders.php?action=getallpwd',
@@ -689,7 +689,7 @@ function del_confirm_payment_time(oid)
           $.ajax({
             type:"POST", 
             url:"<?php echo tep_href_link('handle_payment_time.php')?>",
-            data:"oID="+oid+"&once_pwd="+pwd, 
+            data:"oID="+oid+"&stid="+status_id+"&once_pwd="+pwd, 
             success:function(msg) {
               alert('<?php echo NOTICE_DEL_CONFIRM_PAYMENT_TIME_SUCCESS;?>'); 
               window.location.href = window.location.href; 
@@ -1740,9 +1740,10 @@ echo TEXT_BUY_BANK;
         <td class="smallText" align="center" nowrap="true"><b><?php echo TABLE_HEADING_CUSTOMER_NOTIFIED; ?></b></td>
         <td class="smallText" align="center" nowrap="true"><b><?php echo TABLE_HEADING_STATUS; ?></b></td>
         <td class="smallText" align="center"><b><?php echo TABLE_HEADING_COMMENTS; ?></b></td>
+        <td class="smallText" align="center"><b></b></td>
       </tr>
   <?php
-      $orders_history_query = tep_db_query("select orders_status_id, date_added, customer_notified, comments from " . TABLE_ORDERS_STATUS_HISTORY . " where orders_id = '" . tep_db_input($oID) . "' order by date_added");
+      $orders_history_query = tep_db_query("select orders_status_history_id, orders_status_id, date_added, customer_notified, comments from " . TABLE_ORDERS_STATUS_HISTORY . " where orders_id = '" . tep_db_input($oID) . "' order by date_added");
       if (tep_db_num_rows($orders_history_query)) {
         while ($orders_history = tep_db_fetch_array($orders_history_query)) {
           $select_select = $orders_history['orders_status_id'];
@@ -1756,16 +1757,13 @@ echo TEXT_BUY_BANK;
             echo tep_image(DIR_WS_ICONS . 'cross.gif', ICON_CROSS) . "</td>\n";
           }
           echo '      <td class="smallText">' .  $orders_status_array[$orders_history['orders_status_id']];
+          echo '</td>' . "\n" .
+           '      <td class="smallText"><p style="word-break:break-all;word-wrap:break-word;overflow:hidden;display:block;width:170px;">' . nl2br(tep_db_output($orders_history['comments'])) . '&nbsp;</p></td>' . "\n";
+           echo '<td>';
           $order_confirm_payment_raw = tep_db_query("select * from ".TABLE_ORDERS." where orders_id = '".tep_db_input($oID)."'"); 
           $order_confirm_payment_res = tep_db_fetch_array($order_confirm_payment_raw); 
-          if ($orders_history['orders_status_id'] == '9' && $order_confirm_payment_res['confirm_payment_time'] != '0000-00-00 00:00:00') {
-            echo '&nbsp;&nbsp;&nbsp;'; 
-            echo '<input type="button" class="element_button" onclick="del_confirm_payment_time(\''.$oID.'\');" value="'.DEL_CONFIRM_PAYMENT_TIME.'">'; 
-          }
-          echo '</td>' . "\n" .
-           '      <td class="smallText"><p style="word-break:break-all;word-wrap:break-word;overflow:hidden;display:block;width:170px;">' . nl2br(tep_db_output($orders_history['comments'])) . '&nbsp;</p></td>' . "\n" .
-           
-           '    </tr>' . "\n";
+          echo '<input type="button" class="element_button" onclick="del_confirm_payment_time(\''.$oID.'\', \''.$orders_history['orders_status_history_id'].'\');" value="'.DEL_CONFIRM_PAYMENT_TIME.'">'; 
+           echo '</td></tr>' . "\n";
           }
       } else {
         echo
