@@ -293,6 +293,7 @@ function method_11($order,$form_id,$group_id,$item_id){
 //q_12_1 キャラクターの有無 checkbox
 function method_12($order,$form_id,$group_id,$item_id){
   $value = oa_checkbox($order['q_12_1']);
+  $value = '_0';
   oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
 }
 //q_9_2  date 決算確認：
@@ -329,6 +330,7 @@ function method_15($order,$form_id,$group_id,$item_id){
 //q_6_1  checkbox 残量入力(买)：   根据买卖有不同  如果是买的话   如果是 1 则_0 如果是null 或 0 不删 空值
 function method_16($order,$form_id,$group_id,$item_id){
   $value = oa_checkbox($order['q_6_1'],'0','0');
+  $value = '_0';
   oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
 }
 function method_17($order,$form_id,$group_id,$item_id){
@@ -339,6 +341,7 @@ function method_17($order,$form_id,$group_id,$item_id){
 //q_17_2                   "信用判定"
 function method_18($order,$form_id,$group_id,$item_id){
   $value = oa_checkbox($order['q_17_2']);
+  //  $value = '_0';
   oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
 }
 //                   "サイト入力",
@@ -374,15 +377,19 @@ function method_19($order,$form_id,$group_id,$item_id){
 //                   "在庫確認");//q_10_1 checkbox 在庫確認        如果是 1 则_0 如果是null 或 0 不删 空值
 function method_20($order,$form_id,$group_id,$item_id){
 
+      $value = oa_checkbox($order['q_2_1'],'0','0');
+      $value = '_0';
+      oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
+      /*
   if($order['payment_method']=="銀行振込(買い取り)" or $order['payment_method']=="銀行振込")
     {
-
       $value = oa_checkbox($order['q_2_1'],'0','0');
       oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
     }else{
     $value = oa_checkbox($order['q_10_1'],'0','0');
       oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
   }
+      */
 
 }
 //q_11_15  金額確認
