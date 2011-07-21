@@ -676,16 +676,30 @@ function q_4_3(){
 
 function del_confirm_payment_time(oid)
 {
-  if (window.confirm('<?php echo NOTICE_DEL_CONFIRM_PAYEMENT_TIME;?>')) {
-    $.ajax({
-      type:"POST", 
-      url:"<?php echo tep_href_link('handle_payment_time.php')?>",
-      data:"oID="+oid, 
-      success:function(msg) {
-        alert('<?php echo NOTICE_DEL_CONFIRM_PAYMENT_TIME_SUCCESS;?>'); 
+  $.ajax({
+    url: 'ajax_orders.php?action=getallpwd',
+    type: 'POST',
+    dataType: 'text',
+    async : false,
+    success: function(data) {
+      var pwd_arr = data.split(",");
+      var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n","");
+      if(in_array(pwd, pwd_arr)){
+        if (window.confirm('<?php echo NOTICE_DEL_CONFIRM_PAYEMENT_TIME;?>')) {
+          $.ajax({
+            type:"POST", 
+            url:"<?php echo tep_href_link('handle_payment_time.php')?>",
+            data:"oID="+oid+"&once_pwd="+pwd, 
+            success:function(msg) {
+              alert('<?php echo NOTICE_DEL_CONFIRM_PAYMENT_TIME_SUCCESS;?>'); 
+            }
+          }); 
+        }
+      } else {
+        window.alert("パスワードが違います"); 
       }
-    }); 
-  }
+    }
+  });
 }
 </script>
 </head>
