@@ -409,6 +409,23 @@ if(isset($_GET['his_url'])&&$_GET['his_url']){
   $upper_alpha_arr = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
   $number_arr      = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
 
+  // one time pwd
+  $page_name = $_SERVER['PHP_SELF'];
+  $one_time_sql = "select * from ".TABLE_PWD_CHECK." where page_name='".$page_name."'";
+  $one_time_query = tep_db_query($one_time_sql);
+  $one_time_arr = array();
+  while($one_time_row = tep_db_fetch_array($one_time_query)){
+    $one_time_arr[] = $one_time_row['check_value'];
+  }
+  if(count($one_time_arr)==1&&$one_time_arr[0]=='admin'&&$_SESSION['user_permission']!=15){
+    forward401();
+  }
+  $_SESSION['onetime_pwd'] = true;
+  if(in_array('admin',$one_time_arr)&&in_array('chief',$one_time_arr)&&
+      in_array('staff',$one_time_arr)){
+    $_SESSION['onetime_pwd'] = false;
+  }
+
 
 
   header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");

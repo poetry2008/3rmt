@@ -161,4 +161,7 @@ define('TEXT_ORDER_SITE_TEXT','注文書サイト');
 define('TEXT_ORDER_SERVER_BUSY','ダウンロード中はサーバに対して高負荷となります。アクセスの少ない時間に実行してください。');
 define('TEXT_ORDER_DOWNLOPAD','注文データダウンロード');
 
+define('DEL_CONFIRM_PAYMENT_TIME', '削除');
+define('NOTICE_DEL_CONFIRM_PAYEMENT_TIME', '時間を削除しますか？');
+define('NOTICE_DEL_CONFIRM_PAYMENT_TIME_SUCCESS', '削除成功');
 ?>

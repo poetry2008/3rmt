@@ -66,6 +66,7 @@ while($userslist= tep_db_fetch_array($sites_id)){
 <html <?php echo HTML_PARAMS; ?>>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
+<script language="javascript" src="includes/javascript/jquery.js"></script>
 <title><?php echo TITLE; ?></title>
 <style type="text/css">
 <!--

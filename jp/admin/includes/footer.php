@@ -6,7 +6,7 @@ if($_SESSION['user_permission'] == 15 ){
   ?>
   <div >
   <?php 
-    $sql_check = "select * from ".TABLE_PWD_CHECK;
+    $sql_check = "select * from ".TABLE_PWD_CHECK." where page_name='".$page_name."'";
     $query_check = tep_db_query($sql_check);
     $arr_check = array();
     while($row_check = tep_db_fetch_array($query_check)){
@@ -14,18 +14,19 @@ if($_SESSION['user_permission'] == 15 ){
     }
     if(empty($arr_check)){
   ?>
-  <input type='checkbox' name='pwd_check' value='admin' checked="checked">Admin&nbsp;
-  <input type='checkbox' name='pwd_check' value='chief'>Chief&nbsp;
   <input type='checkbox' name='pwd_check' value='staff'>Staff&nbsp;
-  <input type='checkbox' name='pwd_check' value='onetime'>OneTime&nbsp;
+  <input type='checkbox' name='pwd_check' value='chief'>Chief&nbsp;
+  <input type='checkbox' name='pwd_check' value='admin' checked="checked">Admin&nbsp;
+  <input type='checkbox' name='pwd_check' value='onetime'><?php echo 
+    TEXT_FOOTER_ONE_TIME;?>&nbsp;
   <input type='button' onclick="save_once_pwd_checkbox()" value="SAVE">
   <?php }else{ 
-    if(in_array('admin',$arr_check)){
-      echo "<input type='checkbox' name='pwd_check' value='admin'
-        checked='checked'>Admin&nbsp;";
+    if(in_array('staff',$arr_check)){
+      echo "<input type='checkbox' name='pwd_check' value='staff'
+        checked='checked'>Staff&nbsp;";
     }else{
-      echo "<input type='checkbox' name='pwd_check' value='admin'
-        >Admin&nbsp;";
+      echo "<input type='checkbox' name='pwd_check' value='staff'
+        >Staff&nbsp;";
     }
     if(in_array('chief',$arr_check)){
       echo "<input type='checkbox' name='pwd_check' value='chief'
@@ -34,19 +35,19 @@ if($_SESSION['user_permission'] == 15 ){
       echo "<input type='checkbox' name='pwd_check' value='chief'
         >Chief&nbsp;";
     }
-    if(in_array('staff',$arr_check)){
-      echo "<input type='checkbox' name='pwd_check' value='staff'
-        checked='checked'>Staff&nbsp;";
+    if(in_array('admin',$arr_check)){
+      echo "<input type='checkbox' name='pwd_check' value='admin'
+        checked='checked'>Admin&nbsp;";
     }else{
-      echo "<input type='checkbox' name='pwd_check' value='staff'
-        >Staff&nbsp;";
+      echo "<input type='checkbox' name='pwd_check' value='admin'
+        >Admin&nbsp;";
     }
     if(in_array('onetime',$arr_check)){
       echo "<input type='checkbox' name='pwd_check' value='onetime'
-        checked='checked'>OneTime&nbsp;";
+        checked='checked'>".TEXT_FOOTER_ONE_TIME."&nbsp;";
     }else{
       echo "<input type='checkbox' name='pwd_check' value='onetime'
-        >OneTime&nbsp;";
+        >".TEXT_FOOTER_ONE_TIME."&nbsp;";
     }
   echo "<input type='button' onclick='save_once_pwd_checkbox()' value='SAVE'>";
   }
@@ -67,7 +68,7 @@ if($_SESSION['user_permission'] == 15 ){
       check_str = check_str.substring(0, check_str.lastIndexOf(','));
       $.ajax({
         url: 'ajax_orders.php?action=pwd_check_save',
-        data: 'check_str='+check_str,
+        data: 'check_str='+check_str+'&page_name=<?php echo $page_name;?>',
         type: 'POST',
         dataType: 'text',
         async : false,

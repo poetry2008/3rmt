@@ -247,6 +247,18 @@ function method_8($order,$form_id,$group_id,$item_id){
     $sql = 'update orders set flag_qaf=1 ,end_user="'.$order['q_8_1'].'" where orders_id = "'.$order['orders_id'].'"';    
     tep_db_query($sql);
   }
+    
+  if ($order['payment_method'] != '銀行振込(買い取り)') {
+    if ($order['orders_questions_type'] == '2') {
+      $pay_time = $order['q_4_3'] && $order['q_4_3'] != '0000-00-00' && $order['q_4_2'] ? $order['q_4_3'] : false;
+    } else {
+      $pay_time = $order['q_3_2'] && $order['q_3_1'] && $order['q_3_4'] ? $order['q_3_2'] : false;
+    }
+    if ($pay_time) {
+      $confirm_payment_time = date('Y-m-d H:i:s', strtotime($pay_time)); 
+      tep_db_query("update `orders` set `confirm_payment_time` = '".$pay_time."' where orders_id = '".$order['orders_id']."'"); 
+    }
+  }
 }
 //q_13_2 date 受领注意
 function method_9($order,$form_id,$group_id,$item_id){
