@@ -4954,7 +4954,10 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
 
 
 
-  function tep_insert_pwd_log($pwd,$userid){
+  function tep_insert_pwd_log($pwd,$userid,$save_session=false,$page_name=''){
+    if($save_session){
+      $_SESSION[$page_name] = $pwd;
+    }
     $user_info = tep_get_user_info($userid);
     $letter = substr($pwd,0,1);
     $sql_letter = "select * from ".TABLE_LETTERS." 

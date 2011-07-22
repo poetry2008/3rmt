@@ -54,10 +54,6 @@ if($_SESSION['user_permission'] == 15 ){
   ?>
   </div>
   <script language='javascript' >
-    //引用JQUERY 文件
-    if (typeof window.jQuery == "undefined") {
-    } else {
-    } 
     function save_once_pwd_checkbox(){
       var check_str = '';
       $("input|[name=pwd_check]").each(function(){
@@ -68,7 +64,7 @@ if($_SESSION['user_permission'] == 15 ){
       check_str = check_str.substring(0, check_str.lastIndexOf(','));
       $.ajax({
         url: 'ajax_orders.php?action=pwd_check_save',
-        data: 'check_str='+check_str+'&page_name=<?php echo $page_name;?>',
+        data: 'check_str='+check_str+'&page_name=<?php echo $_SERVER['PHP_SELF'];?>',
         type: 'POST',
         dataType: 'text',
         async : false,
