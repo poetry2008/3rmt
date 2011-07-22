@@ -6,7 +6,8 @@ if($_SESSION['user_permission'] == 15 ){
   ?>
   <div >
   <?php 
-    $sql_check = "select * from ".TABLE_PWD_CHECK." where page_name='".$page_name."'";
+    $sql_check = "select * from ".TABLE_PWD_CHECK." where
+    page_name='".$_SERVER['PHP_SELF']."'";
     $query_check = tep_db_query($sql_check);
     $arr_check = array();
     while($row_check = tep_db_fetch_array($query_check)){
