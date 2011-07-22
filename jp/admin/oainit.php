@@ -197,12 +197,23 @@ VALUES (NULL,'".$oid."',".$form_id.",".$item_id.",".$group_id.",'".$value."')");
 }
 function method_0($order,$form_id,$group_id,$item_id){
   //  echo 'q_3_2  date  入金確認:       ';
-  $value = oa_date($order['q_3_2']);
+  $o_status_query = tep_db_query("select * from orders_status where orders_status_name = '支払確認'");
+  $o_status_res = tep_db_fetch_array($o_status_query); 
+  
+  $order_status_query = tep_db_query("select * from orders_status_history where orders_id = '".$order['orders_id']."' and orders_status_id = '".$o_status_res['orders_status_id']."' order by orders_status_history_id desc limit 1"); 
+  $order_status_res =  tep_db_fetch_array($order_status_query);
+  if ($order_status_res) {
+    $value = date('Y-m-d h:i', strtotime($order_status_res['date_added']));   
+  } else {
+    $value = oa_date($order['q_3_2']);
+  }
+
   oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
 }
 //q_1_1  checkbox 備考の有無：     如果是 1 则_0 如果是null 或 0 不删 空值
 function method_1($order,$form_id,$group_id,$item_id){
-  $value = oa_checkbox($order['q_1_1'],'0','0');
+  //  $value = oa_checkbox($order['q_1_1'],'0','0');
+  $value = '_0';
   oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
 }
 //q_15_3 q_15_4 q_15_5                    "振込先選択",
@@ -248,14 +259,28 @@ function method_8($order,$form_id,$group_id,$item_id){
   }
     
   if ($order['payment_method'] != '銀行振込(買い取り)') {
-    if ($order['orders_questions_type'] == '2') {
-      $pay_time = $order['q_4_3'] && $order['q_4_3'] != '0000-00-00' && $order['q_4_2'] ? $order['q_4_3'] : false;
+    $o_status_query = tep_db_query("select * from orders_status where orders_status_name = '支払確認'");
+    $o_status_res = tep_db_fetch_array($o_status_query); 
+    
+    $order_status_query = tep_db_query("select * from orders_status_history where orders_id = '".$order['orders_id']."' and orders_status_id = '".(int)$o_status_res['orders_status_id']."' order by orders_status_history_id desc limit 1"); 
+    $order_status_res =  tep_db_fetch_array($order_status_query);
+    
+    $whether_update_payment = false;
+    if ($order_status_res) {
+      tep_db_query("update `orders` set `confirm_payment_time` = '".$order_status_res['date_added']."' where orders_id = '".$order['orders_id']."'"); 
     } else {
-      $pay_time = $order['q_3_2'] && $order['q_3_1'] && $order['q_3_4'] ? $order['q_3_2'] : false;
+      $whether_update_payment = true;
     }
-    if ($pay_time) {
-      $confirm_payment_time = date('Y-m-d H:i:s', strtotime($pay_time)); 
-      tep_db_query("update `orders` set `confirm_payment_time` = '".$pay_time."' where orders_id = '".$order['orders_id']."'"); 
+    if ($whether_update_payment) {
+      if ($order['orders_questions_type'] == '2') {
+        $pay_time = $order['q_4_3'] && $order['q_4_3'] != '0000-00-00' && $order['q_4_2'] ? $order['q_4_3'] : false;
+      } else {
+        $pay_time = $order['q_3_2'] && $order['q_3_1'] && $order['q_3_4'] ? $order['q_3_2'] : false;
+      }
+      if ($pay_time) {
+        $confirm_payment_time = date('Y-m-d H:i:s', strtotime($pay_time)); 
+        tep_db_query("update `orders` set `confirm_payment_time` = '".$pay_time."' where orders_id = '".$order['orders_id']."'"); 
+      }
     }
   }
 }
@@ -277,6 +302,7 @@ function method_11($order,$form_id,$group_id,$item_id){
 //q_12_1 キャラクターの有無 checkbox
 function method_12($order,$form_id,$group_id,$item_id){
   $value = oa_checkbox($order['q_12_1']);
+  $value = '_0';
   oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
 }
 //q_9_2  date 決算確認：
@@ -310,19 +336,23 @@ function method_15($order,$form_id,$group_id,$item_id){
 
 }
 //q_6_1  checkbox 残量入力(买)：   根据买卖有不同  如果是买的话  
-//q_6_1  checkbox 残量入力(买)：   根据买卖有不同  如果是买的话   如果是 1 则_0 如果是null 或 0 不删 空值
+
 function method_16($order,$form_id,$group_id,$item_id){
   $value = oa_checkbox($order['q_6_1'],'0','0');
+  $value = '_0';
   oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
 }
+//q_6_1  checkbox 残量入力(买)：   根据买卖有不同  如果是买的话   如果是 1 则_0 如果是null 或 0 不删 空值
 function method_17($order,$form_id,$group_id,$item_id){
   $value = oa_checkbox($order['q_6_1'],'0','0');
+  $value = '_0';
   oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
 }
 
 //q_17_2                   "信用判定"
 function method_18($order,$form_id,$group_id,$item_id){
   $value = oa_checkbox($order['q_17_2']);
+  //  $value = '_0';
   oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
 }
 //                   "サイト入力",
@@ -358,15 +388,19 @@ function method_19($order,$form_id,$group_id,$item_id){
 //                   "在庫確認");//q_10_1 checkbox 在庫確認        如果是 1 则_0 如果是null 或 0 不删 空值
 function method_20($order,$form_id,$group_id,$item_id){
 
+      $value = oa_checkbox($order['q_2_1'],'0','0');
+      $value = '_0';
+      oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
+      /*
   if($order['payment_method']=="銀行振込(買い取り)" or $order['payment_method']=="銀行振込")
     {
-
       $value = oa_checkbox($order['q_2_1'],'0','0');
       oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
     }else{
     $value = oa_checkbox($order['q_10_1'],'0','0');
       oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
   }
+      */
 
 }
 //q_11_15  金額確認
