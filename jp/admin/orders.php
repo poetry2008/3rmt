@@ -2403,12 +2403,12 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
                o.site_id
          from " . TABLE_ORDERS . " o " . $from_payment . "
          where 
-          o.flag_qaf = 0 
+          (o.q_8_1 IS NULL or o.q_8_1 = '')
           -- and o.orders_status != '6'
           -- and o.orders_status != '8'
           " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
           " . $where_payment . $where_type . "
-         order by o.torihiki_date DESC
+         order by torihiki_date_error DESC,o.torihiki_date DESC
       ";
     }
     // old sort is  order by torihiki_date_error DESC,o.torihiki_date DESC
