@@ -1276,7 +1276,7 @@ echo TEXT_BUY_BANK;
       <?php echo tep_draw_radio_field('q_1_1', '0', $oq['q_1_1'] === '0', '', 'id="q_1_1_0" onclick="exclude(this,\'q_1_2\')" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>無｜<?php echo tep_draw_radio_field('q_1_1', '1', $oq['q_1_1'] === '1', '', 'id="q_1_1_1" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>有 → <?php echo tep_draw_checkbox_field('q_1_2', '1', $oq['q_1_2'] === '1', '', 'id="q_1_2" onclick="auto_radio(this,\'q_1_1_1\')" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>返答済
     </td>
 <?php if (!$oq['q_8_1']) { ?>
-    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_1_1_0').attr('checked', '');$('#q_1_1_1').attr('checked', '');$('#q_1_2').attr('checked', '');clean_option(1,'<?php echo $order->info['orders_id'];?>');"></td>
+    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_1_1_0').attr('checked',false);$('#q_1_1_1').attr('checked',false);$('#q_1_2').attr('checked',false);clean_option(1,'<?php echo $order->info['orders_id'];?>');"></td>
 <?php } ?>
   </tr>
 <?php
@@ -1293,14 +1293,14 @@ echo TEXT_BUY_BANK;
     <td class="main">キャラクターの有無：</td>
     <td class="main"><?php echo tep_draw_radio_field('q_12_1', '1', $oq['q_12_1'] === '1', '', 'id="q_12_1_1" onclick="exclude(this,\'q_12_2\')" onchange="change_option(this)"');?>有｜<?php echo tep_draw_radio_field('q_12_1', '0', $oq['q_12_1'] === '0', '', 'id="q_12_1_0" onchange="change_option(this)"');?>無 → <?php echo tep_draw_checkbox_field('q_12_2', '1', $oq['q_12_2'] === '1', '', 'id="q_12_2" onclick="auto_radio(this,\'q_12_1_0\')" onchange="change_option(this)"');?>新規作成してお客様へ連絡</td>
 <?php if (!$oq['q_8_1']) { ?>
-    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_12_1_0').attr('checked','');$('#q_12_1_1').attr('checked','');$('#q_12_2').attr('checked','');clean_option(12,'<?php echo $order->info['orders_id'];?>');"></td>
+    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_12_1_0').attr('checked',false);$('#q_12_1_1').attr('checked',false);$('#q_12_2').attr('checked',false);clean_option(12,'<?php echo $order->info['orders_id'];?>');"></td>
 <?php } ?>
   </tr>
   <tr>
     <td class="main">受領 <font color="red">※注意※</font>：</td>
     <td class="main"><?php echo tep_draw_checkbox_field('q_13_1', '1', isset($oq['q_13_1']) ? $oq['q_13_1'] === '1' : $pay_time,'', 'id="q_13_1" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?><?php echo tep_draw_input_field('q_13_2_m', $oq['q_13_2'] && $oq['q_13_2'] != '0000-00-00' ? date('m', strtotime($oq['q_13_2'])) : ($pay_time?date('m', strtotime($pay_time)):''), 'size="2" class="questions_date" readonly');?>月<?php echo tep_draw_input_field('q_13_2_d', $oq['q_13_2'] && $oq['q_13_2'] != '0000-00-00' ? date('d', strtotime($oq['q_13_2'])) : ($pay_time?date('d', strtotime($pay_time)):''), 'size="2" class="questions_date" readonly');?>日</td>
 <?php if (!$oq['q_8_1']) { ?>
-    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_13_1').attr('checked','');clean_option(13,'<?php echo $order->info['orders_id'];?>');"></td>
+    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_13_1').attr('checked',false);clean_option(13,'<?php echo $order->info['orders_id'];?>');"></td>
 <?php } ?>
   </tr>
 
@@ -1344,14 +1344,14 @@ echo TEXT_BUY_BANK;
       <?php echo tep_draw_radio_field('q_6_1', '0', $oq['q_6_1'] === '0', '', 'id="q_6_1_0" onclick="exclude(this,\'q_6_2\')" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>無｜<?php echo tep_draw_radio_field('q_6_1', '1', $oq['q_6_1'] === '1', '', 'id="q_6_1_1" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>有 → <?php echo tep_draw_checkbox_field('q_6_2', '1', $oq['q_6_2'] === '1', '', 'id="q_6_2" onclick="auto_radio(this,\'q_6_1_1\')" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>報告
     </td>
 <?php if (!$oq['q_8_1']) { ?>
-    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_6_1_0').attr('checked','');$('#q_6_1_1').attr('checked','');$('#q_6_2').attr('checked','');clean_option(6,'<?php echo $order->info['orders_id'];?>');"></td>
+    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_6_1_0').attr('checked',false);$('#q_6_1_1').attr('checked',false);$('#q_6_2').attr('checked',false);clean_option(6,'<?php echo $order->info['orders_id'];?>');"></td>
 <?php } ?>
   </tr>
   <tr>
     <td class="main">受領メール送信：</td>
     <td class="main"><?php echo tep_draw_checkbox_field('q_14_1', '1', isset($oq['q_14_1']) ? $oq['q_14_1'] === '1' : $pay_email,'','id="q_14_1" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?><?php echo tep_draw_hidden_field('q_14_2', $oq['q_14_2'] ? $oq['q_14_2'] : $order->customer['email_address'], 'size="20" class="readonly" readonly');?>済</td>
 <?php if (!$oq['q_8_1']) { ?>
-    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_14_1').attr('checked','');$('#q_14_3').attr('checked','');clean_option(14,'<?php echo $order->info['orders_id'];?>');"></td>
+    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_14_1').attr('checked',false);$('#q_14_3').attr('checked',false);clean_option(14,'<?php echo $order->info['orders_id'];?>');"></td>
 <?php } ?>
   </tr>
   <tr>
@@ -1373,7 +1373,7 @@ echo TEXT_BUY_BANK;
 </table>
     </td>
 <?php if (!$oq['q_8_1']) { ?>
-    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#td_q_15 input[type=checkbox]').attr('checked','');$('#q_15_7').val('');clean_option(15,'<?php echo $order->info['orders_id'];?>');"></td>
+    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#td_q_15 input[type=checkbox]').attr('checked',false);$('#q_15_7').val('');clean_option(15,'<?php echo $order->info['orders_id'];?>');"></td>
 <?php } ?>
   </tr>
     
@@ -1381,7 +1381,7 @@ echo TEXT_BUY_BANK;
     <td class="main">支払完了メール送信：</td>
     <td class="main"><?php echo tep_draw_hidden_field('q_16_1', $oq['q_16_1'] ? $oq['q_16_1'] : $order->customer['email_address'], 'size="20" class="readonly" readonly');?><?php echo tep_draw_checkbox_field('q_16_2', '1', isset($oq['q_16_2']) ? $oq['q_16_2'] === '1' : $end_email,'','id="q_16_2" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>済</td>
 <?php if (!$oq['q_8_1']) { ?>
-    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_16_2').attr('checked', '');clean_option(16,'<?php echo $order->info['orders_id'];?>')"></td>
+    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_16_2').attr('checked',false);clean_option(16,'<?php echo $order->info['orders_id'];?>')"></td>
 <?php } ?>
   </tr>
 <?php
@@ -1397,7 +1397,7 @@ echo TEXT_BUY_BANK;
     <td class="main">決算確認：</td>
     <td class="main"><?php echo tep_draw_checkbox_field('q_9_1', '1', $oq['q_9_1'], '', 'id="q_9_1" onclick="if(this.checked){$(\'#q_9_2_m\').val(new Date().getMonth()+1);$(\'#q_9_2_d\').val(new Date().getDate());change_option(this);}else{$(\'#q_9_2_m\').val(\'\');$(\'#q_9_2_d\').val(\'\');change_option(this);}"');?><?php echo tep_draw_input_field('q_9_2_m', $oq['q_9_2'] && $oq['q_9_2'] != '0000-00-00' ? date('m', strtotime($oq['q_9_2'])) : '', 'size="2" id="q_9_2_m" class="questions_date" readonly');?>月<?php echo tep_draw_input_field('q_9_2_d', $oq['q_9_2'] && $oq['q_9_2'] != '0000-00-00' ? date('d', strtotime($oq['q_9_2'])) : '', 'size="2" id="q_9_2_d" class="questions_date" readonly');?>日</td>
 <?php if (!$oq['q_8_1']) { ?>
-    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_9_1').attr('checked','');$('#q_9_2_m').val('');$('#q_9_2_d').val('');clean_option(9,'<?php echo $order->info['orders_id'];?>')"></td>
+    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_9_1').attr('checked',false);$('#q_9_2_m').val('');$('#q_9_2_d').val('');clean_option(9,'<?php echo $order->info['orders_id'];?>')"></td>
 <?php } ?>
   </tr>
   <tr>
@@ -1406,7 +1406,7 @@ echo TEXT_BUY_BANK;
       <?php echo tep_draw_radio_field('q_10_1', '1', $oq['q_10_1'] === '1', '', 'id="q_10_1_1" onclick="exclude(this,\'q_10_2\')" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>有｜<?php echo tep_draw_radio_field('q_10_1', '0', $oq['q_10_1'] === '0', '', 'id="q_10_1_0" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>無 → <?php echo tep_draw_checkbox_field('q_10_2', '1', $oq['q_10_2'] === '1', '', 'id="q_10_2" onclick="auto_radio(this,\'q_10_1_0\')" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>入手困難ならお客様へ電話
     </td>
 <?php if (!$oq['q_8_1']) { ?>
-    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_10_1_0').attr('checked','');$('#q_10_1_1').attr('checked','');$('#q_10_2').attr('checked','');clean_option(10,'<?php echo $order->info['orders_id'];?>')"></td>
+    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_10_1_0').attr('checked',false);$('#q_10_1_1').attr('checked',false);$('#q_10_2').attr('checked',false);clean_option(10,'<?php echo $order->info['orders_id'];?>')"></td>
 <?php } ?>
   </tr>
   <tr>
@@ -1446,14 +1446,14 @@ echo TEXT_BUY_BANK;
       </table>
     </td>
 <?php if (!$oq['q_8_1']) { ?>
-    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_11_15').val('');$('#td_q_11 input').attr('checked','');$('#td_q_11_first').hide();$('#td_q_11_second').hide();clean_option(11,'<?php echo $order->info['orders_id'];?>')"></td>
+    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_11_15').val('');$('#td_q_11 input').attr('checked',false);$('#td_q_11_first').hide();$('#td_q_11_second').hide();clean_option(11,'<?php echo $order->info['orders_id'];?>')"></td>
 <?php } ?>
   </tr>
   <tr>
     <td class="main">信用判定：</td>
     <td class="main"><?php echo tep_draw_radio_field('q_17_2', '0', $oq['q_17_2'] === '0', '', 'id="q_17_2_0" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>正常 ｜ <?php echo tep_draw_radio_field('q_17_2', '1', $oq['q_17_2'] === '1', '', 'id="q_17_2_1" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>異常 → 担当者<?php echo tep_draw_input_field('q_17_1', $oq['q_17_1'], 'size="10" id="q_17_1"');?>の承諾を得た</td>
 <?php if (!$oq['q_8_1']) { ?>
-    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_17_2_0').attr('checked','');$('#q_17_2_1').attr('checked','');$('#q_17_1').val('');clean_option(17,'<?php echo $order->info['orders_id'];?>')"></td>
+    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_17_2_0').attr('checked',false);$('#q_17_2_1').attr('checked',false);$('#q_17_1').val('');clean_option(17,'<?php echo $order->info['orders_id'];?>')"></td>
 <?php } ?>
   </tr>
   <tr>
@@ -1464,21 +1464,21 @@ echo TEXT_BUY_BANK;
     
     </td>
 <?php if (!$oq['q_8_1']) { ?>
-    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_4_2').attr('checked','');$('#q_4_3_m').val('');$('#q_4_3_d').val('');clean_option(4,'<?php echo $order->info['orders_id'];?>')"></td>
+    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_4_2').attr('checked',false);$('#q_4_3_m').val('');$('#q_4_3_d').val('');clean_option(4,'<?php echo $order->info['orders_id'];?>')"></td>
 <?php } ?>
   </tr>
   <tr>
     <td class="main">発送：</td>
     <td class="main"><?php echo tep_draw_checkbox_field('q_5_1', '1', isset($oq['q_5_1']) ? $oq['q_5_1'] === '1' : $end_time, '', 'id="q_5_1" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?><?php echo tep_draw_input_field('q_5_2_m', $oq['q_5_2'] && $oq['q_5_2'] != '0000-00-00' ? date('m', strtotime($oq['q_5_2'])) : ($end_time?date('m', strtotime($end_time)):''), 'size="2" class="questions_date" readonly');?>月<?php echo tep_draw_input_field('q_5_2_d', $oq['q_5_2'] && $oq['q_5_2'] != '0000-00-00' ? date('d', strtotime($oq['q_5_2'])) : ($end_time?date('d', strtotime($end_time)):''), 'size="2" class="questions_date" readonly');?>日</td>
 <?php if (!$oq['q_8_1']) { ?>
-    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_5_1').attr('checked','');clean_option(5,'<?php echo $order->info['orders_id'];?>')"></td>
+    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_5_1').attr('checked',false);clean_option(5,'<?php echo $order->info['orders_id'];?>')"></td>
 <?php } ?>
   </tr>
   <tr>
     <td class="main">発送完了メール送信：</td>
     <td class="main"><?php echo tep_draw_hidden_field('q_7_1', $oq['q_7_1'] ? $oq['q_7_1'] : $order->customer['email_address'], 'size="20" class="readonly" class="questions_date" readonly');?><?php echo tep_draw_checkbox_field('q_7_2', '1', isset($oq['q_7_2']) ? $oq['q_7_2'] === '1' : $end_time, '', 'id="q_7_2" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>済</td>
 <?php if (!$oq['q_8_1']) { ?>
-    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_7_2').attr('checked','');clean_option(7,'<?php echo $order->info['orders_id'];?>')"></td>
+    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_7_2').attr('checked',false);clean_option(7,'<?php echo $order->info['orders_id'];?>')"></td>
 <?php } ?>
   </tr>
   <tr>
@@ -1487,7 +1487,7 @@ echo TEXT_BUY_BANK;
       <?php echo tep_draw_radio_field('q_6_1', '0', $oq['q_6_1'] === '0', '', 'id="q_6_1_0" onclick="exclude(this,\'q_6_2\')" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>無｜<?php echo tep_draw_radio_field('q_6_1', '1', $oq['q_6_1'] === '1', '', 'id="q_6_1_1"');?>有 → <?php echo tep_draw_checkbox_field('q_6_2', '1', $oq['q_6_2'] === '1', '', 'id="q_6_2" onclick="auto_radio(this,\'q_6_1_1\')" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>報告
     </td>
 <?php if (!$oq['q_8_1']) { ?>
-    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_6_1_0').attr('checked','');$('#q_6_1_1').attr('checked','');$('#q_6_2').attr('checked','');clean_option(6,'<?php echo $order->info['orders_id'];?>')"></td>
+    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_6_1_0').attr('checked',false);$('#q_6_1_1').attr('checked',false);$('#q_6_2').attr('checked',false);clean_option(6,'<?php echo $order->info['orders_id'];?>')"></td>
 <?php } ?>
   </tr>
 <?php
@@ -1508,7 +1508,7 @@ echo TEXT_BUY_BANK;
       <?php echo tep_draw_radio_field('q_2_1', '1', $oq['q_2_1'] === '1', '', 'id="q_2_1_1" onclick="exclude(this,\'q_2_2\')" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>有｜<?php echo tep_draw_radio_field('q_2_1', '0', $oq['q_2_1'] === '0', '', 'id="q_2_1_0" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>無 → <?php echo tep_draw_checkbox_field('q_2_2', '1', $oq['q_2_2'] === '1', '', 'id="q_2_2" onclick="auto_radio(this,\'q_2_1_0\')" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>入金確認後仕入
     </td>
 <?php if (!$oq['q_8_1']) { ?>
-    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_2_1_0').attr('checked','');$('#q_2_1_1').attr('checked','');$('#q_2_2').attr('checked','');clean_option(2,'<?php echo $order->info['orders_id'];?>')"></td>
+    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_2_1_0').attr('checked',false);$('#q_2_1_1').attr('checked',false);$('#q_2_2').attr('checked',false);clean_option(2,'<?php echo $order->info['orders_id'];?>')"></td>
 <?php } ?>
   </tr>
   <tr>
@@ -1521,28 +1521,28 @@ echo TEXT_BUY_BANK;
 ?>
   </b>円ですか？→<?php echo tep_draw_checkbox_field('q_3_4', '1', $oq['q_3_4'], '','id="q_3_4" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>はい</td>
 <?php if (!$oq['q_8_1']) { ?>
-    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_3_1').attr('checked','');$('#q_3_2_m').val('');$('#q_3_2_d').val('');$('#q_3_4').attr('checked','');clean_option(3,'<?php echo $order->info['orders_id'];?>')"></td>
+    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_3_1').attr('checked',false);$('#q_3_2_m').val('');$('#q_3_2_d').val('');$('#q_3_4').attr('checked',false);clean_option(3,'<?php echo $order->info['orders_id'];?>')"></td>
 <?php } ?>
   </tr>
   <tr>
     <td class="main">入金確認メール送信：</td>
     <td class="main"><?php echo tep_draw_hidden_field('q_4_1', $oq['q_4_1'] ? $oq['q_4_1'] : $order->customer['email_address'], 'size="20" class="questions_date" readonly');?><?php echo tep_draw_checkbox_field('q_4_2', '1', isset($oq['q_4_2'])?$oq['q_4_2'] === '1':$pay_email, '', 'id="q_4_2" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>済</td>
 <?php if (!$oq['q_8_1']) { ?>
-    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_4_2').attr('checked','');clean_option(4,'<?php echo $order->info['orders_id'];?>')"></td>
+    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_4_2').attr('checked',false);clean_option(4,'<?php echo $order->info['orders_id'];?>')"></td>
 <?php } ?>
   </tr>
   <tr>
     <td class="main">発送：</td>
     <td class="main"><?php echo tep_draw_checkbox_field('q_5_1', '1', isset($oq['q_5_1']) ? $oq['q_5_1'] === '1' : $end_time, '', 'id="q_5_1" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?><?php echo tep_draw_input_field('q_5_2_m', $oq['q_5_2'] && $oq['q_5_2'] != '0000-00-00' ? date('m', strtotime($oq['q_5_2'])) : ($end_time?date('m', strtotime($end_time)):''), 'size="2" class="questions_date" readonly');?>月<?php echo tep_draw_input_field('q_5_2_d', $oq['q_5_2'] && $oq['q_5_2'] != '0000-00-00' ? date('d', strtotime($oq['q_5_2'])) : ($end_time?date('d', strtotime($end_time)):''), 'size="2" class="questions_date" readonly');?>日</td>
 <?php if (!$oq['q_8_1']) { ?>
-    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_5_1').attr('checked','');clean_option(5,'<?php echo $order->info['orders_id'];?>')"></td>
+    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_5_1').attr('checked',false);clean_option(5,'<?php echo $order->info['orders_id'];?>')"></td>
 <?php } ?>
   </tr>
   <tr>
     <td class="main">発送完了メール送信：</td>
     <td class="main"><?php echo tep_draw_hidden_field('q_7_1', $oq['q_7_1'] ? $oq['q_7_1'] : $order->customer['email_address'], 'size="20" class="questions_date" readonly');?><?php echo tep_draw_checkbox_field('q_7_2', '1', isset($oq['q_7_2']) ? $oq['q_7_2'] === '1' : $end_email, '', 'id="q_7_2" onchange="change_option(this)" onpropertychange="propertychange_option(this)"');?>済</td>
 <?php if (!$oq['q_8_1']) { ?>
-    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_7_2').attr('checked','');clean_option(7,'<?php echo $order->info['orders_id'];?>')"></td>
+    <td class="main" align="right"><img src="images/icons/icon_cancel.gif" onclick="$('#q_7_2').attr('checked',false);clean_option(7,'<?php echo $order->info['orders_id'];?>')"></td>
 <?php } ?>
   </tr>
   <tr>
@@ -1552,8 +1552,8 @@ echo TEXT_BUY_BANK;
     </td>
 <?php if (!$oq['q_8_1']) { ?>
     <td class="main" align="right">
-    <!--<button type="button" onclick="$('#q_6_1_0').attr('checked','');$('#q_6_1_1').attr('checked','');$('#q_6_2').attr('checked','');">X</button>-->
-    <img onclick="$('#q_6_1_0').attr('checked','');$('#q_6_1_1').attr('checked','');$('#q_6_2').attr('checked','');clean_option(6,'<?php echo $order->info['orders_id'];?>')" src="images/icons/icon_cancel.gif"> 
+    <!--<button type="button" onclick="$('#q_6_1_0').attr('checked',false);$('#q_6_1_1').attr('checked',false);$('#q_6_2').attr('checked',false);">X</button>-->
+    <img onclick="$('#q_6_1_0').attr('checked',false);$('#q_6_1_1').attr('checked',false);$('#q_6_2').attr('checked',false);clean_option(6,'<?php echo $order->info['orders_id'];?>')" src="images/icons/icon_cancel.gif"> 
     </td>
 <?php } ?>
   </tr>
