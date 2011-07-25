@@ -20,7 +20,8 @@ if($_SESSION['user_permission'] == 15 ){
   <input type='checkbox' name='pwd_check' value='admin' checked="checked">Admin&nbsp;
   <input type='checkbox' name='pwd_check' value='onetime'><?php echo 
     TEXT_FOOTER_ONE_TIME;?>&nbsp;
-  <input type='button' onclick="save_once_pwd_checkbox()" value="SAVE">
+  <input type='button' onclick="save_once_pwd_checkbox()" value="<?php echo
+    TEXT_FOOTER_CHECK_SAVE;?>">
   <?php }else{ 
     if(in_array('staff',$arr_check)){
       echo "<input type='checkbox' name='pwd_check' value='staff'
