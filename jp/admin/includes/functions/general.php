@@ -3343,9 +3343,7 @@ function tep_get_orders_products_string($orders) {
   if ($orders['payment_method'] != '銀行振込(買い取り)') {
     //$str .= '<tr><td class="main"><b>入金日：</b></td><td class="main" style="color:red;"><b>'.($pay_time?date('m月d日',strtotime($pay_time)):'入金まだ').'</b></td></tr>';
     if ($orders['confirm_payment_time'] != '0000-00-00 00:00:00') {
-      $time_arr = explode(' ', $orders['confirm_payment_time']);  
-      $date_arr = explode('-', $time_arr[0]);
-      $time_str = $date_arr[1].'月'.$date_arr[2].'日';
+      $time_str = date('n月j日', strtotime($orders['confirm_payment_time'])); 
     } else {
       $time_str = '入金まだ'; 
     }
