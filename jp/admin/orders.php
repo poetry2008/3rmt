@@ -1905,7 +1905,7 @@ echo TEXT_BUY_BANK;
               <select name="search_type" onChange='search_type_changed(this)'>
                 <option value="none"><?php echo TEXT_ORDER_FIND_SELECT;?></option>
                 <option value="customers_name"><?php echo TEXT_ORDER_FIND_NAME;?></option>
-                <option value="email"><?php echo TEXT_ORDER_FIND_MAIL_ADD;?>メールアドレス</option>
+                <option value="email"><?php echo TEXT_ORDER_FIND_MAIL_ADD;?></option>
                 <option value="products_name"><?php echo
                 TEXT_ORDER_FIND_PRODUCT_NAME ;?></option>
               </select>
