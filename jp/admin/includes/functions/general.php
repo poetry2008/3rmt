@@ -3343,7 +3343,7 @@ function tep_get_orders_products_string($orders) {
   if ($orders['payment_method'] != '銀行振込(買い取り)') {
     //$str .= '<tr><td class="main"><b>入金日：</b></td><td class="main" style="color:red;"><b>'.($pay_time?date('m月d日',strtotime($pay_time)):'入金まだ').'</b></td></tr>';
     if ($orders['confirm_payment_time'] != '0000-00-00 00:00:00') {
-      $time_str = date('n月j日', strtotime($orders['confirm_payment_time'])); 
+      $time_str = date('Y年n月j日', strtotime($orders['confirm_payment_time'])); 
     } else {
       $time_str = '入金まだ'; 
     }
@@ -5464,9 +5464,7 @@ function   tep_order_status_change($oID,$status){
   $payment_romaji = tep_get_payment_code_by_order_id($order_id); 
   $oa_form_sql = "select * from ".TABLE_OA_FORM." where formtype = '".$formtype."' and payment_romaji = '".$payment_romaji."'";
   
-  $o_status_query = tep_db_query("select * from ".TABLE_ORDERS_STATUS." where orders_status_id = '".$status."'");
-  $o_status_res = tep_db_fetch_array($o_status_query); 
-  if ($o_status_res['orders_status_name'] == '支払確認') {
+  if ($status == '9') {
     tep_db_query("update `".TABLE_ORDERS."` set `confirm_payment_time` = '".date('Y-m-d H:i:s', time())."' where `orders_id` = '".$oID."'");
   }
   
