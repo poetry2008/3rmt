@@ -21,7 +21,7 @@ success: function(_data) {
 });
 }else{
 alert("パスワードが違います");
-location.reload(true);
+location=location;
 //跳转错误页
 }
 }
