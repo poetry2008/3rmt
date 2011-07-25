@@ -197,10 +197,8 @@ VALUES (NULL,'".$oid."',".$form_id.",".$item_id.",".$group_id.",'".$value."')");
 }
 function method_0($order,$form_id,$group_id,$item_id){
   //  echo 'q_3_2  date  入金確認:       ';
-  $o_status_query = tep_db_query("select * from orders_status where orders_status_name = '支払確認'");
-  $o_status_res = tep_db_fetch_array($o_status_query); 
   
-  $order_status_query = tep_db_query("select * from orders_status_history where orders_id = '".$order['orders_id']."' and orders_status_id = '".$o_status_res['orders_status_id']."' order by date_added desc limit 1"); 
+  $order_status_query = tep_db_query("select * from orders_status_history where orders_id = '".$order['orders_id']."' and orders_status_id = '9' order by date_added desc limit 1"); 
   $order_status_res =  tep_db_fetch_array($order_status_query);
   if ($order_status_res) {
     $value = date('Y-m-d h:i', strtotime($order_status_res['date_added']));   
@@ -227,7 +225,13 @@ function method_2($order,$form_id,$group_id,$item_id){
 }
 //q_15_2 checkbox 支払：
 function method_3($order,$form_id,$group_id,$item_id){
-  $value = oa_date($order['q_15_2']);
+  $order_status_query = tep_db_query("select * from orders_status_history where orders_id = '".$order['orders_id']."' and orders_status_id = '9' order by date_added desc limit 1"); 
+  $order_status_res =  tep_db_fetch_array($order_status_query);
+  if ($order_status_res) {
+    $value = date('Y-m-d h:i', strtotime($order_status_res['date_added']));   
+  } else {
+    $value = oa_date($order['q_15_2']);
+  } 
   oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
 }
 ////q_16_2 checkbox 支払完了メール送信：  
@@ -237,7 +241,13 @@ function method_4($order,$form_id,$group_id,$item_id){
 }
 //q_5_2  date 発送  
 function method_5($order,$form_id,$group_id,$item_id){
-  $value = oa_date($order['q_5_2']);
+  $order_status_query = tep_db_query("select * from orders_status_history where orders_id = '".$order['orders_id']."' and orders_status_id = '9' order by date_added desc limit 1"); 
+  $order_status_res =  tep_db_fetch_array($order_status_query);
+  if ($order_status_res) {
+    $value = date('Y-m-d h:i', strtotime($order_status_res['date_added']));   
+  } else {
+    $value = oa_date($order['q_5_2']);
+  } 
   oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
 }
 //q_7_2  checkbox 発送完了メール送信      如果是 1 则_0 如果是null 或 0 不删 空值  
@@ -259,10 +269,8 @@ function method_8($order,$form_id,$group_id,$item_id){
   }
     
   if ($order['payment_method'] != '銀行振込(買い取り)') {
-    $o_status_query = tep_db_query("select * from orders_status where orders_status_name = '支払確認'");
-    $o_status_res = tep_db_fetch_array($o_status_query); 
     
-    $order_status_query = tep_db_query("select * from orders_status_history where orders_id = '".$order['orders_id']."' and orders_status_id = '".(int)$o_status_res['orders_status_id']."' order by date_added desc limit 1"); 
+    $order_status_query = tep_db_query("select * from orders_status_history where orders_id = '".$order['orders_id']."' and orders_status_id = '9' order by date_added desc limit 1"); 
     $order_status_res =  tep_db_fetch_array($order_status_query);
     
     $whether_update_payment = false;
@@ -286,7 +294,13 @@ function method_8($order,$form_id,$group_id,$item_id){
 }
 //q_13_2 date 受领注意
 function method_9($order,$form_id,$group_id,$item_id){
-  $value = oa_date($order['q_13_2']);
+  $order_status_query = tep_db_query("select * from orders_status_history where orders_id = '".$order['orders_id']."' and orders_status_id = '9' order by date_added desc limit 1"); 
+  $order_status_res =  tep_db_fetch_array($order_status_query);
+  if ($order_status_res) {
+    $value = date('Y-m-d h:i', strtotime($order_status_res['date_added']));   
+  } else {
+    $value = oa_date($order['q_13_2']);
+  } 
   oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
 }
 //q_14_1 checkbox 受領メール送信
@@ -307,7 +321,13 @@ function method_12($order,$form_id,$group_id,$item_id){
 }
 //q_9_2  date 決算確認：
 function method_13($order,$form_id,$group_id,$item_id){
-  $value = oa_date($order['q_9_2']);
+  $order_status_query = tep_db_query("select * from orders_status_history where orders_id = '".$order['orders_id']."' and orders_status_id = '9' order by date_added desc limit 1"); 
+  $order_status_res =  tep_db_fetch_array($order_status_query);
+  if ($order_status_res) {
+    $value = date('Y-m-d h:i', strtotime($order_status_res['date_added']));   
+  } else {
+    $value = oa_date($order['q_9_2']);
+  } 
   oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
 }
 //q_17_1 myname  信用判定：
