@@ -336,8 +336,10 @@ function method_11($order,$form_id,$group_id,$item_id){
 }
 //q_12_1 キャラクターの有無 checkbox
 function method_12($order,$form_id,$group_id,$item_id){
-  $value = oa_checkbox($order['q_12_1']);
-
+  $value = $order['q_12_1'];
+  if($value !=NULL){
+    $value = '_0';
+      }
   oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
 }
 //q_9_2  date 決算確認：
