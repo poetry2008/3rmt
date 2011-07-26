@@ -175,7 +175,7 @@ while($orderq = tep_db_fetch_array($res)){
       //      echo 'method_'.$new_data[$item->title]['method'],'|||',$orderq['orders_id'],'|||',$form->id,'|||',$group->id,'|||',$item->id;
       //      echo $item->title;
       //      echo "\n";
-      if($orderq['value'] ==NULL or empty($orderq['vaule'])){
+      if($orderq['value'] == NULL ){
 	  continue;
 	}else {
 	  call_user_func('method_'.$new_data[$item->title]['method'],$orderq,$form->id,$group->id,$item->id);
