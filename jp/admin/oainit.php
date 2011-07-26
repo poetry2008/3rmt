@@ -174,9 +174,6 @@ while($orderq = tep_db_fetch_array($res)){
   $form = tep_db_fetch_object(tep_db_query($oa_form_sql), "HM_Form");
   foreach ($form->groups as $group){
     foreach ($group->items as $item){
-      //      echo 'method_'.$new_data[$item->title]['method'],'|||',$orderq['orders_id'],'|||',$form->id,'|||',$group->id,'|||',$item->id;
-      //      echo $item->title;
-      //      echo "\n";
       call_user_func('method_'.$new_data[$item->title]['method'],$orderq,$form->id,$group->id,$item->id);
       method_8($orderq,$form->id,$group->id,$item->id);//处理是否完成订单
     }
@@ -193,8 +190,6 @@ function oavalue($value,$form_id,$group_id,$item_id,$oid)
 {
   if($value == NULL)
     return 0;
-  //  echo $oid;
-  echo $value;
   return tep_db_query("
 INSERT INTO `oa_formvalue` 
 (`id`, `orders_id`, `form_id`, `item_id`, `group_id`, `value`) 
@@ -219,7 +214,7 @@ function method_0($order,$form_id,$group_id,$item_id){
 }
 //q_1_1  checkbox 備考の有無：     如果是 1 则_0 如果是null 或 0 不删 空值
 function method_1($order,$form_id,$group_id,$item_id){
-  $value = oa_checkbox($order['q_1_1'],'0','0');
+  $value =$order['q_1_1'];
   if($value!=NULL){
   $value = '_0';
   }
@@ -390,7 +385,8 @@ function method_15($order,$form_id,$group_id,$item_id){
 //q_6_1  checkbox 残量入力(买)：   根据买卖有不同  如果是买的话  
 
 function method_16($order,$form_id,$group_id,$item_id){
-  $value = oa_checkbox($order['q_6_1'],'0','0');
+  //  $value = oa_checkbox($order['q_6_1'],'0','0');
+  $value = $order['q_6_1'];
   if ($value != NULL){
     $value = '_0';
   }
@@ -398,7 +394,8 @@ function method_16($order,$form_id,$group_id,$item_id){
 }
 //q_6_1  checkbox 残量入力(买)：   根据买卖有不同  如果是买的话   如果是 1 则_0 如果是null 或 0 不删 空值
 function method_17($order,$form_id,$group_id,$item_id){
-  $value = oa_checkbox($order['q_6_1'],'0','0');
+  //  $value = oa_checkbox($order['q_6_1'],'0','0');
+  $value = $order['q_6_1'];
   if ($value != NULL){
     $value = '_0';
   }
@@ -444,7 +441,7 @@ function method_19($order,$form_id,$group_id,$item_id){
 //                   "在庫確認");//q_10_1 checkbox 在庫確認        如果是 1 则_0 如果是null 或 0 不删 空值
 function method_20($order,$form_id,$group_id,$item_id){
 
-      $value = oa_checkbox($order['q_2_1'],'0','0');
+  $value = $order['q_2_1'];
       if ($value != NULL){
         $value = '_0';
       }
