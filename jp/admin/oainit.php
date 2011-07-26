@@ -203,6 +203,10 @@ VALUES (NULL,'".$oid."',".$form_id.",".$item_id.",".$group_id.",'".$value."')");
 function method_0($order,$form_id,$group_id,$item_id){
   //  echo 'q_3_2  date  入金確認:       ';
   
+  if ($order['q_3_1'] != 1) {
+    return ''; 
+  }
+  
   $order_status_query = tep_db_query("select * from orders_status_history where orders_id = '".$order['orders_id']."' and orders_status_id = '9' order by date_added desc limit 1"); 
   $order_status_res =  tep_db_fetch_array($order_status_query);
   if ($order_status_res) {
@@ -232,6 +236,10 @@ function method_2($order,$form_id,$group_id,$item_id){
 }
 //q_15_2 checkbox 支払：
 function method_3($order,$form_id,$group_id,$item_id){
+  if ($order['q_15_1'] != 1) {
+    return ''; 
+  }
+  
   $order_status_query = tep_db_query("select * from orders_status_history where orders_id = '".$order['orders_id']."' and orders_status_id = '5' order by date_added desc limit 1"); 
   $order_status_res =  tep_db_fetch_array($order_status_query);
   if ($order_status_res) {
@@ -248,6 +256,9 @@ function method_4($order,$form_id,$group_id,$item_id){
 }
 //q_5_2  date 発送  
 function method_5($order,$form_id,$group_id,$item_id){
+  if ($order['q_5_1'] != 1) {
+    return ''; 
+  }
   $order_status_query = tep_db_query("select * from orders_status_history where orders_id = '".$order['orders_id']."' and orders_status_id = '2' order by date_added desc limit 1"); 
   $order_status_res =  tep_db_fetch_array($order_status_query);
   if ($order_status_res) {
@@ -302,6 +313,9 @@ function method_8($order,$form_id,$group_id,$item_id){
 }
 //q_13_2 date 受领注意
 function method_9($order,$form_id,$group_id,$item_id){
+  if ($order['q_13_1'] != 1) {
+    return ''; 
+  }
   $order_status_query = tep_db_query("select * from orders_status_history where orders_id = '".$order['orders_id']."' and orders_status_id = '13' order by date_added desc limit 1"); 
   $order_status_res =  tep_db_fetch_array($order_status_query);
   if ($order_status_res) {
@@ -342,6 +356,9 @@ function method_13($order,$form_id,$group_id,$item_id){
     $value = oa_date($order['q_9_2']);
   } 
   */ 
+  if ($order['q_9_1'] != 1) {
+    return ''; 
+  }
   $value = oa_date($order['q_9_2']);
   oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
 }
