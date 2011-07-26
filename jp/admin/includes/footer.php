@@ -6,7 +6,8 @@ if($_SESSION['user_permission'] == 15 ){
   ?>
   <div >
   <?php 
-    $sql_check = "select * from ".TABLE_PWD_CHECK." where page_name='".$page_name."'";
+    $sql_check = "select * from ".TABLE_PWD_CHECK." where
+    page_name='".$_SERVER['PHP_SELF']."'";
     $query_check = tep_db_query($sql_check);
     $arr_check = array();
     while($row_check = tep_db_fetch_array($query_check)){
@@ -19,7 +20,8 @@ if($_SESSION['user_permission'] == 15 ){
   <input type='checkbox' name='pwd_check' value='admin' checked="checked">Admin&nbsp;
   <input type='checkbox' name='pwd_check' value='onetime'><?php echo 
     TEXT_FOOTER_ONE_TIME;?>&nbsp;
-  <input type='button' onclick="save_once_pwd_checkbox()" value="SAVE">
+  <input type='button' onclick="save_once_pwd_checkbox()" value="<?php echo
+    TEXT_FOOTER_CHECK_SAVE;?>">
   <?php }else{ 
     if(in_array('staff',$arr_check)){
       echo "<input type='checkbox' name='pwd_check' value='staff'
@@ -54,10 +56,6 @@ if($_SESSION['user_permission'] == 15 ){
   ?>
   </div>
   <script language='javascript' >
-    //引用JQUERY 文件
-    if (typeof window.jQuery == "undefined") {
-    } else {
-    } 
     function save_once_pwd_checkbox(){
       var check_str = '';
       $("input|[name=pwd_check]").each(function(){
@@ -68,7 +66,7 @@ if($_SESSION['user_permission'] == 15 ){
       check_str = check_str.substring(0, check_str.lastIndexOf(','));
       $.ajax({
         url: 'ajax_orders.php?action=pwd_check_save',
-        data: 'check_str='+check_str+'&page_name=<?php echo $page_name;?>',
+        data: 'check_str='+check_str+'&page_name=<?php echo $_SERVER['PHP_SELF'];?>',
         type: 'POST',
         dataType: 'text',
         async : false,

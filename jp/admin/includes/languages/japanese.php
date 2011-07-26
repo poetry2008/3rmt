@@ -472,3 +472,7 @@ define('HEADER_TEXT_CREATE_ORDER','注文作成');
 define('HEADER_TEXT_ORDERMENU','注文書▼');
 define('HEADER_TEXT_INVENTORY','在庫水準');
 define('HEADER_TEXT_CATEGORIES_ADMIN','価格調整');
+//footer start 
+define('TEXT_FOOTER_ONE_TIME','但し、ワンタイムを使えば全員アクセスできる');
+define('TEXT_FOOTER_CHECK_SAVE','保存');
+//footer end

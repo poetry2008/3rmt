@@ -3343,9 +3343,7 @@ function tep_get_orders_products_string($orders) {
   if ($orders['payment_method'] != '銀行振込(買い取り)') {
     //$str .= '<tr><td class="main"><b>入金日：</b></td><td class="main" style="color:red;"><b>'.($pay_time?date('m月d日',strtotime($pay_time)):'入金まだ').'</b></td></tr>';
     if ($orders['confirm_payment_time'] != '0000-00-00 00:00:00') {
-      $time_arr = explode(' ', $orders['confirm_payment_time']);  
-      $date_arr = explode('-', $time_arr[0]);
-      $time_str = $date_arr[0].'年'.$date_arr[1].'月'.$date_arr[2].'日'.'&nbsp;'.$time_arr[1];
+      $time_str = date('Y年n月j日', strtotime($orders['confirm_payment_time'])); 
     } else {
       $time_str = '入金まだ'; 
     }
@@ -4962,7 +4960,10 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
 
 
 
-  function tep_insert_pwd_log($pwd,$userid){
+  function tep_insert_pwd_log($pwd,$userid,$save_session=false,$page_name=''){
+    if($save_session){
+      $_SESSION[$page_name] = $pwd;
+    }
     $user_info = tep_get_user_info($userid);
     $letter = substr($pwd,0,1);
     $sql_letter = "select * from ".TABLE_LETTERS." 
@@ -5462,8 +5463,8 @@ function   tep_order_status_change($oID,$status){
   $formtype = tep_check_order_type($order_id);
   $payment_romaji = tep_get_payment_code_by_order_id($order_id); 
   $oa_form_sql = "select * from ".TABLE_OA_FORM." where formtype = '".$formtype."' and payment_romaji = '".$payment_romaji."'";
- 
-  if ($status == 9) {
+  
+  if ($status == '9') {
     tep_db_query("update `".TABLE_ORDERS."` set `confirm_payment_time` = '".date('Y-m-d H:i:s', time())."' where `orders_id` = '".$oID."'");
   }
   
