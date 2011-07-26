@@ -7,7 +7,8 @@
 
   require_once('oa/HM_Form.php'); 
   require_once('oa/HM_Group.php'); 
-  
+//error_reporting(E_ALL);
+//ini_set('display_errors','On')  ;
   require(DIR_WS_FUNCTIONS . 'visites.php');
 
   require(DIR_WS_CLASSES . 'currencies.php');
@@ -36,30 +37,6 @@
       $messageStack->add_session(WARNING_ORDER_NOT_UPDATED, 'warning');
       tep_redirect(tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('action'))));
     }
-
-      //批量问答
-      if(
-        ($_POST['q_15_3'] || $_POST['q_15_4'] || $_POST['q_15_5'])
-        && $_POST['q_15_7']
-        && $_POST['q_15_8']
-        && $_POST['q_8_1']
-        && $_POST['status'] == 5
-      ){
-        foreach($_POST['chk'] as $value) {
-          $oID = $value;
-          $arr = array(
-            'q_15_3' => $_POST['q_15_3'],
-            'q_15_4' => $_POST['q_15_4'],
-            'q_15_5' => $_POST['q_15_5'],
-            'q_15_7' => $_POST['q_15_7'],
-            'q_15_8' => $_POST['q_15_8'],
-            'q_8_1'  => $_POST['q_8_1']
-          );
-          tep_db_perform('orders_questions',$arr,'update',"orders_id='".$oID."'");
-          orders_updated($oID);
-          orders_wait_flag($oID);
-        }
-      }
       //tep_redirect(tep_href_link(FILENAME_ORDERS));
 
       foreach($_POST['chk'] as $value){
@@ -477,7 +454,7 @@
     }
     tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . $customer_notified . "', '')");
     // 同步问答
-    orders_status_updated_for_question($oID,tep_db_input($status),$_POST['notify_comments'] == 'on', $_POST['qu_type']);
+    //    orders_status_updated_for_question($oID,tep_db_input($status),$_POST['notify_comments'] == 'on', $_POST['qu_type']);
     $order_updated = true;
   }
 
@@ -1120,10 +1097,6 @@ function del_confirm_payment_time(oid, status_id)
               <div id="orders_answer">
 <?php
   // 取得问答的答案
-  $orders_questions_query = tep_db_query("select * from orders_questions where orders_id = '".$order->info['orders_id']."'");
-  
-  $oq = tep_db_fetch_array($orders_questions_query);
-
   $total_order_query = tep_db_query("select * from ".TABLE_ORDERS_TOTAL." where orders_id = '".$order->info['orders_id']."' and class = 'ot_total'"); 
   $total_order_res = tep_db_fetch_array($total_order_query); 
   $total_order_sum = 0; 
@@ -1132,56 +1105,8 @@ function del_confirm_payment_time(oid, status_id)
   }
   // 自动或者手动判断问答种类
   // 0=>贩卖, 1=>买取, 2=>信用卡, 3=>返点/来店 , 4=>不需要支付
-  if (isset($_GET['questions_type'])) {
-    $orders_questions_type = intval($_GET['questions_type']);
-  } else if ($oq['orders_questions_type']) {
-    $orders_questions_type = $oq['orders_questions_type'];
-  } else {
-    $has_oquestion_raw = tep_db_query("select * from orders_questions where orders_id = '".$order->info['orders_id']."'"); 
-    if (tep_db_num_rows($has_oquestion_raw)) { 
-      $has_oquestion_res = tep_db_fetch_array($has_oquestion_raw);
-      $orders_questions_type = $has_oquestion_res['orders_questions_type']; 
-    } else { 
-      $o_orders_query = tep_db_query("select * from ".TABLE_ORDERS." where orders_id = '".$order->info['orders_id']."'"); 
-      $o_orders_res = tep_db_fetch_array($o_orders_query);
-      $o_cus_query = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = '".$o_orders_res['customers_id']."' and site_id = '".$o_orders_res['site_id']."'"); 
-      $o_cus_res = tep_db_fetch_array($o_cus_query);
-      $guch_num = 0; 
-      if ($o_cus_res) {
-        $guch_num = $o_cus_res['customers_guest_chk']; 
-      }
-      if ($guch_num == 9) {
-        $orders_questions_type = 1;
-      } else {
-      if ($total_order_sum < 0) {
-      if ($order->info['payment_method'] == '銀行振込(買い取り)' || $order->info['payment_method'] == '支払いなし' || $order->info['payment_method'] == '来店支払い' || $order->info['payment_method'] == 'ポイント(買い取り)') {
-        $orders_questions_type = 1;
-      } else {
-        if ($order->info['payment_method'] === 'クレジットカード決済') {
-          $orders_questions_type = 1;
-        } else if ($order->info['payment_method'] === 'クレジットカード決済' || $order->info['payment_method'] === 'ペイパル決済') {
-          $orders_questions_type = 2;
-        } else if ($order->info['payment_method'] === '来店支払い' || $order->info['payment_method'] === 'ポイント(買い取り)') {
-          $orders_questions_type = 3;
-        } else if ($order->info['payment_method'] === '支払いなし') {
-          $orders_questions_type = 4;
-        } else {
-          $orders_questions_type = 0;
-        }
-      }
-    } else {
-      if ($order->info['payment_method'] == 'ペイパル決済' || $order->info['payment_method'] == 'クレジットカード決済') {
-        $orders_questions_type = 2;
-      } else {
-        $orders_questions_type = 0;
-      }
-    }
-      }
-    }
-  }
 ?>
                 <h3><?php echo TEXT_ORDER_ANSWER;?></h3>
-
  <!--new order answer{{-->
                           <?php
   $order_id = $order->info['orders_id'];
@@ -2173,15 +2098,12 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
   window.orderSite = new Array();
   // 0 空 1 卖 2 买 3 混
   var orderType = new Array();
-  
   var questionShow = new Array();
 <?php foreach($allorders as $key=>$orders){?>
   window.orderStr['<?php echo $orders['orders_id'];?>']  = "<?php echo str_replace(array("\r\n","\r","\n"), array('\n', '\n', '\n'), orders_a($orders['orders_id'], $allorders));?>";
   window.orderSite['<?php echo $orders['orders_id'];?>'] = "<?php echo $orders['site_id'];?>";
-  orderType['<?php echo $orders['orders_id'];?>']        = "<?php echo tep_get_order_type($orders['orders_id']);?>";
-  questionShow['<?php echo $orders['orders_id'];?>']     = "<?php echo (tep_questions_can_show($orders['orders_id'])?'1':'0');?>";
+  orderType['<?php echo $orders['orders_id'];?>']        = "<?php echo tep_check_order_type($orders['orders_id']);?>";
 <?php }?>
-  
 function submit_confirm()
 {
   var idx = document.sele_act.elements['status'].selectedIndex;

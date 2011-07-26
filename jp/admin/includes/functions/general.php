@@ -1292,8 +1292,6 @@ function tep_remove_order($order_id, $restock = false) {
   tep_db_query("delete from " . TABLE_ORDERS_STATUS_HISTORY . " where orders_id = '" . tep_db_input($order_id) . "'");
   tep_db_query("delete from " . TABLE_ORDERS_TOTAL . " where orders_id = '" . tep_db_input($order_id) . "'");
   tep_db_query("delete from " . TABLE_ORDERS_TO_COMPUTERS . " where orders_id = '" . tep_db_input($order_id) . "'");
-  tep_db_query("delete from orders_questions where orders_id = '" . tep_db_input($order_id) . "'");
-  tep_db_query("delete from orders_questions_products where orders_id = '" . tep_db_input($order_id) . "'");
   tep_db_query("delete from orders_products_download where orders_id = '" . tep_db_input($order_id) . "'");
 }
 
@@ -2934,64 +2932,9 @@ function orders_updated($orders_id) {
   tep_db_query("update ".TABLE_ORDERS." set finished = ( select finished from ".TABLE_ORDERS_STATUS." where orders_status.orders_status_id=orders.orders_status ) where orders_id='".$orders_id."'");
   tep_db_query("update ".TABLE_ORDERS." set orders_status_name = ( select orders_status_name from ".TABLE_ORDERS_STATUS." where orders_status.orders_status_id=orders.orders_status ) where orders_id='".$orders_id."'");
   tep_db_query("update ".TABLE_ORDERS." set orders_status_image = ( select orders_status_image from ".TABLE_ORDERS_STATUS." where orders_status.orders_status_id=orders.orders_status ) where orders_id='".$orders_id."'");
-  tep_db_query("update ".TABLE_ORDERS." o set q_8_1 = ( select q_8_1 from orders_questions oq where oq.orders_id=o.orders_id ) where orders_id='".$orders_id."'");
   tep_db_query("update ".TABLE_ORDERS_PRODUCTS." set torihiki_date = ( select torihiki_date from ".TABLE_ORDERS." where orders.orders_id=orders_products.orders_id ) where orders_id='".$orders_id."'");
 }
 
-// 如果订单的状态发生改动则同步问答
-function orders_status_updated_for_question($orders_id, $orders_status_id, $notify = true, $qu_type = null) {
-  switch($orders_status_id){
-    case 13:
-      // 14_1 13_1 13_2(y-m-d)
-      $arr = array(
-          'q_13_1' => '1',
-          'q_13_2' => date('Y-m-d')
-          );
-      if ($notify) {
-        $arr['q_14_1'] = '1';
-      }
-      break;
-    case 5:
-      // 15_1 15_2(y-m-d) 16_1
-      $arr = array(
-          'q_15_1' => '1',
-          'q_15_2' => date('Y-m-d')
-          );
-      if ($notify) {
-        $arr['q_16_1'] = '1';
-      }
-      break;
-    case 9:
-      // 4_1  
-      $arr = array(
-          'q_4_1' => '1',
-          'q_4_2' => '1',
-          'q_4_3' => date('Y-m-d')
-          );
-      break;
-    case 2:
-      // 5_1 5_2(y-m-d) 7_1
-      $arr = array(
-          'q_5_1' => '1',
-          'q_5_2' => date('Y-m-d')
-          );
-      if ($notify) {
-        $arr['q_7_1'] = '1';
-      }
-      break;
-  }
-  if ($arr ) {
-    if (tep_db_num_rows(tep_db_query("select * from orders_questions where orders_id='".$orders_id."'"))) {
-      tep_db_perform('orders_questions',$arr,'update',"orders_id='".$orders_id."'");
-    } else {
-      $arr['orders_id'] = $orders_id;
-      if (!is_null($qu_type)) {
-        $arr['orders_questions_type'] = $qu_type; 
-      }
-      tep_db_perform('orders_questions',$arr);
-    }
-  }
-}
 
 
 // 如果订单finished则取消orders_wait_flag
@@ -3327,16 +3270,7 @@ function tep_get_orders_products_string($orders) {
 
 
 
-  //$pay_time = tep_get_orders_status_history_time($orders['orders_id'], 9);
-  /*
-  $oq = tep_db_fetch_array(tep_db_query("select * from orders_questions where orders_id = '".$orders['orders_id']."'"));
-  if ($oq['orders_questions_type'] == '2') {
-    //$pay_time = tep_get_orders_status_history_time($orders['orders_id'], 9);
-    $pay_time = $oq['q_4_3'] && $oq['q_4_3'] != '0000-00-00' && $oq['q_4_2'] ? $oq['q_4_3'] : false;
-  } else {
-    $pay_time = $oq['q_3_2'] && $oq['q_3_1'] && $oq['q_3_4'] ? $oq['q_3_2'] : false;
-  }
-  */ 
+
   $str .= '</td></tr>';
   $str .= '<tr><td colspan="2">&nbsp;</td></tr>';
   $str .= '<tr><td class="main" width="60"><b>支払方法：</b></td><td class="main" style="color:darkred;"><b>'.$orders['payment_method'].'</b></td></tr>';
@@ -3615,16 +3549,7 @@ function tep_get_pay_day($time = null){
   }
   //echo $c['cl_value'];
 }
-// orders.php
-// 0 卖 2 信用卡 1 买 
-function tep_get_order_type($orders_id){
-  $oq = tep_db_fetch_array(tep_db_query("select * from orders_questions where orders_id='".$orders_id."'"));
-  if ($oq['orders_questions_type']) {
-    return $oq['orders_questions_type'];
-  } else {
-    return 0;
-  }
-}
+
 
 /*
    function tep_get_order_type($orders_id){
@@ -3649,63 +3574,6 @@ function tep_get_order_type($orders_id){
    }
  */
 
-function tep_questions_can_show($orders_id){
-  /*
-     ($('#q_1_1_0').attr('checked') || $('#q_1_1_1').attr('checked')) 
-     && ($('#q_12_1_0').attr('checked') || $('#q_12_1_1').attr('checked'))
-     && $('#q_13_1').attr('checked')
-     && ($('#q_6_1_0').attr('checked') || $('#q_6_1_1').attr('checked'))
-     && $('#q_14_1').attr('checked')
-  //&& $('#q_15_1').attr('checked')
-  && $('#q_16_2').attr('checked')
-   */
-  // 15: 3,4,5,7,8
-  // 有过受领通知（13）状态的
-  $oq = tep_db_fetch_array(tep_db_query("select * from orders_questions where orders_id = '".$orders_id."'"));
-  if (
-      $oq 
-      && strlen($oq['q_1_1'] !== 0)
-      && strlen($oq['q_12_1'] !== 0)
-      && $oq['q_13_1'] 
-      && strlen($oq['q_6_1'] !== 0)
-      && $oq['q_14_1'] 
-
-      && !$oq['q_15_1'] 
-      && !$oq['q_16_2'] 
-      && !$oq['q_15_3']
-      && !$oq['q_15_4']
-      && !$oq['q_15_5']
-      && !$oq['q_15_7']
-      && !$oq['q_15_8']
-     ) {
-    //return true;
-
-    if (tep_db_num_rows(tep_db_query("select * from ".TABLE_ORDERS_STATUS_HISTORY." where orders_status_id='13' and orders_id='".$orders_id."'"))) {
-      return true;
-    } else {
-      return false;
-    }
-  } else {
-    /*
-       print_r($oq);
-       var_dump(strlen($oq['q_1_1'] !== 0));
-       var_dump(strlen($oq['q_12_1'] !== 0));
-       var_dump( $oq['q_13_1']);
-       var_dump(strlen($oq['q_6_1'] !== 0));
-       var_dump($oq['q_14_1'] );
-       var_dump(!$oq['q_15_1'] );
-       var_dump(!$oq['q_16_2']);
-       var_dump(!$oq['q_15_3']);
-       var_dump(!$oq['q_15_4']);
-       var_dump(!$oq['q_15_5']);
-       var_dump(!$oq['q_15_7']);
-       var_dump(!$oq['q_15_8']);
-     */
-
-    return false;
-  }
-
-}
 
 function tep_display_google_results($from_url=''){
   // 谷歌关键字结果显示停止条件

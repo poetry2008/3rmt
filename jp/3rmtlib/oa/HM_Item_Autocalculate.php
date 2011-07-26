@@ -60,11 +60,6 @@ class HM_Item_Autocalculate extends HM_Item_Basic
        // $i++;
         continue;
       }
-      $oqp = tep_db_fetch_array(tep_db_query("select * from 
-            orders_questions_products where 
-            orders_id='".$this->order_id."' and 
-            products_id='".$op['products_id']."'"));
-
       //checkbox 和 input 值 使用|分隔
 
       $checkbox_arr = $loadArray[$i];
