@@ -157,11 +157,13 @@ echo "</br>";
 
 //选择所有现有数据 从 orders_questions 表时 一条一条循环
 $sql  = 'select oq.* ,o.* from orders_questions oq ,orders o  where o.orders_id = oq.orders_id ';
-//$sql.=' and o.orders_id = "20100527-03282788"';
+//$sql.=' and o.orders_id = "20110726-08162806"';
+
 
 $res =tep_db_query($sql);
 $i = 0;
-while($orderq = mysql_fetch_array($res)){
+while($orderq = tep_db_fetch_array($res)){
+//while($orderq = mysql_fetch_array($res)){
 
   $i++;
   //取得当前订单的类型
@@ -172,9 +174,6 @@ while($orderq = mysql_fetch_array($res)){
   $form = tep_db_fetch_object(tep_db_query($oa_form_sql), "HM_Form");
   foreach ($form->groups as $group){
     foreach ($group->items as $item){
-      //      echo 'method_'.$new_data[$item->title]['method'],'|||',$orderq['orders_id'],'|||',$form->id,'|||',$group->id,'|||',$item->id;
-      //      echo $item->title;
-      //      echo "\n";
       call_user_func('method_'.$new_data[$item->title]['method'],$orderq,$form->id,$group->id,$item->id);
       method_8($orderq,$form->id,$group->id,$item->id);//处理是否完成订单
     }
@@ -189,7 +188,8 @@ echo "</br>";
 echo "問題完了(".$i.")</br>";
 function oavalue($value,$form_id,$group_id,$item_id,$oid)
 {
-  //  echo $oid;
+  if($value == NULL)
+    return 0;
   return tep_db_query("
 INSERT INTO `oa_formvalue` 
 (`id`, `orders_id`, `form_id`, `item_id`, `group_id`, `value`) 
@@ -197,6 +197,10 @@ VALUES (NULL,'".$oid."',".$form_id.",".$item_id.",".$group_id.",'".$value."')");
 }
 function method_0($order,$form_id,$group_id,$item_id){
   //  echo 'q_3_2  date  入金確認:       ';
+  
+  if ($order['q_3_1'] != 1) {
+    return ''; 
+  }
   
   $order_status_query = tep_db_query("select * from orders_status_history where orders_id = '".$order['orders_id']."' and orders_status_id = '9' order by date_added desc limit 1"); 
   $order_status_res =  tep_db_fetch_array($order_status_query);
@@ -210,8 +214,10 @@ function method_0($order,$form_id,$group_id,$item_id){
 }
 //q_1_1  checkbox 備考の有無：     如果是 1 则_0 如果是null 或 0 不删 空值
 function method_1($order,$form_id,$group_id,$item_id){
-  //  $value = oa_checkbox($order['q_1_1'],'0','0');
+  $value =$order['q_1_1'];
+  if($value!=NULL){
   $value = '_0';
+  }
   oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
 }
 //q_15_3 q_15_4 q_15_5                    "振込先選択",
@@ -225,7 +231,11 @@ function method_2($order,$form_id,$group_id,$item_id){
 }
 //q_15_2 checkbox 支払：
 function method_3($order,$form_id,$group_id,$item_id){
-  $order_status_query = tep_db_query("select * from orders_status_history where orders_id = '".$order['orders_id']."' and orders_status_id = '9' order by date_added desc limit 1"); 
+  if ($order['q_15_1'] != 1) {
+    return ''; 
+  }
+  
+  $order_status_query = tep_db_query("select * from orders_status_history where orders_id = '".$order['orders_id']."' and orders_status_id = '5' order by date_added desc limit 1"); 
   $order_status_res =  tep_db_fetch_array($order_status_query);
   if ($order_status_res) {
     $value = date('Y-m-d h:i', strtotime($order_status_res['date_added']));   
@@ -241,7 +251,10 @@ function method_4($order,$form_id,$group_id,$item_id){
 }
 //q_5_2  date 発送  
 function method_5($order,$form_id,$group_id,$item_id){
-  $order_status_query = tep_db_query("select * from orders_status_history where orders_id = '".$order['orders_id']."' and orders_status_id = '9' order by date_added desc limit 1"); 
+  if ($order['q_5_1'] != 1) {
+    return ''; 
+  }
+  $order_status_query = tep_db_query("select * from orders_status_history where orders_id = '".$order['orders_id']."' and orders_status_id = '2' order by date_added desc limit 1"); 
   $order_status_res =  tep_db_fetch_array($order_status_query);
   if ($order_status_res) {
     $value = date('Y-m-d h:i', strtotime($order_status_res['date_added']));   
@@ -257,6 +270,7 @@ function method_6($order,$form_id,$group_id,$item_id){
 }
 //q_4_2  checkbox 入金確認メール送信:        如果是 1 则_0 如果是null 或 0 不删 空值  
 function method_7($order,$form_id,$group_id,$item_id){
+
   $value = oa_checkbox($order['q_4_2']);
   oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
 
@@ -294,7 +308,10 @@ function method_8($order,$form_id,$group_id,$item_id){
 }
 //q_13_2 date 受领注意
 function method_9($order,$form_id,$group_id,$item_id){
-  $order_status_query = tep_db_query("select * from orders_status_history where orders_id = '".$order['orders_id']."' and orders_status_id = '9' order by date_added desc limit 1"); 
+  if ($order['q_13_1'] != 1) {
+    return ''; 
+  }
+  $order_status_query = tep_db_query("select * from orders_status_history where orders_id = '".$order['orders_id']."' and orders_status_id = '13' order by date_added desc limit 1"); 
   $order_status_res =  tep_db_fetch_array($order_status_query);
   if ($order_status_res) {
     $value = date('Y-m-d h:i', strtotime($order_status_res['date_added']));   
@@ -306,6 +323,10 @@ function method_9($order,$form_id,$group_id,$item_id){
 //q_14_1 checkbox 受領メール送信
 function method_10($order,$form_id,$group_id,$item_id){
   $value = oa_checkbox($order['q_14_1']);
+  if ($value != NULL){
+    $value = '_0';
+  }
+
   oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
 }
 //q_15_7 text 支払: 受付番号
@@ -315,12 +336,15 @@ function method_11($order,$form_id,$group_id,$item_id){
 }
 //q_12_1 キャラクターの有無 checkbox
 function method_12($order,$form_id,$group_id,$item_id){
-  $value = oa_checkbox($order['q_12_1']);
-  $value = '_0';
+  $value = $order['q_12_1'];
+  if($value !=NULL){
+    $value = '_0';
+      }
   oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
 }
 //q_9_2  date 決算確認：
 function method_13($order,$form_id,$group_id,$item_id){
+  /* 
   $order_status_query = tep_db_query("select * from orders_status_history where orders_id = '".$order['orders_id']."' and orders_status_id = '9' order by date_added desc limit 1"); 
   $order_status_res =  tep_db_fetch_array($order_status_query);
   if ($order_status_res) {
@@ -328,6 +352,11 @@ function method_13($order,$form_id,$group_id,$item_id){
   } else {
     $value = oa_date($order['q_9_2']);
   } 
+  */ 
+  if ($order['q_9_1'] != 1) {
+    return ''; 
+  }
+  $value = oa_date($order['q_9_2']);
   oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
 }
 //q_17_1 myname  信用判定：
@@ -358,14 +387,20 @@ function method_15($order,$form_id,$group_id,$item_id){
 //q_6_1  checkbox 残量入力(买)：   根据买卖有不同  如果是买的话  
 
 function method_16($order,$form_id,$group_id,$item_id){
-  $value = oa_checkbox($order['q_6_1'],'0','0');
-  $value = '_0';
+  //  $value = oa_checkbox($order['q_6_1'],'0','0');
+  $value = $order['q_6_1'];
+  if ($value != NULL){
+    $value = '_0';
+  }
   oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
 }
 //q_6_1  checkbox 残量入力(买)：   根据买卖有不同  如果是买的话   如果是 1 则_0 如果是null 或 0 不删 空值
 function method_17($order,$form_id,$group_id,$item_id){
-  $value = oa_checkbox($order['q_6_1'],'0','0');
-  $value = '_0';
+  //  $value = oa_checkbox($order['q_6_1'],'0','0');
+  $value = $order['q_6_1'];
+  if ($value != NULL){
+    $value = '_0';
+  }
   oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
 }
 
@@ -408,8 +443,10 @@ function method_19($order,$form_id,$group_id,$item_id){
 //                   "在庫確認");//q_10_1 checkbox 在庫確認        如果是 1 则_0 如果是null 或 0 不删 空值
 function method_20($order,$form_id,$group_id,$item_id){
 
-      $value = oa_checkbox($order['q_2_1'],'0','0');
-      $value = '_0';
+  $value = $order['q_2_1'];
+      if ($value != NULL){
+        $value = '_0';
+      }
       oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
       /*
   if($order['payment_method']=="銀行振込(買い取り)" or $order['payment_method']=="銀行振込")
@@ -447,6 +484,9 @@ function oa_text($value)
 }
 function oa_checkbox($value,$default='0',$flag = '1')
 {
+  if($value == NULL){
+    return $value;
+  }
   if( $value == $flag ){
     return '_'.$default;
   }
