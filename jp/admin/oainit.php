@@ -189,6 +189,8 @@ echo "</br>";
 echo "問題完了(".$i.")</br>";
 function oavalue($value,$form_id,$group_id,$item_id,$oid)
 {
+  if($value == NULL)
+    return 0;
   //  echo $oid;
   return tep_db_query("
 INSERT INTO `oa_formvalue` 
@@ -309,6 +311,10 @@ function method_9($order,$form_id,$group_id,$item_id){
 //q_14_1 checkbox 受領メール送信
 function method_10($order,$form_id,$group_id,$item_id){
   $value = oa_checkbox($order['q_14_1']);
+  if ($value != NULL){
+    $value = '_0';
+  }
+
   oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
 }
 //q_15_7 text 支払: 受付番号
@@ -319,9 +325,7 @@ function method_11($order,$form_id,$group_id,$item_id){
 //q_12_1 キャラクターの有無 checkbox
 function method_12($order,$form_id,$group_id,$item_id){
   $value = oa_checkbox($order['q_12_1']);
-  if($value != NULL){
-  $value = '_0';
-  }
+
   oavalue($value,$form_id,$group_id,$item_id,$order['orders_id']);
 }
 //q_9_2  date 決算確認：
