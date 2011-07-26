@@ -2545,14 +2545,16 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
     <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>)">
     <font color="<?php echo $today_color; ?>">
     <?php 
-      $o_history_raw = tep_db_query("select * from ".TABLE_ORDERS_STATUS_HISTORY." where orders_id = '".$orders['orders_id']."'"); 
+      $o_history_raw = tep_db_query("select * from ".TABLE_ORDERS_STATUS_HISTORY." where orders_id = '".$orders['orders_id']."' order by date_added desc limit 1"); 
       $o_history_res = tep_db_fetch_array($o_history_raw); 
       if (!$o_history_res) {
         $default_status_raw = tep_db_query("select * from ".TABLE_ORDERS_STATUS." where orders_status_id = '".DEFAULT_ORDERS_STATUS_ID."'"); 
         $default_status_res = tep_db_fetch_array($default_status_raw);
         echo $default_status_res['orders_status_name']; 
       } else {
-        echo $orders['orders_status_name']; 
+        $default_status_raw = tep_db_query("select * from ".TABLE_ORDERS_STATUS." where orders_status_id = '".$o_history_res['orders_status_id']."'"); 
+        $default_status_res = tep_db_fetch_array($default_status_raw);
+        echo $default_status_res['orders_status_name']; 
       }
     ?>
     <input type="hidden" name="os[]" id="orders_status_<?php echo $orders['orders_id']; ?>" value="<?php echo $orders['orders_status']; ?>"></font></td>
