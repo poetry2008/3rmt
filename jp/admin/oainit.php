@@ -157,7 +157,9 @@ echo "</br>";
 
 //选择所有现有数据 从 orders_questions 表时 一条一条循环
 $sql  = 'select oq.* ,o.* from orders_questions oq ,orders o  where o.orders_id = oq.orders_id ';
-//$sql.=' and o.orders_id = "20110715-18361915"';
+//$sql.=' and o.orders_id = "20110726-08162806"';
+
+
 $res =tep_db_query($sql);
 $i = 0;
 while($orderq = tep_db_fetch_array($res)){
@@ -192,6 +194,7 @@ function oavalue($value,$form_id,$group_id,$item_id,$oid)
   if($value == NULL)
     return 0;
   //  echo $oid;
+  echo $value;
   return tep_db_query("
 INSERT INTO `oa_formvalue` 
 (`id`, `orders_id`, `form_id`, `item_id`, `group_id`, `value`) 
