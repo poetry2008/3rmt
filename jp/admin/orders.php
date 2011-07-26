@@ -2012,7 +2012,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
           -- and o.orders_status != '8'
           " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
           " . $where_payment . $where_type . "
-         order by torihiki_date_error DESC,o.torihiki_date DESC
+         order by o.torihiki_date DESC
       ";
     }
     // old sort is  order by torihiki_date_error DESC,o.torihiki_date DESC
