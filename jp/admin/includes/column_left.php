@@ -2,27 +2,6 @@
 /*
   $Id$
 */
-if ((strpos($_SERVER['PHP_SELF'], 'history.php') === false)  && 
-    (strpos($_SERVER['PHP_SELF'], 'cleate_oroshi.php') === false) && 
-    (strpos($_SERVER['PHP_SELF'], 'list_display.php') === false) && 
-    (strpos($_SERVER['PHP_SELF'], 'edit_orders.php') === false) && 
-    (strpos($_SERVER['PHP_SELF'], 'edit_new_orders.php') === false) && 
-    (strpos($_SERVER['PHP_SELF'], 'categories.php') === false) && 
-    (strpos($_SERVER['PHP_SELF'], 'micro_log.php') === false) && 
-    (strpos($_SERVER['PHP_SELF'], 'products_tags.php') === false) && 
-    (strpos($_SERVER['PHP_SELF'], 'categories_admin.php') === false) && 
-    (strpos($_SERVER['PHP_SELF'], 'pw_manager_log.php') === false) && 
-    (strpos($_SERVER['PHP_SELF'], 'cleate_dougyousya.php') === false) && 
-    (strpos($_SERVER['PHP_SELF'], 'customers_products.php') === false) && 
-    (strpos($_SERVER['PHP_SELF'], 'pw_manager.php') === false) && 
-    (strpos($_SERVER['PHP_SELF'], 'edit_new_orders2.php') === false) && 
-    (strpos($_SERVER['PHP_SELF'], 'telecom_unknow.php') === false) && 
-    (strpos($_SERVER['PHP_SELF'], 'cleate_list.php') === false) && 
-    (strpos($_SERVER['PHP_SELF'], 'orders.php') === false)) {
-?>
-<script type="text/javascript" src="includes/javascript/jquery.js"></script>
-<?php }?>
-<?php 
 if ($ocertify->npermission >= 10) {?>
 <script>
 $(document).ready(function(){
@@ -75,12 +54,6 @@ function toggle_lan(sobj)
     success:function(msg) {
     }
   }); 
-}
-
-function redirect_new_url(new_object)
-{
-  var url_str = $(new_object).parent().attr('href');
-  window.location.href = url_str;
 }
 </script>
 <?php }?>
