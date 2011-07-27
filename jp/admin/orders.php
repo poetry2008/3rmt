@@ -1065,6 +1065,13 @@ function del_confirm_payment_time(oid, status_id)
                   while($order_history = tep_db_fetch_array($order_history_query)){
                   ?>
                     <tr>
+                      <td class="main">
+                      <?php
+                        $store_name_raw = tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'STORE_NAME' and (site_id = '0' or site_id = '".$order_history['site_id']."') order by site_id desc limit 1");  
+                        $store_name_res = tep_db_fetch_array($store_name_raw); 
+                        echo $store_name_res['configuration_value']; 
+                      ?>
+                      </td> 
                       <td class="main"><?php echo $order_history['date_purchased'];?></td>
                       <td class="main"><?php echo
                       strip_tags(tep_get_ot_total_by_orders_id($order_history['orders_id'],true));?></td>
