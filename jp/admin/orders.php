@@ -1057,7 +1057,6 @@ function del_confirm_payment_time(oid, status_id)
                   select * 
                   from ".TABLE_ORDERS." 
                   where   customers_email_address = '".$customer_email_res['customers_email_address']."'
-                  group by site_id 
                   order by date_purchased desc
                   limit 5
                 ");
@@ -1085,6 +1084,7 @@ function del_confirm_payment_time(oid, status_id)
                     </tr>
                   <?php
                   }
+                  /* 
                   if ($total_order_history < 5) {
                     $diff_num = 5 - $total_order_history; 
                     $p_order_history_query = tep_db_query("
@@ -1112,7 +1112,7 @@ function del_confirm_payment_time(oid, status_id)
                     <?php
                     }
                   }
-                  
+                  */ 
                   ?>
                   </table>
                   <?php
