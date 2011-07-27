@@ -1096,7 +1096,7 @@ function del_confirm_payment_time(oid, status_id)
               <h3>Order Comment</h3>
                 <form action="ajax_orders.php" id='form_orders_comment' method="post">
 
-                <textarea name="orders_comment" cols="100" rows="10" style="width:100%"><?php echo $order->info['orders_comment'];?></textarea><br>
+                <textarea name="orders_comment" cols="100" rows="10" style="width:100%; height:138px; height:120px\9;"><?php echo $order->info['orders_comment'];?></textarea><br>
                 <input type="hidden" name="orders_id" value="<?php echo $order->info['orders_id'];?>">
                 <div align="right"><input type="Submit" value="保存"></div>
                 </form>
