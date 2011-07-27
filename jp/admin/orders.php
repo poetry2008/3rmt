@@ -1051,25 +1051,30 @@ function del_confirm_payment_time(oid, status_id)
             <div id="orders_history">
               <h3><a href="<?php echo tep_href_link('customers_products.php', 'cID='.$order->customer['id'].'&cpage=1')?>">Order History</a></h3>
               <?php 
-                $order_history_query = tep_db_query("
+              $customer_email_raw = tep_db_query("select * from ".TABLE_ORDERS." where orders_id = '".$order->info['orders_id']."'"); 
+              $customer_email_res = tep_db_fetch_array($customer_email_raw); 
+              $order_history_query = tep_db_query("
                   select * 
                   from ".TABLE_ORDERS." 
-                  where customers_id='".$order->customer['id']."'
+                  where   customers_email_address = '".$customer_email_res['customers_email_address']."'
                   order by date_purchased desc
                   limit 5
                 ");
-                if (tep_db_num_rows($order_history_query)) {
+                 $total_order_history = tep_db_num_rows($order_history_query); 
+                 if ($total_order_history > 0) {
                   ?>
                   <table width="100%" border="0" cellspacing="0" cellpadding="2">
                   <?php
+                  $total_order_id_arr = array(); 
                   while($order_history = tep_db_fetch_array($order_history_query)){
+                    $total_order_id_arr[] = $order_history['orders_id']; 
                   ?>
                     <tr>
                       <td class="main">
                       <?php
-                        $store_name_raw = tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'STORE_NAME' and (site_id = '0' or site_id = '".$order_history['site_id']."') order by site_id desc limit 1");  
+                        $store_name_raw = tep_db_query("select * from ".TABLE_SITES." where id = '".$order_history['site_id']."'");  
                         $store_name_res = tep_db_fetch_array($store_name_raw); 
-                        echo $store_name_res['configuration_value']; 
+                        echo $store_name_res['romaji']; 
                       ?>
                       </td> 
                       <td class="main"><?php echo $order_history['date_purchased'];?></td>
@@ -1079,6 +1084,35 @@ function del_confirm_payment_time(oid, status_id)
                     </tr>
                   <?php
                   }
+                  /* 
+                  if ($total_order_history < 5) {
+                    $diff_num = 5 - $total_order_history; 
+                    $p_order_history_query = tep_db_query("
+                        select * 
+                        from ".TABLE_ORDERS." 
+                        where   customers_email_address =
+                        '".$customer_email_res['customers_email_address']."' and
+                        orders_id not in (".implode(',', $total_order_id_arr).") 
+                        order by date_purchased desc
+                        limit ".$diff_num);
+                    while ($p_order_history = tep_db_fetch_array($p_order_history_query)) {
+                    ?>
+                    <tr>
+                      <td class="main">
+                      <?php
+                        $p_store_name_raw = tep_db_query("select * from ".TABLE_SITES." where id = '".$p_order_history['site_id']."'");  
+                        $p_store_name_res = tep_db_fetch_array($p_store_name_raw); 
+                        echo $store_name_res['romaji']; 
+                      ?>
+                      </td> 
+                      <td class="main"><?php echo $p_order_history['date_purchased'];?></td>
+                      <td class="main"><?php echo strip_tags(tep_get_ot_total_by_orders_id($p_order_history['orders_id'],true));?></td>
+                      <td class="main"><?php echo $p_order_history['orders_status_name'];?></td>
+                    </tr>
+                    <?php
+                    }
+                  }
+                  */ 
                   ?>
                   </table>
                   <?php
@@ -1096,7 +1130,7 @@ function del_confirm_payment_time(oid, status_id)
               <h3>Order Comment</h3>
                 <form action="ajax_orders.php" id='form_orders_comment' method="post">
 
-                <textarea name="orders_comment" cols="100" rows="10" style="width:100%; height:138px; height:120px\9;"><?php echo $order->info['orders_comment'];?></textarea><br>
+                <textarea name="orders_comment" cols="100" rows="10" style="width:100%; height:138px; height:119px\9;"><?php echo $order->info['orders_comment'];?></textarea><br>
                 <input type="hidden" name="orders_id" value="<?php echo $order->info['orders_id'];?>">
                 <div align="right"><input type="Submit" value="保存"></div>
                 </form>

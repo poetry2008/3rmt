@@ -81,6 +81,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
           ");
           orders_updated($order_id);
           last_customer_action();
+          tep_order_status_change($order_id,17);
           // insert a history
           $sql = "
             INSERT INTO `".TABLE_ORDERS_STATUS_HISTORY."` (
