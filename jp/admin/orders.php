@@ -731,13 +731,16 @@ function del_confirm_payment_time(oid, status_id)
               <td class="pageHeading" align="right">
                 <?php if ($ocertify->npermission) { ?>
                 <?php 
+                  /*
                    if(isset($order->info['flag_qaf'])&&$order->info['flag_qaf']){
+                   */
                      echo tep_html_element_button(IMAGE_EDIT,
                          'onclick="once_pwd_redircet_new_url(\''.
                        tep_href_link(FILENAME_ORDERS_EDIT,
                            tep_get_all_get_params(array('action','status','questions_type'))
                            .'&action=edit')
                        .'\')"');
+                     /*
                    }else{
                   echo '<a href="' . tep_href_link(FILENAME_ORDERS_EDIT,
                   tep_get_all_get_params(array('action','status','questions_type'))
@@ -745,6 +748,7 @@ function del_confirm_payment_time(oid, status_id)
                      echo tep_html_element_button(IMAGE_EDIT);
                     echo '</a>'; 
                    }
+                   */
                 ?>
                 <?php } ?>
                 <?php echo '<a id="back_link" href="' .  tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('action','status','questions_type'))) . '">' . tep_html_element_button(IMAGE_BACK) . '</a>'; ?>
