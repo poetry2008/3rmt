@@ -1067,9 +1067,9 @@ function del_confirm_payment_time(oid, status_id)
                     <tr>
                       <td class="main">
                       <?php
-                        $store_name_raw = tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'STORE_NAME' and (site_id = '0' or site_id = '".$order_history['site_id']."') order by site_id desc limit 1");  
+                        $store_name_raw = tep_db_query("select * from ".TABLE_SITES." where id = '".$order_history['site_id']."'");  
                         $store_name_res = tep_db_fetch_array($store_name_raw); 
-                        echo $store_name_res['configuration_value']; 
+                        echo $store_name_res['romaji']; 
                       ?>
                       </td> 
                       <td class="main"><?php echo $order_history['date_purchased'];?></td>
