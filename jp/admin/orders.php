@@ -1051,18 +1051,24 @@ function del_confirm_payment_time(oid, status_id)
             <div id="orders_history">
               <h3><a href="<?php echo tep_href_link('customers_products.php', 'cID='.$order->customer['id'].'&cpage=1')?>">Order History</a></h3>
               <?php 
-                $order_history_query = tep_db_query("
+              $customer_email_raw = tep_db_query("select * from ".TABLE_ORDERS." where orders_id = '".$order->info['orders_id']."'"); 
+              $customer_email_res = tep_db_fetch_array($customer_email_raw); 
+              $order_history_query = tep_db_query("
                   select * 
                   from ".TABLE_ORDERS." 
-                  where customers_id='".$order->customer['id']."'
+                  where   customers_email_address = '".$customer_email_res['customers_email_address']."'
+                  group by site_id 
                   order by date_purchased desc
                   limit 5
                 ");
-                if (tep_db_num_rows($order_history_query)) {
+                 $total_order_history = tep_db_num_rows($order_history_query); 
+                 if ($total_order_history > 0) {
                   ?>
                   <table width="100%" border="0" cellspacing="0" cellpadding="2">
                   <?php
+                  $total_order_id_arr = array(); 
                   while($order_history = tep_db_fetch_array($order_history_query)){
+                    $total_order_id_arr[] = $order_history['orders_id']; 
                   ?>
                     <tr>
                       <td class="main">
@@ -1079,6 +1085,34 @@ function del_confirm_payment_time(oid, status_id)
                     </tr>
                   <?php
                   }
+                  if ($total_order_history < 5) {
+                    $diff_num = 5 - $total_order_history; 
+                    $p_order_history_query = tep_db_query("
+                        select * 
+                        from ".TABLE_ORDERS." 
+                        where   customers_email_address =
+                        '".$customer_email_res['customers_email_address']."' and
+                        orders_id not in (".implode(',', $total_order_id_arr).") 
+                        order by date_purchased desc
+                        limit ".$diff_num);
+                    while ($p_order_history = tep_db_fetch_array($p_order_history_query)) {
+                    ?>
+                    <tr>
+                      <td class="main">
+                      <?php
+                        $p_store_name_raw = tep_db_query("select * from ".TABLE_SITES." where id = '".$p_order_history['site_id']."'");  
+                        $p_store_name_res = tep_db_fetch_array($p_store_name_raw); 
+                        echo $store_name_res['romaji']; 
+                      ?>
+                      </td> 
+                      <td class="main"><?php echo $p_order_history['date_purchased'];?></td>
+                      <td class="main"><?php echo strip_tags(tep_get_ot_total_by_orders_id($p_order_history['orders_id'],true));?></td>
+                      <td class="main"><?php echo $p_order_history['orders_status_name'];?></td>
+                    </tr>
+                    <?php
+                    }
+                  }
+                  
                   ?>
                   </table>
                   <?php
