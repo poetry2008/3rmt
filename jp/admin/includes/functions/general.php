@@ -5621,15 +5621,6 @@ function   tep_order_status_change($oID,$status){
     return $status_arr;
   }
 
-  //faq category question max id for sort_order
-  function tep_get_order_faq_category_id(){
-
-  }
-
-  function tep_get_order_faq_question_id(){
-
-  }
-
   //faq category is set 
   function tep_is_set_faq_category($cid,$site_id){
     return tep_db_fetch_array(tep_db_query("select * from
