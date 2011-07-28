@@ -7,8 +7,10 @@
    </body>
    <h1>NEW OA Init</h1>
    <?php
-   error_reporting(E_ALL^E_NOTICE^E_WARNING);
+error_reporting(E_ALL^E_NOTICE^E_WARNING);
 ini_set("display_errors",'On');
+ini_set('include_path',ini_get('include_path').':'.'/home/.sites/28/site1/web/admin/i');
+ini_set('include_path',ini_get('include_path').':'.'/home/.sites/28/site1/web/3rmtlib/oa');
 $start = microtime(true);
    //无用数据 
    //delete from oa_item where group_id not in (select id from oa_group ) //删除非现有组的oa_item
