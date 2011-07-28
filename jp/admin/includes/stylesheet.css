@@ -240,11 +240,12 @@ body {
  padding:5px 0 0 5px;
 }
 .pageHeading_box{
-	width:50%; min-width:80px; overflow:hidden; display: block; float:left;
+	width:100%; overflow:hidden; display: block; clear:both;
 }
 .pageHeading_box02{
-	width:49%; min-width:80px; overflow:hidden; display: block; float:right;
+	width:100%; overflow:hidden; display: block; clear:both;
 }
+.pageHeading_box03{width:100%; height:136px; height:138px\9; overflow:hidden;}
 /* ---------------------------
 .[TD]：ページヘッダ
 --------------------------- */
@@ -484,6 +485,7 @@ TR：偶数行
 .main {
 	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
 	font-size: 12px;                                /* フォントサイズ */
+	line-height:14px;
 }
 .main a { text-decoration:none;}
 legend {
@@ -592,7 +594,10 @@ legend {
 #orders_info {
 	margin-bottom: 10px;
 	background: #f0f1f1;
-}
+	float:left;
+	width:49%;
+/*	margin-right:10px;
+*/}
 #orders_client {
 	margin-bottom: 10px;
 	background: #f0f1f1;
@@ -609,10 +614,14 @@ legend {
 	margin-bottom: 10px;
 	text-align:center;
 	background: #f0f1f1;
+	float:left;
+	width:50%;
 }
 #orders_answer {
 	margin-bottom: 10px;
 	background: #f0f1f1;
+	float:left;
+	width:50%;
 }
 #orders_credit {
 	margin-bottom: 10px;

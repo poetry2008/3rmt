@@ -874,6 +874,23 @@ function del_confirm_payment_time(oid, status_id)
             ?>
               </table>
             </div>
+            <div style="width:0.6%; background:#fff; float:left;">&nbsp;</div>
+            <div id="orders_comment">
+              <h3>Order Comment</h3>
+                <form action="ajax_orders.php" id='form_orders_comment' method="post">
+
+                <textarea name="orders_comment" cols="100" rows="10" class="pageHeading_box03"><?php echo $order->info['orders_comment'];?></textarea><br>
+                <input type="hidden" name="orders_id" value="<?php echo $order->info['orders_id'];?>">
+                </form>
+                <div align="right" style="clear:both;"><input type="Submit" value="保存"></div>
+              </div>
+
+            </div>
+            <!-- /left -->
+            <!-- right -->
+            <div class="pageHeading_box02">
+              <?php // 订单备注 ?>
+            <div style="float:left; width:49%;">
             <div id="orders_client">
               <h3>Customer Info</h3>
               <table width="100%" border="0" cellspacing="0" cellpadding="2">
@@ -887,7 +904,7 @@ function del_confirm_payment_time(oid, status_id)
                 </tr>
                 <tr>
                   <td class="main" valign="top" width="30%"><b>ユーザーエージェント:</b></td>
-                  <td class="main"><?php echo tep_high_light_by_keywords($order->info['orders_user_agent'] ? $order->info['orders_user_agent'] : 'UNKNOW',USER_AGENT_LIGHT_KEYWORDS);?></td>
+                  <td class="main" style="word-break:break-all;width:250px;word-wrap:break-word;overflow:hidden;display:block;"><?php echo tep_high_light_by_keywords($order->info['orders_user_agent'] ? $order->info['orders_user_agent'] : 'UNKNOW',USER_AGENT_LIGHT_KEYWORDS);?></td>
                 </tr>
                 <?php if ($order->info['orders_user_agent']) {?>
                 <tr>
@@ -1122,20 +1139,8 @@ function del_confirm_payment_time(oid, status_id)
               ?>
             </div>
             </div>
-            <!-- /left -->
-            <!-- right -->
-            <div class="pageHeading_box02">
-              <?php // 订单备注 ?>
-              <div id="orders_comment">
-              <h3>Order Comment</h3>
-                <form action="ajax_orders.php" id='form_orders_comment' method="post">
-
-                <textarea name="orders_comment" cols="100" rows="10" style="width:100%"><?php echo $order->info['orders_comment'];?></textarea><br>
-                <input type="hidden" name="orders_id" value="<?php echo $order->info['orders_id'];?>">
-                <div align="right"><input type="Submit" value="保存"></div>
-                </form>
-              </div>
-              <div id="orders_answer">
+            <div style="width:0.6%; background:#fff; float:left;">&nbsp;</div>
+            <div id="orders_answer">
 <?php
   // 取得问答的答案
   $total_order_query = tep_db_query("select * from ".TABLE_ORDERS_TOTAL." where orders_id = '".$order->info['orders_id']."' and class = 'ot_total'"); 
