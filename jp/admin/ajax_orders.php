@@ -31,6 +31,7 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
 } else if ($_GET['orders_id'] && $_POST['orders_credit']) {
   $order = tep_db_fetch_array(tep_db_query("select * from ".TABLE_ORDERS." where orders_id='".$_GET['orders_id']."'"));
   tep_db_perform('customers', array('customers_fax' => $_POST['orders_credit']), 'update', "customers_id='".$order['customers_id']."'");
+  tep_redirect(tep_href_link(FILENAME_ORDERS,'page='.$_POST['page'].'&oID='.$_POST['orders_id'].'&action=edit'));
 } else if ($_GET['orders_id'] && isset($_GET['orders_important_flag'])) {
   // 重要
   tep_db_perform('orders', array('orders_important_flag' => $_GET['orders_important_flag']), 'update', "orders_id='".$_GET['orders_id']."'");
