@@ -874,6 +874,7 @@ function del_confirm_payment_time(oid, status_id)
             ?>
               </table>
             </div>
+            <div style="width:0.6%; background:#fff; float:left;">&nbsp;</div>
             <div id="orders_comment">
               <h3>Order Comment</h3>
                 <form action="ajax_orders.php" id='form_orders_comment' method="post">
@@ -889,7 +890,7 @@ function del_confirm_payment_time(oid, status_id)
             <!-- right -->
             <div class="pageHeading_box02">
               <?php // 订单备注 ?>
-            <div style="float:left; width:49%; padding-right:10px;">
+            <div style="float:left; width:49%;">
             <div id="orders_client">
               <h3>Customer Info</h3>
               <table width="100%" border="0" cellspacing="0" cellpadding="2">
@@ -903,7 +904,7 @@ function del_confirm_payment_time(oid, status_id)
                 </tr>
                 <tr>
                   <td class="main" valign="top" width="30%"><b>ユーザーエージェント:</b></td>
-                  <td class="main"><?php echo tep_high_light_by_keywords($order->info['orders_user_agent'] ? $order->info['orders_user_agent'] : 'UNKNOW',USER_AGENT_LIGHT_KEYWORDS);?></td>
+                  <td class="main" style="word-break:break-all;width:250px;word-wrap:break-word;overflow:hidden;display:block;"><?php echo tep_high_light_by_keywords($order->info['orders_user_agent'] ? $order->info['orders_user_agent'] : 'UNKNOW',USER_AGENT_LIGHT_KEYWORDS);?></td>
                 </tr>
                 <?php if ($order->info['orders_user_agent']) {?>
                 <tr>
@@ -1138,6 +1139,7 @@ function del_confirm_payment_time(oid, status_id)
               ?>
             </div>
             </div>
+            <div style="width:0.6%; background:#fff; float:left;">&nbsp;</div>
             <div id="orders_answer">
 <?php
   // 取得问答的答案
