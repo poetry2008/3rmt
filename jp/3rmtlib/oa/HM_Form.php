@@ -52,7 +52,7 @@ class HM_Form extends DbRecord
     //echo "<button onclick='finishTheOrder()'  id='canEnd' >取引完了</button>";
     //    }
     echo "</tr>";
-    echo '</from>';
+    echo '</form>';
     echo "</div>";
     ?>
     <script type='text/javascript'>
