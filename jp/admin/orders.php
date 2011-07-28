@@ -1182,8 +1182,8 @@ function del_confirm_payment_time(oid, status_id)
             <h3><?php echo TEXT_CREDIT_FIND;?></h3>
             <table width="100%" border="0" cellspacing="0" cellpadding="2">
               <tr>
-            <form action="ajax_orders.php?orders_id=<?php echo $order->info['orders_id'];?>" id='form_orders_credit' method="post">
                 <!--<td class="main" valign="top" width="30%"><b>信用調査:</b></td>-->
+            <form action="ajax_orders.php?orders_id=<?php echo $order->info['orders_id'];?>" id='form_orders_credit' method="post">
                 <td class="main"><input type="text" name="orders_credit" style="width:100%" value="<?php echo tep_get_customers_fax_by_id($order->customer['id']);?>" >
                 <input type="hidden" name="orders_id" value="<?php echo $order->info['orders_id'];?>">
                 <input type="hidden" name="page" value="<?php echo $_GET['page'];?>">
