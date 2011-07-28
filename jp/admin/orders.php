@@ -881,8 +881,9 @@ function del_confirm_payment_time(oid, status_id)
 
                 <textarea name="orders_comment" cols="100" rows="10" class="pageHeading_box03"><?php echo $order->info['orders_comment'];?></textarea><br>
                 <input type="hidden" name="orders_id" value="<?php echo $order->info['orders_id'];?>">
-                </form>
+                <input type="hidden" name="page" value="<?php echo $_GET['page'];?>">
                 <div align="right" style="clear:both;"><input type="Submit" value="保存"></div>
+                </form>
               </div>
 
             </div>
@@ -1179,16 +1180,19 @@ function del_confirm_payment_time(oid, status_id)
         <td>
           <div id="orders_credit">
             <h3><?php echo TEXT_CREDIT_FIND;?></h3>
-            <form action="ajax_orders.php?orders_id=<?php echo $order->info['orders_id'];?>" id='form_orders_credit' method="post">
             <table width="100%" border="0" cellspacing="0" cellpadding="2">
               <tr>
                 <!--<td class="main" valign="top" width="30%"><b>信用調査:</b></td>-->
-                <td class="main"><input type="text" name="orders_credit" style="width:100%" value="<?php echo tep_get_customers_fax_by_id($order->customer['id']);?>" ></td>
+            <form action="ajax_orders.php?orders_id=<?php echo $order->info['orders_id'];?>" id='form_orders_credit' method="post">
+                <td class="main"><input type="text" name="orders_credit" style="width:100%" value="<?php echo tep_get_customers_fax_by_id($order->customer['id']);?>" >
+                <input type="hidden" name="orders_id" value="<?php echo $order->info['orders_id'];?>">
+                <input type="hidden" name="page" value="<?php echo $_GET['page'];?>">
+                </td>
                 <td class="main" width="30"><input type="submit" value="<?php echo
                 TEXT_ORDER_SAVE;?>"></td>
+            </form>
               </tr>
             </table>
-            </form>
           </div>
         </td>
       </tr>
