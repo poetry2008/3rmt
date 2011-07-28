@@ -22,7 +22,7 @@ if ((strpos($_SERVER['PHP_SELF'], 'history.php') === false)  &&
 ?>
 <script type="text/javascript" src="includes/javascript/jquery.js"></script>
 <?php }?>
-<?php 
+<?php
 if ($ocertify->npermission >= 10) {?>
 <script>
 $(document).ready(function(){
@@ -75,12 +75,6 @@ function toggle_lan(sobj)
     success:function(msg) {
     }
   }); 
-}
-
-function redirect_new_url(new_object)
-{
-  var url_str = $(new_object).parent().attr('href');
-  window.location.href = url_str;
 }
 </script>
 <?php }?>
