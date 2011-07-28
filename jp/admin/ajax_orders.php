@@ -15,7 +15,7 @@ header("Pragma: no-cache");
 if ($_POST['orders_id'] && $_POST['orders_comment']) {
   // update orders_comment
   tep_db_perform('orders', array('orders_comment' => $_POST['orders_comment']), 'update', "orders_id='".$_POST['orders_id']."'");
-  echo $_POST['orders_comment'];
+  tep_redirect(tep_href_link(FILENAME_ORDERS,'page='.$_POST['page'].'&oID='.$_POST['orders_id'].'&action=edit'));
 } else if ($_GET['action'] == 'paydate') {
   echo date('Y年n月j日',strtotime(tep_get_pay_day()));
 } else if ($_GET['action'] == 'set_quantity' && $_GET['products_id'] && $_GET['count']) {

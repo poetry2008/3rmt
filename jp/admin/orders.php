@@ -881,6 +881,7 @@ function del_confirm_payment_time(oid, status_id)
 
                 <textarea name="orders_comment" cols="100" rows="10" class="pageHeading_box03"><?php echo $order->info['orders_comment'];?></textarea><br>
                 <input type="hidden" name="orders_id" value="<?php echo $order->info['orders_id'];?>">
+                <input type="hidden" name="page" value="<?php echo $_GET['page'];?>">
                 <div align="right" style="clear:both;"><input type="Submit" value="保存"></div>
                 </form>
               </div>
