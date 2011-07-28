@@ -1,4 +1,6 @@
 <?php
+error_reporting(E_ALL);
+ini_set("display_errors","on");
 /*
   $Id$
 */
@@ -29,6 +31,7 @@
   $ids = explode('_',$key);
   $item_id = $ids['3'];
   $group_id = $ids['2'];
+
   tep_db_query("delete from ".TABLE_OA_FORMVALUE." where orders_id = '".$_GET['oID']."' and form_id='".$form_id."'"." and item_id='".$item_id."'"." and group_id = '".$group_id."'");
   //针对 date 做特殊处理
   if($_GET['fix']=='date'){
@@ -38,6 +41,7 @@
     $user_info = tep_get_user_info($ocertify->auth_user);
     $value =$user_info['name'];
   }
+
   tep_db_query("insert into `".TABLE_OA_FORMVALUE."` values(NULL, '".$oid."', '".$form_id."', '".$item_id."', '".$group_id."', '".$key."','".$value."')");
   if( $_GET['withz']){
     echo $value;
@@ -45,5 +49,5 @@
 
 }
 
-//tep_redirect(tep_href_link(FILENAME_ORDERS, 'oID='.$_GET['oID'].'&action=edit'));
+tep_redirect(tep_href_link(FILENAME_ORDERS, 'oID='.$_GET['oID'].'&action=edit'));
 
