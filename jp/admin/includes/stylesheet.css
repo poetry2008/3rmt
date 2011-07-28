@@ -240,10 +240,10 @@ body {
  padding:5px 0 0 5px;
 }
 .pageHeading_box{
-	width:100%; min-width:80px; overflow:hidden; display: block; clear:both;
+	width:100%; min-width:1000px; overflow:hidden; display: block; clear:both;
 }
 .pageHeading_box02{
-	width:100%; min-width:80px; overflow:hidden; display: block; clear:both;
+	width:100%; min-width:1000px; overflow:hidden; display: block; clear:both;
 }
 .pageHeading_box03{width:100%; height:136px; height:138px\9; overflow:hidden;}
 /* ---------------------------
