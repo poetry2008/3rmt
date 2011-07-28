@@ -76,6 +76,20 @@ if($NewOid['cnt'] == 0) {
 }
   
 # load the selected shipping module(convenience_store)
+if ($payment == 'convenience_store') {
+  $convenience_sid = str_replace('-', "", $insert_id);
+  //$pay_comments = '取引コード' . $convenience_sid ."\n";
+  //$pay_comments .= '郵便番号:' . $_POST['convenience_store_zip_code'] ."\n";
+  //$pay_comments .= '住所1:' . $_POST['convenience_store_address1'] ."\n";
+  //$pay_comments .= '住所2:' . $_POST['convenience_store_address2'] ."\n";
+  //$pay_comments .= '氏:' . $_POST['convenience_store_l_name'] ."\n";
+  //$pay_comments .= '名:' . $_POST['convenience_store_f_name'] ."\n";
+  //$pay_comments .= '電話番号:' . $_POST['convenience_store_tel'] ."\n";
+  //$pay_comments .= '接続URL:' . tep_href_link('convenience_store_chk.php', 'sid=' . $convenience_sid, 'SSL');
+  $pay_comments = 'PCメールアドレス:'.$_POST['convenience_email']; 
+  $comments = $pay_comments ."\n".$comments;
+}
+
 require(DIR_WS_CLASSES . 'order.php');
 $order = new order;
 
