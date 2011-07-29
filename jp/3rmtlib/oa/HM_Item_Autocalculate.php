@@ -5,9 +5,9 @@ require_once DIR_WS_LANGUAGES . $language . '/oa/HM_Item_Autocalculate.php';
 class HM_Item_Autocalculate extends HM_Item_Basic
 {
   /*
-必須：○　必須
-項目名_____ _____　
-   */
+    必須：○　必須
+    項目名_____ _____　
+  */
   var $hasRequire = true;
   var $hasTheName = true;
   var $must_comment = TEXT_AUTO_MUST_COMMENT;  
@@ -15,9 +15,10 @@ class HM_Item_Autocalculate extends HM_Item_Basic
   
   function render()
   {
-   if ($this->loaded){
-    $this->defaultValue = $this->loadedValue;
-}  
+
+    if ($this->loaded){
+      $this->defaultValue = $this->loadedValue;
+    }  
     if(strlen($this->thename)){
       echo "<div >";
       echo $this->thename;
@@ -44,20 +45,23 @@ class HM_Item_Autocalculate extends HM_Item_Basic
 
     // 重新取一次 订单类型
     $order_type =  tep_check_order_type($this->order_id);
+    $noproduct = true;
     while ($opp = tep_db_fetch_array($orders_products_query)) {
+
       //如果是混合订单只选择买取的产品
       $op = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS." p,
             ".TABLE_PRODUCTS_DESCRIPTION." pd where p.products_id=pd.products_id and
             pd.site_id='0' and p.products_id='".$opp['relate_products_id']."'"));
 
       if(!$op){ //if no products  ,continue;
-       // $i++;
-	continue;
+        echo $opp['products_name'];
+        echo TEXT_AUTO_NO_OP;
+        continue;
       }
       //      echo $op['products_bflag'];
-
+      $noproduct = false;
       if ($order_type==3 and $op['products_bflag']==1){
-       // $i++;
+        // $i++;
         continue;
       }
       //checkbox 和 input 值 使用|分隔
@@ -80,12 +84,13 @@ class HM_Item_Autocalculate extends HM_Item_Basic
         $check = "";
       }
       echo "<div class='autocalculate_div'>";
+
       if($op){
-      echo "<input value='".$opp['products_id']."'  
+        echo "<input value='".$opp['products_id']."'  
         onchange='".$this->formname."Change_option(".$opp['products_id'].",this,".$op['products_id'].")' 
         type='checkbox' ".$check." name='0".$this->formname."' ";
-      echo "/>";
-      echo $op['products_name'];
+        echo "/>";
+        echo $op['products_name'];
         //有关联商品的 输出
         echo " <font id ='quantity_".$opp['products_id']."'
           >".$opp['products_quantity']."</font> - ";
@@ -93,95 +98,91 @@ class HM_Item_Autocalculate extends HM_Item_Basic
           value='".($check=="checked"?intval($opp['products_quantity']-$_value):0)."' 
            id ='".$opp['products_id']."_input_".$this->formname."' 
            onchange='".$this->formname."Chage_span(".$opp['products_quantity'].",this,\"span_relate_product_".$opp['products_id']."\")' ";
-      //判断是否 checkbox 选中来确定 是否为只读
-      if($_checked==$opp['products_id']&&$__checked==$op['products_id']){
-        echo " readonly='true' ";
-      }
-      echo " >";
+        //判断是否 checkbox 选中来确定 是否为只读
+
+        if($_checked==$opp['products_id']&&$__checked==$op['products_id']){
+          echo " readonly='true' ";
+        }
+        echo " >";
         echo " = <font id='span_relate_product_".$opp['products_id']."'>".
           ($check=="checked"?$_value:intval($opp['products_quantity']))."</font>";
-      }else{
-        echo "<input value='".$opp['products_id']."'  
-        onclick='".$this->formname."Change_option(".$opp['products_id'].",this,".$op['products_id'].")' 
-        type='checkbox' ".$check." name='0".$this->formname."' ";
-        echo "/>";
-        //没有关联商品的输出
-        echo $opp['products_name'];
-        echo TEXT_AUTO_NO_OP;
       }
       $i++;
       echo "</div>";
     }
+    if($noproduct){
+      //noproducts;
+      }
   }
   function renderScript()
   {
-  //关联商品的javascript 脚本写在这里
+    //关联商品的javascript 脚本写在这里
     //$this->formname."Chage_span  方法 是设置 input 后面的Span 
     ?>
-      <script type='text/javascript' >
-         function <?php echo $this->formname."Chage_span(p_value,e_input,span_id)";?>{
-           var v_input = e_input.value;
-           if(v_input > p_value){
-             e_input.value = 0;
-             $("#"+span_id).text(p_value);
-           }else{
-             if(v_input!=''){
-               $("#"+span_id).text(p_value-v_input);
-             }else{
-               $("#"+span_id).text(0);
-             }
-           }
-         }
-         function <?php echo $this->formname."Change_option(pid,ele,spid)";?>{
-           var <?php echo $this->formname;?>val ='';
-           //循环 checkbox 把 checkbox状态 和input 值保存起来
-           $("input|[name=0<?php echo $this->formname;?>]").each(function(){
-               var check_info = '';
-               var span_value = $("#quantity_"+pid).html()-$("#"+pid+"<?php echo
+    <script type='text/javascript' >
+      function <?php echo $this->formname."Chage_span(p_value,e_input,span_id)";?>{
+      var v_input = e_input.value;
+      if(v_input > p_value){
+        e_input.value = 0;
+        $("#"+span_id).text(p_value);
+      }else{
+        if(v_input!=''){
+          $("#"+span_id).text(p_value-v_input);
+        }else{
+          $("#"+span_id).text(0);
+        }
+      }
+    }
+    function <?php echo $this->formname."Change_option(pid,ele,spid)";?>{
+      var <?php echo $this->formname;?>val ='';
+      //循环 checkbox 把 checkbox状态 和input 值保存起来
+      $("input|[name=0<?php echo $this->formname;?>]").each(function(){
+          var check_info = '';
+          var span_value = $("#quantity_"+pid).html()-$("#"+pid+"<?php echo
                    "_input_".$this->formname;?>").val();
-               if($(this).attr('checked')){
-                 if(span_value){
-                   check_info = $(this).val()+"|"+span_value;
-                 }else{
-                   check_info = $(this).val()+"|"+"0";
-                 }
-               }else{
-                 if(span_value){
-                   check_info = "0|"+span_value;
-                 }else{
-                   check_info = "0|"+"0";
-                 }
-               }
-               check_info += '|'+spid;
-               <?php echo $this->formname;?>val += check_info+"_";
-           });
-           $('#<?php echo $this->formname;?>real').val( <?php echo
-               $this->formname;?>val);
-    // 增加库存
-    if ($(ele).attr('checked')) {
-      $("#"+pid+"<?php echo "_input_".$this->formname;?>").attr('readonly', true);
-      $.ajax({
-        url: 'ajax_orders.php?action=set_quantity&products_id='+pid+'&count='+($("#quantity_"+pid).html()-$("#"+pid+"<?php echo "_input_".$this->formname;?>").val()),
-        async : false,
-        success: function(data) {
-        }   
-      }); 
-    } else {
-    // 减库存
-      $("#"+pid+"<?php echo "_input_".$this->formname;?>").attr('readonly', false);
-      $.ajax({
-        url: 'ajax_orders.php?action=set_quantity&products_id='+pid+'&count=-'+($("#quantity_"+pid).html()-$("#"+pid+"<?php echo "_input_".$this->formname;?>").val()),
-        async : false,
-        success: function(data) {
-        }   
-      }); 
-    }   
+          if($(this).attr('checked')){
+            if(span_value){
+              check_info = $(this).val()+"|"+span_value;
+            }else{
+              check_info = $(this).val()+"|"+"0";
+            }
+          }else{
+            if(span_value){
+              check_info = "0|"+span_value;
+            }else{
+              check_info = "0|"+"0";
+            }
+          }
+          check_info += '|'+spid;
+          <?php echo $this->formname;?>val += check_info+"_";
+        });
+      $('#<?php echo $this->formname;?>real').val( <?php echo
+                                                  $this->formname;?>val);
+      // 增加库存
+      if ($(ele).attr('checked')) {
+        $("#"+pid+"<?php echo "_input_".$this->formname;?>").attr('readonly', true);
+        $.ajax({
+          url: 'ajax_orders.php?action=set_quantity&products_id='+pid+'&count='+($("#quantity_"+pid).html()-$("#"+pid+"<?php echo "_input_".$this->formname;?>").val()),
+              async : false,
+              success: function(data) {
+            }   
+          }); 
+      } else {
+        // 减库存
+        $("#"+pid+"<?php echo "_input_".$this->formname;?>").attr('readonly', false);
+        $.ajax({
+          url: 'ajax_orders.php?action=set_quantity&products_id='+pid+'&count=-'+($("#quantity_"+pid).html()-$("#"+pid+"<?php echo "_input_".$this->formname;?>").val()),
+              async : false,
+              success: function(data) {
+            }   
+          }); 
+      }   
 
 
-         }
-      </script>
-    <?php
-  }
+    }
+    </script>
+        <?php
+        }
 
   function initDefaultValue($order_id,$form_id,$group_id)
   {
@@ -189,11 +190,11 @@ class HM_Item_Autocalculate extends HM_Item_Basic
     //    $result = tep_db_fetch_array(tep_db_query($sql));
     //    $theDate = $result['dp'];
     /*
-    $theDate = time();
-    $this->defaultValue = date('Y-m-d',$theDate);
-    $this->m= date('m',strtotime($theDate));
-    $this->d= date('d',strtotime($theDate));
-    $this->y= date('Y',strtotime($theDate));
+      $theDate = time();
+      $this->defaultValue = date('Y-m-d',$theDate);
+      $this->m= date('m',strtotime($theDate));
+      $this->d= date('d',strtotime($theDate));
+      $this->y= date('Y',strtotime($theDate));
     */
     //天津ORDER id
     $this->order_id = $order_id;

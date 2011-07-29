@@ -260,7 +260,10 @@ function playSound()
     show_submit_button();
   }
 
-
+$(function(){
+  // 每分钟检查状态是否有修改
+  setTimeout(function(){checkChange()}, 60000);
+});
 // 每分钟自动检查最新订单和修改
 function checkChange(){
    $.ajax({
@@ -274,7 +277,7 @@ function checkChange(){
         // 如果有新订单和修改
         // 改变背景颜色
         $('body').css('background-color', '#ffcc99');// rgb(255, 204, 153)
-        // 播放提示音
+       // 播放提示音
         playSound();
         // 在列表插入新订单
         newOrders(prev_customer_action != '' ? prev_customer_action : cfg_last_customer_action);
