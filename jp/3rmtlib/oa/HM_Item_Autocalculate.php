@@ -63,8 +63,9 @@ class HM_Item_Autocalculate extends HM_Item_Basic
       if(is_array($checkbox_info)&&$checkbox_info!=null){
         $_checked = $checkbox_info[0]?$checkbox_info[0]:0;
         $_value = $checkbox_info[1]?$checkbox_info[1]:0;
-        $__checked = $checkbox_info[2]=='nullvalue'?$checkbox_info[2]:0;
+        $__checked = $checkbox_info[2]?$checkbox_info[2]:0;
       }else{
+        $__checked = 0; 
         $_checked = 0;
         $_value = 0;
       }
