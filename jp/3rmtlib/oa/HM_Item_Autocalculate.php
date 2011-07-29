@@ -24,6 +24,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
     if ($this->loaded){
       $this->defaultValue = $this->loadedValue;
     }  
+ 
 /*    if(strlen($this->thename)){
       echo "<div >";
       echo $this->thename;
@@ -35,8 +36,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
       $classrequire = '';
     }
     //设置 隐藏域用来存值
-    echo "<input class='".$classrequire."' id='".$this->formname."real' value =
-    '".$this->defaultValue."' type='hidden' name = '".$this->formname."'>";
+    echo "<input class='".$classrequire."' id='".$this->formname."real' value ='".$this->defaultValue."' type='hidden' name = '".$this->formname."'>";
     //每一个 关联 使用_ 分割
     $loadArray = explode('_',$this->defaultValue);
     //对照 orders 的 关联商品 查找数据
@@ -63,21 +63,28 @@ class HM_Item_Autocalculate extends HM_Item_Basic
       if(is_array($checkbox_info)&&$checkbox_info!=null){
         $_checked = $checkbox_info[0]?$checkbox_info[0]:0;
         $_value = $checkbox_info[1]?$checkbox_info[1]:0;
-        $__checked = $checkbox_info[2]!='null'?$checkbox_info[2]:0;
+        $__checked = $checkbox_info[2]=='nullvalue'?$checkbox_info[2]:0;
       }else{
         $_checked = 0;
         $_value = 0;
       }
       //判断是否选中
+      if(!$op){
+        $currentNull = true;
+      }
       if($_checked==$opp['products_id']&&$__checked==$op['products_id']){
         $check = "checked"; 
       }else{
         $check = "";
       }
+      if($currentNull and $_checked == $opp['products_id']){
+        $check = 'checked';
+      }
 
       if(!$op){ //if no products  ,continue;
+	  
         echo "<input value='".$opp['products_id']."'  
-        onchange='".$this->formname."Change_option(".$opp['products_id'].",this,".'null'.")' 
+        onchange='".$this->formname."Change_option(".$opp['products_id'].",this,".'"nullvalue"'.")' 
         type='checkbox' ".$check." name='0".$this->formname."' ";
         echo "/>";
         echo "".$opp['products_name'].TEXT_AUTO_NO_OP."";
@@ -144,6 +151,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
       }
     }
     function <?php echo $this->formname."Change_option(pid,ele,spid)";?>{
+
       var <?php echo $this->formname;?>val ='';
       //循环 checkbox 把 checkbox状态 和input 值保存起来
       $("input|[name=0<?php echo $this->formname;?>]").each(function(){
@@ -166,8 +174,10 @@ class HM_Item_Autocalculate extends HM_Item_Basic
           check_info += '|'+spid;
           <?php echo $this->formname;?>val += check_info+"_";
         });
-      $('#<?php echo $this->formname;?>real').val( <?php echo
-                                                  $this->formname;?>val);
+
+      $('#<?php echo $this->formname;?>real').val( <?php echo  $this->formname;?>val);
+
+
       // 增加库存
       if ($(ele).attr('checked')) {
         $("#"+pid+"<?php echo "_input_".$this->formname;?>").attr('readonly', true);
@@ -188,7 +198,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
           }); 
       }   
 
-
+        $("#qa_form").ajaxSubmit();
     }
     </script>
         <?php
