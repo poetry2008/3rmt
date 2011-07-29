@@ -15,15 +15,20 @@ class HM_Item_Autocalculate extends HM_Item_Basic
   
   function render()
   {
-
+    if(strlen($this->thename)){
+      echo "<td>";
+    echo $this->thename.':';
+      echo "</td>";
+    }
+    echo "<td>";
     if ($this->loaded){
       $this->defaultValue = $this->loadedValue;
     }  
-    if(strlen($this->thename)){
+/*    if(strlen($this->thename)){
       echo "<div >";
       echo $this->thename;
       echo "</div>";
-    }
+    }*/
     if($this->require){
       $classrequire = 'require';
     }else{
@@ -75,8 +80,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
         onchange='".$this->formname."Change_option(".$opp['products_id'].",this,".'null'.")' 
         type='checkbox' ".$check." name='0".$this->formname."' ";
         echo "/>";
-        echo $opp['products_name'];
-        echo "<div class='oa_auto_no_product' > ".TEXT_AUTO_NO_OP."</div>";
+        echo "".$opp['products_name'].TEXT_AUTO_NO_OP."";
         continue;
       }
       //      echo $op['products_bflag'];

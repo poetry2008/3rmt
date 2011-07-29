@@ -222,9 +222,10 @@ function showRequest(formData, jqForm, options) {
 function showOrdersInfo(text,ele){
   $('#orders_info_box').html(text);
 
-    offset = ele.offsetTop + $('#orders_info_box').height() > $(document).height() 
+    offset = ele.offsetTop + $('#orders_info_box').height() > $(document).height()
     ? $(document).height() - $('#orders_info_box').height() 
-    : ele.offsetTop;
+	: ele.offsetTop+$("#orders_list_table").position().top;
+//-$(".dataTableContent").height()*1;
 
   $('#orders_info_box').css('top',offset).show();
 }

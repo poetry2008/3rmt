@@ -970,3 +970,5 @@ a.s_column_bar {
 .faq_page_text{
   float:left;
 }
+.oa_auto_no_product { float:left; line-height:20px; width:350px\9;}
+.oa_auto_no_product_input { float:left;}
