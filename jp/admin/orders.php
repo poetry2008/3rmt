@@ -2,16 +2,12 @@
 /*
    $Id$
 */
-ob_start();
+  ob_start();
   require('includes/application_top.php');
-
   require_once('oa/HM_Form.php'); 
   require_once('oa/HM_Group.php'); 
-
   require(DIR_WS_FUNCTIONS . 'visites.php');
-
   require(DIR_WS_CLASSES . 'currencies.php');
-
   $currencies          = new currencies(2);
   $orders_statuses     = $all_orders_statuses = $orders_status_array = array();
 
@@ -2348,5 +2344,4 @@ function submit_confirm()
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); 
    ob_end_flush();
-
 ?>
