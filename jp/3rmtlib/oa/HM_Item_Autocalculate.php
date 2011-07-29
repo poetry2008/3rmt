@@ -76,7 +76,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
         type='checkbox' ".$check." name='0".$this->formname."' ";
         echo "/>";
         echo $opp['products_name'];
-        echo "<div class='oa_auto_no_product' > TEXT_AUTO_NO_OP</div>";
+        echo "<div class='oa_auto_no_product' > ".TEXT_AUTO_NO_OP."</div>";
         continue;
       }
       //      echo $op['products_bflag'];
