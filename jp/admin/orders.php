@@ -2,13 +2,12 @@
 /*
    $Id$
 */
-
+ob_start();
   require('includes/application_top.php');
 
   require_once('oa/HM_Form.php'); 
   require_once('oa/HM_Group.php'); 
-//error_reporting(E_ALL);
-//ini_set('display_errors','On')  ;
+
   require(DIR_WS_FUNCTIONS . 'visites.php');
 
   require(DIR_WS_CLASSES . 'currencies.php');
@@ -2347,4 +2346,6 @@ function submit_confirm()
 <div id="wait" style="position:fixed; left:45%; top:45%; display:none;"><img src="images/load.gif" alt="img"></div>
 </body>
 </html>
-<?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>
+<?php require(DIR_WS_INCLUDES . 'application_bottom.php'); 
+   ob_end();
+?>
