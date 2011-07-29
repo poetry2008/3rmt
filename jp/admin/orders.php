@@ -2347,5 +2347,6 @@ function submit_confirm()
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); 
-   ob_end();
+   ob_end_flush();
+
 ?>
