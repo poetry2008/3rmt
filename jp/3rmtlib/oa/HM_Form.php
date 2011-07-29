@@ -108,7 +108,12 @@ class HM_Form extends DbRecord
     {
       return SPANRequire(ele);
     }
+	function  INPUTcheckboxRequire(ele)
+	{
+		return ele.checked;
+	}
     function INPUTtextRequire(ele)
+	
     {
       return INPUThiddenRequire(ele);
     }
