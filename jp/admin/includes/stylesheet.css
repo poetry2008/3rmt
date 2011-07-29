@@ -966,9 +966,9 @@ a.s_column_bar {
 	margin-right:5px;
 	padding:2px 9px\9;
 }
-.autocalculate_div{ width:600px\9;}
+.autocalculate_div{ width:100%\9;}
 .faq_page_text{
   float:left;
 }
-.oa_auto_no_product { float:left; line-height:20px; width:350px\9;}
+.oa_auto_no_product { float:left; line-height:20px; width:100%\9;}
 .oa_auto_no_product_input { float:left;}
