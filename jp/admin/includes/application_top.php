@@ -410,6 +410,7 @@ if(isset($_GET['his_url'])&&$_GET['his_url']){
   $number_arr      = array('0', '1', '2', '3', '4', '5', '6', '7', '8', '9');
 
   // one time pwd
+  /*
   $page_name = $_SERVER['PHP_SELF'];
   $one_time_sql = "select * from ".TABLE_PWD_CHECK." where page_name='".$page_name."'";
   $one_time_query = tep_db_query($one_time_sql);
@@ -425,6 +426,7 @@ if(isset($_GET['his_url'])&&$_GET['his_url']){
       in_array('staff',$one_time_arr)){
     $_SESSION['onetime_pwd'] = false;
   }
+  */
 
 
 
