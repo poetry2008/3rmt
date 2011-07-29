@@ -5,7 +5,10 @@
 
   class splitPageResults {
 /* class constructor */
-
+    function cutOrderString($sql)
+    {
+      return preg_replace('/order by [a-z0-9A-Z\.\_]+ \w*$/','',trim($sql));
+    }
     function splitPageResults(&$current_page_number, $max_rows_per_page, &$sql_query, &$query_num_rows, $sql_count_query = null) {
       if (empty($current_page_number)) $current_page_number = 1;
       $offset = ($max_rows_per_page * ($current_page_number - 1));
@@ -15,7 +18,8 @@
         $count_result = tep_db_fetch_array($count_query);
         $query_num_rows = $count_result['count'];
       } else {
-        $query_num_rows = tep_db_num_rows(tep_db_query($sql_query));
+
+        $query_num_rows = tep_db_num_rows(tep_db_query($this->cutOrderString($sql_query)));
       }
       $sql_query .= " limit " . $offset . ", " . $max_rows_per_page;
     }

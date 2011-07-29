@@ -2,17 +2,12 @@
 /*
    $Id$
 */
-
+  ob_start();
   require('includes/application_top.php');
-
   require_once('oa/HM_Form.php'); 
   require_once('oa/HM_Group.php'); 
-//error_reporting(E_ALL);
-//ini_set('display_errors','On')  ;
   require(DIR_WS_FUNCTIONS . 'visites.php');
-
   require(DIR_WS_CLASSES . 'currencies.php');
-
   $currencies          = new currencies(2);
   $orders_statuses     = $all_orders_statuses = $orders_status_array = array();
 
@@ -2320,7 +2315,7 @@ function submit_confirm()
   }
   ?>
     <!-- 订单信息预览，配合javascript，永远浮动在屏幕右下角 -->
-    <div id="orders_info_box" style="display:none;position:absolute;background:#FFF;padding-top:5px;/*bottom:0;margin-top:40px;right:0;width:200px;*/">&nbsp;</div>
+    <div id="orders_info_box" style="display:none;position:absolute;background:#FFF;padding-top:5px;width:20%;/*bottom:0;margin-top:40px;right:0;width:200px;*/">&nbsp;</div>
   <?php
     echo '      </td>' . "\n";
 
@@ -2347,4 +2342,6 @@ function submit_confirm()
 <div id="wait" style="position:fixed; left:45%; top:45%; display:none;"><img src="images/load.gif" alt="img"></div>
 </body>
 </html>
-<?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>
+<?php require(DIR_WS_INCLUDES . 'application_bottom.php'); 
+   ob_end_flush();
+?>
