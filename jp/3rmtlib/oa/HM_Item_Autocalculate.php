@@ -83,7 +83,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
 
       if(!$op){ //if no products  ,continue;
 	  
-        echo "<input value='".$opp['products_id']."'  
+        echo "<input class='".$classrequire."' value='".$opp['products_id']."'  
         onchange='".$this->formname."Change_option(".$opp['products_id'].",this,".'"nullvalue"'.")' 
         type='checkbox' ".$check." name='0".$this->formname."' ";
         echo "/>";
@@ -197,7 +197,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
             }   
           }); 
       }   
-
+      checkLockOrder();
         $("#qa_form").ajaxSubmit();
     }
     </script>
