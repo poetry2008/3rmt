@@ -94,9 +94,9 @@ A.sub:hover { color: #dddddd; text-decoration: underline; }
 one_time_pwd('<?php echo $page_name;?>');
 </script>
 <?php }?>
-<table width="700" height="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+<table width="100%" height="100%" border="0" align="center" cellpadding="0" cellspacing="0">
   <tr>
-    <td><table border="0" width="700" height="390" cellspacing="0" cellpadding="1">
+    <td><table border="0" width="100%" height="390" cellspacing="0" cellpadding="1">
       <tr bgcolor="#000000">
         <td><table border="0" width="100%" height="390" cellspacing="0" cellpadding="0">
           <tr bgcolor="#ffffff" height="50">
