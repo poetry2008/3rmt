@@ -221,11 +221,11 @@ function showRequest(formData, jqForm, options) {
 // 列表右侧的订单信息显示
 function showOrdersInfo(text,ele){
   $('#orders_info_box').html(text);
-  
-  offset = $(ele).offset().top + $('#orders_info_box').height() > $(document).height() 
+
+    offset = ele.offsetTop + $('#orders_info_box').height() > $(document).height() 
     ? $(document).height() - $('#orders_info_box').height() 
-    : $(ele).offset().top;
-  //offset = 
+    : ele.offsetTop;
+
   $('#orders_info_box').css('top',offset).show();
 }
 

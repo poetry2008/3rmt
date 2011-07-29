@@ -53,9 +53,30 @@ class HM_Item_Autocalculate extends HM_Item_Basic
             ".TABLE_PRODUCTS_DESCRIPTION." pd where p.products_id=pd.products_id and
             pd.site_id='0' and p.products_id='".$opp['relate_products_id']."'"));
 
+      $checkbox_arr = $loadArray[$i];
+      $checkbox_info = explode('|',$checkbox_arr);
+      if(is_array($checkbox_info)&&$checkbox_info!=null){
+        $_checked = $checkbox_info[0]?$checkbox_info[0]:0;
+        $_value = $checkbox_info[1]?$checkbox_info[1]:0;
+        $__checked = $checkbox_info[2]!='null'?$checkbox_info[2]:0;
+      }else{
+        $_checked = 0;
+        $_value = 0;
+      }
+      //判断是否选中
+      if($_checked==$opp['products_id']&&$__checked==$op['products_id']){
+        $check = "checked"; 
+      }else{
+        $check = "";
+      }
+
       if(!$op){ //if no products  ,continue;
+        echo "<input value='".$opp['products_id']."'  
+        onchange='".$this->formname."Change_option(".$opp['products_id'].",this,".'null'.")' 
+        type='checkbox' ".$check." name='0".$this->formname."' ";
+        echo "/>";
         echo $opp['products_name'];
-        echo TEXT_AUTO_NO_OP;
+        echo "<div class='oa_auto_no_product' > TEXT_AUTO_NO_OP</div>";
         continue;
       }
       //      echo $op['products_bflag'];
@@ -66,23 +87,8 @@ class HM_Item_Autocalculate extends HM_Item_Basic
       }
       //checkbox 和 input 值 使用|分隔
 
-      $checkbox_arr = $loadArray[$i];
-      $checkbox_info = explode('|',$checkbox_arr);
-      if(is_array($checkbox_info)&&$checkbox_info!=null){
-        $_checked = $checkbox_info[0]?$checkbox_info[0]:0;
-        $_value = $checkbox_info[1]?$checkbox_info[1]:0;
-        $__checked = $checkbox_info[2]?$checkbox_info[2]:0;
-      }else{
-        $_checked = 0;
-        $_value = 0;
-      }
 
-      //判断是否选中
-      if($_checked==$opp['products_id']&&$__checked==$op['products_id']){
-        $check = "checked"; 
-      }else{
-        $check = "";
-      }
+
       echo "<div class='autocalculate_div'>";
 
       if($op){
