@@ -2,7 +2,7 @@
 /*
    $Id$
 */
-  ob_start();
+  //ob_start();
   require('includes/application_top.php');
   require_once('oa/HM_Form.php'); 
   require_once('oa/HM_Group.php'); 
@@ -2348,5 +2348,5 @@ function submit_confirm()
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); 
-   ob_end_flush();
+   //ob_end_flush();
 ?>
