@@ -1502,6 +1502,7 @@ function del_confirm_payment_time(oid, status_id)
             <td class="smallText" align="right">
               <?php echo tep_draw_form('status', FILENAME_ORDERS, '', 'get'); ?>
               <?php echo HEADING_TITLE_STATUS . ' ' . tep_draw_pull_down_menu('status', tep_array_merge(array(array('id' => '', 'text' => TEXT_ALL_ORDERS)), $all_orders_statuses), '', 'onChange="this.form.submit();"'); ?>
+              <input type="hidden" name="site_id" value="<?php echo (isset($_GET['site_id'])?$_GET['site_id']:0)?>"> 
               </form>
             </td>
           </tr>      
