@@ -104,7 +104,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
       echo "<div class='autocalculate_div'>";
 
       if($op){
-        echo "<input value='".$opp['products_id']."'  
+        echo "<input class='".$classrequire."' value='".$opp['products_id']."'  
         onchange='".$this->formname."Change_option(".$opp['products_id'].",this)' 
         type='checkbox' ".$check." name='0".$this->formname."' ";
         echo "id = 'spid_".$op['products_id']."'/>";
@@ -138,8 +138,8 @@ class HM_Item_Autocalculate extends HM_Item_Basic
     //$this->formname."Chage_span  方法 是设置 input 后面的Span 
     ?>
     <script type='text/javascript' >
-      var sum_flag = true;
-      var sub_flag = true;
+      var sum_flag = new Array();
+      var sub_flag = new Array();
       function <?php echo $this->formname."Chage_span(p_value,e_input,span_id)";?>{
       var v_input = e_input.value;
       if(v_input > p_value){
@@ -188,27 +188,27 @@ class HM_Item_Autocalculate extends HM_Item_Basic
 
       // 增加库存
       if ($(ele).attr('checked')) {
-        if(sum_flag){
+        if(!sum_flag[pid]){
         $("#"+pid+"<?php echo "_input_".$this->formname;?>").attr('readonly', true);
         $.ajax({
           url: 'ajax_orders.php?action=set_quantity&products_id='+pid+'&count='+($("#quantity_"+pid).html()-$("#"+pid+"<?php echo "_input_".$this->formname;?>").val()),
               async : false,
               success: function(data) {
-              sum_flag = false;
-              sub_flag = true;
+              sum_flag[pid] = true;
+              sub_flag[pid] = false;
             }   
           }); 
         }
       } else {
-        if(sub_flag){
+        if(!sub_flag[pid]){
         // 减库存
         $("#"+pid+"<?php echo "_input_".$this->formname;?>").attr('readonly', false);
         $.ajax({
           url: 'ajax_orders.php?action=set_quantity&products_id='+pid+'&count=-'+($("#quantity_"+pid).html()-$("#"+pid+"<?php echo "_input_".$this->formname;?>").val()),
               async : false,
               success: function(data) {
-              sum_flag = true;
-              sub_flag = false;
+              sum_flag[pid] = false;
+              sub_flag[pid] = true;
             }   
           }); 
         }

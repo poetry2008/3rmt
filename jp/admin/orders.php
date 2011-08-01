@@ -2,7 +2,7 @@
 /*
    $Id$
 */
-  ob_start();
+  //ob_start();
   require('includes/application_top.php');
   require_once('oa/HM_Form.php'); 
   require_once('oa/HM_Group.php'); 
@@ -1502,7 +1502,11 @@ function del_confirm_payment_time(oid, status_id)
             <td class="smallText" align="right">
               <?php echo tep_draw_form('status', FILENAME_ORDERS, '', 'get'); ?>
               <?php echo HEADING_TITLE_STATUS . ' ' . tep_draw_pull_down_menu('status', tep_array_merge(array(array('id' => '', 'text' => TEXT_ALL_ORDERS)), $all_orders_statuses), '', 'onChange="this.form.submit();"'); ?>
-              <input type="hidden" name="site_id" value="<?php echo (isset($_GET['site_id'])?$_GET['site_id']:0)?>"> 
+              <?php
+              if (isset($_GET['site_id'])) {
+                echo tep_draw_hidden_field('site_id', $_GET['site_id']); 
+              }
+              ?>
               </form>
             </td>
           </tr>      
@@ -2344,5 +2348,5 @@ function submit_confirm()
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); 
-   ob_end_flush();
+   //ob_end_flush();
 ?>
