@@ -85,7 +85,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
       if(!$op){ //if no products  ,continue;
 	  
         echo "<input class='".$classrequire."' value='".$opp['products_id']."'  
-        onchange='".$this->formname."Change_option(".$opp['products_id'].",this,".'"nullvalue"'.")' 
+        onchange='".$this->formname."Change_option(".$opp['products_id'].",this)' 
         type='checkbox' ".$check." name='0".$this->formname."' ";
         echo "/>";
         echo "".$opp['products_name'].TEXT_AUTO_NO_OP."";
@@ -105,9 +105,9 @@ class HM_Item_Autocalculate extends HM_Item_Basic
 
       if($op){
         echo "<input value='".$opp['products_id']."'  
-        onchange='".$this->formname."Change_option(".$opp['products_id'].",this,".$op['products_id'].")' 
+        onchange='".$this->formname."Change_option(".$opp['products_id'].",this)' 
         type='checkbox' ".$check." name='0".$this->formname."' ";
-        echo "/>";
+        echo "id = 'spid_".$op['products_id']."'/>";
         echo $op['products_name'];
         //有关联商品的 输出
         echo " <font id ='quantity_".$opp['products_id']."'
@@ -153,13 +153,14 @@ class HM_Item_Autocalculate extends HM_Item_Basic
         }
       }
     }
-    function <?php echo $this->formname."Change_option(pid,ele,spid)";?>{
+    function <?php echo $this->formname."Change_option(pid,ele)";?>{
 
       var <?php echo $this->formname;?>val ='';
       //循环 checkbox 把 checkbox状态 和input 值保存起来
       $("input|[name=0<?php echo $this->formname;?>]").each(function(){
           var check_info = '';
-          var span_value = $("#quantity_"+pid).html()-$("#"+pid+"<?php echo
+          var tmp_pid = $(this).val();
+          var span_value = $("#quantity_"+tmp_pid).html()-$("#"+tmp_pid+"<?php echo
                    "_input_".$this->formname;?>").val();
           if($(this).attr('checked')){
             if(span_value){
@@ -174,7 +175,11 @@ class HM_Item_Autocalculate extends HM_Item_Basic
               check_info = "0|"+"0";
             }
           }
-          check_info += '|'+spid;
+          if(this.id){
+            check_info += '|'+this.id.substr(5);
+          }else{
+            check_info += '|nullvalue';
+          }
           <?php echo $this->formname;?>val += check_info+"_";
         });
 
