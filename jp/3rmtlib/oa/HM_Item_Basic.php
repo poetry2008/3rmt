@@ -25,7 +25,7 @@ class HM_Item_Basic
 
   function updateValue($order_id,$form_id,$group_id,$item_id,$result)
     {
-    $sql = 'delete from '. TABLE_OA_FORMVALUE. " where form_id = '" . tep_db_input($form_id) . "' and item_id='". tep_db_input($item_id) . "' and group_id='". tep_db_input($group_id) . "'";
+    $sql = 'delete from '. TABLE_OA_FORMVALUE. " where form_id = '" . tep_db_input($form_id) . "' and orders_id ='".tep_db_input($orders_id)."' and item_id='". tep_db_input($item_id) . "' and group_id='". tep_db_input($group_id) . "'";
     tep_db_query($sql);
     $sql = "INSERT INTO ".TABLE_OA_FORMVALUE ." (`id`, `orders_id`, `form_id`, `item_id`, `group_id`, `name`, `value`) VALUES (NULL,'".$order_id."',".$form_id.",".$item_id.",".$group_id.",'".$this->formname."','".$result."')";
     return tep_db_query($sql);
