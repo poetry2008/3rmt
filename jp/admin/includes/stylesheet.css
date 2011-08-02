@@ -421,7 +421,7 @@ CHECKBOX, INPUT, RADIO, SELECT, TEXTAREA, FILE：FORMの入力・選択項目
 --------------------------- */
 CHECKBOX, INPUT, RADIO, SELECT, TEXTAREA, FILE {
 	font-family: "ＭＳ Ｐゴシック", Osaka, Verdana, Arial, sans-serif; /* フォントファミリ */
-	font-size: 11px;
+	font-size: 12px;
 }
 /* account */
 /* ---------------------------

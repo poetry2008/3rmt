@@ -217,3 +217,6 @@ define('CATEGORY_ALPHA_ROMAJI', '英数字:');
 define('HEAD_SEARCH_TITLE', '頭文字検索設定');
 define('HEAD_SEARCH_CHARACTER_COMMENT', '設定例：ア,カ,サ,タ,ナ カタカナで設定、カンマ区切り複数設定可');
 define('HEAD_SEARCH_ALPHA_COMMENT', '設定例：a,b,c,d,1,7 英数字で設定、カンマ区切りで複数設定可');
+
+define('TEXT_CATEGORY_HEAD_IMAGE_BACK','前のカテゴリへ');
+define('TEXT_CATEGORY_HEAD_IMAGE_NEXT','次のカテゴリへ');

@@ -25,3 +25,5 @@ define('CATEGORY_ADMIN_PRODUCT_NUM', '商品数:');
 define('CATEGORY_ADMIN_LAST_MODIFIED_TEXT', '更新日の日付');
 define('CATEGORY_ADMIN_AUTHOR_TEXT', '担当者:');
 define('CATEGORY_ADMIN_COMMENT_TEXT', 'コメント:');
+define('TEXT_CATEGORY_HEAD_IMAGE_BACK','前のカテゴリへ');
+define('TEXT_CATEGORY_HEAD_IMAGE_NEXT','次のカテゴリへ');

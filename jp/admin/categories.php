@@ -2071,7 +2071,8 @@ function get_cart_products(){
           &nbsp; 
           <?php
           if (isset($_GET['read'])) {
-            echo display_product_link($cPath, $_GET['pID'], $languages_id, $site_id); 
+            echo display_product_link($cPath, $_GET['pID'], $languages_id,
+                $site,true); 
           }
           ?>
       </td>
@@ -2450,10 +2451,13 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                 &nbsp; 
                 <?php
                   if ($cPath) {
-                    $display_ca_str = display_category_link($cPath, $current_category_id, $languages_id, $site_id); 
+                    $display_ca_str = display_category_link($cPath,
+                        $current_category_id, $languages_id,
+                        $site_id,FILENAME_CATEGORIES,true); 
                     echo $display_ca_str; 
                     if (empty($display_ca_str)) {
-                      echo get_same_level_category($cPath, $current_category_id, $languages_id, $site_id); 
+                      echo get_same_level_category($cPath, $current_category_id,
+                          $languages_id, $site_id,FILENAME_CATEGORIES,true); 
                     }
                   }
                 ?>

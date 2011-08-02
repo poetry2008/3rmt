@@ -3237,7 +3237,7 @@ function tep_get_orders_products_string($orders) {
   $str = '';
 
 
-  $str .= '<table border="0">';
+  $str .= '<table border="0" cellpadding="0" cellspacing="0">';
 
   /*
      $str .= '<tr><td class="mian" align="center" colspan="2"><table width="100%"><tr><td class="main" width="50%" align="left">';
@@ -4623,7 +4623,8 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
     return str_replace($arr,$arr2,$format_string);
   }
 
-  function display_product_link($cPath, $pID, $language_id = '4', $site_id)
+  function display_product_link($cPath, $pID, $language_id = '4',
+      $site_id,$td_flag=false)
   {
     $return_str = ''; 
     $cpath_arr = explode('_', $cPath);
@@ -4637,6 +4638,9 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
         p.products_id = p2c.products_id and p2c.categories_id = '".$category_id."'
         order by site_id DESC) c where site_id = ".$site_id." or site_id = 0 group by products_id order by sort_order, products_name, products_id");
 
+          if($td_flag){
+          $return_str .= "</td><td class='pageHeading' align='right'>";
+          }
     while ($products_res = tep_db_fetch_array($products_query)) {
       $product_arr[] = $products_res['products_id']; 
     }
@@ -4655,7 +4659,8 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
     return $return_str;
   }
 
-  function display_category_link($cPath, $current_category_id, $language_id = 4, $site_id, $page = FILENAME_CATEGORIES)
+  function display_category_link($cPath, $current_category_id, $language_id = 4,
+      $site_id, $page = FILENAME_CATEGORIES,$td_flag=false)
   {
     $return_str = ''; 
     $level_category_arr = array();
@@ -4692,17 +4697,21 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
           $show_ca_res = tep_db_fetch_array($show_ca_query);
 
           $return_str .= $show_ca_res['categories_name'].':&nbsp;';  
+          if($td_flag){
+          $return_str .= "</td><td class='pageHeading' align='right'>";
+          }
           if ($cur_key !== false) {
             if (isset($level_category_arr[$cur_key-1])) {
               $prev_id =  $level_category_arr[$cur_key-1];
               $link_cpath = get_link_parent_category($prev_id); 
-              $return_str .= '<input type="button" value="'.IMAGE_BACK.'" onclick="window.location.href=\''.tep_href_link($page, tep_get_all_get_params(array('page', 'x', 'y', 'cPath', 'cID')).'cPath='.$link_cpath).'\'">&nbsp;'; 
+              $return_str .= '<input type="button" value="'.TEXT_CATEGORY_HEAD_IMAGE_BACK.'" onclick="window.location.href=\''.tep_href_link($page, tep_get_all_get_params(array('page', 'x', 'y', 'cPath', 'cID')).'cPath='.$link_cpath).'\'">&nbsp;'; 
             }
 
             if (isset($level_category_arr[$cur_key+1])) {
               $next_id =  $level_category_arr[$cur_key+1];
               $link_cpath = get_link_parent_category($next_id); 
-              $return_str .= '&nbsp;<input type="button" value="'.IMAGE_NEXT.'" onclick="window.location.href=\''.tep_href_link($page, tep_get_all_get_params(array('page', 'x', 'y', 'cPath', 'cID')).'cPath='.$link_cpath).'\'">&nbsp;'; 
+              $return_str .= '&nbsp;<input type="button"
+                value="'.TEXT_CATEGORY_HEAD_IMAGE_NEXT.'" onclick="window.location.href=\''.tep_href_link($page, tep_get_all_get_params(array('page', 'x', 'y', 'cPath', 'cID')).'cPath='.$link_cpath).'\'">&nbsp;'; 
             }
           }
 
@@ -4739,7 +4748,8 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
     return $cid;
   }
 
-  function get_same_level_category($cPath, $current_category_id, $language_id, $site_id, $page = FILENAME_CATEGORIES)
+  function get_same_level_category($cPath, $current_category_id, $language_id,
+      $site_id, $page = FILENAME_CATEGORIES,$td_flag=false)
   {
     $return_str = ''; 
     $cpath_arr = explode('_', $cPath);
@@ -4761,14 +4771,19 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
             $show_ca_res = tep_db_fetch_array($show_ca_query);
 
           $return_str .= $show_ca_res['categories_name'].':&nbsp;';  
+          if($td_flag){
+          $return_str .= "</td><td class='pageHeading' align='right'>";
+          }
           if ($cur_pos !== false) {
             if (isset($category_arr[$cur_pos-1])) {
               $link_path = get_link_parent_category($category_arr[$cur_pos-1]);
-              $return_str .= '<input type="button" value="'.IMAGE_BACK.'" onclick="window.location.href=\''.tep_href_link($page, 'cPath='.$link_path.'&site_id='.(int)$site_id).'\'">&nbsp;'; 
+              $return_str .= '<input type="button"
+                value="'.TEXT_CATEGORY_HEAD_IMAGE_BACK.'" onclick="window.location.href=\''.tep_href_link($page, 'cPath='.$link_path.'&site_id='.(int)$site_id).'\'">&nbsp;'; 
             }
             if (isset($category_arr[$cur_pos+1])) {
               $link_path = get_link_parent_category($category_arr[$cur_pos+1]); 
-              $return_str .= '&nbsp;<input type="button" value="'.IMAGE_NEXT.'" onclick="window.location.href=\''.tep_href_link($page, 'cPath='.$link_path.'&site_id='.(int)$site_id).'\'">'; 
+              $return_str .= '&nbsp;<input type="button"
+                value="'.TEXT_CATEGORY_HEAD_IMAGE_NEXT.'" onclick="window.location.href=\''.tep_href_link($page, 'cPath='.$link_path.'&site_id='.(int)$site_id).'\'">'; 
             }
           }
         }
