@@ -219,19 +219,27 @@ function showRequest(formData, jqForm, options) {
 } 
 
 // 列表右侧的订单信息显示
-function showOrdersInfo(text,ele){
-  $('#orders_info_box').html(text);
+function showOrdersInfo(oID,ele){
+   $.ajax({
+    type:"POST",
+    data:"oid="+oID,
+    async:false, 
+    url: 'ajax_orders.php?action=show_right_order_info',
+    success: function(msg) {
+ 
+    $('#orders_info_box').html(msg);
 
     offset = ele.offsetTop + $('#orders_info_box').height() > $(document).height()
     ? $(document).height() - $('#orders_info_box').height() 
 	: ele.offsetTop+$("#orders_list_table").position().top;
-//-$(".dataTableContent").height()*1;
-
-  $('#orders_info_box').css('top',offset).show();
+      $('#orders_info_box').css('top',offset).show();
+    }
+  });
 }
 
 // 列表右侧的订单信息隐藏
 function hideOrdersInfo(){
+  $('#orders_info_box').html('');
   $('#orders_info_box').hide();
 }
 

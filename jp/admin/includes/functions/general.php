@@ -3234,7 +3234,7 @@ function tep_get_orders_products_names($orders_id) {
   return $str;
 }
 // orders.php
-function tep_get_orders_products_string($orders) {
+function tep_get_orders_products_string($orders, $single = false) {
   $str = '';
 
 
@@ -3328,7 +3328,11 @@ function tep_get_orders_products_string($orders) {
   $str .= '</table>';
   $str=str_replace("\n","",$str);
   $str=str_replace("\r","",$str);
-  return htmlspecialchars($str);
+  if ($single) {
+    echo $str; 
+  } else {
+    return htmlspecialchars($str);
+  }
 }
 
 // orders.php
