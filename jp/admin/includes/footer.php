@@ -60,7 +60,8 @@ if($_SESSION['user_permission'] == 15 ){
       echo "<input type='checkbox' name='pwd_check' value='onetime'
         >".TEXT_FOOTER_ONE_TIME."&nbsp;";
     }
-  echo "<input type='button' onclick='save_once_pwd_checkbox()' value='SAVE'>";
+  echo "<input type='button' onclick='save_once_pwd_checkbox()'
+    value='".TEXT_FOOTER_CHECK_SAVE."'>";
   }
   ?>
   </div>
