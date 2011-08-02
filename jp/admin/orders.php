@@ -471,8 +471,6 @@
 
       tep_remove_order($oID, $_POST['restock']);
       
-      tep_db_query("delete from ".TABLE_OA_FORMVALUE." where orders_id = '".$oID."'");
-
       tep_redirect(tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action'))));
       break;
   }
