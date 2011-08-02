@@ -67,12 +67,13 @@ function deleteItem()
   $type = ucfirst($item_info_res['type']);
   $class= 'HM_Item_'.$type;
   require_once "oa/".$class.'.php';
-  var_dump($class);
+  //var_dump($class);
   if(method_exists($class,'deleteTrigger')){
     call_user_func(array($class,'deleteTrigger'),$_GET['eid'])     ;
   }
   tep_db_query("delete from ".TABLE_OA_ITEM." where id = '".$_GET['eid']."'"); 
- }
+  tep_db_query("delete from ".TABLE_OA_FORMVALUE." where item_id = '".$_GET['eid']."'"); 
+}
 function updateItem()
 {
   
