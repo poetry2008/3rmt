@@ -113,15 +113,26 @@ class MailFetcher {
        return $result;
     }
     //die('xcvxcv');
-    $encodings=array('UTF-8','WINDOWS-1251', 'SHIFT-JIS','ISO-2022-JP','ISO-8859-5', 'ISO-8859-1','KOI8-R');
+    $encodings=array('SHIFT-JIS','ISO-2022-JP','UTF-8','WINDOWS-1251','ISO-8859-5',
+        'ISO-8859-1','KOI8-R','GB2312');
     if(function_exists("iconv") and $text) {
       if($charset)
       {
         //$result = iconv($charset,$enc,$text);
-        $result = iconv($charset,$enc.'//IGNORE',$text);
-        //      $result =iconv(mb_detect_encoding($text,$encodings),$enc,$text);
-      }
-      elseif(function_exists("mb_detect_encoding")){
+        
+//        echo $charset;
+        //$result = my_iconv($charset,$enc.'//IGNORE',$text);
+        foreach($encodings as  $key=>$value){
+          $result = my_iconv($value,$enc,$text);
+          if($result!=false){
+            break;
+          }
+          if($key == count($encodings)-1){
+             $result = iconv($charset,$enc.'//IGNORE',$text);
+             break;
+          }
+        }
+      }elseif(function_exists("mb_detect_encoding")){
         $result =iconv(mb_detect_encoding($text,$encodings),$enc,$text);
       }
       return $result;
@@ -282,6 +293,12 @@ class MailFetcher {
     $var['emailId']=$emailid?$emailid:$cfg->getDefaultEmailId(); //ok to default?
     $var['name']=$var['name']?$var['name']:$var['email']; //No name? use email
     $var['mid']=$mailinfo['mid'];
+
+    /*
+    text for dump value
+    var_dump("<br>------".$var['subject']."-------");
+    var_dump("<br>------".$var['message']."-------<br>");
+    exo*/it;
     if($cfg->useEmailPriority())
       $var['pri']=$this->getPriority($mid);
 
@@ -661,6 +678,7 @@ function getPosInString($search,$longString,$flag=''){
   }
   function chrtojp($chr){
    //$chr =  str_replace(chr(hexdec('1b')),'',$chr);
+
     return chr(hexdec('1b')).chr(hexdec('24')).chr(hexdec('42')).$chr.chr(hexdec('1b')).chr(hexdec('28')).chr(hexdec('42'));
   }
   function is_jp($str){
@@ -684,3 +702,18 @@ function tep_strstr($str1,$str2,$bool=false){
     return strstr($str1,$str2);
   }
 }
+function my_iconv($from, $to, $string) {  
+  echo $from;
+  echo $to;
+  echo '---';
+  @trigger_error('hi', E_USER_NOTICE);  
+  $result = @iconv($from, $to, $string);  
+    
+  $error = error_get_last();  
+  if($error['message']!='hi') {  
+       $result = $string;  
+       return false;
+  } else { 
+  return $result;  
+  }
+}  
