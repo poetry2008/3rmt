@@ -1293,7 +1293,7 @@ function tep_remove_order($order_id, $restock = false) {
   tep_db_query("delete from " . TABLE_ORDERS_TOTAL . " where orders_id = '" . tep_db_input($order_id) . "'");
   tep_db_query("delete from " . TABLE_ORDERS_TO_COMPUTERS . " where orders_id = '" . tep_db_input($order_id) . "'");
   tep_db_query("delete from orders_products_download where orders_id = '" . tep_db_input($order_id) . "'");
-  tep_db_query("delete from ".TABLE_OA_FORMVALUE." where orders_id = '".$order_id."'");
+  tep_db_query("delete from ".TABLE_OA_FORMVALUE." where orders_id = '".tep_db_input($order_id)."'");
 }
 
 function tep_reset_cache_block($cache_block, $site_id='') {
