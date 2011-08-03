@@ -2071,7 +2071,7 @@ function get_cart_products(){
           &nbsp; 
           <?php
           if (isset($_GET['read'])) {
-            echo display_product_link($cPath, $_GET['pID'], $languages_id, $site_id ,true); 
+            echo display_product_link($cPath, $_GET['pID'], $languages_id, $site_id ,false); 
           }
           ?>
       </td>
@@ -2463,11 +2463,6 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                     echo "<td class='smallText' align='right'>";
                   }
                 ?>
-                  <!--
-                </td>
-        <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT); ?></td>
-          <td class="smallText" align="right">
-          -->
           <?php echo tep_draw_form('search', FILENAME_CATEGORIES, '', 'get') . "\n"; ?>
             <table border="0">
             <tr>
