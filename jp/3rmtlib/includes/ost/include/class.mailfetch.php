@@ -34,7 +34,6 @@ class MailFetcher {
   function MailFetcher($username,$password,$hostname,$port,$protocol,$encryption='') {
     if(!strcasecmp($protocol,'pop')) //force pop3
       $protocol='pop3';
-
     $this->hostname=$hostname;
     $this->username=$username;
     $this->password=$password;
@@ -104,24 +103,17 @@ class MailFetcher {
 
   //Convert text to desired encoding..defaults to utf8
   function mime_encode($text,$charset=null,$enc='utf-8') { //Thank in part to afterburner  
-//    echo $text;
-//    $text = str_replace("/r/n","",$text);
-
-    //outString($text);
+    $charset = strtoupper($charset);
     if ($charset=='ISO-2022-JP'||$charset=='SHIFT-JIS'||$charset=='EUC-JP'){
        $result = noLCode($text);
        return $result;
     }
-    //die('xcvxcv');
+
     $encodings=array('SHIFT-JIS','ISO-2022-JP','UTF-8','WINDOWS-1251','ISO-8859-5',
         'ISO-8859-1','KOI8-R','GB2312');
     if(function_exists("iconv") and $text) {
       if($charset)
       {
-        //$result = iconv($charset,$enc,$text);
-        
-//        echo $charset;
-        //$result = my_iconv($charset,$enc.'//IGNORE',$text);
         foreach($encodings as  $key=>$value){
           $result = my_iconv($value,$enc,$text);
           if($result!=false){
@@ -135,7 +127,9 @@ class MailFetcher {
       }elseif(function_exists("mb_detect_encoding")){
         $result =iconv(mb_detect_encoding($text,$encodings),$enc,$text);
       }
-      return $result;
+    
+    
+      return utf8_encode($result);
     }
 
     return utf8_encode($text);
@@ -162,8 +156,6 @@ class MailFetcher {
 
     foreach ($a as $k => $part)
       $str.= $part->text;
-   //add by bobhero {{
-
 
     $explodeStr = explode("?",$text);
     if(strlen($explodeStr[1])){
@@ -213,12 +205,12 @@ class MailFetcher {
     if($struct && !$struct->ifdparameters && strcasecmp($mimeType,$this->getMimeType($struct))==0){
       $partNumber=$partNumber?$partNumber:1;
       if(($text=imap_fetchbody($this->mbox, $mid, $partNumber))){
-
-        if($struct->encoding==3 or $struct->encoding==4) //base64 and qp decode.
-          $text=$this->decode($struct->encoding,$text);
-
-        $charset=null;
-
+	        if($struct->encoding==3 or $struct->encoding==4) //base64 and qp decode.
+		  {
+		    $text=$this->decode($struct->encoding,$text);
+		  }
+		$charset=null;
+	
         if($encoding) { //Convert text to desired mime encoding...
           if($struct->ifparameters){
             $charsetkey=0;
@@ -231,7 +223,15 @@ class MailFetcher {
             if(!strcasecmp($struct->parameters[$charsetkey]->attribute,'CHARSET') && strcasecmp($struct->parameters[$charsetkey]->value,'US-ASCII'))
               $charset=trim($struct->parameters[$charsetkey]->value);
           }
-          $text=$this->mime_encode($text,$charset,$encoding);
+	  //	  echo $charset.$encoding.$text;
+
+	  if(strtolower($charset)=='utf-8' and strtolower($encoding)=='utf-8'){
+	    //
+	  }else{
+
+	    $text=$this->mime_encode($text,$charset,$encoding);
+
+	  }
 
         }
 
@@ -293,12 +293,6 @@ class MailFetcher {
     $var['emailId']=$emailid?$emailid:$cfg->getDefaultEmailId(); //ok to default?
     $var['name']=$var['name']?$var['name']:$var['email']; //No name? use email
     $var['mid']=$mailinfo['mid'];
-
-    /*
-    text for dump value
-    var_dump("<br>------".$var['subject']."-------");
-    var_dump("<br>------".$var['message']."-------<br>");
-    exo*/it;
     if($cfg->useEmailPriority())
       $var['pri']=$this->getPriority($mid);
 
@@ -424,7 +418,6 @@ class MailFetcher {
             "\nError: ".$fetcher->getLastError().
             "\n\n ".$errors.' consecutive errors. Maximum of '.$MAX_ERRORS. ' allowed'.
             "\n\n This could be connection issues related to the host. Next delayed login attempt in aprox. 10 minutes";
-          //                    die($msg);
           Sys::alertAdmin('Mail Fetch Failure Alert',$msg,true);
         }
       }
@@ -515,13 +508,8 @@ function splitToArrayBySE($startFlag,$endFlag,$stcom)
     if($x === false||!isset($x)){
       $x = $value;
     }
-//    else{
- //     $tmp_x = explode($tmpArr[$key+1],$value);
-  //    $x = $tmp_x[0]; 
-   // }
     $tmpArr2[] =$x;
   }
-  //die('xcvxvxx');
   return $tmpArr2;
 }
 function getPosInString($search,$longString,$flag=''){
@@ -708,12 +696,12 @@ function my_iconv($from, $to, $string) {
   echo '---';
   @trigger_error('hi', E_USER_NOTICE);  
   $result = @iconv($from, $to, $string);  
-    
   $error = error_get_last();  
   if($error['message']!='hi') {  
        $result = $string;  
        return false;
   } else { 
+    echo $result;
   return $result;  
   }
 }  
