@@ -2459,11 +2459,15 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                       echo get_same_level_category($cPath, $current_category_id,
                           $languages_id, $site_id,FILENAME_CATEGORIES,true); 
                     }
+                  }else{
+                    echo "<td class='smallText' align='right'>";
                   }
                 ?>
+                  <!--
                 </td>
         <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT); ?></td>
           <td class="smallText" align="right">
+          -->
           <?php echo tep_draw_form('search', FILENAME_CATEGORIES, '', 'get') . "\n"; ?>
             <table border="0">
             <tr>
@@ -2477,7 +2481,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
             </table> 
             </form>
           </td>
-          <td class="smallText" align="right">
+          <td class="smallText" align="right" width="60">
             <?php echo tep_draw_form('goto', FILENAME_CATEGORIES, '', 'get') . "\n"; ?>
 
               <div id="gotomenu">

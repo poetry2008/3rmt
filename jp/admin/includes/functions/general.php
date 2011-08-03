@@ -4644,7 +4644,7 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
         order by site_id DESC) c where site_id = ".$site_id." or site_id = 0 group by products_id order by sort_order, products_name, products_id");
 
           if($td_flag){
-          $return_str .= "</td><td class='pageHeading' align='right'>";
+          $return_str .= "</td><td class='smallText' align='right' width='420'>";
           }
     while ($products_res = tep_db_fetch_array($products_query)) {
       $product_arr[] = $products_res['products_id']; 
@@ -4652,13 +4652,16 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
     if (!empty($product_arr)) {
       $cur_key = array_search($pID, $product_arr);
       if ($cur_key !== false) {
+              $return_str .= '<div style="float:left;width:120px">&nbsp;';
         if (isset($product_arr[$cur_key-1])) {
           $return_str .= '<input type="button" value="'.TEXT_CATEGORY_HEAD_IMAGE_BACK.'" onclick="window.location.href=\''.tep_href_link(FILENAME_CATEGORIES, tep_get_all_get_params(array('page', 'x', 'y', 'pID')).'pID='.$product_arr[$cur_key-1]).'\'">&nbsp;'; 
         }
-
+              $return_str .= '</div>';
+              $return_str .= '<div style="float:left;width:120px">&nbsp;';
         if (isset($product_arr[$cur_key+1])) {
           $return_str .= '&nbsp;<input type="button" value="'.TEXT_CATEGORY_HEAD_IMAGE_NEXT.'" onclick="window.location.href=\''.tep_href_link(FILENAME_CATEGORIES, tep_get_all_get_params(array('page', 'x', 'y', 'pID')).'pID='.$product_arr[$cur_key+1]).'\'">&nbsp;'; 
         }
+              $return_str .= '</div>';
       }
     }
     return $return_str;
@@ -4703,10 +4706,10 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
 
           $return_str .= $show_ca_res['categories_name'].':&nbsp;';  
           if($td_flag){
-          $return_str .= "</td><td class='pageHeading' align='right' width='240px'>";
+          $return_str .= "</td><td class='smallText' align='right' width='420'>";
           }
           if ($cur_key !== false) {
-              $return_str .= '<div style="float:left;width:120px">';
+              $return_str .= '<div style="float:left;width:120px">&nbsp;';
             if (isset($level_category_arr[$cur_key-1])) {
               $prev_id =  $level_category_arr[$cur_key-1];
               $link_cpath = get_link_parent_category($prev_id); 
@@ -4714,7 +4717,7 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
             }
               $return_str .= '</div>';
 
-              $return_str .= '<div style="float:right;width:120px">';
+              $return_str .= '<div style="float:left;width:120px">&nbsp;';
             if (isset($level_category_arr[$cur_key+1])) {
               $next_id =  $level_category_arr[$cur_key+1];
               $link_cpath = get_link_parent_category($next_id); 
@@ -4781,19 +4784,23 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
 
           $return_str .= $show_ca_res['categories_name'].':&nbsp;';  
           if($td_flag){
-          $return_str .= "</td><td class='pageHeading' align='right'>";
+          $return_str .= "</td><td class='smallText' align='right' width='420'>";
           }
           if ($cur_pos !== false) {
-            if (isset($category_arr[$cur_pos-1])) {
               $link_path = get_link_parent_category($category_arr[$cur_pos-1]);
+              $return_str .= '<div style="float:left;width:120px">&nbsp;';
+            if (isset($category_arr[$cur_pos-1])) {
               $return_str .= '<input type="button"
                 value="'.TEXT_CATEGORY_HEAD_IMAGE_BACK.'" onclick="window.location.href=\''.tep_href_link($page, 'cPath='.$link_path.'&site_id='.(int)$site_id).'\'">&nbsp;'; 
             }
+              $return_str .= '</div>';
+              $return_str .= '<div style="float:left;width:120px">&nbsp;';
             if (isset($category_arr[$cur_pos+1])) {
               $link_path = get_link_parent_category($category_arr[$cur_pos+1]); 
               $return_str .= '&nbsp;<input type="button"
                 value="'.TEXT_CATEGORY_HEAD_IMAGE_NEXT.'" onclick="window.location.href=\''.tep_href_link($page, 'cPath='.$link_path.'&site_id='.(int)$site_id).'\'">'; 
             }
+              $return_str .= '</div>';
           }
         }
       }
