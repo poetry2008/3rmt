@@ -100,7 +100,8 @@ if (isset($_GET['action']) && $_GET['action']) {
             $languages_id, 0, FILENAME_CATEGORIES_ADMIN,true); 
         echo $display_ca_str; 
         if (empty($display_ca_str)) {
-          echo get_same_level_category($cPath, $current_category_id, $languages_id, $site_id, FILENAME_CATEGORIES_ADMIN); 
+          echo get_same_level_category($cPath, $current_category_id, $languages_id,
+              $site_id, FILENAME_CATEGORIES_ADMIN,true); 
         }
       }else{
         echo "<td class='smallText' align='right'>";
