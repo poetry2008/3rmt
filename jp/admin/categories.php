@@ -2459,6 +2459,8 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                       echo get_same_level_category($cPath, $current_category_id,
                           $languages_id, $site_id,FILENAME_CATEGORIES,true); 
                     }
+                  }else{
+                    echo "<td class='smallText' align='right'>";
                   }
                 ?>
                   <!--
