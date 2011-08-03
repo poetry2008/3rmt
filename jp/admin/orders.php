@@ -1989,12 +1989,17 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
           " . $where_payment . $where_type . "
          order by o.torihiki_date DESC
       ";
-    }
+  }
     // old sort is  order by torihiki_date_error DESC,o.torihiki_date DESC
     // new sort is  order by o.torihiki_date DESC
 //where
           //(o.q_8_1 IS NULL or o.q_8_1 = '')
-    $orders_split = new splitPageResults($_GET['page'], MAX_DISPLAY_ORDERS_RESULTS, $orders_query_raw, $orders_query_numrows);
+    $from_pos = strpos($orders_query_raw, 'from orders');
+    $order_pos = strpos($orders_query_raw, 'order by');
+    if (($from_pos !== false) && ($order_pos !== false)) {
+      $sql_count_query = "select count(orders_id) as count ".substr($orders_query_raw, $from_pos, $order_pos - $from_pos);
+    }
+    $orders_split = new splitPageResults($_GET['page'], MAX_DISPLAY_ORDERS_RESULTS, $orders_query_raw, $orders_query_numrows, $sql_count_query);
     //echo $orders_query_raw;
     $orders_query = tep_db_query($orders_query_raw);
     $allorders    = $allorders_ids = array();
