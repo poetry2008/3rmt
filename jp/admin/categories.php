@@ -2067,13 +2067,16 @@ function get_cart_products(){
 ?>
         <tr>
           <td class="pageHeading">
+<table width="100%"><tr><td>
         <?php echo tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' . $pInfo->products_name . "\n"; ?>
+
           &nbsp; 
           <?php
           if (isset($_GET['read'])) {
-            echo display_product_link($cPath, $_GET['pID'], $languages_id, $site_id ,false); 
+            echo display_product_link($cPath, $_GET['pID'], $languages_id, $site_id ,true); 
           }
           ?>
+</td></tr></table>
       </td>
     </tr>
     <tr>

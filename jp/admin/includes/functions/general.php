@@ -4644,7 +4644,7 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
         order by site_id DESC) c where site_id = ".$site_id." or site_id = 0 group by products_id order by sort_order, products_name, products_id");
 
           if($td_flag){
-          $return_str .= "</td><td class='smallText' align='right' width='420'>";
+          $return_str .= "</td><td class='smallText' align='right' width='240'>";
           }
     while ($products_res = tep_db_fetch_array($products_query)) {
       $product_arr[] = $products_res['products_id']; 
