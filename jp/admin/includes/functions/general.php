@@ -4703,10 +4703,10 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
 
           $return_str .= $show_ca_res['categories_name'].':&nbsp;';  
           if($td_flag){
-          $return_str .= "</td><td class='pageHeading' align='right' width='240px'>";
+          $return_str .= "</td><td class='pageHeading' align='right' width='420'>";
           }
           if ($cur_key !== false) {
-              $return_str .= '<div style="float:left;width:120px">';
+              $return_str .= '<div style="float:left;width:120px">&nbsp;';
             if (isset($level_category_arr[$cur_key-1])) {
               $prev_id =  $level_category_arr[$cur_key-1];
               $link_cpath = get_link_parent_category($prev_id); 
@@ -4714,7 +4714,7 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
             }
               $return_str .= '</div>';
 
-              $return_str .= '<div style="float:right;width:120px">';
+              $return_str .= '<div style="float:left;width:120px">&nbsp;';
             if (isset($level_category_arr[$cur_key+1])) {
               $next_id =  $level_category_arr[$cur_key+1];
               $link_cpath = get_link_parent_category($next_id); 
