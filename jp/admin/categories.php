@@ -2071,8 +2071,7 @@ function get_cart_products(){
           &nbsp; 
           <?php
           if (isset($_GET['read'])) {
-            echo display_product_link($cPath, $_GET['pID'], $languages_id,
-                $site,true); 
+            echo display_product_link($cPath, $_GET['pID'], $languages_id, $site_id ,true); 
           }
           ?>
       </td>
