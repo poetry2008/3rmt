@@ -2479,7 +2479,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
             </table> 
             </form>
           </td>
-          <td class="smallText" align="right">
+          <td class="smallText" align="right" width="60">
             <?php echo tep_draw_form('goto', FILENAME_CATEGORIES, '', 'get') . "\n"; ?>
 
               <div id="gotomenu">
