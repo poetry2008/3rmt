@@ -4657,7 +4657,6 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
           $return_str .= '<input type="button" value="'.TEXT_CATEGORY_HEAD_IMAGE_BACK.'" onclick="window.location.href=\''.tep_href_link(FILENAME_CATEGORIES, tep_get_all_get_params(array('page', 'x', 'y', 'pID')).'pID='.$product_arr[$cur_key-1]).'\'">&nbsp;'; 
         }
               $return_str .= '</div>';
-
               $return_str .= '<div style="float:left;width:120px">&nbsp;';
         if (isset($product_arr[$cur_key+1])) {
           $return_str .= '&nbsp;<input type="button" value="'.TEXT_CATEGORY_HEAD_IMAGE_NEXT.'" onclick="window.location.href=\''.tep_href_link(FILENAME_CATEGORIES, tep_get_all_get_params(array('page', 'x', 'y', 'pID')).'pID='.$product_arr[$cur_key+1]).'\'">&nbsp;'; 
@@ -4789,8 +4788,8 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
           }
           if ($cur_pos !== false) {
               $link_path = get_link_parent_category($category_arr[$cur_pos-1]);
-            if (isset($category_arr[$cur_pos-1])) {
               $return_str .= '<div style="float:left;width:120px">&nbsp;';
+            if (isset($category_arr[$cur_pos-1])) {
               $return_str .= '<input type="button"
                 value="'.TEXT_CATEGORY_HEAD_IMAGE_BACK.'" onclick="window.location.href=\''.tep_href_link($page, 'cPath='.$link_path.'&site_id='.(int)$site_id).'\'">&nbsp;'; 
             }

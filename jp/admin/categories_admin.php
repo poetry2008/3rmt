@@ -102,12 +102,15 @@ if (isset($_GET['action']) && $_GET['action']) {
         if (empty($display_ca_str)) {
           echo get_same_level_category($cPath, $current_category_id, $languages_id, $site_id, FILENAME_CATEGORIES_ADMIN); 
         }
+      }else{
+        echo "<td class='smallText' align='right'>";
       }
       ?>
+      <!--
       </td>
       <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT); ?></td>
-      <td class="smallText" align="right"><?php echo tep_draw_form('search', FILENAME_CATEGORIES_ADMIN, '', 'get') . "\n"; ?> <?php echo HEADING_TITLE_SEARCH . ' ' . tep_draw_input_field('search', isset($_GET['search'])?$_GET['search']:'') . "\n"; ?></form></td>
-      <td class="smallText" align="right">
+      <td class="smallText" align="right">--><?php echo tep_draw_form('search', FILENAME_CATEGORIES_ADMIN, '', 'get') . "\n"; ?> <?php echo HEADING_TITLE_SEARCH . ' ' . tep_draw_input_field('search', isset($_GET['search'])?$_GET['search']:'') . "\n"; ?></form></td>
+      <td class="smallText" width="60" align="right">
         <div id="gotomenu">
           <a href="javascript:void(0)" onclick="$('#categories_tree').toggle()"><?php echo CATEGORY_ADMIN_CATREE_TITLE;?></a>
           <div id="categories_tree">
