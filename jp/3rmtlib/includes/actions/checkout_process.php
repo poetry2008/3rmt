@@ -62,7 +62,8 @@ $payment_modules = new payment($payment);
   
 # OrderNo
 //if(!isset($_GET['option'])){
-  $insert_id = date("Ymd") . '-' . date("His") . ds_makeRandStr(2);
+  //$insert_id = date("Ymd") . '-' . date("His") . ds_makeRandStr(2);
+  $insert_id = date("Ymd") . '-' . date("His") . tep_get_order_end_num();
 //}else {
 //  $insert_id = $_GET['option'];
 //}
@@ -72,7 +73,8 @@ $NewOidQuery = tep_db_query("select count(*) as cnt from ".TABLE_ORDERS." where 
 $NewOid = tep_db_fetch_array($NewOidQuery);
 if($NewOid['cnt'] == 0) {
   # OrderNo
-    $insert_id = date("Ymd") . '-' . date("His") . ds_makeRandStr(2);
+    //$insert_id = date("Ymd") . '-' . date("His") . ds_makeRandStr(2);
+    $insert_id = date("Ymd") . '-' . date("His") . tep_get_order_end_num();
 }
   
 # load the selected shipping module(convenience_store)

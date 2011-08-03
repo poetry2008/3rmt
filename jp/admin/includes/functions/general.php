@@ -5890,3 +5890,22 @@ function tep_site_head_list($filename){
             </div>
             <?php
 }
+
+function tep_get_order_end_num() 
+{
+  $last_orders_raw = tep_db_query("select * from ".TABLE_ORDERS." order by orders_id desc limit 1"); 
+  $last_orders = tep_db_fetch_array($last_orders_raw);
+  
+  if ($last_orders) {
+    $last_orders_num = substr($last_orders['orders_id'], -2); 
+    
+    if (((int)$last_orders_num < 99) && ((int)$last_orders_num > 0)) {
+      $next_orders_num = (int)$last_orders_num + 1; 
+    } else {
+      $next_orders_num = 1; 
+    }
+    return sprintf('%02d', $next_orders_num); 
+  }
+  
+  return '01';
+}
