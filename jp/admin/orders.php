@@ -1361,7 +1361,7 @@ function del_confirm_payment_time(oid, status_id)
       <tr>
         <td class="main"><b><?php echo ENTRY_STATUS; ?></b>
         
-          <?php echo tep_draw_pull_down_menu('s_status', $orders_statuses, $select_select,  'onChange="mail_text(\'s_status\',\'comments\',\'title\')"'); ?>
+          <?php echo tep_draw_pull_down_menu('s_status', $orders_statuses, $select_select, 'onChange="new_mail_text(this, \'s_status\',\'comments\',\'title\')"'); ?>
         </td>
       </tr>
       <?php
