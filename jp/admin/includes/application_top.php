@@ -421,7 +421,12 @@ if(isset($_GET['his_url'])&&$_GET['his_url']){
     forward401();
   }
   if(!in_array('onetime',$one_time_arr)&&$_SESSION['user_permission']!=15){
-    forward401();
+    if($_SESSION['user_permission']==7&&in_array('chief',$one_time_arr)){
+      forward401();
+    }
+    if($_SESSION['user_permission']==10&&in_array('staff',$one_time_arr)){
+      forward401();
+    }
   }
   $_SESSION['onetime_pwd'] = true;
   if(in_array('admin',$one_time_arr)&&in_array('chief',$one_time_arr)&&
