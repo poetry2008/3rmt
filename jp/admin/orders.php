@@ -1996,8 +1996,13 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
           //(o.q_8_1 IS NULL or o.q_8_1 = '')
     $from_pos = strpos($orders_query_raw, 'from orders');
     $order_pos = strpos($orders_query_raw, 'order by');
+    $op_pos = strpos($orders_query_raw, 'distinct op.orders_id'); 
     if (($from_pos !== false) && ($order_pos !== false)) {
-      $sql_count_query = "select count(orders_id) as count ".substr($orders_query_raw, $from_pos, $order_pos - $from_pos);
+      if ($op_pos !== false) {
+        $sql_count_query = "select count(op.orders_id) as count ".substr($orders_query_raw, $from_pos, $order_pos - $from_pos);
+      } else {
+        $sql_count_query = "select count(o.orders_id) as count ".substr($orders_query_raw, $from_pos, $order_pos - $from_pos);
+      }
     }
     $orders_split = new splitPageResults($_GET['page'], MAX_DISPLAY_ORDERS_RESULTS, $orders_query_raw, $orders_query_numrows, $sql_count_query);
     //echo $orders_query_raw;
