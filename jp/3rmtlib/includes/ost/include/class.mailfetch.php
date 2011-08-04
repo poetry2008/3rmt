@@ -107,17 +107,21 @@ class MailFetcher {
   //Convert text to desired encoding..defaults to utf8
   function mime_encode($text,$charset=null,$enc='utf-8') { //Thank in part to afterburner  
     $charset = strtoupper($charset);
-    if ($charset=='ISO-2022-JP'||$charset=='SHIFT-JIS'||$charset=='EUC-JP'){
+    if ($charset=='' || $charset=='ISO-2022-JP'||$charset=='SHIFT-JIS'||$charset=='EUC-JP'){
        $result = noLCode($text);
        return $result;
     }
-    $encodings=array('SHIFT-JIS','ISO-2022-JP','GBK','WINDOWS-1251','ISO-8859-5',
+    $encodings=array('SHIFT-JIS','ISO-2022-JP','GB2312','GBK','WINDOWS-1251','ISO-8859-5',
                      'ISO-8859-1','KOI8-R','GB2312');
     if(function_exists("iconv") and $text) {
       if($charset)
       {
+	$result = my_iconv($charset,$enc,$text);
+	if($result!=false){
+	  return $result;
+	}
         foreach($encodings as  $key=>$value){
-	  echo $value;
+
           $result = my_iconv($value,$enc,$text);
           if($result!=false){
             break;
@@ -329,7 +333,6 @@ class MailFetcher {
 
       }
     } 
-return false;
     return $ticket;
   }
 
