@@ -82,6 +82,9 @@ class MailFetcher {
   function decode($encoding,$text) {
 
     switch($encoding) {
+      case 0:
+        $text=imap_8bit($text);
+        break;
       case 1:
         $text=imap_8bit($text);
         break;
@@ -108,13 +111,13 @@ class MailFetcher {
        $result = noLCode($text);
        return $result;
     }
-
-    $encodings=array('SHIFT-JIS','ISO-2022-JP','UTF-8','WINDOWS-1251','ISO-8859-5',
-        'ISO-8859-1','KOI8-R','GB2312');
+    $encodings=array('SHIFT-JIS','ISO-2022-JP','GBK','WINDOWS-1251','ISO-8859-5',
+                     'ISO-8859-1','KOI8-R','GB2312');
     if(function_exists("iconv") and $text) {
       if($charset)
       {
         foreach($encodings as  $key=>$value){
+	  echo $value;
           $result = my_iconv($value,$enc,$text);
           if($result!=false){
             break;
@@ -124,14 +127,12 @@ class MailFetcher {
              break;
           }
         }
+	return $result;
       }elseif(function_exists("mb_detect_encoding")){
         $result =iconv(mb_detect_encoding($text,$encodings),$enc,$text);
       }
-    
-    
       return utf8_encode($result);
     }
-
     return utf8_encode($text);
   }
 
@@ -282,7 +283,7 @@ class MailFetcher {
     //Make sure the email is NOT one of the undeleted emails.
     if($mailinfo['mid'] && ($id=Ticket::getIdByMessageId(trim($mailinfo['mid']),$mailinfo['from']['email']))){
       //TODO: Move emails to a fetched folder when delete is false?? 
-      return false;
+            return false;
     }
     $var['name']=$this->mime_decode($mailinfo['from']['name']);
     $var['email']=$mailinfo['from']['email'];
@@ -328,6 +329,7 @@ class MailFetcher {
 
       }
     } 
+return false;
     return $ticket;
   }
 
