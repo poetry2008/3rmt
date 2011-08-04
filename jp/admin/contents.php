@@ -8,6 +8,7 @@
   if (isset($_GET['act']) && $_GET['act']) {
     switch ($_GET['act']) {
       case 'update':
+        $site_id = (isset($_GET['site_id']))?$_GET['site_id']:0;
  if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];//权限判断
          else $site_arr="";
  forward401Unless(editPermission($site_arr, $site_id));
@@ -65,7 +66,8 @@
 
         if ($error == false) {
           tep_db_perform(TABLE_INFORMATION_PAGE, $sql_data_array, 'update', "pID = '" . tep_db_input($cID) . "'");
-          tep_redirect(tep_href_link(FILENAME_CONTENTS, 'cID=' . $cID . '&page='.$page));
+          tep_redirect(tep_href_link(FILENAME_CONTENTS, 'cID=' . $cID .
+                '&page='.$page.((isset($_GET['site_id'])&&$_GET['site_id'])?'&site_id='.$_GET['site_id']:'')));
         }
         break;
       case 'insert':
@@ -187,7 +189,8 @@
             </table></td> 
         </tr> 
         <tr> 
-          <td> <?php echo tep_draw_form('update', FILENAME_CONTENTS, 'act=update'); ?> 
+          <td> <?php echo tep_draw_form('update', FILENAME_CONTENTS, 'act=update'
+              .((isset($_GET['site_id'])&&$_GET['site_id'])?'&site_id='.$_GET['site_id']:'')); ?> 
             <table border="0" cellspacing="0" cellpadding="5"> 
               <tr> 
                 <td class="main"><?php echo ENTRY_SITE; ?></td> 
