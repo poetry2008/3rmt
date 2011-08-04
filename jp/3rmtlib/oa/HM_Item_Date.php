@@ -49,7 +49,6 @@ class HM_Item_Date extends HM_Item_Basic
     echo "<input class='outform ".$classrequire."' id = '".$this->formname."' type='hidden' name='".$this->formname."' value='".$this->defaultValue."' />";
     $thevalue = $this->loaded?$this->defaultValue:"";
     echo "<span id='".$this->formname."showvalue' >".str_replace('-', '/', $thevalue)."</span>";
-    //    if(empty($thevalue)){
     echo "<button type='button' id = '".$this->formname.'submit'."' >".$this->submitName."</button>";
     //    }
     echo $this->afterInput;
@@ -69,6 +68,7 @@ class HM_Item_Date extends HM_Item_Basic
 			      $("#<?php echo $this->formname;?>").val(data);
 			      $("#wait").hide();
 			      $('body').css('cursor','');
+                  checkLockOrder();
                    }
                  });
              });
