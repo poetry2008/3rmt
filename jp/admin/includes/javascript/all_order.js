@@ -579,3 +579,77 @@ function once_pwd_redircet_new_url(url_str){
     }
   });
 }
+
+function new_mail_text(ele,st,tt,ot){
+  // 选中的索引
+  var idx = document.sele_act.elements[st].selectedIndex;
+  // 选中值
+  var CI  = document.sele_act.elements[st].options[idx].value;
+  // 选中的checkbox值
+  if (st == 'status') {
+    // 列表页
+    chk = getCheckboxValue('chk[]');
+  } else {
+    // 详细页
+    chk = new Array();
+    chk[0] = 0;
+  }
+  
+  // 如果有了游戏人物名则不允许多选
+  
+  if((chk.length > 1)  && window.status_text[CI][0].indexOf('${ORDER_A}') != -1){
+    alert('複数の選択はできません。');
+    document.sele_act.elements[st].options[window.last_status].selected = true;
+    return false;
+  }
+  if(chk.length < 1){
+    alert('注文書はまだ選択していません。');
+    document.sele_act.elements[st].options[window.last_status].selected = true;
+    return false;
+  }
+  // 记录上一个状态
+  window.last_status = idx;
+  // 更换表单内容
+  if (st == 'status') {
+    // 列表页
+    if (typeof(window.status_title[CI]) != 'undefined' && typeof(window.status_title[CI][window.orderSite[chk[0]]]) != 'undefined') {
+      document.sele_act.elements[ot].value = window.status_title[CI][window.orderSite[chk[0]]];
+      document.sele_act.elements[tt].value = window.status_text[CI][window.orderSite[chk[0]]].replace('${ORDER_A}', window.orderStr[chk[0]]);
+    } else if (typeof(window.status_title[CI]) != 'undefined'){
+      document.sele_act.elements[ot].value = window.status_title[CI][0];
+      document.sele_act.elements[tt].value = window.status_text[CI][0].replace('${ORDER_A}', window.orderStr[chk[0]]);
+    }
+  } else {
+    // 详细页
+    if (typeof(window.status_title[CI]) != 'undefined') {
+      document.sele_act.elements[ot].value = window.status_title[CI][0];
+      document.sele_act.elements[tt].value = window.status_text[CI][0].replace('${ORDER_A}', window.orderStr);
+    } else if (typeof(window.status_title[CI]) != 'undefined'){
+      document.sele_act.elements[ot].value = window.status_title[CI][0];
+      document.sele_act.elements[tt].value = window.status_text[CI][0].replace('${ORDER_A}', window.orderStr);
+    }
+  }
+  // 替换${PAY_DATE}
+  if(document.sele_act.elements[tt].value.indexOf('${PAY_DATE}') != -1){
+   $.ajax({
+    dataType: 'text',
+    url: 'ajax_orders.php?action=paydate',
+    success: function(text) {
+      document.sele_act.elements[tt].value = document.sele_act.elements[tt].value.replace('${PAY_DATE}',text);
+    }
+  });
+  }
+  
+  // 邮件和提醒的checkbox
+  if (nomail[CI] == '1') {
+    $('#notify_comments').attr('checked','');
+    $('#notify').attr('checked','');
+  } else {
+    $('#notify_comments').attr('checked',true);
+    $('#notify').attr('checked',true);
+  }
+  
+  if ($(ele).val() == 20) {
+    $('#notify').attr('checked', false);  
+  }
+}
