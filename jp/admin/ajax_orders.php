@@ -321,6 +321,11 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
   }
 }else if(isset($_GET['action'])&&$_GET['action']=='getpwdcheckbox'){
   $page_name = $_POST['page_name'];
+  if($_SESSION['last_page']!= $page_name){
+    unset($_SESSION[$_SESSION['last_page']]);
+    $_SESSION['last_page'] = $page_name;
+  }
+  
   $one_time_sql = "select * from ".TABLE_PWD_CHECK." where page_name='".$page_name."'";
   $one_time_query = tep_db_query($one_time_sql);
   $one_time_arr = array();
