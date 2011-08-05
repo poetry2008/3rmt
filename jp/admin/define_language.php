@@ -157,9 +157,6 @@
           <tr>
             <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
           </tr>
-          <tr>
-            <td align="right"><?php echo '<a href="' .  tep_href_link(FILENAME_FILE_MANAGER, 'current_path=' .  DIR_FS_CATALOG_LANGUAGES . $_GET['lngdir']) . '">' .  tep_html_element_button(IMAGE_FILE_MANAGER) . '</a>'; ?></td>
-          </tr>
 <?php
   }
 ?>
