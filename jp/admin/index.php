@@ -89,7 +89,8 @@ A.sub:hover { color: #dddddd; text-decoration: underline; }
 //--></style>
 </head>
 <body>
-<?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])){?>
+<?php
+if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
 <script language='javascript'>
 one_time_pwd('<?php echo $page_name;?>');
 </script>

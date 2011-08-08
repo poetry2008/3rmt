@@ -1487,7 +1487,7 @@ function PageHeader() {
   echo '<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>'."\n";
   echo '</head>' . "\n";
   echo '<body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">' . "\n";
-  if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])){
+  if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){
   echo "<script language='javascript'>
     one_time_pwd('".$page_name."');
       </script>";
