@@ -110,7 +110,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
         echo "id = 'spid_".$op['products_id']."'/>";
         echo $op['products_name'];
         //有关联商品的 输出
-        echo " <font id ='quantity_".$opp['products_id']."'
+        echo " <font id ='quantity_".$i."_".$opp['products_id']."'
           >".$opp['products_quantity']."</font> - ";
         echo "<input type='text'
           value='".($check=="checked"?intval($opp['products_quantity']-$_value):0)."' 
@@ -160,7 +160,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
       $("input|[name=0<?php echo $this->formname;?>]").each(function(){
           var check_info = '';
           var tmp_pid = $(this).val();
-          var span_value = $("#quantity_"+tmp_pid).html()-$("#"+tmp_pid+"<?php echo
+          var span_value = $("#quantity_"+"t"+"_"+tmp_pid).html()-$("#"+tmp_pid+"<?php echo
                    "_input_".$this->formname;?>").val();
           if($(this).attr('checked')){
             if(span_value){
@@ -191,7 +191,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
         if(!sum_flag[t]){
         $("#"+pid+"<?php echo "_input_".$this->formname;?>").attr('readonly', true);
         $.ajax({
-          url: 'ajax_orders.php?action=set_quantity&products_id='+pid+'&count='+($("#quantity_"+pid).html()-$("#"+pid+"<?php echo "_input_".$this->formname;?>").val()),
+          url: 'ajax_orders.php?action=set_quantity&products_id='+pid+'&count='+($("#quantity_"+t+"_"+pid).html()-$("#"+pid+"<?php echo "_input_".$this->formname;?>").val()),
               async : false,
               success: function(data) {
               sum_flag[t] = true;
@@ -204,7 +204,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
         // 减库存
         $("#"+pid+"<?php echo "_input_".$this->formname;?>").attr('readonly', false);
         $.ajax({
-          url: 'ajax_orders.php?action=set_quantity&products_id='+pid+'&count=-'+($("#quantity_"+pid).html()-$("#"+pid+"<?php echo "_input_".$this->formname;?>").val()),
+          url: 'ajax_orders.php?action=set_quantity&products_id='+pid+'&count=-'+($("#quantity_"+t+"_"+pid).html()-$("#"+pid+"<?php echo "_input_".$this->formname;?>").val()),
               async : false,
               success: function(data) {
               sum_flag[t] = false;
