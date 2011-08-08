@@ -85,7 +85,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
       if(!$op){ //if no products  ,continue;
 	  
         echo "<input class='".$classrequire."' value='".$opp['products_id']."'  
-        onchange='".$this->formname."Change_option(".$opp['products_id'].",this)' 
+        onchange='".$this->formname."Change_option(".$opp['products_id'].",this,".$i.")' 
         type='checkbox' ".$check." name='0".$this->formname."' ";
         echo "/>";
         echo "".$opp['products_name'].TEXT_AUTO_NO_OP."";
@@ -105,7 +105,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
 
       if($op){
         echo "<input class='".$classrequire."' value='".$opp['products_id']."'  
-        onchange='".$this->formname."Change_option(".$opp['products_id'].",this)' 
+        onchange='".$this->formname."Change_option(".$opp['products_id'].",this,".$i.")' 
         type='checkbox' ".$check." name='0".$this->formname."' ";
         echo "id = 'spid_".$op['products_id']."'/>";
         echo $op['products_name'];
@@ -153,7 +153,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
         }
       }
     }
-    function <?php echo $this->formname."Change_option(pid,ele)";?>{
+    function <?php echo $this->formname."Change_option(pid,ele,t)";?>{
 
       var <?php echo $this->formname;?>val ='';
       //循环 checkbox 把 checkbox状态 和input 值保存起来
@@ -188,27 +188,27 @@ class HM_Item_Autocalculate extends HM_Item_Basic
 
       // 增加库存
       if ($(ele).attr('checked')) {
-        if(!sum_flag[pid]){
+        if(!sum_flag[t]){
         $("#"+pid+"<?php echo "_input_".$this->formname;?>").attr('readonly', true);
         $.ajax({
           url: 'ajax_orders.php?action=set_quantity&products_id='+pid+'&count='+($("#quantity_"+pid).html()-$("#"+pid+"<?php echo "_input_".$this->formname;?>").val()),
               async : false,
               success: function(data) {
-              sum_flag[pid] = true;
-              sub_flag[pid] = false;
+              sum_flag[t] = true;
+              sub_flag[t] = false;
             }   
           }); 
         }
       } else {
-        if(!sub_flag[pid]){
+        if(!sub_flag[t]){
         // 减库存
         $("#"+pid+"<?php echo "_input_".$this->formname;?>").attr('readonly', false);
         $.ajax({
           url: 'ajax_orders.php?action=set_quantity&products_id='+pid+'&count=-'+($("#quantity_"+pid).html()-$("#"+pid+"<?php echo "_input_".$this->formname;?>").val()),
               async : false,
               success: function(data) {
-              sum_flag[pid] = false;
-              sub_flag[pid] = true;
+              sum_flag[t] = false;
+              sub_flag[t] = true;
             }   
           }); 
         }
