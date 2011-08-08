@@ -134,6 +134,8 @@ case 'delete':
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
   <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
   <script type="text/javascript" src="includes/javascript/jquery.js"></script>
+  <script language="javascript" src="includes/javascript/jquery_include.js"></script>
+  <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
   <script type="text/javascript">
   var html = new Array();
 var i=0;
@@ -303,6 +305,11 @@ function ex(id){
 </script>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" >
+<?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
+  <script language='javascript'>
+    one_time_pwd('<?php echo $page_name;?>');
+  </script>
+<?php }?>
 <?php  //<body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onLoad="SetFocus();">
   ?>
   <div id="spiffycalendar" class="text"></div>

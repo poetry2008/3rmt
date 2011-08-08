@@ -62,6 +62,8 @@ if (isset($_GET['action']) && $_GET['action']) {
   <script type="text/javascript" src="includes/javascript/jquery.js"></script>
   <script type="text/javascript" src="includes/javascript/udlr.js"></script>
   <script type="text/javascript" src="includes/set/c_admin.js"></script>
+  <script language="javascript" src="includes/javascript/jquery_include.js"></script>
+  <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
   <script type="text/javascript">
   $(document).ready(function(){
     $(".udlr").udlr();
@@ -70,6 +72,11 @@ if (isset($_GET['action']) && $_GET['action']) {
   </script>
   </head>
   <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" >
+  <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
+  <script language='javascript'>
+    one_time_pwd('<?php echo $page_name;?>');
+  </script>
+<?php }?>
   <div id="spiffycalendar" class="text"></div>
   <!-- header //-->
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
@@ -107,10 +114,7 @@ if (isset($_GET['action']) && $_GET['action']) {
         echo "<td class='smallText' align='right'>";
       }
       ?>
-      <!--
-      </td>
-      <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT); ?></td>
-      <td class="smallText" align="right">--><?php echo tep_draw_form('search', FILENAME_CATEGORIES_ADMIN, '', 'get') . "\n"; ?> <?php echo HEADING_TITLE_SEARCH . ' ' . tep_draw_input_field('search', isset($_GET['search'])?$_GET['search']:'') . "\n"; ?></form></td>
+      <?php echo tep_draw_form('search', FILENAME_CATEGORIES_ADMIN, '', 'get') . "\n"; ?> <?php echo HEADING_TITLE_SEARCH . ' ' . tep_draw_input_field('search', isset($_GET['search'])?$_GET['search']:'') . "\n"; ?></form></td>
       <td class="smallText" width="60" align="right">
         <div id="gotomenu">
           <a href="javascript:void(0)" onclick="$('#categories_tree').toggle()"><?php echo CATEGORY_ADMIN_CATREE_TITLE;?></a>

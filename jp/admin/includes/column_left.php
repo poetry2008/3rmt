@@ -2,6 +2,7 @@
 /*
   $Id$
 */
+/*
 if ((strpos($_SERVER['PHP_SELF'], 'history.php') === false)  && 
     (strpos($_SERVER['PHP_SELF'], 'cleate_oroshi.php') === false) && 
     (strpos($_SERVER['PHP_SELF'], 'list_display.php') === false) && 
@@ -21,7 +22,13 @@ if ((strpos($_SERVER['PHP_SELF'], 'history.php') === false)  &&
     (strpos($_SERVER['PHP_SELF'], 'orders.php') === false)) {
 ?>
 <script type="text/javascript" src="includes/javascript/jquery.js"></script>
-<?php }?>
+<?php }
+*/?>
+<script type="text/javascript" >
+if (typeof window.jQuery == "undefined") {
+    document.write('<script language="javascript" src="includes/javascript/jquery.js"><\/script>');
+}
+</script>
 <?php
 if ($ocertify->npermission >= 10) {?>
 <script>
