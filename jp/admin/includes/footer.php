@@ -97,8 +97,7 @@ if($_SESSION['user_permission'] == 15 ){
     <?
 }
 
-$page_name = $_POST['page_name'];
-  if($_SESSION['last_page']!= $page_name){
+if($_SESSION['last_page']!= $page_name){
     unset($_SESSION[$_SESSION['last_page']]);
     $_SESSION['last_page'] = $page_name;
 }
