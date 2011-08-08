@@ -160,7 +160,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
       $("input|[name=0<?php echo $this->formname;?>]").each(function(){
           var check_info = '';
           var tmp_pid = $(this).val();
-          var span_value = $("#quantity_"+"t"+"_"+tmp_pid).html()-$("#"+tmp_pid+"<?php echo
+          var span_value = $("#quantity_"+t+"_"+tmp_pid).html()-$("#"+tmp_pid+"<?php echo
                    "_input_".$this->formname;?>").val();
           if($(this).attr('checked')){
             if(span_value){
