@@ -3287,7 +3287,7 @@ function tep_get_orders_products_string($orders, $single = false) {
   $str .= '<tr><td colspan="2">&nbsp;</td></tr>';
   $str .= '<tr><td class="main"><b>オプション：</b></td><td class="main" style="color:blue;"><b>'.$orders['torihiki_houhou'].'</b></td></tr>';
 
-  $orders_products_query = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS." op,".TABLE_PRODUCTS." p where p.products_id = op.products_id and op.orders_id = '".$orders['orders_id']."'");
+  $orders_products_query = tep_db_query("select distinct(*) from ".TABLE_ORDERS_PRODUCTS." op,".TABLE_PRODUCTS." p where p.products_id = op.products_id and op.orders_id = '".$orders['orders_id']."'");
   $autocalculate_arr = array();
   $autocalculate_sql = "select oaf.value as arr_str from ".TABLE_OA_FORMVALUE." oaf,".
     TABLE_OA_ITEM." oai 
@@ -3304,10 +3304,8 @@ function tep_get_orders_products_string($orders, $single = false) {
       $autocalculate_arr[] = array($temp_arr[0],$temp_arr[2]);
     }
   }
-  var_dump($autocalculate_arr);
   while ($p = tep_db_fetch_array($orders_products_query)) {
     $products_attributes_query = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS_ATTRIBUTES." where orders_products_id='".$p['orders_products_id']."'");
-    var_dump(array($p['products_id'],$p['relate_products_id']));
     if(in_array(array($p['products_id'],$p['relate_products_id']),$autocalculate_arr)&&
         !empty($autocalculate_arr)){
       $str .= '<tr><td class="main"><b>商品：</b><font color="red">「入」</font></td><td class="main">'.$p['products_name'].'</td></tr>';
