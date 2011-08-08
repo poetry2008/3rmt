@@ -3304,10 +3304,9 @@ function tep_get_orders_products_string($orders, $single = false) {
       $autocalculate_arr[] = array($temp_arr[0],$temp_arr[2]);
     }
   }
-  var_dump($autocalculate_arr);
   while ($p = tep_db_fetch_array($orders_products_query)) {
     $products_attributes_query = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS_ATTRIBUTES." where orders_products_id='".$p['orders_products_id']."'");
-    var_dump(array($p['products_id'],$p['relate_products_id']));
+
     if(in_array(array($p['products_id'],$p['relate_products_id']),$autocalculate_arr)&&
         !empty($autocalculate_arr)){
       $str .= '<tr><td class="main"><b>商品：</b><font color="red">「入」</font></td><td class="main">'.$p['products_name'].'</td></tr>';
