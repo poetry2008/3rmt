@@ -40,7 +40,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
     //每一个 关联 使用_ 分割
     $loadArray = explode('_',$this->defaultValue);
     //对照 orders 的 关联商品 查找数据
-    $orders_products_query = tep_db_query("select
+    $orders_products_query = tep_db_query("select op.orders_products_id, 
         p.products_id,op.products_quantity,op.products_name,p.relate_products_id,p.products_bflag
         from ".TABLE_ORDERS_PRODUCTS." op, ".TABLE_PRODUCTS." p where
         op.products_id=p.products_id and
@@ -64,7 +64,9 @@ class HM_Item_Autocalculate extends HM_Item_Basic
         $_checked = $checkbox_info[0]?$checkbox_info[0]:0;
         $_value = $checkbox_info[1]?$checkbox_info[1]:0;
         $__checked = $checkbox_info[2]?$checkbox_info[2]:0;
+        $___checked = $checkbox_info[3]?$checkbox_info[3]:0;
       }else{
+        $___checked = 0; 
         $__checked = 0; 
         $_checked = 0;
         $_value = 0;
@@ -73,22 +75,26 @@ class HM_Item_Autocalculate extends HM_Item_Basic
       if(!$op){
         $currentNull = true;
       }
-      if($_checked==$opp['products_id']&&$__checked==$op['products_id']){
+      if($_checked==$opp['products_id']&&$__checked==$op['products_id']
+          &&$___checked==$opp['orders_products_id']){
         $check = "checked"; 
       }else{
         $check = "";
       }
-      if($currentNull and $_checked == $opp['products_id']){
+      if($currentNull and $_checked == $opp['products_id']
+          &&$___checked==$opp['orders_products_id']){
         $check = 'checked';
       }
 
       if(!$op){ //if no products  ,continue;
 	  
-        echo "<input class='".$classrequire."' value='".$opp['products_id']."'  
+        echo "<input class='".$classrequire."'
+          value='".$opp['products_id']."|".$opp['orders_products_id']."'  
         onchange='".$this->formname."Change_option(".$opp['products_id'].",this,".$i.")' 
         type='checkbox' ".$check." name='0".$this->formname."' ";
         echo "/>";
         echo "".$opp['products_name'].TEXT_AUTO_NO_OP."";
+        $i++;
         continue;
       }
       //      echo $op['products_bflag'];
@@ -104,7 +110,8 @@ class HM_Item_Autocalculate extends HM_Item_Basic
       echo "<div class='autocalculate_div'>";
 
       if($op){
-        echo "<input class='".$classrequire."' value='".$opp['products_id']."'  
+        echo "<input class='".$classrequire."'
+          value='".$opp['products_id']."|".$opp['orders_products_id']."'  
         onchange='".$this->formname."Change_option(".$opp['products_id'].",this,".$i.")' 
         type='checkbox' ".$check." name='0".$this->formname."' ";
         echo "id = 'spid_".$op['products_id']."'/>";
@@ -158,15 +165,18 @@ class HM_Item_Autocalculate extends HM_Item_Basic
       var <?php echo $this->formname;?>val ='';
       //循环 checkbox 把 checkbox状态 和input 值保存起来
       $("input|[name=0<?php echo $this->formname;?>]").each(function(){
+          var check_var_tmp = new Array();
+          check_var_tmp = $(this).val().split("|"); 
           var check_info = '';
-          var tmp_pid = $(this).val();
+          var tmp_pid = check_var_tmp[0];
           var span_value = $("#quantity_"+t+"_"+tmp_pid).html()-$("#"+tmp_pid+"<?php echo
                    "_input_".$this->formname;?>").val();
+          var orsers_products_id = '0';
           if($(this).attr('checked')){
             if(span_value){
-              check_info = $(this).val()+"|"+span_value;
+              check_info = check_var_tmp[0]+"|"+span_value;
             }else{
-              check_info = $(this).val()+"|"+"0";
+              check_info = check_var_tmp[0]+"|"+"0";
             }
           }else{
             if(span_value){
@@ -179,6 +189,11 @@ class HM_Item_Autocalculate extends HM_Item_Basic
             check_info += '|'+this.id.substr(5);
           }else{
             check_info += '|nullvalue';
+          }
+          if(check_var_tmp[1]){
+            check_info += '|'+check_var_tmp[1];
+          }else{
+            check_info += '|0';
           }
           <?php echo $this->formname;?>val += check_info+"_";
         });
