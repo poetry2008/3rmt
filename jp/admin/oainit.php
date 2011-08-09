@@ -1,3 +1,8 @@
+<?php 
+set_time_limit(0);
+ob_implicit_flush(true);
+ob_end_clean();
+?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html dir="ltr" lang="ja">
    <head>
@@ -9,13 +14,15 @@
    <?php
 error_reporting(E_ALL^E_NOTICE^E_WARNING);
 ini_set("display_errors",'On');
-ini_set('include_path',ini_get('include_path').':'.'/home/.sites/28/site1/web/admin/i');
-ini_set('include_path',ini_get('include_path').':'.'/home/.sites/28/site1/web/3rmtlib/oa');
+ini_set('include_path',ini_get('include_path').':'.'/home/.sites/28/site1/web/3rmtlib/oa/');
+ini_set('include_path',ini_get('include_path').':'.'/home/.sites/28/site1/web/3rmtlib/');
 $start = microtime(true);
    //无用数据 
    //delete from oa_item where group_id not in (select id from oa_group ) //删除非现有组的oa_item
    $language = 'japanese';
-require_once 'includes/configure.php';
+   $oa_admin = '';//realpath('./');
+//   $oa_admin = realpath('./');
+require_once ($oa_admin.'includes/configure.php');
 require_once (DIR_WS_FUNCTIONS . 'database.php');
 require_once (DIR_WS_FUNCTIONS . 'general.php');
 define('TABLE_ORDERS','orders');
@@ -24,15 +31,17 @@ define('TABLE_OA_FORM', 'oa_form');
 define('TABLE_OA_FORM_GROUP', 'oa_form_group'); 
 define('TABLE_OA_ITEM', 'oa_item'); 
 define('TABLE_OA_FORMVALUE', 'oa_formvalue'); 
+//define('OA_3RMTLIB','/home/.sites/28/site1/web/3rmtlib/');
+define('OA_3RMTLIB','');
 
-require_once("oa/HM_Form.php");
-require_once("oa/HM_Group.php");
-require_once("oa/HM_Item_Checkbox.php");
-require_once("oa/HM_Item_Autocalculate.php");
-require_once("oa/HM_Item_Text.php");
-require_once("oa/HM_Item_Specialbank.php");
-require_once("oa/HM_Item_Date.php");
-require_once("oa/HM_Item_Myname.php");
+require_once(OA_3RMTLIB."oa/HM_Form.php");
+require_once(OA_3RMTLIB."oa/HM_Group.php");
+require_once(OA_3RMTLIB."oa/HM_Item_Checkbox.php");
+require_once(OA_3RMTLIB."oa/HM_Item_Autocalculate.php");
+require_once(OA_3RMTLIB."oa/HM_Item_Text.php");
+require_once(OA_3RMTLIB."oa/HM_Item_Specialbank.php");
+require_once(OA_3RMTLIB."oa/HM_Item_Date.php");
+require_once(OA_3RMTLIB."oa/HM_Item_Myname.php");
 
 tep_db_connect() or die('Unable to connect to database server!');
 $debug = true;
@@ -180,6 +189,9 @@ while($orderq = tep_db_fetch_array($res)){
       method_8($orderq,$form->id,$group->id,$item->id);//处理是否完成订单
     }
   }
+  echo $orderq['orders_id']."<br>";
+  ob_flush();
+  flush();
   //取得订单的form
   //取得订单的group
   //每个group再取得对应的 item 根据每个item 的名 找到对应的 字段 然后进行给值

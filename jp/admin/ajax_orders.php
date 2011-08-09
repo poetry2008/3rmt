@@ -332,6 +332,19 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
   while($one_time_row = tep_db_fetch_array($one_time_query)){
     $one_time_arr[] = $one_time_row['check_value'];
   }
+  if($ocertify->npermission == 15
+      &&in_array('admin',$one_time_arr)&&in_array('onetime',$one_time_arr)){
+    echo 'false';
+    exit;
+  }else if($ocertify->npermission == 10
+      &&in_array('chief',$one_time_arr)&&in_array('onetime',$one_time_arr)){
+    echo 'false';
+    exit;
+  }else if($ocertify->npermission == 7
+      &&in_array('staff',$one_time_arr)&&in_array('onetime',$one_time_arr)){
+    echo 'false';
+    exit;
+  }
   if(!(in_array('admin',$one_time_arr)&&in_array('chief',$one_time_arr)&&
       in_array('staff',$one_time_arr))&&in_array('onetime',$one_time_arr)){
     $sql = "select u.userid,u.rule,l.letter from ".

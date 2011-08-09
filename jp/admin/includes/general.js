@@ -346,6 +346,7 @@ function change_sort_type(sort_type)
 }
 
 
+/*
 function in_array(needle, haystack) {
   if(typeof needle == 'string' || typeof needle == 'number') {
     for(var i in haystack) {
@@ -356,6 +357,7 @@ function in_array(needle, haystack) {
   }
   return false;
 }
+*/
 
 function clearNoNum(obj)
 {

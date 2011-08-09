@@ -96,6 +96,11 @@ if($_SESSION['user_permission'] == 15 ){
   </script>
     <?
 }
+$page_name = $_SERVER['PHP_SELF'];
+if($_SESSION['last_page']!= $page_name){
+    unset($_SESSION[$_SESSION['last_page']]);
+    $_SESSION['last_page'] = $page_name;
+}
 
 //for sql_log
 $logNumber = 0;

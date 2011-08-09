@@ -435,9 +435,6 @@ if(isset($_GET['his_url'])&&$_GET['his_url']){
       in_array('staff',$one_time_arr)){
     $_SESSION['onetime_pwd'] = false;
   }
-  if(count($one_time_arr)==2&&in_array('admin',$one_time_arr)&&in_array('onetime',$one_time_arr)){
-    $_SESSION['onetime_pwd'] = false;
-  }
 
 
 
