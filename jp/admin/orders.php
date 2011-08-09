@@ -211,8 +211,6 @@
 
       $order_updated = true;
       
-      // 同步问答
-      orders_status_updated_for_question($oID,tep_db_input($status),$_POST['notify_comments'] == 'on');
     }
 
       if ($order_updated) {
