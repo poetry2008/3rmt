@@ -3287,7 +3287,7 @@ function tep_get_orders_products_string($orders, $single = false) {
   $str .= '<tr><td colspan="2">&nbsp;</td></tr>';
   $str .= '<tr><td class="main"><b>オプション：</b></td><td class="main" style="color:blue;"><b>'.$orders['torihiki_houhou'].'</b></td></tr>';
 
-  $orders_products_query = tep_db_query("select op.orders_products_id,p.products_id ,p.relate_products_id from ".TABLE_ORDERS_PRODUCTS." op,".TABLE_PRODUCTS." p where p.products_id = op.products_id and op.orders_id = '".$orders['orders_id']."'");
+  $orders_products_query = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS." op,".TABLE_PRODUCTS." p where p.products_id = op.products_id and op.orders_id = '".$orders['orders_id']."'");
   $autocalculate_arr = array();
   $autocalculate_sql = "select oaf.value as arr_str from ".TABLE_OA_FORMVALUE." oaf,".
     TABLE_OA_ITEM." oai 
