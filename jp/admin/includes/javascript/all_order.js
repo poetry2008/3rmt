@@ -218,17 +218,10 @@ function showOrdersInfo(oID,ele){
     success: function(msg) {
  
     $('#orders_info_box').html(msg);
-
-    page_height = $(document).height();
-    $('#orders_info_box').show();
-    var table_height = $('#orders_info_table_list').height();
-    offset = ele.offsetTop + table_height > $(document).height()
-    ? $(document).height() - table_height  
-	: ele.offsetTop+$("#orders_list_table").position().top;
-      $('#orders_info_box').css('top',offset);
-      if((offset+$('#orders_info_box').height())>page_height){
-        $('#orders_info_box').css('top',offset-$('#orders_info_table_list').height());
-      }
+    offset = ele.offsetTop + $('#orders_info_box').height() > $(document).height()
+        ? $(document).height() - $('#orders_info_box').height() 
+        :ele.offsetTop+$("#orders_list_table").position().top;
+      $('#orders_info_box').css('top',offset).show();
     }
   });
 }
