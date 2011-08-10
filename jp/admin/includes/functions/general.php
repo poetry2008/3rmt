@@ -3238,7 +3238,7 @@ function tep_get_orders_products_string($orders, $single = false) {
   $str = '';
 
 
-  $str .= '<table id="orders_info_table_list" border="0" cellpadding="0" cellspacing="0">';
+  $str .= '<table border="0" cellpadding="0" cellspacing="0">';
 
   /*
      $str .= '<tr><td class="mian" align="center" colspan="2"><table width="100%"><tr><td class="main" width="50%" align="left">';
