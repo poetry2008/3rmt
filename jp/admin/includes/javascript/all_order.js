@@ -218,8 +218,8 @@ function showOrdersInfo(oID,ele){
     success: function(msg) {
  
     $('#orders_info_box').html(msg);
-    offset = ele.offsetTop + $('#orders_info_box').height() > $(document).height()
-        ? $(document).height() - $('#orders_info_box').height() 
+    offset = ele.offsetTop + $('#orders_info_box').height() > $('#orders_info_box').height()
+        ? ele.offsetTop+$("#orders_list_table").position().top - $('#orders_info_box').height() 
         :ele.offsetTop+$("#orders_list_table").position().top;
       $('#orders_info_box').css('top',offset).show();
     }
