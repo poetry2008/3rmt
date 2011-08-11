@@ -7,12 +7,9 @@ dataType: 'text',
 async : false,
 success: function(data) {
 if(data !='false'){
-alert('data :'+data);
 var pwd_arr = data.split(",");
 pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n","");
-alert('pwd :'+pwd);
 if(in_array(pwd,pwd_arr)){
-alert('has in_array');
 $.ajax({
 url: 'ajax_orders.php?action=save_pwd_log',
 type: 'POST',
@@ -24,8 +21,8 @@ success: function(_data) {
 });
 }else{
 alert("パスワードが違います");
-location=location;
-//跳转错误页
+
+//跳霓ｬ髞呵ｯｯ鬘ｵ
 }
 }
 }
