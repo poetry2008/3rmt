@@ -3330,6 +3330,264 @@ function tep_get_orders_products_string($orders, $single = false) {
     $str .= '<tr><td class="main"></td><td class="main"></td></tr>';
     $i++;
   }
+  
+  if (ORDER_INFO_ORDER_FROM == 'true') {
+    $str .= '<tr>'; 
+    $str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_FROM.'</b></td>'; 
+    $str .= '<td class="main">';
+    $str .= tep_get_site_name_by_order_id($orders['orders_id']); 
+    $str .= '</td>'; 
+    $str .= '</tr>'; 
+  }
+  if (ORDER_INFO_ORDER_FETCH_TIME == 'true') {
+    $str .= '<tr>'; 
+    $str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_FETCH_TIME.'</b></td>';
+    $str .= '<td class="main">';
+    $str .= $orders['torihiki_date']; 
+    $str .= '</td>'; 
+    $str .= '</tr>'; 
+  }
+  if (ORDER_INFO_ORDER_OPTION == 'true') {
+    $str .= '<tr>'; 
+    $str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_OPTION.'</b></td>';
+    $str .= '<td class="main">';
+    $str .= $orders['torihiki_houhou'];    
+    $str .= '</td>'; 
+    $str .= '</tr>'; 
+  }
+  if (ORDER_INFO_ORDER_ID == 'true') {
+    $str .= '<tr>'; 
+    $str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_ID.'</b></td>';
+    $str .= '<td class="main">';
+    $str .= $orders['orders_id']; 
+    $str .= '</td>'; 
+    $str .= '</tr>'; 
+  }
+  if (ORDER_INFO_ORDER_DATE == 'true') {
+    $str .= '<tr>'; 
+    $str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_DATE.'</b></td>';
+    $str .= '<td class="main">';
+    $str .= tep_date_long($orders['date_purchased']); 
+    $str .= '</td>'; 
+    $str .= '</tr>'; 
+  }
+  if (ORDER_INFO_ORDER_CUSTOMER_TYPE == 'true') {
+    $str .= '<tr>'; 
+    $str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_CUSTOMER_TYPE.'</b></td>';
+    $str .= '<td class="main">';
+    $str .= get_guest_chk($orders['customers_id']); 
+    $str .= '</td>'; 
+    $str .= '</tr>'; 
+  }
+  if (ORDER_INFO_ORDER_CUSTOMER_NAME == 'true') {
+    $str .= '<tr>'; 
+    $str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_CUSTOMER_NAME.'</b></td>';
+    $str .= '<td class="main">';
+    $str .= '<a href="">'.$orders['customers_name'].'</a>'; 
+    $str .= '</td>'; 
+    $str .= '</tr>'; 
+  }
+  if (ORDER_INFO_ORDER_EMAIL == 'true') {
+    $ostGetPara = array( "name"=>urlencode($orders['customers_name']),
+                         "topicid"=>urlencode(constant("SITE_TOPIC_".$orders['site_id'])),
+                         "source"=>urlencode('Email'), 
+                         "email"=>urlencode($orders['customers_email_address']));
+    $parmStr = '';
+    foreach($ostGetPara as $key=>$value){
+      $parmStr.= '&'.$key.'='.$value; 
+    }
+    $remoteurl = (defined('OST_SERVER')?OST_SERVER:'scp')."/tickets.php?a=open2".$parmStr."";
+    
+    $str .= '<tr>'; 
+    $str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_EMAIL.'</b></td>';
+    $str .= '<td class="main">';
+    $str .= tep_output_string_protected($orders['customers_email_address']).'&nbsp;&nbsp;<a title="'.RIGHT_TICKIT_ID_TITLE.'" href="'.$remoteurl.'" target="_blank">'.RIGHT_TICKIT_EMAIL.'</a>&nbsp;&nbsp;<a href="telecom_unknow.php?keywords='.tep_output_string_protected($orders['customers_email_address']).'">'.RIGHT_TICKIT_CARD.'</a>'; 
+    $str .= '</td>'; 
+    $str .= '</tr>'; 
+  }
+  if ( (($orders['cc_type']) || ($orders['cc_owner']) || ($orders['cc_number'])) ) {  
+    if (ORDER_INFO_ORDER_CREDITCARD_TYPE == 'true') {
+      $str .= '<tr>'; 
+      $str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_CREDITCARD_TYPE.'</b></td>';
+      $str .= '<td class="main">';
+      $str .= $orders['cc_type']; 
+      $str .= '</td>'; 
+      $str .= '</tr>'; 
+    }
+    if (RDER_INFO_ORDER_CREDITCARD_OWNER == 'true') {
+      $str .= '<tr>'; 
+      $str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_CREDITCARD_OWNER.'</b></td>';
+      $str .= '<td class="main">';
+      $str .= $orders['cc_owner']; 
+      $str .= '</td>'; 
+      $str .= '</tr>'; 
+    }
+    if (ORDER_INFO_ORDER_CREDITCARD_ID == 'true') {
+      $str .= '<tr>'; 
+      $str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_CREDITCARD_ID.'</b></td>';
+      $str .= '<td class="main">';
+      $str .= $orders['cc_number']; 
+      $str .= '</td>'; 
+      $str .= '</tr>'; 
+    }
+    if (ORDER_INFO_ORDER_CREDITCARD_EXPIRE_TIME == 'true') {
+      $str .= '<tr>'; 
+      $str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_CREDITCARD_EXPIRE_TIME.'</b></td>';
+      $str .= '<td class="main">';
+      $str .= $orders['cc_expires']; 
+      $str .= '</td>'; 
+      $str .= '</tr>'; 
+    }
+  } 
+  if (CUSTOMER_INFO_ORDER_IP == 'true') {
+    $str .= '<tr>'; 
+    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_IP.'</b></td>';
+    $str .= '<td class="main">';
+    $str .= tep_high_light_by_keywords($orders['orders_ip'] ?  $orders['orders_ip'] : 'UNKNOW',IP_LIGHT_KEYWORDS); 
+    $str .= '</td>'; 
+    $str .= '</tr>'; 
+  }
+  if (CUSTOMER_INFO_ORDER_HOST == 'true') {
+    $str .= '<tr>'; 
+    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_HOST.'</b></td>';
+    $str .= '<td class="main">';
+    $str .= tep_high_light_by_keywords($orders['orders_host_name']?'<font'.($orders['orders_host_name'] == $orders['orders_ip'] ? ' color="red"':'').'>'.$orders['orders_host_name'].'</font>':'UNKNOW',HOST_NAME_LIGHT_KEYWORDS); 
+    $str .= '</td>'; 
+    $str .= '</tr>'; 
+  }
+  if (CUSTOMER_INFO_ORDER_USER_AGEMT == 'true') {
+    $str .= '<tr>'; 
+    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_USER_AGEMT.'</b></td>';
+    $str .= '<td class="main">';
+    $str .= tep_high_light_by_keywords($orders['orders_user_agent'] ?  $orders['orders_user_agent'] : 'UNKNOW',USER_AGENT_LIGHT_KEYWORDS); 
+    $str .= '</td>'; 
+    $str .= '</tr>'; 
+  }
+  if ($orders['orders_user_agent']) { 
+    if (CUSTOMER_INFO_ORDER_OS == 'true') {
+      $str .= '<tr>'; 
+      $str .= '<td class="main">'.RIGHT_CUSTOMER_INFO_ORDER_OS.'</td>';
+      $str .= '<td class="main">';
+      $str .= tep_high_light_by_keywords(getOS($orders['orders_user_agent']),OS_LIGHT_KEYWORDS); 
+      $str .= '</td>'; 
+      $str .= '</tr>'; 
+    }
+    if (CUSTOMER_INFO_ORDER_BROWSE_TYPE == 'true') {
+      $browser_info = getBrowserInfo($orders['orders_user_agent']); 
+      $str .= '<tr>'; 
+      $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_BROWSE_TYPE.'</b></td>';
+      $str .= '<td class="main">';
+      $str .= tep_high_light_by_keywords($browser_info['longName'] . ' ' .  $browser_info['version'],BROWSER_LIGHT_KEYWORDS); 
+      $str .= '</td>'; 
+      $str .= '</tr>'; 
+    }
+  } 
+  if (CUSTOMER_INFO_ORDER_BROWSE_LAN == 'true') {
+    $str .= '<tr>'; 
+    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_BROWSE_LAN.'</b></td>';
+    $str .= '<td class="main">';
+    $str .= tep_high_light_by_keywords($orders['orders_http_accept_language'] ?  $orders['orders_http_accept_language'] : 'UNKNOW',HTTP_ACCEPT_LANGUAGE_LIGHT_KEYWORDS); 
+    $str .= '</td>'; 
+    $str .= '</tr>'; 
+  }
+  if (CUSTOMER_INFO_ORDER_COMPUTER_LAN == 'true') {
+    $str .= '<tr>'; 
+    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_COMPUTER_LAN.'</b></td>';
+    $str .= '<td class="main">';
+    $str .= tep_high_light_by_keywords($orders['orders_system_language'] ?  $orders['orders_system_language'] : 'UNKNOW',SYSTEM_LANGUAGE_LIGHT_KEYWORDS); 
+    $str .= '</td>'; 
+    $str .= '</tr>'; 
+  }
+  if (CUSTOMER_INFO_ORDER_USER_LAN == 'true') {
+    $str .= '<tr>'; 
+    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_USER_LAN.'</b></td>';
+    $str .= '<td class="main">';
+    $str .= tep_high_light_by_keywords($orders['orders_user_language'] ?  $orders['orders_user_language'] : 'UNKNOW',USER_LANGUAGE_LIGHT_KEYWORDS); 
+    $str .= '</td>'; 
+    $str .= '</tr>'; 
+  }
+  if (CUSTOMER_INFO_ORDER_PIXEL == 'true') {
+    $str .= '<tr>'; 
+    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_PIXEL.'</b></td>';
+    $str .= '<td class="main">';
+    $str .= tep_high_light_by_keywords($orders['orders_screen_resolution'] ?  $orders['orders_screen_resolution'] : 'UNKNOW',SCREEN_RESOLUTION_LIGHT_KEYWORDS); 
+    $str .= '</td>'; 
+    $str .= '</tr>'; 
+  }
+  if (CUSTOMER_INFO_ORDER_COLOR == 'true') {
+    $str .= '<tr>'; 
+    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_COLOR.'</b></td>';
+    $str .= '<td class="main">';
+    $str .= tep_high_light_by_keywords($orders['orders_color_depth'] ?  $orders['orders_color_depth'] : 'UNKNOW',COLOR_DEPTH_LIGHT_KEYWORDS); 
+    $str .= '</td>'; 
+    $str .= '</tr>'; 
+  }
+  if (CUSTOMER_INFO_ORDER_FLASH == 'true') {
+    $str .= '<tr>'; 
+    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_FLASH.'</b></td>';
+    $str .= '<td class="main">';
+    $str .= tep_high_light_by_keywords($orders['orders_flash_enable'] === '1' ?  'YES' : ($orders['orders_flash_enable'] === '0' ? 'NO' : 'UNKNOW'),FLASH_LIGHT_KEYWORDS); 
+    $str .= '</td>'; 
+    $str .= '</tr>'; 
+  }
+  if ($orders['orders_flash_enable']) {
+    if (CUSTOMER_INFO_ORDER_FLASH_VERSION == 'true') {
+      $str .= '<tr>'; 
+      $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_FLASH_VERSION.'</b></td>';
+      $str .= '<td class="main">';
+      $str .= tep_high_light_by_keywords($orders['orders_flash_version'],FLASH_VERSION_LIGHT_KEYWORDS); 
+      $str .= '</td>'; 
+      $str .= '</tr>'; 
+    }
+  }
+  if (CUSTOMER_INFO_ORDER_DIRECTOR == 'true') {
+    $str .= '<tr>'; 
+    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_DIRECTOR.'</b></td>';
+    $str .= '<td class="main">';
+    $str .= tep_high_light_by_keywords($orders['orders_director_enable'] === '1' ? 'YES' : ($orders['orders_director_enable'] === '0' ? 'NO' : 'UNKNOW'),DIRECTOR_LIGHT_KEYWORDS); 
+    $str .= '</td>'; 
+    $str .= '</tr>'; 
+  }
+  if (CUSTOMER_INFO_ORDER_QUICK_TIME == 'true') {
+    $str .= '<tr>'; 
+    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_QUICK_TIME.'</b></td>';
+    $str .= '<td class="main">';
+    $str .= tep_high_light_by_keywords($orders['orders_quicktime_enable'] === '1' ? 'YES' : ($orders['orders_quicktime_enable'] === '0' ? 'NO' : 'UNKNOW'),QUICK_TIME_LIGHT_KEYWORDS); 
+    $str .= '</td>'; 
+    $str .= '</tr>'; 
+  }
+  if (CUSTOMER_INFO_ORDER_REAL_PLAYER == 'true') {
+    $str .= '<tr>'; 
+    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_REAL_PLAYER.'</b></td>';
+    $str .= '<td class="main">';
+    $str .= tep_high_light_by_keywords($orders['orders_realplayer_enable'] === '1' ?  'YES' : ($orders['orders_realplayer_enable'] === '0' ? 'NO' : 'UNKNOW'),REAL_PLAYER_LIGHT_KEYWORDS); 
+    $str .= '</td>'; 
+    $str .= '</tr>'; 
+  }
+  if (CUSTOMER_INFO_ORDER_WINDOWS_MEDIA == 'true') {
+    $str .= '<tr>'; 
+    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_WINDOWS_MEDIA.'</b></td>';
+    $str .= '<td class="main">'; $str .= tep_high_light_by_keywords($orders['orders_windows_media_enable'] === '1' ? 'YES' : ($orders['orders_windows_media_enable'] === '0' ?  'NO' : 'UNKNOW'),WINDOWS_MEDIA_LIGHT_KEYWORDS); 
+    $str .= '</td>'; 
+    $str .= '</tr>'; 
+  }
+  if (CUSTOMER_INFO_ORDER_PDF == 'true') {
+    $str .= '<tr>'; 
+    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_PDF.'</b></td>';
+    $str .= '<td class="main">';
+    $str .= tep_high_light_by_keywords($orders['orders_pdf_enable'] === '1' ?  'YES' : ($orders['orders_pdf_enable'] === '0' ? 'NO' : 'UNKNOW'),PDF_LIGHT_KEYWORDS); 
+    $str .= '</td>'; 
+    $str .= '</tr>'; 
+  }
+  if (CUSTOMER_INFO_ORDER_JAVA == 'true') {
+    $str .= '<tr>'; 
+    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_JAVA.'</b></td>';
+    $str .= '<td class="main">';
+    $str .= tep_high_light_by_keywords($orders['orders_java_enable'] === '1' ?  'YES' : ($orders['orders_java_enable'] === '0' ? 'NO' : 'UNKNOW'),JAVA_LIGHT_KEYWORDS); 
+    $str .= '</td>'; 
+    $str .= '</tr>'; 
+  }
+  
   $str .= '</table>';
   $str=str_replace("\n","",$str);
   $str=str_replace("\r","",$str);
