@@ -285,13 +285,10 @@ define('TABLE_PERMISSIONS','permissions');
     $adminaccs = ADMIN_FREE_PASS;
     tep_session_register('adminaccs');
   }
-if(!$_SESSION['site_permission']&&!$_SESSION['user_permission']&&isset($_POST['loginuid'])&&
-    $_POST['loginuid']){
 $sites_id=tep_db_query("SELECT site_permission,permission FROM `permissions` WHERE `userid`= '".$_POST['loginuid']."' limit 0,1");
 while($userslist= tep_db_fetch_array($sites_id)){
   $_SESSION['site_permission']=$userslist['site_permission'];
   $_SESSION['user_permission']=$userslist['permission'];
-}
 }
 
 
