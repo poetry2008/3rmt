@@ -1,5 +1,5 @@
 function one_time_pwd(page_name){
-$.ajax({
+  $.ajax({
 url: 'ajax_orders.php?action=getpwdcheckbox',
 type: 'POST',
 data: 'page_name='+page_name,
@@ -21,13 +21,13 @@ success: function(_data) {
 }
 });
 }else{
-alert("パスワードが違います");
-location=location;
-//跳霓ｬ髞呵ｯｯ鬘ｵ
+  alert("パスワードが違います");
+  location=location;
+  //跳霓ｬ髞呵ｯｯ鬘ｵ
 }
 }else{
-alert("SQL ERROR CLOST THIS TAB WILL CLOST THIS PAGE");
-self.close();
+  alert("SQL ERROR CLOST THIS TAB WILL CLOST THIS PAGE");
+  self.close();
 }
 }
 }
