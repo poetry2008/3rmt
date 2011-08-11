@@ -109,7 +109,7 @@ $testArray = array();
 //end for sql_log
 
 // 显示SQL执行记录
-if (STORE_DB_TRANSACTIONS == 'true') {?>
+if (STORE_DB_TRANSACTIONS == 'true' ) {?>
   <div id="debug_info">
     <pre>
     <?php if(isset($logger)){
@@ -123,3 +123,9 @@ if (STORE_DB_TRANSACTIONS == 'true') {?>
     </pre>
     </div>
     <?php }?>
+    <?php
+    $query = tep_db_query("show variables like '%timeout'");
+while($value = tep_db_fetch_array($query)){
+    var_dump($value);
+    }
+    ?>
