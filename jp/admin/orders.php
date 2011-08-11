@@ -2337,7 +2337,7 @@ function submit_confirm()
   }
 
 
-    echo '      <td width="20%" valign="top">' . "\n";
+    echo '      <td width="20%" style="padding-top:22px;" valign="top">' . "\n";
   if ( (tep_not_null($heading)) && (tep_not_null($contents)) ) {
     $box = new box;
     echo $box->infoBox($heading, $contents);
