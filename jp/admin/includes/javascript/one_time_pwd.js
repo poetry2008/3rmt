@@ -26,8 +26,7 @@ success: function(_data) {
   //跳霓ｬ髞呵ｯｯ鬘ｵ
 }
 }else{
-  alert("SQL ERROR CLOST THIS TAB WILL CLOST THIS PAGE");
-  self.close();
+  location.href='/admin/error.html';
 }
 }
 }
