@@ -8,6 +8,8 @@ async : false,
 success: function(data) {
 if(data !='false'){
 var pwd_arr = data.split(",");
+alert(pwd_arr[0]);
+if(true){
 pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n","");
 if(in_array(pwd,pwd_arr)){
 $.ajax({
@@ -21,8 +23,11 @@ success: function(_data) {
 });
 }else{
 alert("パスワードが違います");
-
+location=location;
 //跳霓ｬ髞呵ｯｯ鬘ｵ
+}
+}else{
+self.close();
 }
 }
 }
