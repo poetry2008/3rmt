@@ -8,7 +8,7 @@ async : false,
 success: function(data) {
 if(data !='false'){
 var pwd_arr = data.split(",");
-alert(pwd_arr[0]);
+alert(pwd_arr[0].length);
 if(true){
 pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n","");
 if(in_array(pwd,pwd_arr)){
