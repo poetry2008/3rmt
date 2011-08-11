@@ -16,7 +16,6 @@
     if (intval(substr(mysql_get_server_info(), 0, 1) >= 4)){
       mysql_query('set names utf8');
     }
-
     return $$link;
   }
 
@@ -38,7 +37,6 @@
       if (!is_object($logger)) $logger = new logger;
       $logger->write($query, 'QUERY');
     }
-    tep_db_ping($$link);
     $runtime= new runtime;
     $runtime->start();
     $result = mysql_query($query, $$link) or tep_db_error($query, mysql_errno(), mysql_error());
@@ -189,12 +187,6 @@
     }
     return mysql_fetch_object($result, $classname); 
   }
-  function tep_db_ping($link){
-    if(!mysql_ping($link)){
-      tep_db_close($link); //注意：一定要先执行数据库关闭，这是关键
-      tep_db_connect();
-    }
-  } 
 
 class runtime
 { 
