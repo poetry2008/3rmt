@@ -27,8 +27,11 @@
   }
 
   function tep_db_error($query, $errno, $error) { 
+    header("Location:/admin/timeout_sql_error.php");
+    exit;
     var_dump(debug_backtrace());
-    die('<font color="#000000"><b>' . $errno . ' - ' . $error . '<br><br>' . $query . '<br><br><small><font color="#ff0000">[TEP STOP]</font></small><br><br></b></font>');
+    die('<font size="6"><b>' . $errno . ' - ' . $error . '<br><br>'. $query 
+        . '<br><br><small><font size="6">[SQL-EROOR haomai]</font></small><br><br></b></font>');
   }
 
   function tep_db_query($query, $link = 'db_link') {
@@ -84,8 +87,6 @@
       }
     }
     //end sql log
-    header("Location:http://jp.gamelife.jp/admin/timeout_sql_error.html");
-    exit;
     return $result;
   }
 
