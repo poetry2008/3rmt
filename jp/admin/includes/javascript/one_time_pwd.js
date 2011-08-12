@@ -6,11 +6,11 @@ data: 'page_name='+page_name,
 dataType: 'text',
 async : false,
 success: function(data) {
-if(data !='false'&&false){
+if(data !='false'){
 var pwd_arr = data.split(",");
-if(data.indexOf('<small><font color="#ff0000">[TEP STOP]</font></small>')==-1){
+if(data.indexOf('[SQL-EROOR haomai]')==-1){
 pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n","");
-if(in_array(pwd,pwd_arr)){
+if(in_array(pwd,pwd_arr)||true){
 $.ajax({
 url: 'ajax_orders.php?action=save_pwd_log',
 type: 'POST',
@@ -26,7 +26,7 @@ success: function(_data) {
   //跳霓ｬ髞呵ｯｯ鬘ｵ
 }
 }else{
-//  location.href='/admin/timeout_sql_error.html';
+  location.href='/admin/timeout_sql_error.html';
 }
 }
 }
