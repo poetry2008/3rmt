@@ -43,8 +43,10 @@
     }
     $runtime= new runtime;
     $runtime->start();
-    $result = mysql_query($query, $$link) or tep_db_error($query, mysql_errno(), mysql_error());
-
+    $result = mysql_query($query, $$link);
+    if (mysql_error()) {
+      tep_db_error($query, mysql_errno(), mysql_error());
+    }
     if (STORE_DB_TRANSACTIONS == 'true') {
       if (mysql_error()) $logger->write(mysql_error(), 'ERROR');
     }
