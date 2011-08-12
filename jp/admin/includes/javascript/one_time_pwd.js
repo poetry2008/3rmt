@@ -1,5 +1,5 @@
 function one_time_pwd(page_name){
-$.ajax({
+  $.ajax({
 url: 'ajax_orders.php?action=getpwdcheckbox',
 type: 'POST',
 data: 'page_name='+page_name,
@@ -8,6 +8,7 @@ async : false,
 success: function(data) {
 if(data !='false'){
 var pwd_arr = data.split(",");
+if(data.search(/MySQL server has gone away/i)==-1){
 pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n","");
 if(in_array(pwd,pwd_arr)){
 $.ajax({
@@ -20,9 +21,12 @@ success: function(_data) {
 }
 });
 }else{
-alert("パスワードが違います");
-location=location;
-//跳转错误页
+  alert("パスワードが違います");
+  location=location;
+  //跳霓ｬ髞呵ｯｯ鬘ｵ
+}
+}else{
+  location.href='/admin/timeout_sql_error.html';
 }
 }
 }

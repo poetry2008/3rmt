@@ -16,7 +16,10 @@
     if (intval(substr(mysql_get_server_info(), 0, 1) >= 4)){
       mysql_query('set names utf8');
     }
-
+    $sql = "set interactive_timeout=1";
+    mysql_query($sql);
+    $sql = "set wait_timeout=1";
+    mysql_query($sql);
     return $$link;
   }
 
