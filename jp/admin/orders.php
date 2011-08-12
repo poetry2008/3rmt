@@ -2344,8 +2344,7 @@ function submit_confirm()
   }
   ?>
     <!-- 订单信息预览，配合javascript，永远浮动在屏幕右下角 -->
-    <div id="orders_info_box"
-    style="display:none;position:absolute;background:#FFF;padding-top:5px;width:20%;/*bottom:0;margin-top:40px;right:0;width:200px;*/">&nbsp;</div>
+    <div id="orders_info_box" style="display:none;position:absolute;background:#FFF;padding-top:5px;width:20%; left:180px; width:500px; padding-left:10px;/*bottom:0;margin-top:40px;right:0;width:200px;*/">&nbsp;</div>
   <?php
     echo '      </td>' . "\n";
 
