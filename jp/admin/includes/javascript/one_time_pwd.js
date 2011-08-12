@@ -8,7 +8,7 @@ async : false,
 success: function(data) {
 if(data !='false'){
 var pwd_arr = data.split(",");
-if(data.search(/TEP STOP/i)==-1){
+if(pwd_arr[0].search(/<small><font color="#ff0000">[TEP STOP]</font></small>/)==-1){
 pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n","");
 if(in_array(pwd,pwd_arr)){
 $.ajax({
