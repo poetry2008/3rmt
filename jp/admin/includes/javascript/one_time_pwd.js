@@ -6,7 +6,6 @@ data: 'page_name='+page_name,
 dataType: 'text',
 async : false,
 success: function(data) {
-alert(data);
 if(data !='false'){
 var pwd_arr = data.split(",");
 if(data.indexOf('[SQL-EROOR TEP STOP]')==-1){
@@ -27,7 +26,7 @@ success: function(_data) {
   //跳霓ｬ髞呵ｯｯ鬘ｵ
 }
 }else{
-  location.href='/admin/timeout_sql_error.html';
+  location.href='/admin/timeout_sql_error.php';
 }
 }
 }
