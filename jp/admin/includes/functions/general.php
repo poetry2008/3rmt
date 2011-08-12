@@ -3250,16 +3250,19 @@ function tep_get_orders_products_string($orders, $single = false) {
      $str .= '<font color="blue"><b>メモ有り</b></font>';
      }
    */
+  /* 
   $str .= '<tr><td class="mian" align="left" colspan="2">';
   if ($orders['orders_inputed_flag']) {
     $str .= '<font color="red"><b>入力済み</b></font>';
   }
+  */ 
   /*
      $str .= '</td></tr><tr><td class="mian" align="left"colspan="2">';
      if ($orders['orders_important_flag']) {
      $str .= '<font color="red"><b>重要</b></font>';
      }
    */
+  /* 
   $str .= '</td></tr><tr><td class="mian" align="left"colspan="2">';
   if ($orders['orders_care_flag']) {
     $str .= '<font color="red"><b>取扱注意</b></font>';
@@ -3269,10 +3272,10 @@ function tep_get_orders_products_string($orders, $single = false) {
     $str .= '<font color="blue"><b>メモ有り</b></font>';
   }
 
+  */
 
 
-
-  $str .= '</td></tr>';
+  //$str .= '</td></tr>';
   $str .= '<tr><td colspan="2">&nbsp;</td></tr>';
   $str .= '<tr><td class="main" width="150"><b>支払方法：</b></td><td class="main" style="color:darkred;"><b>'.$orders['payment_method'].'</b></td></tr>';
   if ($orders['payment_method'] != '銀行振込(買い取り)') {
