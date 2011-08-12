@@ -31,11 +31,7 @@
   }
 
   function tep_db_error($query, $errno, $error) { 
-    header("Location:/admin/timeout_sql_error.php");
-    exit;
-    var_dump(debug_backtrace());
-    die('<font size="6"><b>' . $errno . ' - ' . $error . '<br><br>'. $query 
-        . '<br><br><small><font size="6">[SQL-EROOR TEP STOP]</font></small><br><br></b></font>');
+    header("Location:/admin/timeout_sql_error.php?string=<font size=\"6\"><b>" . $errno . ' - ' . $error . '<br><br>'. $query . '<br><br><small><font size="6">[SQL-EROOR TEP STOP]</font></small><br><br></b></font>');
   }
 
   function tep_db_query($query, $link = 'db_link') {
