@@ -513,3 +513,4 @@ define('RIGHT_ORDER_INFO_TRANS_NOTICE', '取り扱い注意');
 define('RIGHT_ORDER_INFO_TRANS_WAIT', '取引待ち');
 define('RIGHT_ORDER_INFO_INPUT_FINISH', '入力済み');
 define('RIGHT_ORDER_INFO_REPUTAION_SEARCH', '信用調査:');
+define('RIGHT_ORDER_COMMENT_TITLE', 'コメント:');
