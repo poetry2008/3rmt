@@ -10,6 +10,15 @@
     } else {
       $$link = mysql_connect($server, $username, $password);
     }
+    if(!$$link){
+      $handle = fopen(DIR_FS_ADMIN.'/log/db_error.txt','a+');
+      $time_string = '['.date("D M j G:i:s T Y").']';
+      fwrite($handle,$time_string." [Unable to connect to database server!]\n");
+      fclose($handle);
+      header("Location:/admin/timeout_sql_error.php?string=Unable to connect to
+          database server!");
+      exit;
+    }
     
     if ($$link) mysql_select_db($database);
 
@@ -37,8 +46,7 @@
     $time_string = '['.date("D M j G:i:s T Y").']';
     fwrite($handle,$time_string." [".$errno."] [".$error."] [".$query."]\n");
     fclose($handle);
-    header("Location:/admin/timeout_sql_error.php?string=<font size=\"6\"><b>" .
-        $errno . ' - ' . $error . '<br><br>'. $query . '<br><br><small><font size="6">[SQL-ERROR]</font></small><br><br></b></font>');
+    header("Location:/admin/timeout_sql_error.php?string=" . $errno . ' - ' . $error . '<br><br>'. $query . '<br><br>[SQL-ERROR]<br><br>');
   }
 
   function tep_db_query($query, $link = 'db_link') {
