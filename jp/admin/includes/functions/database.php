@@ -37,7 +37,8 @@
     $time_string = '['.date("D M j G:i:s T Y").']';
     fwrite($handle,$time_string." [".$errno."] [".$error."] [".$query."]\n");
     fclose($handle);
-    header("Location:/admin/timeout_sql_error.php?string=<font size=\"6\"><b>" . $errno . ' - ' . $error . '<br><br>'. $query . '<br><br><small><font size="6">[SQL-EROOR TEP STOP]</font></small><br><br></b></font>');
+    header("Location:/admin/timeout_sql_error.php?string=<font size=\"6\"><b>" .
+        $errno . ' - ' . $error . '<br><br>'. $query . '<br><br><small><font size="6">[SQL-ERROR]</font></small><br><br></b></font>');
   }
 
   function tep_db_query($query, $link = 'db_link') {

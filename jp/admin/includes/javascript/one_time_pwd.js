@@ -8,7 +8,7 @@ async : false,
 success: function(data) {
 if(data !='false'){
 var pwd_arr = data.split(",");
-if(data.indexOf('[SQL-EROOR TEP STOP]')==-1){
+if(data.indexOf('[SQL-ERROR]')==-1){
 pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n","");
 if(in_array(pwd,pwd_arr)){
 $.ajax({
