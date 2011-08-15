@@ -3656,7 +3656,7 @@ function tep_get_orders_products_string($orders, $single = false) {
   if (ORDER_INFO_ORDER_COMMENT == 'true') {
     $str .= '<tr>'; 
     $str .= '<td class="main">';
-    $str .= '<b>Order Comment:</b>'; 
+    $str .= '<b>'.RIGHT_ORDER_COMMENT_TITLE.'</b>'; 
     $str .= '</td>';
     $str .= '<td class="main">';
     $str .= $orders['orders_comment']; 
