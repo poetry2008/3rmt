@@ -1,6 +1,9 @@
 <?php
-if($_SERVER["HTTP_ACCEPT_LANGUAGE"]=='ja'){
-  include('includes/languages/japanese/timeout_sql_error.php');
+if($_SERVER["HTTP_ACCEPT_LANGUAGE"]){
+  $lan_arr = explode(',',$_SERVER["HTTP_ACCEPT_LANGUAGE"]);
+  if($lan_arr[0]=='ja'){
+    include('includes/languages/japanese/timeout_sql_error.php');
+  }
 }
 ?>
 <HTML>
