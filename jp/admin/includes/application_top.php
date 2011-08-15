@@ -247,7 +247,7 @@ define('TABLE_PERMISSIONS','permissions');
   require(DIR_WS_FUNCTIONS . 'database.php');
 
 // make a connection to the database... now
-  tep_db_connect() or die('Unable to connect to database server!');
+  tep_db_connect();// or die('Unable to connect to database server!');
 
 // set application wide parameters
   $configuration_query = mysql_query('select configuration_key as cfgKey, configuration_value as cfgValue from ' . TABLE_CONFIGURATION . ' order by site_id ASC');
