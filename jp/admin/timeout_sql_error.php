@@ -1,5 +1,7 @@
 <?php
-  require('includes/application_top.php');
+if($_SERVER["HTTP_ACCEPT_LANGUAGE"]=='ja'){
+  include('includes/languages/japanese/timeout_sql_error.php');
+}
 ?>
 <HTML>
 <HEAD>
