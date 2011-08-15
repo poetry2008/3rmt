@@ -1619,6 +1619,7 @@ function update_rules($userid,$rule,$letter){
   if (isset($_POST['userid'])) { $userid = $_POST['userid']; }
   if (isset($_POST['aval'])) { $aval = $_POST['aval']; }
   if (isset($_POST['userslist'])) { $userslist = $_POST['userslist']; }
+  else if(isset($_GET['userslist'])) { $userslist = $_GET['userslist']; }
   if (isset($_POST['no_permission_list'])) { $no_permission_list = $_POST['no_permission_list']; }
   if (isset($_POST['staff_permission_list'])) { $staff_permission_list =
     $_POST['staff_permission_list']; }
@@ -1627,6 +1628,8 @@ function update_rules($userid,$rule,$letter){
   if (isset($_POST['permission_list'])) { $permission_list = $_POST['permission_list']; }
   if (isset($_POST['execute_user'])) { $execute_user = $_POST['execute_user']; }
   if (isset($_POST['execute_password'])) { $execute_password = $_POST['execute_password']; }
+  else if(isset($_GET['execute_password'])) { $execute_password =
+    $_GET['execute_password']; }
   if (isset($_POST['execute_permission'])) { $execute_permission = $_POST['execute_permission']; }
 //修改权限
 if (isset($_POST['execute_change'])) { $execute_change = $_POST['execute_change'];}
