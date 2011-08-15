@@ -16,10 +16,12 @@
     if (intval(substr(mysql_get_server_info(), 0, 1) >= 4)){
       mysql_query('set names utf8');
     }
+    /*
     $sql = "set interactive_timeout=1";
     mysql_query($sql);
     $sql = "set wait_timeout=1";
     mysql_query($sql);
+    */
 
     return $$link;
   }
@@ -31,6 +33,10 @@
   }
 
   function tep_db_error($query, $errno, $error) { 
+    $handle = fopen(DIR_FS_ADMIN.'/log/db_error.txt','a+');
+    $time_string = '['.date("D M j G:i:s T Y").']';
+    fwrite($handle,$time_string." [".$errno."] [".$error."] [".$query."]\n");
+    fclose($handle);
     header("Location:/admin/timeout_sql_error.php?string=<font size=\"6\"><b>" . $errno . ' - ' . $error . '<br><br>'. $query . '<br><br><small><font size="6">[SQL-EROOR TEP STOP]</font></small><br><br></b></font>');
   }
 

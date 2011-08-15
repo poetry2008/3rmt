@@ -117,19 +117,22 @@ class HM_Item_Autocalculate extends HM_Item_Basic
         echo "id = 'spid_".$op['products_id']."'/>";
         echo $op['products_name'];
         //有关联商品的 输出
-        echo " <font id ='quantity_".$i."_".$opp['products_id']."'
+        echo " <font id
+          ='quantity_".$i."_".$opp['products_id']."_".$opp['orders_products_id']."'
           >".$opp['products_quantity']."</font> - ";
         echo "<input type='text'
           value='".($check=="checked"?intval($opp['products_quantity']-$_value):0)."' 
-           id ='".$opp['products_id']."_input_".$this->formname."' 
-           onchange='".$this->formname."Chage_span(".$opp['products_quantity'].",this,\"span_relate_product_".$opp['products_id']."\")' ";
+           id ='".$opp['products_id']."_".$opp['orders_products_id']."_input_".$this->formname."' 
+           onchange='".$this->formname."Chage_span(".$opp['products_quantity'].",this,\"span_relate_product_".$opp['products_id']."_".$opp['orders_products_id']."\")' ";
         //判断是否 checkbox 选中来确定 是否为只读
 
-        if($_checked==$opp['products_id']&&$__checked==$op['products_id']){
+        if($_checked==$opp['products_id']&&$__checked==$op['products_id']
+            &&$___checked==$opp['orders_products_id']){
           echo " readonly='true' ";
         }
         echo " >";
-        echo " = <font id='span_relate_product_".$opp['products_id']."'>".
+        echo " = <font
+          id='span_relate_product_".$opp['products_id']."_".$opp['orders_products_id']."'>".
           ($check=="checked"?$_value:intval($opp['products_quantity']))."</font>";
       }
       $i++;
@@ -161,15 +164,16 @@ class HM_Item_Autocalculate extends HM_Item_Basic
       }
     }
     function <?php echo $this->formname."Change_option(pid,ele,t)";?>{
-
       var <?php echo $this->formname;?>val ='';
       //循环 checkbox 把 checkbox状态 和input 值保存起来
+      var i =0;
       $("input|[name=0<?php echo $this->formname;?>]").each(function(){
           var check_var_tmp = new Array();
           check_var_tmp = $(this).val().split("|"); 
           var check_info = '';
-          var tmp_pid = check_var_tmp[0];
-          var span_value = $("#quantity_"+t+"_"+tmp_pid).html()-$("#"+tmp_pid+"<?php echo
+          var tmp_pid = $(this).val();
+          tmp_pid = tmp_pid.replace('|','_');
+          var span_value = $("#quantity_"+i+"_"+tmp_pid).html()-$("#"+tmp_pid+"<?php echo
                    "_input_".$this->formname;?>").val();
           var orsers_products_id = '0';
           if($(this).attr('checked')){
@@ -196,17 +200,21 @@ class HM_Item_Autocalculate extends HM_Item_Basic
             check_info += '|0';
           }
           <?php echo $this->formname;?>val += check_info+"_";
+          i++;
         });
 
       $('#<?php echo $this->formname;?>real').val( <?php echo  $this->formname;?>val);
 
 
       // 增加库存
+      var tmp_pid = $(ele).val(); 
+      tmp_pid = tmp_pid.replace('|','_');
       if ($(ele).attr('checked')) {
+        $("#"+tmp_pid+"<?php echo "_input_".$this->formname;?>").attr('readonly',true);
         if(!sum_flag[t]){
-        $("#"+pid+"<?php echo "_input_".$this->formname;?>").attr('readonly', true);
         $.ajax({
-          url: 'ajax_orders.php?action=set_quantity&products_id='+pid+'&count='+($("#quantity_"+t+"_"+pid).html()-$("#"+pid+"<?php echo "_input_".$this->formname;?>").val()),
+          url:
+          'ajax_orders.php?action=set_quantity&products_id='+pid+'&count='+($("#quantity_"+t+"_"+tmp_pid).html()-$("#"+tmp_pid+"<?php echo "_input_".$this->formname;?>").val()),
               async : false,
               success: function(data) {
               sum_flag[t] = true;
@@ -215,11 +223,12 @@ class HM_Item_Autocalculate extends HM_Item_Basic
           }); 
         }
       } else {
+        $("#"+tmp_pid+"<?php echo "_input_".$this->formname;?>").attr('readonly', false);
         if(!sub_flag[t]){
         // 减库存
-        $("#"+pid+"<?php echo "_input_".$this->formname;?>").attr('readonly', false);
         $.ajax({
-          url: 'ajax_orders.php?action=set_quantity&products_id='+pid+'&count=-'+($("#quantity_"+t+"_"+pid).html()-$("#"+pid+"<?php echo "_input_".$this->formname;?>").val()),
+          url:
+          'ajax_orders.php?action=set_quantity&products_id='+pid+'&count=-'+($("#quantity_"+t+"_"+tmp_pid).html()-$("#"+tmp_pid+"<?php echo "_input_".$this->formname;?>").val()),
               async : false,
               success: function(data) {
               sum_flag[t] = false;
@@ -227,6 +236,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
             }   
           }); 
         }
+
       }   
       checkLockOrder();
         $("#qa_form").ajaxSubmit();
