@@ -1618,7 +1618,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
     <tr>
       <td valign="top">
     <!-- 订单信息预览，配合javascript，永远浮动在屏幕右下角 -->
-    <div id="orders_info_box" style="display:none;position:absolute;background:#FFF;padding-top:5px;width:20%; left:50px; width:60%; padding-left:10px;/*bottom:0;margin-top:40px;right:0;width:200px;*/">&nbsp;</div>
+    <div id="orders_info_box" style="display:none;position:absolute;background:#FFF;padding-top:5px; margin-left:20px; width:20%; width:55%; padding-left:10px;/*bottom:0;margin-top:40px;right:0;width:200px;*/">&nbsp;</div>
 <?php
   if ($ocertify->npermission == 15) {
     if(!tep_session_is_registered('reload')) $reload = 'yes';
