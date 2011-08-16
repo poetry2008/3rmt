@@ -14,6 +14,7 @@
   vim: expandtab sw=4 ts=4 sts=4:
   $Id$
  **********************************************************************/
+echo 'jp test';
 require_once(INCLUDE_DIR.'class.mailparse.php');
 require_once(INCLUDE_DIR.'class.ticket.php');
 require_once(INCLUDE_DIR.'class.dept.php');
@@ -33,6 +34,7 @@ class MailFetcher {
 
   function MailFetcher($username,$password,$hostname,$port,$protocol,$encryption='') {
     if(!strcasecmp($protocol,'pop')) //force pop3
+
       $protocol='pop3';
     $this->hostname=$hostname;
     $this->username=$username;
@@ -60,7 +62,6 @@ class MailFetcher {
   }
 
   function open() {
-
     //echo $this->serverstr;
     if($this->mbox && imap_ping($this->mbox))
       return $this->mbox;
@@ -80,11 +81,10 @@ class MailFetcher {
 
 
   function decode($encoding,$text) {
-
     switch($encoding) {
       case 0:
-        $text=imap_8bit($text);
-        break;
+	//        $text=imap_8bit($text);
+	//        break;
       case 1:
         $text=imap_8bit($text);
         break;
@@ -142,13 +142,8 @@ class MailFetcher {
 
   //Generic decoder - mirrors imap_utf8
   function mime_decode($text,$is_subject=false) {
-
     $a = imap_mime_header_decode($text);
     $str = '';
-    /*
-       foreach ($a as $k => $part)
-       $str.= $part->text;
-    //add by bobhero {{
     foreach ($a as $k => $part){
     if(!$part->charset){
     $str.= $part->text;
@@ -157,15 +152,11 @@ class MailFetcher {
     }
     }
 
-     */
-
-    foreach ($a as $k => $part)
-      $str.= $part->text;
 
     $explodeStr = explode("?",$text);
     if(strlen($explodeStr[1])){
       if($is_subject){
-        if(!preg_match('/('.chr(hexdec('1b')).chr(hexdec('28')).chr(hexdec('42')).'|'.chr(hexdec('1b')).chr(hexdec('24')).chr(hexdec('42')).')/',$str)){
+        if(!preg_match('/('.chr(hexdec('1b')).chr(hexdec('28')).chr(hexdec('42')).')|('.chr(hexdec('1b')).chr(hexdec('24')).chr(hexdec('42')).')/',$str)){
        $str = $this->mime_encode($str,$explodeStr[1]);
         }
       }else{
@@ -190,7 +181,6 @@ class MailFetcher {
   }
 
   function getHeaderInfo($mid) {
-
     $headerinfo=imap_headerinfo($this->mbox,$mid);
     $sender=$headerinfo->from[0];
 
@@ -231,11 +221,9 @@ class MailFetcher {
 	  //	  echo $charset.$encoding.$text;
 
 	  if(strtolower($charset)=='utf-8' and strtolower($encoding)=='utf-8'){
-	    //
+        //
 	  }else{
-
 	    $text=$this->mime_encode($text,$charset,$encoding);
-
 	  }
 
         }
@@ -455,7 +443,6 @@ class MailFetcher {
 
   }
 function noLCode($longString){
-  
       $startFlag =   chr(hexdec('1b')).chr(hexdec('24')).chr(hexdec('42'));
       $endFlag   =   chr(hexdec('1b')).chr(hexdec('28')).chr(hexdec('42'));
 
@@ -541,7 +528,6 @@ function getPosInString($search,$longString,$flag=''){
     //$longString = str_replace(" ",'',$longString);
     //$longString = chr(hexdec('1b')).chr(hexdec('24')).chr(hexdec('42')).$longString;
     //$longString .= chr(hexdec('1b')).chr(hexdec('28')).chr(hexdec('42'));
-
     $replaceArray=array(
         "2d6a"=>"㈱",  // 3231
         "2d6b"=>"㈲",  // 3232
@@ -710,3 +696,27 @@ function my_iconv($from, $to, $string) {
   return $result;  
   }
 }  
+if( !function_exists('error_get_last') ) {
+    set_error_handler(
+        create_function(
+            '$errno,$errstr,$errfile,$errline,$errcontext',
+            '
+                global $__error_get_last_retval__;
+                $__error_get_last_retval__ = array(
+                    \'type\'        => $errno,
+                    \'message\'        => $errstr,
+                    \'file\'        => $errfile,
+                    \'line\'        => $errline
+                );
+                return false;
+            '
+        )
+    );
+    function error_get_last() {
+        global $__error_get_last_retval__;
+        if( !isset($__error_get_last_retval__) ) {
+            return null;
+        }
+        return $__error_get_last_retval__;
+    }
+}
