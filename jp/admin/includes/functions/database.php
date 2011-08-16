@@ -15,8 +15,7 @@
       $time_string = '['.date("D M j G:i:s T Y").']';
       fwrite($handle,$time_string." [Unable to connect to database server!]\n");
       fclose($handle);
-      header("Location:/admin/timeout_sql_error.php?string=Unable to connect to
-          database server!");
+      header("Location:/admin/timeout_sql_error.php?string=Unable to connect to database server!");
       exit;
     }
     
