@@ -3659,7 +3659,7 @@ function tep_get_orders_products_string($orders, $single = false) {
     $str .= '<b>'.RIGHT_ORDER_COMMENT_TITLE.'</b>'; 
     $str .= '</td>';
     $str .= '<td class="main">';
-    $str .= $orders['orders_comment']; 
+    $str .= nl2br($orders['orders_comment']); 
     $str .= '</td>'; 
     $str .= '</tr>'; 
   }
