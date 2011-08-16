@@ -3276,6 +3276,35 @@ function tep_get_orders_products_string($orders, $single = false) {
 
 
   //$str .= '</td></tr>';
+  if (ORDER_INFO_TRANS_NOTICE == 'true') {
+    if ($orders['orders_care_flag']) {
+      $str .= '<tr>'; 
+      $str .= '<td class="main" colspan="2"><font color="red">';
+      $str .= RIGHT_ORDER_INFO_TRANS_NOTICE; 
+      $str .= '</font></td>'; 
+      $str .= '</tr>'; 
+    }
+  }
+  
+  if (ORDER_INFO_TRANS_WAIT == 'true') {
+    if ($orders['orders_wait_flag']) {
+      $str .= '<tr>'; 
+      $str .= '<td class="main" colspan="2"><font color="red">';
+      $str .= RIGHT_ORDER_INFO_TRANS_WAIT; 
+      $str .= '</font></td>'; 
+      $str .= '</tr>'; 
+    } 
+  }
+  
+  if (ORDER_INFO_INPUT_FINISH == 'true') {
+    if ($orders['orders_inputed_flag']) {
+      $str .= '<tr>'; 
+      $str .= '<td class="main" colspan="2"><font color="red">';
+      $str .= RIGHT_ORDER_INFO_INPUT_FINISH; 
+      $str .= '</font></td>'; 
+      $str .= '</tr>'; 
+    } 
+  }
   $str .= '<tr><td colspan="2">&nbsp;</td></tr>';
   $str .= '<tr><td class="main" width="150"><b>支払方法：</b></td><td class="main" style="color:darkred;"><b>'.$orders['payment_method'].'</b></td></tr>';
   if ($orders['payment_method'] != '銀行振込(買い取り)') {
@@ -3336,35 +3365,6 @@ function tep_get_orders_products_string($orders, $single = false) {
   }
   }
   
-  if (ORDER_INFO_TRANS_NOTICE == 'true') {
-    if ($orders['orders_care_flag']) {
-      $str .= '<tr>'; 
-      $str .= '<td class="main" colspan="2"><font color="red">';
-      $str .= RIGHT_ORDER_INFO_TRANS_NOTICE; 
-      $str .= '</font></td>'; 
-      $str .= '</tr>'; 
-    }
-  }
-  
-  if (ORDER_INFO_TRANS_WAIT == 'true') {
-    if ($orders['orders_wait_flag']) {
-      $str .= '<tr>'; 
-      $str .= '<td class="main" colspan="2"><font color="red">';
-      $str .= RIGHT_ORDER_INFO_TRANS_WAIT; 
-      $str .= '</font></td>'; 
-      $str .= '</tr>'; 
-    } 
-  }
-  
-  if (ORDER_INFO_INPUT_FINISH == 'true') {
-    if ($orders['orders_inputed_flag']) {
-      $str .= '<tr>'; 
-      $str .= '<td class="main" colspan="2"><font color="red">';
-      $str .= RIGHT_ORDER_INFO_INPUT_FINISH; 
-      $str .= '</font></td>'; 
-      $str .= '</tr>'; 
-    } 
-  }
   
   if (ORDER_INFO_ORDER_INFO == 'true') {
     $str .= '<tr>'; 
