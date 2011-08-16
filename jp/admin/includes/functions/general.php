@@ -3305,7 +3305,7 @@ function tep_get_orders_products_string($orders, $single = false) {
       $str .= '</tr>'; 
     } 
   }
-  $str .= '<tr><td colspan="2">&nbsp;</td></tr>';
+  //$str .= '<tr><td colspan="2">&nbsp;</td></tr>';
   $str .= '<tr><td class="main" width="150"><b>支払方法：</b></td><td class="main" style="color:darkred;"><b>'.$orders['payment_method'].'</b></td></tr>';
   if ($orders['payment_method'] != '銀行振込(買い取り)') {
     //$str .= '<tr><td class="main"><b>入金日：</b></td><td class="main" style="color:red;"><b>'.($pay_time?date('m月d日',strtotime($pay_time)):'入金まだ').'</b></td></tr>';
