@@ -21,6 +21,7 @@ echo "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 echo "<a href='index.php'>".TEXT_ERROR_LINK_INDEX."</a>";
 if(isset($_GET['string'])&&$_GET['string']){
   echo "<br>";
+  echo "<br>";
   echo $_GET['string'];
 }
 ?>
