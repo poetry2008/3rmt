@@ -360,7 +360,9 @@ function UserPassword_preview() {
 
   echo "</form>\n";                 // フォームのフッター
 
+  /*
   echo '<a href="' . tep_href_link(FILENAME_USERS) . '">&laquo;&nbsp;' . BUTTON_BACK_MENU . '</a>'; // ユーザ管理メニューに戻る
+  */
 
   return TRUE;
 }
@@ -502,7 +504,9 @@ function UserPassword_execute() {
   echo "<br>\n";
   echo TEXT_SUCCESSINFO_CHANGE_PASSWORD;    // 完了メッセージ
   echo "<br><br>\n";
+/*
   echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // ユーザ管理メニューに戻る
+  */
   echo "</form>\n";           // フォームのフッター
 
   if ($oresult) @tep_db_free_result($oresult);    // 結果オブジェクトを開放する
