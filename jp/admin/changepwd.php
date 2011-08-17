@@ -468,7 +468,6 @@ function UserInfor_execute() {
 function UserPassword_execute() {
 
   PageBody('t', PAGE_TITLE_PASSWORD);   // ユーザ管理画面のタイトル部表示（パスワード変更）
-
   // 新しいパスワードの入力チェック
   $ret_err = checkNotnull($GLOBALS['aval']['password']);
   if ($ret_err != "") set_errmsg_array($aerror, '<b>' . TABLE_HEADING_NEW_PASSWORD . '</b>:' . $ret_err);
@@ -479,12 +478,13 @@ function UserPassword_execute() {
   if (strcmp($GLOBALS['aval']['password'],$GLOBALS['aval']['chk_password']) != 0)
     set_errmsg_array($aerror, TEXT_ERRINFO_CONFIRM_PASSWORD);
 
-  echo tep_draw_form('users',FILENAME_USERS);      // <form>タグの出力
+  echo tep_draw_form('users',FILENAME_CHANGEPWD);      // <form>タグの出力
 
   if (isset($aerror) && is_array($aerror)) {      // 入力エラーのとき
     print_err_message($aerror);   // エラーメッセージ表示
     echo "<br>\n";
     echo tep_draw_hidden_field('userslist', $GLOBALS['userid']);    // ユーザＩＤを隠し項目にセットする
+    echo tep_draw_hidden_field('execute_password', $GLOBALS['execute_password']);
     echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // ユーザ管理メニューに戻る
     echo "</form>\n";       // フォームのフッター
     return FALSE;
@@ -709,7 +709,8 @@ if (isset($_POST['execute_change'])) { $execute_change = $_POST['execute_change'
   echo "    </table></td>\n";
   }
   $change_pwd_flag = false;
-  if($userslist){
+  if((isset($userslist)&&$userslist)||
+      (isset($userid)&&$userid)){
     if($ocertify->npermission == 15){
       $change_pwd_flag = true;
     }else if($ocertify->auth_user == $userslist){
