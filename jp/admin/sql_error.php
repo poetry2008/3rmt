@@ -17,7 +17,7 @@ if($_SERVER["HTTP_ACCEPT_LANGUAGE"]){
 <div class="error_body">
 <table align="center" class="error_p">
   <tr>
-    	<td valign="top"><img src="images/error_01.gif"></td>
+    	<td valign="top"><img src="images/sql_error.gif"></td>
         <td><div class="sql_text">
         	<?php echo TEXT_ERROR_PAGE_SHOW;?>
         </div>
