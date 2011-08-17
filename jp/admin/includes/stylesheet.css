@@ -977,7 +977,8 @@ a.s_column_bar {
 
 .error_body { height:100%; font-size:12px; background:url(../images/bjpicture.gif) top repeat-x; font-family:"ＭＳ Ｐゴシック",Osaka,Verdana,Arial,sans-serif}
 .error_box_bootom{ height:75px; background:url(../images/bottom_bg.gif) bottom repeat-x;}
-.error_p { margin-top:32px;}
-.sql_text{ padding:25px 0 0 40px; font-size:14px;}
+.error_p { padding-top:50px; margin-top:50px\9;}
+.sql_text{ padding:25px 0 0 40px; font-size:16px;}
 .sql_text01{ margin-left:40px; margin-top:15px;}
 .sql_text02{ width:600px; margin-left:40px; margin-top:15px;}
+.sql_text01 input{ height:25px\9; height:23px;}
