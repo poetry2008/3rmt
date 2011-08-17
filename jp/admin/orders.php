@@ -4,6 +4,92 @@
 */
   //ob_start();
   require('includes/application_top.php');
+function tep_show_orders_products_info($orders_id) {
+  $str = '';
+
+  $orders_info_raw = tep_db_query("select * from ".TABLE_ORDERS." where orders_id = '".$orders_id."'"); 
+  $orders = tep_db_fetch_array($orders_info_raw);
+  
+  if (!$orders) {
+    return $str; 
+  }
+
+  $str .= '<table border="0" cellpadding="0" cellspacing="0">';
+
+  $str .= '<tr><td class="mian" align="left" colspan="2">';
+  if ($orders['orders_inputed_flag']) {
+    $str .= '<font color="red"><b>入力済み</b></font>';
+  }
+  
+  $str .= '</td></tr><tr><td class="mian" align="left"colspan="2">';
+  if ($orders['orders_care_flag']) {
+    $str .= '<font color="red"><b>取扱注意</b></font>';
+  }
+  $str .= '</td></tr><tr><td class="mian" align="left"colspan="2">';
+  if ($orders['orders_comment']) {
+    $str .= '<font color="blue"><b>メモ有り</b></font>';
+  }
+
+  $str .= '</td></tr>';
+  $str .= '<tr><td colspan="2">&nbsp;</td></tr>';
+  $str .= '<tr><td class="main" width="60"><b>支払方法：</b></td><td class="main" style="color:darkred;"><b>'.$orders['payment_method'].'</b></td></tr>';
+  if ($orders['payment_method'] != '銀行振込(買い取り)') {
+    if ($orders['confirm_payment_time'] != '0000-00-00 00:00:00') {
+      $time_str = date('Y年n月j日', strtotime($orders['confirm_payment_time'])); 
+      $str .= '<tr><td class="main"><b>入金日：</b></td><td class="main" style="color:red;"><b>'.$time_str.'</b></td></tr>';
+    }
+  }
+  $str .= '<tr><td colspan="2">&nbsp;</td></tr>';
+  $str .= '<tr><td class="main"><b>オプション：</b></td><td class="main" style="color:blue;"><b>'.$orders['torihiki_houhou'].'</b></td></tr>';
+
+  $orders_products_query = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS." op,".TABLE_PRODUCTS." p where p.products_id = op.products_id and op.orders_id = '".$orders['orders_id']."'");
+  $autocalculate_arr = array();
+  $autocalculate_sql = "select oaf.value as arr_str from ".TABLE_OA_FORMVALUE." oaf,".
+    TABLE_OA_ITEM." oai 
+    where oaf.item_id = oai.id 
+    and oai.type = 'autocalculate' 
+    and oaf.orders_id = '".$orders['orders_id']."' 
+    order by oaf.id asc limit 1 ";
+  $autocalculate_query = tep_db_query($autocalculate_sql);
+  $autocalculate_row = tep_db_fetch_array($autocalculate_query);
+  $arr_checked = explode('_',$autocalculate_row['arr_str']);
+  $autocalculate_arr = array();
+  foreach($arr_checked as $key=>$value){
+    $temp_arr = explode('|',$value);
+    if($temp_arr[0] != 0 && $temp_arr[3] != 0){
+      $autocalculate_arr[] = array($temp_arr[0],$temp_arr[3]);
+    }
+  }
+  $tmpArr = array();
+  while ($p = tep_db_fetch_array($orders_products_query)) {
+    if(in_array($p,$tmpArr)){
+      continue;
+    }
+    $tmpArr[] = $p ;
+    $products_attributes_query = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS_ATTRIBUTES." where orders_products_id='".$p['orders_products_id']."'");
+    if(in_array(array($p['products_id'],$p['orders_products_id']),$autocalculate_arr)&&
+        !empty($autocalculate_arr)){
+      $str .= '<tr><td class="main"><b>商品：</b><font color="red">「入」</font></td><td class="main">'.$p['products_name'].'</td></tr>';
+    }else{
+      $str .= '<tr><td class="main"><b>商品：</b><font color="red">「未」</font></td><td class="main">'.$p['products_name'].'</td></tr>';
+    }
+    $str .= '<tr><td class="main"><b>個数：</b></td><td class="main">'.$p['products_quantity'].'個'.tep_get_full_count2($p['products_quantity'], $p['products_id'], $p['products_rate']).'</td></tr>';
+    while($pa = tep_db_fetch_array($products_attributes_query)){
+      $str .= '<tr><td class="main"><b>'.$pa['products_options'].'：</b></td><td class="main">'.$pa['products_options_values'].'</td></tr>';
+    }
+    $str .= '<tr><td class="main"><b>キャラ名：</b></td><td style="font-size:20px;color:#407416;"><b>'.$p['products_character'].'</b></td></tr>';
+    $names = tep_get_computers_names_by_orders_id($orders['orders_id']);
+    if ($names) {
+      $str .= '<tr><td class="main"><b>PC：</b></td><td class="main">'.implode('&nbsp;,&nbsp;', $names).'</td></tr>';
+    }
+    $str .= '<tr><td class="main"></td><td class="main"></td></tr>';
+    $i++;
+  }
+  $str .= '</table>';
+  $str=str_replace("\n","",$str);
+  $str=str_replace("\r","",$str);
+  return $str; 
+}
   require_once('oa/HM_Form.php'); 
   require_once('oa/HM_Group.php'); 
   require(DIR_WS_FUNCTIONS . 'visites.php');
