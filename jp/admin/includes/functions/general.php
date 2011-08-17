@@ -3307,7 +3307,6 @@ function tep_get_orders_products_string($orders, $single = false) {
   }
   //$str .= '<tr><td colspan="2">&nbsp;</td></tr>';
   $str .= '<tr><td class="main" width="150"><b>支払方法：</b></td><td class="main" style="color:darkred;"><b>'.$orders['payment_method'].'</b></td></tr>';
-  if ($orders['payment_method'] != '銀行振込(買い取り)') {
     //$str .= '<tr><td class="main"><b>入金日：</b></td><td class="main" style="color:red;"><b>'.($pay_time?date('m月d日',strtotime($pay_time)):'入金まだ').'</b></td></tr>';
     if ($orders['confirm_payment_time'] != '0000-00-00 00:00:00') {
       $time_str = date('Y年n月j日', strtotime($orders['confirm_payment_time'])); 
@@ -3317,7 +3316,6 @@ function tep_get_orders_products_string($orders, $single = false) {
     if($time_str){
     $str .= '<tr><td class="main"><b>入金日：</b></td><td class="main" style="color:red;"><b>'.$time_str.'</b></td></tr>';
     }
-  }
   $str .= '<tr><td colspan="2">&nbsp;</td></tr>';
   $str .= '<tr><td class="main"><b>オプション：</b></td><td class="main" style="color:blue;"><b>'.$orders['torihiki_houhou'].'</b></td></tr>';
 
