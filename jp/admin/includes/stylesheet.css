@@ -974,3 +974,10 @@ a.s_column_bar {
 .oa_auto_no_product_input { float:left;}
 #orders_info_box table td{ font-size:14px;}
 .orders_info_div td { vertical-align:top; padding-top:2px;}
+
+.error_body { height:100%; font-size:12px; background:url(../images/bjpicture.gif) top repeat-x; font-family:"ＭＳ Ｐゴシック",Osaka,Verdana,Arial,sans-serif}
+.error_box_bootom{ height:75px; background:url(../images/bottom_bg.gif) bottom repeat-x;}
+.error_p { margin-top:32px;}
+.sql_text{ padding:25px 0 0 40px; font-size:14px;}
+.sql_text01{ margin-left:40px; margin-top:15px;}
+.sql_text02{ width:600px; margin-left:40px; margin-top:15px;}

@@ -26,7 +26,7 @@ success: function(_data) {
   //跳霓ｬ髞呵ｯｯ鬘ｵ
 }
 }else{
-  location.href='/admin/timeout_sql_error.php';
+  location.href='/admin/sql_error.php';
 }
 }
 }
