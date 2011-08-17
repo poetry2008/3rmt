@@ -708,9 +708,18 @@ if (isset($_POST['execute_change'])) { $execute_change = $_POST['execute_change'
   echo "\n<!-- left_navigation_eof //-->\n";
   echo "    </table></td>\n";
   }
+  $change_pwd_flag = false;
+  if($userslist){
+    if($ocertify->npermission == 15){
+      $change_pwd_flag = true;
+    }else if($ocertify->auth_user == $userslist){
+      $change_pwd_flag = true;
+    }
+  }
 
+  
 // 画面表示、入力チェックＤＢ反映
-  if ($ocertify->auth_user) {
+  if ($ocertify->auth_user&&$change_pwd_flag) {
         // パスワード変更
     if (isset($execute_password) && $execute_password) {
       if (isset($execute_update) && $execute_update){
