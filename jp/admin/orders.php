@@ -2215,7 +2215,9 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
         if(!in_array($_orders_status_history['orders_status_id'], $_osh)
         && !is_dir(tep_get_upload_dir().'orders_status/'.$_orders_status_history['orders_status_image']) 
         && file_exists(tep_get_upload_dir().'orders_status/'.$_orders_status_history['orders_status_image'])){
-          echo tep_image(tep_get_web_upload_dir(). 'orders_status/' . $_orders_status_history['orders_status_image'], $_orders_status_history['orders_status_image'], 15, 15, ($_orders_status_history['orders_status_id'] == @$orders['orders_status_id'])?'style="vertical-align: middle;"':'style="vertical-align: middle;"');
+          echo tep_image(tep_get_web_upload_dir(). 'orders_status/' .
+              $_orders_status_history['orders_status_image'],
+              $_orders_status_history['orders_status_image'],0 ,0 , ($_orders_status_history['orders_status_id'] == @$orders['orders_status_id'])?'style="vertical-align: middle;"':'style="vertical-align: middle;"');
           $_osi = $_osi or true;
         }
           $_osh[] = $_orders_status_history['orders_status_id'];
