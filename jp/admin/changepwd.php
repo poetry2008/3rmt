@@ -334,7 +334,7 @@ function UserPassword_preview() {
   echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TABLE_HEADING_NEW_PASSWORD . '</td>';    // 新しいパスワード
   // 入力項目出力
   echo '<td>';
-  echo tep_draw_password_field("aval[password]", '', TRUE);
+  echo tep_draw_password_field("aval[password]", '', TRUE," id='aval_password'");
   echo '</td>';
   echo "</tr>\n";
 
@@ -342,7 +342,7 @@ function UserPassword_preview() {
   echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TABLE_HEADING_CONFIRM_PASSWORD . '</td>';  // 確認のため再入力
   // 入力項目出力
   echo '<td>';
-  echo tep_draw_password_field("aval[chk_password]", '', TRUE);
+  echo tep_draw_password_field("aval[chk_password]", '', TRUE," id='aval_chk_password'");
   echo '</td>';
   echo "</tr>\n";
 
@@ -540,7 +540,12 @@ function formConfirm(type) {
       rtn = confirm("'. JAVA_SCRIPT_INFO_DELETE . '");
       break;
     case "password":
+      if($("#aval_password").val()== $("#aval_chk_password").val()){
       rtn = confirm("'. JAVA_SCRIPT_INFO_PASSWORD . '");
+      }else{
+        alert("'.JAVA_SCRIPT_ERRINFO_CONFIRM_PASSWORD.'");
+        rtn = false;
+      }
       break;
     case "staff2chief":
       rtn = confirm("'. JAVA_SCRIPT_INFO_STAFF2CHIEF . '");
