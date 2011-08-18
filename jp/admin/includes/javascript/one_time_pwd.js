@@ -8,7 +8,7 @@ async : false,
 success: function(data) {
 if(data !='false'){
 var pwd_arr = data.split(",");
-if(data.search(/MySQL server has gone away/i)==-1){
+if(data.indexOf('[SQL-ERROR]')==-1){
 pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n","");
 if(in_array(pwd,pwd_arr)){
 $.ajax({
@@ -26,7 +26,7 @@ success: function(_data) {
   //跳霓ｬ髞呵ｯｯ鬘ｵ
 }
 }else{
-  location.href='/admin/timeout_sql_error.html';
+  location.href='/admin/sql_error.php';
 }
 }
 }

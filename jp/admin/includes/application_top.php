@@ -50,6 +50,7 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
   define('LOCAL_EXE_UNZIP', '/usr/local/bin/unzip');
 
 // define the filenames used in the project
+  define('FILENAME_CHANGEPWD', 'changepwd.php');
   define('FILENAME_POINT_EMAIL', 'point_email.php');
   define('FILENAME_OA_FORM', 'oa_form.php'); 
   define('FILENAME_OA_GROUP', 'oa_group.php'); 
@@ -247,7 +248,7 @@ define('TABLE_PERMISSIONS','permissions');
   require(DIR_WS_FUNCTIONS . 'database.php');
 
 // make a connection to the database... now
-  tep_db_connect() or die('Unable to connect to database server!');
+  tep_db_connect();// or die('Unable to connect to database server!');
 
 // set application wide parameters
   $configuration_query = mysql_query('select configuration_key as cfgKey, configuration_value as cfgValue from ' . TABLE_CONFIGURATION . ' order by site_id ASC');

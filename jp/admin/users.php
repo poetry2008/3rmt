@@ -768,6 +768,9 @@ if(tep_db_query($permission_sid_sql)){
  --------------------------------------*/
 function UserPassword_preview() {
 
+  tep_redirect(tep_href_link(FILENAME_CHANGEPWD,
+        'execute_password='.$GLOBALS['execute_password'].'&userslist='.$GLOBALS['userslist']));
+  /*
   PageBody('t', PAGE_TITLE_PASSWORD);   // ユーザ管理画面のタイトル部表示（パスワード変更）
 
   echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));              // <form>タグの出力
@@ -845,6 +848,7 @@ function UserPassword_preview() {
   */
   
 
+  /* move this ro change pwd
   echo "</table>\n";
 
   echo '<br>';
@@ -862,6 +866,7 @@ function UserPassword_preview() {
   echo '<a href="' . tep_href_link(basename($GLOBALS['PHP_SELF'])) . '">&laquo;&nbsp;' . BUTTON_BACK_MENU . '</a>'; // ユーザ管理メニューに戻る
 
   return TRUE;
+  */
 }
 
 /*--------------------------------------
@@ -1619,6 +1624,7 @@ function update_rules($userid,$rule,$letter){
   if (isset($_POST['userid'])) { $userid = $_POST['userid']; }
   if (isset($_POST['aval'])) { $aval = $_POST['aval']; }
   if (isset($_POST['userslist'])) { $userslist = $_POST['userslist']; }
+  else if(isset($_GET['userslist'])) { $userslist = $_GET['userslist']; }
   if (isset($_POST['no_permission_list'])) { $no_permission_list = $_POST['no_permission_list']; }
   if (isset($_POST['staff_permission_list'])) { $staff_permission_list =
     $_POST['staff_permission_list']; }
@@ -1627,6 +1633,8 @@ function update_rules($userid,$rule,$letter){
   if (isset($_POST['permission_list'])) { $permission_list = $_POST['permission_list']; }
   if (isset($_POST['execute_user'])) { $execute_user = $_POST['execute_user']; }
   if (isset($_POST['execute_password'])) { $execute_password = $_POST['execute_password']; }
+  else if(isset($_GET['execute_password'])) { $execute_password =
+    $_GET['execute_password']; }
   if (isset($_POST['execute_permission'])) { $execute_permission = $_POST['execute_permission']; }
 //修改权限
 if (isset($_POST['execute_change'])) { $execute_change = $_POST['execute_change'];}
@@ -1648,6 +1656,16 @@ if (isset($_POST['execute_change'])) { $execute_change = $_POST['execute_change'
 if (isset($_POST['execute_c_permission'])) { $execute_change = $_POST['execute_c_permission'];}
 if (isset($_POST['rule'])) { $rule = $_POST['rule'];}
 if (isset($_POST['letter'])) { $letter = $_POST['letter'];}
+if ($ocertify->auth_user) {
+if (isset($execute_password) && $execute_password) {
+      if (isset($execute_update) && $execute_update){
+        UserPassword_execute();  // パスワード変更処理実行
+      }else{
+        UserPassword_preview();          // パスワード変更ページ表示
+      }
+    // 管理者権限
+}
+}
 
   PageHeader();       // ページ・ヘッダの表示
   PageBodyTable('t');     // ページのレイアウトテーブル：開始（ナビゲーションボックスを包括するテーブル開始）
@@ -1685,14 +1703,6 @@ if (isset($_POST['letter'])) { $letter = $_POST['letter'];}
       }
 
     // パスワード変更
-    } else if (isset($execute_password) && $execute_password) {
-      if (isset($execute_update) && $execute_update){
-        UserPassword_execute();  // パスワード変更処理実行
-      }else{
-        UserPassword_preview();          // パスワード変更ページ表示
-      }
-
-    // 管理者権限
     } else if (isset($execute_permission) && $execute_permission) {
 
 //permission start

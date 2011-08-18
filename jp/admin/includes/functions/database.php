@@ -10,16 +10,27 @@
     } else {
       $$link = mysql_connect($server, $username, $password);
     }
+    if(!$$link){
+      $handle = fopen(DIR_FS_ADMIN.'/log/db_error.txt','a+');
+      $time_string = '['.date("D M j G:i:s T Y").']';
+      fwrite($handle,$time_string." [Unable to connect to database server!]\n");
+      fclose($handle);
+      header("Location:/admin/sql_error.php?string=Unable to connect to database server!");
+      exit;
+    }
     
     if ($$link) mysql_select_db($database);
 
     if (intval(substr(mysql_get_server_info(), 0, 1) >= 4)){
       mysql_query('set names utf8');
     }
+    /*
     $sql = "set interactive_timeout=1";
     mysql_query($sql);
     $sql = "set wait_timeout=1";
     mysql_query($sql);
+    */
+
     return $$link;
   }
 
@@ -30,8 +41,11 @@
   }
 
   function tep_db_error($query, $errno, $error) { 
-    var_dump(debug_backtrace());
-    die('<font color="#000000"><b>' . $errno . ' - ' . $error . '<br><br>' . $query . '<br><br><small><font color="#ff0000">[TEP STOP]</font></small><br><br></b></font>');
+    $handle = fopen(DIR_FS_ADMIN.'/log/db_error.txt','a+');
+    $time_string = '['.date("D M j G:i:s T Y").']';
+    fwrite($handle,$time_string." [".$errno."] [".$error."] [".$query."]\n");
+    fclose($handle);
+    header("Location:/admin/sql_error.php?string=" . $errno . ' - ' . $error .'<br><br>[SQL-ERROR]<br><br>');
   }
 
   function tep_db_query($query, $link = 'db_link') {
@@ -43,8 +57,10 @@
     }
     $runtime= new runtime;
     $runtime->start();
-    $result = mysql_query($query, $$link) or tep_db_error($query, mysql_errno(), mysql_error());
-
+    $result = mysql_query($query, $$link);
+    if (mysql_error()) {
+      tep_db_error($query, mysql_errno(), mysql_error());
+    }
     if (STORE_DB_TRANSACTIONS == 'true') {
       if (mysql_error()) $logger->write(mysql_error(), 'ERROR');
     }

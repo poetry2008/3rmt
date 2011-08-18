@@ -149,7 +149,7 @@ if (!isset($ocertify->npermission) || $ocertify->npermission >= 7) {
       </tr>
       <tr>
       <td class="menu01"><a class="t_link01"
-      href="'.tep_href_link('users.php', '', 'NONSSL').'">'.HEADER_TEXT_USERS.'</a></td>
+      href="'.tep_href_link('changepwd.php?execute_password='.TEXT_ECECUTE_PASSWORD_USER."&userslist=".$ocertify->auth_user, '', 'NONSSL').'">'.HEADER_TEXT_USERS.'</a></td>
       </tr>
       </table>
       </td>
