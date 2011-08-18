@@ -14,7 +14,7 @@
   vim: expandtab sw=4 ts=4 sts=4:
   $Id$
  **********************************************************************/
-echo 'jp test';
+
 require_once(INCLUDE_DIR.'class.mailparse.php');
 require_once(INCLUDE_DIR.'class.ticket.php');
 require_once(INCLUDE_DIR.'class.dept.php');
@@ -145,26 +145,25 @@ class MailFetcher {
     $a = imap_mime_header_decode($text);
     $str = '';
     foreach ($a as $k => $part){
-    if(!$part->charset){
+      //    if(!$part->charset){
     $str.= $part->text;
-    }else{
-    $str.= mb_convert_encoding($part->text,'UTF-8', $part->charset);
-    }
-    }
+    //    }else{
+    //    $str.= mb_convert_encoding($part->text,'UTF-8', $part->charset);
+    //    }
+        }
 
 
     $explodeStr = explode("?",$text);
     if(strlen($explodeStr[1])){
       if($is_subject){
-        if(!preg_match('/('.chr(hexdec('1b')).chr(hexdec('28')).chr(hexdec('42')).')|('.chr(hexdec('1b')).chr(hexdec('24')).chr(hexdec('42')).')/',$str)){
-       $str = $this->mime_encode($str,$explodeStr[1]);
-        }
+	$str  =  iconv($explodeStr[1],'UTF-8',$str);
+	//        if(!preg_match('/('.chr(hexdec('1b')).chr(hexdec('28')).chr(hexdec('42')).')|('.chr(hexdec('1b')).chr(hexdec('24')).chr(hexdec('42')).')/',$str)){
+	//	  $str = $this->mime_encode($str,$explodeStr[1]);
+	//        }
       }else{
         $str  =  iconv($explodeStr[1],'UTF-8',$str);
       }
     }
-
-
     return $str?$str:imap_utf8($text);
   }
 
@@ -267,7 +266,7 @@ class MailFetcher {
     return $body;
   }
 
-  function createTicket($mid,$emailid=0){
+  function createTicket($mid,$emailid=0,$deletemsgs){
     global $cfg;
 
     $mailinfo=$this->getHeaderInfo($mid);
@@ -275,11 +274,12 @@ class MailFetcher {
     //Make sure the email is NOT one of the undeleted emails.
     if($mailinfo['mid'] && ($id=Ticket::getIdByMessageId(trim($mailinfo['mid']),$mailinfo['from']['email']))){
       //TODO: Move emails to a fetched folder when delete is false?? 
+        if($deletemsgs)
+          imap_delete($this->mbox,$mid);
             return false;
     }
     $var['name']=$this->mime_decode($mailinfo['from']['name']);
     $var['email']=$mailinfo['from']['email'];
-//    var_dump("<<".$mailinfo['subject'].">>");
     $var['subject']=$mailinfo['subject']?$this->mime_decode($mailinfo['subject'],true):'[No Subject]';
     $var['message']=Format::stripEmptyLines($this->getBody($mid))?Format::stripEmptyLines($this->getBody($mid)):" ";
     $var['header']=$this->getHeader($mid);
@@ -302,8 +302,11 @@ class MailFetcher {
 
     $errors=array();
     if(!$ticket) {
-      if(!($ticket=Ticket::create($var,$errors,'Email')) || $errors)
+      if(!($ticket=Ticket::create($var,$errors,'Email')) || $errors){
+echo $errors;
+	die('something got wrong');
         return null;
+      }
       $msgid=$ticket->getLastMsgId();
     }else{
       $message=$var['message'];
@@ -353,11 +356,11 @@ class MailFetcher {
     //echo "New Emails:  $nummsgs\n";
     $msgs=$errors=0;
     for($i=$nummsgs; $i>0; $i--){ //process messages in reverse. Latest first. FILO.
-      if($this->createTicket($i,$emailid)){
+      if($this->createTicket($i,$emailid,$deletemsgs)){
         imap_setflag_full($this->mbox, imap_uid($this->mbox,$i), "\\Seen", ST_UID); //IMAP only??
+        $msgs++;
         if($deletemsgs)
           imap_delete($this->mbox,$i);
-        $msgs++;
         $errors=0; //We are only interested in consecutive errors.
       }else{
         $errors++;
