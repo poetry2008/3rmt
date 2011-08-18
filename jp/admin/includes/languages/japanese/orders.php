@@ -164,4 +164,24 @@ define('TEXT_ORDER_DOWNLOPAD','注文データダウンロード');
 define('DEL_CONFIRM_PAYMENT_TIME', '削除');
 define('NOTICE_DEL_CONFIRM_PAYEMENT_TIME', '時間を削除しますか？');
 define('NOTICE_DEL_CONFIRM_PAYMENT_TIME_SUCCESS', '削除成功');
+
+//for function
+define('TEXT_FUNCTION_INPUT_FINISH','入力済み');
+define('TEXT_FUNCTION_NOTICE','取扱注意');
+define('TEXT_FUNCTION_HAVE_HISTORY','メモ有り');
+define('TEXT_FUNCTION_PAYMENT_METHOD','支払方法：');
+define('TEXT_FUNCTION_DATE_STRING','Y年n月j日');
+define('TEXT_FUNCTION_UN_GIVE_MONY','入金まだ');
+define('TEXT_FUNCTION_UN_GIVE_MONY_DAY','入金日：');
+define('TEXT_FUNCTION_OPTION','オプション：');
+define('TEXT_FUNCTION_CATEGORY','商品：');
+define('TEXT_FUNCTION_FINISH','「入」');
+define('TEXT_FUNCTION_UNFINISH','「未」');
+define('TEXT_FUNCTION_NUMBER','個数：');
+define('TEXT_FUNCTION_NUM','個');
+define('TEXT_FUNCTION_GAME_NAME','キャラ名：');
+define('TEXT_FUNCTION_PC','PC：');
+
+
+
 ?>

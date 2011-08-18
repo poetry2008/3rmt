@@ -18,31 +18,31 @@ function tep_show_orders_products_info($orders_id) {
 
   $str .= '<tr><td class="mian" align="left" colspan="2">';
   if ($orders['orders_inputed_flag']) {
-    $str .= '<font color="red"><b>入力済み</b></font>';
+    $str .= '<font color="red"><b>'.TEXT_FUNCTION_INPUT_FINISH.'</b></font>';
   }
   
   $str .= '</td></tr><tr><td class="mian" align="left"colspan="2">';
   if ($orders['orders_care_flag']) {
-    $str .= '<font color="red"><b>取扱注意</b></font>';
+    $str .= '<font color="red"><b>'.TEXT_FUNCTION_NOTICE.'</b></font>';
   }
   $str .= '</td></tr><tr><td class="mian" align="left"colspan="2">';
   if ($orders['orders_comment']) {
-    $str .= '<font color="blue"><b>メモ有り</b></font>';
+    $str .= '<font color="blue"><b>'.TEXT_FUNCTION_HAVE_HISTORY.'</b></font>';
   }
 
   $str .= '</td></tr>';
   $str .= '<tr><td colspan="2">&nbsp;</td></tr>';
-  $str .= '<tr><td class="main" width="60"><b>支払方法：</b></td><td class="main" style="color:darkred;"><b>'.$orders['payment_method'].'</b></td></tr>';
+  $str .= '<tr><td class="main" width="60"><b>'.TEXT_FUNCTION_PAYMENT_METHOD.'</b></td><td class="main" style="color:darkred;"><b>'.$orders['payment_method'].'</b></td></tr>';
     if ($orders['confirm_payment_time'] != '0000-00-00 00:00:00') {
-      $time_str = date('Y年n月j日', strtotime($orders['confirm_payment_time'])); 
+      $time_str = date(TEXT_FUNCTION_DATE_STRING, strtotime($orders['confirm_payment_time'])); 
     }else if(tep_check_order_type($orders['orders_id'])!=2){
-      $time_str = '入金まだ';  
+      $time_str = TEXT_FUNCTION_UN_GIVE_MONY;  
     }
     if($time_str){
-      $str .= '<tr><td class="main"><b>入金日：</b></td><td class="main" style="color:red;"><b>'.$time_str.'</b></td></tr>';
+      $str .= '<tr><td class="main"><b>'.TEXT_FUNCTION_UN_GIVE_MONY_DAY.'</b></td><td class="main" style="color:red;"><b>'.$time_str.'</b></td></tr>';
     }
   $str .= '<tr><td colspan="2">&nbsp;</td></tr>';
-  $str .= '<tr><td class="main"><b>オプション：</b></td><td class="main" style="color:blue;"><b>'.$orders['torihiki_houhou'].'</b></td></tr>';
+  $str .= '<tr><td class="main"><b>'.TEXT_FUNCTION_OPTION.'</b></td><td class="main" style="color:blue;"><b>'.$orders['torihiki_houhou'].'</b></td></tr>';
 
   $orders_products_query = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS." op,".TABLE_PRODUCTS." p where p.products_id = op.products_id and op.orders_id = '".$orders['orders_id']."'");
   $autocalculate_arr = array();
@@ -71,18 +71,21 @@ function tep_show_orders_products_info($orders_id) {
     $products_attributes_query = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS_ATTRIBUTES." where orders_products_id='".$p['orders_products_id']."'");
     if(in_array(array($p['products_id'],$p['orders_products_id']),$autocalculate_arr)&&
         !empty($autocalculate_arr)){
-      $str .= '<tr><td class="main"><b>商品：</b><font color="red">「入」</font></td><td class="main">'.$p['products_name'].'</td></tr>';
+      $str .= '<tr><td class="main"><b>'.TEXT_FUNCTION_CATEGORY.'</b><font
+        color="red">'.TEXT_FUNCTION_FINISH.'</font></td><td class="main">'.$p['products_name'].'</td></tr>';
     }else{
-      $str .= '<tr><td class="main"><b>商品：</b><font color="red">「未」</font></td><td class="main">'.$p['products_name'].'</td></tr>';
+      $str .= '<tr><td class="main"><b>'.TEXT_FUNCTION_CATEGORY.'</b><font
+        color="red">'.TEXT_FUNCTION_UNFINISH.'</font></td><td class="main">'.$p['products_name'].'</td></tr>';
     }
-    $str .= '<tr><td class="main"><b>個数：</b></td><td class="main">'.$p['products_quantity'].'個'.tep_get_full_count2($p['products_quantity'], $p['products_id'], $p['products_rate']).'</td></tr>';
+    $str .= '<tr><td class="main"><b>'.TEXT_FUNCTION_NUMBER.'</b></td><td
+      class="main">'.$p['products_quantity'].TEXT_FUNCTION_NUM.tep_get_full_count2($p['products_quantity'], $p['products_id'], $p['products_rate']).'</td></tr>';
     while($pa = tep_db_fetch_array($products_attributes_query)){
       $str .= '<tr><td class="main"><b>'.$pa['products_options'].'：</b></td><td class="main">'.$pa['products_options_values'].'</td></tr>';
     }
-    $str .= '<tr><td class="main"><b>キャラ名：</b></td><td style="font-size:20px;color:#407416;"><b>'.$p['products_character'].'</b></td></tr>';
+    $str .= '<tr><td class="main"><b>'.TEXT_FUNCTION_GAME_NAME.'</b></td><td style="font-size:20px;color:#407416;"><b>'.$p['products_character'].'</b></td></tr>';
     $names = tep_get_computers_names_by_orders_id($orders['orders_id']);
     if ($names) {
-      $str .= '<tr><td class="main"><b>PC：</b></td><td class="main">'.implode('&nbsp;,&nbsp;', $names).'</td></tr>';
+      $str .= '<tr><td class="main"><b>'.TEXT_FUNCTION_PC.'</b></td><td class="main">'.implode('&nbsp;,&nbsp;', $names).'</td></tr>';
     }
     $str .= '<tr><td class="main"></td><td class="main"></td></tr>';
     $i++;
