@@ -117,5 +117,5 @@ define('TEXT_ERRINFO_USER_CHIEF', '<b>権限を取消す</b>:Chiefを選択し�
 define('TEXT_ERRINFO_USER_ADMIN', '<b>権限を取消す</b>:Adminを選択してください');
 
 
-define('JAVA_SCRIPT_ERRINFO_CONFIRM_PASSWORD', '確認のため再入力:確認のため再入力したパスワードが違います');
+define('JAVA_SCRIPT_ERRINFO_CONFIRM_PASSWORD','新しいパスワードと確認のため再入力が一致しません');
 ?>
