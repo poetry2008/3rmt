@@ -2254,41 +2254,18 @@ function submit_confirm()
         </tr>
       </table>
 </td><td valign="top" align="right">
-      <table id="select_question" style="display:none">
-        <tr>
-          <td><?php echo TEXT_ORDER_BANK;?></td>
-          <td>
-            <input type="checkbox" name="q_15_3" id="q_15_3" value="1"><?php echo
-            TEXT_ORDER_JNB;?> 
-            <input type="checkbox" name="q_15_4" id="q_15_4" value="1"><?php echo
-            TEXT_ORDER_EBANK?>
-            <input type="checkbox" name="q_15_5" id="q_15_5" value="1"><?php echo
-            TEXT_ORDER_POST_BANK;?>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-        </tr>
-        <tr>
-          <td><input type="checkbox" name="q_15_8" id="q_15_8" value="1">
-          <?php echo TEXT_ORDER_OK_ORDER_NIMBE;?></td>
-          <td><input type="text" name="q_15_7" id="q_15_7"></td>
-        </tr>
-        <tr>
-          <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-        </tr>
-        <tr>
-          <td><?php echo TEXT_ORDER_QUERYER_NAME;?></td>
-          <td><input type="text" name="q_8_1" id="q_8_1"></td>
-        </tr>
-        <tr>
-          <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-        </tr>
-        <!--
-        <tr>
-          <td colspan="2" align="right"><input type="submit" name="submit" value="取引完了" onclick="return check_question_form()"></td>
-        </tr>
-        -->
+      <table id="select_question" >
+       <tr>
+           <td></td>
+           <td>
+               <select id='oa_dynamic_groups'  ></select>
+           </td>
+       </tr>
+       <tr id='oa_dynamic_group_item' >
+           <td id='oa_dynamic_group_item_name'></td>
+	   <td id='oa_dynamic_group_item_render'></td>
+       </tr>
+       <tr><td></td><td><button id="oa_dynamic_submit" >nono</button></td></tr>
       </table>
 </td></tr></table>
       </form>
