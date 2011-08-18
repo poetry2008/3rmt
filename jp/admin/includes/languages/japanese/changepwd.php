@@ -44,7 +44,7 @@ define('TEXT_ERRINFO_DB_CHANGE_PERMISSION','ユーザ権限の変更ができま
 define('TEXT_SUCCESSINFO_INSERT_USER', 'ユーザを追加しました');
 define('TEXT_SUCCESSINFO_UPDATE_USER', 'ユーザ情報を更新しました');
 define('TEXT_SUCCESSINFO_DELETE_USER', 'ユーザ情報を削除しました');
-define('TEXT_SUCCESSINFO_CHANGE_PASSWORD', 'パスワードを変更しました');
+define('TEXT_SUCCESSINFO_CHANGE_PASSWORD', '変更が完了しました。');
 define('TEXT_SUCCESSINFO_PERMISSION', 'ユーザ権限を%sました');
 define('TEXT_SUCCESSINFO_CHANGE_PERMISSION','権限を変更しました');
 // ページタイトル

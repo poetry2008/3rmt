@@ -352,6 +352,7 @@ function UserPassword_preview() {
 
   echo tep_draw_hidden_field("execute_password");         // 処理モードを隠し項目にセットする
   echo tep_draw_hidden_field("userid", $GLOBALS['userslist']);    // ユーザＩＤを隠し項目にセットする
+  echo tep_draw_hidden_field("userslist", $GLOBALS['userslist']);    // ユーザＩＤを隠し項目にセットする
 
   // ボタン表示
   echo tep_draw_input_field("execute_update", BUTTON_CHANGE, "onClick=\"return formConfirm('password')\"", FALSE, "submit", FALSE); // 変更
