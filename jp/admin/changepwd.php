@@ -503,7 +503,10 @@ function UserPassword_execute() {
   }
 
   echo "<br>\n";
+  echo "&nbsp;&nbsp;&nbsp;&nbsp;";
+  echo "<font size='4' color='red'>";
   echo TEXT_SUCCESSINFO_CHANGE_PASSWORD;    // 完了メッセージ
+  echo "</font>";
   echo "<br><br>\n";
 /*
   echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // ユーザ管理メニューに戻る
