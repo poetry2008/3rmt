@@ -328,6 +328,14 @@ function UserManu_preview() {
   global $ocertify;           // ユーザ認証オブジェクト
 
   PageBody('t', PAGE_TITLE_MENU_USER);      // ユーザ管理画面のタイトル部表示（ユーザ管理メニュー）
+  echo '
+<script language="JavaScript1.1">
+<!--
+function changepwd(){
+  document.getElementById("useraction_form").action="'.FILENAME_CHANGEPWD.'";
+  document.getElementById("useraction_form").submit();
+}
+</script>';
 
   // ユーザ情報取得
   if ($ocertify->npermission < 15) $ssql = makeSelectUserInfo($ocertify->auth_user);    // 一般ユーザのとき
@@ -348,7 +356,7 @@ function UserManu_preview() {
   // テーブルタグの開始
   echo '<table ' . $GLOBALS['TableBorder'] . " " . $GLOBALS['TableCellspacing'] . " " . $GLOBALS['TableCellpadding'] . " " . $GLOBALS['TableBgcolor'] . '>' . "\n";
   echo "<tr>\n";
-  echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));    // <form>タグの出力
+  echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']),'','post',' id=\'useraction_form\'');    // <form>タグの出力
 
   if ($nrow == 1) {                         // 対象データが1件だったとき
     // 項目タイトル（1セル）の出力
@@ -375,18 +383,23 @@ function UserManu_preview() {
   echo "</table>\n";
 
   echo '<br>';
+  echo tep_draw_hidden_field("execute_password",BUTTON_CHANGE_PASSWORD);
 
   // ボタン表示
   if ($ocertify->npermission == 15) {     // 管理者のとき
     echo tep_draw_input_field("execute_new", BUTTON_INSERT_USER, '', FALSE, "submit", FALSE); // ユーザの追加
     echo tep_draw_input_field("execute_user", BUTTON_INFO_USER, '', FALSE, "submit", FALSE);  // ユーザ情報
-    echo tep_draw_input_field("execute_password", BUTTON_CHANGE_PASSWORD, '', FALSE, "submit", FALSE);  // パスワード変更
+    echo tep_draw_input_field("execute_password", BUTTON_CHANGE_PASSWORD,
+        'onclick="changepwd()"', FALSE,
+        "button", FALSE);  // パスワード変更
     echo tep_draw_input_field("execute_permission", BUTTON_PERMISSION, '', FALSE, "submit", FALSE); // 管理者権限
  echo tep_draw_input_field("execute_change",BUTTON_CHANGE_PERMISSION , '', FALSE, "submit", FALSE);
     echo "\n";
   } else {
     //echo tep_draw_input_field("execute_user", BUTTON_INFO_USER, '', FALSE, "submit", FALSE);  // ユーザ情報
-    echo tep_draw_input_field("execute_password", BUTTON_CHANGE_PASSWORD, '', FALSE, "submit", FALSE);  // パスワード変更
+    echo tep_draw_input_field("execute_password", BUTTON_CHANGE_PASSWORD, 
+        'onclick="changepwd()"', FALSE,
+        "button", FALSE);  // パスワード変更
   }
 
   echo "</form>\n";           // フォームのフッター
