@@ -2490,7 +2490,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
           <td class="smallText" align="right" width="60">
             <?php echo tep_draw_form('goto', FILENAME_CATEGORIES, '', 'get') . "\n"; ?>
 
-              <div id="gotomenu">
+              <div id="gotomenu" style="width:100%">
                 <a href="javascript:void(0)" onclick="$('#categories_tree').toggle()"><?php echo CATEGORY_TREE_SELECT_TEXT;?></a>
                 <div id="categories_tree">
                 <?php
