@@ -76,7 +76,7 @@ $(window).resize(function (){
     ajaxLoad('<?php echo $cPath;?>');
     var menu_div_width = $('#categories_right_td').width();
 <?php if ($_COOKIE['tarrow'] == 'open') {?>
-    menu_div_width = menu_div_width-125;
+    menu_div_width = menu_div_width-130;
 <?php } ?>
     if(menu_div_width>=480){
       $('#categories_tree').animate({width:(menu_div_width-5)+"px"});
