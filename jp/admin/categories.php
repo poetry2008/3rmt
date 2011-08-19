@@ -1173,6 +1173,21 @@ function get_cart_products(){
   if (tagstr != '')
   window.open("categories.php?action=get_cart_products&products_id=<?php echo $_GET['pID'];?>&buyflag="+$("input[@type=radio][name=products_cart_buyflag][checked]").val()+tagstr, '','toolbar=0,location=0,directories=0,status=1,menubar=0,scrollbars=yes,resizable=yes,width=300');
 }
+$(window).resize(function (){
+    var menu_div_width = $('#categories_right_td').width();
+    if(menu_div_width>=470){
+      $('#categories_tree').animate({width:(menu_div_width-10)+"px"});
+    }
+});
+$(document).ready(function(){
+    var menu_div_width = $('#categories_right_td').width();
+    if(menu_div_width>=480){
+      $('#categories_tree').animate({width:(menu_div_width-10)+"px"});
+    }else{
+      $('#categories_tree').animate({width:"470px"});
+    }
+    
+});
 </script>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" >
@@ -1195,7 +1210,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
         <!-- left_navigation_eof //-->
       </table></td>
     <!-- body_text //-->
-    <td width="100%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+    <td width="100%" valign="top" id='categories_right_td'><table border="0" width="100%" cellspacing="0" cellpadding="2">
         <?php
   if (isset($_GET['action']) && $_GET['action'] == 'new_product') {
     if ( isset($_GET['pID']) && ($_GET['pID']) && (!$_POST) ) {
