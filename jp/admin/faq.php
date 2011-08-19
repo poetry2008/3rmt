@@ -324,6 +324,9 @@ $(window).resize(function (){
 });
 $(document).ready(function(){
     var menu_div_width = $('#categories_right_td').width();
+<?php if ($_COOKIE['tarrow'] == 'open') {?>
+    menu_div_width = menu_div_width-125;
+<?php } ?>
     if(menu_div_width>=480){
       $('#categories_tree').animate({width:(menu_div_width-5)+"px"});
     }else{
