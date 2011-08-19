@@ -47,8 +47,9 @@ function toggle_header_menu(elmnt)
     }
   }
 }
-function goto_changepwd(){
-  document.getElementById("changepwd_form").submit();
+function goto_changepwd(id){
+  document.getElementById(id).action="<?php echo FILENAME_CHANGEPWD;?>";
+  document.getElementById(id).submit();
   return false;
 }
 </script>
@@ -158,7 +159,8 @@ if (!isset($ocertify->npermission) || $ocertify->npermission >= 7) {
     'NONSSL').'">'.HEADER_TEXT_PW_MANAGER.'</a></td>
       </tr>
       <tr>
-      <td class="menu01"><a class="t_link01" onclick="javascript:goto_changepwd()"
+      <td class="menu01"><a class="t_link01"
+      onclick="javascript:goto_changepwd(\'changepwd_form\')"
       href="javascript:void(0);">'.HEADER_TEXT_USERS.'</a></td>
       </tr>
       </table>

@@ -328,14 +328,6 @@ function UserManu_preview() {
   global $ocertify;           // ユーザ認証オブジェクト
 
   PageBody('t', PAGE_TITLE_MENU_USER);      // ユーザ管理画面のタイトル部表示（ユーザ管理メニュー）
-  echo '
-<script language="JavaScript1.1">
-<!--
-function changepwd(){
-  document.getElementById("useraction_form").action="'.FILENAME_CHANGEPWD.'";
-  document.getElementById("useraction_form").submit();
-}
-</script>';
 
   // ユーザ情報取得
   if ($ocertify->npermission < 15) $ssql = makeSelectUserInfo($ocertify->auth_user);    // 一般ユーザのとき
@@ -389,16 +381,16 @@ function changepwd(){
   if ($ocertify->npermission == 15) {     // 管理者のとき
     echo tep_draw_input_field("execute_new", BUTTON_INSERT_USER, '', FALSE, "submit", FALSE); // ユーザの追加
     echo tep_draw_input_field("execute_user", BUTTON_INFO_USER, '', FALSE, "submit", FALSE);  // ユーザ情報
-    echo tep_draw_input_field("execute_password", BUTTON_CHANGE_PASSWORD,
-        'onclick="changepwd()"', FALSE,
+    echo tep_draw_input_field("execute_password_button", BUTTON_CHANGE_PASSWORD,
+        'onclick="goto_changepwd(\'useraction_form\')"', FALSE,
         "button", FALSE);  // パスワード変更
     echo tep_draw_input_field("execute_permission", BUTTON_PERMISSION, '', FALSE, "submit", FALSE); // 管理者権限
  echo tep_draw_input_field("execute_change",BUTTON_CHANGE_PERMISSION , '', FALSE, "submit", FALSE);
     echo "\n";
   } else {
     //echo tep_draw_input_field("execute_user", BUTTON_INFO_USER, '', FALSE, "submit", FALSE);  // ユーザ情報
-    echo tep_draw_input_field("execute_password", BUTTON_CHANGE_PASSWORD, 
-        'onclick="changepwd()"', FALSE,
+    echo tep_draw_input_field("execute_password_button", BUTTON_CHANGE_PASSWORD, 
+        'onclick="goto_changepwd(\'useraction_form\')"', FALSE,
         "button", FALSE);  // パスワード変更
   }
 
@@ -1503,6 +1495,7 @@ function PageHeader() {
 
   echo '<script language="javascript" src="includes/javascript/jquery_include.js"></script>'."\n";
   echo '<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>'."\n";
+
   echo '</head>' . "\n";
   echo '<body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">' . "\n";
   if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){

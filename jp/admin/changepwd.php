@@ -698,11 +698,8 @@ function PageFooter() {
   if (isset($_POST['userid'])) { $userid = $_POST['userid']; }
   if (isset($_POST['aval'])) { $aval = $_POST['aval']; }
   if (isset($_POST['userslist'])) { $userslist = $_POST['userslist']; }
-  else if(isset($_GET['userslist'])) { $userslist = $_GET['userslist']; }
   if (isset($_POST['execute_user'])) { $execute_user = $_POST['execute_user']; }
   if (isset($_POST['execute_password'])) { $execute_password = $_POST['execute_password']; }
-  else if(isset($_GET['execute_password'])) { $execute_password =
-    $_GET['execute_password']; }
 //修改权限
 if (isset($_POST['execute_change'])) { $execute_change = $_POST['execute_change'];}
 //2003-07-16 hiroshi_sato add 6 lines
