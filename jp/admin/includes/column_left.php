@@ -51,6 +51,7 @@ $(document).ready(function(){
 });
 function toggle_leftColumn()
 {
+    
   var arrow_status = $('.columnLeft').css('display');
   
   if (arrow_status == 'none') {
@@ -64,6 +65,10 @@ function toggle_leftColumn()
      $('.leftright').children().attr('src', 'includes/languages/japanese/images/boult.gif')
   } else {
      $('.leftright').children().attr('src', 'includes/languages/japanese/images/boult_back.gif')
+  }
+  var menu_div_width = $('#categories_right_td').width();
+  if(menu_div_width>=480){
+    $('#categories_tree').animate({width:(menu_div_width-5)+"px"});
   }
 }
 function toggle_lan(sobj)

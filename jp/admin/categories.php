@@ -1175,14 +1175,14 @@ function get_cart_products(){
 }
 $(window).resize(function (){
     var menu_div_width = $('#categories_right_td').width();
-    if(menu_div_width>=470){
-      $('#categories_tree').animate({width:(menu_div_width-10)+"px"});
+    if(menu_div_width>=480){
+      $('#categories_tree').animate({width:(menu_div_width-5)+"px"});
     }
 });
 $(document).ready(function(){
     var menu_div_width = $('#categories_right_td').width();
     if(menu_div_width>=480){
-      $('#categories_tree').animate({width:(menu_div_width-10)+"px"});
+      $('#categories_tree').animate({width:(menu_div_width-5)+"px"});
     }else{
       $('#categories_tree').animate({width:"470px"});
     }

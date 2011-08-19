@@ -65,9 +65,21 @@ if (isset($_GET['action']) && $_GET['action']) {
   <script language="javascript" src="includes/javascript/jquery_include.js"></script>
   <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
   <script type="text/javascript">
+$(window).resize(function (){
+    var menu_div_width = $('#categories_right_td').width();
+    if(menu_div_width>=480){
+      $('#categories_tree').animate({width:(menu_div_width-5)+"px"});
+    }
+});
   $(document).ready(function(){
     $(".udlr").udlr();
     ajaxLoad('<?php echo $cPath;?>');
+    var menu_div_width = $('#categories_right_td').width();
+    if(menu_div_width>=480){
+      $('#categories_tree').animate({width:(menu_div_width-5)+"px"});
+    }else{
+      $('#categories_tree').animate({width:"470px"});
+    }
   })
   </script>
   </head>
@@ -92,7 +104,7 @@ if (isset($_GET['action']) && $_GET['action']) {
   </table>
   </td>
   <!-- body_text //-->
-  <td width="100%" valign="top">
+  <td width="100%" valign="top" id='categories_right_td'>
   <table border="0" width="100%" cellspacing="0" cellpadding="2">
   <tr>
   <td>
