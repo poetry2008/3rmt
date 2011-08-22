@@ -348,7 +348,7 @@ function UserManu_preview() {
   // テーブルタグの開始
   echo '<table ' . $GLOBALS['TableBorder'] . " " . $GLOBALS['TableCellspacing'] . " " . $GLOBALS['TableCellpadding'] . " " . $GLOBALS['TableBgcolor'] . '>' . "\n";
   echo "<tr>\n";
-  echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));    // <form>タグの出力
+  echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']),'','post',' id=\'useraction_form\'');    // <form>タグの出力
 
   if ($nrow == 1) {                         // 対象データが1件だったとき
     // 項目タイトル（1セル）の出力
@@ -375,18 +375,23 @@ function UserManu_preview() {
   echo "</table>\n";
 
   echo '<br>';
+  echo tep_draw_hidden_field("execute_password",BUTTON_CHANGE_PASSWORD);
 
   // ボタン表示
   if ($ocertify->npermission == 15) {     // 管理者のとき
     echo tep_draw_input_field("execute_new", BUTTON_INSERT_USER, '', FALSE, "submit", FALSE); // ユーザの追加
     echo tep_draw_input_field("execute_user", BUTTON_INFO_USER, '', FALSE, "submit", FALSE);  // ユーザ情報
-    echo tep_draw_input_field("execute_password", BUTTON_CHANGE_PASSWORD, '', FALSE, "submit", FALSE);  // パスワード変更
+    echo tep_draw_input_field("execute_password_button", BUTTON_CHANGE_PASSWORD,
+        'onclick="goto_changepwd(\'useraction_form\')"', FALSE,
+        "button", FALSE);  // パスワード変更
     echo tep_draw_input_field("execute_permission", BUTTON_PERMISSION, '', FALSE, "submit", FALSE); // 管理者権限
  echo tep_draw_input_field("execute_change",BUTTON_CHANGE_PERMISSION , '', FALSE, "submit", FALSE);
     echo "\n";
   } else {
     //echo tep_draw_input_field("execute_user", BUTTON_INFO_USER, '', FALSE, "submit", FALSE);  // ユーザ情報
-    echo tep_draw_input_field("execute_password", BUTTON_CHANGE_PASSWORD, '', FALSE, "submit", FALSE);  // パスワード変更
+    echo tep_draw_input_field("execute_password_button", BUTTON_CHANGE_PASSWORD, 
+        'onclick="goto_changepwd(\'useraction_form\')"', FALSE,
+        "button", FALSE);  // パスワード変更
   }
 
   echo "</form>\n";           // フォームのフッター
@@ -1490,6 +1495,7 @@ function PageHeader() {
 
   echo '<script language="javascript" src="includes/javascript/jquery_include.js"></script>'."\n";
   echo '<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>'."\n";
+
   echo '</head>' . "\n";
   echo '<body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">' . "\n";
   if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){

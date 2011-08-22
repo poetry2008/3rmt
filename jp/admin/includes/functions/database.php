@@ -15,7 +15,7 @@
       $time_string = '['.date("D M j G:i:s T Y").']';
       fwrite($handle,$time_string." [Unable to connect to database server!]\n");
       fclose($handle);
-      header("Location:/admin/timeout_sql_error.php?string=Unable to connect to database server!");
+      header("Location:/admin/sql_error.php?string=Unable to connect to database server!");
       exit;
     }
     
@@ -45,7 +45,7 @@
     $time_string = '['.date("D M j G:i:s T Y").']';
     fwrite($handle,$time_string." [".$errno."] [".$error."] [".$query."]\n");
     fclose($handle);
-    header("Location:/admin/timeout_sql_error.php?string=" . $errno . ' - ' . $error . '<br><br>'. $query . '<br><br>[SQL-ERROR]<br><br>');
+    header("Location:/admin/sql_error.php?string=" . $errno . ' - ' . $error .'<br><br>[SQL-ERROR]<br><br>');
   }
 
   function tep_db_query($query, $link = 'db_link') {

@@ -44,7 +44,7 @@ define('TEXT_ERRINFO_DB_CHANGE_PERMISSION','ユーザ権限の変更ができま
 define('TEXT_SUCCESSINFO_INSERT_USER', 'ユーザを追加しました');
 define('TEXT_SUCCESSINFO_UPDATE_USER', 'ユーザ情報を更新しました');
 define('TEXT_SUCCESSINFO_DELETE_USER', 'ユーザ情報を削除しました');
-define('TEXT_SUCCESSINFO_CHANGE_PASSWORD', 'パスワードを変更しました');
+define('TEXT_SUCCESSINFO_CHANGE_PASSWORD', '変更が完了しました。');
 define('TEXT_SUCCESSINFO_PERMISSION', 'ユーザ権限を%sました');
 define('TEXT_SUCCESSINFO_CHANGE_PERMISSION','権限を変更しました');
 // ページタイトル
@@ -115,4 +115,7 @@ define('JAVA_SCRIPT_INFO_ADMIN2CHIEF', 'Admin権限を取り消します。\nよ
 define('TEXT_ERRINFO_USER_STAFF', '<b>権限を与える</b>:Staffを選択してください');
 define('TEXT_ERRINFO_USER_CHIEF', '<b>権限を取消す</b>:Chiefを選択してください');
 define('TEXT_ERRINFO_USER_ADMIN', '<b>権限を取消す</b>:Adminを選択してください');
+
+
+define('JAVA_SCRIPT_ERRINFO_CONFIRM_PASSWORD','新しいパスワードと確認のため再入力が一致しません');
 ?>

@@ -334,7 +334,7 @@ function UserPassword_preview() {
   echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TABLE_HEADING_NEW_PASSWORD . '</td>';    // 新しいパスワード
   // 入力項目出力
   echo '<td>';
-  echo tep_draw_password_field("aval[password]", '', TRUE);
+  echo tep_draw_password_field("aval[password]", '', TRUE," id='aval_password'");
   echo '</td>';
   echo "</tr>\n";
 
@@ -342,7 +342,7 @@ function UserPassword_preview() {
   echo '<td class="main" ' . $GLOBALS['TdnBgcolor'] . ' nowrap>' . TABLE_HEADING_CONFIRM_PASSWORD . '</td>';  // 確認のため再入力
   // 入力項目出力
   echo '<td>';
-  echo tep_draw_password_field("aval[chk_password]", '', TRUE);
+  echo tep_draw_password_field("aval[chk_password]", '', TRUE," id='aval_chk_password'");
   echo '</td>';
   echo "</tr>\n";
 
@@ -352,6 +352,7 @@ function UserPassword_preview() {
 
   echo tep_draw_hidden_field("execute_password");         // 処理モードを隠し項目にセットする
   echo tep_draw_hidden_field("userid", $GLOBALS['userslist']);    // ユーザＩＤを隠し項目にセットする
+  echo tep_draw_hidden_field("userslist", $GLOBALS['userslist']);    // ユーザＩＤを隠し項目にセットする
 
   // ボタン表示
   echo tep_draw_input_field("execute_update", BUTTON_CHANGE, "onClick=\"return formConfirm('password')\"", FALSE, "submit", FALSE); // 変更
@@ -468,7 +469,6 @@ function UserInfor_execute() {
 function UserPassword_execute() {
 
   PageBody('t', PAGE_TITLE_PASSWORD);   // ユーザ管理画面のタイトル部表示（パスワード変更）
-
   // 新しいパスワードの入力チェック
   $ret_err = checkNotnull($GLOBALS['aval']['password']);
   if ($ret_err != "") set_errmsg_array($aerror, '<b>' . TABLE_HEADING_NEW_PASSWORD . '</b>:' . $ret_err);
@@ -479,12 +479,13 @@ function UserPassword_execute() {
   if (strcmp($GLOBALS['aval']['password'],$GLOBALS['aval']['chk_password']) != 0)
     set_errmsg_array($aerror, TEXT_ERRINFO_CONFIRM_PASSWORD);
 
-  echo tep_draw_form('users',FILENAME_USERS);      // <form>タグの出力
+  echo tep_draw_form('users',FILENAME_CHANGEPWD);      // <form>タグの出力
 
   if (isset($aerror) && is_array($aerror)) {      // 入力エラーのとき
     print_err_message($aerror);   // エラーメッセージ表示
     echo "<br>\n";
     echo tep_draw_hidden_field('userslist', $GLOBALS['userid']);    // ユーザＩＤを隠し項目にセットする
+    echo tep_draw_hidden_field('execute_password', $GLOBALS['execute_password']);
     echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // ユーザ管理メニューに戻る
     echo "</form>\n";       // フォームのフッター
     return FALSE;
@@ -502,7 +503,10 @@ function UserPassword_execute() {
   }
 
   echo "<br>\n";
+  echo "&nbsp;&nbsp;&nbsp;&nbsp;";
+  echo "<font size='4' color='red'>";
   echo TEXT_SUCCESSINFO_CHANGE_PASSWORD;    // 完了メッセージ
+  echo "</font>";
   echo "<br><br>\n";
 /*
   echo tep_draw_input_field("back", BUTTON_BACK_MENU, '', FALSE, "submit", FALSE);  // ユーザ管理メニューに戻る
@@ -540,7 +544,12 @@ function formConfirm(type) {
       rtn = confirm("'. JAVA_SCRIPT_INFO_DELETE . '");
       break;
     case "password":
+      if($("#aval_password").val()== $("#aval_chk_password").val()){
       rtn = confirm("'. JAVA_SCRIPT_INFO_PASSWORD . '");
+      }else{
+        alert("'.JAVA_SCRIPT_ERRINFO_CONFIRM_PASSWORD.'");
+        rtn = false;
+      }
       break;
     case "staff2chief":
       rtn = confirm("'. JAVA_SCRIPT_INFO_STAFF2CHIEF . '");
@@ -689,11 +698,8 @@ function PageFooter() {
   if (isset($_POST['userid'])) { $userid = $_POST['userid']; }
   if (isset($_POST['aval'])) { $aval = $_POST['aval']; }
   if (isset($_POST['userslist'])) { $userslist = $_POST['userslist']; }
-  else if(isset($_GET['userslist'])) { $userslist = $_GET['userslist']; }
   if (isset($_POST['execute_user'])) { $execute_user = $_POST['execute_user']; }
   if (isset($_POST['execute_password'])) { $execute_password = $_POST['execute_password']; }
-  else if(isset($_GET['execute_password'])) { $execute_password =
-    $_GET['execute_password']; }
 //修改权限
 if (isset($_POST['execute_change'])) { $execute_change = $_POST['execute_change'];}
 //2003-07-16 hiroshi_sato add 6 lines
@@ -708,9 +714,19 @@ if (isset($_POST['execute_change'])) { $execute_change = $_POST['execute_change'
   echo "\n<!-- left_navigation_eof //-->\n";
   echo "    </table></td>\n";
   }
+  $change_pwd_flag = false;
+  if((isset($userslist)&&$userslist)||
+      (isset($userid)&&$userid)){
+    if($ocertify->npermission == 15){
+      $change_pwd_flag = true;
+    }else if($ocertify->auth_user == $userslist){
+      $change_pwd_flag = true;
+    }
+  }
 
+  
 // 画面表示、入力チェックＤＢ反映
-  if ($ocertify->auth_user) {
+  if ($ocertify->auth_user&&$change_pwd_flag) {
         // パスワード変更
     if (isset($execute_password) && $execute_password) {
       if (isset($execute_update) && $execute_update){

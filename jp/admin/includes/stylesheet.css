@@ -813,9 +813,9 @@ font-size:10px;!important;
 display:none;
 /*	width:100%;*/
 	position: absolute;
-	width:900px;
+/*	width:900px;  */
 	background-color:#000;
-	top:12px;
+	top:17px;
 	right:0;
 	z-index:180;
 	border:1px solid #000;
@@ -973,3 +973,12 @@ a.s_column_bar {
 .oa_auto_no_product { float:left; line-height:20px; width:100%\9;}
 .oa_auto_no_product_input { float:left;}
 #orders_info_box table td{ font-size:14px;}
+.orders_info_div td { vertical-align:top; padding-top:2px;}
+
+.error_body { height:100%; font-size:12px; background:url(../images/bjpicture.gif) top repeat-x; font-family:"ＭＳ Ｐゴシック",Osaka,Verdana,Arial,sans-serif}
+.error_box_bootom{ height:75px; background:url(../images/bottom_bg.gif) bottom repeat-x;}
+.error_p { padding-top:50px; margin-top:50px\9;}
+.sql_text{ padding:25px 0 0 40px; font-size:16px;}
+.sql_text01{ margin-left:40px; margin-top:15px;}
+.sql_text02{ width:600px; margin-left:40px; margin-top:15px;}
+.sql_text01 input{ height:25px\9; height:23px;}

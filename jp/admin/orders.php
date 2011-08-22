@@ -4,6 +4,97 @@
 */
   //ob_start();
   require('includes/application_top.php');
+function tep_show_orders_products_info($orders_id) {
+  $str = '';
+
+  $orders_info_raw = tep_db_query("select * from ".TABLE_ORDERS." where orders_id = '".$orders_id."'"); 
+  $orders = tep_db_fetch_array($orders_info_raw);
+  
+  if (!$orders) {
+    return $str; 
+  }
+
+  $str .= '<table border="0" cellpadding="0" cellspacing="0">';
+
+  $str .= '<tr><td class="mian" align="left" colspan="2">';
+  if ($orders['orders_inputed_flag']) {
+    $str .= '<font color="red"><b>'.TEXT_FUNCTION_INPUT_FINISH.'</b></font>';
+  }
+  
+  $str .= '</td></tr><tr><td class="mian" align="left"colspan="2">';
+  if ($orders['orders_care_flag']) {
+    $str .= '<font color="red"><b>'.TEXT_FUNCTION_NOTICE.'</b></font>';
+  }
+  $str .= '</td></tr><tr><td class="mian" align="left"colspan="2">';
+  if ($orders['orders_comment']) {
+    $str .= '<font color="blue"><b>'.TEXT_FUNCTION_HAVE_HISTORY.'</b></font>';
+  }
+
+  $str .= '</td></tr>';
+  $str .= '<tr><td colspan="2">&nbsp;</td></tr>';
+  $str .= '<tr><td class="main" width="60"><b>'.TEXT_FUNCTION_PAYMENT_METHOD.'</b></td><td class="main" style="color:darkred;"><b>'.$orders['payment_method'].'</b></td></tr>';
+    if ($orders['confirm_payment_time'] != '0000-00-00 00:00:00') {
+      $time_str = date(TEXT_FUNCTION_DATE_STRING, strtotime($orders['confirm_payment_time'])); 
+    }else if(tep_check_order_type($orders['orders_id'])!=2){
+      $time_str = TEXT_FUNCTION_UN_GIVE_MONY;  
+    }
+    if($time_str){
+      $str .= '<tr><td class="main"><b>'.TEXT_FUNCTION_UN_GIVE_MONY_DAY.'</b></td><td class="main" style="color:red;"><b>'.$time_str.'</b></td></tr>';
+    }
+  $str .= '<tr><td colspan="2">&nbsp;</td></tr>';
+  $str .= '<tr><td class="main"><b>'.TEXT_FUNCTION_OPTION.'</b></td><td class="main" style="color:blue;"><b>'.$orders['torihiki_houhou'].'</b></td></tr>';
+
+  $orders_products_query = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS." op,".TABLE_PRODUCTS." p where p.products_id = op.products_id and op.orders_id = '".$orders['orders_id']."'");
+  $autocalculate_arr = array();
+  $autocalculate_sql = "select oaf.value as arr_str from ".TABLE_OA_FORMVALUE." oaf,".
+    TABLE_OA_ITEM." oai 
+    where oaf.item_id = oai.id 
+    and oai.type = 'autocalculate' 
+    and oaf.orders_id = '".$orders['orders_id']."' 
+    order by oaf.id asc limit 1 ";
+  $autocalculate_query = tep_db_query($autocalculate_sql);
+  $autocalculate_row = tep_db_fetch_array($autocalculate_query);
+  $arr_checked = explode('_',$autocalculate_row['arr_str']);
+  $autocalculate_arr = array();
+  foreach($arr_checked as $key=>$value){
+    $temp_arr = explode('|',$value);
+    if($temp_arr[0] != 0 && $temp_arr[3] != 0){
+      $autocalculate_arr[] = array($temp_arr[0],$temp_arr[3]);
+    }
+  }
+  $tmpArr = array();
+  while ($p = tep_db_fetch_array($orders_products_query)) {
+    if(in_array($p,$tmpArr)){
+      continue;
+    }
+    $tmpArr[] = $p ;
+    $products_attributes_query = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS_ATTRIBUTES." where orders_products_id='".$p['orders_products_id']."'");
+    if(in_array(array($p['products_id'],$p['orders_products_id']),$autocalculate_arr)&&
+        !empty($autocalculate_arr)){
+      $str .= '<tr><td class="main"><b>'.TEXT_FUNCTION_CATEGORY.'</b><font
+        color="red">'.TEXT_FUNCTION_FINISH.'</font></td><td class="main">'.$p['products_name'].'</td></tr>';
+    }else{
+      $str .= '<tr><td class="main"><b>'.TEXT_FUNCTION_CATEGORY.'</b><font
+        color="red">'.TEXT_FUNCTION_UNFINISH.'</font></td><td class="main">'.$p['products_name'].'</td></tr>';
+    }
+    $str .= '<tr><td class="main"><b>'.TEXT_FUNCTION_NUMBER.'</b></td><td
+      class="main">'.$p['products_quantity'].TEXT_FUNCTION_NUM.tep_get_full_count2($p['products_quantity'], $p['products_id'], $p['products_rate']).'</td></tr>';
+    while($pa = tep_db_fetch_array($products_attributes_query)){
+      $str .= '<tr><td class="main"><b>'.$pa['products_options'].'：</b></td><td class="main">'.$pa['products_options_values'].'</td></tr>';
+    }
+    $str .= '<tr><td class="main"><b>'.TEXT_FUNCTION_GAME_NAME.'</b></td><td style="font-size:20px;color:#407416;"><b>'.$p['products_character'].'</b></td></tr>';
+    $names = tep_get_computers_names_by_orders_id($orders['orders_id']);
+    if ($names) {
+      $str .= '<tr><td class="main"><b>'.TEXT_FUNCTION_PC.'</b></td><td class="main">'.implode('&nbsp;,&nbsp;', $names).'</td></tr>';
+    }
+    $str .= '<tr><td class="main"></td><td class="main"></td></tr>';
+    $i++;
+  }
+  $str .= '</table>';
+  $str=str_replace("\n","",$str);
+  $str=str_replace("\r","",$str);
+  return $str; 
+}
   require_once('oa/HM_Form.php'); 
   require_once('oa/HM_Group.php'); 
   require(DIR_WS_FUNCTIONS . 'visites.php');
@@ -1618,7 +1709,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
     <tr>
       <td valign="top">
     <!-- 订单信息预览，配合javascript，永远浮动在屏幕右下角 -->
-    <div id="orders_info_box" style="display:none; position:absolute; background:#FFF; margin-left:20px; width:20%; width:55%; padding:5px 5px 4px 5px;/*bottom:0;margin-top:40px;right:0;width:200px;*/">&nbsp;</div>
+    <div id="orders_info_box" style="display:none; position:absolute; background:#FFF; margin-left:20px; width:20%; width:55%; padding:15px 5px 14px 5px;/*bottom:0;margin-top:40px;right:0;width:200px;*/">&nbsp;</div>
 <?php
   if ($ocertify->npermission == 15) {
     if(!tep_session_is_registered('reload')) $reload = 'yes';
@@ -2125,7 +2216,9 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
         if(!in_array($_orders_status_history['orders_status_id'], $_osh)
         && !is_dir(tep_get_upload_dir().'orders_status/'.$_orders_status_history['orders_status_image']) 
         && file_exists(tep_get_upload_dir().'orders_status/'.$_orders_status_history['orders_status_image'])){
-          echo tep_image(tep_get_web_upload_dir(). 'orders_status/' . $_orders_status_history['orders_status_image'], $_orders_status_history['orders_status_image'], 15, 15, ($_orders_status_history['orders_status_id'] == @$orders['orders_status_id'])?'style="vertical-align: middle;"':'style="vertical-align: middle;"');
+          echo tep_image(tep_get_web_upload_dir(). 'orders_status/' .
+              $_orders_status_history['orders_status_image'],
+              $_orders_status_history['orders_status_image'],0 ,0 , ($_orders_status_history['orders_status_id'] == @$orders['orders_status_id'])?'style="vertical-align: middle;"':'style="vertical-align: middle;"');
           $_osi = $_osi or true;
         }
           $_osh[] = $_orders_status_history['orders_status_id'];
@@ -2166,7 +2259,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
     ?>
     <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onmouseover="showOrdersInfo('<?php echo $orders['orders_id'];?>',this);" onmouseout="hideOrdersInfo();">
     <?php
-      echo '<a href="' . tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID')) . 'oID=' . $orders['orders_id']) .  '">' . tep_image(DIR_WS_IMAGES . 'icon_info02.gif', IMAGE_ICON_INFO) . '</a>'; 
+      echo '<a href="' . tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID')) . 'oID=' . $orders['orders_id']) .  '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
     } ?>&nbsp;</td>
     </tr>
 <?php }?>
@@ -2256,41 +2349,18 @@ function submit_confirm()
         </tr>
       </table>
 </td><td valign="top" align="right">
-      <table id="select_question" style="display:none">
-        <tr>
-          <td><?php echo TEXT_ORDER_BANK;?></td>
-          <td>
-            <input type="checkbox" name="q_15_3" id="q_15_3" value="1"><?php echo
-            TEXT_ORDER_JNB;?> 
-            <input type="checkbox" name="q_15_4" id="q_15_4" value="1"><?php echo
-            TEXT_ORDER_EBANK?>
-            <input type="checkbox" name="q_15_5" id="q_15_5" value="1"><?php echo
-            TEXT_ORDER_POST_BANK;?>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-        </tr>
-        <tr>
-          <td><input type="checkbox" name="q_15_8" id="q_15_8" value="1">
-          <?php echo TEXT_ORDER_OK_ORDER_NIMBE;?></td>
-          <td><input type="text" name="q_15_7" id="q_15_7"></td>
-        </tr>
-        <tr>
-          <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-        </tr>
-        <tr>
-          <td><?php echo TEXT_ORDER_QUERYER_NAME;?></td>
-          <td><input type="text" name="q_8_1" id="q_8_1"></td>
-        </tr>
-        <tr>
-          <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-        </tr>
-        <!--
-        <tr>
-          <td colspan="2" align="right"><input type="submit" name="submit" value="取引完了" onclick="return check_question_form()"></td>
-        </tr>
-        -->
+      <table id="select_question" >
+       <tr>
+           <td></td>
+           <td>
+               <select id='oa_dynamic_groups'  ></select>
+           </td>
+       </tr>
+       <tr id='oa_dynamic_group_item' >
+           <td id='oa_dynamic_group_item_name'></td>
+	   <td id='oa_dynamic_group_item_render'></td>
+       </tr>
+       <tr><td></td><td><button id="oa_dynamic_submit" >nono</button></td></tr>
       </table>
 </td></tr></table>
       </form>
