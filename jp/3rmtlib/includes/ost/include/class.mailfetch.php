@@ -14,7 +14,8 @@
   vim: expandtab sw=4 ts=4 sts=4:
   $Id$
  **********************************************************************/
-
+echo date('Y-m-d H:i:s');
+echo 'jp test';
 require_once(INCLUDE_DIR.'class.mailparse.php');
 require_once(INCLUDE_DIR.'class.ticket.php');
 require_once(INCLUDE_DIR.'class.dept.php');
@@ -303,8 +304,8 @@ class MailFetcher {
     $errors=array();
     if(!$ticket) {
       if(!($ticket=Ticket::create($var,$errors,'Email')) || $errors){
-echo $errors;
-	die('something got wrong');
+        var_dump( $errors);
+        //        die('something got wrong');
         return null;
       }
       $msgid=$ticket->getLastMsgId();

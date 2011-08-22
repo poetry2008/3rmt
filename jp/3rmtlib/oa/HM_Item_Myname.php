@@ -37,7 +37,7 @@ class HM_Item_Myname extends HM_Item_Basic
 
   }
 
-  function render()
+  function render($m)
   {
     if(strlen($this->thename)){
       echo "<td>";
@@ -51,14 +51,16 @@ class HM_Item_Myname extends HM_Item_Basic
     }else {
       $classrequire = '';
     }
-
+    if ($m){
+      echo "<input id='hidden".$this->formname."' type='hidden' name='".$this->formname."'>";
+    }
     echo $this->beforeInput."<span id='".$this->formname."'type='text' class='".$classrequire." outform'size='".$this->size."' name='".$this->formname."' >".$this->getDefaultValue()."</span >";
     //    if(!$this->loaded){
     echo "<button type='button' id = '".$this->formname.'submit'."' >$this->submitName</button>".$this->afterInput;
     //        }
     echo "</td>";
   }
-  function renderScript()
+  function renderScript($m)
   {
       ?>
       <script type='text/javascript' >
@@ -66,13 +68,20 @@ class HM_Item_Myname extends HM_Item_Basic
        $(document).ready(function (){
            $("#<?php echo $this->formname;?>submit").click(function(){
  $.ajax({
-                 url:'oa_answer_process.php?fix=user&withz=1&oID=<?php echo $_GET["oID"]?>',
+                 url:'oa_answer_process.php?fix=user&withz=1&oID=<?php echo $_GET["oID"]?><?php if($m){echo "&fake=1";}?>',
                      type:'post',    
                      data:"form_id="+$('input|[name=form_id]').val()+"&<?php echo $this->formname;?>="+$('input|[name=<?php echo $this->formname;?>]').val(),
                      beforeSend: function(){$('body').css('cursor','wait');$("#wait").show()},
                      async : false,
                      success: function(data){
                                $("#<?php echo $this->formname;?>").text(data);		     
+                               <?php 
+                               if($m){
+                                 ?>
+                                 $("#hidden<?php echo $this->formname;?>").attr("value",data);		     
+                                 <?php 
+                               }
+                               ?>
                                $("#wait").hide();
                                $('body').css('cursor','');
                                  checkLockOrder();

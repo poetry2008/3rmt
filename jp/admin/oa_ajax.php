@@ -25,10 +25,26 @@ if(isset($_GET['action'])){
     echo date('Y/m/d H-i' ,time());
     break;
   case 'finish':
+
     $id = $_GET['oID'];
+    if(!$id){
+      $ids = $_POST['oID'];
+    }
+    if (strpos($ids,'_')){
+      $m = true;
+      $oids = explode('_',$ids);
+    }
     $user_info = tep_get_user_info($ocertify->auth_user);
     $value =$user_info['name'];
-    $result = tep_db_query("update `".TABLE_ORDERS."` set `end_user` = '".$value."', `flag_qaf` = ".'1'." where orders_id = '".$id."'");  
+    if($m){
+      foreach ($oids as $id){
+        if(!empty($id)){
+        $result = tep_db_query("update `".TABLE_ORDERS."` set `end_user` = '".$value."', `flag_qaf` = ".'1'." where orders_id = '".$id."'");  
+        }
+      }
+    }else {
+      $result = tep_db_query("update `".TABLE_ORDERS."` set `end_user` = '".$value."', `flag_qaf` = ".'1'." where orders_id = '".$id."'");  
+    }
     break;
   }
 }

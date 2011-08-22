@@ -1,5 +1,4 @@
 <?php
-
 class HM_Item extends DbRecord
 {
   var $type;
@@ -15,12 +14,13 @@ class HM_Item extends DbRecord
   function init()
   {
     $this->getInstance();
+    return $this;
   }
-  function render()
+  function render($m=false)
   {
-    $this->instance->render();
+    $this->instance->render($m);
     if (method_exists($this->instance,'renderScript')){
-      $this->instance->renderScript();
+      $this->instance->renderScript($m);
     }
   }
   function getInstance()

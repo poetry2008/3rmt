@@ -2349,7 +2349,7 @@ function submit_confirm()
         </tr>
       </table>
 </td><td valign="top" align="right">
-      <table id="select_question" >
+      <table id="select_question" style="display:none" >
        <tr>
            <td></td>
            <td>
@@ -2360,7 +2360,7 @@ function submit_confirm()
            <td id='oa_dynamic_group_item_name'></td>
 	   <td id='oa_dynamic_group_item_render'></td>
        </tr>
-       <tr><td></td><td><button id="oa_dynamic_submit" >nono</button></td></tr>
+       <tr><td></td><td><button id="oa_dynamic_submit" >保存</button></td></tr>
       </table>
 </td></tr></table>
       </form>

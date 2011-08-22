@@ -64,7 +64,6 @@ class HM_Form extends DbRecord
          echo "var finished = false;";
        }
     if($this->status == 6 or $this->status == 8){
-      
       ?>
       disableQA();
       var canceled = true;
