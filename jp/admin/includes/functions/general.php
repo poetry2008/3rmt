@@ -3448,7 +3448,7 @@ function tep_get_orders_products_string($orders, $single = false) {
     $str .= '<tr>'; 
     $str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_CUSTOMER_TYPE.'</b></td>';
     $str .= '<td class="main">';
-    if(get_guest_chk($orders['customers_id'])){
+    if(get_guest_chk($orders['customers_id'])==0){
       $str .= TEXT_TEP_CFG_PAYMENT_CHECKBOX_OPTION_MEMBER;
     }else{
       $str .= TEXT_TEP_CFG_PAYMENT_CHECKBOX_OPTION_CUSTOMER;
