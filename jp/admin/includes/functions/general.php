@@ -3311,6 +3311,43 @@ function tep_get_orders_products_string($orders, $single = false) {
       $str .= '</tr>'; 
     } 
   }
+  if(ORDER_INFO_BASIC_TEXT == 'true'){
+    $str .= '<tr>';
+    $str .= '<td class="main"><b>';
+    $str .= TEXT_FUNCTION_HEADING_CUSTOMERS;
+    $str .= '</b></td>';
+    $str .= '<td class="main"><b>';
+    $str .= tep_output_string_protected($orders['customers_name']); 
+    $str .= '</b></td>';
+    $str .= '</tr>';
+
+    $str .= '<tr>';
+    $str .= '<td class="main"><b>';
+    $str .= TEXT_FUNCTION_HEADING_ORDER_TOTAL;
+    $str .= '</b></td>';
+    $str .= '<td class="main"><b>';
+    $str .= strip_tags(tep_get_ot_total_by_orders_id($orders['orders_id'], true));
+    $str .= '</b></td>';
+    $str .= '</tr>';
+
+    $str .= '<tr>';
+    $str .= '<td class="main"><b>';
+    $str .= TEXT_FUNCTION_ORDER_ORDER_DATE;
+    $str .= '</b></td>';
+    $str .= '<td class="main"><b>';
+    $str .= tep_datetime_short($orders['torihiki_date']);;
+    $str .= '</b></td>';
+    $str .= '</tr>';
+
+    $str .= '<tr>';
+    $str .= '<td class="main"><b>';
+    $str .= TEXT_FUNCTION_HEADING_DATE_PURCHASED;
+    $str .= '</b></td>';
+    $str .= '<td class="main"><b>';
+    $str .= tep_datetime_short($orders['date_purchased']); 
+    $str .= '</b></td>';
+    $str .= '</tr>';
+  }
   //$str .= '<tr><td colspan="2">&nbsp;</td></tr>';
   $str .= '<tr><td class="main" width="150"><b>支払方法：</b></td><td class="main" style="color:darkred;"><b>'.$orders['payment_method'].'</b></td></tr>';
     //$str .= '<tr><td class="main"><b>入金日：</b></td><td class="main" style="color:red;"><b>'.($pay_time?date('m月d日',strtotime($pay_time)):'入金まだ').'</b></td></tr>';

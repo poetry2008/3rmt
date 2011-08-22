@@ -518,3 +518,11 @@ define('TEXT_ECECUTE_PASSWORD_USER','パスワード変更');
 define('RIGHT_ORDER_COMMENT_TITLE', 'コメント:');
 define('BOX_LOCALIZATION_PREORDERS_STATUS', '予約ステータス設定');
 define('HEADER_TEXT_PREORDERS', '予約注文一覧');
+
+
+//order div 
+
+define('TEXT_FUNCTION_ORDER_ORDER_DATE','取引日：');
+define('TEXT_FUNCTION_HEADING_CUSTOMERS', '顧客名：');
+define('TEXT_FUNCTION_HEADING_ORDER_TOTAL', '注文総額：');
+define('TEXT_FUNCTION_HEADING_DATE_PURCHASED', '注文日：');
