@@ -3360,7 +3360,6 @@ function tep_get_orders_products_string($orders, $single = false) {
     if($time_str){
     $str .= '<tr><td class="main"><b>入金日：</b></td><td class="main" style="color:red;"><b>'.$time_str.'</b></td></tr>';
     }
-  $str .= '<tr><td colspan="2">&nbsp;</td></tr>';
   $str .= '<tr><td class="main"><b>オプション：</b></td><td class="main" style="color:blue;"><b>'.$orders['torihiki_houhou'].'</b></td></tr>';
 
   $orders_products_query = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS." op,".TABLE_PRODUCTS." p where p.products_id = op.products_id and op.orders_id = '".$orders['orders_id']."'");
@@ -3399,7 +3398,7 @@ function tep_get_orders_products_string($orders, $single = false) {
     while($pa = tep_db_fetch_array($products_attributes_query)){
       $str .= '<tr><td class="main"><b>'.$pa['products_options'].'：</b></td><td class="main">'.$pa['products_options_values'].'</td></tr>';
     }
-    $str .= '<tr><td class="main"><b>キャラ名：</b></td><td style="font-size:20px;color:#407416;"><b>'.$p['products_character'].'</b></td></tr>';
+    $str .= '<tr><td class="main"><b>キャラ名：</b></td><td class="main"  style="color:#407416;"><b>'.$p['products_character'].'</b></td></tr>';
     $names = tep_get_computers_names_by_orders_id($orders['orders_id']);
     if ($names) {
       $str .= '<tr><td class="main"><b>PC：</b></td><td class="main">'.implode('&nbsp;,&nbsp;', $names).'</td></tr>';
