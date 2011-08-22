@@ -515,7 +515,7 @@ define('RIGHT_ORDER_INFO_INPUT_FINISH', '入力済み');
 define('RIGHT_ORDER_INFO_REPUTAION_SEARCH', '信用調査:');
 //user pama
 define('TEXT_ECECUTE_PASSWORD_USER','パスワード変更');
-define('RIGHT_ORDER_COMMENT_TITLE', 'コメント:');
+define('RIGHT_ORDER_COMMENT_TITLE', 'コメント：');
 define('BOX_LOCALIZATION_PREORDERS_STATUS', '予約ステータス設定');
 define('HEADER_TEXT_PREORDERS', '予約注文一覧');
 
