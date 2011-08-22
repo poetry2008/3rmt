@@ -3439,7 +3439,7 @@ function tep_get_orders_products_string($orders, $single = false) {
     $str .= '</tr>'; 
   
     $str .= '<tr>'; 
-    $str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_DATE.'</b></td>';
+    $str .= '<td class="main"><b>'.TEXT_FUNCTION_ORDER_ORDER_DATE.'</b></td>';
     $str .= '<td class="main">';
     $str .= tep_date_long($orders['date_purchased']); 
     $str .= '</td>'; 
@@ -3448,7 +3448,11 @@ function tep_get_orders_products_string($orders, $single = false) {
     $str .= '<tr>'; 
     $str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_CUSTOMER_TYPE.'</b></td>';
     $str .= '<td class="main">';
-    $str .= get_guest_chk($orders['customers_id']); 
+    if(get_guest_chk($orders['customers_id'])){
+      $str .= TEXT_TEP_CFG_PAYMENT_CHECKBOX_OPTION_MEMBER;
+    }else{
+      $str .= TEXT_TEP_CFG_PAYMENT_CHECKBOX_OPTION_CUSTOMER;
+    }
     $str .= '</td>'; 
     $str .= '</tr>'; 
     
