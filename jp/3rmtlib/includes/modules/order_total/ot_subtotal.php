@@ -31,6 +31,14 @@
                               ),
                               'value' => isset($order->info['subtotal']) ? $order->info['subtotal'] : '');
     }
+    
+    function pre_process() {
+      global $currencies;
+
+      $this->output[] = array('title' => $this->title . ':',
+                              'text'  => '',
+                              'value' => '');
+    }
 
     function check() {
       if (!isset($this->_check)) {

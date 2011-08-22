@@ -50,6 +50,7 @@
   define('WARN_DOWNLOAD_DIRECTORY_NOT_READABLE', 'true');
 
 // define the filenames used in the project
+  define('FILENAME_PREORDER_SUCCESS', 'preorder_success.php');
   define('FILENAME_FAQ_INFO', 'faq_info.php');
   define('FILENAME_ACCOUNT', 'account.php');
   define('FILENAME_TAGS', 'tags.php');
@@ -129,6 +130,21 @@
   define('FILENAME_EMAIL_TROUBLE', 'email_trouble.php');
 
 // define the database table names used in the project
+  define('TABLE_PREORDERS_OA_FORMVALUE', 'preorders_oa_formvalue'); 
+  define('TABLE_PREORDERS', 'preorders');
+  define('TABLE_PREORDERS_MAIL', 'preorders_mail');
+  define('TABLE_PREORDERS_OPERATOR', 'preorders_operator');
+  define('TABLE_PREORDERS_PRODUCTS', 'preorders_products');
+  define('TABLE_PREORDERS_PRODUCTS_ATTRIBUTES', 'preorders_products_attributes');
+  define('TABLE_PREORDERS_PRODUCTS_DOWNLOAD', 'preorders_products_download');
+  define('TABLE_PREORDERS_PRODUCTS_TO_ACTOR', 'preorders_products_to_actor');
+  define('TABLE_PREORDERS_QUESTIONS', 'preorders_questions');
+  define('TABLE_PREORDERS_QUESTIONS_PRODUCTS', 'preorders_questions_products');
+  define('TABLE_PREORDERS_STATUS', 'preorders_status');
+  define('TABLE_PREORDERS_STATUS_HISTORY', 'preorders_status_history');
+  define('TABLE_PREORDERS_TEMP', 'preorders_temp');
+  define('TABLE_PREORDERS_TOTAL', 'preorders_total');
+  define('TABLE_PREORDERS_TO_COMPUTERS', 'preorders_to_computers');
   define('TABLE_FAQ_CATEGORIES', 'faq_categories');
   define('TABLE_FAQ_QUESTION',  'faq_question');
   define('TABLE_FAQ_CATEGORIES_DESCRIPTION', 'faq_categories_description');
@@ -396,6 +412,7 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
       && basename($_SERVER['SCRIPT_NAME']) != FILENAME_SHOPPING_CART
       && basename($_SERVER['SCRIPT_NAME']) != FILENAME_FAQ
       && basename($_SERVER['SCRIPT_NAME']) != FILENAME_FAQ_INFO
+      && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PREORDER
     ) {
       tep_parseURI();
     }
@@ -410,6 +427,7 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
         && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PAGE
         && basename($_SERVER['SCRIPT_NAME']) != FILENAME_TAGS
         && basename($_SERVER['SCRIPT_NAME']) != FILENAME_FAQ
+        && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PREORDER
         && basename($_SERVER['SCRIPT_NAME']) != FILENAME_FAQ_INFO
         //&& ((!isset($_GET['manufacturers_id']) && basename($_SERVER['SCRIPT_NAME']) != FILENAME_DEFAULT))
         && !isset($_GET['manufacturers_id']) && !isset($_GET['tags_id']) 
@@ -423,6 +441,7 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
         && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PRODUCT_REVIEWS
         && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PRODUCT_REVIEWS_INFO
         && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PAGE
+        && basename($_SERVER['SCRIPT_NAME']) != FILENAME_PREORDER
         && basename($_SERVER['SCRIPT_NAME']) != FILENAME_FAQ
         && basename($_SERVER['SCRIPT_NAME']) != FILENAME_FAQ_INFO
         //&& ((!isset($_GET['manufacturers_id']) && basename($_SERVER['SCRIPT_NAME']) != FILENAME_DEFAULT))

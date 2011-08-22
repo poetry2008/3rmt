@@ -55,6 +55,34 @@
 
       return $order_total_array;
     }
+    
+    function pre_process() {
+      $order_total_array = array();
+      if (is_array($this->modules)) {
+        reset($this->modules);
+        while (list(, $value) = each($this->modules)) {
+          $class = substr($value, 0, strrpos($value, '.'));
+          if ($class == 'ot_codt' || $class == 'ot_conv' || $class == 'ot_loworderfee' || $class == 'ot_tax') {
+            continue; 
+          }
+          if ($GLOBALS[$class]->enabled) {
+            $GLOBALS[$class]->pre_process();
+
+            for ($i=0, $n=sizeof($GLOBALS[$class]->output); $i<$n; $i++) {
+              if (tep_not_null($GLOBALS[$class]->output[$i]['title'])) {
+                $order_total_array[] = array('code' => $GLOBALS[$class]->code,
+                                             'title' => $GLOBALS[$class]->output[$i]['title'],
+                                             'text' => "",
+                                             'value' => $GLOBALS[$class]->output[$i]['value'],
+                                             'sort_order' => $GLOBALS[$class]->sort_order);
+              }
+            }
+          }
+        }
+      }
+
+      return $order_total_array;
+    }
 
     /*
     function output() {

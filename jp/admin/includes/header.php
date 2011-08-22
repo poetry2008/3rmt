@@ -93,6 +93,7 @@ if (!isset($ocertify->npermission) || $ocertify->npermission >= 7) {
     <tr>
     <td><a href="' . tep_href_link(FILENAME_ORDERS, '', 'NONSSL') . '"
     class="headerLink">'.HEADER_TEXT_ORDERS.'</a>&nbsp;|</td>
+    <td><a href="'.tep_href_link(FILENAME_PREORDERS, '', 'NONSSL').'" class="headerLink">'.HEADER_TEXT_PREORDERS.'</a>&nbsp;|</td> 
     <td><a href="' . tep_href_link('telecom_unknow.php', '', 'NONSSL') . '" class="headerLink"
     >'.HEADER_TEXT_TELECOM_UNKNOW.'</a>&nbsp;|</td>
     <td align="left">

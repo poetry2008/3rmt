@@ -4,7 +4,12 @@
 */
 
   require('includes/application_top.php');
-
+  if (isset($_GET['products_id'])) {
+    forward404(); 
+  }
+  require(DIR_WS_CLASSES. 'payment.php'); 
+  $payment_modules = new payment;
+  
   if (tep_session_is_registered('customer_id')) {
 //ccdd
     $account = tep_db_query("
@@ -22,13 +27,13 @@
   }
 
   $valid_product = false;
-  if (isset($_GET['products_id'])) {
+  if (isset($_GET['promaji'])) {
 //ccdd
     $product_info_query = tep_db_query("
-        select pd.products_name 
+        select pd.products_id, pd.products_name 
         from " . TABLE_PRODUCTS_DESCRIPTION . " pd 
         where pd.products_status != '0' and pd.products_status != '3'  
-          and pd.products_id = '" .  (int)$_GET['products_id'] . "' 
+          and pd.romaji = '" .  $_GET['promaji'] . "' 
           and pd.language_id = '" . $languages_id . "' 
           and (pd.site_id = '".SITE_ID."' or pd.site_id = '0')
         order by pd.site_id DESC
@@ -36,14 +41,94 @@
     ");
     $valid_product = (tep_db_num_rows($product_info_query) > 0);
   }
-
+  
+  if (!$valid_product) {
+    forward404(); 
+  }
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_PREORDER);
 
   $product_info = tep_db_fetch_array($product_info_query);
-  $breadcrumb->add($product_info['products_name'] . 'を予約する', tep_href_link(FILENAME_PREORDER, 'products_id=' . intval($_GET['products_id'])));
-  $po_game_c = ds_tep_get_categories((int)$_GET['products_id'],1);
+  $breadcrumb->add($product_info['products_name'] . 'を予約する');
+  $po_game_c = ds_tep_get_categories($product_info['products_id'],1);
 ?>
 <?php page_head();?>
+<script type="text/javascript" src="./js/jquery-1.3.2.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+$("input:radio").each(function(){
+if($("input[name=payment]").length == 1){
+  $("input[name=payment]").each(function(index){
+      $(this).attr('checked','true');
+    });
+}
+  if ($(this).attr("checked") == true) {
+    if ($(this).attr('name') != 'bank_kamoku') { 
+      if ($(this).val() == 'convenience_store') {
+        $("#cemail").css("display", "block");
+        $("#caemail").css("display", "block");
+      } else {
+        $("#cemail").css("display", "none");
+        $("#caemail").css("display", "none");
+      }
+    }
+  }
+})
+$("input:radio").click(function(){
+  if ($(this).val() == 'convenience_store') {
+    $("#cemail").css("display", "block");
+    $("#caemail").css("display", "block");
+  } else {
+    if ($(this).attr('name') != 'bank_kamoku') { 
+      $("#cemail").css("display", "none");
+      $("#caemail").css("display", "none");
+    } 
+  }
+});
+$(".moduleRow").click(function(){
+  if ($(this).find('input:radio').val() == 'convenience_store') {
+    $("#cemail").css("display", "block");
+    $("#caemail").css("display", "block");
+  } else {
+    if ($(this).find('input:radio').attr('name') != 'bank_kamoku') {
+      $("#cemail").css("display", "none");
+      $("#caemail").css("display", "none");
+    }
+  }
+});
+});
+</script>
+<script type="text/javascript"><!--
+var selected;
+
+function selectRowEffect(object, buttonSelect) {
+  if (!selected) {
+    if (document.getElementById) {
+      selected = document.getElementById('defaultSelected');
+    } else {
+      selected = document.all['defaultSelected'];
+    }
+  }
+
+  if (selected) selected.className = 'moduleRow';
+  object.className = 'moduleRowSelected';
+  selected = object;
+
+// one button is not an array
+  if (document.preorder_product.payment[0]) {
+    document.preorder_product.payment[buttonSelect].checked=true;
+  } else {
+    document.preorder_product.payment.checked=true;
+  }
+}
+
+function rowOverEffect(object) {
+  //if (object.className == 'moduleRow') object.className = 'moduleRowOver';
+}
+
+function rowOutEffect(object) {
+  //if (object.className == 'moduleRowOver') object.className = 'moduleRow';
+}
+//--></script>
 </head>
 <body>
 <div align="center">
@@ -72,8 +157,7 @@
       <h1 class="pageHeading"><?php echo $po_game_c . '&nbsp;' . $product_info['products_name']; ?>を予約する</h1>
             <div class="comment">
       <p>
-        <?php echo STORE_NAME;?>では、<?php echo $po_game_c; ?>の予約サービスを行っております。<br>
-        ご希望する数量が弊社在庫にある場合は「<?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . intval($_GET['products_id'])) . '">' . $product_info['products_name']; ?></a>」をクリックしてお手続きください。
+        <?php echo STORE_NAME;?>では、<?php echo $po_game_c; ?>の予約サービスを行っております。<br> ご希望する数量が弊社在庫にある場合は「<?php echo '<a href="' .  tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $product_info['products_id']) . '">' . $product_info['products_name']; ?></a>」をクリックしてお手続きください。
       </p>
 <?php
     $error = false;
@@ -111,19 +195,43 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
       $fromname_error = false;
     }
     
+    if (isset($_GET['action']) && ($_GET['action'] == 'process') && empty($_POST['predate'])) {
+      $predate_error = true;
+      $error = true;
+    } else {
+      $predate_error = false;
+    }
+    
+    if (isset($_GET['action']) && ($_GET['action'] == 'process') && empty($_POST['payment'])) {
+      $payment_error = true;
+      $error = true;
+    } else {
+      $payment_error = false;
+    }
     if (isset($_GET['action']) && ($_GET['action'] == 'process') && ($error == false)) {
-      $email_subject = sprintf(TEXT_EMAIL_SUBJECT, $product_info['products_name'], STORE_NAME);
-      $email_body = sprintf(TEXT_EMAIL_INTRO, $from_name, STORE_NAME, $from_name, $from_email_address, $_POST['products_name'], $_POST['quantity'], $_POST['timelimit'], STORE_NAME) . "\n\n";
-    
-      if (tep_not_null($_POST['yourmessage'])) {
-        $email_body .= '▼ご要望' . "\n" . $_POST['yourmessage'] . "\n\n";
+      $preorder_id = date('Ymd').'-'.date('His').tep_get_order_end_num(); 
+      if (tep_session_is_registered('customer_id')) {
+          $preorder_email_text = PREORDER_MAIL_CONTENT; 
+          $preorder_email_subject = PREORDER_MAIL_SUBJECT; 
+           tep_mail(tep_get_fullname($account_values['customers_firstname'],$account_values['customers_lastname']), $account_values['customers_email_address'], $preorder_email_subject, $preorder_email_text, STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS); 
+      } else {
+        $exists_customer_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_email_address = '".$_POST['from']."' and site_id = '".SITE_ID."'");    
+        if (tep_db_num_rows($exists_customer_raw)) {
+          $preorder_email_text = PREORDER_MAIL_CONTENT; 
+          $preorder_email_subject = PREORDER_MAIL_SUBJECT; 
+        } else {
+          $tmp_customer_id = tep_create_tmp_guest($_POST['from'], $_POST['yourname']); 
+          $active_url = tep_href_link('preorder_auth.php', 'pid='.$preorder_id); 
+          $preorder_email_text = str_replace('${URL}', $active_url, PREORDER_MAIL_ACTIVE_CONTENT); 
+          $preorder_email_subject = PREORDER_MAIL_ACTIVE_SUBJECT; 
+        }
+        tep_mail($_POST['yourname'], $_POST['from'], $preorder_email_subject, $preorder_email_text, STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS); 
       }
-    
-      $email_body .= sprintf(TEXT_EMAIL_LINK, tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . intval($_GET['products_id']))) . "\n\n" .
-      sprintf(TEXT_EMAIL_SIGNATURE, STORE_NAME . "\n" . HTTP_SERVER . DIR_WS_CATALOG . "\n");
-    
-      tep_mail('', SEND_EXTRA_ORDER_EMAILS_TO, $email_subject, stripslashes($email_body), $from_name, $from_email_address);
-      tep_mail('', $from_email_address, $email_subject, stripslashes($email_body), STORE_NAME, STORE_OWNER_EMAIL_ADDRESS);
+      
+      $send_preorder_id = $preorder_id;
+      tep_session_register('send_preorder_id');
+      tep_create_preorder_info($_POST, $preorder_id, $customer_id, $tmp_customer_id); 
+      tep_redirect(tep_href_link(FILENAME_PREORDER_SUCCESS));
 ?>
       <div>
         <?php echo sprintf(TEXT_EMAIL_SUCCESSFUL_SENT, $from_email_address, stripslashes($_POST['products_name']), $_POST['quantity'], $_POST['timelimit']); ?>
@@ -144,7 +252,7 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
         if ($fromemail_error == true) $your_email_address_prompt .= ENTRY_EMAIL_ADDRESS_CHECK_ERROR;
       }
 ?>
-      <?php echo tep_draw_form('email_friend', tep_href_link(FILENAME_PREORDER, 'action=process&products_id=' . intval($_GET['products_id']))) . tep_draw_hidden_field('products_name', $product_info['products_name']); ?>
+      <?php echo tep_draw_form('preorder_product', tep_preorder_href_link($_GET['promaji'], 'action=process')) .  tep_draw_hidden_field('products_id', $product_info['products_id']).tep_draw_hidden_field('products_name', $product_info['products_name']); ?>
 
       <p>
         弊社在庫にお客様がご希望する数量がない場合は、下記の必要事項をご入力の上お申し込みください。<br>
@@ -174,7 +282,7 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
       <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
         <tr>
           <td class="main" valign="top">商品名:</td>
-          <td class="main"><strong><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . intval($_GET['products_id'])) . '" target="_blank">' . $po_game_c . '&nbsp;/&nbsp;' . $product_info['products_name']; ?></a></strong></td>
+          <td class="main"><strong><?php echo '<a href="' .  tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $product_info['products_id']) . '" target="_blank">' . $po_game_c . '&nbsp;/&nbsp;' . $product_info['products_name']; ?></a></strong></td>
         </tr>
         <tr>
           <td class="main"><?php echo FORM_FIELD_FRIEND_NAME; ?></td>
@@ -189,17 +297,126 @@ if (!isset($_GET['quantity'])) $_GET['quantity'] = NULL; //del notice
           </td>
         </tr>
         <tr>
-          <td class="main"><?php echo FORM_FIELD_FRIEND_EMAIL; ?></td>
+          <td class="main"><?php echo FORM_FIELD_PREORDER_FIXTIME; ?></td>
           <td class="main">
 <?php
-if (!isset($timelimit_error)) $timelimit_error = NULL; //del notice
 if (!isset($_GET['send_to'])) $_GET['send_to'] = NULL; //del notice
-            echo tep_draw_input_field('timelimit', (($timelimit_error == true) ? $_POST['timelimit'] : $_GET['send_to']) , 'size="30" maxlength="50" class="input_text"');
-            echo '&nbsp;&nbsp;(例.&nbsp;20日までに届けて欲しい。)';
+echo tep_get_torihiki_select_by_pre_products($product_info['products_id']);
 ?>
           </td>
         </tr>
+        <tr>
+          <td class="main"><?php echo FORM_FIELD_PREORDER_FIXDAY; ?></td>
+          <td class="main">
+<?php
+    $today = getdate();
+      $m_num = $today['mon'];
+      $d_num = $today['mday'];
+      $year = $today['year'];
+    
+    $hours = date('H');
+    $mimutes = date('i');
+?>
+  <select name="predate">
+    <option value="">希望日を選択してください</option>
+    <?php
+          $oarr = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
+          $newarr = array('月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日', '日曜日');
+    for($i=0; $i<7; $i++) {
+      if ($_POST['predate'] == date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$i,$year))) {
+        $check_str = 'selected'; 
+      } else {
+        $check_str = ''; 
+      }
+      echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$i,$year)).'" '.$check_str.'>'.str_replace($oarr, $newarr,date("Y年m月d日（l）", mktime(0,0,0,$m_num,$d_num+$i,$year))).'</option>' . "\n";
+    }
+    ?>
+  </select>
+          <?php
+          if ($predate_error == true) echo '&nbsp;<span class="errorText">' . TEXT_REQUIRED . '</span>';
+          ?>
+          </td>
+        </tr>
       </table>
+      <br> 
+      <?php
+      $selection = $payment_modules->selection(); 
+    if (sizeof($selection) > 1) { 
+      ?>
+      <h3 class="formAreaTitle"><?php echo FORM_FIELD_PREORDER_PAYMENT; ?></h3>
+      <table width="100%" cellpadding="2" cellspacing="0" border="0" class="formArea">
+          <?php
+          if ($predate_error == true) echo '<tr><td><span class="errorText">' .  TEXT_REQUIRED . '</span></td></tr>';
+          ?>
+        <?php
+        $radio_buttons = 0; 
+        for ($i=0, $n=sizeof($selection); $i<$n; $i++) { 
+          if ($selection[$i]['id'] == 'buying' || $selection[$i]['id'] == 'buyingpoint' || $selection[$i]['id'] == 'fetchgood' || $selection[$i]['id'] == 'freepayment') {
+            continue; 
+          }
+        ?>
+        <tr>
+          <td>
+          <table border="0" width="100%" cellspacing="0" cellpadding="0" class="box_des02">
+          <?php
+          if ($n == 1) {
+            echo '                  <tr id="defaultSelected" class="moduleRowSelected" onmouseover="rowOverEffect(this)" onmouseout="rowOutEffect(this)" onclick="selectRowEffect(this, ' . $radio_buttons . ')">' . "\n";
+          } else {
+            echo '                  <tr class="moduleRow" onmouseover="rowOverEffect(this)" onmouseout="rowOutEffect(this)" onclick="selectRowEffect(this, ' . $radio_buttons . ')">' . "\n";
+          }
+          ?>
+                              <td width="10"></td> 
+                                <td class="main" colspan="3"><b><?php echo $selection[$i]['module']; ?></b></td> 
+                                <td class="main" align="right"><?php
+    if (sizeof($selection) > 1) {
+      echo tep_draw_radio_field('payment', $selection[$i]['id']);
+    } else {
+      echo tep_draw_hidden_field('payment', $selection[$i]['id']);
+    }
+?> </td> 
+                                <td width="10"></td> 
+                              </tr> <?php
+    if (isset($selection[$i]['error'])) {
+?> 
+                              <tr> 
+                                <td width="10"></td> 
+                                <td class="main" colspan="4"><?php echo $selection[$i]['error']; ?></td> 
+                                <td width="10"></td> 
+                              </tr> 
+                              <?php
+    } elseif (isset($selection[$i]['fields']) && is_array($selection[$i]['fields'])) {
+?> 
+                              <tr> 
+                                <td width="10"></td> 
+                                <td colspan="4"><table border="0" cellspacing="0" cellpadding="2"> 
+                                    <?php
+      for ($j=0, $n2=sizeof($selection[$i]['fields']); $j<$n2; $j++) {
+?> 
+                                    <tr> 
+                                      <td width="10"></td> 
+                                      <td class="main"><?php echo $selection[$i]['fields'][$j]['title']; ?></td> 
+                                      <td></td> 
+                                      <td class="main"><?php echo $selection[$i]['fields'][$j]['field']; ?></td> 
+                                      <td width="10"></td> 
+                                    </tr> 
+                                    <?php
+      }
+?> 
+                                  </table></td> 
+                                <td width="10"></td> 
+                              </tr> 
+                              <?php
+    }
+?> 
+            </table>
+          </td> 
+        </tr>
+        <?php 
+        $radio_buttons++; 
+        }
+        ?> 
+      </table> 
+      <?php }?> 
       <br>
       <h3 class="formAreaTitle"><?php echo $po_game_c; ?>についてのご要望</h3>
       <table width="100%" cellpadding="2" cellspacing="0" border="0" class="formArea">
@@ -209,7 +426,7 @@ if (!isset($_GET['send_to'])) $_GET['send_to'] = NULL; //del notice
       <table border="0" width="100%" cellspacing="0" cellpadding="0">
         <tr>
           <td class="main">
-            <?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . intval($_GET['products_id'])) . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?>
+            <?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $product_info['products_id']) . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?>
           </td>
           <td align="right" class="main">
             <?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?>

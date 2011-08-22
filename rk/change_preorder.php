@@ -1,0 +1,310 @@
+<?php
+/*
+  $Id$
+
+  osCommerce, Open Source E-Commerce Solutions
+  http://www.oscommerce.com
+
+  Copyright (c) 2003 osCommerce
+
+  Released under the GNU General Public License
+*/
+
+  require('includes/application_top.php');
+  
+  require(DIR_WS_LANGUAGES . $language . '/change_preorder.php');
+  $preorder_id = $_GET['pid'];
+  
+  $preorder_raw = tep_db_query('select * from '.TABLE_PREORDERS." where orders_id = '".$preorder_id."' and site_id = '".SITE_ID."' and is_active = '1'");
+  $preorder_res = tep_db_fetch_array($preorder_raw); 
+  if (!$preorder_res) {
+    forward404(); 
+  }
+  $ensure_datetime = strtotime($preorder_res['predate']);
+  if (time() > $ensure_datetime) {
+    $preorder_product_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$preorder_id."'"); 
+    $preorder_product_res = tep_db_fetch_array($preorder_product_raw); 
+    tep_redirect(tep_href_link('change_preorder_timeout.php?pname='.urlencode($preorder_product_res['products_name']))); 
+  }
+  $error = false;  
+  if ($_POST['action'] == 'process') {
+    $preorder_torihikihouhou = tep_db_prepare_input($_POST['torihikihouhou']);
+    $preorder_date = tep_db_prepare_input($_POST['date']);
+    $preorder_hour = tep_db_prepare_input($_POST['hour']);
+    $preorder_min = tep_db_prepare_input($_POST['min']);
+    if ($preorder_torihikihouhou == '') {
+      $error = true;
+      $torihikihouhou_error = TEXT_PREORDER_ERROR_TORIHIKIHOUHOU;
+    }
+    
+    if ($preorder_date == '') {
+      $error = true; 
+      $date_error = TEXT_PREORDER_ERROR_DATE; 
+    }
+    
+    if ($preorder_hour == '') {
+      $error = true;
+      $jikan_error = TEXT_PREORDER_ERROR_JIKAN;
+    }
+    
+    if ($preorder_min == '') {
+      $error = true;
+      $jikan_error = TEXT_PREORDER_ERROR_JIKAN;
+    }
+   
+    if (isset($_POST['p_character'])) {
+      if (empty($_POST['p_character'])) {
+        $error = true;
+        $character_error = TEXT_PREORDER_ERROR_CHARACTER;
+      }
+    }
+    
+    if ($error == false) {
+      tep_session_register('preorder_torihikihouhou'); 
+      tep_session_register('preorder_date'); 
+      tep_session_register('preorder_hour'); 
+      tep_session_register('preorder_min'); 
+      if (isset($_POST['p_character'])) {
+        $p_character = tep_db_prepare_input($_POST['p_character']); 
+        tep_session_register('p_character'); 
+      }
+      $preorder_tori_date = $_POST['date'].' '.$_POST['hour'].':'.$_POST['min'].':00'; 
+      tep_session_register('preorder_tori_date'); 
+      if (isset($_POST['op_id'])) {
+        $op_ids = tep_db_prepare_input($_POST['op_id']); 
+        tep_session_register('op_ids'); 
+      }
+      tep_session_register('preorder_id'); 
+      tep_redirect(tep_href_link('change_preorder_confirm.php')); 
+    }
+  }
+$breadcrumb->add(NAVBAR_CHANGE_PREORDER_TITLE, '');
+?>
+<?php page_head();?>
+<script type="text/javascript">
+</script>
+<script type="text/javascript" src="js/data.js"></script>
+</head>
+<body><div align="center"> 
+  <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
+  <!-- header_eof //--> 
+  <!-- body //--> 
+  <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border"> 
+    <tr> 
+      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"> <!-- left_navigation //--> 
+        <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
+        <!-- left_navigation_eof //--> </td> 
+      <!-- body_text //--> 
+      <td valign="top" id="contents"> 
+          <h1 class="pageHeading"><?php echo NAVBAR_CHANGE_PREORDER_TITLE;?></h1> 
+          <div class="comment">
+          <?php 
+          echo tep_draw_form('order', tep_href_link('change_preorder.php', 'pid='.$_GET['pid'])).tep_draw_hidden_field('action', 'process'); 
+          ?>
+          <h3 class="formAreaTitle"><?php echo CHANGE_ORDER_CUSTOMER_DETAILS?></h3> 
+          <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
+            <tr>
+              <td class="main">
+              <?php echo CHANGE_ORDER_CUSTOMER_NAME;?> 
+              </td>
+              <td class="main">
+              <?php echo $preorder_res['customers_name'];?> 
+              </td>
+            </tr>
+            <tr>
+              <td class="main">
+              <?php echo CHANGE_ORDER_CUSTOMER_EMAIL;?> 
+              </td>
+              <td class="main">
+              <?php echo $preorder_res['customers_email_address'];?> 
+              </td>
+            </tr>
+          </table>
+          <br> 
+          <?php
+            $preorder_product_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$preorder_id."'"); 
+            $preorder_product_res = tep_db_fetch_array($preorder_product_raw); 
+          ?> 
+          <h3 class="formAreaTitle"><?php echo CHANGE_ORDER_PRODUCT_DETAILS;?></h3> 
+          <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
+            <tr>
+              <td class="main">
+              <?php echo CHANGE_ORDER_PRODUCT_NAME;?> 
+              </td>
+              <td class="main">
+              <a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id='.$preorder_product_res['products_id']);?>" target="_blank"><?php echo $preorder_product_res['products_name'];?></a> 
+              </td>
+            </tr>
+            <tr>
+              <td class="main">
+              <?php echo CHANGE_ORDER_PRODUCT_NUM;?> 
+              </td>
+              <td class="main">
+              <?php echo $preorder_product_res['products_quantity'].PRODUCT_UNIT_TEXT;?> 
+              </td>
+            </tr>
+        </table> 
+        <br> 
+        <h3 class="formAreaTitle"><?php echo CHANGE_ORDER_FETCH_TIME_TITLE;?></h3> 
+        <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
+        <tr>
+              <td class="main">
+              <?php echo CHANGE_ORDER_FETCH_TIME_READ;?> 
+              </td>
+              <td class="main">
+              <?php 
+              $ids[] = $preorder_product_res['products_id']; 
+              echo tep_get_torihiki_select_by_products($ids);
+              if (isset($torihikihouhou_error)) {
+                echo '<font color="#ff0000">'.$torihikihouhou_error.'</font>'; 
+              }
+              ?> 
+               
+              </td>
+        </tr>
+        <tr>
+          <td class="main">
+          <?php echo CHANGE_ORDER_FETCH_DAY;?> 
+          </td>
+          <td class="main">
+            <?php
+    $today = getdate();
+      $m_num = $today['mon'];
+      $d_num = $today['mday'];
+      $year = $today['year'];
+    
+    $hours = date('H');
+    $mimutes = date('i');
+?>
+  <select name="date" onChange="selectDate('<?php echo $hours; ?>', '<?php echo $mimutes; ?>')">
+    <option value="">希望日を選択してください</option>
+    <?php
+          $oarr = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
+          $newarr = array('月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日', '日曜日');
+    for($i=0; $i<7; $i++) {
+      echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$i,$year)).'">'.str_replace($oarr, $newarr,date("Y年m月d日（l）", mktime(0,0,0,$m_num,$d_num+$i,$year))).'</option>' . "\n";
+    }
+    ?>
+  </select>
+              <?php
+              if (isset($date_error)) {
+                echo '<font color="#ff0000">'.$date_error.'</font>'; 
+              }
+              ?> 
+              </td>
+            </tr>
+            <tr>
+              <td class="main"><?php echo CHANGE_ORDER_FETCH_DATE;?></td> 
+              <td class="main">
+  <select name="hour" onChange="selectHour('<?php echo $hours; ?>', '<?php echo $mimutes; ?>')">
+    <option value="">--</option>
+  </select>
+  &nbsp;時&nbsp;
+  <select name="min">
+    <option value="">--</option>
+  </select>
+  &nbsp;分&nbsp;
+             <?php  
+             if (isset($jikan_error)) {
+                echo '<font color="#ff0000">'.$jikan_error.'</font>'; 
+              }
+ ?> 
+  <?php echo TEXT_CHECK_24JI; ?>
+              </td> 
+            </tr>
+          </table> 
+          <?php
+          $products_options_name_query = tep_db_query("
+              SELECT distinct popt.products_options_id, 
+                     popt.products_options_name 
+              FROM " . TABLE_PRODUCTS_OPTIONS . " popt, " . TABLE_PRODUCTS_ATTRIBUTES . " patrib 
+              WHERE patrib.products_id = '" . $preorder_product_res['products_id'] . "' 
+                AND patrib.options_id  = popt.products_options_id 
+                AND popt.language_id   = '" . $languages_id . "'
+          ");
+          if (tep_db_num_rows($products_options_name_query)) { 
+          ?>
+          <br> 
+          <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
+            <?php
+        while ($products_options_name = tep_db_fetch_array($products_options_name_query)) {
+            $selected = 0;
+            $products_options_array = array();
+            echo '<tr><td class="main">' . $products_options_name['products_options_name'] . ':</td><td>' . "\n";
+        $products_options_query = tep_db_query("
+            SELECT pov.products_options_values_id, 
+                   pov.products_options_values_name, 
+                   pa.options_values_price, 
+                   pa.price_prefix, 
+                   pa.products_at_quantity, 
+                   pa.products_at_quantity 
+            FROM " . TABLE_PRODUCTS_ATTRIBUTES . " pa, " . TABLE_PRODUCTS_OPTIONS_VALUES . " pov 
+            WHERE pa.products_id = '" . $preorder_product_res['products_id'] . "' 
+              AND pa.options_id = '" . $products_options_name['products_options_id'] . "' 
+              AND pa.options_values_id = pov.products_options_values_id and pov.language_id = '" . $languages_id . "' 
+            ORDER BY pa.products_attributes_id");
+
+            while ($products_options = tep_db_fetch_array($products_options_query)) {
+              //add products_at_quantity - ds-style
+              if($products_options['products_at_quantity'] > 0) {
+                $products_options_array[] = array('id' => $products_options['products_options_values_id'], 'text' => $products_options['products_options_values_name']);
+                if ($products_options['options_values_price'] != '0') {
+                  $products_options_array[sizeof($products_options_array)-1]['text'] .= ' (' . $products_options['price_prefix'] . $currencies->display_price($products_options['options_values_price'], tep_get_tax_rate($product_info['products_tax_class_id'])) .') ';
+                }
+                
+              }
+            }
+            echo tep_draw_pull_down_menu('op_id[' .  $products_options_name['products_options_id'] . ']' , $products_options_array, isset($_SESSION['op_ids'][$products_options_name['products_options_id']])?$_SESSION['op_ids'][$products_options_name['products_options_id']]:'');
+            echo '</td></tr>';
+          }
+            ?>
+          </table> 
+          <?php }?> 
+          <?php
+            $product_info_raw = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".$preorder_product_res['products_id']."'"); 
+            $product_info_res = tep_db_fetch_array($product_info_raw); 
+            
+            if ($product_info_res['products_cflag'] == 1) {
+          ?>
+          <br> 
+          <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
+            <tr>
+              <td class="main"><?php echo CHANGE_ORDER_PRODUCT_CHARACTER;?></td> 
+              <td>
+              <?php 
+              echo tep_draw_input_field('p_character', isset($_SESSION['p_character'])?$_SESSION['p_character']:'');
+              if (isset($character_error)) {
+                echo '<font color="#ff0000">'.$character_error.'</font>'; 
+              }
+              ?> 
+              </td>
+            </tr>
+          </table> 
+          <?php }?> 
+          <br>
+          <br>
+          <table width="100%" cellpadding="0" cellspacing="0" border="0">
+            <tr>
+              <td class="main" align="right">
+                <?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE);?> 
+              </td>
+            </tr>
+          </table> 
+          </form> 
+          </div>
+          <p class="pageBottom"></p>
+      </td> 
+      <!-- body_text_eof //--> 
+      <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation //--> 
+        <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
+        <!-- right_navigation_eof //--> </td> 
+  </table> 
+  <!-- body_eof //--> 
+  <!-- footer //--> 
+  <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
+  <!-- footer_eof //--> 
+</div>
+</div>
+</body>
+</html>
+<?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>
