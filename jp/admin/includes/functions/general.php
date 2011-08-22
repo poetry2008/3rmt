@@ -3239,6 +3239,7 @@ function tep_get_orders_products_string($orders, $single = false) {
 
 
   $str .= '<table border="0" cellpadding="0" cellspacing="0" class="orders_info_div">';
+  $str .= '<tr><td class="main" colspan="2">&nbsp;</td><tr>';
 
   /*
      $str .= '<tr><td class="mian" align="center" colspan="2"><table width="100%"><tr><td class="main" width="50%" align="left">';
@@ -3280,7 +3281,9 @@ function tep_get_orders_products_string($orders, $single = false) {
     if ($orders['orders_care_flag']) {
       $str .= '<tr>'; 
       $str .= '<td class="main" colspan="2"><font color="red">';
+      $str .= '<b>';
       $str .= RIGHT_ORDER_INFO_TRANS_NOTICE; 
+      $str .= '</b>';
       $str .= '</font></td>'; 
       $str .= '</tr>'; 
     }
@@ -3290,7 +3293,9 @@ function tep_get_orders_products_string($orders, $single = false) {
     if ($orders['orders_wait_flag']) {
       $str .= '<tr>'; 
       $str .= '<td class="main" colspan="2"><font color="red">';
+      $str .= '<b>';
       $str .= RIGHT_ORDER_INFO_TRANS_WAIT; 
+      $str .= '</b>';
       $str .= '</font></td>'; 
       $str .= '</tr>'; 
     } 
@@ -3300,10 +3305,49 @@ function tep_get_orders_products_string($orders, $single = false) {
     if ($orders['orders_inputed_flag']) {
       $str .= '<tr>'; 
       $str .= '<td class="main" colspan="2"><font color="red">';
+      $str .= '<b>';
       $str .= RIGHT_ORDER_INFO_INPUT_FINISH; 
+      $str .= '</b>';
       $str .= '</font></td>'; 
       $str .= '</tr>'; 
     } 
+  }
+  if(ORDER_INFO_BASIC_TEXT == 'true'){
+    $str .= '<tr>';
+    $str .= '<td class="main"><b>';
+    $str .= TEXT_FUNCTION_HEADING_CUSTOMERS;
+    $str .= '</b></td>';
+    $str .= '<td class="main"><b>';
+    $str .= tep_output_string_protected($orders['customers_name']); 
+    $str .= '</b></td>';
+    $str .= '</tr>';
+
+    $str .= '<tr>';
+    $str .= '<td class="main"><b>';
+    $str .= TEXT_FUNCTION_HEADING_ORDER_TOTAL;
+    $str .= '</b></td>';
+    $str .= '<td class="main"><b>';
+    $str .= strip_tags(tep_get_ot_total_by_orders_id($orders['orders_id'], true));
+    $str .= '</b></td>';
+    $str .= '</tr>';
+
+    $str .= '<tr>';
+    $str .= '<td class="main"><b>';
+    $str .= TEXT_FUNCTION_ORDER_ORDER_DATE;
+    $str .= '</b></td>';
+    $str .= '<td class="main"><b>';
+    $str .= tep_datetime_short($orders['torihiki_date']);;
+    $str .= '</b></td>';
+    $str .= '</tr>';
+
+    $str .= '<tr>';
+    $str .= '<td class="main"><b>';
+    $str .= TEXT_FUNCTION_HEADING_DATE_PURCHASED;
+    $str .= '</b></td>';
+    $str .= '<td class="main"><b>';
+    $str .= tep_datetime_short($orders['date_purchased']); 
+    $str .= '</b></td>';
+    $str .= '</tr>';
   }
   //$str .= '<tr><td colspan="2">&nbsp;</td></tr>';
   $str .= '<tr><td class="main" width="150"><b>支払方法：</b></td><td class="main" style="color:darkred;"><b>'.$orders['payment_method'].'</b></td></tr>';
@@ -3316,7 +3360,6 @@ function tep_get_orders_products_string($orders, $single = false) {
     if($time_str){
     $str .= '<tr><td class="main"><b>入金日：</b></td><td class="main" style="color:red;"><b>'.$time_str.'</b></td></tr>';
     }
-  $str .= '<tr><td colspan="2">&nbsp;</td></tr>';
   $str .= '<tr><td class="main"><b>オプション：</b></td><td class="main" style="color:blue;"><b>'.$orders['torihiki_houhou'].'</b></td></tr>';
 
   $orders_products_query = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS." op,".TABLE_PRODUCTS." p where p.products_id = op.products_id and op.orders_id = '".$orders['orders_id']."'");
@@ -3355,7 +3398,7 @@ function tep_get_orders_products_string($orders, $single = false) {
     while($pa = tep_db_fetch_array($products_attributes_query)){
       $str .= '<tr><td class="main"><b>'.$pa['products_options'].'：</b></td><td class="main">'.$pa['products_options_values'].'</td></tr>';
     }
-    $str .= '<tr><td class="main"><b>キャラ名：</b></td><td style="font-size:20px;color:#407416;"><b>'.$p['products_character'].'</b></td></tr>';
+    $str .= '<tr><td class="main"><b>キャラ名：</b></td><td class="main"  style="color:#407416;"><b>'.$p['products_character'].'</b></td></tr>';
     $names = tep_get_computers_names_by_orders_id($orders['orders_id']);
     if ($names) {
       $str .= '<tr><td class="main"><b>PC：</b></td><td class="main">'.implode('&nbsp;,&nbsp;', $names).'</td></tr>';
@@ -3665,6 +3708,7 @@ function tep_get_orders_products_string($orders, $single = false) {
   }
   
   
+  $str .= '<tr><td class="main" colspan="2">&nbsp;</td><tr>';
   $str .= '</table>';
   $str=str_replace("\n","",$str);
   $str=str_replace("\r","",$str);

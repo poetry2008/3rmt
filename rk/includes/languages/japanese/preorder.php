@@ -69,4 +69,7 @@ define('TEXT_EMAIL_SIGNATURE', '[ご連絡・お問い合わせ先]━━━━�
 . 'support@rmt-kames.jp' . "\n"
 . 'http://www.rmt-kames.jp/' . "\n"
 . '━━━━━━━━━━━━━━━━━━━━━━━');
+define('FORM_FIELD_PREORDER_FIXTIME', 'オプション:');
+define('FORM_FIELD_PREORDER_FIXDAY', '予約希望日');
+define('FORM_FIELD_PREORDER_PAYMENT', 'お支払い方法');
 ?>

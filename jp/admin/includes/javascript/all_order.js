@@ -210,20 +210,20 @@ function showRequest(formData, jqForm, options) {
 
 // 列表右侧的订单信息显示
 function showOrdersInfo(oID,ele){
-    $.ajax({
-	type:"POST",
-	data:"oid="+oID,
-	async:false, 
-	url: 'ajax_orders.php?action=show_right_order_info',
-	success: function(msg) {
-	    
-	    $('#orders_info_box').html(msg);
-	    offset = ele.offsetTop + $('#orders_info_box').height() > $('#orders_list_table').height()
-		? ele.offsetTop+$("#orders_list_table").position().top - $('#orders_info_box').height() 
-		:ele.offsetTop+$("#orders_list_table").position().top;
-	    $('#orders_info_box').css('top',offset).show();
-	}
-    });
+
+   $.ajax({
+    type:"POST",
+    data:"oid="+oID,
+    async:false, 
+    url: 'ajax_orders.php?action=show_right_order_info',
+    success: function(msg) {
+ 
+    $('#orders_info_box').html(msg);
+    offset = ele.offsetTop + ele.offsetHeight + $('#orders_info_box').height() > $('#orders_list_table').height()? ele.offsetTop+$("#orders_list_table").position().top-$('#tep_site_filter').height()-$('#orders_info_box').height()-$('#offsetHeight').height():ele.offsetTop+$("#orders_list_table").position().top+ele.offsetHeight;
+      $('#orders_info_box').css('top',offset).show();
+    }
+  });
+
 }
 
 // 列表右侧的订单信息隐藏
@@ -671,4 +671,76 @@ function new_mail_text(ele,st,tt,ot){
     if ($(ele).val() == 20) {
 	$('#notify').attr('checked', false);  
     }
+}
+
+function preorders_flag(ele, type, oid) {
+  if (ele.className == 'orders_flag_checked') {
+   $.ajax({
+    url: 'ajax_preorders.php?orders_id='+oid+'&orders_'+type+'_flag=0',
+    success: function(data) {
+      ele.className='orders_flag_unchecked';
+    }
+  });
+  } else {
+   $.ajax({
+    url: 'ajax_preorders.php?orders_id='+oid+'&orders_'+type+'_flag=1',
+    success: function(data) {
+      ele.className='orders_flag_checked';
+    }
+  });
+  }
+}
+
+function preorders_work(ele, work, oid) {
+  document.getElementById('work_a').className = 'orders_flag_unchecked';
+  document.getElementById('work_b').className = 'orders_flag_unchecked';
+  document.getElementById('work_c').className = 'orders_flag_unchecked';
+   $.ajax({
+    dataType: 'text',
+    url: 'ajax_preorders.php?orders_id='+oid+'&work='+work,
+    success: function(data) {
+      if (data == 'success') {
+        if (ele.className == 'orders_flag_checked') {
+          ele.className='orders_flag_unchecked';
+        } else {
+          ele.className='orders_flag_checked';
+        }
+      }
+    }
+  });
+}
+
+function preorders_computers(ele, cid, oid) {
+  if (ele.className == 'orders_computer_checked') {
+   $.ajax({
+    url: 'ajax_preorders.php?action=delete&orders_id='+oid+'&computers_id='+cid,
+    success: function(data) {
+      ele.className='orders_computer_unchecked';
+    }
+  });
+  } else {
+    $.ajax({
+      url: 'ajax_preorders.php?action=insert&orders_id='+oid+'&computers_id='+cid,
+      success: function(data) {
+        ele.className='orders_computer_checked';
+      }
+    });
+  }
+}
+
+function showPreOrdersInfo(oID,ele){
+   $.ajax({
+    type:"POST",
+    data:"oid="+oID,
+    async:false, 
+    url: 'ajax_orders.php?action=show_right_preorder_info',
+    success: function(msg) {
+ 
+    $('#orders_info_box').html(msg);
+    offset = ele.offsetTop + $('#orders_info_box').height() > $('#orders_list_table').height()
+        ? ele.offsetTop+$("#orders_list_table").position().top - $('#orders_info_box').height() 
+        :ele.offsetTop+$("#orders_list_table").position().top;
+      $('#orders_info_box').css('top',offset).show();
+    }
+  });
 }

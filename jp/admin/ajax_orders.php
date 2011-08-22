@@ -415,5 +415,12 @@ and f.payment_romaji = "'.$_GET['payment'].'" and f.formtype = '.$_GET['buytype'
       $item->init()->render(true);
     }
   }
+
+} else if (isset($_GET['action'])&&$_GET['action']=='show_right_preorder_info') {
+  $orders_info_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$_POST['oid']."'"); 
+  $orders_info = tep_db_fetch_array($orders_info_raw); 
+  require(DIR_WS_FUNCTIONS . 'visites.php');
+  tep_get_pre_orders_products_string($orders_info, true);
+
 }
 

@@ -50,6 +50,9 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
   define('LOCAL_EXE_UNZIP', '/usr/local/bin/unzip');
 
 // define the filenames used in the project
+  define('FILENAME_PREORDERS', 'preorders.php');
+  define('FILENAME_PREORDERS_STATUS', 'preorders_status.php');
+  define('FILENAME_FINAL_PREORDERS', 'final_preorders.php');
   define('FILENAME_CHANGEPWD', 'changepwd.php');
   define('FILENAME_POINT_EMAIL', 'point_email.php');
   define('FILENAME_OA_FORM', 'oa_form.php'); 
@@ -127,6 +130,21 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
 
 
 // define the database table names used in the project
+  define('TABLE_PREORDERS_OA_FORMVALUE', 'preorders_oa_formvalue');
+  define('TABLE_PREORDERS', 'preorders');
+  define('TABLE_PREORDERS_MAIL', 'preorders_mail');
+  define('TABLE_PREORDERS_OPERATOR', 'preorders_operator');
+  define('TABLE_PREORDERS_PRODUCTS', 'preorders_products');
+  define('TABLE_PREORDERS_PRODUCTS_ATTRIBUTES', 'preorders_products_attributes');
+  define('TABLE_PREORDERS_PRODUCTS_DOWNLOAD', 'preorders_products_download');
+  define('TABLE_PREORDERS_PRODUCTS_TO_ACTOR', 'preorders_products_to_actor');
+  define('TABLE_PREORDERS_QUESTIONS', 'preorders_questions');
+  define('TABLE_PREORDERS_QUESTIONS_PRODUCTS', 'preorders_questions_products');
+  define('TABLE_PREORDERS_STATUS', 'preorders_status');
+  define('TABLE_PREORDERS_STATUS_HISTORY', 'preorders_status_history');
+  define('TABLE_PREORDERS_TEMP', 'preorders_temp');
+  define('TABLE_PREORDERS_TOTAL', 'preorders_total');
+  define('TABLE_PREORDERS_TO_COMPUTERS', 'preorders_to_computers');
   define('TABLE_PWD_CHECK', 'pwd_check');
   define('TABLE_FAQ_CATEGORIES', 'faq_categories');
   define('TABLE_FAQ_QUESTION',  'faq_question');
@@ -314,6 +332,7 @@ while($userslist= tep_db_fetch_array($sites_id)){
 
 // define our general functions used application-wide
   require(DIR_WS_FUNCTIONS . 'general.php');
+  require(DIR_WS_FUNCTIONS . 'preorder_general.php');
   require(DIR_WS_FUNCTIONS . 'html_output.php');
 
 

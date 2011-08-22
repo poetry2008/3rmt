@@ -2600,6 +2600,7 @@ function tep_unlink_temp_dir($dir)
                pd.products_description,
                pd.option_image_type, 
                pd.site_id,
+               pd.romaji, 
                pd.products_url,
                pd.products_viewed
         FROM " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
@@ -2652,6 +2653,7 @@ function tep_unlink_temp_dir($dir)
                pd.products_name, 
                pd.products_description,
                pd.site_id,
+               pd.romaji, 
                pd.option_image_type, 
                pd.products_url,
                pd.products_viewed
@@ -4117,4 +4119,267 @@ function tep_get_order_end_num()
   }
   
   return '01';
+}
+  function tep_get_torihiki_select_by_pre_products($product_id)
+  {
+    $torihiki_list = array();
+    $torihiki_array = tep_get_torihiki_by_pre_products($product_id);
+    foreach($torihiki_array as $torihiki){
+      $torihiki_list[] = array('id' => $torihiki,
+        'text' => $torihiki
+      );
+    }
+    if (!isset($torihikihouhou)) $torihikihouhou=NULL;
+    return tep_draw_pull_down_menu('ensure_deadline', $torihiki_list, $torihikihouhou);
+  }
+  
+  function tep_get_torihiki_by_pre_products($product_id)
+  {
+    $option_types = array();
+    if ($product_id) {
+      $sql = "select * from `" . TABLE_PRODUCTS . "` where products_id = '".  $product_id . "'";
+    
+      // ccdd
+    $product_query = tep_db_query($sql);
+    while($product = tep_db_fetch_array($product_query)){
+      $option_types[] = $product['option_type'];
+    }
+    }
+    $torihikis = tep_get_torihiki_houhou();
+    if($option_types){
+      if ($torihikis) {
+        foreach ($torihikis as $tkey => $torihiki) {
+          if(in_array($tkey, $option_types)){
+            return $torihiki;
+          }
+        }
+      }
+      if ($torihikis) {
+        return array_shift($torihikis);
+      } else {
+        return null;
+      }
+    } else if ($torihikis) {
+      return array_shift($torihikis);
+    } else {
+      return null;
+    }
+  }
+ 
+function tep_create_tmp_guest($email, $name)
+{ 
+  $lastname = $name;
+  $firstname = '';
+  
+  $NewPass = tep_create_random_value(ENTRY_PASSWORD_MIN_LENGTH);
+  $sql_data_array = array('customers_firstname' => $firstname,
+                            'customers_lastname' => $lastname,
+                            'customers_firstname_f' => '',
+                            'customers_lastname_f' => '',
+                            'customers_email_address' => $email,
+                            'customers_telephone' => '',
+                            'customers_newsletter' => '0',
+                            'customers_password' => tep_encrypt_password($NewPass),
+                            'customers_default_address_id' => 1,
+                            'customers_guest_chk' => '1',
+                            'send_mail_time' => time(),
+                            'site_id' => SITE_ID,
+                            'point' => '0');
+
+
+    tep_db_perform(TABLE_CUSTOMERS, $sql_data_array);
+
+    $customer_id = tep_db_insert_id();
+
+    $sql_data_array = array('customers_id' => $customer_id,
+                            'address_book_id' => 1,
+                            'entry_firstname' => $firstname,
+                            'entry_lastname' => $lastname,
+                            'entry_firstname_f' => '',
+                            'entry_lastname_f' => '',
+                            'entry_street_address' => '',
+                            'entry_postcode' => '',
+                            'entry_city' => '',
+                            'entry_country_id' => '107',
+                            'entry_telephone' => '');
+
+    tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array);
+    
+    tep_db_query("insert into " . TABLE_CUSTOMERS_INFO . " (customers_info_id, customers_info_number_of_logons, customers_info_date_account_created) values ('" . tep_db_input($customer_id) . "', '0', now())");
+    return $customer_id; 
+}
+
+function preorders_updated($orders_id) {
+  tep_db_query("update ".TABLE_PREORDERS." set language_id = ( select language_id from ".TABLE_PREORDERS_STATUS." where preorders_status.orders_status_id=preorders.orders_status ) where orders_id='".$orders_id."'");
+  tep_db_query("update ".TABLE_PREORDERS." set finished = ( select finished from ".TABLE_PREORDERS_STATUS." where preorders_status.orders_status_id=preorders.orders_status ) where orders_id='".$orders_id."'");
+  tep_db_query("update ".TABLE_PREORDERS." set orders_status_name = ( select orders_status_name from ".TABLE_PREORDERS_STATUS." where preorders_status.orders_status_id=preorders.orders_status ) where orders_id='".$orders_id."'");
+  tep_db_query("update ".TABLE_PREORDERS." set orders_status_image = ( select orders_status_image from ".TABLE_PREORDERS_STATUS." where preorders_status.orders_status_id=preorders.orders_status ) where orders_id='".$orders_id."'");
+  tep_db_query("update ".TABLE_PREORDERS_PRODUCTS." set torihiki_date = ( select torihiki_date from ".TABLE_PREORDERS." where preorders.orders_id=preorders_products.orders_id ) where orders_id='".$orders_id."'");
+}
+  
+function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null) 
+{
+   global $currency, $currencies; 
+   $is_active = 1; 
+   if ($tmp_cid) {
+     $is_active = 0; 
+   }
+   if ($tmp_cid) {
+     $customers_id = $tmp_cid; 
+   } else {
+     $customers_id = $cid; 
+   }
+   $payment_module = new $pInfo['payment']; 
+   $payment_method = $payment_module->title;
+   $orders_status = DEFAULT_PREORDERS_STATUS_ID;
+   $orders_status_raw = tep_db_query("select * from ".TABLE_PREORDERS_STATUS." where orders_status_id = '".$orders_status."'"); 
+   $orders_status_res = tep_db_fetch_array($orders_status_raw);
+   
+   $orders_status_name = $orders_status_res['orders_status_name'];
+   
+   $customers_raw = tep_db_query("
+      select c.customers_firstname, 
+              c.customers_lastname, 
+              c.customers_firstname_f, 
+              c.customers_lastname_f, 
+              c.customers_telephone, 
+              c.customers_email_address, 
+              ab.entry_company, 
+              ab.entry_street_address, 
+              ab.entry_suburb, 
+              ab.entry_postcode, 
+              ab.entry_city, 
+              ab.entry_zone_id, 
+              z.zone_name, 
+              co.countries_id, 
+              co.countries_name, 
+              co.countries_iso_code_2, 
+              co.countries_iso_code_3, 
+              co.address_format_id, 
+              ab.entry_state 
+      from " . TABLE_CUSTOMERS . " c, " .  TABLE_ADDRESS_BOOK . " ab left join " . TABLE_ZONES . " z on (ab.entry_zone_id = z.zone_id) left join " . TABLE_COUNTRIES . " co on (ab.entry_country_id = co.countries_id) 
+      where c.customers_id = '" .  $customers_id . "' 
+      and ab.customers_id = '" . $customers_id . "' 
+      and c.customers_default_address_id = ab.address_book_id 
+      and c.site_id = ".SITE_ID);
+   $customers_res = tep_db_fetch_array($customers_raw);
+  
+   $shipping_address_query = tep_db_query("
+      select ab.entry_firstname, ab.entry_lastname, ab.entry_firstname_f, ab.entry_lastname_f, ab.entry_telephone, ab.entry_company, ab.entry_street_address, ab.entry_suburb, ab.entry_postcode, ab.entry_city, ab.entry_zone_id, z.zone_name, ab.entry_country_id, c.countries_id, c.countries_name, c.countries_iso_code_2, c.countries_iso_code_3, c.address_format_id, ab.entry_state 
+      from " . TABLE_ADDRESS_BOOK . " ab left join " . TABLE_ZONES . " z on (ab.entry_zone_id = z.zone_id) left join " . TABLE_COUNTRIES . " c on (ab.entry_country_id = c.countries_id) 
+      where ab.customers_id = '" . $customers_id . "' 
+        and ab.address_book_id = '1'
+  ");
+  $shipping_address = tep_db_fetch_array($shipping_address_query);
+  
+  // ccdd
+  $billing_address_query = tep_db_query("
+      select ab.entry_firstname, ab.entry_lastname, ab.entry_firstname_f, ab.entry_lastname_f, ab.entry_telephone, ab.entry_company, ab.entry_street_address, ab.entry_suburb, ab.entry_postcode, ab.entry_city, ab.entry_zone_id, z.zone_name, ab.entry_country_id, c.countries_id, c.countries_name, c.countries_iso_code_2, c.countries_iso_code_3, c.address_format_id, ab.entry_state 
+      from " . TABLE_ADDRESS_BOOK . " ab left join " . TABLE_ZONES . " z on (ab.entry_zone_id = z.zone_id) left join " . TABLE_COUNTRIES . " c on (ab.entry_country_id = c.countries_id) 
+      where ab.customers_id = '" . $customers_id . "' 
+      and ab.address_book_id = '1'");
+  $billing_address = tep_db_fetch_array($billing_address_query);
+   
+   $order_id = $preorder_id;
+   
+   $sql_data_array = array('orders_id' => $order_id,
+                           'customers_id' => $customers_id, 
+                           'customers_name' => tep_get_fullname($customers_res['customers_firstname'], $customers_res['customers_lastname']), 
+                           'customers_email_address' => $customers_res['customers_email_address'], 
+                           'customers_street_address' => $customers_res['entry_street_address'], 
+                           'customers_suburb' => $customers_res['entry_suburb'], 
+                           'customers_city' => $customers_res['entry_city'],
+                           'customers_postcode' => $customers_res['entry_postcode'], 
+                           'customers_state' => ((tep_not_null($customers_res['entry_state']))?$customers_res['entry_state']:$customers_res['zone_name']), 
+                           'customers_country' => $customers_res['countries_name'], 
+                           'customers_telephone' => $customers_res['customers_telephone'],
+                           'customers_address_format_id' => $customers_res['address_format_id'],
+                           'payment_method' => $payment_method, 
+                           'date_purchased'    => 'now()', 
+                           'orders_status' => $orders_status,
+                           'orders_status_name' => $orders_status_name, 
+                           'currency' => $currency, 
+                           'currency_value' =>
+                           $currencies->currencies[$currency]['value'],
+                           'site_id' => SITE_ID, 
+                           'orders_ip' => $_SERVER['REMOTE_ADDR'], 
+                           'orders_host_name'  => trim(strtolower(@gethostbyaddr($_SERVER['REMOTE_ADDR']))), 
+                           'orders_user_agent' => $_SERVER['HTTP_USER_AGENT'], 
+                           'orders_wait_flag'  => 1, 
+                           'orders_http_accept_language' => $_SERVER['HTTP_ACCEPT_LANGUAGE'],
+                           'code_fee' => 0, 
+                           'ensure_deadline' => $pInfo['ensure_deadline'],
+                           'predate' => $pInfo['predate'].' 00:00:00',
+                           'is_active' => $is_active,
+                           'send_mail_time' => time(),
+                           'expect_comment' => $pInfo['yourmessage'],
+                           'delivery_name'  => tep_get_fullname($shipping_address['entry_firstname'],$shipping_address['entry_lastname']), 
+                           'delivery_company' => $shipping_address['entry_company'],
+                           'delivery_street_address' => $shipping_address['entry_street_address'],
+                           'delivery_suburb'    => $shipping_address['entry_suburb'],
+                           'delivery_city'      => $shipping_address['entry_city'], 
+                           'delivery_postcode'  => $shipping_address['entry_postcode'], 
+                           'delivery_state'     => ((tep_not_null($shipping_address['entry_state']))?$shipping_address['state']:$shipping_address['zone_name']),  
+                           'delivery_country'   => $shipping_address['countries_name'],  
+                           'delivery_telephone' => $shipping_address['entry_telephone'],   
+                           'delivery_address_format_id' => $shipping_address['address_format_id'], 
+                           'billing_name' => tep_get_fullname($billing_address['entry_firstname'],$billing_address['entry_lastname']), 
+                           'billing_company' => $billing_address['entry_company'], 
+                           'billing_street_address' => $billing_address['entry_street_address'],  
+                           'billing_suburb'   => $billing_address['entry_suburb'],  
+                           'billing_city'     => $billing_address['entry_city'], 
+                           'billing_postcode' => $billing_address['entry_postcode'], 
+                           'billing_state' => ((tep_not_null($billing_address['entry_state']))?$billing_address['state']:$billing_address['zone_name']), 
+                           'billing_country' => $billing_address['countries_name'],
+                           'billing_telephone' => $billing_address['entry_telephone'], 
+                           'billing_address_format_id' => $billing_address['address_format_id'],  
+                           );
+    
+   tep_db_perform(TABLE_PREORDERS, $sql_data_array);
+
+   require(DIR_WS_CLASSES.'order_total.php');
+   $order_total_modules = new order_total;
+   $order_totals = $order_total_modules->pre_process(); 
+   
+   for ($i=0, $n=sizeof($order_totals); $i<$n; $i++) { 
+     $sql_data_array = array('orders_id' => $order_id,
+                             'title' => $order_totals[$i]['title'], 
+                             'text' => $order_totals[$i]['text'], 
+                             'value' => $order_totals[$i]['value'], 
+                             'class' => $order_totals[$i]['code'], 
+                             'sort_order' => $order_totals[$i]['sort_order'], 
+     );
+     tep_db_perform(TABLE_PREORDERS_TOTAL, $sql_data_array);
+   }
+  
+   $customer_notification = (SEND_EMAILS == 'true') ? '1' : '0';
+   $sh_comments = ''; 
+   if ($pInfo['payment'] == 'convenience_store') {
+     $sh_comments = 'PCメールアドレス:' .$pInfo['convenience_email']; 
+   }
+   
+   $sql_data_array = array('orders_id' => $order_id, 
+                           'orders_status_id' => $orders_status, 
+                           'date_added' => 'now()', 
+                           'customer_notified' => $customer_notification,
+                           'comments' => $sh_comments, 
+                           );
+   tep_db_perform(TABLE_PREORDERS_STATUS_HISTORY, $sql_data_array);
+  
+   $products_raw = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".$pInfo['products_id']."'");
+   $products_res = tep_db_fetch_array($products_raw);
+   
+    
+   $sql_data_array = array('orders_id' => $order_id, 
+                          'products_id' => $pInfo['products_id'], 
+                          'products_model' => $products_res['products_model'], 
+                          'products_name' => $pInfo['products_name'],
+                          'products_tax' => $order->products[$i]['tax'], 
+                          'products_quantity' => $pInfo['quantity'], 
+                          'products_rate' => tep_get_products_rate($pInfo['products_id']), 
+                          'site_id' => SITE_ID
+                          );
+   tep_db_perform(TABLE_PREORDERS_PRODUCTS, $sql_data_array);
+   
+   preorders_updated($order_id);   
 }

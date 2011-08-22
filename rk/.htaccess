@@ -104,6 +104,8 @@ RewriteRule ^reviews/pr-([0-9]+)/([0-9]+)\.html$ product_reviews_info.php?produc
 
 #info {{{
 RewriteCond %{REQUEST_FILENAME} !-f 
+RewriteRule ^preorder/(.*).html$  preorder.php?promaji=$1&%{QUERY_STRING}
+RewriteCond %{REQUEST_FILENAME} !-f 
 RewriteRule ^info$ /info/ 
 RewriteCond %{REQUEST_FILENAME} !-f 
 RewriteRule ^info/index.html$ /info/ [R,L] 
@@ -122,7 +124,7 @@ RewriteRule ^([^\/\.]+)/([^\/\.]+)/([^\/\.]+)\.html product_info.php?%{REQUEST_F
 RewriteCond %{REQUEST_URI} !page-\d+.html
 RewriteRule ^([^\/\.]+)/([^\/\.]+)/([^\/\.]+)/([^\/\.]+)\.html product_info.php?products_id=$4 [QSA,L]
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_URI} !\.
+#RewriteCond %{REQUEST_URI} !\.
 RewriteRule ^(.*) index.php?cName=$1 [QSA,PT,L]
 
 # http://rmt.worldmoney.jp/item/p-33129.html

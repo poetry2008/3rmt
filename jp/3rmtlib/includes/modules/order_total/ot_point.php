@@ -38,6 +38,17 @@
                                   'value' => $point);
       }
     }
+    
+    function pre_process() {
+      global $currencies;
+
+      if (MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
+
+          $this->output[] = array('title' => $this->title . ':',
+                                  'text' => '',
+                                  'value' => '');
+      }
+    }
 
     function check() {
       if (!isset($this->_check)) {

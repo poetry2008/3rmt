@@ -1775,6 +1775,7 @@ register checkbox・mouse off
 	background: #e5e5e5;
 }
 .moduleRow td { padding:3px 5px;
+}
 /* ---------------------------
 register checkbox・mouse over
 --------------------------- */
@@ -1787,6 +1788,8 @@ register checkbox select row
 --------------------------- */
 .moduleRowSelected, .moduleRowSelected td {
 	background: #ccc;
+}
+.moduleRowSelected td { padding:3px 5px;
 }
 
 /* ---------------------------

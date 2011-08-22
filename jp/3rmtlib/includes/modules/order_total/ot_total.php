@@ -78,7 +78,13 @@
                               'text' => '',
                               'value' => $total);
     }
-
+    
+    function pre_process() {
+      $this->output[] = array('title' => $this->title . ':',
+                              'text' => '',
+                              'value' => '');
+    }
+    
     function check() {
       if (!isset($this->_check)) {
         // ccdd

@@ -1173,6 +1173,23 @@ function get_cart_products(){
   if (tagstr != '')
   window.open("categories.php?action=get_cart_products&products_id=<?php echo $_GET['pID'];?>&buyflag="+$("input[@type=radio][name=products_cart_buyflag][checked]").val()+tagstr, '','toolbar=0,location=0,directories=0,status=1,menubar=0,scrollbars=yes,resizable=yes,width=300');
 }
+$(window).resize(function (){
+    var menu_div_width = $('#categories_right_td').width();
+    if(menu_div_width>=480){
+      $('#categories_tree').animate({width:(menu_div_width-5)+"px"});
+    }
+});
+$(document).ready(function(){
+    var menu_div_width = $('#categories_right_td').width();
+<?php if ($_COOKIE['tarrow'] == 'open') {?>
+    menu_div_width = menu_div_width-125;
+<?php } ?>
+    if(menu_div_width>=480){
+      $('#categories_tree').animate({width:(menu_div_width-10)+"px"});
+    }else{
+      $('#categories_tree').animate({width:"470px"});
+    }
+});
 </script>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" >
@@ -1195,7 +1212,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
         <!-- left_navigation_eof //-->
       </table></td>
     <!-- body_text //-->
-    <td width="100%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+    <td width="100%" valign="top" id='categories_right_td'><table border="0" width="100%" cellspacing="0" cellpadding="2">
         <?php
   if (isset($_GET['action']) && $_GET['action'] == 'new_product') {
     if ( isset($_GET['pID']) && ($_GET['pID']) && (!$_POST) ) {
@@ -2490,7 +2507,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
           <td class="smallText" align="right" width="60">
             <?php echo tep_draw_form('goto', FILENAME_CATEGORIES, '', 'get') . "\n"; ?>
 
-              <div id="gotomenu">
+              <div id="gotomenu" style="width:100%">
                 <a href="javascript:void(0)" onclick="$('#categories_tree').toggle()"><?php echo CATEGORY_TREE_SELECT_TEXT;?></a>
                 <div id="categories_tree">
                 <?php

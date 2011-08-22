@@ -813,9 +813,9 @@ font-size:10px;!important;
 display:none;
 /*	width:100%;*/
 	position: absolute;
-	width:900px;
+/*	width:900px;  */
 	background-color:#000;
-	top:12px;
+	top:17px;
 	right:0;
 	z-index:180;
 	border:1px solid #000;

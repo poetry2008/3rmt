@@ -47,11 +47,22 @@ function toggle_header_menu(elmnt)
     }
   }
 }
+function goto_changepwd(id){
+  document.getElementById(id).action="<?php echo FILENAME_CHANGEPWD;?>";
+  document.getElementById(id).submit();
+  return false;
+}
 </script>
 <table border="0" width="100%" cellspacing="0" cellpadding="0">
 <tr>
 <td><?php echo tep_image(DIR_WS_CATALOG .DIR_WS_IMAGES . ADMINPAGE_LOGO_IMAGE, STORE_NAME, '', ''); ?></td>
 <td align="right">
+<?php echo tep_draw_form('changepwd', FILENAME_CHANGEPWD,'','post','
+    id=\'changepwd_form\'');
+echo tep_draw_hidden_field("execute_password",TEXT_ECECUTE_PASSWORD_USER);
+echo tep_draw_hidden_field("userslist",$ocertify->auth_user);
+echo "</form>";
+?>
 <?php echo HEADER_TEXT_SITE_NAME;?>&nbsp;<b>
 <?php
 //var_dump($ocertify->npermission);
@@ -93,6 +104,7 @@ if (!isset($ocertify->npermission) || $ocertify->npermission >= 7) {
     <tr>
     <td><a href="' . tep_href_link(FILENAME_ORDERS, '', 'NONSSL') . '"
     class="headerLink">'.HEADER_TEXT_ORDERS.'</a>&nbsp;|</td>
+    <td><a href="'.tep_href_link(FILENAME_PREORDERS, '', 'NONSSL').'" class="headerLink">'.HEADER_TEXT_PREORDERS.'</a>&nbsp;|</td> 
     <td><a href="' . tep_href_link('telecom_unknow.php', '', 'NONSSL') . '" class="headerLink"
     >'.HEADER_TEXT_TELECOM_UNKNOW.'</a>&nbsp;|</td>
     <td align="left">
@@ -149,7 +161,8 @@ if (!isset($ocertify->npermission) || $ocertify->npermission >= 7) {
       </tr>
       <tr>
       <td class="menu01"><a class="t_link01"
-      href="'.tep_href_link('changepwd.php?execute_password='.TEXT_ECECUTE_PASSWORD_USER."&userslist=".$ocertify->auth_user, '', 'NONSSL').'">'.HEADER_TEXT_USERS.'</a></td>
+      onclick="javascript:goto_changepwd(\'changepwd_form\')"
+      href="javascript:void(0);">'.HEADER_TEXT_USERS.'</a></td>
       </tr>
       </table>
       </td>

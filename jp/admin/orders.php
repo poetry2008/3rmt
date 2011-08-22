@@ -1709,7 +1709,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
     <tr>
       <td valign="top">
     <!-- 订单信息预览，配合javascript，永远浮动在屏幕右下角 -->
-    <div id="orders_info_box" style="display:none; position:absolute; background:#FFF; margin-left:20px; width:20%; width:55%; padding:5px 5px 4px 5px;/*bottom:0;margin-top:40px;right:0;width:200px;*/">&nbsp;</div>
+    <div id="orders_info_box" style="display:none; position:absolute; background:#FFF; margin-left:20px; width:20%; width:55%; padding:5px 5px 4px 15px;/*bottom:0;margin-top:40px;right:0;width:200px;*/">&nbsp;</div>
 <?php
   if ($ocertify->npermission == 15) {
     if(!tep_session_is_registered('reload')) $reload = 'yes';
@@ -2259,7 +2259,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
     ?>
     <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onmouseover="showOrdersInfo('<?php echo $orders['orders_id'];?>',this);" onmouseout="hideOrdersInfo();">
     <?php
-      echo '<a href="' . tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID')) . 'oID=' . $orders['orders_id']) .  '">' . tep_image(DIR_WS_IMAGES . 'icon_info02.gif', IMAGE_ICON_INFO) . '</a>'; 
+      echo '<a href="' . tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID')) . 'oID=' . $orders['orders_id']) .  '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
     } ?>&nbsp;</td>
     </tr>
 <?php }?>
