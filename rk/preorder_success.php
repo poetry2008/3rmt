@@ -44,7 +44,8 @@
         $preorder_email_text = PREORDER_MAIL_CONTENT; 
       } else {
         $preorder_email_subject = PREORDER_MAIL_ACTIVE_SUBJECT; 
-        $preorder_email_text = PREORDER_MAIL_ACTIVE_CONTENT; 
+        $active_url = HTTP_SERVER.'/preorder_auth.php?pid='.$preorder_id; 
+        $preorder_email_text = str_replace('${URL}', $active_url, PREORDER_MAIL_ACTIVE_CONTENT); 
       }
       tep_mail($_POST['pemail'], $preorder['customers_name'], $preorder_email_subject, $preorder_email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS); 
     }

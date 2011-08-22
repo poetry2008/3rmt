@@ -221,7 +221,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
           $preorder_email_subject = PREORDER_MAIL_SUBJECT; 
         } else {
           $tmp_customer_id = tep_create_tmp_guest($_POST['from'], $_POST['yourname']); 
-          $active_url = tep_href_link('preorder_auth.php', 'pid='.$preorder_id); 
+          $active_url = HTTP_SERVER.'/preorder_auth.php?pid='.$preorder_id; 
           $preorder_email_text = str_replace('${URL}', $active_url, PREORDER_MAIL_ACTIVE_CONTENT); 
           $preorder_email_subject = PREORDER_MAIL_ACTIVE_SUBJECT; 
         }
