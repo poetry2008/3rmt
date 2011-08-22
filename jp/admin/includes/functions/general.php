@@ -3239,6 +3239,7 @@ function tep_get_orders_products_string($orders, $single = false) {
 
 
   $str .= '<table border="0" cellpadding="0" cellspacing="0" class="orders_info_div">';
+  $str .= '<tr><td class="main" colspan="2">&nbsp;</td><tr>';
 
   /*
      $str .= '<tr><td class="mian" align="center" colspan="2"><table width="100%"><tr><td class="main" width="50%" align="left">';
@@ -3708,6 +3709,7 @@ function tep_get_orders_products_string($orders, $single = false) {
   }
   
   
+  $str .= '<tr><td class="main" colspan="2">&nbsp;</td><tr>';
   $str .= '</table>';
   $str=str_replace("\n","",$str);
   $str=str_replace("\r","",$str);
