@@ -3280,7 +3280,9 @@ function tep_get_orders_products_string($orders, $single = false) {
     if ($orders['orders_care_flag']) {
       $str .= '<tr>'; 
       $str .= '<td class="main" colspan="2"><font color="red">';
+      $str .= '<b>';
       $str .= RIGHT_ORDER_INFO_TRANS_NOTICE; 
+      $str .= '</b>';
       $str .= '</font></td>'; 
       $str .= '</tr>'; 
     }
@@ -3290,7 +3292,9 @@ function tep_get_orders_products_string($orders, $single = false) {
     if ($orders['orders_wait_flag']) {
       $str .= '<tr>'; 
       $str .= '<td class="main" colspan="2"><font color="red">';
+      $str .= '<b>';
       $str .= RIGHT_ORDER_INFO_TRANS_WAIT; 
+      $str .= '</b>';
       $str .= '</font></td>'; 
       $str .= '</tr>'; 
     } 
@@ -3300,7 +3304,9 @@ function tep_get_orders_products_string($orders, $single = false) {
     if ($orders['orders_inputed_flag']) {
       $str .= '<tr>'; 
       $str .= '<td class="main" colspan="2"><font color="red">';
+      $str .= '<b>';
       $str .= RIGHT_ORDER_INFO_INPUT_FINISH; 
+      $str .= '</b>';
       $str .= '</font></td>'; 
       $str .= '</tr>'; 
     } 
