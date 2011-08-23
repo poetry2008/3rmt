@@ -3533,7 +3533,7 @@ function tep_get_orders_products_string($orders, $single = false) {
     $str .= '</tr>'; 
   if ($orders['orders_user_agent']) { 
       $str .= '<tr>'; 
-      $str .= '<td class="main">'.RIGHT_CUSTOMER_INFO_ORDER_OS.'</td>';
+      $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_OS.'</b></td>';
       $str .= '<td class="main">';
       $str .= tep_high_light_by_keywords(getOS($orders['orders_user_agent']),OS_LIGHT_KEYWORDS); 
       $str .= '</td>'; 
