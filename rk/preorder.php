@@ -373,6 +373,21 @@ echo tep_get_torihiki_select_by_pre_products($product_info['products_id']);
           if ($selection[$i]['id'] == 'buying' || $selection[$i]['id'] == 'buyingpoint' || $selection[$i]['id'] == 'fetchgood' || $selection[$i]['id'] == 'freepayment') {
             continue; 
           }
+          if ($selection[$i]['id'] == 'moneyorder' && MODULE_PAYMENT_MONEYORDER_PREORDER_SHOW == 'False') {
+            continue; 
+          }
+          if ($selection[$i]['id'] == 'postalmoneyorder' && MODULE_PAYMENT_POSTALMONEYORDER_PREORDER_SHOW == 'False') {
+            continue; 
+          }
+          if ($selection[$i]['id'] == 'convenience_store' && MODULE_PAYMENT_CONVENIENCE_STORE_PREORDER_SHOW == 'False') {
+            continue; 
+          }
+          if ($selection[$i]['id'] == 'telecom' && MODULE_PAYMENT_TELECOM_PREORDER_SHOW == 'False') {
+            continue; 
+          }
+          if ($selection[$i]['id'] == 'paypal' && MODULE_PAYMENT_PAYPAL_PREORDER_SHOW == 'False') {
+            continue; 
+          }
         ?>
         <tr>
           <td>
