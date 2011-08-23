@@ -477,7 +477,7 @@ define('TEXT_FOOTER_ONE_TIME','チェックされている権限のワンタイ�
 define('TEXT_FOOTER_CHECK_SAVE','保存');
 //footer end
 define('RIGHT_ORDER_INFO_ORDER_FROM', '注文書サイト：');
-define('RIGHT_ORDER_INFO_ORDER_FETCH_TIME', '引日時：');
+define('RIGHT_ORDER_INFO_ORDER_FETCH_TIME', '取引日：');
 define('RIGHT_ORDER_INFO_ORDER_OPTION', 'オプション：');
 define('RIGHT_ORDER_INFO_ORDER_ID', 'ご注文番号：');
 define('RIGHT_ORDER_INFO_ORDER_DATE', '注文日：');
