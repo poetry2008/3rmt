@@ -47,7 +47,7 @@
         $active_url = HTTP_SERVER.'/preorder_auth.php?pid='.$preorder_id; 
         $preorder_email_text = str_replace('${URL}', $active_url, PREORDER_MAIL_ACTIVE_CONTENT); 
       }
-      tep_mail($_POST['pemail'], $preorder['customers_name'], $preorder_email_subject, $preorder_email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS); 
+      tep_mail($preorder['customers_name'], $_POST['pemail'], $preorder_email_subject, $preorder_email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS); 
     }
   }
   $breadcrumb->add(PREORDER_SUCCESS_TITLE, '');
