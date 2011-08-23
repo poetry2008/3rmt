@@ -191,33 +191,34 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
         }
       }
     
-    if (isset($_GET['action']) && ($_GET['action'] == 'process') && empty($last_name)) {
-      $lastname_error = true;
-      $error = true;
-    } else {
-      $lasttname_error = false;
-    }
-    
-    if (isset($_GET['action']) && ($_GET['action'] == 'process') && empty($first_name)) {
-      $firstname_error = true;
-      $error = true;
-    } else {
-      $firstname_error = false;
-    }
-    
+    if (!tep_session_is_registered('customer_id')) {
+      if (isset($_GET['action']) && ($_GET['action'] == 'process') && empty($last_name)) {
+        $lastname_error = true;
+        $error = true;
+      } else {
+        $lasttname_error = false;
+      }
+      
+      if (isset($_GET['action']) && ($_GET['action'] == 'process') && empty($first_name)) {
+        $firstname_error = true;
+        $error = true;
+      } else {
+        $firstname_error = false;
+      }
+    } 
     if (isset($_GET['action']) && ($_GET['action'] == 'process') && empty($_POST['predate'])) {
       $predate_error = true;
       $error = true;
     } else {
       $predate_error = false;
     }
-    
     if (isset($_GET['action']) && ($_GET['action'] == 'process') && empty($_POST['payment'])) {
       $payment_error = true;
       $error = true;
     } else {
       $payment_error = false;
     }
+    
     if (isset($_GET['action']) && ($_GET['action'] == 'process') && ($error == false)) {
       $preorder_id = date('Ymd').'-'.date('His').tep_get_order_end_num(); 
       if (tep_session_is_registered('customer_id')) {
@@ -312,22 +313,27 @@ if (!isset($_GET['quantity'])) $_GET['quantity'] = NULL; //del notice
             echo tep_draw_input_field('quantity', (($quantity_error == true) ? $_POST['quantity'] : $_GET['quantity']) , 'size="7" maxlength="15" class="input_text_short"');
             echo '&nbsp;&nbsp;個';
       if ($quantity_error == true) echo '&nbsp;<span class="errorText">' . TEXT_REQUIRED . '</span>';
+      if (!isset($_GET['send_to'])) $_GET['send_to'] = NULL; //del notice
 ?>
           </td>
         </tr>
+        <?php
+        if (false) { 
+        ?>
         <tr>
           <td class="main"><?php echo FORM_FIELD_PREORDER_FIXTIME; ?></td>
           <td class="main">
 <?php
-if (!isset($_GET['send_to'])) $_GET['send_to'] = NULL; //del notice
-echo tep_get_torihiki_select_by_pre_products($product_info['products_id']);
+//echo tep_get_torihiki_select_by_pre_products($product_info['products_id']);
 ?>
           </td>
         </tr>
+        <?php }?> 
         <tr>
           <td class="main"><?php echo FORM_FIELD_PREORDER_FIXDAY; ?></td>
           <td class="main">
 <?php
+    echo tep_draw_hidden_field('ensure_deadline');
     $today = getdate();
       $m_num = $today['mon'];
       $d_num = $today['mday'];
