@@ -1795,6 +1795,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
                o.orders_wait_flag,
                o.orders_inputed_flag,
                o.orders_work,
+               o.predate, 
                o.customers_email_address,
                o.orders_comment,
                o.torihiki_houhou,
@@ -1825,6 +1826,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
                o.orders_wait_flag,
                o.orders_inputed_flag,
                o.orders_work,
+               o.predate, 
                o.customers_email_address,
                o.torihiki_houhou,
                o.orders_comment,
@@ -1854,6 +1856,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
                o.orders_wait_flag,
                o.orders_inputed_flag,
                o.orders_work,
+               o.predate, 
                o.torihiki_houhou,
                o.customers_email_address,
                o.orders_comment,
@@ -1887,6 +1890,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
                o.orders_important_flag,
                o.orders_care_flag,
                o.orders_wait_flag,
+               o.predate, 
                o.orders_inputed_flag,
                o.orders_work,
                o.customers_email_address,
@@ -1948,6 +1952,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
                o.orders_wait_flag,
                o.orders_inputed_flag,
                o.orders_work,
+               o.predate, 
                o.customers_email_address,
                o.torihiki_houhou,
                o.orders_comment,
@@ -2006,6 +2011,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
                o.orders_wait_flag,
                o.orders_inputed_flag,
                o.orders_work,
+               o.predate, 
                o.customers_email_address,
                o.orders_comment,
                o.torihiki_houhou,
@@ -2124,7 +2130,8 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
       <?php echo strip_tags(tep_get_pre_ot_total_by_orders_id($orders['orders_id'], true));?>
       <?php }?>
     </td>
-    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';"><?php echo $next_mark; ?><font color="<?php echo !$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)?'#999':$today_color; ?>" id="tori_<?php echo $orders['orders_id']; ?>"><?php echo tep_datetime_short($orders['torihiki_date']); ?></font></td>
+    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('oID', 'action')) .  'oID='.$orders['orders_id']);?>';"><?php echo $next_mark; ?><font color="<?php echo !$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)?'#999':$today_color; ?>" id="tori_<?php echo $orders['orders_id'];
+?>"><?php echo tep_datetime_short($orders['predate']); ?></font></td>
     <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="left" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';"><?php
     if ($orders['orders_wait_flag']) { echo tep_image(DIR_WS_IMAGES .
         'icon_hand.gif', TEXT_ORDER_WAIT); } else { echo '&nbsp;'; } ?></td>
@@ -2278,6 +2285,7 @@ function submit_confirm()
         </tr>
       </table>
 </td><td valign="top" align="right">
+      <?php if (false) {?> 
       <table id="select_question" style="display:none">
         <tr>
           <td><?php echo TEXT_ORDER_BANK;?></td>
@@ -2314,7 +2322,8 @@ function submit_confirm()
         </tr>
         -->
       </table>
-</td></tr></table>
+      <?php }?>
+      </td></tr></table>
       </form>
       <!-- display add end-->
 
