@@ -78,7 +78,11 @@
                     }
                     ?>
                     </td>                  
-                    <td class="main">0<?php echo MONEY_UNIT_TEXT;?></td>                  
+                    <td class="main">
+                    <?php 
+                    echo $currencies->display_price($preorder_product_res['final_price'], $preorder_product_res['products_tax'], $preorder_product_res['products_quantity']); 
+                    ?>
+                    </td>                  
                   </tr>
                 </table> 
               </td>
@@ -142,16 +146,24 @@
               <td width="70%" align="right" valign="top">
                 <table border="0" cellpadding="2" cellspacing="0"> 
                   <?php
+                  if ($preorder_res['code_fee']) {
+                  ?>
+                  <tr>
+                    <td class="main" align="right"><?php echo CHANGE_PREORDER_HANDLE_FEE_TEXT;?></td> 
+                    <td class="main" align="right"><?php echo $currencies->format_total($preorder_res['code_fee']);?></td> 
+                  </tr>
+                  <?php
+                  }
                   $preorder_total_raw = tep_db_query("select * from ".TABLE_PREORDERS_TOTAL." where orders_id = '".$_SESSION['preorder_id']."' order by sort_order asc"); 
                   while ($preorder_total_res = tep_db_fetch_array($preorder_total_raw)) { 
                   ?>
                   <tr>
                     <td class="main" align="right"><?php echo $preorder_total_res['title'];?></td>                  
-                    <td class="main" align="right">0<?php echo MONEY_UNIT_TEXT;?></td>                  
+                    <td class="main" align="right"><?php echo $currencies->format_total($preorder_total_res['value'])?></td>                  
                   </tr>
                 <?php }?> 
                   <tr>
-                    <td class="main" align="right">今回の獲得予定ポイント:</td> 
+                    <td class="main" align="right"><?php echo CHANGE_PREORDER_POINT_TEXT;?></td> 
                     <td class="main" align="right">0p</td> 
                   </tr>
                 </table> 

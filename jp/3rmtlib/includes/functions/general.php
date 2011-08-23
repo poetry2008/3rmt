@@ -4166,14 +4166,12 @@ function tep_get_order_end_num()
     }
   }
  
-function tep_create_tmp_guest($email, $name)
+function tep_create_tmp_guest($email, $last_name, $first_name)
 { 
-  $lastname = $name;
-  $firstname = '';
   
   $NewPass = tep_create_random_value(ENTRY_PASSWORD_MIN_LENGTH);
-  $sql_data_array = array('customers_firstname' => $firstname,
-                            'customers_lastname' => $lastname,
+  $sql_data_array = array('customers_firstname' => $first_name,
+                            'customers_lastname' => $last_name,
                             'customers_firstname_f' => '',
                             'customers_lastname_f' => '',
                             'customers_email_address' => $email,
@@ -4193,8 +4191,8 @@ function tep_create_tmp_guest($email, $name)
 
     $sql_data_array = array('customers_id' => $customer_id,
                             'address_book_id' => 1,
-                            'entry_firstname' => $firstname,
-                            'entry_lastname' => $lastname,
+                            'entry_firstname' => $first_name,
+                            'entry_lastname' => $last_name,
                             'entry_firstname_f' => '',
                             'entry_lastname_f' => '',
                             'entry_street_address' => '',
@@ -4369,12 +4367,14 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null)
    $products_raw = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".$pInfo['products_id']."'");
    $products_res = tep_db_fetch_array($products_raw);
    
+  $tax_address_query = tep_db_query("select ab.entry_country_id, ab.entry_zone_id from " . TABLE_ADDRESS_BOOK . " ab left join " . TABLE_ZONES . " z on (ab.entry_zone_id = z.zone_id) where ab.customers_id = '" . $customers_id . "' and ab.address_book_id = '1'");
+  $tax_address = tep_db_fetch_array($tax_address_query);
     
    $sql_data_array = array('orders_id' => $order_id, 
                           'products_id' => $pInfo['products_id'], 
                           'products_model' => $products_res['products_model'], 
                           'products_name' => $pInfo['products_name'],
-                          'products_tax' => $order->products[$i]['tax'], 
+                          'products_tax' => tep_get_tax_rate($products_res['products_tax_class_id'], $tax_address['entry_country_id'], $tax_address['entry_zone_id']), 
                           'products_quantity' => $pInfo['quantity'], 
                           'products_rate' => tep_get_products_rate($pInfo['products_id']), 
                           'site_id' => SITE_ID
