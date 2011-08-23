@@ -3641,14 +3641,14 @@ function tep_get_orders_products_string($orders, $single = false) {
  
   if (ORDER_INFO_REFERER_INFO == 'true') {
     $str .= '<tr>'; 
-    $str .= '<td class="main"><b>Referer Info:</b></td>';
+    $str .= '<td class="main"><b>Referer Info：</b></td>';
     $str .= '<td class="main">';
     $str .= urldecode($orders['orders_ref']); 
     $str .= '</td>'; 
     $str .= '</tr>'; 
     if ($orders['orders_ref_keywords']) {
       $str .= '<tr>'; 
-      $str .= '<td class="main"><b>KEYWORDS:</b></td>';
+      $str .= '<td class="main"><b>KEYWORDS：</b></td>';
       $str .= '<td class="main">';
       $str .= $orders['orders_ref_keywords']; 
       $str .= '</td>'; 
@@ -3663,7 +3663,7 @@ function tep_get_orders_products_string($orders, $single = false) {
       $str .= '<td class="main" colspan="2">';      
       $str .= '<table width="100%" border="0" cellspacing="0" cellpadding="2">'; 
       $str .= '<tr>'; 
-      $str .= '<td colspan="4"><b>Order History:</b></td>'; 
+      $str .= '<td colspan="4"><b>Order History：</b></td>'; 
       $str .= '</tr>'; 
       while ($order_history_list = tep_db_fetch_array($order_history_list_raw)) {
         $str .= '<tr>'; 
