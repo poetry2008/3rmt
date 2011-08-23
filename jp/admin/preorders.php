@@ -812,12 +812,14 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                 </tr>
                 <tr>
                   <td class="main" valign="top" width="30%"><b><?php echo TEXT_ORDER_DATE_LONG;?></b></td>
-                  <td class="main"><b style=" color:#0000FF"><?php echo $order->tori['date'];?></b></td>
+                  <td class="main"><b style=" color:#0000FF"><?php echo $order->info['predate'];?></b></td>
                 </tr>
+                <?php if (false) {?> 
                 <tr>
                   <td class="main" valign="top"><b><?php echo TEXT_ORDER_HOUHOU;?></b></td>
                   <td class="main"><b style=" color:#0000FF"><?php echo $order->tori['houhou'];?></b></td>
                 </tr>
+                <?php }?> 
                 <tr>
                   <td class="main" valign="top"><b><?php echo TEXT_PREORDER_ID_TEXT;?></b></td>
                   <td class="main"><?php echo $_GET['oID'] ?></td>
@@ -883,6 +885,9 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
             <?php
                 }
             ?>
+              <?php 
+              if (false) { 
+              ?> 
               <tr>
                 <td class="main"><b><?php echo ENTRY_ENSURE_DATE;?></b></td> 
                 <td class="main">
@@ -893,6 +898,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                 ?> 
                 </td> 
               </tr>
+              <?php }?> 
               <tr>
                 <td class="main">
                   <b><?php echo TEXT_ORDER_EXPECTET_COMMENT;?></b> 
