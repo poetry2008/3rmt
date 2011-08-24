@@ -68,6 +68,7 @@
       <h1 class="pageHeading"><?php echo PREORDER_SUCCESS_TITLE;?></h1> 
       <div class="comment">
       <?php
+      if (!$preorder['is_active']) { 
       if ($error == true) {
         if (isset($error_msg)) {
           if ($error_msg == ALREADY_SEND_PREMAIL_TEXT) {
@@ -118,6 +119,20 @@
         </tr>
       </table>
       </form> 
+      <?php } else {?> 
+      <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size:12px;">
+        <tr>
+          <td>
+                <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+                  <tr> 
+                    <td class="main" align="right"><?php echo '<a href="' .tep_href_link(FILENAME_DEFAULT). '">' .  tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></td> 
+                    <td align="right" class="main">
+                    </td> 
+                  </tr> 
+                </table></td> 
+        </tr>
+      </table> 
+      <?php }?> 
       </div>
       <p class="pageBottom"></p> 
       </td> 
