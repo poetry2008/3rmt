@@ -591,7 +591,7 @@
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/javascript/jquery.js"></script>
 <script language="javascript" src="includes/javascript/jquery.form.js"></script>
-<script language="javascript" src="includes/javascript/all_order.js"></script>
+<script language="javascript" src="includes/javascript/all_preorder.js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
 <script language="javascript">
@@ -2137,7 +2137,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
       <?php }?>
     </td>
     <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('oID', 'action')) .  'oID='.$orders['orders_id']);?>';"><?php echo $next_mark; ?><font color="<?php echo !$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)?'#999':$today_color; ?>" id="tori_<?php echo $orders['orders_id'];
-?>"><?php echo tep_datetime_short($orders['predate']); ?></font></td>
+?>"><?php echo substr($orders['predate'], 0, 10); ?></font></td>
     <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="left" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';"><?php
     if ($orders['orders_wait_flag']) { echo tep_image(DIR_WS_IMAGES .
         'icon_hand.gif', TEXT_ORDER_WAIT); } else { echo '&nbsp;'; } ?></td>
@@ -2201,7 +2201,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
     ?>
     <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onmouseover="showPreOrdersInfo('<?php echo $orders['orders_id'];?>',this);" onmouseout="hideOrdersInfo();">
     <?php
-      echo '<a href="' . tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('oID')) . 'oID=' . $orders['orders_id']) .  '">' . tep_image(DIR_WS_IMAGES . 'icon_info02.gif', IMAGE_ICON_INFO) . '</a>'; 
+      echo '<a href="' . tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('oID')) . 'oID=' . $orders['orders_id']) .  '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
     } ?>&nbsp;</td>
     </tr>
 <?php }?>
