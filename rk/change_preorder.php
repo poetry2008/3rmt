@@ -74,7 +74,8 @@
         $op_ids = tep_db_prepare_input($_POST['op_id']); 
         tep_session_register('op_ids'); 
       }
-      tep_session_register('preorder_id'); 
+      $preorder_oid = $preorder_id; 
+      tep_session_register('preorder_oid'); 
       tep_redirect(tep_href_link('change_preorder_confirm.php')); 
     }
   }

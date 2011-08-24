@@ -14,11 +14,11 @@
   
   require(DIR_WS_LANGUAGES . $language . '/change_preorder_confirm.php');
  
-  if (!tep_session_is_registered('preorder_id')) {
+  if (!tep_session_is_registered('preorder_oid')) {
     forward404(); 
   }
   
-  $preorder_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$_SESSION['preorder_id']."' and site_id = '".SITE_ID."'");
+  $preorder_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$_SESSION['preorder_oid']."' and site_id = '".SITE_ID."'");
   $preorder_res = tep_db_fetch_array($preorder_raw);
   if (!$preorder_res) {
     forward404(); 
@@ -53,7 +53,7 @@
               </td>
             </tr>
             <?php
-              $preorder_product_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$_SESSION['preorder_id']."'"); 
+              $preorder_product_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$_SESSION['preorder_oid']."'"); 
             ?>
             <tr>
               <td class="main">
@@ -154,7 +154,7 @@
                   </tr>
                   <?php
                   }
-                  $preorder_total_raw = tep_db_query("select * from ".TABLE_PREORDERS_TOTAL." where orders_id = '".$_SESSION['preorder_id']."' order by sort_order asc"); 
+                  $preorder_total_raw = tep_db_query("select * from ".TABLE_PREORDERS_TOTAL." where orders_id = '".$_SESSION['preorder_oid']."' order by sort_order asc"); 
                   while ($preorder_total_res = tep_db_fetch_array($preorder_total_raw)) { 
                   ?>
                   <tr>
@@ -174,10 +174,10 @@
           <table width="100%" cellpadding="0" cellspacing="0" border="0">
             <tr>
               <td class="main" align="left">
-              <a href="<?php echo tep_href_link('change_preorder.php', 'pid='.$_SESSION['preorder_id']);?>"><?php echo tep_image_button('button_back.gif', IMAGE_BUTTON_BACK);?></a> 
+              <a href="<?php echo tep_href_link('change_preorder.php', 'pid='.$_SESSION['preorder_oid']);?>"><?php echo tep_image_button('button_back.gif', IMAGE_BUTTON_BACK);?></a> 
               </td>
               <td class="main" align="right">
-                <?php echo tep_draw_hidden_field('pid', $_SESSION['preorder_id']);?> 
+                <?php echo tep_draw_hidden_field('pid', $_SESSION['preorder_oid']);?> 
                 <?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE);?> 
               </td>
             </tr>

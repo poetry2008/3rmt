@@ -3,7 +3,7 @@
   $Id$
 */
 
-if (!tep_session_is_registered('preorder_id')) {
+if (!tep_session_is_registered('preorder_oid')) {
   forward404();
 }
 
@@ -240,7 +240,7 @@ tep_session_unregister('preorder_hour');
 tep_session_unregister('preorder_min');
 tep_session_unregister('p_character');
 tep_session_unregister('op_ids');
-tep_session_unregister('preorder_id');
+tep_session_unregister('preorder_oid');
 
 tep_redirect(tep_href_link('change_preorder_success.php'));
 
