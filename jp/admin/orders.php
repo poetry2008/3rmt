@@ -1591,7 +1591,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
               </select>
               </form>
             </td>
-            <td valign="top"></td>
+            <td valign="top" width="315"></td>
           </tr>
         </table>
       </td>
