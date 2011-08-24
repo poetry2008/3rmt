@@ -3,7 +3,7 @@
   $Id$
 */
 
-if (!tep_session_is_registered('preorder_oid')) {
+if (!isset($_POST['pid'])) {
   forward404();
 }
 
@@ -17,7 +17,8 @@ if ($preorder) {
   if (tep_db_num_rows($order_query)) {
     $orders_id = date('Ymd').'-'.date('His').tep_get_order_end_num(); 
   }
- 
+  
+  $torihikihouhou_date_str = $_POST['date'].' '.$_POST['hour'].':'.$_POST['min'].':00';
   $default_status_raw = tep_db_query("select * from ".TABLE_ORDERS_STATUS." where orders_status_id = '".DEFAULT_ORDERS_STATUS_ID."'");
   $default_status_res = tep_db_fetch_array($default_status_raw); 
    
@@ -70,8 +71,8 @@ if ($preorder) {
                            'currency' => $preorder['currency'], 
                            'currency_value' => $preorder['currency_value'], 
                            'torihiki_Bahamut' => $preorder['torihiki_Bahamut'], 
-                           'torihiki_houhou' => $_SESSION['preorder_torihikihouhou'], 
-                           'torihiki_date' => (isset($_SESSION['preorder_tori_date'])?$_SESSION['preorder_tori_date']:'0000-00-00 00:00:00'), 
+                           'torihiki_houhou' => $_POST['torihikihouhou'], 
+                           'torihiki_date' => $torihikihouhou_date_str, 
                            'code_fee' => $preorder['code_fee'], 
                            'language_id' => $preorder['language_id'], 
                            'orders_status_name' => $default_status_res['orders_status_name'], 
@@ -165,14 +166,14 @@ if ($preorder) {
                           'products_tax' => $preorder_product_res['products_tax'], 
                           'products_quantity' => $preorder_product_res['products_quantity'], 
                           'products_rate' => $preorder_product_res['products_rate'], 
-                          'products_character' => isset($_SESSION['p_character'])?$_SESSION['p_character']:'',
-                          'torihiki_date' => isset($_SESSION['preorder_tori_date'])?$_SESSION['preorder_tori_date']:'0000-00-00 00:00:00', 
+                          'products_character' => isset($_POST['p_character'])?$_POST['p_character']:'',
+                          'torihiki_date' => $torihikihouhou_date_str, 
                           'site_id' => SITE_ID
       );
   tep_db_perform(TABLE_ORDERS_PRODUCTS, $sql_data_array);
 
-if (isset($_SESSION['op_ids'])) {
-   foreach ($_SESSION['op_ids'] as $key => $value) {
+if (isset($_POST['op_id'])) {
+   foreach ($_POST['op_id'] as $key => $value) {
       if (DOWNLOAD_ENABLED == 'true') {
         $attributes_query = "select popt.products_options_name, poval.products_options_values_name, pa.options_values_price, pa.price_prefix, pa.products_at_quantity, pa.products_attributes_id, pad.products_attributes_maxdays, pad.products_attributes_maxcount , pad.products_attributes_filename from " . TABLE_PRODUCTS_OPTIONS . " popt, " . TABLE_PRODUCTS_OPTIONS_VALUES . " poval, " . TABLE_PRODUCTS_ATTRIBUTES . " pa left join " . TABLE_PRODUCTS_ATTRIBUTES_DOWNLOAD . " pad on pa.products_attributes_id=pad.products_attributes_id where pa.products_id = '" .  $preorder_product_res['products_id'] . "' and pa.options_id = '" . $key . "' and pa.options_id = popt.products_options_id and pa.options_values_id = '" . $value . "' and pa.options_values_id = poval.products_options_values_id and popt.language_id = '" . $languages_id . "' and poval.language_id = '" . $languages_id . "'";
         $attributes = tep_db_query($attributes_query);
@@ -234,13 +235,6 @@ tep_db_query("delete from ".TABLE_PREORDERS_TOTAL." where orders_id = '".$_POST[
 tep_db_query("delete from ".TABLE_PREORDERS_TO_COMPUTERS." where orders_id = '".$_POST['pid']."'"); 
 tep_db_query("delete from ".TABLE_PREORDERS_OA_FORMVALUE." where orders_id = '".$pid."'"); 
 
-tep_session_unregister('preorder_torihikihouhou');
-tep_session_unregister('preorder_date');
-tep_session_unregister('preorder_hour');
-tep_session_unregister('preorder_min');
-tep_session_unregister('p_character');
-tep_session_unregister('op_ids');
-tep_session_unregister('preorder_oid');
 
 tep_redirect(tep_href_link('change_preorder_success.php'));
 

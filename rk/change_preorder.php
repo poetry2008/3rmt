@@ -58,26 +58,6 @@
         $character_error = TEXT_PREORDER_ERROR_CHARACTER;
       }
     }
-    
-    if ($error == false) {
-      tep_session_register('preorder_torihikihouhou'); 
-      tep_session_register('preorder_date'); 
-      tep_session_register('preorder_hour'); 
-      tep_session_register('preorder_min'); 
-      if (isset($_POST['p_character'])) {
-        $p_character = tep_db_prepare_input($_POST['p_character']); 
-        tep_session_register('p_character'); 
-      }
-      $preorder_tori_date = $_POST['date'].' '.$_POST['hour'].':'.$_POST['min'].':00'; 
-      tep_session_register('preorder_tori_date'); 
-      if (isset($_POST['op_id'])) {
-        $op_ids = tep_db_prepare_input($_POST['op_id']); 
-        tep_session_register('op_ids'); 
-      }
-      $preorder_oid = $preorder_id; 
-      tep_session_register('preorder_oid'); 
-      tep_redirect(tep_href_link('change_preorder_confirm.php')); 
-    }
   }
 $breadcrumb->add(NAVBAR_CHANGE_PREORDER_TITLE, '');
 ?>
@@ -86,7 +66,29 @@ $breadcrumb->add(NAVBAR_CHANGE_PREORDER_TITLE, '');
 </script>
 <script type="text/javascript" src="js/data.js"></script>
 </head>
-<body><div align="center"> 
+<body>
+<?php 
+if ($error == false && $_POST['action'] == 'process') { 
+echo tep_draw_form('order1', tep_href_link('change_preorder_confirm.php'));
+foreach ($_POST as $post_key => $post_value) {
+  if (is_array($post_value)) {
+    foreach ($post_value as $ps_key => $ps_value) {
+      echo tep_draw_hidden_field($post_key.'['.$ps_key.']', $ps_value); 
+    }
+  } else {
+    echo tep_draw_hidden_field($post_key, $post_value); 
+  }
+}
+echo tep_draw_hidden_field('pid', $_GET['pid']); 
+echo '</form>';
+?>
+<script type="text/javascript">
+  document.forms.order1.submit(); 
+</script>
+<?php
+} 
+?>
+<div align="center"> 
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
   <!-- header_eof //--> 
   <!-- body //--> 
@@ -99,7 +101,7 @@ $breadcrumb->add(NAVBAR_CHANGE_PREORDER_TITLE, '');
       <td valign="top" id="contents"> 
           <h1 class="pageHeading"><?php echo NAVBAR_CHANGE_PREORDER_TITLE;?></h1> 
           <div class="comment">
-          <?php 
+          <?php
           echo tep_draw_form('order', tep_href_link('change_preorder.php', 'pid='.$_GET['pid'])).tep_draw_hidden_field('action', 'process'); 
           ?>
           <h3 class="formAreaTitle"><?php echo CHANGE_ORDER_CUSTOMER_DETAILS?></h3> 
@@ -255,7 +257,7 @@ $breadcrumb->add(NAVBAR_CHANGE_PREORDER_TITLE, '');
                 
               }
             }
-            echo tep_draw_pull_down_menu('op_id[' .  $products_options_name['products_options_id'] . ']' , $products_options_array, isset($_SESSION['op_ids'][$products_options_name['products_options_id']])?$_SESSION['op_ids'][$products_options_name['products_options_id']]:'');
+            echo tep_draw_pull_down_menu('op_id[' .  $products_options_name['products_options_id'] . ']' , $products_options_array, isset($_POST['op_id'][$products_options_name['products_options_id']])?$_POST['op_id'][$products_options_name['products_options_id']]:'');
             echo '</td></tr>';
           }
             ?>
@@ -273,7 +275,7 @@ $breadcrumb->add(NAVBAR_CHANGE_PREORDER_TITLE, '');
               <td class="main"><?php echo CHANGE_ORDER_PRODUCT_CHARACTER;?></td> 
               <td>
               <?php 
-              echo tep_draw_input_field('p_character', isset($_SESSION['p_character'])?$_SESSION['p_character']:'');
+              echo tep_draw_input_field('p_character', isset($_POST['p_character'])?$_POST['p_character']:'');
               if (isset($character_error)) {
                 echo '<font color="#ff0000">'.$character_error.'</font>'; 
               }

@@ -12,13 +12,13 @@
 
   require('includes/application_top.php');
   
-  require(DIR_WS_LANGUAGES . $language . '/change_preorder_confirm.php');
- 
-  if (!tep_session_is_registered('preorder_oid')) {
+  if (!isset($_POST['pid'])) {
     forward404(); 
   }
   
-  $preorder_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$_SESSION['preorder_oid']."' and site_id = '".SITE_ID."'");
+  require(DIR_WS_LANGUAGES . $language . '/change_preorder_confirm.php');
+  
+  $preorder_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$_POST['pid']."' and site_id = '".SITE_ID."'");
   $preorder_res = tep_db_fetch_array($preorder_raw);
   if (!$preorder_res) {
     forward404(); 
@@ -53,7 +53,7 @@
               </td>
             </tr>
             <?php
-              $preorder_product_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$_SESSION['preorder_oid']."'"); 
+              $preorder_product_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$_POST['pid']."'"); 
             ?>
             <tr>
               <td class="main">
@@ -64,9 +64,9 @@
                     <td class="main">
                     <?php 
                     echo $preorder_product_res['products_name'];
-                    if (tep_session_is_registered('op_ids')) {
+                    if (isset($_POST['op_id'])) {
                       echo '<br>';  
-                      foreach ($_SESSION['op_ids'] as $key => $value) {
+                      foreach ($_POST['op_id'] as $key => $value) {
                         $pro_option_raw = tep_db_query("select * from ".TABLE_PRODUCTS_OPTIONS." where products_options_id = '".$key."' and language_id = '".$languages_id."'"); 
                         $pro_option_res = tep_db_fetch_array($pro_option_raw); 
                         
@@ -101,15 +101,15 @@
                   <tr>
                     <td class="main"><?php echo PREORDER_CONFIRM_FETCH_TIME_READ;?></td>                  
                     <td class="main">
-                    <?php echo $_SESSION['preorder_torihikihouhou'];?> 
+                    <?php echo $_POST['torihikihouhou'];?> 
                     </td>                  
                   </tr>
                   <tr>
                     <td class="main"><?php echo PREORDER_CONFIRM_FETCH_TIME_DAY;?></td>                  
                     <td class="main">
                     <?php
-                      if (!empty($_SESSION['preorder_date'])) {
-                        $date_arr = explode('-', $_SESSION['preorder_date']); 
+                      if (!empty($_POST['date'])) {
+                        $date_arr = explode('-', $_POST['date']); 
                         echo $date_arr[0].'年'.$date_arr[1].'月'.$date_arr[2].'日'; 
                       }
                     ?>
@@ -119,7 +119,7 @@
                     <td class="main"><?php echo PREORDER_CONFIRM_FETCH_TIME_DATE;?></td>                  
                     <td class="main">
                     <?php
-                    echo $_SESSION['preorder_hour'].'時'.$_SESSION['preorder_min'].'分'; 
+                    echo $_POST['hour'].'時'.$_POST['min'].'分'; 
                     ?>
                     </td>                  
                   </tr>
@@ -128,7 +128,7 @@
             </tr>
           </table>
           <br> 
-          <?php echo PREORDER_CONFIRM_CHARACTER.$_SESSION['p_character'];?> 
+          <?php echo PREORDER_CONFIRM_CHARACTER.$_POST['p_character'];?> 
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
               <td class="main" width="30%">
@@ -154,7 +154,7 @@
                   </tr>
                   <?php
                   }
-                  $preorder_total_raw = tep_db_query("select * from ".TABLE_PREORDERS_TOTAL." where orders_id = '".$_SESSION['preorder_oid']."' order by sort_order asc"); 
+                  $preorder_total_raw = tep_db_query("select * from ".TABLE_PREORDERS_TOTAL." where orders_id = '".$_POST['pid']."' order by sort_order asc"); 
                   while ($preorder_total_res = tep_db_fetch_array($preorder_total_raw)) { 
                   ?>
                   <tr>
@@ -174,15 +174,45 @@
           <table width="100%" cellpadding="0" cellspacing="0" border="0">
             <tr>
               <td class="main" align="left">
-              <a href="<?php echo tep_href_link('change_preorder.php', 'pid='.$_SESSION['preorder_oid']);?>"><?php echo tep_image_button('button_back.gif', IMAGE_BUTTON_BACK);?></a> 
+              <a href="javascript:void(0);" onclick="document.forms.order1.submit();"><?php echo tep_image_button('button_back.gif', IMAGE_BUTTON_BACK);?></a> 
               </td>
               <td class="main" align="right">
-                <?php echo tep_draw_hidden_field('pid', $_SESSION['preorder_oid']);?> 
+                <?php
+                foreach ($_POST as $pe_key => $pe_value) {
+                  if ($pe_key == 'action' || $pe_key == 'x' || $pe_key == 'y') {
+                    continue; 
+                  }
+                  if (is_array($pe_value)) {
+                    foreach ($pe_value as $pes_key => $pes_value) {
+                      echo tep_draw_hidden_field($pe_key.'['.$pes_key.']', $pes_value); 
+                    }
+                  } else {
+                    echo tep_draw_hidden_field($pe_key, $pe_value); 
+                  }
+                }
+                ?>
                 <?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE);?> 
               </td>
             </tr>
           </table> 
           </form> 
+          <?php 
+          echo tep_draw_form('order1', tep_href_link('change_preorder.php?pid='.$_POST['pid']));
+          foreach ($_POST as $post_key => $post_value) {
+            if ($post_key == 'action' || $post_key == 'x' || $post_key == 'y') {
+              continue; 
+            }
+            if (is_array($post_value)) {
+              foreach ($post_value as $ps_key => $ps_value) {
+                echo tep_draw_hidden_field($post_key.'['.$ps_key.']', $ps_value); 
+              }
+            } else {
+              echo tep_draw_hidden_field($post_key, $post_value); 
+            }
+          }
+          echo tep_draw_hidden_field('pid', $_GET['pid']); 
+          echo '</form>';
+          ?> 
           </div>
           <p class="pageBottom"></p>
       </td> 
