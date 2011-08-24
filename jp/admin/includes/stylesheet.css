@@ -245,7 +245,7 @@ body {
 .pageHeading_box02{
 	width:100%; overflow:hidden; display: block; clear:both;
 }
-.pageHeading_box03{width:100%; height:136px; height:138px\9; overflow:hidden;}
+.pageHeading_box03{width:99.3%; float:left; height:136px; height:138px\9; overflow:hidden;}
 /* ---------------------------
 .[TD]：ページヘッダ
 --------------------------- */
