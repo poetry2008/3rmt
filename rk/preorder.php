@@ -56,8 +56,8 @@
 <script type="text/javascript">
 $(document).ready(function(){
 $("input:radio").each(function(){
-if($("input[name=payment]").length == 1){
-  $("input[name=payment]").each(function(index){
+if($("input[name=pre_payment]").length == 1){
+  $("input[name=pre_payment]").each(function(index){
       $(this).attr('checked','true');
     });
 }
@@ -114,10 +114,10 @@ function selectRowEffect(object, buttonSelect) {
   selected = object;
 
 // one button is not an array
-  if (document.preorder_product.payment[0]) {
-    document.preorder_product.payment[buttonSelect].checked=true;
+  if (document.preorder_product.pre_payment[0]) {
+    document.preorder_product.pre_payment[buttonSelect].checked=true;
   } else {
-    document.preorder_product.payment.checked=true;
+    document.preorder_product.pre_payment.checked=true;
   }
 }
 
@@ -212,7 +212,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
     } else {
       $predate_error = false;
     }
-    if (isset($_GET['action']) && ($_GET['action'] == 'process') && empty($_POST['payment'])) {
+    if (isset($_GET['action']) && ($_GET['action'] == 'process') && empty($_POST['pre_payment'])) {
       $payment_error = true;
       $error = true;
     } else {
@@ -415,9 +415,9 @@ if (!isset($_GET['quantity'])) $_GET['quantity'] = NULL; //del notice
                                 <td class="main" colspan="3"><b><?php echo $selection[$i]['module']; ?></b></td> 
                                 <td class="main" align="right"><?php
     if (sizeof($selection) > 1) {
-      echo tep_draw_radio_field('payment', $selection[$i]['id']);
+      echo tep_draw_radio_field('pre_payment', $selection[$i]['id']);
     } else {
-      echo tep_draw_hidden_field('payment', $selection[$i]['id']);
+      echo tep_draw_hidden_field('pre_payment', $selection[$i]['id']);
     }
 ?> </td> 
                                 <td width="10"></td> 

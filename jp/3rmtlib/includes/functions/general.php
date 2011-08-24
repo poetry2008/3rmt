@@ -4227,7 +4227,7 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
    } else {
      $customers_id = $cid; 
    }
-   $payment_module = new $pInfo['payment']; 
+   $payment_module = new $pInfo['pre_payment']; 
    $payment_method = $payment_module->title;
    $orders_status = DEFAULT_PREORDERS_STATUS_ID;
    $orders_status_raw = tep_db_query("select * from ".TABLE_PREORDERS_STATUS." where orders_status_id = '".$orders_status."'"); 
@@ -4352,7 +4352,7 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
   
    $customer_notification = (SEND_EMAILS == 'true') ? '1' : '0';
    $sh_comments = ''; 
-   if ($pInfo['payment'] == 'convenience_store') {
+   if ($pInfo['pre_payment'] == 'convenience_store') {
      $sh_comments .= 'PCメールアドレス:' .$pInfo['convenience_email']; 
    }
    if (!empty($sh_comments)) {
