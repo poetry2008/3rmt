@@ -4215,7 +4215,7 @@ function preorders_updated($orders_id) {
   tep_db_query("update ".TABLE_PREORDERS_PRODUCTS." set torihiki_date = ( select torihiki_date from ".TABLE_PREORDERS." where preorders.orders_id=preorders_products.orders_id ) where orders_id='".$orders_id."'");
 }
   
-function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null) 
+function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $exists_single = false) 
 {
    global $currency, $currencies; 
    $is_active = 1; 
@@ -4282,7 +4282,8 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null)
    
    $sql_data_array = array('orders_id' => $order_id,
                            'customers_id' => $customers_id, 
-                           'customers_name' => tep_get_fullname($customers_res['customers_firstname'], $customers_res['customers_lastname']), 
+                           'customers_name' => ($exists_single)?tep_get_fullname($pInfo['firstname'],$pInfo['lastname']):tep_get_fullname($customers_res['customers_firstname'],
+                             $customers_res['customers_lastname']), 
                            'customers_email_address' => $customers_res['customers_email_address'], 
                            'customers_street_address' => $customers_res['entry_street_address'], 
                            'customers_suburb' => $customers_res['entry_suburb'], 
