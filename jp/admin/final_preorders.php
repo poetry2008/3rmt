@@ -961,6 +961,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
               </tr>
               <!-- End Payment Block -->
               <!-- Begin Trade Date Block -->
+              <?php if (false) {?> 
               <tr>
                 <td class="main" valign="top"><b><?php echo EDIT_ORDERS_FETCHTIME;?></b></td>
                 <td class="main">
@@ -973,6 +974,16 @@ while ($totals = tep_db_fetch_array($totals_query)) {
                 <td class="main">
                   <input name='update_tori_torihiki_houhou' size='45' value='<?php echo $order->tori['houhou']; ?>'>
                   <?php echo EDIT_ORDERS_TORI_READ;?> 
+                </td>
+              </tr>
+              <?php }?> 
+              <tr>
+                <td class="main" valign="top"><b><?php echo EDIT_ORDERS_FETCHTIME;?></b></td>
+                <td class="main">
+                  <input name='update_predate' size='25' value='<?php echo $order->info['predate']; ?>'>
+                  <span class="smalltext"><?php echo EDIT_ORDERS_FETCHTIME_READ;?></span>
+                  <input type="hidden" name='update_tori_torihiki_date' size='25' value='<?php echo $order->tori['date']; ?>'>
+                  <input type="hidden" name='update_tori_torihiki_houhou' size='45' value='<?php echo $order->tori['houhou']; ?>'>
 <input type="hidden" name="update_viladate" value="true">
 <input name="update_customer_company" size="25" type='hidden' value="<?php echo tep_html_quotes($order->customer['company']); ?>">
 <input name="update_delivery_company" size="25" type='hidden' value="<?php echo tep_html_quotes($order->delivery['company']); ?>">
@@ -992,22 +1003,17 @@ while ($totals = tep_db_fetch_array($totals_query)) {
 <input name="update_customer_country" size="25" type='hidden' value="<?php echo tep_html_quotes($order->customer['country']); ?>">
 <input name="update_delivery_country" size="25" type='hidden' value="<?php echo tep_html_quotes($order->delivery['country']); ?>">
 <input name="update_customer_telephone" size="25" type='hidden' value="<?php echo $order->customer['telephone']; ?>">
-
+                  <input type="hidden" name='update_ensure_deadeline' size='45' value='<?php echo $order->info['ensure_deadline']; ?>'>
                 </td>
               </tr>
-              <tr>
-                <td class="main" valign="top"><b><?php echo EDIT_ORDERS_ENSUREDATE;?></b></td>
-                <td class="main">
-                  <input name='update_predate' size='25' value='<?php echo $order->info['predate']; ?>'>
-                  <span class="smalltext"><?php echo EDIT_ORDERS_FETCHTIME_READ;?></span>
-                </td>
-              </tr>
+              <?php if (false) {?> 
               <tr>
                 <td class="main" valign="top"><b><?php echo EDIT_ORDERS_ENSUREDATE_TEXT;?></b></td>
                 <td class="main">
                   <input name='update_ensure_deadeline' size='45' value='<?php echo $order->info['ensure_deadline']; ?>'>
                   <?php echo EDIT_ORDERS_TORI_READ;?> 
               </tr>
+              <?php }?> 
             </table>
             <!-- End Trade Date Block -->
           </td>
