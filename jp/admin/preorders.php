@@ -2201,7 +2201,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
     ?>
     <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onmouseover="showPreOrdersInfo('<?php echo $orders['orders_id'];?>',this);" onmouseout="hideOrdersInfo();">
     <?php
-      echo '<a href="' . tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('oID')) . 'oID=' . $orders['orders_id']) .  '">' . tep_image(DIR_WS_IMAGES . 'icon_info02.gif', IMAGE_ICON_INFO) . '</a>'; 
+      echo '<a href="' . tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('oID')) . 'oID=' . $orders['orders_id']) .  '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
     } ?>&nbsp;</td>
     </tr>
 <?php }?>
