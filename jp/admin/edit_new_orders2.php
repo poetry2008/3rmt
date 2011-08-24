@@ -449,6 +449,9 @@
       }
       // orders 
       //      var_dump($_SESSION['create_order2']['orders']);
+      if(!tep_get_orders_status_id($_SESSION['create_order2']['orders']['orders_id'])){
+        $_SESSION['create_order2']['orders']['orders_id']= date("Ymd") . '-' . date("His") . tep_get_order_end_num();
+      }
       tep_db_perform(TABLE_ORDERS, $_SESSION['create_order2']['orders']);
       orders_updated($_SESSION['create_order2']['orders']['orders_id']);
 
