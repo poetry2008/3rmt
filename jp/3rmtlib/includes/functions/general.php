@@ -4388,3 +4388,22 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
    
    preorders_updated($order_id);   
 }
+
+function tep_get_preorder_end_num() 
+{
+  $last_orders_raw = tep_db_query("select * from ".TABLE_PREORDERS." order by orders_id desc limit 1"); 
+  $last_orders = tep_db_fetch_array($last_orders_raw);
+  
+  if ($last_orders) {
+    $last_orders_num = substr($last_orders['orders_id'], -2); 
+    
+    if (((int)$last_orders_num < 99) && ((int)$last_orders_num > 0)) {
+      $next_orders_num = (int)$last_orders_num + 1; 
+    } else {
+      $next_orders_num = 1; 
+    }
+    return sprintf('%02d', $next_orders_num); 
+  }
+  
+  return '01';
+}

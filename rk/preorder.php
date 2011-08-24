@@ -220,7 +220,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
     }
     
     if (isset($_GET['action']) && ($_GET['action'] == 'process') && ($error == false)) {
-      $preorder_id = date('Ymd').'-'.date('His').tep_get_order_end_num(); 
+      $preorder_id = date('Ymd').'-'.date('His').tep_get_preorder_end_num(); 
       if (tep_session_is_registered('customer_id')) {
           $preorder_email_text = PREORDER_MAIL_CONTENT; 
           $preorder_email_subject = PREORDER_MAIL_SUBJECT; 
