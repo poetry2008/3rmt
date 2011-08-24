@@ -138,7 +138,7 @@ if ($preorder) {
     tep_db_perform(TABLE_ORDERS_TOTAL, $sql_data_array);
   }
   
-  $preorder_status_history_raw = tep_db_query("select * from ".TABLE_PREORDERS_STATUS_HISTORY." where orders_id = '".$_POST['pid']."' and comments != ''");  
+  $preorder_status_history_raw = tep_db_query("select * from ".TABLE_PREORDERS_STATUS_HISTORY." where orders_id = '".$_POST['pid']."' and comments != '' order by orders_status_history_id asc");  
   $preorder_status_history_res = tep_db_fetch_array($preorder_status_history_raw);
   $sh_comments = ''; 
   if ($preorder_status_history_res) {

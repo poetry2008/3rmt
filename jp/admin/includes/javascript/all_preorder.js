@@ -99,8 +99,8 @@ function fax_over_color(ele){
 
 // 订单搜索
 function search_type_changed(elem){
-    if ($('#keywords').val() && elem.selectedIndex != 0) 
-	document.forms.orders1.submit();
+    //if ($('#keywords').val() && elem.selectedIndex != 0) 
+  document.forms.orders1.submit();
 }
 
 function getCheckboxValue(ccName)

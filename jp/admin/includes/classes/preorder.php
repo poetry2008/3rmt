@@ -94,7 +94,6 @@
 'paypal_countrycode' => $order['paypal_countrycode'],
 'ensure_deadline'=> $order['ensure_deadline'],
 'predate'=> $order['predate'],
-'expect_comment'=> $order['expect_comment'],
 'flag_qaf' => $order['flag_qaf']);
 
       $this->customer = array('name'           => $order['customers_name'],

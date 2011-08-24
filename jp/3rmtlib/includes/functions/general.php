@@ -4311,7 +4311,6 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
                            'predate' => $pInfo['predate'].' 00:00:00',
                            'is_active' => $is_active,
                            'send_mail_time' => time(),
-                           'expect_comment' => $pInfo['yourmessage'],
                            'delivery_name'  => tep_get_fullname($shipping_address['entry_firstname'],$shipping_address['entry_lastname']), 
                            'delivery_company' => $shipping_address['entry_company'],
                            'delivery_street_address' => $shipping_address['entry_street_address'],
@@ -4354,8 +4353,13 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
    $customer_notification = (SEND_EMAILS == 'true') ? '1' : '0';
    $sh_comments = ''; 
    if ($pInfo['payment'] == 'convenience_store') {
-     $sh_comments = 'PCメールアドレス:' .$pInfo['convenience_email']; 
+     $sh_comments .= 'PCメールアドレス:' .$pInfo['convenience_email']; 
    }
+   if (!empty($sh_comments)) {
+     $sh_comments .= "\n"; 
+   }
+   
+   $sh_comments .= $pInfo['yourmessage']; 
    
    $sql_data_array = array('orders_id' => $order_id, 
                            'orders_status_id' => $orders_status, 
