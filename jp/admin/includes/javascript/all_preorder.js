@@ -379,7 +379,7 @@ function show_questions(){
 	    function(key){
 		oid =  $(this).val();
 		ids += oid+'_';
-		$.ajax({ url: "ajax_orders.php?oid="+oid+"&action=get_oa_type", 
+		$.ajax({ url: "ajax_preorders.php?oid="+oid+"&action=get_oa_type", 
 			 async: false,
 			 success: function(msg){
 			     var oamsg = msg.split("_");
