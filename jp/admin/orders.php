@@ -1566,8 +1566,8 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
   
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
-      <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
-      <td align="right" class="smallText">
+      <td class="pageHeading" width="50%"><?php echo HEADING_TITLE; ?></td>
+      <td align="left" class="smallText">
         <table width=""  border="0" cellspacing="1" cellpadding="0">
           <tr>
             <td class="smallText" valign='top'>
@@ -1591,7 +1591,6 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
               </select>
               </form>
             </td>
-            <td valign="top" width="315"></td>
           </tr>
         </table>
       </td>
