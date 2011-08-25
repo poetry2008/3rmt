@@ -1572,7 +1572,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                   'get','id="orders1" onsubmit="return false"'); ?><?php echo
               TEXT_ORDER_FIND;?> 
               <input name="keywords" style="width:320px;" type="text" id="keywords" size="40" value="<?php if(isset($_GET['keywords'])) echo stripslashes($_GET['keywords']); ?>">
-              <select name="search_type" onChange='search_type_changed(this)'>
+              <select name="search_type" onChange='search_type_changed(this)' style="text-align:center;">
                 <option value="none"><?php echo TEXT_ORDER_FIND_SELECT;?></option>
                 <option value="orders_id"><?php echo TEXT_ORDER_FIND_OID;?></option>
                 <option value="customers_name"><?php echo TEXT_ORDER_FIND_NAME;?></option>
