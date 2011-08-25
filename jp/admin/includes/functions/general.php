@@ -3286,6 +3286,7 @@ function tep_get_orders_products_string($orders, $single = false) {
       $str .= '</b>';
       $str .= '</font></td>'; 
       $str .= '</tr>'; 
+      $str .= '<tr><td colspan="2"><hr></td></tr>'; 
     }
   }
   
@@ -3298,6 +3299,7 @@ function tep_get_orders_products_string($orders, $single = false) {
       $str .= '</b>';
       $str .= '</font></td>'; 
       $str .= '</tr>'; 
+      $str .= '<tr><td colspan="2"><hr></td></tr>'; 
     } 
   }
   
@@ -3310,6 +3312,7 @@ function tep_get_orders_products_string($orders, $single = false) {
       $str .= '</b>';
       $str .= '</font></td>'; 
       $str .= '</tr>'; 
+      $str .= '<tr><td colspan="2"><hr></td></tr>'; 
     } 
   }
   if(ORDER_INFO_BASIC_TEXT == 'true'){
@@ -3321,33 +3324,34 @@ function tep_get_orders_products_string($orders, $single = false) {
     $str .= tep_output_string_protected($orders['customers_name']); 
     $str .= '</b></td>';
     $str .= '</tr>';
+    $str .= '<tr><td colspan="2"><hr></td></tr>'; 
 
-    $str .= '<tr>';
-    $str .= '<td class="main"><b>';
-    $str .= TEXT_FUNCTION_HEADING_ORDER_TOTAL;
-    $str .= '</b></td>';
-    $str .= '<td class="main"><b>';
-    $str .= strip_tags(tep_get_ot_total_by_orders_id($orders['orders_id'], true));
-    $str .= '</b></td>';
-    $str .= '</tr>';
+    //$str .= '<tr>';
+    //$str .= '<td class="main"><b>';
+    //$str .= TEXT_FUNCTION_HEADING_ORDER_TOTAL;
+    //$str .= '</b></td>';
+    //$str .= '<td class="main"><b>';
+    //$str .= strip_tags(tep_get_ot_total_by_orders_id($orders['orders_id'], true));
+    //$str .= '</b></td>';
+    //$str .= '</tr>';
 
-    $str .= '<tr>';
-    $str .= '<td class="main"><b>';
-    $str .= TEXT_FUNCTION_ORDER_ORDER_DATE;
-    $str .= '</b></td>';
-    $str .= '<td class="main"><b>';
-    $str .= tep_datetime_short($orders['torihiki_date']);;
-    $str .= '</b></td>';
-    $str .= '</tr>';
+    //$str .= '<tr>';
+    //$str .= '<td class="main"><b>';
+    //$str .= TEXT_FUNCTION_ORDER_ORDER_DATE;
+    //$str .= '</b></td>';
+    //$str .= '<td class="main"><b>';
+    //$str .= tep_datetime_short($orders['torihiki_date']);;
+    //$str .= '</b></td>';
+    //$str .= '</tr>';
 
-    $str .= '<tr>';
-    $str .= '<td class="main"><b>';
-    $str .= TEXT_FUNCTION_HEADING_DATE_PURCHASED;
-    $str .= '</b></td>';
-    $str .= '<td class="main"><b>';
-    $str .= tep_datetime_short($orders['date_purchased']); 
-    $str .= '</b></td>';
-    $str .= '</tr>';
+    //$str .= '<tr>';
+    //$str .= '<td class="main"><b>';
+    //$str .= TEXT_FUNCTION_HEADING_DATE_PURCHASED;
+    //$str .= '</b></td>';
+    //$str .= '<td class="main"><b>';
+    //$str .= tep_datetime_short($orders['date_purchased']); 
+    //$str .= '</b></td>';
+    //$str .= '</tr>';
   }
   //$str .= '<tr><td colspan="2">&nbsp;</td></tr>';
   $str .= '<tr><td class="main" width="150"><b>支払方法：</b></td><td class="main" style="color:darkred;"><b>'.$orders['payment_method'].'</b></td></tr>';
@@ -3406,6 +3410,7 @@ function tep_get_orders_products_string($orders, $single = false) {
     $str .= '<tr><td class="main"></td><td class="main"></td></tr>';
     $i++;
   }
+  $str .= '<tr><td colspan="2"><hr></td></tr>'; 
   }
   
   
@@ -3439,7 +3444,7 @@ function tep_get_orders_products_string($orders, $single = false) {
     $str .= '</tr>'; 
   
     $str .= '<tr>'; 
-    $str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_DATE.'</b></td>';
+    $str .= '<td class="main"><b>'.TEXT_FUNCTION_ORDER_ORDER_DATE.'</b></td>';
     $str .= '<td class="main">';
     $str .= tep_date_long($orders['date_purchased']); 
     $str .= '</td>'; 
@@ -3448,7 +3453,11 @@ function tep_get_orders_products_string($orders, $single = false) {
     $str .= '<tr>'; 
     $str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_CUSTOMER_TYPE.'</b></td>';
     $str .= '<td class="main">';
-    $str .= get_guest_chk($orders['customers_id']); 
+    if(get_guest_chk($orders['customers_id'])==0){
+      $str .= TEXT_TEP_CFG_PAYMENT_CHECKBOX_OPTION_MEMBER;
+    }else{
+      $str .= TEXT_TEP_CFG_PAYMENT_CHECKBOX_OPTION_CUSTOMER;
+    }
     $str .= '</td>'; 
     $str .= '</tr>'; 
     
@@ -3505,6 +3514,7 @@ function tep_get_orders_products_string($orders, $single = false) {
       $str .= '</td>'; 
       $str .= '</tr>'; 
   } 
+      $str .= '<tr><td colspan="2"><hr></td></tr>'; 
   }
   if (ORDER_INFO_CUSTOMER_INFO == 'true') {
     $str .= '<tr>'; 
@@ -3529,7 +3539,7 @@ function tep_get_orders_products_string($orders, $single = false) {
     $str .= '</tr>'; 
   if ($orders['orders_user_agent']) { 
       $str .= '<tr>'; 
-      $str .= '<td class="main">'.RIGHT_CUSTOMER_INFO_ORDER_OS.'</td>';
+      $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_OS.'</b></td>';
       $str .= '<td class="main">';
       $str .= tep_high_light_by_keywords(getOS($orders['orders_user_agent']),OS_LIGHT_KEYWORDS); 
       $str .= '</td>'; 
@@ -3633,23 +3643,25 @@ function tep_get_orders_products_string($orders, $single = false) {
     $str .= tep_high_light_by_keywords($orders['orders_java_enable'] === '1' ?  'YES' : ($orders['orders_java_enable'] === '0' ? 'NO' : 'UNKNOW'),JAVA_LIGHT_KEYWORDS); 
     $str .= '</td>'; 
     $str .= '</tr>'; 
+    $str .= '<tr><td colspan="2"><hr></td></tr>'; 
   }
  
   if (ORDER_INFO_REFERER_INFO == 'true') {
     $str .= '<tr>'; 
-    $str .= '<td class="main"><b>Referer Info:</b></td>';
+    $str .= '<td class="main"><b>Referer Info：</b></td>';
     $str .= '<td class="main">';
     $str .= urldecode($orders['orders_ref']); 
     $str .= '</td>'; 
     $str .= '</tr>'; 
     if ($orders['orders_ref_keywords']) {
       $str .= '<tr>'; 
-      $str .= '<td class="main"><b>KEYWORDS:</b></td>';
+      $str .= '<td class="main"><b>KEYWORDS：</b></td>';
       $str .= '<td class="main">';
       $str .= $orders['orders_ref_keywords']; 
       $str .= '</td>'; 
       $str .= '</tr>'; 
     }
+    $str .= '<tr><td colspan="2"><hr></td></tr>'; 
   }
   
   if (ORDER_INFO_ORDER_HISTORY == 'true') {
@@ -3659,7 +3671,7 @@ function tep_get_orders_products_string($orders, $single = false) {
       $str .= '<td class="main" colspan="2">';      
       $str .= '<table width="100%" border="0" cellspacing="0" cellpadding="2">'; 
       $str .= '<tr>'; 
-      $str .= '<td colspan="4"><b>Order History:</b></td>'; 
+      $str .= '<td colspan="4"><b>Order History：</b></td>'; 
       $str .= '</tr>'; 
       while ($order_history_list = tep_db_fetch_array($order_history_list_raw)) {
         $str .= '<tr>'; 
@@ -3682,6 +3694,7 @@ function tep_get_orders_products_string($orders, $single = false) {
       $str .= '</table>'; 
       $str .= '</td>';      
       $str .= '</tr>';      
+      $str .= '<tr><td colspan="2"><hr></td></tr>'; 
     }
   }
   
@@ -3694,6 +3707,7 @@ function tep_get_orders_products_string($orders, $single = false) {
     $str .= tep_get_customers_fax_by_id($orders['customers_id']); 
     $str .= '</td>'; 
     $str .= '</tr>'; 
+    $str .= '<tr><td colspan="2"><hr></td></tr>'; 
   }
   
   if (ORDER_INFO_ORDER_COMMENT == 'true') {
@@ -3705,6 +3719,7 @@ function tep_get_orders_products_string($orders, $single = false) {
     $str .= nl2br($orders['orders_comment']); 
     $str .= '</td>'; 
     $str .= '</tr>'; 
+    $str .= '<tr><td colspan="2"><hr></td></tr>'; 
   }
   
   

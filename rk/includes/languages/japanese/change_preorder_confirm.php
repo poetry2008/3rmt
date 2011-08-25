@@ -12,4 +12,5 @@ define('PREORDER_CONFIRM_FETCH_TIME_DAY', '取引希望日:');
 define('PREORDER_CONFIRM_FETCH_TIME_DATE', '取引希望時間:');
 define('PREORDER_CONFIRM_CHARACTER', 'お客様のキャラクター名：');
 define('CHANGE_ORDER_CONFIRM_PAYMENT', 'お支払い方法');
-
+define('CHANGE_PREORDER_HANDLE_FEE_TEXT', '手数料:');
+define('CHANGE_PREORDER_POINT_TEXT', '今回の獲得予定ポイント:');

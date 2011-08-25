@@ -56,8 +56,8 @@
 <script type="text/javascript">
 $(document).ready(function(){
 $("input:radio").each(function(){
-if($("input[name=payment]").length == 1){
-  $("input[name=payment]").each(function(index){
+if($("input[name=pre_payment]").length == 1){
+  $("input[name=pre_payment]").each(function(index){
       $(this).attr('checked','true');
     });
 }
@@ -114,10 +114,10 @@ function selectRowEffect(object, buttonSelect) {
   selected = object;
 
 // one button is not an array
-  if (document.preorder_product.payment[0]) {
-    document.preorder_product.payment[buttonSelect].checked=true;
+  if (document.preorder_product.pre_payment[0]) {
+    document.preorder_product.pre_payment[buttonSelect].checked=true;
   } else {
-    document.preorder_product.payment.checked=true;
+    document.preorder_product.pre_payment.checked=true;
   }
 }
 
@@ -173,9 +173,12 @@ function rowOutEffect(object) {
       $from_name = tep_get_fullname($account_values['customers_firstname'],$account_values['customers_lastname']);
       $from_email_address = $account_values['customers_email_address'];
     } else {
-if (!isset($_POST['yourname'])) $_POST['yourname'] = NULL; //del notice
+if (!isset($_POST['firstname'])) $_POST['firstname'] = NULL; //del notice
+if (!isset($_POST['lastname'])) $_POST['lastname'] = NULL; //del notice
 if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
-      $from_name = $_POST['yourname'];
+      $first_name = $_POST['firstname'];
+      $last_name = $_POST['lastname'];
+      $from_name = tep_get_fullname($_POST['firstname'], $_POST['lastname']); 
       $from_email_address = $_POST['from'];
     }
     
@@ -188,28 +191,36 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
         }
       }
     
-    if (isset($_GET['action']) && ($_GET['action'] == 'process') && empty($from_name)) {
-      $fromname_error = true;
-      $error = true;
-    } else {
-      $fromname_error = false;
-    }
-    
+    if (!tep_session_is_registered('customer_id')) {
+      if (isset($_GET['action']) && ($_GET['action'] == 'process') && empty($last_name)) {
+        $lastname_error = true;
+        $error = true;
+      } else {
+        $lasttname_error = false;
+      }
+      
+      if (isset($_GET['action']) && ($_GET['action'] == 'process') && empty($first_name)) {
+        $firstname_error = true;
+        $error = true;
+      } else {
+        $firstname_error = false;
+      }
+    } 
     if (isset($_GET['action']) && ($_GET['action'] == 'process') && empty($_POST['predate'])) {
       $predate_error = true;
       $error = true;
     } else {
       $predate_error = false;
     }
-    
-    if (isset($_GET['action']) && ($_GET['action'] == 'process') && empty($_POST['payment'])) {
+    if (isset($_GET['action']) && ($_GET['action'] == 'process') && empty($_POST['pre_payment'])) {
       $payment_error = true;
       $error = true;
     } else {
       $payment_error = false;
     }
+    
     if (isset($_GET['action']) && ($_GET['action'] == 'process') && ($error == false)) {
-      $preorder_id = date('Ymd').'-'.date('His').tep_get_order_end_num(); 
+      $preorder_id = date('Ymd').'-'.date('His').tep_get_preorder_end_num(); 
       if (tep_session_is_registered('customer_id')) {
           $preorder_email_text = PREORDER_MAIL_CONTENT; 
           $preorder_email_subject = PREORDER_MAIL_SUBJECT; 
@@ -217,20 +228,26 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
       } else {
         $exists_customer_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_email_address = '".$_POST['from']."' and site_id = '".SITE_ID."'");    
         if (tep_db_num_rows($exists_customer_raw)) {
+          $exists_customer_res = tep_db_fetch_array($exists_customer_raw); 
           $preorder_email_text = PREORDER_MAIL_CONTENT; 
           $preorder_email_subject = PREORDER_MAIL_SUBJECT; 
+          $exists_email_single = true;     
         } else {
-          $tmp_customer_id = tep_create_tmp_guest($_POST['from'], $_POST['yourname']); 
+          $tmp_customer_id = tep_create_tmp_guest($_POST['from'], $_POST['lastname'], $_POST['firstname']); 
           $active_url = HTTP_SERVER.'/preorder_auth.php?pid='.$preorder_id; 
           $preorder_email_text = str_replace('${URL}', $active_url, PREORDER_MAIL_ACTIVE_CONTENT); 
           $preorder_email_subject = PREORDER_MAIL_ACTIVE_SUBJECT; 
         }
-        tep_mail($_POST['yourname'], $_POST['from'], $preorder_email_subject, $preorder_email_text, STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS); 
+        tep_mail($from_name, $_POST['from'], $preorder_email_subject, $preorder_email_text, STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS); 
       }
       
       $send_preorder_id = $preorder_id;
       tep_session_register('send_preorder_id');
-      tep_create_preorder_info($_POST, $preorder_id, $customer_id, $tmp_customer_id); 
+      if (isset($exists_email_single)) {
+        tep_create_preorder_info($_POST, $preorder_id, $exists_customer_res['customers_id'], $tmp_customer_id, true); 
+      } else {
+        tep_create_preorder_info($_POST, $preorder_id, $customer_id, $tmp_customer_id); 
+      }
       tep_redirect(tep_href_link(FILENAME_PREORDER_SUCCESS));
 ?>
       <div>
@@ -240,13 +257,18 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
 <?php
     } else {
       if (tep_session_is_registered('customer_id')) {
-        $your_name_prompt = tep_output_string_protected(tep_get_fullname($account_values['customers_firstname'],$account_values['customers_lastname']));
+        $last_name_prompt = $account_values['customers_lastname'];
+        $first_name_prompt = $account_values['customers_firstname'];
         $your_email_address_prompt = $account_values['customers_email_address'];
       } else {
-if (!isset($_POST['yourname'])) $_POST['yourname'] = NULL; //del notice
-if (!isset($_GET['yourname'])) $_GET['yourname'] = NULL; //del notice
-        $your_name_prompt = tep_draw_input_field('yourname', (($fromname_error == true) ? $_POST['yourname'] : $_GET['yourname']), 'class="input_text"');
-        if ($fromname_error == true) $your_name_prompt .= '&nbsp;<span class="errorText">' . TEXT_REQUIRED . '</span>';
+if (!isset($_POST['lastname'])) $_POST['lastname'] = NULL; //del notice
+if (!isset($_POST['firstname'])) $_POST['firstname'] = NULL; //del notice
+if (!isset($_GET['lastname'])) $_GET['lastname'] = NULL; //del notice
+if (!isset($_GET['firstname'])) $_GET['firstname'] = NULL; //del notice
+        $last_name_prompt = tep_draw_input_field('lastname', (($lastname_error == true) ? $_POST['lastname'] : $_GET['lastname']), 'class="input_text"');
+        $first_name_prompt = tep_draw_input_field('firstname', (($firstname_error == true) ? $_POST['firstname'] : $_GET['firstname']), 'class="input_text"');
+        if ($lastname_error == true) $last_name_prompt .= '&nbsp;<span class="errorText">' . TEXT_REQUIRED . '</span>';
+        if ($firstname_error == true) $first_name_prompt .= '&nbsp;<span class="errorText">' . TEXT_REQUIRED . '</span>';
 if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
         $your_email_address_prompt = tep_draw_input_field('from', (($fromemail_error == true) ? $_POST['from'] : $_GET['from']) , 'size="30" class="input_text"') . '&nbsp;&nbsp;携帯電話メールアドレス推奨';
         if ($fromemail_error == true) $your_email_address_prompt .= ENTRY_EMAIL_ADDRESS_CHECK_ERROR;
@@ -267,8 +289,12 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
       <h3 class="formAreaTitle"><?php echo FORM_TITLE_CUSTOMER_DETAILS; ?></h3>
       <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
         <tr>  
-          <td class="main"><?php echo FORM_FIELD_CUSTOMER_NAME; ?></td>
-          <td class="main"><?php echo $your_name_prompt; ?></td>
+          <td class="main"><?php echo FORM_FIELD_CUSTOMER_LASTNAME; ?></td>
+          <td class="main"><?php echo $last_name_prompt; ?></td>
+        </tr>
+        <tr>  
+          <td class="main"><?php echo FORM_FIELD_CUSTOMER_FIRSTNAME; ?></td>
+          <td class="main"><?php echo $first_name_prompt; ?></td>
         </tr>
         <tr>
           <td class="main"><?php echo FORM_FIELD_CUSTOMER_EMAIL; ?></td>
@@ -293,22 +319,27 @@ if (!isset($_GET['quantity'])) $_GET['quantity'] = NULL; //del notice
             echo tep_draw_input_field('quantity', (($quantity_error == true) ? $_POST['quantity'] : $_GET['quantity']) , 'size="7" maxlength="15" class="input_text_short"');
             echo '&nbsp;&nbsp;個';
       if ($quantity_error == true) echo '&nbsp;<span class="errorText">' . TEXT_REQUIRED . '</span>';
+      if (!isset($_GET['send_to'])) $_GET['send_to'] = NULL; //del notice
 ?>
           </td>
         </tr>
+        <?php
+        if (false) { 
+        ?>
         <tr>
           <td class="main"><?php echo FORM_FIELD_PREORDER_FIXTIME; ?></td>
           <td class="main">
 <?php
-if (!isset($_GET['send_to'])) $_GET['send_to'] = NULL; //del notice
-echo tep_get_torihiki_select_by_pre_products($product_info['products_id']);
+//echo tep_get_torihiki_select_by_pre_products($product_info['products_id']);
 ?>
           </td>
         </tr>
+        <?php }?> 
         <tr>
           <td class="main"><?php echo FORM_FIELD_PREORDER_FIXDAY; ?></td>
           <td class="main">
 <?php
+    echo tep_draw_hidden_field('ensure_deadline');
     $today = getdate();
       $m_num = $today['mon'];
       $d_num = $today['mday'];
@@ -346,12 +377,27 @@ echo tep_get_torihiki_select_by_pre_products($product_info['products_id']);
       <h3 class="formAreaTitle"><?php echo FORM_FIELD_PREORDER_PAYMENT; ?></h3>
       <table width="100%" cellpadding="2" cellspacing="0" border="0" class="formArea">
           <?php
-          if ($predate_error == true) echo '<tr><td><span class="errorText">' .  TEXT_REQUIRED . '</span></td></tr>';
+          if ($payment_error == true) echo '<tr><td style="font-size:11px;"><span class="errorText">' .  TEXT_REQUIRED . '</span></td></tr>';
           ?>
         <?php
         $radio_buttons = 0; 
         for ($i=0, $n=sizeof($selection); $i<$n; $i++) { 
           if ($selection[$i]['id'] == 'buying' || $selection[$i]['id'] == 'buyingpoint' || $selection[$i]['id'] == 'fetchgood' || $selection[$i]['id'] == 'freepayment') {
+            continue; 
+          }
+          if ($selection[$i]['id'] == 'moneyorder' && MODULE_PAYMENT_MONEYORDER_PREORDER_SHOW == 'False') {
+            continue; 
+          }
+          if ($selection[$i]['id'] == 'postalmoneyorder' && MODULE_PAYMENT_POSTALMONEYORDER_PREORDER_SHOW == 'False') {
+            continue; 
+          }
+          if ($selection[$i]['id'] == 'convenience_store' && MODULE_PAYMENT_CONVENIENCE_STORE_PREORDER_SHOW == 'False') {
+            continue; 
+          }
+          if ($selection[$i]['id'] == 'telecom' && MODULE_PAYMENT_TELECOM_PREORDER_SHOW == 'False') {
+            continue; 
+          }
+          if ($selection[$i]['id'] == 'paypal' && MODULE_PAYMENT_PAYPAL_PREORDER_SHOW == 'False') {
             continue; 
           }
         ?>
@@ -369,9 +415,9 @@ echo tep_get_torihiki_select_by_pre_products($product_info['products_id']);
                                 <td class="main" colspan="3"><b><?php echo $selection[$i]['module']; ?></b></td> 
                                 <td class="main" align="right"><?php
     if (sizeof($selection) > 1) {
-      echo tep_draw_radio_field('payment', $selection[$i]['id']);
+      echo tep_draw_radio_field('pre_payment', $selection[$i]['id']);
     } else {
-      echo tep_draw_hidden_field('payment', $selection[$i]['id']);
+      echo tep_draw_hidden_field('pre_payment', $selection[$i]['id']);
     }
 ?> </td> 
                                 <td width="10"></td> 

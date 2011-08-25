@@ -4166,14 +4166,12 @@ function tep_get_order_end_num()
     }
   }
  
-function tep_create_tmp_guest($email, $name)
+function tep_create_tmp_guest($email, $last_name, $first_name)
 { 
-  $lastname = $name;
-  $firstname = '';
   
   $NewPass = tep_create_random_value(ENTRY_PASSWORD_MIN_LENGTH);
-  $sql_data_array = array('customers_firstname' => $firstname,
-                            'customers_lastname' => $lastname,
+  $sql_data_array = array('customers_firstname' => $first_name,
+                            'customers_lastname' => $last_name,
                             'customers_firstname_f' => '',
                             'customers_lastname_f' => '',
                             'customers_email_address' => $email,
@@ -4193,8 +4191,8 @@ function tep_create_tmp_guest($email, $name)
 
     $sql_data_array = array('customers_id' => $customer_id,
                             'address_book_id' => 1,
-                            'entry_firstname' => $firstname,
-                            'entry_lastname' => $lastname,
+                            'entry_firstname' => $first_name,
+                            'entry_lastname' => $last_name,
                             'entry_firstname_f' => '',
                             'entry_lastname_f' => '',
                             'entry_street_address' => '',
@@ -4217,7 +4215,7 @@ function preorders_updated($orders_id) {
   tep_db_query("update ".TABLE_PREORDERS_PRODUCTS." set torihiki_date = ( select torihiki_date from ".TABLE_PREORDERS." where preorders.orders_id=preorders_products.orders_id ) where orders_id='".$orders_id."'");
 }
   
-function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null) 
+function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $exists_single = false) 
 {
    global $currency, $currencies; 
    $is_active = 1; 
@@ -4229,7 +4227,7 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null)
    } else {
      $customers_id = $cid; 
    }
-   $payment_module = new $pInfo['payment']; 
+   $payment_module = new $pInfo['pre_payment']; 
    $payment_method = $payment_module->title;
    $orders_status = DEFAULT_PREORDERS_STATUS_ID;
    $orders_status_raw = tep_db_query("select * from ".TABLE_PREORDERS_STATUS." where orders_status_id = '".$orders_status."'"); 
@@ -4284,7 +4282,8 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null)
    
    $sql_data_array = array('orders_id' => $order_id,
                            'customers_id' => $customers_id, 
-                           'customers_name' => tep_get_fullname($customers_res['customers_firstname'], $customers_res['customers_lastname']), 
+                           'customers_name' => ($exists_single)?tep_get_fullname($pInfo['firstname'],$pInfo['lastname']):tep_get_fullname($customers_res['customers_firstname'],
+                             $customers_res['customers_lastname']), 
                            'customers_email_address' => $customers_res['customers_email_address'], 
                            'customers_street_address' => $customers_res['entry_street_address'], 
                            'customers_suburb' => $customers_res['entry_suburb'], 
@@ -4312,7 +4311,6 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null)
                            'predate' => $pInfo['predate'].' 00:00:00',
                            'is_active' => $is_active,
                            'send_mail_time' => time(),
-                           'expect_comment' => $pInfo['yourmessage'],
                            'delivery_name'  => tep_get_fullname($shipping_address['entry_firstname'],$shipping_address['entry_lastname']), 
                            'delivery_company' => $shipping_address['entry_company'],
                            'delivery_street_address' => $shipping_address['entry_street_address'],
@@ -4354,9 +4352,14 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null)
   
    $customer_notification = (SEND_EMAILS == 'true') ? '1' : '0';
    $sh_comments = ''; 
-   if ($pInfo['payment'] == 'convenience_store') {
-     $sh_comments = 'PCメールアドレス:' .$pInfo['convenience_email']; 
+   if ($pInfo['pre_payment'] == 'convenience_store') {
+     $sh_comments .= 'PCメールアドレス:' .$pInfo['convenience_email']; 
    }
+   if (!empty($sh_comments)) {
+     $sh_comments .= "\n"; 
+   }
+   
+   $sh_comments .= $pInfo['yourmessage']; 
    
    $sql_data_array = array('orders_id' => $order_id, 
                            'orders_status_id' => $orders_status, 
@@ -4369,12 +4372,14 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null)
    $products_raw = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".$pInfo['products_id']."'");
    $products_res = tep_db_fetch_array($products_raw);
    
+  $tax_address_query = tep_db_query("select ab.entry_country_id, ab.entry_zone_id from " . TABLE_ADDRESS_BOOK . " ab left join " . TABLE_ZONES . " z on (ab.entry_zone_id = z.zone_id) where ab.customers_id = '" . $customers_id . "' and ab.address_book_id = '1'");
+  $tax_address = tep_db_fetch_array($tax_address_query);
     
    $sql_data_array = array('orders_id' => $order_id, 
                           'products_id' => $pInfo['products_id'], 
                           'products_model' => $products_res['products_model'], 
                           'products_name' => $pInfo['products_name'],
-                          'products_tax' => $order->products[$i]['tax'], 
+                          'products_tax' => tep_get_tax_rate($products_res['products_tax_class_id'], $tax_address['entry_country_id'], $tax_address['entry_zone_id']), 
                           'products_quantity' => $pInfo['quantity'], 
                           'products_rate' => tep_get_products_rate($pInfo['products_id']), 
                           'site_id' => SITE_ID
@@ -4382,4 +4387,23 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null)
    tep_db_perform(TABLE_PREORDERS_PRODUCTS, $sql_data_array);
    
    preorders_updated($order_id);   
+}
+
+function tep_get_preorder_end_num() 
+{
+  $last_orders_raw = tep_db_query("select * from ".TABLE_PREORDERS." order by orders_id desc limit 1"); 
+  $last_orders = tep_db_fetch_array($last_orders_raw);
+  
+  if ($last_orders) {
+    $last_orders_num = substr($last_orders['orders_id'], -2); 
+    
+    if (((int)$last_orders_num < 99) && ((int)$last_orders_num > 0)) {
+      $next_orders_num = (int)$last_orders_num + 1; 
+    } else {
+      $next_orders_num = 1; 
+    }
+    return sprintf('%02d', $next_orders_num); 
+  }
+  
+  return '01';
 }

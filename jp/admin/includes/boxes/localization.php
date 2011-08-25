@@ -56,6 +56,7 @@
               <tr>
                 <td class="menuBoxContent">
                  <?php echo '<a href="' . tep_href_link(FILENAME_ORDERS_STATUS, '', 'NONSSL') . '" class="menuBoxContent_Link">' .  BOX_LOCALIZATION_ORDERS_STATUS . '</a>';?>
+                 <br> 
                  <?php echo '<a href="' . tep_href_link(FILENAME_PREORDERS_STATUS, '', 'NONSSL') . '" class="menuBoxContent_Link">' .  BOX_LOCALIZATION_PREORDERS_STATUS . '</a>';?>
                 </td>
               </tr>
