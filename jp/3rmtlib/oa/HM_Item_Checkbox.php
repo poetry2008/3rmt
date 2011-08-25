@@ -59,6 +59,7 @@ class HM_Item_Checkbox extends HM_Item_Basic
       echo "</td>";
     }
     echo "<td>";
+    
    if ($this->loaded){
     $this->defaultValue = $this->loadedValue;
    }  

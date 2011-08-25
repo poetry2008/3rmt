@@ -403,49 +403,63 @@ function show_questions(){
 	);
     }
     if(show){
+        $('#oa_dynamic_groups').html('');
+	$('#oa_dynamic_group_item').html('');
 	$.ajax({ url: "ajax_orders.php?payment="+order_payment_type+"&buytype="+order_buy_type+"&action=get_oa_groups", success: function(msg){
-	    oa_groups =  msg.split("_");
+	    var oa_groupsobj =  eval("("+msg+")");
+	    var oa_groups = oa_groupsobj.split('_');;
 	    $("#oa_dynamic_groups").find('option').remove();//删除以前数据 
-	    $("<option >-----</option>").appendTo($("#oa_dynamic_groups"));
-	    for (var  groupstring in oa_groups){
+	    $("#oa_dynamic_groups")[0].options.add(new Option('----', '-1', true));
+	    for (var groupstring in oa_groups){
 		if(oa_groups[groupstring]==''){
 		    continue;
 		}
 		group = oa_groups[groupstring].split('|');
 		group_name = group[0];
 		group_id = group[1];
-		form_id = group[1];
-		$("<option value="+group_id+">"+group_name+"</option>").appendTo($("#oa_dynamic_groups"));
+		form_id = group[2];
+//		$("#oa_dynamic_groups")[0].options.add(new Option(group_name,group_id,true,false));
+		$("#oa_dynamic_groups")[0].options.add(new Option(''+group_name+'',group_id,true,false));
 	    }
 	    if(order_can_end=='1'){
-		$("<option value='end' >取引完了 </option>").appendTo($("#oa_dynamic_groups"));
+		$("#oa_dynamic_groups")[0].options.add(new Option('取引完了','end',true,false));
 	    }
 	}});
 	$("#oa_dynamic_groups").change(function(){
+
+	    if($(this).selected().val()=='-1'){
+//		$('#oa_dynamic_groups').html('');
+		$('#oa_dynamic_group_item').html('');
+		$("#oa_dynamic_submit").unbind('click');
+		$("#oa_dynamic_submit").hide();
+		return true;
+	    }
 	    if($(this).selected().val()=='end'){
+		$("#oa_dynamic_submit").show();
 		$("#oa_dynamic_submit").html('取引完了');
 		msg = '<input type="hidden" id="endtheseorder" value="1"/>';
 		$("#oa_dynamic_group_item").html(msg);
 	    }else{
+		$("#oa_dynamic_submit").show();
 		$("#oa_dynamic_submit").html('保存');
 	    $.ajax(
 		{ 
-
 		    url: "ajax_orders.php?group_id="+$(this).val()+"&action=get_group_renderstring", 
+		    type:"GET",
+		    data:"ids="+ids,
 		    success: function(msg){	      
-			$("#oa_dynamic_group_item").html(msg);
-
+			$("#oa_dynamic_group_item").html($(msg));
 		    }});
 	    }
 	    
 	});
-
 	$('#select_question').show();
     }else{
         $('#oa_dynamic_groups').html('');
 	$('#oa_dynamic_group_item').html('');
 	$('#select_question').hide();
     }
+    $("#oa_dynamic_submit").unbind('click');
     $("#oa_dynamic_submit").click(function(){
 	if($("#endtheseorder").val()==1){
 	    var finish = 1;
@@ -472,7 +486,7 @@ function show_questions(){
 		    if (finish == 1){
 			window.location.reload();
 		    }else {
-			$("#oa_dynamic_submit").html('保存完了');
+			alert($("#oa_dynamic_groups").find('option|[selected]').text()+'の保存が完了しました');
 		    }
 		}
 	    }
@@ -744,3 +758,7 @@ function showPreOrdersInfo(oID,ele){
     }
   });
 }
+$(document).ready(function(){
+$(".dataTableContent").find("input|[type=checkbox][checked]").parent().parent().each(function(){
+if($(this).attr('class')!='dataTableRowSelected'){$(this).attr('style','background-color: rgb(240, 128, 128);')}})
+});

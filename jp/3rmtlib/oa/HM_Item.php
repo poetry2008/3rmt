@@ -25,6 +25,7 @@ class HM_Item extends DbRecord
   }
   function getInstance()
   {
+    if(!$this->instance){
     $instanceClass = "HM_Item_".ucfirst($this->type);
     require_once $instanceClass.".php";
     $this->instance = new $instanceClass();
@@ -33,6 +34,7 @@ class HM_Item extends DbRecord
     $this->instance->group_id= $this->group_id;
     $this->instance->form_id= $this->form_id;
     $this->instance->init($this->option);
+    }
     return $this->instance;
   }
   function parseOption($option)
@@ -45,6 +47,8 @@ class HM_Item extends DbRecord
   }
   function loadDefaultValue($order_id,$form_id,$group_id)
   {
+    //        var_dump($order_id,$form_id,$group_id);
+
     //echo $order_id,'form',$form_id,'group',$group_id;
     define("TABLE_OA_FORMVALUE",'oa_formvalue');
     $sql = 'select value from '.TABLE_OA_FORMVALUE.' where ';
@@ -66,6 +70,8 @@ class HM_Item extends DbRecord
         tep_db_query($sql);
       }
     }
+
+
     if ($result){
     $this->instance->order_id = $order_id;
     $this->instance->loadedValue = $result['value'];

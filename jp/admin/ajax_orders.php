@@ -381,7 +381,7 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
   $orders_info_raw = tep_db_query("select payment_method from ".TABLE_ORDERS." where orders_id = '".$_GET['oid']."'"); 
   $orders_info = tep_db_fetch_array($orders_info_raw); 
 
-  echo $orders_info['payment_method'].'_'.tep_check_order_type($_GET['oid']).'_';
+  echo urlencode($orders_info['payment_method']).'_'.tep_check_order_type($_GET['oid']).'_';
   echo tep_get_order_canbe_finish($_GET['oid'])?1:0;
   //取得 支付类型 及 支付方法
 } else if  (isset($_GET['action'])&&$_GET['action']=='get_oa_groups') {
@@ -391,30 +391,67 @@ from oa_group g,oa_form f,oa_form_group fg
 where 
 f.id = fg.form_id 
 and g.id = fg.group_id 
-and f.payment_romaji = "'.$_GET['payment'].'" and f.formtype = '.$_GET['buytype'];
+and f.payment_romaji = "'.urldecode($_GET['payment']).'" and f.formtype = '.$_GET['buytype'].' order by fg.ordernumber';
+
   $group_res = tep_db_query($sql);
+  $bigText = '';
   while($group = tep_db_fetch_array($group_res)){
-    echo $group['gname'];
-    echo "|";
-    echo $group['gid'];
-    echo "|";
-    echo $group['form_id'];
-    echo "_";
+    $bigText.= $group['gname'];
+        $bigText.="|";
+        $bigText.=$group['gid'];
+        $bigText.="|";
+       $bigText.= $group['form_id'];
+        $bigText.="_";
   }
-  //取得各种GROUP 其中 网站入力不显示，并默认加入 ----- 无效选项
-  //  echo "_sdfsf|3_sfdsfd|2_xvcxcv|34_xcvxcv|323_sfsdf|99";
+  //  $bigText['result'] = $bigText;
+  echo json_encode($bigText);
+
 } else if  (isset($_GET['action'])&&$_GET['action']=='get_group_renderstring') {
-  $sql  = 'select * from oa_item where group_id = "'.$_GET['group_id'].'"';
-  $res = tep_db_query($sql);
+  $ids = $_GET['ids'];
+  //  $ids = $_POST['ids'];
+  $ids_array = explode('_',$ids);
+  $sql  = 'select * from oa_item where group_id = "'.$_GET['group_id'].'" and type!="autocalculate" order by  ordernumber';
   require_once 'oa/DbRecord.php';
   require_once 'oa/HM_Form.php'; 
   require_once "oa/HM_Item.php";
   require_once 'oa/HM_Group.php';
+  $res = tep_db_query($sql);
+  $bigRender ='';
   while ($item = tep_db_fetch_object($res,'HM_Item')){
+    foreach($ids_array as $oid){
+      if($oid!=''){
+	$sqlEx = 'select of.orders_id ,of.value from oa_item i,oa_formvalue of where orders_id = "'.$oid.'" and item_id = '.$item->id .' and of.group_id = "'.$_GET['group_id'].'"' ;
+	$resEx = tep_db_query($sqlEx);
+	$exampleOrderInstead = tep_db_fetch_array($resEx);
+       	if(!$exampleOrderInstead){
+	  $exampleOrder = false;
+	  break;
+	}
+	if(!isset($exampleOrder)){
+	  $exampleOrder = $exampleOrderInstead;
+	}else {
+	  if($exampleOrder['value'] != $exampleOrderInstead['value']){
+	    $exampleOrder = false;
+	    break;
+	  }
+	}
+      }
+    }
     if($item->type!='autocalculate'){
-      $item->init()->render(true);
+      if($exampleOrder!=false){
+	$orders_info_raw = tep_db_fetch_array(tep_db_query("select oa_form.id from ".TABLE_ORDERS." o, oa_form  where oa_form.payment_romaji = o.payment_method and o.orders_id = '".$exampleOrder['orders_id']."' and oa_form.formtype=".tep_check_order_type($exampleOrder['orders_id']))); 
+	if($orders_info_raw){
+	  $item->init()->loadDefaultValue($exampleOrder['orders_id'],$orders_info_raw['id'],$_GET['group_id']);
+	}
+      }
+      //      $bigRender.= "<tr>";
+      echo "<tr>";
+      $bigRender.= $item->init()->render(true).'';
+      echo "</tr>";
+      //      $bigRender.= "</tr>";
     }
   }
+  //  echo $bigRender;
 
 } else if (isset($_GET['action'])&&$_GET['action']=='show_right_preorder_info') {
   $orders_info_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$_POST['oid']."'"); 

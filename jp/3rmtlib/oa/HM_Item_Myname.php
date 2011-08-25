@@ -39,12 +39,15 @@ class HM_Item_Myname extends HM_Item_Basic
 
   function render($m)
   {
+    if(!$m){
     if(strlen($this->thename)){
       echo "<td>";
     echo $this->thename.':';
       echo "</td>";
     }
+    }
     echo "<td>";
+
     //如果不允许为空
     if($this->require){
       $classrequire = 'require';
@@ -55,9 +58,7 @@ class HM_Item_Myname extends HM_Item_Basic
       echo "<input id='hidden".$this->formname."' type='hidden' name='".$this->formname."'>";
     }
     echo $this->beforeInput."<span id='".$this->formname."'type='text' class='".$classrequire." outform'size='".$this->size."' name='".$this->formname."' >".$this->getDefaultValue()."</span >";
-    //    if(!$this->loaded){
     echo "<button type='button' id = '".$this->formname.'submit'."' >$this->submitName</button>".$this->afterInput;
-    //        }
     echo "</td>";
   }
   function renderScript($m)

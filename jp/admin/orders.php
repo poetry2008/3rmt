@@ -676,13 +676,10 @@ function tep_show_orders_products_info($orders_id) {
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
 <script language="javascript">
-
   // 用作跳转
   var base_url = '<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('questions_type')));?>';
-  
   // 非完成状态的订单不显示最终确认
   var show_q_8_1_able  = <?php echo tep_orders_finished($_GET['oID']) && !check_torihiki_date_error($_GET['oID']) ?'true':'false';?>;
-  
   var cfg_last_customer_action = '<?php echo LAST_CUSTOMER_ACTION;?>';
 
 <?php 
@@ -2348,20 +2345,22 @@ function submit_confirm()
           </td>
         </tr>
       </table>
-</td><td valign="top" align="right">
-      <table id="select_question" style="display:none" >
+</td><td valign="top" align="right" width="30%">
+<div id='select_question' style="display:none" >
+      <table width="400">
        <tr>
-           <td></td>
-           <td>
+           <td width="400" align='right'>
                <select id='oa_dynamic_groups'  ></select>
            </td>
        </tr>
-       <tr id='oa_dynamic_group_item' >
-           <td id='oa_dynamic_group_item_name'></td>
-	   <td id='oa_dynamic_group_item_render'></td>
-       </tr>
-       <tr><td></td><td><button id="oa_dynamic_submit" >保存</button></td></tr>
-      </table>
+       </table>
+      <table id='oa_dynamic_group_item'  width="400">
+
+       </table>
+      <table width="400">
+       <tr><td align='right'><button id="oa_dynamic_submit" >保存</button></td></tr>
+       </table>
+</div>
 </td></tr></table>
       </form>
       <!-- display add end-->

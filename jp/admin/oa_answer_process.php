@@ -53,8 +53,10 @@ foreach ($_POST as $key=> $value){
   }else{
     if(!$fake){
     foreach($oidArray as $oid){
+      if($oid!=''){
       echo ("insert into `".TABLE_OA_FORMVALUE."` values(NULL, '".$oid."', '".$form_id."', '".$item_id."', '".$group_id."', '".$key."','".$value."')");
       tep_db_query("insert into `".TABLE_OA_FORMVALUE."` values(NULL, '".$oid."', '".$form_id."', '".$item_id."', '".$group_id."', '".$key."','".$value."')");
+      }
     }}
   }
   if( $_GET['withz']){
