@@ -1566,7 +1566,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
   
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
-      <td class="pageHeading" width="50%"><?php echo HEADING_TITLE; ?></td>
+      <td class="pageHeading" width="28%"><?php echo HEADING_TITLE; ?></td>
       <td align="left" class="smallText">
         <table width=""  border="0" cellspacing="1" cellpadding="0">
           <tr>
@@ -1574,7 +1574,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
               <?php echo tep_draw_form('orders1', FILENAME_ORDERS, '',
                   'get','id="orders1" onsubmit="return false"'); ?><?php echo
               TEXT_ORDER_FIND;?> 
-              <input name="keywords" type="text" id="keywords" size="40" value="<?php if(isset($_GET['keywords'])) echo stripslashes($_GET['keywords']); ?>">
+              <input name="keywords" style="width:320px;" type="text" id="keywords" size="40" value="<?php if(isset($_GET['keywords'])) echo stripslashes($_GET['keywords']); ?>">
               <select name="search_type" onChange='search_type_changed(this)'>
                 <option value="none"><?php echo TEXT_ORDER_FIND_SELECT;?></option>
                 <option value="orders_id"><?php echo TEXT_ORDER_FIND_OID;?></option>
