@@ -2348,10 +2348,10 @@ function submit_confirm()
   return true;
 }
 </script>
-<table width="100%"><tr><td>
+<table width="100%"><tr><td width="70%">
       <table width="100%" id="select_send" style="display:none">
         <tr>
-          <td class="main"><b><?php echo ENTRY_STATUS; ?></b></td>
+          <td class="main" width="100"><b><?php echo ENTRY_STATUS; ?></b></td>
         <td class="main"><?php echo tep_draw_pull_down_menu('status',
             $orders_statuses, $select_select,
             'onChange="mail_text(\'status\',\'comments\',\'os_title\')"'); ?> <?php
@@ -2377,7 +2377,7 @@ function submit_confirm()
           color="red">※</font>&nbsp;<?php echo TEXT_ORDER_COPY;?></td><td>
           <?php echo TEXT_ORDER_LOGIN;?></td></tr></table>
           <br>
-          <?php echo tep_draw_textarea_field('comments', 'hard', '74', '30', $select_text, 'style="font-family:monospace;font-size:x-small"'); ?>
+          <?php echo tep_draw_textarea_field('comments', 'hard', '60', '30', $select_text, 'style="font-family:monospace;font-size:x-small"'); ?>
         </td>
         </tr>
         <tr>
@@ -2405,17 +2405,17 @@ function submit_confirm()
       </table>
 </td><td valign="top" align="right" width="30%">
 <div id='select_question' style="display:none" >
-      <table width="400">
+      <table width="100%">
        <tr>
-           <td width="400" align='right'>
+           <td align='right'>
                <select id='oa_dynamic_groups'  ></select>
            </td>
        </tr>
        </table>
-      <table id='oa_dynamic_group_item'  width="400">
+      <table id='oa_dynamic_group_item'  width="100%">
 
        </table>
-      <table width="400">
+      <table width="100%">
        <tr><td align='right'><button id="oa_dynamic_submit" >保存</button></td></tr>
        </table>
 </div>
