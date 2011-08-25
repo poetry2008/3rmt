@@ -1563,8 +1563,8 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
   
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
-      <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
-      <td align="right" class="smallText">
+      <td class="pageHeading" width="50%"><?php echo HEADING_TITLE; ?></td>
+      <td align="left" class="smallText">
         <table width=""  border="0" cellspacing="1" cellpadding="0">
           <tr>
             <td class="smallText" valign='top'>
@@ -1588,7 +1588,6 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
               </select>
               </form>
             </td>
-            <td valign="top" width="315"></td>
           </tr>
         </table>
       </td>
@@ -1964,7 +1963,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
                o.orders_comment,
                o.confirm_payment_time, 
                o.site_id
-        from " . TABLE_ORDERS . " o " . $from_payment . " where 1=1 " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . " and o.orders_status = '".substr($_GET['search_type'], 3)."'" . $where_payment . $where_type ;
+        from " . TABLE_ORDERS . " o " . $from_payment . " where 1=1 " .  (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . " and o.orders_status = '".substr($_GET['search_type'], 3)."'" . $where_payment . $where_type .' order by o.torihiki_date DESC';
   } elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['search_type'] == 'orders_id'))) {
       $orders_query_raw = "
         select o.orders_id, 
@@ -1990,7 +1989,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
                o.confirm_payment_time, 
                o.site_id
         from " . TABLE_ORDERS . " o " . $from_payment . "
-        where 1=1 " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . " and o.orders_id like '%".$_GET['keywords']."%'" . $where_payment . $where_type ;
+        where 1=1 " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . " and o.orders_id like '%".$_GET['keywords']."%'" . $where_payment . $where_type.' order by o.torihiki_date DESC';
   } elseif ( isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['search_type'] == 'customers_name') or (isset($_GET['search_type']) && $_GET['search_type'] == 'email'))
   ) {
       $orders_query_raw = "
@@ -2051,7 +2050,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
     //$orders_query_raw .= ")";  
     }
     
-    $orders_query_raw .= " order by torihiki_date_error DESC,o.torihiki_date DESC";
+    $orders_query_raw .= " order by o.torihiki_date DESC";
   } elseif (isset($_GET['keywords']) && $_GET['keywords']) {
     $orders_query_raw = "
         select distinct(o.orders_id), 
