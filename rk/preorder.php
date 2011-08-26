@@ -339,7 +339,6 @@ if (!isset($_GET['quantity'])) $_GET['quantity'] = NULL; //del notice
           <td class="main"><?php echo FORM_FIELD_PREORDER_FIXDAY; ?></td>
           <td class="main">
 <?php
-    echo tep_draw_hidden_field('ensure_deadline');
     $today = getdate();
       $m_num = $today['mon'];
       $d_num = $today['mday'];
@@ -349,17 +348,17 @@ if (!isset($_GET['quantity'])) $_GET['quantity'] = NULL; //del notice
     $mimutes = date('i');
 ?>
   <select name="predate">
-    <option value="">希望日を選択してください</option>
+    <option value=""><?php echo PREORDER_SELECT_EMPTY_OPTION;?></option>
     <?php
           $oarr = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
-          $newarr = array('月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日', '日曜日');
+          $newarr = array(PREORDER_MONDAY_TEXT, PREORDER_TUESDAY_TEXT, PREORDER_WENSDAY_TEXT, PREORDER_THIRSDAY_TEXT, PREORDER_FRIDAY_TEXT, PREORDER_STATURDAY_TEXT, PREORDER_SUNDAY_TEXT);
     for($i=0; $i<7; $i++) {
       if ($_POST['predate'] == date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$i,$year))) {
         $check_str = 'selected'; 
       } else {
         $check_str = ''; 
       }
-      echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$i,$year)).'" '.$check_str.'>'.str_replace($oarr, $newarr,date("Y年m月d日（l）", mktime(0,0,0,$m_num,$d_num+$i,$year))).'</option>' . "\n";
+      echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$i,$year)).'" '.$check_str.'>'.str_replace($oarr, $newarr,date("Y".PREORDER_YEAR_TEXT."m".PREORDER_MONTH_TEXT."d".PREORDER_DAY_TEXT."（l）", mktime(0,0,0,$m_num,$d_num+$i,$year))).'</option>' . "\n";
     }
     ?>
   </select>
@@ -464,7 +463,7 @@ if (!isset($_GET['quantity'])) $_GET['quantity'] = NULL; //del notice
       </table> 
       <?php }?> 
       <br>
-      <h3 class="formAreaTitle"><?php echo $po_game_c; ?>についてのご要望</h3>
+      <h3 class="formAreaTitle"><?php echo $po_game_c.PREORDER_EXPECT_CTITLE; ?></h3>
       <table width="100%" cellpadding="2" cellspacing="0" border="0" class="formArea">
         <tr><td class="main"><?php echo tep_draw_textarea_field('yourmessage', 'soft', 40, 8);?></td></tr>
       </table>

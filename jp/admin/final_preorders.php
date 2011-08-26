@@ -127,15 +127,35 @@
         $action = 'edit';
         break;
       } elseif (!checkdate($m[2], $m[3], $m[1]) || $m[4] >= 24 || $m[5] >= 60 || $m[6] >= 60) { // make sure the date provided is a validate date
-        $messageStack->add(EDIT_ORDERS_NOTICE_NOUSE_DATE_TEXT, 'error');
-        $action = 'edit';
-        break;
+        if ($_POST['update_predate'] != '0000-00-00 00:00:00') {
+          $messageStack->add(EDIT_ORDERS_NOTICE_NOUSE_DATE_TEXT, 'error');
+          $action = 'edit';
+          break;
+        }
       }
     } else {
       $messageStack->add(EDIT_ORDERS_NOTICE_MUST_INPUT_DATE_TEXT, 'error');
       $action = 'edit';
       break;
     }
+    if (isset($_POST['update_ensure_deadline'])) { //日時が有効かチェック
+      if (!preg_match('/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/', $_POST['update_ensure_deadline'], $m1)) { // check the date format
+        $messageStack->add(EDIT_ORDERS_NOTICE_DATE_WRONG_TEXT, 'error');
+        $action = 'edit';
+        break;
+      } elseif (!checkdate($m1[2], $m1[3], $m1[1]) || $m1[4] >= 24 || $m1[5] >= 60 || $m1[6] >= 60) { // make sure the date provided is a validate date
+        if ($_POST['update_ensure_deadline'] != '0000-00-00 00:00:00') {
+          $messageStack->add(EDIT_ORDERS_NOTICE_NOUSE_DATE_TEXT, 'error');
+          $action = 'edit';
+          break;
+        }
+      }
+    } else {
+      $messageStack->add(EDIT_ORDERS_NOTICE_MUST_INPUT_DATE_TEXT, 'error');
+      $action = 'edit';
+      break;
+    }
+    
     foreach ($update_totals as $total_index => $total_details) {    
       extract($total_details,EXTR_PREFIX_ALL,"ot");
       if ($ot_class == "ot_point" && (int)$ot_value > 0) {
@@ -188,7 +208,7 @@
       torihiki_date = '" . tep_db_input($update_tori_torihiki_date) . "',
       torihiki_houhou = '" . tep_db_input($update_tori_torihiki_houhou) . "',
       predate = '" . tep_db_input($_POST['update_predate']) . "',
-      ensure_deadline = '" . tep_db_input($_POST['update_ensure_deadeline']) . "',
+      ensure_deadline = '" . tep_db_input($_POST['update_ensure_deadline']) . "',
       cc_type = '" . tep_db_input($update_info_cc_type) . "',
       cc_owner = '" . tep_db_input($update_info_cc_owner) . "',";
       
@@ -620,6 +640,12 @@ while ($totals = tep_db_fetch_array($totals_query)) {
           $change_preorder_url = $site_url_res['url'].'/change_preorder.php?pid='.$oID; 
           $email .= "\n\n".$change_preorder_url; 
         }
+        if ($status == 33) {
+          $site_url_raw = tep_db_query("select * from sites where id = '".$order->info['site_id']."'"); 
+          $site_url_res = tep_db_fetch_array($site_url_raw); 
+          $change_preorder_url = $site_url_res['url'].'/extend_time.php?pid='.$oID; 
+          $email .= "\n\n".$change_preorder_url; 
+        }
       tep_mail($check_status['customers_name'], $check_status['customers_email_address'], FORDERS_MAIL_UPDATE_CONTENT_FINISH.'【' . get_configuration_by_site_id('STORE_NAME', $order->info['site_id']) . '】', $email, get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $order->info['site_id']),$order->info['site_id']);
       } 
       //tep_mail(get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS', $order->info['site_id']), FORDERS_MAIL_UPDATE_CONTENT_MAIL.'【' . get_configuration_by_site_id('STORE_NAME', $order->info['site_id']) . '】', $email, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);
@@ -1003,17 +1029,14 @@ while ($totals = tep_db_fetch_array($totals_query)) {
 <input name="update_customer_country" size="25" type='hidden' value="<?php echo tep_html_quotes($order->customer['country']); ?>">
 <input name="update_delivery_country" size="25" type='hidden' value="<?php echo tep_html_quotes($order->delivery['country']); ?>">
 <input name="update_customer_telephone" size="25" type='hidden' value="<?php echo $order->customer['telephone']; ?>">
-                  <input type="hidden" name='update_ensure_deadeline' size='45' value='<?php echo $order->info['ensure_deadline']; ?>'>
                 </td>
               </tr>
-              <?php if (false) {?> 
               <tr>
-                <td class="main" valign="top"><b><?php echo EDIT_ORDERS_ENSUREDATE_TEXT;?></b></td>
+                <td class="main" valign="top"><b><?php echo EDIT_ORDERS_ENSUREDATE;?></b></td>
                 <td class="main">
-                  <input name='update_ensure_deadeline' size='45' value='<?php echo $order->info['ensure_deadline']; ?>'>
-                  <?php echo EDIT_ORDERS_TORI_READ;?> 
+                  <input name='update_ensure_deadline' size='25' value='<?php echo $order->info['ensure_deadline']; ?>'>
+                  <span class="smalltext"><?php echo EDIT_ORDERS_FETCHTIME_READ;?></span>
               </tr>
-              <?php }?> 
             </table>
             <!-- End Trade Date Block -->
           </td>

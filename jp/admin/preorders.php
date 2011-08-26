@@ -202,6 +202,12 @@
             $change_preorder_url = $site_url_res['url'].'/change_preorder.php?pid='.$oID; 
             $comments .= "\n\n".$change_preorder_url; 
           }
+          if ($status == 33) {
+            $site_url_raw = tep_db_query("select * from sites where id = '".$site_id."'"); 
+            $site_url_res = tep_db_fetch_array($site_url_raw); 
+            $change_preorder_url = $site_url_res['url'].'/extend_time.php?pid='.$oID; 
+            $comments = str_replace('${ORDER_UP_DATE}', $change_preorder_url, $comments); 
+          }
           tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
         } 
         //tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS', $site_id), '送信済：'.$title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
@@ -445,6 +451,12 @@
           $site_url_res = tep_db_fetch_array($site_url_raw); 
           $change_preorder_url = $site_url_res['url'].'/change_preorder.php?pid='.$oID; 
           $comments .= "\n\n".$change_preorder_url; 
+        }
+        if ($status == 33) {
+          $site_url_raw = tep_db_query("select * from sites where id = '".$site_id."'"); 
+          $site_url_res = tep_db_fetch_array($site_url_raw); 
+          $change_preorder_url = $site_url_res['url'].'/extend_time.php?pid='.$oID; 
+          $comments = str_replace('${ORDER_UP_DATE}', $change_preorder_url, $comments); 
         }
         tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
       }
@@ -823,12 +835,15 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                   <td class="main" valign="top" width="30%"><b><?php echo TEXT_ORDER_DATE_LONG;?></b></td>
                   <td class="main"><b style=" color:#0000FF"><?php echo $order->info['predate'];?></b></td>
                 </tr>
-                <?php if (false) {?> 
                 <tr>
-                  <td class="main" valign="top"><b><?php echo TEXT_ORDER_HOUHOU;?></b></td>
-                  <td class="main"><b style=" color:#0000FF"><?php echo $order->tori['houhou'];?></b></td>
+                  <td class="main"><b><?php echo ENTRY_ENSURE_DATE;?></b></td> 
+                  <td class="main"><b style=" color:#0000FF">
+                  <?php 
+                  echo $order->info['ensure_deadline'];
+                  ?> 
+                  </b> 
+                  </td> 
                 </tr>
-                <?php }?> 
                 <tr>
                   <td class="main" valign="top"><b><?php echo TEXT_PREORDER_ID_TEXT;?></b></td>
                   <td class="main"><?php echo $_GET['oID'] ?></td>
@@ -894,20 +909,6 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
             <?php
                 }
             ?>
-              <?php 
-              if (false) { 
-              ?> 
-              <tr>
-                <td class="main"><b><?php echo ENTRY_ENSURE_DATE;?></b></td> 
-                <td class="main">
-                <?php 
-                echo $order->info['ensure_deadline'];
-                echo '<br>'; 
-                echo tep_date_long($order->info['predate']);
-                ?> 
-                </td> 
-              </tr>
-              <?php }?> 
               </table>
             </div>
             <div style="width:0.6%; background:#fff; float:left;">&nbsp;</div>
