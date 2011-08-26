@@ -311,7 +311,7 @@ function tep_show_orders_products_info($orders_id) {
         $messageStack->add_session('注文ID' . $oID . 'の' . WARNING_ORDER_NOT_UPDATED, 'warning');
       }
     }
-
+      tep_order_status_change($oID,$status);
       tep_redirect(tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('action'))));
 
     

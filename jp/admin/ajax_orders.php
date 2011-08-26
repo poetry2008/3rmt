@@ -483,6 +483,8 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
 		}
 	}
 	while ($item = tep_db_fetch_object($res,'HM_Item')){
+	  unset($exampleOrder);
+	  unset($exampleOrderInstead);
 		if(count($ids_array)>1){
 			foreach($ids_array as $oid){
 				$sqlEx = 'select of.orders_id ,of.value from oa_item i,oa_formvalue of where orders_id = "'.$oid.'" and item_id = '.$item->id .' and of.group_id = "'.$_GET['group_id'].'"' ;
@@ -493,18 +495,26 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
 					break;
 				}
 				if(!isset($exampleOrder)){
+
 					$exampleOrder = $exampleOrderInstead;
 				}else {
 					if($exampleOrder['value'] != $exampleOrderInstead['value']){
+					  var_dump($exampleOrderInstead);
+					  var_dump($exampleOrder);
+					  echo '------------';
 						$exampleOrder = false;
 						break;
+					}else {
+					  
 					}
+
 				}
 			}
 		}else {
 			$exampleOrder['orders_id']=$ids_array[0];
 		}
 		if($exampleOrder!=false){
+
 			$orders_info_raw = tep_db_fetch_array(tep_db_query("select oa_form.id from ".TABLE_ORDERS." o, oa_form  where oa_form.payment_romaji = o.payment_method and o.orders_id = '".$exampleOrder['orders_id']."' and oa_form.formtype=".tep_check_order_type($exampleOrder['orders_id']))); 
 			$item->init()->loadDefaultValue($exampleOrder['orders_id'],$orders_info_raw['id'],$_GET['group_id']);
 		}
