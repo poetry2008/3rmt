@@ -62,7 +62,6 @@ foreach ($_POST as $key=> $value){
   if( $_GET['withz']){
     echo $value;
   }
-}
 
-//tep_redirect(tep_href_link(FILENAME_ORDERS, 'oID='.$_GET['oID'].'&action=edit'));
+}
 
