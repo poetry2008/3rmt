@@ -38,13 +38,19 @@ if(isset($_GET['action'])){
     $value =$user_info['name'];
     if($m){
       foreach ($oids as $id){
-        if(!empty($id)){
+        if(trim($id)!=''){
         $result = tep_db_query("update `".TABLE_ORDERS."` set `end_user` = '".$value."', `flag_qaf` = ".'1'." where orders_id = '".$id."'");  
+        if($_POST['finish']){
+          $messageStack->add_session('注文ID'.$id . 'の成功：取り引きが完了致しました', 'success');
+        }
+
         }
       }
     }else {
       $result = tep_db_query("update `".TABLE_ORDERS."` set `end_user` = '".$value."', `flag_qaf` = ".'1'." where orders_id = '".$id."'");  
     }
+//tep_redirect(tep_href_link(FILENAME_ORDERS, 'oID='.$_GET['oID'].'&action=edit'));
+
     break;
   }
 }

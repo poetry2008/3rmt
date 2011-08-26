@@ -487,6 +487,8 @@ function show_questions(){
 	});
 	longstring+='&oID='+ids;
 	longstring+='&form_id='+form_id;
+	longstring+='&finish=1';
+
 	$.ajax(
 	    {
 		type:"POST",
