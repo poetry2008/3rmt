@@ -435,6 +435,7 @@ function show_questions(){
 		$("#oa_dynamic_groups")[0].options.add(new Option('取引完了','end',true,false));
 	    }
 	}});
+	$("#oa_dynamic_groups").unbind('change');
 	$("#oa_dynamic_groups").change(function(){
 
 	    if($(this).selected().val()=='-1'){
