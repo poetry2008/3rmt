@@ -825,3 +825,12 @@ function tep_get_preorder_canbe_finish($orders_id){
   
 return true;
 }
+
+function tep_get_preorders_products_names($orders_id) {
+  $str = '';
+  $orders_products_query = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$orders_id."'");
+  while ($p = tep_db_fetch_array($orders_products_query)) {
+    $str .= $p['products_name'].' ';
+  }
+  return $str;
+}
