@@ -1,5 +1,4 @@
 <?php
-
 class HM_Item extends DbRecord
 {
   var $type;
@@ -15,16 +14,18 @@ class HM_Item extends DbRecord
   function init()
   {
     $this->getInstance();
+    return $this;
   }
-  function render()
+  function render($m=false)
   {
-    $this->instance->render();
+    $this->instance->render($m);
     if (method_exists($this->instance,'renderScript')){
-      $this->instance->renderScript();
+      $this->instance->renderScript($m);
     }
   }
   function getInstance()
   {
+    if(!$this->instance){
     $instanceClass = "HM_Item_".ucfirst($this->type);
     require_once $instanceClass.".php";
     $this->instance = new $instanceClass();
@@ -33,6 +34,7 @@ class HM_Item extends DbRecord
     $this->instance->group_id= $this->group_id;
     $this->instance->form_id= $this->form_id;
     $this->instance->init($this->option);
+    }
     return $this->instance;
   }
   function parseOption($option)
@@ -45,8 +47,10 @@ class HM_Item extends DbRecord
   }
   function loadDefaultValue($order_id,$form_id,$group_id)
   {
+    //        var_dump($order_id,$form_id,$group_id);
+
     //echo $order_id,'form',$form_id,'group',$group_id;
-    define("TABLE_OA_FORMVALUE",'oa_formvalue');
+    define("TABLE_PREORDERS_OA_FORMVALUE",'preorders_oa_formvalue');
     $sql = 'select value from '.TABLE_PREORDERS_OA_FORMVALUE.' where ';
     $sql .= ' orders_id="' .$order_id.'"';
     $sql .= 'and  group_id="' .$group_id.'"';
@@ -66,6 +70,8 @@ class HM_Item extends DbRecord
         tep_db_query($sql);
       }
     }
+
+
     if ($result){
     $this->instance->order_id = $order_id;
     $this->instance->loadedValue = $result['value'];
