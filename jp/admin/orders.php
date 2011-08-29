@@ -65,7 +65,7 @@ function tep_show_orders_products_info($orders_id) {
     $str .= '</tr>';
     $str .= '<tr><td colspan="2"><hr></td></tr>'; 
   }
-  $str .= '<tr><td class="main" width="150"><b>'.TEXT_FUNCTION_PAYMENT_METHOD.'</b></td><td class="main" style="color:darkred;"><b>'.$orders['payment_method'].'</b></td></tr>';
+  $str .= '<tr><td class="main" width="110"><b>'.TEXT_FUNCTION_PAYMENT_METHOD.'</b></td><td class="main" style="color:darkred;"><b>'.$orders['payment_method'].'</b></td></tr>';
     if ($orders['confirm_payment_time'] != '0000-00-00 00:00:00') {
       $time_str = date(TEXT_FUNCTION_DATE_STRING, strtotime($orders['confirm_payment_time'])); 
     }else if(tep_check_order_type($orders['orders_id'])!=2){
@@ -1989,7 +1989,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
     <?php echo TEXT_ORDER_SERVER_BUSY;?></span>
     <table  border="0" align="center" cellpadding="0" cellspacing="2">
     <tr>
-      <td class="smallText" width='150'>
+      <td class="smallText" width='120'>
       <?php echo TEXT_ORDER_SITE_TEXT;?>:
       <?php echo tep_site_pull_down_menu_with_all(isset($_GET['site_id']) ? $_GET['site_id'] :'', false);?>
       </td>
