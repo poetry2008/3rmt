@@ -222,6 +222,13 @@ while ($preorder_oa_res = tep_db_fetch_array($preorder_oa_raw)) {
 
 }
 
+$preorders_computer_raw = tep_db_query("select * from ".TABLE_PREORDERS_TO_COMPUTERS." where orders_id = '".$_POST['pid']."'");
+while ($preorders_computers_res = tep_db_fetch_array($preorders_computer_raw)) {
+  $sql_data_array = array('orders_id' => $orders_id,
+                          'computers_id' => $preorders_computers_res['computers_id'], 
+      );
+  tep_db_perform('orders_to_computers', $sql_data_array);
+}
 
 tep_db_query("delete from ".TABLE_PREORDERS." where orders_id = '".$_POST['pid']."' and site_id = '".SITE_ID."'"); 
 tep_db_query("delete from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$_POST['pid']."'"); 

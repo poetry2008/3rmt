@@ -459,7 +459,7 @@ function tep_get_pre_orders_products_string($orders, $single = false) {
       $str .= '<tr><td class="main"><b>'.$pa['products_options'].'：</b></td><td class="main">'.$pa['products_options_values'].'</td></tr>';
     }
     $str .= '<tr><td class="main"><b>キャラ名：</b></td><td style="font-size:20px;color:#407416;"><b>'.$p['products_character'].'</b></td></tr>';
-    $names = tep_get_computers_names_by_orders_id($orders['orders_id']);
+    $names = tep_get_computers_names_by_preorders_id($orders['orders_id']);
     if ($names) {
       $str .= '<tr><td class="main"><b>PC：</b></td><td class="main">'.implode('&nbsp;,&nbsp;', $names).'</td></tr>';
     }
@@ -776,4 +776,52 @@ function tep_get_pre_orders_products_string($orders, $single = false) {
   } else {
     return htmlspecialchars($str);
   }
+}
+
+
+function tep_preorders_finishqa($orders_id) {
+  $order = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PREORDERS." where orders_id='".$orders_id."'"));
+  return $order['flag_qaf'];
+}
+
+function tep_get_preorders_status_id($orders_id, $language_id = '') {
+  global $languages_id;
+
+  if (!$language_id) $language_id = $languages_id;
+  $orders_query = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id='".$orders_id."'");
+  $orders = tep_db_fetch_array($orders_query);
+  return $orders['orders_status'];
+}
+
+function tep_get_preorder_canbe_finish($orders_id){
+  //  如果是取消的可以结束 
+  
+  if (tep_preorders_finishqa($orders_id)) {
+    return false;
+  }
+  $status =  tep_get_preorders_status_id($orders_id);
+  if($status == 6 or $status == 8){
+    return true;
+  }
+  $formtype = tep_check_pre_order_type($orders_id);
+  $payment_romaji = tep_get_pre_payment_code_by_order_id($orders_id); 
+  $oa_form_sql = "select * from ".TABLE_OA_FORM."   where formtype = '".$formtype."' and payment_romaji = '".$payment_romaji."'";
+  $res = tep_db_fetch_array(tep_db_query($oa_form_sql));;
+  $form_id = $res['id'] ;
+  $sql = 'select i.* from oa_form_group fg ,oa_item i where  i.group_id = fg.group_id and i.option like "%require%" and fg.form_id = "'.$form_id .'"';
+  $res3  = tep_db_query($sql);
+  while($item = tep_db_fetch_array($res3)){
+    $sql2 =  'select value from preorders_oa_formvalue where item_id = '.$item['id'] .' and orders_id ="'.$orders_id.'" and form_id = "'.$form_id.'"';
+    $res2 = tep_db_fetch_array(tep_db_query($sql2));
+    if (!$res2){
+      return false;
+    }else {
+      if ($res2['value']==''){
+      return false;
+      }
+    }
+    $res2 = '';
+  }
+  
+return true;
 }
