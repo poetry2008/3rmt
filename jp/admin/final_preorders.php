@@ -544,7 +544,7 @@
     
   // 最終処理（更新およびメール送信）
   if ($products_delete == false) {
-    tep_order_status_change($oID,$status);
+    tep_pre_order_status_change($oID,$status);
     tep_db_query("update " . TABLE_PREORDERS . " set orders_status = '" . tep_db_input($status) . "', last_modified = now() where orders_id = '" . tep_db_input($oID) . "'");
     preorders_updated(tep_db_input($oID));
     $notify_comments = '';
