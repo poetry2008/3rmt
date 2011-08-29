@@ -14,7 +14,7 @@ function tep_show_orders_products_info($orders_id) {
     return $str; 
   }
 
-  $str .= '<table border="0" cellpadding="0" cellspacing="0">';
+  $str .= '<table id="infoBox_01" border="0" cellpadding="0" cellspacing="0">';
   $str .= '<tr><td class="main" colspan="2">&nbsp;</td><tr>';
     if (ORDER_INFO_TRANS_NOTICE == 'true') {
     if ($orders['orders_care_flag']) {
@@ -65,7 +65,7 @@ function tep_show_orders_products_info($orders_id) {
     $str .= '</tr>';
     $str .= '<tr><td colspan="2"><hr></td></tr>'; 
   }
-  $str .= '<tr><td class="main" width="110"><b>'.TEXT_FUNCTION_PAYMENT_METHOD.'</b></td><td class="main" style="color:darkred;"><b>'.$orders['payment_method'].'</b></td></tr>';
+  $str .= '<tr><td class="main" width="90"><b>'.TEXT_FUNCTION_PAYMENT_METHOD.'</b></td><td class="main" style="color:darkred;"><b>'.$orders['payment_method'].'</b></td></tr>';
     if ($orders['confirm_payment_time'] != '0000-00-00 00:00:00') {
       $time_str = date(TEXT_FUNCTION_DATE_STRING, strtotime($orders['confirm_payment_time'])); 
     }else if(tep_check_order_type($orders['orders_id'])!=2){
