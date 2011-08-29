@@ -1118,6 +1118,7 @@ function validate_comment(){
   if(o_comment.val()){
     return true;
   }else{
+    alert('<?php echo TEXT_ORDER_COMMENT_ERROR;?>');
     return false;
   }
 }
