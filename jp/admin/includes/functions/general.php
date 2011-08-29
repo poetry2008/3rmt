@@ -6355,9 +6355,8 @@ function tep_get_order_canbe_finish($orders_id){
   }
   
 return true;
-  
-  
-   
-
-  
+}
+//LAST_CUSTOMER_ACTION
+function last_customer_action() {
+  tep_db_query("update ".TABLE_CONFIGURATION." set configuration_value=now() where configuration_key='LAST_CUSTOMER_ACTION'");
 }
