@@ -323,6 +323,7 @@ echo "</pre>";
               ); 
 
   tep_db_perform(TABLE_ORDERS, $sql_data_array);
+  last_customer_action();
   orders_updated($insert_id);
   //$insert_id = tep_db_insert_id();
  
