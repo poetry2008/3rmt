@@ -389,28 +389,21 @@ function show_questions(){
 	    function(key){
 		oid =  $(this).val();
 		ids += oid+'_';
-		$.ajax({ url: "ajax_orders.php?oid="+oid+"&action=get_oa_type", 
-			 async: false,
-			 success: function(msg){
-			     var oamsg = msg.split("_");
-			     if(order_payment_type == ''){
-				 order_payment_type = oamsg[0];
-				 order_buy_type = oamsg[1];
-				 order_can_end =oamsg[2];
-				 show  = true;
-			     }else{
-				 if(oamsg[0]==order_payment_type && oamsg[1]==order_buy_type){
-				     show = true;
-				 }else {
-				     show = false;
-				 }
-				 if(oamsg[2]=='0'){
-				     order_can_end =0;
-				 }
-			     }
-			 }});
 	    }
 	);
+	$.ajax({ url: "ajax_orders.php?oid="+ids+"&action=get_oa_type", 
+		 async: false,
+		 success: function(msg){
+		     var oamsg = msg.split("_");
+		     if(oamsg.length>1){
+			 show = true;
+			 order_payment_type = oamsg[0];
+			 order_buy_type = oamsg[1];
+			 order_can_end =oamsg[2];
+		     }else {
+			 show =false;
+		     }
+		 }});
     }
     if(show){
         $('#oa_dynamic_groups').html('');
