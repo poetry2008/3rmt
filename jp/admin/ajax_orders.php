@@ -474,7 +474,7 @@ if ($_POST['orders_id'] && $_POST['orders_comment']) {
   }
   if(!$onsuit && !$tnsuit){
     echo urlencode($orders_info['payment_method']).'_'.$type.'_';
-    echo $notfinish?0:1;
+    echo $notfinish?0:$finish_first;
   }
   //取得 支付类型 及 支付方法
 } else if  (isset($_GET['action'])&&$_GET['action']=='get_oa_groups') {
