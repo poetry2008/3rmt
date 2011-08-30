@@ -1662,6 +1662,7 @@ if (isset($_POST['execute_change'])) { $execute_change = $_POST['execute_change'
 if (isset($_POST['execute_c_permission'])) { $execute_change = $_POST['execute_c_permission'];}
 if (isset($_POST['rule'])) { $rule = $_POST['rule'];}
 if (isset($_POST['letter'])) { $letter = $_POST['letter'];}
+/*
 if ($ocertify->auth_user) {
 if (isset($execute_password) && $execute_password) {
       if (isset($execute_update) && $execute_update){
@@ -1672,6 +1673,7 @@ if (isset($execute_password) && $execute_password) {
     // 管理者権限
 }
 }
+*/
 
   PageHeader();       // ページ・ヘッダの表示
   PageBodyTable('t');     // ページのレイアウトテーブル：開始（ナビゲーションボックスを包括するテーブル開始）
