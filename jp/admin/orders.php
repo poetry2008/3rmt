@@ -1118,8 +1118,9 @@ function validate_comment(){
   if(o_comment.val()){
     return true;
   }else{
-    alert('<?php echo TEXT_ORDER_COMMENT_ERROR;?>');
-    return false;
+    o_comment_flag = $('input|[name=orders_comment_flag]');
+    o_comment_flag.val('true');
+    return true;
   }
 }
 </script>
@@ -1327,6 +1328,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                 <textarea name="orders_comment" cols="100" rows="10" 
                 style = "overflow-y:auto"class="pageHeading_box03"><?php echo $order->info['orders_comment'];?></textarea><br>
                 <input type="hidden" name="orders_id" value="<?php echo $order->info['orders_id'];?>">
+                <input type="hidden" name="orders_comment_flag" value="">
                 <input type="hidden" name="page" value="<?php echo $_GET['page'];?>">
                 <div align="right" style="clear:both;"><input type="Submit" value="保存"></div>
                 </form>

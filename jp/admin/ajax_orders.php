@@ -12,7 +12,8 @@ header("Cache-Control: no-store, no-cache, must-revalidate");
 header("Cache-Control: post-check=0, pre-check=0", false);
 # HTTP/1.0
 header("Pragma: no-cache");
-if ($_POST['orders_id'] && $_POST['orders_comment']) {
+if ($_POST['orders_id'] &&
+    ($_POST['orders_comment']||$_POST['orders_comment_flag']=='true')) {
   // update orders_comment
   tep_db_perform('orders', array('orders_comment' => $_POST['orders_comment']), 'update', "orders_id='".$_POST['orders_id']."'");
   tep_redirect(tep_href_link(FILENAME_ORDERS,'page='.$_POST['page'].'&oID='.$_POST['orders_id'].'&action=edit'));
