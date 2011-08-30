@@ -433,4 +433,17 @@ define('ENTRY_GUEST_EMAIL_NOT_ACTIVE', '&nbsp;<small><font color="#FF0000">認�
 define('CHECK_EMAIL_EXISTS_ERROR', 'エラーが発生しました。<br>お手数をお掛けいたしますが、こちらから<a href="'.HTTP_SERVER.'?'.tep_session_name().'='.tep_session_id().'">トップページ</a>に戻り再度やり直してください。');
 define('SENDMAIL_SUCCESS_COMMENT_TEXT', '正常に受信できる場合：「送信」後5分以内で'.STORE_NAME.'からの確認メールが届きます。<br>受信できない場合：「送信」後5分以上経過しても受信できない場合は、スパムフィルター等で受け取りを拒否されている可能性が高いです。');
 define('ALREADY_SEND_MAIL_TEXT', 'エラーが発生しました。\nお手数をお掛けいたしますが、トップページに戻り再度やり直してください');
+define('PREORDER_SELECT_EMPTY_OPTION', '希望日を選択してください');
+define('PREORDER_YEAR_TEXT', '年');
+define('PREORDER_MONTH_TEXT', '月');
+define('PREORDER_DAY_TEXT', '日');
+define('PREORDER_MONDAY_TEXT', '月曜日');
+define('PREORDER_TUESDAY_TEXT', '火曜日');
+define('PREORDER_WENSDAY_TEXT', '水曜日');
+define('PREORDER_THIRSDAY_TEXT', '木曜日');
+define('PREORDER_FRIDAY_TEXT', '金曜日');
+define('PREORDER_STATURDAY_TEXT', '土曜日');
+define('PREORDER_SUNDAY_TEXT', '日曜日');
+define('PREORDER_HOUR_TEXT', '時');
+define('PREORDER_MIN_TEXT', '分');
 ?>

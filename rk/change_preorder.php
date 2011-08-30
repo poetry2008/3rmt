@@ -20,7 +20,7 @@
   if (!$preorder_res) {
     forward404(); 
   }
-  $ensure_datetime = strtotime($preorder_res['predate']);
+  $ensure_datetime = strtotime($preorder_res['ensure_deadline']);
   if (time() > $ensure_datetime) {
     $preorder_product_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$preorder_id."'"); 
     $preorder_product_res = tep_db_fetch_array($preorder_product_raw); 
@@ -180,12 +180,12 @@ echo '</form>';
     $mimutes = date('i');
 ?>
   <select name="date" onChange="selectDate('<?php echo $hours; ?>', '<?php echo $mimutes; ?>')">
-    <option value="">希望日を選択してください</option>
+    <option value=""><?php echo PREORDER_SELECT_EMPTY_OPTION;?></option>
     <?php
           $oarr = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
-          $newarr = array('月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日', '日曜日');
+          $newarr = array(PREORDER_MONDAY_TEXT, PREORDER_TUESDAY_TEXT, PREORDER_WENSDAY_TEXT, PREORDER_THIRSDAY_TEXT, PREORDER_FRIDAY_TEXT, PREORDER_STATURDAY_TEXT, PREORDER_SUNDAY_TEXT);
     for($i=0; $i<7; $i++) {
-      echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$i,$year)).'">'.str_replace($oarr, $newarr,date("Y年m月d日（l）", mktime(0,0,0,$m_num,$d_num+$i,$year))).'</option>' . "\n";
+      echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$i,$year)).'">'.str_replace($oarr, $newarr,date("Y".PREORDER_YEAR_TEXT."m".PREORDER_MONTH_TEXT."d".PREORDER_DAY_TEXT."（l）", mktime(0,0,0,$m_num,$d_num+$i,$year))).'</option>' . "\n";
     }
     ?>
   </select>
@@ -202,11 +202,11 @@ echo '</form>';
   <select name="hour" onChange="selectHour('<?php echo $hours; ?>', '<?php echo $mimutes; ?>')">
     <option value="">--</option>
   </select>
-  &nbsp;時&nbsp;
+  &nbsp;<?php echo PREORDER_HOUR_TEXT;?>&nbsp;
   <select name="min">
     <option value="">--</option>
   </select>
-  &nbsp;分&nbsp;
+  &nbsp;<?php echo PREORDER_MIN_TEXT;?>&nbsp;
              <?php  
              if (isset($jikan_error)) {
                 echo '<font color="#ff0000">'.$jikan_error.'</font>'; 

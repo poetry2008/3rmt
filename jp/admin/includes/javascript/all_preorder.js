@@ -100,7 +100,7 @@ function fax_over_color(ele){
 // 订单搜索
 function search_type_changed(elem){
     //if ($('#keywords').val() && elem.selectedIndex != 0) 
-  document.forms.orders1.submit();
+	document.forms.orders1.submit();
 }
 
 function getCheckboxValue(ccName)
@@ -172,7 +172,7 @@ function mail_text(st,tt,ot){
     if(document.sele_act.elements[tt].value.indexOf('${PAY_DATE}') != -1){
 	$.ajax({
 	    dataType: 'text',
-	    url: 'ajax_orders.php?action=paydate',
+	    url: 'ajax_preorders.php?action=paydate',
 	    success: function(text) {
 		document.sele_act.elements[tt].value = document.sele_act.elements[tt].value.replace('${PAY_DATE}',text);
 	    }
@@ -215,16 +215,22 @@ function showOrdersInfo(oID,ele){
     type:"POST",
     data:"oid="+oID,
     async:false, 
-    url: 'ajax_orders.php?action=show_right_order_info',
+    url: 'ajax_preorders.php?action=show_right_order_info',
     success: function(msg) {
  
     $('#orders_info_box').html(msg);
-    if(document.documentElement.clientHeight <= document.body.scrollHeight){
-      offset = ele.offsetTop + ele.offsetHeight + $('#orders_info_box').height() > document.documentElement.clientHeight ? ele.offsetTop+$("#orders_list_table").position().top-$('#tep_site_filter').height()-$('#orders_info_box').height()-$('#offsetHeight').height():ele.offsetTop+$("#orders_list_table").position().top+ele.offsetHeight;
-    }else{
+    if(document.documentElement.clientHeight < document.body.scrollHeight){
      offset = ele.offsetTop + ele.offsetHeight + $('#orders_info_box').height() > $('#orders_list_table').height()? ele.offsetTop+$("#orders_list_table").position().top-$('#tep_site_filter').height()-$('#orders_info_box').height()-$('#offsetHeight').height():ele.offsetTop+$("#orders_list_table").position().top+ele.offsetHeight;
-    }
       $('#orders_info_box').css('top',offset).show();
+    }else{
+      if(ele.offsetTop+$("#orders_list_table").position().top+ele.offsetTop + ele.offsetHeight + $('#orders_info_box').height() > document.documentElement.clientHeight){
+      offset = ele.offsetTop+$("#orders_list_table").position().top-$('#orders_info_box').height()-$('#offsetHeight').height()-ele.offsetHeight;
+      $('#orders_info_box').css('top',offset).show();
+      }else{
+      offset = ele.offsetTop+$("#orders_list_table").position().top+ele.offsetHeight;
+      $('#orders_info_box').css('top',offset).show();
+      }
+    }
     }
   });
 
@@ -280,7 +286,7 @@ $(function(){
 function checkChange(){
     $.ajax({
 	dataType: 'text',
-	url: 'ajax_orders.php?action=last_customer_action',
+	url: 'ajax_preorders.php?action=last_customer_action',
 	success: function(last_customer_action) {
 	    if (
 		last_customer_action != cfg_last_customer_action 
@@ -305,14 +311,14 @@ function checkChange(){
 function orders_flag(ele, type, oid) {
     if (ele.className == 'orders_flag_checked') {
 	$.ajax({
-	    url: 'ajax_orders.php?orders_id='+oid+'&orders_'+type+'_flag=0',
+	    url: 'ajax_preorders.php?orders_id='+oid+'&orders_'+type+'_flag=0',
 	    success: function(data) {
 		ele.className='orders_flag_unchecked';
 	    }
 	});
     } else {
 	$.ajax({
-	    url: 'ajax_orders.php?orders_id='+oid+'&orders_'+type+'_flag=1',
+	    url: 'ajax_preorders.php?orders_id='+oid+'&orders_'+type+'_flag=1',
 	    success: function(data) {
 		ele.className='orders_flag_checked';
 	    }
@@ -327,7 +333,7 @@ function orders_work(ele, work, oid) {
     document.getElementById('work_c').className = 'orders_flag_unchecked';
     $.ajax({
 	dataType: 'text',
-	url: 'ajax_orders.php?orders_id='+oid+'&work='+work,
+	url: 'ajax_preorders.php?orders_id='+oid+'&work='+work,
 	success: function(data) {
 	    if (data == 'success') {
 		if (ele.className == 'orders_flag_checked') {
@@ -344,14 +350,14 @@ function orders_work(ele, work, oid) {
 function orders_computers(ele, cid, oid) {
     if (ele.className == 'orders_computer_checked') {
 	$.ajax({
-	    url: 'ajax_orders.php?action=delete&orders_id='+oid+'&computers_id='+cid,
+	    url: 'ajax_preorders.php?action=delete&orders_id='+oid+'&computers_id='+cid,
 	    success: function(data) {
 		ele.className='orders_computer_unchecked';
 	    }
 	});
     } else {
 	$.ajax({
-	    url: 'ajax_orders.php?action=insert&orders_id='+oid+'&computers_id='+cid,
+	    url: 'ajax_preorders.php?action=insert&orders_id='+oid+'&computers_id='+cid,
 	    success: function(data) {
 		ele.className='orders_computer_checked';
 	    }
@@ -363,7 +369,7 @@ function orders_computers(ele, cid, oid) {
 function clean_option(n,oid){
     // 自动保存
     // auto_save_questions();
-    $.ajax({ url: "ajax_orders.php?orders_id="+oid+"&action=clean_option&questions_no="+n, success: function(){}});
+    $.ajax({ url: "ajax_preorders.php?orders_id="+oid+"&action=clean_option&questions_no="+n, success: function(){}});
     // 是否显示按钮
     show_submit_button();
 }
@@ -407,49 +413,64 @@ function show_questions(){
 	);
     }
     if(show){
-	$.ajax({ url: "ajax_orders.php?payment="+order_payment_type+"&buytype="+order_buy_type+"&action=get_oa_groups", success: function(msg){
-	    oa_groups =  msg.split("_");
+        $('#oa_dynamic_groups').html('');
+	$('#oa_dynamic_group_item').html('');
+	$.ajax({ url: "ajax_preorders.php?payment="+order_payment_type+"&buytype="+order_buy_type+"&action=get_oa_groups", success: function(msg){
+	    var oa_groupsobj =  eval("("+msg+")");
+	    var oa_groups = oa_groupsobj.split('_');;
 	    $("#oa_dynamic_groups").find('option').remove();//删除以前数据 
-	    $("<option >-----</option>").appendTo($("#oa_dynamic_groups"));
-	    for (var  groupstring in oa_groups){
+	    $("#oa_dynamic_groups")[0].options.add(new Option('----', '-1', true));
+	    for (var groupstring in oa_groups){
 		if(oa_groups[groupstring]==''){
 		    continue;
 		}
 		group = oa_groups[groupstring].split('|');
 		group_name = group[0];
 		group_id = group[1];
-		form_id = group[1];
-		$("<option value="+group_id+">"+group_name+"</option>").appendTo($("#oa_dynamic_groups"));
+		form_id = group[2];
+//		$("#oa_dynamic_groups")[0].options.add(new Option(group_name,group_id,true,false));
+		$("#oa_dynamic_groups")[0].options.add(new Option(''+group_name+'',group_id,true,false));
 	    }
 	    if(order_can_end=='1'){
-		$("<option value='end' >取引完了 </option>").appendTo($("#oa_dynamic_groups"));
+		$("#oa_dynamic_groups")[0].options.add(new Option('取引完了','end',true,false));
 	    }
 	}});
+	$("#oa_dynamic_groups").unbind('change');
 	$("#oa_dynamic_groups").change(function(){
+
+	    if($(this).selected().val()=='-1'){
+//		$('#oa_dynamic_groups').html('');
+		$('#oa_dynamic_group_item').html('');
+		$("#oa_dynamic_submit").unbind('click');
+		$("#oa_dynamic_submit").hide();
+		return true;
+	    }
 	    if($(this).selected().val()=='end'){
+		$("#oa_dynamic_submit").show();
 		$("#oa_dynamic_submit").html('取引完了');
 		msg = '<input type="hidden" id="endtheseorder" value="1"/>';
 		$("#oa_dynamic_group_item").html(msg);
 	    }else{
+		$("#oa_dynamic_submit").show();
 		$("#oa_dynamic_submit").html('保存');
 	    $.ajax(
 		{ 
-
-		    url: "ajax_orders.php?group_id="+$(this).val()+"&action=get_group_renderstring", 
+		    url: "ajax_preorders.php?group_id="+$(this).val()+"&action=get_group_renderstring", 
+		    type:"GET",
+		    data:"ids="+ids,
 		    success: function(msg){	      
-			$("#oa_dynamic_group_item").html(msg);
-
+			$("#oa_dynamic_group_item").html($(msg));
 		    }});
 	    }
 	    
 	});
-
 	$('#select_question').show();
     }else{
         $('#oa_dynamic_groups').html('');
 	$('#oa_dynamic_group_item').html('');
 	$('#select_question').hide();
     }
+    $("#oa_dynamic_submit").unbind('click');
     $("#oa_dynamic_submit").click(function(){
 	if($("#endtheseorder").val()==1){
 	    var finish = 1;
@@ -466,6 +487,8 @@ function show_questions(){
 	});
 	longstring+='&oID='+ids;
 	longstring+='&form_id='+form_id;
+	longstring+='&finish=1';
+
 	$.ajax(
 	    {
 		type:"POST",
@@ -476,7 +499,7 @@ function show_questions(){
 		    if (finish == 1){
 			window.location.reload();
 		    }else {
-			$("#oa_dynamic_submit").html('保存完了');
+			alert($("#oa_dynamic_groups").find('option|[selected]').text()+'の保存が完了しました');
 		    }
 		}
 	    }
@@ -493,7 +516,7 @@ function click_relate(pid,ele){
     if ($(ele).parent().parent().find('#checkbox_'+pid).attr('checked')) {
 	$(ele).parent().parent().find('#offset_'+pid).attr('readonly', true);
 	$.ajax({
-            url: 'ajax_orders.php?action=set_quantity&products_id='+pid+'&count='+($(ele).parent().parent().find('#quantity_'+pid).html()-$(ele).parent().parent().find('#offset_'+pid).val()),
+            url: 'ajax_preorders.php?action=set_quantity&products_id='+pid+'&count='+($(ele).parent().parent().find('#quantity_'+pid).html()-$(ele).parent().parent().find('#offset_'+pid).val()),
             success: function(data) {
             }
 	});
@@ -501,7 +524,7 @@ function click_relate(pid,ele){
 	// 减库存
 	$(ele).parent().parent().find('#offset_'+pid).attr('readonly', false);
 	$.ajax({
-            url: 'ajax_orders.php?action=set_quantity&products_id='+pid+'&count=-'+($(ele).parent().parent().find('#quantity_'+pid).html()-$(ele).parent().parent().find('#offset_'+pid).val()),
+            url: 'ajax_preorders.php?action=set_quantity&products_id='+pid+'&count=-'+($(ele).parent().parent().find('#quantity_'+pid).html()-$(ele).parent().parent().find('#offset_'+pid).val()),
             success: function(data) {
             }
 	});
@@ -587,7 +610,7 @@ function allt(id,div_id){
 function once_pwd_redircet_new_url(url_str){
     //window.location.href = url_str;
     $.ajax({
-	url: 'ajax_orders.php?action=getallpwd',
+	url: 'ajax_preorders.php?action=getallpwd',
 	type: 'POST',
 	dataType: 'text',
 	async : false,
@@ -656,7 +679,7 @@ function new_mail_text(ele,st,tt,ot){
     if(document.sele_act.elements[tt].value.indexOf('${PAY_DATE}') != -1){
 	$.ajax({
 	    dataType: 'text',
-	    url: 'ajax_orders.php?action=paydate',
+	    url: 'ajax_preorders.php?action=paydate',
 	    success: function(text) {
 		document.sele_act.elements[tt].value = document.sele_act.elements[tt].value.replace('${PAY_DATE}',text);
 	    }
@@ -737,23 +760,18 @@ function showPreOrdersInfo(oID,ele){
     type:"POST",
     data:"oid="+oID,
     async:false, 
-    url: 'ajax_orders.php?action=show_right_preorder_info',
+    url: 'ajax_preorders.php?action=show_right_preorder_info',
     success: function(msg) {
  
     $('#orders_info_box').html(msg);
-    if(document.documentElement.clientHeight < document.body.scrollHeight){
-     offset = ele.offsetTop + ele.offsetHeight + $('#orders_info_box').height() > $('#orders_list_table').height()? ele.offsetTop+$("#orders_list_table").position().top-$('#tep_site_filter').height()-$('#orders_info_box').height()-$('#offsetHeight').height():ele.offsetTop+$("#orders_list_table").position().top+ele.offsetHeight;
+    offset = ele.offsetTop + $('#orders_info_box').height() > $('#orders_list_table').height()
+        ? ele.offsetTop+$("#orders_list_table").position().top - $('#orders_info_box').height() 
+        :ele.offsetTop+$("#orders_list_table").position().top;
       $('#orders_info_box').css('top',offset).show();
-    }else{
-      if(ele.offsetTop+$("#orders_list_table").position().top+ele.offsetTop + ele.offsetHeight + $('#orders_info_box').height() > document.documentElement.clientHeight){
-      offset = ele.offsetTop+$("#orders_list_table").position().top-$('#orders_info_box').height()-$('#offsetHeight').height()-ele.offsetHeight;
-      $('#orders_info_box').css('top',offset).show();
-      }else{
-      offset = ele.offsetTop+$("#orders_list_table").position().top+ele.offsetHeight;
-      $('#orders_info_box').css('top',offset).show();
-      }
-    }
-
     }
   });
 }
+$(document).ready(function(){
+$(".dataTableContent").find("input|[type=checkbox][checked]").parent().parent().each(function(){
+if($(this).attr('class')!='dataTableRowSelected'){$(this).attr('style','background-color: rgb(240, 128, 128);')}})
+});

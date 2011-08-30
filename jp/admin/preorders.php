@@ -202,6 +202,12 @@
             $change_preorder_url = $site_url_res['url'].'/change_preorder.php?pid='.$oID; 
             $comments .= "\n\n".$change_preorder_url; 
           }
+          if ($status == 33) {
+            $site_url_raw = tep_db_query("select * from sites where id = '".$site_id."'"); 
+            $site_url_res = tep_db_fetch_array($site_url_raw); 
+            $change_preorder_url = $site_url_res['url'].'/extend_time.php?pid='.$oID; 
+            $comments = str_replace('${ORDER_UP_DATE}', $change_preorder_url, $comments); 
+          }
           tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
         } 
         //tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS', $site_id), '送信済：'.$title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
@@ -225,7 +231,8 @@
       } else {
         $messageStack->add_session(NOTICE_ORDER_ID_TEXT . $oID . NOTICE_ORDER_ID_LINK_TEXT . WARNING_ORDER_NOT_UPDATED, 'warning');
       }
-    }
+      tep_pre_order_status_change($oID,$status); 
+      }
 
       tep_redirect(tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('action'))));
 
@@ -446,6 +453,12 @@
           $change_preorder_url = $site_url_res['url'].'/change_preorder.php?pid='.$oID; 
           $comments .= "\n\n".$change_preorder_url; 
         }
+        if ($status == 33) {
+          $site_url_raw = tep_db_query("select * from sites where id = '".$site_id."'"); 
+          $site_url_res = tep_db_fetch_array($site_url_raw); 
+          $change_preorder_url = $site_url_res['url'].'/extend_time.php?pid='.$oID; 
+          $comments = str_replace('${ORDER_UP_DATE}', $change_preorder_url, $comments); 
+        }
         tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
       }
       //tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS', $site_id), '送信済：'.$title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
@@ -593,7 +606,7 @@
 <?php 
   // 订单详细页，TITLE显示交易商品名
   if ($_GET['action']=='edit' && $_GET['oID']) {?>
-<title><?php echo tep_get_orders_products_names($_GET['oID']); ?></title>
+<title><?php echo tep_get_preorders_products_names($_GET['oID']); ?></title>
 <?php } else { ?>
 <title><?php echo TITLE; ?></title>
 <?php }?>
@@ -823,12 +836,15 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                   <td class="main" valign="top" width="30%"><b><?php echo TEXT_ORDER_DATE_LONG;?></b></td>
                   <td class="main"><b style=" color:#0000FF"><?php echo $order->info['predate'];?></b></td>
                 </tr>
-                <?php if (false) {?> 
                 <tr>
-                  <td class="main" valign="top"><b><?php echo TEXT_ORDER_HOUHOU;?></b></td>
-                  <td class="main"><b style=" color:#0000FF"><?php echo $order->tori['houhou'];?></b></td>
+                  <td class="main"><b><?php echo ENTRY_ENSURE_DATE;?></b></td> 
+                  <td class="main"><b style=" color:#0000FF">
+                  <?php 
+                  echo $order->info['ensure_deadline'];
+                  ?> 
+                  </b> 
+                  </td> 
                 </tr>
-                <?php }?> 
                 <tr>
                   <td class="main" valign="top"><b><?php echo TEXT_PREORDER_ID_TEXT;?></b></td>
                   <td class="main"><?php echo $_GET['oID'] ?></td>
@@ -894,20 +910,6 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
             <?php
                 }
             ?>
-              <?php 
-              if (false) { 
-              ?> 
-              <tr>
-                <td class="main"><b><?php echo ENTRY_ENSURE_DATE;?></b></td> 
-                <td class="main">
-                <?php 
-                echo $order->info['ensure_deadline'];
-                echo '<br>'; 
-                echo tep_date_long($order->info['predate']);
-                ?> 
-                </td> 
-              </tr>
-              <?php }?> 
               </table>
             </div>
             <div style="width:0.6%; background:#fff; float:left;">&nbsp;</div>
@@ -2340,10 +2342,10 @@ function submit_confirm()
   return true;
 }
 </script>
-<table width="100%"><tr><td>
+<table width="100%"><tr><td width="70%">
       <table width="100%" id="select_send" style="display:none">
         <tr>
-          <td class="main"><b><?php echo ENTRY_STATUS; ?></b></td>
+          <td class="main" width="100"><b><?php echo ENTRY_STATUS; ?></b></td>
         <td class="main"><?php echo tep_draw_pull_down_menu('status',
             $orders_statuses, $select_select,
             'onChange="mail_text(\'status\',\'comments\',\'os_title\')"'); ?> <?php
@@ -2369,7 +2371,7 @@ function submit_confirm()
           color="red">※</font>&nbsp;<?php echo TEXT_ORDER_COPY;?></td><td>
           <?php echo TEXT_ORDER_LOGIN;?></td></tr></table>
           <br>
-          <?php echo tep_draw_textarea_field('comments', 'hard', '74', '30', $select_text, 'style="font-family:monospace;font-size:x-small"'); ?>
+          <?php echo tep_draw_textarea_field('comments', 'hard', '60', '30', $select_text, 'style="font-family:monospace;font-size:x-small"'); ?>
         </td>
         </tr>
         <tr>
@@ -2396,45 +2398,22 @@ function submit_confirm()
         </tr>
       </table>
 </td><td valign="top" align="right">
-      <?php if (false) {?> 
-      <table id="select_question" style="display:none">
-        <tr>
-          <td><?php echo TEXT_ORDER_BANK;?></td>
-          <td>
-            <input type="checkbox" name="q_15_3" id="q_15_3" value="1"><?php echo
-            TEXT_ORDER_JNB;?> 
-            <input type="checkbox" name="q_15_4" id="q_15_4" value="1"><?php echo
-            TEXT_ORDER_EBANK?>
-            <input type="checkbox" name="q_15_5" id="q_15_5" value="1"><?php echo
-            TEXT_ORDER_POST_BANK;?>
-          </td>
-        </tr>
-        <tr>
-          <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-        </tr>
-        <tr>
-          <td><input type="checkbox" name="q_15_8" id="q_15_8" value="1">
-          <?php echo TEXT_ORDER_OK_ORDER_NIMBE;?></td>
-          <td><input type="text" name="q_15_7" id="q_15_7"></td>
-        </tr>
-        <tr>
-          <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-        </tr>
-        <tr>
-          <td><?php echo TEXT_ORDER_QUERYER_NAME;?></td>
-          <td><input type="text" name="q_8_1" id="q_8_1"></td>
-        </tr>
-        <tr>
-          <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-        </tr>
-        <!--
-        <tr>
-          <td colspan="2" align="right"><input type="submit" name="submit" value="取引完了" onclick="return check_question_form()"></td>
-        </tr>
-        -->
-      </table>
-      <?php }?>
-      </td></tr></table>
+<div id='select_question' style="display:none" >
+      <table width="100%">
+       <tr>
+           <td align='right'>
+               <select id='oa_dynamic_groups'  ></select>
+           </td>
+       </tr>
+       </table>
+      <table id='oa_dynamic_group_item'  width="100%">
+
+       </table>
+      <table width="100%">
+       <tr><td align='right'><button id="oa_dynamic_submit" >保存</button></td></tr>
+       </table>
+</div>
+</td></tr></table>
       </form>
       <!-- display add end-->
 

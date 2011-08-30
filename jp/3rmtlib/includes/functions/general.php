@@ -4307,7 +4307,6 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
                            'orders_wait_flag'  => 1, 
                            'orders_http_accept_language' => $_SERVER['HTTP_ACCEPT_LANGUAGE'],
                            'code_fee' => 0, 
-                           'ensure_deadline' => $pInfo['ensure_deadline'],
                            'predate' => $pInfo['predate'].' 00:00:00',
                            'is_active' => $is_active,
                            'send_mail_time' => time(),

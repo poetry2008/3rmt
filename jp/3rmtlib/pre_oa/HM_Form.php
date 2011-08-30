@@ -58,13 +58,12 @@ class HM_Form extends DbRecord
     <script type='text/javascript'>
        <?php 
 
-       if (tep_orders_finishqa($this->orders_id)) {
+       if (tep_preorders_finishqa($this->orders_id)) {
          echo "var finished = true;";
        }else {
          echo "var finished = false;";
        }
     if($this->status == 6 or $this->status == 8){
-      
       ?>
       disableQA();
       var canceled = true;
@@ -185,7 +184,7 @@ class HM_Form extends DbRecord
                       function()
                       {
                         <?php 
-                        if(tep_orders_finishqa($this->orders_id)) {
+                        if(tep_preorders_finishqa($this->orders_id)) {
                           ?>
                           disableQA();
                           return 0;

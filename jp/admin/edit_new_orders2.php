@@ -453,7 +453,7 @@
       if(!tep_get_orders_status_id($_SESSION['create_order2']['orders']['orders_id'])){
         $_SESSION['create_order2']['orders']['orders_id']= date("Ymd") . '-' . date("His") . tep_get_order_end_num();
         $new_orders2_id = $_SESSION['create_order2']['orders']['orders_id'];
-
+        last_customer_action();
       }
       tep_db_perform(TABLE_ORDERS, $_SESSION['create_order2']['orders']);
       orders_updated($_SESSION['create_order2']['orders']['orders_id']);

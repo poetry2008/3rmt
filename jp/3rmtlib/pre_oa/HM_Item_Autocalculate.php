@@ -42,13 +42,14 @@ class HM_Item_Autocalculate extends HM_Item_Basic
     //对照 orders 的 关联商品 查找数据
     $orders_products_query = tep_db_query("select op.orders_products_id, 
         p.products_id,op.products_quantity,op.products_name,p.relate_products_id,p.products_bflag
-        from ".TABLE_PREORDERS_PRODUCTS." op, ".TABLE_PRODUCTS." p where op.products_id=p.products_id and
+        from ".TABLE_PREORDERS_PRODUCTS." op, ".TABLE_PRODUCTS." p where
+        op.products_id=p.products_id and
         op.orders_id='".$this->order_id."' order by op.products_name
         asc");
     $i = 0;
 
     // 重新取一次 订单类型
-    $order_type =  tep_check_order_type($this->order_id);
+    $order_type =  tep_check_pre_order_type($this->order_id);
     $noproduct = true;
     while ($opp = tep_db_fetch_array($orders_products_query)) {
 
