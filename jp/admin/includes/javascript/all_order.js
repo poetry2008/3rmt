@@ -376,95 +376,88 @@ function clean_option(n,oid){
 
 // 是否显示批量问答框
 function show_questions(){
-  var order_payment_type = '';
-  var order_buy_type = '';
-  var form_id = '';
-  var ids = '';
-  var order_can_end = 1;
-  show = true;
-  if($(".dataTableContent").find('input|[type=checkbox][checked]').length<1){
-    show = false;
-  }else{
-    $(".dataTableContent").find('input|[type=checkbox][checked]').each(
-        function(key){
-        oid =  $(this).val();
-        ids += oid+'_';
-        $.ajax({ url: "ajax_orders.php?oid="+oid+"&action=get_oa_type", 
-          async: false,
-          success: function(msg){
-          var oamsg = msg.split("_");
-          if(order_payment_type == ''){
-          order_payment_type = oamsg[0];
-          order_buy_type = oamsg[1];
-          order_can_end =oamsg[2];
-          show  = true;
-          }else{
-          if(oamsg[0]==order_payment_type && oamsg[1]==order_buy_type){
-          show = true;
-          }else {
-          show = false;
-          }
-          if(oamsg[2]=='0'){
-          order_can_end =0;
-          }
-          }
-          }});
-        }
-    );
-  }
-  if(show){
-    $('#oa_dynamic_groups').html('');
-    $('#oa_dynamic_group_item').html('');
-    $.ajax({ url: "ajax_orders.php?payment="+order_payment_type+"&buytype="+order_buy_type+"&action=get_oa_groups", success: function(msg){
-        var oa_groupsobj =  eval("("+msg+")");
-        var oa_groups = oa_groupsobj.split('_');;
-        $("#oa_dynamic_groups").find('option').remove();//删除以前数据 
-        $("#oa_dynamic_groups")[0].options.add(new Option('----', '-1', true));
-        for (var groupstring in oa_groups){
-        if(oa_groups[groupstring]==''){
-        continue;
-        }
-        group = oa_groups[groupstring].split('|');
-        group_name = group[0];
-        group_id = group[1];
-        form_id = group[2];
-        //		$("#oa_dynamic_groups")[0].options.add(new Option(group_name,group_id,true,false));
-        $("#oa_dynamic_groups")[0].options.add(new Option(''+group_name+'',group_id,true,false));
-        }
-        if(order_can_end=='1'){
-        $("#oa_dynamic_groups")[0].options.add(new Option('取引完了','end',true,false));
-        }
-        }});
-    $("#oa_dynamic_groups").unbind('change');
-    $("#oa_dynamic_groups").change(function(){
+    var order_payment_type = '';
+    var order_buy_type = '';
+    var form_id = '';
+    var ids = '';
+    var order_can_end = 1;
+    show = true;
+    if($(".dataTableContent").find('input|[type=checkbox][checked]').length<1){
+	show = false;
+    }else{
+	$(".dataTableContent").find('input|[type=checkbox][checked]').each(
+	    function(key){
+		oid =  $(this).val();
+		ids += oid+'_';
+	    }
+	);
+	$.ajax({ url: "ajax_orders.php?oid="+ids+"&action=get_oa_type", 
+		 async: false,
+		 success: function(msg){
+		     var oamsg = msg.split("_");
+		     if(oamsg.length>1){
+			 show = true;
+			 order_payment_type = oamsg[0];
+			 order_buy_type = oamsg[1];
+			 order_can_end =oamsg[2];
+		     }else {
+			 show =false;
+		     }
+		 }});
+    }
+    if(show){
+        $('#oa_dynamic_groups').html('');
+	$('#oa_dynamic_group_item').html('');
+	$.ajax({ url: "ajax_orders.php?payment="+order_payment_type+"&buytype="+order_buy_type+"&action=get_oa_groups", success: function(msg){
+	    var oa_groupsobj =  eval("("+msg+")");
+	    var oa_groups = oa_groupsobj.split('_');;
+	    $("#oa_dynamic_groups").find('option').remove();//删除以前数据 
+	    $("#oa_dynamic_groups")[0].options.add(new Option('----', '-1', true));
+	    for (var groupstring in oa_groups){
+		if(oa_groups[groupstring]==''){
+		    continue;
+		}
+		group = oa_groups[groupstring].split('|');
+		group_name = group[0];
+		group_id = group[1];
+		form_id = group[2];
+//		$("#oa_dynamic_groups")[0].options.add(new Option(group_name,group_id,true,false));
+		$("#oa_dynamic_groups")[0].options.add(new Option(''+group_name+'',group_id,true,false));
+	    }
+	    if(order_can_end=='1'){
+		$("#oa_dynamic_groups")[0].options.add(new Option('取引完了','end',true,false));
+	    }
+	}});
+	$("#oa_dynamic_groups").unbind('change');
+	$("#oa_dynamic_groups").change(function(){
 
-        if($(this).selected().val()=='-1'){
-        //		$('#oa_dynamic_groups').html('');
-        $('#oa_dynamic_group_item').html('');
-        $("#oa_dynamic_submit").unbind('click');
-        $("#oa_dynamic_submit").hide();
-        return true;
-        }
-        if($(this).selected().val()=='end'){
-        $("#oa_dynamic_submit").show();
-        $("#oa_dynamic_submit").html('取引完了');
-        msg = '<input type="hidden" id="endtheseorder" value="1"/>';
-        $("#oa_dynamic_group_item").html(msg);
-        }else{
-        $("#oa_dynamic_submit").show();
-        $("#oa_dynamic_submit").html('保存');
-        $.ajax(
-          { 
-url: "ajax_orders.php?group_id="+$(this).val()+"&action=get_group_renderstring", 
-type:"GET",
-data:"ids="+ids,
-success: function(msg){	      
-$("#oa_dynamic_group_item").html($(msg));
-}});
-}
-
-});
-$('#select_question').show();
+	    if($(this).selected().val()=='-1'){
+//		$('#oa_dynamic_groups').html('');
+		$('#oa_dynamic_group_item').html('');
+		$("#oa_dynamic_submit").unbind('click');
+		$("#oa_dynamic_submit").hide();
+		return true;
+	    }
+	    if($(this).selected().val()=='end'){
+		$("#oa_dynamic_submit").show();
+		$("#oa_dynamic_submit").html('取引完了');
+		msg = '<input type="hidden" id="endtheseorder" value="1"/>';
+		$("#oa_dynamic_group_item").html(msg);
+	    }else{
+		$("#oa_dynamic_submit").show();
+		$("#oa_dynamic_submit").html('保存');
+	    $.ajax(
+		{ 
+		    url: "ajax_orders.php?group_id="+$(this).val()+"&action=get_group_renderstring", 
+		    type:"GET",
+		    data:"ids="+ids,
+		    success: function(msg){	      
+			$("#oa_dynamic_group_item").html($(msg));
+		    }});
+	    }
+	    
+	});
+	$('#select_question').show();
 }else{
   $('#oa_dynamic_groups').html('');
   $('#oa_dynamic_group_item').html('');
