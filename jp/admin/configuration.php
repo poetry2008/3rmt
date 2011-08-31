@@ -159,7 +159,7 @@ from " . TABLE_CONFIGURATION . "
 where 
     configuration_group_id = '" . $_GET['gID'] . "' 
     and 
-    `site_id` = '0'  order by sort_order,configuration_value"
+    `site_id` = '0'  order by sort_order"
                );
 while ($configuration = tep_db_fetch_array($configuration_query)) {
     if (tep_not_null($configuration['use_function'])) {
