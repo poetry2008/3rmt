@@ -1493,7 +1493,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                       <td class="main"><?php echo
                       tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' .
                       tep_draw_input_field('products_price',
-                          isset($pInfo->products_price)?abs($pInfo->products_price):'','
+                          isset($pInfo->products_price)?(abs($pInfo->products_price)?abs($pInfo->products_price):'0'):'','
                           onkeyup="clearNoNum(this)" id="pp"' . ($site_id ? 'class="readonly" readonly' : '')); ?></td>
  
                     </tr>
@@ -2141,7 +2141,8 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   echo '  <td height="30">';
   echo '<table  width="100%" cellpadding="0" cellspacing="0" border="0"><tr><td align="left">';
   // add abs for products_price 
-  echo CATEGORY_JIAGE_TEXT.'：&nbsp;' .  tep_draw_input_field('products_price', number_format(abs($pInfo->products_price),0,'.',''),'onkeyup="clearNoNum(this)" id="pp" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;' . CATEGORY_MONEY_UNIT_TEXT .  '&nbsp;&nbsp;←&nbsp;' . (int)$pInfo->products_price . CATEGORY_MONEY_UNIT_TEXT.' ' . "\n";
+  echo CATEGORY_JIAGE_TEXT.'：&nbsp;' .  tep_draw_input_field('products_price',
+      number_format(abs($pInfo->products_price)?abs($pInfo->products_price):'0',0,'.',''),'onkeyup="clearNoNum(this)" id="pp" size="8" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;' . CATEGORY_MONEY_UNIT_TEXT .  '&nbsp;&nbsp;←&nbsp;' . (int)$pInfo->products_price . CATEGORY_MONEY_UNIT_TEXT.' ' . "\n";
   echo '</td><td align="right">';
   if (!$pInfo->products_bflag && $pInfo->relate_products_id)
   echo CATEGORY_AVERAGE_PRICE.' '.@display_price(tep_get_avg_by_pid($pInfo->products_id)).CATEGORY_MONEY_UNIT_TEXT;
