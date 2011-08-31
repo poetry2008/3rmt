@@ -19,3 +19,4 @@ define('TEXT_DISPLAY_NUMBER_OF_COMPUTERS', '<b>%d</b>~<b>%d</b>番目を表示�
 define('TEXT_CONFIRM_DELETE_COMPUTER', 'アイコンを削除');
 define('TABLE_HEADING_COMPUTER_ORDER', '整列順');
 define('BUTTON_NEW_COMPUTER_TEXT', '新PC');
+
