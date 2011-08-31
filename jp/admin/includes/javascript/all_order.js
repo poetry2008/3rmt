@@ -375,12 +375,12 @@ function clean_option(n,oid){
 }
 
 // 是否显示批量问答框
-function show_questions(){
     var order_payment_type = '';
     var order_buy_type = '';
     var form_id = '';
     var ids = '';
     var order_can_end = 1;
+function show_questions(){
     show = true;
     if($(".dataTableContent").find('input|[type=checkbox][checked]').length<1){
 	show = false;
@@ -392,7 +392,7 @@ function show_questions(){
 	    }
 	);
 	$.ajax({ url: "ajax_orders.php?oid="+ids+"&action=get_oa_type", 
-		 async: false,
+//		 async: false,
 		 success: function(msg){
 		     var oamsg = msg.split("_");
 		     if(oamsg.length>1){
@@ -403,8 +403,12 @@ function show_questions(){
 		     }else {
 			 show =false;
 		     }
+		     show_questiondiv(show);
 		 }});
     }
+    return true;
+}
+    function show_questiondiv(show){
     if(show){
         $('#oa_dynamic_groups').html('');
 	$('#oa_dynamic_group_item').html('');
@@ -481,22 +485,21 @@ $("#oa_dynamic_submit").click(function(){
     longstring+='&oID='+ids;
     longstring+='&form_id='+form_id;
     longstring+='&finish=1';
-
     $.ajax(
       {
-type:"POST",
-async:false,
-data:longstring,
-url: urloa,
-success:function(){
-if (finish == 1){
-window.location.reload();
-}else {
-alert($("#oa_dynamic_groups").find('option|[selected]').text()+'の保存が完了しました');
-}
-}
-}
-);
+	  type:"POST",
+	  async:false,
+	  data:longstring,
+	  url: urloa,
+	  success:function(){
+	      if (finish == 1){
+		  window.location.reload();
+	      }else {
+		  alert($("#oa_dynamic_groups").find('option|[selected]').text()+'の保存が完了しました');
+	      }
+	  }
+      }
+    );
     return false;
     });
 }
