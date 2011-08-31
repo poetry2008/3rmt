@@ -50,6 +50,40 @@
       tep_mail($preorder['customers_name'], $_POST['pemail'], $preorder_email_subject, $preorder_email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS); 
     }
   }
+  
+  $preorder_product_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$preorder_id."'");
+  $preorder_product = tep_db_fetch_array($preorder_product_raw);
+  $categories_name = '';
+
+  $ca_path = tep_get_product_path($preorder_product['products_id']);
+  if (tep_not_null($ca_path)) {
+    $ca_path_array = tep_parse_category_path($ca_path); 
+  }
+  if (isset($ca_path_array)) {
+    for ($cnum = 0, $ctnum=sizeof($ca_path_array); $cnum<$ctnum; $cnum++) {
+      $categories_query = tep_db_query("
+          select categories_name 
+          from " .  TABLE_CATEGORIES_DESCRIPTION . " 
+          where categories_id = '" .  $ca_path_array[$cnum] . "' 
+            and language_id='" . $languages_id . "' 
+            and (site_id = ".SITE_ID." or site_id = 0)
+          order by site_id DESC
+          limit 1" 
+      );
+      if (tep_db_num_rows($categories_query) > 0) {
+        $categories_info = tep_db_fetch_array($categories_query); 
+        
+        if ($cnum == 0) {
+          $categories_name = $categories_info['categories_name']; 
+        }
+        
+        $breadcrumb->add($categories_info['categories_name'], tep_href_link(FILENAME_DEFAULT, 'cPath=' . implode('_', array_slice($ca_path_array, 0, ($cnum+1)))));
+      } else {
+        break;
+      }
+    }
+  }
+  $breadcrumb->add($preorder_product['products_name'], tep_href_link(FILENAME_PRODUCT_INFO, 'products_id='.$preorder_product['products_id'])); 
   $breadcrumb->add(PREORDER_SUCCESS_TITLE, '');
 ?>
 <?php page_head();?>
@@ -65,7 +99,7 @@
         <!-- left_navigation_eof //--> </td> 
       <!-- body_text //--> 
       <td valign="top" id="contents"> 
-      <h1 class="pageHeading"><?php echo PREORDER_SUCCESS_TITLE;?></h1> 
+      <h1 class="pageHeading"><?php echo PREORDER_SUCCESS_HEAD_TITLE;?></h1> 
       <div class="comment">
       <?php
       if (!$preorder['is_active']) { 
@@ -121,6 +155,24 @@
       </form> 
       <?php } else {?> 
       <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size:12px;">
+        <tr>
+          <td>
+          <?php echo sprintf(PREORDER_SUCCESS_READ_INFO, $categories_name, '<a href="'.tep_href_link(FILENAME_PRODUCT_INFO, 'products_id='.$preorder_product['products_id']).'">'.$preorder_product['products_name'].'</a>');?> 
+          </td>
+        </tr>
+        <tr>
+          <td>
+          <br>
+          <br>
+          <?php echo PREORDER_SUCCESS_APPOINT_CONTENT;?>
+          <br>
+          <?php echo PREORDER_SUCCESS_APPOINT_PRODUCT_NAME.$preorder_product['products_name'];?> 
+          <br>
+          <?php echo PREORDER_SUCCESS_APPOINT_PRODUCT_NUM.$preorder_product['products_quantity'].PREORDER_SUCCESS_UNIT_TEXT;?> 
+          <br>
+          <?php echo PREORDER_SUCCESS_APPOINT_PRODUCT_DATE.date('Y'.PREORDER_SUCCESS_YEAR_TEXT.'m'.PREORDER_SUCCESS_MONTH_TEXT.'d'.PREORDER_SUCCESS_DAY_TEXT, strtotime($preorder['predate']))?>
+          </td>
+        </tr>
         <tr>
           <td>
                 <table border="0" width="100%" cellspacing="0" cellpadding="0"> 

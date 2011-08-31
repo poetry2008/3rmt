@@ -46,9 +46,33 @@
     forward404(); 
   }
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_PREORDER);
-
   $product_info = tep_db_fetch_array($product_info_query);
-  $breadcrumb->add($product_info['products_name'] . 'を予約する');
+  
+  $ca_path = tep_get_product_path($product_info['products_id']);
+  if (tep_not_null($ca_path)) {
+    $ca_path_array = tep_parse_category_path($ca_path); 
+  }
+  if (isset($ca_path_array)) {
+    for ($cnum = 0, $ctnum=sizeof($ca_path_array); $cnum<$ctnum; $cnum++) {
+      $categories_query = tep_db_query("
+          select categories_name 
+          from " .  TABLE_CATEGORIES_DESCRIPTION . " 
+          where categories_id = '" .  $ca_path_array[$cnum] . "' 
+            and language_id='" . $languages_id . "' 
+            and (site_id = ".SITE_ID." or site_id = 0)
+          order by site_id DESC
+          limit 1" 
+      );
+      if (tep_db_num_rows($categories_query) > 0) {
+        $categories_info = tep_db_fetch_array($categories_query); $breadcrumb->add($categories_info['categories_name'], tep_href_link(FILENAME_DEFAULT, 'cPath=' . implode('_', array_slice($ca_path_array, 0, ($cnum+1)))));
+      } else {
+        break;
+      }
+    }
+  }
+  
+  $breadcrumb->add($product_info['products_name'], tep_href_link(FILENAME_PRODUCT_INFO, 'products_id='.$product_info['products_id']));
+  $breadcrumb->add(sprintf(HEADING_TITLE, $product_info['products_name']));
   $po_game_c = ds_tep_get_categories($product_info['products_id'],1);
 ?>
 <?php page_head();?>

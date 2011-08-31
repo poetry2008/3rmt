@@ -4,7 +4,7 @@
 */
 
 define('NAVBAR_TITLE', '商品を予約する');
-define('HEADING_TITLE', '\'%s\' を予約する');
+define('HEADING_TITLE', '%sを予約する');
 define('HEADING_TITLE_ERROR', '商品を予約する');
 define('ERROR_INVALID_PRODUCT', '商品が見つかりません...');
 
