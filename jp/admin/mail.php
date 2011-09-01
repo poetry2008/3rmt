@@ -5,28 +5,73 @@
 
   require('includes/application_top.php');
 
-  if ( isset($_GET['action']) && ($_GET['action'] == 'send_email_to_user') && ($_POST['customers_email_address']) && (!$_POST['back_x']) ) {
-    switch ($_POST['customers_email_address']) {
-      case '***':
-        $mail_query = tep_db_query("select customers_firstname, customers_lastname, customers_email_address from " . TABLE_CUSTOMERS);
-        $mail_sent_to = TEXT_ALL_CUSTOMERS;
-        break;
-      case '**D':
-        $mail_query = tep_db_query("select customers_firstname, customers_lastname, customers_email_address from " . TABLE_CUSTOMERS . " where customers_newsletter = '1'");
-        $mail_sent_to = TEXT_NEWSLETTER_CUSTOMERS;
-        break;
-      default:
-        $customers_email_address = tep_db_prepare_input($_POST['customers_email_address']);
-
-        $mail_query = tep_db_query("select customers_firstname, customers_lastname, customers_email_address from " . TABLE_CUSTOMERS . " where customers_email_address = '" . tep_db_input($customers_email_address) . "'");
-        $mail_sent_to = $_POST['customers_email_address'];
-        break;
+  if ( isset($_GET['action']) && ($_GET['action'] == 'send_email_to_user') && (!$_POST['back_x']) ) {
+    $mail_sent_to = '';
+    
+    if ($_POST['se_pname']) {
+      $se_name = $_POST['se_pname'];
+      $mail_sent_to .= $_POST['se_pname'].','; 
+    }
+    if ($_POST['se_mail']) {
+      $mail_sent_to .= $_POST['se_mail'].','; 
+    }
+    if ($_POST['se_cname']) {
+      $mail_sent_to .= $_POST['se_cname'].','; 
+    }
+    if ($_POST['se_site']) {
+      $mail_sent_to .= $_POST['se_site'].','; 
     }
 
+    if ($mail_sent_to != '') {
+      $mail_sent_to = substr($mail_sent_to, 0, -1); 
+    }
+    
+    $mail_sql = ''; 
+    $mail_select_sql = 'select c.customers_firstname, c.customers_lastname, c.customers_email_address ';
+    $mail_from_sql = '';
+    $mail_where_sql = '';
+    $mail_or_sql = '';
+   
+    if (!empty($_POST['se_pname'])) {
+      $mail_from_sql .= ' from '.TABLE_ORDERS.' p, '.TABLE_ORDERS_PRODUCTS.' op, '.TABLE_CUSTOMERS.' c'; 
+      $mail_where_sql .= ' and p.customers_id = c.customers_id and p.orders_id = op.orders_id'; 
+      $mail_or_sql .= ' or op.products_name like \''.$_POST['se_pname'].'\''; 
+    } else {
+      $mail_from_sql .= ' from '.TABLE_CUSTOMERS.' c'; 
+    } 
+    
+    if (!empty($_POST['se_site'])) {
+      $mail_from_sql .= ', '.TABLE_SITES.' s'; 
+      $mail_where_sql .= ' and c.site_id = s.id'; 
+      $mail_or_sql .= ' or s.name like \'%'.$_POST['se_site'].'%\''; 
+    }
+    
+    if (!empty($_POST['se_mail'])) {
+      $mail_or_sql .= ' or c.customers_email_address like \'%'.$_POST['se_mail'].'%\''; 
+    }
+    
+    if (!empty($_POST['se_cname'])) {
+      //$mail_or_sql .= ' or c.customers_firstname like \'%'.$_POST['se_cname'].'%\' or c.customers_lastname like \'%'.$_POST['se_cname'].'%\''; 
+      $mail_or_sql .= ' or concat(c.customers_lastname, \' \', c.customers_firstname) like \'%'.$_POST['se_cname'].'%\''; 
+    }
+    
+    if ($mail_where_sql != '') {
+      $mail_where_sql = ' where '.substr($mail_where_sql, 4).' and ('.substr($mail_or_sql, 3).')'; 
+    } else {
+      $mail_where_sql = ' where '.substr($mail_or_sql, 3); 
+    }
+    
+    $mail_sql .= $mail_select_sql.$mail_from_sql.$mail_where_sql;
+    
+    $mail_query = tep_db_query($mail_sql);
+    
     $from = tep_db_prepare_input($_POST['from']);
     $subject = tep_db_prepare_input($_POST['subject']);
     $message = tep_db_prepare_input($_POST['message']);
 
+
+
+    if($_POST['back_mail']==''){
     //Let's build a message object using the email class
     $mimemessage = new email(array('X-Mailer: osCommerce bulk mailer'));
     // add the message to the object
@@ -35,19 +80,33 @@
     //while ($mail = tep_db_fetch_array($mail_query)) {
       //$mimemessage->send(tep_get_fullname($mail['customers_firstname'], $mail['customers_lastname']), $mail['customers_email_address'], '', $from, $subject);
     //}
-    $mail = tep_db_fetch_array($mail_query);
-    if($mail)
-    $mimemessage->send(tep_get_fullname($mail['customers_firstname'], $mail['customers_lastname']), $mail['customers_email_address'], '', $from, $subject);
+    $mail_sum=0;
+    while($mail = tep_db_fetch_array($mail_query)){
+      $mimemessage->send(tep_get_fullname($mail['customers_firstname'], $mail['customers_lastname']), $mail['customers_email_address'], '', $from, $subject);
+      $mail_sum++;
+    }
 
-    tep_redirect(tep_href_link(FILENAME_MAIL, 'mail_sent_to=' . urlencode($mail_sent_to)));
+      tep_redirect(tep_href_link(FILENAME_MAIL, 'mail_sent_to=' .
+            urlencode($mail_sent_to).'&mail_sum='.$mail_sum));
+    }
   }
 
-  if ( isset($_GET['action']) && ($_GET['action'] == 'preview') && (!$_POST['customers_email_address']) ) {
-    $messageStack->add(ERROR_NO_CUSTOMER_SELECTED, 'error');
+  if ( isset($_GET['action']) && ($_GET['action'] == 'preview')) {
+    if (empty($_POST['se_pname']) && empty($_POST['se_mail']) && empty($_POST['se_cname']) && empty($_POST['se_site'])) {
+      $messageStack->add(ERROR_NO_SEARCH_TEXT, 'error');
+    }
+    if (!empty($_POST['se_mail'])) {
+      if (!preg_match("/^([a-zA-Z0-9]+[_|\-|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\-|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/", $_POST['se_mail'])) {
+        $messageStack->add(ERROR_EMAIL_WRONG_TYPE, 'error');
+        $error_email_single = true; 
+      }
+    }
+    //$messageStack->add(ERROR_NO_CUSTOMER_SELECTED, 'error');
   }
 
   if (isset($_GET['mail_sent_to']) && $_GET['mail_sent_to']) {
-    $messageStack->add(sprintf(NOTICE_EMAIL_SENT_TO, $_GET['mail_sent_to']), 'notice');
+      $messageStack->add(sprintf(NOTICE_EMAIL_SENT_TO,
+            isset($_GET['mail_sum'])?$_GET['mail_sum']:0), 'notice');
   }
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -58,6 +117,12 @@
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript" >
+function back_to_mail(){
+  document.mail.back_mail.value = 'back';
+  document.mail.submit();
+}
+</script>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">
 <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
@@ -90,18 +155,7 @@
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="2">
 <?php
-  if ( isset($_GET['action']) && ($_GET['action'] == 'preview') && ($_POST['customers_email_address']) ) {
-    switch ($_POST['customers_email_address']) {
-      case '***':
-        $mail_sent_to = TEXT_ALL_CUSTOMERS;
-        break;
-      case '**D':
-        $mail_sent_to = TEXT_NEWSLETTER_CUSTOMERS;
-        break;
-      default:
-        $mail_sent_to = $_POST['customers_email_address'];
-        break;
-    }
+  if ( isset($_GET['action']) && ($_GET['action'] == 'preview')&&($_POST['se_pname'] || $_POST['se_mail'] || $_POST['se_cname'] || $_POST['se_site']) && !isset($error_email_single)) {
 ?>
           <tr><?php echo tep_draw_form('mail', FILENAME_MAIL, 'action=send_email_to_user'); ?>
             <td><table border="0" width="100%" cellpadding="0" cellspacing="2">
@@ -109,7 +163,25 @@
                 <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
               </tr>
               <tr>
-                <td class="smallText"><b><?php echo TEXT_CUSTOMER; ?></b><br><?php echo $mail_sent_to; ?></td>
+                <td class="smallText"><b><?php echo SEARCH_MAIL_PRODUCTS_NAME; ?></b><br><?php echo $_POST['se_pname']; ?></td>
+              </tr>
+              <tr>
+                <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
+              </tr>
+              <tr>
+                <td class="smallText"><b><?php echo SEARCH_MAIL_TITLE; ?></b><br><?php echo $_POST['se_mail']; ?></td>
+              </tr>
+              <tr>
+                <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
+              </tr>
+              <tr>
+                <td class="smallText"><b><?php echo SEARCH_MAIL_CUSTOMERS_NAME; ?></b><br><?php echo $_POST['se_cname']; ?></td>
+              </tr>
+              <tr>
+                <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
+              </tr>
+              <tr>
+                <td class="smallText"><b><?php echo SEARCH_MAIL_SITENAME; ?></b><br><?php echo $_POST['se_site']; ?></td>
               </tr>
               <tr>
                 <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
@@ -142,10 +214,12 @@
         echo tep_draw_hidden_field($key, htmlspecialchars(stripslashes($value)));
       }
     }
+    echo tep_draw_hidden_field('back_mail','');
 ?>
                 <table border="0" width="100%" cellpadding="0" cellspacing="2">
                   <tr>
-                    <td><?php echo tep_image_submit('button_back.gif', IMAGE_BACK, 'name="back"'); ?></td>
+                    <td><?php echo
+                    tep_html_element_submit(IMAGE_BACK,'onclick="back_to_mail()"');?></td>
                     <td align="right"><?php echo '<a class="new_product_reset" href="' . tep_href_link(FILENAME_MAIL) . '">' .  tep_html_element_button(IMAGE_CANCEL) . '</a> ' .  tep_html_element_submit(BUTTON_SENDMAIL_TEXT); ?></td>
                   </tr>
                 </table></td>
@@ -161,6 +235,7 @@
                 <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
               </tr>
 <?php
+    /* 
     $customers = array();
     $customers[] = array('id' => '', 'text' => TEXT_SELECT_CUSTOMER);
     $customers[] = array('id' => '***', 'text' => TEXT_ALL_CUSTOMERS);
@@ -170,10 +245,40 @@
       $customers[] = array('id' => $customers_values['customers_email_address'],
                            'text' => $customers_values['customers_lastname'] . ', ' . $customers_values['customers_firstname'] . ' (' . $customers_values['customers_email_address'] . ')');
     }
+    */    
 ?>
               <tr>
-                <td class="main"><?php echo TEXT_CUSTOMER; ?></td>
-                <td><?php echo tep_draw_pull_down_menu('customers_email_address', $customers, isset($_GET['customer'])?$_GET['customer']:'');?></td>
+                <td class="main"><?php echo SEARCH_MAIL_PRODUCTS_NAME; ?></td>
+                <td>
+                <?php echo tep_draw_input_field('se_pname');?> 
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
+              </tr>
+              <tr>
+                <td class="main"><?php echo SEARCH_MAIL_TITLE; ?></td>
+                <td>
+                <?php echo tep_draw_input_field('se_mail');?> 
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
+              </tr>
+              <tr>
+                <td class="main"><?php echo SEARCH_MAIL_CUSTOMERS_NAME; ?></td>
+                <td>
+                <?php echo tep_draw_input_field('se_cname');?> 
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
+              </tr>
+              <tr>
+                <td class="main"><?php echo SEARCH_MAIL_SITENAME; ?></td>
+                <td>
+                <?php echo tep_draw_input_field('se_site');?> 
+                </td>
               </tr>
               <tr>
                 <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
