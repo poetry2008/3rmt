@@ -12,6 +12,7 @@
       $this->description = MODULE_METASEO_A_TAG_TEXT_DESCRIPTION;
       $this->explain = MODULE_METASEO_A_TAG_TEXT_EXPLAIN;
       $this->sort_order = MODULE_METASEO_A_TAG_SORT_ORDER;
+      $this->link = 'tags/t-1.html';
 
     }
 
