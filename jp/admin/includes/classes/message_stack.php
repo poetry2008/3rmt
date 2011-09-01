@@ -68,8 +68,17 @@
       }
       $messageToStack = array();
       */
-
-      $messageToStack[] = array('text' => $message, 'type' => $type);
+      $exists_single = false; 
+      if (!empty($messageToStack)) {
+        foreach ($messageToStack as $key => $value) {
+          if (($value['text'] == $message) && ($value['type'] == $type)) {
+            $exists_single = true; 
+          }
+        }
+      }
+      if (!$exists_single) {
+        $messageToStack[] = array('text' => $message, 'type' => $type);
+      }
       /*
       $_SESSION['messageToStack'] = $messageToStack;
       */
