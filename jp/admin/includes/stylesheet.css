@@ -859,8 +859,11 @@ margin-bottom:15px\9;
 }
 #categories_tree li .subcategory_tree{list-style-type: none;}
 .dataTableHeadingContent_pw a{ color:#FFFFFF; text-decoration:none; font-weight:bold;}
+.dataTableHeadingContent_order a{ color:#FFFFFF; text-decoration:underline; font-weight:bold;}
+/*
 a.head_sort_order_select { color:#FFFFFF; text-decoration:underline; font-weight:bold; }
 a.head_sort_order {color:#FFFFFF; text-decoration:none; font-weight:bold; }
+*/
 .pw_textarea{ width:97%;}
 
 .popup-calendar {
