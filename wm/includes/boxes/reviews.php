@@ -84,9 +84,8 @@ if (
       if (isset($subcid) && $subcid) {
         $exists_reviews_raw .= "and p.products_id = p2c.products_id and p2c.categories_id in (".implode(',',$subcid).") ";
       }
-      if (!isset($_GET['products_id'])) {
-        $exists_reviews_raw .= " and p.products_id = '" .  $random_reviews['products_id'] . "'";
-      }
+      
+      $exists_reviews_raw .= " and p.products_id = '" .  $random_reviews['products_id'] . "'";
       
       $exists_reviews_raw .= " and pd.products_status != 0 and pd.products_status != 3 order by pd.site_id DESC";
       $exists_reviews_query = tep_db_query($exists_reviews_raw); 
