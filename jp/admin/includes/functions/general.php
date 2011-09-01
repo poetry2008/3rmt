@@ -6360,3 +6360,26 @@ return true;
 function last_customer_action() {
   tep_db_query("update ".TABLE_CONFIGURATION." set configuration_value=now() where configuration_key='LAST_CUSTOMER_ACTION'");
 }
+
+function tep_get_ot_total_by_orders_id_no_abs($orders_id, $single = false) {
+  if ($single) {
+    global $currencies; 
+  }
+  $query = tep_db_query("select value from " . TABLE_ORDERS_TOTAL . " where class='ot_total' and orders_id='".$orders_id."'");
+  $result = tep_db_fetch_array($query);
+  if($result['value'] > 0){
+    if ($single) {
+      return
+        "<b>".$currencies->format($result['value'],true,DEFAULT_CURRENCY,'',false)."</b>";
+    } else {
+      return "<b>".$result['value']."円</b>";
+    }
+  }else{
+    if ($single) {
+      return "<b><font
+        color='ff0000'>".$currencies->format($result['value'],true,DEFAULT_CURRENCY,'',false)."</font></b>";
+    } else {
+      return "<b><font color='ff0000'>".$result['value']."円</font></b>";
+    }
+  }
+}
