@@ -57,7 +57,11 @@ if (
   </div>
     <?php
   $random_reviews_array = array(); 
-  $random_reviews_raw = tep_db_query("select * from ".TABLE_REVIEWS." where site_id = '".SITE_ID."' and reviews_status = '1'"); 
+  if (isset($_GET['products_id'])) {
+    $random_reviews_raw = tep_db_query("select * from ".TABLE_REVIEWS." where site_id = '".SITE_ID."' and reviews_status = '1' and products_id = '".(int)$_GET['products_id']."'"); 
+  } else {
+    $random_reviews_raw = tep_db_query("select * from ".TABLE_REVIEWS." where site_id = '".SITE_ID."' and reviews_status = '1'"); 
+  }
   $random_reviews_num = tep_db_num_rows($random_reviews_raw);
   $re_calc_num = 1;
   $re_max_num = 1;
@@ -81,9 +85,7 @@ if (
       if (isset($subcid) && $subcid) {
         $exists_reviews_raw .= "and p.products_id = p2c.products_id and p2c.categories_id in (".implode(',',$subcid).") ";
       }
-      if (isset($_GET['products_id'])) {
-        $exists_reviews_raw .= " and p.products_id = '" . (int)$_GET['products_id'] . "'";
-      } else {
+      if (!isset($_GET['products_id'])) {
         $exists_reviews_raw .= " and p.products_id = '" .  $random_reviews['products_id'] . "'";
       }
       
