@@ -387,18 +387,22 @@ function show_questions(ele){
     show = true;
     if($(".dataTableContent").find('input|[type=checkbox][checked]').length==0){
 	show = false;
+	show_questiondiv(show)
+	return true;
     }
-    $(".dataTableContent").find('input|[type=checkbox][checked]').each(
-	function(key){
-	    oid =  $(this).val();
-	    ids += oid+'_';
-	}
-    );
     if(show){
     setTimeout(function(){
+	$(".dataTableContent").find('input|[type=checkbox][checked]').each(
+	    function(key){
+		oid =  $(this).val();
+		ids += oid+'_';
+	    }
+	);		     
 	$.ajax({ url: "ajax_orders.php?action=get_oa_type",
+		 type:'post',
 		 beforeSend: function(jqXHR,settings){
 		     if(lastid!=ele.value){
+			 show_questiondiv(false)
 			 return false;
 		     }
 		     return true;
