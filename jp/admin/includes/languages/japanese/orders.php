@@ -184,5 +184,7 @@ define('TEXT_FUNCTION_PC','PC：');
 define('ORDERS_STATUS_SELECT_PRE', 'ステータス「');
 define('ORDERS_STATUS_SELECT_LAST', '」からの検索');
 define('TEXT_ORDER_FIND_OID', '注文番号からの検索');
+define('TEXT_SORT_ASC','▲');
+define('TEXT_SORT_DESC','▼');
 
 ?>

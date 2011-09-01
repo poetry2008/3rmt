@@ -2595,77 +2595,113 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
 ?>
       <td class="dataTableHeadingContent_order"><?php 
       if ($HTTP_GET_VARS['order_sort'] == 'site_romaji'){
-        echo "<a href='".tep_href_link(FILENAME_ORDERS,
+        echo "<a class='head_sort_order_select' href='".tep_href_link(FILENAME_ORDERS,
             tep_get_all_get_params(array('x', 'y', 'order_type',
                 'order_sort')).'order_sort=site_romaji&order_type='.$type_str)."'>";
+        echo TABLE_HEADING_SITE;
+        if($type_str == 'asc'){
+          echo TEXT_SORT_DESC;
+        }else{
+          echo TEXT_SORT_ASC;
+        }
       }else{
-        echo "<a href='".tep_href_link(FILENAME_ORDERS,
+        echo "<a class='head_sort_order' href='".tep_href_link(FILENAME_ORDERS,
                 'order_sort=site_romaji&order_type=asc')."'>";
+        echo TABLE_HEADING_SITE;
       }
-      echo TABLE_HEADING_SITE;
       echo "</a>";
       ?></td>
       <td class="dataTableHeadingContent_order"><?php 
       if ($HTTP_GET_VARS['order_sort'] == 'customers_name'){
-        echo "<a href='".tep_href_link(FILENAME_ORDERS,
+        echo "<a class='head_sort_order_select' href='".tep_href_link(FILENAME_ORDERS,
             tep_get_all_get_params(array('x', 'y', 'order_type',
                 'order_sort')).'order_sort=customers_name&order_type='.$type_str)."'>";
+        echo TABLE_HEADING_CUSTOMERS; 
+        if($type_str == 'asc'){
+          echo TEXT_SORT_DESC;
+        }else{
+          echo TEXT_SORT_ASC;
+        }
       }else{
-        echo "<a href='".tep_href_link(FILENAME_ORDERS,
+        echo "<a class='head_sort_order' href='".tep_href_link(FILENAME_ORDERS,
                 'order_sort=customers_name&order_type=asc')."'>";
+        echo TABLE_HEADING_CUSTOMERS; 
       }
-      echo TABLE_HEADING_CUSTOMERS; 
       echo "</a>";
       ?></td>
       <td class="dataTableHeadingContent_order" align="right"><?php 
       if ($HTTP_GET_VARS['order_sort'] == 'ot_total'){
-        echo "<a href='".tep_href_link(FILENAME_ORDERS,
+        echo "<a class='head_sort_order_select' href='".tep_href_link(FILENAME_ORDERS,
             tep_get_all_get_params(array('x', 'y', 'order_type',
                 'order_sort')).'order_sort=ot_total&order_type='.$type_str)."'>";
+        echo TABLE_HEADING_ORDER_TOTAL;
+        if($type_str == 'asc'){
+          echo TEXT_SORT_DESC;
+        }else{
+          echo TEXT_SORT_ASC;
+        }
       }else{
-        echo "<a href='".tep_href_link(FILENAME_ORDERS,
+        echo "<a class='head_sort_order' href='".tep_href_link(FILENAME_ORDERS,
                 'order_sort=ot_total&order_type=asc')."'>";
+        echo TABLE_HEADING_ORDER_TOTAL;
       }
-      echo TABLE_HEADING_ORDER_TOTAL;
       echo "</a>";
       ?></td>
       <td class="dataTableHeadingContent_order" align="center"><?php 
       if ($HTTP_GET_VARS['order_sort'] == 'torihiki_date'){
-        echo "<a href='".tep_href_link(FILENAME_ORDERS,
+        echo "<a class='head_sort_order_select' href='".tep_href_link(FILENAME_ORDERS,
             tep_get_all_get_params(array('x', 'y', 'order_type',
                 'order_sort')).'order_sort=torihiki_date&order_type='.$type_str)."'>";
+        echo TEXT_ORDER_ORDER_DATE;
+        if($type_str == 'asc'){
+          echo TEXT_SORT_DESC;
+        }else{
+          echo TEXT_SORT_ASC;
+        }
       }else{
-        echo "<a href='".tep_href_link(FILENAME_ORDERS,
+        echo "<a class='head_sort_order' href='".tep_href_link(FILENAME_ORDERS,
                 'order_sort=torihiki_date&order_type=asc')."'>";
+        echo TEXT_ORDER_ORDER_DATE;
       }
-      echo TEXT_ORDER_ORDER_DATE;
       echo "</a>";
       ?></td>
       <td class="dataTableHeadingContent">&nbsp;</td>
       <td class="dataTableHeadingContent">&nbsp;</td>
       <td class="dataTableHeadingContent_order" align="center"><?php 
       if ($HTTP_GET_VARS['order_sort'] == 'date_purchased'){
-        echo "<a href='".tep_href_link(FILENAME_ORDERS,
+        echo "<a class='head_sort_order_select' href='".tep_href_link(FILENAME_ORDERS,
             tep_get_all_get_params(array('x', 'y', 'order_type',
                 'order_sort')).'order_sort=date_purchased&order_type='.$type_str)."'>";
+        echo TABLE_HEADING_DATE_PURCHASED; 
+        if($type_str == 'asc'){
+          echo TEXT_SORT_DESC;
+        }else{
+          echo TEXT_SORT_ASC;
+        }
       }else{
-        echo "<a href='".tep_href_link(FILENAME_ORDERS,
+        echo "<a class='head_sort_order' href='".tep_href_link(FILENAME_ORDERS,
                 'order_sort=date_purchased&order_type=asc')."'>";
+        echo TABLE_HEADING_DATE_PURCHASED; 
       }
-      echo TABLE_HEADING_DATE_PURCHASED; 
       echo "</a>";
       ?></td>
       <td class="dataTableHeadingContent" align="right"></td>
       <td class="dataTableHeadingContent_order" align="right"><?php 
-      if ($HTTP_GET_VARS['order_sort'] == 'site_romaji'){
-        echo "<a href='".tep_href_link(FILENAME_ORDERS,
+      if ($HTTP_GET_VARS['order_sort'] == 'orders_status_name'){
+        echo "<a class='head_sort_order_select' href='".tep_href_link(FILENAME_ORDERS,
             tep_get_all_get_params(array('x', 'y', 'order_type',
-                'order_sort')).'order_sort=site_romaji&order_type='.$type_str)."'>";
+                'order_sort')).'order_sort=orders_status_name&order_type='.$type_str)."'>";
+        echo TABLE_HEADING_STATUS; 
+        if($type_str == 'asc'){
+          echo TEXT_SORT_DESC;
+        }else{
+          echo TEXT_SORT_ASC;
+        }
       }else{
-        echo "<a href='".tep_href_link(FILENAME_ORDERS,
-                'order_sort=site_romaji&order_type=asc')."'>";
+        echo "<a class='head_sort_order' href='".tep_href_link(FILENAME_ORDERS,
+                'order_sort=orders_status_name&order_type=asc')."'>";
+        echo TABLE_HEADING_STATUS; 
       }
-      echo TABLE_HEADING_STATUS; 
       echo "</a>";
       ?></td>
       <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_ACTION; ?>&nbsp;</td>
@@ -2756,9 +2792,9 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
     <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';">
       <?php if (!$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)) {?>
       <font color="#999"><?php echo
-        strip_tags(tep_get_ot_total_by_orders_id($orders['orders_id'],true));?></font>
+        strip_tags(tep_get_ot_total_by_orders_id_no_abs($orders['orders_id'],true));?></font>
       <?php } else { ?>
-      <?php echo strip_tags(tep_get_ot_total_by_orders_id($orders['orders_id'], true));?>
+      <?php echo strip_tags(tep_get_ot_total_by_orders_id_no_abs($orders['orders_id'], true));?>
       <?php }?>
     </td>
     <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';"><?php echo $next_mark; ?><font color="<?php echo !$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)?'#999':$today_color; ?>" id="tori_<?php echo $orders['orders_id']; ?>"><?php echo tep_datetime_short($orders['torihiki_date']); ?></font></td>
