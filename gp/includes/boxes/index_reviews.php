@@ -102,7 +102,7 @@ if (
       if ($re_calc_num > $re_show_num) {
         break; 
       }
-      if ($re_max_num > 5000) {
+      if ($re_max_num > 3000) {
         break; 
       }
     }
@@ -125,6 +125,11 @@ if (
     echo '<div class="product_info_box"><p class="reviews_top"><a href="' .  tep_href_link(FILENAME_PRODUCT_REVIEWS_INFO, 'products_id=' .  $ran_value['products_id'] . '&reviews_id=' . $ran_key) . '" class="reviews_img">' . tep_image(DIR_WS_IMAGES . 'products/' .  $ran_value['products_image'], $ran_value['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a><br>'.  tep_image(DIR_WS_IMAGES . 'stars_' . $ran_value['reviews_rating'] . '.gif' , sprintf(BOX_REVIEWS_TEXT_OF_5_STARS, $ran_value['reviews_rating']), 88, 16) . "\n".'</p> <table border="0" cellspacing="0" cellpadding="0" class="reviews_bottom"><tr><td><a href="' .  tep_href_link(FILENAME_PRODUCT_REVIEWS_INFO, 'products_id=' .  $ran_value['products_id'] . '&reviews_id=' .  $ran_key) . '">' . tep_show_review_des($review) . ' ...</a></td></tr></table>'; 
      echo '</div></div>'; 
     } 
+    if (empty($random_reviews_array)) {
+      echo '<div class="reviews_warp" align="center">';
+      echo BOX_REVIEWS_NO_REVIEWS;
+      echo '</div>'; 
+    }
     } elseif (isset($_GET['products_id'])) {
 // display 'write a review' box
     echo '<div class="reviews_warp" align="center">';
