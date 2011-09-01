@@ -375,24 +375,35 @@ function clean_option(n,oid){
 }
 
 // 是否显示批量问答框
-    var order_payment_type = '';
-    var order_buy_type = '';
-    var form_id = '';
-    var ids = '';
-    var order_can_end = 1;
-function show_questions(){
+var order_payment_type = '';
+var order_buy_type = '';
+var form_id = '';
+var ids = '';
+var order_can_end = 1;
+var lastid = '';
+function show_questions(ele){
+    ids = '';
+    lastid = ele.value;
     show = true;
-    if($(".dataTableContent").find('input|[type=checkbox][checked]').length<1){
+    if($(".dataTableContent").find('input|[type=checkbox][checked]').length==0){
 	show = false;
-    }else{
-	$(".dataTableContent").find('input|[type=checkbox][checked]').each(
-	    function(key){
-		oid =  $(this).val();
-		ids += oid+'_';
-	    }
-	);
-	$.ajax({ url: "ajax_orders.php?oid="+ids+"&action=get_oa_type", 
-//		 async: false,
+    }
+    $(".dataTableContent").find('input|[type=checkbox][checked]').each(
+	function(key){
+	    oid =  $(this).val();
+	    ids += oid+'_';
+	}
+    );
+    if(show){
+    setTimeout(function(){
+	$.ajax({ url: "ajax_orders.php?action=get_oa_type",
+		 beforeSend: function(jqXHR,settings){
+		     if(lastid!=ele.value){
+			 return false;
+		     }
+		     return true;
+		 },
+		 data:'oid='+ids,
 		 success: function(msg){
 		     var oamsg = msg.split("_");
 		     if(oamsg.length>1){
@@ -404,7 +415,7 @@ function show_questions(){
 			 show =false;
 		     }
 		     show_questiondiv(show);
-		 }});
+		 }});},1000);
     }
     return true;
 }
