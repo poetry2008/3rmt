@@ -25,8 +25,11 @@
     }
 
 // class methods
-    function format($number, $calculate_currency_value = true, $currency_type = DEFAULT_CURRENCY, $currency_value = '') {
+    function format($number, $calculate_currency_value = true, $currency_type =
+        DEFAULT_CURRENCY, $currency_value = '',$is_abs = true) {
+      if($is_abs){
       $number = abs($number);
+      }
       if ($calculate_currency_value) {
         $rate = ($currency_value) ? $currency_value : $this->currencies[$currency_type]['value'];
         $format_string = $this->currencies[$currency_type]['symbol_left'] . number_format($number * $rate, $this->currencies[$currency_type]['decimal_places'], $this->currencies[$currency_type]['decimal_point'], $this->currencies[$currency_type]['thousands_point']) . $this->currencies[$currency_type]['symbol_right'];

@@ -440,8 +440,8 @@ if ($_POST['orders_id'] &&
   $onsuit = false;
   $tnsuit = false;
   $notfinish = false;
-  $ids = $_GET['oid'];
-  $ids_array = explode('_',$_GET['oid']);
+  $ids = $_POST['oid'];
+  $ids_array = explode('_',$ids);
   foreach($ids_array as $oid){
     if($oid==''){continue;}
     unset($orders_info_raw);
