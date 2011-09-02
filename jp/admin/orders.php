@@ -2600,9 +2600,19 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
                 'order_sort')).'order_sort=site_romaji&order_type='.$type_str)."'>";
         echo TABLE_HEADING_SITE;
         if($type_str == 'asc'){
-          echo TEXT_SORT_DESC;
-        }else{
+          echo "<font color='#c0c0c0'>";
           echo TEXT_SORT_ASC;
+          echo "</font>";
+          echo "<font color='#facb9c'>";
+          echo TEXT_SORT_DESC;
+          echo "</font>";
+        }else{
+          echo "<font color='#facb9c'>";
+          echo TEXT_SORT_ASC;
+          echo "</font>";
+          echo "<font color='#c0c0c0'>";
+          echo TEXT_SORT_DESC;
+          echo "</font>";
         }
       }else{
         echo "<a class='head_sort_order' href='".tep_href_link(FILENAME_ORDERS,
@@ -2618,9 +2628,19 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
                 'order_sort')).'order_sort=customers_name&order_type='.$type_str)."'>";
         echo TABLE_HEADING_CUSTOMERS; 
         if($type_str == 'asc'){
-          echo TEXT_SORT_DESC;
-        }else{
+          echo "<font color='#c0c0c0'>";
           echo TEXT_SORT_ASC;
+          echo "</font>";
+          echo "<font color='#facb9c'>";
+          echo TEXT_SORT_DESC;
+          echo "</font>";
+        }else{
+          echo "<font color='#facb9c'>";
+          echo TEXT_SORT_ASC;
+          echo "</font>";
+          echo "<font color='#c0c0c0'>";
+          echo TEXT_SORT_DESC;
+          echo "</font>";
         }
       }else{
         echo "<a class='head_sort_order' href='".tep_href_link(FILENAME_ORDERS,
@@ -2636,9 +2656,19 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
                 'order_sort')).'order_sort=ot_total&order_type='.$type_str)."'>";
         echo TABLE_HEADING_ORDER_TOTAL;
         if($type_str == 'asc'){
-          echo TEXT_SORT_DESC;
-        }else{
+          echo "<font color='#c0c0c0'>";
           echo TEXT_SORT_ASC;
+          echo "</font>";
+          echo "<font color='#facb9c'>";
+          echo TEXT_SORT_DESC;
+          echo "</font>";
+        }else{
+          echo "<font color='#facb9c'>";
+          echo TEXT_SORT_ASC;
+          echo "</font>";
+          echo "<font color='#c0c0c0'>";
+          echo TEXT_SORT_DESC;
+          echo "</font>";
         }
       }else{
         echo "<a class='head_sort_order' href='".tep_href_link(FILENAME_ORDERS,
@@ -2654,9 +2684,19 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
                 'order_sort')).'order_sort=torihiki_date&order_type='.$type_str)."'>";
         echo TEXT_ORDER_ORDER_DATE;
         if($type_str == 'asc'){
-          echo TEXT_SORT_DESC;
-        }else{
+          echo "<font color='#c0c0c0'>";
           echo TEXT_SORT_ASC;
+          echo "</font>";
+          echo "<font color='#facb9c'>";
+          echo TEXT_SORT_DESC;
+          echo "</font>";
+        }else{
+          echo "<font color='#facb9c'>";
+          echo TEXT_SORT_ASC;
+          echo "</font>";
+          echo "<font color='#c0c0c0'>";
+          echo TEXT_SORT_DESC;
+          echo "</font>";
         }
       }else{
         echo "<a class='head_sort_order' href='".tep_href_link(FILENAME_ORDERS,
@@ -2674,9 +2714,19 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
                 'order_sort')).'order_sort=date_purchased&order_type='.$type_str)."'>";
         echo TABLE_HEADING_DATE_PURCHASED; 
         if($type_str == 'asc'){
-          echo TEXT_SORT_DESC;
-        }else{
+          echo "<font color='#c0c0c0'>";
           echo TEXT_SORT_ASC;
+          echo "</font>";
+          echo "<font color='#facb9c'>";
+          echo TEXT_SORT_DESC;
+          echo "</font>";
+        }else{
+          echo "<font color='#facb9c'>";
+          echo TEXT_SORT_ASC;
+          echo "</font>";
+          echo "<font color='#c0c0c0'>";
+          echo TEXT_SORT_DESC;
+          echo "</font>";
         }
       }else{
         echo "<a class='head_sort_order' href='".tep_href_link(FILENAME_ORDERS,
@@ -2693,9 +2743,19 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
                 'order_sort')).'order_sort=orders_status_name&order_type='.$type_str)."'>";
         echo TABLE_HEADING_STATUS; 
         if($type_str == 'asc'){
-          echo TEXT_SORT_DESC;
-        }else{
+          echo "<font color='#c0c0c0'>";
           echo TEXT_SORT_ASC;
+          echo "</font>";
+          echo "<font color='#facb9c'>";
+          echo TEXT_SORT_DESC;
+          echo "</font>";
+        }else{
+          echo "<font color='#facb9c'>";
+          echo TEXT_SORT_ASC;
+          echo "</font>";
+          echo "<font color='#c0c0c0'>";
+          echo TEXT_SORT_DESC;
+          echo "</font>";
         }
       }else{
         echo "<a class='head_sort_order' href='".tep_href_link(FILENAME_ORDERS,
