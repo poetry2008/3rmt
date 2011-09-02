@@ -43,6 +43,7 @@
       //$mimemessage->send(tep_get_fullname($mail['customers_firstname'], $mail['customers_lastname']), $mail['customers_email_address'], '', $from, $subject);
     //}
     $mail_sum=0;
+    set_time_limit(0);
     foreach($_POST['mail_list'] as $mail){
       $mail_arr = explode('|_|',$mail);
       $mimemessage->send(tep_get_fullname($mail_arr['0'], $mail_arr['1']), $mail_arr['2'], '', $from, $subject);
