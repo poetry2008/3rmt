@@ -5,7 +5,65 @@
 
   require('includes/application_top.php');
 
-  if ( isset($_GET['action']) && ($_GET['action'] == 'send_email_to_user') && (!$_POST['back_x']) ) {
+  if ( isset($_GET['action']) && ($_GET['action'] == 'send_email_to_user') &&
+      (!$_POST['back_mail']) ) {
+    $mail_sent_to = '';
+    
+    if ($_POST['se_pname']) {
+      $se_name = $_POST['se_pname'];
+      $mail_sent_to .= $_POST['se_pname'].','; 
+    }
+    if ($_POST['se_mail']) {
+      $mail_sent_to .= $_POST['se_mail'].','; 
+    }
+    if ($_POST['se_cname']) {
+      $mail_sent_to .= $_POST['se_cname'].','; 
+    }
+    if ($_POST['se_site']) {
+      $mail_sent_to .= $_POST['se_site'].','; 
+    }
+
+    if ($mail_sent_to != '') {
+      $mail_sent_to = substr($mail_sent_to, 0, -1); 
+    }
+       
+    $from = tep_db_prepare_input($_POST['from']);
+    $subject = tep_db_prepare_input($_POST['subject']);
+    $message = tep_db_prepare_input($_POST['message']);
+
+
+
+    if($_POST['back_mail']==''){
+    //Let's build a message object using the email class
+    $mimemessage = new email(array('X-Mailer: osCommerce bulk mailer'));
+    // add the message to the object
+    $mimemessage->add_text($message);
+    $mimemessage->build_message();
+    //while ($mail = tep_db_fetch_array($mail_query)) {
+      //$mimemessage->send(tep_get_fullname($mail['customers_firstname'], $mail['customers_lastname']), $mail['customers_email_address'], '', $from, $subject);
+    //}
+    $mail_sum=0;
+    foreach($_POST['mail_list'] as $mail){
+      $mail_arr = explode('|_|',$mail);
+      $mimemessage->send(tep_get_fullname($mail_arr['0'], $mail_arr['1']), $mail_arr['2'], '', $from, $subject);
+      $mail_sum++;
+    }
+
+      tep_redirect(tep_href_link(FILENAME_MAIL, 'mail_sent_to=' .
+            urlencode($mail_sent_to).'&mail_sum='.$mail_sum));
+    }
+  }
+
+  if ( isset($_GET['action']) && ($_GET['action'] == 'preview')) {
+    if (empty($_POST['se_pname']) && empty($_POST['se_mail']) && empty($_POST['se_cname']) && empty($_POST['se_site'])) {
+      $messageStack->add(ERROR_NO_SEARCH_TEXT, 'error');
+    }
+    if (!empty($_POST['se_mail'])) {
+      if (!preg_match("/^([a-zA-Z0-9]+[_|\-|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\-|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/", $_POST['se_mail'])) {
+        $messageStack->add(ERROR_EMAIL_WRONG_TYPE, 'error');
+        $error_email_single = true; 
+      }
+    }
     $mail_sent_to = '';
     
     if ($_POST['se_pname']) {
@@ -64,43 +122,7 @@
     $mail_sql .= $mail_select_sql.$mail_from_sql.$mail_where_sql;
     
     $mail_query = tep_db_query($mail_sql);
-    
-    $from = tep_db_prepare_input($_POST['from']);
-    $subject = tep_db_prepare_input($_POST['subject']);
-    $message = tep_db_prepare_input($_POST['message']);
 
-
-
-    if($_POST['back_mail']==''){
-    //Let's build a message object using the email class
-    $mimemessage = new email(array('X-Mailer: osCommerce bulk mailer'));
-    // add the message to the object
-    $mimemessage->add_text($message);
-    $mimemessage->build_message();
-    //while ($mail = tep_db_fetch_array($mail_query)) {
-      //$mimemessage->send(tep_get_fullname($mail['customers_firstname'], $mail['customers_lastname']), $mail['customers_email_address'], '', $from, $subject);
-    //}
-    $mail_sum=0;
-    while($mail = tep_db_fetch_array($mail_query)){
-      $mimemessage->send(tep_get_fullname($mail['customers_firstname'], $mail['customers_lastname']), $mail['customers_email_address'], '', $from, $subject);
-      $mail_sum++;
-    }
-
-      tep_redirect(tep_href_link(FILENAME_MAIL, 'mail_sent_to=' .
-            urlencode($mail_sent_to).'&mail_sum='.$mail_sum));
-    }
-  }
-
-  if ( isset($_GET['action']) && ($_GET['action'] == 'preview')) {
-    if (empty($_POST['se_pname']) && empty($_POST['se_mail']) && empty($_POST['se_cname']) && empty($_POST['se_site'])) {
-      $messageStack->add(ERROR_NO_SEARCH_TEXT, 'error');
-    }
-    if (!empty($_POST['se_mail'])) {
-      if (!preg_match("/^([a-zA-Z0-9]+[_|\-|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\-|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/", $_POST['se_mail'])) {
-        $messageStack->add(ERROR_EMAIL_WRONG_TYPE, 'error');
-        $error_email_single = true; 
-      }
-    }
     //$messageStack->add(ERROR_NO_CUSTOMER_SELECTED, 'error');
   }
 
@@ -158,7 +180,7 @@ function back_to_mail(){
   if ( isset($_GET['action']) && ($_GET['action'] == 'preview')&&($_POST['se_pname'] || $_POST['se_mail'] || $_POST['se_cname'] || $_POST['se_site']) && !isset($error_email_single)) {
 ?>
           <tr><?php echo tep_draw_form('mail', FILENAME_MAIL, 'action=send_email_to_user'); ?>
-            <td><table border="0" width="100%" cellpadding="0" cellspacing="2">
+            <td width="50%"><table border="0" width="100%" cellpadding="0" cellspacing="2">
               <tr>
                 <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
               </tr>
@@ -204,8 +226,31 @@ function back_to_mail(){
               <tr>
                 <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
               </tr>
+                </table></td>
+                <td valign="top">
+                <select multiple="multiple" name="mail_list[]">
+                <?php
+                $temp_mail_arr  = array();
+                while($mail_row = tep_db_fetch_array($mail_query)){
+                  if(in_array($mail_row['customers_email_address'],$temp_mail_arr)){
+                    continue;
+                  }
+                  echo "<option
+                    value='".$mail_row['customers_firstname']."|_|"
+                    .$mail_row['customers_lastname']."|_|"
+                    .$mail_row['customers_email_address']."' >";
+                  echo $mail_row['customers_firstname']." "
+                    .$mail_row['customers_lastname']." "
+                    .$mail_row['customers_email_address'];
+                  echo "</option>";
+                  $temp_mail_arr[] = $mail_row['customers_email_address'];
+                }
+                ?>
+                </select>
+                </td>
+              </tr>
               <tr>
-                <td>
+                <td colspan="2">
 <?php
 /* Re-Post all POST'ed variables */
     reset($_POST);
@@ -222,8 +267,6 @@ function back_to_mail(){
                     tep_html_element_submit(IMAGE_BACK,'onclick="back_to_mail()"');?></td>
                     <td align="right"><?php echo '<a class="new_product_reset" href="' . tep_href_link(FILENAME_MAIL) . '">' .  tep_html_element_button(IMAGE_CANCEL) . '</a> ' .  tep_html_element_submit(BUTTON_SENDMAIL_TEXT); ?></td>
                   </tr>
-                </table></td>
-              </tr>
             </table></td>
           </form></tr>
 <?php
