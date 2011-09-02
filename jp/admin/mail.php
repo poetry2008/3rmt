@@ -246,6 +246,11 @@ function back_to_mail(){
                   echo "</option>";
                   $temp_mail_arr[] = $mail_row['customers_email_address'];
                 }
+                if(empty($temp_mail_arr)){
+                  echo "<option>";
+                  echo NO_MAIL_RESULT;
+                  echo "</option>";
+                }
                 ?>
                 </select>
                 </td>

@@ -31,4 +31,5 @@ define('SEARCH_MAIL_SITENAME', '登録サイト:');
 define('ERROR_NO_SEARCH_TEXT', '少なくとも１つ入力してください');
 define('ERROR_EMAIL_WRONG_TYPE', 'メールアドレスの格式が正しくないです');
 define('BUTTON_SEARCH_TEXT','検索');
+define('NO_MAIL_RESULT','該当するデータはありません。');
 ?>
