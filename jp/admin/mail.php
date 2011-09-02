@@ -59,12 +59,14 @@
     if (empty($_POST['se_pname']) && empty($_POST['se_mail']) && empty($_POST['se_cname']) && empty($_POST['se_site'])) {
       $messageStack->add(ERROR_NO_SEARCH_TEXT, 'error');
     }
+    /*
     if (!empty($_POST['se_mail'])) {
       if (!preg_match("/^([a-zA-Z0-9]+[_|\-|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\-|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/", $_POST['se_mail'])) {
         $messageStack->add(ERROR_EMAIL_WRONG_TYPE, 'error');
         $error_email_single = true; 
       }
     }
+    */
     $mail_sent_to = '';
     
     if ($_POST['se_pname']) {
@@ -129,7 +131,7 @@
 
   if (isset($_GET['mail_sent_to']) && $_GET['mail_sent_to']) {
       $messageStack->add(sprintf(NOTICE_EMAIL_SENT_TO,
-            isset($_GET['mail_sum'])?$_GET['mail_sum']:0), 'notice');
+            isset($_GET['mail_sum'])?$_GET['mail_sum']:0), 'success');
   }
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">

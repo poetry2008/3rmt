@@ -2747,20 +2747,20 @@ function tep_get_ot_total_by_orders_id($orders_id, $single = false) {
     if ($single) {
       return "<b>".$currencies->format(abs($result['value']))."</b>";
     } else {
-      return "<b>".abs($result['value'])."円</b>";
+      return "<b>".abs($result['value'])."".TEXT_MONEY_SYMBOL."</b>";
     }
   }else{
     if ($single) {
       return "<b><font color='ff0000'>".$currencies->format(abs($result['value']))."</font></b>";
     } else {
-      return "<b><font color='ff0000'>".abs($result['value'])."円</font></b>";
+      return "<b><font color='ff0000'>".abs($result['value'])."".TEXT_MONEY_SYMBOL."</font></b>";
     }
   }
 }
 
 // order.php
 function tep_get_ot_total_num_by_text($text) {
-  return str_replace(array("," , "<b>" , "</b>" , "円") , array("" , "" , "" , "") , $text);
+  return str_replace(array("," , "<b>" , "</b>" , "".TEXT_MONEY_SYMBOL."") , array("" , "" , "" , "") , $text);
 }
 
 
@@ -6372,14 +6372,14 @@ function tep_get_ot_total_by_orders_id_no_abs($orders_id, $single = false) {
       return
         "<b>".$currencies->format($result['value'],true,DEFAULT_CURRENCY,'',false)."</b>";
     } else {
-      return "<b>".$result['value']."円</b>";
+      return "<b>".$result['value']."</b>";
     }
   }else{
     if ($single) {
       return "<b><font
         color='ff0000'>".$currencies->format($result['value'],true,DEFAULT_CURRENCY,'',false)."</font></b>";
     } else {
-      return "<b><font color='ff0000'>".$result['value']."円</font></b>";
+      return "<b><font color='ff0000'>".$result['value']."".TEXT_MONEY_SYMBOL."</font></b>";
     }
   }
 }

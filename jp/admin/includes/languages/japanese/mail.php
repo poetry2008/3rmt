@@ -21,7 +21,7 @@ define('TEXT_ALL_CUSTOMERS', '全ての顧客');
 define('TEXT_NEWSLETTER_CUSTOMERS', '全てのメールマガジン購読者');
 
 //define('NOTICE_EMAIL_SENT_TO', '注: %s へE-Mailを送信しました。');
-define('NOTICE_EMAIL_SENT_TO', '注: %s 通メールを送信完了しました。');
+define('NOTICE_EMAIL_SENT_TO', '%s 通メールを送信完了しました。');
 define('ERROR_NO_CUSTOMER_SELECTED', 'エラー: 顧客が選択されていません。');
 define('BUTTON_SENDMAIL_TEXT', 'E-mailを送る');
 define('SEARCH_MAIL_PRODUCTS_NAME', '商品:');
