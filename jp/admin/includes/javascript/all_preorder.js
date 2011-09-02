@@ -637,8 +637,7 @@ window.alert("パスワードが違います");
 });
 }
 
-function new_mail_text(st,tt,ot){
-
+function new_mail_text(ele,st,tt,ot){
   // 选中的索引
   var idx = document.sele_act.elements[st].selectedIndex;
   // 选中值
@@ -706,8 +705,11 @@ if (nomail[CI] == '1') {
   $('#notify_comments').attr('checked',true);
   $('#notify').attr('checked',true);
 }
-}
 
+if ($(ele).val() == 20) {
+  $('#notify').attr('checked', false);  
+}
+}
 
 function preorders_flag(ele, type, oid) {
   if (ele.className == 'orders_flag_checked') {
