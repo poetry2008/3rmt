@@ -349,7 +349,8 @@ function back_to_mail(){
                 <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
               </tr>
               <tr>
-                <td colspan="2" align="right"><?php echo tep_html_element_submit(BUTTON_SENDMAIL_TEXT); ?></td>
+                <td colspan="2" align="right"><?php echo
+                tep_html_element_submit(BUTTON_SEARCH_TEXT); ?></td>
               </tr>
             </table></td>
           </form></tr>
