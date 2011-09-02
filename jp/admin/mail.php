@@ -4,6 +4,7 @@
 */
 
   require('includes/application_top.php');
+  set_time_limit(0);
 
   if ( isset($_GET['action']) && ($_GET['action'] == 'send_email_to_user') &&
       (!$_POST['back_mail']) ) {
@@ -43,7 +44,6 @@
       //$mimemessage->send(tep_get_fullname($mail['customers_firstname'], $mail['customers_lastname']), $mail['customers_email_address'], '', $from, $subject);
     //}
     $mail_sum=0;
-    set_time_limit(0);
     foreach($_POST['mail_list'] as $mail){
       $mail_arr = explode('|_|',$mail);
       $mimemessage->send(tep_get_fullname($mail_arr['0'], $mail_arr['1']), $mail_arr['2'], '', $from, $subject);
@@ -142,11 +142,15 @@
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript" src="includes/javascript/jquery_select.js"></script>
 <script language="javascript" >
 function back_to_mail(){
   document.mail.back_mail.value = 'back';
   document.mail.submit();
 }
+$(document).ready(function(){
+$("#search_mail_list").dgMagnetCombo();
+});
 </script>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">
@@ -231,7 +235,7 @@ function back_to_mail(){
               </tr>
                 </table></td>
                 <td valign="top">
-                <select multiple="multiple" name="mail_list[]">
+                <select id="search_mail_list" multiple="multiple" name="mail_list[]" id="search_mail_list">
                 <?php
                 $temp_mail_arr  = array();
                 while($mail_row = tep_db_fetch_array($mail_query)){
