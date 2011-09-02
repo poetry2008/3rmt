@@ -220,7 +220,6 @@ while ($preorder_oa_res = tep_db_fetch_array($preorder_oa_raw)) {
  
 }
 
-}
 
 $preorders_computer_raw = tep_db_query("select * from ".TABLE_PREORDERS_TO_COMPUTERS." where orders_id = '".$_POST['pid']."'");
 while ($preorders_computers_res = tep_db_fetch_array($preorders_computer_raw)) {
@@ -240,7 +239,9 @@ tep_db_query("delete from ".TABLE_PREORDERS_QUESTIONS_PRODUCTS." where orders_id
 tep_db_query("delete from ".TABLE_PREORDERS_STATUS_HISTORY." where orders_id = '".$_POST['pid']."'"); 
 tep_db_query("delete from ".TABLE_PREORDERS_TOTAL." where orders_id = '".$_POST['pid']."'"); 
 tep_db_query("delete from ".TABLE_PREORDERS_TO_COMPUTERS." where orders_id = '".$_POST['pid']."'"); 
-tep_db_query("delete from ".TABLE_PREORDERS_OA_FORMVALUE." where orders_id = '".$pid."'"); 
+tep_db_query("delete from ".TABLE_PREORDERS_OA_FORMVALUE." where orders_id = '".$_POST['pid']."'"); 
+
+}
 
 
 tep_redirect(tep_href_link('change_preorder_success.php'));
