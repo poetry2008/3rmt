@@ -4290,12 +4290,16 @@ function tep_display_google_results($from_url=''){
        }
      */
     if ($status == '1') {
+      tep_db_query("UPDATE `".TABLE_REVIEWS."` SET `products_status` = '".$status."' where `products_id` = '".$products_id."' and `site_id` = '".$site_id."'"); 
       return tep_db_query("update " . TABLE_PRODUCTS_DESCRIPTION . " set products_status = '1' where products_id = '" . $products_id . "' and site_id = '".$site_id."'");
     } elseif ($status == '2') {
+      tep_db_query("UPDATE `".TABLE_REVIEWS."` SET `products_status` = '".$status."' where `products_id` = '".$products_id."' and `site_id` = '".$site_id."'"); 
       return tep_db_query("update " . TABLE_PRODUCTS_DESCRIPTION . " set products_status = '2' where products_id = '" . $products_id . "' and site_id = '".$site_id."'");
     } elseif ($status == '0') {
+      tep_db_query("UPDATE `".TABLE_REVIEWS."` SET `products_status` = '".$status."' where `products_id` = '".$products_id."' and `site_id` = '".$site_id."'"); 
       return tep_db_query("update " . TABLE_PRODUCTS_DESCRIPTION . " set products_status = '0' where products_id = '" . $products_id . "' and site_id = '".$site_id."'");
     } elseif ($status == '3') {
+      tep_db_query("UPDATE `".TABLE_REVIEWS."` SET `products_status` = '".$status."' where `products_id` = '".$products_id."' and `site_id` = '".$site_id."'"); 
       return tep_db_query("update " . TABLE_PRODUCTS_DESCRIPTION . " set products_status = '3' where products_id = '" . $products_id . "' and site_id = '".$site_id."'");
     } else {
       return -1;
@@ -4332,6 +4336,7 @@ function tep_display_google_results($from_url=''){
       }
 
       tep_db_query("UPDATE `".TABLE_PRODUCTS_DESCRIPTION."` SET `products_status` = '".$pstatus."' where `products_id` = '".$pID."' and `site_id` = '".$value."'");  
+      tep_db_query("UPDATE `".TABLE_REVIEWS."` SET `products_status` = '".$pstatus."' where `products_id` = '".$pID."' and `site_id` = '".$value."'"); 
     }
   }
 
