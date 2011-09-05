@@ -207,10 +207,6 @@ function back_to_mail(){
   document.mail.back_mail.value = 'back';
   document.mail.submit();
 }
-$(document).ready(function(){
-mail_left_td_height = $("#mail_left_td").height();
-$("#search_mail_list").height(mail_left_td_height-13);
-});
 </script>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">
@@ -247,7 +243,7 @@ $("#search_mail_list").height(mail_left_td_height-13);
   if ( isset($_GET['action']) && ($_GET['action'] == 'preview')&&($_POST['se_pname'] || $_POST['se_mail'] || $_POST['se_cname'] || $_POST['se_site']) && !isset($error_email_single)) {
 ?>
           <tr><?php echo tep_draw_form('mail', FILENAME_MAIL, 'action=send_email_to_user'); ?>
-            <td width="50%" id="mail_left_td"><table border="0" width="100%" cellpadding="0" cellspacing="2">
+            <td id="mail_left_td"><table border="0" cellpadding="0" cellspacing="2">
               <tr>
                 <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
               </tr>
@@ -300,8 +296,28 @@ $("#search_mail_list").height(mail_left_td_height-13);
               <tr>
                 <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
               </tr>
+              <tr>
+                <td colspan="2">
+<?php
+/* Re-Post all POST'ed variables */
+    reset($_POST);
+    while (list($key, $value) = each($_POST)) {
+      if (!is_array($_POST[$key])) {
+        echo tep_draw_hidden_field($key, htmlspecialchars(stripslashes($value)));
+      }
+    }
+    echo tep_draw_hidden_field('back_mail','');
+?>
+                <table border="0" width="100%" cellpadding="0" cellspacing="2">
+                  <tr>
+                    <td><?php echo
+                    tep_html_element_submit(IMAGE_BACK,'onclick="back_to_mail()"');?></td>
+                    <td align="right"><?php echo '<a class="new_product_reset" href="' . tep_href_link(FILENAME_MAIL) . '">' .  tep_html_element_button(IMAGE_CANCEL) . '</a> ' .  tep_html_element_submit(BUTTON_SENDMAIL_TEXT); ?></td>
+                  </tr>
+            </table></td>
+          </form></tr>
               </table></td>
-                <td valign="top" >
+                <td valign="top" width="50%">
                 <table>
                 <tr>
                 <td id = "search_mail_list" valign="top">
@@ -342,7 +358,7 @@ $("#search_mail_list").height(mail_left_td_height-13);
                 <td>
                 <table border="0" width="100%" cellspacing="0" cellpadding="2">
                 <tr>
-                  <td class="smallText" valign="top">
+                  <td class="smallText" height="35">
                 <?php
                 // page split 
                 echo 
@@ -351,7 +367,7 @@ $("#search_mail_list").height(mail_left_td_height-13);
                     TEXT_DISPLAY_NUMBER_OF_MAIL);
                 ?>
                   </td>
-                  <td class="smallText" valign="right">
+                  <td class="smallText" align="right">
                 <?php
                 echo 
                 $mail_split->display_links($mail_query_numrows,
@@ -368,26 +384,7 @@ $("#search_mail_list").height(mail_left_td_height-13);
                 </table>
                 </td>
               </tr>
-              <tr>
-                <td colspan="2">
-<?php
-/* Re-Post all POST'ed variables */
-    reset($_POST);
-    while (list($key, $value) = each($_POST)) {
-      if (!is_array($_POST[$key])) {
-        echo tep_draw_hidden_field($key, htmlspecialchars(stripslashes($value)));
-      }
-    }
-    echo tep_draw_hidden_field('back_mail','');
-?>
-                <table border="0" width="100%" cellpadding="0" cellspacing="2">
-                  <tr>
-                    <td><?php echo
-                    tep_html_element_submit(IMAGE_BACK,'onclick="back_to_mail()"');?></td>
-                    <td align="right"><?php echo '<a class="new_product_reset" href="' . tep_href_link(FILENAME_MAIL) . '">' .  tep_html_element_button(IMAGE_CANCEL) . '</a> ' .  tep_html_element_submit(BUTTON_SENDMAIL_TEXT); ?></td>
-                  </tr>
-            </table></td>
-          </form></tr>
+
 <?php
   } else {
     unset($_SESSION['mail_post_value']);
