@@ -1155,7 +1155,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
         ".$sort_table." where ".$sort_where." op.products_name like
         '%".$_GET['keywords']."%' " . (isset($_GET['site_id']) &&
         intval($_GET['site_id']) ? " and op.site_id = '" . intval($_GET['site_id'])
-        . "' " : '') . " order by ".$order_str;
+        . "' " : '') . " order by op.torihiki_date DESC";
       //op.torihiki_date desc";
   } elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && preg_match('/^os_\d+$/', $_GET['search_type'])))) {
      if (!empty($_GET['keywords'])) {
