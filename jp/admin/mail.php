@@ -44,12 +44,22 @@
       //$mimemessage->send(tep_get_fullname($mail['customers_firstname'], $mail['customers_lastname']), $mail['customers_email_address'], '', $from, $subject);
     //}
     $mail_sum=0;
-    foreach($_POST['mail_list'] as $mail){
-      $mail_arr = explode('|_|',$mail);
-      $mimemessage->send(tep_get_fullname($mail_arr['0'], $mail_arr['1']), $mail_arr['2'], '', $from, $subject);
+    $mail_sql = $_SESSION['mail_list'];
+    if(isset($_SESSION['mail_sub_customer'])&&$_SESSION['mail_sub_customer']){
+      $tmp_arr = explode(',',$_SESSION['mail_sub_customer']);
+      if(isset($tmp_arr[0])&&$tmp_arr[0]){
+        $mail_sql .= ' and c.customers_id not in ('.$_SESSION['mail_sub_customer'].') ';
+      }
+    }
+    $mail_query = tep_db_query($mail_sql);
+    while ($mail = tep_db_fetch_array($mail_query)) {
+      $mimemessage->send(tep_get_fullname($mail['customers_firstname'], $mail['customers_lastname']), $mail['customers_email_address'], '', $from, $subject);
       $mail_sum++;
     }
 
+      unset($_SESSION['mail_post_value']);
+      unset($_SESSION['mail_list']);
+      unset($_SESSION['mail_sub_customer']);
       tep_redirect(tep_href_link(FILENAME_MAIL, 'mail_sent_to=' .
             urlencode($mail_sent_to).'&mail_sum='.$mail_sum));
     }
@@ -57,7 +67,9 @@
 
   if ( isset($_GET['action']) && ($_GET['action'] == 'preview')) {
     if (empty($_POST['se_pname']) && empty($_POST['se_mail']) && empty($_POST['se_cname']) && empty($_POST['se_site'])) {
-      $messageStack->add(ERROR_NO_SEARCH_TEXT, 'error');
+      if(isset($_SESSION['mail_post_value'])&&empty($_SESSION['mail_post_value'])){
+        $messageStack->add(ERROR_NO_SEARCH_TEXT, 'error');
+      }
     }
     /*
     if (!empty($_POST['se_mail'])) {
@@ -67,6 +79,21 @@
       }
     }
     */
+    if(!isset($_SESSION['mail_post_value'])){
+      $_SESSION['mail_post_value'] = array(); 
+    }
+    if(empty($_SESSION['mail_post_value'])){
+    reset($_POST);
+    while (list($key, $value) = each($_POST)) {
+      if (!is_array($_POST[$key])) {
+        $_SESSION['mail_post_value'][$key] = htmlspecialchars(stripslashes($value));
+      }
+    }
+    }else{
+      foreach($_SESSION['mail_post_value'] as $key => $value){
+        $_POST[$key]=$value;
+      }
+    }
     $mail_sent_to = '';
     
     if ($_POST['se_pname']) {
@@ -88,7 +115,7 @@
     }
     
     $mail_sql = ''; 
-    $mail_select_sql = 'select c.customers_firstname, c.customers_lastname, c.customers_email_address ';
+    $mail_select_sql = 'select c.customers_id,c.customers_firstname, c.customers_lastname, c.customers_email_address ';
     $mail_from_sql = '';
     $mail_where_sql = '';
     $mail_or_sql = '';
@@ -124,7 +151,10 @@
     
     $mail_sql .= $mail_select_sql.$mail_from_sql.$mail_where_sql;
     
-    $mail_query = tep_db_query($mail_sql);
+    
+    if(!isset($_SESSION['mail_list'])||$_SESSION['mail_list']){
+      $_SESSION['mail_list'] = $mail_sql; 
+    }
 
     //$messageStack->add(ERROR_NO_CUSTOMER_SELECTED, 'error');
   }
@@ -142,16 +172,44 @@
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
-<script language="javascript" src="includes/javascript/jquery_select.js"></script>
 <script language="javascript" >
+function save_mail_info(){
+  mail_info_from = $("#mail_info_from").val();
+  mail_info_subject = $("#mail_info_subject").val();
+  mail_info_message = $("#mail_info_message").val();
+  $.ajax({
+    url: 'ajax_orders.php?action=save_mail_info',
+    data: 'mail_info_from='+mail_info_from+'&mail_info_subject='+mail_info_subject+'&mail_info_message='+mail_info_message,
+    type: 'POST',
+    dataType: 'text',
+    async: false,
+    success: function(data){
+    }
+  });
+}
+function change_select_mail(_this){
+  if($(_this).attr('checked')){
+    mail_list_action = 'add';
+  }else{
+    mail_list_action = 'sub';
+  }
+  $.ajax({
+    url: 'ajax_orders.php?action=change_mail_list',
+    data: 'mail_list_value='+_this.value+'&mail_list_action='+mail_list_action,
+    type: 'POST',
+    dataType: 'text',
+    async: false,
+    success: function(data){
+    }
+  });
+}
 function back_to_mail(){
   document.mail.back_mail.value = 'back';
   document.mail.submit();
 }
 $(document).ready(function(){
-$("#search_mail_list").dgMagnetCombo();
 mail_left_td_height = $("#mail_left_td").height();
-$("#search_mail_list").height(mail_left_td_height);
+$("#search_mail_list").height(mail_left_td_height-13);
 });
 </script>
 </head>
@@ -218,49 +276,93 @@ $("#search_mail_list").height(mail_left_td_height);
                 <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
               </tr>
               <tr>
-                <td class="smallText"><b><?php echo TEXT_FROM; ?></b><br><?php echo htmlspecialchars(stripslashes($_POST['from'])); ?></td>
+                <td class="main"><?php echo TEXT_FROM; ?></td>
+                <td><?php echo tep_draw_input_field('from',
+                    $_POST['from']?$_POST['from']:EMAIL_FROM,'id="mail_info_from"'); ?></td>
               </tr>
               <tr>
-                <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
+                <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
               </tr>
               <tr>
-                <td class="smallText"><b><?php echo TEXT_SUBJECT; ?></b><br><?php echo htmlspecialchars(stripslashes($_POST['subject'])); ?></td>
+                <td class="main"><?php echo TEXT_SUBJECT; ?></td>
+                <td><?php echo
+                tep_draw_input_field('subject',$_POST['subject']?$_POST['subject']:'',
+                    'id="mail_info_subject"'); ?></td>
               </tr>
               <tr>
-                <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
+                <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
               </tr>
               <tr>
-                <td class="smallText"><b><?php echo TEXT_MESSAGE; ?></b><br><?php echo nl2br(htmlspecialchars(stripslashes($_POST['message']))); ?></td>
+                <td valign="top" class="main"><?php echo TEXT_MESSAGE; ?></td>
+                <td><?php echo tep_draw_textarea_field('message', 'soft', '60',
+                    '15',$_POST['message']?$_POST['message']:'','id="mail_info_message"'); ?></td>
               </tr>
               <tr>
-                <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
+                <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
               </tr>
-                </table></td>
-                <td valign="top">
-                <select id="search_mail_list" multiple="multiple" name="mail_list[]" id="search_mail_list">
-                <?php
-                $temp_mail_arr  = array();
+              </table></td>
+                <td valign="top" >
+                <table>
+                <tr>
+                <td id = "search_mail_list" valign="top">
+                <table>
+                <tr>
+                  <td></td>
+                  <td><?php echo TEXT_CUSTOMER_FULL_NAME;?></td>
+                  <td><?php echo TEXT_CUSTOMER_EMAIL;?></td>
+                </tr>
+                <?php //checkbox
+                $mail_split = new splitPageResults($_GET['page'],
+                    15,$mail_sql,$mail_query_numrows);
+                $mail_query = tep_db_query($mail_sql);
+                $mail_sub_customer_arr =
+                  explode(',',$_SESSION['mail_sub_customer']);
                 while($mail_row = tep_db_fetch_array($mail_query)){
-                  if(in_array($mail_row['customers_email_address'],$temp_mail_arr)){
-                    continue;
+                  echo "<tr>";
+                  echo "<td>";
+                  echo "<input type='checkbox' name='mail_list_checkbox[]'
+                    onclick='change_select_mail(this)' value='".
+                    $mail_row['customers_id']."' ";
+                  if(!in_array($mail_row['customers_id'],$mail_sub_customer_arr)){
+                    echo " checked='checked' "; 
                   }
-                  echo "<option
-                    value='".$mail_row['customers_firstname']."|_|"
-                    .$mail_row['customers_lastname']."|_|"
-                    .$mail_row['customers_email_address']."' >";
-                  echo $mail_row['customers_firstname']." "
-                    .$mail_row['customers_lastname']." "
-                    .$mail_row['customers_email_address'];
-                  echo "</option>";
-                  $temp_mail_arr[] = $mail_row['customers_email_address'];
+                  echo ">";
+                  echo "</td>";
+                  echo
+                    "<td>".tep_get_fullname($mail_row['customers_firstname'],
+                        $mail_row['customers_lastname'])."</td>";
+                  echo "<td>".$mail_row['customers_email_address']."</td>";
+                  echo "</tr>";
                 }
-                if(empty($temp_mail_arr)){
-                  echo "<option>";
-                  echo NO_MAIL_RESULT;
-                  echo "</option>";
-                }
+                ?> 
+                </table>
+                </td>
+                </tr>
+                <tr>
+                <td>
+                <table border="0" width="100%" cellspacing="0" cellpadding="2">
+                <tr>
+                  <td class="smallText" valign="top">
+                <?php
+                // page split 
+                $mail_split->display_count($mail_query_numrows,
+                    15,$_GET['page'],
+                    TEXT_DISTPLAY_NUMBER_OF_MAIL);
                 ?>
-                </select>
+                  </td>
+                  <td class="smallText" valign="right">
+                <?php
+                $mail_split->display_links($mail_query_numrows,
+                    15,3,$_GET['page'],
+                    tep_get_all_get_params(array('page')),'
+                    onclick="save_mail_info()"');
+                ?>
+                  </td>
+                <tr>
+                </table>
+                </td>
+                </tr>
+                </table>
                 </td>
               </tr>
               <tr>
@@ -285,25 +387,15 @@ $("#search_mail_list").height(mail_left_td_height);
           </form></tr>
 <?php
   } else {
+    unset($_SESSION['mail_post_value']);
+    unset($_SESSION['mail_list']);
+    unset($_SESSION['mail_sub_customer']);
 ?>
           <tr><?php echo tep_draw_form('mail', FILENAME_MAIL, 'action=preview'); ?>
             <td><table border="0" cellpadding="0" cellspacing="2">
               <tr>
                 <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
               </tr>
-<?php
-    /* 
-    $customers = array();
-    $customers[] = array('id' => '', 'text' => TEXT_SELECT_CUSTOMER);
-    $customers[] = array('id' => '***', 'text' => TEXT_ALL_CUSTOMERS);
-    $customers[] = array('id' => '**D', 'text' => TEXT_NEWSLETTER_CUSTOMERS);
-    $mail_query = tep_db_query("select customers_email_address, customers_firstname, customers_lastname from " . TABLE_CUSTOMERS . " order by customers_lastname");
-    while($customers_values = tep_db_fetch_array($mail_query)) {
-      $customers[] = array('id' => $customers_values['customers_email_address'],
-                           'text' => $customers_values['customers_lastname'] . ', ' . $customers_values['customers_firstname'] . ' (' . $customers_values['customers_email_address'] . ')');
-    }
-    */    
-?>
               <tr>
                 <td class="main"><?php echo SEARCH_MAIL_PRODUCTS_NAME; ?></td>
                 <td>
@@ -340,28 +432,7 @@ $("#search_mail_list").height(mail_left_td_height);
               <tr>
                 <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
               </tr>
-              <tr>
-                <td class="main"><?php echo TEXT_FROM; ?></td>
-                <td><?php echo tep_draw_input_field('from', EMAIL_FROM); ?></td>
-              </tr>
-              <tr>
-                <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-              </tr>
-              <tr>
-                <td class="main"><?php echo TEXT_SUBJECT; ?></td>
-                <td><?php echo tep_draw_input_field('subject'); ?></td>
-              </tr>
-              <tr>
-                <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-              </tr>
-              <tr>
-                <td valign="top" class="main"><?php echo TEXT_MESSAGE; ?></td>
-                <td><?php echo tep_draw_textarea_field('message', 'soft', '60', '15'); ?></td>
-              </tr>
-              <tr>
-                <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-              </tr>
-              <tr>
+                            <tr>
                 <td colspan="2" align="right"><?php echo
                 tep_html_element_submit(BUTTON_SEARCH_TEXT); ?></td>
               </tr>

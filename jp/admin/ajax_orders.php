@@ -559,5 +559,25 @@ if ($_POST['orders_id'] &&
   require(DIR_WS_FUNCTIONS . 'visites.php');
   tep_get_pre_orders_products_string($orders_info, true);
 
+}else if (isset($_GET['action'])&&$_GET['action']=='change_mail_list'){
+  if(isset($_SESSION['mail_sub_customer'])&&$_SESSION['mail_sub_customer']){
+    $tmp_arr = explode(',',$_SESSION['mail_sub_customer']);
+  }else{
+    $tmp_arr = array();
+  }
+  if($_POST['mail_list_action']=='sub'){
+    if(!in_array($_POST['mail_list_value'],$tmp_arr)){
+      array_push($tmp_arr,$_POST['mail_list_value']);
+    }
+  }else if ($_POST['mail_list_action']=='add'){
+    if(in_array($_POST['mail_list_value'],$tmp_arr)){
+      $tmp_arr = array_diff($tmp_arr,array($_POST['mail_list_value']));
+    }
+  }
+  $_SESSION['mail_sub_customer'] = implode(',',$tmp_arr);
+}else if (isset($_GET['action'])&&$_GET['action']=='save_mail_info'){
+  $_SESSION['mail_post_value']['from'] = $_POST['mail_info_from'];
+  $_SESSION['mail_post_value']['subject'] = $_POST['mail_info_subject'];
+  $_SESSION['mail_post_value']['message'] = $_POST['mail_info_message'];
 }
 
