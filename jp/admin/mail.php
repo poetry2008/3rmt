@@ -313,7 +313,7 @@ $("#search_mail_list").height(mail_left_td_height-13);
                 </tr>
                 <?php //checkbox
                 $mail_split = new splitPageResults($_GET['page'],
-                    15,$mail_sql,$mail_query_numrows);
+                    MAX_DISPLAY_CUSTOMER_MAIL_RESULTS,$mail_sql,$mail_query_numrows);
                 $mail_query = tep_db_query($mail_sql);
                 $mail_sub_customer_arr =
                   explode(',',$_SESSION['mail_sub_customer']);
@@ -345,17 +345,20 @@ $("#search_mail_list").height(mail_left_td_height-13);
                   <td class="smallText" valign="top">
                 <?php
                 // page split 
+                echo 
                 $mail_split->display_count($mail_query_numrows,
-                    15,$_GET['page'],
-                    TEXT_DISTPLAY_NUMBER_OF_MAIL);
+                    MAX_DISPLAY_CUSTOMER_MAIL_RESULTS,$_GET['page'],
+                    TEXT_DISPLAY_NUMBER_OF_MAIL);
                 ?>
                   </td>
                   <td class="smallText" valign="right">
                 <?php
+                echo 
                 $mail_split->display_links($mail_query_numrows,
-                    15,3,$_GET['page'],
-                    tep_get_all_get_params(array('page')),'
-                    onclick="save_mail_info()"');
+                    MAX_DISPLAY_CUSTOMER_MAIL_RESULTS,
+                    MAX_DISPLAY_PAGE_LINKS,$_GET['page'],
+                    tep_get_all_get_params(array('page')),
+                    ' onclick="save_mail_info()" ');
                 ?>
                   </td>
                 <tr>
