@@ -150,6 +150,8 @@ function back_to_mail(){
 }
 $(document).ready(function(){
 $("#search_mail_list").dgMagnetCombo();
+mail_left_td_height = $("#mail_left_td").height();
+$("#search_mail_list").height(mail_left_td_height);
 });
 </script>
 </head>
@@ -187,7 +189,7 @@ $("#search_mail_list").dgMagnetCombo();
   if ( isset($_GET['action']) && ($_GET['action'] == 'preview')&&($_POST['se_pname'] || $_POST['se_mail'] || $_POST['se_cname'] || $_POST['se_site']) && !isset($error_email_single)) {
 ?>
           <tr><?php echo tep_draw_form('mail', FILENAME_MAIL, 'action=send_email_to_user'); ?>
-            <td width="50%"><table border="0" width="100%" cellpadding="0" cellspacing="2">
+            <td width="50%" id="mail_left_td"><table border="0" width="100%" cellpadding="0" cellspacing="2">
               <tr>
                 <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
               </tr>
