@@ -131,22 +131,22 @@
     if (!empty($_POST['se_site'])) {
       $mail_from_sql .= ', '.TABLE_SITES.' s'; 
       $mail_where_sql .= ' and c.site_id = s.id'; 
-      $mail_or_sql .= ' or s.name like \'%'.$_POST['se_site'].'%\''; 
+      $mail_or_sql .= ' and s.name like \'%'.$_POST['se_site'].'%\''; 
     }
     
     if (!empty($_POST['se_mail'])) {
-      $mail_or_sql .= ' or c.customers_email_address like \'%'.$_POST['se_mail'].'%\''; 
+      $mail_or_sql .= ' and c.customers_email_address like \'%'.$_POST['se_mail'].'%\''; 
     }
     
     if (!empty($_POST['se_cname'])) {
       //$mail_or_sql .= ' or c.customers_firstname like \'%'.$_POST['se_cname'].'%\' or c.customers_lastname like \'%'.$_POST['se_cname'].'%\''; 
-      $mail_or_sql .= ' or concat(c.customers_lastname, \' \', c.customers_firstname) like \'%'.$_POST['se_cname'].'%\''; 
+      $mail_or_sql .= ' and concat(c.customers_lastname, \' \', c.customers_firstname) like \'%'.$_POST['se_cname'].'%\''; 
     }
     
     if ($mail_where_sql != '') {
-      $mail_where_sql = ' where '.substr($mail_where_sql, 4).' and ('.substr($mail_or_sql, 3).')'; 
+      $mail_where_sql = ' where '.substr($mail_where_sql, 5).' and ('.substr($mail_or_sql, 4).')'; 
     } else {
-      $mail_where_sql = ' where '.substr($mail_or_sql, 3); 
+      $mail_where_sql = ' where '.substr($mail_or_sql, 4); 
     }
     
     $mail_sql .= $mail_select_sql.$mail_from_sql.$mail_where_sql;
