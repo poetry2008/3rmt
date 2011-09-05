@@ -50,7 +50,7 @@
                              'authors_name'   => tep_output_string_protected($reviews['customers_name']),
                              'review'         => tep_output_string_protected(mb_substr($reviews_des['reviews_text'], 0, 250)) . '..',
                              'rating'         => $reviews['reviews_rating'],
-                             'word_count'     => tep_word_count($reviews['reviews_text'], ' '),
+                             'word_count'     => tep_word_count($reviews_des['reviews_text'], ' '),
                              'date_added'     => tep_date_long($reviews['date_added']));
   }
   forward404Unless($reviews_array);
