@@ -110,15 +110,15 @@ cellpadding="2">
     </tr>
     <tr>
     <td>
-        <table  border="0" align="left" cellpadding="0" cellspacing="2" width="100%">
+        <table  border="0" align="left" cellpadding="0" cellspacing="2">
     <tr>
-      <td class="smallText" height="25" colspan="3">
+      <td class="smallText" height="25" colspan="5">
       <?php echo TEXT_ORDER_SITE_TEXT;?>:
       <?php echo tep_site_pull_down_menu_with_all(isset($_GET['site_id']) ? $_GET['site_id'] :'', false);?>
       </td>
     </tr>
     <tr>
-      <td class="smallText" height="25" width="210">
+      <td class="smallText" height="25" width="230">
       <?php echo TEXT_ORDER_START_DATE;?>
       <select name="s_y">
       <?php for($i=2002; $i<=date('Y'); $i++) { if($i == date('Y')){ echo '<option value="'.$i.'" selected>'.$i.'</option>'."\n" ; }else{ echo '<option value="'.$i.'">'.$i.'</option>'."\n" ;} } ?>
@@ -140,8 +140,8 @@ cellpadding="2">
       ?>    
       </select>
       <?php echo TEXT_ORDER_DAY;?></td>
-      <td width="80" align="center">～</td>
-      <td class="smallText"><?php echo TEXT_ORDER_END_DATE;?>
+<!--      <td width="80" align="center">～</td>
+-->      <td class="smallText" colspan="4"><?php echo TEXT_ORDER_END_DATE;?>
       <select name="e_y">
       <?php
       for($i=2002; $i<=date('Y'); $i++) {
@@ -181,12 +181,22 @@ cellpadding="2">
       <tr>
        <td class="smallText" height="30"><?php echo HEADING_TITLE_ORDER_STATUS . ' ' .
        tep_draw_pull_down_menu('order_status', tep_array_merge(array(array('id' => '', 'text' => TEXT_ALL_ORDERS)), $all_orders_statuses), '', ''); ?></td>
-       <td align="center">|</td>
-       <td class="smallText" height="30"><?php echo HEADING_TITLE_PREORDER_STATUS . ' ' .
+       <td height="30" width="180"><?php 
+    echo tep_html_element_submit(TEXT_ORDER_CSV_OUTPUT,"onclick='change_action(\"".tep_href_link('orders_csv_exe.php','csv_exe=true', 'SSL')."\")'");
+    ?>
+       </td>
+       <td align="center" width="80">|</td>
+       <td class="smallText" height="30" width="230"><?php echo HEADING_TITLE_PREORDER_STATUS . ' ' .
        tep_draw_pull_down_menu('preorder_status', tep_array_merge(array(array('id' => '',
                  'text' => TEXT_ALL_PREORDERS)), $all_preorders_statuses), '', ''); ?></td>
+       <td height="30">
+    <?php
+      echo
+    tep_html_element_submit(TEXT_PREORDER_CSV_OUTPUT,"onclick='change_action(\"".tep_href_link('preorders_csv_exe.php','csv_exe=true', 'SSL')."\")'");
+    ?></td>
+
       </tr>
-      <tr>
+<!--      <tr>
     <td height="30"><?php 
     echo tep_html_element_submit(TEXT_ORDER_CSV_OUTPUT,"onclick='change_action(\"".tep_href_link('orders_csv_exe.php','csv_exe=true', 'SSL')."\")'");
     ?>
@@ -198,7 +208,7 @@ cellpadding="2">
     tep_html_element_submit(TEXT_PREORDER_CSV_OUTPUT,"onclick='change_action(\"".tep_href_link('preorders_csv_exe.php','csv_exe=true', 'SSL')."\")'");
     ?></td>
       </tr>
-    </table>
+-->    </table>
     </td>
     </tr>
 
