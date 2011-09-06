@@ -1505,7 +1505,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
   // list start
 ?>
     <tr>
-      <td width="100%">
+      <td width="100%" height="40">
   
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
@@ -1567,95 +1567,6 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
 
       </td>
     </tr>
-<?php
-  if ($ocertify->npermission == 15) {
-?>
-    <tr>
-      <td>
-    <!--ORDER EXPORT SCRIPT //-->
-    <form action="<?php echo tep_href_link('preorders_csv_exe.php','csv_exe=true', 'SSL') ; ?>" method="post">
-    <fieldset><legend class="smallText"><b>
-    <?php echo TEXT_ORDER_DOWNLOPAD;?></b></legend>
-    <span class="smallText">
-    <?php echo TEXT_ORDER_SERVER_BUSY;?></span>
-    <table  border="0" align="center" cellpadding="0" cellspacing="2">
-    <tr>
-      <td class="smallText" width='150'>
-      <?php echo TEXT_ORDER_SITE_TEXT;?>:
-      <?php echo tep_site_pull_down_menu_with_all(isset($_GET['site_id']) ? $_GET['site_id'] :'', false);?>
-      </td>
-      <td class="smallText">
-      <?php echo TEXT_ORDER_START_DATE;?>
-      <select name="s_y">
-      <?php for($i=2002; $i<=date('Y'); $i++) { if($i == date('Y')){ echo '<option value="'.$i.'" selected>'.$i.'</option>'."\n" ; }else{ echo '<option value="'.$i.'">'.$i.'</option>'."\n" ;} } ?>
-      </select>
-      <?php echo TEXT_ORDER_YEAR;?>
-      <select name="s_m">
-      <?php for($i=1; $i<13; $i++) { if($i == date('m')-1){ echo '<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'" selected>'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n"; }else{ echo '<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'">'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n"; }  } ?>    
-      </select>
-      <?php echo TEXT_ORDER_MONTH;?>
-      <select name="s_d">
-      <?php
-      for($i=1; $i<32; $i++) {
-        if($i == date('d')){
-          echo '<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'" selected>'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n";
-        }else{
-          echo '<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'">'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n";
-        } 
-      }
-      ?>    
-      </select>
-      <?php echo TEXT_ORDER_DAY;?></td>
-      <td width="80" align="center">～</td>
-      <td class="smallText"><?php echo TEXT_ORDER_END_DATE;?>
-      <select name="e_y">
-      <?php
-      for($i=2002; $i<=date('Y'); $i++) {
-        if($i == date('Y')){
-          echo '<option value="'.$i.'" selected>'.$i.'</option>'."\n" ;
-        }else{
-          echo '<option value="'.$i.'">'.$i.'</option>'."\n" ;
-        } 
-      }
-      ?>    
-      </select>
-      <?php echo TEXT_ORDER_YEAR;?>
-      <select name="e_m">
-      <?php
-      for($i=1; $i<13; $i++) {
-        if($i == date('m')){
-          echo '<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'" selected>'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n";
-        }else{
-          echo '<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'">'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n";
-        } 
-      }
-      ?>    
-      </select>
-      <?php echo TEXT_ORDER_MONTH;?>
-      <select name="e_d">
-      <?php
-      for($i=1; $i<32; $i++) {
-        if($i == date('d')){
-          echo '<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'" selected>'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n";
-        }else{
-          echo '<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'">'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n";
-        } 
-      }
-      ?>    
-      </select>
-      <?php echo TEXT_ORDER_DAY;?></td>
-       <td class="smallText"><?php echo HEADING_TITLE_STATUS . ' ' . tep_draw_pull_down_menu('status', tep_array_merge(array(array('id' => '', 'text' => TEXT_ALL_ORDERS)), $all_orders_statuses), '', ''); ?></td>
-      <td>&nbsp;</td>
-    <td><?php echo tep_html_element_submit(TEXT_ORDER_CSV_OUTPUT);?></td>
-      </tr>
-    </table></fieldset>
-    </form>
-    <!--ORDER EXPORT SCRIPT EOF //-->
-    </td>
-      </tr>
-<?php
-  }
-?>
     <tr>
       <td>
   <table border="0" width="100%" cellspacing="0" cellpadding="0">

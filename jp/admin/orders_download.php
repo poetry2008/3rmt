@@ -4,24 +4,21 @@
 */
   //ob_start();
   require('includes/application_top.php');
-  require(DIR_WS_FUNCTIONS . 'visites.php');
-  require(DIR_WS_CLASSES . 'currencies.php');
-  $currencies          = new currencies(2);
-  $orders_statuses     = $all_orders_statuses = $orders_status_array = array();
-  $all_search_status = array(); 
+  $all_orders_statuses =  array();
+  $all_preorders_statuses =  array();
   $orders_status_query = tep_db_query("select orders_status_id, orders_status_name from " . TABLE_ORDERS_STATUS . " where language_id = '" . $languages_id . "'");
 
   while ($orders_status = tep_db_fetch_array($orders_status_query)) {
-    if (
-      $orders_status['orders_status_id'] != 17 
-      //&& $orders_status['orders_status_id'] != 31
-      )
-      $orders_statuses[] = array('id' => $orders_status['orders_status_id'],'text' => $orders_status['orders_status_name']);
-    
     $all_orders_statuses[] = array('id' => $orders_status['orders_status_id'], 'text' => $orders_status['orders_status_name']);
-    $orders_status_array[$orders_status['orders_status_id']] = $orders_status['orders_status_name'];
-    $all_search_status[$orders_status['orders_status_id']] = $orders_status['orders_status_name'];
   }
+  $preorders_status_query = tep_db_query("select orders_status_id, orders_status_name
+      from " . TABLE_PREORDERS_STATUS . " where language_id = '" .
+      $languages_id . "'");
+  while ($preorders_status = tep_db_fetch_array($preorders_status_query)) {
+    $all_preorders_statuses[] = array('id' => $preorders_status['orders_status_id'],
+        'text' => $preorders_status['orders_status_name']);
+  }
+
 
   header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
   # 永远是改动过的
@@ -46,6 +43,12 @@
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript">
+function change_action(url){
+  document.getElementById('orders_download').action=url;
+  document.getElementById('orders_download').submit();
+}
+</script>
 </head>
 <body>
 <?php
@@ -84,7 +87,8 @@ cellpadding="2">
   </tr>
       <td class="pageHeading" height="40">
     <!--ORDER EXPORT SCRIPT //-->
-    <!--<form action="<?php echo tep_href_link('orders_csv_exe.php','csv_exe=true', 'SSL') ; ?>" method="post">
+    <form id="orders_download" action="<?php echo tep_href_link('orders_csv_exe.php','csv_exe=true', 'SSL') ; ?>" method="post">
+    <!--
     <fieldset><legend class="smallText">-->
     <?php echo TEXT_ORDER_DOWNLOPAD;?><!--</legend>-->
    
@@ -108,13 +112,13 @@ cellpadding="2">
     <td>
         <table  border="0" align="left" cellpadding="0" cellspacing="2" width="100%">
     <tr>
-      <td class="smallText" width="210" height="25">
+      <td class="smallText" height="25" colspan="3">
       <?php echo TEXT_ORDER_SITE_TEXT;?>:
       <?php echo tep_site_pull_down_menu_with_all(isset($_GET['site_id']) ? $_GET['site_id'] :'', false);?>
       </td>
     </tr>
     <tr>
-      <td class="smallText" height="25">
+      <td class="smallText" height="25" width="210">
       <?php echo TEXT_ORDER_START_DATE;?>
       <select name="s_y">
       <?php for($i=2002; $i<=date('Y'); $i++) { if($i == date('Y')){ echo '<option value="'.$i.'" selected>'.$i.'</option>'."\n" ; }else{ echo '<option value="'.$i.'">'.$i.'</option>'."\n" ;} } ?>
@@ -175,10 +179,24 @@ cellpadding="2">
       </select>
       <?php echo TEXT_ORDER_DAY;?></td></tr>
       <tr>
-       <td class="smallText" height="30"><?php echo HEADING_TITLE_STATUS . ' ' . tep_draw_pull_down_menu('status', tep_array_merge(array(array('id' => '', 'text' => TEXT_ALL_ORDERS)), $all_orders_statuses), '', ''); ?></td>
-      <td>&nbsp;</td></tr>
+       <td class="smallText" height="30"><?php echo HEADING_TITLE_ORDER_STATUS . ' ' .
+       tep_draw_pull_down_menu('order_status', tep_array_merge(array(array('id' => '', 'text' => TEXT_ALL_ORDERS)), $all_orders_statuses), '', ''); ?></td>
+       <td align="center">|</td>
+       <td class="smallText" height="30"><?php echo HEADING_TITLE_PREORDER_STATUS . ' ' .
+       tep_draw_pull_down_menu('preorder_status', tep_array_merge(array(array('id' => '',
+                 'text' => TEXT_ALL_PREORDERS)), $all_preorders_statuses), '', ''); ?></td>
+      </tr>
       <tr>
-    <td height="25"><?php echo tep_html_element_submit(TEXT_ORDER_CSV_OUTPUT);?></td>
+    <td height="30"><?php 
+    echo tep_html_element_submit(TEXT_ORDER_CSV_OUTPUT,"onclick='change_action(\"".tep_href_link('orders_csv_exe.php','csv_exe=true', 'SSL')."\")'");
+    ?>
+    </td>
+    <td align="center">|</td>
+    <td height="30">
+    <?php
+      echo
+    tep_html_element_submit(TEXT_PREORDER_CSV_OUTPUT,"onclick='change_action(\"".tep_href_link('preorders_csv_exe.php','csv_exe=true', 'SSL')."\")'");
+    ?></td>
       </tr>
     </table>
     </td>

@@ -27,14 +27,14 @@
   $end = $e_y.$e_m.$e_d ;
 
 // ダウンロード範囲の指定
-    //if($_POST['status'] && $_POST['status'] !=""){
+    //if($_POST['order_status'] && $_POST['order_status'] !=""){
       //$csv_query = tep_db_query("
           //select o.*, op.* 
           //from ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op 
           //where o.orders_id = op.orders_id 
             //and o.date_purchased >= '" . $start . "' 
             //and o.date_purchased <= '" . $end . "' 
-            //and o.orders_status = '".(int)$_POST['status']."' 
+            //and o.orders_status = '".(int)$_POST['order_status']."' 
           //order by o.orders_id, op.orders_products_id
       //");
 	//}else{
@@ -45,7 +45,7 @@
             and o.site_id = s.id
             and o.date_purchased >= '" . $start . "' 
             and o.date_purchased <= '" . $end . "' 
-            ".(isset($_POST['status']) && $_POST['status'] ? ("and o.orders_status = '".(int)$_POST['status'] . "'") : '')."
+            ".(isset($_POST['order_status']) && $_POST['order_status'] ? ("and o.orders_status = '".(int)$_POST['order_status'] . "'") : '')."
             ".(isset($_POST['site_id']) && $_POST['site_id'] ? ("and o.site_id = '".(int)$_POST['site_id'] . "'") : '')."
           order by o.orders_id, op.orders_products_id
       ");

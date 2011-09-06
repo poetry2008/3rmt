@@ -2356,7 +2356,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
   // list start
 ?>
     <tr>
-      <td width="100%">
+      <td width="100%" height="40">
   
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
@@ -2419,6 +2419,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
       </td>
     </tr>
 <?php
+  /*
   if ($ocertify->npermission == 15) {
 ?>
     <tr>
@@ -2506,6 +2507,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
       </tr>
 <?php
   }
+ */
 ?>
     <tr>
       <td>
