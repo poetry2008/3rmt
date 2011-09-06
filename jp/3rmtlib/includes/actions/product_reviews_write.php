@@ -60,6 +60,16 @@
     }
     // ccdd
     if ($form_error === false) {
+      $product_status_query = tep_db_query("
+          select pd.products_status 
+          from ".TABLE_PRODUCTS_DESCRIPTION . " pd 
+          where pd.products_id  = '" . (int)$_GET['products_id'] . "' 
+            and pd.language_id = '" . $languages_id . "' 
+            and (pd.site_id = '0' or pd.site_id = '".SITE_ID."')
+          order by pd.site_id DESC limit 1
+        ");
+      $product_status_res = tep_db_fetch_array($product_status_query); 
+      
       tep_db_query("
           INSERT INTO " . TABLE_REVIEWS . " (
             products_id, 
@@ -69,7 +79,8 @@
             date_added, 
             reviews_status,
             reviews_ip,
-            site_id
+            site_id,
+            products_status
           ) values (
             '" . $_GET['products_id'] . "', 
             '" . $customer_id . "', 
@@ -78,7 +89,8 @@
             now(), 
             '0', 
             '".$_SERVER['REMOTE_ADDR']."',
-            '".SITE_ID."'
+            '".SITE_ID."', 
+            '".(int)$product_status_res['products_status']."'
           )");
         $insert_id = tep_db_insert_id();
         // ccdd
