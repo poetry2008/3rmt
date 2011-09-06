@@ -17,27 +17,22 @@ if (
   if(basename($PHP_SELF) == FILENAME_PRODUCT_INFO){
     // ccdd
     $reviews_query = tep_db_query("
-        select rd.reviews_text, 
-               r.reviews_rating, 
+        select r.reviews_rating, 
                r.reviews_id, 
-               r.products_id, 
-               r.customers_name, 
-               r.date_added, 
-               r.last_modified, 
-               r.reviews_read 
-        from " .  TABLE_REVIEWS . " r, " . TABLE_REVIEWS_DESCRIPTION . " rd 
-        where r.reviews_id = rd.reviews_id 
-          and r.products_id = '" .  (int)$_GET['products_id'] . "' 
+               r.customers_name 
+        from " .  TABLE_REVIEWS . " r 
+        where r.products_id = '" .  (int)$_GET['products_id'] . "' 
           and r.reviews_status = '1' 
-          and  r.products_id not in".tep_not_in_disabled_products()." 
           and r.site_id = ".SITE_ID
         );
     if(tep_db_num_rows($reviews_query)) {
       echo  '<h2 class="pageHeading_long02"><span class="game_t">'.$product_info['products_name'] .'のレビュー</span></h2>'."\n" . '<div class="comment_long02">'."\n" ;
       while ($reviews = tep_db_fetch_array($reviews_query)) {
+        $reviews_des_query = tep_db_query("select reviews_text from ".TABLE_REVIEWS_DESCRIPTION." where reviews_id = '".$reviews['reviews_id']."' and languages_id = '".$languages_id."'"); 
+        $reviews_des_res = tep_db_fetch_array($reviews_des_query); 
         echo '<div class="reviews_area"><p class="main">
 <b>' . sprintf(TEXT_REVIEW_BY, tep_output_string_protected($reviews['customers_name'])) . '</b>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'stars_' . $reviews['reviews_rating'] . '.gif' , sprintf(BOX_REVIEWS_TEXT_OF_5_STARS, $reviews['reviews_rating'])) . '[' . sprintf(BOX_REVIEWS_TEXT_OF_5_STARS, $reviews['reviews_rating']) . ']
-<br>' . nl2br($reviews['reviews_text']) . "\n" . '</p></div></div>';
+<br>' . nl2br($reviews_des_res['reviews_text']) . "\n" . '</p></div></div>';
 //<div align="right"><i>' . sprintf(TEXT_REVIEW_DATE_ADDED, tep_date_long($reviews['date_added'])) . '</i></div></div>' . "\n";
       }
       //if(MAX_RANDOM_SELECT_REVIEWS > tep_db_num_rows($reviews_query)){
