@@ -129,14 +129,14 @@ if (tep_session_is_registered('customer_id')) {
             }
             ?>
             <?php
-            //$faq_info_query = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where status = 1 and site_id = ".SITE_ID." and romaji = 'faq'"); 
-            //$faq_info_res = tep_db_fetch_array($faq_info_query); 
-            //if ($faq_info_res) {
+            $faq_info_query = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where status = 1 and site_id = ".SITE_ID." and romaji = 'faq'"); 
+            $faq_info_res = tep_db_fetch_array($faq_info_query); 
+            if ($faq_info_res) {
             ?>
-            <li><a href="<?php echo HTTP_SERVER.'/faq/';?>">FAQ</a></li>
+            <li><a href="<?php echo info_tep_href_link($faq_info_res['romaji']);?>"><?php echo $faq_info_res['heading_title'];?></a></li>
             <li>|</li>
             <?php
-            //}
+            }
             ?>
             <li><a href="<?php echo tep_href_link(FILENAME_CONTACT_US)?>"><?php echo BOX_INFORMATION_CONTACT?></a></li>
             <li>|</li>
