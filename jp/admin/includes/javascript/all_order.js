@@ -424,6 +424,7 @@ function show_questions(ele){
     return true;
 }
     function show_questiondiv(show){
+
     if(show){
         $('#oa_dynamic_groups').html('');
 	$('#oa_dynamic_group_item').html('');
