@@ -31,7 +31,7 @@ $categories_tab_query1 = tep_db_query("
 <div class="pageHeading_long01"><h2><?php echo INDEX_CATEGORY_BANNER_TEXT;?></h2></div>
 <div class="comment02">
   <table width="710" class="game_list_content" border="0"cellpadding="0" cellspacing="0">
-    <tr>
+    <tr align="center">
 <?php 
   $number_of_categories = 0 ;
   $col = 0 ;
