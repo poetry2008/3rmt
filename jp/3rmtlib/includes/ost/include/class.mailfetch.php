@@ -1,4 +1,5 @@
 <?php
+
 /*********************************************************************
   class.mailfetch.php
 
@@ -13,9 +14,9 @@
 
   vim: expandtab sw=4 ts=4 sts=4:
   $Id$
- **********************************************************************/
-echo date('Y-m-d H:i:s');
-echo 'jp test';
+**********************************************************************/
+error_reporting(E_ALL^E_NOTICE);
+//error_reporting(E_ALL);
 require_once(INCLUDE_DIR.'class.mailparse.php');
 require_once(INCLUDE_DIR.'class.ticket.php');
 require_once(INCLUDE_DIR.'class.dept.php');
@@ -45,17 +46,17 @@ class MailFetcher {
     $this->encryption = $encryption;
 
     $this->serverstr=sprintf('{%s:%d/%s',$this->hostname,$this->port,strtolower($this->protocol));
-      if(!strcasecmp($this->encryption,'SSL')){
-        $this->serverstr.='/ssl';
-      }
-      $this->serverstr.='/novalidate-cert}INBOX'; //add other flags here as needed.
+    if(!strcasecmp($this->encryption,'SSL')){
+      $this->serverstr.='/ssl';
+    }
+    $this->serverstr.='/novalidate-cert}INBOX'; //add other flags here as needed.
 
-      //echo $this->serverstr;
-      //Charset to convert the mail to.
-      $this->charset='UTF-8';
-      //Set timeouts 
-      //       if(function_exists('imap_timeout'))
-      //            imap_timeout(1,20); //Open timeout.
+    //echo $this->serverstr;
+    //Charset to convert the mail to.
+    $this->charset='UTF-8';
+    //Set timeouts 
+    //       if(function_exists('imap_timeout'))
+    //            imap_timeout(1,20); //Open timeout.
   }
 
   function connect() {
@@ -83,24 +84,24 @@ class MailFetcher {
 
   function decode($encoding,$text) {
     switch($encoding) {
-      case 0:
-	//        $text=imap_8bit($text);
-	//        break;
-      case 1:
-        $text=imap_8bit($text);
-        break;
-      case 2:
-        $text=imap_binary($text);
-        break;
-      case 3:
-        $text=imap_base64($text);
-        break;
-      case 4:
-        $text=imap_qprint($text);
-        break;
-      case 5:
-      default:
-        $text=$text;
+    case 0:
+      //        $text=imap_8bit($text);
+      //        break;
+    case 1:
+      $text=imap_8bit($text);
+      break;
+    case 2:
+      $text=imap_binary($text);
+      break;
+    case 3:
+      $text=imap_base64($text);
+      break;
+    case 4:
+      $text=imap_qprint($text);
+      break;
+    case 5:
+    default:
+      $text=$text;
     } 
     return $text;
   }
@@ -108,63 +109,85 @@ class MailFetcher {
   //Convert text to desired encoding..defaults to utf8
   function mime_encode($text,$charset=null,$enc='utf-8') { //Thank in part to afterburner  
     $charset = strtoupper($charset);
-    if ($charset=='' || $charset=='ISO-2022-JP'||$charset=='SHIFT-JIS'||$charset=='EUC-JP'){
-       $result = noLCode($text);
-       return $result;
-    }
+    //    if ($charset=='' || $charset=='ISO-2022-JP'||$charset=='SHIFT-JIS'||$charset=='EUC-JP'){
+    //      $result = noLCode($text);
+    //     return $result;
+    // }
     $encodings=array('SHIFT-JIS','ISO-2022-JP','GB2312','GBK','WINDOWS-1251','ISO-8859-5',
                      'ISO-8859-1','KOI8-R','GB2312');
     if(function_exists("iconv") and $text) {
       if($charset)
-      {
-	$result = my_iconv($charset,$enc,$text);
-	if($result!=false){
-	  return $result;
-	}
-        foreach($encodings as  $key=>$value){
-
-          $result = my_iconv($value,$enc,$text);
+        {
+          $result = my_iconv($charset,$enc,$text);
           if($result!=false){
-            break;
+            return $result;
           }
-          if($key == count($encodings)-1){
-             $result = iconv($charset,$enc.'//IGNORE',$text);
-             break;
+          foreach($encodings as  $key=>$value){
+
+            $result = my_iconv($value,$enc,$text);
+            if($result!=false){
+              break;
+            }
+            if($key == count($encodings)-1){
+              $result = iconv($charset,$enc.'//IGNORE',$text);
+              break;
+            }
           }
-        }
-	return $result;
-      }elseif(function_exists("mb_detect_encoding")){
+          return $result;
+        }elseif(function_exists("mb_detect_encoding")){
         $result =iconv(mb_detect_encoding($text,$encodings),$enc,$text);
       }
       return utf8_encode($result);
     }
     return utf8_encode($text);
   }
+  function mb_list_lowerencodings() { $r=mb_list_encodings();
+    for ($n=sizeOf($r); $n--; ) { $r[$n]=strtolower($r[$n]); } return $r;
+  }
 
+  function mime_decode($mimeStr, $inputCharset='iso-2022-jp', $targetCharset='utf-8', $fallbackCharset='ISO-2022-JP') {
+    $encodings=$this->mb_list_lowerencodings();
+    $inputCharset=strtolower($inputCharset);
+    $targetCharset=strtolower($targetCharset);
+    $fallbackCharset=strtolower($fallbackCharset);
+
+    $decodedStr='';
+    $mimeStrs=imap_mime_header_decode($mimeStr);
+    for ($n=sizeOf($mimeStrs), $i=0; $i<$n; $i++) {
+      $mimeStr=$mimeStrs[$i];
+      $mimeStr->charset=strtolower($mimeStr->charset);
+      if (($mimeStr == 'default' && $inputCharset == $targetCharset)
+          || $mimeStr->charset == $targetCharset) {
+        $decodedStr.=$mimeStr->text;
+      } else {
+        $decodedStr.=mb_convert_encoding($mimeStr->text, $targetCharset, (in_array(strtolower($mimeStr->charset), $encodings) ? $mimeStr->charset : $fallbackCharset) ) ;
+      }
+    }
+    return $decodedStr;
+  }
   //Generic decoder - mirrors imap_utf8
-  function mime_decode($text,$is_subject=false) {
+  function mime_decode2($text,$is_subject=false) {
     $a = imap_mime_header_decode($text);
     $str = '';
     foreach ($a as $k => $part){
-      //    if(!$part->charset){
-    $str.= $part->text;
-    //    }else{
-    //    $str.= mb_convert_encoding($part->text,'UTF-8', $part->charset);
-    //    }
-        }
-
-
-    $explodeStr = explode("?",$text);
-    if(strlen($explodeStr[1])){
-      if($is_subject){
-	$str  =  iconv($explodeStr[1],'UTF-8',$str);
-	//        if(!preg_match('/('.chr(hexdec('1b')).chr(hexdec('28')).chr(hexdec('42')).')|('.chr(hexdec('1b')).chr(hexdec('24')).chr(hexdec('42')).')/',$str)){
-	//	  $str = $this->mime_encode($str,$explodeStr[1]);
-	//        }
-      }else{
-        $str  =  iconv($explodeStr[1],'UTF-8',$str);
-      }
+      $str .= $this->mime_encode($part->text,$part->charset);
+      //    $str.= $part->text;
     }
+    //   $explodeStr = explode("?",$text);
+    //  if(strlen($explodeStr[1])){
+    /*
+      if($is_subject){
+      $str  =  iconv($explodeStr[1],'UTF-8',$str);
+      if(!preg_match('/('.chr(hexdec('1b')).chr(hexdec('28')).chr(hexdec('42')).')|('.chr(hexdec('1b')).chr(hexdec('24')).chr(hexdec('42')).')/',$str)){
+      $str = $this->mime_encode($str,$explodeStr[1]);
+      }
+      }else{
+      $str  =  iconv($explodeStr[1],'UTF-8',$str);
+      }
+    */
+    //		  $str = $this->mime_encode($str,$explodeStr[1]);
+    //        $str  =  iconv($explodeStr[1],'UTF-8',$str);
+    //}
     return $str?$str:imap_utf8($text);
   }
 
@@ -186,9 +209,9 @@ class MailFetcher {
 
     //Parse what we need...
     $header=array(
-        'from'   =>array('name'  =>@$sender->personal,'email' =>strtolower($sender->mailbox).'@'.$sender->host),
-        'subject'=>@$headerinfo->subject,
-        'mid'    =>$headerinfo->message_id);
+                  'from'   =>array('name'  =>@$sender->personal,'email' =>strtolower($sender->mailbox).'@'.$sender->host),
+                  'subject'=>@$headerinfo->subject,
+                  'mid'    =>$headerinfo->message_id);
     return $header;
   }
 
@@ -200,7 +223,7 @@ class MailFetcher {
     if($struct && !$struct->ifdparameters && strcasecmp($mimeType,$this->getMimeType($struct))==0){
       $partNumber=$partNumber?$partNumber:1;
       if(($text=imap_fetchbody($this->mbox, $mid, $partNumber))){
-	        if($struct->encoding==3 or $struct->encoding==4) //base64 and qp decode.
+        if($struct->encoding==3 or $struct->encoding==4) //base64 and qp decode.
 		  {
 		    $text=$this->decode($struct->encoding,$text);
 		  }
@@ -218,13 +241,11 @@ class MailFetcher {
             if(!strcasecmp($struct->parameters[$charsetkey]->attribute,'CHARSET') && strcasecmp($struct->parameters[$charsetkey]->value,'US-ASCII'))
               $charset=trim($struct->parameters[$charsetkey]->value);
           }
-	  //	  echo $charset.$encoding.$text;
 
-	  if(strtolower($charset)=='utf-8' and strtolower($encoding)=='utf-8'){
-        //
-	  }else{
-	    $text=$this->mime_encode($text,$charset,$encoding);
-	  }
+          if(strtolower($charset)=='utf-8' and strtolower($encoding)=='utf-8'){
+          }else{
+            $text=$this->mime_encode($text,$charset,$encoding);
+          }
 
         }
 
@@ -275,13 +296,14 @@ class MailFetcher {
     //Make sure the email is NOT one of the undeleted emails.
     if($mailinfo['mid'] && ($id=Ticket::getIdByMessageId(trim($mailinfo['mid']),$mailinfo['from']['email']))){
       //TODO: Move emails to a fetched folder when delete is false?? 
-        if($deletemsgs)
-          imap_delete($this->mbox,$mid);
-            return false;
+      if($deletemsgs)
+        imap_delete($this->mbox,$mid);
+      return false;
     }
     $var['name']=$this->mime_decode($mailinfo['from']['name']);
     $var['email']=$mailinfo['from']['email'];
-    $var['subject']=$mailinfo['subject']?$this->mime_decode($mailinfo['subject'],true):'[No Subject]';
+
+    $var['subject']=$mailinfo['subject']?$this->mime_decode($mailinfo['subject']):'[No Subject]';
     $var['message']=Format::stripEmptyLines($this->getBody($mid))?Format::stripEmptyLines($this->getBody($mid)):" ";
     $var['header']=$this->getHeader($mid);
     $var['emailId']=$emailid?$emailid:$cfg->getDefaultEmailId(); //ok to default?
@@ -399,7 +421,7 @@ class MailFetcher {
     //TODO: Lock the table here??
     while($row=db_fetch_array($accounts)) {
       $fetcher = new MailFetcher($row['userid'],Misc::decrypt($row['userpass'],SECRET_SALT),
-          $row['mail_host'],$row['mail_port'],$row['mail_protocol'],$row['mail_encryption']);
+                                 $row['mail_host'],$row['mail_port'],$row['mail_protocol'],$row['mail_encryption']);
       if($fetcher->connect()){   
         $fetcher->fetchTickets($row['email_id'],$row['mail_fetchmax'],$row['mail_delete']?true:false);
         $fetcher->close();
@@ -420,22 +442,22 @@ class MailFetcher {
       }
     }
   }
+}
+
+
+
+
+function outString($longString)
+{ 
+  $len = strlen($longString);
+  $j=1;
+  for($i=0;$i<3;$i++){
+    //echo dechex(ord($longString{$i}));
   }
-
-
-
-
-  function outString($longString)
-  { 
-    $len = strlen($longString);
-    $j=1;
-    for($i=0;$i<3;$i++){
-      //echo dechex(ord($longString{$i}));
-    }
-      for ($i=3;$i<$len-3;$i+=2)
-      {
-        echo "***".$j."***";
-    $j++;
+  for ($i=3;$i<$len-3;$i+=2)
+    {
+      echo "***".$j."***";
+      $j++;
       echo dechex(ord($longString{$i}));
       echo dechex(ord($longString{$i+1}));
       echo  chr(hexdec('1b')).chr(hexdec('24')).chr(hexdec('42'));
@@ -443,27 +465,25 @@ class MailFetcher {
       echo $longString{$i+1};
       echo  chr(hexdec('1b')).chr(hexdec('28')).chr(hexdec('42'));
       echo '</br>';
-      }
+    }
 
-  }
+}
 function noLCode($longString){
-      $startFlag =   chr(hexdec('1b')).chr(hexdec('24')).chr(hexdec('42'));
-      $endFlag   =   chr(hexdec('1b')).chr(hexdec('28')).chr(hexdec('42'));
+  $startFlag =   chr(hexdec('1b')).chr(hexdec('24')).chr(hexdec('42'));
+  $endFlag   =   chr(hexdec('1b')).chr(hexdec('28')).chr(hexdec('42'));
 
-      $splited =  splitToArrayBySE($startFlag,$endFlag,$longString);
-      $resultString = '';
-      foreach($splited as $key=>$value){
-        //outstring($value);
-        if (strpos($value,$startFlag)===0){
-//        outstring( replaceJpSp($value));
-        $resultString .= replaceJpSp($value);
-        }else {
-        //$resultString .=iconv('ISO-2022-JP','UTF-8',$value);
-        $resultString .=$value;
-        }
-      }
-      //echo $resultString;
-      return $resultString;
+  $splited =  splitToArrayBySE($startFlag,$endFlag,$longString);
+  $resultString = '';
+  foreach($splited as $key=>$value){
+    if (strpos($value,$startFlag)===0){
+      $resultString .= replaceJpSp($value);
+    }else {
+      //        $resultString .=iconv('ISO-2022-JP','UTF-8',$value);
+      $resultString .=$value;
+    }
+  }
+  //echo $resultString;
+  return $resultString;
 
 }
 function splitToArrayBySE($startFlag,$endFlag,$stcom)
@@ -494,7 +514,7 @@ function splitToArrayBySE($startFlag,$endFlag,$stcom)
       $tmpArr[] = substr($stcom,$startpos);
     }
 
-//     $tmpstr .= $stcom[$i];
+    //     $tmpstr .= $stcom[$i];
   }
   //$tmpArr = array_reverse($tmpArr);
 
@@ -524,160 +544,160 @@ function getPosInString($search,$longString,$flag=''){
   return $posArray;
 }
 
-  function replaceJpSp($longString){
-    $len = strlen($longString);
-    //$longString = str_replace(chr(hexdec('1b')).chr(hexdec('28')).chr(hexdec('42')),'',$longString);
-    //$longString = str_replace("\r\n",'',$longString);
-    //$longString = str_replace(chr(hexdec('21')).chr(hexdec('21')),'',$longString);
-    //$longString = str_replace(" ",'',$longString);
-    //$longString = chr(hexdec('1b')).chr(hexdec('24')).chr(hexdec('42')).$longString;
-    //$longString .= chr(hexdec('1b')).chr(hexdec('28')).chr(hexdec('42'));
-    $replaceArray=array(
-        "2d6a"=>"㈱",  // 3231
-        "2d6b"=>"㈲",  // 3232
-        "2d40"=>"㍉",  //  3249
-        "213b"=>"〇",  //〇
-        //"217b"=>"&#9675;",  //○
-        //"217e"=>"&#9671;",  //◇
-        //"2222"=>"&#9633;",  //□
-        //"2224"=>"&#9651;",  //△
-        //"2226"=>"&#9661;",  //▽
-        //"2179"=>"&#9734;",  //☆
-        //"217c"=>"&#9679;",  //●
-        //"2221"=>"&#9670;",  //◆
-        //"2223"=>"&#9632;",  //■
-        //"2225"=>"&#9650;",  //▲
-        //"2227"=>"&#9660;",  //▼
-        //"217a"=>"★",  //★
-        //"217d"=>"◎",  //◎
-        //"227e"=>"◇",  //◯
-        "2169"=>"♂",  //♂
-        "216a"=>"♀",   //♀
-        "2229"=>"〒",  //  〒
-        "2261"=>"≡",  // ≡
-        "2d74"=>"∑",  // ∑
-        "2269"=>"∫",  //  ∫
-        "2d73"=>"∮",  // ∮
-        "2265"=>"√",  //  √
-        "225d"=>"⊥",  // ⊥
-        "225c"=>"∠",  //∠
-        "2d78"=>"∟",  //   ∟
-        "2d79"=>"⊿",  //   ⊿
-        "2268"=>"∵",  // ∵
-        "2241"=>"∩",  //  ∩    
-        "2240"=>"∪",  // ∪ 
-        "2d62"=>"№",     //   №
-        "2d64"=>"℡",     //   ℡
-        "2d63"=>"㏍",   //   33cd    
-        "2d65"=>"㊤",   //   32a4
-        "2d66"=>"㊥",   //   32a5   
-        "2d67"=>"㊦",   //   32a6
-        "2d68"=>"㊧",   //   32a7
-        "2d69"=>"㊨",   //   32a8
-        "2d6b"=>"㈲",   //   3232
-        "2d6c"=>"㈹",   //    3239
-        "2d6d"=>"㍾",   //   337e
-        "2d6e"=>"㍽",   //   337d
-        "2d6f"=>"㍼",   //    337c
-        "2d5f"=>"㍻",   //    337b
-        "2d40"=>"㍉",  //    3349
-        "2d50"=>"㎜",  //    ㎜
-        "2d51"=>"㎝",  //   ㎝
-        "2d52"=>"㎞",  //   ㎞
-        "2d53"=>"㎎",  //   ㎎
-        "2d54"=>"㎏",  //   ㎏
-        "2d55"=>"㏄",  // ㏄
-        "2d40"=>"㍉",   //  3349
-        "2d41"=>"㌔",   //   3314
-        "2d42"=>"㌢",   // 3322
-        "2d43"=>"㍍",  //    334d
-        "2d44"=>"㌘",   //   3318
-        "2d45"=>"㌧",   //   3327
-        "2d46"=>"㌃",   //  3303
-        "2d47"=>"㌶",     //  3336
-        "2d48"=>"㍑",    //  3351
-        "2d49"=>"㍗",   //  3357
-        "2d4a"=>"㌍",    //  330d
-        "2d4b"=>"㌦",  //  3326
-        "2d4c"=>"㌣",  // 3323
-        "2d4d"=>"㌫",       // 332b
-        "2d4e"=>"㍊",           // 334a
-        "2d4f"=>"㌻",  //  333b
-        "2d21"=>"①",     //  ①
-        "2d22"=>"②",     //  ②
-        "2d23"=>"③",     //  ③
-        "2d24"=>"④",     //  ④
-        "2d25"=>"⑤",     //  ⑤
-        "2d26"=>"⑥",     //  ⑥
-        "2d27"=>"⑦",     //  ⑦
-        "2d28"=>"⑧",     //  ⑧
-        "2d29"=>"⑨",     //  ⑨
-        "2d2a"=>"⑩",     //  ⑩
-        "2d2b"=>"⑪",     //  ⑪
-        "2d2c"=>"⑫",     //   ⑫
-        "2d2d"=>"⑬",    //   ⑬
-        "2d2e"=>"⑭",    //   ⑭
-        "2d2f"=>"⑮",     //   ⑮ 
-        "2d30"=>"⑯",    //   ⑯
-        "2d31"=>"⑰",    //   ⑰
-        "2d32"=>"⑱",    //   ⑱
-        "2d33"=>"⑲",    //   ⑲
-        "2d34"=>"⑳",    //   ⑳
-        "2d35"=>"Ⅰ",    //  Ⅰ
-        "2d36"=>"Ⅱ",    //  Ⅱ
-        "2d37"=>"Ⅲ",    //  Ⅲ
-        "2d38"=>"Ⅳ",    //  Ⅳ  
-        "2d39"=>"Ⅴ",    //  Ⅴ
-        "2d3a"=>"Ⅵ",    // Ⅵ
-        "2d3b"=>"Ⅶ",    // Ⅶ
-        "2d3c"=>"Ⅷ",    // Ⅷ
-        "2d3d"=>"Ⅸ",    // Ⅸ
-        "2d3e"=>"Ⅹ",    // Ⅹ  
-        );
-    foreach ($replaceArray as $key=>$value){
-      $a = substr($key,0,2);
-      $b = substr($key,2);
-      $hexArray[] = chr(hexdec($a)).chr(hexdec($b));
-      $toArray[] = $value;
+function replaceJpSp($longString){
+  $len = strlen($longString);
+  //$longString = str_replace(chr(hexdec('1b')).chr(hexdec('28')).chr(hexdec('42')),'',$longString);
+  //$longString = str_replace("\r\n",'',$longString);
+  //$longString = str_replace(chr(hexdec('21')).chr(hexdec('21')),'',$longString);
+  //$longString = str_replace(" ",'',$longString);
+  //$longString = chr(hexdec('1b')).chr(hexdec('24')).chr(hexdec('42')).$longString;
+  //$longString .= chr(hexdec('1b')).chr(hexdec('28')).chr(hexdec('42'));
+  $replaceArray=array(
+                      "2d6a"=>"㈱",  // 3231
+                      "2d6b"=>"㈲",  // 3232
+                      "2d40"=>"㍉",  //  3249
+                      "213b"=>"〇",  //〇
+                      //"217b"=>"&#9675;",  //○
+                      //"217e"=>"&#9671;",  //◇
+                      //"2222"=>"&#9633;",  //□
+                      //"2224"=>"&#9651;",  //△
+                      //"2226"=>"&#9661;",  //▽
+                      //"2179"=>"&#9734;",  //☆
+                      //"217c"=>"&#9679;",  //●
+                      //"2221"=>"&#9670;",  //◆
+                      //"2223"=>"&#9632;",  //■
+                      //"2225"=>"&#9650;",  //▲
+                      //"2227"=>"&#9660;",  //▼
+                      //"217a"=>"★",  //★
+                      //"217d"=>"◎",  //◎
+                      //"227e"=>"◇",  //◯
+                      "2169"=>"♂",  //♂
+                      "216a"=>"♀",   //♀
+                      "2229"=>"〒",  //  〒
+                      "2261"=>"≡",  // ≡
+                      "2d74"=>"∑",  // ∑
+                      "2269"=>"∫",  //  ∫
+                      "2d73"=>"∮",  // ∮
+                      "2265"=>"√",  //  √
+                      "225d"=>"⊥",  // ⊥
+                      "225c"=>"∠",  //∠
+                      "2d78"=>"∟",  //   ∟
+                      "2d79"=>"⊿",  //   ⊿
+                      "2268"=>"∵",  // ∵
+                      "2241"=>"∩",  //  ∩    
+                      "2240"=>"∪",  // ∪ 
+                      "2d62"=>"№",     //   №
+                      "2d64"=>"℡",     //   ℡
+                      "2d63"=>"㏍",   //   33cd    
+                      "2d65"=>"㊤",   //   32a4
+                      "2d66"=>"㊥",   //   32a5   
+                      "2d67"=>"㊦",   //   32a6
+                      "2d68"=>"㊧",   //   32a7
+                      "2d69"=>"㊨",   //   32a8
+                      "2d6b"=>"㈲",   //   3232
+                      "2d6c"=>"㈹",   //    3239
+                      "2d6d"=>"㍾",   //   337e
+                      "2d6e"=>"㍽",   //   337d
+                      "2d6f"=>"㍼",   //    337c
+                      "2d5f"=>"㍻",   //    337b
+                      "2d40"=>"㍉",  //    3349
+                      "2d50"=>"㎜",  //    ㎜
+                      "2d51"=>"㎝",  //   ㎝
+                      "2d52"=>"㎞",  //   ㎞
+                      "2d53"=>"㎎",  //   ㎎
+                      "2d54"=>"㎏",  //   ㎏
+                      "2d55"=>"㏄",  // ㏄
+                      "2d40"=>"㍉",   //  3349
+                      "2d41"=>"㌔",   //   3314
+                      "2d42"=>"㌢",   // 3322
+                      "2d43"=>"㍍",  //    334d
+                      "2d44"=>"㌘",   //   3318
+                      "2d45"=>"㌧",   //   3327
+                      "2d46"=>"㌃",   //  3303
+                      "2d47"=>"㌶",     //  3336
+                      "2d48"=>"㍑",    //  3351
+                      "2d49"=>"㍗",   //  3357
+                      "2d4a"=>"㌍",    //  330d
+                      "2d4b"=>"㌦",  //  3326
+                      "2d4c"=>"㌣",  // 3323
+                      "2d4d"=>"㌫",       // 332b
+                      "2d4e"=>"㍊",           // 334a
+                      "2d4f"=>"㌻",  //  333b
+                      "2d21"=>"①",     //  ①
+                      "2d22"=>"②",     //  ②
+                      "2d23"=>"③",     //  ③
+                      "2d24"=>"④",     //  ④
+                      "2d25"=>"⑤",     //  ⑤
+                      "2d26"=>"⑥",     //  ⑥
+                      "2d27"=>"⑦",     //  ⑦
+                      "2d28"=>"⑧",     //  ⑧
+                      "2d29"=>"⑨",     //  ⑨
+                      "2d2a"=>"⑩",     //  ⑩
+                      "2d2b"=>"⑪",     //  ⑪
+                      "2d2c"=>"⑫",     //   ⑫
+                      "2d2d"=>"⑬",    //   ⑬
+                      "2d2e"=>"⑭",    //   ⑭
+                      "2d2f"=>"⑮",     //   ⑮ 
+                      "2d30"=>"⑯",    //   ⑯
+                      "2d31"=>"⑰",    //   ⑰
+                      "2d32"=>"⑱",    //   ⑱
+                      "2d33"=>"⑲",    //   ⑲
+                      "2d34"=>"⑳",    //   ⑳
+                      "2d35"=>"Ⅰ",    //  Ⅰ
+                      "2d36"=>"Ⅱ",    //  Ⅱ
+                      "2d37"=>"Ⅲ",    //  Ⅲ
+                      "2d38"=>"Ⅳ",    //  Ⅳ  
+                      "2d39"=>"Ⅴ",    //  Ⅴ
+                      "2d3a"=>"Ⅵ",    // Ⅵ
+                      "2d3b"=>"Ⅶ",    // Ⅶ
+                      "2d3c"=>"Ⅷ",    // Ⅷ
+                      "2d3d"=>"Ⅸ",    // Ⅸ
+                      "2d3e"=>"Ⅹ",    // Ⅹ  
+                      );
+  foreach ($replaceArray as $key=>$value){
+    $a = substr($key,0,2);
+    $b = substr($key,2);
+    $hexArray[] = chr(hexdec($a)).chr(hexdec($b));
+    $toArray[] = $value;
+  }
+  $returnString = '';
+  for($i=3;$i<$len-3;$i=$i+2){
+    if (@array_key_exists(dechex(ord($longString[$i])).dechex(ord($longString[$i+1])),$replaceArray)){
+      //$key = dechex(ord($longString[$i])).dechex(ord($longString[$i+1]));
+
+      $returnString.= $replaceArray[dechex(ord($longString[$i])).dechex(ord($longString[$i+1]))];
+      //$returnString.= iconv('ISO-2022-JP','UTF-8'.'//IGNORE',chrtojp(chr(hexdec('22')).chr(hexdec('28'))));
+    }else {
+      //echo dechex(ord($longString[$i]));
+      //echo dechex( ord($longString[$i]));
+      $returnString.= iconv('ISO-2022-JP','UTF-8',chrtojp($longString[$i].$longString[$i+1]));
     }
-    $returnString = '';
-    for($i=3;$i<$len-3;$i=$i+2){
-      if (@array_key_exists(dechex(ord($longString[$i])).dechex(ord($longString[$i+1])),$replaceArray)){
-        //$key = dechex(ord($longString[$i])).dechex(ord($longString[$i+1]));
-
-       $returnString.= $replaceArray[dechex(ord($longString[$i])).dechex(ord($longString[$i+1]))];
-       //$returnString.= iconv('ISO-2022-JP','UTF-8'.'//IGNORE',chrtojp(chr(hexdec('22')).chr(hexdec('28'))));
-     }else {
-       //echo dechex(ord($longString[$i]));
-       //echo dechex( ord($longString[$i]));
-       $returnString.= iconv('ISO-2022-JP','UTF-8',chrtojp($longString[$i].$longString[$i+1]));
-     }
-    }
-    return $returnString;
-   // return str_replace($hexArray,chr(hexdec('21')).chr(hexdec('7a')),$longString);
-//    return str_replace($hexArray,chr(hexdec('22')).chr(hexdec('28')),$longString);
-    //return str_replace($hexArray,chr(hexdec('21')).chr(hexdec('22')),$longString);
-//    return str_replace($hexArray,$toArray,$longString);
   }
-  function chrtojp($chr){
-   //$chr =  str_replace(chr(hexdec('1b')),'',$chr);
+  return $returnString;
+  // return str_replace($hexArray,chr(hexdec('21')).chr(hexdec('7a')),$longString);
+  //    return str_replace($hexArray,chr(hexdec('22')).chr(hexdec('28')),$longString);
+  //return str_replace($hexArray,chr(hexdec('21')).chr(hexdec('22')),$longString);
+  //    return str_replace($hexArray,$toArray,$longString);
+}
+function chrtojp($chr){
+  //$chr =  str_replace(chr(hexdec('1b')),'',$chr);
 
-    return chr(hexdec('1b')).chr(hexdec('24')).chr(hexdec('42')).$chr.chr(hexdec('1b')).chr(hexdec('28')).chr(hexdec('42'));
+  return chr(hexdec('1b')).chr(hexdec('24')).chr(hexdec('42')).$chr.chr(hexdec('1b')).chr(hexdec('28')).chr(hexdec('42'));
+}
+function is_jp($str){
+  if(!preg_match('/('.chr(hexdec('1b')).chr(hexdec('28')).chr(hexdec('42')).'|'.chr(hexdec('1b')).chr(hexdec('24')).chr(hexdec('42')).')/',$str)){
+    return true;
+  }else{
+    return false;
   }
-  function is_jp($str){
-        if(!preg_match('/('.chr(hexdec('1b')).chr(hexdec('28')).chr(hexdec('42')).'|'.chr(hexdec('1b')).chr(hexdec('24')).chr(hexdec('42')).')/',$str)){
-          return true;
-        }else{
-          return false;
-        }
 
-  }
+}
 
 
 function tep_strstr($str1,$str2,$bool=false){
   if($bool){
     if(strlen($str2)>0){
-    return substr($str1,0,strlen($str2)*-1);
+      return substr($str1,0,strlen($str2)*-1);
     }else{
       return false;
     }
@@ -693,18 +713,18 @@ function my_iconv($from, $to, $string) {
   $result = @iconv($from, $to, $string);  
   $error = error_get_last();  
   if($error['message']!='hi') {  
-       $result = $string;  
-       return false;
+    $result = $string;  
+    return false;
   } else { 
     echo $result;
-  return $result;  
+    return $result;  
   }
 }  
 if( !function_exists('error_get_last') ) {
-    set_error_handler(
-        create_function(
-            '$errno,$errstr,$errfile,$errline,$errcontext',
-            '
+  set_error_handler(
+                    create_function(
+                                    '$errno,$errstr,$errfile,$errline,$errcontext',
+                                    '
                 global $__error_get_last_retval__;
                 $__error_get_last_retval__ = array(
                     \'type\'        => $errno,
@@ -714,13 +734,13 @@ if( !function_exists('error_get_last') ) {
                 );
                 return false;
             '
-        )
-    );
-    function error_get_last() {
-        global $__error_get_last_retval__;
-        if( !isset($__error_get_last_retval__) ) {
-            return null;
-        }
-        return $__error_get_last_retval__;
+                                    )
+                    );
+  function error_get_last() {
+    global $__error_get_last_retval__;
+    if( !isset($__error_get_last_retval__) ) {
+      return null;
     }
+    return $__error_get_last_retval__;
+  }
 }
