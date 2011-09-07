@@ -2065,3 +2065,16 @@ border:2px solid #FF8080;
 	display:block;
 	width:510px;
 }
+.comment_faq_box {
+	background:#FFFFFF;
+	padding:5px;
+}
+.faq_question_row_div span {
+	font-size:14px;
+}
+.faq_back {
+	text-align:right;
+}
+.comment_faq td {
+	font-size:12px;
+}

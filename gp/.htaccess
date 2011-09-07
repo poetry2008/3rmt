@@ -67,6 +67,21 @@ RewriteRule ^latest_news/([0-9]+)\.html$ latest_news.php?news_id=$1&%{QUERY_STRI
 RewriteCond %{REQUEST_FILENAME} !-f 
 RewriteRule ^images/(.*) default_images/$1 [QSA,L]
 
+# faq romaji
+RewriteRule ^faq/([^\/\.]+)\.html faq_info.php?question_romaji=$1 [QSA,L]
+RewriteCond %{REQUEST_URI} !page-\d+.html
+RewriteRule ^faq/([^\/\.]+)/([^\/\.]+)\.html faq_info.php?question_romaji=$2&qPath=$1 [QSA,L]
+RewriteCond %{REQUEST_URI} !page-\d+.html
+RewriteRule ^faq/([^\/\.]+)/([^\/\.]+)/([^\/\.]+)\.html faq_info.php?%{REQUEST_FILENAME}&question_romaji=$3&qPath=$1/$2 [QSA,L]
+RewriteCond %{REQUEST_URI} !page-\d+.html
+RewriteRule ^faq/([^\/\.]+)/([^\/\.]+)/([^\/\.]+)/([^\/\.]+)\.html faq_info.php?question_romaji=$4&qPath=$1/$2/$3 [QSA,L]
+RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteCond %{REQUEST_URI} !\.
+RewriteRule ^faq/(.*) faq.php?faq_name=$1 [QSA,PT,L]
+RewriteRule ^faq$ faq.php [QSA,PT,L]
+
+
+
 
 # http://rmt.worldmoney.jp/game/m-18.html
 # if romaji RewriteRule ^game/m-([0-9A-Za-z_-]+).html$ index.php?manufacturers_id=$1&%{QUERY_STRING}
