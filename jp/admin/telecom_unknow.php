@@ -121,7 +121,7 @@ function check_one(ele){
   
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
-      <td class="pageHeading" width="33%"><a href="telecom_unknow.php"><?php echo TELECOM_UNKNOW_TITLE;?></a></td>
+      <td class="pageHeading" width="33%" height="40"><a href="telecom_unknow.php"><?php echo TELECOM_UNKNOW_TITLE;?></a></td>
       <td align="center">
         <form action="?" method="get">
           <input type="text" name="keywords" value="<?php echo $_GET['keywords'];?>">
@@ -356,7 +356,7 @@ function check_one(ele){
       <td colspan="5">
         <table border="0" width="100%" cellspacing="0" cellpadding="2">
           <tr>
-            <td class="smallText" valign="top"><input type="submit" value="一括非表示"><?php echo $orders_split->display_count($orders_query_numrows, MAX_DISPLAY_ORDERS_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_ORDERS); ?></td>
+            <td class="smallText" ><input type="submit" value="一括非表示"><?php echo $orders_split->display_count($orders_query_numrows, MAX_DISPLAY_ORDERS_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_ORDERS); ?></td>
             <td class="smallText" align="right"><?php echo $orders_split->display_links($orders_query_numrows, MAX_DISPLAY_ORDERS_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'oID', 'action'))); ?></td>
           </tr>
         </table>
