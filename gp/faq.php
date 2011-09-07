@@ -132,8 +132,8 @@ if (isset($body_option)) {
     <div class="comment">
     <div class="comment_faq_box">
 
-    <div  style="border-bottom-style:dotted; width:100%; margin-top:10px;
-color:#444; margin:0 2px;"></div>
+    <!--<div  style="border-bottom-style:dotted; width:100%; margin-top:10px;
+color:#444; margin:0 2px;"></div>-->
     <div class="comment_faq">
     <table class="faq_question_row">
     <tr><td>
@@ -152,7 +152,7 @@ color:#444; margin:0 2px;"></div>
         </td></tr>
     </table>
     <?php } ?>
-    <table width="100%" >
+    <table width="94%" >
         <tr><td align="right">
     <?php if($link_url != 'faq' && $flag_question) { ?>
     <div class="faq_back">
