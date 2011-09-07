@@ -6,6 +6,7 @@
 require('includes/application_top.php');
 require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_FAQ);
 require(DIR_WS_ACTIONS.'faq_category.php');
+$flag_question = false;             
 ?>
 <?php page_head();?>
 </head>
@@ -61,13 +62,13 @@ if (isset($body_option)) {
     <?php } ?>
     </div>
     <p class="pageBottom"></p>
+    </div>
+    </div>
     <?php 
     }
     //this show faq question 
     ?>
     <?php if($q_row = tep_db_fetch_array($faq_question_query)){ ?>
-    </div>
-    </div>
     <h2 class="pageHeading"><?php echo $parent_info['title'].TEXT_QUESTION_TITLE;?></h2>
     <div class="comment">
     <div class="comment_faq_box">
@@ -99,24 +100,31 @@ if (isset($body_option)) {
     ?>
     </div>
     <p class="pageBottom"></p>
-    <?php } ?>
-
     <?php if($link_url != 'faq') { ?>
     <div class="faq_back">
       <a href="<?php echo HTTP_SERVER.'/'.implode('/',$link_arr).'/';?>"><img src="images/design/button/faq_back.gif" alt="<?php echo TEXT_BACK;?>">
       </a>
     </div>
+    </div></div>
     <?php } ?>
+    <?php 
+    } else{ 
+      $flag_question = true;             
+    }
+    ?>
     <?php //this last  show faq category ?>
     <?php if ($last_row = tep_db_fetch_array($last_faq_category_query)){?>
     <?php if (isset($last_parent_info)&&$last_parent_info!=null){ ?>
-    </div></div>
     <h2 class="pageHeading"><?php echo
       $last_parent_info['title'].TEXT_QUESTION_TITLE;?></h2>
     <?php }else {?>
     <h2 class="pageHeading"><?php echo TEXT_FAQ_TITLE_LAST;?></h2>
     <?php } ?>
-    <div  style="border-bottom-style:dotted; width:94%; margin-top:10px; color:#444; margin-left:2px;"></div>
+    <div class="comment">
+    <div class="comment_faq_box">
+
+    <div  style="border-bottom-style:dotted; width:100%; margin-top:10px;
+color:#444; margin:0 2px;"></div>
     <div class="comment_faq">
     <table class="faq_question_row">
     <tr><td>
@@ -135,8 +143,19 @@ if (isset($body_option)) {
         </td></tr>
     </table>
     <?php } ?>
+    <table width="100%" >
+        <tr><td align="right">
+    <?php if($link_url != 'faq' && $flag_question) { ?>
+    <div class="faq_back">
+      <a href="<?php echo HTTP_SERVER.'/'.implode('/',$link_arr).'/';?>"><img src="images/design/button/faq_back.gif" alt="<?php echo TEXT_BACK;?>">
+      </a>
+    </div>
+    <?php }?>
+        </td></tr>
+    </table>
     </div>
     <p class="pageBottom"></p>
+    </div></div>
     <?php 
     }
     //this show faq question 
