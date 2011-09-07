@@ -6,7 +6,7 @@
 require('includes/application_top.php');
 require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_FAQ);
 require(DIR_WS_ACTIONS.'faq_category.php');
-$flag_question = false;             
+$flag_question = true;             
 ?>
 <?php page_head();?>
 </head>
@@ -39,14 +39,14 @@ if (isset($body_option)) {
     <?php if (isset($parent_info)&&$parent_info!=null){ ?>
     <h2 class="pageHeading"><?php echo $parent_info['title'].TEXT_QUESTION_TITLE;?></h2><div class="comment"><div class="comment_faq_box">
     <?php }else {?>
-	<h2 class="pageHeading"><?php echo
+    <h2 class="pageHeading"><?php echo
       TEXT_FAQ_TITLE.'</h2><div class="comment"><div class="comment_faq_box"><font color="red" style=" font-size:14px; padding-left:2px;">'.TEXT_FAQ_TITLE_END.'</font>';?>
     <?php } ?>    <div class="comment_faq">
     <table class="faq_question_row">
-    	<tr><td>
+    <tr><td>
     <img src="images/design/ask.gif" alt="question"></td><td class="faq_question_row_div"><span><a href="<?php echo
     HTTP_SERVER.'/'.$link_url.'/'.urlencode($c_row['romaji']).'/';?>">
-      <?php echo $c_row['title'];?>
+    <?php echo $c_row['title'];?>
     </a></span></div></td></tr>
     </table>
     <?php while($c_row = tep_db_fetch_array($faq_category_query)){ ?>
@@ -62,6 +62,14 @@ if (isset($body_option)) {
     <?php } ?>
     </div>
     <p class="pageBottom"></p>
+    <?php if($link_url != 'faq' && $flag_question) { ?>
+    <div class="faq_back">
+      <a href="<?php echo HTTP_SERVER.'/'.implode('/',$link_arr).'/';?>"><img src="images/design/button/faq_back.gif" alt="<?php echo TEXT_BACK;?>">
+      </a>
+    </div>
+    <?php 
+      $flag_question = false;
+    }?>
     </div>
     </div>
     <?php 
@@ -100,16 +108,17 @@ if (isset($body_option)) {
     ?>
     </div>
     <p class="pageBottom"></p>
-    <?php if($link_url != 'faq') { ?>
+    <?php if($link_url != 'faq' && $flag_question) { ?>
     <div class="faq_back">
       <a href="<?php echo HTTP_SERVER.'/'.implode('/',$link_arr).'/';?>"><img src="images/design/button/faq_back.gif" alt="<?php echo TEXT_BACK;?>">
       </a>
     </div>
-    </div></div>
-    <?php } ?>
     <?php 
-    } else{ 
-      $flag_question = true;             
+      $flag_question = false;
+    } 
+    ?>
+    </div></div>
+    <?php 
     }
     ?>
     <?php //this last  show faq category ?>
