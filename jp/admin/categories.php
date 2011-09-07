@@ -2475,7 +2475,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
         <tr>
           <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
               <tr>
-                <td class="pageHeading">
+                <td class="pageHeading" height="40">
                 <?php echo BOX_CATALOG_CATEGORIES_PRODUCTS; ?>
                 &nbsp; 
                 <?php
@@ -2492,6 +2492,8 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                     echo "<td class='smallText' align='right'>";
                   }
                 ?>
+                </td>
+                <td class="smallText" align="right">
           <?php echo tep_draw_form('search', FILENAME_CATEGORIES, '', 'get') . "\n"; ?>
             <table border="0">
             <tr>
