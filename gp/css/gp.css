@@ -630,7 +630,7 @@ border:1px solid #ccc;
 	padding:3px 0 0 10px;
 }
 .header_Navigation ul{background:url(../images/design/header_img01.gif) no-repeat; float:right; height:29px; overflow:hidden; padding:0 5px;}
-.header_Navigation li{ line-height:25px; margin:0 10px; font-size:12px;float:left;}
+.header_Navigation li{ line-height:20px; margin:0 10px; font-size:12px;float:left;}
 .header_Navigation li a{ color:#565656; font-size:12px;}
 .header_Navigation a{
 	color: #CC0000;
@@ -724,6 +724,7 @@ Ranking
 #contents, #contents_long{
 	padding-left: 8px;
 	padding-bottom: 20px;
+	padding-top:5px;
 }
 #contents{
 	padding:5px 0 0 9px;
@@ -1877,7 +1878,14 @@ background-image: url(../includes/languages/japanese/images/buttons/button_check
 }
 .waring_category {
 color:#000;
-margin:5px 0 2px 0;
+margin:0 5px 5px 0;
+overflow:hidden;
+padding:5px 7px;
+border:2px solid #FF8080;
+}
+.waring_category01 {
+color:#000;
+margin:0 9px 5px 0;
 overflow:hidden;
 padding:5px 7px;
 border:2px solid #FF8080;
@@ -2020,6 +2028,10 @@ border:2px solid #FF8080;
   padding:5px;
   padding:5px 0\9;
   margin:5px 0\9;
+}
+.comment_info_warpper td {
+	text-align:center;
+	vertical-align:top;
 }
 .comment_info_warpper table { margin-left:5px\9;}
 .comment_info_warpper01{
