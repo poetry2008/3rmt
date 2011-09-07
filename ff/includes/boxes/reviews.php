@@ -17,27 +17,22 @@ if (
   if(basename($PHP_SELF) == FILENAME_PRODUCT_INFO){
     // ccdd
     $reviews_query = tep_db_query("
-        select rd.reviews_text, 
-               r.reviews_rating, 
+        select r.reviews_rating, 
                r.reviews_id, 
-               r.products_id, 
-               r.customers_name, 
-               r.date_added, 
-               r.last_modified, 
-               r.reviews_read 
-        from " .  TABLE_REVIEWS . " r, " . TABLE_REVIEWS_DESCRIPTION . " rd 
-        where r.reviews_id = rd.reviews_id 
-          and r.products_id = '" .  (int)$_GET['products_id'] . "' 
+               r.customers_name 
+        from " .  TABLE_REVIEWS . " r 
+        where r.products_id = '" .  (int)$_GET['products_id'] . "' 
           and r.reviews_status = '1' 
-          and  r.products_id not in".tep_not_in_disabled_products()." 
           and r.site_id = ".SITE_ID
         );
     if(tep_db_num_rows($reviews_query)) {
       echo  '<div class="pageHeading_long"><span>'.$product_info['products_name'] .'のレビュー</span></div>'."\n" . '<div class="comment_long">'."\n" ;
       while ($reviews = tep_db_fetch_array($reviews_query)) {
+        $reviews_des_query = tep_db_query("select reviews_text from ".TABLE_REVIEWS_DESCRIPTION." where reviews_id = '".$reviews['reviews_id']."' and languages_id = '".$languages_id."'"); 
+        $reviews_des_res = tep_db_fetch_array($reviews_des_query); 
         echo '<div class="reviews_area"><p class="main">
 <b>' . sprintf(TEXT_REVIEW_BY, tep_output_string_protected($reviews['customers_name'])) . '</b>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'stars_' . $reviews['reviews_rating'] . '.gif' , sprintf(BOX_REVIEWS_TEXT_OF_5_STARS, $reviews['reviews_rating'])) . '[' . sprintf(BOX_REVIEWS_TEXT_OF_5_STARS, $reviews['reviews_rating']) . ']
-<br>' . str_replace('<br />', '<br>', nl2br($reviews['reviews_text'])) . "\n" . '</p></div>';
+<br>' . str_replace('<br />', '<br>', nl2br($reviews_des_res['reviews_text'])) . "\n" . '</p></div>';
 //<div align="right"><i>' . sprintf(TEXT_REVIEW_DATE_ADDED, tep_date_long($reviews['date_added'])) . '</i></div></div>' . "\n";
       }
       //if(MAX_RANDOM_SELECT_REVIEWS > tep_db_num_rows($reviews_query)){
@@ -59,55 +54,40 @@ if (
   </div>
     <?php
   $random_reviews_array = array(); 
+  $random_from_str = '';
+  $random_where_str = '';
+  
   if (isset($_GET['products_id'])) {
-    $random_reviews_raw = tep_db_query("select * from ".TABLE_REVIEWS." where site_id = '".SITE_ID."' and reviews_status = '1' and products_id = '".(int)$_GET['products_id']."'"); 
+    $random_from_str = "select r.reviews_id, r.reviews_rating, r.products_id from ".TABLE_REVIEWS." r";
+    $random_where_str = "r.site_id = '".SITE_ID."' and r.reviews_status = '1' and r.products_id = '".(int)$_GET['products_id']."' and r.products_status != '0' and r.products_status != '3'"; 
   } else {
-    $random_reviews_raw = tep_db_query("select * from ".TABLE_REVIEWS." where site_id = '".SITE_ID."' and reviews_status = '1'"); 
+    $random_from_str = "select r.reviews_id, r.reviews_rating, r.products_id from ".TABLE_REVIEWS." r";
+    $random_where_str = "site_id = '".SITE_ID."' and reviews_status = '1' and products_status != '0' and products_status != '3'"; 
   }
-  $random_reviews_num = tep_db_num_rows($random_reviews_raw);
-  $re_calc_num = 1;
-  $re_max_num = 1;
-  $re_show_num = ($random_reviews_num > 3)?3:$random_reviews_num; 
-  if ($random_reviews_num > 0) {
-    while (true) {
-      $random_num = tep_rand(0, ($random_reviews_num-1)); 
-      tep_db_data_seek($random_reviews_raw, $random_num); 
-      $random_reviews = tep_db_fetch_array($random_reviews_raw); 
-      $re_max_num++;
-      if (isset($random_reviews_array[$random_reviews['reviews_id']])) {
-        continue; 
-      }
-      $exists_reviews_raw = "select p.products_id, p.products_image, pd.products_name from ".TABLE_PRODUCTS." p, ".TABLE_PRODUCTS_DESCRIPTION." pd ";
+  
+  if (isset($subcid) && $subcid) {
+    $random_from_str .= ", " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c";
+    $random_where_str .= " and r.products_id = p2c.products_id and p2c.categories_id in (".implode(',', $subcid).")";   
+  }
+  
+  $random_reviews_str = $random_from_str.' where '.$random_where_str;
+  
+  $random_reviews = tep_reviews_random_select($random_reviews_str, 3); 
+  
+  if (!empty($random_reviews)) {
+    foreach ($random_reviews as $rr_key => $rr_value) {
+      $link_pro_raw = tep_db_query("select p.products_image, pd.products_name from ".TABLE_PRODUCTS." p, ".TABLE_PRODUCTS_DESCRIPTION." pd where p.products_id = pd.products_id and p.products_id = '".$rr_value['products_id']."' and pd.language_id = '".$languages_id."' and (pd.site_id = '0' or pd.site_id = '".SITE_ID."') order by pd.site_id DESC limit 1"); 
+      $link_pro = tep_db_fetch_array($link_pro_raw); 
       
-      if (isset($subcid) && $subcid) {
-          $exists_reviews_raw .= (", " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c");
-      }
-      
-      $exists_reviews_raw .= " where p.products_id = pd.products_id and pd.language_id = '".$languages_id."'";
-      if (isset($subcid) && $subcid) {
-        $exists_reviews_raw .= "and p.products_id = p2c.products_id and p2c.categories_id in (".implode(',',$subcid).") ";
-      }
-      
-      $exists_reviews_raw .= " and p.products_id = '" .  $random_reviews['products_id'] . "'";
-      
-      $exists_reviews_raw .= " and pd.products_status != 0 and pd.products_status != 3 order by pd.site_id DESC";
-      $exists_reviews_query = tep_db_query($exists_reviews_raw); 
-      if (tep_db_num_rows($exists_reviews_query)) {
-        $exists_reviews_res = tep_db_fetch_array($exists_reviews_query); 
-        $random_reviews_array[$random_reviews['reviews_id']]['products_id'] = $exists_reviews_res['products_id'];  
-        $random_reviews_array[$random_reviews['reviews_id']]['products_image'] = $exists_reviews_res['products_image'];  
-        $random_reviews_array[$random_reviews['reviews_id']]['products_name'] = $exists_reviews_res['products_name'];  
-        $random_reviews_array[$random_reviews['reviews_id']]['reviews_rating'] = $random_reviews['reviews_rating'];  
-        $re_calc_num++; 
-      }
-      if ($re_calc_num > $re_show_num) {
-        break; 
-      }
-      if ($re_max_num > 3000) {
-        break; 
+      if ($link_pro) {
+        $random_reviews_array[$rr_value['reviews_id']]['products_id'] = $rr_value['products_id'];  
+        $random_reviews_array[$rr_value['reviews_id']]['products_image'] = $link_pro['products_image'];  
+        $random_reviews_array[$rr_value['reviews_id']]['products_name'] = $link_pro['products_name'];  
+        $random_reviews_array[$rr_value['reviews_id']]['reviews_rating'] = $rr_value['reviews_rating'];  
       }
     }
-     foreach ($random_reviews_array as $ran_key => $ran_value) {   
+     
+    foreach ($random_reviews_array as $ran_key => $ran_value) {   
       $review_query = tep_db_query("
           select substring(reviews_text, 1, 60) as reviews_text 
           from " . TABLE_REVIEWS_DESCRIPTION . " 

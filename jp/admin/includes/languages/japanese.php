@@ -533,3 +533,4 @@ define('TEXT_TEP_CFG_PAYMENT_CHECKBOX_OPTION_CUSTOMER','ゲスト');
 
 define('TEXT_MONEY_SYMBOL','円');
 
+define('FILENAME_ORDER_DOWNLOPAD','注文データエクスポート');

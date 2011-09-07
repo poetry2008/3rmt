@@ -97,7 +97,10 @@
                    '">'.FILENAME_MAG_UP_TEXT.'</a><br>' . 
                    '<a class="menuBoxContent_Link" href="' .
                    tep_href_link('mag_dl.php', '', 'NONSSL') .
-                   '">'.FILENAME_MAG_DL_TEXT.'</a>';
+                   '">'.FILENAME_MAG_DL_TEXT.'</a><br>'.
+                   '<a class="menuBoxContent_Link" href="' .
+                   tep_href_link(FILENAME_ORDERS_DOWNLOAD, '', 'NONSSL') .
+                   '">'.FILENAME_ORDER_DOWNLOPAD.'</a>';
               ?> 
                 </td>
               </tr>

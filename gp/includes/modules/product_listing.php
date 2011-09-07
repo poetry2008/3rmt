@@ -104,7 +104,7 @@
           </td>
         </tr>
         <tr>
-          <?php if (false) {?> 
+          <?php if (true) {?> 
           <td colspan="2" style="padding-left:5px; ">
             <p class="smallText">
 <?php

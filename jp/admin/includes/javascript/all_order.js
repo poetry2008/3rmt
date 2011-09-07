@@ -248,7 +248,11 @@ function playSound()
   var node=document.getElementById('warn_sound');  
   if(node!=null)  
   {  
-    node.Play();  
+    if (node.controls) {
+      node.controls.play();
+    } else {
+      node.play();
+    }
   }
 }
 // 当ele选中，则id必须同时被选中

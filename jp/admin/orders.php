@@ -2356,7 +2356,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
   // list start
 ?>
     <tr>
-      <td width="100%">
+      <td width="100%" height="40">
   
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
@@ -2419,6 +2419,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
       </td>
     </tr>
 <?php
+  /*
   if ($ocertify->npermission == 15) {
 ?>
     <tr>
@@ -2506,6 +2507,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
       </tr>
 <?php
   }
+ */
 ?>
     <tr>
       <td>
@@ -3101,7 +3103,7 @@ function submit_confirm()
 <?php
     require(DIR_WS_INCLUDES . 'footer.php');
 ?>
-<embed id="warn_sound" src="images/warn.mp3" width="0" height="0" loop="false" autostart="false"></embed>
+<embed id="warn_sound" src="images/warn.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></embed>
 <!-- footer_eof //-->
 <br>
 <div id="wait" style="position:fixed; left:45%; top:45%; display:none;"><img src="images/load.gif" alt="img"></div>

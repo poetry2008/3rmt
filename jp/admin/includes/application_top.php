@@ -50,6 +50,7 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
   define('LOCAL_EXE_UNZIP', '/usr/local/bin/unzip');
 
 // define the filenames used in the project
+  define('FILENAME_ORDERS_DOWNLOAD', 'orders_download.php');
   define('FILENAME_PREORDERS', 'preorders.php');
   define('FILENAME_PREORDERS_STATUS', 'preorders_status.php');
   define('FILENAME_FINAL_PREORDERS', 'final_preorders.php');

@@ -13,7 +13,8 @@
 
 // CSVファイル名の作成
 
-  $filename = ((isset($_POST['site_id'])&&$_POST['site_id']) ? (tep_get_site_romaji_by_id(intval($_POST['site_id'])).'_') :'')."orders_".date("Ymd_His", time()).".csv";
+  $filename = ((isset($_POST['site_id'])&&$_POST['site_id']) ?
+      (tep_get_site_romaji_by_id(intval($_POST['site_id'])).'_') :'')."preorders_".date("Ymd_His", time()).".csv";
 
 //ダウンロード範囲の取得
   $s_y = $_POST['s_y'] ; //開始日　年
@@ -27,14 +28,14 @@
   $end = $e_y.$e_m.$e_d ;
 
 // ダウンロード範囲の指定
-    //if($_POST['status'] && $_POST['status'] !=""){
+    //if($_POST['preorder_status'] && $_POST['preorder_status'] !=""){
       //$csv_query = tep_db_query("
           //select o.*, op.* 
           //from ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op 
           //where o.orders_id = op.orders_id 
             //and o.date_purchased >= '" . $start . "' 
             //and o.date_purchased <= '" . $end . "' 
-            //and o.orders_status = '".(int)$_POST['status']."' 
+            //and o.orders_status = '".(int)$_POST['preorder_status']."' 
           //order by o.orders_id, op.orders_products_id
       //");
 	//}else{
@@ -45,7 +46,7 @@
             and o.site_id = s.id
             and o.date_purchased >= '" . $start . "' 
             and o.date_purchased <= '" . $end . "' 
-            ".(isset($_POST['status']) && $_POST['status'] ? ("and o.orders_status = '".(int)$_POST['status'] . "'") : '')."
+            ".(isset($_POST['preorder_status']) && $_POST['preorder_status'] ? ("and o.orders_status = '".(int)$_POST['preorder_status'] . "'") : '')."
             ".(isset($_POST['site_id']) && $_POST['site_id'] ? ("and o.site_id = '".(int)$_POST['site_id'] . "'") : '')."
           order by o.orders_id, op.orders_products_id
       ");
