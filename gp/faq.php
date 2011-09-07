@@ -63,11 +63,11 @@ if (isset($body_option)) {
     <p class="pageBottom"></p>
     <?php 
     }
-	echo "</div>";
-	echo "</div>";
     //this show faq question 
     ?>
     <?php if($q_row = tep_db_fetch_array($faq_question_query)){ ?>
+    </div>
+    </div>
     <h2 class="pageHeading"><?php echo $parent_info['title'].TEXT_QUESTION_TITLE;?></h2>
     <div class="comment">
     <div class="comment_faq_box">
@@ -87,7 +87,7 @@ if (isset($body_option)) {
     ?>
     <table class="faq_question_row">
     <tr>
-    	<td><img src="images/design/ask.gif" alt="question"> </td>
+        <td><img src="images/design/ask.gif" alt="question"> </td>
         <td class="faq_question_row_div"><span><a href="<?php echo
       HTTP_SERVER.'/'.$link_url.'/'.urlencode($q_row['romaji']).'.html';?>">
         <?php echo $q_row['ask'];?>
