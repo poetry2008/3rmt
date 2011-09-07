@@ -25,7 +25,36 @@ if ($_SERVER['PHP_SELF'] == '/product_info.php') {
 </div>
 <?php } ?>
 <?php
-if($_SERVER['REQUEST_URI']=='/'||$_SERVER['REQUEST_URI']=='/index.php'||$_SERVER['REQUEST_URI']=='/reviews/'||$_SERVER['PHP_SELF'] == '/page.php'||$_SERVER['PHP_SELF'] == '/contact_us.php'||$_SERVER['PHP_SELF'] == '/reorder.php'||$_SERVER['PHP_SELF'] == '/sitemap.php'||$_SERVER['PHP_SELF'] == '/tags.php'||$_SERVER['PHP_SELF'] == '/products_new.php'||$_SERVER['PHP_SELF'] == '/specials.php'||strpos($_SERVER['PHP_SELF'], 'shopping_cart.php')||strpos($_SERVER['PHP_SELF'], 'login.php')||strpos($_SERVER['PHP_SELF'], 'send_mail.php')||strpos($_SERVER['PHP_SELF'], 'create_account.php')||strpos($_SERVER['PHP_SELF'], 'create_account_process.php')||strpos($_SERVER['PHP_SELF'], 'advanced_search.php')||strpos($_SERVER['PHP_SELF'], 'product_notifications.php')||strpos($_SERVER['PHP_SELF'], 'account.php')||strpos($_SERVER['PHP_SELF'], 'account_history.php')||strpos($_SERVER['PHP_SELF'], 'account_history_info.php')||strpos($_SERVER['PHP_SELF'], 'account_edit.php')||strpos($_SERVER['PHP_SELF'], 'email_trouble.php')||strpos($_SERVER['PHP_SELF'], 'browser_ie6x.php')||strpos($_SERVER['PHP_SELF'], 'latest_news.php')||strpos($_SERVER['PHP_SELF'], 'password_forgotten.php')||strpos($_SERVER['PHP_SELF'], 'checkout_products.php')||strpos($_SERVER['PHP_SELF'], 'checkout_shipping.php')||strpos($_SERVER['PHP_SELF'], 'logoff.php')||strpos($_SERVER['PHP_SELF'], 'open.php')||strpos($_SERVER['PHP_SELF'], 'checkout_success.php')||strpos($_SERVER['PHP_SELF'], 'checkout_confirmation.php')||strpos($_SERVER['PHP_SELF'], 'checkout_payment.php')||strpos($_SERVER['PHP_SELF'], 'account_edit_process.php')||(strpos($_SERVER['REQUEST_URI'],'index.php?cmd='))){
+if($_SERVER['PHP_SELF'] == '/faq.php'||$_SERVER['PHP_SELF'] == '/faq_info.php'
+    ||$_SERVER['REQUEST_URI']=='/'||$_SERVER['REQUEST_URI']=='/index.php'
+    ||$_SERVER['REQUEST_URI']=='/reviews/'||$_SERVER['PHP_SELF'] == '/page.php'
+    ||$_SERVER['PHP_SELF'] == '/contact_us.php'||$_SERVER['PHP_SELF'] == '/reorder.php'
+    ||$_SERVER['PHP_SELF'] == '/sitemap.php'||$_SERVER['PHP_SELF'] == '/tags.php'
+    ||$_SERVER['PHP_SELF'] == '/products_new.php'||$_SERVER['PHP_SELF'] == '/specials.php'
+    ||strpos($_SERVER['PHP_SELF'], 'shopping_cart.php')
+    ||strpos($_SERVER['PHP_SELF'], 'login.php')
+    ||strpos($_SERVER['PHP_SELF'], 'send_mail.php')
+    ||strpos($_SERVER['PHP_SELF'], 'create_account.php')
+    ||strpos($_SERVER['PHP_SELF'], 'create_account_process.php')
+    ||strpos($_SERVER['PHP_SELF'], 'advanced_search.php')
+    ||strpos($_SERVER['PHP_SELF'], 'product_notifications.php')
+    ||strpos($_SERVER['PHP_SELF'], 'account.php')
+    ||strpos($_SERVER['PHP_SELF'], 'account_history.php')
+    ||strpos($_SERVER['PHP_SELF'], 'account_history_info.php')
+    ||strpos($_SERVER['PHP_SELF'], 'account_edit.php')
+    ||strpos($_SERVER['PHP_SELF'], 'email_trouble.php')
+    ||strpos($_SERVER['PHP_SELF'], 'browser_ie6x.php')
+    ||strpos($_SERVER['PHP_SELF'], 'latest_news.php')
+    ||strpos($_SERVER['PHP_SELF'], 'password_forgotten.php')
+    ||strpos($_SERVER['PHP_SELF'], 'checkout_products.php')
+    ||strpos($_SERVER['PHP_SELF'], 'checkout_shipping.php')
+    ||strpos($_SERVER['PHP_SELF'], 'logoff.php')
+    ||strpos($_SERVER['PHP_SELF'], 'open.php')
+    ||strpos($_SERVER['PHP_SELF'], 'checkout_success.php')
+    ||strpos($_SERVER['PHP_SELF'], 'checkout_confirmation.php')
+    ||strpos($_SERVER['PHP_SELF'], 'checkout_payment.php')
+    ||strpos($_SERVER['PHP_SELF'], 'account_edit_process.php')
+    ||(strpos($_SERVER['REQUEST_URI'],'index.php?cmd='))){
 }else{
   if (!((strpos($_SERVER['PHP_SELF'], 'index.php')) && ($category_depth == 'top') && !isset($_GET['manufacturers_id']))) {
   $left_search_category_single = true; 
