@@ -67,7 +67,7 @@
         $products_name = $listing['products_name'];
         $ten = '';
       }
-      $description = strip_tags(mb_substr (replace_store_name($listing['products_description']),0,120));//maker
+      $description = strip_tags(mb_substr (replace_store_name($listing['products_description']),0,60));//maker
     
       $row++;
       $col++;
@@ -117,7 +117,7 @@ if (!isset($listing['products_cflag'])) $listing['products_cflag'] = NULL;//del 
     echo $description . '..';
   } else {
     # 販売商品
-    echo $description . '.. 表示在庫以上の注文は「<a href="' . tep_href_link(FILENAME_PREORDER, 'products_id=' . $listing['products_id']) . '">' . $products_name . $ten . 'を予約</a>」からお手続きください。';
+    echo $description . '..<br>表示在庫以上の注文は「<a href="' . tep_href_link(FILENAME_PREORDER, 'products_id=' . $listing['products_id']) . '">' . $products_name . $ten . 'を予約</a>」からお手続きください。';
   }
 ?>
             </p>
