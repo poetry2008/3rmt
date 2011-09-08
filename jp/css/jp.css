@@ -13,7 +13,7 @@ A：link
 --------------------------- */
 A {
 	color: #2864B4;
-	text-decoration: none;
+	text-decoration:none;
 }
 /* ---------------------------
 A：hover
@@ -179,6 +179,7 @@ UL UL UL {
 .subcategory_tree {
 	list-style-type:none;
 }
+.subcategory_tree a { position:relative;}
 .subcategory_tree ul { padding:0px 0 0 39px; *padding:0px 0 0 0px; *margin-top:-15px;}
 /* ---------------------------
 header
@@ -1117,3 +1118,4 @@ searching
  width:520px;
 }
 .active_email input{ width:380px;}
+
