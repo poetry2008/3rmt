@@ -16,11 +16,11 @@
            r.reviews_rating, 
            r.date_added, 
            r.products_id, 
-           r.customers_name
+           r.customers_name,
+           r.products_status
     from " . TABLE_REVIEWS . " r
       where r.reviews_status  = '1' 
-      and r.site_id         = '".SITE_ID."' 
-      and r.products_status != '0' and r.products_status != '3' 
+      and r.site_id = '".SITE_ID."' 
       order by date_added DESC
   ";
   
@@ -43,7 +43,9 @@
                              'review'         => tep_output_string_protected(mb_substr($reviews_des['reviews_text'], 0, 250)) . '..',
                              'rating'         => $reviews['reviews_rating'],
                              'word_count'     => tep_word_count($reviews_des['reviews_text'], ' '),
-                             'date_added'     => tep_date_long($reviews['date_added']));
+                             'date_added'     => tep_date_long($reviews['date_added']),
+                             'products_status' => $reviews['products_status'] 
+                             );
   }
   forward404Unless($reviews_array);
   page_head();

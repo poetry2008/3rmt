@@ -16,7 +16,7 @@
     array_push($sub_caid, FF_CID); 
   }
   $reviews_array = array();  
-  $reviews_query_raw = "select r.reviews_id, r.reviews_rating, r.date_added, r.products_id, r.customers_name from ".TABLE_REVIEWS." r, ".TABLE_PRODUCTS_TO_CATEGORIES." p2c where r.products_id = p2c.products_id and p2c.categories_id in (".implode(',', $sub_caid).") and r.reviews_status = '1' and r.site_id = '".SITE_ID."' and r.products_status != '0' and r.products_status != '3' order by r.date_added DESC"; 
+  $reviews_query_raw = "select r.reviews_id, r.reviews_rating, r.date_added, r.products_id, r.customers_name, r.products_status from ".TABLE_REVIEWS." r, ".TABLE_PRODUCTS_TO_CATEGORIES." p2c where r.products_id = p2c.products_id and p2c.categories_id in (".implode(',', $sub_caid).") and r.reviews_status = '1' and r.site_id = '".SITE_ID."' order by r.date_added DESC"; 
   $reviews_split = new splitPageResults($_GET['page'], MAX_DISPLAY_NEW_REVIEWS, $reviews_query_raw, $reviews_numrows);
 //ccdd
   $reviews_query = tep_db_query($reviews_query_raw);
@@ -35,7 +35,9 @@
                              'review'         => tep_output_string_protected(mb_substr($reviews_des['reviews_text'], 0, 250)) . '..',
                              'rating'         => $reviews['reviews_rating'],
                              'word_count'     => tep_word_count($reviews_des['reviews_text'], ' '),
-                             'date_added'     => tep_date_long($reviews['date_added']));
+                             'date_added'     => tep_date_long($reviews['date_added']),
+                             'products_status' => $reviews['products_status'], 
+                             );
   }
   forward404Unless($reviews_array);
   page_head();

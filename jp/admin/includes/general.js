@@ -888,3 +888,26 @@ document.edit_order.notify_comments.checked = false;
   window.alert("注文内容確認をキャンセルしました。\n\n【 重要 】メールは送信されていません。【 重要 】");
 }
 }
+
+function check_toggle_black_status(url_str)
+{
+  $.ajax({
+    url: 'ajax_orders.php?action=getallpwd',
+    type: 'POST',
+    dataType: 'text',
+    async : false,
+    success: function(data) {
+      var pwd_arr = data.split(",");
+      var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n","");
+      if(in_array(pwd, pwd_arr)){
+        if (window.confirm('この商品のレビューを非表示にしますか？')) {
+          window.location.href = url_str+'&once_pwd='+pwd+'&up_rs=true'; 
+        } else {
+          window.location.href = url_str+'&once_pwd='+pwd; 
+        }
+      } else {
+        window.alert("パスワードが違います"); 
+      }
+    }
+  });
+}
