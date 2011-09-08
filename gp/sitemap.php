@@ -74,6 +74,7 @@
    while($result = tep_db_fetch_array($contents_page)){
              echo '<li><a href="'.info_tep_href_link($result['romaji']).'">'.$result['heading_title'].'</a></li>'."\n" ;
   } 
+   echo "<li><a href='/faq/'>FAQ</a></li>";
 // Extra Pages ADDED END
 ?>
         </ul></li>
