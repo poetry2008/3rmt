@@ -67,7 +67,8 @@
         $products_name = $listing['products_name'];
         $ten = '';
       }
-      $description = strip_tags(mb_substr (replace_store_name($listing['products_description']),0,60));//maker
+      $description = strip_tags(mb_substr
+          (replace_store_name($listing['products_description']),0,120));//maker
     
       $row++;
       $col++;
