@@ -13,6 +13,20 @@
   require('includes/application_top.php');
   
   require(DIR_WS_LANGUAGES.$language.'/preorder_active_success.php');
+  
+  $pid = $_GET['pid'];
+  
+  $preorder_pro_query = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$pid."'"); 
+  $preorder_pro_res = tep_db_fetch_array($preorder_pro_query);
+  
+  $url_str = tep_href_link(FILENAME_DEFAULT);
+  if ($preorder_pro_res) {
+    $product_info_query = tep_db_query("select * from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$preorder_pro_res['products_id']."' and (site_id = '0' or site_id = '".SITE_ID."') order by site_id DESC limit 1"); 
+    $product_info_res = tep_db_fetch_array($product_info_query); 
+    if ($product_info_res) {
+      $url_str = tep_preorder_href_link($product_info_res['romaji']); 
+    }
+  }
   $breadcrumb->add(PREORDER_ACTIVE_SUCCESS_TITLE, '');
 ?>
 <?php page_head();?>
@@ -40,7 +54,7 @@
           <td>
                 <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                   <tr> 
-                    <td class="main" align="right"><?php echo '<a href="' .tep_href_link(FILENAME_DEFAULT). '">' .  tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></td> 
+                    <td class="main" align="right"><?php echo '<a href="' .$url_str. '">' .  tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></td> 
                     <td align="right" class="main">
                     </td> 
                   </tr> 

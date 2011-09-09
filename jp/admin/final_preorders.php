@@ -884,6 +884,30 @@ while ($totals = tep_db_fetch_array($totals_query)) {
 <script language="javascript" src="includes/javascript/jquery.js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript">
+function check_mail_product_status(pid)
+{
+   var direct_single = false; 
+   var select_status = document.getElementById('status').value;  
+   if (select_status == 32) {
+     $.ajax({ 
+     type:"POST",
+     data:"pid="+pid,
+     async:false, 
+     url: 'ajax_preorders.php?action=check_preorder_deadline',
+     success: function(msg) {
+       if (msg == 'true') {
+         direct_single = true; 
+         alert('<?php echo NOTICE_INPUT_ENSURE_DEADLINE;?>'); 
+       }
+     }
+     });  
+   }
+   if (!direct_single) {
+     document.edit_order.submit(); 
+   }
+}
+</script>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">
 <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
@@ -1395,7 +1419,7 @@ if (tep_db_num_rows($orders_history_query)) {
       <table border="0" cellspacing="0" cellpadding="2">
         <tr>
           <td class="main"><b><?php echo ENTRY_STATUS; ?></b></td>
-          <td class="main"><?php echo tep_draw_pull_down_menu('status', $orders_statuses, '16'); ?></td>
+          <td class="main"><?php echo tep_draw_pull_down_menu('status', $orders_statuses, '16', 'id="status"'); ?></td>
         </tr>
         <tr>
           <td class="main"><b><?php echo EDIT_ORDERS_SEND_MAIL_TEXT;?></b></td>
@@ -1447,7 +1471,9 @@ if (tep_db_num_rows($orders_history_query)) {
               <td class="main" bgcolor="#FBE2C8" width="10">&nbsp;</td>
               <td class="main" bgcolor="#FFCC99" width="10">&nbsp;</td>
               <td class="main" bgcolor="#F8B061" width="10">&nbsp;</td>
-              <td class="main" bgcolor="#FF9933" width="120" align="center"><?php echo tep_html_element_submit(IMAGE_UPDATE); ?></td>
+              <td class="main" bgcolor="#FF9933" width="120" align="center">
+              <?php echo tep_html_element_button(IMAGE_UPDATE, 'onclick="check_mail_product_status(\''.$_GET['oID'].'\')"');?> 
+              </td>
           </tr>
           </table>
     </td>

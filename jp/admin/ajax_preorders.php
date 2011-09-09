@@ -565,5 +565,13 @@ if ($_POST['orders_id'] &&
   require(DIR_WS_FUNCTIONS . 'visites.php');
   tep_get_pre_orders_products_string($orders_info, true);
 
+} else if (isset($_GET['action'])&&$_GET['action']=='check_preorder_deadline') {
+  $orders_info_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$_POST['pid']."'"); 
+  $orders_info = tep_db_fetch_array($orders_info_raw);
+  if ($orders_info['ensure_deadline'] == '0000-00-00 00:00:00') {
+    echo 'true'; 
+  } else {
+    echo 'false';
+  }
 }
 

@@ -208,7 +208,15 @@
             $change_preorder_url = $site_url_res['url'].'/extend_time.php?pid='.$oID; 
             $comments = str_replace('${ORDER_UP_DATE}', $change_preorder_url, $comments); 
           }
-          tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
+          if ($status == 32) {
+            $mail_preorder_pro_raw = tep_db_query("select ensure_deadline from ".TABLE_PREORDERS. " where orders_id = '".$oID."'"); 
+            $mail_preorder_pro = tep_db_fetch_array($mail_preorder_pro_raw);
+            if ($mail_preorder_pro['ensure_deadline'] != '0000-00-00 00:00:00') {
+              tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
+            }
+          } else {
+            tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
+          }
         } 
         //tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS', $site_id), '送信済：'.$title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
         $customer_notified = '1';
@@ -709,6 +717,28 @@ function del_confirm_payment_time(oid, status_id)
       }
     }
   });
+}
+function check_mail_product_status(pid)
+{
+   var direct_single = false; 
+   var select_status = document.getElementById('s_status').value;  
+   if (select_status == 32) {
+     $.ajax({ 
+     type:"POST",
+     data:"pid="+pid,
+     async:false, 
+     url: 'ajax_preorders.php?action=check_preorder_deadline',
+     success: function(msg) {
+       if (msg == 'true') {
+         direct_single = true; 
+         alert('<?php echo NOTICE_INPUT_ENSURE_DEADLINE;?>'); 
+       }
+     }
+     });  
+   }
+   if (direct_single) {
+     return false;
+   }
 }
 </script>
 </head>
@@ -1398,12 +1428,12 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
 <table border="0" width="100%">
   <tr>
     <td width="50%">
-      <?php echo tep_draw_form('sele_act', FILENAME_PREORDERS, tep_get_all_get_params(array('action')) . 'action=update_order'); ?>
+      <?php echo tep_draw_form('sele_act', FILENAME_PREORDERS, tep_get_all_get_params(array('action')) . 'action=update_order', 'post', 'onsubmit="return check_mail_product_status(\''.$_GET['oID'].'\');"'); ?>
       <table width="100%" border="0">
       <tr>
         <td class="main"><b><?php echo ENTRY_STATUS; ?></b>
         
-          <?php echo tep_draw_pull_down_menu('s_status', $orders_statuses, $select_select, 'onChange="new_mail_text(this, \'s_status\',\'comments\',\'title\')"'); ?>
+          <?php echo tep_draw_pull_down_menu('s_status', $orders_statuses, $select_select, 'onChange="new_mail_text(this, \'s_status\',\'comments\',\'title\')" id="s_status"'); ?>
         </td>
       </tr>
       <?php
