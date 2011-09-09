@@ -206,7 +206,7 @@
             set_time_limit(0);
             $page_sort_order = tep_get_rownum_faq_question($current_category_id,$faq_question_id,
                 $site_id,$_GET['search']);
-            $select_page = intval((intval($page_sort_order)-1)/3)+1;
+            $select_page = intval((intval($page_sort_order)-1)/MAX_DISPLAY_FAQ_ADMIN)+1;
          if(isset($_GET['rdirect'])){
            tep_redirect(tep_href_link(FILENAME_FAQ, 'cPath=' . $cPath .
                  '&qID=' . $faq_question_id.'&site_id=0'.'&page='.$select_page));

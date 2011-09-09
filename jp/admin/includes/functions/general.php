@@ -5996,10 +5996,16 @@ function   tep_order_status_change($oID,$status){
   }
 
   function tep_get_faq_category_info($cid,$site_id=0){
+    if($site_id==0){
+    return tep_db_fetch_array(tep_db_query("select * from
+          ".TABLE_FAQ_CATEGORIES_DESCRIPTION." where faq_category_id = '".$cid."' 
+          order by site_id DESC "));
+    }else{
     return tep_db_fetch_array(tep_db_query("select * from
           ".TABLE_FAQ_CATEGORIES_DESCRIPTION." where faq_category_id = '".$cid."' 
           and (site_id = '0' or site_id='".$site_id."') 
           order by site_id DESC "));
+    }
   }
 
   function get_all_site_faq_category_status($faq_category_id)
