@@ -1087,6 +1087,7 @@ a.Icon:hover {
 }
 .c_pay_info {padding:5px; border:1px solid #B6B7CB; margin:35px 0 15px 0;}
 #caemail p{ height:280px;}
+#catelnumber p{ height:280px;}
 .box_des02 {
 	background:url(../images/rmt_cr.gif) 56px 181px no-repeat;
 }
@@ -1118,4 +1119,12 @@ searching
  width:520px;
 }
 .active_email input{ width:380px;}
-
+.con_telnumber_input {
+	display:inline;
+	margin-left:78px;
+}
+.con_telnumber_input_validate {
+	display:inline;
+	margin-left:39px;
+}
+.ctelnumber_input{ margin:10px 0 0 0;}
