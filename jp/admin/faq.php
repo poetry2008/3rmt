@@ -53,6 +53,7 @@
          //   $edit_per=editPermission($site_arr, $site_id);//判断是否拥有相应网站的管理权限
          forward401Unless(editPermission($site_arr, $site_id));
          $dc_page = (isset($_GET['page']))?'&page='.$_GET['page']:'';
+         $dc_site = (isset($_POST['site_id']))?'&site_id='.$_POST['site_id']:'';
          if ($_POST['faq_category_id']) {
           $faq_category_id = tep_db_prepare_input($_POST['faq_category_id']);
           tep_set_time_limit(0);
@@ -95,7 +96,7 @@
           }
          }
          tep_redirect(tep_href_link(FILENAME_FAQ, 'cPath=' .
-               $cPath.$dc_page));
+               $cPath.$dc_page.$dc_site));
          break;
       case 'delete_faq_question_confirm':
          if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];
@@ -103,6 +104,7 @@
          //   $edit_per=editPermission($site_arr, $site_id);//判断是否拥有相应网站的管理权限
          forward401Unless(editPermission($site_arr, $site_id));
          $d_page = (isset($_GET['page']))?'&page='.$_GET['page']:'';
+         $d_site = (isset($_POST['site_id']))?'&site_id='.$_POST['site_id']:'';
          if(($_POST['faq_question_id']) && (is_array($_POST['question_categories']))){
            $faq_question_id = tep_db_prepare_input($_POST['faq_question_id']);
            $question_categories = $_POST['question_categories'];
@@ -120,7 +122,7 @@
              tep_remove_faq_question($faq_question_id);
            }
          }
-         tep_redirect(tep_href_link(FILENAME_FAQ, 'cPath=' . $cPath.$d_page));
+         tep_redirect(tep_href_link(FILENAME_FAQ, 'cPath=' . $cPath.$d_page.$d_site));
          break;
       case 'insert_faq_question':
       case 'update_faq_question':
@@ -1014,7 +1016,8 @@ switch (isset($_action)? $_action:'') {
       $dc_page = (isset($_GET['page']))?'&page='.$_GET['page']:'';
       $contents = array('form' => tep_draw_form('categories', FILENAME_FAQ,
             'action=delete_faq_category_confirm&cPath=' . $cPath.$dc_page) .
-          tep_draw_hidden_field('faq_category_id', $faq_info->faq_category_id));
+          tep_draw_hidden_field('faq_category_id', $faq_info->faq_category_id).
+          tep_draw_hidden_field('site_id', $_GET['site_id']));
       $contents[] = array('text' => TEXT_DELETE_FAQ_CATEGORY_INTRO);
       $contents[] = array('text' => '<br><b>' . $faq_info->title . '</b>');
       if($faq_info->childs_count > 0) {
@@ -1037,7 +1040,8 @@ switch (isset($_action)? $_action:'') {
       $contents = array('form' => tep_draw_form('question', FILENAME_FAQ,
             'action=delete_faq_question_confirm&cPath=' .  $cPath.$d_page,
             'post').
-            tep_draw_hidden_field('faq_question_id', $qInfo->faq_question_id));
+            tep_draw_hidden_field('faq_question_id', $qInfo->faq_question_id).
+            tep_draw_hidden_field('site_id', $_GET['site_id']));
     $contents[] = array('text' => TEXT_DELETE_QUESTION_INTRO);
     $contents[] = array('text' => '<br><b>' . $qInfo->ask . '</b>');
 
