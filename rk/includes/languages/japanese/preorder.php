@@ -66,7 +66,7 @@ define('TEXT_EMAIL_LINK', 'この商品の詳細は、下記のリンクをク�
 . 'コピー＆ペーストしてください。' . "\n\n" . '%s' . "\n\n");
 define('TEXT_EMAIL_SIGNATURE', '[ご連絡・お問い合わせ先]━━━━━━━━━━━━' . "\n"
 . '株式会社 iimy' . "\n"
-. 'support@rmt-kames.jp' . "\n"
+. SUPPORT_EMAIL_ADDRESS . "\n"
 . 'http://www.rmt-kames.jp/' . "\n"
 . '━━━━━━━━━━━━━━━━━━━━━━━');
 define('FORM_FIELD_PREORDER_FIXTIME', 'オプション:');

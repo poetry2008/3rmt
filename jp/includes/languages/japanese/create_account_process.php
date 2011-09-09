@@ -52,7 +52,7 @@ define('EMAIL_CONTACT',
 define('EMAIL_WARNING',
 '[ご連絡・お問い合わせ先]━━━━━━━━━━━━' . "\n"
 . '株式会社iimy' . "\n"
-. 'support@iimy.co.jp'."\n"
+. SUPPORT_EMAIL_ADDRESS."\n"
 . 'http://www.iimy.co.jp/' . "\n"
 . '━━━━━━━━━━━━━━━━━━━━━━━' . "\n");
 

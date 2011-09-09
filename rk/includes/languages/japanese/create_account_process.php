@@ -45,7 +45,7 @@ define('EMAIL_CONTACT',
 define('EMAIL_WARNING',
 '[ご連絡・お問い合わせ先]━━━━━━━━━━━━' . "\n"
 . '株式会社iimy' . "\n"
-. 'helpdesk@rmt-kames.jp'."\n"
+. SUPPORT_EMAIL_ADDRESS."\n"
 . 'http://www.rmt-kames.jp/' . "\n"
 . '━━━━━━━━━━━━━━━━━━━━━━━' . "\n");
 
