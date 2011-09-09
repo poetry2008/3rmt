@@ -91,6 +91,11 @@ if ($payment == 'convenience_store') {
   $pay_comments = 'PCメールアドレス:'.$_POST['convenience_email']; 
   $comments = $pay_comments ."\n".$comments;
 }
+if ($payment == 'rakuten_bank') {
+  $convenience_sid = str_replace('-', "", $insert_id);
+  $pay_comments = '電話番号:'.$_POST['rakuten_email']; 
+  $comments = $pay_comments ."\n".$comments;
+}
 
 require(DIR_WS_CLASSES . 'order.php');
 $order = new order;

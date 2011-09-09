@@ -25,6 +25,13 @@ $("input:radio").each(function(){
         $("#cemail").css("display", "none");
         $("#caemail").css("display", "none");
       }
+      if($(this).val() == 'rakuten_bank'){
+        $("#ctelnumber").css("display", "block");
+        $("#catelnumber").css("display", "block");
+      } else {
+        $("#ctelnumber").css("display", "none");
+        $("#catelnumber").css("display", "none");
+      }
     }
   }
 })
@@ -38,6 +45,15 @@ $("input:radio").click(function(){
       $("#caemail").css("display", "none");
     }
   }
+  if($(this).val() == 'rakuten_bank'){
+    $("#ctelnumber").css("display", "block");
+    $("#catelnumber").css("display", "block");
+  } else {
+    if ($(this).attr('name') != 'bank_kamoku') {
+      $("#ctelnumber").css("display", "none");
+      $("#catelnumber").css("display", "none");
+    }
+  }
 });
 $(".moduleRow").click(function(){
   if ($(this).find('input:radio').val() == 'convenience_store') {
@@ -47,6 +63,15 @@ $(".moduleRow").click(function(){
     if ($(this).find('input:radio').attr('name') != 'bank_kamoku') {
       $("#cemail").css("display", "none");
       $("#caemail").css("display", "none");
+    }
+  }
+  if ($(this).find('input:radio').val() == 'rakuten_bank') {
+    $("#ctelnumber").css("display", "block");
+    $("#catelnumber").css("display", "block");
+  } else {
+    if ($(this).find('input:radio').attr('name') != 'bank_kamoku') {
+      $("#ctelnumber").css("display", "none");
+      $("#catelnumber").css("display", "none");
     }
   }
 });
