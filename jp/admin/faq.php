@@ -727,12 +727,15 @@ $(document).ready(function(){
                     if(
                         ((!isset($_GET['qID']) || !$_GET['qID']) &&
                          (!isset($_GET['cID']) || !$_GET['cID']) ||
-                         (isset($_GET['qID']) && ($_GET['qID'] ==
+                         (isset($_GET['qID']) && (($_GET['qID'] ==
                           $_faq_info['faq_question_id']&&
                           (!isset($_GET['site_id'])||$_GET['site_id']==0||
                           (isset($_GET['site_id'])&&$_GET['site_id']&&
                            tep_is_set_faq_question($current_category_id,$_GET['qID'],
-                             $_GET['site_id'],$_GET['search'],$_GET['page']))))))
+                             $_GET['site_id'],$_GET['search'],$_GET['page']))))||
+                           !tep_is_set_faq_question($current_category_id,$_GET['qID'],
+                             $_GET['site_id'],$_GET['search'],$_GET['page'])
+                                                  )))
                         && (!isset($qInfo) || !$qInfo)
                         && (!isset($faq_info) || !$faq_info)
                         && (!isset($_GET['action']) || substr($_GET['action'], 0, 4)
