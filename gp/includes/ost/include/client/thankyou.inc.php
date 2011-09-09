@@ -19,8 +19,7 @@ if(!defined('OSTCLIENTINC') || !is_object($ticket)) die('Kwaheri rafiki!'); //Sa
 弊社のメールが 「迷惑メールフォルダ」や「ゴミ箱」に振り分けされ見落としていませんか？<br><br>
 ＜メールドメインの受信制限を設定している＞<br>
 <?php
-                 echo  $_SERVER['HTTP_HOST'];
-
+echo STORE_DOMAIN;
 ?>
 のメールドメインを受信するように設定をお願いいたします。<br><br>
 ＜それでも届かないときは、メールアドレス変更＞<br>

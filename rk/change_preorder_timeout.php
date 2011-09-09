@@ -30,7 +30,7 @@
       <td valign="top" id="contents"> 
         <h1 class="pageHeading"><?php echo CPREORDER_TIMEOUT_HEADING_TITLE ; ?></h1> 
         <div class="comment">
-        <a href="<?php echo tep_href_link('open.php', 'pname='.$_GET['pname']);?>"><?php echo CPREORDER_CONTACT_US;?></a> 
+        <a href="<?php echo tep_href_link('open.php', 'pname='.urlencode($_GET['pname']));?>"><?php echo CPREORDER_CONTACT_US;?></a> 
         </div>
        <p class="pageBottom"></p>
       </td> 
