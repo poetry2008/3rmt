@@ -637,7 +637,7 @@ right:5px;*/
     </tr>
     <tr>
       <td valign="top">
-   <table width="100%" style=" height:27px; margin-top:6px\9;">
+   <table width="100%" style=" height:27px;">
       <tr>
         <td>
        <?php tep_pw_site_filter(FILENAME_PW_MANAGER);?>
