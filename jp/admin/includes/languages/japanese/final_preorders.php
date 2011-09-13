@@ -207,5 +207,5 @@ define('FORDERS_MAIL_UPDATE_CONTENT_MAIL', '送信済：注文内容の変更を
 define('FORDERS_MAIL_REPLACE_TRAN_HANDLE_FEE', '決済手数料');
 define('FORDERS_MAIL_REPLACE_HANDLE_FEE', '手数料');
 define('EDIT_ORDERS_ENSUREDATE', '確保期限:');
-define('NOTICE_INPUT_ENSURE_DEADLINE', '確保期限を設定してください');
+define('NOTICE_INPUT_ENSURE_DEADLINE', '確保期限を設定してください。');
 ?>
