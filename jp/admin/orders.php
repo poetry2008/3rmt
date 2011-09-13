@@ -1446,7 +1446,8 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                o.confirm_payment_time, 
                o.site_id
         from " . TABLE_ORDERS . " o " . $f_payment . $sort_table."
-        where 1=1 ".$w_type;
+        where 1=1
+        ".$w_type;
     $orders_query_raw .= " order by ".$order_str;
   }else {
       // orders_list 隐藏 「キャンセル」と「注文取消」
