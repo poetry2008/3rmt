@@ -188,41 +188,7 @@
         //tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, $payment_error_return . '&type=noe', 'SSL', true, false));
         tep_redirect($redirect_url);
       
-      } else {
-        $pc_telnumber_single = false;
-        $pc_telnumber_again_single = false;
-
-        $pc_pos = strrpos($_POST['rakuten_telnumber'], '@');
-        $pc_new_telnumber = substr($_POST['rakuten_telnumber'], $pc_pos+1);
-        if (preg_match('/^(docomo\.|softbank\.|i\.softbank\.|disney\.|ezweb\.|vodafone\.|.*\.vodafone\.|biz\.ezweb\.|.*biz\.ezweb\.|ezweb\.|sky\.ttk\.|sky\.tkc\.|sky\.tu\-ka\.|pdx\.|emnet\.)(.*)$/i', $pc_new_telnumber)) {
-          $pc_telnumber_single = true; 
-        }
-        
-        $pc_apos = strrpos($_POST['rakuten_telnumber_again'], '@');
-        $pc_anew_telnumber = substr($_POST['rakuten_telnumber_again'], $pc_apos+1);
-        if (preg_match('/^(docomo\.|softbank\.|i\.softbank\.|disney\.|ezweb\.|vodafone\.|.*\.vodafone\.|biz\.ezweb\.|.*biz\.ezweb\.|ezweb\.|sky\.ttk\.|sky\.tkc\.|sky\.tu\-ka\.|pdx\.|emnet\.)(.*)$/i', $pc_anew_telnumber)) {
-          $pc_telnumber_again_single = true; 
-        }
-        
-        if (!$pc_telnumber_single && !$pc_telnumber_again_single) {
-          return false; 
-        } else {
-          $payment_error_return = 'payment_error=' . $this->code . '&type=nom' ;
-
-        //do for &type turn into &amp;type url ,fix it afterlater
-          $redirect_url = tep_href_link(FILENAME_CHECKOUT_PAYMENT, $payment_error_return, 'SSL', true, false);
-        $url_test = explode('?',$redirect_url);
-        if ($url_test[1] == 'payment_error=rakuten_bank&amp;type=nom')
-        {
-          $url_test[1] = 'payment_error=rakuten_bank&type=nom';
-          $redirect_url = $url_test[0] .'?'. $url_test[1]; 
-        }
-
-          //tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, $payment_error_return, 'SSL', true, false));
-          tep_redirect($redirect_url);
-        //do for &type turn into &amp;type url ,fix it afterlater
-        }
-      }
+      } 
     }
     
     function confirmation() {
