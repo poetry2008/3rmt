@@ -1379,7 +1379,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
     $orders_query_raw .= "order by ".$order_str;
     //torihiki_date_error DESC,o.torihiki_date DESC";
   }else if(isset($_GET['keywords']) && ((isset($_GET['search_type']) &&
-          preg_match('/^payment_method|/', $_GET['search_type'])))){
+          preg_match('/^payment_method/', $_GET['search_type'])))){
     $payment_m = explode('|',$_GET['search_type']);
     $orders_query_raw = "
         select o.orders_id, 
@@ -1408,8 +1408,9 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
         where  o.payment_method like '%".$payment_m[1]."%' ";
     $orders_query_raw .= "order by ".$order_str;
   }else if(isset($_GET['keywords']) && ((isset($_GET['search_type']) &&
-          preg_match('/^type|/', $_GET['search_type'])))){
+          preg_match('/^type/', $_GET['search_type'])))){
     $type_arr = explode('|',$_GET['search_type']);
+    $f_payment = "left join " . TABLE_ORDERS_STATUS_HISTORY . " h on (o.orders_id = h.orders_id)";
     switch ($type_arr[1]) { 
     case 'sell':
       $w_type = " and (!(o.payment_method like '%買い取り%') and h.orders_id not in (select orders_id from ".TABLE_ORDERS_STATUS_HISTORY." where comments like '金融機関名%支店名%'))"; 
@@ -1444,9 +1445,9 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                o.orders_comment,
                o.confirm_payment_time, 
                o.site_id
-        from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
+        from " . TABLE_ORDERS . " o " . $f_payment . $sort_table."
         where 1=1 ".$w_type;
-    $orders_query_raw .= "order by ".$order_str;
+    $orders_query_raw .= " order by ".$order_str;
   }else {
       // orders_list 隐藏 「キャンセル」と「注文取消」
       $orders_query_raw = "
