@@ -447,6 +447,7 @@ function tep_show_orders_products_info($orders_id) {
   require(DIR_WS_CLASSES . 'currencies.php');
   $currencies          = new currencies(2);
   $orders_statuses     = $all_orders_statuses = $orders_status_array = array();
+  $all_payment_method = explode("\n",tep_get_list_payment());
   $all_search_status = array(); 
   $orders_status_query = tep_db_query("select orders_status_id, orders_status_name from " . TABLE_ORDERS_STATUS . " where language_id = '" . $languages_id . "'");
 
@@ -1183,8 +1184,8 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                o.confirm_payment_time, 
                o.site_id
         from " . TABLE_ORDERS . " o " . $from_payment . " ,
-        ".TABLE_ORDERS_PRODUCTS." op ".$sort_table." where 1=1 ".$sort_where .
-          (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id =
+        ".TABLE_ORDERS_PRODUCTS." op ".$sort_table." where ".$sort_where .
+          (isset($_GET['site_id']) && intval($_GET['site_id']) ? " o.site_id =
            '" . intval($_GET['site_id']) . "' " : '') . " and o.orders_status =
            '".substr($_GET['search_type'], 3)."' and o.orders_id = op.orders_id and
            (o.orders_id like '%".$_GET['keywords']."%' or o.customers_name like
@@ -1217,9 +1218,10 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                  o.orders_comment,
                  o.confirm_payment_time, 
                  o.site_id
-          from " . TABLE_ORDERS . " o " . $from_payment . $sort_table." where 1=1
-          ".$sort_where .  (isset($_GET['site_id']) && intval($_GET['site_id']) ? "
-          and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . " and
+          from " . TABLE_ORDERS . " o " . $from_payment . $sort_table." where 
+          ".$sort_where .
+          (isset($_GET['site_id']) && intval($_GET['site_id']) ? "
+          o.site_id = '" . intval($_GET['site_id']) . "' and " : '') . "
           o.orders_status = '".substr($_GET['search_type'], 3)."'" . $where_payment
           . $where_type .' order by '.$order_str;
           //o.torihiki_date DESC';
@@ -1249,9 +1251,10 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                o.confirm_payment_time, 
                o.site_id
         from " . TABLE_ORDERS . " o " . $from_payment .$sort_table ."
-        where 1=1 " . $sort_where.(isset($_GET['site_id']) &&
-        intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) .
-        "' " : '') . " and o.orders_id like '%".$_GET['keywords']."%'" .
+        where " . $sort_where.
+        (isset($_GET['site_id']) &&
+        intval($_GET['site_id']) ? " o.site_id = '" . intval($_GET['site_id']) .
+        "' and " : '') . " o.orders_id like '%".$_GET['keywords']."%'" .
         $where_payment . $where_type.' order by '.$order_str;
       //o.torihiki_date DESC';
   } elseif ( isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['search_type'] == 'customers_name') or (isset($_GET['search_type']) && $_GET['search_type'] == 'email'))
@@ -1280,8 +1283,9 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                o.confirm_payment_time, 
                o.site_id
         from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
-        where 1=1 
-          " .$sort_where .(isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
+        where   
+          " .$sort_where . " 1=1 ".
+          (isset($_GET['site_id']) && intval($_GET['site_id']) ? " o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
           " . $where_payment . $where_type ;
 
     $keywords = str_replace('　', ' ', $_GET['keywords']);
@@ -1374,7 +1378,76 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
     
     $orders_query_raw .= "order by ".$order_str;
     //torihiki_date_error DESC,o.torihiki_date DESC";
-  } else {
+  }else if(isset($_GET['keywords']) && ((isset($_GET['search_type']) &&
+          preg_match('/^payment_method|/', $_GET['search_type'])))){
+    $payment_m = explode('|',$_GET['search_type']);
+    $orders_query_raw = "
+        select o.orders_id, 
+               o.torihiki_date, 
+               IF(o.torihiki_date = '0000-00-00 00:00:00',1,0) as torihiki_date_error,
+               o.customers_id, 
+               o.customers_name, 
+               o.payment_method, 
+               o.date_purchased, 
+               o.last_modified, 
+               o.currency, 
+               o.currency_value, 
+               o.orders_status, 
+               o.orders_status_name,
+               o.orders_important_flag,
+               o.orders_care_flag,
+               o.orders_wait_flag,
+               o.orders_inputed_flag,
+               o.orders_work,
+               o.customers_email_address,
+               o.torihiki_houhou,
+               o.orders_comment,
+               o.confirm_payment_time, 
+               o.site_id
+        from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
+        where  o.payment_method like '%".$payment_m[1]."%' ";
+    $orders_query_raw .= "order by ".$order_str;
+  }else if(isset($_GET['keywords']) && ((isset($_GET['search_type']) &&
+          preg_match('/^type|/', $_GET['search_type'])))){
+    $type_arr = explode('|',$_GET['search_type']);
+    switch ($type_arr[1]) { 
+    case 'sell':
+      $w_type = " and (!(o.payment_method like '%買い取り%') and h.orders_id not in (select orders_id from ".TABLE_ORDERS_STATUS_HISTORY." where comments like '金融機関名%支店名%'))"; 
+      break;
+    case 'buy':
+      $w_type = " and (o.payment_method like '%買い取り%')"; 
+      break;
+    case 'mix':
+      $w_type = " and (!(o.payment_method like '%買い取り') and h.comments like '金融機関名%支店名%')"; 
+      break;
+  } 
+    $orders_query_raw = "
+        select o.orders_id, 
+               o.torihiki_date, 
+               IF(o.torihiki_date = '0000-00-00 00:00:00',1,0) as torihiki_date_error,
+               o.customers_id, 
+               o.customers_name, 
+               o.payment_method, 
+               o.date_purchased, 
+               o.last_modified, 
+               o.currency, 
+               o.currency_value, 
+               o.orders_status, 
+               o.orders_status_name,
+               o.orders_important_flag,
+               o.orders_care_flag,
+               o.orders_wait_flag,
+               o.orders_inputed_flag,
+               o.orders_work,
+               o.customers_email_address,
+               o.torihiki_houhou,
+               o.orders_comment,
+               o.confirm_payment_time, 
+               o.site_id
+        from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
+        where 1=1 ".$w_type;
+    $orders_query_raw .= "order by ".$order_str;
+  }else {
       // orders_list 隐藏 「キャンセル」と「注文取消」
       $orders_query_raw = "
         select distinct o.orders_status as orders_status_id, 
@@ -1563,6 +1636,10 @@ function validate_comment(){
     return true;
   }
 }
+<?php
+
+
+?>
 </script>
 </head>
 <body>
@@ -2381,7 +2458,19 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                 <option value="<?php echo 'os_'.$as_key?>"><?php echo ORDERS_STATUS_SELECT_PRE.$as_value.ORDERS_STATUS_SELECT_LAST;?></option> 
                 <?php
                 }
+                foreach ($all_payment_method as $p_method){
                 ?>
+                <option value="<?php echo "payment_method|".$p_method;?>"><?php echo
+                ORDERS_PAYMENT_METHOD_PRE.$p_method.ORDERS_PAYMENT_METHOD_LAST;?></option> 
+                <?php
+                }
+                ?>
+                <option value="type|sell"><?php echo 
+                TEXT_ORDER_TYPE_PRE.TEXT_ORDER_TYPE_SELL.TEXT_ORDER_TYPE_LAST;?></option>
+                <option value="type|buy"><?php echo 
+                TEXT_ORDER_TYPE_PRE.TEXT_ORDER_TYPE_BUY.TEXT_ORDER_TYPE_LAST;?></option>
+                <option value="type|mix"><?php echo 
+                TEXT_ORDER_TYPE_PRE.TEXT_ORDER_TYPE_MIX.TEXT_ORDER_TYPE_LAST;?></option>
               </select>
               </form>
             </td>
@@ -2559,6 +2648,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
     <?php tep_site_filter(FILENAME_ORDERS);?>
         </td>
         <td align="right">
+          <!--
           <div id="order_icons">
           <span<?php if (isset($_GET['type']) && $_GET['type'] == 'sell') {?> class="order_icons_selected"<?php }?>>
             <a href="<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action', 'type')) . 'type=sell', 'SSL');?>" title="<?php echo TEXT_ORDER_SELL;?>"><img src="images/icons/mai4.gif" alt="<?php echo TEXT_ORDER_SELL;?>" title="<?php echo TEXT_ORDER_SELL;?>"> </a>
@@ -2582,6 +2672,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
             <a href="<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action', 'payment')) . 'payment=convenience_store','SSL');?>" title="<?php echo TEXT_ORDER_CONVENIENCE;?>"><img src="images/icons/ko.gif" alt="<?php echo TEXT_ORDER_CONVENIENCE;?>" title="<?php echo TEXT_ORDER_CONVENIENCE;?>"> </a>
           </span>
           </div>
+          -->
         </td>
       </tr>
     </table>
@@ -2617,7 +2708,8 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
           echo "</font>";
         }
       }else{
-        echo "<a class='head_sort_order' href='".tep_href_link(FILENAME_ORDERS,
+        echo "<a class='head_sort_order' href='".tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array('x', 'y', 'order_type',
+                'order_sort')).
                 'order_sort=site_romaji&order_type=asc')."'>";
         echo TABLE_HEADING_SITE;
       }
@@ -2645,7 +2737,8 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
           echo "</font>";
         }
       }else{
-        echo "<a class='head_sort_order' href='".tep_href_link(FILENAME_ORDERS,
+        echo "<a class='head_sort_order' href='".tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array('x', 'y', 'order_type',
+                'order_sort')).
                 'order_sort=customers_name&order_type=asc')."'>";
         echo TABLE_HEADING_CUSTOMERS; 
       }
@@ -2673,7 +2766,8 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
           echo "</font>";
         }
       }else{
-        echo "<a class='head_sort_order' href='".tep_href_link(FILENAME_ORDERS,
+        echo "<a class='head_sort_order' href='".tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array('x', 'y', 'order_type',
+                'order_sort')).
                 'order_sort=ot_total&order_type=asc')."'>";
         echo TABLE_HEADING_ORDER_TOTAL;
       }
@@ -2701,7 +2795,8 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
           echo "</font>";
         }
       }else{
-        echo "<a class='head_sort_order' href='".tep_href_link(FILENAME_ORDERS,
+        echo "<a class='head_sort_order' href='".tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array('x', 'y', 'order_type',
+                'order_sort')).
                 'order_sort=torihiki_date&order_type=asc')."'>";
         echo TEXT_ORDER_ORDER_DATE;
       }
@@ -2731,7 +2826,8 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
           echo "</font>";
         }
       }else{
-        echo "<a class='head_sort_order' href='".tep_href_link(FILENAME_ORDERS,
+        echo "<a class='head_sort_order' href='".tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array('x', 'y', 'order_type',
+                'order_sort')).
                 'order_sort=date_purchased&order_type=asc')."'>";
         echo TABLE_HEADING_DATE_PURCHASED; 
       }
@@ -2760,7 +2856,8 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
           echo "</font>";
         }
       }else{
-        echo "<a class='head_sort_order' href='".tep_href_link(FILENAME_ORDERS,
+        echo "<a class='head_sort_order' href='".tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array('x', 'y', 'order_type',
+                'order_sort')).
                 'order_sort=orders_status_name&order_type=asc')."'>";
         echo TABLE_HEADING_STATUS; 
       }
