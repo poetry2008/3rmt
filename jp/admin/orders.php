@@ -1405,7 +1405,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                o.confirm_payment_time, 
                o.site_id
         from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
-        where  o.payment_method like '%".$payment_m[1]."%' ";
+        where ".$sort_where." o.payment_method like '%".$payment_m[1]."%' ";
     $orders_query_raw .= "order by ".$order_str;
   }else if(isset($_GET['keywords']) && ((isset($_GET['search_type']) &&
           preg_match('/^type/', $_GET['search_type'])))){
@@ -1425,7 +1425,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
       break;
   } 
     $orders_query_raw = "
-        select o.orders_id, 
+        select distinct(o.orders_id), 
                o.torihiki_date, 
                IF(o.torihiki_date = '0000-00-00 00:00:00',1,0) as torihiki_date_error,
                o.customers_id, 
@@ -1448,7 +1448,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                o.confirm_payment_time, 
                o.site_id
         from " . TABLE_ORDERS . " o " . $f_payment . $sort_table."
-        where
+        where ".$sort_where."
         o.flag_qaf = 0 
         ".$w_type;
     $orders_query_raw .= " order by ".$order_str;
