@@ -172,7 +172,8 @@
          !preg_match("/^((\d{2}-\d{4})|(\d{3}-\d{3})|(\d{3}-\d{4}))-\d{4}$/",
            $_POST['rakuten_telnumber_again'])){
         $payment_error_return = 'payment_error=' . $this->code ;
-        tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, $payment_error_return, 'SSL', true, false));
+        tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT,
+              $payment_error_return.'&type=nom', 'SSL', true, false));
       } else if ($_POST['rakuten_telnumber'] != $_POST['rakuten_telnumber_again']) {
   $payment_error_return = 'payment_error=' . $this->code; 
         $redirect_url = tep_href_link(FILENAME_CHECKOUT_PAYMENT, $payment_error_return . '&type=noe', 'SSL', true, false);
