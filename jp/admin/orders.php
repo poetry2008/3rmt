@@ -1645,7 +1645,8 @@ if(isset($_GET['keywords'])&&$_GET['keywords']){
 if(isset($_GET['search_type'])&&$_GET['search_type']){
   ?>
     $(document).ready(function(){ 
-    $("select[name=search_type]").find("option[value=<?php echo $_GET['search_type'];?>]").attr("selected", "selected");
+    $("select[name=search_type]").find("option[value='<?php echo
+      urldecode($_GET['search_type']);?>']").attr("selected", "selected");
     });
   <?php
 }
