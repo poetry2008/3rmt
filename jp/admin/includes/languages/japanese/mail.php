@@ -34,4 +34,6 @@ define('BUTTON_SEARCH_TEXT','検索');
 define('NO_MAIL_RESULT','該当するデータはありません。');
 define('TEXT_CUSTOMER_EMAIL','E-Mail アドレス');
 define('TEXT_CUSTOMER_FULL_NAME','顧客名');
+define('TEXT_MAIL_SEARCH_INFO','キーワードを入力しメールを送信する顧客を検索してください');
+define('TEXT_MAIL_RESULT_INFO','右のCheckBoxから送信する顧客を選択してください');
 ?>

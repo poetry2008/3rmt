@@ -235,6 +235,21 @@ function back_to_mail(){
             <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
             <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', HEADING_IMAGE_WIDTH, HEADING_IMAGE_HEIGHT); ?></td>
           </tr>
+          <tr>
+          <td colspan='2'>
+
+          <?php 
+          if($_GET['action']=='preview'){
+            echo TEXT_MAIL_RESULT_INFO;
+          }else{
+            echo TEXT_MAIL_SEARCH_INFO;
+          }
+          ?>
+          </td>
+          </tr>
+          <tr>
+            <td colspan='2'></td>
+          </tr>
         </table></td>
       </tr>
       <tr>
