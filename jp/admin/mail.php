@@ -163,6 +163,21 @@
       $messageStack->add(sprintf(NOTICE_EMAIL_SENT_TO,
             isset($_GET['mail_sum'])?$_GET['mail_sum']:0), 'success');
   }
+  if ($_GET['selected_box']=='tools') {
+    $mail_sql = '';
+    $mail_select_sql = 'select c.customers_id,c.customers_firstname, c.customers_lastname, c.customers_email_address ';
+    $mail_from_sql = ' from '.TABLE_CUSTOMERS.' c'; 
+    $mail_where_sql =
+      ' where c.customers_email_address="'.tep_db_prepare_input($_GET['customer']).'"';
+    if(isset($_GET['site_id'])&&$_GET['site_id']){
+      $mail_where_sql .=
+      ' c.site_id="'.tep_db_prepare_input($_GET['site_id']).'"';
+    }
+    $mail_sql .= $mail_select_sql.$mail_from_sql.$mail_where_sql;
+    if(!isset($_SESSION['mail_list'])||$_SESSION['mail_list']){
+      $_SESSION['mail_list'] = $mail_sql; 
+    }
+  }
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html <?php echo HTML_PARAMS; ?>>
@@ -255,7 +270,10 @@ function back_to_mail(){
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="2">
 <?php
-  if ( isset($_GET['action']) && ($_GET['action'] == 'preview')&&($_POST['se_pname'] || $_POST['se_mail'] || $_POST['se_cname'] || $_POST['se_site']) && !isset($error_email_single)) {
+  if (( isset($_GET['action']) && ($_GET['action'] ==
+          'preview')&&($_POST['se_pname'] || $_POST['se_mail'] || $_POST['se_cname']
+            || $_POST['se_site']) && !isset($error_email_single))||(
+        isset($_GET['selected_box'])&&$_GET['selected_box']=='tools' )){
 ?>
           <tr><?php echo tep_draw_form('mail', FILENAME_MAIL, 'action=send_email_to_user'); ?>
             <td id="mail_left_td"><table border="0" cellpadding="0" cellspacing="2">
@@ -325,8 +343,16 @@ function back_to_mail(){
 ?>
                 <table border="0" width="100%" cellpadding="0" cellspacing="2">
                   <tr>
-                    <td><?php echo
-                    tep_html_element_submit(IMAGE_BACK,'onclick="back_to_mail()"');?></td>
+                    <td><?php 
+                    if($_GET['selected_box']!='tools'){
+                    echo tep_html_element_submit(IMAGE_BACK,'onclick="back_to_mail()"');
+                    }else{
+                    echo '<a class="new_product_reset" href="' .
+                      tep_href_link(FILENAME_CUSTOMERS,'page='.$_GET['customer_page'].'&site_id='.
+                          $_GET['site_id'].'&cID='.$_GET['cID']). '">' .
+                      tep_html_element_button(IMAGE_BACK) . '</a> ';
+                    }
+                    ?></td>
                     <td align="right"><?php echo '<a class="new_product_reset" href="' . tep_href_link(FILENAME_MAIL) . '">' .  tep_html_element_button(IMAGE_CANCEL) . '</a> ' .  tep_html_element_submit(BUTTON_SENDMAIL_TEXT); ?></td>
                   </tr>
             </table></td>
