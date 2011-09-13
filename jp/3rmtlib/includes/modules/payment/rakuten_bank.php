@@ -119,7 +119,7 @@
                             array('title' => '<div id="catelnumber"
                               style="display:none;"><div
                               class="ctelnumber_input_validate">'.MODULE_PAYMENT_RAKUTEN_TELNUMBER_CONFIRMATION_TEXT.'<div
-                              class="con_telnumber_input_validate">'.tep_draw_input_field('rakuten_telnumber_again', $email_default_str, 'onpaste="return false"').'  '.MODULE_PAYMENT_RAKUTEN_MUST_INPUT.'</div></div><p>'.MODULE_PAYMENT_RAKUTEN_BANK_TEXT_FOOTER.'</p></div>',
+                              class="con_telnumber_input_validate">'.tep_draw_input_field('rakuten_telnumber_again', $email_default_str, 'onpaste="return false"').'  '.MODULE_PAYMENT_RAKUTEN_MUST_INPUT.'</div></div></div>',
                                   'field' => '' 
                                  ), 
                             array('title' => $s_message,
