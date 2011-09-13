@@ -1186,7 +1186,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
         from " . TABLE_ORDERS . " o " . $from_payment . " ,
         ".TABLE_ORDERS_PRODUCTS." op ".$sort_table." where ".$sort_where .
           (isset($_GET['site_id']) && intval($_GET['site_id']) ? " o.site_id =
-           '" . intval($_GET['site_id']) . "' " : '') . " and o.orders_status =
+           '" . intval($_GET['site_id']) . "' and " : '') . " o.orders_status =
            '".substr($_GET['search_type'], 3)."' and o.orders_id = op.orders_id and
            (o.orders_id like '%".$_GET['keywords']."%' or o.customers_name like
             '%".$_GET['keywords']."%' or o.customers_email_address like
@@ -1637,7 +1637,18 @@ function validate_comment(){
   }
 }
 <?php
-
+if(isset($_GET['keywords'])&&$_GET['keywords']){
+  ?>
+    $("#keywords").val("<?php echo $_GET['keywords'];?>");
+  <?php
+}
+if(isset($_GET['search_type'])&&$_GET['search_type']){
+  ?>
+    $(document).ready(function(){ 
+    $("select[name=search_type]").find("option[value=<?php echo $_GET['search_type'];?>]").attr("selected", "selected");
+    });
+  <?php
+}
 
 ?>
 </script>
@@ -1875,7 +1886,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                 <?php if ($order->info['orders_user_agent']) {?>
                 <tr>
                   <td class="main" valign="top" width="30%"><b>OS:</b></td>
-                  <td class="main"><?php echo tep_high_light_by_keywords(getOS($order->info['orders_user_agent']),OS_LIGHT_KEYWORDS);?></td>
+                  <td class="main"><?php echo tep_high_light_by_keywords(getOS($order->info['orders_user_agent']),S_LIGHT_KEYWORDS);?></td>
                 </tr>
                 <tr>
                   <td class="main" valign="top" width="30%"><b>ブラウザの種類:</b></td>
