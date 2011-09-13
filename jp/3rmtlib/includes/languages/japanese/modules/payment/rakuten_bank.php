@@ -32,7 +32,7 @@
   define('MODULE_PAYMENT_RAKUTEN_BANK_TEXT_TEL', '電話番号:');
   define('MODULE_PAYMENT_RAKUTEN_BANK_TEXT_ERROR_MESSAGE', '楽天銀行の処理中にエラーが発生しました。入力内容を確認し、再度入力してください。');
   define('MODULE_PAYMENT_RAKUTEN_BANK_TEXT_ERROR_MESSAGE_NOE', '電話番号と電話番号(確認用)が一致しませんでした。');
-  define('MODULE_PAYMENT_RAKUTEN_BANK_TEXT_ERROR_MESSAGE_NOM', 'ご入力されたメールアドレスは登録できません。PCメールをご入力ください。');
+  define('MODULE_PAYMENT_RAKUTEN_BANK_TEXT_ERROR_MESSAGE_NOM', 'ご入力されたメールアドレスは登録できません。電話番号をご入力ください。');
   define('MODULE_PAYMENT_RAKUTEN_TELNUMBER_TEXT', '電話番号:');
   define('MODULE_PAYMENT_RAKUTEN_TELNUMBER_CONFIRMATION_TEXT', '電話番号(確認用):');
   define('MODULE_PAYMENT_RAKUTEN_MUST_INPUT', '<small><font color="#AE0E30">(必須)</font></small>');
