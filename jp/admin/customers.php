@@ -646,7 +646,28 @@ function check_form() {
       if (isset($cInfo) && is_object($cInfo)) {
         $heading[] = array('text' => '<b>' . tep_get_fullname($cInfo->customers_firstname, $cInfo->customers_lastname) . '</b>');
 
-        $contents[] = array('align' => 'center', 'text' => '<a class = "new_product_reset" href="' .  tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' .  $cInfo->customers_id . '&action=edit') .  '">'.tep_html_element_button(IMAGE_EDIT) . '</a>' .  ($ocertify->npermission == 15 ? (' <a class = "new_product_reset" href="' .  tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' .  $cInfo->customers_id .  '&action=confirm') . '">' .  tep_html_element_button(IMAGE_DELETE) .  '</a>'):'') . ' <a href="' .  tep_href_link(FILENAME_ORDERS, 'cID=' .  $cInfo->customers_id) . '">' .  tep_html_element_button(IMAGE_ORDERS) .  '</a> <a href="'.tep_href_link('customers_products.php', str_replace('page', 'cpage', tep_get_all_get_params(array('cID', 'action')).'cID='.$cInfo->customers_id)).'">'.tep_html_element_button(BUTTON_CUSTOMERS_PRODUCTS_TEXT).'</a> <a href="' . tep_href_link(FILENAME_MAIL, 'selected_box=tools&customer=' . $cInfo->customers_email_address) .  '">' .tep_html_element_button(IMAGE_EMAIL) . '</a>');
+        $contents[] = array('align' => 'center', 'text' => '<a class =
+            "new_product_reset" href="' .  tep_href_link(FILENAME_CUSTOMERS,
+          tep_get_all_get_params(array('cID', 'action')) . 'cID=' .
+            $cInfo->customers_id . '&action=edit') .
+            '">'.tep_html_element_button(IMAGE_EDIT) . '</a>' .
+            ($ocertify->npermission == 15 ? (' <a class = "new_product_reset"
+                                             href="' .
+                                             tep_href_link(FILENAME_CUSTOMERS,
+                                               tep_get_all_get_params(array('cID',
+                                                   'action')) . 'cID=' .
+                                               $cInfo->customers_id .
+                                               '&action=confirm') . '">' .
+                                             tep_html_element_button(IMAGE_DELETE) .
+                                             '</a>'):'') . ' <a href="' .
+            tep_href_link(FILENAME_ORDERS, 'cID=' .  $cInfo->customers_id) . '">' .
+            tep_html_element_button(IMAGE_ORDERS) .  '</a> <a
+            href="'.tep_href_link('customers_products.php', str_replace('page',
+          'cpage', tep_get_all_get_params(array('cID',
+                'action')).'cID='.$cInfo->customers_id)).'">'.tep_html_element_button(BUTTON_CUSTOMERS_PRODUCTS_TEXT).'</a>
+            <a href="' . tep_href_link(FILENAME_MAIL, 'selected_box=tools&customer='
+          .
+          $cInfo->customers_email_address.'&'.tep_get_all_get_params(array('page')).'&customer_page='.$_GET['page']) .  '">' .tep_html_element_button(IMAGE_EMAIL) . '</a>');
         $contents[] = array('text' => '<br>' . TEXT_DATE_ACCOUNT_CREATED . ' ' . tep_date_short($cInfo->date_account_created));
         $contents[] = array('text' => '<br>' . TEXT_DATE_ACCOUNT_LAST_MODIFIED . ' ' . tep_date_short($cInfo->date_account_last_modified));
         $contents[] = array('text' => '<br>' . TEXT_INFO_DATE_LAST_LOGON . ' '  . tep_date_short($cInfo->date_last_logon));
