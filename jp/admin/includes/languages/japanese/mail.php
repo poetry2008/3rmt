@@ -29,11 +29,11 @@ define('SEARCH_MAIL_TITLE', 'メールアドレス:');
 define('SEARCH_MAIL_CUSTOMERS_NAME', '名前:');
 define('SEARCH_MAIL_SITENAME', '登録サイト:');
 define('ERROR_NO_SEARCH_TEXT', '少なくとも１つ入力してください');
-define('ERROR_EMAIL_WRONG_TYPE', 'メールアドレスの格式が正しくないです');
 define('BUTTON_SEARCH_TEXT','検索');
 define('NO_MAIL_RESULT','該当するデータはありません。');
 define('TEXT_CUSTOMER_EMAIL','E-Mail アドレス');
 define('TEXT_CUSTOMER_FULL_NAME','顧客名');
 define('TEXT_MAIL_SEARCH_INFO','キーワードを入力しメールを送信する顧客を検索してください');
 define('TEXT_MAIL_RESULT_INFO','右のCheckBoxからメールを送信する顧客を選択してください');
+define('TEXT_LESS_THAN_ONE_SEARCH','検索フォームにキーワードがないため検索できません\n最低1つはキーワードを入力してください');
 ?>

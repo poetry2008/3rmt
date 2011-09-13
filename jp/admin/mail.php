@@ -71,14 +71,7 @@
         $messageStack->add(ERROR_NO_SEARCH_TEXT, 'error');
       }
     }
-    /*
-    if (!empty($_POST['se_mail'])) {
-      if (!preg_match("/^([a-zA-Z0-9]+[_|\-|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\-|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/", $_POST['se_mail'])) {
-        $messageStack->add(ERROR_EMAIL_WRONG_TYPE, 'error');
-        $error_email_single = true; 
-      }
-    }
-    */
+   
     if(!isset($_SESSION['mail_post_value'])){
       $_SESSION['mail_post_value'] = array(); 
     }
@@ -188,6 +181,20 @@
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
 <script language="javascript" >
+function valadate_search(){
+  if(
+  !$("input[name=se_pname]").val()&&
+  !$("input[name=se_mail]").val()&&
+  !$("input[name=se_cname]").val()&&
+  !$("input[name=se_site]").val()
+  ){
+    alert("<?php echo TEXT_LESS_THAN_ONE_SEARCH;?>");
+    return false;
+  }else{
+    return true;
+  }
+
+}
 function save_mail_info(){
   mail_info_from = $("#mail_info_from").val();
   mail_info_subject = $("#mail_info_subject").val();
@@ -432,7 +439,8 @@ function back_to_mail(){
     unset($_SESSION['mail_list']);
     unset($_SESSION['mail_sub_customer']);
 ?>
-          <tr><?php echo tep_draw_form('mail', FILENAME_MAIL, 'action=preview'); ?>
+          <tr><?php echo tep_draw_form('mail', FILENAME_MAIL,
+              'action=preview','post','onsubmit="return valadate_search()"'); ?>
             <td><table border="0" cellpadding="0" cellspacing="2">
               <tr>
                 <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
