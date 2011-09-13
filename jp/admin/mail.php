@@ -171,7 +171,7 @@
       ' where c.customers_email_address="'.tep_db_prepare_input($_GET['customer']).'"';
     if(isset($_GET['site_id'])&&$_GET['site_id']){
       $mail_where_sql .=
-      ' c.site_id="'.tep_db_prepare_input($_GET['site_id']).'"';
+      ' and  c.site_id="'.tep_db_prepare_input($_GET['site_id']).'"';
     }
     $mail_sql .= $mail_select_sql.$mail_from_sql.$mail_where_sql;
     if(!isset($_SESSION['mail_list'])||$_SESSION['mail_list']){
