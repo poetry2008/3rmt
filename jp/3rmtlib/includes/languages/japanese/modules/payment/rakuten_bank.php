@@ -6,7 +6,7 @@
 // 楽天銀行
   define('MODULE_PAYMENT_RAKUTEN_BANK_TEXT_TITLE', '楽天銀行');
   define('MODULE_PAYMENT_RAKUTEN_BANK_TEXT_DESCRIPTION', '楽天銀行(代金に手数料が連動)');
-  define('MODULE_PAYMENT_RAKUTEN_BANK_TEXT_PROCESS', 'LAWSON、スリーエフ、MINI STOP、サークルK、SUNKUSがご利用いただけます。<br>30,000円未満の決済の場合200円、30,000円以上の決済の場合は350円の手数料が別途必要となります。');
+  define('MODULE_PAYMENT_RAKUTEN_BANK_TEXT_PROCESS','楽天銀行へ振り込みする場合は選択してください。<br>振込手数料はお客様のご負担となります。');
   define('MODULE_PAYMENT_RAKUTEN_BANK_TEXT_PROCESS_CON', 'LAWSON、スリーエフ、MINI STOP、サークルK、SUNKUSがご利用いただけます。');
   define('MODULE_PAYMENT_RAKUTEN_BANK_TEXT_FOOTER', '※ SmartPitシートの送信は、弊社営業時間内に行っております。');
   /*
