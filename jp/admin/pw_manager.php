@@ -591,7 +591,7 @@ right:5px;*/
   
   <table border="0" width="100%" cellspacing="0" cellpadding="3">
     <tr>
-      <td colspan="2" class="pageHeading"><?php echo HEADING_TITLE; ?></td>
+      <td colspan="2" class="pageHeading" height="40"><?php echo HEADING_TITLE; ?></td>
     </tr>
       <tr>
         <td colspan="2">
@@ -637,7 +637,7 @@ right:5px;*/
     </tr>
     <tr>
       <td valign="top">
-    <table width="100%" style="margin-top: 5px;">
+    <table width="100%" style="margin-top: 5px; margin-top:8px\9;">
       <tr>
         <td>
         <?php tep_pw_site_filter(FILENAME_PW_MANAGER);?>

@@ -536,7 +536,7 @@ $(document).ready(function(){
                          (isset($_GET['cID']) && ($_GET['cID'] ==
                           $faq_category['faq_category_id']||
                           (isset($_GET['site_id'])&&$_GET['site_id']&&
-                          !tep_is_set_faq_category($_GET['cID'],$_GET['site_id'])))))
+                          !tep_is_set_faq_question($_GET['cID'],$_GET['site_id'])))))
                          && (!isset($faq_info) || !$faq_info) 
                          && (!isset($_GET['action']) || substr($_GET['action'], 0, 4) != 'new_')
                       ){
@@ -1130,7 +1130,7 @@ switch (isset($_action)? $_action:'') {
   }
 
   if ((tep_not_null($heading)) && (tep_not_null($contents)) ) {
-    echo '            <td width="25%" valign="top">' . "\n";
+    echo '            <td class="right_column_b" width="25%" valign="top">' . "\n";
     $box = new box;
     echo $box->infoBox($heading, $contents);
     echo '            </td>' . "\n";

@@ -704,9 +704,17 @@ h3 {
 	vertical-align:top;
 }
 .smallText a { text-decoration:none;}
-.right_column01 {
-/*	padding-top:14px;
-*padding-top:12px;*/
+.right_column_a {
+	 padding-top:14px;
+	 padding-top:12px\9;
+}
+.right_column_b {
+	 padding-top:20px;
+	 padding-top:18px\9;
+}
+.right_column_c {
+	 padding-top:23px;
+	 padding-top:20px\9;
 }
 .t_link01 {
 	display:block;
