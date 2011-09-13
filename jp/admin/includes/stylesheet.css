@@ -495,7 +495,8 @@ legend {
 }
 #tep_site_filter {
 	/*width:100%;*/
-  width: 63%;/*float: left;*/
+  width: 63%;
+  height:14px;/*float: left;*/
 }
 #order_icons {
 	/*float: right;*/
@@ -704,12 +705,15 @@ h3 {
 	vertical-align:top;
 }
 .smallText a { text-decoration:none;}
+.right_column01{
+/*	margin-top:12px;
+*/}
 .right_column_a {
 	 padding-top:14px;
-	 padding-top:12px\9;
+	 padding-top:14px\9;
 }
 .right_column_b {
-	 padding-top:20px;
+	 padding-top:19px;
 	 padding-top:18px\9;
 }
 .right_column_c {
@@ -941,7 +945,7 @@ text-overflow:ellipsis;
 
 }
 .button_save input{ vertical-align:bottom;}
-.new_pwmanager{ text-align:right; width:100%;}
+.new_pwmanager{ text-align:right; width:100%;}]
 .alertmsg {	color: #ff0000; }
 .faq_status_link{ text-decoration: none; }
 .faq_status_link:hover{ text-decoration: none; }

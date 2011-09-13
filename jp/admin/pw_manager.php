@@ -637,11 +637,11 @@ right:5px;*/
     </tr>
     <tr>
       <td valign="top">
-    <table width="100%" style="margin-top: 5px; margin-top:8px\9;">
+   <table width="100%" style=" height:27px; margin-top:6px\9;">
       <tr>
         <td>
-        <?php tep_pw_site_filter(FILENAME_PW_MANAGER);?>
-        </td>
+       <?php tep_pw_site_filter(FILENAME_PW_MANAGER);?>
+       </td>
         <td align="right">
         </td>
       </tr>
@@ -1103,8 +1103,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
   if ( (tep_not_null($heading)) && (tep_not_null($contents)) ) {
     echo '            <td class="right_column01" width="20%" valign="top">' . "\n";
 ?>
-        <table width=""  border="0" cellspacing="1" cellpadding="0"
-        class = "new_pwmanager">
+        <table width=""  border="0" cellspacing="1" cellpadding="0" class = "new_pwmanager">
         <tr><td>
         <?php
         echo '<button type=\'button\'
