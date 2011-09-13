@@ -1410,15 +1410,17 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
   }else if(isset($_GET['keywords']) && ((isset($_GET['search_type']) &&
           preg_match('/^type/', $_GET['search_type'])))){
     $type_arr = explode('|',$_GET['search_type']);
-    $f_payment = "left join " . TABLE_ORDERS_STATUS_HISTORY . " h on (o.orders_id = h.orders_id)";
     switch ($type_arr[1]) { 
     case 'sell':
+      $f_payment = "left join " . TABLE_ORDERS_STATUS_HISTORY . " h on (o.orders_id = h.orders_id)";
       $w_type = " and (!(o.payment_method like '%買い取り%') and h.orders_id not in (select orders_id from ".TABLE_ORDERS_STATUS_HISTORY." where comments like '金融機関名%支店名%'))"; 
       break;
     case 'buy':
+      $f_payment = "";
       $w_type = " and (o.payment_method like '%買い取り%')"; 
       break;
     case 'mix':
+      $f_payment = "left join " . TABLE_ORDERS_STATUS_HISTORY . " h on (o.orders_id = h.orders_id)";
       $w_type = " and (!(o.payment_method like '%買い取り') and h.comments like '金融機関名%支店名%')"; 
       break;
   } 
