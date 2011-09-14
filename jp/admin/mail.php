@@ -57,6 +57,7 @@
       unset($mimemessage);
       $mail_sum++;
     }
+    exit;
 
       unset($_SESSION['mail_post_value']);
       unset($_SESSION['mail_list']);
