@@ -6,7 +6,8 @@
 // 代金引換払い(手数料が購入金額に連動)
   class rakuten_bank {
     var $site_id, $code, $title, $description, $enabled, $n_fee, $s_error, $email_footer;
-
+    var $arrs2d = array('１' => '1', '２' => '2', '３' => '3', '４' => '4', '５' => '5', '６' => '6', '７' => '7', '８' => '8', '９' => '9', '０' => '0','－' => '-');
+    
 // class constructor
     function rakuten_bank($site_id = 0) {
       global $order;
@@ -163,19 +164,17 @@
     }
     */ 
       if ($_POST['rakuten_telnumber'] == "" || $_POST['rakuten_telnumber_again'] == "") {
-  $payment_error_return = 'payment_error=' . $this->code ;
+        $payment_error_return = 'payment_error=' . $this->code ;
         tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, $payment_error_return, 'SSL', true, false));
        
       } else if
-        (!preg_match("/^(\+\d{2}){0,1}((\d{2}(-){0,1}\d{4})|(\d{3}(-){0,1}\d{3})|(\d{3}(-){0,1}\d{4}))(-){0,1}\d{4}$/",
-                     $_POST['rakuten_telnumber'])||
-         !preg_match("/^(\+\d{2}){0,1}((\d{2}(-){0,1}\d{4})|(\d{3}(-){0,1}\d{3})|(\d{3}(-){0,1}\d{4}))(-){0,1}\d{4}$/",
-           $_POST['rakuten_telnumber_again'])){
+        (!preg_match("/^(\+\d{2}){0,1}((\d{2}(-){0,1}\d{4})|(\d{3}(-){0,1}\d{3})|(\d{3}(-){0,1}\d{4}))(-){0,1}\d{4}$/", strtr($_POST['rakuten_telnumber'], $this->arrs2d))||
+         !preg_match("/^(\+\d{2}){0,1}((\d{2}(-){0,1}\d{4})|(\d{3}(-){0,1}\d{3})|(\d{3}(-){0,1}\d{4}))(-){0,1}\d{4}$/", strtr($_POST['rakuten_telnumber_again'], $this->arrs2d))){
         $payment_error_return = 'payment_error=' . $this->code ;
         tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT,
               $payment_error_return.'&type=nom', 'SSL', true, false));
-      } else if ($_POST['rakuten_telnumber'] != $_POST['rakuten_telnumber_again']) {
-  $payment_error_return = 'payment_error=' . $this->code; 
+      } else if (strtr($_POST['rakuten_telnumber'], $this->arrs2d) != strtr($_POST['rakuten_telnumber_again'], $this->arrs2d)) {
+        $payment_error_return = 'payment_error=' . $this->code; 
         $redirect_url = tep_href_link(FILENAME_CHECKOUT_PAYMENT, $payment_error_return . '&type=noe', 'SSL', true, false);
         //do for &type turn into &amp;type url ,fix it afterlater
         $url_test = explode('?',$redirect_url);
@@ -194,7 +193,7 @@
     function confirmation() {
       global $currencies;
       global $_POST;
-
+      
       $s_result = !$_POST['codt_fee_error'];
       
       if (!empty($_POST['codt_fee'])) {
@@ -209,7 +208,7 @@
             'title' => $this->title,
             'fields' => array(array('title' => MODULE_PAYMENT_RAKUTEN_BANK_TEXT_PROCESS_CON,
                                     'field' => ''),
-                              array('title' => MODULE_PAYMENT_RAKUTEN_TELNUMBER_TEXT.$_POST['rakuten_telnumber'],
+                              array('title' => MODULE_PAYMENT_RAKUTEN_TELNUMBER_TEXT.strtr($_POST['rakuten_telnumber'], $this->arrs2d),
                                     'field' => ''),
                               array('title' => $s_message,
                                     'field' => ''),
@@ -218,7 +217,7 @@
       } else {
         $confirmation = array(
             'title' => $this->title,
-            'fields' => array(array('title' => MODULE_PAYMENT_RAKUTEN_TELNUMBER_TEXT.$_POST['rakuten_telnumber'],
+            'fields' => array(array('title' => MODULE_PAYMENT_RAKUTEN_TELNUMBER_TEXT.strtr($_POST['rakuten_telnumber'], $this->arrs2d),
                                     'field' => ''),
                               array('title' => $s_message,
                                     'field' => ''),

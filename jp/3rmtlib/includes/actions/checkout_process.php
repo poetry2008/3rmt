@@ -93,7 +93,8 @@ if ($payment == 'convenience_store') {
 }
 if ($payment == 'rakuten_bank') {
   $convenience_sid = str_replace('-', "", $insert_id);
-  $pay_comments = '電話番号:'.str_replace('-','',$_POST['rakuten_telnumber']); 
+  $arrs2d = array('１' => '1', '２' => '2', '３' => '3', '４' => '4', '５' => '5', '６' => '6', '７' => '7', '８' => '8', '９' => '9', '０' => '0','－' => '-');
+  $pay_comments = '電話番号:'.str_replace('-','',strtr($_POST['rakuten_telnumber'], $arrs2d)); 
   $comments = $pay_comments ."\n".$comments;
 }
 
