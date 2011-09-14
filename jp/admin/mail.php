@@ -230,13 +230,18 @@ function back_to_mail(){
   document.mail.submit();
 }
 function send_mail_validate(){
+  var flag_checkbox = 0;
   $("input[name='mail_list_checkbox[]']:checkbox").each(function () {
    if ($(this).attr("checked")) {
-     return true;
+     flag_checkbox ++;
    }
-  }) 
-  alert("<?php echo TEXT_NO_SELECTED_CHECKBOX;?>");
-  return false; 
+  });
+  if(flag_checkbox){
+    return true;
+  }else{
+    alert("<?php echo TEXT_NO_SELECTED_CHECKBOX;?>");
+    return false; 
+  }
 }
 </script>
 </head>
