@@ -229,6 +229,15 @@ function back_to_mail(){
   document.mail.back_mail.value = 'back';
   document.mail.submit();
 }
+function send_mail_validate(){
+  $("input[name='mail_list_checkbox[]']:checkbox").each(function () {
+   if ($(this).attr("checked")) {
+     return true;
+   }
+  }) 
+  alert("<?php echo TEXT_NO_SELECTED_CHECKBOX;?>");
+  return false; 
+}
 </script>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">
@@ -282,7 +291,8 @@ function back_to_mail(){
             || $_POST['se_site']) && !isset($error_email_single))||(
         isset($_GET['selected_box'])&&$_GET['selected_box']=='tools' )){
 ?>
-          <tr><?php echo tep_draw_form('mail', FILENAME_MAIL, 'action=send_email_to_user'); ?>
+          <tr><?php echo tep_draw_form('mail', FILENAME_MAIL,
+              'action=send_email_to_user','post','onsubmit="return send_mail_validate()"'); ?>
             <td id="mail_left_td"><table border="0" cellpadding="0" cellspacing="2">
               <tr>
                 <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
