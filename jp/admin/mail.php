@@ -51,7 +51,7 @@
     $mail_query = tep_db_query($mail_sql);
     while ($mail = tep_db_fetch_array($mail_query)) {
       $mimemessage = new email(array('X-Mailer: osCommerce bulk mailer'));
-      $mimemessage->add_text($message,'mail');
+      $mimemessage->add_text($message);
       $mimemessage->build_message();
       $mimemessage->send(tep_get_fullname($mail['customers_firstname'],
             $mail['customers_lastname']), $mail['customers_email_address'], '',
