@@ -220,3 +220,4 @@ define('HEAD_SEARCH_ALPHA_COMMENT', '設定例：a,b,c,d,1,7 英数字で設定�
 
 define('TEXT_CATEGORY_HEAD_IMAGE_BACK','前のカテゴリへ');
 define('TEXT_CATEGORY_HEAD_IMAGE_NEXT','次のカテゴリへ');
+define('NOTICE_MUST_EDIT_CATEGORY_OR_PRODUCT', 'このサイトの商品は登録されていないのでallのステータスに連動しています。個別に変更したい場合は「編集」ボタンをクリックして、内容を保存してからステータスを変更してください。');
