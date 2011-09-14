@@ -230,12 +230,19 @@ function back_to_mail(){
   document.mail.submit();
 }
 function send_mail_validate(){
-  var flag_checkbox = 0;
-  $("input[name='mail_list_checkbox[]']:checkbox").each(function () {
-   if ($(this).attr("checked")) {
-     flag_checkbox ++;
-   }
+  var flag_checkbox = true;
+  $.ajax({
+    url: 'ajax_orders.php?action=mail_checkbox_validate',
+    type: 'POST',
+    dataType: 'text',
+    async: false,
+    success: function(data){
+      if(data == 'true'){
+        flag_checkbox=false;
+      }
+    }
   });
+  return false;
   if(flag_checkbox){
     return true;
   }else{

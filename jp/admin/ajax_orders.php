@@ -579,5 +579,18 @@ if ($_POST['orders_id'] &&
   $_SESSION['mail_post_value']['from'] = $_POST['mail_info_from'];
   $_SESSION['mail_post_value']['subject'] = $_POST['mail_info_subject'];
   $_SESSION['mail_post_value']['message'] = $_POST['mail_info_message'];
+}else if (isset($_GET['action'])&&$_GET['action']=='mail_checkbox_validate'){
+  if(isset($_SESSION['mail_list'])&&$_SESSION['mail_list']&&
+      isset($_SESSION['mail_sub_customer'])&&$_SESSION['mail_sub_customer']){
+    $mail_list_query = tep_db_query($_SESSION['mail_list']);
+    $sub_mail_arr = explode(',',$_SESSION['mail_sub_customer']);
+    if(tep_db_num_rows($mail_list_query)==count($sub_mail_arr)){
+      echo "true";
+    }else{
+      echo "false";
+    }
+  }else{
+    echo "false";
+  }
 }
 
