@@ -134,8 +134,12 @@
  * when NOT sending html email
  */
 
-    function add_text($text = '') {
+    function add_text($text = '',$from_page='') {
+      if($from_page== 'mail'){
+      $this->text = mb_convert_encoding($text, 'UTF-8');
+      }else{
       $this->text = mb_convert_encoding(mb_convert_kana($text, "KV"), 'iso-2022-jp' );
+      }
     }
 
 /**
@@ -459,7 +463,8 @@
  * Sends the mail.
  */
 
-    function send($to_name, $to_addr, $from_name, $from_addr, $subject = '', $headers = '') {
+    function send($to_name, $to_addr, $from_name, $from_addr, $subject = '',
+        $headers = '',$from_page="") {
       // $from_name が "" で $from_addr が "Name <someone@abc.com>" 形式の場合に
       // $from_addr を分解して純粋な E-mail アドレスに変える
       // tamura 2002/05/08
@@ -469,15 +474,22 @@
       }
     //echo $subject;
       if ($subject != '') {
-        $subject = mb_convert_encoding($subject, 'ISO-2022-JP'); // 追加
+      if($from_page=='mail'){
+      $subject = mb_convert_encoding($subject, 'UTF-8');
+      }else{
+      $subject = mb_convert_encoding($subject, 'ISO-2022-JP'); // 追加
+      }
       //$subject = mb_convert_encoding($subject, 'UTF-8', 'ECU-JP');
-      //$subject = mb_convert_encoding($subject, 'UTF-8');
       //echo '<br>';
       //echo $subject;
       //$subject = mb_encode_mimeheader(mb_convert_kana($subject, "KV"), 'ISO-2022-JP');
       //$subject = mb_encode_mimeheader($subject, 'ISO-2022-JP');
+      //$subject = '=?ISO-2022-JP?B?'.base64_encode(mb_convert_kana($subject, "KV"))."?=";
+      if($from_page=='mail'){
+      $subject = '=?UTF-8?B?'.base64_encode($subject)."?=";
+      }else{
       $subject = '=?ISO-2022-JP?B?'.base64_encode(mb_convert_kana($subject, "KV"))."?=";
-      //$subject = '=?UTF-8?B?'.base64_encode($subject)."?=";
+      }
       }
       //echo '<br>';
       //echo $subject;

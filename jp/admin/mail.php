@@ -36,10 +36,7 @@
 
     if($_POST['back_mail']==''){
     //Let's build a message object using the email class
-    $mimemessage = new email(array('X-Mailer: osCommerce bulk mailer'));
     // add the message to the object
-    $mimemessage->add_text($message);
-    $mimemessage->build_message();
     //while ($mail = tep_db_fetch_array($mail_query)) {
       //$mimemessage->send(tep_get_fullname($mail['customers_firstname'], $mail['customers_lastname']), $mail['customers_email_address'], '', $from, $subject);
     //}
@@ -53,7 +50,13 @@
     }
     $mail_query = tep_db_query($mail_sql);
     while ($mail = tep_db_fetch_array($mail_query)) {
-      $mimemessage->send(tep_get_fullname($mail['customers_firstname'], $mail['customers_lastname']), $mail['customers_email_address'], '', $from, $subject);
+      $mimemessage = new email(array('X-Mailer: osCommerce bulk mailer'));
+      $mimemessage->add_text($message,'mail');
+      $mimemessage->build_message();
+      $mimemessage->send(tep_get_fullname($mail['customers_firstname'],
+            $mail['customers_lastname']), $mail['customers_email_address'], '',
+          $from, $subject,'','mail');
+      unset($mimemessage);
       $mail_sum++;
     }
 
@@ -229,6 +232,26 @@ function back_to_mail(){
   document.mail.back_mail.value = 'back';
   document.mail.submit();
 }
+function send_mail_validate(){
+  var flag_checkbox = true;
+  $.ajax({
+    url: 'ajax_orders.php?action=mail_checkbox_validate',
+    type: 'POST',
+    dataType: 'text',
+    async: false,
+    success: function(data){
+      if(data == 'true'){
+        flag_checkbox=false;
+      }
+    }
+  });
+  if(flag_checkbox){
+    return true;
+  }else{
+    alert("<?php echo TEXT_NO_SELECTED_CHECKBOX;?>");
+    return false; 
+  }
+}
 </script>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">
@@ -282,7 +305,8 @@ function back_to_mail(){
             || $_POST['se_site']) && !isset($error_email_single))||(
         isset($_GET['selected_box'])&&$_GET['selected_box']=='tools' )){
 ?>
-          <tr><?php echo tep_draw_form('mail', FILENAME_MAIL, 'action=send_email_to_user'); ?>
+          <tr><?php echo tep_draw_form('mail', FILENAME_MAIL,
+              'action=send_email_to_user','post','onsubmit="return send_mail_validate()"'); ?>
             <td id="mail_left_td"><table border="0" cellpadding="0" cellspacing="2">
               <tr>
                 <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>

@@ -36,4 +36,5 @@ define('TEXT_CUSTOMER_FULL_NAME','顧客名');
 define('TEXT_MAIL_SEARCH_INFO','キーワードを入力しメールを送信する顧客を検索してください');
 define('TEXT_MAIL_RESULT_INFO','右のCheckBoxからメールを送信する顧客を選択してください');
 define('TEXT_LESS_THAN_ONE_SEARCH','検索フォームにキーワードがないため検索できません\n最低1つはキーワードを入力してください');
+define('TEXT_NO_SELECTED_CHECKBOX','メール送信先を選択してください');
 ?>
