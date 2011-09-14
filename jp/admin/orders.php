@@ -2896,7 +2896,11 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
         "));
       }
       $allorders[] = $orders;
-      if (((!isset($_GET['oID']) || !$_GET['oID']) || ($_GET['oID'] == $orders['orders_id'])) && (!isset($oInfo) || !$oInfo)) {
+      if (((!isset($_GET['oID']) || !$_GET['oID']) || 
+            (isset($_GET['oID'])&&$_GET['oID']&&
+             ($_GET['oID'] == $orders['orders_id']
+             ||!tep_is_in_order_page($orders_query_raw,$_GET['oID']) ))) 
+          && (!isset($oInfo) || !$oInfo)) {
         $oInfo = new objectInfo($orders);
       }
 
@@ -3191,7 +3195,7 @@ function submit_confirm()
   }
 
 
-    echo '      <td width="20%" style="padding-top:22px;" valign="top">' . "\n";
+    echo '      <td width="20%" style="padding-top:20px;" valign="top">' . "\n";
   if ( (tep_not_null($heading)) && (tep_not_null($contents)) ) {
     $box = new box;
     echo $box->infoBox($heading, $contents);
