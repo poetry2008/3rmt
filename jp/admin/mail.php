@@ -36,10 +36,7 @@
 
     if($_POST['back_mail']==''){
     //Let's build a message object using the email class
-    $mimemessage = new email(array('X-Mailer: osCommerce bulk mailer'));
     // add the message to the object
-    $mimemessage->add_text($message);
-    $mimemessage->build_message();
     //while ($mail = tep_db_fetch_array($mail_query)) {
       //$mimemessage->send(tep_get_fullname($mail['customers_firstname'], $mail['customers_lastname']), $mail['customers_email_address'], '', $from, $subject);
     //}
@@ -53,7 +50,11 @@
     }
     $mail_query = tep_db_query($mail_sql);
     while ($mail = tep_db_fetch_array($mail_query)) {
+      $mimemessage = new email(array('X-Mailer: osCommerce bulk mailer'));
+      $mimemessage->add_text($message);
+      $mimemessage->build_message();
       $mimemessage->send(tep_get_fullname($mail['customers_firstname'], $mail['customers_lastname']), $mail['customers_email_address'], '', $from, $subject);
+      unset($mimemessage);
       $mail_sum++;
     }
 
