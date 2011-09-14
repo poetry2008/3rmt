@@ -242,7 +242,6 @@ function send_mail_validate(){
       }
     }
   });
-  return false;
   if(flag_checkbox){
     return true;
   }else{
