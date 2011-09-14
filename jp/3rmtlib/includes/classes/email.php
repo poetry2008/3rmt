@@ -135,11 +135,13 @@
  */
 
     function add_text($text = '',$from_page='') {
+      /*
       if($from_page== 'mail'){
       $this->text = mb_convert_encoding($text, 'UTF-8');
       }else{
+      */
       $this->text = mb_convert_encoding(mb_convert_kana($text, "KV"), 'iso-2022-jp' );
-      }
+      //}
     }
 
 /**
