@@ -1892,7 +1892,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                 <?php if ($order->info['orders_user_agent']) {?>
                 <tr>
                   <td class="main" valign="top" width="30%"><b>OS:</b></td>
-                  <td class="main"><?php echo tep_high_light_by_keywords(getOS($order->info['orders_user_agent']),S_LIGHT_KEYWORDS);?></td>
+                  <td class="main"><?php echo tep_high_light_by_keywords(getOS($order->info['orders_user_agent']),OS_LIGHT_KEYWORDS);?></td>
                 </tr>
                 <tr>
                   <td class="main" valign="top" width="30%"><b>ブラウザの種類:</b></td>
