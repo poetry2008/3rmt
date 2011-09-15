@@ -87,6 +87,11 @@
           if (!isset($_POST['configuration']['MODULE_PAYMENT_FREE_PAYMENT_LIMIT_SHOW']) && $_GET['module'] == 'freepayment') {  
             $limit_show_str = 'MODULE_PAYMENT_FREE_PAYMENT_LIMIT_SHOW';  
           }
+          if
+            (!isset($_POST['configuration']['MODULE_PAYMENT_RAKUTEN_BANK_LIMIT_SHOW'])
+             && $_GET['module'] == 'rakuten_bank') {  
+            $limit_show_str = 'MODULE_PAYMENT_RAKUTEN_BANK_LIMIT_SHOW';  
+          }
           if (!empty($limit_show_str)) {
             if (!tep_db_num_rows(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$limit_show_str."' and site_id='".$site_id."'"))) {
               $cp_show_configuration = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$limit_show_str."' and site_id='0'"));
