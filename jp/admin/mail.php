@@ -31,7 +31,15 @@
     $from = tep_db_prepare_input($_POST['from']);
     $subject = tep_db_prepare_input($_POST['subject']);
     $message = tep_db_prepare_input($_POST['message']);
-
+    if(!$from){
+      $from = $_SESSION['mail_post_value']['from'];
+    }
+    if(!$subject){
+      $subject = $_SESSION['mail_post_value']['subject'];
+    }
+    if(!$message){
+      $message = $_SESSION['mail_post_value']['message'];
+    }
 
 
     if($_POST['back_mail']==''){
@@ -233,6 +241,7 @@ function back_to_mail(){
   document.mail.submit();
 }
 function send_mail_validate(){
+  save_mail_info();
   var flag_checkbox = true;
   $.ajax({
     url: 'ajax_orders.php?action=mail_checkbox_validate',
