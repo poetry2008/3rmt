@@ -47,8 +47,12 @@
 
       $this->build_params['html_encoding'] = 'quoted-printable';
       $this->build_params['text_encoding'] = '7bit';
+      /*
       $this->build_params['html_charset']  = 'iso-2022-jp';
       $this->build_params['text_charset']  = 'iso-2022-jp';
+      */
+      $this->build_params['html_charset']  = 'utf-8';
+      $this->build_params['text_charset']  = 'utf-8';
       $this->build_params['text_wrap'] = 998;
 
 /**
@@ -134,14 +138,9 @@
  * when NOT sending html email
  */
 
-    function add_text($text = '',$from_page='') {
-      /*
-      if($from_page== 'mail'){
-      $this->text = mb_convert_encoding($text, 'UTF-8');
-      }else{
-      */
-      $this->text = mb_convert_encoding(mb_convert_kana($text, "KV"), 'iso-2022-jp' );
-      //}
+    function add_text($text = '') {
+      $this->text = mb_convert_encoding(mb_convert_kana($text, "KV"),
+          'UTF-8' );
     }
 
 /**
@@ -497,20 +496,36 @@
       //echo $subject;
     
     if($to_name != '') {
+      /*
       $to_name = mb_convert_encoding($to_name, 'ISO-2022-JP'); // 追加
         $to_addr = mb_convert_encoding($to_addr, 'ISO-2022-JP'); // 追加
+        */
+      $to_name = mb_convert_encoding($to_name, 'UTF-8'); // 追加
+        $to_addr = mb_convert_encoding($to_addr, 'UTF-8'); // 追加
     }
     
     if($from_name != '') {
+      /*
       $from_name = mb_convert_encoding($from_name, 'ISO-2022-JP'); // 追加
         $from_addr = mb_convert_encoding($from_addr, 'ISO-2022-JP'); // 追加
+        */
+      $from_name = mb_convert_encoding($from_name, 'UTF-8'); // 追加
+        $from_addr = mb_convert_encoding($from_addr, 'UTF-8'); // 追加
     }
     
+    /*
       $to    = ($to_name != '')
           ? ('"' . mb_encode_mimeheader(mb_convert_kana($to_name, "KV"), 'ISO-2022-JP') . '" <' . $to_addr . '>')
           : $to_addr;
       $from  = ($from_name != '')
           ? ('"' . mb_encode_mimeheader(mb_convert_kana($from_name, "KV"), 'ISO-2022-JP')  . '" <' . $from_addr. '>')
+          : $from_addr;
+          */
+      $to    = ($to_name != '')
+          ? ('"' . mb_encode_mimeheader(mb_convert_kana($to_name, "KV"), 'UTF-8') . '" <' . $to_addr . '>')
+          : $to_addr;
+      $from  = ($from_name != '')
+          ? ('"' . mb_encode_mimeheader(mb_convert_kana($from_name, "KV"), 'UTF-8')  . '" <' . $from_addr. '>')
           : $from_addr;
 
       if (is_string($headers)) {
