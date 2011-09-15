@@ -1033,9 +1033,8 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
     $order_str = 'o.torihiki_date DESC';
   }else{
     if($HTTP_GET_VARS['order_sort'] == 'site_romaji'){
-      $sort_table = " ,". TABLE_ORDERS_TOTAL." ot, ".TABLE_SITES." s ";
-      $sort_where = " o.orders_id = ot.orders_id and ot.class  ='ot_total' and
-        o.site_id = s.id and ";
+      $sort_table = " ,".TABLE_SITES." s ";
+      $sort_where = " o.site_id = s.id and ";
       $order_str = " s.romaji ".$HTTP_GET_VARS['order_type'];
     }else if($HTTP_GET_VARS['order_sort'] == 'customers_name'){
       $order_str = " o.customers_name ".$HTTP_GET_VARS['order_type'];
@@ -1420,10 +1419,36 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
       $w_type = " and (o.payment_method like '%買い取り%')"; 
       break;
     case 'mix':
-      $f_payment = "left join " . TABLE_ORDERS_STATUS_HISTORY . " h on (o.orders_id = h.orders_id)";
-      $w_type = " and (!(o.payment_method like '%買い取り%') and h.comments like '金融機関名%支店名%')"; 
+      $mix_single = true; 
       break;
-  } 
+  }
+    if (isset($mix_single)) {
+      $old_replace_arr = array('o.orders_id', 'o.site_id');
+      $new_replace_arr = array('op.orders_id', 'op.site_id');
+      $orders_query_raw = " select 
+               op.orders_id, 
+               o.torihiki_date, 
+               IF(o.torihiki_date = '0000-00-00 00:00:00',1,0) as torihiki_date_error,
+               o.customers_id, 
+               o.customers_name, 
+               o.payment_method, 
+               o.date_purchased, 
+               o.last_modified, 
+               o.currency, 
+               o.currency_value, 
+               o.orders_status, 
+               o.orders_status_name,
+               o.orders_important_flag,
+               o.orders_care_flag,
+               o.orders_wait_flag,
+               o.orders_inputed_flag,
+               o.orders_work,
+               o.customers_email_address,
+               o.torihiki_houhou,
+               o.orders_comment,
+               o.confirm_payment_time, 
+        avg( products_bflag) bflag, op.orders_id from " .  TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS . " op, ".TABLE_PRODUCTS." p ".$sort_table."where ".$sort_where."o.flag_qaf = 0 and o.orders_id = op.orders_id and op.products_id = p.products_id" .  (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . " group by op.orders_id having bflag > 0 and bflag < 1 order by ".$order_str;
+    } else {
     $orders_query_raw = "
         select distinct(o.orders_id), 
                o.torihiki_date, 
@@ -1452,6 +1477,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
         o.flag_qaf = 0 
         ".$w_type;
     $orders_query_raw .= " order by ".$order_str;
+    }
   }else {
       // orders_list 隐藏 「キャンセル」と「注文取消」
       $orders_query_raw = "
@@ -1500,11 +1526,18 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
     if (($from_pos !== false) && ($order_pos !== false)) {
       if ($op_pos !== false) {
         $sql_count_query = "select count(op.orders_id) as count ".substr($orders_query_raw, $from_pos, $order_pos - $from_pos);
+      } else if (isset($mix_single)) {
+        $sql_count_query = "select count(op.orders_id) as count, avg(products_bflag) bflag ".substr($orders_query_raw, $from_pos, $order_pos - $from_pos);
+        $c_total_num = tep_db_num_rows(tep_db_query($sql_count_query));
+        if ($c_total_num > 0) {
+          $sql_count_query = "select ".$c_total_num." as count from ".TABLE_ORDERS.' limit 1'; 
+        } else {
+          $sql_count_query = "select 0 as count from ".TABLE_ORDERS.' limit 1'; 
+        }
       } else {
         $sql_count_query = "select count(o.orders_id) as count ".substr($orders_query_raw, $from_pos, $order_pos - $from_pos);
       }
     }
-
 }
   header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
   # 永远是改动过的
