@@ -1001,12 +1001,13 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
       $where_type = " and (o.payment_method like '%買い取り%')"; 
       break;
     case 'mix':
-      $where_type = " and (!(o.payment_method like '%買い取り') and h.comments like '金融機関名%支店名%')"; 
+      //$where_type = " and (!(o.payment_method like '%買い取り') and h.comments like '金融機関名%支店名%')"; 
       break;
   }
   }
     
   $where_payment = '';
+  /* 
   if(isset($_GET['payment'])){
   switch ($_GET['payment']) { 
     case 'convenience_store':
@@ -1025,6 +1026,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
       break;
   }
   }
+  */ 
   $from_payment = (isset($_GET['payment']) or isset($_GET['type']))?("left join " . TABLE_ORDERS_STATUS_HISTORY . " h on (o.orders_id = h.orders_id)"):'';
 
   $sort_table = '';
