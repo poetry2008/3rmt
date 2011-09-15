@@ -299,6 +299,13 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
         if (check_money_limit(MODULE_PAYMENT_PAYPAL_MONEY_LIMIT, $order->info['total'])) {
           continue; 
         }
+      } else if ($selection[$i]['id'] == 'rakuten_bank'){
+        if (!tep_whether_show_payment(MODULE_PAYMENT_RAKUTEN_BANK_LIMIT_SHOW, $_SESSION['guestchk'])) {
+          continue; 
+        }
+        if (check_money_limit(MODULE_PAYMENT_RAKUTEN_BANK_MONEY_LIMIT, $order->info['total'])) {
+          continue; 
+        }
       }
 ?> 
                         <tr> 
