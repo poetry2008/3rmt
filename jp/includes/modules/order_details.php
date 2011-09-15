@@ -106,8 +106,16 @@
     }
   
 // Product name, with or without link
+    $stock_link_single = false; 
     if (strstr($PHP_SELF, FILENAME_SHOPPING_CART)) {
-      echo '    <td class="main" style="">'.(((PRODUCT_LIST_MODEL > 0) && strstr($PHP_SELF, FILENAME_SHOPPING_CART))?'<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . tep_get_prid($products[$i]['id'])) . '">' . $products[$i]['model'] . '</a><br>':'').'<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . tep_get_prid($products[$i]['id'])) . '"><b>' . $products[$i]['name'] . '</b></a>';
+      $cart_pro_status_raw = tep_db_query("select products_status from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$products[$i]['id']."' and (site_id = 0 or site_id = ".SITE_ID.") order by site_id desc limit 1"); 
+      $cart_pro_status = tep_db_fetch_array($cart_pro_status_raw);
+      if ($cart_pro_status['products_status'] == 0) {
+        $stock_link_single = true; 
+        echo '    <td class="main" style="">'.(((PRODUCT_LIST_MODEL > 0) && strstr($PHP_SELF, FILENAME_SHOPPING_CART))?$products[$i]['model'] . '<br>':'').'<b>' . $products[$i]['name'] . '</b>';
+      } else {
+        echo '    <td class="main" style="">'.(((PRODUCT_LIST_MODEL > 0) && strstr($PHP_SELF, FILENAME_SHOPPING_CART))?'<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . tep_get_prid($products[$i]['id'])) . '">' . $products[$i]['model'] . '</a><br>':'').'<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . tep_get_prid($products[$i]['id'])) . '"><b>' . $products[$i]['name'] . '</b></a>';
+      }
     } else {
       echo '    <td class="main" style="">'.(((PRODUCT_LIST_MODEL > 0) && strstr($PHP_SELF, FILENAME_SHOPPING_CART))?'<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . tep_get_prid($products[$i]['id'])) . '">' . $products[$i]['model'] . '</a><br>':'').'<b>' . $products[$i]['name'] . '</b>';
     }
@@ -115,7 +123,7 @@
 // Display marker if stock quantity insufficient
     if (!strstr($PHP_SELF, FILENAME_ACCOUNT_HISTORY_INFO)) {
       if (STOCK_CHECK == 'true') {
-        echo $stock_check = tep_check_stock($products[$i]['id'], $products[$i]['quantity']);
+        echo $stock_check = tep_check_stock($products[$i]['id'], $products[$i]['quantity'], $stock_link_single);
         if ($stock_check) $any_out_of_stock = 1;
         if(!isset($stock_check)||$stock_check == ''){
           $n_products_id = tep_get_prid($products[$i]['id']);
@@ -125,7 +133,7 @@
               $n_products_sum += intval($products[$j]['quantity']);
             }
           }
-        echo $stock_check = tep_check_stock($products[$i]['id'], $n_products_sum);
+        echo $stock_check = tep_check_stock($products[$i]['id'], $n_products_sum, $stock_link_single);
         if ($stock_check) $any_out_of_stock = 1;
         }
       }

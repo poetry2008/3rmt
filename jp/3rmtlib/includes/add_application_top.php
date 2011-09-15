@@ -687,7 +687,7 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
     for ($i=0, $n=sizeof($cPath_array); $i<$n; $i++) {
       // ccdd
       $categories_query = tep_db_query("
-          select categories_name 
+          select categories_name, categories_status 
           from " .  TABLE_CATEGORIES_DESCRIPTION . " 
           where categories_id = '" .  $cPath_array[$i] . "' 
             and language_id='" . $languages_id . "' 
@@ -697,7 +697,61 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
       );
       if (tep_db_num_rows($categories_query) > 0) {
         $categories = tep_db_fetch_array($categories_query);
-        $breadcrumb->add($categories['categories_name'], tep_href_link(FILENAME_DEFAULT, 'cPath=' . implode('_', array_slice($cPath_array, 0, ($i+1)))));
+        if ($_SERVER['PHP_SELF'] == '/'.FILENAME_PRODUCT_INFO) {
+          $check_pro_status_raw = tep_db_query("select products_status from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".(int)$_GET['products_id']."' and (site_id = 0 or site_id = ".SITE_ID.") order by site_id DESC limit 1"); 
+          $check_pro_status = tep_db_fetch_array($check_pro_status_raw); 
+          if ($check_pro_status['products_status'] == 0) {
+            $breadcrumb->add($categories['categories_name']);
+          } else {
+            $breadcrumb->add($categories['categories_name'], tep_href_link(FILENAME_DEFAULT, 'cPath=' . implode('_', array_slice($cPath_array, 0, ($i+1)))));
+          }
+        } else {
+          if ($categories['categories_status'] == 1) {
+            $breadcrumb->add($categories['categories_name']);
+          } else {
+            $add_single = false; 
+            if (isset($cPath_array[$i+1])) {
+              $pre_categories_query = tep_db_query("
+                  select categories_name, categories_status 
+                  from " .  TABLE_CATEGORIES_DESCRIPTION . " 
+                  where categories_id = '" .  $cPath_array[$i+1] . "' 
+                    and language_id='" . $languages_id . "' 
+                    and (site_id = ".SITE_ID." or site_id = 0)
+                  order by site_id DESC
+                  limit 1" 
+              );
+              $pre_categories_res = tep_db_fetch_array($pre_categories_query);
+              if ($pre_categories_res) {
+                if ($pre_categories_res['categories_status'] == 1) {
+                  $add_single = true; 
+                  $breadcrumb->add($categories['categories_name']);
+                }
+              }
+            }
+            
+            if (isset($cPath_array[$i+2]) && !$add_single) {
+              $pre_categories_query = tep_db_query("
+                  select categories_name, categories_status 
+                  from " .  TABLE_CATEGORIES_DESCRIPTION . " 
+                  where categories_id = '" .  $cPath_array[$i+2] . "' 
+                    and language_id='" . $languages_id . "' 
+                    and (site_id = ".SITE_ID." or site_id = 0)
+                  order by site_id DESC
+                  limit 1" 
+              );
+              $pre_categories_res = tep_db_fetch_array($pre_categories_query);
+              if ($pre_categories_res) {
+                if ($pre_categories_res['categories_status'] == 1) {
+                  $add_single = true; 
+                  $breadcrumb->add($categories['categories_name']);
+                }
+              }
+            }
+            if (!$add_single) {
+              $breadcrumb->add($categories['categories_name'], tep_href_link(FILENAME_DEFAULT, 'cPath=' . implode('_', array_slice($cPath_array, 0, ($i+1)))));
+            }
+          }
+        }
       } else {
         break;
       }

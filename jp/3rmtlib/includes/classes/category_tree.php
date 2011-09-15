@@ -40,7 +40,7 @@
             where site_id = '0'
                or site_id = '".SITE_ID."' 
             group by categories_id
-            having c.categories_status != '3' 
+            having c.categories_status != '3' and  c.categories_status != '1'
             order by parent_id, sort_order, categories_name");
      
          $this->data = array();

@@ -16,7 +16,7 @@
           and o.site_id = '".SITE_ID."' 
         order by pd.site_id DESC) p where site_id = '".SITE_ID."' or site_id = '0' 
         group by products_id 
-        having p.products_status != '0' and p.products_status != '3'
+        having p.products_status != '3'
         order by date_purchased desc 
         limit " . MAX_DISPLAY_ALSO_PURCHASED
     );
@@ -58,10 +58,13 @@
         }
     echo '
 
-<td align="center" class="smallText" '.$width_str.'>   
-<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $orders['products_id']) . '">'.tep_image(DIR_WS_IMAGES . 'products/' . $orders['products_image'], $orders['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT,'class="image_border"').'</a>
-   <br><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $orders['products_id']) . '">'.$orders['products_name'].'</a>
-</td>';
+<td align="center" class="smallText" '.$width_str.'>';
+if ($orders['products_status'] == 0) {
+  echo tep_image(DIR_WS_IMAGES . 'products/' . $orders['products_image'], $orders['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT,'class="image_border"').'<br>'.$orders['products_name'];
+} else {
+  echo ' <a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $orders['products_id']) . '">'.tep_image(DIR_WS_IMAGES . 'products/' . $orders['products_image'], $orders['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT,'class="image_border"').'</a> <br><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .  $orders['products_id']) . '">'.$orders['products_name'].'</a>';
+}
+echo '</td>';
 
         $col ++;
         if ($col > 3) {

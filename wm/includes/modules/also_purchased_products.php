@@ -19,7 +19,7 @@
           and opb.products_id = p.products_id 
           and opb.orders_id = o.orders_id 
           and p.products_id = pd.products_id 
-          and o.site_id = '".SITE_ID."' order by pd.site_id DESC) c where site_id = ".SITE_ID." or site_id = '0' group by products_id having c.products_status != '0' and c.products_status != '3' order by date_purchased desc limit " . MAX_DISPLAY_ALSO_PURCHASED
+          and o.site_id = '".SITE_ID."' order by pd.site_id DESC) c where site_id = ".SITE_ID." or site_id = '0' group by products_id having c.products_status != '3' order by date_purchased desc limit " . MAX_DISPLAY_ALSO_PURCHASED
     );
     $num_products_ordered = tep_db_num_rows($orders_query);
     if ($num_products_ordered >= MIN_DISPLAY_ALSO_PURCHASED) {
@@ -44,10 +44,13 @@
         }
     echo '
 
-<td width="25%" align="center" class="smallText">   
-<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $orders['products_id']) . '">'.tep_image(DIR_WS_IMAGES . 'products/' . $orders['products_image'], $orders['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT,'class="image_border"').'</a>
-   <br><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $orders['products_id']) . '">'.$orders['products_name'].'</a>
-</td>';
+<td width="25%" align="center" class="smallText">';
+if ($orders['products_status'] == 0) {
+  echo tep_image(DIR_WS_IMAGES . 'products/' . $orders['products_image'], $orders['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT,'class="image_border"').'<br>'.$orders['products_name'];
+} else {
+  echo ' <a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $orders['products_id']) . '">'.tep_image(DIR_WS_IMAGES . 'products/' . $orders['products_image'], $orders['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT,'class="image_border"').'</a> <br><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .  $orders['products_id']) . '">'.$orders['products_name'].'</a>';
+}
+echo '</td>';
 
         $col ++;
         if ($col > 3) {

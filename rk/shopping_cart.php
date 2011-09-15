@@ -341,10 +341,16 @@ B:ポイントの加算（<?php echo STORE_NAME;?>会員でなければ表示さ
   
 <?php
       foreach($cart_products as $cp){
-        $cp = tep_get_product_by_id($cp, SITE_ID, 4);
-        echo "<a href='".tep_href_link(FILENAME_PRODUCT_INFO, "products_id=".$cp['products_id'])."'>";
-        echo "<img src='default_images/carttags/". $cp['products_cart_image']."' alt='".$cp['products_name']."' title='".$cp['products_name']."'>";
-        echo "</a>";
+        $cp = tep_get_product_by_id($cp, SITE_ID, 4, true, 'shopping_cart', true);
+        $cp_status_raw = tep_db_query("select products_status from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$cp['products_id']."' and (site_id = 0 or site_id = ".SITE_ID.") order by site_id desc limit 1"); 
+        $cp_status_res = tep_db_fetch_array($cp_status_raw);
+        if ($cp_status_res['products_status'] == 0) {
+          echo "<img src='default_images/carttags/". $cp['products_cart_image']."' alt='".$cp['products_name']."' title='".$cp['products_name']."'>";
+        } else {
+          echo "<a href='".tep_href_link(FILENAME_PRODUCT_INFO, "products_id=".$cp['products_id'])."'>";
+          echo "<img src='default_images/carttags/". $cp['products_cart_image']."' alt='".$cp['products_name']."' title='".$cp['products_name']."'>";
+          echo "</a>";
+        }
         echo "<br>";
       }
 ?>

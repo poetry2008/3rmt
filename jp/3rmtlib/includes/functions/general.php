@@ -225,14 +225,18 @@ function forward404Unless($condition)
 ////
 // Check if the required stock is available
 // If insufficent stock is available return an out of stock message
-  function tep_check_stock($products_id, $products_quantity) {
+  function tep_check_stock($products_id, $products_quantity, $link_single = false) {
     $stock_left = tep_get_products_stock($products_id) - $products_quantity;
     $out_of_stock = '';
     $product = tep_get_product_by_id($products_id, SITE_ID, 4);
 
     if ($stock_left < 0) {
-    $product = tep_get_product_by_id($products_id, SITE_ID, 4,true,'product_info');
-      $out_of_stock = '<span class="markProductOutOfStock"><a style="color:#CC0033" href="'.tep_href_link('open.php', 'products='.urlencode($product['products_name'])).'">' . STOCK_MARK_PRODUCT_OUT_OF_STOCK . '</a></span>';
+      $product = tep_get_product_by_id($products_id, SITE_ID, 4,true,'product_info');
+      if ($link_single) {
+        $out_of_stock = '<span class="markProductOutOfStock">'.STOCK_MARK_PRODUCT_OUT_OF_STOCK . '</span>';
+      } else {
+        $out_of_stock = '<span class="markProductOutOfStock"><a style="color:#CC0033" href="'.tep_href_link('open.php', 'products='.urlencode($product['products_name'])).'">' . STOCK_MARK_PRODUCT_OUT_OF_STOCK . '</a></span>';
+      }
     }
 
     return $out_of_stock;
@@ -2559,7 +2563,7 @@ function tep_unlink_temp_dir($dir)
     return $category;
   }
 
-  function tep_get_product_by_id($pid,$site_id, $lid, $default = true,$page=''){ 
+  function tep_get_product_by_id($pid,$site_id, $lid, $default = true,$page='', $show=false){ 
     if ($default) {
     $sql = "
         SELECT * FROM (SELECT p.products_id, 
@@ -2613,7 +2617,11 @@ function tep_unlink_temp_dir($dir)
        "; 
        if($page=='product_info'){
        }else if($page=='shopping_cart'){
-         $sql .= " HAVING c.products_status != '0' and c.products_status != '3'";
+         if ($show) {
+           $sql .= " HAVING c.products_status != '3'";
+         } else {
+           $sql .= " HAVING c.products_status != '0' and c.products_status != '3'";
+         }
        }else{
          $sql .= " HAVING c.products_status != '0'";
        }
