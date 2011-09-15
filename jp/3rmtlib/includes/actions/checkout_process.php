@@ -650,7 +650,7 @@ if ($payment == 'moneyorder') {
 }
   
 if ($payment_class->email_footer) { 
-  $email_order .= $payment_class->email_footer . "\n";
+  $email_order .= str_replace('<br />','',$payment_class->email_footer . "\n");
 }
   
 if(tep_not_null($bbbank)) {
