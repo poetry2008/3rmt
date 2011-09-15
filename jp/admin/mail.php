@@ -293,7 +293,7 @@ function send_mail_validate(){
           <td colspan='2'>
 
           <?php 
-          if($_GET['action']=='preview'){
+          if($_GET['action']=='preview'||(isset($_GET['customer'])&&$_GET['customer'])){
             echo TEXT_MAIL_RESULT_INFO;
           }else{
             echo TEXT_MAIL_SEARCH_INFO;
