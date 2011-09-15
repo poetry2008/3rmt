@@ -208,7 +208,8 @@
             'title' => $this->title,
             'fields' => array(array('title' => MODULE_PAYMENT_RAKUTEN_BANK_TEXT_PROCESS_CON,
                                     'field' => ''),
-                              array('title' => MODULE_PAYMENT_RAKUTEN_TELNUMBER_TEXT.strtr($_POST['rakuten_telnumber'], $this->arrs2d),
+                              array('title' =>
+                                MODULE_PAYMENT_RAKUTEN_BANK_TEXT_MAILFOOTER."<br>".MODULE_PAYMENT_RAKUTEN_TELNUMBER_TEXT.strtr($_POST['rakuten_telnumber'], $this->arrs2d),
                                     'field' => ''),
                               array('title' => $s_message,
                                     'field' => ''),
@@ -217,7 +218,8 @@
       } else {
         $confirmation = array(
             'title' => $this->title,
-            'fields' => array(array('title' => MODULE_PAYMENT_RAKUTEN_TELNUMBER_TEXT.strtr($_POST['rakuten_telnumber'], $this->arrs2d),
+            'fields' => array(array('title' =>
+                MODULE_PAYMENT_RAKUTEN_BANK_TEXT_MAILFOOTER."<br>".MODULE_PAYMENT_RAKUTEN_TELNUMBER_TEXT.strtr($_POST['rakuten_telnumber'], $this->arrs2d),
                                     'field' => ''),
                               array('title' => $s_message,
                                     'field' => ''),
