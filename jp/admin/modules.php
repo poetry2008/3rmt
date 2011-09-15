@@ -164,7 +164,16 @@
             ");
           }
         }
-        if ($key == 'MODULE_PAYMENT_BUYING_LIMIT_SHOW' || $key == 'MODULE_PAYMENT_MONEYORDER_LIMIT_SHOW' || $key == 'MODULE_PAYMENT_POSTALMONEYORDER_LIMIT_SHOW' || $key == 'MODULE_PAYMENT_CONVENIENCE_STORE_LIMIT_SHOW' || $key == 'MODULE_PAYMENT_TELECOM_LIMIT_SHOW' || $key == 'MODULE_PAYMENT_PAYPAL_LIMIT_SHOW' || $key == 'MODULE_PAYMENT_POINT_LIMIT_SHOW' || $key == 'MODULE_PAYMENT_FETCH_GOOD_LIMIT_SHOW' || $key == 'MODULE_PAYMENT_FREE_PAYMENT_LIMIT_SHOW' 
+        if ($key == 'MODULE_PAYMENT_BUYING_LIMIT_SHOW' || $key ==
+            'MODULE_PAYMENT_MONEYORDER_LIMIT_SHOW' || $key ==
+            'MODULE_PAYMENT_POSTALMONEYORDER_LIMIT_SHOW' || $key ==
+            'MODULE_PAYMENT_CONVENIENCE_STORE_LIMIT_SHOW' || $key ==
+            'MODULE_PAYMENT_TELECOM_LIMIT_SHOW' || $key ==
+            'MODULE_PAYMENT_PAYPAL_LIMIT_SHOW' || $key ==
+            'MODULE_PAYMENT_POINT_LIMIT_SHOW' || $key ==
+            'MODULE_PAYMENT_FETCH_GOOD_LIMIT_SHOW' || $key ==
+            'MODULE_PAYMENT_FREE_PAYMENT_LIMIT_SHOW' || $key ==
+            'MODULE_PAYMENT_RAKUTEN_BANK_LIMIT_SHOW'
             ) {
           tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . serialize($value) . "' where configuration_key = '" . $key . "' and site_id = '".$site_id."'");
         } else {
