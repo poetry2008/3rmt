@@ -150,9 +150,12 @@ if ($_POST['orders_id'] &&
 						tep_get_all_get_params(array('oID', 'action')) .
 						'oID='.$orders['orders_id']);?>';">
           <?php if (!$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)) {?>
-          <font color="#999"><?php echo strip_tags(tep_get_ot_total_by_orders_id($orders['orders_id'], true));?></font>
+          <font color="#999"><?php echo
+            strip_tags(tep_get_ot_total_by_orders_id_no_abs($orders['orders_id'], true));?></font>
                                                                                                                     <?php } else { ?>
-                                                                                                                    <?php echo strip_tags(tep_get_ot_total_by_orders_id($orders['orders_id'], true));?>
+                                                                                                                    <?php
+                                                                                                                      echo
+                                                                                                                      strip_tags(tep_get_ot_total_by_orders_id_no_abs($orders['orders_id'], true));?>
                                                                                                                     <?php }?>
                                                                                                                     </td>
                                                                                                                         <td style="border-bottom:1px solid
