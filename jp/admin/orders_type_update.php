@@ -28,7 +28,7 @@ function tep_check_order_type($oID)
     $avg  = tep_db_fetch_array(tep_db_query($sql));
     $avg = $avg['bflag'];
     $sql_count_bflag = "  SELECT count( products_bflag ) count FROM orders_products op, products p  WHERE 1 AND p.products_id = op.products_id AND op.orders_id = '".$oID."'";
-    $sql_count_op = "  SELECT count( DISTINCT(products_id) ) count FROM orders_products op
+    $sql_count_op = "  SELECT count( products_id ) count FROM orders_products op
       WHERE 1  AND op.orders_id = '".$oID."'";
     $count_bflag =  tep_db_fetch_array(tep_db_query($sql_count_bflag));    
     $count_op =  tep_db_fetch_array(tep_db_query($sql_count_op));    
