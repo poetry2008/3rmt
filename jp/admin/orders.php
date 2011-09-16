@@ -1321,8 +1321,11 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
     
     $orders_query_raw .= " order by ".$order_str;
     //o.torihiki_date DESC";
-  } elseif (isset($_GET['keywords']) && $_GET['keywords']) {
-    $orders_query_raw = "
+  }else if(isset($_GET['keywords']) && ((isset($_GET['search_type']) &&
+          preg_match('/^payment_method/', $_GET['search_type'])))){
+    $payment_m = explode('|',$_GET['search_type']);
+    if (!empty($_GET['keywords'])) {
+      $orders_query_raw = "
         select distinct(o.orders_id), 
                o.torihiki_date, 
                IF(o.torihiki_date = '0000-00-00 00:00:00',1,0) as torihiki_date_error,
@@ -1345,43 +1348,17 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                o.orders_comment,
                o.confirm_payment_time, 
                o.site_id
-        from " . TABLE_ORDERS . " o " . $from_payment . ", " . TABLE_ORDERS_PRODUCTS . " op 
-         ".$sort_table."
-        where ".$sort_where." o.orders_id = op.orders_id
-          " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
-          " . $where_payment . $where_type ;
-    $keywords = str_replace('　', ' ', $_GET['keywords']);
-    tep_parse_search_string($keywords, $search_keywords);
-    if (isset($search_keywords) && (sizeof($search_keywords) > 0)) {
-      $orders_query_raw .= " and (";
-      for ($i=0, $n=sizeof($search_keywords); $i<$n; $i++ ) {
-      switch ($search_keywords[$i]) {
-      case '(':
-      case ')':
-      case 'and':
-      case 'or':
-          $orders_query_raw .= " " . tep_db_prepare_input($search_keywords[$i]) . " ";
-    break;
-      default:
-          $keyword = tep_db_prepare_input($search_keywords[$i]);
-          $orders_query_raw .= "(";
-          $orders_query_raw .= "o.customers_name like '%" . tep_db_input($keyword) . "%' or ";
-          $orders_query_raw .= "o.customers_name_f like '%" . tep_db_input($keyword) . "%' or ";
-          $orders_query_raw .= "o.customers_email_address like '%" . tep_db_input($keyword) . "%' or ";
-          $orders_query_raw .= "o.customers_telephone like '%" . tep_db_input($keyword) . "%' or ";
-          $orders_query_raw .= "op.products_name like '%" . tep_db_input($keyword) . "%'";
-          $orders_query_raw .= ")";
-    break;
-    }
-      } 
-    $orders_query_raw .= ")";  
-    }
-    
-    $orders_query_raw .= "order by ".$order_str;
-    //torihiki_date_error DESC,o.torihiki_date DESC";
-  }else if(isset($_GET['keywords']) && ((isset($_GET['search_type']) &&
-          preg_match('/^payment_method/', $_GET['search_type'])))){
-    $payment_m = explode('|',$_GET['search_type']);
+        from " . TABLE_ORDERS . " o " . $from_payment . " ,
+        ".TABLE_ORDERS_PRODUCTS." op ".$sort_table." where ".$sort_where .
+          (isset($_GET['site_id']) && intval($_GET['site_id']) ? " o.site_id =
+           '" . intval($_GET['site_id']) . "' and " : '') . " o.payment_method =
+           '".$payment_m[1]."' and o.orders_id = op.orders_id and
+           (o.orders_id like '%".$_GET['keywords']."%' or o.customers_name like
+            '%".$_GET['keywords']."%' or o.customers_email_address like
+            '%".$_GET['keywords']."%' or op.products_name like
+            '%".$_GET['keywords']."%') ".' order by
+           '.$order_str;
+    } else {
     $orders_query_raw = "
         select o.orders_id, 
                o.torihiki_date, 
@@ -1408,6 +1385,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
         from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
         where ".$sort_where." o.payment_method like '".$payment_m[1]."' ";
     $orders_query_raw .= "order by ".$order_str;
+    }
   }else if(isset($_GET['keywords']) && ((isset($_GET['search_type']) &&
           preg_match('/^type/', $_GET['search_type'])))){
     $type_arr = explode('|',$_GET['search_type']);
@@ -1480,6 +1458,64 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
         ".$w_type;
     $orders_query_raw .= " order by ".$order_str;
     }
+  }elseif (isset($_GET['keywords']) && $_GET['keywords']) {
+    $orders_query_raw = "
+        select distinct(o.orders_id), 
+               o.torihiki_date, 
+               IF(o.torihiki_date = '0000-00-00 00:00:00',1,0) as torihiki_date_error,
+               o.customers_id, 
+               o.customers_name, 
+               o.payment_method, 
+               o.date_purchased, 
+               o.last_modified, 
+               o.currency, 
+               o.currency_value, 
+               o.orders_status, 
+               o.orders_status_name,
+               o.orders_important_flag,
+               o.orders_care_flag,
+               o.orders_wait_flag,
+               o.orders_inputed_flag,
+               o.orders_work,
+               o.customers_email_address,
+               o.torihiki_houhou,
+               o.orders_comment,
+               o.confirm_payment_time, 
+               o.site_id
+        from " . TABLE_ORDERS . " o " . $from_payment . ", " . TABLE_ORDERS_PRODUCTS . " op 
+         ".$sort_table."
+        where ".$sort_where." o.orders_id = op.orders_id
+          " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
+          " . $where_payment . $where_type ;
+    $keywords = str_replace('　', ' ', $_GET['keywords']);
+    tep_parse_search_string($keywords, $search_keywords);
+    if (isset($search_keywords) && (sizeof($search_keywords) > 0)) {
+      $orders_query_raw .= " and (";
+      for ($i=0, $n=sizeof($search_keywords); $i<$n; $i++ ) {
+      switch ($search_keywords[$i]) {
+      case '(':
+      case ')':
+      case 'and':
+      case 'or':
+          $orders_query_raw .= " " . tep_db_prepare_input($search_keywords[$i]) . " ";
+    break;
+      default:
+          $keyword = tep_db_prepare_input($search_keywords[$i]);
+          $orders_query_raw .= "(";
+          $orders_query_raw .= "o.customers_name like '%" . tep_db_input($keyword) . "%' or ";
+          $orders_query_raw .= "o.customers_name_f like '%" . tep_db_input($keyword) . "%' or ";
+          $orders_query_raw .= "o.customers_email_address like '%" . tep_db_input($keyword) . "%' or ";
+          $orders_query_raw .= "o.customers_telephone like '%" . tep_db_input($keyword) . "%' or ";
+          $orders_query_raw .= "op.products_name like '%" . tep_db_input($keyword) . "%'";
+          $orders_query_raw .= ")";
+    break;
+    }
+      } 
+    $orders_query_raw .= ")";  
+    }
+    
+    $orders_query_raw .= "order by ".$order_str;
+ 
   }else {
       // orders_list 隐藏 「キャンセル」と「注文取消」
       $orders_query_raw = "
