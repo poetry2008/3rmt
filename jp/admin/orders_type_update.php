@@ -23,18 +23,33 @@ require_once (DIR_WS_FUNCTIONS . 'database.php');
 define('TABLE_ORDERS','orders');
 function tep_check_order_type($oID)
   {
+    $sql_count_op = "  SELECT products_id FROM orders_products op WHERE 1  AND op.orders_id = '".$oID."'";
+    $query_count_op = tep_db_query($sql_count_op);
+    while($sql_count_op_row = tep_db_fetch_array($query_count_op)){
+      $sql_product = "select products_id from products where products_id = '".
+        $sql_count_op_row['products_id']."'";
+      if(!tep_db_num_rows(tep_db_query($sql_product))){
+        return 4;
+      }
+    }
     $sql = "  SELECT avg( products_bflag ) bflag FROM orders_products op, products p  WHERE 1 AND p.products_id = op.products_id AND op.orders_id = '".$oID."'";
 
     $avg  = tep_db_fetch_array(tep_db_query($sql));
     $avg = $avg['bflag'];
+    /*
     $sql_count_bflag = "  SELECT count( products_bflag ) count FROM orders_products op, products p  WHERE 1 AND p.products_id = op.products_id AND op.orders_id = '".$oID."'";
-    $sql_count_op = "  SELECT count( products_id ) count FROM orders_products op
-      WHERE 1  AND op.orders_id = '".$oID."'";
+    $sql_count_op = "  SELECT count( products_id ) count FROM orders_products op WHERE 1  AND op.orders_id = '".$oID."'";
     $count_bflag =  tep_db_fetch_array(tep_db_query($sql_count_bflag));    
     $count_op =  tep_db_fetch_array(tep_db_query($sql_count_op));    
     if($count_bflag['count'] != $count_op['count']){
+      if($count_bflag['count'] == 0 ){
+        return 4;
+      }
       return 3;
     }
+    */
+    
+
     if($avg == 0){
       return 1;
     }
