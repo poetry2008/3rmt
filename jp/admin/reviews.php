@@ -225,7 +225,11 @@
         <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
       </tr>
       <tr>
-        <td align="right" class="main"><?php echo tep_draw_hidden_field('cPath', $_GET['cPath']) . tep_draw_hidden_field('products_id', $rInfo->products_id) . tep_image_submit('button_save.gif', IMAGE_save) . ' <a href="' . tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' . $_GET['rID']) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL,"style='padding-bottom:17px;'") . '</a>'; ?></td>
+        <td align="right" class="main"><?php echo tep_draw_hidden_field('cPath',
+            $_GET['cPath']) . tep_draw_hidden_field('products_id',
+              $rInfo->products_id) . tep_html_element_submit('button_save.gif',
+                IMAGE_SAVE) . ' <a href="' . tep_href_link(FILENAME_REVIEWS, 'page='
+                . $_GET['page'] . '&rID=' . $_GET['rID']) . '">' . tep_html_element_button(IMAGE_CANCEL,"style='padding-bottom:17px;'") . '</a>'; ?></td>
       </form></tr>
 <?php
 
@@ -424,7 +428,8 @@
       }
 ?>
       <tr>
-        <td align="right"><?php echo '<a href="' . tep_href_link($back_url, $back_url_params, 'NONSSL') . '">' . tep_image_button('button_back.gif', IMAGE_BACK) . '</a>'; ?></td>
+        <td align="right"><?php echo '<a href="' . tep_href_link($back_url,
+  $back_url_params, 'NONSSL') . '">' . tep_html_element_button(IMAGE_BACK) . '</a>'; ?></td>
       </tr>
 <?php
     }
