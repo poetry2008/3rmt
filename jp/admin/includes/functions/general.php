@@ -6414,3 +6414,31 @@ function tep_is_in_order_page($orders_query_raw,$oID){
     return false;
   }
 }
+
+function tep_get_order_type_info($oID)
+{
+  $orders_products_raw = tep_db_query("select products_id from ".TABLE_ORDERS_PRODUCTS." where orders_id = '".$oID."'");
+  if (!tep_db_num_rows($orders_products_raw)) {
+    return 3; 
+  }
+  while ($orders_products = tep_db_fetch_array($orders_products_raw)) {
+    $exists_products_raw = tep_db_query("select products_id from ".TABLE_PRODUCTS." where products_id = '".$orders_products['products_id']."'"); 
+    if (!tep_db_num_rows($exists_products_raw)) {
+      return 3; 
+    }
+  }
+  
+  $sql = "  SELECT avg( products_bflag ) bflag FROM orders_products op, products p  WHERE 1 AND p.products_id = op.products_id AND op.orders_id = '".$oID."'";
+
+  $avg  = tep_db_fetch_array(tep_db_query($sql));
+  $avg = $avg['bflag'];
+
+  if($avg == 0){
+    return 1;
+  }
+  if($avg == 1){
+    return 2;
+  }
+  return 3;
+
+}

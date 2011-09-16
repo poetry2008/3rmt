@@ -590,6 +590,9 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
   }
 }
 
+$order_type_str = tep_check_order_type($insert_id);
+tep_db_query("update `".TABLE_ORDERS."` set `orders_type` = '".$order_type_str."' where orders_id = '".$insert_id."'");
+
 orders_updated($insert_id);
 
 # メール本文整形 --------------------------------------

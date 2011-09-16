@@ -122,7 +122,8 @@ if ($preorder) {
                            'paypal_playerid' => $preorder['paypal_playerid'], 
                            'flag_qaf' => $preorder['flag_qaf'], 
                            'end_user' => $preorder['end_user'], 
-                           'confirm_payment_time' => $preorder['confirm_payment_time'], 
+                           'confirm_payment_time' => $preorder['confirm_payment_time'],
+                           'orders_type' => 1, 
                           );
   tep_db_perform(TABLE_ORDERS, $sql_data_array);
 
