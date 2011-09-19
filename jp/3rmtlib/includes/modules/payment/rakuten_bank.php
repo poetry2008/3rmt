@@ -26,7 +26,6 @@
 
       if (is_object($order)) $this->update_status();
 
-      $this->email_footer = MODULE_PAYMENT_RAKUTEN_BANK_TEXT_TELNUMBER_FOOTER;
     }
 
 // class methods
@@ -270,7 +269,6 @@
     function before_process() {
       global $_POST;
 
-      $this->email_footer = $_POST['codt_message'];
     }
 
     function after_process() {

@@ -650,10 +650,12 @@ if ($payment == 'moneyorder') {
   $email_order .= C_POSTAL."\n"; 
 } else if ($payment == 'telecom') {
   $email_order .= C_CC."\n"; 
+} else if ($payment == 'rakuten_bank') {
+  $email_order .= C_RAKUTEN_BANK."\n";
 }
   
 if ($payment_class->email_footer) { 
-  $email_order .= str_replace('<br />','',$payment_class->email_footer . "\n");
+  $email_order .= $payment_class->email_footer . "\n";
 }
   
 if(tep_not_null($bbbank)) {
