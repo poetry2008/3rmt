@@ -190,8 +190,6 @@
 
     tep_db_query($UpdateOrders);
     
-    $orders_type_str = tep_get_order_type_info($oID);
-    tep_db_query("update `".TABLE_ORDERS."` set `orders_type` = '".$orders_type_str."' where orders_id = '".tep_db_input($oID)."'"); 
 
     orders_updated($oID);
     
@@ -301,6 +299,9 @@
        $products_delete = true;
     }
   }
+  
+  $orders_type_str = tep_get_order_type_info($oID);
+  tep_db_query("update `".TABLE_ORDERS."` set `orders_type` = '".$orders_type_str."' where orders_id = '".tep_db_input($oID)."'"); 
   
   // 1.4. UPDATE SHIPPING, DISCOUNT & CUSTOM TAXES #####
 
