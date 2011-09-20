@@ -1367,7 +1367,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
   }
     if (!empty($_GET['keywords'])) {
       $orders_query_raw = "
-        select o.orders_id, 
+        select distinct(o.orders_id), 
                o.torihiki_date, 
                IF(o.torihiki_date = '0000-00-00 00:00:00',1,0) as torihiki_date_error,
                o.customers_id, 
@@ -1395,7 +1395,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
     $orders_query_raw .= " order by ".$order_str;
     } else {
       $orders_query_raw = "
-        select o.orders_id, 
+        select distinct(o.orders_id), 
                o.torihiki_date, 
                IF(o.torihiki_date = '0000-00-00 00:00:00',1,0) as torihiki_date_error,
                o.customers_id, 
