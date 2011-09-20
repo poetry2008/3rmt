@@ -93,7 +93,7 @@ if ($payment == 'convenience_store') {
 }
 if ($payment == 'rakuten_bank') {
   $convenience_sid = str_replace('-', "", $insert_id);
-  $pay_comments = '電話番号:'.$payment_modules->replace_for_telnumber($_POST['rakuten_telnumber']); 
+  $pay_comments = '電話番号:'.$GLOBALS[$payment_modules->selected_module]->replace_for_telnumber($_POST['rakuten_telnumber']); 
   $comments = $pay_comments ."\n".$comments;
 }
 
