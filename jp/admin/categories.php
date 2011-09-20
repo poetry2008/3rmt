@@ -2547,7 +2547,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
 -->
             <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_JIAGE_TEXT;?></td>
             <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_NUM_TEXT;?></td>
-            <td class="dataTableHeadingContent" align="center" style="width:60px;"><?php echo TABLE_HEADING_STATUS; ?></td>
+            <td class="dataTableHeadingContent" align="center" ><?php echo TABLE_HEADING_STATUS; ?></td>
             <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_ACTION; ?>&nbsp;</td>
           </tr>
                     <?php
@@ -2696,6 +2696,28 @@ if (isset($nowColor) && $nowColor == $odd) {
               echo '<td class="dataTableContent" align="center">';
             }
             ?>
+            <table width="100%"><tr>
+            <?php
+                    if ( (isset($cInfo) && is_object($cInfo)) && ($categories['categories_id'] == $cInfo->categories_id) ) {
+                     
+                      echo '<td  onclick="document.location.href=\'' .
+                        tep_href_link(FILENAME_CATEGORIES,tep_get_path($categories['categories_id']).
+                            '&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)))
+                        . '\'">' . "&nbsp;</td>";
+                    } else {
+                    ?>
+                    <td 
+                    <?php echo 'onclick="document.location.href=\'' .
+                    tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath
+                        .(isset($_GET['page'])&&$_GET['page'] ? ('&page=' .
+                            $_GET['page']) : '') . '&cID=' .
+                        $categories['categories_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:''))
+                    .'\'" ';?>
+                    >&nbsp;</td>
+                    <?php
+                    }
+?>
+            <td align="center" style="width:60px">
 <?php if ($ocertify->npermission == 15 or $ocertify->npermission == 10) {?>
 <?php //if (!isset($_GET['cPath']) or !$_GET['cPath']){?>
 <?php 
@@ -2804,7 +2826,27 @@ if (isset($nowColor) && $nowColor == $odd) {
                       <?php }?>
                 <?php }?>
             <?php }?>
-<?php //}?>
+<?php //}?></td>
+<?php
+                    if ( (isset($cInfo) && is_object($cInfo)) && ($categories['categories_id'] == $cInfo->categories_id) ) {
+                      echo '<td  onclick="document.location.href=\'' . 
+                        tep_href_link(FILENAME_CATEGORIES, tep_get_path($categories['categories_id'])
+                            .'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '\'">'
+                        . "&nbsp;</td>";
+                    } else {
+                    ?>
+                    <td  
+                    <?php echo 'onclick="document.location.href=\'' .
+                    tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath
+                        .(isset($_GET['page'])&&$_GET['page'] ? ('&page=' .
+                            $_GET['page']) : '') . '&cID=' .
+                        $categories['categories_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:''))
+                    .'\'" ';?>
+                    >&nbsp;</td>
+                    <?php
+                    }
+?>
+</tr></table>
             </td>
             <td class="dataTableContent" align="right" onclick="document.location.href='<?php echo tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' .  $categories['categories_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) .(isset($_GET['search'])?'&search='.$_GET['search']:'');?>';">
             <?php if ( (isset($cInfo) && is_object($cInfo)) && ($categories['categories_id'] == $cInfo->categories_id) ) { echo tep_image(DIR_WS_IMAGES .  'icon_arrow_right.gif', ''); } else { echo '<a href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' .  $categories['categories_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) .(isset($_GET['search'])?'&search='.$_GET['search']:'') .'">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?> &nbsp;</td> 
