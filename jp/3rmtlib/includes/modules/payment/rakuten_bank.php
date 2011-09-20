@@ -6,6 +6,8 @@
 // 代金引換払い(手数料が購入金額に連動)
 class rakuten_bank {
   var $site_id, $code, $title, $description, $enabled, $n_fee, $s_error, $email_footer;
+  var $arrs2d = array('１' => '1', '２' => '2', '３' => '3', '４' => '4', 
+       '５' => '5', '６' => '6', '７' => '7', '８' => '8', '９' => '9', '０' => '0','－' => '-');
 
   // class constructor
   function rakuten_bank($site_id = 0) {
@@ -344,9 +346,7 @@ class rakuten_bank {
         'MODULE_PAYMENT_RAKUTEN_BANK_MONEY_LIMIT');
   }
   function replace_for_telnumber($str){
-   $arrs2d = array('１' => '1', '２' => '2', '３' => '3', '４' => '4', 
-       '５' => '5', '６' => '6', '７' => '7', '８' => '8', '９' => '9', '０' => '0','－' => '-');
-    return str_replace('-','',strtr($str,$arrs2d));
+    return str_replace('-','',strtr($str,$this->arrs2d));
   }
 }
 ?>
