@@ -2547,7 +2547,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
 -->
             <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_JIAGE_TEXT;?></td>
             <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_NUM_TEXT;?></td>
-            <td class="dataTableHeadingContent" align="center" style="width:80px;"><?php echo TABLE_HEADING_STATUS; ?></td>
+            <td class="dataTableHeadingContent" align="center" style="width:60px;"><?php echo TABLE_HEADING_STATUS; ?></td>
             <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_ACTION; ?>&nbsp;</td>
           </tr>
                     <?php

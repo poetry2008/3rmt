@@ -3,7 +3,7 @@
   $Id$
 */
 require(DIR_WS_FUNCTIONS . 'visites.php');
-ini_set('display_errors' ,'On');
+ini_set('display_errors' ,'Off');
 
 // user new point value it from checkout_confirmation.php 
 if(isset($real_point)){
