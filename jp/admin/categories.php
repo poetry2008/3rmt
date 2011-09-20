@@ -2571,9 +2571,13 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
         from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
         where c.categories_id = cd.categories_id 
           and cd.language_id = '" . $languages_id . "' 
-          and cd.categories_name like '%" . $_GET['search'] . "%' 
-          and cd.site_id = '0'
-        order by c.sort_order, cd.categories_name";
+          and cd.categories_name like '%" . $_GET['search'] . "%' ";
+      if(isset($_GET['site_id'])&&$_GET['site_id']){
+        $categories_query_raw .= " and cd.site_id = '".$_GET['site_id']."' ";
+      }else{
+        $categories_query_raw .= " and cd.site_id = '0' ";
+      }
+      $categories_query_raw .= " order by c.sort_order, cd.categories_name";
     } else {
       $categories_query_raw = "
         select * 
@@ -2876,9 +2880,13 @@ if (isset($nowColor) && $nowColor == $odd) {
         where p.products_id = pd.products_id 
           and pd.language_id = '" . $languages_id . "' 
           and p.products_id = p2c.products_id 
-          and pd.products_name like '%" . $_GET['search'] . "%' 
-          and pd.site_id='0'
-        order by p.sort_order,pd.products_name, p.products_id";
+          and pd.products_name like '%" . $_GET['search'] . "%' ";
+      if(isset($_GET['site_id'])&&$_GET['site_id']){
+        $products_query_raw .= " and pd.site_id = '".$_GET['site_id']."' ";
+      }else{
+        $products_query_raw .= " and pd.site_id = 0 "; 
+      }
+      $products_query_raw .= " order by p.sort_order,pd.products_name, p.products_id";
     } else {
       $products_query_raw = "
         select * from ( 
