@@ -2993,7 +2993,17 @@ if (empty($products['products_quantity']) or $products['products_quantity'] == 0
                    } else {
                      echo '<td class="dataTableContent" align="center">';
                    }
-                   ?> 
+                   ?>
+                   <table width="100%">
+                   <tr>
+                   <?php 
+                   if ( (isset($pInfo) && is_object($pInfo)) && ($products['products_id'] == $pInfo->products_id) ) {
+                     echo '<td align="right" class="dataTableContent" onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) .  '&pID=' . $products['products_id'] .  '&action=new_product_preview&read=only') . '\'">' . "\n";
+                   } else {
+                     echo '<td class="dataTableContent" align="right" onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'')) . '\'">';
+                   }
+                   ?>&nbsp;</td>
+                   <td style="width:60px" align="center">
             <?php
 $p_page = (isset($_GET['page']))?'&page='.$_GET['page']:'';
 if ($ocertify->npermission >= 10) { //表示制限
@@ -3084,7 +3094,18 @@ if ($ocertify->npermission >= 10) { //表示制限
   echo '&nbsp;&nbsp;' . tep_image(DIR_WS_ICONS . 'battery_0.gif', CATEGORY_BUTTON_NUM_UNCOMMON);
   
 }
-?></td>
+?>
+</td>
+<?php 
+    if ( (isset($pInfo) && is_object($pInfo)) && ($products['products_id'] == $pInfo->products_id) ) {
+                     echo '<td align="right" class="dataTableContent" onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) .  '&pID=' . $products['products_id'] .  '&action=new_product_preview&read=only') . '\'">' . "\n";
+                   } else {
+                     echo '<td class="dataTableContent" align="right" onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'')) . '\'">';
+   }
+?>&nbsp;</td>
+</tr>
+</table>
+</td>
                      <td class="dataTableContent" align="right">
                       <?php if ( isset($pInfo) && (is_object($pInfo)) && ($products['products_id'] == $pInfo->products_id) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); } else { echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . (isset($_GET['search'])?'&search='.$_GET['search']:'').'">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>
 &nbsp;</td>
