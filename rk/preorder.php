@@ -253,9 +253,17 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
         $exists_customer_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_email_address = '".$_POST['from']."' and site_id = '".SITE_ID."'");    
         if (tep_db_num_rows($exists_customer_raw)) {
           $exists_customer_res = tep_db_fetch_array($exists_customer_raw); 
-          $preorder_email_text = PREORDER_MAIL_CONTENT; 
-          $preorder_email_subject = PREORDER_MAIL_SUBJECT; 
-          $exists_email_single = true;     
+          if ($exists_customer_res['is_active'] == 0) {
+            $tmp_customer_id = $exists_customer_res['customers_id']; 
+            $active_url = HTTP_SERVER.'/preorder_auth.php?pid='.$preorder_id; 
+            $preorder_email_text = str_replace('${URL}', $active_url, PREORDER_MAIL_ACTIVE_CONTENT); 
+            $preorder_email_subject = PREORDER_MAIL_ACTIVE_SUBJECT; 
+            $unactive_customers_single = true; 
+          } else {
+            $preorder_email_text = PREORDER_MAIL_CONTENT; 
+            $preorder_email_subject = PREORDER_MAIL_SUBJECT; 
+            $exists_email_single = true;     
+          }
         } else {
           $tmp_customer_id = tep_create_tmp_guest($_POST['from'], $_POST['lastname'], $_POST['firstname']); 
           $active_url = HTTP_SERVER.'/preorder_auth.php?pid='.$preorder_id; 
@@ -270,7 +278,11 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
       if (isset($exists_email_single)) {
         tep_create_preorder_info($_POST, $preorder_id, $exists_customer_res['customers_id'], $tmp_customer_id, true); 
       } else {
-        tep_create_preorder_info($_POST, $preorder_id, $customer_id, $tmp_customer_id); 
+        if (isset($unactive_customers_single)) {
+          tep_create_preorder_info($_POST, $preorder_id, $customer_id, $tmp_customer_id, true); 
+        } else {
+          tep_create_preorder_info($_POST, $preorder_id, $customer_id, $tmp_customer_id); 
+        }
       }
       tep_redirect(tep_href_link(FILENAME_PREORDER_SUCCESS));
 ?>
