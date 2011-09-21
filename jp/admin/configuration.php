@@ -312,7 +312,16 @@ case 'edit':
       $contents_site = array('form' => tep_draw_form('configuration', FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' . $fetch_result['configuration_id'] . '&action=save'));
   }
 //  $contents_site[] = array('text' => TEXT_INFO_EDIT_INTRO);
-  $contents_site[] = array('text' => '<br><b>' . $fetch_result['configuration_title'] . '</b><br>' . $fetch_result['configuration_description'] . '<br>' . $value_field);
+  $replace_title_arr = array('MAX_DISPLAY_SEARCH_RESULTS', 
+                             'C_ORDER', 
+                             'C_COD_TABLE',
+                             'C_CONVENIENCE_STORE'
+                             ); 
+  if (in_array($cInfo->configuration_key, $replace_title_arr)) {
+    $contents_site[] = array('text' => '<br><b>' .  str_replace(FRONT_OR_ADMIN_CONFIGURATION_TITLE_TEXT, FRONT_CONFIGURATION_TITLE_TEXT, $fetch_result['configuration_title']) . '</b><br>' . $fetch_result['configuration_description'] . '<br>' . $value_field);
+  } else {
+    $contents_site[] = array('text' => '<br><b>' . $fetch_result['configuration_title'] . '</b><br>' . $fetch_result['configuration_description'] . '<br>' . $value_field);
+  }
 
   //if exists ,can be delete ,or  can not 
   if (is_numeric($fetch_result['configuration_id'])){

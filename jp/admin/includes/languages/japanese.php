@@ -534,3 +534,6 @@ define('TEXT_TEP_CFG_PAYMENT_CHECKBOX_OPTION_CUSTOMER','ゲスト');
 define('TEXT_MONEY_SYMBOL','円');
 
 define('FILENAME_ORDER_DOWNLOPAD','注文データエクスポート');
+define('FRONT_CONFIGURATION_TITLE_TEXT', 'フロントエンド：');
+define('ADMIN_CONFIGURATION_TITLE_TEXT', 'バックエンド：');
+define('FRONT_OR_ADMIN_CONFIGURATION_TITLE_TEXT', 'フロントエンド・バックエンド：');
