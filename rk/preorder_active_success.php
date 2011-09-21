@@ -16,10 +16,14 @@
   
   $pid = $_GET['pid'];
   
+  $preorder_query = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$pid."'");
+  $preorder_res = tep_db_fetch_array($preorder_query);
+
   $preorder_product_query = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$pid."'"); 
   if (!tep_db_num_rows($preorder_product_query)) {
     forward404(); 
   }
+  
   $preorder_product = tep_db_fetch_array($preorder_product_query);
   
   $categories_name = '';
@@ -93,7 +97,7 @@
           <br>
           <?php echo PREORDER_ACTIVE_SUCCESS_APPOINT_PRODUCT_NUM.$preorder_product['products_quantity'].PREORDER_ACTIVE_SUCCESS_UNIT_TEXT;?> 
           <br>
-          <?php echo PREORDER_ACTIVE_SUCCESS_APPOINT_PRODUCT_DATE.date('Y'.PREORDER_ACTIVE_SUCCESS_YEAR_TEXT.'m'.PREORDER_ACTIVE_SUCCESS_MONTH_TEXT.'d'.PREORDER_ACTIVE_SUCCESS_DAY_TEXT, strtotime($preorder['predate']))?>
+          <?php echo PREORDER_ACTIVE_SUCCESS_APPOINT_PRODUCT_DATE.date('Y'.PREORDER_ACTIVE_SUCCESS_YEAR_TEXT.'m'.PREORDER_ACTIVE_SUCCESS_MONTH_TEXT.'d'.PREORDER_ACTIVE_SUCCESS_DAY_TEXT, strtotime($preorder_res['predate']))?>
           </td>
         </tr>
         <tr>
