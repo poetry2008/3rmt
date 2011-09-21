@@ -102,7 +102,7 @@ while ($tag = tep_db_fetch_array($tags_query))
     $products_ids = substr($products_ids,0,-1);
     $products_ids .= ")";
     $products_sql = "
-        SELECT distinct(pd.products_id)
+        SELECT distinct(pd.products_id) 
         FROM 
         ".TABLE_PRODUCTS_DESCRIPTION." pd 
         left join ".TABLE_PRODUCTS." p 
@@ -158,7 +158,8 @@ while ($tag = tep_db_fetch_array($tags_query))
                pd.products_description,
                pd.site_id,
                pd.products_url,
-               pd.products_viewed
+               pd.products_viewed,
+               pd.products_status 
         from ". TABLE_PRODUCTS . " as p 
         left join " . TABLE_PRODUCTS_DESCRIPTION . " as pd 
         on p.products_id = pd.products_id 
@@ -168,6 +169,7 @@ while ($tag = tep_db_fetch_array($tags_query))
       /*根据products_id 查找商品的详细 信息*/
       $_products_query = tep_db_query($_products_sql);
       $products = tep_db_fetch_array($_products_query);
+      if($products['products_status'] != 3 && $products['products_status'] != 0){
       //$products['products_name'] = tep_get_products_name($products['products_id']);
       //$products['products_description'] = tep_get_products_description($products['products_id']);
       echo '<td align="center" valign="top" class="smallText" width="20%" style="padding-bottom:8px;">';
@@ -198,6 +200,7 @@ while ($tag = tep_db_fetch_array($tags_query))
 
                           }
                           $z++;
+      }
     }
     echo '</tr>' . "\n";
     echo '</table>' . "\n";
