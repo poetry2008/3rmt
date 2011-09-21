@@ -244,6 +244,7 @@ tep_db_query("delete from ".TABLE_PREORDERS_OA_FORMVALUE." where orders_id = '".
 
 }
 
+last_customer_action();
 
 tep_redirect(tep_href_link('change_preorder_success.php'));
 
