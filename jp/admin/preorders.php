@@ -200,7 +200,7 @@
             $site_url_raw = tep_db_query("select * from sites where id = '".$site_id."'"); 
             $site_url_res = tep_db_fetch_array($site_url_raw); 
             $change_preorder_url = $site_url_res['url'].'/change_preorder.php?pid='.$oID; 
-            $comments .= "\n\n".$change_preorder_url; 
+            $comments = str_replace('${REAL_ORDER_URL}', $change_preorder_url, $comments); 
           }
           if ($status == 33) {
             $site_url_raw = tep_db_query("select * from sites where id = '".$site_id."'"); 
@@ -459,7 +459,7 @@
           $site_url_raw = tep_db_query("select * from sites where id = '".$site_id."'"); 
           $site_url_res = tep_db_fetch_array($site_url_raw); 
           $change_preorder_url = $site_url_res['url'].'/change_preorder.php?pid='.$oID; 
-          $comments .= "\n\n".$change_preorder_url; 
+          $comments = str_replace('${REAL_ORDER_URL}', $change_preorder_url, $comments); 
         }
         if ($status == 33) {
           $site_url_raw = tep_db_query("select * from sites where id = '".$site_id."'"); 
