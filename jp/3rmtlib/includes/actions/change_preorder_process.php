@@ -65,7 +65,7 @@ if ($preorder) {
                            'cc_number' => $preorder['cc_number'], 
                            'cc_expires' => $preorder['cc_expires'], 
                            'last_modified' => $preorder['last_modified'], 
-                           'date_purchased' => $preorder['date_purchased'], 
+                           'date_purchased' => 'now()', 
                            'orders_status' => DEFAULT_ORDERS_STATUS_ID, 
                            'orders_date_finished' => $preorder['orders_date_finished'], 
                            'currency' => $preorder['currency'], 
