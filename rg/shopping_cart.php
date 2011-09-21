@@ -135,16 +135,11 @@ function change_num(ob,targ, quan,a_quan)
 <body>
 <div class="body_shadow" align="center">
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-  <!-- header_eof //-->
-  <!-- body //-->
   <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border" summary="rmt">
     <tr>
       <td width="<?php echo BOX_WIDTH; ?>" valign="top" class="left_colum_border">
-        <!-- left_navigation //-->
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-        <!-- left_navigation_eof //-->
       </td>
-      <!-- body_text //-->
       <td valign="top" id="contents">
         <div class="pageHeading"><img align="top" alt="" src="images/menu_ico_a.gif"><h1><?php echo HEADING_TITLE ; ?></h1></div>
         <div class="comment">
@@ -339,7 +334,9 @@ B:ポイントの加算（<?php echo STORE_NAME;?>会員でなければ表示さ
         $cp_status_raw = tep_db_query("select products_status from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$cp['products_id']."' and (site_id = 0 or site_id = ".SITE_ID.") order by site_id desc limit 1"); 
         $cp_status_res = tep_db_fetch_array($cp_status_raw);
         if ($cp_status_res['products_status'] == 0) {
+          /*
           echo "<img src='default_".DIR_WS_IMAGES . 'carttags/'. $cp['products_cart_image']."' alt='".$cp['products_name']."' title='".$cp['products_name']."'>";
+          */
         } else {
           echo "<a href='".tep_href_link(FILENAME_PRODUCT_INFO, "products_id=".$cp['products_id'])."'>";
           echo "<img src='default_".DIR_WS_IMAGES . 'carttags/'. $cp['products_cart_image']."' alt='".$cp['products_name']."' title='".$cp['products_name']."'>";
@@ -380,18 +377,11 @@ B:ポイントの加算（<?php echo STORE_NAME;?>会員でなければ表示さ
         </div>
         <p class="pageBottom"></p>
       </td>
-      <!-- body_text_eof //-->
       <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>">
-        <!-- right_navigation //-->
         <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?>
-        <!-- right_navigation_eof //-->
       </td>
-    </tr>
   </table>
-  <!-- body_eof //-->
-  <!-- footer //-->
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-  <!-- footer_eof //-->
 </div>
 </body>
 </html><?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>
