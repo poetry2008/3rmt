@@ -36,8 +36,17 @@
           $width_str = ' width="25%"';
           break;
       }
+      $_orders_query = $orders_query;
+      $h_show_flag = true;
+      while ($_orders = tep_db_fetch_array($_orders_query)) {
+        if ($_orders['products_status'] != 0) {
+          $h_show_flag = false;
+        }
+      }
+      if($h_show_flag){
 ?>
 <div class="pageHeading_long"><img align="top" alt="" src="images/menu_ico.gif"><h3><?php echo $product_info['products_name'];?><?php  echo TEXT_ALSO_PURCHASED_PRODUCTS ; ?> </h3></div>
+<?php } ?>
 <div class="comment_long">
 <?php
       $row = 0;

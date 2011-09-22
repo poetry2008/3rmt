@@ -22,9 +22,18 @@
     );
     $num_products_ordered = tep_db_num_rows($orders_query);
     if ($num_products_ordered >= MIN_DISPLAY_ALSO_PURCHASED) {
+      $_orders_query = $orders_query;
+      $h_show_flag = true;
+      while ($_orders = tep_db_fetch_array($_orders_query)) {
+        if ($_orders['products_status'] != 0) {
+          $h_show_flag = false;
+        }
+      }
+      if($h_show_flag){
 ?>
 <!-- also_purchased_products //-->
 <h1 class="pageHeading_long"><?php echo $product_info['products_name'];?><?php  echo TEXT_ALSO_PURCHASED_PRODUCTS ; ?> </h1>
+<?php } ?>
 <div class="comment_long">
 <div class="product_info_box"><?php
       $row = 0;
