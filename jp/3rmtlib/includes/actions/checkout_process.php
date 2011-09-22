@@ -94,8 +94,7 @@ if ($payment == 'convenience_store') {
 }
 if ($payment == 'rakuten_bank') {
   $convenience_sid = str_replace('-', "", $insert_id);
-  $arrs2d = array('１' => '1', '２' => '2', '３' => '3', '４' => '4', '５' => '5', '６' => '6', '７' => '7', '８' => '8', '９' => '9', '０' => '0','－' => '-');
-  $pay_comments = '電話番号:'.str_replace('-','',strtr($_POST['rakuten_telnumber'], $arrs2d)); 
+  $pay_comments = '電話番号:'.$GLOBALS[$payment_modules->selected_module]->replace_for_telnumber($_POST['rakuten_telnumber']); 
   $comments = $pay_comments ."\n".$comments;
 }
 
@@ -591,6 +590,9 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
   }
 }
 
+$order_type_str = tep_check_order_type($insert_id);
+tep_db_query("update `".TABLE_ORDERS."` set `orders_type` = '".$order_type_str."' where orders_id = '".$insert_id."'");
+
 orders_updated($insert_id);
 
 # メール本文整形 --------------------------------------
@@ -648,10 +650,12 @@ if ($payment == 'moneyorder') {
   $email_order .= C_POSTAL."\n"; 
 } else if ($payment == 'telecom') {
   $email_order .= C_CC."\n"; 
+} else if ($payment == 'rakuten_bank') {
+  $email_order .= C_RAKUTEN_BANK."\n";
 }
   
 if ($payment_class->email_footer) { 
-  $email_order .= str_replace('<br />','',$payment_class->email_footer . "\n");
+  $email_order .= $payment_class->email_footer . "\n";
 }
   
 if(tep_not_null($bbbank)) {

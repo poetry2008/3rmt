@@ -117,5 +117,5 @@
      where site_id = '0'
         or site_id = '".SITE_ID."'
      group by products_id
-     having p.products_status != '3' 
+     having p.products_status != '3' and p.products_status != '0'  
    ";

@@ -65,7 +65,7 @@ if ($preorder) {
                            'cc_number' => $preorder['cc_number'], 
                            'cc_expires' => $preorder['cc_expires'], 
                            'last_modified' => $preorder['last_modified'], 
-                           'date_purchased' => $preorder['date_purchased'], 
+                           'date_purchased' => 'now()', 
                            'orders_status' => DEFAULT_ORDERS_STATUS_ID, 
                            'orders_date_finished' => $preorder['orders_date_finished'], 
                            'currency' => $preorder['currency'], 
@@ -122,7 +122,8 @@ if ($preorder) {
                            'paypal_playerid' => $preorder['paypal_playerid'], 
                            'flag_qaf' => $preorder['flag_qaf'], 
                            'end_user' => $preorder['end_user'], 
-                           'confirm_payment_time' => $preorder['confirm_payment_time'], 
+                           'confirm_payment_time' => $preorder['confirm_payment_time'],
+                           'orders_type' => 1, 
                           );
   tep_db_perform(TABLE_ORDERS, $sql_data_array);
 
@@ -243,6 +244,7 @@ tep_db_query("delete from ".TABLE_PREORDERS_OA_FORMVALUE." where orders_id = '".
 
 }
 
+last_customer_action();
 
 tep_redirect(tep_href_link('change_preorder_success.php'));
 

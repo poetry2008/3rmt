@@ -834,3 +834,49 @@ function tep_get_preorders_products_names($orders_id) {
   }
   return $str;
 }
+
+function tep_pre_payment_method_menu($payment_method = "") {
+  $payment_text = tep_get_list_pre_payment(); 
+  $payment_array = explode("\n", $payment_text);
+  for($i=0; $i<sizeof($payment_array); $i++) {
+    $payment_list[] = array('id' => $payment_array[$i],
+        'text' => $payment_array[$i]);
+  }
+  return tep_draw_pull_down_menu('payment_method', $payment_list, $payment_method);
+}
+
+function tep_get_list_pre_payment() {
+  global $language;
+
+  $payment_directory = DIR_FS_CATALOG_MODULES .'payment/';
+  $payment_array = array();
+  $payment_list_str = '';
+
+  if ($dh = @dir($payment_directory)) {
+    while ($payment_file = $dh->read()) {
+      if (!is_dir($payment_directory.$payment_file)) {
+        if (substr($payment_file, strrpos($payment_file, '.')) == '.php') {
+          $payment_array[] = $payment_file; 
+        }
+      }
+    }
+    sort($payment_array);
+    $dh->close();
+  }
+
+  for ($i = 0, $n = sizeof($payment_array); $i < $n; $i++) {
+    $payment_filename = $payment_array[$i]; 
+    include(DIR_WS_LANGUAGES . $language . '/modules/payment/' . $payment_filename); 
+    include($payment_directory . $payment_filename); 
+    $payment_class = substr($payment_filename, 0, strrpos($payment_filename, '.'));
+    if (tep_class_exists($payment_class)) {
+      $payment_module = new $payment_class; 
+      if ($payment_module->code == 'buying' || $payment_module->code == 'buyingpoint' || $payment_module->code == 'fetchgood' || $payment_module->code == 'freepayment') {
+        continue; 
+      }
+      $payment_list_str .= $payment_module->title."\n"; 
+    }
+  }
+
+  return mb_substr($payment_list_str, 0, -1, 'UTF-8');
+}

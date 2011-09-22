@@ -42,6 +42,10 @@
               tep_set_category_link_product_status($cID, $_GET['status'], $site_id, $up_rs); 
             } 
           }
+          if (USE_CACHE == 'true') {
+            tep_reset_cache_block('categories');
+            tep_reset_cache_block('also_purchased');
+          }
           tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' .  $HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page));
           break;
       case 'setflag':
@@ -51,6 +55,10 @@
         $up_rs = (isset($_GET['up_rs']))?true:false; 
         if ($site_id == 0) {
           tep_set_all_product_status($_GET['pID'], $_GET['flag'], $up_rs); 
+          if (USE_CACHE == 'true') {
+            tep_reset_cache_block('categories');
+            tep_reset_cache_block('also_purchased');
+          }
           tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' .  $_GET['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$p_page));
         }
         
@@ -2547,7 +2555,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
 -->
             <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_JIAGE_TEXT;?></td>
             <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_NUM_TEXT;?></td>
-            <td class="dataTableHeadingContent" align="center" style="width:80px;"><?php echo TABLE_HEADING_STATUS; ?></td>
+            <td class="dataTableHeadingContent" align="center" ><?php echo TABLE_HEADING_STATUS; ?></td>
             <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_ACTION; ?>&nbsp;</td>
           </tr>
                     <?php
@@ -2571,9 +2579,13 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
         from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
         where c.categories_id = cd.categories_id 
           and cd.language_id = '" . $languages_id . "' 
-          and cd.categories_name like '%" . $_GET['search'] . "%' 
-          and cd.site_id = '0'
-        order by c.sort_order, cd.categories_name";
+          and cd.categories_name like '%" . $_GET['search'] . "%' ";
+      if(isset($_GET['site_id'])&&$_GET['site_id']){
+        $categories_query_raw .= " and cd.site_id = '".$_GET['site_id']."' ";
+      }else{
+        $categories_query_raw .= " and cd.site_id = '0' ";
+      }
+      $categories_query_raw .= " order by c.sort_order, cd.categories_name";
     } else {
       $categories_query_raw = "
         select * 
@@ -2696,6 +2708,28 @@ if (isset($nowColor) && $nowColor == $odd) {
               echo '<td class="dataTableContent" align="center">';
             }
             ?>
+            <table width="100%"><tr>
+            <?php
+                    if ( (isset($cInfo) && is_object($cInfo)) && ($categories['categories_id'] == $cInfo->categories_id) ) {
+                     
+                      echo '<td  onclick="document.location.href=\'' .
+                        tep_href_link(FILENAME_CATEGORIES,tep_get_path($categories['categories_id']).
+                            '&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)))
+                        . '\'">' . "&nbsp;</td>";
+                    } else {
+                    ?>
+                    <td 
+                    <?php echo 'onclick="document.location.href=\'' .
+                    tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath
+                        .(isset($_GET['page'])&&$_GET['page'] ? ('&page=' .
+                            $_GET['page']) : '') . '&cID=' .
+                        $categories['categories_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:''))
+                    .'\'" ';?>
+                    >&nbsp;</td>
+                    <?php
+                    }
+?>
+            <td align="center" style="width:60px">
 <?php if ($ocertify->npermission == 15 or $ocertify->npermission == 10) {?>
 <?php //if (!isset($_GET['cPath']) or !$_GET['cPath']){?>
 <?php 
@@ -2804,7 +2838,27 @@ if (isset($nowColor) && $nowColor == $odd) {
                       <?php }?>
                 <?php }?>
             <?php }?>
-<?php //}?>
+<?php //}?></td>
+<?php
+                    if ( (isset($cInfo) && is_object($cInfo)) && ($categories['categories_id'] == $cInfo->categories_id) ) {
+                      echo '<td  onclick="document.location.href=\'' . 
+                        tep_href_link(FILENAME_CATEGORIES, tep_get_path($categories['categories_id'])
+                            .'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '\'">'
+                        . "&nbsp;</td>";
+                    } else {
+                    ?>
+                    <td  
+                    <?php echo 'onclick="document.location.href=\'' .
+                    tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath
+                        .(isset($_GET['page'])&&$_GET['page'] ? ('&page=' .
+                            $_GET['page']) : '') . '&cID=' .
+                        $categories['categories_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:''))
+                    .'\'" ';?>
+                    >&nbsp;</td>
+                    <?php
+                    }
+?>
+</tr></table>
             </td>
             <td class="dataTableContent" align="right" onclick="document.location.href='<?php echo tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' .  $categories['categories_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) .(isset($_GET['search'])?'&search='.$_GET['search']:'');?>';">
             <?php if ( (isset($cInfo) && is_object($cInfo)) && ($categories['categories_id'] == $cInfo->categories_id) ) { echo tep_image(DIR_WS_IMAGES .  'icon_arrow_right.gif', ''); } else { echo '<a href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' .  $categories['categories_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) .(isset($_GET['search'])?'&search='.$_GET['search']:'') .'">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?> &nbsp;</td> 
@@ -2834,9 +2888,13 @@ if (isset($nowColor) && $nowColor == $odd) {
         where p.products_id = pd.products_id 
           and pd.language_id = '" . $languages_id . "' 
           and p.products_id = p2c.products_id 
-          and pd.products_name like '%" . $_GET['search'] . "%' 
-          and pd.site_id='0'
-        order by p.sort_order,pd.products_name, p.products_id";
+          and pd.products_name like '%" . $_GET['search'] . "%' ";
+      if(isset($_GET['site_id'])&&$_GET['site_id']){
+        $products_query_raw .= " and pd.site_id = '".$_GET['site_id']."' ";
+      }else{
+        $products_query_raw .= " and pd.site_id = 0 "; 
+      }
+      $products_query_raw .= " order by p.sort_order,pd.products_name, p.products_id";
     } else {
       $products_query_raw = "
         select * from ( 
@@ -2951,7 +3009,17 @@ if (empty($products['products_quantity']) or $products['products_quantity'] == 0
                    } else {
                      echo '<td class="dataTableContent" align="center">';
                    }
-                   ?> 
+                   ?>
+                   <table width="100%">
+                   <tr>
+                   <?php 
+                   if ( (isset($pInfo) && is_object($pInfo)) && ($products['products_id'] == $pInfo->products_id) ) {
+                     echo '<td align="right" class="dataTableContent" onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) .  '&pID=' . $products['products_id'] .  '&action=new_product_preview&read=only') . '\'">' . "\n";
+                   } else {
+                     echo '<td class="dataTableContent" align="right" onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'')) . '\'">';
+                   }
+                   ?>&nbsp;</td>
+                   <td style="width:60px" align="center">
             <?php
 $p_page = (isset($_GET['page']))?'&page='.$_GET['page']:'';
 if ($ocertify->npermission >= 10) { //表示制限
@@ -3042,7 +3110,18 @@ if ($ocertify->npermission >= 10) { //表示制限
   echo '&nbsp;&nbsp;' . tep_image(DIR_WS_ICONS . 'battery_0.gif', CATEGORY_BUTTON_NUM_UNCOMMON);
   
 }
-?></td>
+?>
+</td>
+<?php 
+    if ( (isset($pInfo) && is_object($pInfo)) && ($products['products_id'] == $pInfo->products_id) ) {
+                     echo '<td align="right" class="dataTableContent" onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) .  '&pID=' . $products['products_id'] .  '&action=new_product_preview&read=only') . '\'">' . "\n";
+                   } else {
+                     echo '<td class="dataTableContent" align="right" onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) .  '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).(isset($_GET['search'])?'&search='.$_GET['search']:'')) . '\'">';
+   }
+?>&nbsp;</td>
+</tr>
+</table>
+</td>
                      <td class="dataTableContent" align="right">
                       <?php if ( isset($pInfo) && (is_object($pInfo)) && ($products['products_id'] == $pInfo->products_id) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); } else { echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . (isset($_GET['search'])?'&search='.$_GET['search']:'').'">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>
 &nbsp;</td>

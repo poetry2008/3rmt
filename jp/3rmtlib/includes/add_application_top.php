@@ -701,14 +701,23 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
           $check_pro_status_raw = tep_db_query("select products_status from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".(int)$_GET['products_id']."' and (site_id = 0 or site_id = ".SITE_ID.") order by site_id DESC limit 1"); 
           $check_pro_status = tep_db_fetch_array($check_pro_status_raw); 
           if ($check_pro_status['products_status'] == 0) {
+            if ($categories['categories_status'] == 1) {
             $breadcrumb->add($categories['categories_name']);
-          } else {
+            } else {
             $breadcrumb->add($categories['categories_name'], tep_href_link(FILENAME_DEFAULT, 'cPath=' . implode('_', array_slice($cPath_array, 0, ($i+1)))));
+          }
+          } else {
+            if ($categories['categories_status'] == 1) { 
+            $breadcrumb->add($categories['categories_name']);
+            }else{
+            $breadcrumb->add($categories['categories_name'], tep_href_link(FILENAME_DEFAULT, 'cPath=' . implode('_', array_slice($cPath_array, 0, ($i+1)))));
+            }
           }
         } else {
           if ($categories['categories_status'] == 1) {
             $breadcrumb->add($categories['categories_name']);
           } else {
+            /*
             $add_single = false; 
             if (isset($cPath_array[$i+1])) {
               $pre_categories_query = tep_db_query("
@@ -748,8 +757,11 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
               }
             }
             if (!$add_single) {
+            */
               $breadcrumb->add($categories['categories_name'], tep_href_link(FILENAME_DEFAULT, 'cPath=' . implode('_', array_slice($cPath_array, 0, ($i+1)))));
+            /*
             }
+            */
           }
         }
       } else {

@@ -992,43 +992,8 @@ function tep_show_orders_products_info($orders_id) {
 if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) {
 }else{
   $where_type = '';
-  if(isset($_GET['type'])){
-  switch ($_GET['type']) { 
-    case 'sell':
-      $where_type = " and (!(o.payment_method like '%買い取り%') and h.orders_id not in (select orders_id from ".TABLE_ORDERS_STATUS_HISTORY." where comments like '金融機関名%支店名%'))"; 
-      break;
-    case 'buy':
-      $where_type = " and (o.payment_method like '%買い取り%')"; 
-      break;
-    case 'mix':
-      //$where_type = " and (!(o.payment_method like '%買い取り') and h.comments like '金融機関名%支店名%')"; 
-      break;
-  }
-  }
-    
   $where_payment = '';
-  /* 
-  if(isset($_GET['payment'])){
-  switch ($_GET['payment']) { 
-    case 'convenience_store':
-      $where_payment = " and o.payment_method = 'コンビニ決済'";
-      break;
-    case 'telecom':
-      $where_payment = " and (o.payment_method = 'クレジットカード決済' or o.payment_method = 'ペイパル決済')";
-      break;
-    case 'postalmoneyorder':
-      $where_payment = " and o.payment_method = 'ゆうちょ銀行（郵便局）'";
-      break;
-    case 'moneyorder':
-    case 'buying':
-      //$where_payment .= " and (o.payment_method = '銀行振込' or o.payment_method = '銀行振込(買い取り)' or o.payment_method = '銀行振込（買い取り）')"; 
-      $where_payment .= " and (o.payment_method = '銀行振込' or o.payment_method like '%買い取り%')"; 
-      break;
-  }
-  }
-  */ 
-  $from_payment = (isset($_GET['payment']) or isset($_GET['type']))?("left join " . TABLE_ORDERS_STATUS_HISTORY . " h on (o.orders_id = h.orders_id)"):'';
-
+  $from_payment = '';
   $sort_table = '';
   $sort_where = '';
   if(!isset($HTTP_GET_VARS['order_sort'])||$HTTP_GET_VARS['order_sort']=='') {
@@ -1041,9 +1006,8 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
     }else if($HTTP_GET_VARS['order_sort'] == 'customers_name'){
       $order_str = " o.customers_name ".$HTTP_GET_VARS['order_type'];
     }else if($HTTP_GET_VARS['order_sort'] == 'ot_total'){
-      $sort_table = " ,". TABLE_ORDERS_TOTAL." ot, ".TABLE_SITES." s ";
-      $sort_where = " o.orders_id = ot.orders_id and ot.class  ='ot_total' and
-        o.site_id = s.id and ";
+      $sort_table = " ,". TABLE_ORDERS_TOTAL." ot ";
+      $sort_where = " o.orders_id = ot.orders_id and ot.class  ='ot_total' and ";
       $order_str = " ot.value ".$HTTP_GET_VARS['order_type'];
     }else if($HTTP_GET_VARS['order_sort'] == 'torihiki_date'){
       $order_str = " o.torihiki_date ".$HTTP_GET_VARS['order_type'];
@@ -1383,7 +1347,8 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                o.confirm_payment_time, 
                o.site_id
         from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
-        where ".$sort_where." o.payment_method like '".$payment_m[1]."' ";
+        where ".$sort_where.(isset($_GET['site_id']) && intval($_GET['site_id']) ? " o.site_id =
+           '" . intval($_GET['site_id']) . "' and " : '') ." o.payment_method like '".$payment_m[1]."' ";
     $orders_query_raw .= "order by ".$order_str;
     }
   }else if(isset($_GET['keywords']) && ((isset($_GET['search_type']) &&
@@ -1391,22 +1356,18 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
     $type_arr = explode('|',$_GET['search_type']);
     switch ($type_arr[1]) { 
     case 'sell':
-      $f_payment = "left join " . TABLE_ORDERS_STATUS_HISTORY . " h on (o.orders_id = h.orders_id)";
-      $w_type = " and (!(o.payment_method like '%買い取り%') and h.orders_id not in (select orders_id from ".TABLE_ORDERS_STATUS_HISTORY." where comments like '金融機関名%支店名%'))"; 
+      $w_type = 'orders_type = 1';  
       break;
     case 'buy':
-      $f_payment = "";
-      $w_type = " and (o.payment_method like '%買い取り%')"; 
+      $w_type = 'orders_type = 2';  
       break;
     case 'mix':
-      $mix_single = true; 
+      $w_type = 'orders_type = 3';  
       break;
   }
-    if (isset($mix_single)) {
-      $old_replace_arr = array('o.orders_id', 'o.site_id');
-      $new_replace_arr = array('op.orders_id', 'op.site_id');
-      $orders_query_raw = " select 
-               op.orders_id, 
+    if (!empty($_GET['keywords'])) {
+      $orders_query_raw = "
+        select distinct(o.orders_id), 
                o.torihiki_date, 
                IF(o.torihiki_date = '0000-00-00 00:00:00',1,0) as torihiki_date_error,
                o.customers_id, 
@@ -1427,9 +1388,13 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                o.torihiki_houhou,
                o.orders_comment,
                o.confirm_payment_time, 
-        avg( products_bflag) bflag, op.orders_id from " .  TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS . " op, ".TABLE_PRODUCTS." p ".$sort_table."where ".$sort_where."o.flag_qaf = 0 and o.orders_id = op.orders_id and op.products_id = p.products_id" .  (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . " group by op.orders_id having bflag > 0 and bflag < 1 order by ".$order_str;
+               o.site_id
+        from " . TABLE_ORDERS . " o, " .TABLE_ORDERS_PRODUCTS." op ". $f_payment . $sort_table."
+        where ".$sort_where.(isset($_GET['site_id']) && intval($_GET['site_id']) ? " o.site_id =
+           '" . intval($_GET['site_id']) . "' and " : '') ." ".$w_type. " and o.orders_id = op.orders_id and (o.orders_id like '%".$_GET['keywords']."%' or o.customers_name like '%".$_GET['keywords']."%' or o.customers_email_address like '%".$_GET['keywords']."%' or op.products_name like '%".$_GET['keywords']."%') ";
+    $orders_query_raw .= " order by ".$order_str;
     } else {
-    $orders_query_raw = "
+      $orders_query_raw = "
         select distinct(o.orders_id), 
                o.torihiki_date, 
                IF(o.torihiki_date = '0000-00-00 00:00:00',1,0) as torihiki_date_error,
@@ -1453,9 +1418,8 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                o.confirm_payment_time, 
                o.site_id
         from " . TABLE_ORDERS . " o " . $f_payment . $sort_table."
-        where ".$sort_where."
-        o.flag_qaf = 0 
-        ".$w_type;
+        where ".$sort_where.(isset($_GET['site_id']) && intval($_GET['site_id']) ? " o.site_id =
+           '" . intval($_GET['site_id']) . "' and " : '') ." ".$w_type;
     $orders_query_raw .= " order by ".$order_str;
     }
   }elseif (isset($_GET['keywords']) && $_GET['keywords']) {
@@ -1564,14 +1528,6 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
     if (($from_pos !== false) && ($order_pos !== false)) {
       if ($op_pos !== false) {
         $sql_count_query = "select count(op.orders_id) as count ".substr($orders_query_raw, $from_pos, $order_pos - $from_pos);
-      } else if (isset($mix_single)) {
-        $sql_count_query = "select count(op.orders_id) as count, avg(products_bflag) bflag ".substr($orders_query_raw, $from_pos, $order_pos - $from_pos);
-        $c_total_num = tep_db_num_rows(tep_db_query($sql_count_query));
-        if ($c_total_num > 0) {
-          $sql_count_query = "select ".$c_total_num." as count from ".TABLE_ORDERS.' limit 1'; 
-        } else {
-          $sql_count_query = "select 0 as count from ".TABLE_ORDERS.' limit 1'; 
-        }
       } else {
         $sql_count_query = "select count(o.orders_id) as count ".substr($orders_query_raw, $from_pos, $order_pos - $from_pos);
       }

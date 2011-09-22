@@ -19,7 +19,9 @@
            r.customers_name,
            r.products_status
     from " . TABLE_REVIEWS . " r
-      where r.reviews_status  = '1' 
+      where r.reviews_status  = '1'  
+      and r.products_status != '0' 
+      and r.products_status != '3' 
       and r.site_id = '".SITE_ID."' 
       order by date_added DESC
   ";

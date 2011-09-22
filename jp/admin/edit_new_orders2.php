@@ -474,6 +474,10 @@
         }
         /* 士入不需要操作库存 */
       }
+      
+      $orders_type_str = tep_get_order_type_info($_SESSION['create_order2']['orders']['orders_id']); 
+      tep_db_query("update `".TABLE_ORDERS."` set `orders_type` = '".$orders_type_str."' where orders_id = '".$_SESSION['create_order2']['orders']['orders_id']."'"); 
+      
       orders_updated($_SESSION['create_order2']['orders']['orders_id']);
       foreach($_SESSION['create_order2']['orders_total'] as $c => $ot){
         $ot['text'] = '';
