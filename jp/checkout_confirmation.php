@@ -4,7 +4,6 @@
 */
   require('includes/application_top.php');
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_CHECKOUT_CONFIRMATION);
-ini_set("display_errors","On");
 // if the customer is not logged on, redirect them to the login page
   if (!tep_session_is_registered('customer_id')) {
     $navigation->set_snapshot(array('mode' => 'SSL', 'page' => FILENAME_CHECKOUT_PAYMENT));
@@ -42,7 +41,6 @@ ini_set("display_errors","On");
   require(DIR_WS_CLASSES . 'order.php');
   $order = new order;
   $payment_modules->update_status();
-   var_dump(is_object($$payment) ) ;
   if ( 
       (
        is_array($payment_modules->modules) 
