@@ -318,10 +318,22 @@ B:ポイントの加算（<?php echo STORE_NAME;?>会員でなければ表示さ
 <?php 
     $cart_products = tep_get_cart_products(tep_get_products_by_shopiing_cart($products));
     if ($cart_products) {
+      $h2_show_flag = true;
+      foreach($cart_products as $cp){
+        $cp = tep_get_product_by_id($cp, SITE_ID, 4, true, 'shopping_cart', true);
+        $cp_status_raw = tep_db_query("select products_status from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$cp['products_id']."' and (site_id = 0 or site_id = ".SITE_ID.") order by site_id desc limit 1"); 
+        $cp_status_res = tep_db_fetch_array($cp_status_raw);
+        if ($cp_status_res['products_status'] == 0) {
+          $h2_show_flag = false;
+        }
+      }
+
 ?>
 </td></tr></table></div>
 
+<?php if($h2_show_flag){ ?>
   <h2 class="pageHeading"><span class="game_t">こちらの商品もオススメ！！</span></h2>
+<?php } ?>
   <div class="comment">
 <table><tr><td>
   <div style="text-align:center;padding:10px 0;">
