@@ -5,7 +5,59 @@
 
   class buying {
     var $site_id, $code, $title, $description, $enabled, $s_error, $n_fee, $email_footer;
+    function specialOutput()
+    {
+  $bank_name = tep_db_prepare_input($_POST['bank_name']);
+  $bank_shiten = tep_db_prepare_input($_POST['bank_shiten']);
+  $bank_kamoku = tep_db_prepare_input($_POST['bank_kamoku']);
+  $bank_kouza_num = tep_db_prepare_input($_POST['bank_kouza_num']);
+  $bank_kouza_name = tep_db_prepare_input($_POST['bank_kouza_name']);
 
+?>
+          <tr> 
+            <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
+                <tr class="infoBoxContents"> 
+	<td>
+<table width="100%" class="table_ie" border="0" cellspacing="0" cellpadding="2">
+  <tr>
+  <td class="main" colspan="3"><b><?php echo TABLE_HEADING_BANK; ?></b><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
+  </tr>
+  <tr>
+    <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+  <td class="main" width="30%"><?php echo TEXT_BANK_NAME; ?></td>
+    <td class="main" width="70%"><?php echo $bank_name; ?></td>
+  </tr>
+  <tr>
+    <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+  <td class="main"><?php echo TEXT_BANK_SHITEN; ?></td>
+    <td class="main"><?php echo $bank_shiten; ?></td>
+  </tr>
+  <tr>
+    <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+  <td class="main"><?php echo TEXT_BANK_KAMOKU; ?></td>
+    <td class="main"><?php echo $bank_kamoku; ?></td>
+  </tr>
+  <tr>
+    <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+  <td class="main"><?php echo TEXT_BANK_KOUZA_NUM; ?></td>
+    <td class="main"><?php echo $bank_kouza_num; ?></td>
+  </tr>
+  <tr>
+    <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+  <td class="main"><?php echo TEXT_BANK_KOUZA_NAME; ?></td>
+    <td class="main"><?php echo $bank_kouza_name; ?></td>
+  </tr>
+</table>
+          
+          </td> 
+                </tr> 
+              </table></td> 
+          </tr> 
+          <tr> 
+            <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+          </tr> 
+<?php
+    }
 // class constructor
     function buying($site_id = 0) {
       global $order;
@@ -96,11 +148,98 @@
       }
       return array('id' => $this->code,
                    'module' => '銀行振込(買い取り)',
-                   'fields' => array('title' => $s_message, 'field' => $added_hidden) 
+                   'fields' => array(
+				     array(
+					   'title' => $s_message, 
+					   'field' => $added_hidden
+					   ) , 
+
+				     array(
+					   'title' => '<div class="rowHide rowHide_'.$this->code.'" id="cemail" style="display:none;">'.
+					   '<div class="cemail_input_01">'.
+					   TEXT_BANK_NAME.
+					   '<div class="con_email01">'.
+					   tep_draw_input_field('bank_name', '').
+					   '</div></div></div>', 
+					   'field' => '',
+					   ) ,
+				     array(
+					   'title' => '<div class="rowHide rowHide_'.$this->code.'" id="cemail" style="display:none;">'.
+					   '<div class="cemail_input_01">'.
+					   TEXT_BANK_SHITEN.
+					   '<div class="con_email01">'.
+					   tep_draw_input_field('bank_shiten', '').
+					   '</div></div></div>', 
+					   'field' => '',
+					   ) ,
+				     array(
+					   'title' => '<div class="rowHide rowHide_'.$this->code.'" id="cemail" style="display:none;">'.
+					   '<div class="cemail_input_01">'.
+					   TEXT_BANK_KAMOKU.
+					   '<div class="con_email01">'.
+					   tep_draw_radio_field('bank_kamoku',TEXT_BANK_SELECT_KAMOKU_F ,$bank_sele_f) . '&nbsp;' . TEXT_BANK_SELECT_KAMOKU_F.
+					   tep_draw_radio_field('bank_kamoku',TEXT_BANK_SELECT_KAMOKU_T ,$bank_sele_t) . '&nbsp;' . TEXT_BANK_SELECT_KAMOKU_T.
+					   '</div></div></div>', 
+					   'field' => '',
+					   ) ,
+				     array(
+					   'title' => '<div class="rowHide rowHide_'.$this->code.'" id="cemail" style="display:none;">'.
+					   '<div class="cemail_input_01">'.
+					   TEXT_BANK_KOUZA_NUM.
+					   '<div class="con_email01">'.
+					   tep_draw_input_field('bank_kouza_num', '').
+					   '</div></div></div>', 
+					   'field' => '',
+					   ) ,
+				     array(
+					   'title' => '<div class="rowHide rowHide_'.$this->code.'" id="cemail" style="display:none;">'.
+					   '<div class="cemail_input_01">'.
+					   TEXT_BANK_KOUZA_NAME.
+					   '<div class="con_email01">'.
+					   tep_draw_input_field('bank_kouza_name', '').
+					   '</div></div></div>', 
+					   'field' => '',
+					   ) ,
+				     )
       );
     }
 
     function pre_confirmation_check() {
+
+  $bank_name = tep_db_prepare_input($_POST['bank_name']);
+  $bank_shiten = tep_db_prepare_input($_POST['bank_shiten']);
+  $bank_kamoku = tep_db_prepare_input($_POST['bank_kamoku']);
+  $bank_kouza_num = tep_db_prepare_input($_POST['bank_kouza_num']);
+  $bank_kouza_name = tep_db_prepare_input($_POST['bank_kouza_name']);
+  
+  tep_session_register('bank_name');
+  tep_session_register('bank_shiten');
+  tep_session_register('bank_kamoku');
+  tep_session_register('bank_kouza_num');
+  tep_session_register('bank_kouza_name');
+  
+  if($bank_name == '') {
+    tep_session_unregister('bank_name');
+      tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, 'bank_error=' . urlencode(TEXT_BANK_ERROR_NAME), 'SSL'));
+  }
+  if($bank_shiten == '') {
+    tep_session_unregister('bank_shiten');
+      tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, 'bank_error=' . urlencode(TEXT_BANK_ERROR_SHITEN), 'SSL'));
+  }
+  if($bank_kouza_num == '') {
+    tep_session_unregister('bank_kouza_num');
+      tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, 'bank_error=' . urlencode(TEXT_BANK_ERROR_KOUZA_NUM), 'SSL'));
+  }
+  if (!preg_match("/^[0-9]+$/", $bank_kouza_num)) {
+    tep_session_unregister('bank_kouza_num');
+      tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, 'bank_error=' . urlencode(TEXT_BANK_ERROR_KOUZA_NUM2), 'SSL'));
+  } 
+  if($bank_kouza_name == '') {
+    tep_session_unregister('bank_kouza_name');
+      tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, 'bank_error=' . urlencode(TEXT_BANK_ERROR_KOUZA_NAME), 'SSL'));
+  }
+
+
       return false;
     }
 

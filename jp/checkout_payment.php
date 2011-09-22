@@ -4,7 +4,9 @@
 */
 
   require('includes/application_top.php');
+
   require(DIR_WS_ACTIONS.'checkout_payment.php');
+
 ?>
 <?php page_head();?>
 <script type="text/javascript" src="./js/jquery-1.3.2.min.js"></script>
@@ -15,82 +17,29 @@ if($("input[name=payment]").length == 1){
       $(this).attr('checked','true');
     });
 }
-$("input:radio").each(function(){
-  if ($(this).attr("checked") == true) {
-    if ($(this).attr('name') != 'bank_kamoku') {
-      if ($(this).val() == 'convenience_store') {
-        $("#cemail").css("display", "block");
-        $("#caemail").css("display", "block");
-      } else {
-        $("#cemail").css("display", "none");
-        $("#caemail").css("display", "none");
-      }
-      if($(this).val() == 'rakuten_bank'){
-        $("#ctelnumber").css("display", "block");
-        $("#catelnumber").css("display", "block");
-      } else {
-        $("#ctelnumber").css("display", "none");
-        $("#catelnumber").css("display", "none");
-      }
+function triggerHide(radio)
+{
+   if ($(radio).attr("checked") == true) {
+     $(".rowHide").hide();
+      $(".rowHide_"+$(radio).val()).show();
+    }else{
+     $(".rowHide_"+$(radio).val()).hide();
     }
-  }
-})
+}
+
 $("input:radio").click(function(){
-  if ($(this).val() == 'convenience_store') {
-    $("#cemail").css("display", "block");
-    $("#caemail").css("display", "block");
-  } else {
-    if ($(this).attr('name') != 'bank_kamoku') {
-      $("#cemail").css("display", "none");
-      $("#caemail").css("display", "none");
-    }
-  }
-  if($(this).val() == 'rakuten_bank'){
-    $("#ctelnumber").css("display", "block");
-    $("#catelnumber").css("display", "block");
-  } else {
-    if ($(this).attr('name') != 'bank_kamoku') {
-      $("#ctelnumber").css("display", "none");
-      $("#catelnumber").css("display", "none");
-    }
-  }
+    triggerHide(this);
 });
 $(".moduleRow").click(function(){
-  if ($(this).find('input:radio').val() == 'convenience_store') {
-    $("#cemail").css("display", "block");
-    $("#caemail").css("display", "block");
-  } else {
-    if ($(this).find('input:radio').attr('name') != 'bank_kamoku') {
-      $("#cemail").css("display", "none");
-      $("#caemail").css("display", "none");
-    }
-  }
-  if ($(this).find('input:radio').val() == 'rakuten_bank') {
-    $("#ctelnumber").css("display", "block");
-    $("#catelnumber").css("display", "block");
-  } else {
-    if ($(this).find('input:radio').attr('name') != 'bank_kamoku') {
-      $("#ctelnumber").css("display", "none");
-      $("#catelnumber").css("display", "none");
-    }
-  }
+
+    triggerHide($(this).find("input:radio")[0]);
+
 });
-/*
-var valradio = $("input:radio[@checked]").val();
-alert(valradio);
-if (valradio == 'convenience_store') {
-  $("#cemail").css("display", "block");
-  $("#caemail").css("display", "block");
-} else {
-  $("#cemail").css("display", "none");
-  $("#caemail").css("display", "none");
-}
-*/
-});
+  });
 </script>
+
 <script type="text/javascript"><!--
 var selected;
-
 function selectRowEffect(object, buttonSelect) {
   if (!selected) {
     if (document.getElementById) {
@@ -183,7 +132,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
             </tr> 
 <?php
   //販売開始
-  if($cart->show_total() >= 0) {
+																     //  if($cart->show_total() >= 0) {
   if (isset($_GET['payment_error']) && is_object(${$_GET['payment_error']}) && ($error = ${$_GET['payment_error']}->get_error())) {
 ?> 
             <tr> 
@@ -249,70 +198,23 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
   
   $radio_buttons = 0;
   for ($i=0, $n=sizeof($selection); $i<$n; $i++) {
-    
-    if(
-         $selection[$i]['id'] == 'buying'
-      || $selection[$i]['id'] == 'buyingpoint'
-      || $selection[$i]['id'] == 'fetchgood'
-    ) {
-      //buying not view
-    } else { 
-      if ($selection[$i]['id'] == 'convenience_store') {
-        if (!tep_whether_show_payment(MODULE_PAYMENT_CONVENIENCE_STORE_LIMIT_SHOW, $_SESSION['guestchk'])) {
-          continue; 
-        }
-        if (check_money_limit(MODULE_PAYMENT_CONVENIENCE_STORE_MONEY_LIMIT, $order->info['total'])) {
-          continue; 
-        }
-      } else if($selection[$i]['id'] == 'moneyorder') {
-        if (!tep_whether_show_payment(MODULE_PAYMENT_MONEYORDER_LIMIT_SHOW, $_SESSION['guestchk'])) {
-          continue; 
-        }
-        if (check_money_limit(MODULE_PAYMENT_MONEYORDER_MONEY_LIMIT, $order->info['total'])) {
-          continue; 
-        }
-      } else if ($selection[$i]['id'] == 'postalmoneyorder') {
-        if (!tep_whether_show_payment(MODULE_PAYMENT_POSTALMONEYORDER_LIMIT_SHOW, $_SESSION['guestchk'])) {
-          continue; 
-        }
-        if (check_money_limit(MODULE_PAYMENT_POSTALMONEYORDER_MONEY_LIMIT, $order->info['total'])) {
-          continue; 
-        }
-      } else if ($selection[$i]['id'] == 'telecom') {
-        if (!tep_whether_show_payment(MODULE_PAYMENT_TELECOM_LIMIT_SHOW, $_SESSION['guestchk'])) {
-          continue; 
-        }
-        if (check_money_limit(MODULE_PAYMENT_TELECOM_MONEY_LIMIT, $order->info['total'])) {
-          continue; 
-        }
-      } else if ($selection[$i]['id'] == 'freepayment') {
-        if (!tep_whether_show_payment(MODULE_PAYMENT_FREE_PAYMENT_LIMIT_SHOW, $_SESSION['guestchk'])) {
-          continue; 
-        }
-        if (check_money_limit(MODULE_PAYMENT_FREE_PAYMENT_MONEY_LIMIT, $order->info['total'])) {
-          continue; 
-        }
-      } else if ($selection[$i]['id'] == 'paypal') {
-        if (!tep_whether_show_payment(MODULE_PAYMENT_PAYPAL_LIMIT_SHOW, $_SESSION['guestchk'])) {
-          continue; 
-        }
-        if (check_money_limit(MODULE_PAYMENT_PAYPAL_MONEY_LIMIT, $order->info['total'])) {
-          continue; 
-        }
-      } else if ($selection[$i]['id'] == 'rakuten_bank'){
-        if (!tep_whether_show_payment(MODULE_PAYMENT_RAKUTEN_BANK_LIMIT_SHOW, $_SESSION['guestchk'])) {
-          continue; 
-        }
-        if (check_money_limit(MODULE_PAYMENT_RAKUTEN_BANK_MONEY_LIMIT, $order->info['total'])) {
-          continue; 
-        }
-      }
+
+    if(!tep_whether_show_payment(constant("MODULE_PAYMENT_".strtoupper($selection[$i]['id'])."_LIMIT_SHOW"), $_SESSION['guestchk'])) {
+
+      continue;
+    }
+    if (check_money_limit(constant("MODULE_PAYMENT_".strtoupper($selection[$i]['id'])."_MONEY_LIMIT"), $order->info['total'])) {
+      //      echo constant("MODULE_PAYMENT_".strtoupper($selection[$i]['id'])."_MONEY_LIMIT");
+      continue; 
+    }
+
 ?> 
                         <tr> 
                           <td></td> 
                           <td colspan="2">
                           <table border="0" width="100%" cellspacing="0" cellpadding="0" class="box_des02"> 
                               <?php
+
     if ( ($selection[$i]['id'] == $payment) || ($n == 1) ) {
       echo '                  <tr id="defaultSelected" class="moduleRowSelected" onmouseover="rowOverEffect(this)" onmouseout="rowOutEffect(this)" onclick="selectRowEffect(this, ' . $radio_buttons . ')">' . "\n";
     } else {
@@ -366,7 +268,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
                         </tr> 
                         <?php
     $radio_buttons++;
-  }
+    //  }
   }
 ?> 
                       </table>
@@ -381,7 +283,9 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
       
 <?php
   //販売終了
-  } else {
+			//  }
+/*
+ else {
 ?> 
        <tr> 
               <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
@@ -628,6 +532,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
       </tr>
       <?php
   }
+*/
 ?>
 
         <tr> 

@@ -2,7 +2,9 @@
 /*
   $Id$
 */
+
 require(DIR_WS_FUNCTIONS . 'visites.php');
+
 ini_set('display_errors' ,'On');
 
 // user new point value it from checkout_confirmation.php 
@@ -44,7 +46,6 @@ if ( (STOCK_CHECK == 'true') && (STOCK_ALLOW_CHECKOUT != 'true') ) {
 }
 
 include(DIR_WS_LANGUAGES . $language . '/' . FILENAME_CHECKOUT_PROCESS);
-
 // load selected payment module
 require(DIR_WS_CLASSES . 'payment.php');
 $payment_modules = new payment($payment);
@@ -692,7 +693,7 @@ $email_order .= '株式会社 iimy' . "\n";
 $email_order .= SUPPORT_EMAIL_ADDRESS . "\n";
 $email_order .= HTTP_SERVER . "\n";
 $email_order .= '━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-  
+
 # メール本文整形 --------------------------------------
   
 // 2003.03.08 Edit Japanese osCommerce
@@ -883,9 +884,11 @@ $cart->reset(true);
 if (MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
   if(MODULE_ORDER_TOTAL_POINT_ADD_STATUS == '0') {
     //ccdd
+
     tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " . intval($get_point - $point) . " where customers_id = " . $customer_id );
   } else {
     //ccdd
+
     tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point - " . intval($point) . " where customers_id = " . $customer_id );
   }
 }

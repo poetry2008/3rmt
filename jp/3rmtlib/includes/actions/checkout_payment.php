@@ -60,18 +60,22 @@
   $total_count = $cart->count_contents();
 
 // load all enabled payment modules
+
   require(DIR_WS_CLASSES . 'payment.php');
+
   $payment_modules = new payment;
 
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_CHECKOUT_PAYMENT);
 
   $breadcrumb->add(NAVBAR_TITLE_1, tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
   $breadcrumb->add(NAVBAR_TITLE_2, tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL'));
-  
+//error_reporint(E_ALL);
+//ini_set("display_errors","On");
   //Add point
+
   if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
 //ccdd
     $point_query = tep_db_query("select point from " . TABLE_CUSTOMERS . " where customers_id = '" . $customer_id . "'");
-    $point = tep_db_fetch_array($point_query);
+    $userpoint = tep_db_fetch_array($point_query);
   }
-  
+
