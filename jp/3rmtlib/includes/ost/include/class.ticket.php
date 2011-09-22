@@ -1174,10 +1174,9 @@ class Ticket{
      *  $autorespond and $alertstaff overwrites config info...
      */      
     function create($var,&$errors,$origin,$autorespond=true,$alertstaff=true) {
+      var_dump($var['header']);
         global $cfg,$thisclient,$_FILES;
-       
        /* Coders never code so fully and joyfully as when they do it for free  - Peter Rotich */
-
         $id=0;
         $fields=array();
         $fields['name']     = array('type'=>'string',   'required'=>1, 'error'=>'必須');

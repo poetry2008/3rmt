@@ -3841,6 +3841,7 @@ function tep_only_sell_product(){
 }
 
 function tep_whether_show_payment($payment_key, $guest_chk) {
+
   $payment_arr = unserialize($payment_key);  
   
   if (empty($payment_arr)) {
