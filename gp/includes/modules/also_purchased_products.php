@@ -37,10 +37,10 @@
           break;
       }
       $_orders_query = $orders_query;
-      $h_show_flag = true;
+      $h_show_flag = false;
       while ($_orders = tep_db_fetch_array($_orders_query)) {
         if ($_orders['products_status'] != 0) {
-          $h_show_flag = false;
+          $h_show_flag = true;
         }
       }
       if($h_show_flag){
