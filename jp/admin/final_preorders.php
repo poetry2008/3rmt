@@ -638,7 +638,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
           $site_url_raw = tep_db_query("select * from sites where id = '".$order->info['site_id']."'"); 
           $site_url_res = tep_db_fetch_array($site_url_raw); 
           $change_preorder_url = $site_url_res['url'].'/change_preorder.php?pid='.$oID; 
-          $email = str_replace('${REAL_ORDER_URL}', $change_preorder_url, $email); 
+          $email .= "\n\n".$change_preorder_url; 
         }
         if ($status == 33) {
           $site_url_raw = tep_db_query("select * from sites where id = '".$order->info['site_id']."'"); 
