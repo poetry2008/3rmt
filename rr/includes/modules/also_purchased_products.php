@@ -33,6 +33,7 @@
       echo '<table border="0" width="100%" cellspacing="0" cellpadding="2">'."\n" ;
       echo   '<tr>'."\n";
       while ($orders = tep_db_fetch_array($orders_query)) {
+        if($orders['products_status'] != 0 ){
         $orders['products_name'] = tep_get_products_name($orders['products_id']);
         // ccdd
         $products_description = tep_get_products_description($orders['products_id'], $languages_id) ;
@@ -56,6 +57,7 @@ echo '</td>';
     echo '</tr><tr>';
           $col = 0;
           $row ++;
+        }
         }
       }
       echo '</tr>';
