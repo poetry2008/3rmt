@@ -37,7 +37,6 @@
           break;
       }
 ?>
-<!-- also_purchased_products //-->
 <div class="pageHeading_long"><img align="top" alt="" src="images/menu_ico.gif"><h3><?php echo $product_info['products_name'];?><?php  echo TEXT_ALSO_PURCHASED_PRODUCTS ; ?> </h3></div>
 <div class="comment_long">
 <?php
@@ -47,6 +46,7 @@
       echo '<table border="0" width="100%" cellspacing="0" cellpadding="2">'."\n" ;
       echo   '<tr>'."\n";
       while ($orders = tep_db_fetch_array($orders_query)) {
+        if($orders['products_status'] != 0 ){
         $orders['products_name'] = tep_get_products_name($orders['products_id']);
         // ccdd
         $products_description = tep_get_products_description($orders['products_id'], $languages_id) ;
@@ -71,6 +71,7 @@ echo '</td>';
           $col = 0;
           $row ++;
         }
+        }
       }
       for ($u=0; $u<4-$col; $u++) {
         echo '<td></td>'; 
@@ -79,7 +80,6 @@ echo '</td>';
   echo '</table>' ;
 ?> 
 </div>
-<!-- also_purchased_products_eof //--> 
 <?php
     }
   }
