@@ -205,4 +205,8 @@ define('PREORDERS_STATUS_SELECT_PRE', 'ステータス「');
 define('PREORDERS_STATUS_SELECT_LAST', '」からの検索');
 define('TEXT_ORDER_FIND_OID', '注文番号からの検索');
 define('NOTICE_INPUT_ENSURE_DEADLINE', '確保期限を設定してください。');
+define('PREORDERS_PAYMENT_METHOD_PRE', '支払方法「');
+define('PREORDERS_PAYMENT_METHOD_LAST', '」から検索');
+define('TEXT_SORT_ASC','▲');
+define('TEXT_SORT_DESC','▼');
 ?>
