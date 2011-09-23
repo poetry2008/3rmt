@@ -23,7 +23,6 @@
       and r.products_status != '0' 
       and r.products_status != '3' 
       and r.site_id = '".SITE_ID."' 
-      and r.reviews_status != '0' 
       order by date_added DESC
   ";
   

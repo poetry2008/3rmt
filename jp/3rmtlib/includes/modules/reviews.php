@@ -18,9 +18,7 @@
     <td valign="top" class="main">
     <?php 
     if ($reviews_array[$i]['products_status'] == 0 || $reviews_array[$i]['products_status'] == 3) {
-      /*
       echo tep_image(DIR_WS_IMAGES . $reviews_array[$i]['products_image'], $reviews_array[$i]['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT); 
-      */
     } else {
       echo '<a href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS_INFO, 'products_id=' . $reviews_array[$i]['products_id'] . '&reviews_id=' . $reviews_array[$i]['reviews_id']) . '">' . tep_image(DIR_WS_IMAGES . $reviews_array[$i]['products_image'], $reviews_array[$i]['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a>'; 
     }
