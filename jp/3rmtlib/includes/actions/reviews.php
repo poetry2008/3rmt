@@ -17,6 +17,7 @@
            r.date_added, 
            r.products_id, 
            r.customers_name,
+           r.reviews_status,
            r.products_status
     from " . TABLE_REVIEWS . " r
       where r.reviews_status  = '1'  
@@ -46,7 +47,8 @@
                              'rating'         => $reviews['reviews_rating'],
                              'word_count'     => tep_word_count($reviews_des['reviews_text'], ' '),
                              'date_added'     => tep_date_long($reviews['date_added']),
-                             'products_status' => $reviews['products_status'] 
+                             'products_status' => $reviews['products_status'],
+                             'reviews_status' => $reviews['reviews_status']
                              );
   }
   forward404Unless($reviews_array);
