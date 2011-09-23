@@ -86,7 +86,7 @@ if ($_POST['orders_id'] &&
     //}
 
     //今日の取引なら赤色
-    $trade_array = getdate(strtotime(tep_datetime_short($orders['torihiki_date'])));
+    $trade_array = getdate(strtotime(tep_datetime_short($orders['predate'])));
     $today_array = getdate();
     if ($trade_array["year"] == $today_array["year"] && $trade_array["mon"] == $today_array["mon"] && $trade_array["mday"] == $today_array["mday"]) {
       $today_color = 'red';
