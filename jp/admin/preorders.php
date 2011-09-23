@@ -1551,21 +1551,21 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
               <input name="keywords" style="width:320px;" type="text" id="keywords" size="40" value="<?php if(isset($_GET['keywords'])) echo stripslashes($_GET['keywords']); ?>">
               <select name="search_type" onChange='search_type_changed(this)' style="text-align:center;">
                 <option value="none"><?php echo TEXT_ORDER_FIND_SELECT;?></option>
-                <option value="orders_id"><?php echo TEXT_ORDER_FIND_OID;?></option> 
-                <option value="customers_name"><?php echo TEXT_ORDER_FIND_NAME;?></option>
-                <option value="email"><?php echo TEXT_ORDER_FIND_MAIL_ADD;?></option>
-                <option value="products_name"><?php echo TEXT_ORDER_FIND_PRODUCT_NAME ;?></option>
+                <option value="orders_id"<?php echo ($_GET['search_type'] == 'orders_id')?' selected="selected"':'';?>><?php echo TEXT_ORDER_FIND_OID;?></option> 
+                <option value="customers_name"<?php echo ($_GET['search_type'] == 'customers_name')?' selected="selected"':'';?>><?php echo TEXT_ORDER_FIND_NAME;?></option>
+                <option value="email"<?php echo ($_GET['search_type'] == 'email')?' selected="selected"':'';?>><?php echo TEXT_ORDER_FIND_MAIL_ADD;?></option>
+                <option value="products_name"<?php echo ($_GET['search_type'] == 'products_name')?' selected="selected"':'';?>><?php echo TEXT_ORDER_FIND_PRODUCT_NAME ;?></option>
                 <?php
                 foreach ($all_preorders_status as $ap_key => $ap_value) {
                 ?>
-                <option value="<?php echo 'os_'.$ap_key;?>"><?php echo PREORDERS_STATUS_SELECT_PRE.$ap_value.PREORDERS_STATUS_SELECT_LAST;?></option> 
+                <option value="<?php echo 'os_'.$ap_key;?>"<?php echo ($_GET['search_type'] == 'os_'.$ap_key)?' selected="selected"':'';?>><?php echo PREORDERS_STATUS_SELECT_PRE.$ap_value.PREORDERS_STATUS_SELECT_LAST;?></option> 
                 <?php
                 }
                 ?>
                 <?php
                 foreach ($all_payment_method as $p_method) {
                 ?>
-                <option value="<?php echo 'payment_method|'.$p_method;?>"><?php echo PREORDERS_PAYMENT_METHOD_PRE.$p_method.PREORDERS_PAYMENT_METHOD_LAST;?></option> 
+                <option value="<?php echo 'payment_method|'.$p_method;?>"<?php echo ($_GET['search_type'] == 'payment_method|'.$p_method)?' selected="selected"':'';?>><?php echo PREORDERS_PAYMENT_METHOD_PRE.$p_method.PREORDERS_PAYMENT_METHOD_LAST;?></option> 
                 <?php
                 }
                 ?>
