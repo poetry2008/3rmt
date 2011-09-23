@@ -42,6 +42,10 @@
               tep_set_category_link_product_status($cID, $_GET['status'], $site_id, $up_rs); 
             } 
           }
+          if (USE_CACHE == 'true') {
+            tep_reset_cache_block('categories');
+            tep_reset_cache_block('also_purchased');
+          }
           tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' .  $HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page));
           break;
       case 'setflag':
@@ -51,6 +55,10 @@
         $up_rs = (isset($_GET['up_rs']))?true:false; 
         if ($site_id == 0) {
           tep_set_all_product_status($_GET['pID'], $_GET['flag'], $up_rs); 
+          if (USE_CACHE == 'true') {
+            tep_reset_cache_block('categories');
+            tep_reset_cache_block('also_purchased');
+          }
           tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' .  $_GET['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$p_page));
         }
         

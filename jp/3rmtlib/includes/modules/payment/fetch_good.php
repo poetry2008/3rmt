@@ -3,17 +3,17 @@
   $Id$
 */
 
-  class fetchgood {
+  class fetch_good {
     var $site_id, $code, $title, $description, $enabled, $s_error, $n_fee, $email_footer;
 
 // class constructor
-    function fetchgood ($site_id = 0) {
+    function fetch_good ($site_id = 0) {
       global $order;
       
       $this->site_id = $site_id;
 
-      $this->code        = 'fetchgood';
-      $this->title       = MODULE_PAYMENT_FETCH_GOOD_TEXT_TITLE;
+      $this->code        = 'fetch_good';
+      $this->title       = MODULE_PAYMENT_FETCH_GOOD_TEXT_TITLE.'xxx';
       $this->description = MODULE_PAYMENT_FETCH_GOOD_TEXT_DESCRIPTION;
       $this->explain       = MODULE_PAYMENT_FETCH_GOOD_TEXT_EXPLAIN;
       $this->sort_order  = MODULE_PAYMENT_FETCH_GOOD_SORT_ORDER;

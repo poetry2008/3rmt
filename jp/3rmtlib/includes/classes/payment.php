@@ -25,7 +25,6 @@
 
         if ( (tep_not_null($module)) && (in_array($module . '.' . substr($PHP_SELF, (strrpos($PHP_SELF, '.')+1)), $this->modules)) ) {
           $this->selected_module = $module;
-
           $include_modules[] = array('class' => $module, 'file' => $module . '.php');
         } else {
           reset($this->modules);
@@ -34,12 +33,11 @@
             $include_modules[] = array('class' => $class, 'file' => $value);
           }
         }
-
         for ($i=0, $n=sizeof($include_modules); $i<$n; $i++) {
           include(DIR_WS_LANGUAGES . $language . '/modules/payment/' . $include_modules[$i]['file']);
           include(DIR_WS_MODULES . 'payment/' . $include_modules[$i]['file']);
-
           $GLOBALS[$include_modules[$i]['class']] = new $include_modules[$i]['class']($this->site_id);
+
         }
 
 // if there is only one payment method, select it as default because in
@@ -108,7 +106,10 @@
         while (list(, $value) = each($this->modules)) {
           $class = substr($value, 0, strrpos($value, '.'));
           if ($GLOBALS[$class]->enabled) {
+            
             $js .= $GLOBALS[$class]->javascript_validation();
+          }else {
+
           }
         }
 
@@ -136,17 +137,21 @@
     function selection() {
       $selection_array = array();
 
+
       if (is_array($this->modules)) {
         reset($this->modules);
+        
         while (list(, $value) = each($this->modules)) {
+
           $class = substr($value, 0, strrpos($value, '.'));
+          //          var_dump($GLOBALS[$class]);
           if ($GLOBALS[$class]->enabled) {
             $selection = $GLOBALS[$class]->selection();
             if (is_array($selection)) $selection_array[] = $selection;
           }
+
         }
       }
-
       return $selection_array;
     }
 
@@ -157,7 +162,7 @@
         }
       }
     }
-
+    
     function confirmation() {
       if (is_array($this->modules)) {
         if (is_object($GLOBALS[$this->selected_module]) && ($GLOBALS[$this->selected_module]->enabled) ) {
@@ -165,7 +170,14 @@
         }
       }
     }
-
+    
+    function specialOutput() {
+      if (is_array($this->modules)) {
+        if (is_object($GLOBALS[$this->selected_module]) && ($GLOBALS[$this->selected_module]->enabled) && method_exists("specialOutput",$GLOBALS[$this->selected_module])) {
+          return $GLOBALS[$this->selected_module]->specialOutput();
+        }
+      }
+    }
     function process_button() {
       if (is_array($this->modules)) {
         if (is_object($GLOBALS[$this->selected_module]) && ($GLOBALS[$this->selected_module]->enabled) ) {

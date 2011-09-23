@@ -727,33 +727,47 @@ function tags_tep_href_link($tags_id)
   return $returnstr;
 }
 
+
 /*
   支付方法的限定额度，如果不满足则不能选择支付方法
 */
+function toNumber($var){
+  //  echo $var;
+  if( is_numeric( $var ) )
+    {
+      if( (float)$var != (int)$var )
+        {
+          return (float)$var;
+        }
+      else
+        {
+          return (int)$var;
+        }
+    }
+  
+    if( $var == "true" )    return true;
+    if( $var == "false" )    return false;
+    return $var;
+}
 function check_money_limit($limit_set, $total)
 {
-  
-  //$total = abs($total);
-  //echo $total;
+
   $limit_arr = explode(",", $limit_set); 
-  if (isset($limit_arr[0]) && isset($limit_arr[1])) {
-    if (is_numeric($limit_arr[0]) && is_numeric($limit_arr[1])) {
-      if ($limit_arr[0] <= $limit_arr[1]) {
-        if ($total < $limit_arr[0] || $total > $limit_arr[1]) {
-          return true; 
-        } else {
-          return false; 
-        }
-      } else {
-        return true; 
-      }
-    } else {
-      return true;
-    }
-  } else {
-    return true;
+  if(count($limit_arr)!=2){
+    return false;
   }
-  return false;
+  
+  $a = $limit_arr[0];
+  $b = $limit_arr[1];
+  if(!is_numeric($a) or !is_numeric($b) or !is_numeric($total)){
+    return false;
+  }
+
+  $a = toNumber($a);
+  $b = toNumber($b);
+  $total = toNumber($total);
+  return !($a<=$total and $total<=$b);
+  //  return true;
 }
 
 function tep_tags_link()

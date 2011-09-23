@@ -111,13 +111,13 @@ class rakuten_bank {
           'module' => $this->title,
           'fields' => array(array('title' => MODULE_PAYMENT_RAKUTEN_BANK_TEXT_PROCESS,
               'field' => ''),
-            array('title' => '<div id="ctelnumber"
+            array('title' => '<div id="ctelnumber" class="rowHide rowHide_'.$this->code.'
               style="display:none;">'.MODULE_PAYMENT_RAKUTEN_INFO_TEXT.'<div
               class="ctelnumber_input">'.MODULE_PAYMENT_RAKUTEN_TELNUMBER_TEXT.'<div
               class="con_telnumber_input">'.tep_draw_input_field('rakuten_telnumber', $email_default_str, 'onpaste="return false"').'  '.MODULE_PAYMENT_RAKUTEN_MUST_INPUT.'</div></div></div>', 
               'field' => '' 
               ), 
-            array('title' => '<div id="catelnumber"
+            array('title' => '<div id="catelnumber" class="rowHide rowHide_'.$this->code.'
               style="display:none;"><div
               class="ctelnumber_input_validate">'.MODULE_PAYMENT_RAKUTEN_TELNUMBER_CONFIRMATION_TEXT.'<div
               class="con_telnumber_input_validate">'.tep_draw_input_field('rakuten_telnumber_again', $email_default_str, 'onpaste="return false"').'  '.MODULE_PAYMENT_RAKUTEN_MUST_INPUT.'</div></div></div>',
@@ -133,12 +133,12 @@ class rakuten_bank {
           'module' => $this->title,
           'fields' => array(array('title' => MODULE_PAYMENT_RAKUTEN_BANK_TEXT_PROCESS,
               'field' => ''),
-            array('title' => '<div id="cemail"
+            array('title' => '<div id="cemail" '.$this->code.'" id="cemail"
               style="display:none;">'.MODULE_PAYMENT_RAKUTEN_INFO_TEXT.MODULE_PAYMENT_RAKUTEN_TELNUMBER_TEXT.'<div
               class="con_telnumber_input">'.tep_draw_input_field('rakuten_telnumber', $email_default_str, 'onpaste="return false"').MODULE_PAYMENT_RAKUTEN_MUST_INPUT.'</div></div>', 
               'field' => '' 
               ), 
-            array('title' => '<div id="caemail"
+            array('title' => '<div id="caemail" '.$this->code.'" id="cemail"
               style="display:none;">'.MODULE_PAYMENT_RAKUTEN_TELNUMBER_CONFIRMATION_TEXT.'<div
               class="con_telnumber_input_validate">'.tep_draw_input_field('rakuten_telnumber_again', $email_default_str, 'onpaste="return false"').MODULE_PAYMENT_RAKUTEN_MUST_INPUT.'</div><p>'.MODULE_PAYMENT_RAKUTEN_BANK_TEXT_FOOTER.'</p></div>',
               'field' => '' 
@@ -147,6 +147,7 @@ class rakuten_bank {
               'field' => $added_hidden)
             )
           );
+
 
     }
 

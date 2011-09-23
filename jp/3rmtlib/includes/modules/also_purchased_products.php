@@ -5,7 +5,7 @@
   global $product_info;
   if (isset($_GET['products_id'])) {
     // ccdd
-    $orders_query = tep_db_query("
+    $orders_sql = "
         select * from (select o.date_purchased, pd.site_id, pd.products_status, p.products_id, p.products_image from " .  TABLE_ORDERS_PRODUCTS . " opa, " . TABLE_ORDERS_PRODUCTS . " opb, " .  TABLE_ORDERS . " o, " . TABLE_PRODUCTS . " p, ".TABLE_PRODUCTS_DESCRIPTION." pd where opa.products_id = '" .  (int)$_GET['products_id'] . "' 
           and o.orders_id = opa.orders_id
           and opa.orders_id = opb.orders_id 
@@ -19,9 +19,18 @@
         having c.products_status != '3'
         order by date_purchased desc 
         limit " . MAX_DISPLAY_ALSO_PURCHASED
-    );
+    ;
     $num_products_ordered = tep_db_num_rows($orders_query);
     if ($num_products_ordered >= MIN_DISPLAY_ALSO_PURCHASED) {
+      $_orders_query = tep_db_query($orders_sql);
+      $orders_query = tep_db_query($orders_sql);
+      $h_show_flag = false;
+      while ($_orders = tep_db_fetch_array($_orders_query)) {
+        if ($_orders['products_status'] != 0) {
+          $h_show_flag = true;
+        }
+      }
+      if($h_show_flag){
 ?>
 <!-- also_purchased_products //-->
 <h3 class="pageHeading_long"><?php echo $product_info['products_name'];?><?php  echo TEXT_ALSO_PURCHASED_PRODUCTS ; ?> </h3>
@@ -32,6 +41,7 @@
       
       echo '<table border="0" width="100%" cellspacing="0" cellpadding="2">'."\n" ;
       echo   '<tr>'."\n";
+      }
       while ($orders = tep_db_fetch_array($orders_query)) {
         if ($orders['products_status'] != 0) {
         $orders['products_name'] = tep_get_products_name($orders['products_id']);
@@ -61,11 +71,13 @@ echo '</td>';
         }
         }
       }
+if($h_show_flag){
       echo '</tr>';
   echo '</table>' ;
 ?> 
 <!-- also_purchased_products_eof //--> 
 <?php
+}
     }
   }
 ?> 

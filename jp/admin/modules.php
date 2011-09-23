@@ -46,51 +46,18 @@
       }
       if(!tep_module_installed($class, $site_id)){
           $module = new $class($site_id);
+
           $module->install();
       }
       
       if ($_GET['set'] == 'payment') { 
         if ($site_id != 0) {
           $limit_show_str = ''; 
-          if (!isset($_POST['configuration']['MODULE_PAYMENT_BUYING_LIMIT_SHOW']) && $_GET['module'] == 'buying') {  
-            $limit_show_str = 'MODULE_PAYMENT_BUYING_LIMIT_SHOW';  
-          }
-          
-          if (!isset($_POST['configuration']['MODULE_PAYMENT_MONEYORDER_LIMIT_SHOW']) && $_GET['module'] == 'moneyorder') {  
-            $limit_show_str = 'MODULE_PAYMENT_MONEYORDER_LIMIT_SHOW';  
-          }
-          
-          if (!isset($_POST['configuration']['MODULE_PAYMENT_POSTALMONEYORDER_LIMIT_SHOW']) && $_GET['module'] == 'postalmoneyorder') {  
-            $limit_show_str = 'MODULE_PAYMENT_POSTALMONEYORDER_LIMIT_SHOW';  
-          }
-          
-          if (!isset($_POST['configuration']['MODULE_PAYMENT_CONVENIENCE_STORE_LIMIT_SHOW']) && $_GET['module'] == 'convenience_store') {  
-            $limit_show_str = 'MODULE_PAYMENT_CONVENIENCE_STORE_LIMIT_SHOW';  
-          }
-          
-          if (!isset($_POST['configuration']['MODULE_PAYMENT_TELECOM_LIMIT_SHOW']) && $_GET['module'] == 'telecom') {  
-            $limit_show_str = 'MODULE_PAYMENT_TELECOM_LIMIT_SHOW';  
-          }
-          
-          if (!isset($_POST['configuration']['MODULE_PAYMENT_PAYPAL_LIMIT_SHOW']) && $_GET['module'] == 'paypal') {  
-            $limit_show_str = 'MODULE_PAYMENT_PAYPAL_LIMIT_SHOW';  
-          }
-          
-          if (!isset($_POST['configuration']['MODULE_PAYMENT_POINT_LIMIT_SHOW']) && $_GET['module'] == 'buyingpoint') {  
-            $limit_show_str = 'MODULE_PAYMENT_POINT_LIMIT_SHOW';  
-          }
-          
-          if (!isset($_POST['configuration']['MODULE_PAYMENT_FETCH_GOOD_LIMIT_SHOW']) && $_GET['module'] == 'fetchgood') {  
-            $limit_show_str = 'MODULE_PAYMENT_FETCH_GOOD_LIMIT_SHOW';  
-          }
-          
-          if (!isset($_POST['configuration']['MODULE_PAYMENT_FREE_PAYMENT_LIMIT_SHOW']) && $_GET['module'] == 'freepayment') {  
-            $limit_show_str = 'MODULE_PAYMENT_FREE_PAYMENT_LIMIT_SHOW';  
-          }
-          if
-            (!isset($_POST['configuration']['MODULE_PAYMENT_RAKUTEN_BANK_LIMIT_SHOW'])
-             && $_GET['module'] == 'rakuten_bank') {  
-            $limit_show_str = 'MODULE_PAYMENT_RAKUTEN_BANK_LIMIT_SHOW';  
+          foreach ($_POST['configuration'] as $key => $value){
+            if(preg_match('/.*LIMIT_SHOW/', $key)) {
+              $limit_show_str = $key;
+              break;
+            }
           }
           if (!empty($limit_show_str)) {
             if (!tep_db_num_rows(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$limit_show_str."' and site_id='".$site_id."'"))) {
@@ -169,17 +136,8 @@
             ");
           }
         }
-        if ($key == 'MODULE_PAYMENT_BUYING_LIMIT_SHOW' || $key ==
-            'MODULE_PAYMENT_MONEYORDER_LIMIT_SHOW' || $key ==
-            'MODULE_PAYMENT_POSTALMONEYORDER_LIMIT_SHOW' || $key ==
-            'MODULE_PAYMENT_CONVENIENCE_STORE_LIMIT_SHOW' || $key ==
-            'MODULE_PAYMENT_TELECOM_LIMIT_SHOW' || $key ==
-            'MODULE_PAYMENT_PAYPAL_LIMIT_SHOW' || $key ==
-            'MODULE_PAYMENT_POINT_LIMIT_SHOW' || $key ==
-            'MODULE_PAYMENT_FETCH_GOOD_LIMIT_SHOW' || $key ==
-            'MODULE_PAYMENT_FREE_PAYMENT_LIMIT_SHOW' || $key ==
-            'MODULE_PAYMENT_RAKUTEN_BANK_LIMIT_SHOW'
-            ) {
+        if ($key)
+          {
           tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . serialize($value) . "' where configuration_key = '" . $key . "' and site_id = '".$site_id."'");
         } else {
           tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . $value . "' where configuration_key = '" . $key . "' and site_id = '".$site_id."'");
@@ -290,6 +248,7 @@ $ex_site = $sites[0];
   //print_r($directory_array_sorted);
   ksort($directory_array_sorted);
   foreach ($directory_array_sorted as $i => $files) {
+
     //$file = $directory_array_sorted[$i];
     //include(DIR_WS_LANGUAGES . $language . '/modules/' . $module_type . '/' . $file);
     //include($module_directory . $file);
@@ -340,7 +299,10 @@ $ex_site = $sites[0];
         echo '              <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" ondblclick="document.location.href=\'' . tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $class) . '\'">' . "\n";
       }
 ?>
-                <td class="dataTableContent"><?php if (isset($module->link) && $module->link) {?><a target='_blank' href="<?php echo $ex_site['url'].'/'.$module->link;?>"><?php echo tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW);?></a><?php } ?><?php echo $module->title; ?></td>
+                <td class="dataTableContent"><?php if (isset($module->link) && $module->link) {?><a target='_blank' href="<?php echo $ex_site['url'].'/'.$module->link;?>"><?php echo tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW);?></a><?php } ?>
+      <?php 
+      echo $module->title;
+      ?></td>
                 <td class="dataTableContent" align="left"><?php echo $module->link ? ($ex_site['url'].'/'.$module->link) : '';?></td>
                 <td class="dataTableContent" align="right"><?php if (is_numeric($module->sort_order)) echo $module->sort_order; ?></td>
                 <!--<td class="dataTableContent" align="right"><?php if ($module->check() > 0) { echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN, 10, 10) . '&nbsp;<a href="' . tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $class . '&action=remove') . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) . '</a>'; } else { echo '<a href="' . tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $class . '&action=install') . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT, 10, 10) . '</a>&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED, 10, 10); } ?></td>-->
@@ -464,6 +426,8 @@ $ex_site = $sites[0];
                   'MODULE_PAYMENT_BUYING_LIMIT_SHOW' ||
                   $module_item['configuration_key'] ==
                   'MODULE_PAYMENT_MONEYORDER_LIMIT_SHOW' ||
+                  $module_item['configuration_key'] ==
+                  'MODULE_PAYMENT_BUYINGPOINT_LIMIT_SHOW' ||
                   $module_item['configuration_key'] ==
                   'MODULE_PAYMENT_POSTALMONEYORDER_LIMIT_SHOW' ||
                   $module_item['configuration_key'] ==

@@ -3,16 +3,16 @@
   $Id$
 */
 
-  class freepayment {
+  class free_payment {
     var $site_id, $code, $title, $description, $enabled, $s_error, $n_fee, $email_footer;
 
 // class constructor
-    function freepayment ($site_id = 0) {
+    function free_payment ($site_id = 0) {
       global $order;
       
       $this->site_id = $site_id;
 
-      $this->code        = 'freepayment';
+      $this->code        = 'free_payment';
       $this->title       = MODULE_PAYMENT_FREE_PAYMENT_TEXT_TITLE;
       $this->description = MODULE_PAYMENT_FREE_PAYMENT_TEXT_DESCRIPTION;
       $this->explain       = MODULE_PAYMENT_FREE_PAYMENT_TEXT_EXPLAIN;
