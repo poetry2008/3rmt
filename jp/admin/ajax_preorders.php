@@ -453,7 +453,8 @@ if ($_POST['orders_id'] &&
     unset($orders_info_raw);
 	$orders_info_raw = tep_db_query("select payment_method  from ".TABLE_PREORDERS." where orders_id = '".$oid."'"); 
     $finish          = tep_get_preorder_canbe_finish($oid)?1:0;
-    $type            = tep_check_pre_order_type($oid);
+    //$type            = tep_check_pre_order_type($oid);
+    $type            = 4;
 	$orders_info = tep_db_fetch_array($orders_info_raw); 
     if(!isset($orders_info_first)){
       $orders_info_first = $orders_info;
@@ -550,7 +551,8 @@ if ($_POST['orders_id'] &&
       $exampleOrder['orders_id']=$ids_array[0];
     }
     if($exampleOrder!=false){
-      $orders_info_raw = tep_db_fetch_array(tep_db_query("select oa_form.id from ".TABLE_PREORDERS." o, oa_form  where oa_form.payment_romaji = o.payment_method and o.orders_id = '".$exampleOrder['orders_id']."' and oa_form.formtype=".tep_check_pre_order_type($exampleOrder['orders_id']))); 
+      //$orders_info_raw = tep_db_fetch_array(tep_db_query("select oa_form.id from ".TABLE_PREORDERS." o, oa_form  where oa_form.payment_romaji = o.payment_method and o.orders_id = '".$exampleOrder['orders_id']."' and oa_form.formtype=".tep_check_pre_order_type($exampleOrder['orders_id']))); 
+      $orders_info_raw = tep_db_fetch_array(tep_db_query("select oa_form.id from ".TABLE_PREORDERS." o, oa_form  where oa_form.payment_romaji = o.payment_method and o.orders_id = '".$exampleOrder['orders_id']."' and oa_form.formtype=4")); 
       $item->init()->loadDefaultValue($exampleOrder['orders_id'],$orders_info_raw['id'],$_GET['group_id']);
     }
     echo "<tr>";

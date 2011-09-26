@@ -477,7 +477,10 @@ $ex_site = $sites[0];
           $link_form_str .= '<a href="'.tep_href_link(FILENAME_OA_FORM, 'preturn='.$mInfo->code.'&pcode='.$mInfo->title.'&type=1').'">'.tep_html_element_button(FORM_SELL_TEXT).'</a>'; 
           $link_form_str .= '<a href="'.tep_href_link(FILENAME_OA_FORM, 'preturn='.$mInfo->code.'&pcode='.$mInfo->title.'&type=2').'">'.tep_html_element_button(FORM_BUY_TEXT).'</a>'; 
           $link_form_str .= '<a href="'.tep_href_link(FILENAME_OA_FORM, 'preturn='.$mInfo->code.'&pcode='.$mInfo->title.'&type=3').'">'.tep_html_element_button(FORM_MIX_TEXT).'</a>'; 
-     
+          
+          if ($mInfo->code != 'buying' && $mInfo->code != 'buyingpoint' && $mInfo->code != 'fetchgood' && $mInfo->code != 'freepayment') {
+            $link_form_str .= '<a href="'.tep_href_link(FILENAME_OA_FORM, 'preturn='.$mInfo->code.'&pcode='.$mInfo->title.'&type=4').'">'.tep_html_element_button(FORM_PREORDER_TEXT).'</a>'; 
+          }
           $contents[] = array('align' => 'left', 'text' => $link_form_str);
            
         }
