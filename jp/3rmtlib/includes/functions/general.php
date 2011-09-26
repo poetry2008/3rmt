@@ -3537,7 +3537,7 @@ function tep_get_top_category_by_cpath($cPath_array)
 
 function tep_check_black_category($category_id)
 {
-  $category_query = tep_db_query("select * from ".TABLE_CATEGORIES_DESCRIPTION." where site_id = '0' or site_id = '".SITE_ID."' and categories_id = '".(int)$category_id."' order by site_id desc limit 1");
+  $category_query = tep_db_query("select * from ".TABLE_CATEGORIES_DESCRIPTION." where (site_id = '0' or site_id = '".SITE_ID."') and categories_id = '".(int)$category_id."' order by site_id desc limit 1");
   $category_res = tep_db_fetch_array($category_query);
   
   if ($category_res) {
@@ -3550,7 +3550,7 @@ function tep_check_black_category($category_id)
 
 function tep_check_black_product($products_id)
 {
-  $product_query = tep_db_query("select * from ".TABLE_PRODUCTS_DESCRIPTION." where site_id = '0' or site_id = '".SITE_ID."' and products_id = '".(int)$products_id."' order by site_id desc limit 1");
+  $product_query = tep_db_query("select * from ".TABLE_PRODUCTS_DESCRIPTION." where (site_id = '0' or site_id = '".SITE_ID."') and products_id = '".(int)$products_id."' order by site_id desc limit 1");
   $product_res = tep_db_fetch_array($product_query);
   if ($product_res) {
     if ($product_res['products_status'] == 3) {

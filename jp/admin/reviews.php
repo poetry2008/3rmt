@@ -456,12 +456,19 @@
              r.date_added, 
              r.last_modified, 
              r.reviews_rating, 
-             r.site_id, 
-             r.reviews_status 
-     from " . TABLE_REVIEWS . " r
-     " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " where r.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
+             r.reviews_status ,
+             s.romaji,
+             s.name as site_name,
+             pd.products_name
+     from " . TABLE_REVIEWS . " r, ".TABLE_SITES." s, ".TABLE_PRODUCTS_DESCRIPTION." pd
+     where r.site_id = s.id
+           and r.products_id = pd.products_id
+           and pd.language_id = '".$languages_id."'
+           and pd.site_id = 0
+        " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and s.id = '" . intval($_GET['site_id']) . "' " : '') . "
      order by date_added DESC";
-$reviews_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $reviews_query_raw, $reviews_query_numrows);
+    
+    $reviews_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $reviews_query_raw, $reviews_query_numrows);
     $reviews_query = tep_db_query($reviews_query_raw);
     while ($reviews = tep_db_fetch_array($reviews_query)) {
       if ( ((!isset($_GET['rID']) || !$_GET['rID']) || ($_GET['rID'] == $reviews['reviews_id'])) && (!isset($rInfo) || !$rInfo) ) {
@@ -508,20 +515,8 @@ $reviews_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS,
         echo '              <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' . $reviews['reviews_id']. '&site_id=' . (isset($_GET['site_id'])?$_GET['site_id']:'')) . '\'">' . "\n";
       }
 ?>
-                <td class="dataTableContent">
-                <?php 
-                  $re_site_info_query = tep_db_query("select * from ".TABLE_SITES." where id = '".$reviews['site_id']."'"); 
-                  $re_site_info = tep_db_fetch_array($re_site_info_query); 
-                  echo $re_site_info['name']; 
-                ?>
-                </td>
-                <td class="dataTableContent"><?php echo '<a href="' . tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' . $reviews['reviews_id'] . '&action=preview') . '">' . tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW) . '</a>&nbsp;'?>
-                <?php
-                  $product_info_raw = tep_db_query("select products_name from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$reviews['products_id']."' and (site_id = '0' or site_id = '".$reviews['site_id']."') order by site_id DESC limit 1"); 
-                  $product_info = tep_db_fetch_array($product_info_raw); 
-                  echo $product_info['products_name']; 
-                ?>
-                </td>
+                <td class="dataTableContent"><?php echo $reviews['site_name'];?></td>
+                <td class="dataTableContent"><?php echo '<a href="' .  tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' .  $reviews['reviews_id'] . '&action=preview') . '">' .  tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW) .  '</a>&nbsp;'.$reviews['products_name'];?></td>
         <td class="dataTableContent" align="center">
 <?php
       if ($reviews['reviews_status'] == '1') {

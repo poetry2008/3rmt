@@ -633,20 +633,63 @@ while ($totals = tep_db_fetch_array($totals_query)) {
       $email .= get_url_by_site_id($order->info['site_id']) . "\n";
       $email .= '━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
       
+      $email = ''; 
+      $select_status_query = tep_db_query("select orders_status_mail from ".TABLE_PREORDERS_MAIL." where orders_status_id = '".$_POST['status']."'"); 
+      $select_status_res = tep_db_fetch_array($select_status_query);
+      if ($select_status_res) {
+        $email = $select_status_res['orders_status_mail']; 
+      }
+      
+      $select_products_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$oID."'");
+      $select_products_res = tep_db_fetch_array($select_products_raw);
+
+      $select_total_raw = tep_db_query("select * from ".TABLE_PREORDERS_TOTAL." where orders_id = '".$oID."' and class = 'ot_total'");
+      $select_total_res = tep_db_fetch_array($select_total_raw);
+      
+      $pre_otm = (int)$select_total_res['value'].TEXT_MONEY_SYMBOL;
+      $email = str_replace(array(
+        '${NAME}',
+        '${MAIL}',
+        '${PREORDER_D}',
+        '${PREORDER_N}',
+        '${PAY}',
+        '${ORDER_M}',
+        '${TRADING}',
+        '${ORDER_S}',
+        '${SITE_NAME}',
+        '${SITE_URL}',
+        '${SUPPORT_EMAIL}',
+        '${PAY_DATE}'
+      ),array(
+        $select_products_res['customers_name'],
+        $select_products_res['customers_email_address'],
+        tep_date_long($select_products_res['date_purchased']),
+        $oID,
+        $select_products_res['payment_method'],
+        $pre_otm,
+        tep_torihiki($select_products_res['torihiki_date']),
+        $select_products_res['orders_status_name'],
+        get_configuration_by_site_id('STORE_NAME', $select_products_res['site_id']),
+        get_url_by_site_id($select_products_res['site_id']),
+        get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $select_products_res['site_id']),
+        date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day()))
+      ),$email);
+      
       if ($customer_guest['customers_guest_chk'] != 9) {
         if ($status == 32) {
           $site_url_raw = tep_db_query("select * from sites where id = '".$order->info['site_id']."'"); 
           $site_url_res = tep_db_fetch_array($site_url_raw); 
           $change_preorder_url = $site_url_res['url'].'/change_preorder.php?pid='.$oID; 
-          $email .= "\n\n".$change_preorder_url; 
+          $email = str_replace('${REAL_ORDER_URL}', $change_preorder_url, $email); 
         }
         if ($status == 33) {
           $site_url_raw = tep_db_query("select * from sites where id = '".$order->info['site_id']."'"); 
           $site_url_res = tep_db_fetch_array($site_url_raw); 
           $change_preorder_url = $site_url_res['url'].'/extend_time.php?pid='.$oID; 
-          $email .= "\n\n".$change_preorder_url; 
+          $email = str_replace('${ORDER_UP_DATE}', $change_preorder_url, $email); 
         }
-      tep_mail($check_status['customers_name'], $check_status['customers_email_address'], FORDERS_MAIL_UPDATE_CONTENT_FINISH.'【' . get_configuration_by_site_id('STORE_NAME', $order->info['site_id']) . '】', $email, get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $order->info['site_id']),$order->info['site_id']);
+        
+        tep_mail($check_status['customers_name'], $check_status['customers_email_address'], FORDERS_MAIL_UPDATE_CONTENT_FINISH.'【' . get_configuration_by_site_id('STORE_NAME', $order->info['site_id']) . '】', $email, get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $order->info['site_id']),$order->info['site_id']);
       } 
       //tep_mail(get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS', $order->info['site_id']), FORDERS_MAIL_UPDATE_CONTENT_MAIL.'【' . get_configuration_by_site_id('STORE_NAME', $order->info['site_id']) . '】', $email, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);
       $customer_notified = '1';
@@ -889,19 +932,27 @@ function check_mail_product_status(pid)
 {
    var direct_single = false; 
    var select_status = document.getElementById('status').value;  
+   var ensure_date = document.getElementById('update_ensure_deadline').value; 
+   ensure_date = ensure_date.replace(/(^\s*)|(\s*$)/g, ""); 
    if (select_status == 32) {
-     $.ajax({ 
-     type:"POST",
-     data:"pid="+pid,
-     async:false, 
-     url: 'ajax_preorders.php?action=check_preorder_deadline',
-     success: function(msg) {
-       if (msg == 'true') {
+     if (ensure_date == '' || ensure_date == '0000-00-00 00:00:00') {
          direct_single = true; 
          alert('<?php echo NOTICE_INPUT_ENSURE_DEADLINE;?>'); 
+     } 
+     /* 
+     $.ajax({ 
+       type:"POST",
+       data:"pid="+pid,
+       async:false, 
+       url: 'ajax_preorders.php?action=check_preorder_deadline',
+       success: function(msg) {
+         if (msg == 'true') {
+           direct_single = true; 
+           alert('<?php echo NOTICE_INPUT_ENSURE_DEADLINE;?>'); 
+         }
        }
-     }
      });  
+     */ 
    }
    if (!direct_single) {
      document.edit_order.submit(); 
@@ -1058,7 +1109,7 @@ function check_mail_product_status(pid)
               <tr>
                 <td class="main" valign="top"><b><?php echo EDIT_ORDERS_ENSUREDATE;?></b></td>
                 <td class="main">
-                  <input name='update_ensure_deadline' size='25' value='<?php echo $order->info['ensure_deadline']; ?>'>
+                  <input id='update_ensure_deadline' name='update_ensure_deadline' size='25' value='<?php echo $order->info['ensure_deadline']; ?>'>
                   <span class="smalltext"><?php echo EDIT_ORDERS_FETCHTIME_READ;?></span>
               </tr>
             </table>
