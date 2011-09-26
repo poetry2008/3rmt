@@ -873,7 +873,7 @@ function tep_get_list_pre_payment() {
     $payment_class = substr($payment_filename, 0, strrpos($payment_filename, '.'));
     if (tep_class_exists($payment_class)) {
       $payment_module = new $payment_class; 
-      if ($payment_module->code == 'buying' || $payment_module->code == 'buyingpoint' || $payment_module->code == 'fetchgood' || $payment_module->code == 'freepayment') {
+      if ($payment_module->code == 'buying' || $payment_module->code == 'buyingpoint' || $payment_module->code == 'fetch_good' || $payment_module->code == 'free_payment') {
         continue; 
       }
       $payment_list_str .= $payment_module->title."\n"; 
