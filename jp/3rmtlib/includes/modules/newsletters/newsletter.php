@@ -25,11 +25,18 @@
       return false;
     }
 
-    function confirm() {
+    function confirm($site_id='') {
       global $_GET;
 
+      if($site_id){
+        $mail_query = tep_db_query("select count(*) as count from " .
+            TABLE_CUSTOMERS . " where customers_newsletter = '1' and site_id
+            ='".$site_id."'");
+      }else{
       $mail_query = tep_db_query("select count(*) as count from " . TABLE_CUSTOMERS . " where customers_newsletter = '1'");
+      }
       $mail = tep_db_fetch_array($mail_query);
+
     
     //add
     $mag_query = tep_db_query("select count(*) as count from mail_magazine");
@@ -64,8 +71,14 @@
       return $confirm_string;
     }
 
-    function send($newsletter_id) {
+    function send($newsletter_id,$site_id='') {
+      if($site_id){
+      $mail_query = tep_db_query("select customers_firstname, customers_lastname,
+          customers_email_address from " . TABLE_CUSTOMERS . " where
+          customers_newsletter = '1' and site_id='".$site_id."'");
+      }else{
       $mail_query = tep_db_query("select customers_firstname, customers_lastname, customers_email_address from " . TABLE_CUSTOMERS . " where customers_newsletter = '1'");
+      }
 
       $mimemessage = new email(array('X-Mailer: osCommerce bulk mailer'));
       $mimemessage->add_text($this->content);
