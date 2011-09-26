@@ -247,7 +247,9 @@
     $module = new $module_name($nInfo->title, $nInfo->content);
 ?>
       <tr>
-        <td><?php if ($module->show_choose_audience) { echo $module->choose_audience(); } else { echo $module->confirm(); } ?></td>
+        <td><?php if ($module->show_choose_audience) { echo
+          $module->choose_audience(); } else { echo
+            $module->confirm($_GET['site_id']); } ?></td>
       </tr>
 <?php
   } elseif (isset($_GET['action']) && $_GET['action'] == 'confirm') {
@@ -297,7 +299,9 @@
 <?php
   tep_set_time_limit(0);
   flush();
-  if (!isset($_GET['selected_box'])) { $module->send($nInfo->newsletters_id); } //2003-07-17 hiroshi_sato fixed
+  if (!isset($_GET['selected_box'])) {
+    $module->send($nInfo->newsletters_id,$_GET['site_id']); } 
+  //2003-07-17 hiroshi_sato fixed
 ?>
       <tr>
         <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
@@ -309,7 +313,10 @@
         <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
       </tr>
       <tr>
-        <td><?php echo '<a href="' . tep_href_link(FILENAME_NEWSLETTERS, 'page=' . $_GET['page'] . '&nID=' . $_GET['nID'] . (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' . tep_image_button('button_back.gif', IMAGE_BACK) . '</a>'; ?></td>
+        <td><?php echo '<a href="' . tep_href_link(FILENAME_NEWSLETTERS, 'page=' .
+        $_GET['page'] . '&nID=' . $_GET['nID'] .
+        (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' .
+        tep_html_element_button(IMAGE_BACK) . '</a>'; ?></td>
       </tr>
 <?php
   } else {

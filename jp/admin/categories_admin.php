@@ -113,7 +113,7 @@ $(window).resize(function (){
   <td>
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
-      <td class="pageHeading">
+      <td class="pageHeading" height="40">
       <?php echo CATEGORY_ADMIN_TITLE;?> 
       &nbsp; 
       <?php
@@ -129,7 +129,9 @@ $(window).resize(function (){
         echo "<td class='smallText' align='right'>";
       }
       ?>
-      <?php echo tep_draw_form('search', FILENAME_CATEGORIES_ADMIN, '', 'get') . "\n"; ?> <?php echo HEADING_TITLE_SEARCH . ' ' . tep_draw_input_field('search', isset($_GET['search'])?$_GET['search']:'') . "\n"; ?></form></td>
+      <?php echo tep_draw_form('search', FILENAME_CATEGORIES_ADMIN, '', 'get') . "\n"; ?> <?php echo HEADING_TITLE_SEARCH . ' ' . tep_draw_input_field('search', isset($_GET['search'])?$_GET['search']:'') . "\n"; ?>
+      <input type = "submit" value = "<?php echo IMAGE_SEARCH;?>" >
+      </form></td>
       <td class="smallText" width="60" align="right">
         <div id="gotomenu">
           <a href="javascript:void(0)" onclick="$('#categories_tree').toggle()"><?php echo CATEGORY_ADMIN_CATREE_TITLE;?></a>

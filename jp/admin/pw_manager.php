@@ -846,8 +846,6 @@ right:5px;*/
       echo "</tr>";
     }
 
-
-
     ?>
 
     <tr>
@@ -866,6 +864,15 @@ right:5px;*/
         </table>
       </td>
     </tr>
+    <?php
+      echo "<tr><td colspan='8' align='right' >";
+        echo '<button type=\'button\'
+        onclick="location.href=\''.tep_href_link(FILENAME_PW_MANAGER,'action=new&sort='.$_GET['sort'].'&type='.$_GET['type']).'\'" >';
+        echo TEXT_NEW;
+        echo "</button>";
+      echo "</td></tr>";
+
+    ?>
   </table>
       </td>
 <?php
@@ -1106,10 +1113,6 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
         <table width=""  border="0" cellspacing="1" cellpadding="0" class = "new_pwmanager">
         <tr><td>
         <?php
-        echo '<button type=\'button\'
-        onclick="location.href=\''.tep_href_link(FILENAME_PW_MANAGER,'action=new&sort='.$_GET['sort'].'&type='.$_GET['type']).'\'" >';
-        echo TEXT_NEW;
-        echo "</button>";
         /*
           echo "<a href='".tep_href_link(FILENAME_PW_MANAGER,'action=new')."'>";
           echo tep_image_button('button_create.gif',IMAGE_CREATE);

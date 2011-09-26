@@ -61,7 +61,9 @@
         </td>
       </tr>
       <tr>
-        <td align="right" class="main"><br><?php echo '<a href="'.tep_href_link(FILENAME_CREATE_ORDER, 'Customer=' . $customer_id, 'SSL').'">' . tep_image_button('button_new_product.gif', IMAGE_NEW_PRODUCT) . '</a>' ?></td>
+        <td align="right" class="main"><br><?php echo '<a
+        href="'.tep_href_link(FILENAME_CREATE_ORDER, 'Customer=' . $customer_id,
+        'SSL').'">' . tep_html_element_button('button_new_product.gif', IMAGE_NEW_PRODUCT) . '</a>' ?></td>
       </tr>
     </table></td>
 <!-- body_text_eof //-->

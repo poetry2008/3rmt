@@ -219,7 +219,10 @@
   if (!isset($_GET['action']) || substr($_GET['action'], 0, 3) != 'new') {
 ?>
                   <tr>
-                    <td colspan="2" align="right"><?php echo '<a href="' .  tep_href_link(FILENAME_ORDERS_STATUS, 'page=' . $_GET['page'] .  '&action=new') . '">' . tep_html_element_button(IMAGE_INSERT) . '</a>'; ?></td>
+                    <td colspan="2" align="right"><?php echo '<a href="' .
+                    tep_href_link(FILENAME_ORDERS_STATUS, 'page=' . $_GET['page'] .
+                        '&action=new') . '">' .
+                    tep_html_element_button(IMAGE_NEW_ORDERS_STATUS) . '</a>'; ?></td>
                   </tr>
 <?php
   }
@@ -230,7 +233,7 @@
 <?php
   $heading = array();
   $contents = array();
-  $explanation = '名前：${NAME}<br>メールアドレス：${MAIL}<br>注文日：${ORDER_D}<br>注文番号：${ORDER_N}<br>支払い方法：${PAY}<br>注文金額：${ORDER_M}<br>取引方法：${TRADING}<br>注文ステータス：${ORDER_S}<br>自社キャラ名：${ORDER_A}<br>サイト名：${SITE_NAME}<br>サイトのURL：${SITE_URL}<br>お問い合わせ用メールアドレス：${SUPPORT_EMAIL}';
+  $explanation = TEXT_ORDERS_STATUS_DESCRIPTION;
   switch (isset($_GET['action'])?$_GET['action']:null) {
     case 'new':
       $site_id   = isset($_GET['site_id']) ? (int)$_GET['site_id']:0;

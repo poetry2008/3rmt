@@ -384,6 +384,7 @@ $(document).ready(function(){
             echo HEADING_TITLE_SEARCH. ' ' .
             tep_draw_input_field('search',isset($_GET['search'])?$_GET['search']:'');
             ?>
+            <input type="submit" value="<?php echo IMAGE_SEARCH;?>">
             </div>
             </form>
             </td>

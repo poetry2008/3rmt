@@ -789,7 +789,9 @@ default:
                               </table></td>
                           </tr>
                           <tr>
-                            <td><a href="present.php?action=input"><?php echo tep_html_element_button('新規'); ?></a></td>
+                            <td align="right" colspan="4"><a
+                            href="present.php?action=input"><?php echo
+                            tep_html_element_button(TEXT_PRESENT_NEW); ?></a></td>
                           </tr>
                         </table></td>
                       <?php

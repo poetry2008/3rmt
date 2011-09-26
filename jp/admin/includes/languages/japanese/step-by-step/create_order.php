@@ -26,7 +26,10 @@ define('CATEGORY_CORRECT', '顧客情報');
 
 define('CREATE_ORDER_STEP_ONE', 'ステップ 1 - 顧客を検索します');
 define('CREATE_ORDER_TITLE_TEXT', '登録データの有無を確認:');
-define('CREATE_ORDER_SEARCH_TEXT', 'メールアドレスを入力し「検索」ボタンをクリックしてください。');
+define('CREATE_ORDER_SEARCH_TEXT',
+    '顧客のメールアドレスを入力し「検索」ボタンをクリックしてください。<br>
+    顧客のメールアドレスが、存在する場合自動で顧客情報が入力されます。<br>
+    顧客のメールアドレスが存在しない場合は、ゲストアカウント作成ページに移動します。');
 define('CREATE_ORDER_EMAIL_TEXT', 'メールアドレス:');
 define('CREATE_ORDER_SEARCH_BUTTON_TEXT', '検索');
 define('CREATE_ORDER_NOTICE_ONE', '変更があれば修正してください');

@@ -157,7 +157,9 @@ while($point_mail = tep_db_fetch_array($point_mail_query)){
                   <tr>
                     <td colspan="2" align="right">
                     <?php 
-                    echo '<a href="'.tep_href_link(FILENAME_POINT_EMAIL, 'page=' .  $_GET['page'] . '&action=new').'">'.tep_html_element_button(IMAGE_INSERT).'</a>';
+                    echo '<a href="'.tep_href_link(FILENAME_POINT_EMAIL, 'page=' .
+                    $_GET['page'] .
+                    '&action=new').'">'.tep_html_element_button(IMAGE_NEW_POINT_EMAIL).'</a>';
                     ?></td>
                   </tr>
 <?php

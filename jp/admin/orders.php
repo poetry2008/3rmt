@@ -3153,7 +3153,7 @@ function submit_confirm()
               </tr>
               <tr>
                 <td class="main" colspan="2"><br><b style="color:#FF0000;"><?php
-                echo TEXT_ORDER_HAS_ERROR;?></b><br><br><?php echo tep_image_submit('button_update.gif', IMAGE_UPDATE, 'onclick="return submit_confirm()&&check_question_form();"'); ?></td>
+                echo TEXT_ORDER_HAS_ERROR;?></b><br><br><?php echo tep_html_element_submit(IMAGE_UPDATE, 'onclick="return submit_confirm()&&check_question_form();"'); ?></td>
               </tr>
             </table>
           </td>

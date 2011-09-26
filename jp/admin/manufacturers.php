@@ -179,7 +179,11 @@
   if (!isset($_GET['action']) || $_GET['action'] != 'new') {
 ?>
               <tr>
-                <td align="right" colspan="2" class="smallText"><?php echo '<a href="' . tep_href_link(FILENAME_MANUFACTURERS, 'page=' .  $_GET['page'] . '&mID=' . (isset($mInfo->manufacturers_id) ?$mInfo->manufacturers_id:'') . '&action=new') . '">' .  tep_html_element_button(IMAGE_INSERT) . '</a>'; ?></td>
+                <td align="right" colspan="2" class="smallText"><?php echo '<a
+                href="' . tep_href_link(FILENAME_MANUFACTURERS, 'page=' .
+                $_GET['page'] . '&mID=' . (isset($mInfo->manufacturers_id)
+                    ?$mInfo->manufacturers_id:'') . '&action=new') . '">' .
+                    tep_html_element_button(IMAGE_NEW_MANUFACTURERS) . '</a>'; ?></td>
               </tr>
 <?php
   }
