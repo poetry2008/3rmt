@@ -160,7 +160,7 @@ function check_all(cid){
       <tr>
         <td>
   <?php echo tep_draw_form('products_to_tags','products_tags.php', 'action=save', 'post');?>
-  <input type="submit" value="Save">
+  <input type="submit" value="<?php echo IMAGE_SAVE;?>">
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
             <td valign="top" width="50%">
