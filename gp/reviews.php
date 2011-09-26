@@ -22,7 +22,7 @@
       <td valign="top" id="contents"><div class="pageHeading"><h1><?php echo HEADING_TITLE ; ?></h1></div> 
         
         <div class="comment"> 
-          <div class="comment_info_warpper"> 
+          <div class="comment_info_warpper_reviews"> 
           <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
 
 <?php
