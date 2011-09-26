@@ -59,7 +59,7 @@
       return array('id' => $this->code,
                    'module' => $this->title,
                    'fields' => array(
-                     array('title' => PAYMENT_FREE_PAYMENT_DESCRIPTION, 'field' => ''),
+                     array('title' => MODULE_PAYMENT_FREE_PAYMENT_TEXT_DESCRIPTION, 'field' => ''),
                      array('title' => $s_message, 'field' => '') 
                      )             
       );

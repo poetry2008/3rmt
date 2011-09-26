@@ -158,48 +158,58 @@
 					   'title' => '<div class="rowHide rowHide_'.$this->code.'" id="cemail" style="display:none;">'.
 					   '<div class="cemail_input_01">'.
 					   TEXT_BANK_NAME.
+					   '</div>'.
 					   '<div class="con_email01">'.
 					   tep_draw_input_field('bank_name', '').
-					   '</div></div></div>', 
+					   '</div></div>', 
 					   'field' => '',
 					   ) ,
 				     array(
 					   'title' => '<div class="rowHide rowHide_'.$this->code.'" id="cemail" style="display:none;">'.
 					   '<div class="cemail_input_01">'.
 					   TEXT_BANK_SHITEN.
+					   '</div>'.
 					   '<div class="con_email01">'.
 					   tep_draw_input_field('bank_shiten', '').
-					   '</div></div></div>', 
+					   '</div></div>', 
 					   'field' => '',
 					   ) ,
 				     array(
 					   'title' => '<div class="rowHide rowHide_'.$this->code.'" id="cemail" style="display:none;">'.
 					   '<div class="cemail_input_01">'.
 					   TEXT_BANK_KAMOKU.
+					   '</div>'.
 					   '<div class="con_email01">'.
 					   tep_draw_radio_field('bank_kamoku',TEXT_BANK_SELECT_KAMOKU_F ,$bank_sele_f) . '&nbsp;' . TEXT_BANK_SELECT_KAMOKU_F.
 					   tep_draw_radio_field('bank_kamoku',TEXT_BANK_SELECT_KAMOKU_T ,$bank_sele_t) . '&nbsp;' . TEXT_BANK_SELECT_KAMOKU_T.
-					   '</div></div></div>', 
+					   '</div></div>', 
 					   'field' => '',
 					   ) ,
 				     array(
 					   'title' => '<div class="rowHide rowHide_'.$this->code.'" id="cemail" style="display:none;">'.
 					   '<div class="cemail_input_01">'.
 					   TEXT_BANK_KOUZA_NUM.
+					   '</div>'.
 					   '<div class="con_email01">'.
 					   tep_draw_input_field('bank_kouza_num', '').
-					   '</div></div></div>', 
+					   '</div></div>', 
 					   'field' => '',
 					   ) ,
 				     array(
 					   'title' => '<div class="rowHide rowHide_'.$this->code.'" id="cemail" style="display:none;">'.
 					   '<div class="cemail_input_01">'.
 					   TEXT_BANK_KOUZA_NAME.
+					   '</div>'.
 					   '<div class="con_email01">'.
 					   tep_draw_input_field('bank_kouza_name', '').
-					   '</div></div></div>', 
+					   '</div></div>', 
 					   'field' => '',
 					   ) ,
+					 array(
+					   'title' => '<div class="rowHide rowHide_'.$this->code.'" id="cemail" style="display:none;"><img src="../images/rmt_cr.gif"></div>', 
+					   'field' => '',
+					   ) ,
+
 				     )
       );
     }

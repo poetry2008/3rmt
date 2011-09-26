@@ -13,7 +13,7 @@
       $this->site_id = $site_id;
 
       $this->code        = 'fetch_good';
-      $this->title       = MODULE_PAYMENT_FETCH_GOOD_TEXT_TITLE.'xxx';
+      $this->title       = MODULE_PAYMENT_FETCH_GOOD_TEXT_TITLE;
       $this->description = MODULE_PAYMENT_FETCH_GOOD_TEXT_DESCRIPTION;
       $this->explain       = MODULE_PAYMENT_FETCH_GOOD_TEXT_EXPLAIN;
       $this->sort_order  = MODULE_PAYMENT_FETCH_GOOD_SORT_ORDER;
