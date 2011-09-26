@@ -1225,7 +1225,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
  <!--new order answer{{-->
                           <?php
   $order_id = $order->info['orders_id'];
-  $formtype = tep_check_pre_order_type($order_id);
+  $formtype = 4;
   $payment_romaji = tep_get_pre_payment_code_by_order_id($order_id); 
   $oa_form_sql = "select * from ".TABLE_OA_FORM." where formtype = '".$formtype."' and payment_romaji = '".$payment_romaji."'";
   $form = tep_db_fetch_object(tep_db_query($oa_form_sql), "HM_Form");

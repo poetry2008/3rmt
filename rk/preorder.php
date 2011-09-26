@@ -417,7 +417,7 @@ if (!isset($_GET['quantity'])) $_GET['quantity'] = NULL; //del notice
         <?php
         $radio_buttons = 0; 
         for ($i=0, $n=sizeof($selection); $i<$n; $i++) { 
-          if ($selection[$i]['id'] == 'buying' || $selection[$i]['id'] == 'buyingpoint' || $selection[$i]['id'] == 'fetchgood' || $selection[$i]['id'] == 'freepayment') {
+          if ($selection[$i]['id'] == 'buying' || $selection[$i]['id'] == 'buyingpoint' || $selection[$i]['id'] == 'fetch_good' || $selection[$i]['id'] == 'free_payment') {
             continue; 
           }
           if ($selection[$i]['id'] == 'moneyorder' && MODULE_PAYMENT_MONEYORDER_PREORDER_SHOW == 'False') {

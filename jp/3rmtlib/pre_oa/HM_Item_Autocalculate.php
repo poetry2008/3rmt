@@ -49,7 +49,8 @@ class HM_Item_Autocalculate extends HM_Item_Basic
     $i = 0;
 
     // 重新取一次 订单类型
-    $order_type =  tep_check_pre_order_type($this->order_id);
+    //$order_type =  tep_check_pre_order_type($this->order_id);
+    $order_type =  4;
     $noproduct = true;
     while ($opp = tep_db_fetch_array($orders_products_query)) {
 

@@ -175,7 +175,7 @@ class HM_Form extends DbRecord
             $("#wait").hide();
             $('body').css('cursor','');
             disableQA();
-            window.location.href='orders.php?page=<?php echo $_GET['page'];?>';
+            window.location.href='preorders.php?page=<?php echo $_GET['page'];?>';
           }
         }
         );
