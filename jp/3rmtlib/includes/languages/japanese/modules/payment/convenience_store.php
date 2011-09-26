@@ -8,7 +8,7 @@
   define('MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_DESCRIPTION', 'コンビニ決済(代金に手数料が連動)');
   define('MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_PROCESS', 'LAWSON、スリーエフ、MINI STOP、サークルK、SUNKUSがご利用いただけます。<br>30,000円未満の決済の場合200円、30,000円以上の決済の場合は350円の手数料が別途必要となります。');
   define('MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_PROCESS_CON', 'LAWSON、スリーエフ、MINI STOP、サークルK、SUNKUSがご利用いただけます。');
-  define('MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_FOOTER', '※ SmartPitシートの送信は、弊社営業時間内に行っております。');
+  define('MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_FOOTER', '※ SmartPitシートの送信は、弊社営業時間内に行っております。<img src="../images/rmt_cr.gif">');
   /*
   define('MODULE_PAYMENT_CONVENIENCE_STORE_IMG_FOOTER', '
   <table width="100%" cellspacing="3" cellpadding="0" border="0" id="convenience_img">

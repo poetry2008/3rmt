@@ -136,7 +136,7 @@
             ");
           }
         }
-        if ($key)
+        if (preg_match('/.*LIMIT_SHOW/', $key)) 
           {
           tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . serialize($value) . "' where configuration_key = '" . $key . "' and site_id = '".$site_id."'");
         } else {

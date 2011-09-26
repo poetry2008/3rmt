@@ -1004,13 +1004,13 @@ P.description {
 }
 .con_email01 {
 	display:inline;
-	margin-left:78px;
+	margin-left:25px;
 }
 .con_email02 {
 	display:inline;
 	margin-left:39px;
 }
-.cemail_input_01{ margin:10px 0 0 0;}
+.cemail_input_01{ float:left; line-height:21px; width:100px;}
 .waring_category {
 	color:#000;
 	margin:5px 0 2px 0;

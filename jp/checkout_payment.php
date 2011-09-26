@@ -212,7 +212,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
                         <tr> 
                           <td></td> 
                           <td colspan="2">
-                          <table border="0" width="100%" cellspacing="0" cellpadding="0" class="box_des02"> 
+                          <table border="0" width="100%" cellspacing="0" cellpadding="0" class=""> 
                               <?php
 
     if ( ($selection[$i]['id'] == $payment) || ($n == 1) ) {
@@ -234,7 +234,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
                               </tr> <?php
     if (isset($selection[$i]['error'])) {
 ?> 
-                              <tr> 
+                             <tr> 
                                 <td width="10"></td> 
                                 <td class="main" colspan="4"><?php echo $selection[$i]['error']; ?></td> 
                                 <td width="10"></td> 
@@ -242,30 +242,32 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
                               <?php
     } elseif (isset($selection[$i]['fields']) && is_array($selection[$i]['fields'])) {
 ?> 
-                              <tr> 
+                             <tr> 
                                 <td width="10"></td> 
-                                <td colspan="4"><table border="0" cellspacing="0" cellpadding="2"> 
-                                    <?php
+                                <td colspan="4"><table border="0" cellspacing="0" cellpadding="2" width="100%"> 
+                                   <?php
       for ($j=0, $n2=sizeof($selection[$i]['fields']); $j<$n2; $j++) {
 ?> 
-                                    <tr> 
+                                   <tr> 
                                       <td class="main02"><?php echo $selection[$i]['fields'][$j]['title']; ?></td> 
                                       <td></td> 
                                       <td class="main02"><?php echo $selection[$i]['fields'][$j]['field']; ?></td> 
                                       <td width="10"></td> 
-                                    </tr> 
-                                    <?php
+                                    </tr>
+                                   <?php
       }
-?> 
-                                  </table></td> 
-                                <td width="10"></td> 
+?>
+								 </table></td>
+                               <td width="10"></td> 
                               </tr>
+
 <?php
     }
 ?> 
-                            </table></td> 
+                        </table></td> 
                           <td></td> 
                         </tr> 
+
                         <?php
     $radio_buttons++;
     //  }
@@ -277,10 +279,9 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
                 </table>
                 </td> 
             </tr> 
-            <tr> 
-              <td></td> 
-            </tr> 
-      
+            <tr>
+            	<td></td>
+            </tr>
 <?php
   //販売終了
 			//  }
