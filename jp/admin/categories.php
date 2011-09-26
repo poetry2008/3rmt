@@ -1206,7 +1206,7 @@ $(document).ready(function(){
 <?php
 if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
   <script language='javascript'>
-    //one_time_pwd('<?php echo $page_name;?>');
+    one_time_pwd('<?php echo $page_name;?>');
   </script>
 <?php }?>
 <div id="spiffycalendar" class="text"></div>
