@@ -1206,7 +1206,7 @@ $(document).ready(function(){
 <?php
 if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
   <script language='javascript'>
-    one_time_pwd('<?php echo $page_name;?>');
+    //one_time_pwd('<?php echo $page_name;?>');
   </script>
 <?php }?>
 <div id="spiffycalendar" class="text"></div>
@@ -3323,9 +3323,9 @@ tep_display_google_results(FILENAME_CATEGORIES);
 
         //$contents[] = array('text' => '<br>' . $product_categories_string);
         if (isset($_GET['rdirect'])) {
-          $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_image_submit('button_delete.gif', IMAGE_DELETE) . ' <a class="new_product_reset" href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' .  $pInfo->products_id.'&site_id='.$_GET['site_id'].'&rdirect=all'.$d_page) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
+          $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_DELETE) . ' <a class="new_product_reset" href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&pID=' .  $pInfo->products_id.'&site_id='.$_GET['site_id'].'&rdirect=all'.$d_page) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
         } else {
-          $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_image_submit('button_delete.gif', IMAGE_DELETE) . ' <a class="new_product_reset" href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' .  $pInfo->products_id.'&site_id='.$_GET['site_id'].$d_page) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
+          $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_DELETE) . ' <a class="new_product_reset" href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&pID=' .  $pInfo->products_id.'&site_id='.$_GET['site_id'].$d_page) .  '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
         }
         break;
       case 'delete_product':
