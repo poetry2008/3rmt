@@ -195,7 +195,7 @@
             <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
           </tr>
           <tr>
-            <td class="main"><?php echo TEXT_LATEST_NEWS_CONTENT; ?></td>
+            <td class="main" valign="top"><?php echo TEXT_LATEST_NEWS_CONTENT; ?></td>
             <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_textarea_field('content', 'soft', '70', '15',isset($latest_news['content'])? stripslashes($latest_news['content']):''); ?>
   <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#STORE_NAME#
   </td>
@@ -211,7 +211,7 @@
             <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
           </tr>
           <tr>
-            <td class="main"><?php echo TEXT_LATEST_NEWS_IMAGE_DESCRIPTION; ?></td>
+            <td class="main" valign="top"><?php echo TEXT_LATEST_NEWS_IMAGE_DESCRIPTION; ?></td>
             <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_textarea_field('news_image_description', 'soft', '70', '7', isset($latest_news['news_image_description'])?stripslashes($latest_news['news_image_description']):''); ?></td>
           </tr>     
         </table></td>
