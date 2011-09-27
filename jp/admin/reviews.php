@@ -415,7 +415,11 @@
       while(list($key, $value) = each($_POST)) echo '<input type="hidden" name="' . $key . '" value="' . htmlspecialchars(stripslashes($value)) . '">';
 ?>
       <tr>
-        <td align="right" class="smallText"><?php echo '<a href="' .  tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' .  $rInfo->reviews_id . '&action=edit') . '">' .  tep_html_element_button(IMAGE_BACK) . '</a> ' .  tep_html_element_submit(IMAGE_UPDATE) . ' <a href="' .  tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' .  $rInfo->reviews_id) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>'; ?></td>
+        <td align="right" class="smallText"><?php echo '<a href="' .
+        tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' .
+            $rInfo->reviews_id . '&action=edit') . '">' .
+        tep_html_element_button(IMAGE_BACK) . '</a> ' .
+        tep_html_element_submit(IMAGE_SAVE) . ' <a href="' .  tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' .  $rInfo->reviews_id) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>'; ?></td>
       </form></tr>
 <?php
     } else {

@@ -526,8 +526,8 @@ $sele_lid = substr($sql1['limit_date'],8,2);
                     <div align="right">
             <a href=
             <?php echo tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('action'))); ?>
-            ><?php echo tep_html_element_button('戻る'); ?></a>
-            <?php echo tep_html_element_submit('更新'); ?>
+            ><?php echo tep_html_element_button(IMAGE_BACK); ?></a>
+            <?php echo tep_html_element_submit(IMAGE_SAVE); ?>
                     </div></td>
                 </tr>
               </table>

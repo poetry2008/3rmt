@@ -62,7 +62,7 @@
       </tr>
       <tr>
         <td align="right" class="main"><br><?php echo
-        tep_image_submit('button_insert.gif', IMAGE_SAVE); ?></td>
+        tep_html_element_submit(IMAGE_SAVE); ?></td>
       </tr>
     </table></form></td>
 <!-- body_text_eof //-->

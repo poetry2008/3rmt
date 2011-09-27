@@ -224,7 +224,7 @@
           <?php
             isset($_GET['latest_news_id']) ? $cancel_button = '&nbsp;&nbsp;<a class="new_product_reset" href="' . tep_href_link(FILENAME_LATEST_NEWS, 'latest_news_id=' . $_GET['latest_news_id']) . '">' .
     tep_html_element_button(IMAGE_CANCEL) . '</a>' : $cancel_button = '';
-            echo tep_html_element_submit(IMAGE_INSERT) . $cancel_button;
+            echo tep_html_element_submit(IMAGE_SAVE) . $cancel_button;
           ?>
         </td>
     
