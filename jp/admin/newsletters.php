@@ -210,7 +210,9 @@
       <tr>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="2">
           <tr>
-            <td class="main" align="right"><?php echo (($form_action == 'insert') ?  tep_html_element_submit(IMAGE_SAVE) : tep_html_element_submit(IMAGE_UPDATE)).  '&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_NEWSLETTERS, 'page=' .  (isset($_GET['page'])?$_GET['page']:'') . '&nID=' .  (isset($_GET['nID'])?$_GET['nID']:'') .  (isset($_GET['lsite_id'])?('&site_id='.$_GET['lsite_id']):'')) . '">' .  tep_html_element_button(IMAGE_CANCEL) . '</a>'; ?></td>
+            <td class="main" align="right"><?php echo (($form_action == 'insert') ?
+                tep_html_element_submit(IMAGE_SAVE) :
+                tep_html_element_submit(IMAGE_SAVE)).  '&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_NEWSLETTERS, 'page=' .  (isset($_GET['page'])?$_GET['page']:'') . '&nID=' .  (isset($_GET['nID'])?$_GET['nID']:'') .  (isset($_GET['lsite_id'])?('&site_id='.$_GET['lsite_id']):'')) . '">' .  tep_html_element_button(IMAGE_CANCEL) . '</a>'; ?></td>
           </tr>
         </table></td>
       </form></tr>

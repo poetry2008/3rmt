@@ -391,7 +391,9 @@ function popupImageWindow(url) {
         <td><table border="0" width="100%" cellspacing="0" cellpadding="2">
           <tr>
             <td class="main"><?php echo TEXT_BANNERS_BANNER_NOTE . '<br>' . TEXT_BANNERS_INSERT_NOTE . '<br>' . TEXT_BANNERS_EXPIRCY_NOTE . '<br>' . TEXT_BANNERS_SCHEDULE_NOTE; ?></td>
-            <td class="main" align="right" valign="top" nowrap><?php echo (($form_action == 'insert') ? tep_html_element_submit(IMAGE_INSERT) : tep_html_element_submit(IMAGE_UPDATE)). '&nbsp;&nbsp;<a class="new_product_reset" href="' .  tep_href_link(FILENAME_BANNER_MANAGER, 'page=' .(isset($_GET['page'])?$_GET['page']:'') . '&bID=' .  (isset($_GET['bID'])?$_GET['bID']:'') .  (isset($_GET['lsite_id'])?('&site_id='.$_GET['lsite_id']):'')) .  '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>'; ?></td>
+            <td class="main" align="right" valign="top" nowrap><?php echo
+            (($form_action == 'insert') ? tep_html_element_submit(IMAGE_INSERT) :
+             tep_html_element_submit(IMAGE_SAVE)). '&nbsp;&nbsp;<a class="new_product_reset" href="' .  tep_href_link(FILENAME_BANNER_MANAGER, 'page=' .(isset($_GET['page'])?$_GET['page']:'') . '&bID=' .  (isset($_GET['bID'])?$_GET['bID']:'') .  (isset($_GET['lsite_id'])?('&site_id='.$_GET['lsite_id']):'')) .  '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>'; ?></td>
           </tr>
         </table></td>
       </form></tr>

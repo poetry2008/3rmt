@@ -945,7 +945,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_insert.gif', IMAGE_INSERT) . '&nbsp;<a href="' . tep_href_link(FILENAME_PW_MANAGER, 'page=' . $_GET['page']) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
       */
       $contents[] = array('align' => 'center', 'text' => '<br>' . 
-          "<button type='submit' >".TEXT_BUTTON_QUERY."</button>"
+          "<button type='submit' >".IMAGE_SAVE."</button>"
           . '&nbsp;' .
           "<button type='button'
           onclick=\"location.href='".
@@ -1036,7 +1036,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
         ."</div>"
           );
       $contents[] = array('align' => 'center', 'text' => '<br>' . 
-          "<button type='submit' >".TEXT_BUTTON_QUERY."</button>"
+          "<button type='submit' >".IMAGE_SAVE."</button>"
           . '&nbsp;' .
           "<button type='button'
           onclick=\"location.href='".
