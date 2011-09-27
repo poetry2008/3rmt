@@ -20,4 +20,4 @@ define('PREORDER_SUCCESS_READ_INFO', STORE_NAME.'では、%sの予約サービ�
     「迷惑メールフォルダ」や「ゴミ箱」に振り分けされ見落としていませんか？<br>＜メールドメインの受信制限を設定している＞<br>'.STORE_DOMAIN.'のメールドメインを受信するように設定をお願いいたします。<br>＜それでも届かないときは、メールアドレス変更＞<br>お客様情報から今すぐご登録メールアドレスの変更をお願いいたします。');
 define('PREORDER_SUCCESS_UNACTIVE_HEAD_TITLE', 'メール認証');
 define('PREORDER_SUCCESS_UNACTIVE_TITLE', 'メール認証');
-define('PREORDER_SUCCESS_TEXT_LINK', '「フリーメールでメールが受け取れない方へ（問い合わせへのリンクを付ける）」');
+define('PREORDER_SUCCESS_TEXT_LINK', '「フリーメールでメールが受け取れない方へ」');
