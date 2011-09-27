@@ -706,7 +706,7 @@ h3 {
 }
 .smallText a { text-decoration:none;}
 .right_column01{
-/*	margin-top:12px;
+/*	margin-top:12px ;
 */
 }
 .right_column_a {
@@ -1002,3 +1002,4 @@ a.s_column_bar {
 .sql_text01 input{ height:25px\9; height:23px;}
 #oa_dynamic_group_item td { text-align:left;}
 #infoBox_01 td { vertical-align:top;}
+.right_column_text{ padding-top:25px;}

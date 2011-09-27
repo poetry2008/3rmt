@@ -1108,7 +1108,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
     break;
 }
   if ( (tep_not_null($heading)) && (tep_not_null($contents)) ) {
-    echo '            <td class="right_column01" width="20%" valign="top">' . "\n";
+    echo '            <td class="right_column_text" width="20%" valign="top">' . "\n";
 ?>
         <table width=""  border="0" cellspacing="1" cellpadding="0" class = "new_pwmanager">
         <tr><td>
