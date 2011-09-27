@@ -1004,13 +1004,13 @@ P.description {
 }
 .con_email01 {
 	display:inline;
-	margin-left:25px;
+	margin-left:39px;
 }
 .con_email02 {
 	display:inline;
 	margin-left:39px;
 }
-.cemail_input_01{ float:left; line-height:21px; width:120px;}
+.cemail_input_01{ clear:both; line-height:21px; font-size:11px;}
 .waring_category {
 	color:#000;
 	margin:5px 0 2px 0;
@@ -1128,3 +1128,4 @@ searching
 	margin-left:39px;
 }
 .ctelnumber_input{ margin:10px 0 0 0;}
+.cemail_front_text{ width:140px; float:left;}
