@@ -1118,8 +1118,13 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
       //torihiki_date_error DESC,o.torihiki_date DESC";
     }  elseif (isset($_GET['keywords']) && isset($_GET['search_type']) && $_GET['search_type'] == 'products_name' && !$_GET['type'] && !$payment) {
       $orders_query_raw = " select distinct op.orders_id from " . TABLE_ORDERS_PRODUCTS . " op 
-        ".$sort_table." where ".$sort_where." op.products_name like
-        '%".$_GET['keywords']."%' " . (isset($_GET['site_id']) &&
+        ".$sort_table." where ".$sort_where." op.products_name ";
+        if(isset($_GET['real_name'])&&$_GET['real_name']){
+          $orders_query_raw .=  "= '".$_GET['keywords']."' " ;
+        }else{
+          $orders_query_raw .=  "like '%".$_GET['keywords']."%' " ;
+        }
+        $orders_query_raw .= (isset($_GET['site_id']) &&
         intval($_GET['site_id']) ? " and op.site_id = '" . intval($_GET['site_id'])
         . "' " : '') . " order by op.torihiki_date DESC";
       //op.torihiki_date desc";
