@@ -27,7 +27,9 @@
     <td valign="top" class="main">
     <?php 
     if ($reviews_array[$i]['products_status'] == 0 || $reviews_array[$i]['products_status'] == 3) {
-      echo '<b>' .  $reviews_array[$i]['products_name'] . '</b>';
+      if ($reviews_array[$i]['products_status'] != 3) {
+        echo '<b>' .  $reviews_array[$i]['products_name'] . '</b>';
+      }
     } else {
       echo '<a href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS_INFO, 'products_id=' .  $reviews_array[$i]['products_id'] . '&reviews_id=' .  $reviews_array[$i]['reviews_id']) . '"><b><u>' .  $reviews_array[$i]['products_name'] . '</u></b></a>';
     }
