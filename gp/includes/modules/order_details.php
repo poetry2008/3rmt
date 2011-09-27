@@ -104,7 +104,7 @@
     if (strstr($PHP_SELF, FILENAME_SHOPPING_CART)) {
       $cart_pro_status_raw = tep_db_query("select products_status from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$products[$i]['id']."' and (site_id = 0 or site_id = ".SITE_ID.") order by site_id desc limit 1"); 
       $cart_pro_status = tep_db_fetch_array($cart_pro_status_raw);
-      if ($cart_pro_status['products_status'] == 0) {
+      if ($cart_pro_status['products_status'] == 0 || $cart_pro_status['products_status'] == 3) {
         $stock_link_single = true; 
         echo '    <td class="main" style=" background:#f4f4f4; width:150px;">'.(((PRODUCT_LIST_MODEL > 0) && strstr($PHP_SELF, FILENAME_SHOPPING_CART))?$products[$i]['model'] . '<br>':'').'<b>' . $products[$i]['name'] . '</b>';
       } else {
