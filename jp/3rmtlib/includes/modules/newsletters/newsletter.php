@@ -32,14 +32,16 @@
         $mail_query = tep_db_query("select count(*) as count from " .
             TABLE_CUSTOMERS . " where customers_newsletter = '1' and site_id
             ='".$site_id."'");
+    $mag_query = tep_db_query("select count(*) as count from mail_magazine where
+        site_id = '".$site_id."'");
       }else{
       $mail_query = tep_db_query("select count(*) as count from " . TABLE_CUSTOMERS . " where customers_newsletter = '1'");
+    $mag_query = tep_db_query("select count(*) as count from mail_magazine");
       }
       $mail = tep_db_fetch_array($mail_query);
 
     
     //add
-    $mag_query = tep_db_query("select count(*) as count from mail_magazine");
     $mag = tep_db_fetch_array($mag_query);
     
     $mag_count = $mail['count'] + $mag['count'];
@@ -90,7 +92,12 @@
       }
     
     //add
+    if($site_id){
+    $mag_query = tep_db_query("select * from mail_magazine where site_id =
+        '".$site_id."'");
+    }else{
     $mag_query = tep_db_query("select * from mail_magazine");
+    }
     while($mag = tep_db_fetch_array($mag_query)) {
         $mimemessage->send($mag['mag_name'], $mag['mag_email'], '', EMAIL_FROM, $this->title);
     }
