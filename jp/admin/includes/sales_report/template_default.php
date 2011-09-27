@@ -304,7 +304,7 @@ if (isset($srDetail)){
                 <td class="dataTableContent">&nbsp;</td>
                 <td class="dataTableContent" align="left"><a href="<?php echo tep_catalog_href_link("product_info.php?products_id=" . $info[$i]['pid']) ?>" target="_blank"><?php echo $info[$i]['pname']; ?></a>
                 </td>
-                <td class="dataTableContent" align="right"><?php echo $info[$i]['pquant']; ?></td>
+                <td class="dataTableContent" align="center"><?php echo $info[$i]['pquant']; ?></td>
                 <?php
           if ($srDetail == 2) {?>
                 <td class="dataTableContent" align="right"><?php 
