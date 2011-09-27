@@ -149,7 +149,7 @@
         </tr>
         <tr>
           <td>
-          <?php echo sprintf(PREORDER_SUCCESS_TEXT, '<a href="'.tep_href_link(FILENAME_CONTACT_US).'">'.PREORDER_SUCCESS_TEXT_LINK.'</a>');?> 
+          <?php echo sprintf(PREORDER_SUCCESS_TEXT, '<a href="'.tep_href_link('email_trouble.php').'">'.PREORDER_SUCCESS_TEXT_LINK.'</a>');?> 
           </td>
         </tr>
         <tr>
