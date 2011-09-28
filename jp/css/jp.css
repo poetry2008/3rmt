@@ -1087,6 +1087,7 @@ a.Icon:hover {
 }
 .c_pay_info {padding:5px; border:1px solid #B6B7CB; margin:35px 0 15px 0;}
 #caemail p{ height:280px;}
+#caemail p img { text-align:center; position:relative; left:40px;}
 #catelnumber p{ height:280px;}
 .box_des02 {
 /*	background:url(../images/rmt_cr.gif) 56px 181px no-repeat;
