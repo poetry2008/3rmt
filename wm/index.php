@@ -76,7 +76,7 @@ if ($category_depth == 'nested') {
     echo HEADING_TITLE;
   }
 ?></h1>
-    <div class="comment_long"><?php echo $seo_category['categories_header_text']; //seoフレーズ ?>
+    <div class="comment_long"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_header_text']); //seoフレーズ ?>
         <?php
         $has_ca_single = false; 
         ?>
@@ -156,7 +156,7 @@ if (isset($_GET['cPath'])) {
 ?>
 <?php
 if (!empty($seo_category['categories_footer_text'])) {
-echo '<div class="footer_text01">'.$seo_category['categories_footer_text'].'</div>';
+echo '<div class="footer_text01">'.str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_footer_text']).'</div>';
 }
 ?>  
 <?php
@@ -172,12 +172,12 @@ echo '<div class="footer_text01">'.$seo_category['categories_footer_text'].'</di
     if ($seo_category['seo_description']) {
       echo '<div class="seo01">'; 
       echo '<div class="seo_title_04">'.$seo_category['seo_name'].'について'.'</div>'; 
-      echo '<p>'.$seo_category['seo_description'].'</p>'; 
+      echo '<p>'.str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_description']).'</p>'; 
       echo '<div class="seo_bottom_01"></div>'; 
       echo '</div>'; 
     }
     if (!empty($seo_category['text_information'])) {
-      echo $seo_category['text_information']; 
+      echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['text_information']); 
     }
   }
 ?>

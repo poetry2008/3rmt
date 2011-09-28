@@ -23,7 +23,7 @@
       if (!empty($seo_category['categories_header_text'])) { 
       ?>
       <p class="comment">
-      <?php echo $seo_category['categories_header_text']; //seoフレーズ ?>
+      <?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_header_text']); //seoフレーズ ?>
       </p>
       <?php
       } 
@@ -113,7 +113,7 @@
       ?>
       <p class="comment">
       <?php 
-      echo $seo_category['categories_footer_text']; //seoフレーズ 
+      echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_footer_text']); //seoフレーズ 
       ?>
       </p>
       <?php
@@ -136,10 +136,10 @@
   if (isset($cPath_array)) {
     if ($seo_category['seo_description']) {
       echo '<h2 class="pageHeading"><span class="game_t">' . $seo_category['seo_name'] . 'について</span></h2>' . "\n";
-      echo '<p class="comment">' . $seo_category['seo_description'] . '</p>' . "\n"; //seoフレーズ
+      echo '<p class="comment">' . str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_description']) . '</p>' . "\n"; //seoフレーズ
     }
     if (!empty($seo_category['text_information'])) {
-      echo '<p class="comment">'.$seo_category['text_information'].'</p>';
+      echo '<p class="comment">'.str_replace('#STORE_NAME#', STORE_NAME, $seo_category['text_information']).'</p>';
     }
   }
 ?>

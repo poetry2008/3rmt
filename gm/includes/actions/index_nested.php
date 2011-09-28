@@ -21,7 +21,7 @@
     }
 ?> 
       <!-- heading title eof//-->
-    <p><?php echo $seo_category['categories_header_text']; //seoフレーズ ?></p>
+    <p><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_header_text']); //seoフレーズ ?></p>
       <table border="0" width="95%" cellspacing="3" cellpadding="3"> 
         <tr> 
           <?php
@@ -105,7 +105,7 @@
     if (!empty($seo_category['categories_footer_text'])) { 
     ?>
     <div id="information">
-    <p><?php echo $seo_category['categories_footer_text']; //seoフレーズ ?></p>
+    <p><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_footer_text']); //seoフレーズ ?></p>
     </div>
     <?php
     } 
@@ -131,7 +131,7 @@
     <div id="information02"> 
     <div class="seo_small_top"></div>
     <p> 
-    <?php echo $seo_category['seo_description']; 
+    <?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_description']); 
     ?>
     </p> 
     <div class="seo_small_bottom"></div>

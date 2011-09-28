@@ -58,7 +58,7 @@ if ($category_depth == 'nested') {
     echo HEADING_TITLE;
   }
 ?></h1>
-    <p class="comment"><?php echo $seo_category['categories_header_text']; //seoフレーズ ?></p>
+    <p class="comment"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_header_text']); //seoフレーズ ?></p>
 <?php
   $has_ca_single = false;
 ?>
@@ -143,7 +143,7 @@ if ($category_depth == 'nested') {
         include(DIR_WS_MODULES . FILENAME_PRODUCT_LISTING); 
       } 
     ?> 
-    <p class="comment"><?php echo $seo_category['categories_footer_text']; //seoフレーズ ?></p>
+    <p class="comment"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_footer_text']); //seoフレーズ ?></p>
     <?php
       if (isset($_GET['cPath'])) {
     ?>
@@ -159,12 +159,13 @@ if ($category_depth == 'nested') {
   <?php
     if (isset($cPath_array)) {
       if ($seo_category['seo_description']) {
-        echo '<h3 class="pageHeading_long">'.$seo_category['seo_name'].'について</h3>'; 
-        echo '<p class="comment">'.$seo_category['seo_description'].'</p>'; 
+        echo '<h3 class="pageHeading_long">'.$seo_category['seo_name'].'について</h3>'; echo '<p class="comment">'.str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_description']).'</p>'; 
         echo '<p class="pageBottom"></p>'; 
       }
       if (!empty($seo_category['text_information'])) {
-        echo str_replace('class="pageHeading"', 'class="pageHeading_long"', $seo_category['text_information']); 
+        $old_info_arr = array('class="pageHeading"', '#STORE_NAME#'); 
+        $new_info_arr = array('class="pageHeading_long"', STORE_NAME); 
+        echo str_replace($old_info_arr, $new_info_arr, $seo_category['text_information']); 
         echo '<p class="pageBottom"></p>'; 
       }
     }
