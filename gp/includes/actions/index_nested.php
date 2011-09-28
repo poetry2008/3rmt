@@ -130,7 +130,7 @@
 <?php  
   if (isset($cPath_array)) {
     if ($seo_category['seo_description']) {
-      echo '<div class="pageHeading"><h3> ' . $seo_category['seo_name'] . 'について</h3></div>' . "\n";
+      echo '<div class="pageHeading"><h3> ' . str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_name']) . 'について</h3></div>' . "\n";
       echo '<div class="comment"><div class="comment_info_warpper">' .  str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_description']) . '</div></div>' . "\n"; //seoフレーズ
 ?>
         <p class="pageBottom"></p>

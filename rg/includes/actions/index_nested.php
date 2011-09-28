@@ -118,7 +118,7 @@
 <?php  
   if (isset($cPath_array)) {
     if ($seo_category['seo_description']) {
-      echo '<div class="pageHeading"><img align="top" alt="" src="images/menu_ico_a.gif"><h3> ' . $seo_category['seo_name'] . 'について</h3></div>' . "\n";
+      echo '<div class="pageHeading"><img align="top" alt="" src="images/menu_ico_a.gif"><h3> ' . str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_name']) . 'について</h3></div>' . "\n";
       echo '<p class="comment">' . str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_description']) . '</p>' . "\n"; //seoフレーズ
 ?>
         <p class="pageBottom"></p>

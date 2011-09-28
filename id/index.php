@@ -205,7 +205,7 @@ if ($category_depth == 'nested') {
    if (isset($_GET['cPath'])) {
       if ($seo_category['seo_description']) {
         echo '<h2 class="pageHeading_long">';
-        echo '<span class="game_t">'.$seo_category['seo_name'].'について'.'</span>';
+        echo '<span class="game_t">'.str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_name']).'について'.'</span>';
         echo '</h2>';
         echo '<div class="comment">'.str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_description']).'</div>'; 
       }

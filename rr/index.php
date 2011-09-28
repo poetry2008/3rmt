@@ -211,7 +211,7 @@ if ($category_depth == 'nested') {
   <?php
       if (isset($cPath_array)) {
         if ($seo_category['seo_description']) {
-          echo '<h2 class="pageHeading">'.$seo_category['seo_name'].'について</h2>'; 
+          echo '<h2 class="pageHeading">'.str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_name']).'について</h2>'; 
           echo '<div class="comment"><div class="product_list_info"><div class="product_listing_content"><p><font color="#888888">'.str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_description']).'</font></p></div></div></div>'; 
         }
         if (!empty($seo_category['text_information'])) {

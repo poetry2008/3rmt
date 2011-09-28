@@ -171,7 +171,7 @@ echo '<div class="footer_text01">'.str_replace('#STORE_NAME#', STORE_NAME, $seo_
   if (isset($cPath_array)) {
     if ($seo_category['seo_description']) {
       echo '<div class="seo01">'; 
-      echo '<div class="seo_title_04">'.$seo_category['seo_name'].'について'.'</div>'; 
+      echo '<div class="seo_title_04">'.str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_name']).'について'.'</div>'; 
       echo '<p>'.str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_description']).'</p>'; 
       echo '<div class="seo_bottom_01"></div>'; 
       echo '</div>'; 
