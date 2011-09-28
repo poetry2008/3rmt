@@ -19,12 +19,30 @@ if($("input[name=payment]").length == 1){
 }
 function triggerHide(radio)
 {
-   if ($(radio).attr("checked") == true) {
+    if ($(radio).val() == 'convenience_store') {
+      $("#cemail").css("display", "block"); 
+      $("#caemail").css("display", "block"); 
+    } else {
+      $("#cemail").css("display", "none"); 
+      $("#caemail").css("display", "none"); 
+    }
+    
+    if ($(radio).val() == 'rakuten_bank') {
+      $("#ctelnumber").css("display", "block"); 
+      $("#catelnumber").css("display", "block"); 
+    } else {
+      $("#ctelnumber").css("display", "none"); 
+      $("#catelnumber").css("display", "none"); 
+    }
+    
+    /* 
+    if ($(radio).attr("checked") == true) {
      $(".rowHide").hide();
       $(".rowHide_"+$(radio).val()).show();
     }else{
      $(".rowHide_"+$(radio).val()).hide();
     }
+    */
 }
 
 $("input:radio").click(function(){
