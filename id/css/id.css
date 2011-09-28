@@ -2163,11 +2163,11 @@ width:640px;
 background: url(../images/design/boxmiddle_ico01.gif) no-repeat 20px center;
 }
 .c_pay_info { background-color:#ccc; padding:5px; margin:12px 0;}
-#caemail p{ height:290px; *height:290px; overflow:hidden;}
+#caemail p{ height:310px; *height:290px; overflow:hidden;}
 .box_des02 {
-	background:url(../images/rmt_cr.gif) 130px 200px no-repeat;
+/*	background:url(../images/rmt_cr.gif) 130px 200px no-repeat;
 	*background: url(../images/rmt_cr.gif) 130px 210px no-repeat!important;
-}
+*/}
 .product_list02 span{ font-size:10px; width:157px; text-align:center;}
 .product_list02 img{ margin-bottom:10px; height:50px;}
 .product_list02 input{ margin-top:10px;} 
