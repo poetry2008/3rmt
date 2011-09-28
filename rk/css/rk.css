@@ -1904,6 +1904,7 @@ display:block;
 }
 .c_pay_info { background-color:#e5e5e5; padding:5px; margin:10px 0;}
 #caemail p{ height:300px; *height:310px;}
+#caemail p img { position:relative; left:10px;}
 .box_des02 {
 /*	background:url(../images/rmt_cr.gif) 50px 241px no-repeat;
 */}

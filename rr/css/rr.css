@@ -1898,3 +1898,5 @@ border:1px solid #CAC6BE;
 .product_num1{ float:left;}
 .pag_link{ color: #FFCC00;}
 .pag_link:hover{ color:#ccc;}
+#caemail p {}
+#caemail p img { position:relative; left:70px;}
