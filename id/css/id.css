@@ -2163,7 +2163,7 @@ width:640px;
 background: url(../images/design/boxmiddle_ico01.gif) no-repeat 20px center;
 }
 .c_pay_info { background-color:#ccc; padding:5px; margin:12px 0;}
-#caemail p{ height:310px; *height:290px; overflow:hidden;}
+#caemail p{ height:310px; *height:300px; overflow:hidden;}
 .box_des02 {
 /*	background:url(../images/rmt_cr.gif) 130px 200px no-repeat;
 	*background: url(../images/rmt_cr.gif) 130px 210px no-repeat!important;
