@@ -108,7 +108,7 @@ class rakuten_bank {
        $email_default_str = $_SESSION['customer_emailaddress']; 
        }
      */
-    if(SITE_ID == 1){
+    //if(SITE_ID == 1){
       $selection = array(
           'id' => $this->code,
           'module' => $this->title,
@@ -130,6 +130,7 @@ class rakuten_bank {
               'field' => $added_hidden)
             )
           );
+    /*
     }else{
       $selection = array(
           'id' => $this->code,
@@ -151,6 +152,7 @@ class rakuten_bank {
             )
           );
    }
+   */
 
     return $selection;
   }
