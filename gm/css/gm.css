@@ -1176,8 +1176,8 @@ width:418px;
 .c_shipping{ margin-left:10px; margin-top:3px;}
 .stockWarning{ color: #CC0033;}
 .markProductOutOfStock a{color: #CC0033;}
-#caemail p{ height:310px;*height:350px;}
-#caemail p img { position:relative; left:-5px;}
+#caemail p{ height:280px; height:*height:290px;}
+#caemail p img { position:relative;/* left:-5px;*/ margin-top:10px\9;}
 .box_des02 {
     font-size:14px;
     color: #FFF;

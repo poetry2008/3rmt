@@ -1737,5 +1737,5 @@ border:2px solid #FF8080;
  table-layout:fixed;
  width:490px;
 }
-#caemail p {}
-#caemail p img { position:relative; left:8px;}
+#caemail p { margin:10px 0 0 0;}
+#caemail p img { position:relative;/* left:8px; */ top:3px\9;}
