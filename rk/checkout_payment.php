@@ -9,12 +9,6 @@
 <?php page_head();?>
 <script type="text/javascript" src="./js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript"><!--
-$(document).ready(function(){
-if($("input[name=payment]").length == 1){
-  $("input[name=payment]").each(function(index){
-      $(this).attr('checked','true');
-    });
-}
 function triggerHide(radio)
 {
     if ($(radio).val() == 'convenience_store') {
@@ -42,12 +36,23 @@ function triggerHide(radio)
     }
     */
 }
+	
+$(document).ready(function(){
+if($("input[name=payment]").length == 1){
+  $("input[name=payment]").each(function(index){
+      $(this).attr('checked','true');
+    });
+}
+  $("input[name=payment]").each(function(index){
+    if ($(this).attr('checked') == true) {
+      triggerHide(this);
+    }
+  });
 
 $("input:radio").click(function(){
     triggerHide(this);
 });
 $(".moduleRow").click(function(){
-
     triggerHide($(this).find("input:radio")[0]);
 
 });
