@@ -5,7 +5,7 @@
   $category = tep_get_category_by_id($current_category_id, SITE_ID, $languages_id);
 ?> 
       <td valign="top" id="contents">
-      <!-- heading title --> 
+
 <?php  
   if( isset($cPath_array)) {
       if ($category['categories_status'] != '0') {
@@ -19,7 +19,7 @@
        echo '<h1 class="pageHeading">'.$seo_manufacturers['manufacturers_name'].'</h1>';
   }
 ?> 
-      <!-- heading title eof//-->
+
       <p class="comment"><?php echo $seo_category['categories_header_text']; //seoフレーズ ?></p>
       <table border="0" width="100%" cellspacing="3" cellpadding="3"> 
         <tr align="center">
@@ -162,7 +162,7 @@
 ?>
     </td> 
     <td width="<?php echo BOX_WIDTH; ?>" valign="top" class="right_colum_border">
-      <!-- right_navigation //--> 
+
       <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-      <!-- right_navigation_eof //-->
+
     </td> 
