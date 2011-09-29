@@ -1903,8 +1903,8 @@ display:block;
 	background: url(../images/design/contents/headding_title.gif) no-repeat -3px -6px;
 }
 .c_pay_info { background-color:#e5e5e5; padding:5px; margin:10px 0;}
-#caemail p{ height:300px; *height:310px;}
-#caemail p img { position:relative; left:10px;}
+#caemail p{ height:300px; height:260px\9; margin:5px 0 0 0;}
+#caemail p img { position:relative;/* left:10px;*/ bottom:-1px\9;}
 .box_des02 {
 /*	background:url(../images/rmt_cr.gif) 50px 241px no-repeat;
 */}

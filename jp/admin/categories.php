@@ -262,10 +262,22 @@
                 );
 
           if ($_GET['action'] == 'insert_category' || ($_GET['action'] == 'update_category' && !tep_categories_description_exist($categories_id, $language_id, $site_id))) {
+           
             $insert_sql_data = array('categories_id' => $categories_id,
                                      'language_id'   => $languages[$i]['id'],
                                      'site_id'       => $site_id
                                      );
+            
+            if ($site_id != 0) {
+              $has_status_raw = tep_db_query("select categories_status from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id = '".$categories_id."' and site_id = '".$site_id."'"); 
+              if (!tep_db_num_rows($has_status_raw)) {
+                $has_default_status_raw = tep_db_query("select categories_status from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id = '".$categories_id."' and site_id = '0'"); 
+                $has_default_status = tep_db_fetch_array($has_default_status_raw);  
+                if ($has_default_status) {
+                  $insert_sql_data['categories_status'] = $has_default_status['categories_status']; 
+                }
+              }
+            } 
             
             if(!tep_check_romaji($sql_data_array['romaji'])){
               $messageStack->add_session(TEXT_ROMAJI_ERROR, 'error');
