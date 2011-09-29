@@ -70,7 +70,7 @@ if ($category_depth == 'nested') {
   }
 ?>      
 </h1>
-<p><?php echo $seo_category['categories_header_text'];?></p>
+<p><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_header_text']);?></p>
       <?php
       $has_ca_single = false; 
       ?>
@@ -145,7 +145,7 @@ if ($category_depth == 'nested') {
      include(DIR_WS_MODULES . FILENAME_PRODUCT_LISTING); 
    }
 ?>
-<p><?php echo $seo_category['categories_footer_text'];?></p>
+<p><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_footer_text']);?></p>
 <?php
   if (isset($_GET['cPath'])) {
     $new_products_category_id = $current_category_id;
@@ -159,13 +159,12 @@ if ($category_depth == 'nested') {
 <?php 
 if (isset($cPath_array)) {
   if ($seo_category['seo_description']) {
-    echo '<div class="seo01"><div class="seo_title_04">'.$seo_category['seo_name'].'について</div>'; 
-    echo '<p>'.$seo_category['seo_description'].'</p>'; 
+    echo '<div class="seo01"><div class="seo_title_04">'.str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_name']).'について</div>'; echo '<p>'.str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_description']).'</p>'; 
 	echo '<div class="seo_news_index02"></div>';
 	echo '</div>';
   }
   if (!empty($seo_category['text_information'])) {
-    echo $seo_category['text_information']; 
+    echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['text_information']); 
   }
 }
 ?>

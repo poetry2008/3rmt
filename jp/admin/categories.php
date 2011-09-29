@@ -35,6 +35,7 @@
             else{
 	      $site_arr="";
 	    }
+            forward401Unless(editPermission($site_arr, $site_id));
             tep_insert_pwd_log($_GET['once_pwd'],$ocertify->auth_user);
             $c_page = (isset($_GET['page']))?'&page='.$_GET['page']:''; 
             
@@ -49,8 +50,15 @@
           tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' .  $HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page));
           break;
       case 'setflag':
-        tep_insert_pwd_log($_GET['once_pwd'],$ocertify->auth_user);
+        if(isset($_SESSION['site_permission'])) {
+          $site_arr=$_SESSION['site_permission'];
+        } else {
+          $site_arr="";
+        }
         $site_id = (isset($_GET['site_id']))?$_GET['site_id']:0;  
+        forward401Unless(editPermission($site_arr, $site_id));
+        tep_insert_pwd_log($_GET['once_pwd'],$ocertify->auth_user);
+        
         $p_page = (isset($_GET['page']))?'&page='.$_GET['page']:''; 
         $up_rs = (isset($_GET['up_rs']))?true:false; 
         if ($site_id == 0) {
@@ -2512,6 +2520,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                 echo tep_draw_hidden_field('site_id', isset($_GET['site_id'])?$_GET['site_id']:'0'); 
                 echo HEADING_TITLE_SEARCH . ' ' . tep_draw_input_field('search', isset($_GET['search'])?$_GET['search']:'') . "\n"; 
                 ?>
+                <input type="submit" value="<?php echo IMAGE_SEARCH;?>">
               </td>
             </tr>
             </table> 
@@ -2736,6 +2745,21 @@ if (isset($nowColor) && $nowColor == $odd) {
   $c_page = (isset($_GET['page']))?'&page='.$_GET['page']:'';
 ?>
                 <?php
+                $re_site_id = (isset($_GET['site_id']))?$_GET['site_id']:0; 
+                $unaccept_edit_single = false;
+                if (isset($_SESSION['site_permission'])) {
+                  $accept_site_arr = explode(',', $_SESSION['site_permission']); 
+                } else {
+                  $accept_site_arr = array(); 
+                }
+                if (!in_array($re_site_id, $accept_site_arr)) {
+                  $unaccept_edit_single = true;
+                }
+                if ($_SESSION['user_permission'] == 15) {
+                  $unaccept_edit_single = false;
+                }
+                ?>
+                <?php
                   if (!isset($_GET['site_id']) || $_GET['site_id'] == 0) {
                     $ca_status_arr = get_all_site_category_status($categories['categories_id']);  
                     foreach ($ca_status_arr as $cas_key => $cas_value) {
@@ -2743,44 +2767,120 @@ if (isset($nowColor) && $nowColor == $odd) {
                         case 'blue':
                           if (!empty($cas_value)) {
                           ?>
-                            <a href="javascript:void(0);" onclick="check_toggle_status('<?php echo tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=2&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page);?>')" title="<?php echo implode(',', $cas_value);?>"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_blue.gif', '');?></a>
+                            <?php
+                            if ($unaccept_edit_single) {
+                            ?>
+                              <a href="javascript:void(0);" onclick="window.alert('<?php echo NOTICE_HAS_NO_PREVILEGE_EDIT;?>');" title="<?php echo implode(',', $cas_value);?>"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_blue.gif', '');?></a>
+                            <?php
+                            } else {
+                            ?>
+                              <a href="javascript:void(0);" onclick="check_toggle_status('<?php echo tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=2&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page);?>')" title="<?php echo implode(',', $cas_value);?>"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_blue.gif', '');?></a>
+                            <?php
+                            }
+                            ?>
                           <?php
                           } else {
                           ?>
-                            <a href="javascript:void(0);" onclick="check_toggle_status('<?php echo tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=2&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page);?>')"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_blue_light.gif', '');?></a> 
+                            <?php
+                            if ($unaccept_edit_single) {
+                            ?>
+                              <a href="javascript:void(0);" onclick="window.alert('<?php echo NOTICE_HAS_NO_PREVILEGE_EDIT;?>');"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_blue_light.gif', '');?></a> 
+                            <?php } else {?>
+                              <a href="javascript:void(0);" onclick="check_toggle_status('<?php echo tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=2&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page);?>')"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_blue_light.gif', '');?></a> 
+                            <?php }?>
                             <?php
                           }
                           break;
                         case 'red':
                           if (!empty($cas_value)) {
                           ?>
-                          <a href="javascript:void(0);" onclick="check_toggle_status('<?php echo tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=1&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page);?>')" title="<?php echo implode(',', $cas_value);?>"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', '');?></a>
+                          <?php
+                            if ($unaccept_edit_single) {
+                          ?>
+                            <a href="javascript:void(0);" onclick="window.alert('<?php echo NOTICE_HAS_NO_PREVILEGE_EDIT;?>');" title="<?php echo implode(',', $cas_value);?>"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', '');?></a>
+                          <?php
+                            } else {
+                          ?>
+                            <a href="javascript:void(0);" onclick="check_toggle_status('<?php echo tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=1&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page);?>')" title="<?php echo implode(',', $cas_value);?>"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', '');?></a>
+                          <?php
+                            }
+                          ?>
                           <?php
                           } else {
                           ?>
-                          <a href="javascript:void(0);" onclick="check_toggle_status('<?php echo tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=1&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page);?>')"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', '');?></a>
+                          <?php
+                            if ($unaccept_edit_single) {
+                          ?>
+                            <a href="javascript:void(0);" onclick="window.alert('<?php echo NOTICE_HAS_NO_PREVILEGE_EDIT;?>');"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', '');?></a>
+                          <?php
+                            } else {
+                          ?>
+                            <a href="javascript:void(0);" onclick="check_toggle_status('<?php echo tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=1&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page);?>')"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', '');?></a>
+                          <?php
+                            }
+                          ?>
                           <?php
                           }
                           break;
                         case 'black':
                           if (!empty($cas_value)) {
                           ?>
-                          <a href="javascript:void(0);" onclick="check_toggle_black_status('<?php echo tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=3&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page);?>')" title="<?php echo implode(',', $cas_value);?>"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_black.gif', '');?></a>
+                          <?php
+                            if ($unaccept_edit_single) {
+                          ?>
+                            <a href="javascript:void(0);" onclick="window.alert('<?php echo NOTICE_HAS_NO_PREVILEGE_EDIT;?>');" title="<?php echo implode(',', $cas_value);?>"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_black.gif', '');?></a>
+                          <?php
+                            } else {
+                          ?>
+                            <a href="javascript:void(0);" onclick="check_toggle_black_status('<?php echo tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=3&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page);?>')" title="<?php echo implode(',', $cas_value);?>"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_black.gif', '');?></a>
+                          <?php
+                            }
+                          ?>
                           <?php
                           } else {
                           ?>
-                          <a href="javascript:void(0);" onclick="check_toggle_black_status('<?php echo tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=3&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page);?>')" title="<?php echo implode(',', $cas_value);?>"><?php echo tep_image(DIR_WS_IMAGES .  'icon_status_black_light.gif', '');?></a>
+                          <?php
+                            if ($unaccept_edit_single) {
+                          ?>
+                            <a href="javascript:void(0);" onclick="window.alert('<?php echo NOTICE_HAS_NO_PREVILEGE_EDIT;?>');" title="<?php echo implode(',', $cas_value);?>"><?php echo tep_image(DIR_WS_IMAGES .  'icon_status_black_light.gif', '');?></a>
+                          <?php
+                            } else {
+                          ?>
+                            <a href="javascript:void(0);" onclick="check_toggle_black_status('<?php echo tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=3&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page);?>')" title="<?php echo implode(',', $cas_value);?>"><?php echo tep_image(DIR_WS_IMAGES .  'icon_status_black_light.gif', '');?></a>
+                          <?php
+                            }
+                          ?>
                           <?php
                           }
                           break;
                         default:
                           if (!empty($cas_value)) {
                           ?>
-                          <a href="javascript:void(0);" onclick="check_toggle_status('<?php echo tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=0&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page);?>')" title="<?php echo implode(',', $cas_value);?>"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', '');?></a>
+                          <?php
+                            if ($unaccept_edit_single) {
+                            ?>
+                             <a href="javascript:void(0);" onclick="window.alert('<?php echo NOTICE_HAS_NO_PREVILEGE_EDIT;?>');" title="<?php echo implode(',', $cas_value);?>"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', '');?></a>
+                            <?php
+                            } else {
+                            ?>
+                             <a href="javascript:void(0);" onclick="check_toggle_status('<?php echo tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=0&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page);?>')" title="<?php echo implode(',', $cas_value);?>"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', '');?></a>
+                            <?php
+                            }
+                          ?>
                           <?php
                           } else {
                           ?>
-                          <a href="javascript:void(0);" onclick="check_toggle_status('<?php echo tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=0&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page);?>')"><?php echo tep_image(DIR_WS_IMAGES .  'icon_status_green_light.gif', '');?></a>
+                          <?php
+                            if ($unaccept_edit_single) {
+                          ?>
+                            <a href="javascript:void(0);" onclick="window.alert('<?php echo NOTICE_HAS_NO_PREVILEGE_EDIT;?>');"><?php echo tep_image(DIR_WS_IMAGES .  'icon_status_green_light.gif', '');?></a>
+                          <?php
+                            } else {
+                          ?>
+                            <a href="javascript:void(0);" onclick="check_toggle_status('<?php echo tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=0&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page);?>')"><?php echo tep_image(DIR_WS_IMAGES .  'icon_status_green_light.gif', '');?></a>
+                          <?php
+                            }
+                          ?>
                           <?php
                           }
                           break;
@@ -2797,6 +2897,11 @@ if (isset($nowColor) && $nowColor == $odd) {
                 ?>
                 <?php if($categories['categories_status'] == '1'){?>
                   <?php 
+                  if ($unaccept_edit_single) {
+                  ?>
+                    <a href="javascript:void(0);" onclick="window.alert('<?php echo NOTICE_HAS_NO_PREVILEGE_EDIT;?>');"><?php echo tep_image(DIR_WS_IMAGES .  'icon_status_green_light.gif', '');?></a> <a href="javascript:void(0);" onclick="window.alert('<?php echo NOTICE_HAS_NO_PREVILEGE_EDIT;?>');"><?php echo tep_image(DIR_WS_IMAGES .  'icon_status_blue_light.gif', '');?></a> <?php echo tep_image(DIR_WS_IMAGES .  'icon_status_red.gif', '');?> <a href="javascript:void(0);" onclick="window.alert('<?php echo NOTICE_HAS_NO_PREVILEGE_EDIT;?>"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_black_light.gif', '');?></a> 
+                  <?php
+                  } else { 
                   if ($edit_notice_single) {
                   ?>
                     <a href="javascript:void(0);" onclick="window.alert('<?php echo NOTICE_MUST_EDIT_CATEGORY_OR_PRODUCT;?>');"><?php echo tep_image(DIR_WS_IMAGES .  'icon_status_green_light.gif', '');?></a> <a href="javascript:void(0);" onclick="window.alert('<?php echo NOTICE_MUST_EDIT_CATEGORY_OR_PRODUCT;?>');"><?php echo tep_image(DIR_WS_IMAGES .  'icon_status_blue_light.gif', '');?></a> <?php echo tep_image(DIR_WS_IMAGES .  'icon_status_red.gif', '');?> <a href="javascript:void(0);" onclick="window.alert('<?php echo NOTICE_MUST_EDIT_CATEGORY_OR_PRODUCT;?>"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_black_light.gif', '');?></a> 
@@ -2806,9 +2911,15 @@ if (isset($nowColor) && $nowColor == $odd) {
                     <a href="javascript:void(0);" onclick="check_toggle_status('<?php echo tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=0&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page);?>')"><?php echo tep_image(DIR_WS_IMAGES .  'icon_status_green_light.gif', '');?></a> <a href="javascript:void(0);" onclick="check_toggle_status('<?php echo tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=2&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page);?>')"><?php echo tep_image(DIR_WS_IMAGES .  'icon_status_blue_light.gif', '');?></a> <?php echo tep_image(DIR_WS_IMAGES .  'icon_status_red.gif', '');?> <a href="javascript:void(0);" onclick="check_toggle_black_status('<?php echo tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=3&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page);?>')"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_black_light.gif', '');?></a> 
                   <?php
                   }
+                  }
                   ?>
                 <?php } else if($categories['categories_status'] == '2'){?>
                   <?php
+                  if ($unaccept_edit_single) {
+                  ?>
+                    <a href="javascript:void(0);" onclick="window.alert('<?php echo NOTICE_HAS_NO_PREVILEGE_EDIT;?>');"><?php echo tep_image(DIR_WS_IMAGES .  'icon_status_green_light.gif', '');?></a> <?php echo tep_image(DIR_WS_IMAGES .  'icon_status_blue.gif', '');?> <a href="javascrpt:void(0);" onclick="window.alert('<?php echo NOTICE_HAS_NO_PREVILEGE_EDIT;?>');"><?php echo tep_image(DIR_WS_IMAGES .  'icon_status_red_light.gif', '');?></a> <a href="javascript:void(0);" onclick="window.alert('<?php echo NOTICE_HAS_NO_PREVILEGE_EDIT;?>');"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_black_light.gif', '');?></a> 
+                  <?php
+                  } else { 
                   if ($edit_notice_single) {
                   ?>
                     <a href="javascript:void(0);" onclick="window.alert('<?php echo NOTICE_MUST_EDIT_CATEGORY_OR_PRODUCT;?>');"><?php echo tep_image(DIR_WS_IMAGES .  'icon_status_green_light.gif', '');?></a> <?php echo tep_image(DIR_WS_IMAGES .  'icon_status_blue.gif', '');?> <a href="javascrpt:void(0);" onclick="window.alert('<?php echo NOTICE_MUST_EDIT_CATEGORY_OR_PRODUCT;?>');"><?php echo tep_image(DIR_WS_IMAGES .  'icon_status_red_light.gif', '');?></a> <a href="javascript:void(0);" onclick="window.alert('<?php echo NOTICE_MUST_EDIT_CATEGORY_OR_PRODUCT;?>');"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_black_light.gif', '');?></a> 
@@ -2818,14 +2929,27 @@ if (isset($nowColor) && $nowColor == $odd) {
                     <a href="javascript:void(0);" onclick="check_toggle_status('<?php echo tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=0&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page);?>')"><?php echo tep_image(DIR_WS_IMAGES .  'icon_status_green_light.gif', '');?></a> <?php echo tep_image(DIR_WS_IMAGES .  'icon_status_blue.gif', '');?> <a href="javascrpt:void(0);" onclick="check_toggle_status('<?php echo tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=1&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page);?>')"><?php echo tep_image(DIR_WS_IMAGES .  'icon_status_red_light.gif', '');?></a> <a href="javascript:void(0);" onclick="check_toggle_black_status('<?php echo tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=3&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page);?>')"><?php echo tep_image(DIR_WS_IMAGES . 'icon_status_black_light.gif', '');?></a> 
                   <?php
                   }
+                  }
                   ?>
                 <?php } else if($categories['categories_status'] == '3'){?>
                   <?php
+                  if ($unaccept_edit_single) {
+                  ?>
+                    <a href="javascript:void(0);" onclick="window.alert('<?php echo NOTICE_HAS_NO_PREVILEGE_EDIT;?>');"><?php echo tep_image(DIR_WS_IMAGES .  'icon_status_green_light.gif', '');?></a> <a href="javascript:void(0);" onclick="window.alert('<?php echo NOTICE_HAS_NO_PREVILEGE_EDIT;?>');"><?php echo tep_image(DIR_WS_IMAGES .  'icon_status_blue_light.gif', '');?></a> <a href="javascript:void(0);" onclick="window.alert('<?php echo NOTICE_HAS_NO_PREVILEGE_EDIT;?>');"><?php echo tep_image(DIR_WS_IMAGES .  'icon_status_red_light.gif', '');?></a> <?php echo tep_image(DIR_WS_IMAGES.'icon_status_black.gif', '');?> 
+                  <?php
+                  } else { 
+                  if ($unaccept_edit_single) {
+                  ?>
+                    <a href="javascript:void(0);" onclick="window.alert('<?php echo NOTICE_HAS_NO_PREVILEGE_EDIT;?>');"><?php echo tep_image(DIR_WS_IMAGES .  'icon_status_green_light.gif', '');?></a> <a href="javascript:void(0);" onclick="window.alert('<?php echo NOTICE_HAS_NO_PREVILEGE_EDIT;?>');"><?php echo tep_image(DIR_WS_IMAGES .  'icon_status_blue_light.gif', '');?></a> <a href="javascript:void(0);" onclick="window.alert('<?php echo NOTICE_HAS_NO_PREVILEGE_EDIT;?>');"><?php echo tep_image(DIR_WS_IMAGES .  'icon_status_red_light.gif', '');?></a> <?php echo tep_image(DIR_WS_IMAGES.'icon_status_black.gif', '');?> 
+                  <?php
+                  } else { 
                   if ($edit_notice_single) {
                   ?>
                     <a href="javascript:void(0);" onclick="window.alert('<?php echo NOTICE_MUST_EDIT_CATEGORY_OR_PRODUCT;?>');"><?php echo tep_image(DIR_WS_IMAGES .  'icon_status_green_light.gif', '');?></a> <a href="javascript:void(0);" onclick="window.alert('<?php echo NOTICE_MUST_EDIT_CATEGORY_OR_PRODUCT;?>');"><?php echo tep_image(DIR_WS_IMAGES .  'icon_status_blue_light.gif', '');?></a> <a href="javascript:void(0);" onclick="window.alert('<?php echo NOTICE_MUST_EDIT_CATEGORY_OR_PRODUCT;?>');"><?php echo tep_image(DIR_WS_IMAGES .  'icon_status_red_light.gif', '');?></a> <?php echo tep_image(DIR_WS_IMAGES.'icon_status_black.gif', '');?> 
                   <?php } else {?>
                     <a href="javascript:void(0);" onclick="check_toggle_status('<?php echo tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=0&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page);?>')"><?php echo tep_image(DIR_WS_IMAGES .  'icon_status_green_light.gif', '');?></a> <a href="javascript:void(0);" onclick="check_toggle_status('<?php echo tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=2&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page);?>')"><?php echo tep_image(DIR_WS_IMAGES .  'icon_status_blue_light.gif', '');?></a> <a href="javascript:void(0);" onclick="check_toggle_status('<?php echo tep_href_link(FILENAME_CATEGORIES, 'action=toggle&cID='.$categories['categories_id'].'&status=1&cPath='.$HTTP_GET_VARS['cPath'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$c_page);?>')"><?php echo tep_image(DIR_WS_IMAGES .  'icon_status_red_light.gif', '');?></a> <?php echo tep_image(DIR_WS_IMAGES.'icon_status_black.gif', '');?> 
+                  <?php }?>
+                  <?php }?>
                   <?php }?>
                 <?php } else {?> 
                   <?php
@@ -3023,36 +3147,81 @@ if (empty($products['products_quantity']) or $products['products_quantity'] == 0
             <?php
 $p_page = (isset($_GET['page']))?'&page='.$_GET['page']:'';
 if ($ocertify->npermission >= 10) { //表示制限
+  $repro_site_id = (isset($_GET['site_id']))?$_GET['site_id']:0; 
+  $unaccept_pro_edit_single = false;
+  if (isset($_SESSION['site_permission'])) {
+    $accept_pro_site_arr = explode(',', $_SESSION['site_permission']); 
+  } else {
+    $accept_pro_site_arr = array(); 
+  }
+  if (!in_array($repro_site_id, $accept_pro_site_arr)) {
+    $unaccept_pro_edit_single = true;
+  }
+  if ($_SESSION['user_permission'] == 15) {
+    $unaccept_pro_edit_single = false;
+  }
   if (!isset($_GET['site_id']) || $_GET['site_id'] == 0) {
        $pro_status_arr = get_all_site_product_status($products['products_id']); 
        foreach ($pro_status_arr as $pro_skey => $pro_svalue) {
          switch ($pro_skey) {
            case 'blue':
              if (!empty($pro_svalue)) {
-               echo '<a href="javascript:void(0);" onclick="check_toggle_status(\'' .  tep_href_link(FILENAME_CATEGORIES, 'action=setflag&flag=2&pID=' .  $products['products_id'] .  '&cPath=' .  $cPath.'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$p_page) .  '\')" title="'.implode(',', $pro_svalue).'">' .  tep_image(DIR_WS_IMAGES .  'icon_status_blue.gif', '', 10, 10) . '</a>&nbsp;'; 
+               if ($unaccept_pro_edit_single) {
+                 echo '<a href="javascript:void(0);" onclick="window.alert(\'' .NOTICE_HAS_NO_PREVILEGE_EDIT.  '\')" title="'.implode(',', $pro_svalue).'">' .  tep_image(DIR_WS_IMAGES .  'icon_status_blue.gif', '', 10, 10) . '</a>&nbsp;'; 
+               } else {
+                 echo '<a href="javascript:void(0);" onclick="check_toggle_status(\'' .  tep_href_link(FILENAME_CATEGORIES, 'action=setflag&flag=2&pID=' .  $products['products_id'] .  '&cPath=' .  $cPath.'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$p_page) .  '\')" title="'.implode(',', $pro_svalue).'">' .  tep_image(DIR_WS_IMAGES .  'icon_status_blue.gif', '', 10, 10) . '</a>&nbsp;'; 
+               }
              } else {
-               echo '<a href="javascript:void(0);" onclick="check_toggle_status(\'' .  tep_href_link(FILENAME_CATEGORIES, 'action=setflag&flag=2&pID=' .  $products['products_id'] .  '&cPath=' .  $cPath.'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$p_page) .  '\')" title="'.implode(',', $pro_svalue).'">' .  tep_image(DIR_WS_IMAGES .  'icon_status_blue_light.gif', '', 10, 10) . '</a>&nbsp;'; 
+               if ($unaccept_pro_edit_single) {
+                 echo '<a href="javascript:void(0);" onclick="window_alert(\'' .NOTICE_HAS_NO_PREVILEGE_EDIT.  '\')" title="'.implode(',', $pro_svalue).'">' .  tep_image(DIR_WS_IMAGES .  'icon_status_blue_light.gif', '', 10, 10) . '</a>&nbsp;'; 
+               } else {
+                 echo '<a href="javascript:void(0);" onclick="check_toggle_status(\'' .  tep_href_link(FILENAME_CATEGORIES, 'action=setflag&flag=2&pID=' .  $products['products_id'] .  '&cPath=' .  $cPath.'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$p_page) .  '\')" title="'.implode(',', $pro_svalue).'">' .  tep_image(DIR_WS_IMAGES .  'icon_status_blue_light.gif', '', 10, 10) . '</a>&nbsp;'; 
+               }
              }
              break;
            case 'red':
              if (!empty($pro_svalue)) {
-               echo '<a href="javascript:void(0);" onclick="check_toggle_status(\'' .  tep_href_link(FILENAME_CATEGORIES, 'action=setflag&flag=0&pID=' .  $products['products_id'] .  '&cPath=' .  $cPath.'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$p_page) .  '\')" title="'.implode(',', $pro_svalue).'">' .  tep_image(DIR_WS_IMAGES .  'icon_status_red.gif', '', 10, 10) . '</a>&nbsp;'; 
+               if ($unaccept_pro_edit_single) {
+                 echo '<a href="javascript:void(0);" onclick="window.alert(\'' .NOTICE_HAS_NO_PREVILEGE_EDIT.  '\')" title="'.implode(',', $pro_svalue).'">' .  tep_image(DIR_WS_IMAGES .  'icon_status_red.gif', '', 10, 10) . '</a>&nbsp;'; 
+               } else {
+                 echo '<a href="javascript:void(0);" onclick="check_toggle_status(\'' .  tep_href_link(FILENAME_CATEGORIES, 'action=setflag&flag=0&pID=' .  $products['products_id'] .  '&cPath=' .  $cPath.'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$p_page) .  '\')" title="'.implode(',', $pro_svalue).'">' .  tep_image(DIR_WS_IMAGES .  'icon_status_red.gif', '', 10, 10) . '</a>&nbsp;'; 
+               }
              } else {
-               echo '<a href="javascript:void(0);" onclick="check_toggle_status(\'' .  tep_href_link(FILENAME_CATEGORIES, 'action=setflag&flag=0&pID=' .  $products['products_id'] .  '&cPath=' .  $cPath.'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$p_page) .  '\')" title="'.implode(',', $pro_svalue).'">' .  tep_image(DIR_WS_IMAGES .  'icon_status_red_light.gif', '', 10, 10) . '</a>&nbsp;'; 
+               if ($unaccept_pro_edit_single) {
+                echo '<a href="javascript:void(0);" onclick="window.alert(\'' .NOTICE_HAS_NO_PREVILEGE_EDIT.  '\')" title="'.implode(',', $pro_svalue).'">' .  tep_image(DIR_WS_IMAGES .  'icon_status_red_light.gif', '', 10, 10) . '</a>&nbsp;'; 
+               } else {
+                echo '<a href="javascript:void(0);" onclick="check_toggle_status(\'' .  tep_href_link(FILENAME_CATEGORIES, 'action=setflag&flag=0&pID=' .  $products['products_id'] .  '&cPath=' .  $cPath.'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$p_page) .  '\')" title="'.implode(',', $pro_svalue).'">' .  tep_image(DIR_WS_IMAGES .  'icon_status_red_light.gif', '', 10, 10) . '</a>&nbsp;'; 
+               }
              }
              break;
            case 'black':
              if (!empty($pro_svalue)) {
-               echo '<a href="javascript:void(0);" onclick="check_toggle_black_status(\'' .  tep_href_link(FILENAME_CATEGORIES, 'action=setflag&flag=3&pID=' .  $products['products_id'] .  '&cPath=' .  $cPath.'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$p_page) .  '\')" title="'.implode(',', $pro_svalue).'">' .  tep_image(DIR_WS_IMAGES .  'icon_status_black.gif', '', 10, 10) . '</a>'; 
+               if ($unaccept_pro_edit_single) {
+                 echo '<a href="javascript:void(0);" onclick="window.alert(\'' .NOTICE_HAS_NO_PREVILEGE_EDIT.  '\')" title="'.implode(',', $pro_svalue).'">' .  tep_image(DIR_WS_IMAGES .  'icon_status_black.gif', '', 10, 10) . '</a>'; 
+               } else {
+                 echo '<a href="javascript:void(0);" onclick="check_toggle_black_status(\'' .  tep_href_link(FILENAME_CATEGORIES, 'action=setflag&flag=3&pID=' .  $products['products_id'] .  '&cPath=' .  $cPath.'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$p_page) .  '\')" title="'.implode(',', $pro_svalue).'">' .  tep_image(DIR_WS_IMAGES .  'icon_status_black.gif', '', 10, 10) . '</a>'; 
+               }
              } else {
-               echo '<a href="javascript:void(0);" onclick="check_toggle_black_status(\'' .  tep_href_link(FILENAME_CATEGORIES, 'action=setflag&flag=3&pID=' .  $products['products_id'] .  '&cPath=' .  $cPath.'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$p_page) .  '\')" title="'.implode(',', $pro_svalue).'">' .  tep_image(DIR_WS_IMAGES .  'icon_status_black_light.gif', '', 10, 10) . '</a>'; 
+               if ($unaccept_pro_edit_single) {
+                 echo '<a href="javascript:void(0);" onclick="window.alert(\'' .NOTICE_HAS_NO_PREVILEGE_EDIT.  '\')" title="'.implode(',', $pro_svalue).'">' .  tep_image(DIR_WS_IMAGES .  'icon_status_black_light.gif', '', 10, 10) . '</a>'; 
+               } else {
+                 echo '<a href="javascript:void(0);" onclick="check_toggle_black_status(\'' .  tep_href_link(FILENAME_CATEGORIES, 'action=setflag&flag=3&pID=' .  $products['products_id'] .  '&cPath=' .  $cPath.'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$p_page) .  '\')" title="'.implode(',', $pro_svalue).'">' .  tep_image(DIR_WS_IMAGES .  'icon_status_black_light.gif', '', 10, 10) . '</a>'; 
+               }
              }
              break;
            default:
              if (!empty($pro_svalue)) {
-               echo '<a href="javascript:void(0);" onclick="check_toggle_status(\'' .  tep_href_link(FILENAME_CATEGORIES, 'action=setflag&flag=1&pID=' .  $products['products_id'] .  '&cPath=' .  $cPath.'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$p_page) .  '\')" title="'.implode(',', $pro_svalue).'">' .  tep_image(DIR_WS_IMAGES .  'icon_status_green.gif', '', 10, 10) . '</a>&nbsp;'; 
+               if ($unaccept_pro_edit_single) {
+                 echo '<a href="javascript:void(0);" onclick="window.alert(\'' .NOTICE_HAS_NO_PREVILEGE_EDIT.  '\')" title="'.implode(',', $pro_svalue).'">' .  tep_image(DIR_WS_IMAGES .  'icon_status_green.gif', '', 10, 10) . '</a>&nbsp;'; 
+               } else {
+                 echo '<a href="javascript:void(0);" onclick="check_toggle_status(\'' .  tep_href_link(FILENAME_CATEGORIES, 'action=setflag&flag=1&pID=' .  $products['products_id'] .  '&cPath=' .  $cPath.'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$p_page) .  '\')" title="'.implode(',', $pro_svalue).'">' .  tep_image(DIR_WS_IMAGES .  'icon_status_green.gif', '', 10, 10) . '</a>&nbsp;'; 
+               }
              } else {
-               echo '<a href="javascript:void(0);" onclick="check_toggle_status(\'' .  tep_href_link(FILENAME_CATEGORIES, 'action=setflag&flag=1&pID=' .  $products['products_id'] .  '&cPath=' .  $cPath.'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$p_page) .  '\')" title="'.implode(',', $pro_svalue).'">' .  tep_image(DIR_WS_IMAGES .  'icon_status_green_light.gif', '', 10, 10) . '</a>&nbsp;'; 
+               if ($unaccept_pro_edit_single) {
+                 echo '<a href="javascript:void(0);" onclick="window.alert(\'' .NOTICE_HAS_NO_PREVILEGE_EDIT.  '\')" title="'.implode(',', $pro_svalue).'">' .  tep_image(DIR_WS_IMAGES .  'icon_status_green_light.gif', '', 10, 10) . '</a>&nbsp;'; 
+               } else {
+                 echo '<a href="javascript:void(0);" onclick="check_toggle_status(\'' .  tep_href_link(FILENAME_CATEGORIES, 'action=setflag&flag=1&pID=' .  $products['products_id'] .  '&cPath=' .  $cPath.'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$p_page) .  '\')" title="'.implode(',', $pro_svalue).'">' .  tep_image(DIR_WS_IMAGES .  'icon_status_green_light.gif', '', 10, 10) . '</a>&nbsp;'; 
+               }
              }
              break;
          }
@@ -3066,29 +3235,45 @@ if ($ocertify->npermission >= 10) { //表示制限
        }
      }
      if ($products['products_status'] == '1') {
+       if ($unaccept_pro_edit_single) {
+         echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN, 10, 10) . '&nbsp;<a href="javascript:void(0)" onclick="window.alert(\''.NOTICE_HAS_NO_PREVILEGE_EDIT.'\');">' .  tep_image(DIR_WS_IMAGES . 'icon_status_blue_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) . '</a>&nbsp;<a href="javascript:void(0);" onclick="window.alert(\''.NOTICE_HAS_NO_PREVILEGE_EDIT.'\');">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) . '</a>&nbsp;<a href="javascript:void(0);" onclick="window.alert(\''.NOTICE_HAS_NO_PREVILEGE_EDIT.'\');">' . tep_image(DIR_WS_IMAGES . 'icon_status_black_light.gif', 'black', 10, 10) . '</a>';
+       } else { 
        if ($edit_pro_notice_single) {
          echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN, 10, 10) . '&nbsp;<a href="javascript:void(0)" onclick="window.alert(\''.NOTICE_MUST_EDIT_CATEGORY_OR_PRODUCT.'\');">' . tep_image(DIR_WS_IMAGES . 'icon_status_blue_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) . '</a>&nbsp;<a href="javascript:void(0);" onclick="window.alert(\''.NOTICE_MUST_EDIT_CATEGORY_OR_PRODUCT.'\');">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) . '</a>&nbsp;<a href="javascript:void(0);" onclick="window.alert(\''.NOTICE_MUST_EDIT_CATEGORY_OR_PRODUCT.'\');">' . tep_image(DIR_WS_IMAGES . 'icon_status_black_light.gif', 'black', 10, 10) . '</a>';
        } else {
          echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN, 10, 10) . '&nbsp;<a href="javascript:void(0)" onclick="check_toggle_status(\'' .  tep_href_link(FILENAME_CATEGORIES, 'action=setflag&flag=2&pID=' .  $products['products_id'] . '&cPath=' .  $cPath.'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$p_page) .  '\')">' . tep_image(DIR_WS_IMAGES . 'icon_status_blue_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) . '</a>&nbsp;<a href="javascript:void(0);" onclick="check_toggle_status(\'' .  tep_href_link(FILENAME_CATEGORIES, 'action=setflag&flag=0&pID=' .  $products['products_id'] . '&cPath=' .  $cPath.'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$p_page) . '\')">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) . '</a>&nbsp;<a href="javascript:void(0);" onclick="check_toggle_black_status(\'' .  tep_href_link(FILENAME_CATEGORIES, 'action=setflag&flag=3&pID=' .  $products['products_id'] . '&cPath=' .  $cPath.'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$p_page) . '\')">' . tep_image(DIR_WS_IMAGES . 'icon_status_black_light.gif', 'black', 10, 10) . '</a>';
        }
+       }
       } else if ($products['products_status'] == '2') {
+       if ($unaccept_pro_edit_single) {
+         echo '<a href="javascript:void(0);" onclick="window.alert(\''.NOTICE_HAS_NO_PREVILEGE_EDIT.'\');">' .  tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT, 10, 10) . '</a>&nbsp;' .  tep_image(DIR_WS_IMAGES . 'icon_status_blue.gif', IMAGE_ICON_STATUS_GREEN, 10, 10) . '&nbsp;<a href="javascript:void(0);" onclick="window.alert(\''.NOTICE_HAS_NO_PREVILEGE_EDIT.'\');">' .  tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) . '</a>&nbsp;<a href="javascript:void(0);" onclick="window.alert(\''.NOTICE_HAS_NO_PREVILEGE_EDIT.'\');">' . tep_image(DIR_WS_IMAGES . 'icon_status_black_light.gif', 'black', 10, 10) . '</a>';
+       } else { 
        if ($edit_pro_notice_single) {
          echo '<a href="javascript:void(0);" onclick="window.alert(\''.NOTICE_MUST_EDIT_CATEGORY_OR_PRODUCT.'\');">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT, 10, 10) . '</a>&nbsp;' .  tep_image(DIR_WS_IMAGES . 'icon_status_blue.gif', IMAGE_ICON_STATUS_GREEN, 10, 10) . '&nbsp;<a href="javascript:void(0);" onclick="window.alert(\''.NOTICE_MUST_EDIT_CATEGORY_OR_PRODUCT.'\');">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) . '</a>&nbsp;<a href="javascript:void(0);" onclick="window.alert(\''.NOTICE_MUST_EDIT_CATEGORY_OR_PRODUCT.'\');">' . tep_image(DIR_WS_IMAGES . 'icon_status_black_light.gif', 'black', 10, 10) . '</a>';
        } else {
          echo '<a href="javascript:void(0);" onclick="check_toggle_status(\'' .  tep_href_link(FILENAME_CATEGORIES, 'action=setflag&flag=1&pID=' .  $products['products_id'] . '&cPath=' .  $cPath.'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$p_page) .  '\')">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT, 10, 10) . '</a>&nbsp;' .  tep_image(DIR_WS_IMAGES . 'icon_status_blue.gif', IMAGE_ICON_STATUS_GREEN, 10, 10) . '&nbsp;<a href="javascript:void(0);" onclick="check_toggle_status(\'' .  tep_href_link(FILENAME_CATEGORIES, 'action=setflag&flag=0&pID=' .  $products['products_id'] . '&cPath=' .  $cPath.'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$p_page) . '\')">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) . '</a>&nbsp;<a href="javascript:void(0);" onclick="check_toggle_black_status(\'' .  tep_href_link(FILENAME_CATEGORIES, 'action=setflag&flag=3&pID=' .  $products['products_id'] . '&cPath=' .  $cPath.'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$p_page) . '\')">' . tep_image(DIR_WS_IMAGES . 'icon_status_black_light.gif', 'black', 10, 10) . '</a>';
        }
+       }
       } else if ($products['products_status'] == '3') {
-        if ($edit_pro_notice_single) {
+       if ($unaccept_pro_edit_single) {
+          echo '<a href="javascript:void(0);" onclick="window.alert(\''.NOTICE_HAS_NO_PREVILEGE_EDIT.'\');">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT, 10, 10) . '</a>&nbsp;<a href="javascript:void(0);" onclick="window.alert(\''.NOTICE_HAS_NO_PREVILEGE_EDIT.'\');">' . tep_image(DIR_WS_IMAGES . 'icon_status_blue_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) . '</a>&nbsp;<a href="javascript:void(0);" onclick="window.alert(\''.NOTICE_HAS_NO_PREVILEGE_EDIT.'\');">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) .  '</a>&nbsp'.tep_image(DIR_WS_IMAGES.'icon_status_black.gif', 'black',10, 10);
+       } else { 
+         if ($edit_pro_notice_single) {
           echo '<a href="javascript:void(0);" onclick="window.alert(\''.NOTICE_MUST_EDIT_CATEGORY_OR_PRODUCT.'\');">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT, 10, 10) . '</a>&nbsp;<a href="javascript:void(0);" onclick="window.alert(\''.NOTICE_MUST_EDIT_CATEGORY_OR_PRODUCT.'\');">' . tep_image(DIR_WS_IMAGES . 'icon_status_blue_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) . '</a>&nbsp;<a href="javascript:void(0);" onclick="window.alert(\''.NOTICE_MUST_EDIT_CATEGORY_OR_PRODUCT.'\');">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) .  '</a>&nbsp'.tep_image(DIR_WS_IMAGES.'icon_status_black.gif', 'black',10, 10);
         } else {
           echo '<a href="javascript:void(0);" onclick="check_toggle_status(\'' .  tep_href_link(FILENAME_CATEGORIES, 'action=setflag&flag=1&pID=' .  $products['products_id'] . '&cPath=' .  $cPath.'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$p_page) .  '\')">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT, 10, 10) . '</a>&nbsp;<a href="javascript:void(0);" onclick="check_toggle_status(\'' .  tep_href_link(FILENAME_CATEGORIES, 'action=setflag&flag=2&pID=' .  $products['products_id'] . '&cPath=' .  $cPath.'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$p_page) .  '\')">' . tep_image(DIR_WS_IMAGES . 'icon_status_blue_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) . '</a>&nbsp;<a href="javascript:void(0);" onclick="check_toggle_status(\'' .  tep_href_link(FILENAME_CATEGORIES, 'action=setflag&flag=0&pID=' .  $products['products_id'] . '&cPath=' .  $cPath.'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$p_page) . '\')">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) .  '</a>&nbsp'.tep_image(DIR_WS_IMAGES.'icon_status_black.gif', 'black',10, 10);
         }
+        }
       } else {
+        if ($unaccept_pro_edit_single) {
+          echo '<a href="javascript:void(0);" onclick="window.alert(\''.NOTICE_HAS_NO_PREVILEGE_EDIT.'\');">' .  tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT, 10, 10) . '</a>&nbsp;<a href="javascript:void(0);" onclick="window.alert(\''.NOTICE_HAS_NO_PREVILEGE_EDIT.'\');">' .  tep_image(DIR_WS_IMAGES . 'icon_status_blue_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT, 10, 10) . '</a>&nbsp;' .  tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED, 10, 10).'&nbsp;<a href="javascript:void(0);" onclick="window.alert(\''.NOTICE_HAS_NO_PREVILEGE_EDIT.'\');">' . tep_image(DIR_WS_IMAGES . 'icon_status_black_light.gif', 'black', 10, 10) . '</a>';
+        } else { 
         if ($edit_pro_notice_single) {
           echo '<a href="javascript:void(0);" onclick="window.alert(\''.NOTICE_MUST_EDIT_CATEGORY_OR_PRODUCT.'\');">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT, 10, 10) . '</a>&nbsp;<a href="javascript:void(0);" onclick="window.alert(\''.NOTICE_MUST_EDIT_CATEGORY_OR_PRODUCT.'\');">' . tep_image(DIR_WS_IMAGES . 'icon_status_blue_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT, 10, 10) . '</a>&nbsp;' .  tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED, 10, 10).'&nbsp;<a href="javascript:void(0);" onclick="window.alert(\''.NOTICE_MUST_EDIT_CATEGORY_OR_PRODUCT.'\');">' . tep_image(DIR_WS_IMAGES . 'icon_status_black_light.gif', 'black', 10, 10) . '</a>';
         } else {
           echo '<a href="javascript:void(0);" onclick="check_toggle_status(\'' .  tep_href_link(FILENAME_CATEGORIES, 'action=setflag&flag=1&pID=' .  $products['products_id'] . '&cPath=' .  $cPath.'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$p_page) .  '\')">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT, 10, 10) . '</a>&nbsp;<a href="javascript:void(0);" onclick="check_toggle_status(\'' .  tep_href_link(FILENAME_CATEGORIES, 'action=setflag&flag=2&pID=' .  $products['products_id'] . '&cPath=' .  $cPath.'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$p_page) . '\')">' . tep_image(DIR_WS_IMAGES . 'icon_status_blue_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT, 10, 10) . '</a>&nbsp;' .  tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED, 10, 10).'&nbsp;<a href="javascript:void(0);" onclick="check_toggle_black_status(\'' .  tep_href_link(FILENAME_CATEGORIES, 'action=setflag&flag=3&pID=' .  $products['products_id'] . '&cPath=' .  $cPath.'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$p_page) . '\')">' . tep_image(DIR_WS_IMAGES . 'icon_status_black_light.gif', 'black', 10, 10) . '</a>';
         }
+      }
       }
       }
 } else {
@@ -3322,9 +3507,9 @@ tep_display_google_results(FILENAME_CATEGORIES);
 
         //$contents[] = array('text' => '<br>' . $product_categories_string);
         if (isset($_GET['rdirect'])) {
-          $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_image_submit('button_delete.gif', IMAGE_DELETE) . ' <a class="new_product_reset" href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' .  $pInfo->products_id.'&site_id='.$_GET['site_id'].'&rdirect=all'.$d_page) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
+          $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_DELETE) . ' <a class="new_product_reset" href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&pID=' .  $pInfo->products_id.'&site_id='.$_GET['site_id'].'&rdirect=all'.$d_page) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
         } else {
-          $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_image_submit('button_delete.gif', IMAGE_DELETE) . ' <a class="new_product_reset" href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' .  $pInfo->products_id.'&site_id='.$_GET['site_id'].$d_page) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
+          $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_DELETE) . ' <a class="new_product_reset" href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&pID=' .  $pInfo->products_id.'&site_id='.$_GET['site_id'].$d_page) .  '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
         }
         break;
       case 'delete_product':

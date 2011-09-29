@@ -21,10 +21,10 @@
           and p.products_id = pd.products_id 
           and o.site_id = '".SITE_ID."' order by pd.site_id DESC) c where site_id = ".SITE_ID." or site_id = '0' group by products_id having c.products_status != '3' order by date_purchased desc limit " . MAX_DISPLAY_ALSO_PURCHASED
     ;
+    $_orders_query = tep_db_query($orders_sql);
+    $orders_query = tep_db_query($orders_sql);
     $num_products_ordered = tep_db_num_rows($orders_query);
     if ($num_products_ordered >= MIN_DISPLAY_ALSO_PURCHASED) {
-      $_orders_query = tep_db_query($orders_sql);
-      $orders_query = tep_db_query($orders_sql);
       $h_show_flag = false;
       while ($_orders = tep_db_fetch_array($_orders_query)) {
         if ($_orders['products_status'] != 0) {

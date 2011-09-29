@@ -162,7 +162,7 @@ break;
       </select>
       日 </td>
       <td>&nbsp;</td>
-      <td><input type="submit" value="Submit"></td>
+      <td><input type="submit" value="<?php echo IMAGE_SEARCH;?>"></td>
       </tr>
     </table>
     </form>

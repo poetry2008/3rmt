@@ -44,13 +44,13 @@
         tep_db_query("delete from ".TABLE_CUSTOMERS_BASKET_ATTRIBUTES." where customers_id = '".$preorder_res['customers_id']."'");
       }
     
-      tep_redirect(tep_href_link('preorder_timeout.php')); 
+      tep_redirect(tep_href_link('account_timeout.php')); 
     } else {
       tep_db_query("update ".TABLE_PREORDERS." set `is_active` = 1, `date_purchased` = '".date('Y-m-d H:i:s', time())."' where orders_id = '".$pid."' and site_id = '".SITE_ID."'");  
       tep_db_query("update ".TABLE_CUSTOMERS." set `is_active` = 1 where customers_id = '".$preorder_res['customers_id']."' and site_id = '".SITE_ID."'"); 
       tep_redirect(tep_href_link('preorder_active_success.php', 'pid='.$pid)); 
     }
   } else {
-    tep_redirect(tep_href_link('preorder_timeout.php')); 
+    tep_redirect(tep_href_link('account_timeout.php')); 
   }
 ?>

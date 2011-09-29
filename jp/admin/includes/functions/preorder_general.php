@@ -350,7 +350,8 @@ function   tep_pre_order_status_change($oID,$status){
   require_once("pre_oa/HM_Item_Date.php");
   require_once("pre_oa/HM_Item_Myname.php");
   $order_id = $oID;
-  $formtype = tep_check_pre_order_type($order_id);
+  //$formtype = tep_check_pre_order_type($order_id);
+  $formtype = 4;
   $payment_romaji = tep_get_pre_payment_code_by_order_id($order_id); 
   $oa_form_sql = "select * from ".TABLE_OA_FORM." where formtype = '".$formtype."' and payment_romaji = '".$payment_romaji."'";
   
@@ -803,7 +804,8 @@ function tep_get_preorder_canbe_finish($orders_id){
   if($status == 6 or $status == 8){
     return true;
   }
-  $formtype = tep_check_pre_order_type($orders_id);
+  //$formtype = tep_check_pre_order_type($orders_id);
+  $formtype = 4;
   $payment_romaji = tep_get_pre_payment_code_by_order_id($orders_id); 
   $oa_form_sql = "select * from ".TABLE_OA_FORM."   where formtype = '".$formtype."' and payment_romaji = '".$payment_romaji."'";
   $res = tep_db_fetch_array(tep_db_query($oa_form_sql));;
@@ -871,7 +873,7 @@ function tep_get_list_pre_payment() {
     $payment_class = substr($payment_filename, 0, strrpos($payment_filename, '.'));
     if (tep_class_exists($payment_class)) {
       $payment_module = new $payment_class; 
-      if ($payment_module->code == 'buying' || $payment_module->code == 'buyingpoint' || $payment_module->code == 'fetchgood' || $payment_module->code == 'freepayment') {
+      if ($payment_module->code == 'buying' || $payment_module->code == 'buyingpoint' || $payment_module->code == 'fetch_good' || $payment_module->code == 'free_payment') {
         continue; 
       }
       $payment_list_str .= $payment_module->title."\n"; 

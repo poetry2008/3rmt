@@ -1343,7 +1343,7 @@ function check_mail_product_status(pid)
              '  </tr>' . "\n";
       } else { //ゲスト
         echo '  <tr>' . "\n" .
-             '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_TOTAL_DETAIL_READ.'</td>' . 
+             '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_TOTALDETAIL_READ.'</td>' . 
              '    <td align="right" class="' . $TotalStyle . '">' . trim($TotalDetails["Name"]) . '</td>' . "\n" .
              '    <td align="right" class="' . $TotalStyle . '">' . $TotalDetails["Price"] . 
                 "<input type='hidden' name='update_totals[$TotalIndex][title]' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . 

@@ -239,7 +239,8 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       $contents[] = array('text' => '<br>' . TEXT_INFO_BILL_TEMPLATES_RESPONSIBLE . '<br>' . tep_draw_input_field('responsible', $cInfo->responsible));
       $contents[] = array('text' => '<br>' . TEXT_INFO_BILL_TEMPLATES_SORT_ORDER . '<br>' . tep_draw_input_field('sort_order', $cInfo->sort_order));
       
-      $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_UPDATE) . '&nbsp;<a href="' .  tep_href_link(FILENAME_BILL_TEMPLATES, 'page=' . $_GET['page'] . '&cID=' .  $cInfo->id) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
+      $contents[] = array('align' => 'center', 'text' => '<br>' .
+          tep_html_element_submit(IMAGE_SAVE) . '&nbsp;<a href="' .  tep_href_link(FILENAME_BILL_TEMPLATES, 'page=' . $_GET['page'] . '&cID=' .  $cInfo->id) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
       break;
     case 'delete':
       $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_DELETE_BILL_TEMPLATE . '</b>');

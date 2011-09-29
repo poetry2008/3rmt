@@ -846,8 +846,6 @@ right:5px;*/
       echo "</tr>";
     }
 
-
-
     ?>
 
     <tr>
@@ -866,6 +864,15 @@ right:5px;*/
         </table>
       </td>
     </tr>
+    <?php
+      echo "<tr><td colspan='8' align='right' >";
+        echo '<button type=\'button\'
+        onclick="location.href=\''.tep_href_link(FILENAME_PW_MANAGER,'action=new&sort='.$_GET['sort'].'&type='.$_GET['type']).'\'" >';
+        echo TEXT_NEW;
+        echo "</button>";
+      echo "</td></tr>";
+
+    ?>
   </table>
       </td>
 <?php
@@ -938,7 +945,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       $contents[] = array('align' => 'center', 'text' => '<br>' . tep_image_submit('button_insert.gif', IMAGE_INSERT) . '&nbsp;<a href="' . tep_href_link(FILENAME_PW_MANAGER, 'page=' . $_GET['page']) . '">' . tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>');
       */
       $contents[] = array('align' => 'center', 'text' => '<br>' . 
-          "<button type='submit' >".TEXT_BUTTON_QUERY."</button>"
+          "<button type='submit' >".IMAGE_SAVE."</button>"
           . '&nbsp;' .
           "<button type='button'
           onclick=\"location.href='".
@@ -1029,7 +1036,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
         ."</div>"
           );
       $contents[] = array('align' => 'center', 'text' => '<br>' . 
-          "<button type='submit' >".TEXT_BUTTON_QUERY."</button>"
+          "<button type='submit' >".IMAGE_SAVE."</button>"
           . '&nbsp;' .
           "<button type='button'
           onclick=\"location.href='".
@@ -1101,15 +1108,11 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
     break;
 }
   if ( (tep_not_null($heading)) && (tep_not_null($contents)) ) {
-    echo '            <td class="right_column01" width="20%" valign="top">' . "\n";
+    echo '            <td class="right_column_text" width="20%" valign="top">' . "\n";
 ?>
         <table width=""  border="0" cellspacing="1" cellpadding="0" class = "new_pwmanager">
         <tr><td>
         <?php
-        echo '<button type=\'button\'
-        onclick="location.href=\''.tep_href_link(FILENAME_PW_MANAGER,'action=new&sort='.$_GET['sort'].'&type='.$_GET['type']).'\'" >';
-        echo TEXT_NEW;
-        echo "</button>";
         /*
           echo "<a href='".tep_href_link(FILENAME_PW_MANAGER,'action=new')."'>";
           echo tep_image_button('button_create.gif',IMAGE_CREATE);

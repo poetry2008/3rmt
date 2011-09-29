@@ -219,7 +219,10 @@
   if (!isset($_GET['action']) || substr($_GET['action'], 0, 3) != 'new') {
 ?>
                   <tr>
-                    <td colspan="2" align="right"><?php echo '<a href="' .  tep_href_link(FILENAME_ORDERS_STATUS, 'page=' . $_GET['page'] .  '&action=new') . '">' . tep_html_element_button(IMAGE_INSERT) . '</a>'; ?></td>
+                    <td colspan="2" align="right"><?php echo '<a href="' .
+                    tep_href_link(FILENAME_ORDERS_STATUS, 'page=' . $_GET['page'] .
+                        '&action=new') . '">' .
+                    tep_html_element_button(IMAGE_NEW_ORDERS_STATUS) . '</a>'; ?></td>
                   </tr>
 <?php
   }
@@ -230,7 +233,7 @@
 <?php
   $heading = array();
   $contents = array();
-  $explanation = '名前：${NAME}<br>メールアドレス：${MAIL}<br>注文日：${ORDER_D}<br>注文番号：${ORDER_N}<br>支払い方法：${PAY}<br>注文金額：${ORDER_M}<br>取引方法：${TRADING}<br>注文ステータス：${ORDER_S}<br>自社キャラ名：${ORDER_A}<br>サイト名：${SITE_NAME}<br>サイトのURL：${SITE_URL}<br>お問い合わせ用メールアドレス：${SUPPORT_EMAIL}';
+  $explanation = TEXT_ORDERS_STATUS_DESCRIPTION;
   switch (isset($_GET['action'])?$_GET['action']:null) {
     case 'new':
       $site_id   = isset($_GET['site_id']) ? (int)$_GET['site_id']:0;
@@ -262,7 +265,8 @@
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('nomail', '1') . ' ' . 'DON\'T SEND MAIL');
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('calc_price', '1') . ' ' . '平均単価の算出条件に設定');
 
-      $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_INSERT) . ' <a class="new_product_reset" href="' . tep_href_link(FILENAME_ORDERS_STATUS, 'page=' . $_GET['page']) .  '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
+      $contents[] = array('align' => 'center', 'text' => '<br>' .
+          tep_html_element_submit(IMAGE_SAVE) . ' <a class="new_product_reset" href="' . tep_href_link(FILENAME_ORDERS_STATUS, 'page=' . $_GET['page']) .  '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
       break;
     case 'edit':
       $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_EDIT_ORDERS_STATUS . '</b>');
@@ -310,7 +314,8 @@
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('nomail', '1', $oInfo->nomail) . ' ' . 'DON\'T SEND MAIL');
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('calc_price', '1', $oInfo->calc_price) . ' ' . '平均単価の算出条件に設定');
       
-      $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_UPDATE) . ' <a class="new_product_reset" href="' . tep_href_link(FILENAME_ORDERS_STATUS, 'page=' . $_GET['page'] .  '&oID=' . $oInfo->orders_status_id) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
+      $contents[] = array('align' => 'center', 'text' => '<br>' .
+          tep_html_element_submit(IMAGE_SAVE) . ' <a class="new_product_reset" href="' . tep_href_link(FILENAME_ORDERS_STATUS, 'page=' . $_GET['page'] .  '&oID=' . $oInfo->orders_status_id) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
       break;
     case 'delete':
       $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_DELETE_ORDERS_STATUS . '</b>');

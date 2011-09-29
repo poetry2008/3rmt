@@ -503,7 +503,7 @@ function check_form() {
       </tr>   
     <?php } ?>
       <tr>
-        <td align="right" class="main"><?php echo tep_html_element_submit(IMAGE_UPDATE) . '&nbsp;&nbsp;<a href="' .  tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action'))) .'">' . tep_html_element_button(IMAGE_CANCEL) . '</a>'; ?></td>
+        <td align="right" class="main"><?php echo tep_html_element_submit(IMAGE_SAVE) . '&nbsp;&nbsp;<a href="' .  tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action'))) .'">' . tep_html_element_button(IMAGE_CANCEL) . '</a>'; ?></td>
       </tr></form>
 <?php
   } else {
@@ -513,7 +513,9 @@ function check_form() {
           <tr><?php echo tep_draw_form('search', FILENAME_CUSTOMERS, tep_get_all_get_params(), 'get'); ?>
             <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
             <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT); ?></td>
-            <td class="smallText" align="right"><?php //echo tep_draw_hidden_field('d', '龠');?><?php echo HEADING_TITLE_SEARCH . ' ' . tep_draw_input_field('search'); ?><br><?php echo CUSTOMER_SEARCH_READ_TITLE;?> 
+            <td class="smallText" align="right"><?php //echo tep_draw_hidden_field('d', '龠');?><?php echo HEADING_TITLE_SEARCH . ' ' . tep_draw_input_field('search'); ?>
+      <input type="submit" value="<?php echo IMAGE_SEARCH;?>">
+            <br><?php echo CUSTOMER_SEARCH_READ_TITLE;?> 
       </td>
           </form></tr>
         </table></td>

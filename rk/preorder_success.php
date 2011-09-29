@@ -84,7 +84,11 @@
     }
   }
   $breadcrumb->add($preorder_product['products_name'], tep_href_link(FILENAME_PRODUCT_INFO, 'products_id='.$preorder_product['products_id'])); 
-  $breadcrumb->add(PREORDER_SUCCESS_TITLE, '');
+  if (!$preorder['is_active']) { 
+    $breadcrumb->add(PREORDER_SUCCESS_UNACTIVE_TITLE, '');
+  } else {
+    $breadcrumb->add(PREORDER_SUCCESS_TITLE, '');
+  }
 ?>
 <?php page_head();?>
 </head>
@@ -99,7 +103,14 @@
         <!-- left_navigation_eof //--> </td> 
       <!-- body_text //--> 
       <td valign="top" id="contents"> 
-      <h1 class="pageHeading"><?php echo PREORDER_SUCCESS_HEAD_TITLE;?></h1> 
+      <h1 class="pageHeading">
+      <?php 
+      if (!$preorder['is_active']) { 
+        echo PREORDER_SUCCESS_UNACTIVE_HEAD_TITLE;
+      } else {
+        echo PREORDER_SUCCESS_HEAD_TITLE;
+      }
+      ?></h1> 
       <div class="comment">
       <?php
       if (!$preorder['is_active']) { 
@@ -138,7 +149,7 @@
         </tr>
         <tr>
           <td>
-          <?php echo PREORDER_SUCCESS_TEXT;?> 
+          <?php echo sprintf(PREORDER_SUCCESS_TEXT, '<a href="'.tep_href_link('email_trouble.php').'">'.PREORDER_SUCCESS_TEXT_LINK.'</a>');?> 
           </td>
         </tr>
         <tr>

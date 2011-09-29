@@ -1004,13 +1004,13 @@ P.description {
 }
 .con_email01 {
 	display:inline;
-	margin-left:25px;
+	margin-left:39px;
 }
 .con_email02 {
 	display:inline;
 	margin-left:39px;
 }
-.cemail_input_01{ float:left; line-height:21px; width:100px;}
+.cemail_input_01{ clear:both; line-height:21px; font-size:11px;}
 .waring_category {
 	color:#000;
 	margin:5px 0 2px 0;
@@ -1086,11 +1086,12 @@ a.Icon:hover {
 	width:120px;
 }
 .c_pay_info {padding:5px; border:1px solid #B6B7CB; margin:35px 0 15px 0;}
-#caemail p{ height:280px;}
-#catelnumber p{ height:280px;}
+#caemail p{ height:290px; margin:0;}
+/*#caemail p img { text-align:center; position:relative; left:40px;}
+*/#catelnumber p{ height:280px;}
 .box_des02 {
-	background:url(../images/rmt_cr.gif) 56px 181px no-repeat;
-}
+/*	background:url(../images/rmt_cr.gif) 56px 181px no-repeat;
+*/}
 .product_list02 span{ font-size:10px; width:157px; text-align:center;}
 .product_list02 img{ margin-bottom:10px; height:50px;}
 .product_list02 input{ margin-top:10px;} 
@@ -1128,3 +1129,4 @@ searching
 	margin-left:39px;
 }
 .ctelnumber_input{ margin:10px 0 0 0;}
+.cemail_front_text{ width:150px; float:left;}

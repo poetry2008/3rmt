@@ -30,5 +30,5 @@ define('TEXT_LATEST_NEWS_IMAGE_DESCRIPTION', '画像に対しての簡単な説�
 define('TABLE_HEADING_LATEST_NEWS_ISFIRST', 'トップにします');
 
 
-define('IMAGE_NEW_NEWS_ITEM', '新しいニュースを作成');
+define('IMAGE_NEW_NEWS_ITEM', '新規作成');
 ?>

@@ -157,7 +157,9 @@ while($point_mail = tep_db_fetch_array($point_mail_query)){
                   <tr>
                     <td colspan="2" align="right">
                     <?php 
-                    echo '<a href="'.tep_href_link(FILENAME_POINT_EMAIL, 'page=' .  $_GET['page'] . '&action=new').'">'.tep_html_element_button(IMAGE_INSERT).'</a>';
+                    echo '<a href="'.tep_href_link(FILENAME_POINT_EMAIL, 'page=' .
+                    $_GET['page'] .
+                    '&action=new').'">'.tep_html_element_button(IMAGE_NEW_POINT_EMAIL).'</a>';
                     ?></td>
                   </tr>
 <?php
@@ -189,7 +191,7 @@ while($point_mail = tep_db_fetch_array($point_mail_query)){
       $contents[] = array('text' => '<br>' . $point_mail_inputs_string);
       
       $contents[] = array('align' => 'center', 'text' => '<br>' . 
-          tep_html_element_submit(IMAGE_INSERT).
+          tep_html_element_submit(IMAGE_SAVE).
           '<a href="'.tep_href_link(FILENAME_POINT_EMAIL,'page=' .  $_GET['page']).'">'.tep_html_element_button(IMAGE_CANCEL).'</a>');
       break;
     case 'edit':
@@ -216,7 +218,7 @@ while($point_mail = tep_db_fetch_array($point_mail_query)){
         '<br>' . $explanation;
       $contents[] = array('text' => '<br>'.$point_mail_inputs_string);
       $contents[] = array('align' => 'center' , 'text' => '<br>' .
-          tep_html_element_submit(IMAGE_EDIT).
+          tep_html_element_submit(IMAGE_SAVE).
           '<a href="'.tep_href_link(FILENAME_POINT_EMAIL,'page=' .  $_GET['page'].'id='.$point_mail->id).'">'.tep_html_element_button(IMAGE_CANCEL).'</a>');
       break;
     case 'delete':

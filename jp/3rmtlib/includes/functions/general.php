@@ -2163,19 +2163,23 @@ function forward404Unless($condition)
     $title       = str_replace($search, $replace, $title);
     $keywords    = str_replace($search, $replace, $keywords);
     $description = str_replace($search, $replace, $description);
+    $copyright   = str_replace($search, $replace, $copyright);
     // replace again
     $title       = str_replace($search, $replace, $title);
     $keywords    = str_replace($search, $replace, $keywords);
     $description = str_replace($search, $replace, $description);
+    $copyright   = str_replace($search, $replace, $copyright);
     //
     
     $title = str_replace('#SEO_PAGE#', '', $title); 
     $keywords = str_replace('#SEO_PAGE#', '', $keywords); 
     $description = str_replace('#SEO_PAGE#', '', $description); 
+    $copyright = str_replace('#SEO_PAGE#', '', $copyright); 
      
     $title = str_replace(' &raquo; ', ' ', $title); 
     $keywords = str_replace(' &raquo; ', ' ', $keywords); 
     $description = str_replace(' &raquo; ', ' ', $description); 
+    $copyright = str_replace(' &raquo; ', ' ', $copyright); 
   ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html <?php echo HTML_PARAMS; ?>>

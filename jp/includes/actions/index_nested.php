@@ -19,8 +19,8 @@
        echo '<h1 class="pageHeading">'.$seo_manufacturers['manufacturers_name'].'</h1>';
   }
 ?> 
-
-      <p class="comment"><?php echo $seo_category['categories_header_text']; //seoフレーズ ?></p>
+      <!-- heading title eof//-->
+      <p class="comment"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_header_text']); //seoフレーズ ?></p>
       <table border="0" width="100%" cellspacing="3" cellpadding="3"> 
         <tr align="center">
 <?php
@@ -127,7 +127,7 @@
         </tr>
       </table>
       <br>
-      <p class="comment"><?php echo $seo_category['categories_footer_text']; //seoフレーズ ?></p>
+      <p class="comment"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_footer_text']); //seoフレーズ ?></p>
       <?php 
   $new_products_category_id = $current_category_id;
   $exone_single = false; 
@@ -142,15 +142,15 @@
   }
   if (isset($cPath_array)) {
     if ($seo_category['seo_description']) {
-      echo '<h3 class="pageHeading">' . $seo_category['seo_name'] . 'について</h3>' . "\n";
-      echo '<p class="comment">' . $seo_category['seo_description'] . '</p>' . "\n"; //seoフレーズ
+      echo '<h3 class="pageHeading">' . str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_name']) . 'について</h3>' . "\n";
+      echo '<p class="comment">' . str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_description']) . '</p>' . "\n"; //seoフレーズ
 ?>
         <p class="pageBottom"></p>
 <?php
     }
 ?>
 <?php  if (!empty($seo_category['text_information'])) {
-    echo $seo_category['text_information'];
+    echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['text_information']);
     
 ?>
         <p class="pageBottom"></p>

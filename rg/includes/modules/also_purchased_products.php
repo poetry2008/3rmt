@@ -20,6 +20,8 @@
         order by date_purchased desc 
         limit " . MAX_DISPLAY_ALSO_PURCHASED
     ;
+    $_orders_query = tep_db_query($orders_sql);
+    $orders_query = tep_db_query($orders_sql);
     $num_products_ordered = tep_db_num_rows($orders_query);
     if ($num_products_ordered >= MIN_DISPLAY_ALSO_PURCHASED) {
       switch ($num_products_ordered) {
@@ -36,8 +38,6 @@
           $width_str = ' width="25%"';
           break;
       }
-      $_orders_query = tep_db_query($orders_sql);
-      $orders_query = tep_db_query($orders_sql);
       $h_show_flag = false;
       while ($_orders = tep_db_fetch_array($_orders_query)) {
         if ($_orders['products_status'] != 0) {

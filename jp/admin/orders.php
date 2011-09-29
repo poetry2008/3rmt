@@ -1118,8 +1118,13 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
       //torihiki_date_error DESC,o.torihiki_date DESC";
     }  elseif (isset($_GET['keywords']) && isset($_GET['search_type']) && $_GET['search_type'] == 'products_name' && !$_GET['type'] && !$payment) {
       $orders_query_raw = " select distinct op.orders_id from " . TABLE_ORDERS_PRODUCTS . " op 
-        ".$sort_table." where ".$sort_where." op.products_name like
-        '%".$_GET['keywords']."%' " . (isset($_GET['site_id']) &&
+        ".$sort_table." where ".$sort_where." op.products_name ";
+        if(isset($_GET['real_name'])&&$_GET['real_name']){
+          $orders_query_raw .=  "= '".$_GET['keywords']."' " ;
+        }else{
+          $orders_query_raw .=  "like '%".$_GET['keywords']."%' " ;
+        }
+        $orders_query_raw .= (isset($_GET['site_id']) &&
         intval($_GET['site_id']) ? " and op.site_id = '" . intval($_GET['site_id'])
         . "' " : '') . " order by op.torihiki_date DESC";
       //op.torihiki_date desc";
@@ -2490,7 +2495,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                   'get','id="orders1" onsubmit="return false"'); ?><?php echo
               TEXT_ORDER_FIND;?> 
               <input name="keywords" style="width:320px;" type="text" id="keywords" size="40" value="<?php if(isset($_GET['keywords'])) echo stripslashes($_GET['keywords']); ?>">
-              <select name="search_type" onChange='search_type_changed(this)' style="text-align:center;">
+              <select name="search_type" onChange='search_type_changed(this)' style="text-align:left;">
                 <option value="none"><?php echo TEXT_ORDER_FIND_SELECT;?></option>
                 <option value="orders_id"><?php echo TEXT_ORDER_FIND_OID;?></option>
                 <option value="customers_name"><?php echo TEXT_ORDER_FIND_NAME;?></option>
@@ -3153,7 +3158,7 @@ function submit_confirm()
               </tr>
               <tr>
                 <td class="main" colspan="2"><br><b style="color:#FF0000;"><?php
-                echo TEXT_ORDER_HAS_ERROR;?></b><br><br><?php echo tep_image_submit('button_update.gif', IMAGE_UPDATE, 'onclick="return submit_confirm()&&check_question_form();"'); ?></td>
+                echo TEXT_ORDER_HAS_ERROR;?></b><br><br><?php echo tep_html_element_submit(IMAGE_UPDATE, 'onclick="return submit_confirm()&&check_question_form();"'); ?></td>
               </tr>
             </table>
           </td>

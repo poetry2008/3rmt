@@ -219,7 +219,10 @@
   if (!isset($_GET['action']) || substr($_GET['action'], 0, 3) != 'new') {
 ?>
                   <tr>
-                    <td colspan="2" align="right"><?php echo '<a href="' .  tep_href_link(FILENAME_PREORDERS_STATUS, 'page=' . $_GET['page'] .  '&action=new') . '">' . tep_html_element_button(IMAGE_INSERT) . '</a>'; ?></td>
+                    <td colspan="2" align="right"><?php echo '<a href="' .
+                    tep_href_link(FILENAME_PREORDERS_STATUS, 'page=' . $_GET['page']
+                        .  '&action=new') . '">' .
+                    tep_html_element_button(IMAGE_NEW_PREORDERS_STATUS) . '</a>'; ?></td>
                   </tr>
 <?php
   }
@@ -262,7 +265,8 @@
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('nomail', '1') . ' ' . TEXT_ORDERS_STATUS_NOMAIL);
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('calc_price', '1') . ' ' . TEXT_ORDERS_STATUS_AVG_PRICE);
 
-      $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_INSERT) . ' <a class="new_product_reset" href="' . tep_href_link(FILENAME_PREORDERS_STATUS, 'page=' . $_GET['page']) .  '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
+      $contents[] = array('align' => 'center', 'text' => '<br>' .
+          tep_html_element_submit(IMAGE_SAVE) . ' <a class="new_product_reset" href="' . tep_href_link(FILENAME_PREORDERS_STATUS, 'page=' . $_GET['page']) .  '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
       break;
     case 'edit':
       $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_EDIT_ORDERS_STATUS . '</b>');
@@ -310,7 +314,8 @@
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('nomail', '1', $oInfo->nomail) . ' ' . TEXT_ORDERS_STATUS_NOMAIL);
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('calc_price', '1', $oInfo->calc_price) . ' ' . TEXT_ORDERS_STATUS_AVG_PRICE);
       
-      $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_UPDATE) . ' <a class="new_product_reset" href="' . tep_href_link(FILENAME_PREORDERS_STATUS, 'page=' . $_GET['page'] .  '&oID=' . $oInfo->orders_status_id) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
+      $contents[] = array('align' => 'center', 'text' => '<br>' .
+          tep_html_element_submit(IMAGE_SAVE) . ' <a class="new_product_reset" href="' . tep_href_link(FILENAME_PREORDERS_STATUS, 'page=' . $_GET['page'] .  '&oID=' . $oInfo->orders_status_id) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
       break;
     case 'delete':
       $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_DELETE_ORDERS_STATUS . '</b>');

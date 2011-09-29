@@ -195,7 +195,7 @@
             <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
           </tr>
           <tr>
-            <td class="main"><?php echo TEXT_LATEST_NEWS_CONTENT; ?></td>
+            <td class="main" valign="top"><?php echo TEXT_LATEST_NEWS_CONTENT; ?></td>
             <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_textarea_field('content', 'soft', '70', '15',isset($latest_news['content'])? stripslashes($latest_news['content']):''); ?>
   <br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;#STORE_NAME#
   </td>
@@ -211,7 +211,7 @@
             <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
           </tr>
           <tr>
-            <td class="main"><?php echo TEXT_LATEST_NEWS_IMAGE_DESCRIPTION; ?></td>
+            <td class="main" valign="top"><?php echo TEXT_LATEST_NEWS_IMAGE_DESCRIPTION; ?></td>
             <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_textarea_field('news_image_description', 'soft', '70', '7', isset($latest_news['news_image_description'])?stripslashes($latest_news['news_image_description']):''); ?></td>
           </tr>     
         </table></td>
@@ -224,7 +224,7 @@
           <?php
             isset($_GET['latest_news_id']) ? $cancel_button = '&nbsp;&nbsp;<a class="new_product_reset" href="' . tep_href_link(FILENAME_LATEST_NEWS, 'latest_news_id=' . $_GET['latest_news_id']) . '">' .
     tep_html_element_button(IMAGE_CANCEL) . '</a>' : $cancel_button = '';
-            echo tep_html_element_submit(IMAGE_INSERT) . $cancel_button;
+            echo tep_html_element_submit(IMAGE_SAVE) . $cancel_button;
           ?>
         </td>
     

@@ -247,13 +247,15 @@ date("Y") - $i; ?></option>
           <tr>
             <td valign="top"><?php tep_site_filter(FILENAME_STATS_SALES_REPORT2);?><table border="0" width="100%" cellspacing="0" cellpadding="2">
               <tr class="dataTableHeadingRow">
-                <td class="dataTableHeadingContent" align="right"><?php echo  SR_TABLE_HEADING_DATE; ?></td>
-                <td class="dataTableHeadingContent" align="right"><?php echo  SR_TABLE_HEADING_ORDERS;?></td>
-                <td class="dataTableHeadingContent" align="right"><?php echo  SR_TABLE_HEADING_ITEMS; ?></td>
+                <td class="dataTableHeadingContent" align="left"><?php echo  SR_TABLE_HEADING_DATE; ?></td>
+                <td class="dataTableHeadingContent" align="left"><?php echo  SR_TABLE_HEADING_ORDERS;?></td>
+                <td class="dataTableHeadingContent" align="center"><?php echo  SR_TABLE_HEADING_ITEMS; ?></td>
                 <td class="dataTableHeadingContent" align="right"><?php echo  SR_TABLE_HEADING_REVENUE;?></td>
               </tr>
               <?php
 $sum = 0;
+$orders_sum = 0;
+$products_point_sum = 0; 
 while ($sr->hasNext()) {
   $info = $sr->next();
   $last = sizeof($info) - 1;
@@ -263,22 +265,27 @@ while ($sr->hasNext()) {
     switch ($srView) {
       case '3':
 ?>
-                <td class="dataTableContent" align="right"><?php echo tep_date_long(date("Y-m-d\ H:i:s", $sr->showDate)) . " - " . tep_date_short(date("Y-m-d\ H:i:s", $sr->showDateEnd)); ?></td>
+                <td class="dataTableContent" align="left"><?php echo tep_date_long(date("Y-m-d\ H:i:s", $sr->showDate)) . " - " . tep_date_short(date("Y-m-d\ H:i:s", $sr->showDateEnd)); ?></td>
                 <?php
         break;
       case '4':
 ?>
-                <td class="dataTableContent" align="right"><?php echo tep_date_long(date("Y-m-d\ H:i:s", $sr->showDate)); ?></td>
+                <td class="dataTableContent" align="left"><?php echo tep_date_long(date("Y-m-d\ H:i:s", $sr->showDate)); ?></td>
                 <?php
         break;
       default;
 ?>
-                <td class="dataTableContent" align="right"><?php echo tep_date_short(date("Y-m-d\ H:i:s", $sr->showDate)) . " - " . tep_date_short(date("Y-m-d\ H:i:s", $sr->showDateEnd)); ?></td>
+                <td class="dataTableContent" align="left"><?php echo tep_date_short(date("Y-m-d\ H:i:s", $sr->showDate)) . " - " . tep_date_short(date("Y-m-d\ H:i:s", $sr->showDateEnd)); ?></td>
                 <?php
     }
 ?>
-                <td class="dataTableContent" align="right"><?php echo $info[0]['order']; ?></td>
-                <td class="dataTableContent" align="right"><?php echo isset($info[$last - 1]['totitem'])?$info[$last - 1]['totitem']:''; ?></td>
+                <td class="dataTableContent" align="left"><?php echo $info[0]['order']; ?></td>
+                <?php $orders_sum += $info[0]['order'];?>
+                <td class="dataTableContent" align="center"><?php echo isset($info[$last - 1]['totitem'])?$info[$last - 1]['totitem']:''; ?></td>
+                <?php 
+                if(isset($info[$last - 1]['totitem'])){
+                  $products_point_sum += $info[$last - 1]['totitem'];
+                }?> 
                 <td class="dataTableContent" align="right"><?php 
   if ($info[$last - 1]['totsum'] < 0) {
     echo '<font color="red">'.$currencies->format(isset($info[$last - 1]['totsum'])?$info[$last - 1]['totsum']:'').'</font>';
@@ -321,7 +328,15 @@ if (isset($srDetail)){
   }
 }
 ?>
-<tr><td colspan="7" class="dataTableContent" align="right">合計金額:<?php echo $t<0?'<font color="red">':'';?><?php echo $currencies->format($t);?><?php echo $t<0?'</font>':'';?></td></tr>
+<tr>
+<td class="dataTableContent" align="right"></td>
+<td class="dataTableContent" align="left"><?php echo
+SR_ORDERS_SUM.$orders_sum.SR_ONE_ORDERS;?></td>
+<td class="dataTableContent" align="center"><?php echo
+SR_PRODUCTS_POINT_SUM.$products_point_sum.SR_POINT;?></td>
+<td class="dataTableContent" align="right"><?php echo SR_MONEY_SUM.
+($t<0?'<font color="red">':'');?><?php echo $currencies->format($t);?><?php echo
+($t<0?'</font>':'');?></td></tr>
 <?php
 if ($srCompare > SR_COMPARE_NO) {
 ?>

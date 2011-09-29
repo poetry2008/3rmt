@@ -127,7 +127,7 @@ function check_one(ele){
           <input type="text" name="keywords" value="<?php echo $_GET['keywords'];?>">
           <input type="checkbox" name="rel_yes" value="1" <?php if (!(!$_GET['rel_yes'] && $_GET['rel_no'])) {echo 'checked';} ?>><?php echo TELECOM_UNKNOW_SEARCH_SUCCESS;?> 
           <input type="checkbox" name="rel_no" value="1" <?php if (!(!$_GET['rel_no'] && $_GET['rel_yes'])) {echo 'checked';} ?>><?php echo TELECOM_UNKNOW_SEARCH_FAIL;?>
-          <input type="submit" value="Go">
+          <input type="submit" value="<?php echo IMAGE_SEARCH;?>">
         </form>
       </td>
       <td align="right" class="smallText" width="33%">&nbsp;</td>

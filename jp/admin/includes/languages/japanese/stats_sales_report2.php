@@ -52,3 +52,8 @@ define('SR_REPORT_COMP_NO', 'しない');
 define('SR_REPORT_COMP_DAY', '前日比');
 define('SR_REPORT_COMP_MONTH', '先月比');
 define('SR_REPORT_COMP_YEAR', '前年比');
+define('SR_ORDERS_SUM','合計件数:');
+define('SR_PRODUCTS_POINT_SUM','合計点数:');
+define('SR_MONEY_SUM','合計金額:');
+define('SR_ONE_ORDERS','件');
+define('SR_POINT','点');

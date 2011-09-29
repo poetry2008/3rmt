@@ -26,7 +26,7 @@
           ?>
           <tr>
             <td colspan="2">
-               <font color="#ffffff"><?php echo $seo_category['categories_header_text']; //seoフレーズ ?></font>
+               <font color="#ffffff"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_header_text']); //seoフレーズ ?></font>
             </td>
           </tr>
           <?php
@@ -113,7 +113,7 @@
           ?>
           <tr>
             <td colspan="2">
-              <font color="#ffffff"><?php echo $seo_category['categories_footer_text']; //seoフレーズ ?></font>
+              <font color="#ffffff"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_footer_text']); //seoフレーズ ?></font>
             </td>
           </tr>
           <?php
@@ -138,15 +138,15 @@
 <?php  
   if (isset($cPath_array)) {
     if ($seo_category['seo_description']) {
-      echo '<h3 class="pageHeading"> ' . $seo_category['seo_name'] . 'について</h3>' . "\n";
-      echo '<div class="comment"><div class="reviews_area"><p>' . $seo_category['seo_description'] . '</p></div></div>' . "\n"; //seoフレーズ
+      echo '<h3 class="pageHeading"> ' . str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_name']) . 'について</h3>' . "\n";
+      echo '<div class="comment"><div class="reviews_area"><p>' .  str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_description']) . '</p></div></div>' . "\n"; //seoフレーズ
 ?>
         <p class="pageBottom"></p>
 <?php
     }
 ?>
 <?php  if (!empty($seo_category['text_information'])) {
-    echo $seo_category['text_information'];
+    echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['text_information']);
 ?>
         <!--<p class="pageBottom"></p>-->
 <?php 

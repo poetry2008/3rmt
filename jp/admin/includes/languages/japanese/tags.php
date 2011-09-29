@@ -21,5 +21,5 @@ define('LISTING_TITLE_A_TO_Z','タイトル Ａ～Ｚ');
 define('LISTING_TITLE_Z_TO_A','タイトル Ｚ～Ａ');
 define('LISTING_TITLE_A_TO_N','タイトル あ～ん');
 define('LISTING_TITLE_N_TO_A','タイトル ん～あ');
-define('BUTTON_NEW_TAG', '新しいタブ');
+define('BUTTON_NEW_TAG', '新規作成');
 ?>
