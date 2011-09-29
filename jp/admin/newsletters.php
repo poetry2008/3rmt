@@ -315,10 +315,7 @@
       $module->send($nInfo->newsletters_id,$_GET['send_site_id']); 
       ?>
       <script type="text/javascript">
-        function redirect_send_success() {
-          window.location.href="<?php echo tep_href_link('newsletters.php', 'page='.$_GET['page'].'&nID='.$_GET['nID'].'&action=confirm_send&send_site_id='.$_GET['send_site_id'].'&send_finish=1');?>"; 
-        }
-        setTimeout(redirect_send_success(), 6000); 
+        setTimeout("window.location.href='<?php echo tep_href_link('newsletters.php', 'page='.$_GET['page'].'&nID='.$_GET['nID'].'&action=confirm_send&send_site_id='.$_GET['send_site_id'].'&send_finish=1');?>';", 6000); 
       </script>
       <?php
     } 
