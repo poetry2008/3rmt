@@ -292,7 +292,6 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
         </td>
       </tr>
       <?php
-    if ($payment == 'buying') {
             if(method_exists(
                              $payment_modules,
                              'specialOutput'
