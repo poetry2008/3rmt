@@ -295,23 +295,44 @@
         <td><table border="0" cellspacing="0" cellpadding="2">
           <tr>
             <td class="main" valign="middle"><?php echo tep_image(DIR_WS_IMAGES . 'ani_send_email.gif', IMAGE_ANI_SEND_EMAIL); ?></td>
-            <td class="main" valign="middle"><b><?php echo TEXT_PLEASE_WAIT; ?></b></td>
+            <td class="main" valign="middle">
+            <?php
+            if (!isset($_GET['send_finish'])) { 
+            ?>
+            <b><?php echo TEXT_PLEASE_WAIT; ?></b>
+            <?php }?> 
+            </td>
           </tr>
         </table></td>
       </tr>
 <?php
   tep_set_time_limit(0);
   flush();
-  if (!isset($_GET['selected_box'])) {
-    $module->send($nInfo->newsletters_id,$_GET['send_site_id']); } 
+  if (!isset($_GET['send_finish'])) { 
+    if (!isset($_GET['selected_box'])) {
+      $module->send($nInfo->newsletters_id,$_GET['send_site_id']); 
+      ?>
+      <script type="text/javascript">
+        function redirect_send_success() {
+          window.location.href="<?php echo tep_href_link('newsletters.php', 'page='.$_GET['page'].'&nID='.$_GET['nID'].'&action=confirm_send&send_site_id='.$_GET['send_site_id'].'&send_finish=1');?>"; 
+        }
+        setTimeout(redirect_send_success(), 6000); 
+      </script>
+      <?php
+    } 
+  } 
   //2003-07-17 hiroshi_sato fixed
 ?>
       <tr>
         <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
       </tr>
+      <?php
+      if (isset($_GET['send_finish'])) { 
+      ?>
       <tr>
         <td class="main"><font color="#ff0000"><b><?php echo TEXT_FINISHED_SENDING_EMAILS; ?></b></font></td>
       </tr>
+      <?php }?> 
       <tr>
         <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
       </tr>
