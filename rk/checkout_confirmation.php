@@ -42,41 +42,6 @@
   
 ////
 // check if bank info
-  if($payment == 'buying') {
-  $bank_name = tep_db_prepare_input($_POST['bank_name']);
-  $bank_shiten = tep_db_prepare_input($_POST['bank_shiten']);
-  $bank_kamoku = tep_db_prepare_input($_POST['bank_kamoku']);
-  $bank_kouza_num = tep_db_prepare_input($_POST['bank_kouza_num']);
-  $bank_kouza_name = tep_db_prepare_input($_POST['bank_kouza_name']);
-  
-  tep_session_register('bank_name');
-  tep_session_register('bank_shiten');
-  tep_session_register('bank_kamoku');
-  tep_session_register('bank_kouza_num');
-  tep_session_register('bank_kouza_name');
-  
-  if($bank_name == '') {
-    tep_session_unregister('bank_name');
-      tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, 'bank_error=' . urlencode(TEXT_BANK_ERROR_NAME), 'SSL'));
-  }
-  if($bank_shiten == '') {
-    tep_session_unregister('bank_shiten');
-      tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, 'bank_error=' . urlencode(TEXT_BANK_ERROR_SHITEN), 'SSL'));
-  }
-  if($bank_kouza_num == '') {
-    tep_session_unregister('bank_kouza_num');
-      tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, 'bank_error=' . urlencode(TEXT_BANK_ERROR_KOUZA_NUM), 'SSL'));
-  }
-  if (!preg_match("/^[0-9]+$/", $bank_kouza_num)) {
-    tep_session_unregister('bank_kouza_num');
-      tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, 'bank_error=' . urlencode(TEXT_BANK_ERROR_KOUZA_NUM2), 'SSL'));
-  } 
-  if($bank_kouza_name == '') {
-    tep_session_unregister('bank_kouza_name');
-      tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, 'bank_error=' . urlencode(TEXT_BANK_ERROR_KOUZA_NAME), 'SSL'));
-  }
-  }  
-
 // load the selected payment module
   require(DIR_WS_CLASSES . 'payment.php');
   $payment_modules = new payment($payment);
@@ -335,52 +300,15 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
           </tr> 
     
 <?php
-    if ($payment == 'buying') {
-?>
-          <tr> 
-            <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
-                <tr> 
-                  <td>
-<table width="100%" border="0" cellspacing="0" cellpadding="2" >
-  <tr>
-  <td class="main" colspan="3"><b><?php echo TABLE_HEADING_BANK; ?></b><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
-  </tr>
-  <tr>
-    <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-  <td class="main" width="30%"><?php echo TEXT_BANK_NAME; ?></td>
-    <td class="main" width="70%"><?php echo $bank_name; ?></td>
-  </tr>
-  <tr>
-    <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-  <td class="main"><?php echo TEXT_BANK_SHITEN; ?></td>
-    <td class="main"><?php echo $bank_shiten; ?></td>
-  </tr>
-  <tr>
-    <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-  <td class="main"><?php echo TEXT_BANK_KAMOKU; ?></td>
-    <td class="main"><?php echo $bank_kamoku; ?></td>
-  </tr>
-  <tr>
-    <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-  <td class="main"><?php echo TEXT_BANK_KOUZA_NUM; ?></td>
-    <td class="main"><?php echo $bank_kouza_num; ?></td>
-  </tr>
-  <tr>
-    <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-  <td class="main"><?php echo TEXT_BANK_KOUZA_NAME; ?></td>
-    <td class="main"><?php echo $bank_kouza_name; ?></td>
-  </tr>
-</table>
-          
-          </td> 
-                </tr> 
-              </table></td> 
-          </tr> 
-          <tr> 
-            <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-          </tr> 
-<?php
-  }
+            if(method_exists(
+                             $payment_modules,
+                             'specialOutput'
+                             )){
+              call_user_method ('specialOutput',$payment_modules);
+
+              //              call_user$payment_modules
+              
+            }
 ?>
     
         <tr> 
