@@ -300,6 +300,8 @@
             if (!isset($_GET['send_finish'])) { 
             ?>
             <b><?php echo TEXT_PLEASE_WAIT; ?></b>
+            <?php } else {?> 
+            <font color="#ff0000"><b><?php echo TEXT_FINISHED_SENDING_EMAILS; ?></b></font>
             <?php }?> 
             </td>
           </tr>
@@ -323,16 +325,6 @@
   } 
   //2003-07-17 hiroshi_sato fixed
 ?>
-      <tr>
-        <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
-      </tr>
-      <?php
-      if (isset($_GET['send_finish'])) { 
-      ?>
-      <tr>
-        <td class="main"><font color="#ff0000"><b><?php echo TEXT_FINISHED_SENDING_EMAILS; ?></b></font></td>
-      </tr>
-      <?php }?> 
       <tr>
         <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
       </tr>
