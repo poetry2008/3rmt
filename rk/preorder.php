@@ -95,6 +95,15 @@ if($("input[name=pre_payment]").length == 1){
         $("#caemail").css("display", "none");
       }
     }
+    if ($(this).attr('name') != 'bank_kamoku') { 
+      if ($(this).val() == 'rakuten_bank') {
+        $("#ctelnumber").css("display", "block");
+        $("#catelnumber").css("display", "block");
+      } else {
+        $("#ctelnumber").css("display", "none");
+        $("#catelnumber").css("display", "none");
+      }
+    }
   }
 })
 $("input:radio").click(function(){
@@ -107,6 +116,16 @@ $("input:radio").click(function(){
       $("#caemail").css("display", "none");
     } 
   }
+  
+  if ($(this).val() == 'rakuten_bank') {
+    $("#ctelnumber").css("display", "block");
+    $("#catelnumber").css("display", "block");
+  } else {
+    if ($(this).attr('name') != 'bank_kamoku') { 
+      $("#ctelnumber").css("display", "none");
+      $("#catelnumber").css("display", "none");
+    } 
+  }
 });
 $(".moduleRow").click(function(){
   if ($(this).find('input:radio').val() == 'convenience_store') {
@@ -116,6 +135,16 @@ $(".moduleRow").click(function(){
     if ($(this).find('input:radio').attr('name') != 'bank_kamoku') {
       $("#cemail").css("display", "none");
       $("#caemail").css("display", "none");
+    }
+  }
+  
+  if ($(this).find('input:radio').val() == 'rakuten_bank') {
+    $("#ctelnumber").css("display", "block");
+    $("#catelnumber").css("display", "block");
+  } else {
+    if ($(this).find('input:radio').attr('name') != 'bank_kamoku') {
+      $("#ctelnumber").css("display", "none");
+      $("#catelnumber").css("display", "none");
     }
   }
 });
@@ -152,6 +181,14 @@ function rowOverEffect(object) {
 function rowOutEffect(object) {
   //if (object.className == 'moduleRowOver') object.className = 'moduleRow';
 }
+<?php
+if ($_POST['pre_payment'] == 'convenience_store') {
+?>
+      $("#cemail").css("display", "block"); 
+      $("#caemail").css("display", "block"); 
+<?php
+}
+?>
 //--></script>
 </head>
 <body>
@@ -243,6 +280,32 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
       $payment_error = false;
     }
     
+    if ($_POST['pre_payment'] == 'convenience_store') {
+      $conv_payment_module = new $_POST['pre_payment']; 
+      $conv_n_type = $conv_payment_module->preorder_confirmation_check(); 
+      if ($conv_n_type) {
+        $conv_error_info = $conv_payment_module->get_preorder_error($conv_n_type); 
+        $error = true; 
+        $payment_error = true;
+        $payment_error_str = $conv_error_info; 
+      } else {
+        $payment_error = false;
+      }
+    }
+    
+    if ($_POST['pre_payment'] == 'rakuten_bank') {
+      $rak_payment_module = new $_POST['pre_payment']; 
+      $rak_n_type = $rak_payment_module->preorder_confirmation_check(); 
+      if ($rak_n_type) {
+        $rak_error_info = $rak_payment_module->get_preorder_error($rak_n_type); 
+        $error = true; 
+        $payment_error = true;
+        $payment_error_str = $rak_error_info; 
+      } else {
+        $payment_error = false;
+      }
+    }
+
     if (isset($_GET['action']) && ($_GET['action'] == 'process') && ($error == false)) {
       $preorder_id = date('Ymd').'-'.date('His').tep_get_preorder_end_num(); 
       if (tep_session_is_registered('customer_id')) {
@@ -412,7 +475,15 @@ if (!isset($_GET['quantity'])) $_GET['quantity'] = NULL; //del notice
       <h3 class="formAreaTitle"><?php echo FORM_FIELD_PREORDER_PAYMENT; ?></h3>
       <table width="100%" cellpadding="2" cellspacing="0" border="0" class="formArea">
           <?php
-          if ($payment_error == true) echo '<tr><td style="font-size:11px;"><span class="errorText">' .  TEXT_REQUIRED . '</span></td></tr>';
+          if ($payment_error == true) {
+            echo '<tr><td style="font-size:11px;"><span class="errorText">';
+            if (isset($payment_error_str)) {
+              echo $payment_error_str; 
+            } else {
+              echo TEXT_REQUIRED;
+            }
+            echo '</span></td></tr>';
+          }
           ?>
         <?php
         $radio_buttons = 0; 

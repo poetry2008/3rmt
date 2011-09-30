@@ -193,6 +193,19 @@ class rakuten_bank {
 
       } 
   }
+  
+  function preorder_confirmation_check() {
+    global $_POST;
+    if ($_POST['rakuten_telnumber'] == "" || $_POST['rakuten_telnumber_again'] == "") {
+      return 3;
+    } else if
+      (!preg_match("/^(\+\d{2}){0,1}((\d{2}(-){0,1}\d{4})|(\d{3}(-){0,1}\d{3})|(\d{3}(-){0,1}\d{4}))(-){0,1}\d{4}$/", strtr($_POST['rakuten_telnumber'], $this->arrs2d))||
+       !preg_match("/^(\+\d{2}){0,1}((\d{2}(-){0,1}\d{4})|(\d{3}(-){0,1}\d{3})|(\d{3}(-){0,1}\d{4}))(-){0,1}\d{4}$/", strtr($_POST['rakuten_telnumber_again'], $this->arrs2d))){
+        return 3; 
+      } else if (strtr($_POST['rakuten_telnumber'], $this->arrs2d) != strtr($_POST['rakuten_telnumber_again'], $this->arrs2d)) {
+        return 1;
+      } 
+  }
 
   function confirmation() {
     global $currencies;
@@ -303,6 +316,22 @@ class rakuten_bank {
     }else{
       return false;
     }
+  }
+  
+  function get_preorder_error($error_type) {
+      if ($error_type == 1)
+      {
+        $error_message = MODULE_PAYMENT_RAKUTEN_BANK_TEXT_ERROR_MESSAGE_NOE;
+      }
+      else if ($error_type == 2)
+      {
+        $error_message = MODULE_PAYMENT_RAKUTEN_BANK_TEXT_ERROR_MESSAGE_NOM;
+      }
+      else
+      {
+        $error_message = MODULE_PAYMENT_RAKUTEN_BANK_TEXT_ERROR_MESSAGE;
+      }
+    return $error_message; 
   }
 
   function check() {

@@ -31,6 +31,38 @@
       <td valign="top" id="contents"> 
         <h1 class="pageHeading"><?php echo CPREORDER_SUCCESS_HEADING_TITLE ; ?></h1> 
         <div class="comment">
+          <table border="0" cellspacing="0" cellpadding="0" border="0" width="90%" align="center">
+            <tr>
+              <td width="20%">
+                <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+                  <tr>
+                    <td width="30%" align="right"><?php echo tep_draw_separator('pixel_silver.gif', '1', '5');?></td> 
+                    <td width="70%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1');?></td> 
+                  </tr>
+                </table> 
+              </td>
+              <td width="60%">
+              <?php echo tep_draw_separator('pixel_silver.gif', '100%', '1');?>
+              </td>
+              <td width="20%">
+                <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+                  <tr>
+                    <td width="70%">
+                    <?php echo tep_draw_separator('pixel_silver.gif', '100%', '1');?>
+                    </td>
+                    <td width="30%">
+                    <?php echo tep_image(DIR_WS_IMAGES.'checkout_bullet.gif');?>
+                    </td>
+                  </tr>
+                </table>  
+              </td>
+            </tr>
+            <tr>
+              <td align="left" width="20%" class="preorderBarFrom"><?php echo PREORDER_TRADER_LINE_TITLE;?></td> 
+              <td align="center" width="60%" class="preorderBarFrom"><?php echo PREORDER_CONFIRM_LINE_TITLE;?></td> 
+              <td align="right" width="20%" class="preorderBarCurrent"><?php echo PREORDER_FINISH_LINE_TITLE;?></td> 
+            </tr>
+          </table>
         <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size:12px;">
           <tr>
             <td>

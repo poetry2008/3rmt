@@ -4367,6 +4367,9 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
    if ($pInfo['pre_payment'] == 'convenience_store') {
      $sh_comments .= 'PCメールアドレス:' .$pInfo['convenience_email']; 
    }
+   if ($pInfo['pre_payment'] == 'rakuten_bank') {
+     $sh_comments .= '電話番号:'.$pInfo['rakuten_telnumber']; 
+   }
    if (!empty($sh_comments)) {
      $sh_comments .= "\n"; 
    }

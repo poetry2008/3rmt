@@ -101,9 +101,48 @@ echo '</form>';
       <td valign="top" id="contents"> 
           <h1 class="pageHeading"><?php echo NAVBAR_CHANGE_PREORDER_TITLE;?></h1> 
           <div class="comment">
+          <table border="0" cellspacing="0" cellpadding="0" border="0" width="90%" align="center">
+            <tr>
+              <td width="20%">
+                <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+                  <tr>
+                    <td width="30%" align="right"><?php echo tep_image(DIR_WS_IMAGES.'checkout_bullet.gif');?></td> 
+                    <td width="70%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1');?></td> 
+                  </tr>
+                </table> 
+              </td>
+              <td width="60%">
+              <?php echo tep_draw_separator('pixel_silver.gif', '100%', '1');?>
+              </td>
+              <td width="20%">
+                <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+                  <tr>
+                    <td width="70%">
+                    <?php echo tep_draw_separator('pixel_silver.gif', '100%', '1');?>
+                    </td>
+                    <td width="30%">
+                    <?php echo tep_draw_separator('pixel_silver.gif', '1', '5');?>
+                    </td>
+                  </tr>
+                </table>  
+              </td>
+            </tr>
+            <tr>
+              <td align="left" width="20%" class="preorderBarcurrent"><?php echo PREORDER_TRADER_LINE_TITLE;?></td> 
+              <td align="center" width="60%" class="preorderBarTo"><?php echo PREORDER_CONFIRM_LINE_TITLE;?></td> 
+              <td align="right" width="20%" class="preorderBarTo"><?php echo PREORDER_FINISH_LINE_TITLE;?></td> 
+            </tr>
+          </table>
           <?php
           echo tep_draw_form('order', tep_href_link('change_preorder.php', 'pid='.$_GET['pid'])).tep_draw_hidden_field('action', 'process'); 
           ?>
+          <table width="100%" cellpadding="0" cellspacing="0" border="0" class="c_pay_info">
+            <tr>
+              <td class="main" align="right">
+                <?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE);?> 
+              </td>
+            </tr>
+          </table> 
           <h3 class="formAreaTitle"><?php echo CHANGE_ORDER_CUSTOMER_DETAILS?></h3> 
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
@@ -273,11 +312,11 @@ echo '</form>';
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
               <td class="main"><?php echo CHANGE_ORDER_PRODUCT_CHARACTER;?></td> 
-              <td>
+              <td class="main">
               <?php 
               echo tep_draw_input_field('p_character', isset($_POST['p_character'])?$_POST['p_character']:'');
               if (isset($character_error)) {
-                echo '<font color="#ff0000">'.$character_error.'</font>'; 
+                echo '&nbsp;&nbsp;<font color="#ff0000">'.$character_error.'</font>'; 
               }
               ?> 
               </td>
@@ -286,10 +325,10 @@ echo '</form>';
           <?php }?> 
           <br>
           <br>
-          <table width="100%" cellpadding="0" cellspacing="0" border="0">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0" class="c_pay_info">
             <tr>
               <td class="main" align="right">
-                <?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE);?> 
+                <?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE);?> 
               </td>
             </tr>
           </table> 
