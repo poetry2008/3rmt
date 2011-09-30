@@ -353,9 +353,9 @@ $ex_site = $sites[0];
           $value['use_function'] = $_value['use_function'];
           $value['set_function'] = $_value['set_function'];
         
-        //if ($site_id == 0 && !preg_match('/.*SORT_ORDER$/', $key)) {
+        if ($site_id == 0 && !preg_match('/.*SORT_ORDER$/', $key)) {
           $keys .= tep_draw_hidden_field('configuration[' . $key . ']', $value['value']);
-        //} else {
+        } else {
           $keys .= '<b>' . $value['title'] . '</b><br>' . $value['description'] . '<br>';
           if ($value['set_function']) {
             eval('$keys .= ' . $value['set_function'] . "'" . $value['value'] . "', '" . $key . "');");
@@ -363,7 +363,7 @@ $ex_site = $sites[0];
             $keys .= tep_draw_input_field('configuration[' . $key . ']', $value['value']);
           }
           $keys .= '<br><br>';
-        //}
+        }
         
       }
       $keys = substr($keys, 0, strrpos($keys, '<br><br>'));
@@ -409,6 +409,10 @@ $ex_site = $sites[0];
           reset($mInfo->keys);
           while (list($k, $value) = each($mInfo->keys)) {
             $module_item = tep_db_fetch_array(tep_db_query("select * from configuration where configuration_key = '".$k."' and site_id = '".$s['id']."'"));
+            if ($module_item === false) {
+            	$module_item = tep_db_fetch_array(tep_db_query("select * from configuration where configuration_key = '".$k."' and site_id = '0'"));
+       
+            }
             $keys .= '<b>' . $module_item['configuration_title'] . '</b><br>';
             if ($module_item['use_function']) {
               $use_function = $module_item['use_function'];
