@@ -353,9 +353,9 @@ $ex_site = $sites[0];
           $value['use_function'] = $_value['use_function'];
           $value['set_function'] = $_value['set_function'];
         
-        if ($site_id == 0 && !preg_match('/.*SORT_ORDER$/', $key)) {
+        //if ($site_id == 0 && !preg_match('/.*SORT_ORDER$/', $key)) {
           $keys .= tep_draw_hidden_field('configuration[' . $key . ']', $value['value']);
-        } else {
+        //} else {
           $keys .= '<b>' . $value['title'] . '</b><br>' . $value['description'] . '<br>';
           if ($value['set_function']) {
             eval('$keys .= ' . $value['set_function'] . "'" . $value['value'] . "', '" . $key . "');");
@@ -363,7 +363,7 @@ $ex_site = $sites[0];
             $keys .= tep_draw_input_field('configuration[' . $key . ']', $value['value']);
           }
           $keys .= '<br><br>';
-        }
+        //}
         
       }
       $keys = substr($keys, 0, strrpos($keys, '<br><br>'));
