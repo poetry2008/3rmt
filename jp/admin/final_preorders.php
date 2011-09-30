@@ -688,8 +688,50 @@ while ($totals = tep_db_fetch_array($totals_query)) {
           $change_preorder_url = $site_url_res['url'].'/extend_time.php?pid='.$oID; 
           $email = str_replace('${ORDER_UP_DATE}', $change_preorder_url, $email); 
         }
+        $preorder_email_title = ''; 
+        $select_status_raw = tep_db_query("select * from ".TABLE_PREORDERS_MAIL." where orders_status_id = '".$status."'"); 
+        $select_status_res = tep_db_fetch_array($select_status_raw);
+        if ($select_status_res) {
+          $preorder_email_title = $select_status_res['orders_status_title']; 
+          
+          $select_t_products_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$oID."'");
+          $select_t_products_res = tep_db_fetch_array($select_t_products_raw);
+
+          $select_t_total_raw = tep_db_query("select * from ".TABLE_PREORDERS_TOTAL." where orders_id = '".$oID."' and class = 'ot_total'");
+          $select_t_total_res = tep_db_fetch_array($select_t_total_raw);
+          
+          $pre_t_otm = (int)$select_t_total_res['value'].TEXT_MONEY_SYMBOL;
+          
+          $preorder_email_title = str_replace(array(
+            '${NAME}',
+            '${MAIL}',
+            '${PREORDER_D}',
+            '${PREORDER_N}',
+            '${PAY}',
+            '${ORDER_M}',
+            '${TRADING}',
+            '${ORDER_S}',
+            '${SITE_NAME}',
+            '${SITE_URL}',
+            '${SUPPORT_EMAIL}',
+            '${PAY_DATE}'
+          ),array(
+            $select_t_products_res['customers_name'],
+            $select_t_products_res['customers_email_address'],
+            tep_date_long($select_t_products_res['date_purchased']),
+            $oID,
+            $select_t_products_res['payment_method'],
+            $pre_t_otm,
+            tep_torihiki($select_t_products_res['torihiki_date']),
+            $select_t_products_res['orders_status_name'],
+            get_configuration_by_site_id('STORE_NAME', $select_t_products_res['site_id']),
+            get_url_by_site_id($select_t_products_res['site_id']),
+            get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $select_t_products_res['site_id']),
+            date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day()))
+          ),$preorder_email_title);
+        }
         
-        tep_mail($check_status['customers_name'], $check_status['customers_email_address'], FORDERS_MAIL_UPDATE_CONTENT_FINISH.'【' . get_configuration_by_site_id('STORE_NAME', $order->info['site_id']) . '】', $email, get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $order->info['site_id']),$order->info['site_id']);
+        tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $preorder_email_title, $email, get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $order->info['site_id']),$order->info['site_id']);
       } 
       //tep_mail(get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS', $order->info['site_id']), FORDERS_MAIL_UPDATE_CONTENT_MAIL.'【' . get_configuration_by_site_id('STORE_NAME', $order->info['site_id']) . '】', $email, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);
       $customer_notified = '1';

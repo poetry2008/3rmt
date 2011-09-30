@@ -224,6 +224,42 @@
       }
     }
     
+    function preorder_confirmation_check() {
+      global $_POST;
+      
+      if ($_POST['convenience_email'] == "" || $_POST['convenience_email_again'] == "") {
+        return 3; 
+      } else if
+        (!ereg("^([^@])+@([a-za-z0-9_-])+(\.[a-za-z0-9_-])+",$_POST['convenience_email'])
+         || !ereg("^([^@])+@([a-za-z0-9_-])+(\.[a-za-z0-9_-])+",$_POST['convenience_email_again'])){
+        return 3; 
+      } else if ($_POST['convenience_email'] != $_POST['convenience_email_again']) {
+        return 1; 
+      } else {
+        $pc_email_single = false;
+        $pc_email_again_single = false;
+
+        $pc_pos = strrpos($_POST['convenience_email'], '@');
+        $pc_new_email = substr($_POST['convenience_email'], $pc_pos+1);
+        if (preg_match('/^(docomo\.|softbank\.|i\.softbank\.|disney\.|ezweb\.|vodafone\.|.*\.vodafone\.|biz\.ezweb\.|.*biz\.ezweb\.|ezweb\.|sky\.ttk\.|sky\.tkc\.|sky\.tu\-ka\.|pdx\.|emnet\.)(.*)$/i', $pc_new_email)) {
+          $pc_email_single = true; 
+        }
+        
+        $pc_apos = strrpos($_POST['convenience_email_again'], '@');
+        $pc_anew_email = substr($_POST['convenience_email_again'], $pc_apos+1);
+        if (preg_match('/^(docomo\.|softbank\.|i\.softbank\.|disney\.|ezweb\.|vodafone\.|.*\.vodafone\.|biz\.ezweb\.|.*biz\.ezweb\.|ezweb\.|sky\.ttk\.|sky\.tkc\.|sky\.tu\-ka\.|pdx\.|emnet\.)(.*)$/i', $pc_anew_email)) {
+          $pc_email_again_single = true; 
+        }
+        
+        if (!$pc_email_single && !$pc_email_again_single) {
+          return 0; 
+        } else {
+          return 2; 
+        }
+      }
+      return 0; 
+    }
+    
     function confirmation() {
       global $currencies;
       global $_POST;
@@ -332,6 +368,22 @@
     }else{
       return false;
     }
+    }
+    
+    function get_preorder_error($error_type) {
+        if ($error_type == 1)
+        {
+          $error_message = MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE_NOE;
+        }
+        else if ($error_type == 2)
+        {
+          $error_message = MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE_NOM;
+        }
+        else
+        {
+          $error_message = MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE;
+        }
+        return $error_message; 
     }
 
     function check() {
