@@ -22,10 +22,8 @@ function triggerHide(radio)
     }
 
     if ($(radio).val() == 'buying') {
-	alert(3);
       $(".rowHide_buying").css("display", "block"); 
     } else {
-	alert(2);
       $(".rowHide_buying").css("display", "none"); 
     }
     
@@ -55,7 +53,6 @@ if($("input[name=payment]").length == 1){
 }
   $("input[name=payment]").each(function(index){
     if ($(this).attr('checked') == true) {
-	alert(1);
       triggerHide(this);
     }
   });
