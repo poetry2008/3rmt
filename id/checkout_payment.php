@@ -19,6 +19,11 @@ function triggerHide(radio)
       $("#caemail").css("display", "none"); 
     }
     
+    if ($(radio).val() == 'buying') {
+      $(".rowHide_buying").css("display", "block"); 
+    } else {
+      $(".rowHide_buying").css("display", "none"); 
+    }
     if ($(radio).val() == 'rakuten_bank') {
       $("#ctelnumber").css("display", "block"); 
       $("#catelnumber").css("display", "block"); 

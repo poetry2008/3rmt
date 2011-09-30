@@ -409,6 +409,10 @@ $ex_site = $sites[0];
           reset($mInfo->keys);
           while (list($k, $value) = each($mInfo->keys)) {
             $module_item = tep_db_fetch_array(tep_db_query("select * from configuration where configuration_key = '".$k."' and site_id = '".$s['id']."'"));
+            if ($module_item === false) {
+            	$module_item = tep_db_fetch_array(tep_db_query("select * from configuration where configuration_key = '".$k."' and site_id = '0'"));
+       
+            }
             $keys .= '<b>' . $module_item['configuration_title'] . '</b><br>';
             if ($module_item['use_function']) {
               $use_function = $module_item['use_function'];

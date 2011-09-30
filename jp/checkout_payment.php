@@ -20,6 +20,14 @@ function triggerHide(radio)
       $("#cemail").css("display", "none"); 
       $("#caemail").css("display", "none"); 
     }
+
+    if ($(radio).val() == 'buying') {
+	alert(3);
+      $(".rowHide_buying").css("display", "block"); 
+    } else {
+	alert(2);
+      $(".rowHide_buying").css("display", "none"); 
+    }
     
     if ($(radio).val() == 'rakuten_bank') {
       $("#ctelnumber").css("display", "block"); 
@@ -47,6 +55,7 @@ if($("input[name=payment]").length == 1){
 }
   $("input[name=payment]").each(function(index){
     if ($(this).attr('checked') == true) {
+	alert(1);
       triggerHide(this);
     }
   });
