@@ -109,10 +109,10 @@ class MailFetcher {
   //Convert text to desired encoding..defaults to utf8
   function mime_encode($text,$charset=null,$enc='utf-8') { //Thank in part to afterburner  
     $charset = strtoupper($charset);
-    //    if ($charset=='' || $charset=='ISO-2022-JP'||$charset=='SHIFT-JIS'||$charset=='EUC-JP'){
-    //      $result = noLCode($text);
-    //     return $result;
-    // }
+    if ($charset=='' || $charset=='ISO-2022-JP'||$charset=='SHIFT-JIS'||$charset=='EUC-JP'){
+        $result = noLCode($text);
+        return $result;
+    }
     $encodings=array('SHIFT-JIS','ISO-2022-JP','GB2312','GBK','WINDOWS-1251','ISO-8859-5',
                      'ISO-8859-1','KOI8-R','GB2312');
     if(function_exists("iconv") and $text) {
