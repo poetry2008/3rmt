@@ -201,8 +201,10 @@ if(!flag_tmp){
 var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n","");
 if(in_array(pwd,pwd_arr)){
 $("input[name=update_viladate]").val(pwd);
-document.edit_order.submit();
+$("input[name=x]").val('');
+$("input[name=y]").val('');
 window.alert("注文内容を更新しました。合計金額を必ず確認してください。\n\n【 重要 】メールは送信されていません。【 重要 】");
+document.edit_order.submit();
 document.edit_order.notify.checked = true;
 document.edit_order.notify_comments.checked = false;
 }else{
