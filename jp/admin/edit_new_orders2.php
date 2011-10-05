@@ -391,7 +391,7 @@
   if ($plustax['cnt'] == 0) {
     $newtotal = $total_value + $new_tax;
   } else {
-    if(DISPLAY_PRICE_WITH_TAX == 'true') {
+    if(DISPLAY_PRICE_WITH_TA == 'true') {
       $newtotal = $total_value - $new_tax;
     } else {
       $newtotal = $total_value;
@@ -438,7 +438,7 @@
       $notify_comments = $comments;
     }
 
-    if (isset($_POST['x']) && isset($_POST['y'])) {
+    if (isset($_POST['x']) && $_POST['x'] && isset($_POST['y']) && $_POST['y']) {
       if (
            !$_SESSION['create_order2']['orders'] 
         || !$_SESSION['create_order2']['orders']['orders_id'] 
@@ -453,8 +453,8 @@
       if(!tep_get_orders_status_id($_SESSION['create_order2']['orders']['orders_id'])){
         $_SESSION['create_order2']['orders']['orders_id']= date("Ymd") . '-' . date("His") . tep_get_order_end_num();
         $new_orders2_id = $_SESSION['create_order2']['orders']['orders_id'];
-        last_customer_action();
       }
+      last_customer_action();
       tep_db_perform(TABLE_ORDERS, $_SESSION['create_order2']['orders']);
       orders_updated($_SESSION['create_order2']['orders']['orders_id']);
 
