@@ -46,6 +46,7 @@
     fwrite($handle,$time_string." [".$errno."] [".$error."] [".$query."]\n");
     fclose($handle);
     header("Location:/admin/sql_error.php?string=" . $errno . ' - ' . $error .'<br><br>[SQL-ERROR]<br><br>');
+    exit;
   }
 
   function tep_db_query($query, $link = 'db_link') {
@@ -146,7 +147,6 @@
       }
       $query = substr($query, 0, -2) . ' where ' . $parameters;
     }
-
     return tep_db_query($query, $link);
   }
 
