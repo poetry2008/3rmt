@@ -209,5 +209,11 @@
         }
       }
     }
+	
+function getexpress($amt,$token){
+    if (method_exists($GLOBALS[$this->selected_module], 'getexpress')) {
+      $GLOBALS[$this->selected_module]->getexpress($amt,$token);
+    }
+}
   }
 ?>

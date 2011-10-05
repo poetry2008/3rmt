@@ -89,10 +89,13 @@ class rakuten_bank {
 
     $total_cost = $order->info['total'];      // 税金も含めた代金の総額
     $f_result = $this->calc_fee($total_cost); // 手数料
-
+/*  
+    //commented by rekam
     $added_hidden = $f_result
       ? tep_draw_hidden_field('codt_fee', $this->n_fee).tep_draw_hidden_field('cod_total_cost', $total_cost)
       : tep_draw_hidden_field('codt_fee_error', $this->s_error);
+*/
+    $added_hidden = ''; // added by rekam
     if (!empty($this->n_fee)) {
       $s_message = $f_result ? (MODULE_PAYMENT_RAKUTEN_BANK_TEXT_FEE . '&nbsp;' . $currencies->format($this->n_fee)) : ('<font color="#FF0000">' . $this->s_error . '</font>');
     } else {
@@ -105,7 +108,7 @@ class rakuten_bank {
        $email_default_str = $_SESSION['customer_emailaddress']; 
        }
      */
-    if(SITE_ID == 1){
+    //if(SITE_ID == 1){
       $selection = array(
           'id' => $this->code,
           'module' => $this->title,
@@ -127,6 +130,7 @@ class rakuten_bank {
               'field' => $added_hidden)
             )
           );
+    /*
     }else{
       $selection = array(
           'id' => $this->code,
@@ -148,6 +152,7 @@ class rakuten_bank {
             )
           );
    }
+   */
 
     return $selection;
   }
@@ -186,6 +191,19 @@ class rakuten_bank {
         //tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, $payment_error_return . '&type=noe', 'SSL', true, false));
         tep_redirect($redirect_url);
 
+      } 
+  }
+  
+  function preorder_confirmation_check() {
+    global $_POST;
+    if ($_POST['rakuten_telnumber'] == "" || $_POST['rakuten_telnumber_again'] == "") {
+      return 3;
+    } else if
+      (!preg_match("/^(\+\d{2}){0,1}((\d{2}(-){0,1}\d{4})|(\d{3}(-){0,1}\d{3})|(\d{3}(-){0,1}\d{4}))(-){0,1}\d{4}$/", strtr($_POST['rakuten_telnumber'], $this->arrs2d))||
+       !preg_match("/^(\+\d{2}){0,1}((\d{2}(-){0,1}\d{4})|(\d{3}(-){0,1}\d{3})|(\d{3}(-){0,1}\d{4}))(-){0,1}\d{4}$/", strtr($_POST['rakuten_telnumber_again'], $this->arrs2d))){
+        return 3; 
+      } else if (strtr($_POST['rakuten_telnumber'], $this->arrs2d) != strtr($_POST['rakuten_telnumber_again'], $this->arrs2d)) {
+        return 1;
       } 
   }
 
@@ -298,6 +316,22 @@ class rakuten_bank {
     }else{
       return false;
     }
+  }
+  
+  function get_preorder_error($error_type) {
+      if ($error_type == 1)
+      {
+        $error_message = MODULE_PAYMENT_RAKUTEN_BANK_TEXT_ERROR_MESSAGE_NOE;
+      }
+      else if ($error_type == 2)
+      {
+        $error_message = MODULE_PAYMENT_RAKUTEN_BANK_TEXT_ERROR_MESSAGE_NOM;
+      }
+      else
+      {
+        $error_message = MODULE_PAYMENT_RAKUTEN_BANK_TEXT_ERROR_MESSAGE;
+      }
+    return $error_message; 
   }
 
   function check() {

@@ -22,7 +22,7 @@
        <?php
        if (!empty($seo_category['categories_header_text'])) {
        ?>
-       <div class="comment"><div class="comment_info_warpper"><?php echo $seo_category['categories_header_text']; //seoフレーズ ?></div></div>
+       <div class="comment"><div class="comment_info_warpper"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_header_text']); //seoフレーズ ?></div></div>
        <?php
        }
        ?>
@@ -109,7 +109,7 @@
             <?php
             if (!empty($seo_category['categories_footer_text'])) {
             ?>
-            <div class="comment"><div class="comment_info_warpper"><?php echo $seo_category['categories_footer_text']; //seoフレーズ ?></div></div>
+            <div class="comment"><div class="comment_info_warpper"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_footer_text']); //seoフレーズ ?></div></div>
             <?php
             }
             ?>
@@ -130,15 +130,15 @@
 <?php  
   if (isset($cPath_array)) {
     if ($seo_category['seo_description']) {
-      echo '<div class="pageHeading"><h3> ' . $seo_category['seo_name'] . 'について</h3></div>' . "\n";
-      echo '<div class="comment"><div class="comment_info_warpper">' .  $seo_category['seo_description'] . '</div></div>' . "\n"; //seoフレーズ
+      echo '<div class="pageHeading"><h3> ' . str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_name']) . 'について</h3></div>' . "\n";
+      echo '<div class="comment"><div class="comment_info_warpper">' .  str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_description']) . '</div></div>' . "\n"; //seoフレーズ
 ?>
         <p class="pageBottom"></p>
 <?php
     }
 ?>
 <?php  if (!empty($seo_category['text_information'])) {
-    echo $seo_category['text_information'];
+    echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['text_information']);
 ?>
         <!--<p class="pageBottom"></p>-->
 <?php 

@@ -409,6 +409,10 @@ $ex_site = $sites[0];
           reset($mInfo->keys);
           while (list($k, $value) = each($mInfo->keys)) {
             $module_item = tep_db_fetch_array(tep_db_query("select * from configuration where configuration_key = '".$k."' and site_id = '".$s['id']."'"));
+            if ($module_item === false) {
+            	$module_item = tep_db_fetch_array(tep_db_query("select * from configuration where configuration_key = '".$k."' and site_id = '0'"));
+       
+            }
             $keys .= '<b>' . $module_item['configuration_title'] . '</b><br>';
             if ($module_item['use_function']) {
               $use_function = $module_item['use_function'];
@@ -479,9 +483,7 @@ $ex_site = $sites[0];
           $link_form_str .= '<a href="'.tep_href_link(FILENAME_OA_FORM, 'preturn='.$mInfo->code.'&pcode='.$mInfo->title.'&type=2').'">'.tep_html_element_button(FORM_BUY_TEXT).'</a>'; 
           $link_form_str .= '<a href="'.tep_href_link(FILENAME_OA_FORM, 'preturn='.$mInfo->code.'&pcode='.$mInfo->title.'&type=3').'">'.tep_html_element_button(FORM_MIX_TEXT).'</a>'; 
           
-          if ($mInfo->code != 'buying' && $mInfo->code != 'buyingpoint' && $mInfo->code != 'fetch_good' && $mInfo->code != 'free_payment') {
-            $link_form_str .= '<a href="'.tep_href_link(FILENAME_OA_FORM, 'preturn='.$mInfo->code.'&pcode='.$mInfo->title.'&type=4').'">'.tep_html_element_button(FORM_PREORDER_TEXT).'</a>'; 
-          }
+          $link_form_str .= '<a href="'.tep_href_link(FILENAME_OA_FORM, 'preturn='.$mInfo->code.'&pcode='.$mInfo->title.'&type=4').'">'.tep_html_element_button(FORM_PREORDER_TEXT).'</a>'; 
           $contents[] = array('align' => 'left', 'text' => $link_form_str);
            
         }

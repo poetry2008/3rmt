@@ -2163,19 +2163,23 @@ function forward404Unless($condition)
     $title       = str_replace($search, $replace, $title);
     $keywords    = str_replace($search, $replace, $keywords);
     $description = str_replace($search, $replace, $description);
+    $copyright   = str_replace($search, $replace, $copyright);
     // replace again
     $title       = str_replace($search, $replace, $title);
     $keywords    = str_replace($search, $replace, $keywords);
     $description = str_replace($search, $replace, $description);
+    $copyright   = str_replace($search, $replace, $copyright);
     //
     
     $title = str_replace('#SEO_PAGE#', '', $title); 
     $keywords = str_replace('#SEO_PAGE#', '', $keywords); 
     $description = str_replace('#SEO_PAGE#', '', $description); 
+    $copyright = str_replace('#SEO_PAGE#', '', $copyright); 
      
     $title = str_replace(' &raquo; ', ' ', $title); 
     $keywords = str_replace(' &raquo; ', ' ', $keywords); 
     $description = str_replace(' &raquo; ', ' ', $description); 
+    $copyright = str_replace(' &raquo; ', ' ', $copyright); 
   ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html <?php echo HTML_PARAMS; ?>>
@@ -4362,6 +4366,9 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
    $sh_comments = ''; 
    if ($pInfo['pre_payment'] == 'convenience_store') {
      $sh_comments .= 'PCメールアドレス:' .$pInfo['convenience_email']; 
+   }
+   if ($pInfo['pre_payment'] == 'rakuten_bank') {
+     $sh_comments .= '電話番号:'.$pInfo['rakuten_telnumber']; 
    }
    if (!empty($sh_comments)) {
      $sh_comments .= "\n"; 

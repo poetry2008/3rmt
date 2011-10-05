@@ -102,7 +102,7 @@ if(isset($_GET['sid'])&&$_GET['sid']){
           echo HEADING_TITLE;
         }
       ?></h1>
-        <div class="comment_long"><?php echo $seo_category['categories_header_text']; //seoフレーズ ?>
+        <div class="comment_long"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_header_text']); //seoフレーズ ?>
       <?php
         $has_ca_single = false; 
       ?>
@@ -186,7 +186,7 @@ if(isset($_GET['sid'])&&$_GET['sid']){
         } else {
           include(DIR_WS_MODULES . FILENAME_PRODUCT_LISTING); 
         }
-      echo '<p>'.$seo_category['categories_footer_text'].'</p>';
+      echo '<p>'.str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_footer_text']).'</p>';
       if (isset($_GET['cPath'])) {
         $new_products_category_id = $current_category_id; 
         if (!$has_ca_single) {
@@ -201,12 +201,14 @@ if(isset($_GET['sid'])&&$_GET['sid']){
         <?php
         if (isset($cPath_array)) {
           if ($seo_category['seo_description']) {
-            echo '<h2 class="pageHeading_long">'.$seo_category['seo_name'].'について</h2>'; 
-            echo '<div class="comment_long"><p>'.$seo_category['seo_description'].'</p></div>'; 
+            echo '<h2 class="pageHeading_long">'.str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_name']).'について</h2>'; 
+            echo '<div class="comment_long"><p>'.str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_description']).'</p></div>'; 
             echo '<div class="pageBottom_long"></div>';
           }
           if (!empty($seo_category['text_information'])) {
-            echo str_replace('pageHeading', 'pageHeading_long', $seo_category['text_information']); 
+            $old_info_arr = array('pageHeading', '#STORE_NAME#');
+            $new_info_arr = array('pageHeading_long', STORE_NAME); 
+            echo str_replace($old_info_arr, $new_info_arr, $seo_category['text_information']); 
           }
         }
       ?>

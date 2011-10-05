@@ -43,9 +43,56 @@
       <td valign="top" id="contents"> 
           <h1 class="pageHeading"><?php echo NAVBAR_CHANGE_PREORDER_TITLE;?></h1> 
           <div class="comment">
+          <table border="0" cellspacing="0" cellpadding="0" border="0" width="90%" align="center">
+            <tr>
+              <td width="20%">
+                <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+                  <tr>
+                    <td width="30%" align="right"><?php echo tep_draw_separator('pixel_silver.gif', '1', '5');?></td> 
+                    <td width="70%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1');?></td> 
+                  </tr>
+                </table> 
+              </td>
+              <td width="60%">
+                <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+                  <tr>
+                    <td width="50%">
+                    <?php echo tep_draw_separator('pixel_silver.gif', '100%', '1');?>
+                    </td> 
+                    <td><?php echo tep_image(DIR_WS_IMAGES.'checkout_bullet.gif');?></td> 
+                    <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1');?></td> 
+                  </tr>
+                </table> 
+              </td>
+              <td width="20%">
+                <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+                  <tr>
+                    <td width="70%">
+                    <?php echo tep_draw_separator('pixel_silver.gif', '100%', '1');?>
+                    </td>
+                    <td width="30%">
+                    <?php echo tep_draw_separator('pixel_silver.gif', '1', '5');?>
+                    </td>
+                  </tr>
+                </table>  
+              </td>
+            </tr>
+            <tr>
+              <td align="left" width="20%" class="preorderBarFrom"><?php echo '<a href="javascript:void(0);" onclick="document.forms.order1.submit();">'.PREORDER_TRADER_LINE_TITLE.'</a>';?></td> 
+              <td align="center" width="60%" class="preorderBarcurrent"><?php echo PREORDER_CONFIRM_LINE_TITLE;?></td> 
+              <td align="right" width="20%" class="preorderBarTo"><?php echo PREORDER_FINISH_LINE_TITLE;?></td> 
+            </tr>
+          </table>
           <?php
           echo tep_draw_form('order', 'change_preorder_process.php'); 
           ?>
+          <table width="100%" cellpadding="0" cellspacing="0" border="0" class="c_pay_info">
+            <tr>
+              <td class="main" align="right">
+                <?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE);?> 
+              </td>
+            </tr>
+          </table>
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
               <td class="main">
@@ -171,13 +218,15 @@
             </tr>
           </table>
           <br> 
-          <table width="100%" cellpadding="0" cellspacing="0" border="0">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0" class="c_pay_info">
             <tr>
-              <td class="main" align="left">
-              <a href="javascript:void(0);" onclick="document.forms.order1.submit();"><?php echo tep_image_button('button_back.gif', IMAGE_BUTTON_BACK);?></a> 
-              </td>
               <td class="main" align="right">
                 <?php
+                if (false) {
+                ?>
+                <a href="javascript:void(0);" onClick="document.forms.order1.submit();"><?php echo tep_image_button('button_back.gif', IMAGE_BUTTON_BACK);?></a> 
+                <?php
+                }
                 foreach ($_POST as $pe_key => $pe_value) {
                   if ($pe_key == 'action' || $pe_key == 'x' || $pe_key == 'y') {
                     continue; 
@@ -191,7 +240,7 @@
                   }
                 }
                 ?>
-                <?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE);?> 
+                <?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE);?> 
               </td>
             </tr>
           </table> 

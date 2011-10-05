@@ -2093,3 +2093,5 @@ border:2px solid #FF8080;
 }
 .comment_info_warpper_reviews{background-color:#fff; padding:5px; padding:5px 0\9; margin:5px 0\9;}
 .comment_info_warpper_reviews table { margin-left:5px\9;}
+#caemail p{ margin:5px 0 0 0;}
+#caemail p img { position:relative; /*left:10px;*/ top:3px;}

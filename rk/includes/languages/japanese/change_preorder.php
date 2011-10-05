@@ -16,7 +16,8 @@ define('CHANGE_ORDER_FETCH_DAY', '取引希望日:');
 define('CHANGE_ORDER_FETCH_DATE', '取引希望時間:');
 define('CHANGE_ORDER_PRODUCT_CHARACTER', 'お客様のキャラクター名：');
 define('TEXT_CHECK_24JI', '(24時間表記)');
-
+define('TEXT_TORIHIKIKIBOUBI', '取引希望日:');
+define('TEXT_TORIHIKIKIBOUJIKAN', '取引希望時間:');
 define('TEXT_PREORDER_TORIHIKIHOUHOU', 'オプション:');
 define('TEXT_PREORDER_ERROR_TORIHIKIHOUHOU', '<span class="errorText">【'.mb_substr(TEXT_TORIHIKIHOUHOU,0,(mb_strlen(TEXT_TORIHIKIHOUHOU)-1)).'】を選択してください。</span>');
 define('TEXT_PREORDER_ERROR_DATE', '<span class="errorText">【'.mb_substr(TEXT_TORIHIKIKIBOUBI,0,(mb_strlen(TEXT_TORIHIKIKIBOUBI)-1)).'】を選択してください。</span>');

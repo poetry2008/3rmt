@@ -116,7 +116,7 @@ if ($category_depth == 'nested') {
     echo HEADING_TITLE;
   }
 ?></h1>
-    <div class="comment"><font color="#FFffff"><?php echo $seo_category['categories_header_text']; //seoフレーズ ?></font>
+    <div class="comment"><font color="#FFffff"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_header_text']); //seoフレーズ ?></font>
        <?php
           $has_ca_single = false; 
         ?>
@@ -198,7 +198,7 @@ if ($category_depth == 'nested') {
       } else {
         include(DIR_WS_MODULES . FILENAME_PRODUCT_LISTING); 
       }
-       echo '<p><font color="#ffffff">'.$seo_category['categories_footer_text'].'</font></p></div>';
+       echo '<p><font color="#ffffff">'.str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_footer_text']).'</font></p></div>';
       if (isset($_GET['cPath'])) {
         $new_products_category_id = $current_category_id; 
         if (!$has_ca_single) {
@@ -211,11 +211,11 @@ if ($category_depth == 'nested') {
   <?php
       if (isset($cPath_array)) {
         if ($seo_category['seo_description']) {
-          echo '<h2 class="pageHeading">'.$seo_category['seo_name'].'について</h2>'; 
-          echo '<div class="comment"><div class="product_list_info"><div class="product_listing_content"><p><font color="#888888">'.$seo_category['seo_description'].'</font></p></div></div></div>'; 
+          echo '<h2 class="pageHeading">'.str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_name']).'について</h2>'; 
+          echo '<div class="comment"><div class="product_list_info"><div class="product_listing_content"><p><font color="#888888">'.str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_description']).'</font></p></div></div></div>'; 
         }
         if (!empty($seo_category['text_information'])) {
-          echo $seo_category['text_information']; 
+          echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['text_information']); 
         }
       }
       ?>
