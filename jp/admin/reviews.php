@@ -227,9 +227,9 @@
       <tr>
         <td align="right" class="main"><?php echo tep_draw_hidden_field('cPath',
             $_GET['cPath']) . tep_draw_hidden_field('products_id',
-              $rInfo->products_id) . tep_html_element_submit('button_save.gif',
+              $rInfo->products_id) . tep_html_element_submit(
                 IMAGE_SAVE) . ' <a href="' . tep_href_link(FILENAME_REVIEWS, 'page='
-                . $_GET['page'] . '&rID=' . $_GET['rID']) . '">' . tep_html_element_button(IMAGE_CANCEL,"style='padding-bottom:17px;'") . '</a>'; ?></td>
+                . $_GET['page'] . '&rID=' . $_GET['rID']) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>'; ?></td>
       </form></tr>
 <?php
 

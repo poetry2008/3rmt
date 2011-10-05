@@ -167,7 +167,11 @@ if(isset($_GET['action']) &&
         $order_str = '`date_order` asc, `title` asc'; 
       } else {
         if($HTTP_GET_VARS['sort'] == 'nextdate'){
-        $order_str = '`date_order` '.$HTTP_GET_VARS['type']; 
+          if($HTTP_GET_VARS['type'] == 'desc' ){
+            $order_str = 'new_order_time '.$HTTP_GET_VARS['type']; 
+          }else{
+            $order_str = '`date_order` '.$HTTP_GET_VARS['type']; 
+          }
         }else if($HTTP_GET_VARS['sort'] == 'operator'){
         $order_str = '`self` '.$HTTP_GET_VARS['type'].', `privilege` '.$HTTP_GET_VARS['type']; 
         }else{
@@ -205,7 +209,8 @@ if(isset($_GET['action']) &&
       $pw_manager_query_raw = "select id,title,priority,site_id,url,
                              loginurl,username,password,comment,memo
                              ,nextdate,privilege,self,operator,created_at,
-                             updated_at,onoff,update_user from
+                             updated_at,onoff,update_user,
+                             UNIX_TIMESTAMP(nextdate) as new_order_time from 
                              ".TABLE_IDPW." " 
                              .$user_list_str." "
                              .$sort_where_permission." 
@@ -217,7 +222,8 @@ if(isset($_GET['action']) &&
       $pw_manager_query_raw = "select id,title,priority,site_id,url,
                              loginurl,username,password,comment,memo
                              ,nextdate,privilege,self,operator,created_at,
-                             updated_at,onoff,update_user from
+                             updated_at,onoff,update_user,
+                             UNIX_TIMESTAMP(nextdate) as new_order_time from 
                              ".TABLE_IDPW." 
                              where ".$_GET['search_type']." like '%".
                              $_GET['keywords']."%'
@@ -230,7 +236,8 @@ if(isset($_GET['action']) &&
     $pw_manager_query_raw = "select id,title,priority,site_id,url,
                              loginurl,username,password,comment,memo
                              ,nextdate,privilege,self,operator,created_at,
-                             updated_at,onoff,update_user from
+                             updated_at,onoff,update_user,
+                             UNIX_TIMESTAMP(nextdate) as new_order_time from 
                              ".TABLE_IDPW." where site_id='".$site_id."'
                              and onoff = '1' 
                              " .$sort_where . "
@@ -255,7 +262,8 @@ if(isset($_GET['action']) &&
       $pw_manager_query_raw = "select id,title,priority,site_id,url,
                              loginurl,username,password,comment,memo
                              ,nextdate,privilege,self,operator,created_at,
-                             updated_at,onoff,update_user from
+                             updated_at,onoff,update_user,
+                             UNIX_TIMESTAMP(nextdate) as new_order_time from 
                              ".TABLE_IDPW." " 
                              .$user_list_str." "
                              .$sort_where_permission." 
@@ -266,7 +274,9 @@ if(isset($_GET['action']) &&
       $pw_manager_query_raw = "select id,title,priority,site_id,url,
                              loginurl,username,password,comment,memo
                              ,nextdate,privilege,self,operator,created_at,
-                             updated_at,onoff,update_user from
+                             updated_at,onoff,update_user,
+                             UNIX_TIMESTAMP(nextdate) as new_order_time 
+                             from
                              ".TABLE_IDPW." 
                              where ".$_GET['search_type']." like '%".
                              $_GET['keywords']."%'
@@ -278,7 +288,8 @@ if(isset($_GET['action']) &&
     $pw_manager_query_raw = "select id,title,priority,site_id,url,
                              loginurl,username,password,comment,memo
                              ,nextdate,privilege,self,operator,created_at,
-                             updated_at,onoff,update_user from
+                             updated_at,onoff,update_user,
+                             UNIX_TIMESTAMP(nextdate) as new_order_time from 
                              ".TABLE_IDPW." 
                              where onoff = '1' 
                              " .$sort_where . "
