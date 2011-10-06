@@ -183,7 +183,7 @@
                 href="' . tep_href_link(FILENAME_MANUFACTURERS, 'page=' .
                 $_GET['page'] . '&mID=' . (isset($mInfo->manufacturers_id)
                     ?$mInfo->manufacturers_id:'') . '&action=new') . '">' .
-                    tep_html_element_button(IMAGE_NEW_MANUFACTURERS) . '</a>'; ?></td>
+                    tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>'; ?></td>
               </tr>
 <?php
   }

@@ -327,7 +327,10 @@ if (isset($_GET['latest_news_id']) and $latest_news['news_id'] == $_GET['latest_
                     <td class="smallText" align="right"><?php echo $latest_news_split->display_links($latest_news_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'latest_news_id'))); ?></td>
                   </tr>
                   <tr>
-                    <td colspan="2" align="right" class="smallText"><?php echo '&nbsp;<a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'action=new_latest_news'.(isset($_GET['site_id'])?('&lsite_id='.$_GET['site_id']):'')) . '">' .tep_html_element_button(IMAGE_NEW_NEWS_ITEM) . '</a>'; ?>&nbsp;</td>
+                    <td colspan="2" align="right" class="smallText"><?php echo
+                    '&nbsp;<a href="' . tep_href_link(FILENAME_LATEST_NEWS,
+                    'action=new_latest_news'.(isset($_GET['site_id'])?('&lsite_id='.$_GET['site_id']):''))
+                    . '">' .tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>'; ?>&nbsp;</td>
                   </tr>
                 </table></td>
               </tr>

@@ -382,7 +382,7 @@
             <td align="right" colspan="5"><a href="<?php echo
             tep_href_link(FILENAME_CONTENTS,
                 $site_id?'site_id='.$site_id.'&action=insert':'action=insert');
-?>"><?php echo tep_html_element_button(IMAGE_CONTENTS_NEW); ?></a></td>
+?>"><?php echo tep_html_element_button(IMAGE_NEW_PROJECT); ?></a></td>
           </tr>
                   </table></td> 
                 <?php

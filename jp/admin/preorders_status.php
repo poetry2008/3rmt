@@ -222,7 +222,7 @@
                     <td colspan="2" align="right"><?php echo '<a href="' .
                     tep_href_link(FILENAME_PREORDERS_STATUS, 'page=' . $_GET['page']
                         .  '&action=new') . '">' .
-                    tep_html_element_button(IMAGE_NEW_PREORDERS_STATUS) . '</a>'; ?></td>
+                    tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>'; ?></td>
                   </tr>
 <?php
   }

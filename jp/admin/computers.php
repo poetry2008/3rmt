@@ -128,7 +128,10 @@ if (isset($_GET['action']) and $_GET['action']) {
 //  if (!$_GET['action']) {
 ?>
                   <tr>
-                    <td colspan="2" align="right"><?php echo '<a href="' .  tep_href_link(FILENAME_COMPUTERS, 'page=' . $_GET['page'] .  '&action=new') . '">' .  tep_html_element_button(BUTTON_NEW_COMPUTER_TEXT) . '</a>'; ?></td>
+                    <td colspan="2" align="right"><?php echo '<a href="' .
+                    tep_href_link(FILENAME_COMPUTERS, 'page=' . $_GET['page'] .
+                        '&action=new') . '">' .
+                    tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>'; ?></td>
                   </tr>
 <?php
   }

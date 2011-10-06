@@ -181,7 +181,10 @@ if (isset($_GET['action']) and $_GET['action']) {
         if (!isset($_GET['action'])) {
 ?>
                   <tr>
-                    <td colspan="2" align="right"><?php echo '<a href="' .  tep_href_link(FILENAME_BILL_TEMPLATES, 'page=' . $_GET['page'] .  '&action=new') . '">' .  tep_html_element_button(BUTTON_NEW_TEXT) . '</a>'; ?></td>
+                    <td colspan="2" align="right"><?php echo '<a href="' .
+                    tep_href_link(FILENAME_BILL_TEMPLATES, 'page=' . $_GET['page'] .
+                        '&action=new') . '">' .
+                    tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>'; ?></td>
                   </tr>
 <?php
   }

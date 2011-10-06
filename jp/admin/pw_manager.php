@@ -879,7 +879,7 @@ right:5px;*/
       echo "<tr><td colspan='8' align='right' >";
         echo '<button type=\'button\'
         onclick="location.href=\''.tep_href_link(FILENAME_PW_MANAGER,'action=new&sort='.$_GET['sort'].'&type='.$_GET['type']).'\'" >';
-        echo TEXT_NEW;
+        echo IMAGE_NEW_PROJECT;
         echo "</button>";
       echo "</td></tr>";
 

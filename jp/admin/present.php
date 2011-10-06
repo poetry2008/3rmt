@@ -791,7 +791,7 @@ default:
                           <tr>
                             <td align="right" colspan="4"><a
                             href="present.php?action=input"><?php echo
-                            tep_html_element_button(TEXT_PRESENT_NEW); ?></a></td>
+                            tep_html_element_button(IMAGE_NEW_PROJECT); ?></a></td>
                           </tr>
                         </table></td>
                       <?php

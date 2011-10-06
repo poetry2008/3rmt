@@ -476,7 +476,10 @@ function popupImageWindow(url) {
                     <td class="smallText" align="right"><?php echo $banners_split->display_links($banners_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'bID'))); ?></td>
                   </tr>
                   <tr>
-                    <td align="right" colspan="2"><?php echo '<a href="' .  tep_href_link(FILENAME_BANNER_MANAGER, 'action=new' .  (isset($_GET['site_id'])?('&lsite_id='.$_GET['site_id']):'')) . '">' . tep_html_element_button(IMAGE_NEW_BANNER) . '</a>'; ?></td>
+                    <td align="right" colspan="2"><?php echo '<a href="' .
+                    tep_href_link(FILENAME_BANNER_MANAGER, 'action=new' .
+                        (isset($_GET['site_id'])?('&lsite_id='.$_GET['site_id']):''))
+                    . '">' . tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>'; ?></td>
                   </tr>
                 </table></td>
               </tr>
