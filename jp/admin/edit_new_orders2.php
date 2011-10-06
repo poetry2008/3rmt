@@ -499,6 +499,7 @@
       
       
       
+  $order = $_SESSION['create_order2']['orders'];
 //start print 
   # 印刷用メール本文 ----------------------------
   if(preg_match('/ /',$order['torihiki_date'])){
