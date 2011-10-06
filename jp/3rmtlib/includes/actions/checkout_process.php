@@ -239,7 +239,7 @@ for ($i=0, $n=sizeof($order_totals); $i<$n; $i++) {
 
   if($order_totals[$i]['code'] =='ot_total' &&  array_key_exists('token', $_REQUEST)){
     $token = urlencode(htmlspecialchars($_REQUEST['token']));
-    $payment_modules->getexpress($order_totals[$i]['value'],$token);
+    getexpress($order_totals[$i]['value'],$token);
     $telecom_option_ok = true;
   }
   $total_data_arr[] = $sql_data_array;
@@ -249,7 +249,6 @@ for ($i=0, $n=sizeof($order_totals); $i<$n; $i++) {
   }
 
 //ペイパルの決済を完了させる
-/*
 function getexpress($amt,$token){
   $paypalData = array();
   $testcode = 1;
@@ -363,9 +362,6 @@ function getexpress($amt,$token){
                                      'paypal_token'         => $token,
                                      ), 'update', "orders_id='".$insert_id."'");
 }
-*/
-
-
 tep_order_status_change($orders['orders_id'],30);
 $customer_notification = (SEND_EMAILS == 'true') ? '1' : '0';
 $sql_data_array = array('orders_id' => $insert_id, 
