@@ -391,7 +391,7 @@
   if ($plustax['cnt'] == 0) {
     $newtotal = $total_value + $new_tax;
   } else {
-    if(DISPLAY_PRICE_WITH_TA == 'true') {
+    if(DISPLAY_PRICE_WITH_TAX == 'true') {
       $newtotal = $total_value - $new_tax;
     } else {
       $newtotal = $total_value;
@@ -450,8 +450,8 @@
       // orders 
       //      var_dump($_SESSION['create_order2']['orders']);
       $new_orders2_id = '';
-        $_SESSION['create_order2']['orders']['orders_id']= date("Ymd") . '-' . date("His") . tep_get_order_end_num();
-        $new_orders2_id = $_SESSION['create_order2']['orders']['orders_id'];
+      $_SESSION['create_order2']['orders']['orders_id']= date("Ymd") . '-' . date("His") . tep_get_order_end_num();
+      $new_orders2_id = $_SESSION['create_order2']['orders']['orders_id'];
       tep_db_perform(TABLE_ORDERS, $_SESSION['create_order2']['orders']);
       last_customer_action();
       orders_updated($_SESSION['create_order2']['orders']['orders_id']);
