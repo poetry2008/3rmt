@@ -272,7 +272,7 @@
   $currency = $currency_array[0];
   $currency_value = $currency_array[1];
   //$insert_id = date("Ymd") . '-' . date("His") . '00';
-  $insert_id = date("Ymd") . '-' . date("His") . tep_get_order_end_num(true);
+  $insert_id = date("Ymd") . '-' . date("His") . tep_get_order_end_num();
 
   $sql_data_array = array('orders_id'     => $insert_id,
             'customers_id'                => $customer_id,

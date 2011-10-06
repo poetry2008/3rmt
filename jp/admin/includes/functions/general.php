@@ -6315,13 +6315,8 @@ function tep_site_head_list($filename){
             <?php
 }
 
-function tep_get_order_end_num($flag=false) 
+function tep_get_order_end_num() 
 {
-  $last_order_id_sql = "select configuration_value from ".TABLE_CONFIGURATION."
-    where configuration_key = 'LAST_ORDER_ID_END_NUM'";
-  $last_order_id_query = tep_db_query($last_order_id_sql);
-  $last_order_id_info = tep_db_fetch_array($last_order_id_query);
-  if($last_order_id_info['configuration_value'] == ''){
   $last_orders_raw = tep_db_query("select * from ".TABLE_ORDERS." order by orders_id desc limit 1"); 
   $last_orders = tep_db_fetch_array($last_orders_raw);
   
@@ -6333,37 +6328,10 @@ function tep_get_order_end_num($flag=false)
     } else {
       $next_orders_num = 1; 
     }
-    if(!$flag){
-    $update_last_order_configuration = "update ".TABLE_CONFIGURATION." set
-      configuration_value = '".$next_orders_num."' where 
-      configuration_key = 'LAST_ORDER_ID_END_NUM' ";
-    tep_db_query($update_last_order_configuration);
-    }
-    return sprintf('%02d', $next_orders_num); 
-  }
-    if(!$flag){
-    $update_last_order_configuration = "update ".TABLE_CONFIGURATION." set
-      configuration_value = '".$next_orders_num."' where 
-      configuration_key = '1' ";
-    tep_db_query($update_last_order_configuration);
-    }
-  return '01';
-  }else{
-    $last_orders_num = $last_order_id_info['configuration_value'];
-    if (((int)$last_orders_num < 99) && ((int)$last_orders_num > 0)) {
-      $next_orders_num = (int)$last_orders_num + 1; 
-    } else {
-      $next_orders_num = 1; 
-    }
-    if(!$flag){
-    $update_last_order_configuration = "update ".TABLE_CONFIGURATION." set
-      configuration_value = '".$next_orders_num."' where 
-      configuration_key = 'LAST_ORDER_ID_END_NUM' ";
-    tep_db_query($update_last_order_configuration);
-    }
     return sprintf('%02d', $next_orders_num); 
   }
   
+  return '01';
 }
 
 
