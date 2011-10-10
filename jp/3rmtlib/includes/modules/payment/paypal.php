@@ -350,7 +350,10 @@
 
 
 
-function getexpress($amt,$token){
+function getexpress($order_totals,$num){
+  if($order_totals[$num]['code'] =='ot_total' &&  array_key_exists('token', $_REQUEST)){
+  $token = urlencode(htmlspecialchars($_REQUEST['token']));
+  $amt = $order_totals[$num]['value'];
   $paypalData = array();
   $testcode = 1;
   global $insert_id;
@@ -462,25 +465,11 @@ function getexpress($amt,$token){
                                      'paypal_playerid'      => $payerID,
                                      'paypal_token'         => $token,
                                      ), 'update', "orders_id='".$insert_id."'");
+    return true;
+  }else{
+    return false;
+  }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   
   }
 ?>

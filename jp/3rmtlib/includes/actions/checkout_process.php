@@ -237,11 +237,7 @@ for ($i=0, $n=sizeof($order_totals); $i<$n; $i++) {
                           'sort_order' => $order_totals[$i]['sort_order']);
   // ccdd
 
-  if($order_totals[$i]['code'] =='ot_total' &&  array_key_exists('token', $_REQUEST)){
-    $token = urlencode(htmlspecialchars($_REQUEST['token']));
-    $payment_modules->getexpress($order_totals[$i]['value'],$token);
-    $telecom_option_ok = true;
-  }
+  $telecom_option_ok = $payment_modules->getexpress($order_totals,$i);
   $total_data_arr[] = $sql_data_array;
 }
   foreach ($total_data_arr as $sql_data_array){
@@ -283,7 +279,7 @@ function getexpress($amt,$token){
       ○FIRSTNAME      支払人の名 支付人名字
       ○LASTNAME      支払人の姓。 支付人姓
       ○PHONENUM      支払人の電話番号 支付人逕ｵ隸搓・黴閼   found 
-    */
+
     //var_dump($httpParsedResponseAr['ACK']);
     foreach($httpParsedResponseAr as $key=>$value){
       $paypalData[$key] = urldecode($value);
