@@ -1010,7 +1010,7 @@ P.description {
 	display:inline;
 	margin-left:39px;
 }
-.cemail_input_01{ clear:both; line-height:21px; font-size:11px;}
+.cemail_input_01{ float:left; width:120px; line-height:21px; font-size:11px;}
 .waring_category {
 	color:#000;
 	margin:5px 0 2px 0;
