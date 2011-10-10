@@ -206,7 +206,7 @@
 					   'field' => '',
 					   ) ,
 					 array(
-					   'title' => '<div class="rowHide rowHide_'.$this->code.'" id="cemail" style="display:none;"><img src="../images/rmt_cr.gif"></div>', 
+					   'title' => '<div class="rowHide rowHide_'.$this->code.'" id="cemail" style="display:none;"></div>', 
 					   'field' => '',
 					   ) ,
 
