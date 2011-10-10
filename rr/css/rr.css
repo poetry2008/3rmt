@@ -1900,3 +1900,5 @@ border:1px solid #CAC6BE;
 .pag_link:hover{ color:#ccc;}
 #caemail p { margin:5px 0 0 0;}
 #caemail p img { position:relative; /*left:70px;*/ top:2px;}
+.cemail_input_01 { float:left; width:150px;}
+.con_email01{ float:left;}

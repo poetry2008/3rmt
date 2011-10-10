@@ -762,10 +762,11 @@ background-image: url(../includes/languages/japanese/images/buttons/button_check
 }
 .con_email01{
 display:inline;
-margin-left:50px;
+/*margin-left:50px;
+*/float:left;
 }
 .con_email01 input{
-width:120px;
+/*width:120px;*/
 }
 .con_email02{
 display:inline;
@@ -1236,3 +1237,4 @@ searching
 .faq_answer_row { width:400px;  word-wrap:break-word; word-break:break-all; overflow:hidden; display:block; float:left;}
 .header_Navigation { margin:5px; color:#339966; padding-top:10px; width:450px; line-height:20px; font-size:10px; float:left; word-wrap:break-word;}
 .header_Navigation a { color:#339966;}
+.cemail_input_01 { float:left; width:150px;}

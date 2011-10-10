@@ -1845,3 +1845,5 @@ border:1px solid #CAC6BE;
 .active_email input{ width:340px; height:21px;}
 #caemail p{ margin:5px 0 0 0;}
 #caemail p img { position:relative;/* left:-2px;*/ top:2px; top:4px\9;}
+.cemail_input_01 { float:left; width:150px;}
+.con_email01{ float:left;}
