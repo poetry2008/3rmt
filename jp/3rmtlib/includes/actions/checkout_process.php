@@ -70,15 +70,13 @@ $payment_modules = new payment($payment);
 //}
 # Check
 //ccdd
-/*
 $NewOidQuery = tep_db_query("select count(*) as cnt from ".TABLE_ORDERS." where orders_id = '".$insert_id."' and site_id = '".SITE_ID."'");
 $NewOid = tep_db_fetch_array($NewOidQuery);
-if($NewOid['cnt'] == 0) {
+if($NewOid['cnt'] > 0) {
   # OrderNo
     //$insert_id = date("Ymd") . '-' . date("His") . ds_makeRandStr(2);
     $insert_id = date("Ymd") . '-' . date("His") . tep_get_order_end_num();
 }
-*/
   
 # load the selected shipping module(convenience_store)
 if ($payment == 'convenience_store') {
