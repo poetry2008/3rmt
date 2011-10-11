@@ -170,7 +170,7 @@ if(isset($_GET['action']) &&
           if($HTTP_GET_VARS['type'] == 'desc' ){
             $order_str = 'new_order_time '.$HTTP_GET_VARS['type']; 
           }else{
-            $order_str = '`nextdate` '.$HTTP_GET_VARS['type']; 
+            $order_str = '`date_order` '.$HTTP_GET_VARS['type']; 
           }
         }else if($HTTP_GET_VARS['sort'] == 'operator'){
         $order_str = '`self` '.$HTTP_GET_VARS['type'].', `privilege` '.$HTTP_GET_VARS['type']; 
