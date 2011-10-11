@@ -164,6 +164,7 @@ if(isset($_GET['action']) &&
   }
       //add order 
       $order_str = ''; 
+      $next_str = 'nextdate as ';
       if (!isset($HTTP_GET_VARS['sort'])||$HTTP_GET_VARS['sort']=='') {
         $order_str = '`nextdate` asc, `title` asc'; 
       } else {
@@ -171,7 +172,7 @@ if(isset($_GET['action']) &&
           if($HTTP_GET_VARS['type'] == 'desc' ){
             $order_str = 'nextdate '.$HTTP_GET_VARS['type']; 
           }else{
-            $minus = '';
+            $next_str = "IF(nextdate = '0000-00-00', '9999-12-30', nextdate) as";
             $order_str = 'nextdate '.$HTTP_GET_VARS['type']; 
           }
         }else if($HTTP_GET_VARS['sort'] == 'operator'){
@@ -210,7 +211,7 @@ if(isset($_GET['action']) &&
         }
       $pw_manager_query_raw = "select id,title,priority,site_id,url,
                              loginurl,username,password,comment,memo
-                             ,IF(nextdate = '0000-00-00', '9999-12-30', nextdate) as
+                             ,".$next_str."
                              nextdate
                              ,privilege,self,operator,created_at,
                              updated_at,onoff,update_user
@@ -225,7 +226,7 @@ if(isset($_GET['action']) &&
       }else{
       $pw_manager_query_raw = "select id,title,priority,site_id,url,
                              loginurl,username,password,comment,memo
-                             ,IF(nextdate = '0000-00-00', '9999-12-30', nextdate) as
+                             ,".$next_str."
                              nextdate
                              ,privilege,self,operator,created_at,
                              updated_at,onoff,update_user
@@ -269,7 +270,7 @@ if(isset($_GET['action']) &&
         }
       $pw_manager_query_raw = "select id,title,priority,site_id,url,
                              loginurl,username,password,comment,memo
-                             ,IF(nextdate = '0000-00-00', '9999-12-30', nextdate) as
+                             ,".$next_str."
                              nextdate
                              ,privilege,self,operator,created_at,
                              updated_at,onoff,update_user
@@ -283,7 +284,7 @@ if(isset($_GET['action']) &&
       }else{
       $pw_manager_query_raw = "select id,title,priority,site_id,url,
                              loginurl,username,password,comment,memo
-                             ,IF(nextdate = '0000-00-00', '9999-12-30', nextdate) as
+                             ,".$next_str."
                              nextdate
                              ,privilege,self,operator,created_at,
                              updated_at,onoff,update_user
@@ -298,7 +299,7 @@ if(isset($_GET['action']) &&
     }else{
     $pw_manager_query_raw = "select id,title,priority,site_id,url,
                              loginurl,username,password,comment,memo
-                             ,IF(nextdate = '0000-00-00', '9999-12-30', nextdate) as
+                             ,".$next_str."
                              nextdate,
                              privilege,self,operator,created_at,
                              updated_at,onoff,update_user
