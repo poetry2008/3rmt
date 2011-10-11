@@ -1,5 +1,6 @@
 <?php
 require('includes/application_top.php');
+require('includes/modules/payment/paypal.php');
 /** SetExpressCheckout NVP example; last modified 08MAY23.
  *
  *  Initiate an Express Checkout transaction. 
