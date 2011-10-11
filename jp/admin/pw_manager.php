@@ -5,10 +5,10 @@
   require('includes/application_top.php');
   $sort_where = '';
   if($ocertify->npermission != 15){
-    $sort_where = " and ((privilege <= '".$ocertify->npermission."' and self='') or
+    $sort_where_start = " and ((privilege <= '".$ocertify->npermission."' and self='') or
      self='".$ocertify->auth_user."' )";
   }else{
-    $sort_where = '';
+    $sort_where_start = '';
   }
 
   if(isset($_GET['site_id'])&&$_GET['site_id']){
@@ -54,15 +54,19 @@ if(isset($_GET['action']) &&
             $pw_operator = $user_info['name'];
             $user_self = '';
           }
+          /*
           if(tep_db_prepare_input($_POST['nextdate'])!=''&&
               tep_db_prepare_input($_POST['nextdate'])!='0000-00-00'){
             $order_date = tep_db_prepare_input($_POST['nextdate']);
           }else{
             $order_date = '9999-12-30';
           }
+          */
           $privilege_str .= 'admin';
           $sql_data_array = array(
+              /*
             'date_order'=> $order_date,
+            */
             'title' => tep_db_prepare_input($_POST['title']),
             'url' => tep_db_prepare_input($_POST['url']),
             'priority' => tep_db_prepare_input($_POST['priority']),
@@ -163,14 +167,17 @@ if(isset($_GET['action']) &&
   }
       //add order 
       $order_str = ''; 
+      $union_flag = false;
       if (!isset($HTTP_GET_VARS['sort'])||$HTTP_GET_VARS['sort']=='') {
-        $order_str = '`date_order` asc, `title` asc'; 
+        $union_flag = true;
+        $order_str = '`nextdate` asc, `title` asc'; 
       } else {
         if($HTTP_GET_VARS['sort'] == 'nextdate'){
+          $union_flag = true;
           if($HTTP_GET_VARS['type'] == 'desc' ){
-            $order_str = 'new_order_time '.$HTTP_GET_VARS['type']; 
+            $order_str = '`nextdate` '.$HTTP_GET_VARS['type']; 
           }else{
-            $order_str = '`date_order` '.$HTTP_GET_VARS['type']; 
+            $order_str = '`nextdate` '.$HTTP_GET_VARS['type']; 
           }
         }else if($HTTP_GET_VARS['sort'] == 'operator'){
         $order_str = '`self` '.$HTTP_GET_VARS['type'].', `privilege` '.$HTTP_GET_VARS['type']; 
@@ -188,7 +195,11 @@ if(isset($_GET['action']) &&
 
 
    // sort sql 
-
+   $pw_manager_query_raw  =  '';
+   if($union_flag){
+     $pw_manager_query_raw  =  '(';
+     $sort_where = $sort_where_start.' and nextdate != "0000-00-00" ';
+   }
     if(isset($site_id)&&$site_id){
      if(isset($_GET['search_type'])&&$_GET['search_type']&&
         isset($_GET['keywords'])&&$_GET['keywords']){
@@ -206,11 +217,10 @@ if(isset($_GET['action']) &&
         }else{
           $sort_where_permission = " or  false)";
         }
-      $pw_manager_query_raw = "select id,title,priority,site_id,url,
+      $pw_manager_query_raw .= "select id,title,priority,site_id,url,
                              loginurl,username,password,comment,memo
                              ,nextdate,privilege,self,operator,created_at,
-                             updated_at,onoff,update_user,
-                             UNIX_TIMESTAMP(nextdate) as new_order_time from 
+                             updated_at,onoff,update_user from 
                              ".TABLE_IDPW." " 
                              .$user_list_str." "
                              .$sort_where_permission." 
@@ -219,11 +229,10 @@ if(isset($_GET['action']) &&
                              " .$sort_where . "
                              order by ".$order_str;
       }else{
-      $pw_manager_query_raw = "select id,title,priority,site_id,url,
+      $pw_manager_query_raw .= "select id,title,priority,site_id,url,
                              loginurl,username,password,comment,memo
                              ,nextdate,privilege,self,operator,created_at,
-                             updated_at,onoff,update_user,
-                             UNIX_TIMESTAMP(nextdate) as new_order_time from 
+                             updated_at,onoff,update_user from 
                              ".TABLE_IDPW." 
                              where ".$_GET['search_type']." like '%".
                              $_GET['keywords']."%'
@@ -233,11 +242,10 @@ if(isset($_GET['action']) &&
                              order by ".$order_str;
       }
     }else{
-    $pw_manager_query_raw = "select id,title,priority,site_id,url,
+    $pw_manager_query_raw .= "select id,title,priority,site_id,url,
                              loginurl,username,password,comment,memo
                              ,nextdate,privilege,self,operator,created_at,
-                             updated_at,onoff,update_user,
-                             UNIX_TIMESTAMP(nextdate) as new_order_time from 
+                             updated_at,onoff,update_user from 
                              ".TABLE_IDPW." where site_id='".$site_id."'
                              and onoff = '1' 
                              " .$sort_where . "
@@ -259,11 +267,10 @@ if(isset($_GET['action']) &&
         }else{
           $sort_where_permission = " or  false)";
         }
-      $pw_manager_query_raw = "select id,title,priority,site_id,url,
+      $pw_manager_query_raw .= "select id,title,priority,site_id,url,
                              loginurl,username,password,comment,memo
                              ,nextdate,privilege,self,operator,created_at,
-                             updated_at,onoff,update_user,
-                             UNIX_TIMESTAMP(nextdate) as new_order_time from 
+                             updated_at,onoff,update_user from 
                              ".TABLE_IDPW." " 
                              .$user_list_str." "
                              .$sort_where_permission." 
@@ -271,11 +278,10 @@ if(isset($_GET['action']) &&
                              " .$sort_where . "
                              order by ".$order_str;
       }else{
-      $pw_manager_query_raw = "select id,title,priority,site_id,url,
+      $pw_manager_query_raw .= "select id,title,priority,site_id,url,
                              loginurl,username,password,comment,memo
                              ,nextdate,privilege,self,operator,created_at,
-                             updated_at,onoff,update_user,
-                             UNIX_TIMESTAMP(nextdate) as new_order_time 
+                             updated_at,onoff,update_user
                              from
                              ".TABLE_IDPW." 
                              where ".$_GET['search_type']." like '%".
@@ -285,16 +291,123 @@ if(isset($_GET['action']) &&
                              order by ".$order_str;
       }
     }else{
-    $pw_manager_query_raw = "select id,title,priority,site_id,url,
+    $pw_manager_query_raw .= "select id,title,priority,site_id,url,
                              loginurl,username,password,comment,memo
                              ,nextdate,privilege,self,operator,created_at,
-                             updated_at,onoff,update_user,
-                             UNIX_TIMESTAMP(nextdate) as new_order_time from 
+                             updated_at,onoff,update_user from 
                              ".TABLE_IDPW." 
                              where onoff = '1' 
                              " .$sort_where . "
                              order by ".$order_str;
     }
+   if($union_flag){
+    $pw_manager_query_raw .= " ) union ( ";
+    $sort_where = $sort_where_start.' and nextdate = "0000-00-00" ';
+    if(isset($site_id)&&$site_id){
+     if(isset($_GET['search_type'])&&$_GET['search_type']&&
+        isset($_GET['keywords'])&&$_GET['keywords']){
+      if($_GET['search_type'] == 'operator'){
+        $user_list = tep_get_user_list_by_username(trim($_GET['keywords']));
+        if(isset($user_list)&&count($user_list)>=1){
+          $user_list_str = "where (self in ('".implode("','",$user_list)."') ";
+        }else{
+          $user_list_str = "where (false ";
+        }
+        if(trim(strtolower($_GET['keywords'])) == 'staff'){
+          $sort_where_permission = " or  privilege = '7')";
+        }else if (trim(strtolower($_GET['keywords'])) == 'chief'){
+          $sort_where_permission = " or  privilege = '10')";
+        }else{
+          $sort_where_permission = " or  false)";
+        }
+      $pw_manager_query_raw .= "select id,title,priority,site_id,url,
+                             loginurl,username,password,comment,memo
+                             ,nextdate,privilege,self,operator,created_at,
+                             updated_at,onoff,update_user from 
+                             ".TABLE_IDPW." " 
+                             .$user_list_str." "
+                             .$sort_where_permission." 
+                             and onoff = '1' 
+                             and site_id = '".$site_id."' 
+                             " .$sort_where . "
+                             order by ".$order_str;
+      }else{
+      $pw_manager_query_raw .= "select id,title,priority,site_id,url,
+                             loginurl,username,password,comment,memo
+                             ,nextdate,privilege,self,operator,created_at,
+                             updated_at,onoff,update_user from 
+                             ".TABLE_IDPW." 
+                             where ".$_GET['search_type']." like '%".
+                             $_GET['keywords']."%'
+                             and onoff = '1' 
+                             and site_id = '".$site_id."' 
+                             " .$sort_where . "
+                             order by ".$order_str;
+      }
+    }else{
+    $pw_manager_query_raw .= "select id,title,priority,site_id,url,
+                             loginurl,username,password,comment,memo
+                             ,nextdate,privilege,self,operator,created_at,
+                             updated_at,onoff,update_user from 
+                             ".TABLE_IDPW." where site_id='".$site_id."'
+                             and onoff = '1' 
+                             " .$sort_where . "
+                             order by ".$order_str;
+    }
+    }else if(isset($_GET['search_type'])&&$_GET['search_type']&&
+        isset($_GET['keywords'])&&$_GET['keywords']){
+      if($_GET['search_type'] == 'operator'){
+        $user_list = tep_get_user_list_by_username(trim($_GET['keywords']));
+        if(isset($user_list)&&count($user_list)>=1){
+          $user_list_str = "where (self in ('".implode("','",$user_list)."') ";
+        }else{
+          $user_list_str = "where (false ";
+        }
+        if(trim(strtolower($_GET['keywords'])) == 'staff'){
+          $sort_where_permission = " or  privilege = '7')";
+        }else if (trim(strtolower($_GET['keywords'])) == 'chief'){
+          $sort_where_permission = " or  privilege = '10')";
+        }else{
+          $sort_where_permission = " or  false)";
+        }
+      $pw_manager_query_raw .= "select id,title,priority,site_id,url,
+                             loginurl,username,password,comment,memo
+                             ,nextdate,privilege,self,operator,created_at,
+                             updated_at,onoff,update_user from 
+                             ".TABLE_IDPW." " 
+                             .$user_list_str." "
+                             .$sort_where_permission." 
+                             and onoff = '1' 
+                             " .$sort_where . "
+                             order by ".$order_str;
+      }else{
+      $pw_manager_query_raw .= "select id,title,priority,site_id,url,
+                             loginurl,username,password,comment,memo
+                             ,nextdate,privilege,self,operator,created_at,
+                             updated_at,onoff,update_user
+                             from
+                             ".TABLE_IDPW." 
+                             where ".$_GET['search_type']." like '%".
+                             $_GET['keywords']."%'
+                             and onoff = '1' 
+                             " .$sort_where . "
+                             order by ".$order_str;
+      }
+    }else{
+    $pw_manager_query_raw .= "select id,title,priority,site_id,url,
+                             loginurl,username,password,comment,memo
+                             ,nextdate,privilege,self,operator,created_at,
+                             updated_at,onoff,update_user from 
+                             ".TABLE_IDPW." 
+                             where onoff = '1' 
+                             " .$sort_where . "
+                             order by ".$order_str;
+    }
+    $pw_manager_query_raw .= " ) ";
+    if($HTTP_GET_VARS['type'] == 'desc' ){
+      $pw_manager_query_raw .= "  order by ".$order_str;
+    }
+  }
     if($pw_id){
       $has_pw_sql = str_replace('where',"where id='".$pw_id."' and
           ",$pw_manager_query_raw);
