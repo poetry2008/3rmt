@@ -16,6 +16,56 @@
     forward404(); 
   }
   
+  $preorder_info_attr = array();
+  foreach ($_POST as $pc_key => $pc_value) {
+    if (is_array($pc_value)) {
+      foreach ($pc_value as $pcs_key => $pcs_value) {
+        $preorder_info_attr[$pcs_key] =$pcs_value; 
+      }
+    }
+  }
+  
+  if (!tep_session_is_registered('preorder_info_attr')) {
+    tep_session_register('preorder_info_attr'); 
+  }
+  
+  
+  $preorder_info_tori = $_POST['torihikihouhou'];
+  $preorder_info_date = $_POST['date'];
+  $preorder_info_hour = $_POST['hour'];
+  $preorder_info_min = $_POST['min'];
+  $preorder_info_character = $_POST['p_character'];
+  $preorder_info_id = $_POST['pid'];
+  $preorder_info_pay = $_POST['pay_type'];
+  
+  if (!tep_session_is_registered('preorder_info_tori')) {
+    tep_session_register('preorder_info_tori'); 
+  }
+  
+  if (!tep_session_is_registered('preorder_info_date')) {
+    tep_session_register('preorder_info_date'); 
+  }
+  
+  if (!tep_session_is_registered('preorder_info_hour')) {
+    tep_session_register('preorder_info_hour'); 
+  }
+  
+  if (!tep_session_is_registered('preorder_info_min')) {
+    tep_session_register('preorder_info_min'); 
+  }
+  
+  if (!tep_session_is_registered('preorder_info_character')) {
+    tep_session_register('preorder_info_character'); 
+  }
+  
+  if (!tep_session_is_registered('preorder_info_id')) {
+    tep_session_register('preorder_info_id'); 
+  }
+  
+  if (!tep_session_is_registered('preorder_info_pay')) {
+    tep_session_register('preorder_info_pay'); 
+  }
+  
   require(DIR_WS_LANGUAGES . $language . '/change_preorder_confirm.php');
   
   $preorder_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$_POST['pid']."' and site_id = '".SITE_ID."'");
@@ -23,6 +73,13 @@
   if (!$preorder_res) {
     forward404(); 
   } 
+  if ($_POST['pay_type'] == 1) {
+    $form_action_url = MODULE_PAYMENT_TELECOM_CONNECTION_URL; 
+  } else if ($_POST['pay_type'] == 2) {
+    $form_action_url = MODULE_PAYMENT_PAYPAL_CONNECTION_URL; 
+  } else {
+    $form_action_url = tep_href_link('change_preorder_process.php'); 
+  }
   $breadcrumb->add(NAVBAR_CHANGE_PREORDER_TITLE, '');
 ?>
 <?php page_head();?>
@@ -84,7 +141,7 @@
             </tr>
           </table>
           <?php
-          echo tep_draw_form('order', 'change_preorder_process.php'); 
+          echo tep_draw_form('order', $form_action_url, 'post'); 
           ?>
           <table width="100%" cellpadding="0" cellspacing="0" border="0" class="c_pay_info">
             <tr>
@@ -201,8 +258,12 @@
                   </tr>
                   <?php
                   }
+                  $total_param = 0; 
                   $preorder_total_raw = tep_db_query("select * from ".TABLE_PREORDERS_TOTAL." where orders_id = '".$_POST['pid']."' order by sort_order asc"); 
                   while ($preorder_total_res = tep_db_fetch_array($preorder_total_raw)) { 
+                    if ($preorder_total_res['class'] == 'ot_total') {
+                      $total_param = (int)$preorder_total_res['value']; 
+                    }
                   ?>
                   <tr>
                     <td class="main" align="right"><?php echo $preorder_total_res['title'];?></td>                  
@@ -222,11 +283,7 @@
             <tr>
               <td class="main" align="right">
                 <?php
-                if (false) {
-                ?>
-                <a href="javascript:void(0);" onClick="document.forms.order1.submit();"><?php echo tep_image_button('button_back.gif', IMAGE_BUTTON_BACK);?></a> 
-                <?php
-                }
+                /* 
                 foreach ($_POST as $pe_key => $pe_value) {
                   if ($pe_key == 'action' || $pe_key == 'x' || $pe_key == 'y') {
                     continue; 
@@ -238,6 +295,22 @@
                   } else {
                     echo tep_draw_hidden_field($pe_key, $pe_value); 
                   }
+                }
+                */ 
+                if ($_POST['pay_type'] == 1) {
+                  if (!isset($_SESSION['preorder_option'])) {
+                    $_SESSION['preorder_option'] = date('Ymd-His').ds_makeRandStr(2); 
+                  }
+                  echo tep_draw_hidden_field('option', $_SESSION['preorder_option']);
+                  echo tep_draw_hidden_field('clientip', MODULE_PAYMENT_TELECOM_KID);
+                  echo tep_draw_hidden_field('money', $total_param);
+                  echo tep_draw_hidden_field('redirect_url', tep_href_link('change_preorder_process.php'));
+                  echo tep_draw_hidden_field('redirect_back_url', tep_href_link('change_preorder.php', 'pid='.$_POST['pid']));
+                } else if ($_POST['pay_type'] == 2) {
+                  echo tep_draw_hidden_field('cpre_type', '1');
+                  echo tep_draw_hidden_field('amout', $total_param);
+                  echo tep_draw_hidden_field('RETURNURL', tep_href_link('change_preorder_process.php'));
+                  echo tep_draw_hidden_field('CANCELURL', tep_href_link('change_preorder.php', 'pid='.$_POST['pid']));
                 }
                 ?>
                 <?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE);?> 
@@ -259,7 +332,6 @@
               echo tep_draw_hidden_field($post_key, $post_value); 
             }
           }
-          echo tep_draw_hidden_field('pid', $_GET['pid']); 
           echo '</form>';
           ?> 
           </div>

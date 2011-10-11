@@ -4371,3 +4371,30 @@ function tep_get_preorder_end_num()
   
   return '01';
 }
+
+function tep_preorder_get_payment_type($payment_method)
+{
+  global $language;  
+  if (defined('MODULE_PAYMENT_INSTALLED') && tep_not_null(MODULE_PAYMENT_INSTALLED)) {
+    $modules_array = explode(';', MODULE_PAYMENT_INSTALLED); 
+    $include_modules = array(); 
+    while (list(, $value) = each($modules_array)) {
+      $class = substr($value, 0, strrpos($value, '.')); 
+      $include_modules[] = array('class' => $class, 'file' => $value); 
+    }
+    for ($i=0, $n=sizeof($include_modules); $i<$n; $i++) {
+      include(DIR_WS_LANGUAGES.$language.'/modules/payment/'.$include_modules[$i]['file']); 
+      include(DIR_WS_MODULES.'payment/'.$include_modules[$i]['file']); 
+      $cpayment = new $include_modules[$i]['class']; 
+      if ($cpayment->title == $payment_method) {
+        if ($cpayment->code == 'telecom') {
+          return 1; 
+        } else if ($cpayment->code == 'paypal') {
+          return 2; 
+        }
+      }
+      unset($cpayment); 
+    }
+  }
+  return 0;
+}

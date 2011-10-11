@@ -3,22 +3,22 @@
   $Id$
 */
 
-if (!isset($_POST['pid'])) {
+if (!isset($_SESSION['preorder_info_id'])) {
   forward404();
 }
 
-$preorder_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$_POST['pid']."' and site_id = '".SITE_ID."'");
+$preorder_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$_SESSION['preorder_info_id']."' and site_id = '".SITE_ID."'");
 $preorder = tep_db_fetch_array($preorder_raw);
 
 if ($preorder) {
-  $order_query = tep_db_query("select * from ".TABLE_ORDERS." where orders_id = '".$_POST['pid']."'"); 
-  $orders_id = $_POST['pid'];
+  $order_query = tep_db_query("select * from ".TABLE_ORDERS." where orders_id = '".$_SESSION['preorder_info_id']."'"); 
+  $orders_id = $_SESSION['preorder_info_id'];
   
   if (tep_db_num_rows($order_query)) {
     $orders_id = date('Ymd').'-'.date('His').tep_get_order_end_num(); 
   }
   
-  $torihikihouhou_date_str = $_POST['date'].' '.$_POST['hour'].':'.$_POST['min'].':00';
+  $torihikihouhou_date_str = $_SESSION['preorder_info_date'].' '.$_SESSION['preorder_info_hour'].':'.$_SESSION['preorder_info_min'].':00';
   $default_status_raw = tep_db_query("select * from ".TABLE_ORDERS_STATUS." where orders_status_id = '".DEFAULT_ORDERS_STATUS_ID."'");
   $default_status_res = tep_db_fetch_array($default_status_raw); 
    
@@ -71,7 +71,7 @@ if ($preorder) {
                            'currency' => $preorder['currency'], 
                            'currency_value' => $preorder['currency_value'], 
                            'torihiki_Bahamut' => $preorder['torihiki_Bahamut'], 
-                           'torihiki_houhou' => $_POST['torihikihouhou'], 
+                           'torihiki_houhou' => $_SESSION['preorder_info_tori'], 
                            'torihiki_date' => $torihikihouhou_date_str, 
                            'code_fee' => $preorder['code_fee'], 
                            'language_id' => $preorder['language_id'], 
@@ -108,7 +108,7 @@ if ($preorder) {
                            'telecom_money' => $preorder['telecom_money'], 
                            'telecom_email' => $preorder['telecom_email'], 
                            'telecom_clientip' => $preorder['telecom_clientip'], 
-                           'telecom_option' => $preorder['telecom_option'], 
+                           'telecom_option' => $_SESSION['preorder_option'], 
                            'telecom_cont' => $preorder['telecom_cont'], 
                            'telecom_sendid' => $preorder['telecom_sendid'], 
                            'telecom_unknow' => $preorder['telecom_unknow'], 
@@ -125,9 +125,23 @@ if ($preorder) {
                            'confirm_payment_time' => $preorder['confirm_payment_time'],
                            'orders_type' => 1, 
                           );
+  
+  if ($_SESSION['preorder_option']) {
+    $telecom_unknow = tep_db_fetch_array(tep_db_query("select * from telecom_unknow where `option`='".$_SESSION['preorder_option']."' and rel='yes'"));
+    if ($telecom_unknow) {
+    $sql_data_array['telecom_name']  = $telecom_unknow['username'];
+    $sql_data_array['telecom_tel']   = $telecom_unknow['telno'];
+    $sql_data_array['telecom_email'] = $telecom_unknow['email'];
+    $sql_data_array['telecom_money'] = $telecom_unknow['money'];
+    tep_db_query("update `telecom_unknow` set type='success' where `option`='".$_SESSION['preorder_option']."' and rel='yes' order by date_added limit 1");
+
+    $telecom_option_ok = true;
+    }
+  }
+  
   tep_db_perform(TABLE_ORDERS, $sql_data_array);
 
-  $preorder_total_raw = tep_db_query("select * from ".TABLE_PREORDERS_TOTAL." where orders_id = '".$_POST['pid']."'");
+  $preorder_total_raw = tep_db_query("select * from ".TABLE_PREORDERS_TOTAL." where orders_id = '".$_SESSION['preorder_info_id']."'");
   
   while ($preorder_total_res = tep_db_fetch_array($preorder_total_raw)) {
     $sql_data_array = array('orders_id' => $orders_id,
@@ -137,10 +151,17 @@ if ($preorder) {
                             'class' => $preorder_total_res['class'], 
                             'sort_order' => $preorder_total_res['sort_order'], 
         ); 
+    if ($preorder_total_res['class'] == 'ot_total') {
+      $cpayment_type = tep_preorder_get_payment_type($preorder['payment_method']);   
+      if ($cpayment_type == 2) {
+        $cpayment_module = new payment('paypal'); 
+        $telecom_option_ok = $cpayment_module->getpreexpress((int)$preorder_total_res['value'], $orders_id); 
+      }
+    }
     tep_db_perform(TABLE_ORDERS_TOTAL, $sql_data_array);
   }
   
-  $preorder_status_history_raw = tep_db_query("select * from ".TABLE_PREORDERS_STATUS_HISTORY." where orders_id = '".$_POST['pid']."' and comments != '' order by orders_status_history_id asc");  
+  $preorder_status_history_raw = tep_db_query("select * from ".TABLE_PREORDERS_STATUS_HISTORY." where orders_id = '".$_SESSION['preorder_info_id']."' and comments != '' order by orders_status_history_id asc");  
   $preorder_status_history_res = tep_db_fetch_array($preorder_status_history_raw);
   $sh_comments = ''; 
   if ($preorder_status_history_res) {
@@ -155,8 +176,19 @@ if ($preorder) {
       ); 
   tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
   
-  
-  $preorder_product_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$_POST['pid']."'"); 
+  if ($telecom_option_ok) {
+    tep_db_perform(TABLE_ORDERS, array('orders_status' => '30'), 'update', "orders_id='".$orders_id."'");
+    $sql_data_array = array('orders_id' => $orders_id, 
+                            'orders_status_id' => '30', 
+                            'date_added' => 'now()', 
+                            'customer_notified' => '0',
+                            'comments' => 'checkout');
+    // ccdd
+    //tep_order_status_change($orders_id,30);
+    tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
+    orders_updated($orders_id);
+  }
+  $preorder_product_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$_SESSION['preorder_info_id']."'"); 
   $preorder_product_res = tep_db_fetch_array($preorder_product_raw); 
   $sql_data_array = array('orders_id' => $orders_id,
                           'products_id' => $preorder_product_res['products_id'],
@@ -167,14 +199,14 @@ if ($preorder) {
                           'products_tax' => $preorder_product_res['products_tax'], 
                           'products_quantity' => $preorder_product_res['products_quantity'], 
                           'products_rate' => $preorder_product_res['products_rate'], 
-                          'products_character' => isset($_POST['p_character'])?$_POST['p_character']:'',
+                          'products_character' => isset($_SESSION['preorder_info_character'])?$_SESSION['preorder_info_character']:'',
                           'torihiki_date' => $torihikihouhou_date_str, 
                           'site_id' => SITE_ID
       );
   tep_db_perform(TABLE_ORDERS_PRODUCTS, $sql_data_array);
 
-if (isset($_POST['op_id'])) {
-   foreach ($_POST['op_id'] as $key => $value) {
+if (isset($_SESSION['preorder_info_attr'])) {
+   foreach ($_SESSION['preorder_info_attr'] as $key => $value) {
       if (DOWNLOAD_ENABLED == 'true') {
         $attributes_query = "select popt.products_options_name, poval.products_options_values_name, pa.options_values_price, pa.price_prefix, pa.products_at_quantity, pa.products_attributes_id, pad.products_attributes_maxdays, pad.products_attributes_maxcount , pad.products_attributes_filename from " . TABLE_PRODUCTS_OPTIONS . " popt, " . TABLE_PRODUCTS_OPTIONS_VALUES . " poval, " . TABLE_PRODUCTS_ATTRIBUTES . " pa left join " . TABLE_PRODUCTS_ATTRIBUTES_DOWNLOAD . " pad on pa.products_attributes_id=pad.products_attributes_id where pa.products_id = '" .  $preorder_product_res['products_id'] . "' and pa.options_id = '" . $key . "' and pa.options_id = popt.products_options_id and pa.options_values_id = '" . $value . "' and pa.options_values_id = poval.products_options_values_id and popt.language_id = '" . $languages_id . "' and poval.language_id = '" . $languages_id . "'";
         $attributes = tep_db_query($attributes_query);
@@ -207,7 +239,7 @@ if (isset($_POST['op_id'])) {
 }
 
 
-$preorder_oa_raw = tep_db_query("select * from ".TABLE_PREORDERS_OA_FORMVALUE." where orders_id = '".$_POST['pid']."'");
+$preorder_oa_raw = tep_db_query("select * from ".TABLE_PREORDERS_OA_FORMVALUE." where orders_id = '".$_SESSION['preorder_info_id']."'");
 
 while ($preorder_oa_res = tep_db_fetch_array($preorder_oa_raw)) {
    $sql_data_array = array('orders_id' => $orders_id,
@@ -222,7 +254,7 @@ while ($preorder_oa_res = tep_db_fetch_array($preorder_oa_raw)) {
 }
 
 
-$preorders_computer_raw = tep_db_query("select * from ".TABLE_PREORDERS_TO_COMPUTERS." where orders_id = '".$_POST['pid']."'");
+$preorders_computer_raw = tep_db_query("select * from ".TABLE_PREORDERS_TO_COMPUTERS." where orders_id = '".$_SESSION['preorder_info_id']."'");
 while ($preorders_computers_res = tep_db_fetch_array($preorders_computer_raw)) {
   $sql_data_array = array('orders_id' => $orders_id,
                           'computers_id' => $preorders_computers_res['computers_id'], 
@@ -230,21 +262,29 @@ while ($preorders_computers_res = tep_db_fetch_array($preorders_computer_raw)) {
   tep_db_perform('orders_to_computers', $sql_data_array);
 }
 
-tep_db_query("delete from ".TABLE_PREORDERS." where orders_id = '".$_POST['pid']."' and site_id = '".SITE_ID."'"); 
-tep_db_query("delete from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$_POST['pid']."'"); 
-tep_db_query("delete from ".TABLE_PREORDERS_PRODUCTS_ATTRIBUTES." where orders_id = '".$_POST['pid']."'"); 
-tep_db_query("delete from ".TABLE_PREORDERS_PRODUCTS_DOWNLOAD." where orders_id = '".$_POST['pid']."'"); 
-tep_db_query("delete from ".TABLE_PREORDERS_PRODUCTS_TO_ACTOR." where orders_id = '".$_POST['pid']."'"); 
-tep_db_query("delete from ".TABLE_PREORDERS_QUESTIONS." where orders_id = '".$_POST['pid']."'"); 
-tep_db_query("delete from ".TABLE_PREORDERS_QUESTIONS_PRODUCTS." where orders_id = '".$_POST['pid']."'"); 
-tep_db_query("delete from ".TABLE_PREORDERS_STATUS_HISTORY." where orders_id = '".$_POST['pid']."'"); 
-tep_db_query("delete from ".TABLE_PREORDERS_TOTAL." where orders_id = '".$_POST['pid']."'"); 
-tep_db_query("delete from ".TABLE_PREORDERS_TO_COMPUTERS." where orders_id = '".$_POST['pid']."'"); 
-tep_db_query("delete from ".TABLE_PREORDERS_OA_FORMVALUE." where orders_id = '".$_POST['pid']."'"); 
+tep_db_query("delete from ".TABLE_PREORDERS." where orders_id = '".$_SESSION['preorder_info_id']."' and site_id = '".SITE_ID."'"); 
+tep_db_query("delete from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$_SESSION['preorder_info_id']."'"); 
+tep_db_query("delete from ".TABLE_PREORDERS_PRODUCTS_ATTRIBUTES." where orders_id = '".$_SESSION['preorder_info_id']."'"); 
+tep_db_query("delete from ".TABLE_PREORDERS_PRODUCTS_DOWNLOAD." where orders_id = '".$_SESSION['preorder_info_id']."'"); 
+tep_db_query("delete from ".TABLE_PREORDERS_PRODUCTS_TO_ACTOR." where orders_id = '".$_SESSION['preorder_info_id']."'"); 
+tep_db_query("delete from ".TABLE_PREORDERS_QUESTIONS." where orders_id = '".$_SESSION['preorder_info_id']."'"); 
+tep_db_query("delete from ".TABLE_PREORDERS_QUESTIONS_PRODUCTS." where orders_id = '".$_SESSION['preorder_info_id']."'"); 
+tep_db_query("delete from ".TABLE_PREORDERS_STATUS_HISTORY." where orders_id = '".$_SESSION['preorder_info_id']."'"); 
+tep_db_query("delete from ".TABLE_PREORDERS_TOTAL." where orders_id = '".$_SESSION['preorder_info_id']."'"); 
+tep_db_query("delete from ".TABLE_PREORDERS_TO_COMPUTERS." where orders_id = '".$_SESSION['preorder_info_id']."'"); 
+tep_db_query("delete from ".TABLE_PREORDERS_OA_FORMVALUE." where orders_id = '".$_SESSION['preorder_info_id']."'"); 
 
 }
 
 last_customer_action();
+
+tep_session_unregister('preorder_info_tori');
+tep_session_unregister('preorder_info_date');
+tep_session_unregister('preorder_info_hour');
+tep_session_unregister('preorder_info_min');
+tep_session_unregister('preorder_info_character');
+tep_session_unregister('preorder_info_id');
+tep_session_unregister('preorder_info_pay');
 
 tep_redirect(tep_href_link('change_preorder_success.php'));
 

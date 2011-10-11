@@ -20,6 +20,9 @@
   if (!$preorder_res) {
     forward404(); 
   }
+  
+  $preorder_payment_code = tep_preorder_get_payment_type($preorder_res['payment_method']);
+  
   $ensure_datetime = strtotime($preorder_res['ensure_deadline']);
   if (time() > $ensure_datetime) {
     $preorder_product_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$preorder_id."'"); 
@@ -74,6 +77,7 @@ foreach ($_POST as $post_key => $post_value) {
   if (is_array($post_value)) {
     foreach ($post_value as $ps_key => $ps_value) {
       echo tep_draw_hidden_field($post_key.'['.$ps_key.']', $ps_value); 
+      $preorder_info_attr[] = $ps_value;
     }
   } else {
     echo tep_draw_hidden_field($post_key, $post_value); 
@@ -328,6 +332,7 @@ echo '</form>';
           <table width="100%" cellpadding="0" cellspacing="0" border="0" class="c_pay_info">
             <tr>
               <td class="main" align="right">
+                <?php echo tep_draw_hidden_field('pay_type', $preorder_payment_code);?> 
                 <?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE);?> 
               </td>
             </tr>
