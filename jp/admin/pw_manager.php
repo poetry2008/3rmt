@@ -54,15 +54,19 @@ if(isset($_GET['action']) &&
             $pw_operator = $user_info['name'];
             $user_self = '';
           }
+          /*
           if(tep_db_prepare_input($_POST['nextdate'])!=''&&
               tep_db_prepare_input($_POST['nextdate'])!='0000-00-00'){
             $order_date = tep_db_prepare_input($_POST['nextdate']);
           }else{
             $order_date = '9999-12-30';
           }
+          */
           $privilege_str .= 'admin';
           $sql_data_array = array(
+              /*
             'date_order'=> $order_date,
+            */
             'title' => tep_db_prepare_input($_POST['title']),
             'url' => tep_db_prepare_input($_POST['url']),
             'priority' => tep_db_prepare_input($_POST['priority']),
