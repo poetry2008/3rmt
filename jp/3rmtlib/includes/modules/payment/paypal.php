@@ -470,6 +470,123 @@ function getexpress($order_totals,$num){
     return false;
   }
 }
+
+function getpreexpress($pre_value, $pre_pid){
+  if(array_key_exists('token', $_REQUEST)){
+  $token = urlencode(htmlspecialchars($_REQUEST['token']));
+  $amt = $pre_value;
+  $paypalData = array();
+  $testcode = 1;
+  // Add request-specific fields to the request string.
+  $nvpStr = "&TOKEN=$token";
+  // Execute the API operation; see the PPHttpPost function above.
+  $httpParsedResponseAr = PPHttpPost('GetExpressCheckoutDetails', $nvpStr);
+
+  if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) {
+    foreach($httpParsedResponseAr as $key=>$value){
+      $paypalData[$key] = urldecode($value);
+    }
+    // Extract the response details.
+    $payerID = urlencode($httpParsedResponseAr['PAYERID']);
+    $paymentType = urlencode("Sale");     // or 'Sale' or 'Order'
+    $paymentAmount = urlencode($amt);
+    $currencyID = urlencode("JPY");   
+    //$token = urlencode($httpParsedResponseAr['TOKEN']);
+    $nvpStr = "&TOKEN=$token&PAYERID=$payerID&AMT=$paymentAmount&PAYMENTACTION=$paymentType&CURRENCYCODE=$currencyID";
+
+    // Execute the API operation; see the PPHttpPost function above.
+    $httpParsedResponseAr = PPHttpPost('DoExpressCheckoutPayment', $nvpStr);
+    /*
+      ★PAYMENTTYPE      支払いが即時に行われるか遅れて行われるかを示します。 譏ｾ示及譌ｶ支付霑・･諡冶ｿ沁x付
+      ★PAYERSTATUS      支払人のステータス 支付人身莉ｽ
+      ★PAYMENTSTATUS      支払いのステータス。 支付状諤閼      Completed: 支払いが完了し、会員残高に正常に入金されました。 支付完豈普C蟶先姐余鬚攝ｳ常霑寢ｼ
+      ★COUNTRYCODE      支払人の居住国 支付人居住国家
+      ○EMAIL      支払人のメールアドレス。 支付人的驍ｮ箱  found
+      ○AMT      最終請求金額。 最后申隸ｷ金鬚魘   found
+      ○FIRSTNAME      支払人の名 支付人名字
+      ○LASTNAME      支払人の姓。 支付人姓
+      ○PHONENUM      支払人の電話番号 支付人逕ｵ隸搓・黴閼   found 
+    */
+    //var_dump($httpParsedResponseAr['ACK']);
+    foreach($httpParsedResponseAr as $key=>$value){
+      $paypalData[$key] = urldecode($value);
+    }
+
+    if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) {
+      //成功コード発行予定
+      //$sql_data_array['money'] =$httpParsedResponseAr["AMT"];
+      //$sql_data_array['type']="success";
+      //$sql_data_array['rel']="yes";
+      //$sql_data_array['date_added']= 'now()';
+      //$sql_data_array['last_modified']= 'now()';
+      //      tep_db_perform("telecom_unknow", $sql_data_array);
+      //エラーコード発行予定
+      //                  exit('DoExpressCheckoutPayment failed: ' . urldecode(print_r($httpParsedResponseAr, true)));
+      if($paypalData['PAYMENTSTATUS'] == "Completed"){
+                  tep_db_perform('telecom_unknow', array(
+        'payment_method' => 'paypal',
+        '`option`'      => ' ',
+        'username'      => $paypalData['FIRSTNAME'] . '' . $paypalData['LASTNAME'],
+        'email'         => $paypalData['EMAIL'],
+        'telno'         => $paypalData['PHONENUM'],
+        'money'         => $paypalData['AMT'],
+        'rel'           => 'yes',
+        'type'          => 'success',
+        'date_added'    => 'now()',
+        'last_modified' => 'now()'
+      ));
+      }else{
+      //不明扱い
+                  tep_db_perform('telecom_unknow', array(
+        'payment_method' => 'paypal',
+        '`option`'      => ' ',
+        'username'      => $paypalData['FIRSTNAME'] . '' . $paypalData['LASTNAME'],
+        'email'         => $paypalData['EMAIL'],
+        'telno'         => $paypalData['PHONENUM'],
+        'money'         => $paypalData['AMT'],
+        'rel'           => 'no',
+        'date_added'    => 'now()',
+        'last_modified' => 'now()'
+      ));
+              tep_db_query("delete from ".TABLE_ORDERS." where
+            orders_id='".$pre_pid."'");
+            tep_redirect(tep_href_link(FILENAME_PREORDER_UNSUCCESS));
+            exit;
+      }
+
+    }else{
+        tep_db_query("delete from ".TABLE_ORDERS." where
+            orders_id='".$pre_pid."'");
+            tep_redirect(tep_href_link(FILENAME_PREORDER_UNSUCCESS));
+            exit;
+    }
+  }else{
+        tep_db_query("delete from ".TABLE_ORDERS." where
+            orders_id='".$pre_pid."'");
+            tep_redirect(tep_href_link(FILENAME_PREORDER_UNSUCCESS));
+            exit;
+    // 不正
+    //エラーコード発行予定
+   // exit('GetExpressCheckoutDetails failed: ' . urldecode(print_r($httpParsedResponseAr, true)));
+  }
+  tep_db_perform(TABLE_ORDERS, array(
+                                     'paypal_paymenttype'   => $paypalData['PAYMENTTYPE'],
+                                     'paypal_payerstatus'   => $paypalData['PAYERSTATUS'],
+                                     'paypal_paymentstatus' => $paypalData['PAYMENTSTATUS'],
+                                     'paypal_countrycode'   => $paypalData['COUNTRYCODE'],
+                                     'telecom_email'        => $paypalData['EMAIL'],
+                                     'telecom_money'        => $paypalData['AMT'],
+                                     'telecom_name'         => $paypalData['FIRSTNAME'] . ''. $paypalData['LASTNAME'],
+                                     'telecom_tel'          => $paypalData['PHONENUM'],
+                                     'orders_status'        => '30',
+                                     'paypal_playerid'      => $payerID,
+                                     'paypal_token'         => $token,
+                                     ), 'update', "orders_id='".$pre_pid."'");
+    return true;
+  }else{
+    return false;
+  }
+}
   
   }
 function PPHttpPost($methodName_, $nvpStr_) {

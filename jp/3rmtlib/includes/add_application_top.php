@@ -16,7 +16,7 @@
   //error_reporting(0);
   //ini_set("display_errors", "On");
   //error_reporting(E_ALL);
-  //ini_set("display_errors", "On");
+  ini_set("display_errors", "On");
 
 // check if register_globals is enabled.
 // since this is a temporary measure this message is hardcoded. The requirement will be removed before 2.2 is finalized.
@@ -51,6 +51,7 @@
 
 // define the filenames used in the project
   define('FILENAME_PREORDER_SUCCESS', 'preorder_success.php');
+  define('FILENAME_PREORDER_UNSUCCESS', 'preorder_unsuccess.php');
   define('FILENAME_FAQ_INFO', 'faq_info.php');
   define('FILENAME_ACCOUNT', 'account.php');
   define('FILENAME_TAGS', 'tags.php');
