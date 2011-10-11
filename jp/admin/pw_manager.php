@@ -164,12 +164,13 @@ if(isset($_GET['action']) &&
   }
       //add order 
       $order_str = ''; 
-      $next_str = 'nextdate as ';
       if (!isset($HTTP_GET_VARS['sort'])||$HTTP_GET_VARS['sort']=='') {
+        $next_str = "IF(nextdate = '0000-00-00', '9999-12-30', nextdate) as";
         $order_str = '`nextdate` asc, `title` asc'; 
       } else {
         if($HTTP_GET_VARS['sort'] == 'nextdate'){
           if($HTTP_GET_VARS['type'] == 'desc' ){
+            $next_str = 'nextdate as ';
             $order_str = 'nextdate '.$HTTP_GET_VARS['type']; 
           }else{
             $next_str = "IF(nextdate = '0000-00-00', '9999-12-30', nextdate) as";
