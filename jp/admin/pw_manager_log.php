@@ -109,18 +109,17 @@ function delete_all(){
               <?php echo tep_draw_form('orders1', FILENAME_PW_MANAGER_LOG, '', 'get','id="orders1" onsubmit="return false"'); ?>検索 : 
               <input name="keywords" type="text" id="keywords" size="40" value="<?php if(isset($_GET['keywords'])) echo stripslashes($_GET['keywords']); ?>">
               <select name="search_type" onChange='search_type_changed(this)'>
-
-                <option value="none">--選択してください--</option>
-                <option value="priority">重</option>
-                <option value="loginurl">LoginURL</option>
-                <option value="title">タイトル</option>
-                <option value="url">タイトルURL</option>
-                <option value="username">ID</option>
-                <option value="password">パスワード</option>
-                <option value="operator">管理者</option>
-                <option value="comment">登録情報</option>
-                <option value="memo">メモ欄</option>
-                <option value="site_id">サイト名</option>
+                <option value="none"><?php echo PW_MANAGER_SELECT_NONE;?></option>
+                <option value="priority"><?php echo PW_MANAGER_SELECT_ONE;?></option>
+                <option value="loginurl"><?php echo PW_MANAGER_SELECT_TWO;?></option>
+                <option value="title"><?php echo PW_MANAGER_SELECT_THREE;?></option>
+                <option value="url"><?php echo PW_MANAGER_SELECT_FOUR;?></option>
+                <option value="username"><?php echo PW_MANAGER_SELECT_FIVE;?></option>
+                <option value="password"><?php echo PW_MANAGER_SELECT_SIX;?></option>
+                <option value="operator"><?php echo PW_MANAGER_SELECT_SEVEN;?></option>
+                <option value="comment"><?php echo PW_MANAGER_SELECT_EIGHT;?></option>
+                <option value="memo"><?php echo PW_MANAGER_SELECT_NINE;?></option>
+                <option value="site_id"><?php echo PW_MANAGER_SELECT_TEN;?></option>
               </select>
               </form>
             </td>
@@ -149,6 +148,7 @@ function delete_all(){
     <?php
       //add order 
       $order_str = ''; 
+      /*
       if (!isset($HTTP_GET_VARS['sort'])||$HTTP_GET_VARS['sort']=='') {
         $order_str = '`updated_at` desc, `title` asc'; 
       } else {
@@ -157,6 +157,24 @@ function delete_all(){
         }else{
         $order_str = '`'.$HTTP_GET_VARS['sort'].'` '.$HTTP_GET_VARS['type']; 
         }
+      }
+      */
+      if (!isset($HTTP_GET_VARS['sort'])||$HTTP_GET_VARS['sort']=='') {
+        $next_str = "IF(nextdate = '0000-00-00', '9999-12-30', nextdate) as ";
+        $order_str = '`nextdate` asc, `title` asc'; 
+      } else {
+        if($HTTP_GET_VARS['sort'] == 'nextdate'){
+          if($HTTP_GET_VARS['type'] == 'desc' ){
+            $next_str = 'nextdate as ';
+            $order_str = 'nextdate '.$HTTP_GET_VARS['type']; 
+          }else{
+            $next_str = "IF(nextdate = '0000-00-00', '9999-12-30', nextdate) as ";
+            $order_str = 'nextdate '.$HTTP_GET_VARS['type']; 
+          }    
+        }else{
+            $next_str = 'nextdate as ';
+        $order_str = '`'.$HTTP_GET_VARS['sort'].'` '.$HTTP_GET_VARS['type']; 
+        }    
       }
       
       if ($HTTP_GET_VARS['type'] == 'asc') {
@@ -271,7 +289,7 @@ function delete_all(){
     if(isset($site_id)&&$site_id){
     $pw_manager_query_raw = "select id,title,priority,site_id,url,
                              loginurl,username,password,comment,memo
-                             ,nextdate,privilege,operator,created_at,
+                             ,".$next_str."nextdate,privilege,operator,created_at,
                              updated_at,onoff,update_user from
                              ".TABLE_IDPW_LOG." where site_id='".$site_id."'
                              order by ".$order_str;
@@ -279,7 +297,7 @@ function delete_all(){
         isset($_GET['keywords'])&&$_GET['keywords']){
       $pw_manager_query_raw = "select id,title,priority,site_id,url,
                              loginurl,username,password,comment,memo
-                             ,nextdate,privilege,operator,created_at,
+                             ,".$next_str."nextdate,privilege,operator,created_at,
                              updated_at,onoff,update_user from
                              ".TABLE_IDPW_LOG." 
                              where ".$_GET['search_type']." like '%".
@@ -288,7 +306,7 @@ function delete_all(){
     }else if(isset($pwid)&&$pwid){
     $pw_manager_query_raw = "select id,title,priority,site_id,url,
                              loginurl,username,password,comment,memo
-                             ,nextdate,privilege,operator,created_at,
+                             ,".$next_str."nextdate,privilege,operator,created_at,
                              updated_at,onoff,update_user from 
                              ".TABLE_IDPW_LOG." where idpw_id = '".$pwid."'
                              order by ".$order_str;
@@ -296,7 +314,7 @@ function delete_all(){
     }else{
     $pw_manager_query_raw = "select id,title,priority,site_id,url,
                              loginurl,username,password,comment,memo
-                             ,nextdate,privilege,operator,created_at,
+                             ,".$next_str."nextdate,privilege,operator,created_at,
                              updated_at,onoff,update_user from
                              ".TABLE_IDPW_LOG." order by ".$order_str;
     }
@@ -356,7 +374,13 @@ function delete_all(){
          }
         }
       echo "</td>";
-      echo "<td class='dataTableContent'>".$pw_manager_row['nextdate']."</td>";
+      echo "<td class='dataTableContent'>";
+      if($pw_manager_row['nextdate'] == '9999-12-30'){
+        echo "0000-00-00";
+      }else{
+        echo $pw_manager_row['nextdate'];
+      }
+      echo "</td>";
       echo '<td class="dataTableContent" align="right">';
       if ( isset($pwInfo) && (is_object($pwInfo)) && ($pw_manager_row['id'] == $pwInfo->id) ) { 
         echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); 
