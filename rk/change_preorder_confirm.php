@@ -217,7 +217,7 @@
                     <?php
                       if (!empty($_POST['date'])) {
                         $date_arr = explode('-', $_POST['date']); 
-                        echo $date_arr[0].'年'.$date_arr[1].'月'.$date_arr[2].'日'; 
+                        echo $date_arr[0].PREORDER_YEAR_TEXT.$date_arr[1].PREORDER_MONTH_TEXT.$date_arr[2].PREORDER_DAY_TEXT; 
                       }
                     ?>
                     </td>                  
@@ -226,7 +226,7 @@
                     <td class="main"><?php echo PREORDER_CONFIRM_FETCH_TIME_DATE;?></td>                  
                     <td class="main">
                     <?php
-                    echo $_POST['hour'].'時'.$_POST['min'].'分'; 
+                    echo $_POST['hour'].PREORDER_HOUR_TEXT.$_POST['min'].PREORDER_MIN_TEXT; 
                     ?>
                     </td>                  
                   </tr>
