@@ -142,6 +142,9 @@ echo '</form>';
           ?>
           <table width="100%" cellpadding="0" cellspacing="0" border="0" class="c_pay_info">
             <tr>
+              <td class="main">
+              <?php echo TEXT_PREORDER_FETCH_BUTTON_INFO;?> 
+              </td>
               <td class="main" align="right">
                 <?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE);?> 
               </td>
@@ -331,6 +334,9 @@ echo '</form>';
           <br>
           <table width="100%" cellpadding="0" cellspacing="0" border="0" class="c_pay_info">
             <tr>
+              <td class="main">
+              <?php echo TEXT_PREORDER_FETCH_BUTTON_INFO;?> 
+              </td>
               <td class="main" align="right">
                 <?php echo tep_draw_hidden_field('pay_type', $preorder_payment_code);?> 
                 <?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE);?> 
