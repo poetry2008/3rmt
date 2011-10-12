@@ -48,6 +48,7 @@
     } else {
       tep_db_query("update ".TABLE_PREORDERS." set `is_active` = 1, `date_purchased` = '".date('Y-m-d H:i:s', time())."' where orders_id = '".$pid."' and site_id = '".SITE_ID."'");  
       tep_db_query("update ".TABLE_CUSTOMERS." set `is_active` = 1 where customers_id = '".$preorder_res['customers_id']."' and site_id = '".SITE_ID."'"); 
+      tep_mail($preorder_res['customers_name'], $preorder_res['customers_email_address'],PREORDER_MAIL_SUBJECT, PREORDER_MAIL_CONTENT, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS); 
       tep_redirect(tep_href_link('preorder_active_success.php', 'pid='.$pid)); 
     }
   } else {

@@ -13,7 +13,9 @@
   require('includes/application_top.php');
 
   require(DIR_WS_LANGUAGES . $language . '/change_preorder_success.php');
-  
+   
+  $breadcrumb->add(CPREORDER_SUCCESS_NAVBAR_TITLE_FETCH, '');
+  $breadcrumb->add(CPREORDER_SUCCESS_NAVBAR_TITLE_CONFIRM, '');
   $breadcrumb->add(CPREORDER_SUCCESS_NAVBAR_TITLE, '');
 ?>
 <?php page_head();?>
@@ -63,7 +65,17 @@
               <td align="right" width="20%" class="preorderBarCurrent"><?php echo PREORDER_FINISH_LINE_TITLE;?></td> 
             </tr>
           </table>
-        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size:12px;">
+          <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size:12px;">
+          <tr>
+            <td>
+            <?php echo tep_draw_separator('pixel_trans.gif', '100%', '10');?> 
+            </td>
+          </tr>
+          <tr>
+            <td align="right">
+            <?php echo '<a href="' .tep_href_link(FILENAME_DEFAULT). '">' .  tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?>
+            </td>
+          </tr>
           <tr>
             <td>
             <?php echo CPREORDER_SUCCESS_TEXT;?> 

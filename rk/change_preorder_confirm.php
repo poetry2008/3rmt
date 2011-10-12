@@ -145,8 +145,11 @@
           ?>
           <table width="100%" cellpadding="0" cellspacing="0" border="0" class="c_pay_info">
             <tr>
+              <td class="main">
+              <?php echo CHANGE_PREORDER_CONFIRM_BUTTON_INFO;?> 
+              </td>
               <td class="main" align="right">
-                <?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE);?> 
+                <?php echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONTINUE);?> 
               </td>
             </tr>
           </table>
@@ -236,7 +239,7 @@
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
               <td class="main" width="30%">
-                <table width="100%" cellpadding="2" cellspacing="2" border="0"> 
+                <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea_td"> 
                   <tr>
                     <td class="main"><?php echo CHANGE_ORDER_CONFIRM_PAYMENT;?></td>                  
                   </tr>
@@ -281,22 +284,11 @@
           <br> 
           <table width="100%" cellpadding="0" cellspacing="0" border="0" class="c_pay_info">
             <tr>
+              <td class="main">
+              <?php echo CHANGE_PREORDER_CONFIRM_BUTTON_INFO;?> 
+              </td>
               <td class="main" align="right">
                 <?php
-                /* 
-                foreach ($_POST as $pe_key => $pe_value) {
-                  if ($pe_key == 'action' || $pe_key == 'x' || $pe_key == 'y') {
-                    continue; 
-                  }
-                  if (is_array($pe_value)) {
-                    foreach ($pe_value as $pes_key => $pes_value) {
-                      echo tep_draw_hidden_field($pe_key.'['.$pes_key.']', $pes_value); 
-                    }
-                  } else {
-                    echo tep_draw_hidden_field($pe_key, $pe_value); 
-                  }
-                }
-                */ 
                 if ($_POST['pay_type'] == 1) {
                   if (!isset($_SESSION['preorder_option'])) {
                     $_SESSION['preorder_option'] = date('Ymd-His').ds_makeRandStr(2); 
@@ -313,7 +305,7 @@
                   echo tep_draw_hidden_field('CANCELURL', HTTP_SERVER.'/change_preorder.php?pid='.$_POST['pid']);
                 }
                 ?>
-                <?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE);?> 
+                <?php echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONTINUE);?> 
               </td>
             </tr>
           </table> 

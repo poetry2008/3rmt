@@ -14,3 +14,5 @@ define('PREORDER_CONFIRM_CHARACTER', 'お客様のキャラクター名：');
 define('CHANGE_ORDER_CONFIRM_PAYMENT', 'お支払い方法');
 define('CHANGE_PREORDER_HANDLE_FEE_TEXT', '手数料:');
 define('CHANGE_PREORDER_POINT_TEXT', '今回の獲得予定ポイント:');
+define('CHANGE_PREORDER_CONFIRM_BUTTON_INFO', '<b>ご注文内容をご確認の上「注文する」をクリックしてください。</b>');
+define('CHANGE_PREORDER_BREADCRUMB_FETCH', '注文');

@@ -4,6 +4,8 @@
 */
 define('CPREORDER_SUCCESS_HEADING_TITLE', 'ご注文の手続きが完了しました!!');
 define('CPREORDER_SUCCESS_NAVBAR_TITLE', 'ご注文の手続きが完了しました!!');
+define('CPREORDER_SUCCESS_NAVBAR_TITLE_FETCH', '注文');
+define('CPREORDER_SUCCESS_NAVBAR_TITLE_CONFIRM', '最終確認');
 
 define('CPREORDER_SUCCESS_TEXT', '<span class="red"><b>「注文受付」メールをお送りしましたのでご確認ください。</b></span><br>
 <b>10分経過してもメールが届かない場合は、再送いたしますのでご連絡ください。</b><br>

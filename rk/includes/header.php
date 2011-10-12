@@ -144,7 +144,18 @@ echo tep_draw_form('quick_find', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, 
   </div>
   <div class="header_Navigation">
           <a href="<?php echo tep_href_link(FILENAME_SITEMAP,'','NONSSL');?>"><?php echo HEADER_TITLE_SITEMAP ; ?></a>
-          &nbsp;&nbsp;<?php echo $breadcrumb->trail(' &raquo; '); ?>
+          &nbsp;&nbsp;
+          <?php 
+          if ($_SERVER['PHP_SELF'] == '/change_preorder_confirm.php') {
+            echo '<a href="'.HTTP_SERVER.'" class="headerNavigation">'.HEADER_TITLE_TOP.'</a>'; 
+            echo ' &raquo; ';
+            echo '<a href="javascript:void(0);" class="headerNavigation" onclick="document.forms.order1.submit();">'.CHANGE_PREORDER_BREADCRUMB_FETCH.'</a>';
+            echo ' &raquo; ';
+            echo NAVBAR_CHANGE_PREORDER_TITLE; 
+          } else {
+            echo $breadcrumb->trail(' &raquo; '); 
+          }
+          ?>
 </div>
 <?php
   if (isset($_GET['error_message']) && tep_not_null($_GET['error_message'])) {
