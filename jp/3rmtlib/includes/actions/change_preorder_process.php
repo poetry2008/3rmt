@@ -7,6 +7,8 @@ if (!isset($_SESSION['preorder_info_id'])) {
   forward404();
 }
 
+require(DIR_WS_CLASSES.'payment.php');
+
 $preorder_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$_SESSION['preorder_info_id']."' and site_id = '".SITE_ID."'");
 $preorder = tep_db_fetch_array($preorder_raw);
 
@@ -285,6 +287,8 @@ tep_session_unregister('preorder_info_min');
 tep_session_unregister('preorder_info_character');
 tep_session_unregister('preorder_info_id');
 tep_session_unregister('preorder_info_pay');
+
+unset($_SESSION['preorder_option']);
 
 tep_redirect(tep_href_link('change_preorder_success.php'));
 
