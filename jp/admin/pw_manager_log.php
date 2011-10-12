@@ -160,16 +160,16 @@ function delete_all(){
       }
       */
       if (!isset($HTTP_GET_VARS['sort'])||$HTTP_GET_VARS['sort']=='') {
-        $next_str = "IF(nextdate = '0000-00-00', '9999-12-30', nextdate) as ";
-        $order_str = '`nextdate` asc, `title` asc'; 
+        $next_str = "IF(nextdate = '0000-00-00', '1', '0') as date_order, ";
+        $order_str = '`date_order`,`nextdate` asc, `title` asc'; 
       } else {
         if($HTTP_GET_VARS['sort'] == 'nextdate'){
           if($HTTP_GET_VARS['type'] == 'desc' ){
             $next_str = 'nextdate as ';
             $order_str = 'nextdate '.$HTTP_GET_VARS['type']; 
           }else{
-            $next_str = "IF(nextdate = '0000-00-00', '9999-12-30', nextdate) as ";
-            $order_str = 'nextdate '.$HTTP_GET_VARS['type']; 
+            $next_str = "IF(nextdate = '0000-00-00', '1', '0') as date_order, ";
+            $order_str = 'date_order,nextdate '.$HTTP_GET_VARS['type']; 
           }    
         }else{
             $next_str = 'nextdate as ';
@@ -375,11 +375,7 @@ function delete_all(){
         }
       echo "</td>";
       echo "<td class='dataTableContent'>";
-      if($pw_manager_row['nextdate'] == '9999-12-30'){
-        echo "0000-00-00";
-      }else{
-        echo $pw_manager_row['nextdate'];
-      }
+      echo $pw_manager_row['nextdate'];
       echo "</td>";
       echo '<td class="dataTableContent" align="right">';
       if ( isset($pwInfo) && (is_object($pwInfo)) && ($pw_manager_row['id'] == $pwInfo->id) ) { 
