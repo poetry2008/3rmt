@@ -308,7 +308,7 @@
                   echo tep_draw_hidden_field('redirect_back_url', HTTP_SERVER.'/change_preorder.php?pid='.$_POST['pid']);
                 } else if ($_POST['pay_type'] == 2) {
                   echo tep_draw_hidden_field('cpre_type', '1');
-                  echo tep_draw_hidden_field('amout', $total_param);
+                  echo tep_draw_hidden_field('amount', $total_param);
                   echo tep_draw_hidden_field('RETURNURL', HTTP_SERVER.'/change_preorder_process.php');
                   echo tep_draw_hidden_field('CANCELURL', HTTP_SERVER.'/change_preorder.php?pid='.$_POST['pid']);
                 }
