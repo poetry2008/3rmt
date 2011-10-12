@@ -157,7 +157,7 @@ if ($preorder) {
       $cpayment_type = tep_preorder_get_payment_type($preorder['payment_method']);   
       if ($cpayment_type == 2) {
         $cpayment_module = new payment('paypal'); 
-        $telecom_option_ok = $cpayment_module->getpreexpress((int)$preorder_total_res['value'], $orders_id); 
+        $telecom_option_ok = $GLOBALS[$cpayment_module->selected_module]->getpreexpress((int)$preorder_total_res['value'], $orders_id); 
       }
     }
     tep_db_perform(TABLE_ORDERS_TOTAL, $sql_data_array);
