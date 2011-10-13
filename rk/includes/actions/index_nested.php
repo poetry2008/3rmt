@@ -21,7 +21,7 @@
 ?> 
       <p class="comment"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_header_text']); //seoフレーズ ?></p>
             <div class="comment">
-        <table border="0" width="100%" cellspacing="3" cellpadding="3" summary=""> 
+        <table border="0" width="100%" cellspacing="1" cellpadding="1" summary=""> 
           <tr align="center">
 <?php
     if (isset($cPath) && ereg('_', $cPath)) {
