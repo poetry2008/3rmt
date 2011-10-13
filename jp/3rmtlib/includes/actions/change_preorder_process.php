@@ -156,13 +156,11 @@ if ($preorder) {
     if ($preorder_total_res['class'] == 'ot_total') {
       $cpayment_type = tep_preorder_get_payment_type($preorder['payment_method']);   
       if ($cpayment_type == 2) {
-        if (class_exists('paypal')) {
-          $telecom_option_ok = $paypal->getpreexpress((int)$preorder_total_res['value'], $orders_id); 
-        } else {
+        if (!class_exists('paypal')) {
           include(DIR_WS_MODULES.'payment/paypal.php'); 
-          $cpayment_module = new papal(); 
-          $telecom_option_ok = $cpayment_module->getpreexpress((int)$preorder_total_res['value'], $orders_id); 
-        }
+        } 
+        $cpayment_module = new paypal(); 
+        $telecom_option_ok = $cpayment_module->getpreexpress((int)$preorder_total_res['value'], $orders_id); 
       }
     }
     tep_db_perform(TABLE_ORDERS_TOTAL, $sql_data_array);
