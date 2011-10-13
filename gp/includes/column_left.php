@@ -81,18 +81,18 @@ if($_SERVER['PHP_SELF'] == '/faq.php'||$_SERVER['PHP_SELF'] == '/faq_info.php'
         <script type="text/javascript" src="js/left_search_category.js"></script> 
         <table width="170" cellpadding="1" cellspacing="2" border="0" class="seach_before_info">
         	<tr>
-                <td><a href="javascript:void(0);" onclick="left_search_category('left_search_category.php?ra=<?php echo LEFT_SEARCH_CATEGORY_ONE_TEXT;?>');"><?php echo LEFT_SEARCH_CATEGORY_ONE_TEXT;?></a></td>
-                <td><a href="javascript:void(0);" onclick="left_search_category('left_search_category.php?ra=<?php echo LEFT_SEARCH_CATEGORY_TWO_TEXT;?>');"><?php echo LEFT_SEARCH_CATEGORY_TWO_TEXT;?></a></td>
-                <td><a href="javascript:void(0);" onclick="left_search_category('left_search_category.php?ra=<?php echo LEFT_SEARCH_CATEGORY_THREE_TEXT;?>');"><?php echo LEFT_SEARCH_CATEGORY_THREE_TEXT;?></a></td>
-                <td><a href="javascript:void(0);" onclick="left_search_category('left_search_category.php?ra=<?php echo LEFT_SEARCH_CATEGORY_FOUR_TEXT;?>');"><?php echo LEFT_SEARCH_CATEGORY_FOUR_TEXT;?></a></td>
-                <td><a href="javascript:void(0);" onclick="left_search_category('left_search_category.php?ra=<?php echo LEFT_SEARCH_CATEGORY_FIVE_TEXT;?>');"><?php echo LEFT_SEARCH_CATEGORY_FIVE_TEXT;?></a></td>
+                <td><a href="javascript:void(0);" onclick="left_search_category('left_search_category.php?ra=<?php echo urlencode(LEFT_SEARCH_CATEGORY_ONE_TEXT);?>');"><?php echo LEFT_SEARCH_CATEGORY_ONE_TEXT;?></a></td>
+                <td><a href="javascript:void(0);" onclick="left_search_category('left_search_category.php?ra=<?php echo urlencode(LEFT_SEARCH_CATEGORY_TWO_TEXT);?>');"><?php echo LEFT_SEARCH_CATEGORY_TWO_TEXT;?></a></td>
+                <td><a href="javascript:void(0);" onclick="left_search_category('left_search_category.php?ra=<?php echo urlencode(LEFT_SEARCH_CATEGORY_THREE_TEXT);?>');"><?php echo LEFT_SEARCH_CATEGORY_THREE_TEXT;?></a></td>
+                <td><a href="javascript:void(0);" onclick="left_search_category('left_search_category.php?ra=<?php echo urlencode(LEFT_SEARCH_CATEGORY_FOUR_TEXT);?>');"><?php echo LEFT_SEARCH_CATEGORY_FOUR_TEXT;?></a></td>
+                <td><a href="javascript:void(0);" onclick="left_search_category('left_search_category.php?ra=<?php echo urlencode(LEFT_SEARCH_CATEGORY_FIVE_TEXT);?>');"><?php echo LEFT_SEARCH_CATEGORY_FIVE_TEXT;?></a></td>
             </tr>
             <tr>
-                <td><a href="javascript:void(0);" onclick="left_search_category('left_search_category.php?ra=<?php echo LEFT_SEARCH_CATEGORY_SIX_TEXT;?>');"><?php echo LEFT_SEARCH_CATEGORY_SIX_TEXT;?></a></td>
-                <td><a href="javascript:void(0);" onclick="left_search_category('left_search_category.php?ra=<?php echo LEFT_SEARCH_CATEGORY_SEVEN_TEXT;?>');"><?php echo LEFT_SEARCH_CATEGORY_SEVEN_TEXT;?></a></td>
-                <td><a href="javascript:void(0);" onclick="left_search_category('left_search_category.php?ra=<?php echo LEFT_SEARCH_CATEGORY_EIGHT_TEXT;?>');"><?php echo LEFT_SEARCH_CATEGORY_EIGHT_TEXT;?></a></td>
-                <td><a href="javascript:void(0);" onclick="left_search_category('left_search_category.php?ra=<?php echo LEFT_SEARCH_CATEGORY_NINE_TEXT;?>');"><?php echo LEFT_SEARCH_CATEGORY_NINE_TEXT;?></a></td>
-                <td><a href="javascript:void(0);" onclick="left_search_category('left_search_category.php?ra=<?php echo LEFT_SEARCH_CATEGORY_TEN_TEXT;?>');"><?php echo LEFT_SEARCH_CATEGORY_TEN_TEXT;?></a></td>
+                <td><a href="javascript:void(0);" onclick="left_search_category('left_search_category.php?ra=<?php echo urlencode(LEFT_SEARCH_CATEGORY_SIX_TEXT);?>');"><?php echo LEFT_SEARCH_CATEGORY_SIX_TEXT;?></a></td>
+                <td><a href="javascript:void(0);" onclick="left_search_category('left_search_category.php?ra=<?php echo urlencode(LEFT_SEARCH_CATEGORY_SEVEN_TEXT);?>');"><?php echo LEFT_SEARCH_CATEGORY_SEVEN_TEXT;?></a></td>
+                <td><a href="javascript:void(0);" onclick="left_search_category('left_search_category.php?ra=<?php echo urlencode(LEFT_SEARCH_CATEGORY_EIGHT_TEXT);?>');"><?php echo LEFT_SEARCH_CATEGORY_EIGHT_TEXT;?></a></td>
+                <td><a href="javascript:void(0);" onclick="left_search_category('left_search_category.php?ra=<?php echo urlencode(LEFT_SEARCH_CATEGORY_NINE_TEXT);?>');"><?php echo LEFT_SEARCH_CATEGORY_NINE_TEXT;?></a></td>
+                <td><a href="javascript:void(0);" onclick="left_search_category('left_search_category.php?ra=<?php echo urlencode(LEFT_SEARCH_CATEGORY_TEN_TEXT);?>');"><?php echo LEFT_SEARCH_CATEGORY_TEN_TEXT;?></a></td>
             </tr>
             <tr>
                 <td><a href="javascript:void(0);" onclick="left_search_category('left_search_category.php?ra=a,b,c');">A<?php echo CONNECT_SYMBOL_TEXT;?>C</a></td>
