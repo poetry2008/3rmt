@@ -160,8 +160,10 @@ function delete_all(){
       }
       */
       if (!isset($HTTP_GET_VARS['sort'])||$HTTP_GET_VARS['sort']=='') {
-        $next_str = "IF(nextdate = '0000-00-00', '1', '0') as date_order, ";
-        $order_str = '`date_order`,`nextdate` asc, `title` asc'; 
+        //$next_str = "IF(nextdate = '0000-00-00', '1', '0') as date_order, ";
+        //$order_str = '`date_order`,`nextdate` asc, `title` asc'; 
+        $next_str = '';
+        $order_str = '`nextdate` desc, `title` asc'; 
       } else {
         if($HTTP_GET_VARS['sort'] == 'nextdate'){
           $next_str = 'nextdate as ';
