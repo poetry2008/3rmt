@@ -215,5 +215,10 @@ function getexpress($amt,$token){
       $GLOBALS[$this->selected_module]->getexpress($amt,$token);
     }
 }
+function dealUnknow(&$sqldata){
+    if (method_exists($GLOBALS[$this->selected_module], 'dealUnknow')) {
+      $GLOBALS[$this->selected_module]->dealUnknow($amt,&$sqldata);
+    }
+}
   }
 ?>
