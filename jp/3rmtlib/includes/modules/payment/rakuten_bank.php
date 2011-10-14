@@ -5,7 +5,7 @@
 
 // 代金引換払い(手数料が購入金額に連動)
 class rakuten_bank {
-  var $site_id, $code, $title, $description, $enabled, $n_fee, $s_error, $email_footer;
+  var $site_id, $code, $title, $description, $enabled, $n_fee, $s_error, $email_footer,$c_prefix;
   var $arrs2d = array('１' => '1', '２' => '2', '３' => '3', '４' => '4', 
        '５' => '5', '６' => '6', '７' => '7', '８' => '8', '９' => '9', '０' => '0','－' => '-');
 
@@ -20,7 +20,7 @@ class rakuten_bank {
     $this->description = MODULE_PAYMENT_RAKUTEN_BANK_TEXT_DESCRIPTION;
     $this->sort_order  = MODULE_PAYMENT_RAKUTEN_BANK_SORT_ORDER;
     $this->enabled     = ((MODULE_PAYMENT_RAKUTEN_BANK_STATUS == 'True') ? true : false);
-
+    $this->c_prefix    = C_RAKUTEN_BANK;
     if ((int)MODULE_PAYMENT_RAKUTEN_BANK_ORDER_STATUS_ID > 0) {
       $this->order_status = MODULE_PAYMENT_RAKUTEN_BANK_ORDER_STATUS_ID;
     }

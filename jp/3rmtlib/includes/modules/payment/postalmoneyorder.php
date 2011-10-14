@@ -4,7 +4,7 @@
 */
 
   class postalmoneyorder {
-    var $site_id, $code, $title, $description, $enabled, $n_fee, $email_footer, $s_error;
+    var $site_id, $code, $title, $description, $enabled, $n_fee, $email_footer, $s_error,$c_prefix;
 
 // class constructor
     function postalmoneyorder($site_id = 0) {
@@ -18,7 +18,7 @@
       $this->explain     = MODULE_PAYMENT_POSTALMONEYORDER_TEXT_EXPLAIN;
       $this->sort_order  = MODULE_PAYMENT_POSTALMONEYORDER_SORT_ORDER;
       $this->enabled     = ((MODULE_PAYMENT_POSTALMONEYORDER_STATUS == 'True') ? true : false);
-
+      $this->c_prefix    = C_POSTAL; 
       if ((int)MODULE_PAYMENT_POSTALMONEYORDER_ORDER_STATUS_ID > 0) {
         $this->order_status = MODULE_PAYMENT_POSTALMONEYORDER_ORDER_STATUS_ID;
       }
