@@ -177,6 +177,7 @@ $(window).resize(function (){
   <!--dataTableHeadingRow-->
   <tr class="dataTableHeadingRow" valign="top">
   <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_CATEGORIES_PRODUCTS; ?></td>
+  <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_CATEGORIES_PREORDER_PRODUCTS_NUM; ?></td>
   <td class="dataTableHeadingContent" align="center" ><?php echo TABLE_HEADING_CATEGORIES_ZHUWEN_NUM;?></td>
   <td class="dataTableHeadingContent" align="center" ><?php echo TABLE_HEADING_CATEGORIES_JIAKONG;?></td>
   <td class="dataTableHeadingContent" align="center" ><?php echo TABLE_HEADING_CATEGORIES_SHIZAIKU;?></td>
@@ -313,7 +314,7 @@ while ($categories = tep_db_fetch_array($categories_query)) {
   <td class="dataTableContent1">
    <?php echo '<a href="' . tep_href_link(FILENAME_CATEGORIES_ADMIN, tep_get_path($categories['categories_id'])) . '">' . tep_image(DIR_WS_ICONS . 'folder.gif', ICON_FOLDER) . '</a>&nbsp;<b>' . $categories['categories_name'] . '</b>'; ?>
   </td>
-  <td class="dataTableContent" align="right" colspan="<?php echo 8 + $count_dougyousya['cnt'];?>">&nbsp;</td>
+  <td class="dataTableContent" align="right" colspan="<?php echo 9 + $count_dougyousya['cnt'];?>">&nbsp;</td>
   <td class="dataTableContent5" align="center">&nbsp;</td>
 <?php /*
 <td class="dataTableContent4" align="center"><?php if ($ocertify->npermission == 15 or $ocertify->npermission == 10) {?>
@@ -451,6 +452,19 @@ while ($products = tep_db_fetch_array($products_query)) {
       }
       $target_cnt=$products_count-1;//同業者専用
   ?>
+  <td class="dataTableContent6" align='right'>
+  <?php
+    $preorder_products_raw = tep_db_query("select sum(products_quantity) as pre_total from ".TABLE_PREORDERS_PRODUCTS." where products_id = '".$products['products_id']."'"); 
+    $preorder_products_res = tep_db_fetch_array($preorder_products_raw);
+    if ($preorder_products_res) {
+      if ($preorder_products_res['pre_total']) {
+        echo $preorder_products_res['pre_total'];
+      } else {
+        echo '0'; 
+      }
+    } 
+    ?>
+  </td>
   <td class="dataTableContent6" align='right'><?php echo tep_get_order_cnt_by_pid($products['products_id']);?></td>
   <?php //個数架空 ?>
   <td class="dataTableContent6" align='right' onmouseover='this.style.cursor="pointer"'  id='virtual_quantity_<?php echo $products['products_id']; ?>' onclick="update_virtual_quantity(<?php echo $products['products_id']; ?>)"><?php echo $imaginary;?></td>

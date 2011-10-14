@@ -41,3 +41,4 @@ define('PREORDERS_STATUS_EXPLANATION_TEXT', '名前：${NAME}<br>メールアド
 define('TEXT_ORDERS_STATUS_NOMAIL', 'DON\'T SEND MAIL');
 define('TEXT_ORDERS_STATUS_AVG_PRICE','平均単価の算出条件に設定');
 define('TEXT_ORDERS_STATUS_PIC_DEL', 'アイコンを削除');
+define('TEXT_PREORDER_NYUUKA', '入荷連絡');

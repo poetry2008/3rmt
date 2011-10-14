@@ -294,7 +294,7 @@ if (
   ){
 // 如果有新订单和修改
 // 改变背景颜色
-$('body').css('background-color', '#ffcc99');// rgb(255, 204, 153)
+$('body').css('background-color', '#83dc94');// rgb(255, 204, 153)
 // 在列表插入新订单
 newOrders(prev_customer_action != '' ? prev_customer_action : cfg_last_customer_action);
 // 修改最后检查时间

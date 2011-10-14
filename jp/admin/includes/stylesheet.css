@@ -756,6 +756,21 @@ table.menu01 {
 	text-decoration:none;
 	background:#ffd700;
 }
+#headerorder td {
+	background:#000;
+	padding:1px;
+}
+#headerorder td a {
+	color:#fff;
+	font-weight:bold;
+	padding:2px 7px;
+	text-decoration: underline;
+}
+#headerorder td a:hover {
+	color:#000;
+	text-decoration:none;
+	background:#ffd700;
+}
 #ordermenu td {
 	background:#000;
 	padding:1px;
