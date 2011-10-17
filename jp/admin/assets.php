@@ -182,12 +182,10 @@ if($is_null){
 </table>
 <?php
 echo "<div class=\"assets_bottom\">";
-/*
 echo "<a href='".
 tep_href_link(FILENAME_ASSETS,tep_get_all_get_params(array('pid','endY','endM','endD')))."'>";
 echo tep_html_element_button(TEXT_BACK);
 echo "</a>";
-*/
 echo '&nbsp;<input type="button" value="'.TEXT_ASSETS_PRINT.'" onclick="window.print();">';
 echo "</div>";
 }else{
@@ -225,10 +223,12 @@ echo tep_draw_pull_down_menu('product_categories_id',tep_get_category_tree(),
 <?php
 echo tep_html_element_submit(TEXT_SEARCH);
 echo '&nbsp;&nbsp;';
+/*
 echo "<a href='".
 tep_href_link(FILENAME_ASSETS,tep_get_all_get_params(array('action')))."'>";
 echo tep_html_element_button(TEXT_REFRESH);
 echo "</a>";
+*/
 ?>
 <input type="button" class="assets_input" value="<?php echo TEXT_ASSETS_PRINT;?>" onclick="window.print();">
 <?php
