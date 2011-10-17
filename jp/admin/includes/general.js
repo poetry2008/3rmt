@@ -921,3 +921,16 @@ function check_toggle_black_status(url_str)
     }
   });
 }
+
+function clearLibNum(obj) 
+{
+  var re = /^[0-9]+$/;
+  var error_single = false; 
+  if(!re.test(obj.value)){
+    alert('登録できない文字が入力されました。その文字を消します。'); 
+    error_single = true; 
+  }
+  if (error_single) {
+    obj.value = obj.value.replace(/[^0-9]/g,"");
+  }
+}
