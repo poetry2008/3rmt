@@ -25,23 +25,33 @@ function toggle_header_menu(elmnt)
 
     switch (elmnt) {
       case 'tutorials':
+        document.getElementById('headerorder').style.visibility="hidden";
         document.getElementById('ordermenu').style.visibility="hidden";
         document.getElementById('managermenu').style.visibility="hidden";
         document.getElementById('redirecturl').style.visibility="hidden";
         break;
       case 'ordermenu':
+        document.getElementById('headerorder').style.visibility="hidden";
         document.getElementById('tutorials').style.visibility="hidden";
         document.getElementById('managermenu').style.visibility="hidden";
         document.getElementById('redirecturl').style.visibility="hidden";
         break;
       case 'managermenu':
+        document.getElementById('headerorder').style.visibility="hidden";
         document.getElementById('tutorials').style.visibility="hidden";
         document.getElementById('ordermenu').style.visibility="hidden";
         document.getElementById('redirecturl').style.visibility="hidden";
         break;
       case 'redirecturl':
+        document.getElementById('headerorder').style.visibility="hidden";
         document.getElementById('tutorials').style.visibility="hidden";
         document.getElementById('ordermenu').style.visibility="hidden";
+        document.getElementById('managermenu').style.visibility="hidden";
+        break;
+      case 'headerorder':
+        document.getElementById('tutorials').style.visibility="hidden";
+        document.getElementById('ordermenu').style.visibility="hidden";
+        document.getElementById('redirecturl').style.visibility="hidden";
         document.getElementById('managermenu').style.visibility="hidden";
         break;
     }
@@ -102,9 +112,16 @@ if (!isset($ocertify->npermission) || $ocertify->npermission >= 7) {
   echo '
     <table>
     <tr>
-    <td><a href="' . tep_href_link(FILENAME_ORDERS, '', 'NONSSL') . '"
-    class="headerLink">'.HEADER_TEXT_ORDERS.'</a>&nbsp;|</td>
-    <td><a href="'.tep_href_link(FILENAME_PREORDERS, '', 'NONSSL').'" class="headerLink">'.HEADER_TEXT_PREORDERS.'</a>&nbsp;|</td> 
+    <td><a class="headerLink" href="javascript:void(0);" onclick="toggle_header_menu(\'headerorder\')">'.HEADER_TEXT_ORDER_INFO.'</a>&nbsp;|<br>
+    <table class="menu01" id="headerorder" cellpadding="0" cellspacing="0">
+    <tr>
+      <td class="menu01"><a class="t_link01" href="'.tep_href_link(FILENAME_ORDERS, '', 'NONSSL').'">'.HEADER_TEXT_ORDERS.'</a></td> 
+    </tr>
+    <tr>
+      <td class="menu01"><a class="t_link01" href="'.tep_href_link(FILENAME_PREORDERS, '', 'NONSSL').'">'.HEADER_TEXT_PREORDERS.'</a></td> 
+    </tr>
+    </table> 
+    </td>
     <td><a href="' . tep_href_link('telecom_unknow.php', '', 'NONSSL') . '" class="headerLink"
     >'.HEADER_TEXT_TELECOM_UNKNOW.'</a>&nbsp;|</td>
     <td align="left">

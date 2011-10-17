@@ -165,17 +165,14 @@ if(isset($_GET['action']) &&
       //add order 
       $order_str = ''; 
       if (!isset($HTTP_GET_VARS['sort'])||$HTTP_GET_VARS['sort']=='') {
-        $next_str = "IF(nextdate = '0000-00-00', '1', '0') as date_order,";
-        $order_str = '`date_order` asc,`nextdate` asc, `title` asc'; 
+        //$next_str = "IF(nextdate = '0000-00-00', '1', '0') as date_order,";
+        //$order_str = '`date_order` asc,`nextdate` asc, `title` asc'; 
+        $next_str = '';
+        $order_str = '`nextdate` desc, `title` asc'; 
       } else {
         if($HTTP_GET_VARS['sort'] == 'nextdate'){
-          if($HTTP_GET_VARS['type'] == 'desc' ){
-            $next_str = 'nextdate as ';
-            $order_str = 'nextdate '.$HTTP_GET_VARS['type']; 
-          }else{
-            $next_str = "IF(nextdate = '0000-00-00', '1', '0') as date_order,";
-            $order_str = 'date_order,nextdate '.$HTTP_GET_VARS['type']; 
-          }
+          $next_str = 'nextdate as ';
+          $order_str = 'nextdate '.$HTTP_GET_VARS['type']; 
         }else if($HTTP_GET_VARS['sort'] == 'operator'){
         $order_str = '`self` '.$HTTP_GET_VARS['type'].', `privilege` '.$HTTP_GET_VARS['type']; 
         }else{

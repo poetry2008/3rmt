@@ -50,7 +50,7 @@ if ($_POST['orders_id'] &&
 } else if ($_GET['action'] == 'insert' && $_GET['orders_id'] && $_GET['computers_id']) {
   tep_db_query("insert into ".TABLE_PREORDERS_TO_COMPUTERS." (`orders_id`,`computers_id`) VALUES('".$_GET['orders_id']."','".(int)$_GET['computers_id']."')");
 } else if ($_GET['action'] == 'last_customer_action') {
-  echo LAST_CUSTOMER_ACTION;
+  echo PREORDER_LAST_CUSTOMER_ACTION;
 } else if (isset($_GET['orders_id']) && isset($_GET['work'])) {
   // A, B, C
   $exists_order_work_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$_GET['orders_id']."'"); 
@@ -69,8 +69,7 @@ if ($_POST['orders_id'] &&
   // ajax在订单列表的顶部插入新订单，如果订单结构发生改变此处需要和orders.php同步修改
   $orders_query = tep_db_query("
 			select * from ".TABLE_PREORDERS."
-			where date_purchased > '".$_GET['prev_customer_action']."'
-			");
+			where date_purchased > '".$_GET['prev_customer_action']."' and is_active = '1'");
 
   while ($orders = tep_db_fetch_array($orders_query)) {
     if (!isset($orders['site_id'])) {
@@ -574,6 +573,14 @@ if ($_POST['orders_id'] &&
     echo 'true'; 
   } else {
     echo 'false';
+  }
+} else if (isset($_GET['action']) && $_GET['action'] == 'get_nyuuka') {
+  $preorder_status_raw = tep_db_query("select * from ".TABLE_PREORDERS_STATUS." where orders_status_id = '".$_POST['sid']."'");
+  $preorder_status = tep_db_fetch_array($preorder_status_raw);
+  if ($preorder_status) {
+    echo $preorder_status['is_nyuuka']; 
+  } else {
+    echo 0; 
   }
 }
 

@@ -184,6 +184,26 @@ echo '</form>';
               <a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id='.$preorder_product_res['products_id']);?>" target="_blank"><?php echo $preorder_product_res['products_name'];?></a> 
               </td>
             </tr>
+            <?php
+              $product_info_raw = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".$preorder_product_res['products_id']."'"); 
+              $product_info_res = tep_db_fetch_array($product_info_raw); 
+              
+              if ($product_info_res['products_cflag'] == 1) {
+            ?>
+            <tr>
+              <td class="main"><?php echo CHANGE_ORDER_PRODUCT_CHARACTER;?></td> 
+              <td class="main">
+              <?php 
+              echo tep_draw_input_field('p_character', isset($_POST['p_character'])?$_POST['p_character']:'');
+              if (isset($character_error)) {
+                echo '<br><font color="#ff0000">'.$character_error.'</font>'; 
+              }
+              ?> 
+              </td>
+            </tr>
+            <?php
+            }  
+            ?>
             <tr>
               <td class="main">
               <?php echo CHANGE_ORDER_PRODUCT_NUM;?> 
@@ -309,28 +329,6 @@ echo '</form>';
             ?>
           </table> 
           <?php }?> 
-          <?php
-            $product_info_raw = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".$preorder_product_res['products_id']."'"); 
-            $product_info_res = tep_db_fetch_array($product_info_raw); 
-            
-            if ($product_info_res['products_cflag'] == 1) {
-          ?>
-          <br> 
-          <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
-            <tr>
-              <td class="main"><?php echo CHANGE_ORDER_PRODUCT_CHARACTER;?></td> 
-              <td class="main">
-              <?php 
-              echo tep_draw_input_field('p_character', isset($_POST['p_character'])?$_POST['p_character']:'');
-              if (isset($character_error)) {
-                echo '&nbsp;&nbsp;<font color="#ff0000">'.$character_error.'</font>'; 
-              }
-              ?> 
-              </td>
-            </tr>
-          </table> 
-          <?php }?> 
-          <br>
           <br>
           <table width="100%" cellpadding="0" cellspacing="0" border="0" class="c_pay_info">
             <tr>

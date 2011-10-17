@@ -4,30 +4,18 @@
 */
 
 require(DIR_WS_FUNCTIONS . 'visites.php');
-
-ini_set('display_errors' ,'On');
-
 // user new point value it from checkout_confirmation.php 
 if(isset($real_point)){
   $point = $real_point;
 }
-
 // if the customer is not logged on, redirect them to the login page
-
 if (!tep_session_is_registered('customer_id')) {
   $navigation->set_snapshot(array('mode' => 'SSL', 'page' => FILENAME_CHECKOUT_PAYMENT));
   tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
 }
-  
-//  if (!tep_session_is_registered('sendto')) {
-//    tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL'));
-
-//  }
-
-if ( (tep_not_null(MODULE_PAYMENT_INSTALLED)) && (!tep_session_is_registered('payment')) ) {
+if ((tep_not_null(MODULE_PAYMENT_INSTALLED)) && (!tep_session_is_registered('payment')) ) {
   tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL')); 
 }
-
 // avoid hack attempts during the checkout procedure by checking the internal cartID
 if (isset($cart->cartID) && tep_session_is_registered('cartID')) {
   if ($cart->cartID != $cartID) {
@@ -50,24 +38,6 @@ include(DIR_WS_LANGUAGES . $language . '/' . FILENAME_CHECKOUT_PROCESS);
 require(DIR_WS_CLASSES . 'payment.php');
 $payment_modules = new payment($payment);
 
-// load the selected shipping module
-/*
-  require(DIR_WS_CLASSES . 'shipping.php');
-  $shipping_modules = new shipping($shipping);
-  // add for Japanese update
-  if (isset($shipping['timespec'])) {
-  $comments = '['.TEXT_TIME_SPECIFY.$shipping['timespec'].']'
-  ."\n".$comments;
-  }
-*/
-  
-# OrderNo
-//if(!isset($_GET['option'])){
-  //$insert_id = date("Ymd") . '-' . date("His") . ds_makeRandStr(2);
-  $insert_id = date("Ymd") . '-' . date("His") . tep_get_order_end_num();
-//}else {
-//  $insert_id = $_GET['option'];
-//}
 # Check
 //ccdd
 $NewOidQuery = tep_db_query("select count(*) as cnt from ".TABLE_ORDERS." where orders_id = '".$insert_id."' and site_id = '".SITE_ID."'");
@@ -79,24 +49,6 @@ if($NewOid['cnt'] > 0) {
 }
   
 # load the selected shipping module(convenience_store)
-if ($payment == 'convenience_store') {
-  $convenience_sid = str_replace('-', "", $insert_id);
-  //$pay_comments = '取引コード' . $convenience_sid ."\n";
-  //$pay_comments .= '郵便番号:' . $_POST['convenience_store_zip_code'] ."\n";
-  //$pay_comments .= '住所1:' . $_POST['convenience_store_address1'] ."\n";
-  //$pay_comments .= '住所2:' . $_POST['convenience_store_address2'] ."\n";
-  //$pay_comments .= '氏:' . $_POST['convenience_store_l_name'] ."\n";
-  //$pay_comments .= '名:' . $_POST['convenience_store_f_name'] ."\n";
-  //$pay_comments .= '電話番号:' . $_POST['convenience_store_tel'] ."\n";
-  //$pay_comments .= '接続URL:' . tep_href_link('convenience_store_chk.php', 'sid=' . $convenience_sid, 'SSL');
-  $pay_comments = 'PCメールアドレス:'.$_POST['convenience_email']; 
-  $comments = $pay_comments ."\n".$comments;
-}
-if ($payment == 'rakuten_bank') {
-  $convenience_sid = str_replace('-', "", $insert_id);
-  $pay_comments = '電話番号:'.$GLOBALS[$payment_modules->selected_module]->replace_for_telnumber($_POST['rakuten_telnumber']); 
-  $comments = $pay_comments ."\n".$comments;
-}
 
 require(DIR_WS_CLASSES . 'order.php');
 $order = new order;
@@ -169,7 +121,6 @@ $sql_data_array = array('orders_id'         => $insert_id,
                         'orders_host_name'  => trim(strtolower(@gethostbyaddr($_SERVER['REMOTE_ADDR']))),
                         'orders_user_agent' => $_SERVER['HTTP_USER_AGENT'],
                         'orders_wait_flag'  => 1,
-
                         'orders_screen_resolution'    => $_SESSION['screenResolution'],
                         'orders_color_depth'          => $_SESSION['colorDepth'],
                         'orders_flash_enable'         => $_SESSION['flashEnable'],
@@ -186,24 +137,10 @@ $sql_data_array = array('orders_id'         => $insert_id,
                         'telecom_option'              => $_SESSION['option'],
                         );
   
-// 扈溯ｮ｡Google Adsense来源
 if (isset($_SESSION['referer_adurl']) && $_SESSION['referer_adurl']) {
   $sql_data_array['orders_adurl'] = $_SESSION['referer_adurl'];
 }
-// 鬪瑚ｯ＆s明信用蜊｡ 
-if ($_SESSION['option']) {
-
-$telecom_unknow = tep_db_fetch_array(tep_db_query("select * from telecom_unknow where `option`='".$_SESSION['option']."' and rel='yes'"));
-if ($telecom_unknow) {
-$sql_data_array['telecom_name']  = $telecom_unknow['username'];
-$sql_data_array['telecom_tel']   = $telecom_unknow['telno'];
-$sql_data_array['telecom_email'] = $telecom_unknow['email'];
-$sql_data_array['telecom_money'] = $telecom_unknow['money'];
-tep_db_query("update `telecom_unknow` set type='success' where `option`='".$_SESSION['option']."' and rel='yes' order by date_added limit 1");
-
-$telecom_option_ok = true;
-}
-}
+$telecom_option_ok = $payment_modules->dealUnknow($sql_data_array);
 if (isset($_POST['codt_fee'])) {
   $sql_data_array['code_fee'] = intval($_POST['codt_fee']);
 } else if (isset($_POST['money_order_fee'])) {
@@ -215,7 +152,6 @@ if (isset($_POST['codt_fee'])) {
 } else {
   $sql_data_array['code_fee'] = 0;
 }
-  
 $bflag_single = ds_count_bflag();
 if ($bflag_single == 'View') {
   $orign_hand_fee = $sql_data_array['code_fee'];
@@ -236,131 +172,12 @@ for ($i=0, $n=sizeof($order_totals); $i<$n; $i++) {
                           'class' => $order_totals[$i]['code'], 
                           'sort_order' => $order_totals[$i]['sort_order']);
   // ccdd
-
   $telecom_option_ok = $payment_modules->getexpress($order_totals,$i);
   $total_data_arr[] = $sql_data_array;
 }
   foreach ($total_data_arr as $sql_data_array){
   tep_db_perform(TABLE_ORDERS_TOTAL, $sql_data_array);
   }
-
-//ペイパルの決済を完了させる
-/*
-function getexpress($amt,$token){
-  $paypalData = array();
-  $testcode = 1;
-  global $insert_id;
-  // Add request-specific fields to the request string.
-  $nvpStr = "&TOKEN=$token";
-  // Execute the API operation; see the PPHttpPost function above.
-  $httpParsedResponseAr = PPHttpPost('GetExpressCheckoutDetails', $nvpStr);
-
-  if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) {
-    foreach($httpParsedResponseAr as $key=>$value){
-      $paypalData[$key] = urldecode($value);
-    }
-    // Extract the response details.
-    $payerID = urlencode($httpParsedResponseAr['PAYERID']);
-    $paymentType = urlencode("Sale");     // or 'Sale' or 'Order'
-    $paymentAmount = urlencode($amt);
-    $currencyID = urlencode("JPY");   
-    //$token = urlencode($httpParsedResponseAr['TOKEN']);
-    $nvpStr = "&TOKEN=$token&PAYERID=$payerID&AMT=$paymentAmount&PAYMENTACTION=$paymentType&CURRENCYCODE=$currencyID";
-
-    // Execute the API operation; see the PPHttpPost function above.
-    $httpParsedResponseAr = PPHttpPost('DoExpressCheckoutPayment', $nvpStr);
-    /*
-      ★PAYMENTTYPE      支払いが即時に行われるか遅れて行われるかを示します。 譏ｾ示及譌ｶ支付霑・･諡冶ｿ沁x付
-      ★PAYERSTATUS      支払人のステータス 支付人身莉ｽ
-      ★PAYMENTSTATUS      支払いのステータス。 支付状諤閼      Completed: 支払いが完了し、会員残高に正常に入金されました。 支付完豈普C蟶先姐余鬚攝ｳ常霑寢ｼ
-      ★COUNTRYCODE      支払人の居住国 支付人居住国家
-      ○EMAIL      支払人のメールアドレス。 支付人的驍ｮ箱  found
-      ○AMT      最終請求金額。 最后申隸ｷ金鬚魘   found
-      ○FIRSTNAME      支払人の名 支付人名字
-      ○LASTNAME      支払人の姓。 支付人姓
-      ○PHONENUM      支払人の電話番号 支付人逕ｵ隸搓・黴閼   found 
-
-    //var_dump($httpParsedResponseAr['ACK']);
-    foreach($httpParsedResponseAr as $key=>$value){
-      $paypalData[$key] = urldecode($value);
-    }
-
-    if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) {
-      //成功コード発行予定
-      //$sql_data_array['money'] =$httpParsedResponseAr["AMT"];
-      //$sql_data_array['type']="success";
-      //$sql_data_array['rel']="yes";
-      //$sql_data_array['date_added']= 'now()';
-      //$sql_data_array['last_modified']= 'now()';
-      //      tep_db_perform("telecom_unknow", $sql_data_array);
-      //エラーコード発行予定
-      //                  exit('DoExpressCheckoutPayment failed: ' . urldecode(print_r($httpParsedResponseAr, true)));
-      if($paypalData['PAYMENTSTATUS'] == "Completed"){
-                  tep_db_perform('telecom_unknow', array(
-        'payment_method' => 'paypal',
-        '`option`'      => ' ',
-        'username'      => $paypalData['FIRSTNAME'] . '' . $paypalData['LASTNAME'],
-        'email'         => $paypalData['EMAIL'],
-        'telno'         => $paypalData['PHONENUM'],
-        'money'         => $paypalData['AMT'],
-        'rel'           => 'yes',
-        'type'          => 'success',
-        'date_added'    => 'now()',
-        'last_modified' => 'now()'
-      ));
-      }else{
-      //不明扱い
-                  tep_db_perform('telecom_unknow', array(
-        'payment_method' => 'paypal',
-        '`option`'      => ' ',
-        'username'      => $paypalData['FIRSTNAME'] . '' . $paypalData['LASTNAME'],
-        'email'         => $paypalData['EMAIL'],
-        'telno'         => $paypalData['PHONENUM'],
-        'money'         => $paypalData['AMT'],
-        'rel'           => 'no',
-        'date_added'    => 'now()',
-        'last_modified' => 'now()'
-      ));
-              tep_db_query("delete from ".TABLE_ORDERS." where
-            orders_id='".$insert_id."'");
-            tep_redirect(tep_href_link(FILENAME_CHECKOUT_UNSUCCESS,
-                  'msg=paypal_error'));
-            exit;
-      }
-
-    }else{
-        tep_db_query("delete from ".TABLE_ORDERS." where
-            orders_id='".$insert_id."'");
-            tep_redirect(tep_href_link(FILENAME_CHECKOUT_UNSUCCESS,
-                  'msg=paypal_error'));
-            exit;
-    }
-  }else{
-        tep_db_query("delete from ".TABLE_ORDERS." where
-            orders_id='".$insert_id."'");
-            tep_redirect(tep_href_link(FILENAME_CHECKOUT_UNSUCCESS,
-                  'msg=paypal_error'));
-            exit;
-    // 不正
-    //エラーコード発行予定
-   // exit('GetExpressCheckoutDetails failed: ' . urldecode(print_r($httpParsedResponseAr, true)));
-  }
-  tep_db_perform(TABLE_ORDERS, array(
-                                     'paypal_paymenttype'   => $paypalData['PAYMENTTYPE'],
-                                     'paypal_payerstatus'   => $paypalData['PAYERSTATUS'],
-                                     'paypal_paymentstatus' => $paypalData['PAYMENTSTATUS'],
-                                     'paypal_countrycode'   => $paypalData['COUNTRYCODE'],
-                                     'telecom_email'        => $paypalData['EMAIL'],
-                                     'telecom_money'        => $paypalData['AMT'],
-                                     'telecom_name'         => $paypalData['FIRSTNAME'] . ''. $paypalData['LASTNAME'],
-                                     'telecom_tel'          => $paypalData['PHONENUM'],
-                                     'orders_status'        => '30',
-                                     'paypal_playerid'      => $payerID,
-                                     'paypal_token'         => $token,
-                                     ), 'update', "orders_id='".$insert_id."'");
-}
-*/
-
 
 tep_order_status_change($orders['orders_id'],30);
 $customer_notification = (SEND_EMAILS == 'true') ? '1' : '0';
@@ -644,16 +461,10 @@ if (is_object($$payment)) {
   $payment_class = $$payment;
   $email_order .= '▼お支払方法　　　：' . $payment_class->title . "\n";
 }
-if ($payment == 'moneyorder') {
-  $email_order .= C_BANK."\n"; 
-} else if ($payment == 'postalmoneyorder') {
-  $email_order .= C_POSTAL."\n"; 
-} else if ($payment == 'telecom') {
-  $email_order .= C_CC."\n"; 
-} else if ($payment == 'rakuten_bank') {
-  $email_order .= C_RAKUTEN_BANK."\n";
-}
-  
+
+if ($payment_class->c_prefix) { 
+  $email_order .= $payment_class->c_prefix . "\n";
+}  
 if ($payment_class->email_footer) { 
   $email_order .= $payment_class->email_footer . "\n";
 }
@@ -789,68 +600,16 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
 }
   
 $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n\n\n";
-  
-  
-
-if ($payment_class->title === '銀行振込(買い取り)') {
-  $email_printing_order .= '★★★★★★★★★★★★この注文は【買取】です。★★★★★★★★★★★★' . "\n";
-  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-  $email_printing_order .= '備考の有無　　　　　：□ 無　　｜　　□ 有　→　□ 返答済' . "\n";
-  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-  $email_printing_order .= 'キャラクターの有無　：□ 有　　｜　　□ 無　→　新規作成してお客様へ連絡' . "\n";
-  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-  $email_printing_order .= '受領　※注意※　　●：＿＿月＿＿日' . "\n";
-  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-  $email_printing_order .= '残量入力→誤差有無　：□ 無　　｜　　□ 有　→　□ 報告' . "\n";
-  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-  $email_printing_order .= '受領メール送信　　　：□ 済' . "\n";
-  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-  $email_printing_order .= '支払　　　　　　　　：＿＿月＿＿日　※総額5,000円未満は168円引く※' . "\n";
-  $email_printing_order .= '　　　　　　　　　　　□ JNB　　□ eBank　　□ ゆうちょ' . "\n";
-  $email_printing_order .= '　　　　　　　　　　　入金予定日＿＿月＿＿日　受付番号＿＿＿＿＿＿＿＿＿' . "\n";
-  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-  $email_printing_order .= '支払完了メール送信　：□ 済　　　※追加文章がないか確認しましたか？※' . "\n";
-} elseif ($payment_class->title === 'クレジットカード決済') {
-  $email_printing_order .= 'この注文は【販売】です。' . "\n";
-  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-  $email_printing_order .= '備考の有無　　　　　：□ 無　　｜　　□ 有　→　□ 返答済' . "\n";
-  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-  $email_printing_order .= '決済確認　　　　　●：＿＿月＿＿日' . "\n";
-  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-  $email_printing_order .= '在庫確認　　　　　　：□ 有　　｜　　□ 無　→　仕入困難ならお客様へ電話' . "\n";
-  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-  $email_printing_order .= '信用調査　　　　　　：□ 2回目以降　→　□ 常連（以下のチェック必要無）' . "\n";
-  $email_printing_order .= '　　　　　　　　　　　　　　　　　　　　□ 1. 過去に本人確認をしている' . "\n";
-  $email_printing_order .= '　　　　　　　　　　　　　　　　　　　　□ 2. 決済内容に変更がない' . "\n";
-  $email_printing_order .= '　　　　　　　　　　　　　　　　　　　　□ 3. 短期間に高額決済がない' . "\n";
-  $email_printing_order .= '　　　　　　　　　　----------------------------------------------------' . "\n";
-  $email_printing_order .= '　　　　　　　　　　　□ 初回　→　□ IP・ホストのチェック' . "\n";
-  $email_printing_order .= '　　　　　　　　　　　　　　　　　 　 電話確認をする' . "\n";
-  $email_printing_order .= '　　　　　　　　　　　　　　　　　 　 カード名義（カタカナ）＿＿＿＿＿＿' . "\n";
-  $email_printing_order .= '　　　　　　　　　　　　　　　　　 　 電話番号＿＿＿＿＿＿＿＿＿＿＿＿＿' . "\n";
-  $email_printing_order .= '　　　　　　　　　　　　　　　　　 　 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿' . "\n";
-  $email_printing_order .= '　　　　　　　　　　　　　　　　　 　 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿' . "\n";
-  $email_printing_order .= '　　　　　　　　　　　　　　　　　 　 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿' . "\n";
-  $email_printing_order .= '　　　　　　　　　　　　　　　　　 □ カード名義・商品名・キャラ名一致' . "\n";
-  $email_printing_order .= '　　　　　　　　　　　　　　　　　 　 本人確認日：＿＿月＿＿日' . "\n";
-  $email_printing_order .= '　　　　　　　　　　　　　　　　　 □ 信用調査入力' . "\n";
-  $email_printing_order .= '　　　　　　　　　　----------------------------------------------------' . "\n";
-  $email_printing_order .= '※ 疑わしい点があれば担当者へ報告をする　→　担当者＿＿＿＿の承諾を得た' . "\n";
-  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-  $email_printing_order .= '発送　　　　　　　　：＿＿月＿＿日' . "\n";
-  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-  $email_printing_order .= '残量入力→誤差有無　：□ 無　　｜　　□ 有　→　報告　□' . "\n";
-  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-  $email_printing_order .= '発送完了メール送信　：□ 済' . "\n";
-} else {
+if (method_exists($payment_class,'getMailString')){
+  $email_printing_order .=$payment_class->getMailString();
+}else{
   $email_printing_order .= 'この注文は【販売】です。' . "\n";
   $email_printing_order .= '------------------------------------------------------------------------' . "\n";
   $email_printing_order .= '備考の有無　　　　　：□ 無　　｜　　□ 有　→　□ 返答済' . "\n";
   $email_printing_order .= '------------------------------------------------------------------------' . "\n";
   $email_printing_order .= '在庫確認　　　　　　：□ 有　　｜　　□ 無　→　入金確認後仕入' . "\n";
   $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-  $email_printing_order .= '入金確認　　　　　●：＿＿月＿＿日　→　金額は' .
-    abs($ot['value']) . '円ですか？　□ はい' . "\n";
+  $email_printing_order .= '入金確認　　　　　●：＿＿月＿＿日　→　金額は' .    abs($ot['value']) . '円ですか？　□ はい' . "\n";
   $email_printing_order .= '------------------------------------------------------------------------' . "\n";
   $email_printing_order .= '入金確認メール送信　：□ 済' . "\n";
   $email_printing_order .= '------------------------------------------------------------------------' . "\n";
@@ -860,7 +619,8 @@ if ($payment_class->title === '銀行振込(買い取り)') {
   $email_printing_order .= '------------------------------------------------------------------------' . "\n";
   $email_printing_order .= '発送完了メール送信　：□ 済' . "\n";    
 }
-  
+
+
 $email_printing_order .= '------------------------------------------------------------------------' . "\n";
 $email_printing_order .= '最終確認　　　　　　：確認者名＿＿＿＿' . "\n";
 $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";

@@ -48,7 +48,30 @@
     } else {
       tep_db_query("update ".TABLE_PREORDERS." set `is_active` = 1, `date_purchased` = '".date('Y-m-d H:i:s', time())."' where orders_id = '".$pid."' and site_id = '".SITE_ID."'");  
       tep_db_query("update ".TABLE_CUSTOMERS." set `is_active` = 1 where customers_id = '".$preorder_res['customers_id']."' and site_id = '".SITE_ID."'"); 
-      tep_mail($preorder_res['customers_name'], $preorder_res['customers_email_address'],PREORDER_MAIL_SUBJECT, PREORDER_MAIL_CONTENT, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS); 
+      preorder_last_customer_action(); 
+      
+      $preorder_email_text = PREORDER_MAIL_CONTENT;
+      $pre_name = '';
+      $pre_num = 0;
+      $pre_date = '';
+      $replace_info_arr = array('${PRODUCTS_NAME}', '${PRODUCTS_QUANTITY}', '${EFFECTIVE_TIME}'); 
+      
+      $pre_date_str = strtotime($preorder_res['predate']); 
+      $pre_date = date('Y', $pre_date_str).PREORDER_YEAR_TEXT.date('m', $pre_date_str).PREORDER_MONTH_TEXT.date('d', $pre_date_str).PREORDER_DAY_TEXT; 
+
+      $preorder_products_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$pid."'");
+      $preorder_products_res = tep_db_fetch_array($preorder_products_raw);
+      
+      if ($preorder_products_res) {
+        $pre_name = $preorder_products_res['products_name']; 
+        $pre_num = $preorder_products_res['products_quantity']; 
+      }
+     
+      $pre_replace_info_arr = array($pre_name, $pre_num, $pre_date);
+     
+      $preorder_email_text = str_replace($replace_info_arr, $pre_replace_info_arr, $preorder_email_text);
+
+      tep_mail($preorder_res['customers_name'], $preorder_res['customers_email_address'],PREORDER_MAIL_SUBJECT, $preorder_email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS); 
       tep_redirect(tep_href_link('preorder_active_success.php', 'pid='.$pid)); 
     }
   } else {

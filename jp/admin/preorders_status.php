@@ -21,8 +21,8 @@
             'finished' => tep_db_prepare_input((int)$_POST['finished']),
             'nomail' => tep_db_prepare_input((int)$_POST['nomail']),
             'calc_price' => tep_db_prepare_input((int)$_POST['calc_price']),
+            'is_nyuuka' => tep_db_prepare_input((int)$_POST['is_nyuuka'])
             );
-
         if ($_GET['action'] == 'insert') {
           if (!tep_not_null($orders_status_id)) {
             $next_id_query = tep_db_query("select max(orders_status_id) as orders_status_id from " . TABLE_PREORDERS_STATUS . "");
@@ -264,6 +264,7 @@
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('finished', '1') . ' ' . TEXT_ORDERS_STATUS_FINISHED);
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('nomail', '1') . ' ' . TEXT_ORDERS_STATUS_NOMAIL);
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('calc_price', '1') . ' ' . TEXT_ORDERS_STATUS_AVG_PRICE);
+      $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('is_nyuuka', '1') . ' ' . TEXT_PREORDER_NYUUKA);
 
       $contents[] = array('align' => 'center', 'text' => '<br>' .
           tep_html_element_submit(IMAGE_SAVE) . ' <a class="new_product_reset" href="' . tep_href_link(FILENAME_PREORDERS_STATUS, 'page=' . $_GET['page']) .  '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
@@ -313,6 +314,7 @@
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('finished', '1', $oInfo->finished) . ' ' . TEXT_ORDERS_STATUS_FINISHED);
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('nomail', '1', $oInfo->nomail) . ' ' . TEXT_ORDERS_STATUS_NOMAIL);
       $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('calc_price', '1', $oInfo->calc_price) . ' ' . TEXT_ORDERS_STATUS_AVG_PRICE);
+      $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('is_nyuuka', '1', $oInfo->is_nyuuka) . ' ' . TEXT_PREORDER_NYUUKA);
       
       $contents[] = array('align' => 'center', 'text' => '<br>' .
           tep_html_element_submit(IMAGE_SAVE) . ' <a class="new_product_reset" href="' . tep_href_link(FILENAME_PREORDERS_STATUS, 'page=' . $_GET['page'] .  '&oID=' . $oInfo->orders_status_id) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');

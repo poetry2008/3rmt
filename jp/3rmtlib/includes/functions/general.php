@@ -4350,7 +4350,9 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
                           );
    tep_db_perform(TABLE_PREORDERS_PRODUCTS, $sql_data_array);
    
-   preorders_updated($order_id);   
+   preorders_updated($order_id);  
+
+   preorder_last_customer_action();
 }
 
 function tep_get_preorder_end_num() 
@@ -4397,4 +4399,8 @@ function tep_preorder_get_payment_type($payment_method)
     }
   }
   return 0;
+}
+
+function preorder_last_customer_action() {
+  tep_db_query("update ".TABLE_CONFIGURATION." set configuration_value=now() where configuration_key='PREORDER_LAST_CUSTOMER_ACTION'");
 }

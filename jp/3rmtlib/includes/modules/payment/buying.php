@@ -367,5 +367,27 @@
     function keys() {
       return array('MODULE_PAYMENT_BUYING_STATUS', 'MODULE_PAYMENT_BUYING_LIMIT_SHOW', 'MODULE_PAYMENT_BUYING_ZONE', 'MODULE_PAYMENT_BUYING_ORDER_STATUS_ID', 'MODULE_PAYMENT_BUYING_SORT_ORDER', 'MODULE_PAYMENT_BUYING_COST', 'MODULE_PAYMENT_BUYING_MONEY_LIMIT');
     }
+    function getMailStrign($option=''){
+      $email_printing_order ='';
+      $email_printing_order .= '★★★★★★★★★★★★この注文は【買取】です。★★★★★★★★★★★★' . "\n";
+      $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+      $email_printing_order .= '備考の有無　　　　　：□ 無　　｜　　□ 有　→　□ 返答済' . "\n";
+      $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+      $email_printing_order .= 'キャラクターの有無　：□ 有　　｜　　□ 無　→　新規作成してお客様へ連絡' . "\n";
+      $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+      $email_printing_order .= '受領　※注意※　　●：＿＿月＿＿日' . "\n";
+      $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+      $email_printing_order .= '残量入力→誤差有無　：□ 無　　｜　　□ 有　→　□ 報告' . "\n";
+      $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+      $email_printing_order .= '受領メール送信　　　：□ 済' . "\n";
+      $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+      $email_printing_order .= '支払　　　　　　　　：＿＿月＿＿日　※総額5,000円未満は168円引く※' . "\n";
+      $email_printing_order .= '　　　　　　　　　　　□ JNB　　□ eBank　　□ ゆうちょ' . "\n";
+      $email_printing_order .= '　　　　　　　　　　　入金予定日＿＿月＿＿日　受付番号＿＿＿＿＿＿＿＿＿' . "\n";
+      $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+      $email_printing_order .= '支払完了メール送信　：□ 済　　　※追加文章がないか確認しましたか？※' . "\n";
+      
+      return $email_printing_order;
+    }
   }
 ?>

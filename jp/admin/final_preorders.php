@@ -970,35 +970,110 @@ while ($totals = tep_db_fetch_array($totals_query)) {
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
 <script language="javascript">
+$(document).ready(function() {
+   var se_status = document.getElementById('status').value;  
+  $.ajax({
+    url:'ajax_preorders.php?action=get_nyuuka',
+    data: 'sid='+se_status, 
+    type:'POST',
+    dataType: 'text', 
+    async: false,
+    success: function(data) {
+      document.getElementById('isruhe').value = data; 
+    }
+  });
+});
 function check_mail_product_status(pid)
 {
    var direct_single = false; 
    var select_status = document.getElementById('status').value;  
+   var isruhe_value = document.getElementById('isruhe').value;  
    var ensure_date = document.getElementById('update_ensure_deadline').value; 
    ensure_date = ensure_date.replace(/(^\s*)|(\s*$)/g, ""); 
    if (select_status == 32) {
      if (ensure_date == '' || ensure_date == '0000-00-00 00:00:00') {
          direct_single = true; 
-         alert('<?php echo NOTICE_INPUT_ENSURE_DEADLINE;?>'); 
      } 
-     /* 
-     $.ajax({ 
-       type:"POST",
-       data:"pid="+pid,
-       async:false, 
-       url: 'ajax_preorders.php?action=check_preorder_deadline',
-       success: function(msg) {
-         if (msg == 'true') {
-           direct_single = true; 
-           alert('<?php echo NOTICE_INPUT_ENSURE_DEADLINE;?>'); 
-         }
-       }
-     });  
-     */ 
    }
-   if (!direct_single) {
+   if ((isruhe_value == 1) && (ensure_date == '0000-00-00 00:00:00')) {
+         direct_single = true; 
+   }
+   
+   if (direct_single) {
+     alert('<?php echo NOTICE_INPUT_ENSURE_DEADLINE;?>'); 
+   }
+   
+   if (!direct_single) { 
+   $.ajax({
+url: 'ajax_orders.php?action=getallpwd',
+type: 'POST',
+dataType: 'text',
+async : false,
+success: function(data) {
+var pwd_arr = data.split(",");;
+var flag_tmp = true;
+$(".once_pwd").each(function(index) {
+  var input_name = $(this).attr('name');
+  var input_val = $(this).val();
+  var op_id  = input_name.replace(/[^0-9]/ig," ").replace(/(^\s*)|(\s*$)/g, "");;
+  var tmp_str = "input[name=op_id_"+op_id+"]";
+  var percent = 0;
+  $.ajax({
+    url: 'ajax_preorders.php?action=getpercent',
+    data: 'cid='+op_id,
+    type: 'POST',
+    dataType: 'text',
+    async : false,
+    success: function(_data) {
+      percent = _data/100;  
+    }
+    });
+  var final_val = $(tmp_str).val();
+  if(input_val > Math.abs(final_val*(1+percent))||input_val < Math.abs(final_val*(1-percent))){
+    if(percent!=0){
+      flag_tmp=false;
+    }
+  }
+  });
+  if(!flag_tmp){
+  var pwd =  window.prompt("<?php echo FORDERS_NOTICE_INPUT_ONCE_PWD;?>\r\n","");
+  if(in_array(pwd,pwd_arr)){
+  $("input[name=update_viladate]").val(pwd);
+    _flag = true; 
+  }else{
+  alert("<?php echo FORDERS_NOTICE_ONCE_PWD_WRONG;?>");
+  $("input[name=update_viladate]").val('_false');
+  $("input[name=x]").val('43');
+  $("input[name=y]").val('12');
+  document.edit_order.submit();
+  return false;
+  }
+  }else{
+    $("input[name=update_viladate]").val('');
+    $("input[name=x]").val('43');
+    $("input[name=y]").val('12');
+    _flag = true;
+  }
+}
+});
+
+   if (!direct_single&&_flag) {
      document.edit_order.submit(); 
    }
+  }
+}
+function check_prestatus() {
+  var s_value = document.getElementById('status').value;
+  $.ajax({
+    url:'ajax_preorders.php?action=get_nyuuka',
+    data: 'sid='+s_value, 
+    type:'POST',
+    dataType: 'text', 
+    async: false,
+    success: function(data) {
+      document.getElementById('isruhe').value = data; 
+    }
+  });
 }
 </script>
 </head>
@@ -1512,7 +1587,10 @@ if (tep_db_num_rows($orders_history_query)) {
       <table border="0" cellspacing="0" cellpadding="2">
         <tr>
           <td class="main"><b><?php echo ENTRY_STATUS; ?></b></td>
-          <td class="main"><?php echo tep_draw_pull_down_menu('status', $orders_statuses, '16', 'id="status"'); ?></td>
+          <td class="main"><?php 
+          echo tep_draw_pull_down_menu('status', $orders_statuses, '16', 'id="status" onchange="check_prestatus();"'); ?>
+          <input type="hidden" name="isruhe" id="isruhe" value=""> 
+          </td>
         </tr>
         <tr>
           <td class="main"><b><?php echo EDIT_ORDERS_SEND_MAIL_TEXT;?></b></td>

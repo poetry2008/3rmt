@@ -1457,9 +1457,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
           </tr>
           <tr>
             <td class="main"><?php echo TEXT_PRODUCT_SORT_ORDER_TEXT; ?></td>
-            <td class="main"><?php echo
-            tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' .
-            tep_draw_input_field('sort_order', isset($pInfo->sort_order)?$pInfo->sort_order:'1000','id="op"' . ($site_id ? 'class="readonly" readonly' : '')); ?></td>
+            <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' .  tep_draw_input_field('sort_order', isset($pInfo->sort_order)?$pInfo->sort_order:'1000','id="op"' .  ($site_id ? 'class="readonly" readonly' : 'onkeyup="clearLibNum(this);"')); ?></td>
             <td class="main">&nbsp;</td>
           </tr>
           <tr>
@@ -1565,7 +1563,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
         </tr>
         <tr bgcolor="#CCCCCC">
           <td class="main"><?php echo '<font color="blue"><b>' . TEXT_PRODUCTS_REAL_QUANTITY . '</b></font>'; ?></td>
-          <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_real_quantity', isset($pInfo->products_real_quantity)?$pInfo->products_real_quantity:'', ($site_id ? 'class="readonly" readonly' : '')); ?></td>
+          <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_real_quantity', isset($pInfo->products_real_quantity)?$pInfo->products_real_quantity:'', ($site_id ? 'class="readonly" readonly' : 'onkeyup="clearLibNum(this);"')); ?></td>
         </tr>
         <tr>
           <td>&nbsp;</td>
@@ -1584,7 +1582,8 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
               <?php echo '<span class="categories_input01">' 
             . TEXT_PRODUCT_XIANGMU_NAME.'&nbsp;' . tep_draw_input_field('products_attention_1_1', isset($des_result['products_attention_1_1'])?$des_result['products_attention_1_1']:'', 'style="width:100px;" '.($site_id ? 'class="readonly" readonly' : ''))
             . '&nbsp;&nbsp;&nbsp;'.TEXT_PRODUCT_ATTONE_TEXT.'&nbsp;' . tep_draw_input_field('products_attention_1_2', isset($des_result['products_attention_1_2'])?$des_result['products_attention_1_2']:'', 'style="width:100px;" '.($site_id ? 'class="readonly" readonly' : ''))
-            . '&nbsp;&nbsp;&nbsp;'.TEXT_PRODUCT_SHUZHI_TEXT.'&nbsp;' . tep_draw_input_field('products_attention_1_3', isset($des_result['products_attention_1_3'])?$des_result['products_attention_1_3']:'', 'style="width:100px;" '.($site_id ? 'class="readonly" readonly' : ''))
+            . '&nbsp;&nbsp;&nbsp;'.TEXT_PRODUCT_SHUZHI_TEXT.'&nbsp;' .
+            tep_draw_input_field('products_attention_1_3', isset($des_result['products_attention_1_3'])?$des_result['products_attention_1_3']:'', 'style="width:100px;" '.($site_id ? 'class="readonly" readonly' : 'onkeyup="clearLibNum(this);"'))
             . '&nbsp;&nbsp;&nbsp;'.TEXT_PRODUCT_ATTTWO_TEXT.'&nbsp;' . tep_draw_input_field('products_attention_1_4', isset($des_result['products_attention_1_4'])?$des_result['products_attention_1_4']:'', 'style="width:100px;" '.($site_id ? 'class="readonly" readonly' : ''))
             .'</span>'; ?>
           </td>
@@ -1871,12 +1870,11 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                     
                     <table width="100%">
                     <td></tr>
-                    <tr><td width="150"><?php echo TEXT_PRODUCT_CART_MIN_TEXT;?></td>
-                    <td><input name="products_cart_min" type="text" value="<?php echo $pInfo->products_cart_min?$pInfo->products_cart_min:0;?>">
+                    <tr><td width="150"><?php echo TEXT_PRODUCT_CART_MIN_TEXT;?></td> <td><input name="products_cart_min" type="text" value="<?php echo $pInfo->products_cart_min?$pInfo->products_cart_min:0;?>" onkeyup="clearLibNum(this);">
                     </td></tr>
                     <tr>
                     <td><?php echo TEXT_PRODUCT_CARTORDER_TEXT;?></td>
-                    <td><input name="products_cartorder" type="text" value="<?php echo $pInfo->products_cartorder?$pInfo->products_cartorder:1000;?>">
+                    <td><input name="products_cartorder" type="text" value="<?php echo $pInfo->products_cartorder?$pInfo->products_cartorder:1000;?>" onkeyup="clearLibNum(this);">
                     </td></tr>
  <?php if ($pInfo->products_cart_image) {?>
                     <tr>
@@ -2180,11 +2178,11 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   echo '  </td>';
   echo '  </tr><tr><td><hr size="2" noshade></td></tr><tr>';
   echo '  <td height="30">';
-  echo CATEGORY_SHIKU_TEXT . tep_draw_input_field('products_real_quantity', $pInfo->products_real_quantity,'size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;' .CATEGORY_GE_UNIT_TEXT. '&nbsp;&nbsp;←&nbsp;' . $pInfo->products_real_quantity .CATEGORY_GE_UNIT_TEXT. "\n";
+  echo CATEGORY_SHIKU_TEXT . tep_draw_input_field('products_real_quantity', $pInfo->products_real_quantity,'size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"') . '&nbsp;' .CATEGORY_GE_UNIT_TEXT. '&nbsp;&nbsp;←&nbsp;' . $pInfo->products_real_quantity .CATEGORY_GE_UNIT_TEXT. "\n";
   echo '  </td>';
   echo '  </tr><tr><td><hr size="2" noshade style="border:0;"></td></tr><tr>';
   echo '  <td height="42" style="background-color:#ccc; padding-top:5px;">';
-  echo CATEGORY_JIAKONGZAIKU_TEXT.'&nbsp;' .  tep_draw_input_field('products_virtual_quantity', $pInfo->products_virtual_quantity,' size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;"') . '&nbsp;'.CATEGORY_GE_UNIT_TEXT. '&nbsp;&nbsp;←&nbsp;' . $pInfo->products_virtual_quantity . CATEGORY_GE_UNIT_TEXT . "\n";
+  echo CATEGORY_JIAKONGZAIKU_TEXT.'&nbsp;' .  tep_draw_input_field('products_virtual_quantity', $pInfo->products_virtual_quantity,' size="8" id="qt" style="text-align: right;font: bold small sans-serif;ime-mode: disabled;" onkeyup="clearLibNum(this);"') . '&nbsp;'.CATEGORY_GE_UNIT_TEXT. '&nbsp;&nbsp;←&nbsp;' . $pInfo->products_virtual_quantity . CATEGORY_GE_UNIT_TEXT . "\n";
   echo '  </td>';
   echo '  </tr>';
   echo '</table>';
@@ -3598,10 +3596,10 @@ tep_display_google_results(FILENAME_CATEGORIES);
               '&page=' . $_GET['page'], 'post'));
         $contents[] = array('text' => '<br>' . TEXT_MAX . '<br>' .
             tep_draw_input_field('max_inventory',
-              $inventory['max']?$inventory['max']:'', ''));
+              $inventory['max']?$inventory['max']:'', 'onkeyup="clearLibNum(this);"'));
         $contents[] = array('text' => '<br>' . TEXT_MIN . '<br>' .
             tep_draw_input_field('min_inventory',
-              $inventory['min']?$inventory['min']:'', ''));
+              $inventory['min']?$inventory['min']:'', 'onkeyup="clearLibNum(this);"'));
         $contents[] = array('text' =>
             tep_draw_hidden_field('products_id',$pInfo->products_id));
         $inv_msg = $HTTP_GET_VARS['msg'];
