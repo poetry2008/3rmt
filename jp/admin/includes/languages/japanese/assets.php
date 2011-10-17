@@ -24,4 +24,5 @@ define('TEXT_ASSETS_NO_DATA','有効なデータが足りません');
 define('TEXT_SORT_DATE','直近');
 define('TEXT_SORT_PRICE_ASC','最安値');
 define('TEXT_SORT_PRICE_DESC','最高値');
+define('TEXT_PRODUCTS_DATE','取引日');
 ?>

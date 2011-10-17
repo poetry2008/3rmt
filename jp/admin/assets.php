@@ -37,7 +37,7 @@ echo tep_draw_form('new_product', FILENAME_ASSETS,tep_get_all_get_params(
       array('endY','endM','endD')),'get');
 ?>
 <table class="assets_info_search_bar" width="100%">
-<tr><td width="13%">
+<tr><td width="18%">
 <table><tr><td>
     <input type="hidden" name="pid" value="<?php echo $pid;?>">
     <input type="hidden" name="site_id" value="<?php echo $_GET['site_id'];?>">
@@ -110,6 +110,22 @@ echo tep_draw_form('new_product', FILENAME_ASSETS,tep_get_all_get_params(
 ?>
     </select>
     <?php echo ASSETS_DAY_TEXT;?>
+    <select name="sort_order">
+  <option value="" <?php
+  if(!isset($_GET['sort_order'])||$_GET['sort_order']==''){?>
+   selected<?php }?>><?php echo TEXT_SORT_DATE;?>
+  </option>
+  <option value="price_asc" <?php
+  if(isset($_GET['sort_order'])||$_GET['sort_order']=='price_asc'){?>
+   selected<?php }?>><?php echo TEXT_SORT_PRICE_ASC;?>
+  </option>
+  <option value="price_desc" <?php
+  if(isset($_GET['sort_order'])||$_GET['sort_order']=='price_desc'){?>
+   selected<?php }?>><?php echo TEXT_SORT_PRICE_DESC;?>
+  </option>
+</select>
+
+
     </td>
     </tr>
 </table>
@@ -144,6 +160,17 @@ if(isset($_GET['endY'])&&$_GET['endY']&&
 }
 if(isset($_GET['site_id'])&&$_GET['site_id']){
   $all_products_sql .= " and op.site_id = '".$_GET['site_id']."' ";
+}
+if(isset($_GET['sort_order'])){
+  if($_GET['sort_order'] == 'price_asc'){
+    $all_products_sql .= 'order by final_price asc ';
+  }else if($_GET['sort_order'] == 'price_desc'){
+    $all_products_sql .= 'order by final_price desc ';
+  }else {
+    $all_products_sql .= 'order by date_purchased desc ';
+  }
+}else{
+  $all_products_sql .= 'order by date_purchased desc ';
 }
 $products_query = tep_db_query($all_products_sql);
 ?>
@@ -313,10 +340,14 @@ while($row = tep_db_fetch_array($all_products_query)){
   echo $row_quantity;
   echo "</td>";
   echo "<td align='center'>";
+  /*
   echo $currencies->format($row_price);
+  */
+  $price_in =  @display_price(tep_get_avg_by_pid($row['products_id']));
+  echo $currencies->format($price_in);
   echo "</td>";
   echo "<td align='center'>";
-  echo $currencies->format($row_quantity*$row_price);
+  echo $currencies->format($row_quantity*$price_in);
   echo "</td>";
   echo "</tr>";
 }
