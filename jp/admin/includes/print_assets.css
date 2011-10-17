@@ -1,0 +1,38 @@
+@charset "utf-8";
+.assets_title {
+  display:none!important;
+}
+.assets_search_bar {
+  display:none!important;
+}
+.assets_info_search_bar {
+  display:none!important;
+}
+.assets_box { 
+  background-color:#676767!important; 
+  margin:0 5px!important;
+}
+.asstes_c { 
+  background-color:#fff!important;
+}
+.assets_text { 
+  background-color:#dcdcdc!important;
+}
+.assets_info_link {
+  display:none!important;
+}
+.assets_bottom {
+  display:none!important;
+}
+#print_footer {
+  display:none!important;
+}
+.assets_title {
+    color: #727272!important;
+    font-family: "ＭＳ Ｐゴシック",Osaka,Verdana,Arial,sans-serif!important;
+    font-size: 18px!important;
+    font-weight: bold!important;
+    line-height: 40px!important;
+    padding-left: 5px!important;
+	display:block;
+}

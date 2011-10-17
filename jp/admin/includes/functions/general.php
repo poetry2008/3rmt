@@ -6435,3 +6435,29 @@ function tep_get_order_type_info($oID)
   return 3;
 
 }
+function tep_get_avg_price_by_order($products_id,$site_id=0){
+  $sql = "SELECT AVG( `final_price` )as final_unit_price 
+    FROM  `orders_products` 
+    WHERE products_id='".$products_id."' ";
+  if($site_id != 0 ){
+    $sql .= " site_id = '".$site_id."'";
+  }
+  $query = tep_db_query($sql);
+  $res = tep_db_fetch_array($query);
+  return $res['final_unit_price'];
+}
+
+function tep_get_child_category_by_cid($cid)
+{
+   $return_arr = array();
+   $return_arr[] = $cid;
+   $child_category_raw = tep_db_query("select categories_id from ".TABLE_CATEGORIES." where parent_id = '".$cid."'"); 
+   while ($child_category = tep_db_fetch_array($child_category_raw)) {
+     $return_arr[] = $child_category['categories_id']; 
+     $child_child_category_raw = tep_db_query("select categories_id from ".TABLE_CATEGORIES." where parent_id = '".$child_category['categories_id']."'"); 
+     while ($child_child_category = tep_db_fetch_array($child_child_category_raw)) {
+       $return_arr[] = $child_child_category['categories_id']; 
+     }
+   }
+   return $return_arr;
+}
