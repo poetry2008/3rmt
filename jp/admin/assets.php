@@ -164,7 +164,7 @@ while($row = tep_db_fetch_array($products_query)){
   echo $row['products_quantity'];
   echo "</td>";
   echo "<td align='center'>"; 
-  echo $row['final_price'];
+  echo $currencies->format($row['final_price']);
   echo "</td>";
   echo "</tr>";
 }
@@ -271,10 +271,10 @@ while($row = tep_db_fetch_array($all_products_query)){
   echo $row_quantity;
   echo "</td>";
   echo "<td align='center'>";
-  echo $row_price;
+  echo $currencies->format($row_price);
   echo "</td>";
   echo "<td align='center'>";
-  echo $row_quantity*$row_price;
+  echo $currencies->format($row_quantity*$row_price);
   echo "</td>";
   echo "</tr>";
 }
