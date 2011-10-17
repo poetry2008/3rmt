@@ -377,14 +377,19 @@ function clearNoNum(obj)
   if(!(key == 37 || key == 38 || key == 39 || key ==40)){
   */
   var re = /^[0-9]+\.?[0-9]*$/;
+  var show_error_msg = false; 
   if(!re.test(obj.value)){
-  //replace all un number and '.'
-  obj.value = obj.value.replace(/[^\d.]/g,"");
-  //first char must be number
-  obj.value = obj.value.replace(/^\./g,"");
-  //only one '.'
-  obj.value = obj.value.replace(/\.{2,}/g,".");
-  obj.value = obj.value.replace(".","$#$").replace(/\./g,"").replace("$#$",".");
+    show_error_msg = true; 
+    alert('登録できない文字が入力されました。その文字を消します。'); 
+  } 
+  if(show_error_msg){
+    //replace all un number and '.'
+    obj.value = obj.value.replace(/[^\d.]/g,"");
+    //first char must be number
+    obj.value = obj.value.replace(/^\./g,"");
+    //only one '.'
+    obj.value = obj.value.replace(/\.{2,}/g,".");
+    obj.value = obj.value.replace(".","$#$").replace(/\./g,"").replace("$#$",".");
   }
 }
 
