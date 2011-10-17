@@ -36,8 +36,8 @@ if(isset($pid)&&$pid){
 echo tep_draw_form('new_product', FILENAME_ASSETS,tep_get_all_get_params(
       array('endY','endM','endD')),'get');
 ?>
-<table class="assets_info_search_bar">
-<tr><td>
+<table class="assets_info_search_bar" width="100%">
+<tr><td width="13%">
 <table><tr><td>
     <input type="hidden" name="pid" value="<?php echo $pid;?>">
     <input type="hidden" name="site_id" value="<?php echo $_GET['site_id'];?>">
@@ -119,6 +119,11 @@ echo tep_draw_form('new_product', FILENAME_ASSETS,tep_get_all_get_params(
 echo tep_html_element_submit(TEXT_SEARCH);
 ?>
 </td>
+<td align="right" width="50%">
+<div class="assets_bottom">
+<input type="button" value="<?php echo TEXT_ASSETS_PRINT;?>" onclick="window.print();">
+</div>
+</td>
 </tr>
 </table>
 </form>
@@ -199,6 +204,20 @@ echo tep_draw_pull_down_menu('product_categories_id',tep_get_category_tree(),
   <option value="2"<?php if($_GET['bflag'] == '2'){?> selected<?php }?>><?php echo TEXT_BUY;?>
 </option>
 </select>
+<select name="sort_order">
+  <option value="" <?php
+  if(!isset($_GET['sort_order'])||$_GET['sort_order']==''){?>
+   selected<?php }?>><?php echo TEXT_SORT_DATE;?>
+  </option>
+  <option value="price_asc" <?php
+  if(isset($_GET['sort_order'])||$_GET['sort_order']=='price_asc'){?>
+   selected<?php }?>><?php echo TEXT_SORT_PRICE_ASC;?>
+  </option>
+  <option value="price_desc" <?php
+  if(isset($_GET['sort_order'])||$_GET['sort_order']=='price_desc'){?>
+   selected<?php }?>><?php echo TEXT_SORT_PRICE_DESC;?>
+  </option>
+</select>
 &nbsp;&nbsp;
 <?php
 echo tep_html_element_submit(TEXT_SEARCH);
@@ -207,10 +226,13 @@ echo "<a href='".
 tep_href_link(FILENAME_ASSETS,tep_get_all_get_params(array('action')))."'>";
 echo tep_html_element_button(TEXT_REFRESH);
 echo "</a>";
+?>
+<input type="button" class="assets_input" value="<?php echo TEXT_ASSETS_PRINT;?>" onclick="window.print();">
+<?php
 echo '</div>';
 echo "</form>";
-
 $all_products_sql = 'SELECT avg(op.final_price) as final_unit_price, p.`products_id` ,  
+  o.torihiki_date ,
   `products_real_quantity` , pd.`products_name`,p.`products_price` 
     FROM  '.TABLE_PRODUCTS.' p,  '.TABLE_PRODUCTS_DESCRIPTION.'
     pd,'.TABLE_ORDERS_PRODUCTS.' op ,
@@ -237,6 +259,19 @@ if (!empty($_GET['product_categories_id'])) {
 }
 
 $all_products_sql .= " group by op.products_id ";
+
+
+if(isset($_GET['sort_order'])){
+  if($_GET['sort_order'] == 'price_asc'){
+    $all_products_sql .= 'order by final_unit_price asc ';
+  }else if($_GET['sort_order'] == 'price_desc'){
+    $all_products_sql .= 'order by final_unit_price desc ';
+  }else {
+    $all_products_sql .= 'order by torihiki_date desc ';
+  }
+}else{
+  $all_products_sql .= 'order by torihiki_date desc ';
+}
 $all_products_query = tep_db_query($all_products_sql);
 $all_quantity = 0;
 $all_price = 0;
@@ -244,7 +279,8 @@ $all_price_sum = 0;
 ?>
 <table cellpadding="0" cellspacing="1" border="0" width="99%" class="assets_box">
 <tr class="assets_text">
-<td height="28" align="center" width="50%"><b><?php echo TEXT_PRODUCTS_NAME;?></b></td>
+<td height="28" align="center" width="15%"><b><?php echo TEXT_PRODUCTS_DATE;?></b></td>
+<td height="28" align="center" width="35%"><b><?php echo TEXT_PRODUCTS_NAME;?></b></td>
 <td align="center" width="10%"><b><?php echo TEXT_PRODUCTS_QUANTITY;?></b></td>
 <td align="center"><b><?php echo TEXT_PRODUCTS_PRICE;?></b></td>
 <td align="center"><b><?php echo TEXT_PRODUCTS_PRICE_SUM;?></b></td>
@@ -259,6 +295,9 @@ while($row = tep_db_fetch_array($all_products_query)){
   $all_quantity += $row_quantity;
   $all_price += abs($row_price);
   echo "<tr class='asstes_c'>";
+  echo "<td height='25' align='left'>";
+  echo $row['torihiki_date'];
+  echo "</td>";
   echo "<td height='25' align='left'>";
   echo "<span class=\"assets_info_link\"><a href='".  tep_href_link(FILENAME_ASSETS,"pid=".$row['products_id']."&".tep_get_all_get_params())."'>";
   //echo tep_html_element_button(TEXT_INFO);
@@ -285,9 +324,6 @@ if($is_null){
 }
 ?>
 </table>
-<div class="assets_bottom">
-<input type="button" value="<?php echo TEXT_ASSETS_PRINT;?>" onclick="window.print();">
-</div>
 <?php
 }
 ?>
