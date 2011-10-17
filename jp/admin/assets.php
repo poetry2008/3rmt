@@ -204,6 +204,9 @@ if($is_null){
   echo "<tr><td colspan='4'>";
   echo TEXT_ASSETS_NO_DATA;
   echo "</td></tr>";
+}else{
+  echo "<tr class='asstes_c'><td colspan='4' height='25'>";
+  echo "</td></tr>";
 }
 ?>
 </table>
@@ -213,7 +216,6 @@ echo "<a href='".
 tep_href_link(FILENAME_ASSETS,tep_get_all_get_params(array('pid','endY','endM','endD')))."'>";
 echo tep_html_element_button(TEXT_BACK);
 echo "</a>";
-echo '&nbsp;<input type="button" value="'.TEXT_ASSETS_PRINT.'" onclick="window.print();">';
 echo "</div>";
 }else{
 //简易页面
@@ -246,6 +248,7 @@ echo tep_draw_pull_down_menu('product_categories_id',tep_get_category_tree(),
    selected<?php }?>><?php echo TEXT_SORT_PRICE_DESC;?>
   </option>
 </select>
+<input type="hidden" name="search" value="1">
 &nbsp;&nbsp;
 <?php
 echo tep_html_element_submit(TEXT_SEARCH);
@@ -286,6 +289,11 @@ if($_GET['bflag'] == 2){
 if (!empty($_GET['product_categories_id'])) {
   $category_path_arr = tep_get_child_category_by_cid($_GET['product_categories_id']);
   $all_products_sql .= ' and p.products_id = p2c.products_id and p2c.categories_id in ('.implode(',', $category_path_arr).')';
+}
+if(isset($_GET['search'])&&$_GET['search']!=''){
+  $all_products_sql .= ' and '.$_GET['search'];
+}else{
+  $all_products_sql .= ' and false';
 }
 
 $all_products_sql .= " group by op.products_id ";
@@ -352,9 +360,11 @@ while($row = tep_db_fetch_array($all_products_query)){
   echo "</tr>";
 }
 if($is_null){
+  if(isset($_GET['search'])&&$_GET['search']!=''){
   echo "<tr><td colspan='4'>";
   echo TEXT_ASSETS_NO_DATA;
   echo "</td></tr>";
+  }
 }
 ?>
 </table>
