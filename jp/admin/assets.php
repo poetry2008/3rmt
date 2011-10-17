@@ -125,7 +125,7 @@ echo tep_html_element_submit(TEXT_SEARCH);
 <?php
 $all_products_sql = "select o.`date_purchased`,op.`products_name`,
   op.`products_quantity`,op.`final_price`,
-  op.products_id from orders o,orders_products op 
+  op.products_id from ".TABLE_ORDERS." o,".TABLE_ORDERS_PRODUCTS." op 
   where o.orders_id = op.orders_id and op.products_id ='".$pid."' " ;
 if(isset($_GET['endY'])&&$_GET['endY']&&
     isset($_GET['endY'])&&$_GET['endY']&&
@@ -150,7 +150,9 @@ $products_query = tep_db_query($all_products_sql);
 <td align="center"><b><?php echo TEXT_ORDER_PRODUCTS_PRICE;?></b></td>
 </tr>
 <?php
+$is_null = true;
 while($row = tep_db_fetch_array($products_query)){
+  $is_null = false;
   echo "<tr class='asstes_c'>";
   echo "<td height='25' align='left'>"; 
   echo $row['date_purchased'];
@@ -165,6 +167,11 @@ while($row = tep_db_fetch_array($products_query)){
   echo $row['final_price'];
   echo "</td>";
   echo "</tr>";
+}
+if($is_null){
+  echo "<tr><td colspan='4'>";
+  echo TEXT_ASSETS_NO_DATA;
+  echo "</td></tr>";
 }
 ?>
 </table>
@@ -205,8 +212,9 @@ echo "</form>";
 
 $all_products_sql = 'SELECT avg(op.final_price) as final_unit_price, p.`products_id` ,  
   `products_real_quantity` , pd.`products_name`,p.`products_price` 
-    FROM  `products` p,  `products_description` pd,`orders_products` op ,orders o, 
-    orders_status os ';
+    FROM  '.TABLE_PRODUCTS.' p,  '.TABLE_PRODUCTS_DESCRIPTION.'
+    pd,'.TABLE_ORDERS_PRODUCTS.' op ,
+    '.TABLE_ORDERS.' o, '.TABLE_ORDERS_STATUS.' os ';
 
 if (!empty($_GET['product_categories_id'])) {
   $all_products_sql .= ' , `products_to_categories` p2c ';
@@ -243,7 +251,9 @@ $all_price_sum = 0;
 </tr>
 <?php
 if(isset($_GET['site_id'])){$site_id=$_GET['site_id'];}else{$site_id=0;}
+$is_null = true;
 while($row = tep_db_fetch_array($all_products_query)){
+  $is_null = false;
   $row_quantity = $row['products_real_quantity'];
   $row_price = $row['final_unit_price'];//tep_get_avg_price_by_order($row['products_id'],$site_id);
   $all_quantity += $row_quantity;
@@ -267,6 +277,11 @@ while($row = tep_db_fetch_array($all_products_query)){
   echo $row_quantity*$row_price;
   echo "</td>";
   echo "</tr>";
+}
+if($is_null){
+  echo "<tr><td colspan='4'>";
+  echo TEXT_ASSETS_NO_DATA;
+  echo "</td></tr>";
 }
 ?>
 </table>

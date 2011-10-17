@@ -20,4 +20,5 @@ define('TEXT_ASSETS_PRINT', '印刷');
 define('ASSETS_YEAR_TEXT', '年');
 define('ASSETS_MONTH_TEXT', '月');
 define('ASSETS_DAY_TEXT', '日');
+define('TEXT_ASSETS_NO_DATA','有効なデータが足りません');
 ?>
