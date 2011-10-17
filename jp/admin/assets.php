@@ -181,10 +181,13 @@ if($is_null){
 ?>
 </table>
 <?php
-echo "<div class=\"assets_bottom\"><a href='".
+echo "<div class=\"assets_bottom\">";
+/*
+echo "<a href='".
 tep_href_link(FILENAME_ASSETS,tep_get_all_get_params(array('pid','endY','endM','endD')))."'>";
 echo tep_html_element_button(TEXT_BACK);
 echo "</a>";
+*/
 echo '&nbsp;<input type="button" value="'.TEXT_ASSETS_PRINT.'" onclick="window.print();">';
 echo "</div>";
 }else{
