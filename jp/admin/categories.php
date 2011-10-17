@@ -3408,7 +3408,7 @@ tep_display_google_results(FILENAME_CATEGORIES);
 
         $contents[] = array('text' => '<br>' . TEXT_CATEGORIES_NAME . $category_inputs_string);
         $contents[] = array('text' => '<br>' . TEXT_CATEGORIES_IMAGE . '<br>' . tep_draw_file_field('categories_image'));
-        $contents[] = array('text' => '<br>' . TEXT_SORT_ORDER . '<br>' . tep_draw_input_field('sort_order', '', 'size="2"'));
+        $contents[] = array('text' => '<br>' . TEXT_SORT_ORDER . '<br>' .  tep_draw_input_field('sort_order', '', 'size="2" onkeyup="clearLibNum(this);"'));
         $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_SAVE) . ' <a class="new_product_reset" href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath) . '">' .  tep_html_element_button(IMAGE_CANCEL) . '</a>');
         break;
       case 'edit_category':
@@ -3459,7 +3459,7 @@ tep_display_google_results(FILENAME_CATEGORIES);
         $contents[] = array('text' => '<br>' . TEXT_EDIT_CATEGORIES_NAME . $category_inputs_string);
         $contents[] = array('text' => '<br>' . tep_image(tep_get_web_upload_dir($site_id).'categories/'. $cInfo->categories_image, $cInfo->categories_name) . '<br>' . tep_get_upload_dir($site_id). 'categories/<br><b>' . $cInfo->categories_image . '</b>');
         $contents[] = array('text' => '<br>' . TEXT_EDIT_CATEGORIES_IMAGE . '<br>' . tep_draw_file_field('categories_image'));
-        $contents[] = array('text' => '<br>' . TEXT_EDIT_SORT_ORDER . '<br>' . tep_draw_input_field('sort_order', $cInfo->sort_order, 'size="2"'));
+        $contents[] = array('text' => '<br>' . TEXT_EDIT_SORT_ORDER . '<br>' .  tep_draw_input_field('sort_order', $cInfo->sort_order, 'size="2" onkeyup="clearLibNum(this);"'));
         if (isset($_GET['rdirect'])) {
           $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_SAVE) . ' <a href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' .  $cInfo->categories_id.'&site_id=0') . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
         } else {
