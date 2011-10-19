@@ -991,6 +991,7 @@ a.s_column_bar {
 /*	font-size:13px;
 */	margin-right:5px;
 	padding:2px 9px\9;
+	float:left;
 /*	margin-bottom:2px;
 	margin-top:2px;
 */}
@@ -1037,8 +1038,8 @@ a.s_column_bar {
 .assets_bottom{
   margin-right:8px;
 }
-.assets_input{ float:right; margin-right:5px;}
-.assets_time { float:left; margin-left:15px;}
+.assets_input{ float:left; margin-right:5px;}
+.assets_time { float:left;}
 .asset_info { height:25px; line-height:25px; float:right; margin-right:5px;}
 .asset_easy { 
 	height:25px; 
@@ -1050,3 +1051,5 @@ a.s_column_bar {
 	font-weight:bold;
 }
 .no_result { font-size:18px; color:#ff0000; margin-left:5px;}
+.product_history_back { margin:5px 0 0 5px;}
+.assets_top_text { margin-left:5px; font-size:13px; /*border:1px solid #ff0000;*/}

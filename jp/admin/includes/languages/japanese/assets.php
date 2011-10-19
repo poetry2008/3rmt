@@ -6,7 +6,7 @@ define('TEXT_PRODUCTS_PRICE','平均単価');
 define('TEXT_PRODUCTS_PRICE_SUM','総額');
 
 define('TEXT_ORDER_PRODUCTS_DATE','注文日');
-define('TEXT_ORDER_PRODUCTS_NAME','タイトル');
+define('TEXT_ORDER_PRODUCTS_NAME','商品名');
 define('TEXT_ORDER_PRODUCTS_QUANTITY','数量');
 define('TEXT_ORDER_PRODUCTS_PRICE','単価');
 define('TEXT_SHOW_ALL', 'すべて');
@@ -30,4 +30,12 @@ define('TEXT_SUM_PRODUCT','合計の在庫');
 define('TEXT_AVG_PRICE','単価の平均');
 define('TEXT_SUM_PRICE','合計の金額');
 define('TEXT_NO_RESULT','有効なデータが足りません');
+define('TEXT_SEARCH_ORDER','並び順');
+define('TEXT_SEARCH_CATEGORY','カテゴリー');
+define('TEXT_SEARCH_SITE','サイト');
+define('TEXT_SEARCH_WHERE','検索条件');
+define('TEXT_SEARCH_DATE','集計期間');
+define('TEXT_SEARCH_DATE_START','開始日');
+define('TEXT_SEARCH_DATE_END','終了日');
+define('TEXT_ASSETS_INFO','資産計算条件を設定し検索ボタンをクリックしてください<br>資産計算に必要なデータが足りない場合、行が赤色で表示されます');
 ?>
