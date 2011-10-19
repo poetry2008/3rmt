@@ -1,5 +1,5 @@
 <?php
-define('ASSETS_TITLE', '資産計算リスト');
+define('ASSETS_TITLE', '資産管理');
 define('TEXT_PRODUCTS_NAME','タイトル');
 define('TEXT_PRODUCTS_QUANTITY','数量');
 define('TEXT_PRODUCTS_PRICE','平均単価');
