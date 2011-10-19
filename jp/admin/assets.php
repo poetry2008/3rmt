@@ -221,8 +221,7 @@ if(!isset($_GET['sort_order'])||$_GET['sort_order']==''){?>
     </select></td>
     </tr>
 </table>
-
-
+<input type="hidden" name="search" value="1">
           <?php
           echo tep_html_element_submit(TEXT_SEARCH);
           echo '&nbsp;&nbsp;';
@@ -393,6 +392,7 @@ if(!isset($_GET['sort_order'])||$_GET['sort_order']==''){?>
                 <?php
             }
           }
+   if(isset($_GET['search'])&&$_GET['search']==1){
    $all_product_info = tep_get_all_asset($start,$end);
    if(isset($_GET['show_status'])&&$_GET['show_status']=='info'){
      echo "<div class='asset_info'>";
@@ -412,6 +412,7 @@ if(!isset($_GET['sort_order'])||$_GET['sort_order']==''){?>
    echo $currencies->format($all_product_info['all_product_price']);
    echo "&nbsp;&nbsp;";
    echo "</div>";
+   }
 ?>
 <?php
 ?>
