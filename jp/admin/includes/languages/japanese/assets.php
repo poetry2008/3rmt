@@ -29,4 +29,5 @@ define('TEXT_STATUS_INFO','詳細');
 define('TEXT_SUM_PRODUCT','合計の在庫');
 define('TEXT_AVG_PRICE','単価の平均');
 define('TEXT_SUM_PRICE','合計の金額');
+define('TEXT_NO_RESULT','有効なデータが足りません');
 ?>
