@@ -1511,9 +1511,9 @@ class Ticket{
                         $file=null;
                         $attachment=$_FILES['attachment'];
                         if(($attachment && is_file($attachment['tmp_name'])) && $cfg->emailAttachments()) {
+                          die("fuck')");
                             $file=array('file'=>$attachment['tmp_name'], 'name'=>$attachment['name'], 'type'=>$attachment['type']);
                         }
-                        
                         if($cfg->stripQuotedReply() && ($tag=trim($cfg->getReplySeparator())))
                             $body ="\n$tag\n\n".$body;
                         
@@ -1530,9 +1530,8 @@ class Ticket{
                     }
                     
                 } //Send send alert.
-                
                 //Upload attachment if any...
-                if($_FILES['attachment'] && $_FILES['attachment']['size']){
+                if($_FILES['attachment'] && $_FILES['attachment']['size'] >= 0){
                     $ticket->uploadAttachment($_FILES['attachment'],$respId,'R');
                 }
                 
@@ -1551,7 +1550,6 @@ class Ticket{
         }else{
             $errors['err']=$errors['err']?$errors['err']:'Unable to create the ticket. Correct the error(s) and try again';
         }
-
         return $ticket;
     
     }

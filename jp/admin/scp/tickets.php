@@ -138,7 +138,6 @@ if($_POST && !$errors):
             }elseif(!$errors['err']){
                 $errors['err']='Unable to post the response.';
             }
-
             //            header('Location: http://www.example.com/');
             break; 
         case 'transfer':
@@ -439,7 +438,9 @@ if($_POST && !$errors):
             case 'open':
                 $ticket=null;
                 //TODO: check if the user is allowed to create a ticet.
+
                 if(($ticket=Ticket::create_by_staff($_POST,$errors))) {
+
                     $ticket->reload();
                     $msg='問合番号を新規作成しました';
                     if($thisuser->canAccessDept($ticket->getDeptId()) || $ticket->getStaffId()==$thisuser->getId()) {

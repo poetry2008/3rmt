@@ -330,10 +330,10 @@ if(($resp=db_query($sql)) && ($notes=db_num_rows($resp))){
 <?php 
 if (strspn("MSIE",$_SERVER["HTTP_USER_AGENT"])==4){
 ?>
-                    <form action="tickets.php?id=<?=$id?>#reply" name="reply" id="replyform" method="post">
+                    <form enctype="multipart/form-data" action="tickets.php?id=<?=$id?>#reply" name="reply" id="replyform" method="post">
 <?php }else { 
 ?>
-                    <form onsubmit = 'return checkNg();' action="tickets.php?id=<?=$id?>#reply" name="reply" id="replyform" method="post">
+                    <form enctype="multipart/form-data" onsubmit = 'return checkNg();' action="tickets.php?id=<?=$id?>#reply" name="reply" id="replyform" method="post">
 <?php
 }
 ?>
