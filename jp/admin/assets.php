@@ -3,7 +3,7 @@
 require('includes/application_top.php');
 
 require(DIR_WS_CLASSES . 'currencies.php');
-$currencies = new currencies();
+$currencies = new currencies(2);
 
 $startDate = "";
 $startDateG = 0;
@@ -359,11 +359,21 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
     $category_asset_arr = array();
     $i=-1000;
     $sort_category_arr = array();
+    $all_quantity = 0;
+    $all_avg_price = 0;
+    $all_asset_price = 0;
+    $all_true_row =0;
     while($row_category_asset = tep_db_fetch_array($query_category_asset)){
       $temp_row = tep_get_all_asset_category_by_cid($row_category_asset['categories_id'],
           $bflag,$site_id,$start,$end);
       $temp_row['categories_name'] = $row_category_asset['categories_name'];
       $i++;
+      if($temp_row['quantity_all_product']!=0){
+        $all_true_row ++;
+        $all_quantity += $temp_row['quantity_all_product'];
+      }
+      $all_avg_price += $temp_row['avg_price'];
+      $all_asset_price += $temp_row['asset_all_product'];
       if(isset($_GET['sort_order'])&&$_GET['sort_order']!=''){
         if($temp_row['asset_all_product'] == 0){
           $sort_category_arr[$row_category_asset['categories_id']]=$i;
@@ -397,6 +407,13 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
           $bflag,$site_id,$start,$end);
       $tmp_arr['products_name'] = $product['products_name'];
       $tmp_arr['products_real_quantity'] = $product['products_real_quantity'];
+      if($tmp_arr['quantity_all_product']!=0){
+        $all_true_row ++;
+        $all_quantity += $tmp_arr['quantity_all_product'];
+      }
+      $all_avg_price += $tmp_arr['price'];
+      $all_asset_price += $tmp_arr['asset_all_product'];
+
       if($product['relate_id']==0){
         $tmp_arr['relate_date'] = tep_get_relate_date($product['products_id'],$site_id,$start,$end);
       }else{
@@ -457,11 +474,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
           echo $category_asset_arr[$key]['quantity_all_product'];
           echo "</td>";
           echo "<td align='right'>";
-          if($category_asset_arr[$key]['quantity_all_product']!=0){
-            echo $currencies->format($category_asset_arr[$key]['asset_all_product']/$category_asset_arr[$key]['quantity_all_product']);
-          }else{
-            echo $currencies->format(0);
-          }
+          echo $currencies->format($category_asset_arr[$key]['avg_price']);
           echo "</td>";
           echo "<td align='right'>";
           echo $currencies->format($category_asset_arr[$key]['asset_all_product']);
@@ -480,7 +493,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
         }
         echo "</td>";
         echo "<td>";
-        echo "<a href='"
+        echo "<a class='asset_product_link' href='"
           .tep_href_link(FILENAME_ASSETS,tep_get_all_get_params()."&pid=".$k)."'>";
         echo tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW);
         echo "</a>";
@@ -516,15 +529,15 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
     }
     echo TEXT_SUM_PRODUCT;
     echo ":&nbsp;";
-    echo $all_product_info['quantity_all_product'];
+    echo $all_quantity;
     echo "&nbsp;&nbsp;";
     echo TEXT_AVG_PRICE;
     echo ":&nbsp;";
-    echo @$currencies->format($all_product_info['asset_all_product']/$all_product_info['quantity_all_product']);
+    echo $currencies->format(@($all_avg_price/$all_true_row));
     echo "&nbsp;&nbsp;";
     echo TEXT_SUM_PRICE;
     echo ":&nbsp;";
-    echo $currencies->format($all_product_info['asset_all_product']);
+    echo $currencies->format($all_asset_price);
     echo "&nbsp;&nbsp;";
     echo "</div>";
   }
