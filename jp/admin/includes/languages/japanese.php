@@ -102,6 +102,7 @@ define('BOX_REPORTS_PRODUCTS_PURCHASED', '商品別の販売数');
 define('BOX_REPORTS_ORDERS_TOTAL', '顧客別の売上順位');
 define('BOX_REPORTS_SALES_REPORT2', '売上管理');
 define('BOX_REPORTS_NEW_CUSTOMERS', '新規顧客');
+define('BOX_REPORTS_ASSETS', '資産計算リスト');
 
 // tools text in includes/boxes/tools.php
 define('BOX_HEADING_TOOLS', '各種ツール');
