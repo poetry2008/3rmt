@@ -261,11 +261,11 @@
                   </tr>
                   <?php
                   }
-                  $total_param = 0; 
+                  $total_param = '0'; 
                   $preorder_total_raw = tep_db_query("select * from ".TABLE_PREORDERS_TOTAL." where orders_id = '".$_POST['pid']."' order by sort_order asc"); 
                   while ($preorder_total_res = tep_db_fetch_array($preorder_total_raw)) { 
                     if ($preorder_total_res['class'] == 'ot_total') {
-                      $total_param = (int)$preorder_total_res['value']; 
+                      $total_param = number_format($preorder_total_res['value'], 0, '.', ''); 
                     }
                   ?>
                   <tr>
