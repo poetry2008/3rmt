@@ -988,13 +988,13 @@ a.s_column_bar {
 }
 #canEnd{ text-align:right; margin-right:13px;}
 .element_button { 
-/*	font-size:13px;
-*/	margin-right:5px;
+	font-size:13px;
+	margin-right:5px;
 	padding:2px 9px\9;
 	float:left;
-/*	margin-bottom:2px;
+	margin-bottom:2px;
 	margin-top:2px;
-*/}
+}
 .element_button01{
 	font-size:13px;
 	margin-right:5px;
@@ -1038,7 +1038,14 @@ a.s_column_bar {
 .assets_bottom{
   margin-right:8px;
 }
-.assets_input{ float:left; margin-right:5px;}
+.assets_input{
+	font-size:13px;
+	margin-right:5px;
+	padding:2px 9px\9;
+	float:left;
+	margin-bottom:2px;
+	margin-top:2px;
+}
 .assets_time { float:left;}
 .asset_info { height:25px; line-height:25px; float:right; margin-right:5px;}
 .asset_easy { 

@@ -37,3 +37,6 @@
 	display:block;
 }
 .assets_error { background-color:#fff!important;}
+.header{ display:none!important;}
+.assets_top_text { display:none!important;}
+.asset_product_link img { display:none!important;}
