@@ -138,7 +138,6 @@ if($_POST && !$errors):
             }elseif(!$errors['err']){
                 $errors['err']='Unable to post the response.';
             }
-
             //            header('Location: http://www.example.com/');
             break; 
         case 'transfer':
@@ -439,7 +438,20 @@ if($_POST && !$errors):
             case 'open':
                 $ticket=null;
                 //TODO: check if the user is allowed to create a ticet.
+            if($_FILES['attachment'] && $_FILES['attachment']['size']){
+              if(!$_FILES['attachment']['name'] ||!$_FILES['attachment']['tmp_name'])
+                $errors['attachment']='無効な添付ファイルです';
+              elseif(!$cfg->canUploadFiles()) //TODO: saved vs emailed attachments...admin config??
+                $errors['attachment']='アップロードディレクトリが無効です。管理者に連絡してください。';
+              elseif(!$cfg->canUploadFileType($_FILES['attachment']['name']))
+                $errors['attachment']='無効なファイル形式です';
+            }
+
+
                 if(($ticket=Ticket::create_by_staff($_POST,$errors))) {
+                if($_FILES['attachment'] && $_FILES['attachment']['size']){
+                    $ticket->uploadAttachment($_FILES['attachment'],$respId,'R');
+                }
                     $ticket->reload();
                     $msg='問合番号を新規作成しました';
                     if($thisuser->canAccessDept($ticket->getDeptId()) || $ticket->getStaffId()==$thisuser->getId()) {
