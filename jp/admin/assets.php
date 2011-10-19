@@ -323,7 +323,7 @@ if(!isset($_GET['sort_order'])||$_GET['sort_order']==''){?>
                 <?php
                 if(count($products)>0){
                   ?>
-                    <td align="center" ><b><?php echo TEXT_PRODUCTS_DATE;?></b></td>
+                    <td align="center"><b><?php echo TEXT_PRODUCTS_DATE;?></b></td>
                     <?php
                 }
               ?>
@@ -394,7 +394,11 @@ if(!isset($_GET['sort_order'])||$_GET['sort_order']==''){?>
             }
           }
    $all_product_info = tep_get_all_asset($start,$end);
-   echo "<div class='asset_easy_info'>";
+   if(isset($_GET['show_status'])&&$_GET['show_status']=='info'){
+     echo "<div class='asset_info'>";
+   }else{
+     echo "<div class='asset_easy'>";
+   }
    echo TEXT_SUM_PRODUCT;
    echo ":&nbsp;";
    echo $all_product_info['all_product_quantity'];
