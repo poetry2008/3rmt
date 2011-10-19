@@ -988,12 +988,12 @@ a.s_column_bar {
 }
 #canEnd{ text-align:right; margin-right:13px;}
 .element_button { 
-	font-size:13px;
-	margin-right:5px;
+/*	font-size:13px;
+*/	margin-right:5px;
 	padding:2px 9px\9;
-	margin-bottom:2px;
+/*	margin-bottom:2px;
 	margin-top:2px;
-}
+*/}
 .element_button01{
 	font-size:13px;
 	margin-right:5px;
@@ -1019,8 +1019,10 @@ a.s_column_bar {
 #infoBox_01 td { vertical-align:top;}
 .right_column_text{ padding-top:25px;}
 .assets_search_bar { margin:0 5px 5px 5px;}
+.assets_search_bar select { float:left; margin-right:5px;}
 .assets_box { background-color:#676767; margin:0 5px;}
-.asstes_c { background-color:#fff;}
+.assets_c { background-color:#fff;}
+.assets_error { background-color:#ff0000;}
 .assets_text { background-color:#dcdcdc;}
 .assets_title{ 
 	color: #727272;
@@ -1034,3 +1036,5 @@ a.s_column_bar {
   margin-right:8px;
 }
 .assets_input{ float:right; margin-right:5px;}
+.assets_time { float:left; margin-left:15px;}
+.asset_easy_info { height:25px; line-height:25px; float:right; margin-right:5px;}
