@@ -1154,7 +1154,7 @@ class Ticket{
                  $sql.=',helptopic='.db_input($topicDesc);
              }
              $sql.=' WHERE ticket_id='.db_input($this->getId());
-             //echo $sql;
+
              if(db_query($sql)){
                  $this->postNote('Ticket Updated',$var['note']);
                  $this->reload();
@@ -1511,7 +1511,6 @@ class Ticket{
                         $file=null;
                         $attachment=$_FILES['attachment'];
                         if(($attachment && is_file($attachment['tmp_name'])) && $cfg->emailAttachments()) {
-                          die("fuck')");
                             $file=array('file'=>$attachment['tmp_name'], 'name'=>$attachment['name'], 'type'=>$attachment['type']);
                         }
                         if($cfg->stripQuotedReply() && ($tag=trim($cfg->getReplySeparator())))
@@ -1569,7 +1568,6 @@ class Ticket{
             $sql='SELECT ticket_id FROM '.TICKET_TABLE.' WHERE status=\'open\' AND isoverdue=0 '.
                  ' AND (duedate is NOT NULL AND duedate<NOW()) ORDER BY created LIMIT 100';
         }
-        //echo $sql;
         if(($stale=db_query($sql)) && db_num_rows($stale)){
             while(list($id)=db_fetch_row($stale)){
                 $ticket = new Ticket($id);
