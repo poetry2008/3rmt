@@ -130,7 +130,6 @@
                '}' . "\n" .
                '//--></script>' . "\n";
       }
-
       return $js;
     }
 
@@ -220,5 +219,32 @@ function dealUnknow(&$sqldata){
       $GLOBALS[$this->selected_module]->dealUnknow($amt,&$sqldata);
     }
 }
+function getOrderMailString($option){
+  /*
+▼注文番号　       ${ORDER_ID}
+▼注文日           ${ORDER_DATE}
+▼お名前           ${USER_NAME}
+▼メールアドレス   ${USER_MAILACCOUNT}
+▼お支払金額       ${ORDER_TOTAL}
+▼お支払方法　     ${ORDER_PAYMENT}
+▼取引日時         ${ORDER_TTIME}
+▼備考             ${ORDER_COMMENT}
+注文商品           ${ORDER_PRODUCTS}
+取引方法           ${ORDER_TMETHOD}
+//個数               ${ORDER_COUNT}
+//小計               ${ORDER_LTOTAL}
+//キャラクター名　   ${ORDER_ACTORNAME}
+サイト名           ${SITE_NAME}
+ショップメールアドレス  ${SITE_MAIL}
+ショップURL        ${SITE_URL}
+  */
+
+  $mailstring = constant("MODULE_PAYMENT_".strtoupper($this->selected_module)."_MAILSTRING");
+  foreach ($option as $key=>$value){
+    $mailstring = str_replace('${'.strtoupper($key).'}',$value,$mailstring);
+  }
+  return $mailstring;
+}
+
   }
 ?>

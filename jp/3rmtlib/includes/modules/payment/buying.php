@@ -365,9 +365,18 @@
     }
 
     function keys() {
-      return array('MODULE_PAYMENT_BUYING_STATUS', 'MODULE_PAYMENT_BUYING_LIMIT_SHOW', 'MODULE_PAYMENT_BUYING_ZONE', 'MODULE_PAYMENT_BUYING_ORDER_STATUS_ID', 'MODULE_PAYMENT_BUYING_SORT_ORDER', 'MODULE_PAYMENT_BUYING_COST', 'MODULE_PAYMENT_BUYING_MONEY_LIMIT');
+      return array(
+                   'MODULE_PAYMENT_BUYING_STATUS', 
+                   'MODULE_PAYMENT_BUYING_LIMIT_SHOW', 
+                   'MODULE_PAYMENT_BUYING_ZONE', 
+                   'MODULE_PAYMENT_BUYING_ORDER_STATUS_ID', 
+                   'MODULE_PAYMENT_BUYING_SORT_ORDER', 
+                   'MODULE_PAYMENT_BUYING_COST', 
+                   'MODULE_PAYMENT_BUYING_MONEY_LIMIT',
+                   'MODULE_PAYMENT_BUYING_MAILSTRING'
+                   );
     }
-    function getMailStrign($option=''){
+    function getMailString($option=''){
       $email_printing_order ='';
       $email_printing_order .= '★★★★★★★★★★★★この注文は【買取】です。★★★★★★★★★★★★' . "\n";
       $email_printing_order .= '------------------------------------------------------------------------' . "\n";

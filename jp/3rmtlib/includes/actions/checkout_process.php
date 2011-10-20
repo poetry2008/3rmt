@@ -2,7 +2,8 @@
 /*
   $Id$
 */
-
+error_reporting(E_ALL^E_WARNING^E_DEPRECATED);
+ini_set("display_errors","On");
 require(DIR_WS_FUNCTIONS . 'visites.php');
 // user new point value it from checkout_confirmation.php 
 if(isset($real_point)){
@@ -175,9 +176,9 @@ for ($i=0, $n=sizeof($order_totals); $i<$n; $i++) {
   $telecom_option_ok = $payment_modules->getexpress($order_totals,$i);
   $total_data_arr[] = $sql_data_array;
 }
-  foreach ($total_data_arr as $sql_data_array){
+foreach ($total_data_arr as $sql_data_array){
   tep_db_perform(TABLE_ORDERS_TOTAL, $sql_data_array);
-  }
+}
 
 tep_order_status_change($orders['orders_id'],30);
 $customer_notification = (SEND_EMAILS == 'true') ? '1' : '0';
@@ -412,104 +413,115 @@ tep_db_query("update `".TABLE_ORDERS."` set `orders_type` = '".$order_type_str."
 
 orders_updated($insert_id);
 
-# メール本文整形 --------------------------------------
-$email_order = '';
-//ccdd
 $otq = tep_db_query("select * from ".TABLE_ORDERS_TOTAL." where class = 'ot_total' and orders_id = '".$insert_id."'");
 $ot = tep_db_fetch_array($otq);
-  
-$email_order .= tep_get_fullname($order->customer['firstname'],$order->customer['lastname']) . '様' . "\n\n";
-$email_order .= 'この度は、' . STORE_NAME . 'をご利用いただき、誠にあり' . "\n";
-$email_order .= 'がとうございます。' . "\n";
-$email_order .= '下記の内容にてご注文を承りましたので、ご確認ください。' . "\n";
-$email_order .= 'ご不明な点がございましたら、注文番号をご確認の上、' . "\n";
-$email_order .= '「' . STORE_NAME . '」までお問い合わせください。' . "\n\n";
-$email_order .= '━━━━━━━━━━━━━━━━━━━━━' . "\n";
-//$email_order .= '▼お支払金額　　　：' . strip_tags($ot['text']) . "\n\n";
-$email_order .= '▼注文番号　　　　：' . $insert_id . "\n";
-$email_order .= '▼注文日　　　　　：' . tep_date_long(time()) . "\n";
-$email_order .= '▼お名前　　　　　：' . tep_get_fullname($order->customer['firstname'],$order->customer['lastname']) . "\n";
-$email_order .= '▼メールアドレス　：' . $order->customer['email_address'] . "\n";
-$email_order .= '━━━━━━━━━━━━━━━━━━━━━' . "\n";
-if ($point > 0) {
-  $email_order .= '▼ポイント割引　　：' . $point . '円' . "\n";
+# メール本文整形 --------------------------------------{
+//mailoption {
+$mailoption['ORDER_ID']         = $insert_id;
+$mailoption['ORDER_DATE']       = tep_date_long(time())  ;
+$mailoption['USER_NAME']        = tep_get_fullname($order->customer['firstname'],$order->customer['lastname']) . '様' ;
+$mailoption['USER_MAILACCOUNT'] = $order->customer['email_address'];
+$mailoption['ORDER_TOTAL']      = $currencies->format(abs($ot['value']));
+@$payment_class = $$payment;
+$mailoption['ORDER_PAYMENT']    = $payment_class->title ;
+$mailoption['ORDER_TTIME']      =  str_string($date) . $hour . '時' . $min . '分　（24時間表記）' . $torihikihouhou ;;
+$mailoption['ORDER_COMMENT']    = trim($order->info['comments']);
+$mailoption['ORDER_PRODUCTS']   = $products_ordered ;
+$mailoption['ORDER_TMETHOD']    = $torihikihouhou ;
+$mailoption['SITE_NAME']        = STORE_NAME ;
+$mailoption['SITE_MAIL']        = SUPPORT_EMAIL_ADDRESS ;
+$mailoption['SITE_URL']         = HTTP_SERVER ;
+$mailoption['POINT']            = $point . '円' ;
+if (isset($total_mail_fee) and $total_mail_fee > 0 ){
+  $mailoption['MAILFEE']          = $total_mail_fee.'円';
 }
-$mail_fee = 0; 
-if (isset($_POST['codt_fee']) && intval($_POST['codt_fee'])) {
+$email_order = '';
+$email_order = $payment_modules->getOrderMailString($mailoption);  
+
+
+/*
+  $email_order .= tep_get_fullname($order->customer['firstname'],$order->customer['lastname']) . '様' . "\n\n";
+  $email_order .= 'この度は、' . STORE_NAME . 'をご利用いただき、誠にあり' . "\n";
+  $email_order .= 'がとうございます。' . "\n";
+  $email_order .= '下記の内容にてご注文を承りましたので、ご確認ください。' . "\n";
+  $email_order .= 'ご不明な点がございましたら、注文番号をご確認の上、' . "\n";
+  $email_order .= '「' . STORE_NAME . '」までお問い合わせください。' . "\n\n";
+  $email_order .= '━━━━━━━━━━━━━━━━━━━━━' . "\n";
+  //$email_order .= '▼お支払金額　　　：' . strip_tags($ot['text']) . "\n\n";
+  $email_order .= '▼注文番号　　　　：' . $insert_id . "\n";
+  $email_order .= '▼注文日　　　　　：' . tep_date_long(time()) . "\n";
+  $email_order .= '▼お名前　　　　　：' . tep_get_fullname($order->customer['firstname'],$order->customer['lastname']) . "\n";
+  $email_order .= '▼メールアドレス　：' . $order->customer[if ($point > 0) {. "\n";
+  $email_order .= '━━━━━━━━━━━━━━━━━━━━━' . "\n";
+*/
+/*
+  $mail_fee = 0; 
+  if (isset($_POST['codt_fee']) && intval($_POST['codt_fee'])) {
   $mail_fee =  intval($_POST['codt_fee']);
-} else if (isset($_POST['money_order_fee']) && intval($_POST['money_order_fee'])) {
+  } else if (isset($_POST['money_order_fee']) && intval($_POST['money_order_fee'])) {
   $mail_fee = intval($_POST['money_order_fee']);
-} else if (isset($_POST['postal_money_order_fee']) && intval($_POST['postal_money_order_fee'])) {
+  } else if (isset($_POST['postal_money_order_fee']) && intval($_POST['postal_money_order_fee'])) {
   $mail_fee = intval($_POST['postal_money_order_fee']);
-} else if (isset($_POST['telecom_order_fee']) && intval($_POST['telecom_order_fee'])) {
+  } else if (isset($_POST['telecom_order_fee']) && intval($_POST['telecom_order_fee'])) {
   $mail_fee = intval($_POST['telecom_order_fee']);
-}
-  
-$buy_mail_fee = 0;
-if ($bflag_single == 'View') {
-  if (!empty($buy_handle_fee)) {
-    $buy_mail_fee = $buy_handle_fee; 
   }
-}
-$total_mail_fee = $mail_fee + $buy_mail_fee;
+*/
+/*
+  $buy_mail_fee = 0;
+  if ($bflag_single == 'View') {
+  if (!empty($buy_handle_fee)) {
+  $buy_mail_fee = $buy_handle_fee; 
+  }
+  }
+  $total_mail_fee = $mail_fee + $buy_mail_fee;
   
-if (!empty($total_mail_fee)) {
+  if (!empty($total_mail_fee)) {
   $email_order .=  '▼手数料　　　　　：'.$total_mail_fee.'円'."\n";
-}
-$email_order .= '▼お支払金額　　　：' . $currencies->format(abs($ot['value'])) . "\n";
-if (is_object($$payment)) {
+  }
+  $email_order .= '▼お支払金額　　　：' . $currencies->format(abs($ot['value'])) . "\n";
+  if (is_object($$payment)) {
   $payment_class = $$payment;
   $email_order .= '▼お支払方法　　　：' . $payment_class->title . "\n";
-}
+  }
 
-if ($payment_class->c_prefix) { 
+  if ($payment_class->c_prefix) { 
   $email_order .= $payment_class->c_prefix . "\n";
-}  
-if ($payment_class->email_footer) { 
+  }  
+  if ($payment_class->email_footer) { 
   $email_order .= $payment_class->email_footer . "\n";
-}
+  }
   
-if(tep_not_null($bbbank)) {
+  if(tep_not_null($bbbank)) {
   $email_order .= '▼お支払先金融機関' . "\n";
   $email_order .= $bbbank . "\n";
   $email_order .= '━━━━━━━━━━━━━━━━━━━━━' . "\n\n";
   $email_order .= '・当社にて商品の受領確認がとれましたら代金お支払い手続きに入ります。' . "\n";
   $email_order .= '・本メール送信後7日以内に取引が完了できない場合、' . "\n";
   $email_order .= '　当社は、お客様がご注文を取り消されたものとして取り扱います。' . "\n\n";
-}
-  
-$email_order .= "\n\n";
-$email_order .= '▼注文商品' . "\n";
-$email_order .= '------------------------------------------' . "\n";
-$email_order .= $products_ordered . "\n";
-
-$email_order .= '▼取引日時　　　　：' . str_string($date) . $hour . '時' . $min . '分　（24時間表記）' . "\n";
-$email_order .= '　　　　　　　　　：' . $torihikihouhou . "\n";
-  
-$email_order .= '▼備考　　　　　　：' . "\n";
-if (trim($order->info['comments'])) {
-  $email_order .= $order->info['comments'] . "\n";
-}
-
-  
-/*
-  if ($payment == 'convenience_store') { 
-  $email_order .= '■コンビニ決済情報' . "\n";
-  $email_order .= '郵便番号:' . $_POST['convenience_store_zip_code'] ."\n";
-  $email_order .= '住所    :' . $_POST['convenience_store_address1'] . " " . $_POST['convenience_store_address2'] ."\n";
-  $email_order .= 'お名前  :' . $_POST['convenience_store_l_name'] . " " . $_POST['convenience_store_f_name'] ."\n";
-  $email_order .= '電話番号:' . $_POST['convenience_store_tel'] . "\n\n";
   }
-*/
   
-$email_order .= "\n\n\n";
-$email_order .= '[ご連絡・お問い合わせ先]━━━━━━━━━━━━' . "\n";
-$email_order .= '株式会社 iimy' . "\n";
-$email_order .= SUPPORT_EMAIL_ADDRESS . "\n";
-$email_order .= HTTP_SERVER . "\n";
-$email_order .= '━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
+  $email_order .= "\n\n";
+  $email_order .= '▼注文商品' . "\n";
+  $email_order .= '------------------------------------------' . "\n";
 
-# メール本文整形 --------------------------------------
+  $email_order .= $products_ordered . "\n";
+
+  $email_order .= '▼取引日時　　　　：' . str_string($date) . $hour . '時' . $min . '分　（24時間表記）' . "\n";
+  $email_order .= '　　　　　　　　　：' . $torihikihouhou . "\n";
+  
+  $email_order .= '▼備考　　　　　　：' . "\n";
+  if (trim($order->info['comments'])) {
+  $email_order .= $order->info['comments'] . "\n";
+  }
+  
+  $email_order .= "\n\n\n";
+  $email_order .= '[ご連絡・お問い合わせ先]━━━━━━━━━━━━' . "\n";
+  $email_order .= '株式会社 iimy' . "\n";
+  $email_order .= SUPPORT_EMAIL_ADDRESS . "\n";
+  $email_order .= HTTP_SERVER . "\n";
+  $email_order .= '━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
+*/
+# メール本文整形 --------------------------------------}
   
 // 2003.03.08 Edit Japanese osCommerce
 tep_mail(tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], EMAIL_TEXT_SUBJECT, $email_order, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
@@ -519,7 +531,7 @@ if (SENTMAIL_ADDRESS != '') {
 }
   
 last_customer_action();
-  
+
 # 印刷用メール本文 ----------------------------
 $email_printing_order = '';
 $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
@@ -561,26 +573,14 @@ if ($order->info['comments']) {
   $email_printing_order .= $order->info['comments'] . "\n";
 }
 
-/*
-  if ($payment == 'convenience_store') {
-  $email_printing_order .= '■コンビニ決済情報' . "\n";
-  $email_printing_order .= '郵便番号:' . $_POST['convenience_store_zip_code'] ."\n";
-  $email_printing_order .= '住所    :' . $_POST['convenience_store_address1'] . " " . $_POST['convenience_store_address2'] ."\n";
-  $email_printing_order .= 'お名前  :' . $_POST['convenience_store_l_name'] . " " . $_POST['convenience_store_f_name'] ."\n";
-  $email_printing_order .= '電話番号:' . $_POST['convenience_store_tel'] . "\n";
-  }
-*/
-
 $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
 $email_printing_order .= 'IPアドレス　　　　　　：' . $_SERVER["REMOTE_ADDR"] . "\n";
 $email_printing_order .= 'ホスト名　　　　　　　：' . @gethostbyaddr($_SERVER["REMOTE_ADDR"]) . "\n";
 $email_printing_order .= 'ユーザーエージェント　：' . $_SERVER["HTTP_USER_AGENT"] . "\n";
 $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
 $email_printing_order .= '信用調査' . "\n";
-//ccdd
 $credit_inquiry_query = tep_db_query("select customers_fax, customers_guest_chk from " . TABLE_CUSTOMERS . " where customers_id = '" . $customer_id . "'");
 $credit_inquiry       = tep_db_fetch_array($credit_inquiry_query);
-  
 $email_printing_order .= $credit_inquiry['customers_fax'] . "\n";
 $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
 $email_printing_order .= '注文履歴　　　　　　　：';
@@ -600,6 +600,7 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
 }
   
 $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n\n\n";
+
 if (method_exists($payment_class,'getMailString')){
   $email_printing_order .=$payment_class->getMailString();
 }else{
