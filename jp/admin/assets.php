@@ -26,9 +26,9 @@ if ( isset($_GET['startY']) && ($_GET['startY']) && (tep_not_null($_GET['startY'
   $sYear = date("Y");
 }
 if ($startDateG) {
-  $startDate = mktime(0, 0, 0, $sMon, $sDay+1, $sYear);
+  $startDate = mktime(0, 0, 0, $sMon, $sDay, $sYear);
 } else {
-  $startDate = mktime(0, 0, 0, date("m"), date("d")+1, date("Y")-1);
+  $startDate = mktime(0, 0, 0, date("m"), date("d"), date("Y")-1);
 }
 
 $endDate = "";
