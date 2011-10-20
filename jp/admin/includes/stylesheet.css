@@ -1072,13 +1072,23 @@ a.s_column_bar {
 	height:30px;
 	line-height:30px;
 }
-.asset_easy td { background-color:#fff;}
+.asset_easy td { background-color:#ccc;}
 .no_result { font-size:18px; color:#ff0000; margin-left:5px;}
 .product_history_back { margin:5px 0 0 5px;}
 .assets_top_text { margin-left:5px; font-size:13px; /*border:1px solid #ff0000;*/}
-.assets_bottom_info { text-align:right;
+.assets_bottom_info { text-align:right; border-bottom:1px solid #676767; border-right:1px solid #676767;
 }
 .assets_bottom_info_right { text-align:right;
 }
 .info_sum_quantity_title, .info_avg_price_title, .info_sum_price_title{ text-align:left; float:left; padding-left:5px;}
 .info_sum_quantity_description, .info_avg_price_description, .info_sum_price_description{ float:right; padding-right:5px;}
+.assets_bottom_box{
+	margin-right:10px;
+}
+.assets_bottom_box td { background-color:#CCCCCC; height:25px}
+.assets_bottom_info_left {
+	border-bottom:1px solid #676767;
+	border-right:1px solid #676767;
+	border-left:1px solid #676767;
+}
+.asstes_easy_text { text-align:right;}
