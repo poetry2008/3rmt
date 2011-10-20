@@ -6609,7 +6609,7 @@ function tep_get_relate_date($pid,$site_id=0,$start='',$end='')
   return $res['max_date'];
 }
 function tep_get_order_history_sql_by_pid($pid,$start='',$end='',$sort=''){
-  $sql = "select 
+  $sql = "select p.products_id,  
     op.products_name,op.final_price,op.products_quantity,o.torihiki_date,
     (op.final_price*op.products_quantity) as op_assets
     from ".TABLE_ORDERS." o,".TABLE_ORDERS_PRODUCTS." op,".
