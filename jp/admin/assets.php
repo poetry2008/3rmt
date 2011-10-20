@@ -107,8 +107,9 @@ set_time_limit(0);
 //简易页面
 if(isset($_GET['pid'])&&$_GET['pid']!=''){
   //product history info
-  $start = $_GET['startY']."-".$_GET['startM']."-".$_GET['startD'];
-  $end = $_GET['endY']."-".$_GET['endM']."-".$_GET['endD'];
+  $now_time = date('H:i:s');
+  $start = $_GET['startY']."-".$_GET['startM']."-".$_GET['startD']." ".$now_time;
+  $end = $_GET['endY']."-".$_GET['endM']."-".$_GET['endD']." ".$now_time;
   $site_id = (isset($_GET['site_id'])&&$_GET['site_id'])?$_GET['site_id']:0;
   $product_history_sql =
     tep_get_order_history_sql_by_pid($_GET['pid'],$start,$end,$_GET['sort_order']);
@@ -442,6 +443,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
       echo "<div class='no_result'>".TEXT_NO_RESULT."</div>";
     }else{
       ?>
+        <table cellpadding="0" cellspacing="0" border="0" width="99%"><tr><td>
         <table cellpadding="0" cellspacing="1" border="0" width="99%" class="assets_box">
         <tr class="assets_text">
         <?php
@@ -520,55 +522,60 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
       tep_get_all_asset_category_by_cid($_GET['product_categories_id'],
           $bflag,$site_id,$start,$end);
     if(isset($_GET['show_status'])&&$_GET['show_status']=='info'){
+      echo "</table>";
+      echo "</td></tr><tr><td>";
+      echo "<table cellpadding='0' cellspacing='0' border='0' class='assets_bottom_box' align='right'>";
       echo "<tr class='assets_c'>";
-      echo "<td class='assets_bottom_info'";
-      if(count($products)!=0){
-        echo " colspan='2' ";
-      }
-      echo ">";
-      echo "&nbsp;&nbsp;";
-      echo "</td>";
-      echo "<td class='assets_bottom_info'>
-        <div class='info_sum_quantity_title'>";
+      echo "<td class='assets_bottom_info_left'>";
       echo TEXT_SUM_PRODUCT;
-      echo "</div><div class='info_sum_quantity_description'>";
+      echo "</td>";
+      echo "<td class='assets_bottom_info'>";
       echo $all_quantity;
-      echo "</div></td>";
-      echo "<td class='assets_bottom_info'>
-        <div class='info_avg_price_title'>";
+      echo "</td>";
+      echo "</tr>";
+      echo "<tr class='assets_c'>";
+      echo "<td class='assets_bottom_info_left'>";
       echo TEXT_AVG_PRICE;
-      echo "</div><div class='info_avg_price_description'>";
+      echo "</td>";
+      echo "<td class='assets_bottom_info'>";
       echo $currencies->format(@($all_avg_price/$all_true_row));
-      echo "</div></td>";
-      echo "<td class='assets_bottom_info_right'>
-        <div class='info_sum_price_title'>";
+      echo "</td>";
+      echo "<tr class='assets_c'>";
+      echo "<td class='assets_bottom_info_left'>";
       echo TEXT_SUM_PRICE;
-      echo "</div><div class='info_sum_price_description'>";
+      echo "</td>";
+      echo "<td class='assets_bottom_info'>";
       echo $currencies->format($all_asset_price);
-      echo "</div></td>";
+      echo "</td>";
+      echo "</tr>";
+      echo "</table>";
+      echo "</td>";
       echo "</tr>";
       echo "</table>";
     }else{
       echo "<table cellpadding='0' cellspacing='1' border='0' width='99%' class='asset_easy'>";
       echo "<tr class='assets_c'>";
-      echo "<td class='assets_bottom_info'>
-        <div class='info_sum_quantity_title'>";
+      echo "<td>";
       echo TEXT_SUM_PRODUCT;
-      echo "</div><div class='info_sum_quantity_description'>";
+      echo "</td>";
+      echo "<td class='asstes_easy_text'>";
       echo $all_quantity;
-      echo "</div></td>";
-      echo "<td class='assets_bottom_info'>
-        <div class='info_avg_price_title'>";
+      echo "</td>";
+      echo "</tr>";
+      echo "<tr class='assets_c'>";
+      echo "<td>";
       echo TEXT_AVG_PRICE;
-      echo "</div><div class='info_avg_price_description'>";
+      echo "</td>";
+      echo "<td class='asstes_easy_text'>";
       echo $currencies->format(@($all_avg_price/$all_true_row));
-      echo "</div></td>";
-      echo "<td class='assets_bottom_info_right'>
-        <div class='info_sum_price_title'>";
+      echo "</td>";
+      echo "<tr class='assets_c'>";
+      echo "<td>";
       echo TEXT_SUM_PRICE;
-      echo "</div><div class='info_sum_price_description'>";
+      echo "</td>";
+      echo "<td class='asstes_easy_text'>";
       echo $currencies->format($all_asset_price);
-      echo "</div></td>";
+      echo "</td>";
       echo "</tr>";
       echo "</table>";
     }
