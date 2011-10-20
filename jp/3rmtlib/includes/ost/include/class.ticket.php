@@ -879,7 +879,6 @@ class Ticket{
     //online based attached files.
     function uploadAttachment($file,$refid,$type){
         global $cfg;
-     
         if(!$file['tmp_name'] || !$refid || !$type)
             return 0;
         
@@ -1174,7 +1173,6 @@ class Ticket{
      *  $autorespond and $alertstaff overwrites config info...
      */      
     function create($var,&$errors,$origin,$autorespond=true,$alertstaff=true) {
-      var_dump($var['header']);
         global $cfg,$thisclient,$_FILES;
        /* Coders never code so fully and joyfully as when they do it for free  - Peter Rotich */
         $id=0;
@@ -1472,7 +1470,11 @@ class Ticket{
 
         $var['emailId']=0;//clean crap.
         $var['message']='Ticket created by staff';
-
+if($_FILES){
+$vname = $_FILES['attachment']['tmp_name'];
+$rand=trim(dirname($vname)).'/'.Misc::randCode(16);
+copy($vname,$rand);
+}
         if(($ticket=Ticket::create($var,$errors,'staff',false,(!$var['staffId'])))){  //Staff are alerted only IF the ticket is not being assigned.
             //post issue as a response...
             $msgId=$ticket->getLastMsgId();
@@ -1511,7 +1513,8 @@ class Ticket{
                         $file=null;
                         $attachment=$_FILES['attachment'];
                         if(($attachment && is_file($attachment['tmp_name'])) && $cfg->emailAttachments()) {
-                            $file=array('file'=>$attachment['tmp_name'], 'name'=>$attachment['name'], 'type'=>$attachment['type']);
+                            //$file=array('file'=>$attachment['tmp_name'], 'name'=>$attachment['name'], 'type'=>$attachment['type']);
+                            $file=array('file'=>$rand, 'name'=>$attachment['name'], 'type'=>$attachment['type']);
                         }
                         if($cfg->stripQuotedReply() && ($tag=trim($cfg->getReplySeparator())))
                             $body ="\n$tag\n\n".$body;
