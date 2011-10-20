@@ -6594,12 +6594,13 @@ function tep_get_product_by_category_id($categories_id,$bflag,$site_id=0){
 }
 function tep_get_relate_date($pid,$site_id=0,$start='',$end='')
 {
-  $sql = "select max(torihiki_date) as max_date from ".TABLE_ORDERS." where 1 ";
+  $sql = "select max(o.torihiki_date) as max_date from ".TABLE_ORDERS." o ,
+    ".TABLE_ORDERS_PRODUCTS." op where  o.orders_id = op.orders_id and op.products_id ='".$pid."'";
   if($site_id!=0){
-    $sql .= " and site_id='".$site_id."' ";
+    $sql .= " and o.site_id='".$site_id."' ";
   }
   if($start!=''&&$end!=''){
-    $sql .= " and date_purchased between '".$start."' and '".$end."' ";
+    $sql .= " and o.date_purchased between '".$start."' and '".$end."' ";
   }
   $query = tep_db_query($sql);
   $res = tep_db_fetch_array($query);
