@@ -2623,7 +2623,7 @@ function submit_confirm()
 <?php
     require(DIR_WS_INCLUDES . 'footer.php');
 ?>
-<embed id="warn_sound" src="images/presound.mp3" width="0" height="0" loop="false" autostart="false"></embed>
+<embed id="warn_sound" src="images/presound.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></embed>
 <!-- footer_eof //-->
 <br>
 <div id="wait" style="position:fixed; left:45%; top:45%; display:none;"><img src="images/load.gif" alt="img"></div>
