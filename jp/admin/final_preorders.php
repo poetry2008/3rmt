@@ -1593,7 +1593,7 @@ if (tep_db_num_rows($orders_history_query)) {
           if ($is_nyuuka_res) {
             $sel_nyuuka_id = $is_nyuuka_res['orders_status_id']; 
           } else {
-            $sel_nyuuka_id = 16; 
+            $sel_nyuuka_id = 1; 
           }
           echo tep_draw_pull_down_menu('status', $orders_statuses, $sel_nyuuka_id, 'id="status" onchange="check_prestatus();"'); ?>
           <input type="hidden" name="isruhe" id="isruhe" value=""> 
