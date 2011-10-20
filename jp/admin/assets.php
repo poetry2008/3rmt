@@ -488,9 +488,12 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
           echo "<tr class='assets_c'>";
         }
         echo "<td>";
+        /*
         if($all_product[$k]['relate_date']>0){
           echo $all_product[$k]['relate_date'];
         }
+        */
+        echo tep_get_relate_date($all_product[$k]['products_id'],$site_id,$start,$end);
         echo "</td>";
         echo "<td>";
         echo "<a class='asset_product_link' href='"
