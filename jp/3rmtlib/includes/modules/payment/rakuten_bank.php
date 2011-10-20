@@ -376,7 +376,9 @@ class rakuten_bank {
         'MODULE_PAYMENT_RAKUTEN_BANK_ORDER_STATUS_ID' , 
         'MODULE_PAYMENT_RAKUTEN_BANK_SORT_ORDER', 
         'MODULE_PAYMENT_RAKUTEN_BANK_COST', 
-        'MODULE_PAYMENT_RAKUTEN_BANK_MONEY_LIMIT');
+        'MODULE_PAYMENT_RAKUTEN_BANK_MONEY_LIMIT',
+        'MODULE_PAYMENT_RAKUTEN_BANK_MAILSTRING',
+);
   }
   function replace_for_telnumber($str){
     return str_replace('-','',strtr($str,$this->arrs2d));
