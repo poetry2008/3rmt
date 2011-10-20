@@ -38,6 +38,7 @@ include(DIR_WS_LANGUAGES . $language . '/' . FILENAME_CHECKOUT_PROCESS);
 require(DIR_WS_CLASSES . 'payment.php');
 $payment_modules = new payment($payment);
 
+$insert_id = date("Ymd") . '-' . date("His") . tep_get_order_end_num();
 # Check
 //ccdd
 $NewOidQuery = tep_db_query("select count(*) as cnt from ".TABLE_ORDERS." where orders_id = '".$insert_id."' and site_id = '".SITE_ID."'");
