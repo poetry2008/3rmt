@@ -346,7 +346,6 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
   }else{
     $bflag = 0;
   }
-  if(isset($_GET['show_status'])&&$_GET['show_status']=='info'){
     $sql_category_asset = " select c.categories_id,cd.categories_name from
       ".TABLE_CATEGORIES." c 
       ,".TABLE_CATEGORIES_DESCRIPTION." cd 
@@ -437,6 +436,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
         arsort($sort_product_arr);
       }
     }
+    if(isset($_GET['show_status'])&&$_GET['show_status']=='info'){
 
     if(count($category_asset_arr)==0&&count($products)==0){
       echo "<div class='no_result'>".TEXT_NO_RESULT."</div>";
