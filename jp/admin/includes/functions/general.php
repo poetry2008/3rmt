@@ -6595,7 +6595,9 @@ function tep_get_product_by_category_id($categories_id,$bflag,$site_id=0){
 function tep_get_relate_date($pid,$site_id=0,$start='',$end='')
 {
   $sql = "select max(o.torihiki_date) as max_date from ".TABLE_ORDERS." o ,
-    ".TABLE_ORDERS_PRODUCTS." op where  o.orders_id = op.orders_id and op.products_id ='".$pid."'";
+    ".TABLE_ORDERS_PRODUCTS." op ,".TABLE_ORDERS_STATUS." os 
+      where  o.orders_id = op.orders_id and op.products_id ='".$pid."' 
+      and o.order_status = os.orders_status_id and os.calc_price = '1' ";
   if($site_id!=0){
     $sql .= " and o.site_id='".$site_id."' ";
   }
