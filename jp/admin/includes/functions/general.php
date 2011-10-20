@@ -6610,9 +6610,10 @@ function tep_get_order_history_sql_by_pid($pid,$start='',$end='',$sort=''){
     op.products_name,op.final_price,op.products_quantity,o.torihiki_date,
     (op.final_price*op.products_quantity) as op_assets
     from ".TABLE_ORDERS." o,".TABLE_ORDERS_PRODUCTS." op,".
-    TABLE_ORDERS_STATUS." os WHERE 
+    TABLE_ORDERS_STATUS." os ,".TABLE_PRODUCTS." p WHERE 
     o.orders_id = op.orders_id and os.orders_status_id=o.orders_status 
-    and os.calc_price = 1 and op.products_id = '".$pid."' ";
+    and os.calc_price = 1 and op.products_id = p.products_id 
+    and p.relate_products_id ='".$pid."' ";
   if($start!=''&&$end!=''){
     $sql .= " and o.date_purchased between '".$start."' and '".$end."' ";
   }
