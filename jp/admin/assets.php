@@ -339,8 +339,9 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
                 <?php
                 echo '</div>';
   echo "</form>";
-  $start = $_GET['startY']."-".$_GET['startM']."-".$_GET['startD'];
-  $end = $_GET['endY']."-".$_GET['endM']."-".$_GET['endD'];
+  $now_time = date('H:i:s');
+  $start = $_GET['startY']."-".$_GET['startM']."-".$_GET['startD']." ".$now_time;
+  $end = $_GET['endY']."-".$_GET['endM']."-".$_GET['endD']." ".$now_time;
   $site_id = (isset($_GET['site_id'])&&$_GET['site_id'])?$_GET['site_id']:0;
   if(isset($_GET['bflag'])&&$_GET['bflag']==2){
     $bflag = 1;
@@ -455,8 +456,10 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
       ?>
         <td align="center"><b><?php echo TEXT_PRODUCTS_NAME;?></b></td>
         <td align="center" width="18%"><b><?php echo TEXT_PRODUCTS_QUANTITY;?></b></td>
-        <td align="center" width="18%"><b><?php echo TEXT_PRODUCTS_PRICE;?></b></td>
-        <td align="center" width="18%"><b><?php echo TEXT_PRODUCTS_PRICE_SUM;?></b></td>
+        <td id='product_price' align="center" width="18%"><b><?php 
+        echo TEXT_PRODUCTS_PRICE;?></b></td>
+        <td id='product_price_sum' align="center" width="18%"><b><?php 
+        echo TEXT_PRODUCTS_PRICE_SUM;?></b></td>
         </tr>
         <?php 
         foreach($sort_category_arr as $key => $v){
@@ -516,6 +519,8 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
       }
     }
   }
+  ?>
+  <?php
   if(isset($_GET['search'])&&$_GET['search']==1){
     //$all_product_info = tep_get_all_asset($start,$end);
     $all_product_info =
@@ -526,10 +531,10 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
       echo "</td></tr><tr><td>";
       echo "<table cellpadding='0' cellspacing='0' border='0' class='assets_bottom_box' align='right'>";
       echo "<tr class='assets_c'>";
-      echo "<td class='assets_bottom_info_left'>";
+      echo "<td id='info_title_td' class='assets_bottom_info_left'>";
       echo TEXT_SUM_PRODUCT;
       echo "</td>";
-      echo "<td class='assets_bottom_info'>";
+      echo "<td id='info_value_td' class='assets_bottom_info'>";
       echo $all_quantity;
       echo "</td>";
       echo "</tr>";
@@ -585,6 +590,10 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
 </td>
 </tr>
 </table>
+<script language='javascript'>
+  $('#info_title_td').width($('#product_price').width());
+  $('#info_value_td').width($('#product_price_sum').width());
+</script>
 <div id="print_footer">
 <?php
 require(DIR_WS_INCLUDES . 'footer.php');
