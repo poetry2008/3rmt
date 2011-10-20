@@ -1588,7 +1588,14 @@ if (tep_db_num_rows($orders_history_query)) {
         <tr>
           <td class="main"><b><?php echo ENTRY_STATUS; ?></b></td>
           <td class="main"><?php 
-          echo tep_draw_pull_down_menu('status', $orders_statuses, '16', 'id="status" onchange="check_prestatus();"'); ?>
+          $is_nyuuka_raw = tep_db_query("select * from ".TABLE_PREORDERS_STATUS." where is_nyuuka = '1' order by orders_status_id asc limit 1"); 
+          $is_nyuuka_res = tep_db_fetch_array($is_nyuuka_raw);
+          if ($is_nyuuka_res) {
+            $sel_nyuuka_id = $is_nyuuka_res['orders_status_id']; 
+          } else {
+            $sel_nyuuka_id = 1; 
+          }
+          echo tep_draw_pull_down_menu('status', $orders_statuses, $sel_nyuuka_id, 'id="status" onchange="check_prestatus();"'); ?>
           <input type="hidden" name="isruhe" id="isruhe" value=""> 
           </td>
         </tr>

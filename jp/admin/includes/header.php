@@ -62,8 +62,33 @@ function goto_changepwd(id){
   document.getElementById(id).submit();
   return false;
 }
+<?php
+if ($_SERVER['PHP_SELF'] != '/admin/preorders.php') {
+?>
+var cfg_head_last_customer_action = '<?php echo PREORDER_LAST_CUSTOMER_ACTION;?>';
+var prev_head_customer_action = '';
+function check_preorder_head() {
+  $.ajax({
+    dataType: 'text',
+    url: 'ajax_preorders.php?action=last_customer_action',
+    success: function(last_head_customer_action) {
+      if (last_head_customer_action != cfg_head_last_customer_action && prev_head_customer_action != last_head_customer_action){
+        $('.preorder_head').css('background-color', '#83dc94');
+        prev_head_customer_action = last_head_customer_action;
+      }
+      }
+  });
+  setTimeout(function(){check_preorder_head()}, 70000);
+}
+
+$(function(){
+  setTimeout(function(){check_preorder_head()}, 70000);
+});
+<?php
+}
+?>
 </script>
-<table border="0" width="100%" cellspacing="0" cellpadding="0">
+<table border="0" width="100%" cellspacing="0" cellpadding="0" class="preorder_head">
 <tr>
 <td><?php echo tep_image(DIR_WS_CATALOG .DIR_WS_IMAGES . ADMINPAGE_LOGO_IMAGE, STORE_NAME, '', ''); ?></td>
 <td align="right">

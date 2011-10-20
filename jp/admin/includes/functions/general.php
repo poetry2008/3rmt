@@ -6487,16 +6487,24 @@ function tep_get_all_asset_category_by_cid($cid,$bflag,$site_id=0,$start='',$end
    $asset_all_product = 0;
    $result = array();
    $result['error'] = false;
+   $all_tmp_price = 0;
+   $all_tmp_row = 0;
    while($tmp_row = tep_db_fetch_array($tmp_query)){
      $tmp_price = @tep_get_asset_avg_by_pid($tmp_row['products_id'],$site_id,$start,$end);
      if($tmp_price == 0 && $tmp_row['products_real_quantity'] != 0 ){
        $result['error'] = true;
+     }else{
+       $asset_all_product += ($tmp_row['products_real_quantity']*$tmp_price);
+     }
+     if($tmp_row['products_real_quantity'] != 0){
+       $all_tmp_row++;
      }
      $quantity_all_product += $tmp_row['products_real_quantity'];
-     $asset_all_product += ($tmp_row['products_real_quantity']*$tmp_price);
+     $all_tmp_price += $tmp_price;
    }
    $result['quantity_all_product'] = $quantity_all_product;
    $result['asset_all_product'] = $asset_all_product;
+   $result['avg_price'] = @($all_tmp_price/$all_tmp_row);
    return $result;
 }
 function tep_get_all_asset_product_by_pid($pid,$bflag,$site_id=0,$start='',$end=''){
@@ -6528,7 +6536,7 @@ function tep_get_all_asset($start='',$end=''){
   $all_product_quantity = 0;
   $all_product_price = 0;
   while($row = tep_db_fetch_array($query)){
-    $tmp_price = @tep_get_asset_avg_by_pid($row['products_id'],$start,$end);
+    $tmp_price = @tep_get_asset_avg_by_pid($row['products_id'],0,$start,$end);
     $all_product_quantity += $row['products_real_quantity'];
     $all_product_price += ($tmp_price*$row['products_real_quantity']);
   }
@@ -6586,14 +6594,41 @@ function tep_get_product_by_category_id($categories_id,$bflag,$site_id=0){
 }
 function tep_get_relate_date($pid,$site_id=0,$start='',$end='')
 {
-  $sql = "select max(torihiki_date) as max_date from ".TABLE_ORDERS." where 1 ";
+  $sql = "select max(o.torihiki_date) as max_date from ".TABLE_ORDERS." o ,
+    ".TABLE_ORDERS_PRODUCTS." op ,".TABLE_ORDERS_STATUS." os ,".TABLE_PRODUCTS." p 
+      where  o.orders_id = op.orders_id and p.products_id = '".$pid."'
+      and p.relate_products_id= op.products_id 
+      and o.orders_status = os.orders_status_id and os.calc_price = '1' ";
   if($site_id!=0){
-    $sql .= " and site_id='".$site_id."' ";
+    $sql .= " and o.site_id='".$site_id."' ";
   }
-  if($statr!=''&&$end!=''){
-    $sql .= " and date_purchased between '".$start."' and '".$end."' ";
+  if($start!=''&&$end!=''){
+    $sql .= " and o.date_purchased between '".$start."' and '".$end."' ";
   }
   $query = tep_db_query($sql);
   $res = tep_db_fetch_array($query);
   return $res['max_date'];
+}
+function tep_get_order_history_sql_by_pid($pid,$start='',$end='',$sort=''){
+  $sql = "select p.products_id,  
+    op.products_name,op.final_price,op.products_quantity,o.torihiki_date,
+    (op.final_price*op.products_quantity) as op_assets
+    from ".TABLE_ORDERS." o,".TABLE_ORDERS_PRODUCTS." op,".
+    TABLE_ORDERS_STATUS." os ,".TABLE_PRODUCTS." p WHERE 
+    o.orders_id = op.orders_id and os.orders_status_id=o.orders_status 
+    and os.calc_price = 1 and op.products_id = p.products_id 
+    and p.relate_products_id ='".$pid."' ";
+  if($start!=''&&$end!=''){
+    $sql .= " and o.date_purchased between '".$start."' and '".$end."' ";
+  }
+  if($sort){
+    if($sort='price_asc'){
+      $sql .= " order by op_assets asc ";
+    }else if($sort='price_desc'){
+      $sql .= " order by op_assets desc ";
+    }
+  }else{
+    $sql .= " order by o.torihiki_date desc ";
+  }
+  return $sql;
 }

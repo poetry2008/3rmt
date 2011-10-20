@@ -991,7 +991,6 @@ a.s_column_bar {
 	font-size:13px;
 	margin-right:5px;
 	padding:2px 9px\9;
-	float:left;
 	margin-bottom:2px;
 	margin-top:2px;
 }
@@ -1046,17 +1045,40 @@ a.s_column_bar {
 	margin-bottom:2px;
 	margin-top:2px;
 }
+.assets_submit{
+	font-size:13px;
+	margin-right:5px;
+	padding:2px 9px\9;
+	float:left;
+	margin-bottom:2px;
+	margin-top:2px;
+}
 .assets_time { float:left;}
-.asset_info { height:25px; line-height:25px; float:right; margin-right:5px;}
+.asset_info {
+	background-color:#676767;
+    color: #000;
+    height: 30px;
+    line-height: 30px;
+    margin-left: 5px;
+    text-align: right;
+    width: 99%;
+}
+.asset_info td { margin:0; padding:0; background-color:#fff;}
 .asset_easy { 
-	height:25px; 
-	line-height:25px; 
 	margin-left:5px;
-	border:#676767 1px solid;
-	width:99%;
+	background-color:#676767;
 	color:#000;
 	font-weight:bold;
+	height:30px;
+	line-height:30px;
 }
+.asset_easy td { background-color:#fff;}
 .no_result { font-size:18px; color:#ff0000; margin-left:5px;}
 .product_history_back { margin:5px 0 0 5px;}
 .assets_top_text { margin-left:5px; font-size:13px; /*border:1px solid #ff0000;*/}
+.assets_bottom_info { text-align:right;
+}
+.assets_bottom_info_right { text-align:right;
+}
+.info_sum_quantity_title, .info_avg_price_title, .info_sum_price_title{ text-align:left; float:left; padding-left:5px;}
+.info_sum_quantity_description, .info_avg_price_description, .info_sum_price_description{ float:right; padding-right:5px;}
