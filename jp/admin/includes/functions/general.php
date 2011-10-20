@@ -6491,7 +6491,8 @@ function tep_get_all_asset_category_by_cid($cid,$bflag,$site_id=0,$start='',$end
    $all_tmp_row = 0;
    while($tmp_row = tep_db_fetch_array($tmp_query)){
      $tmp_price = @tep_get_asset_avg_by_pid($tmp_row['products_id'],$site_id,$start,$end);
-     if($tmp_price == 0 && $tmp_row['products_real_quantity'] != 0 ){
+     if($tmp_row['products_real_quantity'] >= tep_get_relate_products_sum($tmp_row['products_id']
+           ,$site_id,$start,$end)){
        $result['error'] = true;
      }else{
        $asset_all_product += ($tmp_row['products_real_quantity']*$tmp_price);
@@ -6515,7 +6516,8 @@ function tep_get_all_asset_product_by_pid($pid,$bflag,$site_id=0,$start='',$end=
   $tmp_price = @tep_get_asset_avg_by_pid($pid,$site_id,$start,$end);
   $result = array();
   $result['error'] = false;
-  if($tmp_price == 0 && $row['quantity_all_product'] == 0 ){
+  if($row['products_real_quantity'] >= tep_get_relate_products_sum($pid,$site_id,
+        $start,$end)){
     $result['error'] = true;
   }else{
     $result['error'] = false;
@@ -6616,8 +6618,8 @@ function tep_get_order_history_sql_by_pid($pid,$start='',$end='',$sort=''){
     from ".TABLE_ORDERS." o,".TABLE_ORDERS_PRODUCTS." op,".
     TABLE_ORDERS_STATUS." os ,".TABLE_PRODUCTS." p WHERE 
     o.orders_id = op.orders_id and os.orders_status_id=o.orders_status 
-    and os.calc_price = 1 and op.products_id = p.products_id 
-    and p.relate_products_id ='".$pid."' ";
+    and os.calc_price = 1 and op.products_id = p.relate_products_id 
+    and p.products_id ='".$pid."' ";
   if($start!=''&&$end!=''){
     $sql .= " and o.date_purchased between '".$start."' and '".$end."' ";
   }
@@ -6631,4 +6633,22 @@ function tep_get_order_history_sql_by_pid($pid,$start='',$end='',$sort=''){
     $sql .= " order by o.torihiki_date desc ";
   }
   return $sql;
+}
+function tep_get_relate_products_sum($pid,$site_id=0,$start='',$end='')
+{
+  $sql = "select sum(op.products_quantity) as sum_relate from ".TABLE_ORDERS." o ,
+    ".TABLE_ORDERS_PRODUCTS." op ,".TABLE_ORDERS_STATUS." os ,".TABLE_PRODUCTS." p 
+      where  o.orders_id = op.orders_id and p.products_id = '".$pid."'
+      and p.relate_products_id= op.products_id 
+      and o.orders_status = os.orders_status_id and os.calc_price = '1' ";
+  if($site_id!=0){
+    $sql .= " and o.site_id='".$site_id."' ";
+  }
+  if($start!=''&&$end!=''){
+    $sql .= " and o.date_purchased between '".$start."' and '".$end."' ";
+  }
+  $query = tep_db_query($sql);
+  $res = tep_db_fetch_array($query);
+  return $res['sum_relate'];
+
 }
