@@ -81,6 +81,9 @@ charset=<?php echo CHARSET; ?>">
 <link media="print" rel="stylesheet" type="text/css" href="includes/print_assets.css">
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript">
+  window.print();
+</script>
 <title><?php echo ASSETS_TITLE;?></title>
 </head>
 <body>
@@ -103,10 +106,6 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
     tep_get_order_history_sql_by_pid($_GET['pid'],$start,$end,$_GET['sort_order']);
   $product_history_query = tep_db_query($product_history_sql);
   ?>
-  <div class='product_history_info'>
-    <input type="button" class="assets_input" value="<?php echo
-    TEXT_ASSETS_PRINT;?>" onclick="window.print()"> 
-  </div>
   <?php
   if(tep_db_num_rows($product_history_query)){
     ?>
@@ -136,9 +135,6 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
   }
 }else{
   ?>
-    <div class="assets_print">
-      <input type="button" class="assets_input" value="<?php echo TEXT_ASSETS_PRINT;?>" onclick="window.print();">
-    </div>
   <?php
   $now_time = date('H:i:s');
   $start = $_GET['startY']."-".$_GET['startM']."-".$_GET['startD']." ".$start_time;
