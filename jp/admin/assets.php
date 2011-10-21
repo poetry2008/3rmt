@@ -434,7 +434,6 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
       echo "<div class='no_result'>".TEXT_NO_RESULT."</div>";
     }else{
       ?>
-        <table cellpadding="0" cellspacing="0" border="0" width="99%"><tr><td>
         <table cellpadding="0" cellspacing="1" border="0" width="99%" class="assets_box">
         <tr class="assets_text">
         <?php
@@ -516,10 +515,14 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
       tep_get_all_asset_category_by_cid($_GET['product_categories_id'],
           $bflag,$site_id,$start,$end);
     if(isset($_GET['show_status'])&&$_GET['show_status']=='info'){
-      echo "</table>";
-      echo "</td></tr><tr><td>";
-      echo "<table cellpadding='0' cellspacing='0' border='0' class='assets_bottom_box' align='right'>";
       echo "<tr class='assets_c'>";
+      echo "<td rowspan='3' ";
+      if(count($products)>0){
+        echo "colspan='3' ";
+      }else{
+        echo "colspan='2' ";
+      }
+      echo "></td>";
       echo "<td id='info_title_td' class='assets_bottom_info_left'>";
       echo TEXT_SUM_PRODUCT;
       echo "</td>";
@@ -540,9 +543,6 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
       echo "</td>";
       echo "<td class='assets_bottom_info'>";
       echo $currencies->format($all_asset_price);
-      echo "</td>";
-      echo "</tr>";
-      echo "</table>";
       echo "</td>";
       echo "</tr>";
       echo "</table>";
@@ -579,10 +579,6 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
 </td>
 </tr>
 </table>
-<script language='javascript'>
-  $('#info_title_td').width($('#product_price').width());
-  $('#info_value_td').width($('#product_price_sum').width());
-</script>
 <div id="print_footer">
 <?php
 require(DIR_WS_INCLUDES . 'footer.php');

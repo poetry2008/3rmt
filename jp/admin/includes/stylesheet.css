@@ -1076,7 +1076,7 @@ a.s_column_bar {
 .no_result { font-size:18px; color:#ff0000; margin-left:5px;}
 .product_history_back { margin:5px 0 0 5px;}
 .assets_top_text { margin-left:5px; font-size:13px; /*border:1px solid #ff0000;*/}
-.assets_bottom_info { text-align:right; border-bottom:1px solid #676767; border-right:1px solid #676767;
+.assets_bottom_info { text-align:right; /*border-bottom:1px solid #676767; border-right:1px solid #676767;*/ height:25px; background-color:#FFF;
 }
 .assets_bottom_info_right { text-align:right;
 }
@@ -1085,10 +1085,12 @@ a.s_column_bar {
 .assets_bottom_box{
 	margin-right:10px;
 }
-.assets_bottom_box td { background-color:#CCCCCC; height:25px}
-.assets_bottom_info_left {
-	border-bottom:1px solid #676767;
+/*.assets_bottom_box td { background-color:#CCCCCC; height:25px}
+*/.assets_bottom_info_left {
+/*	border-bottom:1px solid #676767;
 	border-right:1px solid #676767;
 	border-left:1px solid #676767;
+*/	height:25px;
+	background-color:#ccc;
 }
 .asstes_easy_text { text-align:right;}
