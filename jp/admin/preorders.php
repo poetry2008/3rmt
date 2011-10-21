@@ -45,7 +45,7 @@
       $site_id  = tep_get_pre_site_id_by_orders_id($value);
     
       $order_updated = false;
-      $check_status_query = tep_db_query("select customers_name, customers_id, customers_email_address, orders_status, date_purchased, payment_method, torihiki_date from " . TABLE_PREORDERS . " where orders_id = '" . tep_db_input($oID) . "'");
+      $check_status_query = tep_db_query("select customers_name, customers_id, customers_email_address, orders_status, date_purchased, payment_method, torihiki_date, ensure_deadline, predate  from " . TABLE_PREORDERS . " where orders_id = '" . tep_db_input($oID) . "'");
       $check_status = tep_db_fetch_array($check_status_query);
       
       //Add Point System
@@ -141,6 +141,12 @@
         
         $os_query = tep_db_query("select orders_status_name from " . TABLE_PREORDERS_STATUS . " where orders_status_id = '".$status."'");
         $os_result = tep_db_fetch_array($os_query);
+        $num_product = 0; 
+        $num_product_raw = tep_db_query("select products_quantity from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$oID."'"); 
+        $num_product_res = tep_db_fetch_array($num_product_raw); 
+        if ($num_product_res) {
+          $num_product = $num_product_res['products_quantity']; 
+        }
         $title = str_replace(array(
           '${NAME}',
           '${MAIL}',
@@ -152,8 +158,10 @@
           '${ORDER_S}',
           '${SITE_NAME}',
           '${SITE_URL}',
-          '${PAY_DATE}'
-          
+          '${PAY_DATE}',
+          '${ENSURE_TIME}',
+          '${PRODUCTS_QUANTITY}',
+          '${EFFECTIVE_TIME}'
         ),array(
           $check_status['customers_name'],
           $check_status['customers_email_address'],
@@ -165,7 +173,10 @@
           $os_result['orders_status_name'],
           get_configuration_by_site_id('STORE_NAME', $site_id),
           get_url_by_site_id($site_id),
-          date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day()))
+          date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day())),
+          $check_status['ensure_deadline'],
+          $num_product.PREORDER_PRODUCT_UNIT_TEXT,
+          date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT, strtotime($check_status['predate']))
         ),$title
         );
         $comments = str_replace(array(
@@ -180,7 +191,10 @@
           '${SITE_NAME}',
           '${SITE_URL}',
           '${SUPPORT_EMAIL}',
-          '${PAY_DATE}'
+          '${PAY_DATE}',
+          '${ENSURE_TIME}', 
+          '${PRODUCTS_QUANTITY}',
+          '${EFFECTIVE_TIME}'
         ),array(
           $check_status['customers_name'],
           $check_status['customers_email_address'],
@@ -193,7 +207,10 @@
           get_configuration_by_site_id('STORE_NAME', $site_id),
           get_url_by_site_id($site_id),
           get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
-          date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day()))
+          date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day())),
+          $check_status['ensure_deadline'], 
+          $num_product.PREORDER_PRODUCT_UNIT_TEXT,
+          date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT, strtotime($check_status['predate']))
         ),$comments
         );
         if (!tep_is_oroshi($check_status['customers_id'])) {
@@ -263,7 +280,8 @@
                  orders_status, 
                  date_purchased, 
                  payment_method, 
-                 torihiki_date 
+                 torihiki_date,
+                 ensure_deadline
           from " . TABLE_PREORDERS . " 
           where orders_id = '" . tep_db_input($oID) . "'");
       $check_status = tep_db_fetch_array($check_status_query);
@@ -398,6 +416,13 @@
       
       $os_query = tep_db_query("select orders_status_name from " . TABLE_PREORDERS_STATUS . " where orders_status_id = '".$status."'");
       $os_result = tep_db_fetch_array($os_query);
+      
+      $num_product = 0; 
+      $num_product_raw = tep_db_query("select products_quantity from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$oID."'"); 
+      $num_product_res = tep_db_fetch_array($num_product_raw); 
+      if ($num_product_res) {
+        $num_product = $num_product_res['products_quantity']; 
+      }
 
       $title = str_replace(array(
         '${NAME}',
@@ -411,7 +436,10 @@
         '${SITE_NAME}',
         '${SITE_URL}',
         '${SUPPORT_EMAIL}',
-        '${PAY_DATE}'
+        '${PAY_DATE}',
+        '${ENSURE_TIME}', 
+        '${PRODUCTS_QUANTITY}',
+        '${EFFECTIVE_TIME}'
       ),array(
         $check_status['customers_name'],
         $check_status['customers_email_address'],
@@ -424,7 +452,10 @@
         get_configuration_by_site_id('STORE_NAME', $site_id),
         get_url_by_site_id($site_id),
         get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
-        date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day()))
+        date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day())),
+        $check_status['ensure_deadline'], 
+        $num_product.PREORDER_PRODUCT_UNIT_TEXT,
+        date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT, strtotime($check_status['predate']))
       ),$title);
 
       $comments = str_replace(array(
@@ -439,7 +470,10 @@
         '${SITE_NAME}',
         '${SITE_URL}',
         '${SUPPORT_EMAIL}',
-        '${PAY_DATE}'
+        '${PAY_DATE}',
+        '${ENSURE_TIME}', 
+        '${PRODUCTS_QUANTITY}',
+        '${EFFECTIVE_TIME}'
       ),array(
         $check_status['customers_name'],
         $check_status['customers_email_address'],
@@ -452,9 +486,11 @@
         get_configuration_by_site_id('STORE_NAME', $site_id),
         get_url_by_site_id($site_id),
         get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
-        date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day()))
+        date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day())),
+        $check_status['ensure_deadline'], 
+        $num_product.PREORDER_PRODUCT_UNIT_TEXT,
+        date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT, strtotime($check_status['predate']))
       ),$comments);
-      
       if (!tep_is_oroshi($check_status['customers_id'])) {
         if ($status == 32) {
           $site_url_raw = tep_db_query("select * from sites where id = '".$site_id."'"); 
