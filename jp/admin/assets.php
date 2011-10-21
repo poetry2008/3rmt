@@ -111,13 +111,15 @@ charset=<?php echo CHARSET; ?>">
 <div class="assets_title">
 <?php echo ASSETS_TITLE;?>
 </div>
-<div class="assets_top_text">
-<?php echo TEXT_ASSETS_INFO;?>
-</div>
 <?php
 set_time_limit(0);
 //简易页面
 if(isset($_GET['pid'])&&$_GET['pid']!=''){
+  ?>
+<div class="assets_top_text_product">
+<?php echo TEXT_ASSETS_INFO;?>
+</div>
+<?php
   //product history info
   $now_time = date('H:i:s');
   $start = $_GET['startY']."-".$_GET['startM']."-".$_GET['startD']." ".$start_time;
@@ -166,6 +168,11 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
   echo "</a>";
   echo "</div>";
 }else{
+  ?>
+<div class="assets_top_text">
+<?php echo TEXT_ASSETS_INFO;?>
+</div>
+<?php
   echo tep_draw_form('new_product', FILENAME_ASSETS,tep_get_all_get_params(
         array('site_id','bflag','product_categories_id')),'get');
   echo '<div class="assets_search_bar">';
