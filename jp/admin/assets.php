@@ -337,6 +337,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
   $start = $_GET['startY']."-".$_GET['startM']."-".$_GET['startD']." ".$now_time;
   $end = $_GET['endY']."-".$_GET['endM']."-".$_GET['endD']." ".$now_time;
   $site_id = (isset($_GET['site_id'])&&$_GET['site_id'])?$_GET['site_id']:0;
+  if(isset($_GET['search'])&&$_GET['search']==1){
   $sql_category_asset = " select c.categories_id,cd.categories_name from
     ".TABLE_CATEGORIES." c 
     ,".TABLE_CATEGORIES_DESCRIPTION." cd 
@@ -510,7 +511,6 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
   }
   ?>
   <?php
-  if(isset($_GET['search'])&&$_GET['search']==1){
     //$all_product_info = tep_get_all_asset($start,$end);
     $all_product_info =
       tep_get_all_asset_category_by_cid($_GET['product_categories_id'],
