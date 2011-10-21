@@ -84,35 +84,11 @@ charset=<?php echo CHARSET; ?>">
 <title><?php echo ASSETS_TITLE;?></title>
 </head>
 <body>
-<?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
-  <script language='javascript'>
-    //one_time_pwd('<?php echo $page_name;?>');
-    </script>
-    <?php }?>
-    <div class='header'>
-    <?php
-    require(DIR_WS_INCLUDES . 'header.php');
-    ?>
-    </div>
-    <table border="0" width="100%" cellspacing="2" cellpadding="2">
-    <tr>
-    <?php
-    if ($ocertify->npermission >= 10) {
-      echo '<td width="' . BOX_WIDTH . '" valign="top">';
-      echo '<table border="0" width="' . BOX_WIDTH . '" cellspacing="1" cellpadding="1" class="columnLeft">';
-      require(DIR_WS_INCLUDES . 'column_left.php');
-      echo '</table>';
-      echo '</td>';
-    } else {
-      echo '<td>&nbsp;</td>';
-    }
-?>
+<table border="0" width="100%" cellspacing="2" cellpadding="2">
+<tr>
 <td width="100%" valign="top">
-<div class="assets_title">
+<div class="print_assets_title">
 <?php echo ASSETS_TITLE;?>
-</div>
-<div class="assets_top_text">
-<?php echo TEXT_ASSETS_INFO;?>
 </div>
 <?php
 set_time_limit(0);
@@ -129,8 +105,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
   ?>
   <div class='product_history_info'>
     <input type="button" class="assets_input" value="<?php echo
-    TEXT_ASSETS_PRINT;?>" onclick="window.open('<?php echo 
-        tep_href_link(FILENAME_PRINT_ASSETS,tep_get_all_get_params());?>');">
+    TEXT_ASSETS_PRINT;?>" onclick="window.print()"> 
   </div>
   <?php
   if(tep_db_num_rows($product_history_query)){
@@ -159,201 +134,12 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
   }else{
     echo "<div class='no_result'>".TEXT_NO_RESULT."</div>";
   }
-  echo "<div class='product_history_back'>";
-  echo "<a href='".
-    tep_href_link(FILENAME_ASSETS,tep_get_all_get_params(array('pid')))."'>";
-  echo tep_html_element_button(IMAGE_BACK); 
-  echo "</a>";
-  echo "</div>";
 }else{
-  echo tep_draw_form('new_product', FILENAME_ASSETS,tep_get_all_get_params(
-        array('site_id','bflag','product_categories_id')),'get');
-  echo '<div class="assets_search_bar">';
-  echo "<table width='100%'>";
-  echo "<tr>";
-  echo "<td width='230'>";
-  echo TEXT_SEARCH_SITE;
-  echo "</td>";
-  echo "<td width='150'>";
-  echo TEXT_SEARCH_WHERE;
-  echo "</td>";
-  echo "<td width='300'>";
-  echo TEXT_SEARCH_DATE;
-  echo "</td>";
-  echo "<td>";
-  echo "</td>";
-  echo "</tr>";
-  echo "<tr>";
-  echo "<td>";
-  echo tep_site_pull_down_menu_with_all($_GET['site_id'], false, TEXT_SHOW_ALL);
-  echo "</td>";
-  echo "<td>";
   ?>
-    <select name="show_status">
-    <option value="easy" <?php
-    if(!isset($_GET['show_status'])||$_GET['show_status']=='easy'){?>
-      selected<?php }?>><?php echo TEXT_STATUS_EASY;?>
-        </option>
-        <option value="info" <?php
-        if(isset($_GET['show_status'])&&$_GET['show_status']=='info'){?>
-          selected<?php }?>><?php echo TEXT_STATUS_INFO;?>
-            </option>
-            </select>
-
-            <?php
-            echo "</td>";
-  echo "<td>";
-  ?>
-    <?php //start date ?>
-    <table cellpadding="0" cellspacing="0" border="0" class="assets_time">
-    <tr>
-    <td>
-    <?php echo TEXT_SEARCH_DATE_START."&nbsp;&nbsp";?>
-    </td><td>
-    <select name="startY" size="1">
-    <?php
-    if ($startDate) {
-      $y = date("Y") - date("Y", $startDate- 60* 60 * 24);
-    } else {
-      $y = 0;
-    }
-  for ($i = 10; $i >= 0; $i--) {
-    ?>
-      <option<?php if ($y == $i) echo " selected"; ?>><?php echo date("Y") - $i; ?></option>
-      <?php
-  }
-  ?>
-    </select></td>
-    <td><select name="startM" size="1">
-    <?php
-    if ($startDate) {
-      $m = date("n", $startDate- 60* 60 * 24);
-    } else {
-      $m = date("n");
-    }
-  for ($i = 1; $i < 13; $i++) {
-    ?>
-      <option<?php if ($m == $i) echo " selected"; ?> value="<?php echo $i; ?>"><?php echo strftime("%B", mktime(0, 0, 0, $i, 1)); ?></option>
-      <?php
-  }
-  ?>
-    </select></td>
-    <td><select name="startD" size="1">
-    <?php
-    if ($startDate) {
-      $j = date("j", $startDate- 60* 60 * 24);
-    } else {
-      $j = 1;
-    }
-  for ($i = 1; $i < 32; $i++) {
-    ?>
-      <option<?php if ($j == $i) echo " selected"; ?>><?php echo $i; ?></option>
-      <?php
-  }
-  ?>
-    </select></td>
-    </tr>
-    </table>
-    </td>
-    <td>
-    <input type="hidden" name="search" value="1">
-    <?php
-    echo tep_html_element_submit(TEXT_SEARCH,'','assets_submit');
-  ?>
-    </td>
-    </tr>
-    <tr>
-    <td>
-    <?php echo TEXT_SEARCH_CATEGORY;?>
-    </td>
-    <td>
-    <?php echo TEXT_SEARCH_ORDER;?>
-    </td>
-    <td>
-    <table cellpadding="0" cellspacing="0" border="0" class="assets_time"><tr><td>
-    <?php echo TEXT_SEARCH_DATE_END."&nbsp;&nbsp";?>
-    </td><td>
-    <select name="endY" size="1">
-    <?php
-    if ($endDate) {
-      $y = date("Y") - date("Y", $endDate - 60* 60 * 24);
-    } else {
-      $y = 0;
-    }
-  for ($i = 10; $i >= 0; $i--) {
-    ?>
-      <option<?php if ($y == $i) echo " selected"; ?>>
-      <?php echo date("Y") - $i; ?></option>
-      <?php
-  }
-  ?>
-    </select>
-    </td>
-    <td><select name="endM" size="1">
-    <?php
-    if ($endDate) {
-      $m = date("n", $endDate - 60* 60 * 24);
-    } else {
-      $m = date("n");
-    }
-  for ($i = 1; $i < 13; $i++) {
-    ?>
-      <option<?php if ($m == $i) echo " selected"; ?> value="<?php echo $i; ?>">
-      <?php echo strftime("%B", mktime(0, 0, 0, $i, 1)); ?></option>
-      <?php
-  }
-  ?>
-    </select></td>
-    <td><select name="endD" size="1">
-    <?php
-    if ($endDate) {
-      $j = date("j", $endDate - 60* 60 * 24);
-    } else {
-      $j = date("j");
-    }
-  for ($i = 1; $i < 32; $i++) {
-    ?>
-      <option<?php if ($j == $i) echo " selected"; ?>>
-      <?php echo $i; ?></option>
-      <?php
-  }
-  ?>
-    </select></td>
-    </tr>
-    </table>
-    </td>
-    <td>
-    <?php ?>
-    <input type="button" class="assets_input" value="<?php echo
-    TEXT_ASSETS_PRINT;?>" onclick="window.open('<?php echo 
-        tep_href_link(FILENAME_PRINT_ASSETS,tep_get_all_get_params());?>');">
-    </td>
-    </tr>
-    <tr>
-    <td>
-    <?php
-    echo tep_draw_pull_down_menu('product_categories_id',tep_get_category_tree(),
-        $current_category_id);
-  ?>
-    </td><td>
-    <select name="sort_order">
-    <option value="" <?php
-    if(!isset($_GET['sort_order'])||$_GET['sort_order']==''){?>
-      selected<?php }?>><?php echo TEXT_SORT_DATE;?>
-        </option>
-        <option value="price_asc" <?php
-        if(isset($_GET['sort_order'])&&$_GET['sort_order']=='price_asc'){?>
-          selected<?php }?>><?php echo TEXT_SORT_PRICE_ASC;?>
-            </option>
-            <option value="price_desc" <?php
-            if(isset($_GET['sort_order'])&&$_GET['sort_order']=='price_desc'){?>
-              selected<?php }?>><?php echo TEXT_SORT_PRICE_DESC;?>
-                </option>
-                </select>
-                </td><td></td><td></td></tr></table>
-                <?php
-                echo '</div>';
-  echo "</form>";
+    <div class="assets_print">
+      <input type="button" class="assets_input" value="<?php echo TEXT_ASSETS_PRINT;?>" onclick="window.print();">
+    </div>
+  <?php
   $now_time = date('H:i:s');
   $start = $_GET['startY']."-".$_GET['startM']."-".$_GET['startD']." ".$start_time;
   $end = $_GET['endY']."-".$_GET['endM']."-".$_GET['endD']." ".$now_time;
@@ -455,6 +241,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
       echo "<div class='no_result'>".TEXT_NO_RESULT."</div>";
     }else{
       ?>
+        <div class="assets_print_bottom">
         <table cellpadding="0" cellspacing="1" border="0" width="99%" class="assets_box">
         <tr class="assets_text">
         <?php
@@ -604,14 +391,8 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
   }
 }
 ?>
-</td>
-</tr>
-</table>
-<div id="print_footer">
-<?php
-require(DIR_WS_INCLUDES . 'footer.php');
-?>
 </div>
+</td></tr></table>
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>
