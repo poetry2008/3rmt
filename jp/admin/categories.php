@@ -835,6 +835,7 @@
             tep_reset_cache_block('also_purchased');
           }
           
+          unset($_SESSION['product_history']);
           if (isset($_POST['rdirect'])) {
             tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&page='.$_GET['page'].'&pID=' . $products_id.'&site_id=0'));
           } else {
