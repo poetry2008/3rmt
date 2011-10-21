@@ -345,9 +345,9 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
       echo "</table>";
     }else{
       if(count($category_asset_arr)!=0||count($products)!=0){
-      echo "<table cellpadding='0' cellspacing='1' border='0' width='99%'>";
+      echo "<table cellpadding='0' cellspacing='1' border='0' width='99%' class='asset_easy'>";
       echo "<tr class='assets_c'>";
-      echo "<td >";
+      echo "<td class='asstes_easy_left'>";
       echo TEXT_SUM_PRODUCT;
       echo "</td>";
       echo "<td class='asstes_easy_text'>";
@@ -355,14 +355,14 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
       echo "</td>";
       echo "</tr>";
       echo "<tr class='assets_c'>";
-      echo "<td  >";
+      echo "<td  class='asstes_easy_left'>";
       echo TEXT_AVG_PRICE;
       echo "</td>";
       echo "<td class='asstes_easy_text'>";
       echo $currencies->format(@($all_avg_price/$all_true_row));
       echo "</td>";
       echo "<tr class='assets_c'>";
-      echo "<td  >";
+      echo "<td  class='asstes_easy_left'>";
       echo TEXT_SUM_PRICE;
       echo "</td>";
       echo "<td class='asstes_easy_text'>";
