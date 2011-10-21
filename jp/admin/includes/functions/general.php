@@ -6495,8 +6495,8 @@ function tep_get_all_asset_category_by_cid($cid,$bflag,$site_id=0,$start='',$end
            ,$site_id,$start,$end)&&$tmp_row['products_real_quantity']!=0){
        $result['error'] = true;
      }else{
-       $asset_all_product += ($tmp_row['products_real_quantity']*$tmp_price);
      }
+     $asset_all_product += ($tmp_row['products_real_quantity']*$tmp_price);
      if($tmp_row['products_real_quantity'] != 0){
        $all_tmp_row++;
      }
