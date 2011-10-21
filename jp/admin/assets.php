@@ -507,6 +507,8 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
 
       }
     }
+  }else{
+    echo "<div class='no_result'>".TEXT_NO_RESULT."</div>";
   }
   ?>
   <?php
@@ -514,7 +516,8 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
     $all_product_info =
       tep_get_all_asset_category_by_cid($_GET['product_categories_id'],
           $bflag,$site_id,$start,$end);
-    if(isset($_GET['show_status'])&&$_GET['show_status']=='info'){
+    if(isset($_GET['show_status'])&&$_GET['show_status']=='info'
+        &&(count($category_asset_arr)!=0||count($products)!=0)){
       echo "<tr class='assets_c'>";
       echo "<td rowspan='3' ";
       if(count($products)>0){
@@ -547,6 +550,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
       echo "</tr>";
       echo "</table>";
     }else{
+      if(count($category_asset_arr)!=0||count($products)!=0){
       echo "<table cellpadding='0' cellspacing='1' border='0' width='99%' class='asset_easy'>";
       echo "<tr class='assets_c'>";
       echo "<td class='asstes_easy_left'>";
@@ -572,6 +576,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
       echo "</td>";
       echo "</tr>";
       echo "</table>";
+      }
     }
   }
 }
