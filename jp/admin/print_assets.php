@@ -256,11 +256,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
         </tr>
         <?php 
         foreach($sort_category_arr as $key => $v){
-          if($category_asset_arr[$key]['error']){
-            echo "<tr class='assets_error'>";
-          }else{
-            echo "<tr class='assets_c'>";
-          }
+          echo "<tr class='assets_c'>";
           if(count($products)!=0){
             echo "<td>";
             echo "</td>";
@@ -280,21 +276,13 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
           echo "</tr>";
         }
       foreach($sort_product_arr as $k => $v){
-        if($all_product[$k]['error']){
-          echo "<tr class='assets_error'>";
-        }else{
-          echo "<tr class='assets_c'>";
-        }
+        echo "<tr class='assets_c'>";
         echo "<td>";
         if($all_product[$k]['relate_date']>0){
           echo $all_product[$k]['relate_date'];
         }
         echo "</td>";
         echo "<td>";
-        echo "<a class='asset_product_link' href='"
-          .tep_href_link(FILENAME_ASSETS,tep_get_all_get_params()."&pid=".$k)."'>";
-        echo tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW);
-        echo "</a>";
         echo $all_product[$k]['products_name'];
         echo "</td>";
         echo "<td align='right'>";
