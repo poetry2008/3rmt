@@ -1072,7 +1072,6 @@ a.s_column_bar {
 	height:30px;
 	line-height:30px;
 }
-.asset_easy td { background-color:#ccc;}
 .no_result { font-size:18px; color:#ff0000; margin-left:5px;}
 .product_history_back { margin:5px 0 0 5px;}
 .assets_top_text { margin-left:5px; font-size:13px; /*border:1px solid #ff0000;*/}
@@ -1094,3 +1093,4 @@ a.s_column_bar {
 	background-color:#ccc;
 }
 .asstes_easy_text { text-align:right;}
+.asstes_easy_left{ background-color:#ccc;}
