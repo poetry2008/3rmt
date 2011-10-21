@@ -4,6 +4,7 @@ require('includes/application_top.php');
 
 require(DIR_WS_CLASSES . 'currencies.php');
 $currencies = new currencies(2);
+$bflag =0 ;
 
 $startDate = "";
 $startDateG = 0;
@@ -170,14 +171,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
   echo "</td>";
   echo "<td>";
   ?>
-    <select name="bflag">
-    <option value="1"<?php if($_GET['bflag'] == '1'){?> selected<?php }?>><?php echo TEXT_SELL;?>
-    </option>
-    <option value="2"<?php if($_GET['bflag'] == '2'){?> selected<?php }?>><?php echo TEXT_BUY;?>
-    </option>
-    </select>
-    &nbsp;&nbsp;
-  <select name="show_status">
+    <select name="show_status">
     <option value="easy" <?php
     if(!isset($_GET['show_status'])||$_GET['show_status']=='easy'){?>
       selected<?php }?>><?php echo TEXT_STATUS_EASY;?>
@@ -343,11 +337,6 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
   $start = $_GET['startY']."-".$_GET['startM']."-".$_GET['startD']." ".$now_time;
   $end = $_GET['endY']."-".$_GET['endM']."-".$_GET['endD']." ".$now_time;
   $site_id = (isset($_GET['site_id'])&&$_GET['site_id'])?$_GET['site_id']:0;
-  if(isset($_GET['bflag'])&&$_GET['bflag']==2){
-    $bflag = 1;
-  }else{
-    $bflag = 0;
-  }
   $sql_category_asset = " select c.categories_id,cd.categories_name from
     ".TABLE_CATEGORIES." c 
     ,".TABLE_CATEGORIES_DESCRIPTION." cd 
