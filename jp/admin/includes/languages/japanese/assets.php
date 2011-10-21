@@ -1,7 +1,7 @@
 <?php
 define('ASSETS_TITLE', '資産管理');
-define('TEXT_PRODUCTS_NAME','タイトル');
-define('TEXT_PRODUCTS_QUANTITY','数量');
+define('TEXT_PRODUCTS_NAME','カテゴリー/商品');
+define('TEXT_PRODUCTS_QUANTITY','実在庫数');
 define('TEXT_PRODUCTS_PRICE','平均単価');
 define('TEXT_PRODUCTS_PRICE_SUM','総額');
 
@@ -23,7 +23,7 @@ define('TEXT_ASSETS_NO_DATA','有効なデータが足りません');
 define('TEXT_SORT_DATE','直近');
 define('TEXT_SORT_PRICE_ASC','最安値');
 define('TEXT_SORT_PRICE_DESC','最高値');
-define('TEXT_PRODUCTS_DATE','取引日');
+define('TEXT_PRODUCTS_DATE','納品日');
 define('TEXT_STATUS_EASY','簡易');
 define('TEXT_STATUS_INFO','詳細');
 define('TEXT_SUM_PRODUCT','合計在庫');
@@ -38,4 +38,5 @@ define('TEXT_SEARCH_DATE','集計期間');
 define('TEXT_SEARCH_DATE_START','開始日');
 define('TEXT_SEARCH_DATE_END','終了日');
 define('TEXT_ASSETS_INFO','資産計算条件を設定し検索ボタンをクリックしてください<br>資産計算に必要なデータが足りない場合、行が赤色で表示されます');
+define('TEXT_ROW','個');
 ?>
