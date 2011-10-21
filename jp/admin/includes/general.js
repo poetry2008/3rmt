@@ -377,8 +377,8 @@ function clearNoNum(obj)
   if(!(key == 37 || key == 38 || key == 39 || key ==40)){
   */
   var re = /^[0-9]+\.?[0-9]*$/;
-  var show_error_msg = false; 
-  if(!re.test(obj.value)){
+  var show_error_msg = false;  
+  if(!re.test(obj.value) && obj.value != ''){
     show_error_msg = true; 
     alert('登録できない文字が入力されました。その文字を消します。'); 
   } 
@@ -931,7 +931,7 @@ function clearLibNum(obj)
 {
   var re = /^[0-9]+$/;
   var error_single = false; 
-  if(!re.test(obj.value)){
+  if(!re.test(obj.value) && obj.value != ''){
     alert('登録できない文字が入力されました。その文字を消します。'); 
     error_single = true; 
   }
