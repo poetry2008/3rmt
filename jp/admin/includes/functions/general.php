@@ -6561,8 +6561,6 @@ function tep_get_asset_avg_by_pid($pid,$site_id=0,$start='',$end=''){
          $sql .= " and date_purchased between '".$start."' and '".$end."' ";
        }
 
-       $sql .= " order by o.torihiki_date desc
-        ";
     $order_history_query = tep_db_query($sql);
     $sum = 0;
     $cnt = 0;
@@ -6636,7 +6634,7 @@ function tep_get_order_history_sql_by_pid($pid,$start='',$end='',$sort=''){
 }
 function tep_get_relate_products_sum($pid,$site_id=0,$start='',$end='')
 {
-  $sql = "select sum(op.products_quantity) as sum_relate from ".TABLE_ORDERS." o ,
+  $sql = "select op.products_quantity as sum_relate from ".TABLE_ORDERS." o ,
     ".TABLE_ORDERS_PRODUCTS." op ,".TABLE_ORDERS_STATUS." os ,".TABLE_PRODUCTS." p 
       where  o.orders_id = op.orders_id and p.products_id = '".$pid."'
       and p.relate_products_id= op.products_id 
@@ -6648,7 +6646,10 @@ function tep_get_relate_products_sum($pid,$site_id=0,$start='',$end='')
     $sql .= " and o.date_purchased between '".$start."' and '".$end."' ";
   }
   $query = tep_db_query($sql);
-  $res = tep_db_fetch_array($query);
-  return $res['sum_relate'];
+  $return_sum = 0;
+  while($res = tep_db_fetch_array($query)){
+    $return_sum += $res['sum_relate'];
+  }
+  return $return_sum;
 
 }
