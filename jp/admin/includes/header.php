@@ -67,6 +67,18 @@ if ($_SERVER['PHP_SELF'] != '/admin/preorders.php') {
 ?>
 var cfg_head_last_customer_action = '<?php echo PREORDER_LAST_CUSTOMER_ACTION;?>';
 var prev_head_customer_action = '';
+function playHeadSound()  
+{  
+  var hnode=document.getElementById('head_sound');  
+  if(hnode!=null)  
+  {  
+   if (hnode.controls) {
+    hnode.controls.play();  
+   } else {
+    hnode.play();  
+   }
+  }
+}
 function check_preorder_head() {
   $.ajax({
     dataType: 'text',
@@ -75,6 +87,7 @@ function check_preorder_head() {
       if (last_head_customer_action != cfg_head_last_customer_action && prev_head_customer_action != last_head_customer_action){
         $('.preorder_head').css('background-color', '#83dc94');
         prev_head_customer_action = last_head_customer_action;
+        playHeadSound();
       }
       }
   });
@@ -84,6 +97,7 @@ function check_preorder_head() {
 $(function(){
   setTimeout(function(){check_preorder_head()}, 70000);
 });
+
 <?php
 }
 ?>
@@ -231,6 +245,13 @@ if (!isset($ocertify->npermission) || $ocertify->npermission >= 7) {
   echo '|&nbsp;
   <a href="' . tep_href_link(basename($GLOBALS['PHP_SELF']), '', 'NONSSL') .
     '?execute_logout_user=1" class="headerLink">'.HEADER_TEXT_LOGOUT.'</a>';
+}
+?>
+<?php
+if ($_SERVER['PHP_SELF'] != '/admin/preorders.php') {
+?>
+<embed id="head_sound" src="images/presound.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></embed>
+<?php
 }
 ?>
 </td>

@@ -51,6 +51,7 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
 
 // define the filenames used in the project
   define('FILENAME_ASSETS', 'assets.php');
+  define('FILENAME_PRINT_ASSETS', 'print_assets.php');
   define('FILENAME_ORDERS_DOWNLOAD', 'orders_download.php');
   define('FILENAME_PREORDERS', 'preorders.php');
   define('FILENAME_PREORDERS_STATUS', 'preorders_status.php');
