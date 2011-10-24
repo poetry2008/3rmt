@@ -147,6 +147,8 @@
         }
       }
       echo tep_draw_form('form', tep_href_link('preorder_success.php')); 
+      echo PREORDER_SUCCESS_ACTIVE_INFO_TEXT; 
+      echo '<br><br>'; 
       echo tep_draw_hidden_field('action', 'send'); 
       ?>
       <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size:12px;">

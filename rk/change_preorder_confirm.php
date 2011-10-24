@@ -16,6 +16,21 @@
     forward404(); 
   }
   
+  $preorder_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$_POST['pid']."' and site_id = '".SITE_ID."'");
+  $preorder_res = tep_db_fetch_array($preorder_raw);
+  if (!$preorder_res) {
+    forward404(); 
+  } 
+  
+  $check_preorder_str = $preorder_res['check_preorder_str'];
+ 
+  $preorder_subtotal = 0;
+  $preorder_subtotal_raw = tep_db_query("select * from ".TABLE_PREORDERS_TOTAL." where orders_id = '".$_POST['pid']."' and class = 'ot_subtotal'");
+  $preorder_subtotal_res = tep_db_fetch_array($preorder_subtotal_raw);
+  if ($preorder_subtotal_res) {
+    $preorder_subtotal = number_format($preorder_subtotal_res['value'], 0, '.', ''); 
+  }
+
   $preorder_info_attr = array();
   foreach ($_POST as $pc_key => $pc_value) {
     if (is_array($pc_value)) {
@@ -65,15 +80,27 @@
   if (!tep_session_is_registered('preorder_info_pay')) {
     tep_session_register('preorder_info_pay'); 
   }
+ 
+  if (MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
+    if ($_POST['preorder_point'] < $preorder_subtotal) {
+      $preorder_point = $_POST['preorder_point']; 
+    } else {
+      $preorder_point = $preorder_subtotal; 
+    }
+    $real_point = $preorder_point;
+    
+    if (!tep_session_is_registered('preorder_point')) {
+      tep_session_register('preorder_point'); 
+    } 
+    if (!tep_session_is_registered('preorder_real_point')) {
+      tep_session_register('preorder_real_point'); 
+    } 
+  }
   
   require(DIR_WS_LANGUAGES . $language . '/change_preorder_confirm.php');
   
-  $preorder_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$_POST['pid']."' and site_id = '".SITE_ID."'");
-  $preorder_res = tep_db_fetch_array($preorder_raw);
-  if (!$preorder_res) {
-    forward404(); 
-  } 
-  if ($_POST['pay_type'] == 1) {
+
+if ($_POST['pay_type'] == 1) {
     $form_action_url = MODULE_PAYMENT_TELECOM_CONNECTION_URL; 
   } else if ($_POST['pay_type'] == 2) {
     $form_action_url = MODULE_PAYMENT_PAYPAL_CONNECTION_URL; 
@@ -265,17 +292,86 @@
                   $preorder_total_raw = tep_db_query("select * from ".TABLE_PREORDERS_TOTAL." where orders_id = '".$_POST['pid']."' order by sort_order asc"); 
                   while ($preorder_total_res = tep_db_fetch_array($preorder_total_raw)) { 
                     if ($preorder_total_res['class'] == 'ot_total') {
-                      $total_param = number_format($preorder_total_res['value'], 0, '.', ''); 
+                      $total_param = number_format($preorder_total_res['value'], 0, '.', '')-(int)$preorder_point; 
                     }
+                    
                   ?>
                   <tr>
                     <td class="main" align="right"><?php echo $preorder_total_res['title'];?></td>                  
-                    <td class="main" align="right"><?php echo $currencies->format_total($preorder_total_res['value'])?></td>                  
+                    <td class="main" align="right">
+                    <?php 
+                    if ($preorder_total_res['class'] == 'ot_point') {
+                      echo $currencies->format_total((int)$preorder_point);
+                    } else if ($preorder_total_res['class'] == 'ot_total') {
+                      echo $currencies->format_total($preorder_total_res['value']-(int)$preorder_point);
+                    } else {
+                      echo $currencies->format_total($preorder_total_res['value']);
+                    }
+                    ?>
+                    </td>                  
                   </tr>
                 <?php }?> 
+                  <?php
+if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
+if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
+  
+  $ptoday = date("Y-m-d H:i:s", time());
+  $pstday_array = getdate();
+  $pstday = date("Y-m-d H:i:s", mktime($pstday_array[hours],$pstday_array[mimutes],$pstday_array[second],$pstday_array[mon],($pstday_array[mday] - MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL_KIKAN),$pstday_array[year]));
+  
+  $total_buyed_date = 0;
+  // ccdd
+  $customer_level_total_query = tep_db_query("select * from preorders where customers_id = '".$preorder_res['customers_id']."' and date_purchased >= '".$pstday."' and site_id = ".SITE_ID);
+  if(tep_db_num_rows($customer_level_total_query)) {
+    while($customer_level_total = tep_db_fetch_array($customer_level_total_query)) {
+      $cltotal_subtotal_query = tep_db_query("select value from preorders_total where orders_id = '".$customer_level_total['orders_id']."' and class = 'ot_subtotal'");
+    $cltotal_subtotal = tep_db_fetch_array($cltotal_subtotal_query);
+  
+      $cltotal_point_query = tep_db_query("select value from preorders_total where orders_id = '".$customer_level_total['orders_id']."' and class = 'ot_point'");
+    $cltotal_point = tep_db_fetch_array($cltotal_subtotal_query);
+     
+    $total_buyed_date += ($cltotal_subtotal['value'] - $cltotal_point['value']);
+    }
+  }
+  //----------------------------------------------
+  
+  //還元率を計算----------------------------------
+  if(mb_ereg("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK)) {
+    $back_rate_array = explode("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK);
+  $back_rate = MODULE_ORDER_TOTAL_POINT_FEE;
+  for($j=0; $j<sizeof($back_rate_array); $j++) {
+    $back_rate_array2 = explode(",", $back_rate_array[$j]);
+    if($back_rate_array2[2] <= $total_buyed_date) {
+      $back_rate = $back_rate_array2[1];
+    $back_rate_name = $back_rate_array2[0];
+    }
+  }
+  } else {
+  $back_rate_array = explode(",", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK);
+  if($back_rate_array[2] <= $total_buyed_date) {
+    $back_rate = $back_rate_array[1];
+    $back_rate_name = $back_rate_array[0];
+  }
+  }
+  //----------------------------------------------
+  $point_rate = $back_rate;
+} else {
+  $point_rate = MODULE_ORDER_TOTAL_POINT_FEE;
+}
+// ここまでカスタマーレベルに応じたポイント還元率算出============================================================
+  if ($preorder_subtotal > 0) {
+    $preorder_get_point = ($preorder_subtotal - (int)$preorder_point) * $point_rate;
+  } else {
+    $preorder_get_point = 0;
+  }
+if (!tep_session_is_registered('preorder_get_point')) {
+  tep_session_register('preorder_get_point');
+}
+}
+                  ?>
                   <tr>
                     <td class="main" align="right"><?php echo CHANGE_PREORDER_POINT_TEXT;?></td> 
-                    <td class="main" align="right">0p</td> 
+                    <td class="main" align="right"><?php echo (int)$preorder_get_point.'&nbsp;P';?></td> 
                   </tr>
                 </table> 
               </td>
@@ -311,7 +407,7 @@
           </table> 
           </form> 
           <?php 
-          echo tep_draw_form('order1', tep_href_link('change_preorder.php?pid='.$_POST['pid']));
+          echo tep_draw_form('order1', tep_href_link('change_preorder.php?pid='.$check_preorder_str));
           foreach ($_POST as $post_key => $post_value) {
             if ($post_key == 'action' || $post_key == 'x' || $post_key == 'y') {
               continue; 

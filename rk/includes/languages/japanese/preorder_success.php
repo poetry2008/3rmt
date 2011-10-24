@@ -21,3 +21,4 @@ define('PREORDER_SUCCESS_READ_INFO', STORE_NAME.'では、%sの予約サービ�
 define('PREORDER_SUCCESS_UNACTIVE_HEAD_TITLE', 'メール認証');
 define('PREORDER_SUCCESS_UNACTIVE_TITLE', 'メール認証');
 define('PREORDER_SUCCESS_TEXT_LINK', '「フリーメールでメールが受け取れない方へ」');
+define('PREORDER_SUCCESS_ACTIVE_INFO_TEXT', '<font size="3">メールを送信致しました。</font><br><br>予約注文の手続を完了するには、お客様のメールアドレスを'.STORE_NAME.'に登録していただく必要がございます。<br>メール本文よりメール認証URLをクリックしてください。メール認証完了後、自動で予約手続が完了いたします。<br><br> メールが届かない場合は、下記入力フォームにて認証メールをもう一度送信してください');

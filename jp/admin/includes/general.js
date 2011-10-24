@@ -821,7 +821,8 @@ document.edit_order.notify_comments.checked = false;
 
 }
 function pre_update_price2() {
-
+  document.getElementById("h_predate").value = document.getElementById("date_predate").value;
+  document.getElementById("h_deadline").value = document.getElementById("date_ensure_deadline").value;
   if (window.confirm("注文内容を確認しますか？")) {
     document.edit_order.notify.checked = false;
     document.edit_order.notify_comments.checked = false;
@@ -896,7 +897,6 @@ document.edit_order.notify_comments.checked = false;
 }
 }
 });
-
 
 // delete   document.edit_order.submit();
 } else {

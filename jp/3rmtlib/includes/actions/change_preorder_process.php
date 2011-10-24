@@ -7,6 +7,10 @@ if (!isset($_SESSION['preorder_info_id'])) {
   forward404();
 }
 
+if (isset($preorder_real_point)) {
+  $preorder_point = $preorder_real_point;
+}
+
 require(DIR_WS_CLASSES.'payment.php');
 
 $preorder_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$_SESSION['preorder_info_id']."' and site_id = '".SITE_ID."'");
@@ -23,10 +27,10 @@ if ($preorder) {
   $torihikihouhou_date_str = $_SESSION['preorder_info_date'].' '.$_SESSION['preorder_info_hour'].':'.$_SESSION['preorder_info_min'].':00';
   $default_status_raw = tep_db_query("select * from ".TABLE_ORDERS_STATUS." where orders_status_id = '".DEFAULT_ORDERS_STATUS_ID."'");
   $default_status_res = tep_db_fetch_array($default_status_raw); 
-   
+  $preorder_cus_id = $preorder['customers_id']; 
   $sql_data_array = array('orders_id' => $orders_id,
                            'site_id' => $preorder['site_id'], 
-                           'customers_id' => $preorder['customers_id'], 
+                           'customers_id' => $preorder_cus_id, 
                            'customers_name' => $preorder['customers_name'], 
                            'customers_name_f' => $preorder['customers_name_f'], 
                            'customers_company' => $preorder['customers_company'], 
@@ -146,10 +150,18 @@ if ($preorder) {
   $preorder_total_raw = tep_db_query("select * from ".TABLE_PREORDERS_TOTAL." where orders_id = '".$_SESSION['preorder_info_id']."'");
   
   while ($preorder_total_res = tep_db_fetch_array($preorder_total_raw)) {
+    if ($preorder_total_res['class'] == 'ot_total') {
+      $preorder_total_num = $preorder_total_res['value'] - (int)$preorder_point; 
+    } else if ($preorder_total_res['class'] == 'ot_point') {
+      $preorder_total_num = (int)$preorder_point; 
+    } else {
+      $preorder_total_num = $preorder_total_res['value']; 
+    }
+    
     $sql_data_array = array('orders_id' => $orders_id,
                             'title' => $preorder_total_res['title'], 
                             'text' => $preorder_total_res['text'], 
-                            'value' => $preorder_total_res['value'], 
+                            'value' => $preorder_total_num, 
                             'class' => $preorder_total_res['class'], 
                             'sort_order' => $preorder_total_res['sort_order'], 
         ); 
@@ -267,6 +279,14 @@ while ($preorders_computers_res = tep_db_fetch_array($preorders_computer_raw)) {
   tep_db_perform('orders_to_computers', $sql_data_array);
 }
 
+if (MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
+  if(MODULE_ORDER_TOTAL_POINT_ADD_STATUS == '0') {
+    tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " .  intval($preorder_get_point - $preorder_point) . " where customers_id = " . $preorder_cus_id );
+  } else {
+    tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point - " .  intval($preorder_point) . " where customers_id = " . $preorder_cus_id );
+  }
+}
+
 tep_db_query("delete from ".TABLE_PREORDERS." where orders_id = '".$_SESSION['preorder_info_id']."' and site_id = '".SITE_ID."'"); 
 tep_db_query("delete from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$_SESSION['preorder_info_id']."'"); 
 tep_db_query("delete from ".TABLE_PREORDERS_PRODUCTS_ATTRIBUTES." where orders_id = '".$_SESSION['preorder_info_id']."'"); 
@@ -279,9 +299,11 @@ tep_db_query("delete from ".TABLE_PREORDERS_TOTAL." where orders_id = '".$_SESSI
 tep_db_query("delete from ".TABLE_PREORDERS_TO_COMPUTERS." where orders_id = '".$_SESSION['preorder_info_id']."'"); 
 tep_db_query("delete from ".TABLE_PREORDERS_OA_FORMVALUE." where orders_id = '".$_SESSION['preorder_info_id']."'"); 
 
+last_customer_action();
+
 }
 
-last_customer_action();
+
 
 tep_session_unregister('preorder_info_tori');
 tep_session_unregister('preorder_info_date');
@@ -290,6 +312,9 @@ tep_session_unregister('preorder_info_min');
 tep_session_unregister('preorder_info_character');
 tep_session_unregister('preorder_info_id');
 tep_session_unregister('preorder_info_pay');
+tep_session_unregister('preorder_point');
+tep_session_unregister('preorder_real_point');
+tep_session_unregister('preorder_get_point');
 
 unset($_SESSION['preorder_option']);
 

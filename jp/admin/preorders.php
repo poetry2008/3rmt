@@ -217,8 +217,11 @@
           if ($status == 32) {
             $site_url_raw = tep_db_query("select * from sites where id = '".$site_id."'"); 
             $site_url_res = tep_db_fetch_array($site_url_raw); 
-            $change_preorder_url = $site_url_res['url'].'/change_preorder.php?pid='.$oID; 
+            $change_preorder_url_param = md5(time().$oID); 
+            $change_preorder_url = $site_url_res['url'].'/change_preorder.php?pid='.$change_preorder_url_param; 
             $comments = str_replace('${REAL_ORDER_URL}', $change_preorder_url, $comments); 
+            
+            tep_db_query("update ".TABLE_PREORDERS." set check_preorder_str = '".$change_preorder_url_param."' where orders_id = '".$oID."'"); 
           }
           if ($status == 33) {
             $site_url_raw = tep_db_query("select * from sites where id = '".$site_id."'"); 
@@ -495,8 +498,11 @@
         if ($status == 32) {
           $site_url_raw = tep_db_query("select * from sites where id = '".$site_id."'"); 
           $site_url_res = tep_db_fetch_array($site_url_raw); 
-          $change_preorder_url = $site_url_res['url'].'/change_preorder.php?pid='.$oID; 
+          $change_preorder_url_param = md5(time().$oID); 
+          $change_preorder_url = $site_url_res['url'].'/change_preorder.php?pid='.$change_preorder_url_param; 
           $comments = str_replace('${REAL_ORDER_URL}', $change_preorder_url, $comments); 
+          
+          tep_db_query("update ".TABLE_PREORDERS." set check_preorder_str = '".$change_preorder_url_param."' where orders_id = '".$oID."'"); 
         }
         if ($status == 33) {
           $site_url_raw = tep_db_query("select * from sites where id = '".$site_id."'"); 

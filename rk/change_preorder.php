@@ -11,15 +11,33 @@
 */
 
   require('includes/application_top.php');
+
   
   require(DIR_WS_LANGUAGES . $language . '/change_preorder.php');
-  $preorder_id = $_GET['pid'];
   
-  $preorder_raw = tep_db_query('select * from '.TABLE_PREORDERS." where orders_id = '".$preorder_id."' and site_id = '".SITE_ID."' and is_active = '1'");
+  $preorder_raw = tep_db_query('select * from '.TABLE_PREORDERS." where check_preorder_str = '".$_GET['pid']."' and site_id = '".SITE_ID."' and is_active = '1'");
   $preorder_res = tep_db_fetch_array($preorder_raw); 
   if (!$preorder_res) {
     forward404(); 
   }
+  
+  $customer_info_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = '".$preorder_res['customers_id']."' and site_id = '".SITE_ID."'"); 
+  $customer_info_res = tep_db_fetch_array($customer_info_raw);
+  
+  $is_guest_single = 0;
+  if ($customer_info_res['customers_guest_chk'] != '0') {
+    $is_guest_single = 1; 
+  }
+  
+  if (!tep_session_is_registered('customer_id')) {
+      if ($customer_info_res['customers_guest_chk'] == '0') {
+        $navigation->set_snapshot();
+        tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
+      }
+  } 
+  $preorder_point = (int)$customer_info_res['point'];  
+  
+  $preorder_id = $preorder_res['orders_id'];
   
   $preorder_payment_code = tep_preorder_get_payment_type($preorder_res['payment_method']);
   
@@ -83,7 +101,7 @@ foreach ($_POST as $post_key => $post_value) {
     echo tep_draw_hidden_field($post_key, $post_value); 
   }
 }
-echo tep_draw_hidden_field('pid', $_GET['pid']); 
+echo tep_draw_hidden_field('pid', $preorder_id); 
 echo '</form>';
 ?>
 <script type="text/javascript">
@@ -330,13 +348,29 @@ echo '</form>';
           </table> 
           <?php }?> 
           <br>
+          <?php
+          if (!$is_guest_single && MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { 
+          ?>
+          <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
+            <tr>
+              <td class="main"><?php echo TEXT_PREORDER_POINT_TEXT;?></td> 
+              <td class="main"><?php echo tep_draw_input_field('preorder_point', isset($_POST['preorder_point'])?$_POST['preorder_point']:0, 'class="input_text_short"').'&nbsp;/&nbsp;'.$preorder_point;?></td> 
+            </tr>
+          </table>
+          <br>
+          <?php }?> 
           <table width="100%" cellpadding="0" cellspacing="0" border="0" class="c_pay_info">
             <tr>
               <td class="main">
               <?php echo TEXT_PREORDER_FETCH_BUTTON_INFO;?> 
               </td>
               <td class="main" align="right">
-                <?php echo tep_draw_hidden_field('pay_type', $preorder_payment_code);?> 
+                <?php
+                 if ($is_guest_single && MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { 
+                   echo '<input type="hidden" name="preorder_point" value="0">'; 
+                 }
+                ?>
+                <?php echo tep_draw_hidden_field('pay_type', strval($preorder_payment_code));?> 
                 <?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE);?> 
               </td>
             </tr>

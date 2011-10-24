@@ -24,3 +24,4 @@ define('TEXT_PREORDER_ERROR_DATE', '<span class="errorText">【'.mb_substr(TEXT_
 define('TEXT_PREORDER_ERROR_JIKAN', '<span class="errorText">【'.mb_substr(TEXT_TORIHIKIKIBOUJIKAN,0,(mb_strlen(TEXT_TORIHIKIKIBOUJIKAN)-1)).'】を選択してください。</span>');
 define('TEXT_PREORDER_ERROR_CHARACTER', '<span class="errorText">入力してください</span>');
 define('TEXT_PREORDER_FETCH_BUTTON_INFO', '<b>ご注文の手続きを進めてください。</b><br>「次へ進む」をクリックして支払方法の選択へ。');
+define('TEXT_PREORDER_POINT_TEXT', 'ポイント:');

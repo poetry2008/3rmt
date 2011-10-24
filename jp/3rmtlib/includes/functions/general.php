@@ -4351,8 +4351,10 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
    tep_db_perform(TABLE_PREORDERS_PRODUCTS, $sql_data_array);
    
    preorders_updated($order_id);  
-
-   preorder_last_customer_action();
+   
+   if ($is_active == 1) {
+     preorder_last_customer_action();
+   }
 }
 
 function tep_get_preorder_end_num() 
