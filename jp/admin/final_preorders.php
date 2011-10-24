@@ -647,6 +647,14 @@ while ($totals = tep_db_fetch_array($totals_query)) {
       $select_total_res = tep_db_fetch_array($select_total_raw);
       
       $pre_otm = (int)$select_total_res['value'].TEXT_MONEY_SYMBOL;
+      
+      $num_product = 0; 
+      $num_product_raw = tep_db_query("select products_quantity from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$oID."'"); 
+      $num_product_res = tep_db_fetch_array($num_product_raw); 
+      if ($num_product_res) {
+        $num_product = $num_product_res['products_quantity']; 
+      }
+      
       $email = str_replace(array(
         '${NAME}',
         '${MAIL}',
@@ -659,7 +667,10 @@ while ($totals = tep_db_fetch_array($totals_query)) {
         '${SITE_NAME}',
         '${SITE_URL}',
         '${SUPPORT_EMAIL}',
-        '${PAY_DATE}'
+        '${PAY_DATE}',
+        '${ENSURE_TIME}',
+        '${PRODUCTS_QUANTITY}',
+        '${EFFECTIVE_TIME}'
       ),array(
         $select_products_res['customers_name'],
         $select_products_res['customers_email_address'],
@@ -672,7 +683,10 @@ while ($totals = tep_db_fetch_array($totals_query)) {
         get_configuration_by_site_id('STORE_NAME', $select_products_res['site_id']),
         get_url_by_site_id($select_products_res['site_id']),
         get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $select_products_res['site_id']),
-        date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day()))
+        date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day())),
+        $select_products_res['ensure_deadline'],
+        $num_product.PREORDER_PRODUCT_UNIT_TEXT,
+        date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT,strtotime($select_products_res['predate'])),
       ),$email);
       
       if ($customer_guest['customers_guest_chk'] != 9) {
@@ -714,7 +728,10 @@ while ($totals = tep_db_fetch_array($totals_query)) {
             '${SITE_NAME}',
             '${SITE_URL}',
             '${SUPPORT_EMAIL}',
-            '${PAY_DATE}'
+            '${PAY_DATE}',
+            '${ENSURE_TIME}',
+            '${PRODUCTS_QUANTITY}',
+            '${EFFECTIVE_TIME}'
           ),array(
             $select_t_products_res['customers_name'],
             $select_t_products_res['customers_email_address'],
@@ -727,7 +744,10 @@ while ($totals = tep_db_fetch_array($totals_query)) {
             get_configuration_by_site_id('STORE_NAME', $select_t_products_res['site_id']),
             get_url_by_site_id($select_t_products_res['site_id']),
             get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $select_t_products_res['site_id']),
-            date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day()))
+            date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day())),
+            $select_products_res['ensure_deadline'],
+            $num_product.PREORDER_PRODUCT_UNIT_TEXT,
+            date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT,strtotime($select_products_res['predate'])),
           ),$preorder_email_title);
         }
         

@@ -209,4 +209,5 @@ define('PREORDERS_PAYMENT_METHOD_PRE', '支払方法「');
 define('PREORDERS_PAYMENT_METHOD_LAST', '」から検索');
 define('TEXT_SORT_ASC','▲');
 define('TEXT_SORT_DESC','▼');
+define('PREORDER_PRODUCT_UNIT_TEXT', '個');
 ?>
