@@ -13,36 +13,12 @@
 <script type="text/javascript"><!--
 function triggerHide(radio)
 {
-    if ($(radio).val() == 'convenience_store') {
-      $("#cemail").css("display", "block"); 
-      $("#caemail").css("display", "block"); 
-    } else {
-      $("#cemail").css("display", "none"); 
-      $("#caemail").css("display", "none"); 
-    }
-
-    if ($(radio).val() == 'buying') {
-      $(".rowHide_buying").css("display", "block"); 
-    } else {
-      $(".rowHide_buying").css("display", "none"); 
-    }
-    
-    if ($(radio).val() == 'rakuten_bank') {
-      $("#ctelnumber").css("display", "block"); 
-      $("#catelnumber").css("display", "block"); 
-    } else {
-      $("#ctelnumber").css("display", "none"); 
-      $("#catelnumber").css("display", "none"); 
-    }
-    
-    /* 
-    if ($(radio).attr("checked") == true) {
-     $(".rowHide").hide();
-      $(".rowHide_"+$(radio).val()).show();
-    }else{
-     $(".rowHide_"+$(radio).val()).hide();
-    }
-    */
+ if ($(radio).attr("checked") == true) {
+      $(".rowHide").hide();
+       $(".rowHide_"+$(radio).val()).show();
+     }else{
+      $(".rowHide_"+$(radio).val()).hide();
+     }
 }
 	
 $(document).ready(function(){
@@ -57,13 +33,12 @@ if($("input[name=payment]").length == 1){
     }
   });
 
-$("input:radio").click(function(){
+  $(".moduleRowSelecte").find("input:radio").click(function(){
     triggerHide(this);
-});
-$(".moduleRow").click(function(){
-    triggerHide($(this).find("input:radio")[0]);
-
-});
+  });
+  $(".moduleRow").click(function(){
+      triggerHide($(this).find("input:radio")[0]);
+    });
   });
 --></script>
 

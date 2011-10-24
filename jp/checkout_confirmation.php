@@ -416,7 +416,8 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
               <tr class="infoBoxContents"> 
                 <td><table border="0" cellspacing="0" cellpadding="2"> 
                     <tr> 
-                      <td class="main" colspan="4"><?php echo $confirmation['title']; ?></td> 
+                      <td class="main" colspan="4"><?php
+                                                                                    echo $confirmation['title']; ?></td> 
                     </tr> 
                     <?php
       for ($i=0, $n=sizeof($confirmation['fields']); $i<$n; $i++) {
