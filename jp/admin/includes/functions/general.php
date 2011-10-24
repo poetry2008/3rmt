@@ -6549,7 +6549,7 @@ function tep_get_all_asset($start='',$end=''){
 function tep_get_asset_avg_by_pid($pid,$site_id=0,$start='',$end=''){
     $product = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS." where products_id='".$pid."'"));
        $sql ="
-        select * 
+        select op.products_quantity ,op.final_price 
         from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS." o on op.orders_id=o.orders_id left join ".TABLE_ORDERS_STATUS." os on o.orders_status=os.orders_status_id 
         where 
         op.products_id='".$product['relate_products_id']."'
