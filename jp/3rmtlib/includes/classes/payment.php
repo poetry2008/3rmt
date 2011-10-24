@@ -172,7 +172,7 @@
     
     function specialOutput() {
       if (is_array($this->modules)) {
-        if (is_object($GLOBALS[$this->selected_module]) && ($GLOBALS[$this->selected_module]->enabled) && method_exists("specialOutput",$GLOBALS[$this->selected_module])) {
+        if (is_object($GLOBALS[$this->selected_module]) && ($GLOBALS[$this->selected_module]->enabled) && method_exists($GLOBALS[$this->selected_module],"specialOutput")) {
           return $GLOBALS[$this->selected_module]->specialOutput();
         }
       }

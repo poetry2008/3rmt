@@ -388,7 +388,7 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
   $total_tax += tep_calculate_tax($total_products_price, $products_tax) * $order->products[$i]['qty'];
   $total_cost += $total_products_price;
 
-  $products_ordered .= '注文商品　　　　　：' . $order->products[$i]['name'];
+  $products_ordered .= '' . $order->products[$i]['name'];
   if(tep_not_null($order->products[$i]['model'])) {
     $products_ordered .= ' (' . $order->products[$i]['model'] . ')';
   }
@@ -417,10 +417,11 @@ orders_updated($insert_id);
 $otq = tep_db_query("select * from ".TABLE_ORDERS_TOTAL." where class = 'ot_total' and orders_id = '".$insert_id."'");
 $ot = tep_db_fetch_array($otq);
 # メール本文整形 --------------------------------------{
+
 //mailoption {
 $mailoption['ORDER_ID']         = $insert_id;
 $mailoption['ORDER_DATE']       = tep_date_long(time())  ;
-$mailoption['USER_NAME']        = tep_get_fullname($order->customer['firstname'],$order->customer['lastname']) . '様' ;
+$mailoption['USER_NAME']        = tep_get_fullname($order->customer['firstname'],$order->customer['lastname'])  ;
 $mailoption['USER_MAILACCOUNT'] = $order->customer['email_address'];
 $mailoption['ORDER_TOTAL']      = $currencies->format(abs($ot['value']));
 @$payment_class = $$payment;
@@ -432,7 +433,11 @@ $mailoption['ORDER_TMETHOD']    = $torihikihouhou ;
 $mailoption['SITE_NAME']        = STORE_NAME ;
 $mailoption['SITE_MAIL']        = SUPPORT_EMAIL_ADDRESS ;
 $mailoption['SITE_URL']         = HTTP_SERVER ;
+if ($point){
 $mailoption['POINT']            = $point . '円' ;
+}else {
+  $mailoption['POINT']            = 0;
+}
 if (isset($total_mail_fee) and $total_mail_fee > 0 ){
   $mailoption['MAILFEE']          = $total_mail_fee.'円';
 }

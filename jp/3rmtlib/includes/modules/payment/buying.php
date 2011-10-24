@@ -265,8 +265,9 @@
       } else {
         $s_message = $s_result ? '':('<font color="#FF0000">'.$_POST['buying_order_fee_error'].'</font>'); 
       }
-      
+
       if (!empty($this->n_fee)) {
+
         return array(
             'title' => MODULE_PAYMENT_BUYING_TEXT_DESCRIPTION,
             'fields' => array(array('title' => MODULE_PAYMENT_BUYING_TEXT_PROCESS,
@@ -296,6 +297,7 @@
 
     function check_buy_goods() {
       global $cart;
+      
       return $cart->show_total() > 0;
     }
     function process_button() {
