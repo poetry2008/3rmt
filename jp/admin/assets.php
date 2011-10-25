@@ -3,7 +3,6 @@
 require('includes/application_top.php');
 
 require(DIR_WS_CLASSES . 'currencies.php');
-$time = time();
 $currencies = new currencies(2);
 $bflag =0 ;
 $min_order_date_sql = "SELECT date_purchased
@@ -544,9 +543,6 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
   ?>
   <?php
     //$all_product_info = tep_get_all_asset($start,$end);
-    $all_product_info =
-      tep_get_all_asset_category_by_cid($_GET['product_categories_id'],
-          $bflag,$site_id,$start,$end);
     if(isset($_GET['show_status'])&&$_GET['show_status']=='info'
         &&(count($category_asset_arr)!=0||count($products)!=0)){
       echo "<tr class='assets_c'>";
@@ -617,8 +613,6 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
 </table>
 <div id="print_footer">
 <?php
-$now = time();
-echo $now-$time;
 require(DIR_WS_INCLUDES . 'footer.php');
 ?>
 </div>
