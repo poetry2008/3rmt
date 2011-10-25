@@ -75,21 +75,44 @@
       <div class="comment">
       <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size:11px;">
         <tr>
-        <td style="font-size:15px;">
+        <td style="font-size:15px; color:#ff0000;">
           <?php echo PREORDER_ACTIVE_SUCCESS_READ_HEAD.'<br><br>';?> 
         </td>
         </tr>
         <tr>
-          <td style="font-size:13px;">
+          <td>
+          <table class="preorder_active_info" border="0" cellpadding="0" cellspacing="1" width="100%"> 
+          <tr> 
+          <td colspan="2"> 
           <?php echo PREORDER_ACTIVE_SUCCESS_APPOINT_CONTENT;?>
           <br>
-          <?php echo PREORDER_ACTIVE_SUCCESS_APPOINT_PRODUCT_NAME.$preorder_product['products_name'];?> 
-          <br>
-          <?php echo PREORDER_ACTIVE_SUCCESS_APPOINT_PRODUCT_NUM.$preorder_product['products_quantity'].PREORDER_ACTIVE_SUCCESS_UNIT_TEXT;?> 
-          <br>
-          <?php echo PREORDER_ACTIVE_SUCCESS_APPOINT_PRODUCT_DATE.date('Y'.PREORDER_ACTIVE_SUCCESS_YEAR_TEXT.'m'.PREORDER_ACTIVE_SUCCESS_MONTH_TEXT.'d'.PREORDER_ACTIVE_SUCCESS_DAY_TEXT, strtotime($preorder_res['predate']))?>
-          <br>
-          <br>
+          </td> 
+          </tr> 
+          <tr> 
+          <td width="100"> 
+          <?php echo PREORDER_ACTIVE_SUCCESS_APPOINT_PRODUCT_NAME;?>
+          </td>
+          <td>
+          <?php echo $preorder_product['products_name'];?> 
+          </td>
+          </tr> 
+          <tr> 
+          <td> 
+          <?php echo PREORDER_ACTIVE_SUCCESS_APPOINT_PRODUCT_NUM;?>
+          </td>
+          <td>
+          <?php echo $preorder_product['products_quantity'].PREORDER_ACTIVE_SUCCESS_UNIT_TEXT;?> 
+          </td>
+          </tr>
+          <tr>
+          <td>
+          <?php echo PREORDER_ACTIVE_SUCCESS_APPOINT_PRODUCT_DATE;?>
+          </td>
+          <td>
+          <?php echo date('Y'.PREORDER_ACTIVE_SUCCESS_YEAR_TEXT.'m'.PREORDER_ACTIVE_SUCCESS_MONTH_TEXT.'d'.PREORDER_ACTIVE_SUCCESS_DAY_TEXT, strtotime($preorder_res['predate']));?>
+          </td>
+          </tr>
+          </table><br>
           </td>
         </tr>
         <tr>

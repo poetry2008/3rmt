@@ -156,7 +156,7 @@
           <td>
             <table>
               <tr>
-                <td style="font-size:11px;"><?php echo INPUT_PREORDER_SEND_MAIL;?></td> 
+                <td style="font-size:11px; color:#ff0000;"><?php echo INPUT_PREORDER_SEND_MAIL;?></td> 
                 <td>
                 <?php echo tep_draw_input_field('pemail', (isset($_POST['pemail'])?$_POST['pemail']:$pe_email));?> 
                 </td>
@@ -164,7 +164,7 @@
                 <?php echo tep_image_submit('button_send_mail.gif', 'mail');?> 
                 </td>
               </tr>
-            </table>
+            </table><br>
           </td>
         </tr>
         <tr>
@@ -173,7 +173,7 @@
           </td>
         </tr>
         <tr>
-          <td>
+          <td><br>
                 <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                   <tr> 
                     <td class="main" align="right"><?php echo '<a href="' .tep_href_link(FILENAME_DEFAULT). '">' .  tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></td> 
