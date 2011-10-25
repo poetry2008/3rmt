@@ -412,7 +412,7 @@
 
       if ($customer_guest['customers_guest_chk'] == 0 && $ot_class == "ot_point" && $ot_value != $before_point) { //会員ならポントの増減
         $point_difference = ($ot_value - $before_point);
-        tep_db_query("update " . TABLE_CUSTOMERS . " set point = point - " . $point_difference . " where customers_id = '" . $order->customer['id'] . "'"); 
+        //tep_db_query("update " . TABLE_CUSTOMERS . " set point = point - " . $point_difference . " where customers_id = '" . $order->customer['id'] . "'"); 
       }
 
       $ot_text = $currencies->format($ot_value, true, $order->info['currency'], $order->info['currency_value']);
