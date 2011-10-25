@@ -1180,7 +1180,7 @@ padding-right:5px;
 padding:0 3px;
 }
 textarea,input{
-  font-size:14px;
+  font-size:12px;
 }
 textarea{
   width:100%;
