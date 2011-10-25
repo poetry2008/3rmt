@@ -101,6 +101,45 @@ $(function(){
 <?php
 }
 ?>
+<?php
+if ($_SERVER['PHP_SELF'] != '/admin/orders.php') {
+?>
+var cfg_ohead_last_customer_action = '<?php echo LAST_CUSTOMER_ACTION;?>';
+var prev_ohead_customer_action = '';
+function playOrderHeadSound()  
+{  
+  var ohnode=document.getElementById('head_warn');  
+  if(ohnode!=null)  
+  {  
+   if (ohnode.controls) {
+    ohnode.controls.play();  
+   } else {
+    ohnode.play();  
+   }
+  }
+}
+function check_order_head() {
+  $.ajax({
+    dataType: 'text',
+    url: 'ajax_orders.php?action=last_customer_action',
+    success: function(last_ohead_customer_action) {
+      if (last_ohead_customer_action != cfg_ohead_last_customer_action && prev_ohead_customer_action != last_ohead_customer_action){
+        $('.preorder_head').css('background-color', '#ffcc99');
+        prev_ohead_customer_action = last_ohead_customer_action;
+        playOrderHeadSound();
+      }
+      }
+  });
+  setTimeout(function(){check_order_head()}, 90000);
+}
+
+$(function(){
+  setTimeout(function(){check_order_head()}, 90000);
+});
+
+<?php
+}
+?>
 </script>
 <table border="0" width="100%" cellspacing="0" cellpadding="0" class="preorder_head">
 <tr>
@@ -251,6 +290,13 @@ if (!isset($ocertify->npermission) || $ocertify->npermission >= 7) {
 if ($_SERVER['PHP_SELF'] != '/admin/preorders.php') {
 ?>
 <embed id="head_sound" src="images/presound.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></embed>
+<?php
+}
+?>
+<?php
+if ($_SERVER['PHP_SELF'] != '/admin/orders.php') {
+?>
+<embed id="head_warn" src="images/warn.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></embed>
 <?php
 }
 ?>
