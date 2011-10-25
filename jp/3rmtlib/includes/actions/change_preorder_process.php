@@ -287,6 +287,15 @@ if (MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
   }
 }
 
+$link_customer_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = '".$preorder_cus_id."' and site_id = '".SITE_ID."'");
+$link_customer_res = tep_db_fetch_array($link_customer_raw);
+
+if ($link_customer_res) {
+  if ($link_customer_res['customers_guest_chk'] == '1') {
+    tep_db_query( "update " . TABLE_CUSTOMERS . " set point = '0' where customers_id = " . $preorder_cus_id );
+  }
+}
+
 tep_db_query("delete from ".TABLE_PREORDERS." where orders_id = '".$_SESSION['preorder_info_id']."' and site_id = '".SITE_ID."'"); 
 tep_db_query("delete from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$_SESSION['preorder_info_id']."'"); 
 tep_db_query("delete from ".TABLE_PREORDERS_PRODUCTS_ATTRIBUTES." where orders_id = '".$_SESSION['preorder_info_id']."'"); 
@@ -312,9 +321,11 @@ tep_session_unregister('preorder_info_min');
 tep_session_unregister('preorder_info_character');
 tep_session_unregister('preorder_info_id');
 tep_session_unregister('preorder_info_pay');
-tep_session_unregister('preorder_point');
-tep_session_unregister('preorder_real_point');
-tep_session_unregister('preorder_get_point');
+if (MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
+  tep_session_unregister('preorder_point');
+  tep_session_unregister('preorder_real_point');
+  tep_session_unregister('preorder_get_point');
+}
 
 unset($_SESSION['preorder_option']);
 
