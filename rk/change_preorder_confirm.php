@@ -21,6 +21,14 @@
   if (!$preorder_res) {
     forward404(); 
   } 
+  $is_guest_single = 0;
+  $link_customer_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = '".$preorder_res['customers_id']."'");
+  $link_customer_res = tep_db_fetch_array($link_customer_raw);
+  if ($link_customer_res) {
+    if ($link_customer_res['customers_guest_chk'] == '1') {
+      $is_guest_single = 1; 
+    }
+  }
   
   $check_preorder_str = $preorder_res['check_preorder_str'];
  
@@ -364,9 +372,14 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
   } else {
     $preorder_get_point = 0;
   }
-if (!tep_session_is_registered('preorder_get_point')) {
-  tep_session_register('preorder_get_point');
-}
+  
+  if ($is_guest_single) {
+    $preorder_get_point = 0;
+  }
+  
+  if (!tep_session_is_registered('preorder_get_point')) {
+    tep_session_register('preorder_get_point');
+  }
 }
                   ?>
                   <tr>

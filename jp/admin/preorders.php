@@ -147,6 +147,7 @@
         if ($num_product_res) {
           $num_product = $num_product_res['products_quantity']; 
         }
+        $ensure_date_arr = explode(' ', $check_status['ensure_deadline']);
         $title = str_replace(array(
           '${NAME}',
           '${MAIL}',
@@ -174,7 +175,7 @@
           get_configuration_by_site_id('STORE_NAME', $site_id),
           get_url_by_site_id($site_id),
           date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day())),
-          $check_status['ensure_deadline'],
+          $ensure_date_arr[0],
           $num_product.PREORDER_PRODUCT_UNIT_TEXT,
           date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT, strtotime($check_status['predate']))
         ),$title
@@ -208,7 +209,7 @@
           get_url_by_site_id($site_id),
           get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
           date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day())),
-          $check_status['ensure_deadline'], 
+          $ensure_date_arr[0],
           $num_product.PREORDER_PRODUCT_UNIT_TEXT,
           date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT, strtotime($check_status['predate']))
         ),$comments
@@ -426,7 +427,7 @@
       if ($num_product_res) {
         $num_product = $num_product_res['products_quantity']; 
       }
-
+      $ensure_date_arr = explode(' ', $check_status['ensure_deadline']);
       $title = str_replace(array(
         '${NAME}',
         '${MAIL}',
@@ -456,7 +457,7 @@
         get_url_by_site_id($site_id),
         get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
         date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day())),
-        $check_status['ensure_deadline'], 
+        $ensure_date_arr[0], 
         $num_product.PREORDER_PRODUCT_UNIT_TEXT,
         date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT, strtotime($check_status['predate']))
       ),$title);
@@ -490,7 +491,7 @@
         get_url_by_site_id($site_id),
         get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
         date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day())),
-        $check_status['ensure_deadline'], 
+        $ensure_date_arr[0], 
         $num_product.PREORDER_PRODUCT_UNIT_TEXT,
         date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT, strtotime($check_status['predate']))
       ),$comments);

@@ -655,6 +655,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
         $num_product = $num_product_res['products_quantity']; 
       }
       
+      $ensure_date_arr = explode(' ', $select_products_res['ensure_deadline']);
       $email = str_replace(array(
         '${NAME}',
         '${MAIL}',
@@ -684,7 +685,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
         get_url_by_site_id($select_products_res['site_id']),
         get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $select_products_res['site_id']),
         date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day())),
-        $select_products_res['ensure_deadline'],
+        $ensure_date_arr[0],
         $num_product.PREORDER_PRODUCT_UNIT_TEXT,
         date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT,strtotime($select_products_res['predate'])),
       ),$email);
@@ -748,7 +749,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
             get_url_by_site_id($select_t_products_res['site_id']),
             get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $select_t_products_res['site_id']),
             date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day())),
-            $select_products_res['ensure_deadline'],
+            $ensure_date_arr[0],
             $num_product.PREORDER_PRODUCT_UNIT_TEXT,
             date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT,strtotime($select_products_res['predate'])),
           ),$preorder_email_title);
