@@ -209,7 +209,7 @@ echo '</form>';
           <h3 class="formAreaTitle"><?php echo CHANGE_ORDER_CUSTOMER_DETAILS?></h3> 
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
-              <td class="main">
+              <td class="main" width="150">
               <?php echo CHANGE_ORDER_CUSTOMER_NAME;?> 
               </td>
               <td class="main">
@@ -233,7 +233,7 @@ echo '</form>';
           <h3 class="formAreaTitle"><?php echo CHANGE_ORDER_PRODUCT_DETAILS;?></h3> 
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
-              <td class="main">
+              <td class="main" width="150">
               <?php echo CHANGE_ORDER_PRODUCT_NAME;?> 
               </td>
               <td class="main">
@@ -273,7 +273,7 @@ echo '</form>';
         <h3 class="formAreaTitle"><?php echo CHANGE_ORDER_FETCH_TIME_TITLE;?></h3> 
         <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
         <tr>
-              <td class="main">
+              <td class="main" width="150">
               <?php echo CHANGE_ORDER_FETCH_TIME_READ;?> 
               </td>
               <td class="main">
@@ -355,7 +355,7 @@ echo '</form>';
         while ($products_options_name = tep_db_fetch_array($products_options_name_query)) {
             $selected = 0;
             $products_options_array = array();
-            echo '<tr><td class="main">' . $products_options_name['products_options_name'] . ':</td><td>' . "\n";
+            echo '<tr><td class="main" width="150">' . $products_options_name['products_options_name'] . ':</td><td>' . "\n";
         $products_options_query = tep_db_query("
             SELECT pov.products_options_values_id, 
                    pov.products_options_values_name, 
@@ -391,7 +391,7 @@ echo '</form>';
             ?>
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
-              <td class="main"><?php echo TEXT_PREORDER_POINT_TEXT;?></td> 
+              <td class="main" width="150"><?php echo TEXT_PREORDER_POINT_TEXT;?></td> 
               <td class="main">
               <input type="text" name="preorder_point" class="input_text_short" value="<?php echo isset($_POST['preorder_point'])?$_POST['preorder_point']:'0';?>">&nbsp;/&nbsp;<?php echo $preorder_point;?> 
               <?php 
