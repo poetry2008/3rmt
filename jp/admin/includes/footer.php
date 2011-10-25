@@ -113,20 +113,12 @@ if (STORE_DB_TRANSACTIONS == 'true' ) {?>
   <div id="debug_info">
     <pre>
     <?php 
-    $i=0;
-    $j=0;
     if(isset($logger)){
       foreach ($logger->queries as $qk => $qv) {
-        if($logger->times[$qk]>1){
-          $j++;
         echo '[' . $logger->times[$qk] . ']' . $qk . "\t=>\t" . $qv."\n";
-        }
-        $i+=$logger->times[$qk];
       }
     }
   
-  echo "<<<<<".$j.">>>>><br>";
-  echo "<<<<<".$i.">>>>>";
   print_r($_SESSION);
   ?>
     <?php //print_r($logger->times);?>

@@ -3,7 +3,6 @@
 require('includes/application_top.php');
 
 require(DIR_WS_CLASSES . 'currencies.php');
-$time = time();
 $currencies = new currencies(2);
 $bflag =0 ;
 $min_order_date_sql = "SELECT date_purchased
@@ -614,8 +613,6 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
 </table>
 <div id="print_footer">
 <?php
-$now = time();
-echo $now-$time;
 require(DIR_WS_INCLUDES . 'footer.php');
 ?>
 </div>
