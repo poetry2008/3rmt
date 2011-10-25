@@ -75,22 +75,12 @@
       <div class="comment">
       <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size:11px;">
         <tr>
-          <td>
-            <?php 
-            $preorder_product_status_query = tep_db_query("select products_status from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$preorder_product['products_id']."' and (site_id = 0 or site_id = ".SITE_ID.") order by site_id desc limit 1"); 
-            $preorder_product_status = tep_db_fetch_array($preorder_product_status_query);
-            if ($preorder_product_status['products_status'] == 0) {
-              echo sprintf(PREORDER_ACTIVE_SUCCESS_READ_INFO, $categories_name, $preorder_product['products_name']);
-            } else {
-              echo sprintf(PREORDER_ACTIVE_SUCCESS_READ_INFO, $categories_name, '<a href="'.tep_href_link(FILENAME_PRODUCT_INFO, 'products_id='.$preorder_product['products_id']).'">'.$preorder_product['products_name'].'</a>');
-            }
-            ?> 
-          </td>
+        <td style="font-size:15px;">
+          <?php echo PREORDER_ACTIVE_SUCCESS_READ_HEAD.'<br><br>';?> 
+        </td>
         </tr>
         <tr>
-          <td>
-          <br>
-          <br>
+          <td style="font-size:13px;">
           <?php echo PREORDER_ACTIVE_SUCCESS_APPOINT_CONTENT;?>
           <br>
           <?php echo PREORDER_ACTIVE_SUCCESS_APPOINT_PRODUCT_NAME.$preorder_product['products_name'];?> 
@@ -98,6 +88,34 @@
           <?php echo PREORDER_ACTIVE_SUCCESS_APPOINT_PRODUCT_NUM.$preorder_product['products_quantity'].PREORDER_ACTIVE_SUCCESS_UNIT_TEXT;?> 
           <br>
           <?php echo PREORDER_ACTIVE_SUCCESS_APPOINT_PRODUCT_DATE.date('Y'.PREORDER_ACTIVE_SUCCESS_YEAR_TEXT.'m'.PREORDER_ACTIVE_SUCCESS_MONTH_TEXT.'d'.PREORDER_ACTIVE_SUCCESS_DAY_TEXT, strtotime($preorder_res['predate']))?>
+          <br>
+          <br>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <?php 
+            echo PREORDER_ACTIVE_SUCCESS_READ_INFO.'<br>';
+            ?>
+          </td>
+        </tr>
+        <tr>
+          <td>
+          <div class="preorder_active_line"></div> 
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <?php
+            $preorder_product_status_query = tep_db_query("select products_status from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$preorder_product['products_id']."' and (site_id = 0 or site_id = ".SITE_ID.") order by site_id desc limit 1"); 
+            $preorder_product_status = tep_db_fetch_array($preorder_product_status_query);
+            if ($preorder_product_status['products_status'] == 0) {
+              echo sprintf(PREORDER_ACTIVE_SUCCESS_READ_BOTTOM, $categories_name, $preorder_product['products_name']);
+            } else {
+              echo sprintf(PREORDER_ACTIVE_SUCCESS_READ_BOTTOM, $categories_name, '<a href="'.tep_href_link(FILENAME_PRODUCT_INFO, 'products_id='.$preorder_product['products_id']).'">'.$preorder_product['products_name'].'</a>');
+            }
+            
+            ?> 
           </td>
         </tr>
         <tr>
