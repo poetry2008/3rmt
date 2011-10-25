@@ -87,7 +87,7 @@
     } else {
       $preorder_point = $preorder_subtotal; 
     }
-    $real_point = $preorder_point;
+    $preorder_real_point = $preorder_point;
     
     if (!tep_session_is_registered('preorder_point')) {
       tep_session_register('preorder_point'); 

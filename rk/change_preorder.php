@@ -24,9 +24,9 @@
   $customer_info_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = '".$preorder_res['customers_id']."' and site_id = '".SITE_ID."'"); 
   $customer_info_res = tep_db_fetch_array($customer_info_raw);
   
-  $is_guest_single = 0;
-  if ($customer_info_res['customers_guest_chk'] != '0') {
-    $is_guest_single = 1; 
+  $is_member_single = 0;
+  if ($customer_info_res['customers_guest_chk'] == '0') {
+    $is_member_single = 1; 
   }
   
   if (!tep_session_is_registered('customer_id')) {
@@ -77,6 +77,24 @@
       if (empty($_POST['p_character'])) {
         $error = true;
         $character_error = TEXT_PREORDER_ERROR_CHARACTER;
+      }
+    }
+    
+    if (isset($_POST['preorder_point'])) {
+      if (is_numeric($_POST['preorder_point'])) {
+        if ($_POST['preorder_point'] > $preorder_point) {
+          if (($_POST['preorder_point'] != '0') && ($preroder_point != '0')) {
+            $error = true;
+            $point_error = TEXT_PREORDER_ERROR_POINT;
+          }
+        }
+        if (($_POST['preorder_point'] < 0)) {
+          $error = true;
+          $point_error = TEXT_PREORDER_ERROR_POINT;
+        }
+      } else {
+        $error = true;
+        $point_error = TEXT_PREORDER_ERROR_POINT;
       }
     }
   }
@@ -349,12 +367,19 @@ echo '</form>';
           <?php }?> 
           <br>
           <?php
-          if (!$is_guest_single && MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { 
-          ?>
+          if ($is_member_single && MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { 
+            ?>
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
               <td class="main"><?php echo TEXT_PREORDER_POINT_TEXT;?></td> 
-              <td class="main"><?php echo tep_draw_input_field('preorder_point', isset($_POST['preorder_point'])?$_POST['preorder_point']:0, 'class="input_text_short"').'&nbsp;/&nbsp;'.$preorder_point;?></td> 
+              <td class="main">
+              <input type="text" name="preorder_point" class="input_text_short" value="<?php echo isset($_POST['preorder_point'])?$_POST['preorder_point']:'0';?>">&nbsp;/&nbsp;<?php echo $preorder_point;?> 
+              <?php 
+              if (isset($point_error)) {
+                echo '<br><font color="#ff0000">'.$point_error.'</font>'; 
+              }
+              ?>
+              </td> 
             </tr>
           </table>
           <br>
@@ -366,7 +391,7 @@ echo '</form>';
               </td>
               <td class="main" align="right">
                 <?php
-                 if ($is_guest_single && MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { 
+                 if (!$is_member_single && MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { 
                    echo '<input type="hidden" name="preorder_point" value="0">'; 
                  }
                 ?>
