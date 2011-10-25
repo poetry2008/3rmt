@@ -32,7 +32,7 @@
   if (!tep_session_is_registered('customer_id')) {
       if ($customer_info_res['customers_guest_chk'] == '0') {
         $navigation->set_snapshot();
-        tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
+        tep_redirect(tep_href_link(FILENAME_LOGIN, 'pid='.$_GET['pid'], 'SSL'));
       }
   } else {
     if ($guestchk == '0') {
@@ -51,7 +51,7 @@
 
         $cart->reset();
         
-        tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
+        tep_redirect(tep_href_link(FILENAME_LOGIN, 'pid='.$_GET['pid'], 'SSL'));
       }
     }
   } 
