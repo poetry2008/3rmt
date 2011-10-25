@@ -293,6 +293,9 @@ if ($_SERVER['PHP_SELF'] != '/admin/preorders.php') {
 <?php
 }
 ?>
+</td>
+</tr>
+</table>
 <?php
 if ($_SERVER['PHP_SELF'] != '/admin/orders.php') {
 ?>
@@ -300,9 +303,6 @@ if ($_SERVER['PHP_SELF'] != '/admin/orders.php') {
 <?php
 }
 ?>
-</td>
-</tr>
-</table>
 
 </td>
 </tr>

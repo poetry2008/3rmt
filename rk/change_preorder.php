@@ -34,6 +34,26 @@
         $navigation->set_snapshot();
         tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
       }
+  } else {
+    if ($guestchk == '0') {
+      if ($customer_emailaddress != $preorder_res['customers_email_address']) {
+        $navigation->set_snapshot();
+        
+        tep_session_unregister('customer_id');
+        tep_session_unregister('customer_default_address_id');
+        tep_session_unregister('customer_first_name');
+        tep_session_unregister('customer_last_name'); 
+        tep_session_unregister('customer_country_id');
+        tep_session_unregister('customer_zone_id');
+        tep_session_unregister('comments');
+        tep_session_unregister('customer_emailaddress');
+        tep_session_unregister('guestchk');
+
+        $cart->reset();
+        
+        tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
+      }
+    }
   } 
   $preorder_point = (int)$customer_info_res['point'];  
   
