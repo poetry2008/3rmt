@@ -7,6 +7,8 @@ if (!isset($_SESSION['preorder_info_id'])) {
   forward404();
 }
 
+require(DIR_WS_FUNCTIONS . 'visites.php');
+
 if (isset($preorder_real_point)) {
   $preorder_point = $preorder_real_point;
 }
@@ -23,7 +25,8 @@ if ($preorder) {
   if (tep_db_num_rows($order_query)) {
     $orders_id = date('Ymd').'-'.date('His').tep_get_order_end_num(); 
   }
-  
+ 
+  $ppayment_list_arr = tep_preorder_get_payment_list();
   $torihikihouhou_date_str = $_SESSION['preorder_info_date'].' '.$_SESSION['preorder_info_hour'].':'.$_SESSION['preorder_info_min'].':00';
   $default_status_raw = tep_db_query("select * from ".TABLE_ORDERS_STATUS." where orders_status_id = '".DEFAULT_ORDERS_STATUS_ID."'");
   $default_status_res = tep_db_fetch_array($default_status_raw); 
@@ -152,12 +155,16 @@ if ($preorder) {
   while ($preorder_total_res = tep_db_fetch_array($preorder_total_raw)) {
     if ($preorder_total_res['class'] == 'ot_total') {
       $preorder_total_num = $preorder_total_res['value'] - (int)$preorder_point; 
+      $preorder_total_print_num = $preorder_total_res['value'] - (int)$preorder_point; 
     } else if ($preorder_total_res['class'] == 'ot_point') {
       $preorder_total_num = (int)$preorder_point; 
     } else {
       $preorder_total_num = $preorder_total_res['value']; 
     }
     
+    if ($preorder_total_res['class'] == 'ot_subtotal') {
+      $preorder_subtotal_num = $preorder_total_res['value']; 
+    }
     $sql_data_array = array('orders_id' => $orders_id,
                             'title' => $preorder_total_res['title'], 
                             'text' => $preorder_total_res['text'], 
@@ -166,7 +173,7 @@ if ($preorder) {
                             'sort_order' => $preorder_total_res['sort_order'], 
         ); 
     if ($preorder_total_res['class'] == 'ot_total') {
-      $cpayment_type = tep_preorder_get_payment_type($preorder['payment_method']);   
+      $cpayment_type = tep_preorder_get_payment_type($ppayment_list_arr, $preorder['payment_method']);   
       if ($cpayment_type == 2) {
         if (!class_exists('paypal')) {
           include(DIR_WS_MODULES.'payment/paypal.php'); 
@@ -205,6 +212,8 @@ if ($preorder) {
     tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
     orders_updated($orders_id);
   }
+  $products_ordered_text = ''; 
+  
   $preorder_product_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$_SESSION['preorder_info_id']."'"); 
   $preorder_product_res = tep_db_fetch_array($preorder_product_raw); 
   $sql_data_array = array('orders_id' => $orders_id,
@@ -222,6 +231,13 @@ if ($preorder) {
       );
   tep_db_perform(TABLE_ORDERS_PRODUCTS, $sql_data_array);
 
+  $products_ordered_text .= ''.$preorder_product_res['products_name'];
+  if (tep_not_null($preorder_product_res['products_model'])) {
+    $products_ordered_text .= $preorder_product_res['products_model']; 
+  }
+  
+  $products_ordered_atttibutes_text = '';
+  
 if (isset($_SESSION['preorder_info_attr'])) {
    foreach ($_SESSION['preorder_info_attr'] as $key => $value) {
       if (DOWNLOAD_ENABLED == 'true') {
@@ -252,6 +268,10 @@ if (isset($_SESSION['preorder_info_attr'])) {
         tep_db_perform(TABLE_ORDERS_PRODUCTS_DOWNLOAD, $sql_data_array);
       }
       
+      $products_ordered_attributes .= "\n"
+        .$attributes_values['products_options_name']
+        .str_repeat('　', intval((27-strlen($attributes_values['products_options_name']))/3))
+        .'：'.$attributes_values['products_options_values_name'];
    }
 }
 
@@ -270,6 +290,7 @@ while ($preorder_oa_res = tep_db_fetch_array($preorder_oa_raw)) {
  
 }
 
+$products_ordered_text .= $products_ordered_attributes;
 
 $preorders_computer_raw = tep_db_query("select * from ".TABLE_PREORDERS_TO_COMPUTERS." where orders_id = '".$_SESSION['preorder_info_id']."'");
 while ($preorders_computers_res = tep_db_fetch_array($preorders_computer_raw)) {
@@ -277,6 +298,172 @@ while ($preorders_computers_res = tep_db_fetch_array($preorders_computer_raw)) {
                           'computers_id' => $preorders_computers_res['computers_id'], 
       );
   tep_db_perform('orders_to_computers', $sql_data_array);
+}
+
+$products_ordered_text .= "\n".'個数　　　　　　　：' .  $preorder_product_res['products_quantity'] . '個' .  "\n";
+$products_ordered_text .= '単価　　　　　　　：' .  $currencies->display_price($preorder_product_res['final_price'], $preorder_product_res['products_tax']) . "\n";
+
+$products_ordered_text .= '小計　　　　　　　：' .  $currencies->display_price($preorder_product_res['final_price'], $preorder_product_res['products_tax'], $preorder_product_res['products_quantity']) . "\n";
+
+if (tep_not_null($_SESSION['preorder_info_character'])) {
+  $products_ordered_text .= 'キャラクター名　　：' .$_SESSION['preorder_info_character']."\n";
+}
+
+$products_ordered_text .= "------------------------------------------\n";
+if (tep_get_cflag_by_product_id($preorder_prodct_res['products_id'])) {
+  if (tep_get_bflag_by_product_id($preorder_prodct_res['products_id'])) {
+    $products_ordered_text .= "※ 当社キャラクター名は、お取引10分前までに電子メールにてお知らせいたします。\n\n";
+  } else {
+    $products_ordered_text .= "※ 当社キャラクター名は、お支払い確認後に電子メールにてお知らせいたします。\n\n";
+  }
+}
+
+$mailoption['ORDER_ID']         = $orders_id;
+$mailoption['ORDER_DATE']       = tep_date_long(time())  ;
+$mailoption['USER_NAME']        = $preorder['customers_name'];
+$mailoption['USER_MAILACCOUNT'] = $preorder['customers_email_address'];
+$mailoption['ORDER_TOTAL']      = $currencies->format(abs($preorder_total_print_num));
+
+$mailoption['ORDER_PAYMENT']    = $preorder['payment_method'];
+$mailoption['ORDER_TTIME']      =  str_string($_SESSION['preorder_info_date']) .  $_SESSION['preorder_info_hour'] . '時' . $_SESSION['preorder_info_min'] .  '分　（24時間表記）' . $_SESSION['preorder_info_tori'];
+$mailoption['ORDER_COMMENT']    = '';
+$mailoption['ORDER_PRODUCTS']   = $products_ordered_text;
+$mailoption['ORDER_TMETHOD']    = $_SESSION['preorder_info_tori'];
+$mailoption['SITE_NAME']        = STORE_NAME;
+$mailoption['SITE_MAIL']        = SUPPORT_EMAIL_ADDRESS;
+$mailoption['SITE_URL']         = HTTP_SERVER;
+$mailoption['ORDER_COUNT'] = $preorder_product_res['products_quantity'];
+$mailoption['ORDER_LTOTAL'] = $currencies->display_price($preorder_product_res['final_price'], $preorder_product_res['products_tax'], $preorder_product_res['products_quantity']);
+$mailoption['ORDER_ACTORNAME'] = $_SESSION['preorder_info_character'];
+if ($preorder_point){
+  $mailoption['POINT']            = $preorder_point . '円' ;
+}else {
+    $mailoption['POINT']            = 0;
+}
+$mailoption['MAILFEE']          = '0円';
+
+$email_order_text = '';
+
+$cpayment_code = tep_preorder_get_payment_type($ppayment_list_arr, $preorder['payment_method'], true);   
+if ($cpayment_code != '') {
+  $email_order_text = preorder_get_mail_string($cpayment_code, $mailoption); 
+} 
+
+tep_mail($preorder['customers_name'], $preorder['customers_email_address'], EMAIL_TEXT_SUBJECT, $email_order_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
+  
+if (SENTMAIL_ADDRESS != '') {
+    tep_mail('', SENTMAIL_ADDRESS, EMAIL_TEXT_SUBJECT2, $email_order_text, $preorder['customers_name'], $preorder['customers_email_address'], '');
+}
+
+$email_printing_order = '';
+$email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
+$email_printing_order .= 'サイト名　　　　：' . STORE_NAME . "\n";
+$email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
+$email_printing_order .= '取引日時　　　　：' .  str_string($_SESSION['preorder_info_date']) . $_SESSION['preorder_info_hour'] . '時' .  $_SESSION['preorder_info_min'] . '分　（24時間表記）' . "\n";
+$email_printing_order .= 'オプション　　　：' . $_SESSION['preorder_info_tori'] . "\n";
+$email_printing_order .=
+'------------------------------------------------------------------------' . "\n";
+$email_printing_order .= '日時変更　　　　：' . date('Y') . ' 年  月  日  時  分' .
+"\n";
+$email_printing_order .= '日時変更　　　　：' . date('Y') . ' 年  月  日  時  分' .
+"\n";
+$email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
+$email_printing_order .= '注文者名　　　　：' .
+$preorder['customers_name'] . '様'
+. "\n";
+$email_printing_order .= '注文番号　　　　：' . $orders_id . "\n";
+$email_printing_order .= '注文日　　　　　：' . tep_date_long(time()) . "\n";
+$email_printing_order .= 'メールアドレス　：' . $preorder['customers_email_address'] .
+"\n";
+$email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
+
+if ($preorder_point > 0) {
+    $email_printing_order .= '□ポイント割引　　：' . (int)$preorder_point . '円' . "\n";
+}
+
+$email_printing_order .= 'お支払金額　　　：' .  $currencies->format(abs($preorder_total_print_num)) . "\n";
+
+$email_printing_order .= 'お支払方法　　　：' . $preorder['payment_method'] . "\n";
+  
+
+$email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
+$email_printing_order .= $products_ordered;
+
+$email_printing_order .= '備考　　　　　　：' . "\n";
+
+$email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
+$email_printing_order .= 'IPアドレス　　　　　　：' . $_SERVER["REMOTE_ADDR"] .
+"\n";
+$email_printing_order .= 'ホスト名　　　　　　　：' .
+@gethostbyaddr($_SERVER["REMOTE_ADDR"]) . "\n";
+$email_printing_order .= 'ユーザーエージェント　：' . $_SERVER["HTTP_USER_AGENT"] .
+"\n";
+$email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
+$email_printing_order .= '信用調査' . "\n";
+
+$credit_inquiry_query = tep_db_query("select customers_fax, customers_guest_chk from " . TABLE_CUSTOMERS . " where customers_id = '" . $preorder_cus_id . "'");
+$credit_inquiry       = tep_db_fetch_array($credit_inquiry_query);
+$email_printing_order .= $credit_inquiry['customers_fax'] . "\n";
+$email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
+$email_printing_order .= '注文履歴　　　　　　　：';
+
+if ($credit_inquiry['customers_guest_chk'] == '1') { $email_printing_order .= 'ゲスト'; } else { $email_printing_order .= '会員'; }
+    
+  $email_printing_order .= "\n";
+    
+  $order_history_query_raw = "select o.orders_id, o.customers_name, o.customers_id, o.date_purchased, s.orders_status_name, ot.value as order_total_value from " .  TABLE_ORDERS . " o left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id), " . TABLE_ORDERS_STATUS . " s where o.customers_id = '" .  tep_db_input($preorder_cus_id) . "' and o.orders_status = s.orders_status_id and s.language_id = '" . $languages_id . "' and ot.class = 'ot_total' order by o.date_purchased DESC limit 0,5";  
+    //ccdd
+    $order_history_query = tep_db_query($order_history_query_raw);
+    while ($order_history = tep_db_fetch_array($order_history_query)) {
+        $email_printing_order .= $order_history['date_purchased'] . '　　' .  tep_output_string_protected($order_history['customers_name']) . '　　' .  abs(intval($order_history['order_total_value'])) . '円　　' .  $order_history['orders_status_name'] . "\n";
+    }
+
+$email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n\n\n";
+$print_single = 0;
+
+if ($cpayment_code != '') {
+  if (!class_exists($cpayment_code)) {
+    $cpayment_module = new payment($cpayment_code);
+    $payment_class = $$cpayment_module;
+    if (method_exists($payment_class,'getMailString')){
+      $email_printing_order .= $payment_class->getMailString();
+      $print_single = 1;
+    }
+  } else {
+    $cpayment_module = new $cpayment_code(); 
+    if (method_exists($cpayment_module,'getMailString')){
+      $email_printing_order .= $cpayment_module->getMailString();
+      $print_single = 1;
+    }
+  }
+}
+
+if (!$print_single){
+    $email_printing_order .= 'この注文は【販売】です。' . "\n";
+    $email_printing_order .= '------------------------------------------------------------------------' .  "\n";
+    $email_printing_order .= '備考の有無　　　　　：□ 無　　｜　　□ 有　→　□ 返答済' . "\n"; 
+    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+    $email_printing_order .= '在庫確認　　　　　　：□ 有　　｜　　□ 無　→　入金確認後仕入' . "\n";
+    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+    $email_printing_order .= '入金確認　　　　　●：＿＿月＿＿日　→　金額は' .  number_format(abs($preorder_total_print_num), 0, '.', '') . '円ですか？　□ はい' . "\n";
+    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+    $email_printing_order .= '入金確認メール送信　：□ 済' . "\n";
+    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+    $email_printing_order .= '発送　　　　　　　　：＿＿月＿＿日' . "\n"; 
+    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+    $email_printing_order .= '残量入力→誤差有無　：□ 無　　｜　　□ 有　→　報告　□' . "\n";
+    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+    $email_printing_order .= '発送完了メール送信　：□ 済' . "\n";    
+}
+
+
+$email_printing_order .= '------------------------------------------------------------------------' . "\n";
+$email_printing_order .= '最終確認　　　　　　：確認者名＿＿＿＿' . "\n";
+$email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
+
+
+if (SEND_EXTRA_ORDER_EMAILS_TO != '') {
+  tep_mail('', PRINT_EMAIL_ADDRESS, STORE_NAME, $email_printing_order, $preorder['customers_name'], $preorder['customers_email_address'], '');
 }
 
 if (MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
