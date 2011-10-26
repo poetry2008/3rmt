@@ -121,13 +121,13 @@
       break;
     }
     */
-    if (isset($_POST['update_predate'])) { //日時が有効かチェック
-      if (!preg_match('/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/', $_POST['update_predate'], $m)) { // check the date format
+  if (isset($_POST['h_predate'])) { //日時が有効かチェック
+      if (!preg_match('/^(\d\d\d\d)-(\d\d)-(\d\d)$/', $_POST['h_predate'], $m)) { // check the date format
         $messageStack->add(EDIT_ORDERS_NOTICE_DATE_WRONG_TEXT, 'error');
         $action = 'edit';
         break;
-      } elseif (!checkdate($m[2], $m[3], $m[1]) || $m[4] >= 24 || $m[5] >= 60 || $m[6] >= 60) { // make sure the date provided is a validate date
-        if ($_POST['update_predate'] != '0000-00-00 00:00:00') {
+      } elseif (!checkdate($m[2], $m[3], $m[1])) { // make sure the date provided is a validate date
+        if ($_POST['h_predate'] != '0000-00-00') {
           $messageStack->add(EDIT_ORDERS_NOTICE_NOUSE_DATE_TEXT, 'error');
           $action = 'edit';
           break;
@@ -138,13 +138,13 @@
       $action = 'edit';
       break;
     }
-    if (isset($_POST['update_ensure_deadline'])) { //日時が有効かチェック
-      if (!preg_match('/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/', $_POST['update_ensure_deadline'], $m1)) { // check the date format
+    if (isset($_POST['h_deadline'])) { //日時が有効かチェック
+      if (!preg_match('/^(\d\d\d\d)-(\d\d)-(\d\d)$/', $_POST['h_deadline'], $m1)) { // check the date format
         $messageStack->add(EDIT_ORDERS_NOTICE_DATE_WRONG_TEXT, 'error');
         $action = 'edit';
         break;
-      } elseif (!checkdate($m1[2], $m1[3], $m1[1]) || $m1[4] >= 24 || $m1[5] >= 60 || $m1[6] >= 60) { // make sure the date provided is a validate date
-        if ($_POST['update_ensure_deadline'] != '0000-00-00 00:00:00') {
+      } elseif (!checkdate($m1[2], $m1[3], $m1[1])) { // make sure the date provided is a validate date
+        if ($_POST['h_deadline'] != '0000-00-00') {
           $messageStack->add(EDIT_ORDERS_NOTICE_NOUSE_DATE_TEXT, 'error');
           $action = 'edit';
           break;
@@ -207,8 +207,8 @@
       payment_method = '" . tep_db_input($_POST['payment_method']) . "',
       torihiki_date = '" . tep_db_input($update_tori_torihiki_date) . "',
       torihiki_houhou = '" . tep_db_input($update_tori_torihiki_houhou) . "',
-      predate = '" . tep_db_input($_POST['update_predate']) . "',
-      ensure_deadline = '" . tep_db_input($_POST['update_ensure_deadline']) . "',
+      predate = '" . tep_db_input($_POST['h_predate']) . " 00:00:00',
+      ensure_deadline = '" . tep_db_input($_POST['h_deadline']) . " 00:00:00',
       cc_type = '" . tep_db_input($update_info_cc_type) . "',
       cc_owner = '" . tep_db_input($update_info_cc_owner) . "',";
       
@@ -412,7 +412,7 @@
 
       if ($customer_guest['customers_guest_chk'] == 0 && $ot_class == "ot_point" && $ot_value != $before_point) { //会員ならポントの増減
         $point_difference = ($ot_value - $before_point);
-        tep_db_query("update " . TABLE_CUSTOMERS . " set point = point - " . $point_difference . " where customers_id = '" . $order->customer['id'] . "'"); 
+        //tep_db_query("update " . TABLE_CUSTOMERS . " set point = point - " . $point_difference . " where customers_id = '" . $order->customer['id'] . "'"); 
       }
 
       $ot_text = $currencies->format($ot_value, true, $order->info['currency'], $order->info['currency_value']);
@@ -655,6 +655,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
         $num_product = $num_product_res['products_quantity']; 
       }
       
+      $ensure_date_arr = explode(' ', $select_products_res['ensure_deadline']);
       $email = str_replace(array(
         '${NAME}',
         '${MAIL}',
@@ -684,7 +685,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
         get_url_by_site_id($select_products_res['site_id']),
         get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $select_products_res['site_id']),
         date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day())),
-        $select_products_res['ensure_deadline'],
+        $ensure_date_arr[0],
         $num_product.PREORDER_PRODUCT_UNIT_TEXT,
         date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT,strtotime($select_products_res['predate'])),
       ),$email);
@@ -693,8 +694,11 @@ while ($totals = tep_db_fetch_array($totals_query)) {
         if ($status == 32) {
           $site_url_raw = tep_db_query("select * from sites where id = '".$order->info['site_id']."'"); 
           $site_url_res = tep_db_fetch_array($site_url_raw); 
-          $change_preorder_url = $site_url_res['url'].'/change_preorder.php?pid='.$oID; 
+          $change_preorder_url_param = md5(time().$oID);
+          $change_preorder_url = $site_url_res['url'].'/change_preorder.php?pid='.$change_preorder_url_param; 
           $email = str_replace('${REAL_ORDER_URL}', $change_preorder_url, $email); 
+          
+          tep_db_query("update ".TABLE_PREORDERS." set check_preorder_str = '".$change_preorder_url_param."' where orders_id = '".$oID."'"); 
         }
         if ($status == 33) {
           $site_url_raw = tep_db_query("select * from sites where id = '".$order->info['site_id']."'"); 
@@ -745,7 +749,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
             get_url_by_site_id($select_t_products_res['site_id']),
             get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $select_t_products_res['site_id']),
             date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day())),
-            $select_products_res['ensure_deadline'],
+            $ensure_date_arr[0],
             $num_product.PREORDER_PRODUCT_UNIT_TEXT,
             date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT,strtotime($select_products_res['predate'])),
           ),$preorder_email_title);
@@ -985,10 +989,13 @@ while ($totals = tep_db_fetch_array($totals_query)) {
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
 <title><?php echo TITLE; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
+<link rel="stylesheet" type="text/css" href="includes/styles.css">
 <script language="javascript" src="includes/general.js"></script>
 <script language="javascript" src="includes/javascript/jquery.js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript" src="includes/javascript/jquery.form.js"></script>
+<script language="javascript" src="includes/javascript/datePicker.js"></script>
 <script language="javascript">
 $(document).ready(function() {
    var se_status = document.getElementById('status').value;  
@@ -1008,14 +1015,16 @@ function check_mail_product_status(pid)
    var direct_single = false; 
    var select_status = document.getElementById('status').value;  
    var isruhe_value = document.getElementById('isruhe').value;  
-   var ensure_date = document.getElementById('update_ensure_deadline').value; 
+   var ensure_date = document.getElementById('date_ensure_deadline').value; 
    ensure_date = ensure_date.replace(/(^\s*)|(\s*$)/g, ""); 
+   document.getElementById("h_predate").value = document.getElementById("date_predate").value; 
+   document.getElementById("h_deadline").value = document.getElementById("date_ensure_deadline").value; 
    if (select_status == 32) {
-     if (ensure_date == '' || ensure_date == '0000-00-00 00:00:00') {
+     if (ensure_date == '' || ensure_date == '0000-00-00') {
          direct_single = true; 
      } 
    }
-   if ((isruhe_value == 1) && (ensure_date == '0000-00-00 00:00:00')) {
+   if ((isruhe_value == 1) && (ensure_date == '0000-00-00')) {
          direct_single = true; 
    }
    
@@ -1096,6 +1105,100 @@ function check_prestatus() {
   });
 }
 </script>
+<script language="javascript">
+$(function() {
+ $.datePicker.setDateFormat('ymd', '-');
+ $('#date_predate').datePicker();
+ $('#date_ensure_deadline').datePicker();
+});
+</script>
+<style type="text/css">
+a.date-picker{
+display:block;
+float:none;
+}
+.popup-calendar {
+top:20px;
+}
+.number{
+font-size:24px;
+font-weight:bold;
+width:20px;
+text-align:center;
+}
+form{
+margin:0;
+padding:0;
+}
+.alarm_input{
+width:80px;
+}
+.log{
+  border:#999 solid 1px;
+  background:#eee;
+  clear: both;
+}
+.log .content{
+  padding:3px;
+  font-size:12px;
+}
+.log .alarm{
+  display:none;
+  font-size:10px;
+  background:url(images/icons/alarm.gif) no-repeat left center;
+}
+.log .level{
+  font-size:10px;
+  font-weight:bold;
+  display:none;
+  width:100px;
+  *width:120px;
+}
+.log .level input{
+margin:0;
+padding:0;
+}
+.log .info{
+  font-size:10px;
+  background:#fff;
+  text-align:right;
+}
+.info02{
+width:50px;
+}
+.log .action{
+text-align:center;
+  font-size:10px;
+}
+.edit_action{
+  display:none;
+  font-size:10px;
+line-height:24px;
+padding-right:5px;
+}
+.action a{
+padding:0 3px;
+}
+textarea,input{
+  font-size:12px;
+}
+textarea{
+  width:100%;
+}
+.alarm_on{
+  border:2px solid #ff8e90;
+  background:#ffe6e6;
+}
+.clr{
+clear:both;
+width:100%;
+height:5px;
+overflow:hidden;
+}
+.popup-calendar-wrapper{
+float:left;
+}
+</style>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">
 <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
@@ -1218,7 +1321,11 @@ function check_prestatus() {
               <tr>
                 <td class="main" valign="top"><b><?php echo EDIT_ORDERS_FETCHTIME;?></b></td>
                 <td class="main">
-                  <input name='update_predate' size='25' value='<?php echo $order->info['predate']; ?>'>
+                  <?php
+                    $predate_arr = explode(' ', $order->info['predate']); 
+                  ?>
+                  <input id="date_predate" name='update_predate' size='25' value='<?php echo $predate_arr[0]; ?>'>
+                  <br> 
                   <span class="smalltext"><?php echo EDIT_ORDERS_FETCHTIME_READ;?></span>
                   <input type="hidden" name='update_tori_torihiki_date' size='25' value='<?php echo $order->tori['date']; ?>'>
                   <input type="hidden" name='update_tori_torihiki_houhou' size='45' value='<?php echo $order->tori['houhou']; ?>'>
@@ -1241,12 +1348,18 @@ function check_prestatus() {
 <input name="update_customer_country" size="25" type='hidden' value="<?php echo tep_html_quotes($order->customer['country']); ?>">
 <input name="update_delivery_country" size="25" type='hidden' value="<?php echo tep_html_quotes($order->delivery['country']); ?>">
 <input name="update_customer_telephone" size="25" type='hidden' value="<?php echo $order->customer['telephone']; ?>">
+<input type='hidden' id="h_predate" name="h_predate"> 
+<input type='hidden' id="h_deadline" name="h_deadline"> 
                 </td>
               </tr>
               <tr>
                 <td class="main" valign="top"><b><?php echo EDIT_ORDERS_ENSUREDATE;?></b></td>
                 <td class="main">
-                  <input id='update_ensure_deadline' name='update_ensure_deadline' size='25' value='<?php echo $order->info['ensure_deadline']; ?>'>
+                  <?php
+                  $ensure_arr = explode(' ', $order->info['ensure_deadline']);  
+                  ?>
+                  <input id='date_ensure_deadline' name='update_ensure_deadline' size='25' value='<?php echo $ensure_arr[0]; ?>'>
+                  <br> 
                   <span class="smalltext"><?php echo EDIT_ORDERS_FETCHTIME_READ;?></span>
               </tr>
             </table>

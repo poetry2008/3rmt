@@ -28,8 +28,8 @@
   
   $preorder_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$preorder_id."' and site_id = '".SITE_ID."'"); 
   $preorder = tep_db_fetch_array($preorder_raw);
-
-  if ($preorder) {
+  
+  if ($preorder && !isset($_SESSION['preorder_active'])) {
     $pe_email = $preorder['customers_email_address']; 
     if ($_POST['action'] == 'send') {
       if (empty($_POST['pemail'])) {
@@ -74,6 +74,7 @@
   $categories_name = '';
 
   $ca_path = tep_get_product_path($preorder_product['products_id']);
+  
   if (tep_not_null($ca_path)) {
     $ca_path_array = tep_parse_category_path($ca_path); 
   }
@@ -95,17 +96,23 @@
           $categories_name = $categories_info['categories_name']; 
         }
         
-        $breadcrumb->add($categories_info['categories_name'], tep_href_link(FILENAME_DEFAULT, 'cPath=' . implode('_', array_slice($ca_path_array, 0, ($cnum+1)))));
+        if (!isset($_SESSION['preorder_active'])) {
+          $breadcrumb->add($categories_info['categories_name'], tep_href_link(FILENAME_DEFAULT, 'cPath=' . implode('_', array_slice($ca_path_array, 0, ($cnum+1)))));
+        }
       } else {
         break;
       }
     }
   }
-  $breadcrumb->add($preorder_product['products_name'], tep_href_link(FILENAME_PRODUCT_INFO, 'products_id='.$preorder_product['products_id'])); 
-  if (!$preorder['is_active']) { 
-    $breadcrumb->add(PREORDER_SUCCESS_UNACTIVE_TITLE, '');
+  if (!isset($_SESSION['preorder_active'])) {
+    $breadcrumb->add($preorder_product['products_name'], tep_href_link(FILENAME_PRODUCT_INFO, 'products_id='.$preorder_product['products_id'])); 
+    if (!$preorder['is_active']) { 
+      $breadcrumb->add(PREORDER_SUCCESS_UNACTIVE_TITLE, '');
+    } else {
+      $breadcrumb->add(PREORDER_SUCCESS_TITLE, '');
+    }
   } else {
-    $breadcrumb->add(PREORDER_SUCCESS_TITLE, '');
+    $breadcrumb->add(PREORDER_SUCCESS_ACTIVE_HEAD_TITLE, '');
   }
 ?>
 <?php page_head();?>
@@ -123,14 +130,102 @@
       <td valign="top" id="contents"> 
       <h1 class="pageHeading">
       <?php 
-      if (!$preorder['is_active']) { 
-        echo PREORDER_SUCCESS_UNACTIVE_HEAD_TITLE;
+      if (isset($_SESSION['preorder_active'])) {
+        echo PREORDER_SUCCESS_ACTIVE_HEAD_TITLE; 
       } else {
-        echo PREORDER_SUCCESS_HEAD_TITLE;
+        if (!$preorder['is_active']) { 
+          echo PREORDER_SUCCESS_UNACTIVE_HEAD_TITLE;
+        } else {
+          echo PREORDER_SUCCESS_HEAD_TITLE;
+        }
       }
       ?></h1> 
       <div class="comment">
       <?php
+      if (isset($_SESSION['preorder_active'])) {
+      ?>
+      <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size:11px;">
+        <tr>
+        <td style="font-size:15px; color:#ff0000;">
+          <?php echo PREORDER_ACTIVE_SUCCESS_READ_HEAD.'<br><br>';?> 
+        </td>
+        </tr>
+        <tr>
+          <td>
+          <table class="preorder_active_info" border="0" cellpadding="0" cellspacing="1" width="100%"> 
+          <tr> 
+          <td colspan="2"> 
+          <?php echo PREORDER_SUCCESS_APPOINT_CONTENT;?>
+          <br>
+          </td> 
+          </tr> 
+          <tr> 
+          <td width="100"> 
+          <?php echo PREORDER_SUCCESS_APPOINT_PRODUCT_NAME;?>
+          </td>
+          <td>
+          <?php echo $preorder_product['products_name'];?> 
+          </td>
+          </tr> 
+          <tr> 
+          <td> 
+          <?php echo PREORDER_SUCCESS_APPOINT_PRODUCT_NUM;?>
+          </td>
+          <td>
+          <?php echo $preorder_product['products_quantity'].PREORDER_SUCCESS_UNIT_TEXT;?> 
+          </td>
+          </tr>
+          <tr>
+          <td>
+          <?php echo PREORDER_SUCCESS_APPOINT_PRODUCT_DATE;?>
+          </td>
+          <td>
+          <?php echo date('Y'.PREORDER_SUCCESS_YEAR_TEXT.'m'.PREORDER_SUCCESS_MONTH_TEXT.'d'.PREORDER_SUCCESS_DAY_TEXT, strtotime($preorder_res['predate']));?>
+          </td>
+          </tr>
+          </table><br>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <?php 
+            echo PREORDER_ACTIVE_SUCCESS_READ_INFO.'<br>';
+            ?>
+          </td>
+        </tr>
+        <tr>
+          <td>
+          <div class="preorder_active_line"></div> 
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <?php
+            $preorder_product_status_query = tep_db_query("select products_status from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$preorder_product['products_id']."' and (site_id = 0 or site_id = ".SITE_ID.") order by site_id desc limit 1"); 
+            $preorder_product_status = tep_db_fetch_array($preorder_product_status_query);
+            if ($preorder_product_status['products_status'] == 0) {
+              echo sprintf(PREORDER_ACTIVE_SUCCESS_READ_BOTTOM, $categories_name, $preorder_product['products_name']);
+            } else {
+              echo sprintf(PREORDER_ACTIVE_SUCCESS_READ_BOTTOM, $categories_name, '<a href="'.tep_href_link(FILENAME_PRODUCT_INFO, 'products_id='.$preorder_product['products_id']).'">'.$preorder_product['products_name'].'</a>');
+            }
+            
+            ?> 
+          </td>
+        </tr>
+        <tr>
+          <td>
+                <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+                  <tr> 
+                    <td class="main" align="right"><?php echo '<a href="' .tep_href_link(FILENAME_DEFAULT). '">' .  tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></td> 
+                    <td align="right" class="main">
+                    </td> 
+                  </tr> 
+                </table></td> 
+        </tr>
+      </table>
+      
+      <?php
+      } else {
       if (!$preorder['is_active']) { 
       if ($error == true) {
         if (isset($error_msg)) {
@@ -147,6 +242,8 @@
         }
       }
       echo tep_draw_form('form', tep_href_link('preorder_success.php')); 
+      echo PREORDER_SUCCESS_ACTIVE_INFO_TEXT; 
+      echo '<br><br>'; 
       echo tep_draw_hidden_field('action', 'send'); 
       ?>
       <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size:12px;">
@@ -154,7 +251,7 @@
           <td>
             <table>
               <tr>
-                <td style="font-size:11px;"><?php echo INPUT_PREORDER_SEND_MAIL;?></td> 
+                <td style="font-size:11px; color:#ff0000;"><?php echo INPUT_PREORDER_SEND_MAIL;?></td> 
                 <td>
                 <?php echo tep_draw_input_field('pemail', (isset($_POST['pemail'])?$_POST['pemail']:$pe_email));?> 
                 </td>
@@ -162,7 +259,7 @@
                 <?php echo tep_image_submit('button_send_mail.gif', 'mail');?> 
                 </td>
               </tr>
-            </table>
+            </table><br>
           </td>
         </tr>
         <tr>
@@ -171,7 +268,7 @@
           </td>
         </tr>
         <tr>
-          <td>
+          <td><br>
                 <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                   <tr> 
                     <td class="main" align="right"><?php echo '<a href="' .tep_href_link(FILENAME_DEFAULT). '">' .  tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></td> 
@@ -199,15 +296,39 @@
         </tr>
         <tr>
           <td>
-          <br>
-          <br>
+          <br>  
+          <table class="preorder_active_info" border="0" cellpadding="0" cellspacing="1" width="100%"> 
+          <tr> 
+          <td colspan="2"> 
           <?php echo PREORDER_SUCCESS_APPOINT_CONTENT;?>
           <br>
-          <?php echo PREORDER_SUCCESS_APPOINT_PRODUCT_NAME.$preorder_product['products_name'];?> 
-          <br>
-          <?php echo PREORDER_SUCCESS_APPOINT_PRODUCT_NUM.$preorder_product['products_quantity'].PREORDER_SUCCESS_UNIT_TEXT;?> 
-          <br>
-          <?php echo PREORDER_SUCCESS_APPOINT_PRODUCT_DATE.date('Y'.PREORDER_SUCCESS_YEAR_TEXT.'m'.PREORDER_SUCCESS_MONTH_TEXT.'d'.PREORDER_SUCCESS_DAY_TEXT, strtotime($preorder['predate']))?>
+          </td> 
+          </tr> 
+          <tr> 
+          <td> 
+          <?php echo PREORDER_SUCCESS_APPOINT_PRODUCT_NAME;?>
+          </td>
+          <td>
+          <?php echo $preorder_product['products_name'];?> 
+          </td> 
+          </tr>
+          <tr> 
+          <td> 
+          <?php echo PREORDER_SUCCESS_APPOINT_PRODUCT_NUM;?>
+          </td>
+          <td>
+          <?php echo $preorder_product['products_quantity'].PREORDER_SUCCESS_UNIT_TEXT;?> 
+          </td>
+          </tr>
+          <tr>
+          <td>
+          <?php echo PREORDER_SUCCESS_APPOINT_PRODUCT_DATE;?>
+          </td>
+          <td>
+          <?php echo date('Y'.PREORDER_SUCCESS_YEAR_TEXT.'m'.PREORDER_SUCCESS_MONTH_TEXT.'d'.PREORDER_SUCCESS_DAY_TEXT, strtotime($preorder['predate']))?>
+          </td>
+          </tr>
+          </table> 
           </td>
         </tr>
         <tr>
@@ -221,6 +342,7 @@
                 </table></td> 
         </tr>
       </table> 
+      <?php }?> 
       <?php }?> 
       </div>
       <p class="pageBottom"></p> 

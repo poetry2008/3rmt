@@ -111,13 +111,13 @@
                             array('title' => '<div class="rowHide
                               rowHide_'.$this->code.'" id="cemail"
                               style="display:none;">'.MODULE_PAYMENT_CONVENIENCE_INFO_TEXT.'<div
-                              class="cemail_input_01"><div class="cemail_front_text">'
+                              class="cemail_input_info"><div class="cemail_front_text">'
                               .MODULE_PAYMENT_CONVENIENCE_EMAIL_TEXT.'</div><div
                               class="con_email01">'.tep_draw_input_field('convenience_email',
                                 $email_default_str, 'onpaste="return
                                 false"').'
                               '.MODULE_PAYMENT_CONVENIENCE_MUST_INPUT."</div></div><div
-                              class='cemail_input_01'><div
+                              class='cemail_input_info'><div
                               class='cemail_front_text'>"
                               .MODULE_PAYMENT_CONVENIENCE_EMAIL_CONFIRMATION_TEXT."</div><div
                               class='con_email02'>".tep_draw_input_field('convenience_email_again',

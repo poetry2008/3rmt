@@ -11,15 +11,53 @@
 */
 
   require('includes/application_top.php');
+
   
   require(DIR_WS_LANGUAGES . $language . '/change_preorder.php');
-  $preorder_id = $_GET['pid'];
   
-  $preorder_raw = tep_db_query('select * from '.TABLE_PREORDERS." where orders_id = '".$preorder_id."' and site_id = '".SITE_ID."' and is_active = '1'");
+  $preorder_raw = tep_db_query('select * from '.TABLE_PREORDERS." where check_preorder_str = '".$_GET['pid']."' and site_id = '".SITE_ID."' and is_active = '1'");
   $preorder_res = tep_db_fetch_array($preorder_raw); 
   if (!$preorder_res) {
     forward404(); 
   }
+  
+  $customer_info_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = '".$preorder_res['customers_id']."' and site_id = '".SITE_ID."'"); 
+  $customer_info_res = tep_db_fetch_array($customer_info_raw);
+  
+  $is_member_single = 0;
+  if ($customer_info_res['customers_guest_chk'] == '0') {
+    $is_member_single = 1; 
+  }
+  
+  if (!tep_session_is_registered('customer_id')) {
+      if ($customer_info_res['customers_guest_chk'] == '0') {
+        $navigation->set_snapshot();
+        tep_redirect(tep_href_link(FILENAME_LOGIN, 'pid='.$_GET['pid'], 'SSL'));
+      }
+  } else {
+    if ($guestchk == '0') {
+      if ($customer_emailaddress != $preorder_res['customers_email_address']) {
+        $navigation->set_snapshot();
+        
+        tep_session_unregister('customer_id');
+        tep_session_unregister('customer_default_address_id');
+        tep_session_unregister('customer_first_name');
+        tep_session_unregister('customer_last_name'); 
+        tep_session_unregister('customer_country_id');
+        tep_session_unregister('customer_zone_id');
+        tep_session_unregister('comments');
+        tep_session_unregister('customer_emailaddress');
+        tep_session_unregister('guestchk');
+
+        $cart->reset();
+        
+        tep_redirect(tep_href_link(FILENAME_LOGIN, 'pid='.$_GET['pid'], 'SSL'));
+      }
+    }
+  } 
+  $preorder_point = (int)$customer_info_res['point'];  
+  
+  $preorder_id = $preorder_res['orders_id'];
   
   $preorder_payment_code = tep_preorder_get_payment_type($preorder_res['payment_method']);
   
@@ -61,6 +99,24 @@
         $character_error = TEXT_PREORDER_ERROR_CHARACTER;
       }
     }
+    
+    if (isset($_POST['preorder_point'])) {
+      if (is_numeric($_POST['preorder_point'])) {
+        if ($_POST['preorder_point'] > $preorder_point) {
+          if (($_POST['preorder_point'] != '0') && ($preroder_point != '0')) {
+            $error = true;
+            $point_error = TEXT_PREORDER_ERROR_POINT;
+          }
+        }
+        if (($_POST['preorder_point'] < 0)) {
+          $error = true;
+          $point_error = TEXT_PREORDER_ERROR_POINT;
+        }
+      } else {
+        $error = true;
+        $point_error = TEXT_PREORDER_ERROR_POINT;
+      }
+    }
   }
 $breadcrumb->add(NAVBAR_CHANGE_PREORDER_TITLE, '');
 ?>
@@ -83,7 +139,7 @@ foreach ($_POST as $post_key => $post_value) {
     echo tep_draw_hidden_field($post_key, $post_value); 
   }
 }
-echo tep_draw_hidden_field('pid', $_GET['pid']); 
+echo tep_draw_hidden_field('pid', $preorder_id); 
 echo '</form>';
 ?>
 <script type="text/javascript">
@@ -153,7 +209,7 @@ echo '</form>';
           <h3 class="formAreaTitle"><?php echo CHANGE_ORDER_CUSTOMER_DETAILS?></h3> 
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
-              <td class="main">
+              <td class="main" width="150">
               <?php echo CHANGE_ORDER_CUSTOMER_NAME;?> 
               </td>
               <td class="main">
@@ -177,7 +233,7 @@ echo '</form>';
           <h3 class="formAreaTitle"><?php echo CHANGE_ORDER_PRODUCT_DETAILS;?></h3> 
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
-              <td class="main">
+              <td class="main" width="150">
               <?php echo CHANGE_ORDER_PRODUCT_NAME;?> 
               </td>
               <td class="main">
@@ -217,7 +273,7 @@ echo '</form>';
         <h3 class="formAreaTitle"><?php echo CHANGE_ORDER_FETCH_TIME_TITLE;?></h3> 
         <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
         <tr>
-              <td class="main">
+              <td class="main" width="150">
               <?php echo CHANGE_ORDER_FETCH_TIME_READ;?> 
               </td>
               <td class="main">
@@ -299,7 +355,7 @@ echo '</form>';
         while ($products_options_name = tep_db_fetch_array($products_options_name_query)) {
             $selected = 0;
             $products_options_array = array();
-            echo '<tr><td class="main">' . $products_options_name['products_options_name'] . ':</td><td>' . "\n";
+            echo '<tr><td class="main" width="150">' . $products_options_name['products_options_name'] . ':</td><td>' . "\n";
         $products_options_query = tep_db_query("
             SELECT pov.products_options_values_id, 
                    pov.products_options_values_name, 
@@ -330,13 +386,36 @@ echo '</form>';
           </table> 
           <?php }?> 
           <br>
+          <?php
+          if ($is_member_single && MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { 
+            ?>
+          <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
+            <tr>
+              <td class="main" width="150"><?php echo TEXT_PREORDER_POINT_TEXT;?></td> 
+              <td class="main">
+              <input type="text" name="preorder_point" class="input_text_short" value="<?php echo isset($_POST['preorder_point'])?$_POST['preorder_point']:'0';?>">&nbsp;/&nbsp;<?php echo $preorder_point;?> 
+              <?php 
+              if (isset($point_error)) {
+                echo '<br><font color="#ff0000">'.$point_error.'</font>'; 
+              }
+              ?>
+              </td> 
+            </tr>
+          </table>
+          <br>
+          <?php }?> 
           <table width="100%" cellpadding="0" cellspacing="0" border="0" class="c_pay_info">
             <tr>
               <td class="main">
               <?php echo TEXT_PREORDER_FETCH_BUTTON_INFO;?> 
               </td>
               <td class="main" align="right">
-                <?php echo tep_draw_hidden_field('pay_type', $preorder_payment_code);?> 
+                <?php
+                 if (!$is_member_single && MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { 
+                   echo '<input type="hidden" name="preorder_point" value="0">'; 
+                 }
+                ?>
+                <?php echo tep_draw_hidden_field('pay_type', strval($preorder_payment_code));?> 
                 <?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE);?> 
               </td>
             </tr>

@@ -147,6 +147,7 @@
         if ($num_product_res) {
           $num_product = $num_product_res['products_quantity']; 
         }
+        $ensure_date_arr = explode(' ', $check_status['ensure_deadline']);
         $title = str_replace(array(
           '${NAME}',
           '${MAIL}',
@@ -174,7 +175,7 @@
           get_configuration_by_site_id('STORE_NAME', $site_id),
           get_url_by_site_id($site_id),
           date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day())),
-          $check_status['ensure_deadline'],
+          $ensure_date_arr[0],
           $num_product.PREORDER_PRODUCT_UNIT_TEXT,
           date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT, strtotime($check_status['predate']))
         ),$title
@@ -208,7 +209,7 @@
           get_url_by_site_id($site_id),
           get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
           date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day())),
-          $check_status['ensure_deadline'], 
+          $ensure_date_arr[0],
           $num_product.PREORDER_PRODUCT_UNIT_TEXT,
           date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT, strtotime($check_status['predate']))
         ),$comments
@@ -217,8 +218,11 @@
           if ($status == 32) {
             $site_url_raw = tep_db_query("select * from sites where id = '".$site_id."'"); 
             $site_url_res = tep_db_fetch_array($site_url_raw); 
-            $change_preorder_url = $site_url_res['url'].'/change_preorder.php?pid='.$oID; 
+            $change_preorder_url_param = md5(time().$oID); 
+            $change_preorder_url = $site_url_res['url'].'/change_preorder.php?pid='.$change_preorder_url_param; 
             $comments = str_replace('${REAL_ORDER_URL}', $change_preorder_url, $comments); 
+            
+            tep_db_query("update ".TABLE_PREORDERS." set check_preorder_str = '".$change_preorder_url_param."' where orders_id = '".$oID."'"); 
           }
           if ($status == 33) {
             $site_url_raw = tep_db_query("select * from sites where id = '".$site_id."'"); 
@@ -423,7 +427,7 @@
       if ($num_product_res) {
         $num_product = $num_product_res['products_quantity']; 
       }
-
+      $ensure_date_arr = explode(' ', $check_status['ensure_deadline']);
       $title = str_replace(array(
         '${NAME}',
         '${MAIL}',
@@ -453,7 +457,7 @@
         get_url_by_site_id($site_id),
         get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
         date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day())),
-        $check_status['ensure_deadline'], 
+        $ensure_date_arr[0], 
         $num_product.PREORDER_PRODUCT_UNIT_TEXT,
         date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT, strtotime($check_status['predate']))
       ),$title);
@@ -487,7 +491,7 @@
         get_url_by_site_id($site_id),
         get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
         date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day())),
-        $check_status['ensure_deadline'], 
+        $ensure_date_arr[0], 
         $num_product.PREORDER_PRODUCT_UNIT_TEXT,
         date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT, strtotime($check_status['predate']))
       ),$comments);
@@ -495,8 +499,11 @@
         if ($status == 32) {
           $site_url_raw = tep_db_query("select * from sites where id = '".$site_id."'"); 
           $site_url_res = tep_db_fetch_array($site_url_raw); 
-          $change_preorder_url = $site_url_res['url'].'/change_preorder.php?pid='.$oID; 
+          $change_preorder_url_param = md5(time().$oID); 
+          $change_preorder_url = $site_url_res['url'].'/change_preorder.php?pid='.$change_preorder_url_param; 
           $comments = str_replace('${REAL_ORDER_URL}', $change_preorder_url, $comments); 
+          
+          tep_db_query("update ".TABLE_PREORDERS." set check_preorder_str = '".$change_preorder_url_param."' where orders_id = '".$oID."'"); 
         }
         if ($status == 33) {
           $site_url_raw = tep_db_query("select * from sites where id = '".$site_id."'"); 

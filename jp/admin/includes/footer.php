@@ -112,20 +112,24 @@ $testArray = array();
 if (STORE_DB_TRANSACTIONS == 'true' ) {?>
   <div id="debug_info">
     <pre>
-    <?php if(isset($logger)){
+    <?php 
+    if(isset($logger)){
       foreach ($logger->queries as $qk => $qv) {
         echo '[' . $logger->times[$qk] . ']' . $qk . "\t=>\t" . $qv."\n";
       }
     }
+  
   print_r($_SESSION);
   ?>
     <?php //print_r($logger->times);?>
     </pre>
     </div>
-    <?php }?>
     <?php
+    /*
     $query = tep_db_query("show variables like '%timeout'");
 while($value = tep_db_fetch_array($query)){
     var_dump($value);
     }
+    */
     ?>
+    <?php }?>
