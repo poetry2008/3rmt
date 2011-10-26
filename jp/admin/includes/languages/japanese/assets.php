@@ -30,7 +30,7 @@ define('TEXT_SUM_PRODUCT','合計在庫');
 define('TEXT_AVG_PRICE','平均単価');
 define('TEXT_SUM_PRICE','合計金額');
 define('TEXT_NO_RESULT','有効なデータが足りません');
-define('TEXT_SEARCH_ORDER','並び順');
+define('TEXT_SEARCH_ORDER','算出順');
 define('TEXT_SEARCH_CATEGORY','カテゴリー');
 define('TEXT_SEARCH_SITE','サイト');
 define('TEXT_SEARCH_WHERE','検索条件');
