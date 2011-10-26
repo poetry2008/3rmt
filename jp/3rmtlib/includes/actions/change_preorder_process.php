@@ -13,6 +13,8 @@ if (isset($preorder_real_point)) {
   $preorder_point = $preorder_real_point;
 }
 
+include(DIR_WS_LANGUAGES . $language . '/change_preorder_process.php');
+
 require(DIR_WS_CLASSES.'payment.php');
 
 $preorder_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$_SESSION['preorder_info_id']."' and site_id = '".SITE_ID."'");
