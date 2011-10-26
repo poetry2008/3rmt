@@ -219,32 +219,14 @@ class rakuten_bank {
     } else {
       $s_message = $s_result ? '' : ('<font color="#FF0000">' . $_POST['codt_fee_error'] . '</font>');
     }
+    return array(
+                 'title' => str_replace("#TELNUMBER#",$_POST['rakuten_telnumber'],nl2br(constant("MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_CONFIRMATION"))),
+		 'fields' => array(
+				   array('title' => constant("MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_SHOW"), 'field' => ''),  
+				   array('title' => $s_message, 'field' => '')  
+				   )           
+		 );
 
-    if (!empty($_POST['codt_fee'])) {
-      $confirmation = array(
-          'title' => $this->title,
-          'fields' => array(array('title' => MODULE_PAYMENT_RAKUTEN_BANK_TEXT_PROCESS_CON,
-              'field' => ''),
-            array('title' =>
-              MODULE_PAYMENT_RAKUTEN_BANK_TEXT_MAILFOOTER.MODULE_PAYMENT_RAKUTEN_TELNUMBER_TEXT.strtr($_POST['rakuten_telnumber'], $this->arrs2d),
-              'field' => ''),
-            array('title' => $s_message,
-              'field' => ''),
-            )
-          );
-    } else {
-      $confirmation = array(
-          'title' => $this->title,
-          'fields' => array(array('title' =>
-              MODULE_PAYMENT_RAKUTEN_BANK_TEXT_MAILFOOTER.MODULE_PAYMENT_RAKUTEN_TELNUMBER_TEXT.strtr($_POST['rakuten_telnumber'], $this->arrs2d),
-              'field' => ''),
-            array('title' => $s_message,
-              'field' => ''),
-            )
-          );
-    }
-
-    return $confirmation;
   }
 
   function process_button() {

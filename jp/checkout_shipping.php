@@ -2,7 +2,6 @@
 /*
   $Id$
 */
-
   require('includes/application_top.php');
   require('includes/classes/http_client.php');
 

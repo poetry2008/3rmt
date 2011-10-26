@@ -272,30 +272,14 @@
       } else {
         $s_message = $s_result ? '' : ('<font color="#FF0000">' . $_POST['codt_fee_error'] . '</font>');
       }
-      
-      if (!empty($_POST['codt_fee'])) {
-        $confirmation = array(
-            'title' => $this->title,
-            'fields' => array(array('title' => MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_PROCESS_CON,
-                                    'field' => ''),
-                              array('title' => MODULE_PAYMENT_CONVENIENCE_EMAIL_TEXT.$_POST['convenience_email'],
-                                    'field' => ''),
-                              array('title' => $s_message,
-                                    'field' => ''),
-                             )
-        );
-      } else {
-        $confirmation = array(
-            'title' => $this->title,
-            'fields' => array(array('title' => MODULE_PAYMENT_CONVENIENCE_EMAIL_TEXT.$_POST['convenience_email'],
-                                    'field' => ''),
-                              array('title' => $s_message,
-                                    'field' => ''),
-                             )
-        );
-      }
-    
-      return $confirmation;
+                  return array(
+                               'title' => str_replace("#USER_MAIL#",$_POST['convenience_email_again'],nl2br(constant("MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_CONFIRMATION"))),
+                   'fields' => array(
+                                     array('title' => constant("MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_SHOW"), 'field' => ''),  
+                                     array('title' => $s_message, 'field' => '')  
+				     )           
+		   );
+
     }
 
     function process_button() {

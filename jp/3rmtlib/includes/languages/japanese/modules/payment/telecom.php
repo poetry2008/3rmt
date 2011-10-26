@@ -13,3 +13,4 @@
   define('MODULE_PAYMENT_TELECOM_TEXT_OVERFLOW_ERROR', 'お買い上げ金額がコンビニ決済の制限を超えたためお取り扱いできません。');
   define('MODULE_PAYMENT_TELECOM_TEXT_FEE', 'クレジットカード決済決済手数料:');
   define('MODULE_PAYMENT_TELECOM_TEXT_PROCESS', 'クレジットカード決済手数料が別途かかります。');
+  define('MODULE_PAYMENT_TELECOM_TEXT_CONFIRMATION', 'カード情報の入力画面ではフリーメールアドレスのご入力をご遠慮ください。');

@@ -59,7 +59,7 @@
       return array('id' => $this->code,
                    'module' => 'ポイントの加算',
                    'fields' => array(
-                     array('title' => str_replace('#STORE_NAME#', STORE_NAME, PAYMENT_POINT_DESCRIPTION), 'field' => ''),
+                     array('title' => str_replace('#STORE_NAME#', STORE_NAME, $this->description), 'field' => ''),
                      array('title' => $s_message, 'field' => '')
                      ) 
       );
@@ -82,33 +82,14 @@
       } else {
         $s_message = $s_result ? '':('<font color="#FF0000">'.$_POST['point_order_fee_error'].'</font>'); 
       }
-      
-      if (!empty($this->n_fee)) {
-        return array(
-            'title' => MODULE_PAYMENT_BUYINGPOINT_TEXT_DESCRIPTION,
-            'fields' => array(array('title' => MODULE_PAYMENT_BUYINGPOINT_TEXT_PROCESS,
-                                    'field' => ''),
-                              array('title' => $s_message, 'field' => '')  
-                       )           
-            );
-      } else {
-        if ($this->check_buy_goods()) {
-          //return array(); 
-          return array(
-              'title' => MODULE_PAYMENT_BUYINGPOINT_TEXT_DESCRIPTION,
-              'fields' => array(
-                                array('title' => MODULE_PAYMENT_BUYINGPOINT_TEXT_SHOW, 'field' => ''),  
-                                array('title' => $s_message, 'field' => '')  
-                         )           
-              );
-        } else {
-          return array(
-              'title' => MODULE_PAYMENT_BUYINGPOINT_TEXT_DESCRIPTION,
-              'fields' => array(array('title' => $s_message, 'field' => '')  
-                         )           
-              );
-        }
-      }
+            return array(
+                   'title' => nl2br(constant("MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_CONFIRMATION")),
+                   'fields' => array(
+                                     array('title' => constant("MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_SHOW"), 'field' => ''),  
+                                     array('title' => $s_message, 'field' => '')  
+				     )           
+		   );
+
       //return false;
     }
 

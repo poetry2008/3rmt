@@ -3,19 +3,17 @@
   $Id$
 */
 class telecom {
-  var $site_id, $code, $title, $description, $enabled, $n_fee, $s_error, $email_footer,$c_prefix;
+  var $site_id, $code, $title, $description, $enabled, $n_fee, $s_error, $email_footer;
 
   // class constructor
   function telecom($site_id = 0) {
     global $order, $_GET;
       
     $this->site_id = $site_id;
-
     $this->code        = 'telecom';
     $this->title       = MODULE_PAYMENT_TELECOM_TEXT_TITLE;
     $this->description = MODULE_PAYMENT_TELECOM_TEXT_DESCRIPTION;
     $this->explain     = MODULE_PAYMENT_TELECOM_TEXT_EXPLAIN;
-    $this->c_prefix    = C_CC;
     $this->sort_order  = MODULE_PAYMENT_TELECOM_SORT_ORDER;
     $this->enabled     = ((MODULE_PAYMENT_TELECOM_STATUS == 'True') ? true : false);
 
@@ -123,23 +121,14 @@ class telecom {
     } else {
       $s_message = $s_result ? '':('<font color="#FF0000">'.$_POST['telecom_order_fee_error'].'</font>'); 
     }
-      
-    if (!empty($_POST['telecom_order_fee'])) {
-      return array(
-                   'title' => MODULE_PAYMENT_TELECOM_TEXT_DESCRIPTION,
-                   'fields' => array(array('title' => MODULE_PAYMENT_TELECOM_TEXT_PROCESS,
-                                           'field' => ''),
-                                     array('title' => $s_message, 'field' => '')  
-                                     )           
-                   );
-    } else {
-      return array(
-                   'title' => MODULE_PAYMENT_TELECOM_TEXT_DESCRIPTION,
-                   'fields' => array(array('title' => $s_message, 'field' => '')  
-                                     )           
-                   );
-    }
-    //return false;
+    return array(
+		 'title' => nl2br(constant("MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_CONFIRMATION")),
+		 'fields' => array(
+				   array('title' => constant("MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_SHOW"), 'field' => ''),  
+				   array('title' => $s_message, 'field' => '')  
+				   )           
+		 );      
+
   }
 
     
