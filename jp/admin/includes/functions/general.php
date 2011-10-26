@@ -6622,9 +6622,9 @@ function tep_get_order_history_sql_by_pid($pid,$start='',$end='',$sort=''){
     $sql .= " and o.date_purchased between '".$start."' and '".$end."' ";
   }
   if($sort){
-    if($sort='price_asc'){
+    if($sort=='price_asc'){
       $sql .= " order by final_price asc ";
-    }else if($sort='price_desc'){
+    }else if($sort=='price_desc'){
       $sql .= " order by final_price desc ";
     }else{
       $sql .= " order by o.torihiki_date desc ";
