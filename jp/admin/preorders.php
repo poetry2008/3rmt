@@ -542,8 +542,6 @@
     case 'deleteconfirm':
       $oID = tep_db_prepare_input($_GET['oID']);
 
-      tep_preorder_remove_attributes($oID, $_POST['restock']);
-
       tep_preorder_remove_order($oID, $_POST['restock']);
       
       tep_redirect(tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('oID', 'action'))));
@@ -2619,7 +2617,6 @@ function submit_confirm()
 
       $contents = array('form' => tep_draw_form('orders', FILENAME_PREORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID=' . $oInfo->orders_id . '&action=deleteconfirm'));
       $contents[] = array('text' => TEXT_INFO_DELETE_INTRO . '<br><br><b>' . tep_get_fullname(isset($cInfo->customers_firstname)?$cInfo->customers_firstname:'', isset($cInfo->customers_lastname)?$cInfo->customers_lastname:'') . '</b>');
-      $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('restock', '', true) . ' ' . TEXT_INFO_RESTOCK_PRODUCT_QUANTITY);
       $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_DELETE) . ' <a href="' .  tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID=' . $oInfo->orders_id) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
       break;
     default:

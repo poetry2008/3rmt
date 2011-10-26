@@ -219,7 +219,7 @@
       orders_status = '" . tep_db_input($status) . "'";
     
     if(!$CommentsWithStatus) {
-      $UpdateOrders .= ", comments = '" . tep_db_input($comments) . "'";
+      //$UpdateOrders .= ", comments = '" . tep_db_input($comments) . "'";
     }
     $UpdateOrders .= " where orders_id = '" . tep_db_input($oID) . "';";
 
@@ -656,6 +656,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
       }
       
       $ensure_date_arr = explode(' ', $select_products_res['ensure_deadline']);
+      $email = $_POST['comments']; 
       $email = str_replace(array(
         '${NAME}',
         '${MAIL}',
@@ -706,12 +707,10 @@ while ($totals = tep_db_fetch_array($totals_query)) {
           $change_preorder_url = $site_url_res['url'].'/extend_time.php?pid='.$oID; 
           $email = str_replace('${ORDER_UP_DATE}', $change_preorder_url, $email); 
         }
-        $preorder_email_title = ''; 
+        $preorder_email_title = $_POST['etitle']; 
         $select_status_raw = tep_db_query("select * from ".TABLE_PREORDERS_MAIL." where orders_status_id = '".$status."'"); 
         $select_status_res = tep_db_fetch_array($select_status_raw);
         if ($select_status_res) {
-          $preorder_email_title = $select_status_res['orders_status_title']; 
-          
           $select_t_products_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$oID."'");
           $select_t_products_res = tep_db_fetch_array($select_t_products_raw);
 
@@ -1103,7 +1102,29 @@ function check_prestatus() {
       document.getElementById('isruhe').value = data; 
     }
   });
-}
+
+  $.ajax({
+    dataType: 'text',
+    url: 'ajax_preorders.php?action=get_mail',
+    data: 'sid='+s_value, 
+    type:'POST',
+    async: false,
+    success: function(msg) {
+      document.edit_order.comments.value = msg;
+    }
+  });
+  
+  $.ajax({
+    dataType: 'text',
+    url: 'ajax_preorders.php?action=get_mail',
+    data: 'sid='+s_value+'&type=1', 
+    type:'POST',
+    async: false,
+    success: function(t_msg) {
+      document.edit_order.etitle.value = t_msg;
+    }
+  });
+}  
 </script>
 <script language="javascript">
 $(function() {
@@ -1746,18 +1767,15 @@ if (tep_db_num_rows($orders_history_query)) {
     </td>
     <td class="main" width="10">&nbsp;</td>
     <td class="main">
-    <?php echo EDIT_ORDERS_RECORD_ARTICLE;?><br>
     <?php
-    if($CommentsWithStatus) {
-  
-  //<textarea style="font-family:monospace;font-size:x-small" name="comments" wrap="hard" rows="30" cols="74"></textarea>
-  
-      echo tep_draw_textarea_field('comments', 'hard', '74', '5', isset($order->info['comments'])?$order->info['comments']:'');
-  //    echo tep_draw_textarea_field('comments', 'soft', '40', '5');
-    } else {
-      echo tep_draw_textarea_field('comments', 'hard', '74', '5', isset($order->info['comments'])?$order->info['comments']:'');
-    }
+      $ma_se = "select * from ".TABLE_PREORDERS_MAIL." where orders_status_id = '".$sel_nyuuka_id."'"; 
+      $mail_sele = tep_db_query($ma_se); 
+      $mail_sql = tep_db_fetch_array($mail_sele); 
     ?>
+    <?php echo '<b>'.ENTRY_EMAIL_TITLE.'</b>'.tep_draw_input_field('etitle', $mail_sql['orders_status_title']);?> 
+    <br> 
+    <br> 
+    <textarea style="font-family:monospace:font-size:12px;" name="comments" wrap="hard" rows="15" cols="74"><?php echo str_replace('${ORDER_A}', preorders_a($order->info['orders_id']), $mail_sql['orders_status_mail']);?></textarea> 
   </td>
   </tr>
 </table>

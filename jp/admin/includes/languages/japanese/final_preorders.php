@@ -211,4 +211,5 @@ define('NOTICE_INPUT_ENSURE_DEADLINE', '確保期限を設定してください�
 define('FORDERS_NOTICE_INPUT_ONCE_PWD', 'ワンタイムパスワードを入力してください');
 define('FORDERS_NOTICE_ONCE_PWD_WRONG', 'パスワードが違います');
 define('PREORDER_PRODUCT_UNIT_TEXT', '個');
+define('ENTRY_EMAIL_TITLE', 'メールタイトル：');
 ?>

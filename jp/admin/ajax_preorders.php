@@ -582,5 +582,18 @@ if ($_POST['orders_id'] &&
   } else {
     echo 0; 
   }
+} else if (isset($_GET['action']) && $_GET['action'] == 'get_mail') {
+  $preorder_status_raw = tep_db_query("select * from ".TABLE_PREORDERS_MAIL." where orders_status_id = '".$_POST['sid']."'");
+  $preorder_status = tep_db_fetch_array($preorder_status_raw);
+  if ($preorder_status) {
+    if ($_POST['type']) {
+      echo $preorder_status['orders_status_title']; 
+    } else {
+      $replace_str = date('Y年n月j日',strtotime(tep_get_pay_day()));
+      echo str_replace('${PAY_DATE}', $replace_str, $preorder_status['orders_status_mail']); 
+    }
+  } else {
+    echo ''; 
+  }
 }
 
