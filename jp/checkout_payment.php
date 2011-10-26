@@ -208,7 +208,6 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { echo $payment_modules->javascrip
       continue;
     }
     if (check_money_limit(constant("MODULE_PAYMENT_".strtoupper($selection[$i]['id'])."_MONEY_LIMIT"), $order->info['total'])) {
-      //      echo constant("MODULE_PAYMENT_".strtoupper($selection[$i]['id'])."_MONEY_LIMIT");
       continue; 
     }
 

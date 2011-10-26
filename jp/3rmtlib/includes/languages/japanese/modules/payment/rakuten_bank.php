@@ -37,3 +37,21 @@
   define('MODULE_PAYMENT_RAKUTEN_TELNUMBER_CONFIRMATION_TEXT', '電話番号(確認用):');
   define('MODULE_PAYMENT_RAKUTEN_MUST_INPUT', '<small><font color="#AE0E30">(必須)</font></small>');
   define('MODULE_PAYMENT_RAKUTEN_INFO_TEXT', '下記入力欄に電話番号をご記入ください。<br>');
+ 
+  define('MODULE_PAYMENT_RAKUTEN_BANK_TEXT_CONFIRMATION', '
+電話番号:#TELNUMBER#
+
+下記の口座へお振り込みください。
+------------------------------------------
+銀行名　　：　楽天銀行（旧イーバンク銀行）
+支店名　　：　ワルツ支店
+口座種別　：　普通
+口座名義　：　カ）アイアイエムワイ
+口座番号　：　7003965
+------------------------------------------
+※ 必ずご注文時に入力したお名前でお振り込みください。
+※ 振込手数料はお客様のご負担となります。
+※ お振り込みはご注文から７日以内にお願いいたします。
+※ ご入金を株式会社iimyが確認した時点でご契約の成立となります。
+
+');

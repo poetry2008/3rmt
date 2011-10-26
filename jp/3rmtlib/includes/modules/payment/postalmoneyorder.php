@@ -18,7 +18,7 @@
       $this->explain     = MODULE_PAYMENT_POSTALMONEYORDER_TEXT_EXPLAIN;
       $this->sort_order  = MODULE_PAYMENT_POSTALMONEYORDER_SORT_ORDER;
       $this->enabled     = ((MODULE_PAYMENT_POSTALMONEYORDER_STATUS == 'True') ? true : false);
-      $this->c_prefix    = C_POSTAL; 
+
       if ((int)MODULE_PAYMENT_POSTALMONEYORDER_ORDER_STATUS_ID > 0) {
         $this->order_status = MODULE_PAYMENT_POSTALMONEYORDER_ORDER_STATUS_ID;
       }
@@ -117,22 +117,14 @@
         $s_message = $s_result ? '':('<font color="#FF0000">'.$_POST['postal_money_order_fee_error'].'</font>'); 
       }
       
-      if (!empty($_POST['postal_money_order_fee'])) {
-        return array(
-            'title' => MODULE_PAYMENT_POSTALMONEYORDER_TEXT_DESCRIPTION,
-            'fields' => array(array('title' => MODULE_PAYMENT_POSTALMONEY_ORDER_TEXT_PROCESS,
-                                    'field' => ''),
-                              array('title' => $s_message, 'field' => '')  
-                       )           
-            );
-      } else {
-        return array(
-            'title' => MODULE_PAYMENT_POSTALMONEYORDER_TEXT_DESCRIPTION,
-            'fields' => array(array('title' => $s_message, 'field' => '')  
-                       )           
-            );
-      }
-      //return array('title' => MODULE_PAYMENT_POSTALMONEYORDER_TEXT_DESCRIPTION);
+    return array(
+		 'title' => nl2br(constant("MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_CONFIRMATION")),
+		 'fields' => array(
+				   array('title' => constant("MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_SHOW"), 'field' => ''),  
+				   array('title' => $s_message, 'field' => '')  
+				   )           
+		 );
+
     }
 
     function process_button() {

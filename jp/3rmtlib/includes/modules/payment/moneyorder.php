@@ -116,22 +116,14 @@
       } else {
         $s_message = $s_result ? '':('<font color="#FF0000">'.$_POST['money_order_fee_error'].'</font>'); 
       }
-      
-      if (!empty($_POST['money_order_fee'])) {
-        return array(
-            'title' => MODULE_PAYMENT_MONEYORDER_TEXT_DESCRIPTION,
-            'fields' => array(array('title' => MODULE_PAYMENT_MONEY_ORDER_TEXT_PROCESS,
-                                    'field' => ''),
-                              array('title' => $s_message, 'field' => '')  
-                       )           
-            );
-      } else {
-        return array(
-            'title' => MODULE_PAYMENT_MONEYORDER_TEXT_DESCRIPTION,
-            'fields' => array(array('title' => $s_message, 'field' => '')  
-                       )           
-            );
-      }
+      return array(
+                   'title' => nl2br(constant("MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_CONFIRMATION")),
+                   'fields' => array(
+                                     array('title' => constant("MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_SHOW"), 'field' => ''),  
+                                     array('title' => $s_message, 'field' => '')  
+				     )           
+		   );
+
     }
 
     function process_button() {
