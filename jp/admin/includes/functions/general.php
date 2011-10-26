@@ -6560,6 +6560,7 @@ function tep_get_asset_avg_by_pid($pid,$site_id=0,$start='',$end=''){
        if($start!=''&&$end!=''){
          $sql .= " and date_purchased between '".$start."' and '".$end."' ";
        }
+       $sql .= " order by o.torihiki_date desc";
 
     $order_history_query = tep_db_query($sql);
     $sum = 0;
