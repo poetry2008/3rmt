@@ -178,23 +178,16 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
   echo '<div class="assets_search_bar">';
   echo "<table width='100%'>";
   echo "<tr>";
-  echo "<td width='230'>";
+  echo "<td width='100'>";
   echo TEXT_SEARCH_SITE;
   echo "</td>";
-  echo "<td width='150'>";
-  echo TEXT_SEARCH_WHERE;
-  echo "</td>";
-  echo "<td width='300'>";
-  echo TEXT_SEARCH_DATE;
-  echo "</td>";
-  echo "<td>";
-  echo "</td>";
-  echo "</tr>";
-  echo "<tr>";
-  echo "<td>";
+  echo "<td width='260'>";
   echo tep_site_pull_down_menu_with_all($_GET['site_id'], false, TEXT_SHOW_ALL);
   echo "</td>";
-  echo "<td>";
+  echo "<td width='100'>";
+  echo TEXT_SEARCH_WHERE;
+  echo "</td>";
+  echo "<td width='150'>";
   ?>
     <select name="show_status">
     <option value="easy" <?php
@@ -209,7 +202,10 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
 
             <?php
             echo "</td>";
-  echo "<td>";
+  echo "<td width='100'>";
+  echo TEXT_SEARCH_DATE;
+  echo "</td>";
+  echo "<td width='300'>";
   ?>
     <?php //start date ?>
     <table cellpadding="0" cellspacing="0" border="0" class="assets_time">
@@ -274,8 +270,30 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
     <?php echo TEXT_SEARCH_CATEGORY;?>
     </td>
     <td>
-    <?php echo TEXT_SEARCH_ORDER;?>
+    <?php
+    echo tep_draw_pull_down_menu('product_categories_id',tep_get_category_tree(),
+        $current_category_id);
+  ?>
     </td>
+    <td>
+    <?php echo TEXT_SEARCH_ORDER;?>
+    </td><td>
+    <select name="sort_order">
+    <option value="" <?php
+    if(!isset($_GET['sort_order'])||$_GET['sort_order']==''){?>
+      selected<?php }?>><?php echo TEXT_SORT_DATE;?>
+        </option>
+        <option value="price_asc" <?php
+        if(isset($_GET['sort_order'])&&$_GET['sort_order']=='price_asc'){?>
+          selected<?php }?>><?php echo TEXT_SORT_PRICE_ASC;?>
+            </option>
+            <option value="price_desc" <?php
+            if(isset($_GET['sort_order'])&&$_GET['sort_order']=='price_desc'){?>
+              selected<?php }?>><?php echo TEXT_SORT_PRICE_DESC;?>
+                </option>
+                </select>
+                </td>
+    <td></td>
     <td>
     <table cellpadding="0" cellspacing="0" border="0" class="assets_time"><tr><td>
     <?php echo TEXT_SEARCH_DATE_END."&nbsp;&nbsp";?>
@@ -335,29 +353,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
     TEXT_ASSETS_PRINT;?>" onclick="window.open('<?php echo 
         tep_href_link(FILENAME_PRINT_ASSETS,tep_get_all_get_params());?>');">
     </td>
-    </tr>
-    <tr>
-    <td>
-    <?php
-    echo tep_draw_pull_down_menu('product_categories_id',tep_get_category_tree(),
-        $current_category_id);
-  ?>
-    </td><td>
-    <select name="sort_order">
-    <option value="" <?php
-    if(!isset($_GET['sort_order'])||$_GET['sort_order']==''){?>
-      selected<?php }?>><?php echo TEXT_SORT_DATE;?>
-        </option>
-        <option value="price_asc" <?php
-        if(isset($_GET['sort_order'])&&$_GET['sort_order']=='price_asc'){?>
-          selected<?php }?>><?php echo TEXT_SORT_PRICE_ASC;?>
-            </option>
-            <option value="price_desc" <?php
-            if(isset($_GET['sort_order'])&&$_GET['sort_order']=='price_desc'){?>
-              selected<?php }?>><?php echo TEXT_SORT_PRICE_DESC;?>
-                </option>
-                </select>
-                </td><td></td><td></td></tr></table>
+    </table>
                 <?php
                 echo '</div>';
   echo "</form>";

@@ -6612,8 +6612,7 @@ function tep_get_relate_date($pid,$site_id=0,$start='',$end='')
 }
 function tep_get_order_history_sql_by_pid($pid,$start='',$end='',$sort=''){
   $sql = "select p.products_id,  
-    op.products_name,op.final_price,op.products_quantity,o.torihiki_date,
-    (op.final_price*op.products_quantity) as op_assets
+    op.products_name,op.final_price,op.products_quantity,o.torihiki_date
     from ".TABLE_ORDERS." o,".TABLE_ORDERS_PRODUCTS." op,".
     TABLE_ORDERS_STATUS." os ,".TABLE_PRODUCTS." p WHERE 
     o.orders_id = op.orders_id and os.orders_status_id=o.orders_status 
@@ -6623,10 +6622,12 @@ function tep_get_order_history_sql_by_pid($pid,$start='',$end='',$sort=''){
     $sql .= " and o.date_purchased between '".$start."' and '".$end."' ";
   }
   if($sort){
-    if($sort='price_asc'){
-      $sql .= " order by op_assets asc ";
-    }else if($sort='price_desc'){
-      $sql .= " order by op_assets desc ";
+    if($sort=='price_asc'){
+      $sql .= " order by final_price desc ";
+    }else if($sort=='price_desc'){
+      $sql .= " order by final_price asc ";
+    }else{
+      $sql .= " order by o.torihiki_date desc ";
     }
   }else{
     $sql .= " order by o.torihiki_date desc ";
