@@ -283,11 +283,11 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
     if(!isset($_GET['sort_order'])||$_GET['sort_order']==''){?>
       selected<?php }?>><?php echo TEXT_SORT_DATE;?>
         </option>
-        <option value="price_asc" <?php
+        <option value="price_desc" <?php
         if(isset($_GET['sort_order'])&&$_GET['sort_order']=='price_asc'){?>
           selected<?php }?>><?php echo TEXT_SORT_PRICE_ASC;?>
             </option>
-            <option value="price_desc" <?php
+            <option value="price_asc" <?php
             if(isset($_GET['sort_order'])&&$_GET['sort_order']=='price_desc'){?>
               selected<?php }?>><?php echo TEXT_SORT_PRICE_DESC;?>
                 </option>
@@ -361,6 +361,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
   $start = $_GET['startY']."-".$_GET['startM']."-".$_GET['startD']." ".$start_time;
   $end = $_GET['endY']."-".$_GET['endM']."-".$_GET['endD']." ".$now_time;
   $site_id = (isset($_GET['site_id'])&&$_GET['site_id'])?$_GET['site_id']:0;
+  $sort = (isset($_GET['sort_order'])&&$_GET['sort_order'])?$_GET['sort_order']:'';
   if(isset($_GET['search'])&&$_GET['search']==1){
   $sql_category_asset = " select c.categories_id,cd.categories_name from
     ".TABLE_CATEGORIES." c 
@@ -380,7 +381,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
   $all_true_row =0;
   while($row_category_asset = tep_db_fetch_array($query_category_asset)){
     $temp_row = tep_get_all_asset_category_by_cid($row_category_asset['categories_id'],
-        $bflag,$site_id,$start,$end);
+        $bflag,$site_id,$start,$end,$sort);
     $temp_row['categories_name'] = $row_category_asset['categories_name'];
     $i++;
     if($temp_row['quantity_all_product']!=0){
@@ -401,6 +402,9 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
     }
     $category_asset_arr[$row_category_asset['categories_id']] = $temp_row;
   }
+  //设置默认排序
+  asort($sort_category_arr);
+  /*
   if(isset($_GET['sort_order'])){
     if($_GET['sort_order']=='price_asc'){
       asort($sort_category_arr);
@@ -410,6 +414,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
       asort($sort_category_arr);
     }
   }
+  */
   $products = tep_get_product_by_category_id($_GET['product_categories_id']
       ,$bflag,$site_id);
   $i=-1000;
@@ -419,7 +424,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
     $i++;
     $tmp_arr = array();
     $tmp_arr = tep_get_all_asset_product_by_pid($product['products_id'],
-        $bflag,$site_id,$start,$end);
+        $bflag,$site_id,$start,$end,$sort);
     $tmp_arr['products_name'] = $product['products_name'];
     $tmp_arr['products_real_quantity'] = $product['products_real_quantity'];
     if($tmp_arr['quantity_all_product']!=0){
@@ -443,6 +448,9 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
     }
     $all_product[$product['products_id']] = $tmp_arr;
   }
+  //默认排序
+  arsort($sort_product_arr);
+  /*
   if(isset($_GET['sort_order'])){
     if($_GET['sort_order']=='price_asc'){
       asort($sort_product_arr);
@@ -452,6 +460,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
       arsort($sort_product_arr);
     }
   }
+  */
   if(isset($_GET['show_status'])&&$_GET['show_status']=='info'){
 
     if(count($category_asset_arr)==0&&count($products)==0){
