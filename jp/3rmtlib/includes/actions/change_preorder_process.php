@@ -303,9 +303,9 @@ while ($preorders_computers_res = tep_db_fetch_array($preorders_computer_raw)) {
 }
 
 $products_ordered_text .= "\n".'個数　　　　　　　：' .  $preorder_product_res['products_quantity'] . '個' .  "\n";
-$products_ordered_text .= '単価　　　　　　　：' .  $currencies->display_price($preorder_product_res['final_price'], $preorder_product_res['products_tax']) . "\n";
+$products_ordered_text .= '単価　　　　　　　：' .  number_format($preorder_product_res['final_price'], 0, '.', '') . "\n";
 
-$products_ordered_text .= '小計　　　　　　　：' .  $currencies->display_price($preorder_product_res['final_price'], $preorder_product_res['products_tax'], $preorder_product_res['products_quantity']) . "\n";
+$products_ordered_text .= '小計　　　　　　　：' .  number_format($preorder_product_res['final_price']*$preorder_product_res['products_quantity'], 0, '.', '') . "\n";
 
 if (tep_not_null($_SESSION['preorder_info_character'])) {
   $products_ordered_text .= 'キャラクター名　　：' .$_SESSION['preorder_info_character']."\n";
@@ -328,14 +328,14 @@ $mailoption['ORDER_TOTAL']      = $currencies->format(abs($preorder_total_print_
 
 $mailoption['ORDER_PAYMENT']    = $preorder['payment_method'];
 $mailoption['ORDER_TTIME']      =  str_string($_SESSION['preorder_info_date']) .  $_SESSION['preorder_info_hour'] . '時' . $_SESSION['preorder_info_min'] .  '分　（24時間表記）' . $_SESSION['preorder_info_tori'];
-$mailoption['ORDER_COMMENT']    = '';
+$mailoption['ORDER_COMMENT']    = trim($preorder['comment_msg']);
 $mailoption['ORDER_PRODUCTS']   = $products_ordered_text;
 $mailoption['ORDER_TMETHOD']    = $_SESSION['preorder_info_tori'];
 $mailoption['SITE_NAME']        = STORE_NAME;
 $mailoption['SITE_MAIL']        = SUPPORT_EMAIL_ADDRESS;
 $mailoption['SITE_URL']         = HTTP_SERVER;
 $mailoption['ORDER_COUNT'] = $preorder_product_res['products_quantity'];
-$mailoption['ORDER_LTOTAL'] = $currencies->display_price($preorder_product_res['final_price'], $preorder_product_res['products_tax'], $preorder_product_res['products_quantity']);
+$mailoption['ORDER_LTOTAL'] = number_format($preorder_product_res['final_price']*$preorder_product_res['products_quantity'], 0, '.', '');
 $mailoption['ORDER_ACTORNAME'] = $_SESSION['preorder_info_character'];
 if ($preorder_point){
   $mailoption['POINT']            = $preorder_point . '円' ;
@@ -393,6 +393,9 @@ $email_printing_order .= $products_ordered;
 
 $email_printing_order .= '備考　　　　　　：' . "\n";
 
+if (!empty($preorder['comment_msg'])) {
+  $email_printing_order .= $preorder['comment_msg'] . "\n";
+}
 $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
 $email_printing_order .= 'IPアドレス　　　　　　：' . $_SERVER["REMOTE_ADDR"] .
 "\n";
@@ -462,7 +465,6 @@ if (!$print_single){
 $email_printing_order .= '------------------------------------------------------------------------' . "\n";
 $email_printing_order .= '最終確認　　　　　　：確認者名＿＿＿＿' . "\n";
 $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-
 
 if (SEND_EXTRA_ORDER_EMAILS_TO != '') {
   tep_mail('', PRINT_EMAIL_ADDRESS, STORE_NAME, $email_printing_order, $preorder['customers_name'], $preorder['customers_email_address'], '');

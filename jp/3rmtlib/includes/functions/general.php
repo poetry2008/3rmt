@@ -4292,6 +4292,7 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
                            'billing_country' => $billing_address['countries_name'],
                            'billing_telephone' => $billing_address['entry_telephone'], 
                            'billing_address_format_id' => $billing_address['address_format_id'],  
+                           'comment_msg' => $pInfo['yourmessage'],  
                            );
     
    tep_db_perform(TABLE_PREORDERS, $sql_data_array);
