@@ -121,6 +121,17 @@ if ($_POST['pay_type'] == 1) {
 <script type="text/javascript">
 </script>
 <script type="text/javascript" src="js/data.js"></script>
+<script type="text/javascript">
+<!--
+var a_vars = Array();
+var pagename='';
+var visitesSite = 1;
+var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERVER; ?>/visites.php";
+<?php
+  require(DIR_WS_ACTIONS.'visites.js');
+?>
+//-->
+</script>
 </head>
 <body><div align="center"> 
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
@@ -449,6 +460,11 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
   <!-- footer_eof //--> 
 </div>
 </div>
+<object>
+<noscript>
+<img src="visites.php" alt="Statistics" style="border:0">
+</noscript>
+</object>
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

@@ -1916,7 +1916,7 @@ display:block;
 .preorderBarFrom,.preorderBarTo{ font-size:11px; color:#8C8C8C;}
 .comment img { vertical-align:middle\9;}
 .cemail_input_01 { float:left; width:150px;}
-.con_email01{ float:left;}
+.con_email01{ /*float:left;*/}
 .formArea_td { position:relative; top:-20px;}
 .preorder_active_line { border-bottom:1px dashed #999; margin:10px 0;}
 .preorder_active_info { font-size:13px; background-color:#999999;}
