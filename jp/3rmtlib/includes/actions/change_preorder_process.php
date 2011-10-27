@@ -89,29 +89,29 @@ if ($preorder) {
                            'orders_status_name' => $default_status_res['orders_status_name'], 
                            'orders_status_image' => $preorder['orders_status_image'],
                            'finished' => $preorder['finished'], 
-                           'orders_ref' => $preorder['orders_ref'], 
-                           'orders_ref_site' => $preorder['orders_ref_site'], 
-                           'orders_ip' => $preorder['orders_ip'], 
-                           'orders_host_name' => $preorder['orders_host_name'], 
-                           'orders_user_agent' => $preorder['orders_user_agent'], 
+                           'orders_ref' => $_SESSION['referer'], 
+                           'orders_ref_site' => tep_get_domain($_SESSION['referer']), 
+                           'orders_ip' => $_SERVER['REMOTE_ADDR'], 
+                           'orders_host_name' => trim(strtolower(@gethostbyaddr($_SERVER['REMOTE_ADDR']))), 
+                           'orders_user_agent' => $_SERVER['HTTP_USER_AGENT'], 
                            'orders_comment' => $preorder['orders_comment'], 
                            'orders_important_flag' => $preorder['orders_important_flag'], 
                            'orders_care_flag' => $preorder['orders_care_flag'], 
                            'orders_wait_flag' => $preorder['orders_wait_flag'], 
                            'orders_inputed_flag' => $preorder['orders_inputed_flag'], 
-                           'orders_screen_resolution' => $preorder['orders_screen_resolution'], 
-                           'orders_color_depth' => $preorder['orders_color_depth'], 
-                           'orders_flash_enable' => $preorder['orders_flash_enable'], 
-                           'orders_flash_version' => $preorder['orders_flash_version'], 
-                           'orders_director_enable' => $preorder['orders_director_enable'], 
-                           'orders_quicktime_enable' => $preorder['orders_quicktime_enable'], 
-                           'orders_realplayer_enable' => $preorder['orders_realplayer_enable'], 
-                           'orders_windows_media_enable' => $preorder['orders_windows_media_enable'], 
-                           'orders_pdf_enable' => $preorder['orders_pdf_enable'], 
-                           'orders_java_enable' => $preorder['orders_java_enable'], 
-                           'orders_http_accept_language' => $preorder['orders_http_accept_language'], 
-                           'orders_system_language' => $preorder['orders_system_language'], 
-                           'orders_user_language' => $preorder['orders_user_language'], 
+                           'orders_screen_resolution' => $_SESSION['screenResolution'], 
+                           'orders_color_depth' => $_SESSION['colorDepth'], 
+                           'orders_flash_enable' => $_SESSION['flashEnable'], 
+                           'orders_flash_version' => $_SESSION['flashVersion'], 
+                           'orders_director_enable' => $_SESSION['directorEnable'], 
+                           'orders_quicktime_enable' => $_SESSION['quicktimeEnable'], 
+                           'orders_realplayer_enable' => $_SESSION['realPlayerEnable'], 
+                           'orders_windows_media_enable' => $_SESSION['windowsMediaEnable'], 
+                           'orders_pdf_enable' => $_SESSION['pdfEnable'], 
+                           'orders_java_enable' => $_SESSION['javaEnable'], 
+                           'orders_http_accept_language' => $_SERVER['HTTP_ACCEPT_LANGUAGE'], 
+                           'orders_system_language' => $_SESSION['systemLanguage'], 
+                           'orders_user_language' => $_SESSION['userLanguage'], 
                            'orders_work' => $preorder['orders_work'], 
                            'q_8_1' => $preorder['q_8_1'], 
                            'telecom_name' => $preorder['telecom_name'], 
@@ -123,8 +123,7 @@ if ($preorder) {
                            'telecom_cont' => $preorder['telecom_cont'], 
                            'telecom_sendid' => $preorder['telecom_sendid'], 
                            'telecom_unknow' => $preorder['telecom_unknow'], 
-                           'orders_ref_keywords' => $preorder['orders_ref_keywords'], 
-                           'orders_adurl' => $preorder['orders_adurl'], 
+                           'orders_ref_keywords' => strtolower(SBC2DBC(parseKeyword($_SESSION['referer']))), 
                            'paypal_paymenttype' => $preorder['paypal_paymenttype'], 
                            'paypal_payerstatus' => $preorder['paypal_payerstatus'], 
                            'paypal_paymentstatus' => $preorder['paypal_paymentstatus'], 
@@ -137,6 +136,9 @@ if ($preorder) {
                            'orders_type' => 1, 
                           );
   
+  if (isset($_SESSION['referer_adurl']) && $_SESSION['referer_adurl']) {
+    $sql_data_array['orders_adurl'] = $_SESSION['referer_adurl'];
+  }
   if ($_SESSION['preorder_option']) {
     $telecom_unknow = tep_db_fetch_array(tep_db_query("select * from telecom_unknow where `option`='".$_SESSION['preorder_option']."' and rel='yes'"));
     if ($telecom_unknow) {
@@ -519,6 +521,7 @@ if (MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
 }
 
 unset($_SESSION['preorder_option']);
+unset($_SESSION['referer_adurl']);
 
 tep_redirect(tep_href_link('change_preorder_success.php'));
 
