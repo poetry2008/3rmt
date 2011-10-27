@@ -365,5 +365,8 @@ class rakuten_bank {
   function replace_for_telnumber($str){
     return str_replace('-','',strtr($str,$this->arrs2d));
   }
+  function preorder_process_button($pid, $preorder_total)
+  {
+  }
 }
 ?>

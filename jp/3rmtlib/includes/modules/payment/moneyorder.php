@@ -208,5 +208,9 @@
                    'MODULE_PAYMENT_MONEYORDER_MAILSTRING',
                    );
     }
+    
+    function preorder_process_button($pid, $preorder_total)
+    {
+    }
   }
 ?>
