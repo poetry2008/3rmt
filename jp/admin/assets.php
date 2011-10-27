@@ -439,7 +439,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
     }else{
       $tmp_arr['relate_date'] = $i; 
     }
-    if(isset($_GET['sort_order'])&&$_GET['sort_order']==''&&false){
+    if(isset($_GET['sort_order'])&&$_GET['sort_order']==''||true){
       $sort_product_arr[$product['products_id']] =
         $tmp_arr['relate_date'];
     }else{
