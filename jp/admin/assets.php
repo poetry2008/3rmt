@@ -178,23 +178,16 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
   echo '<div class="assets_search_bar">';
   echo "<table width='100%'>";
   echo "<tr>";
-  echo "<td width='230'>";
+  echo "<td width='100'>";
   echo TEXT_SEARCH_SITE;
   echo "</td>";
-  echo "<td width='150'>";
-  echo TEXT_SEARCH_WHERE;
-  echo "</td>";
-  echo "<td width='300'>";
-  echo TEXT_SEARCH_DATE;
-  echo "</td>";
-  echo "<td>";
-  echo "</td>";
-  echo "</tr>";
-  echo "<tr>";
-  echo "<td>";
+  echo "<td width='260'>";
   echo tep_site_pull_down_menu_with_all($_GET['site_id'], false, TEXT_SHOW_ALL);
   echo "</td>";
-  echo "<td>";
+  echo "<td width='100'>";
+  echo TEXT_SEARCH_WHERE;
+  echo "</td>";
+  echo "<td width='150'>";
   ?>
     <select name="show_status">
     <option value="easy" <?php
@@ -209,7 +202,10 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
 
             <?php
             echo "</td>";
-  echo "<td>";
+  echo "<td width='100'>";
+  echo TEXT_SEARCH_DATE;
+  echo "</td>";
+  echo "<td width='300'>";
   ?>
     <?php //start date ?>
     <table cellpadding="0" cellspacing="0" border="0" class="assets_time">
@@ -274,8 +270,30 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
     <?php echo TEXT_SEARCH_CATEGORY;?>
     </td>
     <td>
-    <?php echo TEXT_SEARCH_ORDER;?>
+    <?php
+    echo tep_draw_pull_down_menu('product_categories_id',tep_get_category_tree(),
+        $current_category_id);
+  ?>
     </td>
+    <td>
+    <?php echo TEXT_SEARCH_ORDER;?>
+    </td><td>
+    <select name="sort_order">
+    <option value="" <?php
+    if(!isset($_GET['sort_order'])||$_GET['sort_order']==''){?>
+      selected<?php }?>><?php echo TEXT_SORT_DATE;?>
+        </option>
+        <option value="price_desc" <?php
+        if(isset($_GET['sort_order'])&&$_GET['sort_order']=='price_desc'){?>
+          selected<?php }?>><?php echo TEXT_SORT_PRICE_ASC;?>
+            </option>
+            <option value="price_asc" <?php
+            if(isset($_GET['sort_order'])&&$_GET['sort_order']=='price_asc'){?>
+              selected<?php }?>><?php echo TEXT_SORT_PRICE_DESC;?>
+                </option>
+                </select>
+                </td>
+    <td></td>
     <td>
     <table cellpadding="0" cellspacing="0" border="0" class="assets_time"><tr><td>
     <?php echo TEXT_SEARCH_DATE_END."&nbsp;&nbsp";?>
@@ -335,29 +353,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
     TEXT_ASSETS_PRINT;?>" onclick="window.open('<?php echo 
         tep_href_link(FILENAME_PRINT_ASSETS,tep_get_all_get_params());?>');">
     </td>
-    </tr>
-    <tr>
-    <td>
-    <?php
-    echo tep_draw_pull_down_menu('product_categories_id',tep_get_category_tree(),
-        $current_category_id);
-  ?>
-    </td><td>
-    <select name="sort_order">
-    <option value="" <?php
-    if(!isset($_GET['sort_order'])||$_GET['sort_order']==''){?>
-      selected<?php }?>><?php echo TEXT_SORT_DATE;?>
-        </option>
-        <option value="price_asc" <?php
-        if(isset($_GET['sort_order'])&&$_GET['sort_order']=='price_asc'){?>
-          selected<?php }?>><?php echo TEXT_SORT_PRICE_ASC;?>
-            </option>
-            <option value="price_desc" <?php
-            if(isset($_GET['sort_order'])&&$_GET['sort_order']=='price_desc'){?>
-              selected<?php }?>><?php echo TEXT_SORT_PRICE_DESC;?>
-                </option>
-                </select>
-                </td><td></td><td></td></tr></table>
+    </table>
                 <?php
                 echo '</div>';
   echo "</form>";
@@ -365,6 +361,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
   $start = $_GET['startY']."-".$_GET['startM']."-".$_GET['startD']." ".$start_time;
   $end = $_GET['endY']."-".$_GET['endM']."-".$_GET['endD']." ".$now_time;
   $site_id = (isset($_GET['site_id'])&&$_GET['site_id'])?$_GET['site_id']:0;
+  $sort = (isset($_GET['sort_order'])&&$_GET['sort_order'])?$_GET['sort_order']:'';
   if(isset($_GET['search'])&&$_GET['search']==1){
   $sql_category_asset = " select c.categories_id,cd.categories_name from
     ".TABLE_CATEGORIES." c 
@@ -384,7 +381,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
   $all_true_row =0;
   while($row_category_asset = tep_db_fetch_array($query_category_asset)){
     $temp_row = tep_get_all_asset_category_by_cid($row_category_asset['categories_id'],
-        $bflag,$site_id,$start,$end);
+        $bflag,$site_id,$start,$end,$sort);
     $temp_row['categories_name'] = $row_category_asset['categories_name'];
     $i++;
     if($temp_row['quantity_all_product']!=0){
@@ -393,7 +390,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
     }
     $all_avg_price += $temp_row['avg_price'];
     $all_asset_price += $temp_row['asset_all_product'];
-    if(isset($_GET['sort_order'])&&$_GET['sort_order']!=''){
+    if(isset($_GET['sort_order'])&&$_GET['sort_order']!=''&&false){
       if($temp_row['asset_all_product'] == 0){
         $sort_category_arr[$row_category_asset['categories_id']]=$i;
       }else{
@@ -405,6 +402,9 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
     }
     $category_asset_arr[$row_category_asset['categories_id']] = $temp_row;
   }
+  //设置默认排序
+  asort($sort_category_arr);
+  /*
   if(isset($_GET['sort_order'])){
     if($_GET['sort_order']=='price_asc'){
       asort($sort_category_arr);
@@ -414,6 +414,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
       asort($sort_category_arr);
     }
   }
+  */
   $products = tep_get_product_by_category_id($_GET['product_categories_id']
       ,$bflag,$site_id);
   $i=-1000;
@@ -423,7 +424,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
     $i++;
     $tmp_arr = array();
     $tmp_arr = tep_get_all_asset_product_by_pid($product['products_id'],
-        $bflag,$site_id,$start,$end);
+        $bflag,$site_id,$start,$end,$sort);
     $tmp_arr['products_name'] = $product['products_name'];
     $tmp_arr['products_real_quantity'] = $product['products_real_quantity'];
     if($tmp_arr['quantity_all_product']!=0){
@@ -438,7 +439,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
     }else{
       $tmp_arr['relate_date'] = $i; 
     }
-    if(isset($_GET['sort_order'])&&$_GET['sort_order']==''){
+    if(isset($_GET['sort_order'])&&$_GET['sort_order']==''||true){
       $sort_product_arr[$product['products_id']] =
         $tmp_arr['relate_date'];
     }else{
@@ -447,6 +448,9 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
     }
     $all_product[$product['products_id']] = $tmp_arr;
   }
+  //默认排序
+  arsort($sort_product_arr);
+  /*
   if(isset($_GET['sort_order'])){
     if($_GET['sort_order']=='price_asc'){
       asort($sort_product_arr);
@@ -456,6 +460,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
       arsort($sort_product_arr);
     }
   }
+  */
   if(isset($_GET['show_status'])&&$_GET['show_status']=='info'){
 
     if(count($category_asset_arr)==0&&count($products)==0){

@@ -4292,6 +4292,7 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
                            'billing_country' => $billing_address['countries_name'],
                            'billing_telephone' => $billing_address['entry_telephone'], 
                            'billing_address_format_id' => $billing_address['address_format_id'],  
+                           'comment_msg' => $pInfo['yourmessage'],  
                            );
     
    tep_db_perform(TABLE_PREORDERS, $sql_data_array);
@@ -4376,9 +4377,10 @@ function tep_get_preorder_end_num()
   return '01';
 }
 
-function tep_preorder_get_payment_type($payment_method)
+function tep_preorder_get_payment_list()
 {
-  global $language;  
+  global $language; 
+  $return_arr = '';
   if (defined('MODULE_PAYMENT_INSTALLED') && tep_not_null(MODULE_PAYMENT_INSTALLED)) {
     $modules_array = explode(';', MODULE_PAYMENT_INSTALLED); 
     $include_modules = array(); 
@@ -4386,23 +4388,51 @@ function tep_preorder_get_payment_type($payment_method)
       $class = substr($value, 0, strrpos($value, '.')); 
       $include_modules[] = array('class' => $class, 'file' => $value); 
     }
+    
     for ($i=0, $n=sizeof($include_modules); $i<$n; $i++) {
       include(DIR_WS_LANGUAGES.$language.'/modules/payment/'.$include_modules[$i]['file']); 
       include(DIR_WS_MODULES.'payment/'.$include_modules[$i]['file']); 
       $cpayment = new $include_modules[$i]['class']; 
-      if ($cpayment->title == $payment_method) {
-        if ($cpayment->code == 'telecom') {
-          return 1; 
-        } else if ($cpayment->code == 'paypal') {
-          return 2; 
-        }
-      }
+      $return_arr[$cpayment->code] = $cpayment->title; 
       unset($cpayment); 
     }
   }
-  return 0;
+  return $return_arr;
+}
+
+function tep_preorder_get_payment_type($payment_list, $payment_method, $return_single = false)
+{
+  foreach ($payment_list as $key => $value) {
+    if ($value == $payment_method) {
+      if ($return_single) {
+        return $key; 
+      } else {
+        if ($key == 'telecom') {
+          return 1; 
+        } else if ($key == 'paypal') {
+          return 2; 
+        }
+      }
+    } 
+  }
+  
+  if ($return_single) {
+    return ''; 
+  } else {
+    return 0;
+  }
+}
+
+function preorder_get_mail_string($payment_code, $mailoption) {
+  $mailstring = constant("MODULE_PAYMENT_".strtoupper($payment_code).'_MAILSTRING');
+  foreach ($mailoption as $key => $value) {
+    $mailstring = str_replace('${'.strtoupper($key).'}', $value, $mailstring); 
+  }
+  
+  return $mailstring;
 }
 
 function preorder_last_customer_action() {
   tep_db_query("update ".TABLE_CONFIGURATION." set configuration_value=now() where configuration_key='PREORDER_LAST_CUSTOMER_ACTION'");
 }
+

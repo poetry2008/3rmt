@@ -823,22 +823,18 @@ document.edit_order.notify_comments.checked = false;
 function pre_update_price2() {
   document.getElementById("h_predate").value = document.getElementById("date_predate").value;
   document.getElementById("h_deadline").value = document.getElementById("date_ensure_deadline").value;
+  var num_is_null = false; 
   if (window.confirm("注文内容を確認しますか？")) {
     document.edit_order.notify.checked = false;
     document.edit_order.notify_comments.checked = false;
     // 如果减少购买量则提示保存位置
     $('.update_products_qty').each(function(){
-        old = $('#'+$(this).attr('id').replace('_new_qty_', '_qty_'));
-        if(parseInt(old.val()) > parseInt($(this).val())){
-        pid = $(this).attr('id').substr($(this).attr('id').indexOf('_qty_')+5);
-        //alert(pid);
-        if (window.confirm($('#update_products_name_'+pid).val()+" "+(old.val() - $(this).val())+"個を実在個に保存しますか？架空在庫に保存しますか？\n\n「OK」なら実在庫、「キャンセル」なら架空在庫に足されます")) {
-        $('#update_products_real_quantity_'+pid).val('1');
-        } else {
-        $('#update_products_real_quantity_'+pid).val('0');
+        if ($(this).val() == 0) {
+           num_is_null = true; 
+          alert('商品個数に0を入力してはいけません。');
         }
-        }
-        });
+    });
+    if (!num_is_null) {
     // once pw viladate
     $.ajax({
 url: 'ajax_orders.php?action=getallpwd',
@@ -897,7 +893,7 @@ document.edit_order.notify_comments.checked = false;
 }
 }
 });
-
+}
 // delete   document.edit_order.submit();
 } else {
   window.alert("注文内容確認をキャンセルしました。\n\n【 重要 】メールは送信されていません。【 重要 】");

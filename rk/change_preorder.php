@@ -35,31 +35,35 @@
         tep_redirect(tep_href_link(FILENAME_LOGIN, 'pid='.$_GET['pid'], 'SSL'));
       }
   } else {
-    if ($guestchk == '0') {
-      if ($customer_emailaddress != $preorder_res['customers_email_address']) {
-        $navigation->set_snapshot();
-        
-        tep_session_unregister('customer_id');
-        tep_session_unregister('customer_default_address_id');
-        tep_session_unregister('customer_first_name');
-        tep_session_unregister('customer_last_name'); 
-        tep_session_unregister('customer_country_id');
-        tep_session_unregister('customer_zone_id');
-        tep_session_unregister('comments');
-        tep_session_unregister('customer_emailaddress');
-        tep_session_unregister('guestchk');
+    if ($is_member_single) { 
+      if ($guestchk == '0') {
+        if ($customer_emailaddress != $preorder_res['customers_email_address']) {
+          $navigation->set_snapshot();
+          
+          tep_session_unregister('customer_id');
+          tep_session_unregister('customer_default_address_id');
+          tep_session_unregister('customer_first_name');
+          tep_session_unregister('customer_last_name'); 
+          tep_session_unregister('customer_country_id');
+          tep_session_unregister('customer_zone_id');
+          tep_session_unregister('comments');
+          tep_session_unregister('customer_emailaddress');
+          tep_session_unregister('guestchk');
 
-        $cart->reset();
-        
-        tep_redirect(tep_href_link(FILENAME_LOGIN, 'pid='.$_GET['pid'], 'SSL'));
+          $cart->reset();
+          
+          tep_redirect(tep_href_link(FILENAME_LOGIN, 'pid='.$_GET['pid'], 'SSL'));
+        }
       }
     }
   } 
   $preorder_point = (int)$customer_info_res['point'];  
   
   $preorder_id = $preorder_res['orders_id'];
-  
-  $preorder_payment_code = tep_preorder_get_payment_type($preorder_res['payment_method']);
+ 
+  $ppayment_list_arr = tep_preorder_get_payment_list();
+
+  $preorder_payment_code = tep_preorder_get_payment_type($ppayment_list_arr, $preorder_res['payment_method']);
   
   $ensure_datetime = strtotime($preorder_res['ensure_deadline']);
   if (time() > $ensure_datetime) {

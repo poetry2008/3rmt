@@ -593,6 +593,68 @@ function getpreexpress($pre_value, $pre_pid){
   }
 }
   
+  function preorder_process_button($pid, $preorder_total) { 
+    global $currencies;   
+    global $languages_id;
+   
+    $preorder_info_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$pid."'");
+    $preorder_info = tep_db_fetch_array($preorder_info_raw);
+    
+    
+    $mail_body = '仮クレジットカード注文です。'."\n\n";
+    $mail_body .= '━━━━━━━━━━━━━━━━━━━━━'."\n";
+    $mail_body .= '▼注文番号　　　　：2007****-********'."\n";
+    $mail_body .= '▼注文日　　　　　：' . tep_date_long(time())."\n";
+    $mail_body .= '▼お名前　　　　　：' . $preorder_info['customers_name']."\n";
+    $mail_body .= '▼メールアドレス　：' . $preorder_info['customers_email_address']."\n";
+    $mail_body .= '━━━━━━━━━━━━━━━━━━━━━'."\n";
+    $mail_body .= '▼お支払金額　　　：' . $currencies->format($preorder_total) . "\n";
+    $mail_body .= '▼お支払方法　　　：ペイパル決済'."\n";
+    $mail_body .= '▼注文商品'."\n";
+    $mail_body .= "\t" . '------------------------------------------'."\n";
+   
+    $preorder_products_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$pid."'");
+    $preorder_products_res = tep_db_fetch_array($preorder_products_raw); 
+    if ($preorder_products_res) {
+      $mail_body .= '・' . $preorder_products_res['products_name'] . '×' .  $preorder_products_res['products_quantity'] . '(キャラクター名:' .  $_SESSION["preorder_info_character"] . ')' . "\n";
+   
+      if (isset($_SESSION['preorder_info_attr'])) {
+        foreach ($_SESSION['preorder_info_attr'] as $key => $value) {
+          $attributes = tep_db_query("select popt.products_options_name, poval.products_options_values_name, pa.options_values_price, pa.price_prefix, pa.products_at_quantity
+                                        from " . TABLE_PRODUCTS_OPTIONS . " popt, " . TABLE_PRODUCTS_OPTIONS_VALUES . " poval, " . TABLE_PRODUCTS_ATTRIBUTES . " pa
+                                        where pa.products_id = '" .  $preorder_products_res['products_id'] . "'
+                                         and pa.options_id = '" . $key . "'
+                                         and pa.options_id = popt.products_options_id
+                                         and pa.options_values_id = '" . $value . "'
+                                         and pa.options_values_id = poval.products_options_values_id
+                                         and popt.language_id = '" . $languages_id . "'
+                                         and poval.language_id = '" . $languages_id . "'");
+          $attributes_values = tep_db_fetch_array($attributes);
+          if ($attributes_values) {
+            $mail_body .= '└' . $attributes_values['products_options_name'] . ' ' .  $attributes_values['products_options_values_name'] . "\n";
+          }
+        }
+      }
+    }
+
+    $mail_body .= "\t" . '------------------------------------------'."\n";
+    
+    $mail_body .= '▼取引日時　　　　：' .  $_SESSION["preorder_info_date"].$_SESSION["preorder_info_hour"].':'.$_SESSION["preroder_info_min"] .":00". "\n";
+    $mail_body .= '　　　　　　　　　：' . $_SESSION["preorder_info_tori"] . "\n";
+    
+    $mail_body .= "\n\n";
+    $mail_body .= '■IPアドレス　　　　　　：' . $_SERVER["REMOTE_ADDR"] . "\n";
+    $mail_body .= '■ホスト名　　　　　　　：' . @gethostbyaddr($_SERVER["REMOTE_ADDR"]) . "\n";
+    $mail_body .= '■ユーザーエージェント　：' . $_SERVER["HTTP_USER_AGENT"] . "\n";
+    tep_mail('管理者', SENTMAIL_ADDRESS, '仮クレカ注文', $mail_body, '', '');
+    
+    $hidden_param_str = ''; 
+    $hidden_param_str .= tep_draw_hidden_field('cpre_type', '1');
+    $hidden_param_str .= tep_draw_hidden_field('amount', $preorder_total);
+    $hidden_param_str .= tep_draw_hidden_field('RETURNURL', HTTP_SERVER.'/change_preorder_process.php');
+    $hidden_param_str .= tep_draw_hidden_field('CANCELURL', HTTP_SERVER.'/change_preorder.php?pid='.$_POST['pid']);
+    echo $hidden_param_str; 
+  }
   }
 function PPHttpPost($methodName_, $nvpStr_) {
   //  global $environment;

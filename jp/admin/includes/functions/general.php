@@ -6461,8 +6461,8 @@ function tep_get_child_category_by_cid($cid)
    }
    return $return_arr;
 }
-function tep_get_all_asset_category_by_cid($cid,$bflag,$site_id=0,$start='',$end='')
-{
+function tep_get_all_asset_category_by_cid($cid,$bflag,$site_id=0,
+    $start='',$end='',$sort=''){
    $return_arr = array();
    $return_arr[] = $cid;
    $child_category_raw = tep_db_query("select categories_id from ".TABLE_CATEGORIES." where parent_id = '".$cid."'"); 
@@ -6490,7 +6490,9 @@ function tep_get_all_asset_category_by_cid($cid,$bflag,$site_id=0,$start='',$end
    $all_tmp_price = 0;
    $all_tmp_row = 0;
    while($tmp_row = tep_db_fetch_array($tmp_query)){
-     $tmp_price = @tep_get_asset_avg_by_pid($tmp_row['products_id'],$site_id,$start,$end);
+     $tmp_price =
+       @tep_get_asset_avg_by_pid($tmp_row['products_id'],$site_id,$start,$end,
+           $sort);
      if($tmp_row['products_real_quantity'] > tep_get_relate_products_sum($tmp_row['products_id']
            ,$site_id,$start,$end)&&$tmp_row['products_real_quantity']!=0){
        $result['error'] = true;
@@ -6508,12 +6510,13 @@ function tep_get_all_asset_category_by_cid($cid,$bflag,$site_id=0,$start='',$end
    $result['avg_price'] = @($all_tmp_price/$all_tmp_row);
    return $result;
 }
-function tep_get_all_asset_product_by_pid($pid,$bflag,$site_id=0,$start='',$end=''){
+function tep_get_all_asset_product_by_pid($pid,$bflag,$site_id=0,
+    $start='',$end='',$sort=''){
   $sql = "select products_real_quantity from ".TABLE_PRODUCTS." where products_id
     ='".$pid."' and products_bflag='".$bflag."'";
   $query = tep_db_query($sql);
   $row = tep_db_fetch_array($query);
-  $tmp_price = @tep_get_asset_avg_by_pid($pid,$site_id,$start,$end);
+  $tmp_price = @tep_get_asset_avg_by_pid($pid,$site_id,$start,$end,$sort);
   $result = array();
   $result['error'] = false;
   if($row['products_real_quantity'] > tep_get_relate_products_sum($pid,$site_id,
@@ -6531,22 +6534,7 @@ function tep_get_all_asset_product_by_pid($pid,$bflag,$site_id=0,$start='',$end=
   }
   return $result;
 }
-function tep_get_all_asset($start='',$end=''){
-  $sql = "select products_id,products_real_quantity from ".TABLE_PRODUCTS;
-  $query = tep_db_query($sql);
-  $result = array();
-  $all_product_quantity = 0;
-  $all_product_price = 0;
-  while($row = tep_db_fetch_array($query)){
-    $tmp_price = @tep_get_asset_avg_by_pid($row['products_id'],0,$start,$end);
-    $all_product_quantity += $row['products_real_quantity'];
-    $all_product_price += ($tmp_price*$row['products_real_quantity']);
-  }
-  $result['all_product_quantity'] = $all_product_quantity;
-  $result['all_product_price'] = $all_product_price;
-  return $result;
-}
-function tep_get_asset_avg_by_pid($pid,$site_id=0,$start='',$end=''){
+function tep_get_asset_avg_by_pid($pid,$site_id=0,$start='',$end='',$sort=''){
     $product = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS." where products_id='".$pid."'"));
        $sql ="
         select op.products_quantity ,op.final_price 
@@ -6560,8 +6548,13 @@ function tep_get_asset_avg_by_pid($pid,$site_id=0,$start='',$end=''){
        if($start!=''&&$end!=''){
          $sql .= " and date_purchased between '".$start."' and '".$end."' ";
        }
-       $sql .= " order by o.torihiki_date desc";
-
+    if($sort=='price_desc'){
+      $sql .= " order by final_price desc ";
+    }else if($sort=='price_asc'){
+      $sql .= " order by final_price asc ";
+    }else{
+      $sql .= " order by o.torihiki_date desc";
+    }
     $order_history_query = tep_db_query($sql);
     $sum = 0;
     $cnt = 0;
@@ -6612,8 +6605,7 @@ function tep_get_relate_date($pid,$site_id=0,$start='',$end='')
 }
 function tep_get_order_history_sql_by_pid($pid,$start='',$end='',$sort=''){
   $sql = "select p.products_id,  
-    op.products_name,op.final_price,op.products_quantity,o.torihiki_date,
-    (op.final_price*op.products_quantity) as op_assets
+    op.products_name,op.final_price,op.products_quantity,o.torihiki_date
     from ".TABLE_ORDERS." o,".TABLE_ORDERS_PRODUCTS." op,".
     TABLE_ORDERS_STATUS." os ,".TABLE_PRODUCTS." p WHERE 
     o.orders_id = op.orders_id and os.orders_status_id=o.orders_status 
@@ -6623,10 +6615,12 @@ function tep_get_order_history_sql_by_pid($pid,$start='',$end='',$sort=''){
     $sql .= " and o.date_purchased between '".$start."' and '".$end."' ";
   }
   if($sort){
-    if($sort='price_asc'){
-      $sql .= " order by op_assets asc ";
-    }else if($sort='price_desc'){
-      $sql .= " order by op_assets desc ";
+    if($sort=='price_desc'){
+      $sql .= " order by final_price desc ";
+    }else if($sort=='price_asc'){
+      $sql .= " order by final_price asc ";
+    }else{
+      $sql .= " order by o.torihiki_date desc ";
     }
   }else{
     $sql .= " order by o.torihiki_date desc ";
