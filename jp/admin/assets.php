@@ -284,11 +284,11 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
       selected<?php }?>><?php echo TEXT_SORT_DATE;?>
         </option>
         <option value="price_desc" <?php
-        if(isset($_GET['sort_order'])&&$_GET['sort_order']=='price_asc'){?>
+        if(isset($_GET['sort_order'])&&$_GET['sort_order']=='price_desc'){?>
           selected<?php }?>><?php echo TEXT_SORT_PRICE_ASC;?>
             </option>
             <option value="price_asc" <?php
-            if(isset($_GET['sort_order'])&&$_GET['sort_order']=='price_desc'){?>
+            if(isset($_GET['sort_order'])&&$_GET['sort_order']=='price_asc'){?>
               selected<?php }?>><?php echo TEXT_SORT_PRICE_DESC;?>
                 </option>
                 </select>
