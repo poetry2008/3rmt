@@ -53,8 +53,6 @@
   $order = new order;
 
   if (!tep_session_is_registered('comments')) tep_session_register('comments');
-  
-
 
   $total_weight = $cart->show_weight();
   $total_count = $cart->count_contents();

@@ -49,8 +49,8 @@ if($NewOid['cnt'] > 0) {
     //$insert_id = date("Ymd") . '-' . date("His") . ds_makeRandStr(2);
     $insert_id = date("Ymd") . '-' . date("His") . tep_get_order_end_num();
 }
-  
-# load the selected shipping module(convenience_store)
+
+$comments = $payment_modules->dealComment($comments);
 
 require(DIR_WS_CLASSES . 'order.php');
 $order = new order;
@@ -443,91 +443,6 @@ if (isset($total_mail_fee) and $total_mail_fee > 0 ){
 }
 $email_order = '';
 $email_order = $payment_modules->getOrderMailString($mailoption);  
-
-
-/*
-  $email_order .= tep_get_fullname($order->customer['firstname'],$order->customer['lastname']) . '様' . "\n\n";
-  $email_order .= 'この度は、' . STORE_NAME . 'をご利用いただき、誠にあり' . "\n";
-  $email_order .= 'がとうございます。' . "\n";
-  $email_order .= '下記の内容にてご注文を承りましたので、ご確認ください。' . "\n";
-  $email_order .= 'ご不明な点がございましたら、注文番号をご確認の上、' . "\n";
-  $email_order .= '「' . STORE_NAME . '」までお問い合わせください。' . "\n\n";
-  $email_order .= '━━━━━━━━━━━━━━━━━━━━━' . "\n";
-  //$email_order .= '▼お支払金額　　　：' . strip_tags($ot['text']) . "\n\n";
-  $email_order .= '▼注文番号　　　　：' . $insert_id . "\n";
-  $email_order .= '▼注文日　　　　　：' . tep_date_long(time()) . "\n";
-  $email_order .= '▼お名前　　　　　：' . tep_get_fullname($order->customer['firstname'],$order->customer['lastname']) . "\n";
-  $email_order .= '▼メールアドレス　：' . $order->customer[if ($point > 0) {. "\n";
-  $email_order .= '━━━━━━━━━━━━━━━━━━━━━' . "\n";
-*/
-/*
-  $mail_fee = 0; 
-  if (isset($_POST['codt_fee']) && intval($_POST['codt_fee'])) {
-  $mail_fee =  intval($_POST['codt_fee']);
-  } else if (isset($_POST['money_order_fee']) && intval($_POST['money_order_fee'])) {
-  $mail_fee = intval($_POST['money_order_fee']);
-  } else if (isset($_POST['postal_money_order_fee']) && intval($_POST['postal_money_order_fee'])) {
-  $mail_fee = intval($_POST['postal_money_order_fee']);
-  } else if (isset($_POST['telecom_order_fee']) && intval($_POST['telecom_order_fee'])) {
-  $mail_fee = intval($_POST['telecom_order_fee']);
-  }
-*/
-/*
-  $buy_mail_fee = 0;
-  if ($bflag_single == 'View') {
-  if (!empty($buy_handle_fee)) {
-  $buy_mail_fee = $buy_handle_fee; 
-  }
-  }
-  $total_mail_fee = $mail_fee + $buy_mail_fee;
-  
-  if (!empty($total_mail_fee)) {
-  $email_order .=  '▼手数料　　　　　：'.$total_mail_fee.'円'."\n";
-  }
-  $email_order .= '▼お支払金額　　　：' . $currencies->format(abs($ot['value'])) . "\n";
-  if (is_object($$payment)) {
-  $payment_class = $$payment;
-  $email_order .= '▼お支払方法　　　：' . $payment_class->title . "\n";
-  }
-
-  if ($payment_class->c_prefix) { 
-  $email_order .= $payment_class->c_prefix . "\n";
-  }  
-  if ($payment_class->email_footer) { 
-  $email_order .= $payment_class->email_footer . "\n";
-  }
-  
-  if(tep_not_null($bbbank)) {
-  $email_order .= '▼お支払先金融機関' . "\n";
-  $email_order .= $bbbank . "\n";
-  $email_order .= '━━━━━━━━━━━━━━━━━━━━━' . "\n\n";
-  $email_order .= '・当社にて商品の受領確認がとれましたら代金お支払い手続きに入ります。' . "\n";
-  $email_order .= '・本メール送信後7日以内に取引が完了できない場合、' . "\n";
-  $email_order .= '　当社は、お客様がご注文を取り消されたものとして取り扱います。' . "\n\n";
-  }
-  
-  $email_order .= "\n\n";
-  $email_order .= '▼注文商品' . "\n";
-  $email_order .= '------------------------------------------' . "\n";
-
-  $email_order .= $products_ordered . "\n";
-
-  $email_order .= '▼取引日時　　　　：' . str_string($date) . $hour . '時' . $min . '分　（24時間表記）' . "\n";
-  $email_order .= '　　　　　　　　　：' . $torihikihouhou . "\n";
-  
-  $email_order .= '▼備考　　　　　　：' . "\n";
-  if (trim($order->info['comments'])) {
-  $email_order .= $order->info['comments'] . "\n";
-  }
-  
-  $email_order .= "\n\n\n";
-  $email_order .= '[ご連絡・お問い合わせ先]━━━━━━━━━━━━' . "\n";
-  $email_order .= '株式会社 iimy' . "\n";
-  $email_order .= SUPPORT_EMAIL_ADDRESS . "\n";
-  $email_order .= HTTP_SERVER . "\n";
-  $email_order .= '━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-*/
-# メール本文整形 --------------------------------------}
   
 // 2003.03.08 Edit Japanese osCommerce
 tep_mail(tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], EMAIL_TEXT_SUBJECT, $email_order, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');

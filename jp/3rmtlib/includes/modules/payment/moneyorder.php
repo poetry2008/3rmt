@@ -4,7 +4,7 @@
 */
 
   class moneyorder {
-    var $site_id, $code, $title, $description, $enabled, $s_error, $n_fee, $email_footer,$c_prefix;
+    var $site_id, $code, $title, $description, $enabled, $s_error, $n_fee, $email_footer;
 
 // class constructor
     function moneyorder($site_id = 0) {
@@ -17,7 +17,6 @@
       $this->description = MODULE_PAYMENT_MONEYORDER_TEXT_DESCRIPTION;
       $this->explain       = MODULE_PAYMENT_MONEYORDER_TEXT_EXPLAIN;
       $this->sort_order  = MODULE_PAYMENT_MONEYORDER_SORT_ORDER;
-      $this->c_prefix  =  C_BANK; 
       $this->enabled     = ((MODULE_PAYMENT_MONEYORDER_STATUS == 'True') ? true : false);
 
       if ((int)MODULE_PAYMENT_MONEYORDER_ORDER_STATUS_ID > 0) {
@@ -26,7 +25,7 @@
 
       if (is_object($order)) $this->update_status();
     
-      $this->email_footer = MODULE_PAYMENT_MONEYORDER_TEXT_EMAIL_FOOTER;
+            $this->email_footer = MODULE_PAYMENT_MONEYORDER_TEXT_EMAIL_FOOTER;
     }
 
 // class methods

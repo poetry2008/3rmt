@@ -365,5 +365,11 @@ class rakuten_bank {
   function replace_for_telnumber($str){
     return str_replace('-','',strtr($str,$this->arrs2d));
   }
+  function dealComment($comment)
+  {
+    $pay_comments = '電話番号:'.$this->replace_for_telnumber($_POST['rakuten_telnumber']); 
+    $comment = $pay_comments ."\n".$comment;
+    return $comment;
+  }
 }
 ?>
