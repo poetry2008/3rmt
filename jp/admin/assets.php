@@ -390,7 +390,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
     }
     $all_avg_price += $temp_row['avg_price'];
     $all_asset_price += $temp_row['asset_all_product'];
-    if(isset($_GET['sort_order'])&&$_GET['sort_order']!=''){
+    if(isset($_GET['sort_order'])&&$_GET['sort_order']!=''&&false){
       if($temp_row['asset_all_product'] == 0){
         $sort_category_arr[$row_category_asset['categories_id']]=$i;
       }else{
@@ -439,7 +439,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
     }else{
       $tmp_arr['relate_date'] = $i; 
     }
-    if(isset($_GET['sort_order'])&&$_GET['sort_order']==''){
+    if(isset($_GET['sort_order'])&&$_GET['sort_order']==''&&false){
       $sort_product_arr[$product['products_id']] =
         $tmp_arr['relate_date'];
     }else{
