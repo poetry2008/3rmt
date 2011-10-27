@@ -74,8 +74,6 @@
       tep_mail($preorder_res['customers_name'], $preorder_res['customers_email_address'],PREORDER_MAIL_SUBJECT, $preorder_email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS); 
       $send_preorder_id = $pid;
       tep_session_register('send_preorder_id');
-      $preorder_active = 1;
-      tep_session_register('preorder_active');
       tep_redirect(tep_href_link('preorder_success.php')); 
     }
   } else {
