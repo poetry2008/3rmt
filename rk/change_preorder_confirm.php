@@ -21,6 +21,7 @@
   if (!$preorder_res) {
     forward404(); 
   } 
+  
   $is_guest_single = 0;
   $link_customer_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = '".$preorder_res['customers_id']."'");
   $link_customer_res = tep_db_fetch_array($link_customer_raw);
@@ -409,20 +410,11 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
               </td>
               <td class="main" align="right">
                 <?php
-                if ($_POST['pay_type'] == 1) {
-                  if (!isset($_SESSION['preorder_option'])) {
-                    $_SESSION['preorder_option'] = date('Ymd-His').ds_makeRandStr(2); 
-                  }
-                  echo tep_draw_hidden_field('option', $_SESSION['preorder_option']);
-                  echo tep_draw_hidden_field('clientip', MODULE_PAYMENT_TELECOM_KID);
-                  echo tep_draw_hidden_field('money', $total_param);
-                  echo tep_draw_hidden_field('redirect_url', HTTP_SERVER.'/change_preorder_process.php');
-                  echo tep_draw_hidden_field('redirect_back_url', HTTP_SERVER.'/change_preorder.php?pid='.$_POST['pid']);
-                } else if ($_POST['pay_type'] == 2) {
-                  echo tep_draw_hidden_field('cpre_type', '1');
-                  echo tep_draw_hidden_field('amount', $total_param);
-                  echo tep_draw_hidden_field('RETURNURL', HTTP_SERVER.'/change_preorder_process.php');
-                  echo tep_draw_hidden_field('CANCELURL', HTTP_SERVER.'/change_preorder.php?pid='.$_POST['pid']);
+                $ppayment_list_arr = tep_preorder_get_payment_list();
+                $con_payment_code = tep_preorder_get_payment_type($ppayment_list_arr, $preorder_res['payment_method'], true);
+                if ($con_payment_code != '') {
+                  $con_payment = new $con_payment_code(); 
+                  $con_payment->preorder_process_button($_POST['pid'], $total_param); 
                 }
                 ?>
                 <?php echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONTINUE);?> 

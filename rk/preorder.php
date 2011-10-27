@@ -308,6 +308,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
 
     if (isset($_GET['action']) && ($_GET['action'] == 'process') && ($error == false)) {
       $preorder_id = date('Ymd').'-'.date('His').tep_get_preorder_end_num(); 
+      $redirect_single = 0; 
       if (tep_session_is_registered('customer_id')) {
           $preorder_email_text = PREORDER_MAIL_CONTENT; 
           
@@ -347,6 +348,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
           }
         } else {
           $tmp_customer_id = tep_create_tmp_guest($_POST['from'], $_POST['lastname'], $_POST['firstname']); 
+          $redirect_single = 1; 
           $active_url = HTTP_SERVER.'/preorder_auth.php?pid='.$preorder_id; 
           $preorder_email_text = str_replace('${URL}', $active_url, PREORDER_MAIL_ACTIVE_CONTENT); 
           $preorder_email_subject = PREORDER_MAIL_ACTIVE_SUBJECT; 
@@ -365,7 +367,11 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
           tep_create_preorder_info($_POST, $preorder_id, $customer_id, $tmp_customer_id); 
         }
       }
-      tep_redirect(tep_href_link(FILENAME_PREORDER_SUCCESS));
+      if (!$redirect_single) {
+        tep_redirect(tep_href_link(FILENAME_PREORDER_SUCCESS));
+      } else {
+        tep_redirect(tep_href_link('non-preorder_auth.php'));
+      }
 ?>
       <div>
         <?php echo sprintf(TEXT_EMAIL_SUCCESSFUL_SENT, $from_email_address, stripslashes($_POST['products_name']), $_POST['quantity'], $_POST['timelimit']); ?>

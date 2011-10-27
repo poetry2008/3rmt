@@ -414,5 +414,9 @@
                    'MODULE_PAYMENT_CONVENIENCE_STORE_MAILSTRING',
                     );
     }
+   
+    function preorder_process_button($pid, $preorder_total)
+    {
+    }
   }
 ?>
