@@ -6661,13 +6661,13 @@ function tep_output_generated_category_path_asset($id, $from = 'category') {
     }
     foreach ($calculated_category_path[$i] as $j=>$j_value) {
       $calculated_category_path_string .= $calculated_category_path[$i][$j]['text'];
-      $calculated_category_path_string .= '&gt;&gt';
+      $calculated_category_path_string .= '&nbsp;&gt;&gt;&nbsp;';
     }
     /*
       $calculated_category_path_string = substr($calculated_category_path_string, 0, -16) . '<br>';
     */
   }
-  $calculated_category_path_string = substr($calculated_category_path_string, 0, -7);
+  $calculated_category_path_string = substr($calculated_category_path_string, 0, -20);
 
   if (strlen($calculated_category_path_string) < 1) $calculated_category_path_string = TEXT_TOP;
 

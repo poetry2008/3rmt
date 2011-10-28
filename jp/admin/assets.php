@@ -124,9 +124,9 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
 <div class="breadcreumb_asset">
 <?php 
   echo TEXT_TOP;
-  echo '&gt;&gt;';
+  echo '&nbsp;&gt;&gt;&nbsp;';
   echo tep_output_generated_category_path_asset($_GET['pid'], 'product');
-  echo '&gt;&gt;';
+  echo '&nbsp;&gt;&gt;&nbsp;';
   echo  tep_get_products_name($_GET['pid'],0,$_GET['site_id']);
 ?>
 </div>

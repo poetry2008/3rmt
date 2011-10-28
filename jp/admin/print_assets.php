@@ -97,14 +97,14 @@ charset=<?php echo CHARSET; ?>">
 <?php 
   if(isset($_GET['pid'])&&$_GET['pid']){
   echo TEXT_TOP;
-  echo '&gt;&gt;';
+  echo '&nbsp;&gt;&gt;&nbsp;';
   echo tep_output_generated_category_path_asset($_GET['pid'], 'product');
-  echo '&gt;&gt;';
+  echo '&nbsp;&gt;&gt;&nbsp;';
   echo  tep_get_products_name($_GET['pid'],0,$_GET['site_id']);
   }else{
     echo TEXT_TOP;
     if($_GET['product_categories_id']){
-      echo '&gt;&gt;';
+      echo '&nbsp;&gt;&gt;&nbsp;';
       echo tep_output_generated_category_path_asset($_GET['product_categories_id'], 'category');
       echo tep_get_products_name($_GET['pid'],0,$_GET['site_id']);
     }
