@@ -364,7 +364,7 @@ if ($cpayment_code == 'convenience_store') {
     $order_comment_str .= $preorder['raku_text'] . "\n";
   }
 }
-$order_comment_str = $preorder['comment_msg'];
+$order_comment_str .= $preorder['comment_msg'];
 
 $mailoption['ORDER_COMMENT']    = trim($order_comment_str);
 
