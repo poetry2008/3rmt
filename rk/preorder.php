@@ -30,10 +30,9 @@
   if (isset($_GET['promaji'])) {
 //ccdd
     $product_info_query = tep_db_query("
-        select pd.products_id, pd.products_name 
+        select pd.products_id, pd.products_name, pd.products_status 
         from " . TABLE_PRODUCTS_DESCRIPTION . " pd 
-        where pd.products_status != '0' and pd.products_status != '3'  
-          and pd.romaji = '" .  $_GET['promaji'] . "' 
+        where pd.romaji = '" .  $_GET['promaji'] . "' 
           and pd.language_id = '" . $languages_id . "' 
           and (pd.site_id = '".SITE_ID."' or pd.site_id = '0')
         order by pd.site_id DESC
@@ -218,7 +217,15 @@ if ($_POST['pre_payment'] == 'convenience_store') {
       <h1 class="pageHeading"><?php echo $po_game_c . '&nbsp;' . $product_info['products_name']; ?>を予約する</h1>
             <div class="comment">
       <p>
-        <?php echo STORE_NAME;?>では、<?php echo $po_game_c; ?>の予約サービスを行っております。<br> ご希望する数量が弊社在庫にある場合は「<?php echo '<a href="' .  tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $product_info['products_id']) . '">' . $product_info['products_name']; ?></a>」をクリックしてお手続きください。
+        <?php echo STORE_NAME;?>では、<?php echo $po_game_c; ?>の予約サービスを行っております。<br> ご希望する数量が弊社在庫にある場合は「
+        <?php 
+        if ($product_info['products_status'] == 0 || $product_info['products_status'] == 3)  {
+          echo $product_info['products_name']; 
+        } else {
+          echo '<a href="' .  tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .  $product_info['products_id']) . '">' .  $product_info['products_name'].'</a>';
+        }
+        ?>
+        」をクリックしてお手続きください。
       </p>
 <?php
     $error = false;
@@ -308,6 +315,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
 
     if (isset($_GET['action']) && ($_GET['action'] == 'process') && ($error == false)) {
       $preorder_id = date('Ymd').'-'.date('His').tep_get_preorder_end_num(); 
+      $redirect_single = 0; 
       if (tep_session_is_registered('customer_id')) {
           $preorder_email_text = PREORDER_MAIL_CONTENT; 
           
@@ -326,6 +334,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
         if (tep_db_num_rows($exists_customer_raw)) {
           $exists_customer_res = tep_db_fetch_array($exists_customer_raw); 
           if ($exists_customer_res['is_active'] == 0) {
+            $redirect_single = 1; 
             $tmp_customer_id = $exists_customer_res['customers_id']; 
             $active_url = HTTP_SERVER.'/preorder_auth.php?pid='.$preorder_id; 
             $preorder_email_text = str_replace('${URL}', $active_url, PREORDER_MAIL_ACTIVE_CONTENT); 
@@ -347,6 +356,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
           }
         } else {
           $tmp_customer_id = tep_create_tmp_guest($_POST['from'], $_POST['lastname'], $_POST['firstname']); 
+          $redirect_single = 1; 
           $active_url = HTTP_SERVER.'/preorder_auth.php?pid='.$preorder_id; 
           $preorder_email_text = str_replace('${URL}', $active_url, PREORDER_MAIL_ACTIVE_CONTENT); 
           $preorder_email_subject = PREORDER_MAIL_ACTIVE_SUBJECT; 
@@ -365,7 +375,11 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
           tep_create_preorder_info($_POST, $preorder_id, $customer_id, $tmp_customer_id); 
         }
       }
-      tep_redirect(tep_href_link(FILENAME_PREORDER_SUCCESS));
+      if (!$redirect_single) {
+        tep_redirect(tep_href_link(FILENAME_PREORDER_SUCCESS));
+      } else {
+        tep_redirect(tep_href_link('non-preorder_auth.php'));
+      }
 ?>
       <div>
         <?php echo sprintf(TEXT_EMAIL_SUCCESSFUL_SENT, $from_email_address, stripslashes($_POST['products_name']), $_POST['quantity'], $_POST['timelimit']); ?>
@@ -425,7 +439,18 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
       <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
         <tr>
           <td class="main" valign="top">商品名:</td>
-          <td class="main"><strong><?php echo '<a href="' .  tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $product_info['products_id']) . '" target="_blank">' . $po_game_c . '&nbsp;/&nbsp;' . $product_info['products_name']; ?></a></strong></td>
+          <td class="main">
+          <strong>
+          <?php 
+          if ($product_info['products_status'] == 0 || $product_info['products_status'] == 3)  {
+            echo $po_game_c.'&nbsp;&nbsp;'.$product_info['products_name']; 
+          } else {
+            echo '<a href="' .  tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $product_info['products_id']) . '" target="_blank">' . $po_game_c . '&nbsp;/&nbsp;' . $product_info['products_name'].'</a>'; 
+            
+          }
+            ?>
+          </strong>
+          </td>
         </tr>
         <tr>
           <td class="main"><?php echo FORM_FIELD_FRIEND_NAME; ?></td>
