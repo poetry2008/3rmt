@@ -354,7 +354,7 @@ if (!empty($preorder['code_fee'])) {
 $email_order_text = '';
 
 $cpayment_code = tep_preorder_get_payment_type($ppayment_list_arr, $preorder['payment_method'], true);   
-$order_comment_str = $preorder['comment_msg'];
+$order_comment_str = '';
 if ($cpayment_code == 'convenience_store') {
   if (!empty($preorder['cemail_text'])) {
     $order_comment_str .= $preorder['cemail_text'] . "\n";
@@ -364,6 +364,7 @@ if ($cpayment_code == 'convenience_store') {
     $order_comment_str .= $preorder['raku_text'] . "\n";
   }
 }
+$order_comment_str = $preorder['comment_msg'];
 
 $mailoption['ORDER_COMMENT']    = trim($order_comment_str);
 
