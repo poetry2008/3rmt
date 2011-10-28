@@ -95,10 +95,20 @@ charset=<?php echo CHARSET; ?>">
 </div>
 <div class="breadcreumb_asset">
 <?php 
+  if(isset($_GET['pid'])&&$_GET['pid']){
   echo TEXT_TOP;
   echo '&gt;&gt;';
-  echo tep_output_generated_category_path($_GET['pid'], 'product','asset');
+  echo tep_output_generated_category_path_asset($_GET['pid'], 'product');
+  echo '&gt;&gt;';
   echo  tep_get_products_name($_GET['pid'],0,$_GET['site_id']);
+  }else{
+    echo TEXT_TOP;
+    echo '&gt;&gt;';
+    if($_GET['product_categories_id']){
+      echo tep_output_generated_category_path_asset($_GET['product_categories_id'], 'category');
+      echo tep_get_products_name($_GET['pid'],0,$_GET['site_id']);
+    }
+  }
 ?>
 </div>
 <?php
