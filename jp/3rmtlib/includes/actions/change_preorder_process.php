@@ -330,7 +330,7 @@ $mailoption['ORDER_TOTAL']      = $currencies->format(abs($preorder_total_print_
 
 $mailoption['ORDER_PAYMENT']    = $preorder['payment_method'];
 $mailoption['ORDER_TTIME']      =  str_string($_SESSION['preorder_info_date']) .  $_SESSION['preorder_info_hour'] . '時' . $_SESSION['preorder_info_min'] .  '分　（24時間表記）' . $_SESSION['preorder_info_tori'];
-$mailoption['ORDER_COMMENT']    = trim($preorder['comment_msg']);
+
 $mailoption['ORDER_PRODUCTS']   = $products_ordered_text;
 $mailoption['ORDER_TMETHOD']    = $_SESSION['preorder_info_tori'];
 $mailoption['SITE_NAME']        = STORE_NAME;
@@ -354,6 +354,20 @@ if (!empty($preorder['code_fee'])) {
 $email_order_text = '';
 
 $cpayment_code = tep_preorder_get_payment_type($ppayment_list_arr, $preorder['payment_method'], true);   
+$order_comment_str = '';
+if ($cpayment_code == 'convenience_store') {
+  if (!empty($preorder['cemail_text'])) {
+    $order_comment_str .= $preorder['cemail_text'] . "\n";
+  }
+} else if ($cpayment_code == 'rakuten_bank') {
+  if (!empty($preorder['raku_text'])) {
+    $order_comment_str .= $preorder['raku_text'] . "\n";
+  }
+}
+$order_comment_str .= $preorder['comment_msg'];
+
+$mailoption['ORDER_COMMENT']    = trim($order_comment_str);
+
 if ($cpayment_code != '') {
   $email_order_text = preorder_get_mail_string($cpayment_code, $mailoption); 
 } 

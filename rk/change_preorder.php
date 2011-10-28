@@ -241,7 +241,17 @@ echo '</form>';
               <?php echo CHANGE_ORDER_PRODUCT_NAME;?> 
               </td>
               <td class="main">
-              <a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id='.$preorder_product_res['products_id']);?>" target="_blank"><?php echo $preorder_product_res['products_name'];?></a> 
+              <?php
+                $product_status_raw = tep_db_query("select products_status from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$preorder_product_res['products_id']."' and (site_id = 0 or site_id = ".SITE_ID.") order by site_id desc limit 1"); 
+                $product_status_res = tep_db_fetch_array($product_status_raw); 
+                if ($product_status_res['products_status'] == 0 || $product_status_res['products_status'] == 3) {
+                  echo $preorder_product_res['products_name']; 
+                } else {
+                ?>
+                <a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id='.$preorder_product_res['products_id']);?>" target="_blank"><?php echo $preorder_product_res['products_name'];?></a> 
+                <?php
+                }
+              ?>
               </td>
             </tr>
             <?php
