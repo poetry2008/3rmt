@@ -219,6 +219,11 @@ function dealUnknow(&$sqldata){
       $GLOBALS[$this->selected_module]->dealUnknow($amt,&$sqldata);
     }
 }
+function dealComment($comment){
+    if (method_exists($GLOBALS[$this->selected_module], 'dealComment')) {
+      return $GLOBALS[$this->selected_module]->dealComment($comment);
+    }
+}
 function getOrderMailString($option){
   /*
 ▼注文番号　       ${ORDER_ID}

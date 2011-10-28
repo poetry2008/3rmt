@@ -414,9 +414,16 @@
                    'MODULE_PAYMENT_CONVENIENCE_STORE_MAILSTRING',
                     );
     }
-   
+
+    function dealComment($comment)
+  {
+    $pay_comments = 'PCメールアドレス:'.$_POST['convenience_email']; 
+    return $pay_comments ."\n".$comment;
+  }
+
     function preorder_process_button($pid, $preorder_total)
     {
     }
+
   }
 ?>
