@@ -344,7 +344,12 @@ if ($preorder_point){
 }else {
     $mailoption['POINT']            = 0;
 }
-$mailoption['MAILFEE']          = '0円';
+
+if (!empty($preorder['code_fee'])) {
+  $mailoption['MAILFEE']          = $preorder['code_fee'].'円';
+} else {
+  $mailoption['MAILFEE']          = '0円';
+}
 
 $email_order_text = '';
 
@@ -383,6 +388,10 @@ $email_printing_order .= '━━━━━━━━━━━━━━━━━━
 
 if ($preorder_point > 0) {
     $email_printing_order .= '□ポイント割引　　：' . (int)$preorder_point . '円' . "\n";
+}
+
+if (!empty($preoder['code_fee'])) {
+  $email_printing_order .= '手数料　　　　　：'.$preorder['code_fee'].'円'."\n";
 }
 
 $email_printing_order .= 'お支払金額　　　：' .  $currencies->format(abs($preorder_total_print_num)) . "\n";
