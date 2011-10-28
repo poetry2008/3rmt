@@ -371,8 +371,5 @@ class rakuten_bank {
     $comment = $pay_comments ."\n".$comment;
     return $comment;
   }
-  function preorder_process_button($pid, $preorder_total)
-  {
-  }
 }
 ?>

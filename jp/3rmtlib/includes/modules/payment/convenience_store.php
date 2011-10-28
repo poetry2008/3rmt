@@ -421,9 +421,6 @@
     return $pay_comments ."\n".$comment;
   }
 
-    function preorder_process_button($pid, $preorder_total)
-    {
-    }
 
   }
 ?>

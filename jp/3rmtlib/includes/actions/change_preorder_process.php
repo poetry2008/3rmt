@@ -404,6 +404,16 @@ $email_printing_order .= $products_ordered;
 
 $email_printing_order .= '備考　　　　　　：' . "\n";
 
+if ($cpayment_code == 'convenience_store') {
+  if (!empty($preorder['cemail_text'])) {
+    $email_printing_order .= $preorder['cemail_text'] . "\n";
+  }
+} else if ($cpayment_code == 'rakuten_bank') {
+  if (!empty($preorder['raku_text'])) {
+    $email_printing_order .= $preorder['raku_text'] . "\n";
+  }
+}
+
 if (!empty($preorder['comment_msg'])) {
   $email_printing_order .= $preorder['comment_msg'] . "\n";
 }

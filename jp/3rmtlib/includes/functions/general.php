@@ -4295,6 +4295,13 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
                            'comment_msg' => $pInfo['yourmessage'],  
                            );
     
+   if ($pInfo['pre_payment'] == 'convenience_store') {
+     $sql_data_array['cemail_text'] = 'PCメールアドレス:' .$pInfo['convenience_email']; 
+   }
+   if ($pInfo['pre_payment'] == 'rakuten_bank') {
+     $sql_data_array['raku_text'] = '電話番号:'.$pInfo['rakuten_telnumber']; 
+   }
+   
    tep_db_perform(TABLE_PREORDERS, $sql_data_array);
 
    require(DIR_WS_CLASSES.'order_total.php');
