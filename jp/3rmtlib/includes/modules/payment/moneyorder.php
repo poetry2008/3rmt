@@ -208,8 +208,5 @@
                    );
     }
     
-    function preorder_process_button($pid, $preorder_total)
-    {
-    }
   }
 ?>
