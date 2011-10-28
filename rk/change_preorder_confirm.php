@@ -414,7 +414,9 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
                 $con_payment_code = tep_preorder_get_payment_type($ppayment_list_arr, $preorder_res['payment_method'], true);
                 if ($con_payment_code != '') {
                   $con_payment = new $con_payment_code(); 
-                  $con_payment->preorder_process_button($_POST['pid'], $total_param); 
+                  if (method_exists($con_payment, 'preorder_process_button')) {
+                    $con_payment->preorder_process_button($_POST['pid'], $total_param); 
+                  }
                 }
                 ?>
                 <?php echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONTINUE);?> 
