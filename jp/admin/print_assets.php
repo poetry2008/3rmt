@@ -103,8 +103,8 @@ charset=<?php echo CHARSET; ?>">
   echo  tep_get_products_name($_GET['pid'],0,$_GET['site_id']);
   }else{
     echo TEXT_TOP;
-    echo '&gt;&gt;';
     if($_GET['product_categories_id']){
+      echo '&gt;&gt;';
       echo tep_output_generated_category_path_asset($_GET['product_categories_id'], 'category');
       echo tep_get_products_name($_GET['pid'],0,$_GET['site_id']);
     }
