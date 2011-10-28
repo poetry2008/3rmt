@@ -125,8 +125,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
 <?php 
   echo TEXT_TOP;
   echo '&gt;&gt;';
-  echo tep_output_generated_category_path($_GET['pid'], 'asset');
-  echo '&gt;&gt;';
+  echo tep_output_generated_category_path($_GET['pid'], 'product','asset');
   echo  tep_get_products_name($_GET['pid'],0,$_GET['site_id']);
 ?>
 </div>
