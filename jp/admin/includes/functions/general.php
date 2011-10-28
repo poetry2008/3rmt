@@ -1212,13 +1212,9 @@ function tep_output_generated_category_path($id, $from = 'category') {
   for ($i = 0, $n = sizeof($calculated_category_path); $i < $n; $i++) {
     for ($j = 0, $k = sizeof($calculated_category_path[$i]); $j < $k; $j++) {
       $calculated_category_path_string .= $calculated_category_path[$i][$j]['text'];
-      if($from=='asset'){
-        $calculated_category_path_string .= '&gt;&gt;';
-      }else{
-        $calculated_category_path_string .= '&nbsp;&gt;&nbsp;';
-      }
+      $calculated_category_path_string .= '&nbsp;&gt;&nbsp;';
     }
-    $calculated_category_path_string = substr($calculated_category_path_string, 0, -16) . '<br>';
+      $calculated_category_path_string = substr($calculated_category_path_string, 0, -16) . '<br>';
   }
   $calculated_category_path_string = substr($calculated_category_path_string, 0, -4);
 
@@ -6651,5 +6647,30 @@ function tep_get_relate_products_sum($pid,$site_id=0,$start='',$end='')
     $return_sum += $res['sum_relate'];
   }
   return $return_sum;
+
+}
+function tep_output_generated_category_path_asset($id, $from = 'category') {
+  $calculated_category_path_string = '';
+  $calculated_category_path = tep_generate_category_path($id, $from);
+  if($from=='category'){
+    krsort($calculated_category_path);
+  }
+  foreach ($calculated_category_path as $i=>$i_value) {
+    if($from=='category'){
+      krsort($calculated_category_path[$i]);
+    }
+    foreach ($calculated_category_path[$i] as $j=>$j_value) {
+      $calculated_category_path_string .= $calculated_category_path[$i][$j]['text'];
+      $calculated_category_path_string .= '&gt;&gt';
+    }
+    /*
+      $calculated_category_path_string = substr($calculated_category_path_string, 0, -16) . '<br>';
+    */
+  }
+  $calculated_category_path_string = substr($calculated_category_path_string, 0, -7);
+
+  if (strlen($calculated_category_path_string) < 1) $calculated_category_path_string = TEXT_TOP;
+
+  return $calculated_category_path_string;
 
 }
