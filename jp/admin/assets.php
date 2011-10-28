@@ -108,6 +108,11 @@ charset=<?php echo CHARSET; ?>">
     }
 ?>
 <td width="100%" valign="top">
+<?php
+if(isset($_GET['pid'])&&$_GET['pid']!=''){
+  echo "<div class = 'title_breadcreumb_div'>";
+}
+?>
 <div class="assets_title">
 <?php echo ASSETS_TITLE;?>
 </div>
@@ -116,6 +121,16 @@ set_time_limit(0);
 //简易页面
 if(isset($_GET['pid'])&&$_GET['pid']!=''){
   ?>
+<div class="breadcreumb_asset">
+<?php 
+  echo TEXT_TOP;
+  echo '&nbsp;&gt;&nbsp;';
+  echo tep_output_generated_category_path($_GET['pid'], 'product');
+  echo '&nbsp;&gt;&nbsp;';
+  echo  tep_get_products_name($_GET['pid'],0,$_GET['site_id']);
+?>
+</div>
+</div>
 <div class="assets_top_text_product">
 <?php echo TEXT_ASSETS_INFO;?>
 </div>
