@@ -652,7 +652,7 @@ function getpreexpress($pre_value, $pre_pid){
     $hidden_param_str .= tep_draw_hidden_field('cpre_type', '1');
     $hidden_param_str .= tep_draw_hidden_field('amount', $preorder_total);
     $hidden_param_str .= tep_draw_hidden_field('RETURNURL', HTTP_SERVER.'/change_preorder_process.php');
-    $hidden_param_str .= tep_draw_hidden_field('CANCELURL', HTTP_SERVER.'/change_preorder.php?pid='.$_POST['pid']);
+    $hidden_param_str .= tep_draw_hidden_field('CANCELURL', HTTP_SERVER.'/change_preorder.php?pid='.$preorder_info['check_preorder_str']);
     echo $hidden_param_str; 
   }
   

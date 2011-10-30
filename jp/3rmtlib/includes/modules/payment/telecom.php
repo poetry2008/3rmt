@@ -452,7 +452,7 @@ class telecom {
     $hidden_param_str .= tep_draw_hidden_field('clientip', MODULE_PAYMENT_TELECOM_KID);
     $hidden_param_str .= tep_draw_hidden_field('money', $preorder_total);
     $hidden_param_str .= tep_draw_hidden_field('redirect_url', HTTP_SERVER.'/change_preorder_process.php');
-    $hidden_param_str .= tep_draw_hidden_field('redirect_back_url', HTTP_SERVER.'/change_preorder.php?pid='.$_POST['pid']);
+    $hidden_param_str .= tep_draw_hidden_field('redirect_back_url', HTTP_SERVER.'/change_preorder.php?pid='.$preorder_info['check_preorder_str']);
     echo $hidden_param_str; 
   }
   
