@@ -420,7 +420,14 @@
     $pay_comments = 'PCメールアドレス:'.$_POST['convenience_email']; 
     return $pay_comments ."\n".$comment;
   }
-
+  
+    function checkPreorderConvEmail($email)
+    {
+      if (!empty($email)) {
+        return true; 
+      }
+      return false; 
+    }
 
   }
 ?>

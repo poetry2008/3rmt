@@ -655,6 +655,7 @@ function getpreexpress($pre_value, $pre_pid){
     $hidden_param_str .= tep_draw_hidden_field('CANCELURL', HTTP_SERVER.'/change_preorder.php?pid='.$_POST['pid']);
     echo $hidden_param_str; 
   }
+  
   }
 function PPHttpPost($methodName_, $nvpStr_) {
   //  global $environment;

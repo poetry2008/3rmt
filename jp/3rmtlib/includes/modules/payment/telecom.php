@@ -455,5 +455,21 @@ class telecom {
     $hidden_param_str .= tep_draw_hidden_field('redirect_back_url', HTTP_SERVER.'/change_preorder.php?pid='.$_POST['pid']);
     echo $hidden_param_str; 
   }
+  
+  function preorderDealUnknow(&$sql_data_array){
+    $telecom_option_ok = false;
+    if ($_SESSION['preorder_option']) {
+      $telecom_unknow = tep_db_fetch_array(tep_db_query("select * from telecom_unknow where `option`='".$_SESSION['preorder_option']."' and rel='yes'"));
+      if ($telecom_unknow) {
+        $sql_data_array['telecom_name']  = $telecom_unknow['username'];
+        $sql_data_array['telecom_tel']   = $telecom_unknow['telno'];
+        $sql_data_array['telecom_email'] = $telecom_unknow['email'];
+        $sql_data_array['telecom_money'] = $telecom_unknow['money'];
+        tep_db_query("update `telecom_unknow` set type='success' where `option`='".$_SESSION['preorder_option']."' and rel='yes' order by date_added limit 1");
+        $telecom_option_ok = true;
+      }
+    }
+  return $telecom_option_ok;
+  }
 }
 ?>
