@@ -169,18 +169,30 @@ if ($preorder) {
     tep_db_perform(TABLE_ORDERS_TOTAL, $sql_data_array);
   }
   
-  $preorder_status_history_raw = tep_db_query("select * from ".TABLE_PREORDERS_STATUS_HISTORY." where orders_id = '".$_SESSION['preorder_info_id']."' and comments != '' order by orders_status_history_id asc");  
-  $preorder_status_history_res = tep_db_fetch_array($preorder_status_history_raw);
-  $sh_comments = ''; 
-  if ($preorder_status_history_res) {
-    $sh_comments = $preorder_status_history_res['comments']; 
+  $order_comment_str = '';
+
+  if (isset($cpayment_class)) {
+    if (method_exists($cpayment_class, 'checkPreorderConvEmail')) {
+      if ($cpayment_class->checkPreorderConvEmail($preorder['cemail_text'])) {
+        $order_comment_str .= $preorder['cemail_text'] . "\n";
+      }
+    }
+    if (method_exists($cpayment_class, 'checkPreorderRakuEmail')) {
+      if ($cpayment_class->checkPreorderRakuEmail($preorder['raku_text'])) {
+        $order_comment_str .= $preorder['raku_text'] . "\n";
+      }
+    }
   }
+  if (!empty($preorder['comment_msg'])) {
+    $order_comment_str .= $preorder['comment_msg'];
+  }
+  
   $customer_notification = (SEND_EMAILS == 'true') ? '1' : '0'; 
   $sql_data_array = array('orders_id' => $orders_id,
                           'orders_status_id' => DEFAULT_ORDERS_STATUS_ID, 
                           'date_added' => date('Y-m-d H:i:s', time()), 
                           'customer_notified' => $customer_notification, 
-                          'comments' => $sh_comments, 
+                          'comments' => $order_comment_str, 
       ); 
   tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
   
@@ -333,23 +345,6 @@ if (!empty($preorder['code_fee'])) {
 
 $email_order_text = '';
 
-$order_comment_str = '';
-
-if (isset($cpayment_class)) {
-  if (method_exists($cpayment_class, 'checkPreorderConvEmail')) {
-    if ($cpayment_class->checkPreorderConvEmail($preorder['cemail_text'])) {
-      $order_comment_str .= $preorder['cemail_text'] . "\n";
-    }
-  }
-  if (method_exists($cpayment_class, 'checkPreorderRakuEmail')) {
-    if ($cpayment_class->checkPreorderRakuEmail($preorder['raku_text'])) {
-      $order_comment_str .= $preorder['raku_text'] . "\n";
-    }
-  }
-}
-if (!empty($preorder['comment_msg'])) {
-  $order_comment_str .= $preorder['comment_msg'];
-}
 
 $mailoption['ORDER_COMMENT']    = trim($order_comment_str);
 
