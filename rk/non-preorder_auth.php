@@ -96,9 +96,7 @@
           $categories_name = $categories_info['categories_name']; 
         }
         
-        if (!isset($_SESSION['preorder_active'])) {
-          $breadcrumb->add($categories_info['categories_name'], tep_href_link(FILENAME_DEFAULT, 'cPath=' . implode('_', array_slice($ca_path_array, 0, ($cnum+1)))));
-        }
+        $breadcrumb->add($categories_info['categories_name'], tep_href_link(FILENAME_DEFAULT, 'cPath=' . implode('_', array_slice($ca_path_array, 0, ($cnum+1)))));
       } else {
         break;
       }
