@@ -93,6 +93,24 @@ charset=<?php echo CHARSET; ?>">
 <div class="print_assets_title">
 <?php echo ASSETS_TITLE;?>
 </div>
+<div class="breadcreumb_asset">
+<?php 
+  if(isset($_GET['pid'])&&$_GET['pid']){
+  echo TEXT_TOP;
+  echo '&nbsp;&gt;&gt;&nbsp;';
+  echo tep_output_generated_category_path_asset($_GET['pid'], 'product');
+  echo '&nbsp;&gt;&gt;&nbsp;';
+  echo  tep_get_products_name($_GET['pid'],0,$_GET['site_id']);
+  }else{
+    echo TEXT_TOP;
+    if($_GET['product_categories_id']){
+      echo '&nbsp;&gt;&gt;&nbsp;';
+      echo tep_output_generated_category_path_asset($_GET['product_categories_id'], 'category');
+      echo tep_get_products_name($_GET['pid'],0,$_GET['site_id']);
+    }
+  }
+?>
+</div>
 <?php
 set_time_limit(0);
 //简易页面
@@ -140,6 +158,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
   $start = $_GET['startY']."-".$_GET['startM']."-".$_GET['startD']." ".$start_time;
   $end = $_GET['endY']."-".$_GET['endM']."-".$_GET['endD']." ".$now_time;
   $site_id = (isset($_GET['site_id'])&&$_GET['site_id'])?$_GET['site_id']:0;
+  $sort = (isset($_GET['sort_order'])&&$_GET['sort_order'])?$_GET['sort_order']:'';
   if(isset($_GET['search'])&&$_GET['search']==1){
   $sql_category_asset = " select c.categories_id,cd.categories_name from
     ".TABLE_CATEGORIES." c 
@@ -159,7 +178,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
   $all_true_row =0;
   while($row_category_asset = tep_db_fetch_array($query_category_asset)){
     $temp_row = tep_get_all_asset_category_by_cid($row_category_asset['categories_id'],
-        $bflag,$site_id,$start,$end);
+        $bflag,$site_id,$start,$end,$sort);
     $temp_row['categories_name'] = $row_category_asset['categories_name'];
     $i++;
     if($temp_row['quantity_all_product']!=0){
@@ -198,7 +217,7 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
     $i++;
     $tmp_arr = array();
     $tmp_arr = tep_get_all_asset_product_by_pid($product['products_id'],
-        $bflag,$site_id,$start,$end);
+        $bflag,$site_id,$start,$end,$sort);
     $tmp_arr['products_name'] = $product['products_name'];
     $tmp_arr['products_real_quantity'] = $product['products_real_quantity'];
     if($tmp_arr['quantity_all_product']!=0){

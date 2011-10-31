@@ -424,6 +424,15 @@ class convenience_store {
   function preorder_process_button($pid, $preorder_total)
   {
   }
+  
+    function checkPreorderConvEmail($email)
+    {
+      if (!empty($email)) {
+        return true; 
+      }
+      return false; 
+    }
+
 
 }
 ?>

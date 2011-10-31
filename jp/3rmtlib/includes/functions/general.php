@@ -4295,6 +4295,13 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
                            'comment_msg' => $pInfo['yourmessage'],  
                            );
     
+   if ($pInfo['pre_payment'] == 'convenience_store') {
+     $sql_data_array['cemail_text'] = 'PCメールアドレス:' .$pInfo['convenience_email']; 
+   }
+   if ($pInfo['pre_payment'] == 'rakuten_bank') {
+     $sql_data_array['raku_text'] = '電話番号:'.$pInfo['rakuten_telnumber']; 
+   }
+   
    tep_db_perform(TABLE_PREORDERS, $sql_data_array);
 
    require(DIR_WS_CLASSES.'order_total.php');
@@ -4400,27 +4407,14 @@ function tep_preorder_get_payment_list()
   return $return_arr;
 }
 
-function tep_preorder_get_payment_type($payment_list, $payment_method, $return_single = false)
+function tep_preorder_get_payment_type($payment_list, $payment_method)
 {
   foreach ($payment_list as $key => $value) {
     if ($value == $payment_method) {
-      if ($return_single) {
-        return $key; 
-      } else {
-        if ($key == 'telecom') {
-          return 1; 
-        } else if ($key == 'paypal') {
-          return 2; 
-        }
-      }
+      return $key; 
     } 
   }
-  
-  if ($return_single) {
-    return ''; 
-  } else {
-    return 0;
-  }
+  return ''; 
 }
 
 function preorder_get_mail_string($payment_code, $mailoption) {

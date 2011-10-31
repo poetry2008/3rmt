@@ -54,7 +54,7 @@
       $pre_name = '';
       $pre_num = 0;
       $pre_date = '';
-      $replace_info_arr = array('${PRODUCTS_NAME}', '${PRODUCTS_QUANTITY}', '${EFFECTIVE_TIME}'); 
+      $replace_info_arr = array('${PRODUCTS_NAME}', '${PRODUCTS_QUANTITY}', '${EFFECTIVE_TIME}', '${PAY}'); 
       
       $pre_date_str = strtotime($preorder_res['predate']); 
       $pre_date = date('Y', $pre_date_str).PREORDER_YEAR_TEXT.date('m', $pre_date_str).PREORDER_MONTH_TEXT.date('d', $pre_date_str).PREORDER_DAY_TEXT; 
@@ -67,15 +67,13 @@
         $pre_num = $preorder_products_res['products_quantity']; 
       }
      
-      $pre_replace_info_arr = array($pre_name, $pre_num, $pre_date);
+      $pre_replace_info_arr = array($pre_name, $pre_num, $pre_date, $preroder_res['payment_method']);
      
       $preorder_email_text = str_replace($replace_info_arr, $pre_replace_info_arr, $preorder_email_text);
 
       tep_mail($preorder_res['customers_name'], $preorder_res['customers_email_address'],PREORDER_MAIL_SUBJECT, $preorder_email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS); 
       $send_preorder_id = $pid;
       tep_session_register('send_preorder_id');
-      $preorder_active = 1;
-      tep_session_register('preorder_active');
       tep_redirect(tep_href_link('preorder_success.php')); 
     }
   } else {
