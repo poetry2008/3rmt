@@ -330,6 +330,16 @@ class rakuten_bank {
     $comment = $pay_comments ."\n".$comment;
     return $comment;
   }
+  
+  function dealPreorderRakuComment($comment, $tel, $return_single = false)
+  {
+    $pay_comments = '電話番号:'.$this->replace_for_telnumber($tel); 
+    $comment = $pay_comments ."\n".$comment;
+    if (!$return_single) {
+      return $pay_comments; 
+    }
+    return $comment;
+  }
   function checkPreorderRakuEmail($email)
   {
     if (!empty($email)) {
