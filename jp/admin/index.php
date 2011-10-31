@@ -6,6 +6,25 @@
   require('includes/application_top.php');
   require(DIR_WS_CLASSES . 'currencies.php');
 
+
+
+  //notes
+$notes = '';  
+$left='';  
+$top='';  
+$zindex='';  
+$query = tep_db_query("select * from notes order by id desc");
+while($row=tep_db_fetch_array($query)){
+  list($left,$top,$zindex) = explode('|',$row['xyz']); 
+  $time = strtotime($row['addtime']);
+  $notes.= '
+    <div id="note_'.$row['id'].'" class="note '.$row['color'].'" style="left:'.$left.'px;top:'.$top.'px;z-index:'.$zindex.'">'.htmlspecialchars($row['content']).'
+    <div class="note_close">
+    <input type="button" onclick="note_desplay_none(\''.$row['id'].'\')" value="'.CLOSE.'">
+    </div>
+    </div>';
+}
+//end nodes
   $currencies = new currencies();
   if ($ocertify->npermission >= 10) {
   $cat = array(array('title' => BOX_CUSTOMERS_ORDERS,
@@ -68,6 +87,12 @@ while($userslist= tep_db_fetch_array($sites_id)){
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script type="text/javascript" src="includes/jquery.fancybox-1.3.1.pack.js"></script>
+<script type="text/javascript" src="includes/global.js"></script>
+<script type='text/javascript'
+src='http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.2/jquery-ui.min.js'></script>
+<link rel="stylesheet" type="text/css" href="includes/node_style.css" />
+<link rel="stylesheet" type="text/css" href="includes/fancybox.css" />
 <title><?php echo TITLE; ?></title>
 <style type="text/css">
 <!--
@@ -99,9 +124,12 @@ one_time_pwd('<?php echo $page_name;?>');
   <tr>
     <td><table border="0" width="100%" height="390" cellspacing="0" cellpadding="1">
       <tr bgcolor="#000000">
-        <td><table border="0" width="100%" height="390" cellspacing="0" cellpadding="0">
+        <td>
+          <table border="0" width="100%" height="390" cellspacing="0" cellpadding="0">
           <tr bgcolor="#ffffff" height="50">
             <td height="50">
+            <div id="add"><a href="add_note.php" id="fancy">
+            <?php echo TEXT_ADD_NOTE;?></a></div>
             </td>
             <td align="right" class="text" nowrap><?php echo '|&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_DEFAULT) . '">' . HEADER_TITLE_ADMINISTRATION . '</a>&nbsp;&nbsp;|&nbsp;&nbsp;<a href="' . tep_catalog_href_link() . '">' . HEADER_TITLE_ONLINE_CATALOG . '</a>'; ?>&nbsp;&nbsp;|&nbsp;&nbsp;</td>
           </tr>
@@ -109,7 +137,11 @@ one_time_pwd('<?php echo $page_name;?>');
             <td colspan="2"><img src="images/pixel_trans.gif" width="1" height="1"></td>
           </tr>
           <tr>
-            <td colspan="2" bgcolor="#FFFFFF"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+            <td colspan="2" bgcolor="#FFFFFF">
+          <div id="main">
+          <div class="demo">
+          <?php echo $notes;?>
+            <table border="0" width="100%" cellspacing="0" cellpadding="2">
               <tr valign="top">
                 <td width="160"><table border="0" width="160" height="390" cellspacing="0" cellpadding="2">
                   <tr>
@@ -597,7 +629,7 @@ foreach ($sites as $site)
   echo '<table width="100%"><tr valign="top"><td width="33%">' . $b_box->menuBox($b_heading, $b_contents) . '</td><td width="33%">' . $s_box->menuBox($s_heading, $s_contents) . '</td><td width="33%">' . $w_box->menuBox($w_heading, $w_contents) . '</td></tr></table>';
   echo '<br>';
 ?>
-        </td>
+       </div></div> </td>
               </tr>
             </table></td>
           </tr>
