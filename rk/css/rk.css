@@ -1921,3 +1921,5 @@ display:block;
 .preorder_active_line { border-bottom:1px dashed #999; margin:10px 0;}
 .preorder_active_info { font-size:13px; background-color:#999999;}
 .preorder_active_info td{ background-color:#fff; height:20px; padding-left:2px;}
+.preorser_formArea{ background-color:#ccc; font-size:13px; line-height:20px;}
+.preorser_formArea td{ background-color:#fff; padding-left:2px;}

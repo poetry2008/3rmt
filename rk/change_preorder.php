@@ -61,10 +61,6 @@
   
   $preorder_id = $preorder_res['orders_id'];
  
-  $ppayment_list_arr = tep_preorder_get_payment_list();
-
-  $preorder_payment_code = tep_preorder_get_payment_type($ppayment_list_arr, $preorder_res['payment_method']);
-  
   $ensure_datetime = strtotime($preorder_res['ensure_deadline']);
   if (time() > $ensure_datetime) {
     $preorder_product_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$preorder_id."'"); 
@@ -429,7 +425,6 @@ echo '</form>';
                    echo '<input type="hidden" name="preorder_point" value="0">'; 
                  }
                 ?>
-                <?php echo tep_draw_hidden_field('pay_type', strval($preorder_payment_code));?> 
                 <?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE);?> 
               </td>
             </tr>

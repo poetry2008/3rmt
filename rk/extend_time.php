@@ -48,7 +48,7 @@
                 <?php
                 echo tep_draw_form('preorder', tep_href_link('extend_time.php', 'pid='.$_GET['pid'].'&action=process')); 
                 ?>
-                <table border="0" width="100%" cellspacing="2" cellpadding="2" class="formArea">
+                <table border="0" width="100%" cellspacing="1" cellpadding="2" class="preorser_formArea">
                   <tr>
                     <td class="main"><?php echo EXTEND_CUSTOMERS_NAME_TEXT;?></td> 
                     <td class="main">
@@ -99,12 +99,12 @@
                       <?php
                       if ($predate_error == true) echo '&nbsp;<span class="errorText">' . TEXT_REQUIRED . '</span>';
                       ?>
-                    </td>.
+                    </td>
                   </tr>
                   </table>  
                   <table border="0" width="100%" cellspacing="0" cellpadding="0">
                   <tr>
-                    <td colspan="2">
+                    <td colspan="2"><br>
                           <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                             <tr> 
                               <td class="main" align="right"><?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></td> 

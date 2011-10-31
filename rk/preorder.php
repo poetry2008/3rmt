@@ -9,7 +9,6 @@
   }
   require(DIR_WS_CLASSES. 'payment.php'); 
   $payment_modules = new payment;
-  tep_session_unregister('preorder_active'); 
   if (tep_session_is_registered('customer_id')) {
 //ccdd
     $account = tep_db_query("

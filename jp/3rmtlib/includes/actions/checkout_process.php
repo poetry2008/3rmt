@@ -438,9 +438,10 @@ $mailoption['POINT']            = $point . '円' ;
 }else {
   $mailoption['POINT']            = 0;
 }
-if (isset($total_mail_fee) and $total_mail_fee > 0 ){
-  $mailoption['MAILFEE']          = $total_mail_fee.'円';
+if(!isset($total_mail_fee)){
+  $total_mail_fee =0;
 }
+$mailoption['MAILFEE']          = $total_mail_fee.'円';
 $email_order = '';
 $email_order = $payment_modules->getOrderMailString($mailoption);  
   

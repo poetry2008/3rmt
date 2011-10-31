@@ -15,8 +15,6 @@ if (isset($preorder_real_point)) {
 
 include(DIR_WS_LANGUAGES . $language . '/change_preorder_process.php');
 
-require(DIR_WS_CLASSES.'payment.php');
-
 $preorder_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$_SESSION['preorder_info_id']."' and site_id = '".SITE_ID."'");
 $preorder = tep_db_fetch_array($preorder_raw);
 
@@ -29,6 +27,12 @@ if ($preorder) {
   }
  
   $ppayment_list_arr = tep_preorder_get_payment_list();
+  $cpayment_code = tep_preorder_get_payment_type($ppayment_list_arr, $preorder['payment_method']);   
+  
+  if ($cpayment_code != '') {
+    $cpayment_class = new $cpayment_code(); 
+  }
+
   $torihikihouhou_date_str = $_SESSION['preorder_info_date'].' '.$_SESSION['preorder_info_hour'].':'.$_SESSION['preorder_info_min'].':00';
   $default_status_raw = tep_db_query("select * from ".TABLE_ORDERS_STATUS." where orders_status_id = '".DEFAULT_ORDERS_STATUS_ID."'");
   $default_status_res = tep_db_fetch_array($default_status_raw); 
@@ -114,22 +118,8 @@ if ($preorder) {
                            'orders_user_language' => $_SESSION['userLanguage'], 
                            'orders_work' => $preorder['orders_work'], 
                            'q_8_1' => $preorder['q_8_1'], 
-                           'telecom_name' => $preorder['telecom_name'], 
-                           'telecom_tel' => $preorder['telecom_tel'], 
-                           'telecom_money' => $preorder['telecom_money'], 
-                           'telecom_email' => $preorder['telecom_email'], 
-                           'telecom_clientip' => $preorder['telecom_clientip'], 
                            'telecom_option' => $_SESSION['preorder_option'], 
-                           'telecom_cont' => $preorder['telecom_cont'], 
-                           'telecom_sendid' => $preorder['telecom_sendid'], 
-                           'telecom_unknow' => $preorder['telecom_unknow'], 
                            'orders_ref_keywords' => strtolower(SBC2DBC(parseKeyword($_SESSION['referer']))), 
-                           'paypal_paymenttype' => $preorder['paypal_paymenttype'], 
-                           'paypal_payerstatus' => $preorder['paypal_payerstatus'], 
-                           'paypal_paymentstatus' => $preorder['paypal_paymentstatus'], 
-                           'paypal_countrycode' => $preorder['paypal_countrycode'], 
-                           'paypal_token' => $preorder['paypal_token'], 
-                           'paypal_playerid' => $preorder['paypal_playerid'], 
                            'flag_qaf' => $preorder['flag_qaf'], 
                            'end_user' => $preorder['end_user'], 
                            'confirm_payment_time' => $preorder['confirm_payment_time'],
@@ -139,19 +129,12 @@ if ($preorder) {
   if (isset($_SESSION['referer_adurl']) && $_SESSION['referer_adurl']) {
     $sql_data_array['orders_adurl'] = $_SESSION['referer_adurl'];
   }
-  if ($_SESSION['preorder_option']) {
-    $telecom_unknow = tep_db_fetch_array(tep_db_query("select * from telecom_unknow where `option`='".$_SESSION['preorder_option']."' and rel='yes'"));
-    if ($telecom_unknow) {
-    $sql_data_array['telecom_name']  = $telecom_unknow['username'];
-    $sql_data_array['telecom_tel']   = $telecom_unknow['telno'];
-    $sql_data_array['telecom_email'] = $telecom_unknow['email'];
-    $sql_data_array['telecom_money'] = $telecom_unknow['money'];
-    tep_db_query("update `telecom_unknow` set type='success' where `option`='".$_SESSION['preorder_option']."' and rel='yes' order by date_added limit 1");
-
-    $telecom_option_ok = true;
+  
+  if (isset($cpayment_class)) {
+    if (method_exists($cpayment_class, 'preorderDealUnknow')) {
+      $telecom_option_ok = $cpayment_class->preorderDealUnknow($sql_data_array); 
     }
   }
-  
   tep_db_perform(TABLE_ORDERS, $sql_data_array);
 
   $preorder_total_raw = tep_db_query("select * from ".TABLE_PREORDERS_TOTAL." where orders_id = '".$_SESSION['preorder_info_id']."'");
@@ -177,30 +160,39 @@ if ($preorder) {
                             'sort_order' => $preorder_total_res['sort_order'], 
         ); 
     if ($preorder_total_res['class'] == 'ot_total') {
-      $cpayment_type = tep_preorder_get_payment_type($ppayment_list_arr, $preorder['payment_method']);   
-      if ($cpayment_type == 2) {
-        if (!class_exists('paypal')) {
-          include(DIR_WS_MODULES.'payment/paypal.php'); 
-        } 
-        $cpayment_module = new paypal(); 
-        $telecom_option_ok = $cpayment_module->getpreexpress((int)$preorder_total_res['value'], $orders_id); 
+      if (isset($cpayment_class)) {
+        if (method_exists($cpayment_class, 'getpreexpress')) {
+          $telecom_option_ok = $cpayment_class->getpreexpress((int)$preorder_total_res['value'], $orders_id); 
+        }
       }
     }
     tep_db_perform(TABLE_ORDERS_TOTAL, $sql_data_array);
   }
   
-  $preorder_status_history_raw = tep_db_query("select * from ".TABLE_PREORDERS_STATUS_HISTORY." where orders_id = '".$_SESSION['preorder_info_id']."' and comments != '' order by orders_status_history_id asc");  
-  $preorder_status_history_res = tep_db_fetch_array($preorder_status_history_raw);
-  $sh_comments = ''; 
-  if ($preorder_status_history_res) {
-    $sh_comments = $preorder_status_history_res['comments']; 
+  $order_comment_str = '';
+
+  if (isset($cpayment_class)) {
+    if (method_exists($cpayment_class, 'checkPreorderConvEmail')) {
+      if ($cpayment_class->checkPreorderConvEmail($preorder['cemail_text'])) {
+        $order_comment_str .= $preorder['cemail_text'] . "\n";
+      }
+    }
+    if (method_exists($cpayment_class, 'checkPreorderRakuEmail')) {
+      if ($cpayment_class->checkPreorderRakuEmail($preorder['raku_text'])) {
+        $order_comment_str .= $preorder['raku_text'] . "\n";
+      }
+    }
   }
+  if (!empty($preorder['comment_msg'])) {
+    $order_comment_str .= $preorder['comment_msg'];
+  }
+  
   $customer_notification = (SEND_EMAILS == 'true') ? '1' : '0'; 
   $sql_data_array = array('orders_id' => $orders_id,
                           'orders_status_id' => DEFAULT_ORDERS_STATUS_ID, 
                           'date_added' => date('Y-m-d H:i:s', time()), 
                           'customer_notified' => $customer_notification, 
-                          'comments' => $sh_comments, 
+                          'comments' => $order_comment_str, 
       ); 
   tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
   
@@ -353,18 +345,6 @@ if (!empty($preorder['code_fee'])) {
 
 $email_order_text = '';
 
-$cpayment_code = tep_preorder_get_payment_type($ppayment_list_arr, $preorder['payment_method'], true);   
-$order_comment_str = '';
-if ($cpayment_code == 'convenience_store') {
-  if (!empty($preorder['cemail_text'])) {
-    $order_comment_str .= $preorder['cemail_text'] . "\n";
-  }
-} else if ($cpayment_code == 'rakuten_bank') {
-  if (!empty($preorder['raku_text'])) {
-    $order_comment_str .= $preorder['raku_text'] . "\n";
-  }
-}
-$order_comment_str .= $preorder['comment_msg'];
 
 $mailoption['ORDER_COMMENT']    = trim($order_comment_str);
 
@@ -418,18 +398,8 @@ $email_printing_order .= $products_ordered;
 
 $email_printing_order .= '備考　　　　　　：' . "\n";
 
-if ($cpayment_code == 'convenience_store') {
-  if (!empty($preorder['cemail_text'])) {
-    $email_printing_order .= $preorder['cemail_text'] . "\n";
-  }
-} else if ($cpayment_code == 'rakuten_bank') {
-  if (!empty($preorder['raku_text'])) {
-    $email_printing_order .= $preorder['raku_text'] . "\n";
-  }
-}
-
-if (!empty($preorder['comment_msg'])) {
-  $email_printing_order .= $preorder['comment_msg'] . "\n";
+if (!empty($order_comment_str)) {
+  $email_printing_order .= $order_comment_str . "\n";
 }
 $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
 $email_printing_order .= 'IPアドレス　　　　　　：' . $_SERVER["REMOTE_ADDR"] .
@@ -461,20 +431,10 @@ if ($credit_inquiry['customers_guest_chk'] == '1') { $email_printing_order .= '�
 $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n\n\n";
 $print_single = 0;
 
-if ($cpayment_code != '') {
-  if (!class_exists($cpayment_code)) {
-    $cpayment_module = new payment($cpayment_code);
-    $payment_class = $$cpayment_module;
-    if (method_exists($payment_class,'getMailString')){
-      $email_printing_order .= $payment_class->getMailString();
-      $print_single = 1;
-    }
-  } else {
-    $cpayment_module = new $cpayment_code(); 
-    if (method_exists($cpayment_module,'getMailString')){
-      $email_printing_order .= $cpayment_module->getMailString();
-      $print_single = 1;
-    }
+if (isset($cpayment_class)) {
+  if (method_exists($cpayment_class,'getMailString')){
+    $email_printing_order .= $cpayment_class->getMailString();
+    $print_single = 1;
   }
 }
 
