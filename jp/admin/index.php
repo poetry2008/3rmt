@@ -20,6 +20,7 @@ while($row=tep_db_fetch_array($query)){
   $notes.= '
     <div id="note_'.$row['id'].'" class="note '.$row['color'].'" style="left:'.$left.'px;top:'.$top.'px;z-index:'.$zindex.'">'.htmlspecialchars($row['content']).'
     <div class="note_close">
+    <input type="hidden" value="'.$row['id'].'" class="hidden">
     <input type="button" onclick="note_desplay_none(\''.$row['id'].'\')" value="'.CLOSE.'">
     </div>
     </div>';

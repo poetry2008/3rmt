@@ -44,7 +44,7 @@ $(function(){
             zIndex = zIndex++;
             //alert(zIndex);
             if(parseInt(msg)){
-            var str = "<div id='note_"+msg+"' class='note "+color+"' style='left:0;top:0;z-index:"+zIndex+"'>"+txt+"<div class='note_close' ><input type='button' onclick=\"note_desplay_none(\'"+msg+"\')\" value='CLOSE'></div></div>";
+            var str = "<div id='note_"+msg+"' class='note "+color+"' style='left:0;top:0;z-index:"+zIndex+"'>"+txt+"<div class='note_close' ><input type='hidden' value='"+msg+"' class='hidden'><input type='button' onclick=\"note_desplay_none(\'"+msg+"\')\" value='CLOSE'></div></div>";
             $(".demo").append(str);
             make_draggable($('.note'));
             $.fancybox.close();
@@ -70,7 +70,7 @@ $.get('update_position.php',{
 x		: ui.position.left,
 y		: ui.position.top,
 z		: zIndex,
-id	: elements.attr('id')
+id	: parseInt(ui.helper.find('input.hidden').val())
 });
 }
 });
