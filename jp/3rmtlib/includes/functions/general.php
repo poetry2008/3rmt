@@ -4294,12 +4294,17 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
                            'billing_address_format_id' => $billing_address['address_format_id'],  
                            'comment_msg' => $pInfo['yourmessage'],  
                            );
-    
-   if ($pInfo['pre_payment'] == 'convenience_store') {
-     $sql_data_array['cemail_text'] = 'PCメールアドレス:' .$pInfo['convenience_email']; 
+   $pay_class = new $pInfo['pre_payment']; 
+   
+   $sh_comments = ''; 
+   if (method_exists($pay_class, 'dealPreorderConvComment')) {
+     $sql_data_array['cemail_text'] = $pay_class->dealPreorderConvComment($pInfo['yourmessage'], $pInfo['convenience_email']); 
+     $sh_comments = $pay_class->dealPreorderConvComment($pInfo['yourmessage'], $pInfo['convenience_email'], true); 
    }
-   if ($pInfo['pre_payment'] == 'rakuten_bank') {
-     $sql_data_array['raku_text'] = '電話番号:'.$pInfo['rakuten_telnumber']; 
+   
+   if (method_exists($pay_class, 'dealPreorderRakuComment')) {
+     $sql_data_array['raku_text'] = $pay_class->dealPreorderRakuComment($pInfo['yourmessage'], $pInfo['rakuten_telnumber']); 
+     $sh_comments = $pay_class->dealPreorderRakuComment($pInfo['yourmessage'], $pInfo['rakuten_telnumber'], true); 
    }
    
    tep_db_perform(TABLE_PREORDERS, $sql_data_array);
@@ -4320,18 +4325,6 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
    }
   
    $customer_notification = (SEND_EMAILS == 'true') ? '1' : '0';
-   $sh_comments = ''; 
-   if ($pInfo['pre_payment'] == 'convenience_store') {
-     $sh_comments .= 'PCメールアドレス:' .$pInfo['convenience_email']; 
-   }
-   if ($pInfo['pre_payment'] == 'rakuten_bank') {
-     $sh_comments .= '電話番号:'.$pInfo['rakuten_telnumber']; 
-   }
-   if (!empty($sh_comments)) {
-     $sh_comments .= "\n"; 
-   }
-   
-   $sh_comments .= $pInfo['yourmessage']; 
    
    $sql_data_array = array('orders_id' => $order_id, 
                            'orders_status_id' => $orders_status, 
