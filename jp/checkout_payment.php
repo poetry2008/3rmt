@@ -15,30 +15,31 @@ function triggerHide(radio)
 {
  if ($(radio).attr("checked") == true) {
       $(".rowHide").hide();
-       $(".rowHide_"+$(radio).val()).show();
-     }else{
-      $(".rowHide_"+$(radio).val()).hide();
+      $(".rowHide").find("input").attr("disabled","true");
+      $(".rowHide_"+$(radio).val()).show();
+      $(".rowHide_"+$(radio).val()).find("input").removeAttr("disabled");
      }
 }
-	
 $(document).ready(function(){
-if($("input[name=payment]").length == 1){
-  $("input[name=payment]").each(function(index){
-      $(this).attr('checked','true');
-    });
-}
-  $("input[name=payment]").each(function(index){
-    if ($(this).attr('checked') == true) {
-      triggerHide(this);
+    if($("input[name=payment]").length == 1){
+      $("input[name=payment]").each(function(index){
+	  $(this).attr('checked','true');
+	});
     }
-  });
-
-  $(".moduleRowSelecte").find("input:radio").click(function(){
-    triggerHide(this);
-  });
-  $(".moduleRow").click(function(){
-      triggerHide($(this).find("input:radio")[0]);
-    });
+    $("input[name=payment]").click(function(index){
+	  triggerHide(this);
+      });
+    $("input[name=payment]").each(function(index){
+	if ($(this).attr('checked') == true) {
+	  triggerHide(this);
+	}
+      });
+    $(".moduleRow").click(function(){
+	triggerHide($(this).find("input:radio")[0]);
+      });
+    $(".moduleRowSelected").click(function(){
+	triggerHide($(this).find("input:radio")[0]);
+      });
   });
 --></script>
 
