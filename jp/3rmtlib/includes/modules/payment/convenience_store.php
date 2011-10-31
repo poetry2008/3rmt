@@ -420,12 +420,11 @@ class convenience_store {
     $pay_comments = 'PCメールアドレス:'.$_POST['convenience_email']; 
     return $pay_comments ."\n".$comment;
   }
-<<<<<<< HEAD
 
   function preorder_process_button($pid, $preorder_total)
   {
-=======
     
+  }
     function dealPreorderConvComment($comment, $con_email, $return_single = false)
   {
     $pay_comments = 'PCメールアドレス:'.$con_email; 
@@ -433,9 +432,7 @@ class convenience_store {
       return $pay_comments;
     }
     return $pay_comments ."\n".$comment;
->>>>>>> b6a6c1a7624686c9bba5ae5ea3e4a8a1088219b9
-  }
-  
+ } 
     function checkPreorderConvEmail($email)
     {
       if (!empty($email)) {
