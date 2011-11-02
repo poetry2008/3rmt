@@ -55,6 +55,7 @@ H4 {
 	overflow: hidden;
 	background: url(../images/design/contents/headding_content.gif) repeat-y;
 }
+.comment img{ vertical-align:middle\9;}
 table.comment {
 	width:auto;
 	margin: 0px;
@@ -1352,7 +1353,7 @@ SPAN.errorText {
 }
 /*register checkbox select row*/
 .moduleRowSelected, .moduleRowSelected td {
-	background: #ccc;
+	background: #ccc; padding:3px 5px;
 }
 /*check out in turn*/
 .checkoutBarFrom, .checkoutBarTo {
@@ -1593,4 +1594,15 @@ searching
 }
 .active_email input{ width:340px;}
 .cemail_input_01 { float:left; width:150px;}
-.con_email01{ float:left;}
+.con_email01{ /*float:left;*/}
+.preorder_active_info { background-color:#ccc; line-height:20px; font-size:13px;}
+.preorder_active_info td { background-color:#fff; padding-left:2px;}
+.preorder_active_line{ border-bottom:1px dashed #666; margin:0 0 15px 0;}
+.preorder_active_box{ font-size:11px;}
+.preorderBarcurrent { font-size:11px; color:#000;}
+.preorderBarTo{ font-size:11px; color:#8c8c8c;}
+.preorderBarFrom{ font-size:11px; color:#8c8c8c;}
+.preorder_text{ font-size:11px;}
+.preorser_formArea{ background-color:#ccc; font-size:13px; line-height:20px;}
+.preorser_formArea td{ background-color:#FFFFFF; padding-left:2px;}
+.formArea_td_info{ width:270px\9; font-size: 11px; line-height: 1.5;}

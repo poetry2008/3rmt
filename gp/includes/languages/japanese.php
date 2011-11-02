@@ -458,4 +458,22 @@ define('LEFT_SEARCH_CATEGORY_EIGHT_TEXT', 'ヤ');
 define('LEFT_SEARCH_CATEGORY_NINE_TEXT', 'ラ');
 define('LEFT_SEARCH_CATEGORY_TEN_TEXT', 'ワ');
 define('CONNECT_SYMBOL_TEXT', '～');
+
+define('PREORDER_SELECT_EMPTY_OPTION', '希望日を選択してください');
+define('PREORDER_YEAR_TEXT', '年');
+define('PREORDER_MONTH_TEXT', '月');
+define('PREORDER_DAY_TEXT', '日');
+define('PREORDER_MONDAY_TEXT', '月曜日');
+define('PREORDER_TUESDAY_TEXT', '火曜日');
+define('PREORDER_WENSDAY_TEXT', '水曜日');
+define('PREORDER_THIRSDAY_TEXT', '木曜日');
+define('PREORDER_FRIDAY_TEXT', '金曜日');
+define('PREORDER_STATURDAY_TEXT', '土曜日');
+define('PREORDER_SUNDAY_TEXT', '日曜日');
+define('PREORDER_HOUR_TEXT', '時');
+define('PREORDER_MIN_TEXT', '分');
+define('PREORDER_TRADER_LINE_TITLE', '取引情報');
+define('PREORDER_CONFIRM_LINE_TITLE', '最終確認');
+define('PREORDER_FINISH_LINE_TITLE', '手続き完了！');
+
 ?>
