@@ -4300,11 +4300,11 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
    if (method_exists($pay_class, 'dealPreorderConvComment')) {
      $sql_data_array['cemail_text'] = $pay_class->dealPreorderConvComment($pInfo['yourmessage'], $pInfo['convenience_email']); 
      $sh_comments = $pay_class->dealPreorderConvComment($pInfo['yourmessage'], $pInfo['convenience_email'], true); 
-   }
-   
-   if (method_exists($pay_class, 'dealPreorderRakuComment')) {
+   } else if (method_exists($pay_class, 'dealPreorderRakuComment')) {
      $sql_data_array['raku_text'] = $pay_class->dealPreorderRakuComment($pInfo['yourmessage'], $pInfo['rakuten_telnumber']); 
      $sh_comments = $pay_class->dealPreorderRakuComment($pInfo['yourmessage'], $pInfo['rakuten_telnumber'], true); 
+   } else {
+     $sh_comments = $pInfo['yourmessage']; 
    }
    
    tep_db_perform(TABLE_PREORDERS, $sql_data_array);
