@@ -32,7 +32,6 @@ class rakuten_bank {
   // class methods
   function update_status() {
     global $order;
-
     if ( ($this->enabled == true) && ((int)MODULE_PAYMENT_RAKUTEN_BANK_ZONE > 0) ) {
       $check_flag = false;
       $check_query = tep_db_query("select zone_id from " . TABLE_ZONES_TO_GEO_ZONES . " where geo_zone_id = '" . MODULE_PAYMENT_RAKUTEN_BANK_ZONE . "' and zone_country_id = '" . $order->billing['country']['id'] . "' order by zone_id");
@@ -89,26 +88,16 @@ class rakuten_bank {
 
     $total_cost = $order->info['total'];      // 税金も含めた代金の総額
     $f_result = $this->calc_fee($total_cost); // 手数料
-/*  
-    //commented by rekam
-    $added_hidden = $f_result
-      ? tep_draw_hidden_field('codt_fee', $this->n_fee).tep_draw_hidden_field('cod_total_cost', $total_cost)
-      : tep_draw_hidden_field('codt_fee_error', $this->s_error);
-*/
+
     $added_hidden = ''; // added by rekam
     if (!empty($this->n_fee)) {
       $s_message = $f_result ? (MODULE_PAYMENT_RAKUTEN_BANK_TEXT_FEE . '&nbsp;' . $currencies->format($this->n_fee)) : ('<font color="#FF0000">' . $this->s_error . '</font>');
     } else {
       $s_message = $f_result ? '': ('<font color="#FF0000">' . $this->s_error . '</font>');
     }
-    //$s_message = $f_result ? (MODULE_PAYMENT_RAKUTEN_BANK_TEXT_FEE . '&nbsp;' . $currencies->format($this->n_fee)) : ('<font color="#FF0000">' . $this->s_error . '</font>');
+
     $email_default_str = ''; 
-    /*
-       if (isset($_SESSION['customer_emailaddress'])) {
-       $email_default_str = $_SESSION['customer_emailaddress']; 
-       }
-     */
-    //if(SITE_ID == 1){
+
       $selection = array(
           'id' => $this->code,
           'module' => $this->title,
@@ -130,43 +119,13 @@ class rakuten_bank {
               'field' => $added_hidden)
             )
           );
-    /*
-    }else{
-      $selection = array(
-          'id' => $this->code,
-          'module' => $this->title,
-          'fields' => array(array('title' => MODULE_PAYMENT_RAKUTEN_BANK_TEXT_PROCESS,
-              'field' => ''),
-            array('title' => '<div id="cemail" '.$this->code.'" id="cemail" class= "rowHide rowHide_'.$this->code.'"
-              style="display:none;">'.MODULE_PAYMENT_RAKUTEN_INFO_TEXT.MODULE_PAYMENT_RAKUTEN_TELNUMBER_TEXT.'<div
-              class="con_telnumber_input">'.tep_draw_input_field('rakuten_telnumber', $email_default_str, 'onpaste="return false"').MODULE_PAYMENT_RAKUTEN_MUST_INPUT.'</div></div>', 
-              'field' => '' 
-              ), 
-            array('title' => '<div id="caemail" '.$this->code.'" id="cemail" class= "rowHide rowHide_'.$this->code.'"
-              style="display:none;">'.MODULE_PAYMENT_RAKUTEN_TELNUMBER_CONFIRMATION_TEXT.'<div
-              class="con_telnumber_input_validate">'.tep_draw_input_field('rakuten_telnumber_again', $email_default_str, 'onpaste="return false"').MODULE_PAYMENT_RAKUTEN_MUST_INPUT.'</div><p>'.MODULE_PAYMENT_RAKUTEN_BANK_TEXT_FOOTER.'</p></div>',
-              'field' => '' 
-              ), 
-            array('title' => $s_message,
-              'field' => $added_hidden)
-            )
-          );
-   }
-   */
 
     return $selection;
   }
 
   function pre_confirmation_check() {
     global $_POST;
-    /* 
-       if($_POST['rakuten_store_l_name'] == "" || $_POST['rakuten_store_f_name'] == "" || $_POST['rakuten_store_tel'] == ""){
-       $payment_error_return = 'payment_error=' . $this->code ;
-       tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, $payment_error_return, 'SSL', true, false));
-       }else{
-       return false;
-       }
-     */ 
+
     if ($_POST['rakuten_telnumber'] == "" || $_POST['rakuten_telnumber_again'] == "") {
       $payment_error_return = 'payment_error=' . $this->code ;
       tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, $payment_error_return, 'SSL', true, false));

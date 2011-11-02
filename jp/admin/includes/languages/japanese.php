@@ -538,3 +538,9 @@ define('FRONT_CONFIGURATION_TITLE_TEXT', 'フロントエンド：');
 define('ADMIN_CONFIGURATION_TITLE_TEXT', 'バックエンド：');
 define('FRONT_OR_ADMIN_CONFIGURATION_TITLE_TEXT', 'フロントエンド・バックエンド：');
 define('HEADER_TEXT_ORDER_INFO', '注文情報▼');
+
+
+//note
+define('TEXT_ADD_NOTE','付箋追加');
+define('TEXT_COMMENT_NOTE','付箋の内容');
+define('TEXT_COLOR','付箋の色');

@@ -222,6 +222,8 @@ function dealUnknow(&$sqldata){
 function dealComment($comment){
     if (method_exists($GLOBALS[$this->selected_module], 'dealComment')) {
       return $GLOBALS[$this->selected_module]->dealComment($comment);
+    }else{
+      return $comment;
     }
 }
 function getOrderMailString($option){
