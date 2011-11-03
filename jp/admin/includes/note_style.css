@@ -1,8 +1,8 @@
 @charset "utf-8";
 /* CSS Document */
-.demo{position:relative; margin:20px;  dotted #d3d3d3}
+.demo{position:relative; dotted #d3d3d3;}
 
-.note{width:150px; height:150px; position:absolute; margin-top:0; padding:10px; overflow:hidden; cursor:move; font-size:14px; line-height:22px; color:#39f;
+.note{position:absolute; margin-top:0; overflow:hidden; cursor:move; font-size:14px; line-height:22px; color:#39f;
 	/* Adding a CSS3 shadow below the note, in the browsers which support it: */
 	-moz-box-shadow:2px 2px 0 #DDDDDD;
 	-webkit-box-shadow:2px 2px 0 #DDDDDD;
@@ -27,4 +27,7 @@
 #msg{padding:2px; margin-left:10px; color:#f30}
 .red{background:#ffc; color:#693}
 ul { list-style:none;}
-.note_close input{ position:relative; top:110px; left:96px;}
+.note_close input{ position:relative; float:right;}
+textarea{ width:100%; position:relative; height:100%;}
+.note_move input { float:right;}
+.note_textarea{ margin:15px 15px 15px 10px; clear:both;}

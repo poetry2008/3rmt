@@ -22,7 +22,10 @@ $color = $_POST['color'];
 $time = date('Y-m-d H:i:s');
 $zIndex = $_POST['zIndex'];
 $xyz = '0|0|'.$zIndex;
-$query = tep_db_query("insert into notes(content,color,xyz,addtime)values('$txt','$color','$xyz','$time')");
+$xlen = '150';
+$ylen = '150';
+$query = tep_db_query("insert into notes(content,color,xyz,addtime)values
+    ('".$txt."','".$color."','".$xyz."|".$xlen."|".$ylen."','$time')");
 if($query){
   echo tep_db_insert_id();
 }else{

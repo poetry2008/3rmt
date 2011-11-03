@@ -6,13 +6,22 @@ $id = intval($_GET['id']);
 $x = intval($_GET['x']);
 $y = intval($_GET['y']);
 $z = intval($_GET['z']);
-
-tep_db_query("UPDATE notes SET xyz='".$x."|".$y."|".$z."' WHERE id=".$id);
+$query = tep_db_query("select * from notes where id = '".$id."'");
+$row = tep_db_fetch_array($query);
+list($left,$top,$zindex,$xlen,$ylen) = explode('|',$row['xyz']);
+tep_db_query("UPDATE notes SET xyz='".$x."|".$y."|".$z."|".$xlen."|".$ylen."' WHERE id=".$id);
 
 echo "1";
 }else if(isset($_GET['del_note'])&&$_GET['del_note']&&is_numeric($_GET['id']))
 {
 tep_db_query("delete from notes  WHERE id=".$_GET['id']);
 tep_db_query("OPTIMIZE TABLE  `notes`");
+}else if(isset($_POST['action'])&&$_POST['action']=='change_move'){
+$query = tep_db_query("select * from notes where id = '".$id."'");
+$row = tep_db_fetch_array($query);
+list($left,$top,$zindex,$xlen,$ylen) = explode('|',$row['xyz']);
+$xlen=$_POST['xlen'];
+$ylen=$_POST['ylen'];
+tep_db_query("UPDATE notes SET xyz='".$left."|".$top."|".$zindex."|".$xlen."|".$ylen."' WHERE id=".$id);
 }
 ?>
