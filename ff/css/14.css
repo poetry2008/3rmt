@@ -68,6 +68,7 @@ H4 {
 	background:url(../images/design/comment_bg_long.gif) repeat-y scroll 0 0 transparent;
 	margin:0 0 5px;
 }
+.comment img { vertical-align:middle\9;}
 .comment_index02 , .comment_index01{
 	width: 520px;
 	margin: 0;
@@ -1375,7 +1376,6 @@ TABLE：Info Box
 .product_info_box{
 	background: #f4f4f4;
 	padding:5px;
-	padding:5px 0px\9;
 }
 .product_info_box table{
 	width: 100%;
@@ -1585,7 +1585,7 @@ TABLE：Form area (the border)
 --------------------------- */
 TABLE.formArea {
 	background: #FFF;
-	border-color: #E8E8E8;
+	border-color: #ccc;
 	border-style: solid;
 	border-width: 1px;
 }
@@ -1846,4 +1846,20 @@ border:1px solid #CAC6BE;
 #caemail p{ margin:5px 0 0 0;}
 #caemail p img { position:relative;/* left:-2px;*/ top:2px; top:4px\9;}
 .cemail_input_01 { float:left; width:150px;}
-.con_email01{ float:left;}
+.con_email01{/* float:left;*/}
+.preorder_active_info{background-color:#ccc; font-size:13px; line-height:25px;}
+.preorder_active_info td{ background-color:#FFFFFF; padding-left:2px;}
+.preorder_active_line{ border-bottom:1px dashed #ccc; margin:0 0 10px 0;}
+.preorderBarcurrent{ font-size:11px; color:#000000;}
+.preorderBarTo{ font-size:11px; color:#8c8c8c;}
+.preorderBarFrom{ font-size:11px; color:#8c8c8c;}
+.c_pay_info{
+   background-color: #FFFFFF;
+    border: 1px solid #CCCCCC;
+    margin: 3px 0;
+    padding: 5px;
+	padding:0\9;
+}
+.preorser_formArea{ background-color:#ccc; font-size:13px;}
+.preorser_formArea td{ background-color:#FFFFFF; padding-left:2px; line-height:25px;}
+.formArea_td_info { width:360px\9; font-size:10px; line-height:1.5;}

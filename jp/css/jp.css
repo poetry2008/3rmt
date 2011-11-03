@@ -76,6 +76,7 @@ H3 {
 	margin:0\9;
 	line-height:14px;
 }
+.comment img { vertical-align:middle\9;}
 /* ---------------------------
 img
 --------------------------- */
@@ -1087,7 +1088,7 @@ a.Icon:hover {
 	width:120px;
 }
 .c_pay_info {padding:5px; border:1px solid #B6B7CB; margin:35px 0 15px 0;}
-#caemail p{ height:290px; margin:0;}
+#caemail p{/* height:290px;*/ margin:0;}
 /*#caemail p img { text-align:center; position:relative; left:40px;}
 */#catelnumber p{ height:280px;}
 .box_des02 {
@@ -1122,12 +1123,24 @@ searching
 }
 .active_email input{ width:380px;}
 .con_telnumber_input {
-	display:inline;
+/*	display:inline;
 	margin-left:78px;
-}
+*/}
 .con_telnumber_input_validate {
-	display:inline;
+/*	display:inline;
 	margin-left:39px;
-}
+*/}
 .ctelnumber_input{ margin:10px 0 0 0;}
 .cemail_front_text{ width:150px; float:left;}
+.preorder_active_info { background-color:#ccc; font-size:13px; line-height:20px;}
+.preorder_active_info td { background-color:#fff; padding-left:2px;}
+.preorder_active_line { border-bottom:1px dashed #000; margin:0 0 15px 0;}
+.preorderBarcurrent{ font-size:11px; color:#000;}
+.preorderBarTo { font-size:11px; color:#8c8c8c;}
+.preorderBarFrom { font-size:11px; color:#8c8c8c;}
+.change_preorder_timeout_table { font-size:12px;}
+.preorser_formArea{ background-color:#ccc; font-size:13px; line-height:20px;}
+.preorser_formArea td{ background-color:#fff; padding-left:2px;}
+.formArea_td_info { width:380px\9; font-size:12px; line-height:1.5;}
+.input_text { width:200px; height:20px;}
+.input_text_short { width:40px; height:20px; text-align:right;}

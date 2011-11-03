@@ -1,17 +1,10 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2002 osCommerce
-
-  Released under the GNU General Public License
 */
 
 define('NAVBAR_TITLE', '商品を予約する');
-define('HEADING_TITLE', '\'%s\' を予約する');
+define('HEADING_TITLE', '%sを予約する');
 define('HEADING_TITLE_ERROR', '商品を予約する');
 define('ERROR_INVALID_PRODUCT', '商品が見つかりません...');
 
@@ -38,7 +31,7 @@ define('TEXT_EMAIL_SUCCESSFUL_SENT', '<p><b>「予約確認メール」を&nbsp;
 <b>＜迷惑メールフォルダの確認＞</b><br>
 弊社のメールが 「迷惑メールフォルダ」や「ゴミ箱」に振り分けされ見落としていませんか？<br>
 <b>＜メールドメインの受信制限を設定している＞</b><br>
-itemdepot.jpのメールドメインを受信するように設定をお願いいたします。<br>
+rmt-kames.jpのメールドメインを受信するように設定をお願いいたします。<br>
 <b>＜それでも届かないときは、メールアドレス変更＞</b><br>
 メールアドレスをご確認の上、再度お申し込みをお願いいたします。<br>
 </p>
@@ -64,16 +57,22 @@ define('TEXT_EMAIL_INTRO', '%s 様' . "\n\n"
 . '▼メールアドレス　：%s' . "\n"
 . '━━━━━━━━━━━━━━━━━━━━━' . "\n\n"
 . '▼予約内容' . "\n"
-. '	------------------------------------------' . "\n"
-. '	予約商品      ：%s' . "\n"
-. '	希望個数　　　：%s個' . "\n"
-. '	期限　　　　　：%s' . "\n"
-. '	------------------------------------------');
+. ' ------------------------------------------' . "\n"
+. ' 予約商品      ：%s' . "\n"
+. ' 希望個数　　　：%s個' . "\n"
+. ' 期限　　　　　：%s' . "\n"
+. ' ------------------------------------------');
 define('TEXT_EMAIL_LINK', 'この商品の詳細は、下記のリンクをクリックするか、リンクをブラウザに' . "\n"
 . 'コピー＆ペーストしてください。' . "\n\n" . '%s' . "\n\n");
 define('TEXT_EMAIL_SIGNATURE', '[ご連絡・お問い合わせ先]━━━━━━━━━━━━' . "\n"
 . '株式会社 iimy' . "\n"
 . SUPPORT_EMAIL_ADDRESS . "\n"
-. 'http://www.itemdepot.jp/' . "\n"
+. 'http://www.rmt-kames.jp/' . "\n"
 . '━━━━━━━━━━━━━━━━━━━━━━━');
+define('FORM_FIELD_PREORDER_FIXTIME', 'オプション:');
+define('FORM_FIELD_PREORDER_FIXDAY', '有効期限:');
+define('FORM_FIELD_PREORDER_PAYMENT', 'お支払い方法');
+define('FORM_FIELD_CUSTOMER_LASTNAME', '姓:');
+define('FORM_FIELD_CUSTOMER_FIRSTNAME', '名:');
+define('PREORDER_EXPECT_CTITLE', 'についてのご要望');
 ?>

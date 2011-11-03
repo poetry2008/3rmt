@@ -190,7 +190,8 @@ TABLE： form eria（boundary line）
 TABLE.formArea {                           
 	border:1px solid #ccc;
 	margin-top:15px;   
-	*margin-top:5px;                        
+	*margin-top:5px;
+	font-size:14px;                        
 }
 /* ---------------------------
 TD：form eria（title）
@@ -761,16 +762,16 @@ border:0;
 background-image: url(../includes/languages/japanese/images/buttons/button_checkout02.gif);
 }
 .con_email01{
-display:inline;
-/*margin-left:50px;
-*/float:left;
+/*display:inline;
+*//*margin-left:50px;
+*/
 }
 .con_email01 input{
 /*width:120px;*/
 }
 .con_email02{
-display:inline;
-}
+/*display:inline;
+*/}
 .con_email02 input{
 width:120px;
 }
@@ -1238,3 +1239,24 @@ searching
 .header_Navigation { margin:5px; color:#339966; padding-top:10px; width:450px; line-height:20px; font-size:10px; float:left; word-wrap:break-word;}
 .header_Navigation a { color:#339966;}
 .cemail_input_01 { float:left; width:150px;}
+.comment_preoder { width:95%;}
+.preorder_active_info{ background-color:#ccc; line-height:20px; font-size:13px;}
+.preorder_active_info td{ background-color:#000; padding-left:2px;}
+.preorder_active_line { border-bottom:1px dashed #fff; margin:0 0 15px 0;}
+.preorderBarcurrent{ font-size:14px; color:#fff;}
+.preorderBarTo{ font-size:14px; color:#fff;}
+.preorderBarFrom { font-size:14px;}
+.input_text_short{   
+	height: 20px;
+    text-align: right;
+    width: 40px;
+}
+.comment_change_preorder{ width:96%;}
+.comment img, .comment_change_preorder img { vertical-align:middle\9;}
+.preorser_formArea{ background-color:#fff; font-size:13px; line-height:20px;}
+.preorser_formArea td{ background-color:#000; padding-left:2px;}
+.formArea_td{
+	width:120px;
+	width:132px\9;
+}
+.formArea_td_info{ width:260px\9;}
