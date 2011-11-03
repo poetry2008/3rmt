@@ -1,8 +1,8 @@
 <?php
 require('includes/application_top.php');
 $txt = stripslashes(trim($_POST['content']));
-$txt = htmlspecialchars($txt, ENT_QUOTES);
 /*
+$txt = htmlspecialchars($txt, ENT_QUOTES);
 $txt = mysql_real_escape_string(strip_tags($txt),$link); //过滤HTML标签，并转义特殊字符
 if(strlen($txt)<1 || strlen($txt)>100){
   echo '内容长度为1~100字符之间';
