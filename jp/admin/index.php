@@ -112,7 +112,7 @@ foreach($note_arr as $note_row){
 <table width="100%"><tr>
 <td align="rignt" height="20px">
 <div id="add"><a href="add_note.php" id="fancy">
-<?php echo TEXT_ADD_NOTE;?></a></div>
+<?php echo "<input type='button' value='".TEXT_ADD_NOTE."'>";?></a></div>
 </td>
 </tr>
 <tr><td>

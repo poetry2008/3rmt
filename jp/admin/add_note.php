@@ -23,7 +23,9 @@
 </ul><input type="hidden" id="mycolor" value="yellow" /></td>
 </tr>
 <tr>
-<td height="36" colspan="2" align="center"><input type="submit" id="addbtn" class="btn" value="确 定" /> <input type="button" class="btn" value="取 消" id="cancel" onclick="$.fancybox.close()" /></td>
+<td height="36" colspan="2" align="center"><input type="submit" id="addbtn"
+class="btn" value="<?php echo IMAGE_SAVE?>" /> <input type="button" class="btn"
+value="<?php echo IMAGE_CANCEL?>" id="cancel" onclick="$.fancybox.close()" /></td>
 </tr>
 </table>
 </form>
