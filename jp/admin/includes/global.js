@@ -32,7 +32,7 @@ $(function(){
         $("#note_txt").focus();
         return false;
         }
-        
+
         var data = {
         'zIndex': ++zIndex,
         'content': txt,
@@ -41,18 +41,18 @@ $(function(){
         };
 
         $.post('posts.php',data,function(msg){
-            zIndex = zIndex++;
-            //alert(zIndex);
-            if(parseInt(msg)){
-            var str = "<div id='note_"+msg+"' class='note "+color+"' style='left:0;top:0;z-index:"+zIndex+",width:150px,height:150px'><div class='note_close' ><input type='hidden' value='"+msg+"' class='hidden'><input type='image' onclick=\"note_desplay_none(\'"+msg+"\')\" alt='close' src='images/icons/note_close.gif'></div><div id='note_text_"+msg+"' class='note_textarea' style='height:120px'><textarea style='resize: none;'>"+txt+"</textarea></div></div>";
-            $(".demo").append(str);
-            make_draggable($('.note'));
-            $.fancybox.close();
-            window.location.reload();
-            }else{
-            $("#msg").html(msg);
-            }
-            });
+          zIndex = zIndex++;
+          //alert(zIndex);
+          if(parseInt(msg)){
+          var str = "<div id='note_"+msg+"' class='note "+color+"' style='left:0;top:0;z-index:"+zIndex+",width:150px,height:150px'><div class='note_close' ><input type='hidden' value='"+msg+"' class='hidden'><input type='image' onclick=\"note_save_text(\'"+msg+"\')\" alt='save' src='images/icons/note_save.gif'><input type='image' onclick=\"note_desplay_none(\'"+msg+"\')\" alt='close' src='images/icons/note_close.gif'></div><div id='note_text_"+msg+"' class='note_textarea' style='height:120px'><textarea style='resize: none;'>"+txt+"</textarea></div></div>";
+          $(".demo").append(str);
+          make_draggable($('.note'));
+          $.fancybox.close();
+          window.location.reload();
+          }else{
+          $("#msg").html(msg);
+          }
+          });
         e.preventDefault();
     });	
 });
@@ -78,9 +78,25 @@ id	: parseInt(ui.helper.find('input.hidden').val())
 }
 function note_desplay_none(id)
 {
-document.getElementById('note_'+id).style.display = "none";
-$.get('update_position.php?del_note=true&id='+id,{});
+  if(confirm("削除を実行しますか？")){
+    document.getElementById('note_'+id).style.display = "none";
+    $.get('update_position.php?del_note=true&id='+id,{});
+  }
 }
-function save_height_width()
+function note_save_text(id)
 {
+  text = $("#note_textarea_"+id).html();
+  $.ajax({
+url: 'update_position.php',
+type: 'POST',
+async: false,
+data:
+'action=save_text&text='+text+'&id='+id,
+success: function(date){
+if(date==1){
+  alert("内容を保存しました。");
+}
+}
+});
+
 }

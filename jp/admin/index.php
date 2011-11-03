@@ -26,11 +26,13 @@ while($row=tep_db_fetch_array($query)){
     style="left:'.$left.'px;top:'.$top.'px;z-index:'.$zindex.';height:'.$ylen.'px;width:'.$xlen.'px">
     <div class="note_close">
     <input type="hidden" value="'.$row['id'].'" class="hidden">
+    <input type="image" onclick="note_save_text(\''.$row['id'].'\')" alt="save" 
+    src="images/icons/note_save.gif">
     <input type="image" onclick="note_desplay_none(\''.$row['id'].'\')" alt="close"
     src="images/icons/note_close.gif">
     </div><div id="note_text_'.$row['id'].'" class="note_textarea"
     style="height:'.($ylen-30).'px">'
-    .'<textarea style="resize: none;">'
+    .'<textarea style="resize: none;" id="note_textarea_'.$row['id'].'">'
     .htmlspecialchars($row['content']).'
     </textarea></div>
     </div>';
