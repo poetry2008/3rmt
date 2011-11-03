@@ -1264,6 +1264,8 @@ float:left;
                 <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
                 <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT); ?></td>
                 <td class="pageHeading" align="right">
+    <?php echo '<a href="' . tep_href_link('handle_new_preorder.php', 'oID='.$_GET['oID']) . '">' . tep_html_element_button(BUTTON_WRITE_PREORDER) . '</a>'; ?>
+    &nbsp; 
     <?php echo '<a href="' . tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params()) . '">' . tep_html_element_button(IMAGE_BACK) . '</a>'; ?>
                 </td>
               </tr>

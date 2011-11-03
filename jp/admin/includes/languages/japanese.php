@@ -544,3 +544,5 @@ define('HEADER_TEXT_ORDER_INFO', '注文情報▼');
 define('TEXT_ADD_NOTE','付箋追加');
 define('TEXT_COMMENT_NOTE','付箋の内容');
 define('TEXT_COLOR','付箋の色');
+
+define('HEADER_TEXT_CREATE_PREORDER', '予約作成');

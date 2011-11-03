@@ -875,3 +875,26 @@ function tep_get_list_pre_payment() {
 
   return mb_substr($payment_list_str, 0, -1, 'UTF-8');
 }
+
+function tep_get_preorder_end_num() 
+{
+  $last_orders_raw = tep_db_query("select * from ".TABLE_PREORDERS." order by orders_id desc limit 1"); 
+  $last_orders = tep_db_fetch_array($last_orders_raw);
+  
+  if ($last_orders) {
+    $last_orders_num = substr($last_orders['orders_id'], -2); 
+    
+    if (((int)$last_orders_num < 99) && ((int)$last_orders_num > 0)) {
+      $next_orders_num = (int)$last_orders_num + 1; 
+    } else {
+      $next_orders_num = 1; 
+    }
+    return sprintf('%02d', $next_orders_num); 
+  }
+  
+  return '01';
+}
+
+function preorder_last_customer_action() {
+  tep_db_query("update ".TABLE_CONFIGURATION." set configuration_value=now() where configuration_key='PREORDER_LAST_CUSTOMER_ACTION'");
+}
