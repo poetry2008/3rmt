@@ -61,13 +61,18 @@ foreach($note_arr as $note_row){
     stop: function(e) {
       var xlen=$(\"#note_".$note_row."\").width();
       var ylen=$(\"#note_".$note_row."\").height();
+      var top=$(\"#note_".$note_row."\").css('top');
       $.ajax({
         url: 'update_position.php',
         type: 'POST',
         async: false,
         data:
         'action=change_move&xlen='+xlen+'&ylen='+ylen+'&id=".$note_row."',
-        success: function(){}
+        success: function(){
+          if($('.demo').height()<(Number(ylen)+Number(top.substring(0,top.length-2))+10)){
+              $('.demo').height(Number(ylen)+Number(top.substring(0,top.length-2))+10);
+            }
+          }
           });
       }
     });\n";
