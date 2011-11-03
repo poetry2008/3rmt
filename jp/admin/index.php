@@ -26,11 +26,13 @@ while($row=tep_db_fetch_array($query)){
     style="left:'.$left.'px;top:'.$top.'px;z-index:'.$zindex.';height:'.$ylen.'px;width:'.$xlen.'px">
     <div class="note_close">
     <input type="hidden" value="'.$row['id'].'" class="hidden">
+    <input type="image" onclick="note_save_text(\''.$row['id'].'\')" alt="save" 
+    src="images/icons/note_save.gif">
     <input type="image" onclick="note_desplay_none(\''.$row['id'].'\')" alt="close"
     src="images/icons/note_close.gif">
     </div><div id="note_text_'.$row['id'].'" class="note_textarea"
     style="height:'.($ylen-30).'px">'
-    .'<textarea style="resize: none;">'
+    .'<textarea style="resize: none;" id="note_textarea_'.$row['id'].'">'
     .htmlspecialchars($row['content']).'
     </textarea></div>
     </div>';
@@ -61,13 +63,18 @@ foreach($note_arr as $note_row){
     stop: function(e) {
       var xlen=$(\"#note_".$note_row."\").width();
       var ylen=$(\"#note_".$note_row."\").height();
+      var top=$(\"#note_".$note_row."\").css('top');
       $.ajax({
         url: 'update_position.php',
         type: 'POST',
         async: false,
         data:
         'action=change_move&xlen='+xlen+'&ylen='+ylen+'&id=".$note_row."',
-        success: function(){}
+        success: function(){
+          if($('.demo').height()<(Number(ylen)+Number(top.substring(0,top.length-2))+10)){
+              $('.demo').height(Number(ylen)+Number(top.substring(0,top.length-2))+10);
+            }
+          }
           });
       }
     });\n";
@@ -105,7 +112,7 @@ foreach($note_arr as $note_row){
 <table width="100%"><tr>
 <td align="rignt" height="20px">
 <div id="add"><a href="add_note.php" id="fancy">
-<?php echo TEXT_ADD_NOTE;?></a></div>
+<?php echo "<input type='button' value='".TEXT_ADD_NOTE."'>";?></a></div>
 </td>
 </tr>
 <tr><td>

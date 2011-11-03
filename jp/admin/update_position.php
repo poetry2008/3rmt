@@ -23,5 +23,13 @@ list($left,$top,$zindex,$xlen,$ylen) = explode('|',$row['xyz']);
 $xlen=$_POST['xlen'];
 $ylen=$_POST['ylen'];
 tep_db_query("UPDATE notes SET xyz='".$left."|".$top."|".$zindex."|".$xlen."|".$ylen."' WHERE id=".$id);
+}else if(isset($_POST['action'])&&$_POST['action']=='save_text'){
+  $id = $_POST['id'];
+  $text = $_POST['text'];
+  $query  = tep_db_query("update notes set content='".trim($text)."' where id =
+      '".$id."'");
+  if($query){
+    echo 1;
+  }
 }
 ?>
