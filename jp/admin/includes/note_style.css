@@ -15,8 +15,8 @@
 .blue{background-color:#A6E3FC;border:1px solid #75C5E7;}
 .green{background-color:#A5F88B;border:1px solid #98E775;}
 
-#add{height:36px; line-height:36px; text-align:center; margin-top:10px}
-.popup_title{background:#e8f5fe; padding:4px}
+#add{height:36px; line-height:36px; text-align:right; margin-top:10px}
+.popup_title{background:#e8f5fe; padding:4px; color:#000000;}
 #note_form{padding:4px}
 #note_form p{line-height:24px}
 .input{border:1px solid #ccc; padding:2px}

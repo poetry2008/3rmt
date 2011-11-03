@@ -85,7 +85,7 @@ function note_desplay_none(id)
 }
 function note_save_text(id)
 {
-  text = $("#note_textarea_"+id).html();
+  text = $("#note_textarea_"+id).val();
   $.ajax({
 url: 'update_position.php',
 type: 'POST',
