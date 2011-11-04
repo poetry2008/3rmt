@@ -13,7 +13,7 @@
   $preorder = tep_db_fetch_array($preorder_raw);
   
   if ($preorder) {
-  
+    unset($_SESSION['create_preorder']); 
     $sql_data_array = array('orders_id'     => $insert_id,
             'customers_id'                => $preorder['customers_id'],
             'customers_name'              => $preorder['customers_name'],
