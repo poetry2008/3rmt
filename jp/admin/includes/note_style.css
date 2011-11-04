@@ -13,7 +13,7 @@
 
 .yellow{background-color:#FDFB8C;border:1px solid #336699;}
 .blue{background-color:#A6E3FC;border:1px solid #75C5E7;}
-.green{background-color:#A5F88B;border:1px solid #98E775;}
+.red{background-color:#ff0000;border:1px solid #98E775;}
 
 #add{height:36px; line-height:36px; text-align:right; margin-top:10px}
 .popup_title{background:#e8f5fe; padding:4px; color:#000000;}
@@ -25,7 +25,7 @@
 #color li.cur{border:1px solid #369}
 .btn{width:68px; height:24px; background:url(images/btn_bg.gif) repeat-x; border:1px solid #9cf; cursor:pointer}
 #msg{padding:2px; margin-left:10px; color:#f30}
-.red{background:#ffc; color:#693}
+.red{background:#ff0000; color:#693}
 ul { list-style:none;}
 .note_close { float:right;}
 .note_close input{ position:relative; float:left; margin-left:2px;}
