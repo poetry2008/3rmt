@@ -26,8 +26,8 @@ while($row=tep_db_fetch_array($query)){
     style="left:'.$left.'px;top:'.$top.'px;z-index:'.$zindex.';height:'.$ylen.'px;width:'.$xlen.'px">
     <div class="note_close">
     <input type="hidden" value="'.$row['id'].'" class="hidden">
-    <input type="image" onclick="note_save_text(\''.$row['id'].'\')" alt="save" 
-    src="images/icons/note_save.gif">
+    <input type="button" onclick="note_save_text(\''.$row['id'].'\')"
+     value=" '.IMAGE_SAVE.'"
     <input type="image" onclick="note_desplay_none(\''.$row['id'].'\')" alt="close"
     src="images/icons/note_close.gif">
     </div><div id="note_text_'.$row['id'].'" class="note_textarea"
