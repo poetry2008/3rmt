@@ -19,7 +19,7 @@
 <td><ul id="color">
 <li class="yellow"></li>
 <li class="blue"></li>
-<li class="green"></li>
+<li class="red"></li>
 </ul><input type="hidden" id="mycolor" value="yellow" /></td>
 </tr>
 <tr>

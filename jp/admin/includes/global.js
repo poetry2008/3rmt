@@ -28,7 +28,7 @@ $(function(){
         var user = $("#user").val();
         var color = $("#mycolor").val();
         if(txt==""){
-        $("#msg").html("内容不能为空");
+        $("#msg").html("空白で入力しないでください！");
         $("#note_txt").focus();
         return false;
         }
