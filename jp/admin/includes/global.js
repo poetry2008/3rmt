@@ -44,7 +44,7 @@ $(function(){
           zIndex = zIndex++;
           //alert(zIndex);
           if(parseInt(msg)){
-          var str = "<div id='note_"+msg+"' class='note "+color+"' style='left:0;top:0;z-index:"+zIndex+",width:150px,height:150px'><div class='note_close' ><input type='hidden' value='"+msg+"' class='hidden'><input type='image' onclick=\"note_save_text(\'"+msg+"\')\" alt='save' src='images/icons/note_save.gif'><input type='image' onclick=\"note_desplay_none(\'"+msg+"\')\" alt='close' src='images/icons/note_close.gif'></div><div id='note_text_"+msg+"' class='note_textarea' style='height:120px'><textarea style='resize: none;'>"+txt+"</textarea></div></div>";
+          var str = "<div id='note_"+msg+"' class='note "+color+"' style='left:0;top:0;z-index:"+zIndex+",width:150px,height:150px'><div class='note_close' ><input type='hidden' value='"+msg+"' class='hidden'><input type='image' onclick=\"note_save_text(\'"+msg+"\')\" alt='save' src='images/icons/note_save.gif'><input type='image' onclick=\"note_desplay_none(\'"+msg+"\')\" alt='close' src='images/icons/note_close.gif'></div><div id='note_text_"+msg+"' class='note_textarea' style='height:120px'><textarea style='resize: none;overflow;auto;'>"+txt+"</textarea></div></div>";
           $(".demo").append(str);
           make_draggable($('.note'));
           $.fancybox.close();
