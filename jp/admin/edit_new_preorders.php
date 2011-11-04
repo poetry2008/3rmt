@@ -118,7 +118,7 @@
      
     $preorder_status_raw = tep_db_query("select orders_status_name from ".TABLE_PREORDERS_STATUS." where orders_status_id = '".$_POST['status']."'"); 
     $preorder_status = tep_db_fetch_array($preorder_status_raw);
-    
+     
     $_SESSION['create_preorder']['orders']['orders_status'] = $_POST['status']; 
     $_SESSION['create_preorder']['orders']['orders_status_name'] = $preorder_status['orders_status_name']; 
    
@@ -431,6 +431,7 @@
       $new_orders2_id = '';
       $_SESSION['create_preorder']['orders']['orders_id']= date("Ymd") . '-' .  date("His") . tep_get_preorder_end_num();
       $new_orders2_id = $_SESSION['create_preorder']['orders']['orders_id'];
+      $_SESSION['create_preorder']['orders']['predate'] = $_POST['h_predate'].' 00:00:00'; 
       tep_db_perform(TABLE_PREORDERS, $_SESSION['create_preorder']['orders']);
       preorder_last_customer_action();
       preorders_updated($_SESSION['create_preorder']['orders']['orders_id']);
@@ -687,6 +688,11 @@
       $ProductsTax = tep_get_tax_rate($p_products_tax_class_id, $CountryID, $ZoneID);
       
       // 2.2 UPDATE ORDER #####
+      foreach ($_SESSION['create_preorder']['orders_products'] as $pkey => $pvalue) {
+        if ($pvalue['orders_id'] != $oID) {
+          unset($_SESSION['create_preorder']['orders_products'][$pkey]); 
+        }
+      }
       $_SESSION['create_preorder']['orders_products'][$add_product_products_id] = array(
         'orders_id' => $oID,
         'products_id' => $add_product_products_id,
@@ -800,10 +806,13 @@
 <!--京-->
 <title><?php echo TITLE; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
+<link rel="stylesheet" type="text/css" href="includes/styles.css">
 <script language="javascript" src="includes/general.js"></script>
 <script language="javascript" src="includes/javascript/jquery.js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript" src="includes/javascript/jquery.form.js"></script>
+<script language="javascript" src="includes/javascript/datePicker.js"></script>
 <script>
 function check_add(){
   price = document.getElementById('add_product_price').value;
@@ -839,8 +848,98 @@ function check_prestatus() {
     }
   });
 }  
-
+$(function() {
+$.datePicker.setDateFormat('ymd', '-');    
+$('#predate').datePicker();
+});
 </script>
+<style type="text/css">
+a.date-picker{
+display:block;
+float:none;
+}
+.popup-calendar {
+top:20px;
+}
+.number{
+font-size:24px;
+font-weight:bold;
+width:20px;
+text-align:center;
+}
+form{
+margin:0;
+padding:0;
+}
+.alarm_input{
+width:80px;
+}
+.log{
+  border:#999 solid 1px;
+  background:#eee;
+  clear: both;
+}
+.log .content{
+  padding:3px;
+  font-size:12px;
+}
+.log .alarm{
+  display:none;
+  font-size:10px;
+  background:url(images/icons/alarm.gif) no-repeat left center;
+}
+.log .level{
+  font-size:10px;
+  font-weight:bold;
+  display:none;
+  width:100px;
+  *width:120px;
+}
+.log .level input{
+margin:0;
+padding:0;
+}
+.log .info{
+  font-size:10px;
+  background:#fff;
+  text-align:right;
+}
+.info02{
+width:50px;
+}
+.log .action{
+text-align:center;
+  font-size:10px;
+}
+.edit_action{
+  display:none;
+  font-size:10px;
+line-height:24px;
+padding-right:5px;
+}
+.action a{
+padding:0 3px;
+}
+textarea,input{
+  font-size:12px;
+}
+textarea{
+  width:100%;
+}
+.alarm_on{
+  border:2px solid #ff8e90;
+  background:#ffe6e6;
+}
+.clr{
+clear:both;
+width:100%;
+height:5px;
+overflow:hidden;
+}
+.popup-calendar-wrapper{
+float:left;
+}
+</style>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">
 <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
@@ -943,7 +1042,10 @@ if (($action == 'edit') && ($order_exists == true)) {
               <!-- Begin Trade Date Block -->
               <tr>
                 <td class="main" valign="top"><b><?php echo EDIT_ORDERS_PREDATE_TEXT;?></b></td>
-                <td class="main"><?php echo $order['predate']; ?></td>
+                <td class="main">
+                <?php echo tep_draw_input_field('predate', $order['predate'], 'id="predate"'); ?>
+                <input type="hidden" id="h_predate" name="h_predate"> 
+                </td>
               </tr>
             </table>
             <!-- End Trade Date Block -->
@@ -1253,14 +1355,14 @@ if (($action == 'edit') && ($order_exists == true)) {
           <td class="main"><b><?php echo ENTRY_STATUS; ?></b></td>
           <td class="main">
           <?php
-          $is_nyuuka_raw = tep_db_query("select * from ".TABLE_PREORDERS_STATUS." where is_nyuuka = '1' order by orders_status_id asc limit 1"); 
-          $is_nyuuka_res = tep_db_fetch_array($is_nyuuka_raw); 
-          if ($is_nyuuka_res) {
-            $sel_nyuuka_id = $is_nyuuka_res['orders_status_id']; 
+          $is_select_query = tep_db_query(" select orders_status_id, orders_status_name from " . TABLE_PREORDERS_STATUS . " where language_id = '" . (int)$languages_id . "' limit 1");
+          $is_select_res = tep_db_fetch_array($is_select_query); 
+          if ($is_select_res) {
+            $sel_status_id = $is_select_res['orders_status_id']; 
           } else {
-            $sel_nyuuka_id = 1; 
+            $sel_status_id = 1; 
           }
-          echo tep_draw_pull_down_menu('status', $orders_statuses, $sel_nyuuka_id, 'id="status" onchange="check_prestatus();"'); 
+          echo tep_draw_pull_down_menu('status', $orders_statuses, $sel_status_id, 'id="status" onchange="check_prestatus();"'); 
           ?>
           </td>
         </tr>
