@@ -321,6 +321,7 @@ float:left;
 <?php
   //Add input string check - OK insert order data - d2006.4.14 ds-style
   } else {
+  unset($_SESSION['create_preorder']); 
   $currency_array = explode(",", $currency_text);
    
   $currency = $currency_array[0];

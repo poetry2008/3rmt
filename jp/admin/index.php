@@ -6,9 +6,7 @@
   require('includes/application_top.php');
   require(DIR_WS_CLASSES . 'currencies.php');
 
-
-
-  //notes
+//notes
 $notes = '';  
 $left='';  
 $top='';  
@@ -22,12 +20,12 @@ while($row=tep_db_fetch_array($query)){
   $height_arr[] = $ylen+$top+10;
   $time = strtotime($row['addtime']);
   $notes.= '
-    <div id="note_'.$row['id'].'" class="note '.$row['color'].'" 
+    <div id="note_'.$row['id'].'" ondblclick="changeLayer(this);" class="note '.$row['color'].'" 
     style="left:'.$left.'px;top:'.$top.'px;z-index:'.$zindex.';height:'.$ylen.'px;width:'.$xlen.'px">
     <div class="note_close">
     <input type="hidden" value="'.$row['id'].'" class="hidden">
-    <input type="image" onclick="note_save_text(\''.$row['id'].'\')" alt="save" 
-    src="images/icons/note_save.gif">
+    <input type="button" onclick="note_save_text(\''.$row['id'].'\')"
+     value=" '.IMAGE_SAVE.'" >
     <input type="image" onclick="note_desplay_none(\''.$row['id'].'\')" alt="close"
     src="images/icons/note_close.gif">
     </div><div id="note_text_'.$row['id'].'" class="note_textarea"
@@ -81,6 +79,17 @@ foreach($note_arr as $note_row){
 }
 ?>
 });
+function changeLayer(obj) {
+  arr = new Array(); 
+  var i = 0 
+  $('.note').each(function(i) {
+    arr[i] = $(this).css("z-index");  
+    i++; 
+  });
+  arr.sort();
+  max = arr[arr.length-1]+1;
+  $(obj).css('z-index', max);
+}
 </script>
 <title><?php echo TITLE; ?></title>
 </head>
