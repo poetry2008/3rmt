@@ -687,6 +687,11 @@
       $ProductsTax = tep_get_tax_rate($p_products_tax_class_id, $CountryID, $ZoneID);
       
       // 2.2 UPDATE ORDER #####
+      foreach ($_SESSION['create_preorder']['orders_products'] as $pkey => $pvalue) {
+        if ($pvalue['orders_id'] != $oID) {
+          unset($_SESSION['create_preorder']['orders_products'][$pkey]); 
+        }
+      }
       $_SESSION['create_preorder']['orders_products'][$add_product_products_id] = array(
         'orders_id' => $oID,
         'products_id' => $add_product_products_id,
@@ -1253,14 +1258,14 @@ if (($action == 'edit') && ($order_exists == true)) {
           <td class="main"><b><?php echo ENTRY_STATUS; ?></b></td>
           <td class="main">
           <?php
-          $is_nyuuka_raw = tep_db_query("select * from ".TABLE_PREORDERS_STATUS." where is_nyuuka = '1' order by orders_status_id asc limit 1"); 
-          $is_nyuuka_res = tep_db_fetch_array($is_nyuuka_raw); 
-          if ($is_nyuuka_res) {
-            $sel_nyuuka_id = $is_nyuuka_res['orders_status_id']; 
+          $is_select_query = tep_db_query(" select orders_status_id, orders_status_name from " . TABLE_PREORDERS_STATUS . " where language_id = '" . (int)$languages_id . "' limit 1");
+          $is_select_res = tep_db_fetch_array($is_select_query); 
+          if ($is_select_res) {
+            $sel_status_id = $is_select_res['orders_status_id']; 
           } else {
-            $sel_nyuuka_id = 1; 
+            $sel_status_id = 1; 
           }
-          echo tep_draw_pull_down_menu('status', $orders_statuses, $sel_nyuuka_id, 'id="status" onchange="check_prestatus();"'); 
+          echo tep_draw_pull_down_menu('status', $orders_statuses, $sel_status_id, 'id="status" onchange="check_prestatus();"'); 
           ?>
           </td>
         </tr>
