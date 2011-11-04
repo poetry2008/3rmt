@@ -8,6 +8,7 @@ class google implements engine {
   var $pageCount;
   var $resultCount;
   var $dbdriver;
+  var $context;
   //    <div id="bd"><div id="inf"><strong>bobhero</strong> で検索した結果　1～10件目 / 約452件 - 0.38秒</div>
   //  var $countPreg = "/<div\sid=\"bd\"><div\sid=\"inf\"><strong>.*<\/strong>(.*)<\/div>/";
   //var $countPreg = "/<div\s+id=resultStats>約\s+(.*)件中\s+\d+\s+ページ目<nobr>\s+.(.*)秒.&nbsp;<\/nobr><\/div>/";
@@ -20,6 +21,9 @@ class google implements engine {
     $this->keyword = $keyword;
     $this->keywordi =     preg_replace("/ +/","+",$keyword);
     $this->countLimit = $countLimit;
+    $opts=array('http'=> array('user_agent'=>'Mozilla/5.0 (Windows NT 6.1)
+        AppleWebKit/534.30 (KHTML, like Gecko) Chrome/12.0.742.112 Safari/534.30'));
+    $this->context = stream_context_create($opts);
     //    $this->preSearch();
   }
 
@@ -29,7 +33,8 @@ class google implements engine {
     $this->currentPage = 1;
     
     while($this->currentPage < $this->pageCount){
-      $tmpPage = file_get_contents($this->makeUrl($this->currentPage));
+      $tmpPage =
+        file_get_contents($this->makeUrl($this->currentPage),false,$this->context);
       $this->dbdriver->saveResult($this->parseResult($tmpPage));
     }
 
@@ -63,7 +68,7 @@ class google implements engine {
   }
   //找出有多少结果,算出有多少页
   function preSearch(){
-    $this->currentHtml = file_get_contents($this->makeUrl());
+    $this->currentHtml = file_get_contents($this->makeUrl(),false,$this->context);
     $this->currentPageNumber = 1;
     $this->getPageCount();
   }
@@ -138,7 +143,8 @@ class google implements engine {
 
   function getCurrentPageResult(){
   	//读取每个页面
-    $this->currentHtml = file_get_contents($this->makeUrl($this->currentPageNumber));
+    $this->currentHtml =
+      file_get_contents($this->makeUrl($this->currentPageNumber),false,$this->context);
     return $this->parseResult($this->currentHtml);
   }
 
