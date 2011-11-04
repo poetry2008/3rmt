@@ -26,9 +26,9 @@
 //  if (!tep_session_is_registered('shipping')) {
 //    tep_redirect(tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL'));
 //  }
-  if (!tep_session_is_registered('payment')) tep_session_register('payment');
-  if (isset($_POST['payment'])) $payment = $_POST['payment'];
 
+  if (isset($_POST['payment'])) $payment = $_POST['payment'];
+  if (!tep_session_is_registered('payment')) tep_session_register('payment');
   if (!tep_session_is_registered('comments')) tep_session_register('comments');
   if (isset($_POST['comments_added']) && $_POST['comments_added'] != '') {
     $comments = tep_db_prepare_input($_POST['comments']);

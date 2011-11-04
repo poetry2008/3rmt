@@ -380,10 +380,6 @@ echo '</form>';
               //add products_at_quantity - ds-style
               if($products_options['products_at_quantity'] > 0) {
                 $products_options_array[] = array('id' => $products_options['products_options_values_id'], 'text' => $products_options['products_options_values_name']);
-                if ($products_options['options_values_price'] != '0') {
-                  $products_options_array[sizeof($products_options_array)-1]['text'] .= ' (' . $products_options['price_prefix'] . $currencies->display_price($products_options['options_values_price'], tep_get_tax_rate($product_info['products_tax_class_id'])) .') ';
-                }
-                
               }
             }
             echo tep_draw_pull_down_menu('op_id[' .  $products_options_name['products_options_id'] . ']' , $products_options_array, isset($_POST['op_id'][$products_options_name['products_options_id']])?$_POST['op_id'][$products_options_name['products_options_id']]:'');

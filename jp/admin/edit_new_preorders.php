@@ -1366,7 +1366,6 @@ if (($action == 'edit') && ($order_exists == true)) {
         where pd.language_id = '" . (int)$languages_id . "' 
           and cd.site_id = '0'
           and pd.site_id = '0'
-          and p.products_bflag = '0' 
         ORDER BY categories_name");
     while($row = tep_db_fetch_array($result))
     {

@@ -297,9 +297,9 @@ while ($preorders_computers_res = tep_db_fetch_array($preorders_computer_raw)) {
 }
 
 $products_ordered_text .= "\n".'個数　　　　　　　：' .  $preorder_product_res['products_quantity'] . '個' .  "\n";
-$products_ordered_text .= '単価　　　　　　　：' .  number_format($preorder_product_res['final_price'], 0, '.', '') . "\n";
+$products_ordered_text .= '単価　　　　　　　：' .  $currencies->display_price($preorder_product_res['final_price'], $preorder_product_res['products_tax']) . "\n";
 
-$products_ordered_text .= '小計　　　　　　　：' .  number_format($preorder_product_res['final_price']*$preorder_product_res['products_quantity'], 0, '.', '') . "\n";
+$products_ordered_text .= '小計　　　　　　　：' .  $currencies->display_price($preorder_product_res['final_price'], $preorder_product_res['products_tax'], $preorder_product_res['products_quantity']) . "\n";
 
 if (tep_not_null($_SESSION['preorder_info_character'])) {
   $products_ordered_text .= 'キャラクター名　　：' .$_SESSION['preorder_info_character']."\n";
