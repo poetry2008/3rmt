@@ -383,14 +383,13 @@ class buying {
   }
    function dealComment($comment)
   {
-        
+    global $bank_name,$bank_shiten,$bank_kamoku,$bank_kouza_num,$bank_kouza_name;
     if(tep_session_is_registered('bank_name')) {
       $bbbank = TEXT_BANK_NAME . '：' . $bank_name . "\n";
       $bbbank .= TEXT_BANK_SHITEN . '：' . $bank_shiten . "\n";
       $bbbank .= TEXT_BANK_KAMOKU . '：' . $bank_kamoku . "\n";
       $bbbank .= TEXT_BANK_KOUZA_NUM . '：' . $bank_kouza_num . "\n";
       $bbbank .= TEXT_BANK_KOUZA_NAME . '：' . $bank_kouza_name;
-
     }
     $comment = $bbbank ."\n".$comment;
     return $comment;
