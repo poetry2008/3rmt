@@ -773,8 +773,8 @@ background-image: url(../includes/languages/japanese/images/buttons/button_check
 /*display:inline;
 */}
 .con_email02 input{
-width:120px;
-}
+/*width:120px;
+*/}
 .game_news_index01 {
 font-size:14px;
 padding-left:10px;

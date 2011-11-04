@@ -1,8 +1,8 @@
 @charset "utf-8";
 /* CSS Document */
-.demo{position:relative; margin:20px;  dotted #d3d3d3}
+.demo{position:relative; dotted #d3d3d3;}
 
-.note{width:150px; height:150px; position:absolute; margin-top:0; padding:10px; overflow:hidden; cursor:move; font-size:14px; line-height:22px; color:#39f;
+.note{position:absolute; margin-top:0; overflow:hidden; cursor:move; font-size:14px; line-height:22px; color:#39f;
 	/* Adding a CSS3 shadow below the note, in the browsers which support it: */
 	-moz-box-shadow:2px 2px 0 #DDDDDD;
 	-webkit-box-shadow:2px 2px 0 #DDDDDD;
@@ -15,8 +15,8 @@
 .blue{background-color:#A6E3FC;border:1px solid #75C5E7;}
 .green{background-color:#A5F88B;border:1px solid #98E775;}
 
-#add{height:36px; line-height:36px; text-align:center; margin-top:10px}
-.popup_title{background:#e8f5fe; padding:4px}
+#add{height:36px; line-height:36px; text-align:right; margin-top:10px}
+.popup_title{background:#e8f5fe; padding:4px; color:#000000;}
 #note_form{padding:4px}
 #note_form p{line-height:24px}
 .input{border:1px solid #ccc; padding:2px}
@@ -27,4 +27,8 @@
 #msg{padding:2px; margin-left:10px; color:#f30}
 .red{background:#ffc; color:#693}
 ul { list-style:none;}
-.note_close input{ position:relative; top:110px; left:96px;}
+.note_close { float:right;}
+.note_close input{ position:relative; float:left; margin-left:2px;}
+textarea{ width:100%; position:relative; height:100%;}
+.note_move input { float:right;}
+.note_textarea{ margin:15px 15px 15px 10px; clear:both;}
