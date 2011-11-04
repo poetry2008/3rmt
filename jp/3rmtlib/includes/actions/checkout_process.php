@@ -51,7 +51,6 @@ if($NewOid['cnt'] > 0) {
 }
 
 $comments = $payment_modules->dealComment($comments);
-
 require(DIR_WS_CLASSES . 'order.php');
 $order = new order;
 
@@ -189,24 +188,10 @@ $sql_data_array = array('orders_id' => $insert_id,
                         'customer_notified' => $customer_notification,
                         'comments' => $order->info['comments']);
 // ccdd
+
 tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
   
 //# 追加分（買取情報）
-if(tep_session_is_registered('bank_name')) {
-  $bbbank = TEXT_BANK_NAME . '：' . $bank_name . "\n";
-  $bbbank .= TEXT_BANK_SHITEN . '：' . $bank_shiten . "\n";
-  $bbbank .= TEXT_BANK_KAMOKU . '：' . $bank_kamoku . "\n";
-  $bbbank .= TEXT_BANK_KOUZA_NUM . '：' . $bank_kouza_num . "\n";
-  $bbbank .= TEXT_BANK_KOUZA_NAME . '：' . $bank_kouza_name;
-
-  $sql_data_array = array('orders_id' => $insert_id, 
-                          'orders_status_id' => $order->info['order_status'], 
-                          'date_added' => 'now()', 
-                          'customer_notified' => $customer_notification,
-                          'comments' => $bbbank);
-  // ccdd
-  tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
-}
   
 
 if ($telecom_option_ok) {
@@ -433,6 +418,12 @@ $mailoption['ORDER_TMETHOD']    = $torihikihouhou ;
 $mailoption['SITE_NAME']        = STORE_NAME ;
 $mailoption['SITE_MAIL']        = SUPPORT_EMAIL_ADDRESS ;
 $mailoption['SITE_URL']         = HTTP_SERVER ;
+$mailoption['BANK_NAME']        = $bank_name;
+$mailoption['BANK_SHITEN']        = $bank_shiten;
+$mailoption['BANK_KAMOKU']        = $bank_kamoku;
+$mailoption['BANK_KOUZA_NUM']        = $bank_kouza_num;
+$mailoption['BANK_KOUZA_NAME']        = $bank_kouza_name;
+
 if ($point){
 $mailoption['POINT']            = $point . '円' ;
 }else {
@@ -471,7 +462,7 @@ $email_printing_order .= '注文日　　　　　：' . tep_date_long(time()) .
 $email_printing_order .= 'メールアドレス　：' . $order->customer['email_address'] . "\n";
 $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
 if ($point > 0) {
-  $email_printing_order .= '□ポイント割引　　：' . (int)$point . '円' . "\n";
+  $email_printing_order .= 'ポイント割引　　：' . (int)$point . '円' . "\n";
 }
 if (!empty($total_mail_fee)) {
   $email_printing_order .= '手数料　　　　　：'.$total_mail_fee.'円'."\n"; 
