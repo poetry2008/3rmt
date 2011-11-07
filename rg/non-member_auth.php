@@ -47,7 +47,14 @@
         $gu_email_srandom = md5(time().$customers_res['customers_id'].$_POST['cemail']); 
         
         $email_text = stripslashes($customers_res['customers_lastname'].' '.$customers_res['customers_firstname']).EMAIL_NAME_COMMENT_LINK .  "\n\n"; 
-        $email_text .= str_replace('${URL}', HTTP_SERVER.'/nm_token.php?gud='.$gu_email_srandom, GUEST_LOGIN_EMAIL_CONTENT);  
+        $old_str_array = array('${URL}', '${NAME}', '${SITE_NAME}', '${SITE_URL}'); 
+        $new_str_array = array(
+            HTTP_SERVER.'/nm_token.php?gud='.$gu_email_srandom,
+            $mail_name, 
+            STORE_NAME,
+            HTTP_SERVER
+            ); 
+        $email_text .= str_replace($old_str_array, $new_str_array, GUEST_LOGIN_EMAIL_CONTENT);  
         tep_mail($mail_name, $_POST['cemail'], GUEST_LOGIN_EMAIL_TITLE, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
         
         tep_db_query("update `".TABLE_CUSTOMERS."` set `check_login_str` = '".$gu_email_srandom."' where `customers_id` = '".$customers_res['customers_id']."' and site_id = '".SITE_ID."'"); 

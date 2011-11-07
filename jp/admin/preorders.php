@@ -142,7 +142,7 @@
         $os_query = tep_db_query("select orders_status_name from " . TABLE_PREORDERS_STATUS . " where orders_status_id = '".$status."'");
         $os_result = tep_db_fetch_array($os_query);
         $num_product = 0; 
-        $num_product_raw = tep_db_query("select products_quantity from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$oID."'"); 
+        $num_product_raw = tep_db_query("select products_quantity, products_name from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$oID."'"); 
         $num_product_res = tep_db_fetch_array($num_product_raw); 
         if ($num_product_res) {
           $num_product = $num_product_res['products_quantity']; 
@@ -162,7 +162,8 @@
           '${PAY_DATE}',
           '${ENSURE_TIME}',
           '${PRODUCTS_QUANTITY}',
-          '${EFFECTIVE_TIME}'
+          '${EFFECTIVE_TIME}',
+          '${PRODUCTS_NAME}'
         ),array(
           $check_status['customers_name'],
           $check_status['customers_email_address'],
@@ -177,7 +178,8 @@
           date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day())),
           $ensure_date_arr[0],
           $num_product.PREORDER_PRODUCT_UNIT_TEXT,
-          date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT, strtotime($check_status['predate']))
+          date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT, strtotime($check_status['predate'])),
+          $num_product_res['products_name']
         ),$title
         );
         $comments = str_replace(array(
@@ -195,7 +197,8 @@
           '${PAY_DATE}',
           '${ENSURE_TIME}', 
           '${PRODUCTS_QUANTITY}',
-          '${EFFECTIVE_TIME}'
+          '${EFFECTIVE_TIME}',
+          '${PRODUCTS_NAME}'
         ),array(
           $check_status['customers_name'],
           $check_status['customers_email_address'],
@@ -211,7 +214,8 @@
           date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day())),
           $ensure_date_arr[0],
           $num_product.PREORDER_PRODUCT_UNIT_TEXT,
-          date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT, strtotime($check_status['predate']))
+          date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT, strtotime($check_status['predate'])),
+          $num_product_res['products_name']
         ),$comments
         );
         if (!tep_is_oroshi($check_status['customers_id'])) {
@@ -422,7 +426,7 @@
       $os_result = tep_db_fetch_array($os_query);
       
       $num_product = 0; 
-      $num_product_raw = tep_db_query("select products_quantity from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$oID."'"); 
+      $num_product_raw = tep_db_query("select products_quantity, products_name from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$oID."'"); 
       $num_product_res = tep_db_fetch_array($num_product_raw); 
       if ($num_product_res) {
         $num_product = $num_product_res['products_quantity']; 
@@ -443,7 +447,8 @@
         '${PAY_DATE}',
         '${ENSURE_TIME}', 
         '${PRODUCTS_QUANTITY}',
-        '${EFFECTIVE_TIME}'
+        '${EFFECTIVE_TIME}',
+        '${PRODUCTS_NAME}'
       ),array(
         $check_status['customers_name'],
         $check_status['customers_email_address'],
@@ -459,7 +464,8 @@
         date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day())),
         $ensure_date_arr[0], 
         $num_product.PREORDER_PRODUCT_UNIT_TEXT,
-        date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT, strtotime($check_status['predate']))
+        date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT, strtotime($check_status['predate'])),
+        $num_product_res['products_name'] 
       ),$title);
 
       $comments = str_replace(array(
@@ -477,7 +483,8 @@
         '${PAY_DATE}',
         '${ENSURE_TIME}', 
         '${PRODUCTS_QUANTITY}',
-        '${EFFECTIVE_TIME}'
+        '${EFFECTIVE_TIME}',
+        '${PRODUCTS_NAME}'
       ),array(
         $check_status['customers_name'],
         $check_status['customers_email_address'],
@@ -493,7 +500,8 @@
         date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day())),
         $ensure_date_arr[0], 
         $num_product.PREORDER_PRODUCT_UNIT_TEXT,
-        date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT, strtotime($check_status['predate']))
+        date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT, strtotime($check_status['predate'])),
+        $num_product_res['products_name'] 
       ),$comments);
       if (!tep_is_oroshi($check_status['customers_id'])) {
         if ($status == 32) {

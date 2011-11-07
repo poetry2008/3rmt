@@ -245,12 +245,19 @@
     $customer_country_id = $country;
     $customer_zone_id = $zone_id;
     
-    $mail_name = tep_get_fullname($fistname, $lastname);  
+    $mail_name = tep_get_fullname($firstname, $lastname);  
     $ac_email_srandom = md5(time().$customer_id.$email_address); 
     
     tep_db_query("update `".TABLE_CUSTOMERS."` set `check_login_str` = '".$ac_email_srandom."' where `customers_id` = '".tep_db_input($customer_id)."'"); 
     
-    $email_text = str_replace('${URL}', HTTP_SERVER.'/m_edit_token.php?aid='.$ac_email_srandom, ACTIVE_EDIT_ACCOUNT_EMAIL_CONTENT);  
+    $old_str_array = array('${URL}', '${NAME}', '${SITE_NAME}', '${SITE_URL}'); 
+    $new_str_array = array(
+        HTTP_SERVER.'/m_edit_token.php?aid='.$ac_email_srandom,
+        $mail_name, 
+        STORE_NAME,
+        HTTP_SERVER
+        ); 
+    $email_text = str_replace($old_str_array, $new_str_array, ACTIVE_EDIT_ACCOUNT_EMAIL_CONTENT);  
     
     tep_mail($mail_name, $email_address, ACTIVE_EDIT_ACCOUNT_EMAIL_TITLE, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
     

@@ -649,7 +649,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
       $pre_otm = (int)$select_total_res['value'].TEXT_MONEY_SYMBOL;
       
       $num_product = 0; 
-      $num_product_raw = tep_db_query("select products_quantity from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$oID."'"); 
+      $num_product_raw = tep_db_query("select products_quantity, products_name from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$oID."'"); 
       $num_product_res = tep_db_fetch_array($num_product_raw); 
       if ($num_product_res) {
         $num_product = $num_product_res['products_quantity']; 
@@ -672,7 +672,8 @@ while ($totals = tep_db_fetch_array($totals_query)) {
         '${PAY_DATE}',
         '${ENSURE_TIME}',
         '${PRODUCTS_QUANTITY}',
-        '${EFFECTIVE_TIME}'
+        '${EFFECTIVE_TIME}',
+        '${PRODUCTS_NAME}' 
       ),array(
         $select_products_res['customers_name'],
         $select_products_res['customers_email_address'],
@@ -689,6 +690,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
         $ensure_date_arr[0],
         $num_product.PREORDER_PRODUCT_UNIT_TEXT,
         date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT,strtotime($select_products_res['predate'])),
+        $num_product_res['products_name']
       ),$email);
       
       if ($customer_guest['customers_guest_chk'] != 9) {
@@ -734,7 +736,8 @@ while ($totals = tep_db_fetch_array($totals_query)) {
             '${PAY_DATE}',
             '${ENSURE_TIME}',
             '${PRODUCTS_QUANTITY}',
-            '${EFFECTIVE_TIME}'
+            '${EFFECTIVE_TIME}',
+            '${PRODUCTS_NAME}' 
           ),array(
             $select_t_products_res['customers_name'],
             $select_t_products_res['customers_email_address'],
@@ -751,6 +754,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
             $ensure_date_arr[0],
             $num_product.PREORDER_PRODUCT_UNIT_TEXT,
             date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT,strtotime($select_products_res['predate'])),
+            $num_product_res['products_name']
           ),$preorder_email_title);
         }
         
