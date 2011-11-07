@@ -130,6 +130,45 @@ $origin_form_raw = tep_db_query("select * from ".TABLE_OA_FORM." where payment_r
 <script language="javascript" src="includes/general.js"></script>
 <script language="javascript" src="includes/javascript/jquery.js"></script>
 <script type="text/javascript">
+<?php
+if ($_GET['type'] == '4') {
+?>
+$(document).ready(function() {
+  $.ajax({
+    url: 'preorder_item_process.php',
+    type: 'POST',
+    <?php
+    if ($_GET['action'] == 'edit') {
+    ?>
+    data: "type=<?php echo $sel_type_str;?>"+"&eid=<?php echo $_GET['eid']?>", 
+    <?php
+    } else {
+    ?>
+    data: "type=<?php echo $sel_type_str;?>", 
+    <?php
+    }
+    ?>
+    async : false,
+    success: function(msg) {
+      $('#show_option').html(msg); 
+    }
+  });
+});
+function change_item_type()
+{
+  $.ajax({
+    url: 'preorder_item_process.php',
+    type: 'POST',
+    data: "type="+$('#itype').val(), 
+    async : false,
+    success: function(msg) {
+      $('#show_option').html(msg); 
+    }
+  });
+}
+<?php
+} else {
+?>
 $(document).ready(function() {
   $.ajax({
     url: 'item_process.php',
@@ -163,6 +202,9 @@ function change_item_type()
     }
   });
 }
+<?php
+}
+?>
 function add_option() {    
   var $table = $("#tab tr"); 
   var len = $table.length;
