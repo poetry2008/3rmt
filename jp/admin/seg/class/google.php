@@ -90,8 +90,8 @@ class google implements engine {
   }
   function parseResult($html){
   	//截取 搜索 结果列表
-    $cutStart  = "<ol>";
-    $cutEnd  = '</ol></div>';
+    $cutStart  = "<div id=\"ires\">";
+    $cutEnd  = '</ol>';
     $html = getMiddle($cutStart,$cutEnd,$html);
     //区分 是否是自己的搜索结果
     if(preg_match("/.*\<hr[^>]*\>(.*)/",$html,$tmp_html)){
