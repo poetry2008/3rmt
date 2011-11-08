@@ -258,8 +258,8 @@
           HTTP_SERVER
           ); 
     $email_text = str_replace($old_str_array, $new_str_array, ACTIVE_EDIT_ACCOUNT_EMAIL_CONTENT);  
-    
-    tep_mail($mail_name, $email_address, ACTIVE_EDIT_ACCOUNT_EMAIL_TITLE, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
+    $ed_email_text = str_replace('${SITE_NAME}', STORE_NAME, ACTIVE_EDIT_ACCOUNT_EMAIL_TITLE); 
+    tep_mail($mail_name, $email_address, $ed_email_text, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
     
     $acu_cud = $customer_id;
     tep_session_register('acu_cud');

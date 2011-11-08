@@ -33,7 +33,7 @@
       }
     
       if ($preorder['is_active']) {
-        $preorder_email_subject = PREORDER_MAIL_SUBJECT; 
+        $preorder_email_subject = str_replace('${SITE_NAME}', STORE_NAME, PREORDER_MAIL_SUBJECT); 
         
         $preorder_email_text = PREORDER_MAIL_CONTENT; 
         $pre_name = '';
@@ -54,7 +54,7 @@
         
         $preorder_email_text = str_replace($replace_info_arr, $pre_replace_info_arr, $preorder_email_text, $preorder['customers_name'], STORE_NAME, HTTP_SERVER, $preorder_id);
       } else {
-        $preorder_email_subject = PREORDER_MAIL_ACTIVE_SUBJECT; 
+        $preorder_email_subject = str_replace('${SITE_NAME}', STORE_NAME, PREORDER_MAIL_ACTIVE_SUBJECT); 
         $active_url = HTTP_SERVER.'/preorder_auth.php?pid='.$preorder_id; 
         $old_str_array = array('${URL}', '${NAME}', '${SITE_NAME}', '${SITE_URL}'); 
         $new_str_array = array(

@@ -331,7 +331,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
           
           $preorder_email_text = str_replace($replace_info_arr, $pre_replace_info_arr, $preorder_email_text);
           
-          $preorder_email_subject = PREORDER_MAIL_SUBJECT; 
+          $preorder_email_subject = str_replace('${SITE_NAME}', STORE_NAME, PREORDER_MAIL_SUBJECT); 
           
           tep_mail(tep_get_fullname($account_values['customers_firstname'],$account_values['customers_lastname']), $account_values['customers_email_address'], $preorder_email_subject, $preorder_email_text, STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS); 
       } else {
@@ -350,7 +350,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
                 HTTP_SERVER
                 ); 
             $preorder_email_text = str_replace($old_str_array, $new_str_array, PREORDER_MAIL_ACTIVE_CONTENT); 
-            $preorder_email_subject = PREORDER_MAIL_ACTIVE_SUBJECT; 
+            $preorder_email_subject = str_replace('${SITE_NAME}', STORE_NAME, PREORDER_MAIL_ACTIVE_SUBJECT); 
             $unactive_customers_single = true; 
           } else {
             $preorder_email_text = PREORDER_MAIL_CONTENT; 
@@ -366,7 +366,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
             
             $preorder_email_text = str_replace($replace_info_arr, $pre_replace_info_arr, $preorder_email_text);
             
-            $preorder_email_subject = PREORDER_MAIL_SUBJECT; 
+            $preorder_email_subject = str_replace('${SITE_NAME}', STORE_NAME, PREORDER_MAIL_SUBJECT); 
             $exists_email_single = true;     
           }
         } else {
@@ -381,7 +381,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
               HTTP_SERVER
               ); 
           $preorder_email_text = str_replace($old_str_array, $new_str_array, PREORDER_MAIL_ACTIVE_CONTENT); 
-          $preorder_email_subject = PREORDER_MAIL_ACTIVE_SUBJECT; 
+          $preorder_email_subject = str_replace('${SITE_NAME}', STORE_NAME, PREORDER_MAIL_ACTIVE_SUBJECT); 
         }
         tep_mail($from_name, $_POST['from'], $preorder_email_subject, $preorder_email_text, STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS); 
       }
