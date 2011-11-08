@@ -30,5 +30,5 @@ define('TEXT_SELECT','選択されていないためテンプレートを追加�
 define('TEXT_ADD_FINISH','追加完了');
 define('TEXT_DELETE_CONFRIM','を削除しますか？');
 define('TEXT_GROUP_MANAGE','グループ管理');
-define('TEXT_SELECT_GROUP_READ', '通常注文のOAグループと予約注文のOAグループは別々に設定してください。<br>通常注文のOAと予約注文のOAを共有して使う場合バグの原因になります');
+define('TEXT_SELECT_GROUP_READ', '通常注文のOAグループと予約注文のOAグループは別々に設定してください。<br>通常注文のOAと予約注文のOAを共有して使う場合バグの原因になります。');
 ?>
