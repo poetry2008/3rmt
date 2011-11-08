@@ -46,7 +46,7 @@ class HM_Form extends DbRecord
     echo "<tr><td class='main' colspan='3' align='right'>&nbsp;"; 
     echo "<input type='hidden' name='form_id' value='".$this->id."' /><div id='canEndDiv'>";
     echo $this->end_user;
-    echo "<button onclick='finishTheOrder()'  id='canEnd' >".OA_FORM_ORDER_FINISH."</button></div>";
+    //echo "<button onclick='finishTheOrder()'  id='canEnd' >".OA_FORM_ORDER_FINISH."</button></div>";
     echo "</td>";
     // if(!tep_orders_finishqa($this->orders_id)) {
     //echo "<button onclick='finishTheOrder()'  id='canEnd' >取引完了</button>";

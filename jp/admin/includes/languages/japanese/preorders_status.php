@@ -36,7 +36,7 @@ define('TEXT_EDIT_ORDERS_STATUS_IMAGE', 'ステータスに表示するアイコ
 
 define('TEXT_ORDERS_STATUS_FINISHED', '完了注文');
 //mail本文 add end
-define('PREORDERS_STATUS_EXPLANATION_TEXT', '名前：${NAME}<br>メールアドレス：${MAIL}<br>注文日：${PREORDER_D}<br>注文番号：${PREORDER_N}<br>支払い方法：${PAY}<br>注文金額：${ORDER_M}<br>取引方法：${TRADING}<br>注文ステータス：${ORDER_S}<br>自社キャラ名：${ORDER_A}<br>サイト名：${SITE_NAME}<br>サイトのURL：${SITE_URL}<br>お問い合わせ用メールアドレス：${SUPPORT_EMAIL}<br>確保期限：${ENSURE_TIME}<br>希望個数:${PRODUCTS_QUANTITY}<br>期限:${EFFECTIVE_TIME}');
+define('PREORDERS_STATUS_EXPLANATION_TEXT', '名前：${NAME}<br>メールアドレス：${MAIL}<br>注文日：${PREORDER_D}<br>注文番号：${PREORDER_N}<br>支払い方法：${PAY}<br>注文金額：${ORDER_M}<br>取引方法：${TRADING}<br>注文ステータス：${ORDER_S}<br>自社キャラ名：${ORDER_A}<br>サイト名：${SITE_NAME}<br>サイトのURL：${SITE_URL}<br>お問い合わせ用メールアドレス：${SUPPORT_EMAIL}<br>確保期限：${ENSURE_TIME}<br>希望個数:${PRODUCTS_QUANTITY}<br>期限:${EFFECTIVE_TIME}<br>商品名:${PRODUCTS_NAME}');
 
 define('TEXT_ORDERS_STATUS_NOMAIL', 'DON\'T SEND MAIL');
 define('TEXT_ORDERS_STATUS_AVG_PRICE','平均単価の算出条件に設定');

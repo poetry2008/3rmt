@@ -185,6 +185,7 @@ function ajaxUpdate(id,order){
           <?php
           } else { 
           ?>
+          <?php echo TEXT_SELECT_GROUP_READ;?> 
           <?php echo tep_draw_form('selt_group', FILENAME_OA_GROUP, 'pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&action=link_group');?> 
 <script type='text/javascript'>
 

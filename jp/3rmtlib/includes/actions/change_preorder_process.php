@@ -19,12 +19,12 @@ $preorder_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id 
 $preorder = tep_db_fetch_array($preorder_raw);
 
 if ($preorder) {
-  $order_query = tep_db_query("select * from ".TABLE_ORDERS." where orders_id = '".$_SESSION['preorder_info_id']."'"); 
-  $orders_id = $_SESSION['preorder_info_id'];
+  //$order_query = tep_db_query("select * from ".TABLE_ORDERS." where orders_id = '".$_SESSION['preorder_info_id']."'"); 
+  //$orders_id = $_SESSION['preorder_info_id'];
   
-  if (tep_db_num_rows($order_query)) {
+  //if (tep_db_num_rows($order_query)) {
     $orders_id = date('Ymd').'-'.date('His').tep_get_order_end_num(); 
-  }
+  //}
  
   $ppayment_list_arr = tep_preorder_get_payment_list();
   $cpayment_code = tep_preorder_get_payment_type($ppayment_list_arr, $preorder['payment_method']);   
