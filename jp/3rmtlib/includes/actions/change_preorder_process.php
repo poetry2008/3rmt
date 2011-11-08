@@ -227,7 +227,7 @@ if ($preorder) {
       );
   tep_db_perform(TABLE_ORDERS_PRODUCTS, $sql_data_array);
 
-  $products_ordered_text .= ''.$preorder_product_res['products_name'];
+  $products_ordered_text .= '注文商品　　　　　：'.$preorder_product_res['products_name'];
   if (tep_not_null($preorder_product_res['products_model'])) {
     $products_ordered_text .= $preorder_product_res['products_model']; 
   }
@@ -320,6 +320,7 @@ $mailoption['USER_NAME']        = $preorder['customers_name'];
 $mailoption['USER_MAILACCOUNT'] = $preorder['customers_email_address'];
 $mailoption['ORDER_TOTAL']      = $currencies->format(abs($preorder_total_print_num));
 
+$mailoption['TORIHIKIHOUHOU']   = $_SESSION['preorder_info_tori'];
 $mailoption['ORDER_PAYMENT']    = $preorder['payment_method'];
 $mailoption['ORDER_TTIME']      =  str_string($_SESSION['preorder_info_date']) .  $_SESSION['preorder_info_hour'] . '時' . $_SESSION['preorder_info_min'] .  '分　（24時間表記）' . $_SESSION['preorder_info_tori'];
 
