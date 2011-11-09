@@ -515,7 +515,7 @@
         $pre_otm = number_format($preorder_total_res['value'], 0, '.', '').TEXT_MONEY_SYMBOL; 
       }
       $num_product = 0;
-      $num_product_raw = tep_db_query("select products_quantity from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$order->info['orders_id']."'");
+      $num_product_raw = tep_db_query("select products_name, products_quantity from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$order->info['orders_id']."'");
       $num_product_res = tep_db_fetch_array($num_product_raw);
       if ($num_product_res) {
         $num_product = $num_product_res['products_quantity']; 
@@ -536,7 +536,8 @@
               '${PAY_DATE}',
               '${ENSURE_TIME}',
               '${PRODUCTS_QUANTITY}',
-              '${EFFECTIVE_TIME}'
+              '${EFFECTIVE_TIME}',
+              '${PRODUCTS_NAME}' 
             ),array(
               $order->customer['name'],
               $order->customer['email_address'],
@@ -552,7 +553,8 @@
               date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day())),
               $_POST['update_ensure_deadline'],
               $num_product.EDIT_ORDERS_NUM_UNIT,
-              date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT,strtotime($order->info['predate']))
+              date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT,strtotime($order->info['predate'])),
+              $num_product_res['products_name'] 
             ),$email);
 
       if ($customer_guest['customers_guest_chk'] != 9) {
@@ -584,7 +586,8 @@
               '${PAY_DATE}',
               '${ENSURE_TIME}',
               '${PRODUCTS_QUANTITY}',
-              '${EFFECTIVE_TIME}'
+              '${EFFECTIVE_TIME}',
+              '${PRODUCTS_NAME}' 
             ),array(
               $order->customer['name'],
               $order->customer['email_address'],
@@ -600,9 +603,11 @@
               date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day())),
               $_POST['update_ensure_deadline'],
               $num_product.EDIT_ORDERS_NUM_UNIT,
-              date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT,strtotime($order->info['predate']))
+              date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT,strtotime($order->info['predate'])),
+              $num_product_res['products_name'] 
             ),$email_title);
-            tep_mail($order->customer['name'], $order->customer['email_address'], $email_title, $email, get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']),$order->info['site_id']);
+        
+        tep_mail($order->customer['name'], $order->customer['email_address'], $email_title, $email, get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']),$order->info['site_id']);
       
       }
       $customer_notified = '1';
