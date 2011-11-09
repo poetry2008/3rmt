@@ -322,10 +322,10 @@ $mailoption['ORDER_TOTAL']      = $currencies->format(abs($preorder_total_print_
 
 $mailoption['TORIHIKIHOUHOU']   = $_SESSION['preorder_info_tori'];
 $mailoption['ORDER_PAYMENT']    = $preorder['payment_method'];
-$mailoption['ORDER_TTIME']      =  str_string($_SESSION['preorder_info_date']) .  $_SESSION['preorder_info_hour'] . '時' . $_SESSION['preorder_info_min'] .  '分　（24時間表記）' . $_SESSION['preorder_info_tori'];
+$mailoption['ORDER_TTIME']      =  str_string($_SESSION['preorder_info_date']) .  $_SESSION['preorder_info_hour'] . '時' . $_SESSION['preorder_info_min'] .  '分　（24時間表記）';
 
 $mailoption['ORDER_PRODUCTS']   = $products_ordered_text;
-$mailoption['ORDER_TMETHOD']    = $_SESSION['preorder_info_tori'];
+$mailoption['ORDER_TMETHOD']    = $torihikihouhou_date_str;
 $mailoption['SITE_NAME']        = STORE_NAME;
 $mailoption['SITE_MAIL']        = SUPPORT_EMAIL_ADDRESS;
 $mailoption['SITE_URL']         = HTTP_SERVER;

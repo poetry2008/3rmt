@@ -515,7 +515,7 @@
         $pre_otm = number_format($preorder_total_res['value'], 0, '.', '').TEXT_MONEY_SYMBOL; 
       }
       $num_product = 0;
-      $num_product_raw = tep_db_query("select products_quantity from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$order->info['orders_id']."'");
+      $num_product_raw = tep_db_query("select products_name, products_quantity from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$order->info['orders_id']."'");
       $num_product_res = tep_db_fetch_array($num_product_raw);
       if ($num_product_res) {
         $num_product = $num_product_res['products_quantity']; 
@@ -536,7 +536,8 @@
               '${PAY_DATE}',
               '${ENSURE_TIME}',
               '${PRODUCTS_QUANTITY}',
-              '${EFFECTIVE_TIME}'
+              '${EFFECTIVE_TIME}',
+              '${PRODUCTS_NAME}' 
             ),array(
               $order->customer['name'],
               $order->customer['email_address'],
@@ -552,7 +553,8 @@
               date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day())),
               $_POST['update_ensure_deadline'],
               $num_product.EDIT_ORDERS_NUM_UNIT,
-              date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT,strtotime($order->info['predate']))
+              date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT,strtotime($order->info['predate'])),
+              $num_product_res['products_name'] 
             ),$email);
 
       if ($customer_guest['customers_guest_chk'] != 9) {
@@ -584,7 +586,8 @@
               '${PAY_DATE}',
               '${ENSURE_TIME}',
               '${PRODUCTS_QUANTITY}',
-              '${EFFECTIVE_TIME}'
+              '${EFFECTIVE_TIME}',
+              '${PRODUCTS_NAME}' 
             ),array(
               $order->customer['name'],
               $order->customer['email_address'],
@@ -600,9 +603,11 @@
               date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day())),
               $_POST['update_ensure_deadline'],
               $num_product.EDIT_ORDERS_NUM_UNIT,
-              date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT,strtotime($order->info['predate']))
+              date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT,strtotime($order->info['predate'])),
+              $num_product_res['products_name'] 
             ),$email_title);
-            tep_mail($order->customer['name'], $order->customer['email_address'], $email_title, $email, get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']),$order->info['site_id']);
+        
+        tep_mail($order->customer['name'], $order->customer['email_address'], $email_title, $email, get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']),$order->info['site_id']);
       
       }
       $customer_notified = '1';
@@ -1104,7 +1109,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     $RowStyle = "dataTableContent";
     echo '    <tr class="dataTableRow">' . "\n" .
          '      <td class="' . $RowStyle . '" align="left" valign="top" width="20">'
-         . "<input name='update_products[$pid][qty]' size='2' value='" .  $order_products[$pid]['qty'] . "' onkeyup='clearLibNum(this);'>&nbsp;x</td>\n" . 
+         . "<input name='update_products[$pid][qty]' size='2' value='" .  $order_products[$pid]['qty'] . "' onkeyup='clearLibNum(this);' class='update_products_qty'>&nbsp;x</td>\n" . 
          '      <td class="' . $RowStyle . '">' . $order_products[$pid]['name'] . "<input name='update_products[$pid][name]' size='64' type='hidden' value='" . $order_products[$pid]['name'] . "'>\n" . 
        '      &nbsp;&nbsp;'.EDIT_ORDERS_DUMMY_TITLE.'<input type="hidden" name="dummy" value="あいうえお眉幅"><input name="update_products[' . $pid . '][character]" size="20" value="' . htmlspecialchars($order_products[$pid]['character']) . '">';
     // Has Attributes?
@@ -1140,7 +1145,7 @@ if (($action == 'edit') && ($order_exists == true)) {
         <td>
           <table width="100%" cellpadding="0" cellspacing="0">
             <tr>
-              <td valign="top"><?php echo "<span class='smalltext'>" .  HINT_DELETE_POSITION . EDIT_ORDERS_ADD_PRO_READ . "</span>"; ?></td>
+              <td valign="top"><?php //echo "<span class='smalltext'>" .  HINT_DELETE_POSITION . EDIT_ORDERS_ADD_PRO_READ . "</span>"; ?></td>
               <?php 
               if (!(count($order_products) > 0)) {
               ?> 
@@ -1267,14 +1272,11 @@ if (($action == 'edit') && ($order_exists == true)) {
       if ($customer_guest['customers_guest_chk'] == 0 || $customer_guest['customers_guest_chk'] == 9) { //会員
         $current_point = $customer_point['point'] + $TotalDetails["Price"];
         echo '  <tr>' . "\n" .
-             '    <td align="left" class="' . $TotalStyle . '">このお客様は会員です。入力可能ポイントは <font color="red"><b>残り' . $customer_point['point'] . '（合計' . $current_point . '）</b></font> です。−（マイナス）符号の入力は必要ありません。必ず正数を入力するように！</td>' . 
-             '    <td align="right" class="' . $TotalStyle . '">' . trim($TotalDetails["Name"]) . '</td>' . "\n" .
-             '    <td align="right" class="' . $TotalStyle . '" nowrap>−' . "<input name='update_totals[$TotalIndex][value]' size='6' value='" . $TotalDetails["Price"] . "'>" . 
+             '    <td colspan="4">' . "<input type='hidden' name='update_totals[$TotalIndex][value]' size='6' value='" . $TotalDetails["Price"] . "'>" . 
                 "<input type='hidden' name='update_totals[$TotalIndex][title]' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . 
                 "<input type='hidden' name='update_totals[$TotalIndex][class]' value='" . $TotalDetails["Class"] . "'>" . 
                 "<input type='hidden' name='update_totals[$TotalIndex][total_id]' value='" . $TotalDetails["TotalID"] . "'>" . 
                 "<input type='hidden' name='before_point' value='" . $TotalDetails["Price"] . "'>" . 
-             '    <td align="right" class="' . $TotalStyle . '"><b>' . tep_draw_separator('pixel_trans.gif', '1', '17') . '</b>' . 
              '   </td>' . "\n" .
              '  </tr>' . "\n";
       } else { //ゲスト
