@@ -170,22 +170,14 @@ if ($preorder) {
   }
   
   $order_comment_str = '';
-
-  if (isset($cpayment_class)) {
-    if (method_exists($cpayment_class, 'checkPreorderConvEmail')) {
-      if ($cpayment_class->checkPreorderConvEmail($preorder['cemail_text'])) {
-        $order_comment_str .= $preorder['cemail_text'] . "\n";
-      }
-    }
-    if (method_exists($cpayment_class, 'checkPreorderRakuEmail')) {
-      if ($cpayment_class->checkPreorderRakuEmail($preorder['raku_text'])) {
-        $order_comment_str .= $preorder['raku_text'] . "\n";
-      }
-    }
+  
+  $comment_raw = tep_db_query("select comments from ".TABLE_PREORDERS_STATUS_HISTORY." where orders_id = '".$_SESSION['preorder_info_id']."' and comments != '' order by orders_status_history_id asc limit 1");
+ 
+  $comment_res = tep_db_fetch_array($comment_raw);
+  if ($comment_res) {
+    $order_comment_str = $comment_res['comments'];
   }
-  if (!empty($preorder['comment_msg'])) {
-    $order_comment_str .= $preorder['comment_msg'];
-  }
+  
   
   $customer_notification = (SEND_EMAILS == 'true') ? '1' : '0'; 
   $sql_data_array = array('orders_id' => $orders_id,
