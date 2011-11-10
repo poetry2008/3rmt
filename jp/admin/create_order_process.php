@@ -319,6 +319,8 @@
               ); 
   if ($payment_method  == 'コンビニ決済') {
     $sql_data_array['orders_comment'] = 'PCメールアドレス:'.$_POST['con_email']."\n"; 
+  }elseif ($payment_method =='楽天銀行'){
+    $sql_data_array['orders_comment'] = '電話番号:'.$_POST['rak_tel']."\n"; 
   }
   tep_db_perform(TABLE_ORDERS, $sql_data_array);
   last_customer_action();
@@ -363,12 +365,12 @@
   tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
   }
   if ($payment_method  == '楽天銀行') {
-    $convenience_comments = '電話番号:'.$_POST['rak_tel']."\n"; 
+    $rakuten_comments = '電話番号:'.$_POST['rak_tel']."\n"; 
   $sql_data_array = array('orders_id' => $insert_id, 
                 'orders_status_id' => $new_value, 
                 'date_added' => 'now()', 
                 'customer_notified' => '1',
-                'comments' => $convenience_comments);
+                'comments' => $rakuten_comments);
   tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
   }
   //insert into order total
