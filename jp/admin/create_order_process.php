@@ -364,6 +364,15 @@ echo "</pre>";
                 'comments' => $convenience_comments);
   tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
   }
+  if ($payment_method  == '楽天銀行') {
+    $convenience_comments = '電話番号:'.$_POST['rak_tel']."\n"; 
+  $sql_data_array = array('orders_id' => $insert_id, 
+                'orders_status_id' => $new_value, 
+                'date_added' => 'now()', 
+                'customer_notified' => '1',
+                'comments' => $convenience_comments);
+  tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
+  }
   //insert into order total
   //=================================================
   
