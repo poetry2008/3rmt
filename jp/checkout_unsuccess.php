@@ -9,7 +9,9 @@
 // 以下是动作
 // if the customer is not logged on, redirect them to the shopping cart page
   if (!tep_session_is_registered('customer_id')) {
-    tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
+    if (!isset($_GET['pre_type'])) {
+      tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
+    }
   }
 
   if (isset($_GET['action']) && ($_GET['action'] == 'checkout_payment')) {
@@ -60,8 +62,17 @@
               <font size="2"><?php echo TEXT_PAY_UNSUCCESS;?></font></td> 
             </tr> 
             <tr> 
-              <td align="right" class="main"><?php echo
-              tep_image_submit('button_back_payment.jpg', IMAGE_BUTTON_CONTINUE); ?></td> 
+              <td align="right" class="main">
+              <?php 
+              if (isset($_GET['pre_type'])) {
+              ?>
+              <a href="<?php echo tep_href_link(FILENAME_DEFAULT);?>"><?php echo tep_image_button('button_continue.gif', '');?></a> 
+              <?php
+              } else {
+                echo tep_image_submit('button_back_payment.jpg', IMAGE_BUTTON_CONTINUE); 
+              } 
+              ?>
+              </td> 
             </tr> 
           </table> 
           </div></form> 
