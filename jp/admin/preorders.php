@@ -719,7 +719,6 @@ if($reload == 'yes') {
 }
 */
 ?>
-// 以当前时间为如今日
 function q_3_2(){
   if ($('#q_3_1').attr('checked') == true){
     if ($('#q_3_2_m').val() == '' || $('#q_3_2_m').val() == '') {
@@ -729,7 +728,6 @@ function q_3_2(){
   }
 }
 
-// 以当前时间为如今日
 function q_4_3(){
   if ($('#q_4_2').attr('checked') == true){
     if ($('#q_4_3_m').val() == '' || $('#q_4_3_m').val() == '') {
