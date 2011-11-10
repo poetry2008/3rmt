@@ -694,7 +694,7 @@ if (tep_not_null($action)) {
 	    $mailoption['TORIHIKIHOUHOU']   =  $_SESSION['orderinfo_mail_use']['torihikihouhou'];      //?
 	    $mailoption['ORDER_PAYMENT']    = $order->info['payment_method'] ;  //d
 	    $mailoption['ORDER_TTIME']      = $trade_time . '　（24時間表記）';//d
-	    $mailoption['ORDER_COMMENT']    = trim($order->info['orders_comment']).$notify_comments_mail;// = $comments;
+	    $mailoption['ORDER_COMMENT']    = trim($order->info['orders_comment']).$order->info['comments']."\n".$notify_comments_mail;// = $comments;
 	    $mailoption['ORDER_PRODUCTS']   = $products_ordered_mail;//?
 	    $mailoption['ORDER_TMETHOD']    = $insert_torihiki_date;
 	    $mailoption['SITE_NAME']        = get_configuration_by_site_id('STORE_NAME',$order->info['site_id']);//d
