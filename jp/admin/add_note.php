@@ -7,7 +7,13 @@
 <form id="add_form" action="#" method="post">
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="posttable">
 <tr>
-<td ><?php echo TEXT_COMMENT_NOTE;?><span id="msg"></span></td>
+<td ><?php echo TEXT_TITLE_NOTE;?>&nbsp;&nbsp;&nbsp;<span id="msg_title"></span></td>
+</tr>
+<tr>
+<td><input type="text" class="input" name="title" id="title"/></td>
+</tr>
+<tr>
+<td ><?php echo TEXT_COMMENT_NOTE;?>&nbsp;&nbsp;&nbsp;<span id="msg_txt"></span></td>
 </tr>
 <tr>
 <td ><textarea name="note_txt" id="note_txt" class="input" style="width:98%; height:80px"></textarea></td>
