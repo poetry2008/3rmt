@@ -26,7 +26,9 @@ tep_db_query("UPDATE notes SET xyz='".$left."|".$top."|".$zindex."|".$xlen."|".$
 }else if(isset($_POST['action'])&&$_POST['action']=='save_text'){
   $id = $_POST['id'];
   $text = $_POST['text'];
-  $query  = tep_db_query("update notes set content='".trim($text)."' where id =
+  $time = date('Y-m-d H:i:s');
+  $query  = tep_db_query("update notes set
+      content='".trim($text)."',addtime='".$time."' where id =
       '".$id."'");
   if($query){
     echo 1;
