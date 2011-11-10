@@ -25,32 +25,38 @@ $(function(){
 
     $("#addbtn").live('click',function(e){
         var txt = $("#note_txt").val();
-        var user = $("#user").val();
+        var title = $("#title").val();
         var color = $("#mycolor").val();
         if(txt==""){
-        $("#msg").html("空白で入力しないでください！");
+        $("#msg_txt").html("空白で入力しないでください！");
         $("#note_txt").focus();
+        return false;
+        }
+        if(title==""){
+        $("#msg_title").html("空白で入力しないでください！");
+        $("#title").focus();
         return false;
         }
 
         var data = {
         'zIndex': ++zIndex,
         'content': txt,
-        'user': user,
+        'title': title,
         'color': color
         };
 
         $.post('posts.php',data,function(msg){
           zIndex = zIndex++;
           //alert(zIndex);
-          if(parseInt(msg)){
-          var str = "<div id='note_"+msg+"' class='note "+color+"' style='left:0;top:0;z-index:"+zIndex+",width:150px,height:150px'><div class='note_close' ><input type='hidden' value='"+msg+"' class='hidden'><input type='image' onclick=\"note_save_text(\'"+msg+"\')\" alt='save' src='images/icons/note_save.gif'><input type='image' onclick=\"note_desplay_none(\'"+msg+"\')\" alt='close' src='images/icons/note_close.gif'></div><div id='note_text_"+msg+"' class='note_textarea' style='height:120px'><textarea style='resize: none;overflow;auto;'>"+txt+"</textarea></div></div>";
+          msg = msg.split('||');
+          if(parseInt(msg[0])){
+          var str = "<div id='note_"+msg[0]+"' class='note "+color+"' style='left:0;top:0;z-index:"+zIndex+",width:150px,height:150px'><div class='note_head' ><div class='title'>"+title+"&nbsp;&nbsp;"+msg[1]+"</div><div class='note_clost'><input type='hidden' value='"+msg[0]+"' class='hidden'><input type='button' onclick=\"note_save_text(\'"+msg[0]+"\')\" value='保存'><input type='image' onclick=\"note_desplay_none(\'"+msg[0]+"\')\" alt='close' src='images/icons/note_close.gif'></div></div><div id='note_text_"+msg[0]+"' class='note_textarea' style='height:120px'><textarea style='resize: none;overflow;auto;font-size:11px;'>"+txt+"</textarea></div></div>";
           $(".demo").append(str);
           make_draggable($('.note'));
           $.fancybox.close();
           window.location.reload();
           }else{
-          $("#msg").html(msg);
+          $("#msg").html(msg[0]);
           }
           });
         e.preventDefault();

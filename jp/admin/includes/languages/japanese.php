@@ -545,4 +545,5 @@ define('HEADER_TEXT_ORDER_INFO', '注文情報▼');
 define('TEXT_ADD_NOTE','メモ追加');
 define('TEXT_COMMENT_NOTE','内容');
 define('TEXT_COLOR','メモの色');
+define('TEXT_TITLE_NOTE','タイトル');
 define('HEADER_TEXT_CREATE_PREORDER', '予約作成');
