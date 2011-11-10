@@ -517,24 +517,7 @@ $email_printing_order .= '━━━━━━━━━━━━━━━━━━
 
 if (method_exists($payment_class,'getMailString')){
   $email_printing_order .=$payment_class->getMailString();
-}else{
-  $email_printing_order .= 'この注文は【販売】です。' . "\n";
-  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-  $email_printing_order .= '備考の有無　　　　　：□ 無　　｜　　□ 有　→　□ 返答済' . "\n";
-  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-  $email_printing_order .= '在庫確認　　　　　　：□ 有　　｜　　□ 無　→　入金確認後仕入' . "\n";
-  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-  $email_printing_order .= '入金確認　　　　　●：＿＿月＿＿日　→　金額は' .    abs($ot['value']) . '円ですか？　□ はい' . "\n";
-  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-  $email_printing_order .= '入金確認メール送信　：□ 済' . "\n";
-  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-  $email_printing_order .= '発送　　　　　　　　：＿＿月＿＿日' . "\n";
-  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-  $email_printing_order .= '残量入力→誤差有無　：□ 無　　｜　　□ 有　→　報告　□' . "\n";
-  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-  $email_printing_order .= '発送完了メール送信　：□ 済' . "\n";    
 }
-
 
 $email_printing_order .= '------------------------------------------------------------------------' . "\n";
 $email_printing_order .= '最終確認　　　　　　：確認者名＿＿＿＿' . "\n";

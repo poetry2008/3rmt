@@ -585,16 +585,20 @@ if (tep_not_null($action)) {
 	$total_details_mail = '';
 	$totals_query = tep_db_query("select * from " . TABLE_ORDERS_TOTAL . " where orders_id = '" . tep_db_input($oID) . "' order by sort_order");
 	$order->totals = array();
+
 	while ($totals = tep_db_fetch_array($totals_query)) {
+
 	  if ($totals['class'] == "ot_point" || $totals['class'] == "ot_subtotal") {
 	    if ((int)$totals['value'] >= 1 && $totals['class'] != "ot_subtotal") {
 	      $total_details_mail .= '▼ポイント割引　　：-' . $currencies->format($totals['value']) . "\n";
+	      $mailpoint = $totals['value'];
 	    }
 	  } elseif ($totals['class'] == "ot_total") {
 	    if($handle_fee) {
 	      $total_details_mail .= '▼手数料　　　　　：'.$currencies->format($handle_fee)."\n";
 	    }
 	    $total_details_mail .= '▼お支払金額　　　：' . $currencies->format($totals['value']) . "\n";
+	    $mailtotal = $totals['value'];
 	    $total_price_mail = round($totals['value']);
 	  } else {
 	    $total_details_mail .= '▼' . $totals['title'] . str_repeat('　', intval((16 -
@@ -660,7 +664,6 @@ if (tep_not_null($action)) {
 	$array_hms = explode(":",$array1[1]);
 	$time1 = mktime($array_hms[0],$array_hms[1],$array_hms[2],$array_ymd[1],$array_ymd[2],$array_ymd[0]);
 	$trade_time = date("Y年m月d日H時i分", $time1);
-
 	$email .= '▼取引日時　　　　：' . $trade_time . '　（24時間表記）' . "\n";
 	$email .= '　　　　　　　　　：' . strip_tags($order->tori['houhou']) . "\n";
 	$email .= '▼備考　　　　　　：';
@@ -685,12 +688,13 @@ if (tep_not_null($action)) {
 	    $mailoption['ORDER_DATE']       = tep_date_long(time())  ;      //d 
 	    $mailoption['USER_NAME']        =  $order->customer['name'] ;
 	    $mailoption['USER_MAILACCOUNT'] = $order->customer['email_address']; //d
-	    $mailoption['ORDER_TOTAL']      = $currencies->format($totals['value']) ;//d
+	    $mailoption['ORDER_TOTAL']      = $currencies->format($mailtotal);
 	    @$payment_class = $$payment; 
+
 	    $mailoption['TORIHIKIHOUHOU']   =  $_SESSION['orderinfo_mail_use']['torihikihouhou'];      //?
 	    $mailoption['ORDER_PAYMENT']    = $order->info['payment_method'] ;  //d
 	    $mailoption['ORDER_TTIME']      = $trade_time . '　（24時間表記）';//d
-	    $mailoption['ORDER_COMMENT']    = trim($order->info['comments']);  //?
+	    $mailoption['ORDER_COMMENT']    = trim($order->info['orders_comment']).$notify_comments_mail;// = $comments;
 	    $mailoption['ORDER_PRODUCTS']   = $products_ordered_mail;//?
 	    $mailoption['ORDER_TMETHOD']    = $insert_torihiki_date;
 	    $mailoption['SITE_NAME']        = get_configuration_by_site_id('STORE_NAME',$order->info['site_id']);//d
@@ -702,7 +706,8 @@ if (tep_not_null($action)) {
 	    $mailoption['BANK_KAMOKU']      = 	    $_SESSION['orderinfo_mail_use']['bank_kamoku'];    //?
 	    $mailoption['BANK_KOUZA_NUM']   = 	    $_SESSION['orderinfo_mail_use']['bank_kouza_num'] ;//?
 	    $mailoption['BANK_KOUZA_NAME']  = 	    $_SESSION['orderinfo_mail_use']['bank_kouza_name'];//?
-
+        unset($_SESSION['orderinfo_mail_use']);
+        $point = $mailpoint;
 	    if ($point){
 	      $mailoption['POINT']            = $point . '円' ;
 	    }else {
@@ -712,7 +717,7 @@ if (tep_not_null($action)) {
 	    if(!isset($total_mail_fee)){
 	      $total_mail_fee =0;
 	    }
-	    $mailoption['MAILFEE']          = $total_mail_fee.'円';
+	    $mailoption['MAILFEE']          = $total_mail_fee.'';
 	    
       switch($order->info['payment_method']){
       case '支払方法を選択してください':
@@ -752,6 +757,9 @@ if (tep_not_null($action)) {
 
 
       $email =get_configuration_by_site_id("MODULE_PAYMENT_".strtoupper($selected_module)."_MAILSTRING",$order->info['site_id']);
+      if($email === false){
+      $email =get_configuration_by_site_id("MODULE_PAYMENT_".strtoupper($selected_module)."_MAILSTRING",0);
+      }
       foreach ($mailoption as $key=>$value){
 	$email = str_replace('${'.strtoupper($key).'}',$value,$email);
       }
