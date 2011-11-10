@@ -99,7 +99,12 @@ async: false,
 data:
 'action=save_text&text='+text+'&id='+id,
 success: function(date){
-if(date==1){
+var res_arr = date.split("|||");
+if(res_arr[0]=='true'){
+  title = res_arr[1]+'&nbsp;&nbsp;'+res_arr[2];
+  content = res_arr[3];
+  $('#note_title_'+id).html(title);
+  $('#note_textarea_'+id).val(content);
   alert("内容を保存しました。");
 }
 }

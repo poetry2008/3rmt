@@ -23,7 +23,7 @@ while($row=tep_db_fetch_array($query)){
     <div id="note_'.$row['id'].'" ondblclick="changeLayer(this);" class="note '.$row['color'].'" 
     style="left:'.$left.'px;top:'.$top.'px;z-index:'.$zindex.';height:'.$ylen.'px;width:'.$xlen.'px">
     <div class="note_head">
-    <div class="note_title">
+    <div id="note_title_'.$row['id'].'" class="note_title">
     '.$row['title'].'&nbsp;&nbsp;
     '.$row['addtime'].'
     </div><div class="note_close">
