@@ -373,7 +373,7 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
   $total_tax += tep_calculate_tax($total_products_price, $products_tax) * $order->products[$i]['qty'];
   $total_cost += $total_products_price;
 
-  $products_ordered .= '' . $order->products[$i]['name'];
+  $products_ordered .= '注文商品　　　　　：' . $order->products[$i]['name'];
   if(tep_not_null($order->products[$i]['model'])) {
     $products_ordered .= ' (' . $order->products[$i]['model'] . ')';
   }
@@ -410,11 +410,12 @@ $mailoption['USER_NAME']        = tep_get_fullname($order->customer['firstname']
 $mailoption['USER_MAILACCOUNT'] = $order->customer['email_address'];
 $mailoption['ORDER_TOTAL']      = $currencies->format(abs($ot['value']));
 @$payment_class = $$payment;
+$mailoption['TORIHIKIHOUHOU']   = $torihikihouhou;
 $mailoption['ORDER_PAYMENT']    = $payment_class->title ;
-$mailoption['ORDER_TTIME']      =  str_string($date) . $hour . '時' . $min . '分　（24時間表記）' . $torihikihouhou ;;
+$mailoption['ORDER_TTIME']      =  str_string($date) . $hour . '時' . $min . '分　（24時間表記）' ;
 $mailoption['ORDER_COMMENT']    = trim($order->info['comments']);
 $mailoption['ORDER_PRODUCTS']   = $products_ordered ;
-$mailoption['ORDER_TMETHOD']    = $torihikihouhou ;
+$mailoption['ORDER_TMETHOD']    = $insert_torihiki_date;
 $mailoption['SITE_NAME']        = STORE_NAME ;
 $mailoption['SITE_MAIL']        = SUPPORT_EMAIL_ADDRESS ;
 $mailoption['SITE_URL']         = HTTP_SERVER ;

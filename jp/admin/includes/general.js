@@ -1025,8 +1025,16 @@ return _flag;
 
 function create_preorder_price() {
 
+  var num_is_null = false; 
   if (window.confirm("注文内容を確認しますか？")) {
+    $('.update_products_qty').each(function(){
+        if ($(this).val() == 0) {
+           num_is_null = true; 
+          alert('商品個数に0を入力してはいけません。');
+        }
+    });
 
+    if (!num_is_null) {
     //viladate
     $.ajax({
 url: 'ajax_orders.php?action=getallpwd',
@@ -1091,7 +1099,7 @@ document.edit_order.notify_comments.checked = false;
 }
 }
 });
-
+}
 } else {
   window.alert("注文内容確認をキャンセルしました。\n\n【 重要 】メールは送信されていません。【 重要 】");
 }

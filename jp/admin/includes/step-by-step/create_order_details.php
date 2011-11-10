@@ -17,6 +17,11 @@ function hidden_payment(){
   }else{
     document.getElementById('trpass1').style.display = "none";
   }
+  if (CI == '楽天銀行') {
+    document.getElementById('rakpass1').style.display = "";
+  } else {
+    document.getElementById('rakpass1').style.display = "none";
+  }
   if (CI == 'コンビニ決済') {
     document.getElementById('copass1').style.display = "";
   } else {
@@ -171,10 +176,27 @@ function hidden_payment(){
         </td>
               </tr>
 <?php
+  if ($payment_method == '楽天銀行') {
+    echo '<tr id="rakpass1">';
+  } else {
+    echo '<tr id="rakpass1" style="display: none;">';
+  } 
+  ?>
+  <td colspan="2">
+  <table border="0" cellspacing="0" cellpadding="0">
+    <tr>
+      <td class="main">&nbsp;<?php echo CREATE_ORDER_TEL_TEXT;?></td> 
+      <td class="main">&nbsp;&nbsp;&nbsp;<?php echo tep_draw_input_field('rak_tel', $_POST['rak_tel']); ?></td>
+    </tr>
+  </table>
+  </td> 
+  <?php
+  echo '</tr>';
   if ($payment_method == 'コンビニ決済') {
-    echo '<tr>';
+    echo '<tr id="copass1">';
   } else {
     echo '<tr id="copass1" style="display: none;">';
+  }
   ?>
   <td colspan="2"><br><table border="0" cellspacing="0" cellpadding="0">
     <tr>
@@ -184,10 +206,9 @@ function hidden_payment(){
   </table>
   </td> 
   <?php
-  }
   echo '</tr>';
   if (isset($payment_method) && $payment_method == '銀行振込(買い取り)') {
-    echo '<tr>';
+    echo '<tr id="trpass1">';
   } else {
     echo '<tr id="trpass1" style="display: none;">';
   }  

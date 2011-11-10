@@ -341,6 +341,12 @@ echo "</pre>";
     $bbbank .= '口座種別　　　　　：' . $bank_kamoku . "\n";
     $bbbank .= '口座番号　　　　　：' . $bank_kouza_num . "\n";
     $bbbank .= '口座名義　　　　　：' . $bank_kouza_name;
+    $_SESSION['orderinfo_mail_use']['bank_name'] = $bank_name;
+    $_SESSION['orderinfo_mail_use']['bank_shiten'] = $bank_shiten;
+    $_SESSION['orderinfo_mail_use']['bank_kamoku'] = $bank_kamoku;
+    $_SESSION['orderinfo_mail_use']['bank_kouza_num'] = $bank_kouza_num;
+    $_SESSION['orderinfo_mail_use']['bank_kouza_name'] = $bank_kouza_name;
+    $_SESSION['orderinfo_mail_use']['torihikihouhou'] = $torihikihouhou;
   
     $sql_data_array = array('orders_id' => $insert_id, 
                 'orders_status_id' => $new_value, 
@@ -351,6 +357,15 @@ echo "</pre>";
   }
   if ($payment_method  == 'コンビニ決済') {
     $convenience_comments = 'PCメールアドレス:'.$_POST['con_email']."\n"; 
+  $sql_data_array = array('orders_id' => $insert_id, 
+                'orders_status_id' => $new_value, 
+                'date_added' => 'now()', 
+                'customer_notified' => '1',
+                'comments' => $convenience_comments);
+  tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
+  }
+  if ($payment_method  == '楽天銀行') {
+    $convenience_comments = '電話番号:'.$_POST['rak_tel']."\n"; 
   $sql_data_array = array('orders_id' => $insert_id, 
                 'orders_status_id' => $new_value, 
                 'date_added' => 'now()', 

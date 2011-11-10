@@ -106,6 +106,7 @@
       }
 
       tep_db_query("delete from " . TABLE_ORDERS_STATUS . " where orders_status_id = '" . tep_db_input($oID) . "'");
+      tep_db_query("delete from " . TABLE_ORDERS_MAIL . " where orders_status_id = '" . tep_db_input($oID) . "'");
 
       tep_redirect(tep_href_link(FILENAME_ORDERS_STATUS, 'page=' . $_GET['page']));
       break;
