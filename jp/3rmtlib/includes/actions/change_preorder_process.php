@@ -432,7 +432,6 @@ if (isset($cpayment_class)) {
 }
 
 if (!$print_single){
-    $email_printing_order .= 'この注文は【販売】です。' . "\n";
     $email_printing_order .= '------------------------------------------------------------------------' .  "\n";
     $email_printing_order .= '備考の有無　　　　　：□ 無　　｜　　□ 有　→　□ 返答済' . "\n"; 
     $email_printing_order .= '------------------------------------------------------------------------' . "\n";
