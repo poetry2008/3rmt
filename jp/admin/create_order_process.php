@@ -7,11 +7,7 @@
   require('includes/step-by-step/new_application_top.php');
 
   require(DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_CREATE_ORDER_PROCESS);
-/*
-echo "<pre>";
-print_r($_POST);
-echo "</pre>";
-*/
+
   $customer_id    = tep_db_prepare_input($_POST['customers_id']);
   $firstname      = tep_db_prepare_input($_POST['firstname']);
   $lastname       = tep_db_prepare_input($_POST['lastname']);
@@ -280,7 +276,6 @@ echo "</pre>";
   $currency_value = $currency_array[1];
   //$insert_id = date("Ymd") . '-' . date("His") . '00';
   $insert_id = date("Ymd") . '-' . date("His") . tep_get_order_end_num();
-
     $sql_data_array = array('orders_id'     => $insert_id,
               'customers_id'                => $customer_id,
               'customers_name'              => tep_get_fullname($firstname,$lastname),
@@ -320,8 +315,11 @@ echo "</pre>";
               'torihiki_date'               => tep_db_input($date . ' ' . $hour . ':' . $min . ':00'),
               'site_id'                     => $site_id,
               'orders_wait_flag'            => '1'
-              ); 
 
+              ); 
+  if ($payment_method  == 'コンビニ決済') {
+    $sql_data_array['orders_comment'] = 'PCメールアドレス:'.$_POST['con_email']."\n"; 
+  }
   tep_db_perform(TABLE_ORDERS, $sql_data_array);
   last_customer_action();
   orders_updated($insert_id);
@@ -333,7 +331,7 @@ echo "</pre>";
                 'customer_notified' => '1',
                 'comments' => '');
     tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
-
+    $_SESSION['orderinfo_mail_use']['torihikihouhou'] = $torihikihouhou;
   // 買取（口座情報をコメントに追加）
   if (isset($bank_name) && $bank_name != '') {
     $bbbank = '金融機関名　　　　：' . $bank_name . "\n";
@@ -346,8 +344,7 @@ echo "</pre>";
     $_SESSION['orderinfo_mail_use']['bank_kamoku'] = $bank_kamoku;
     $_SESSION['orderinfo_mail_use']['bank_kouza_num'] = $bank_kouza_num;
     $_SESSION['orderinfo_mail_use']['bank_kouza_name'] = $bank_kouza_name;
-    $_SESSION['orderinfo_mail_use']['torihikihouhou'] = $torihikihouhou;
-  
+
     $sql_data_array = array('orders_id' => $insert_id, 
                 'orders_status_id' => $new_value, 
                 'date_added' => 'now()', 
@@ -356,7 +353,8 @@ echo "</pre>";
     tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
   }
   if ($payment_method  == 'コンビニ決済') {
-    $convenience_comments = 'PCメールアドレス:'.$_POST['con_email']."\n"; 
+
+  $convenience_comments = 'PCメールアドレス:'.$_POST['con_email']."\n"; 
   $sql_data_array = array('orders_id' => $insert_id, 
                 'orders_status_id' => $new_value, 
                 'date_added' => 'now()', 

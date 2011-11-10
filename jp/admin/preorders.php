@@ -228,12 +228,6 @@
             
             tep_db_query("update ".TABLE_PREORDERS." set check_preorder_str = '".$change_preorder_url_param."' where orders_id = '".$oID."'"); 
           }
-          if ($status == 33) {
-            $site_url_raw = tep_db_query("select * from sites where id = '".$site_id."'"); 
-            $site_url_res = tep_db_fetch_array($site_url_raw); 
-            $change_preorder_url = $site_url_res['url'].'/extend_time.php?pid='.$oID; 
-            $comments = str_replace('${ORDER_UP_DATE}', $change_preorder_url, $comments); 
-          }
           if ($status == 32) {
             $mail_preorder_pro_raw = tep_db_query("select ensure_deadline from ".TABLE_PREORDERS. " where orders_id = '".$oID."'"); 
             $mail_preorder_pro = tep_db_fetch_array($mail_preorder_pro_raw);
@@ -513,12 +507,6 @@
           
           tep_db_query("update ".TABLE_PREORDERS." set check_preorder_str = '".$change_preorder_url_param."' where orders_id = '".$oID."'"); 
         }
-        if ($status == 33) {
-          $site_url_raw = tep_db_query("select * from sites where id = '".$site_id."'"); 
-          $site_url_res = tep_db_fetch_array($site_url_raw); 
-          $change_preorder_url = $site_url_res['url'].'/extend_time.php?pid='.$oID; 
-          $comments = str_replace('${ORDER_UP_DATE}', $change_preorder_url, $comments); 
-        }
         tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
       }
       //tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS', $site_id), '送信済：'.$title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
@@ -719,7 +707,6 @@ if($reload == 'yes') {
 }
 */
 ?>
-// 以当前时间为如今日
 function q_3_2(){
   if ($('#q_3_1').attr('checked') == true){
     if ($('#q_3_2_m').val() == '' || $('#q_3_2_m').val() == '') {
@@ -729,7 +716,6 @@ function q_3_2(){
   }
 }
 
-// 以当前时间为如今日
 function q_4_3(){
   if ($('#q_4_2').attr('checked') == true){
     if ($('#q_4_3_m').val() == '' || $('#q_4_3_m').val() == '') {
