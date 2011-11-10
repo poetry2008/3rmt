@@ -188,15 +188,7 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
         if (sizeof($navigation->snapshot) > 0) {
           $origin_href = tep_href_link($navigation->snapshot['page'], tep_array_to_string($navigation->snapshot['get'], array(tep_session_name())), $navigation->snapshot['mode']);
           $navigation->clear_snapshot();
-          if (isset($_GET['pid'])) {
-            if (ENABLE_SSL && $request_type == 'SSL') {
-              tep_redirect(tep_href_link(FILENAME_DEFAULT, '', 'NONSSL').'?'.tep_session_name().'='.tep_session_id());
-            } else {
-              tep_redirect(tep_href_link(FILENAME_DEFAULT, '', 'NONSSL'));
-            }
-          } else {
-            tep_redirect($origin_href);
-          }
+          tep_redirect($origin_href);
         } else {
           if (ENABLE_SSL && $request_type == 'SSL') {
             tep_redirect(tep_href_link(FILENAME_DEFAULT, '', 'NONSSL').'?'.tep_session_name().'='.tep_session_id());
