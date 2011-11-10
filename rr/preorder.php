@@ -90,77 +90,46 @@
 <?php page_head();?>
 <script type="text/javascript" src="./js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript">
+function triggerHide(radio)
+{
+    if ($(radio).val() == 'convenience_store') {
+      $("#cemail").css("display", "block"); 
+      $("#caemail").css("display", "block"); 
+    } else {
+      $("#cemail").css("display", "none"); 
+      $("#caemail").css("display", "none"); 
+    }
+    
+    if ($(radio).val() == 'rakuten_bank') {
+      $("#ctelnumber").css("display", "block"); 
+      $("#catelnumber").css("display", "block"); 
+    } else {
+      $("#ctelnumber").css("display", "none"); 
+      $("#catelnumber").css("display", "none"); 
+    }
+    
+}
+	
 $(document).ready(function(){
-$("input:radio").each(function(){
 if($("input[name=pre_payment]").length == 1){
   $("input[name=pre_payment]").each(function(index){
       $(this).attr('checked','true');
     });
 }
-  if ($(this).attr("checked") == true) {
-    if ($(this).attr('name') != 'bank_kamoku') { 
-      if ($(this).val() == 'convenience_store') {
-        $("#cemail").css("display", "block");
-        $("#caemail").css("display", "block");
-      } else {
-        $("#cemail").css("display", "none");
-        $("#caemail").css("display", "none");
-      }
+  $("input[name=pre_payment]").each(function(index){
+    if ($(this).attr('checked') == true) {
+      triggerHide(this);
     }
-    if ($(this).attr('name') != 'bank_kamoku') { 
-      if ($(this).val() == 'rakuten_bank') {
-        $("#ctelnumber").css("display", "block");
-        $("#catelnumber").css("display", "block");
-      } else {
-        $("#ctelnumber").css("display", "none");
-        $("#catelnumber").css("display", "none");
-      }
-    }
-  }
-})
+  });
+
 $("input:radio").click(function(){
-  if ($(this).val() == 'convenience_store') {
-    $("#cemail").css("display", "block");
-    $("#caemail").css("display", "block");
-  } else {
-    if ($(this).attr('name') != 'bank_kamoku') { 
-      $("#cemail").css("display", "none");
-      $("#caemail").css("display", "none");
-    } 
-  }
-  
-  if ($(this).val() == 'rakuten_bank') {
-    $("#ctelnumber").css("display", "block");
-    $("#catelnumber").css("display", "block");
-  } else {
-    if ($(this).attr('name') != 'bank_kamoku') { 
-      $("#ctelnumber").css("display", "none");
-      $("#catelnumber").css("display", "none");
-    } 
-  }
+    triggerHide(this);
 });
 $(".moduleRow").click(function(){
-  if ($(this).find('input:radio').val() == 'convenience_store') {
-    $("#cemail").css("display", "block");
-    $("#caemail").css("display", "block");
-  } else {
-    if ($(this).find('input:radio').attr('name') != 'bank_kamoku') {
-      $("#cemail").css("display", "none");
-      $("#caemail").css("display", "none");
-    }
-  }
-  
-  if ($(this).find('input:radio').val() == 'rakuten_bank') {
-    $("#ctelnumber").css("display", "block");
-    $("#catelnumber").css("display", "block");
-  } else {
-    if ($(this).find('input:radio').attr('name') != 'bank_kamoku') {
-      $("#ctelnumber").css("display", "none");
-      $("#catelnumber").css("display", "none");
-    }
-  }
+    triggerHide($(this).find("input:radio")[0]);
+
 });
-});
+  });
 </script>
 <script type="text/javascript"><!--
 var selected;
@@ -193,14 +162,6 @@ function rowOverEffect(object) {
 function rowOutEffect(object) {
   //if (object.className == 'moduleRowOver') object.className = 'moduleRow';
 }
-<?php
-if ($_POST['pre_payment'] == 'convenience_store') {
-?>
-      $("#cemail").css("display", "block"); 
-      $("#caemail").css("display", "block"); 
-<?php
-}
-?>
 //--></script>
 </head>
 <body>
@@ -300,32 +261,23 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
       $payment_error = false;
     }
     
-    if ($_POST['pre_payment'] == 'convenience_store') {
-      $conv_payment_module = new $_POST['pre_payment']; 
-      $conv_n_type = $conv_payment_module->preorder_confirmation_check(); 
-      if ($conv_n_type) {
-        $conv_error_info = $conv_payment_module->get_preorder_error($conv_n_type); 
-        $error = true; 
-        $payment_error = true;
-        $payment_error_str = $conv_error_info; 
-      } else {
-        $payment_error = false;
-      }
+    if (!empty($_POST['pre_payment'])) {
+          $sel_payment_module = new $_POST['pre_payment']; 
+          
+          if (method_exists($sel_payment_module, 'preorder_confirmation_check')) {
+            $sn_type = $sel_payment_module->preorder_confirmation_check(); 
+            if ($sn_type) {
+              $sn_error_info = $sel_payment_module->get_preorder_error($sn_type); 
+              $error = true; 
+              $payment_error = true;
+              $payment_error_str = $sn_error_info; 
+            } else {
+              $payment_error = false;
+            }
+          } else {
+            $payment_error = false;
+          }
     }
-    
-    if ($_POST['pre_payment'] == 'rakuten_bank') {
-      $rak_payment_module = new $_POST['pre_payment']; 
-      $rak_n_type = $rak_payment_module->preorder_confirmation_check(); 
-      if ($rak_n_type) {
-        $rak_error_info = $rak_payment_module->get_preorder_error($rak_n_type); 
-        $error = true; 
-        $payment_error = true;
-        $payment_error_str = $rak_error_info; 
-      } else {
-        $payment_error = false;
-      }
-    }
-
     if (isset($_GET['action']) && ($_GET['action'] == 'process') && ($error == false)) {
       $preorder_id = date('Ymd').'-'.date('His').tep_get_preorder_end_num(); 
       $redirect_single = 0; 
@@ -565,22 +517,11 @@ if (!isset($_GET['quantity'])) $_GET['quantity'] = NULL; //del notice
         <?php
         $radio_buttons = 0; 
         for ($i=0, $n=sizeof($selection); $i<$n; $i++) { 
-          if ($selection[$i]['id'] == 'buying' || $selection[$i]['id'] == 'buyingpoint' || $selection[$i]['id'] == 'fetch_good' || $selection[$i]['id'] == 'free_payment') {
-            continue; 
-          }
-          if ($selection[$i]['id'] == 'moneyorder' && MODULE_PAYMENT_MONEYORDER_PREORDER_SHOW == 'False') {
-            continue; 
-          }
-          if ($selection[$i]['id'] == 'postalmoneyorder' && MODULE_PAYMENT_POSTALMONEYORDER_PREORDER_SHOW == 'False') {
-            continue; 
-          }
-          if ($selection[$i]['id'] == 'convenience_store' && MODULE_PAYMENT_CONVENIENCE_STORE_PREORDER_SHOW == 'False') {
-            continue; 
-          }
-          if ($selection[$i]['id'] == 'telecom' && MODULE_PAYMENT_TELECOM_PREORDER_SHOW == 'False') {
-            continue; 
-          }
-          if ($selection[$i]['id'] == 'paypal' && MODULE_PAYMENT_PAYPAL_PREORDER_SHOW == 'False') {
+          if (defined('MODULE_PAYMENT_'.strtoupper($selection[$i]['id'].'_PREORDER_SHOW'))) {
+            if (constant('MODULE_PAYMENT_'.strtoupper($selection[$i]['id'].'_PREORDER_SHOW')) == 'False') {
+              continue; 
+            }
+          } else {
             continue; 
           }
         ?>

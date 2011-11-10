@@ -243,6 +243,38 @@ function preorders_a($orders_id, $allorders = null, $site_id = 0)
   return $str;
 }
 
+function tep_get_list_payment_info() {
+  global $language;
+
+  $payment_directory = DIR_FS_CATALOG_MODULES .'payment/';
+  $payment_array = array();
+  $payment_list_info = array();
+  if ($dh = @dir($payment_directory)) {
+    while ($payment_file = $dh->read()) {
+      if (!is_dir($payment_directory.$payment_file)) {
+        if (substr($payment_file, strrpos($payment_file, '.')) == '.php') {
+          $payment_array[] = $payment_file; 
+        }
+      }
+    }
+    sort($payment_array);
+    $dh->close();
+  }
+
+  for ($i = 0, $n = sizeof($payment_array); $i < $n; $i++) {
+    $payment_filename = $payment_array[$i]; 
+    include(DIR_WS_LANGUAGES . $language . '/modules/payment/' . $payment_filename); 
+    include($payment_directory . $payment_filename); 
+    $payment_class = substr($payment_filename, 0, strrpos($payment_filename, '.'));
+    if (tep_class_exists($payment_class)) {
+      $payment_module = new $payment_class; 
+      $payment_list_array[] = array($payment_module->title, $payment_module->code); 
+    }
+  }
+
+  return $payment_list_array;
+}
+
 function prenew_calc_handle_fee($payment_name, $products_total, $oID)
 {
   $oid_query = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$oID."'"); 
@@ -257,33 +289,24 @@ function prenew_calc_handle_fee($payment_name, $products_total, $oID)
     return 0; 
   }
   $handle_fee = 0; 
-  if ($payment_name == '銀行振込(買い取り)') {
-    $pay_cost_query = tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'MODULE_PAYMENT_BUYING_COST' and (site_id = 0 or site_id = ".$site_id.") order by site_id DESC limit 1"); 
-    $pay_cost_res = tep_db_fetch_array($pay_cost_query); 
-
-    $handle_fee = calc_fee_final($pay_cost_res['configuration_value'], $products_total); 
-  } else if ($payment_name == 'コンビニ決済') {
-    $pay_cost_query = tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'MODULE_PAYMENT_CONVENIENCE_STORE_COST' and (site_id = 0 or site_id = ".$site_id.") order by site_id DESC limit 1"); 
-    $pay_cost_res = tep_db_fetch_array($pay_cost_query); 
-
-    $handle_fee = calc_fee_final($pay_cost_res['configuration_value'], $products_total); 
-  } else if ($payment_name == '銀行振込') {
-    $pay_cost_query = tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'MODULE_PAYMENT_MONEYORDER_COST' and (site_id = 0 or site_id = ".$site_id.") order by site_id DESC limit 1"); 
-    $pay_cost_res = tep_db_fetch_array($pay_cost_query); 
-
-    $handle_fee = calc_fee_final($pay_cost_res['configuration_value'], $products_total); 
-  } else if ($payment_name == 'ゆうちょ銀行（郵便局）') {
-    $pay_cost_query = tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'MODULE_PAYMENT_POSTALMONEYORDER_COST' and (site_id = 0 or site_id = ".$site_id.") order by site_id DESC limit 1"); 
-    $pay_cost_res = tep_db_fetch_array($pay_cost_query); 
-
-    $handle_fee = calc_fee_final($pay_cost_res['configuration_value'], $products_total); 
-  } else if ($payment_name == 'クレジットカード決済') {
-    $pay_cost_query = tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'MODULE_PAYMENT_TELECOM_COST' and (site_id = 0 or site_id = ".$site_id.") order by site_id DESC limit 1"); 
-    $pay_cost_res = tep_db_fetch_array($pay_cost_query); 
-    $handle_fee = calc_fee_final($pay_cost_res['configuration_value'], $products_total); 
+  $payment_list_info = tep_get_list_payment_info();
+  if (!empty($payment_list_info)) {
+    foreach ($payment_list_info as $key => $value) {
+      if ($value[0] == $payment_name) {
+        $pay_cost_query = tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'MODULE_PAYMENT_".strtoupper($value[1])."_COST' and (site_id = 0 or site_id = ".$site_id.") order by site_id DESC limit 1"); 
+        $pay_cost_res = tep_db_fetch_array($pay_cost_query); 
+         
+        if ($pay_cost_res) {
+          $handle_fee = calc_fee_final($pay_cost_res['configuration_value'], $products_total); 
+        } else {
+          return 0; 
+        }
+      }
+    }
   } else {
     return 0; 
   }
+  
   return $handle_fee;
 }
 

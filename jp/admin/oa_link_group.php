@@ -302,8 +302,8 @@ if ($g_num % 2 == 0) {
                 echo '<a onclick="return confirm(\''.$group_list_res['name'].TEXT_DELETE_CONFRIM.'\')"'.'href="'.tep_href_link(FILENAME_OA_GROUP, 'action=del&gid='.$group_list_res['id'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type']).'">'.DEL_GROUP_TEXT.'</a>'; 
                 echo '</td>'; 
                 echo '<td>';
-                echo '<input type="button" class="up" value=\'↑\' onclick="editorder(this)">';
-                echo '<input type="button" class="down" value=\'↓\' onclick="editorder(this)">';
+                echo '<input type="button" class="up" value=\''.TEXT_UP.'\' onclick="editorder(this)">';
+                echo '<input type="button" class="down" value=\''.TEXT_DOWN.'\' onclick="editorder(this)">';
                 echo '</td>'; 
                 echo '</tr>'; 
               }

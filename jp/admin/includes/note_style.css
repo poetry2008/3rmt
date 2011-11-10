@@ -32,3 +32,5 @@ ul { list-style:none;}
 textarea{ width:100%; position:relative; height:100%;}
 .note_move input { float:right;}
 .note_textarea{ margin:15px 15px 15px 10px; clear:both;}
+.note_title { float:left; font-size:11px; padding-left:2px; line-height:15px; color:#000000;}
+.note_head { clear:both;}
