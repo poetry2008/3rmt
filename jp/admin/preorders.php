@@ -707,23 +707,6 @@ if($reload == 'yes') {
 }
 */
 ?>
-function q_3_2(){
-  if ($('#q_3_1').attr('checked') == true){
-    if ($('#q_3_2_m').val() == '' || $('#q_3_2_m').val() == '') {
-      $('#q_3_2_m').val(new Date().getMonth()+1);
-      $('#q_3_2_d').val(new Date().getDate());
-    }
-  }
-}
-
-function q_4_3(){
-  if ($('#q_4_2').attr('checked') == true){
-    if ($('#q_4_3_m').val() == '' || $('#q_4_3_m').val() == '') {
-      $('#q_4_3_m').val(new Date().getMonth()+1);
-      $('#q_4_3_d').val(new Date().getDate());
-    }
-  }
-}
 
 function del_confirm_payment_time(oid, status_id)
 {
