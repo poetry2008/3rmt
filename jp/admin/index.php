@@ -34,7 +34,7 @@ while($row=tep_db_fetch_array($query)){
     src="images/icons/note_close.gif"></div>
     </div><div id="note_text_'.$row['id'].'" class="note_textarea"
     style="height:'.($ylen-30).'px">'
-    .'<textarea style="overflow:auto;resize: none;" id="note_textarea_'.$row['id'].'">'
+    .'<textarea style="overflow:auto;resize: none;font-size:11px;" id="note_textarea_'.$row['id'].'">'
     .htmlspecialchars($row['content']).'
     </textarea></div>
     </div>';
