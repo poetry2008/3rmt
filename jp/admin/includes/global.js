@@ -28,12 +28,12 @@ $(function(){
         var title = $("#title").val();
         var color = $("#mycolor").val();
         if(txt==""){
-        $("#msg_txt").html("空白で入力しないでください！");
+        $("#msg_txt").html("内容を入力してください");
         $("#note_txt").focus();
         return false;
         }
         if(title==""){
-        $("#msg_title").html("空白で入力しないでください！");
+        $("#msg_title").html("タイトルを入力してください");
         $("#title").focus();
         return false;
         }
