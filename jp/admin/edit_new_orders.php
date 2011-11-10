@@ -709,7 +709,7 @@ if (tep_not_null($action)) {
         unset($_SESSION['orderinfo_mail_use']);
         $point = $mailpoint;
 	    if ($point){
-	      $mailoption['POINT']            = $point . '円' ;
+	      $mailoption['POINT']            = $point;
 	    }else {
 	      $mailoption['POINT']            = 0;
 	    }
