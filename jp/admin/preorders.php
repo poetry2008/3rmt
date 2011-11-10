@@ -228,12 +228,6 @@
             
             tep_db_query("update ".TABLE_PREORDERS." set check_preorder_str = '".$change_preorder_url_param."' where orders_id = '".$oID."'"); 
           }
-          if ($status == 33) {
-            $site_url_raw = tep_db_query("select * from sites where id = '".$site_id."'"); 
-            $site_url_res = tep_db_fetch_array($site_url_raw); 
-            $change_preorder_url = $site_url_res['url'].'/extend_time.php?pid='.$oID; 
-            $comments = str_replace('${ORDER_UP_DATE}', $change_preorder_url, $comments); 
-          }
           if ($status == 32) {
             $mail_preorder_pro_raw = tep_db_query("select ensure_deadline from ".TABLE_PREORDERS. " where orders_id = '".$oID."'"); 
             $mail_preorder_pro = tep_db_fetch_array($mail_preorder_pro_raw);
@@ -512,12 +506,6 @@
           $comments = str_replace('${REAL_ORDER_URL}', $change_preorder_url, $comments); 
           
           tep_db_query("update ".TABLE_PREORDERS." set check_preorder_str = '".$change_preorder_url_param."' where orders_id = '".$oID."'"); 
-        }
-        if ($status == 33) {
-          $site_url_raw = tep_db_query("select * from sites where id = '".$site_id."'"); 
-          $site_url_res = tep_db_fetch_array($site_url_raw); 
-          $change_preorder_url = $site_url_res['url'].'/extend_time.php?pid='.$oID; 
-          $comments = str_replace('${ORDER_UP_DATE}', $change_preorder_url, $comments); 
         }
         tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
       }

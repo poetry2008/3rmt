@@ -703,12 +703,6 @@ while ($totals = tep_db_fetch_array($totals_query)) {
           
           tep_db_query("update ".TABLE_PREORDERS." set check_preorder_str = '".$change_preorder_url_param."' where orders_id = '".$oID."'"); 
         }
-        if ($status == 33) {
-          $site_url_raw = tep_db_query("select * from sites where id = '".$order->info['site_id']."'"); 
-          $site_url_res = tep_db_fetch_array($site_url_raw); 
-          $change_preorder_url = $site_url_res['url'].'/extend_time.php?pid='.$oID; 
-          $email = str_replace('${ORDER_UP_DATE}', $change_preorder_url, $email); 
-        }
         $preorder_email_title = $_POST['etitle']; 
         $select_status_raw = tep_db_query("select * from ".TABLE_PREORDERS_MAIL." where orders_status_id = '".$status."'"); 
         $select_status_res = tep_db_fetch_array($select_status_raw);
