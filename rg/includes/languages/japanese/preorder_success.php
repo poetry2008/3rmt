@@ -25,5 +25,5 @@ define('PREORDER_SUCCESS_ACTIVE_INFO_TEXT', '<font size="3" color="#ff0000"><b>�
 define('PREORDER_SUCCESS_ACTIVE_HEAD_TITLE', '予約手続が完了しました');
 define('PREORDER_ACTIVE_SUCCESS_READ_INFO', '今すぐ電子メールをご確認ください。「予約注文受付」メールが届いていない場合は、受付が完了しておりません。<br>メールアドレスをご確認の上、再度お申し込みをお願いいたします。<br><br>10分経過してもメールが届かない場合は、再送いたしますのでご連絡ください。<br>注意：メールが届かないときは、以下のことを必ずご確認ください。<br>＜迷惑メールフォルダの確認＞弊社のメールが
     「迷惑メールフォルダ」や「ゴミ箱」に振り分けされ見落としていませんか？<br>＜メールドメインの受信制限を設定している＞<br>'.STORE_DOMAIN.'のメールドメインを受信するように設定をお願いいたします。<br>＜それでも届かないときは、メールアドレス変更＞<br>お客様情報から今すぐご登録メールアドレスの変更をお願いいたします。');
-define('PREORDER_ACTIVE_SUCCESS_READ_HEAD', '「予約注文受付」メールをお送りしましたのでご確認ください。<br>納期に付きましては、24時間以内にご回答いたします。');
+define('PREORDER_ACTIVE_SUCCESS_READ_HEAD', '「予約注文受付」メールをお送りしましたのでご確認ください。<br>納期に付きましては、入荷目処が立ち次第、ご回答いたします。');
 define('PREORDER_ACTIVE_SUCCESS_READ_BOTTOM', STORE_NAME.'では、%sの予約サービスを行っております。 <br>ご希望する数量が弊社在庫にある場合は「%s」をクリックしてお手続きください。');
