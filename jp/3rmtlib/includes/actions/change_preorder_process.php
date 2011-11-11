@@ -325,7 +325,7 @@ $mailoption['ORDER_COUNT'] = $preorder_product_res['products_quantity'];
 $mailoption['ORDER_LTOTAL'] = number_format($preorder_product_res['final_price']*$preorder_product_res['products_quantity'], 0, '.', '');
 $mailoption['ORDER_ACTORNAME'] = $_SESSION['preorder_info_character'];
 if ($preorder_point){
-  $mailoption['POINT']            = $preorder_point . '円' ;
+  $mailoption['POINT']            = str_replace('円', '', $currencies->format(abs($preorder_point)));
 }else {
     $mailoption['POINT']            = 0;
 }
