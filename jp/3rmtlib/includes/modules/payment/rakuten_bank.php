@@ -251,7 +251,7 @@ class rakuten_bank {
         $error_message = MODULE_PAYMENT_RAKUTEN_BANK_TEXT_ERROR_MESSAGE;
       }
 
-      return array('title' => '楽天銀行 エラー!',
+      return array('title' => $this->title.' エラー!',
           'error' => $error_message);
 
     }else{

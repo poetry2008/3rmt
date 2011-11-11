@@ -314,7 +314,7 @@ class buying {
     if (isset($_GET['payment_error']) && (strlen($_GET['payment_error']) > 0)) {
       $error_message = MODULE_PAYMENT_BUYING_TEXT_ERROR_MESSATE;
         
-      return array('title' => 'コンビニ決済 エラー!', 'error' => $error_message);
+      return array('title' => $this->title.' エラー!', 'error' => $error_message);
     } else {
       return false;
     }

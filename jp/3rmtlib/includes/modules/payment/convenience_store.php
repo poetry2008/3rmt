@@ -325,7 +325,7 @@ class convenience_store {
           $error_message = MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE;
         }
         
-      return array('title' => 'コンビニ決済 エラー!',
+      return array('title' => $this->title.' エラー!',
                    'error' => $error_message);
     
     }else{
