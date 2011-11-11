@@ -19,8 +19,9 @@
    
   if ($preorder_res) {
     $now_time = time(); 
-    
-    if (($now_time - $preorder_res['send_mail_time']) > 60*60*24*3) {
+    $preorder_customer_res = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = '".$preorder_res['customers_id']."'");     
+    $preorder_customer = tep_db_fetch_array($preorder_customer_res); 
+    if (($now_time - (int)$preorder_customer['send_mail_time']) > 60*60*24*3) {
        
       tep_db_query("delete from ".TABLE_PREORDERS." where orders_id = '".$pid."' and site_id = '".SITE_ID."'"); 
       tep_db_query("delete from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$pid."'"); 
@@ -67,7 +68,7 @@
         $pre_num = $preorder_products_res['products_quantity']; 
       }
      
-      $pre_replace_info_arr = array($pre_name, $pre_num, $pre_date, $preroder_res['payment_method'], $preorder_res['customers_name'], STORE_NAME, HTTP_SERVER, $preorder_res['orders_id']);
+      $pre_replace_info_arr = array($pre_name, $pre_num, $pre_date, $preorder_res['payment_method'], $preorder_res['customers_name'], STORE_NAME, HTTP_SERVER, $preorder_res['orders_id']);
      
       $preorder_email_text = str_replace($replace_info_arr, $pre_replace_info_arr, $preorder_email_text);
       $pre_email_text = str_replace('${SITE_NAME}', STORE_NAME, PREORDER_MAIL_SUBJECT);
