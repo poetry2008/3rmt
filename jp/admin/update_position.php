@@ -34,7 +34,8 @@ tep_db_query("UPDATE notes SET xyz='".$left."|".$top."|".$zindex."|".$xlen."|".$
     $now_sql = "select * from notes where id='".$id."'";
     $now_query = tep_db_query($now_sql);
     $now_res = tep_db_fetch_array($now_query);
-    echo "true|||".$now_res['title']."|||".$now_res['addtime']."|||".$now_res['content'];
+    echo
+      "true|||".$now_res['title']."|||".substr($now_res['addtime'],0,strlen($now_res['addtime'])-3)."|||".$now_res['content'];
   }
 }
 ?>
