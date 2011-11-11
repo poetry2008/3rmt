@@ -11,35 +11,12 @@
 <script type="text/javascript"><!--
 function triggerHide(radio)
 {
-    if ($(radio).val() == 'convenience_store') {
-      $("#cemail").css("display", "block"); 
-      $("#caemail").css("display", "block"); 
-    } else {
-      $("#cemail").css("display", "none"); 
-      $("#caemail").css("display", "none"); 
-    }
-    if ($(radio).val() == 'buying') {
-      $(".rowHide_buying").css("display", "block"); 
-    } else {
-      $(".rowHide_buying").css("display", "none"); 
-    }
-    
-    if ($(radio).val() == 'rakuten_bank') {
-      $("#ctelnumber").css("display", "block"); 
-      $("#catelnumber").css("display", "block"); 
-    } else {
-      $("#ctelnumber").css("display", "none"); 
-      $("#catelnumber").css("display", "none"); 
-    }
-    
-    /* 
-    if ($(radio).attr("checked") == true) {
-     $(".rowHide").hide();
+if ($(radio).attr("checked") == true) {
+      $(".rowHide").hide();
+      $(".rowHide").find("input").attr("disabled","true");
       $(".rowHide_"+$(radio).val()).show();
-    }else{
-     $(".rowHide_"+$(radio).val()).hide();
-    }
-    */
+      $(".rowHide_"+$(radio).val()).find("input").removeAttr("disabled");
+     }
 }
 	
 $(document).ready(function(){

@@ -19,8 +19,10 @@
    
   if ($preorder_res) {
     $now_time = time(); 
+    $preorder_customer_res = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = '".$preorder_res['customers_id']."'");     
+    $preorder_customer = tep_db_fetch_array($preorder_customer_res); 
     
-    if (($now_time - $preorder_res['send_mail_time']) > 60*60*24*3) {
+    if (($now_time - $preorder_customer['send_mail_time']) > 60*60*24*3) {
        
       tep_db_query("delete from ".TABLE_PREORDERS." where orders_id = '".$pid."' and site_id = '".SITE_ID."'"); 
       tep_db_query("delete from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$pid."'"); 

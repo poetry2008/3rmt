@@ -430,10 +430,6 @@ if (isset($cpayment_class)) {
 }
 
 
-$email_printing_order .= '------------------------------------------------------------------------' . "\n";
-$email_printing_order .= '最終確認　　　　　　：確認者名＿＿＿＿' . "\n";
-$email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-
 if (SEND_EXTRA_ORDER_EMAILS_TO != '') {
   tep_mail('', PRINT_EMAIL_ADDRESS, STORE_NAME, $email_printing_order, $preorder['customers_name'], $preorder['customers_email_address'], '');
 }
