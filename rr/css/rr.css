@@ -1430,8 +1430,8 @@ TABLE：Info box (content)
 	line-height: 20px;
 	padding: 3px 5px;
 	background: #393838;
-	border:1px solid #5e5e5e\9;
-}
+/*	border:1px solid #5e5e5e\9;
+*/}
 .infoBoxContents td a{
 	color: #fff;
 }
