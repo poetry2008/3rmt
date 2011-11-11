@@ -332,7 +332,7 @@ function session_win() {
             </tr>
             <?php if (!isset($_GET['pid'])) {?> 
             <tr>
-              <td height="50%" colspan="2" valign="top">
+              <td height="50%" colspan="2" align="center">
                     <table class="infoBoxContents_logo"  cellpadding="2" cellspacing="1" border="0" summary="table">
                       <tr><td class="main" valign="top"><?php echo TEXT_NEW_CUSTOMER . '<br><br>' . TEXT_NEW_CUSTOMER_INTRODUCTION; ?></td></tr>
                       <tr><td align="right">

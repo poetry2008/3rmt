@@ -426,7 +426,7 @@ $mailoption['BANK_KOUZA_NUM']        = $bank_kouza_num;
 $mailoption['BANK_KOUZA_NAME']        = $bank_kouza_name;
 
 if ($point){
-$mailoption['POINT']            = $point . '円' ;
+  $mailoption['POINT']            = str_replace('円', '', $currencies->format(abs($point)));
 }else {
   $mailoption['POINT']            = 0;
 }
