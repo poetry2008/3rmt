@@ -331,9 +331,9 @@ if ($preorder_point){
 }
 
 if (!empty($preorder['code_fee'])) {
-  $mailoption['MAILFEE']          = $preorder['code_fee'].'円';
+  $mailoption['MAILFEE']          = str_replace('円', '', $currencies->format(abs($preorder['code_fee'])));
 } else {
-  $mailoption['MAILFEE']          = '0円';
+  $mailoption['MAILFEE']          = '0';
 }
 
 $email_order_text = '';
