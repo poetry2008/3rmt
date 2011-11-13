@@ -325,7 +325,7 @@ $mailoption['ORDER_COUNT'] = $preorder_product_res['products_quantity'];
 $mailoption['ORDER_LTOTAL'] = number_format($preorder_product_res['final_price']*$preorder_product_res['products_quantity'], 0, '.', '');
 $mailoption['ORDER_ACTORNAME'] = $_SESSION['preorder_info_character'];
 if ($preorder_point){
-  $mailoption['POINT']            = $preorder_point . '円' ;
+  $mailoption['POINT']            = str_replace('円', '', $currencies->format(abs($preorder_point)));
 }else {
     $mailoption['POINT']            = 0;
 }
@@ -422,37 +422,13 @@ if ($credit_inquiry['customers_guest_chk'] == '1') { $email_printing_order .= '�
     }
 
 $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n\n\n";
-$print_single = 0;
 
 if (isset($cpayment_class)) {
   if (method_exists($cpayment_class,'getMailString')){
     $email_printing_order .= $cpayment_class->getMailString();
-    $print_single = 1;
   }
 }
 
-if (!$print_single){
-    $email_printing_order .= 'この注文は【販売】です。' . "\n";
-    $email_printing_order .= '------------------------------------------------------------------------' .  "\n";
-    $email_printing_order .= '備考の有無　　　　　：□ 無　　｜　　□ 有　→　□ 返答済' . "\n"; 
-    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-    $email_printing_order .= '在庫確認　　　　　　：□ 有　　｜　　□ 無　→　入金確認後仕入' . "\n";
-    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-    $email_printing_order .= '入金確認　　　　　●：＿＿月＿＿日　→　金額は' .  number_format(abs($preorder_total_print_num), 0, '.', '') . '円ですか？　□ はい' . "\n";
-    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-    $email_printing_order .= '入金確認メール送信　：□ 済' . "\n";
-    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-    $email_printing_order .= '発送　　　　　　　　：＿＿月＿＿日' . "\n"; 
-    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-    $email_printing_order .= '残量入力→誤差有無　：□ 無　　｜　　□ 有　→　報告　□' . "\n";
-    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-    $email_printing_order .= '発送完了メール送信　：□ 済' . "\n";    
-}
-
-
-$email_printing_order .= '------------------------------------------------------------------------' . "\n";
-$email_printing_order .= '最終確認　　　　　　：確認者名＿＿＿＿' . "\n";
-$email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
 
 if (SEND_EXTRA_ORDER_EMAILS_TO != '') {
   tep_mail('', PRINT_EMAIL_ADDRESS, STORE_NAME, $email_printing_order, $preorder['customers_name'], $preorder['customers_email_address'], '');

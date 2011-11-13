@@ -648,8 +648,12 @@ while ($totals = tep_db_fetch_array($totals_query)) {
       
       $pre_otm = (int)$select_total_res['value'].TEXT_MONEY_SYMBOL;
       
+      $ot_sub_query = tep_db_query("select value from " . TABLE_PREORDERS_TOTAL . " where orders_id = '".$oID."' and class = 'ot_subtotal'");
+      $ot_sub_result = tep_db_fetch_array($ot_sub_query);
+      $ot_sub_total = (int)$ot_sub_result['value'].TEXT_MONEY_SYMBOL;
+      
       $num_product = 0; 
-      $num_product_raw = tep_db_query("select products_quantity, products_name from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$oID."'"); 
+      $num_product_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$oID."'"); 
       $num_product_res = tep_db_fetch_array($num_product_raw); 
       if ($num_product_res) {
         $num_product = $num_product_res['products_quantity']; 
@@ -673,7 +677,9 @@ while ($totals = tep_db_fetch_array($totals_query)) {
         '${ENSURE_TIME}',
         '${PRODUCTS_QUANTITY}',
         '${EFFECTIVE_TIME}',
-        '${PRODUCTS_NAME}' 
+        '${PRODUCTS_NAME}',
+        '${PRODUCTS_PRICE}',
+        '${SUB_TOTAL}'
       ),array(
         $select_products_res['customers_name'],
         $select_products_res['customers_email_address'],
@@ -690,7 +696,9 @@ while ($totals = tep_db_fetch_array($totals_query)) {
         $ensure_date_arr[0],
         $num_product.PREORDER_PRODUCT_UNIT_TEXT,
         date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT,strtotime($select_products_res['predate'])),
-        $num_product_res['products_name']
+        $num_product_res['products_name'],
+        $currencies->display_price($num_product_res['final_price'], $num_product_res['products_tax']),
+        $ot_sub_total
       ),$email);
       
       if ($customer_guest['customers_guest_chk'] != 9) {
@@ -731,7 +739,9 @@ while ($totals = tep_db_fetch_array($totals_query)) {
             '${ENSURE_TIME}',
             '${PRODUCTS_QUANTITY}',
             '${EFFECTIVE_TIME}',
-            '${PRODUCTS_NAME}' 
+            '${PRODUCTS_NAME}', 
+            '${PRODUCTS_PRICE}',
+            '${SUB_TOTAL}'
           ),array(
             $select_t_products_res['customers_name'],
             $select_t_products_res['customers_email_address'],
@@ -748,10 +758,11 @@ while ($totals = tep_db_fetch_array($totals_query)) {
             $ensure_date_arr[0],
             $num_product.PREORDER_PRODUCT_UNIT_TEXT,
             date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT,strtotime($select_products_res['predate'])),
-            $num_product_res['products_name']
+            $num_product_res['products_name'],
+            $currencies->display_price($num_product_res['final_price'], $num_product_res['products_tax']),
+            $ot_sub_total
           ),$preorder_email_title);
         }
-        
         tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $preorder_email_title, $email, get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $order->info['site_id']),$order->info['site_id']);
       } 
       //tep_mail(get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS', $order->info['site_id']), FORDERS_MAIL_UPDATE_CONTENT_MAIL.'【' . get_configuration_by_site_id('STORE_NAME', $order->info['site_id']) . '】', $email, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);

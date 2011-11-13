@@ -3,7 +3,7 @@
   $Id$
 */
 error_reporting(E_ALL^E_WARNING^E_DEPRECATED);
-ini_set("display_errors","On");
+ini_set("display_errors","Off");
 require(DIR_WS_FUNCTIONS . 'visites.php');
 // user new point value it from checkout_confirmation.php 
 if(isset($real_point)){
@@ -426,7 +426,7 @@ $mailoption['BANK_KOUZA_NUM']        = $bank_kouza_num;
 $mailoption['BANK_KOUZA_NAME']        = $bank_kouza_name;
 
 if ($point){
-  $mailoption['POINT']            =  str_replace('円','',$currencies->format(abs($point)));
+  $mailoption['POINT']            = str_replace('円', '', $currencies->format(abs($point)));
 }else {
   $mailoption['POINT']            = 0;
 }
@@ -519,9 +519,6 @@ if (method_exists($payment_class,'getMailString')){
   $email_printing_order .=$payment_class->getMailString();
 }
 
-$email_printing_order .= '------------------------------------------------------------------------' . "\n";
-$email_printing_order .= '最終確認　　　　　　：確認者名＿＿＿＿' . "\n";
-$email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
 # ------------------------------------------
 // send emails to other people
 

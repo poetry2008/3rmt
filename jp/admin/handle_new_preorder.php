@@ -101,7 +101,7 @@
           ); 
     }
     
-    tep_redirect(tep_href_link('edit_new_preorders.php', 'oID='.$insert_id.'&action=edit'));
+    tep_redirect(tep_href_link('edit_new_preorders.php', 'oID='.$insert_id.'&action=edit&dtype=1'));
   } else {
     tep_redirect(tep_href_link('final_preorders.php', 'oID='.$_GET['oID'].'&action=edit'));
   }

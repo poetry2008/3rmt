@@ -28,12 +28,12 @@ $(function(){
         var title = $("#title").val();
         var color = $("#mycolor").val();
         if(txt==""){
-        $("#msg_txt").html("空白で入力しないでください！");
+        $("#msg_txt").html("内容を入力してください");
         $("#note_txt").focus();
         return false;
         }
         if(title==""){
-        $("#msg_title").html("空白で入力しないでください！");
+        $("#msg_title").html("タイトルを入力してください");
         $("#title").focus();
         return false;
         }
@@ -50,7 +50,7 @@ $(function(){
           //alert(zIndex);
           msg = msg.split('||');
           if(parseInt(msg[0])){
-          var str = "<div id='note_"+msg[0]+"' class='note "+color+"' style='left:0;top:0;z-index:"+zIndex+",width:150px,height:150px'><div class='note_head' ><div class='title'>"+title+"&nbsp;&nbsp;"+msg[1]+"</div><div class='note_clost'><input type='hidden' value='"+msg[0]+"' class='hidden'><input type='button' onclick=\"note_save_text(\'"+msg[0]+"\')\" value='保存'><input type='image' onclick=\"note_desplay_none(\'"+msg[0]+"\')\" alt='close' src='images/icons/note_close.gif'></div></div><div id='note_text_"+msg[0]+"' class='note_textarea' style='height:120px'><textarea style='resize: none;overflow;auto;font-size:11px;'>"+txt+"</textarea></div></div>";
+          var str = "<div id='note_"+msg[0]+"' class='note "+color+"' style='left:0;top:0;z-index:"+zIndex+",width:150px,height:150px'><div class='note_head' ><div class='title'><input type='button' onclick=\"note_save_text(\'"+msg[0]+"\')\" value='保存'>"+title+"&nbsp;&nbsp;"+msg[1]+"</div><div class='note_clost'><input type='hidden' value='"+msg[0]+"' class='hidden'><input type='image' onclick=\"note_desplay_none(\'"+msg[0]+"\')\" alt='close' src='images/icons/note_close.gif'></div></div><div id='note_text_"+msg[0]+"' class='note_textarea' style='height:120px'><textarea style='resize: none;overflow;auto;font-size:11px;'>"+txt+"</textarea></div></div>";
           $(".demo").append(str);
           make_draggable($('.note'));
           $.fancybox.close();
@@ -99,10 +99,14 @@ async: false,
 data:
 'action=save_text&text='+text+'&id='+id,
 success: function(date){
-if(date==1){
+var res_arr = date.split("|||");
+if(res_arr[0]=='true'){
+  title = '<input type="button" onclick="note_save_text(\''+id+'\')" value="保存">&nbsp;&nbsp;'+res_arr[1]+'&nbsp;&nbsp;'+res_arr[2];
+  content = res_arr[3];
+  $('#note_title_'+id).html(title);
+  $('#note_textarea_'+id).val(content);
   alert("内容を保存しました。");
 }
 }
 });
-
 }

@@ -23,10 +23,12 @@
 </tr>
 <tr>
 <td><ul id="color">
-<li class="yellow"></li>
-<li class="blue"></li>
+<li class="white"></li>
+<li class="gray"></li>
 <li class="red"></li>
-</ul><input type="hidden" id="mycolor" value="yellow" /></td>
+<li class="blue"></li>
+<li class="yellow"></li>
+</ul><input type="hidden" id="mycolor" value="white" /></td>
 </tr>
 <tr>
 <td height="36" colspan="2" align="center"><input type="submit" id="addbtn"

@@ -50,9 +50,9 @@
           $pre_name = $preorder_product_res['products_name'];
           $pre_num = $preorder_product_res['products_quantity']; 
         }
-        $pre_replace_info_arr = array($pre_name, $pre_num, $pre_date, $preorder['payment_method']);
+        $pre_replace_info_arr = array($pre_name, $pre_num, $pre_date, $preorder['payment_method'], $preorder['customers_name'], STORE_NAME, HTTP_SERVER, $preorder_id);
         
-        $preorder_email_text = str_replace($replace_info_arr, $pre_replace_info_arr, $preorder_email_text, $preorder['customers_name'], STORE_NAME, HTTP_SERVER, $preorder_id);
+        $preorder_email_text = str_replace($replace_info_arr, $pre_replace_info_arr, $preorder_email_text);
       } else {
         $preorder_email_subject = str_replace('${SITE_NAME}', STORE_NAME, PREORDER_MAIL_ACTIVE_SUBJECT); 
         $active_url = HTTP_SERVER.'/preorder_auth.php?pid='.$preorder_id; 

@@ -26,10 +26,16 @@ tep_db_query("UPDATE notes SET xyz='".$left."|".$top."|".$zindex."|".$xlen."|".$
 }else if(isset($_POST['action'])&&$_POST['action']=='save_text'){
   $id = $_POST['id'];
   $text = $_POST['text'];
-  $query  = tep_db_query("update notes set content='".trim($text)."' where id =
+  $time = date('Y-m-d H:i:s');
+  $query  = tep_db_query("update notes set
+      content='".trim($text)."', addtime='".$time."' where id =
       '".$id."'");
   if($query){
-    echo 1;
+    $now_sql = "select * from notes where id='".$id."'";
+    $now_query = tep_db_query($now_sql);
+    $now_res = tep_db_fetch_array($now_query);
+    echo
+      "true|||".$now_res['title']."|||".substr($now_res['addtime'],0,strlen($now_res['addtime'])-3)."|||".$now_res['content'];
   }
 }
 ?>

@@ -1370,7 +1370,7 @@ if (($action == 'edit') && ($order_exists == true)) {
         </tr>
         <tr>
           <td class="main"><b><?php echo EDIT_ORDERS_SEND_MAIL_TEXT; ?></b></td>
-          <td class="main"><table bgcolor="red" cellspacing="5"><tr><td><?php echo tep_draw_checkbox_field('notify', '', true); ?></td></tr></table></td>
+          <td class="main"><table bgcolor="red" cellspacing="5"><tr><td><?php echo tep_draw_checkbox_field('notify', '', isset($_GET['dtype'])?false:true); ?></td></tr></table></td>
         </tr>
         <?php if($CommentsWithStatus) { ?>
         <tr>

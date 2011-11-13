@@ -173,8 +173,8 @@ function ajaxUpdate(id,order){
               $has_item_res['title'].TEXT_DELETE_CONFRIM;?>')" href="<?php echo tep_href_link(FILENAME_OA_ITEM, 'gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&eid='.$has_item_res['id'].'&action=del');?>"><?php echo DEL_ITEM_LINK_TEXT;?></a> 
               </td>
               <td><?php
-            echo '<input type="button" class="up" value=\'↑\' onclick="editorder(this)">';
-            echo '<input type="button" class="down" value=\'↓\' onclick="editorder(this)">';
+            echo '<input type="button" class="up" value=\''.TEXT_UP.'\' onclick="editorder(this)">';
+            echo '<input type="button" class="down" value=\''.TEXT_DOWN.'\' onclick="editorder(this)">';
 ?>
               </td>
             </tr>

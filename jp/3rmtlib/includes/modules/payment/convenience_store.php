@@ -102,15 +102,12 @@ class convenience_store {
     if (isset($_SESSION['customer_emailaddress'])) {
       $email_default_str = $_SESSION['customer_emailaddress']; 
     }
-    if(SITE_ID == 1){
       $selection = array(
                          'id' => $this->code,
                          'module' => $this->title,
                          'fields' => array(array('title' => MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_PROCESS,
                                                  'field' => ''),
-                                           array('title' => '<div class="rowHide
-                              rowHide_'.$this->code.'" id="cemail"
-                              style="display:none;">'.MODULE_PAYMENT_CONVENIENCE_INFO_TEXT.'<div
+                                           array('title' => '<div class="rowHide rowHide_'.$this->code.'" id="cemail" style="display:none;">'.MODULE_PAYMENT_CONVENIENCE_INFO_TEXT.'<div
                               class="cemail_input_info"><div class="cemail_front_text">'
                                                  .MODULE_PAYMENT_CONVENIENCE_EMAIL_TEXT.'</div><div
                               class="con_email01">'.tep_draw_input_field('convenience_email',
@@ -132,24 +129,6 @@ class convenience_store {
                                                  'field' => '')
                                            )
                          );
-    }else{
-      $selection = array(
-                         'id' => $this->code,
-                         'module' => $this->title,
-                         'fields' => array(array('title' => MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_PROCESS,
-                                                 'field' => ''),
-                                           array('title' => '<div id="cemail" class="rowHide" style="display:none;">'.MODULE_PAYMENT_CONVENIENCE_INFO_TEXT.MODULE_PAYMENT_CONVENIENCE_EMAIL_TEXT.'<div class="con_email01">'.tep_draw_input_field('convenience_email', $email_default_str, 'onpaste="return false"').MODULE_PAYMENT_CONVENIENCE_MUST_INPUT.'</div></div>', 
-                                                 'field' => '' 
-                                                 ), 
-                                           array('title' => '<div id="caemail" class="rowHide" style="display:none;">'.MODULE_PAYMENT_CONVENIENCE_EMAIL_CONFIRMATION_TEXT.'<div class="con_email02">'.tep_draw_input_field('convenience_email_again', $email_default_str, 'onpaste="return false"').MODULE_PAYMENT_CONVENIENCE_MUST_INPUT.'</div><p>'.MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_FOOTER.'</p></div>'. $added_hidden,
-                                                 'field' => '' 
-                                                 ), 
-                                           array('title' => $s_message,
-                                                 'field' => '')
-                                           )
-                         );
-
-    }
 
     return $selection;
   }
@@ -346,7 +325,7 @@ class convenience_store {
           $error_message = MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE;
         }
         
-      return array('title' => 'コンビニ決済 エラー!',
+      return array('title' => $this->title.' エラー!',
                    'error' => $error_message);
     
     }else{

@@ -139,10 +139,14 @@
         $ot_result = tep_db_fetch_array($ot_query);
         $otm = (int)$ot_result['value'] . TEXT_MONEY_SYMBOL;
         
+        $ot_sub_query = tep_db_query("select value from " . TABLE_PREORDERS_TOTAL . " where orders_id = '".$oID."' and class = 'ot_subtotal'");
+        $ot_sub_result = tep_db_fetch_array($ot_sub_query);
+        $ot_sub_total = (int)$ot_sub_result['value'].TEXT_MONEY_SYMBOL;
+
         $os_query = tep_db_query("select orders_status_name from " . TABLE_PREORDERS_STATUS . " where orders_status_id = '".$status."'");
         $os_result = tep_db_fetch_array($os_query);
         $num_product = 0; 
-        $num_product_raw = tep_db_query("select products_quantity, products_name from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$oID."'"); 
+        $num_product_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$oID."'"); 
         $num_product_res = tep_db_fetch_array($num_product_raw); 
         if ($num_product_res) {
           $num_product = $num_product_res['products_quantity']; 
@@ -163,7 +167,9 @@
           '${ENSURE_TIME}',
           '${PRODUCTS_QUANTITY}',
           '${EFFECTIVE_TIME}',
-          '${PRODUCTS_NAME}'
+          '${PRODUCTS_NAME}',
+          '${PRODUCTS_PRICE}',
+          '${SUB_TOTAL}'
         ),array(
           $check_status['customers_name'],
           $check_status['customers_email_address'],
@@ -179,8 +185,10 @@
           $ensure_date_arr[0],
           $num_product.PREORDER_PRODUCT_UNIT_TEXT,
           date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT, strtotime($check_status['predate'])),
-          $num_product_res['products_name']
-        ),$title
+          $num_product_res['products_name'],
+          $currencies->display_price($num_product_res['final_price'], $num_product_res['products_tax']),
+          $ot_sub_total
+          ),$title
         );
         $comments = str_replace(array(
           '${NAME}',
@@ -215,7 +223,9 @@
           $ensure_date_arr[0],
           $num_product.PREORDER_PRODUCT_UNIT_TEXT,
           date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT, strtotime($check_status['predate'])),
-          $num_product_res['products_name']
+          $num_product_res['products_name'],
+          $currencies->display_price($num_product_res['final_price'], $num_product_res['products_tax']),
+          $ot_sub_total
         ),$comments
         );
         if (!tep_is_oroshi($check_status['customers_id'])) {
@@ -416,11 +426,15 @@
       $ot_result = tep_db_fetch_array($ot_query);
       $otm = (int)$ot_result['value'] . TEXT_MONEY_SYMBOL;
       
+      $ot_sub_query = tep_db_query("select value from " . TABLE_PREORDERS_TOTAL . " where orders_id = '".$oID."' and class = 'ot_subtotal'");
+      $ot_sub_result = tep_db_fetch_array($ot_sub_query);
+      $ot_sub_total = (int)$ot_sub_result['value'].TEXT_MONEY_SYMBOL;
+      
       $os_query = tep_db_query("select orders_status_name from " . TABLE_PREORDERS_STATUS . " where orders_status_id = '".$status."'");
       $os_result = tep_db_fetch_array($os_query);
       
       $num_product = 0; 
-      $num_product_raw = tep_db_query("select products_quantity, products_name from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$oID."'"); 
+      $num_product_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$oID."'"); 
       $num_product_res = tep_db_fetch_array($num_product_raw); 
       if ($num_product_res) {
         $num_product = $num_product_res['products_quantity']; 
@@ -442,7 +456,9 @@
         '${ENSURE_TIME}', 
         '${PRODUCTS_QUANTITY}',
         '${EFFECTIVE_TIME}',
-        '${PRODUCTS_NAME}'
+        '${PRODUCTS_NAME}',
+        '${PRODUCTS_PRICE}',
+        '${SUB_TOTAL}'
       ),array(
         $check_status['customers_name'],
         $check_status['customers_email_address'],
@@ -459,7 +475,9 @@
         $ensure_date_arr[0], 
         $num_product.PREORDER_PRODUCT_UNIT_TEXT,
         date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT, strtotime($check_status['predate'])),
-        $num_product_res['products_name'] 
+        $num_product_res['products_name'], 
+        $currencies->display_price($num_product_res['final_price'], $num_product_res['products_tax']),
+        $ot_sub_total
       ),$title);
 
       $comments = str_replace(array(
@@ -478,7 +496,9 @@
         '${ENSURE_TIME}', 
         '${PRODUCTS_QUANTITY}',
         '${EFFECTIVE_TIME}',
-        '${PRODUCTS_NAME}'
+        '${PRODUCTS_NAME}',
+        '${PRODUCTS_PRICE}',
+        '${SUB_TOTAL}'
       ),array(
         $check_status['customers_name'],
         $check_status['customers_email_address'],
@@ -495,7 +515,9 @@
         $ensure_date_arr[0], 
         $num_product.PREORDER_PRODUCT_UNIT_TEXT,
         date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT, strtotime($check_status['predate'])),
-        $num_product_res['products_name'] 
+        $num_product_res['products_name'], 
+        $currencies->display_price($num_product_res['final_price'], $num_product_res['products_tax']),
+        $ot_sub_total
       ),$comments);
       if (!tep_is_oroshi($check_status['customers_id'])) {
         if ($status == 32) {
@@ -707,23 +729,6 @@ if($reload == 'yes') {
 }
 */
 ?>
-function q_3_2(){
-  if ($('#q_3_1').attr('checked') == true){
-    if ($('#q_3_2_m').val() == '' || $('#q_3_2_m').val() == '') {
-      $('#q_3_2_m').val(new Date().getMonth()+1);
-      $('#q_3_2_d').val(new Date().getDate());
-    }
-  }
-}
-
-function q_4_3(){
-  if ($('#q_4_2').attr('checked') == true){
-    if ($('#q_4_3_m').val() == '' || $('#q_4_3_m').val() == '') {
-      $('#q_4_3_m').val(new Date().getMonth()+1);
-      $('#q_4_3_d').val(new Date().getDate());
-    }
-  }
-}
 
 function del_confirm_payment_time(oid, status_id)
 {
