@@ -426,14 +426,14 @@ $mailoption['BANK_KOUZA_NUM']        = $bank_kouza_num;
 $mailoption['BANK_KOUZA_NAME']        = $bank_kouza_name;
 
 if ($point){
-$mailoption['POINT']            = $point . '円' ;
+  $mailoption['POINT']            =  str_replace('円','',$currencies->format(abs($point)));
 }else {
   $mailoption['POINT']            = 0;
 }
 if(!isset($total_mail_fee)){
   $total_mail_fee =0;
 }
-$mailoption['MAILFEE']          = $total_mail_fee.'円';
+$mailoption['MAILFEE']          = str_replace('円','',$currencies->format(abs($total_mail_fee)));
 $email_order = '';
 $email_order = $payment_modules->getOrderMailString($mailoption);  
   
