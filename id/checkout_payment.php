@@ -18,26 +18,27 @@ function triggerHide(radio)
       $(".rowHide_"+$(radio).val()).find("input").removeAttr("disabled");
      }
 }
-	
 $(document).ready(function(){
-if($("input[name=payment]").length == 1){
-  $("input[name=payment]").each(function(index){
-      $(this).attr('checked','true');
-    });
-}
-  $("input[name=payment]").each(function(index){
-    if ($(this).attr('checked') == true) {
-      triggerHide(this);
+    if($("input[name=payment]").length == 1){
+      $("input[name=payment]").each(function(index){
+	  $(this).attr('checked','true');
+	});
     }
-  });
+    $("input[name=payment]").click(function(index){
+	  triggerHide(this);
+      });
+    $("input[name=payment]").each(function(index){
+	if ($(this).attr('checked') == true) {
+	  triggerHide(this);
+	}
+      });
+    $(".moduleRow").click(function(){
+	triggerHide($(this).find("input:radio")[0]);
+      });
+    $(".moduleRowSelected").click(function(){
+	triggerHide($(this).find("input:radio")[0]);
+      });
 
-$("input:radio").click(function(){
-    triggerHide(this);
-});
-$(".moduleRow").click(function(){
-    triggerHide($(this).find("input:radio")[0]);
-
-});
   });
 --></script>
 <script type="text/javascript"><!--
