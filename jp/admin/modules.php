@@ -482,7 +482,7 @@ default:
 	      foreach ($con_limit_show as $lim_key => $lim_value) {
 		if ($lim_value == 1) {
 		  $con_limit_show_str .= '会員&nbsp;&nbsp;'; 
-		} else {
+		} elseif($lim_value ==2){
 		  $con_limit_show_str .= 'ゲスト'; 
 		}
 	      }
