@@ -430,10 +430,13 @@ if ($point){
 }else {
   $mailoption['POINT']            = 0;
 }
-if(!isset($total_mail_fee)){
+if(!isset($_SESSION['mailfee'])){
   $total_mail_fee =0;
+}else{
+  $total_mail_fee =$_SESSION['mailfee'];
 }
-$mailoption['MAILFEE']          = str_replace('円','',$currencies->format(abs($total_mail_fee)));
+
+$mailoption['MAILFEE']          = str_replace('円','',$total_mail_fee);
 $email_order = '';
 $email_order = $payment_modules->getOrderMailString($mailoption);  
   

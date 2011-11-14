@@ -135,8 +135,9 @@ class buying {
   function selection() {
     global $currencies;
     global $order;
-    if($_GET['bank_error']){
+    if($_SESSION['bank_error']){
       echo '<font color="#FF0000">'.$_GET['bank_error'].'</font>'; 
+      unset($_SESSION['bank_error']);
       }
     $total_cost = $order->info['total'];
     $f_result = $this->calc_fee($total_cost); 
@@ -231,26 +232,35 @@ class buying {
     $_SESSION['bank_name']        = $bank_name;
     $_SESSION['bank_kouza_num']   = $bank_kouza_num;
     $_SESSION['bank_kouza_name']  = $bank_kouza_name;
+    
+    if($bank_kamoku == '') {
+      tep_session_unregister('bank_kamoku');
+      tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL'));
+    }
     if($bank_name == '') {
       tep_session_unregister('bank_name');
-      tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, 'bank_error=' . urlencode(TEXT_BANK_ERROR_NAME), 'SSL'));
+      $_SESSION['bank_error'] =true;
+      tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL'));
     }
     if($bank_shiten == '') {
       tep_session_unregister('bank_shiten');
-      tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, 'bank_error=' . urlencode(TEXT_BANK_ERROR_SHITEN), 'SSL'));
+      $_SESSION['bank_error'] =true;
     }
     if($bank_kouza_num == '') {
+      $_SESSION['bank_error'] =true;
       tep_session_unregister('bank_kouza_num');
-      tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, 'bank_error=' . urlencode(TEXT_BANK_ERROR_KOUZA_NUM), 'SSL'));
+      tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL'));
+
     }
     if (!preg_match("/^[0-9]+$/", $bank_kouza_num)) {
+      $_SESSION['bank_error'] =true;
       tep_session_unregister('bank_kouza_num');
-      tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, 'bank_error=' . urlencode(TEXT_BANK_ERROR_KOUZA_NUM2), 'SSL'));
+      tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL'));
     } 
     if($bank_kouza_name == '') {
+      $_SESSION['bank_error'] =true;
       tep_session_unregister('bank_kouza_name');
-      tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, 'bank_error=' . urlencode(TEXT_BANK_ERROR_KOUZA_NAME), 'SSL'));
-    }
+      tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL'));    }
 
     return false;
   }
