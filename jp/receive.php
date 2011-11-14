@@ -58,13 +58,13 @@ if ($w_clientip == '76011' && $w_username && $w_email && $w_money && $w_telno) {
       'orders_status' => '30',
     ), 'update', "orders_id='".$orders['orders_id']."'");
     $sql_data_array = array('orders_id' => $orders['orders_id'], 
-                          'orders_status_id' => '30', 
+                          'orders_status_id' => '15', 
                           'date_added' => 'now()', 
                           'customer_notified' => '0',
                           'comments' => '');
     tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
     orders_updated($orders['orders_id']);
-    tep_order_status_change($orders['orders_id'],30);
+    tep_order_status_change($orders['orders_id'], 15);
     // success
     tep_db_perform('telecom_unknow', array(
       '`option`'      => $w_option,
