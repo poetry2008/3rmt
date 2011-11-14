@@ -233,7 +233,7 @@ if (!isset($_GET['pid'])) {
 ?> 
 </h2>
 <div class="box">
-<?php echo tep_draw_form('login', tep_href_link(FILENAME_LOGIN, 'action=process', 'SSL')); ?>
+<?php echo tep_draw_form('login', tep_href_link(FILENAME_LOGIN, 'action=process'.(isset($_GET['pid'])?'&pid='.$_GET['pid']:''), 'SSL')); ?>
       <table class="box_des" width="95%" border="0" align="center" cellpadding="0" cellspacing="0">
 
         <?php
