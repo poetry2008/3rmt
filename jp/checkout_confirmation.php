@@ -58,10 +58,6 @@
     $payment_modules->pre_confirmation_check();
   }
 
-// load the selected shipping module
-//  require(DIR_WS_CLASSES . 'shipping.php');
-//  $shipping_modules = new shipping($shipping);
-
   require(DIR_WS_CLASSES . 'order_total.php');
   $order_total_modules = new order_total;
 
@@ -400,6 +396,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
         </tr> 
         <?php
   if (is_array($payment_modules->modules)) {
+
     if ($confirmation = $payment_modules->confirmation()) {
 ?> 
         <tr> 
