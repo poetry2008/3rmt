@@ -115,6 +115,22 @@
             <?php echo date('Y'.PREORDER_SUCCESS_YEAR_TEXT.'m'.PREORDER_SUCCESS_MONTH_TEXT.'d'.PREORDER_SUCCESS_DAY_TEXT, strtotime($preorder['predate']));?>
             </td>
             </tr>
+            <tr>
+              <td>
+              <?php echo PREORDER_SUCCESS_APPOINT_PAYMENT_NAME;?>
+              </td>
+              <td>
+              <?php echo $preorder['payment_method'];?> 
+              </td>
+            </tr>
+            <tr>
+              <td>
+              <?php echo PREORDER_SUCCESS_APPOINT_COMMENT;?>
+              </td>
+              <td>
+              <?php echo nl2br($preorder['comment_msg']);?> 
+              </td>
+            </tr>
             </table><br>
             </td>
           </tr>
