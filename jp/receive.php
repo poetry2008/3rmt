@@ -1,7 +1,7 @@
 <?php 
 require('includes/application_top.php');
 
-check_uri('/^\/receive.php/');
+//check_uri('/^\/receive.php/');
 
 header("Content-type: text/html"); 
 
