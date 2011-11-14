@@ -159,6 +159,7 @@
                                 $currencies->format_total($GLOBALS[$class]->output[$i]['value']) . '</td>' . "\n" .
                                 '              </tr>';
             }
+            $_SESSION['mailfee'] = $currencies->format($total_handle_fee);   
             if ($class == 'ot_subtotal') {
               if (!empty($total_handle_fee)) {
                 $output_string .= '              <tr>' . "\n" .

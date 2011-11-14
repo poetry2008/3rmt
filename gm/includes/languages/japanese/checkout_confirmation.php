@@ -1,3 +1,4 @@
+
 <?php
 /*
   $Id$
@@ -50,6 +51,7 @@ define('TEXT_BANK_SELECT_KAMOKU_T', '当座');
 
 define('TEXT_BANK_ERROR_NAME', '【'.mb_substr(TEXT_BANK_NAME,0,(mb_strlen(TEXT_BANK_NAME)-1)).'】が入力されていません');
 define('TEXT_BANK_ERROR_SHITEN', '【'.mb_substr(TEXT_BANK_SHITEN,0,(mb_strlen(TEXT_BANK_SHITEN)-1)).'】が入力されていません');
+define('TEXT_BANK_ERROR_KAMOKU', '【'.mb_substr(TEXT_BANK_KAMOKU,0,(mb_strlen(TEXT_BANK_KAMOKU)-1)).'】が入力されていません');
 define('TEXT_BANK_ERROR_KOUZA_NUM', '【'.mb_substr(TEXT_BANK_KOUZA_NUM,0,(mb_strlen(TEXT_BANK_KOUZA_NUM)-1)).'】が入力されていません');
 define('TEXT_BANK_ERROR_KOUZA_NUM2', '【'.mb_substr(TEXT_BANK_KOUZA_NUM,0,(mb_strlen(TEXT_BANK_KOUZA_NUM)-1)).'】は半角で入力してください。');
 define('TEXT_BANK_ERROR_KOUZA_NAME', '【'.mb_substr(TEXT_BANK_KOUZA_NAME,0,(mb_strlen(TEXT_BANK_KOUZA_NAME)-1)).'】が入力されていません');

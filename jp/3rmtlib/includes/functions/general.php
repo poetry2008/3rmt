@@ -4428,6 +4428,20 @@ function tep_whether_show_preorder_payment($limit_setting) {
   if (empty($payment_arr)) {
     return false; 
   }
+  $tmp_arr = array(); 
+  
+  foreach ($payment_arr as $pkey => $pvalue) {
+    if (!empty($pvalue)) {
+      $tmp_arr[] = $pvalue; 
+    }
+  }
+  
+  if (empty($tmp_arr)) {
+    return false; 
+  }
+  
+  $payment_arr = $tmp_arr;
+
   $num = count($payment_arr); 
   if ($num == 1) {
     if (empty($payment_arr[0])) {
