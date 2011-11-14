@@ -1359,11 +1359,7 @@ if (($action == 'edit') && ($order_exists == true)) {
           <?php
           $is_select_query = tep_db_query(" select orders_status_id, orders_status_name from " . TABLE_PREORDERS_STATUS . " where language_id = '" . (int)$languages_id . "' limit 1");
           $is_select_res = tep_db_fetch_array($is_select_query); 
-          if ($is_select_res) {
-            $sel_status_id = $is_select_res['orders_status_id']; 
-          } else {
-            $sel_status_id = 1; 
-          }
+          $sel_status_id = DEFAULT_PREORDERS_STATUS_ID; 
           echo tep_draw_pull_down_menu('status', $orders_statuses, $sel_status_id, 'id="status" onchange="check_prestatus();"'); 
           ?>
           </td>
@@ -1383,7 +1379,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     <td class="main" width="10">&nbsp;</td>
     <td class="main">
     <?php
-    $ma_se = "select * from ".TABLE_PREORDERS_MAIL." where orders_status_id = '".$sel_nyuuka_id."'"; 
+    $ma_se = "select * from ".TABLE_PREORDERS_MAIL." where orders_status_id = '".$sel_status_id."'"; 
     $mail_sele = tep_db_query($ma_se);
     $mail_sql = tep_db_fetch_array($mail_sele);
     ?>
