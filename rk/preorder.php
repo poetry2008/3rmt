@@ -271,14 +271,14 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
       if (tep_session_is_registered('customer_id')) {
           $preorder_email_text = PREORDER_MAIL_CONTENT; 
           
-          $replace_info_arr = array('${PRODUCTS_NAME}', '${PRODUCTS_QUANTITY}', '${EFFECTIVE_TIME}', '${PAY}', '${NAME}', '${SITE_NAME}', '${SITE_URL}', '${PREORDER_N}'); 
+          $replace_info_arr = array('${PRODUCTS_NAME}', '${PRODUCTS_QUANTITY}', '${EFFECTIVE_TIME}', '${PAY}', '${NAME}', '${SITE_NAME}', '${SITE_URL}', '${PREORDER_N}', '${ORDER_COMMENT}'); 
           $predate_str_arr = explode('-', $_POST['predate']);
           $predate_str = $predate_str_arr[0].PREORDER_YEAR_TEXT.$predate_str_arr[1].PREORDER_MONTH_TEXT.$predate_str_arr[2].PREORDER_MONTH_TEXT;
         
           $payment_name_class = new $_POST['pre_payment'];
           $payment_name_str = $payment_name_class->title;
           
-          $pre_replace_info_arr = array($_POST['products_name'], $_POST['quantity'], $predate_str, $payment_name_str, tep_get_fullname($account_values['customers_firstname'],$account_values['customers_lastname']), STORE_NAME, HTTP_SERVER, $preorder_id);
+          $pre_replace_info_arr = array($_POST['products_name'], $_POST['quantity'], $predate_str, $payment_name_str, tep_get_fullname($account_values['customers_firstname'],$account_values['customers_lastname']), STORE_NAME, HTTP_SERVER, $preorder_id, $_POST['yourmessage']);
           
           $preorder_email_text = str_replace($replace_info_arr, $pre_replace_info_arr, $preorder_email_text);
           
@@ -306,14 +306,14 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
           } else {
             $preorder_email_text = PREORDER_MAIL_CONTENT; 
             
-            $replace_info_arr = array('${PRODUCTS_NAME}', '${PRODUCTS_QUANTITY}', '${EFFECTIVE_TIME}', '${PAY}', '${NAME}', '${SITE_NAME}', '${SITE_URL}', '${PREORDER_N}'); 
+            $replace_info_arr = array('${PRODUCTS_NAME}', '${PRODUCTS_QUANTITY}', '${EFFECTIVE_TIME}', '${PAY}', '${NAME}', '${SITE_NAME}', '${SITE_URL}', '${PREORDER_N}', '${ORDER_COMMENT}'); 
             $predate_str_arr = explode('-', $_POST['predate']);
             $predate_str = $predate_str_arr[0].PREORDER_YEAR_TEXT.$predate_str_arr[1].PREORDER_MONTH_TEXT.$predate_str_arr[2].PREORDER_MONTH_TEXT;
             
             $payment_name_class = new $_POST['pre_payment'];
             $payment_name_str = $payment_name_class->title;
               
-            $pre_replace_info_arr = array($_POST['products_name'], $_POST['quantity'], $predate_str, $payment_name_str, $from_name, STORE_NAME, HTTP_SERVER, $preorder_id);
+            $pre_replace_info_arr = array($_POST['products_name'], $_POST['quantity'], $predate_str, $payment_name_str, $from_name, STORE_NAME, HTTP_SERVER, $preorder_id, $_POST['yourmessage']);
             
             $preorder_email_text = str_replace($replace_info_arr, $pre_replace_info_arr, $preorder_email_text);
             

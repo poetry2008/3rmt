@@ -55,7 +55,7 @@
       $pre_name = '';
       $pre_num = 0;
       $pre_date = '';
-      $replace_info_arr = array('${PRODUCTS_NAME}', '${PRODUCTS_QUANTITY}', '${EFFECTIVE_TIME}', '${PAY}', '${NAME}', '${SITE_NAME}', '${SITE_URL}', '${PREORDER_N}'); 
+      $replace_info_arr = array('${PRODUCTS_NAME}', '${PRODUCTS_QUANTITY}', '${EFFECTIVE_TIME}', '${PAY}', '${NAME}', '${SITE_NAME}', '${SITE_URL}', '${PREORDER_N}', '${ORDER_COMMENT}'); 
       
       $pre_date_str = strtotime($preorder_res['predate']); 
       $pre_date = date('Y', $pre_date_str).PREORDER_YEAR_TEXT.date('m', $pre_date_str).PREORDER_MONTH_TEXT.date('d', $pre_date_str).PREORDER_DAY_TEXT; 
@@ -68,7 +68,7 @@
         $pre_num = $preorder_products_res['products_quantity']; 
       }
      
-      $pre_replace_info_arr = array($pre_name, $pre_num, $pre_date, $preorder_res['payment_method'], $preorder_res['customers_name'], STORE_NAME, HTTP_SERVER, $preorder_res['orders_id']);
+      $pre_replace_info_arr = array($pre_name, $pre_num, $pre_date, $preorder_res['payment_method'], $preorder_res['customers_name'], STORE_NAME, HTTP_SERVER, $preorder_res['orders_id'], $preorder_res['comment_msg']);
      
       $preorder_email_text = str_replace($replace_info_arr, $pre_replace_info_arr, $preorder_email_text);
       $pre_email_text = str_replace('${SITE_NAME}', STORE_NAME, PREORDER_MAIL_SUBJECT);
