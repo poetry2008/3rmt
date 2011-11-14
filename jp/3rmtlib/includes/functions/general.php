@@ -4429,20 +4429,52 @@ function tep_whether_show_preorder_payment($limit_setting) {
     return false; 
   }
   $num = count($payment_arr); 
+  if ($num == 1) {
+    if (empty($payment_arr[0])) {
+      return false; 
+    }
+  }
+  
   if ($num == 2) {
-    return true; 
-  } else if ($num == 1) { 
+    $i = 0; 
+    foreach ($payment_arr as $key => $value) {
+      if (!empty($value)) {
+        $i++; 
+      }
+    }
+    if ($i == $num) {
+      return true; 
+    } else {
+      foreach ($payment_arr as $skey => $svalue) {
+        if (!empty($svalue)) {
+          if ($svalue == 1) {
+            if (!isset($_SESSION['customer_id'])) {
+              return false; 
+            } else  if (isset($_SESSION['customer_id']) && ($_SESSION['guestchk'] == '1')) {
+              return false; 
+            }
+          } else if ($svalue == 2) {
+            if (isset($_SESSION['customer_id']) && ($_SESSION['guestchk'] == '0')) {
+              return false; 
+            }
+          }
+          break; 
+        }
+      }  
+    }
+  } else {
     if ($payment_arr[0] == 1) {
       if (!isset($_SESSION['customer_id'])) {
         return false; 
-      } else  if (isset($_SESSION['customer_id']) && ($_SESSION['guestchk'] == 1)) {
+      } else  if (isset($_SESSION['customer_id']) && ($_SESSION['guestchk'] == '1')) {
         return false; 
       }
     } else if ($payment_arr[0] == 2) {
-      if (isset($_SESSION['customer_id']) && ($_SESSION['guestchk'] == 0)) {
+      if (isset($_SESSION['customer_id']) && ($_SESSION['guestchk'] == '0')) {
         return false; 
       }
     }
   }
+
   return true;
 }
