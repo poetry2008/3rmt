@@ -163,7 +163,7 @@ class buying {
 					 TEXT_BANK_NAME.
 					 '</div>'.
 					 '<div class="con_email01">'.
-					 tep_draw_input_field('bank_name', '').
+					 tep_draw_input_field('bank_name', $_SESSION['bank_name']).
 					 '</div></div>', 
 					 'field' => '',
 					 ) ,
@@ -173,7 +173,7 @@ class buying {
 					 TEXT_BANK_SHITEN.
 					 '</div>'.
 					 '<div class="con_email01">'.
-					 tep_draw_input_field('bank_shiten', '').
+					 tep_draw_input_field('bank_shiten', $_SESSION['bank_shiten']).
 					 '</div></div>', 
 					 'field' => '',
 					 ) ,
@@ -194,7 +194,7 @@ class buying {
 					 TEXT_BANK_KOUZA_NUM.
 					 '</div>'.
 					 '<div class="con_email01">'.
-					 tep_draw_input_field('bank_kouza_num', '').
+					 tep_draw_input_field('bank_kouza_num', $_SESSION['bank_kouza_num']).
 					 '</div></div>', 
 					 'field' => '',
 					 ) ,
@@ -204,7 +204,7 @@ class buying {
 					 TEXT_BANK_KOUZA_NAME.
 					 '</div>'.
 					 '<div class="con_email01">'.
-					 tep_draw_input_field('bank_kouza_name', '').
+					 tep_draw_input_field('bank_kouza_name', $_SESSION['bank_kouza_name']).
 					 '</div></div>', 
 					 'field' => '',
 					 ) ,
@@ -225,12 +225,12 @@ class buying {
     $bank_kouza_num = tep_db_prepare_input($_POST['bank_kouza_num']);
     $bank_kouza_name = tep_db_prepare_input($_POST['bank_kouza_name']);
   
-    tep_session_register('bank_name');
-    tep_session_register('bank_shiten');
-    tep_session_register('bank_kamoku');
-    tep_session_register('bank_kouza_num');
     tep_session_register('bank_kouza_name');
-    $_SESSION['bank_kamoku'] = $bank_kamoku;
+    $_SESSION['bank_kamoku']      = $bank_kamoku;
+    $_SESSION['bank_shiten']      = $bank_shiten;
+    $_SESSION['bank_name']        = $bank_name;
+    $_SESSION['bank_kouza_num']   = $bank_kouza_num;
+    $_SESSION['bank_kouza_name']  = $bank_kouza_name;
     if($bank_name == '') {
       tep_session_unregister('bank_name');
       tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, 'bank_error=' . urlencode(TEXT_BANK_ERROR_NAME), 'SSL'));
