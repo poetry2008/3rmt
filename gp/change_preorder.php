@@ -61,7 +61,9 @@
   
   $preorder_id = $preorder_res['orders_id'];
  
-  $ensure_datetime = strtotime($preorder_res['ensure_deadline']);
+  $ensure_date_info = explode(' ', $preorder_res['ensure_deadline']);
+  $year_info = explode('-', $ensure_date_info[0]);
+  $ensure_datetime = mktime(23, 59, 59, $year_info[1], $year_info[2], $year_info[0]);
   if (time() > $ensure_datetime) {
     $preorder_product_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$preorder_id."'"); 
     $preorder_product_res = tep_db_fetch_array($preorder_product_raw); 
