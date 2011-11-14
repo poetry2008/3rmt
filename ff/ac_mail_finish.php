@@ -92,6 +92,17 @@
               <td>
               <table>
                 <tr>
+                <td style="font-size: 15px; color: rgb(255, 0, 0);" colspan="3">
+                <?php echo EMAIL_RED_TEXT_INFO;?>
+                </td>
+              </tr>
+              <tr>
+                <td style="font-size:11px;" colspan="3">
+                <?php echo EMAIL_READ_INFO_TEXT;?>
+                <br>
+                </td>
+              </tr>
+                <tr>
                   <td style="font-size:11px;">
                   <b><?php echo INPUT_SEND_MAIL;?>:</b> 
                   </td>
