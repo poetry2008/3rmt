@@ -186,8 +186,16 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
         $cart->restore_contents();
        
         if (sizeof($navigation->snapshot) > 0) {
-          $origin_href = tep_href_link($navigation->snapshot['page'], tep_array_to_string($navigation->snapshot['get'], array(tep_session_name())), $navigation->snapshot['mode']);
-          $navigation->clear_snapshot();
+          if ($navigation->snapshot['page'] != 'change_preorder.php') {
+            $origin_href = tep_href_link($navigation->snapshot['page'], tep_array_to_string($navigation->snapshot['get'], array(tep_session_name())), $navigation->snapshot['mode']);
+            $navigation->clear_snapshot();
+          } else {
+            if (ENABLE_SSL && $request_type == 'SSL') {
+              $origin_href = tep_href_link(FILENAME_DEFAULT, '', 'NONSSL').'?' . tep_session_name().'='.tep_session_id(); 
+            } else {
+              $origin_href = tep_href_link(FILENAME_DEFAULT); 
+            }
+          }
           tep_redirect($origin_href);
         } else {
           if (ENABLE_SSL && $request_type == 'SSL') {
