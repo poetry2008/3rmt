@@ -180,13 +180,23 @@ function rowOutEffect(object) {
 <?php
     $error = false;
   
+    
     if (isset($_GET['action']) && ($_GET['action'] == 'process') && empty($_POST['quantity'])) {
       $quantity_error = true;
       $error = true;
     } else {
-      $quantity_error = false;
+      if (isset($_GET['action']) && ($_GET['action'] == 'process') && !is_numeric(tep_an_zen_to_han($_POST['quantity']))) {
+        $quantity_error = true;
+        $error = true;
+      } else {
+       if (isset($_GET['action']) && ($_GET['action'] == 'process') && (tep_an_zen_to_han($_POST['quantity']) <= 0)) {
+        $quantity_error = true;
+        $error = true;
+       } else {
+        $quantity_error = false;
+       }
+      }
     }
-    
     if (tep_session_is_registered('customer_id')) {
       $from_name = tep_get_fullname($account_values['customers_firstname'],$account_values['customers_lastname']);
       $from_email_address = $account_values['customers_email_address'];
@@ -255,6 +265,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
           }
     }
     if (isset($_GET['action']) && ($_GET['action'] == 'process') && ($error == false)) {
+      $_POST['quantity'] = tep_an_zen_to_han($_POST['quantity']); 
       $preorder_id = date('Ymd').'-'.date('His').tep_get_preorder_end_num(); 
       $redirect_single = 0; 
       if (tep_session_is_registered('customer_id')) {

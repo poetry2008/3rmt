@@ -92,8 +92,8 @@
               <td>
               <table>
                 <tr>
-                <td style="font-size: 15px; color: rgb(255, 0, 0);" colspan="3">
-                <?php echo EMAIL_RED_TEXT_INFO;?>
+                <td style="color: rgb(255, 0, 0);" colspan="3">
+                <font size="3"><b><?php echo EMAIL_RED_TEXT_INFO;?></b></font>
                 </td>
               </tr>
               <tr>
@@ -103,7 +103,7 @@
                 </td>
               </tr>
                 <tr>
-                  <td style="font-size:11px;">
+                  <td class="active_email_name">
                   <b><?php echo INPUT_SEND_MAIL;?>:</b> 
                   </td>
                   <td class="active_email">
