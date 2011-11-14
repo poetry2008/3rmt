@@ -4422,3 +4422,27 @@ function preorder_last_customer_action() {
   tep_db_query("update ".TABLE_CONFIGURATION." set configuration_value=now() where configuration_key='PREORDER_LAST_CUSTOMER_ACTION'");
 }
 
+function tep_whether_show_preorder_payment($limit_setting) {
+  $payment_arr = unserialize($limit_setting);  
+  
+  if (empty($payment_arr)) {
+    return false; 
+  }
+  $num = count($payment_arr); 
+  if ($num == 2) {
+    return true; 
+  } else if ($num == 1) { 
+    if ($payment_arr[0] == 1) {
+      if (!isset($_SESSION['customer_id'])) {
+        return false; 
+      } else  if (isset($_SESSION['customer_id']) && ($_SESSION['guestchk'] == 1)) {
+        return false; 
+      }
+    } else if ($payment_arr[0] == 2) {
+      if (isset($_SESSION['customer_id']) && ($_SESSION['guestchk'] == 0)) {
+        return false; 
+      }
+    }
+  }
+  return true;
+}

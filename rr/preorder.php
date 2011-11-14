@@ -510,6 +510,8 @@ if (!isset($_GET['quantity'])) $_GET['quantity'] = NULL; //del notice
           if (defined('MODULE_PAYMENT_'.strtoupper($selection[$i]['id'].'_PREORDER_SHOW'))) {
             if (constant('MODULE_PAYMENT_'.strtoupper($selection[$i]['id'].'_PREORDER_SHOW')) == 'False') {
               continue; 
+            } else if (!tep_whether_show_preorder_payment(constant('MODULE_PAYMENT_'.strtoupper($selection[$i]['id'].'_LIMIT_SHOW')))) {
+              continue; 
             }
           } else {
             continue; 
