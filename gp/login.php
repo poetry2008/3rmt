@@ -195,8 +195,16 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
         $cart->restore_contents();
 
         if (sizeof($navigation->snapshot) > 0) {
-          $origin_href = tep_href_link($navigation->snapshot['page'], tep_array_to_string($navigation->snapshot['get'], array(tep_session_name())), $navigation->snapshot['mode']);
-          $navigation->clear_snapshot();
+          if ($navigation->snapshot['page'] != 'change_preorder.php') {
+            $origin_href = tep_href_link($navigation->snapshot['page'], tep_array_to_string($navigation->snapshot['get'], array(tep_session_name())), $navigation->snapshot['mode']);
+            $navigation->clear_snapshot();
+          } else {
+            if (ENABLE_SSL && $request_type == 'SSL') {
+              $origin_href = tep_href_link(FILENAME_DEFAULT, '', 'NONSSL').'?' . tep_session_name().'='.tep_session_id(); 
+            } else {
+              $origin_href = tep_href_link(FILENAME_DEFAULT); 
+            }
+          }
           tep_redirect($origin_href);
         } else {
           if (ENABLE_SSL && $request_type == 'SSL') {
@@ -246,7 +254,7 @@ function session_win() {
       }
       ?> 
       </h1></div>
-      <?php echo tep_draw_form('login', tep_href_link(FILENAME_LOGIN, 'action=process', 'SSL')); ?>
+      <?php echo tep_draw_form('login', tep_href_link(FILENAME_LOGIN, 'action=process'.(isset($_GET['pid'])?'&pid='.$_GET['pid']:''), 'SSL')); ?>
       <div class="comment">
       <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" summary="content" class="product_info_box">
 

@@ -187,8 +187,12 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
         $cart->restore_contents();
 
         if (sizeof($navigation->snapshot) > 0) {
-          $origin_href = tep_href_link($navigation->snapshot['page'], tep_array_to_string($navigation->snapshot['get'], array(tep_session_name())), $navigation->snapshot['mode']);
-          $navigation->clear_snapshot();
+          if ($navigation->snapshot['page'] != 'change_preorder.php') {
+            $origin_href = tep_href_link($navigation->snapshot['page'], tep_array_to_string($navigation->snapshot['get'], array(tep_session_name())), $navigation->snapshot['mode']);
+            $navigation->clear_snapshot();
+          } else {
+            $origin_href = tep_href_link(FILENAME_DEFAULT); 
+          }
           tep_redirect($origin_href);
         } else {
           tep_redirect(tep_href_link(FILENAME_DEFAULT));
@@ -233,7 +237,7 @@ if (!isset($_GET['pid'])) {
 ?> 
 </h2>
 <div class="box">
-<?php echo tep_draw_form('login', tep_href_link(FILENAME_LOGIN, 'action=process', 'SSL')); ?>
+<?php echo tep_draw_form('login', tep_href_link(FILENAME_LOGIN, 'action=process'.(isset($_GET['pid'])?'&pid='.$_GET['pid']:''), 'SSL')); ?>
       <table class="box_des" width="95%" border="0" align="center" cellpadding="0" cellspacing="0">
 
         <?php

@@ -3138,7 +3138,8 @@ function submit_confirm()
           color="red">※</font>&nbsp;<?php echo TEXT_ORDER_COPY;?></td><td>
           <?php echo TEXT_ORDER_LOGIN;?></td></tr></table>
           <br>
-          <?php echo tep_draw_textarea_field('comments', 'hard', '60', '30', $select_text, 'style="font-family:monospace;font-size:x-small"'); ?>
+          <?php echo tep_draw_textarea_field('comments', 'hard', '60', '30',
+              $select_text, 'style="font-family:monospace;font-size:12px"'); ?>
         </td>
         </tr>
         <tr>

@@ -11,7 +11,6 @@
 */
 
   require('includes/application_top.php');
-  
   if (isset($_GET['pid'])) {
     $link_customer_email = ''; 
     $preorder_info_raw = tep_db_query("select orders_id, customers_id, customers_email_address from ".TABLE_PREORDERS." where check_preorder_str = '".$_GET['pid']."' and site_id = '".SITE_ID."'");    
@@ -195,8 +194,12 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
         $cart->restore_contents();
 
         if (sizeof($navigation->snapshot) > 0) {
-          $origin_href = tep_href_link($navigation->snapshot['page'], tep_array_to_string($navigation->snapshot['get'], array(tep_session_name())), $navigation->snapshot['mode']);
-          $navigation->clear_snapshot();
+          if ($navigation->snapshot['page'] != 'change_preorder.php') {
+            $origin_href = tep_href_link($navigation->snapshot['page'], tep_array_to_string($navigation->snapshot['get'], array(tep_session_name())), $navigation->snapshot['mode']);
+            $navigation->clear_snapshot();
+          } else {
+            $origin_href = tep_href_link(FILENAME_DEFAULT); 
+          }
           tep_redirect($origin_href);
         } else {
           tep_redirect(tep_href_link(FILENAME_DEFAULT));
@@ -239,7 +242,7 @@ function session_win() {
       }
       ?> 
       </h1>
-      <?php echo tep_draw_form('login', tep_href_link(FILENAME_LOGIN, 'action=process', 'SSL')); ?>
+      <?php echo tep_draw_form('login', tep_href_link(FILENAME_LOGIN, 'action=process'.(isset($_GET['pid'])?'&pid='.$_GET['pid']:''), 'SSL')); ?>
       <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
 
         <?php
