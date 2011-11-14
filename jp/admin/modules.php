@@ -142,11 +142,15 @@ if (isset($_GET['action']))
 
       if (preg_match('/.*LIMIT_SHOW/', $key)) 	{
           tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . serialize($value) . "' where configuration_key = '" . $key . "' and site_id = '".$site_id."'");
+          echo "update " . TABLE_CONFIGURATION . " set configuration_value = '" . serialize($value) . "' where configuration_key = '" . $key . "' and site_id = '".$site_id."'";
         } else {
         tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . $value . "' where configuration_key = '" . $key . "' and site_id = '".$site_id."'");
+    echo "update " . TABLE_CONFIGURATION . " set configuration_value = '" . $value . "' where configuration_key = '" . $key . "' and site_id = '".$site_id."'";
       }
     }
-    tep_redirect(tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $_GET['module']));
+
+
+    //    tep_redirect(tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $_GET['module']));
     break;
   case 'install':
   case 'remove':
@@ -430,28 +434,7 @@ default:
 	    $keys .= tep_call_function($use_function, $module_item['configuration_value']);
 	  }
 	} else {
-	  if ($module_item['configuration_key'] ==
-	      'MODULE_PAYMENT_BUYING_LIMIT_SHOW' ||
-	      $module_item['configuration_key'] ==
-	      'MODULE_PAYMENT_MONEYORDER_LIMIT_SHOW' ||
-	      $module_item['configuration_key'] ==
-	      'MODULE_PAYMENT_BUYINGPOINT_LIMIT_SHOW' ||
-	      $module_item['configuration_key'] ==
-	      'MODULE_PAYMENT_POSTALMONEYORDER_LIMIT_SHOW' ||
-	      $module_item['configuration_key'] ==
-	      'MODULE_PAYMENT_CONVENIENCE_STORE_LIMIT_SHOW' ||
-	      $module_item['configuration_key'] ==
-	      'MODULE_PAYMENT_TELECOM_LIMIT_SHOW' ||
-	      $module_item['configuration_key'] ==
-	      'MODULE_PAYMENT_PAYPAL_LIMIT_SHOW' ||
-	      $module_item['configuration_key'] ==
-	      'MODULE_PAYMENT_POINT_LIMIT_SHOW' ||
-	      $module_item['configuration_key'] ==
-	      'MODULE_PAYMENT_FETCH_GOOD_LIMIT_SHOW' ||
-	      $module_item['configuration_key'] ==
-	      'MODULE_PAYMENT_FREE_PAYMENT_LIMIT_SHOW'||
-	      $module_item['configuration_key'] ==
-	      'MODULE_PAYMENT_RAKUTEN_BANK_LIMIT_SHOW') {
+	  if (preg_match("/MODULE_PAYMENT_.*_LIMIT_SHOW/",$module_item['configuration_key'])) {
 	    $con_limit_show = unserialize($module_item['configuration_value']);   
 	    $con_limit_show_str = ''; 
 	    if (!empty($con_limit_show)) {
@@ -481,11 +464,9 @@ default:
     // 临时隐藏
     $contents[] = array('align' => 'left', 'text' => '<a href="' .  tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' .  @$_GET['module'] . '&action=edit') . '">' . tep_html_element_button(IMAGE_EDIT) . '</a>');
     if ($_GET['set'] == 'payment') {
-
       $link_form_str .= '<a href="'.tep_href_link(FILENAME_OA_FORM, 'preturn='.$mInfo->code.'&pcode='.$mInfo->title.'&type=1').'">'.tep_html_element_button(FORM_SELL_TEXT).'</a>'; 
       $link_form_str .= '<a href="'.tep_href_link(FILENAME_OA_FORM, 'preturn='.$mInfo->code.'&pcode='.$mInfo->title.'&type=2').'">'.tep_html_element_button(FORM_BUY_TEXT).'</a>'; 
       $link_form_str .= '<a href="'.tep_href_link(FILENAME_OA_FORM, 'preturn='.$mInfo->code.'&pcode='.$mInfo->title.'&type=3').'">'.tep_html_element_button(FORM_MIX_TEXT).'</a>'; 
-          
       $link_form_str .= '<a href="'.tep_href_link(FILENAME_OA_FORM, 'preturn='.$mInfo->code.'&pcode='.$mInfo->title.'&type=4').'">'.tep_html_element_button(FORM_PREORDER_TEXT).'</a>'; 
       $contents[] = array('align' => 'left', 'text' => $link_form_str);
            
