@@ -67,9 +67,7 @@
 
   $breadcrumb->add(NAVBAR_TITLE_1, tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
   $breadcrumb->add(NAVBAR_TITLE_2, tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL'));
-//error_reporint(E_ALL);
-//ini_set("display_errors","On");
-  //Add point
+
 
   if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
 //ccdd
