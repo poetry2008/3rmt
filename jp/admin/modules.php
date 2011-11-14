@@ -58,8 +58,7 @@ if (isset($_GET['action']))
 	    break;
 	  }
 	}
-	
-        if (!empty($limit_show_str)) {
+    if (!empty($limit_show_str)) {
 	  if (!tep_db_num_rows(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$limit_show_str."' and site_id='".$site_id."'"))) {
 	    $cp_show_configuration = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$limit_show_str."' and site_id='0'"));
 	    if ($cp_show_configuration) {
@@ -97,6 +96,7 @@ if (isset($_GET['action']))
 	  }
 	  $blank_show_arr = array(); 
 	  tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . serialize($blank_show_arr) . "' where configuration_key = '" .  $limit_show_str . "' and site_id = '".$site_id."'");
+
         } else {
 	  if (!tep_db_num_rows(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='MODULE_PAYMENT_".strtoupper($_GET['module'])."_LIMIT_SHOW' and site_id='".$site_id."'"))) {
 	    $cp_show_configuration = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='MODULE_PAYMENT_".strtoupper($_GET['module'])."_LIMIT_SHOW' and site_id='0'"));
@@ -178,17 +178,19 @@ if (isset($_GET['action']))
               '".$site_id."'
               )
             ");
+
 	}
       }
 
       if (preg_match('/.*LIMIT_SHOW/', $key)) 	{
+
           tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . serialize($value) . "' where configuration_key = '" . $key . "' and site_id = '".$site_id."'");
         } else {
         tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . $value . "' where configuration_key = '" . $key . "' and site_id = '".$site_id."'");
       }
     }
 
-    tep_redirect(tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $_GET['module']));
+        tep_redirect(tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $_GET['module']));
     break;
   case 'install':
   case 'remove':
