@@ -16,6 +16,6 @@ define('GUEST_SUCCESS_INFO_COMMENT', '<font color="#ff0000">メールアドレ�
 define('CHECK_FINISH_TEXT', 'メール認証が完了いたしました。<br>「次へ進む」をクリックしてショッピングを続けてください。');
 define('WRONG_EMAIL_PATTERN_NOTICE', 'メールアドレスが無効です。使用できない文字が含まれているか、「＠」の前に「.」が有りませんか、または、「.」「.」が連続である可能性があります。');
 define('EMAIL_NAME_COMMENT_LINK', ' 様 ');
-define('EMAIL_RED_TEXT_INFO', 'メール|を送信致しました');
+define('EMAIL_RED_TEXT_INFO', 'メールを送信致しました');
 define('EMAIL_READ_INFO_TEXT', STORE_NAME.'をご利用いただくには、メール認証を行う必要があります。<br>メール内に記載してあるURLをクリックしメール認証を完了させてから'.STORE_NAME.'を利用することが出来ます。');
 ?>

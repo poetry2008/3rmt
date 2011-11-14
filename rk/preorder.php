@@ -496,6 +496,8 @@ if (!isset($_GET['quantity'])) $_GET['quantity'] = NULL; //del notice
           if (defined('MODULE_PAYMENT_'.strtoupper($selection[$i]['id'].'_PREORDER_SHOW'))) {
             if (constant('MODULE_PAYMENT_'.strtoupper($selection[$i]['id'].'_PREORDER_SHOW')) == 'False') {
               continue; 
+            } else if (!tep_whether_show_preorder_payment(constant('MODULE_PAYMENT_'.strtoupper($selection[$i]['id'].'_LIMIT_SHOW')))) {
+              continue; 
             }
           } else {
             continue; 
@@ -564,7 +566,7 @@ if (!isset($_GET['quantity'])) $_GET['quantity'] = NULL; //del notice
       </table> 
       <?php }?> 
       <br>
-      <h3 class="formAreaTitle"><?php echo $po_game_c.PREORDER_EXPECT_CTITLE; ?></h3>
+      <h3 class="formAreaTitle"><?php echo $product_info['products_name'].PREORDER_EXPECT_CTITLE; ?></h3>
       <table width="100%" cellpadding="2" cellspacing="0" border="0" class="formArea">
         <tr><td class="main"><?php echo tep_draw_textarea_field('yourmessage', 'soft', 40, 8);?></td></tr>
       </table>

@@ -3,7 +3,6 @@
   $Id$
 */
 require('includes/application_top.php');
-
 switch ($_GET['set']) {
 case 'shipping':
   $module_type = 'shipping';
@@ -59,7 +58,8 @@ if (isset($_GET['action']))
 	    break;
 	  }
 	}
-	if (!empty($limit_show_str)) {
+	
+        if (!empty($limit_show_str)) {
 	  if (!tep_db_num_rows(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$limit_show_str."' and site_id='".$site_id."'"))) {
 	    $cp_show_configuration = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$limit_show_str."' and site_id='0'"));
 	    if ($cp_show_configuration) {
@@ -97,16 +97,57 @@ if (isset($_GET['action']))
 	  }
 	  $blank_show_arr = array(); 
 	  tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . serialize($blank_show_arr) . "' where configuration_key = '" .  $limit_show_str . "' and site_id = '".$site_id."'");
-
-	}
+        } else {
+	  if (!tep_db_num_rows(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='MODULE_PAYMENT_".strtoupper($_GET['module'])."_LIMIT_SHOW' and site_id='".$site_id."'"))) {
+	    $cp_show_configuration = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='MODULE_PAYMENT_".strtoupper($_GET['module'])."_LIMIT_SHOW' and site_id='0'"));
+	    if ($cp_show_configuration) {
+	      tep_db_query("
+                  INSERT INTO `configuration` (
+                  `configuration_id` ,
+                  `configuration_title` ,
+                  `configuration_key` ,
+                  `configuration_value` ,
+                  `configuration_description` ,
+                  `configuration_group_id` ,
+                  `sort_order` ,
+                  `last_modified` ,
+                  `date_added` ,
+                  `use_function` ,
+                  `set_function` ,
+                  `site_id`
+                  )
+                  VALUES (
+                  NULL , 
+                  '".mysql_real_escape_string($cp_show_configuration['configuration_title'])."', 
+                  '".$cp_show_configuration['configuration_key']."', 
+                  '".$cp_show_configuration['configuration_value']."', 
+                  '".mysql_real_escape_string($cp_show_configuration['configuration_description'])."', 
+                  '".$cp_show_configuration['configuration_group_id']."', 
+                  '".$cp_show_configuration['sort_order']."' , 
+                  '".$cp_show_configuration['last_modified']."' , 
+                  '".$cp_show_configuration['date_added']."', 
+                  '".mysql_real_escape_string($cp_show_configuration['use_function'])."' , 
+                  '".mysql_real_escape_string($cp_show_configuration['set_function'])."' , 
+                  '".$site_id."'
+                  )
+                ");
+	    }
+	  }
+	  
+          $blank_show_arr = array(); 
+	  tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . serialize($blank_show_arr) . "' where configuration_key = 'MODULE_PAYMENT_" . strtoupper($_GET['module'])  . "_LIMIT_SHOW' and site_id = '".$site_id."'");
+        }
       }
     }
 
     while (list($key, $value) = each($_POST['configuration'])) {
-      if (!tep_db_num_rows(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$key."' and site_id='".$site_id."'"))) {
+      if (
+          !tep_db_num_rows(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$key."' and site_id='".$site_id."'")
+                           )
+          ) {
 	$cp_configuration = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$key."' and site_id='0'"));
-
 	if ($cp_configuration) {
+
 	  tep_db_query("
               INSERT INTO `configuration` (
               `configuration_id` ,
@@ -142,15 +183,12 @@ if (isset($_GET['action']))
 
       if (preg_match('/.*LIMIT_SHOW/', $key)) 	{
           tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . serialize($value) . "' where configuration_key = '" . $key . "' and site_id = '".$site_id."'");
-          echo "update " . TABLE_CONFIGURATION . " set configuration_value = '" . serialize($value) . "' where configuration_key = '" . $key . "' and site_id = '".$site_id."'";
         } else {
         tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . $value . "' where configuration_key = '" . $key . "' and site_id = '".$site_id."'");
-    echo "update " . TABLE_CONFIGURATION . " set configuration_value = '" . $value . "' where configuration_key = '" . $key . "' and site_id = '".$site_id."'";
       }
     }
 
-
-    //    tep_redirect(tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $_GET['module']));
+    tep_redirect(tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $_GET['module']));
     break;
   case 'install':
   case 'remove':
@@ -347,6 +385,7 @@ case 'edit':
   $keys = '';
   reset($mInfo->keys);
   while (list($key, $value) = each($mInfo->keys)) {
+
     $_value_query = tep_db_query("select configuration_key, configuration_title, configuration_value, configuration_description, use_function, set_function from " . TABLE_CONFIGURATION . " where configuration_key = '" . $key . "' and site_id = '".$site_id."'");
     $_value = tep_db_fetch_array($_value_query);
     if (!$_value) {
@@ -358,7 +397,7 @@ case 'edit':
     $value['description'] = $_value['configuration_description'];
     $value['use_function'] = $_value['use_function'];
     $value['set_function'] = $_value['set_function'];
-        
+
     if ($site_id == 0 && !preg_match('/.*SORT_ORDER$/', $key)) {
       $keys .= tep_draw_hidden_field('configuration[' . $key . ']', $value['value']);
     } else {
@@ -371,7 +410,9 @@ case 'edit':
       }
       $keys .= '<br><br>';
     }
-        
+    if (preg_match("/MODULE_PAYMENT_.*_LIMIT_SHOW/",$key)) {
+      $keys .= '<input type="hidden" name="configuration['.$key.'][] value=0 "/>';
+    }     
   }
   $keys = substr($keys, 0, strrpos($keys, '<br><br>'));
   $heading[] = array('text' => '<b>' . $mInfo->title . '</b>');
@@ -441,7 +482,7 @@ default:
 	      foreach ($con_limit_show as $lim_key => $lim_value) {
 		if ($lim_value == 1) {
 		  $con_limit_show_str .= '会員&nbsp;&nbsp;'; 
-		} else {
+		} elseif($lim_value ==2){
 		  $con_limit_show_str .= 'ゲスト'; 
 		}
 	      }

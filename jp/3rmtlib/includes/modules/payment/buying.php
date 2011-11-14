@@ -135,7 +135,9 @@ class buying {
   function selection() {
     global $currencies;
     global $order;
-      
+    if($_GET['bank_error']){
+      echo '<font color="#FF0000">'.$_GET['bank_error'].'</font>'; 
+      }
     $total_cost = $order->info['total'];
     $f_result = $this->calc_fee($total_cost); 
       
@@ -146,6 +148,7 @@ class buying {
     } else {
       $s_message = $f_result ? '':('<font color="#FF0000">'.$this->s_error.'</font>'); 
     }
+
     return array('id' => $this->code,
 		 'module' => '銀行振込(買い取り)',
 		 'fields' => array(
@@ -160,7 +163,7 @@ class buying {
 					 TEXT_BANK_NAME.
 					 '</div>'.
 					 '<div class="con_email01">'.
-					 tep_draw_input_field('bank_name', '').
+					 tep_draw_input_field('bank_name', $_SESSION['bank_name']).
 					 '</div></div>', 
 					 'field' => '',
 					 ) ,
@@ -170,7 +173,7 @@ class buying {
 					 TEXT_BANK_SHITEN.
 					 '</div>'.
 					 '<div class="con_email01">'.
-					 tep_draw_input_field('bank_shiten', '').
+					 tep_draw_input_field('bank_shiten', $_SESSION['bank_shiten']).
 					 '</div></div>', 
 					 'field' => '',
 					 ) ,
@@ -180,8 +183,8 @@ class buying {
 					 TEXT_BANK_KAMOKU.
 					 '</div>'.
 					 '<div class="con_email01">'.
-					 tep_draw_radio_field('bank_kamoku',TEXT_BANK_SELECT_KAMOKU_F ,$bank_sele_f) . '&nbsp;' . TEXT_BANK_SELECT_KAMOKU_F.
-					 tep_draw_radio_field('bank_kamoku',TEXT_BANK_SELECT_KAMOKU_T ,$bank_sele_t) . '&nbsp;' . TEXT_BANK_SELECT_KAMOKU_T.
+					 tep_draw_radio_field('bank_kamoku',TEXT_BANK_SELECT_KAMOKU_F ,$_SESSION['bank_kamoku']==TEXT_BANK_SELECT_KAMOKU_F) . '&nbsp;' . TEXT_BANK_SELECT_KAMOKU_F.
+					 tep_draw_radio_field('bank_kamoku',TEXT_BANK_SELECT_KAMOKU_T ,$_SESSION['bank_kamoku']==TEXT_BANK_SELECT_KAMOKU_T) . '&nbsp;' . TEXT_BANK_SELECT_KAMOKU_T.
 					 '</div></div>', 
 					 'field' => '',
 					 ) ,
@@ -191,7 +194,7 @@ class buying {
 					 TEXT_BANK_KOUZA_NUM.
 					 '</div>'.
 					 '<div class="con_email01">'.
-					 tep_draw_input_field('bank_kouza_num', '').
+					 tep_draw_input_field('bank_kouza_num', $_SESSION['bank_kouza_num']).
 					 '</div></div>', 
 					 'field' => '',
 					 ) ,
@@ -201,7 +204,7 @@ class buying {
 					 TEXT_BANK_KOUZA_NAME.
 					 '</div>'.
 					 '<div class="con_email01">'.
-					 tep_draw_input_field('bank_kouza_name', '').
+					 tep_draw_input_field('bank_kouza_name', $_SESSION['bank_kouza_name']).
 					 '</div></div>', 
 					 'field' => '',
 					 ) ,
@@ -215,19 +218,19 @@ class buying {
   }
 
   function pre_confirmation_check() {
-
+    
     $bank_name = tep_db_prepare_input($_POST['bank_name']);
     $bank_shiten = tep_db_prepare_input($_POST['bank_shiten']);
     $bank_kamoku = tep_db_prepare_input($_POST['bank_kamoku']);
     $bank_kouza_num = tep_db_prepare_input($_POST['bank_kouza_num']);
     $bank_kouza_name = tep_db_prepare_input($_POST['bank_kouza_name']);
   
-    tep_session_register('bank_name');
-    tep_session_register('bank_shiten');
-    tep_session_register('bank_kamoku');
-    tep_session_register('bank_kouza_num');
     tep_session_register('bank_kouza_name');
-  
+    $_SESSION['bank_kamoku']      = $bank_kamoku;
+    $_SESSION['bank_shiten']      = $bank_shiten;
+    $_SESSION['bank_name']        = $bank_name;
+    $_SESSION['bank_kouza_num']   = $bank_kouza_num;
+    $_SESSION['bank_kouza_name']  = $bank_kouza_name;
     if($bank_name == '') {
       tep_session_unregister('bank_name');
       tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, 'bank_error=' . urlencode(TEXT_BANK_ERROR_NAME), 'SSL'));
@@ -248,7 +251,6 @@ class buying {
       tep_session_unregister('bank_kouza_name');
       tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, 'bank_error=' . urlencode(TEXT_BANK_ERROR_KOUZA_NAME), 'SSL'));
     }
-
 
     return false;
   }
