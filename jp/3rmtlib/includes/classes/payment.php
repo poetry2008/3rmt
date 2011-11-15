@@ -216,7 +216,7 @@ class payment {
   }
   function dealUnknow(&$sqldata){
     if (method_exists($GLOBALS[$this->selected_module], 'dealUnknow')) {
-      $GLOBALS[$this->selected_module]->dealUnknow($amt,&$sqldata);
+      $GLOBALS[$this->selected_module]->dealUnknow($sqldata);
     }
   }
   function dealComment($comment){
