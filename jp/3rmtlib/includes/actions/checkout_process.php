@@ -521,10 +521,6 @@ $email_printing_order .= '━━━━━━━━━━━━━━━━━━
 if (method_exists($payment_class,'getMailString')){
   $email_printing_order .=$payment_class->getMailString($ot['value']);
 }
-$email_printing_order .=
-'------------------------------------------------------------------------' . "\n";
-$email_printing_order .= '最終確認　　　　　　：確認者名＿＿＿＿' . "\n";
-$email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
 
 # ------------------------------------------
 // send emails to other people
