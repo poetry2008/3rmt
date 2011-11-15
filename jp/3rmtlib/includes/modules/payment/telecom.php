@@ -385,6 +385,10 @@ class telecom {
   $email_printing_order .= '残量入力→誤差有無　：□ 無　　｜　　□ 有　→　報告　□' . "\n";
   $email_printing_order .= '------------------------------------------------------------------------' . "\n";
   $email_printing_order .= '発送完了メール送信　：□ 済' . "\n";
+    $email_printing_order .=
+    '------------------------------------------------------------------------' . "\n";
+    $email_printing_order .= '最終確認　　　　　　：確認者名＿＿＿＿' . "\n";
+    $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
   return $email_printing_order;
   }
   

@@ -399,7 +399,10 @@ class buying {
     $email_printing_order .= '　　　　　　　　　　　入金予定日＿＿月＿＿日　受付番号＿＿＿＿＿＿＿＿＿' . "\n";
     $email_printing_order .= '------------------------------------------------------------------------' . "\n";
     $email_printing_order .= '支払完了メール送信　：□ 済　　　※追加文章がないか確認しましたか？※' . "\n";
-      
+    $email_printing_order .=
+    '------------------------------------------------------------------------' . "\n";
+    $email_printing_order .= '最終確認　　　　　　：確認者名＿＿＿＿' . "\n";
+    $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
     return $email_printing_order;
   }
    function dealComment($comment)
