@@ -211,13 +211,16 @@
 	
 function getexpress($amt,$token){
     if (method_exists($GLOBALS[$this->selected_module], 'getexpress')) {
-      $GLOBALS[$this->selected_module]->getexpress($amt,$token);
+      return $GLOBALS[$this->selected_module]->getexpress($amt,$token);
+    }else {
+      return true;
     }
 }
 function dealUnknow(&$sqldata){
     if (method_exists($GLOBALS[$this->selected_module], 'dealUnknow')) {
       return $GLOBALS[$this->selected_module]->dealUnknow($sqldata);
     }
+    return true;
 }
 function dealComment($comment){
     if (method_exists($GLOBALS[$this->selected_module], 'dealComment')) {

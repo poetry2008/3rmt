@@ -214,8 +214,8 @@ if (isset($_GET['action']))
     }
 
     while (list($key, $value) = each($_POST['configuration'])) {
-      if (
           echo __LINE__."</br>";
+      if (
           !tep_db_num_rows(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$key."' and site_id='".$site_id."'")
                            )
           ) {

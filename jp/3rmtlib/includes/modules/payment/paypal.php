@@ -171,7 +171,6 @@
     
     # ユーザー情報----------------------------
     $mail_body .= '━━━━━━━━━━━━━━━━━━━━━'."\n";
-    $mail_body .= '▼注文番号　　　　：2007****-********'."\n";
     $mail_body .= '▼注文日　　　　　：' . tep_date_long(time())."\n";
     $mail_body .= '▼お名前　　　　　：' . $order->customer["lastname"] . ' ' . $order->customer["firstname"]."\n";
     $mail_body .= '▼メールアドレス　：' . $order->customer["email_address"]."\n";
@@ -603,7 +602,7 @@ function getpreexpress($pre_value, $pre_pid){
     
     $mail_body = '仮クレジットカード注文です。'."\n\n";
     $mail_body .= '━━━━━━━━━━━━━━━━━━━━━'."\n";
-    $mail_body .= '▼注文番号　　　　：2007****-********'."\n";
+
     $mail_body .= '▼注文日　　　　　：' . tep_date_long(time())."\n";
     $mail_body .= '▼お名前　　　　　：' . $preorder_info['customers_name']."\n";
     $mail_body .= '▼メールアドレス　：' . $preorder_info['customers_email_address']."\n";
