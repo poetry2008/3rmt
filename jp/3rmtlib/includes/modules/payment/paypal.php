@@ -656,44 +656,41 @@ function getpreexpress($pre_value, $pre_pid){
     echo $hidden_param_str; 
   }
 
-  function getMailString($option=''){
-    $email_printing_order .= 'この注文は【販売】です。' . "\n";
-    $email_printing_order .=
-      '------------------------------------------------------------------------'
-      . "\n";
-    $email_printing_order .= '備考の有無　　　　　：□ 無　　｜　　□ 有　→　□
-      返答済' . "\n";
-    $email_printing_order .=
-      '------------------------------------------------------------------------'
-      . "\n";
-    $email_printing_order .= '在庫確認　　　　　　：□ 有　　｜　　□
-      無　→　入金確認後仕入' . "\n";
-    $email_printing_order .=
-      '------------------------------------------------------------------------'
-      . "\n";
-    $email_printing_order .=
-      '入金確認　　　　　●：＿＿月＿＿日　→　金額は' .
-      abs($option) . '円ですか？　□ はい' . "\n";
-    $email_printing_order .=
-      '------------------------------------------------------------------------'
-      . "\n";
-    $email_printing_order .= '入金確認メール送信　：□ 済' . "\n";
-    $email_printing_order .=
-      '------------------------------------------------------------------------'
-      . "\n";
-    $email_printing_order .=
-      '発送　　　　　　　　：＿＿月＿＿日' . "\n";
-    $email_printing_order .=
-      '------------------------------------------------------------------------'
-      . "\n";
-    $email_printing_order .= '残量入力→誤差有無　：□
-      無　　｜　　□ 有　→　報告　□' . "\n";
-    $email_printing_order .=
-      '------------------------------------------------------------------------'
-      . "\n";
-    $email_printing_order .= '発送完了メール送信　：□
-      済' . "\n";    
-    return $email_printing_order;
+ function getMailString($option='')
+  {
+    $email_printing_order ='';
+  $email_printing_order .= 'この注文は【販売】です。' . "\n";
+  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+  $email_printing_order .= '備考の有無　　　　　：□ 無　　｜　　□ 有　→　□ 返答済' . "\n";
+  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+  $email_printing_order .= '決済確認　　　　　●：＿＿月＿＿日' . "\n";
+  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+  $email_printing_order .= '在庫確認　　　　　　：□ 有　　｜　　□ 無　→　仕入困難ならお客様へ電話' . "\n";
+  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+  $email_printing_order .= '信用調査　　　　　　：□ 2回目以降　→　□ 常連（以下のチェック必要無）' . "\n";
+  $email_printing_order .= '　　　　　　　　　　　　　　　　　　　　□ 1. 過去に本人確認をしている' . "\n";
+  $email_printing_order .= '　　　　　　　　　　　　　　　　　　　　□ 2. 決済内容に変更がない' . "\n";
+  $email_printing_order .= '　　　　　　　　　　　　　　　　　　　　□ 3. 短期間に高額決済がない' . "\n";
+  $email_printing_order .= '　　　　　　　　　　----------------------------------------------------' . "\n";
+  $email_printing_order .= '　　　　　　　　　　　□ 初回　→　□ IP・ホストのチェック' . "\n";
+  $email_printing_order .= '　　　　　　　　　　　　　　　　　 　 電話確認をする' . "\n";
+  $email_printing_order .= '　　　　　　　　　　　　　　　　　 　 カード名義（カタカナ）＿＿＿＿＿＿' . "\n";
+  $email_printing_order .= '　　　　　　　　　　　　　　　　　 　 電話番号＿＿＿＿＿＿＿＿＿＿＿＿＿' . "\n";
+  $email_printing_order .= '　　　　　　　　　　　　　　　　　 　 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿' . "\n";
+  $email_printing_order .= '　　　　　　　　　　　　　　　　　 　 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿' . "\n";
+  $email_printing_order .= '　　　　　　　　　　　　　　　　　 　 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿' . "\n";
+  $email_printing_order .= '　　　　　　　　　　　　　　　　　 □ カード名義・商品名・キャラ名一致' . "\n";
+  $email_printing_order .= '　　　　　　　　　　　　　　　　　 　 本人確認日：＿＿月＿＿日' . "\n";
+  $email_printing_order .= '　　　　　　　　　　　　　　　　　 □ 信用調査入力' . "\n";
+  $email_printing_order .= '　　　　　　　　　　----------------------------------------------------' . "\n";
+  $email_printing_order .= '※ 疑わしい点があれば担当者へ報告をする　→　担当者＿＿＿＿の承諾を得た' . "\n";
+  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+  $email_printing_order .= '発送　　　　　　　　：＿＿月＿＿日' . "\n";
+  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+  $email_printing_order .= '残量入力→誤差有無　：□ 無　　｜　　□ 有　→　報告　□' . "\n";
+  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+  $email_printing_order .= '発送完了メール送信　：□ 済' . "\n";
+  return $email_printing_order;
   }
   
   }
