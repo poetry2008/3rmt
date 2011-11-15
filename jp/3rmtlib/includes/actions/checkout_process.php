@@ -433,7 +433,7 @@ if ($point){
 if(!isset($_SESSION['mailfee'])){
   $total_mail_fee =0;
 }else{
-  $total_mail_fee =$_SESSION['mailfee'];
+  $total_mail_fee = str_replace('円','',$_SESSION['mailfee']);
 }
 
 $mailoption['MAILFEE']          = str_replace('円','',$total_mail_fee);
