@@ -48,13 +48,14 @@ define('TEXT_BANK_KOUZA_NAME', '口座名義:');
 define('TEXT_BANK_SELECT_KAMOKU_F', '普通');
 define('TEXT_BANK_SELECT_KAMOKU_T', '当座');
 
-define('TEXT_BANK_ERROR_NAME', '【'.mb_substr(TEXT_BANK_NAME,0,(mb_strlen(TEXT_BANK_NAME)-1)).'】が入力されていません');
-define('TEXT_BANK_ERROR_SHITEN', '【'.mb_substr(TEXT_BANK_SHITEN,0,(mb_strlen(TEXT_BANK_SHITEN)-1)).'】が入力されていません');
-define('TEXT_BANK_ERROR_KOUZA_NUM', '【'.mb_substr(TEXT_BANK_KOUZA_NUM,0,(mb_strlen(TEXT_BANK_KOUZA_NUM)-1)).'】が入力されていません');
-define('TEXT_BANK_ERROR_KOUZA_NUM2', '【'.mb_substr(TEXT_BANK_KOUZA_NUM,0,(mb_strlen(TEXT_BANK_KOUZA_NUM)-1)).'】は半角で入力してください。');
-define('TEXT_BANK_ERROR_KOUZA_NAME', '【'.mb_substr(TEXT_BANK_KOUZA_NAME,0,(mb_strlen(TEXT_BANK_KOUZA_NAME)-1)).'】が入力されていません');
+define('TEXT_BANK_ERROR_NAME', '【金融機関名】が入力されていません');
+define('TEXT_BANK_ERROR_KAMOKU', '【口座種別】が入力されていません');
+define('TEXT_BANK_ERROR_SHITEN', '【支店名】が入力されていません');
+define('TEXT_BANK_ERROR_KOUZA_NUM', '【口座番号】が入力されていません');
+define('TEXT_BANK_ERROR_KOUZA_NUM2', '【口座番号】は半角で入力してください。');
+define('TEXT_BANK_ERROR_KOUZA_NAME', '【口座名義】が入力されていません');
+
 define('CONFIRMATION_BUYING_TEXT_TITLE', '銀行振込(買い取り)');
 define('CONFIRMATION_BUYING_TEXT_FEE', '銀行振込(買い取り)決済手数料:');
 define('TEXT_HANDLE_FEE_CONFIRMATION', '手数料:');
 define('TEXT_POINT_NOW_TWO', '<b>買取はポイントがつきません</b>&nbsp;&nbsp;今回の獲得予定ポイント:');
-define('TEXT_BANK_ERROR_KAMOKU', '【'.mb_substr(TEXT_BANK_KAMOKU,0,(mb_strlen(TEXT_BANK_KAMOKU)-1)).'】が入力されていません');

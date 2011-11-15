@@ -420,7 +420,7 @@ class convenience_store {
       return false; 
     }
 
-  function getMailString($option=''){
+ function getMailString($option=''){
     $email_printing_order .= 'この注文は【販売】です。' . "\n";
     $email_printing_order .=
       '------------------------------------------------------------------------'
@@ -459,6 +459,7 @@ class convenience_store {
       済' . "\n";    
     return $email_printing_order;
   }
+
 
 }
 ?>
