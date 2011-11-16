@@ -34,8 +34,7 @@ default:
 if (isset($_GET['action'])) 
   switch ($_GET['action']) {
   case 'save':
-    var_dump($_SERVER);
-    var_dump($_POST);
+
     $site_id = isset($_POST['site_id'])?(int)$_POST['site_id']:0;
     if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];//权限判断
     else $site_arr="";
@@ -60,15 +59,13 @@ if (isset($_GET['action']))
             break;
           }
         }
+        //如果有CHECKBOX
         if (!empty($limit_show_str)) {
-          echo __LINE__."</br>";
-          var_dump("select * from ".TABLE_CONFIGURATION." where configuration_key='".$limit_show_str."' and site_id='".$site_id."'");
+
           if (!tep_db_num_rows(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$limit_show_str."' and site_id='".$site_id."'"))) {
-          echo __LINE__."</br>";
-         var_dump("select * from ".TABLE_CONFIGURATION." where configuration_key='".$limit_show_str."' and site_id='0'");
+
             $cp_show_configuration = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$limit_show_str."' and site_id='0'"));
             if ($cp_show_configuration) {
-          echo __LINE__."</br>";
               tep_db_query("
                   INSERT INTO `configuration` (
                   `configuration_id` ,
@@ -99,50 +96,17 @@ if (isset($_GET['action']))
                   '".$site_id."'
                   )
                 ");
-              var_dump("
-                  INSERT INTO `configuration` (
-                  `configuration_id` ,
-                  `configuration_title` ,
-                  `configuration_key` ,
-                  `configuration_value` ,
-                  `configuration_description` ,
-                  `configuration_group_id` ,
-                  `sort_order` ,
-                  `last_modified` ,
-                  `date_added` ,
-                  `use_function` ,
-                  `set_function` ,
-                  `site_id`
-                  )
-                  VALUES (
-                  NULL , 
-                  '".mysql_real_escape_string($cp_show_configuration['configuration_title'])."', 
-                  '".$cp_show_configuration['configuration_key']."', 
-                  '".$cp_show_configuration['configuration_value']."', 
-                  '".mysql_real_escape_string($cp_show_configuration['configuration_description'])."', 
-                  '".$cp_show_configuration['configuration_group_id']."', 
-                  '".$cp_show_configuration['sort_order']."' , 
-                  '".$cp_show_configuration['last_modified']."' , 
-                  '".$cp_show_configuration['date_added']."', 
-                  '".mysql_real_escape_string($cp_show_configuration['use_function'])."' , 
-                  '".mysql_real_escape_string($cp_show_configuration['set_function'])."' , 
-                  '".$site_id."'
-                  )
-                ");
+
             }
           }
-          $blank_show_arr = array(); 
-          echo __LINE__."</br>";
-         var_dump("update " . TABLE_CONFIGURATION . " set configuration_value = '" . serialize($blank_show_arr) . "' where configuration_key = '" .  $limit_show_str . "' and site_id = '".$site_id."'");
-          tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . serialize($blank_show_arr) . "' where configuration_key = '" .  $limit_show_str . "' and site_id = '".$site_id."'");
+          tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . serialize($value) . "' where configuration_key = '" .  $limit_show_str . "' and site_id = '".$site_id."'");
         } else {
-          //not here
-          echo __LINE__."</br>";
+
           if (!tep_db_num_rows(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='MODULE_PAYMENT_".strtoupper($_GET['module'])."_LIMIT_SHOW' and site_id='".$site_id."'"))) {
-          echo __LINE__."</br>";
+
             $cp_show_configuration = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='MODULE_PAYMENT_".strtoupper($_GET['module'])."_LIMIT_SHOW' and site_id='0'"));
             if ($cp_show_configuration) {
-          echo __LINE__."</br>";
+
               tep_db_query("
                   INSERT INTO `configuration` (
                   `configuration_id` ,
@@ -173,56 +137,23 @@ if (isset($_GET['action']))
                   '".$site_id."'
                   )
                 ");
-              var_dump("
-                  INSERT INTO `configuration` (
-                  `configuration_id` ,
-                  `configuration_title` ,
-                  `configuration_key` ,
-                  `configuration_value` ,
-                  `configuration_description` ,
-                  `configuration_group_id` ,
-                  `sort_order` ,
-                  `last_modified` ,
-                  `date_added` ,
-                  `use_function` ,
-                  `set_function` ,
-                  `site_id`
-                  )
-                  VALUES (
-                  NULL , 
-                  '".mysql_real_escape_string($cp_show_configuration['configuration_title'])."', 
-                  '".$cp_show_configuration['configuration_key']."', 
-                  '".serialize(array())."', 
-                  '".mysql_real_escape_string($cp_show_configuration['configuration_description'])."', 
-                  '".$cp_show_configuration['configuration_group_id']."', 
-                  '".$cp_show_configuration['sort_order']."' , 
-                  '".$cp_show_configuration['last_modified']."' , 
-                  '".$cp_show_configuration['date_added']."', 
-                  '".mysql_real_escape_string($cp_show_configuration['use_function'])."' , 
-                  '".mysql_real_escape_string($cp_show_configuration['set_function'])."' , 
-                  '".$site_id."'
-                  )
-                ");
+
             }
           }
           $blank_show_arr = array();
-          echo __LINE__."</br>";
-          var_dump("update " . TABLE_CONFIGURATION . " set configuration_value = '" . serialize($blank_show_arr) . "' where configuration_key = 'MODULE_PAYMENT_" . strtoupper($_GET['module'])  . "_LIMIT_SHOW' and site_id = '".$site_id."'");
           tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . serialize($blank_show_arr) . "' where configuration_key = 'MODULE_PAYMENT_" . strtoupper($_GET['module'])  . "_LIMIT_SHOW' and site_id = '".$site_id."'");
         }
       }
     }
-
     while (list($key, $value) = each($_POST['configuration'])) {
-          echo __LINE__."</br>";
+
       if (
           !tep_db_num_rows(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$key."' and site_id='".$site_id."'")
                            )
           ) {
-          echo __LINE__."</br>";
+
         $cp_configuration = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$key."' and site_id='0'"));
         if ($cp_configuration) {
-          echo __LINE__."</br>";
           tep_db_query("
               INSERT INTO `configuration` (
               `configuration_id` ,
@@ -253,51 +184,17 @@ if (isset($_GET['action']))
               '".$site_id."'
               )
             ");
-          var_dump("
-              INSERT INTO `configuration` (
-              `configuration_id` ,
-              `configuration_title` ,
-              `configuration_key` ,
-              `configuration_value` ,
-              `configuration_description` ,
-              `configuration_group_id` ,
-              `sort_order` ,
-              `last_modified` ,
-              `date_added` ,
-              `use_function` ,
-              `set_function` ,
-              `site_id`
-              )
-              VALUES (
-              NULL , 
-              '".mysql_real_escape_string($cp_configuration['configuration_title'])."', 
-              '".$cp_configuration['configuration_key']."', 
-              '".$cp_configuration['configuration_value']."', 
-              '".mysql_real_escape_string($cp_configuration['configuration_description'])."', 
-              '".$cp_configuration['configuration_group_id']."', 
-              '".$cp_configuration['sort_order']."' , 
-              '".$cp_configuration['last_modified']."' , 
-              '".$cp_configuration['date_added']."', 
-              '".mysql_real_escape_string($cp_configuration['use_function'])."' , 
-              '".mysql_real_escape_string($cp_configuration['set_function'])."' , 
-              '".$site_id."'
-              )
-            ");
+
         }
       }
 
       if (preg_match('/.*LIMIT_SHOW/', $key)) 	{
-          echo __LINE__."</br>";
-        var_dump("update " . TABLE_CONFIGURATION . " set configuration_value = '" . serialize($value) . "' where configuration_key = '" . $key . "' and site_id = '".$site_id."'");
         tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . serialize($value) . "' where configuration_key = '" . $key . "' and site_id = '".$site_id."'");
       } else {
-          echo __LINE__."</br>";
-        var_dump("update " . TABLE_CONFIGURATION . " set configuration_value = '" . $value . "' where configuration_key = '" . $key . "' and site_id = '".$site_id."'");
         tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . $value . "' where configuration_key = '" . $key . "' and site_id = '".$site_id."'");
       }
     }
-
-    //    tep_redirect(tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $_GET['module']));
+    tep_redirect(tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $_GET['module']));
     break;
   case 'install':
   case 'remove':
