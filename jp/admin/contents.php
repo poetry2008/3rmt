@@ -365,7 +365,18 @@
               }
             ?></td>
             <td class="dataTableContent" align="right"><?php echo htmlspecialchars($contents['sort_id']); ?></td> 
-                      <td class="dataTableContent" align="right"><?php if ( ($contents['pID'] == $cID) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); } else { echo '<a href="' . tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID')) . 'cID=' . $contents['pID']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?> 
+                      <td class="dataTableContent" align="right">
+                      <?php 
+                      if ( ($contents['pID'] == $cID) ) { 
+                        echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); 
+                      } else { 
+                        if ($_GET['action'] == 'confirm') {
+                          echo '<a href="' . tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $contents['pID']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
+                        } else {
+                          echo '<a href="' . tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID')) . 'cID=' . $contents['pID']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
+                        }
+                      } 
+                      ?> 
 &nbsp;</td> 
                     </tr> <?php
     }
