@@ -12,8 +12,6 @@
 
   class payment {
     var $site_id, $modules, $selected_module;
-
-// class constructor
     function payment($module = '', $site_id = 0) {
       global $payment, $language, $PHP_SELF;
 
@@ -212,15 +210,14 @@
 function getexpress($amt,$token){
     if (method_exists($GLOBALS[$this->selected_module], 'getexpress')) {
       return $GLOBALS[$this->selected_module]->getexpress($amt,$token);
-    }else {
-      return true;
     }
+      return null;
 }
 function dealUnknow(&$sqldata){
     if (method_exists($GLOBALS[$this->selected_module], 'dealUnknow')) {
       return $GLOBALS[$this->selected_module]->dealUnknow($sqldata);
     }
-    return true;
+    return null;
 }
 function dealComment($comment){
     if (method_exists($GLOBALS[$this->selected_module], 'dealComment')) {
