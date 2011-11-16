@@ -15,3 +15,5 @@
   define('MODULE_PAYMENT_FETCH_GOOD_TEXT_SHOW', '');
 // define('MODULE_PAYMENT_FETCH_GOOD_TEXT_SHOW', '振込先口座情報に誤りがないかご確認ください。');
   define('MODULE_PAYMENT_FETCH_GOOD_TEXT_CONFIRMATION',"");
+  define('TEXT_POINT_NOW_TWO','<b>買取はポイントがつきません</b>&nbsp;&nbsp;今回の獲得予定ポイント:');
+
