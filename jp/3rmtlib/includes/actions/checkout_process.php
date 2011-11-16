@@ -142,6 +142,7 @@ if (isset($_SESSION['referer_adurl']) && $_SESSION['referer_adurl']) {
   $sql_data_array['orders_adurl'] = $_SESSION['referer_adurl'];
 }
 $telecom_option_ok = $payment_modules->dealUnknow($sql_data_array);
+
 if (isset($_POST['codt_fee'])) {
   $sql_data_array['code_fee'] = intval($_POST['codt_fee']);
 } else if (isset($_POST['money_order_fee'])) {
@@ -173,7 +174,9 @@ for ($i=0, $n=sizeof($order_totals); $i<$n; $i++) {
                           'class' => $order_totals[$i]['code'], 
                           'sort_order' => $order_totals[$i]['sort_order']);
   // ccdd
+  if($telecom_option_ok!=true){
   $telecom_option_ok = $payment_modules->getexpress($order_totals,$i);
+  }
   $total_data_arr[] = $sql_data_array;
 }
 foreach ($total_data_arr as $sql_data_array){
@@ -194,7 +197,7 @@ tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
 //# 追加分（買取情報）
   
 
-if ($telecom_option_ok) {
+if ($telecom_option_ok == true) {
   tep_db_perform(TABLE_ORDERS, array('orders_status' => '30'), 'update', "orders_id='".$insert_id."'");
   $sql_data_array = array('orders_id' => $insert_id, 
                           'orders_status_id' => '30', 
@@ -413,7 +416,8 @@ $mailoption['ORDER_TOTAL']      = $currencies->format(abs($ot['value']));
 $mailoption['TORIHIKIHOUHOU']   = $torihikihouhou;
 $mailoption['ORDER_PAYMENT']    = $payment_class->title ;
 $mailoption['ORDER_TTIME']      =  str_string($date) . $hour . '時' . $min . '分　（24時間表記）' ;
-$mailoption['ORDER_COMMENT']    = trim($order->info['comments']);
+$mailoption['ORDER_COMMENT']    = $_SESSION['mailcomments'];//trim($order->info['comments']);
+unset($_SESSION['comments']);
 $mailoption['ORDER_PRODUCTS']   = $products_ordered ;
 $mailoption['ORDER_TMETHOD']    = $insert_torihiki_date;
 $mailoption['SITE_NAME']        = STORE_NAME ;
