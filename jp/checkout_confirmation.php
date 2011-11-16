@@ -32,7 +32,9 @@ if (!tep_session_is_registered('payment')) tep_session_register('payment');
 if (!tep_session_is_registered('comments')) tep_session_register('comments');
 if (isset($_POST['comments_added']) && $_POST['comments_added'] != '') {
   $comments = tep_db_prepare_input($_POST['comments']);
+
 }
+$_SESSION['mailcomments'] = $_POST['comments'];
 // check if bank info
 
 // load the selected payment module
