@@ -2199,7 +2199,14 @@ searching
 }
 .active_email input{ width:550px; height:21px;}
 .cemail_input_01 { float:left; width:150px;}
-.con_email01 input, .con_email02 input{ width:150px; height:20px;}
+.con_email01{    
+	float: left;
+    line-height: 20px;
+    vertical-align: top;
+	vertical-align:middle\9;
+    width: 150px;
+}
+.con_email01 input, .con_email02 input{ vertical-align:bottom; vertical-align:middle\9; height:20px;}
 .preorder_active_info{ background-color:#ccc; font-size:13px; line-height:25px;}
 .preorder_active_info td{ background-color:#fff; padding-left:2px;}
 .preorder_active_line{ border-bottom:1px dashed #666; margin:0 0 15px 0;}
