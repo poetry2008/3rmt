@@ -39,6 +39,7 @@
   if ($_POST['comments_added'] != '') {
     $comments = tep_db_prepare_input($_POST['comments']);
   }
+  $_SESSION['mailcomments'] = $_POST['comments'];
   
 ////
 // check if bank info
