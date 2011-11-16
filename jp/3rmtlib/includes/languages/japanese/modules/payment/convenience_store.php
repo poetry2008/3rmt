@@ -41,3 +41,5 @@
 コンビニ決済
 	LAWSON、スリーエフ、MINI STOP、サークルK、SUNKUSがご利用いただけます。 		
 	PCメールアドレス:#USER_MAIL#");
+
+define('TEXT_HANDLE_FEE_CONFIRMATION', '手数料:');

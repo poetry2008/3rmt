@@ -15,3 +15,4 @@
   define('MODULE_PAYMENT_BUYINGPOINT_TEXT_SHOW', '');
 //  define('MODULE_PAYMENT_BUYINGPOINT_TEXT_SHOW', '振込先口座情報に誤りがないかご確認ください。');
   define('MODULE_PAYMENT_BUYINGPOINT_TEXT_CONFIRMATION',"買取代金は当サイト でご利用できるポイントとしてお支払いされます。");
+  define('TEXT_POINT_NOW_TWO','<b>買取はポイントがつきません</b>&nbsp;&nbsp;今回の獲得予定ポイント:');
