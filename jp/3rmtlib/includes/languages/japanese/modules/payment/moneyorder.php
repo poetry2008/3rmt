@@ -34,3 +34,22 @@
 ※ お振り込みはご注文から7日以内にお願いいたします。
 ※ ご入金を株式会社iimyが確認した時点でご契約の成立となります。
 ");
+
+
+
+define('TEXT_BANK_ERROR_NAME', '【金融機関名】が入力されていません');
+define('TEXT_BANK_ERROR_KAMOKU', '【口座種別】が入力されていません');
+define('TEXT_BANK_ERROR_SHITEN', '【支店名】が入力されていません');
+define('TEXT_BANK_ERROR_KOUZA_NUM', '【口座番号】が入力されていません');
+define('TEXT_BANK_ERROR_KOUZA_NUM2', '【口座番号】は半角で入力してください。');
+define('TEXT_BANK_ERROR_KOUZA_NAME', '【口座名義】が入力されていません');
+
+define('TABLE_HEADING_BANK', '振込先口座情報');
+define('TEXT_BANK_NAME', '金融機関名:');
+define('TEXT_BANK_SHITEN', '支店名:');
+define('TEXT_BANK_KAMOKU', '口座種別:');
+define('TEXT_BANK_KOUZA_NUM', '口座番号:');
+define('TEXT_BANK_KOUZA_NAME', '口座名義:');
+
+define('TEXT_BANK_SELECT_KAMOKU_F', '普通');
+define('TEXT_BANK_SELECT_KAMOKU_T', '当座');
