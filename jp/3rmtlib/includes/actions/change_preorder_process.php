@@ -387,7 +387,7 @@ $email_printing_order .= 'お支払方法　　　：' . $preorder['payment_meth
   
 
 $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-$email_printing_order .= $products_ordered;
+$email_printing_order .= $products_ordered_text;
 
 $email_printing_order .= '備考　　　　　　：' . "\n";
 
