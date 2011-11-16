@@ -16,8 +16,10 @@
 //振込先口座情報に誤りがないかご確認ください。');
   define('MODULE_PAYMENT_BUYING_TEXT_CONFIRMATION',"");
 
+  /*
   define('CONFIRMATION_BUYING_TEXT_TITLE', '銀行振込(買い取り)');
   define('CONFIRMATION_BUYING_TEXT_FEE', '銀行振込(買い取り)決済手数料:');
   define('TEXT_HANDLE_FEE_CONFIRMATION', '手数料:');
   define('TEXT_POINT_NOW_TWO','<b>買取はポイントがつきません</b>&nbsp;&nbsp;今回の獲得予定ポイント:');
+  */
 ?>

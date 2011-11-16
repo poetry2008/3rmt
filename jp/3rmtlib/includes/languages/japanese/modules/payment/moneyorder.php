@@ -35,6 +35,7 @@
 ※ ご入金を株式会社iimyが確認した時点でご契約の成立となります。
 ");
 
+/*
 
 
 define('TEXT_BANK_ERROR_NAME', '【金融機関名】が入力されていません');
@@ -53,3 +54,4 @@ define('TEXT_BANK_KOUZA_NAME', '口座名義:');
 
 define('TEXT_BANK_SELECT_KAMOKU_F', '普通');
 define('TEXT_BANK_SELECT_KAMOKU_T', '当座');
+*/
