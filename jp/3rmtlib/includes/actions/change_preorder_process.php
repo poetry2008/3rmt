@@ -425,7 +425,7 @@ $email_printing_order .= '━━━━━━━━━━━━━━━━━━
 
 if (isset($cpayment_class)) {
   if (method_exists($cpayment_class,'getMailString')){
-    $email_printing_order .= $cpayment_class->getMailString();
+    $email_printing_order .= $cpayment_class->getMailString($preorder_total_print_num);
   }
 }
 
