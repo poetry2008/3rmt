@@ -22,4 +22,13 @@
   define('TEXT_HANDLE_FEE_CONFIRMATION', '手数料:');
   define('TEXT_POINT_NOW_TWO','<b>買取はポイントがつきません</b>&nbsp;&nbsp;今回の獲得予定ポイント:');
   */
+
+
+define('TEXT_BANK_ERROR_NAME', '【金融機関名】が入力されていません');
+define('TEXT_BANK_ERROR_KAMOKU', '【口座種別】が入力されていません');
+define('TEXT_BANK_ERROR_SHITEN', '【支店名】が入力されていません');
+define('TEXT_BANK_ERROR_KOUZA_NUM', '【口座番号】が入力されていません');
+define('TEXT_BANK_ERROR_KOUZA_NUM2', '【口座番号】は半角で入力してください。');
+define('TEXT_BANK_ERROR_KOUZA_NAME', '【口座名義】が入力されていません');
+
 ?>
