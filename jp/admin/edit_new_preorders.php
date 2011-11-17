@@ -928,9 +928,6 @@ padding:0 3px;
 textarea,input{
   font-size:12px;
 }
-textarea{
-  width:100%;
-}
 .alarm_on{
   border:2px solid #ff8e90;
   background:#ffe6e6;
