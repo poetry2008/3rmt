@@ -27,4 +27,3 @@ define('PREORDER_ACTIVE_SUCCESS_READ_INFO', '今すぐ電子メールをご確�
     「迷惑メールフォルダ」や「ゴミ箱」に振り分けされ見落としていませんか？<br>＜メールドメインの受信制限を設定している＞<br>'.STORE_DOMAIN.'のメールドメインを受信するように設定をお願いいたします。<br>＜それでも届かないときは、メールアドレス変更＞<br>お客様情報から今すぐご登録メールアドレスの変更をお願いいたします。');
 define('PREORDER_ACTIVE_SUCCESS_READ_HEAD', '「予約注文受付」メールをお送りしましたのでご確認ください。<br>納期に付きましては、24時間以内にご回答いたします。');
 define('PREORDER_ACTIVE_SUCCESS_READ_BOTTOM', STORE_NAME.'では、%sの予約サービスを行っております。 <br>ご希望する数量が弊社在庫にある場合は「%s」をクリックしてお手続きください。');
-define('PREORDER_EMAIL_ALREADY_SEND', 'エラーが発生しました。<br>お手数をお掛けいたしますが、こちらから<a href="'.HTTP_SERVER.'">トップページ</a>に戻り再度やり直してください。' );

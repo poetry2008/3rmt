@@ -32,10 +32,10 @@
         $error_msg = PREORDER_EMAIL_PATTENR_WRONG; 
       } else if ($preorder['is_active']) {
         $error = true; 
-        $error_msg = PREORDER_EMAIL_ALREADY_SEND; 
+        $error_msg = ALREADY_SEND_PREMAIL_TEXT; 
       } else if (tep_check_exists_cu_email($_POST['pemail'], $preorder['customers_id'], 1)) {
         $error = true; 
-        $error_msg = PREORDER_EMAIL_ALREADY_SEND; 
+        $error_msg = CHECK_EMAIL_EXISTS_ERROR; 
       }
    
       if (!$error) {
