@@ -416,8 +416,9 @@ $mailoption['ORDER_TOTAL']      = $currencies->format(abs($ot['value']));
 $mailoption['TORIHIKIHOUHOU']   = $torihikihouhou;
 $mailoption['ORDER_PAYMENT']    = $payment_class->title ;
 $mailoption['ORDER_TTIME']      =  str_string($date) . $hour . '時' . $min . '分　（24時間表記）' ;
-$mailoption['ORDER_COMMENT']    = $_SESSION['mailcomments'];//trim($order->info['comments']);
+$mailoption['ORDER_COMMENT']    = $_SESSION['mailcomments'];//
 unset($_SESSION['comments']);
+$mailoption['EXTRA_COMMENT']    = str_replace("\n".$mailoption['ORDER_COMMENT'],'',trim($order->info['comments']));
 $mailoption['ORDER_PRODUCTS']   = $products_ordered ;
 $mailoption['ORDER_TMETHOD']    = $insert_torihiki_date;
 $mailoption['SITE_NAME']        = STORE_NAME ;
