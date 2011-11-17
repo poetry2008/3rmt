@@ -712,12 +712,12 @@
 
 
 // echo print 
-/*
+  /*
   print_r($_SESSION);
   var_dump("<br><br>");
   var_dump(str_replace("\n",'<br>',$email_printing_order));
   exit;
-*/
+  */
 
     if (isset($_POST['notify']) && ($_POST['notify'] == 'on')) {
       $order = new order($_SESSION['create_order2']['orders']['orders_id']);

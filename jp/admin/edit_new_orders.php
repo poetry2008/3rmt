@@ -1534,10 +1534,10 @@ color: #FF6600;
   
       //<textarea style="font-family:monospace;font-size:x-small" name="comments" wrap="hard" rows="30" cols="74"></textarea>
   
-      echo tep_draw_textarea_field('comments', 'hard', '74', '5', isset($order->info['comments'])?$order->info['comments']:'');
+      echo tep_draw_textarea_field('comments', 'hard', '60', '30', isset($order->info['comments'])?$order->info['comments']:'','style=" font-family:monospace; font-size:12px;"');
       //    echo tep_draw_textarea_field('comments', 'soft', '40', '5');
     } else {
-      echo tep_draw_textarea_field('comments', 'hard', '74', '5', isset($order->info['comments'])?$order->info['comments']:'');
+      echo tep_draw_textarea_field('comments', 'hard', '60', '30', isset($order->info['comments'])?$order->info['comments']:'','style=" font-family:monospace; font-size:12px;"');
     }
     ?>
     </td>
