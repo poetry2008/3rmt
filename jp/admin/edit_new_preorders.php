@@ -1381,7 +1381,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     $mail_sql = tep_db_fetch_array($mail_sele);
     ?>
     <?php   
-    echo '<b>メールタイトル：</b>'.tep_draw_input_field('etitle', $mail_sql['orders_status_title']); 
+    echo '<b>メールタイトル：</b>'.tep_draw_input_field('etitle', $mail_sql['orders_status_title'],'style="width:315px;"'); 
     ?> 
     <br>
     <br>
