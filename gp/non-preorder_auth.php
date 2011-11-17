@@ -38,7 +38,7 @@
       if (!$error) {
         $preorder_email_subject = str_replace('${SITE_NAME}', STORE_NAME, PREORDER_MAIL_ACTIVE_SUBJECT); 
         $encode_param_str = md5(time().$preorder['customers_id'].$_POST['pemail']); 
-        $active_url = HTTP_SERVER.'/preorder_auth.php?pid='.$preorder_id; 
+        $active_url = HTTP_SERVER.'/preorder_auth.php?pid='.$encode_param_str; 
         $old_str_array = array('${URL}', '${NAME}', '${SITE_NAME}', '${SITE_URL}'); 
         $new_str_array = array(
             $active_url,   
