@@ -86,6 +86,10 @@
       $error = true;
       $entry_password_error = true;
     }
+    if (empty($password) && empty($confirmation)) {
+      $error = true;
+      $entry_password_error = true;
+    }
   }
   
   $noactive_single = false;
@@ -98,7 +102,7 @@
     }
   }
 //ccdd
-  if (!$noactive_single) { 
+  if (!$noactive_single && !$error) { 
     $check_email = tep_db_query("select * from " .  TABLE_CUSTOMERS . " where customers_email_address = '" .  tep_db_input($email_address) . "' and customers_guest_chk = '0' and site_id = '".SITE_ID."'");
     if (tep_db_num_rows($check_email)) {
       $check_email_res = tep_db_fetch_array($check_email); 

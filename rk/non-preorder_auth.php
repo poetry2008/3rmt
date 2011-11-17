@@ -37,32 +37,15 @@
       } else if (!tep_validate_email($_POST['pemail'])) {
         $error = true; 
         $error_msg = PREORDER_EMAIL_PATTENR_WRONG; 
+      } else if ($preorder['is_active']) {
+        $error = true; 
+        $error_msg = PREORDER_EMAIL_ALREADY_SEND; 
       }
     
-      if ($preorder['is_active']) {
-        $preorder_email_subject = str_replace('${SITE_NAME}', STORE_NAME, PREORDER_MAIL_SUBJECT); 
-        
-        $preorder_email_text = PREORDER_MAIL_CONTENT; 
-        $pre_name = '';
-        $pre_num = 0;
-        $pre_date = '';
-        $replace_info_arr = array('${PRODUCTS_NAME}', '${PRODUCTS_QUANTITY}', '${EFFECTIVE_TIME}', '${PAY}', '${NAME}', '${SITE_NAME}', '${SITE_URL}', '${PREORDER_N}', '${ORDER_COMMENT}'); 
-        
-        $pre_date_str = strtotime($preorder['predate']);
-        $pre_date = date('Y', $pre_date_str).PREORDER_YEAR_TEXT.date('m', $pre_date_str).PREORDER_MONTH_TEXT.date('d', $pre_date_str).PREORDER_DAY_TEXT;
-        $preorder_product_query = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$preorder_id."'");
-        $preorder_product_res = tep_db_fetch_array($preorder_product_query); 
-        
-        if ($preorder_product_res) {
-          $pre_name = $preorder_product_res['products_name'];
-          $pre_num = $preorder_product_res['products_quantity']; 
-        }
-        $pre_replace_info_arr = array($pre_name, $pre_num, $pre_date, $preorder['payment_method'], $preorder['customers_name'], STORE_NAME, HTTP_SERVER, $preorder['orders_id'], $preorder['comment_msg']);
-        
-        $preorder_email_text = str_replace($replace_info_arr, $pre_replace_info_arr, $preorder_email_text);
-      } else {
+      if (!$error) {
         $preorder_email_subject =str_replace('${SITE_NAME}', STORE_NAME, PREORDER_MAIL_ACTIVE_SUBJECT); 
-        $active_url = HTTP_SERVER.'/preorder_auth.php?pid='.$preorder_id; 
+        $encode_param_str = md5(time().$preorder['customers_id'].$_POST['pemail']); 
+        $active_url = HTTP_SERVER.'/preorder_auth.php?pid='.$encode_param_str; 
         $old_str_array = array('${URL}', '${NAME}', '${SITE_NAME}', '${SITE_URL}'); 
         $new_str_array = array(
               $active_url,     
@@ -71,8 +54,9 @@
               HTTP_SERVER
               ); 
         $preorder_email_text = str_replace($old_str_array, $new_str_array, PREORDER_MAIL_ACTIVE_CONTENT); 
-      }
-      tep_mail($preorder['customers_name'], $_POST['pemail'], $preorder_email_subject, $preorder_email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS); 
+        tep_db_query("update `".TABLE_CUSTOMERS."` set `check_login_str` = '".$encode_param_str."' where customers_id = '".$preorder['customers_id']."' and site_id = '".SITE_ID."'");  
+        tep_mail($preorder['customers_name'], $_POST['pemail'], $preorder_email_subject, $preorder_email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS); 
+    }
     }
   }
   
