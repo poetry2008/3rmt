@@ -316,6 +316,7 @@ $mailoption['TORIHIKIHOUHOU']   = $_SESSION['preorder_info_tori'];
 $mailoption['ORDER_PAYMENT']    = $preorder['payment_method'];
 $mailoption['ORDER_TTIME']      =  str_string($_SESSION['preorder_info_date']) .  $_SESSION['preorder_info_hour'] . '時' . $_SESSION['preorder_info_min'] .  '分　（24時間表記）';
 
+$mailoption['EXTRA_COMMENT']   = '';
 $mailoption['ORDER_PRODUCTS']   = $products_ordered_text;
 $mailoption['ORDER_TMETHOD']    = $torihikihouhou_date_str;
 $mailoption['SITE_NAME']        = STORE_NAME;
