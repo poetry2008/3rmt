@@ -9,7 +9,7 @@
   define('MODULE_PAYMENT_POSTALMONEYORDER_TEXT_EMAIL_FOOTER', C_POSTAL."\n\n". EMAIL_SIGNATURE);  //Add Japanese osCommerce
   define('MODULE_PAYMENT_POSTALMONEY_ORDER_TEXT_FEE', 'ゆうちょ銀行（郵便局）決済手数料:');
   define('MODULE_PAYMENT_POSTALMONEY_ORDER_TEXT_PROCESS', 'ゆうちょ銀行（郵便局）決済手数料が別途かかります。');
-  define('MODULE_PAYMENT_POSTALMONEYORDER_TEXT_OVERFLOW_ERROR', 'お買い上げ金額がコンビニ決済の制限を超えたためお取り扱いできません。');
+  define('MODULE_PAYMENT_POSTALMONEYORDER_TEXT_OVERFLOW_ERROR','お買い上げ金額がゆうちょ銀行（郵便局）の制限を超えたためお取り扱いできません。');
   define('MODULE_PAYMENT_POSTALMONEY_ORDER_TEXT_MAILFOOTER', '');
   define('MODULE_PAYMENT_POSTALMONEY_ORDER_TEXT_ERROR_MESSAGE', 'ゆうちょ銀行（郵便局）決済の処理中にエラーが発生しました. 入力内容を訂正しもう一度試してください。　');
   define('MODULE_PAYMENT_POSTALMONEYORDER_TEXT_CONFIRMATION', 'ゆうちょ銀行から送金する場合は下記の口座へ
