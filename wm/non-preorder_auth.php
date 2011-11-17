@@ -33,6 +33,9 @@
       } else if ($preorder['is_active']) {
         $error = true; 
         $error_msg = PREORDER_EMAIL_ALREADY_SEND; 
+      } else if (tep_check_exists_cu_email($_POST['pemail'], $preorder['customers_id'], 1)) {
+        $error = true; 
+        $error_msg = PREORDER_EMAIL_ALREADY_SEND; 
       }
       
       if (!$error) {
@@ -47,7 +50,9 @@
             HTTP_SERVER
             ); 
         $preorder_email_text = str_replace($old_str_array, $new_str_array, PREORDER_MAIL_ACTIVE_CONTENT); 
-        tep_db_query("update `".TABLE_CUSTOMERS."` set `check_login_str` = '".$encode_param_str."' where customers_id = '".$preorder['customers_id']."' and site_id = '".SITE_ID."'"); 
+        
+        tep_db_query("update `".TABLE_CUSTOMERS."` set `check_login_str` = '".$encode_param_str."', `customers_email_address` = '".$_POST['pemail']."' where customers_id = '".$preorder['customers_id']."' and site_id = '".SITE_ID."'");  
+        tep_db_query("update `".TABLE_PREORDERS."` set `customers_email_address` = '".$_POST['pemail']."' where orders_id = '".$preorder['orders_id']."' and site_id = '".SITE_ID."'"); 
         tep_mail($preorder['customers_name'], $_POST['pemail'], $preorder_email_subject, $preorder_email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS); 
     }
     }
