@@ -1499,7 +1499,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
         $sta       = isset($_GET['status'])?$_GET['status']:'';
       ?>
       <tr>
-        <td class="main"><b><?php echo ENTRY_EMAIL_TITLE; ?></b><?php echo tep_draw_input_field('title', $mail_sql['orders_status_title']); ?></td>
+        <td class="main"><b><?php echo ENTRY_EMAIL_TITLE; ?></b><?php echo tep_draw_input_field('title', $mail_sql['orders_status_title'],'style=" width:315px;"'); ?></td>
       </tr>
       <tr>
         <td class="main">
@@ -2536,7 +2536,7 @@ function submit_confirm()
         </tr>
         <tr>
           <td class="main"><b><?php echo ENTRY_EMAIL_TITLE; ?></b></td>
-        <td class="main"><?php echo tep_draw_input_field('os_title', $select_title); ?></td>
+        <td class="main"><?php echo tep_draw_input_field('os_title', $select_title,' style=" width:400px;"'); ?></td>
         </tr>
         <tr>
           <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
