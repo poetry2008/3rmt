@@ -101,8 +101,8 @@ if ($preorder) {
                            'orders_comment' => $preorder['orders_comment'], 
                            'orders_important_flag' => $preorder['orders_important_flag'], 
                            'orders_care_flag' => $preorder['orders_care_flag'], 
-                           'orders_wait_flag' => $preorder['orders_wait_flag'], 
-                           'orders_inputed_flag' => $preorder['orders_inputed_flag'], 
+                           'orders_wait_flag' => '1', 
+                           'orders_inputed_flag' => '0', 
                            'orders_screen_resolution' => $_SESSION['screenResolution'], 
                            'orders_color_depth' => $_SESSION['colorDepth'], 
                            'orders_flash_enable' => $_SESSION['flashEnable'], 
@@ -116,7 +116,7 @@ if ($preorder) {
                            'orders_http_accept_language' => $_SERVER['HTTP_ACCEPT_LANGUAGE'], 
                            'orders_system_language' => $_SESSION['systemLanguage'], 
                            'orders_user_language' => $_SESSION['userLanguage'], 
-                           'orders_work' => $preorder['orders_work'], 
+                           'orders_work' => '', 
                            'q_8_1' => $preorder['q_8_1'], 
                            'telecom_option' => $_SESSION['preorder_option'], 
                            'orders_ref_keywords' => strtolower(SBC2DBC(parseKeyword($_SESSION['referer']))), 
@@ -279,7 +279,7 @@ while ($preorder_oa_res = tep_db_fetch_array($preorder_oa_raw)) {
 }
 
 $products_ordered_text .= $products_ordered_attributes;
-
+/*
 $preorders_computer_raw = tep_db_query("select * from ".TABLE_PREORDERS_TO_COMPUTERS." where orders_id = '".$_SESSION['preorder_info_id']."'");
 while ($preorders_computers_res = tep_db_fetch_array($preorders_computer_raw)) {
   $sql_data_array = array('orders_id' => $orders_id,
@@ -287,7 +287,7 @@ while ($preorders_computers_res = tep_db_fetch_array($preorders_computer_raw)) {
       );
   tep_db_perform('orders_to_computers', $sql_data_array);
 }
-
+*/
 $products_ordered_text .= "\n".'個数　　　　　　　：' .  $preorder_product_res['products_quantity'] . '個' .  "\n";
 $products_ordered_text .= '単価　　　　　　　：' .  $currencies->display_price($preorder_product_res['final_price'], $preorder_product_res['products_tax']) . "\n";
 
