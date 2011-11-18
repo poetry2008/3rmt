@@ -923,13 +923,13 @@ while ($totals = tep_db_fetch_array($totals_query)) {
               <tr>
                 <td class="main" valign="top"><b><?php echo EDIT_ORDERS_CUSTOMER_NAME;?></b></td>
                 <td class="main">
-                  <input name="update_customer_name" size="25" value="<?php echo tep_html_quotes($order->customer['name']); ?>">
+                  <input class="edit_input" name="update_customer_name" size="25" value="<?php echo tep_html_quotes($order->customer['name']); ?>">
                   <span class="smalltext"><?php echo EDIT_ORDERS_CUSTOMER_NAME_READ;?></span>
                 </td>
               </tr>
               <tr>
                 <td class="main" valign="top"><b><?php echo EDIT_ORDERS_EMAIL;?></b></td>
-                <td class="main"><input name="update_customer_email_address" size="45" value="<?php echo $order->customer['email_address']; ?>"></td>
+                <td class="main"><input class="edit_new_input" name="update_customer_email_address" size="45" value="<?php echo $order->customer['email_address']; ?>"></td>
               </tr>
               <!-- End Addresses Block -->
               <!-- Begin Payment Block -->
@@ -945,14 +945,14 @@ while ($totals = tep_db_fetch_array($totals_query)) {
               <tr>
                 <td class="main" valign="top"><b><?php echo EDIT_ORDERS_FETCHTIME;?></b></td>
                 <td class="main">
-                  <input name='update_tori_torihiki_date' size='25' value='<?php echo $order->tori['date']; ?>'>
+                  <input class="edit_input" name='update_tori_torihiki_date' size='25' value='<?php echo $order->tori['date']; ?>'>
                   <span class="smalltext"><?php echo EDIT_ORDERS_FETCHTIME_READ;?></span>
                 </td>
               </tr>
               <tr>
                 <td class="main" valign="top"><b><?php echo EDIT_ORDERS_TORI_TEXT;?></b></td>
                 <td class="main">
-                  <input name='update_tori_torihiki_houhou' size='45' value='<?php echo $order->tori['houhou']; ?>'>
+                  <input class="edit_new_input" name='update_tori_torihiki_houhou' size='45' value='<?php echo $order->tori['houhou']; ?>'>
                   <?php echo EDIT_ORDERS_TORI_READ;?> 
 <input type="hidden" name="update_viladate" value="true">
 <input name="update_customer_company" size="25" type='hidden' value="<?php echo tep_html_quotes($order->customer['company']); ?>">
