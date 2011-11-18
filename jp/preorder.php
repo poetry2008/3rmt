@@ -91,18 +91,15 @@ $(document).ready(function(){
 	  $(this).attr('checked','true');
 	});
     }
-    $("input[name=pre_payment]").click(function(index){
-	  triggerHide(this);
-      });
     $("input[name=pre_payment]").each(function(index){
 	if ($(this).attr('checked') == true) {
 	  triggerHide(this);
 	}
       });
-    $(".moduleRow").click(function(){
-	triggerHide($(this).find("input:radio")[0]);
+    $("input:radio").click(function(){
+	triggerHide(this);
       });
-    $(".moduleRowSelected").click(function(){
+    $(".moduleRow").click(function(){
 	triggerHide($(this).find("input:radio")[0]);
       });
   });
