@@ -150,7 +150,7 @@
                   <td colspan="3">
                   <font size="2"><?php
                     echo PREORDER_ACTIVE_INFO_FRONT_COMMENT; 
-                  ?></font>
+                  ?></font><br>
                   </td>
                 </tr>
                 <tr>
@@ -159,7 +159,7 @@
                   <?php echo tep_draw_input_field('pemail', (isset($_POST['pemail'])?$_POST['pemail']:$pe_email));?> 
                   </td>
                   <td align="right">
-                  <?php echo tep_image_submit('button_send_mail.gif', 'mail');?> 
+                  <?php echo tep_image_submit('button_send_mail.gif', 'mail');?><br>
                   </td>
                 </tr>
                 <tr>
