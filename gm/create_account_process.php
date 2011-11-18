@@ -669,7 +669,8 @@ function pass_hidd(){
     tep_session_register('customer_default_address_id');
     tep_session_register('customer_country_id');
     tep_session_register('customer_zone_id');
-
+    $customer_emailaddress = $email_address; 
+    tep_session_register('customer_emailaddress');
     tep_session_register('guestchk');
 
 // restore cart contents
