@@ -2,6 +2,8 @@
 /*
   $Id$
 */
+error_reporting(E_ALL);
+ini_set("display_errors", "On");
 require('includes/application_top.php');
 
 $set = $_GET['set'];
@@ -122,7 +124,13 @@ if (isset($_GET['action']))
         }
       }
     }
+    print_r($_POST['configuration']);
+    echo "<br>126===============================================<br>";
+    print_r($_SERVER);
+    echo "<br>128===============================================<br>";
     while (list($key, $value) = each($_POST['configuration'])) {
+      echo "<br> this is in while <br>";
+      echo "<br>131===============================================<br>";
 
       if (
           !tep_db_num_rows(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$key."' and site_id='".$site_id."'")
@@ -167,10 +175,10 @@ if (isset($_GET['action']))
 
       if (preg_match('/.*LIMIT_SHOW/', $key)) 	{
         var_dump("update " . TABLE_CONFIGURATION . " set configuration_value = '" . serialize($value) . "' where configuration_key = '" . $key . "' and site_id = '".$site_id."'");
-        //tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . serialize($value) . "' where configuration_key = '" . $key . "' and site_id = '".$site_id."'");
+        tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . serialize($value) . "' where configuration_key = '" . $key . "' and site_id = '".$site_id."'");
       } else {
         var_dump("update " . TABLE_CONFIGURATION . " set configuration_value = '" . $value . "' where configuration_key = '" . $key . "' and site_id = '".$site_id."'");
-        //tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . $value . "' where configuration_key = '" . $key . "' and site_id = '".$site_id."'");
+        tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . $value . "' where configuration_key = '" . $key . "' and site_id = '".$site_id."'");
       }
       echo "<br>===============================================<br>";
     }
