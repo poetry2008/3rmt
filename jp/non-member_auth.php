@@ -120,7 +120,8 @@
                 <td colspan="3" class="mail_img"><img src="images/design/mail_top.gif" align=""></td>
               </tr>
               <tr>
-                <td colspan="3"><div class="mail_text">
+                <td colspan="3">
+                <div style="background-color: #FDEBAC; color: #000000; height: 25px; line-height: 25px; margin-bottom: 5px; padding-left: 10px;">
                 <font size="2"><?php 
                   echo sprintf(NOTICE_SEND_TO_EMAIL_TEXT, (isset($_post['cemail'])?$_post['cemail']:$cus_email)); 
                 ?></font></div>
@@ -132,14 +133,16 @@
                 </td>
               </tr>
               <tr>
-                <td class="active_email_name">
-                <b><?php echo INPUT_SEND_MAIL;?>:</b> 
-                </td>
-                <td class="active_email">
-                <?php echo tep_draw_input_field('cemail', (isset($_post['cemail'])?$_post['cemail']:$cus_email));?> 
-                </td>
-                <td>
-                <?php echo tep_image_submit('button_send_mail.gif', SENDMAIL_BUTTON);?> 
+                <td class="active_email_name" colspan="3">
+                <div style="width:520px;">
+                <div style="float:left; line-height: 20px; padding-right: 5px;"><b><?php echo INPUT_SEND_MAIL;?>:</b></div> 
+                <div class="active_email" style="float:left; padding-right:25px;">
+                <?php echo tep_draw_input_field('cemail', (isset($_post['cemail'])?$_post['cemail']:$cus_email));?>
+                </div>
+                <div style="float:left; line-height:20px;">
+                <?php echo tep_image_submit('button_send_mail.gif', SENDMAIL_BUTTON);?>
+                </div>
+                </div> 
                 </td>
               </tr>
               <tr>
