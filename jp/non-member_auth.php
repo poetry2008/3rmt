@@ -170,8 +170,6 @@
                   <?php 
                   if ($_GET['cu'] == 1) {
                     echo '<a href="'.tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL').'">' . tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; 
-                  } else {
-                    echo '<a href="' .  tep_href_link(FILENAME_DEFAULT) . '">' .  tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>';
                   }
                   ?>
                     </td> 
