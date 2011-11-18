@@ -1121,7 +1121,7 @@ searching
  table-layout:fixed;
  width:520px;
 }
-.active_email input{ width:360px;}
+.active_email input{ width:360px; width:200px\9;}
 .con_telnumber_input {
 /*	display:inline;
 	margin-left:78px;
@@ -1145,3 +1145,6 @@ searching
 .input_text { width:200px; height:20px;}
 .input_text_short { width:40px; height:20px; text-align:right;}
 .active_email_name { font-size:11px; width:100px;}
+.mail_text { background-color:#fdebac; font-size:11px; height:25px; padding-left:10px; color:#000000;}
+.mail_img img{ margin-bottom:5px;}
+.mail_img_next img { margin:10px 0;}

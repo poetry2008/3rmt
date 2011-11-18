@@ -117,14 +117,18 @@
             <td>
             <table>
               <tr>
-                <td style="color: rgb(255, 0, 0);" colspan="3">
-                <font size="3"><b><?php echo EMAIL_RED_TEXT_INFO;?></b></font>
+                <td colspan="3" class="mail_img"><img src="images/design/mail_top.gif" align=""></td>
+              </tr>
+              <tr>
+                <td colspan="3" class="mail_text">
+                <?php 
+                  echo sprintf(NOTICE_SEND_TO_EMAIL_TEXT, (isset($_post['cemail'])?$_post['cemail']:$cus_email)); 
+                ?>
                 </td>
               </tr>
               <tr>
-                <td style="font-size:11px;" colspan="3">
-                <?php echo EMAIL_READ_INFO_TEXT;?>
-                <br>
+                <td colspan="3">
+                <font size="2"><?php echo ACTIVE_INFO_FRONT_COMMENT;?></font> 
                 </td>
               </tr>
               <tr>
@@ -132,18 +136,26 @@
                 <b><?php echo INPUT_SEND_MAIL;?>:</b> 
                 </td>
                 <td class="active_email">
-                <?php echo tep_draw_input_field('cemail', (isset($_POST['cemail'])?$_POST['cemail']:$cus_email));?> 
+                <?php echo tep_draw_input_field('cemail', (isset($_post['cemail'])?$_post['cemail']:$cus_email));?> 
                 </td>
                 <td>
                 <?php echo tep_image_submit('button_send_mail.gif', SENDMAIL_BUTTON);?> 
+                </td>
+              </tr>
+              <tr>
+                <td colspan="3">
+                <font size="2"><?php echo ACTIVE_INFO_END_COMMENT;?></font>
                 </td>
               </tr>
             </table>
             </td>
           </tr>
           <tr>
-            <td style="font-size:11px;">
-            <?php echo GUEST_SUCCESS_INFO_COMMENT;?> 
+            <td colspan="3" align="center" class="mail_img_next"><img src="images/design/mail_bottom.gif" align=""></td>
+          </tr>
+          <tr>
+            <td>
+            <font size="2"><?php echo ACTIVE_INFO_EMAIL_READ;?></font> 
             </td>
           </tr>
           <?php }?> 
