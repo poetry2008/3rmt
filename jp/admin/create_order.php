@@ -7,19 +7,19 @@
   
   require(DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_CREATE_ORDER);
   
-  if (IsSet($_GET['Customer'])) {
+  if (isset($_GET['Customer'])) {
     $account_query = tep_db_query("select * from " . TABLE_CUSTOMERS . " where customers_id = '" . $_GET['Customer'] . "'");
     $account = tep_db_fetch_array($account_query);
     $customer = $account['customers_id'];
     $address_query = tep_db_query("select * from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $_GET['Customer'] . "'");
     $address = tep_db_fetch_array($address_query);
-  } elseif (IsSet($_GET['Customer_nr'])) {
+  } elseif (isset($_GET['Customer_nr'])) {
     $account_query = tep_db_query("select * from " . TABLE_CUSTOMERS . " where customers_id = '" . $_GET['Customer_nr'] . "'");
     $account = tep_db_fetch_array($account_query);
     $customer = $account['customers_id'];
     $address_query = tep_db_query("select * from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $_GET['Customer_nr'] . "'");
     $address = tep_db_fetch_array($address_query);
-  } elseif (IsSet($_GET['Customer_mail'])) {
+  } elseif (isset($_GET['Customer_mail'])) {
     $site_id = isset($_GET['site_id']) ? $_GET['site_id']: 0;
     $account_query = tep_db_query("select * from " . TABLE_CUSTOMERS . " where customers_email_address = '" . $_GET['Customer_mail'] . "' and site_id = '".$site_id."'");
     $account = tep_db_fetch_array($account_query);
@@ -94,7 +94,6 @@
     $fax            = isset($account['customers_fax'])          ? $account['customers_fax']:'';
     $zone_id        = isset($account['entry_zone_id'])          ? $account['entry_zone_id']:'';
     $site_id        = isset($account['site_id'])                ? $account['site_id']:'';
-
     $street_address = isset($address['entry_street_address'])   ? $address['entry_street_address']:'';
     $company        = isset($address['entry_company'])          ? $address['entry_company']:'';
     $suburb         = isset($address['entry_suburb'])           ? $address['entry_suburb']:'';

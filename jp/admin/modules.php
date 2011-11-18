@@ -5,7 +5,7 @@
 require('includes/application_top.php');
 
 $set = $_GET['set'];
-if(!is_dir( DIR_FS_CATALOG_MODULES .$_GET['set'])){
+if(empty($set) or !is_dir( DIR_FS_CATALOG_MODULES .$_GET['set'])){
   $set = 'payment';
 }
 $module_type = $set ;

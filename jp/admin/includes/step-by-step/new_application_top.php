@@ -16,7 +16,7 @@
 ////
 // Languages
 require('includes/languages/japanese/step-by-step/japanese.php');
-
+require(DIR_WS_CLASSES . 'payment.php');
 ////
 // check_email
   function tep_validate_email($email) {

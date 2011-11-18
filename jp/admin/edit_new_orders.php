@@ -15,7 +15,8 @@ require(DIR_WS_CLASSES . 'currencies.php');
 $currencies = new currencies(2);
 
 include(DIR_WS_CLASSES . 'order.php');
-
+//error_reporting(E_ALL);
+//ini_set("display_errors","On");
 // START CONFIGURATION ################################
 
 // Correction tax pre-values (Michel Haase, 2005-02-18)
@@ -1114,7 +1115,16 @@ color: #FF6600;
     <tr>
     <td class="main" valign="top"><b><?php echo EDIT_ORDERS_PAYMENT_METHOD;?></b></td>
     <td class="main">
-    <?php echo tep_payment_method_menu($order->info['payment_method']);?>
+    <?php
+    //    echo tep_payment_method_menu($order->info['payment_method']);
+    $payment_array = payment::getPaymentList(); 
+
+    for($i=0; $i<sizeof($payment_array[0]); $i++) {
+      $payment_list[] = array('id' => $payment_array[0][$i],
+          'text' => $payment_array[1][$i]);
+    }
+    echo tep_draw_pull_down_menu('payment_method', $payment_list, $order->info['payment_method']);
+    ?>
     </td>
     </tr>
     <!-- End Payment Block -->
