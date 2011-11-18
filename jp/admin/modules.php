@@ -311,6 +311,7 @@ var_dump(" 227 lin :
       echo "<br>one_row<br>";
     }
     echo "<br>===================old info end ==================<br>";
+    exit;
 
     tep_redirect(tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $_GET['module']));
     break;
