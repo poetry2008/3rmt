@@ -31,6 +31,29 @@ if (isset($_GET['action']))
       $module = new $class($site_id);
       $module->install();
     }
+    echo "GET :<br>";
+    print_r($_GET);
+    echo "<br>=======================end get ===================<br>";
+    echo "POST :<br>";
+    print_r($_POST);
+    echo "<br>=======================end POST ===================<br>";
+    echo "SERVER :<br>";
+    print_r($_SERVER);
+    echo "<br>=======================end SERVER ===================<br>";
+    echo "old info :<br>";
+    $old_sql = "select * from ".TABLE_CONFIGURATION." where configuration_key 
+      like 'MODULE_PAYMENT_".strtoupper($_GET['module'])."%'";
+    $old_query = tep_db_query($old_sql);
+    while($old_row = tep_db_fetch_array($old_query)){
+      echo "<br>one_row<br>";
+      foreach($old_row as $k => $v){
+        echo "<br>";
+        echo "key :".$k."&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value :".$v;
+        echo "<br>";
+      }
+      echo "<br>one_row<br>";
+    }
+    echo "<br>===================old info end ==================<br>";
     if ($_GET['set'] == 'payment') { 
       if ($site_id != 0) {
         $limit_show_str = ''; 
@@ -41,6 +64,7 @@ if (isset($_GET['action']))
           }
         }
         //如果有CHECKBOX
+        echo "limit_show_str :".var_dump($limit_show_str)."<br>";
         if (!empty($limit_show_str)) {
           if (!tep_db_num_rows(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$limit_show_str."' and site_id='".$site_id."'"))) {
             $cp_show_configuration = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$limit_show_str."' and site_id='0'"));
@@ -124,14 +148,12 @@ if (isset($_GET['action']))
         }
       }
     }
+    echo "<br>================configuration=========================<br>";
     print_r($_POST['configuration']);
-    echo "<br>126===============================================<br>";
-    print_r($_SERVER);
-    echo "<br>128===============================================<br>";
+    echo "<br>================configuration_end===================<br>";
     while (list($key, $value) = each($_POST['configuration'])) {
-      echo "<br> this is in while <br>";
-      echo "<br>131===============================================<br>";
-
+      echo "<br>===============================================<br>";
+      echo " while key :".$key."            while site_id :".$site_id."<br>";
       if (
           !tep_db_num_rows(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$key."' and site_id='".$site_id."'")
                            )
@@ -182,6 +204,21 @@ if (isset($_GET['action']))
       }
       echo "<br>===============================================<br>";
     }
+    echo "<br><br><br>new info :<br>";
+    $new_sql = "select * from ".TABLE_CONFIGURATION." where configuration_key 
+      like 'MODULE_PAYMENT_".strtoupper($_GET['module'])."%'";
+    $new_query = tep_db_query($new_sql);
+    while($new_row = tep_db_fetch_array($new_query)){
+      echo "<br>one_row<br>";
+      foreach($new_row as $n_k => $n_v){
+        echo "<br>";
+        echo "key :".$n_k."&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;value :".$n_v;
+        echo "<br>";
+      }
+      echo "<br>one_row<br>";
+    }
+    echo "<br>===================old info end ==================<br>";
+
     exit;
     tep_redirect(tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $_GET['module']));
     break;
