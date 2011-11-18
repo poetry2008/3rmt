@@ -279,15 +279,7 @@ while ($preorder_oa_res = tep_db_fetch_array($preorder_oa_raw)) {
 }
 
 $products_ordered_text .= $products_ordered_attributes;
-/*
-$preorders_computer_raw = tep_db_query("select * from ".TABLE_PREORDERS_TO_COMPUTERS." where orders_id = '".$_SESSION['preorder_info_id']."'");
-while ($preorders_computers_res = tep_db_fetch_array($preorders_computer_raw)) {
-  $sql_data_array = array('orders_id' => $orders_id,
-                          'computers_id' => $preorders_computers_res['computers_id'], 
-      );
-  tep_db_perform('orders_to_computers', $sql_data_array);
-}
-*/
+
 $products_ordered_text .= "\n".'個数　　　　　　　：' .  $preorder_product_res['products_quantity'] . '個' .  "\n";
 $products_ordered_text .= '単価　　　　　　　：' .  $currencies->display_price($preorder_product_res['final_price'], $preorder_product_res['products_tax']) . "\n";
 
