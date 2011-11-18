@@ -121,7 +121,7 @@
               </tr>
               <tr>
                 <td colspan="3">
-                <div style="background-color: #FDEBAC; color: #000000; height: 25px; line-height: 25px; margin-bottom: 5px; padding-left: 10px;">
+                <div style="background-color: #FDEBAC; color: #000000; height: 25px; line-height: 25px; margin:5px 0; padding-left: 10px;">
                 <font size="2"><?php 
                   echo sprintf(NOTICE_SEND_TO_EMAIL_TEXT, (isset($_post['cemail'])?$_post['cemail']:$cus_email)); 
                 ?></font></div>
