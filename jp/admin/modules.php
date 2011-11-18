@@ -3,38 +3,19 @@
   $Id$
 */
 require('includes/application_top.php');
-switch ($_GET['set']) {
-case 'shipping':
-  $module_type = 'shipping';
-  $module_directory = DIR_FS_CATALOG_MODULES . 'shipping/';
-  $module_key = 'MODULE_SHIPPING_INSTALLED';
-  define('HEADING_TITLE', HEADING_TITLE_MODULES_SHIPPING);
-  break;
-case 'ordertotal':
-  $module_type = 'order_total';
-  $module_directory = DIR_FS_CATALOG_MODULES . 'order_total/';
-  $module_key = 'MODULE_ORDER_TOTAL_INSTALLED';
-  define('HEADING_TITLE', HEADING_TITLE_MODULES_ORDER_TOTAL);
-  break;
-case 'metaseo':
-  $module_type = 'metaseo';
-  $module_directory = DIR_FS_CATALOG_MODULES . 'metaseo/';
-  $module_key = 'MODULE_METASEO_INSTALLED';
-  define('HEADING_TITLE', HEADING_TITLE_MODULES_METASEO);
-  break;
-case 'payment':
-default:
-  $module_type = 'payment';
-  $module_directory = DIR_FS_CATALOG_MODULES . 'payment/';
-  $module_key = 'MODULE_PAYMENT_INSTALLED';
-  define('HEADING_TITLE', HEADING_TITLE_MODULES_PAYMENT);
-  break;
+
+$set = $_GET['set'];
+if(!is_dir( DIR_FS_CATALOG_MODULES .$_GET['set'])){
+  $set = 'payment';
 }
+$module_type = $set ;
+$module_directory = DIR_FS_CATALOG_MODULES . $module_type.'/';
+$module_key = 'MODULE_'.strtoupper($module_type).'_INSTALLED';
+define('HEADING_TITLE', $tmp  = constant('HEADING_TITLE_MODULES_'.strtoupper($module_type)));
 
 if (isset($_GET['action'])) 
   switch ($_GET['action']) {
   case 'save':
-
     $site_id = isset($_POST['site_id'])?(int)$_POST['site_id']:0;
     if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];//权限判断
     else $site_arr="";
@@ -46,10 +27,8 @@ if (isset($_GET['action']))
     }
     if(!tep_module_installed($class, $site_id)){
       $module = new $class($site_id);
-
       $module->install();
     }
-      
     if ($_GET['set'] == 'payment') { 
       if ($site_id != 0) {
         $limit_show_str = ''; 
@@ -61,9 +40,7 @@ if (isset($_GET['action']))
         }
         //如果有CHECKBOX
         if (!empty($limit_show_str)) {
-
           if (!tep_db_num_rows(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$limit_show_str."' and site_id='".$site_id."'"))) {
-
             $cp_show_configuration = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$limit_show_str."' and site_id='0'"));
             if ($cp_show_configuration) {
               tep_db_query("
@@ -302,10 +279,6 @@ for ($i = 0, $n = sizeof($directory_array); $i < $n; $i++) {
 //print_r($directory_array_sorted);
 ksort($directory_array_sorted);
 foreach ($directory_array_sorted as $i => $files) {
-
-  //$file = $directory_array_sorted[$i];
-  //include(DIR_WS_LANGUAGES . $language . '/modules/' . $module_type . '/' . $file);
-  //include($module_directory . $file);
   foreach ($files as $j => $file) {
     $class = substr($file, 0, strrpos($file, '.'));
     if (tep_class_exists($class)) {
