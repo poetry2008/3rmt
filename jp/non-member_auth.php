@@ -120,15 +120,15 @@
                 <td colspan="3" class="mail_img"><img src="images/design/mail_top.gif" align=""></td>
               </tr>
               <tr>
-                <td colspan="3" class="mail_text">
-                <?php 
+                <td colspan="3"><div class="mail_text">
+                <font size="2"><?php 
                   echo sprintf(NOTICE_SEND_TO_EMAIL_TEXT, (isset($_post['cemail'])?$_post['cemail']:$cus_email)); 
-                ?>
+                ?></font></div>
                 </td>
               </tr>
               <tr>
                 <td colspan="3">
-                <font size="2"><?php echo ACTIVE_INFO_FRONT_COMMENT;?></font><br>
+                <font size="2"><?php echo ACTIVE_INFO_FRONT_COMMENT;?></font><br><br>
                 </td>
               </tr>
               <tr>
@@ -139,12 +139,12 @@
                 <?php echo tep_draw_input_field('cemail', (isset($_post['cemail'])?$_post['cemail']:$cus_email));?> 
                 </td>
                 <td>
-                <?php echo tep_image_submit('button_send_mail.gif', SENDMAIL_BUTTON);?><br> 
+                <?php echo tep_image_submit('button_send_mail.gif', SENDMAIL_BUTTON);?> 
                 </td>
               </tr>
               <tr>
                 <td colspan="3">
-                <font size="2"><?php echo ACTIVE_INFO_END_COMMENT;?></font>
+                <br><font size="2"><?php echo ACTIVE_INFO_END_COMMENT;?></font>
                 </td>
               </tr>
             </table>

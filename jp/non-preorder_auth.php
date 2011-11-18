@@ -140,17 +140,17 @@
                 	<td colspan="3" class="mail_img"><img src="images/design/mail_top.gif" align=""></td>
                 </tr>
                 <tr>
-                  <td colspan="3"  class="mail_text">
-                  <?php
+                  <td colspan="3"><div class="mail_text">
+                  <font size="2"><?php
                     echo sprintf(PREORDER_NOTICE_SEND_TO_EMAIL_TEXT, (isset($_POST['pemail'])?$_POST['pemail']:$pe_email)); 
-                  ?>
+                  ?></font></div>
                   </td>
                 </tr>
                 <tr>
                   <td colspan="3">
                   <font size="2"><?php
                     echo PREORDER_ACTIVE_INFO_FRONT_COMMENT; 
-                  ?></font><br>
+                  ?></font><br><br>
                   </td>
                 </tr>
                 <tr>
@@ -159,12 +159,12 @@
                   <?php echo tep_draw_input_field('pemail', (isset($_POST['pemail'])?$_POST['pemail']:$pe_email));?> 
                   </td>
                   <td align="right">
-                  <?php echo tep_image_submit('button_send_mail.gif', 'mail');?><br>
+                  <?php echo tep_image_submit('button_send_mail.gif', 'mail');?>
                   </td>
                 </tr>
                 <tr>
                   <td colspan="3">
-                  <font size="2"><?php
+                  <br><font size="2"><?php
                     echo PREORDER_ACTIVE_INFO_END_COMMENT; 
                   ?></font>
                   </td>
