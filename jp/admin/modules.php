@@ -398,7 +398,8 @@ case 'edit':
 
   $contents = array('form' => tep_draw_form('modules', FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $_GET['module'] . '&action=save'));
   $contents[] = array('text' => $keys);
-  $contents[] = array('text' => '<input type="hidden" name="site_id" value="'.$site_id.'">');
+  $contents[] = array('text' => '<input type="hidden" name="site_id" value="'.$site_id.'">'.
+      TEXT_PAYMENT_EMAIL_TEMPLATE);
   $contents[] = array('align' => 'center', 'text' => '<br>' .
                       tep_html_element_submit(IMAGE_SAVE) . ' <a href="' .  tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' .  $_GET['module']) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
 

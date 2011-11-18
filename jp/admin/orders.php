@@ -2405,7 +2405,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
         $sta       = isset($_GET['status'])?$_GET['status']:'';
       ?>
       <tr>
-        <td class="main"><b><?php echo ENTRY_EMAIL_TITLE; ?></b><?php echo tep_draw_input_field('title', $mail_sql['orders_status_title']); ?></td>
+        <td class="main"><b><?php echo ENTRY_EMAIL_TITLE; ?></b><?php echo tep_draw_input_field('title', $mail_sql['orders_status_title'],'style="width:315px;"'); ?></td>
       </tr>
       <tr>
         <td class="main">
@@ -2419,7 +2419,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
       </tr>
       <tr>
         <td class="main">
-          <textarea style="font-family:monospace;font-size:12px;width:400px;" name="comments" wrap="hard" rows="30" cols="74"><?php echo str_replace('${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']); ?></textarea>
+          <textarea style="font-family:monospace;font-size:12px; width:400px;" name="comments" wrap="hard" rows="30" cols="74"><?php echo str_replace('${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']); ?></textarea>
         </td>
       </tr>
       <tr>
@@ -3129,7 +3129,7 @@ function submit_confirm()
         </tr>
         <tr>
           <td class="main"><b><?php echo ENTRY_EMAIL_TITLE; ?></b></td>
-        <td class="main"><?php echo tep_draw_input_field('os_title', $select_title); ?></td>
+        <td class="main"><?php echo tep_draw_input_field('os_title', $select_title,'style=" width:400px;"'); ?></td>
         </tr>
         <tr>
           <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
@@ -3142,8 +3142,8 @@ function submit_confirm()
           color="red">※</font>&nbsp;<?php echo TEXT_ORDER_COPY;?></td><td>
           <?php echo TEXT_ORDER_LOGIN;?></td></tr></table>
           <br>
-          <?php echo tep_draw_textarea_field('comments', 'hard', '60', '30',
-              $select_text, 'style="font-family:monospace;font-size:12px"'); ?>
+          <?php echo tep_draw_textarea_field('comments', 'hard', '74', '30',
+              $select_text, 'style="font-family:monospace;font-size:12px; width:400px;"'); ?>
         </td>
         </tr>
         <tr>

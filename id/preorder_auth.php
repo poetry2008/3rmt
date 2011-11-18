@@ -11,18 +11,22 @@
 */
 
   require('includes/application_top.php');
-
-  $pid = $_GET['pid']; 
-  
-  $preorder_query = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$pid."' and is_active = 0 and site_id = '".SITE_ID."'");
+ 
+  $exists_customer_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where check_login_str = '".$_GET['pid']."' and site_id = '".SITE_ID."' and is_active = '0'");  
+  if (!tep_db_num_rows($exists_customer_raw)) {
+    forward404(); 
+  }
+  $exists_customer = tep_db_fetch_array($exists_customer_raw);  
+ 
+  $preorder_query = tep_db_query("select * from ".TABLE_PREORDERS." where customers_id = '".$exists_customer['customers_id']."' and is_active = 0 and site_id = '".SITE_ID."' order by orders_id desc limit 1");
   $preorder_res = tep_db_fetch_array($preorder_query); 
    
   if ($preorder_res) {
+    $pid = $preorder_res['orders_id']; 
     $now_time = time(); 
     $preorder_customer_res = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = '".$preorder_res['customers_id']."'");     
     $preorder_customer = tep_db_fetch_array($preorder_customer_res); 
-    
-    if (($now_time - $preorder_customer['send_mail_time']) > 60*60*24*3) {
+    if (($now_time - (int)$preorder_customer['send_mail_time']) > 60*60*24*3) {
        
       tep_db_query("delete from ".TABLE_PREORDERS." where orders_id = '".$pid."' and site_id = '".SITE_ID."'"); 
       tep_db_query("delete from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$pid."'"); 
@@ -72,7 +76,6 @@
       $pre_replace_info_arr = array($pre_name, $pre_num, $pre_date, $preorder_res['payment_method'], $preorder_res['customers_name'], STORE_NAME, HTTP_SERVER, $preorder_res['orders_id'], $preorder_res['comment_msg']);
      
       $preorder_email_text = str_replace($replace_info_arr, $pre_replace_info_arr, $preorder_email_text);
-      
       $pre_email_text = str_replace('${SITE_NAME}', STORE_NAME, PREORDER_MAIL_SUBJECT);
       tep_mail($preorder_res['customers_name'], $preorder_res['customers_email_address'], $pre_email_text, $preorder_email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS); 
       $send_preorder_id = $pid;

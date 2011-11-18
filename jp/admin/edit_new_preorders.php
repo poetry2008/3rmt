@@ -928,9 +928,6 @@ padding:0 3px;
 textarea,input{
   font-size:12px;
 }
-textarea{
-  width:100%;
-}
 .alarm_on{
   border:2px solid #ff8e90;
   background:#ffe6e6;
@@ -1384,7 +1381,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     $mail_sql = tep_db_fetch_array($mail_sele);
     ?>
     <?php   
-    echo '<b>メールタイトル：</b>'.tep_draw_input_field('etitle', $mail_sql['orders_status_title']); 
+    echo '<b>メールタイトル：</b>'.tep_draw_input_field('etitle', $mail_sql['orders_status_title'],'style="width:315px;"'); 
     ?> 
     <br>
     <br>
@@ -1395,7 +1392,8 @@ if (($action == 'edit') && ($order_exists == true)) {
       $order_a_str .= $ovalue['character']."\n"; 
     }
     ?>
-    <textarea style="font-family:monospace;font-size:12px;width:100%;" name="comments" wrap="hard" rows="15" cols="74"><?php echo str_replace('${ORDER_A}', $order_a_str, $mail_sql['orders_status_mail']);?></textarea>
+    <textarea style="font-family:monospace;font-size:12px; width:400px;" name="comments"
+    wrap="hard" rows="30" cols="74"><?php echo str_replace('${ORDER_A}', $order_a_str, $mail_sql['orders_status_mail']);?></textarea>
     </td>
   </tr>
 </table>

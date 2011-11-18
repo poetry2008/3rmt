@@ -71,7 +71,7 @@
   } else {
     $entry_email_address_check_error = false;
   }
-
+  
   if($guestchk == '0') {
     $passlen = strlen($password);
     if ($passlen < ENTRY_PASSWORD_MIN_LENGTH) {
@@ -85,8 +85,13 @@
       $error = true;
       $entry_password_error = true;
     }
+    
+    if (empty($password) && empty($confirmation)) {
+      $error = true;
+      $entry_password_error = true;
+    }
   }
-
+  
   $noactive_single = false;
 
   if ($guestchk == 1) {
@@ -97,7 +102,7 @@
     }
   }
 //ccdd
-  if (!$noactive_single) { 
+  if (!$noactive_single && !$error) { 
     $check_email = tep_db_query("select * from " .  TABLE_CUSTOMERS . " where customers_email_address = '" .  tep_db_input($email_address) . "' and customers_guest_chk = '0' and site_id = '".SITE_ID."'");
     if (tep_db_num_rows($check_email)) {
       $check_email_res = tep_db_fetch_array($check_email); 

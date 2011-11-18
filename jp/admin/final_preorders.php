@@ -1213,8 +1213,8 @@ textarea,input{
   font-size:12px;
 }
 textarea{
-  width:100%;
-}
+/*  width:100%;
+*/}
 .alarm_on{
   border:2px solid #ff8e90;
   background:#ffe6e6;
@@ -1780,10 +1780,10 @@ if (tep_db_num_rows($orders_history_query)) {
       $mail_sele = tep_db_query($ma_se); 
       $mail_sql = tep_db_fetch_array($mail_sele); 
     ?>
-    <?php echo '<b>'.ENTRY_EMAIL_TITLE.'</b>'.tep_draw_input_field('etitle', $mail_sql['orders_status_title']);?> 
+    <?php echo '<b>'.ENTRY_EMAIL_TITLE.'</b>'.tep_draw_input_field('etitle', $mail_sql['orders_status_title'],' style="width:315px;"');?> 
     <br> 
     <br> 
-    <textarea style="font-family:monospace:font-size:12px;" name="comments" wrap="hard" rows="15" cols="74"><?php echo str_replace('${ORDER_A}', preorders_a($order->info['orders_id']), $mail_sql['orders_status_mail']);?></textarea> 
+    <textarea style="font-family:monospace; font-size:12px; width:400px;" name="comments" wrap="hard" rows="30" cols="74"><?php echo str_replace('${ORDER_A}', preorders_a($order->info['orders_id']), $mail_sql['orders_status_mail']);?></textarea> 
   </td>
   </tr>
 </table>
