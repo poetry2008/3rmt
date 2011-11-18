@@ -2,22 +2,39 @@
 /*
   $Id$
 */
-error_reporting(E_ALL);
-ini_set("display_errors", "On");
 require('includes/application_top.php');
-
-$set = $_GET['set'];
-if(!is_dir( DIR_FS_CATALOG_MODULES .$_GET['set'])){
-  $set = 'payment';
+switch ($_GET['set']) {
+case 'shipping':
+  $module_type = 'shipping';
+  $module_directory = DIR_FS_CATALOG_MODULES . 'shipping/';
+  $module_key = 'MODULE_SHIPPING_INSTALLED';
+  define('HEADING_TITLE', HEADING_TITLE_MODULES_SHIPPING);
+  break;
+case 'ordertotal':
+  $module_type = 'order_total';
+  $module_directory = DIR_FS_CATALOG_MODULES . 'order_total/';
+  $module_key = 'MODULE_ORDER_TOTAL_INSTALLED';
+  define('HEADING_TITLE', HEADING_TITLE_MODULES_ORDER_TOTAL);
+  break;
+case 'metaseo':
+  $module_type = 'metaseo';
+  $module_directory = DIR_FS_CATALOG_MODULES . 'metaseo/';
+  $module_key = 'MODULE_METASEO_INSTALLED';
+  define('HEADING_TITLE', HEADING_TITLE_MODULES_METASEO);
+  break;
+case 'payment':
+default:
+  $module_type = 'payment';
+  $module_directory = DIR_FS_CATALOG_MODULES . 'payment/';
+  $module_key = 'MODULE_PAYMENT_INSTALLED';
+  define('HEADING_TITLE', HEADING_TITLE_MODULES_PAYMENT);
+  break;
 }
-$module_type = $set ;
-$module_directory = DIR_FS_CATALOG_MODULES . $module_type.'/';
-$module_key = 'MODULE_'.strtoupper($module_type).'_INSTALLED';
-define('HEADING_TITLE', $tmp  = constant('HEADING_TITLE_MODULES_'.strtoupper($module_type)));
 
 if (isset($_GET['action'])) 
   switch ($_GET['action']) {
   case 'save':
+    $post_configuration = $_POST['configuration'];
     $site_id = isset($_POST['site_id'])?(int)$_POST['site_id']:0;
     if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];//权限判断
     else $site_arr="";
@@ -29,31 +46,10 @@ if (isset($_GET['action']))
     }
     if(!tep_module_installed($class, $site_id)){
       $module = new $class($site_id);
+
       $module->install();
     }
-    echo "GET :<br>";
-    print_r($_GET);
-    echo "<br>=======================end get ===================<br>";
-    echo "POST :<br>";
-    print_r($_POST);
-    echo "<br>=======================end POST ===================<br>";
-    echo "SERVER :<br>";
-    print_r($_SERVER);
-    echo "<br>=======================end SERVER ===================<br>";
-    echo "old info :<br>";
-    $old_sql = "select * from ".TABLE_CONFIGURATION." where configuration_key 
-      like 'MODULE_PAYMENT_".strtoupper($_GET['module'])."%' order by site_id";
-    $old_query = tep_db_query($old_sql);
-    while($old_row = tep_db_fetch_array($old_query)){
-      echo "<br>one_row<br>";
-      echo "site_id :".$old_row['site_id']."<br>";
-      echo "title :".$old_row['configuration_title']."<br>";
-      echo "key :".$old_row['configuration_key']."<br>";
-      echo "value :".$old_row['configuration_value']."<br>";
-      echo "description :".$old_row['configuration_description']."<br>";
-      echo "<br>one_row<br>";
-    }
-    echo "<br>===================old info end ==================<br>";
+      
     if ($_GET['set'] == 'payment') { 
       if ($site_id != 0) {
         $limit_show_str = ''; 
@@ -64,42 +60,12 @@ if (isset($_GET['action']))
           }
         }
         //如果有CHECKBOX
-        echo "limit_show_str :".var_dump($limit_show_str)."<br>";
         if (!empty($limit_show_str)) {
+
           if (!tep_db_num_rows(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$limit_show_str."' and site_id='".$site_id."'"))) {
+
             $cp_show_configuration = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$limit_show_str."' and site_id='0'"));
             if ($cp_show_configuration) {
-var_dump(" 72 lin :
-                  INSERT INTO `configuration` (
-                  `configuration_id` ,
-                  `configuration_title` ,
-                  `configuration_key` ,
-                  `configuration_value` ,
-                  `configuration_description` ,
-                  `configuration_group_id` ,
-                  `sort_order` ,
-                  `last_modified` ,
-                  `date_added` ,
-                  `use_function` ,
-                  `set_function` ,
-                  `site_id`
-                  )
-                  VALUES (
-                  NULL , 
-                  '".mysql_real_escape_string($cp_show_configuration['configuration_title'])."', 
-                  '".$cp_show_configuration['configuration_key']."', 
-                  '".$cp_show_configuration['configuration_value']."', 
-                  '".mysql_real_escape_string($cp_show_configuration['configuration_description'])."', 
-                  '".$cp_show_configuration['configuration_group_id']."', 
-                  '".$cp_show_configuration['sort_order']."' , 
-                  '".$cp_show_configuration['last_modified']."' , 
-                  '".$cp_show_configuration['date_added']."', 
-                  '".mysql_real_escape_string($cp_show_configuration['use_function'])."' , 
-                  '".mysql_real_escape_string($cp_show_configuration['set_function'])."' , 
-                  '".$site_id."'
-                  )
-                ");
-
               tep_db_query("
                   INSERT INTO `configuration` (
                   `configuration_id` ,
@@ -133,7 +99,6 @@ var_dump(" 72 lin :
 
             }
           }
-          var_dump("update " . TABLE_CONFIGURATION . " set configuration_value = '" . serialize($value) . "' where configuration_key = '" .  $limit_show_str . "' and site_id = '".$site_id."'");
           tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . serialize($value) . "' where configuration_key = '" .  $limit_show_str . "' and site_id = '".$site_id."'");
         } else {
 
@@ -141,36 +106,6 @@ var_dump(" 72 lin :
 
             $cp_show_configuration = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='MODULE_PAYMENT_".strtoupper($_GET['module'])."_LIMIT_SHOW' and site_id='0'"));
             if ($cp_show_configuration) {
-var_dump(" 144 lin :
-                  INSERT INTO `configuration` (
-                  `configuration_id` ,
-                  `configuration_title` ,
-                  `configuration_key` ,
-                  `configuration_value` ,
-                  `configuration_description` ,
-                  `configuration_group_id` ,
-                  `sort_order` ,
-                  `last_modified` ,
-                  `date_added` ,
-                  `use_function` ,
-                  `set_function` ,
-                  `site_id`
-                  )
-                  VALUES (
-                  NULL , 
-                  '".mysql_real_escape_string($cp_show_configuration['configuration_title'])."', 
-                  '".$cp_show_configuration['configuration_key']."', 
-                  '".serialize(array())."', 
-                  '".mysql_real_escape_string($cp_show_configuration['configuration_description'])."', 
-                  '".$cp_show_configuration['configuration_group_id']."', 
-                  '".$cp_show_configuration['sort_order']."' , 
-                  '".$cp_show_configuration['last_modified']."' , 
-                  '".$cp_show_configuration['date_added']."', 
-                  '".mysql_real_escape_string($cp_show_configuration['use_function'])."' , 
-                  '".mysql_real_escape_string($cp_show_configuration['set_function'])."' , 
-                  '".$site_id."'
-                  )
-                ");
 
               tep_db_query("
                   INSERT INTO `configuration` (
@@ -206,17 +141,17 @@ var_dump(" 144 lin :
             }
           }
           $blank_show_arr = array();
-          var_dump("update " . TABLE_CONFIGURATION . " set configuration_value = '" . serialize($blank_show_arr) . "' where configuration_key = 'MODULE_PAYMENT_" . strtoupper($_GET['module'])  . "_LIMIT_SHOW' and site_id = '".$site_id."'");
           tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . serialize($blank_show_arr) . "' where configuration_key = 'MODULE_PAYMENT_" . strtoupper($_GET['module'])  . "_LIMIT_SHOW' and site_id = '".$site_id."'");
         }
       }
     }
-    echo "<br>================configuration=========================<br>";
-    print_r($_POST['configuration']);
-    echo "<br>================configuration_end===================<br>";
-    while (list($key, $value) = each($_POST['configuration'])) {
-      echo "<br>===============================================<br>";
-      echo " while key :".$key."            while site_id :".$site_id."<br>";
+    $key = '';
+    $value = '';
+    $show_flag = true;
+    foreach($post_configuration as $key => $value){
+    //while (list($key, $value) = each($_POST['configuration'])) {
+      $show_flag = false;
+
       if (
           !tep_db_num_rows(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$key."' and site_id='".$site_id."'")
                            )
@@ -224,36 +159,6 @@ var_dump(" 144 lin :
 
         $cp_configuration = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$key."' and site_id='0'"));
         if ($cp_configuration) {
-var_dump(" 227 lin :
-              INSERT INTO `configuration` (
-              `configuration_id` ,
-              `configuration_title` ,
-              `configuration_key` ,
-              `configuration_value` ,
-              `configuration_description` ,
-              `configuration_group_id` ,
-              `sort_order` ,
-              `last_modified` ,
-              `date_added` ,
-              `use_function` ,
-              `set_function` ,
-              `site_id`
-              )
-              VALUES (
-              NULL , 
-              '".mysql_real_escape_string($cp_configuration['configuration_title'])."', 
-              '".$cp_configuration['configuration_key']."', 
-              '".$cp_configuration['configuration_value']."', 
-              '".mysql_real_escape_string($cp_configuration['configuration_description'])."', 
-              '".$cp_configuration['configuration_group_id']."', 
-              '".$cp_configuration['sort_order']."' , 
-              '".$cp_configuration['last_modified']."' , 
-              '".$cp_configuration['date_added']."', 
-              '".mysql_real_escape_string($cp_configuration['use_function'])."' , 
-              '".mysql_real_escape_string($cp_configuration['set_function'])."' , 
-              '".$site_id."'
-              )
-            ");
           tep_db_query("
               INSERT INTO `configuration` (
               `configuration_id` ,
@@ -289,30 +194,15 @@ var_dump(" 227 lin :
       }
 
       if (preg_match('/.*LIMIT_SHOW/', $key)) 	{
-        var_dump("update " . TABLE_CONFIGURATION . " set configuration_value = '" . serialize($value) . "' where configuration_key = '" . $key . "' and site_id = '".$site_id."'");
         tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . serialize($value) . "' where configuration_key = '" . $key . "' and site_id = '".$site_id."'");
       } else {
-        var_dump("update " . TABLE_CONFIGURATION . " set configuration_value = '" . $value . "' where configuration_key = '" . $key . "' and site_id = '".$site_id."'");
         tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . $value . "' where configuration_key = '" . $key . "' and site_id = '".$site_id."'");
       }
-      echo "<br>===============================================<br>";
     }
-    echo "<br><br><br>new info :<br>";
-    $new_sql = "select * from ".TABLE_CONFIGURATION." where configuration_key 
-      like 'MODULE_PAYMENT_".strtoupper($_GET['module'])."%' order by site_id";
-    $new_query = tep_db_query($new_sql);
-    while($new_row = tep_db_fetch_array($new_query)){
-      echo "<br>one_row<br>";
-      echo "site_id :".$new_row['site_id']."<br>";
-      echo "title :".$new_row['configuration_title']."<br>";
-      echo "key :".$new_row['configuration_key']."<br>";
-      echo "value :".$new_row['configuration_value']."<br>";
-      echo "description :".$new_row['configuration_description']."<br>";
-      echo "<br>one_row<br>";
+    if($show_flag){
+      echo "can not run foreach ";
+      exit;
     }
-    echo "<br>===================old info end ==================<br>";
-    exit;
-
     tep_redirect(tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $_GET['module']));
     break;
   case 'install':
@@ -417,6 +307,10 @@ for ($i = 0, $n = sizeof($directory_array); $i < $n; $i++) {
 //print_r($directory_array_sorted);
 ksort($directory_array_sorted);
 foreach ($directory_array_sorted as $i => $files) {
+
+  //$file = $directory_array_sorted[$i];
+  //include(DIR_WS_LANGUAGES . $language . '/modules/' . $module_type . '/' . $file);
+  //include($module_directory . $file);
   foreach ($files as $j => $file) {
     $class = substr($file, 0, strrpos($file, '.'));
     if (tep_class_exists($class)) {
