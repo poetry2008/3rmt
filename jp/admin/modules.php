@@ -147,10 +147,8 @@ if (isset($_GET['action']))
     }
     $key = '';
     $value = '';
-    $show_flag = true;
     foreach($post_configuration as $key => $value){
     //while (list($key, $value) = each($_POST['configuration'])) {
-      $show_flag = false;
 
       if (
           !tep_db_num_rows(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$key."' and site_id='".$site_id."'")
@@ -198,10 +196,6 @@ if (isset($_GET['action']))
       } else {
         tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . $value . "' where configuration_key = '" . $key . "' and site_id = '".$site_id."'");
       }
-    }
-    if($show_flag){
-      echo "can not run foreach ";
-      exit;
     }
     tep_redirect(tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $_GET['module']));
     break;
