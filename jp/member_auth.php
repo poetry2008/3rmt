@@ -116,17 +116,17 @@
                 </tr>
                 <tr>
                   <td colspan="3">
-                  <?php echo ACTIVE_INFO_FRONT_COMMENT;?><br><br>
+                  <br><?php echo ACTIVE_INFO_FRONT_COMMENT;?><br><br>
                   </td>
                 </tr>
                 <tr>
-                  <td>
+                  <td width="20%">
                   <b><?php echo INPUT_SEND_MAIL;?>:</b> 
                   </td>
-                  <td class="active_email">
+                  <td class="active_email" width="70%">
                   <?php echo tep_draw_input_field('cemail', (isset($_POST['cemail'])?$_POST['cemail']:$cus_email));?> 
                   </td>
-                  <td align="right">
+                  <td align="right" width="10%">
                   <?php echo tep_image_submit('button_send_mail.gif', SENDMAIL_BUTTON);?>
                   </td>
                 </tr>
