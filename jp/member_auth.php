@@ -108,7 +108,7 @@
                 	<td colspan="3" class="mail_img"><img src="images/design/mail_top.gif" align=""></td>
                 </tr>
                 <tr>
-                  <td colspan="3" style="background-color: #FDEBAC; color: #000000; height: 25px; line-height: 25px; padding-left: 10px;">
+                  <td colspan="3">
                   <font size="2"><?php
                     echo sprintf(NOTICE_SEND_TO_EMAIL_TEXT, (isset($_POST['cemail'])?$_POST['cemail']:$cus_email)); 
                   ?></font>
