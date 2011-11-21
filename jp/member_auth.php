@@ -108,31 +108,35 @@
                 	<td colspan="3" class="mail_img"><img src="images/design/mail_top.gif" align=""></td>
                 </tr>
                 <tr>
-                  <td colspan="3" class="mail_text">
-                  <?php
+                  <td colspan="3">
+                  <div style="background-color: #FDEBAC; color: #000000; height: 25px; line-height: 25px; margin:5px 0; padding-left: 10px;">
+                  <font size="2"><?php
                     echo sprintf(NOTICE_SEND_TO_EMAIL_TEXT, (isset($_POST['cemail'])?$_POST['cemail']:$cus_email)); 
-                  ?>
+                  ?></font></div>
                   </td>
                 </tr>
                 <tr>
                   <td colspan="3">
-                  <font size="2"><?php echo ACTIVE_INFO_FRONT_COMMENT;?></font> 
+                  <font size="2"><?php echo ACTIVE_INFO_FRONT_COMMENT;?></font><br><br>
                   </td>
                 </tr>
                 <tr>
-                  <td class="active_email_name">
+                  <td class="active_email_name" colspan="3">
+                  <div style="width:520px;">
+                  <div style="float:left; line-height: 20px; padding-right: 5px;">
                   <b><?php echo INPUT_SEND_MAIL;?>:</b> 
-                  </td>
-                  <td class="active_email">
+                  </div>
+                  <div class="active_email"  style="float:left; padding-right:25px;">
                   <?php echo tep_draw_input_field('cemail', (isset($_POST['cemail'])?$_POST['cemail']:$cus_email));?> 
-                  </td>
-                  <td>
-                  <?php echo tep_image_submit('button_send_mail.gif', SENDMAIL_BUTTON);?> 
+                  </div>
+                  <div style="float:left; line-height:20px;">
+                  <?php echo tep_image_submit('button_send_mail.gif', SENDMAIL_BUTTON);?>
+                  </div></div>
                   </td>
                 </tr>
                 <tr>
                   <td colspan="3">
-                    <font size="2"><?php echo ACTIVE_INFO_END_COMMENT;?></font> 
+                    <br><font size="2"><?php echo ACTIVE_INFO_END_COMMENT;?></font> 
                   </td>
                 </tr>
               </table>

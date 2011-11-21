@@ -140,31 +140,38 @@
                 	<td colspan="3" class="mail_img"><img src="images/design/mail_top.gif" align=""></td>
                 </tr>
                 <tr>
-                  <td colspan="3"  class="mail_text">
-                  <?php
+                  <td colspan="3">
+                  <div style="background-color: #FDEBAC; color: #000000; height: 25px; line-height: 25px; margin:5px 0; padding-left: 10px;">
+                  <font size="2"><?php
                     echo sprintf(PREORDER_NOTICE_SEND_TO_EMAIL_TEXT, (isset($_POST['pemail'])?$_POST['pemail']:$pe_email)); 
-                  ?>
+                  ?></font></div>
                   </td>
                 </tr>
                 <tr>
                   <td colspan="3">
                   <font size="2"><?php
                     echo PREORDER_ACTIVE_INFO_FRONT_COMMENT; 
-                  ?></font>
+                  ?></font><br><br>
                   </td>
                 </tr>
                 <tr>
-                  <td  class="active_email_name" style="font-size:11px; color:#ff0000;"><?php echo INPUT_PREORDER_SEND_MAIL;?></td> 
-                  <td class="active_email">
+                  <td  class="active_email_name" colspan="3">
+				 <div style="width:520px;">
+                  <div style="float:left; line-height: 20px; padding-right: 5px;">
+				  <b><?php echo INPUT_PREORDER_SEND_MAIL;?></b>
+                  </div>
+                  <div class="active_email" style="float:left; padding-right:25px;">
                   <?php echo tep_draw_input_field('pemail', (isset($_POST['pemail'])?$_POST['pemail']:$pe_email));?> 
-                  </td>
-                  <td align="right">
-                  <?php echo tep_image_submit('button_send_mail.gif', 'mail');?> 
+                  </div>
+                  <div style="float:left; line-height:20px;">
+                  <?php echo tep_image_submit('button_send_mail.gif', 'mail');?>
+                  </div>
+                  </div>
                   </td>
                 </tr>
                 <tr>
                   <td colspan="3">
-                  <font size="2"><?php
+                  <br><font size="2"><?php
                     echo PREORDER_ACTIVE_INFO_END_COMMENT; 
                   ?></font>
                   </td>
