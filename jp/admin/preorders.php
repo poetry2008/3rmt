@@ -2393,7 +2393,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
     if ($orders['is_active'] == '1') {
       echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'">' . "\n";
     } else {
-      echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableUnactiveRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableUnactiveRow\'">' . "\n";
+      echo '    <tr id="tr_' . $orders['orders_id'] . '" class="inv_second" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'inv_second\'">' . "\n";
     }
   }
 ?>
