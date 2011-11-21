@@ -45,6 +45,7 @@
   $error = false;
   
   //customer_id check
+  //判断是否 信息 错误
   if($customer_id == '') {
     $error = true;
   } elseif(!is_numeric($customer_id)) {
@@ -138,6 +139,7 @@
   }
 
   //Add input string check - NG return Input order data - d2006.4.14 ds-style
+  //信息 错误处理
   if($error == true) {
   
 // #### Get Available Customers
@@ -335,6 +337,7 @@
     tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
     $_SESSION['orderinfo_mail_use']['torihikihouhou'] = $torihikihouhou;
   // 買取（口座情報をコメントに追加）
+  // 根据不同支付 方法 处理 订单 状态
   if (isset($bank_name) && $bank_name != '') {
     $bbbank = '金融機関名　　　　：' . $bank_name . "\n";
     $bbbank .= '支店名　　　　　　：' . $bank_shiten . "\n";
@@ -375,6 +378,7 @@
   }
   //insert into order total
   //=================================================
+  // 插入 订单 相关的价格 信息
   
   require(DIR_FS_CATALOG . 'includes/classes/order.php');
   $order = new order($insert_id);

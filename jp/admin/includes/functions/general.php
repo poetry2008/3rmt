@@ -3236,6 +3236,7 @@ function tep_get_orders_products_names($orders_id) {
 }
 // orders.php
 function tep_get_orders_products_string($orders, $single = false) {
+  require_once(DIR_WS_CLASSES . 'payment.php');
   $str = '';
 
 
@@ -3355,7 +3356,8 @@ function tep_get_orders_products_string($orders, $single = false) {
     //$str .= '</tr>';
   }
   //$str .= '<tr><td colspan="2">&nbsp;</td></tr>';
-  $str .= '<tr><td class="main" width="150"><b>支払方法：</b></td><td class="main" style="color:darkred;"><b>'.$orders['payment_method'].'</b></td></tr>';
+  $str .= '<tr><td class="main" width="150"><b>支払方法：</b></td><td class="main"
+    style="color:darkred;"><b>'.payment::changeRomaji($orders['payment_method'],'title').'</b></td></tr>';
     //$str .= '<tr><td class="main"><b>入金日：</b></td><td class="main" style="color:red;"><b>'.($pay_time?date('m月d日',strtotime($pay_time)):'入金まだ').'</b></td></tr>';
     if ($orders['confirm_payment_time'] != '0000-00-00 00:00:00') {
       $time_str = date('Y年n月j日', strtotime($orders['confirm_payment_time'])); 
@@ -6632,3 +6634,29 @@ function tep_output_generated_category_path_asset($id, $from = 'category') {
   return $calculated_category_path_string;
 
 }
+
+
+//从前台引用的方法
+  function tep_count_payment_modules() {
+    return tep_count_modules(MODULE_PAYMENT_INSTALLED);
+  }
+  function tep_count_modules($modules = '') {
+    $count = 0;
+
+    if (empty($modules)) return $count;
+
+    $modules_array = split(';', $modules);
+
+    for ($i=0, $n=sizeof($modules_array); $i<$n; $i++) {
+      $class = substr($modules_array[$i], 0, strrpos($modules_array[$i], '.'));
+
+      if (!isset($GLOBALS[$class])) $GLOBALS[$class]=NULL;
+      if (is_object($GLOBALS[$class])) {
+        if ($GLOBALS[$class]->enabled) {
+          $count++;
+        }
+      }
+    }
+
+    return $count;
+  }

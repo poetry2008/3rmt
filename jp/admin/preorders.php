@@ -6,12 +6,14 @@
   require('includes/application_top.php');
   require_once('pre_oa/HM_Form.php'); 
   require_once('pre_oa/HM_Group.php'); 
+  require_once(DIR_WS_CLASSES . 'payment.php');
   require(DIR_WS_FUNCTIONS . 'visites.php');
   require(DIR_WS_CLASSES . 'currencies.php');
   $currencies          = new currencies(2);
   $orders_statuses     = $all_orders_statuses = $orders_status_array = array();
   $all_preorders_status = array();
-  $all_payment_method = explode("\n", tep_get_list_pre_payment()); 
+  //$all_payment_method = explode("\n", tep_get_list_pre_payment()); 
+  $all_payment_method = payment::getPaymentList(2);
   $orders_status_query = tep_db_query("select orders_status_id, orders_status_name from " . TABLE_PREORDERS_STATUS . " where language_id = '" . $languages_id . "'");
 
   while ($orders_status = tep_db_fetch_array($orders_status_query)) {

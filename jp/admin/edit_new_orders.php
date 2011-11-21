@@ -64,14 +64,17 @@ $order_query = tep_db_query("
       where orders_id = '" . tep_db_input($oID) . "'");
   
 // 最新の注文情報取得
+// 获取最新 订单情报
 $order = new order($oID);
 // ポイントを取得する
+// 获得客户信息
 $customer_point_query = tep_db_query("
       select point 
       from " . TABLE_CUSTOMERS . " 
       where customers_id = '" . $order->customer['id'] . "'");
 $customer_point = tep_db_fetch_array($customer_point_query);
 // ゲストチェック
+// 获取客户 是否为注册用户
 $customer_guest_query = tep_db_query("
       select customers_guest_chk 
       from " . TABLE_CUSTOMERS . " 
@@ -86,6 +89,7 @@ if (tep_not_null($action)) {
       
     // 1. UPDATE ORDER ###############################################################################################
   case 'update_order':
+    //更新订单
     $oID = tep_db_prepare_input($_GET['oID']);
     $order = new order($oID);
     $status = '1'; // 初期値
@@ -108,6 +112,7 @@ if (tep_not_null($action)) {
       break;
     }
 
+    //  错误信息处理
     if (isset($update_tori_torihiki_date)) { //日時が有効かチェック
       if (!preg_match('/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/', $update_tori_torihiki_date, $m)) { // check the date format
         $messageStack->add('日時フォーマットが間違っています。 "2008-01-01 10:30:00"', 'error');
@@ -469,6 +474,7 @@ if (tep_not_null($action)) {
     }
 
     //point修正中
+    //返点 
     $point_query = tep_db_query("select sum(value) as total_point from " . TABLE_ORDERS_TOTAL . " where class = 'ot_point' and orders_id = '" . $oID . "'");
     $total_point = tep_db_fetch_array($point_query);
 
@@ -1117,6 +1123,7 @@ color: #FF6600;
     <td class="main">
     <?php
     //    echo tep_payment_method_menu($order->info['payment_method']);
+    /*
     $payment_array = payment::getPaymentList(); 
 
     for($i=0; $i<sizeof($payment_array[0]); $i++) {
@@ -1124,6 +1131,10 @@ color: #FF6600;
           'text' => $payment_array[1][$i]);
     }
     echo tep_draw_pull_down_menu('payment_method', $payment_list, $order->info['payment_method']);
+    */
+    $code_payment_method =
+    payment::changeRomaji($order->info['payment_method'],'code');
+    echo payment::makePaymentListPullDownMenu($code_payment_method);
     ?>
     </td>
     </tr>

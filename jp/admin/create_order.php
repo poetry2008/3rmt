@@ -20,12 +20,14 @@
     $address_query = tep_db_query("select * from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $_GET['Customer_nr'] . "'");
     $address = tep_db_fetch_array($address_query);
   } elseif (isset($_GET['Customer_mail'])) {
+    //通过 邮箱获得 客户信息
     $site_id = isset($_GET['site_id']) ? $_GET['site_id']: 0;
     $account_query = tep_db_query("select * from " . TABLE_CUSTOMERS . " where customers_email_address = '" . $_GET['Customer_mail'] . "' and site_id = '".$site_id."'");
     $account = tep_db_fetch_array($account_query);
     $customer = $account['customers_id'];
     $address_query = tep_db_query("select * from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $customer . "'");
     $address = tep_db_fetch_array($address_query);
+    //用户不存在 跳转页面
     if (tep_db_num_rows($account_query) == 0) {
       tep_redirect(tep_href_link(FILENAME_CREATE_ACCOUNT, 'email_address=' . $_GET['Customer_mail'], 'SSL'));
     }

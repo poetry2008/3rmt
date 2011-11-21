@@ -44,6 +44,7 @@
   $error = false;
   
   //customer_id check
+  //判断是否 信息 错误
   if($customer_id == '') {
     $error = true;
   } elseif(!is_numeric($customer_id)) {
@@ -92,6 +93,7 @@
     $entry_predate_error = false;
   }
   //Add input string check - NG return Input order data - d2006.4.14 ds-style
+  //信息 错误处理
   if($error == true) {
   
 // #### Get Available Customers
@@ -391,6 +393,7 @@ float:left;
   $module_type = 'order_total';
   $ot_tax_status = false;
 
+  // 插入 预约订单 相关的价格 信息
   if (defined('MODULE_ORDER_TOTAL_INSTALLED') && tep_not_null(MODULE_ORDER_TOTAL_INSTALLED)) {
     $thismodules = explode(';', MODULE_ORDER_TOTAL_INSTALLED);
 

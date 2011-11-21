@@ -8,6 +8,8 @@ define('PAYMENT_LIST_TYPE_BOTH',3);
 class payment {
 
   var $site_id, $modules, $selected_module;
+  public static $payment_array;
+  public static $payment_method_array;
   function payment($module = '', $site_id = 0) {
     global $payment, $language, $PHP_SELF;
     $this->site_id = $site_id;
@@ -135,7 +137,7 @@ class payment {
       while (list(, $value) = each($this->modules)) {
 
 	$class = substr($value, 0, strrpos($value, '.'));
-	//          var_dump($GLOBALS[$class]);
+	//          ar_dump($GLOBALS[$class]);
 	if ($GLOBALS[$class]->enabled) {
 	  $selection = $GLOBALS[$class]->selection();
 	  if (is_array($selection)) $selection_array[] = $selection;
@@ -272,6 +274,7 @@ class payment {
       $dh->close();
     }
 
+    $payment_method_array = array();
     for ($i = 0, $n = sizeof($payment_array); $i < $n; $i++) {
       $payment_filename = $payment_array[$i]; 
       include(DIR_WS_LANGUAGES . $language . '/modules/payment/' . $payment_filename); 
@@ -279,11 +282,13 @@ class payment {
       $payment_class = substr($payment_filename, 0, strrpos($payment_filename, '.'));
       if (tep_class_exists($payment_class)) {
         $payment_module = new $payment_class; 
+        $payment_method_array[$payment_class] = $payment_module;
         $payment_list_str[] = $payment_module->title;
         $payment_list_code[] = $payment_module->code;
       }
     }
-
+    self::$payment_method_array = $payment_method_array;
+    self::$payment_array = array($payment_list_code,$payment_list_str);
     if($type==PAYMENT_LIST_TYPE_HAIJI){
       return $payment_list_str;
     }
@@ -293,7 +298,13 @@ class payment {
     return array($payment_list_code,$payment_list_str);
   }
   public static   function makePaymentListPullDownMenu($payment_method = "") {
-    $payment_text = self::getPaymentList(); 
+    //修改 变量名称
+    if(empty(self::$payment_array)){
+      $payment_text = self::getPaymentList(); 
+    }else{
+      $payment_text = self::$payment_array;
+    }
+    $payment_array = $payment_text;
     //$payment_list[] = array('id' => '', 'text' => '支払方法を選択してください');
     for($i=0; $i<sizeof($payment_array[0]); $i++) {
       $payment_list[] = array('id' => $payment_array[0][$i],
@@ -301,7 +312,61 @@ class payment {
     }
     return tep_draw_pull_down_menu('payment_method', $payment_list, $payment_method);
   }
+  public static function changeRomaji($string,$res_type=''){
+    //获取 支付方法列表
+    if(empty(self::$payment_array)){
+      $payment_text = self::getPaymentList(); 
+    }else{
+      $payment_text = self::$payment_array;
+    }
+    $payment_array_code = $payment_text[0];
+    $payment_array_title = $payment_text[1];
+    //判断 返回信息
+    if(preg_match("/^[a-zA-Z0-9_]*$/",$string)){
+      //去掉 payment_
+      if(preg_match("/^payment_/",$string)){
+        $string = mb_substr($string,8,mb_strlen($string));
+      }
+      $return_type = "title";
+      $payment_array = $payment_text[0];
+    }else{
+      $return_type = "code";
+      $payment_array = $payment_text[1];
+    }
+    for($i=0; $i<sizeof($payment_array); $i++) {
+      if($string == $payment_array[$i]){
+        if($res_type){
+          if($res_type=='code'){
+            return $payment_array_code[$i];
+          }else if($res_type='title'){
+            return $payment_array_title[$i];
+          }else{
+            return false;
+          }
+        }else{
+          if($return_type == 'code'){
+            return $payment_array_code[$i];
+          }else if($return_type == 'title'){
+            return $payment_array_title[$i];
+          }else{
+            return false;
+          }
+        }
+      }
+    }
 
+  }
+
+  public static function calc_fee($payment_method,$total_cost){
+    //判断是否 初始化 支付方法
+    if(empty(self::$payment_method_array)){
+      self::getPaymentList(); 
+    }
+    //通过 静态变量 调用 手续费处理方法
+    self::$payment_method_array[self::changeRomaji($payment_method,'code')]->calc_fee($total_cost);
+    return
+      self::$payment_method_array[self::changeRomaji($payment_method,'code')]->n_fee;
+  }
 
 }
 ?>
