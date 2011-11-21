@@ -218,6 +218,7 @@ if ($preorder) {
                           'site_id' => SITE_ID
       );
   tep_db_perform(TABLE_ORDERS_PRODUCTS, $sql_data_array);
+  $order_products_id = tep_db_insert_id();
 
   $products_ordered_text .= '注文商品　　　　　：'.$preorder_product_res['products_name'];
   if (tep_not_null($preorder_product_res['products_model'])) {
@@ -237,7 +238,7 @@ if (isset($_SESSION['preorder_info_attr'])) {
       $attributes_values = tep_db_fetch_array($attributes);
       
       $sql_data_array = array('orders_id' => $orders_id, 
-                              'orders_products_id' => $preorder_product_res['products_id'], 
+                              'orders_products_id' => $order_products_id, 
                               'products_options' => $attributes_values['products_options_name'],
                               'products_options_values' => $attributes_values['products_options_values_name'], 
                               'options_values_price' => $attributes_values['options_values_price'], 
@@ -248,7 +249,7 @@ if (isset($_SESSION['preorder_info_attr'])) {
       
       if ((DOWNLOAD_ENABLED == 'true') && isset($attributes_values['products_attributes_filename']) && tep_not_null($attributes_values['products_attributes_filename'])) {
         $sql_data_array = array('orders_id' => $orders_id, 
-                                'orders_products_id' => $preorder_product_res['products_id'], 
+                                'orders_products_id' => $order_products_id, 
                                 'orders_products_filename' => $attributes_values['products_attributes_filename'], 
                                 'download_maxdays' => $attributes_values['products_attributes_maxdays'], 
                                 'download_count' => $attributes_values['products_attributes_maxcount']);
