@@ -100,7 +100,7 @@
          }
          ?>
          <?php echo tep_draw_form('form', tep_href_link('member_auth.php', 'action=send', 'SSL'));?> 
-          <table border="0" width="100%" cellspacing="0" cellpadding="0" class="information_table"> 
+          <table border="0" cellspacing="0" cellpadding="0" class="information_table"> 
             <tr> 
               <td>
               <table class="information_table">
@@ -108,7 +108,7 @@
                 	<td colspan="3" class="mail_img"><img src="images/design/mail_top.gif" align=""></td>
                 </tr>
                 <tr>
-                  <td colspan="3" class="information_mail">
+                  <td colspan="3" class="information_color">
                   <?php
                     echo sprintf(NOTICE_SEND_TO_EMAIL_TEXT, (isset($_POST['cemail'])?$_POST['cemail']:$cus_email)); 
                   ?>
@@ -120,7 +120,7 @@
                   </td>
                 </tr>
                 <tr>
-                  <td width="85">
+                  <td>
                   <b><?php echo INPUT_SEND_MAIL;?>:</b> 
                   </td>
                   <td class="active_email">
@@ -146,16 +146,6 @@
               <?php echo ACTIVE_INFO_EMAIL_READ;?>
               </td>
             </tr>
-            <tr> 
-              <td><br> 
-                <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
-                  <tr> 
-                    <td class="main" align="right"><?php echo '<a href="' .  tep_href_link(FILENAME_DEFAULT) . '">' .  tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></td> 
-                    <td align="right" class="main">
-                    </td> 
-                  </tr> 
-                </table></td> 
-            </tr> 
           </table> 
           </form> 
         </div></td> 

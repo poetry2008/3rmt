@@ -9,7 +9,13 @@
   require('includes/step-by-step/new_application_top.php');
 
   require(DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_EDIT_ORDERS);
-
+ 
+  $active_order_raw = tep_db_query("select is_active from ".TABLE_PREORDERS." where orders_id = '".$_GET['oID']."'");
+  $active_order_res = tep_db_fetch_array($active_order_raw);
+  if (!$active_order_res['is_active']) {
+    tep_redirect(FILENAME_PREORDERS); 
+  }
+  
   require(DIR_WS_CLASSES . 'currencies.php');
   $currencies = new currencies(2);
 

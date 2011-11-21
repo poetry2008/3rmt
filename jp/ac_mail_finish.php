@@ -144,9 +144,6 @@
               <font size="2"><?php echo ACTIVE_INFO_EMAIL_READ;?></font> 
               </td>
             </tr>
-        <tr>
-          <td align="right"><br><?php echo '<a href="'.tep_href_link(FILENAME_ACCOUNT, '', 'SSL').'">' .  tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></td>
-        </tr>
       </table>
       </form> 
       </div>
