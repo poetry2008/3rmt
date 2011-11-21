@@ -1960,11 +1960,12 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
                o.orders_comment,
                o.torihiki_houhou,
                o.confirm_payment_time, 
+               o.is_active, 
                o.site_id
         from " . TABLE_PREORDERS . " o " . $from_payment .$sort_table. "
         where ".$sort_where." o.customers_email_address = '" . tep_db_input($cEmail) . "' 
           " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id
-          = '" . intval($_GET['site_id']) . "' " : '') . " and is_active = '1' " . $where_payment . $where_type . "
+          = '" . intval($_GET['site_id']) . "' " : '') . $where_payment . $where_type . "
         order by ".$order_str;
     } else if (isset($_GET['cID']) && $_GET['cID']) {
       $cID = tep_db_prepare_input($_GET['cID']);
@@ -1991,10 +1992,11 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
                o.torihiki_houhou,
                o.orders_comment,
                o.confirm_payment_time, 
+               o.is_active, 
                o.site_id
         from " . TABLE_PREORDERS . " o " . $from_payment .$sort_table. "
         where ".$sort_where." o.customers_id = '" . tep_db_input($cID) . "' 
-          " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . " and is_active = '1' " . $where_payment . $where_type . "
+          " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . $where_payment . $where_type . "
         order by ".$order_str;
     } elseif (isset($_GET['status']) && $_GET['status']) {
       $status = tep_db_prepare_input($_GET['status']);
@@ -2021,13 +2023,14 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
                o.customers_email_address,
                o.orders_comment,
                o.confirm_payment_time, 
+               o.is_active, 
                o.site_id
         from " . TABLE_PREORDERS . " o " . $from_payment .$sort_table. "
         where ".$sort_where." o.orders_status = '" . tep_db_input($status) . "' 
-          " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . " and is_active = '1' " . $where_payment . $where_type . "
+          " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . $where_payment . $where_type . "
         order by ".$order_str;
     }  elseif (isset($_GET['keywords']) && isset($_GET['search_type']) && $_GET['search_type'] == 'products_name' && !$_GET['type'] && !$payment) {
-      $orders_query_raw = " select distinct op.orders_id from " .  TABLE_PREORDERS_PRODUCTS . " op, ".TABLE_PREORDERS." o ".$sort_table." where ".$sort_where." op.orders_id = o.orders_id and o.is_active='1' and op.products_name like '%".$_GET['keywords']."%' " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and op.site_id = '" . intval($_GET['site_id']) . "' " : '') . " order by ".$order_str;
+      $orders_query_raw = " select distinct op.orders_id from " .  TABLE_PREORDERS_PRODUCTS . " op, ".TABLE_PREORDERS." o ".$sort_table." where ".$sort_where." op.orders_id = o.orders_id and op.products_name like '%".$_GET['keywords']."%' " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and op.site_id = '" . intval($_GET['site_id']) . "' " : '') . " order by ".$order_str;
     } elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && preg_match('/^os_\d+$/', $_GET['search_type'])))) {
     if (!empty($_GET['keywords'])) {
       $orders_query_raw = "
@@ -2053,8 +2056,9 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
                  o.torihiki_houhou,
                  o.orders_comment,
                  o.confirm_payment_time, 
+                 o.is_active, 
                  o.site_id
-          from " . TABLE_PREORDERS . " o " . $from_payment . " , ".TABLE_PREORDERS_PRODUCTS." op ".$sort_table." where ".$sort_where." 1=1 " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . " and is_active = '1' and o.orders_status = '".substr($_GET['search_type'], 3)."' and o.orders_id = op.orders_id and (o.orders_id like '%".$_GET['keywords']."%' or o.customers_name like '%".$_GET['keywords']."%' or o.customers_email_address like '%".$_GET['keywords']."%' or op.products_name like '%".$_GET['keywords']."%') " .  $where_payment . $where_type.' order by '.$order_str;
+          from " . TABLE_PREORDERS . " o " . $from_payment . " , ".TABLE_PREORDERS_PRODUCTS." op ".$sort_table." where ".$sort_where." 1=1 " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . " and o.orders_status = '".substr($_GET['search_type'], 3)."' and o.orders_id = op.orders_id and (o.orders_id like '%".$_GET['keywords']."%' or o.customers_name like '%".$_GET['keywords']."%' or o.customers_email_address like '%".$_GET['keywords']."%' or op.products_name like '%".$_GET['keywords']."%') " .  $where_payment . $where_type.' order by '.$order_str;
     } else {
       $orders_query_raw = "
           select distinct(o.orders_id), 
@@ -2079,8 +2083,9 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
                  o.torihiki_houhou,
                  o.orders_comment,
                  o.confirm_payment_time, 
+                 o.is_active, 
                  o.site_id
-          from " . TABLE_PREORDERS . " o " . $from_payment .$sort_table ." where ".$sort_where." 1=1 " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . " and is_active = '1' and o.orders_status = '".substr($_GET['search_type'], 3)."'" .  $where_payment . $where_type.' order by '.$order_str;
+          from " . TABLE_PREORDERS . " o " . $from_payment .$sort_table ." where ".$sort_where." 1=1 " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . " and o.orders_status = '".substr($_GET['search_type'], 3)."'" .  $where_payment . $where_type.' order by '.$order_str;
     }
     }elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['search_type'] == 'orders_id'))) {
     $orders_query_raw = "
@@ -2106,12 +2111,12 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
                o.torihiki_houhou,
                o.orders_comment,
                o.confirm_payment_time, 
+               o.is_active, 
                o.site_id
         from " . TABLE_PREORDERS . " o " . $from_payment . $sort_table."
         where ".$sort_where." 1=1 
           " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id
-          = '" . intval($_GET['site_id']) . "' " : '') . " and is_active = '1' and
-          o.orders_id like '%".$_GET['keywords']."%'" . $where_payment . $where_type .' order by '.$order_str;
+          = '" . intval($_GET['site_id']) . "' " : '') . " and o.orders_id like '%".$_GET['keywords']."%'" . $where_payment . $where_type .' order by '.$order_str;
     }elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['search_type'] == 'customers_name') || (isset($_GET['search_type']) && $_GET['search_type'] == 'email'))
   ) {
     $orders_query_raw = "
@@ -2137,10 +2142,11 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
                o.torihiki_houhou,
                o.orders_comment,
                o.confirm_payment_time, 
+               o.is_active, 
                o.site_id
         from " . TABLE_PREORDERS . " o " . $from_payment .$sort_table."
         where ".$sort_where." 1=1 
-          " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . " and is_active = '1' " . $where_payment . $where_type ;
+          " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . $where_payment . $where_type ;
 
     $keywords = str_replace('　', ' ', $_GET['keywords']);
     tep_parse_search_string($keywords, $search_keywords);
@@ -2204,8 +2210,9 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
                  o.torihiki_houhou,
                  o.orders_comment,
                  o.confirm_payment_time, 
+                 o.is_active, 
                  o.site_id
-          from " . TABLE_PREORDERS . " o " . $from_payment . " , ".TABLE_PREORDERS_PRODUCTS." op ".$sort_table." where ".$sort_where." 1=1 " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . " and is_active = '1' and o.payment_method = '".$payment_m[1]."' and o.orders_id = op.orders_id and (o.orders_id like '%".$_GET['keywords']."%' or o.customers_name like '%".$_GET['keywords']."%' or o.customers_email_address like '%".$_GET['keywords']."%' or op.products_name like '%".$_GET['keywords']."%') " .  $where_payment . $where_type.' order by '.$order_str;
+          from " . TABLE_PREORDERS . " o " . $from_payment . " , ".TABLE_PREORDERS_PRODUCTS." op ".$sort_table." where ".$sort_where." 1=1 " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . " and o.payment_method = '".$payment_m[1]."' and o.orders_id = op.orders_id and (o.orders_id like '%".$_GET['keywords']."%' or o.customers_name like '%".$_GET['keywords']."%' or o.customers_email_address like '%".$_GET['keywords']."%' or op.products_name like '%".$_GET['keywords']."%') " .  $where_payment . $where_type.' order by '.$order_str;
     } else {
       $orders_query_raw = "
           select distinct(o.orders_id), 
@@ -2230,10 +2237,11 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
                  o.torihiki_houhou,
                  o.orders_comment,
                  o.confirm_payment_time, 
+                 o.is_active, 
                  o.site_id
           from " . TABLE_PREORDERS . " o " . $from_payment . $sort_table ."
           where ".$sort_where." 1=1 " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and
-          o.site_id = '" . intval($_GET['site_id']) . "' " : '') . " and is_active = '1' and o.payment_method = '".$payment_m[1]."'" .  $where_payment .  $where_type.' order by '.$order_str;
+          o.site_id = '" . intval($_GET['site_id']) . "' " : '') . " and o.payment_method = '".$payment_m[1]."'" .  $where_payment .  $where_type.' order by '.$order_str;
     }
   } elseif (isset($_GET['keywords']) && $_GET['keywords']) {
     $orders_query_raw = "
@@ -2259,9 +2267,9 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
                o.torihiki_houhou,
                o.orders_comment,
                o.confirm_payment_time, 
+               o.is_active, 
                o.site_id
-        from " . TABLE_PREORDERS . " o " . $from_payment . ", " .  TABLE_PREORDERS_PRODUCTS . " op ".$sort_table." where ".$sort_where." o.orders_id = op.orders_id
-          " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . " and is_active = '1' " . $where_payment . $where_type ;
+        from " . TABLE_PREORDERS . " o " . $from_payment . ", " .  TABLE_PREORDERS_PRODUCTS . " op ".$sort_table." where ".$sort_where." o.orders_id = op.orders_id " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . $where_payment . $where_type ;
     $keywords = str_replace('　', ' ', $_GET['keywords']);
     tep_parse_search_string($keywords, $search_keywords);
     if (isset($search_keywords) && (sizeof($search_keywords) > 0)) {
@@ -2317,13 +2325,14 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
                o.orders_comment,
                o.torihiki_houhou,
                o.confirm_payment_time, 
+               o.is_active, 
                o.site_id
          from " . TABLE_PREORDERS . " o " . $from_payment . $sort_table ."
          where ".$sort_where." 
           o.flag_qaf = 0 
           -- and o.orders_status != '6'
           -- and o.orders_status != '8'
-          " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . " and is_active = '1' " . $where_payment . $where_type . "
+          " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . $where_payment . $where_type . "
          order by ".$order_str;
   }
   // old sort is  order by torihiki_date_error DESC,o.torihiki_date DESC
@@ -2381,7 +2390,11 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
     echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'">' . "\n";
   } else {
     //echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRow" onmouseover="showOrdersInfo(\''.tep_get_orders_products_string($orders).'\',this);this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="hideOrdersInfo();this.className=\'dataTableRow\'" ondblclick="window.location.href=\''.tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']).'\'">' . "\n";
-    echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'">' . "\n";
+    if ($orders['is_active'] == '1') {
+      echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'">' . "\n";
+    } else {
+      echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableUnactiveRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableUnactiveRow\'">' . "\n";
+    }
   }
 ?>
   <?php 
@@ -2627,7 +2640,11 @@ function submit_confirm()
         $heading[] = array('text' => '<b>[' . $oInfo->orders_id . ']<br>' . tep_datetime_short($oInfo->date_purchased) . '</b>');
 
         if ($ocertify->npermission == 15) {
-          $contents[] = array('align' => 'center', 'text' => '<a href="' .  tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID=' . $oInfo->orders_id . '&action=edit') . '">' . tep_html_element_button(IMAGE_DETAILS) . '</a> <a href="' .  tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID=' . $oInfo->orders_id . '&action=delete') .  '">' . tep_html_element_button(IMAGE_DELETE) . '</a>');
+          if ($oInfo->is_active) {
+            $contents[] = array('align' => 'center', 'text' => '<a href="' .  tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID=' . $oInfo->orders_id . '&action=edit') . '">' . tep_html_element_button(IMAGE_DETAILS) . '</a> <a href="' .  tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID=' . $oInfo->orders_id . '&action=delete') .  '">' . tep_html_element_button(IMAGE_DELETE) . '</a>');
+          } else {
+            $contents[] = array('align' => 'center', 'text' => '<a href="' .  tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID=' . $oInfo->orders_id . '&action=delete') .  '">' . tep_html_element_button(IMAGE_DELETE) . '</a>');
+          }
         } else {
           $contents[] = array('align' => 'center', 'text' => '<a href="' .  tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID=' . $oInfo->orders_id . '&action=edit') . '">' . tep_html_element_button(IMAGE_DETAILS) . '</a>');
         }
