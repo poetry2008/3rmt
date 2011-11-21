@@ -3,7 +3,7 @@
 /*
   $Id$
 
-  商品评论详细页
+  商品隸・ｮｺ隸ｦ扈・｡ｵ
 */
   require('includes/application_top.php');
   
@@ -135,7 +135,7 @@
                 <td width="85">
                 <b><?php echo INPUT_SEND_MAIL;?>:</b>
                 </td> 
-                <td width="360">
+                <td>
                 <?php echo tep_draw_input_field('cemail',
                     (isset($_post['cemail'])?$_post['cemail']:$cus_email),'size="58"');?>
                 </td>
