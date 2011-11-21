@@ -123,9 +123,9 @@
                   <td width="85">
                   <b><?php echo INPUT_SEND_MAIL;?>:</b> 
                   </td>
-                  <td class="active_email" width="360">
+                  <td width="360">
                   <?php echo tep_draw_input_field('cemail',
-                      (isset($_POST['cemail'])?$_POST['cemail']:$cus_email),'size="80"');?> 
+                      (isset($_POST['cemail'])?$_POST['cemail']:$cus_email),'size="58"');?> 
                   </td>
                   <td align="right">
                   <?php echo tep_image_submit('button_send_mail.gif', SENDMAIL_BUTTON);?>
