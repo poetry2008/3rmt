@@ -79,7 +79,7 @@
       <td valign="top" id="contents"> 
         <h1 class="pageHeading"><?php echo HEADING_TITLE; ?></h1> 
         
-        <div> 
+        <div class="comment"> 
         <?php
           if ($error == true) {
             if (isset($error_msg)) {
@@ -101,7 +101,7 @@
         <?php
           echo tep_draw_form('form', tep_href_link('non-member_auth.php', 'action=send'.(isset($_GET['cu'])?'&cu='.$_GET['cu']:''), 'SSL')); 
         ?>
-          <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+          <table border="0" cellspacing="0" cellpadding="0" class="information_table"> 
           <?php
           if ($_GET['cu'] == 1) {
           ?>
@@ -115,39 +115,36 @@
           ?>
           <tr>
             <td>
-            <table>
+            <table class="information_table">
               <tr>
                 <td colspan="3" class="mail_img"><img src="images/design/mail_top.gif" align=""></td>
               </tr>
               <tr>
-                <td colspan="3">
-                <div style="background-color: #FDEBAC; color: #000000; height: 25px; line-height: 25px; margin:5px 0; padding-left: 10px;">
-                <font size="2"><?php 
+                <td colspan="3"  class="information_color">
+                <?php 
                   echo sprintf(NOTICE_SEND_TO_EMAIL_TEXT, (isset($_post['cemail'])?$_post['cemail']:$cus_email)); 
-                ?></font></div>
+                ?>
                 </td>
               </tr>
               <tr>
                 <td colspan="3">
-                <font size="2"><?php echo ACTIVE_INFO_FRONT_COMMENT;?></font><br><br>
+                <br><?php echo ACTIVE_INFO_FRONT_COMMENT;?><br><br>
                 </td>
               </tr>
               <tr>
-                <td class="active_email_name" colspan="3">
-                <div style="width:520px;">
-                <div style="float:left; line-height: 20px; padding-right: 5px;"><b><?php echo INPUT_SEND_MAIL;?>:</b></div> 
-                <div class="active_email" style="float:left; padding-right:25px;">
+                <td width="85">
+                <b><?php echo INPUT_SEND_MAIL;?>:</b>
+                </td> 
+                <td class="active_email" width="360">
                 <?php echo tep_draw_input_field('cemail', (isset($_post['cemail'])?$_post['cemail']:$cus_email));?>
-                </div>
-                <div style="float:left; line-height:20px;">
+                </td>
+                <td align="right">
                 <?php echo tep_image_submit('button_send_mail.gif', SENDMAIL_BUTTON);?>
-                </div>
-                </div> 
                 </td>
               </tr>
               <tr>
                 <td colspan="3">
-                <br><font size="2"><?php echo ACTIVE_INFO_END_COMMENT;?></font>
+                <br><?php echo ACTIVE_INFO_END_COMMENT;?>
                 </td>
               </tr>
             </table>
@@ -158,7 +155,7 @@
           </tr>
           <tr>
             <td>
-            <font size="2"><?php echo ACTIVE_INFO_EMAIL_READ;?></font> 
+            <?php echo ACTIVE_INFO_EMAIL_READ;?> 
             </td>
           </tr>
           <?php }?> 

@@ -114,6 +114,7 @@
           echo PREORDER_SUCCESS_UNACTIVE_HEAD_TITLE;
         ?>
         </h1>
+        <div class="comment"> 
         <?php
         if ($error == true) {
           if (isset($error_msg)) {
@@ -132,48 +133,43 @@
         echo tep_draw_form('form', tep_href_link('non-preorder_auth.php')); 
         echo tep_draw_hidden_field('action', 'send'); 
         ?>
-        <table border="0" width="100%" cellspacing="0" cellpadding="0">
+        <table border="0" cellspacing="0" cellpadding="0" class="information_table">
           <tr>
             <td>
-              <table>
+              <table class="information_table">
                 <tr>
                 	<td colspan="3" class="mail_img"><img src="images/design/mail_top.gif" align=""></td>
                 </tr>
                 <tr>
-                  <td colspan="3">
-                  <div style="background-color: #FDEBAC; color: #000000; height: 25px; line-height: 25px; margin:5px 0; padding-left: 10px;">
-                  <font size="2"><?php
+                  <td colspan="3" class="information_color">
+                  <?php
                     echo sprintf(PREORDER_NOTICE_SEND_TO_EMAIL_TEXT, (isset($_POST['pemail'])?$_POST['pemail']:$pe_email)); 
-                  ?></font></div>
+                  ?></div>
                   </td>
                 </tr>
                 <tr>
                   <td colspan="3">
-                  <font size="2"><?php
+                  <br><?php
                     echo PREORDER_ACTIVE_INFO_FRONT_COMMENT; 
-                  ?></font><br><br>
+                  ?><br><br>
                   </td>
                 </tr>
                 <tr>
-                  <td  class="active_email_name" colspan="3">
-				 <div style="width:520px;">
-                  <div style="float:left; line-height: 20px; padding-right: 5px;">
+                  <td width="85">
 				  <b><?php echo INPUT_PREORDER_SEND_MAIL;?></b>
-                  </div>
-                  <div class="active_email" style="float:left; padding-right:25px;">
+                  </td>
+                  <td class="active_email" width="360">
                   <?php echo tep_draw_input_field('pemail', (isset($_POST['pemail'])?$_POST['pemail']:$pe_email));?> 
-                  </div>
-                  <div style="float:left; line-height:20px;">
+                  </td>
+                  <td align="right">
                   <?php echo tep_image_submit('button_send_mail.gif', 'mail');?>
-                  </div>
-                  </div>
                   </td>
                 </tr>
                 <tr>
                   <td colspan="3">
-                  <br><font size="2"><?php
+                  <br><?php
                     echo PREORDER_ACTIVE_INFO_END_COMMENT; 
-                  ?></font>
+                  ?>
                   </td>
                 </tr> 
               </table>
@@ -184,11 +180,12 @@
             </tr>
           <tr>
             <td>
-            <font size="2"><?php echo PREORDER_ACTIVE_INFO_EMAIL_READ;?></font> 
+            <?php echo PREORDER_ACTIVE_INFO_EMAIL_READ;?> 
             </td>
           </tr>
         </table>
         </form> 
+        </div>
       </td>
       <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>">
         <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?>
