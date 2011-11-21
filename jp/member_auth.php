@@ -80,7 +80,7 @@
       <td valign="top" id="contents"> 
         <h1 class="pageHeading"><?php echo HEADING_TITLE; ?></h1> 
         
-        <div> 
+        <div class="comment"> 
          <?php
          if ($error == true) {
            if (isset($error_msg)) {
@@ -100,23 +100,23 @@
          }
          ?>
          <?php echo tep_draw_form('form', tep_href_link('member_auth.php', 'action=send', 'SSL'));?> 
-          <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+          <table border="0" width="100%" cellspacing="0" cellpadding="0" class="information_table"> 
             <tr> 
               <td>
-              <table>
+              <table class="information_table">
                 <tr>
                 	<td colspan="3" class="mail_img"><img src="images/design/mail_top.gif" align=""></td>
                 </tr>
                 <tr>
                   <td colspan="3">
-                  <font size="2"><?php
+                  <?php
                     echo sprintf(NOTICE_SEND_TO_EMAIL_TEXT, (isset($_POST['cemail'])?$_POST['cemail']:$cus_email)); 
-                  ?></font>
+                  ?>
                   </td>
                 </tr>
                 <tr>
                   <td colspan="3">
-                  <font size="2"><?php echo ACTIVE_INFO_FRONT_COMMENT;?></font><br><br>
+                  <?php echo ACTIVE_INFO_FRONT_COMMENT;?><br><br>
                   </td>
                 </tr>
                 <tr>
@@ -132,7 +132,7 @@
                 </tr>
                 <tr>
                   <td colspan="3">
-                    <br><font size="2"><?php echo ACTIVE_INFO_END_COMMENT;?></font> 
+                    <br><?php echo ACTIVE_INFO_END_COMMENT;?>
                   </td>
                 </tr>
               </table>
@@ -143,7 +143,7 @@
             </tr>
             <tr>
               <td>
-              <font size="2"><?php echo ACTIVE_INFO_EMAIL_READ;?></font> 
+              <?php echo ACTIVE_INFO_EMAIL_READ;?>
               </td>
             </tr>
             <tr> 
