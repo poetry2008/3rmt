@@ -187,16 +187,6 @@
             <font size="2"><?php echo PREORDER_ACTIVE_INFO_EMAIL_READ;?></font> 
             </td>
           </tr>
-          <tr>
-            <td><br>
-                  <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
-                    <tr> 
-                      <td class="main" align="right"><?php echo '<a href="' .tep_href_link(FILENAME_DEFAULT). '">' .  tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></td> 
-                      <td align="right" class="main">
-                      </td> 
-                    </tr> 
-                  </table></td> 
-          </tr>
         </table>
         </form> 
       </td>
