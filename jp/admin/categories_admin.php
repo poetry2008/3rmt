@@ -454,7 +454,7 @@ while ($products = tep_db_fetch_array($products_query)) {
   ?>
   <td class="dataTableContent6" align='right'>
   <?php
-    $preorder_products_raw = tep_db_query("select sum(pp.products_quantity) as pre_total from ".TABLE_PREORDERS_PRODUCTS." pp, ".TABLE_PREORDERS." p where pp.products_id = '".$products['products_id']."' and pp.orders_id = p.orders_id and p.is_active = '1' group by pp.products_id"); 
+    $preorder_products_raw = tep_db_query("select sum(products_quantity) as pre_total from ".TABLE_PREORDERS_PRODUCTS." where products_id = '".$products['products_id']."'"); 
     $preorder_products_res = tep_db_fetch_array($preorder_products_raw);
     if ($preorder_products_res) {
       if ($preorder_products_res['pre_total']) {
