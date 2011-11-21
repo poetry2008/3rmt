@@ -210,5 +210,5 @@ define('PREORDERS_PAYMENT_METHOD_LAST', '」から検索');
 define('TEXT_SORT_ASC','▲');
 define('TEXT_SORT_DESC','▼');
 define('PREORDER_PRODUCT_UNIT_TEXT', '個');
-define('NOTICE_LIMIT_SHOW_PREORDER_TEXT', 'メール未認証のため操作不可');
+define('NOTICE_LIMIT_SHOW_PREORDER_TEXT', 'メール認証中のため操作はできません');
 ?>
