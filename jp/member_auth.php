@@ -120,13 +120,13 @@
                   </td>
                 </tr>
                 <tr>
-                  <td width="20%">
+                  <td width="85">
                   <b><?php echo INPUT_SEND_MAIL;?>:</b> 
                   </td>
-                  <td class="active_email" width="70%">
+                  <td class="active_email" width="360">
                   <?php echo tep_draw_input_field('cemail', (isset($_POST['cemail'])?$_POST['cemail']:$cus_email));?> 
                   </td>
-                  <td align="right" width="10%">
+                  <td align="right">
                   <?php echo tep_image_submit('button_send_mail.gif', SENDMAIL_BUTTON);?>
                   </td>
                 </tr>
