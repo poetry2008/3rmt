@@ -1121,7 +1121,6 @@ searching
  table-layout:fixed;
  width:520px;
 }
-.active_email input{ width:100%;}
 .con_telnumber_input {
 /*	display:inline;
 	margin-left:78px;
@@ -1144,4 +1143,4 @@ searching
 .formArea_td_info { width:380px\9; font-size:12px; line-height:1.5;}
 .input_text { width:200px; height:20px;}
 .input_text_short { width:40px; height:20px; text-align:right;}
-.information_color{background-color: #FDEBAC; color: #000000; height: 25px; line-height: 25px; padding-left: 10px; width:100%;}
+.information_color{background-color: #FDEBAC; color: #000000; padding:5px; width:100%;}

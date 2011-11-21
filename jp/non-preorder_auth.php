@@ -159,7 +159,8 @@
 				  <b><?php echo INPUT_PREORDER_SEND_MAIL;?></b>
                   </td>
                   <td class="active_email" width="360">
-                  <?php echo tep_draw_input_field('pemail', (isset($_POST['pemail'])?$_POST['pemail']:$pe_email));?> 
+                  <?php echo tep_draw_input_field('pemail',
+                      (isset($_POST['pemail'])?$_POST['pemail']:$pe_email),'size="58"');?> 
                   </td>
                   <td align="right">
                   <?php echo tep_image_submit('button_send_mail.gif', 'mail');?>
