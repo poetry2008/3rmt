@@ -120,10 +120,10 @@
                   </td>
                 </tr>
                 <tr>
-                  <td class="active_email_name">
+                  <td width="85">
                   <b><?php echo INPUT_SEND_MAIL;?>:</b> 
                   </td>
-                  <td class="active_email" align="left">
+                  <td class="active_email">
                   <?php echo tep_draw_input_field('cemail', (isset($_POST['cemail'])?$_POST['cemail']:$cus_email));?> 
                   </td>
                   <td align="right">
