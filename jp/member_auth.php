@@ -100,7 +100,7 @@
          }
          ?>
          <?php echo tep_draw_form('form', tep_href_link('member_auth.php', 'action=send', 'SSL'));?> 
-          <table border="0" width="100%" cellspacing="0" cellpadding="0" class="information_table"> 
+          <table border="0" cellspacing="0" cellpadding="0" class="information_table"> 
             <tr> 
               <td>
               <table class="information_table">
@@ -120,7 +120,7 @@
                   </td>
                 </tr>
                 <tr>
-                  <td width="85">
+                  <td>
                   <b><?php echo INPUT_SEND_MAIL;?>:</b> 
                   </td>
                   <td class="active_email">
