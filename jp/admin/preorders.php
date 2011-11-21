@@ -2400,8 +2400,18 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
   <?php 
   if ($ocertify->npermission) {
     ?>
-        <td style="border-bottom:1px solid #000000;" class="dataTableContent">
-          <input type="checkbox" name="chk[]" value="<?php echo $orders['orders_id']; ?>" onClick="chg_tr_color(this);show_questions(this);">
+        <td style="border-bottom:1px solid #000000;" class="dataTableContent"> 
+        <?php
+        if ($orders['is_active'] == '0') {
+        ?>
+        <input type="checkbox" name="unchk[]" value="<?php echo $orders['orders_id']; ?>" onClick="chg_tr_color(this);show_questions(this);" disabled>
+        <?php
+        } else {
+        ?>
+        <input type="checkbox" name="chk[]" value="<?php echo $orders['orders_id']; ?>" onClick="chg_tr_color(this);show_questions(this);">
+        <?php
+        }
+        ?>
         </td>
 <?php 
   }
