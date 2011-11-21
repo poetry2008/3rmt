@@ -1121,7 +1121,7 @@ searching
  table-layout:fixed;
  width:520px;
 }
-.active_email input{ width:355px;}
+.active_email input{ width:355px; width:200px\9;}
 .con_telnumber_input {
 /*	display:inline;
 	margin-left:78px;
