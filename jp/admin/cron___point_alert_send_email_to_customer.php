@@ -13,7 +13,15 @@ define('DEFAULT_POINT_MAIL_TITLE','point test');
 define('SLEEP_SECOND',3);
 // default send row to sleep
 define('SEND_ROWS',2);
+// debug module flag
+define('POINT_DEBUG_MODULE_FLAG','On');
+// default log file name
+define('LOG_FILE_NAME','cron___point_alert_send_mail_to_customer.log');
 
+if(POINT_DEBUG_MODULE_FLAG=='On'){
+  $log_str = '';
+  $send_row = 0;
+}
 
 // link db
 $link = mysql_connect(DB_SERVER,DB_SERVER_USERNAME,DB_SERVER_PASSWORD);
@@ -25,7 +33,9 @@ function get_configuration_by_site_id($key, $site_id = '0',$table_name='') {
   if(!$site_id||!isset($site_id)){
     $site_id = '0';
   }
-  $config = mysql_fetch_array(mysql_query("select * from ".$table_name." where configuration_key='".$key."' and site_id='".$site_id."'"));
+  $config = mysql_fetch_array(mysql_query("select * from ".$table_name." where
+        configuration_key='".$key."' and (site_id='".$site_id."' or site_id = '0')
+        order by site_id desc"));
   if ($config) {
     return $config['configuration_value'];
   } else {
@@ -189,10 +199,35 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
            echo "<br>";
          */
         //send mail 
+        if(POINT_DEBUG_MODULE_FLAG=='On'){
         mail($to, $subject, $message, $headers);
         if(($sum_user%SEND_ROWS)==0){
           sleep(SLEEP_SECOND);
         }
+        }else{
+           $send_row++;
+           $log_str .= "\n";
+           $log_str .= "from mail :".$From_Mail."\n";
+           $log_str .= "\n";
+           $log_str .= "title :".$title."\n";
+           $log_str .= "\n";
+           $log_str .= "to :".$to."\n";
+           $log_str .= "\n";
+           $log_str .= "message :\n".preg_replace("/\r\n|\n/","\n",$message)."\n";
+           $log_str .= "\n";
+           $log_str .= "==============================================";
+           $log_str .= "\n";
+           $log_str .= "\n";
+           $log_str .= "\n";
+  
+        }
       }
     }
   }
+  if(POINT_DEBUG_MODULE_FLAG=='On'){
+    $fp = fopen(ROOT_DIR.'/log/'.LOG_FILE_NAME,'w');
+    $head = "SEND: ".$send_row." mail \n\n";
+    fwrite($fp,$head.$log_str); 
+    fclose($fp);
+  }
+  
