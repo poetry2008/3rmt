@@ -2390,11 +2390,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
     echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'">' . "\n";
   } else {
     //echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRow" onmouseover="showOrdersInfo(\''.tep_get_orders_products_string($orders).'\',this);this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="hideOrdersInfo();this.className=\'dataTableRow\'" ondblclick="window.location.href=\''.tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']).'\'">' . "\n";
-    if ($orders['is_active'] == '1') {
-      echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'">' . "\n";
-    } else {
-      echo '    <tr id="tr_' . $orders['orders_id'] . '" class="inv_second" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'inv_second\'">' . "\n";
-    }
+    echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'">' . "\n";
   }
 ?>
   <?php 
@@ -2416,26 +2412,62 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
 <?php 
   }
 ?>
-        <td style="border-bottom:1px solid #000000;" class="dataTableContent" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';"><?php echo tep_get_site_romaji_by_id($orders['site_id']);?></td>
         <td style="border-bottom:1px solid #000000;" class="dataTableContent" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';">
+        <?php 
+        if ($orders['is_active'] == '0') {
+          echo '<span style="color:#999999;">'; 
+        }
+        echo tep_get_site_romaji_by_id($orders['site_id']);
+        if ($orders['is_active'] == '0') {
+          echo '</span>'; 
+        }
+        ?>
+        </td>
+        <td style="border-bottom:1px solid #000000;" class="dataTableContent" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';">
+          <?php
+            if ($orders['is_active'] == '1') {
+          ?>
           <a href="<?php echo tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID=' . $orders['orders_id'] . '&action=edit');?>"><?php echo tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW);?></a>&nbsp;
-          <a href="<?php echo tep_href_link('orders.php', 'cEmail=' .
-            tep_output_string_protected($orders['customers_email_address']));?>"><?php
-            echo tep_image(DIR_WS_ICONS . 'search.gif', TEXT_ORDER_HISTORY_ORDER);?></a>
+          <?php
+            } else {
+          ?>
+          <a href="javascript:void(0);" onclick="window.alert('<?php echo NOTICE_LIMIT_SHOW_PREORDER_TEXT;?>');"><?php echo tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW);?></a>&nbsp;
+          <?php
+            }
+          ?>
+          <a href="<?php echo tep_href_link('orders.php', 'cEmail=' .  tep_output_string_protected($orders['customers_email_address']));?>"><?php echo tep_image(DIR_WS_ICONS . 'search.gif', TEXT_ORDER_HISTORY_ORDER);?></a>
 <?php if ($ocertify->npermission) {?>
           &nbsp;<a href="<?php echo tep_href_link('customers.php', 'page=1&cID=' .
             tep_output_string_protected($orders['customers_id']) .
             '&action=edit');?>"><?php echo tep_image(DIR_WS_ICONS .
             'arrow_r_red.gif', TEXT_ORDER_CUSTOMER_INFO);?></a>&nbsp;&nbsp;
 <?php }?> 
-  <?php if (!$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)) {?>
+  <?php 
+  if ($orders['is_active'] == '0') {
+  ?>
+  <span style="color:#999999;"> 
+  <?php 
+  } else {
+  if (!$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)) {
+  ?>
   <font color="#999">
-  <?php } else { ?>
+  <?php } else { ?> 
   <font color="#000">
+  <?php } ?>
   <?php } ?>
           <b><?php echo tep_output_string_protected($orders['customers_name']);?></b>
           <input type="hidden" id="cid_<?php echo $orders['orders_id'];?>" name="cid[]" value="<?php echo $orders['customers_id'];?>" />
+  <?php
+  if ($orders['is_active'] == '0') {
+  ?>
+  </span>  
+  <?php
+  } else {
+  ?>
   </font>
+  <?php
+  }
+  ?>
   <?php if (tep_is_oroshi($orders['customers_id'])) { ?>
   <?php echo tep_image(DIR_WS_ICONS . 'oroshi.gif', TEXT_ORDER_OROSHI);?>
   <?php }?>
@@ -2447,14 +2479,56 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
     </td>
     <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';">
       <?php if (!$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)) {?>
-      <font color="#999"><?php echo
-        strip_tags(tep_get_pre_ot_total_by_orders_id($orders['orders_id'],true));?></font>
+      <?php
+      if ($orders['is_active'] == '0') {
+      ?>
+      <span style="color:#999999;"> 
+      <?php
+      } else {
+      ?>
+      <font color="#999">
+      <?php
+      }
+      ?>
+      <?php echo strip_tags(tep_get_pre_ot_total_by_orders_id($orders['orders_id'],true));?>
+      <?php
+      if ($orders['is_active'] == '0') {
+      ?>
+      </span> 
+      <?php
+      } else {
+      ?>
+      </font>
+      <?php
+      }
+      ?>
       <?php } else { ?>
+      <?php
+      if ($orders['is_active'] == '0') {
+      ?>
+      <span style="color:#999999;"> 
+      <?php }?> 
       <?php echo strip_tags(tep_get_pre_ot_total_by_orders_id($orders['orders_id'], true));?>
+      <?php
+      if ($orders['is_active'] == '0') {
+      ?>
+      </span> 
+      <?php }?> 
       <?php }?>
     </td>
-    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('oID', 'action')) .  'oID='.$orders['orders_id']);?>';"><?php echo $next_mark; ?><font color="<?php echo !$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)?'#999':$today_color; ?>" id="tori_<?php echo $orders['orders_id'];
-?>"><?php echo str_replace('-', '/', substr($orders['predate'], 0, 10)); ?></font></td>
+    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('oID', 'action')) .  'oID='.$orders['orders_id']);?>';"><?php echo $next_mark; ?>
+    <?php
+    if ($orders['is_active'] == '0') {
+    ?>
+    <span style="color:#999999;"><?php echo str_replace('-', '/', substr($orders['predate'], 0, 10)); ?></span>
+    <?php
+    } else {
+    ?>
+    <font color="<?php echo !$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)?'#999':$today_color; ?>" id="tori_<?php echo $orders['orders_id']; ?>"><?php echo str_replace('-', '/', substr($orders['predate'], 0, 10)); ?></font>
+    <?php
+    }
+    ?>
+    </td>
     <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="left" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';"><?php
     if ($orders['orders_wait_flag']) { echo tep_image(DIR_WS_IMAGES .
         'icon_hand.gif', TEXT_ORDER_WAIT); } else { echo '&nbsp;'; } ?></td>
@@ -2490,11 +2564,33 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
     ?>
     </td>
     <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';">
+    <?php
+    if ($orders['is_active'] == '0') {
+    ?>
+    <span style="color:#999999;"> 
+    <?php
+    } else {
+    ?>
     <font color="<?php echo $today_color; ?>">
+    <?php
+    }
+    ?>
     <?php 
       echo $orders['orders_status_name']; 
     ?>
-    <input type="hidden" name="os[]" id="orders_status_<?php echo $orders['orders_id']; ?>" value="<?php echo $orders['orders_status']; ?>"></font></td>
+    <input type="hidden" name="os[]" id="orders_status_<?php echo $orders['orders_id']; ?>" value="<?php echo $orders['orders_status']; ?>">
+    <?php
+    if ($orders['is_active'] == '0') {
+    ?>
+    </span> 
+    <?php
+    } else {
+    ?>
+    </font>
+    <?php
+    }
+    ?>
+    </td>
     <?php 
     if ( isset($oInfo) && (is_object($oInfo)) && ($orders['orders_id'] == $oInfo->orders_id) ) { 
     ?>
