@@ -108,7 +108,7 @@
                 	<td colspan="3" class="mail_img"><img src="images/design/mail_top.gif" align=""></td>
                 </tr>
                 <tr>
-                  <td colspan="3">
+                  <td colspan="3" class="mail_text">
                   <?php
                     echo sprintf(NOTICE_SEND_TO_EMAIL_TEXT, (isset($_POST['cemail'])?$_POST['cemail']:$cus_email)); 
                   ?>
@@ -123,10 +123,10 @@
                   <td class="active_email_name">
                   <b><?php echo INPUT_SEND_MAIL;?>:</b> 
                   </td>
-                  <td class="active_email">
+                  <td class="active_email" align="left">
                   <?php echo tep_draw_input_field('cemail', (isset($_POST['cemail'])?$_POST['cemail']:$cus_email));?> 
                   </td>
-                  <td>
+                  <td align="right">
                   <?php echo tep_image_submit('button_send_mail.gif', SENDMAIL_BUTTON);?>
                   </td>
                 </tr>
