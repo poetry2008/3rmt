@@ -469,7 +469,7 @@ function tep_show_preorders_products_info($orders_id) {
     $str .= '<b>'.RIGHT_ORDER_COMMENT_TITLE.'</b>'; 
     $str .= '</td>';
     $str .= '<td class="main">';
-    $str .= nl2br($orders['comment_msg']); 
+    $str .= nl2br($orders['orders_comment']); 
     $str .= '</td>'; 
     $str .= '</tr>'; 
     $str .= '<tr><td colspan="2"><hr></td></tr>'; 
