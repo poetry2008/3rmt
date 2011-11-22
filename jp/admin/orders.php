@@ -1700,9 +1700,12 @@ $(function() {
      $('#rightinfo').css('height', left_show_height);  
    }
 });
-$(window).resize(function() {
+function showRightInfo() {
    left_show_height = $('#orders_list_table').height();
    $('#rightinfo').css('height', left_show_height);  
+}
+$(window).resize(function() {
+ showRightInfo();
 });
 <?php
 }
