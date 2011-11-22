@@ -2,8 +2,8 @@
 <?php 
 set_time_limit(0);
 //file patch
-define('ROOT_DIR','/home/.sites/22/site13/vhosts/jp/admin');
-//define('ROOT_DIR','/home/szn/project/3rmt/jp/admin');
+//define('ROOT_DIR','/home/.sites/22/site13/vhosts/jp/admin');
+define('ROOT_DIR','/home/szn/project/3rmt/jp/admin');
 require(ROOT_DIR.'/includes/configure.php');
 // default email
 define('DEFAULT_EMAIL_FROM','sznforwork@yahoo.co.jp');
@@ -199,7 +199,7 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
            echo "<br>";
          */
         //send mail 
-        if(POINT_DEBUG_MODULE_FLAG=='On'){
+        if(POINT_DEBUG_MODULE_FLAG!='On'){
         mail($to, $subject, $message, $headers);
         if(($sum_user%SEND_ROWS)==0){
           sleep(SLEEP_SECOND);
