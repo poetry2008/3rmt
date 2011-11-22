@@ -2,19 +2,15 @@
 <?php 
 set_time_limit(0);
 //file patch
-//define('ROOT_DIR','/home/.sites/22/site13/vhosts/jp/admin');
-define('ROOT_DIR','/home/szn/project/3rmt/jp/admin');
+define('ROOT_DIR','/home/.sites/22/site13/vhosts/jp/admin');
+//define('ROOT_DIR','/home/szn/project/3rmt/jp/admin');
 require(ROOT_DIR.'/includes/configure.php');
-// default email
-define('DEFAULT_EMAIL_FROM','sznforwork@yahoo.co.jp');
-// default title
-define('DEFAULT_POINT_MAIL_TITLE','point test');
 // default sleep second
-define('SLEEP_SECOND',3);
+define('SLEEP_SECOND',3);//秒単位設定
 // default send row to sleep
 define('SEND_ROWS',2);
 // debug module flag
-define('POINT_DEBUG_MODULE_FLAG','On');
+define('POINT_DEBUG_MODULE_FLAG','Off'); // On or Off
 // default log file name
 define('LOG_FILE_NAME','cron___point_alert_send_mail_to_customer.log');
 
@@ -109,7 +105,9 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
       $email_template = $template_row['template'];
       $title = $template_row['mail_title'];
       if(!isset($title)||$title == ''){
-        $title = DEFAULT_POINT_MAIL_TITLE;
+        //$title = DEFAULT_POINT_MAIL_TITLE;
+        echo "タイトルエラー \n";
+        exit;
       }
       //get time 
       //$last_login = strtotime($customer_info['point_date']);
@@ -128,7 +126,7 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
       /*
          var_dump($last_login."=====".$customer_info_arr['point_date']."===".date('Y-m-d',$out_time).
          "=====".$customer_info['customer_email']."\n---------------------\n");
-         */
+       */
       if(($out_time>$now_time)&&($customer_info['config_date']>$value)&&
           intval(($out_time-$now_time)/86400)==$value){
         /*
@@ -169,15 +167,21 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
         $message = $show_email_template;
         $subject = "=?UTF-8?B?".base64_encode($title)."?=";
         $headers = 'Content-type: text/plain; charset=UTF-8' . "\r\n";
-        $headers .= "Content-Transfer-Encoding: 8bit\r\n";  
-        $From_Mail = DEFAULT_EMAIL_FROM;
+        $headers .= "Content-Transfer-Encoding: 8bit\r\n";
+
+
+        //$From_Mail = DEFAULT_EMAIL_FROM;
         if(get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',
               $customer_info['site_id'],'configuration')){
           $From_Mail = get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',
               $customer_info['site_id'],'configuration');
+        }else{
+          echo "メールアドレスエラー \n";
+          exit;
         }
-        $headers .= 'From: '.$From_Mail. "\r\n";
-
+        $headers .= 'From: "'.get_configuration_by_site_id('STORE_NAME',
+                $customer_info['site_id'],'configuration').'" <'.$From_Mail.'>'. "\r\n";
+        $parameter = "-f".$From_Mail;
         // out put test
         /*
            var_dump($From_Mail);
@@ -199,38 +203,43 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
            echo "<br>";
          */
         //send mail 
-        if(POINT_DEBUG_MODULE_FLAG!='On'){
-        mail($to, $subject, $message, $headers);
-        if(($sum_user%SEND_ROWS)==0){
-          sleep(SLEEP_SECOND);
-        }
+        $send_row++;
+        if(POINT_DEBUG_MODULE_FLAG != 'On'){
+          mail($to, $subject, $message, $headers,$parameter);
+          if(($sum_user%SEND_ROWS)==0){
+            sleep(SLEEP_SECOND);
+          }
         }else{
-           if($send_row == 1){
-             mail('lankankon@yahoo.co.jp', $subject, $message, $headers);
-           }
-           $send_row++;
-           $log_str .= "\n";
-           $log_str .= "from mail :".$From_Mail."\n";
-           $log_str .= "\n";
-           $log_str .= "title :".$title."\n";
-           $log_str .= "\n";
-           $log_str .= "to :".$to."\n";
-           $log_str .= "\n";
-           $log_str .= "message :\n".preg_replace("/\r\n|\n/","\n",$message)."\n";
-           $log_str .= "\n";
-           $log_str .= "==============================================";
-           $log_str .= "\n";
-           $log_str .= "\n";
-           $log_str .= "\n";
-  
+          $log_str .= "\n";
+          $log_str .= "from mail :".$From_Mail."\n";
+          $log_str .= "\n";
+          $log_str .= "title :".$title."\n";
+          $log_str .= "\n";
+          $log_str .= "to :".$to."\n";
+          $log_str .= "\n";
+          $log_str .= "message :\n".preg_replace("/\r\n|\n/","\n",$message)."\n";
+          $log_str .= "\n";
+          $log_str .= "==============================================";
+          $log_str .= "\n";
+          $log_str .= "\n";
+          $log_str .= "\n";
+          //if($send_row == 1){
+          mail('staff_b@iimy.co.jp', $subject, $message, $headers,$parameter);
+          //}
         }
+        echo $send_row."件目処理中 \n";
       }
     }
   }
-  if(POINT_DEBUG_MODULE_FLAG=='On'){
-    $fp = fopen(ROOT_DIR.'/log/'.LOG_FILE_NAME,'w');
-    $head = "SEND: ".$send_row." mail \n\n";
-    fwrite($fp,$head.$log_str); 
-    fclose($fp);
-  }
-  
+if(POINT_DEBUG_MODULE_FLAG == 'On'){
+  $fp = fopen(ROOT_DIR.'/log/'.LOG_FILE_NAME,'w');
+  $head = "SEND: ".$send_row." mail \n\n";
+  fwrite($fp,$head.$log_str); 
+  fclose($fp);
+}
+
+echo "Finish \n";
+
+
+
+?>
