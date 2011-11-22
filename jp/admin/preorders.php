@@ -781,6 +781,20 @@ function check_mail_product_status(pid)
      return false;
    }
 }
+<?php
+if (!isset($_GET['action'])) {
+?>
+$(function() {
+   left_show_height = $('#orders_list_table').height();
+   right_show_height = $('#rightinfo').height();
+   
+   if (right_show_height < left_show_height) {
+     $('#rightinfo').css('height', left_show_height);  
+   }
+});
+<?php
+}
+?>
 </script>
 </head>
 <body>
@@ -2765,13 +2779,19 @@ function submit_confirm()
   }
 
 
-    echo '      <td width="20%" style="padding-top:22px;" valign="top">' . "\n";
+    echo '      <td width="20%" style="padding-top:20px;" valign="top">' . "\n";
+  if (!isset($_GET['action']) && $orders_query_numrows > 0) {
+    echo '<div id="rightinfo" style="background-color:#FFD700;">'; 
+  }
   if ( (tep_not_null($heading)) && (tep_not_null($contents)) ) {
     $box = new box;
     echo $box->infoBox($heading, $contents);
   }
   ?>
   <?php
+  if (!isset($_GET['action']) && $orders_query_numrows > 0) {
+    echo '</div>'; 
+  }
     echo '      </td>' . "\n";
 
 ?>
