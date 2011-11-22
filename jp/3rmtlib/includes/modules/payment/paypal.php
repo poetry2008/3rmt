@@ -334,6 +334,7 @@
                  'MODULE_PAYMENT_PAYPAL_COST',
                  'MODULE_PAYMENT_PAYPAL_MONEY_LIMIT',
                  'MODULE_PAYMENT_PAYPAL_MAILSTRING',
+                 'MODULE_PAYMENT_PAYPAL_PRINT_MAILSTRING',
                   );
 
     /*  原来 返回值

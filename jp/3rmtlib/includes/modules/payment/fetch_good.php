@@ -184,6 +184,7 @@ class fetch_good {
                  'MODULE_PAYMENT_FETCH_GOOD_SORT_ORDER',
                  'MODULE_PAYMENT_FETCH_GOOD_MONEY_LIMIT',
                  'MODULE_PAYMENT_FETCH_GOOD_MAILSTRING',
+                 'MODULE_PAYMENT_FETCH_GOOD_PRINT_MAILSTRING',
                  );
   }
 

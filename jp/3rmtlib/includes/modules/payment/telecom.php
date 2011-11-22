@@ -323,6 +323,7 @@ class telecom {
                  'MODULE_PAYMENT_TELECOM_COST',
                  'MODULE_PAYMENT_TELECOM_MONEY_LIMIT',
                  'MODULE_PAYMENT_TELECOM_MAILSTRING',
+                 'MODULE_PAYMENT_TELECOM_PRINT_MAILSTRING',
 );
   }
   
