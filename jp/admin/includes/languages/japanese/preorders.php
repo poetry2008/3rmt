@@ -67,7 +67,7 @@ define('ENTRY_PRINTABLE', '納品書をプリント');
 define('TEXT_INFO_HEADING_DELETE_ORDER', '注文を削除');
 define('TEXT_INFO_DELETE_INTRO', '本当にこの注文を削除しますか?');
 define('TEXT_INFO_RESTOCK_PRODUCT_QUANTITY', '在庫数を元に戻す'); // 'Restock product quantity'
-define('TEXT_DATE_ORDER_CREATED', '注文日:');
+define('TEXT_DATE_ORDER_CREATED', '予約日:');
 define('TEXT_DATE_ORDER_LAST_MODIFIED', '更新日:');
 define('TEXT_INFO_PAYMENT_METHOD', '支払方法:');
 
@@ -211,4 +211,23 @@ define('TEXT_SORT_ASC','▲');
 define('TEXT_SORT_DESC','▼');
 define('PREORDER_PRODUCT_UNIT_TEXT', '個');
 define('NOTICE_LIMIT_SHOW_PREORDER_TEXT', 'メール認証中のため操作はできません');
+
+define('TEXT_FUNCTION_INPUT_FINISH','入力済み');
+define('TEXT_FUNCTION_NOTICE','取扱注意');
+define('TEXT_FUNCTION_HAVE_HISTORY','メモ有り');
+define('TEXT_FUNCTION_PAYMENT_METHOD','支払方法：');
+define('TEXT_FUNCTION_DATE_STRING','Y年n月j日');
+define('TEXT_FUNCTION_UN_GIVE_MONY','入金まだ');
+define('TEXT_FUNCTION_UN_GIVE_MONY_DAY','入金日：');
+define('TEXT_FUNCTION_OPTION','オプション：');
+define('TEXT_FUNCTION_CATEGORY','商品：');
+define('TEXT_FUNCTION_FINISH','「入」');
+define('TEXT_FUNCTION_UNFINISH','「未」');
+define('TEXT_FUNCTION_NUMBER','個数：');
+define('TEXT_FUNCTION_NUM','個');
+define('TEXT_FUNCTION_GAME_NAME','キャラ名：');
+define('TEXT_FUNCTION_PC','PC：');
+define('TEXT_FUNCTION_PREDATE','有効期限：');
+define('TEXT_FUNCTION_ENSURE_DATE','確保期限：');
+define('TEXT_FUNCTION_ORDER_FROM_INFO', '予約注文書サイト：');
 ?>
