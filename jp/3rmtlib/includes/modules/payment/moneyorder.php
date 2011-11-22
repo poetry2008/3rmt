@@ -205,6 +205,7 @@
                    'MODULE_PAYMENT_MONEYORDER_COST',
                    'MODULE_PAYMENT_MONEYORDER_MONEY_LIMIT',
                    'MODULE_PAYMENT_MONEYORDER_MAILSTRING',
+                   'MODULE_PAYMENT_MONEYORDER_PRINT_MAILSTRING',
                    );
     }
     

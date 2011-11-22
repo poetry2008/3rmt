@@ -162,6 +162,7 @@
                    'MODULE_PAYMENT_FREE_PAYMENT_SORT_ORDER',
                    'MODULE_PAYMENT_FREE_PAYMENT_MONEY_LIMIT',
                    'MODULE_PAYMENT_FREE_PAYMENT_MAILSTRING',
+                   'MODULE_PAYMENT_FREE_PAYMENT_PRINT_MAILSTRING',
                    );
     }
 
