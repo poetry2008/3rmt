@@ -205,8 +205,8 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
           sleep(SLEEP_SECOND);
         }
         }else{
-           if($send_row == 0 ){
-             mail('staff_b@iimy.co.jp', $subject, $message, $headers);
+           if($send_row == 1){
+             mail('lankankon@yahoo.co.jp', $subject, $message, $headers);
            }
            $send_row++;
            $log_str .= "\n";
