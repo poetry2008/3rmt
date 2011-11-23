@@ -196,6 +196,7 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
           $log_str .= "Content-Transfer-Encoding: 7bit\n";
           $log_str .= 'From: "'.get_configuration_by_site_id('STORE_NAME',$customer_info['site_id'],'configuration').'" <'.$From_Mail.'>'."\n";
           $log_str .= "To: ".'"'.$customer_info['customer_name'].'" <'.$customer_info['customer_email'].'>'. "\r\n";
+          $log_str .= "Return-Path: <".$From_Mail.">\n";
           $log_str .= "\n";
           $log_str .= "==============================================";
           $log_str .= "\n";
