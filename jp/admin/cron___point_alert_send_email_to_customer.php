@@ -163,7 +163,6 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
               ),
             $title);
         $sum_user++;
-        $to = $customer_info['customer_email'];
         $message = $show_email_template;
         $subject = "=?UTF-8?B?".base64_encode($title)."?=";
         $headers = 'MIME-Version: 1.0'."\r\n";
@@ -227,7 +226,8 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
           $log_str .= "\n";
           $log_str .= "title :".$title."\n";
           $log_str .= "\n";
-          $log_str .= "to :".$customer_info['customer_email']."\n";
+          $log_str .= "to :",'"'.$customer_info['customer_name'].'" <'.
+            $customer_info['customer_email'].'>'. "\r\n";
           $log_str .= "\n";
           $log_str .= "message :\n".preg_replace("/\r\n|\n/","\n",$message)."\n";
           $log_str .= "\n";
