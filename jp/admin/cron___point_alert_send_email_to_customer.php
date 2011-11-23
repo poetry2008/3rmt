@@ -166,8 +166,10 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
         $to = $customer_info['customer_email'];
         $message = $show_email_template;
         $subject = "=?UTF-8?B?".base64_encode($title)."?=";
-        $headers = 'Content-type: text/plain; charset=UTF-8' . "\r\n";
-        $headers .= "Content-Transfer-Encoding: 8bit\r\n";
+        $headers = 'MIME-Version: 1.0'."\r\n";
+        $headers .= "X-Mailer: iimy Mailer\r\n";
+        $headers .= 'Content-type: text/plain; charset=utf-8' . "\r\n";
+        $headers .= "Content-Transfer-Encoding: 7bit\r\n";
 
 
         //$From_Mail = DEFAULT_EMAIL_FROM;
@@ -179,9 +181,20 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
           echo "メールアドレスエラー \n";
           exit;
         }
-        $headers .= 'From: "'.get_configuration_by_site_id('STORE_NAME',
-                $customer_info['site_id'],'configuration').'" <'.$From_Mail.'>'. "\r\n";
-        $parameter = "-f".$From_Mail;
+        $headers .= 'To: "'.
+          mb_convert_encoding($customer_info['customer_name'],'ISO-2022-JP','utf-8').'"
+          <'.$customer_info['customer_email'].'>'. "\r\n";
+        $headers .= 'From: "'.mb_convert_encoding(get_configuration_by_site_id('STORE_NAME',
+                $customer_info['site_id'],'configuration'),'ISO-2022-JP','utf-8').'" <'.$From_Mail.'>'. "\r\n";
+        /*
+        $from_str = get_configuration_by_site_id('STORE_NAME',
+                             $customer_info['site_id'],'configuration');
+        $from  = ($from_str != '')? ('"' .
+            mb_encode_mimeheader(mb_convert_kana($from_str, "KV"), 'UTF-8')  .'" <'
+            . $From_Mail. '>'):$From_Mail; 
+        $headers .= 'From: '.$from_str. "\r\n";
+        */
+        $parameter = '-f'.$From_Mail;
         // out put test
         /*
            var_dump($From_Mail);
@@ -205,7 +218,7 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
         //send mail 
         $send_row++;
         if(POINT_DEBUG_MODULE_FLAG != 'On'){
-          mail($to, $subject, $message, $headers,$parameter);
+          mail($customer_info['customer_email'], $subject, $message, $headers,$parameter);
           if(($sum_user%SEND_ROWS)==0){
             sleep(SLEEP_SECOND);
           }
