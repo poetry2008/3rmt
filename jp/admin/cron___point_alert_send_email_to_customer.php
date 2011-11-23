@@ -104,7 +104,7 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
       $email_template = $template_row['template'];
       $title = $template_row['mail_title'];
       if(!isset($title)||$title == ''){
-        //$title = DEFAULT_POINT_MAIL_TITLE;
+
         echo "Title ERROR \n";
         exit;
       }
@@ -162,8 +162,7 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
               ),
             $title);
         $sum_user++;
-        //$to = $customer_info['customer_email'];
-        $to = '"=?UTF-8?B?'.base64_encode($customer_info['customer_name']).'?=" <'.$customer_info['customer_email'].'>'. "\r\n";
+     	$to = '"=?UTF-8?B?'.base64_encode($customer_info['customer_name']).'?=" <'.$customer_info['customer_email'].'>'. "\r\n";
         $message = $show_email_template;
         $subject = "=?UTF-8?B?".base64_encode($title)."?=";
         $headers = 'MIME-Version: 1.0'."\r\n";
@@ -171,8 +170,6 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
         $headers .= 'Content-type: text/plain; charset=utf-8' . "\r\n";
         $headers .= "Content-Transfer-Encoding: 7bit\r\n";
 
-
-        //$From_Mail = DEFAULT_EMAIL_FROM;
         if(get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',
               $customer_info['site_id'],'configuration')){
           $From_Mail = get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',
@@ -181,16 +178,8 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
           echo "MailAddress ERROR \n";
           exit;
         }
-        $headers .= 'From: "'.mb_convert_encoding(get_configuration_by_site_id('STORE_NAME',
-                $customer_info['site_id'],'configuration'),'ISO-2022-JP','utf-8').'" <'.$From_Mail.'>'. "\r\n";
-        /*
-        $from_str = get_configuration_by_site_id('STORE_NAME',
-                             $customer_info['site_id'],'configuration');
-        $from  = ($from_str != '')? ('"' .
-            mb_encode_mimeheader(mb_convert_kana($from_str, "KV"), 'UTF-8')  .'" <'
-            . $From_Mail. '>'):$From_Mail; 
-        $headers .= 'From: '.$from_str. "\r\n";
-        */
+        $headers .= 'From: "'.mb_convert_encoding(get_configuration_by_site_id('STORE_NAME',$customer_info['site_id'],'configuration'),'ISO-2022-JP','utf-8').'" <'.$From_Mail.'>'. "\r\n";
+
         $parameter = '-f'.$From_Mail;
         // out put test
         /*
@@ -221,9 +210,7 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
           }
         }else{
           $log_str .= "\n";
-          $log_str .= 'from mail :"'.get_configuration_by_site_id('STORE_NAME',
-              $customer_info['site_id'],'configuration').'" <'.$From_Mail.'>'
-            ."\n";
+          $log_str .= 'from mail :"'.get_configuration_by_site_id('STORE_NAME',$customer_info['site_id'],'configuration').'" <'.$From_Mail.'>'."\n";
           $log_str .= "\n";
           $log_str .= "title :".$title."\n";
           $log_str .= "\n";
@@ -236,8 +223,8 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
           $log_str .= "\n";
           $log_str .= "\n";
           if($send_row == 1){
-            $to = '"=?UTF-8?B?'.base64_encode($customer_info['customer_name']).'?=" <lankankon@yahoo.co.jp>'. "\r\n";
-            mail($to, $subject, $message, $headers,$parameter);
+          	$to = '"=?UTF-8?B?'.base64_encode($customer_info['customer_name']).'?=" <minatoku7@gmail.com>'. "\r\n";
+          	mail($to, $subject, $message, $headers,$parameter);
           }
         }
         echo "SEND: ".$send_row." mail \n";
