@@ -199,6 +199,9 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
           $log_str .= "To: ".'"'.$customer_info['customer_name'].'" <'.$customer_info['customer_email'].'>'. "\r\n";
           $log_str .= "Return-Path: <".$From_Mail.">\n";
           $log_str .= "\n";
+          $log_str .= "message: \n";
+          $log_str .= $message;
+          $log_str .= "\n";
           $log_str .= "==============================================";
           $log_str .= "\n";
           if($send_row == 1){
