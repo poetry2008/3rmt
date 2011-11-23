@@ -227,7 +227,7 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
           $log_str .= "\n";
           $log_str .= "title :".$title."\n";
           $log_str .= "\n";
-          $log_str .= "to :".$to."\n";
+          $log_str .= "to :".$customer_info['customer_email']."\n";
           $log_str .= "\n";
           $log_str .= "message :\n".preg_replace("/\r\n|\n/","\n",$message)."\n";
           $log_str .= "\n";
