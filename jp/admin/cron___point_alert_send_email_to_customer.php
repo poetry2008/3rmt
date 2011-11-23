@@ -1,5 +1,6 @@
 #!/usr/bin/env php
 <?php 
+header("Content-Type:text/html; charset=UTF-8");
 set_time_limit(0);
 //file patch
 define('ROOT_DIR','/home/.sites/22/site13/vhosts/jp/admin');
@@ -178,7 +179,7 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
           echo "MailAddress ERROR \n";
           exit;
         }
-        $headers .= 'From: "'.mb_convert_encoding(get_configuration_by_site_id('STORE_NAME',$customer_info['site_id'],'configuration'),'ISO-2022-JP','utf-8').'" <'.$From_Mail.'>'. "\r\n";
+        $headers .= 'From: "=?UTF-8?B?'.base64_encode(get_configuration_by_site_id('STORE_NAME',$customer_info['site_id'],'configuration')).'?=" <'.$From_Mail.'>'. "\r\n";
 
         $parameter = '-f'.$From_Mail;
         $send_row++;
@@ -194,7 +195,7 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
           $log_str .= "X-Mailer: iimy Mailer\n";
           $log_str .= 'Content-type: text/plain; charset=utf-8' . "\n";
           $log_str .= "Content-Transfer-Encoding: 7bit\n";
-          $log_str .= 'From: "'.get_configuration_by_site_id('STORE_NAME',$customer_info['site_id'],'configuration').'" <'.$From_Mail.'>'."\n";
+          $LOG_STR .= 'From: "'.get_configuration_by_site_id('STORE_NAME',$customer_info['site_id'],'configuration').'" <'.$From_Mail.'>'."\n";
           $log_str .= "To: ".'"'.$customer_info['customer_name'].'" <'.$customer_info['customer_email'].'>'. "\r\n";
           $log_str .= "Return-Path: <".$From_Mail.">\n";
           $log_str .= "\n";
@@ -217,7 +218,6 @@ if(POINT_DEBUG_MODULE_FLAG == 'On'){
 }
 
 echo "Finish \n";
-
 
 
 ?>
