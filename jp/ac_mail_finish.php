@@ -99,7 +99,7 @@
               <td>
               <table  class="information_table">
                 <tr>
-                	<td colspan="3" class="mail_img"><img src="images/design/mail_top.gif" align=""></td>
+                	<td colspan="3"><img src="images/design/mail_top.gif" alt=""></td>
                 </tr>
                 <tr>
                   <td colspan="3" class="information_color">
@@ -134,7 +134,7 @@
               </td>
             </tr>
             <tr>
-              <td colspan="3" align="center" class="mail_img_next"><img src="images/design/mail_bottom.gif" align=""></td>
+              <td colspan="3" align="center"><img src="images/design/mail_bottom.gif" alt=""></td>
             </tr>
             <tr> 
               <td>

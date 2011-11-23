@@ -796,26 +796,23 @@ function resizeRightInfo() {
    left_show_height = $('#orders_list_table').height();
    right_show_height = $('#rightinfo').height();
    
-   if (right_show_height < left_show_height) {
+   if (right_show_height <= left_show_height) {
      $('#rightinfo').css('height', left_show_height);  
    }
 }
+function showRightInfo() {
+   left_show_height = $('#orders_list_table').height();
+   $('#rightinfo').css('height', left_show_height);  
+}
+$(window).resize(function() {
+  showRightInfo();
+});
 <?php
 }
 ?>
 </script>
 </head>
-<?php
-if (!isset($_GET['action'])) {
-?>
-<body onResize="resizeRightInfo();">
-<?php
-} else {
-?>
 <body>
-<?php
-}
-?>
 <?php
 if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
   <script language='javascript'>
