@@ -10,15 +10,14 @@ define('SLEEP_SECOND',3);//秒単位設定
 // default send row to sleep
 define('SEND_ROWS',2);
 // debug module flag
-define('POINT_DEBUG_MODULE_FLAG','Off'); // On or Off
+define('POINT_DEBUG_MODULE_FLAG','On'); // On or Off
 // default log file name
 define('LOG_FILE_NAME','cron___point_alert_send_mail_to_customer.log');
 
 if(POINT_DEBUG_MODULE_FLAG=='On'){
   $log_str = '';
-  $send_row = 0;
 }
-
+$send_row = 0;
 // link db
 $link = mysql_connect(DB_SERVER,DB_SERVER_USERNAME,DB_SERVER_PASSWORD);
 mysql_query('set names utf8');
@@ -105,8 +104,8 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
       $email_template = $template_row['template'];
       $title = $template_row['mail_title'];
       if(!isset($title)||$title == ''){
-        //$title = DEFAULT_POINT_MAIL_TITLE;
-        echo "タイトルエラー \n";
+
+        echo "Title ERROR \n";
         exit;
       }
       //get time 
@@ -163,7 +162,7 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
               ),
             $title);
         $sum_user++;
-        $to = $customer_info['customer_email'];
+     	$to = '"=?UTF-8?B?'.base64_encode($customer_info['customer_name']).'?=" <'.$customer_info['customer_email'].'>'. "\r\n";
         $message = $show_email_template;
         $subject = "=?UTF-8?B?".base64_encode($title)."?=";
         $headers = 'MIME-Version: 1.0'."\r\n";
@@ -171,28 +170,16 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
         $headers .= 'Content-type: text/plain; charset=utf-8' . "\r\n";
         $headers .= "Content-Transfer-Encoding: 7bit\r\n";
 
-
-        //$From_Mail = DEFAULT_EMAIL_FROM;
         if(get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',
               $customer_info['site_id'],'configuration')){
           $From_Mail = get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',
               $customer_info['site_id'],'configuration');
         }else{
-          echo "メールアドレスエラー \n";
+          echo "MailAddress ERROR \n";
           exit;
         }
-        $to = '"=?UTF-8?B?'.base64_encode($customer_info['customer_name']).'?=" <'.
-          $customer_info['customer_email'].'>'. "\r\n";
-        $headers .= 'From: "'.mb_convert_encoding(get_configuration_by_site_id('STORE_NAME',
-                $customer_info['site_id'],'configuration'),'ISO-2022-JP','utf-8').'" <'.$From_Mail.'>'. "\r\n";
-        /*
-        $from_str = get_configuration_by_site_id('STORE_NAME',
-                             $customer_info['site_id'],'configuration');
-        $from  = ($from_str != '')? ('"' .
-            mb_encode_mimeheader(mb_convert_kana($from_str, "KV"), 'UTF-8')  .'" <'
-            . $From_Mail. '>'):$From_Mail; 
-        $headers .= 'From: '.$from_str. "\r\n";
-        */
+        $headers .= 'From: "'.mb_convert_encoding(get_configuration_by_site_id('STORE_NAME',$customer_info['site_id'],'configuration'),'ISO-2022-JP','utf-8').'" <'.$From_Mail.'>'. "\r\n";
+
         $parameter = '-f'.$From_Mail;
         // out put test
         /*
@@ -223,11 +210,11 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
           }
         }else{
           $log_str .= "\n";
-          $log_str .= "from mail :".$From_Mail."\n";
+          $log_str .= 'from mail :"'.get_configuration_by_site_id('STORE_NAME',$customer_info['site_id'],'configuration').'" <'.$From_Mail.'>'."\n";
           $log_str .= "\n";
           $log_str .= "title :".$title."\n";
           $log_str .= "\n";
-          $log_str .= "to :".$to."\n";
+          $log_str .= "to :".'"'.$customer_info['customer_name'].'" <'.$customer_info['customer_email'].'>'. "\r\n";
           $log_str .= "\n";
           $log_str .= "message :\n".preg_replace("/\r\n|\n/","\n",$message)."\n";
           $log_str .= "\n";
@@ -235,11 +222,12 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
           $log_str .= "\n";
           $log_str .= "\n";
           $log_str .= "\n";
-          //if($send_row == 1){
-          mail('staff_b@iimy.co.jp', $subject, $message, $headers,$parameter);
-          //}
+          if($send_row == 1){
+          	$to = '"=?UTF-8?B?'.base64_encode($customer_info['customer_name']).'?=" <minatoku7@gmail.com>'. "\r\n";
+          	mail($to, $subject, $message, $headers,$parameter);
+          }
         }
-        echo $send_row."件目処理中 \n";
+        echo "SEND: ".$send_row." mail \n";
       }
     }
   }
