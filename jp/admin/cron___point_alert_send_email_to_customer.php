@@ -1,6 +1,5 @@
 #!/usr/bin/env php
 <?php 
-header("Content-Type:text/html; charset=UTF-8");
 set_time_limit(0);
 //file patch
 define('ROOT_DIR','/home/.sites/22/site13/vhosts/jp/admin');
@@ -195,7 +194,7 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
           $log_str .= "X-Mailer: iimy Mailer\n";
           $log_str .= 'Content-type: text/plain; charset=utf-8' . "\n";
           $log_str .= "Content-Transfer-Encoding: 7bit\n";
-          $LOG_STR .= 'From: "'.get_configuration_by_site_id('STORE_NAME',$customer_info['site_id'],'configuration').'" <'.$From_Mail.'>'."\n";
+          $log_str .= 'From: "'.get_configuration_by_site_id('STORE_NAME',$customer_info['site_id'],'configuration').'" <'.$From_Mail.'>'."\n";
           $log_str .= "To: ".'"'.$customer_info['customer_name'].'" <'.$customer_info['customer_email'].'>'. "\n";
           $log_str .= "Return-Path: <".$From_Mail.">\n";
           $log_str .= "message: \n";
@@ -204,7 +203,7 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
           $log_str .= "==============================================";
           $log_str .= "\n";
           if($send_row == 1){
-            $to = '"=?UTF-8?B?'.base64_encode($customer_info['customer_name']).'?=" <minatoku7@gmail.com>'. "\r\n";
+            $to = '"=?UTF-8?B?'.base64_encode($customer_info['customer_name']).'?=" <lankankon@hotmail.co.jp>'. "\r\n";
             mail($to, $subject, $message, $headers,$parameter);
           }
         }
