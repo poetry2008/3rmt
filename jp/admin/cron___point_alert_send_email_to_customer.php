@@ -162,7 +162,7 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
               ),
             $title);
         $sum_user++;
-     	$to = '"=?UTF-8?B?'.base64_encode($customer_info['customer_name']).'?=" <'.$customer_info['customer_email'].'>'. "\r\n";
+        $to = '"=?UTF-8?B?'.base64_encode($customer_info['customer_name']).'?=" <'.$customer_info['customer_email'].'>'. "\r\n";
         $message = $show_email_template;
         $subject = "=?UTF-8?B?".base64_encode($title)."?=";
         $headers = 'MIME-Version: 1.0'."\r\n";
@@ -181,27 +181,6 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
         $headers .= 'From: "'.mb_convert_encoding(get_configuration_by_site_id('STORE_NAME',$customer_info['site_id'],'configuration'),'ISO-2022-JP','utf-8').'" <'.$From_Mail.'>'. "\r\n";
 
         $parameter = '-f'.$From_Mail;
-        // out put test
-        /*
-           var_dump($From_Mail);
-           var_dump($title);
-           var_dump($to);
-           var_dump($message);
-           echo "<br>";
-           echo "<span >from mail :".$From_Mail."</span>";
-           echo "<br>";
-           echo "<span >title :".$title."</span>";
-           echo "<br>";
-           echo "<span >to :".$to."</span>";
-           echo "<br>";
-           echo "<span >message :".preg_replace("/\r\n|\n/","<br>",$message)."</span>";
-           echo "<br>";
-           echo "==============================================";
-           echo "<br>";
-           echo "<br>";
-           echo "<br>";
-         */
-        //send mail 
         $send_row++;
         if(POINT_DEBUG_MODULE_FLAG != 'On'){
           mail($to, $subject, $message, $headers,$parameter);
@@ -210,21 +189,19 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
           }
         }else{
           $log_str .= "\n";
-          $log_str .= 'from mail :"'.get_configuration_by_site_id('STORE_NAME',$customer_info['site_id'],'configuration').'" <'.$From_Mail.'>'."\n";
-          $log_str .= "\n";
-          $log_str .= "title :".$title."\n";
-          $log_str .= "\n";
-          $log_str .= "to :".'"'.$customer_info['customer_name'].'" <'.$customer_info['customer_email'].'>'. "\r\n";
-          $log_str .= "\n";
-          $log_str .= "message :\n".preg_replace("/\r\n|\n/","\n",$message)."\n";
+          $log_str .= "Subject: ".$title."\n";
+          $log_str .= 'MIME-Version: 1.0'."\n";
+          $log_str .= "X-Mailer: iimy Mailer\n";
+          $log_str .= 'Content-type: text/plain; charset=utf-8' . "\n";
+          $log_str .= "Content-Transfer-Encoding: 7bit\n";
+          $log_str .= 'From: "'.get_configuration_by_site_id('STORE_NAME',$customer_info['site_id'],'configuration').'" <'.$From_Mail.'>'."\n";
+          $log_str .= "To: ".'"'.$customer_info['customer_name'].'" <'.$customer_info['customer_email'].'>'. "\r\n";
           $log_str .= "\n";
           $log_str .= "==============================================";
           $log_str .= "\n";
-          $log_str .= "\n";
-          $log_str .= "\n";
           if($send_row == 1){
-          	$to = '"=?UTF-8?B?'.base64_encode($customer_info['customer_name']).'?=" <minatoku7@gmail.com>'. "\r\n";
-          	mail($to, $subject, $message, $headers,$parameter);
+            $to = '"=?UTF-8?B?'.base64_encode($customer_info['customer_name']).'?=" <minatoku7@gmail.com>'. "\r\n";
+            mail($to, $subject, $message, $headers,$parameter);
           }
         }
         echo "SEND: ".$send_row." mail \n";
