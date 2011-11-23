@@ -181,9 +181,8 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
           echo "メールアドレスエラー \n";
           exit;
         }
-        $headers .= 'To: "'.
-          mb_convert_encoding($customer_info['customer_name'],'ISO-2022-JP','utf-8').'"
-          <'.$customer_info['customer_email'].'>'. "\r\n";
+        $to = '"=?UTF-8?B?'.base64_encode($customer_info['customer_name']).'?=" <'.
+          $customer_info['customer_email'].'>'. "\r\n";
         $headers .= 'From: "'.mb_convert_encoding(get_configuration_by_site_id('STORE_NAME',
                 $customer_info['site_id'],'configuration'),'ISO-2022-JP','utf-8').'" <'.$From_Mail.'>'. "\r\n";
         /*
@@ -218,7 +217,7 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
         //send mail 
         $send_row++;
         if(POINT_DEBUG_MODULE_FLAG != 'On'){
-          mail($customer_info['customer_email'], $subject, $message, $headers,$parameter);
+          mail($to, $subject, $message, $headers,$parameter);
           if(($sum_user%SEND_ROWS)==0){
             sleep(SLEEP_SECOND);
           }
