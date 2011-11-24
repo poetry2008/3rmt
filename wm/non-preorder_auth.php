@@ -130,10 +130,10 @@
       echo tep_draw_form('form', tep_href_link('non-preorder_auth.php')); 
       echo tep_draw_hidden_field('action', 'send'); 
       ?>
-        <table border="0" width="100%" cellspacing="0" cellpadding="0" class="information_table">
+        <table border="0" width="100%" cellspacing="0" cellpadding="0" class="contents">
         <tr>
           <td>
-            <table class="information_table">
+            <table class="contents">
               <tr>
                 <td colspan="3"><img src="images/design/mail_top.gif" alt=""></td>
               </tr>
@@ -152,9 +152,9 @@
                   </td>
                 </tr>
               <tr>
-                <td width="105"><?php echo INPUT_PREORDER_SEND_MAIL;?></td> 
-                <td width="300">
-                <?php echo tep_draw_input_field('pemail', (isset($_POST['pemail'])?$_POST['pemail']:$pe_email),'size="50"');?> 
+                <td width="95"><?php echo INPUT_PREORDER_SEND_MAIL;?></td> 
+                <td width="330">
+                <?php echo tep_draw_input_field('pemail', (isset($_POST['pemail'])?$_POST['pemail']:$pe_email),'size="55"');?> 
                 </td>
                 <td>
                 <?php echo tep_image_submit('button_send_mail.gif', 'mail');?> 

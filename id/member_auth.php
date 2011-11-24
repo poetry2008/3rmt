@@ -121,7 +121,7 @@
                   <b><?php echo INPUT_SEND_MAIL;?>:</b> 
                   </td>
                   <td width="550">
-                  <?php echo tep_draw_input_field('cemail', (isset($_POST['cemail'])?$_POST['cemail']:$cus_email),'size="90"');?> 
+                  <?php echo tep_draw_input_field('cemail', (isset($_POST['cemail'])?$_POST['cemail']:$cus_email),'size="100"');?> 
                   </td>
                   <td>
                   <?php echo tep_image_submit('button_send_mail.gif', SENDMAIL_BUTTON);?> 
@@ -140,7 +140,7 @@
             </tr>
             <tr>
               <td>
-              <?php echo ACTIVE_INFO_EMAIL_READ;?>
+              <?php echo ACTIVE_INFO_EMAIL_READ;?><br><br><br><br>
               </td>
             </tr>
           </table> 

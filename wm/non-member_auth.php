@@ -98,7 +98,7 @@
         <?php
           echo tep_draw_form('form', tep_href_link('non-member_auth.php', 'action=send'.(isset($_GET['cu'])?'&cu='.$_GET['cu']:''), 'SSL')); 
         ?>
-          <table border="0" width="100%" cellspacing="0" cellpadding="0" class="information_table"> 
+          <table border="0" width="100%" cellspacing="0" cellpadding="0" class="contents"> 
             <?php
             if ($_GET['cu'] == 1) {
             ?>
@@ -112,7 +112,7 @@
             ?>
             <tr>
               <td>
-              <table class="information_table">
+              <table class="contents">
                 <tr>
                 <td colspan="3"><img src="images/design/mail_top.gif" alt=""></td>
               </tr>
@@ -129,11 +129,11 @@
                 </td>
               </tr>
                 <tr>
-                  <td width="105">
+                  <td width="95">
                   <b><?php echo INPUT_SEND_MAIL;?>:</b> 
                   </td>
-                  <td width="300">
-                  <?php echo tep_draw_input_field('cemail', (isset($_POST['cemail'])?$_POST['cemail']:$cus_email),'size="50"');?> 
+                  <td width="330">
+                  <?php echo tep_draw_input_field('cemail', (isset($_POST['cemail'])?$_POST['cemail']:$cus_email),'size="55"');?> 
                   </td>
                   <td>
                   <?php echo tep_image_submit('button_send_mail.gif', SENDMAIL_BUTTON);?> 
