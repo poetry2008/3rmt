@@ -120,7 +120,7 @@
                   <td width="95">
                   <b><?php echo INPUT_SEND_MAIL;?>:</b> 
                   </td>
-                  <td width="330">
+                  <td width="338">
                   <?php echo tep_draw_input_field('cemail', (isset($_POST['cemail'])?$_POST['cemail']:$cus_email),'size="55"');?> 
                   </td>
                   <td>
