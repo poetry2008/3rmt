@@ -607,8 +607,7 @@ function c_is_set_error_char(){
     success: function(data) {
       if(data!=''){
         flag = false;
-        $("#cromaji").val(data);
-        alert("禁止記号は全て「-」に置き換えられます");
+        alert("ローマ字に禁止記号が含まれています。");
       }
     }
   });
