@@ -222,3 +222,4 @@ define('TEXT_CATEGORY_HEAD_IMAGE_BACK','前のカテゴリへ');
 define('TEXT_CATEGORY_HEAD_IMAGE_NEXT','次のカテゴリへ');
 define('NOTICE_MUST_EDIT_CATEGORY_OR_PRODUCT', 'このサイトの商品は登録されていないのでallのステータスに連動しています。個別に変更したい場合は「編集」ボタンをクリックして、内容を保存してからステータスを変更してください。');
 define('NOTICE_HAS_NO_PREVILEGE_EDIT', '権限がありません');
+define('TEXT_CATEGORY_ROMAJI', 'ローマ字:');

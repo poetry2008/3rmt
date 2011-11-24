@@ -4492,3 +4492,57 @@ function tep_whether_show_preorder_payment($limit_setting) {
 
   return true;
 }
+
+function tep_preorder_get_products_id_by_param()
+{
+   global $languages_id;
+   
+   $category_array = array();
+   
+   if (!isset($_GET['fromaji'])) {
+     return false; 
+   }
+   
+   if (!isset($_GET['promaji'])) {
+     return false; 
+   }
+   
+   $category_query = tep_db_query("select cd.categories_id from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd where c.categories_id = cd.categories_id and c.parent_id = '0' and cd.romaji = '".urldecode($_GET['fromaji'])."' and cd.language_id = '".$languages_id."' and (cd.site_id = '0' or cd.site_id = '".SITE_ID."') order by cd.site_id desc limit 1");
+   $category = tep_db_fetch_array($category_query);
+   if ($category) {
+     $category_array[] = $category['categories_id']; 
+     if (isset($_GET['sromaji'])) {
+       $child_category_query = tep_db_query("select cd.categories_id from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd where c.categories_id = cd.categories_id and c.parent_id = '".$category['categories_id']."' and cd.romaji = '".urldecode($_GET['sromaji'])."' and cd.language_id = '".$languages_id."' and (cd.site_id = '0' or cd.site_id = '".SITE_ID."') order by cd.site_id desc limit 1");
+       $child_category = tep_db_fetch_array($child_category_query);
+       
+       if ($child_category) {
+         $category_array[] = $child_category['categories_id']; 
+         if (isset($_GET['tromaji'])) {
+           $child_child_category_query = tep_db_query("select cd.categories_id from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd where c.categories_id = cd.categories_id and c.parent_id = '".$child_category['categories_id']."' and cd.romaji = '".urldecode($_GET['tromaji'])."' and cd.language_id = '".$languages_id."' and (cd.site_id = '0' or cd.site_id = '".SITE_ID."') order by cd.site_id desc limit 1");
+           $child_child_category = tep_db_fetch_array($child_child_category_query);
+          
+           if ($child_child_category) {
+             $category_array[] = $child_child_category['categories_id']; 
+           }
+         }
+       }
+     }
+   }
+  
+   if (!empty($category_array)) {
+     $count_num = count($category_array); 
+     $product_info_query = tep_db_query("select pd.products_id from ".TABLE_PRODUCTS_DESCRIPTION." pd where pd.language_id = '".$languages_id."' and pd.romaji = '".urldecode($_GET['promaji'])."' and (pd.site_id = '0' or pd.site_id = '".SITE_ID."') group by products_id order by pd.site_id desc");
+     if (tep_db_num_rows($product_info_query) > 0) {
+       while ($product_info = tep_db_fetch_array($product_info_query)) {
+         $product_to_category_query = tep_db_query("select categories_id from ".TABLE_PRODUCTS_TO_CATEGORIES." where products_id = '".$product_info['products_id']."'"); 
+         while ($product_to_category = tep_db_fetch_array($product_to_category_query)) {
+           if ($product_to_category['categories_id'] == $category_array[$count_num-1]) {
+             return $product_info['products_id']; 
+           }
+         }
+       }
+     }
+   }
+   
+   return false;
+}
