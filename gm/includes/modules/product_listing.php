@@ -153,7 +153,7 @@ if ($listing_numrows > 0) {
     echo $description . '..';
   } else {
     # 販売商品
-    echo $description . '..&nbsp;&nbsp;ご希望の数量がない場合は「<a href="' .  tep_preorder_href_link($listing['romaji']) . '">' . $products_name . $ten . 'を予約する</a>」をクリック';
+    echo $description . '..&nbsp;&nbsp;ご希望の数量がない場合は「<a href="' .  tep_preorder_href_link($listing['products_id'], $listing['romaji']) . '">' . $products_name . $ten . 'を予約する</a>」をクリック';
   }
 ?>
             </p>

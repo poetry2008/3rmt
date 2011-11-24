@@ -26,19 +26,23 @@
   }
 
   $valid_product = false;
-  if (isset($_GET['promaji'])) {
-//ccdd
-    $product_info_query = tep_db_query("
-        select pd.products_id, pd.products_name, pd.products_status 
-        from " . TABLE_PRODUCTS_DESCRIPTION . " pd 
-        where pd.romaji = '" .  $_GET['promaji'] . "' 
-          and pd.language_id = '" . $languages_id . "' 
-          and (pd.site_id = '".SITE_ID."' or pd.site_id = '0')
-        order by pd.site_id DESC
-        limit 1
-    ");
-    $valid_product = (tep_db_num_rows($product_info_query) > 0);
+  
+  $products_id = tep_preorder_get_products_id_by_param();
+
+  if (!$products_id) {
+    forward404(); 
   }
+  
+  $product_info_query = tep_db_query("
+      select pd.products_id, pd.products_name, pd.products_status, pd.romaji 
+      from " . TABLE_PRODUCTS_DESCRIPTION . " pd 
+      where pd.products_id = '" .  $products_id . "' 
+        and pd.language_id = '" . $languages_id . "' 
+        and (pd.site_id = '".SITE_ID."' or pd.site_id = '0')
+      order by pd.site_id DESC
+      limit 1
+  ");
+  $valid_product = (tep_db_num_rows($product_info_query) > 0);
   
   if (!$valid_product) {
     forward404(); 
@@ -382,7 +386,7 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
         if ($fromemail_error == true) $your_email_address_prompt .= ENTRY_EMAIL_ADDRESS_CHECK_ERROR;
       }
 ?>
-      <?php echo tep_draw_form('preorder_product', tep_preorder_href_link($_GET['promaji'], 'action=process')) .  tep_draw_hidden_field('products_id', $product_info['products_id']).tep_draw_hidden_field('products_name', $product_info['products_name']); ?>
+      <?php echo tep_draw_form('preorder_product', tep_preorder_href_link($product_info['products_id'], $product_info['romaji'], 'action=process')) .  tep_draw_hidden_field('products_id', $product_info['products_id']).tep_draw_hidden_field('products_name', $product_info['products_name']); ?>
 
       <p>
         弊社在庫にお客様がご希望する数量がない場合は、下記の必要事項をご入力の上お申し込みください。<br>
