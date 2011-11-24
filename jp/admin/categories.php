@@ -1105,7 +1105,7 @@ function cmess(pid, cid, site_id) {
   }
   
   flag1 = c_is_set_romaji(pid,cid,site_id);
-  flag2 = c_is_set_error_char(); 
+  flag2 = c_is_set_error_char(true); 
   if(flag1&&flag2){
     return true;
   }else{
@@ -3393,7 +3393,7 @@ tep_display_google_results(FILENAME_CATEGORIES);
                 '', 'id="cname"').'<br>'."\n".  '<br>'.TEXT_CATEGORY_ROMAJI.'<br>' .  tep_image(DIR_WS_CATALOG_LANGUAGES .  $languages[$i]['directory'] .  '/images/' .  $languages[$i]['image'], $languages[$i]['name']) .  '&nbsp;' .  tep_draw_input_field('romaji[' . $languages[$i]['id'] . ']', '', 'id="cromaji"').'<input type="button" onclick =
       "c_is_set_romaji(\''.$current_category_id.'\',\'\',\''.$site_id.'\')"
       value="'.TEXT_ROMAJI_IS_SET.'">'.
-      '<input type="button" onclick = "c_is_set_error_char()"
+      '<input type="button" onclick = "c_is_set_error_char(false)"
       value="'.IS_SET_ERROR_CHAR.'">'.
             '<br><br>'."\n";
           if (!empty($_GET['cPath'])) {
@@ -3442,7 +3442,7 @@ tep_display_google_results(FILENAME_CATEGORIES);
           $category_inputs_string .= '<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES .  $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .  tep_draw_input_field('categories_name[' . $languages[$i]['id'] . ']', tep_get_category_name($cInfo->categories_id, $languages[$i]['id'], $site_id, true), 'id="cname"').'<br>'."\n".  '<br>'.TEXT_CATEGORY_ROMAJI.'<br>' .  tep_image(DIR_WS_CATALOG_LANGUAGES .  $languages[$i]['directory'] .  '/images/' . $languages[$i]['image'], $languages[$i]['name']) .  '&nbsp;' . tep_draw_input_field('romaji[' .  $languages[$i]['id'] . ']', tep_get_category_romaji($cInfo->categories_id, $languages[$i]['id'], $site_id, true), 'id="cromaji"').'<input type="button" onclick =
       "c_is_set_romaji(\''.$current_category_id.'\',\''.$cInfo->categories_id.'\',\''.$site_id.'\')"
       value="'.TEXT_ROMAJI_IS_SET.'">'.
-      '<input type="button" onclick = "c_is_set_error_char()"
+      '<input type="button" onclick = "c_is_set_error_char(false)"
       value="'.IS_SET_ERROR_CHAR.'">'.
 '<br><br>'."\n";
           if (!empty($_GET['cPath'])) {

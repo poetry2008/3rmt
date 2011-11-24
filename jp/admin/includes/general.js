@@ -594,7 +594,7 @@ function replace_romaji(romaji){
   romaji = romaji.replace(/\+/g,'<22222222>');
   return romaji;
 }
-function c_is_set_error_char(){
+function c_is_set_error_char(replace_single){
   var flag = true;
   var cromaji = $("#cromaji").val();
   cromaji = replace_romaji(cromaji);
@@ -607,6 +607,9 @@ function c_is_set_error_char(){
     success: function(data) {
       if(data!=''){
         flag = false;
+        if (replace_single == false) {
+          $("#cromaji").val(data); 
+        }
         alert("ローマ字に禁止記号が含まれています。");
       }
     }
