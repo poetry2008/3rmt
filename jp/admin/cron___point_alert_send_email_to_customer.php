@@ -178,7 +178,7 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
           echo "MailAddress ERROR \n";
           exit;
         }
-        $headers .= 'From: "'.mb_convert_encoding(get_configuration_by_site_id('STORE_NAME',$customer_info['site_id'],'configuration'),'ISO-2022-JP','utf-8').'" <'.$From_Mail.'>'. "\r\n";
+        $headers .= 'From: "=?UTF-8?B?'.base64_encode(get_configuration_by_site_id('STORE_NAME',$customer_info['site_id'],'configuration')).'?=" <'.$From_Mail.'>'. "\r\n";
 
         $parameter = '-f'.$From_Mail;
         $send_row++;
@@ -195,13 +195,15 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
           $log_str .= 'Content-type: text/plain; charset=utf-8' . "\n";
           $log_str .= "Content-Transfer-Encoding: 7bit\n";
           $log_str .= 'From: "'.get_configuration_by_site_id('STORE_NAME',$customer_info['site_id'],'configuration').'" <'.$From_Mail.'>'."\n";
-          $log_str .= "To: ".'"'.$customer_info['customer_name'].'" <'.$customer_info['customer_email'].'>'. "\r\n";
+          $log_str .= "To: ".'"'.$customer_info['customer_name'].'" <'.$customer_info['customer_email'].'>'. "\n";
           $log_str .= "Return-Path: <".$From_Mail.">\n";
+          $log_str .= "message: \n";
+          $log_str .= str_replace("\r\n","\n",$message);
           $log_str .= "\n";
           $log_str .= "==============================================";
           $log_str .= "\n";
           if($send_row == 1){
-            $to = '"=?UTF-8?B?'.base64_encode($customer_info['customer_name']).'?=" <minatoku7@gmail.com>'. "\r\n";
+            $to = '"=?UTF-8?B?'.base64_encode($customer_info['customer_name']).'?=" <lankankon@hotmail.co.jp>'. "\r\n";
             mail($to, $subject, $message, $headers,$parameter);
           }
         }
@@ -217,7 +219,6 @@ if(POINT_DEBUG_MODULE_FLAG == 'On'){
 }
 
 echo "Finish \n";
-
 
 
 ?>
