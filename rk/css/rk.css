@@ -92,7 +92,6 @@ H4 {
 .faq_answer{ line-height:20px; overflow:hidden;}
 .faq_answer img ,.faq_ask img{ margin-right:10px; float:left;}
 .faq_answer span ,.faq_ask span{float:left; overflow:hidden; width:460px;}
-.active_email input{ height: 21px; width: 370px;}
 .comment_index02, .comment_index01 {
 	width: 500px;
  *width: 530px;
@@ -1923,4 +1922,10 @@ display:block;
 .preorder_active_info td{ background-color:#fff; height:20px; padding-left:2px;}
 .preorser_formArea{ background-color:#ccc; font-size:13px; line-height:20px;}
 .preorser_formArea td{ background-color:#fff; padding-left:2px;}
-.active_email_name { font-size:11px;}
+.information_color {
+    background-color: #FDEBAC;
+    color: #000000;
+    margin: 5px;
+    padding: 5px;
+    width: 100%;
+}

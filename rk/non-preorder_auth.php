@@ -135,41 +135,56 @@
         }
       }
       echo tep_draw_form('form', tep_href_link('non-preorder_auth.php')); 
-      echo PREORDER_SUCCESS_ACTIVE_INFO_TEXT; 
-      echo '<br><br>'; 
       echo tep_draw_hidden_field('action', 'send'); 
       ?>
-      <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size:12px;">
+      <table border="0" width="100%" cellspacing="0" cellpadding="0" class="captcha_comment">
         <tr>
           <td>
-            <table>
+            <table class="captcha_comment">
               <tr>
-                <td style="font-size:11px; color:#ff0000;"><?php echo INPUT_PREORDER_SEND_MAIL;?></td> 
-                <td>
-                <?php echo tep_draw_input_field('pemail', (isset($_POST['pemail'])?$_POST['pemail']:$pe_email));?> 
+                <td colspan="3"><img src="images/design/mail_top.gif" alt=""></td>
+                </tr>
+                <tr>
+                  <td colspan="3" class="information_color">
+                  <?php
+                    echo sprintf(PREORDER_NOTICE_SEND_TO_EMAIL_TEXT, (isset($_POST['pemail'])?$_POST['pemail']:$pe_email)); 
+                  ?></div>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="3">
+                  <br><?php
+                    echo PREORDER_ACTIVE_INFO_FRONT_COMMENT; 
+                  ?><br><br>
+                  </td>
+                </tr>
+              <tr>
+                <td width="90"><?php echo INPUT_PREORDER_SEND_MAIL;?></td> 
+                <td width="365">
+                <?php echo tep_draw_input_field('pemail', (isset($_POST['pemail'])?$_POST['pemail']:$pe_email),'size="50"');?> 
                 </td>
                 <td>
                 <?php echo tep_image_submit('button_send_mail.gif', 'mail');?> 
                 </td>
               </tr>
-            </table><br>
+              <tr>
+                  <td colspan="3">
+                  <br><?php
+                    echo PREORDER_ACTIVE_INFO_END_COMMENT; 
+                  ?>
+                  </td>
+                </tr>
+            </table>
           </td>
         </tr>
         <tr>
-          <td>
-          <?php echo sprintf(PREORDER_SUCCESS_TEXT, '<a href="'.tep_href_link('email_trouble.php').'">'.PREORDER_SUCCESS_TEXT_LINK.'</a>');?> 
-          </td>
-        </tr>
-        <tr>
-          <td><br>
-                <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
-                  <tr> 
-                    <td class="main" align="right"><?php echo '<a href="' .tep_href_link(FILENAME_DEFAULT). '">' .  tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></td> 
-                    <td align="right" class="main">
-                    </td> 
-                  </tr> 
-                </table></td> 
-        </tr>
+              <td align="center"><img src="images/design/mail_bottom.gif" alt=""></td>
+            </tr>
+          <tr>
+            <td>
+            <?php echo PREORDER_ACTIVE_INFO_EMAIL_READ;?> 
+            </td>
+          </tr>
       </table>
       </form> 
       </div>

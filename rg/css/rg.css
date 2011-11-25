@@ -1729,7 +1729,6 @@ border:2px solid #FF8080;
 .best_goods{ width:170px; margin:0 auto;}
 .best_goods_info { text-align:center; font-size:12px; padding:5px 0; border:1px solid #ccc;}
 .reorder{margin-top:8px; overflow:hidden;}
-.active_email input {width:365px;}
 .payment_comment{ 
  word-wrap:break-word;
  word-break:break-all;
@@ -1758,4 +1757,10 @@ border:2px solid #FF8080;
     padding: 4px;
 }
 .formArea_td_info { width:360px\9; line-height:1.5; font-size:11px;}
-.active_email_name { font-size:11px;}
+.information_color {
+    background-color: #FDEBAC;
+    color: #000000;
+    margin: 5px;
+    padding: 5px;
+    width: 100%;
+}
