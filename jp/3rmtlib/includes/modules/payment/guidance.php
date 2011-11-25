@@ -69,7 +69,7 @@ class guidance {
       }
     }
     if ( !$f_find ) {
-      $this->s_error = MODULE_PAYMENT_GUIDANCE_TEXT_OVERFLOW_ERROR;
+      $this->s_error = '';
     }
 
     return $f_find;
@@ -98,7 +98,7 @@ class guidance {
     $selection = array('id' => $this->code,
                        'module' => $this->title, 
                        'fields' => array(array('title' => MODULE_PAYMENT_GUIDANCE_TEXT_PROCESS, 'field' => ''),
-                                         array('title' => $s_message, 'field' => $added_hidden) 
+                                         array('title' => '', 'field' => $added_hidden) 
                       ));
     return $selection;
   }
