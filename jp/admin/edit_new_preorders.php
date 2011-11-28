@@ -13,7 +13,116 @@
 
   require(DIR_WS_CLASSES . 'currencies.php');
   $currencies = new currencies(2);
+  
+  if ($_GET['dtype'] == '1') {
+    $ds_single = false; 
+    if (!isset($_SESSION['create_preorder']['orders_total']['ot_subtotal']['value'])) {
+      include(DIR_WS_LANGUAGES . $language . '/modules/order_total/ot_subtotal.php');  
+      include(DIR_FS_CATALOG_MODULES.'order_total/ot_subtotal.php'); 
+      
+      $ot_info_class = new ot_subtotal;
+      $subtotal_info_array = array('orders_id' => $_SESSION['create_preorder']['orders']['orders_id'],
+                        'title' => $ot_info_class->title, 
+                        'text' => '', 
+                        'value' => '0', 
+                        'class' => $ot_info_class->code, 
+                        'sort_order' => $ot_info_class->sort_order 
+          ); 
+      $_SESSION['create_preorder']['orders_total']['ot_subtotal'] = $subtotal_info_array; 
+      $ds_single = true; 
+    }
+    
+    if (!isset($_SESSION['create_preorder']['orders_total']['ot_total']['value'])) {
+      include(DIR_WS_LANGUAGES . $language . '/modules/order_total/ot_total.php');  
+      include(DIR_FS_CATALOG_MODULES.'order_total/ot_total.php'); 
+      
+      $ot_info_class = new ot_total;
+      $total_info_array = array('orders_id' => $_SESSION['create_preorder']['orders']['orders_id'],
+                        'title' => $ot_info_class->title, 
+                        'text' => '', 
+                        'value' => '0', 
+                        'class' => $ot_info_class->code, 
+                        'sort_order' => $ot_info_class->sort_order 
+          ); 
+      $_SESSION['create_preorder']['orders_total']['ot_total'] = $total_info_array; 
+      $ds_single = true; 
+    } 
+    if ($ds_single) { 
+      $Again_RunningSubTotal = 0;
+      $Again_RunningTax = 0;
 
+      foreach ($_SESSION['create_preorder']['orders_products'] as $ag_pid => $ag_order_products) {
+        if (DISPLAY_PRICE_WITH_TAX == 'true') {
+          $Again_RunningSubTotal += (tep_add_tax(($ag_order_products['products_quantity'] * $ag_order_products['final_price']), $ag_order_products['products_tax']));
+        } else {
+          $Again_RunningSubTotal += ($ag_order_products['products_quantity'] * $ag_order_products['final_price']);
+        }
+        $Again_RunningTax += (($ag_order_products['products_tax'] / 100) * ($ag_order_products['products_quantity'] * $ag_order_products['final_price']));     
+      }
+      
+      $ag_new_subtotal = $Again_RunningSubTotal;
+      $ag_new_tax = $Again_RunningTax;
+      
+      //subtotal
+      
+      $_SESSION['create_preorder']['orders_total']['ot_subtotal']['value'] = tep_insert_currency_value($ag_new_subtotal);
+      $_SESSION['create_preorder']['orders_total']['ot_subtotal']['text']  = tep_insert_currency_text($currencies->format($ag_new_subtotal, true, $_SESSION['create_preorder']['orders']['currency']));
+      
+      //tax
+      $ag_plustax_query = tep_db_query("select count(*) as cnt from " .  TABLE_PREORDERS_TOTAL . " where class = 'ot_tax' and orders_id = '".$_GET['oID']."'");
+      $ag_plustax = tep_db_fetch_array($ag_plustax_query);
+      if($ag_plustax['cnt'] > 0) {
+        $_SESSION['create_preorder']['orders_total']['ot_tax']['value'] = tep_insert_currency_value($ag_new_tax);
+        $_SESSION['create_preorder']['orders_total']['ot_tax']['text']  = tep_insert_currency_text($currencies->format($ag_new_tax, true, $_SESSION['create_preorder']['orders']['currency']));
+      }
+      
+      //total
+      $ag_total_value = 0;
+      foreach ($_SESSION['create_preorder']['orders_total'] as $ag_code => $ag_orders_total) {
+        if ($ag_code != 'ot_total') {
+          $ag_total_value += $ag_orders_total['value'];
+        }
+      }
+
+      if($plustax['cnt'] == 0) {
+        $ag_newtotal = $ag_total_value + $ag_new_tax;
+      } else {
+        if(DISPLAY_PRICE_WITH_TAX == 'true') {
+          $ag_newtotal = $ag_total_value - $ag_new_tax;
+        } else {
+          $ag_newtotal = $ag_total_value;
+        }
+      }
+      
+      $ag_handle_fee = calc_handle_fee($_SESSION['create_preorder']['orders']['payment_method'], $ag_newtotal);
+      $ag_newtotal = $ag_newtotal+$ag_handle_fee;    
+      
+      if (isset($_SESSION['create_preorder']['orders_total']['ot_point']['value'])) {
+        $ag_newtotal = $ag_newtotal - (int)$_SESSION['create_preorder']['orders_total']['ot_point']['value']; 
+      } 
+      //tep_db_query($totals);
+      $_SESSION['create_preorder']['orders_total']['ot_total']['value'] = intval(floor($ag_newtotal));
+      $_SESSION['create_preorder']['orders_total']['ot_total']['text']  = $currencies->ot_total_format(intval(floor($ag_newtotal)), true, $_SESSION['create_preorder']['orders']['currency']);
+      
+      $_SESSION['create_preorder']['orders']['code_fee'] = $ag_handle_fee;
+    
+    } 
+    if (!isset($_SESSION['create_preorder']['orders_total']['ot_point']['value'])) {
+      include(DIR_WS_LANGUAGES . $language . '/modules/order_total/ot_point.php');  
+      include(DIR_FS_CATALOG_MODULES.'order_total/ot_point.php'); 
+      
+      $ot_info_class = new ot_point;
+      $point_info_array = array('orders_id' => $_SESSION['create_preorder']['orders']['orders_id'],
+                        'title' => $ot_info_class->title, 
+                        'text' => '', 
+                        'value' => '0', 
+                        'class' => $ot_info_class->code, 
+                        'sort_order' => $ot_info_class->sort_order 
+          ); 
+      $_SESSION['create_preorder']['orders_total']['ot_point'] = $point_info_array; 
+    }
+  }
+  
   include(DIR_WS_CLASSES . 'preorder.php');
 
 // START CONFIGURATION ################################
@@ -77,7 +186,7 @@
       from " . TABLE_CUSTOMERS . " 
       where customers_id = '" . $order['customers_id'] . "'");
   $customer_guest = tep_db_fetch_array($customer_guest_query);
-
+  
   if (tep_not_null($action)) {
     switch ($action) {
       case 'check_session':
