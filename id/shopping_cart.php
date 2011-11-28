@@ -85,7 +85,11 @@ function set_sub_total()
   sub_total = Math.round(sub_total);
   var sub_total_text = document.getElementById("sub_total");
   var monetary_sub_total = sub_total_text.innerHTML.slice(-1);
-  sub_total_text.innerHTML = Math.abs(sub_total).toString() + monetary_sub_total;
+  if (sub_total > 0) {
+    sub_total_text.innerHTML = Math.abs(sub_total).toString() + monetary_sub_total;
+  } else {
+    sub_total_text.innerHTML = '<font color="#ff0000">' + Math.abs(sub_total).toString() + '</font>' + monetary_sub_total;
+  }
 
 }
   

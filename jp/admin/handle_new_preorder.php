@@ -58,7 +58,8 @@
     
     $predate_arr = explode(' ', $preorder['predate']);
     $sql_data_array['predate'] = $predate_arr[0];
-    
+    $sql_data_array['code_fee'] = $preorder['code_fee']; 
+   
     $customer_raw = tep_db_query("select customers_fax from ".TABLE_CUSTOMERS." where customers_id = '".$preorder['customers_id']."'");
     
     $customer_res = tep_db_fetch_array($customer_raw);
