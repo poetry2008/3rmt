@@ -81,14 +81,14 @@ H4 {
 	float:right;
 	margin-left:4px;
 }
-table.comment {
+/*table.comment {
 	width:auto;
 	margin: 0px;
 	padding: 5px 15px 0px 15px;
 	overflow: hidden;
 	background: url(../images/design/contents/headding_content.gif) repeat-y;
 }
-.comment_long{
+*/.comment_long{
 	width: 682px;
 	*width: 714px;
 	margin: 0px;
