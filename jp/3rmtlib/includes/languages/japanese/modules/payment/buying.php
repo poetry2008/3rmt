@@ -34,8 +34,9 @@ define('TEXT_BANK_NAME', '金融機関名:');
 define('TEXT_BANK_SHITEN', '支店名:');
 define('TEXT_BANK_KAMOKU', '口座種別:');
 define('TEXT_BANK_KOUZA_NUM', '口座番号:');
-define('TEXT_BANK_KOUZA_NAME', '口座名義（カタカナで入力してください）:');
+define('TEXT_BANK_KOUZA_NAME', '口座名義:');
 
 define('TEXT_BANK_SELECT_KAMOKU_F', '普通');
 define('TEXT_BANK_SELECT_KAMOKU_T', '当座');
+define('TEXT_BANK_KOUZA_NAME_READ', '<font color="#ff0000">カタカナ</font>で入力してください');
 ?>

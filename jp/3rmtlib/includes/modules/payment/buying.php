@@ -206,7 +206,7 @@ class buying {
 					 '</div>'.
 					 '<div class="con_email01">'.
 					 tep_draw_input_field('bank_kouza_name', $_SESSION['bank_kouza_name']).
-					 '</div></div>', 
+					 '</div>&nbsp;&nbsp;'.TEXT_BANK_KOUZA_NAME_READ.'</div>', 
 					 'field' => '',
 					 ) ,
 				   array(
