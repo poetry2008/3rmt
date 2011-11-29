@@ -98,7 +98,7 @@
         <?php
           echo tep_draw_form('form', tep_href_link('non-member_auth.php', 'action=send'.(isset($_GET['cu'])?'&cu='.$_GET['cu']:''), 'SSL')); 
         ?>
-          <table border="0" width="100%" cellspacing="0" cellpadding="0" class="captcha_comment"> 
+          <table border="0" width="100%" cellspacing="0" cellpadding="0" class="msg"> 
             <?php
             if ($_GET['cu'] == 1) {
             ?>
@@ -112,7 +112,7 @@
             ?>
             <tr>
               <td>
-              <table class="captcha_comment">
+              <table class="msg">
                 <tr>
                 <td colspan="3"><img src="images/design/mail_top.gif" alt=""></td>
               </tr>
