@@ -104,10 +104,10 @@
          }
          ?>
          <?php echo tep_draw_form('form', tep_href_link('member_auth.php', 'action=send', 'SSL'));?> 
-          <table border="0" width="100%" cellspacing="0" cellpadding="0" class="preorder_success_box"> 
+          <table border="0" width="100%" cellspacing="0" cellpadding="0" class="msg"> 
             <tr>
               <td>
-              <table class="preorder_success_box">
+              <table class="msg">
                 <tr>
                   <td colspan="3"><img src="images/design/mail_top.gif" alt=""></td>
                 </tr>

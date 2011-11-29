@@ -404,7 +404,7 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
       <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
         <tr>  
           <td class="main" width="120"><?php echo FORM_FIELD_CUSTOMER_LASTNAME; ?></td>
-          <td class="formArea_td_info"><?php echo $last_name_prompt; ?></td>
+          <td class="main"><?php echo $last_name_prompt; ?></td>
         </tr>
         <tr>  
           <td class="main"><?php echo FORM_FIELD_CUSTOMER_FIRSTNAME; ?></td>

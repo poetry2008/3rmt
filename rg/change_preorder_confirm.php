@@ -181,15 +181,15 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
               </td>
             </tr>
             <tr>
-              <td align="left" width="20%" class="preorderBarFrom"><?php echo '<a href="javascript:void(0);" onclick="document.forms.order1.submit();">'.PREORDER_TRADER_LINE_TITLE.'</a>';?></td> 
-              <td align="center" width="60%" class="preorderBarcurrent"><?php echo PREORDER_CONFIRM_LINE_TITLE;?></td> 
-              <td align="right" width="20%" class="preorderBarTo"><?php echo PREORDER_FINISH_LINE_TITLE;?></td> 
+              <td align="left" width="20%" class="checkoutBarFrom"><?php echo '<a href="javascript:void(0);" onclick="document.forms.order1.submit();">'.PREORDER_TRADER_LINE_TITLE.'</a>';?></td> 
+              <td align="center" width="60%" class="checkoutBarcurrent"><?php echo PREORDER_CONFIRM_LINE_TITLE;?></td> 
+              <td align="right" width="20%" class="checkoutBarTo"><?php echo PREORDER_FINISH_LINE_TITLE;?></td> 
             </tr>
           </table>
           <?php
           echo tep_draw_form('order', $form_action_url, 'post'); 
           ?>
-          <table width="100%" cellpadding="0" cellspacing="0" border="0" class="c_pay_info">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0" class="rg_pay_info">
             <tr>
               <td class="main">
               <?php echo CHANGE_PREORDER_CONFIRM_BUTTON_INFO;?> 
@@ -402,7 +402,7 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
             </tr>
           </table>
           <br> 
-          <table width="100%" cellpadding="0" cellspacing="0" border="0" class="c_pay_info">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0" class="rg_pay_info">
             <tr>
               <td class="main">
               <?php echo CHANGE_PREORDER_CONFIRM_BUTTON_INFO;?> 
