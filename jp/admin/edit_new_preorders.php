@@ -255,7 +255,7 @@
     }
   
     // 1.5.2.2 Update ot_subtotal, ot_tax, and ot_total classes
-    if (trim($ot_title) && trim($ot_value) || $ot_class == "ot_point") {
+    if (trim($ot_title) || $ot_class == "ot_point") {
   
       $sort_order++;
       if ($ot_class == "ot_subtotal") {
