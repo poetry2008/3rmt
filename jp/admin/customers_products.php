@@ -720,7 +720,7 @@ function clear_all(ele,cid) {
                 <tr>
                   <td colspan="3" align="left"></td>
                   <td colspan="4" align="right">
-                  <?php echo tep_html_element_submit('請求書作成');?> 
+                  <?php echo tep_html_element_submit(APPLICATION_CREATE_TEXT);?> 
                   <a href="<?php echo tep_href_link(FILENAME_CUSTOMERS, str_replace('cpage', 'page', tep_get_all_get_params(array('page'))));?>"><?php echo tep_html_element_button(IMAGE_BACK);?></a> 
                   </td>
                 </tr>
