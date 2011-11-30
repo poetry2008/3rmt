@@ -2290,7 +2290,7 @@ function tep_site_filter($filename, $ca_single = false){
                       if ($ca_single) {
                         echo tep_href_link($filename, tep_get_all_get_params(array('site_id')) . 'site_id=' . $site['id']);
                       } else {
-                        echo tep_href_link($filename, tep_get_all_get_params(array('site_id', 'page', 'oID', 'rID', 'cID', 'pID')) . 'site_id=' . $site['id']);
+                        echo tep_href_link($filename, tep_get_all_get_params(array('site_id', 'page', 'oID', 'rID', 'cID', 'pID', 'latest_news_id')) . 'site_id=' . $site['id']);
                       }
                     ?>"><?php echo $site['romaji'];?></a></span>
                       <?php }
