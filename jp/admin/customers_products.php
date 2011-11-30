@@ -637,8 +637,15 @@ function clear_all(ele,cid) {
                   $i = 1; 
                   $product_list_total = tep_db_num_rows($product_list_query); 
                   while ($product_list_res = tep_db_fetch_array($product_list_query)) {
+                    $even = 'dataTableSecondRow';
+                    $odd  = 'dataTableRow';
+                    if (isset($nowColor) && $nowColor == $odd) {
+                      $nowColor = $even; 
+                    } else {
+                      $nowColor = $odd; 
+                    }
                   ?>
-                  <tr class="dataTableRow">
+                  <tr class="<?php echo $nowColor;?>">
                     <?php
                     if ($product_list_total == $i) {
                       $style_str = 'border-bottom: 1px solid #000;padding-top:5px;'; 

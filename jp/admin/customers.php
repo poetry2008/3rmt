@@ -599,10 +599,17 @@ function check_form() {
       $type = TABLE_HEADING_MEMBER_TYPE_MEMBER;
     }
 
+    $even = 'dataTableSecondRow';
+    $odd  = 'dataTableRow';
+    if (isset($nowColor) && $nowColor == $odd) {
+      $nowColor = $even; 
+    } else {
+      $nowColor = $odd; 
+    }
       if ( (isset($cInfo) && is_object($cInfo)) && ($customers['customers_id'] == $cInfo->customers_id) ) {
         echo '          <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cInfo->customers_id . '&action=edit') . '\'">' . "\n";
       } else {
-        echo '          <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID')) . 'cID=' . $customers['customers_id']) . '\'">' . "\n";
+        echo '          <tr class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID')) . 'cID=' . $customers['customers_id']) . '\'">' . "\n";
     }
 ?>
                 <td class="dataTableContent"><?php echo tep_get_site_romaji_by_id($customers['site_id']); ?></td>

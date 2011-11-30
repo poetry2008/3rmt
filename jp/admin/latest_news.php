@@ -284,10 +284,17 @@
       if ( ((!isset($_GET['latest_news_id']) || !$_GET['latest_news_id']) || ($_GET['latest_news_id'] == $latest_news['news_id'])) && (!isset($selected_item) || !$selected_item) && (!isset($_GET['action']) || substr($_GET['action'], 0, 4) != 'new_') ) {
         $selected_item = $latest_news;
       }
+      $even = 'dataTableSecondRow';
+      $odd  = 'dataTableRow';
+      if (isset($nowColor) && $nowColor == $odd) {
+        $nowColor = $even; 
+      } else {
+        $nowColor = $odd; 
+      }
       if ( (isset($selected_item) && is_array($selected_item)) && ($latest_news['news_id'] == $selected_item['news_id']) ) {
         echo '              <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_LATEST_NEWS, 'page='.$_GET['page'].'&latest_news_id=' . $latest_news['news_id'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '\'">' . "\n";
       } else {
-        echo '              <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_LATEST_NEWS, 'page='.$_GET['page'].'&latest_news_id=' . $latest_news['news_id'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '\'">' . "\n";
+        echo '              <tr class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_LATEST_NEWS, 'page='.$_GET['page'].'&latest_news_id=' . $latest_news['news_id'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '\'">' . "\n";
       }
 ?>
                 <td class="dataTableContent"><?php echo '&nbsp;'.tep_get_site_romaji_by_id($latest_news['site_id']); ?></td>

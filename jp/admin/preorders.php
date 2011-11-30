@@ -2414,12 +2414,19 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
     #}
     $next_mark = '';
   }
+  $even = 'dataTableSecondRow';
+  $odd  = 'dataTableRow';
+  if (isset($nowColor) && $nowColor == $odd) {
+    $nowColor = $even; 
+  } else {
+    $nowColor = $odd; 
+  }
   if ( (isset($oInfo) && is_object($oInfo)) && ($orders['orders_id'] == $oInfo->orders_id) ) {
     //echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRowSelected" onmouseover="showOrdersInfo(\''.tep_get_orders_products_string($orders).'\',this);this.style.cursor=\'hand\'" onmouseout="hideOrdersInfo()" ondblclick="window.location.href=\''.tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']).'\'">' . "\n";
     echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'">' . "\n";
   } else {
     //echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRow" onmouseover="showOrdersInfo(\''.tep_get_orders_products_string($orders).'\',this);this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="hideOrdersInfo();this.className=\'dataTableRow\'" ondblclick="window.location.href=\''.tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']).'\'">' . "\n";
-    echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'">' . "\n";
+    echo '    <tr id="tr_' . $orders['orders_id'] . '" class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'">' . "\n";
   }
 ?>
   <?php 
@@ -2465,13 +2472,16 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
             }
           ?>
           <a href="<?php echo tep_href_link('orders.php', 'cEmail=' .  tep_output_string_protected($orders['customers_email_address']));?>"><?php echo tep_image(DIR_WS_ICONS . 'search.gif', TEXT_ORDER_HISTORY_ORDER);?></a>
-<?php if ($ocertify->npermission) {?>
-          &nbsp;<a href="<?php echo tep_href_link('customers.php', 'page=1&cID=' .
-            tep_output_string_protected($orders['customers_id']) .
-            '&action=edit');?>"><?php echo tep_image(DIR_WS_ICONS .
-            'arrow_r_red.gif', TEXT_ORDER_CUSTOMER_INFO);?></a>&nbsp;&nbsp;
-<?php }?> 
-  <?php 
+          
+           
+          <?php 
+  if ($orders['is_active'] == '0') {
+  ?>
+          <a style="text-decoration:underline;" href="javascript:void(0);">
+  <?php } else { ?>
+          <a style="text-decoration:underline;" href="<?php echo tep_href_link('customers.php', 'page=1&cID=' .  tep_output_string_protected($orders['customers_id']) .  '&action=edit');?>">
+  <?php }?>
+          <?php 
   if ($orders['is_active'] == '0') {
   ?>
   <span style="color:#999999;"> 
@@ -2485,8 +2495,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
   <?php } ?>
   <?php } ?>
           <b><?php echo tep_output_string_protected($orders['customers_name']);?></b>
-          <input type="hidden" id="cid_<?php echo $orders['orders_id'];?>" name="cid[]" value="<?php echo $orders['customers_id'];?>" />
-  <?php
+          <?php
   if ($orders['is_active'] == '0') {
   ?>
   </span>  
@@ -2497,6 +2506,9 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
   <?php
   }
   ?>
+          </a>
+          <input type="hidden" id="cid_<?php echo $orders['orders_id'];?>" name="cid[]" value="<?php echo $orders['customers_id'];?>" />
+  
   <?php if (tep_is_oroshi($orders['customers_id'])) { ?>
   <?php echo tep_image(DIR_WS_ICONS . 'oroshi.gif', TEXT_ORDER_OROSHI);?>
   <?php }?>

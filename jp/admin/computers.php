@@ -103,11 +103,18 @@ if (isset($_GET['action']) and $_GET['action']) {
       if (( (!@$_GET['cID']) || (@$_GET['cID'] == $computers['computers_id'])) && (!@$cInfo) && (substr(@$_GET['action'], 0, 3) != 'new')) {
       $cInfo = new objectInfo($computers);
     }
+    $even = 'dataTableSecondRow';
+    $odd  = 'dataTableRow';
+    if (isset($nowColor) && $nowColor == $odd) {
+      $nowColor = $even; 
+    } else {
+      $nowColor = $odd; 
+    }
 
     if (isset($cInfo) && (is_object($cInfo)) && ($computers['computers_id'] == $cInfo->computers_id) ) {
       echo '              <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_COMPUTERS, 'page=' . $_GET['page'] . '&cID=' . $cInfo->computers_id . '&action=edit') . '\'">' . "\n";
     } else {
-      echo '              <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_COMPUTERS, 'page=' . $_GET['page'] . '&cID=' . $computers['computers_id']) . '\'">' . "\n";
+      echo '              <tr class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_COMPUTERS, 'page=' . $_GET['page'] . '&cID=' . $computers['computers_id']) . '\'">' . "\n";
     }
 ?>
                 <td class="dataTableContent"><?php echo $computers['computers_name']; ?></td>

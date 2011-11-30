@@ -77,8 +77,15 @@
     if (strlen($rows) < 2) {
       $rows = '0' . $rows;
     }
+    $even = 'dataTableSecondRow';
+    $odd  = 'dataTableRow';
+    if (isset($nowColor) && $nowColor == $odd) {
+      $nowColor = $even; 
+    } else {
+      $nowColor = $odd; 
+    }
 ?>
-              <tr class="dataTableRow" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='dataTableRow'" onclick="document.location.href='<?php echo tep_href_link(FILENAME_CATEGORIES, 'action=new_product_preview&read=only&pID=' . $products['products_id'] . '&origin=' . FILENAME_STATS_PRODUCTS_VIEWED . '?page=' . $_GET['page'], 'NONSSL'); ?>'">
+              <tr class="<?php echo $nowColor;?>" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='<?php echo $nowColor;?>'" onclick="document.location.href='<?php echo tep_href_link(FILENAME_CATEGORIES, 'action=new_product_preview&read=only&pID=' . $products['products_id'] . '&origin=' . FILENAME_STATS_PRODUCTS_VIEWED . '?page=' . $_GET['page'], 'NONSSL'); ?>'">
                 <td class="dataTableContent"><?php echo $rows; ?>.</td>
                 <td class="dataTableContent"><?php echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'action=new_product_preview&read=only&pID=' . $products['products_id'] . '&origin=' . FILENAME_STATS_PRODUCTS_VIEWED . '?page=' . $_GET['page'], 'NONSSL') . '">' . $products['products_name'] . '</a> (' . $products['name'] . ')'; ?></td>
                 <td class="dataTableContent" align="center"><?php echo $products['products_viewed']; ?>&nbsp;</td>

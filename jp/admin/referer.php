@@ -198,8 +198,15 @@
     $i = 1;
     while ($ref_site = tep_db_fetch_array($ref_site_query)) {
       //$ad_cnt = tep_db_fetch_array(tep_db_query("select count(orders_id) as cnt from orders where orders_adurl='".$ref_site['orders_ref_site']."'"));
+      $even = 'dataTableSecondRow';
+      $odd  = 'dataTableRow';
+      if (isset($nowColor) && $nowColor == $odd) {
+        $nowColor = $even; 
+      } else {
+        $nowColor = $odd; 
+      }
   ?>
-                <tr class="dataTableRow" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='dataTableRow'">
+                <tr class="<?php echo $nowColor;?>" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='<?php echo $nowColor;?>'">
                   <td class="dataTableContent"><?php echo $ref_site['orders_ref_site2'];?></td>
                   <td class="dataTableContent"><?php echo $ref_site['cnt'];?><?php //echo $ad_cnt['cnt']?'('.$ad_cnt['cnt'].')':'';?></td>
                   <td class="dataTableContent"><?php echo $i;?></td>

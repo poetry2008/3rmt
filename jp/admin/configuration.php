@@ -196,10 +196,17 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
   $cInfo = new objectInfo($cInfo_array);
     }
 
+    $even = 'dataTableSecondRow';
+    $odd  = 'dataTableRow';
+    if (isset($nowColor) && $nowColor == $odd) {
+      $nowColor = $even; 
+    } else {
+      $nowColor = $odd; 
+    }
     if ( (isset($cInfo) && is_object($cInfo)) && ($configuration['configuration_id'] == $cInfo->configuration_id) ) {
   echo '                  <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' . $cInfo->configuration_id . '&action=edit') . '\'">' . "\n";
     } else {
-  echo '                  <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' . $configuration['configuration_id']) . '\'">' . "\n";
+  echo '                  <tr class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' . $configuration['configuration_id']) . '\'">' . "\n";
     }
 ?>
     <td class="dataTableContent"><?php echo $configuration['configuration_title']; ?></td>

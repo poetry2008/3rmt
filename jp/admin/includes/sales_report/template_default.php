@@ -259,8 +259,16 @@ $products_point_sum = 0;
 while ($sr->hasNext()) {
   $info = $sr->next();
   $last = sizeof($info) - 1;
+  
+  $even = 'dataTableSecondRow';
+  $odd  = 'dataTableRow';
+  if (isset($nowColor) && $nowColor == $odd) {
+    $nowColor = $even; 
+  } else {
+    $nowColor = $odd; 
+  }
 ?>
-              <tr class="dataTableRow" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='dataTableRow'">
+              <tr class="<?php echo $nowColor;?>" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='<?php echo $nowColor;?>'">
                 <?php
     switch ($srView) {
       case '3':

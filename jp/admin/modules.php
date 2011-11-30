@@ -342,6 +342,13 @@ foreach ($directory_array_sorted as $i => $files) {
         $mInfo = new objectInfo($module_info);
       }
 
+      $even = 'dataTableSecondRow';
+      $odd  = 'dataTableRow';
+      if (isset($nowColor) && $nowColor == $odd) {
+        $nowColor = $even; 
+      } else {
+        $nowColor = $odd; 
+      }
       if (isset($mInfo)&& (is_object($mInfo)) && ($class == $mInfo->code) ) {
         if ($module->check() > 0) {
           echo '              <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" ondblclick="document.location.href=\'' . tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $class . '&action=edit') . '\'">' . "\n";
@@ -349,7 +356,7 @@ foreach ($directory_array_sorted as $i => $files) {
           echo '              <tr class="dataTableRowSelected">' . "\n";
         }
       } else {
-        echo '              <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" ondblclick="document.location.href=\'' . tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $class) . '\'">' . "\n";
+        echo '              <tr class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'" ondblclick="document.location.href=\'' . tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $class) . '\'">' . "\n";
       }
       ?>
       <td class="dataTableContent"><?php if (isset($module->link) && $module->link) {?><a target='_blank' href="<?php echo $ex_site['url'].'/'.$module->link;?>"><?php echo tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW);?></a><?php } ?>
