@@ -2510,7 +2510,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
   <font color="#000">
   <?php } ?>
   <?php } ?>
-          <b><?php echo tep_output_string_protected($orders['customers_name']);?></b>
+          <?php echo tep_output_string_protected($orders['customers_name']);?>
           <?php
   if ($orders['is_active'] == '0') {
   ?>
