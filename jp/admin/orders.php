@@ -3027,7 +3027,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
   <?php } else { ?>
   <font color="#000">
   <?php } ?>
-          <a style="text-decoration:underline;" href="<?php echo tep_href_link('customers.php', 'page=1&cID=' .  tep_output_string_protected($orders['customers_id']) .  '&action=edit');?>"><?php echo tep_output_string_protected($orders['customers_name']);?></a>
+          <a style="text-decoration:underline;" href="<?php echo tep_href_link('customers.php', 'page=1&cID=' .  tep_output_string_protected($orders['customers_id']) .  '&action=edit');?>"><b><?php echo tep_output_string_protected($orders['customers_name']);?></b></a>
           <input type="hidden" id="cid_<?php echo $orders['orders_id'];?>" name="cid[]" value="<?php echo $orders['customers_id'];?>" />
   </font>
   <?php if (tep_is_oroshi($orders['customers_id'])) { ?>
