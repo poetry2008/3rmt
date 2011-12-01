@@ -442,19 +442,28 @@ if(isset($_GET['his_url'])&&$_GET['his_url']){
     $one_time_arr[] = $one_time_row['check_value'];
     $one_time_flag = true; 
   }
+  
   if(count($one_time_arr)==1&&$one_time_arr[0]=='admin'&&$_SESSION['user_permission']!=15){
-    forward401();
+    if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
+      forward401();
+    }
   }
   if (!$one_time_flag && $_SESSION['user_permission']!=15) {
-    forward401();
+    if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
+      forward401();
+    }
   }
   if(!in_array('onetime',$one_time_arr)&&$_SESSION['user_permission']!=15){
     if(!(in_array('chief',$one_time_arr)&&in_array('staff',$one_time_arr))){
     if($_SESSION['user_permission']==7&&in_array('chief',$one_time_arr)){
-      forward401();
+      if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
+        forward401();
+      }
     }
     if($_SESSION['user_permission']==10&&in_array('staff',$one_time_arr)){
-      forward401();
+      if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
+        forward401();
+      }
     }
     }
   }
