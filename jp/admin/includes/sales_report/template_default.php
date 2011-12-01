@@ -338,9 +338,9 @@ if (isset($srDetail)){
 ?>
 <tr>
 <td class="dataTableContent" align="right"></td>
-<td class="dataTableContent" align="left"><?php echo
+<td class="dataTableContent" align="right"><?php echo
 SR_ORDERS_SUM.$orders_sum.SR_ONE_ORDERS;?></td>
-<td class="dataTableContent" align="center"><?php echo
+<td class="dataTableContent" align="right"><?php echo
 SR_PRODUCTS_POINT_SUM.$products_point_sum.SR_POINT;?></td>
 <td class="dataTableContent" align="right"><?php echo SR_MONEY_SUM.
 ($t<0?'<font color="red">':'');?><?php echo $currencies->format($t);?><?php echo
