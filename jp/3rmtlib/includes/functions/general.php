@@ -4546,3 +4546,41 @@ function tep_preorder_get_products_id_by_param()
    
    return false;
 }
+function tep_get_torihiki_date_radio($start_time,$radio_name="torihiki_time"){
+  $arr = array();
+  $time_str = date('H:i',$start_time);
+  $time_arr = explode(':',$time_str);
+  $hour = $time_arr[0];
+  $mim_start = $time_arr[1];
+  $show_row = 0;
+  for($hour;$hour<24;$hour++){
+    for($mim_start;$mim_start<60;){
+      if($show_row ==0 ){
+        if($mim_start < 15){
+          $mim_start = 15;
+        }else if($mim_start < 30){
+          $mim_start = 30;
+        }else if($mim_start < 45){
+          $mim_start = 45;
+        }else if($mim_start >= 45){
+          $mim_start = 0;
+          break;
+        }
+      }
+      $s_start = $mim_start;
+      $mim_start+=14;
+      $e_start = $mim_start;
+      $return_str = "<input type='radio' name='".$radio_name."' value='".
+           sprintf('%02d',$hour).":".sprintf('%02d',$s_start)."-".
+           sprintf('%02d',$hour).":".sprintf('%02d',$e_start)."'>&nbsp;&nbsp;";
+      $return_str .= sprintf('%02d',$hour)."時".sprintf('%02d',$s_start)."分";
+      $return_str .= " ～ ";
+      $return_str .= sprintf('%02d',$hour)."時".sprintf('%02d',$e_start)."分";
+      $show_row ++;
+      $mim_start++;
+      $arr[]=$return_str;
+    }
+    $mim_start = 0;
+  }
+  return $arr;
+}
