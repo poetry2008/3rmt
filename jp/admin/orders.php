@@ -2106,66 +2106,82 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
               <?php 
               $customer_email_raw = tep_db_query("select * from ".TABLE_ORDERS." where orders_id = '".$order->info['orders_id']."'"); 
               $customer_email_res = tep_db_fetch_array($customer_email_raw); 
+              $history_list_array = array(); 
+              $preorder_history_query = tep_db_query("
+                  select orders_id, date_purchased 
+                  from ".TABLE_PREORDERS." 
+                  where   customers_email_address = '".$customer_email_res['customers_email_address']."'
+                  order by date_purchased desc
+                  limit 5
+                ");
+              while ($preorder_history_res = tep_db_fetch_array($preorder_history_query)) {
+                $history_list_array['p_'.$preorder_history_res['orders_id']] = strtotime($preorder_history_res['date_purchased']); 
+              }
+              
               $order_history_query = tep_db_query("
-                  select * 
+                  select orders_id, date_purchased 
                   from ".TABLE_ORDERS." 
                   where   customers_email_address = '".$customer_email_res['customers_email_address']."'
                   order by date_purchased desc
                   limit 5
                 ");
-                 $total_order_history = tep_db_num_rows($order_history_query); 
-                 if ($total_order_history > 0) {
-                  ?>
+              
+              while ($order_history_res = tep_db_fetch_array($order_history_query)) {
+                $history_list_array['o_'.$order_history_res['orders_id']] = strtotime($order_history_res['date_purchased']); 
+              }   
+                 if (!empty($history_list_array)) {
+                   arsort($history_list_array); 
+                   ?>
                   <table width="100%" border="0" cellspacing="0" cellpadding="2">
                   <?php
-                  $total_order_id_arr = array(); 
-                  while($order_history = tep_db_fetch_array($order_history_query)){
-                    $total_order_id_arr[] = $order_history['orders_id']; 
+                  $history_list_num = 0; 
+                  foreach ($history_list_array as $h_key => $h_value) { 
+                    if ($history_list_num > 4) {
+                      break; 
+                    }
+                    $from_site_single = 0;
+                    $history_table = TABLE_ORDERS; 
+                    $from_site_char = substr($h_key, 0, 1);
+                    $h_order_id = substr($h_key, 2);
+                    if ($from_site_char == 'p') {
+                      $from_site_single = 1;
+                      $history_table = TABLE_PREORDERS; 
+                    }
+                    $order_history_info_raw = tep_db_query("select orders_id, date_purchased, orders_status_name, site_id from ".$history_table." where orders_id = '".$h_order_id."'"); 
+                    $order_history_info = tep_db_fetch_array($order_history_info_raw); 
                   ?>
                     <tr>
                       <td class="main">
                       <?php
-                        $store_name_raw = tep_db_query("select * from ".TABLE_SITES." where id = '".$order_history['site_id']."'");  
+                        $store_name_raw = tep_db_query("select * from ".TABLE_SITES." where id = '".$order_history_info['site_id']."'");  
                         $store_name_res = tep_db_fetch_array($store_name_raw); 
                         echo $store_name_res['romaji']; 
                       ?>
                       </td> 
-                      <td class="main"><?php echo $order_history['date_purchased'];?></td>
-                      <td class="main"><?php echo
-                      strip_tags(tep_get_ot_total_by_orders_id($order_history['orders_id'],true));?></td>
-                      <td class="main"><?php echo $order_history['orders_status_name'];?></td>
-                    </tr>
-                  <?php
-                  }
-                  /* 
-                  if ($total_order_history < 5) {
-                    $diff_num = 5 - $total_order_history; 
-                    $p_order_history_query = tep_db_query("
-                        select * 
-                        from ".TABLE_ORDERS." 
-                        where   customers_email_address =
-                        '".$customer_email_res['customers_email_address']."' and
-                        orders_id not in (".implode(',', $total_order_id_arr).") 
-                        order by date_purchased desc
-                        limit ".$diff_num);
-                    while ($p_order_history = tep_db_fetch_array($p_order_history_query)) {
-                    ?>
-                    <tr>
                       <td class="main">
                       <?php
-                        $p_store_name_raw = tep_db_query("select * from ".TABLE_SITES." where id = '".$p_order_history['site_id']."'");  
-                        $p_store_name_res = tep_db_fetch_array($p_store_name_raw); 
-                        echo $store_name_res['romaji']; 
+                      if (!$from_site_single) {
+                        echo TEXT_ORDER_HISTORY_FROM_ORDER; 
+                      } else {
+                        echo TEXT_ORDER_HISTORY_FROM_PREORDER; 
+                      }
                       ?>
-                      </td> 
-                      <td class="main"><?php echo $p_order_history['date_purchased'];?></td>
-                      <td class="main"><?php echo strip_tags(tep_get_ot_total_by_orders_id($p_order_history['orders_id'],true));?></td>
-                      <td class="main"><?php echo $p_order_history['orders_status_name'];?></td>
+                      </td>
+                      <td class="main"><?php echo $order_history_info['date_purchased'];?></td>
+                      <td class="main">
+                      <?php 
+                        if (!$from_site_single) {
+                          echo strip_tags(tep_get_ot_total_by_orders_id($order_history_info['orders_id'],true));
+                        } else {
+                          echo strip_tags(tep_get_pre_ot_total_by_orders_id($order_history_info['orders_id'],true));
+                        }
+                      ?>
+                      </td>
+                      <td class="main"><?php echo $order_history_info['orders_status_name'];?></td>
                     </tr>
-                    <?php
-                    }
+                  <?php
+                    $history_list_num++; 
                   }
-                  */ 
                   ?>
                   </table>
                   <?php

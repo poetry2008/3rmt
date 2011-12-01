@@ -330,7 +330,11 @@ while($tag = tep_db_fetch_array($tag_query)) {
           echo '<span class="markProductOutOfStock">売り切れ</span>';
         } else {
           # 通常商品
-          echo '<br><span class="markProductOutOfStock">在庫切れ<br><img src="images/design/box/arrow_2.gif" width="5" height="5" hspace="5" border="0" align="absmiddle" alt=""><a href=' .  tep_preorder_href_link($product_info['products_id'], $product_info['romaji']) . '>' . $product_info['products_name'] . 'を予約する</a></span>';
+          echo '<br><span class="markProductOutOfStock">在庫切れ<br>';
+          if ($product_info['preorder_status'] == '1') {
+            echo '<img src="images/design/box/arrow_2.gif" width="5" height="5" hspace="5" border="0" align="absmiddle" alt=""><a href=' .  tep_preorder_href_link($product_info['products_id'], $product_info['romaji']) . '>' . $product_info['products_name'] . 'を予約する</a>';
+          }
+          echo '</span>'; 
         }
       }else{    
     // ccdd

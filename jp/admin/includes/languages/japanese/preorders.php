@@ -230,4 +230,6 @@ define('TEXT_FUNCTION_PC','PC：');
 define('TEXT_FUNCTION_PREDATE','有効期限：');
 define('TEXT_FUNCTION_ENSURE_DATE','確保期限：');
 define('TEXT_FUNCTION_ORDER_FROM_INFO', '予約注文書サイト：');
+define('TEXT_ORDER_HISTORY_FROM_ORDER', '注文');
+define('TEXT_ORDER_HISTORY_FROM_PREORDER', '予約');
 ?>

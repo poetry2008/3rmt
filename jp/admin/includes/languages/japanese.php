@@ -48,7 +48,7 @@ define('CHARSET', 'UTF-8');    // Shift_JIS / euc-jp / iso-2022-jp
 define('TITLE', STORE_NAME);  //ショップ名を記述してください。
 
 // header text in includes/header.php
-define('HEADER_TITLE_TOP', '管理メニュー');
+define('HEADER_TITLE_TOP', 'トップ');
 define('HEADER_TITLE_SUPPORT_SITE', 'サポートサイト');
 define('HEADER_TITLE_ONLINE_CATALOG', 'オンラインカタログ');
 define('HEADER_TITLE_ADMINISTRATION', '管理メニュー');

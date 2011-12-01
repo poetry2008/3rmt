@@ -17,7 +17,7 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
 // Set the level of error reporting
   //error_reporting(E_ALL & ~E_NOTICE);
   error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);
-  ini_set("display_errors", "On");
+  ini_set("display_errors", "Off");
 
 // Check if register_globals is enabled.
 // Since this is a temporary measure this message is hardcoded. The requirement will be removed before 2.2 is finalized.
@@ -437,19 +437,33 @@ if(isset($_GET['his_url'])&&$_GET['his_url']){
   $one_time_sql = "select * from ".TABLE_PWD_CHECK." where page_name='".$page_name."'";
   $one_time_query = tep_db_query($one_time_sql);
   $one_time_arr = array();
+  $one_time_flag = false; 
   while($one_time_row = tep_db_fetch_array($one_time_query)){
     $one_time_arr[] = $one_time_row['check_value'];
+    $one_time_flag = true; 
   }
+  
   if(count($one_time_arr)==1&&$one_time_arr[0]=='admin'&&$_SESSION['user_permission']!=15){
-    forward401();
+    if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
+      forward401();
+    }
+  }
+  if (!$one_time_flag && $_SESSION['user_permission']!=15) {
+    if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
+      forward401();
+    }
   }
   if(!in_array('onetime',$one_time_arr)&&$_SESSION['user_permission']!=15){
     if(!(in_array('chief',$one_time_arr)&&in_array('staff',$one_time_arr))){
     if($_SESSION['user_permission']==7&&in_array('chief',$one_time_arr)){
-      forward401();
+      if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
+        forward401();
+      }
     }
     if($_SESSION['user_permission']==10&&in_array('staff',$one_time_arr)){
-      forward401();
+      if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
+        forward401();
+      }
     }
     }
   }

@@ -178,6 +178,7 @@
                     pd.site_id,
                     p.sort_order,
                     pd.romaji,
+                    pd.preorder_status, 
                     p.products_price_offset, p.products_small_sum"; 
   /*
   if(isset($_GET['colors']) && !empty($_GET['colors'])) {

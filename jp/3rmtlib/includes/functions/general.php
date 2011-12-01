@@ -2610,7 +2610,8 @@ function tep_unlink_temp_dir($dir)
                pd.site_id,
                pd.romaji, 
                pd.products_url,
-               pd.products_viewed
+               pd.products_viewed,
+               pd.preorder_status
         FROM " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
         WHERE p.products_id = '" . $pid . "' 
           AND pd.products_id = '" .  $pid . "'" . " 
@@ -2668,7 +2669,8 @@ function tep_unlink_temp_dir($dir)
                pd.romaji, 
                pd.option_image_type, 
                pd.products_url,
-               pd.products_viewed
+               pd.products_viewed,
+               pd.preorder_status
         FROM " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
         WHERE p.products_id = '" . $pid . "' 
           AND pd.products_status != '0' 
