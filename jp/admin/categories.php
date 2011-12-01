@@ -739,7 +739,9 @@
                 'products_description' => $des,
                 'products_status' => tep_db_prepare_input($_POST['products_status']),
                 'option_image_type' => tep_db_prepare_input($_POST['option_image_type']),
-                'products_url'         => tep_db_prepare_input($_POST['products_url'][$language_id]));
+                'products_url'         => tep_db_prepare_input($_POST['products_url'][$language_id]),
+                'preorder_status' => tep_db_prepare_input($_POST['preorder_status']) 
+                );
             if (isset($_GET['action']) && ($_GET['action'] == 'insert_product' || ($_GET['action'] == 'update_product' && !tep_products_description_exist($products_id,$site_id,$language_id)))) {
               $insert_sql_data = array('products_id' => $products_id,
                                        'language_id' => $language_id,
@@ -1291,7 +1293,8 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                  p.products_cart_image,
                  p.products_cart_min,
                  pd.option_image_type, 
-                 p.products_cartorder 
+                 p.products_cartorder,
+                 pd.preorder_status
           from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
           where p.products_id = '" . $_GET['pID'] . "' 
             and p.products_id = pd.products_id 
@@ -1438,6 +1441,10 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
             <td class="main"><?php echo TEXT_PRODUCTS_BUY_AND_SELL; ?></td>
             <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_radio_field('products_bflag', '0', $in_bflag, '', ($site_id?'onclick="return false;"':'')) . '&nbsp;' . TEXT_PRODUCT_USUALLY . '&nbsp;' . tep_draw_radio_field('products_bflag', '1', $out_bflag, '', ($site_id?'onclick="return false;"':'')) . '&nbsp;' . TEXT_PRODUCT_PURCHASE; ?></td>
             <td class="main">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="main"><?php echo TEXT_PRODUCTS_PREORDER_TEXT;?></td>
+            <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15'). '&nbsp;'.tep_draw_radio_field('preorder_status', '1', $pInfo->preorder_status == '1').'&nbsp;On'.tep_draw_radio_field('preorder_status', '0', (isset($pInfo->preorder_status)?($pInfo->preorder_status == '0'):true)).'&nbsp;Off'?></td>
           </tr>
           <tr>
             <td class="main"><?php echo TEXT_PRODUCTS_CHARACTER; ?></td>
@@ -2045,7 +2052,8 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                  p.products_attention_5,
                  p.relate_products_id,
                  pd.products_status, 
-                 p.manufacturers_id  
+                 p.manufacturers_id, 
+                 pd.preorder_status
           from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
           where p.products_id = pd.products_id 
             and p.products_id = '" . $_GET['pID'] . "' 

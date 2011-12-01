@@ -34,7 +34,7 @@
   }
   
   $product_info_query = tep_db_query("
-      select pd.products_id, pd.products_name, pd.products_status, pd.romaji 
+      select pd.products_id, pd.products_name, pd.products_status, pd.romaji, pd.preorder_status 
       from " . TABLE_PRODUCTS_DESCRIPTION . " pd 
       where pd.products_id = '" . $products_id . "' 
         and pd.language_id = '" . $languages_id . "' 
@@ -49,6 +49,10 @@
   }
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_PREORDER);
   $product_info = tep_db_fetch_array($product_info_query);
+  
+  if ($product_info['preorder_status'] != '1') {
+    forward404(); 
+  }
   
   $ca_path = tep_get_product_path($product_info['products_id']);
   if (tep_not_null($ca_path)) {
