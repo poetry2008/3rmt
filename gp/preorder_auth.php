@@ -14,7 +14,7 @@
  
   $exists_customer_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where check_login_str = '".$_GET['pid']."' and site_id = '".SITE_ID."' and is_active = '0'");  
   if (!tep_db_num_rows($exists_customer_raw)) {
-    forward404(); 
+    tep_redirect(tep_href_link('account_timeout.php')); 
   }
   $exists_customer = tep_db_fetch_array($exists_customer_raw);  
  
