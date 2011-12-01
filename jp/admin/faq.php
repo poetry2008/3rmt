@@ -553,7 +553,7 @@ $(document).ready(function(){
                     // row color 
                     $even = 'dataTableSecondRow';
                     $odd = 'dataTableRow';
-                    if(isset($newColor) && $newColor == $odd) {
+                    if(isset($nowColor) && $nowColor == $odd) {
                       $nowColor = $even;
                     }else{
                       $nowColor = $odd;

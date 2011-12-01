@@ -334,7 +334,14 @@ function check_one(ele){
     $orders_query = tep_db_query($orders_query_raw);
 
     while ($orders = tep_db_fetch_array($orders_query)) {
-      echo '    <tr onmouseover="this.style.background=\'#FFCC99\'" onmouseout="this.style.background=\''.(tep_match_by_keywords($orders['telno'],TELNO_KEYWORDS)?'red':($orders['rel'] == 'no'?'#ccc':'#fff')).'\'" style="border-bottom:1px solid #000000;'.(tep_match_by_keywords($orders['telno'],TELNO_KEYWORDS)?'background:red':($orders['rel'] == 'no'?'background:#ccc':'background:#fff')).'" class="dataTableRow" id="tr_'.$orders['id'].'">' . "\n";
+      $even = '#E0E0E0';
+      $odd  = '#F0F1F1';
+      if (isset($nowColor) && $nowColor == $odd) {
+        $nowColor = $even;      
+      } else {
+        $nowColor = $odd;      
+      }
+      echo '    <tr onmouseover="this.style.background=\'#FFCC99\'" onmouseout="this.style.background=\''.(tep_match_by_keywords($orders['telno'],TELNO_KEYWORDS)?'red':($orders['rel'] == 'no'?'#ccc':$nowColor)).'\'" style="border-bottom:1px solid #000000;'.(tep_match_by_keywords($orders['telno'],TELNO_KEYWORDS)?'background:red':($orders['rel'] == 'no'?'background:#ccc':'background:'.$nowColor)).'" class="dataTableRow" id="tr_'.$orders['id'].'">' . "\n";
 ?>
       <td align="left"   style="border-bottom:1px solid #000000;" class="dataTableContent"><input type="checkbox" name="ids[]" class="a_checkbox" onclick="check_one(this)" value="<?php echo $orders['type'] == 'success' ? 'false' : $orders['id'];?>"></td>
       <td align="center"   style="border-bottom:1px solid #000000;" class="dataTableContent"><?php echo $orders['payment_method'] == 'paypal' ? 'ペイパル' : 'テレコム'; ?>&nbsp;</td>

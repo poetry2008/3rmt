@@ -86,8 +86,16 @@
     if (strlen($rows) < 2) {
       $rows = '0' . $rows;
     }
+    
+    $even = 'dataTableSecondRow';
+    $odd  = 'dataTableRow';
+    if (isset($nowColor) && $nowColor == $odd) {
+      $nowColor = $even; 
+    } else {
+      $nowColor = $odd; 
+    }
 ?>
-              <tr class="dataTableRow" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='dataTableRow'" onclick="document.location.href='<?php echo tep_href_link(FILENAME_CUSTOMERS, 'search=' . urlencode($customers['customers_lastname']), 'NONSSL'); ?>'">
+              <tr class="<?php echo $nowColor;?>" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='<?php echo $nowColor;?>'" onclick="document.location.href='<?php echo tep_href_link(FILENAME_CUSTOMERS, 'search=' . urlencode($customers['customers_lastname']), 'NONSSL'); ?>'">
                 <td class="dataTableContent"><?php echo $rows; ?>.</td>
                 <td class="dataTableContent"><?php echo $customers['romaji'];?></td>
                 <td class="dataTableContent"><?php echo '<a href="' . tep_href_link(FILENAME_CUSTOMERS, 'search=' . urlencode($customers['customers_lastname']), 'NONSSL') . '">' . tep_output_string_protected(tep_get_fullname($customers['customers_firstname'], $customers['customers_lastname'])) . '</a>'; ?></td>

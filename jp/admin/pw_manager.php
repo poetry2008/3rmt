@@ -784,6 +784,13 @@ right:5px;*/
           (!@$pwInfo) && (substr(@$_GET['action'], 0, 3) != 'new')) {
       $pwInfo = new objectInfo($pw_manager_row);
       }
+      $even = 'dataTableSecondRow';
+      $odd  = 'dataTableRow';
+      if (isset($nowColor) && $nowColor == $odd) {
+        $nowColor = $even; 
+      } else {
+        $nowColor = $odd; 
+      }
     if (isset($pwInfo) && (is_object($pwInfo)) && ($pw_manager_row['id'] == $pwInfo->id) ) {
       echo '              <tr class="dataTableRowSelected"
         onmouseover="this.style.cursor=\'hand\'" >' . "\n";
@@ -791,9 +798,9 @@ right:5px;*/
         tep_href_link(FILENAME_PW_MANAGER, 'page=' . $_GET['page'] . '&pw_id=' .
             $pwInfo->id . '&action=edit&site_id='.$site_id.'&sort='.$_GET['sort'].'&type='.$_GET['type']) . '\'"';
     } else {
-      echo '              <tr class="dataTableRow"
+      echo '              <tr class="'.$nowColor.'"
         onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'"
-        onmouseout="this.className=\'dataTableRow\'">' . "\n";
+        onmouseout="this.className=\''.$nowColor.'\'">' . "\n";
       $onclick = 'onclick="document.location.href=\'' . tep_href_link(FILENAME_PW_MANAGER,
         'page=' . $_GET['page'] .
           '&site_id='.$site_id.'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&pw_id=' . $pw_manager_row['id']) . '\'"';
