@@ -287,9 +287,9 @@ while ($sr->hasNext()) {
                 <?php
     }
 ?>
-                <td class="dataTableContent" align="left"><?php echo $info[0]['order']; ?></td>
+                <td class="dataTableContent" align="right"><?php echo $info[0]['order']; ?></td>
                 <?php $orders_sum += $info[0]['order'];?>
-                <td class="dataTableContent" align="center"><?php echo isset($info[$last - 1]['totitem'])?$info[$last - 1]['totitem']:''; ?></td>
+                <td class="dataTableContent" align="right"><?php echo isset($info[$last - 1]['totitem'])?$info[$last - 1]['totitem']:''; ?></td>
                 <?php 
                 if(isset($info[$last - 1]['totitem'])){
                   $products_point_sum += $info[$last - 1]['totitem'];
