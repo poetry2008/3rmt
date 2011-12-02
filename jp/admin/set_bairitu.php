@@ -72,11 +72,11 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
 <p><?php echo SET_BAIRITU_CAL;?><select  name="shisoku">
 <?php 
   if($col['shisoku'] == "+"){
-    echo "<option value='+' selected>＋</option>";
-    echo "<option value='-'>−</option>";
+    echo "<option value='+' selected>+</option>";
+    echo "<option value='-'>-</option>";
   }else{
-    echo "<option value='+'>＋</option>";
-    echo "<option value='-' selected >−</option>";
+    echo "<option value='+'>+</option>";
+    echo "<option value='-' selected >-</option>";
   }
  ?>
  </select>
