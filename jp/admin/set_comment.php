@@ -40,7 +40,8 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
           one_time_pwd('<?php echo $page_name;?>');
     </script>
 <?php }?>
-<form method="post" action="set_comment.php?action=save&cID=<?php echo $cID;?>&cPath=<?php echo $cPath;?>"  onsubmit="alert('更新されました。')">
+<form method="post" action="set_comment.php?action=save&cID=<?php echo
+$cID;?>&cPath=<?php echo $cPath;?>"  onsubmit="alert('<?php echo SET_BAIRITU_UPDATE_NOTICE;?>')">
 <p><?php echo SET_COMMENT_USER?></p>
 <p><input type='text' name='author' value="<?php echo $col['author'];?>" /></p>
 <p><?php echo SET_COMMENT_SINGLE?></p>
