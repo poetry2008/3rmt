@@ -49,6 +49,8 @@ switch ($HTTP_GET_VARS['action']){
 <head>
 <meta http-equiv="Content-Type" content="text/html; 
 charset=<?php echo CHARSET; ?>">
+<script language="javascript" src="includes/javascript/jquery_include.js"></script>
+<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
 <title><?php echo SET_BAIRITU_TITLE;?></title>
 </head>
 <?php 
@@ -56,6 +58,12 @@ charset=<?php echo CHARSET; ?>">
   $col=tep_db_fetch_array($res);
 ?>
 <body>
+<?php
+if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
+    <script language='javascript'>
+          one_time_pwd('<?php echo $page_name;?>');
+    </script>
+<?php }?>
 <form method="post" action="set_bairitu.php?action=set_bai"  onsubmit="alert('<?php echo SET_BAIRITU_UPDATE_NOTICE;?>')">
 <p><?php echo SET_BAIRITU_CURSET;?><input type="text" value="<?php echo isset($col['bairitu'])?$col['bairitu']:1.1?>" name="bai" ></p>
 <p><b><?php echo SET_BAIRITU_SINGLE_PRICE;?></b></p>
@@ -96,5 +104,6 @@ if ($best_limit_res) {
 <input type="submit" value="<?php echo IMAGE_CONFIRM;?>">
 </form>
 <?php }?>
+<?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
 </body>
 </html>

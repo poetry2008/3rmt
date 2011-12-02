@@ -24,6 +24,8 @@ switch ($HTTP_GET_VARS['action']){
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=<?php echo CHARSET; ?>">
+<script language="javascript" src="includes/javascript/jquery_include.js"></script>
+<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
 <title><?php echo SET_COMMENT_TITLE?></title>
 </head>
 <?php 
@@ -31,6 +33,13 @@ switch ($HTTP_GET_VARS['action']){
   $col=tep_db_fetch_array($res);
 ?>
 <body>
+<body>
+<?php
+if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
+    <script language='javascript'>
+          one_time_pwd('<?php echo $page_name;?>');
+    </script>
+<?php }?>
 <form method="post" action="set_comment.php?action=save&cID=<?php echo $cID;?>&cPath=<?php echo $cPath;?>"  onsubmit="alert('更新されました。')">
 <p><?php echo SET_COMMENT_USER?></p>
 <p><input type='text' name='author' value="<?php echo $col['author'];?>" /></p>
@@ -39,6 +48,7 @@ switch ($HTTP_GET_VARS['action']){
 <p><?php echo SET_COMMENT_COMMENT_TEXT;?></p>
 <p><textarea cols='60' rows='12' name='comment'><?php echo $col['comment'];?></textarea></p>
 <p><input type="submit" value="<?php echo SET_COMMENT_TITLE;?>"><p>
+<?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
 </form>
 </body>
 </html>

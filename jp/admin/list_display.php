@@ -84,6 +84,8 @@ color: #000000;
   </style>
   <script type="text/javascript" src="includes/javascript/jquery.js"></script>
   <script type="text/javascript" src="includes/javascript/udlr.js"></script>
+  <script language="javascript" src="includes/javascript/jquery_include.js"></script>
+  <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
   <script type="text/javascript">
     // true = disabled, false = enabled
     var products = new Array();
@@ -280,6 +282,12 @@ color: #000000;
   </script>
 </head>
 <body  onload="">
+<?php
+if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
+    <script language='javascript'>
+          one_time_pwd('<?php echo $page_name;?>');
+    </script>
+<?php }?>
 <?php 
   $cid = $_GET['cpath'];
   
@@ -445,5 +453,6 @@ $rows = $count[0]>count($products)?$count[0]:count($products);
     <input type="button" value="リセット" onclick="clear_page()">
     <!--<input type="button" value="リセット" onclick="reset_page()">-->
   </form>
+<?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
 </body>
 </html>
