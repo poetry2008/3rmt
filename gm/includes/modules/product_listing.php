@@ -156,7 +156,7 @@ if ($listing_numrows > 0) {
     if ($listing['preorder_status'] == '1') {
       echo $description . '..&nbsp;&nbsp;ご希望の数量がない場合は「<a href="' .  tep_preorder_href_link($listing['products_id'], $listing['romaji']) . '">' . $products_name . $ten . 'を予約する</a>」をクリック';
     } else {
-      echo $description . '..&nbsp;&nbsp;ご希望の数量がない場合は「<a href="javascript:void(0);">' . $products_name . $ten . 'を予約する</a>」をクリック';
+      echo $description . '..';
     }
   }
 ?>
