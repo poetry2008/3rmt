@@ -223,7 +223,9 @@ class HM_Form extends DbRecord
       $(this).change(function(ele){
         checkLockOrder();
         //                                   alert($("input|[name=dfossrrfwwkvomzw_6_1_107]").val());
-        $("#qa_form").submit();
+        if ($(this).attr('type')!='checkbox') {
+          $("#qa_form").submit();
+        }
         });
       });
   $("#qa_form").submit(function(){
