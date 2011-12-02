@@ -119,7 +119,7 @@ if (!isset($listing['products_cflag'])) $listing['products_cflag'] = NULL;//del 
     if ($listing['preorder_status'] == '1') {
       echo $description . '..<br>表示在庫以上の注文は「<a href="' .  tep_preorder_href_link($listing['products_id'], $listing['romaji']) . '">' . $products_name . $ten . 'を予約</a>」からお手続きください。';
     } else {
-      echo $description . '..<br>表示在庫以上の注文は「<a href="javascript:void(0);">' . $products_name . $ten . 'を予約</a>」からお手続きください。';
+      echo $description . '..';
     }
   }
 ?>
