@@ -13,6 +13,36 @@ function forward401()
   exit;
   //throw new Exception();
 }
+function one_time_pwd_forward401($page_name)
+{ 
+  $file_name = substr($page_name,7,strlen($page_name));
+  $inpagelist = true;
+  $pagelist = array(
+'handle_payment_time.php', 
+'pre_handle_payment_time.php', 
+'ajax_preorders.php', 
+'ajax_orders.php', 
+'handle_new_preorder.php', 
+'orders_csv_exe.php', 
+'preorders_csv_exe.php', 
+'pre_oa_answer_process.php', 
+'oa_answer_process.php', 
+'popup_image.php'
+      );
+  foreach($pagelist as $page){
+    if($file_name == $page){
+      $inpagelist = false;
+      break;
+    }
+  }
+  if($inpagelist){
+  header($_SERVER["SERVER_PROTOCOL"] . " 401Not Found");
+  //  require("/home/hansir/project/OSC_3RMT/jp/".DIR_WS_MODULES  . '401.html');
+  require( DIR_WS_MODULES. '401.html');
+  exit;
+  }
+  //throw new Exception();
+}
 //在条件成立的时候，401
 function forward401If($condition)
 {
@@ -6689,3 +6719,61 @@ function tep_cfg_shipping_checkbox_option($check_array, $key_value, $key = '') {
     }
     return $string;
   }
+
+function tep_datetime_short_torihiki($raw_datetime) {
+  if ( ($raw_datetime == '0000-00-00 00:00:00') || ($raw_datetime == '') ) return false;
+
+  $year = (int)substr($raw_datetime, 0, 4);
+  $month = (int)substr($raw_datetime, 5, 2);
+  $day = (int)substr($raw_datetime, 8, 2);
+  $hour = (int)substr($raw_datetime, 11, 2);
+  $minute = (int)substr($raw_datetime, 14, 2);
+  $second = (int)substr($raw_datetime, 17, 2);
+
+  return strftime(DATE_TIME_FORMAT_TORIHIKI, mktime($hour, $minute, $second, $month, $day, $year));
+}
+function
+tep_get_torihiki_date_radio($start_time,$radio_name="torihiki_time",$default_check=false){
+  $arr = array();
+  $time_str = date('H:i',$start_time);
+  $time_arr = explode(':',$time_str);
+  $hour = $time_arr[0];
+  $mim_start = $time_arr[1];
+  $show_row = 0;
+  for($hour;$hour<24;$hour++){
+    for($mim_start;$mim_start<60;){
+      if($show_row ==0 ){
+        if($mim_start < 15){
+          $mim_start = 15;
+        }else if($mim_start < 30){
+          $mim_start = 30;
+        }else if($mim_start < 45){
+          $mim_start = 45;
+        }else if($mim_start >= 45){
+          $mim_start = 0;
+          break;
+        }
+      }
+      $s_start = $mim_start;
+      $mim_start+=14;
+      $e_start = $mim_start;
+      $return_str = "<input type='radio' name='".$radio_name."' value='".
+           sprintf('%02d',$hour).":".sprintf('%02d',$s_start)."-".
+           sprintf('%02d',$hour).":".sprintf('%02d',$e_start)."'";
+      if($default_check){
+        $return_str .= " checked >&nbsp;&nbsp;";
+        $default_check = false;
+      }else{
+        $return_str .= " >&nbsp;&nbsp;";
+      }
+      $return_str .= sprintf('%02d',$hour)."時".sprintf('%02d',$s_start)."分";
+      $return_str .= " ～ ";
+      $return_str .= sprintf('%02d',$hour)."時".sprintf('%02d',$e_start)."分";
+      $show_row ++;
+      $mim_start++;
+      $arr[]=$return_str;
+    }
+    $mim_start = 0;
+  }
+  return $arr;
+}
