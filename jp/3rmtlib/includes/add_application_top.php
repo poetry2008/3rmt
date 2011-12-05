@@ -515,7 +515,7 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
                               if (isset($_POST['continue']) && $_POST['goto']) {
                                 tep_redirect($_POST['goto']);
                               } else if (isset($_POST['checkout'])) {
-                                tep_redirect(tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL'));
+                                tep_redirect(tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL'));
                               } else {
                                 tep_redirect(tep_href_link($goto, tep_get_all_get_params($parameters)));
                               }

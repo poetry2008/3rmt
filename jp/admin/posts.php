@@ -1,5 +1,6 @@
 <?php
 require('includes/application_top.php');
+if ($_SERVER["HTTP_X_REQUESTED_WITH"] == "XMLHttpRequest") {
 $txt = stripslashes(trim($_POST['content']));
 $title = stripslashes(trim($_POST['title']));
 
@@ -15,5 +16,6 @@ if($query){
   echo tep_db_insert_id()."||".$time;
 }else{
   echo TEXT_ERROR;
+}
 }
 ?>
