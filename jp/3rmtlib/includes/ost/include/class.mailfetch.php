@@ -163,6 +163,9 @@ class MailFetcher {
         $decodedStr.=mb_convert_encoding($mimeStr->text, $targetCharset, (in_array(strtolower($mimeStr->charset), $encodings) ? $mimeStr->charset : $fallbackCharset) ) ;
       }
     }
+    if ($decodedStr == '') {
+      return imap_utf8($mimeStr);
+    }
     return $decodedStr;
   }
   //Generic decoder - mirrors imap_utf8
@@ -300,21 +303,10 @@ class MailFetcher {
         imap_delete($this->mbox,$mid);
       return false;
     }
-    $mail_sym_pos = strrpos($mailinfo['from']['email'], '@');
-    $email_end_str = substr($mailinfo['from']['email'], $mail_sym_pos+1); 
-    $email_pos = strpos($email_end_str, 'hotmail.com');
-    if ($email_pos !== false) {
-      $var['name']=$this->mime_decode2($mailinfo['from']['name']);
-    } else {
-      $var['name']=$this->mime_decode($mailinfo['from']['name']);
-    }
+    $var['name']=$this->mime_decode($mailinfo['from']['name']);
     $var['email']=$mailinfo['from']['email'];
 
-    if ($email_pos !== false) {
-      $var['subject']=$mailinfo['subject']?$this->mime_decode2($mailinfo['subject']):'[No Subject]';
-    } else {
-      $var['subject']=$mailinfo['subject']?$this->mime_decode($mailinfo['subject']):'[No Subject]';
-    }
+    $var['subject']=$mailinfo['subject']?$this->mime_decode($mailinfo['subject']):'[No Subject]';
     $var['message']=Format::stripEmptyLines($this->getBody($mid))?Format::stripEmptyLines($this->getBody($mid)):" ";
     $var['header']=$this->getHeader($mid);
     $var['emailId']=$emailid?$emailid:$cfg->getDefaultEmailId(); //ok to default?
