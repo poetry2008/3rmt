@@ -445,24 +445,24 @@ if(isset($_GET['his_url'])&&$_GET['his_url']){
   
   if(count($one_time_arr)==1&&$one_time_arr[0]=='admin'&&$_SESSION['user_permission']!=15){
     if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest"){
-      forward401();
+      one_time_pwd_forward401($page_name);
     }
   }
   if (!$one_time_flag && $_SESSION['user_permission']!=15) {
     if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
-      forward401();
+      one_time_pwd_forward401($page_name);
     }
   }
   if(!in_array('onetime',$one_time_arr)&&$_SESSION['user_permission']!=15){
     if(!(in_array('chief',$one_time_arr)&&in_array('staff',$one_time_arr))){
     if($_SESSION['user_permission']==7&&in_array('chief',$one_time_arr)){
       if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
-        forward401();
+        one_time_pwd_forward401($page_name);
       }
     }
     if($_SESSION['user_permission']==10&&in_array('staff',$one_time_arr)){
       if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
-        forward401();
+        one_time_pwd_forward401($page_name);
       }
     }
     }
