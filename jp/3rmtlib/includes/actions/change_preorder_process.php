@@ -222,7 +222,7 @@ if ($preorder) {
 
   $products_ordered_text .= '注文商品　　　　　：'.$preorder_product_res['products_name'];
   if (tep_not_null($preorder_product_res['products_model'])) {
-    $products_ordered_text .= $preorder_product_res['products_model']; 
+    $products_ordered_text .= ' ('.$preorder_product_res['products_model'].')'; 
   }
   
   $products_ordered_atttibutes_text = '';
@@ -315,6 +315,13 @@ $mailoption['ORDER_TMETHOD']    = $torihikihouhou_date_str;
 $mailoption['SITE_NAME']        = STORE_NAME;
 $mailoption['SITE_MAIL']        = SUPPORT_EMAIL_ADDRESS;
 $mailoption['SITE_URL']         = HTTP_SERVER;
+$bank_info_array = explode('<<<|||', $preorder['bank_info']);
+$mailoption['BANK_NAME'] = $bank_info_array[0];
+$mailoption['BANK_SHITEN'] = $bank_info_array[1];
+$mailoption['BANK_KAMOKU'] = $bank_info_array[2];
+$mailoption['BANK_KOUZA_NUM'] = $bank_info_array[3];
+$mailoption['BANK_KOUZA_NAME'] = $bank_info_array[4];
+
 $mailoption['ORDER_COUNT'] = $preorder_product_res['products_quantity'];
 $mailoption['ORDER_LTOTAL'] = number_format($preorder_product_res['final_price']*$preorder_product_res['products_quantity'], 0, '.', '');
 $mailoption['ORDER_ACTORNAME'] = $_SESSION['preorder_info_character'];

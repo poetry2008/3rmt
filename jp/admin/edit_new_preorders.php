@@ -468,6 +468,9 @@
         $comment_str = $_SESSION['create_preorder']['orders']['cemail_text']; 
       } else if ($_SESSION['create_preorder']['orders']['payment_method'] == '楽天銀行') {
         $comment_str = $_SESSION['create_preorder']['orders']['raku_text']; 
+      } else if ($_SESSION['create_preorder']['orders']['payment_method'] == '銀行振込(買い取り)') {
+        $bank_info_arr = explode('<<<|||', $_SESSION['create_preorder']['orders']['bank_info']); 
+        $comment_str = '金融機関名:'.$bank_info_arr[0]."\n".'支店名:'.$bank_info_arr[1]."\n".'口座種別:'.$bank_info_arr[2]."\n".'口座番号:'.$bank_info_arr[3]."\n".'口座名義:'.$bank_info_arr[4]; 
       }
       
       if (DEFAULT_PREORDERS_STATUS_ID == $_POST['status']) {

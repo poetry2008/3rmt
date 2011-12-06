@@ -4293,7 +4293,8 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
                            'billing_country' => $billing_address['countries_name'],
                            'billing_telephone' => $billing_address['entry_telephone'], 
                            'billing_address_format_id' => $billing_address['address_format_id'],  
-                           'comment_msg' => $pInfo['yourmessage'],  
+                           'comment_msg' => $pInfo['yourmessage'], 
+                           'bank_info' => $pInfo['bank_name'].'<<<|||'.$pInfo['bank_shiten'].'<<<|||'.$pInfo['bank_kamoku'].'<<<|||'.$pInfo['bank_kouza_num'].'<<<|||'.$pInfo['bank_kouza_name']
                            );
    $pay_class = new $pInfo['pre_payment']; 
    
@@ -4304,8 +4305,10 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
    } else if (method_exists($pay_class, 'dealPreorderRakuComment')) {
      $sql_data_array['raku_text'] = $pay_class->dealPreorderRakuComment($pInfo['yourmessage'], $pInfo['rakuten_telnumber']); 
      $sh_comments = $pay_class->dealPreorderRakuComment($pInfo['yourmessage'], $pInfo['rakuten_telnumber'], true); 
-   } else {
-     $sh_comments = $pInfo['yourmessage']; 
+   } else if (method_exists($pay_class, 'dealPreorderBuyingComment')) {
+     $sh_comments = $pay_class->dealPreorderBuyingComment($pInfo); 
+   } else { 
+    $sh_comments = $pInfo['yourmessage']; 
    }
    
    tep_db_perform(TABLE_PREORDERS, $sql_data_array);
