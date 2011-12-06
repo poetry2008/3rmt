@@ -54,6 +54,12 @@ function hidden_payment()
   var idx = document.create_order.elements['payment_method'].selectedIndex;
   var CI= document.create_order.elements['payment_method'].options[idx].value;
   
+  if (CI == '銀行振込(買い取り)') {
+    document.getElementById('trpass1').style.display = ""; 
+  } else {
+    document.getElementById('trpass1').style.display = "none"; 
+  }
+  
   if (CI == 'コンビニ決済') {
     document.getElementById('copass1').style.display = ""; 
   } else {
@@ -302,6 +308,17 @@ float:left;
   for($pnum = 0; $pnum<sizeof($payment_array); $pnum++) {
     $payment_list[] = array('id' => $payment_array[$pnum], 'text' => $payment_array[$pnum]); 
   }
+  switch (isset($bank_kamoku)?$bank_kamoku:null) {
+    case '普通':
+    default:
+      $bank_sele_f = true;
+      $bank_sele_t = false;
+      break;
+    case '当座':
+      $bank_sele_f = false;
+      $bank_sele_t = true;
+      break;
+  }
 ?>
   <tr>
     <td class="formAreaTitle"><br><?php echo CREATE_ORDER_PAYMENT_TITLE;?></td>
@@ -333,6 +350,32 @@ float:left;
                 <?php echo tep_draw_input_field('rak_tel', '');?> 
                 </td>
               </tr>
+              <tr id="trpass1" style="display:none;"> 
+              <td colspan="2">
+              <br>
+              <table border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td class="main">&nbsp;<?php echo CREATE_ORDER_BANK_NAME_TEXT;?></td>
+                <td class="main">&nbsp;<?php echo tep_draw_input_field('bank_name', ''); ?><?php if (isset($entry_bank_name_error) && $entry_bank_name_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
+              </tr>
+              <tr>
+                <td class="main">&nbsp;<?php echo CREATE_ORDER_BANK_SHITEN_TEXT;?></td>
+                <td class="main">&nbsp;<?php echo tep_draw_input_field('bank_shiten', ''); ?><?php if (isset($entry_bank_shiten_error) && $entry_bank_shiten_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
+              </tr>
+              <tr>
+                <td class="main">&nbsp;<?php echo CREATE_ORDER_BANK_KAMOKU_TEXT;?></td>
+                <td class="main">&nbsp; <?php echo tep_draw_radio_field('bank_kamoku', '普通', $bank_sele_f); ?>&nbsp;<?php echo CREATE_ORDER_SELECT_COMMON_TEXT;?>&nbsp;&nbsp;<?php echo tep_draw_radio_field('bank_kamoku', '当座', $bank_sele_t); ?>&nbsp;<?php echo CREATE_ORDER_SELECT_COMMON_ONE_TEXT;?></td>
+              </tr>
+              <tr>
+                <td class="main">&nbsp;<?php echo CREATE_ORDER_BANK_KOUZA_NUM_TEXT;?></td>
+                <td class="main">&nbsp;<?php echo tep_draw_input_field('bank_kouza_num', ''); ?><?php if (isset($entry_bank_kouza_num_error) && $entry_bank_kouza_num_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
+              </tr>
+             <tr>
+               <td class="main">&nbsp;<?php echo CREATE_ORDER_BANK_KOUZA_NAME_TEXT;?></td>
+               <td class="main">&nbsp;<?php echo tep_draw_input_field('bank_kouza_name', ''); ?><?php if (isset($entry_bank_kouza_name_error) && $entry_bank_kouza_name_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
+          </tr>
+        </table></td>
+       </tr>
             </table></td>
         </tr>
       </table>

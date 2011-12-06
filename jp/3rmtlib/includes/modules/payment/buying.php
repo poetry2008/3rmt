@@ -273,7 +273,39 @@ class buying {
 
     return false;
   }
+  
+  function preorder_confirmation_check() {
+    global $_POST;
+    
+    $preorder_bank_name = tep_db_prepare_input($_POST['bank_name']);
+    $preorder_bank_shiten = tep_db_prepare_input($_POST['bank_shiten']);
+    $preorder_bank_kamoku = tep_db_prepare_input($_POST['bank_kamoku']);
+    $preorder_bank_kouza_num = tep_db_prepare_input($_POST['bank_kouza_num']);
+    $preorder_bank_kouza_name = tep_db_prepare_input($_POST['bank_kouza_name']);
+  
+    
+    if($preorder_bank_name == '') {
+      return 1; 
+    }
+    if($preorder_bank_shiten == '') {
+      return 2; 
+    }
+    if($preorder_bank_kamoku == '') {
+      return 3; 
+    }
+    if($preorder_bank_kouza_num == '') {
+      return 4; 
+    }
+    if (!preg_match("/^[0-9]+$/", $preorder_bank_kouza_num)) {
+      return 5; 
+    } 
+    if($preorder_bank_kouza_name == '') {
+      return 6; 
+    }
 
+    return 0;
+  }
+  
   function confirmation() {
     global $currencies;
     global $_POST;
@@ -345,6 +377,33 @@ class buying {
     //return false;
   }
 
+  function get_preorder_error($error_type) {
+    switch ($error_type) {
+      case '1':
+        $error_msg =TEXT_BANK_ERROR_NAME;
+        break;
+      case '2':
+        $error_msg =TEXT_BANK_ERROR_SHITEN;
+        break;
+      case '3':
+        $error_msg =TEXT_BANK_ERROR_KAMOKU;
+        break;
+      case '4':
+        $error_msg =TEXT_BANK_ERROR_KOUZA_NUM;
+        break;
+      case '5':
+        $error_msg =TEXT_BANK_ERROR_KOUZA_NUM2;
+        break;
+      case '6':
+        $error_msg =TEXT_BANK_ERROR_KOUZA_NAME;
+        break;
+      default:
+        $error_msg = ''; 
+        break;
+    }
+    return $error_msg; 
+  }
+  
   function check() {
     if (!isset($this->_check)) {
       $check_query = tep_db_query("select configuration_value from " . TABLE_CONFIGURATION . " where configuration_key = 'MODULE_PAYMENT_BUYING_STATUS' and site_id = '".$this->site_id."'");
@@ -365,6 +424,8 @@ class buying {
 0,3000円に入れると、0円から3000円までの金額が決済可能。設定範囲外の決済は不可。', '6', '0', now(), ".$this->site_id.")");
       
     tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added, site_id) values ('表示設定', 'MODULE_PAYMENT_BUYING_LIMIT_SHOW', 'a:2:{i:0;s:1:\"1\";i:1;s:1:\"2\";}', '表示設定', '6', '1', 'tep_cfg_payment_checkbox_option(array(\'1\', \'2\'), ', now(), ".$this->site_id.");");
+    
+    tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added, site_id) values ('予約注文', 'MODULE_PAYMENT_BUYING_PREORDER_SHOW', 'True', '予約注文で銀行振込(買い取り)を表示します', '6', '1', 'tep_cfg_select_option(array(\'True\', \'False\'), ', now(), ".$this->site_id.");");
   }
 
   function remove() {
@@ -375,6 +436,7 @@ class buying {
     return array(
 		 'MODULE_PAYMENT_BUYING_STATUS', 
 		 'MODULE_PAYMENT_BUYING_LIMIT_SHOW', 
+                 'MODULE_PAYMENT_BUYING_PREORDER_SHOW',
 		 'MODULE_PAYMENT_BUYING_ZONE', 
 		 'MODULE_PAYMENT_BUYING_ORDER_STATUS_ID', 
 		 'MODULE_PAYMENT_BUYING_SORT_ORDER', 
@@ -420,6 +482,18 @@ class buying {
       $bbbank .= TEXT_BANK_KOUZA_NAME . '：' . $bank_kouza_name;
     }
     $comment = $bbbank ."\n".$comment;
+    return $comment;
+  }
+  
+  function dealPreorderBuyingComment($pInfo)
+  {
+    $bbbank = TEXT_BANK_NAME . '：' . $pInfo['bank_name'] . "\n";
+    $bbbank .= TEXT_BANK_SHITEN . '：' . $pInfo['bank_shiten'] . "\n";
+    $bbbank .= TEXT_BANK_KAMOKU . '：' . $pInfo['bank_kamoku'] . "\n";
+    $bbbank .= TEXT_BANK_KOUZA_NUM . '：' . $pInfo['bank_kouza_num'] . "\n";
+    $bbbank .= TEXT_BANK_KOUZA_NAME . '：' . $pInfo['bank_kouza_name'];
+    
+    $comment = $bbbank ."\n".$pInfo['yourmessage'];
     return $comment;
   }
 }

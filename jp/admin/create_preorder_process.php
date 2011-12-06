@@ -91,6 +91,44 @@
   } else {
     $entry_predate_error = false;
   }
+  
+  if ($payment_method == '') {
+    $error = true;
+    $entry_payment_method_error = true;
+  } elseif ($payment_method == '銀行振込(買い取り)') {
+    if ($bank_name == '') {
+      $error = true;
+      $entry_bank_name_error = true;
+    } else {
+      $entry_bank_name_error = false;
+    }
+    
+    if ($bank_shiten == '') {
+      $error = true;
+      $entry_bank_shiten_error = true;
+    } else {
+      $entry_bank_shiten_error = false;
+    }
+    
+    if ($bank_kouza_num == '') {
+      $error = true;
+      $entry_bank_kouza_num_error = true;
+    } else {
+      $entry_bank_kouza_num_error = false;
+    }
+    
+    if ($bank_kouza_name == '') {
+      $error = true;
+      $entry_bank_kouza_name_error = true;
+    } else {
+      $entry_bank_kouza_name_error = false;
+    }
+    
+    $entry_payment_method_error = false;
+  } else {
+    $entry_payment_method_error = false;
+  }
+  
   //Add input string check - NG return Input order data - d2006.4.14 ds-style
   if($error == true) {
   
@@ -376,6 +414,10 @@ float:left;
   
   if ($payment_method == '楽天銀行') {
     $sql_data_array['raku_text'] = '電話番号:'.$rak_tel; 
+  }
+  
+  if ($payment_method == '銀行振込(買い取り)') {
+    $sql_data_array['bank_info'] = $bank_name.'<<<|||'.$bank_shiten.'<<<|||'.$bank_kamoku.'<<<|||'.$bank_kouza_num.'<<<|||'.$bank_kouza_name; 
   }
   
   $_SESSION['create_preorder']['orders'] = $sql_data_array;
