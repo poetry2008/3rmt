@@ -1,8 +1,5 @@
 <?php
 require('includes/application_top.php');
-echo '<script language="javascript">';
-echo 'alert("aaaaaaa")';
-echo '</script>';
 if(is_numeric($_GET['id']) && is_numeric($_GET['x']) && is_numeric($_GET['y']) &&
     is_numeric($_GET['z'])){
 $id = intval($_GET['id']);

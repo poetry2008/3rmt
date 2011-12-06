@@ -65,7 +65,6 @@ foreach($note_arr as $note_row){
       var xlen=$(\"#note_".$note_row."\").width();
       var ylen=$(\"#note_".$note_row."\").height();
       var top=$(\"#note_".$note_row."\").css('top');
-      alert('ssssssssss');
       $.ajax({
         url: 'update_position.php',
         type: 'POST',
