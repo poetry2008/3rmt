@@ -94,8 +94,8 @@
   
  
   if (MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
-    if ($_POST['preorder_point'] < $preorder_subtotal) {
-      $preorder_point = $_POST['preorder_point']; 
+    if (@$_POST['preorder_point'] < $preorder_subtotal) {
+      $preorder_point = isset($_POST['preorder_point'])?$_POST['preorder_point']:0; 
     } else {
       $preorder_point = $preorder_subtotal; 
     }
@@ -384,7 +384,12 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
   if ($preorder_subtotal > 0) {
     $preorder_get_point = ($preorder_subtotal - (int)$preorder_point) * $point_rate;
   } else {
-    $preorder_get_point = 0;
+    if (isset($con_payment->show_point)) {
+      $show_point_single = true; 
+      $preorder_get_point = abs($preorder_subtotal);
+    } else {
+      $preorder_get_point = 0;
+    }
   }
   
   if ($is_guest_single) {
@@ -397,7 +402,15 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
 }
                   ?>
                   <tr>
-                    <td class="main" align="right"><?php echo CHANGE_PREORDER_POINT_TEXT;?></td> 
+                    <td class="main" align="right">
+                    <?php 
+                    if (isset($show_point_single)) {
+                      echo CHANGE_PREORDER_POINT_TEXT_BUY;
+                    } else {
+                      echo CHANGE_PREORDER_POINT_TEXT;
+                    }
+                    ?>
+                    </td> 
                     <td class="main" align="right"><?php echo (int)$preorder_get_point.'&nbsp;P';?></td> 
                   </tr>
                 </table> 

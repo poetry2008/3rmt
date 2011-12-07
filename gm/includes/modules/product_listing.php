@@ -146,19 +146,10 @@ if ($listing_numrows > 0) {
           <td colspan="2" style="padding-left:5px; ">
             <p class="smallText">
 <?php
-  if($listing['products_bflag'] == '1') {
-    # 買取商品
     echo $description . '..';
-  } elseif ($listing['products_cflag'] == '0') {
-    echo $description . '..';
-  } else {
-    # 販売商品
     if ($listing['preorder_status'] == '1') {
-      echo $description . '..&nbsp;&nbsp;ご希望の数量がない場合は「<a href="' .  tep_preorder_href_link($listing['products_id'], $listing['romaji']) . '">' . $products_name . $ten . 'を予約する</a>」をクリック';
-    } else {
-      echo $description . '..';
+      echo '&nbsp;&nbsp;ご希望の数量がない場合は「<a href="' .  tep_preorder_href_link($listing['products_id'], $listing['romaji']) . '">' . $products_name . $ten . 'を予約する</a>」をクリック';
     }
-  }
 ?>
             </p>
           </td>
