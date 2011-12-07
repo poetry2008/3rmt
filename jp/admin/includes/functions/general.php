@@ -27,7 +27,9 @@ function one_time_pwd_forward401($page_name)
 'preorders_csv_exe.php', 
 'pre_oa_answer_process.php', 
 'oa_answer_process.php', 
-'popup_image.php'
+'popup_image.php',
+'posts.php',
+'update_position.php'
       );
   foreach($pagelist as $page){
     if($file_name == $page){

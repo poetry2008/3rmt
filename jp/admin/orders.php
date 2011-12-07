@@ -4,6 +4,16 @@
 */
   //ob_start();
   require('includes/application_top.php');
+
+
+  // action ajax order 
+if ($_POST['orders_id'] &&
+    ($_POST['orders_comment']||$_POST['orders_comment_flag']=='true')&&
+    $_POST['action']=='ajax_orders') {
+  // update orders_comment
+  tep_db_perform('orders', array('orders_comment' => $_POST['orders_comment']), 'update', "orders_id='".$_POST['orders_id']."'");
+  tep_redirect(tep_href_link(FILENAME_ORDERS,'page='.$_POST['page'].'&oID='.$_POST['orders_id'].'&action=edit'));
+}
 function tep_show_orders_products_info($orders_id) {
   $str = '';
 
@@ -138,7 +148,7 @@ function tep_show_orders_products_info($orders_id) {
     $str .= '<tr>'; 
     $str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_FETCH_TIME.'</b></td>';
     $str .= '<td class="main">';
-    $str .= $orders['torihiki_date']; 
+    $str .= str_replace('/','<br>',$orders['torihiki_date']); 
     $str .= '</td>'; 
     $str .= '</tr>'; 
     
@@ -1714,7 +1724,7 @@ $(window).resize(function() {
 </head>
 <body>
 <?php
-if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
+if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']&&false){?>
   <script language='javascript'>
     one_time_pwd('<?php echo $page_name;?>');
   </script>
@@ -2379,7 +2389,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
           $select_select = $orders_history['orders_status_id'];
           echo 
              '    <tr>' . "\n" .
-             '      <td class="smallText" align="center">' . tep_datetime_short($orders_history['date_added']) . '</td>' . "\n" .
+             '      <td class="smallText" align="center">' . tep_datetime_short_torihiki($orders_history['date_added']) . '</td>' . "\n" .
              '      <td class="smallText" align="center">';
           if ($orders_history['customer_notified'] == '1') {
             echo tep_image(DIR_WS_ICONS . 'tick.gif', ICON_TICK) . "</td>\n";
@@ -2974,7 +2984,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
       }
 
   //今日の取引なら赤色
-  $trade_array = getdate(strtotime(tep_datetime_short($orders['torihiki_date'])));
+  $trade_array = getdate(strtotime(tep_datetime_short_torihiki($orders['torihiki_date'])));
   $today_array = getdate();
   if ($trade_array["year"] == $today_array["year"] && $trade_array["mon"] == $today_array["mon"] && $trade_array["mday"] == $today_array["mday"]) {
     $today_color = 'red';
@@ -3047,12 +3057,12 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
       <?php echo strip_tags(tep_get_ot_total_by_orders_id_no_abs($orders['orders_id'], true));?>
       <?php }?>
     </td>
-    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';"><?php echo $next_mark; ?><font color="<?php echo !$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)?'#999':$today_color; ?>" id="tori_<?php echo $orders['orders_id']; ?>"><?php echo tep_datetime_short($orders['torihiki_date']); ?></font></td>
+    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';"><?php echo $next_mark; ?><font color="<?php echo !$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)?'#999':$today_color; ?>" id="tori_<?php echo $orders['orders_id']; ?>"><?php echo tep_datetime_short_torihiki($orders['torihiki_date']); ?></font></td>
     <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="left" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';"><?php
     if ($orders['orders_wait_flag']) { echo tep_image(DIR_WS_IMAGES .
         'icon_hand.gif', TEXT_ORDER_WAIT); } else { echo '&nbsp;'; } ?></td>
     <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="left" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';"><?php echo $orders['orders_work']?strtoupper($orders['orders_work']):'&nbsp;';?></td>
-    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="center" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';"><span style="color:#999999;"><?php echo tep_datetime_short($orders['date_purchased']); ?></span></td>
+    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="center" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';"><span style="color:#999999;"><?php echo tep_datetime_short_torihiki($orders['date_purchased']); ?></span></td>
     <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="center" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';">
     <?php 
     // ===============================================================
@@ -3254,7 +3264,7 @@ function submit_confirm()
       break;
     default:
       if (isset($oInfo) && is_object($oInfo)) {
-        $heading[] = array('text' => '<b>[' . $oInfo->orders_id . ']<br>' . tep_datetime_short($oInfo->date_purchased) . '</b>');
+        $heading[] = array('text' => '<b>[' . $oInfo->orders_id . ']<br>' . tep_datetime_short_torihiki($oInfo->date_purchased) . '</b>');
 
         if ($ocertify->npermission == 15) {
           $contents[] = array('align' => 'center', 'text' => '<a href="' .  tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID=' . $oInfo->orders_id . '&action=edit') . '">' . tep_html_element_button(IMAGE_DETAILS) . '</a> <a href="' .  tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID=' . $oInfo->orders_id . '&action=delete') .  '">' . tep_html_element_button(IMAGE_DELETE) . '</a>');
