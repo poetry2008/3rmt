@@ -29,7 +29,12 @@ function one_time_pwd_forward401($page_name)
 'oa_answer_process.php', 
 'popup_image.php',
 'posts.php',
-'update_position.php'
+'update_position.php',
+'ajax_order_change_total.php',
+'item_process.php',
+'oa_ajax.php',
+'preorder_item_process.php',
+'set_ajax_dougyousya.php'
       );
   foreach($pagelist as $page){
     if($file_name == $page){
