@@ -425,7 +425,14 @@
     init();
   });
 </script>
+<script language="javascript" src="includes/javascript/jquery_include.js"></script>
+<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
 <body style="text-align:center;">
+<?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
+  <script language='javascript'>
+    one_time_pwd('<?php echo $page_name;?>');
+  </script>
+<?php }?>
   <div style="margin:0 auto; width:100%;">
     <div id="content_html">
 <table border="0" width="100%" style=" margin-bottom:20px;" cellpadding="0" cellspacing="0" align="right">
