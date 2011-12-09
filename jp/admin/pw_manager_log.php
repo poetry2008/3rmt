@@ -401,7 +401,7 @@ function delete_all(){
          <?php
           echo "<button type='button'
           onclick=\"delete_all()\">" .
-          TEXT_BUTTON_DELETE_ALL."</button>"; 
+          TEXT_BUTTON_DELETE_ALL."</button>&nbsp;&nbsp;"; 
           
           echo "<button type='button'
           onclick=\"location.href='".
@@ -497,7 +497,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
     break;
 }
   if (tep_has_pw_manager_log($pwid)&& (tep_not_null($heading)) && (tep_not_null($contents))) {
-    echo '            <td class="right_column01" width="25%" valign="top">' . "\n";
+    echo '            <td style="padding-top:20px;" width="25%" valign="top">' . "\n";
 
     $box = new box;
     echo $box->infoBox($heading, $contents);

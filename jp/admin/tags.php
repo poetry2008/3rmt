@@ -235,7 +235,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       $contents[] = array('text' => '<br>' . TEXT_INFO_TAGS_NAME . '<br>' . tep_draw_input_field('tags_name'));
       $contents[] = array('text' => '<br>' . TEXT_INFO_TAGS_IMAGE . '<br>' . tep_draw_file_field('tags_images')) ;
       //$contents[] = array('text' => '<br>' . TEXT_INFO_TAGS_IMAGE . '<br>' . tep_draw_input_field('tags_images'));
-      $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_INSERT) . '&nbsp;<a href="' .  tep_href_link(FILENAME_TAGS, 'page=' . $_GET['page'].$sort_str) . '">' .  tep_html_element_button(IMAGE_CANCEL) . '</a>');
+      $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_SAVE) . '&nbsp;<a href="' .  tep_href_link(FILENAME_TAGS, 'page=' . $_GET['page'].$sort_str) . '">' .  tep_html_element_button(IMAGE_CANCEL) . '</a>');
       break;
     case 'edit':
       $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_EDIT_TAG . '</b>');
@@ -252,7 +252,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       }
       
       //$contents[] = array('text' => '<br>' . TEXT_INFO_TAGS_IMAGE . '<br>' . tep_image(DIR_WS_CATALOG_IMAGES . $cInfo->tags_images)) ;
-      $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_UPDATE) . '&nbsp;<a href="' .  tep_href_link(FILENAME_TAGS, 'page=' . $_GET['page'] . '&cID=' .  $cInfo->tags_id.$sort_str) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
+      $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_SAVE) . '&nbsp;<a href="' .  tep_href_link(FILENAME_TAGS, 'page=' . $_GET['page'] . '&cID=' .  $cInfo->tags_id.$sort_str) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
       break;
     case 'delete':
       $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_DELETE_TAG . '</b>');
