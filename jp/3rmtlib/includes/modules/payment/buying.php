@@ -4,7 +4,7 @@
 */
 
 class buying {
-  var $site_id, $code, $title, $description, $enabled, $s_error, $n_fee, $email_footer;
+  var $site_id, $code, $title, $description, $enabled, $s_error, $n_fee, $email_footer, $show_add_comment;
   function specialOutput()
   {
     $bank_name = tep_db_prepare_input($_POST['bank_name']);
@@ -70,7 +70,8 @@ class buying {
     $this->explain       = MODULE_PAYMENT_BUYING_TEXT_EXPLAIN;
     $this->sort_order  = MODULE_PAYMENT_BUYING_SORT_ORDER;
     $this->enabled     = ((MODULE_PAYMENT_BUYING_STATUS == 'True') ? true : false);
-
+    $this->show_add_comment = 1;
+    
     if ((int)MODULE_PAYMENT_BUYING_ORDER_STATUS_ID > 0) {
       $this->order_status = MODULE_PAYMENT_BUYING_ORDER_STATUS_ID;
     }

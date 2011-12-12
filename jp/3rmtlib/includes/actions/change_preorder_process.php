@@ -339,8 +339,11 @@ if (!empty($preorder['code_fee'])) {
 
 $email_order_text = '';
 
-
-$mailoption['ORDER_COMMENT']    = trim($preorder['comment_msg']);
+if (isset($cpayment_class->show_add_comment)) {
+  $mailoption['ORDER_COMMENT']    = trim($preorder['comment_msg']);
+} else {
+  $mailoption['ORDER_COMMENT']    = trim($order_comment_str);
+}
 
 if ($cpayment_code != '') {
   $email_order_text = preorder_get_mail_string($cpayment_code, $mailoption); 
