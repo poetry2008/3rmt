@@ -141,7 +141,7 @@
         
         $ot_sub_query = tep_db_query("select value from " . TABLE_PREORDERS_TOTAL . " where orders_id = '".$oID."' and class = 'ot_subtotal'");
         $ot_sub_result = tep_db_fetch_array($ot_sub_query);
-        $ot_sub_total = (int)$ot_sub_result['value'].TEXT_MONEY_SYMBOL;
+        $ot_sub_total = abs((int)$ot_sub_result['value']).TEXT_MONEY_SYMBOL;
 
         $os_query = tep_db_query("select orders_status_name from " . TABLE_PREORDERS_STATUS . " where orders_status_id = '".$status."'");
         $os_result = tep_db_fetch_array($os_query);
@@ -206,7 +206,9 @@
           '${ENSURE_TIME}', 
           '${PRODUCTS_QUANTITY}',
           '${EFFECTIVE_TIME}',
-          '${PRODUCTS_NAME}'
+          '${PRODUCTS_NAME}',
+          '${PRODUCTS_PRICE}',
+          '${SUB_TOTAL}'
         ),array(
           $check_status['customers_name'],
           $check_status['customers_email_address'],
@@ -428,7 +430,7 @@
       
       $ot_sub_query = tep_db_query("select value from " . TABLE_PREORDERS_TOTAL . " where orders_id = '".$oID."' and class = 'ot_subtotal'");
       $ot_sub_result = tep_db_fetch_array($ot_sub_query);
-      $ot_sub_total = (int)$ot_sub_result['value'].TEXT_MONEY_SYMBOL;
+      $ot_sub_total = abs((int)$ot_sub_result['value']).TEXT_MONEY_SYMBOL;
       
       $os_query = tep_db_query("select orders_status_name from " . TABLE_PREORDERS_STATUS . " where orders_status_id = '".$status."'");
       $os_result = tep_db_fetch_array($os_query);

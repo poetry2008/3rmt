@@ -656,7 +656,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
       
       $ot_sub_query = tep_db_query("select value from " . TABLE_PREORDERS_TOTAL . " where orders_id = '".$oID."' and class = 'ot_subtotal'");
       $ot_sub_result = tep_db_fetch_array($ot_sub_query);
-      $ot_sub_total = (int)$ot_sub_result['value'].TEXT_MONEY_SYMBOL;
+      $ot_sub_total = abs((int)$ot_sub_result['value']).TEXT_MONEY_SYMBOL;
       
       $num_product = 0; 
       $num_product_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$oID."'"); 
