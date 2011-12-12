@@ -404,17 +404,6 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
       ?>
       <div class="formAreaTitle"><?php echo FORM_FIELD_PREORDER_PAYMENT; ?></div>
       <table width="100%" cellpadding="2" cellspacing="0" border="0" class="formArea">
-          <?php
-          if ($payment_error == true) {
-            echo '<tr><td style="font-size:11px;"><span class="errorText">';
-            if (isset($payment_error_str)) {
-              echo $payment_error_str; 
-            } else {
-              echo TEXT_REQUIRED;
-            }
-            echo '</span></td></tr>';
-          }
-          ?>
         <?php
         $radio_buttons = 0; 
         for ($i=0, $n=sizeof($selection); $i<$n; $i++) { 
