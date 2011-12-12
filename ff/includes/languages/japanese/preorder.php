@@ -47,29 +47,6 @@ define('TEXT_EMAIL_SUCCESSFUL_SENT', '<p><b>「予約確認メール」を&nbsp;
 </table>
 ');
 
-define('TEXT_EMAIL_SUBJECT', '%sの予約を承りました【%s】');
-define('TEXT_EMAIL_INTRO', '%s 様' . "\n\n"
-. 'この度は、%sをご利用いただき、誠にありがとうございます。' . "\n\n"
-. '下記の内容にてご予約を承りました。ご確認ください。' . "\n"
-. '尚、納期につきましては24時間以内にご回答いたします。' . "\n\n"
-. '━━━━━━━━━━━━━━━━━━━━━' . "\n"
-. '▼お名前　　　　　：%s' . "\n"
-. '▼メールアドレス　：%s' . "\n"
-. '━━━━━━━━━━━━━━━━━━━━━' . "\n\n"
-. '▼予約内容' . "\n"
-. ' ------------------------------------------' . "\n"
-. ' 予約商品      ：%s' . "\n"
-. ' 希望個数　　　：%s個' . "\n"
-. ' 期限　　　　　：%s' . "\n"
-. ' ------------------------------------------');
-define('TEXT_EMAIL_LINK', 'この商品の詳細は、下記のリンクをクリックするか、リンクをブラウザに' . "\n"
-. 'コピー＆ペーストしてください。' . "\n\n" . '%s' . "\n\n");
-define('TEXT_EMAIL_SIGNATURE', '[ご連絡・お問い合わせ先]━━━━━━━━━━━━' . "\n"
-. '株式会社 iimy' . "\n"
-. SUPPORT_EMAIL_ADDRESS . "\n"
-. 'http://www.ff14-rmt.com/' . "\n"
-. '━━━━━━━━━━━━━━━━━━━━━━━');
-define('FORM_FIELD_PREORDER_FIXTIME', 'オプション:');
 define('FORM_FIELD_PREORDER_FIXDAY', '有効期限:');
 define('FORM_FIELD_PREORDER_PAYMENT', 'お支払い方法');
 define('FORM_FIELD_CUSTOMER_LASTNAME', '姓:');
