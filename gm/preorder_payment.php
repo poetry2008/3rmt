@@ -379,24 +379,31 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
         echo '<span class="errorText"><b>入力した内容に誤りがございます。正しく入力してください。</span></b><br><br>';
       }
 ?>
-     <br>    
      <?php
       $selection = $payment_modules->selection(); 
     if (sizeof($selection) > 1) { 
       ?>
-      <div class="formAreaTitle"><?php echo FORM_FIELD_PREORDER_PAYMENT; ?></div>
-      <table width="100%" cellpadding="2" cellspacing="0" border="0" class="formArea">
-          <?php
+      <?php
           if ($payment_error == true) {
-            echo '<tr><td style="font-size:11px;"><span class="errorText">';
+            echo '<table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxNotice">'; 
+            echo '<tr><td>'; 
+            echo '<table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxNotice">'; 
+            echo '<tr class="infoBoxNoticeContents">'; 
+            echo '<td class="main" width="100%" valign="top">';
             if (isset($payment_error_str)) {
               echo $payment_error_str; 
             } else {
               echo TEXT_REQUIRED;
             }
-            echo '</span></td></tr>';
+            echo '</td>'; 
+            echo '</tr>';
+            echo '</table>'; 
+            echo '</td></tr>'; 
+            echo '</table><br>';
           }
-          ?>
+      ?>
+      <div class="formAreaTitle"><?php echo FORM_FIELD_PREORDER_PAYMENT; ?></div>
+      <table width="100%" cellpadding="2" cellspacing="0" border="0" class="formArea">
         <?php
         $radio_buttons = 0; 
         for ($i=0, $n=sizeof($selection); $i<$n; $i++) { 
