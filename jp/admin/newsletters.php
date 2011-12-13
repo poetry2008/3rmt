@@ -300,13 +300,6 @@ function check_send_mail()
       <tr>
         <td><table border="0" cellspacing="0" cellpadding="2">
           <tr>
-            <?php
-            if (isset($_GET['send_finish'])) { 
-            ?>
-            <td class="main" valign="middle"><?php echo tep_image(DIR_WS_IMAGES . 'ani_send_email.gif', IMAGE_ANI_SEND_EMAIL); ?></td>
-            <?php
-            }
-            ?>
             <td class="main" valign="middle">
             <?php
             if (!isset($_GET['send_finish'])) { 
