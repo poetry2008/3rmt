@@ -74,6 +74,7 @@ if(!in_array('onetime',$request_one_time_arr)&&$_SESSION['user_permission']!=15)
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html <?php echo HTML_PARAMS; ?>>
 <head>
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
 <title><?php echo $page_title; ?></title>
 <script language="javascript"><!--
 var i=0;
