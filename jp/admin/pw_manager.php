@@ -765,7 +765,7 @@ right:5px;*/
       <?php
       } else {
       ?>
-      <a href="<?php echo tep_href_link('pw_manager.php', tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=nextdate&type=asc');?>"><?php echo TEXT_NEXTDATE;?></a> 
+      <a href="<?php echo tep_href_link('pw_manager.php', tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=nextdate&type=desc');?>"><?php echo TEXT_NEXTDATE;?></a> 
       <?php
       }
       ?>
