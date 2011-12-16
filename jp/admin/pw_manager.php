@@ -168,7 +168,7 @@ if(isset($_GET['action']) &&
         //$next_str = "IF(nextdate = '0000-00-00', '1', '0') as date_order,";
         //$order_str = '`date_order` asc,`nextdate` asc, `title` asc'; 
         $next_str = '';
-        $order_str = '`nextdate` desc, `title` asc'; 
+        $order_str = '`nextdate` asc, `title` asc'; 
       } else {
         if($HTTP_GET_VARS['sort'] == 'nextdate'){
           $next_str = 'nextdate as ';
