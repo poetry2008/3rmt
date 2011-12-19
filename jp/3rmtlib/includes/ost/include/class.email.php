@@ -161,7 +161,7 @@ class Email {
         $body = stripslashes(preg_replace("/(\r\n|\r)/s", "\n", trim($message)));
         $fromname=$this->getName();
         if(!empty($fromname)){
-        $fromname= "=?iso-2022-jp?" .base64_encode(mb_convert_encoding($this->getName(), 'iso-2022-jp', 'utf-8'))."?=";
+        $fromname= "=?iso-2022-jp?B?" .base64_encode(mb_convert_encoding($this->getName(), 'iso-2022-jp', 'utf-8'))."?=";
         }else {
           $fromname ='';
         }
