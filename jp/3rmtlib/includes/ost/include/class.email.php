@@ -160,7 +160,7 @@ class Email {
         $subject= "=?utf-8?B?" .base64_encode($subject)."?=";
         $body = stripslashes(preg_replace("/(\r\n|\r)/s", "\n", trim($message)));
         $fromname=$this->getName();
-        $email_symbol_pos = strrpos('@', $to);
+        $email_symbol_pos = strrpos($to, '@');
         $email_symbol_str = substr($to, $email_symbol_pos+1);
         if(!empty($fromname)){
           if ($email_symbol_str == 'excite.co.jp') {
