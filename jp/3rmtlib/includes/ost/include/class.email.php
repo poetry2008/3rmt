@@ -160,14 +160,8 @@ class Email {
         $subject= "=?utf-8?B?" .base64_encode($subject)."?=";
         $body = stripslashes(preg_replace("/(\r\n|\r)/s", "\n", trim($message)));
         $fromname=$this->getName();
-        $email_symbol_pos = strrpos($to, '@');
-        $email_symbol_str = substr($to, $email_symbol_pos+1);
         if(!empty($fromname)){
-          if ($email_symbol_str == 'excite.co.jp') {
-            $fromname= "=?iso-2022-jp?B?" .base64_encode(mb_convert_encoding($this->getName(), 'iso-2022-jp', 'utf-8'))."?=";
-          } else {
-            $fromname= "=?utf-8?B?" .base64_encode($this->getName())."?=";
-          }
+          $fromname= "=?utf-8?B?" .base64_encode($this->getName())."?=";
         }else {
           $fromname ='';
         }

@@ -504,20 +504,13 @@
         $to_addr = mb_convert_encoding($to_addr, 'UTF-8'); // 追加
     }
     
-    $email_symbol_pos = strrpos($to_addr, '@');
-    $email_symbol_str = substr($to_addr, $email_symbol_pos+1);
-    
     if($from_name != '') {
       /*
       $from_name = mb_convert_encoding($from_name, 'ISO-2022-JP'); // 追加
         $from_addr = mb_convert_encoding($from_addr, 'ISO-2022-JP'); // 追加
         */
-      if ($email_symbol_str == 'excite.co.jp') {
-        $from_name = mb_convert_encoding($from_name, 'ISO-2022-JP', 'UTF-8'); // 追加
-      } else {
-        $from_name = mb_convert_encoding($from_name, 'UTF-8'); // 追加
-      }
-         
+        
+      $from_name = mb_convert_encoding($from_name, 'UTF-8'); // 追加
       $from_addr = mb_convert_encoding($from_addr, 'UTF-8'); // 追加
     }
     
@@ -532,11 +525,8 @@
       $to    = ($to_name != '')
           ? ('"' . mb_encode_mimeheader(mb_convert_kana($to_name, "KV"), 'UTF-8') . '" <' . $to_addr . '>')
           : $to_addr;
-      if ($email_symbol_str == 'excite.co.jp') {
-        $from  = ($from_name != '') ? ('"' . mb_encode_mimeheader(mb_convert_kana($from_name, "KV"), 'ISO-2022-JP')  . '" <' . $from_addr. '>') : $from_addr;
-      } else {
-        $from  = ($from_name != '') ? ('"' .  mb_encode_mimeheader(mb_convert_kana($from_name, "KV"), 'UTF-8')  . '" <' . $from_addr. '>') : $from_addr;
-      }
+       
+      $from  = ($from_name != '') ? ('"' .  mb_encode_mimeheader(mb_convert_kana($from_name, "KV"), 'UTF-8')  . '" <' . $from_addr. '>') : $from_addr;
       
       if (is_string($headers)) {
         $headers = explode($this->lf, trim($headers));
