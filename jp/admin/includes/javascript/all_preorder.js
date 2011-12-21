@@ -779,6 +779,7 @@ function showPreOrdersInfo(oID,ele,popup_type){
   if (popup_type == 1) {
     data_str += "&popup=1";
     popup_num = 2;
+    ele = ele.parentNode; 
   }
   $.ajax({
 type:"POST",
