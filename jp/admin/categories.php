@@ -3077,11 +3077,11 @@ if (isset($nowColor) && $nowColor == $odd) {
     }
     $products_split = new splitPageResults($_GET['page'], MAX_DISPLAY_PRODUCTS_ADMIN, $products_query_raw, $products_query_numrows);
     $products_query = tep_db_query($products_query_raw);
-    $show_light = false; 
+    $highlight_symbol = false; 
     if (isset($_GET['pID'])) { 
       while ($products_list = tep_db_fetch_array($products_query)) {
          if ($products_list['products_id'] == $_GET['pID']) {
-           $show_light = true;
+           $highlight_symbol = true;
            break;
          }
       } 
@@ -3106,13 +3106,13 @@ if (isset($nowColor) && $nowColor == $odd) {
         $pInfo_array = tep_array_merge($products, $reviews);
         $pInfo = new objectInfo($pInfo_array);
       }
-      if (!$show_light) {
+      if (!$highlight_symbol) {
         $reviews_query = tep_db_query("select (avg(reviews_rating) / 5 * 100) as average_rating from " . TABLE_REVIEWS . " where products_id = '" . $products['products_id'] . "'");
         $reviews = tep_db_fetch_array($reviews_query);
         $pInfo_array = tep_array_merge($products, $reviews);
         $pInfo = new objectInfo($pInfo_array);
       }
-      $show_light = true; 
+      $highlight_symbol = true; 
 // 列を色違いにする
 // products list
 $even = 'dataTableSecondRow';
