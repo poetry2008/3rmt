@@ -241,10 +241,10 @@ if ($_POST['orders_id'] &&
 							'oID='.$orders['orders_id']);?>';"><font color="<?php echo $today_color; ?>"><?php echo $orders['orders_status_name']; ?></font></td>
                                                                                                                                                          <td style="border-bottom:1px solid
 #000000;background-color: darkred;" class="dataTableContent"
-                                                                                                                                                         onmouseover="showOrdersInfo('<?php echo
-					$orders['orders_id'];?>',this);"
-                                                                                                                                                         onmouseout="hideOrdersInfo();" align="right"><?php 
-                                                                                                                                                         echo '<a href="' . tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID','page')) . 'oID=' . $orders['orders_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
+                                                                                                                                                         onmouseover="if(popup_num == 1) showOrdersInfo('<?php echo $orders['orders_id'];?>',this, 0);"
+                                                                                                                                                         onmouseout="if(popup_num == 1) hideOrdersInfo(0);" align="right">
+                                                                                                                                                         <?php 
+                                                                                                                                                         echo '<a href="javascript:void(0);" onclick="showOrdersInfo(\''.$orders['orders_id'].'\', this, 1)">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
     ?>&nbsp;</td>
     </tr>
         <?php 
@@ -477,7 +477,11 @@ if ($_POST['orders_id'] &&
   $orders_info_raw = tep_db_query("select * from ".TABLE_ORDERS." where orders_id = '".$_POST['oid']."'"); 
   $orders_info = tep_db_fetch_array($orders_info_raw); 
   require(DIR_WS_FUNCTIONS . 'visites.php');
-  tep_get_orders_products_string($orders_info, true);
+  if ($_POST['popup'] == '1') {
+    tep_get_orders_products_string($orders_info, true, true);
+  } else {
+    tep_get_orders_products_string($orders_info, true);
+  }
 } else if (isset($_GET['action'])&&$_GET['action']=='get_oa_type') {
   $onsuit = false;
   $tnsuit = false;

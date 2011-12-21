@@ -237,7 +237,10 @@ $('#orders_info_box').css('top',offset).show();
 }
 
 // 列表右侧的订单信息隐藏
-function hideOrdersInfo(){
+function hideOrdersInfo(popup_type){
+  if (popup_type == 1) {
+    popup_num = 1; 
+  }
   $('#orders_info_box').html('');
   $('#orders_info_box').hide();
 }
@@ -771,10 +774,15 @@ ele.className='orders_computer_checked';
 }
 }
 
-function showPreOrdersInfo(oID,ele){
+function showPreOrdersInfo(oID,ele,popup_type){
+  data_str = "oid="+oID;
+  if (popup_type == 1) {
+    data_str += "&popup=1";
+    popup_num = 2;
+  }
   $.ajax({
 type:"POST",
-data:"oid="+oID,
+data:data_str,
 async:false, 
 url: 'ajax_preorders.php?action=show_right_preorder_info',
 success: function(msg) {

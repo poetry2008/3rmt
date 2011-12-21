@@ -54,11 +54,12 @@
 
 
 
-    <form action="<?php echo tep_href_link('keywords.php','site_id='.$_GET['site_id']) ; ?>" method="get">
+    <form action="<?php echo tep_href_link('keywords.php') ; ?>" method="get">
     <fieldset><!--<legend class="smallText"><b>xxxxx</b></legend>-->
     <table  border="0" align="center" cellpadding="0" cellspacing="2">
     <tr>
       <td class="smallText">
+      <input type="hidden" name="site_id" value="<?php echo $_GET['site_id'];?>"> 
       <?php echo KEYWORDS_SEARCH_START_TEXT;?> 
       <select name="s_y">
       <?php 

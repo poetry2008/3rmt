@@ -814,6 +814,7 @@ $(window).resize(function() {
 <?php
 }
 ?>
+var popup_num = 1;
 </script>
 </head>
 <body>
@@ -2660,13 +2661,17 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
       echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); 
     } else { 
     ?>
-    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onmouseover="showPreOrdersInfo('<?php echo $orders['orders_id'];?>',this);" onmouseout="hideOrdersInfo();">
+    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onmouseover="if(popup_num == 1) showPreOrdersInfo('<?php echo $orders['orders_id'];?>',this, 0);" onmouseout="if(popup_num == 1) hideOrdersInfo(0);">
     <?php
+      /* 
       if ($_GET['action'] == 'delete') {
         echo '<a href="' . tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID=' . $orders['orders_id']) .  '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
       } else {
         echo '<a href="' . tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('oID')) . 'oID=' . $orders['orders_id']) .  '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
       }
+      */
+      echo '<a href="javascript:void(0);" onclick="showPreOrdersInfo(\''.$orders['orders_id'].'\', this, 1);">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
+      
     } ?>&nbsp;</td>
     </tr>
 <?php }?>

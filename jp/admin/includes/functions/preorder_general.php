@@ -752,12 +752,14 @@ function   tep_pre_order_status_change($oID,$status){
   }
 }
 
-function tep_get_pre_orders_products_string($orders, $single = false) {
+function tep_get_pre_orders_products_string($orders, $single = false, $popup = false) {
   $str = '';
 
 
-  $str .= '<table border="0" cellpadding="0" cellspacing="0">';
-
+  $str .= '<table border="0" cellpadding="0" cellspacing="0" class="orders_info_div" width="100%">';
+  if ($popup) {
+    $str .= '<tr><td class="main" colspan="2" align="right"><a style="text-decoration:underline;" href="javascript:void(0);" onclick="hideOrdersInfo(1);"><img src="images/icons/note_close.gif" alt="close"></a></td><tr>';
+  }
   if (ORDER_INFO_TRANS_NOTICE == 'true') {
     if ($orders['orders_care_flag']) {
       $str .= '<tr>'; 

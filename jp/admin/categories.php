@@ -3077,6 +3077,16 @@ if (isset($nowColor) && $nowColor == $odd) {
     }
     $products_split = new splitPageResults($_GET['page'], MAX_DISPLAY_PRODUCTS_ADMIN, $products_query_raw, $products_query_numrows);
     $products_query = tep_db_query($products_query_raw);
+    $show_light = false; 
+    if (isset($_GET['pID'])) { 
+      while ($products_list = tep_db_fetch_array($products_query)) {
+         if ($products_list['products_id'] == $_GET['pID']) {
+           $show_light = true;
+           break;
+         }
+      } 
+    } 
+    $products_query = tep_db_query($products_query_raw);
     while ($products = tep_db_fetch_array($products_query)) {
       $products_count++;
       $rows++;
@@ -3096,7 +3106,13 @@ if (isset($nowColor) && $nowColor == $odd) {
         $pInfo_array = tep_array_merge($products, $reviews);
         $pInfo = new objectInfo($pInfo_array);
       }
-
+      if (!$show_light) {
+        $reviews_query = tep_db_query("select (avg(reviews_rating) / 5 * 100) as average_rating from " . TABLE_REVIEWS . " where products_id = '" . $products['products_id'] . "'");
+        $reviews = tep_db_fetch_array($reviews_query);
+        $pInfo_array = tep_array_merge($products, $reviews);
+        $pInfo = new objectInfo($pInfo_array);
+      }
+      $show_light = true; 
 // 列を色違いにする
 // products list
 $even = 'dataTableSecondRow';
@@ -3106,7 +3122,6 @@ if (isset($nowColor) && $nowColor == $odd) {
 } else {
   $nowColor = $odd;
 }
-
       if ( (isset($pInfo) && is_object($pInfo)) && ($products['products_id'] == $pInfo->products_id) ) {
         //echo '              <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) .  '&pID=' . $products['products_id'] .  '&action=new_product_preview&read=only') . '\'">' . "\n";
         echo '              <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" >' . "\n";
@@ -3335,7 +3350,8 @@ if ($ocertify->npermission >= 10) { //表示制限
 </table>
 </td>
                      <td class="dataTableContent" align="right">
-                      <?php if ( isset($pInfo) && (is_object($pInfo)) && ($products['products_id'] == $pInfo->products_id) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); } else { echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . (isset($_GET['search'])?'&search='.$_GET['search']:'').'">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>
+                      <?php if ( isset($pInfo) && (is_object($pInfo)) && ($products['products_id'] == $pInfo->products_id) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); }
+                        else { echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) .  (isset($_GET['search'])?'&search='.$_GET['search']:'').(isset($_GET['page'])?'&page='.$_GET['page']:'').'">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>
 &nbsp;</td>
                     </tr>
                     <?php
@@ -3369,7 +3385,7 @@ if ($ocertify->npermission >= 10) { //表示制限
     echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, $cPath_back . '&cID=' .  $current_category_id.'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '">' . tep_html_element_button(IMAGE_BACK) . '</a>&nbsp;';
   }
   if ((!isset($_GET['search']) || !$_GET['search']) && $ocertify->npermission >= 10) { //表示制限
-    echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&action=new_category') . '">' . tep_html_element_button(IMAGE_NEW_CATEGORY) .  '</a>&nbsp;<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&action=new_product') . '">' . tep_html_element_button(IMAGE_NEW_PRODUCT) . '</a>';
+    echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&action=new_category') . '">' . tep_html_element_button(IMAGE_NEW_CATEGORY) .  '</a>&nbsp;<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&action=new_product'.(isset($_GET['page'])?'&page='.$_GET['page']:'')) . '">' . tep_html_element_button(IMAGE_NEW_PRODUCT) . '</a>';
   }
 ?>&nbsp;</td>
                           </tr>
