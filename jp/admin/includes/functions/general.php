@@ -30,7 +30,6 @@ function one_time_pwd_forward401($page_name)
 'popup_image.php',
 'posts.php',
 'update_position.php',
-'ajax_order_change_total.php',
 'item_process.php',
 'oa_ajax.php',
 'preorder_item_process.php',
@@ -6739,8 +6738,7 @@ function tep_datetime_short_torihiki($raw_datetime) {
 
   return strftime(DATE_TIME_FORMAT_TORIHIKI, mktime($hour, $minute, $second, $month, $day, $year));
 }
-function
-tep_get_torihiki_date_radio($start_time,$radio_name="torihiki_time",$default_check=false){
+function tep_get_torihiki_date_radio($start_time,$radio_name="torihiki_time",$default_check=false){
   $arr = array();
   $time_str = date('H:i',$start_time);
   $time_arr = explode(':',$time_str);
@@ -6752,10 +6750,16 @@ tep_get_torihiki_date_radio($start_time,$radio_name="torihiki_time",$default_che
       if($show_row ==0 ){
         if($mim_start < 15){
           $mim_start = 15;
+          $arr[]=null;
         }else if($mim_start < 30){
           $mim_start = 30;
+          $arr[]=null;
+          $arr[]=null;
         }else if($mim_start < 45){
           $mim_start = 45;
+          $arr[]=null;
+          $arr[]=null;
+          $arr[]=null;
         }else if($mim_start >= 45){
           $mim_start = 0;
           break;
@@ -6783,4 +6787,70 @@ tep_get_torihiki_date_radio($start_time,$radio_name="torihiki_time",$default_che
     $mim_start = 0;
   }
   return $arr;
+}
+
+
+
+
+/*
+  取得唯一值
+*/
+function get_configuration_by_site_id_or_default($key,$site_id){
+  return get_configuration_by_site_id($key,$site_id)===false?get_configuration_by_site_id($key,0):get_configuration_by_site_id($key,$site_id);
+}
+//以下是配送使用的方法
+  function tep_get_address_by_customers_id($customers_id, $address_id = 1, $html = false, $boln = '', $eoln = "\n") {
+//ccdd
+    $address_sql = "select address_book_id,entry_firstname as firstname,
+        entry_lastname as lastname, entry_firstname_f as firstname_f,
+        entry_lastname_f as lastname_f, entry_company as company,
+        entry_street_address as street_address, entry_suburb as suburb, entry_city
+        as city, entry_postcode as postcode, entry_state as state, entry_zone_id as
+        zone_id, entry_country_id as country_id, entry_telephone as telephone from "
+        . TABLE_ADDRESS_BOOK . " where customers_id = '" . (int)$customers_id . "'";
+    $res_arr = array();
+    $address_query = tep_db_query($address_sql);
+    while($address = tep_db_fetch_array($address_query)){
+      $temp_arr = array();
+      $format_id = tep_get_address_format_id($address['country_id']);
+      $temp_arr['text'] = tep_address_format($format_id, $address, $html, $boln, $eoln);
+      $temp_arr['value'] = $address['address_book_id']; 
+      $res_arr[] = $temp_arr;
+    
+    }
+    return $res_arr;
+  }
+
+
+function tep_get_address_by_cid_aid($customers_id, $address_id = 1, $html = false, $boln = '', $eoln = "\n") {
+//ccdd
+    $address_sql = "select address_book_id,entry_firstname as firstname,
+        entry_lastname as lastname, entry_firstname_f as firstname_f,
+        entry_lastname_f as lastname_f, entry_company as company,
+        entry_street_address as street_address, entry_suburb as suburb, entry_city
+        as city, entry_postcode as postcode, entry_state as state, entry_zone_id as
+        zone_id, entry_country_id as country_id, entry_telephone as telephone from "
+        . TABLE_ADDRESS_BOOK . " where customers_id = '" . (int)$customers_id . "' 
+        and address_book_id ='".$address_id."'";
+    $res_arr = array();
+    $address_query = tep_db_query($address_sql);
+    while($address = tep_db_fetch_array($address_query)){
+      $temp_arr = array();
+      $format_id = tep_get_address_format_id($address['country_id']);
+      $temp_arr['text'] = tep_address_format($format_id, $address, $html, $boln, $eoln);
+      $temp_arr['value'] = $address['address_book_id']; 
+      $res_arr[] = $temp_arr;
+    
+    }
+    return $res_arr;
+  }
+function tep_get_products_list_by_order_id($oid){
+  $sql = "select * from " . TABLE_ORDERS_PRODUCTS . " where orders_id
+    = '" . $oid. "'";
+  $query = tep_db_query($sql);
+  $products_list = array();
+  while($row = tep_db_fetch_array($query)){
+    $products_list[] = $row;
+  }
+  return $products_list;
 }
