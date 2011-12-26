@@ -1511,7 +1511,7 @@ function forward404Unless($condition)
     number_format($p['products_attention_1_3'] * $cnt);
   }
   
-  function tep_get_torihiki_select_by_products($product_ids = null)
+  function tep_get_torihiki_select_by_products($product_ids = null,$select_name='')
   {
     $torihiki_list = array();
     $torihiki_array = tep_get_torihiki_by_products($product_ids);
@@ -1521,7 +1521,11 @@ function forward404Unless($condition)
       );
     }
     if (!isset($torihikihouhou)) $torihikihouhou=NULL;
+    if($select_name){
+    return tep_draw_pull_down_menu($select_name, $torihiki_list, $torihikihouhou);
+    }else{
     return tep_draw_pull_down_menu('torihikihouhou', $torihiki_list, $torihikihouhou);
+    }
   }
   
   function tep_get_torihiki_by_products($product_ids = null)
@@ -2611,7 +2615,8 @@ function tep_unlink_temp_dir($dir)
                pd.romaji, 
                pd.products_url,
                pd.products_viewed,
-               pd.preorder_status
+               pd.preorder_status,
+               pd.shipping_flag
         FROM " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
         WHERE p.products_id = '" . $pid . "' 
           AND pd.products_id = '" .  $pid . "'" . " 
@@ -3025,7 +3030,9 @@ function orders_updated($orders_id) {
   tep_db_query("update ".TABLE_ORDERS." set finished = ( select finished from ".TABLE_ORDERS_STATUS." where orders_status.orders_status_id=orders.orders_status ) where orders_id='".$orders_id."'");
   tep_db_query("update ".TABLE_ORDERS." set orders_status_name = ( select orders_status_name from ".TABLE_ORDERS_STATUS." where orders_status.orders_status_id=orders.orders_status ) where orders_id='".$orders_id."'");
   tep_db_query("update ".TABLE_ORDERS." set orders_status_image = ( select orders_status_image from ".TABLE_ORDERS_STATUS." where orders_status.orders_status_id=orders.orders_status ) where orders_id='".$orders_id."'");
+  /*
   tep_db_query("update ".TABLE_ORDERS_PRODUCTS." set torihiki_date = ( select torihiki_date from ".TABLE_ORDERS." where orders.orders_id=orders_products.orders_id ) where orders_id='".$orders_id."'");
+  */
 }
 
 function replace_store_name($str) {
@@ -4563,10 +4570,17 @@ function tep_get_torihiki_date_radio($start_time,$radio_name="torihiki_time"){
       if($show_row ==0 ){
         if($mim_start < 15){
           $mim_start = 15;
+          $arr[]=null;
         }else if($mim_start < 30){
           $mim_start = 30;
+        }else if($mim_start < 30){
+        }else if($mim_start < 30){
         }else if($mim_start < 45){
           $mim_start = 45;
+          $arr[]=null;
+        }else if($mim_start < 30){
+        }else if($mim_start < 30){
+        }else if($mim_start < 30){
         }else if($mim_start >= 45){
           $mim_start = 0;
           break;
@@ -4588,4 +4602,88 @@ function tep_get_torihiki_date_radio($start_time,$radio_name="torihiki_time"){
     $mim_start = 0;
   }
   return $arr;
+}
+
+
+
+
+
+function get_configuration_by_site_id($key, $site_id = '0',$table_name='') {
+  if($table_name==''){
+    $config = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$key."' and site_id='".$site_id."'"));
+  }else{
+    $config = tep_db_fetch_array(tep_db_query("select * from ".$table_name." where configuration_key='".$key."' and site_id='".$site_id."'"));
+  }
+  if ($config) {
+    return $config['configuration_value'];
+  } else {
+    return false;
+  }
+}
+
+
+/*
+  取得唯一值
+*/
+function get_configuration_by_site_id_or_default($key,$site_id){
+  return get_configuration_by_site_id($key,$site_id)===false?get_configuration_by_site_id($key,0):get_configuration_by_site_id($key,$site_id);
+}
+
+
+
+//以下是配送使用的方法
+  function tep_get_address_by_customers_id($customers_id, $address_id = 1, $html = false, $boln = '', $eoln = "\n") {
+//ccdd
+    $address_sql = "select address_book_id,entry_firstname as firstname,
+        entry_lastname as lastname, entry_firstname_f as firstname_f,
+        entry_lastname_f as lastname_f, entry_company as company,
+        entry_street_address as street_address, entry_suburb as suburb, entry_city
+        as city, entry_postcode as postcode, entry_state as state, entry_zone_id as
+        zone_id, entry_country_id as country_id, entry_telephone as telephone from "
+        . TABLE_ADDRESS_BOOK . " where customers_id = '" . (int)$customers_id . "'";
+    $res_arr = array();
+    $address_query = tep_db_query($address_sql);
+    while($address = tep_db_fetch_array($address_query)){
+      $temp_arr = array();
+      $format_id = tep_get_address_format_id($address['country_id']);
+      $temp_arr['text'] = tep_address_format($format_id, $address, $html, $boln, $eoln);
+      $temp_arr['value'] = $address['address_book_id']; 
+      $res_arr[] = $temp_arr;
+    
+    }
+    return $res_arr;
+  }
+
+
+function tep_get_address_by_cid_aid($customers_id, $address_id = 1, $html = false, $boln = '', $eoln = "\n") {
+//ccdd
+    $address_sql = "select address_book_id,entry_firstname as firstname,
+        entry_lastname as lastname, entry_firstname_f as firstname_f,
+        entry_lastname_f as lastname_f, entry_company as company,
+        entry_street_address as street_address, entry_suburb as suburb, entry_city
+        as city, entry_postcode as postcode, entry_state as state, entry_zone_id as
+        zone_id, entry_country_id as country_id, entry_telephone as telephone from "
+        . TABLE_ADDRESS_BOOK . " where customers_id = '" . (int)$customers_id . "' 
+        and address_book_id ='".$address_id."'";
+    $res_arr = array();
+    $address_query = tep_db_query($address_sql);
+    while($address = tep_db_fetch_array($address_query)){
+      $temp_arr = array();
+      $format_id = tep_get_address_format_id($address['country_id']);
+      $temp_arr['text'] = tep_address_format($format_id, $address, $html, $boln, $eoln);
+      $temp_arr['value'] = $address['address_book_id']; 
+      $res_arr[] = $temp_arr;
+    
+    }
+    return $res_arr;
+  }
+function tep_get_products_list_by_order_id($oid){
+  $sql = "select * from " . TABLE_ORDERS_PRODUCTS . " where orders_id
+    = '" . $oid. "'";
+  $query = tep_db_query($sql);
+  $products_list = array();
+  while($row = tep_db_fetch_array($query)){
+    $products_list[] = $row;
+  }
+  return $products_list;
 }

@@ -65,7 +65,9 @@ $order_totals = $order_total_modules->process();
   
 # Select
 //$cnt = strlen($NewOid);
-
+//这里需要提取最小时间 存入ORDER 表
+sort($_SESSION['shipping_date_arr']);
+$insert_torihiki_date = $_SESSION['shipping_date_arr'][0];
 // 2003-06-06 add_telephone
 $sql_data_array = array('orders_id'         => $insert_id,
                         'customers_id'      => $customer_id,
@@ -172,7 +174,9 @@ for ($i=0, $n=sizeof($order_totals); $i<$n; $i++) {
                           'text' => $order_totals[$i]['text'],
                           'value' => $order_totals[$i]['value'], 
                           'class' => $order_totals[$i]['code'], 
-                          'sort_order' => $order_totals[$i]['sort_order']);
+                          'sort_order' => $order_totals[$i]['sort_order'],
+                          'shipping_pid' => $order_totals[$i]['shipping_pid']
+                          );
   // ccdd
   if($telecom_option_ok!=true){
   $telecom_option_ok = $payment_modules->getexpress($order_totals,$i);
@@ -277,6 +281,21 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
       $chara = $_SESSION['character'][$character_id];
     }
   }
+  //insert some thing to products description
+  if($_SESSION['each_product_shipping']){
+    $address_book_id = $shipping_method_info_arr[$order->products[0]['id']]['shipping_address'];
+    $s_torihiki_date = $shipping_method_info_arr[$order->products[0]['id']]['insert_torihiki_date'];
+    $e_torihiki_date = $shipping_method_info_arr[$order->products[0]['id']]['insert_torihiki_date_end'];
+    $s_torihiki_houhou = $shipping_method_info_arr[$order->products[0]['id']]['torihikihouhou'];
+    $s_method = $shipping_method_info_arr[$order->products[0]['id']]['shipping_method'];
+  }else{
+    $address_book_id = $shipping_method_info_arr['all_products']['shipping_address'];
+    $s_torihiki_date = $shipping_method_info_arr['all_products']['insert_torihiki_date'];
+    $e_torihiki_date = $shipping_method_info_arr['all_products']['insert_torihiki_date_end'];
+    $s_torihiki_houhou = $shipping_method_info_arr['all_products']['torihikihouhou'];
+    $s_method = $shipping_method_info_arr['all_products']['shipping_method'];
+  }
+
   
   $sql_data_array = array('orders_id' => $insert_id, 
                           'products_id' => tep_get_prid($order->products[$i]['id']), 
@@ -288,7 +307,12 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
                           'products_quantity' => $order->products[$i]['qty'],
                           'products_rate' => tep_get_products_rate(tep_get_prid($order->products[$i]['id'])),
                           'products_character' =>  stripslashes($chara),
-                          'site_id' => SITE_ID
+                          'site_id' => SITE_ID,
+                          'torihiki_date' => $s_torihiki_date,
+                          'torihiki_date_end' => $e_torihiki_date,
+                          'address_book_id' => $address_book_id,
+                          'torihiki_houhou' => $s_torihiki_houhou,
+                          'shipping_method' => $s_method
                           );
   // ccdd
   tep_db_perform(TABLE_ORDERS_PRODUCTS, $sql_data_array);
@@ -451,7 +475,10 @@ $mailoption['ORDER_TOTAL']      = $currencies->format(abs($ot['value']));
 @$payment_class = $$payment;
 $mailoption['TORIHIKIHOUHOU']   = $torihikihouhou;
 $mailoption['ORDER_PAYMENT']    = $payment_class->title ;
-$mailoption['ORDER_TTIME']      =  str_string($date) . $hour . '時' . $min . '分　（24時間表記）' ;
+$show_time = explode('-',$torihiki_time);
+$show_time_str = str_replace(':','時',$show_time[0])."分 ～ ".
+          str_replace(':','時',$show_time[1])."分";
+$mailoption['ORDER_TTIME']      =  str_string($date) ."  ". $show_time_str.'　（24時間表記）' ;
 $mailoption['ORDER_COMMENT']    = $_SESSION['mailcomments'];//
 unset($_SESSION['comments']);
 $mailoption['ADD_INFO']    = str_replace("\n".$mailoption['ORDER_COMMENT'],'',trim($order->info['comments']));
@@ -597,8 +624,7 @@ if (MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
   
 tep_session_unregister('torihikihouhou');
 tep_session_unregister('date');
-tep_session_unregister('hour');
-tep_session_unregister('min');
+tep_session_register('torihiki_time');
 tep_session_unregister('insert_torihiki_date');
   
 tep_session_unregister('bank_name');

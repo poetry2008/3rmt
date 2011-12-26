@@ -32,8 +32,8 @@ define('TEXT_CONTINUE_CHECKOUT_PROCEDURE', '「次へ進む」をクリックし
 # Add ds-style
 define('TEXT_CARACTOR', 'お届け先キャラクター名:');
 define('TEXT_TORIHIKIHOUHOU', 'オプション:');
-define('TEXT_TORIHIKIKIBOUBI', '取引希望日:');
-define('TEXT_TORIHIKIKIBOUJIKAN', '取引希望時間:');
+define('TEXT_TORIHIKIKIBOUBI', 'お届け希望日:');
+define('TEXT_TORIHIKIKIBOUJIKAN', 'お届け希望日時間:');
 
 define('TEXT_CHECK_EIJI', '(英字)');
 define('TEXT_CHECK_24JI', '<b>(24時間表記)</b>');
@@ -44,4 +44,19 @@ define('TEXT_ERROR_BAHAMUTO_EIJI', '<span class="errorText">【お届け先キ�
 define('TEXT_ERROR_TORIHIKIHOUHOU', '<span class="errorText">【オプション】を選択してください。</span>');
 define('TEXT_ERROR_DATE', '<span class="errorText">【取引希望日】を選択してください。</span>');
 define('TEXT_ERROR_JIKAN', '<span class="errorText">【取引希望時間】を選択してください。</span>');
+
+
+// from checkout product
+
+define('NAVBAR_TITLE', 'キャラクター名の入力');
+define('NAVBAR_TITLE_1', 'ショッピングカート');
+define('HEADING_TITLE', 'お客様のキャラクター名を入力してください。');
+
+define('TEXT_DATE_ADDED', '登録日:');
+define('TEXT_MANUFACTURER', 'メーカー:');
+define('TEXT_PRICE', '価格:');
+define('TEXT_CHARACTER', 'お客様のキャラクター名：');
+define('TEXT_TORIHIKIBOUBI_DEFAULT_SELECT','ご希望のお届け日時を指定してください');
+define('TEXT_CREATE_ADDRESS_BOOK','お届け先を指定する');
+define('TEXT_USE_ADDRESS_BOOK','登録先に届ける');
 ?>

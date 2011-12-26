@@ -20,7 +20,8 @@
     }
 
     function process() {
-      global $order, $currencies, $payment, $point, $_POST, $cart;
+      global $order, $currencies, $payment, $point, $_POST,
+             $cart,$shipping_method_info_arr;
 
       $total = @$order->info['total'];
       if ((MODULE_ORDER_TOTAL_CODT_STATUS == 'true')
@@ -66,6 +67,12 @@
         $total += $buying_fee; 
       }
     }
+    //把所有的配送费用加入到 总额里面
+    foreach($shipping_method_info_arr as $shipping_key => $shipping_method_info){
+      $total += $shipping_method_info['shipping_cost'];
+    }
+    
+
                               /*
                               'text' => '<b>' . $currencies->format_total(
                                 $total, 

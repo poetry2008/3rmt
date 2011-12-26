@@ -109,15 +109,16 @@
   // postcode
   if ($process == true) {
     if ($postcode_error == true) {
-      $a_value = tep_draw_input_field('postcode') . '&nbsp;' . ENTRY_POST_CODE_ERROR;
+      $a_value = tep_draw_input_field('postcode','',' onkeyup="set_all_city()" ') . '&nbsp;' . ENTRY_POST_CODE_ERROR;
     } else {
       $a_value = $postcode . tep_draw_hidden_field('postcode');
     }
   } else {
-    $a_value = tep_draw_input_field('postcode') . '&nbsp;' . ENTRY_POST_CODE_TEXT;
+    $a_value = tep_draw_input_field('postcode','',' onkeyup="set_all_city()" ') . '&nbsp;' . ENTRY_POST_CODE_TEXT;
   }
   $address_form->setFormLine('postcode',ENTRY_POST_CODE,$a_value);
 
+  
   // city
   if ($process == true) {
     if ($city_error == true) {
@@ -153,6 +154,7 @@
   $address_form->setFormLine('state',ENTRY_STATE,$a_value);
 
   // country
+  /*
   if ($process == true) {
     if ($country_error == true) {
       $a_value = tep_get_country_list('country') . '&nbsp;' . ENTRY_COUNTRY_ERROR;
@@ -165,6 +167,7 @@
   $address_form->setFormLine('country',ENTRY_COUNTRY,$a_value);
   $a_hidden = tep_draw_hidden_field('country',(isset($country) ? $country : STORE_COUNTRY));
   $address_form->setFormHidden('country',$a_hidden); // in case without country
+  */
 
 // 2003-06-06 add_telephone
   // telephone

@@ -32,6 +32,20 @@
 
   $error   = false;
   $process = false;
+  // ajax 请求
+  if (isset($_POST['action']) && ($_POST['action'] == 'get_zipcode')) {
+    $zipcode = tep_db_prepare_input($_POST['zipcode']);
+    $zipcode_sql = "select yc1,yc2,yc3 from ".TABLE_ZIPCODE." WHERE
+      zipcode = '".$zipcode."' limit 1";
+    $zipcode_query = tep_db_query($zipcode_sql);
+    if($zipcode_row = tep_db_fetch_array($zipcode_query)){
+      echo $zipcode_row['yc1']."|||".$zipcode_row['yc2']." ".$zipcode_row['yc3'];
+    }
+    exit;
+  }
+  // ajax end
+
+
   // 以下是处理表单部分
   if (isset($_POST['action']) && ($_POST['action'] == 'submit')) {
 // process a new shipping address
@@ -122,12 +136,14 @@
         $city_error = false;
       }
 
+      /*
       if (strlen($country) < 1) {
         $country_error = true;
         $error = true;
       } else {
         $country_error = false;
       }
+      */
 
       if (ACCOUNT_STATE == 'true') {
         if ($entry_country_error == true) {
@@ -274,7 +290,34 @@
   $breadcrumb->add(NAVBAR_TITLE_2, tep_href_link(FILENAME_CHECKOUT_SHIPPING_ADDRESS, '', 'SSL'));
 ?>
 <?php page_head();?>
+<script type="text/javascript" src="./js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript"><!--
+function set_all_city(){
+//自动设置城市 乡村
+  var zipcode       = document.checkout_address.postcode.value;
+  if(zipcode.length == 7 ){
+  $.ajax({
+    url: '<?php echo FILENAME_CHECKOUT_SHIPPING_ADDRESS;?>',
+    type: 'POST',
+    data: 'action=get_zipcode&zipcode='+zipcode,
+    dataType: 'text',
+    async: false,
+    success: function(_data){
+      if(_data){
+        str = _data.split('|||');
+        $("#state").val(str[0]);
+        document.checkout_address.city.value = str[1];
+      }else{
+        //邮编错误处理
+        alert("post error");
+        document.checkout_address.postcode.value = '';
+      }
+    }
+   });
+  }
+}
+
+
 var selected;
 
 function selectRowEffect(object, buttonSelect) {
@@ -312,14 +355,18 @@ function check_form() {
 
   var firstname      = document.checkout_address.firstname.value;
   var lastname       = document.checkout_address.lastname.value;
+  var firstname_f    = document.checkout_address.firstname_f.value;
+  var lastname_f     = document.checkout_address.lastname_f.value;
   var street_address = document.checkout_address.street_address.value;
   var postcode       = document.checkout_address.postcode.value;
   var city           = document.checkout_address.city.value;
   var telephone      = document.checkout_address.telephone.value;
 
+  /*
   if (firstname == '' && lastname == '' && street_address == '') {
     return true;
   }
+  */
 
 <?php
   if (ACCOUNT_GENDER == 'true') {
@@ -379,11 +426,12 @@ function check_form() {
   }
 ?>
 
+  /*
   if (document.checkout_address.country.value == 0) {
     error_message = error_message + "<?php echo JS_COUNTRY; ?>";
     error = 1;
   }
-
+  */
 <?php // 2003-06-06 add_telephone ?>
   if (telephone == '' || telephone.length < <?php echo ENTRY_TELEPHONE_MIN_LENGTH; ?>) {
     error_message = error_message + "<?php echo JS_TELEPHONE; ?>";
@@ -402,14 +450,11 @@ function check_form() {
 <body> 
 <div class="body_shadow" align="center"> 
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
-  <!-- header_eof //--> 
-  <!-- body //--> 
   <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border"> 
     <tr> 
-      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"> <!-- left_navigation //--> 
+      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"> 
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
-        <!-- left_navigation_eof //--> </td> 
-      <!-- body_text //--> 
+        </td> 
       <td valign="top" id="contents"><?php echo tep_draw_form('checkout_address', tep_href_link(FILENAME_CHECKOUT_SHIPPING_ADDRESS, '', 'SSL'), 'post', 'onSubmit="return check_form();"'); ?><h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1> 
         
         <div> 
@@ -666,15 +711,15 @@ function check_form() {
           </table> 
           </form> 
         </div></td> 
-      <!-- body_text_eof //--> 
-      <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation //--> 
+      <!-- body_text_eof --> 
+      <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation --> 
         <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-        <!-- right_navigation_eof //--> </td> 
+        <!-- right_navigation_eof --> </td> 
   </table> 
-  <!-- body_eof //--> 
-  <!-- footer //--> 
+  <!-- body_eof --> 
+  <!-- footer --> 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
-  <!-- footer_eof //--> 
+  <!-- footer_eof --> 
 </div> 
 </body>
 </html>

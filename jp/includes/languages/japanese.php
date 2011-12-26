@@ -155,7 +155,7 @@ define('BOX_TELL_A_FRIEND_TEXT', 'この商品のURLを友達にメールする'
 
 // checkout procedure text
 define('CHECKOUT_BAR_PRODUCTS',    'キャラクター名');
-define('CHECKOUT_BAR_DELIVERY',    '取引日時');
+define('CHECKOUT_BAR_DELIVERY',    '配達方法');
 define('CHECKOUT_BAR_PAYMENT',     '支払方法');
 define('CHECKOUT_BAR_CONFIRMATION','最終確認');
 define('CHECKOUT_BAR_FINISHED',    '手続完了!');
@@ -236,7 +236,7 @@ define('ENTRY_SUBURB_ERROR', '');
 define('ENTRY_SUBURB_TEXT', '');
 define('ENTRY_POST_CODE', '郵便番号:');
 define('ENTRY_POST_CODE_ERROR', '&nbsp;<small><font color="#FF0000">少なくても ' . ENTRY_POSTCODE_MIN_LENGTH . ' 文字</font></small>');
-define('ENTRY_POST_CODE_TEXT', '&nbsp;<small>(例. 331-0814) <font color="#AABBDD">必須</font></small>');
+define('ENTRY_POST_CODE_TEXT', '&nbsp;<small>(例. 0010000) <font color="#AABBDD">必須</font></small>');
 define('ENTRY_CITY', '市区町村:');
 define('ENTRY_CITY_ERROR', '&nbsp;<small><font color="#FF0000">少なくても ' . ENTRY_CITY_MIN_LENGTH . ' 文字</font></small>');
 define('ENTRY_CITY_TEXT', '&nbsp;<small>(例. さいたま市) <font color="#AABBDD">必須</font></small>');

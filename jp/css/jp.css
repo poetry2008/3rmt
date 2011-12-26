@@ -1144,3 +1144,30 @@ searching
 .input_text { width:200px; height:20px;}
 .input_text_short { width:40px; height:20px; text-align:right;}
 .information_color{background-color: #FDEBAC; color: #000000; padding:5px; margin:5px; width:100%;}
+
+.all_torihiki_radio ul{ clear:both; text-align:center; font-size:12px;}
+.all_torihiki_radio li{ float:left; list-style:none; width:200px;}
+
+/*new*/
+.float_left{
+	float:left;
+}
+.shipping_frame{
+	float:left;
+	padding:5px 0 0 15px;
+	font-size:12px;
+	line-height:21px;
+}
+.box_content{
+	padding:5px;
+	margin:5px;
+	overflow:hidden;
+}
+.frame_width{
+	width:15%;
+	float:left;
+	font-size:12px;
+}
+.all_torihiki_radio{ 
+	float:left;
+}

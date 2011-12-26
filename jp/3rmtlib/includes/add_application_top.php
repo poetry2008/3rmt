@@ -132,6 +132,7 @@
   define('FILENAME_EMAIL_TROUBLE', 'email_trouble.php');
 
 // define the database table names used in the project
+  define('TABLE_ZIPCODE', 'zcode'); 
   define('TABLE_PREORDERS_OA_FORMVALUE', 'preorders_oa_formvalue'); 
   define('TABLE_PREORDERS', 'preorders');
   define('TABLE_PREORDERS_MAIL', 'preorders_mail');
