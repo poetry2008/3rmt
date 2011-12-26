@@ -3,70 +3,27 @@
    $Id$
  */
 
-class buyingpoint {
-  var $site_id, $code, $title, $description, $enabled, $s_error, $n_fee, $email_footer;
-
-  // class constructor
-  function buyingpoint ($site_id = 0) {
-    global $order;
-
-    $this->site_id = $site_id;
-
+class buyingpoint extends basePayment  implements paymentInterface  {  
+  var $site_id, $code, $title, $description, $enabled, $s_error, $n_fee, $email_footer, $show_payment_info, $additional_title;
+  
+  function loadSpecialSettings($site_id=0){
+    $this->site_id = $site_id;    
     $this->code        = 'buyingpoint';
-    $this->title       = MODULE_PAYMENT_BUYINGPOINT_TEXT_TITLE;
-    $this->description = MODULE_PAYMENT_BUYINGPOINT_TEXT_DESCRIPTION;
-    $this->explain       = MODULE_PAYMENT_BUYINGPOINT_TEXT_EXPLAIN;
-    $this->sort_order  = MODULE_PAYMENT_BUYINGPOINT_SORT_ORDER;
-    $this->enabled     = ((MODULE_PAYMENT_BUYINGPOINT_STATUS == 'True') ? true : false);
-
-    if ((int)MODULE_PAYMENT_BUYINGPOINT_ORDER_STATUS_ID > 0) {
-      $this->order_status = MODULE_PAYMENT_BUYINGPOINT_ORDER_STATUS_ID;
-    }
-
-    if (is_object($order)) $this->update_status();
-
-    $this->email_footer = MODULE_PAYMENT_BUYINGPOINT_TEXT_EMAIL_FOOTER;
+    $this->show_payment_info = 0;
+    $this->additional_title = TS_MODULE_PAYMENT_BUYINGPOINT_ADDITIONAL_TEXT_TITLE; 
+  }
+  
+  function fields($theData, $back=false){
   }
 
-  // class methods
-  function update_status() {
-    global $order;
-    return true;
-  }
-
-  function calc_fee($total_cost) {
-    return 0;
-  }
+  
 
   function javascript_validation() {
     return false;
   }
 
-  function selection() {
-    global $currencies;
-    global $order;
-
-    $total_cost = $order->info['total'];
-    $f_result = $this->calc_fee($total_cost); 
-
-    $added_hidden = $f_result ? tep_draw_hidden_field('point_order_fee', $this->n_fee):tep_draw_hidden_field('point_order_fee_error', $this->s_error);
-
-    if (!empty($this->n_fee)) {
-      $s_message = $f_result ? (MODULE_PAYMENT_BUYINGPOINT_TEXT_FEE . '&nbsp;' .  $currencies->format($this->n_fee)):('<font color="#FF0000">'.$this->s_error.'</font>'); 
-    } else {
-      $s_message = $f_result ? '':('<font color="#FF0000">'.$this->s_error.'</font>'); 
-    }
-    return array('id' => $this->code,
-        'module' => 'ポイントの加算',
-        'fields' => array(
-          array('title' => str_replace('#STORE_NAME#', STORE_NAME, $this->description), 'field' => ''),
-          array('title' => $s_message, 'field' => '')
-          ) 
-        );
-  }
-
   function pre_confirmation_check() {
-    return false;
+    return true;
   }
 
   function confirmation() {
@@ -77,15 +34,14 @@ class buyingpoint {
     $s_result = !$_POST['point_order_fee_error'];
     $this->calc_fee($order->info['total']);
     if (!empty($this->n_fee)) {
-      //$s_message = $s_result ? (MODULE_PAYMENT_BUYINGPOINT_TEXT_FEE . '&nbsp;' .  $currencies->format($this->n_fee)):('<font color="#FF0000">'.$_POST['point_order_fee_error'].'</font>'); 
       $s_message = $s_result ? '':('<font color="#FF0000">'.$_POST['point_order_fee_error'].'</font>'); 
     } else {
       $s_message = $s_result ? '':('<font color="#FF0000">'.$_POST['point_order_fee_error'].'</font>'); 
     }
     return array(
-        'title' => nl2br(constant("MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_CONFIRMATION")),
+        'title' => nl2br(constant("TS_MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_CONFIRMATION")),
         'fields' => array(
-          array('title' => constant("MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_SHOW"), 'field' => ''),  
+          array('title' => constant("TS_MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_SHOW"), 'field' => ''),  
           array('title' => $s_message, 'field' => '')  
           )           
         );
@@ -108,7 +64,7 @@ class buyingpoint {
       $total += intval($_POST['point_order_fee']); 
     }
 
-    $s_message = $_POST['point_order_fee_error']?$_POST['point_order_fee_error']:sprintf(MODULE_PAYMENT_BUYINGPOINT_TEXT_MAILFOOTER, $currencies->format($total), $currencies->format($_POST['point_order_fee']));
+    $s_message = $_POST['point_order_fee_error']?$_POST['point_order_fee_error']:sprintf(TS_MODULE_PAYMENT_BUYINGPOINT_TEXT_MAILFOOTER, $currencies->format($total), $currencies->format($_POST['point_order_fee']));
 
     return tep_draw_hidden_field('point_order_message', htmlspecialchars($s_message)). tep_draw_hidden_field('point_order_fee', $_POST['point_order_fee']);
     //return false;
@@ -125,17 +81,7 @@ class buyingpoint {
     return false;
   }
 
-  function get_error() {
-    global $_POST, $_GET;
 
-    if (isset($_GET['payment_error']) && (strlen($_GET['payment_error']) > 0)) {
-      $error_message = MODULE_PAYMENT_BUYINGPOINT_TEXT_ERROR_MESSATE;
-      return array('title' => $this->title.' エラー!', 'error' => $error_message);
-    } else {
-      return false;
-    }
-    //return false;
-  }
 
   function check() {
     if (!isset($this->_check)) {
@@ -154,9 +100,6 @@ class buyingpoint {
     tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added, site_id) values ('表示設定', 'MODULE_PAYMENT_BUYINGPOINT_LIMIT_SHOW', 'a:2:{i:0;s:1:\"1\";i:1;s:1:\"2\";}', '表示設定', '6', '1', 'tep_cfg_payment_checkbox_option(array(\'1\', \'2\'), ', now(), ".$this->site_id.");");
   }
 
-  //function remove() {
-  //  tep_db_query("delete from " . TABLE_CONFIGURATION . " where configuration_key in ('" . implode("', '", $this->keys()) . "') and site_id = '".$this->site_id."'");
-  //}
 
   function keys() {
     return array(

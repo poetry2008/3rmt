@@ -36,7 +36,7 @@
           include(DIR_WS_LANGUAGES . $language . '/modules/shipping/' . $include_modules[$i]['file']);
           include(DIR_WS_MODULES . 'shipping/' . $include_modules[$i]['file']);
 
-          $GLOBALS[$include_modules[$i]['class']] = new $include_modules[$i]['class'];
+          //          $GLOBALS[$include_modules[$i]['class']] = new $include_modules[$i]['class'];
         }
       }
     }

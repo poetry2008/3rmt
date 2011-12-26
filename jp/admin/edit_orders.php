@@ -936,7 +936,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
               <tr>
                 <td class="main" valign="top"><b><?php echo EDIT_ORDERS_PAYMENT_METHOD;?></b></td>
                 <td class="main">
-                  <?php echo tep_payment_method_menu($order->info['payment_method']);?>
+    <?php echo payment::makePaymentListPullDownMenu($order->info['payment_method']);?>
                   <?php echo EDIT_ORDERS_PAYMENT_METHOD_READ;?> 
                 </td>
               </tr>

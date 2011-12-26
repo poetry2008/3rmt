@@ -7,15 +7,12 @@
     var $site_id, $title, $output;
 
     function ot_total($site_id = 0) {
-
       $this->site_id = $site_id;
-
       $this->code = 'ot_total';
       $this->title = MODULE_ORDER_TOTAL_TOTAL_TITLE;
       $this->description = MODULE_ORDER_TOTAL_TOTAL_DESCRIPTION;
       $this->enabled = ((MODULE_ORDER_TOTAL_TOTAL_STATUS == 'true') ? true : false);
       $this->sort_order = MODULE_ORDER_TOTAL_TOTAL_SORT_ORDER;
-
       $this->output = array();
     }
 
@@ -24,10 +21,10 @@
 
       $total = @$order->info['total'];
       if ((MODULE_ORDER_TOTAL_CODT_STATUS == 'true')
-          && ($payment == 'cod_table')
-          && isset($_POST['codt_fee'])
-          && (0 < intval($_POST['codt_fee']))) {
-        $total += intval($_POST['codt_fee']);
+          //          && ($payment == 'cod_table')
+          && isset($_POST['code_fee'])
+          && (0 < intval($_POST['code_fee']))) {
+        $total += intval($_POST['code_fee']);
       }
     
     //Add point

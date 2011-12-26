@@ -1279,11 +1279,11 @@ function forward404Unless($condition)
 
     return $count;
   }
-
+/*
   function tep_count_payment_modules() {
     return tep_count_modules(MODULE_PAYMENT_INSTALLED);
   }
-
+*/
   function tep_count_shipping_modules() {
     return tep_count_modules(MODULE_SHIPPING_INSTALLED);
   }
@@ -2755,7 +2755,7 @@ function tep_unlink_temp_dir($dir)
     }
     return $questions;
   }
-  
+/*  
   function calc_buy_handle($total)
   {
     $buy_table_fee = split("[:,]", MODULE_PAYMENT_BUYING_COST);
@@ -2772,7 +2772,7 @@ function tep_unlink_temp_dir($dir)
     }
     return $buying_fee; 
   }
-
+*/
 function tep_orders_status_finished($osid){
     $query = tep_db_query("
         select * 
@@ -3792,27 +3792,6 @@ function tep_only_sell_product(){
   return true;
 
 }
-
-function tep_whether_show_payment($payment_key, $guest_chk) {
-
-  $payment_arr = unserialize($payment_key);  
-  
-  if (empty($payment_arr)) {
-    return false; 
-  }
-  if (count($payment_arr) == 1) { 
-    if ($payment_arr[0] == 1) {
-      if ($guest_chk != 0) {
-        return false; 
-      }
-    } else {
-      if ($guest_chk == 0) {
-        return false; 
-      }
-    }
-  }
-  return true;
-}
   
 function tep_get_all_subcategories($parent_id) 
 {
@@ -4375,7 +4354,7 @@ function tep_get_preorder_end_num()
   
   return '01';
 }
-
+/*
 function tep_preorder_get_payment_list()
 {
   global $language; 
@@ -4398,6 +4377,7 @@ function tep_preorder_get_payment_list()
   }
   return $return_arr;
 }
+*/
 
 function tep_preorder_get_payment_type($payment_list, $payment_method)
 {
@@ -4408,7 +4388,7 @@ function tep_preorder_get_payment_type($payment_list, $payment_method)
   }
   return ''; 
 }
-
+/*
 function preorder_get_mail_string($payment_code, $mailoption) {
   $mailstring = constant("MODULE_PAYMENT_".strtoupper($payment_code).'_MAILSTRING');
   foreach ($mailoption as $key => $value) {
@@ -4417,7 +4397,7 @@ function preorder_get_mail_string($payment_code, $mailoption) {
   
   return $mailstring;
 }
-
+*/
 function preorder_last_customer_action() {
   tep_db_query("update ".TABLE_CONFIGURATION." set configuration_value=now() where configuration_key='PREORDER_LAST_CUSTOMER_ACTION'");
 }

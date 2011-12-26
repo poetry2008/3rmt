@@ -2620,7 +2620,7 @@ function tep_get_faq_question($q_id){
 function tep_get_faq_category($c_id){
   return tep_db_fetch_array(tep_db_query("select * from ".TABLE_FAQ_CATEGORIES." where c_id = '".$c_id."'"));
 }
-
+/*
 function calc_handle_fee($payment_name, $products_total)
 {
   if ($products_total == 0) {
@@ -2642,7 +2642,8 @@ function calc_handle_fee($payment_name, $products_total)
   }
   return $handle_fee;
 }
-
+*/
+/*
 function new_calc_handle_fee($payment_name, $products_total, $oID)
 {
   $oid_query = tep_db_query("select * from ".TABLE_ORDERS." where orders_id = '".$oID."'"); 
@@ -2686,7 +2687,8 @@ function new_calc_handle_fee($payment_name, $products_total, $oID)
   }
   return $handle_fee;
 }
-
+*/
+/*
 function calc_fee_final($fee_set, $total_cost)
 {
   $return_fee = 0; 
@@ -2703,7 +2705,7 @@ function calc_fee_final($fee_set, $total_cost)
   }
   return $return_fee;
 }
-
+*/
 function tep_set_categories_status($categories_id, $status)
 {
   /*
@@ -2897,18 +2899,6 @@ function tep_get_site_id_by_orders_id($orders_id) {
   }
 }
 
-function get_configuration_by_site_id($key, $site_id = '0',$table_name='') {
-  if($table_name==''){
-    $config = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$key."' and site_id='".$site_id."'"));
-  }else{
-    $config = tep_db_fetch_array(tep_db_query("select * from ".$table_name." where configuration_key='".$key."' and site_id='".$site_id."'"));
-  }
-  if ($config) {
-    return $config['configuration_value'];
-  } else {
-    return false;
-  }
-}
 
 function get_url_by_site_id($site_id) {
   $site = tep_db_fetch_array(tep_db_query("select * from ".TABLE_SITES." where id='".$site_id."'"));
@@ -6657,6 +6647,37 @@ function tep_output_generated_category_path_asset($id, $from = 'category') {
         }
       }
     }
-
     return $count;
   }
+
+//根据email 返回 customer信息
+function tep_get_customer_id_by_email($email,$site_id=0){
+    $account_query = tep_db_query("select * from " . TABLE_CUSTOMERS . " where customers_email_address = '" . $email . "' and site_id = '".$site_id."'");
+    $account = tep_db_fetch_array($account_query);
+    if(!$account){
+      return false;
+    }
+    $customer = $account['customers_id'];
+    return $customer;
+}
+
+function tep_get_customer_by_id($id){
+    $account_query = tep_db_query("select * from " . TABLE_CUSTOMERS . " where customers_id = ".$id);
+    $account = tep_db_fetch_array($account_query);
+    if(!$account){
+      return false;
+    }
+    return $account;
+}
+function tep_get_address_by_cid($id){
+  $address_query = tep_db_query("select * from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $id . "'");
+  $address = tep_db_fetch_array($address_query);
+  return $address;
+}
+
+
+
+
+
+
+

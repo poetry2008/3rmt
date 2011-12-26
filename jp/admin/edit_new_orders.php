@@ -1,4 +1,4 @@
-<?php
+ <?php
 /*
   $Id$
    
@@ -7,7 +7,7 @@
 
 require('includes/application_top.php');
 require('includes/step-by-step/new_application_top.php');
-
+ini_set("display_errors","On");
 include(DIR_FS_ADMIN . DIR_WS_LANGUAGES . $language . '/' . FILENAME_EDIT_ORDERS);
 require(DIR_FS_ADMIN . DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_EDIT_ORDERS);
 
@@ -17,12 +17,6 @@ $currencies = new currencies(2);
 include(DIR_WS_CLASSES . 'order.php');
 //error_reporting(E_ALL);
 //ini_set("display_errors","On");
-// START CONFIGURATION ################################
-
-// Correction tax pre-values (Michel Haase, 2005-02-18)
-// -> What was this ? Why 20.0, 20.0, 7.6 and 7.6 ???
-//    It's used later in a 'hidden way' an produces unlogical results ...
-
 // Optional Tax Rates, e.g. shipping tax of 17.5% is "17.5"
 // $AddCustomTax = "20.0"; // class "ot_custom", used for all unknown total modules
 $AddCustomTax = "19.6";  // new
@@ -83,10 +77,6 @@ $customer_guest = tep_db_fetch_array($customer_guest_query);
 
 if (tep_not_null($action)) {
   switch ($action) {
-
-
-    //
-      
     // 1. UPDATE ORDER ###############################################################################################
   case 'update_order':
     //更新订单
@@ -306,11 +296,7 @@ if (tep_not_null($action)) {
 
     foreach($update_totals as $total_index => $total_details) {
       extract($total_details,EXTR_PREFIX_ALL,"ot");
-  
-      // Correction tax calculation (Michel Haase, 2005-02-18)
-      // Correction tax calculation (Shimon Pozin, 2005-09-03) 
-      // Here is the major caveat: the product is priced in default currency, while shipping etc. are priced in target currency. We need to convert target currency
-      // into default currency before calculating RunningTax (it will be converted back before display)
+
       if ($ot_class == "ot_shipping" || $ot_class == "ot_lev_discount" || $ot_class == "ot_customer_discount" || $ot_class == "ot_custom" || $ot_class == "ot_cod_fee") {
 	$order = new order($oID);
 	$RunningTax += $ot_value * $products_details['tax'] / $order->info['currency_value'] / 100 ; // corrected tax by cb
@@ -491,16 +477,12 @@ if (tep_not_null($action)) {
 	$newtotal = $total_value["total_value"];
       }
     }
-  
-    //if (($newtotal - $total_point["total_point"]) >= 1) {
     if ($newtotal > 0) {
       $newtotal -= $total_point["total_point"];
     }
-    //} else {
-    //  $newtotal = '0';
-    //}
-  
-    $handle_fee = new_calc_handle_fee($order->info['payment_method'], $newtotal, $oID);
+   
+    //    $handle_fee = $cpaypal->calc_handle_fee($order->info['payment_method'], $newtotal, $oID);
+    $handle_fee = 0;
   
     $newtotal = $newtotal+$handle_fee;
 
@@ -987,7 +969,9 @@ if (tep_not_null($action)) {
 	    $newtotal = $total_value["total_value"];
 	  }
 	}
-	$handle_fee = new_calc_handle_fee($order->info['payment_method'], $newtotal, $oID);
+    //	$handle_fee = new_calc_handle_fee($order->info['payment_method'], $newtotal, $oID);
+	$handle_fee = 0;
+    
 	$newtotal = $newtotal+$handle_fee;    
 	/*
 	  , text = '<b>".$currencies->ot_total_format(intval(floor($newtotal)), true, $order->info['currency'])."</b>'
@@ -1666,10 +1650,10 @@ if ($action == "add_product") {
   print "<tr><td><table border='0'>\n";
     
   // Set Defaults
-  if(!IsSet($add_product_categories_id))
+  if(!isset($add_product_categories_id))
     $add_product_categories_id = 0;
 
-  if(!IsSet($add_product_products_id))
+  if(!isset($add_product_products_id))
     $add_product_products_id = 0;
     
   // Step 1: Choose Category
@@ -1740,7 +1724,7 @@ if ($action == "add_product") {
 		}
 	      $OptionOption .= "</select><br>\n";
           
-	      if(IsSet($add_product_options))
+	      if(isset($add_product_options))
 		$OptionOption = str_replace("value='" . $add_product_options[$OptionID] . "'","value='" . $add_product_options[$OptionID] . "' selected",$OptionOption);
           
 	      print $OptionOption;
@@ -1765,7 +1749,7 @@ if ($action == "add_product") {
       echo '<td class="dataTableContent" valign="top">' .  ADDPRODUCT_TEXT_CONFIRM_QUANTITY . '<input name="add_product_quantity" size="2" value="1" onkeyup="clearLibNum(this);">&nbsp;'.EDIT_ORDERS_NUM_UNIT.'&nbsp;&nbsp;&nbsp;'.EDIT_ORDERS_PRO_DUMMY_NAME.'&nbsp;<input type="hidden" name="dummy" value="あいうえお眉幅"><input name="add_product_character" size="20" value=""></td>';
       echo "<td class='dataTableContent' align='center'><input type='submit' value='" . ADDPRODUCT_TEXT_CONFIRM_ADDNOW . "'>";
 
-      if(IsSet($add_product_options))
+      if(isset($add_product_options))
 	{
 	  foreach($add_product_options as $option_id => $option_value_id)
 	    {

@@ -5,71 +5,182 @@
 define('PAYMENT_LIST_TYPE_ROMAJI',1);
 define('PAYMENT_LIST_TYPE_HAIJI',2);
 define('PAYMENT_LIST_TYPE_BOTH',3);
+define('PAYMENT_RETURN_TYPE_CODE','code');
+define('PAYMENT_RETURN_TYPE_TITLE','title');
 class payment {
-
+  static private  $instance = NULL;
   var $site_id, $modules, $selected_module;
   public static $payment_array;
   public static $payment_method_array;
-  function payment($module = '', $site_id = 0) {
-    global $payment, $language, $PHP_SELF;
+  var $session_error_name = 'payment_selection_error';
+  var $session_paymentvalue_name = 'payment_value';
+  function payment($site_id = 0) {
+    
     $this->site_id = $site_id;
-    if (defined('MODULE_PAYMENT_INSTALLED') && tep_not_null(MODULE_PAYMENT_INSTALLED)) {
-      $this->modules = explode(';', MODULE_PAYMENT_INSTALLED);
-      $include_modules = array();
+    $this->loadSettings($site_id);
+    $this->initModules();
+    
+    if (( count($this->modules) == 1) && (!is_object($GLOBALS[$payment])) ) {
+      $payment = $include_modules[0]['class'];
+    }
+    if ( (tep_not_null($module)) && (in_array($module, $this->modules)) && (isset($GLOBALS[$module]->form_action_url)) ) {
+      $this->form_action_url = $GLOBALS[$module]->form_action_url;
+    }
 
-      if ( (tep_not_null($module)) && (in_array($module . '.' . substr($PHP_SELF, (strrpos($PHP_SELF, '.')+1)), $this->modules)) ) {
-	$this->selected_module = $module;
-	$include_modules[] = array('class' => $module, 'file' => $module . '.php');
-      } else {
-	reset($this->modules);
-	while (list(, $value) = each($this->modules)) {
-	  $class = substr($value, 0, strrpos($value, '.'));
-	  $include_modules[] = array('class' => $class, 'file' => $value);
-	}
-      }
-      for ($i=0, $n=sizeof($include_modules); $i<$n; $i++) {
-	include(DIR_WS_LANGUAGES . $language . '/modules/payment/' . $include_modules[$i]['file']);
-	include(DIR_WS_MODULES . 'payment/' . $include_modules[$i]['file']);
-	$GLOBALS[$include_modules[$i]['class']] = new $include_modules[$i]['class']($this->site_id);
+  }
+  public static function getInstance($site_id=0)
+  { //如果对象实例还没有被创建，则创建一个新的实例
 
-      }
+    global $language;
+    if(self::$instance == NULL)
+      {
+        self::$instance =new payment($site_id);
+      } //返回对象实例
+    foreach(self::$instance->payment_enabled as $key=>$value){
+      $languageFile = DIR_WS_LANGUAGES . $language . '/modules/payment/' . $value['file'];
+      $classFile = DIR_WS_MODULES . 'payment/' .$value['file'];
+      require_once $languageFile;
+      require_once $classFile;
+    }
+    return self::$instance;
+  } 
+  
+  public function getModule($payment)
+  {
+        foreach ($this->modules as $module){
+          if($module instanceof $payment){
+              return $module;
+            }
+        }
+    return false;
+  }
+  public function loadSettings($site_id=0)
+  {
+    //安装了哪些支付方法
+    //moneyorder.php;postalmoneyorder.php;convenience_store.php;telecom.php;paypal.php;buyingpoint.php;fetch_good.php;free_payment.php;rakuten_bank.php;buying.php;guidance.php
+    //取得安装了哪些支付方法
+    $paymentString =  get_configuration_by_site_id_or_default('MODULE_PAYMENT_INSTALLED',$site_id);
+    $paymentStringArray = explode(";",$paymentString);
+    $class = '';
 
-      // if there is only one payment method, select it as default because in
-      // checkout_confirmation.php the $payment variable is being assigned the
-      // $_POST['payment'] value which will be empty (no radio button selection possible)
-      if ( (tep_count_payment_modules() == 1) && (!is_object($GLOBALS[$payment])) ) {
-	$payment = $include_modules[0]['class'];
-      }
-
-      if ( (tep_not_null($module)) && (in_array($module, $this->modules)) && (isset($GLOBALS[$module]->form_action_url)) ) {
-	$this->form_action_url = $GLOBALS[$module]->form_action_url;
+    foreach($paymentStringArray as $value){
+      $class = strtoupper(substr($value,0,strpos($value,'.')));
+      //判断是否为开启状态 经过此步以后  得到的payment_installed是所有可用的
+      if(get_configuration_by_site_id_or_default("MODULE_PAYMENT_".$class."_STATUS",$site_id) == "True"){
+        $this->payment_enabled[] = array(
+                                         "file"=>$value,
+                                         "class"=>$class,
+                                         );
+        
       }
     }
   }
 
-  // class methods
-  /* The following method is needed in the checkout_confirmation.php page
-     due to a chicken and egg problem with the payment class and order class.
-     The payment modules needs the order destination data for the dynamic status
-     feature, and the order class needs the payment module title.
-     The following method is a work-around to implementing the method in all
-     payment modules available which would break the modules in the contributions
-     section. This should be looked into again post 2.2.
-  */   
+  //判断支付方法是否被 enabled
+  public function moduleIsEnabled($module){
+    foreach($this->payment_enabled as $value){
+      if ($value['class'] == strtoupper($module)){
+        return true;
+      }
+    }
+    return false;
+  }
+
+  function initModules()  {
+    global $language;
+    foreach($this->payment_enabled as $key=>$value){
+      $languageFile = DIR_WS_LANGUAGES . $language . '/modules/payment/' . $value['file'];
+      $classFile = DIR_WS_MODULES . 'payment/' .$value['file'];
+      //      if(file_exists($languageFile) and file_exists($classFile)){
+      require_once $languageFile;
+      require_once $classFile;
+      $class = strtolower($value['class']);
+      $p = new $class($this->site_id);;
+      if($p instanceof basePayment){
+        $this->modules[$value['class']] = $p;
+      }else {
+        die($value['class'].' not correct');
+      }
+
+    }
+
+  }
+  
+  /*
+    判断是否显示给 对应的用户
+    取到对应的值 MODULE_PAYMENT_{$romaji}_LIMIT_SHOW
+  */
+  function showToUser($payment,$userType){
+    $payment_arr = get_configuration_by_site_id_or_default("MODULE_PAYMENT_".strtoupper($payment)."_LIMIT_SHOW",$this->site_id);
+    $payment_arr = unserialize($payment_arr);
+
+    if (empty($payment_arr)) {
+      return false; 
+    }
+    if (count($payment_arr) == 1) { 
+      if ($payment_arr[0] == 1) {
+        if ($userType != 0) {
+          return false; 
+        }
+      } else {
+        if ($userType == 0) {
+          return false; 
+        }
+      }
+    }
+    return true;
+    
+  }
+
+  /*
+    判断 支付方法是否可以支付对应的 帐目
+
+    先判断 是否为可用 支付方法
+    从数据 取到  MODULE_PAYMENT_{romaji}_MONEY_LIMIT  并进行计算 返回结果 
+
+   */
+  function moneyInRange($payment,$total){
+    
+    if($this->moduleIsEnabled($payment)){
+      $range = get_configuration_by_site_id_or_default("MODULE_PAYMENT_".strtoupper($payment)."_MONEY_LIMIT",$this->site_id);
+    }
+    $limit_arr = explode(",", $range); 
+    if(count($limit_arr)!=2){
+      return false;
+    }
+    $a = $limit_arr[0];
+    $b = $limit_arr[1];
+    if(!is_numeric($a) or !is_numeric($b) or !is_numeric($total)){
+
+      return false;
+    }
+    $a = toNumber($a);
+    $b = toNumber($b);
+    $total = toNumber($total);
+
+    return !($a<=$total and $total<=$b);
+  }
+  /*
   function update_status() {
     if (is_array($this->modules)) {
       if (is_object($GLOBALS[$this->selected_module])) {
-	if (function_exists('method_exists')) {
-	  if (method_exists($GLOBALS[$this->selected_module], 'update_status')) {
-	    $GLOBALS[$this->selected_module]->update_status();
-	  }
-	} else { // PHP3 compatibility
-	  @call_user_method('update_status', $GLOBALS[$this->selected_module]);
-	}
+        if (function_exists('method_exists')) {
+          if (method_exists($GLOBALS[$this->selected_module], 'update_status')) {
+            $GLOBALS[$this->selected_module]->update_status();
+          }
+        } else { // PHP3 compatibility
+          @call_user_method('update_status', $GLOBALS[$this->selected_module]);
+        }
       }
     }
   }
+  */
 
+  //todo:查看下面两个常量的定义位置  去掉global
+  
+  /*
+    集中输出各个支付方法的js验证
+  */
   function javascript_validation($num) {
     $js = '';
     if( $num == "" ){
@@ -77,172 +188,213 @@ class payment {
     }
     if (is_array($this->modules)) {
       $js = '<script type="text/javascript"><!-- ' . "\n" .
-	'function check_form() {' . "\n" .
-	'  var error = 0;' . "\n" .
-	'  var error_message = "' . JS_ERROR . '";' . "\n" .
-	'  var payment_value = null;' . "\n" .
-	'  var gold_max = ' . $num . ';' . "\n" .
-	'  var gold_value = null;' . "\n" .
-	'  gold_value = document.checkout_payment.point.value;' . "\n" .
-	'  if (document.checkout_payment.payment.length) {' . "\n" .
-	'    for (var i=0; i<document.checkout_payment.payment.length; i++) {' . "\n" .
-	'      if (document.checkout_payment.payment[i].checked) {' . "\n" .
-	'        payment_value = document.checkout_payment.payment[i].value;' . "\n" .
-	'      }' . "\n" .
-	'    }' . "\n" .
-	'  } else if (document.checkout_payment.payment.checked) {' . "\n" .
-	'    payment_value = document.checkout_payment.payment.value;' . "\n" .
-	'  } else if (document.checkout_payment.payment.value) {' . "\n" .
-	'    payment_value = document.checkout_payment.payment.value;' . "\n" .
-	'  }' . "\n\n";
+        'function check_form() {' . "\n" .
+        '  var error = 0;' . "\n" .
+        '  var error_message = "' . JS_ERROR . '";' . "\n" .
+        '  var payment_value = null;' . "\n" .
+        '  var gold_max = ' . $num . ';' . "\n" .
+        '  var gold_value = null;' . "\n" .
+        '  gold_value = document.checkout_payment.point.value;' . "\n" .
+        '  if (document.checkout_payment.payment.length) {' . "\n" .
+        '    for (var i=0; i<document.checkout_payment.payment.length; i++) {' . "\n" .
+        '      if (document.checkout_payment.payment[i].checked) {' . "\n" .
+        '        payment_value = document.checkout_payment.payment[i].value;' . "\n" .
+        '      }' . "\n" .
+        '    }' . "\n" .
+        '  } else if (document.checkout_payment.payment.checked) {' . "\n" .
+        '    payment_value = document.checkout_payment.payment.value;' . "\n" .
+        '  } else if (document.checkout_payment.payment.value) {' . "\n" .
+        '    payment_value = document.checkout_payment.payment.value;' . "\n" .
+        '  }' . "\n\n";
 
       reset($this->modules);
       while (list(, $value) = each($this->modules)) {
-	$class = substr($value, 0, strrpos($value, '.'));
-	if ($GLOBALS[$class]->enabled) {
+        $class = substr($value, 0, strrpos($value, '.'));
+        if ($GLOBALS[$class]->enabled) {
             
-	  $js .= $GLOBALS[$class]->javascript_validation();
-	}else {
+          $js .= $GLOBALS[$class]->javascript_validation();
+        }else {
 
-	}
+        }
       }
 
       $js .= "\n" . '  if (payment_value == null) {' . "\n" .
-	'    error_message = error_message + "' . JS_ERROR_NO_PAYMENT_MODULE_SELECTED . '";' . "\n" .
-	'    error = 1;' . "\n" .
-	'  }' . "\n\n" .
-	'  if (gold_value > gold_max || gold_value < 0 ) {' . "\n" .
-	'    error_message = error_message + "' . '獲得ポイントより多くのポイントを指定しているか、マイナスの値を指定しています。' . '";' . "\n" .
-	'    error = 1;' . "\n" .
-	'  }' . "\n\n" .
-	'  if (error == 1) {' . "\n" .
-	'    alert(error_message);' . "\n" .
-	'    return false;' . "\n" .
-	'  } else {' . "\n" .
-	'    return true;' . "\n" .
-	'  }' . "\n" .
-	'}' . "\n" .
-	'//--></script>' . "\n";
+        '    error_message = error_message + "' . JS_ERROR_NO_PAYMENT_MODULE_SELECTED . '";' . "\n" .
+        '    error = 1;' . "\n" .
+        '  }' . "\n\n" .
+        '  if (gold_value > gold_max || gold_value < 0 ) {' . "\n" .
+        '    error_message = error_message + "' . '獲得ポイントより多くのポイントを指定しているか、マイナスの値を指定しています。' . '";' . "\n" .
+        '    error = 1;' . "\n" .
+        '  }' . "\n\n" .
+        '  if (error == 1) {' . "\n" .
+        '    alert(error_message);' . "\n" .
+        '    return false;' . "\n" .
+        '  } else {' . "\n" .
+        '    return true;' . "\n" .
+        '  }' . "\n" .
+        '}' . "\n" .
+        '//--></script>' . "\n";
     }
     return $js;
   }
 
+
+  //todo: 完成函数
   function selection() {
+    global $order, $currencies; 
+    if($_SERVER['REQUEST_METHOD']=='POST'){
+      $theData = $this->postToSession();
+    }else {
+      $theData = $this->getPostSession();
+    }
     $selection_array = array();
-
-
-    if (is_array($this->modules)) {
-      reset($this->modules);
-        
-      while (list(, $value) = each($this->modules)) {
-
-	$class = substr($value, 0, strrpos($value, '.'));
-	//          ar_dump($GLOBALS[$class]);
-	if ($GLOBALS[$class]->enabled) {
-	  $selection = $GLOBALS[$class]->selection();
-	  if (is_array($selection)) $selection_array[] = $selection;
-	}
-
-      }
+    foreach($this->modules as $key=>$value){
+      //var_dump($key);
+      $total_cost = $value->calc_fee($order->info['total']); 
+      $selection_array[$key] = array(
+                                     "id"=>$value->code,
+                                     'module' => isset($value->additional_title)?$value->additional_title:$value->title,
+                                     'description'=>$value->explain,
+                                     'fields_description'=>$value->fields_description,
+                                     'footer'=>$value->footer,
+                                     'fields' => $value->fields($theData),
+      );
+      if ($total_cost > 0) {
+        $selection_array[$key]['codefee'] = constant("TS_MODULE_PAYMENT_".strtoupper($value->code)."_TEXT_FEE").$currencies->format($total_cost); 
+      } 
     }
     return $selection_array;
   }
+  
+  function admin_selection() {
+    $selection_array = array();
+    $theData = $_POST; 
+    foreach($this->modules as $key=>$value){
+    if (empty($value->code)) {
+      continue; 
+    }
+    $selection_array[strtoupper($key)] = array('id'=>$value->code,
+                            'module' => $value->title,
+                            'fields' => $value->fields($theData, true)
+    );
+    } 
 
-  function pre_confirmation_check() {
-    if (is_array($this->modules)) {
-      if (is_object($GLOBALS[$this->selected_module]) && ($GLOBALS[$this->selected_module]->enabled) ) {
-	$GLOBALS[$this->selected_module]->pre_confirmation_check();
+    return $selection_array;
+  }
+  
+  function admin_confirmation_check( $payment) {
+    $module = $this->getModule($payment);
+    $s = $this->admin_selection();
+    if($module){
+        return $module->validate_selection($s[strtoupper($payment)],$_POST);
+    } else {
+      return false;
+    }
+  }
+  
+  function admin_add_additional_info(&$sql_data_array, $payment) {
+    $module = $this->getModule($payment);
+    if ($module) {
+      if (method_exists($module, 'admin_add_additional_info')) {
+        $module->admin_add_additional_info($sql_data_array); 
       }
     }
+  }
+  
+  function admin_deal_comment($payment) {
+    $module = $this->getModule($payment);
+    if ($module) {
+      if (method_exists($module, 'admin_deal_comment')) {
+        return $module->admin_deal_comment($_SESSION['create_preorder']['orders']); 
+      }
+    } 
+    return ''; 
+  }
+ 
+  function admin_show_payment_info($payment)
+  {
+    $module = $this->getModule($payment);
+    if ($module) {
+      return $module->show_payment_info; 
+    } 
+    return 0; 
+  }
+
+  function pre_confirmation_check($payment) {
+    $module = $this->getModule($payment);
+    if($module){
+      $pre_check = $module->pre_confirmation_check($back);
+      if($pre_check == true){
+        $s = $this->selection();
+        return $module->validate_selection($s[strtoupper($payment)],$_POST,$back);
+      }else{
+        return $pre_check;
+      }
+    }else {
+      return false;
+    }
+  }
+
+
+    
+  function confirmation($payment) {
+    $p = $this->getModule($payment);
+    return $p->confirmation();
   }
     
-  function confirmation() {
-    if (is_array($this->modules)) {
-      if (is_object($GLOBALS[$this->selected_module]) && ($GLOBALS[$this->selected_module]->enabled) ) {
-	return $GLOBALS[$this->selected_module]->confirmation();
-      }
+  function specialOutput($payment) {
+    $p = $this->getModule($payment);
+    if(method_exists($p,'specialOutput')){
+      return $p->specialOutput();
     }
   }
-    
-  function specialOutput() {
-    if (is_array($this->modules)) {
-      if (is_object($GLOBALS[$this->selected_module]) && ($GLOBALS[$this->selected_module]->enabled) && method_exists($GLOBALS[$this->selected_module],"specialOutput")) {
-	return $GLOBALS[$this->selected_module]->specialOutput();
-      }
-    }
-  }
-  function process_button() {
-    if (is_array($this->modules)) {
-      if (is_object($GLOBALS[$this->selected_module]) && ($GLOBALS[$this->selected_module]->enabled) ) {
-	return $GLOBALS[$this->selected_module]->process_button();
-      }
-    }
+  function process_button($payment) {
+    $p = $this->getModule($payment);
+    return $p->process_button();
   }
 
-  function before_process() {
-    if (is_array($this->modules)) {
-      if (isset($GLOBALS[$this->selected_module]) && is_object($GLOBALS[$this->selected_module]) && ($GLOBALS[$this->selected_module]->enabled) ) {
-	return $GLOBALS[$this->selected_module]->before_process();
-      }
-    }
+  function before_process($payment) {
+    $p = $this->getModule($payment);
+    return $p->before_process();
   }
 
-  function after_process() {
-    if (is_array($this->modules)) {
-      if (is_object($GLOBALS[$this->selected_module]) && ($GLOBALS[$this->selected_module]->enabled) ) {
-	return $GLOBALS[$this->selected_module]->after_process();
-      }
-    }
+  function after_process($payment) {
+    $p = $this->getModule($payment);
+    return $p->after_process();
   }
 
-  function get_error() {
-    if (is_array($this->modules)) {
-      if (is_object($GLOBALS[$this->selected_module]) && ($GLOBALS[$this->selected_module]->enabled) ) {
-	return $GLOBALS[$this->selected_module]->get_error();
-      }
-    }
+  function get_error($payment) {
+    $p = $this->getModule($payment);
+    return $p->get_error();
   }
 	
-  function getexpress($amt,$token){
-    if (method_exists($GLOBALS[$this->selected_module], 'getexpress')) {
-      return $GLOBALS[$this->selected_module]->getexpress($amt,$token);
+  function getExpress($payment,$amt,$token){
+    if($p = $this->getModule($payment)){
+      if(method_exists($p,'getExpress')){
+        return $p->getExpress($amt,$token);
+      }
     }
     return null;
   }
-  function dealUnknow(&$sqldata){
-    if (method_exists($GLOBALS[$this->selected_module], 'dealUnknow')) {
-      return $GLOBALS[$this->selected_module]->dealUnknow($sqldata);
+  function dealUnknow($payment,&$sqldata){
+    if($p = $this->getModule($payment)){
+      if(method_exists($p,'dealUnknow')){
+        return $p->dealUnknow($sqldata);
+      }
     }
     return null;
   }
-  function dealComment($comment){
-    if (method_exists($GLOBALS[$this->selected_module], 'dealComment')) {
-      return $GLOBALS[$this->selected_module]->dealComment($comment);
-    }else{
-      return $comment;
+  function dealComment($payment,$comment){
+    if($p = $this->getModule($payment)){
+      if(method_exists($p,'dealComment')){
+      $comment = $p->dealComment($comment, $this->session_paymentvalue_name);
+      }
     }
+    return $comment;
   }
-  function getOrderMailString($option){
-    /*
-      ▼注文番号　       ${ORDER_ID}
-      ▼注文日           ${ORDER_DATE}
-      ▼お名前           ${USER_NAME}
-      ▼メールアドレス   ${USER_MAILACCOUNT}
-      ▼お支払金額       ${ORDER_TOTAL}
-      ▼お支払方法　     ${ORDER_PAYMENT}
-      ▼取引日時         ${ORDER_TTIME}
-      ▼備考             ${ORDER_COMMENT}
-      注文商品           ${ORDER_PRODUCTS}
-      取引方法           ${ORDER_TMETHOD}
-      //個数               ${ORDER_COUNT}
-      //小計               ${ORDER_LTOTAL}
-      //キャラクター名　   ${ORDER_ACTORNAME}
-      サイト名           ${SITE_NAME}
-      ショップメールアドレス  ${SITE_MAIL}
-      ショップURL        ${SITE_URL}
-    */
-
-    $mailstring = constant("MODULE_PAYMENT_".strtoupper($this->selected_module)."_MAILSTRING");
+  function getOrderMailString($payment,$option){
+    
+    $mailstring = get_configuration_by_site_id_or_default("MODULE_PAYMENT_".strtoupper($payment)."_MAILSTRING",$this->site_id);
     foreach ($option as $key=>$value){
       $mailstring = str_replace('${'.strtoupper($key).'}',$value,$mailstring);
     }
@@ -250,18 +402,12 @@ class payment {
   }
 
 
-  /*
-    相互转换romaji 和 支付方法日文
-   */
-  static function change($key){
-    
-  }
-  public static   function getPaymentList($type='') {
+
+  public static function getPaymentList($type='') {
     global $language;
-    $payment_directory = DIR_FS_CATALOG_MODULES .'payment/';
+    $payment_directory =DIR_FS_3RMTLIB. DIR_WS_MODULES .'payment/';
     $payment_array = array();
     $payment_list_str = '';
-
     if ($dh = @dir($payment_directory)) {
       while ($payment_file = $dh->read()) {
         if (!is_dir($payment_directory.$payment_file)) {
@@ -277,10 +423,10 @@ class payment {
     $payment_method_array = array();
     for ($i = 0, $n = sizeof($payment_array); $i < $n; $i++) {
       $payment_filename = $payment_array[$i]; 
-      include(DIR_WS_LANGUAGES . $language . '/modules/payment/' . $payment_filename); 
-      include($payment_directory . $payment_filename); 
+      require_once DIR_WS_LANGUAGES . $language . '/modules/payment/' . $payment_filename; 
+      require_once $payment_directory . $payment_filename; 
       $payment_class = substr($payment_filename, 0, strrpos($payment_filename, '.'));
-      if (tep_class_exists($payment_class)) {
+     if (class_exists($payment_class)) {
         $payment_module = new $payment_class; 
         $payment_method_array[$payment_class] = $payment_module;
         $payment_list_str[] = $payment_module->title;
@@ -289,6 +435,7 @@ class payment {
     }
     self::$payment_method_array = $payment_method_array;
     self::$payment_array = array($payment_list_code,$payment_list_str);
+
     if($type==PAYMENT_LIST_TYPE_HAIJI){
       return $payment_list_str;
     }
@@ -308,7 +455,7 @@ class payment {
     //$payment_list[] = array('id' => '', 'text' => '支払方法を選択してください');
     for($i=0; $i<sizeof($payment_array[0]); $i++) {
       $payment_list[] = array('id' => $payment_array[0][$i],
-          'text' => $payment_array[1][$i]);
+                              'text' => $payment_array[1][$i]);
     }
     return tep_draw_pull_down_menu('payment_method', $payment_list, $payment_method);
   }
@@ -357,16 +504,22 @@ class payment {
 
   }
 
-  public static function calc_fee($payment_method,$total_cost){
-    //判断是否 初始化 支付方法
-    if(empty(self::$payment_method_array)){
-      self::getPaymentList(); 
-    }
-    //通过 静态变量 调用 手续费处理方法
-    self::$payment_method_array[self::changeRomaji($payment_method,'code')]->calc_fee($total_cost);
-    return
-      self::$payment_method_array[self::changeRomaji($payment_method,'code')]->n_fee;
+  /*
+    计算手续费   
+   */
+  public function handle_calc_fee($payment_method,$total_cost){
+    $p = $this->getModule($payment_method);
+    return $p->calc_fee($total_cost);
   }
-
+  function postToSession(){
+    $_SESSION[$this->session_paymentvalue_name] = $_POST;
+    return $_POST;
+  }
+  function unsetPostSession($value){
+    unset($_SESSION[$this->session_paymentvalue_name][$value]);
+  }
+  function getPostSession(){
+    return $_SESSION[$this->session_paymentvalue_name];
+  }
 }
 ?>

@@ -1145,3 +1145,10 @@ searching
 .input_text { width:200px; height:20px;}
 .input_text_short { width:40px; height:20px; text-align:right;}
 .active_email_name { font-size:11px; width:100px;}
+.checkout_payment_info{ border:1px solid #b6b7cb;}
+.checkout_payment_info table{ padding:0 5px; font-size:12px; line-height:1.5; width:100%;}
+.cp_description{  font-size: 11px; padding: 8px 10px 5px;}
+.cp_content{ font-size:11px; padding:0 10px;}
+.cp_content p{padding:0; margin:0; color:#ff0000;}
+.con_email{display: inline; margin-left: 39px;}
+.rowHide div{clear:both; font-size: 11px; line-height: 21px;}

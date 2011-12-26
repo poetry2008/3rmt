@@ -17,7 +17,7 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
 // Set the level of error reporting
   //error_reporting(E_ALL & ~E_NOTICE);
   error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);
-  ini_set("display_errors", "On");
+  ini_set("display_errors", "Off");
 
 // Check if register_globals is enabled.
 // Since this is a temporary measure this message is hardcoded. The requirement will be removed before 2.2 is finalized.
@@ -335,6 +335,7 @@ while($userslist= tep_db_fetch_array($sites_id)){
 
 // define our general functions used application-wide
   require(DIR_WS_FUNCTIONS . 'general.php');
+  require(DIR_WS_FUNCTIONS . 'generalBoth.php');
   require(DIR_WS_FUNCTIONS . 'preorder_general.php');
   require(DIR_WS_FUNCTIONS . 'html_output.php');
 

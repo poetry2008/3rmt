@@ -52,6 +52,14 @@
   function tep_db_query($query, $link = 'db_link') {
     global $$link, $logger;
 
+    //    if(is_guest()){
+    $disable_action =  array("update","insert","delete");
+    $tquery = trim($query);
+    if(in_array(strtolower(substr($tquery,0,strpos($tquery,' '))),$disable_action)){
+      //      return true;
+    }
+    //}
+
     if (STORE_DB_TRANSACTIONS == 'true') {
       if (!is_object($logger)) $logger = new logger;
       $logger->write($query, 'QUERY');

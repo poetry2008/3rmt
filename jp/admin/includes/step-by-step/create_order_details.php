@@ -1,33 +1,21 @@
 <?php
 /*
   $Id$
-  
-  3rmt over
 */
-tep_draw_hidden_field($customer_id);    
 ?>
 <script type="text/javascript">
   //todo:修改通性用
   function hidden_payment(){
   var idx = document.create_order.elements["payment_method"].selectedIndex;
   var CI = document.create_order.elements["payment_method"].options[idx].value;
-  
-  if(CI == '銀行振込(買い取り)'){
-    document.getElementById('trpass1').style.display = "";
-  }else{
-    document.getElementById('trpass1').style.display = "none";
-  }
-  if (CI == '楽天銀行') {
-    document.getElementById('rakpass1').style.display = "";
-  } else {
-    document.getElementById('rakpass1').style.display = "none";
-  }
-  if (CI == 'コンビニ決済') {
-    document.getElementById('copass1').style.display = "";
-  } else {
-    document.getElementById('copass1').style.display = "none";
-  }
-}
+  $(".rowHide").hide();
+  $(".rowHide").find("input").attr("disabled","true");
+  $(".rowHide_"+CI).show();
+  $(".rowHide_"+CI).find("input").removeAttr("disabled");
+ }
+   $(document).ready(function(){hidden_payment()});
+
+
 </script>
 <table border="0" width="100%" cellspacing="0" cellpadding="2">
   <tr>
@@ -183,28 +171,11 @@ for($i=0; $i<6; $i++) {
   $min_list[] = array('id' => $min_num,
                       'text' => $min_num);
 }
-// 支払方法のリスト作成
-//$payment_text = "銀行振込\nクレジットカード決済\n銀行振込(買い取り)\nペイパル決済\nポイント(買い取り)\n来店支払い\nコンビニ決済\nゆうちょ銀行（郵便局）\n支払いなし";
-//$payment_text = tep_get_list_payment(); 
-$payment_array = payment::getPaymentList();
-$payment_list[] = array('id' => 'payment_null', 'text' => '支払方法を選択してください');
 for($i=0; $i<sizeof($payment_array[0]); $i++) {
-  $payment_list[] = array('id' => 'payment_'.$payment_array[0][$i],
+  $payment_list[] = array('id' => $payment_array[0][$i],
                           'text' => $payment_array[1][$i]);
 }
 
-// 口座科目の記憶
-switch(isset($bank_kamoku)?$bank_kamoku:null) {
-case '普通':
-default:
-  $bank_sele_f = true;
-  $bank_sele_t = false;
-  break;
-case '当座':
-  $bank_sele_f = false;
-  $bank_sele_t = true;
-  break;
-}
 
 ?>
 <tr>
@@ -225,147 +196,40 @@ echo CREATE_ORDER_PAYMENT_TITLE;?>:</td>
 <?php
  
 //diff order and order2
-
 if(isset($from_page)&&$from_page == 'create_order_process2'){
-
   echo $payment_method;
   echo tep_draw_hidden_field('payment_method',$payment_method);
 }else{ 
   echo tep_draw_pull_down_menu('payment_method', $payment_list, isset($payment_method)?$payment_method:'', 'onchange="hidden_payment()"'); 
 }
+
 if (isset($entry_payment_method_error ) && $entry_payment_method_error == true) { 
   echo '&nbsp;&nbsp;<font color="red">Error</font>'; 
 } ?>
+<?php
+
+
+foreach ($selections as $se){
+?>
+  <div class='rowHide rowHide_<?php echo $se["id"];?>'>
+<?php
+  foreach($se['fields'] as $field ){
+    echo $field['title'];
+    echo $field['field'];
+    echo "<span>".$field['message']."</span>";
+  }?>
+  </div>
+<?php
+}
+?>
+
 </td>
 </tr>
 
-<?php
 
-if ($payment_method == '楽天銀行') {
-  echo '<tr id="rakpass1">';
-} else {
-  echo '<tr id="rakpass1" style="display: none;">';
-} 
-?>
-<td colspan="2">
-  <table border="0" cellspacing="0" cellpadding="0">
-  <tr>
-  <td class="main">&nbsp;
-<?php
-echo CREATE_ORDER_TEL_TEXT;?></td> 
-<td class="main">&nbsp;&nbsp;&nbsp;
-<?php
-echo tep_draw_input_field('rak_tel', $_POST['rak_tel']);
-?></td>
-</tr>
-</table>
-</td> 
-
-<?php
-
-echo '</tr>';
-if ($payment_method == 'コンビニ決済') {
-  echo '<tr id="copass1">';
-} else {
-  echo '<tr id="copass1" style="display: none;">';
-}
-?>
-<td colspan="2"><br><table border="0" cellspacing="0" cellpadding="0">
-  <tr>
-  <td class="main">
-  
-  <?php
-  echo CREATE_ORDER_PC_TEXT;?></td> 
-  <td class="main">&nbsp;
-<?php
-echo tep_draw_input_field('con_email', $email_address);
-?></td>
-</tr>
-</table>
-</td> 
-
-<?php
-
-echo '</tr>';
-if (isset($payment_method) && $payment_method == '銀行振込(買い取り)') {
-  echo '<tr id="trpass1">';
-} else {
-  echo '<tr id="trpass1" style="display: none;">';
-}  
-?>
-<td colspan="2"><br><table border="0" cellspacing="0" cellpadding="0">
-  <tr>
-  <td class="main">&nbsp;
-<?php
-echo CREATE_ORDER_BANK_NAME_TEXT;?></td>
-<td class="main">&nbsp;
-<?php
-echo tep_draw_input_field('bank_name', '');
-?>
-
-<?php
-if (isset($entry_bank_name_error) && $entry_bank_name_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; };
-?></td>
-</tr>
-<tr>
-<td class="main">&nbsp;
-<?php
-echo CREATE_ORDER_BANK_SHITEN_TEXT;?></td>
-<td class="main">&nbsp;
-<?php
-echo tep_draw_input_field('bank_shiten', '');
-?>
-  
-<?php
-if (isset($entry_bank_shiten_error) && $entry_bank_shiten_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; };
-?></td>
-</tr>
-<tr>
-<td class="main">&nbsp;
-<?php
-echo CREATE_ORDER_BANK_KAMOKU_TEXT;?></td>
-<td class="main">&nbsp; 
-<?php
-echo tep_draw_radio_field('bank_kamoku', '普通', $bank_sele_f);
-?>&nbsp;
-<?php
-echo CREATE_ORDER_SELECT_COMMON_TEXT;?>&nbsp;&nbsp;
-<?php
-echo tep_draw_radio_field('bank_kamoku', '当座', $bank_sele_t);
-?>&nbsp;
-<?php
-echo CREATE_ORDER_SELECT_COMMON_ONE_TEXT;?></td>
-</tr>
-<tr>
-<td class="main">&nbsp;
-<?php
-echo CREATE_ORDER_BANK_KOUZA_NUM_TEXT;?></td>
-<td class="main">&nbsp;
-<?php
-echo tep_draw_input_field('bank_kouza_num', '');
-?>
-  
-<?php
-if (isset($entry_bank_kouza_num_error) && $entry_bank_kouza_num_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; };
-?></td>
-</tr>
-<tr>
-<td class="main">&nbsp;
-<?php
-echo CREATE_ORDER_BANK_KOUZA_NAME_TEXT;?></td>
-<td class="main">&nbsp;
-<?php
-echo tep_draw_input_field('bank_kouza_name', '');
-?>
-  
-<?php
-if (isset($entry_bank_kouza_name_error) && $entry_bank_kouza_name_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; };
-?></td>
-</tr>
 </table></td>
 </tr>
-</table></td>
-</tr>
+
 </table>
 </td>
 </tr>
@@ -387,6 +251,8 @@ echo CREATE_ORDER_FETCH_DATE_TEXT;?></td>
 <?php
 echo tep_draw_pull_down_menu('date', $date_list, isset($date)?$date:'');
 ?>
+
+
   
 <?php
 if (isset($entry_date_error) && $entry_date_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; };

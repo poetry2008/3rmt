@@ -3,39 +3,31 @@
   $Id$
 */
 //ペイパル実験
-  class paypal{
-    var $site_id, $code, $title, $description, $enabled, $n_fee, $s_error, $email_footer;
+  class paypal extends basePayment  implements paymentInterface  { 
+    var $site_id, $code, $title, $description, $enabled, $s_error, $email_footer, $show_payment_info;
 
 // class constructor
-    function paypal($site_id = 0) {
-      global $order, $_GET;
-      
+    function loadSpecialSettings($site_id){
       $this->site_id = $site_id;
-
       $this->code        = 'paypal';
-      $this->title       = MODULE_PAYMENT_PAYPAL_TEXT_TITLE;
-      $this->description = MODULE_PAYMENT_PAYPAL_TEXT_DESCRIPTION;
-      $this->explain     = MODULE_PAYMENT_PAYPAL_TEXT_EXPLAIN;
-      $this->sort_order  = MODULE_PAYMENT_PAYPAL_SORT_ORDER;
-      $this->enabled     = ((MODULE_PAYMENT_PAYPAL_STATUS == 'True') ? true : false);
-
-      if ((int)MODULE_PAYMENT_PAYPAL_ORDER_STATUS_ID > 0) {
-        $this->order_status = MODULE_PAYMENT_PAYPAL_ORDER_STATUS_ID;
-      }
-
-      if (is_object($order)) $this->update_status();
-
-      //      $this->form_action_url = MODULE_PAYMENT_PAYPAL_CONNECTION_URL;
       $this->form_action_url = MODULE_PAYMENT_PAYPAL_CONNECTION_URL ;
+      $this->show_payment_info = 2;
+    }
+    function fields($theData, $back=false){
+    global $order;
+    $total_cost = $order->info['total'];
+    $code_fee = $this->calc_fee($total_cost); 
+    $added_hidden = tep_draw_hidden_field('code_fee', $code_fee);
+    return array(
+		 array(
+		       "code"=>'',
+		       "title"=>'',
+		       "field"=>$added_hidden,
+		       "rule"=>'',
+		       "message"=>"",
+		       ));      
+    }
 
-      //      $this->form_action_url =      'https://api-3t.sandbox.paypal.com/nvp ';
-    
-    if(isset($_GET['submit_x']) || isset($_GET['submit_y'])){
-      $_GET['payment_error'] = 'paypal';
-    }
-    
-    $this->email_footer = MODULE_PAYMENT_PAYPAL_TEXT_EMAIL_FOOTER;
-    }
 
 // class methods
     function update_status() {
@@ -64,31 +56,8 @@
       return false;
     }
 
-    function calc_fee($total_cost) {
-      $table_fee = split("[:,]" , MODULE_PAYMENT_PAYPAL_COST);
-      $f_find = false;
-      $this->n_fee = 0;
-      for ($i = 0; $i < count($table_fee); $i+=2) {
-        if ($total_cost <= $table_fee[$i]) { 
-          $additional_fee = $total_cost.$table_fee[$i+1]; 
-          @eval("\$additional_fee = $additional_fee;"); 
-          //$this->n_fee = $table_fee[$i+1]; 
-          if (is_numeric($additional_fee)) {
-            $this->n_fee = intval($additional_fee); 
-          } else {
-            $this->n_fee = 0; 
-          }
-          $f_find = true;
-          break;
-        }
-      }
-      if ( !$f_find ) {
-        $this->s_error = MODULE_PAYMENT_PAYPAL_TEXT_OVERFLOW_ERROR;
-      }
 
-      return $f_find;
-    }
-    function selection() {
+    function selection($theData) {
       global $currencies;
       global $order;
       
@@ -110,7 +79,7 @@
     }
 
     function pre_confirmation_check() {
-      return false;
+      return true;
     }
 
     function confirmation() {
@@ -130,9 +99,9 @@
         $s_message = $s_result ? '':('<font color="#FF0000">'.$_POST['paypal_order_fee_error'].'</font>'); 
       }
     return array(
-		 'title' => nl2br(constant("MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_CONFIRMATION")),
+		 'title' => nl2br(constant("TS_MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_CONFIRMATION")),
 		 'fields' => array(
-				   array('title' => constant("MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_SHOW"), 'field' => ''),  
+				   array('title' => constant("TS_MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_SHOW"), 'field' => ''),  
 				   array('title' => $s_message, 'field' => '')  
 				   )           
 		 );
@@ -354,7 +323,7 @@
 
 
 
-  function getexpress($order_totals,$num){
+  function getExpress($order_totals,$num){
   if($order_totals[$num]['code'] =='ot_total' &&  array_key_exists('token', $_REQUEST)){
   $token = urlencode(htmlspecialchars($_REQUEST['token']));
   $amt = $order_totals[$num]['value'];

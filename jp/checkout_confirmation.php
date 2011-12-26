@@ -3,89 +3,11 @@
   $Id$
 */
 require('includes/application_top.php');
+
 require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_CHECKOUT_CONFIRMATION);
-// if the customer is not logged on, redirect them to the login page
-if (!tep_session_is_registered('customer_id')) {
-  $navigation->set_snapshot(array('mode' => 'SSL', 'page' => FILENAME_CHECKOUT_PAYMENT));
-  tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
-}
-
-// if there is nothing in the customers cart, redirect them to the shopping cart page
-if ($cart->count_contents() < 1) {
-  tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
-}
-
-// avoid hack attempts during the checkout procedure by checking the internal cartID
-if (isset($cart->cartID) && tep_session_is_registered('cartID')) {
-  if ($cart->cartID != $cartID) {
-    tep_redirect(tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL'));
-  }
-}
-$sendto = false;
-// if no shipping method has been selected, redirect the customer to the shipping method selection page
-//  if (!tep_session_is_registered('shipping')) {
-//    tep_redirect(tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL'));
-//  }
-
-if (isset($_POST['payment'])) $payment = $_POST['payment'];
-if (!tep_session_is_registered('payment')) tep_session_register('payment');
-if (!tep_session_is_registered('comments')) tep_session_register('comments');
-if (isset($_POST['comments_added']) && $_POST['comments_added'] != '') {
-  $comments = tep_db_prepare_input($_POST['comments']);
-
-}
-$_SESSION['mailcomments'] = $_POST['comments'];
-// check if bank info
-
-// load the selected payment module
-require(DIR_WS_CLASSES . 'payment.php');
-$payment_modules = new payment($payment, SITE_ID);
-require(DIR_WS_CLASSES . 'order.php');
-$order = new order;
-$payment_modules->update_status();
-if ( 
-    (
-     is_array($payment_modules->modules) 
-     && (sizeof($payment_modules->modules) > 1) 
-     && !is_object($$payment) ) 
-    || (
-        is_object($$payment) 
-        && ($$payment->enabled == false)
-        ) 
-     ) {
-  tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, 'error_message=' . urlencode(ERROR_NO_PAYMENT_MODULE_SELECTED), 'SSL'));
-}
-
-if (is_array($payment_modules->modules)) {
-  $payment_modules->pre_confirmation_check();
-}
-
-require(DIR_WS_CLASSES . 'order_total.php');
-$order_total_modules = new order_total;
-
-// Stock Check
-$any_out_of_stock = false;
-if (STOCK_CHECK == 'true') {
-  for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
-    if (tep_check_stock($order->products[$i]['id'], $order->products[$i]['qty'])) {
-      $any_out_of_stock = true;
-    }
-  }
-  // Out of Stock
-  if ( (STOCK_ALLOW_CHECKOUT != 'true') && ($any_out_of_stock == true) ) {
-    tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
-  }
-}
-
-$breadcrumb->add(NAVBAR_TITLE_1, tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
-$breadcrumb->add(NAVBAR_TITLE_2);
-if (isset($$payment->form_action_url) && $$payment->form_action_url) {
-  $form_action_url = $$payment->form_action_url;
-} else {
-  $form_action_url = tep_href_link(FILENAME_CHECKOUT_PROCESS, '', 'SSL');
-}
+require(DIR_WS_ACTIONS.'checkout_confirmation.php');
+page_head();
 ?>
-<?php page_head();?>
 <script type="text/javascript">
   <!--
   var a_vars = Array();
@@ -278,15 +200,7 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
 </tr> 
     
 <?php
-
-if(method_exists(
-                 $payment_modules,
-                 'specialOutput'
-                 )){
-  call_user_method ('specialOutput',$payment_modules);
-
-              
-}
+$payment_modules->specialOutput($payment);
 
 ?>
 <tr> 
@@ -303,7 +217,7 @@ if(method_exists(
         <td class="main"><?php echo '<b>' . HEADING_PAYMENT_METHOD . '</b> <a href="' . tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td> 
         </tr> 
         <tr> 
-        <td class="main"><?php echo $order->info['payment_method']; ?></td> 
+        <td class="main"><?php echo payment::changeRomaji($order->info['payment_method']); ?></td> 
         </tr> 
         </table></td> 
         <td width="70%" valign="top" align="right"><table width="100%" border="0" cellspacing="0" cellpadding="2"> 
@@ -347,7 +261,6 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
       }
     }
     //----------------------------------------------
-    
     //還元率を計算----------------------------------
     if(mb_ereg("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK)) {
       $back_rate_array = explode("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK);
@@ -371,7 +284,6 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
   } else {
     $point_rate = MODULE_ORDER_TOTAL_POINT_FEE;
   }
-
   if ($order->info['subtotal'] > 0) {
     $get_point = ($order->info['subtotal'] - (int)$point) * $point_rate;
   } else {
@@ -384,9 +296,9 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
   tep_session_register('get_point');
   echo '<tr>' . "\n";
   if (!tep_only_buy_product()) {
-    echo '<td align="right" class="main"><br>'.TEXT_POINT_NOW.'</td>' . "\n";
+    echo '<td align="right" class="main"><br>'.TS_TEXT_POINT_NOW.'</td>' . "\n";
   } else {
-    echo '<td align="right" class="main"><br>'.TEXT_POINT_NOW_TWO.'</td>' . "\n";
+    echo '<td align="right" class="main"><br>'.TS_TEXT_POINT_NOW_TWO.'</td>' . "\n";
   } 
 
   echo '<td align="right" class="main"><br>'.(int)$get_point.'&nbsp;P</td>' . "\n";
@@ -400,7 +312,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
 <?php
 if (is_array($payment_modules->modules)) {
 
-  if ($confirmation = $payment_modules->confirmation()) {
+  if ($confirmation = $payment_modules->confirmation($payment)) {
     ?> 
     <tr> 
       <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
@@ -432,23 +344,7 @@ if (is_array($payment_modules->modules)) {
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        }
     ?> 
     <?php
-    if ($bflag_cnt == 'View' && false) {
-      $con_show_fee = calc_buy_handle($order->info['total']); 
-      if ($con_show_fee != 0) { 
-        ?>
-        <tr> 
-          <td class="main" colspan="4"><?php echo CONFIRMATION_BUYING_TEXT_TITLE; ?></td> </tr> 
-                                                                                        <tr> 
-                                                                                        <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
 
-                                                                                                                                                                          <td class="main"><?php
-                                                                                                                                                                          echo CONFIRMATION_BUYING_TEXT_FEE.$currencies->format($con_show_fee); ?></td> 
-                                                                                                                                                                                                                                                      <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-                                                                                                                                                                                                                                                                                                                                        <td class="main">&nbsp;</td> 
-                                                                                                                                                                                                                                                                                                                                                                   </tr> 
-                                                                                                                                                                                                                                                                                                                                                                   <?php
-                                                                                                                                                                                                                                                                                                                                                                   }
-    }
     ?>
     </table></td> 
         </tr> 
@@ -494,7 +390,7 @@ if (tep_not_null($order->info['comments'])) {
   <td class="main"><b>ご注文内容をご確認の上「注文する」をクリックしてください。</b></td>
   <td align="right" class="main"> <?php
   if (is_array($payment_modules->modules)) {
-    echo $payment_modules->process_button();
+    echo $payment_modules->process_button($payment);
   }
 //character  
 
