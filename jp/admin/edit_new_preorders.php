@@ -611,7 +611,8 @@
             ),$email_title);
         
         tep_mail($order->customer['name'], $order->customer['email_address'], $email_title, $email, get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']),$order->info['site_id']);
-      
+        
+        tep_mail(get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), $email_title, $email, $order->customer['name'], $order->customer['email_address'], $order->info['site_id']);
       }
       $customer_notified = '1';
     }

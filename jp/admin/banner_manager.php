@@ -12,10 +12,15 @@
          else $site_arr="";
     switch ($_GET['action']) {
       case 'setflag':
-        if ( (($_GET['flag'] == '0') || ($_GET['flag'] ==
-              '1'))&&(isset($_GET['site_id'])&&$_GET['site_id']!='')){
-          tep_set_banner_status($_GET['bID'], $_GET['flag'],$_GET['site_id']);
-          $messageStack->add_session(SUCCESS_BANNER_STATUS_UPDATED, 'success');
+        $banner_exists_raw = tep_db_query("select * from ".TABLE_BANNERS." where banners_id = '".(int)$_GET['bID']."'");        
+        $banner_exists = tep_db_fetch_array($banner_exists_raw);
+        if ($banner_exists) {
+          if (($_GET['flag'] == '0') || ($_GET['flag'] == '1')) {
+            tep_set_banner_status($_GET['bID'], $_GET['flag'], $banner_exists['site_id']);
+            $messageStack->add_session(SUCCESS_BANNER_STATUS_UPDATED, 'success');
+          } else {
+            $messageStack->add_session(ERROR_UNKNOWN_STATUS_FLAG, 'error');
+          }
         } else {
           $messageStack->add_session(ERROR_UNKNOWN_STATUS_FLAG, 'error');
         }

@@ -7,16 +7,8 @@ define('NAVBAR_TITLE', '商品を予約する');
 define('HEADING_TITLE', '%sを予約する');
 define('HEADING_TITLE_ERROR', '商品を予約する');
 define('ERROR_INVALID_PRODUCT', '商品が見つかりません...');
-
-define('FORM_TITLE_CUSTOMER_DETAILS', 'お客様について');
-define('FORM_TITLE_FRIEND_DETAILS', '予約商品について');
-define('FORM_TITLE_FRIEND_MESSAGE', 'ご要望');
-
-define('FORM_FIELD_CUSTOMER_NAME', 'お名前:');
-define('FORM_FIELD_CUSTOMER_EMAIL', 'メールアドレス:');
-define('FORM_FIELD_FRIEND_NAME', 'ご希望個数:');
-define('FORM_FIELD_FRIEND_EMAIL', '期限:');
-
+define('FORM_FIELD_PREORDER_PAYMENT', 'お支払い方法');
+define('PREORDER_EXPECT_CTITLE', 'についてのご要望');
 define('TEXT_EMAIL_SUCCESSFUL_SENT', '<p><b>「予約確認メール」を&nbsp;<span class="red">%s</span>&nbsp;へ送信いたしました。</b><br>
 納期につきましては24時間以内にご回答いたします。<br>
 <br>
@@ -67,12 +59,6 @@ define('TEXT_EMAIL_LINK', 'この商品の詳細は、下記のリンクをク�
 define('TEXT_EMAIL_SIGNATURE', '[ご連絡・お問い合わせ先]━━━━━━━━━━━━' . "\n"
 . '株式会社 iimy' . "\n"
 . SUPPORT_EMAIL_ADDRESS . "\n"
-. 'http://www.iimy.co.jp/' . "\n"
+. 'http://www.gamemoney.cc/' . "\n"
 . '━━━━━━━━━━━━━━━━━━━━━━━');
-define('FORM_FIELD_PREORDER_FIXTIME', 'オプション:');
-define('FORM_FIELD_PREORDER_FIXDAY', '有効期限:');
-define('FORM_FIELD_PREORDER_PAYMENT', 'お支払い方法');
-define('FORM_FIELD_CUSTOMER_LASTNAME', '姓:');
-define('FORM_FIELD_CUSTOMER_FIRSTNAME', '名:');
-define('PREORDER_EXPECT_CTITLE', 'についてのご要望');
 ?>

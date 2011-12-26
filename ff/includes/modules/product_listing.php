@@ -109,18 +109,9 @@
 <?php
 if (!isset($listing['products_bflag'])) $listing['products_bflag'] = NULL;//del notice
 if (!isset($listing['products_cflag'])) $listing['products_cflag'] = NULL;//del notice
-  if($listing['products_bflag'] == '1') {
-    # 買取商品
-    echo $description . '..';
-  } elseif ($listing['products_cflag'] == '0') {
-    echo $description . '..';
-  } else {
-    # 販売商品
-    if ($listing['preorder_status'] == '1') {
-      echo $description . '..<br>表示在庫以上の注文は「<a href="' .  tep_preorder_href_link($listing['products_id'], $listing['romaji']) . '">' . $products_name . $ten . 'を予約</a>」からお手続きください。';
-    } else {
-      echo $description . '..';
-    }
+  echo $description . '..';
+  if ($listing['preorder_status'] == '1') {
+    echo '<br>表示在庫以上の注文は「<a href="' .  tep_preorder_href_link($listing['products_id'], $listing['romaji']) . '">' . $products_name . $ten . 'を予約</a>」からお手続きください。';
   }
 ?>
             </p>

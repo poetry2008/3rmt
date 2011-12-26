@@ -78,6 +78,7 @@
       $preorder_email_text = str_replace($replace_info_arr, $pre_replace_info_arr, $preorder_email_text);
       $pre_email_text = str_replace('${SITE_NAME}', STORE_NAME, PREORDER_MAIL_SUBJECT);
       tep_mail($preorder_res['customers_name'], $preorder_res['customers_email_address'], $pre_email_text, $preorder_email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS); 
+      tep_mail('', SENTMAIL_ADDRESS, $pre_email_text, $preorder_email_text, $preorder_res['customers_name'], $preorder_res['customers_email_address']); 
       $send_preorder_id = $pid;
       tep_session_register('send_preorder_id');
       tep_redirect(tep_href_link('preorder_success.php')); 

@@ -150,7 +150,7 @@ function rowOutEffect(object) {
 <!-- body //-->
 <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border">
   <tr>
-    <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border">
+    <td valign="top" class="left_colum_border">
       <!-- left_navigation //-->
       <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
       <!-- left_navigation_eof //-->
@@ -166,8 +166,9 @@ function rowOutEffect(object) {
 <?php
   } else {
 ?>
-      <h1 class="pageHeading"><img align="top" alt="img" src="images/menu_ico.gif"><?php echo $po_game_c . '&nbsp;' . $product_info['products_name']; ?>を予約する</h1>
+      <h1 class="pageHeading"><?php echo $po_game_c . '&nbsp;' . $product_info['products_name']; ?>を予約する</h1>
             <div class="comment">
+            <div class="product_info_box">
       <p>
         <?php echo STORE_NAME;?>では、<?php echo $po_game_c; ?>の予約サービスを行っております。<br> ご希望する数量が弊社在庫にある場合は「
         <?php 
@@ -513,7 +514,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
               echo tep_draw_hidden_field('predate', $_POST['predate']); 
               echo tep_draw_hidden_field('preorder_subtotal', $_POST['preorder_subtotal']); 
             ?>
-            <?php echo tep_image_submit('button_continue02.gif', IMAGE_BUTTON_CONTINUE); ?>
+            <?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?>
           </td>
         </tr>
       </table>
@@ -533,11 +534,11 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
     }
   }
 ?>
-    </div>
+    </div></div>
         <p class="pageBottom"></p>
     </td>      
     <!-- body_text_eof //-->
-    <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>">
+    <td valign="top" class="right_colum_border">
       <!-- right_navigation //-->
       <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?>
       <!-- right_navigation_eof //-->

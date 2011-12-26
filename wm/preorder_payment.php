@@ -286,7 +286,8 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
           
           $preorder_email_subject = str_replace('${SITE_NAME}', STORE_NAME, PREORDER_MAIL_SUBJECT); 
           
-          tep_mail(tep_get_fullname($account_values['customers_firstname'],$account_values['customers_lastname']), $account_values['customers_email_address'], $preorder_email_subject, $preorder_email_text, STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS); 
+          tep_mail(tep_get_fullname($account_values['customers_firstname'],$account_values['customers_lastname']), $account_values['customers_email_address'], $preorder_email_subject, $preorder_email_text, STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS);
+          tep_mail('', SENTMAIL_ADDRESS, $preorder_email_subject, $preorder_email_text, tep_get_fullname($account_values['customers_firstname'],$account_values['customers_lastname']), $account_values['customers_email_address']); 
       } else {
         $exists_customer_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_email_address = '".$_POST['from']."' and site_id = '".SITE_ID."'");    
         if (tep_db_num_rows($exists_customer_raw)) {
@@ -307,6 +308,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
             $preorder_email_text = str_replace($old_str_array, $new_str_array, PREORDER_MAIL_ACTIVE_CONTENT); 
             $preorder_email_subject = str_replace('${SITE_NAME}', STORE_NAME, PREORDER_MAIL_ACTIVE_SUBJECT); 
             $unactive_customers_single = true; 
+            $send_to_owner = true;  
             tep_db_query("update `".TABLE_CUSTOMERS."` set `check_login_str` = '".$encode_param_str."' where customers_id = '".$exists_customer_res['customers_id']."'");  
           } else {
             $preorder_email_text = PREORDER_MAIL_CONTENT; 
@@ -328,6 +330,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
         } else {
           $tmp_customer_id = tep_create_tmp_guest($_POST['from'], $_POST['lastname'], $_POST['firstname']); 
           $redirect_single = 1; 
+          $send_to_owner = true;  
           $encode_param_str = md5(time().$tmp_customer_id.$_POST['from']); 
           $active_url = HTTP_SERVER.'/preorder_auth.php?pid='.$encode_param_str; 
           
@@ -343,6 +346,9 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
           tep_db_query("update `".TABLE_CUSTOMERS."` set `check_login_str` = '".$encode_param_str."' where customers_id = '".$tmp_customer_id."'");  
         }
         tep_mail($from_name, $_POST['from'], $preorder_email_subject, $preorder_email_text, STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS); 
+        if (isset($send_to_owner)) {
+          tep_mail('', SENTMAIL_ADDRESS, $preorder_email_subject, $preorder_email_text, $from_name, $_POST['from']); 
+        }
       }
       
       $send_preorder_id = $preorder_id;
@@ -381,24 +387,29 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
         echo '<span class="errorText"><b>入力した内容に誤りがございます。正しく入力してください。</span></b><br><br>';
       }
 ?>
-     <br>    
      <?php
       $selection = $payment_modules->selection(); 
     if (sizeof($selection) > 1) { 
       ?>
-      <div class="formAreaTitle"><?php echo FORM_FIELD_PREORDER_PAYMENT; ?></div>
-      <table width="100%" cellpadding="2" cellspacing="0" border="0" class="formArea">
-          <?php
+      <?php
           if ($payment_error == true) {
-            echo '<tr><td style="font-size:11px;"><span class="errorText">';
+            echo '<table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxNotice">'; 
+            echo '<tr class="infoBoxNoticeContents"><td>'; 
+            echo '<table border="0" width="100%" cellspacing="0" cellpadding="2">';
+            echo '<tr><td class="main" width="100%" valign="top">';
             if (isset($payment_error_str)) {
               echo $payment_error_str; 
             } else {
               echo TEXT_REQUIRED;
             }
-            echo '</span></td></tr>';
+            echo '</td></tr>';
+            echo '</table>'; 
+            echo '</td></tr>'; 
+            echo '</table><br>';
           }
-          ?>
+      ?>
+      <div class="formAreaTitle"><?php echo FORM_FIELD_PREORDER_PAYMENT; ?></div>
+      <table width="100%" cellpadding="2" cellspacing="0" border="0" class="formArea">
         <?php
         $radio_buttons = 0; 
         for ($i=0, $n=sizeof($selection); $i<$n; $i++) { 

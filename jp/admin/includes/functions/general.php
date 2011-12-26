@@ -2314,7 +2314,7 @@ function tep_site_filter($filename, $ca_single = false){
             if ($ca_single) {
               echo tep_href_link($filename, tep_get_all_get_params(array('site_id')));
             } else {
-              echo tep_href_link($filename, tep_get_all_get_params(array('site_id', 'page', 'oID', 'rID', 'cID')));
+              echo tep_href_link($filename, tep_get_all_get_params(array('site_id', 'page', 'oID', 'rID', 'cID', 'latest_news_id', 'bID')));
             }
           ?>">all</a></span> 
             <?php } ?>
@@ -2326,7 +2326,7 @@ function tep_site_filter($filename, $ca_single = false){
                       if ($ca_single) {
                         echo tep_href_link($filename, tep_get_all_get_params(array('site_id')) . 'site_id=' . $site['id']);
                       } else {
-                        echo tep_href_link($filename, tep_get_all_get_params(array('site_id', 'page', 'oID', 'rID', 'cID', 'pID', 'latest_news_id')) . 'site_id=' . $site['id']);
+                        echo tep_href_link($filename, tep_get_all_get_params(array('site_id', 'page', 'oID', 'rID', 'cID', 'pID', 'latest_news_id', 'bID')) . 'site_id=' . $site['id']);
                       }
                     ?>"><?php echo $site['romaji'];?></a></span>
                       <?php }
@@ -3271,12 +3271,16 @@ function tep_get_orders_products_names($orders_id) {
   return $str;
 }
 // orders.php
-function tep_get_orders_products_string($orders, $single = false) {
+function tep_get_orders_products_string($orders, $single = false, $popup = false) {
   $str = '';
 
 
   $str .= '<table border="0" cellpadding="0" cellspacing="0" class="orders_info_div" width="100%">';
-  $str .= '<tr><td class="main" colspan="2">&nbsp;</td><tr>';
+  if ($popup) {
+    $str .= '<tr><td class="main" colspan="2" align="right"><a style="text-decoration:underline;" href="javascript:void(0);" onclick="hideOrdersInfo(1);"><img src="images/icons/note_close.gif" alt="close"></a></td><tr>';
+  } else {
+    $str .= '<tr><td class="main" colspan="2">&nbsp;</td><tr>';
+  }
 
   /*
      $str .= '<tr><td class="mian" align="center" colspan="2"><table width="100%"><tr><td class="main" width="50%" align="left">';

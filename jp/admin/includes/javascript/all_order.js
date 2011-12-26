@@ -209,11 +209,16 @@ function showRequest(formData, jqForm, options) {
 } 
 
 // 列表右侧的订单信息显示
-function showOrdersInfo(oID,ele){
-
+function showOrdersInfo(oID,ele,popup_type){
+  data_str = "oid="+oID; 
+  if (popup_type == 1) {
+    data_str += "&popup=1"; 
+    popup_num = 2; 
+    ele = ele.parentNode; 
+  }
   $.ajax({
 type:"POST",
-data:"oid="+oID,
+data:data_str,
 async:false, 
 url: 'ajax_orders.php?action=show_right_order_info',
 success: function(msg) {
@@ -237,9 +242,12 @@ $('#orders_info_box').css('top',offset).show();
 }
 
 // 列表右侧的订单信息隐藏
-function hideOrdersInfo(){
-  $('#orders_info_box').html('');
-  $('#orders_info_box').hide();
+function hideOrdersInfo(popup_type){
+  if (popup_type == 1) {
+    popup_num = 1; 
+  }
+  $("#orders_info_box").html("");
+  $("#orders_info_box").hide();
 }
 
 //播放提示音，需要warn_sound
