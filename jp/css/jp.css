@@ -1121,7 +1121,6 @@ searching
  table-layout:fixed;
  width:520px;
 }
-.active_email input{ width:360px;}
 .con_telnumber_input {
 /*	display:inline;
 	margin-left:78px;
@@ -1152,3 +1151,4 @@ searching
 .cp_content p{padding:0; margin:0; color:#ff0000;}
 .con_email{display: inline; margin-left: 39px;}
 .rowHide div{clear:both; font-size: 11px; line-height: 21px;}
+.information_color{background-color: #FDEBAC; color: #000000; padding:5px; margin:5px; width:100%;}

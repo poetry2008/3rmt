@@ -183,20 +183,23 @@ class moneyorder extends basePayment implements paymentInterface {
     tep_db_query("delete from " . TABLE_CONFIGURATION . " where configuration_key in ('" . implode("', '", $this->keys()) . "') and site_id = '".$this->site_id."'");
   }
 
-  function keys() {
-    return array(
-                 'MODULE_PAYMENT_MONEYORDER_STATUS',
-                 'MODULE_PAYMENT_MONEYORDER_LIMIT_SHOW',
-                 'MODULE_PAYMENT_MONEYORDER_PREORDER_SHOW',
-                 'MODULE_PAYMENT_MONEYORDER_ZONE',
-                 'MODULE_PAYMENT_MONEYORDER_ORDER_STATUS_ID',
-                 'MODULE_PAYMENT_MONEYORDER_SORT_ORDER',
-                 'MODULE_PAYMENT_MONEYORDER_PAYTO',
-                 'MODULE_PAYMENT_MONEYORDER_COST',
-                 'MODULE_PAYMENT_MONEYORDER_MONEY_LIMIT',
-                 'MODULE_PAYMENT_MONEYORDER_MAILSTRING',
-                 );
-  }
+
+
+    function keys() {
+      return array(
+                   'MODULE_PAYMENT_MONEYORDER_STATUS',
+                   'MODULE_PAYMENT_MONEYORDER_LIMIT_SHOW',
+                   'MODULE_PAYMENT_MONEYORDER_PREORDER_SHOW',
+                   'MODULE_PAYMENT_MONEYORDER_ZONE',
+                   'MODULE_PAYMENT_MONEYORDER_ORDER_STATUS_ID',
+                   'MODULE_PAYMENT_MONEYORDER_SORT_ORDER',
+                   'MODULE_PAYMENT_MONEYORDER_PAYTO',
+                   'MODULE_PAYMENT_MONEYORDER_COST',
+                   'MODULE_PAYMENT_MONEYORDER_MONEY_LIMIT',
+                   'MODULE_PAYMENT_MONEYORDER_MAILSTRING',
+                   'MODULE_PAYMENT_MONEYORDER_PRINT_MAILSTRING',
+                   );
+    }
     
   function getMailString($option=''){
     $email_printing_order .= 'この注文は【販売】です。' . "\n";

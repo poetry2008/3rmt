@@ -397,6 +397,42 @@ orders_updated($insert_id);
 
 $otq = tep_db_query("select * from ".TABLE_ORDERS_TOTAL." where class = 'ot_total' and orders_id = '".$insert_id."'");
 $ot = tep_db_fetch_array($otq);
+
+// mail oprion like mailprint
+// CUSTOMER_INFO
+$email_customer_info = '';
+$email_customer_info .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
+$email_customer_info .= 'IPアドレス　　　　　　：' . $_SERVER["REMOTE_ADDR"] . "\n";
+$email_customer_info .= 'ホスト名　　　　　　　：' . @gethostbyaddr($_SERVER["REMOTE_ADDR"]) . "\n";
+$email_customer_info .= 'ユーザーエージェント　：' . $_SERVER["HTTP_USER_AGENT"] . "\n";
+$email_customer_info .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
+$email_credit_research = ''; 
+$credit_inquiry_query = tep_db_query("select customers_fax, customers_guest_chk from " . TABLE_CUSTOMERS . " where customers_id = '" . $customer_id . "'");
+$credit_inquiry       = tep_db_fetch_array($credit_inquiry_query);
+$email_credit_research .= $credit_inquiry['customers_fax'] . "\n";
+$email_credit_research .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
+$email_orders_history = '';
+  
+if ($credit_inquiry['customers_guest_chk'] == '1') { 
+  $email_orders_history .= 'ゲスト'; 
+} else { 
+  $email_orders_history .= '会員'; 
+}
+  
+$email_orders_history .= "\n";
+  
+$order_history_query_raw = "select o.orders_id, o.customers_name, o.customers_id,
+  o.date_purchased, s.orders_status_name, ot.value as order_total_value from " . TABLE_ORDERS . " o left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id), " . TABLE_ORDERS_STATUS . " s where o.customers_id = '" . tep_db_input($customer_id) . "' and o.orders_status = s.orders_status_id and s.language_id = '" . $languages_id . "' and ot.class = 'ot_total' order by o.date_purchased DESC limit 0,5";  
+//ccdd
+$order_history_query = tep_db_query($order_history_query_raw);
+while ($order_history = tep_db_fetch_array($order_history_query)) {
+  $email_orders_history .= $order_history['date_purchased'] . '　　' .
+    tep_output_string_protected($order_history['customers_name']) . '　　' .
+    abs(intval($order_history['order_total_value'])) . '円　　' . $order_history['orders_status_name'] . "\n";
+}
+  
+$email_orders_history .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n\n\n";
+
 # メール本文整形 --------------------------------------{
 
 //mailoption {
@@ -423,6 +459,7 @@ $mailoption['BANK_SHITEN']        = $_SESSION[$payment_modules->session_paymentv
 $mailoption['BANK_KAMOKU']        = $_SESSION[$payment_modules->session_paymentvalue_name]['bank_kamoku'];
 $mailoption['BANK_KOUZA_NUM']        = $_SESSION[$payment_modules->session_paymentvalue_name]['bank_kouza_num'];
 $mailoption['BANK_KOUZA_NAME']        = $_SESSION[$payment_modules->session_paymentvalue_name]['bank_kouza_name'];
+
 if ($point){
   $mailoption['POINT']            = str_replace('円', '', $currencies->format(abs($point)));
 }else {
@@ -483,34 +520,11 @@ $email_printing_order .= '備考　　　　　　：' . "\n";
 if ($order->info['comments']) {
   $email_printing_order .= $order->info['comments'] . "\n";
 }
-
-$email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-$email_printing_order .= 'IPアドレス　　　　　　：' . $_SERVER["REMOTE_ADDR"] . "\n";
-$email_printing_order .= 'ホスト名　　　　　　　：' . @gethostbyaddr($_SERVER["REMOTE_ADDR"]) . "\n";
-$email_printing_order .= 'ユーザーエージェント　：' . $_SERVER["HTTP_USER_AGENT"] . "\n";
-$email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
+$email_printing_order .= $email_customer_info;
 $email_printing_order .= '信用調査' . "\n";
-$credit_inquiry_query = tep_db_query("select customers_fax, customers_guest_chk from " . TABLE_CUSTOMERS . " where customers_id = '" . $customer_id . "'");
-$credit_inquiry       = tep_db_fetch_array($credit_inquiry_query);
-$email_printing_order .= $credit_inquiry['customers_fax'] . "\n";
-$email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
+$email_printing_order .= $email_credit_research;
 $email_printing_order .= '注文履歴　　　　　　　：';
-  
-if ($credit_inquiry['customers_guest_chk'] == '1') { $email_printing_order .= 'ゲスト'; } else { $email_printing_order .= '会員'; }
-  
-$email_printing_order .= "\n";
-  
-$order_history_query_raw = "select o.orders_id, o.customers_name, o.customers_id,
-  o.date_purchased, s.orders_status_name, ot.value as order_total_value from " . TABLE_ORDERS . " o left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id), " . TABLE_ORDERS_STATUS . " s where o.customers_id = '" . tep_db_input($customer_id) . "' and o.orders_status = s.orders_status_id and s.language_id = '" . $languages_id . "' and ot.class = 'ot_total' order by o.date_purchased DESC limit 0,5";  
-//ccdd
-$order_history_query = tep_db_query($order_history_query_raw);
-while ($order_history = tep_db_fetch_array($order_history_query)) {
-  $email_printing_order .= $order_history['date_purchased'] . '　　' .
-    tep_output_string_protected($order_history['customers_name']) . '　　' .
-    abs(intval($order_history['order_total_value'])) . '円　　' . $order_history['orders_status_name'] . "\n";
-}
-  
-$email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n\n\n";
+$email_printing_order .= $email_orders_history;
 
 if (method_exists($payment_class,'getMailString')){
   $email_printing_order .=$payment_class->getMailString($ot['value']);

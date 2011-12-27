@@ -1729,7 +1729,6 @@ border:2px solid #FF8080;
 .best_goods{ width:170px; margin:0 auto;}
 .best_goods_info { text-align:center; font-size:12px; padding:5px 0; border:1px solid #ccc;}
 .reorder{margin-top:8px; overflow:hidden;}
-.active_email input {width:365px;}
 .payment_comment{ 
  word-wrap:break-word;
  word-break:break-all;
@@ -1742,20 +1741,10 @@ border:2px solid #FF8080;
 #caemail p img { position:relative;/* left:8px; */ top:3px\9;}
 .cemail_input_01 { float:left; width:150px;}
 .con_email01{ /*float:left;*/}
-.preorder_active_info{ background-color:#ccc; font-size:13px; line-height:25px;}
-.preorder_active_info td{ background-color:#FFFFFF; padding-left:2px;}
-.preorder_active_line{ border-bottom:1px dashed #666; margin:0 0 15px 0;}
-.preorder_success_box { font-size:12px;}
-.preorser_formArea{ background-color:#ccc; font-size:13px; }
-.preorser_formArea td{ background-color:#FFFFFF; padding-left:2px; line-height:25px;}
-.preorderBarcurrent { font-size:11px; color:#000;}
-.preorderBarTo { font-size:11px; color:#8C8C8C;}
-.preorderBarFrom{ font-size:11px; color:#8c8c8c;}
-.c_pay_info{
-    background-color: #FFFFFF;
-    border: 1px solid #CCCCCC;
-    margin: 3px 0;
-    padding: 4px;
+.information_color {
+    background-color: #FDEBAC;
+    color: #000000;
+    margin: 5px;
+    padding: 5px;
+    width: 100%;
 }
-.formArea_td_info { width:360px\9; line-height:1.5; font-size:11px;}
-.active_email_name { font-size:11px;}

@@ -5,6 +5,16 @@
   //ob_start();
   require('includes/application_top.php');
   require_once(DIR_WS_CLASSES . 'payment.php');
+
+
+  // action ajax order 
+if ($_POST['orders_id'] &&
+    ($_POST['orders_comment']||$_POST['orders_comment_flag']=='true')&&
+    $_POST['action']=='ajax_orders') {
+  // update orders_comment
+  tep_db_perform('orders', array('orders_comment' => $_POST['orders_comment']), 'update', "orders_id='".$_POST['orders_id']."'");
+  tep_redirect(tep_href_link(FILENAME_ORDERS,'page='.$_POST['page'].'&oID='.$_POST['orders_id'].'&action=edit'));
+}
 function tep_show_orders_products_info($orders_id) {
   $str = '';
 
@@ -143,7 +153,7 @@ function tep_show_orders_products_info($orders_id) {
     $str .= '<tr>'; 
     $str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_FETCH_TIME.'</b></td>';
     $str .= '<td class="main">';
-    $str .= $orders['torihiki_date']; 
+    $str .= str_replace('/','<br>',$orders['torihiki_date']); 
     $str .= '</td>'; 
     $str .= '</tr>'; 
     
@@ -1695,11 +1705,33 @@ if(isset($_GET['search_type'])&&$_GET['search_type']){
 }
 
 ?>
+<?php
+if (!isset($_GET['action'])) {
+?>
+$(function() {
+   left_show_height = $('#orders_list_table').height();
+   right_show_height = $('#rightinfo').height();
+   
+   if (right_show_height <= left_show_height) {
+     $('#rightinfo').css('height', left_show_height);  
+   }
+});
+function showRightInfo() {
+   left_show_height = $('#orders_list_table').height();
+   $('#rightinfo').css('height', left_show_height);  
+}
+$(window).resize(function() {
+ showRightInfo();
+});
+<?php
+}
+?>
+var popup_num = 1;
 </script>
 </head>
 <body>
 <?php
-if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
+if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']&&false){?>
   <script language='javascript'>
     one_time_pwd('<?php echo $page_name;?>');
   </script>
@@ -2091,66 +2123,82 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
               <?php 
               $customer_email_raw = tep_db_query("select * from ".TABLE_ORDERS." where orders_id = '".$order->info['orders_id']."'"); 
               $customer_email_res = tep_db_fetch_array($customer_email_raw); 
+              $history_list_array = array(); 
+              $preorder_history_query = tep_db_query("
+                  select orders_id, date_purchased 
+                  from ".TABLE_PREORDERS." 
+                  where   customers_email_address = '".$customer_email_res['customers_email_address']."'
+                  order by date_purchased desc
+                  limit 5
+                ");
+              while ($preorder_history_res = tep_db_fetch_array($preorder_history_query)) {
+                $history_list_array['p_'.$preorder_history_res['orders_id']] = strtotime($preorder_history_res['date_purchased']); 
+              }
+              
               $order_history_query = tep_db_query("
-                  select * 
+                  select orders_id, date_purchased 
                   from ".TABLE_ORDERS." 
                   where   customers_email_address = '".$customer_email_res['customers_email_address']."'
                   order by date_purchased desc
                   limit 5
                 ");
-                 $total_order_history = tep_db_num_rows($order_history_query); 
-                 if ($total_order_history > 0) {
-                  ?>
+              
+              while ($order_history_res = tep_db_fetch_array($order_history_query)) {
+                $history_list_array['o_'.$order_history_res['orders_id']] = strtotime($order_history_res['date_purchased']); 
+              }   
+                 if (!empty($history_list_array)) {
+                   arsort($history_list_array); 
+                   ?>
                   <table width="100%" border="0" cellspacing="0" cellpadding="2">
                   <?php
-                  $total_order_id_arr = array(); 
-                  while($order_history = tep_db_fetch_array($order_history_query)){
-                    $total_order_id_arr[] = $order_history['orders_id']; 
+                  $history_list_num = 0; 
+                  foreach ($history_list_array as $h_key => $h_value) { 
+                    if ($history_list_num > 4) {
+                      break; 
+                    }
+                    $from_site_single = 0;
+                    $history_table = TABLE_ORDERS; 
+                    $from_site_char = substr($h_key, 0, 1);
+                    $h_order_id = substr($h_key, 2);
+                    if ($from_site_char == 'p') {
+                      $from_site_single = 1;
+                      $history_table = TABLE_PREORDERS; 
+                    }
+                    $order_history_info_raw = tep_db_query("select orders_id, date_purchased, orders_status_name, site_id from ".$history_table." where orders_id = '".$h_order_id."'"); 
+                    $order_history_info = tep_db_fetch_array($order_history_info_raw); 
                   ?>
                     <tr>
                       <td class="main">
                       <?php
-                        $store_name_raw = tep_db_query("select * from ".TABLE_SITES." where id = '".$order_history['site_id']."'");  
+                        $store_name_raw = tep_db_query("select * from ".TABLE_SITES." where id = '".$order_history_info['site_id']."'");  
                         $store_name_res = tep_db_fetch_array($store_name_raw); 
                         echo $store_name_res['romaji']; 
                       ?>
                       </td> 
-                      <td class="main"><?php echo $order_history['date_purchased'];?></td>
-                      <td class="main"><?php echo
-                      strip_tags(tep_get_ot_total_by_orders_id($order_history['orders_id'],true));?></td>
-                      <td class="main"><?php echo $order_history['orders_status_name'];?></td>
-                    </tr>
-                  <?php
-                  }
-                  /* 
-                  if ($total_order_history < 5) {
-                    $diff_num = 5 - $total_order_history; 
-                    $p_order_history_query = tep_db_query("
-                        select * 
-                        from ".TABLE_ORDERS." 
-                        where   customers_email_address =
-                        '".$customer_email_res['customers_email_address']."' and
-                        orders_id not in (".implode(',', $total_order_id_arr).") 
-                        order by date_purchased desc
-                        limit ".$diff_num);
-                    while ($p_order_history = tep_db_fetch_array($p_order_history_query)) {
-                    ?>
-                    <tr>
                       <td class="main">
                       <?php
-                        $p_store_name_raw = tep_db_query("select * from ".TABLE_SITES." where id = '".$p_order_history['site_id']."'");  
-                        $p_store_name_res = tep_db_fetch_array($p_store_name_raw); 
-                        echo $store_name_res['romaji']; 
+                      if (!$from_site_single) {
+                        echo TEXT_ORDER_HISTORY_FROM_ORDER; 
+                      } else {
+                        echo TEXT_ORDER_HISTORY_FROM_PREORDER; 
+                      }
                       ?>
-                      </td> 
-                      <td class="main"><?php echo $p_order_history['date_purchased'];?></td>
-                      <td class="main"><?php echo strip_tags(tep_get_ot_total_by_orders_id($p_order_history['orders_id'],true));?></td>
-                      <td class="main"><?php echo $p_order_history['orders_status_name'];?></td>
+                      </td>
+                      <td class="main"><?php echo $order_history_info['date_purchased'];?></td>
+                      <td class="main">
+                      <?php 
+                        if (!$from_site_single) {
+                          echo strip_tags(tep_get_ot_total_by_orders_id($order_history_info['orders_id'],true));
+                        } else {
+                          echo strip_tags(tep_get_pre_ot_total_by_orders_id($order_history_info['orders_id'],true));
+                        }
+                      ?>
+                      </td>
+                      <td class="main"><?php echo $order_history_info['orders_status_name'];?></td>
                     </tr>
-                    <?php
-                    }
+                  <?php
+                    $history_list_num++; 
                   }
-                  */ 
                   ?>
                   </table>
                   <?php
@@ -2348,7 +2396,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
           $select_select = $orders_history['orders_status_id'];
           echo 
              '    <tr>' . "\n" .
-             '      <td class="smallText" align="center">' . tep_datetime_short($orders_history['date_added']) . '</td>' . "\n" .
+             '      <td class="smallText" align="center">' . tep_datetime_short_torihiki($orders_history['date_added']) . '</td>' . "\n" .
              '      <td class="smallText" align="center">';
           if ($orders_history['customer_notified'] == '1') {
             echo tep_image(DIR_WS_ICONS . 'tick.gif', ICON_TICK) . "</td>\n";
@@ -2943,7 +2991,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
       }
 
   //今日の取引なら赤色
-  $trade_array = getdate(strtotime(tep_datetime_short($orders['torihiki_date'])));
+  $trade_array = getdate(strtotime(tep_datetime_short_torihiki($orders['torihiki_date'])));
   $today_array = getdate();
   if ($trade_array["year"] == $today_array["year"] && $trade_array["mon"] == $today_array["mon"] && $trade_array["mday"] == $today_array["mday"]) {
     $today_color = 'red';
@@ -2961,12 +3009,19 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
     #}
     $next_mark = '';
   }
+  $even = 'dataTableSecondRow';
+  $odd  = 'dataTableRow';
+  if (isset($nowColor) && $nowColor == $odd) {
+    $nowColor = $even; 
+  } else {
+    $nowColor = $odd; 
+  }
   if ( (isset($oInfo) && is_object($oInfo)) && ($orders['orders_id'] == $oInfo->orders_id) ) {
     //echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRowSelected" onmouseover="showOrdersInfo(\''.tep_get_orders_products_string($orders).'\',this);this.style.cursor=\'hand\'" onmouseout="hideOrdersInfo()" ondblclick="window.location.href=\''.tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']).'\'">' . "\n";
     echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'">' . "\n";
   } else {
     //echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRow" onmouseover="showOrdersInfo(\''.tep_get_orders_products_string($orders).'\',this);this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="hideOrdersInfo();this.className=\'dataTableRow\'" ondblclick="window.location.href=\''.tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']).'\'">' . "\n";
-    echo '    <tr id="tr_' . $orders['orders_id'] . '" class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'">' . "\n";
+    echo '    <tr id="tr_' . $orders['orders_id'] . '" class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'">' . "\n";
   }
 ?>
   <?php 
@@ -2984,18 +3039,12 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
           <a href="<?php echo tep_href_link('orders.php', 'cEmail=' .
             tep_output_string_protected($orders['customers_email_address']));?>"><?php
             echo tep_image(DIR_WS_ICONS . 'search.gif', TEXT_ORDER_HISTORY_ORDER);?></a>
-<?php if ($ocertify->npermission) {?>
-          &nbsp;<a href="<?php echo tep_href_link('customers.php', 'page=1&cID=' .
-            tep_output_string_protected($orders['customers_id']) .
-            '&action=edit');?>"><?php echo tep_image(DIR_WS_ICONS .
-            'arrow_r_red.gif', TEXT_ORDER_CUSTOMER_INFO);?></a>&nbsp;&nbsp;
-<?php }?> 
   <?php if (!$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)) {?>
   <font color="#999">
   <?php } else { ?>
   <font color="#000">
   <?php } ?>
-          <b><?php echo tep_output_string_protected($orders['customers_name']);?></b>
+          <a style="text-decoration:underline;" href="<?php echo tep_href_link('customers.php', 'page=1&cID=' .  tep_output_string_protected($orders['customers_id']) .  '&action=edit');?>"><b><?php echo tep_output_string_protected($orders['customers_name']);?></b></a>
           <input type="hidden" id="cid_<?php echo $orders['orders_id'];?>" name="cid[]" value="<?php echo $orders['customers_id'];?>" />
   </font>
   <?php if (tep_is_oroshi($orders['customers_id'])) { ?>
@@ -3015,12 +3064,12 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
       <?php echo strip_tags(tep_get_ot_total_by_orders_id_no_abs($orders['orders_id'], true));?>
       <?php }?>
     </td>
-    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';"><?php echo $next_mark; ?><font color="<?php echo !$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)?'#999':$today_color; ?>" id="tori_<?php echo $orders['orders_id']; ?>"><?php echo tep_datetime_short($orders['torihiki_date']); ?></font></td>
+    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';"><?php echo $next_mark; ?><font color="<?php echo !$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)?'#999':$today_color; ?>" id="tori_<?php echo $orders['orders_id']; ?>"><?php echo tep_datetime_short_torihiki($orders['torihiki_date']); ?></font></td>
     <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="left" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';"><?php
     if ($orders['orders_wait_flag']) { echo tep_image(DIR_WS_IMAGES .
         'icon_hand.gif', TEXT_ORDER_WAIT); } else { echo '&nbsp;'; } ?></td>
     <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="left" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';"><?php echo $orders['orders_work']?strtoupper($orders['orders_work']):'&nbsp;';?></td>
-    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="center" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';"><span style="color:#999999;"><?php echo tep_datetime_short($orders['date_purchased']); ?></span></td>
+    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="center" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';"><span style="color:#999999;"><?php echo tep_datetime_short_torihiki($orders['date_purchased']); ?></span></td>
     <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="center" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';">
     <?php 
     // ===============================================================
@@ -3079,13 +3128,16 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
       echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); 
     } else { 
     ?>
-    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onmouseover="showOrdersInfo('<?php echo $orders['orders_id'];?>',this);" onmouseout="hideOrdersInfo();">
+    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onmouseover="if(popup_num == 1) showOrdersInfo('<?php echo $orders['orders_id'];?>',this, 0);" onmouseout="if(popup_num == 1) hideOrdersInfo(0);">
     <?php
+      /* 
       if ($_GET['action'] == 'delete') {
         echo '<a href="' . tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID=' . $orders['orders_id']) .  '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
       } else {
         echo '<a href="' . tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID')) . 'oID=' . $orders['orders_id']) .  '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
       }
+      */ 
+      echo '<a href="javascript:void(0);" onclick="showOrdersInfo(\''.$orders['orders_id'].'\', this, 1);">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
     } ?>&nbsp;</td>
     </tr>
 <?php }?>
@@ -3222,7 +3274,7 @@ function submit_confirm()
       break;
     default:
       if (isset($oInfo) && is_object($oInfo)) {
-        $heading[] = array('text' => '<b>[' . $oInfo->orders_id . ']<br>' . tep_datetime_short($oInfo->date_purchased) . '</b>');
+        $heading[] = array('text' => '<b>[' . $oInfo->orders_id . ']<br>' . tep_datetime_short_torihiki($oInfo->date_purchased) . '</b>');
 
         if ($ocertify->npermission == 15) {
           $contents[] = array('align' => 'center', 'text' => '<a href="' .  tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID=' . $oInfo->orders_id . '&action=edit') . '">' . tep_html_element_button(IMAGE_DETAILS) . '</a> <a href="' .  tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID=' . $oInfo->orders_id . '&action=delete') .  '">' . tep_html_element_button(IMAGE_DELETE) . '</a>');
@@ -3239,12 +3291,18 @@ function submit_confirm()
 
 
     echo '      <td width="20%" style="padding-top:20px;" valign="top">' . "\n";
+  if (!isset($_GET['action']) && $orders_query_numrows > 0) {
+    echo '<div id="rightinfo" style="background-color:#FFD700;">'; 
+  }
   if ( (tep_not_null($heading)) && (tep_not_null($contents)) ) {
     $box = new box;
     echo $box->infoBox($heading, $contents);
   }
   ?>
   <?php
+    if (!isset($_GET['action']) && $orders_query_numrows > 0) {
+      echo '</div>'; 
+    }
     echo '      </td>' . "\n";
 
 ?>

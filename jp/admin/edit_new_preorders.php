@@ -12,7 +12,7 @@
 
   require(DIR_WS_CLASSES . 'currencies.php');
   $currencies = new currencies(2);
-
+  
   include(DIR_WS_CLASSES . 'preorder.php');
   unset($cpayment); 
   $cpayment = payment::getInstance((int)$_SESSION['create_preorder']['orders']['site_id']);
@@ -77,7 +77,7 @@
       from " . TABLE_CUSTOMERS . " 
       where customers_id = '" . $order['customers_id'] . "'");
   $customer_guest = tep_db_fetch_array($customer_guest_query);
-
+  
   if (tep_not_null($action)) {
     switch ($action) {
       case 'check_session':
@@ -465,7 +465,7 @@
       
       // orders_status_history
       $comment_str = $cpayment->admin_deal_comment($_POST['payment_method']);
-       
+
       if (DEFAULT_PREORDERS_STATUS_ID == $_POST['status']) {
         $sql_data_array = array(
                     'orders_id' => $_SESSION['create_preorder']['orders']['orders_id'], 
@@ -604,7 +604,8 @@
             ),$email_title);
         
         tep_mail($order->customer['name'], $order->customer['email_address'], $email_title, $email, get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']),$order->info['site_id']);
-      
+        
+        tep_mail(get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), $email_title, $email, $order->customer['name'], $order->customer['email_address'], $order->info['site_id']);
       }
       $customer_notified = '1';
     }

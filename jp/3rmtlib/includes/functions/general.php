@@ -2610,7 +2610,8 @@ function tep_unlink_temp_dir($dir)
                pd.site_id,
                pd.romaji, 
                pd.products_url,
-               pd.products_viewed
+               pd.products_viewed,
+               pd.preorder_status
         FROM " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
         WHERE p.products_id = '" . $pid . "' 
           AND pd.products_id = '" .  $pid . "'" . " 
@@ -2668,7 +2669,8 @@ function tep_unlink_temp_dir($dir)
                pd.romaji, 
                pd.option_image_type, 
                pd.products_url,
-               pd.products_viewed
+               pd.products_viewed,
+               pd.preorder_status
         FROM " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
         WHERE p.products_id = '" . $pid . "' 
           AND pd.products_status != '0' 
@@ -4270,7 +4272,8 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
                            'billing_country' => $billing_address['countries_name'],
                            'billing_telephone' => $billing_address['entry_telephone'], 
                            'billing_address_format_id' => $billing_address['address_format_id'],  
-                           'comment_msg' => $pInfo['yourmessage'],  
+                           'comment_msg' => $pInfo['yourmessage'], 
+                           'bank_info' => $pInfo['bank_name'].'<<<|||'.$pInfo['bank_shiten'].'<<<|||'.$pInfo['bank_kamoku'].'<<<|||'.$pInfo['bank_kouza_num'].'<<<|||'.$pInfo['bank_kouza_name']
                            );
    $pay_class = new $pInfo['pre_payment']; 
    
@@ -4281,8 +4284,10 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
    } else if (method_exists($pay_class, 'dealPreorderRakuComment')) {
      $sql_data_array['raku_text'] = $pay_class->dealPreorderRakuComment($pInfo['yourmessage'], $pInfo['rakuten_telnumber']); 
      $sh_comments = $pay_class->dealPreorderRakuComment($pInfo['yourmessage'], $pInfo['rakuten_telnumber'], true); 
-   } else {
-     $sh_comments = $pInfo['yourmessage']; 
+   } else if (method_exists($pay_class, 'dealPreorderBuyingComment')) {
+     $sh_comments = $pay_class->dealPreorderBuyingComment($pInfo); 
+   } else { 
+    $sh_comments = $pInfo['yourmessage']; 
    }
    
    tep_db_perform(TABLE_PREORDERS, $sql_data_array);
@@ -4471,4 +4476,96 @@ function tep_whether_show_preorder_payment($limit_setting) {
   }
 
   return true;
+}
+
+function tep_preorder_get_products_id_by_param()
+{
+   global $languages_id;
+   
+   $category_array = array();
+   
+   if (!isset($_GET['fromaji'])) {
+     return false; 
+   }
+   
+   if (!isset($_GET['promaji'])) {
+     return false; 
+   }
+   
+   $category_query = tep_db_query("select cd.categories_id from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd where c.categories_id = cd.categories_id and c.parent_id = '0' and cd.romaji = '".urldecode($_GET['fromaji'])."' and cd.language_id = '".$languages_id."' and (cd.site_id = '0' or cd.site_id = '".SITE_ID."') order by cd.site_id desc limit 1");
+   $category = tep_db_fetch_array($category_query);
+   if ($category) {
+     $category_array[] = $category['categories_id']; 
+     if (isset($_GET['sromaji'])) {
+       $child_category_query = tep_db_query("select cd.categories_id from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd where c.categories_id = cd.categories_id and c.parent_id = '".$category['categories_id']."' and cd.romaji = '".urldecode($_GET['sromaji'])."' and cd.language_id = '".$languages_id."' and (cd.site_id = '0' or cd.site_id = '".SITE_ID."') order by cd.site_id desc limit 1");
+       $child_category = tep_db_fetch_array($child_category_query);
+       
+       if ($child_category) {
+         $category_array[] = $child_category['categories_id']; 
+         if (isset($_GET['tromaji'])) {
+           $child_child_category_query = tep_db_query("select cd.categories_id from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd where c.categories_id = cd.categories_id and c.parent_id = '".$child_category['categories_id']."' and cd.romaji = '".urldecode($_GET['tromaji'])."' and cd.language_id = '".$languages_id."' and (cd.site_id = '0' or cd.site_id = '".SITE_ID."') order by cd.site_id desc limit 1");
+           $child_child_category = tep_db_fetch_array($child_child_category_query);
+          
+           if ($child_child_category) {
+             $category_array[] = $child_child_category['categories_id']; 
+           }
+         }
+       }
+     }
+   }
+  
+   if (!empty($category_array)) {
+     $count_num = count($category_array); 
+     $product_info_query = tep_db_query("select pd.products_id from ".TABLE_PRODUCTS_DESCRIPTION." pd where pd.language_id = '".$languages_id."' and pd.romaji = '".urldecode($_GET['promaji'])."' and (pd.site_id = '0' or pd.site_id = '".SITE_ID."') group by products_id order by pd.site_id desc");
+     if (tep_db_num_rows($product_info_query) > 0) {
+       while ($product_info = tep_db_fetch_array($product_info_query)) {
+         $product_to_category_query = tep_db_query("select categories_id from ".TABLE_PRODUCTS_TO_CATEGORIES." where products_id = '".$product_info['products_id']."'"); 
+         while ($product_to_category = tep_db_fetch_array($product_to_category_query)) {
+           if ($product_to_category['categories_id'] == $category_array[$count_num-1]) {
+             return $product_info['products_id']; 
+           }
+         }
+       }
+     }
+   }
+   
+   return false;
+}
+function tep_get_torihiki_date_radio($start_time,$radio_name="torihiki_time"){
+  $arr = array();
+  $time_str = date('H:i',$start_time);
+  $time_arr = explode(':',$time_str);
+  $hour = $time_arr[0];
+  $mim_start = $time_arr[1];
+  $show_row = 0;
+  for($hour;$hour<24;$hour++){
+    for($mim_start;$mim_start<60;){
+      if($show_row ==0 ){
+        if($mim_start < 15){
+          $mim_start = 15;
+        }else if($mim_start < 30){
+          $mim_start = 30;
+        }else if($mim_start < 45){
+          $mim_start = 45;
+        }else if($mim_start >= 45){
+          $mim_start = 0;
+          break;
+        }
+      }
+      $s_start = $mim_start;
+      $mim_start+=14;
+      $e_start = $mim_start;
+      $return_str = "<input type='radio' name='".$radio_name."' value='".
+           sprintf('%02d',$hour).":".sprintf('%02d',$s_start)."-".
+           sprintf('%02d',$hour).":".sprintf('%02d',$e_start)."'>&nbsp;&nbsp;";
+      $return_str .= sprintf('%02d',$hour)."時".sprintf('%02d',$s_start)."分";
+      $return_str .= " ～ ";
+      $return_str .= sprintf('%02d',$hour)."時".sprintf('%02d',$e_start)."分";
+      $show_row ++;
+      $mim_start++;
+      $arr[]=$return_str;
+    }
+    $mim_start = 0;
+  }
+  return $arr;
 }

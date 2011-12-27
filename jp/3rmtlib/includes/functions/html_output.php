@@ -761,7 +761,7 @@ function tep_tags_link()
   return $returnstr;
 }
 
-function tep_preorder_href_link($romaji, $param = null)
+function tep_preorder_href_link($pid, $romaji, $param = null)
 {
   global $request_type;
   $returnstr = HTTP_SERVER . DIR_WS_CATALOG;
@@ -769,14 +769,26 @@ function tep_preorder_href_link($romaji, $param = null)
   if ($param) {
     $param_str = '?'.$param; 
   }
+  
+  $categories = tep_get_categories_by_pid($pid);
+  $categoriesToString = '';
+  if (count($categories)) {
+    foreach ($categories as $k => $v) {
+      $categories[$k] = urlencode($v); 
+    }
+    $categoriesToString = @join('/', $categories).'/'; 
+  }
+  
   if ($_SERVER['HTTP_HOST'] == substr(HTTPS_SERVER, 8)) {
-      $returnstr .= "preorder/".urlencode($romaji).".html".$param_str;
+      $returnstr .= 'preorder/'.$categoriesToString.urlencode($romaji).'.html'.$param_str;
     } else {
         if ($request_type == 'SSL') {
-          $returnstr .= "preorder/".urlencode($romaji).".html".$param_str.'&'.tep_session_name()."=".tep_session_id();
+          $returnstr .= "preorder/".$categoriesToString.urlencode($romaji).".html".$param_str.'&'.tep_session_name()."=".tep_session_id();
         } else {
-          $returnstr .= "preorder/".urlencode($romaji).".html".$param_str;
+          $returnstr .= "preorder/".$categoriesToString.urlencode($romaji).".html".$param_str;
         }
     }
   return $returnstr;
 }
+
+

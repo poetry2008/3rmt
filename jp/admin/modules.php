@@ -3,19 +3,14 @@
   $Id$
 */
 require('includes/application_top.php');
-
 $set = $_GET['set'];
 if(empty($set) or !is_dir( DIR_FS_CATALOG_MODULES .$_GET['set'])){
   $set = 'payment';
-}
-$module_type = $set ;
-$module_directory = DIR_FS_CATALOG_MODULES . $module_type.'/';
-$module_key = 'MODULE_'.strtoupper($module_type).'_INSTALLED';
-define('HEADING_TITLE', $tmp  = constant('HEADING_TITLE_MODULES_'.strtoupper($module_type)));
 
 if (isset($_GET['action'])) 
   switch ($_GET['action']) {
   case 'save':
+    $post_configuration = $_POST['configuration'];
     $site_id = isset($_POST['site_id'])?(int)$_POST['site_id']:0;
     if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];//权限判断
     else $site_arr="";
@@ -27,8 +22,10 @@ if (isset($_GET['action']))
     }
     if(!tep_module_installed($class, $site_id)){
       $module = new $class($site_id);
+
       $module->install();
     }
+      
     if ($_GET['set'] == 'payment') { 
       if ($site_id != 0) {
         $limit_show_str = ''; 
@@ -40,7 +37,9 @@ if (isset($_GET['action']))
         }
         //如果有CHECKBOX
         if (!empty($limit_show_str)) {
+
           if (!tep_db_num_rows(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$limit_show_str."' and site_id='".$site_id."'"))) {
+
             $cp_show_configuration = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$limit_show_str."' and site_id='0'"));
             if ($cp_show_configuration) {
               tep_db_query("
@@ -122,7 +121,10 @@ if (isset($_GET['action']))
         }
       }
     }
-    while (list($key, $value) = each($_POST['configuration'])) {
+    $key = '';
+    $value = '';
+    foreach($post_configuration as $key => $value){
+    //while (list($key, $value) = each($_POST['configuration'])) {
 
       if (
           !tep_db_num_rows(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$key."' and site_id='".$site_id."'")
@@ -207,7 +209,8 @@ $ex_site = $sites[0];
   <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
   </head>
   <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">
-  <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
+  <?php
+  if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
   <script language='javascript'>
      one_time_pwd('<?php echo $page_name;?>');
 </script>
@@ -275,6 +278,10 @@ for ($i = 0, $n = sizeof($directory_array); $i < $n; $i++) {
 //print_r($directory_array_sorted);
 ksort($directory_array_sorted);
 foreach ($directory_array_sorted as $i => $files) {
+
+  //$file = $directory_array_sorted[$i];
+  //include(DIR_WS_LANGUAGES . $language . '/modules/' . $module_type . '/' . $file);
+  //include($module_directory . $file);
   foreach ($files as $j => $file) {
     $class = substr($file, 0, strrpos($file, '.'));
     if (tep_class_exists($class)) {
@@ -311,6 +318,13 @@ foreach ($directory_array_sorted as $i => $files) {
         $mInfo = new objectInfo($module_info);
       }
 
+      $even = 'dataTableSecondRow';
+      $odd  = 'dataTableRow';
+      if (isset($nowColor) && $nowColor == $odd) {
+        $nowColor = $even; 
+      } else {
+        $nowColor = $odd; 
+      }
       if (isset($mInfo)&& (is_object($mInfo)) && ($class == $mInfo->code) ) {
         if ($module->check() > 0) {
           echo '              <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" ondblclick="document.location.href=\'' . tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $class . '&action=edit') . '\'">' . "\n";
@@ -318,7 +332,7 @@ foreach ($directory_array_sorted as $i => $files) {
           echo '              <tr class="dataTableRowSelected">' . "\n";
         }
       } else {
-        echo '              <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" ondblclick="document.location.href=\'' . tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $class) . '\'">' . "\n";
+        echo '              <tr class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'" ondblclick="document.location.href=\'' . tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $class) . '\'">' . "\n";
       }
       ?>
       <td class="dataTableContent"><?php if (isset($module->link) && $module->link) {?><a target='_blank' href="<?php echo $ex_site['url'].'/'.$module->link;?>"><?php echo tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW);?></a><?php } ?>
@@ -398,8 +412,7 @@ case 'edit':
 
   $contents = array('form' => tep_draw_form('modules', FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' . $_GET['module'] . '&action=save'));
   $contents[] = array('text' => $keys);
-  $contents[] = array('text' => '<input type="hidden" name="site_id" value="'.$site_id.'">'.
-      TEXT_PAYMENT_EMAIL_TEMPLATE);
+  $contents[] = array('text' => '<input type="hidden" name="site_id" value="'.$site_id.'">');
   $contents[] = array('align' => 'center', 'text' => '<br>' .
                       tep_html_element_submit(IMAGE_SAVE) . ' <a href="' .  tep_href_link(FILENAME_MODULES, 'set=' . $_GET['set'] . '&module=' .  $_GET['module']) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
 

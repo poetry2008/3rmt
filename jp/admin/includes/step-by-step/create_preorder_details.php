@@ -7,6 +7,7 @@
 
     tep_draw_hidden_field($customer_id);    
 ?>
+
 <table border="0" width="100%" cellspacing="0" cellpadding="2">
   <tr>
     <td class="formAreaTitle"><?php echo CATEGORY_CORRECT; ?></td>
@@ -82,6 +83,7 @@
       $payment_list[] = array('id' => $payment_array[0][$i], 'text' => $payment_array[1][$i]);
     }
   }
+
 ?>
   <tr>
     <td class="formAreaTitle"><br><?php echo CREATE_ORDER_PAYMENT_TITLE;?></td>
@@ -101,6 +103,7 @@
                 } ?>
         </td>
               </tr>
+
               <?php
               foreach ($selection as $skey => $singleton) { 
               foreach ($singleton['fields'] as $fkey => $field) { 
@@ -117,6 +120,7 @@
               <?php }?> 
               <?php }?>
         </table></td>
+
         </tr>
       </table>
   </td>

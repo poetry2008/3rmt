@@ -168,7 +168,7 @@ if(isset($_GET['action']) &&
         //$next_str = "IF(nextdate = '0000-00-00', '1', '0') as date_order,";
         //$order_str = '`date_order` asc,`nextdate` asc, `title` asc'; 
         $next_str = '';
-        $order_str = '`nextdate` desc, `title` asc'; 
+        $order_str = '`nextdate` asc, `title` asc'; 
       } else {
         if($HTTP_GET_VARS['sort'] == 'nextdate'){
           $next_str = 'nextdate as ';
@@ -765,7 +765,7 @@ right:5px;*/
       <?php
       } else {
       ?>
-      <a href="<?php echo tep_href_link('pw_manager.php', tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=nextdate&type=asc');?>"><?php echo TEXT_NEXTDATE;?></a> 
+      <a href="<?php echo tep_href_link('pw_manager.php', tep_get_all_get_params(array('x', 'y', 'type', 'sort')).'sort=nextdate&type=desc');?>"><?php echo TEXT_NEXTDATE;?></a> 
       <?php
       }
       ?>
@@ -784,6 +784,13 @@ right:5px;*/
           (!@$pwInfo) && (substr(@$_GET['action'], 0, 3) != 'new')) {
       $pwInfo = new objectInfo($pw_manager_row);
       }
+      $even = 'dataTableSecondRow';
+      $odd  = 'dataTableRow';
+      if (isset($nowColor) && $nowColor == $odd) {
+        $nowColor = $even; 
+      } else {
+        $nowColor = $odd; 
+      }
     if (isset($pwInfo) && (is_object($pwInfo)) && ($pw_manager_row['id'] == $pwInfo->id) ) {
       echo '              <tr class="dataTableRowSelected"
         onmouseover="this.style.cursor=\'hand\'" >' . "\n";
@@ -791,9 +798,9 @@ right:5px;*/
         tep_href_link(FILENAME_PW_MANAGER, 'page=' . $_GET['page'] . '&pw_id=' .
             $pwInfo->id . '&action=edit&site_id='.$site_id.'&sort='.$_GET['sort'].'&type='.$_GET['type']) . '\'"';
     } else {
-      echo '              <tr class="dataTableRow"
+      echo '              <tr class="'.$nowColor.'"
         onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'"
-        onmouseout="this.className=\'dataTableRow\'">' . "\n";
+        onmouseout="this.className=\''.$nowColor.'\'">' . "\n";
       $onclick = 'onclick="document.location.href=\'' . tep_href_link(FILENAME_PW_MANAGER,
         'page=' . $_GET['page'] .
           '&site_id='.$site_id.'&sort='.$_GET['sort'].'&type='.$_GET['type'].'&pw_id=' . $pw_manager_row['id']) . '\'"';

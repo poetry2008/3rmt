@@ -99,6 +99,13 @@ while($point_mail = tep_db_fetch_array($point_mail_query)){
     &&(!isset($_GET['action'])||substr($_GET['action'],0,3) != 'new')){
     $point_info = new objectInfo($point_mail);
   }
+  $even = 'dataTableSecondRow';
+  $odd  = 'dataTableRow';
+  if (isset($nowColor) && $nowColor == $odd) {
+    $nowColor = $even; 
+  } else {
+    $nowColor = $odd; 
+  }
   if(isset($point_info) && (is_object($point_info)) && ($point_mail['id'] ==
         $point_info->id)){
     echo '<tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" 
@@ -106,9 +113,9 @@ while($point_mail = tep_db_fetch_array($point_mail_query)){
     'page=' . $_GET['page']. '&id=' . $point_info->id ) .
       '\'">' . "\n";
   }else{
-    echo '<tr class="dataTableRow"
+    echo '<tr class="'.$nowColor.'"
       onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'"
-      onmouseout="this.className=\'dataTableRow\'"
+      onmouseout="this.className=\''.$nowColor.'\'"
       onclick="document.location.href=\'' . tep_href_link(FILENAME_POINT_EMAIL,
       'page=' . $_GET['page'] .'&id=' . $point_mail['id']) .'\'">' .
         "\n";

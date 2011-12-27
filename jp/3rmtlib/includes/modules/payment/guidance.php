@@ -38,35 +38,13 @@ class guidance extends basePayment  implements paymentInterface  {
     }
   }
 
-  
+
 
   // class methods
   function javascript_validation() {
     return false;
   }
   function fields($theData, $back=false){
-  }
-  function selection($theData) {
-    global $currencies;
-    global $order;
-
-    $total_cost = $order->info['total'];      // 税金も含めた代金の総額
-    $f_result = $this->calc_fee($total_cost); // 手数料
-
-    $added_hidden = ''; // added by rekam
-    if (!empty($this->n_fee)) {
-      $s_message = $f_result ? (MODULE_PAYMENT_GUIDANCE_TEXT_FEE . '&nbsp;' . $currencies->format($this->n_fee)) : ('<font color="#FF0000">' . $this->s_error . '</font>');
-    } else {
-      $s_message = $f_result ? '': ('<font color="#FF0000">' . $this->s_error . '</font>');
-    }
-
-    $email_default_str = ''; 
-    $selection = array('id' => $this->code,
-                       'module' => $this->title, 
-                       'fields' => array(array('title' => MODULE_PAYMENT_GUIDANCE_TEXT_PROCESS, 'field' => ''),
-                                         array('title' => '', 'field' => $added_hidden) 
-                      ));
-    return $selection;
   }
 
   function pre_confirmation_check() {

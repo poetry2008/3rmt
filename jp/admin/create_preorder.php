@@ -51,6 +51,7 @@
 <script type="text/javascript">
 function hidden_payment()
 {
+
   var idx = document.create_order.elements['payment_method'].selectedIndex; 
   var CI = document.create_order.elements['payment_method'].options[idx].value; 
   $(".rowHide").hide(); 
@@ -294,6 +295,7 @@ float:left;
     }
   }
   $selection = $cpayment->admin_selection();
+
 ?>
   <tr>
     <td class="formAreaTitle"><br><?php echo CREATE_ORDER_PAYMENT_TITLE;?></td>
@@ -325,6 +327,7 @@ float:left;
               <?php }?> 
               <?php }?> 
           </table></td>
+
         </tr>
       </table>
   </td>

@@ -92,6 +92,7 @@
     $entry_predate_error = false;
   }
   
+
   $selection = $cpayment->admin_selection();
   if (!empty($_POST['payment_method'])) {
     $validateModule = $cpayment->admin_confirmation_check($selection, $_POST['payment_method']); 
@@ -100,7 +101,7 @@
       $error = true;
     } 
   } 
- //Add input string check - NG return Input order data - d2006.4.14 ds-style
+
   if($error == true) {
   
 // #### Get Available Customers
@@ -396,10 +397,11 @@ float:left;
             ); 
    
   $cpayment->admin_add_additional_info($sql_data_array, $_POST['payment_method']); 
+
   $_SESSION['create_preorder']['orders'] = $sql_data_array;
   
   //insert into order total
-  //=================================================
+
   
   
   require(DIR_WS_CLASSES . 'currencies.php');

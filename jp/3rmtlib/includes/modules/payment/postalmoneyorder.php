@@ -12,30 +12,6 @@ class postalmoneyorder extends basePayment  implements paymentInterface  {
     $this->site_id      = $site_id;
     $this->show_payment_info = 0;
   }
-  /*
-  function postalmoneyorder($site_id = 0) {
-    global $order;
-      
-    $this->site_id = $site_id;
-
-
-    $this->title       = TS_MODULE_PAYMENT_POSTALMONEYORDER_TEXT_TITLE;
-    $this->description = TS_MODULE_PAYMENT_POSTALMONEYORDER_TEXT_DESCRIPTION;
-    $this->explain     = TS_MODULE_PAYMENT_POSTALMONEYORDER_TEXT_EXPLAIN;
-    $this->sort_order  = MODULE_PAYMENT_POSTALMONEYORDER_SORT_ORDER;
-    $this->enabled     = ((MODULE_PAYMENT_POSTALMONEYORDER_STATUS == 'True') ? true : false);
-
-    if ((int)MODULE_PAYMENT_POSTALMONEYORDER_ORDER_STATUS_ID > 0) {
-      $this->order_status = MODULE_PAYMENT_POSTALMONEYORDER_ORDER_STATUS_ID;
-    }
-
-    if (is_object($order)) $this->update_status();
-    
-    $this->email_footer = MODULE_PAYMENT_POSTALMONEYORDER_TEXT_EMAIL_FOOTER;
-  }
-  */
-
-
   
   function javascript_validation() {
     return false;
@@ -163,19 +139,21 @@ class postalmoneyorder extends basePayment  implements paymentInterface  {
     tep_db_query("delete from " . TABLE_CONFIGURATION . " where configuration_key in ('" . implode("', '", $this->keys()) . "') and site_id = '".$this->site_id."'");
   }
 
-  function keys() {
-    return array('MODULE_PAYMENT_POSTALMONEYORDER_STATUS',
-                 'MODULE_PAYMENT_POSTALMONEYORDER_LIMIT_SHOW',
-                 'MODULE_PAYMENT_POSTALMONEYORDER_PREORDER_SHOW',
-                 'MODULE_PAYMENT_POSTALMONEYORDER_ZONE',
-                 'MODULE_PAYMENT_POSTALMONEYORDER_ORDER_STATUS_ID',
-                 'MODULE_PAYMENT_POSTALMONEYORDER_SORT_ORDER',
-                 'MODULE_PAYMENT_POSTALMONEYORDER_PAYTO',
-                 'MODULE_PAYMENT_POSTALMONEYORDER_COST',
-                 'MODULE_PAYMENT_POSTALMONEYORDER_MONEY_LIMIT',
-                 'MODULE_PAYMENT_POSTALMONEYORDER_MAILSTRING',
-                 );
-  }
+
+    function keys() {
+      return array('MODULE_PAYMENT_POSTALMONEYORDER_STATUS',
+                   'MODULE_PAYMENT_POSTALMONEYORDER_LIMIT_SHOW',
+                   'MODULE_PAYMENT_POSTALMONEYORDER_PREORDER_SHOW',
+                   'MODULE_PAYMENT_POSTALMONEYORDER_ZONE',
+                   'MODULE_PAYMENT_POSTALMONEYORDER_ORDER_STATUS_ID',
+                   'MODULE_PAYMENT_POSTALMONEYORDER_SORT_ORDER',
+                   'MODULE_PAYMENT_POSTALMONEYORDER_PAYTO',
+                   'MODULE_PAYMENT_POSTALMONEYORDER_COST',
+                   'MODULE_PAYMENT_POSTALMONEYORDER_MONEY_LIMIT',
+                   'MODULE_PAYMENT_POSTALMONEYORDER_MAILSTRING',
+                   'MODULE_PAYMENT_POSTALMONEYORDER_PRINT_MAILSTRING',
+);
+    }
     
 
   function getMailString($option=''){

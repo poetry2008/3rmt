@@ -365,6 +365,7 @@ class convenience_store extends basePayment  implements paymentInterface  {
       tep_db_query("delete from " . TABLE_CONFIGURATION . " where configuration_key in ('" . implode("', '", $this->keys()) . "') and site_id = '".$this->site_id."'");
     }
 
+
     function keys() {
       return array( 
                    'MODULE_PAYMENT_CONVENIENCE_STORE_STATUS',
@@ -380,6 +381,7 @@ class convenience_store extends basePayment  implements paymentInterface  {
                    'MODULE_PAYMENT_CONVENIENCE_STORE_MAILSTRING',
                     );
     }
+
 
     function dealComment($comment, $session_paymentinfo_name)
     {

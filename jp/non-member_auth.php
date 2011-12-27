@@ -3,7 +3,7 @@
 /*
   $Id$
 
-  商品评论详细页
+  商品隸・ｮｺ隸ｦ扈・｡ｵ
 */
   require('includes/application_top.php');
   
@@ -79,7 +79,7 @@
       <td valign="top" id="contents"> 
         <h1 class="pageHeading"><?php echo HEADING_TITLE; ?></h1> 
         
-        <div> 
+        <div class="comment"> 
         <?php
           if ($error == true) {
             if (isset($error_msg)) {
@@ -101,7 +101,7 @@
         <?php
           echo tep_draw_form('form', tep_href_link('non-member_auth.php', 'action=send'.(isset($_GET['cu'])?'&cu='.$_GET['cu']:''), 'SSL')); 
         ?>
-          <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+          <table border="0" cellspacing="0" cellpadding="0" class="information_table"> 
           <?php
           if ($_GET['cu'] == 1) {
           ?>
@@ -115,35 +115,48 @@
           ?>
           <tr>
             <td>
-            <table>
+            <table class="information_table">
               <tr>
-                <td style="color: rgb(255, 0, 0);" colspan="3">
-                <font size="3"><b><?php echo EMAIL_RED_TEXT_INFO;?></b></font>
+                <td colspan="3"><img src="images/design/mail_top.gif" alt=""></td>
+              </tr>
+              <tr>
+                <td colspan="3"  class="information_color">
+                <?php 
+                  echo sprintf(NOTICE_SEND_TO_EMAIL_TEXT, (isset($_post['cemail'])?$_post['cemail']:$cus_email)); 
+                ?>
                 </td>
               </tr>
               <tr>
-                <td style="font-size:11px;" colspan="3">
-                <?php echo EMAIL_READ_INFO_TEXT;?>
-                <br>
+                <td colspan="3">
+                <br><?php echo ACTIVE_INFO_FRONT_COMMENT;?><br><br>
                 </td>
               </tr>
               <tr>
-                <td class="active_email_name">
-                <b><?php echo INPUT_SEND_MAIL;?>:</b> 
+                <td width="85">
+                <b><?php echo INPUT_SEND_MAIL;?>:</b>
+                </td> 
+                <td width="360">
+                <?php echo tep_draw_input_field('cemail',
+                    (isset($_post['cemail'])?$_post['cemail']:$cus_email),'size="58"');?>
                 </td>
-                <td class="active_email">
-                <?php echo tep_draw_input_field('cemail', (isset($_POST['cemail'])?$_POST['cemail']:$cus_email));?> 
+                <td align="right">
+                <?php echo tep_image_submit('button_send_mail.gif', SENDMAIL_BUTTON);?>
                 </td>
-                <td>
-                <?php echo tep_image_submit('button_send_mail.gif', SENDMAIL_BUTTON);?> 
+              </tr>
+              <tr>
+                <td colspan="3">
+                <br><?php echo ACTIVE_INFO_END_COMMENT;?>
                 </td>
               </tr>
             </table>
             </td>
           </tr>
           <tr>
-            <td style="font-size:11px;">
-            <?php echo GUEST_SUCCESS_INFO_COMMENT;?> 
+            <td colspan="3" align="center"><img src="images/design/mail_bottom.gif" alt=""></td>
+          </tr>
+          <tr>
+            <td>
+            <?php echo ACTIVE_INFO_EMAIL_READ;?> 
             </td>
           </tr>
           <?php }?> 
@@ -155,8 +168,6 @@
                   <?php 
                   if ($_GET['cu'] == 1) {
                     echo '<a href="'.tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL').'">' . tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; 
-                  } else {
-                    echo '<a href="' .  tep_href_link(FILENAME_DEFAULT) . '">' .  tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>';
                   }
                   ?>
                     </td> 

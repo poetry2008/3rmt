@@ -78,7 +78,7 @@
       <td valign="top" id="contents">
         <div class="pageHeading"><img align="top" alt="img" src="images/menu_ico.gif"><h1><?php echo PREORDER_SUCCESS_ACTIVE_HEAD_TITLE; ?></h1></div>
                 <div class="comment">
-        <table border="0" width="100%" cellspacing="0" cellpadding="0" class="preorder_success_box">
+        <table border="0" width="100%" cellspacing="0" cellpadding="0" class="msg">
           <tr>
           <td style="font-size:15px; color:#ff0000;">
             <?php echo PREORDER_ACTIVE_SUCCESS_READ_HEAD.'<br><br>';?> 
@@ -86,7 +86,7 @@
           </tr>
           <tr>
             <td>
-            <table class="preorder_active_info" border="0" cellpadding="0" cellspacing="1" width="100%"> 
+            <table class="infotable" border="0" cellpadding="0" cellspacing="1" width="100%"> 
             <tr> 
             <td colspan="2"> 
             <?php echo PREORDER_SUCCESS_APPOINT_CONTENT;?>

@@ -1,5 +1,44 @@
 <?php
 require('includes/application_top.php');
+//one time pwd 
+$http_referer = $_SERVER['HTTP_REFERER'];
+$http_referer_arr = explode('?',$_SERVER['HTTP_REFERER']);
+$http_referer_arr = explode('admin',$http_referer_arr[0]);
+$request_page_name = '/admin'.$http_referer_arr[1];
+$request_one_time_sql = "select * from ".TABLE_PWD_CHECK." where page_name='".$request_page_name."'";
+$request_one_time_query = tep_db_query($request_one_time_sql);
+$request_one_time_arr = array();
+$request_one_time_flag = false; 
+while($request_one_time_row = tep_db_fetch_array($request_one_time_query)){
+  $request_one_time_arr[] = $request_one_time_row['check_value'];
+  $request_one_time_flag = true; 
+}
+
+if(count($request_one_time_arr)==1&&$request_one_time_arr[0]=='admin'&&$_SESSION['user_permission']!=15){
+  if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest"){
+    forward401();
+  }
+}
+if (!$request_one_time_flag && $_SESSION['user_permission']!=15) {
+  if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
+    forward401();
+  }
+}
+if(!in_array('onetime',$request_one_time_arr)&&$_SESSION['user_permission']!=15){
+  if(!(in_array('chief',$request_one_time_arr)&&in_array('staff',$request_one_time_arr))){
+  if($_SESSION['user_permission']==7&&in_array('chief',$request_one_time_arr)){
+    if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
+      forward401();
+    }
+  }
+  if($_SESSION['user_permission']==10&&in_array('staff',$request_one_time_arr)){
+    if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
+      forward401();
+    }
+  }
+  }
+}
+//end one time pwd
 
 require(DIR_WS_CLASSES . 'currencies.php');
 $currencies          = new currencies(2);
@@ -202,10 +241,10 @@ if ($_POST['orders_id'] &&
 							'oID='.$orders['orders_id']);?>';"><font color="<?php echo $today_color; ?>"><?php echo $orders['orders_status_name']; ?></font></td>
                                                                                                                                                          <td style="border-bottom:1px solid
 #000000;background-color: darkred;" class="dataTableContent"
-                                                                                                                                                         onmouseover="showOrdersInfo('<?php echo
-					$orders['orders_id'];?>',this);"
-                                                                                                                                                         onmouseout="hideOrdersInfo();" align="right"><?php 
-                                                                                                                                                         echo '<a href="' . tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID','page')) . 'oID=' . $orders['orders_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
+                                                                                                                                                         onmouseover="if(popup_num == 1) showOrdersInfo('<?php echo $orders['orders_id'];?>',this, 0);"
+                                                                                                                                                         onmouseout="if(popup_num == 1) hideOrdersInfo(0);" align="right">
+                                                                                                                                                         <?php 
+                                                                                                                                                         echo '<a href="javascript:void(0);" onclick="showOrdersInfo(\''.$orders['orders_id'].'\', this, 1)">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
     ?>&nbsp;</td>
     </tr>
         <?php 
@@ -438,7 +477,11 @@ if ($_POST['orders_id'] &&
   $orders_info_raw = tep_db_query("select * from ".TABLE_ORDERS." where orders_id = '".$_POST['oid']."'"); 
   $orders_info = tep_db_fetch_array($orders_info_raw); 
   require(DIR_WS_FUNCTIONS . 'visites.php');
-  tep_get_orders_products_string($orders_info, true);
+  if ($_POST['popup'] == '1') {
+    tep_get_orders_products_string($orders_info, true, true);
+  } else {
+    tep_get_orders_products_string($orders_info, true);
+  }
 } else if (isset($_GET['action'])&&$_GET['action']=='get_oa_type') {
   $onsuit = false;
   $tnsuit = false;

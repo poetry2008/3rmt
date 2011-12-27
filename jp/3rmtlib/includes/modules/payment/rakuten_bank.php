@@ -313,6 +313,7 @@ class rakuten_bank  extends basePayment  implements paymentInterface {
         'MODULE_PAYMENT_RAKUTEN_BANK_COST', 
         'MODULE_PAYMENT_RAKUTEN_BANK_MONEY_LIMIT',
         'MODULE_PAYMENT_RAKUTEN_BANK_MAILSTRING',
+        'MODULE_PAYMENT_RAKUTEN_BANK_PRINT_MAILSTRING',
 );
   }
   function replace_for_telnumber($str){

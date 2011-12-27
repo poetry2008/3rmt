@@ -60,9 +60,9 @@
               </td>
             </tr>
             <tr>
-              <td align="left" width="20%" class="preorderBarFrom"><?php echo PREORDER_TRADER_LINE_TITLE;?></td> 
-              <td align="center" width="60%" class="preorderBarFrom"><?php echo PREORDER_CONFIRM_LINE_TITLE;?></td> 
-              <td align="right" width="20%" class="preorderBarCurrent"><?php echo PREORDER_FINISH_LINE_TITLE;?></td> 
+              <td align="left" width="20%" class="checkoutBarFrom"><?php echo PREORDER_TRADER_LINE_TITLE;?></td> 
+              <td align="center" width="60%" class="checkoutBarFrom"><?php echo PREORDER_CONFIRM_LINE_TITLE;?></td> 
+              <td align="right" width="20%" class="checkoutBarCurrent"><?php echo PREORDER_FINISH_LINE_TITLE;?></td> 
             </tr>
           </table>
           <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size:12px;">

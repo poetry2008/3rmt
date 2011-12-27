@@ -25,6 +25,7 @@ define('DATE_FORMAT_LONG', '%Y年%B%e日 %A'); // this is used for strftime()
 define('DATE_FORMAT', 'Y/m/d'); // this is used for date()
 define('PHP_DATE_TIME_FORMAT', 'Y/m/d H:i:s'); // this is used for date()
 define('DATE_TIME_FORMAT', DATE_FORMAT_SHORT . ' %H:%M:%S');
+define('DATE_TIME_FORMAT_TORIHIKI', '%Y/%m/%d %H:%M');
 
 ////
 // Return date in raw format
@@ -48,7 +49,7 @@ define('CHARSET', 'UTF-8');    // Shift_JIS / euc-jp / iso-2022-jp
 define('TITLE', STORE_NAME);  //ショップ名を記述してください。
 
 // header text in includes/header.php
-define('HEADER_TITLE_TOP', '管理メニュー');
+define('HEADER_TITLE_TOP', 'トップ');
 define('HEADER_TITLE_SUPPORT_SITE', 'サポートサイト');
 define('HEADER_TITLE_ONLINE_CATALOG', 'オンラインカタログ');
 define('HEADER_TITLE_ADMINISTRATION', '管理メニュー');
@@ -383,20 +384,6 @@ define('REFERER_TITLE_TEXT', 'アクセスランキング');
 define('REFERER_TITLE_URL', 'アクセス来たソース');
 define('REFERER_TITLE_NUM', '件数');
 define('REFERER_TITLE_SORT_NUM', '順位');
-define('SET_BAIRITU_TITLE', '無題ドキュメント');
-define('SET_BAIRITU_CURSET', '倍率設定：');
-define('SET_BAIRITU_SINGLE_PRICE', '単価の差額');
-define('SET_BAIRITU_PERCENT', 'パーセント：');
-define('SET_BAIRITU_SPRICE', '特別価格設定の計算');
-define('SET_BAIRITU_CAL', '計算：');
-define('SET_BAIRITU_CAL_SET', '計算設定');
-define('SET_BAIRITU_BESTSELLER', '人気商品アイコンの表示');
-define('SET_BAIRITU_BESTSELLER_READ', '日以内に注文があれば人気とする<br>0を入力するとアイコンは表示されません。');
-define('SET_BAIRITU_UPDATE_NOTICE', '更新されました。');
-define('SET_COMMENT_TITLE', '担当者登録');
-define('SET_COMMENT_USER', '担当者:');
-define('SET_COMMENT_SINGLE', '単価ルール:');
-define('SET_COMMENT_COMMENT_TEXT', 'コメント:');
 define('TELECOM_UNKNOW_TITLE', '決算管理');
 define('TELECOM_UNKNOW_SEARCH_SUCCESS', '成功');
 define('TELECOM_UNKNOW_SEARCH_FAIL', '失敗');

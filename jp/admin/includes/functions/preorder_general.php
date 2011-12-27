@@ -53,6 +53,7 @@ function tep_show_preorders_products_info($orders_id) {
       $str .= '</tr>'; 
       $str .= '<tr><td colspan="2"><hr></td></tr>'; 
     }
+
   }
   
   if (ORDER_INFO_TRANS_WAIT == 'true') {
@@ -67,6 +68,7 @@ function tep_show_preorders_products_info($orders_id) {
       $str .= '<tr><td colspan="2"><hr></td></tr>'; 
     } 
   }
+
   
   if (ORDER_INFO_INPUT_FINISH == 'true') {
     if ($orders['orders_inputed_flag']) {
@@ -91,6 +93,7 @@ function tep_show_preorders_products_info($orders_id) {
     $str .= '</tr>';
     $str .= '<tr><td colspan="2"><hr></td></tr>'; 
   }
+
   $str .= '<tr><td class="main" width="70"><b>'.TEXT_FUNCTION_PAYMENT_METHOD.'</b></td><td class="main" style="color:darkred;"><b>'.$orders['payment_method'].'</b></td></tr>';
     if ($orders['confirm_payment_time'] != '0000-00-00 00:00:00') {
       $time_str = date(TEXT_FUNCTION_DATE_STRING, strtotime($orders['confirm_payment_time'])); 
@@ -752,12 +755,14 @@ function   tep_pre_order_status_change($oID,$status){
   }
 }
 
-function tep_get_pre_orders_products_string($orders, $single = false) {
+function tep_get_pre_orders_products_string($orders, $single = false, $popup = false) {
   $str = '';
 
 
-  $str .= '<table border="0" cellpadding="0" cellspacing="0">';
-
+  $str .= '<table border="0" cellpadding="0" cellspacing="0" class="orders_info_div" width="100%">';
+  if ($popup) {
+    $str .= '<tr><td class="main" colspan="2" align="right"><a style="text-decoration:underline;" href="javascript:void(0);" onclick="hideOrdersInfo(1);"><img src="images/icons/note_close.gif" alt="close"></a></td><tr>';
+  }
   if (ORDER_INFO_TRANS_NOTICE == 'true') {
     if ($orders['orders_care_flag']) {
       $str .= '<tr>'; 

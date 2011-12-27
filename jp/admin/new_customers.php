@@ -253,8 +253,15 @@ echo "<a   href='".tep_href_link(FILENAME_NEW_CUSTOMERS,"action=refresh")."'>".R
       } else {
         $type = TABLE_HEADING_MEMBER_TYPE_MEMBER;
       }
+      $even = 'dataTableSecondRow';
+      $odd  = 'dataTableRow';
+      if (isset($nowColor) && $nowColor == $odd) {
+        $nowColor = $even; 
+      } else {
+        $nowColor = $odd; 
+      }
 
-    echo '          <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'">' . "\n";
+    echo '          <tr class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'">' . "\n";
 
 ?>
                 <td class="dataTableContent"><?php echo tep_get_site_romaji_by_id($customers['site_id']); ?></td>

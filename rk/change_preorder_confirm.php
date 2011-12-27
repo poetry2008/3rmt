@@ -92,8 +92,8 @@
   }
   
   if (MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
-    if ($_POST['preorder_point'] < $preorder_subtotal) {
-      $preorder_point = $_POST['preorder_point']; 
+    if (@$_POST['preorder_point'] < $preorder_subtotal) {
+      $preorder_point = isset($_POST['preorder_point'])?$_POST['preorder_point']:0; 
     } else {
       $preorder_point = $preorder_subtotal; 
     }
@@ -181,9 +181,9 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
               </td>
             </tr>
             <tr>
-              <td align="left" width="20%" class="preorderBarFrom"><?php echo '<a href="javascript:void(0);" onclick="document.forms.order1.submit();">'.PREORDER_TRADER_LINE_TITLE.'</a>';?></td> 
-              <td align="center" width="60%" class="preorderBarcurrent"><?php echo PREORDER_CONFIRM_LINE_TITLE;?></td> 
-              <td align="right" width="20%" class="preorderBarTo"><?php echo PREORDER_FINISH_LINE_TITLE;?></td> 
+              <td align="left" width="20%" class="checkoutBarFrom"><?php echo '<a href="javascript:void(0);" onclick="document.forms.order1.submit();">'.PREORDER_TRADER_LINE_TITLE.'</a>';?></td> 
+              <td align="center" width="60%" class="checkoutBarcurrent"><?php echo PREORDER_CONFIRM_LINE_TITLE;?></td> 
+              <td align="right" width="20%" class="checkoutBarTo"><?php echo PREORDER_FINISH_LINE_TITLE;?></td> 
             </tr>
           </table>
           <?php
@@ -284,7 +284,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
           <?php echo PREORDER_CONFIRM_CHARACTER.$_POST['p_character'];?> 
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
-              <td class="main" width="30%">
+              <td class="main" width="30%" valign="top">
                 <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea_td"> 
                   <tr>
                     <td class="main"><?php echo CHANGE_ORDER_CONFIRM_PAYMENT;?></td>                  
@@ -381,7 +381,12 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
   if ($preorder_subtotal > 0) {
     $preorder_get_point = ($preorder_subtotal - (int)$preorder_point) * $point_rate;
   } else {
-    $preorder_get_point = 0;
+    if (isset($con_payment->show_point)) {
+      $show_point_single = true; 
+      $preorder_get_point = abs($preorder_subtotal);
+    } else {
+      $preorder_get_point = 0;
+    }
   }
   
   if ($is_guest_single) {
@@ -394,7 +399,15 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
 }
                   ?>
                   <tr>
-                    <td class="main" align="right"><?php echo CHANGE_PREORDER_POINT_TEXT;?></td> 
+                    <td class="main" align="right">
+                    <?php 
+                    if (isset($show_point_single)) {
+                      echo CHANGE_PREORDER_POINT_TEXT_BUY;
+                    } else {
+                      echo CHANGE_PREORDER_POINT_TEXT;
+                    }
+                    ?>
+                    </td> 
                     <td class="main" align="right"><?php echo (int)$preorder_get_point.'&nbsp;P';?></td> 
                   </tr>
                 </table> 

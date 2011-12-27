@@ -87,6 +87,12 @@ charset=<?php echo CHARSET; ?>">
 <title><?php echo ASSETS_TITLE;?></title>
 </head>
 <body>
+<?php
+if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']&&false){?>
+  <script language='javascript'>
+    one_time_pwd('<?php echo $page_name;?>');
+  </script>
+<?php }?>
 <table border="0" width="100%" cellspacing="2" cellpadding="2">
 <tr>
 <td width="100%" valign="top">
@@ -396,6 +402,9 @@ if(isset($_GET['pid'])&&$_GET['pid']!=''){
 ?>
 </div>
 </td></tr></table>
+<div class="assets_footer">
+<?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
+</div>
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

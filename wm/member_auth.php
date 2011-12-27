@@ -97,50 +97,52 @@
          }
          ?>
          <?php echo tep_draw_form('form', tep_href_link('member_auth.php', 'action=send', 'SSL'));?> 
-          <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size:12px;"> 
+          <table border="0" width="100%" cellspacing="0" cellpadding="0" class="contents"> 
             <tr>
               <td>
-              <table>
+              <table class="contents">
                 <tr>
-                <td style="color: rgb(255, 0, 0);" colspan="3">
-                <font size="3"><b><?php echo EMAIL_RED_TEXT_INFO;?></b></font>
-                </td>
-              </tr>
-              <tr>
-                <td style="font-size:11px;" colspan="3">
-                <?php echo EMAIL_READ_INFO_TEXT;?>
-                <br>
-                </td>
-              </tr>
+                  <td colspan="3"><img src="images/design/mail_top.gif" alt=""></td>
+                </tr>
                 <tr>
-                  <td class="active_email_name">
+                  <td colspan="3" class="information_color">
+                  <?php
+                    echo sprintf(NOTICE_SEND_TO_EMAIL_TEXT, (isset($_POST['cemail'])?$_POST['cemail']:$cus_email)); 
+                  ?>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="3">
+                  <br><?php echo ACTIVE_INFO_FRONT_COMMENT;?><br><br>
+                  </td>
+                </tr>
+                <tr>
+                  <td width="95">
                   <b><?php echo INPUT_SEND_MAIL;?>:</b> 
                   </td>
-                  <td class="active_email">
-                  <?php echo tep_draw_input_field('cemail', (isset($_POST['cemail'])?$_POST['cemail']:$cus_email));?> 
+                  <td width="338">
+                  <?php echo tep_draw_input_field('cemail', (isset($_POST['cemail'])?$_POST['cemail']:$cus_email),'size="55"');?> 
                   </td>
                   <td>
                   <?php echo tep_image_submit('button_send_mail.gif', SENDMAIL_BUTTON);?> 
                   </td>
                 </tr>
+                <tr>
+                  <td colspan="3">
+                    <br><?php echo ACTIVE_INFO_END_COMMENT;?>
+                  </td>
+                </tr>
               </table>
               </td>
             </tr>
-            <tr> 
+            <tr>
+              <td align="center"><img src="images/design/mail_bottom.gif" alt=""></td>
+            </tr>
+            <tr>
               <td>
-              <?php echo ACTIVE_INFO_COMMENT;?> 
+              <?php echo ACTIVE_INFO_EMAIL_READ;?>
               </td>
             </tr>
-            <tr> 
-              <td><br> 
-                <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
-                  <tr> 
-                    <td class="main" align="right"><?php echo '<a href="' .  tep_href_link(FILENAME_PRODUCT_REVIEWS, $get_params) . '">' .  tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></td> 
-                    <td align="right" class="main">
-                    </td> 
-                  </tr> 
-                </table></td> 
-            </tr> 
           </table> 
           </form> 
         </div>

@@ -395,7 +395,13 @@ echo '</form>';
           <?php }?> 
           <br>
           <?php
-          if ($is_member_single && MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { 
+          $preorder_total = 0;
+          $preorder_total_raw = tep_db_query("select * from ".TABLE_PREORDERS_TOTAL." where orders_id = '".$preorder_res['orders_id']."' and class = 'ot_subtotal'");
+          $preorder_total_res = tep_db_fetch_array($preorder_total_raw);
+          if ($preorder_total_res) {
+            $preorder_total = number_format($preorder_total_res['value'], 0, '.', ''); 
+          }
+          if ($is_member_single && MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && ($preorder_total > 0)) { 
             ?>
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
@@ -419,7 +425,7 @@ echo '</form>';
               </td>
               <td class="main" align="right">
                 <?php
-                 if (!$is_member_single && MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { 
+                 if (!$is_member_single && MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && ($preorder_total > 0)) { 
                    echo '<input type="hidden" name="preorder_point" value="0">'; 
                  }
                 ?>

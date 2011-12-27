@@ -92,7 +92,7 @@
         </tr>
         <tr>
           <td>
-          <table class="preorder_active_info" border="0" cellpadding="0" cellspacing="1" width="100%"> 
+          <table class="infotable" border="0" cellpadding="0" cellspacing="1" width="100%"> 
           <tr> 
           <td colspan="2"> 
           <?php echo PREORDER_SUCCESS_APPOINT_CONTENT;?>

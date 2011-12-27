@@ -31,4 +31,5 @@ define('TS_TEXT_BANK_KOUZA_NUM', '口座番号:');
 define('TS_TEXT_BANK_KOUZA_NAME', '口座名義:');
 define('TS_TEXT_BANK_SELECT_KAMOKU_F', '普通');
 define('TS_TEXT_BANK_SELECT_KAMOKU_T', '当座');
+
 ?>

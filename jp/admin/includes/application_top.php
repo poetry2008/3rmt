@@ -438,19 +438,33 @@ if(isset($_GET['his_url'])&&$_GET['his_url']){
   $one_time_sql = "select * from ".TABLE_PWD_CHECK." where page_name='".$page_name."'";
   $one_time_query = tep_db_query($one_time_sql);
   $one_time_arr = array();
+  $one_time_flag = false; 
   while($one_time_row = tep_db_fetch_array($one_time_query)){
     $one_time_arr[] = $one_time_row['check_value'];
+    $one_time_flag = true; 
   }
+  
   if(count($one_time_arr)==1&&$one_time_arr[0]=='admin'&&$_SESSION['user_permission']!=15){
-    forward401();
+    if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest"){
+      one_time_pwd_forward401($page_name);
+    }
+  }
+  if (!$one_time_flag && $_SESSION['user_permission']!=15) {
+    if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
+      one_time_pwd_forward401($page_name);
+    }
   }
   if(!in_array('onetime',$one_time_arr)&&$_SESSION['user_permission']!=15){
     if(!(in_array('chief',$one_time_arr)&&in_array('staff',$one_time_arr))){
     if($_SESSION['user_permission']==7&&in_array('chief',$one_time_arr)){
-      forward401();
+      if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
+        one_time_pwd_forward401($page_name);
+      }
     }
     if($_SESSION['user_permission']==10&&in_array('staff',$one_time_arr)){
-      forward401();
+      if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
+        one_time_pwd_forward401($page_name);
+      }
     }
     }
   }

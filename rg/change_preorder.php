@@ -190,15 +190,15 @@ echo '</form>';
               </td>
             </tr>
             <tr>
-              <td align="left" width="20%" class="preorderBarcurrent"><?php echo PREORDER_TRADER_LINE_TITLE;?></td> 
-              <td align="center" width="60%" class="preorderBarTo"><?php echo PREORDER_CONFIRM_LINE_TITLE;?></td> 
-              <td align="right" width="20%" class="preorderBarTo"><?php echo PREORDER_FINISH_LINE_TITLE;?></td> 
+              <td align="left" width="20%" class="checkoutBarCurrent"><?php echo PREORDER_TRADER_LINE_TITLE;?></td> 
+              <td align="center" width="60%" class="checkoutBarTo"><?php echo PREORDER_CONFIRM_LINE_TITLE;?></td> 
+              <td align="right" width="20%" class="checkoutBarTo"><?php echo PREORDER_FINISH_LINE_TITLE;?></td> 
             </tr>
           </table>
           <?php
           echo tep_draw_form('order', tep_href_link('change_preorder.php', 'pid='.$_GET['pid'])).tep_draw_hidden_field('action', 'process'); 
           ?>
-          <table width="100%" cellpadding="0" cellspacing="0" border="0" class="c_pay_info">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0" class="rg_pay_info">
             <tr>
               <td class="main">
               <?php echo TEXT_PREORDER_FETCH_BUTTON_INFO;?> 
@@ -395,7 +395,13 @@ echo '</form>';
           <?php }?> 
           <br>
           <?php
-          if ($is_member_single && MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { 
+          $preorder_total = 0;
+          $preorder_total_raw = tep_db_query("select * from ".TABLE_PREORDERS_TOTAL." where orders_id = '".$preorder_res['orders_id']."' and class = 'ot_subtotal'");
+          $preorder_total_res = tep_db_fetch_array($preorder_total_raw);
+          if ($preorder_total_res) {
+            $preorder_total = number_format($preorder_total_res['value'], 0, '.', ''); 
+          }
+          if ($is_member_single && MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && ($preorder_total > 0)) { 
             ?>
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
@@ -412,14 +418,14 @@ echo '</form>';
           </table>
           <br>
           <?php }?> 
-          <table width="100%" cellpadding="0" cellspacing="0" border="0" class="c_pay_info">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0" class="rg_pay_info">
             <tr>
               <td class="main">
               <?php echo TEXT_PREORDER_FETCH_BUTTON_INFO;?> 
               </td>
               <td class="main" align="right">
                 <?php
-                 if (!$is_member_single && MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { 
+                 if (!$is_member_single && MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && ($preorder_total > 0)) { 
                    echo '<input type="hidden" name="preorder_point" value="0">'; 
                  }
                 ?>

@@ -15,15 +15,15 @@
   $an_cols = array('password','confirmation','email_address','postcode','telephone','fax');
   if (ACCOUNT_DOB) $an_cols[] = 'dob';
   foreach ($an_cols as $col) {
-    $_POST[$col] = isset($_POST[$col]) ? tep_an_zen_to_han($_POST[$col]) : '';
+    $_POST[$col] = tep_an_zen_to_han($_POST[$col]);
   }
 
-  $gender         = isset($_POST['gender']) ? tep_db_prepare_input($_POST['gender']) : '';
+  $gender         = tep_db_prepare_input($_POST['gender']);
   $firstname      = tep_db_prepare_input($_POST['firstname']);
   $lastname       = tep_db_prepare_input($_POST['lastname']);
   
-  $firstname_f    = isset($_POST['firstname_f']) ? tep_db_prepare_input($_POST['firstname_f']) : '';
-  $lastname_f     = isset($_POST['lastname_f']) ? tep_db_prepare_input($_POST['lastname_f']) : '';
+  $firstname_f    = tep_db_prepare_input($_POST['firstname_f']);
+  $lastname_f     = tep_db_prepare_input($_POST['lastname_f']);
   
   $dob            = tep_db_prepare_input($_POST['dob']);
   $email_address  = tep_db_prepare_input($_POST['email_address']);
@@ -32,13 +32,13 @@
   $newsletter     = tep_db_prepare_input($_POST['newsletter']);
   $password       = tep_db_prepare_input($_POST['password']);
   $confirmation   = tep_db_prepare_input($_POST['confirmation']);
-  $street_address = isset($_POST['street_address']) ? tep_db_prepare_input($_POST['street_address']) : '';
-  $company        = isset($_POST['company']) ? tep_db_prepare_input($_POST['company']) : '';
-  $suburb         = isset($_POST['suburb']) ? tep_db_prepare_input($_POST['suburb']) : '';
+  $street_address = tep_db_prepare_input($_POST['street_address']);
+  $company        = tep_db_prepare_input($_POST['company']);
+  $suburb         = tep_db_prepare_input($_POST['suburb']);
   $postcode       = tep_db_prepare_input($_POST['postcode']);
-  $city           = isset($_POST['city']) ? tep_db_prepare_input($_POST['city']) : '';
-  $zone_id        = isset($_POST['zone_id']) ? tep_db_prepare_input($_POST['zone_id']): '';
-  $state          = isset($_POST['state']) ? tep_db_prepare_input($_POST['state']) : '';
+  $city           = tep_db_prepare_input($_POST['city']);
+  $zone_id        = tep_db_prepare_input($_POST['zone_id']);
+  $state          = tep_db_prepare_input($_POST['state']);
   $country        = tep_db_prepare_input($_POST['country']);
   $guestchk       = tep_db_prepare_input($_POST['guestchk']);
 
