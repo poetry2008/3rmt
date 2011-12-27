@@ -160,6 +160,7 @@ if(!$show_some_shipping){
 
 ?>
 </td> 
+</tr></table></td></tr>
 </tr> 
 <tr> 
 <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
