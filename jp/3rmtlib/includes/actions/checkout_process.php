@@ -602,6 +602,7 @@ if($guestchk == '1') {
 tep_session_unregister('sendto');
 tep_session_unregister('billto');
 tep_session_unregister('shipping');
+tep_session_unregister('shipping_method_info_arr');
 tep_session_unregister('payment');
 tep_session_unregister('comments');
 if (MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
