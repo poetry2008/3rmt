@@ -32,13 +32,4 @@ define('TEXT_CONTINUE_CHECKOUT_PROCEDURE', '「次へ進む」をクリックし
 //Add Point System
 define('TEXT_POINT', 'ポイント');
 
-define('TABLE_HEADING_BANK', '振込先口座情報');
-define('TEXT_BANK_NAME', '金融機関名:');
-define('TEXT_BANK_SHITEN', '支店名:');
-define('TEXT_BANK_KAMOKU', '口座種別:');
-define('TEXT_BANK_KOUZA_NUM', '口座番号:');
-define('TEXT_BANK_KOUZA_NAME', '口座名義<b>（カタカナ）</b>:');
-
-define('TEXT_BANK_SELECT_KAMOKU_F', '普通');
-define('TEXT_BANK_SELECT_KAMOKU_T', '当座');
 ?>

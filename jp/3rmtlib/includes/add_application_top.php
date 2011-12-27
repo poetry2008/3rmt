@@ -391,6 +391,7 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
 
 // define our general functions used application-wide
   require(DIR_WS_FUNCTIONS . 'general.php');
+  require(DIR_WS_FUNCTIONS . 'generalBoth.php');
   require(DIR_WS_FUNCTIONS . 'html_output.php');
 
 // currency
@@ -469,6 +470,7 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
     $navigation = new navigationHistory();
   }
   $navigation->add_current_page();
+
 // Shopping cart actions
   if (isset($_GET['action'])) {
     if (DISPLAY_CART == 'true') {
@@ -482,6 +484,7 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
         $parameters = array('action', 'pid');
       }
     }
+
     switch ($_GET['action']) {
       // customer wants to update the product quantity in their shopping cart
       case 'update_product' : for ($i=0, $n=sizeof($_POST['products_id']); $i<$n; $i++) {
@@ -675,7 +678,7 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
       }
     }
   }
-  
+
   // include the breadcrumb class and start the breadcrumb trail
   require(DIR_WS_CLASSES . 'breadcrumb.php');
   $breadcrumb = new breadcrumb;

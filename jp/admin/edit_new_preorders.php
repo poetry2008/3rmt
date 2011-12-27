@@ -7,7 +7,6 @@
 
   require('includes/application_top.php');
   require('includes/step-by-step/new_application_top.php');
-
   include(DIR_FS_ADMIN . DIR_WS_LANGUAGES . $language . '/edit_preorders.php');
   require(DIR_FS_ADMIN . DIR_WS_LANGUAGES . $language . '/step-by-step/edit_preorders.php');
 
@@ -15,7 +14,8 @@
   $currencies = new currencies(2);
   
   include(DIR_WS_CLASSES . 'preorder.php');
-
+  unset($cpayment); 
+  $cpayment = payment::getInstance((int)$_SESSION['create_preorder']['orders']['site_id']);
 // START CONFIGURATION ################################
 
 // Correction tax pre-values (Michel Haase, 2005-02-18)
@@ -114,7 +114,7 @@
   }
     $oID = tep_db_prepare_input($_GET['oID']);
     
-    $_SESSION['create_preorder']['orders']['payment_method'] = $_POST['payment_method']; 
+    $_SESSION['create_preorder']['orders']['payment_method'] = $cpayment::changeRomaji($_POST['payment_method'], PAYMENT_RETURN_TYPE_TITLE); 
      
     $preorder_status_raw = tep_db_query("select orders_status_name from ".TABLE_PREORDERS_STATUS." where orders_status_id = '".$_POST['status']."'"); 
     $preorder_status = tep_db_fetch_array($preorder_status_raw);
@@ -392,7 +392,8 @@
     $newtotal = '0';
   }
   
-  $handle_fee = calc_handle_fee($order['payment_method'], $newtotal);
+  $payment_code = $cpayment::changeRomaji($order['payment_method'], PAYMENT_RETURN_TYPE_CODE); 
+  $handle_fee = $cpayment->handle_calc_fee($payment_code, $newtotal); 
   
   $newtotal = $newtotal+$handle_fee;
   if(!$total_value_more_zero){
@@ -463,16 +464,8 @@
       }
       
       // orders_status_history
-      $comment_str = '';
-      if ($_SESSION['create_preorder']['orders']['payment_method'] == 'コンビニ決済') {
-        $comment_str = $_SESSION['create_preorder']['orders']['cemail_text']; 
-      } else if ($_SESSION['create_preorder']['orders']['payment_method'] == '楽天銀行') {
-        $comment_str = $_SESSION['create_preorder']['orders']['raku_text']; 
-      } else if ($_SESSION['create_preorder']['orders']['payment_method'] == '銀行振込(買い取り)') {
-        $bank_info_arr = explode('<<<|||', $_SESSION['create_preorder']['orders']['bank_info']); 
-        $comment_str = '金融機関名:'.$bank_info_arr[0]."\n".'支店名:'.$bank_info_arr[1]."\n".'口座種別:'.$bank_info_arr[2]."\n".'口座番号:'.$bank_info_arr[3]."\n".'口座名義:'.$bank_info_arr[4]; 
-      }
-      
+      $comment_str = $cpayment->admin_deal_comment($_POST['payment_method']);
+
       if (DEFAULT_PREORDERS_STATUS_ID == $_POST['status']) {
         $sql_data_array = array(
                     'orders_id' => $_SESSION['create_preorder']['orders']['orders_id'], 
@@ -779,8 +772,8 @@
           $newtotal = $total_value;
         }
       }
-      
-      $handle_fee = calc_handle_fee($order['payment_method'], $newtotal);
+      $payment_code = $cpayment::changeRomaji($order['payment_method'], PAYMENT_RETURN_TYPE_CODE); 
+      $handle_fee = $cpayment->handle_calc_fee($payment_code, $newtotal); 
       $newtotal = $newtotal+$handle_fee;    
       
       //tep_db_query($totals);
@@ -1040,8 +1033,10 @@ if (($action == 'edit') && ($order_exists == true)) {
               <tr>
                 <td class="main" valign="top"><b><?php echo EDIT_ORDERS_PAYMENT_METHOD;?></b></td>
                 <td class="main">
-                  <?php echo tep_pre_payment_method_menu($order['payment_method']);
-                   ?>
+                <?php 
+                $payment_code = $cpayment::changeRomaji($order['payment_method'], PAYMENT_RETURN_TYPE_CODE); 
+                echo $cpayment::makePaymentListPullDownMenu($payment_code); 
+                ?>
                 </td>
               </tr>
               <!-- End Payment Block -->

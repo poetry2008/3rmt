@@ -3,33 +3,9 @@
   $Id$
 */
 require('includes/application_top.php');
-switch ($_GET['set']) {
-case 'shipping':
-  $module_type = 'shipping';
-  $module_directory = DIR_FS_CATALOG_MODULES . 'shipping/';
-  $module_key = 'MODULE_SHIPPING_INSTALLED';
-  define('HEADING_TITLE', HEADING_TITLE_MODULES_SHIPPING);
-  break;
-case 'ordertotal':
-  $module_type = 'order_total';
-  $module_directory = DIR_FS_CATALOG_MODULES . 'order_total/';
-  $module_key = 'MODULE_ORDER_TOTAL_INSTALLED';
-  define('HEADING_TITLE', HEADING_TITLE_MODULES_ORDER_TOTAL);
-  break;
-case 'metaseo':
-  $module_type = 'metaseo';
-  $module_directory = DIR_FS_CATALOG_MODULES . 'metaseo/';
-  $module_key = 'MODULE_METASEO_INSTALLED';
-  define('HEADING_TITLE', HEADING_TITLE_MODULES_METASEO);
-  break;
-case 'payment':
-default:
-  $module_type = 'payment';
-  $module_directory = DIR_FS_CATALOG_MODULES . 'payment/';
-  $module_key = 'MODULE_PAYMENT_INSTALLED';
-  define('HEADING_TITLE', HEADING_TITLE_MODULES_PAYMENT);
-  break;
-}
+$set = $_GET['set'];
+if(empty($set) or !is_dir( DIR_FS_CATALOG_MODULES .$_GET['set'])){
+  $set = 'payment';
 
 if (isset($_GET['action'])) 
   switch ($_GET['action']) {

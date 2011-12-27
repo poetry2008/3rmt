@@ -3,7 +3,6 @@
    $Id$
  */
 
-
 //无权限修改 提示401
 function forward401()
 { 
@@ -2656,7 +2655,7 @@ function tep_get_faq_question($q_id){
 function tep_get_faq_category($c_id){
   return tep_db_fetch_array(tep_db_query("select * from ".TABLE_FAQ_CATEGORIES." where c_id = '".$c_id."'"));
 }
-
+/*
 function calc_handle_fee($payment_name, $products_total)
 {
   if ($products_total == 0) {
@@ -2678,7 +2677,8 @@ function calc_handle_fee($payment_name, $products_total)
   }
   return $handle_fee;
 }
-
+*/
+/*
 function new_calc_handle_fee($payment_name, $products_total, $oID)
 {
   $oid_query = tep_db_query("select * from ".TABLE_ORDERS." where orders_id = '".$oID."'"); 
@@ -2722,7 +2722,8 @@ function new_calc_handle_fee($payment_name, $products_total, $oID)
   }
   return $handle_fee;
 }
-
+*/
+/*
 function calc_fee_final($fee_set, $total_cost)
 {
   $return_fee = 0; 
@@ -2739,7 +2740,7 @@ function calc_fee_final($fee_set, $total_cost)
   }
   return $return_fee;
 }
-
+*/
 function tep_set_categories_status($categories_id, $status)
 {
   /*
@@ -2933,18 +2934,6 @@ function tep_get_site_id_by_orders_id($orders_id) {
   }
 }
 
-function get_configuration_by_site_id($key, $site_id = '0',$table_name='') {
-  if($table_name==''){
-    $config = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$key."' and site_id='".$site_id."'"));
-  }else{
-    $config = tep_db_fetch_array(tep_db_query("select * from ".$table_name." where configuration_key='".$key."' and site_id='".$site_id."'"));
-  }
-  if ($config) {
-    return $config['configuration_value'];
-  } else {
-    return false;
-  }
-}
 
 function get_url_by_site_id($site_id) {
   $site = tep_db_fetch_array(tep_db_query("select * from ".TABLE_SITES." where id='".$site_id."'"));
@@ -3271,7 +3260,10 @@ function tep_get_orders_products_names($orders_id) {
   return $str;
 }
 // orders.php
-function tep_get_orders_products_string($orders, $single = false, $popup = false) {
+
+function tep_get_orders_products_string($orders, $single = false) {
+  require_once(DIR_WS_CLASSES . 'payment.php');
+
   $str = '';
 
 
@@ -3395,7 +3387,8 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
     //$str .= '</tr>';
   }
   //$str .= '<tr><td colspan="2">&nbsp;</td></tr>';
-  $str .= '<tr><td class="main" width="150"><b>支払方法：</b></td><td class="main" style="color:darkred;"><b>'.$orders['payment_method'].'</b></td></tr>';
+  $str .= '<tr><td class="main" width="150"><b>支払方法：</b></td><td class="main"
+    style="color:darkred;"><b>'.payment::changeRomaji($orders['payment_method'],'title').'</b></td></tr>';
     //$str .= '<tr><td class="main"><b>入金日：</b></td><td class="main" style="color:red;"><b>'.($pay_time?date('m月d日',strtotime($pay_time)):'入金まだ').'</b></td></tr>';
     if ($orders['confirm_payment_time'] != '0000-00-00 00:00:00') {
       $time_str = date('Y年n月j日', strtotime($orders['confirm_payment_time'])); 
@@ -5367,50 +5360,8 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
     return false;
   }
 
-  function tep_payment_method_menu($payment_method = "") {
-    //$payment_text = "銀行振込\nクレジットカード決済\n銀行振込(買い取り)\nペイパル決済\nポイント(買い取り)\n来店支払い\nコンビニ決済\nゆうちょ銀行（郵便局）\n支払いなし";
-    $payment_text = tep_get_list_payment(); 
-    $payment_array = explode("\n", $payment_text);
-    //$payment_list[] = array('id' => '', 'text' => '支払方法を選択してください');
-    for($i=0; $i<sizeof($payment_array); $i++) {
-      $payment_list[] = array('id' => $payment_array[$i],
-          'text' => $payment_array[$i]);
-    }
-    return tep_draw_pull_down_menu('payment_method', $payment_list, $payment_method);
-  }
 
-  function tep_get_list_payment() {
-    global $language;
 
-    $payment_directory = DIR_FS_CATALOG_MODULES .'payment/';
-    $payment_array = array();
-    $payment_list_str = '';
-
-    if ($dh = @dir($payment_directory)) {
-      while ($payment_file = $dh->read()) {
-        if (!is_dir($payment_directory.$payment_file)) {
-          if (substr($payment_file, strrpos($payment_file, '.')) == '.php') {
-            $payment_array[] = $payment_file; 
-          }
-        }
-      }
-      sort($payment_array);
-      $dh->close();
-    }
-
-    for ($i = 0, $n = sizeof($payment_array); $i < $n; $i++) {
-      $payment_filename = $payment_array[$i]; 
-      include(DIR_WS_LANGUAGES . $language . '/modules/payment/' . $payment_filename); 
-      include($payment_directory . $payment_filename); 
-      $payment_class = substr($payment_filename, 0, strrpos($payment_filename, '.'));
-      if (tep_class_exists($payment_class)) {
-        $payment_module = new $payment_class; 
-        $payment_list_str .= $payment_module->title."\n"; 
-      }
-    }
-
-    return mb_substr($payment_list_str, 0, -1, 'UTF-8');
-  }
   function tep_get_faq_path($current_category_id = '') {
     global $cPath_array;
 
@@ -6714,6 +6665,63 @@ function tep_output_generated_category_path_asset($id, $from = 'category') {
   return $calculated_category_path_string;
 
 }
+
+
+//从前台引用的方法
+  function tep_count_payment_modules() {
+    return tep_count_modules(MODULE_PAYMENT_INSTALLED);
+  }
+  function tep_count_modules($modules = '') {
+    $count = 0;
+
+    if (empty($modules)) return $count;
+
+    $modules_array = split(';', $modules);
+
+    for ($i=0, $n=sizeof($modules_array); $i<$n; $i++) {
+      $class = substr($modules_array[$i], 0, strrpos($modules_array[$i], '.'));
+
+      if (!isset($GLOBALS[$class])) $GLOBALS[$class]=NULL;
+      if (is_object($GLOBALS[$class])) {
+        if ($GLOBALS[$class]->enabled) {
+          $count++;
+        }
+      }
+    }
+    return $count;
+  }
+
+//根据email 返回 customer信息
+function tep_get_customer_id_by_email($email,$site_id=0){
+    $account_query = tep_db_query("select * from " . TABLE_CUSTOMERS . " where customers_email_address = '" . $email . "' and site_id = '".$site_id."'");
+    $account = tep_db_fetch_array($account_query);
+    if(!$account){
+      return false;
+    }
+    $customer = $account['customers_id'];
+    return $customer;
+}
+
+function tep_get_customer_by_id($id){
+    $account_query = tep_db_query("select * from " . TABLE_CUSTOMERS . " where customers_id = ".$id);
+    $account = tep_db_fetch_array($account_query);
+    if(!$account){
+      return false;
+    }
+    return $account;
+}
+function tep_get_address_by_cid($id){
+  $address_query = tep_db_query("select * from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $id . "'");
+  $address = tep_db_fetch_array($address_query);
+  return $address;
+}
+
+
+
+
+
+
+
 function tep_cfg_shipping_checkbox_option($check_array, $key_value, $key = '') {
     $string = '';
     for ($i = 0, $n = sizeof($check_array); $i < $n; $i++) {
@@ -6792,8 +6800,6 @@ function tep_get_torihiki_date_radio($start_time,$radio_name="torihiki_time",$de
   }
   return $arr;
 }
-
-
 
 
 /*

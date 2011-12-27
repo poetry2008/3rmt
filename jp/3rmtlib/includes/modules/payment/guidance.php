@@ -4,28 +4,17 @@
  */
 
 // 代金引換払い(手数料が購入金額に連動)
-class guidance {
-  var $site_id, $code, $title, $description, $enabled, $n_fee, $s_error, $email_footer,$c_prefix;
+require_once (DIR_WS_CLASSES . 'basePayment.php');
+class guidance extends basePayment  implements paymentInterface  {
+  var $site_id, $code, $title, $description, $enabled, $n_fee, $s_error, $email_footer,$c_prefix, $show_payment_info;
 
-  // class constructor
-  function guidance($site_id = 0) {
-    global $order;
-
+  function loadSpecialSettings($site_id = 0)
+  {
     $this->site_id = $site_id;
-
     $this->code        = 'guidance';
-    $this->title       = MODULE_PAYMENT_GUIDANCE_TEXT_TITLE;
-    $this->description = MODULE_PAYMENT_GUIDANCE_TEXT_DESCRIPTION;
-    $this->sort_order  = MODULE_PAYMENT_GUIDANCE_SORT_ORDER;
-    $this->enabled     = ((MODULE_PAYMENT_GUIDANCE_STATUS == 'True') ? true : false);
-    $this->c_prefix    = C_GUIDANCE;
-    if ((int)MODULE_PAYMENT_GUIDANCE_ORDER_STATUS_ID > 0) {
-      $this->order_status = MODULE_PAYMENT_GUIDANCE_ORDER_STATUS_ID;
-    }
-
-    if (is_object($order)) $this->update_status();
-
+    $this->show_payment_info = 0;
   }
+
 
   // class methods
   function update_status() {
@@ -49,58 +38,13 @@ class guidance {
     }
   }
 
-  // 代引手数料を計算する
-  function calc_fee($total_cost) {
-    $table_fee = split("[:,]" , MODULE_PAYMENT_GUIDANCE_COST);
-    $f_find = false;
-    $this->n_fee = 0;
-    for ($i = 0; $i < count($table_fee); $i+=2) {
-      if ($total_cost <= $table_fee[$i]) { 
-        $additional_fee = $total_cost.$table_fee[$i+1]; 
-        @eval("\$additional_fee = $additional_fee;"); 
-        //$this->n_fee = $table_fee[$i+1]; 
-        if (is_numeric($additional_fee)) {
-          $this->n_fee = intval($additional_fee); 
-        } else {
-          $this->n_fee = 0; 
-        }
-        $f_find = true;
-        break;
-      }
-    }
-    if ( !$f_find ) {
-      $this->s_error = '';
-    }
 
-    return $f_find;
-  }
 
   // class methods
   function javascript_validation() {
     return false;
   }
-
-  function selection() {
-    global $currencies;
-    global $order;
-
-    $total_cost = $order->info['total'];      // 税金も含めた代金の総額
-    $f_result = $this->calc_fee($total_cost); // 手数料
-
-    $added_hidden = ''; // added by rekam
-    if (!empty($this->n_fee)) {
-      $s_message = $f_result ? (MODULE_PAYMENT_GUIDANCE_TEXT_FEE . '&nbsp;' . $currencies->format($this->n_fee)) : ('<font color="#FF0000">' . $this->s_error . '</font>');
-    } else {
-      $s_message = $f_result ? '': ('<font color="#FF0000">' . $this->s_error . '</font>');
-    }
-
-    $email_default_str = ''; 
-    $selection = array('id' => $this->code,
-                       'module' => $this->title, 
-                       'fields' => array(array('title' => MODULE_PAYMENT_GUIDANCE_TEXT_PROCESS, 'field' => ''),
-                                         array('title' => '', 'field' => $added_hidden) 
-                      ));
-    return $selection;
+  function fields($theData, $back=false){
   }
 
   function pre_confirmation_check() {

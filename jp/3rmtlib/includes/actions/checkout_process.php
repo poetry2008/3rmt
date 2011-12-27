@@ -2,9 +2,10 @@
 /*
   $Id$
 */
-error_reporting(E_ALL^E_WARNING^E_DEPRECATED);
-ini_set("display_errors","Off");
+
+ini_set("display_errors","On");
 require(DIR_WS_FUNCTIONS . 'visites.php');
+
 // user new point value it from checkout_confirmation.php 
 if(isset($real_point)){
   $point = $real_point;
@@ -37,8 +38,7 @@ if ( (STOCK_CHECK == 'true') && (STOCK_ALLOW_CHECKOUT != 'true') ) {
 include(DIR_WS_LANGUAGES . $language . '/' . FILENAME_CHECKOUT_PROCESS);
 // load selected payment module
 require(DIR_WS_CLASSES . 'payment.php');
-$payment_modules = new payment($payment);
-
+$payment_modules = payment::getInstance(SITE_ID);
 $insert_id = date("Ymd") . '-' . date("His") . tep_get_order_end_num();
 # Check
 //ccdd
@@ -50,12 +50,12 @@ if($NewOid['cnt'] > 0) {
     $insert_id = date("Ymd") . '-' . date("His") . tep_get_order_end_num();
 }
 
-$comments = $payment_modules->dealComment($comments);
+$comments = $payment_modules->dealComment($payment,$comments);
 require(DIR_WS_CLASSES . 'order.php');
 $order = new order;
 
 // load the before_process function from the payment modules
-$payment_modules->before_process();
+$payment_modules->before_process($payment);
 
 require(DIR_WS_CLASSES . 'order_total.php');
 $order_total_modules = new order_total;
@@ -105,7 +105,7 @@ $sql_data_array = array('orders_id'         => $insert_id,
                         'billing_country' => $order->billing['country']['title'], 
                         'billing_telephone' => $order->billing['telephone'], 
                         'billing_address_format_id' => $order->billing['format_id'], 
-                        'payment_method' => $order->info['payment_method'], 
+                        'payment_method' => payment::changeRomaji($order->info['payment_method'], PAYMENT_RETURN_TYPE_TITLE), 
                         'cc_type'    => $order->info['cc_type'], 
                         'cc_owner'   => $order->info['cc_owner'], 
                         'cc_number'  => $order->info['cc_number'], 
@@ -143,23 +143,18 @@ $sql_data_array = array('orders_id'         => $insert_id,
 if (isset($_SESSION['referer_adurl']) && $_SESSION['referer_adurl']) {
   $sql_data_array['orders_adurl'] = $_SESSION['referer_adurl'];
 }
-$telecom_option_ok = $payment_modules->dealUnknow($sql_data_array);
-
-if (isset($_POST['codt_fee'])) {
-  $sql_data_array['code_fee'] = intval($_POST['codt_fee']);
-} else if (isset($_POST['money_order_fee'])) {
-  $sql_data_array['code_fee'] = intval($_POST['money_order_fee']);
-} else if (isset($_POST['postal_money_order_fee'])) {
-  $sql_data_array['code_fee'] = intval($_POST['postal_money_order_fee']);
-} else if (isset($_POST['telecom_order_fee'])) {
-  $sql_data_array['code_fee'] = intval($_POST['telecom_order_fee']);
-} else {
+$telecom_option_ok = $payment_modules->dealUnknow($payment,$sql_data_array);
+//所有的费用 应该都叫 code_fee
+if (isset($_POST['code_fee'])) {
+  $sql_data_array['code_fee'] = intval($_POST['code_fee']);
+} else{
   $sql_data_array['code_fee'] = 0;
 }
+
 $bflag_single = ds_count_bflag();
 if ($bflag_single == 'View') {
   $orign_hand_fee = $sql_data_array['code_fee'];
-  $buy_handle_fee = calc_buy_handle($order->info['total']); 
+  $buy_handle_fee = $payment_modules->handle_calc_fee($payment,$order->info['total']); 
   $sql_data_array['code_fee'] = $orign_hand_fee + $buy_handle_fee; 
   $new_handle_fee = $sql_data_array['code_fee'];
 }
@@ -179,7 +174,7 @@ for ($i=0, $n=sizeof($order_totals); $i<$n; $i++) {
                           );
   // ccdd
   if($telecom_option_ok!=true){
-  $telecom_option_ok = $payment_modules->getexpress($order_totals,$i);
+  $telecom_option_ok = $payment_modules->getExpress($payment,$order_totals,$i);
   }
   $total_data_arr[] = $sql_data_array;
 }
@@ -195,11 +190,9 @@ $sql_data_array = array('orders_id' => $insert_id,
                         'customer_notified' => $customer_notification,
                         'comments' => $order->info['comments']);
 // ccdd
-
 tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
   
 //# 追加分（買取情報）
-  
 
 if ($telecom_option_ok == true) {
   tep_db_perform(TABLE_ORDERS, array('orders_status' => '30'), 'update', "orders_id='".$insert_id."'");
@@ -472,7 +465,8 @@ $mailoption['ORDER_DATE']       = tep_date_long(time())  ;
 $mailoption['USER_NAME']        = tep_get_fullname($order->customer['firstname'],$order->customer['lastname'])  ;
 $mailoption['USER_MAILACCOUNT'] = $order->customer['email_address'];
 $mailoption['ORDER_TOTAL']      = $currencies->format(abs($ot['value']));
-@$payment_class = $$payment;
+@$payment_class = $payment_modules->getModule($payment);
+
 $mailoption['TORIHIKIHOUHOU']   = $torihikihouhou;
 $mailoption['ORDER_PAYMENT']    = $payment_class->title ;
 $show_time = explode('-',$torihiki_time);
@@ -487,12 +481,11 @@ $mailoption['ORDER_TMETHOD']    = $insert_torihiki_date;
 $mailoption['SITE_NAME']        = STORE_NAME ;
 $mailoption['SITE_MAIL']        = SUPPORT_EMAIL_ADDRESS ;
 $mailoption['SITE_URL']         = HTTP_SERVER ;
-$mailoption['BANK_NAME']        = $bank_name;
-$mailoption['BANK_SHITEN']        = $bank_shiten;
-$mailoption['BANK_KAMOKU']        = $bank_kamoku;
-$mailoption['BANK_KOUZA_NUM']        = $bank_kouza_num;
-$mailoption['BANK_KOUZA_NAME']        = $bank_kouza_name;
-
+$mailoption['BANK_NAME']        = $_SESSION[$payment_modules->session_paymentvalue_name]['bank_name'];
+$mailoption['BANK_SHITEN']        = $_SESSION[$payment_modules->session_paymentvalue_name]['bank_shiten'];
+$mailoption['BANK_KAMOKU']        = $_SESSION[$payment_modules->session_paymentvalue_name]['bank_kamoku'];
+$mailoption['BANK_KOUZA_NUM']        = $_SESSION[$payment_modules->session_paymentvalue_name]['bank_kouza_num'];
+$mailoption['BANK_KOUZA_NAME']        = $_SESSION[$payment_modules->session_paymentvalue_name]['bank_kouza_name'];
 
 if ($point){
   $mailoption['POINT']            = str_replace('円', '', $currencies->format(abs($point)));
@@ -507,8 +500,7 @@ if(!isset($_SESSION['mailfee'])){
 
 $mailoption['MAILFEE']          = str_replace('円','',$total_mail_fee);
 $email_order = '';
-$email_order = $payment_modules->getOrderMailString($mailoption);  
-  
+$email_order = $payment_modules->getOrderMailString($payment,$mailoption);  
 // 2003.03.08 Edit Japanese osCommerce
 tep_mail(tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], EMAIL_TEXT_SUBJECT, $email_order, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
   
@@ -541,10 +533,7 @@ if (!empty($total_mail_fee)) {
   $email_printing_order .= '手数料　　　　　：'.$total_mail_fee.'円'."\n"; 
 }
 $email_printing_order .= 'お支払金額　　　：' .  $currencies->format(abs($ot['value'])) . "\n";
-if (is_object($$payment)) {
-  $payment_class = $$payment;
-  $email_printing_order .= 'お支払方法　　　：' . $payment_class->title . "\n";
-}
+$email_printing_order .= 'お支払方法　　　：' . $payment_class->title . "\n";
   
 if(tep_not_null($bbbank)) {
   $email_printing_order .= 'お支払先金融機関' . "\n";
@@ -570,7 +559,6 @@ if (method_exists($payment_class,'getMailString')){
 
 # ------------------------------------------
 // send emails to other people
-
 if (SEND_EXTRA_ORDER_EMAILS_TO != '') {
   tep_mail('', PRINT_EMAIL_ADDRESS, STORE_NAME, $email_printing_order, tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], '');
 }
@@ -584,7 +572,7 @@ if (SEND_EXTRA_ORDER_EMAILS_TO != '') {
 //tep_session_register('ac_total');
 
 // load the after_process function from the payment modules
-$payment_modules->after_process();
+$payment_modules->after_process($payment);
 
 $cart->reset(true);
 
@@ -626,13 +614,13 @@ tep_session_unregister('torihikihouhou');
 tep_session_unregister('date');
 tep_session_register('torihiki_time');
 tep_session_unregister('insert_torihiki_date');
-  
+/*
 tep_session_unregister('bank_name');
 tep_session_unregister('bank_shiten');
 tep_session_unregister('bank_kamoku');
 tep_session_unregister('bank_kouza_num');
 tep_session_unregister('bank_kouza_name');
-  
+*/
 #convenience_store
 unset($_SESSION['character']);
 unset($_SESSION['option']);

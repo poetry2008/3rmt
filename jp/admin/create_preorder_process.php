@@ -92,44 +92,16 @@
     $entry_predate_error = false;
   }
   
-  if ($payment_method == '') {
-    $error = true;
-    $entry_payment_method_error = true;
-  } elseif ($payment_method == '銀行振込(買い取り)') {
-    if ($bank_name == '') {
+
+  $selection = $cpayment->admin_selection();
+  if (!empty($_POST['payment_method'])) {
+    $validateModule = $cpayment->admin_confirmation_check($selection, $_POST['payment_method']); 
+    if ($validateModule['validated'] == false) {
+      $selection[strtoupper($_POST['payment_method'])] = $validateModule; 
       $error = true;
-      $entry_bank_name_error = true;
-    } else {
-      $entry_bank_name_error = false;
-    }
-    
-    if ($bank_shiten == '') {
-      $error = true;
-      $entry_bank_shiten_error = true;
-    } else {
-      $entry_bank_shiten_error = false;
-    }
-    
-    if ($bank_kouza_num == '') {
-      $error = true;
-      $entry_bank_kouza_num_error = true;
-    } else {
-      $entry_bank_kouza_num_error = false;
-    }
-    
-    if ($bank_kouza_name == '') {
-      $error = true;
-      $entry_bank_kouza_name_error = true;
-    } else {
-      $entry_bank_kouza_name_error = false;
-    }
-    
-    $entry_payment_method_error = false;
-  } else {
-    $entry_payment_method_error = false;
-  }
-  
-  //Add input string check - NG return Input order data - d2006.4.14 ds-style
+    } 
+  } 
+
   if($error == true) {
   
 // #### Get Available Customers
@@ -205,6 +177,20 @@
 <script language="javascript" src="includes/javascript/jquery.form.js"></script>
 <script language="javascript" src="includes/javascript/datePicker.js"></script>
 <script type="text/javascript">
+function hidden_payment()
+{
+  var idx = document.create_order.elements['payment_method'].selectedIndex; 
+  var CI = document.create_order.elements['payment_method'].options[idx].value; 
+  $(".rowHide").hide(); 
+  $(".rowHide_"+CI).show();
+}
+$(function () {
+  var CI = '<?php echo $payment_method;?>'; 
+  if (CI != '') {
+    $(".rowHide_"+CI).show();
+  }
+});
+
 $(function () {
 $.datePicker.setDateFormat('ymd', '-');
 $('#predate').datePicker();
@@ -366,7 +352,9 @@ float:left;
   $currency_value = $currency_array[1];
   //$insert_id = date("Ymd") . '-' . date("His") . '00';
   $insert_id = date("Ymd") . '-' . date("His") . tep_get_preorder_end_num();
-
+  
+  $payment_method_info = $cpayment::changeRomaji($payment_method, PAYMENT_LIST_TYPE_HAIJI);
+  
   $sql_data_array = array('orders_id'     => $insert_id,
             'customers_id'                => $customer_id,
             'customers_name'              => tep_get_fullname($firstname,$lastname),
@@ -401,29 +389,19 @@ float:left;
             'orders_status'               => '1',
             'currency'                    => $currency,
             'currency_value'              => $currency_value,
-            'payment_method'              => $payment_method,
+            'payment_method'              => $payment_method_info,
             'site_id'                     => $site_id,
             'predate'                     => $predate,
             'is_active'                     => '1',
             'orders_wait_flag'            => '1'
             ); 
-  
-  if ($payment_method == 'コンビニ決済') {
-    $sql_data_array['cemail_text'] = 'PCメールアドレス:'.$con_email; 
-  }
-  
-  if ($payment_method == '楽天銀行') {
-    $sql_data_array['raku_text'] = '電話番号:'.$rak_tel; 
-  }
-  
-  if ($payment_method == '銀行振込(買い取り)') {
-    $sql_data_array['bank_info'] = $bank_name.'<<<|||'.$bank_shiten.'<<<|||'.$bank_kamoku.'<<<|||'.$bank_kouza_num.'<<<|||'.$bank_kouza_name; 
-  }
-  
+   
+  $cpayment->admin_add_additional_info($sql_data_array, $_POST['payment_method']); 
+
   $_SESSION['create_preorder']['orders'] = $sql_data_array;
   
   //insert into order total
-  //=================================================
+
   
   
   require(DIR_WS_CLASSES . 'currencies.php');

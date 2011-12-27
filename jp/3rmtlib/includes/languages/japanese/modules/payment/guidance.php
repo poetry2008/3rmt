@@ -3,8 +3,8 @@
   $Id$
 */
 
-  define('MODULE_PAYMENT_GUIDANCE_TEXT_TITLE', 'ウェブマネー及びゲーム間移動');
-  define('MODULE_PAYMENT_GUIDANCE_TEXT_PROCESS','このショッピングカートは、販売商品と買取商品を一緒に入れることができます。<br>
+  define('TS_MODULE_PAYMENT_GUIDANCE_TEXT_TITLE', 'ウェブマネー及びゲーム間移動');
+  define('TS_MODULE_PAYMENT_GUIDANCE_TEXT_EXPLAIN','このショッピングカートは、販売商品と買取商品を一緒に入れることができます。<br>
 例えばFF11のギルを売って、リネージュ2のアデナを買うことが一度にできます。
 これを応用することによりウェブマネーで支払いをしたり、様々な物々交換が可能となります。<br>
 &lt;&lt;ヒント！&gt;&gt;<br>

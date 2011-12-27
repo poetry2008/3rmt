@@ -744,30 +744,9 @@ function toNumber($var){
           return (int)$var;
         }
     }
-  
     if( $var == "true" )    return true;
     if( $var == "false" )    return false;
     return $var;
-}
-function check_money_limit($limit_set, $total)
-{
-
-  $limit_arr = explode(",", $limit_set); 
-  if(count($limit_arr)!=2){
-    return false;
-  }
-  
-  $a = $limit_arr[0];
-  $b = $limit_arr[1];
-  if(!is_numeric($a) or !is_numeric($b) or !is_numeric($total)){
-    return false;
-  }
-
-  $a = toNumber($a);
-  $b = toNumber($b);
-  $total = toNumber($total);
-  return !($a<=$total and $total<=$b);
-  //  return true;
 }
 
 function tep_tags_link()

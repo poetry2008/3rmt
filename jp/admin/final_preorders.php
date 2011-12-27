@@ -7,7 +7,6 @@
 
   require('includes/application_top.php');
   require('includes/step-by-step/new_application_top.php');
-
   require(DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_EDIT_ORDERS);
  
   $active_order_raw = tep_db_query("select is_active from ".TABLE_PREORDERS." where orders_id = '".$_GET['oID']."'");
@@ -15,7 +14,7 @@
   if (!$active_order_res['is_active']) {
     tep_redirect(FILENAME_PREORDERS); 
   }
-  
+  unset($cpayment); 
   require(DIR_WS_CLASSES . 'currencies.php');
   $currencies = new currencies(2);
 
@@ -70,6 +69,7 @@
   
   // 最新の注文情報取得
   $order = new preorder($oID);
+  $cpayment = payment::getInstance($order->info['site_id']); 
   // ポイントを取得する
   $customer_point_query = tep_db_query("
       select point 
@@ -200,7 +200,7 @@
       billing_postcode = '" . tep_db_input($update_customer_postcode) . "',
       billing_country = '" . tep_db_input(stripslashes($update_customer_country)) . "',";
     }
-    
+    $payment_method_info = payment::changeRomaji($_POST['payment_method'], PAYMENT_RETURN_TYPE_TITLE); 
     $UpdateOrders .= "delivery_name = '" . tep_db_input(stripslashes($update_delivery_name)) . "',
       delivery_name_f = '" . tep_db_input(stripslashes($update_delivery_name_f)) . "',
       delivery_company = '" . tep_db_input(stripslashes($update_delivery_company)) . "',
@@ -210,7 +210,7 @@
       delivery_state = '" . tep_db_input(stripslashes($update_delivery_state)) . "',
       delivery_postcode = '" . tep_db_input($update_delivery_postcode) . "',
       delivery_country = '" . tep_db_input(stripslashes($update_delivery_country)) . "',
-      payment_method = '" . tep_db_input($_POST['payment_method']) . "',
+      payment_method = '" . tep_db_input($payment_method_info) . "',
       torihiki_date = '" . tep_db_input($update_tori_torihiki_date) . "',
       torihiki_houhou = '" . tep_db_input($update_tori_torihiki_houhou) . "',
       predate = '" . tep_db_input($_POST['h_predate']) . " 00:00:00',
@@ -535,7 +535,7 @@
   //  $newtotal = '0';
   //}
   
-  $handle_fee = prenew_calc_handle_fee($_POST['payment_method'], $newtotal, $oID);
+  $handle_fee = $cpayment->handle_calc_fee($_POST['payment_method'], $newtotal);
   //$newtotal = $newtotal + $_POST['payment_code_fee']; 
   $newtotal = $newtotal+$handle_fee;
   /*
@@ -967,7 +967,8 @@ while ($totals = tep_db_fetch_array($totals_query)) {
           $newtotal = $total_value["total_value"];
         }
       }
-      $handle_fee = prenew_calc_handle_fee($order->info['payment_method'], $newtotal, $oID);
+      $payment_code = payment::changeRomaji($order->info['payment_method'], PAYMENT_RETURN_TYPE_CODE); 
+      $handle_fee = $cpayment->handle_calc_fee($payment_code, $newtotal);
       $newtotal   = $newtotal+$handle_fee;
       
       /* delete text for update 
@@ -1336,7 +1337,10 @@ float:left;
               <tr>
                 <td class="main" valign="top"><b><?php echo EDIT_ORDERS_PAYMENT_METHOD;?></b></td>
                 <td class="main">
-                  <?php echo tep_pre_payment_method_menu($order->info['payment_method']);?>
+                  <?php 
+                  $payment_code = $cpayment::changeRomaji($order->info['payment_method'], PAYMENT_RETURN_TYPE_CODE); 
+                  echo $cpayment::makePaymentListPullDownMenu($payment_code); 
+                  ?>
                   <?php echo EDIT_ORDERS_PAYMENT_METHOD_READ;?> 
                 </td>
               </tr>

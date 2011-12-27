@@ -4,30 +4,60 @@
  */
 
 // 代金引換払い(手数料が購入金額に連動)
-class rakuten_bank {
-  var $site_id, $code, $title, $description, $enabled, $n_fee, $s_error, $email_footer,$c_prefix;
+class rakuten_bank  extends basePayment  implements paymentInterface {
+  var $site_id, $code, $title, $description, $enabled, $n_fee, $s_error, $email_footer,$c_prefix, $show_payment_info;
   var $arrs2d = array('１' => '1', '２' => '2', '３' => '3', '４' => '4', 
        '５' => '5', '６' => '6', '７' => '7', '８' => '8', '９' => '9', '０' => '0','－' => '-');
 
-  // class constructor
-  function rakuten_bank($site_id = 0) {
-    global $order;
-
+  function loadSpecialSettings($site_id){
     $this->site_id = $site_id;
-
-    $this->code        = 'rakuten_bank';
-    $this->title       = MODULE_PAYMENT_RAKUTEN_BANK_TEXT_TITLE;
-    $this->description = MODULE_PAYMENT_RAKUTEN_BANK_TEXT_DESCRIPTION;
-    $this->sort_order  = MODULE_PAYMENT_RAKUTEN_BANK_SORT_ORDER;
-    $this->enabled     = ((MODULE_PAYMENT_RAKUTEN_BANK_STATUS == 'True') ? true : false);
-    $this->c_prefix    = C_RAKUTEN_BANK;
-    if ((int)MODULE_PAYMENT_RAKUTEN_BANK_ORDER_STATUS_ID > 0) {
-      $this->order_status = MODULE_PAYMENT_RAKUTEN_BANK_ORDER_STATUS_ID;
-    }
-
-    if (is_object($order)) $this->update_status();
-
+    $this->code               = 'rakuten_bank';
+    $this->field_description  = 'TS_MODULE_PAYMENT_RAKUTEN_INFO_TEXT';
+    $this->show_payment_info = 0;
   }
+  function fields($theData, $back=false){
+    global $order;
+    $total_cost = $order->info['total'];
+    $code_fee = $this->calc_fee($total_cost); 
+    $added_hidden = tep_draw_hidden_field('code_fee', $code_fee);
+
+    if ($back) {
+    return array(
+                 array(
+                       "code"=>'rak_tel',
+                       "title"=>TS_MODULE_PAYMENT_RAKUTEN_TELNUMBER_TEXT,
+                       "field"=>tep_draw_input_field('rak_tel', $theData['rak_tel']),
+                       "rule"=>basePayment::RULE_NOT_NULL,
+                       )
+
+                ); 
+    } else {
+    return array(
+                 array(
+                       "code"=>'',
+                       "title"=>'',
+                       "field"=>$added_hidden,
+                       "rule"=>'',
+                       "message"=>"",
+                       ),
+                 array(
+                       "code"=>'rakuten_telnumber',
+                       "title"=>TS_MODULE_PAYMENT_RAKUTEN_TELNUMBER_TEXT,
+                       "field"=>tep_draw_input_field('rakuten_telnumber', $theData['rakuten_telnumber']).TS_MODULE_PAYMENT_RAKUTEN_MUST_INPUT,
+                       "rule"=>basePayment::RULE_NOT_NULL,
+                       ),
+                 array(
+                       "code"=>'rakuten_telnumber_again',
+                       "title"=>TS_MODULE_PAYMENT_RAKUTEN_TELNUMBER_CONFIRMATION_TEXT,
+                       "field"=>tep_draw_input_field('rakuten_telnumber_again', $theData['rakuten_telnumber_again']).TS_MODULE_PAYMENT_RAKUTEN_MUST_INPUT,
+                       "rule"=>basePayment::RULE_SAME_TO,
+                       "params_code"=>'rakuten_telnumber',
+                       ),
+                 );
+    }
+  }
+
+  // class constructor
 
   // class methods
   function update_status() {
@@ -51,38 +81,12 @@ class rakuten_bank {
     }
   }
 
-  // 代引手数料を計算する
-  function calc_fee($total_cost) {
-    $table_fee = split("[:,]" , MODULE_PAYMENT_RAKUTEN_BANK_COST);
-    $f_find = false;
-    $this->n_fee = 0;
-    for ($i = 0; $i < count($table_fee); $i+=2) {
-      if ($total_cost <= $table_fee[$i]) { 
-        $additional_fee = $total_cost.$table_fee[$i+1]; 
-        @eval("\$additional_fee = $additional_fee;"); 
-        //$this->n_fee = $table_fee[$i+1]; 
-        if (is_numeric($additional_fee)) {
-          $this->n_fee = intval($additional_fee); 
-        } else {
-          $this->n_fee = 0; 
-        }
-        $f_find = true;
-        break;
-      }
-    }
-    if ( !$f_find ) {
-      $this->s_error = MODULE_PAYMENT_RAKUTEN_BANK_TEXT_OVERFLOW_ERROR;
-    }
-
-    return $f_find;
-  }
-
   // class methods
   function javascript_validation() {
     return false;
   }
 
-  function selection() {
+  function selection($theData) {
     global $currencies;
     global $order;
 
@@ -103,18 +107,7 @@ class rakuten_bank {
           'module' => $this->title,
           'fields' => array(array('title' => MODULE_PAYMENT_RAKUTEN_BANK_TEXT_PROCESS,
               'field' => ''),
-            array('title' => '<div id="ctelnumber" class="rowHide rowHide_'.$this->code.'"
-              style="display:none;">'.MODULE_PAYMENT_RAKUTEN_INFO_TEXT.'<div
-              class="ctelnumber_input">'.MODULE_PAYMENT_RAKUTEN_TELNUMBER_TEXT.'<div
-              class="con_telnumber_input">'.tep_draw_input_field('rakuten_telnumber', $email_default_str, 'onpaste="return false"').'  '.MODULE_PAYMENT_RAKUTEN_MUST_INPUT.'</div></div></div>', 
-              'field' => '' 
-              ), 
-            array('title' => '<div id="catelnumber" class="rowHide rowHide_'.$this->code.'"
-              style="display:none;"><div
-              class="ctelnumber_input_validate">'.MODULE_PAYMENT_RAKUTEN_TELNUMBER_CONFIRMATION_TEXT.'<div
-              class="con_telnumber_input_validate">'.tep_draw_input_field('rakuten_telnumber_again', $email_default_str, 'onpaste="return false"').'  '.MODULE_PAYMENT_RAKUTEN_MUST_INPUT.'</div></div></div>',
-              'field' => '' 
-              ), 
+
             array('title' => $s_message,
               'field' => $added_hidden)
             )
@@ -124,6 +117,7 @@ class rakuten_bank {
   }
 
   function pre_confirmation_check() {
+    return true;
     global $_POST;
 
     if ($_POST['rakuten_telnumber'] == "" || $_POST['rakuten_telnumber_again'] == "") {
@@ -179,9 +173,9 @@ class rakuten_bank {
       $s_message = $s_result ? '' : ('<font color="#FF0000">' . $_POST['codt_fee_error'] . '</font>');
     }
     return array(
-                 'title' => str_replace("#TELNUMBER#",$_POST['rakuten_telnumber'],nl2br(constant("MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_CONFIRMATION"))),
+                 'title' => str_replace("#TELNUMBER#",$_POST['rakuten_telnumber'],nl2br(constant("TS_MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_CONFIRMATION"))),
 		 'fields' => array(
-				   array('title' => constant("MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_SHOW"), 'field' => ''),  
+				   array('title' => constant("TS_MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_SHOW"), 'field' => ''),  
 				   array('title' => $s_message, 'field' => '')  
 				   )           
 		 );
@@ -325,7 +319,7 @@ class rakuten_bank {
   function replace_for_telnumber($str){
     return str_replace('-','',strtr($str,$this->arrs2d));
   }
-  function dealComment($comment)
+  function dealComment($comment, $session_paymentinfo_name)
   {
     $pay_comments = '電話番号:'.$this->replace_for_telnumber($_POST['rakuten_telnumber']); 
     $comment = $pay_comments ."\n".$comment;
@@ -392,6 +386,43 @@ function getMailString($option=''){
     $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
     return $email_printing_order;
   }
+   function adminSelection()
+   {
+     return array(
+                  'code'=>$this->code,
+                  'fields'=>
+                  array(
+                        array(
+                              "title"=>'電話番号：',
+                              "field"=>'<input type="text" name="rak_tel" />',
+                              "message"=>$_SESSION['checkform']['rak_tel']?$_SESSION['checkform']['rak_tel']:'',
+                              )
+                        )
+                  );
+     
+  }
 
+   /*
+     检查提交是否符合规则，如果不复合需要在SESSION里放上错误信息并返回false，如果符合 则返回true
+    */
+   function checkAdminSelection(){
+     if(isset($_POST['rak_tel']) and !empty($_POST['rak_tel'])){
+       return true;
+     }else {
+       $_SESSION['checkform']['rak_tel']='something go wrong';
+       return false;
+     }
+
+   }
+    
+  function admin_add_additional_info(&$sql_data_array)
+  {
+      global $_POST; 
+      $sql_data_array['raku_text'] = '電話番号:'.$_POST['rak_tel']; 
+  }
+  function admin_deal_comment($order_info)
+  {
+    return $order_info['raku_text']; 
+  }
 }
 ?>

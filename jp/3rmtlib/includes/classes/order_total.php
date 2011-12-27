@@ -121,17 +121,9 @@
       }
 
       $show_handle_fee = 0;
-      if (MODULE_ORDER_TOTAL_CONV_STATUS == 'true' && ($payment == 'convenience_store')) {
-        $show_handle_fee = intval($_POST['codt_fee']); 
-      }
-      if ($payment == 'moneyorder') {
-        $show_handle_fee = intval($_POST['money_order_fee']); 
-      }
-      if ($payment == 'postalmoneyorder') {
-        $show_handle_fee = intval($_POST['postal_money_order_fee']); 
-      }
-      if ($payment == 'telecom') {
-        $show_handle_fee = intval($_POST['telecom_order_fee']); 
+
+      if(isset($_POST['code_fee'])){
+      $show_handle_fee = intval($_POST['code_fee']); 
       }
       $buying_fee = 0; 
       if (isset($cart)) { 

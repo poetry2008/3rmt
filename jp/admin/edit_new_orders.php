@@ -1,4 +1,4 @@
-<?php
+ <?php
 /*
   $Id$
    
@@ -7,7 +7,7 @@
 
 require('includes/application_top.php');
 require('includes/step-by-step/new_application_top.php');
-
+ini_set("display_errors","On");
 include(DIR_FS_ADMIN . DIR_WS_LANGUAGES . $language . '/' . FILENAME_EDIT_ORDERS);
 require(DIR_FS_ADMIN . DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_EDIT_ORDERS);
 
@@ -15,13 +15,8 @@ require(DIR_WS_CLASSES . 'currencies.php');
 $currencies = new currencies(2);
 
 include(DIR_WS_CLASSES . 'order.php');
-
-// START CONFIGURATION ################################
-
-// Correction tax pre-values (Michel Haase, 2005-02-18)
-// -> What was this ? Why 20.0, 20.0, 7.6 and 7.6 ???
-//    It's used later in a 'hidden way' an produces unlogical results ...
-
+//error_reporting(E_ALL);
+//ini_set("display_errors","On");
 // Optional Tax Rates, e.g. shipping tax of 17.5% is "17.5"
 // $AddCustomTax = "20.0"; // class "ot_custom", used for all unknown total modules
 $AddCustomTax = "19.6";  // new
@@ -63,14 +58,17 @@ $order_query = tep_db_query("
       where orders_id = '" . tep_db_input($oID) . "'");
   
 // 最新の注文情報取得
+// 获取最新 订单情报
 $order = new order($oID);
 // ポイントを取得する
+// 获得客户信息
 $customer_point_query = tep_db_query("
       select point 
       from " . TABLE_CUSTOMERS . " 
       where customers_id = '" . $order->customer['id'] . "'");
 $customer_point = tep_db_fetch_array($customer_point_query);
 // ゲストチェック
+// 获取客户 是否为注册用户
 $customer_guest_query = tep_db_query("
       select customers_guest_chk 
       from " . TABLE_CUSTOMERS . " 
@@ -79,12 +77,9 @@ $customer_guest = tep_db_fetch_array($customer_guest_query);
 
 if (tep_not_null($action)) {
   switch ($action) {
-
-
-    //
-      
     // 1. UPDATE ORDER ###############################################################################################
   case 'update_order':
+    //更新订单
     $oID = tep_db_prepare_input($_GET['oID']);
     $order = new order($oID);
     $status = '1'; // 初期値
@@ -107,6 +102,7 @@ if (tep_not_null($action)) {
       break;
     }
 
+    //  错误信息处理
     if (isset($update_tori_torihiki_date)) { //日時が有効かチェック
       if (!preg_match('/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/', $update_tori_torihiki_date, $m)) { // check the date format
         $messageStack->add('日時フォーマットが間違っています。 "2008-01-01 10:30:00"', 'error');
@@ -300,11 +296,7 @@ if (tep_not_null($action)) {
 
     foreach($update_totals as $total_index => $total_details) {
       extract($total_details,EXTR_PREFIX_ALL,"ot");
-  
-      // Correction tax calculation (Michel Haase, 2005-02-18)
-      // Correction tax calculation (Shimon Pozin, 2005-09-03) 
-      // Here is the major caveat: the product is priced in default currency, while shipping etc. are priced in target currency. We need to convert target currency
-      // into default currency before calculating RunningTax (it will be converted back before display)
+
       if ($ot_class == "ot_shipping" || $ot_class == "ot_lev_discount" || $ot_class == "ot_customer_discount" || $ot_class == "ot_custom" || $ot_class == "ot_cod_fee") {
 	$order = new order($oID);
 	$RunningTax += $ot_value * $products_details['tax'] / $order->info['currency_value'] / 100 ; // corrected tax by cb
@@ -468,6 +460,7 @@ if (tep_not_null($action)) {
     }
 
     //point修正中
+    //返点 
     $point_query = tep_db_query("select sum(value) as total_point from " . TABLE_ORDERS_TOTAL . " where class = 'ot_point' and orders_id = '" . $oID . "'");
     $total_point = tep_db_fetch_array($point_query);
 
@@ -484,16 +477,12 @@ if (tep_not_null($action)) {
 	$newtotal = $total_value["total_value"];
       }
     }
-  
-    //if (($newtotal - $total_point["total_point"]) >= 1) {
     if ($newtotal > 0) {
       $newtotal -= $total_point["total_point"];
     }
-    //} else {
-    //  $newtotal = '0';
-    //}
-  
-    $handle_fee = new_calc_handle_fee($order->info['payment_method'], $newtotal, $oID);
+   
+    //    $handle_fee = $cpaypal->calc_handle_fee($order->info['payment_method'], $newtotal, $oID);
+    $handle_fee = 0;
   
     $newtotal = $newtotal+$handle_fee;
 
@@ -980,7 +969,9 @@ if (tep_not_null($action)) {
 	    $newtotal = $total_value["total_value"];
 	  }
 	}
-	$handle_fee = new_calc_handle_fee($order->info['payment_method'], $newtotal, $oID);
+    //	$handle_fee = new_calc_handle_fee($order->info['payment_method'], $newtotal, $oID);
+	$handle_fee = 0;
+    
 	$newtotal = $newtotal+$handle_fee;    
 	/*
 	  , text = '<b>".$currencies->ot_total_format(intval(floor($newtotal)), true, $order->info['currency'])."</b>'
@@ -1114,7 +1105,21 @@ color: #FF6600;
     <tr>
     <td class="main" valign="top"><b><?php echo EDIT_ORDERS_PAYMENT_METHOD;?></b></td>
     <td class="main">
-    <?php echo tep_payment_method_menu($order->info['payment_method']);?>
+    <?php
+    //    echo tep_payment_method_menu($order->info['payment_method']);
+    /*
+    $payment_array = payment::getPaymentList(); 
+
+    for($i=0; $i<sizeof($payment_array[0]); $i++) {
+      $payment_list[] = array('id' => $payment_array[0][$i],
+          'text' => $payment_array[1][$i]);
+    }
+    echo tep_draw_pull_down_menu('payment_method', $payment_list, $order->info['payment_method']);
+    */
+    $code_payment_method =
+    payment::changeRomaji($order->info['payment_method'],'code');
+    echo payment::makePaymentListPullDownMenu($code_payment_method);
+    ?>
     </td>
     </tr>
     <!-- End Payment Block -->
@@ -1645,10 +1650,10 @@ if ($action == "add_product") {
   print "<tr><td><table border='0'>\n";
     
   // Set Defaults
-  if(!IsSet($add_product_categories_id))
+  if(!isset($add_product_categories_id))
     $add_product_categories_id = 0;
 
-  if(!IsSet($add_product_products_id))
+  if(!isset($add_product_products_id))
     $add_product_products_id = 0;
     
   // Step 1: Choose Category
@@ -1719,7 +1724,7 @@ if ($action == "add_product") {
 		}
 	      $OptionOption .= "</select><br>\n";
           
-	      if(IsSet($add_product_options))
+	      if(isset($add_product_options))
 		$OptionOption = str_replace("value='" . $add_product_options[$OptionID] . "'","value='" . $add_product_options[$OptionID] . "' selected",$OptionOption);
           
 	      print $OptionOption;
@@ -1744,7 +1749,7 @@ if ($action == "add_product") {
       echo '<td class="dataTableContent" valign="top">' .  ADDPRODUCT_TEXT_CONFIRM_QUANTITY . '<input name="add_product_quantity" size="2" value="1" onkeyup="clearLibNum(this);">&nbsp;'.EDIT_ORDERS_NUM_UNIT.'&nbsp;&nbsp;&nbsp;'.EDIT_ORDERS_PRO_DUMMY_NAME.'&nbsp;<input type="hidden" name="dummy" value="あいうえお眉幅"><input name="add_product_character" size="20" value=""></td>';
       echo "<td class='dataTableContent' align='center'><input type='submit' value='" . ADDPRODUCT_TEXT_CONFIRM_ADDNOW . "'>";
 
-      if(IsSet($add_product_options))
+      if(isset($add_product_options))
 	{
 	  foreach($add_product_options as $option_id => $option_value_id)
 	    {

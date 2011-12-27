@@ -57,4 +57,5 @@ define('CREATE_ORDER_YEZHE_NAME_TEXT', '業者名：');
 define('CREATE_ORDER_SHIRU_TEXT', '仕入れ予約');
 define('CREATE_ORDER_TEL_TEXT', '電話番号:');
 define('CREATE_PREORDER_PREDATE', '有効期限');
+define('CREATE_PREORDER_PAYMENT_LIST_DEFAULT', '支払方法を選択してください');
 ?>

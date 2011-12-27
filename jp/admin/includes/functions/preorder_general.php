@@ -53,6 +53,7 @@ function tep_show_preorders_products_info($orders_id) {
       $str .= '</tr>'; 
       $str .= '<tr><td colspan="2"><hr></td></tr>'; 
     }
+
   }
   
   if (ORDER_INFO_TRANS_WAIT == 'true') {
@@ -67,6 +68,7 @@ function tep_show_preorders_products_info($orders_id) {
       $str .= '<tr><td colspan="2"><hr></td></tr>'; 
     } 
   }
+
   
   if (ORDER_INFO_INPUT_FINISH == 'true') {
     if ($orders['orders_inputed_flag']) {
@@ -91,6 +93,7 @@ function tep_show_preorders_products_info($orders_id) {
     $str .= '</tr>';
     $str .= '<tr><td colspan="2"><hr></td></tr>'; 
   }
+
   $str .= '<tr><td class="main" width="70"><b>'.TEXT_FUNCTION_PAYMENT_METHOD.'</b></td><td class="main" style="color:darkred;"><b>'.$orders['payment_method'].'</b></td></tr>';
     if ($orders['confirm_payment_time'] != '0000-00-00 00:00:00') {
       $time_str = date(TEXT_FUNCTION_DATE_STRING, strtotime($orders['confirm_payment_time'])); 
@@ -605,6 +608,7 @@ function preorders_a($orders_id, $allorders = null, $site_id = 0)
   return $str;
 }
 
+/*
 function tep_get_list_payment_info() {
   global $language;
 
@@ -636,7 +640,6 @@ function tep_get_list_payment_info() {
 
   return $payment_list_array;
 }
-
 function prenew_calc_handle_fee($payment_name, $products_total, $oID)
 {
   $oid_query = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$oID."'"); 
@@ -671,7 +674,7 @@ function prenew_calc_handle_fee($payment_name, $products_total, $oID)
   
   return $handle_fee;
 }
-
+*/
 function tep_get_pre_product_by_op_id($orders_products_id,$type=''){
   if($type=='pid'){
     $sql = "select p.products_price as price from ".
@@ -791,13 +794,13 @@ function tep_get_pre_orders_products_string($orders, $single = false, $popup = f
   }
   //$str .= '<tr><td colspan="2">&nbsp;</td></tr>';
   $str .= '<tr><td class="main" width="150"><b>支払方法：</b></td><td class="main" style="color:darkred;"><b>'.$orders['payment_method'].'</b></td></tr>';
-  if ($orders['payment_method'] != '銀行振込(買い取り)') {
-    //$str .= '<tr><td class="main"><b>入金日：</b></td><td class="main" style="color:red;"><b>'.($pay_time?date('m月d日',strtotime($pay_time)):'入金まだ').'</b></td></tr>';
-    if ($orders['confirm_payment_time'] != '0000-00-00 00:00:00') {
-      $time_str = date('Y年n月j日', strtotime($orders['confirm_payment_time'])); 
-    } else {
-      $time_str = '入金まだ'; 
-    }
+  //$str .= '<tr><td class="main"><b>入金日：</b></td><td class="main" style="color:red;"><b>'.($pay_time?date('m月d日',strtotime($pay_time)):'入金まだ').'</b></td></tr>';
+  if ($orders['confirm_payment_time'] != '0000-00-00 00:00:00') {
+    $time_str = date('Y年n月j日', strtotime($orders['confirm_payment_time'])); 
+  } else {
+    $time_str = '入金まだ'; 
+  }
+  if($time_str) {
     $str .= '<tr><td class="main"><b>入金日：</b></td><td class="main" style="color:red;"><b>'.$time_str.'</b></td></tr>';
   }
   $str .= '<tr><td colspan="2">&nbsp;</td></tr>';
@@ -1217,6 +1220,7 @@ function tep_get_preorders_products_names($orders_id) {
   return $str;
 }
 
+/*
 function tep_pre_payment_method_menu($payment_method = "") {
   $payment_text = tep_get_list_pre_payment(); 
   $payment_array = explode("\n", $payment_text);
@@ -1226,7 +1230,8 @@ function tep_pre_payment_method_menu($payment_method = "") {
   }
   return tep_draw_pull_down_menu('payment_method', $payment_list, $payment_method);
 }
-
+*/
+/*
 function tep_get_list_pre_payment() {
   global $language;
 
@@ -1259,7 +1264,7 @@ function tep_get_list_pre_payment() {
 
   return mb_substr($payment_list_str, 0, -1, 'UTF-8');
 }
-
+*/
 function tep_get_preorder_end_num() 
 {
   $last_orders_raw = tep_db_query("select * from ".TABLE_PREORDERS." order by orders_id desc limit 1"); 

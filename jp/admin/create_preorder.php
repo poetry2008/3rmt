@@ -51,26 +51,11 @@
 <script type="text/javascript">
 function hidden_payment()
 {
-  var idx = document.create_order.elements['payment_method'].selectedIndex;
-  var CI= document.create_order.elements['payment_method'].options[idx].value;
-  
-  if (CI == '銀行振込(買い取り)') {
-    document.getElementById('trpass1').style.display = ""; 
-  } else {
-    document.getElementById('trpass1').style.display = "none"; 
-  }
-  
-  if (CI == 'コンビニ決済') {
-    document.getElementById('copass1').style.display = ""; 
-  } else {
-    document.getElementById('copass1').style.display = "none"; 
-  }
-  
-  if (CI == '楽天銀行') {
-    document.getElementById('rakpass1').style.display = ""; 
-  } else {
-    document.getElementById('rakpass1').style.display = "none"; 
-  }
+
+  var idx = document.create_order.elements['payment_method'].selectedIndex; 
+  var CI = document.create_order.elements['payment_method'].options[idx].value; 
+  $(".rowHide").hide(); 
+  $(".rowHide_"+CI).show();
 }
 $(function() {
 $.datePicker.setDateFormat('ymd', '-');
@@ -193,7 +178,7 @@ float:left;
 <?php
   echo '<form action="' . $PHP_SELF . '" method="GET">' . "\n";
   echo '<p class=main>'.CREATE_ORDER_SEARCH_TEXT.'<br>';
-  echo 'メールアドレス:&nbsp;<input type="text" name="Customer_mail" size="40">'.tep_site_pull_down_menu('', false).'&nbsp;&nbsp;<input type="submit" value="  検索  "></p>' . "\n";
+  echo CREATE_ORDER_EMAIL_TEXT.'&nbsp;<input type="text" name="Customer_mail" size="40">'.tep_site_pull_down_menu('', false).'&nbsp;&nbsp;<input type="submit" value="  '.CREATE_ORDER_SEARCH_BUTTON_TEXT.'  "></p>' . "\n";
   echo '</form>' . "\n";
 ?>
   <br>
@@ -302,23 +287,15 @@ float:left;
 ?>
 
 <?php
-  $payment_text = tep_get_list_pre_payment();
-  $payment_array = explode("\n", $payment_text);
-  $payment_list[] = array('id' => '', 'text' => '支払方法を選択してください');
-  for($pnum = 0; $pnum<sizeof($payment_array); $pnum++) {
-    $payment_list[] = array('id' => $payment_array[$pnum], 'text' => $payment_array[$pnum]); 
+  $payment_array = payment::getPaymentList();
+  $payment_list[] = array('id' => '', 'text' => CREATE_PREORDER_PAYMENT_LIST_DEFAULT);
+  for($pnum = 0; $pnum<sizeof($payment_array[0]); $pnum++) {
+    if (!empty($payment_array[0][$pnum])) {
+      $payment_list[] = array('id' => $payment_array[0][$pnum], 'text' => $payment_array[1][$pnum]); 
+    }
   }
-  switch (isset($bank_kamoku)?$bank_kamoku:null) {
-    case '普通':
-    default:
-      $bank_sele_f = true;
-      $bank_sele_t = false;
-      break;
-    case '当座':
-      $bank_sele_f = false;
-      $bank_sele_t = true;
-      break;
-  }
+  $selection = $cpayment->admin_selection();
+
 ?>
   <tr>
     <td class="formAreaTitle"><br><?php echo CREATE_ORDER_PAYMENT_TITLE;?></td>
@@ -334,49 +311,23 @@ float:left;
                 <?php echo tep_draw_pull_down_menu('payment_method', $payment_list, '', 'onchange="hidden_payment()"');?>  
                 </td>
               </tr>
-              <tr id="copass1" style="display:none;">
+              <?php
+              foreach ($selection as $skey => $singleton) { 
+              foreach ($singleton['fields'] as $fkey => $field) { 
+              ?>
+              <tr class="rowHide rowHide_<?php echo $singleton['id'];?>">
                 <td class="main">
-                <?php echo CREATE_ORDER_PC_TEXT;?>  
+                <?php echo $field['title'];?> 
                 </td>
                 <td class="main">
-                <?php echo tep_draw_input_field('con_email', '');?> 
+                <?php echo $field['field'];?> 
+                <font color="#red"><?php echo $field['message'];?></font> 
                 </td>
               </tr>
-              <tr id="rakpass1" style="display:none;">
-                <td class="main">
-                <?php echo CREATE_ORDER_TEL_TEXT;?>  
-                </td>
-                <td class="main">
-                <?php echo tep_draw_input_field('rak_tel', '');?> 
-                </td>
-              </tr>
-              <tr id="trpass1" style="display:none;"> 
-              <td colspan="2">
-              <br>
-              <table border="0" cellspacing="0" cellpadding="0">
-              <tr>
-                <td class="main">&nbsp;<?php echo CREATE_ORDER_BANK_NAME_TEXT;?></td>
-                <td class="main">&nbsp;<?php echo tep_draw_input_field('bank_name', ''); ?><?php if (isset($entry_bank_name_error) && $entry_bank_name_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
-              </tr>
-              <tr>
-                <td class="main">&nbsp;<?php echo CREATE_ORDER_BANK_SHITEN_TEXT;?></td>
-                <td class="main">&nbsp;<?php echo tep_draw_input_field('bank_shiten', ''); ?><?php if (isset($entry_bank_shiten_error) && $entry_bank_shiten_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
-              </tr>
-              <tr>
-                <td class="main">&nbsp;<?php echo CREATE_ORDER_BANK_KAMOKU_TEXT;?></td>
-                <td class="main">&nbsp; <?php echo tep_draw_radio_field('bank_kamoku', '普通', $bank_sele_f); ?>&nbsp;<?php echo CREATE_ORDER_SELECT_COMMON_TEXT;?>&nbsp;&nbsp;<?php echo tep_draw_radio_field('bank_kamoku', '当座', $bank_sele_t); ?>&nbsp;<?php echo CREATE_ORDER_SELECT_COMMON_ONE_TEXT;?></td>
-              </tr>
-              <tr>
-                <td class="main">&nbsp;<?php echo CREATE_ORDER_BANK_KOUZA_NUM_TEXT;?></td>
-                <td class="main">&nbsp;<?php echo tep_draw_input_field('bank_kouza_num', ''); ?><?php if (isset($entry_bank_kouza_num_error) && $entry_bank_kouza_num_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
-              </tr>
-             <tr>
-               <td class="main">&nbsp;<?php echo CREATE_ORDER_BANK_KOUZA_NAME_TEXT;?></td>
-               <td class="main">&nbsp;<?php echo tep_draw_input_field('bank_kouza_name', ''); ?><?php if (isset($entry_bank_kouza_name_error) && $entry_bank_kouza_name_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
-          </tr>
-        </table></td>
-       </tr>
-            </table></td>
+              <?php }?> 
+              <?php }?> 
+          </table></td>
+
         </tr>
       </table>
   </td>

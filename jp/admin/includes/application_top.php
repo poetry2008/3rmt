@@ -335,6 +335,7 @@ while($userslist= tep_db_fetch_array($sites_id)){
 
 // define our general functions used application-wide
   require(DIR_WS_FUNCTIONS . 'general.php');
+  require(DIR_WS_FUNCTIONS . 'generalBoth.php');
   require(DIR_WS_FUNCTIONS . 'preorder_general.php');
   require(DIR_WS_FUNCTIONS . 'html_output.php');
 

@@ -4,6 +4,7 @@
 */
   //ob_start();
   require('includes/application_top.php');
+  require_once(DIR_WS_CLASSES . 'payment.php');
 
 
   // action ajax order 
@@ -75,7 +76,11 @@ function tep_show_orders_products_info($orders_id) {
     $str .= '</tr>';
     $str .= '<tr><td colspan="2"><hr></td></tr>'; 
   }
-  $str .= '<tr><td class="main" width="70"><b>'.TEXT_FUNCTION_PAYMENT_METHOD.'</b></td><td class="main" style="color:darkred;"><b>'.$orders['payment_method'].'</b></td></tr>';
+  $show_payment_method =
+    payment::changeRomaji($orders['payment_method'],'title');
+  $str .= '<tr><td class="main"
+    width="70"><b>'.TEXT_FUNCTION_PAYMENT_METHOD.'</b></td><td class="main"
+    style="color:darkred;"><b>'.$show_payment_method.'</b></td></tr>';
     if ($orders['confirm_payment_time'] != '0000-00-00 00:00:00') {
       $time_str = date(TEXT_FUNCTION_DATE_STRING, strtotime($orders['confirm_payment_time'])); 
     }else if(tep_check_order_type($orders['orders_id'])!=2){
@@ -457,7 +462,8 @@ function tep_show_orders_products_info($orders_id) {
   require(DIR_WS_CLASSES . 'currencies.php');
   $currencies          = new currencies(2);
   $orders_statuses     = $all_orders_statuses = $orders_status_array = array();
-  $all_payment_method = explode("\n",tep_get_list_payment());
+  //$all_payment_method = explode("\n",tep_get_list_payment());
+  $all_payment_method = payment::getPaymentList(2);
   $all_search_status = array(); 
   $orders_status_query = tep_db_query("select orders_status_id, orders_status_name from " . TABLE_ORDERS_STATUS . " where language_id = '" . $languages_id . "'");
 

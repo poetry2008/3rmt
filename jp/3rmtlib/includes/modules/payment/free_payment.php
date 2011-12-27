@@ -3,46 +3,28 @@
   $Id$
 */
 
-  class free_payment {
-    var $site_id, $code, $title, $description, $enabled, $s_error, $n_fee, $email_footer;
-
-// class constructor
-    function free_payment ($site_id = 0) {
-      global $order;
-      
+  class free_payment  extends basePayment  implements paymentInterface {
+    var $site_id, $code, $title, $description, $enabled, $s_error, $n_fee, $email_footer, $show_payment_info;
+    function loadSpecialSettings($site_id){
       $this->site_id = $site_id;
-
       $this->code        = 'free_payment';
-      $this->title       = MODULE_PAYMENT_FREE_PAYMENT_TEXT_TITLE;
-      $this->description = MODULE_PAYMENT_FREE_PAYMENT_TEXT_DESCRIPTION;
-      $this->explain       = MODULE_PAYMENT_FREE_PAYMENT_TEXT_EXPLAIN;
-      $this->sort_order  = MODULE_PAYMENT_FREE_PAYMENT_SORT_ORDER;
-      $this->enabled     = ((MODULE_PAYMENT_FREE_PAYMENT_STATUS == 'True') ? true : false);
-
-      if ((int)MODULE_PAYMENT_FREE_PAYMENT_ORDER_STATUS_ID > 0) {
-        $this->order_status = MODULE_PAYMENT_FREE_PAYMENT_ORDER_STATUS_ID;
-      }
-
-      if (is_object($order)) $this->update_status();
-    
-      $this->email_footer = MODULE_PAYMENT_FREE_PAYMENT_TEXT_EMAIL_FOOTER;
+      $this->show_payment_info = 0;
+    }
+    function fields($theData, $back=false){
     }
 
-// class methods
     function update_status() {
       global $order;
       return true;
     }
     
-    function calc_fee($total_cost) {
-      return 0;
-    }
+    
 
     function javascript_validation() {
       return false;
     }
 
-    function selection() {
+    function selection($theData) {
       global $currencies;
       global $order;
       
@@ -82,9 +64,9 @@
         $s_message = $s_result ? '':('<font color="#FF0000">'.$_POST['free_payment_order_fee_error'].'</font>'); 
       }
     return array(
-		 'title' => nl2br(constant("MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_CONFIRMATION")),
+		 'title' => nl2br(constant("TS_MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_CONFIRMATION")),
 		 'fields' => array(
-				   array('title' => constant("MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_SHOW"), 'field' => ''),  
+				   array('title' => constant("TS_MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_SHOW"), 'field' => ''),  
 				   array('title' => $s_message, 'field' => '')  
 				   )           
 		 );

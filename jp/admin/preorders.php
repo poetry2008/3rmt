@@ -8,10 +8,11 @@
   require_once('pre_oa/HM_Group.php'); 
   require(DIR_WS_FUNCTIONS . 'visites.php');
   require(DIR_WS_CLASSES . 'currencies.php');
+  require(DIR_WS_CLASSES . 'payment.php');
   $currencies          = new currencies(2);
   $orders_statuses     = $all_orders_statuses = $orders_status_array = array();
   $all_preorders_status = array();
-  $all_payment_method = explode("\n", tep_get_list_pre_payment()); 
+  $all_payment_method = payment::getPaymentList(PAYMENT_LIST_TYPE_HAIJI); 
   $orders_status_query = tep_db_query("select orders_status_id, orders_status_name from " . TABLE_PREORDERS_STATUS . " where language_id = '" . $languages_id . "'");
 
   while ($orders_status = tep_db_fetch_array($orders_status_query)) {
@@ -111,7 +112,7 @@
           $point_rate = MODULE_ORDER_TOTAL_POINT_FEE;
         }
         // ここまでカスタマーレベルに応じたポイント還元率算出============================================================
-        
+          /* 
           if ($result3['value'] >= 0) {
             $get_point = ($result3['value'] - (int)$result2['value']) * $point_rate;
             //tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " . $get_point . " where customers_id = " . $result1['customers_id'] );
@@ -122,7 +123,7 @@
               $get_point = 0;
             }
           }
-        
+          */ 
         }
         }   
     
@@ -375,6 +376,7 @@
       $point_rate = MODULE_ORDER_TOTAL_POINT_FEE;
     }
     // ここまでカスタマーレベルに応じたポイント還元率算出============================================================
+      /* 
       if ($result3['value'] >= 0) {
         $get_point = ($result3['value'] - (int)$result2['value']) * $point_rate;
       } else {
@@ -388,12 +390,15 @@
           $get_point = 0;
         }
       }
+      */ 
       //$plus = $result4['point'] + $get_point;
       
-      if($check_status['payment_method'] != 'ポイント(買い取り)'){
+      //if($check_status['payment_method'] != 'ポイント(買い取り)'){
       //tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " . $get_point . " where customers_id = " . $result1['customers_id'] );
-      }
-    }else{
+      //}
+    }
+    //else{
+      /* 
       $os_query = tep_db_query("select orders_status_name from " . TABLE_PREORDERS_STATUS . " where orders_status_id = '".$status."'");
       $os_result = tep_db_fetch_array($os_query);
       if($os_result['orders_status_name']=='支払通知*'){
@@ -414,7 +419,8 @@
       //tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " .  $get_point . " where customers_id = " . $result1['customers_id'] );
        }
       }
-    }
+      */ 
+    //}
     }
     
     if ($check_status['orders_status'] != $status || $comments != '') {
@@ -851,6 +857,9 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
   if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) {
     // edit start
     $order = new preorder($oID);
+    $cpayment = payment::getInstance($order->info['site_id']);
+    $payment_code = payment::changeRomaji($order->info['payment_method'], PAYMENT_RETURN_TYPE_CODE);
+    $show_payment_info = $cpayment->admin_show_payment_info($payment_code);
 ?>
 <script>
   // 游戏人物名，订单详细页用来替换邮件内容
@@ -1152,7 +1161,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                 <?php } ?>
               </table>
             </div>
-            <?php if ($order->info['payment_method'] == 'クレジットカード決済') { ?>
+            <?php if ($show_payment_info == 1) { ?>
             <!-- 信用卡信息 -->
 
             <div id="orders_telecom">
@@ -1173,7 +1182,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
               </table>
             </div>
 
-            <?php }else if ($order->info['payment_method'] == 'ペイパル決済') {?>
+            <?php }else if ($show_payment_info == 2) {?>
             <!-- PAYPAL信息 -->
 
             <div id="orders_paypal">
@@ -2776,7 +2785,7 @@ function submit_confirm()
 
        </table>
       <table width="100%">
-       <tr><td align='right'><button id="oa_dynamic_submit" >保存</button></td></tr>
+       <tr><td align='right'><button id="oa_dynamic_submit" ><?php echo IMAGE_SAVE;?></button></td></tr>
        </table>
 </div>
 </td></tr></table>

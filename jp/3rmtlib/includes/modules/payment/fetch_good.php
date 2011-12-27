@@ -3,29 +3,18 @@
   $Id$
 */
 
-class fetch_good {
-  var $site_id, $code, $title, $description, $enabled, $s_error, $n_fee, $email_footer;
+class fetch_good extends basePayment  implements paymentInterface {
+  var $site_id, $code, $title, $description, $enabled, $s_error, $n_fee, $email_footer, $show_payment_info, $additional_title;
 
-  // class constructor
-  function fetch_good ($site_id = 0) {
-    global $order;
-      
+  function loadSpecialSettings($site_id = 0){
     $this->site_id = $site_id;
-
     $this->code        = 'fetch_good';
-    $this->title       = MODULE_PAYMENT_FETCH_GOOD_TEXT_TITLE;
-    $this->description = MODULE_PAYMENT_FETCH_GOOD_TEXT_DESCRIPTION;
-    $this->explain       = MODULE_PAYMENT_FETCH_GOOD_TEXT_EXPLAIN;
-    $this->sort_order  = MODULE_PAYMENT_FETCH_GOOD_SORT_ORDER;
-    $this->enabled     = ((MODULE_PAYMENT_FETCH_GOOD_STATUS == 'True') ? true : false);
+    $this->show_payment_info = 0;
+    $this->additional_title = TS_MODULE_PAYMENT_FETCH_GOOD_ADDITIONAL_TEXT_TITLE; 
+  }
+  function fields($theData, $back=false){
 
-    if ((int)MODULE_PAYMENT_FETCH_GOOD_ORDER_STATUS_ID > 0) {
-      $this->order_status = MODULE_PAYMENT_FETCH_GOOD_ORDER_STATUS_ID;
-    }
 
-    if (is_object($order)) $this->update_status();
-    
-    $this->email_footer = MODULE_PAYMENT_FETCH_GOOD_TEXT_EMAIL_FOOTER;
   }
 
   // class methods
@@ -34,15 +23,12 @@ class fetch_good {
     return true;
   }
     
-  function calc_fee($total_cost) {
-    return 0;
-  }
-
+  
   function javascript_validation() {
     return false;
   }
 
-  function selection() {
+  function selection($theData) {
     global $currencies;
     global $order;
       
