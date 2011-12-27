@@ -7,6 +7,14 @@
   require('includes/step-by-step/new_application_top.php');
 
   require(DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_CREATE_ORDER_PROCESS);
+  require(DIR_WS_CLASSES . 'shipping.php');
+
+  $shipping_method     = tep_db_prepare_input($_POST['shipping_method']);
+  $shipping_address    = tep_db_prepare_input($_POST['shipping_address']);
+  $shipping_date       = tep_db_prepare_input($_POST['date']);
+  $shipping_work_time  = tep_db_prepare_input($_POST['work_time']);
+  $shipping_start_time = tep_db_prepare_input($_POST['start_time']);
+  $shipping_time       = tep_db_prepare_input($_POST['torihiki_time_radio']);
 
   $customer_id    = tep_db_prepare_input($_POST['customers_id']);
   $firstname      = tep_db_prepare_input($_POST['firstname']);
@@ -30,12 +38,14 @@
   $temp_amount    = "0";
   $temp_amount    = number_format($temp_amount, 2, '.', '');
   $date = tep_db_prepare_input($_POST['date']);
-  $hour = tep_db_prepare_input($_POST['hour']);
-  $min  = tep_db_prepare_input($_POST['min']);
+  $torihiki_time  = tep_db_prepare_input($_POST['torihiki_time']);
   $torihikihouhou = tep_db_prepare_input($_POST['torihikihouhou']);
   $payment_method = tep_db_prepare_input($_POST['payment_method']);
   
   $currency_text  = DEFAULT_CURRENCY . ",1";
+  $torihiki_time_arr = explode('-',$torihiki_time);
+  $insert_torihiki_date = $date." ".$torihiki_time_arr[0]. '/' .
+          $date." ".$torihiki_time_arr[1];
   if(isset($_POST['Currency']) && !empty($_POST['Currency']))
   {
     $currency_text = tep_db_prepare_input($_POST['Currency']);
@@ -86,7 +96,7 @@
     $entry_date_error = false;
   }
 
-  if ($hour == '' || $min == '') {
+  if ($torihiki_time == '') {
     $error = true;
     $entry_tardetime_error = true;
   } else {
@@ -312,7 +322,7 @@
               'currency_value'              => $currency_value,
               'payment_method'              => $payment_method,
               'torihiki_houhou'             => $torihikihouhou,
-              'torihiki_date'               => tep_db_input($date . ' ' . $hour . ':' . $min . ':00'),
+              'torihiki_date'               => $insert_torihiki_date,
               'site_id'                     => $site_id,
               'orders_wait_flag'            => '1'
 
@@ -459,6 +469,7 @@
       tep_db_perform(TABLE_ORDERS_TOTAL, $sql_data_array);
   }
   
+    //这里把订配送的相关信息 存入到SESSION 里面
     tep_redirect(tep_href_link(FILENAME_EDIT_NEW_ORDERS, 'oID=' . $insert_id, 'SSL'));
 
 

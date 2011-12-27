@@ -42,9 +42,9 @@ define('CREATE_ORDER_BANK_KOUZA_NUM_TEXT', '口座番号:');
 define('CREATE_ORDER_BANK_KOUZA_NAME_TEXT', '口座名義:');
 define('CREATE_ORDER_SELECT_COMMON_TEXT', '普通');
 define('CREATE_ORDER_SELECT_COMMON_ONE_TEXT', '当座');
-define('CREATE_ORDER_FETCH_TIME_TITLE_TEXT', '取引日時');
-define('CREATE_ORDER_FETCH_DATE_TEXT', '取引日:');
-define('CREATE_ORDER_FETCH_TIME_TEXT', '取引時間:');
+define('CREATE_ORDER_FETCH_TIME_TITLE_TEXT', 'お届け希望日時');
+define('CREATE_ORDER_FETCH_DATE_TEXT', 'お届け希望日:');
+define('CREATE_ORDER_FETCH_TIME_TEXT', 'お届け希望時間:');
 define('CREATE_ORDER_FETCH_ALLTIME_TEXT', '（24時間表記）');
 define('CREATE_ORDER_FETCH_TIME_SELECT_TEXT', 'オプション:');
 define('CREATE_ORDER_COMMUNITY_TITLE_TEXT', '当社使用欄');
@@ -56,4 +56,7 @@ define('CREATE_ORDER_SEARCH_TWO_TEXT','業者名を選択し「検索」ボタ�
 define('CREATE_ORDER_YEZHE_NAME_TEXT', '業者名：');
 define('CREATE_ORDER_SHIRU_TEXT', '仕入れ注文');
 define('CREATE_ORDER_TEL_TEXT', '電話番号:');
+define('TEXT_CREATE_ADDRESS_BOOK','お届け先を指定する');
+define('TEXT_USE_ADDRESS_BOOK','登録先に届ける');
+define('TEXT_TORIHIKIBOUBI_DEFAULT_SELECT','ご希望のお届け日時を指定してください');
 ?>

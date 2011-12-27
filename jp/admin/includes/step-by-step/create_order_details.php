@@ -110,17 +110,20 @@ function hidden_payment(){
   $d_num = $today['mday'];
   $year = $today['year'];
   $date_list[] = array('id' => '', 'text' => '取引日を選択してください');
-  for($i=0; $i<14; $i++) {
-    $date_list[] = array('id' => date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$i,$year)),
-              'text' => strftime("%Y年%m月%d日（%a）", mktime(0,0,0,$m_num,$d_num+$i,$year)));
+  for($i=0; $i<=$end_day; $i++) {
+    $date_list[] = array('id' => date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$start_day,$year)),
+              'text' => strftime("%Y年%m月%d日（%a）", mktime(0,0,0,$m_num,$d_num+$start_day,$year)));
+    $start_day++;
   }
   // 取引時間のリスト作成
+  /*
     $hour_list[] = array('id' => '', 'text' => '--');
   for($i=0; $i<24; $i++) {
     $hour_num = str_pad($i, 2, "0", STR_PAD_LEFT);
     $hour_list[] = array('id' => $hour_num,
               'text' => $hour_num);
   }
+ 
   
   $min_list[] = array('id' => '', 'text' => '--');
   for($i=0; $i<6; $i++) {
@@ -128,6 +131,7 @@ function hidden_payment(){
     $min_list[] = array('id' => $min_num,
               'text' => $min_num);
   }
+  */
   // 支払方法のリスト作成
   //$payment_text = "銀行振込\nクレジットカード決済\n銀行振込(買い取り)\nペイパル決済\nポイント(買い取り)\n来店支払い\nコンビニ決済\nゆうちょ銀行（郵便局）\n支払いなし";
   $payment_text = tep_get_list_payment(); 
@@ -241,6 +245,211 @@ function hidden_payment(){
       </table>
   </td>
   </tr>
+  <?php // 这里添加 配送选择
+  //  1代表SITE_ID
+  
+  ?>
+  <tr>
+    <td class="formAreaTitle"><br><?php echo 'shipping list';?></td>
+  </tr>
+  <tr>
+    <td class="main"><table border="0" width="100%" cellspacing="0" cellpadding="2"
+    class="formArea"><tr><td>
+    <?php //这里添加 配送方法的列表 配送方法 保存到 session 里面 ?>
+<?php 
+$shipping_modules = shipping::getInstance($site_id);
+$c_address_book = tep_get_address_by_customers_id($customer_id);
+if(isset($shipping_method)&&$shipping_method){
+?>
+  <script language='javascript'>
+torihiki_time_str = get_torihiki_time_list('<?php 
+    echo $shipping_work_time;?>','<?php 
+    echo $shipping_start_time;?>','<?php 
+    echo $shipping_date;?>','torihiki_time_radio','<?php 
+    echo $shipping_time?>')
+  </script>
+        <div>
+        <div><input name='address_radio' type="radio" onClick="create_address_book()"><?php
+        echo TEXT_CREATE_ADDRESS_BOOK;?></div>
+        <div>
+        <div><input name='address_radio' type="radio" onClick="show_address_book()"
+        checked ="true" ><?php
+        echo TEXT_USE_ADDRESS_BOOK;?></div>
+        <div id="address_book_list">
+        <select name="shipping_address" onchange="show_shipping_method()" >
+        <?php
+        foreach($c_address_book as $book_row){
+          echo "<option value='".$book_row['value']."' ";
+          if($shipping_address == $book_row['value']){
+            echo " selected='true' ";
+          }
+          echo " >".$book_row['text'];
+          echo "</option>";
+          
+        }
+      ?>
+        </select>
+        </div>
+        </div>
+        </div>
+    <div  id='shipping_list' >
+    <?php
+  $shipping_method_count = count($shipping_modules->modules);
+  //是否只有一个配送
+  $one_shipping = false;
+  $shipping_list_str = '';
+  foreach($shipping_modules->modules as $s_modules){
+    //这里输出 每一个模块
+    $s_option = $s_modules->get_torihiki_date_select($shipping_date);
+    $shipping_list_str .= "<option value='".$s_modules->code."' ";
+    if($shipping_method==$s_modules->code){
+      $shipping_list_str .= " selected='true' ";
+      $one_shipping = true;
+    }
+    $shipping_list_str .= ">".$s_modules->title."</option>";
+    if(!$one_shipping){
+      echo "<div style='display:none'>";
+      echo "<select id='".$s_modules->code."'>";
+      echo $s_option;
+      echo "</select>";
+      echo "</div>";
+    }
+  }
+  echo "<select name='shipping_method' onchange='set_torihiki_date(\"".$s_modules->code."\",\"".
+        $s_modules->work_time."\",\"".$s_modules->start_time."\")' >" ;
+  echo $shipping_list_str;
+  echo "</select>";
+  ?>
+    </div>
+    <?php
+    //这里是 区引时间相关的显示
+    ?>
+    <div id='torihiki_info_list' >
+    <div>
+    <?php /*
+    <div><?php echo TEXT_TORIHIKIHOUHOU;?></div>
+    <div><?php echo tep_get_torihiki_select_by_products($product_ids);?></div>
+    */
+    ?>
+    </div>
+    <div>
+    <div><?php echo CREATE_ORDER_FETCH_DATE_TEXT;?></div>
+    <div><select name="date" onChange="show_torihiki_time(this,'torihiki_time_radio','')" 
+    id='shipping_torihiki_date_select'>
+    <option value=""><?php echo TEXT_TORIHIKIBOUBI_DEFAULT_SELECT;?></option>
+    <?php echo $s_option;?>
+    </select>
+    </div>
+    </div>
+    <div id="shipping_torihiki">
+    <div><?php echo CREATE_ORDER_FETCH_TIME_TEXT;?></div>
+    <div id="shipping_torihiki_radio"></div>
+    </div>
+    <script language = 'javascript'>
+torihiki_radio_div = window.document.getElementById('shipping_torihiki_radio');
+torihiki_radio_div.innerHTML = torihiki_time_str;
+    </script>
+    <?php
+    echo tep_draw_input_field('work_time','','id="shipping_work_time"',false,'hidden');
+    echo tep_draw_input_field('start_time','','id="shipping_start_time"',false,'hidden');
+    ?>
+    </div>
+    <?php
+
+}else{
+      ?>
+        <div>
+        <div><input name='address_radio' type="radio" onClick="create_address_book()"><?php
+        echo TEXT_CREATE_ADDRESS_BOOK;?></div>
+        <div>
+        <div><input name='address_radio' type="radio" onClick="show_address_book()"><?php
+        echo TEXT_USE_ADDRESS_BOOK;?></div>
+        </div>
+        </div>
+        <div style="display:none" id="address_book_list">
+        <select name="shipping_address" onchange="show_shipping_method()" >
+        <?php
+        foreach($c_address_book as $book_row){
+          echo "<option value='".$book_row['value']."' ";
+          if($shipping_address == $book_row['value']){
+            echo " selected='true' ";
+          }
+          echo " >".$book_row['text'];
+          echo "</option>";
+          
+        }
+      ?>
+        </select>
+        </div>
+    <div  id='shipping_list' style='display:none' >
+    <?php
+  $shipping_method_count = count($shipping_modules->modules);
+  //是否只有一个配送
+  $one_shipping = false;
+  $shipping_list_str = '';
+  foreach($shipping_modules->modules as $s_modules){
+    //这里输出 每一个模块
+    $s_option = $s_modules->get_torihiki_date_select();
+    $shipping_list_str .= "<option value='".$s_modules->code."' ";
+    if($shipping_method_count == 1){
+      $shipping_list_str .= " selected='true' ";
+      $one_shipping = true;
+    }
+    $shipping_list_str .= ">".$s_modules->title."</option>";
+    if(!$one_shipping){
+      echo "<div style='display:none'>";
+      echo "<select id='".$s_modules->code."'>";
+      echo $s_option;
+      echo "</select>";
+      echo "</div>";
+    }
+  }
+  echo "<select name='shipping_method' onchange='set_torihiki_date(\"".$s_modules->code."\",\"".
+        $s_modules->work_time."\",\"".$s_modules->start_time."\")' >" ;
+  echo $shipping_list_str;
+  echo "</select>";
+  ?>
+    </div>
+    <?php
+    //这里是 区引时间相关的显示
+    ?>
+    <div style='display:none' id='torihiki_info_list' >
+
+    <div>
+    <div><?php echo CREATE_ORDER_FETCH_DATE_TEXT;?></div>
+    <div><select name="date" onChange="show_torihiki_time(this,'torihiki_time_radio','')" 
+    id='shipping_torihiki_date_select'>
+    <option value=""><?php echo TEXT_TORIHIKIBOUBI_DEFAULT_SELECT;?></option>
+    <?php echo $s_option;?>
+    </select>
+    </div>
+    </div>
+    </div>
+    <div style="display:none" id="shipping_torihiki">
+    <div><?php echo CREATE_ORDER_FETCH_TIME_TEXT;?></div>
+    <div id="shipping_torihiki_radio"></div>
+    </div>
+    <?php
+    echo tep_draw_input_field('work_time','','id="shipping_work_time"',false,'hidden');
+    echo tep_draw_input_field('start_time','','id="shipping_start_time"',false,'hidden');
+    ?>
+    </div>
+    <?php
+}
+?>
+    <div>
+    <?php /*
+    <div><?php echo TEXT_TORIHIKIHOUHOU;?></div>
+    <div><?php echo tep_get_torihiki_select_by_products($product_ids);?></div>
+    */
+    ?>
+    </div>
+    </td></tr>
+    </table></td>
+  </tr>
+  </tr>
+<?php //这里是原来取引
+/*
   <tr>
     <td class="formAreaTitle"><br><?php echo CREATE_ORDER_FETCH_TIME_TITLE_TEXT;?></td>
   </tr>
@@ -253,8 +462,24 @@ function hidden_payment(){
                 <td class="main">&nbsp;<?php echo tep_draw_pull_down_menu('date', $date_list, isset($date)?$date:''); ?><?php if (isset($entry_date_error) && $entry_date_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
               </tr>
               <tr>
-                <td class="main">&nbsp;<?php echo CREATE_ORDER_FETCH_TIME_TEXT;?></td>
-                <td class="main">&nbsp;
+                <td class="main" valign="top">&nbsp;<?php echo CREATE_ORDER_FETCH_TIME_TEXT;?></td>
+                <td class="main" valign="top">
+    <div class="all_torihiki_radio">
+    <?php 
+    $radio_arr = tep_get_torihiki_date_radio($start_time);
+    $row_num = 0;
+    echo "<ul>";
+    foreach($radio_arr as $radio){
+      $row_num++;
+      echo "<li>".$radio."</li>";
+      if($row_num%4==0){
+        echo "</ul><ul>";
+      }
+    }
+    echo "</ul>";
+    ?>
+    </div>
+
                 <?php 
                 //diff order and order2
                 /*
@@ -267,10 +492,13 @@ function hidden_payment(){
                 echo tep_draw_pull_down_menu('hour', $hour_list, isset($hour)?$hour:''); 
                 }
                 */
+                /*  原来的区引时间
                 echo tep_draw_pull_down_menu('hour', $hour_list, isset($hour)?$hour:''); 
                 ?>&nbsp;時&nbsp;<?php 
                 echo tep_draw_pull_down_menu('min', $min_list, isset($min)?$min:''); 
                 ?>&nbsp;分&nbsp;<b><?php echo CREATE_ORDER_FETCH_ALLTIME_TEXT;?></b><?php 
+                */
+/*
                 if (isset($entry_tardetime_error ) && $entry_tardetime_error == true) { 
                   echo '&nbsp;&nbsp;<font color="red">Error</font>'; 
                 } ?></td>
@@ -284,6 +512,7 @@ function hidden_payment(){
       </table>
   </td>
   </tr>
+*/?>
   <tr>
     <td class="formAreaTitle"><br><?php echo CREATE_ORDER_COMMUNITY_TITLE_TEXT;?></td>
   </tr>

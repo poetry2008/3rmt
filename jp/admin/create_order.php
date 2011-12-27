@@ -6,6 +6,7 @@
   require('includes/step-by-step/new_application_top.php');
   
   require(DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_CREATE_ORDER);
+  require(DIR_WS_CLASSES . 'shipping.php');
   
   if (IsSet($_GET['Customer'])) {
     $account_query = tep_db_query("select * from " . TABLE_CUSTOMERS . " where customers_id = '" . $_GET['Customer'] . "'");
