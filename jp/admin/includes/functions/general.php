@@ -3261,7 +3261,7 @@ function tep_get_orders_products_names($orders_id) {
 }
 // orders.php
 
-function tep_get_orders_products_string($orders, $single = false) {
+function tep_get_orders_products_string($orders, $single = false, $popup = false) {
   require_once(DIR_WS_CLASSES . 'payment.php');
 
   $str = '';

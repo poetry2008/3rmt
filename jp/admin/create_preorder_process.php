@@ -7,7 +7,8 @@
   require('includes/step-by-step/new_application_top.php');
 
   require(DIR_WS_LANGUAGES . $language . '/step-by-step/create_preorder_process.php');
-
+  $cpayment = payment::getInstance((int)$_POST['site_id']);
+  
   $customer_id    = tep_db_prepare_input($_POST['customers_id']);
   $predate        = tep_db_prepare_input($_POST['predate']);
   $payment_method = tep_db_prepare_input($_POST['payment_method']);
@@ -92,7 +93,7 @@
     $entry_predate_error = false;
   }
   
-
+  
   $selection = $cpayment->admin_selection();
   if (!empty($_POST['payment_method'])) {
     $validateModule = $cpayment->admin_confirmation_check($selection, $_POST['payment_method']); 

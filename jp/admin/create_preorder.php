@@ -287,6 +287,7 @@ float:left;
 ?>
 
 <?php
+  $cpayment = payment::getInstance((int)$_GET['site_id']); 
   $payment_array = payment::getPaymentList();
   $payment_list[] = array('id' => '', 'text' => CREATE_PREORDER_PAYMENT_LIST_DEFAULT);
   for($pnum = 0; $pnum<sizeof($payment_array[0]); $pnum++) {
