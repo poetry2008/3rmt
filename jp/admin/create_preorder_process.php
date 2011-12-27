@@ -96,7 +96,7 @@
   
   $selection = $cpayment->admin_selection();
   if (!empty($_POST['payment_method'])) {
-    $validateModule = $cpayment->admin_confirmation_check($selection, $_POST['payment_method']); 
+    $validateModule = $cpayment->admin_confirmation_check($_POST['payment_method']); 
     if ($validateModule['validated'] == false) {
       $selection[strtoupper($_POST['payment_method'])] = $validateModule; 
       $error = true;

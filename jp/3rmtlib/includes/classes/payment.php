@@ -282,10 +282,11 @@ class payment {
     return $selection_array;
   }
   
-  function admin_confirmation_check($ad_selection, $payment) {
+  function admin_confirmation_check($payment) {
     $module = $this->getModule($payment);
+    $s = $this->admin_selection(); 
     if($module){
-        return $module->validate_selection($ad_selection[strtoupper($payment)],$_POST);
+        return $module->validate_selection($s[strtoupper($payment)],$_POST);
     } else {
       return false;
     }
