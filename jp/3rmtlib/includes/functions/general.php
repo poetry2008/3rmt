@@ -4588,27 +4588,10 @@ function tep_get_torihiki_date_radio($start_time,$radio_name="torihiki_time"){
 
 
 
-function get_configuration_by_site_id($key, $site_id = '0',$table_name='') {
-  if($table_name==''){
-    $config = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$key."' and site_id='".$site_id."'"));
-  }else{
-    $config = tep_db_fetch_array(tep_db_query("select * from ".$table_name." where configuration_key='".$key."' and site_id='".$site_id."'"));
-  }
-  if ($config) {
-    return $config['configuration_value'];
-  } else {
-    return false;
-  }
-}
-
 
 /*
   取得唯一值
 */
-function get_configuration_by_site_id_or_default($key,$site_id){
-  return get_configuration_by_site_id($key,$site_id)===false?get_configuration_by_site_id($key,0):get_configuration_by_site_id($key,$site_id);
-}
-
 
 
 //以下是配送使用的方法

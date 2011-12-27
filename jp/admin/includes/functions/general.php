@@ -6805,9 +6805,7 @@ function tep_get_torihiki_date_radio($start_time,$radio_name="torihiki_time",$de
 /*
   取得唯一值
 */
-function get_configuration_by_site_id_or_default($key,$site_id){
-  return get_configuration_by_site_id($key,$site_id)===false?get_configuration_by_site_id($key,0):get_configuration_by_site_id($key,$site_id);
-}
+
 //以下是配送使用的方法
   function tep_get_address_by_customers_id($customers_id, $address_id = 1, $html = false, $boln = '', $eoln = "\n") {
 //ccdd
