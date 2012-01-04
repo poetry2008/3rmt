@@ -2121,3 +2121,60 @@ border:2px solid #FF8080;
 
 
 
+.checkout_payment_info{
+	border:1px solid #ccc;
+	background-color:#F4F4F4;
+	margin-top:15px;   
+	*margin-top:5px;
+	font-size:12px;
+	padding:5px;                        
+}
+.float_left{
+	float:left;
+}
+.txt_right{
+	text-align:right;
+}
+.box_content_title {
+    background-color:#C7D9E7;
+    clear: both;
+    line-height: 18px;
+    overflow: hidden;
+    width: 100%;
+}
+.box_content_title input {
+    margin-right: 12px;
+}
+.frame_w70{
+	width:70%;
+	float:left;
+	padding-left:10px;
+}
+.float_right{
+	float:right;
+}
+.cp_content{
+	padding:0 10px;
+}
+.cp_content P{
+	color:#FF0000;
+}
+.cp_codefee{
+	margin-top:5px;
+}
+.txt_input_box{
+	overflow:hidden;
+	clear:both;
+	line-height:21px;
+}
+.frame_title{
+	width:30%;
+	float:left;
+	line-height:20px;
+}
+.clear{
+	clear:both;
+}
+.cp_description{
+	padding:0 10px;
+}

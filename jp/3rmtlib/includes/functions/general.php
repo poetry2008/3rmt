@@ -4650,3 +4650,89 @@ function tep_get_products_list_by_order_id($oid){
   }
   return $products_list;
 }
+//３１号删掉{{
+function tep_whether_show_payment(){
+  return true;
+}
+function check_money_limit() {
+  return false;
+}
+//}}
+
+
+//统一的输出 
+function tep_payment_out_selection(){
+global $selection;
+global $payment_modules;
+global $order;
+?>
+<!-- selection start -->
+<div class="checkout_payment_info">
+  <?php
+   //如果大于1个支付方法需要用户选择 ，如果小于则不需要选择了
+    if (sizeof($selection) > 1) {
+      echo "<div>";
+      echo '<div class="float_left">'.TEXT_SELECT_PAYMENT_METHOD."</div>";
+      echo '<div class="txt_right"><b>'.TITLE_PLEASE_SELECT.'</b><br>'.tep_image(DIR_WS_IMAGES . 'arrow_east_south.gif').'</div> ';
+      echo "</div> ";
+    }else {
+      echo "<div>";
+      echo '<div class="float_left">';
+      echo TEXT_ENTER_PAYMENT_INFORMATION;
+      echo '</div><div></div>';
+      echo "</div>";
+    }
+  ?>
+  <!-- loop start  -->
+
+
+<?php 
+    foreach ($selection as $key=>$singleSelection){
+      //判断支付范围 
+      if($payment_modules->moneyInRange($singleSelection['id'],$order->info['total'])){
+	continue;
+      }
+      if(!$payment_modules->showToUser($singleSelection['id'],$_SESSION['guestchk'])){
+        continue;
+      }
+      
+?>
+	<div>
+		<div class="box_content_title">
+			<div class="frame_w70"><b><?php echo $singleSelection['module'];?></b></div>
+			<div class="float_right">
+            	<?php echo tep_draw_radio_field('payment',$singleSelection['id'] ,$_SESSION['payment']==$singleSelection['id']); ?>
+			</div>
+		</div>
+		<div>
+                <p class="cp_description"> <?php  echo $singleSelection['description'];?></p>
+				<div class="cp_content">
+                	<div style="display: none;"  class="rowHide rowHide_<?php echo $singleSelection['id'];?>">
+                    <?php echo $singleSelection['fields_description']; 
+                    foreach ($singleSelection['fields'] as $key2=>$field){
+					?>
+                                                                                  
+                        <div class="txt_input_box">
+                        <?php if($field['title']){ ?>
+                            <div class="frame_title"><?php echo $field['title'];?></div>
+                            <?php }?>
+                            <div class="float_left"><?php echo $field['field'];?><small><font color="#AE0E30"><?php echo $field['message'];?></font></small></div>
+                        </div>
+					<?php 
+                                      }
+                                         echo $singleSelection['footer'];
+					?>
+					</div>
+					<div><?php echo $singleSelection['codefee'];?></div>
+				</div>
+		</div>
+	</div>
+<?
+    }
+?>
+<!-- loop end  -->
+</div>
+
+<!-- selection end -->
+<?php
+  }

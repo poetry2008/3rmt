@@ -1262,3 +1262,61 @@ searching
 }
 .formArea_td_info{ width:260px\9;}
 .information_color{background-color: #FDEBAC; color: #000000; padding:5px; margin:5px; width:100%;}
+.checkout_payment_info{
+	border:1px solid #ccc;
+	margin-top:15px;   
+	*margin-top:5px;
+	font-size:14px;
+	padding:5px;
+}
+.float_left{
+	float:left;
+}
+.txt_right{
+	text-align:right;
+}
+.box_content_title {
+    background-color:#666;
+    clear: both;
+    line-height: 18px;
+    overflow: hidden;
+    width: 100%;
+}
+.box_content_title input {
+    margin-right: 12px;
+}
+.frame_w70{
+	width:70%;
+	float:left;
+	padding-left:10px;
+}
+.float_right{
+	float:right;
+}
+.cp_content{
+	padding:0 10px;
+}
+.cp_content p{ color:#FF0000;}
+.txt_input_box{
+	overflow:hidden;
+	clear:both;
+	line-height:21px;
+	line-height:normal\9;
+}
+.frame_title{
+	width:40%;
+	float:left;
+}
+.clear{
+	clear:both;
+}
+
+
+
+
+
+
+
+
+
+

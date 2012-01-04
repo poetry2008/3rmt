@@ -48,7 +48,7 @@ class payment {
   public function getModule($payment)
   {
         foreach ($this->modules as $module){
-          if($module instanceof $payment){
+          if( $module instanceof $payment){
               return $module;
             }
         }
@@ -249,7 +249,6 @@ class payment {
     }
     $selection_array = array();
     foreach($this->modules as $key=>$value){
-      //var_dump($key);
       $total_cost = $value->calc_fee($order->info['total']); 
       $selection_array[$key] = array(
                                      "id"=>$value->code,
@@ -339,7 +338,9 @@ class payment {
     
   function confirmation($payment) {
     $p = $this->getModule($payment);
+    if(method_exists($p,'confirmation')){
     return $p->confirmation();
+    }
   }
     
   function specialOutput($payment) {

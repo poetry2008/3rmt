@@ -1,6 +1,7 @@
 *.swp
 *~
+
 *.log
-*configure.php
+*/includes/configure.php
 */link/APP/View/View_c/
 */link/APP/_Cache/
