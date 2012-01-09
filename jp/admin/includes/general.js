@@ -590,8 +590,14 @@ function faq_question_romaji_can_copy_to(qromaji,site_id){
 
 function replace_romaji(romaji){
   //replace & + to a string
-  romaji = romaji.replace(/\&/g,'<11111111>');
-  romaji = romaji.replace(/\+/g,'<22222222>');
+romaji = romaji.replace(/\&/g,'<11111111>');
+romaji = romaji.replace(/\+/g,'<22222222>');
+romaji = romaji.replace(/\//g,'<33333333>');
+romaji = romaji.replace(/\%/g,'<44444444>');
+romaji = romaji.replace(/\#/g,'<55555555>');
+romaji = romaji.replace(/\?/g,'<66666666>');
+romaji = romaji.replace(/ /g,'<77777777>');
+romaji = romaji.replace(/\'/g,'<88888888>');
   return romaji;
 }
 function c_is_set_error_char(replace_single){

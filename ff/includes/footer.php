@@ -27,7 +27,7 @@
 
           <address class="footer_contacts">
         <?php echo FOOTER_TEXT_BODY . "\n"; ?><br>
-              Copyright&nbsp;&copy;&nbsp;2011&nbsp;&nbsp;
+              Copyright&nbsp;&copy;&nbsp;<?php echo date("Y");?>&nbsp;&nbsp;
 <?php
 echo '<a class="bold" href="'. HTTP_SERVER.'">'.STORE_NAME.'</a>';
 ?>
