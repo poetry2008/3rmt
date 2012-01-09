@@ -1,17 +1,4 @@
-<?php page_head();?>
-<script type="text/javascript" src="./js/jquery-1.3.2.min.js">
-  </script>
-  <script type="text/javascript" src="./js/payment.js">
-  </script>
-  <?php
-  //输出payment 的javascript验证
-  if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') 
-    {
-      echo $payment_modules->javascript_validation($point['point']); 
-    }
-?>
-</head>
-<body> 
+<body>
 <div class="body_shadow" align="center"> 
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
   <!-- header_eof //--> 
@@ -27,6 +14,7 @@
   echo tep_draw_form('checkout_payment', tep_href_link(FILENAME_CHECKOUT_CONFIRMATION, '', 'SSL'), 'post', 'onsubmit="return check_form();"'); 
 ?>
 <h1 class="pageHeading">
+
   <?php 
   echo HEADING_TITLE ; 
 ?>
@@ -54,57 +42,6 @@
   </table>
   </td> 
   </tr> 
-  <?php
-		 
-  if (isset($_GET['payment_error']) && ($error = $payment_modules->get_error($_GET['payment_error']))) {
-    ?> 
-    <tr> 
-    <td>
-    <table border="0" width="100%" cellspacing="0" cellpadding="2"> 
-    <tr> 
-    <td class="main">
-    <b>
-    <?php 
-    echo htmlspecialchars($error['title']); 
-    ?>
-    </b>
-    </td> 
-    </tr> 
-    </table>
-    </td> 
-    </tr> 
-    <tr> 
-    <td>
-    <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxNotice"> 
-    <tr class="infoBoxNoticeContents"> 
-    <td>
-    <table border="0" width="100%" cellspacing="0" cellpadding="2"> 
-    <tr> 
-    <td>
-    </td> 
-    <td class="main" width="100%" valign="top">
-    <?php 
-    echo htmlspecialchars($error['error']); 
-    ?>
-    </td> 
-    <td>
-    </td> 
-    </tr> 
-    </table>
-    </td> 
-    </tr> 
-    </table>
-    </td> 
-    </tr> 
-    <tr> 
-    <td>
-    <?php 
-    echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?>
-    </td> 
-    </tr> 
-    <?php
-  }
-?>
 <tr> 
 <td>
 <table border="0" width="100%" cellspacing="0" cellpadding="2"> 
@@ -117,116 +54,52 @@
   </tr> 
   </table>
   </td> 
-  </tr> 
-
+  </tr>
   <tr> 
   <td>
-<!-- selection start -->
-<div class="checkout_payment_info">
-	<table cellspacing="0" cellcpadding="0" border="0">
-  <?php
-    if (sizeof($selection) > 1) {
-      echo "<tr>";
-      echo "<td></td>";
-      echo '<td class="main" width="50%" valign="top">'.TEXT_SELECT_PAYMENT_METHOD."</td>";
-      echo '<td class="main" width="50%" valign="top" align="right"><b>'.TITLE_PLEASE_SELECT.'</b><br>'.tep_image(DIR_WS_IMAGES . 'arrow_east_south.gif').'</td> ';
-      echo "<td></td>";
-      echo "</tr> ";
-    }else {
-      echo "<tr>";
-      echo "<td></td>";
-      echo '<td class="main" width="100%" colspan="2">';
-      echo TEXT_ENTER_PAYMENT_INFORMATION;
-      echo '</td><td></td>';
-      echo "</tr>";
-    }
-  ?>
-	</table>
-  <!-- loop start  -->
-<?php 
-    foreach ($selection as $key=>$singleSelection){
-      //判断支付范围 
-      if($payment_modules->moneyInRange($singleSelection['id'],$order->info['total'])){
-	continue;
-      }
-      if(!$payment_modules->showToUser($singleSelection['id'],$_SESSION['guestchk'])){
-        continue;
-      }
-      
+<?php tep_payment_out_selection(); 
 ?>
-	<table cellspacing="0" cellcpadding="0" border="0">
-		<tr class="moduleRowSelected">
-			<td><b><?php echo $singleSelection['module'];?></b></td>
-			<td align="right">
-                                                               <?php echo tep_draw_radio_field('payment',$singleSelection['id'] ,$_SESSION['payment']==$singleSelection['id']); ?>
-</td>
-		</tr>
-		<tr>
-			<td>
-                <div class="cp_description"> <?php  echo $singleSelection['description'];?></div>
-				<div class="cp_content">
-                                                                                        <div style="display: none;"  class="rowHide rowHide_<?php echo $singleSelection['id'];?>">
-                                                                                               <?php 
-                                                                                               echo $singleSelection['fields_description']; 
-                                                                                        foreach ($singleSelection['fields'] as $key2=>$field){
-
-?>
-                                                                                  
-						<div>
-<div class="payment_field_title"><?php echo $field['title'];?></div>
-							<div class="payment_field_field">
-<?php echo $field['field'];?>
-<small><font color="#AE0E30"><?php echo $field['message'];?></font></small></div>
-						</div>
-<?php 
-                                                                                        }
-                                                                                        echo $singleSelection['footer'];
-?>
-				</div>
-											<div class="cp_codefee"><?php echo $singleSelection['codefee'];?></div>
-
-			</td>
-		</tr>
-	</table>
-<?
-    }
-?>
-<!-- loop end  -->
-</div>
-
-<!-- selection end -->
 
   </td> 
   </tr> 
-  <tr> 
-  <td>
-  <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
-  <tr class="infoBoxContents"> 
-  <td>
-  <br> 
-  <table border="0" width="100%" cellspacing="0" cellpadding="2"> 
   <tr>
-  <td class="main">
-  <b><?php echo TABLE_HEADING_COMMENTS;?></b> 
-  </td> 
+  	<td>
+    	<table>
+        	<tr><td><img height="10" width="100%" alt="" src="images/pixel_trans.gif"></td></tr>
+        	<tr>
+                <td class="main">
+                <b><?php echo TABLE_HEADING_COMMENTS;?></b> 
+                </td> 
+            </tr>
+        	<tr><td><img height="10" width="100%" alt="" src="images/pixel_trans.gif"></td></tr>
+        </table>
+    </td>
+  </tr> 
+  <tr> 
+      <td>
+          <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
+              <tr class="infoBoxContents"> 
+                  <td>
+                      <table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+
+                          <tr> 
+                              <td>
+                              <?php echo tep_draw_textarea_field('comments', 'soft', '60', '5') . tep_draw_hidden_field('comments_added', 'YES'); ?>
+                              </td> 
+                          </tr> 
+                      </table>
+                  </td> 
+              </tr> 
+          </table>
+      </td> 
   </tr> 
   <tr> 
   <td>
-  <?php echo tep_draw_textarea_field('comments', 'soft', '60', '5') . tep_draw_hidden_field('comments_added', 'YES'); ?>
-  </td> 
-  </tr> 
-  </table>
-  </td> 
-  </tr> 
-  </table>
-  </td> 
-  </tr> 
-  <tr> 
-  <td>
-  <?php //echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?>
   </td> 
   </tr> 
   <?php
+
+                                            //点数处理
   if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() > 0) {//point --  
     if($guestchk == '1') {
       echo '<input type="hidden" name="point" value="0">';
@@ -292,7 +165,6 @@
   </tr> 
   <tr> 
   <td>
-  <?php //echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?>
   </td> 
   </tr> 
   </table> 

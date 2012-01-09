@@ -2318,11 +2318,73 @@ searching
 .input_text { width:200px; height:20px;}
 .input_text_short { width:40px; height:20px; text-align:right;}
 .active_email_name { font-size:11px; width:100px;}
-.checkout_payment_info{ border:1px solid #b6b7cb;}
-.checkout_payment_info table{ padding:0 5px; font-size:12px; line-height:1.5; width:100%;}
-.cp_description{  font-size: 11px; padding: 8px 10px 5px;}
-.cp_content{ font-size:11px; padding:0 10px;}
-.cp_content p{padding:0; margin:0; color:#ff0000;}
+.cp_description{  font-size: 11px; padding:0 10px;}
+.cp_content{ padding:0 10px; font-size:11px;}
+.cp_content p{color:#ff0000;}
 .con_email{display: inline; margin-left: 39px;}
-.rowHide div{clear:both; font-size: 11px; line-height: 21px;}
 .information_color{background-color: #FDEBAC; color: #000000; padding:5px; margin:5px; width:100%;}
+
+.checkout_payment_info{
+	border:1px solid #ccc;
+	background-color:#fff;
+	margin-top:15px;   
+	*margin-top:5px;
+	font-size:12px;
+	padding:5px;                        
+}
+.float_left{
+	float:left;
+}
+.txt_right{
+	text-align:right;
+}
+.box_content_title {
+    background-color:#E9F4FC;
+    clear: both;
+    line-height:1.5;
+    overflow: hidden;
+    width: 100%;
+}
+.box_content_title input {
+    margin-right: 12px;
+}
+.frame_w70{
+	width:70%;
+	float:left;
+	padding-left:10px;
+}
+.float_right{
+	float:right;
+}
+.txt_input_box{
+	overflow:hidden;
+	clear:both;
+	line-height:25px;
+}
+.frame_title{
+	width:40%;
+	float:left;
+}
+.clear{
+	clear:both;
+}
+.payment_box{ float:right;}
+.payment_box div{ 
+	float:left;
+	padding-left:50px;
+	line-height:1.5;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+

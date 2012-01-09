@@ -44,7 +44,7 @@ if (!tep_session_is_registered('billto')) {
   }
 }
 
-require(DIR_WS_CLASSES . 'order.php');
+require_once DIR_WS_CLASSES . 'order.php';
 $order = new order;
 
 if (!tep_session_is_registered('comments')) tep_session_register('comments');
@@ -52,16 +52,10 @@ if (!tep_session_is_registered('comments')) tep_session_register('comments');
 $total_weight = $cart->show_weight();
 $total_count = $cart->count_contents();
 
-// load all enabled payment modules
-
-require(DIR_WS_CLASSES . 'payment.php');
-
-$payment_modules =  payment::getInstance(SITE_ID);
-
-require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_CHECKOUT_PAYMENT);
-
 $breadcrumb->add(NAVBAR_TITLE_1, tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
 $breadcrumb->add(NAVBAR_TITLE_2, tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL'));
+// load all enabled payment modules
+
 
 
 if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
@@ -69,6 +63,30 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
   $point_query = tep_db_query("select point from " . TABLE_CUSTOMERS . " where customers_id = '" . $customer_id . "'");
   $point = tep_db_fetch_array($point_query);
 }
+require_once DIR_WS_CLASSES . 'payment.php';
+require_once DIR_WS_LANGUAGES . $language . '/' . FILENAME_CHECKOUT_PAYMENT;
 
+
+
+//准备变量
+
+$payment_modules =  payment::getInstance(SITE_ID);
 $selection = $payment_modules->selection();
 
+
+
+//统一的头输出 
+
+page_head();?>
+<script type="text/javascript" src="./js/jquery-1.3.2.min.js">
+  </script>
+  <script type="text/javascript" src="./js/payment.js">
+  </script>
+  <?php
+  //输出payment 的javascript验证
+  if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') 
+    {
+      echo $payment_modules->javascript_validation($point['point']); 
+    }
+?>
+</head>

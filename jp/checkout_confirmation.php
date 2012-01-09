@@ -3,23 +3,9 @@
    $Id$
  */
 require('includes/application_top.php');
-
 require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_CHECKOUT_CONFIRMATION);
 require(DIR_WS_ACTIONS.'checkout_confirmation.php');
-page_head();
 ?>
-<script type="text/javascript">
-<!--
-var a_vars = Array();
-var pagename='';
-var visitesSite = 1;
-var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERVER; ?>/visites.php";
-<?php
-require(DIR_WS_ACTIONS.'visites.js');
-?>
-//-->
-</script>
-</head>
 <body> 
 <div class="body_shadow" align="center"> 
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
@@ -60,6 +46,7 @@ require(DIR_WS_ACTIONS.'visites.js');
 </table></td> 
 </tr> 
 <tr> 
+
 <td align="center" width="20%" class="checkoutBarFrom"><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL') . '" class="checkoutBarFrom">' . CHECKOUT_BAR_DELIVERY . '</a>'; ?></td> 
 <td align="center" width="20%" class="checkoutBarFrom"><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '" class="checkoutBarFrom">' . CHECKOUT_BAR_PAYMENT . '</a>'; ?></td> 
 <td align="center" width="20%" class="checkoutBarCurrent"><?php echo CHECKOUT_BAR_CONFIRMATION; ?></td> 
