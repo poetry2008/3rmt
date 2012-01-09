@@ -41,3 +41,23 @@ function requestMethod(){
   return $_SERVER['REQUEST_METHOD'];
 }
 
+//取引时间显示
+function tep_get_torihiki_format($date='',$time=''){
+  if($date!=''&&$time!=''){
+    $time_arr = explode('-',$time);
+    $start = $date." ".$time_arr[0];
+    $end = $date." ".$time_arr[1];
+    return $start.TEXT_TORIHIKI_REPLACE_STR.$end; 
+  }else if($date==''&&time!=''){
+    $time_arr = explode('-',$time);
+    $start = str_replace(':',TEXT_TORIHIKI_HOUR_STR,$time_arr[0]).TEXT_TORIHIKI_MIN_STR;
+    $end = str_replace(':',TEXT_TORIHIKI_HOUR_STR,$time_arr[1]).TEXT_TORIHIKI_MIN_STR;
+    return $start.TEXT_TORIHIKI_REPLACE_STR.$end; 
+  }else if($date!=''&&time==''){
+    return $date;
+  }else {
+    return null;
+  }
+}
+
+//判断订单的产品有几种配送方法
