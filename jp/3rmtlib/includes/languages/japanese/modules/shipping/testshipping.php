@@ -1,6 +1,6 @@
 <?php
 
-  define('TS_MODULE_SHIPPING_TESTSHIPPING_TEXT_TITLE', 'test_shipping');
+  define('TS_MODULE_SHIPPING_TESTSHIPPING_TEXT_TITLE', 'お届けモジュール（テスト1）');
   define('TS_MODULE_SHIPPING_TESTSHIPPING_TEXT_EXPLAIN', '');
   define('TS_MODULE_SHIPPING_TESTSHIPPING_TEXT_DESCRIPTION', 'testshipping one');
   define('TS_MODULE_SHIPPING_TESTSHIPPING_TEXT_PROCESS', '銀行振込(買い取り)決済手数料が別途かかります。');
