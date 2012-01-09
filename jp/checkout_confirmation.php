@@ -5,20 +5,7 @@
 require('includes/application_top.php');
 require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_CHECKOUT_CONFIRMATION);
 require(DIR_WS_ACTIONS.'checkout_confirmation.php');
-page_head();
 ?>
-<script type="text/javascript">
-<!--
-var a_vars = Array();
-var pagename='';
-var visitesSite = 1;
-var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERVER; ?>/visites.php";
-<?php
-require(DIR_WS_ACTIONS.'visites.js');
-?>
-//-->
-</script>
-</head>
 <body> 
 <div class="body_shadow" align="center"> 
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
@@ -43,7 +30,6 @@ require(DIR_WS_ACTIONS.'visites.js');
 <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
 </tr> 
 </table></td> 
-<td width="20%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
 <td width="20%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
 <td width="20%"><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
 <tr> 
@@ -96,7 +82,7 @@ for($i =0,$n=sizeof($order->products);$i<$n;$i++){
     if($show_some_shipping){
       echo "<div>";
     }
-  echo "<div>";
+  echo "<div class='payment_box'>";
     
     echo "<div>";
     echo $order->products[$i]['qty'] . '&nbsp;個' .

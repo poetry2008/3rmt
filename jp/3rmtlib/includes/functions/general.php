@@ -4684,9 +4684,11 @@ global $order;
     }
   ?>
   <!-- loop start  -->
-
-
-<?php 
+<?php
+     if(isset($_SESSION['payment_error'])){
+       echo $_SESSION['payment_error'];
+       unset($_SESSION['payment_error']);
+     }
     foreach ($selection as $key=>$singleSelection){
       //判断支付范围 
       if($payment_modules->moneyInRange($singleSelection['id'],$order->info['total'])){

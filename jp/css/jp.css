@@ -2318,8 +2318,8 @@ searching
 .input_text { width:200px; height:20px;}
 .input_text_short { width:40px; height:20px; text-align:right;}
 .active_email_name { font-size:11px; width:100px;}
-.cp_description{  font-size: 12px; padding:0 10px;}
-.cp_content{ padding:0 10px;}
+.cp_description{  font-size: 11px; padding:0 10px;}
+.cp_content{ padding:0 10px; font-size:11px;}
 .cp_content p{color:#ff0000;}
 .con_email{display: inline; margin-left: 39px;}
 .information_color{background-color: #FDEBAC; color: #000000; padding:5px; margin:5px; width:100%;}
@@ -2339,9 +2339,9 @@ searching
 	text-align:right;
 }
 .box_content_title {
-    background-color:#C7D9E7;
+    background-color:#E9F4FC;
     clear: both;
-    line-height: 18px;
+    line-height:1.5;
     overflow: hidden;
     width: 100%;
 }
@@ -2359,16 +2359,21 @@ searching
 .txt_input_box{
 	overflow:hidden;
 	clear:both;
-	line-height:21px;
+	line-height:25px;
 }
 .frame_title{
-	width:30%;
+	width:40%;
 	float:left;
 }
 .clear{
 	clear:both;
 }
-
+.payment_box{ float:right;}
+.payment_box div{ 
+	float:left;
+	padding-left:50px;
+	line-height:1.5;
+}
 
 
 

@@ -12,3 +12,4 @@
 注文金額をマイナス1円（買取1円）へ如何に近づけるかが簡単に注文する秘訣です。
 マイナス1円からマイナス200円の場合は、支払方法にて「ポイントの加算」が表示されます。ポイントの加算は事前に会員登録が必要となります。<br>
 <font color="red">※ この支払方法は選択しても次へ進めません。</font>');
+define('TS_MODULE_PAYMENT_GUIDANCE_ERROR','please give me the translation');

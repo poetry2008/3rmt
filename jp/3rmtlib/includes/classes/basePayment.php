@@ -69,7 +69,6 @@ class BasePayment
         }
       }
     }
-
     $selection['validated'] = $pass;
     return $selection;
   }

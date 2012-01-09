@@ -1,4 +1,4 @@
-<body> 
+<body>
 <div class="body_shadow" align="center"> 
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
   <!-- header_eof //--> 
@@ -62,28 +62,36 @@
 
   </td> 
   </tr> 
-  <tr> 
-  <td>
-  <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
-  <tr class="infoBoxContents"> 
-  <td>
-  <br> 
-  <table border="0" width="100%" cellspacing="0" cellpadding="2"> 
   <tr>
-  <td class="main">
-   <b><?php echo TABLE_HEADING_COMMENTS;?></b> 
-  </td> 
+  	<td>
+    	<table>
+        	<tr><td><img height="10" width="100%" alt="" src="images/pixel_trans.gif"></td></tr>
+        	<tr>
+                <td class="main">
+                <b><?php echo TABLE_HEADING_COMMENTS;?></b> 
+                </td> 
+            </tr>
+        	<tr><td><img height="10" width="100%" alt="" src="images/pixel_trans.gif"></td></tr>
+        </table>
+    </td>
   </tr> 
   <tr> 
-  <td>
-  <?php echo tep_draw_textarea_field('comments', 'soft', '60', '5') . tep_draw_hidden_field('comments_added', 'YES'); ?>
-  </td> 
-  </tr> 
-  </table>
-  </td> 
-  </tr> 
-  </table>
-  </td> 
+      <td>
+          <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
+              <tr class="infoBoxContents"> 
+                  <td>
+                      <table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+
+                          <tr> 
+                              <td>
+                              <?php echo tep_draw_textarea_field('comments', 'soft', '60', '5') . tep_draw_hidden_field('comments_added', 'YES'); ?>
+                              </td> 
+                          </tr> 
+                      </table>
+                  </td> 
+              </tr> 
+          </table>
+      </td> 
   </tr> 
   <tr> 
   <td>

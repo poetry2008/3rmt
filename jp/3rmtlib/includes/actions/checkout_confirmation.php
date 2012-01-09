@@ -46,10 +46,30 @@ if (!$payment_modules->moduleIsEnabled($payment)){
 
 if (is_array($payment_modules->modules) ){
   $validateModule = $payment_modules->pre_confirmation_check($payment);
-  if ($validateModule['validated']===false){
+  if ($validateModule['validated']===false or $validateModule == false){
     $selection = $payment_modules->selection();
+    if($validateModule !=false){
     $selection[strtoupper($payment)] = $validateModule;
+    }else {
+
+    }
     require_once DIR_WS_LANGUAGES . $language . '/' . FILENAME_CHECKOUT_PAYMENT;
+    //{{
+page_head();?>
+<script type="text/javascript" src="./js/jquery-1.3.2.min.js">
+  </script>
+  <script type="text/javascript" src="./js/payment.js">
+  </script>
+  <?php
+  //输出payment 的javascript验证
+  if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') 
+    {
+      echo $payment_modules->javascript_validation($point['point']); 
+    }
+?>
+</head><?php
+    //}}
+    
     require_once "checkout_payment_template.php";    
     exit();
   }
@@ -82,4 +102,18 @@ if (isset($payment_modules->modules[strtoupper($payment)]->form_action_url) && $
   $form_action_url = tep_href_link(FILENAME_CHECKOUT_PROCESS, '', 'SSL');
 }
 
+
+
+page_head();?>
+<script type="text/javascript" src="./js/jquery-1.3.2.min.js">
+  </script>
+  <script type="text/javascript" src="./js/payment.js">
+  </script>
+  <?php
+  //输出payment 的javascript验证
+  if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') 
+    {
+      echo $payment_modules->javascript_validation($point['point']); 
+    }
 ?>
+</head>

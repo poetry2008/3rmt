@@ -262,6 +262,7 @@ class payment {
         $selection_array[$key]['codefee'] = constant("TS_MODULE_PAYMENT_".strtoupper($value->code)."_TEXT_FEE").$currencies->format($total_cost); 
       } 
     }
+    $this->static_selection = $selection_array;
     return $selection_array;
   }
   
@@ -327,7 +328,9 @@ class payment {
         $s = $this->selection();
         return $module->validate_selection($s[strtoupper($payment)],$_POST,$back);
       }else{
-        return $pre_check;
+        $s = $this->selection();
+        $_SESSION['payment_error'] = constant(strtoupper('TS_MODULE_PAYMENT_'.$payment.'_ERROR'));
+        return false;
       }
     }else {
       return false;
