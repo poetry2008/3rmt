@@ -201,7 +201,8 @@ if ( isset($_POST['action']) && ($_POST['action'] == 'process') ) {
     $shipping_method_info['torihiki_time'] = tep_db_prepare_input($_POST['torihiki_time_radio']);
     $torihiki_time_arr = explode('-',$shipping_method_info['torihiki_time']);
     $shipping_method_info['insert_torihiki_date'] = 
-             tep_db_prepare_input($_POST['date'])." ".$torihiki_time_arr[0]."/".
+             tep_db_prepare_input($_POST['date'])." ".$torihiki_time_arr[0];
+    $shipping_method_info['insert_torihiki_date_end'] =
              tep_db_prepare_input($_POST['date'])." ".$torihiki_time_arr[1];
     $shipping_date_arr[] = tep_db_prepare_input($_POST['date'])." ".$torihiki_time_arr[0];
     $shipping_method_info['torihikihouhou'] = tep_db_prepare_input($_POST['torihikihouhou']);
@@ -270,7 +271,6 @@ foreach($cart_products as $t_p){
     break;
   }
 }
-$each_product_shipping = true;
 
 //获取 用户地址本
 $c_address_book = tep_get_address_by_customers_id($customer_id);
