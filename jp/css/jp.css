@@ -2409,6 +2409,19 @@ searching
 	text-align:center;
 }
 
+.box_waring {
+    background: none repeat scroll 0 0 #FFE6E6;
+    border: 1px solid #FF8E90;
+    padding: 5px;
+	font-size:12px;
+}
+.box_content_title_selected {
+	background-color:#C7D9E7;
+	clear: both;
+    line-height: 1.5;
+    overflow: hidden;
+    width: 100%;
+}
 
 
 

@@ -15,9 +15,11 @@ class BasePayment
 {
 
   const RULE_NOT_NULL = 'validation_not_null';
-  const RULE_NOT_NULL_MSG = '此项必须填写';
+  const RULE_NOT_NULL_MSG= '入力内容を確認し、再度入力してください。';
   const RULE_SAME_TO = 'validation_same_to';
-  const RULE_SAME_TO_MSG = '必须一样';
+  const RULE_EMAIL = 'validation_email';
+  const RULE_EMAIL_MSG = '入力内容を確認し、再度入力してください。';
+  const RULE_SAME_TO_MSG = '入力内容を確認し、再度入力してください。';
   function __construct($site_id = 0){
     global $order;
     $this->site_id = $site_id;
@@ -53,17 +55,21 @@ class BasePayment
         if($singleValue['rule'] != null){
           if(is_array($singleValue['rule'])){
             foreach ($singleValue['rule'] as $rule){
-              $validateResult = $this->$singleValue['rule']($value[$singleValue['code']],$value[$singleValue['params_code']]);
+              $validateResult = $this->$rule($value[$singleValue['code']],$value[$singleValue['params_code']]);
               if ($validateResult !== true){
                 $pass = false;
-                $selection['fields'][$key]['message'] = $validateResult;
+                //  $selection['error'][]=$validateResult;
+                $_SESSION['payment_error'][$this->code]=$validateResult;
+                //                $selection['fields'][$key]['message'] = $validateResult;
               }
             }
           } else {
             $validateResult = $this->$singleValue['rule']($value[$singleValue['code']],$value[$singleValue['params_code']]);
             if($validateResult !== true){
               $pass = false;
-              $selection['fields'][$key]['message'] = $validateResult;
+                $_SESSION['payment_error'][$this->code]=$validateResult;
+                //              $selection['error'][]=$validateResult;
+                //              $selection['fields'][$key]['message'] = $validateResult;
             }
           }
         }
@@ -82,6 +88,11 @@ class BasePayment
       return self::RULE_NOT_NULL_MSG;
     }
   }
+  function validation_email($value){
+    $e = "/^[-+\\.0-9=a-z_]+@([-0-9a-z]+\\.)+([0-9a-z]){2,4}$/i";
+    if(!preg_match($e, $value)) return self::RULE_EMAIL_MSG;
+    return true;
+  }
   function validation_same_to($value1,$value2){
 
     if( $value2 == $value1 ){
@@ -91,6 +102,9 @@ class BasePayment
   }
 
   function calc_fee($money){
+    if(!$this->cost){
+      return 0;
+    }
     $table_fee = split("[:,]" , $this->cost);
     $f_find = false;
     $this->n_fee = 0;

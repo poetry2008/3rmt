@@ -33,12 +33,13 @@ class convenience_store extends basePayment  implements paymentInterface  {
                  array(
                        "code"=>'convenience_email',
                        "title"=>TS_MODULE_PAYMENT_CONVENIENCE_EMAIL_TEXT,
-                       "field"=>tep_draw_input_field('convenience_email', (isset($_SESSION['customer_emailaddress'])?$_SESSION['customer_emailaddress']:$theData['convenience_email'])).TS_MODULE_PAYMENT_CONVENIENCE_MUST_INPUT, "rule"=>basePayment::RULE_NOT_NULL,),
+                       "field"=>tep_draw_input_field('convenience_email', (isset($_SESSION['customer_emailaddress'])?$_SESSION['customer_emailaddress']:$theData['convenience_email']),'onpaste="return false"').TS_MODULE_PAYMENT_CONVENIENCE_MUST_INPUT, 
+                       "rule"=>array(basePayment::RULE_NOT_NULL,basePayment::RULE_EMAIL)),
                  array(
                        "code"=>'convenience_email_again',
                        "title"=>TS_MODULE_PAYMENT_CONVENIENCE_EMAIL_CONFIRMATION_TEXT,
-                       "field"=>tep_draw_input_field('convenience_email_again', (isset($_SESSION['customer_emailaddress'])?$_SESSION['customer_emailaddress']:$theData['convenience_email_again'])).TS_MODULE_PAYMENT_CONVENIENCE_MUST_INPUT,
-                       "rule"=>basePayment::RULE_SAME_TO,
+                       "field"=>tep_draw_input_field('convenience_email_again', isset($_SESSION['customer_emailaddress'])?$_SESSION['customer_emailaddress']:$theData['convenience_email_again'],'onpaste="return false"').TS_MODULE_PAYMENT_CONVENIENCE_MUST_INPUT,
+                       "rule"=>array(basePayment::RULE_SAME_TO,basePayment::RULE_EMAIL),
                        "params_code"=>'convenience_email',
                        ),
                  array(
