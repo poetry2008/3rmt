@@ -1144,9 +1144,16 @@ searching
 .input_text { width:200px; height:20px;}
 .input_text_short { width:40px; height:20px; text-align:right;}
 .information_color{background-color: #FDEBAC; color: #000000; padding:5px; margin:5px; width:100%;}
-
-.all_torihiki_radio ul{ clear:both; text-align:center; font-size:12px;}
-.all_torihiki_radio li{ float:left; list-style:none; width:200px;}
+.all_time_list{ margin-top:10px;}
+.all_time_list ul{ 
+	clear:both; 
+	font-size:12px; 
+	text-align:center; 
+	margin:0; 
+	padding:0; 
+	overflow:hidden;
+}
+.all_time_list li{ float:left; list-style:none; width:180px;}
 
 /*new*/
 .float_left{
@@ -1164,7 +1171,7 @@ searching
 	overflow:hidden;
 }
 .frame_width{
-	width:15%;
+	width:20%;
 	float:left;
 	font-size:12px;
 }
@@ -2374,8 +2381,33 @@ searching
 	padding-left:50px;
 	line-height:1.5;
 }
-
-
+.box_radio{
+	padding-left:60px;
+}
+.box_radio_text{
+	padding-left:105px;
+}
+.all_hour_list ul{
+	clear:both;
+	overflow:hidden;
+	margin:0;
+	padding:0;
+	list-style:none outside none;
+	text-align:center;
+}
+.all_hour_list li{
+	float:left;
+	width:60px;
+	line-height:30px;
+	background-color:#ccc;
+	border:1px solid #fff;
+	color:#000;
+	font-weight:bold;
+}
+.shipping_info_error{
+	color:#ff0000;
+	text-align:center;
+}
 
 
 
