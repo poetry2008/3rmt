@@ -308,6 +308,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
   }
   
   tep_session_register('get_point');
+  if(isset($customer_id)&&tep_is_member_customer($customer_id)){
   echo '<tr>' . "\n";
   if (!tep_only_buy_product()) {
     echo '<td align="right" class="main"><br>'.TEXT_POINT_NOW.'</td>' . "\n";
@@ -316,6 +317,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
   }
   echo '<td align="right" class="main"><br>'.(int)$get_point.'&nbsp;P</td>' . "\n";
   echo '</tr>' . "\n";
+  }
   }
 ?>
                 </table>

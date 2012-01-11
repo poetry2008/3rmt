@@ -4743,3 +4743,18 @@ global $order;
 <!-- selection end -->
 <?php
   }
+
+
+function tep_is_member_customer($customer_id){
+  $sql = "select customers_guest_chk from ".TABLE_CUSTOMERS." 
+    where customers_id='".$customer_id."' 
+    and site_id ='".SITE_ID."' 
+    and customers_guest_chk = '0' 
+    limit 1";
+  $query = tep_db_query($sql);
+  if($row = tep_db_fetch_array($query)){
+    return true;
+  }else{
+    return false;
+  }
+}
