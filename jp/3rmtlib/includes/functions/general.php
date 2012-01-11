@@ -3038,15 +3038,6 @@ function orders_updated($orders_id) {
 function replace_store_name($str) {
   return str_replace('#STORE_NAME#', STORE_NAME, $str);
 }
-/*
-function replace_category_seo($input_str, $category_name) 
-{
-    global $_GET, $request_type, $breadcrumb;
-    $page    = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1 ;
-    $search  = array('#STORE_NAME#','#BREADCRUMB#', '#SEO_PAGE#', '#CATEGORY_NAME#');
-    $replace = array(STORE_NAME,$breadcrumb->trail_title(' &raquo; '), $page .  'ページ目', $category_name);
-    return str_replace($search, $replace, $input_str);
-}*/
 
 function tep_get_categories_id_by_parent_id($categories_id, $languages_id = 4) {
   $arr = array();
@@ -4684,11 +4675,25 @@ global $order;
     }
   ?>
   <!-- loop start  -->
-<?php
+<?php  
      if(isset($_SESSION['payment_error'])){
-       echo $_SESSION['payment_error'];
-       unset($_SESSION['payment_error']);
-     }
+	 ?>
+     <div class="box_waring">
+     <?php
+       if(is_array($_SESSION['payment_error'])){
+           foreach($_SESSION['payment_error'] as $key=>$value){
+             echo $selection[strtoupper($key)]['module'];
+             echo "の処理中にエラーが発生しました。";
+             echo $value;
+           }
+         }else{
+           echo $_SESSION['payment_error'];
+         }
+         unset($_SESSION['payment_error']);
+     ?>
+     </div><br>
+     <?php
+	 }
     foreach ($selection as $key=>$singleSelection){
       //判断支付范围 
       if($payment_modules->moneyInRange($singleSelection['id'],$order->info['total'])){
@@ -4697,10 +4702,10 @@ global $order;
       if(!$payment_modules->showToUser($singleSelection['id'],$_SESSION['guestchk'])){
         continue;
       }
-      
 ?>
 	<div>
-		<div class="box_content_title">
+       
+		<div class="box_content_title <?php if($_SESSION['payment']==$singleSelection['id']) { echo 'box_content_title_selected';}?> "  >
 			<div class="frame_w70"><b><?php echo $singleSelection['module'];?></b></div>
 			<div class="float_right">
             	<?php echo tep_draw_radio_field('payment',$singleSelection['id'] ,$_SESSION['payment']==$singleSelection['id']); ?>

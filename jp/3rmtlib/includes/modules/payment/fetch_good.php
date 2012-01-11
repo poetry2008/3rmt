@@ -49,13 +49,11 @@ class fetch_good extends basePayment  implements paymentInterface {
                                    array('title' => str_replace('#STORE_NAME#', STORE_NAME,$this->description), 'field' => ''), 
                                    array('title' => $s_message, 'field' => '') 
                                    )             
-                 //'fields' => array('title' => $s_message, 'field' => $added_hidden) 
                  );
-    //return array('id' => $this->code, 'module' => '', 'fields' => '');
   }
 
   function pre_confirmation_check() {
-    return false;
+    return true;
   }
 
   function confirmation() {

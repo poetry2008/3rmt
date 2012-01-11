@@ -152,6 +152,7 @@ if (isset($_POST['code_fee'])) {
 }
 
 $bflag_single = ds_count_bflag();
+
 if ($bflag_single == 'View') {
   $orign_hand_fee = $sql_data_array['code_fee'];
   $buy_handle_fee = $payment_modules->handle_calc_fee($payment,$order->info['total']); 
