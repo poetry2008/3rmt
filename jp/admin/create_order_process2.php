@@ -31,6 +31,9 @@
   $temp_amount    = number_format($temp_amount, 2, '.', '');
   
   $currency_text  = DEFAULT_CURRENCY . ",1";
+  $torihiki_time_arr = explode('-',$torihiki_time);
+  $insert_torihiki_date = $date." ".$torihiki_time_arr[0]. '/' .
+          $date." ".$torihiki_time_arr[1];
   if(isset($_POST['Currency']) && !empty($_POST['Currency']))
   {
     $currency_text = tep_db_prepare_input($_POST['Currency']);
@@ -81,7 +84,15 @@
     $entry_date_error = false;
   }
 
+  /*
   if ($hour == '' || $min == '') {
+    $error = true;
+    $entry_tardetime_error = true;
+  } else {
+    $entry_tradetime_error = false;
+  }
+  */
+  if ($torihiki_time == '') {
     $error = true;
     $entry_tardetime_error = true;
   } else {
@@ -310,7 +321,7 @@
             'currency_value'              => $currency_value,
             'payment_method'              => $payment_method,
             'torihiki_houhou'             => $torihikihouhou,
-            'torihiki_date'               => tep_db_input($date . ' ' . $hour . ':' . $min . ':00'),
+            'torihiki_date'               => $insert_torihiki_date,
             'site_id'                     => $site_id,
             'orders_wait_flag'            => '1'
             ); 
