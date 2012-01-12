@@ -5,12 +5,13 @@
 require_once (DIR_WS_CLASSES . 'basePayment.php');
 class buying extends basePayment  implements paymentInterface  {
   private  $selection = NULL;
-  var $site_id, $code, $title, $description, $enabled, $s_error, $n_fee, $email_footer, $show_payment_info;
+  var $site_id, $code, $title, $description, $enabled, $s_error, $n_fee, $email_footer, $show_payment_info, $show_add_comment;
   //取得配置
   function loadSpecialSettings($site_id = 0)
   {
     $this->code        = 'buying';
     $this->show_payment_info = 0;
+    $this->show_add_comment = 1; 
   }
   function javascript_validation() {
     return false;
@@ -209,22 +210,22 @@ class buying extends basePayment  implements paymentInterface  {
   function get_preorder_error($error_type) {
     switch ($error_type) {
       case '1':
-        $error_msg =TEXT_BANK_ERROR_NAME;
+        $error_msg =TS_TEXT_BANK_ERROR_NAME;
         break;
       case '2':
-        $error_msg =TEXT_BANK_ERROR_SHITEN;
+        $error_msg =TS_TEXT_BANK_ERROR_SHITEN;
         break;
       case '3':
-        $error_msg =TEXT_BANK_ERROR_KAMOKU;
+        $error_msg =TS_TEXT_BANK_ERROR_KAMOKU;
         break;
       case '4':
-        $error_msg =TEXT_BANK_ERROR_KOUZA_NUM;
+        $error_msg =TS_TEXT_BANK_ERROR_KOUZA_NUM;
         break;
       case '5':
-        $error_msg =TEXT_BANK_ERROR_KOUZA_NUM2;
+        $error_msg =TS_TEXT_BANK_ERROR_KOUZA_NUM2;
         break;
       case '6':
-        $error_msg =TEXT_BANK_ERROR_KOUZA_NAME;
+        $error_msg =TS_TEXT_BANK_ERROR_KOUZA_NAME;
         break;
       default:
         $error_msg = ''; 
@@ -383,13 +384,13 @@ class buying extends basePayment  implements paymentInterface  {
   }
 
   
-  function dealPreorderBuyingComment($pInfo)
+  function deal_preorder_additional($pInfo, &$sql_data_array)
   {
-    $bbbank = TEXT_BANK_NAME . '：' . $pInfo['bank_name'] . "\n";
-    $bbbank .= TEXT_BANK_SHITEN . '：' . $pInfo['bank_shiten'] . "\n";
-    $bbbank .= TEXT_BANK_KAMOKU . '：' . $pInfo['bank_kamoku'] . "\n";
-    $bbbank .= TEXT_BANK_KOUZA_NUM . '：' . $pInfo['bank_kouza_num'] . "\n";
-    $bbbank .= TEXT_BANK_KOUZA_NAME . '：' . $pInfo['bank_kouza_name'];
+    $bbbank = TS_TEXT_BANK_NAME . '：' . $pInfo['bank_name'] . "\n";
+    $bbbank .= TS_TEXT_BANK_SHITEN . '：' . $pInfo['bank_shiten'] . "\n";
+    $bbbank .= TS_TEXT_BANK_KAMOKU . '：' . $pInfo['bank_kamoku'] . "\n";
+    $bbbank .= TS_TEXT_BANK_KOUZA_NUM . '：' . $pInfo['bank_kouza_num'] . "\n";
+    $bbbank .= TS_TEXT_BANK_KOUZA_NAME . '：' . $pInfo['bank_kouza_name'];
     
     $comment = $bbbank ."\n".$pInfo['yourmessage'];
     return $comment;

@@ -63,7 +63,7 @@
         reset($this->modules);
         while (list(, $value) = each($this->modules)) {
           $class = substr($value, 0, strrpos($value, '.'));
-          if ($class == 'ot_codt' || $class == 'ot_conv' || $class == 'ot_loworderfee' || $class == 'ot_tax') {
+          if ($class == 'ot_codt' || $class == 'ot_conv' || $class == 'ot_loworderfee' || $class == 'ot_tax' || $class == 'ot_shipping') {
             continue; 
           }
           if ($GLOBALS[$class]->enabled) {
