@@ -1,8 +1,12 @@
 <?php page_head();?>
+<script type="text/javascript" src="./js/jquery-1.3.2.min.js">
+</script>
 <script type="text/javascript" src="./js/shipping.js">
 </script>
 <script type="text/javascript" >
-window.onload = clear_all_radio_checked();
+$(document).ready(function (){
+    clear_all_radio_checked()
+});
 </script>
 </head>
 <body> 
@@ -64,6 +68,11 @@ window.onload = clear_all_radio_checked();
 </table>
 </td> 
 </tr> 
+<?php if($error){?>
+<tr><td>
+  <div class="shipping_info_error"><?php echo TEXT_SHIPPING_INFO_ERROR;?></div>
+</td></tr>
+<?php }?>
 <tr>
 <td>
 <?php  //这里写正式的内容?>
