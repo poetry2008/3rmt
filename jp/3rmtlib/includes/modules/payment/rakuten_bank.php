@@ -256,15 +256,15 @@ class rakuten_bank  extends basePayment  implements paymentInterface {
   function get_preorder_error($error_type) {
       if ($error_type == 1)
       {
-        $error_message = MODULE_PAYMENT_RAKUTEN_BANK_TEXT_ERROR_MESSAGE_NOE;
+        $error_message = TS_MODULE_PAYMENT_RAKUTEN_BANK_TEXT_ERROR_MESSAGE_NOE;
       }
       else if ($error_type == 2)
       {
-        $error_message = MODULE_PAYMENT_RAKUTEN_BANK_TEXT_ERROR_MESSAGE_NOM;
+        $error_message = TS_MODULE_PAYMENT_RAKUTEN_BANK_TEXT_ERROR_MESSAGE_NOM;
       }
       else
       {
-        $error_message = MODULE_PAYMENT_RAKUTEN_BANK_TEXT_ERROR_MESSAGE;
+        $error_message = TS_MODULE_PAYMENT_RAKUTEN_BANK_TEXT_ERROR_MESSAGE;
       }
     return $error_message; 
   }
@@ -326,13 +326,12 @@ class rakuten_bank  extends basePayment  implements paymentInterface {
     return $comment;
   }
   
-  function dealPreorderRakuComment($comment, $tel, $return_single = false)
+  function deal_preorder_additional($pInfo, &$sql_data_array)
   {
-    $pay_comments = '電話番号:'.$this->replace_for_telnumber($tel); 
-    $comment = $pay_comments ."\n".$comment;
-    if (!$return_single) {
-      return $pay_comments; 
-    }
+    $pay_comments = '電話番号:'.$this->replace_for_telnumber($pInfo['rakuten_telnumber']); 
+    $sql_data_array['raku_text'] = $pay_comments; 
+    
+    $comment = $pay_comments ."\n".$pInfo['yourmessage'];
     return $comment;
   }
   function checkPreorderRakuEmail($email)

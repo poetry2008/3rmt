@@ -4158,7 +4158,7 @@ function preorders_updated($orders_id) {
   
 function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $exists_single = false) 
 {
-   global $currency, $currencies; 
+   global $currency, $currencies, $payment_modules; 
    $is_active = 1; 
    if ($tmp_cid) {
      $is_active = 0; 
@@ -4168,8 +4168,8 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
    } else {
      $customers_id = $cid; 
    }
-   $payment_module = new $pInfo['pre_payment']; 
-   $payment_method = $payment_module->title;
+   $cpayment = $payment_modules->getModule($pInfo['pre_payment']); 
+   $payment_method = $cpayment->title;
    $orders_status = DEFAULT_PREORDERS_STATUS_ID;
    $orders_status_raw = tep_db_query("select * from ".TABLE_PREORDERS_STATUS." where orders_status_id = '".$orders_status."'"); 
    $orders_status_res = tep_db_fetch_array($orders_status_raw);
@@ -4273,20 +4273,9 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
                            'comment_msg' => $pInfo['yourmessage'], 
                            'bank_info' => $pInfo['bank_name'].'<<<|||'.$pInfo['bank_shiten'].'<<<|||'.$pInfo['bank_kamoku'].'<<<|||'.$pInfo['bank_kouza_num'].'<<<|||'.$pInfo['bank_kouza_name']
                            );
-   $pay_class = new $pInfo['pre_payment']; 
    
    $sh_comments = ''; 
-   if (method_exists($pay_class, 'dealPreorderConvComment')) {
-     $sql_data_array['cemail_text'] = $pay_class->dealPreorderConvComment($pInfo['yourmessage'], $pInfo['convenience_email']); 
-     $sh_comments = $pay_class->dealPreorderConvComment($pInfo['yourmessage'], $pInfo['convenience_email'], true); 
-   } else if (method_exists($pay_class, 'dealPreorderRakuComment')) {
-     $sql_data_array['raku_text'] = $pay_class->dealPreorderRakuComment($pInfo['yourmessage'], $pInfo['rakuten_telnumber']); 
-     $sh_comments = $pay_class->dealPreorderRakuComment($pInfo['yourmessage'], $pInfo['rakuten_telnumber'], true); 
-   } else if (method_exists($pay_class, 'dealPreorderBuyingComment')) {
-     $sh_comments = $pay_class->dealPreorderBuyingComment($pInfo); 
-   } else { 
-    $sh_comments = $pInfo['yourmessage']; 
-   }
+   $sh_comments = $payment_modules->deal_preorder_additional($pInfo, $sql_data_array); 
    
    tep_db_perform(TABLE_PREORDERS, $sql_data_array);
 
@@ -4381,7 +4370,7 @@ function tep_preorder_get_payment_list()
   return $return_arr;
 }
 */
-
+/*
 function tep_preorder_get_payment_type($payment_list, $payment_method)
 {
   foreach ($payment_list as $key => $value) {
@@ -4391,6 +4380,7 @@ function tep_preorder_get_payment_type($payment_list, $payment_method)
   }
   return ''; 
 }
+*/
 /*
 function preorder_get_mail_string($payment_code, $mailoption) {
   $mailstring = constant("MODULE_PAYMENT_".strtoupper($payment_code).'_MAILSTRING');
@@ -4640,6 +4630,48 @@ function tep_get_products_list_by_order_id($oid){
     $products_list[] = $row;
   }
   return $products_list;
+}
+
+function tep_get_graph_axis_info() 
+{
+   $time_array = array();
+   $now_time = strtotime(date('Y-m-d H:00:00', time())); 
+   $now_time = strtotime('2011-12-17 10:00:00'); 
+   $time_str = strtotime('-1 hours', $now_time); 
+   $time_array[] = array($time_str, date('G', $time_str), date('Y-m-d H:i:s', $time_str));  
+   $time_array[] = array($now_time, date('G', $now_time), date('Y-m-d H:i:s', $now_time));  
+   
+   for($i=1; $i<=24; $i++) {
+     $time_str = strtotime('+ '.$i.' hours', $now_time); 
+     $hour_str = date('G', $time_str); 
+     $time_array[] = array($time_str, $hour_str, date('Y-m-d H:i:s', $time_str));  
+   }
+   return $time_array;
+}
+
+function tep_get_graph_value_info()
+{
+  global $languages_id;
+  $axis_info_array = tep_get_graph_axis_info();
+  $orders_status_array = array();
+  $axis_value_array = array();
+
+  $orders_status_raw = tep_db_query("select orders_status_id from ".TABLE_ORDERS_STATUS." where is_thzk = '1' and language_id = '".$languages_id."'"); 
+  while ($orders_status = tep_db_fetch_array($orders_status_raw)) {
+    $orders_status_array[] = $orders_status['orders_status_id']; 
+  }
+  foreach ($axis_info_array as $key => $value) {
+    $time_start = date('Y-m-d H:00:00', $value[0]);
+    $time_end = date('Y-m-d H:59:59', $value[0]);
+    if (!empty($orders_status_array)) {
+      $orders_products_count_raw = tep_db_query("select count(distinct o.orders_id) as total from ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op where o.orders_id = op.orders_id and op.torihiki_date >= '".$time_start."' and op.torihiki_date_end <= '".$time_end."' and o.orders_status in (".implode(',', $orders_status_array).") and o.language_id = '".$languages_id."' and o.site_id = '".SITE_ID."'"); 
+      $orders_products_count = tep_db_fetch_array($orders_products_count_raw);  
+      $axis_value_array[] = (int)$orders_products_count['total']; 
+    } else {
+      $axis_value_array[] = 0;      
+    }
+  }
+  return $axis_value_array;
 }
 //３１号删掉{{
 function tep_whether_show_payment(){

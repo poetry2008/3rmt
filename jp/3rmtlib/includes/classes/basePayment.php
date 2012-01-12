@@ -107,7 +107,6 @@ class BasePayment
     }
     $table_fee = split("[:,]" , $this->cost);
     $f_find = false;
-    $this->n_fee = 0;
     for ($i = 0; $i < count($table_fee); $i+=2) {
       if ($money <= $table_fee[$i]) { 
         $additional_fee = $money.$table_fee[$i+1]; 

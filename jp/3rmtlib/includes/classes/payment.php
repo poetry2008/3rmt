@@ -240,13 +240,17 @@ class payment {
 
 
   //todo: 完成函数
-  function selection() {
-    global $order, $currencies; 
-    if($_SERVER['REQUEST_METHOD']=='POST'){
-      $theData = $this->postToSession();
-    }else {
-      $theData = $this->getPostSession();
-    }
+  function selection($type = 0) {
+    if (!$type) { 
+      global $order, $currencies; 
+      if($_SERVER['REQUEST_METHOD']=='POST'){
+        $theData = $this->postToSession();
+      }else {
+        $theData = $this->getPostSession();
+      }
+    } else {
+      $theData = $_POST; 
+    } 
     $selection_array = array();
     foreach($this->modules as $key=>$value){
       $total_cost = $value->calc_fee($order->info['total']); 
@@ -258,8 +262,10 @@ class payment {
                                      'footer'=>$value->footer,
                                      'fields' => $value->fields($theData),
       );
-      if ($total_cost > 0) {
-        $selection_array[$key]['codefee'] = constant("TS_MODULE_PAYMENT_".strtoupper($value->code)."_TEXT_FEE").$currencies->format($total_cost); 
+      if (!$type) { 
+        if ($total_cost > 0) {
+          $selection_array[$key]['codefee'] = constant("TS_MODULE_PAYMENT_".strtoupper($value->code)."_TEXT_FEE").$currencies->format($total_cost); 
+        } 
       } 
     }
     $this->static_selection = $selection_array;
@@ -337,7 +343,27 @@ class payment {
     }
   }
 
-
+  function preorder_confirmation_check($payment)
+  {
+    $module = $this->getModule($payment);
+    if ($module) {
+      if (method_exists($module, 'preorder_confirmation_check')) {
+        return $module->preorder_confirmation_check(); 
+      }
+    } 
+    return 0; 
+  }
+  
+  function get_preorder_error($payment, $sn_type)
+  {
+    $module = $this->getModule($payment);
+    if ($module) {
+      if (method_exists($module, 'get_preorder_error')) {
+        return $module->get_preorder_error($sn_type); 
+      }
+    } 
+    return ''; 
+  }
     
   function confirmation($payment) {
     $p = $this->getModule($payment);
@@ -524,6 +550,50 @@ class payment {
   }
   function getPostSession(){
     return $_SESSION[$this->session_paymentvalue_name];
+  }
+
+  function deal_preorder_additional($pInfo, &$sql_data_array)
+  {
+    $module = $this->getModule($pInfo['pre_payment']);
+    if ($module) {
+      if (method_exists($module, 'deal_preorder_additional')) {
+        return $module->deal_preorder_additional($pInfo, $sql_data_array); 
+      }
+    }
+    return $pInfo['yourmessage']; 
+  }
+  
+  function preorder_process_button($payment, $pid, $total_param)
+  {
+    $module = $this->getModule($payment);
+    if ($module) {
+      if (method_exists($module, 'preorder_process_button')) {
+        return $module->preorder_process_button($pid, $total_param); 
+      }
+    }
+    return ''; 
+  }
+  
+  function preorderDealUnknow(&$sql_data_array, $payment)
+  {
+    $module = $this->getModule($payment);
+    if ($module) {
+      if (method_exists($module, 'preorderDealUnknow')) {
+        return $module->preorderDealUnknow($sql_data_array); 
+      }
+    }
+    return false; 
+  }
+  
+  function getPreexpress($total_value, $oid, $payment)
+  {
+    $module = $this->getModule($payment);
+    if ($module) {
+      if (method_exists($module, 'getpreexpress')) {
+        return $module->getpreexpress($total_value, $oid); 
+      }
+    }
+    return false; 
   }
 }
 ?>

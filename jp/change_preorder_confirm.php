@@ -12,6 +12,8 @@
 
   require('includes/application_top.php');
   
+  require(DIR_WS_CLASSES. 'payment.php'); 
+  
   if (!isset($_POST['pid'])) {
     forward404(); 
   }
@@ -21,14 +23,9 @@
   if (!$preorder_res) {
     forward404(); 
   } 
-  
-  $ppayment_list_arr = tep_preorder_get_payment_list();
-  $con_payment_code = tep_preorder_get_payment_type($ppayment_list_arr, $preorder_res['payment_method']);
+  $payment_modules = payment::getInstance(SITE_ID); 
+  $con_payment_code = payment::changeRomaji($preorder_res['payment_method'],PAYMENT_RETURN_TYPE_CODE);
  
-  if ($con_payment_code != '') {
-    $con_payment = new $con_payment_code(); 
-  }
-  
   $is_guest_single = 0;
   $link_customer_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = '".$preorder_res['customers_id']."'");
   $link_customer_res = tep_db_fetch_array($link_customer_raw);
@@ -112,10 +109,8 @@
   
 
 $form_action_url = tep_href_link('change_preorder_process.php'); 
-if (isset($con_payment)) {
-  if (isset($con_payment->form_action_url)) {
-    $form_action_url = $con_payment->form_action_url; 
-  }
+if (isset($payment_modules->modules[strtoupper($con_payment_code)]->form_action_url) && $payment_modules->modules[strtoupper($con_payment_code)]->form_action_url) {
+  $form_action_url = $payment_modules->modules[strtoupper($con_payment_code)]->form_action_url; 
 }
   $breadcrumb->add(NAVBAR_CHANGE_PREORDER_TITLE, '');
 ?>
@@ -383,7 +378,7 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
   if ($preorder_subtotal > 0) {
     $preorder_get_point = ($preorder_subtotal - (int)$preorder_point) * $point_rate;
   } else {
-    if (isset($con_payment->show_point)) {
+    if (isset($payment_modules->modules[strtoupper($con_payment_code)]->show_point)) {
       $show_point_single = true; 
       $preorder_get_point = abs($preorder_subtotal);
     } else {
@@ -424,11 +419,7 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
               </td>
               <td class="main" align="right">
                 <?php
-                if (isset($con_payment)) {
-                  if (method_exists($con_payment, 'preorder_process_button')) {
-                    $con_payment->preorder_process_button($_POST['pid'], $total_param); 
-                  }
-                }
+                  $payment_modules->preorder_process_button($con_payment_code, $_POST['pid'], $total_param); 
                 ?>
                 <?php echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONTINUE);?> 
               </td>

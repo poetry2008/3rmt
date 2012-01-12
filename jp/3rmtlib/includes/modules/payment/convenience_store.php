@@ -324,15 +324,15 @@ class convenience_store extends basePayment  implements paymentInterface  {
     function get_preorder_error($error_type) {
       if ($error_type == 1)
         {
-          $error_message = MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE_NOE;
+          $error_message = TS_MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE_NOE;
         }
       else if ($error_type == 2)
         {
-          $error_message = MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE_NOM;
+          $error_message = TS_MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE_NOM;
         }
       else
         {
-          $error_message = MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE;
+          $error_message = TS_MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE;
         }
       return $error_message; 
     }
@@ -394,13 +394,12 @@ class convenience_store extends basePayment  implements paymentInterface  {
     {
     
     }
-    function dealPreorderConvComment($comment, $con_email, $return_single = false)
+    function deal_preorder_additional($pInfo, &$sql_data_array)
     {
-      $pay_comments = 'PCメールアドレス:'.$con_email; 
-      if (!$return_single) {
-        return $pay_comments;
-      }
-      return $pay_comments ."\n".$comment;
+      $pay_comments = 'PCメールアドレス:'.$pInfo['convenience_email']; 
+      $sql_data_array['cemail_text'] = $pay_comments; 
+       
+      return $pay_comments ."\n".$pInfo['yourmessage'];
     } 
     function checkPreorderConvEmail($email)
     {
