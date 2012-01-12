@@ -38,3 +38,4 @@ define('TEXT_TORIHIKIHOUHOU', 'オプション:');
 define('TEXT_TORIHIKIKIBOUBI', 'お届け希望日:');
 define('TEXT_TORIHIKIKIBOUJIKAN', 'お届け希望時間:');
 define('TEXT_HANDLE_FEE_CONFIRMATION', '手数料:');
+define('TEXT_TORIHIKIKI_ADDRESS', 'お届け希望アドレス:');

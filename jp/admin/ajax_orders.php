@@ -293,6 +293,12 @@ if ($_POST['orders_id'] &&
   $romaji = $_POST['romaji'];
   $romaji = str_replace('<11111111>','&',$romaji);
   $romaji = str_replace('<22222222>','+',$romaji);
+  $romaji = str_replace('<33333333>','/',$romaji);
+  $romaji = str_replace('<44444444>','%',$romaji);
+  $romaji = str_replace('<55555555>','#',$romaji);
+  $romaji = str_replace('<66666666>','?',$romaji);
+  $romaji = str_replace('<77777777>',' ',$romaji);
+  $romaji = str_replace('<88888888>',"'",$romaji);
   $site_id = isset($_POST['site_id'])?$_POST['site_id']:0;
   $sql =  "select * from ".TABLE_FAQ_CATEGORIES." fc,
 		".TABLE_FAQ_CATEGORIES_DESCRIPTION." 
@@ -313,6 +319,12 @@ if ($_POST['orders_id'] &&
   $romaji = $_POST['romaji'];
   $romaji = str_replace('<11111111>','&',$romaji);
   $romaji = str_replace('<22222222>','+',$romaji);
+  $romaji = str_replace('<33333333>','/',$romaji);
+  $romaji = str_replace('<44444444>','%',$romaji);
+  $romaji = str_replace('<55555555>','#',$romaji);
+  $romaji = str_replace('<66666666>','?',$romaji);
+  $romaji = str_replace('<77777777>',' ',$romaji);
+  $romaji = str_replace('<88888888>',"'",$romaji);
   $site_id = isset($_POST['site_id'])?$_POST['site_id']:0;
   $sql = "select * from  
 		".TABLE_FAQ_QUESTION_DESCRIPTION." fqd,
@@ -334,10 +346,16 @@ if ($_POST['orders_id'] &&
   $romaji = $_POST['romaji'];
   $romaji = str_replace('<11111111>','&',$romaji);
   $romaji = str_replace('<22222222>','+',$romaji);
+  $romaji = str_replace('<33333333>','/',$romaji);
+  $romaji = str_replace('<44444444>','%',$romaji);
+  $romaji = str_replace('<55555555>','#',$romaji);
+  $romaji = str_replace('<66666666>','?',$romaji);
+  $romaji = str_replace('<77777777>',' ',$romaji);
+  $romaji = str_replace('<88888888>',"'",$romaji);
   $replace_str = '\s|　';
-  if(preg_match('/[^\x{4e00}-\x{9fa5}\x{3130}-\x{318F}\x{0800}-\x{4e00}a-zA-Z0-9-？．]/u',$romaji)){
+  if(preg_match('/[\'\&\+\/\%\#\?\.\s]/u',$romaji)){
     $new_romaji =
-      preg_replace('/[^\x{4e00}-\x{9fa5}\x{3130}-\x{318F}\x{0800}-\x{4e00}a-zA-Z0-9-？．]/u','-',$romaji);
+      preg_replace('/[\'\&\+\/\%\#\?\.\s]/u','-', $romaji);
     if(preg_match('/'.$replace_str.'/',$new_romaji)){
       $new_romaji = preg_replace('/'.$replace_str.'/','-',$new_romaji);
     }
@@ -354,6 +372,12 @@ if ($_POST['orders_id'] &&
   $romaji = $_POST['romaji'];
   $romaji = str_replace('<11111111>','&',$romaji);
   $romaji = str_replace('<22222222>','+',$romaji);
+  $romaji = str_replace('<33333333>','/',$romaji);
+  $romaji = str_replace('<44444444>','%',$romaji);
+  $romaji = str_replace('<55555555>','#',$romaji);
+  $romaji = str_replace('<66666666>','?',$romaji);
+  $romaji = str_replace('<77777777>',' ',$romaji);
+  $romaji = str_replace('<88888888>',"'",$romaji);
   $site_id = isset($_POST['site_id'])?$_POST['site_id']:0;
   $sql =  "select * from ".TABLE_CATEGORIES." c,
 		".TABLE_CATEGORIES_DESCRIPTION." 
@@ -374,6 +398,12 @@ if ($_POST['orders_id'] &&
   $romaji = $_POST['romaji'];
   $romaji = str_replace('<11111111>','&',$romaji);
   $romaji = str_replace('<22222222>','+',$romaji);
+  $romaji = str_replace('<33333333>','/',$romaji);
+  $romaji = str_replace('<44444444>','%',$romaji);
+  $romaji = str_replace('<55555555>','#',$romaji);
+  $romaji = str_replace('<66666666>','?',$romaji);
+  $romaji = str_replace('<77777777>',' ',$romaji);
+  $romaji = str_replace('<88888888>',"'",$romaji);
   $site_id = isset($_POST['site_id'])?$_POST['site_id']:0;
   $sql = "select * from  
 		".TABLE_PRODUCTS_DESCRIPTION." pd,

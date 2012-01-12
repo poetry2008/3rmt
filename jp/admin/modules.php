@@ -5,7 +5,13 @@
 require('includes/application_top.php');
 $set = $_GET['set'];
 if(empty($set) or !is_dir( DIR_FS_CATALOG_MODULES .$_GET['set'])){
-  $set = 'payment';
+  $set = $_GET['set'];
+}
+$module_type = $set ;
+$module_directory = DIR_FS_CATALOG_MODULES . $module_type.'/';
+$module_key = 'MODULE_'.strtoupper($module_type).'_INSTALLED';
+define('HEADING_TITLE', $tmp  =
+    constant('HEADING_TITLE_MODULES_'.strtoupper($module_type)));
 
 if (isset($_GET['action'])) 
   switch ($_GET['action']) {

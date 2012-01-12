@@ -3038,15 +3038,6 @@ function orders_updated($orders_id) {
 function replace_store_name($str) {
   return str_replace('#STORE_NAME#', STORE_NAME, $str);
 }
-/*
-function replace_category_seo($input_str, $category_name) 
-{
-    global $_GET, $request_type, $breadcrumb;
-    $page    = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1 ;
-    $search  = array('#STORE_NAME#','#BREADCRUMB#', '#SEO_PAGE#', '#CATEGORY_NAME#');
-    $replace = array(STORE_NAME,$breadcrumb->trail_title(' &raquo; '), $page .  'ページ目', $category_name);
-    return str_replace($search, $replace, $input_str);
-}*/
 
 function tep_get_categories_id_by_parent_id($categories_id, $languages_id = 4) {
   $arr = array();
@@ -4681,4 +4672,121 @@ function tep_get_graph_value_info()
     }
   }
   return $axis_value_array;
+}
+//３１号删掉{{
+function tep_whether_show_payment(){
+  return true;
+}
+function check_money_limit() {
+  return false;
+}
+//}}
+
+
+//统一的输出 
+function tep_payment_out_selection(){
+global $selection;
+global $payment_modules;
+global $order;
+?>
+<!-- selection start -->
+<div class="checkout_payment_info">
+  <?php
+   //如果大于1个支付方法需要用户选择 ，如果小于则不需要选择了
+    if (sizeof($selection) > 1) {
+      echo "<div>";
+      echo '<div class="float_left">'.TEXT_SELECT_PAYMENT_METHOD."</div>";
+      echo '<div class="txt_right"><b>'.TITLE_PLEASE_SELECT.'</b><br>'.tep_image(DIR_WS_IMAGES . 'arrow_east_south.gif').'</div> ';
+      echo "</div> ";
+    }else {
+      echo "<div>";
+      echo '<div class="float_left">';
+      echo TEXT_ENTER_PAYMENT_INFORMATION;
+      echo '</div><div></div>';
+      echo "</div>";
+    }
+  ?>
+  <!-- loop start  -->
+<?php  
+     if(isset($_SESSION['payment_error'])){
+	 ?>
+     <div class="box_waring">
+     <?php
+       if(is_array($_SESSION['payment_error'])){
+           foreach($_SESSION['payment_error'] as $key=>$value){
+             echo $selection[strtoupper($key)]['module'];
+             echo "の処理中にエラーが発生しました。";
+             echo $value;
+           }
+         }else{
+           echo $_SESSION['payment_error'];
+         }
+         unset($_SESSION['payment_error']);
+     ?>
+     </div><br>
+     <?php
+	 }
+    foreach ($selection as $key=>$singleSelection){
+      //判断支付范围 
+      if($payment_modules->moneyInRange($singleSelection['id'],$order->info['total'])){
+	continue;
+      }
+      if(!$payment_modules->showToUser($singleSelection['id'],$_SESSION['guestchk'])){
+        continue;
+      }
+?>
+	<div>
+       
+		<div class="box_content_title <?php if($_SESSION['payment']==$singleSelection['id']) { echo 'box_content_title_selected';}?> "  >
+			<div class="frame_w70"><b><?php echo $singleSelection['module'];?></b></div>
+			<div class="float_right">
+            	<?php echo tep_draw_radio_field('payment',$singleSelection['id'] ,$_SESSION['payment']==$singleSelection['id']); ?>
+			</div>
+		</div>
+		<div>
+                <p class="cp_description"> <?php  echo $singleSelection['description'];?></p>
+				<div class="cp_content">
+                	<div style="display: none;"  class="rowHide rowHide_<?php echo $singleSelection['id'];?>">
+                    <?php echo $singleSelection['fields_description']; 
+                    foreach ($singleSelection['fields'] as $key2=>$field){
+					?>
+                                                                                  
+                        <div class="txt_input_box">
+                        <?php if($field['title']){ ?>
+                            <div class="frame_title"><?php echo $field['title'];?></div>
+                            <?php }?>
+                            <div class="float_left"><?php echo $field['field'];?><small><font color="#AE0E30"><?php echo $field['message'];?></font></small></div>
+                        </div>
+					<?php 
+                                      }
+                                         echo $singleSelection['footer'];
+					?>
+					</div>
+					<div><?php echo $singleSelection['codefee'];?></div>
+				</div>
+		</div>
+	</div>
+<?
+    }
+?>
+<!-- loop end  -->
+</div>
+
+<!-- selection end -->
+<?php
+  }
+
+
+function tep_is_member_customer($customer_id){
+  $sql = "select customers_guest_chk from ".TABLE_CUSTOMERS." 
+    where customers_id='".$customer_id."' 
+    and site_id ='".SITE_ID."' 
+    and customers_guest_chk = '0' 
+    limit 1";
+  $query = tep_db_query($sql);
+  if($row = tep_db_fetch_array($query)){
+    return true;
+  }else{
+    return false;
+  }
 }

@@ -2,8 +2,8 @@
 <?php 
 set_time_limit(0);
 //file patch
-define('ROOT_DIR','/home/.sites/22/site13/vhosts/jp/admin');
-//define('ROOT_DIR','/home/szn/project/3rmt/jp/admin');
+//define('ROOT_DIR','/home/.sites/22/site13/vhosts/jp/admin');
+define('ROOT_DIR','/home/szn/project/3rmt/jp/admin');
 require(ROOT_DIR.'/includes/configure.php');
 // default sleep second
 define('SLEEP_SECOND',3);//秒単位設定
@@ -89,6 +89,7 @@ o.customers_name AS customer_name,
         DAY ) > now( ) , DATE_ADD( o.date_purchased, INTERVAL con.configuration_value
           DAY ) > now( ) )
   AND o.customers_id = c.customers_id
+  AND c.customers_guest_chk = 0 
   AND c.point > 0 
 AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
   AND con.configuration_key = 'MODULE_ORDER_TOTAL_POINT_LIMIT'
@@ -126,7 +127,7 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
          var_dump($last_login."=====".$customer_info_arr['point_date']."===".date('Y-m-d',$out_time).
          "=====".$customer_info['customer_email']."\n---------------------\n");
        */
-      if(($out_time>$now_time)&&($customer_info['config_date']>$value)&&
+      if(($out_time>$now_time)&&($customer_info['config_date']>=$value)&&
           intval(($out_time-$now_time)/86400)==$value){
         /*
            var_dump($customer_info_arr['point_date'].">>>".$value.">>>".$customer_info['customer_email']);

@@ -138,6 +138,7 @@ $sql_data_array = array('orders_id'         => $insert_id,
                         'orders_user_language'        => $_SESSION['userLanguage'],
                         'orders_http_accept_language' => $_SERVER['HTTP_ACCEPT_LANGUAGE'],
                         'telecom_option'              => $_SESSION['option'],
+                        'shipping_method'             => $_SESSION['each_product_shipping'],
                         );
   
 if (isset($_SESSION['referer_adurl']) && $_SESSION['referer_adurl']) {
@@ -152,6 +153,7 @@ if (isset($_POST['code_fee'])) {
 }
 
 $bflag_single = ds_count_bflag();
+
 if ($bflag_single == 'View') {
   $orign_hand_fee = $sql_data_array['code_fee'];
   $buy_handle_fee = $payment_modules->handle_calc_fee($payment,$order->info['total']); 
@@ -275,12 +277,13 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
     }
   }
   //insert some thing to products description
-  if($_SESSION['each_product_shipping']){
-    $address_book_id = $shipping_method_info_arr[$order->products[0]['id']]['shipping_address'];
-    $s_torihiki_date = $shipping_method_info_arr[$order->products[0]['id']]['insert_torihiki_date'];
-    $e_torihiki_date = $shipping_method_info_arr[$order->products[0]['id']]['insert_torihiki_date_end'];
-    $s_torihiki_houhou = $shipping_method_info_arr[$order->products[0]['id']]['torihikihouhou'];
-    $s_method = $shipping_method_info_arr[$order->products[0]['id']]['shipping_method'];
+  if($_SESSION['each_product_shipping']==1){
+    $temp_pid = tep_get_prid($order->products[$i]['id']);
+    $address_book_id = $shipping_method_info_arr[$temp_pid]['shipping_address'];
+    $s_torihiki_date = $shipping_method_info_arr[$temp_pid]['insert_torihiki_date'];
+    $e_torihiki_date = $shipping_method_info_arr[$temp_pid]['insert_torihiki_date_end'];
+    $s_torihiki_houhou = $shipping_method_info_arr[$temp_pid]['torihikihouhou'];
+    $s_method = $shipping_method_info_arr[$temp_pid]['shipping_method'];
   }else{
     $address_book_id = $shipping_method_info_arr['all_products']['shipping_address'];
     $s_torihiki_date = $shipping_method_info_arr['all_products']['insert_torihiki_date'];
@@ -602,6 +605,8 @@ if($guestchk == '1') {
 tep_session_unregister('sendto');
 tep_session_unregister('billto');
 tep_session_unregister('shipping');
+tep_session_unregister('shipping_method_info_arr');
+tep_session_unregister('each_product_shipping');
 tep_session_unregister('payment');
 tep_session_unregister('comments');
 if (MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {

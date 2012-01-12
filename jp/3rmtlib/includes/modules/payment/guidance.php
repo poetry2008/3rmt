@@ -48,7 +48,8 @@ class guidance extends basePayment  implements paymentInterface  {
   }
 
   function pre_confirmation_check() {
-    tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, 'payment_error='.$this->code, 'SSL', true, false)); 
+    //    tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, 'payment_error='.$this->code, 'SSL', true, false)); 
+    return false;
   }
   
   function preorder_confirmation_check() {

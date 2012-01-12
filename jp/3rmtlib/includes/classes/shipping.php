@@ -71,8 +71,8 @@ class shipping {
     }
     return self::$instance;
   }
-
-  public function getModule($shipping){
+ 
+   public function getModule($shipping){
     foreach($this->modules as $module){
       if($module instanceof $shipping){
         return $module;
@@ -369,6 +369,10 @@ class shipping {
       }
     }
 
+   }
+  public function handle_calc_fee($shipping_method,$pid,$qty,$site_id){
+    $s = $this->getModules($shipping_method);
+    return $s->calc_fee($pid,$qty,$site_id);
   }
   
 }

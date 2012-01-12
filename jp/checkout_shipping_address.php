@@ -303,14 +303,19 @@ function set_all_city(){
     dataType: 'text',
     async: false,
     success: function(_data){
+      acc_err_div = document.getElementById('account_error_div');
       if(_data){
+        acc_err_div.innerHTML = "";
+        acc_err_div.style.display = "none";
         str = _data.split('|||');
         $("#state").val(str[0]);
         document.checkout_address.city.value = str[1];
       }else{
         //邮编错误处理
-        alert("post error");
-        document.checkout_address.postcode.value = '';
+        acc_err_div.innerHTML = "post nomber error";
+        acc_err_div.style.display = "block";
+        res_code = zipcode.substring(0,zipcode.length-1);  
+        document.checkout_address.postcode.value = res_code;
       }
     }
    });
@@ -459,170 +464,7 @@ function check_form() {
         
         <div> 
           <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
-            
-            <?php
-  if ($process == true) {
-?> 
-            <tr> 
-              <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
-                  <tr> 
-                    <td class="main"><b><?php echo TABLE_HEADING_NEW_SHIPPING_ADDRESS_PROBLEM; ?></b></td> 
-                  </tr> 
-                </table></td> 
-            </tr> 
-            <tr> 
-              <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxNotice"> 
-                  <tr class="infoBoxNoticeContents"> 
-                    <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
-                        <tr> 
-                          <td><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-                          <td class="main" width="100%" valign="top"><?php echo TEXT_NEW_SHIPPING_ADDRESS_PROBLEM; ?></td> 
-                          <td><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-                        </tr> 
-                      </table></td> 
-                  </tr> 
-                </table></td> 
-            </tr> 
-            <tr> 
-              <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-            </tr> 
-            <?php
-  }
-
-  if ($process == false) {
-?> 
-            <tr> 
-              <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
-                  <tr> 
-                    <td class="main"><b><?php echo TABLE_HEADING_SHIPPING_ADDRESS; ?></b></td> 
-                  </tr> 
-                </table></td> 
-            </tr> 
-            <tr> 
-              <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
-                  <tr class="infoBoxContents"> 
-                    <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
-                        <tr> 
-                          <td><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-                          <td class="main" width="50%" valign="top"><?php echo TEXT_SELECTED_SHIPPING_DESTINATION; ?></td> 
-                          <td align="right" width="50%" valign="top"><table border="0" cellspacing="0" cellpadding="2"> 
-                              <tr> 
-                                <td class="main" align="center" valign="top"><?php echo '<b>' . TITLE_SHIPPING_ADDRESS . '</b><br>' . tep_image(DIR_WS_IMAGES . 'arrow_south_east.gif'); ?></td> 
-                                <td><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-                                <td class="main" valign="top"><?php echo tep_address_label($customer_id, $sendto, true, ' ', '<br>'); ?></td> 
-                                <td><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-                              </tr> 
-                            </table></td> 
-                        </tr> 
-                      </table></td> 
-                  </tr> 
-                </table></td> 
-            </tr> 
-            <tr> 
-              <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-            </tr> 
-            <?php
-    $addresses_count_query = tep_db_query("
-        SELECT COUNT(*) AS total 
-        FROM " . TABLE_ADDRESS_BOOK . " 
-        WHERE customers_id = '" . $customer_id . "' 
-          AND address_book_id != '" . $sendto . "'
-        ");
-    $addresses_count = tep_db_fetch_array($addresses_count_query);
-
-    if ($addresses_count['total'] > 0) {
-?> 
-            <tr> 
-              <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
-                  <tr> 
-                    <td class="main"><b><?php echo TABLE_HEADING_ADDRESS_BOOK_ENTRIES; ?></b></td> 
-                  </tr> 
-                </table></td> 
-            </tr> 
-            <tr> 
-              <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
-                  <tr class="infoBoxContents"> 
-                    <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
-                        <tr> 
-                          <td><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-                          <td class="main" width="50%" valign="top"><?php echo TEXT_SELECT_OTHER_SHIPPING_DESTINATION; ?></td> 
-                          <td class="main" width="50%" valign="top" align="right"><?php echo '<b>' . TITLE_PLEASE_SELECT . '</b><br>' . tep_image(DIR_WS_IMAGES . 'arrow_east_south.gif'); ?></td> 
-                          <td><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-                        </tr> 
-                        <?php
-      $radio_buttons = 0;
-
-// 2003-06-06 add_telephone
-      $addresses_query = tep_db_query("
-          SELECt address_book_id, 
-                 entry_firstname      AS firstname, 
-                 entry_lastname       AS lastname, 
-                 entry_company        AS company, 
-                 entry_street_address AS street_address, 
-                 entry_suburb         AS suburb, 
-                 entry_city           AS city, 
-                 entry_postcode       AS postcode, 
-                 entry_state          AS state, 
-                 entry_zone_id        AS zone_id, 
-                 entry_country_id     AS country_id, 
-                 entry_telephone      AS telephone 
-           FROM " . TABLE_ADDRESS_BOOK . " 
-           WHERE customers_id = '" . $customer_id . "'
-         ");
-      while ($addresses = tep_db_fetch_array($addresses_query)) {
-        $format_id = tep_get_address_format_id($addresses['country_id']);
-?> 
-                        <tr> 
-                          <td><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-                          <td colspan="2"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
-                              <?php
-       if ($addresses['address_book_id'] == $sendto) {
-          echo '                  <tr id="defaultSelected" class="moduleRowSelected" onmouseover="rowOverEffect(this)" onmouseout="rowOutEffect(this)" onclick="selectRowEffect(this, ' . $radio_buttons . ')">' . "\n";
-        } else {
-          echo '                  <tr class="moduleRow" onmouseover="rowOverEffect(this)" onmouseout="rowOutEffect(this)" onclick="selectRowEffect(this, ' . $radio_buttons . ')">' . "\n";
-        }
-?> 
-                              <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-                                <td class="main" colspan="2"><b><?php echo tep_output_string_protected(tep_get_fullname($addresses['firstname'],$addresses['lastname'])); ?></b></td> 
-                                <td class="main" align="right"><?php echo tep_draw_radio_field('address', $addresses['address_book_id'], ($addresses['address_book_id'] == $sendto)); ?></td> 
-                                <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-                              </tr> <tr> 
-                                <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-                                <td colspan="3"><table border="0" cellspacing="0" cellpadding="2"> 
-                                    <tr> 
-                                      <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-                                      <td class="main"><?php echo tep_address_format($format_id, $addresses, true, ' ', ', '); ?></td> 
-                                      <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-                                    </tr> 
-                                  </table></td> 
-                                <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-                              </tr> 
-                            </table></td> 
-                          <td><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-                        </tr> 
-                        <?php
-        $radio_buttons++;
-      }
-?> 
-                      </table></td> 
-                  </tr> 
-                </table></td> 
-            </tr> 
-            <tr> 
-              <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-            </tr> 
-            <?php
-    }
-  }
-  if ($addresses_count['total'] < MAX_ADDRESS_BOOK_ENTRIES) {
-?> 
-            <tr> 
-              <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
-                  <tr> 
-                    <td class="main"><b><?php echo TABLE_HEADING_NEW_SHIPPING_ADDRESS; ?></b></td> 
-                  </tr> 
-                </table></td> 
-            </tr> 
+       
             <tr> 
               <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
                   <tr class="infoBoxContents"> 
@@ -632,6 +474,10 @@ function check_form() {
                           <td class="main" width="100%" valign="top"><?php echo TEXT_CREATE_NEW_SHIPPING_ADDRESS; ?></td> 
                           <td><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
                         </tr> 
+                        <tr><td class="main" width="100%" valign="top" colspan="3">
+                        <div style="display:none" id="account_error_div" 
+                        class="acc_error_div"></div>
+                        </td></tr>
                         <tr> 
                           <td><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
                           <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
@@ -648,7 +494,6 @@ function check_form() {
                 </table></td> 
             </tr> 
             <?php
-  }
 ?> 
             <tr> 
               <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 

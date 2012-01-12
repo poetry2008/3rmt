@@ -48,7 +48,7 @@
     }
 
     function pre_confirmation_check() {
-      return false;
+      return true;
     }
 
     function confirmation() {

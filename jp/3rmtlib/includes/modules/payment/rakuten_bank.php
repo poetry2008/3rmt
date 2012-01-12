@@ -43,13 +43,13 @@ class rakuten_bank  extends basePayment  implements paymentInterface {
                  array(
                        "code"=>'rakuten_telnumber',
                        "title"=>TS_MODULE_PAYMENT_RAKUTEN_TELNUMBER_TEXT,
-                       "field"=>tep_draw_input_field('rakuten_telnumber', $theData['rakuten_telnumber'], 'onpaste="return false"').TS_MODULE_PAYMENT_RAKUTEN_MUST_INPUT,
+                       "field"=>tep_draw_input_field('rakuten_telnumber', $theData['rakuten_telnumber'],'onpaste="return false"').TS_MODULE_PAYMENT_RAKUTEN_MUST_INPUT,
                        "rule"=>basePayment::RULE_NOT_NULL,
                        ),
                  array(
                        "code"=>'rakuten_telnumber_again',
                        "title"=>TS_MODULE_PAYMENT_RAKUTEN_TELNUMBER_CONFIRMATION_TEXT,
-                       "field"=>tep_draw_input_field('rakuten_telnumber_again', $theData['rakuten_telnumber_again'], 'onpaste="return false"').TS_MODULE_PAYMENT_RAKUTEN_MUST_INPUT,
+                       "field"=>tep_draw_input_field('rakuten_telnumber_again', $theData['rakuten_telnumber_again'],'onpaste="return false"').TS_MODULE_PAYMENT_RAKUTEN_MUST_INPUT,
                        "rule"=>basePayment::RULE_SAME_TO,
                        "params_code"=>'rakuten_telnumber',
                        ),
@@ -105,14 +105,14 @@ class rakuten_bank  extends basePayment  implements paymentInterface {
       $selection = array(
           'id' => $this->code,
           'module' => $this->title,
-          'fields' => array(array('title' => MODULE_PAYMENT_RAKUTEN_BANK_TEXT_PROCESS,
-              'field' => ''),
-
-            array('title' => $s_message,
-              'field' => $added_hidden)
-            )
-          );
-
+          'fields' => array(
+                            array('title' => MODULE_PAYMENT_RAKUTEN_BANK_TEXT_PROCESS.'xv',
+                                  'field' => ''),
+                            array('title' => $s_message,
+                                  'field' => $added_hidden)
+                            )
+                         );
+      
     return $selection;
   }
 
