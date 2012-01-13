@@ -20,6 +20,7 @@ class BasePayment
   const RULE_EMAIL = 'validation_email';
   const RULE_EMAIL_MSG = '入力内容を確認し、再度入力してください。';
   const RULE_SAME_TO_MSG = '入力内容を確認し、再度入力してください。';
+  const REQUIRE_MSG = '<span class="fieldRequired">必須</span>';
   function __construct($site_id = 0){
     global $order;
     $this->site_id = $site_id;
@@ -47,7 +48,7 @@ class BasePayment
   /*
     验证选项是否为真
    */
-  function validate_selection(&$selection,$value)
+  function validate_selection(&$selection,$value, $show_type = false)
   {
     $pass = true;
     if(count($value)){
@@ -59,7 +60,11 @@ class BasePayment
               if ($validateResult !== true){
                 $pass = false;
                 //  $selection['error'][]=$validateResult;
-                $_SESSION['payment_error'][$this->code]=$validateResult;
+                if ($show_type) {
+                  $selection['fields'][$key]['message'] = str_replace(self::RULE_NOT_NULL_MSG, self::REQUIRE_MSG, $validateResult);
+                } else {
+                  $_SESSION['payment_error'][$this->code]=$validateResult;
+                }
                 //                $selection['fields'][$key]['message'] = $validateResult;
               }
             }
@@ -67,9 +72,12 @@ class BasePayment
             $validateResult = $this->$singleValue['rule']($value[$singleValue['code']],$value[$singleValue['params_code']]);
             if($validateResult !== true){
               $pass = false;
+              if ($show_type) {
+                $selection['fields'][$key]['message'] = str_replace(self::RULE_NOT_NULL_MSG, self::REQUIRE_MSG, $validateResult);
+              } else {
                 $_SESSION['payment_error'][$this->code]=$validateResult;
+              }
                 //              $selection['error'][]=$validateResult;
-                //              $selection['fields'][$key]['message'] = $validateResult;
             }
           }
         }
