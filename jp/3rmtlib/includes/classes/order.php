@@ -71,7 +71,8 @@
                  date_purchased, 
                  orders_status, 
                  last_modified ,
-                 code_fee
+                 code_fee,
+                 shipping_method
           from " . TABLE_ORDERS . " 
           where orders_id = '" .  tep_db_input($order_id) . "' 
             and site_id = ".SITE_ID
@@ -111,7 +112,7 @@
                           'last_modified' => $order['last_modified'],
                           'code_fee' => $order['code_fee'],
                           'total' => strip_tags($order_total['value']).'円',
-                          'shipping_method' => ((substr($shipping_method['title'], -1) == ':') ? substr(strip_tags($shipping_method['title']), 0, -1) : strip_tags($shipping_method['title'])));
+                          'shipping_method' => $order['shipping_method']);
 
       $this->customer = array('id' => $order['customers_id'],
                               'name' => $order['customers_name'],
@@ -190,7 +191,13 @@
 
     function cart() {
       global $customer_id, $sendto, $billto, $cart, $languages_id, $currency, $currencies, $shipping, $payment;
-
+      $shipping_method = 0;
+foreach($cart_products as $t_p){
+  if($t_p['shipping_flag'] == 1){
+    $shipping_method = 1;
+    break;
+  }
+}
       $this->content_type = $cart->get_content_type();
 //ccdd
       $customer_address_query = tep_db_query("
@@ -256,7 +263,7 @@
                           'cc_owner' => $GLOBALS['cc_owner'],
                           'cc_number' => $GLOBALS['cc_number'],
                           'cc_expires' => $GLOBALS['cc_expires'],
-                          'shipping_method' => $shipping['title'],
+                          'shipping_method' => $shipping_method,
                           'shipping_cost' => $shipping['cost'],
                           'comments' => $GLOBALS['comments']);
 

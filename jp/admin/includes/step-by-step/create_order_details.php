@@ -17,6 +17,7 @@
 
 
 </script>
+
 <table border="0" width="100%" cellspacing="0" cellpadding="2">
   <tr>
   <td class="formAreaTitle">
@@ -204,7 +205,8 @@ if(isset($from_page)&&$from_page == 'create_order_process2'){
 
 if (isset($entry_payment_method_error ) && $entry_payment_method_error == true) { 
   echo '&nbsp;&nbsp;<font color="red">Error</font>'; 
-} ?>
+} 
+?>
 <?php
 
 
@@ -233,17 +235,7 @@ foreach ($selections as $se){
 </td>
 </tr>
 <tr>
-<td class="formAreaTitle"><br>
-                                                 
-  <?php
-  echo CREATE_ORDER_FETCH_TIME_TITLE_TEXT;?></td>
-  </tr>
-  <?php // 这里添加 配送选择
-  //  1代表SITE_ID
-  
-  ?>
-  <tr>
-    <td class="formAreaTitle"><br><?php echo 'shipping list';?></td>
+<td class="formAreaTitle"><br><?php echo 'shipping list';?></td>
   </tr>
   <tr>
     <td class="main"><table border="0" width="100%" cellspacing="0" cellpadding="2"
@@ -262,12 +254,26 @@ torihiki_time_str = get_torihiki_time_list('<?php
     echo $shipping_time?>')
   </script>
         <div>
-        <div><input name='address_radio' type="radio" onClick="create_address_book()"><?php
-        echo TEXT_CREATE_ADDRESS_BOOK;?></div>
-        <div>
-        <div><input name='address_radio' type="radio" onClick="show_address_book()"
-        checked ="true" ><?php
-        echo TEXT_USE_ADDRESS_BOOK;?></div>
+        <?php //这个提取成一个 方法?>
+        <select name='address_radio' onchange="show_address_book(this)">
+        <option value ="" <?php 
+        if($shipping_address_radio == ''){
+          echo "selected='true' ";
+        }
+        ?>>选择配送地址</option>
+        <option value="create_address" ><?php echo TEXT_CREATE_ADDRESS_BOOK;?></option>
+        <option value="show_address" <?php
+        if($shipping_address_radio == 'show_address'){
+          echo "selected='true' ";
+        }
+        ?>><?php echo TEXT_USE_ADDRESS_BOOK;?></option>
+        </select>
+        <?php 
+if (isset($entry_shipping_address_radio_error ) && $entry_shipping_address_error == true) { 
+  echo '&nbsp;&nbsp;<font color="red">Error</font>'; 
+} 
+        ?>
+        </div>
         <div id="address_book_list">
         <select name="shipping_address" onchange="show_shipping_method()" >
         <?php
@@ -282,6 +288,11 @@ torihiki_time_str = get_torihiki_time_list('<?php
         }
       ?>
         </select>
+      <?php
+if (isset($entry_shipping_address_error ) && $entry_shipping_address_error == true) { 
+  echo '&nbsp;&nbsp;<font color="red">Error</font>'; 
+} 
+      ?>
         </div>
         </div>
         </div>
@@ -289,34 +300,38 @@ torihiki_time_str = get_torihiki_time_list('<?php
     <?php
   $shipping_method_count = count($shipping_modules->modules);
   //是否只有一个配送
-  $one_shipping = false;
-  $shipping_list_str = '';
+  $shipping_list_str = "<option value='shipping_null' ";
+  if(isset($entry_shipping_method_error)&&$entry_shipping_method_error==true){
+      $shipping_list_str .= " selected='true' ";
+  }
+  $shipping_list_str .= ">". TEXT_SHIPPING_METHOD."</oprion>";
   foreach($shipping_modules->modules as $s_modules){
     //这里输出 每一个模块
     $s_option = $s_modules->get_torihiki_date_select($shipping_date);
     $shipping_list_str .= "<option value='".$s_modules->code."' ";
     if($shipping_method==$s_modules->code){
       $shipping_list_str .= " selected='true' ";
-      $one_shipping = true;
     }
     $shipping_list_str .= ">".$s_modules->title."</option>";
-    if(!$one_shipping){
-      echo "<div style='display:none'>";
-      echo "<select id='".$s_modules->code."'>";
-      echo $s_option;
-      echo "</select>";
-      echo "</div>";
-    }
+    echo "<div style='display:none'>";
+    echo "<select id='".$s_modules->code."'>";
+    echo $s_option;
+    echo "</select>";
+    echo "</div>";
   }
   echo "<select name='shipping_method' onchange='set_torihiki_date(\"".$s_modules->code."\",\"".
         $s_modules->work_time."\",\"".$s_modules->start_time."\")' >" ;
   echo $shipping_list_str;
   echo "</select>";
-  ?>
+if (isset($entry_shipping_method_error ) && $entry_shipping_method_error == true) { 
+  echo '&nbsp;&nbsp;<font color="red">Error</font>'; 
+} 
+      ?>
     </div>
     <?php
     //这里是 区引时间相关的显示
     ?>
+
     <div id='torihiki_info_list' >
     <div>
     <?php /*
@@ -330,13 +345,36 @@ torihiki_time_str = get_torihiki_time_list('<?php
     <div><select name="date" onChange="show_torihiki_time(this,'torihiki_time_radio','')" 
     id='shipping_torihiki_date_select'>
     <option value=""><?php echo TEXT_TORIHIKIBOUBI_DEFAULT_SELECT;?></option>
-    <?php echo $s_option;?>
+    <?php 
+    if(isset($entry_shipping_method_error)&&$entry_shipping_method_error==true){
+    }else{
+    echo $s_option;
+    }?>
     </select>
+<?php
+if (isset($entry_shipping_date_error ) && $entry_shipping_date_error == true) { 
+  echo '&nbsp;&nbsp;<font color="red">Error</font>'; 
+} 
+?>
     </div>
     </div>
-    <div id="shipping_torihiki">
-    <div><?php echo CREATE_ORDER_FETCH_TIME_TEXT;?></div>
-    <div id="shipping_torihiki_radio"></div>
+<?php
+if (isset($entry_shipping_date_error ) && $entry_shipping_date_error == true) { 
+   echo ' <div id="shipping_torihiki" style="display:none">';
+}else{
+   echo ' <div id="shipping_torihiki">';
+}
+?>
+    <div><?php echo CREATE_ORDER_FETCH_TIME_TEXT;?>
+<?php
+if (isset($entry_shipping_time_error ) && $entry_shipping_time_error == true) { 
+  echo '&nbsp;&nbsp;<font color="red">Error</font>'; 
+} 
+?>
+</div>
+
+    <div id="shipping_torihiki_radio" class="all_torihiki_radio"></div>
+
     </div>
     <script language = 'javascript'>
 torihiki_radio_div = window.document.getElementById('shipping_torihiki_radio');
@@ -352,12 +390,11 @@ torihiki_radio_div.innerHTML = torihiki_time_str;
 }else{
       ?>
         <div>
-        <div><input name='address_radio' type="radio" onClick="create_address_book()"><?php
-        echo TEXT_CREATE_ADDRESS_BOOK;?></div>
-        <div>
-        <div><input name='address_radio' type="radio" onClick="show_address_book()"><?php
-        echo TEXT_USE_ADDRESS_BOOK;?></div>
-        </div>
+        <select name='address_radio' onchange="show_address_book(this)">
+        <option selected="true" value ="">选择配送地址</option>
+        <option value="create_address" ><?php echo TEXT_CREATE_ADDRESS_BOOK;?></option>
+        <option value="show_address" ><?php echo TEXT_USE_ADDRESS_BOOK;?></option>
+        </select>
         </div>
         <div style="display:none" id="address_book_list">
         <select name="shipping_address" onchange="show_shipping_method()" >
@@ -373,6 +410,11 @@ torihiki_radio_div.innerHTML = torihiki_time_str;
         }
       ?>
         </select>
+      <?php
+if (isset($entry_shipping_address_error ) && $entry_shipping_address_error == true) { 
+  echo '&nbsp;&nbsp;<font color="red">Error</font>'; 
+} 
+      ?>
         </div>
     <div  id='shipping_list' style='display:none' >
     <?php
@@ -399,8 +441,14 @@ torihiki_radio_div.innerHTML = torihiki_time_str;
   }
   echo "<select name='shipping_method' onchange='set_torihiki_date(\"".$s_modules->code."\",\"".
         $s_modules->work_time."\",\"".$s_modules->start_time."\")' >" ;
+  echo "<option value='shipping_null' selected='true'>";
+  echo TEXT_SHIPPING_METHOD;
+  echo "</option>";
   echo $shipping_list_str;
   echo "</select>";
+if (isset($entry_shipping_method_error ) && $entry_shipping_method_error == true) { 
+  echo '&nbsp;&nbsp;<font color="red">Error</font>'; 
+} 
   ?>
     </div>
     <?php
@@ -415,12 +463,24 @@ torihiki_radio_div.innerHTML = torihiki_time_str;
     <option value=""><?php echo TEXT_TORIHIKIBOUBI_DEFAULT_SELECT;?></option>
     <?php echo $s_option;?>
     </select>
+<?php
+if (isset($entry_shipping_date_error ) && $entry_shipping_date_error == true) { 
+  echo '&nbsp;&nbsp;<font color="red">Error</font>'; 
+} 
+?>
     </div>
     </div>
     </div>
     <div style="display:none" id="shipping_torihiki">
     <div><?php echo CREATE_ORDER_FETCH_TIME_TEXT;?></div>
-    <div id="shipping_torihiki_radio"></div>
+<?php
+if (isset($entry_shipping_time_error ) && $entry_shipping_time_error == true) { 
+  echo "<div >";
+  echo '&nbsp;&nbsp;<font color="red">Error</font>'; 
+  echo "</div>";
+} 
+?>
+    <div id="shipping_torihiki_radio" class="all_torihiki_radio"></div>
     </div>
     <?php
     echo tep_draw_input_field('work_time','','id="shipping_work_time"',false,'hidden');
@@ -440,75 +500,6 @@ torihiki_radio_div.innerHTML = torihiki_time_str;
     </td></tr>
     </table></td>
   </tr>
-  </tr>
-  <tr>
-  <td class="main">&nbsp;
-<?php
-echo CREATE_ORDER_FETCH_DATE_TEXT;?></td>
-<td class="main">&nbsp;
-<?php
-echo tep_draw_pull_down_menu('date', $date_list, isset($date)?$date:'');
-?>
-
-
-  
-<?php
-if (isset($entry_date_error) && $entry_date_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; };
-?></td>
-</tr>
-<tr>
-<td class="main">&nbsp;
-<?php
-echo CREATE_ORDER_FETCH_TIME_TEXT;?></td>
-<td class="main">&nbsp;
-
-<?php
- 
-//diff order and order2
-/*
-  if(isset($from_page)&&$from_page == 'create_order_process2'){
-  if(!isset($hour)||$hour==''){
-  $hour = date('H',time());  
-  }
-  echo tep_draw_pull_down_menu('hour', $hour_list, isset($hour)?$hour:''); 
-  }else{
-  echo tep_draw_pull_down_menu('hour', $hour_list, isset($hour)?$hour:''); 
-  }
-*/
-echo tep_draw_pull_down_menu('hour', $hour_list, isset($hour)?$hour:''); 
-?>&nbsp;時&nbsp;
-<?php
- 
-echo tep_draw_pull_down_menu('min', $min_list, isset($min)?$min:''); 
-?>&nbsp;分&nbsp;<b>
-
-<?php
-echo CREATE_ORDER_FETCH_ALLTIME_TEXT;?></b>
-
-<?php
- 
-if (isset($entry_tardetime_error ) && $entry_tardetime_error == true) { 
-  echo '&nbsp;&nbsp;<font color="red">Error</font>'; 
-} ?></td>
-</tr>
-<tr>
-<td class="main">&nbsp;
-<?php
-echo CREATE_ORDER_FETCH_TIME_SELECT_TEXT;?></td>
-<td class="main">&nbsp;
-<?php
-echo tep_draw_pull_down_menu('torihikihouhou', tep_get_all_torihiki(), isset($torihikihouhou)?$torihikihouhou:'');
-?>
-
-<?php
-if (isset($entry_torihikihouhou_error) && $entry_torihikihouhou_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; };
-?></td>
-</tr>
-</table></td>
-</tr>
-</table>
-</td>
-</tr>
 <tr>
 <td class="formAreaTitle"><br>
   

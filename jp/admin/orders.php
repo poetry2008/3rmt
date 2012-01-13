@@ -566,7 +566,9 @@ function tep_show_orders_products_info($orders_id) {
         
           if ($result3['value'] >= 0) {
             $get_point = ($result3['value'] - (int)$result2['value']) * $point_rate;
-            tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " . $get_point . " where customers_id = " . $result1['customers_id'] );
+            tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " . 
+                $get_point . " where customers_id = '" . $result1['customers_id']."'
+                and customers_guest_chk = '0' ");
           } else {
             if ($check_status['payment_method'] == 'ポイント(買い取り)') {
               $get_point = abs($result3['value']);
@@ -790,7 +792,9 @@ function tep_show_orders_products_info($orders_id) {
       //$plus = $result4['point'] + $get_point;
       
       if($check_status['payment_method'] != 'ポイント(買い取り)'){
-      tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " . $get_point . " where customers_id = " . $result1['customers_id'] );
+      tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " . $get_point . 
+          " where customers_id = '" . $result1['customers_id']."' 
+          and customers_guest_chk = '0' ");
       }
     }else{
       $os_query = tep_db_query("select orders_status_name from " . TABLE_ORDERS_STATUS . " where orders_status_id = '".$status."'");
@@ -811,7 +815,8 @@ function tep_show_orders_products_info($orders_id) {
        $point_done_row  =  tep_db_fetch_array($point_done_query);
        if($point_done_row['cnt'] <1 ){
       tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " .
-          $get_point . " where customers_id = " . $result1['customers_id'] );
+          $get_point . " where customers_id = '" . $result1['customers_id']."' 
+           and customers_guest_chk = '0'");
        }
       }
     }
@@ -1012,25 +1017,26 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
   $from_payment = '';
   $sort_table = '';
   $sort_where = '';
+  $order_str = 'torihiki_date_error desc,date_purchased_error desc,';
   if(!isset($HTTP_GET_VARS['order_sort'])||$HTTP_GET_VARS['order_sort']=='') {
-    $order_str = 'o.torihiki_date DESC';
+    $order_str .= 'o.torihiki_date DESC';
   }else{
     if($HTTP_GET_VARS['order_sort'] == 'site_romaji'){
       $sort_table = " ,".TABLE_SITES." s ";
       $sort_where = " o.site_id = s.id and ";
-      $order_str = " s.romaji ".$HTTP_GET_VARS['order_type'];
+      $order_str .= " s.romaji ".$HTTP_GET_VARS['order_type'];
     }else if($HTTP_GET_VARS['order_sort'] == 'customers_name'){
-      $order_str = " o.customers_name ".$HTTP_GET_VARS['order_type'];
+      $order_str .= " o.customers_name ".$HTTP_GET_VARS['order_type'];
     }else if($HTTP_GET_VARS['order_sort'] == 'ot_total'){
       $sort_table = " ,". TABLE_ORDERS_TOTAL." ot ";
       $sort_where = " o.orders_id = ot.orders_id and ot.class  ='ot_total' and ";
-      $order_str = " ot.value ".$HTTP_GET_VARS['order_type'];
+      $order_str .= " ot.value ".$HTTP_GET_VARS['order_type'];
     }else if($HTTP_GET_VARS['order_sort'] == 'torihiki_date'){
-      $order_str = " o.torihiki_date ".$HTTP_GET_VARS['order_type'];
+      $order_str .= " o.torihiki_date ".$HTTP_GET_VARS['order_type'];
     }else if($HTTP_GET_VARS['order_sort'] == 'date_purchased'){
-      $order_str = " o.date_purchased ".$HTTP_GET_VARS['order_type'];
+      $order_str .= " o.date_purchased ".$HTTP_GET_VARS['order_type'];
     }else if($HTTP_GET_VARS['order_sort'] == 'orders_status_name'){
-      $order_str = " o.orders_status_name ".$HTTP_GET_VARS['order_type'];
+      $order_str .= " o.orders_status_name ".$HTTP_GET_VARS['order_type'];
     }
   }
   if ($HTTP_GET_VARS['order_type'] == 'asc') {
@@ -1043,7 +1049,10 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
       $orders_query_raw = "
         select distinct o.orders_id, 
                o.torihiki_date, 
-               IF(o.torihiki_date = '0000-00-00 00:00:00',1,0) as torihiki_date_error,
+               IF(o.torihiki_date = '0000-00-00 00:00:00' or o.torihiki_date ='',1,0) 
+                 as torihiki_date_error,
+               IF(o.date_purchased = '0000-00-00 00:00:00' or o.date_purchased ='',1,0) 
+                 as date_purchased_error,
                o.customers_name, 
                o.customers_id, 
                o.payment_method, 
@@ -1074,7 +1083,10 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
       $orders_query_raw = "
         select distinct o.orders_id, 
                o.torihiki_date, 
-               IF(o.torihiki_date = '0000-00-00 00:00:00',1,0) as torihiki_date_error,
+               IF(o.torihiki_date = '0000-00-00 00:00:00' or o.torihiki_date ='',1,0) 
+                 as torihiki_date_error,
+               IF(o.date_purchased = '0000-00-00 00:00:00' or o.date_purchased ='',1,0) 
+                 as date_purchased_error,
                o.customers_name, 
                o.customers_id, 
                o.payment_method, 
@@ -1105,7 +1117,10 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
       $orders_query_raw = "
         select distinct o.orders_id, 
                o.torihiki_date, 
-               IF(o.torihiki_date = '0000-00-00 00:00:00',1,0) as torihiki_date_error,
+               IF(o.torihiki_date = '0000-00-00 00:00:00' or o.torihiki_date ='',1,0) 
+                 as torihiki_date_error,
+               IF(o.date_purchased = '0000-00-00 00:00:00' or o.date_purchased ='',1,0) 
+                 as date_purchased_error,
                o.customers_id, 
                o.customers_name, 
                o.payment_method, 
@@ -1149,7 +1164,10 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
       $orders_query_raw = "
         select distinct(o.orders_id), 
                o.torihiki_date, 
-               IF(o.torihiki_date = '0000-00-00 00:00:00',1,0) as torihiki_date_error,
+               IF(o.torihiki_date = '0000-00-00 00:00:00' or o.torihiki_date ='',1,0) 
+                 as torihiki_date_error,
+               IF(o.date_purchased = '0000-00-00 00:00:00' or o.date_purchased ='',1,0) 
+                 as date_purchased_error,
                o.customers_id, 
                o.customers_name, 
                o.payment_method, 
@@ -1184,7 +1202,10 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
        $orders_query_raw = "
           select distinct(o.orders_id), 
                  o.torihiki_date, 
-                 IF(o.torihiki_date = '0000-00-00 00:00:00',1,0) as torihiki_date_error,
+               IF(o.torihiki_date = '0000-00-00 00:00:00' or o.torihiki_date ='',1,0) 
+                 as torihiki_date_error,
+               IF(o.date_purchased = '0000-00-00 00:00:00' or o.date_purchased ='',1,0) 
+                 as date_purchased_error,
                  o.customers_id, 
                  o.customers_name, 
                  o.payment_method, 
@@ -1216,7 +1237,10 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
       $orders_query_raw = "
         select o.orders_id, 
                o.torihiki_date, 
-               IF(o.torihiki_date = '0000-00-00 00:00:00',1,0) as torihiki_date_error,
+               IF(o.torihiki_date = '0000-00-00 00:00:00' or o.torihiki_date ='',1,0) 
+                 as torihiki_date_error,
+               IF(o.date_purchased = '0000-00-00 00:00:00' or o.date_purchased ='',1,0) 
+                 as date_purchased_error,
                o.customers_id, 
                o.customers_name, 
                o.payment_method, 
@@ -1248,7 +1272,10 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
       $orders_query_raw = "
         select o.orders_id, 
                o.torihiki_date, 
-               IF(o.torihiki_date = '0000-00-00 00:00:00',1,0) as torihiki_date_error,
+               IF(o.torihiki_date = '0000-00-00 00:00:00' or o.torihiki_date ='',1,0) 
+                 as torihiki_date_error,
+               IF(o.date_purchased = '0000-00-00 00:00:00' or o.date_purchased ='',1,0) 
+                 as date_purchased_error,
                o.customers_id, 
                o.customers_name, 
                o.payment_method, 
@@ -1313,7 +1340,10 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
       $orders_query_raw = "
         select distinct(o.orders_id), 
                o.torihiki_date, 
-               IF(o.torihiki_date = '0000-00-00 00:00:00',1,0) as torihiki_date_error,
+               IF(o.torihiki_date = '0000-00-00 00:00:00' or o.torihiki_date ='',1,0) 
+                 as torihiki_date_error,
+               IF(o.date_purchased = '0000-00-00 00:00:00' or o.date_purchased ='',1,0) 
+                 as date_purchased_error,
                o.customers_id, 
                o.customers_name, 
                o.payment_method, 
@@ -1347,7 +1377,10 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
     $orders_query_raw = "
         select o.orders_id, 
                o.torihiki_date, 
-               IF(o.torihiki_date = '0000-00-00 00:00:00',1,0) as torihiki_date_error,
+               IF(o.torihiki_date = '0000-00-00 00:00:00' or o.torihiki_date ='',1,0) 
+                 as torihiki_date_error,
+               IF(o.date_purchased = '0000-00-00 00:00:00' or o.date_purchased ='',1,0) 
+                 as date_purchased_error,
                o.customers_id, 
                o.customers_name, 
                o.payment_method, 
@@ -1390,7 +1423,10 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
       $orders_query_raw = "
         select distinct(o.orders_id), 
                o.torihiki_date, 
-               IF(o.torihiki_date = '0000-00-00 00:00:00',1,0) as torihiki_date_error,
+               IF(o.torihiki_date = '0000-00-00 00:00:00' or o.torihiki_date ='',1,0) 
+                 as torihiki_date_error,
+               IF(o.date_purchased = '0000-00-00 00:00:00' or o.date_purchased ='',1,0) 
+                 as date_purchased_error,
                o.customers_id, 
                o.customers_name, 
                o.payment_method, 
@@ -1418,7 +1454,10 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
       $orders_query_raw = "
         select distinct(o.orders_id), 
                o.torihiki_date, 
-               IF(o.torihiki_date = '0000-00-00 00:00:00',1,0) as torihiki_date_error,
+               IF(o.torihiki_date = '0000-00-00 00:00:00' or o.torihiki_date ='',1,0) 
+                 as torihiki_date_error,
+               IF(o.date_purchased = '0000-00-00 00:00:00' or o.date_purchased ='',1,0) 
+                 as date_purchased_error,
                o.customers_id, 
                o.customers_name, 
                o.payment_method, 
@@ -1447,7 +1486,10 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
     $orders_query_raw = "
         select distinct(o.orders_id), 
                o.torihiki_date, 
-               IF(o.torihiki_date = '0000-00-00 00:00:00',1,0) as torihiki_date_error,
+               IF(o.torihiki_date = '0000-00-00 00:00:00' or o.torihiki_date ='',1,0) 
+                 as torihiki_date_error,
+               IF(o.date_purchased = '0000-00-00 00:00:00' or o.date_purchased ='',1,0) 
+                 as date_purchased_error,
                o.customers_id, 
                o.customers_name, 
                o.payment_method, 
@@ -1507,7 +1549,10 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
         select distinct o.orders_status as orders_status_id, 
                o.orders_id, 
                o.torihiki_date, 
-               IF(o.torihiki_date = '0000-00-00 00:00:00',1,0) as torihiki_date_error,
+               IF(o.torihiki_date = '0000-00-00 00:00:00' or o.torihiki_date ='',1,0) 
+                 as torihiki_date_error,
+               IF(o.date_purchased = '0000-00-00 00:00:00' or o.date_purchased ='',1,0) 
+                 as date_purchased_error,
                o.customers_id, 
                o.customers_name, 
                o.payment_method, 
@@ -2267,8 +2312,12 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
       <!-- 订单商品 -->
       <tr>
         <td>
-
     <table border="0" width="100%" cellspacing="0" cellpadding="2">
+    <?php
+    //关于 多个 和单个配送的处理
+    //如果是一个 配送 使用原来的输出
+    if($order->info['shipping_method'] == 0){
+    ?>
       <tr class="dataTableHeadingRow">
         <td class="dataTableHeadingContent" colspan="2"><?php echo TABLE_HEADING_PRODUCTS; ?></td>
         <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_CHARACTER; ?></td>
@@ -2317,6 +2366,96 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
        '      <td class="dataTableContent" align="right" valign="top"><b>' . $tprice_with_tax . '</b></td>' . "\n";
         echo '    </tr>' . "\n";
       }
+        echo '<tr class="dataTableHeadingRow">';
+        echo "<td class='dataTableHeadingContent' colspan='2'>";
+        echo TEXT_SHIPPING_METHOD;
+        echo "</td>";
+        echo "<td class='dataTableHeadingContent' colspan='5' >";
+        echo TEXT_SHIPPING_ADDRESS;
+        echo "</td>";
+        echo '</tr>';
+        echo '<tr class="dataTableRow">'; 
+        echo "<td colspan='2'>";
+        echo $order->products[$i-1]['shipping_method'];
+        echo "</td>";
+        echo "<td colspan='5' >";
+        $address_arr = tep_get_address_by_cid_aid($order->customer['id'],
+            $order->products[$i-1]['address_book_id']);
+        echo $address_arr['text'];
+        echo "</td>";
+        echo "</tr>";
+    }else{
+      //多个订单的时候
+      for ($i = 0, $n = sizeof($order->products); $i < $n; $i++) {
+
+?>
+      <tr class="dataTableHeadingRow">
+        <td class="dataTableHeadingContent" colspan="2"><?php echo TABLE_HEADING_PRODUCTS; ?></td>
+        <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_CHARACTER; ?></td>
+        <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_PRODUCTS_MODEL; ?></td>
+        <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TAX; ?></td>
+        <!--<td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_PRICE_EXCLUDING_TAX; ?></td>-->
+        <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_PRICE_INCLUDING_TAX; ?></td>
+        <!--<td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TOTAL_EXCLUDING_TAX; ?></td>-->
+        <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TOTAL_INCLUDING_TAX; ?></td>
+      </tr>
+  <?php
+        echo '    <tr class="dataTableRow">' . "\n" . 
+       '      <td class="dataTableContent" valign="top" align="right">' . $order->products[$i]['qty']. tep_get_full_count2($order->products[$i]['qty'], $order->products[$i]['id'], $order->products[$i]['rate']) . '&nbsp;x</td>' . "\n" .
+       '      <td class="dataTableContent" valign="top">' . $order->products[$i]['name'];
+
+        if (isset($order->products[$i]['attributes']) && $order->products[$i]['attributes'] && ($k = sizeof($order->products[$i]['attributes'])) > 0) {
+          for ($j = 0; $j < $k; $j++) {
+            echo '<br><nobr><small>&nbsp;<i> - ' . $order->products[$i]['attributes'][$j]['option'] . ': ' . $order->products[$i]['attributes'][$j]['value'];
+            if ($order->products[$i]['attributes'][$j]['price'] != '0') echo ' (' . $order->products[$i]['attributes'][$j]['prefix'] . $currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . ')<br>';
+              echo '</i></small></nobr>';
+          }
+        }
+
+      if ( DISPLAY_PRICE_WITH_TAX == 'true' ) {
+        $price_with_tax = $currencies->format(
+        tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']),
+        true,
+        $order->info['currency'], $order->info['currency_value']);
+        $tprice_with_tax = $currencies->format(
+        tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'],
+        true,
+        $order->info['currency'],
+        $order->info['currency_value']);
+      } else {
+        $price_with_tax = $tprice_with_tax = '---';
+      }
+
+        echo '      </td>' . "\n" .
+       '      <td class="dataTableContent" valign="top" style="font-size:20px">' . htmlspecialchars($order->products[$i]['character']) . '</td>' . "\n" .
+       '      <td class="dataTableContent" valign="top">' . $order->products[$i]['model'] . '</td>' . "\n" .
+       '      <td class="dataTableContent" align="right" valign="top">' . tep_display_tax_value($order->products[$i]['tax']) . '%</td>' . "\n" .
+       '      <!--<td class="dataTableContent" align="right" valign="top"><b>' . $currencies->format($order->products[$i]['final_price'], true, $order->info['currency'], $order->info['currency_value']) . '</b></td>-->' . "\n" .
+       '      <td class="dataTableContent" align="right" valign="top"><b>' . $price_with_tax . '</b></td>' . "\n" .
+       '      <!--<td class="dataTableContent" align="right" valign="top"><b>' . $currencies->format($order->products[$i]['final_price'] * $order->products[$i]['qty'],true,$order->info['currency'],$order->info['currency_value']) . '</b></td>-->' . "\n" .
+       '      <td class="dataTableContent" align="right" valign="top"><b>' . $tprice_with_tax . '</b></td>' . "\n";
+        echo '    </tr>' . "\n";
+
+        echo '<tr class="dataTableHeadingRow">';
+        echo "<td class='dataTableHeadingContent' colspan='2'>";
+        echo TEXT_SHIPPING_METHOD;
+        echo "</td>";
+        echo "<td class='dataTableHeadingContent' colspan='5' >";
+        echo TEXT_SHIPPING_ADDRESS;
+        echo "</td>";
+        echo '</tr>';
+        echo '<tr class="dataTableRow">'; 
+        echo "<td colspan='2'>";
+        echo $order->products[$i]['shipping_method'];
+        echo "</td>";
+        echo "<td colspan='5' >";
+        $address_arr = tep_get_address_by_cid_aid($order->customer['id'],
+            $order->products[$i]['address_book_id']);
+        echo $address_arr['text'];
+        echo "</td>";
+        echo "</tr>";
+      }
+    }
   ?>
       <tr>
         <td align="right" colspan="9">
@@ -3117,7 +3256,18 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
         echo $default_status_res['orders_status_name']; 
       }
       */ 
-      echo $orders['orders_status_name']; 
+    /*
+      $o_history_sql = "select os.orders_status_name from
+      ".TABLE_ORDERS_STATUS_HISTORY. " osh , ".TABLE_ORDERS_STATUS. " os 
+      WHERE osh.orders_status_id = os.orders_status_id 
+      and osh.orders_id = '".$orders['orders_id']."' 
+      order by date_added desc limit 1";
+      $o_history_query = tep_db_query($o_history_sql);
+      if($o_history_row = tep_db_fetch_array($o_history_query)){
+        echo $o_history_row['orders_status_name'];
+      }
+      */
+    echo $orders['orders_status_name'];
     ?>
     <input type="hidden" name="os[]" id="orders_status_<?php echo $orders['orders_id']; ?>" value="<?php echo $orders['orders_status']; ?>"></font></td>
     <?php 

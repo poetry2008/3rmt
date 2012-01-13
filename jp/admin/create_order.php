@@ -1,6 +1,7 @@
 <?php
 require_once('includes/application_top.php');
 require_once('includes/step-by-step/new_application_top.php');
+require(DIR_WS_CLASSES . 'shipping.php');
 //处理本身表单 查找customer{{
 if(isset($_GET['site_id']) and isset($_GET['Customer_mail'] )){
   $email = $_GET['Customer_mail'];

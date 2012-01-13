@@ -25,12 +25,35 @@
       $order = tep_db_fetch_array($order_query);
 
       $totals_query = tep_db_query("
-        select title, text,value  
+        select title, text,value,class  
         from " . TABLE_ORDERS_TOTAL . " 
         where orders_id = '" . tep_db_input($order_id) . "' 
         order by sort_order
       ");
+      $shipping_total_flag = 0;
+      $shipping_total_sum = 0;
+      $temp_arr = array();
+      $sum_shipping_count_sql = "select count(class) as ot_shipping_sum   
+        from " . TABLE_ORDERS_TOTAL . " 
+        where orders_id = '" . tep_db_input($order_id) . "' 
+        and class='ot_shipping' 
+        order by sort_order";
+      $sum_shipping_count_query = tep_db_query($sum_shipping_count_sql);
+      $sum_shipping_count_row = tep_db_fetch_array($sum_shipping_count_query);
+      $real_sum_shipping_count = $sum_shipping_count_row['ot_shipping_sum'];
+      $temp_flag = true;
       while ($totals = tep_db_fetch_array($totals_query)) {
+        if($totals['class'] == 'ot_shipping'){
+          $shipping_total_sum += $totals['value'];
+          $shipping_total_flag++;
+          $temp_arr = array('title' => $totals['title'], 
+                            'value' => $shipping_total_sum,
+                            'text'  => $totals['text']);
+          continue;
+        }else if($shipping_total_flag==$real_sum_shipping_count&&$temp_flag){
+          $temp_flag = false;
+          $this->totals[] = $temp_arr;
+        }
         $this->totals[] = array('title' => $totals['title'],
                                 'value' => $totals['value'],
                                 'text'  => $totals['text']);
@@ -92,7 +115,8 @@
 'paypal_payerstatus' => $order['paypal_payerstatus'],
 'paypal_paymentstatus' => $order['paypal_paymentstatus'],
 'paypal_countrycode' => $order['paypal_countrycode'],
-'flag_qaf' => $order['flag_qaf']);
+'flag_qaf' => $order['flag_qaf'],
+'shipping_method' => $order['shipping_method']);
 
       $this->customer = array('name'           => $order['customers_name'],
                               'id'             => $order['customers_id'],
@@ -157,7 +181,10 @@
                                         'price'       => $orders_products['products_price'],
                                         'final_price' => $orders_products['final_price'],
                                         'rate'        => $orders_products['products_rate'],
-                                        'character'   => $orders_products['products_character']);
+                                        'character'   => $orders_products['products_character'],
+                                        'shipping_method' => $orders_products['shipping_method'],
+                                        'address_book_id' => $orders_products['address_book_id']
+                                        );
 
         $subindex = 0;
         $attributes_query = tep_db_query("
