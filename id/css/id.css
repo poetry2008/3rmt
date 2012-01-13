@@ -2223,3 +2223,70 @@ searching
     padding: 5px;
     width: 100%;
 }
+.checkout_payment_info{
+	*margin-top:5px;
+	font-size:12px;
+	padding:5px;
+	background: none repeat scroll 0 0 #D2CECE;
+    border: 1px solid #BDBCBC;
+	line-height:1.5;
+}
+.float_left{
+	float:left;
+}
+.txt_right{
+	text-align:right;
+}
+.box_content_title {
+    background-color:#F5F5F5;
+    clear: both;
+    line-height:21px;
+    overflow: hidden;
+    width: 100%;
+}
+.box_content_title_selected{
+	background:#eee;
+}
+.box_content_title input {
+    margin-right: 12px;
+	margin-top:4px;
+	*margin-top:0;
+}
+.frame_w70{
+	width:70%;
+	float:left;
+	padding-left:10px;
+}
+.float_right{
+	float:right;
+}
+.cp_content{
+	padding:0 20px;
+}
+.cp_content p{ color:#FF0000;}
+.cp_codefee{
+	margin-top:5px;
+}
+.txt_input_box{
+	overflow:hidden;
+	clear:both;
+	height:15%;
+}
+.frame_title{
+	width:40%;
+	float:left;
+	line-height:21px;
+}
+.clear{
+	clear:both;
+}
+.cp_description{
+	padding:0 20px;
+	margin:5px 0;
+}
+.box_waring {
+    background: none repeat scroll 0 0 #FFE6E6;
+    border: 1px solid #FF8E90;
+    padding: 5px;
+	font-size:12px;
+}

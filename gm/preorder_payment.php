@@ -9,7 +9,7 @@
     forward404(); 
   }
   require(DIR_WS_CLASSES. 'payment.php'); 
-  $payment_modules = new payment;
+  $payment_modules = payment::getInstance(SITE_ID);
   if (tep_session_is_registered('customer_id')) {
 //ccdd
     $account = tep_db_query("
@@ -88,7 +88,17 @@ function triggerHide(radio)
       $(".rowHide").find("input").attr("disabled","true");
       $(".rowHide_"+$(radio).val()).show();
       $(".rowHide_"+$(radio).val()).find("input").removeAttr("disabled");
-     }
+      
+      $("input[name=pre_payment]").each(function(index){
+	if ($(this).val() != $(radio).val()) {
+          $(this).parent().parent().removeClass(); 
+          $(this).parent().parent().addClass("box_content_title"); 
+        }
+      });
+      
+      $(radio).parent().parent().removeClass(); 
+      $(radio).parent().parent().addClass("box_content_title box_content_title_selected"); 
+ }
 }
 $(document).ready(function(){
     if($("input[name=pre_payment]").length == 1){
@@ -104,46 +114,11 @@ $(document).ready(function(){
 	  triggerHide(this);
 	}
       });
-    $(".moduleRow").click(function(){
-	triggerHide($(this).find("input:radio")[0]);
-      });
   });
 </script>
-<script type="text/javascript"><!--
-var selected;
-
-function selectRowEffect(object, buttonSelect) {
-  if (!selected) {
-    if (document.getElementById) {
-      selected = document.getElementById('defaultSelected');
-    } else {
-      selected = document.all['defaultSelected'];
-    }
-  }
-
-  if (selected) selected.className = 'moduleRow';
-  object.className = 'moduleRowSelected';
-  selected = object;
-
-// one button is not an array
-  if (document.preorder_product.pre_payment[0]) {
-    document.preorder_product.pre_payment[buttonSelect].checked=true;
-  } else {
-    document.preorder_product.pre_payment.checked=true;
-  }
-}
-
-function rowOverEffect(object) {
-  //if (object.className == 'moduleRow') object.className = 'moduleRowOver';
-}
-
-function rowOutEffect(object) {
-  //if (object.className == 'moduleRowOver') object.className = 'moduleRow';
-}
-
-//--></script>
 </head>
 <body>
+
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
 <!-- header_eof //-->
 <!-- body //-->
@@ -248,22 +223,17 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
     }
      
     if (!empty($_POST['pre_payment'])) {
-      $sel_payment_module = new $_POST['pre_payment']; 
-      
-      if (method_exists($sel_payment_module, 'preorder_confirmation_check')) {
-        $sn_type = $sel_payment_module->preorder_confirmation_check(); 
-        if ($sn_type) {
-          $sn_error_info = $sel_payment_module->get_preorder_error($sn_type); 
-          $error = true; 
-          $payment_error = true;
-          $payment_error_str = $sn_error_info; 
-        } else {
-          $payment_error = false;
-        }
+      $sn_type = $payment_modules->preorder_confirmation_check($_POST['pre_payment']); 
+      if ($sn_type) {
+        $sn_error_info = $payment_modules->get_preorder_error($_POST['pre_payment'], $sn_type); 
+        $error = true; 
+        $payment_error = true;
+        $payment_error_str = $sn_error_info; 
       } else {
         $payment_error = false;
       }
     }
+    
     if (isset($_GET['action']) && ($_GET['action'] == 'process') && ($error == false)) {
       $_POST['quantity'] = tep_an_zen_to_han($_POST['quantity']); 
       $preorder_id = date('Ymd').'-'.date('His').tep_get_preorder_end_num(); 
@@ -285,7 +255,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
           $preorder_email_subject = str_replace('${SITE_NAME}', STORE_NAME, PREORDER_MAIL_SUBJECT); 
           
           tep_mail(tep_get_fullname($account_values['customers_firstname'],$account_values['customers_lastname']), $account_values['customers_email_address'], $preorder_email_subject, $preorder_email_text, STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS); 
-          tep_mail('', SENTMAIL_ADDRESS, $preorder_email_subject, $preorder_email_text, tep_get_fullname($account_values['customers_firstname'],$account_values['customers_lastname']), $account_values['customers_email_address']);
+          tep_mail('', SENTMAIL_ADDRESS, $preorder_email_subject, $preorder_email_text, tep_get_fullname($account_values['customers_firstname'],$account_values['customers_lastname']), $account_values['customers_email_address']); 
       } else {
         $exists_customer_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_email_address = '".$_POST['from']."' and site_id = '".SITE_ID."'");    
         if (tep_db_num_rows($exists_customer_raw)) {
@@ -306,7 +276,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
             $preorder_email_text = str_replace($old_str_array, $new_str_array, PREORDER_MAIL_ACTIVE_CONTENT); 
             $preorder_email_subject = str_replace('${SITE_NAME}', STORE_NAME, PREORDER_MAIL_ACTIVE_SUBJECT); 
             $unactive_customers_single = true; 
-            $send_to_owner = true; 
+            $send_to_owner = true;  
             tep_db_query("update `".TABLE_CUSTOMERS."` set `check_login_str` = '".$encode_param_str."' where customers_id = '".$exists_customer_res['customers_id']."'");  
           } else {
             $preorder_email_text = PREORDER_MAIL_CONTENT; 
@@ -328,7 +298,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
         } else {
           $tmp_customer_id = tep_create_tmp_guest($_POST['from'], $_POST['lastname'], $_POST['firstname']); 
           $redirect_single = 1; 
-          $send_to_owner = true; 
+          $send_to_owner = true;  
           $encode_param_str = md5(time().$tmp_customer_id.$_POST['from']); 
           $active_url = HTTP_SERVER.'/preorder_auth.php?pid='.$encode_param_str; 
           
@@ -344,6 +314,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
           tep_db_query("update `".TABLE_CUSTOMERS."` set `check_login_str` = '".$encode_param_str."' where customers_id = '".$tmp_customer_id."'");  
         }
         tep_mail($from_name, $_POST['from'], $preorder_email_subject, $preorder_email_text, STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS); 
+        
         if (isset($send_to_owner)) {
           tep_mail('', SENTMAIL_ADDRESS, $preorder_email_subject, $preorder_email_text, $from_name, $_POST['from']); 
         }
@@ -385,112 +356,78 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
         echo '<span class="errorText"><b>入力した内容に誤りがございます。正しく入力してください。</span></b><br><br>';
       }
 ?>
-     <?php
-      $selection = $payment_modules->selection(); 
-    if (sizeof($selection) > 1) { 
-      ?>
-      <?php
-          if ($payment_error == true) {
-            echo '<table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxNotice">'; 
-            echo '<tr><td>'; 
-            echo '<table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxNotice">'; 
-            echo '<tr class="infoBoxNoticeContents">'; 
-            echo '<td class="main" width="100%" valign="top">';
+    <?php
+      $selection = $payment_modules->selection(1); 
+      if (sizeof($selection) > 1) { 
+        if ($payment_error == true) {
+            echo '<div class="box_waring">'; 
             if (isset($payment_error_str)) {
               echo $payment_error_str; 
             } else {
               echo TEXT_REQUIRED;
             }
-            echo '</td>'; 
-            echo '</tr>';
-            echo '</table>'; 
-            echo '</td></tr>'; 
-            echo '</table><br>';
-          }
+            echo '</div><br>'; 
+        }
+      }
+    ?>
+     
+    <div class="formAreaTitle"><?php echo FORM_FIELD_PREORDER_PAYMENT; ?></div>
+    <div class="checkout_payment_info">  
+    <?php
+    if (sizeof($selection) > 1) { 
       ?>
-      <div class="formAreaTitle"><?php echo FORM_FIELD_PREORDER_PAYMENT; ?></div>
-      <table width="100%" cellpadding="2" cellspacing="0" border="0" class="formArea">
-        <?php
-        $radio_buttons = 0; 
-        for ($i=0, $n=sizeof($selection); $i<$n; $i++) { 
-          if (defined('MODULE_PAYMENT_'.strtoupper($selection[$i]['id'].'_PREORDER_SHOW'))) {
-            if (constant('MODULE_PAYMENT_'.strtoupper($selection[$i]['id'].'_PREORDER_SHOW')) == 'False') {
+      <?php
+        foreach ($selection as $key => $singleSelection) { 
+          if (defined('MODULE_PAYMENT_'.strtoupper($singleSelection['id'].'_PREORDER_SHOW'))) {
+            if (constant('MODULE_PAYMENT_'.strtoupper($singleSelection['id'].'_PREORDER_SHOW')) == 'False') {
               continue; 
             }
             
-            if (!tep_whether_show_preorder_payment(constant('MODULE_PAYMENT_'.strtoupper($selection[$i]['id'].'_LIMIT_SHOW')))) {
+            if (!tep_whether_show_preorder_payment(constant('MODULE_PAYMENT_'.strtoupper($singleSelection['id'].'_LIMIT_SHOW')))) {
               continue; 
             }
             
-            if (check_money_limit(constant('MODULE_PAYMENT_'.strtoupper($selection[$i]['id'].'_MONEY_LIMIT')), $_POST['preorder_subtotal'])) {
+            if ($payment_modules->moneyInRange($singleSelection['id'], $_POST['preorder_subtotal'])) {
               continue; 
             }
           } else {
             continue; 
           }
         ?>
-        <tr>
-          <td>
-          <table border="0" width="100%" cellspacing="0" cellpadding="0" class="box_des02">
-          <?php
-          if ($n == 1) {
-            echo '                  <tr id="defaultSelected" class="moduleRowSelected" onmouseover="rowOverEffect(this)" onmouseout="rowOutEffect(this)" onclick="selectRowEffect(this, ' . $radio_buttons . ')">' . "\n";
-          } else {
-            echo '                  <tr class="moduleRow" onmouseover="rowOverEffect(this)" onmouseout="rowOutEffect(this)" onclick="selectRowEffect(this, ' . $radio_buttons . ')">' . "\n";
-          }
-          ?>
-                              <td width="10"></td> 
-                                <td class="main" colspan="3"><b><?php echo $selection[$i]['module']; ?></b></td> 
-                                <td class="main" align="right"><?php
-    if (sizeof($selection) > 1) {
-      echo tep_draw_radio_field('pre_payment', $selection[$i]['id']);
-    } else {
-      echo tep_draw_hidden_field('pre_payment', $selection[$i]['id']);
-    }
-?> </td> 
-                                <td width="10"></td> 
-                              </tr> <?php
-    if (isset($selection[$i]['error'])) {
-?> 
-                              <tr> 
-                                <td width="10"></td> 
-                                <td class="main" colspan="4"><?php echo $selection[$i]['error']; ?></td> 
-                                <td width="10"></td> 
-                              </tr> 
-                              <?php
-    } elseif (isset($selection[$i]['fields']) && is_array($selection[$i]['fields'])) {
-?> 
-                              <tr> 
-                                <td width="10"></td> 
-                                <td colspan="4"><table border="0" cellspacing="0" cellpadding="2" class="box_des"> 
-                                    <?php
-      for ($j=0, $n2=sizeof($selection[$i]['fields']); $j<$n2; $j++) {
-?> 
-                                    <tr> 
-                                      <td width="10"></td> 
-                                      <td class="main"><?php echo $selection[$i]['fields'][$j]['title']; ?></td> 
-                                      <td></td> 
-                                      <td class="main"><?php echo $selection[$i]['fields'][$j]['field']; ?></td> 
-                                      <td width="10"></td> 
-                                    </tr> 
-                                    <?php
-      }
-?> 
-                                  </table></td> 
-                                <td width="10"></td> 
-                              </tr> 
-                              <?php
-    }
-?> 
-            </table>
-          </td> 
-        </tr>
+        <div>
+          <div class="box_content_title <?php if ($_POST['pre_payment'] == $singleSelection['id']) {echo 'box_content_title_selected';};?>"> 
+            <div class="frame_w70"><b><?php echo $singleSelection['module'];?></b></div> 
+            <div class="float_right">
+            <?php echo tep_draw_radio_field('pre_payment', $singleSelection['id'], $_POST['pre_payment'] == $singleSelection['id']);?> 
+            </div>
+          </div>
+          <div>
+            <p class="cp_description"><?php echo $singleSelection['description'];?></p>
+            <div class="cp_content">
+              <div style="display:none;" class="rowHide rowHide_<?php echo $singleSelection['id'];?>">
+              <?php 
+                echo $singleSelection['fields_description']; 
+                foreach ($singleSelection['fields'] as $key2 => $field) {
+              ?>
+                <div class="txt_input_box">
+                  <?php if ($field['title']) {?>
+                  <div class="frame_title"><?php echo $field['title'];?></div> 
+                  <?php }?>
+                  <div class="float_left"><?php echo $field['field']?><small><font color="#AEOE30"><?php echo $field['message'];?></font></small></div> 
+                </div>
+              <?php
+                }
+              ?> 
+               <?php echo $singleSelection['footer'];?> 
+              </div>
+            </div>
+          </div>
+        </div>
         <?php 
-        $radio_buttons++; 
         }
-        ?> 
-      </table> 
-      <?php }?> 
+        ?>
+      <?php }?>
+       </div> 
       <br>
       <div class="formAreaTitle"><?php echo $product_info['products_name'].PREORDER_EXPECT_CTITLE; ?></div>
       <table width="100%" cellpadding="2" cellspacing="0" border="0" class="formArea">
@@ -500,7 +437,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
       <table border="0" width="100%" cellspacing="0" cellpadding="0">
         <tr>
           <td class="main">
-            <?php echo '<a href="javascript:void(0);" onclick="document.forms.form1.submit(0);">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?>
+           <?php echo '<a href="javascript:void(0);" onclick="document.forms.form1.submit(0);">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?>
           </td>
           <td align="right" class="main">
             <?php
@@ -533,20 +470,22 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
     }
   }
 ?>
-    </div>
+   
         <p class="pageBottom"></p>
     </div>      
     <!-- body_text_eof //-->
+	</div>
     <div id="r_menu">
       <!-- right_navigation //-->
       <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?>
       <!-- right_navigation_eof //-->
     </div>
+   
 <!-- body_eof //-->
 <!-- footer //-->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
 <!-- footer_eof //-->
-</div>
+</div> 
 </div>
 </body>
 </html>

@@ -88,7 +88,17 @@ function triggerHide(radio)
       $(".rowHide").find("input").attr("disabled","true");
       $(".rowHide_"+$(radio).val()).show();
       $(".rowHide_"+$(radio).val()).find("input").removeAttr("disabled");
-     }
+      
+      $("input[name=pre_payment]").each(function(index){
+	if ($(this).val() != $(radio).val()) {
+          $(this).parent().parent().removeClass(); 
+          $(this).parent().parent().addClass("box_content_title"); 
+        }
+      });
+      
+      $(radio).parent().parent().removeClass(); 
+      $(radio).parent().parent().addClass("box_content_title box_content_title_selected"); 
+ }
 }
 $(document).ready(function(){
     if($("input[name=pre_payment]").length == 1){
@@ -104,47 +114,8 @@ $(document).ready(function(){
 	  triggerHide(this);
 	}
       });
-    $(".moduleRow").click(function(){
-	triggerHide($(this).find("input:radio")[0]);
-      });
-    $(".moduleRowSelected").click(function(){
-	triggerHide($(this).find("input:radio")[0]);
-      });
   });
 </script>
-<script type="text/javascript"><!--
-var selected;
-
-function selectRowEffect(object, buttonSelect) {
-  if (!selected) {
-    if (document.getElementById) {
-      selected = document.getElementById('defaultSelected');
-    } else {
-      selected = document.all['defaultSelected'];
-    }
-  }
-
-  if (selected) selected.className = 'moduleRow';
-  object.className = 'moduleRowSelected';
-  selected = object;
-
-// one button is not an array
-  if (document.preorder_product.pre_payment[0]) {
-    document.preorder_product.pre_payment[buttonSelect].checked=true;
-  } else {
-    document.preorder_product.pre_payment.checked=true;
-  }
-}
-
-function rowOverEffect(object) {
-  if (object.className == 'moduleRow') object.className = 'moduleRowOver';
-}
-
-function rowOutEffect(object) {
-  if (object.className == 'moduleRowOver') object.className = 'moduleRow';
-}
-
-//--></script>
 </head>
 <body>
 <div align="center">
@@ -386,31 +357,27 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
         echo '<span class="errorText"><b>入力した内容に誤りがございます。正しく入力してください。</span></b><br><br>';
       }
 ?>
-     <?php
+    <?php
       $selection = $payment_modules->selection(1); 
-    if (sizeof($selection) > 1) { 
-      ?>
-      <?php
-          if ($payment_error == true) {
-            echo '<table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxNotice">'; 
-            echo '<tr class="infoBoxNoticeContents"><td>'; 
-            echo '<table border="0" width="100%" cellspacing="0" cellpadding="2">';
-            echo '<tr><td class="main" width="100%" valign="top">';
+      if (sizeof($selection) > 1) { 
+        if ($payment_error == true) {
+            echo '<div class="box_waring">'; 
             if (isset($payment_error_str)) {
               echo $payment_error_str; 
             } else {
               echo TEXT_REQUIRED;
             }
-            echo '</td></tr>';
-            echo '</table>'; 
-            echo '</td></tr>'; 
-            echo '</table><br>';
-          }
+            echo '</div><br>'; 
+        }
+      }
+    ?>
+     
+    <div class="formAreaTitle"><?php echo FORM_FIELD_PREORDER_PAYMENT; ?></div>
+    <div class="checkout_payment_info">  
+    <?php
+    if (sizeof($selection) > 1) { 
       ?>
-      <div class="formAreaTitle"><?php echo FORM_FIELD_PREORDER_PAYMENT; ?></div>
-      <table width="100%" cellpadding="2" cellspacing="0" border="0" class="formArea">
-                  <?php
-        $radio_buttons = 0; 
+      <?php
         foreach ($selection as $key => $singleSelection) { 
           if (defined('MODULE_PAYMENT_'.strtoupper($singleSelection['id'].'_PREORDER_SHOW'))) {
             if (constant('MODULE_PAYMENT_'.strtoupper($singleSelection['id'].'_PREORDER_SHOW')) == 'False') {
@@ -428,58 +395,40 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
             continue; 
           }
         ?>
-        <tr>
-          <td>
-          <table border="0" width="100%" cellspacing="0" cellpadding="0">
-          <?php
-            if ($_POST['pre_payment'] == $singleSelection['id']) {
-          ?>
-            <tr class="moduleRowSelected" onMouseOver="rowOverEffect(this)" onMouseOut="rowOutEffect(this)" onClick="selectRowEffect(this, <?php echo $radio_buttons;?>);">
-          <?php
-            } else {
-          ?>
-            <tr class="moduleRow" onMouseOver="rowOverEffect(this)" onMouseOut="rowOutEffect(this)" onClick="selectRowEffect(this, <?php echo $radio_buttons;?>);">
-          <?php
-            }
-          ?>
-            <td class="main"><b><?php echo $singleSelection['module']?></b></td> 
-            <td align="right">
-            <?php echo tep_draw_radio_field('pre_payment', $singleSelection['id'], $_POST['pre_payment']==$singleSelection['id']);?> 
-            </td>
-          </tr>
-          <tr>
-            <td colspan="2">
-            <div class="cp_description"><?php echo $singleSelection['description'];?></div> 
+        <div>
+          <div class="box_content_title <?php if ($_POST['pre_payment'] == $singleSelection['id']) {echo 'box_content_title_selected';};?>"> 
+            <div class="frame_w70"><b><?php echo $singleSelection['module'];?></b></div> 
+            <div class="float_right">
+            <?php echo tep_draw_radio_field('pre_payment', $singleSelection['id'], $_POST['pre_payment'] == $singleSelection['id']);?> 
+            </div>
+          </div>
+          <div>
+            <p class="cp_description"><?php echo $singleSelection['description'];?></p>
             <div class="cp_content">
-            <div style="display: none;" class="rowHide rowHide_<?php echo $singleSelection['id'];?>">
-            <?php echo $singleSelection['fields_description'];?> 
-            <?php
-            foreach ($singleSelection['fields'] as $key2 => $field) {
-            ?>
-            <div>
-            <div class="payment_field_title"><?php echo $field['title'];?></div> 
-            <div class="payment_field_field">
-            <?php echo $field['field'];?> 
-            <small><font color="#AE0E30"><?php echo $field['message'];?></font></small> 
+              <div style="display:none;" class="rowHide rowHide_<?php echo $singleSelection['id'];?>">
+              <?php 
+                echo $singleSelection['fields_description']; 
+                foreach ($singleSelection['fields'] as $key2 => $field) {
+              ?>
+                <div class="txt_input_box">
+                  <?php if ($field['title']) {?>
+                  <div class="frame_title"><?php echo $field['title'];?></div> 
+                  <?php }?>
+                  <div class="float_left"><?php echo $field['field']?><small><font color="#AEOE30"><?php echo $field['message'];?></font></small></div> 
+                </div>
+              <?php
+                }
+              ?> 
+               <?php echo $singleSelection['footer'];?> 
+              </div>
             </div>
-            </div>
-            <?php
-            }
-            ?>
-            <?php echo $singleSelection['footer'];?> 
-            </div> 
-            </div>
-            </td>
-          </tr>
-         </table>
-         </td>
-         </tr>
+          </div>
+        </div>
         <?php 
-          $radio_buttons++; 
         }
-        ?> 
-      </table> 
+        ?>
       <?php }?> 
+      </div>
       <br>
       <div class="formAreaTitle"><?php echo $product_info['products_name'].PREORDER_EXPECT_CTITLE; ?></div>
       <table width="100%" cellpadding="2" cellspacing="0" border="0" class="formArea">
@@ -522,7 +471,6 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
     }
   }
 ?>
-    </div>
         <p class="pageBottom"></p>
     </td>      
     <!-- body_text_eof //-->

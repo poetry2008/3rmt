@@ -292,7 +292,7 @@ class payment {
     $module = $this->getModule($payment);
     $s = $this->admin_selection(); 
     if($module){
-        return $module->validate_selection($s[strtoupper($payment)],$_POST);
+        return $module->validate_selection($s[strtoupper($payment)],$_POST,true);
     } else {
       return false;
     }

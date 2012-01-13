@@ -333,6 +333,7 @@ if (isset($payment_modules->modules[strtoupper($cpayment_code)]->show_add_commen
 } else {
   $mailoption['ORDER_COMMENT']    = trim($order_comment_str);
 }
+$mailoption['ADD_INFO'] = '';
 
 $email_order_text = $payment_modules->getOrderMailString($cpayment_code, $mailoption); 
 tep_mail($preorder['customers_name'], $preorder['customers_email_address'], EMAIL_TEXT_SUBJECT, $email_order_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
