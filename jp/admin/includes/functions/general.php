@@ -2954,12 +2954,15 @@ function orders_status_updated($orders_status_id) {
 }
 
 // 代替存储过程
-function orders_updated($orders_id) {
+function orders_updated($orders_id,$shipping_info = null) {
   tep_db_query("update ".TABLE_ORDERS." set language_id = ( select language_id from ".TABLE_ORDERS_STATUS." where orders_status.orders_status_id=orders.orders_status ) where orders_id='".$orders_id."'");
   tep_db_query("update ".TABLE_ORDERS." set finished = ( select finished from ".TABLE_ORDERS_STATUS." where orders_status.orders_status_id=orders.orders_status ) where orders_id='".$orders_id."'");
   tep_db_query("update ".TABLE_ORDERS." set orders_status_name = ( select orders_status_name from ".TABLE_ORDERS_STATUS." where orders_status.orders_status_id=orders.orders_status ) where orders_id='".$orders_id."'");
   tep_db_query("update ".TABLE_ORDERS." set orders_status_image = ( select orders_status_image from ".TABLE_ORDERS_STATUS." where orders_status.orders_status_id=orders.orders_status ) where orders_id='".$orders_id."'");
-  tep_db_query("update ".TABLE_ORDERS_PRODUCTS." set torihiki_date = ( select torihiki_date from ".TABLE_ORDERS." where orders.orders_id=orders_products.orders_id ) where orders_id='".$orders_id."'");
+  //tep_db_query("update ".TABLE_ORDERS_PRODUCTS." set torihiki_date = ( select torihiki_date from ".TABLE_ORDERS." where orders.orders_id=orders_products.orders_id ) where orders_id='".$orders_id."'");
+  if($shipping_info!=null){
+  orders_products_updated($orders_id,$shipping_info);
+  }
 }
 
 
@@ -6818,6 +6821,10 @@ function tep_get_torihiki_date_radio($start_time,$radio_name="torihiki_time",$de
         . TABLE_ADDRESS_BOOK . " where customers_id = '" . (int)$customers_id . "'";
     $res_arr = array();
     $address_query = tep_db_query($address_sql);
+    $temp_arr = array();
+    $temp_arr['text'] = TEXT_SELECTED_ADDRESS_BOOK;
+    $temp_arr['value'] = 0; 
+    $res_arr[] = $temp_arr;
     while($address = tep_db_fetch_array($address_query)){
       $temp_arr = array();
       $format_id = tep_get_address_format_id($address['country_id']);
@@ -6850,7 +6857,11 @@ function tep_get_address_by_cid_aid($customers_id, $address_id = 1, $html = fals
       $res_arr[] = $temp_arr;
     
     }
-    return $res_arr;
+    if(count($res_arr)>1){
+      return $res_arr;
+    }else{
+      return $res_arr[0];
+    }
   }
 function tep_get_products_list_by_order_id($oid){
   $sql = "select * from " . TABLE_ORDERS_PRODUCTS . " where orders_id
@@ -6861,4 +6872,34 @@ function tep_get_products_list_by_order_id($oid){
     $products_list[] = $row;
   }
   return $products_list;
+}
+function orders_products_updated($orders_id,$shipping_info){
+  $time_arr = explode('-',$shipping_info['shipping_time']);
+  $start = $shipping_info['shipping_date']." ".$time_arr[0];
+  $end = $shipping_info['shipping_date']." ".$time_arr[1];
+  //这里修改 订单的产品
+  $sql = "UPDATE ".TABLE_ORDERS_PRODUCTS." SET
+    `torihiki_date`='".$start."',
+    `torihiki_date_end`='".$end."',
+    `address_book_id`='".$shipping_info['shipping_address']."',
+    `shipping_method`='".$shipping_info['shipping_method']."',
+    `torihiki_houhou`='".$shipping_info['torihiki_houhou']."'
+    WHERE `orders_id` = '".$orders_id."'";
+  tep_db_query($sql);
+}
+function tep_get_shipping_products($oid){
+  $sql = "SELECT shipping_pid FROM ".TABLE_ORDERS_TOTAL." WHERE orders_id ='"
+    .$oid."'";
+  $query = tep_db_query($sql);
+  $pid_arr = array();
+  while($row = tep_db_fetch_array($query)){
+    if($row['shipping_pid']){
+      $pid_arr[] = $row['shipping_pid'];
+    }
+  }
+  if(empty($pid_arr)){
+    return false;
+  }else{
+    return $pid_arr;
+  }
 }
