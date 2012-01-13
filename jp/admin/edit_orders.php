@@ -66,6 +66,7 @@ $order_query = tep_db_query("
 // 最新の注文情報取得
 $order = new order($oID);
 $shipping_modules = shipping::getInstance($order->info['site_id']);
+$cpayment = payment::getInstance($order->info['site_id']);
 // ポイントを取得する
 $customer_point_query = tep_db_query("
     select point 
@@ -499,7 +500,7 @@ if (tep_not_null($action)) {
       //  $newtotal = '0';
       //}
 
-      $handle_fee = new_calc_handle_fee($_POST['payment_method'], $newtotal, $oID);
+      $handle_fee = $cpayment->handle_calc_fee($_POST['payment_method'], $newtotal);
       //$newtotal = $newtotal + $_POST['payment_code_fee']; 
       $newtotal = $newtotal+$handle_fee;
       /*
@@ -799,7 +800,7 @@ if (tep_not_null($action)) {
             $newtotal = $total_value["total_value"];
           }
         }
-        $handle_fee = new_calc_handle_fee($order->info['payment_method'], $newtotal, $oID);
+        $handle_fee = $cpayment->handle_calc_fee(payment::changeRomaji($order->info['payment_method'], PAYMENT_RETURN_TYPE_CODE), $newtotal);
         $newtotal   = $newtotal+$handle_fee;
 
         /* delete text for update 
@@ -938,7 +939,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     <tr>
     <td class="main" valign="top"><b><?php echo EDIT_ORDERS_PAYMENT_METHOD;?></b></td>
     <td class="main">
-    <?php echo payment::makePaymentListPullDownMenu($order->info['payment_method']);?>
+    <?php echo payment::makePaymentListPullDownMenu(payment::changeRomaji($order->info['payment_method'], PAYMENT_RETURN_TYPE_CODE));?>
     <?php echo EDIT_ORDERS_PAYMENT_METHOD_READ;?> 
     </td>
     </tr>
