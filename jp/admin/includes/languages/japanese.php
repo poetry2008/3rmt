@@ -534,3 +534,7 @@ define('TEXT_COMMENT_NOTE','内容');
 define('TEXT_COLOR','メモの色');
 define('TEXT_TITLE_NOTE','タイトル');
 define('HEADER_TEXT_CREATE_PREORDER', '予約作成');
+
+define('TEXT_TORIHIKI_REPLACE_STR','～');
+define('TEXT_TORIHIKI_HOUR_STR','時');
+define('TEXT_TORIHIKI_MIN_STR','分');
