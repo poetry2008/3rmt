@@ -47,7 +47,7 @@ class buying extends basePayment  implements paymentInterface  {
                  array(
                        "code"=>'bank_kouza_name',
                        "title"=>TS_TEXT_BANK_KOUZA_NAME,
-                       "field"=>tep_draw_input_field('bank_kouza_name', $theData['bank_kouza_name']).'<br>'.TS_TEXT_BANK_KOUZA_NAME_READ,
+                       "field"=>tep_draw_input_field('bank_kouza_name', $theData['bank_kouza_name']).((!$back)?'<br>'.TS_TEXT_BANK_KOUZA_NAME_READ:''),
                        "rule"=>basePayment::RULE_NOT_NULL,
                        ),
                  );
