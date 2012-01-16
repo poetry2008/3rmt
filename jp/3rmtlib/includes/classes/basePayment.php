@@ -20,7 +20,7 @@ class BasePayment
   const RULE_EMAIL = 'validation_email';
   const RULE_EMAIL_MSG = '入力内容を確認し、再度入力してください。';
   const RULE_SAME_TO_MSG = '入力内容を確認し、再度入力してください。';
-  const REQUIRE_MSG = '<span class="fieldRequired">必須</span>';
+  const REQUIRE_MSG = '<span class="fieldRequired">Error</span>';
   function __construct($site_id = 0){
     global $order;
     $this->site_id = $site_id;
