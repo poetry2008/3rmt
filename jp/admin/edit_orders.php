@@ -107,7 +107,7 @@ if (tep_not_null($action)) {
         tep_redirect(tep_href_link("edit_orders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
         break;
       }
-
+      
       if (isset($update_tori_torihiki_date)) { //日時が有効かチェック
         if (!preg_match('/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/', $update_tori_torihiki_date, $m)) { // check the date format
           $messageStack->add('日時フォーマットが間違っています。 "2008-01-01 10:30:00"', 'error');
@@ -123,7 +123,7 @@ if (tep_not_null($action)) {
         $action = 'edit';
         break;
       }
-
+      
       foreach ($update_totals as $total_index => $total_details) {    
         extract($total_details,EXTR_PREFIX_ALL,"ot");
         if ($ot_class == "ot_point" && (int)$ot_value > 0) {
@@ -172,7 +172,7 @@ if (tep_not_null($action)) {
         delivery_state = '" . tep_db_input(stripslashes($update_delivery_state)) . "',
         delivery_postcode = '" . tep_db_input($update_delivery_postcode) . "',
         delivery_country = '" . tep_db_input(stripslashes($update_delivery_country)) . "',
-        payment_method = '" . tep_db_input($_POST['payment_method']) . "',
+        payment_method = '" .  tep_db_input(payment::changeRomaji($_POST['payment_method'], PAYMENT_RETURN_TYPE_TITLE)) . "',
         torihiki_date = '" . tep_db_input($update_tori_torihiki_date) . "',
         torihiki_houhou = '" . tep_db_input($update_tori_torihiki_houhou) . "',
         cc_type = '" . tep_db_input($update_info_cc_type) . "',

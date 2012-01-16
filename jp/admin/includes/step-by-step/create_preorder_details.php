@@ -110,10 +110,10 @@
               ?>
               <tr class="rowHide rowHide_<?php echo $singleton['id'];?>">
                 <td class="main">
-                <?php echo $field['title'];?> 
+                &nbsp;<?php echo $field['title'];?> 
                 </td>
                 <td class="main">
-                <?php echo $field['field'];?> 
+                &nbsp;&nbsp;<?php echo $field['field'];?> 
                 <font color="#red"><?php echo $field['message'];?></font> 
                 </td>
               </tr>
