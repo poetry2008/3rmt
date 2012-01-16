@@ -198,7 +198,7 @@ function hidden_payment(){
 <?php
   // オプションのリスト作成
   $torihiki_array = explode("\n", DS_TORIHIKI_HOUHOU);
-  $torihiki_list[] = array('id' => '', 'text' => '選択してください');
+  $torihiki_list[] = array('id' => '', 'text' => TEXT_TORIHIKI_LIST_DEFAULT_TXT);
   for($i=0; $i<sizeof($torihiki_array); $i++) {
     $torihiki_list[] = array('id' => $torihiki_array[$i],
                 'text' => $torihiki_array[$i]);

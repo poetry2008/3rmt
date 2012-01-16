@@ -47,7 +47,7 @@ $payment_array = payment::getPaymentList();
 if(!isset($selections)){
 $selections = $cpayment->admin_selection();
 }
-$payment_list[] = array('id' => 'payment_null', 'text' => '支払方法を選択してください');
+$payment_list[] = array('id' => 'payment_null', 'text' => TEXT_PAYMENT_NULL_TXT);
 //}}
 
 require_once(DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_CREATE_ORDER);

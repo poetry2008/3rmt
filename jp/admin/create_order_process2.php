@@ -342,11 +342,11 @@
   // 買取（口座情報をコメントに追加）
   if (isset($bank_name) && $bank_name != '') {
 
-    $comments  = '金融機関名　　　　：' . $bank_name . "\n";
-    $comments .= '支店名　　　　　　：' . $bank_shiten . "\n";
-    $comments .= '口座種別　　　　　：' . $bank_kamoku . "\n";
-    $comments .= '口座番号　　　　　：' . $bank_kouza_num . "\n";
-    $comments .= '口座名義　　　　　：' . $bank_kouza_name;
+    $comments  = TEXT_BANK_NAME_PROCESS . $bank_name . "\n";
+    $comments .= TEXT_BANK_SHITEN_PROCESS . $bank_shiten . "\n";
+    $comments .= TEXT_BANK_KAMOKU_PROCESS . $bank_kamoku . "\n";
+    $comments .= TEXT_BANK_KOUZA_NUM_PROCESS . $bank_kouza_num . "\n";
+    $comments .= TEXT_BANK_KOUZA_NAME_PROCESS . $bank_kouza_name;
     /*
     $sql_data_array = array('orders_id' => $insert_id, 
                 'orders_status_id'  => $new_value, 

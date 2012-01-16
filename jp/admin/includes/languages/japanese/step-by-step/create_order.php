@@ -59,4 +59,6 @@ define('CREATE_ORDER_TEL_TEXT', '電話番号:');
 define('TEXT_CREATE_ADDRESS_BOOK','お届け先を指定する');
 define('TEXT_USE_ADDRESS_BOOK','登録先に届ける');
 define('TEXT_TORIHIKIBOUBI_DEFAULT_SELECT','ご希望のお届け日時を指定してください');
+
+
 ?>

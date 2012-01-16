@@ -33,4 +33,10 @@ define('CATEGORY_ORDER_DETAILS','通貨設定');
 
 define('CATEGORY_CORRECT', '顧客情報');
 define('CREATE_ORDER_RED_TITLE_TEXT', '入力情報に誤りがあります');
+
+define('TEXT_BANK_NAME_PROCESS','金融機関名　　　　：');
+define('TEXT_BANK_SHITEN_PROCESS','支店名　　　　　　：');
+define('TEXT_BANK_KAMOKU_PROCESS','口座種別　　　　　：');
+define('TEXT_BANK_KOUZA_NUM_PROCESS','口座番号　　　　　：');
+define('TEXT_BANK_KOUZA_NAME_PROCESS','口座名義　　　　　：');
 ?>
