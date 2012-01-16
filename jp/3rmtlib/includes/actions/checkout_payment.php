@@ -1,4 +1,5 @@
 <?php
+require_once DIR_WS_LANGUAGES . $language . '/' . FILENAME_CHECKOUT_PAYMENT;
 // if the customer is not logged on, redirect them to the login page
 if (!tep_session_is_registered('customer_id')) {
   $navigation->set_snapshot();
@@ -64,7 +65,6 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
   $point = tep_db_fetch_array($point_query);
 }
 require_once DIR_WS_CLASSES . 'payment.php';
-require_once DIR_WS_LANGUAGES . $language . '/' . FILENAME_CHECKOUT_PAYMENT;
 
 
 

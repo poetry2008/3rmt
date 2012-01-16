@@ -223,7 +223,8 @@ class payment {
         '    error = 1;' . "\n" .
         '  }' . "\n\n" .
         '  if (gold_value > gold_max || gold_value < 0 ) {' . "\n" .
-        '    error_message = error_message + "' . '獲得ポイントより多くのポイントを指定しているか、マイナスの値を指定しています。' . '";' . "\n" .
+        '    error_message = error_message + "' .
+            JS_ERROR_POINT . '";' . "\n" .
         '    error = 1;' . "\n" .
         '  }' . "\n\n" .
         '  if (error == 1) {' . "\n" .
