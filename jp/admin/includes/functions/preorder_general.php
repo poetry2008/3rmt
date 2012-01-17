@@ -726,18 +726,18 @@ function tep_get_pre_orders_products_string($orders, $single = false, $popup = f
     } 
   }
   //$str .= '<tr><td colspan="2">&nbsp;</td></tr>';
-  $str .= '<tr><td class="main" width="150"><b>支払方法：</b></td><td class="main" style="color:darkred;"><b>'.$orders['payment_method'].'</b></td></tr>';
+  $str .= '<tr><td class="main" width="150"><b>'.TEXT_PREORDER_PAYMENT_METHOD.'</b></td><td class="main" style="color:darkred;"><b>'.$orders['payment_method'].'</b></td></tr>';
   //$str .= '<tr><td class="main"><b>入金日：</b></td><td class="main" style="color:red;"><b>'.($pay_time?date('m月d日',strtotime($pay_time)):'入金まだ').'</b></td></tr>';
   if ($orders['confirm_payment_time'] != '0000-00-00 00:00:00') {
-    $time_str = date('Y年n月j日', strtotime($orders['confirm_payment_time'])); 
+    $time_str = date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT, strtotime($orders['confirm_payment_time'])); 
   } else {
-    $time_str = '入金まだ'; 
+    $time_str = TEXT_PREORDER_NOT_COST; 
   }
   if($time_str) {
-    $str .= '<tr><td class="main"><b>入金日：</b></td><td class="main" style="color:red;"><b>'.$time_str.'</b></td></tr>';
+    $str .= '<tr><td class="main"><b>'.TEXT_PREORDER_COST_DATE.'</b></td><td class="main" style="color:red;"><b>'.$time_str.'</b></td></tr>';
   }
   $str .= '<tr><td colspan="2">&nbsp;</td></tr>';
-  $str .= '<tr><td class="main"><b>オプション：</b></td><td class="main" style="color:blue;"><b>'.$orders['torihiki_houhou'].'</b></td></tr>';
+  $str .= '<tr><td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_OPTION.'</b></td><td class="main" style="color:blue;"><b>'.$orders['torihiki_houhou'].'</b></td></tr>';
 
   $orders_products_query = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." op,".TABLE_PRODUCTS." p where p.products_id = op.products_id and op.orders_id = '".$orders['orders_id']."'");
   $autocalculate_arr = array();
@@ -767,15 +767,15 @@ function tep_get_pre_orders_products_string($orders, $single = false, $popup = f
     $products_attributes_query = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS_ATTRIBUTES." where orders_products_id='".$p['orders_products_id']."'");
     if(in_array(array($p['products_id'],$p['orders_products_id']),$autocalculate_arr)&&
         !empty($autocalculate_arr)){
-      $str .= '<tr><td class="main"><b>商品：</b><font color="red">「入」</font></td><td class="main">'.$p['products_name'].'</td></tr>';
+      $str .= '<tr><td class="main"><b>'.TEXT_PREORDER_PRODUCTS_NAME.'</b><font color="red">「'.TEXT_PREORDER_PRODUCTS_ENTRANCE.'」</font></td><td class="main">'.$p['products_name'].'</td></tr>';
     }else{
-      $str .= '<tr><td class="main"><b>商品：</b><font color="red">「未」</font></td><td class="main">'.$p['products_name'].'</td></tr>';
+      $str .= '<tr><td class="main"><b>'.TEXT_PREORDER_PRODUCTS_NAME.'</b><font color="red">「'.TEXT_PREORDER_PRODUCTS_NOENTRANCE.'」</font></td><td class="main">'.$p['products_name'].'</td></tr>';
     }
-    $str .= '<tr><td class="main"><b>個数：</b></td><td class="main">'.$p['products_quantity'].'個'.tep_get_full_count2($p['products_quantity'], $p['products_id'], $p['products_rate']).'</td></tr>';
+    $str .= '<tr><td class="main"><b>'.TEXT_PREORDER_PRODUCTS_NUM.'</b></td><td class="main">'.$p['products_quantity'].TEXT_PREORDER_PRODUCTS_UNIT.tep_get_full_count2($p['products_quantity'], $p['products_id'], $p['products_rate']).'</td></tr>';
     while($pa = tep_db_fetch_array($products_attributes_query)){
       $str .= '<tr><td class="main"><b>'.$pa['products_options'].'：</b></td><td class="main">'.$pa['products_options_values'].'</td></tr>';
     }
-    $str .= '<tr><td class="main"><b>キャラ名：</b></td><td style="font-size:20px;color:#407416;"><b>'.$p['products_character'].'</b></td></tr>';
+    $str .= '<tr><td class="main"><b>'.TEXT_PREORDER_PRODUCTS_CHARACTER_NAME.'</b></td><td style="font-size:20px;color:#407416;"><b>'.$p['products_character'].'</b></td></tr>';
     $names = tep_get_computers_names_by_preorders_id($orders['orders_id']);
     if ($names) {
       $str .= '<tr><td class="main"><b>PC：</b></td><td class="main">'.implode('&nbsp;,&nbsp;', $names).'</td></tr>';
