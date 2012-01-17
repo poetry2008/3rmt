@@ -547,3 +547,9 @@ define('TEXT_PREORDER_PRODUCTS_ENTRANCE', '入');
 define('TEXT_PREORDER_PRODUCTS_NUM', '個数：');
 define('TEXT_PREORDER_PRODUCTS_UNIT', '個');
 define('TEXT_PREORDER_PRODUCTS_CHARACTER_NAME', 'キャラ名：');
+
+
+
+
+define('TEXT_PAYMENT_NULL_TXT','支払方法を選択してください');
+define('TEXT_TORIHIKI_LIST_DEFAULT_TXT','選択してください');
