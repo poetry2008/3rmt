@@ -36,9 +36,8 @@
   <td class="main">&nbsp;<?php echo ENTRY_LAST_NAME;?></td>
   <td class="main">
      &nbsp;
-     <?php echo tep_draw_input_field('lastname', $lastname) . '&nbsp;' . ENTRY_LAST_NAME_TEXT;?>
-     &nbsp;&nbsp;
-     <?php echo CREATE_ORDER_NOTICE_ONE;
+     <?php echo tep_draw_input_field('lastname', $lastname) . '&nbsp;' . 
+     ENTRY_LAST_NAME_TEXT;?>&nbsp;&nbsp;<?php echo CREATE_ORDER_NOTICE_ONE;
      if (isset($entry_firstname_error) && $entry_firstname_error == true) { 
        echo '&nbsp;&nbsp;<font color="red">Error</font>'; 
      }
@@ -46,16 +45,13 @@
    </td>
 </tr>
 <tr>
-<td class="main">&nbsp;
-
-<?php
+<td class="main">&nbsp;<?php
 echo ENTRY_FIRST_NAME;
 ?></td>
 <td class="main">&nbsp;
 <?php
 echo tep_draw_input_field('firstname', $firstname) . '&nbsp;' . ENTRY_FIRST_NAME_TEXT;
-?>&nbsp;&nbsp;
-<?php
+?>&nbsp;&nbsp;<?php
 echo CREATE_ORDER_NOTICE_ONE;?>
   
 <?php
@@ -63,8 +59,7 @@ if (isset($entry_lastname_error) && $entry_lastname_error == true) { echo '&nbsp
 ?></td>
 </tr>
 <tr>
-<td class="main">&nbsp;
-<?php
+<td class="main">&nbsp;<?php
 echo ENTRY_EMAIL_ADDRESS;
 ?></td>
 <td class="main">&nbsp;
@@ -188,7 +183,7 @@ for($i=0; $i<sizeof($payment_array[0]); $i++) {
   <tr>
   <td class="main"><table border="0" cellspacing="0" cellpadding="2">
   <tr>
-  <td class="main">&nbsp;
+  <td class="main" valign="top">&nbsp;
 <?php
 echo CREATE_ORDER_PAYMENT_TITLE;?>:</td>
 <td class="main">&nbsp;
@@ -212,14 +207,17 @@ if (isset($entry_payment_method_error ) && $entry_payment_method_error == true) 
 
 foreach ($selections as $se){
 ?>
-  <div class='rowHide rowHide_<?php echo $se["id"];?>'>
 <?php
   foreach($se['fields'] as $field ){
-    echo $field['title'];
-    echo $field['field'];
-    echo "<span>".$field['message']."</span>";
+    echo '<tr class="rowHide rowHide_'.$se['id'].'">';
+    echo '<td class="main">';
+    echo "&nbsp;".$field['title']."</td>";
+    echo "<td class='main'>";
+    echo "&nbsp;&nbsp;".$field['field'];
+    echo "<font color='#red'>".$field['message']."</font>";
+    echo "</td>";
+    echo "</tr>";
   }?>
-  </div>
 <?php
 }
 ?>

@@ -7,6 +7,8 @@ require('includes/step-by-step/new_application_top.php');
 //此页能是POST过来 ，如果不是 则 跳转 到 CREATE_ORDER
 if(isGet()){
 tep_redirect(tep_redirect(tep_href_link(FILENAME_CREATE_ORDER, null, 'SSL')));
+}else if(!$_POST['email_address']){
+tep_redirect(tep_redirect(tep_href_link(FILENAME_CREATE_ORDER, null, 'SSL')));
 }
 require(DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_CREATE_ORDER_PROCESS);
 //debug info
@@ -180,21 +182,29 @@ $sql_data_array = array('orders_id'     => $insert_id,
 			'orders_status'               => DEFAULT_ORDERS_STATUS_ID,
 			'currency'                    => $currency,
 			'currency_value'              => $currency_value,
-			'payment_method'              => $payment_method,
+			'payment_method'              => payment::changeRomaji($payment_method,
+                            'title'),
                         //           	'torihiki_houhou'             => $torihikihouhou,
            	'torihiki_houhou'             => '',
 			'torihiki_date'               => tep_db_input($date . ' ' . $hour . ':' . $min . ':00'),
 			'site_id'                     => $site_id,
 			'orders_wait_flag'            => '1'
 			); 
-$comment = $payment_modules->admin_deal_comment('');
-$sql_data_array['orders_comment'] = $comment;
+$comment = $payment_modules->dealComment($payment_method,$comment);
+//$sql_data_array['orders_comment'] = $comment;
 //创建订单
 tep_db_perform(TABLE_ORDERS, $sql_data_array);
 
 
 last_customer_action();
 orders_updated($insert_id);
+
+$sql_data_array = array('orders_id' => $insert_id, 
+              'orders_status_id' => $new_value, 
+              'date_added' => 'now()', 
+              'customer_notified' => '1',
+              'comments' => $comment);
+tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
 
 require(DIR_FS_CATALOG . 'includes/classes/order.php');
 $order = new order($insert_id);

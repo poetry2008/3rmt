@@ -42,7 +42,7 @@ class buying extends basePayment  implements paymentInterface  {
                        "code"=>'bank_kouza_num',
                        "title"=>TS_TEXT_BANK_KOUZA_NUM,
                        "field"=>tep_draw_input_field('bank_kouza_num', $theData['bank_kouza_num']),
-                       "rule"=>basePayment::RULE_NOT_NULL,
+                       "rule"=>array(basePayment::RULE_NOT_NULL,basePayment::RULE_IS_NUMBER)
                        ),
                  array(
                        "code"=>'bank_kouza_name',
@@ -310,6 +310,13 @@ class buying extends basePayment  implements paymentInterface  {
       $bbbank .= TS_TEXT_BANK_KAMOKU . '：' .  $_SESSION[$session_paymentinfo_name]['bank_kamoku'] . "\n";
       $bbbank .= TS_TEXT_BANK_KOUZA_NUM . '：' .  $_SESSION[$session_paymentinfo_name]['bank_kouza_num'] . "\n";
       $bbbank .= TS_TEXT_BANK_KOUZA_NAME . '：' .  $_SESSION[$session_paymentinfo_name]['bank_kouza_name'];
+    }else{
+      global $_POST;
+      $bbbank = TS_TEXT_BANK_NAME . '：' .  $_POST['bank_name'] . "\n";
+      $bbbank .= TS_TEXT_BANK_SHITEN . '：' .  $_POST['bank_shiten'] . "\n";
+      $bbbank .= TS_TEXT_BANK_KAMOKU . '：' .  $_POST['BANK_KAmoku'] . "\n";
+      $bbbank .= TS_TEXT_BANK_KOUZA_NUM . '：' .  $_POST['bank_kouza_num'] . "\n";
+      $bbbank .= TS_TEXT_BANK_KOUZA_NAME . '：' .  $_POST['bank_kouza_name'];
     }
     $comment = $bbbank ."\n".$comment;
     return $comment;
