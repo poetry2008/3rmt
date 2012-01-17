@@ -2561,7 +2561,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
       <?php
       }
       ?>
-      <?php echo strip_tags(tep_get_pre_ot_total_by_orders_id($orders['orders_id'],true));?>
+      <?php echo strip_tags(tep_get_pre_ot_total_by_orders_id_no_abs($orders['orders_id'],true));?>
       <?php
       if ($orders['is_active'] == '0') {
       ?>
@@ -2579,7 +2579,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
       ?>
       <span style="color:#999999;"> 
       <?php }?> 
-      <?php echo strip_tags(tep_get_pre_ot_total_by_orders_id($orders['orders_id'], true));?>
+      <?php echo strip_tags(tep_get_pre_ot_total_by_orders_id_no_abs($orders['orders_id'], true));?>
       <?php
       if ($orders['is_active'] == '0') {
       ?>
