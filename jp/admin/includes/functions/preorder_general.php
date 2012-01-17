@@ -608,73 +608,6 @@ function preorders_a($orders_id, $allorders = null, $site_id = 0)
   return $str;
 }
 
-/*
-function tep_get_list_payment_info() {
-  global $language;
-
-  $payment_directory = DIR_FS_CATALOG_MODULES .'payment/';
-  $payment_array = array();
-  $payment_list_info = array();
-  if ($dh = @dir($payment_directory)) {
-    while ($payment_file = $dh->read()) {
-      if (!is_dir($payment_directory.$payment_file)) {
-        if (substr($payment_file, strrpos($payment_file, '.')) == '.php') {
-          $payment_array[] = $payment_file; 
-        }
-      }
-    }
-    sort($payment_array);
-    $dh->close();
-  }
-
-  for ($i = 0, $n = sizeof($payment_array); $i < $n; $i++) {
-    $payment_filename = $payment_array[$i]; 
-    include(DIR_WS_LANGUAGES . $language . '/modules/payment/' . $payment_filename); 
-    include($payment_directory . $payment_filename); 
-    $payment_class = substr($payment_filename, 0, strrpos($payment_filename, '.'));
-    if (tep_class_exists($payment_class)) {
-      $payment_module = new $payment_class; 
-      $payment_list_array[] = array($payment_module->title, $payment_module->code); 
-    }
-  }
-
-  return $payment_list_array;
-}
-function prenew_calc_handle_fee($payment_name, $products_total, $oID)
-{
-  $oid_query = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$oID."'"); 
-  $oid_res = tep_db_fetch_array($oid_query);
-  if ($oid_res) {
-    $site_id = $oid_res['site_id']; 
-  } else {
-    $site_id = 0; 
-  } 
-
-  if ($products_total == 0) {
-    return 0; 
-  }
-  $handle_fee = 0; 
-  $payment_list_info = tep_get_list_payment_info();
-  if (!empty($payment_list_info)) {
-    foreach ($payment_list_info as $key => $value) {
-      if ($value[0] == $payment_name) {
-        $pay_cost_query = tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key = 'MODULE_PAYMENT_".strtoupper($value[1])."_COST' and (site_id = 0 or site_id = ".$site_id.") order by site_id DESC limit 1"); 
-        $pay_cost_res = tep_db_fetch_array($pay_cost_query); 
-         
-        if ($pay_cost_res) {
-          $handle_fee = calc_fee_final($pay_cost_res['configuration_value'], $products_total); 
-        } else {
-          return 0; 
-        }
-      }
-    }
-  } else {
-    return 0; 
-  }
-  
-  return $handle_fee;
-}
-*/
 function tep_get_pre_product_by_op_id($orders_products_id,$type=''){
   if($type=='pid'){
     $sql = "select p.products_price as price from ".
@@ -1220,51 +1153,6 @@ function tep_get_preorders_products_names($orders_id) {
   return $str;
 }
 
-/*
-function tep_pre_payment_method_menu($payment_method = "") {
-  $payment_text = tep_get_list_pre_payment(); 
-  $payment_array = explode("\n", $payment_text);
-  for($i=0; $i<sizeof($payment_array); $i++) {
-    $payment_list[] = array('id' => $payment_array[$i],
-        'text' => $payment_array[$i]);
-  }
-  return tep_draw_pull_down_menu('payment_method', $payment_list, $payment_method);
-}
-*/
-/*
-function tep_get_list_pre_payment() {
-  global $language;
-
-  $payment_directory = DIR_FS_CATALOG_MODULES .'payment/';
-  $payment_array = array();
-  $payment_list_str = '';
-
-  if ($dh = @dir($payment_directory)) {
-    while ($payment_file = $dh->read()) {
-      if (!is_dir($payment_directory.$payment_file)) {
-        if (substr($payment_file, strrpos($payment_file, '.')) == '.php') {
-          $payment_array[] = $payment_file; 
-        }
-      }
-    }
-    sort($payment_array);
-    $dh->close();
-  }
-
-  for ($i = 0, $n = sizeof($payment_array); $i < $n; $i++) {
-    $payment_filename = $payment_array[$i]; 
-    include(DIR_WS_LANGUAGES . $language . '/modules/payment/' . $payment_filename); 
-    include($payment_directory . $payment_filename); 
-    $payment_class = substr($payment_filename, 0, strrpos($payment_filename, '.'));
-    if (tep_class_exists($payment_class)) {
-      $payment_module = new $payment_class; 
-      $payment_list_str .= $payment_module->title."\n"; 
-    }
-  }
-
-  return mb_substr($payment_list_str, 0, -1, 'UTF-8');
-}
-*/
 function tep_get_preorder_end_num() 
 {
   $last_orders_raw = tep_db_query("select * from ".TABLE_PREORDERS." order by orders_id desc limit 1"); 
