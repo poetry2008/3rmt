@@ -386,7 +386,11 @@ class convenience_store extends basePayment  implements paymentInterface  {
 
     function dealComment($comment, $session_paymentinfo_name)
     {
+      if($_POST['convenience_email']){ 
       $pay_comments = 'PCメールアドレス:'.$_POST['convenience_email']; 
+      }else{
+      $pay_comments = 'PCメールアドレス:'.$_POST['con_email']; 
+      }
       return $pay_comments ."\n".$comment;
     }
 
@@ -463,5 +467,9 @@ class convenience_store extends basePayment  implements paymentInterface  {
     {
       return $order_info['cemail_text']; 
     }
+
+  function get_email_configuration($site_id,$oid=0){
+    return get_configuration_by_site_id('C_CONVENIENCE_STORE',$site_id);
+  }
   }
   ?>
