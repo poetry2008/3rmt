@@ -18,6 +18,8 @@ class BasePayment
   const RULE_NOT_NULL_MSG= '入力内容を確認し、再度入力してください。';
   const RULE_SAME_TO = 'validation_same_to';
   const RULE_EMAIL = 'validation_email';
+  const RULE_IS_NUMBER = 'validation_is_number';
+  const RULE_IS_NUMBER_MSG = '半角で入力してください';
   const RULE_EMAIL_MSG = '入力内容を確認し、再度入力してください。';
   const RULE_SAME_TO_MSG = '入力内容を確認し、再度入力してください。';
   const REQUIRE_MSG = '<span class="fieldRequired">Error</span>';
@@ -61,7 +63,9 @@ class BasePayment
                 $pass = false;
                 //  $selection['error'][]=$validateResult;
                 if ($show_type) {
-                  $selection['fields'][$key]['message'] = str_replace(self::RULE_NOT_NULL_MSG, self::REQUIRE_MSG, $validateResult);
+                  $selection['fields'][$key]['message'] = str_replace(
+                      array(self::RULE_NOT_NULL_MSG,
+                        self::RULE_IS_NUMBER_MSG), self::REQUIRE_MSG, $validateResult);
                 } else {
                   $_SESSION['payment_error'][$this->code]=$validateResult;
                 }
@@ -73,7 +77,9 @@ class BasePayment
             if($validateResult !== true){
               $pass = false;
               if ($show_type) {
-                $selection['fields'][$key]['message'] = str_replace(self::RULE_NOT_NULL_MSG, self::REQUIRE_MSG, $validateResult);
+                $selection['fields'][$key]['message'] = str_replace(
+                      array(self::RULE_NOT_NULL_MSG,
+                        self::RULE_IS_NUMBER_MSG), self::REQUIRE_MSG, $validateResult);
               } else {
                 $_SESSION['payment_error'][$this->code]=$validateResult;
               }
@@ -94,6 +100,15 @@ class BasePayment
       return true;
     } else{
       return self::RULE_NOT_NULL_MSG;
+    }
+  }
+  function validation_is_number($value)
+  {
+    $value = trim($value);
+    if(preg_match('/^[0-9]+$/',$value)){
+      return true;
+    }else{
+      return self::RULE_IS_NUMBER_MSG;
     }
   }
   function validation_email($value){
