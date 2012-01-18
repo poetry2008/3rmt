@@ -388,8 +388,10 @@ class convenience_store extends basePayment  implements paymentInterface  {
     {
       if($_POST['convenience_email']){ 
       $pay_comments = 'PCメールアドレス:'.$_POST['convenience_email']; 
-      }else{
+      }else if($_POST['con_email']){
       $pay_comments = 'PCメールアドレス:'.$_POST['con_email']; 
+      }else{
+      $pay_comments = 'PCメールアドレス:'; 
       }
       return $pay_comments ."\n".$comment;
     }
