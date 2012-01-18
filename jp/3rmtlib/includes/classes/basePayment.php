@@ -23,6 +23,7 @@ class BasePayment
   const RULE_EMAIL_MSG = '入力内容を確認し、再度入力してください。';
   const RULE_SAME_TO_MSG = '入力内容を確認し、再度入力してください。';
   const REQUIRE_MSG = '<span class="fieldRequired">Error</span>';
+  const RULE_CHECK_TEL = 'validation_check_tel';
   function __construct($site_id = 0){
     global $order;
     $this->site_id = $site_id;
@@ -124,6 +125,13 @@ class BasePayment
     return self::RULE_SAME_TO_MSG;
   }
 
+  function validation_check_tel($value) {
+    if (!preg_match("/^(\+\d{2}){0,1}((\d{2}(-){0,1}\d{4})|(\d{3}(-){0,1}\d{3})|(\d{3}(-){0,1}\d{4}))(-){0,1}\d{4}$/", $value)) {
+      return self::REQUIRE_MSG; 
+    }
+    return true; 
+  }
+  
   function calc_fee($money){
     if(!$this->cost){
       return 0;

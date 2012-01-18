@@ -27,7 +27,7 @@ class rakuten_bank  extends basePayment  implements paymentInterface {
                        "code"=>'rak_tel',
                        "title"=>TS_MODULE_PAYMENT_RAKUTEN_TELNUMBER_TEXT,
                        "field"=>tep_draw_input_field('rak_tel', $theData['rak_tel']),
-                       "rule"=>basePayment::RULE_NOT_NULL,
+                       "rule"=>array(basePayment::RULE_NOT_NULL, basePayment::RULE_CHECK_TEL),
                        )
 
                 ); 
