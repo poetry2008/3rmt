@@ -321,7 +321,11 @@ class rakuten_bank  extends basePayment  implements paymentInterface {
   }
   function dealComment($comment, $session_paymentinfo_name)
   {
+    if($_POST['rakuten_telnumber']){
     $pay_comments = '電話番号:'.$this->replace_for_telnumber($_POST['rakuten_telnumber']); 
+    }else{
+    $pay_comments = '電話番号:'.$this->replace_for_telnumber($_POST['rak_tel']); 
+    }
     $comment = $pay_comments ."\n".$comment;
     return $comment;
   }

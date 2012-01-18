@@ -405,5 +405,9 @@ class telecom  extends basePayment  implements paymentInterface  {
     }
   return $telecom_option_ok;
   }
+
+  function get_email_configuration($site_id,$oid=0){
+    return get_configuration_by_site_id('C_CC',$site_id);
+  }
 }
 ?>

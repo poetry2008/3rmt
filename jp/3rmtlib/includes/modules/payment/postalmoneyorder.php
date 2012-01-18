@@ -199,5 +199,9 @@ class postalmoneyorder extends basePayment  implements paymentInterface  {
     $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
     return $email_printing_order;
   }
+
+  function get_email_configuration($site_id,$oid=0){
+    return get_configuration_by_site_id('C_POSTAL',$site_id);
+  }
 }
 ?>

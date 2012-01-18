@@ -423,6 +423,16 @@ class payment {
     }
     return $comment;
   }
+  function get_email_configuration($payment,$site_id,$oid){
+    if($p = $this->getModule($payment)){
+      if(method_exists($p,'get_email_configuration')){
+        $txt = $p->get_email_configuration($site_id, $oid);
+      }else{
+        $txt = '別途取り決めた方法に準じて行います。';
+      }
+    }
+    return $txt;
+  }
   function getOrderMailString($payment,$option){
     
     $mailstring = get_configuration_by_site_id_or_default("MODULE_PAYMENT_".strtoupper($payment)."_MAILSTRING",$this->site_id);

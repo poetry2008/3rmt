@@ -305,18 +305,18 @@ class buying extends basePayment  implements paymentInterface  {
   {
     //global $bank_name,$bank_shiten,$bank_kamoku,$bank_kouza_num,$bank_kouza_name;
     if(isset($_SESSION[$session_paymentinfo_name]['bank_name'])) {
-      $bbbank = TS_TEXT_BANK_NAME . '：' .  $_SESSION[$session_paymentinfo_name]['bank_name'] . "\n";
-      $bbbank .= TS_TEXT_BANK_SHITEN . '：' .  $_SESSION[$session_paymentinfo_name]['bank_shiten'] . "\n";
-      $bbbank .= TS_TEXT_BANK_KAMOKU . '：' .  $_SESSION[$session_paymentinfo_name]['bank_kamoku'] . "\n";
-      $bbbank .= TS_TEXT_BANK_KOUZA_NUM . '：' .  $_SESSION[$session_paymentinfo_name]['bank_kouza_num'] . "\n";
-      $bbbank .= TS_TEXT_BANK_KOUZA_NAME . '：' .  $_SESSION[$session_paymentinfo_name]['bank_kouza_name'];
+      $bbbank = TS_TEXT_BANK_NAME .   $_SESSION[$session_paymentinfo_name]['bank_name'] . "\n";
+      $bbbank .= TS_TEXT_BANK_SHITEN .  $_SESSION[$session_paymentinfo_name]['bank_shiten'] . "\n";
+      $bbbank .= TS_TEXT_BANK_KAMOKU .  $_SESSION[$session_paymentinfo_name]['bank_kamoku'] . "\n";
+      $bbbank .= TS_TEXT_BANK_KOUZA_NUM .  $_SESSION[$session_paymentinfo_name]['bank_kouza_num'] . "\n";
+      $bbbank .= TS_TEXT_BANK_KOUZA_NAME .  $_SESSION[$session_paymentinfo_name]['bank_kouza_name'];
     }else{
       global $_POST;
-      $bbbank = TS_TEXT_BANK_NAME . '：' .  $_POST['bank_name'] . "\n";
-      $bbbank .= TS_TEXT_BANK_SHITEN . '：' .  $_POST['bank_shiten'] . "\n";
-      $bbbank .= TS_TEXT_BANK_KAMOKU . '：' .  $_POST['BANK_KAmoku'] . "\n";
-      $bbbank .= TS_TEXT_BANK_KOUZA_NUM . '：' .  $_POST['bank_kouza_num'] . "\n";
-      $bbbank .= TS_TEXT_BANK_KOUZA_NAME . '：' .  $_POST['bank_kouza_name'];
+      $bbbank = TS_TEXT_BANK_NAME .  $_POST['bank_name'] . "\n";
+      $bbbank .= TS_TEXT_BANK_SHITEN .  $_POST['bank_shiten'] . "\n";
+      $bbbank .= TS_TEXT_BANK_KAMOKU .  $_POST['bank_kamoku'] . "\n";
+      $bbbank .= TS_TEXT_BANK_KOUZA_NUM .  $_POST['bank_kouza_num'] . "\n";
+      $bbbank .= TS_TEXT_BANK_KOUZA_NAME .  $_POST['bank_kouza_name'];
     }
     $comment = $bbbank ."\n".$comment;
     return $comment;
@@ -401,6 +401,27 @@ class buying extends basePayment  implements paymentInterface  {
     
     $comment = $bbbank ."\n".$pInfo['yourmessage'];
     return $comment;
+  }
+  function get_email_configuration($site_id,$oid=0){
+    $email = '';
+    $orders_bank_account_query = tep_db_query("select comments from " . 
+        TABLE_ORDERS_STATUS_HISTORY . " where orders_id = '" . tep_db_input($oid) .
+        "' and orders_status_id = '1' and customer_notified = '1' order by date_added");
+            if (tep_db_num_rows($orders_bank_account_query)) {
+              while ($orders_bank_account = tep_db_fetch_array($orders_bank_account_query)) {
+                if (strncmp($orders_bank_account['comments'], '金融機関名　　　　：', 20) == 0) {
+                  $bbbank = $orders_bank_account['comments'];
+                }
+              }
+            } else {
+              $bbbank = 'エラーが発生しました。' . "\n" . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . 'へお問い合わせくだい。' . "\n";
+            }
+            $email .= '▼お支払先金融機関' . "\n";
+            $email .= $bbbank . "\n";
+            $email .= '━━━━━━━━━━━━━━━━━━━━━' . "\n\n";
+            $email .= '・当社にて商品の受領確認がとれましたら代金お支払い手続きに入ります。' . "\n";
+            $email .= '・本メール送信後7日以内に取引が完了できない場合、' . "\n";
+            return $email;
   }
 }
 ?>
