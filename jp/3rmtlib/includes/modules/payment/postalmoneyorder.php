@@ -36,7 +36,7 @@ class postalmoneyorder extends basePayment  implements paymentInterface  {
      
 
 
-  function fields($theData, $back=false){
+  function fields($theData=false, $back=false){
 
     global $order;
     $total_cost = $order->info['total'];

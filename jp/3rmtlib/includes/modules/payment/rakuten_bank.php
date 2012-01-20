@@ -15,7 +15,7 @@ class rakuten_bank  extends basePayment  implements paymentInterface {
     $this->field_description  = 'TS_MODULE_PAYMENT_RAKUTEN_INFO_TEXT';
     $this->show_payment_info = 0;
   }
-  function fields($theData, $back=false){
+  function fields($theData=false, $back=false){
     global $order;
     $total_cost = $order->info['total'];
     $code_fee = $this->calc_fee($total_cost); 

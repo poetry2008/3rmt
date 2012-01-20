@@ -12,7 +12,7 @@ class fetch_good extends basePayment  implements paymentInterface {
     $this->show_payment_info = 0;
     $this->additional_title = TS_MODULE_PAYMENT_FETCH_GOOD_ADDITIONAL_TEXT_TITLE; 
   }
-  function fields($theData, $back=false){
+  function fields($theData=false, $back=false){
 
 
   }

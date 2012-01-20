@@ -10,7 +10,7 @@
       $this->code        = 'free_payment';
       $this->show_payment_info = 0;
     }
-    function fields($theData, $back=false){
+  function fields($theData=false, $back=false){
     }
 
     function update_status() {

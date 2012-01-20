@@ -12,7 +12,7 @@ class telecom  extends basePayment  implements paymentInterface  {
     $this->form_action_url = MODULE_PAYMENT_TELECOM_CONNECTION_URL;
     $this->show_payment_info = 1;
   }
-  function fields($theData, $back=false){
+  function fields($theData=false, $back=false){
     global $order;
     $total_cost = $order->info['total'];
     $code_fee = $this->calc_fee($total_cost); 

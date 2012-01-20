@@ -44,7 +44,7 @@ class guidance extends basePayment  implements paymentInterface  {
   function javascript_validation() {
     return false;
   }
-  function fields($theData, $back=false){
+  function fields($theData=false, $back=false){
   }
 
   function pre_confirmation_check() {

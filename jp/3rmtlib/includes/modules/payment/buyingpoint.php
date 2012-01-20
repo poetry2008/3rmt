@@ -13,7 +13,7 @@ class buyingpoint extends basePayment  implements paymentInterface  {
     $this->show_point = 1; 
   }
   
-  function fields($theData, $back=false){
+  function fields($theData=false, $back=false){
   }
 
   
