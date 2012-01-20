@@ -9,7 +9,7 @@ class rakuten_bank  extends basePayment  implements paymentInterface {
   var $arrs2d = array('１' => '1', '２' => '2', '３' => '3', '４' => '4', 
        '５' => '5', '６' => '6', '７' => '7', '８' => '8', '９' => '9', '０' => '0','－' => '-');
 
-  function loadSpecialSettings($site_id){
+  function loadSpecialSettings($site_id=0){
     $this->site_id = $site_id;
     $this->code               = 'rakuten_bank';
     $this->field_description  = 'TS_MODULE_PAYMENT_RAKUTEN_INFO_TEXT';

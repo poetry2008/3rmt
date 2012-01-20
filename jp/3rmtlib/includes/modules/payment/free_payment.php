@@ -5,7 +5,7 @@
 
   class free_payment  extends basePayment  implements paymentInterface {
     var $site_id, $code, $title, $description, $enabled, $s_error, $n_fee, $email_footer, $show_payment_info;
-    function loadSpecialSettings($site_id){
+    function loadSpecialSettings($site_id=0){
       $this->site_id = $site_id;
       $this->code        = 'free_payment';
       $this->show_payment_info = 0;

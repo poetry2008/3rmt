@@ -7,7 +7,7 @@
     var $site_id, $code, $title, $description, $enabled, $s_error, $email_footer, $show_payment_info;
 
 // class constructor
-    function loadSpecialSettings($site_id){
+    function loadSpecialSettings($site_id=0){
       $this->site_id = $site_id;
       $this->code        = 'paypal';
       $this->form_action_url = MODULE_PAYMENT_PAYPAL_CONNECTION_URL ;
