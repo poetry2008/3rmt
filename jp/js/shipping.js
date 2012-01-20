@@ -256,10 +256,7 @@ function set_torihiki_date(shipping_code,work_time,start_time,pid){
   torihiki_info_list_t.style.display = 'block';
 }
 function clear_all_radio_checked(){
-  var objs=document.getElementsByTagName( "input");
-  for(var   i=0;i <objs.length;i++){
-    if(objs[i].type== "radio"){
-      objs[i].checked=false;
-    }
-  } 
+  $("input[type=radio]").each(function(){
+      $(this).attr('checked',false);
+  });
 }

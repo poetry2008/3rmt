@@ -329,7 +329,10 @@ class rakuten_bank  extends basePayment  implements paymentInterface {
       $pay_comments = '電話番号:';
     }
     $comment = $pay_comments ."\n".$comment;
-    return $comment;
+    $payment_bank_info['add_info'] = $pay_comments;
+    $res_arr = array('comment'=> $comment,
+          'payment_bank_info' => $payment_bank_info);
+    return $res_arr;
   }
   
   function deal_preorder_additional($pInfo, &$sql_data_array)
@@ -425,9 +428,5 @@ function getMailString($option=''){
       global $_POST; 
       $sql_data_array['raku_text'] = '電話番号:'.$_POST['rak_tel']; 
   }
-  function admin_deal_comment($order_info)
-  {
-    return $order_info['raku_text']; 
-  }
-}
+ }
 ?>

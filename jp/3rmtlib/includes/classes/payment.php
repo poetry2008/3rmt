@@ -308,6 +308,16 @@ class payment {
     }
   }
   
+  function admin_process_pay_email($payment,$order,$total_price_mail) {
+    $module = $this->getModule($payment);
+    if ($module) {
+      if (method_exists($module, 'admin_process_pay_email')) {
+        return $module->admin_process_pay_email($order,$total_price_mail); 
+      }
+    }
+    return false;
+  }
+
   function admin_deal_comment($payment) {
     $module = $this->getModule($payment);
     if ($module) {
@@ -423,19 +433,18 @@ class payment {
     }
     return $comment;
   }
-  function get_email_configuration($payment,$site_id,$oid){
-    if($p = $this->getModule($payment)){
-      if(method_exists($p,'get_email_configuration')){
-        $txt = $p->get_email_configuration($site_id, $oid);
-      }else{
-        $txt = '別途取り決めた方法に準じて行います。';
-      }
-    }
-    return $txt;
-  }
   function getOrderMailString($payment,$option){
     
     $mailstring = get_configuration_by_site_id_or_default("MODULE_PAYMENT_".strtoupper($payment)."_MAILSTRING",$this->site_id);
+    foreach ($option as $key=>$value){
+      $mailstring = str_replace('${'.strtoupper($key).'}',$value,$mailstring);
+    }
+    return $mailstring;
+  }
+
+  function getOrderPrintMailString($payment,$option){
+    $mailstring = get_configuration_by_site_id_or_default("MODULE_PAYMENT_".strtoupper($payment).
+        "_PRINT_MAILSTRING",$this->site_id);
     foreach ($option as $key=>$value){
       $mailstring = str_replace('${'.strtoupper($key).'}',$value,$mailstring);
     }

@@ -57,6 +57,7 @@ define('TEXT_MANUFACTURER', 'メーカー:');
 define('TEXT_PRICE', '価格:');
 define('TEXT_CHARACTER', 'お客様のキャラクター名：');
 define('TEXT_TORIHIKIBOUBI_DEFAULT_SELECT','ご希望のお届け日時を指定してください');
-define('TEXT_CREATE_ADDRESS_BOOK','お届け先を指定する');
-define('TEXT_USE_ADDRESS_BOOK','登録先に届ける');
+define('TEXT_CREATE_ADDRESS_BOOK','お届け先を選択する');
+define('TEXT_USE_ADDRESS_BOOK','新しいお届け先を入力する');
+define('TEXT_SHIPPING_INFO_ERROR','重要なお知らせ<br>内容に不備があります<br>必要な情報を正しく入力してください。');
 ?>

@@ -393,7 +393,10 @@ class convenience_store extends basePayment  implements paymentInterface  {
       }else{
       $pay_comments = 'PCメールアドレス:'; 
       }
-      return $pay_comments ."\n".$comment;
+      $payment_bank_info['add_info'] = $pay_comments;
+      $res_arr = array('comment'=> $pay_comments ."\n".$comment,
+          'payment_bank_info' => $payment_bank_info);
+      return $res_arr;
     }
 
     function preorder_process_button($pid, $preorder_total)
@@ -470,8 +473,5 @@ class convenience_store extends basePayment  implements paymentInterface  {
       return $order_info['cemail_text']; 
     }
 
-  function get_email_configuration($site_id,$oid=0){
-    return get_configuration_by_site_id('C_CONVENIENCE_STORE',$site_id);
-  }
   }
   ?>

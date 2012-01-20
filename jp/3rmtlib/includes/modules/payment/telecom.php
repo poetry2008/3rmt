@@ -405,9 +405,28 @@ class telecom  extends basePayment  implements paymentInterface  {
     }
   return $telecom_option_ok;
   }
-
-  function get_email_configuration($site_id,$oid=0){
-    return get_configuration_by_site_id('C_CC',$site_id);
+  function admin_process_pay_email($order,$total_price_mail){
+    $email_credit = '';
+    $email_credit .= $order->customer['name'] . '様' . "\n\n";
+    $email_credit .= 'この度は、' . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . 'をご利用いただき、誠にありがとうございます。' . "\n\n";
+    $email_credit .= '注文番号' . $oID . 'の決済URLをお知らせいたします。' . "\n";
+    $email_credit .= '下記URLをクリックし、クレジットカード決済を完了してください。' . "\n";
+    $email_credit .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
+    $email_credit .= 'https://secure.telecomcredit.co.jp/inetcredit/secure/order.pl?clientip=76011&usrmail=' . $order->customer['email_address'] . '&money=' . $total_price_mail . "\n";
+    $email_credit .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
+    $email_credit .= '※ 上記URLをクリックしても決済ページが表示されない場合は、お手数ではご' . "\n";
+    $email_credit .= 'ざいますが「改行」を取り除きブラウザに直接入力してアクセスしてください。' . "\n\n\n";
+    $email_credit .= 'クレジットカード決済が成功しましたら、商品の手配に移らせていただきます。' . "\n";
+    $email_credit .= "\n\n\n";
+    $email_credit .= 'ご不明な点がございましたら、注文番号をご確認の上、' . "\n";
+    $email_credit .= '「' . STORE_NAME . '」までお問い合わせください。' . "\n\n";
+    $email_credit .= '[ご連絡・お問い合わせ先]━━━━━━━━━━━━' . "\n";
+    $email_credit .= '株式会社 iimy' . "\n";
+    $email_credit .= get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS',$order->info['site_id']) . "\n";
+    $email_credit .= get_url_by_site_id($order->info['site_id']) . "\n";
+    $email_credit .= '━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
+    return $email_credit;
   }
+
 }
 ?>
