@@ -7,7 +7,7 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
 class moneyorder extends basePayment implements paymentInterface {
   var $site_id, $code, $title, $description, $enabled, $s_error, $n_fee, $email_footer, $show_payment_info;
   // class constructor
-  public function loadSpecialSettings($site_id)
+  public function loadSpecialSettings($site_id=0)
   {
     //            global $order;
     $this->site_id = $site_id;
