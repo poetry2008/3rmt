@@ -210,7 +210,8 @@ class payment {
       reset($this->modules);
       //while (list(, $value) = each($this->modules)) {
       foreach($this->modules as $value){
-        $class = substr($value, 0, strrpos($value, '.'));
+        //$class = substr($value, 0, strrpos($value, '.'));
+        $class = $value->code;
         if ($GLOBALS[$class]->enabled) {
             
           $js .= $GLOBALS[$class]->javascript_validation();
