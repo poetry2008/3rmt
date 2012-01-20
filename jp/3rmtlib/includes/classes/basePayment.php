@@ -3,7 +3,7 @@ interface paymentInterface
 {
   public function loadSpecialSettings($site_id=0);
   public function calc_fee($money);
-  public function fields($theData);
+  public function fields($theData=false, $back=false);
   //  public function selection($theData);
   public function pre_confirmation_check();
   public function confirmation() ;
