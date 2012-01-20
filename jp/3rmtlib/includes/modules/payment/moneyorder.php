@@ -43,7 +43,7 @@ class moneyorder extends basePayment implements paymentInterface {
   function javascript_validation() {
     return false;
   }
-  public function fields($theData=false, $back=false)
+  public function fields($theData=false, $back=false){
     global $order;
       
     $total_cost = $order->info['total'];
