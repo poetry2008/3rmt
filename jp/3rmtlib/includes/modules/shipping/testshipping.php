@@ -6,7 +6,7 @@
 require_once (DIR_WS_CLASSES . 'baseShipping.php');
 class testshipping extends baseShipping implements shippingInterface {
   var $site_id,$products_id,$title,$description,$enabled,$s_error,$n_fee;
-  function loadSpecialSettings($site_id = 0){
+  function loadSpecialSettings($site_id){
     $this->code = 'testshipping';
   }
 
