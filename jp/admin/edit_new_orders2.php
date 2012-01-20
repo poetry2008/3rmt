@@ -15,6 +15,7 @@
   $currencies = new currencies(2);
 
   include(DIR_WS_CLASSES . 'order.php');
+  $payment_modules = payment::getInstance($_SESSION['create_order2']['orders']['site_id']);
 
 // START CONFIGURATION ################################
 
@@ -406,7 +407,8 @@
     $newtotal = '0';
   }
   
-  $handle_fee = calc_handle_fee($order['payment_method'], $newtotal);
+  $handle_fee = $payment_modules->handle_calc_fee(
+    payment::changeRomaji($order['payment_method'],PAYMENT_RETURN_TYPE_CODE), $newtotal);
   
   $newtotal = $newtotal+$handle_fee;
   if(!$total_value_more_zero){
@@ -628,7 +630,10 @@
   
   $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n\n\n";
   
-  
+  $payment_class = $payment_modules->getModule(payment::changeRomaji($order['payment_method']));
+   $email_printing_order .=$payment_class->getMailString($ot['text']); 
+
+ /* 
 
   if ($order['payment_method'] === '銀行振込(買い取り)') {
     $email_printing_order .= '★★★★★★★★★★★★この注文は【買取】です。★★★★★★★★★★★★' . "\n";
@@ -698,7 +703,7 @@
     $email_printing_order .= '------------------------------------------------------------------------' . "\n";
     $email_printing_order .= '発送完了メール送信　：□ 済' . "\n";    
   }
-  
+ */ 
   $email_printing_order .= '------------------------------------------------------------------------' . "\n";
   $email_printing_order .= '最終確認　　　　　　：確認者名＿＿＿＿' . "\n";
   $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
@@ -766,7 +771,6 @@
           $total_details_mail .= '▼' . $totals['title'] . str_repeat('　', intval((16 - strlen($totals['title']))/2)) . '：' . strip_tags($totals['text']) . "\n";
         }
       }
-
 
 
       $email = '';
@@ -1034,7 +1038,8 @@
         }
       }
       
-      $handle_fee = calc_handle_fee($order['payment_method'], $newtotal);
+      $handle_fee = $payment_modules->handle_calc_fee(
+          payment::changeRomaji($order['payment_method'],PAYMENT_RETURN_TYPE_CODE), $newtotal);
       $newtotal = $newtotal+$handle_fee;    
       //$totals = "update " . TABLE_ORDERS_TOTAL . " set value = '".$newtotal."', text = '<b>".$currencies->format($newtotal, true, $order['currency'])."</b>' where class='ot_total' and orders_id = '".$oID."'";
       //tep_db_query($totals);
@@ -1181,7 +1186,11 @@ function check_add(){
               <tr>
                 <td class="main" valign="top"><b><?php echo EDIT_ORDERS_PAYMENT_METHOD;?></b></td>
                 <td class="main">
-                  <?php echo tep_payment_method_menu($order->info['payment_method']);?>
+<?php
+            $code_payment_method =
+            payment::changeRomaji($order->info['payment_method'],'code');
+          echo payment::makePaymentListPullDownMenu($code_payment_method);
+?>
                 </td>
               </tr>
               <!-- End Payment Block -->

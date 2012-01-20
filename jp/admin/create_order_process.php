@@ -110,7 +110,6 @@ if ($payment_method == 'payment_null') {
 
 //}}检查是否通过验证
 //验证 shipping
-
 if($shipping_method == 'shipping_null'){
   $error = true;
   $entry_shipping_method_error = true;
@@ -183,15 +182,19 @@ $sql_data_array = array('orders_id'     => $insert_id,
 			'currency'                    => $currency,
 			'currency_value'              => $currency_value,
 			'payment_method'              => payment::changeRomaji($payment_method,
-                            'title'),
+                            PAYMENT_RETURN_TYPE_TITLE),
                         //           	'torihiki_houhou'             => $torihikihouhou,
            	'torihiki_houhou'             => '',
 			'torihiki_date'               => tep_db_input($date . ' ' . $hour . ':' . $min . ':00'),
 			'site_id'                     => $site_id,
 			'orders_wait_flag'            => '1'
 			); 
-$comment = $payment_modules->dealComment($payment_method,$comment);
-//$sql_data_array['orders_comment'] = $comment;
+$comment_arr = $payment_modules->dealComment($payment_method,$comment);
+$_SESSION['payment_bank_info'][$insert_id] = $comment_arr['payment_bank_info'];
+if(isset($comment_arr['payment_bank_info']['add_info'])&&
+    $comment_arr['payment_bank_info']['add_info']){
+$sql_data_array['orders_comment'] = $comment_arr['comment'];
+}
 //创建订单
 tep_db_perform(TABLE_ORDERS, $sql_data_array);
 
@@ -203,7 +206,7 @@ $sql_data_array = array('orders_id' => $insert_id,
               'orders_status_id' => $new_value, 
               'date_added' => 'now()', 
               'customer_notified' => '1',
-              'comments' => $comment);
+              'comments' => $comment_arr['comment']);
 tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
 
 require(DIR_FS_CATALOG . 'includes/classes/order.php');
@@ -279,7 +282,7 @@ if($ot_tax_status == true) {
 			  'sort_order' => $ot_tax->sort_order);
   tep_db_perform(TABLE_ORDERS_TOTAL, $sql_data_array);
 }
-
+  $payment_bank_info = array(); 
 
   $shipping_temp_arr = array();
   $shipping_temp_arr['shipping_method']     = $shipping_method;

@@ -13,6 +13,7 @@ require(DIR_FS_ADMIN . DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAM
 
 require(DIR_WS_CLASSES . 'currencies.php');
 $currencies = new currencies(2);
+$payment_bank_info = $_SESSION['payment_bank_info'];
 
 include(DIR_WS_CLASSES . 'order.php');
 include(DIR_WS_CLASSES . 'shipping.php');
@@ -150,6 +151,7 @@ $shipping_product_sql = "select `torihiki_date`, `torihiki_date_end`,
 
 if (tep_not_null($action)) {
 
+  $payment_modules = payment::getInstance($_POST['site_id']);
   switch ($action) {
     // 1. UPDATE ORDER ###############################################################################################
     case 'update_order':
@@ -248,7 +250,7 @@ if (tep_not_null($action)) {
         delivery_state = '" . tep_db_input(stripslashes($update_delivery_state)) . "',
         delivery_postcode = '" . tep_db_input($update_delivery_postcode) . "',
         delivery_country = '" . tep_db_input(stripslashes($update_delivery_country)) . "',
-        payment_method = '" . tep_db_input($_POST['payment_method']) . "',
+        payment_method = '" . payment::changeRomaji(tep_db_input($_POST['payment_method']),'title' ). "',
         torihiki_date = '" . tep_db_input($update_tori_torihiki_date) . "',
         torihiki_houhou = '" . tep_db_input($update_tori_torihiki_houhou) . "',
         cc_type = '" . tep_db_input($update_info_cc_type) . "',
@@ -562,8 +564,8 @@ if (tep_not_null($action)) {
         $newtotal -= $total_point["total_point"];
       }
 
-      //    $handle_fee = $cpaypal->calc_handle_fee($order->info['payment_method'], $newtotal, $oID);
-      $handle_fee = 0;
+      $handle_fee = $payment_modules->handle_calc_fee(
+          payment::changeRomaji($order->info['payment_method'],PAYMENT_RETURN_TYPE_CODE), $newtotal);
 
       $newtotal = $newtotal+$handle_fee;
 
@@ -678,79 +680,6 @@ if (tep_not_null($action)) {
 
 
 
-          $email = '';
-          $email .= $order->customer['name'] . '様' . "\n\n";
-          $email .= 'この度は、' . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . 'をご利用いただき、誠にありが' . "\n";
-          $email .= 'とうございます。' . "\n";
-          $email .= '下記の内容にてご注文を承りましたので、ご確認ください。' . "\n";
-          $email .= 'ご不明な点がございましたら、ご注文番号をご確認の上、' . "\n";
-          $email .= '「' . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '」までお問い合わせください。' . "\n\n";
-          $email .= $notify_comments_mail;
-          $email .= '━━━━━━━━━━━━━━━━━━━━━' . "\n";
-          $email .= '▼注文番号　　　　：' . $oID . "\n";
-          $email .= '▼注文日　　　　　：' . tep_date_long(time()) . "\n";
-          $email .= '▼お名前　　　　　：' . $order->customer['name'] . '様' . "\n";
-          $email .= '▼メールアドレス　：' . $order->customer['email_address'] . "\n";
-          $email .= '━━━━━━━━━━━━━━━━━━━━━' . "\n";
-          $email .= $total_details_mail;
-          $email .= '▼お支払方法　　　：' . $order->info['payment_method'] . "\n";
-          if ($order->info['payment_method'] == 'ゆうちょ銀行（郵便局）') {
-            $email .= get_configuration_by_site_id('C_POSTAL',$order->info['site_id']); 
-          }
-          if ($order->info['payment_method'] === '銀行振込') {
-            $email .= get_configuration_by_site_id('C_BANK',$order->info['site_id']);
-          } elseif ($order->info['payment_method'] === 'クレジットカード決済') {
-            $email .= get_configuration_by_site_id('C_CC',$order->info['site_id']);
-          } elseif ($order->info['payment_method'] === '銀行振込(買い取り)') {
-            $orders_bank_account_query = tep_db_query("select comments from " . TABLE_ORDERS_STATUS_HISTORY . " where orders_id = '" . tep_db_input($oID) . "' and orders_status_id = '1' and customer_notified = '1' order by date_added");
-            if (tep_db_num_rows($orders_bank_account_query)) {
-              while ($orders_bank_account = tep_db_fetch_array($orders_bank_account_query)) {
-                if (strncmp($orders_bank_account['comments'], '金融機関名　　　　：', 20) == 0) {
-                  $bbbank = $orders_bank_account['comments'];
-                }
-              }
-            } else {
-              $bbbank = 'エラーが発生しました。' . "\n" . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . 'へお問い合わせくだい。' . "\n";
-            }
-            $email .= '▼お支払先金融機関' . "\n";
-            $email .= $bbbank . "\n";
-            $email .= '━━━━━━━━━━━━━━━━━━━━━' . "\n\n";
-            //$email .= '・本メールに記載された当社キャラクター宛に商品をトレードしてください。' . "\n";
-            $email .= '・当社にて商品の受領確認がとれましたら代金お支払い手続きに入ります。' . "\n";
-            $email .= '・本メール送信後7日以内に取引が完了できない場合、' . "\n";
-            $email .= '　当社は、お客様がご注文を取り消されたものとして取り扱います。';
-          } elseif ($order->info['payment_method'] === 'コンビニ決済') {
-            $email .= get_configuration_by_site_id('C_CONVENIENCE_STORE',$order->info['site_id']);
-          } else {
-            $email .= '別途取り決めた方法に準じて行います。';
-          }
-          $email .= "\n\n\n";
-          $email .= '▼注文商品' . "\n";
-          $email .= '------------------------------------------' . "\n";
-          $email .= $products_ordered_mail;
-
-          $array1 = explode(" ", $order->tori['date']);
-          $array_ymd = explode("-",$array1[0]);
-          $array_hms = explode(":",$array1[1]);
-          $time1 = mktime($array_hms[0],$array_hms[1],$array_hms[2],$array_ymd[1],$array_ymd[2],$array_ymd[0]);
-          $trade_time = date("Y年m月d日H時i分", $time1);
-          $email .= '▼取引日時　　　　：' . $trade_time . '　（24時間表記）' . "\n";
-          $email .= '　　　　　　　　　：' . strip_tags($order->tori['houhou']) . "\n";
-          $email .= '▼備考　　　　　　：';
-          if ($order->info['payment_method'] === 'コンビニ決済') {
-            $orders_con_query = tep_db_query("select comments from ".TABLE_ORDERS_STATUS_HISTORY." where orders_id = '".tep_db_input($oID)."' and orders_status_id = '1' and customer_notified = '1' order by date_added");
-            if (tep_db_num_rows($orders_con_query)) {
-              while ($orders_con_res = tep_db_fetch_array($orders_con_query)) {
-                $email .= $orders_con_res['comments'];  
-              }
-            }
-          }
-          $email .= "\n\n\n";
-          $email .= '[ご連絡・お問い合わせ先]━━━━━━━━━━━━' . "\n";
-          $email .= '株式会社 iimy' . "\n";
-          $email .= get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS',$order->info['site_id']) . "\n";
-          $email .= get_url_by_site_id($order->info['site_id']) . "\n";
-          $email .= '━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
           if ($customer_guest['customers_guest_chk'] != 9)
           {
             //bobhero start{{{
@@ -771,11 +700,15 @@ if (tep_not_null($action)) {
             $mailoption['SITE_MAIL']        = get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS',$order->info['site_id']);//d
             $mailoption['SITE_URL']         = get_url_by_site_id($order->info['site_id']);
 
-            $mailoption['BANK_NAME']        = 	    $_SESSION['orderinfo_mail_use']['bank_name'];      //?
-            $mailoption['BANK_SHITEN']      = 	    $_SESSION['orderinfo_mail_use']['bank_shiten'] ;   //?
-            $mailoption['BANK_KAMOKU']      = 	    $_SESSION['orderinfo_mail_use']['bank_kamoku'];    //?
-            $mailoption['BANK_KOUZA_NUM']   = 	    $_SESSION['orderinfo_mail_use']['bank_kouza_num'] ;//?
-            $mailoption['BANK_KOUZA_NAME']  = 	    $_SESSION['orderinfo_mail_use']['bank_kouza_name'];//?
+            if(isset($_SESSION['payment_bank_info'][$oID])&&
+                !empty($_SESSION['payment_bank_info'][$oID])){
+            $mailoption['BANK_NAME']        = $payment_bank_info[$oID]['bank_name'];      //?
+            $mailoption['BANK_SHITEN']      = $payment_bank_info[$oID]['bank_shiten'] ;   //?
+            $mailoption['BANK_KAMOKU']      = $payment_bank_info[$oID]['bank_kamoku'];    //?
+            $mailoption['BANK_KOUZA_NUM']   = $payment_bank_info[$oID]['bank_kouza_num'] ;//?
+            $mailoption['BANK_KOUZA_NAME']  = $payment_bank_info[$oID]['bank_kouza_name'];//?
+            $mailoption['ADD_INFO']  = $payment_bank_info[$oID]['add_info'];//?
+            }
             unset($_SESSION['orderinfo_mail_use']);
             $point = $mailpoint;
             if ($point){
@@ -789,42 +722,8 @@ if (tep_not_null($action)) {
             }
             $mailoption['MAILFEE']          = $total_mail_fee.'';
 
-            switch($order->info['payment_method']){
-              case '支払方法を選択してください':
-                $selected_module = '';
-                break;
-              case '銀行振込(買い取り)':
-                $selected_module = 'buying';
-                break;
-              case 'ポイント(買い取り)':
-                $selected_module = 'buyingpoint';
-                break;
-              case 'コンビニ決済':
-                $selected_module = 'convenience_store';
-                break;
-              case '来店支払い':
-                $selected_module = 'fetch_good';
-                break;
-              case '支払いなし':
-                $selected_module = 'free_payment';
-                break;
-              case '銀行振込':
-                $selected_module = 'moneyorder';
-                break;
-              case 'ペイパル決済':
-                $selected_module = 'paypal';
-                break;
-              case 'ゆうちょ銀行（郵便局）':
-                $selected_module = 'postalmoneyorder';
-                break;
-              case '楽天銀行':
-                $selected_module = 'rakuten_bank';
-                break;
-              case 'クレジットカード決済':
-                $selected_module = 'telecom';
-                break;
-            }
-
+            $selected_module = payment::changeRomaji($order->info['payment_method'],
+                PAYMENT_RETURN_TYPE_CODE);
 
             $email =get_configuration_by_site_id("MODULE_PAYMENT_".strtoupper($selected_module)."_MAILSTRING",$order->info['site_id']);
             if($email === false){
@@ -833,6 +732,7 @@ if (tep_not_null($action)) {
             foreach ($mailoption as $key=>$value){
               $email = str_replace('${'.strtoupper($key).'}',$value,$email);
               }
+
               //$email_order = $payment_class->getOrderMailString($mailoption);  
               //bobhero end}}}
             tep_mail($check_status['customers_name'], $check_status['customers_email_address'], 'ご注文ありがとうございます【' . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email, get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']),$order->info['site_id']);
@@ -841,26 +741,10 @@ if (tep_not_null($action)) {
           $customer_notified = '1';
 
           // 支払方法がクレジットなら決済URLを送る
-          if ($order->info['payment_method'] === 'クレジットカード決済') {
-            $email_credit = '';
-            $email_credit .= $order->customer['name'] . '様' . "\n\n";
-            $email_credit .= 'この度は、' . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . 'をご利用いただき、誠にありがとうございます。' . "\n\n";
-            $email_credit .= '注文番号' . $oID . 'の決済URLをお知らせいたします。' . "\n";
-            $email_credit .= '下記URLをクリックし、クレジットカード決済を完了してください。' . "\n";
-            $email_credit .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-            $email_credit .= 'https://secure.telecomcredit.co.jp/inetcredit/secure/order.pl?clientip=76011&usrmail=' . $order->customer['email_address'] . '&money=' . $total_price_mail . "\n";
-            $email_credit .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-            $email_credit .= '※ 上記URLをクリックしても決済ページが表示されない場合は、お手数ではご' . "\n";
-            $email_credit .= 'ざいますが「改行」を取り除きブラウザに直接入力してアクセスしてください。' . "\n\n\n";
-            $email_credit .= 'クレジットカード決済が成功しましたら、商品の手配に移らせていただきます。' . "\n";
-            $email_credit .= "\n\n\n";
-            $email_credit .= 'ご不明な点がございましたら、注文番号をご確認の上、' . "\n";
-            $email_credit .= '「' . STORE_NAME . '」までお問い合わせください。' . "\n\n";
-            $email_credit .= '[ご連絡・お問い合わせ先]━━━━━━━━━━━━' . "\n";
-            $email_credit .= '株式会社 iimy' . "\n";
-            $email_credit .= get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS',$order->info['site_id']) . "\n";
-            $email_credit .= get_url_by_site_id($order->info['site_id']) . "\n";
-            $email_credit .= '━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
+          $email_credit =  $payment_modules->admin_process_pay_email(
+                  payment::changeRomaji($payment_method,PAYMENT_RETURN_TYPE_CODE),
+                $order,$total_price_mail);
+          if($email_credit){
             if ($customer_guest['customers_guest_chk'] != 9){
               tep_mail($check_status['customers_name'], $check_status['customers_email_address'], 'クレジットカード決済について【' . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email_credit, get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']), $order->info['site_id']);
             }
@@ -1054,7 +938,8 @@ if (tep_not_null($action)) {
             }
           }
           //	$handle_fee = new_calc_handle_fee($order->info['payment_method'], $newtotal, $oID);
-          $handle_fee = 0;
+          $handle_fee = $payment_modules->handle_calc_fee(
+          payment::changeRomaji($order->info['payment_method'],PAYMENT_RETURN_TYPE_CODE), $newtotal);
 
           $newtotal = $newtotal+$handle_fee;    
           /*
@@ -1111,6 +996,20 @@ if (tep_not_null($action)) {
     <script language="javascript" src="includes/javascript/jquery_include.js"></script>
     <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
     <script language="javascript" src="includes/javascript/shipping.js"></script>
+<script type="text/javascript">
+  //todo:修改通性用
+  function hidden_payment(){
+  var idx = document.edit_order.elements["payment_method"].selectedIndex;
+  var CI = document.edit_order.elements["payment_method"].options[idx].value;
+  $(".rowHide").hide();
+  $(".rowHide").find("input").attr("disabled","true");
+  $(".rowHide_"+CI).show();
+  $(".rowHide_"+CI).find("input").removeAttr("disabled");
+ }
+   $(document).ready(function(){hidden_payment()});
+
+
+</script>
     </head>
     <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">
     <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
@@ -1208,19 +1107,42 @@ color: #FF6600;
             <td class="main">
             <?php
             //    echo tep_payment_method_menu($order->info['payment_method']);
-            /*
+/*
+$payment_modules = payment::getInstance($_POST['site_id']);
+$payment_method_romaji = payment::changeRomaji($order->info['payment_method'],PAYMENT_RETURN_TYPE_CODE);
+$validateModule = $payment_modules->admin_confirmation_check($payment_method_romaji);
+$selections = $payment_modules->admin_selection();
+$selections[strtoupper($payment_method_romaji)] = $validateModule;
+
                $payment_array = payment::getPaymentList(); 
 
                for($i=0; $i<sizeof($payment_array[0]); $i++) {
                $payment_list[] = array('id' => $payment_array[0][$i],
                'text' => $payment_array[1][$i]);
                }
-               echo tep_draw_pull_down_menu('payment_method', $payment_list, $order->info['payment_method']);
-             */
+               echo tep_draw_pull_down_menu('payment_method', $payment_list,
+                   $order->info['payment_method'],'onchange="hidden_payment()"');
+*/
             $code_payment_method =
             payment::changeRomaji($order->info['payment_method'],'code');
           echo payment::makePaymentListPullDownMenu($code_payment_method);
-          ?>
+/*            
+echo "<table>";
+foreach ($selections as $se){
+  foreach($se['fields'] as $field ){
+    echo '<tr class="rowHide rowHide_'.$se['id'].'">';
+    echo '<td class="main">';
+    echo "&nbsp;".$field['title']."</td>";
+    echo "<td class='main'>";
+    echo "&nbsp;&nbsp;".$field['field'];
+    echo "<font color='#red'>".$field['message']."</font>";
+    echo "</td>";
+    echo "</tr>";
+  } 
+}
+echo "</table>";
+*/
+?>
             </td>
             </tr>
             <!-- End Payment Block -->

@@ -107,7 +107,7 @@ if (tep_not_null($action)) {
         tep_redirect(tep_href_link("edit_orders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
         break;
       }
-      
+     /* 
       if (isset($update_tori_torihiki_date)) { //日時が有効かチェック
         if (!preg_match('/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/', $update_tori_torihiki_date, $m)) { // check the date format
           $messageStack->add('日時フォーマットが間違っています。 "2008-01-01 10:30:00"', 'error');
@@ -123,6 +123,7 @@ if (tep_not_null($action)) {
         $action = 'edit';
         break;
       }
+      */
       
       foreach ($update_totals as $total_index => $total_details) {    
         extract($total_details,EXTR_PREFIX_ALL,"ot");
