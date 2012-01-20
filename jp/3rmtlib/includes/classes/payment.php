@@ -208,7 +208,8 @@ class payment {
         '  }' . "\n\n";
 
       reset($this->modules);
-      while (list(, $value) = each($this->modules)) {
+      //while (list(, $value) = each($this->modules)) {
+      foreach($this->modules as $value){
         $class = substr($value, 0, strrpos($value, '.'));
         if ($GLOBALS[$class]->enabled) {
             
