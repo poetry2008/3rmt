@@ -1,7 +1,7 @@
 <?php
 interface paymentInterface
 {
-  public function loadSpecialSettings($site_id);
+  public function loadSpecialSettings($site_id=0);
   public function calc_fee($money);
   public function fields($theData);
   //  public function selection($theData);
