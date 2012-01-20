@@ -223,12 +223,12 @@ if($each_product_shipping){
     }
     echo $s_modules->title."</div>";
     echo "<p>".$s_modules->description."</p>";
-    if(!$one_shipping){
+    //if(!$one_shipping){
       echo "<div style='display:none'>";
       echo "<select id='".$s_modules->code."'>";
       echo $s_option;
       echo "</select>";
-    }
+    //}
     echo "</div>";
     echo "</div>";
   }
