@@ -100,7 +100,7 @@ class google implements engine {
     //$html = @iconv("SHIFT-JIS","UTF-8//TRANSLIT//IGNORE",$html);
     //var_dump($html);
     //分割 
-    $resultArray = explode('<li class=g',$html);
+    $resultArray = explode('<li class="g"',$html);
 //    $parsePreg = "/<a\shref=\"(.*)\">(.*)<\/a><div>(.*)<\/div>.*/";
     $parsePreg =
       '/<h3[^>]*><a[^>]*href=\"([^"]*)\"(.*)<\/a><\/h3>.*<div[^>]*>(.*)<\/div>.*/';
