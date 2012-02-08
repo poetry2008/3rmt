@@ -11,116 +11,9 @@
 */
 
   require('includes/application_top.php');
+  require(DIR_WS_ACTIONS.'change_preorder.php');
 
-  
-  require(DIR_WS_LANGUAGES . $language . '/change_preorder.php');
-  
-  $preorder_raw = tep_db_query('select * from '.TABLE_PREORDERS." where check_preorder_str = '".$_GET['pid']."' and site_id = '".SITE_ID."' and is_active = '1'");
-  $preorder_res = tep_db_fetch_array($preorder_raw); 
-  if (!$preorder_res) {
-    forward404(); 
-  }
-  
-  $customer_info_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = '".$preorder_res['customers_id']."' and site_id = '".SITE_ID."'"); 
-  $customer_info_res = tep_db_fetch_array($customer_info_raw);
-  
-  $is_member_single = 0;
-  if ($customer_info_res['customers_guest_chk'] == '0') {
-    $is_member_single = 1; 
-  }
-  
-  if (!tep_session_is_registered('customer_id')) {
-      if ($customer_info_res['customers_guest_chk'] == '0') {
-        $navigation->set_snapshot();
-        tep_redirect(tep_href_link(FILENAME_LOGIN, 'pid='.$_GET['pid'], 'SSL'));
-      }
-  } else {
-    if ($is_member_single) { 
-      if ($guestchk == '0') {
-        if ($customer_emailaddress != $preorder_res['customers_email_address']) {
-          $navigation->set_snapshot();
-          
-          tep_session_unregister('customer_id');
-          tep_session_unregister('customer_default_address_id');
-          tep_session_unregister('customer_first_name');
-          tep_session_unregister('customer_last_name'); 
-          tep_session_unregister('customer_country_id');
-          tep_session_unregister('customer_zone_id');
-          tep_session_unregister('comments');
-          tep_session_unregister('customer_emailaddress');
-          tep_session_unregister('guestchk');
-
-          $cart->reset();
-          
-          tep_redirect(tep_href_link(FILENAME_LOGIN, 'pid='.$_GET['pid'], 'SSL'));
-        }
-      }
-    }
-  } 
-  $preorder_point = (int)$customer_info_res['point'];  
-  
-  $preorder_id = $preorder_res['orders_id'];
- 
-  $ensure_date_info = explode(' ', $preorder_res['ensure_deadline']);
-  $year_info = explode('-', $ensure_date_info[0]);
-  $ensure_datetime = mktime(23, 59, 59, $year_info[1], $year_info[2], $year_info[0]);
-  if (time() > $ensure_datetime) {
-    $preorder_product_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$preorder_id."'"); 
-    $preorder_product_res = tep_db_fetch_array($preorder_product_raw); 
-    tep_redirect(tep_href_link('change_preorder_timeout.php?pname='.urlencode($preorder_product_res['products_name']))); 
-  }
-  $error = false;  
-  if ($_POST['action'] == 'process') {
-    $preorder_torihikihouhou = tep_db_prepare_input($_POST['torihikihouhou']);
-    $preorder_date = tep_db_prepare_input($_POST['date']);
-    $preorder_hour = tep_db_prepare_input($_POST['hour']);
-    $preorder_min = tep_db_prepare_input($_POST['min']);
-    if ($preorder_torihikihouhou == '') {
-      $error = true;
-      $torihikihouhou_error = TEXT_PREORDER_ERROR_TORIHIKIHOUHOU;
-    }
-    
-    if ($preorder_date == '') {
-      $error = true; 
-      $date_error = TEXT_PREORDER_ERROR_DATE; 
-    }
-    
-    if ($preorder_hour == '') {
-      $error = true;
-      $jikan_error = TEXT_PREORDER_ERROR_JIKAN;
-    }
-    
-    if ($preorder_min == '') {
-      $error = true;
-      $jikan_error = TEXT_PREORDER_ERROR_JIKAN;
-    }
-   
-    if (isset($_POST['p_character'])) {
-      if (empty($_POST['p_character'])) {
-        $error = true;
-        $character_error = TEXT_PREORDER_ERROR_CHARACTER;
-      }
-    }
-    
-    if (isset($_POST['preorder_point'])) {
-      if (is_numeric($_POST['preorder_point'])) {
-        if ($_POST['preorder_point'] > $preorder_point) {
-          if (($_POST['preorder_point'] != '0') && ($preroder_point != '0')) {
-            $error = true;
-            $point_error = TEXT_PREORDER_ERROR_POINT;
-          }
-        }
-        if (($_POST['preorder_point'] < 0)) {
-          $error = true;
-          $point_error = TEXT_PREORDER_ERROR_POINT;
-        }
-      } else {
-        $error = true;
-        $point_error = TEXT_PREORDER_ERROR_POINT;
-      }
-    }
-  }
-$breadcrumb->add(NAVBAR_CHANGE_PREORDER_TITLE, '');
+  $breadcrumb->add(NAVBAR_CHANGE_PREORDER_TITLE, '');
 ?>
 <?php page_head();?>
 <script type="text/javascript">
@@ -407,7 +300,24 @@ echo '</form>';
             <tr>
               <td class="main" width="150"><?php echo TEXT_PREORDER_POINT_TEXT;?></td> 
               <td class="main">
-              <input type="text" name="preorder_point" class="input_text_short" value="<?php echo isset($_POST['preorder_point'])?$_POST['preorder_point']:'0';?>">&nbsp;/&nbsp;<?php echo $preorder_point;?> 
+              <input type="text" name="preorder_point" size="24" value="<?php echo isset($_POST['preorder_campaign_info'])?$_POST['preorder_campaign_info']:(isset($_POST['preorder_point'])?$_POST['preorder_point']:'0');?>" style="text-align:right;">&nbsp;&nbsp;<?php echo $preorder_point;?> 
+              <?php 
+              echo TEXT_PREORDER_POINT_READ; 
+              if (isset($point_error)) {
+                echo '<br><font color="#ff0000">'.$point_error.'</font>'; 
+              }
+              ?>
+              </td> 
+            </tr>
+          </table>
+          <br>
+          <?php } else if ($is_member_single && MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && ($preorder_total < 0)) { 
+          ?>
+          <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
+            <tr>
+              <td class="main" width="150"><?php echo TEXT_PREORDER_POINT_TEXT;?></td> 
+              <td class="main">
+              <input type="text" name="camp_preorder_point" size="24" value="<?php echo isset($_POST['preorder_campaign_info'])?$_POST['preorder_campaign_info']:(isset($_POST['camp_preorder_point'])?$_POST['camp_preorder_point']:'0');?>" style="text-align:right;"> 
               <?php 
               if (isset($point_error)) {
                 echo '<br><font color="#ff0000">'.$point_error.'</font>'; 
@@ -417,7 +327,8 @@ echo '</form>';
             </tr>
           </table>
           <br>
-          <?php }?> 
+          <?php
+          }?> 
           <table width="100%" cellpadding="0" cellspacing="0" border="0" class="c_pay_info">
             <tr>
               <td class="main">

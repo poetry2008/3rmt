@@ -32,4 +32,8 @@ define('TEXT_CONTINUE_CHECKOUT_PROCEDURE', '「次へ進む」をクリックし
 //Add Point System
 define('TEXT_POINT', 'ポイント');
 
+define('CAMPAIGN_ERROR_TEXT', 'この値は無効です。');
+define('TEXT_POINT_OR_CAMPAION', 'ポイント/キャンペーンコード');
+define('TEXT_POINT_READ', 'ポイントまで利用可能です。');
+
 ?>

@@ -135,6 +135,9 @@
           $total += intval($this->n_fee); 
           // 追加 - 2007.01.05 ----------------------------------------------
     
+    if (isset($_SESSION['campaign_fee'])) {
+      $total += $_SESSION['campaign_fee']; 
+    }
     #mail送信
     $mail_body = '仮クレジットカード注文です。'."\n\n";
     

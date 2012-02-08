@@ -155,11 +155,30 @@
               continue;
             }
             for ($i=0; $i<$size; $i++) {
+              if ($class == 'ot_point') {
+                if (isset($_SESSION['campaign_fee'])) {
+                  if ($_SESSION['campaign_fee'] == 0) {
+                    continue; 
+                  }
+                } else {
+                  if ($GLOBALS[$class]->output[$i]['value'] == 0) {
+                    continue; 
+                  }
+                }
+              }
               $output_string .= '              <tr>' . "\n" .
                                 '                <td align="right" class="main">' . $GLOBALS[$class]->output[$i]['title'] . '</td>' . "\n" .
-                                '                <td align="right" class="main">' .
-                                $currencies->format_total($GLOBALS[$class]->output[$i]['value']) . '</td>' . "\n" .
-                                '              </tr>';
+                                '                <td align="right" class="main">';
+              if ($class == 'ot_point') {
+                if (isset($_SESSION['campaign_fee'])) {
+                 
+                  $output_string .= '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format_total(abs($_SESSION['campaign_fee']))) .  '</font>'.JPMONEY_UNIT_TEXT.'</td>' . "\n" .  '              </tr>';
+                } else {
+                  $output_string .= '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format_total($GLOBALS[$class]->output[$i]['value'])) . '</font>'.JPMONEY_UNIT_TEXT.'</td>' . "\n" .  '              </tr>';
+                }
+              } else {
+                $output_string .= $currencies->format_total($GLOBALS[$class]->output[$i]['value']) . '</td>' . "\n" .  '              </tr>';
+              }
             }
             $_SESSION['mailfee'] = $currencies->format($total_handle_fee);   
             if($class == 'ot_subtotal'){

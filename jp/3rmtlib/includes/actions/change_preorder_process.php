@@ -134,8 +134,13 @@ if ($preorder) {
   
   while ($preorder_total_res = tep_db_fetch_array($preorder_total_raw)) {
     if ($preorder_total_res['class'] == 'ot_total') {
-      $preorder_total_num = $preorder_total_res['value'] - (int)$preorder_point; 
-      $preorder_total_print_num = $preorder_total_res['value'] - (int)$preorder_point; 
+      if (isset($_SESSION['preorder_campaign_fee'])) {
+        $preorder_total_num = $preorder_total_res['value'] + (int)$_SESSION['preorder_campaign_fee']; 
+        $preorder_total_print_num = $preorder_total_res['value'] + (int)$_SESSION['preorder_campaign_fee']; 
+      } else {
+        $preorder_total_num = $preorder_total_res['value'] - (int)$preorder_point; 
+        $preorder_total_print_num = $preorder_total_res['value'] - (int)$preorder_point; 
+      }
     } else if ($preorder_total_res['class'] == 'ot_point') {
       $preorder_total_num = (int)$preorder_point; 
     } else {
@@ -320,11 +325,16 @@ if ($preorder_point){
     $mailoption['POINT']            = 0;
 }
 
+if (isset($_SESSION['preorder_campaign_fee'])) {
+  $mailoption['POINT']          = str_replace('円', '', $currencies->format(abs($_SESSION['preorder_campaign_fee'])));
+}
+
 if (!empty($preorder['code_fee'])) {
   $mailoption['MAILFEE']          = str_replace('円', '', $currencies->format(abs($preorder['code_fee'])));
 } else {
   $mailoption['MAILFEE']          = '0';
 }
+
 
 $email_order_text = '';
 
@@ -364,8 +374,14 @@ $email_printing_order .= 'メールアドレス　：' . $preorder['customers_em
 "\n";
 $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
 
-if ($preorder_point > 0) {
-    $email_printing_order .= '□ポイント割引　　：' . (int)$preorder_point . '円' . "\n";
+if (isset($_SESSION['preorder_campaign_fee'])) {
+  if (abs($_SESSION['preorder_campaign_fee']) > 0) {
+      $email_printing_order .= '割引　　　　　　：' .  abs($_SESSION['preorder_campaign_fee']). '円' . "\n";
+  }
+} else {
+  if ($preorder_point > 0) {
+      $email_printing_order .= '割引　　　　　　：' . (int)$preorder_point . '円' . "\n";
+  }
 }
 
 if (!empty($preoder['code_fee'])) {
@@ -440,6 +456,28 @@ if ($link_customer_res) {
   }
 }
 
+if (isset($_SESSION['preorder_campaign_fee'])) {
+  $campaign_raw = tep_db_query("select * from ".TABLE_CAMPAIGN." where id = '".$_SESSION['preorder_camp_id']."' and (site_id = '".SITE_ID."' or site_id = '0')"); 
+  $campaign = tep_db_fetch_array($campaign_raw); 
+  $sql_data_array = array(
+      'customer_id' => $preorder_cus_id,
+      'campaign_id' => $_SESSION['preorder_camp_id'],
+      'orders_id' => $orders_id,
+      'campaign_fee' => $_SESSION['preorder_campaign_fee'],
+      'campaign_title' => $campaign['title'],
+      'campaign_name' => $campaign['name'],
+      'campaign_keyword' => $campaign['keyword'],
+      'campaign_start_date' => $campaign['start_date'],
+      'campaign_end_date' => $campaign['end_date'],
+      'campaign_max_use' => $campaign['max_use'],
+      'campaign_point_value' => $campaign['point_value'],
+      'campaign_limit_value' => $campaign['limit_value'],
+      'campaign_type' => $campaign['type'],
+      'site_id' => SITE_ID
+      );
+  tep_db_perform(TABLE_CUSTOMER_TO_CAMPAIGN, $sql_data_array);
+}
+
 tep_db_query("delete from ".TABLE_PREORDERS." where orders_id = '".$_SESSION['preorder_info_id']."' and site_id = '".SITE_ID."'"); 
 tep_db_query("delete from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$_SESSION['preorder_info_id']."'"); 
 tep_db_query("delete from ".TABLE_PREORDERS_PRODUCTS_ATTRIBUTES." where orders_id = '".$_SESSION['preorder_info_id']."'"); 
@@ -473,6 +511,9 @@ if (MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
 
 unset($_SESSION['preorder_option']);
 unset($_SESSION['referer_adurl']);
+
+unset($_SESSION['preorder_campaign_fee']);
+unset($_SESSION['preorder_camp_id']);
 
 tep_redirect(tep_href_link('change_preorder_success.php'));
 

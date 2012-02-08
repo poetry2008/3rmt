@@ -127,12 +127,20 @@
       if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() > 0) {//point --  
         if($guestchk == '1') {
           echo '<input type="hidden" name="point" value="0">';
-        } else if(tep_only_sell_product()){
+        } else {
       ?> 
             <tr> 
               <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                   <tr> 
-                    <td class="main"><b><?php echo TEXT_POINT; ?></b></td> 
+                    <td class="main">
+                    <b><?php echo TEXT_POINT_OR_CAMPAION; ?></b>
+                    &nbsp;&nbsp;
+                    <?php
+                    if ($campaign_error) {
+                      echo '<font color="#ff0000">'.CAMPAIGN_ERROR_TEXT.'</font>'; 
+                    }
+                    ?>
+                    </td> 
                   </tr> 
                 </table></td> 
             </tr> 
@@ -141,8 +149,11 @@
                   <tr class="infoBoxContents"> 
                     <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                         <tr> 
-                          <td class="main"><input type="text" value="0" name="point" class="input_text_short"> 
-                            /<?php echo $point['point'] ?></td> 
+                          <td class="main"><input type="text" value="<?php echo $campaign_error?$campaign_error_str:0;?>" name="point" size="24" style="text-align:right;"> 
+                            </td> 
+                          <td class="main" align="right"> 
+                            <?php echo isset($current_point['point'])?$current_point['point']:$point['point']; ?><?php echo TEXT_POINT_READ;?>
+                          </td>
                         </tr> 
                       </table></td> 
                   </tr> 
@@ -152,10 +163,43 @@
               <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
             </tr> 
             <?php
-        }else{
-          echo '<input type="hidden" name="point" value="0">';
         }
-      }//point eof// 
+      } else if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() < 0) { 
+        if($guestchk != '1') {
+      ?>
+      <tr> 
+              <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+                  <tr> 
+                    <td class="main">
+                    <b><?php echo TEXT_POINT_OR_CAMPAION; ?></b>
+                    &nbsp;&nbsp;
+                    <?php
+                    if ($campaign_error) {
+                      echo '<font color="#ff0000">'.CAMPAIGN_ERROR_TEXT.'</font>'; 
+                    }
+                    ?>
+                    </td> 
+                  </tr> 
+                </table></td> 
+            </tr> 
+            <tr> 
+              <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
+                  <tr class="infoBoxContents"> 
+                    <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+                        <tr> 
+                          <td class="main"><input type="text" value="<?php echo $campaign_error?$campaign_error_str:0;?>" name="camp_point" size="24" style="text-align:right;"> 
+                            </td> 
+                        </tr> 
+                      </table></td> 
+                  </tr> 
+                </table></td> 
+            </tr> 
+            <tr> 
+              <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+            </tr>
+      <?php
+        }
+      }
       ?> 
             <tr> 
               <td><table border="0" width="100%" cellspacing="0" cellpadding="0" class="c_pay_info"> 

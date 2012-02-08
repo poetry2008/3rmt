@@ -454,4 +454,5 @@ define('PREORDER_FINISH_LINE_TITLE', '手続き完了！');
 define('TEXT_TORIHIKI_REPLACE_STR','～');
 define('TEXT_TORIHIKI_HOUR_STR','時');
 define('TEXT_TORIHIKI_MIN_STR','分');
+define('JPMONEY_UNIT_TEXT', '円');
 ?>

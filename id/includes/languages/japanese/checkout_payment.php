@@ -41,4 +41,8 @@ define('TEXT_BANK_KOUZA_NAME', '口座名義<b>（カタカナ）</b>:');
 
 define('TEXT_BANK_SELECT_KAMOKU_F', '普通');
 define('TEXT_BANK_SELECT_KAMOKU_T', '当座');
+
+define('CAMPAIGN_ERROR_TEXT', 'この値は無効です。');
+define('TEXT_POINT_OR_CAMPAION', 'ポイント/キャンペーンコード');
+define('TEXT_POINT_READ', 'ポイントまで利用可能です。');
 ?>

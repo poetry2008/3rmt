@@ -162,13 +162,24 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
     $point_rate = MODULE_ORDER_TOTAL_POINT_FEE;
   }
   if ($order->info['subtotal'] > 0) {
-    $get_point = ($order->info['subtotal'] - (int)$point) * $point_rate;
+    if (isset($_SESSION['campaign_fee'])) {
+      $get_point = ($order->info['subtotal'] + $_SESSION['campaign_fee']) * $point_rate;
+    } else {
+      $get_point = ($order->info['subtotal'] - (int)$point) * $point_rate;
+    }
   } else {
     if ($payment == 'buyingpoint') {
-      $get_point = abs($order->info['subtotal']);
+      if (isset($_SESSION['campaign_fee'])) {
+        $get_point = abs($order->info['subtotal'])+abs($_SESSION['campaign_fee']);
+      } else {
+        $get_point = abs($order->info['subtotal']);
+      }
     } else {
       $get_point = 0;
     }
+  }
+  if ($guestchk == '1') {
+    $get_point = 0;
   }
   tep_session_register('get_point');
   if(isset($customer_id)&&tep_is_member_customer($customer_id)){
@@ -176,7 +187,11 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
   if (!tep_only_buy_product()) {
     echo '<td align="right" class="main"><br>'.TS_TEXT_POINT_NOW.'</td>' . "\n";
   } else {
-    echo '<td align="right" class="main"><br>'.TS_TEXT_POINT_NOW_TWO.'</td>' . "\n";
+    if ($get_point == 0) {
+      echo '<td align="right" class="main"><br>'.TS_TEXT_POINT_NOW_TWO.'</td>' . "\n";
+    } else {
+      echo '<td align="right" class="main"><br>'.TS_TEXT_POINT_NOW.'</td>' . "\n";
+    }
   } 
 
   echo '<td align="right" class="main"><br>'.(int)$get_point.'&nbsp;P</td>' . "\n";

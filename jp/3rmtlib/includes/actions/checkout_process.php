@@ -495,6 +495,9 @@ if ($point){
 }else {
   $mailoption['POINT']            = 0;
 }
+if (isset($_SESSION['campaign_fee'])) {
+  $mailoption['POINT']            = str_replace('円', '', $currencies->format(abs($_SESSION['campaign_fee'])));
+}
 if(!isset($_SESSION['mailfee'])){
   $total_mail_fee =0;
 }else{
@@ -504,6 +507,7 @@ if(!isset($_SESSION['mailfee'])){
 $mailoption['MAILFEE']          = str_replace('円','',$total_mail_fee);
 $email_order = '';
 $email_order = $payment_modules->getOrderMailString($payment,$mailoption);  
+
 // 2003.03.08 Edit Japanese osCommerce
 tep_mail(tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], EMAIL_TEXT_SUBJECT, $email_order, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
   
@@ -529,8 +533,12 @@ $email_printing_order .= '注文番号　　　　：' . $insert_id . "\n";
 $email_printing_order .= '注文日　　　　　：' . tep_date_long(time()) . "\n";
 $email_printing_order .= 'メールアドレス　：' . $order->customer['email_address'] . "\n";
 $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-if ($point > 0) {
-  $email_printing_order .= 'ポイント割引　　：' . (int)$point . '円' . "\n";
+if (isset($_SESSION['campaign_fee'])) {
+  if (abs($_SESSION['campaign_fee']) > 0) {
+    $email_printing_order .= '割引　　　　　　：' . abs((int)$_SESSION['campaign_fee']) . '円' . "\n";
+  }
+} else if ($point > 0) {
+  $email_printing_order .= '割引　　：' . (int)$point . '円' . "\n";
 }
 if (!empty($total_mail_fee)) {
   $email_printing_order .= '手数料　　　　　：'.$total_mail_fee.'円'."\n"; 
@@ -559,7 +567,6 @@ $email_printing_order .= $email_orders_history;
 if (method_exists($payment_class,'getMailString')){
   $email_printing_order .=$payment_class->getMailString($ot['value']);
 }
-
 # ------------------------------------------
 // send emails to other people
 if (SEND_EXTRA_ORDER_EMAILS_TO != '') {
@@ -589,6 +596,28 @@ if (MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
     //ccdd
 
     tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point - " . intval($point) . " where customers_id = " . $customer_id );
+  }
+  
+  if (isset($_SESSION['campaign_fee'])) {
+    $campaign_raw = tep_db_query("select * from ".TABLE_CAMPAIGN." where id = '".$_SESSION['camp_id']."' and (site_id = '".SITE_ID."' or site_id = '0')"); 
+    $campaign = tep_db_fetch_array($campaign_raw); 
+    $sql_data_array = array(
+        'customer_id' => $customer_id,
+        'campaign_id' => $_SESSION['camp_id'],
+        'orders_id' => $insert_id,
+        'campaign_fee' => $_SESSION['campaign_fee'],
+        'campaign_title' => $campaign['title'],
+        'campaign_name' => $campaign['name'],
+        'campaign_keyword' => $campaign['keyword'],
+        'campaign_start_date' => $campaign['start_date'],
+        'campaign_end_date' => $campaign['end_date'],
+        'campaign_max_use' => $campaign['max_use'],
+        'campaign_point_value' => $campaign['point_value'],
+        'campaign_limit_value' => $campaign['limit_value'],
+        'campaign_type' => $campaign['type'],
+        'site_id' => SITE_ID
+        );
+    tep_db_perform(TABLE_CUSTOMER_TO_CAMPAIGN, $sql_data_array);
   }
 }
   
@@ -632,6 +661,8 @@ unset($_SESSION['option']);
 unset($_SESSION['referer_adurl']);
 
   
+unset($_SESSION['campaign_fee']); 
+unset($_SESSION['camp_id']); 
 //$pr = '?SID=' . $convenience_sid;
   
 /*

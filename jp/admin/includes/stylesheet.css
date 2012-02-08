@@ -1111,3 +1111,26 @@ a.s_column_bar {
 .breadcreumb_asset { float:right; line-height:40px; padding-right:10px;}
 .title_breadcreumb_div { clear:both; height:40px;}
 .rowHide { display:none}
+
+/*campaign*/
+#show_campaign_info{
+	position:absolute;
+	left:18%;
+	width:70%;
+	background-color:#FFFF00;
+}
+.campaign_top{
+	background-color:#000000;
+	color:#FFFFFF;
+}
+.campaign_top a{ color:#FFFFFF;}
+.campaign_input{
+	width:40%;
+}
+.campaign_body {
+	padding:0 50px 10px 50px;
+}
+.campaign_input_num{
+	width:20%;
+	text-align:right;
+}

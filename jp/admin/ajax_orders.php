@@ -668,5 +668,494 @@ if ($_POST['orders_id'] &&
   }else{
     echo "false";
   }
-}
+} else if (isset($_GET['action'])&&$_GET['action']=='edit_campaign') {
+  require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_CAMPAIGN); 
+  $campaign_query = tep_db_query("select * from ".TABLE_CAMPAIGN." where id = '".$_POST['cid']."'"); 
+  $campaign_res = tep_db_fetch_array($campaign_query);
+  $html_str = '';
+  $html_str .= '<table cellspacing="0" cellpadding="2" border="0" width="100%" class="campaign_top">';
+  $html_str .= '<tr>'; 
+  $html_str .= '<td width="20">'; 
+  $html_str .= tep_image(DIR_WS_IMAGES . 'icon_info.gif',IMAGE_ICON_INFO,16,16)."&nbsp;";
+  $html_str .= '</td>'; 
+  $html_str .= '<td align="left">'; 
+  $html_str .= '<b>'.$campaign_res['title'].'</b>'; 
+  $html_str .= '</td>'; 
+  $html_str .= '<td align="right">'; 
+  $html_str .= get_campaign_link_page($campaign_res['id'], $campaign_res['site_id'], $_POST['st_id']); 
+  $html_str .= '&nbsp;&nbsp;<a href="javascript:void(0);" onclick="close_campaign_info()">X</a>';  
+  $html_str .= '</td>'; 
+  $html_str .= '</tr>'; 
+  $html_str .= '</table>'; 
+  $html_str .= tep_draw_form('campaign', FILENAME_CAMPAIGN, 'action=update&site_id='.$campaign_res['site_id'].'&st_id='.$_POST['st_id']); 
+  $html_str .= '<table cellspacing="0" cellpadding="2" border="0" width="100%" class="campaign_body">';
+  
+  $html_str .= '<tr>';
+  $html_str .= '<td width="220">';
+  $html_str .= TEXT_INFO_TITLE; 
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= tep_draw_input_field('title', $campaign_res['title'], 'id="title" class="campaign_input" '); 
+  $html_str .= '<div id="title_error"></div>'; 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  $html_str .= '<tr>';
+  $html_str .= '<td>';
+  $html_str .= TEXT_INFO_NAME; 
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= tep_draw_input_field('name', $campaign_res['name'], 'id="name" class="campaign_input"'); 
+  $html_str .= '<div id="name_error"></div>'; 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  $html_str .= '<tr>';
+  $html_str .= '<td>';
+  $html_str .= TEXT_INFO_KEYWORD; 
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= tep_draw_input_field('keyword', $campaign_res['keyword'], 'id="keyword" class="campaign_input" ');
+  $html_str .= '<br>'.'<font size="1">'.TEXT_CAMPAIGN_KEYWORD_READ.'</font>';
+  $html_str .= '<div id="keyword_error"></div>'; 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  $html_str .= '<tr>'; 
+  $html_str .= '<td>'; 
+  $html_str .= TEXT_CAMPAIGN_TYPE; 
+  $html_str .= '</td>'; 
+  $html_str .= '<td>'; 
+  if ($campaign_res['type'] == 1) {
+    $html_str .= tep_draw_radio_field('type',1,true,'','id="type" onclick="toggle_type_info(this);"').TEXT_CAMPAIGN_TYPE_SELL.'&nbsp;'.tep_draw_radio_field('type',2,false,'','id="type" onclick="toggle_type_info(this);"').TEXT_CAMPAIGN_TYPE_BUY; 
+    $limit_value_text = TEXT_CAMPAIGN_LIMIT_VALUE_READ_UP;
+  } else {
+    $html_str .= tep_draw_radio_field('type',1,false,'','id="type" onclick="toggle_type_info(this);"').TEXT_CAMPAIGN_TYPE_SELL.'&nbsp;'.tep_draw_radio_field('type',2,true,'','id="type" onclick="toggle_type_info(this);"').TEXT_CAMPAIGN_TYPE_BUY; 
+    $limit_value_text = TEXT_CAMPAIGN_LIMIT_VALUE_READ_DOWN;
+  }
+  $html_str .= '</td>'; 
+  $html_str .= '</tr>'; 
+  $html_str .= '<tr>';
+  $html_str .= '<td>';
+  $html_str .= '&nbsp;'; 
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  if ($campaign_res['type'] == 1) {
+    $html_str .= '<span id="type_symbol">+</span>';
+  } else {
+    $html_str .= '<span id="type_symbol">-</span>';
+  }
+  $html_str .= '&nbsp;&nbsp;&nbsp;&nbsp;'.tep_draw_input_field('limit_value', abs($campaign_res['limit_value']), 'id="limit_value" class="campaign_input_num"').'&nbsp;'.TEXT_MONEY_SYMBOL; 
+  $html_str .= '<span id="limit_value_text">';
+  $html_str .= $limit_value_text;
+  $html_str .= '</span>';
+  $html_str .= '<div id="limit_value_error"></div>'; 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  $html_str .= '<tr>';
+  $html_str .= '<td>';
+  $html_str .= TEXT_INFO_POINT_VALUE; 
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= '-&nbsp;&nbsp;&nbsp;&nbsp;'.tep_draw_input_field('point_value',
+      substr($campaign_res['point_value'],1), 
+      'id="point_value" class="campaign_input_num" ').'&nbsp;'.TEXT_MONEY_SYMBOL; 
+  $html_str .= '<div id="point_value_error"></div>'; 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  $html_str .= '<tr>'; 
+  $html_str .= '<td>&nbsp;'; 
+  $html_str .= '</td>'; 
+  $html_str .= '<td>'; 
+  $html_str .= '<font size="1">'.TEXT_CAMPAIGN_VALUE_READ.'</font>'; 
+  $html_str .= '</td>'; 
+  $html_str .= '</tr>';
+  $html_str .= '<tr>';
+  $html_str .= '<td>';
+  $html_str .= TEXT_INFO_PREORDER; 
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  if ($campaign_res['is_preorder'] == 0) {
+    $html_str .= tep_draw_radio_field('is_preorder',1,false,'','id="is_preorder"').TEXT_TRUE.'&nbsp;'.tep_draw_radio_field('is_preorder',0,true,'','id="is_preorder"').TEXT_FALSE; 
+  } else {
+    $html_str .= tep_draw_radio_field('is_preorder',1,true,'','id="is_preorder"').TEXT_TRUE.'&nbsp;'.tep_draw_radio_field('is_preorder',0,false,'','id="is_preorder"').TEXT_FALSE; 
+  }
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  $html_str .= '<tr>';
+  $html_str .= '<td>';
+  $html_str .= TEXT_INFO_START_DATE; 
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $start_date_info = explode('-', $campaign_res['start_date']); 
+  $html_str .= '<select name="syear" id="syear">'; 
+  for ($i=2012; $i<=2030; $i++) {
+    $select_str = ($start_date_info[0]==$i)?' selected':''; 
+    $html_str .= '<option  value="'.sprintf('%02d', $i).'"'.$select_str.'>'.sprintf('%02d', $i).'</option>'; 
+  }
+  $html_str .= '</select>'.YEAR_TEXT.'&nbsp;'; 
+  $html_str .= '<select name="smonth" id="smonth">'; 
+  for ($i=1; $i<=12; $i++) {
+    $select_str = ($start_date_info[1]==$i)?' selected':''; 
+    $html_str .= '<option  value="'.sprintf('%02d', $i).'"'.$select_str.'>'.sprintf('%02d', $i).'</option>'; 
+  }
+  $html_str .= '</select>'.MONTH_TEXT.'&nbsp;'; 
+  $html_str .= '<select name="sday" id="sday">'; 
+  for ($i=1; $i<=31; $i++) {
+    $select_str = ($start_date_info[2]==$i)?' selected':''; 
+    $html_str .= '<option  value="'.sprintf('%02d', $i).'"'.$select_str.'>'.sprintf('%02d', $i).'</option>'; 
+  }
+  $html_str .= '</select>'.DAY_TEXT.'&nbsp;'; 
+  $html_str .= '<div id="date_error"></div>'; 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  
+  $html_str .= '<tr>';
+  $html_str .= '<td>';
+  $html_str .= TEXT_INFO_END_DATE; 
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $end_date_info = explode('-', $campaign_res['end_date']); 
+  $html_str .= '<select name="eyear" id="eyear">'; 
+  for ($i=2012; $i<=2030; $i++) {
+    $select_str = ($end_date_info[0]==$i)?' selected':''; 
+    $html_str .= '<option  value="'.sprintf('%02d', $i).'"'.$select_str.'>'.sprintf('%02d', $i).'</option>'; 
+  }
+  $html_str .= '</select>'.YEAR_TEXT.'&nbsp;'; 
+  $html_str .= '<select name="emonth" id="emonth">'; 
+  for ($i=1; $i<=12; $i++) {
+    $select_str = ($end_date_info[1]==$i)?' selected':''; 
+    $html_str .= '<option  value="'.sprintf('%02d', $i).'"'.$select_str.'>'.sprintf('%02d', $i).'</option>'; 
+  }
+  $html_str .= '</select>'.MONTH_TEXT.'&nbsp;'; 
+  $html_str .= '<select name="eday" id="eday">'; 
+  for ($i=1; $i<=31; $i++) {
+    $select_str = ($end_date_info[2]==$i)?' selected':''; 
+    $html_str .= '<option  value="'.sprintf('%02d', $i).'"'.$select_str.'>'.sprintf('%02d', $i).'</option>'; 
+  }
+  $html_str .= '</select>'.DAY_TEXT.'&nbsp;'; 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';  
+  
+  $html_str .= '<tr>';
+  $html_str .= '<td>';
+  $html_str .= TEXT_INFO_MAX_USE; 
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= tep_draw_input_field('max_use', $campaign_res['max_use'],
+      'id="max_use" class="campaign_input_num" ').TEXT_CAMPAIGN_NUM_UNIT; 
+  $html_str .= '<div id="max_use_error"></div>'; 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  $html_str .= '<tr>';
+  $html_str .= '<td>';
+  $html_str .= TEXT_INFO_USE_NUM; 
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $camp_num_query = tep_db_query("select count(*) as total from ".TABLE_CUSTOMER_TO_CAMPAIGN." where campaign_id = '".$campaign_res['id']."'"); 
+  $camp_num = tep_db_fetch_array($camp_num_query); 
+  $html_str .= tep_draw_input_field('use_num', strval((int)$camp_num['total']),
+      'disabled="true" class="campaign_input_num" style="background:#ccc;" ').TEXT_CAMPAIGN_NUM_UNIT; 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  
+  $html_str .= '<tr>';
+  $html_str .= '<td>';
+  $html_str .= '&nbsp;'; 
+  $html_str .= '</td>';
+  $html_str .= '<td  style="padding-left:20%;">';
+  $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_NEW_PROJECT, 'onclick="show_new_campaign(\''.$_POST['st_id'].'\')"').'</a>&nbsp;'; 
+  $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="check_campaign_info('.$campaign_res['id'].', 1, '.$campaign_res['site_id'].');"').'</a>&nbsp;'; 
+  $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="if(confirm(\''.TEXT_DEL_CAMPAIGN.'\')) window.location.href = \''.tep_href_link(FILENAME_CAMPAIGN, 'action=deleteconfirm&campaign_id='.$campaign_res['id']).'&site_id='.$_POST['st_id'].'\';"').'</a>'; 
+  $html_str .= tep_draw_hidden_field('campaign_id', $campaign_res['id']); 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  $html_str .= '</table>';
+  $html_str .= '</form>'; 
+  echo $html_str;
+} else if (isset($_GET['action'])&&$_GET['action']=='new_campaign') {
+  require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_CAMPAIGN); 
+  $html_str = '';
+  $html_str .= '<table cellspacing="0" cellpadding="2" border="0" width="100%" class="campaign_top">';
+  $html_str .= '<tr>';
+  $html_str .= '<td width="20">'; 
+  $html_str .= tep_image(DIR_WS_IMAGES . 'icon_info.gif',IMAGE_ICON_INFO,16,16)."&nbsp;";
+  $html_str .= '</td>'; 
+  $html_str .= '<td align="left">'; 
+  $html_str .= '<b>'.HEADING_TITLE.'</b>'; 
+  $html_str .= '</td>'; 
+  $html_str .= '<td align="right">'; 
+  $html_str .= '<a href="javascript:void(0);" onclick="close_campaign_info()">X</a>';  
+  $html_str .= '</td>'; 
+  $html_str .= '</tr>'; 
+  $html_str .= '</table>'; 
+  $html_str .= tep_draw_form('campaign', FILENAME_CAMPAIGN, 'action=insert&site_id='.$_POST['site_id']); 
+  $html_str .= '<table cellspacing="0" cellpadding="2" border="0" width="100%" class="campaign_body">';
+  $html_str .= '<tr>';
+  $html_str .= '<td width="220">';
+  $html_str .= TEXT_INFO_TITLE; 
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= tep_draw_input_field('title', '', 'id="title" class="campaign_input" '); 
+  $html_str .= '<div id="title_error"></div>'; 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  $html_str .= '<tr>';
+  $html_str .= '<td>';
+  $html_str .= TEXT_INFO_NAME; 
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= tep_draw_input_field('name', '', 'id="name" class="campaign_input" '); 
+  $html_str .= '<div id="name_error"></div>'; 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  $html_str .= '<tr>';
+  $html_str .= '<td>';
+  $html_str .= TEXT_INFO_KEYWORD; 
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= tep_draw_input_field('keyword', '', 'id="keyword" class="campaign_input" '); 
+  $html_str .= '<br>'.'<font size="1">'.TEXT_CAMPAIGN_KEYWORD_READ.'</font>';
+  $html_str .= '<div id="keyword_error"></div>'; 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  $html_str .= '<tr>'; 
+  $html_str .= '<td>'; 
+  $html_str .= TEXT_CAMPAIGN_TYPE; 
+  $html_str .= '</td>'; 
+  $html_str .= '<td>'; 
+  $html_str .= tep_draw_radio_field('type',1,true,'','id="type" onclick="toggle_type_info(this);"').TEXT_CAMPAIGN_TYPE_SELL.'&nbsp;'.tep_draw_radio_field('type',2,false,'','id="type" onclick="toggle_type_info(this);"').TEXT_CAMPAIGN_TYPE_BUY; 
+  $limit_value_text = TEXT_CAMPAIGN_LIMIT_VALUE_READ_UP;
+  $html_str .= '</td>'; 
+  $html_str .= '</tr>'; 
+  $html_str .= '<tr>';
+  $html_str .= '<td>';
+  $html_str .= '&nbsp;'; 
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= '<span
+    id="type_symbol">+</span>&nbsp;&nbsp;&nbsp;&nbsp;'.tep_draw_input_field('limit_value',
+        '', 'id="limit_value" class="campaign_input_num" ').'&nbsp;'.TEXT_MONEY_SYMBOL; 
+  $html_str .= '<span id="limit_value_text">';
+  $html_str .= $limit_value_text;
+  $html_str .= '</span>';
+  $html_str .= '<div id="limit_value_error"></div>'; 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  $html_str .= '<tr>';
+  $html_str .= '<td>';
+  $html_str .= TEXT_INFO_POINT_VALUE; 
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= '-&nbsp;&nbsp;&nbsp;&nbsp;'.tep_draw_input_field('point_value', '',
+      'id="point_value" class="campaign_input_num" ').'&nbsp;'.TEXT_MONEY_SYMBOL; 
+  $html_str .= '<div id="point_value_error"></div>'; 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  $html_str .= '<tr>'; 
+  $html_str .= '<td>&nbsp;'; 
+  $html_str .= '</td>'; 
+  $html_str .= '<td>'; 
+  $html_str .= '<font size="1">'.TEXT_CAMPAIGN_VALUE_READ."</font>"; 
+  $html_str .= '</td>'; 
+  $html_str .= '</tr>';
+  $html_str .= '<tr>';
+  $html_str .= '<td>';
+  $html_str .= TEXT_INFO_PREORDER; 
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= tep_draw_radio_field('is_preorder',1,false,'','id="is_preorder"').TEXT_TRUE.'&nbsp;'.tep_draw_radio_field('is_preorder',0,true,'','id="is_preorder"').TEXT_FALSE; 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  $html_str .= '<tr>';
+  $html_str .= '<td>';
+  $html_str .= TEXT_INFO_START_DATE; 
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= '<select name="syear" id="syear">'; 
+  for ($i=2012; $i<=2030; $i++) {
+    $html_str .= '<option  value="'.sprintf('%02d', $i).'">'.sprintf('%02d', $i).'</option>'; 
+  }
+  $html_str .= '</select>'.YEAR_TEXT.'&nbsp;'; 
+  $html_str .= '<select name="smonth" id="smonth">'; 
+  for ($i=1; $i<=12; $i++) {
+    $html_str .= '<option  value="'.sprintf('%02d', $i).'">'.sprintf('%02d', $i).'</option>'; 
+  }
+  $html_str .= '</select>'.MONTH_TEXT.'&nbsp;'; 
+  $html_str .= '<select name="sday" id="sday">'; 
+  for ($i=1; $i<=31; $i++) {
+    $html_str .= '<option  value="'.sprintf('%02d', $i).'">'.sprintf('%02d', $i).'</option>'; 
+  }
+  $html_str .= '</select>'.DAY_TEXT.'&nbsp;'; 
+  $html_str .= '<div id="date_error"></div>'; 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  
+  $html_str .= '<tr>';
+  $html_str .= '<td>';
+  $html_str .= TEXT_INFO_END_DATE; 
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= '<select name="eyear" id="eyear">'; 
+  for ($i=2012; $i<=2030; $i++) {
+    $html_str .= '<option  value="'.sprintf('%02d', $i).'">'.sprintf('%02d', $i).'</option>'; 
+  }
+  $html_str .= '</select>'.YEAR_TEXT.'&nbsp;'; 
+  $html_str .= '<select name="emonth" id="emonth">'; 
+  for ($i=1; $i<=12; $i++) {
+    $html_str .= '<option  value="'.sprintf('%02d', $i).'">'.sprintf('%02d', $i).'</option>'; 
+  }
+  $html_str .= '</select>'.MONTH_TEXT.'&nbsp;'; 
+  $html_str .= '<select name="eday" id="eday">'; 
+  for ($i=1; $i<=31; $i++) {
+    $html_str .= '<option  value="'.sprintf('%02d', $i).'">'.sprintf('%02d', $i).'</option>'; 
+  }
+  $html_str .= '</select>'.DAY_TEXT.'&nbsp;'; 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';  
+  
+  $html_str .= '<tr>';
+  $html_str .= '<td>';
+  $html_str .= TEXT_INFO_MAX_USE; 
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= tep_draw_input_field('max_use', '', 
+      'id="max_use" class="campaign_input_num" ').TEXT_CAMPAIGN_NUM_UNIT; 
+  $html_str .= '<div id="max_use_error"></div>'; 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  
+   
+  $html_str .= '<tr>';
+  $html_str .= '<td>';
+  $html_str .= TEXT_INFO_USE_NUM; 
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= tep_draw_input_field('use_num', '0', 'disabled="true"
+      class="campaign_input_num" style="background:#ccc;"').TEXT_CAMPAIGN_NUM_UNIT; 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  
+  $html_str .= '<tr>';
+  $html_str .= '<td>';
+  $html_str .= '&nbsp;'; 
+  $html_str .= '</td>';
+  $html_str .= '<td style="padding-left:20%;">';
+  $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="check_campaign_info(0, 0, '.$_POST['site_id'].');"').'</a>&nbsp;'; 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  $html_str .= '</table>';
+  $html_str .= '</form>'; 
+  echo $html_str;
+} else if (isset($_GET['action'])&&$_GET['action']=='check_campaign') {
+  require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_CAMPAIGN); 
+  $error_array = array();
+  $error_array['title'] = '';
+  $error_array['name'] = '';
+  $error_array['keyword'] = '';
+  $error_array['date'] = '';
+  $error_array['max_use'] = '';
+  $error_array['point_value'] = '';
+  $error_array['limit_value'] = '';
+  
+  if (empty($_POST['title'])) {
+    $error_array['title'] = '<font color="#ff0000;">'.TEXT_CAMPAIGN_TITLE_IS_NULL.'</font>'; 
+  } else {
+    if ($_POST['check'] == '1') {
+      $exists_cam_raw = tep_db_query("select id from ".TABLE_CAMPAIGN." where title = '".$_POST['title']."' and site_id = '".(int)$_POST['site_id']."' and id != '".$_POST['campaign_id']."'"); 
+    } else {
+      $exists_cam_raw = tep_db_query("select id from ".TABLE_CAMPAIGN." where title = '".$_POST['title']."' and site_id = '".(int)$_POST['site_id']."'"); 
+    }
+    if (tep_db_num_rows($exists_cam_raw)) {
+      $error_array['title'] = '<font color="#ff0000;">'.TEXT_CAMPAIGN_TITLE_EXISTS.'</font>'; 
+    } 
+  }
+  
+  if (empty($_POST['name'])) {
+    $error_array['name'] = '<font color="#ff0000;">'.TEXT_CAMPAIGN_NAME_IS_NULL.'</font>'; 
+  }
+  
+  if (empty($_POST['keyword'])) {
+    $error_array['keyword'] = '<font color="#ff0000;">'.TEXT_CAMPAIGN_KEYWORD_IS_NULL.'</font>';
+  } else {
+    if (!preg_match('/^[0-9a-zA-Z]+$/', $_POST['keyword'])) {
+      $error_array['keyword'] = '<font color="#ff0000;">'.TEXT_CAMPAIGN_KEYWORD_IS_NULL.'</font>';
+    } else {
+      if (preg_match('/^[0-9]+$/', $_POST['keyword'])) {
+        $error_array['keyword'] = '<font color="#ff0000;">'.TEXT_CAMPAIGN_KEYWORD_IS_NULL.'</font>';
+      } else {
+        if ($_POST['check'] == '1') {
+          $exists_cam_raw = tep_db_query("select id from ".TABLE_CAMPAIGN." where keyword = '".$_POST['keyword']."' and id != '".$_POST['campaign_id']."'"); 
+        } else {
+          $exists_cam_raw = tep_db_query("select id from ".TABLE_CAMPAIGN." where keyword = '".$_POST['keyword']."'"); 
+        }
+        if (tep_db_num_rows($exists_cam_raw)) {
+          $error_array['keyword'] = '<font color="#ff0000;">'.TEXT_CAMPAIGN_KEYWORD_EXISTS.'</font>';
+        }
+      }
+    }
+    }
+    $start_date = $_POST['syear'].'-'.$_POST['smonth'].'-'.$_POST['sday'];  
+    $end_date = $_POST['eyear'].'-'.$_POST['emonth'].'-'.$_POST['eday']; 
 
+    if (!preg_match('/^[\d]{4}-[\d]{1,2}-[\d]{1,2}$/', $start_date) || !preg_match('/^[\d]{4}-[\d]{1,2}-[\d]{1,2}$/', $end_date)) {
+      $error_array['date'] = '<font color="#ff0000;">'.TEXT_CAMPAIGN_DATE_WRONG.'</font>';
+    } else {
+      $start_time = @strtotime($start_date.' 00:00:00'); 
+      $end_time = @strtotime($end_date.' 00:00:00'); 
+      if ($start_time > $end_time) {
+        $error_array['date'] = '<font color="#ff0000;">'.TEXT_CAMPAIGN_DATE_WRONG.'</font>';
+      }
+    }
+    
+    if (empty($_POST['max_use'])) {
+      $error_array['max_use'] = '<font color="#ff0000;">'.TEXT_CAMPAIGN_MAX_USE_WRONG.'</font>';
+    } else {
+      if (!is_numeric($_POST['max_use'])) {
+        $error_array['max_use'] = '<font color="#ff0000;">'.TEXT_CAMPAIGN_MAX_USE_WRONG.'</font>';
+      } else {
+        if ($_POST['max_use'] < 0) {
+          $error_array['max_use'] = '<font color="#ff0000;">'.TEXT_CAMPAIGN_MAX_USE_WRONG.'</font>';
+        }
+      }
+    }
+    
+    $p_error = false;
+    $l_error = false;
+    if (!preg_match('/^[0-9]+(%)?$/', $_POST['point_value'])) {
+      $error_array['point_value'] = '<font color="#ff0000;">'.TEXT_CAMPAIGN_POINT_VALUE_WRONG.'</font>';
+      $p_error = true; 
+    } else {
+      if (preg_match('/^[0-9]+%$/', $_POST['point_value'])) {
+        $percent_str = substr($_POST['point_value'], 0, -1); 
+        if ($_POST['type'] == 1) {
+          if ($percent_str > 100) {
+            $error_array['point_value'] = '<font color="#ff0000;">'.TEXT_CAMPAIGN_POINT_VALUE_WRONG.'</font>';
+            $p_error = true; 
+          }
+        }
+      }  
+    }
+    
+    if (!is_numeric($_POST['limit_value'])) {
+      $error_array['limit_value'] = '<font color="#ff0000;">'.TEXT_CAMPAIGN_LIMIT_VALUE_WRONG.'</font>';
+      $l_error = true;
+    } else {
+      if (!preg_match('/^[0-9]+$/', $_POST['limit_value'])) {
+        $error_array['limit_value'] = '<font color="#ff0000;">'.TEXT_CAMPAIGN_LIMIT_VALUE_WRONG.'</font>';
+        $l_error = true;
+      }
+      if ($_POST['limit_value'] == 0) {
+        $error_array['limit_value'] = '<font color="#ff0000;">'.TEXT_CAMPAIGN_LIMIT_VALUE_WRONG.'</font>';
+        $l_error = true;
+      }
+    }
+   
+    if (!$p_error && !$l_error) {
+      if ($_POST['type'] == 1) {
+        if (preg_match('/^[0-9]+$/', $_POST['point_value'])) {
+          if ($_POST['limit_value'] < $_POST['point_value']) {
+            $error_array['point_value'] = '<font color="#ff0000;">'.TEXT_CAMPAIGN_POINT_VALUE_WRONG.'</font>';
+          }
+        }
+      }
+    }
+    echo implode('|||', $error_array);
+}

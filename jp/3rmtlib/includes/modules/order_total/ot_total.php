@@ -64,6 +64,10 @@
         $total += $buying_fee; 
       }
     }
+    
+    if (isset($_SESSION['campaign_fee'])) {
+      $total += $_SESSION['campaign_fee']; 
+    }
     //把所有的配送费用加入到 总额里面
     foreach($shipping_method_info_arr as $shipping_key => $shipping_method_info){
       $total += $shipping_method_info['shipping_cost'];

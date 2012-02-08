@@ -89,6 +89,7 @@
                    '<a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_LATEST_NEWS) . '">' . BOX_TOOLS_LATEST_NEWS . '</a><br>' . 
                    '<a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_CONTENTS) . '">' . BOX_TOOLS_CONTENTS . '</a><br>' .
                    '<a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_PRESENT) . '" class="menuBoxContent_Link">' . BOX_TOOLS_PRESENT . '</a><br>' . 
+                   '<a class="menuBoxContent_Link" href="' .  tep_href_link(FILENAME_CAMPAIGN) . '" class="menuBoxContent_Link">' . BOX_TOOLS_CAMPAIGN . '</a><br>' . 
                    '<a class="menuBoxContent_Link" href="' . tep_href_link(FILENAME_FAQ) . '">' . BOX_TOOLS_FAQ . '</a>' . 
                      
                    '<hr size="1">' . 

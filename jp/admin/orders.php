@@ -2462,6 +2462,19 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
           <table border="0" cellspacing="0" cellpadding="2">
   <?php
       for ($i = 0, $n = sizeof($order->totals); $i < $n; $i++) {
+        if ($order->totals[$i]['class'] == 'ot_point') {
+          $campaign_query = tep_db_query("select * from ".TABLE_CUSTOMER_TO_CAMPAIGN." where orders_id = '".$_GET['oID']."' and site_id = '".$order->info['site_id']."'"); 
+          $campaign_res = tep_db_fetch_array($campaign_query);
+          if ($campaign_res) {
+            if ((int)$campaign_res['campaign_fee'] == 0) {
+              continue; 
+            }
+          } else {
+            if ($order->totals[$i]['value'] == 0) {
+              continue; 
+            }
+          }
+       }
         echo 
        '    <tr>' . "\n" .
        '      <td align="right" class="smallText">' . $order->totals[$i]['title'] . '</td>' . "\n" .
@@ -2471,17 +2484,33 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
         echo
           $currencies->format_total($order->totals[$i]['value'],true,$order->info['currency'],$order->info['currency_value']);
         */
-        if($order->totals[$i]['value']>=0){
-          echo $currencies->format($order->totals[$i]['value']);
-        }else{
-          if($order->totals[$i]['class'] == 'ot_total'){
-          echo "<b><font color='red'>";
-          echo $currencies->format($order->totals[$i]['value']);
-          echo "</font></b>";
+       
+        if ($order->totals[$i]['class'] == 'ot_point') {
+          $campaign_query = tep_db_query("select * from ".TABLE_CUSTOMER_TO_CAMPAIGN." where orders_id = '".$_GET['oID']."' and site_id = '".$order->info['site_id']."'"); 
+          $campaign_res = tep_db_fetch_array($campaign_query);
+          if ($campaign_res) {
+            echo '<font color="red">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($campaign_res['campaign_fee'])).'</font>'.TEXT_MONEY_SYMBOL;
+          } else {
+            if ($order->totals[$i]['value']>=0) {
+              echo '<font color="red">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($order->totals[$i]['value'])).'</font>'.TEXT_MONEY_SYMBOL;
+            } else {
+              echo "<font color='red'>";
+              echo str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($order->totals[$i]['value']));
+              echo "</font>".TEXT_MONEY_SYMBOL;
+            }
+          }
+        } else {
+          if($order->totals[$i]['value']>=0){
+            echo $currencies->format($order->totals[$i]['value']);
           }else{
-          echo "<font color='red'>";
-          echo $currencies->format($order->totals[$i]['value']);
-          echo "</font>";
+            if($order->totals[$i]['class'] == 'ot_total'){
+            echo "<b><font color='red'>";
+            echo str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($order->totals[$i]['value']));
+            echo "</font></b>".TEXT_MONEY_SYMBOL;
+            }else{
+            echo "<font color='red'>"; echo str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($order->totals[$i]['value']));
+            echo "</font>".TEXT_MONEY_SYMBOL;
+            }
           }
         }
         echo '</td>' . "\n" .

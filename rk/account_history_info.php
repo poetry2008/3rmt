@@ -185,9 +185,34 @@
                     <td width="70%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                         <?php
   for ($i=0, $n=sizeof($order->totals); $i<$n; $i++) {
+    if ($order->totals[$i]['class'] == 'ot_point') {
+      $campaign_info_query = tep_db_query("select * from ".TABLE_CUSTOMER_TO_CAMPAIGN." where orders_id = '".$_GET['order_id']."' and site_id = '".SITE_ID."'"); 
+      $campaign_info = tep_db_fetch_array($campaign_info_query);
+      if ($campaign_info) {
+        if ($campaign_info['campaign_fee'] == 0) {
+          continue; 
+        }
+      } else {
+        if ($order->totals[$i]['value'] == 0) {
+          continue; 
+        }
+      }
+    }
     echo '              <tr>' . "\n" .
          '                <td class="main" align="right" width="100%">' . $order->totals[$i]['title'] . '</td>' . "\n" .
-         '                <td class="main" align="right" nowrap>' .  $currencies->format_total($order->totals[$i]['value']) . '</td>' . "\n" .
+         '                <td class="main" align="right" nowrap>';
+         if ($order->totals[$i]['class'] == 'ot_point') {
+           $campaign_info_query = tep_db_query("select * from ".TABLE_CUSTOMER_TO_CAMPAIGN." where orders_id = '".$_GET['order_id']."' and site_id = '".SITE_ID."'"); 
+           $campaign_info = tep_db_fetch_array($campaign_info_query);
+           if ($campaign_info) {
+             echo '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format_total(abs($campaign_info['campaign_fee']))).'</font>'.JPMONEY_UNIT_TEXT; 
+           } else {
+             echo '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format_total($order->totals[$i]['value'])).'</font>'.JPMONEY_UNIT_TEXT; 
+           }
+         } else {
+           echo $currencies->format_total($order->totals[$i]['value']); 
+         }
+         echo '</td>' . "\n" .
          '              </tr>' . "\n";
     if ($i == 0) {
       echo '              <tr>' . "\n" .

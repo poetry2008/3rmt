@@ -662,7 +662,7 @@ if (tep_not_null($action)) {
 
             if ($totals['class'] == "ot_point" || $totals['class'] == "ot_subtotal") {
               if ((int)$totals['value'] >= 1 && $totals['class'] != "ot_subtotal") {
-                $total_details_mail .= '▼ポイント割引　　：-' . $currencies->format($totals['value']) . "\n";
+                $total_details_mail .= '▼割引　　　　　　：-' . $currencies->format($totals['value']) . "\n";
                 $mailpoint = str_replace('円','',$currencies->format($totals['value']));
               }
             } elseif ($totals['class'] == "ot_total") {

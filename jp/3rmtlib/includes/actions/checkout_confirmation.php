@@ -44,9 +44,121 @@ if (!$payment_modules->moduleIsEnabled($payment)){
     tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, 'error_message=' . urlencode(ERROR_NO_PAYMENT_MODULE_SELECTED), 'SSL'));
 }
 
+$campaign_error = false;
+$campaign_error_str = '';
+
 if (is_array($payment_modules->modules) ){
   $validateModule = $payment_modules->pre_confirmation_check($payment);
-  if ($validateModule['validated']===false or $validateModule == false){
+  unset($_SESSION['campaign_fee']);
+  if (!empty($_POST['camp_point'])) {
+    $_POST['camp_point'] = get_strip_campaign_info($_POST['camp_point']); 
+    if ($cart->show_total() > 0) {
+      $campaign_query = tep_db_query("select * from ".TABLE_CAMPAIGN." where keyword = '".trim($_POST['camp_point'])."' and (site_id = '".SITE_ID."' or site_id = '0') and status = '1' and end_date >= '".date('Y-m-d', time())."' and start_date <= '".date('Y-m-d', time())."' and type='1' order by site_id desc limit 1"); 
+    } else if ($cart->show_total() < 0) {
+      $campaign_query = tep_db_query("select * from ".TABLE_CAMPAIGN." where keyword = '".trim($_POST['camp_point'])."' and (site_id = '".SITE_ID."' or site_id = '0') and status = '1' and end_date >= '".date('Y-m-d', time())."' and start_date <= '".date('Y-m-d', time())."' and type='2' order by site_id desc limit 1"); 
+    }
+    if ($campaign_query) { 
+    $campaign_res = tep_db_fetch_array($campaign_query); 
+    if ($campaign_res) {
+      if ($cart->show_total() > 0) {
+        if ($cart->show_total() <= $campaign_res['limit_value']) {
+          $campaign_error = true;
+        } 
+      } else {
+        if ($cart->show_total() >= $campaign_res['limit_value']) {
+          $campaign_error = true;
+        } 
+      }
+      $max_campaign_query = tep_db_query("select count(*) as total from ".TABLE_CUSTOMER_TO_CAMPAIGN." where customer_id = '".$customer_id."' and campaign_id = '".$campaign_res['id']."'"); 
+      $max_campaign_res = tep_db_fetch_array($max_campaign_query); 
+      if ((int)$max_campaign_res['total'] >= $campaign_res['max_use']) {
+          $campaign_error = true;
+      }
+      if (!$campaign_error) {
+        if (isset($_POST['point'])) {
+          $_POST['point'] = 0; 
+        }
+        $percent_pos = strpos($campaign_res['point_value'], '%'); 
+        if ($percent_pos !== false) {
+          $campaign_fee = $order->info['subtotal']*substr($campaign_res['point_value'], 0, -1)/100; 
+          if ($campaign_fee > 0) {
+            $campaign_fee = 0 - $campaign_fee; 
+          }
+        } else {
+          $campaign_fee = $campaign_res['point_value']; 
+        }
+        @eval("\$campaign_fee = (int)$campaign_fee;");
+        tep_session_register('campaign_fee'); 
+        $camp_id = $campaign_res['id'];
+        tep_session_register('camp_id'); 
+      }
+    } else {
+      $campaign_error = true;
+    }
+    }
+  } else {
+  if (!empty($_POST['point'])) {
+    $_POST['point'] = get_strip_campaign_info($_POST['point']); 
+    if (preg_match('/^[0-9a-zA-Z]+$/', $_POST['point'])) {
+      if (!preg_match('/^[0-9]+$/', $_POST['point'])) {
+        $campaign_query = tep_db_query("select * from ".TABLE_CAMPAIGN." where keyword = '".trim($_POST['point'])."' and (site_id = '".SITE_ID."' or site_id = '0') and status = '1' and end_date >= '".date('Y-m-d', time())."' and start_date <= '".date('Y-m-d', time())."' order by site_id desc limit 1"); 
+        
+        $campaign_res = tep_db_fetch_array($campaign_query); 
+        if ($campaign_res) {
+          if ($campaign_res['type'] != '1') {
+            $campaign_error = true;
+          } else {
+            if ($cart->show_total() <= $campaign_res['limit_value']) {
+              $campaign_error = true;
+            }
+          }
+           
+          $max_campaign_query = tep_db_query("select count(*) as total from ".TABLE_CUSTOMER_TO_CAMPAIGN." where customer_id = '".$customer_id."' and campaign_id = '".$campaign_res['id']."'"); 
+          $max_campaign_res = tep_db_fetch_array($max_campaign_query); 
+          if ((int)$max_campaign_res['total'] >= $campaign_res['max_use']) {
+              $campaign_error = true;
+          } 
+          
+          if (!$campaign_error) {
+            $_POST['point'] = 0; 
+            $percent_pos = strpos($campaign_res['point_value'], '%'); 
+            if ($percent_pos !== false) {
+              $campaign_fee = $order->info['subtotal']*substr($campaign_res['point_value'], 0, -1)/100; 
+              if ($campaign_fee > 0) {
+                $campaign_fee = 0 - $campaign_fee; 
+              }
+            } else {
+              $campaign_fee = $campaign_res['point_value']; 
+            }
+            @eval("\$campaign_fee = (int)$campaign_fee;");
+            tep_session_register('campaign_fee'); 
+            $camp_id = $campaign_res['id'];
+            tep_session_register('camp_id'); 
+          }
+        } else {
+          $campaign_error = true;
+        }
+      } else {
+        if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
+          $cus_point_query = tep_db_query("select point from " . TABLE_CUSTOMERS . " where customers_id = '" . $customer_id . "'");
+          $cus_point = tep_db_fetch_array($cus_point_query);
+          if ($cus_point['point'] < $_POST['point']) {
+            $campaign_error = true;
+          }
+        }
+      }
+    }
+  }
+  }
+ 
+  if ($campaign_error) {
+    $campaign_error_str = isset($_POST['point'])?$_POST['point']:(isset($_POST['preorder_point'])?$_POST['preorder_point']:0);
+  }
+  if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
+      $point_query = tep_db_query("select point from " . TABLE_CUSTOMERS . " where customers_id = '" . $customer_id . "'");
+      $current_point = tep_db_fetch_array($point_query);
+  }
+  if ($validateModule['validated']===false or $validateModule == false or $campaign_error == true){
     $selection = $payment_modules->selection();
     if($validateModule !=false){
     $selection[strtoupper($payment)] = $validateModule;
@@ -64,7 +176,7 @@ page_head();?>
   //输出payment 的javascript验证
   if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') 
     {
-      echo $payment_modules->javascript_validation($point['point']); 
+      echo $payment_modules->javascript_validation($current_point['point']); 
     }
 ?>
 </head><?php
@@ -113,7 +225,7 @@ page_head();?>
   //输出payment 的javascript验证
   if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') 
     {
-      echo $payment_modules->javascript_validation($point['point']); 
+      echo $payment_modules->javascript_validation($current_point['point']); 
     }
 ?>
 </head>

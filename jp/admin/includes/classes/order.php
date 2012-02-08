@@ -48,7 +48,9 @@
           $shipping_total_flag++;
           $temp_arr = array('title' => $totals['title'], 
                             'value' => $shipping_total_sum,
-                            'text'  => $totals['text']);
+                            'text'  => $totals['text'], 
+                            'class'  => 'ot_shipping' 
+                            );
           continue;
         }else if($shipping_total_flag==$real_sum_shipping_count&&$temp_flag){
           $temp_flag = false;
@@ -56,7 +58,8 @@
         }
         $this->totals[] = array('title' => $totals['title'],
                                 'value' => $totals['value'],
-                                'text'  => $totals['text']);
+                                'text'  => $totals['text'],
+                                'class' => $totals['class']);
       }
     
       $this->tori = array('Bahamut' => $order['torihiki_Bahamut'],

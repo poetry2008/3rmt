@@ -125,6 +125,15 @@ if (tep_not_null($action)) {
       }
       */
       
+      foreach ($update_totals as $up_key => $up_total) {
+        if ($up_total['class'] == 'ot_point') {
+          $camp_exists_query = tep_db_query("select * from ".TABLE_CUSTOMER_TO_CAMPAIGN." where orders_id = '".$oID."' and site_id = '".$order->info['site_id']."'"); 
+          if (tep_db_num_rows($camp_exists_query)) {
+            $update_totals[$up_key]['value'] = 0; 
+          }
+        }
+      }
+      
       foreach ($update_totals as $total_index => $total_details) {    
         extract($total_details,EXTR_PREFIX_ALL,"ot");
         if ($ot_class == "ot_point" && (int)$ot_value > 0) {
@@ -467,6 +476,8 @@ if (tep_not_null($action)) {
        */
       tep_db_query("update " . TABLE_ORDERS_TOTAL . " set value = '".tep_insert_currency_value($new_subtotal)."' where class='ot_subtotal' and orders_id = '".$oID."'");
 
+      $campaign_fee = get_campaion_fee($new_subtotal, $oID, $order->info['site_id']);
+      tep_db_query("update ". TABLE_CUSTOMER_TO_CAMPAIGN." set campaign_fee = '".$campaign_fee."' where orders_id = '".$oID."' and site_id = '".$order->info['site_id']."'"); 
       //tax
       $plustax_query = tep_db_query("select count(*) as cnt from " . TABLE_ORDERS_TOTAL . " where class = 'ot_tax' and orders_id = '".$oID."'");
       $plustax = tep_db_fetch_array($plustax_query);
@@ -508,7 +519,7 @@ if (tep_not_null($action)) {
          delete form  $totals = update .....
          , text = '<b>" . $currencies->ot_total_format(intval(floor($newtotal)), true, $order->info['currency']) . "</b>'
        */
-      $totals = "update " . TABLE_ORDERS_TOTAL . " set value = '" . intval(floor($newtotal)) . "' where class='ot_total' and orders_id = '" . $oID . "'";
+      $totals = "update " . TABLE_ORDERS_TOTAL . " set value = '" .  intval(floor($newtotal+$campaign_fee)) . "' where class='ot_total' and orders_id = '" . $oID . "'";
       tep_db_query($totals);
 
       $update_orders_sql = "update ".TABLE_ORDERS." set code_fee = '".$handle_fee."' where orders_id = '".$oID."'";
@@ -563,8 +574,19 @@ if (tep_not_null($action)) {
           $order->totals = array();
           while ($totals = tep_db_fetch_array($totals_query)) {
             if ($totals['class'] == "ot_point" || $totals['class'] == "ot_subtotal") {
-              if ((int)$totals['value'] >= 1 && $totals['class'] != "ot_subtotal") {
-                $total_details_mail .= "\t" . 'ポイント割引　　：-' . $currencies->format($totals['value']) . "\n";
+              if ($totals['class'] == "ot_point") {
+                $camp_exists_query = tep_db_query("select * from ".TABLE_CUSTOMER_TO_CAMPAIGN." where orders_id = '".$oID."' and site_id = '".$order->info['site_id']."'"); 
+                if (tep_db_num_rows($camp_exists_query)) {
+                  $total_details_mail .= "\t" . '割引　　　　　　：-' . $currencies->format(abs($campaign_fee)) . "\n";
+                } else {
+                  if ((int)$totals['value'] >= 1 && $totals['class'] != "ot_subtotal") {
+                    $total_details_mail .= "\t" . '割引　　　　　　：-' .  $currencies->format($totals['value']) . "\n";
+                  }
+                }
+              } else {
+                if ((int)$totals['value'] >= 1 && $totals['class'] != "ot_subtotal") {
+                  $total_details_mail .= "\t" . '割引　　　　　　：-' .  $currencies->format($totals['value']) . "\n";
+                }
               }
             } elseif ($totals['class'] == "ot_total") {
               if($handle_fee)
@@ -776,6 +798,8 @@ if (tep_not_null($action)) {
          */
         tep_db_query("update " . TABLE_ORDERS_TOTAL . " set value = '".tep_insert_currency_value($new_subtotal)."' where class='ot_subtotal' and orders_id = '".$oID."'");
 
+        $campaign_fee = get_campaion_fee($new_subtotal, $oID, $order->info['site_id']);
+        tep_db_query("update ". TABLE_CUSTOMER_TO_CAMPAIGN." set campaign_fee = '".$campaign_fee."' where orders_id = '".$oID."' and site_id = '".$order->info['site_id']."'"); 
         //tax
         $plustax_query = tep_db_query("select count(*) as cnt from " . TABLE_ORDERS_TOTAL . " where class = 'ot_tax' and orders_id = '".$oID."'");
         $plustax = tep_db_fetch_array($plustax_query);
@@ -808,7 +832,7 @@ if (tep_not_null($action)) {
            text = '<b>".$currencies->ot_total_format
            (intval(floor($newtotal)), true, $order->info['currency'])."</b>'
          */
-        $totals = "update " . TABLE_ORDERS_TOTAL . " set value = '".intval(floor($newtotal))."' where class='ot_total' and orders_id = '".$oID."'";
+        $totals = "update " . TABLE_ORDERS_TOTAL . " set value = '".intval(floor($newtotal+$campaign_fee))."' where class='ot_total' and orders_id = '".$oID."'";
         tep_db_query($totals);
 
         $update_orders_sql = "update ".TABLE_ORDERS." set code_fee = '".$handle_fee."' where orders_id = '".$oID."'";
@@ -1308,9 +1332,18 @@ if (($action == 'edit') && ($order_exists == true)) {
         $current_point = $customer_point['point'] + $TotalDetails["Price"];
         echo '  <tr>' . "\n" .
           '    <td align="left" class="' . $TotalStyle . '">このお客様は会員です。入力可能ポイントは <font color="red"><b>残り' . $customer_point['point'] . '（合計' . $current_point . '）</b></font> です。−（マイナス）符号の入力は必要ありません。必ず正数を入力するように！</td>' . 
-          '    <td align="right" class="' . $TotalStyle . '">' . trim($TotalDetails["Name"]) . '</td>' . "\n" .
-          '    <td align="right" class="' . $TotalStyle . '" nowrap>−' . "<input name='update_totals[$TotalIndex][value]' size='6' value='" . $TotalDetails["Price"] . "'>" . 
-          "<input type='hidden' name='update_totals[$TotalIndex][title]' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . 
+          '    <td align="right" class="' . $TotalStyle . '">' .
+          trim($TotalDetails["Name"]) . '</td>' . "\n";
+        
+          echo '    <td align="right" class="' . $TotalStyle . '" nowrap>−' ;
+          $campaign_query = tep_db_query("select * from ".TABLE_CUSTOMER_TO_CAMPAIGN." where orders_id = '".$_GET['oID']."' and site_id = '".$order->info['site_id']."'"); 
+          $campaign_res = tep_db_fetch_array($campaign_query);
+          if ($campaign_res) {
+            echo "<input name='update_totals[$TotalIndex][value]' size='6' value='" .abs((int)$campaign_res['campaign_fee']) . "'>";
+          } else {
+            echo "<input name='update_totals[$TotalIndex][value]' size='6' value='" .  $TotalDetails["Price"] . "'>";
+          }
+          echo "<input type='hidden' name='update_totals[$TotalIndex][title]' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . 
           "<input type='hidden' name='update_totals[$TotalIndex][class]' value='" . $TotalDetails["Class"] . "'>" . 
           "<input type='hidden' name='update_totals[$TotalIndex][total_id]' value='" . $TotalDetails["TotalID"] . "'>" . 
           "<input type='hidden' name='before_point' value='" . $TotalDetails["Price"] . "'>" . 

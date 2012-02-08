@@ -553,3 +553,4 @@ define('TEXT_PREORDER_PRODUCTS_CHARACTER_NAME', 'キャラ名：');
 
 define('TEXT_PAYMENT_NULL_TXT','支払方法を選択してください');
 define('TEXT_TORIHIKI_LIST_DEFAULT_TXT','選択してください');
+define('BOX_TOOLS_CAMPAIGN', 'キャンペーンコード設置');

@@ -1330,6 +1330,7 @@ function tep_remove_order($order_id, $restock = false) {
   tep_db_query("delete from " . TABLE_ORDERS_TO_COMPUTERS . " where orders_id = '" . tep_db_input($order_id) . "'");
   tep_db_query("delete from orders_products_download where orders_id = '" . tep_db_input($order_id) . "'");
   tep_db_query("delete from ".TABLE_OA_FORMVALUE." where orders_id = '".tep_db_input($order_id)."'");
+  tep_db_query("delete from ".TABLE_CUSTOMER_TO_CAMPAIGN." where orders_id = '".tep_db_input($order_id)."'");
 }
 
 function tep_reset_cache_block($cache_block, $site_id='') {
@@ -2313,7 +2314,7 @@ function tep_site_filter($filename, $ca_single = false){
             if ($ca_single) {
               echo tep_href_link($filename, tep_get_all_get_params(array('site_id')));
             } else {
-              echo tep_href_link($filename, tep_get_all_get_params(array('site_id', 'page', 'oID', 'rID', 'cID', 'latest_news_id', 'bID')));
+              echo tep_href_link($filename, tep_get_all_get_params(array('site_id', 'page', 'oID', 'rID', 'cID', 'latest_news_id', 'bID', 'campaign_id')));
             }
           ?>">all</a></span> 
             <?php } ?>
@@ -2325,7 +2326,7 @@ function tep_site_filter($filename, $ca_single = false){
                       if ($ca_single) {
                         echo tep_href_link($filename, tep_get_all_get_params(array('site_id')) . 'site_id=' . $site['id']);
                       } else {
-                        echo tep_href_link($filename, tep_get_all_get_params(array('site_id', 'page', 'oID', 'rID', 'cID', 'pID', 'latest_news_id', 'bID')) . 'site_id=' . $site['id']);
+                        echo tep_href_link($filename, tep_get_all_get_params(array('site_id', 'page', 'oID', 'rID', 'cID', 'pID', 'latest_news_id', 'bID', 'campaign_id')) . 'site_id=' . $site['id']);
                       }
                     ?>"><?php echo $site['romaji'];?></a></span>
                       <?php }
@@ -6902,4 +6903,66 @@ function tep_get_shipping_products($oid){
   }else{
     return $pid_arr;
   }
+}
+
+function get_campaion_fee($total, $orders_id, $site_id)
+{
+  $return_fee = 0; 
+  if ($total == 0) {
+    return $return_fee; 
+  }
+  if ($total > 0) {
+    $campaion_query = tep_db_query("select * from ".TABLE_CUSTOMER_TO_CAMPAIGN." where orders_id = '".$orders_id."' and site_id = '".$site_id."' and campaign_type = '1'"); 
+  } else {
+    $campaion_query = tep_db_query("select * from ".TABLE_CUSTOMER_TO_CAMPAIGN." where orders_id = '".$orders_id."' and site_id = '".$site_id."' and campaign_type = '2'"); 
+  }
+ 
+  $campaion_res = tep_db_fetch_array($campaion_query);
+  if ($campaion_res) {
+    if (abs($campaion_res['campaign_limit_value']) >= abs($total)) {
+      return $return_fee; 
+    }
+    $percent_pos = strpos($campaion_res['campaign_point_value'], '%');
+    if ($percent_pos !== false) {
+      $return_fee = $total*substr($campaion_res['campaign_point_value'], 0, -1)/100; 
+      if ($return_fee > 0) {
+       $return_fee = 0 - $return_fee; 
+      }
+    } else {
+      $return_fee = $campaion_res['campaign_point_value'];
+    }
+    @eval("\$return_fee = (int)$return_fee;"); 
+  }
+  return $return_fee;
+}
+
+function get_campaign_link_page($cid, $site_id, $st_id)
+{
+  $return_str = '';  
+  $campaign_query = tep_db_query("select created_at from ".TABLE_CAMPAIGN." where id = '".$cid."'");
+  $campaign_res = tep_db_fetch_array($campaign_query); 
+  
+  if ($campaign_res) {
+    if (empty($st_id)) {
+      $pre_campaign_query = tep_db_query("select id from ".TABLE_CAMPAIGN." where id != '".$cid."' and created_at >= '".$campaign_res['created_at']."' order by created_at asc limit 1"); 
+    } else {
+      $pre_campaign_query = tep_db_query("select id from ".TABLE_CAMPAIGN." where id != '".$cid."' and created_at >= '".$campaign_res['created_at']."' and site_id = '".$site_id."' order by created_at asc limit 1"); 
+    }
+    $pre_campaign_res = tep_db_fetch_array($pre_campaign_query); 
+    if ($pre_campaign_res) {
+      $return_str .= '<a href="javascript:void(0)" onclick="show_link_campaign_info(\''.$pre_campaign_res['id'].'\', \''.$st_id.'\');">'.TEXT_CAMPAIGN_PREV.'</a>'; 
+    }
+    
+    if (empty($st_id)) {
+      $next_campaign_query = tep_db_query("select id from ".TABLE_CAMPAIGN." where id != '".$cid."' and created_at <= '".$campaign_res['created_at']."' order by created_at desc limit 1"); 
+    } else {
+      $next_campaign_query = tep_db_query("select id from ".TABLE_CAMPAIGN." where id != '".$cid."' and created_at <= '".$campaign_res['created_at']."' and site_id = '".$site_id."' order by created_at desc limit 1"); 
+    }
+    $next_campaign_res = tep_db_fetch_array($next_campaign_query); 
+    if ($next_campaign_res) {
+      $return_str .= '&nbsp;&nbsp;<a href="javascript:void(0)" onclick="show_link_campaign_info(\''.$next_campaign_res['id'].'\', \''.$st_id.'\');">'.TEXT_CAMPAIGN_NEXT.'</a>'; 
+    }
+  }
+  
+  return $return_str;
 }
