@@ -3,6 +3,7 @@
   $Id$
 */
 
+require_once (DIR_WS_CLASSES . 'basePayment.php');
   class free_payment  extends basePayment  implements paymentInterface {
     var $site_id, $code, $title, $description, $enabled, $s_error, $n_fee, $email_footer, $show_payment_info;
     function loadSpecialSettings($site_id=0){

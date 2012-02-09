@@ -46,8 +46,7 @@
                                              'title' => $GLOBALS[$class]->output[$i]['title'],
                                              'text' => "",
                                              'value' => $GLOBALS[$class]->output[$i]['value'],
-                                             'sort_order' => $GLOBALS[$class]->sort_order,
-                                             'shipping_pid' => isset($GLOBALS[$class]->output[$i]['shipping_pid'])?$GLOBALS[$class]->output[$i]['shipping_pid']:null);
+                                             'sort_order' => $GLOBALS[$class]->sort_order);
               }
             }
           }
@@ -63,7 +62,7 @@
         reset($this->modules);
         while (list(, $value) = each($this->modules)) {
           $class = substr($value, 0, strrpos($value, '.'));
-          if ($class == 'ot_codt' || $class == 'ot_conv' || $class == 'ot_loworderfee' || $class == 'ot_tax' || $class == 'ot_shipping') {
+          if ($class == 'ot_codt' || $class == 'ot_conv' || $class == 'ot_loworderfee' || $class == 'ot_tax') {
             continue; 
           }
           if ($GLOBALS[$class]->enabled) {
@@ -113,12 +112,7 @@
       global $cart;
       global $payment, $currencies;
       //先使用global 等支付方法修改 完毕 修改成使用POST 
-      global $shipping_method_info_arr;
       global $_POST;
-      $shipping_cost_all = 0;
-      foreach($shipping_method_info_arr as $shipping_key => $shipping_method_info){
-        $shipping_cost_all += $shipping_method_info['shipping_cost'];
-      }
 
       $show_handle_fee = 0;
 
@@ -151,9 +145,6 @@
           $class = substr($value, 0, strrpos($value, '.'));
           if ($GLOBALS[$class]->enabled) {
             $size = sizeof($GLOBALS[$class]->output);
-            if($class == 'ot_shipping'){
-              continue;
-            }
             for ($i=0; $i<$size; $i++) {
               if ($class == 'ot_point') {
                 if (isset($_SESSION['campaign_fee'])) {
@@ -181,16 +172,6 @@
               }
             }
             $_SESSION['mailfee'] = $currencies->format($total_handle_fee);   
-            if($class == 'ot_subtotal'){
-              if (!empty($shipping_cost_all)) {
-                $output_string .= '              <tr>' . "\n" .
-                                  '                <td align="right" class="main">'
-                                  . TEXT_SHIPPING_COST_ALL_CONFIRMATION . '</td>' . "\n" .
-                                  '                <td align="right" class="main">'
-                                  . $currencies->format($shipping_cost_all) . '</td>' . "\n" .
-                                  '              </tr>';
-              }
-            }
             if ($class == 'ot_subtotal') {
               if (!empty($total_handle_fee)) {
                 $output_string .= '              <tr>' . "\n" .

@@ -20,33 +20,32 @@ require(DIR_WS_ACTIONS.'checkout_confirmation.php');
 <!-- body_text //--> 
 <td valign="top" id="contents"> <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1>      
 <table class="table_ie" border="0" width="100%" cellspacing="0" cellpadding="0"> 
-
 <tr> 
-<td><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
-<tr> 
-<td width="20%"><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
-<tr> 
-<td width="50%" align="right"><?php echo tep_draw_separator('pixel_silver.gif', '1', '5'); ?></td> 
-<td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
-</tr> 
-</table></td> 
-<td width="20%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
-<td width="20%"><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
-<tr> 
-<td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
-<td><?php echo tep_image(DIR_WS_IMAGES . 'checkout_bullet.gif'); ?></td> 
-<td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
-</tr> 
-</table></td> 
-<td width="20%"><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
-<tr> 
-<td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
-<td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '1', '5'); ?></td> 
-</tr> 
-</table></td> 
-</tr> 
-<tr> 
-
+  <td><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+  <tr> 
+  <td width="20%"><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+  <tr> 
+  <td width="50%" align="right"><?php echo tep_draw_separator('pixel_silver.gif', '1', '5'); ?></td> 
+  <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
+  </tr> 
+  </table></td> 
+  <td width="20%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
+  <td width="20%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
+  <td width="20%"><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+  <tr> 
+  <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
+  <td><?php echo tep_image(DIR_WS_IMAGES . 'checkout_bullet.gif'); ?></td> 
+  <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
+  </tr> 
+  </table></td> 
+  <td width="20%"><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+  <tr> 
+  <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
+  <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '1', '5'); ?></td> 
+  </tr> 
+  </table></td> 
+  </tr>
+<td align="center" width="20%" class="checkoutBarFrom"><?php echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL') . '" class="checkoutBarFrom">' . CHECKOUT_BAR_PRODUCTS . '</a>'; ?></td> 
 <td align="center" width="20%" class="checkoutBarFrom"><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL') . '" class="checkoutBarFrom">' . CHECKOUT_BAR_DELIVERY . '</a>'; ?></td> 
 <td align="center" width="20%" class="checkoutBarFrom"><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '" class="checkoutBarFrom">' . CHECKOUT_BAR_PAYMENT . '</a>'; ?></td> 
 <td align="center" width="20%" class="checkoutBarCurrent"><?php echo CHECKOUT_BAR_CONFIRMATION; ?></td> 
@@ -62,17 +61,125 @@ require(DIR_WS_ACTIONS.'checkout_confirmation.php');
 <td class="main" align="right"><?php echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER);?></td> 
 </tr> 
 </table>
-</td>
-</tr>
-<tr>
-<td>
+<table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
+  <tr class="infoBoxContents">
+  <?php
+  if ($sendto != false) {
+    ?> 
+    <td width="30%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+    <tr> 
+    <td class="main"><?php echo '<b>' . HEADING_DELIVERY_ADDRESS . '</b> <a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING_ADDRESS, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td> 
+    </tr> 
+    <tr> 
+    <td class="main"><?php echo tep_address_format($order->delivery['format_id'], $order->delivery, 1, ' ', '<br>'); ?></td> 
+    </tr> 
+    <?php
+    if ($order->info['shipping_method']) {
+      ?> 
+      <tr> 
+        <td class="main"><?php echo '<b>' . HEADING_SHIPPING_METHOD . '</b> <a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td> 
+                                                                                                                                                                                                                  </tr> 
+                                                                                                                                                                                                                  <tr> 
+                                                                                                                                                                                                                  <td class="main"><?php echo $order->info['shipping_method']; ?></td> 
+                                                                                                                                                                                                                                                                                     </tr> 
+                                                                                                                                                                                                                                                                                     <?php
+                                                                                                                                                                                                                                                                                     }
+    ?> 
+    </table></td> 
+    <?php
+  }
+?> 
+<td width="<?php echo (($sendto != false) ? '70%' : '100%'); ?>" valign="top">
+  <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+  <tr> 
+  <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+  <?php
+  if (sizeof($order->info['tax_groups']) > 1) {
+    ?> 
+    <tr> 
+    <td class="main" colspan="2"><?php echo '<b>' . HEADING_PRODUCTS . '</b> <a href="' . tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td> 
+    <td class="smallText" align="right"><b><?php echo HEADING_TAX; ?></b></td> 
+    <td class="smallText" align="right"><b><?php echo HEADING_TOTAL; ?></b></td> 
+    </tr> 
+    <?php
+  } else {
+    ?> 
+    <tr> 
+      <td class="main" colspan="3"><?php echo '<b>' . HEADING_PRODUCTS . '</b> <a href="' . tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td> 
+                                                                                                                                                                                                                 </tr> 
+                                                                                                                                                                                                                 <?php
+                                                                                                                                                                                                                 }
 
-<?php //这里 回显 配送的 信息?>
-<?php require_once DIR_WS_ACTIONS.'checkout_confirmation_shipping_list.php';?>
+for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
+  $product_info = tep_get_product_by_id($order->products[$i]['id'], SITE_ID, $languages_id);
+    
+  echo '          <tr>' . "\n" .
+    '            <td class="main" align="center" valign="top" width="150">' . $order->products[$i]['qty'] . '&nbsp;個' . (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($order->products[$i]['qty'], $order->products[$i]['id']) ? '<br><span style="font-size:10px">'. tep_get_full_count_in_order2($order->products[$i]['qty'], $order->products[$i]['id']) .'</span>': '') . '</td>' . "\n" .
+    '            <td class="main" valign="top">' . $order->products[$i]['name'];
 
-</td>
+  if (STOCK_CHECK == 'true') {
+    echo tep_check_stock($order->products[$i]['id'], $order->products[$i]['qty']);
+  }
+
+  if ( (isset($order->products[$i]['attributes'])) && (sizeof($order->products[$i]['attributes']) > 0) ) {
+    for ($j=0, $n2=sizeof($order->products[$i]['attributes']); $j<$n2; $j++) {
+      echo '<br><small>&nbsp;<i> - ' . $order->products[$i]['attributes'][$j]['option'] . ': ' . $order->products[$i]['attributes'][$j]['value'] . '</i></small>';
+    }
+  }
+
+  echo '</td>' . "\n";
+
+  if (sizeof($order->info['tax_groups']) > 1) echo '            <td class="main" valign="top" align="right">' . tep_display_tax_value($order->products[$i]['tax']) . '%</td>' . "\n";
+
+  echo '            <td class="main" align="right" valign="top">' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty']) . '</td>' . "\n" .
+    '          </tr>' . "\n";
+}
+?> 
+</table></td> 
+</tr> 
+</table></td> 
+</tr> 
+</table></td> 
 </tr> 
 <tr> 
+<td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+</tr> 
+
+<tr> 
+<td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
+  <tr class="infoBoxContents"> 
+  <td>
+  <table width="100%" border="0" cellspacing="0" cellpadding="2">
+  <tr>
+  <td class="main" colspan="3"><b><?php echo TEXT_TORIHIKI_TITLE; ?></b><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
+  </tr>
+  <tr>
+  <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+  <td class="main"><?php echo TEXT_TORIHIKIHOUHOU; ?></td>
+  <td class="main"><?php echo $torihikihouhou; ?></td>
+  </tr>
+  <tr>
+  <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+  <td class="main" width="30%"><?php echo TEXT_TORIHIKIKIBOUBI; ?></td>
+  <td class="main" width="70%"><?php echo str_string($date); ?></td>
+  </tr>
+  <tr>
+  <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+  <td class="main"><?php echo TEXT_TORIHIKIKIBOUJIKAN; ?></td>
+  <td class="main">
+  <?php echo $hour; ?>
+  &nbsp;時&nbsp;
+<?php echo $min; ?>
+&nbsp;分&nbsp;
+</td>
+</tr>
+</table>
+
+</td>
+</tr>
+</table></td>
+</tr> 
+<tr>
 <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
 </tr> 
 

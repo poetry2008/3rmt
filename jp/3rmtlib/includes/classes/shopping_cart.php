@@ -312,7 +312,6 @@
                                     'final_price' => ($products_price + $this->attributes_price($products_id)),
                                     'tax_class_id' => $products['products_tax_class_id'],
                                     'bflag' => $products['products_bflag'],
-                                    'shipping_flag' => $products['shipping_flag'],
                                     'attributes' => $this->contents[$products_id]['attributes']);
         }
       }

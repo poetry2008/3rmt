@@ -16,7 +16,6 @@ $currencies = new currencies(2);
 $payment_bank_info = $_SESSION['payment_bank_info'];
 
 include(DIR_WS_CLASSES . 'order.php');
-include(DIR_WS_CLASSES . 'shipping.php');
 //error_reporting(E_ALL);
 //ini_set("display_errors","On");
 // Optional Tax Rates, e.g. shipping tax of 17.5% is "17.5"
@@ -62,7 +61,6 @@ $order_query = tep_db_query("
 // 最新の注文情報取得
 // 获取最新 订单情报
 $order = new order($oID);
-$shipping_modules = shipping::getInstance($order->info['site_id']);
 // ポイントを取得する
 // 获得客户信息
 $customer_point_query = tep_db_query("
@@ -77,77 +75,6 @@ $customer_guest_query = tep_db_query("
     from " . TABLE_CUSTOMERS . " 
     where customers_id = '" . $order->customer['id'] . "'");
 $customer_guest = tep_db_fetch_array($customer_guest_query);
-
-if($_POST['shipping_method']&&$_POST['shipping_address']&&$_POST['date']
-    &&$_POST['work_time']&&$_POST['start_time']&&$_POST['torihiki_time_radio']){
-  $shipping_method     = tep_db_prepare_input($_POST['shipping_method']);
-  $shipping_address    = tep_db_prepare_input($_POST['shipping_address']);
-  $shipping_date       = tep_db_prepare_input($_POST['date']);
-  $shipping_work_time  = tep_db_prepare_input($_POST['work_time']);
-  $shipping_start_time = tep_db_prepare_input($_POST['start_time']);
-  $shipping_time       = tep_db_prepare_input($_POST['torihiki_time_radio']);
-  if($shipping_method == 'shipping_null'){
-    $error = true;
-    $entry_shipping_method_error = true;
-  }
-  if($shipping_address == ''){
-    $error = true;
-    $entry_shipping_address_error = true;
-  }
-  if($shipping_date ==''){
-    $error = true;
-    $entry_shipping_date_error = true;
-  }
-  if($shipping_time ==''){
-    $error = true;
-    $entry_shipping_time_error = true;
-  }
-
-  $shipping_temp_arr = array();
-  $shipping_temp_arr['shipping_method']     = $shipping_method;
-  $shipping_temp_arr['shipping_address']    = $shipping_address;
-  $shipping_temp_arr['shipping_date']       = $shipping_date;
-  $shipping_temp_arr['shipping_work_time']  = $shipping_work_time;
-  $shipping_temp_arr['shipping_start_time'] = $shipping_start_time;
-  $shipping_temp_arr['shipping_time']       = $shipping_time;
-  $_SESSION['shipping_info_arr_'.$oID] = $shipping_temp_arr;
-}
-$clear_session_flag = false;
-$shipping_product_sql = "select `torihiki_date`, `torihiki_date_end`,
-  `address_book_id`, `shipping_method`, `torihiki_houhou`,`site_id` FROM
-  ".TABLE_ORDERS_PRODUCTS." WHERE `orders_id` ='".$oID."' limit 1";
-  $shipping_product_query = tep_db_query($shipping_product_sql);
-  if($shipping_product_row = tep_db_fetch_array($shipping_product_query)){
-    $clear_session_flag = true;
-  }
-
-$shipping_product_sql = "select `torihiki_date`, `torihiki_date_end`,
-  `address_book_id`, `shipping_method`, `torihiki_houhou`,`site_id` FROM
-  ".TABLE_ORDERS_PRODUCTS." WHERE `orders_id` ='".$oID."' limit 1";
-  $shipping_product_query = tep_db_query($shipping_product_sql);
-  if($shipping_product_row = tep_db_fetch_array($shipping_product_query)){
-    $start_datetime_arr = explode(" ",
-        $shipping_product_row['torihiki_date']);
-    $end_datetime_arr = explode(" ",
-        $shipping_product_row['torihiki_date_end']);
-    $s_site_id = $shipping_product_row['site_id'];
-    $this_shipping = $shipping_modules->modules[strtoupper(
-        $shipping_product_row['shipping_method'])];
-    $s_work_time = $this_shipping->work_time;
-    $s_start_time = time()+$this_shipping->sleep_time*60;
-    $shipping_info = array(
-        'shipping_address'   => $shipping_product_row['address_book_id'],
-        'shipping_method'    => $shipping_product_row['shipping_method'],
-        'shipping_date'      => $start_datetime_arr[0],
-        'shipping_work_time' => $s_work_time,
-        'shipping_start_time'=> $s_start_time,
-        'shipping_time'      => $start_datetime_arr[1]."-".$end_datetime_arr[1]
-        );
-  }else{
-    $shipping_info = $_SESSION['shipping_info_arr_'.$oID];
-    $this_shipping = $shipping_modules->modules[strtoupper(
-        $shipping_info['shipping_method'])];
-  }
 
 if (tep_not_null($action)) {
 
@@ -175,16 +102,12 @@ if (tep_not_null($action)) {
       }else if($viladate=='_false'){
         $viladate = false;
         $messageStack->add_session('更新をキャンセルしました。', 'error');
-        if($clear_session_flag){
-          tep_session_unregister('shipping_info_arr_'.$oID);
-        }
         tep_redirect(tep_href_link("edit_new_orders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
         break;
       }
 
       //  错误信息处理
       //暂时关闭 日期错误处理
-      /*
          if (isset($update_tori_torihiki_date)) { //日時が有効かチェック
          if (!preg_match('/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/', $update_tori_torihiki_date, $m)) { // check the date format
          $messageStack->add('日時フォーマットが間違っています。 "2008-01-01 10:30:00"', 'error');
@@ -200,7 +123,6 @@ if (tep_not_null($action)) {
          $action = 'edit';
          break;
          }
-       */
 
       foreach ($update_totals as $total_index => $total_details) {    
         extract($total_details,EXTR_PREFIX_ALL,"ot");
@@ -763,9 +685,6 @@ if (tep_not_null($action)) {
           $messageStack->add_session('エラーが発生しました。正常に処理が行われていない可能性があります。', 'error');
         }
 
-        if($clear_session_flag){
-          tep_session_unregister('shipping_info_arr_'.$oID);
-        }
         tep_redirect(tep_href_link("edit_new_orders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
 
         break;
@@ -844,7 +763,7 @@ if (tep_not_null($action)) {
           $new_product_id = tep_db_insert_id();
 
 
-          orders_updated($oID,$shipping_info);
+          orders_updated($oID);
 
 
           // 2.2.1 Update inventory Quantity
@@ -948,21 +867,8 @@ if (tep_not_null($action)) {
           $totals = "update " . TABLE_ORDERS_TOTAL . " set value = '".intval(floor($newtotal))."' where class='ot_total' and orders_id = '".$oID."'";
           tep_db_query($totals);
           // shipping total
-          $shipping_calc_fee = $this_shipping->calc_fee($add_product_products_id,
-              $add_product_quantity,tep_get_site_id_by_orders_id($oID));
-          $shipping_insert_sql = 'INSERT INTO ' . TABLE_ORDERS_TOTAL . ' SET
-            orders_id = "' . $oID . '",
-                      title = "' . MODULE_ORDER_TOTAL_SHIPPING_TITLE . '",
-                      text = "",
-                      value = "' . $shipping_calc_fee . '",
-                      class = "ot_shipping",
-                      sort_order = "2"';
-          tep_db_query($shipping_insert_sql);
           $update_orders_sql = "update ".TABLE_ORDERS." set code_fee = '".$handle_fee."' where orders_id = '".$oID."'";
           tep_db_query($update_orders_sql);
-          if($clear_session_flag){
-            tep_session_unregister('shipping_info_arr_'.$oID);
-          }
           tep_redirect(tep_href_link("edit_new_orders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
         }
 
@@ -995,7 +901,6 @@ if (tep_not_null($action)) {
     <script language="javascript" src="includes/javascript/jquery.js"></script>
     <script language="javascript" src="includes/javascript/jquery_include.js"></script>
     <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
-    <script language="javascript" src="includes/javascript/shipping.js"></script>
 <script type="text/javascript">
   //todo:修改通性用
   function hidden_payment(){
@@ -1155,147 +1060,14 @@ echo "</table>";
 
             ?>
             <td class="main" valign="top"><b><?php echo EDIT_ORDERS_FETCHTIME;?></b></td>
-            <td class="main"><?php echo tep_get_torihiki_format(
-                $shipping_info['shipping_date'],
-                $shipping_info['shipping_time']);?></td>
+            <td class="main">
+            <?php echo $order->tori['date'];?> 
+            </td>
             </tr>
             <tr>
             <td class="main" valign="top"><b><?php echo EDIT_ORDERS_TORI_TEXT;?></b></td>
             <td class="main">
-            <?php
-            /*
-               $c_address_book = tep_get_address_by_customers_id($order->customer['id']);
-               $shipping_modules = shipping::getInstance($order->info['site_id']);
-             */
-
-
-            ?>
-            <?php 
-            foreach($shipping_info as $s_key => $s_value){
-              $$s_key = $s_value;
-            }
-          $c_address_book = tep_get_address_by_customers_id($order->customer['id']);
-          if(isset($shipping_method)&&$shipping_method){
-            ?>
-              <script language='javascript'>
-              torihiki_time_str = get_torihiki_time_list('<?php 
-                  echo $shipping_work_time;?>','<?php 
-                  echo $shipping_start_time;?>','<?php 
-                  echo $shipping_date;?>','torihiki_time_radio','<?php 
-                  echo $shipping_time?>')
-              </script>
-              <div>
-              <select name='address_radio' onchange="show_address_book(this)">
-              <option value ="">选择配送地址</option>
-              <option value="create_address" ><?php echo TEXT_CREATE_ADDRESS_BOOK;?></option>
-              <option value="show_address" selected = "true"><?php echo TEXT_USE_ADDRESS_BOOK;?></option>
-              </select>
-              </div>
-              <div id="address_book_list">
-              <select name="shipping_address" onchange="show_shipping_method()" >
-              <?php
-              foreach($c_address_book as $book_row){
-                echo "<option value='".$book_row['value']."' ";
-                if($shipping_address == $book_row['value']){
-                  echo " selected='true' ";
-                }
-                echo " >".$book_row['text'];
-                echo "</option>";
-              }
-            ?>
-              </select>
-              <?php
-              if (isset($entry_shipping_address_error ) && $entry_shipping_address_error == true) { 
-                echo '&nbsp;&nbsp;<font color="red">Error</font>'; 
-              } 
-            ?>
-              </div>
-              </div>
-              </div>
-              <div  id='shipping_list' >
-              <?php
-              $shipping_method_count = count($shipping_modules->modules);
-            //是否只有一个配送
-            $one_shipping = false;
-            $shipping_list_str = '';
-            foreach($shipping_modules->modules as $s_modules){
-              //这里输出 每一个模块
-              $s_option = $s_modules->get_torihiki_date_select($shipping_date);
-              $shipping_list_str .= "<option value='".$s_modules->code."' ";
-              if($shipping_method==$s_modules->code){
-                $shipping_list_str .= " selected='true' ";
-                $one_shipping = true;
-              }
-              $shipping_list_str .= ">".$s_modules->title."</option>";
-              if(!$one_shipping){
-                echo "<div style='display:none'>";
-                echo "<select id='".$s_modules->code."'>";
-                echo $s_option;
-                echo "</select>";
-                echo "</div>";
-              }
-            }
-            echo "<select name='shipping_method' onchange='set_torihiki_date(\"".$s_modules->code."\",\"".
-              $s_modules->work_time."\",\"".$s_modules->start_time."\")' >" ;
-            echo $shipping_list_str;
-            echo "</select>";
-            if (isset($entry_shipping_method_error ) && $entry_shipping_method_error == true) { 
-              echo '&nbsp;&nbsp;<font color="red">Error</font>'; 
-            } 
-            ?>
-              </div>
-              <?php
-              //这里是 区引时间相关的显示
-              ?>
-              <div id='torihiki_info_list' >
-              <div>
-              <?php /*
-                       <div><?php echo TEXT_TORIHIKIHOUHOU;?></div>
-                       <div><?php echo tep_get_torihiki_select_by_products($product_ids);?></div>
-                     */
-              ?>
-              </div>
-              <div>
-              <div><?php echo CREATE_ORDER_FETCH_DATE_TEXT;?></div>
-              <div><select name="date" onChange="show_torihiki_time(this,'torihiki_time_radio','')" 
-              id='shipping_torihiki_date_select'>
-              <option value=""><?php echo TEXT_TORIHIKIBOUBI_DEFAULT_SELECT;?></option>
-              <?php echo $s_option;?>
-              </select>
-              <?php
-              if (isset($entry_shipping_date_error ) && $entry_shipping_date_error == true) { 
-                echo '&nbsp;&nbsp;<font color="red">Error</font>'; 
-              } 
-            ?>
-              </div>
-              </div>
-              <div id="shipping_torihiki">
-              <div><?php echo CREATE_ORDER_FETCH_TIME_TEXT;?></div>
-              <?php
-              if (isset($entry_shipping_time_error ) && $entry_shipping_time_error == true) { 
-                echo "<div>";
-                echo '&nbsp;&nbsp;<font color="red">Error</font>'; 
-                echo "</div>";
-              } 
-            ?>
-              <div id="shipping_torihiki_radio" class="all_torihiki_radio"></div>
-
-              </div>
-              <script language = 'javascript'>
-              torihiki_radio_div = window.document.getElementById('shipping_torihiki_radio');
-            torihiki_radio_div.innerHTML = torihiki_time_str;
-            </script>
-              <?php
-              echo tep_draw_input_field('work_time',$shipping_info['shipping_work_time']
-                  ,'id="shipping_work_time"',false,'hidden');
-            echo tep_draw_input_field('start_time',$shipping_info['shipping_start_time']
-                ,'id="shipping_start_time"',false,'hidden');
-            ?>
-              </div>
-              <?php
-
-          }
-          ?>
+            <?php echo $order->tori['houhou'];?>             
             <input type="hidden" name="update_viladate" value="true">
             <input type="hidden" name="update_customer_name" size="25" value="<?php echo tep_html_quotes($order->customer['name']); ?>">
             <input type="hidden" name="update_customer_email_address" size="45" value="<?php echo $order->customer['email_address']; ?>">
@@ -1338,11 +1110,7 @@ echo "</table>";
             $index = 0;
           $order->products = array();
           $orders_products_query = tep_db_query("select * from " . TABLE_ORDERS_PRODUCTS . " where orders_id = '" . tep_db_input($oID) . "'");
-          $shipping_total = 0;
           while ($orders_products = tep_db_fetch_array($orders_products_query)) {
-            $temp_shipping_total = $this_shipping->calc_fee($orders_products['products_id'],
-                $orders_products['products_quantity'],$order->info['site_id']);
-            $shipping_total += $temp_shipping_total;
             $order->products[$index] = array('qty' => $orders_products['products_quantity'],
                 'name' => str_replace("'", "&#39;", $orders_products['products_name']),
                 'model' => $orders_products['products_model'],

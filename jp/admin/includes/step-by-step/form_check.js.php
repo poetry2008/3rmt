@@ -51,7 +51,7 @@ function check_form() {
   }
 }
 // show shipping date time 
-
+/*
 var shipping_torihiki;
 var torihiki_radio_div;
 function format_time(str){
@@ -265,5 +265,5 @@ function get_torihiki_time_list(work_time,start_time,torihiki_date,radio_name,ch
   torihiki_time_str += "</ul>";
   return torihiki_time_str;
 }
-
+*/
 //--></script>

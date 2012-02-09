@@ -2313,11 +2313,6 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
       <tr>
         <td>
     <table border="0" width="100%" cellspacing="0" cellpadding="2">
-    <?php
-    //关于 多个 和单个配送的处理
-    //如果是一个 配送 使用原来的输出
-    if($order->info['shipping_method'] == 0){
-    ?>
       <tr class="dataTableHeadingRow">
         <td class="dataTableHeadingContent" colspan="2"><?php echo TABLE_HEADING_PRODUCTS; ?></td>
         <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_CHARACTER; ?></td>
@@ -2366,97 +2361,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
        '      <td class="dataTableContent" align="right" valign="top"><b>' . $tprice_with_tax . '</b></td>' . "\n";
         echo '    </tr>' . "\n";
       }
-        echo '<tr class="dataTableHeadingRow">';
-        echo "<td class='dataTableHeadingContent' colspan='2'>";
-        echo TEXT_SHIPPING_METHOD;
-        echo "</td>";
-        echo "<td class='dataTableHeadingContent' colspan='5' >";
-        echo TEXT_SHIPPING_ADDRESS;
-        echo "</td>";
-        echo '</tr>';
-        echo '<tr class="dataTableRow">'; 
-        echo "<td colspan='2'>";
-        echo $order->products[$i-1]['shipping_method'];
-        echo "</td>";
-        echo "<td colspan='5' >";
-        $address_arr = tep_get_address_by_cid_aid($order->customer['id'],
-            $order->products[$i-1]['address_book_id']);
-        echo $address_arr['text'];
-        echo "</td>";
-        echo "</tr>";
-    }else{
-      //多个订单的时候
-      for ($i = 0, $n = sizeof($order->products); $i < $n; $i++) {
-
-?>
-      <tr class="dataTableHeadingRow">
-        <td class="dataTableHeadingContent" colspan="2"><?php echo TABLE_HEADING_PRODUCTS; ?></td>
-        <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_CHARACTER; ?></td>
-        <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_PRODUCTS_MODEL; ?></td>
-        <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TAX; ?></td>
-        <!--<td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_PRICE_EXCLUDING_TAX; ?></td>-->
-        <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_PRICE_INCLUDING_TAX; ?></td>
-        <!--<td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TOTAL_EXCLUDING_TAX; ?></td>-->
-        <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TOTAL_INCLUDING_TAX; ?></td>
-      </tr>
-  <?php
-        echo '    <tr class="dataTableRow">' . "\n" . 
-       '      <td class="dataTableContent" valign="top" align="right">' . $order->products[$i]['qty']. tep_get_full_count2($order->products[$i]['qty'], $order->products[$i]['id'], $order->products[$i]['rate']) . '&nbsp;x</td>' . "\n" .
-       '      <td class="dataTableContent" valign="top">' . $order->products[$i]['name'];
-
-        if (isset($order->products[$i]['attributes']) && $order->products[$i]['attributes'] && ($k = sizeof($order->products[$i]['attributes'])) > 0) {
-          for ($j = 0; $j < $k; $j++) {
-            echo '<br><nobr><small>&nbsp;<i> - ' . $order->products[$i]['attributes'][$j]['option'] . ': ' . $order->products[$i]['attributes'][$j]['value'];
-            if ($order->products[$i]['attributes'][$j]['price'] != '0') echo ' (' . $order->products[$i]['attributes'][$j]['prefix'] . $currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . ')<br>';
-              echo '</i></small></nobr>';
-          }
-        }
-
-      if ( DISPLAY_PRICE_WITH_TAX == 'true' ) {
-        $price_with_tax = $currencies->format(
-        tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']),
-        true,
-        $order->info['currency'], $order->info['currency_value']);
-        $tprice_with_tax = $currencies->format(
-        tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'],
-        true,
-        $order->info['currency'],
-        $order->info['currency_value']);
-      } else {
-        $price_with_tax = $tprice_with_tax = '---';
-      }
-
-        echo '      </td>' . "\n" .
-       '      <td class="dataTableContent" valign="top" style="font-size:20px">' . htmlspecialchars($order->products[$i]['character']) . '</td>' . "\n" .
-       '      <td class="dataTableContent" valign="top">' . $order->products[$i]['model'] . '</td>' . "\n" .
-       '      <td class="dataTableContent" align="right" valign="top">' . tep_display_tax_value($order->products[$i]['tax']) . '%</td>' . "\n" .
-       '      <!--<td class="dataTableContent" align="right" valign="top"><b>' . $currencies->format($order->products[$i]['final_price'], true, $order->info['currency'], $order->info['currency_value']) . '</b></td>-->' . "\n" .
-       '      <td class="dataTableContent" align="right" valign="top"><b>' . $price_with_tax . '</b></td>' . "\n" .
-       '      <!--<td class="dataTableContent" align="right" valign="top"><b>' . $currencies->format($order->products[$i]['final_price'] * $order->products[$i]['qty'],true,$order->info['currency'],$order->info['currency_value']) . '</b></td>-->' . "\n" .
-       '      <td class="dataTableContent" align="right" valign="top"><b>' . $tprice_with_tax . '</b></td>' . "\n";
-        echo '    </tr>' . "\n";
-
-        echo '<tr class="dataTableHeadingRow">';
-        echo "<td class='dataTableHeadingContent' colspan='2'>";
-        echo TEXT_SHIPPING_METHOD;
-        echo "</td>";
-        echo "<td class='dataTableHeadingContent' colspan='5' >";
-        echo TEXT_SHIPPING_ADDRESS;
-        echo "</td>";
-        echo '</tr>';
-        echo '<tr class="dataTableRow">'; 
-        echo "<td colspan='2'>";
-        echo $order->products[$i]['shipping_method'];
-        echo "</td>";
-        echo "<td colspan='5' >";
-        $address_arr = tep_get_address_by_cid_aid($order->customer['id'],
-            $order->products[$i]['address_book_id']);
-        echo $address_arr['text'];
-        echo "</td>";
-        echo "</tr>";
-      }
-    }
-  ?>
+      ?>
       <tr>
         <td align="right" colspan="9">
           <table border="0" cellspacing="0" cellpadding="2">

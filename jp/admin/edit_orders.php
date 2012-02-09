@@ -14,7 +14,6 @@ require(DIR_WS_CLASSES . 'currencies.php');
 $currencies = new currencies(2);
 
 include(DIR_WS_CLASSES . 'order.php');
-include(DIR_WS_CLASSES . 'shipping.php');
 
 // START CONFIGURATION ################################
 
@@ -65,7 +64,6 @@ $order_query = tep_db_query("
 
 // 最新の注文情報取得
 $order = new order($oID);
-$shipping_modules = shipping::getInstance($order->info['site_id']);
 $cpayment = payment::getInstance($order->info['site_id']);
 // ポイントを取得する
 $customer_point_query = tep_db_query("
@@ -107,7 +105,7 @@ if (tep_not_null($action)) {
         tep_redirect(tep_href_link("edit_orders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
         break;
       }
-     /* 
+      
       if (isset($update_tori_torihiki_date)) { //日時が有効かチェック
         if (!preg_match('/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/', $update_tori_torihiki_date, $m)) { // check the date format
           $messageStack->add('日時フォーマットが間違っています。 "2008-01-01 10:30:00"', 'error');
@@ -123,7 +121,6 @@ if (tep_not_null($action)) {
         $action = 'edit';
         break;
       }
-      */
       
       foreach ($update_totals as $up_key => $up_total) {
         if ($up_total['class'] == 'ot_point') {
@@ -968,40 +965,11 @@ if (($action == 'edit') && ($order_exists == true)) {
     <?php echo EDIT_ORDERS_PAYMENT_METHOD_READ;?> 
     </td>
     </tr>
-    <!-- End Payment Block -->
-    <!-- Begin Trade Date Block -->
-    <?php //这里处理 单一配送
-  $shipping_pid_arr = tep_get_shipping_products($oID);
-  if(!$shipping_pid_arr){
-    $shipping_product_sql = "select `torihiki_date`, `torihiki_date_end`,
-      `address_book_id`, `shipping_method`, `torihiki_houhou`,`site_id` FROM
-        ".TABLE_ORDERS_PRODUCTS." WHERE `orders_id` ='".$oID."' limit 1";
-    $shipping_product_query = tep_db_query($shipping_product_sql);
-    $shipping_product_row = tep_db_fetch_array($shipping_product_query);
-    $start_datetime_arr = explode(" ",
-        $shipping_product_row['torihiki_date']);
-    $end_datetime_arr = explode(" ",
-        $shipping_product_row['torihiki_date_end']);
-    $s_site_id = $shipping_product_row['site_id'];
-    $this_shipping = $shipping_modules->modules[strtoupper(
-        $shipping_product_row['shipping_method'])];
-    $s_work_time = $this_shipping->work_time;
-    $s_start_time = time()+$this_shipping->sleep_time*60;
-    $shipping_info = array(
-        'shipping_address'   => $shipping_product_row['address_book_id'],
-        'shipping_method'    => $shipping_product_row['shipping_method'],
-        'shipping_date'      => $start_datetime_arr[0],
-        'shipping_work_time' => $s_work_time,
-        'shipping_start_time'=> $s_start_time,
-        'shipping_time'      => $start_datetime_arr[1]."-".$end_datetime_arr[1]
-        );
-  ?>
     <tr>
     <td class="main" valign="top"><b><?php echo EDIT_ORDERS_FETCHTIME;?></b></td>
     <td class="main">
-    <?php echo tep_get_torihiki_format(
-        $shipping_info['shipping_date'],
-        $shipping_info['shipping_time']);?>
+    <input class="edit_input" name='update_tori_torihiki_date' size='25' value='<?php echo $order->tori['date']; ?>'>
+    <span class="smalltext"><?php echo EDIT_ORDERS_FETCHTIME_READ;?></span>
     </td>
     </tr>
     <tr>
@@ -1013,7 +981,6 @@ if (($action == 'edit') && ($order_exists == true)) {
 
     </td>
     </tr>
-<?php }?>
 <tr>
 <td colspan="2">
     <input type="hidden" name="update_viladate" value="true">
@@ -1080,10 +1047,6 @@ if (($action == 'edit') && ($order_exists == true)) {
   }
 
   ?>
-    <?php // Version without editable names & prices 
-    //这里处理 单个商品单个配送 
-    if(!$shipping_pid_arr){
-    ?>
     <table border="0" width="100%" cellspacing="0" cellpadding="2">
     <tr class="dataTableHeadingRow">
     <td class="dataTableHeadingContent" colspan="2"><?php echo TABLE_HEADING_NUM_PRO_NAME;?></td>
@@ -1135,75 +1098,6 @@ if (($action == 'edit') && ($order_exists == true)) {
         '      <td class="' . $RowStyle . '" align="right">' . $currencies->format($order->products[$i]['final_price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . '</td>' . "\n" . 
         '      <td class="' . $RowStyle . '" align="right"><b>' . $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . '</b></td>' . "\n" . 
         '    </tr>' . "\n";
-    }
-    }else{
-    for ($i=0; $i<sizeof($order->products); $i++) {
-?>
-    <table border="0" width="100%" cellspacing="0" cellpadding="2">
-    <tr class="dataTableHeadingRow">
-    <td class="dataTableHeadingContent" colspan="2"><?php echo TABLE_HEADING_NUM_PRO_NAME;?></td>
-    <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_PRODUCTS_MODEL; ?></td>
-    <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_CURRENICY; ?></td>
-    <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_PRICE_BEFORE; ?></td>
-    <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_PRICE_AFTER; ?></td>
-    <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TOTAL_BEFORE; ?></td>
-    <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TOTAL_AFTER; ?></td>
-    </tr>
-
-    <?php
-
-      $orders_products_id = $order->products[$i]['orders_products_id'];
-      $RowStyle = "dataTableContent";
-      echo '    <tr class="dataTableRow">' . "\n" .
-        '      <td class="' . $RowStyle . '" align="left" valign="top" width="20">'
-        . "<input type='hidden'
-        name='update_products_real_quantity[$orders_products_id]'
-        id='update_products_real_quantity_$orders_products_id' value='1'><input
-        type='hidden' id='update_products_qty_$orders_products_id' value='" .
-        $order->products[$i]['qty'] . "'><input class='update_products_qty' id='update_products_new_qty_$orders_products_id' name='update_products[$orders_products_id][qty]' size='2' value='" .
-        $order->products[$i]['qty'] . "' onkeyup='clearLibNum(this);'>&nbsp;x</td>\n" . 
-        '      <td class="' . $RowStyle . '">' . $order->products[$i]['name'] . "<input name='update_products[$orders_products_id][name]' size='64' id='update_products_name_$orders_products_id' type='hidden' value='" . $order->products[$i]['name'] . "'>\n" . 
-        '      &nbsp;&nbsp;'.EDIT_ORDERS_DUMMY_TITLE. "<input type='hidden' name='dummy' value='あいうえお眉幅'><input name='update_products[$orders_products_id][character]' size='20' value=\"" . htmlspecialchars($order->products[$i]['character']) . "\">";
-      // Has Attributes?
-      if ($order->products[$i]['attributes'] && sizeof($order->products[$i]['attributes']) > 0) {
-        for ($j=0; $j<sizeof($order->products[$i]['attributes']); $j++) {
-          $orders_products_attributes_id = $order->products[$i]['attributes'][$j]['orders_products_attributes_id'];
-          echo '<br><nobr><small>&nbsp;<i> - ' . 
-            "<input name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][option]' size='10' value='" . tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option'], array("'"=>"&quot;")) . "'>" . 
-            ': ' . 
-            "<input name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][value]' size='35' value='" . tep_parse_input_field_data($order->products[$i]['attributes'][$j]['value'], array("'"=>"&quot;"));
-          //if ($order->products[$i]['attributes'][$j]['price'] != '0') echo ' (' . $order->products[$i]['attributes'][$j]['prefix'] . $currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . ')';
-          echo "'>";
-          echo '</i></small></nobr>';
-        }
-      }
-
-      echo '      </td>' . "\n" .
-        '      <td class="' . $RowStyle . '">' . $order->products[$i]['model'] . "<input name='update_products[$orders_products_id][model]' size='12' type='hidden' value='" . $order->products[$i]['model'] . "'>" . '</td>' . "\n" .
-        '      <td class="' . $RowStyle . '" align="right">' . tep_display_tax_value($order->products[$i]['tax']) . "<input name='update_products[$orders_products_id][tax]' size='2' type='hidden' value='" . tep_display_tax_value($order->products[$i]['tax']) . "'>" . '%</td>' . "\n" .
-        '      <td class="' . $RowStyle . '" align="right">' . "<input
-        class='once_pwd' name='update_products[$orders_products_id][final_price]' size='9' value='" . tep_display_currency(number_format(abs($order->products[$i]['final_price']),2)) .
-        "'" .' onkeyup="clearNoNum(this)" >'.  
-        '<input type="hidden" name="op_id_'.$orders_products_id.'" 
-        value="'.tep_get_product_by_op_id($orders_products_id).'">' . '</td>' . "\n" . 
-        '      <td class="' . $RowStyle . '" align="right">' . $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']), true, $order->info['currency'], $order->info['currency_value']) . '</td>' . "\n" . 
-        '      <td class="' . $RowStyle . '" align="right">' . $currencies->format($order->products[$i]['final_price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . '</td>' . "\n" . 
-        '      <td class="' . $RowStyle . '" align="right"><b>' . $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . '</b></td>' . "\n" . 
-        '    </tr>' . "\n";
-?>
-    <table border="0" width="100%" cellspacing="0" cellpadding="2">
-    <tr class="dataTableHeadingRow">
-    <td class="dataTableHeadingContent" colspan="2"><?php echo
-    TABLE_HEADING_SHIPPING_ADDRESS;?></td>
-    <td class="dataTableHeadingContent" colspan="2"><?php echo
-    TABLE_HEADING_SHIPPING_METHOD; ?></td>
-    <td class="dataTableHeadingContent" colspan="2"><?php echo
-    TABLE_HEADING_SHIPPING_HOUHOU; ?></td>
-    <td class="dataTableHeadingContent" ><?php echo TABLE_HEADING_SHIPPING_DATE; ?></td>
-    <td class="dataTableHeadingContent" ><?php echo TABLE_HEADING_SHIPPING_TIME; ?></td>
-    </tr>
-    <?php
-    }
     }
   ?>
     </table>

@@ -2955,15 +2955,12 @@ function orders_status_updated($orders_status_id) {
 }
 
 // 代替存储过程
-function orders_updated($orders_id,$shipping_info = null) {
+function orders_updated($orders_id) {
   tep_db_query("update ".TABLE_ORDERS." set language_id = ( select language_id from ".TABLE_ORDERS_STATUS." where orders_status.orders_status_id=orders.orders_status ) where orders_id='".$orders_id."'");
   tep_db_query("update ".TABLE_ORDERS." set finished = ( select finished from ".TABLE_ORDERS_STATUS." where orders_status.orders_status_id=orders.orders_status ) where orders_id='".$orders_id."'");
   tep_db_query("update ".TABLE_ORDERS." set orders_status_name = ( select orders_status_name from ".TABLE_ORDERS_STATUS." where orders_status.orders_status_id=orders.orders_status ) where orders_id='".$orders_id."'");
   tep_db_query("update ".TABLE_ORDERS." set orders_status_image = ( select orders_status_image from ".TABLE_ORDERS_STATUS." where orders_status.orders_status_id=orders.orders_status ) where orders_id='".$orders_id."'");
-  //tep_db_query("update ".TABLE_ORDERS_PRODUCTS." set torihiki_date = ( select torihiki_date from ".TABLE_ORDERS." where orders.orders_id=orders_products.orders_id ) where orders_id='".$orders_id."'");
-  if($shipping_info!=null){
-  orders_products_updated($orders_id,$shipping_info);
-  }
+  tep_db_query("update ".TABLE_ORDERS_PRODUCTS." set torihiki_date = ( select torihiki_date from ".TABLE_ORDERS." where orders.orders_id=orders_products.orders_id ) where orders_id='".$orders_id."'");
 }
 
 
@@ -6874,6 +6871,7 @@ function tep_get_products_list_by_order_id($oid){
   }
   return $products_list;
 }
+/*
 function orders_products_updated($orders_id,$shipping_info){
   $time_arr = explode('-',$shipping_info['shipping_time']);
   $start = $shipping_info['shipping_date']." ".$time_arr[0];
@@ -6904,7 +6902,7 @@ function tep_get_shipping_products($oid){
     return $pid_arr;
   }
 }
-
+*/
 function get_campaion_fee($total, $orders_id, $site_id)
 {
   $return_fee = 0; 

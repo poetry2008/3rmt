@@ -4,6 +4,7 @@
 */
 
 // 代金引換払い(手数料が購入金額に連動)
+require_once (DIR_WS_CLASSES . 'basePayment.php');
 class convenience_store extends basePayment  implements paymentInterface  { 
   var $site_id, $code, $title, $description, $enabled, $n_fee, $s_error, $email_footer, $show_payment_info;
   function loadSpecialSettings($site_id = 0){

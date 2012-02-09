@@ -32,8 +32,8 @@ define('TEXT_CONTINUE_CHECKOUT_PROCEDURE', '「次へ進む」をクリックし
 # Add ds-style
 define('TEXT_CARACTOR', 'お届け先キャラクター名:');
 define('TEXT_TORIHIKIHOUHOU', 'オプション:');
-define('TEXT_TORIHIKIKIBOUBI', 'お届け希望日:');
-define('TEXT_TORIHIKIKIBOUJIKAN', 'お届け希望日時間:');
+define('TEXT_TORIHIKIKIBOUBI', '取引希望日:');
+define('TEXT_TORIHIKIKIBOUJIKAN', '取引希望時間:');
 
 define('TEXT_CHECK_EIJI', '(英字)');
 define('TEXT_CHECK_24JI', '<b>(24時間表記)</b>');

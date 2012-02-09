@@ -126,104 +126,6 @@ if (isset($_GET['action']))
           tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . serialize($blank_show_arr) . "' where configuration_key = 'MODULE_PAYMENT_" . strtoupper($_GET['module'])  . "_LIMIT_SHOW' and site_id = '".$site_id."'");
         }
       }
-    }else if ($_GET['set'] == 'shipping') { 
-      if ($site_id != 0) {
-        $limit_show_str = ''; 
-        foreach ($_POST['configuration'] as $key => $value){
-          if(preg_match('/.*LIMIT_SHOW/', $key)) {
-            $limit_show_str = $key;
-            break;
-          }
-        }
-        //如果有CHECKBOX
-        if (!empty($limit_show_str)) {
-
-          if (!tep_db_num_rows(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$limit_show_str."' and site_id='".$site_id."'"))) {
-
-            $cp_show_configuration = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$limit_show_str."' and site_id='0'"));
-            if ($cp_show_configuration) {
-              tep_db_query("
-                  INSERT INTO `configuration` (
-                  `configuration_id` ,
-                  `configuration_title` ,
-                  `configuration_key` ,
-                  `configuration_value` ,
-                  `configuration_description` ,
-                  `configuration_group_id` ,
-                  `sort_order` ,
-                  `last_modified` ,
-                  `date_added` ,
-                  `use_function` ,
-                  `set_function` ,
-                  `site_id`
-                  )
-                  VALUES (
-                  NULL , 
-                  '".mysql_real_escape_string($cp_show_configuration['configuration_title'])."', 
-                  '".$cp_show_configuration['configuration_key']."', 
-                  '".$cp_show_configuration['configuration_value']."', 
-                  '".mysql_real_escape_string($cp_show_configuration['configuration_description'])."', 
-                  '".$cp_show_configuration['configuration_group_id']."', 
-                  '".$cp_show_configuration['sort_order']."' , 
-                  '".$cp_show_configuration['last_modified']."' , 
-                  '".$cp_show_configuration['date_added']."', 
-                  '".mysql_real_escape_string($cp_show_configuration['use_function'])."' , 
-                  '".mysql_real_escape_string($cp_show_configuration['set_function'])."' , 
-                  '".$site_id."'
-                  )
-                ");
-
-            }
-          }
-          tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . serialize($value) . "' where configuration_key = '" .  $limit_show_str . "' and site_id = '".$site_id."'");
-        } else {
-
-          if (!tep_db_num_rows(tep_db_query("select * from ".TABLE_CONFIGURATION."
-                  where configuration_key='MODULE_SHIPPING_".strtoupper($_GET['module'])."_LIMIT_SHOW' and site_id='".$site_id."'"))) {
-
-            $cp_show_configuration = tep_db_fetch_array(tep_db_query("select * from
-                  ".TABLE_CONFIGURATION." where configuration_key='MODULE_SHIPPING_".strtoupper($_GET['module'])."_LIMIT_SHOW' and site_id='0'"));
-            if ($cp_show_configuration) {
-
-              tep_db_query("
-                  INSERT INTO `configuration` (
-                  `configuration_id` ,
-                  `configuration_title` ,
-                  `configuration_key` ,
-                  `configuration_value` ,
-                  `configuration_description` ,
-                  `configuration_group_id` ,
-                  `sort_order` ,
-                  `last_modified` ,
-                  `date_added` ,
-                  `use_function` ,
-                  `set_function` ,
-                  `site_id`
-                  )
-                  VALUES (
-                  NULL , 
-                  '".mysql_real_escape_string($cp_show_configuration['configuration_title'])."', 
-                  '".$cp_show_configuration['configuration_key']."', 
-                  '".serialize(array())."', 
-                  '".mysql_real_escape_string($cp_show_configuration['configuration_description'])."', 
-                  '".$cp_show_configuration['configuration_group_id']."', 
-                  '".$cp_show_configuration['sort_order']."' , 
-                  '".$cp_show_configuration['last_modified']."' , 
-                  '".$cp_show_configuration['date_added']."', 
-                  '".mysql_real_escape_string($cp_show_configuration['use_function'])."' , 
-                  '".mysql_real_escape_string($cp_show_configuration['set_function'])."' , 
-                  '".$site_id."'
-                  )
-                ");
-
-            }
-          }
-          $blank_show_arr = array();
-          tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value =
-              '" . serialize($blank_show_arr) . "' where configuration_key =
-              'MODULE_SHIPPING_" . strtoupper($_GET['module'])  . "_LIMIT_SHOW' and site_id = '".$site_id."'");
-        }
-      }
     }
     $key = '';
     $value = '';
@@ -572,8 +474,7 @@ default:
             $keys .= tep_call_function($use_function, $module_item['configuration_value']);
           }
         } else {
-          if(preg_match("/MODULE_PAYMENT_.*_LIMIT_SHOW/",$module_item['configuration_key'])||
-             preg_match("/MODULE_SHIPPING_.*_LIMIT_SHOW/",$module_item['configuration_key'])) {
+          if(preg_match("/MODULE_PAYMENT_.*_LIMIT_SHOW/",$module_item['configuration_key'])) {
             $con_limit_show = unserialize($module_item['configuration_value']);   
             $con_limit_show_str = ''; 
             if (!empty($con_limit_show)) {

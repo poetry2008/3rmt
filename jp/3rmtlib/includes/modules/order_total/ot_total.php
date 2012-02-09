@@ -17,8 +17,7 @@
     }
 
     function process() {
-      global $order, $currencies, $payment, $point, $_POST,
-             $cart,$shipping_method_info_arr;
+      global $order, $currencies, $payment, $point, $_POST, $cart;
 
       $total = @$order->info['total'];
       if ((MODULE_ORDER_TOTAL_CODT_STATUS == 'true')
@@ -67,10 +66,6 @@
     
     if (isset($_SESSION['campaign_fee'])) {
       $total += $_SESSION['campaign_fee']; 
-    }
-    //把所有的配送费用加入到 总额里面
-    foreach($shipping_method_info_arr as $shipping_key => $shipping_method_info){
-      $total += $shipping_method_info['shipping_cost'];
     }
     
 

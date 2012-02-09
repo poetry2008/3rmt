@@ -4,6 +4,7 @@
  */
 
 // 代金引換払い(手数料が購入金額に連動)
+require_once (DIR_WS_CLASSES . 'basePayment.php');
 class rakuten_bank  extends basePayment  implements paymentInterface {
   var $site_id, $code, $title, $description, $enabled, $n_fee, $s_error, $email_footer,$c_prefix, $show_payment_info;
   var $arrs2d = array('１' => '1', '２' => '2', '３' => '3', '４' => '4', 

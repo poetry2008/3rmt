@@ -2,6 +2,7 @@
 /*
   $Id$
 */
+require_once (DIR_WS_CLASSES . 'basePayment.php');
 class telecom  extends basePayment  implements paymentInterface  { 
   var $site_id, $code, $title, $description, $enabled, $n_fee, $s_error, $email_footer, $show_payment_info;
 

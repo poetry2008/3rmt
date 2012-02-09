@@ -3,6 +3,7 @@
   $Id$
 */
 //ペイパル実験
+require_once (DIR_WS_CLASSES . 'basePayment.php');
   class paypal extends basePayment  implements paymentInterface  { 
     var $site_id, $code, $title, $description, $enabled, $s_error, $email_footer, $show_payment_info;
 

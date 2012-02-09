@@ -2615,8 +2615,7 @@ function tep_unlink_temp_dir($dir)
                pd.romaji, 
                pd.products_url,
                pd.products_viewed,
-               pd.preorder_status,
-               pd.shipping_flag
+               pd.preorder_status
         FROM " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
         WHERE p.products_id = '" . $pid . "' 
           AND pd.products_id = '" .  $pid . "'" . " 
@@ -3030,9 +3029,7 @@ function orders_updated($orders_id) {
   tep_db_query("update ".TABLE_ORDERS." set finished = ( select finished from ".TABLE_ORDERS_STATUS." where orders_status.orders_status_id=orders.orders_status ) where orders_id='".$orders_id."'");
   tep_db_query("update ".TABLE_ORDERS." set orders_status_name = ( select orders_status_name from ".TABLE_ORDERS_STATUS." where orders_status.orders_status_id=orders.orders_status ) where orders_id='".$orders_id."'");
   tep_db_query("update ".TABLE_ORDERS." set orders_status_image = ( select orders_status_image from ".TABLE_ORDERS_STATUS." where orders_status.orders_status_id=orders.orders_status ) where orders_id='".$orders_id."'");
-  /*
   tep_db_query("update ".TABLE_ORDERS_PRODUCTS." set torihiki_date = ( select torihiki_date from ".TABLE_ORDERS." where orders.orders_id=orders_products.orders_id ) where orders_id='".$orders_id."'");
-  */
 }
 
 function replace_store_name($str) {
@@ -4576,6 +4573,7 @@ function tep_get_torihiki_date_radio($start_time,$radio_name="torihiki_time"){
 
 
 //以下是配送使用的方法
+  /* 
   function tep_get_address_by_customers_id($customers_id, $address_id = 1, $html = false, $boln = '', $eoln = "\n") {
 //ccdd
     $address_sql = "select address_book_id,entry_firstname as firstname,
@@ -4621,7 +4619,8 @@ function tep_get_address_by_cid_aid($customers_id, $address_id = 1, $html = fals
     }
     return $res_arr;
   }
-function tep_get_products_list_by_order_id($oid){
+ */
+  function tep_get_products_list_by_order_id($oid){
   $sql = "select * from " . TABLE_ORDERS_PRODUCTS . " where orders_id
     = '" . $oid. "'";
   $query = tep_db_query($sql);
@@ -4631,7 +4630,7 @@ function tep_get_products_list_by_order_id($oid){
   }
   return $products_list;
 }
-
+/*
 function tep_get_graph_axis_info() 
 {
    $time_array = array();
@@ -4673,6 +4672,7 @@ function tep_get_graph_value_info()
   }
   return $axis_value_array;
 }
+*/
 //３１号删掉{{
 function tep_whether_show_payment(){
   return true;

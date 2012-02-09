@@ -11,16 +11,6 @@ tep_redirect(tep_redirect(tep_href_link(FILENAME_CREATE_ORDER, null, 'SSL')));
 tep_redirect(tep_redirect(tep_href_link(FILENAME_CREATE_ORDER, null, 'SSL')));
 }
 require(DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_CREATE_ORDER_PROCESS);
-//debug info
-//ini_set("display_errors","On");
-
-$shipping_method     = tep_db_prepare_input($_POST['shipping_method']);
-$shipping_address    = tep_db_prepare_input($_POST['shipping_address']);
-$shipping_address_radio = tep_db_prepare_input($_POST['address_radio']);
-$shipping_date       = tep_db_prepare_input($_POST['date']);
-$shipping_work_time  = tep_db_prepare_input($_POST['work_time']);
-$shipping_start_time = tep_db_prepare_input($_POST['start_time']);
-$shipping_time       = tep_db_prepare_input($_POST['torihiki_time_radio']);
 
 
 $payment_modules = payment::getInstance($_POST['site_id']);
@@ -48,6 +38,10 @@ $new_value      = "1";
 $error          = false; // reset error flag
 $temp_amount    = "0";
 $temp_amount    = number_format($temp_amount, 2, '.', '');
+$date = tep_db_prepare_input($_POST['date']);
+$hour = tep_db_prepare_input($_POST['hour']);
+$min = tep_db_prepare_input($_POST['min']);
+$torihikihouhou = tep_db_prepare_input($_POST['torihikihouhou']);
 $payment_method = tep_db_prepare_input($_POST['payment_method']);
   
 $currency_text  = DEFAULT_CURRENCY . ",1";
@@ -103,34 +97,32 @@ if (!tep_validate_email($email_address)) {
   $entry_email_address_check_error = false;
 }
 
+
+if ($date == '') {
+    $error = true;
+    $entry_date_error = true;
+} else {
+    $entry_date_error = false;
+}
+
+  if ($hour == '' || $min == '') {
+    $error = true;
+    $entry_tardetime_error = true;
+  } else {
+    $entry_tradetime_error = false;
+  }
+
+  if ($torihikihouhou == '') {
+    $error = true;
+    $entry_torihikihouhou_error = true;
+  } else {
+    $entry_torihikihouhou_error = false;
+  }
+
 if ($payment_method == 'payment_null') {
   $error = true;
   $entry_payment_method_error = true;
 } 
-
-//}}检查是否通过验证
-//验证 shipping
-if($shipping_method == 'shipping_null'){
-  $error = true;
-  $entry_shipping_method_error = true;
-}
-if($shipping_address_radio != 'show_address'){
-  $error = true;
-  $entry_shipping_address_radio_error = true;
-}
-if($shipping_address == 0){
-  $error = true;
-  $entry_shipping_address_error = true;
-}
-if($shipping_date ==''){
-  $error = true;
-  $entry_shipping_date_error = true;
-}
-if($shipping_time ==''){
-  $error = true;
-  $entry_shipping_time_error = true;
-}
-
 $payment_method_romaji = payment::changeRomaji($payment_method,PAYMENT_RETURN_TYPE_CODE);
 $validateModule = $payment_modules->admin_confirmation_check($payment_method);
 
@@ -183,8 +175,7 @@ $sql_data_array = array('orders_id'     => $insert_id,
 			'currency_value'              => $currency_value,
 			'payment_method'              => payment::changeRomaji($payment_method,
                             PAYMENT_RETURN_TYPE_TITLE),
-                        //           	'torihiki_houhou'             => $torihikihouhou,
-           	'torihiki_houhou'             => '',
+           	'torihiki_houhou'             => $torihikihouhou,
 			'torihiki_date'               => tep_db_input($date . ' ' . $hour . ':' . $min . ':00'),
 			'site_id'                     => $site_id,
 			'orders_wait_flag'            => '1'
@@ -283,15 +274,6 @@ if($ot_tax_status == true) {
   tep_db_perform(TABLE_ORDERS_TOTAL, $sql_data_array);
 }
   $payment_bank_info = array(); 
-
-  $shipping_temp_arr = array();
-  $shipping_temp_arr['shipping_method']     = $shipping_method;
-  $shipping_temp_arr['shipping_address']    = $shipping_address;
-  $shipping_temp_arr['shipping_date']       = $shipping_date;
-  $shipping_temp_arr['shipping_work_time']  = $shipping_work_time;
-  $shipping_temp_arr['shipping_start_time'] = $shipping_start_time;
-  $shipping_temp_arr['shipping_time']       = $shipping_time;
-  $_SESSION['shipping_info_arr_'.$insert_id] = $shipping_temp_arr;
 
 tep_redirect(tep_href_link(FILENAME_EDIT_NEW_ORDERS, 'oID=' . $insert_id, 'SSL'));
 
