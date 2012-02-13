@@ -18,8 +18,7 @@ $customer_id    = tep_db_prepare_input($_POST['customers_id']);
 $firstname      = tep_db_prepare_input($_POST['firstname']);
 $lastname       = tep_db_prepare_input($_POST['lastname']);
 $email_address  = tep_db_prepare_input($_POST['email_address']);
-/*
-准备删除
+
 $telephone      = isset($_POST['telephone']) ? tep_db_prepare_input($_POST['telephone']) : '';
 $fax            = tep_db_prepare_input($_POST['fax']);
 $street_address = isset($_POST['street_address']) ? tep_db_prepare_input($_POST['street_address']) : '';
@@ -30,7 +29,7 @@ $city           = isset($_POST['city']) ? tep_db_prepare_input($_POST['city']) :
 $zone_id        = isset($_POST['zone_id']) ? tep_db_prepare_input($_POST['zone_id']) : '';
 $state          = isset($_POST['state']) ? tep_db_prepare_input($_POST['state']) : '';
 $country        = isset($_POST['country']) ? tep_db_prepare_input($_POST['country']) : '';
-*/
+
 $site_id        = tep_db_prepare_input($_POST['site_id']);
 $format_id      = "1";
 $size           = "1";

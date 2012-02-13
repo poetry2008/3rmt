@@ -25,6 +25,7 @@ class BasePayment
   const REQUIRE_MSG = '<span class="fieldRequired">Error</span>';
   const RULE_CHECK_TEL = 'validation_check_tel';
   const RULE_CHECK_TEL_MSG = '入力内容を確認し、再度入力してください。';
+  var $p_error_msg = ''; 
   function __construct($site_id = 0){
     global $order;
     $this->site_id = $site_id;
@@ -59,8 +60,12 @@ class BasePayment
       foreach ($selection['fields'] as $key=>$singleValue){
         if($singleValue['rule'] != null){
           if(is_array($singleValue['rule'])){
+            $i_num = 0; 
             foreach ($singleValue['rule'] as $rule){
-              $validateResult = $this->$rule($value[$singleValue['code']],$value[$singleValue['params_code']]);
+              if (isset($singleValue['error_msg'][$i_num])) {
+                $this->p_error_msg = $singleValue['error_msg'][$i_num]; 
+              }
+              $validateResult = $this->$rule($value[$singleValue['code']],$value[$singleValue['params_code']],$p_error_msg);
               if ($validateResult !== true){
                 $pass = false;
                 //  $selection['error'][]=$validateResult;
@@ -69,13 +74,21 @@ class BasePayment
                       array(self::RULE_NOT_NULL_MSG,
                         self::RULE_IS_NUMBER_MSG,self::RULE_CHECK_TEL_MSG), self::REQUIRE_MSG, $validateResult);
                 } else {
-                  $_SESSION['payment_error'][$this->code]=$validateResult;
+                  if (!empty($this->p_error_msg)) {
+                    $_SESSION['payment_error'][$this->code][]=$validateResult;
+                  } else {
+                    $_SESSION['payment_error'][$this->code]=$validateResult;
+                  }
                 }
                 //                $selection['fields'][$key]['message'] = $validateResult;
               }
+              $i_num++; 
             }
           } else {
-            $validateResult = $this->$singleValue['rule']($value[$singleValue['code']],$value[$singleValue['params_code']]);
+            if (isset($singleValue['error_msg'])) {
+              $this->p_error_msg = $singleValue['error_msg']; 
+            }
+            $validateResult = $this->$singleValue['rule']($value[$singleValue['code']],$value[$singleValue['params_code']], $p_error_msg);
             if($validateResult !== true){
               $pass = false;
               if ($show_type) {
@@ -83,7 +96,11 @@ class BasePayment
                       array(self::RULE_NOT_NULL_MSG,
                         self::RULE_IS_NUMBER_MSG,self::RULE_CHECK_TEL_MSG), self::REQUIRE_MSG, $validateResult);
               } else {
-                $_SESSION['payment_error'][$this->code]=$validateResult;
+                if (!empty($this->p_error_msg)) {
+                  $_SESSION['payment_error'][$this->code][]=$validateResult;
+                } else {
+                  $_SESSION['payment_error'][$this->code]=$validateResult;
+                }
               }
                 //              $selection['error'][]=$validateResult;
             }
@@ -101,7 +118,11 @@ class BasePayment
     if(!empty($value)){
       return true;
     } else{
-      return self::RULE_NOT_NULL_MSG;
+      if (!empty($this->p_error_msg)) {
+        return $this->p_error_msg; 
+      } else {
+        return self::RULE_NOT_NULL_MSG;
+      }
     }
   }
   function validation_is_number($value)
@@ -110,25 +131,42 @@ class BasePayment
     if(preg_match('/^[0-9]+$/',$value)){
       return true;
     }else{
-      return self::RULE_IS_NUMBER_MSG;
+      if (!empty($this->p_error_msg)) {
+        return $this->p_error_msg; 
+      } else {
+        return self::RULE_IS_NUMBER_MSG;
+      } 
     }
   }
   function validation_email($value){
     $e = "/^[-+\\.0-9=a-z_]+@([-0-9a-z]+\\.)+([0-9a-z]){2,4}$/i";
-    if(!preg_match($e, $value)) return self::RULE_EMAIL_MSG;
+    if(!preg_match($e, $value)) {
+      if (!empty($this->p_error_msg)) {
+        return $this->p_error_msg; 
+      } else {
+        return self::RULE_EMAIL_MSG;
+      } 
+    }
     return true;
   }
   function validation_same_to($value1,$value2){
-
-    if( $value2 == $value1 ){
+    if($value2 == $value1 ){
       return true;
     }
-    return self::RULE_SAME_TO_MSG;
+    if (!empty($this->p_error_msg)) {
+      return $this->p_error_msg; 
+    } else {
+      return self::RULE_SAME_TO_MSG;
+    }
   }
 
   function validation_check_tel($value) {
     if (!preg_match("/^(\+\d{2}){0,1}((\d{2}(-){0,1}\d{4})|(\d{3}(-){0,1}\d{3})|(\d{3}(-){0,1}\d{4}))(-){0,1}\d{4}$/", $value)) {
-      return self::RULE_CHECK_TEL_MSG; 
+      if (!empty($this->p_error_msg)) {
+        return $this->p_error_msg; 
+      } else {
+        return self::RULE_CHECK_TEL_MSG; 
+      }
     }
     return true; 
   }

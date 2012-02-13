@@ -494,9 +494,15 @@ default:
         $keys .= '<br><br>';
       }
     }
+    
     if (!isset($_GET['module']) || !$_GET['module']) {
-      if(isset($directory_array[0])) {
-        $_GET['module'] = str_replace('.php', '', $directory_array[0]);
+      if (!empty($directory_array_sorted)) {
+        foreach ($directory_array_sorted as $ds_key => $ds_info) {
+          if (isset($ds_info[0])) {
+            $_GET['module'] = str_replace('.php', '', $ds_info[0]);
+          }
+          break; 
+        }
       }
     }
 

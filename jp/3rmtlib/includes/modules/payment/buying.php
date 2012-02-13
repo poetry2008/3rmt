@@ -17,6 +17,7 @@ class buying extends basePayment  implements paymentInterface  {
     return false;
   }
   function fields($theData=false, $back=false){
+    if ($back) {
     return array(
                  array(
                        "code"=>'bank_name',
@@ -51,6 +52,47 @@ class buying extends basePayment  implements paymentInterface  {
                        "rule"=>basePayment::RULE_NOT_NULL,
                        ),
                  );
+    } else {
+    return array(
+                 array(
+                       "code"=>'bank_name',
+                       "title"=>TS_TEXT_BANK_NAME,
+                       "field"=>tep_draw_input_field('bank_name', $theData['bank_name']),
+                       "rule"=>basePayment::RULE_NOT_NULL,
+                       "error_msg" => TS_TEXT_BANK_ERROR_NAME 
+                       ),
+                 array(
+                       "code"=>'bank_shiten',
+                       "title"=>TS_TEXT_BANK_SHITEN,
+                       "field"=>tep_draw_input_field('bank_shiten', $theData['bank_shiten']),
+                       "rule"=>basePayment::RULE_NOT_NULL,
+                       "error_msg" => TS_TEXT_BANK_ERROR_SHITEN 
+                       ),
+                 array(
+                       "code"=>'bank_kamoku',
+                       "title"=>TS_TEXT_BANK_KAMOKU,
+                       "field"=> tep_draw_radio_field('bank_kamoku',TS_TEXT_BANK_SELECT_KAMOKU_F ,(($back==false)?($theData['bank_kamoku']==TS_TEXT_BANK_SELECT_KAMOKU_F):(!isset($theData['bank_kamoku'])?true:($theData['bank_kamoku']==TS_TEXT_BANK_SELECT_KAMOKU_F)))) . '&nbsp;' . TS_TEXT_BANK_SELECT_KAMOKU_F.
+                       tep_draw_radio_field('bank_kamoku',TS_TEXT_BANK_SELECT_KAMOKU_T ,$theData['bank_kamoku']==TS_TEXT_BANK_SELECT_KAMOKU_T) . '&nbsp;' . TS_TEXT_BANK_SELECT_KAMOKU_T,
+                       "rule"=>basePayment::RULE_NOT_NULL,
+                       "error_msg" => TS_TEXT_BANK_ERROR_KAMOKU 
+
+                       ),
+                 array(
+                       "code"=>'bank_kouza_num',
+                       "title"=>TS_TEXT_BANK_KOUZA_NUM,
+                       "field"=>tep_draw_input_field('bank_kouza_num', $theData['bank_kouza_num']),
+                       "rule"=>array(basePayment::RULE_NOT_NULL,basePayment::RULE_IS_NUMBER),
+                       "error_msg" => array(TS_TEXT_BANK_ERROR_KOUZA_NUM, TS_TEXT_BANK_ERROR_KOUZA_NUM2) 
+                       ),
+                 array(
+                       "code"=>'bank_kouza_name',
+                       "title"=>TS_TEXT_BANK_KOUZA_NAME,
+                       "field"=>tep_draw_input_field('bank_kouza_name', $theData['bank_kouza_name']).((!$back)?'<br>'.TS_TEXT_BANK_KOUZA_NAME_READ:''),
+                       "rule"=>basePayment::RULE_NOT_NULL,
+                       "error_msg" => TS_TEXT_BANK_ERROR_KOUZA_NAME 
+                       ),
+                 );
+    }
   }
 
   function pre_confirmation_check() {

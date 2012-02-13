@@ -4712,11 +4712,15 @@ global $order;
 	 ?>
      <div class="box_waring">
      <?php
-       if(is_array($_SESSION['payment_error'])){
+     if(is_array($_SESSION['payment_error'])){
            foreach($_SESSION['payment_error'] as $key=>$value){
-             echo $selection[strtoupper($key)]['module'];
-             echo "の処理中にエラーが発生しました。";
-             echo $value;
+               if (is_array($value)) {
+                 echo $value[0]; 
+               } else {
+                 echo $selection[strtoupper($key)]['module'];
+                 echo "の処理中にエラーが発生しました。";
+                 echo $value;
+               }
            }
          }else{
            echo $_SESSION['payment_error'];

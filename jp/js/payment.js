@@ -1,11 +1,19 @@
 function triggerHide(radio)
 {
- if ($(radio).attr("checked") == true) {
+  $("input[name=payment]").each(function(index){
+      if ($(this).parent().parent()[0].className == 'box_content_title box_content_title_selected') {
+         $(this).parent().parent().removeClass('box_content_title box_content_title_selected');
+         $(this).parent().parent().addClass('box_content_title');
+      }
+  });
+  if ($(radio).attr("checked") == true) {
       $(".rowHide").hide();
       $(".rowHide").find("input").attr("disabled","true");
       $(".rowHide_"+$(radio).val()).show();
       $(".rowHide_"+$(radio).val()).find("input").removeAttr("disabled");
-     }
+      $(radio).parent().parent().removeClass();
+      $(radio).parent().parent().addClass('box_content_title box_content_title_selected');
+ }
 }
 $(document).ready(function(){
     if($("input[name=payment]").length == 1){

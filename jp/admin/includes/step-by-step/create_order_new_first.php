@@ -34,6 +34,9 @@
         <td class="main"><font color="#ffffff"><b><?php echo CREATE_ORDER_STEP_ONE;?></b></font></td>
       </tr>
     </table>
+  <?php 
+  if ($_SERVER['PHP_SELF'] != '/admin/create_order_process.php') {
+  ?>
   <p class="pageHeading"><?php echo CREATE_ORDER_TITLE_TEXT;?></p>
 <?php
                                                                 //显示用户查询表单
@@ -43,12 +46,21 @@
 ?>
   <br>
   <?php 
+  }
   echo tep_draw_form('create_order', FILENAME_CREATE_ORDER_PROCESS, '', 'post', '', '') ;
 ?>
 
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>
-      <td class="pageHeading"><?php echo HEADING_CREATE; ?></td>
+      <td class="pageHeading">
+      <?php 
+      if ($_SERVER['PHP_SELF'] == '/admin/create_order_process.php') {
+        echo '<font color="red">'.CREATE_ORDER_RED_TITLE_TEXT.'</font>'; 
+      } else {
+        echo HEADING_CREATE; 
+      }
+      ?>
+      </td>
     </tr>
     <tr>
       <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>

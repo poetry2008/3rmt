@@ -14,6 +14,7 @@ class telecom  extends basePayment  implements paymentInterface  {
     $this->show_payment_info = 1;
   }
   function fields($theData=false, $back=false){
+    if (!$back) { 
     global $order;
     $total_cost = $order->info['total'];
     $code_fee = $this->calc_fee($total_cost); 
@@ -30,6 +31,7 @@ class telecom  extends basePayment  implements paymentInterface  {
 		       "rule"=>'',
 		       "message"=>"",
 		       ));
+    }
   }
   function javascript_validation() {
     return false;

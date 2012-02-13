@@ -37,7 +37,7 @@ class postalmoneyorder extends basePayment  implements paymentInterface  {
 
 
   function fields($theData=false, $back=false){
-
+    if (!$back) {
     global $order;
     $total_cost = $order->info['total'];
     $code_fee = $this->calc_fee($total_cost); 
@@ -50,7 +50,7 @@ class postalmoneyorder extends basePayment  implements paymentInterface  {
 		       "rule"=>'',
 		       "message"=>"",
 		       ));
-
+    }
   }
   function pre_confirmation_check() {
     return true;

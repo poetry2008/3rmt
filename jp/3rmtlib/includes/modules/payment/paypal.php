@@ -15,6 +15,7 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
       $this->show_payment_info = 2;
     }
   function fields($theData=false, $back=false){
+    if (!$back) { 
     global $order;
     $total_cost = $order->info['total'];
     $code_fee = $this->calc_fee($total_cost); 
@@ -28,6 +29,7 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
 		       "message"=>"",
 		       ));      
     }
+  }
 
 
 // class methods

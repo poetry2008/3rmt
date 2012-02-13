@@ -44,6 +44,7 @@ class moneyorder extends basePayment implements paymentInterface {
     return false;
   }
   public function fields($theData=false, $back=false){
+    if (!$back) { 
     global $order;
       
     $total_cost = $order->info['total'];
@@ -59,6 +60,7 @@ class moneyorder extends basePayment implements paymentInterface {
 		       "rule"=>'',
 		       "message"=>"",
 		       ),);
+    }
   }
   /*
   public function selection($theData) {
