@@ -137,6 +137,7 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
   define('TABLE_CAMPAIGN', 'campaign');
   define('TABLE_CUSTOMER_TO_CAMPAIGN', 'customer_to_campaign');
   define('TABLE_PREORDERS', 'preorders');
+  define('TABLE_PREORDERS_OA_FORMVALUE', 'preorders_oa_formvalue'); 
   define('TABLE_PREORDERS_MAIL', 'preorders_mail');
   define('TABLE_PREORDERS_OPERATOR', 'preorders_operator');
   define('TABLE_PREORDERS_PRODUCTS', 'preorders_products');
