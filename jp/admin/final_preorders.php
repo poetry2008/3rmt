@@ -1338,8 +1338,8 @@ float:left;
                 <td class="main" valign="top"><b><?php echo EDIT_ORDERS_PAYMENT_METHOD;?></b></td>
                 <td class="main">
                   <?php 
-                  $payment_code = $cpayment::changeRomaji($order->info['payment_method'], PAYMENT_RETURN_TYPE_CODE); 
-                  echo $cpayment::makePaymentListPullDownMenu($payment_code); 
+                  $payment_code = payment::changeRomaji($order->info['payment_method'], PAYMENT_RETURN_TYPE_CODE); 
+                  echo payment::makePaymentListPullDownMenu($payment_code); 
                   ?>
                   <?php echo EDIT_ORDERS_PAYMENT_METHOD_READ;?> 
                 </td>

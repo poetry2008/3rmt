@@ -354,7 +354,7 @@ float:left;
   //$insert_id = date("Ymd") . '-' . date("His") . '00';
   $insert_id = date("Ymd") . '-' . date("His") . tep_get_preorder_end_num();
   
-  $payment_method_info = $cpayment::changeRomaji($payment_method, PAYMENT_LIST_TYPE_HAIJI);
+  $payment_method_info = payment::changeRomaji($payment_method, PAYMENT_LIST_TYPE_HAIJI);
   
   $sql_data_array = array('orders_id'     => $insert_id,
             'customers_id'                => $customer_id,

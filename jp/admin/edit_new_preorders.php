@@ -114,7 +114,7 @@
   }
     $oID = tep_db_prepare_input($_GET['oID']);
     
-    $_SESSION['create_preorder']['orders']['payment_method'] = $cpayment::changeRomaji($_POST['payment_method'], PAYMENT_RETURN_TYPE_TITLE); 
+    $_SESSION['create_preorder']['orders']['payment_method'] = payment::changeRomaji($_POST['payment_method'], PAYMENT_RETURN_TYPE_TITLE); 
      
     $preorder_status_raw = tep_db_query("select orders_status_name from ".TABLE_PREORDERS_STATUS." where orders_status_id = '".$_POST['status']."'"); 
     $preorder_status = tep_db_fetch_array($preorder_status_raw);
@@ -392,7 +392,7 @@
     $newtotal = '0';
   }
   
-  $payment_code = $cpayment::changeRomaji($order['payment_method'], PAYMENT_RETURN_TYPE_CODE); 
+  $payment_code = payment::changeRomaji($order['payment_method'], PAYMENT_RETURN_TYPE_CODE); 
   $handle_fee = $cpayment->handle_calc_fee($payment_code, $newtotal); 
   
   $newtotal = $newtotal+$handle_fee;
@@ -772,7 +772,7 @@
           $newtotal = $total_value;
         }
       }
-      $payment_code = $cpayment::changeRomaji($order['payment_method'], PAYMENT_RETURN_TYPE_CODE); 
+      $payment_code = payment::changeRomaji($order['payment_method'], PAYMENT_RETURN_TYPE_CODE); 
       $handle_fee = $cpayment->handle_calc_fee($payment_code, $newtotal); 
       $newtotal = $newtotal+$handle_fee;    
       
@@ -1034,8 +1034,8 @@ if (($action == 'edit') && ($order_exists == true)) {
                 <td class="main" valign="top"><b><?php echo EDIT_ORDERS_PAYMENT_METHOD;?></b></td>
                 <td class="main">
                 <?php 
-                $payment_code = $cpayment::changeRomaji($order['payment_method'], PAYMENT_RETURN_TYPE_CODE); 
-                echo $cpayment::makePaymentListPullDownMenu($payment_code); 
+                $payment_code = payment::changeRomaji($order['payment_method'], PAYMENT_RETURN_TYPE_CODE); 
+                echo payment::makePaymentListPullDownMenu($payment_code); 
                 ?>
                 </td>
               </tr>
