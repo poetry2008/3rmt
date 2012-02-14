@@ -4718,7 +4718,7 @@ global $order;
                  echo $value[0]; 
                } else {
                  echo $selection[strtoupper($key)]['module'];
-                 echo "の処理中にエラーが発生しました。";
+                 echo TEXT_ERROR_PAYMENT_SUPPLY;
                  echo $value;
                }
            }

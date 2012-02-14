@@ -45,4 +45,5 @@ define('TEXT_BANK_SELECT_KAMOKU_T', '当座');
 define('CAMPAIGN_ERROR_TEXT', 'この値は無効です。');
 define('TEXT_POINT_OR_CAMPAION', 'ポイント/キャンペーンコード');
 define('TEXT_POINT_READ', 'ポイントまで利用可能です。');
+define('TEXT_ERROR_PAYMENT_SUPPLY', 'の処理中にエラーが発生しました。');
 ?>
