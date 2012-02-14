@@ -1,4 +1,5 @@
 <?php
+require_once(DIR_WS_LANGUAGES.$language.'/basepayment.php');
 interface paymentInterface
 {
   public function loadSpecialSettings($site_id=0);
@@ -15,16 +16,16 @@ class BasePayment
 {
 
   const RULE_NOT_NULL = 'validation_not_null';
-  const RULE_NOT_NULL_MSG= '入力内容を確認し、再度入力してください。';
+  const RULE_NOT_NULL_MSG= BASEPAYMENT_ERROR_MSG;
   const RULE_SAME_TO = 'validation_same_to';
   const RULE_EMAIL = 'validation_email';
   const RULE_IS_NUMBER = 'validation_is_number';
-  const RULE_IS_NUMBER_MSG = '半角で入力してください';
-  const RULE_EMAIL_MSG = '入力内容を確認し、再度入力してください。';
-  const RULE_SAME_TO_MSG = '入力内容を確認し、再度入力してください。';
+  const RULE_IS_NUMBER_MSG =BASEPAYMENT_ERROR_NUMBER_MSG;
+  const RULE_EMAIL_MSG = BASEPAYMENT_ERROR_MSG;
+  const RULE_SAME_TO_MSG = BASEPAYMENT_ERROR_MSG;
   const REQUIRE_MSG = '<span class="fieldRequired">Error</span>';
   const RULE_CHECK_TEL = 'validation_check_tel';
-  const RULE_CHECK_TEL_MSG = '入力内容を確認し、再度入力してください。';
+  const RULE_CHECK_TEL_MSG = BASEPAYMENT_ERROR_MSG;
   var $p_error_msg = ''; 
   function __construct($site_id = 0){
     global $order;
