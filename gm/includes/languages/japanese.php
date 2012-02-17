@@ -450,4 +450,5 @@ define('PREORDER_TRADER_LINE_TITLE', '取引情報');
 define('PREORDER_CONFIRM_LINE_TITLE', '最終確認');
 define('PREORDER_FINISH_LINE_TITLE', '手続き完了！');
 define('JPMONEY_UNIT_TEXT', '円');
+define('TEXT_SUB_CHAR','｜');
 
