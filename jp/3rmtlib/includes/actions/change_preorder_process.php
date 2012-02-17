@@ -158,7 +158,9 @@ if ($preorder) {
                             'sort_order' => $preorder_total_res['sort_order'], 
         ); 
     if ($preorder_total_res['class'] == 'ot_total') {
-      $telecom_option_ok = $payment_modules->getPreexpress((int)$preorder_total_res['value'], $orders_id, $cpayment_code); 
+      if ($telecom_option_ok != true) {
+        $telecom_option_ok = $payment_modules->getPreexpress((int)$preorder_total_res['value'], $orders_id, $cpayment_code); 
+      }
     }
     tep_db_perform(TABLE_ORDERS_TOTAL, $sql_data_array);
   }
@@ -181,7 +183,7 @@ if ($preorder) {
                           'comments' => $order_comment_str, 
       ); 
   tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
-  
+ 
   if ($telecom_option_ok) {
     tep_db_perform(TABLE_ORDERS, array('orders_status' => '30'), 'update', "orders_id='".$orders_id."'");
     $sql_data_array = array('orders_id' => $orders_id, 

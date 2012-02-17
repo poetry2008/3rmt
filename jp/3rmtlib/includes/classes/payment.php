@@ -615,7 +615,7 @@ class payment {
         return $module->getpreexpress($total_value, $oid); 
       }
     }
-    return false; 
+    return null; 
   }
 }
 ?>

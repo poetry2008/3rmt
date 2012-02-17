@@ -46,7 +46,10 @@
           <td class="main"><table border="0" cellspacing="0" cellpadding="2">
               <tr>
                 <td class="main">&nbsp;<?php echo ENTRY_SITE; ?>:</td>
-                <td class="main">&nbsp;<?php echo isset($account) && $account?( '<font color="#FF0000"><b>'.tep_get_site_romaji_by_id($account['site_id']).'</b></font>'.tep_draw_hidden_field('site_id', $account['site_id'])):(tep_site_pull_down_menu($site_id) . '&nbsp;' . ENTRY_SITE_TEXT); ?></td>
+                <td class="main">&nbsp;
+                <?php 
+                $s_account = tep_get_customer_by_id((int)$customer_id); 
+                echo isset($s_account) && $s_account?( '<font color="#FF0000"><b>'.tep_get_site_romaji_by_id($s_account['site_id']).'</b></font>'.tep_draw_hidden_field('site_id', $s_account['site_id'])):(tep_site_pull_down_menu($site_id) . '&nbsp;' . ENTRY_SITE_TEXT); ?></td>
               </tr>
             </table></td>
         </tr>
