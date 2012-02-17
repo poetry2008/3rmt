@@ -151,7 +151,8 @@ class BasePayment
     return true;
   }
   function validation_same_to($value1,$value2){
-    if($value2 == $value1 ){
+    $cmp_int = strcmp($value1, $value2); 
+    if($cmp_int == 0){
       return true;
     }
     if (!empty($this->p_error_msg)) {
