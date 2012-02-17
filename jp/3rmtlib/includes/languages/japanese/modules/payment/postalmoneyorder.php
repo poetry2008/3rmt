@@ -7,7 +7,7 @@
   define('TS_MODULE_PAYMENT_POSTALMONEYORDER_TEXT_EXPLAIN', '郵便局の窓口およびATMから送金できます。<br>送金手数料はお客様のご負担となります。');
   define('TS_MODULE_PAYMENT_POSTALMONEYORDER_TEXT_DESCRIPTION',  '郵便局の窓口およびATMから送金できます。<br>送金手数料はお客様のご負担となります。');
   define('TS_MODULE_PAYMENT_POSTALMONEYORDER_TEXT_EMAIL_FOOTER', '郵便局の窓口およびATMから送金できます。<br>送金手数料はお客様のご負担となります。'."\n\n". EMAIL_SIGNATURE);  //Add Japanese osCommerce
-  define('TS_MODULE_PAYMENT_POSTALMONEYORDER_TEXT_FEE', 'ゆうちょ銀行（郵便局）決済手数料:');
+  define('TS_MODULE_PAYMENT_POSTALMONEYORDER_TEXT_FEE', 'ゆうちょ銀行（郵便局）手数料:');
   define('TS_MODULE_PAYMENT_POSTALMONEY_ORDER_TEXT_PROCESS', 'ゆうちょ銀行（郵便局）決済手数料が別途かかります。');
   define('TS_MODULE_PAYMENT_POSTALMONEYORDER_TEXT_OVERFLOW_ERROR','お買い上げ金額がゆうちょ銀行（郵便局）の制限を超えたためお取り扱いできません。');
   define('TS_MODULE_PAYMENT_POSTALMONEY_ORDER_TEXT_MAILFOOTER', '');

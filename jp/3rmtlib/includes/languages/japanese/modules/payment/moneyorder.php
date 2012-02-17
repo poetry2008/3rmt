@@ -8,7 +8,7 @@
   define('TS_MODULE_PAYMENT_MONEYORDER_TEXT_DESCRIPTION', 'ジャパンネット銀行またはセブン銀行へお振り込み。<br>振込手数料はお客様のご負担となります。'); 
   define('TS_MODULE_PAYMENT_MONEYORDER_TEXT_EMAIL_FOOTER','ジャパンネット銀行またはセブン銀行へお振り込み。<br>振込手数料はお客様のご負担となります。'. EMAIL_SIGNATURE);  //Add Japanese osCommerce
   
-  define('TS_MODULE_PAYMENT_MONEYORDER_TEXT_FEE', '銀行振込決済手数料:');
+  define('TS_MODULE_PAYMENT_MONEYORDER_TEXT_FEE', '銀行振込手数料:');
   define('TS_MODULE_PAYMENT_MONEY_ORDER_TEXT_PROCESS', '銀行振込決済手数料が別途かかります。');
   define('TS_MODULE_PAYMENT_MONEYORDER_TEXT_OVERFLOW_ERROR', 'お買い上げ金額が銀行振込の制限を超えたためお取り扱いできません。');
   define('TS_MODULE_PAYMENT_MONEY_ORDER_TEXT_MAILFOOTER', '');
