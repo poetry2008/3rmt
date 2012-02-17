@@ -7,7 +7,7 @@ define('TS_MODULE_PAYMENT_BUYING_TEXT_EXPLAIN', '');
 define('TS_MODULE_PAYMENT_BUYING_TEXT_DESCRIPTION', '');
 define('TS_MODULE_PAYMENT_BUYING_TEXT_EMAIL_FOOTER', '');
 define('TS_MODULE_PAYMENT_BUYING_TEXT_PROCESS', '銀行振込(買い取り)決済手数料が別途かかります。');
-define('TS_MODULE_PAYMENT_BUYING_TEXT_FEE', '銀行振込(買い取り)決済手数料:');
+define('TS_MODULE_PAYMENT_BUYING_TEXT_FEE', '銀行振込(買い取り)手数料:');
 define('TS_MODULE_PAYMENT_BUYING_TEXT_MAILFOOTER', '');
 define('TS_MODULE_PAYMENT_BUYING_TEXT_ERROR_MESSAGE', '銀行振込(買い取り)決済の処理中にエラーが発生しました. 入力内容を訂正しもう一度試してください。　');
 define('TS_MODULE_PAYMENT_BUYING_TEXT_SHOW', '');
