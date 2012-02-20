@@ -68,11 +68,9 @@ if (isset($body_option)) {
     <?php 
     }
     //this show faq question 
-    if($parent_info){
     ?>
-    <h2 class="pageHeading"><?php echo $parent_info['title'].TEXT_QUESTION_TITLE;?></h2>
-    <?php } ?>
     <?php if($q_row = tep_db_fetch_array($faq_question_query)){ ?>
+    <h2 class="pageHeading"><?php echo $parent_info['title'].TEXT_QUESTION_TITLE;?></h2>
     <div class="comment_faq">
     <table class="faq_question_row"><tr><td>
     <div>
