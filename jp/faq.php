@@ -36,13 +36,13 @@ if (isset($body_option)) {
 if($current_faq_category_id){
 ?>
     <?php //this show faq category ?>
+    <?php if ($c_row = tep_db_fetch_array($faq_category_query)){?>
     <?php if (isset($parent_info)&&$parent_info!=null){ ?>
     <h2 class="pageHeading"><?php echo $parent_info['title'].TEXT_QUESTION_TITLE;?></h2>
     <?php }else {?>
     <h2 class="pageHeading"><?php echo
       TEXT_FAQ_TITLE.'</h2><br><font style="margin-left:12px;">'.TEXT_FAQ_TITLE_END.'</font>';?>
     <?php } ?>
-    <?php if ($c_row = tep_db_fetch_array($faq_category_query)){?>
     <ul class="faq_ul">
     <li><a href="<?php echo
     HTTP_SERVER.'/'.$link_url.'/'.urlencode($c_row['romaji']).'/';?>">

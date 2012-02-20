@@ -2439,7 +2439,6 @@ searching
 .all_category_row_div, .all_category_row_div a {
 	margin: 10px 0 0 6px;
 	font-weight:bold;
-	color:#656565;
 }
 .faq_ul{
 	padding:0;
@@ -2449,7 +2448,6 @@ searching
 	line-height:21px;
 }
 .faq_question_row_div, .faq_question_row_div a{
-	color:#656565;
 	font-size:12px;
 	font-weight:bold;
 	margin-left:6px;
