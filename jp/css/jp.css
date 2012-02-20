@@ -2435,10 +2435,27 @@ searching
     width: 100%;
 }
 
-
-
-
-
+/*faq*/
+.comment_faq{
+    font-size: 14px;
+    font-weight: bold;
+    margin: 0;
+    overflow: hidden;
+    padding: 5px 5px 0;
+}
+.faq_question_row {
+    margin-bottom: 5px;
+}
+.faq_question_row div {
+    float: left;
+	font-weight:bold;
+}
+.faq_question_row_div{
+	width:400px;
+}
+.faq_back{
+	text-align:right;
+}
 
 
 
