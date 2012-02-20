@@ -1705,9 +1705,9 @@ function forward404Unless($condition)
       case FILENAME_FAQ:
          global $current_faq_category_id;
            if($faq_category_info = tep_get_faq_category_info($current_faq_category_id)){
-             $sub_len = mb_strlen(TEXT_SUB_CHAR.TEXT_FAQ.'-'.STORE_NAME,'UTF-8');
+             $sub_len = mb_strlen(' | '.TEXT_FAQ.' - '.STORE_NAME,'UTF-8');
              $title = mb_substr(strip_tags($faq_category_info['title']),0,30-$sub_len,'UTF-8')
-               .TEXT_SUB_CHAR.TEXT_FAQ.'-'.STORE_NAME;
+               .' | '.TEXT_FAQ.' - '.STORE_NAME;
              $keywords = strip_tags($faq_category_info['keywords']);
              $description = strip_tags($faq_category_info['description']);
            }
