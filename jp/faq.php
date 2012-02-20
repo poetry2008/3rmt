@@ -81,14 +81,14 @@ if($current_faq_category_id){
     } 
     ?>
     </ul>
-    <?php } ?>
-
     <?php if($link_url != 'faq') { ?>
     <div class="faq_back">
       <a href="<?php echo HTTP_SERVER.'/'.implode('/',$link_arr).'/';?>"><img src="includes/languages/japanese/images/buttons/button_back.gif" alt="<?php echo TEXT_BACK;?>">
       </a>
     </div>
     <?php } ?>
+    <?php } ?>
+
 
     <?php //this last  show faq category ?>
     <?php if ($last_row = tep_db_fetch_array($last_faq_category_query)){?>
