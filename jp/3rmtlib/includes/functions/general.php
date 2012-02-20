@@ -1717,7 +1717,7 @@ function forward404Unless($condition)
            if($faq_question_info = tep_get_faq_question_info($faq_question_id)){
              $sub_len = mb_strlen(' - '.STORE_NAME,'UTF-8');
              $title = mb_substr(strip_tags($faq_question_info['ask']),0,30-$sub_len,'UTF-8').
-               '-'.STORE_NAME;
+               ' - '.STORE_NAME;
              $keywords = strip_tags($faq_question_info['keywords']);
              $description = mb_substr(strip_tags($faq_question_info['answer']),0,80,'UTF-8');
            }
