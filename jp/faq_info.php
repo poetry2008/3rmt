@@ -35,75 +35,47 @@ if (isset($body_option)) {
 <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
 </td>
 <td class="contents" valign="top">
-<!--<div class="header_Navigation">
-   <?php echo $breadcrumb->trail(' &raquo; '); ?>
-</div>
---><div id="content">
-    <div class="pageHeading"><?php echo TEXT_QUESTION_TITLE;?></div>
-    <div class="comment_faq">
+<div id="content">
     <?php 
     if(isset($faq_question_id)&&$faq_question_id!=''){
       $faq_question_info = tep_get_faq_question_info($faq_question_id);
     ?>
-      <table class="redtext"><tr>
-        <td style="float:left; padding-left:5px;"><img src="images/q.gif" alt="question"></td>
-        <td style="float:left; width:400px;"><?php echo
-        $faq_question_info['ask'];?></td>
-      </tr></table>
-     <!-- <div style=" border-bottom-style:dotted; width:98%; margin-top:10px; color:#444; margin-left:2px;"></div>-->
-      <table class="faq_answer"><tr>
-      <td valign="top" style="float:left; padding-left:5px;">
-       <img src="images/a.gif" alt="ask"></td><td class="faq_answer_row"><span>
+      <div class="pageHeading"><?php echo $faq_question_info['ask'];?></div>
        <?php 
         $question_answer =
         str_replace('#STORE_NAME#',STORE_NAME,$faq_question_info['answer']);
         $question_answer = str_replace('#REPLACE#',FAQ_HTML_REPLACE,$question_answer);
+        echo "<ul class='faq_ul'><li>";
         echo $question_answer;
+        echo "</li></ul>";
        ?>
-       </span>
-      </td>
-      </tr>
-      </table>
-    <?php }?>
-    </div>
-    <p class="pageBottom"></p>
-
-
     <div class="faq_back">
-      <a href="<?php echo HTTP_SERVER.'/'.implode('/',$link_url_arr).'/';?>"><img src="includes/languages/japanese/images/buttons/button_back.gif" alt="<?php echo TEXT_BACK;?>">
-      </a>
+      <a href="<?php echo HTTP_SERVER.'/'.implode('/',$link_url_arr).'/';?>"><img src="includes/languages/japanese/images/buttons/button_back.gif" alt="<?php echo TEXT_BACK;?>"></a>
     </div>
+    <?php }?>
 
 
     <?php //question list ?>
     <?php if($q_row = tep_db_fetch_array($last_faq_question_query)){ ?>
     <h2 class="pageHeading"><?php echo $temp_category_info['title'].TEXT_CATEGORY_TITLE;?></h2>
-<!--    <div  style="border-bottom-style:dotted; width:94%; margin-top:10px; color:#444; margin-left:2px;"></div>
--->    <div class="comment_faq">
-    <table class="faq_question_row"><tr><td>
-    <div>
-    <img src="images/q.gif" alt="question"></div>
-    <div class="faq_question_row_div"><span><a href="<?php echo
+    <ul class="faq_ul">
+    <li><a href="<?php echo
      HTTP_SERVER.'/'.$link_url.'/'.urlencode($q_row['romaji']).'.html';?>">
       <?php echo $q_row['ask'];?>
-    </a></span></div>
-    </td></tr>
-    </table>
+    </a>
+    </li>
     <?php 
     while($q_row = tep_db_fetch_array($last_faq_question_query)){ 
     ?>
-    <table class="faq_question_row"><tr><td>
-    <div><img src="images/q.gif" alt="question"></div><div class="faq_question_row_div"><span><a href="<?php echo
+    <li><a href="<?php echo
       HTTP_SERVER.'/'.$link_url.'/'.urlencode($q_row['romaji']).'.html';?>">
         <?php echo $q_row['ask'];?>
-      </a></span>
-      </div>
-      </td></tr></table>
+      </a>
+    </li>
     <?php
     } 
     ?>
-    </div>
-    <p class="pageBottom"></p>
+    </ul>
     <?php } ?>
 
 
