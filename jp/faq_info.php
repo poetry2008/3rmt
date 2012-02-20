@@ -48,10 +48,8 @@ if (isset($body_option)) {
         echo "<ul class='faq_ul'><li>";
         echo $question_answer;
         echo "</li></ul>";
+        $show_back_url = true;
        ?>
-    <div class="faq_back">
-      <a href="<?php echo HTTP_SERVER.'/'.implode('/',$link_url_arr).'/';?>"><img src="includes/languages/japanese/images/buttons/button_back.gif" alt="<?php echo TEXT_BACK;?>"></a>
-    </div>
     <?php }?>
 
 
@@ -78,6 +76,11 @@ if (isset($body_option)) {
     <?php } ?>
 
 
+    <?php if($show_back_url){ ?>
+    <div class="faq_back">
+      <a href="<?php echo HTTP_SERVER.'/'.implode('/',$link_url_arr).'/';?>"><img src="includes/languages/japanese/images/buttons/button_back.gif" alt="<?php echo TEXT_BACK;?>"></a>
+    </div>
+    <?php } ?>
 
 </div>
 </td>
