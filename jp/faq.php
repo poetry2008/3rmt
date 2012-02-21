@@ -37,13 +37,15 @@ if($current_faq_category_id){
 ?>
     <?php //this show faq category ?>
     <?php if ($c_row = tep_db_fetch_array($faq_category_query)){?>
-    <?php if (isset($parent_info)&&$parent_info!=null){ ?>
+    <?php if (isset($parent_info)&&$parent_info!=null){ 
+      $show_h2_title = true;
+    ?>
     <h2 class="pageHeading"><?php echo $parent_info['title'].TEXT_QUESTION_TITLE;?></h2>
     <?php }else {?>
     <h2 class="pageHeading"><?php echo
       TEXT_FAQ_TITLE.'</h2><br><font style="margin-left:12px;">'.TEXT_FAQ_TITLE_END.'</font>';?>
     <?php } ?>
-    <ul class="faq_ul">
+    <ul class="faq_ul_category">
     <li><a href="<?php echo
     HTTP_SERVER.'/'.$link_url.'/'.urlencode($c_row['romaji']).'/';?>">
       <?php echo $c_row['title'];?>
@@ -58,13 +60,17 @@ if($current_faq_category_id){
     <?php } ?>
     </ul>
     <?php 
+    }else {
+      $empty_faq_category = true;
     }
     //this show faq question 
     ?>
     <?php if($q_row = tep_db_fetch_array($faq_question_query)){ ?>
+    <?php if(!$show_h2_title){?>
     <h2 class="pageHeading"><?php echo $parent_info['title'].TEXT_QUESTION_TITLE;?></h2>
-    <ul class="faq_ul">
-    <li><a href="<?php echo
+    <?php } ?>
+    <ul class="faq_ul_question">
+    <li class="faq_li_question"><a href="<?php echo
      HTTP_SERVER.'/'.$link_url.'/'.urlencode($q_row['romaji']).'.html';?>">
       <?php echo $q_row['ask'];?>
     </a>
@@ -72,7 +78,7 @@ if($current_faq_category_id){
     <?php 
     while($q_row = tep_db_fetch_array($faq_question_query)){ 
     ?>
-    <li><a href="<?php echo
+    <li class="faq_li_question"><a href="<?php echo
       HTTP_SERVER.'/'.$link_url.'/'.urlencode($q_row['romaji']).'.html';?>">
         <?php echo $q_row['ask'];?>
       </a>
@@ -89,7 +95,22 @@ if($current_faq_category_id){
       </a>
     </div>
     <?php } ?>
-    <?php } ?>
+    <?php }else {
+      $empty_faq_question = true;
+    }
+    if($empty_faq_question&&$empty_faq_category){
+    ?>
+    <h2 class="pageHeading"><?php echo $parent_info['title'].TEXT_QUESTION_TITLE;?></h2>
+    <div class="faq_empty">
+    <?php echo TEXT_EMPTY_FAQ;?>
+    </div>
+    <div class="faq_back">
+      <a href="<?php echo HTTP_SERVER.'/'.implode('/',$link_arr).'/';?>"><img src="includes/languages/japanese/images/buttons/button_back.gif" alt="<?php echo TEXT_BACK;?>">
+      </a>
+    </div>
+    <?php 
+    }
+    ?>
 
 
     <?php //this last  show faq category ?>
@@ -100,7 +121,6 @@ if($current_faq_category_id){
     <?php }else {?>
     <h2 class="pageHeading"><?php echo TEXT_FAQ_TITLE_LAST;?></h2>
     <?php } ?>
-    <!--<div  style="border-bottom-style:dotted; width:94%; margin-top:10px; color:#444; margin-left:2px;"></div>-->
     <div class="comment_faq">
     <table class="faq_question_row">
     <tr><td><div>
@@ -111,8 +131,7 @@ if($current_faq_category_id){
     </table>
     <?php while($last_row = tep_db_fetch_array($last_faq_category_query)){ ?>
     <table class="faq_question_row"><tr><td>
-    	<div><img src="images/q.gif" alt="question"></div>
-   		<div class="faq_question_row_div"><span><a href="<?php echo
+      <div class="faq_question_row_div"><span><a href="<?php echo
      HTTP_SERVER.'/'.$last_link_url.'/'.urlencode($last_row['romaji']).'/';?>">
           <?php echo $last_row['title'];?>
         </a></span>
@@ -170,7 +189,7 @@ if($current_faq_category_id){
       <?php echo $one_faq_category['title'];?>
     </a></div>
     <?php
-    echo "<ul class='faq_ul_question'>";
+    echo "<ul class='faq_ul_question_all'>";
    $one_category_question_sql = "select * from (
                       select 
                       fqd.is_show,

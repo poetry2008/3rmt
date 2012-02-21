@@ -45,7 +45,7 @@ if (isset($body_option)) {
         $question_answer =
         str_replace('#STORE_NAME#',STORE_NAME,$faq_question_info['answer']);
         $question_answer = str_replace('#REPLACE#',FAQ_HTML_REPLACE,$question_answer);
-        echo "<ul class='faq_ul'><li>";
+        echo "<ul class='faq_info_ul_answer'><li class='faq_info_li_answer'>";
         echo $question_answer;
         echo "</li></ul>";
         $show_back_url = true;
@@ -55,8 +55,8 @@ if (isset($body_option)) {
 
     <?php //question list ?>
     <?php if($q_row = tep_db_fetch_array($last_faq_question_query)){ ?>
-    <ul class="faq_ul">
-    <li><a href="<?php echo
+    <ul class="faq_info_ul_question">
+    <li class="faq_info_li_question"><a href="<?php echo
      HTTP_SERVER.'/'.$link_url.'/'.urlencode($q_row['romaji']).'.html';?>">
       <?php echo $q_row['ask'];?>
     </a>
@@ -64,7 +64,7 @@ if (isset($body_option)) {
     <?php 
     while($q_row = tep_db_fetch_array($last_faq_question_query)){ 
     ?>
-    <li><a href="<?php echo
+    <li class="faq_info_li_question"><a href="<?php echo
       HTTP_SERVER.'/'.$link_url.'/'.urlencode($q_row['romaji']).'.html';?>">
         <?php echo $q_row['ask'];?>
       </a>
