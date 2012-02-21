@@ -41,7 +41,7 @@ if (isset($body_option)) {
     <?php }else {?>
     <h2 class="pageHeading"><?php echo
       TEXT_FAQ_TITLE.'</h2><div class="comment"><div class="comment_faq_box"><font
-      color="#000" style=" font-size:14px; padding-left:2px;">'.TEXT_FAQ_TITLE_END.'</font>';?>
+      color="#000" style=" font-size:12px; font-weight:bold; padding-left:2px;">'.TEXT_FAQ_TITLE_END.'</font>';?>
     <?php } ?>    <div class="comment_faq">
     <table class="faq_question_row">
     <tr><td>
