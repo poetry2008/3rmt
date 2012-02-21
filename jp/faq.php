@@ -81,7 +81,9 @@ if($current_faq_category_id){
     } 
     ?>
     </ul>
-    <?php if($link_url != 'faq') { ?>
+    <?php if($link_url != 'faq') { 
+       $show_back_url = true;  
+    ?>
     <div class="faq_back">
       <a href="<?php echo HTTP_SERVER.'/'.implode('/',$link_arr).'/';?>"><img src="includes/languages/japanese/images/buttons/button_back.gif" alt="<?php echo TEXT_BACK;?>">
       </a>
@@ -121,6 +123,14 @@ if($current_faq_category_id){
     </div>
     <p class="pageBottom"></p>
     <?php 
+    if(!$show_back_url){
+    ?>
+    <div class="faq_back">
+      <a href="<?php echo HTTP_SERVER.'/'.implode('/',$link_arr).'/';?>"><img src="includes/languages/japanese/images/buttons/button_back.gif" alt="<?php echo TEXT_BACK;?>">
+      </a>
+    </div>
+<?php
+    }
     }
     //this show faq question 
 }else{
@@ -160,7 +170,7 @@ if($current_faq_category_id){
       <?php echo $one_faq_category['title'];?>
     </a></div>
     <?php
-    echo "<ul>";
+    echo "<ul class='faq_ul_question'>";
    $one_category_question_sql = "select * from (
                       select 
                       fqd.is_show,
