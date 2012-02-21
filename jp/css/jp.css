@@ -2492,3 +2492,9 @@ searching
 	padding-left:28px;
 	line-height:21px;
 }
+.faq_empty{
+	margin-left:12px;
+	font-size:12px;
+	font-weight:bold;
+	color:#000;
+}
