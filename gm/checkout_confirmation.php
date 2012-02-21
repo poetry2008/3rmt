@@ -206,7 +206,8 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
               </td>
             </tr>
           </table>
-        </td>
+          <br> 
+          </td>
       </tr>
       <?php
 	      $payment_modules->specialOutput($payment);
@@ -224,7 +225,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                     <td class="main"><?php echo '<b>' . HEADING_PAYMENT_METHOD . '</b> <a href="' . tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
                   </tr>
                   <tr>
-                    <td class="main"><?php echo $order->info['payment_method']; ?></td>
+                    <td class="main"><?php echo payment::changeRomaji($order->info['payment_method']); ?></td>
                   </tr>
                 </table>
               </td>
@@ -324,7 +325,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
     echo '<td align="right" class="main"><br>'.TEXT_POINT_NOW.'</td>' . "\n";
   } else {
     if ($get_point == 0) {
-      echo '<td align="right" class="main"><br>'.TEXT_POINT_NOW_TWO.'</td>' . "\n";
+      echo '<td align="right" class="main"><br>'.TS_TEXT_POINT_NOW_TWO.'</td>' . "\n";
     } else {
       echo '<td align="right" class="main"><br>'.TEXT_POINT_NOW.'</td>' . "\n";
     }
@@ -399,7 +400,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
   if (tep_not_null($order->info['comments'])) {
 ?>
       <tr>
-        <td class="main"><?php echo '<b>' . HEADING_ORDER_COMMENTS . '</b> <a href="' . tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
+        <td class="main"><br><?php echo '<b>' . HEADING_ORDER_COMMENTS . '</b> <a href="' . tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
       </tr>
       <tr>
         <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
@@ -430,7 +431,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
           <td align="right" class="main">
 <?php
   if (is_array($payment_modules->modules)) {
-    echo $payment_modules->process_button();
+    echo $payment_modules->process_button($payment);
   }
   //character  
   if(isset($_SESSION['character'])){

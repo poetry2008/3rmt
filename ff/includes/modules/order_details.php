@@ -60,11 +60,11 @@
       echo '<td align="center" style=" background:#FFFFFF;padding-left:10px;padding-right:20px;">';
       echo '<table>'; 
       echo '<tr>'; 
-      echo '<td>'; 
+      echo '<td width="40">'; 
       echo tep_draw_input_field('cart_quantity[]', $products[$i]['quantity'], 'size="4" maxlength="4" class="input_text_short" id="quantity_'.$products[$i]['id'].'" onblur="update_cart(this);" onkeypress="return key(event);"');
       echo tep_draw_hidden_field('products_id[]', $products[$i]['id']);
       echo '</td>'; 
-      echo '<td>'; 
+      echo '<td width="20">'; 
       ?>
       <a style="display:block;" href="javascript:void(0)" onclick="change_num('<?php echo $p_id;?>', 'up',1,<?php echo $p_a_quan;?>); return false;"> 
       <img src="images/ico/nup.gif" alt="pic"> 

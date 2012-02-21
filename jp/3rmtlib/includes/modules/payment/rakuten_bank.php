@@ -46,13 +46,16 @@ class rakuten_bank  extends basePayment  implements paymentInterface {
                        "title"=>TS_MODULE_PAYMENT_RAKUTEN_TELNUMBER_TEXT,
                        "field"=>tep_draw_input_field('rakuten_telnumber', $theData['rakuten_telnumber'],'onpaste="return false"').TS_MODULE_PAYMENT_RAKUTEN_MUST_INPUT,
                        "rule"=>array(basePayment::RULE_NOT_NULL, basePayment::RULE_CHECK_TEL),
+                       "error_msg" => array(TS_MODULE_PAYMENT_RAKUTEN_BANK_TEXT_ERROR_MESSAGE,TS_MODULE_PAYMENT_RAKUTEN_BANK_TEXT_ERROR_MESSAGE) 
                        ),
                  array(
                        "code"=>'rakuten_telnumber_again',
                        "title"=>TS_MODULE_PAYMENT_RAKUTEN_TELNUMBER_CONFIRMATION_TEXT,
                        "field"=>tep_draw_input_field('rakuten_telnumber_again', $theData['rakuten_telnumber_again'],'onpaste="return false"').TS_MODULE_PAYMENT_RAKUTEN_MUST_INPUT,
-                       "rule"=>basePayment::RULE_SAME_TO,
+                       "rule"=>array(basePayment::RULE_NOT_NULL,
+                         basePayment::RULE_CHECK_TEL, basePayment::RULE_SAME_TO),
                        "params_code"=>'rakuten_telnumber',
+                       "error_msg" => array(TS_MODULE_PAYMENT_RAKUTEN_BANK_TEXT_ERROR_MESSAGE, TS_MODULE_PAYMENT_RAKUTEN_BANK_TEXT_ERROR_MESSAGE, TS_MODULE_PAYMENT_RAKUTEN_BANK_TEXT_ERROR_MESSAGE_NOE) 
                        ),
                  );
     }
@@ -157,7 +160,7 @@ class rakuten_bank  extends basePayment  implements paymentInterface {
        !preg_match("/^(\+\d{2}){0,1}((\d{2}(-){0,1}\d{4})|(\d{3}(-){0,1}\d{3})|(\d{3}(-){0,1}\d{4}))(-){0,1}\d{4}$/", strtr($_POST['rakuten_telnumber_again'], $this->arrs2d))){
         return 3; 
       } else if (strtr($_POST['rakuten_telnumber'], $this->arrs2d) != strtr($_POST['rakuten_telnumber_again'], $this->arrs2d)) {
-        return 3;
+        return 1;
       } 
   }
 

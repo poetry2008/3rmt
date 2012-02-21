@@ -2228,6 +2228,14 @@ searching
 	font-size:12px;
 	padding:5px;
 	background: none repeat scroll 0 0 #D2CECE;
+    /*border: 1px solid #BDBCBC;*/
+	line-height:1.5;
+}
+.preorder_payment_info{
+	*margin-top:5px;
+	font-size:12px;
+	padding:5px;
+	background: none repeat scroll 0 0 #D2CECE;
     border: 1px solid #BDBCBC;
 	line-height:1.5;
 }

@@ -65,31 +65,6 @@
    </table>
    </td>
    </tr>
- <?php
-   if (isset($_GET['payment_error']) && is_object(${$_GET['payment_error']}) && ($error = ${$_GET['payment_error']}->get_error())) {
-     ?> 
-     <tr> 
-       <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
-       <tr> 
-       <td class="main"><b><?php echo htmlspecialchars($error['title']); ?></b></td> 
-                                                                               </tr> 
-                                                                               </table></td> 
-                                                                               </tr> 
-  
-                                                                               <tr> 
-                                                                               <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxNotice"> 
-                                                                               <tr class="infoBoxNoticeContents"> 
-                                                                               <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
-                                                                               <tr> 
-                                                                               <td class="main" width="100%" valign="top"><?php echo htmlspecialchars($error['error']); ?></td> 
-                                                                                                                                                                              </tr> 
-                                                                                                                                                                              </table></td> 
-                                                                                                                                                                              </tr> 
-                                                                                                                                                                              </table></td> 
-                                                                                                                                                                              </tr> 
-                                                                                                                                                                              <?php
-                                                                                                                                                                              }
-?>
 <tr> 
 <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
    <tr> 
@@ -104,7 +79,9 @@
 </tr> 
 
 <tr> 
-<td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+<td>
+<br>
+<table border="0" width="100%" cellspacing="0" cellpadding="2"> 
   <tr> 
   <td class="main"><b><?php echo TABLE_HEADING_COMMENTS; ?></b></td> 
   </tr> 
@@ -128,7 +105,9 @@
     } else {
       ?> 
       <tr> 
-        <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+        <td>
+        <br> 
+        <table border="0" width="100%" cellspacing="0" cellpadding="2"> 
         <tr> 
         <td class="main">
         <b><?php echo TEXT_POINT_OR_CAMPAION; ?></b>
@@ -163,7 +142,9 @@
     if($guestchk != '1') {
   ?>
   <tr> 
-        <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+        <td>
+        <br> 
+        <table border="0" width="100%" cellspacing="0" cellpadding="2"> 
         <tr> 
         <td class="main">
         <b><?php echo TEXT_POINT_OR_CAMPAION; ?></b>

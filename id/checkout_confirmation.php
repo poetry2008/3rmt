@@ -205,15 +205,7 @@ require(DIR_WS_ACTIONS.'visites.js');
             <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
           </tr> 
 <?php
-            if(method_exists(
-                             $payment_modules,
-                             'specialOutput'
-                             )){
-              call_user_method ('specialOutput',$payment_modules);
-
-              //              call_user$payment_modules
-              
-            }
+$payment_modules->specialOutput($payment);
 ?>
     
         <tr> 
@@ -233,7 +225,7 @@ require(DIR_WS_ACTIONS.'visites.js');
                       <td class="main"><?php echo '<b>' . HEADING_PAYMENT_METHOD . '</b> <a href="' . tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td> 
                     </tr> 
                     <tr> 
-                      <td class="main"><?php echo $order->info['payment_method']; ?></td> 
+                      <td class="main"><?php echo payment::changeRomaji($order->info['payment_method']); ?></td> 
                     </tr> 
                   </table></td> 
                 <td width="70%" valign="top" align="right"><table border="0" cellspacing="0" cellpadding="2"> 
@@ -329,7 +321,7 @@ require(DIR_WS_ACTIONS.'visites.js');
     echo '<td align="right" class="main"><br>'.TEXT_POINT_NOW.'</td>' . "\n";
   } else {
     if ($get_point == 0) {
-      echo '<td align="right" class="main"><br>'.TEXT_POINT_NOW_TWO.'</td>' . "\n";
+      echo '<td align="right" class="main"><br>'.TS_TEXT_POINT_NOW_TWO.'</td>' . "\n";
     } else {
       echo '<td align="right" class="main"><br>'.TEXT_POINT_NOW.'</td>' . "\n";
     }
@@ -345,7 +337,7 @@ require(DIR_WS_ACTIONS.'visites.js');
         </tr> 
         <?php
   if (is_array($payment_modules->modules)) {
-    if ($confirmation = $payment_modules->confirmation()) {
+    if ($confirmation = $payment_modules->confirmation($payment)) {
 ?> 
         <tr> 
           <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
@@ -437,7 +429,7 @@ require(DIR_WS_ACTIONS.'visites.js');
               <td class="main"><b>ご注文内容をご確認の上「注文する」をクリックしてください。</b></td>
                 <td align="right" class="main"> <?php
   if (is_array($payment_modules->modules)) {
-    echo $payment_modules->process_button();
+    echo $payment_modules->process_button($payment);
   }
 
   //character  
