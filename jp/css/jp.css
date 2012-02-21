@@ -2453,5 +2453,7 @@ searching
 	margin-left:6px;
 }
 .faq_back{ text-align:right;}
-
+.faq_ul_question li{
+	line-height:21px;
+}
 

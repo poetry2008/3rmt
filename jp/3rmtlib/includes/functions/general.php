@@ -1702,6 +1702,7 @@ function forward404Unless($condition)
       $_SERVER['SCRIPT_NAME'] = $script_name;
     }
     switch (str_replace('/', '', $_SERVER['SCRIPT_NAME'])) {
+      /*
       case FILENAME_FAQ:
          global $current_faq_category_id;
            if($faq_category_info = tep_get_faq_category_info($current_faq_category_id)){
@@ -1722,6 +1723,7 @@ function forward404Unless($condition)
              $description = mb_substr(strip_tags($faq_question_info['answer']),0,80,'UTF-8');
            }
         break;
+        */
       case FILENAME_DEFAULT:
          global $cPath_array, $cPath, $seo_tags, $seo_category, $seo_manufacturers;
          if (isset($cPath_array)) {
@@ -1888,6 +1890,8 @@ function forward404Unless($condition)
       case FILENAME_PASSWORD_FORGOTTEN:
       case FILENAME_ADVANCED_SEARCH_RESULT:
       case FILENAME_CREATE_ACCOUNT_SUCCESS:
+      case FILENAME_FAQ:
+      case FILENAME_FAQ_INFO:
         $title = TITLE;
         break;
     }
