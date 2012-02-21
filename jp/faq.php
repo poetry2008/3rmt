@@ -99,6 +99,7 @@ if($current_faq_category_id){
       $empty_faq_question = true;
     }
     if($empty_faq_question&&$empty_faq_category){
+       $show_back_url = true;  
     ?>
     <h2 class="pageHeading"><?php echo $parent_info['title'].TEXT_QUESTION_TITLE;?></h2>
     <div class="faq_empty">
