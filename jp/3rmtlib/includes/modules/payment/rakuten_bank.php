@@ -432,5 +432,10 @@ function getMailString($option=''){
       global $_POST; 
       $sql_data_array['raku_text'] = '電話番号:'.$_POST['rak_tel']; 
   }
- }
+  
+  function admin_deal_comment($order_info)
+  {
+    return $order_info['raku_text']; 
+  }
+}
 ?>
