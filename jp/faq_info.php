@@ -6,6 +6,7 @@
 require('includes/application_top.php');
 require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_FAQ_INFO);
 require(DIR_WS_ACTIONS.'faq_question.php');
+check_uri('/faq_info\.php/');
 define('FAQ_HTML_REPLACE','</td></tr><tr><td valign="top" style="float:left;"><img
     src="./images/a.gif" alt="" width="23" height="15"></td><td
     class="faq_answer_row">');
