@@ -1713,7 +1713,8 @@ function forward404Unless($condition)
                $title = ' | '.TEXT_FAQ.' - '.STORE_NAME;
              }
              $keywords = strip_tags($faq_category_info['keywords']);
-             $description = strip_tags($faq_category_info['description']);
+             $description = mb_substr(strip_tags($faq_category_info['description']),0,
+                 MAX_META_FAQ_DESCRIPTION,'UTF-8');
              $use_mate_seo = true;
            }
         break;
