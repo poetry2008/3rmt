@@ -27,14 +27,14 @@ echo tep_draw_form('order1', tep_href_link('change_preorder_confirm.php'));
 foreach ($_POST as $post_key => $post_value) {
   if (is_array($post_value)) {
     foreach ($post_value as $ps_key => $ps_value) {
-      echo tep_draw_hidden_field($post_key.'['.$ps_key.']', $ps_value); 
+      echo '<input type="hidden" name="'.$post_key.'['.$ps_key.']" value="'.$ps_value.'">'; 
       $preorder_info_attr[] = $ps_value;
     }
   } else {
-    echo tep_draw_hidden_field($post_key, $post_value); 
+    echo '<input type="hidden" name="'.$post_key.'" value="'.$post_value.'">'; 
   }
 }
-echo tep_draw_hidden_field('pid', $preorder_id); 
+echo '<input type="hidden" name="pid" value="'.$preorder_id.'">'; 
 echo '</form>';
 ?>
 <script type="text/javascript">

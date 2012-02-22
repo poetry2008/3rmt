@@ -1926,6 +1926,15 @@ display:block;
 
 
 .checkout_payment_info{
+	/*border:1px solid #ccc;*/
+	margin-top:15px;   
+	*margin-top:5px;
+	font-size:11px;
+	padding:5px;
+	line-height:1.5;                        
+}
+
+.preorder_payment_info{
 	border:1px solid #ccc;
 	margin-top:15px;   
 	*margin-top:5px;
@@ -1933,6 +1942,7 @@ display:block;
 	padding:5px;
 	line-height:1.5;                        
 }
+
 .float_left{
 	float:left;
 }

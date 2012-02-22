@@ -58,37 +58,6 @@
                   </tr> 
                 </table></td> 
             </tr> 
-<?php
-  //販売開始
-  //if($cart->show_total() >= 0) {
-  if (isset($_GET['payment_error']) && is_object(${$_GET['payment_error']}) && ($error = ${$_GET['payment_error']}->get_error())) {
-?> 
-            <tr> 
-              <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
-                  <tr> 
-                    <td class="main"><b><?php echo htmlspecialchars($error['title']); ?></b></td> 
-                  </tr> 
-                </table></td> 
-            </tr> 
-            <tr> 
-              <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxNotice"> 
-                  <tr class="infoBoxNoticeContents"> 
-                    <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
-                        <tr> 
-                          <td></td> 
-                          <td class="main" width="100%" valign="top"><?php echo htmlspecialchars($error['error']); ?></td> 
-                          <td></td> 
-                        </tr> 
-                      </table></td> 
-                  </tr> 
-                </table></td> 
-            </tr> 
-            <tr> 
-              <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-            </tr> 
-            <?php
-  }
-?>
             <tr> 
               <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                   <tr> 

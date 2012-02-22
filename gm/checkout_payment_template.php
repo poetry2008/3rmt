@@ -177,7 +177,8 @@ echo tep_image(DIR_WS_IMAGES . 'checkout_bullet.gif');
 </tr> 
 <tr> 
 <?php
-if($cart->show_total() >= 0) { 
+//if($cart->show_total() >= 0) { 
+if(true) { 
   ?>
 
   <td><table border="0" width="95%" cellspacing="1" cellpadding="2" class="formArea"> 
@@ -284,7 +285,8 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() > 0) {//poin
 
 <?php
 
-if($cart->show_total() >= 0) {
+//if($cart->show_total() >= 0) {
+if(true) {
   
   ?>
 

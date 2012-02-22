@@ -1925,6 +1925,16 @@ border:1px solid #CAC6BE;
 
 
 .checkout_payment_info{
+	/*border:1px solid #ccc;*/
+	background-color:#393838;
+	margin-top:15px;   
+	*margin-top:5px;
+	font-size:12px;
+	padding:5px;
+	color:#fff;
+	line-height:1.5;                        
+}
+.preorder_payment_info{
 	border:1px solid #ccc;
 	background-color:#393838;
 	margin-top:15px;   

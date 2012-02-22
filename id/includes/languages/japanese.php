@@ -191,6 +191,7 @@ define('JS_AGREEMENT', '* \'利用規約\' を同意してください。');
 
 define('JS_ERROR_NO_PAYMENT_MODULE_SELECTED', '* ご注文商品のお支払方法を選択してください。\n');
 define('JS_ERROR_SUBMITTED', 'このフォームは既に送信されています。Okボタンを押し処理が完了するまでもうしばらくお待ちください。');
+define('JS_ERROR_POINT','獲得ポイントより多くのポイントを指定しているか、マイナスの値を指定しています。');
 
 define('ERROR_NO_PAYMENT_MODULE_SELECTED', '* ご注文商品のお支払方法を選択してください。');
 

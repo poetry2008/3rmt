@@ -170,6 +170,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
     }
     
     if (isset($_POST['action']) && ($_POST['action'] == 'process') && ($error == false)) {
+      $_POST['quantity'] = tep_an_zen_to_han($_POST['quantity']);
       echo tep_draw_form('pform', tep_href_link(FILENAME_PREORDER_PAYMENT));
       foreach ($_POST as $p_key => $p_value) {
         if ($p_key != 'x' && $p_key != 'y') {

@@ -94,6 +94,7 @@
     
     if (isset($_POST['preorder_point'])) {
       $_POST['preorder_point'] = get_strip_campaign_info($_POST['preorder_point']); 
+      if (!empty($_POST['preorder_point'])) { 
       if (is_numeric($_POST['preorder_point'])) {
         if ($_POST['preorder_point'] > $preorder_point) {
           if (($_POST['preorder_point'] != '0') && ($preroder_point != '0')) {
@@ -135,6 +136,7 @@
           $point_error = TEXT_PREORDER_ERROR_CAMPAIGN;
         }
       }
+      } 
     }
     
     if (!empty($_POST['camp_preorder_point'])) {

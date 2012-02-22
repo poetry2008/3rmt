@@ -452,7 +452,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
               echo tep_draw_hidden_field('predate', $_POST['predate']); 
               echo tep_draw_hidden_field('preorder_subtotal', $_POST['preorder_subtotal']); 
             ?>
-            <?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?>
+            <?php echo tep_image_submit('button_continue02.gif', IMAGE_BUTTON_CONTINUE); ?>
           </td>
         </tr>
       </table>
