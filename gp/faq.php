@@ -6,6 +6,7 @@
 require('includes/application_top.php');
 require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_FAQ);
 require(DIR_WS_ACTIONS.'faq_category.php');
+check_uri('/faq\.php/');
 $flag_question = true;             
 ?>
 <?php page_head();?>

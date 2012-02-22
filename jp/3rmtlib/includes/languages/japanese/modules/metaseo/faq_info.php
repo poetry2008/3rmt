@@ -1,9 +1,0 @@
-<?php
-/*
-	JP、GM共通ファイル
-*/
-
-  define('MODULE_METASEO_FAQ_INFO_TEXT_TITLE', 'FAQ詳細(QA)');
-  define('MODULE_METASEO_FAQ_INFO_TEXT_EXPLAIN', 'EXPLAIN');
-  define('MODULE_METASEO_FAQ_INFO_TEXT_DESCRIPTION', 'FAQ詳細(QA)ページのSEO');
-?>
