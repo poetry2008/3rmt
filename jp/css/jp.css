@@ -2462,6 +2462,7 @@ searching
 }
 .faq_ul_category{
 	margin:5px 0 0 0;
+	padding-left:37px\9;
 }
 .faq_ul_category li{
 	line-height:21px;
@@ -2474,6 +2475,7 @@ searching
 	list-style-type:none;
 	background: url(../images/q.gif) left center no-repeat;
 	padding-left:28px;
+	padding-left:8px\9;
 	line-height:21px;
 }
 .faq_info_ul_answer, .faq_info_ul_question{
@@ -2484,12 +2486,14 @@ searching
 	list-style-type:none;
 	background: url(../images/a.gif) left center no-repeat;
 	padding-left:28px;
+	padding-left:15px\9;
 	line-height:21px;
 }
 .faq_info_li_question{
 	list-style-type:none;
 	background: url(../images/q.gif) left center no-repeat;
 	padding-left:28px;
+	padding-left:15px\9;
 	line-height:21px;
 }
 .faq_empty{
