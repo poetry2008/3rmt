@@ -78,7 +78,7 @@ $customer_guest = tep_db_fetch_array($customer_guest_query);
 
 if (tep_not_null($action)) {
 
-  $payment_modules = payment::getInstance($_POST['site_id']);
+  $payment_modules = payment::getInstance($order->info['site_id']);
   switch ($action) {
     // 1. UPDATE ORDER ###############################################################################################
     case 'update_order':
