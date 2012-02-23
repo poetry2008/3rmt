@@ -86,7 +86,10 @@
     }
    
     if (isset($_POST['p_character'])) {
-      if (empty($_POST['p_character'])) {
+      $tmp_character = $_POST['p_character']; 
+      $tmp_character = str_replace(' ', '', $tmp_character); 
+      $tmp_character = str_replace('　', '', $tmp_character); 
+      if ($tmp_character == '') {
         $error = true;
         $character_error = TEXT_PREORDER_ERROR_CHARACTER;
       }
