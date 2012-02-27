@@ -27,7 +27,7 @@ require(DIR_WS_ACTIONS.'visites.js');
         <!-- left_navigation_eof //--><!--</td>--> 
       <!-- body_text //--> 
       <td valign="top" id="contents"> 
-      <?php echo tep_draw_form('checkout_confirmation', $form_action_url, 'post');?>
+      <?php echo tep_draw_form('checkout_confirmation', $form_action_url, 'post', 'onSubmit="return check_confirm_payment(\''.$payment.'\')"');?>
       <h1 class="pageHeading">
       <span class="game_t">
         <?php echo HEADING_TITLE ; ?>
