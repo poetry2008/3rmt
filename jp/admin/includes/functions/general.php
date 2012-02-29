@@ -3279,7 +3279,7 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
   }
   $str .= '</table>';
   
-  $str .= tep_draw_form('orders', FILENAME_ORDERS, urldecode($_POST['param_str']).'oID='.$orders['orders_id'].'&action=deleteconfirm');
+  $str .= tep_draw_form('orders', FILENAME_ORDERS, urldecode($param_str).'oID='.$orders['orders_id'].'&action=deleteconfirm');
   $str .= '<table border="0" cellpadding="0" cellspacing="0" class="popup_order_info" width="100%">';
   if (ORDER_INFO_TRANS_NOTICE == 'true') {
     if ($orders['orders_care_flag']) {
@@ -3312,7 +3312,7 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
   }
   if(ORDER_INFO_BASIC_TEXT == 'true'){
     $str .= '<tr>';
-    $str .= '<td class="main">';
+    $str .= '<td class="main" width="220">';
     $str .= TEXT_FUNCTION_HEADING_CUSTOMERS;
     $str .= '</td>';
     $str .= '<td class="main">';
@@ -3322,7 +3322,7 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
 
   }
   
-    $str .= '<tr><td class="main" width="150">支払方法：</td><td class="main" style="color:darkred;">'.payment::changeRomaji($orders['payment_method'],'title').'</td></tr>';
+    $str .= '<tr><td class="main" width="220">支払方法：</td><td class="main" style="color:darkred;">'.payment::changeRomaji($orders['payment_method'],'title').'</td></tr>';
     
     if ($orders['confirm_payment_time'] != '0000-00-00 00:00:00') {
       $time_str = date('Y年n月j日', strtotime($orders['confirm_payment_time'])); 
@@ -3685,10 +3685,11 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
   
   
   $str .= '</table>';
-  $str .= '<table border="0" cellpadding="2" cellspacing="0" width="100%">';
-  $str .= '<tr><td class="main" align="center">';
+  $str .= '<table class="popup_order_info" border="0" cellpadding="2" cellspacing="0" width="100%">';
+  $str .= '<tr><td width="220">&nbsp;</td><td class="main" style="padding-left:20%;">';
   $str .= '<div id="order_del">'; 
-  $str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="delete_order_info(\''.$orders['orders_id'].'\')"').'</a>'; 
+  $str .= '<a href="'.tep_href_link(FILENAME_ORDERS, urldecode($param_str).'oID='.$orders['orders_id'].'&action=edit').'">'.tep_html_element_button(IMAGE_DETAILS).'</a>'; 
+  $str .= '&nbsp;<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="delete_order_info(\''.$orders['orders_id'].'\', \''.urlencode($param_str).'\')"').'</a>'; 
   $str .= '</div>'; 
   $str .= '</td></tr>';
   $str .= '</table>';

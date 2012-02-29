@@ -801,11 +801,11 @@ $(document).ready(function(){
       if($(this).attr('class')!='dataTableRowSelected'){$(this).attr('style','background-color: rgb(240, 128, 128);')}})
     });
 
-function delete_order_info(oID)
+function delete_order_info(oID, param_str)
 {
    $.ajax({
 type:"POST",
-data:'oID='+oID,
+data:'oID='+oID+'&param_str='+param_str,
 async:false, 
 url: 'ajax_orders.php?action=show_del_info',
 success: function(msg) {
@@ -813,11 +813,11 @@ success: function(msg) {
 }
 });
 }
-function cancel_del_order_info(oID)
+function cancel_del_order_info(oID, param_str)
 {
 $.ajax({
 type:"POST",
-data:'oID='+oID,
+data:'oID='+oID+'&param_str='+param_str,
 async:false, 
 url: 'ajax_orders.php?action=cancel_del_info',
 success: function(msg) {

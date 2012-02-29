@@ -637,14 +637,13 @@ if ($_POST['orders_id'] &&
     echo ''; 
   }
 } else if (isset($_GET['action']) && $_GET['action'] == 'show_del_preorder_info') {
-  $html_str = '';
-  $html_str .= '<table>'; 
-  $html_str .= '<tr><td>'.tep_html_element_submit(IMAGE_DELETE);
-  $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CANCEL, 'onclick="cancel_del_preorder_info(\''.$_POST['oID'].'\')"').'</a>'; 
-  $html_str .= '</td></tr>'; 
-  $html_str .= '</table>'; 
+  require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_PREORDERS); 
+  $html_str = TEXT_INFO_DELETE_INTRO.'<br>';
+  $html_str .= tep_html_element_submit(IMAGE_DELETE);
+  $html_str .= '&nbsp;<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CANCEL, 'onclick="cancel_del_preorder_info(\''.$_POST['oID'].'\', \''.urlencode($_POST['param_str']).'\')"').'</a>'; 
   echo $html_str;
 } else if (isset($_GET['action']) && $_GET['action'] == 'cancel_del_preorder_info') {
-  $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="delete_preorder_info(\''.$_POST['oID'].'\')"').'</a>'; 
+  $html_str = '<a href="'.tep_href_link(FILENAME_PREORDERS, urldecode($_POST['param_str']).'oID='.$_POST['oID'].'&action=edit').'">'.tep_html_element_button(IMAGE_DETAILS).'</a>'; 
+  $html_str .= '&nbsp;<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="delete_preorder_info(\''.$_POST['oID'].'\', \''.urlencode($_POST['param_str']).'\')"').'</a>'; 
   echo $html_str;
 }

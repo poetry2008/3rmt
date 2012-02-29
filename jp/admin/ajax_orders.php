@@ -1168,14 +1168,17 @@ if ($_POST['orders_id'] &&
   $html_str .= '<td>';
   $html_str .= TEXT_INFO_RESTOCK_PRODUCT_QUANTITY; 
   $html_str .= '</td>';
-  $html_str .= '<td>'.tep_html_element_submit(IMAGE_DELETE); 
-  $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CANCEL, 'onclick="cancel_del_order_info(\''.$_POST['oID'].'\')"').'</a>';
+  $html_str .= '</tr>'; 
+  $html_str .= '<tr>'; 
+  $html_str .= '<td colspan="3">'.tep_html_element_submit(IMAGE_DELETE); 
+  $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CANCEL, 'onclick="cancel_del_order_info(\''.$_POST['oID'].'\', \''.urlencode($param_str).'\')"').'</a>';
   $html_str .= '</td>'; 
   $html_str .= '</tr>'; 
   $html_str .= '</table>'; 
   echo $html_str;
 } else if (isset($_GET['action'])&&$_GET['action']=='cancel_del_info') {
-  $html_str = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="delete_order_info(\''.$_POST['oID'].'\')"').'</a>';
+  $html_str = '<a href="'.tep_href_link(FILENAME_ORDERS, urldecode($_POST['param_str']).'oID='.$_POST['oID'].'&action=edit').'">'.tep_html_element_button(IMAGE_DETAILS).'</a>';
+  $html_str .= '&nbsp;<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="delete_order_info(\''.$_POST['oID'].'\', \''.urlencode($_POST['param_str']).'\')"').'</a>';
   echo $html_str;
 } else if (isset($_GET['action'])&&$_GET['action']=='new_group') {
   require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_OPTION_GROUP); 

@@ -700,7 +700,7 @@ function tep_get_pre_orders_products_string($orders, $single = false, $popup = f
     $str .= '<td align="right"><a href="javascript:void(0);" onclick="hideOrdersInfo(1);">X</a></td></tr>';
   }
   $str .= '</table>'; 
-  $str .= tep_draw_form('preorders', FILENAME_PREORDERS, urldecode($_POST['param_str']).'oID='.$orders['orders_id'].'&action=deleteconfirm'); 
+  $str .= tep_draw_form('preorders', FILENAME_PREORDERS, urldecode($param_str).'oID='.$orders['orders_id'].'&action=deleteconfirm'); 
   $str .= '<table border="0" cellpadding="0" cellspacing="0" class="popup_order_info" width="100%">';
   if (ORDER_INFO_TRANS_NOTICE == 'true') {
     if ($orders['orders_care_flag']) {
@@ -731,7 +731,7 @@ function tep_get_pre_orders_products_string($orders, $single = false, $popup = f
       $str .= '</tr>'; 
     } 
   }
-  $str .= '<tr><td class="main" width="150">'.TEXT_PREORDER_PAYMENT_METHOD.'</td><td class="main" style="color:darkred;">'.$orders['payment_method'].'</td></tr>';
+  $str .= '<tr><td class="main" width="220">'.TEXT_PREORDER_PAYMENT_METHOD.'</td><td class="main" style="color:darkred;">'.$orders['payment_method'].'</td></tr>';
   if ($orders['confirm_payment_time'] != '0000-00-00 00:00:00') {
     $time_str = date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT, strtotime($orders['confirm_payment_time'])); 
   } else {
@@ -1086,9 +1086,10 @@ function tep_get_pre_orders_products_string($orders, $single = false, $popup = f
     $str .= '</tr>'; 
   }
   
-  $str .= '<tr><td class="main" colspan="2" align="center">'; 
+  $str .= '<tr><td width="220">&nbsp;</td><td class="main" style="padding-left:20%">'; 
   $str .= '<div id="order_del">';
-  $str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="delete_preorder_info(\''.$orders['orders_id'].'\')"').'</a>'; 
+  $str .= '<a href="'.tep_href_link(FILENAME_PREORDERS, urldecode($param_str).'oID='.$orders['orders_id'].'&action=edit').'">'.tep_html_element_button(IMAGE_DETAILS).'</a>'; 
+  $str .= '&nbsp;<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="delete_preorder_info(\''.$orders['orders_id'].'\', \''.urlencode($param_str).'\')"').'</a>'; 
   $str .= '</div>';
   $str .= '</td></tr>'; 
   $str .= '</table>';
