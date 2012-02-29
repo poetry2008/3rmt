@@ -1005,7 +1005,6 @@ a.s_column_bar {
 }
 .oa_auto_no_product { float:left; line-height:20px; width:100%\9;}
 .oa_auto_no_product_input { float:left;}
-#orders_info_box table td{ font-size:14px;}
 .orders_info_div td { vertical-align:top; padding-top:2px;}
 
 .error_body { height:100%; font-size:12px; background:url(../images/bjpicture.gif) top repeat-x; font-family:"ＭＳ Ｐゴシック",Osaka,Verdana,Arial,sans-serif}
@@ -1133,4 +1132,48 @@ a.s_column_bar {
 .campaign_input_num{
 	width:20%;
 	text-align:right;
+}
+/*option group*/
+#show_group_info{
+    background-color: #FFFF00;
+    left: 18%;
+    position: absolute;
+    width: 70%;
+}
+#show_item_info{
+    background-color: #FFFF00;
+    left: 18%;
+    position: absolute;
+    width: 70%;
+}
+.option_input{
+	width:25%;
+	text-align:right;
+}
+.option_text{
+	width:60%;
+}
+/* end option group*/
+
+.popup_order_title {
+	background:#000;
+	color:#fff;
+	padding:0 5px;
+}
+.popup_order_title img{
+	vertical-align:top;
+}
+.popup_order_title a{
+	color:#FFFFFF;
+}
+.popup_order_info{
+	padding:5px 50px;
+}
+.popup_order_info td{
+	vertical-align:top;
+	padding-top:2px;
+	line-height:21px;
+}
+.del_order_notice td{
+	vertical-align:middle;
 }

@@ -209,8 +209,8 @@ function showRequest(formData, jqForm, options) {
 } 
 
 // 列表右侧的订单信息显示
-function showOrdersInfo(oID,ele,popup_type){
-  data_str = "oid="+oID; 
+function showOrdersInfo(oID,ele,popup_type,param_str){
+  data_str = "oid="+oID+"&param_str="+param_str; 
   if (popup_type == 1) {
     data_str += "&popup=1"; 
     popup_num = 2; 
@@ -800,3 +800,28 @@ $(document).ready(function(){
     $(".dataTableContent").find("input|[type=checkbox][checked]").parent().parent().each(function(){
       if($(this).attr('class')!='dataTableRowSelected'){$(this).attr('style','background-color: rgb(240, 128, 128);')}})
     });
+
+function delete_order_info(oID)
+{
+   $.ajax({
+type:"POST",
+data:'oID='+oID,
+async:false, 
+url: 'ajax_orders.php?action=show_del_info',
+success: function(msg) {
+  $('#order_del').html(msg);
+}
+});
+}
+function cancel_del_order_info(oID)
+{
+$.ajax({
+type:"POST",
+data:'oID='+oID,
+async:false, 
+url: 'ajax_orders.php?action=cancel_del_info',
+success: function(msg) {
+  $('#order_del').html(msg);
+}
+});
+}

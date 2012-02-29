@@ -240,11 +240,9 @@ if ($_POST['orders_id'] &&
 							tep_get_all_get_params(array('oID', 'action')) .
 							'oID='.$orders['orders_id']);?>';"><font color="<?php echo $today_color; ?>"><?php echo $orders['orders_status_name']; ?></font></td>
                                                                                                                                                          <td style="border-bottom:1px solid
-#000000;background-color: darkred;" class="dataTableContent"
-                                                                                                                                                         onmouseover="if(popup_num == 1) showOrdersInfo('<?php echo $orders['orders_id'];?>',this, 0);"
-                                                                                                                                                         onmouseout="if(popup_num == 1) hideOrdersInfo(0);" align="right">
+#000000;background-color: darkred;" class="dataTableContent" align="right">
                                                                                                                                                          <?php 
-                                                                                                                                                         echo '<a href="javascript:void(0);" onclick="showOrdersInfo(\''.$orders['orders_id'].'\', this, 1)">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
+                                                                                                                                                         echo '<a href="javascript:void(0);" onclick="showOrdersInfo(\''.$orders['orders_id'].'\', this, 1, \''.urlencode(tep_get_all_get_params(array('oID', 'action'))).'\')">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
     ?>&nbsp;</td>
     </tr>
         <?php 
@@ -508,9 +506,9 @@ if ($_POST['orders_id'] &&
   $orders_info = tep_db_fetch_array($orders_info_raw); 
   require(DIR_WS_FUNCTIONS . 'visites.php');
   if ($_POST['popup'] == '1') {
-    tep_get_orders_products_string($orders_info, true, true);
+    tep_get_orders_products_string($orders_info, true, true, $_POST['param_str']);
   } else {
-    tep_get_orders_products_string($orders_info, true);
+    tep_get_orders_products_string($orders_info, true, false, $_POST['param_str']);
   }
 } else if (isset($_GET['action'])&&$_GET['action']=='get_oa_type') {
   $onsuit = false;
@@ -1158,4 +1156,409 @@ if ($_POST['orders_id'] &&
       }
     }
     echo implode('|||', $error_array);
+} else if (isset($_GET['action'])&&$_GET['action']=='show_del_info') {
+  require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_ORDERS);
+  $html_str .= '<table class="del_order_notice">'; 
+  $html_str .= '<tr><td>'; 
+  $html_str .= TEXT_INFO_DELETE_INTRO.'&nbsp;&nbsp;';
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= tep_draw_checkbox_field('restock', '', true);
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= TEXT_INFO_RESTOCK_PRODUCT_QUANTITY; 
+  $html_str .= '</td>';
+  $html_str .= '<td>'.tep_html_element_submit(IMAGE_DELETE); 
+  $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CANCEL, 'onclick="cancel_del_order_info(\''.$_POST['oID'].'\')"').'</a>';
+  $html_str .= '</td>'; 
+  $html_str .= '</tr>'; 
+  $html_str .= '</table>'; 
+  echo $html_str;
+} else if (isset($_GET['action'])&&$_GET['action']=='cancel_del_info') {
+  $html_str = '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="delete_order_info(\''.$_POST['oID'].'\')"').'</a>';
+  echo $html_str;
+} else if (isset($_GET['action'])&&$_GET['action']=='new_group') {
+  require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_OPTION_GROUP); 
+  $html_str = '';
+  $html_str .= '<table cellspacing="0" cellpadding="2" border="0" width="100%" class="campaign_top">';
+  $html_str .= '<tr>';
+  $html_str .= '<td width="20">'; 
+  $html_str .= tep_image(DIR_WS_IMAGES . 'icon_info.gif',IMAGE_ICON_INFO,16,16)."&nbsp;";
+  $html_str .= '</td>'; 
+  $html_str .= '<td align="left">'; 
+  $html_str .= '<b>'.HEADING_TITLE.'</b>'; 
+  $html_str .= '</td>'; 
+  $html_str .= '<td align="right">'; 
+  $html_str .= '<a href="javascript:void(0);" onclick="close_group_info()">X</a>';  
+  $html_str .= '</td>'; 
+  $html_str .= '</tr>'; 
+  $html_str .= '</table>';
+  $html_str .= tep_draw_form('option_group', FILENAME_OPTION_GROUP, 'action=insert'); 
+  $html_str .= '<table cellspacing="0" cellpadding="2" border="0" width="100%" class="campaign_body">';
+  $html_str .= '<tr>';
+  $html_str .= '<td width="220">';
+  $html_str .= TABLE_HEADING_OPTION_GROUP_NAME; 
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= tep_draw_input_field('name', '', 'id="name"'); 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  
+  $html_str .= '<tr>';
+  $html_str .= '<td width="220">';
+  $html_str .= TABLE_HEADING_OPTION_GROUP_TITLE; 
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= tep_draw_input_field('title', '', 'id="title"'); 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  
+  $html_str .= '<tr>';
+  $html_str .= '<td width="220">';
+  $html_str .= TABLE_HEADING_OPTION_GROUP_IS_PREORDER; 
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= tep_draw_radio_field('is_preorder',1,false,'','id="is_preorder"').OPTION_GROUP_IS_PREORDER.'&nbsp;'.tep_draw_radio_field('is_preorder',0,true,'','id="is_preorder"').OPTION_GROUP_IS_NOT_PREORDER; 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  
+  $html_str .= '<tr>';
+  $html_str .= '<td width="220">';
+  $html_str .= TABLE_HEADING_OPTION_GROUP_DESC; 
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= tep_draw_textarea_field('comment', 'hard', '30', '10'); 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  
+  $html_str .= '<tr>';
+  $html_str .= '<td width="220">';
+  $html_str .= TABLE_HEADING_OPTION_GROUP_SORT_NUM; 
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= tep_draw_input_field('sort_num', '1000', 'size="31" id="sort_num" style="text-align:right;"'); 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+
+  $html_str .= '<tr>';
+  $html_str .= '<td>';
+  $html_str .= '&nbsp;'; 
+  $html_str .= '</td>';
+  $html_str .= '<td style="padding-left:20%;">';
+  $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="check_group_info();"').'</a>&nbsp;'; 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  $html_str .= '</table>';
+  $html_str .= '</form>';
+  echo $html_str;
+} else if (isset($_GET['action'])&&$_GET['action']=='edit_group') {
+  require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_OPTION_GROUP); 
+  $group_raw = tep_db_query("select * from ".TABLE_OPTION_GROUP." where id = '".$_POST['group_id']."'"); 
+  $group = tep_db_fetch_array($group_raw); 
+  $html_str = '';
+  $html_str .= '<table cellspacing="0" cellpadding="2" border="0" width="100%" class="campaign_top">';
+  $html_str .= '<tr>'; 
+  $html_str .= '<td width="20">'; 
+  $html_str .= tep_image(DIR_WS_IMAGES . 'icon_info.gif',IMAGE_ICON_INFO,16,16)."&nbsp;";
+  $html_str .= '</td>'; 
+  $html_str .= '<td align="left">'; 
+  $html_str .= '<b>'.$group['name'].'</b>'; 
+  $html_str .= '</td>'; 
+  $html_str .= '<td align="right">'; 
+  $html_str .= get_option_group_link($group['id'], $_POST['keyword']); 
+  $html_str .= '&nbsp;&nbsp;<a href="javascript:void(0);" onclick="close_group_info()">X</a>';  
+  $html_str .= '</td>'; 
+  $html_str .= '</tr>'; 
+  $html_str .= '</table>';
+  $html_str .= tep_draw_form('option_group', FILENAME_OPTION_GROUP, 'action=update'); 
+  $html_str .= '<table cellspacing="0" cellpadding="2" border="0" width="100%" class="campaign_body">';
+  $html_str .= '<tr>';
+  $html_str .= '<td width="220">';
+  $html_str .= TABLE_HEADING_OPTION_GROUP_NAME; 
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= tep_draw_input_field('name', $group['name'], 'id="name"'); 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  
+  $html_str .= '<tr>';
+  $html_str .= '<td width="220">';
+  $html_str .= TABLE_HEADING_OPTION_GROUP_TITLE; 
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= tep_draw_input_field('title', $group['title'], 'id="title"'); 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  
+  $html_str .= '<tr>';
+  $html_str .= '<td width="220">';
+  $html_str .= TABLE_HEADING_OPTION_GROUP_IS_PREORDER; 
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  if ($group['is_preorder'] == '1') {
+    $html_str .= tep_draw_radio_field('is_preorder',1,true,'','id="is_preorder"').OPTION_GROUP_IS_PREORDER.'&nbsp;'.tep_draw_radio_field('is_preorder',0,false,'','id="is_preorder"').OPTION_GROUP_IS_NOT_PREORDER; 
+  } else {
+    $html_str .= tep_draw_radio_field('is_preorder',1,false,'','id="is_preorder"').OPTION_GROUP_IS_PREORDER.'&nbsp;'.tep_draw_radio_field('is_preorder',0,true,'','id="is_preorder"').OPTION_GROUP_IS_NOT_PREORDER; 
+  }
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  
+  $html_str .= '<tr>';
+  $html_str .= '<td width="220">';
+  $html_str .= TABLE_HEADING_OPTION_GROUP_DESC; 
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= tep_draw_textarea_field('comment', 'hard', '30', '10', $group['comment']); 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  
+  $html_str .= '<tr>';
+  $html_str .= '<td width="220">';
+  $html_str .= TABLE_HEADING_OPTION_GROUP_SORT_NUM; 
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= tep_draw_input_field('sort_num', $group['sort_num'], 'size="31" id="sort_num" style="text-align:right;"'); 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+
+  $html_str .= '<tr>';
+  $html_str .= '<td>';
+  $html_str .= '&nbsp;'; 
+  $html_str .= '</td>';
+  $html_str .= '<td style="padding-left:20%;">';
+  $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_NEW_PROJECT, 'onclick="create_option_group();"').'</a>&nbsp;'; 
+  $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE,
+      'onclick="check_group_info();"').'</a>&nbsp;'; 
+  $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="if(confirm(\''.TEXT_DEL_OPTION_GROUP.'\')) window.location.href = \''.tep_href_link(FILENAME_OPTION_GROUP, 'action=deleteconfirm&group_id='.$group['id']).'\';"').'</a>'; 
+  $html_str .= tep_draw_hidden_field('group_id', $group['id']); 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  $html_str .= '</table>';
+  $html_str .= '</form>';
+  echo $html_str;
+} else if (isset($_GET['action'])&&$_GET['action']=='search_group') {
+  $json_array = array(); 
+  $search_group_query = tep_db_query("select name from ".TABLE_OPTION_GROUP." where name like '%".$_GET['q']."%' order by created_at desc");
+    while ($search_group = tep_db_fetch_array($search_group_query)) {
+      $json_array[] = array('name' => $search_group['name']); 
+    }
+  echo json_encode($json_array); 
+} else if (isset($_GET['action'])&&$_GET['action']=='new_item') {
+  require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_OPTION_ITEM); 
+  require_once('enabledoptionitem.php'); 
+  $html_str = '';
+  $html_str .= '<table cellspacing="0" cellpadding="2" border="0" width="100%" class="campaign_top">';
+  $html_str .= '<tr>';
+  $html_str .= '<td width="20">'; 
+  $html_str .= tep_image(DIR_WS_IMAGES . 'icon_info.gif',IMAGE_ICON_INFO,16,16)."&nbsp;";
+  $html_str .= '</td>'; 
+  $html_str .= '<td align="left">'; 
+  $html_str .= '<b>'.HEADING_TITLE.'</b>'; 
+  $html_str .= '</td>'; 
+  $html_str .= '<td align="right">'; 
+  $html_str .= '<a href="javascript:void(0);" onclick="close_item_info()">X</a>';  
+  $html_str .= '</td>'; 
+  $html_str .= '</tr>'; 
+  $html_str .= '</table>';
+  
+  $html_str .= tep_draw_form('option_item', FILENAME_OPTION_ITEM, 'action=insert&group_id='.$_POST['group_id']); 
+  $html_str .= '<table cellspacing="0" cellpadding="2" border="0" width="100%" class="campaign_body">';
+  $html_str .= '<tr>';
+  $html_str .= '<td width="220">';
+  $html_str .= TABLE_HEADING_OPTION_ITEM_NAME; 
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= tep_draw_input_field('title', '', 'id="title" class="option_text"'); 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  
+  $html_str .= '<tr>';
+  $html_str .= '<td>';
+  $html_str .= TABLE_HEADING_OPTION_ITEM_TITLE; 
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= tep_draw_input_field('front_title', '', 'id="front_title" class="option_text"'); 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  
+  $html_str .= '<tr>';
+  $html_str .= '<td>';
+  $html_str .= TABLE_HEADING_OPTION_ITEM_TYPE; 
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= '<select id="type" name="type" onchange="change_option_item_type(0);">'; 
+  $i=0; 
+  foreach ($enabled_item_array as $ekey => $evalue) {
+    if ($i == 0) {
+      $first_item = $ekey; 
+    }
+    $html_str .= '<option value="'.$ekey.'">'.strtolower($evalue).'</option>'; 
+    $i++; 
+  }
+  $html_str .= '</select>'; 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  $html_str .= '</table>'; 
+
+  $html_str .= '<table id="show_select" width="100%" cellspacing="0" cellpadding="2" border="0" class="campaign_body">';
+  $classname = 'HM_Option_Item_'.ucfirst($first_item);
+  require_once('option/'.$classname.'.php');
+  $item_instance = new $classname();
+  $html_str .= $item_instance->prepareFormWithParent($item['id']);
+  $html_str .= '</table>'; 
+  
+  $html_str .= '<table cellspacing="0" cellpadding="2" border="0" width="100%" class="campaign_body">';
+
+  $html_str .= '<tr>';
+  $html_str .= '<td width="220">';
+  $html_str .= TABLE_HEADING_OPTION_ITEM_STORE_NUM; 
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= tep_draw_input_field('stock_num', '', 'id="stock_num" class="option_input"').TEXT_PREORDER_PRODUCTS_UNIT; 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+
+  $html_str .= '<tr>';
+  $html_str .= '<td>';
+  $html_str .= TABLE_HEADING_OPTION_ITEM_PRICE; 
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= tep_draw_input_field('price', '', 'id="price" class="option_input"').TEXT_MONEY_SYMBOL; 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  
+  $html_str .= '<tr>';
+  $html_str .= '<td>';
+  $html_str .= TABLE_HEADING_OPTION_ITEM_SORT_NUM; 
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= tep_draw_input_field('sort_num', '1000', 'id="sort_num" class="option_input"'); 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  
+  $html_str .= '<tr>';
+  $html_str .= '<td>';
+  $html_str .= '&nbsp;'; 
+  $html_str .= '</td>';
+  $html_str .= '<td style="padding-left:20%;">';
+  $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="check_item_info()"').'</a>&nbsp;'; 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  
+  $html_str .= '</table>';
+  $html_str .= '</form>'; 
+  echo $html_str;
+} else if (isset($_GET['action'])&&$_GET['action']=='edit_item') {
+  require_once('enabledoptionitem.php'); 
+  require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_OPTION_ITEM); 
+  $item_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where id = '".$_POST['item_id']."'"); 
+  $item = tep_db_fetch_array($item_query); 
+  $html_str = '';
+  $html_str .= '<table cellspacing="0" cellpadding="2" border="0" width="100%" class="campaign_top">';
+  $html_str .= '<tr>'; 
+  $html_str .= '<td width="20">'; 
+  $html_str .= tep_image(DIR_WS_IMAGES . 'icon_info.gif',IMAGE_ICON_INFO,16,16)."&nbsp;";
+  $html_str .= '</td>'; 
+  $html_str .= '<td align="left">'; 
+  $html_str .= '<b>'.$item['title'].'</b>'; 
+  $html_str .= '</td>'; 
+  $html_str .= '<td align="right">'; 
+  $html_str .= get_option_item_link($_POST['group_id'], $item['id']); 
+  $html_str .= '&nbsp;&nbsp;<a href="javascript:void(0);" onclick="close_item_info()">X</a>';  
+  $html_str .= '</td>'; 
+  $html_str .= '</tr>';
+  $html_str .= '</table>';
+  $html_str .= tep_draw_form('option_item', FILENAME_OPTION_ITEM, 'action=update&group_id='.$_POST['group_id']); 
+  $html_str .= '<table cellspacing="0" cellpadding="2" border="0" width="100%" class="campaign_body">';
+  $html_str .= '<tr>';
+  $html_str .= '<td width="220">';
+  $html_str .= tep_draw_hidden_field('item_id', $item['id']); 
+  $html_str .= TABLE_HEADING_OPTION_ITEM_NAME; 
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= tep_draw_input_field('title', $item['title'], 'id="title" class="option_text"'); 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  
+  $html_str .= '<tr>';
+  $html_str .= '<td>';
+  $html_str .= TABLE_HEADING_OPTION_ITEM_TITLE; 
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= tep_draw_input_field('front_title', $item['front_title'], 'id="front_title" class="option_text"'); 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  
+  $html_str .= '<tr>';
+  $html_str .= '<td>';
+  $html_str .= TABLE_HEADING_OPTION_ITEM_TYPE; 
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= '<select id="type" name="type" onchange="change_option_item_type(0);">'; 
+  foreach ($enabled_item_array as $ekey => $evalue) {
+    if (strtolower($evalue) == $item['type']) {
+      $html_str .= '<option value="'.$ekey.'" selected>'.strtolower($evalue).'</option>'; 
+    } else {
+      $html_str .= '<option value="'.$ekey.'">'.strtolower($evalue).'</option>'; 
+    }
+  }
+  $html_str .= '</select>'; 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  $html_str .= '</table>'; 
+  
+  $html_str .= '<table id="show_select" width="100%" cellspacing="0" cellpadding="2" border="0" class="campaign_body">';
+  $classname = 'HM_Option_Item_'.ucfirst($item['type']);
+  require_once('option/'.$classname.'.php');
+  $item_instance = new $classname();
+  $html_str .= $item_instance->prepareFormWithParent($item['id']);
+  $html_str .= '</table>'; 
+
+  $html_str .= '<table cellspacing="0" cellpadding="2" border="0" width="100%" class="campaign_body">';
+  $html_str .= '<tr>';
+  $html_str .= '<td width="220">';
+  $html_str .= TABLE_HEADING_OPTION_ITEM_STORE_NUM; 
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= tep_draw_input_field('stock_num', $item['stock_num'], 'id="stock_num" class="option_input"').TEXT_PREORDER_PRODUCTS_UNIT; 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+
+  $html_str .= '<tr>';
+  $html_str .= '<td>';
+  $html_str .= TABLE_HEADING_OPTION_ITEM_PRICE; 
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= tep_draw_input_field('price', number_format($item['price']), 'id="price" class="option_input"').TEXT_MONEY_SYMBOL; 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  
+  $html_str .= '<tr>';
+  $html_str .= '<td>';
+  $html_str .= TABLE_HEADING_OPTION_ITEM_SORT_NUM; 
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= tep_draw_input_field('sort_num', $item['sort_num'], 'id="sort_num" class="option_input"'); 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  
+  $html_str .= '<tr>';
+  $html_str .= '<td>';
+  $html_str .= '&nbsp;'; 
+  $html_str .= '</td>';
+  $html_str .= '<td style="padding-left:20%;">';
+  $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_NEW_PROJECT, 'onclick="create_option_item(\''.$_POST['group_id'].'\');"').'</a>&nbsp;'; 
+  $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="check_item_info();"').'</a>&nbsp;'; 
+  $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="if(confirm(\''.TEXT_DEL_OPTION_ITEM.'\')) window.location.href = \''.tep_href_link(FILENAME_OPTION_ITEM, 'action=deleteconfirm&item_id='.$item['id'].'&group_id='.$_POST['group_id']).'\';"').'</a>'; 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  
+  $html_str .= '</table>';
+  $html_str .= '</form>'; 
+  echo $html_str;
+} else if (isset($_GET['action'])&&$_GET['action']=='change_item') {
+  $classname = 'HM_Option_Item_'.ucfirst($_POST['stype']);
+  require_once('option/'.$classname.'.php');
+  $item_instance = new $classname();
+  echo $item_instance->prepareFormWithParent($_POST['item_id']);
 }
