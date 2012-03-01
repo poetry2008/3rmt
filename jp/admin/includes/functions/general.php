@@ -6964,3 +6964,26 @@ function get_campaign_link_page($cid, $site_id, $st_id)
   
   return $return_str;
 }
+
+function tep_get_relate_product_history_sum($relate_products_id,$date_sub,$site_id=0){
+  $sql ="select sum(op.products_quantity) as history_sum 
+        from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS.
+        " o on op.orders_id=o.orders_id left join ".TABLE_ORDERS_STATUS.
+        " os on o.orders_status=os.orders_status_id 
+        where 
+        op.products_id='".$relate_products_id."'
+        and os.calc_price = '1' 
+        and op.torihiki_date between ".
+        "DATE_SUB('".date('Y-m-d H:i:s')."',INTERVAL '"
+        .$date_sub."' DAY) and '".
+        date('Y-m-d H:i:s')."' ";
+  if($site_id!=0){
+    $sql .= " and o.site_id = '".$site_id."' ";
+  }
+  $query = tep_db_query($sql);
+  if($row = tep_db_fetch_array($query)){
+    return $row['history_sum'];
+  }else{
+    return 0;
+  }
+}
