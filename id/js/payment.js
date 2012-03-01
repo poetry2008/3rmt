@@ -66,3 +66,32 @@ function rowOverEffect(object) {
 function rowOutEffect(object) {
   if (object.className == 'moduleRowOver') object.className = 'moduleRow';
 }
+
+function check_confirm_payment(payment_str)
+{
+   var return_single = true;
+   var url_str = '';
+   $.ajax({
+     url: 'ajax_payment.php?action=check_payment',   
+     data: 'payment='+payment_str,
+     type: 'POST',
+     dataType: 'text',
+     async:false,
+     success: function (data) {
+       if (data == '1') {
+         return_single = true; 
+       } else {
+         return_single = false; 
+         url_str = data;   
+       }
+     }
+   });
+  
+  if (return_single == false) {
+    window.location.href = url_str; 
+  } else {
+    return true; 
+  }
+  
+  return false;
+}

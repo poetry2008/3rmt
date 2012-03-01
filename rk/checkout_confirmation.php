@@ -29,7 +29,7 @@ require(DIR_WS_ACTIONS.'visites.js');
       <td valign="top" id="contents"> 
       <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1>      
       <div class="comment">
-      <?php echo tep_draw_form('checkout_confirmation', $form_action_url, 'post');?>
+      <?php echo tep_draw_form('checkout_confirmation', $form_action_url, 'post', 'onSubmit="return check_confirm_payment(\''.$payment.'\')"');?>
         <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
         <tr> 
           <td><table border="0" width="100%" cellspacing="0" cellpadding="0"> 

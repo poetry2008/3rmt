@@ -1710,7 +1710,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
     <tr>
       <td valign="top">
     <!-- 订单信息预览，配合javascript，永远浮动在屏幕右下角 -->
-    <div id="orders_info_box" style="display:none; position:absolute; background:#FFF; margin-left:20px; width:20%; width:55%; padding:5px 5px 18px 10px;/*bottom:0;margin-top:40px;right:0;width:200px;*/">&nbsp;</div>
+    <div id="orders_info_box" style="left:15%; display:none; position:absolute; background:#FFFF00; width:70%; /*bottom:0;margin-top:40px;right:0;width:200px;*/">&nbsp;</div>
 <?php
   if ($ocertify->npermission == 15) {
     if(!tep_session_is_registered('reload')) $reload = 'yes';
@@ -2663,23 +2663,17 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
     ?>
     </td>
     <?php 
-    if ( isset($oInfo) && (is_object($oInfo)) && ($orders['orders_id'] == $oInfo->orders_id) ) { 
+    //if ( isset($oInfo) && (is_object($oInfo)) && ($orders['orders_id'] == $oInfo->orders_id) ) { 
+    if (false) { 
     ?>
     <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right">
     <?php
       echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); 
     } else { 
     ?>
-    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onmouseover="if(popup_num == 1) showPreOrdersInfo('<?php echo $orders['orders_id'];?>',this, 0);" onmouseout="if(popup_num == 1) hideOrdersInfo(0);">
+    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right">
     <?php
-      /* 
-      if ($_GET['action'] == 'delete') {
-        echo '<a href="' . tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID=' . $orders['orders_id']) .  '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
-      } else {
-        echo '<a href="' . tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('oID')) . 'oID=' . $orders['orders_id']) .  '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
-      }
-      */
-      echo '<a href="javascript:void(0);" onclick="showPreOrdersInfo(\''.$orders['orders_id'].'\', this, 1);">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
+      echo '<a href="javascript:void(0);" onclick="showPreOrdersInfo(\''.$orders['orders_id'].'\', this, 1, \''.urlencode(tep_get_all_get_params(array('oID', 'action'))).'\');">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
       
     } ?>&nbsp;</td>
     </tr>
@@ -2840,20 +2834,20 @@ function submit_confirm()
   }
 
 
-    echo '      <td width="20%" style="padding-top:20px;" valign="top">' . "\n";
-  if (!isset($_GET['action']) && $orders_query_numrows > 0) {
-    echo '<div id="rightinfo" style="background-color:#FFD700;">'; 
-  }
-  if ( (tep_not_null($heading)) && (tep_not_null($contents)) ) {
-    $box = new box;
-    echo $box->infoBox($heading, $contents);
-  }
+  //echo '      <td width="20%" style="padding-top:20px;" valign="top">' . "\n";
+  //if (!isset($_GET['action']) && $orders_query_numrows > 0) {
+    //echo '<div id="rightinfo" style="background-color:#FFD700;">'; 
+  //}
+  //if ( (tep_not_null($heading)) && (tep_not_null($contents)) ) {
+    //$box = new box;
+    //echo $box->infoBox($heading, $contents);
+  //}
   ?>
   <?php
-  if (!isset($_GET['action']) && $orders_query_numrows > 0) {
-    echo '</div>'; 
-  }
-    echo '      </td>' . "\n";
+  //if (!isset($_GET['action']) && $orders_query_numrows > 0) {
+    //echo '</div>'; 
+  //}
+    //echo '      </td>' . "\n";
 
 ?>
     </tr>

@@ -11,7 +11,7 @@ require(DIR_WS_ACTIONS.'checkout_confirmation.php');
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
 <!-- header_eof //--> 
 <!-- body //--> 
-<?php echo tep_draw_form('checkout_confirmation', $form_action_url, 'post');?>
+<?php echo tep_draw_form('checkout_confirmation', $form_action_url, 'post', 'onSubmit="return check_confirm_payment(\''.$payment.'\')"');?>
 <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border"> 
 <tr> 
 <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"> <!-- left_navigation //--> 

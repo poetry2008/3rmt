@@ -242,11 +242,9 @@ if ($_POST['orders_id'] &&
 							tep_get_all_get_params(array('oID', 'action')) .
 							'oID='.$orders['orders_id']);?>';"><font color="<?php echo $today_color; ?>"><?php echo $orders['orders_status_name']; ?></font></td>
                                                                                                                                                          <td style="border-bottom:1px solid
-#000000;background-color: darkred;" class="dataTableContent"
-                                                                                                                                                         onmouseover="if(popup_num == 1) showPreOrdersInfo('<?php echo $orders['orders_id'];?>',this, 0);"
-                                                                                                                                                         onmouseout="if(popup_num == 1) hideOrdersInfo(0);" align="right">
+#000000;background-color: darkred;" class="dataTableContent" align="right">
                                                                                                                                                          <?php
-                                                                                                                                                         echo '<a href="javascript:void(0);" onclick="showPreOrdersInfo(\''.$orders['orders_id'].'\', this, 1);">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
+                                                                                                                                                         echo '<a href="javascript:void(0);" onclick="showPreOrdersInfo(\''.$orders['orders_id'].'\', this, 1, \''.urlencode(tep_get_all_get_params(array('oID', 'action'))).'\');">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
     ?>&nbsp;</td>
     </tr>
         <?php 
@@ -604,9 +602,9 @@ if ($_POST['orders_id'] &&
   $orders_info = tep_db_fetch_array($orders_info_raw); 
   require(DIR_WS_FUNCTIONS . 'visites.php');
   if ($_POST['popup'] == '1') {
-    tep_get_pre_orders_products_string($orders_info, true, true);
+    tep_get_pre_orders_products_string($orders_info, true, true, $_POST['param_str']);
   } else {
-    tep_get_pre_orders_products_string($orders_info, true);
+    tep_get_pre_orders_products_string($orders_info, true, false, $_POST['param_str']);
   }
 
 } else if (isset($_GET['action'])&&$_GET['action']=='check_preorder_deadline') {
@@ -638,5 +636,14 @@ if ($_POST['orders_id'] &&
   } else {
     echo ''; 
   }
+} else if (isset($_GET['action']) && $_GET['action'] == 'show_del_preorder_info') {
+  require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_PREORDERS); 
+  $html_str = TEXT_INFO_DELETE_INTRO.'<br>';
+  $html_str .= tep_html_element_submit(IMAGE_DELETE);
+  $html_str .= '&nbsp;<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CANCEL, 'onclick="cancel_del_preorder_info(\''.$_POST['oID'].'\', \''.urlencode($_POST['param_str']).'\')"').'</a>'; 
+  echo $html_str;
+} else if (isset($_GET['action']) && $_GET['action'] == 'cancel_del_preorder_info') {
+  $html_str = '<a href="'.tep_href_link(FILENAME_PREORDERS, urldecode($_POST['param_str']).'oID='.$_POST['oID'].'&action=edit').'">'.tep_html_element_button(IMAGE_DETAILS).'</a>'; 
+  $html_str .= '&nbsp;<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="delete_preorder_info(\''.$_POST['oID'].'\', \''.urlencode($_POST['param_str']).'\')"').'</a>'; 
+  echo $html_str;
 }
-

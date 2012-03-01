@@ -104,7 +104,6 @@
           </td>
         </tr>
         <tr>
-          <?php if (false) {?> 
           <td colspan="2" style="padding-left:5px; ">
             <p class="smallText">
 <?php
@@ -117,7 +116,6 @@ if (!isset($listing['products_cflag'])) $listing['products_cflag'] = NULL;//del 
 ?>
             </p>
           </td>
-          <?php }?> 
           <td align="right" colspan="3">
             <a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $listing['products_id']) ; ?>" class="button_order"></a>
           </td>

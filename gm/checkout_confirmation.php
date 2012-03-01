@@ -32,7 +32,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
 <!-- left_navigation_eof //-->
 <!-- body_text //-->
 <div id="content">
-<?php echo tep_draw_form('checkout_confirmation', $form_action_url, 'post');?>
+<?php echo tep_draw_form('checkout_confirmation', $form_action_url, 'post', 'onSubmit="return check_confirm_payment(\''.$payment.'\')"');?>
 <div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
 <h1 class="pageHeading"><?php echo HEADING_TITLE; ?></h1>
 <table class="box_des" border="0" width="95%" cellspacing="0" cellpadding="0"> 
