@@ -290,6 +290,7 @@ case 'edit':
             'ORDER_INFO_PRODUCT_LIST', 
             'ORDER_INFO_ORDER_COMMENT', 
             'ORDER_INFO_BASIC_TEXT',
+            'DB_CALC_PRICE_HISTORY_DATE',
             ))) 
     while($site = tep_db_fetch_array($select_site_configure)) {
   $site_romaji[] = $site['romaji'];

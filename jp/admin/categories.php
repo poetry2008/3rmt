@@ -2296,11 +2296,13 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
     order by o.torihiki_date desc
     limit 5
   ");
+  $relate_products_name = tep_get_relate_products_name($pInfo->products_id);
   ?>
   <br>
   <table width="95%" border="1" cellspacing="0" cellpadding="2">
     <tr>
-      <th colspan="4" align="left"><?php echo TEXT_PRODUCT_LINK_PRODUCT_TEXT;?><?php echo tep_get_relate_products_name($pInfo->products_id);?></th>
+      <th colspan="4" align="left"><?php echo TEXT_PRODUCT_LINK_PRODUCT_TEXT;?><?php 
+      echo $relate_products_name;?></th>
     </tr>
     <tr>
       <th><?php echo TABLE_HEADING_FETCHTIME_TEXT;?></th>
@@ -2343,6 +2345,14 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   ?>
   </table>
   <?php
+  echo "<div class='relate_history_info'>";
+  $relate_sub_date = get_configuration_by_site_id('DB_CALC_PRICE_HISTORY_DATE');
+  $relate_row_count = tep_get_relate_product_history_sum(
+      $pInfo->relate_products_id,$relate_sub_date,$site_id);
+  $out_relate_sum_str = sprintf(TEXT_RELATE_ROW_COUNT
+      ,$relate_products_name,$relate_sub_date,intval($relate_row_count));
+  echo $out_relate_sum_str;
+  echo "</div>";
   }
   echo '</td>';
   echo '</tr></table>';
