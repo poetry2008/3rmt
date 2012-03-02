@@ -33,18 +33,6 @@
         $total -= intval($point);
       }   
     
-    if(MODULE_ORDER_TOTAL_CONV_STATUS == 'true' && ($payment == 'convenience_store')) {
-        $total += isset($_POST['codt_fee']) ? intval($_POST['codt_fee']) : 0;
-    }
-      if ($payment == 'moneyorder') {
-        $total += intval($_POST['money_order_fee']);
-      }
-      if ($payment == 'postalmoneyorder') {
-        $total += intval($_POST['postal_money_order_fee']);
-      }
-      if ($payment == 'telecom') {
-        $total += intval($_POST['telecom_order_fee']);
-      }
       if (isset($cart)) {
       $bflag_single = $this->ds_count_bflags();
       if ($bflag_single == 'View') {

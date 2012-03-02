@@ -63,7 +63,6 @@ class convenience_store extends basePayment  implements paymentInterface  {
     if(isset($_POST['con_email']) and !empty($_POST['con_email'])){
       return true;
     }else {
-      $_SESSION['checkform']['con_email']='PLEASE 翻译 この文件';
       return false;
     }
   }

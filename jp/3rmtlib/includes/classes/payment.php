@@ -36,6 +36,10 @@ class payment {
       {
         self::$instance =new payment($site_id);
       } //返回对象实例
+    
+    $payment_con_file = DIR_WS_LANGUAGES . $language .  '/modules/payment/payment.php';
+    require_once $payment_con_file; 
+    
     foreach(self::$instance->payment_enabled as $key=>$value){
       $languageFile = DIR_WS_LANGUAGES . $language . '/modules/payment/' . $value['file'];
       $classFile = DIR_WS_MODULES . 'payment/' .$value['file'];
