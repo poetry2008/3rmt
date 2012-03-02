@@ -1005,6 +1005,7 @@ a.s_column_bar {
 }
 .oa_auto_no_product { float:left; line-height:20px; width:100%\9;}
 .oa_auto_no_product_input { float:left;}
+#orders_info_box table td{ font-size:14px;}
 .orders_info_div td { vertical-align:top; padding-top:2px;}
 
 .error_body { height:100%; font-size:12px; background:url(../images/bjpicture.gif) top repeat-x; font-family:"ＭＳ Ｐゴシック",Osaka,Verdana,Arial,sans-serif}
@@ -1110,6 +1111,10 @@ a.s_column_bar {
 .breadcreumb_asset { float:right; line-height:40px; padding-right:10px;}
 .title_breadcreumb_div { clear:both; height:40px;}
 .rowHide { display:none}
+.edit_input { width:60%;}
+.edit_new_input{ width:98%;}
+.update_products_qty { width:25px;}
+
 
 /*campaign*/
 #show_campaign_info{

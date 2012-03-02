@@ -460,11 +460,8 @@ $mailoption['ORDER_TMETHOD']    = $insert_torihiki_date;
 $mailoption['SITE_NAME']        = STORE_NAME ;
 $mailoption['SITE_MAIL']        = SUPPORT_EMAIL_ADDRESS ;
 $mailoption['SITE_URL']         = HTTP_SERVER ;
-$mailoption['BANK_NAME']        = $_SESSION[$payment_modules->session_paymentvalue_name]['bank_name'];
-$mailoption['BANK_SHITEN']        = $_SESSION[$payment_modules->session_paymentvalue_name]['bank_shiten'];
-$mailoption['BANK_KAMOKU']        = $_SESSION[$payment_modules->session_paymentvalue_name]['bank_kamoku'];
-$mailoption['BANK_KOUZA_NUM']        = $_SESSION[$payment_modules->session_paymentvalue_name]['bank_kouza_num'];
-$mailoption['BANK_KOUZA_NAME']        = $_SESSION[$payment_modules->session_paymentvalue_name]['bank_kouza_name'];
+
+$payment_modules->deal_mailoption($mailoption, $payment);
 
 if ($point){
   $mailoption['POINT']            = str_replace('円', '', $currencies->format(abs($point)));

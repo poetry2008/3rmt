@@ -503,6 +503,7 @@ header
  * height: 18px;
 	color: #000;
 	font-size:12px;
+	width:180px;
 }
 .header_search_submit {
 	width: 56px;
@@ -2223,6 +2224,7 @@ searching
     padding: 5px;
     width: 100%;
 }
+.header_search_select option{ width:150px;}
 .checkout_payment_info{
 	*margin-top:5px;
 	font-size:12px;

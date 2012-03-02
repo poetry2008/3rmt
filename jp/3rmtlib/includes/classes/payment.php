@@ -617,5 +617,43 @@ class payment {
     }
     return null; 
   }
+
+  function preorder_deal_mailoption(&$mailoption, $payment, $pInfo)
+  {
+    if($p = $this->getModule($payment)){
+      if(method_exists($p,'preorder_deal_mailoption')){
+        $p->preorder_deal_mailoption($mailoption, $pInfo);
+      }
+    }
+  }
+
+  function deal_mailoption(&$mailoption, $payment)
+  {
+    if($p = $this->getModule($payment)){
+      if(method_exists($p,'deal_mailoption')){
+        $p->deal_mailoption($mailoption, $this->session_paymentvalue_name);
+      }
+    }
+  }
+
+  function deal_preorder_info($pInfo, &$sql_data_array)
+  {
+    $module = $this->getModule($pInfo['pre_payment']);
+    if ($module) {
+      if (method_exists($module, 'deal_preorder_info')) {
+        $module->deal_preorder_info($pInfo, $sql_data_array); 
+      }
+    }
+  }
+  
+  function admin_deal_mailoption(&$mailoption, $oID, $payment)
+  {
+    $module = $this->getModule($payment);
+    if ($module) {
+      if (method_exists($module, 'admin_deal_mailoption')) {
+        $module->admin_deal_mailoption($mailoption, $oID); 
+      }
+    }
+  }
 }
 ?>

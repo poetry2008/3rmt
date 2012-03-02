@@ -623,15 +623,8 @@ if (tep_not_null($action)) {
             $mailoption['SITE_MAIL']        = get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS',$order->info['site_id']);//d
             $mailoption['SITE_URL']         = get_url_by_site_id($order->info['site_id']);
 
-            if(isset($_SESSION['payment_bank_info'][$oID])&&
-                !empty($_SESSION['payment_bank_info'][$oID])){
-            $mailoption['BANK_NAME']        = $payment_bank_info[$oID]['bank_name'];      //?
-            $mailoption['BANK_SHITEN']      = $payment_bank_info[$oID]['bank_shiten'] ;   //?
-            $mailoption['BANK_KAMOKU']      = $payment_bank_info[$oID]['bank_kamoku'];    //?
-            $mailoption['BANK_KOUZA_NUM']   = $payment_bank_info[$oID]['bank_kouza_num'] ;//?
-            $mailoption['BANK_KOUZA_NAME']  = $payment_bank_info[$oID]['bank_kouza_name'];//?
-            $mailoption['ADD_INFO']  = $payment_bank_info[$oID]['add_info'];//?
-            }
+            $payment_modules->admin_deal_mailoption($mailoption, $oID, payment::changeRomaji($order->info['payment_method'], PAYMENT_RETURN_TYPE_CODE)); 
+
             unset($_SESSION['orderinfo_mail_use']);
             $point = $mailpoint;
             if ($point){
