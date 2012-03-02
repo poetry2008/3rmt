@@ -1842,6 +1842,7 @@ border:1px solid #CAC6BE;
  table-layout:fixed;
  width:495px;
 }
+.active_email input{ width:340px; height:21px;}
 #caemail p{ margin:5px 0 0 0;}
 #caemail p img { position:relative;/* left:-2px;*/ top:2px; top:4px\9;}
 .cemail_input_01 { float:left; width:150px;}
@@ -1859,6 +1860,7 @@ border:1px solid #CAC6BE;
     padding: 5px;
 	padding:0\9;
 }
+.active_email_name { font-size:11px; width:80px;}
 .preorser_formArea{ background-color:#ccc; font-size:13px;}
 .preorser_formArea td{ background-color:#FFFFFF; padding-left:2px; line-height:25px;}
 .formArea_td_info { width:360px\9; font-size:10px; line-height:1.5;}

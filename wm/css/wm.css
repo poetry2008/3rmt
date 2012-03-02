@@ -205,7 +205,9 @@ UL {
 	padding: 2px 2px 2px 2px;
 	line-height: 10px;
 	background: none;
+	height:100%;
 }
+.l_m_categories_tree3 strong{ height:100%;}
 .l_m_categories_tree a:hover, .l_m_categories_tree3 a:hover {
 	background: #f8f8f8 url(../images/design/box/dot.gif) bottom repeat-x;
 }

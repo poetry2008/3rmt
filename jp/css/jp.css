@@ -162,6 +162,7 @@ UL UL UL {
 	height:10px;
 	margin:0 0 0 -5px;
 	padding:0 0 0 5px;
+	height:100%;
 }
 .l_m_categories_tree strong a {
 }
@@ -176,6 +177,7 @@ UL UL UL {
 }
 .l_m_categories_tree3 a {
 	width:100px;
+	height:100%;
 }
 .subcategory_tree {
 	list-style-type:none;

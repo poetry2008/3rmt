@@ -52,18 +52,18 @@
     one_time_pwd('<?php echo $page_name;?>');
   </script>
 <?php }?>
-<!-- header //-->
+<!-- header -->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-<!-- header_eof //-->
-<!-- body //-->
+<!-- header_eof -->
+<!-- body -->
 <table border="0" width="100%" cellspacing="2" cellpadding="2">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
-<!-- left_navigation //-->
+<!-- left_navigation -->
 <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-<!-- left_navigation_eof //-->
+<!-- left_navigation_eof -->
     </table></td>
-<!-- body_text //-->
+<!-- body_text -->
     <td width="100%" valign="top">
   <table border='0' bgcolor='#7c6bce' width='100%'>
       <tr>
@@ -116,18 +116,6 @@
 
     tep_draw_hidden_field($customer_id);    
 ?>
-<script type="text/javascript">
-function hidden_payment(){
-  var idx = document.create_order.elements["payment_method"].selectedIndex;
-  var CI = document.create_order.elements["payment_method"].options[idx].value;
-  
-  if(CI == '銀行振込(買い取り)'){
-    document.getElementById('trpass1').style.display = "";
-  }else{
-    document.getElementById('trpass1').style.display = "none";
-  }
-}
-</script>
 <table border="0" width="100%" cellspacing="0" cellpadding="2">
   <tr>
     <td class="formAreaTitle"><?php echo CATEGORY_CORRECT; ?></td>
@@ -198,31 +186,11 @@ function hidden_payment(){
 <?php
   // オプションのリスト作成
   $torihiki_array = explode("\n", DS_TORIHIKI_HOUHOU);
-  $torihiki_list[] = array('id' => '', 'text' => TEXT_TORIHIKI_LIST_DEFAULT_TXT);
+  $torihiki_list[] = array('id' => '', 'text' => '選択してください');
   for($i=0; $i<sizeof($torihiki_array); $i++) {
     $torihiki_list[] = array('id' => $torihiki_array[$i],
                 'text' => $torihiki_array[$i]);
   }
-    // 这里需要添加代码 获取 后台配送的时间设置 db_set_day 是后台设置 类似 0-1  3-7
-    // start_day 开始时间要加的天数
-    // end_day 开始时间加取得的设置的第二个 参数 是结束时间
-    //后台设置的 配送 延迟时间 $send_sleep_time
-    $db_set_day = '0-7';
-    $send_sleep_time = 0;
-    $day_temp_arr = explode('-',$db_set_day);
-    $start_day = $day_temp_arr[0];
-    $end_day = $day_temp_arr[1];
-    $show_next_day = false;
-    $start_time = time()+$send_sleep_time*60;
-    if($start_day == 0){ 
-      if($d_num != intval(date('d',$start_time))){
-        $start_day = 1;
-        $end_day--;
-        $show_next_day = true;
-      }   
-    }   
-
-
   // 取引日のリスト作成
   $today = getdate();
   $m_num = $today['mon'];
@@ -234,7 +202,6 @@ function hidden_payment(){
               'text' => strftime("%Y年%m月%d日（%a）", mktime(0,0,0,$m_num,$d_num+$i,$year)));
   }
   // 取引時間のリスト作成
-  /*
   $hour_list[] = array('id' => '', 'text' => '--');
   for($i=0; $i<24; $i++) {
     $hour_num = str_pad($i, 2, "0", STR_PAD_LEFT);
@@ -248,7 +215,6 @@ function hidden_payment(){
     $min_list[] = array('id' => $min_num,
               'text' => $min_num);
   }
-  */
   // 支払方法のリスト作成 
   /*
   $payment_text = "銀行振込\nクレジットカード決済\n銀行振込(買い取り)\nコンビニ決済\nゆうちょ銀行（郵便局）\nその他の支払い";
@@ -268,19 +234,6 @@ function hidden_payment(){
   );
   */
 
-  // 口座科目の記憶
-  switch(isset($bank_kamoku)?$bank_kamoku:null) {
-    case '普通':
-      default:
-      $bank_sele_f = true;
-      $bank_sele_t = false;
-      break;
-    case '当座':
-      $bank_sele_f = false;
-      $bank_sele_t = true;
-      break;
-  }
-
 ?>
   <tr>
     <td class="formAreaTitle"><br><?php echo CREATE_ORDER_PAYMENT_TITLE;?></td>
@@ -291,7 +244,7 @@ function hidden_payment(){
           <td class="main"><table border="0" cellspacing="0" cellpadding="2">
               <tr>
                 <td class="main">&nbsp;<?php echo CREATE_ORDER_PAYMENT_TITLE;?>:</td>
-                <td class="main">&nbsp;<?php echo CREATE_ORDER_SHIRU_TEXT;?><input type="hidden" name="payment_method" value="銀行振込(買い取り)"></td>
+                <td class="main">&nbsp;<?php echo CREATE_ORDER_SHIRU_TEXT;?><input type="hidden" name="payment_method" value="<?php echo payment::changeRomaji('buying', PAYMENT_RETURN_TYPE_TITLE);?>"></td>
               </tr>
             </table></td>
         </tr>
@@ -313,27 +266,8 @@ function hidden_payment(){
                 <td class="main">&nbsp;<?php echo tep_draw_pull_down_menu('date', $date_list, isset($date)?$date:$getTimeInfo[0]); ?><?php if (isset($entry_date_error) && $entry_date_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
               </tr>
               <tr>
-                <td class="main" valign="top">&nbsp;<?php echo CREATE_ORDER_FETCH_TIME_TEXT;?></td>
-                <td class="main">
-    <div class="all_torihiki_radio">
-    <?php 
-    $radio_arr = tep_get_torihiki_date_radio($start_time);
-    $row_num = 0;
-    echo "<ul>";
-    foreach($radio_arr as $radio){
-      $row_num++;
-      echo "<li>".$radio."</li>";
-      if($row_num%4==0){
-        echo "</ul><ul>";
-      }
-    }
-    echo "</ul>";
-    ?>
-    </div>
-                <?php /* 
-                &nbsp;<?php echo tep_draw_pull_down_menu('hour', $hour_list, isset($hour)?$hour:$getTimeInfo[1]); ?>&nbsp;時&nbsp;<?php echo tep_draw_pull_down_menu('min', $min_list, isset($min)?$min:$getTimeInfo[2]); ?>&nbsp;分&nbsp;<b><?php echo CREATE_ORDER_FETCH_ALLTIME_TEXT;?></b><?php if (isset($entry_tardetime_error ) && $entry_tardetime_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?>
-                */?>
-                </td>
+                <td class="main">&nbsp;<?php echo CREATE_ORDER_FETCH_TIME_TEXT;?></td>
+                <td class="main">&nbsp;<?php echo tep_draw_pull_down_menu('hour', $hour_list, isset($hour)?$hour:$getTimeInfo[1]); ?>&nbsp;時&nbsp;<?php echo tep_draw_pull_down_menu('min', $min_list, isset($min)?$min:$getTimeInfo[2]); ?>&nbsp;分&nbsp;<b><?php echo CREATE_ORDER_FETCH_ALLTIME_TEXT;?></b><?php if (isset($entry_tardetime_error ) && $entry_tardetime_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
               </tr>
               <tr>
                 <td class="main">&nbsp;<?php echo CREATE_ORDER_FETCH_TIME_SELECT_TEXT;?></td>
@@ -378,11 +312,11 @@ function hidden_payment(){
   </td>
   </tr>
 </table>
-<!-- body_eof //-->
+<!-- body_eof -->
 
-<!-- footer //-->
+<!-- footer -->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-<!-- footer_eof //-->
+<!-- footer_eof -->
 
 <br>
 </body>

@@ -205,6 +205,22 @@ if (isset($entry_payment_method_error ) && $entry_payment_method_error == true) 
 <?php
 
 
+if(isset($from_page)&&$from_page == 'create_order_process2'){
+
+foreach ($selections as $se){
+if ($se['id'] == payment::changeRomaji($_POST['payment_method'],PAYMENT_RETURN_TYPE_CODE)) {
+foreach($se['fields'] as $field ){
+    echo '<tr>';
+    echo '<td class="main">';
+    echo "&nbsp;".$field['title']."</td>";
+    echo "<td class='main'>";
+    echo "&nbsp;&nbsp;".$field['field'];
+    echo "</td>";
+    echo "</tr>";
+  }
+}
+}
+} else {
 foreach ($selections as $se){
 ?>
 <?php
@@ -219,6 +235,7 @@ foreach ($selections as $se){
     echo "</tr>";
   }?>
 <?php
+}
 }
 ?>
 

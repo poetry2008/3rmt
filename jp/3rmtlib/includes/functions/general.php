@@ -1900,6 +1900,7 @@ function forward404Unless($condition)
       case FILENAME_PASSWORD_FORGOTTEN:
       case FILENAME_ADVANCED_SEARCH_RESULT:
       case FILENAME_CREATE_ACCOUNT_SUCCESS:
+      case FILENAME_FAQ:
         $title = TITLE;
         break;
     }
@@ -4286,9 +4287,9 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
                            'billing_telephone' => $billing_address['entry_telephone'], 
                            'billing_address_format_id' => $billing_address['address_format_id'],  
                            'comment_msg' => $pInfo['yourmessage'], 
-                           'bank_info' => $pInfo['bank_name'].'<<<|||'.$pInfo['bank_shiten'].'<<<|||'.$pInfo['bank_kamoku'].'<<<|||'.$pInfo['bank_kouza_num'].'<<<|||'.$pInfo['bank_kouza_name']
                            );
    
+   $payment_modules->deal_preorder_info($pInfo, $sql_data_array); 
    $sh_comments = ''; 
    $sh_comments = $payment_modules->deal_preorder_additional($pInfo, $sql_data_array); 
    

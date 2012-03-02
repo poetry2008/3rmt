@@ -311,12 +311,9 @@ $mailoption['ORDER_TMETHOD']    = $torihikihouhou_date_str;
 $mailoption['SITE_NAME']        = STORE_NAME;
 $mailoption['SITE_MAIL']        = SUPPORT_EMAIL_ADDRESS;
 $mailoption['SITE_URL']         = HTTP_SERVER;
-$bank_info_array = explode('<<<|||', $preorder['bank_info']);
-$mailoption['BANK_NAME'] = $bank_info_array[0];
-$mailoption['BANK_SHITEN'] = $bank_info_array[1];
-$mailoption['BANK_KAMOKU'] = $bank_info_array[2];
-$mailoption['BANK_KOUZA_NUM'] = $bank_info_array[3];
-$mailoption['BANK_KOUZA_NAME'] = $bank_info_array[4];
+
+$payment_modules->preorder_deal_mailoption($mailoption, $cpayment_code, $preorder); 
+
 
 $mailoption['ORDER_COUNT'] = $preorder_product_res['products_quantity'];
 $mailoption['ORDER_LTOTAL'] = number_format($preorder_product_res['final_price']*$preorder_product_res['products_quantity'], 0, '.', '');

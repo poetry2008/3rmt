@@ -2225,6 +2225,7 @@ searching
     padding: 5px;
     width: 100%;
 }
+.header_search_select option{ width:150px;}
 .checkout_payment_info{
 	*margin-top:5px;
 	font-size:12px;

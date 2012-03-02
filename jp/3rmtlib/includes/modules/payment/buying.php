@@ -451,5 +451,39 @@ class buying extends basePayment  implements paymentInterface  {
     return $comment;
   }
   
+  function preorder_deal_mailoption(&$mailoption, $pInfo)
+  {
+    $bank_info_array = explode('<<<|||', $pInfo['bank_info']); 
+    $mailoption['BANK_NAME'] = $bank_info_array[0]; 
+    $mailoption['BANK_SHITEN'] = $bank_info_array[1]; 
+    $mailoption['BANK_KAMOKU'] = $bank_info_array[2]; 
+    $mailoption['BANK_KOUZA_NUM'] = $bank_info_array[3]; 
+    $mailoption['BANK_KOUZA_NAME'] = $bank_info_array[4]; 
+  }
+
+  function deal_mailoption(&$mailoption, $session_paymentinfo_name)
+  {
+    $mailoption['BANK_NAME'] = $_SESSION[$session_paymentinfo_name]['bank_name']; 
+    $mailoption['BANK_SHITEN'] = $_SESSION[$session_paymentinfo_name]['bank_shiten']; 
+    $mailoption['BANK_KAMOKU'] = $_SESSION[$session_paymentinfo_name]['bank_kamoku']; 
+    $mailoption['BANK_KOUZA_NUM'] = $_SESSION[$session_paymentinfo_name]['bank_kouza_num']; 
+    $mailoption['BANK_KOUZA_NAME'] = $_SESSION[$session_paymentinfo_name]['bank_kouza_name']; 
+  }
+ 
+  function deal_preorder_info($pInfo, &$sql_data_array) {
+    $sql_data_array['bank_info'] = $pInfo['bank_name'].'<<<|||'.$pInfo['bank_shiten'].'<<<|||'.$pInfo['bank_kamoku'].'<<<|||'.$pInfo['bank_kouza_num'].'<<<|||'.$pInfo['bank_kouza_name']; 
+  }
+
+  function admin_deal_mailoption(&$mailoption, $oID)
+  {
+    if(isset($_SESSION['payment_bank_info'][$oID])&& !empty($_SESSION['payment_bank_info'][$oID])){
+      $mailoption['BANK_NAME'] = $_SESSION['payment_bank_info'][$oID]['bank_name']; 
+      $mailoption['BANK_SHITEN']      = $_SESSION['payment_bank_info'][$oID]['bank_shiten'] ;  
+      $mailoption['BANK_KAMOKU']      = $_SESSION['payment_bank_info'][$oID]['bank_kamoku'];
+      $mailoption['BANK_KOUZA_NUM'] = $_SESSION['payment_bank_info'][$oID]['bank_kouza_num'] ;
+      $mailoption['BANK_KOUZA_NAME'] = $_SESSION['payment_bank_info'][$oID]['bank_kouza_name'];
+      $mailoption['ADD_INFO'] = $_SESSION['payment_bank_info'][$oID]['add_info'];
+    }
+  }
 }
 ?>

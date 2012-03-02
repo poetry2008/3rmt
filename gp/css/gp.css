@@ -290,6 +290,7 @@ UL {
 	text-align:left;
 	width:133px;
 }
+.l_m_categories_tree3 strong{ height:100%;}
 .l_m_categories_tree3 a{
 	font-size: 12px;
 	*font-size: 12px;
@@ -302,6 +303,7 @@ UL {
 	width:120px;
 	margin-top:-10px;
 	*margin-top:2px;
+	height:100%;
 }
 .l_m_categories_tree a:hover,l_m_categories_tree3 a:hover{
 	font-size: 12px;
