@@ -71,12 +71,7 @@ class telecom  extends basePayment  implements paymentInterface  {
     // 追加 - 2007.01.05 ----------------------------------------------
     $total = $order->info['total'];
     $f_result = $this->calc_fee($total); 
-    if ((MODULE_ORDER_TOTAL_CODT_STATUS == 'true')
-        && ($payment == 'cod_table')
-        && isset($_POST['code_fee'])
-        && (0 < intval($_POST['code_fee']))) {
-      $total += intval($_POST['code_fee']);
-    }
+    
     
     //Add point
     if ((MODULE_ORDER_TOTAL_POINT_STATUS == 'true')
@@ -84,9 +79,6 @@ class telecom  extends basePayment  implements paymentInterface  {
       $total -= intval($point);
     }   
     
-    if(MODULE_ORDER_TOTAL_CONV_STATUS == 'true' && ($payment == 'convenience_store')) {
-      $total += intval($_POST['code_fee']);
-    }
     $total += intval($this->n_fee); 
     // 追加 - 2007.01.05 ----------------------------------------------
     if (isset($_SESSION['campaign_fee'])) {
