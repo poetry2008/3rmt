@@ -51,11 +51,16 @@ if (isset($body_option)) {
         echo "</li></ul>";
         $show_back_url = true;
        ?>
+    <div class="faq_back">
+      <a href="<?php echo HTTP_SERVER.'/'.implode('/',$link_url_arr).'/';?>"><img src="includes/languages/japanese/images/buttons/button_back.gif" alt="<?php echo TEXT_BACK;?>"></a>
+    </div>
     <?php }?>
 
 
     <?php //question list ?>
     <?php if($q_row = tep_db_fetch_array($last_faq_question_query)){ ?>
+    <h2 class="pageHeading" ><?php echo $parent_category_info['title'].
+      TEXT_OTHER_QUESTION;?></h2>
     <ul class="faq_info_ul_question">
     <li class="faq_info_li_question"><a href="<?php echo
      HTTP_SERVER.'/'.$link_url.'/'.urlencode($q_row['romaji']).'.html';?>">
@@ -77,7 +82,7 @@ if (isset($body_option)) {
     <?php } ?>
 
 
-    <?php if($show_back_url){ ?>
+    <?php if(!$show_back_url){ ?>
     <div class="faq_back">
       <a href="<?php echo HTTP_SERVER.'/'.implode('/',$link_url_arr).'/';?>"><img src="includes/languages/japanese/images/buttons/button_back.gif" alt="<?php echo TEXT_BACK;?>"></a>
     </div>

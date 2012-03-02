@@ -44,7 +44,7 @@ if($current_faq_category_id){
     <h2 class="pageHeading"><?php echo $parent_info['title'].TEXT_QUESTION_TITLE;?></h2>
     <?php }else {?>
     <h2 class="pageHeading"><?php echo
-      TEXT_FAQ_TITLE.'</h2><br><font style="margin-left:12px;">'.TEXT_FAQ_TITLE_END.'</font>';?>
+      TEXT_FAQ_TITLE.'</h2><br><font style="margin-left:10px;">'.TEXT_FAQ_TITLE_END.'</font>';?>
     <?php } ?>
     <ul class="faq_ul_category">
     <li><a href="<?php echo
@@ -157,7 +157,7 @@ if($current_faq_category_id){
 }else{
   ?>
     <h2 class="pageHeading"><?php echo
-      TEXT_FAQ_TITLE.'</h2><br><font style="margin-left:12px;">'.TEXT_FAQ_TITLE_END.'</font>';?>
+      TEXT_FAQ_TITLE.'</h2><br><font style="margin-left:10px;">'.TEXT_FAQ_TITLE_END.'</font>';?>
   <?php 
   $all_category_sql = "
                       select * from 
