@@ -979,7 +979,7 @@ P.description {
 .button_delete02 {
 	display:block;
 	overflow:hidden;
-	text-indent:-2000px;
+	text-indent:-2000px;	
 	width:53px;
 	height:25px;
 	background-image: url(../includes/languages/japanese/images/buttons/button_delete02.gif);
@@ -2436,8 +2436,10 @@ searching
 }
 
 /*faq*/
-.all_category_row_div, .all_category_row_div a {
-	margin: 10px 0 0 6px;
+.all_category_row_div{
+	margin:10px 0 0 10px;
+}
+.all_category_row_div a {
 	font-weight:bold;
 }
 .faq_ul{
@@ -2447,51 +2449,62 @@ searching
 .faq_ul li{
 	line-height:21px;
 }
-.faq_question_row_div, .faq_question_row_div a{
+.faq_question_row_div{
+	margin-left:7px;
+}
+.faq_question_row_div a{
 	font-size:12px;
 	font-weight:bold;
-	margin-left:6px;
 }
 .faq_back{ text-align:right;}
 .faq_ul_question_all{
 	padding:0;
 	margin:5px 0 0 40px;
 }
-.faq_ul_question_all li{
+.faq_ul_question_all li, .faq_ul_category li{
+	background: url(../images/li_dot.gif) left 6px no-repeat;
+	padding-left:20px;
 	line-height:21px;
+	list-style-type:none;
+	*width:100%;
+	*margin-left:-15px;
+	*padding-left:20px;
 }
 .faq_ul_category{
 	margin:5px 0 0 0;
 	padding-left:37px\9;
 }
-.faq_ul_category li{
-	line-height:21px;
-}
 .faq_ul_question{
-	margin:0 0 0 30px;
+	margin:0 0 0 5px;
 	padding:0;
 }
 .faq_li_question{
 	list-style-type:none;
-	background: url(../images/q.gif) left center no-repeat;
+	background: url(../images/q.gif) left 4px no-repeat;
 	padding-left:28px;
 	padding-left:8px\9;
 	line-height:21px;
 }
+.faq_li_question a{
+	margin-left:5px\9;
+	*width:100%;
+}
 .faq_info_ul_answer, .faq_info_ul_question{
-	margin-left:30px;
+	list-style-type:none;
+	margin-left:4px;
 	padding:0;
+	*margin:0 0 0 -10px;
 }
 .faq_info_li_answer{
 	list-style-type:none;
-	background: url(../images/a.gif) left center no-repeat;
+	background: url(../images/a.gif) no-repeat left 4px;
 	padding-left:28px;
-	padding-left:15px\9;
 	line-height:21px;
+	*width:100%;
 }
 .faq_info_li_question{
 	list-style-type:none;
-	background: url(../images/q.gif) left center no-repeat;
+	background: url(../images/q.gif) left 4px no-repeat;
 	padding-left:28px;
 	padding-left:15px\9;
 	line-height:21px;

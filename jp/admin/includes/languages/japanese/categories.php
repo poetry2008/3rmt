@@ -224,3 +224,5 @@ define('NOTICE_MUST_EDIT_CATEGORY_OR_PRODUCT', 'このサイトの商品は登�
 define('NOTICE_HAS_NO_PREVILEGE_EDIT', '権限がありません');
 define('TEXT_CATEGORY_ROMAJI', 'ローマ字:');
 define('TEXT_PRODUCTS_PREORDER_TEXT', '予約:');
+
+define('TEXT_RELATE_ROW_COUNT', '%sは過去%d日に%d個注文がありました。');
