@@ -210,6 +210,7 @@ function showRequest(formData, jqForm, options) {
 
 // 列表右侧的订单信息显示
 function showOrdersInfo(oID,ele,popup_type,param_str){
+  param_str = decodeURIComponent(param_str);
   data_str = "oid="+oID+"&param_str="+param_str; 
   if (popup_type == 1) {
     data_str += "&popup=1"; 

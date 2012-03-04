@@ -775,6 +775,7 @@ ele.className='orders_computer_checked';
 }
 
 function showPreOrdersInfo(oID,ele,popup_type,param_str){
+  param_str = decodeURIComponent(param_str);
   data_str = "oid="+oID+"&param_str="+param_str;
   if (popup_type == 1) {
     data_str += "&popup=1";

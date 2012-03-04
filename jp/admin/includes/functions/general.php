@@ -3263,20 +3263,16 @@ function tep_get_orders_products_names($orders_id) {
 // orders.php
 
 function tep_get_orders_products_string($orders, $single = false, $popup = false, $param_str = '') {
+  global $ocertify; 
   require_once(DIR_WS_CLASSES . 'payment.php');
-
   $str = '';
 
   $str .= '<table border="0" cellpadding="2" cellspacing="0" class="popup_order_title" width="100%">';
-  if ($popup) {
-    $str .= '<tr>';
-    $str .= '<td width="20">'.tep_image(DIR_WS_IMAGES.'icon_info.gif', IMAGE_ICON_INFO,16,16).'&nbsp;</td>'; 
-    $str .= '<td align="left"><b>['.$orders['orders_id'].']&nbsp;&nbsp;'.tep_datetime_short_torihiki($orders['date_purchased']).'</b></td>'; 
-    $str .= '<td align="right"><a href="javascript:void(0);" onclick="hideOrdersInfo(1);">X</a></td>';
-    $str .= '</tr>';
-  } else {
-    $str .= '<tr><td class="main">&nbsp;</td></tr>';
-  }
+  $str .= '<tr>';
+  $str .= '<td width="20">'.tep_image(DIR_WS_IMAGES.'icon_info.gif', IMAGE_ICON_INFO,16,16).'&nbsp;</td>'; 
+  $str .= '<td align="left"><b>['.$orders['orders_id'].']&nbsp;&nbsp;'.tep_datetime_short_torihiki($orders['date_purchased']).'</b></td>'; 
+  $str .= '<td align="right"><a href="javascript:void(0);" onclick="hideOrdersInfo(1);">X</a></td>';
+  $str .= '</tr>';
   $str .= '</table>';
   
   $str .= tep_draw_form('orders', FILENAME_ORDERS, urldecode($param_str).'oID='.$orders['orders_id'].'&action=deleteconfirm');
@@ -3312,7 +3308,7 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
   }
   if(ORDER_INFO_BASIC_TEXT == 'true'){
     $str .= '<tr>';
-    $str .= '<td class="main" width="220">';
+    $str .= '<td class="main" width="120">';
     $str .= TEXT_FUNCTION_HEADING_CUSTOMERS;
     $str .= '</td>';
     $str .= '<td class="main">';
@@ -3322,7 +3318,7 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
 
   }
   
-    $str .= '<tr><td class="main" width="220">支払方法：</td><td class="main" style="color:darkred;">'.payment::changeRomaji($orders['payment_method'],'title').'</td></tr>';
+    $str .= '<tr><td class="main" width="120">支払方法：</td><td class="main" style="color:darkred;">'.payment::changeRomaji($orders['payment_method'],'title').'</td></tr>';
     
     if ($orders['confirm_payment_time'] != '0000-00-00 00:00:00') {
       $time_str = date('Y年n月j日', strtotime($orders['confirm_payment_time'])); 
@@ -3686,10 +3682,12 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
   
   $str .= '</table>';
   $str .= '<table class="popup_order_info" border="0" cellpadding="2" cellspacing="0" width="100%">';
-  $str .= '<tr><td width="220">&nbsp;</td><td class="main" style="padding-left:20%;">';
+  $str .= '<tr><td width="120">&nbsp;</td><td class="main" style="padding-left:20%;">';
   $str .= '<div id="order_del">'; 
   $str .= '<a href="'.tep_href_link(FILENAME_ORDERS, urldecode($param_str).'oID='.$orders['orders_id'].'&action=edit').'">'.tep_html_element_button(IMAGE_DETAILS).'</a>'; 
-  $str .= '&nbsp;<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="delete_order_info(\''.$orders['orders_id'].'\', \''.urlencode($param_str).'\')"').'</a>'; 
+  if ($ocertify->npermission == 15) {
+    $str .= '&nbsp;<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="delete_order_info(\''.$orders['orders_id'].'\', \''.urlencode($param_str).'\')"').'</a>'; 
+  }
   $str .= '</div>'; 
   $str .= '</td></tr>';
   $str .= '</table>';
