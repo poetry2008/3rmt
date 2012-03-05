@@ -224,7 +224,7 @@ offset = ele.offsetTop + ele.offsetHeight + $('#orders_info_box').height() > $('
 $('#orders_info_box').css('top',offset).show();
 }else{
 if(ele.offsetTop+$("#orders_list_table").position().top+ele.offsetTop + ele.offsetHeight + $('#orders_info_box').height() > document.documentElement.clientHeight){
-offset = ele.offsetTop+$("#orders_list_table").position().top-$('#orders_info_box').height()-$('#offsetHeight').height()-ele.offsetHeight;
+offset = ele.offsetTop+$("#orders_list_table").position().top-$('#orders_info_box').height()-$('#offsetHeight').height()-1;
 $('#orders_info_box').css('top',offset).show();
 }else{
 offset = ele.offsetTop+$("#orders_list_table").position().top+ele.offsetHeight;
@@ -797,11 +797,11 @@ offset = ele.offsetTop + $('#orders_info_box').height() > $('#orders_list_table'
 $('#orders_info_box').css('top',offset).show();
 */
 if(document.documentElement.clientHeight < document.body.scrollHeight){
-offset = ele.offsetTop + ele.offsetHeight + $('#orders_info_box').height() > $('#orders_list_table').height()? ele.offsetTop+$("#orders_list_table").position().top-$('#tep_site_filter').height()-$('#orders_info_box').height()-$('#offsetHeight').height():ele.offsetTop+$("#orders_list_table").position().top+ele.offsetHeight;
+offset = ele.offsetTop + ele.offsetHeight + $('#orders_info_box').height() > $('#orders_list_table').height()? ele.offsetTop+$("#orders_list_table").position().top-1-$('#orders_info_box').height()-$('#offsetHeight').height():ele.offsetTop+$("#orders_list_table").position().top+ele.offsetHeight;
 $('#orders_info_box').css('top',offset).show();
 }else{
 if(ele.offsetTop+$("#orders_list_table").position().top+ele.offsetTop + ele.offsetHeight + $('#orders_info_box').height() > document.documentElement.clientHeight){
-offset = ele.offsetTop+$("#orders_list_table").position().top-$('#orders_info_box').height()-$('#offsetHeight').height()-ele.offsetHeight;
+offset = ele.offsetTop+$("#orders_list_table").position().top-$('#orders_info_box').height()-$('#offsetHeight').height()-1;
 $('#orders_info_box').css('top',offset).show();
 }else{
 offset = ele.offsetTop+$("#orders_list_table").position().top+ele.offsetHeight;

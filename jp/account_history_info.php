@@ -68,7 +68,15 @@
                   </tr> 
                   <tr> 
                     <td class="smallText"><?php echo HEADING_ORDER_DATE . ' ' . tep_date_long($order->info['date_purchased']); ?></td> 
-                    <td class="smallText" align="right"><?php echo HEADING_ORDER_TOTAL . ' ' .  abs($order->info['total']).MONEY_UNIT_ATEXT; ?></td> 
+                    <td class="smallText" align="right">
+                    <?php 
+                    if ($order->info['total'] < 0) {
+                      echo HEADING_ORDER_TOTAL . ' ' . '<font color="#ff0000">' .abs($order->info['total']).'</font>'.MONEY_UNIT_ATEXT; 
+                    } else {
+                      echo HEADING_ORDER_TOTAL . ' ' .  abs($order->info['total']).MONEY_UNIT_ATEXT; 
+                    }
+                    ?>
+                    </td> 
                   </tr> 
                 </table></td> 
             </tr> 
@@ -136,7 +144,13 @@
 
     if (sizeof($order->info['tax_groups']) > 1) echo '            <td class="main" valign="top" align="right">' . tep_display_tax_value($order->products[$i]['tax']) . '%</td>' . "\n";
 
-    echo '            <td class="main" align="right" valign="top">' . $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . '</td>' . "\n" .
+    echo '            <td class="main" align="right" valign="top">';
+    if ($order->products[$i]['final_price'] < 0) {
+      echo '<font color="ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value'])).'</font>'.JPMONEY_UNIT_TEXT;
+    } else {
+      echo $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']);
+    }
+    echo '</td>' . "\n" .
          '          </tr>' . "\n";
   }
 ?> 

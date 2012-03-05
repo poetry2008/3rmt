@@ -152,7 +152,8 @@ echo '</form>';
               <td class="main"><?php echo CHANGE_ORDER_PRODUCT_CHARACTER;?></td> 
               <td class="main">
               <?php 
-              echo tep_draw_input_field('p_character', isset($_POST['p_character'])?$_POST['p_character']:'');
+              $p_character_name = $preorder_product_res['products_character']; 
+              echo tep_draw_input_field('p_character', isset($_POST['p_character'])?$_POST['p_character']:$p_character_name);
               if (isset($character_error)) {
                 echo '<br><font color="#ff0000">'.$character_error.'</font>'; 
               }

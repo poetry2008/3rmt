@@ -20,7 +20,7 @@ if (extension_loaded('mbstring')) {
 // on FreeBSD try 'en_US.ISO_8859-1'
 // on Windows try 'en', or 'English'
 //@setlocale(LC_TIME, 'ja_JP');
-@setlocale(LC_TIME, 'en_US)');
+//@setlocale(LC_TIME, 'en_US)');
 define('DATE_FORMAT_SHORT', '%Y/%m/%d');  // this is used for strftime()
 define('DATE_FORMAT_LONG', '%Y年%m月%d日 %A'); // this is used for strftime()
 define('DATE_FORMAT', 'Y/m/d'); // this is used for date()

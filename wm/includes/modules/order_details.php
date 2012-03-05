@@ -152,7 +152,13 @@
     if (!strstr($PHP_SELF, FILENAME_ACCOUNT_HISTORY_INFO)) {
       //echo '    <td align="right" class="main" style=" background:#dbfdff"><span id="pri_'.$products[$i]['id'] .'"><b>' .  $currencies->display_price($products[$i]['price'], tep_get_tax_rate($products[$i]['tax_class_id']), $products[$i]['quantity']) . '</b></span>';
       // edit total 
-      echo '    <td align="right" class="main" style="background:#dbfdff"><span id="pri_'.$products[$i]['id'] .'">'.  $currencies->display_price($products[$i]['price'], tep_get_tax_rate($products[$i]['tax_class_id']), $products[$i]['quantity']) . '</span>';
+      echo '    <td align="right" class="main" style="background:#dbfdff"><span id="pri_'.$products[$i]['id'] .'">';
+      if ($products[$i]['price'] < 0) {
+        echo '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->display_price($products[$i]['price'], tep_get_tax_rate($products[$i]['tax_class_id']), $products[$i]['quantity'])).'</font>'.JPMONEY_UNIT_TEXT;
+      } else {
+        echo $currencies->display_price($products[$i]['price'], tep_get_tax_rate($products[$i]['tax_class_id']), $products[$i]['quantity']);
+      }
+      echo '</span>';
     } else {
       echo '    <td align="right" class="main" style=" background:#dbfdff"><b>' . $currencies->display_price($products[$i]['price'], $products[$i]['tax'], $products[$i]['quantity']) . '</b>';
     }

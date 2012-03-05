@@ -1128,9 +1128,27 @@ if (($action == 'edit') && ($order_exists == true)) {
          '<input type="hidden" name="op_id_'.$pid.'" 
           value="'.tep_get_pre_product_by_op_id($pid,'pid').'">' . "\n" .
            '</td>' . "\n" .
-         '      <td class="' . $RowStyle . '" align="right">' . $currencies->format(tep_add_tax($order_products[$pid]['final_price'], $order_products[$pid]['tax']), true, $order['currency'], $order['currency_value']) . '</td>' . "\n" . 
-         '      <td class="' . $RowStyle . '" align="right">' . $currencies->format($order_products[$pid]['final_price'] * $order_products[$pid]['qty'], true, $order['currency'], $order['currency_value']) . '</td>' . "\n" . 
-         '      <td class="' . $RowStyle . '" align="right"><b>' . $currencies->format(tep_add_tax($order_products[$pid]['final_price'], $order_products[$pid]['tax']) * $order_products[$pid]['qty'], true, $order['currency'], $order['currency_value']) . '</b></td>' . "\n" . 
+         '      <td class="' . $RowStyle . '" align="right">';
+    if ($order_products[$pid]['final_price'] < 0) {
+      echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($order_products[$pid]['final_price'], $order_products[$pid]['tax']), true, $order['currency'], $order['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
+    } else {
+      echo $currencies->format(tep_add_tax($order_products[$pid]['final_price'], $order_products[$pid]['tax']), true, $order['currency'], $order['currency_value']);
+    }
+    echo '</td>' . "\n" . 
+         '      <td class="' . $RowStyle . '" align="right">';
+    if ($order_products[$pid]['final_price'] < 0) {
+      echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($order_products[$pid]['final_price'] * $order_products[$pid]['qty'], true, $order['currency'], $order['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
+    } else {
+      echo $currencies->format($order_products[$pid]['final_price'] * $order_products[$pid]['qty'], true, $order['currency'], $order['currency_value']);
+    }
+    echo '</td>' . "\n" . 
+         '      <td class="' . $RowStyle . '" align="right"><b>';
+    if ($order_products[$pid]['final_price'] < 0) {
+      echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($order_products[$pid]['final_price'], $order_products[$pid]['tax']) * $order_products[$pid]['qty'], true, $order['currency'], $order['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
+    } else {
+      echo $currencies->format(tep_add_tax($order_products[$pid]['final_price'], $order_products[$pid]['tax']) * $order_products[$pid]['qty'], true, $order['currency'], $order['currency_value']);
+    }
+    echo '</b></td>' . "\n" . 
          '    </tr>' . "\n";
   }
   ?>

@@ -6313,10 +6313,13 @@ function tep_get_ot_total_by_orders_id_no_abs($orders_id, $single = false) {
     }
   }else{
     if ($single) {
-      return "<b><font
-        color='ff0000'>".$currencies->format($result['value'],true,DEFAULT_CURRENCY,'',false)."</font></b>";
+      if ($result['value'] < 0) {
+        return "<b><font color='#ff0000'>".str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($result['value'],true,DEFAULT_CURRENCY,'',false))."</font>".TEXT_MONEY_SYMBOL."</b>";
+      } else {
+        return "<b>".$currencies->format($result['value'],true,DEFAULT_CURRENCY,'',false)."</b>";
+      }
     } else {
-      return "<b><font color='ff0000'>".$result['value']."".TEXT_MONEY_SYMBOL."</font></b>";
+      return "<b><font color='#ff0000'>".$result['value']."".TEXT_MONEY_SYMBOL."</font></b>";
     }
   }
 }

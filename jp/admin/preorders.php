@@ -1411,9 +1411,29 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
        '      <td class="dataTableContent" valign="top">' . $order->products[$i]['model'] . '</td>' . "\n" .
        '      <td class="dataTableContent" align="right" valign="top">' . tep_display_tax_value($order->products[$i]['tax']) . '%</td>' . "\n" .
        '      <!--<td class="dataTableContent" align="right" valign="top"><b>' . $currencies->format($order->products[$i]['final_price'], true, $order->info['currency'], $order->info['currency_value']) . '</b></td>-->' . "\n" .
-       '      <td class="dataTableContent" align="right" valign="top"><b>' . $price_with_tax . '</b></td>' . "\n" .
+       '      <td class="dataTableContent" align="right" valign="top"><b>';
+        if ($price_with_tax != '---') {
+          if ($order->products[$i]['final_price'] < 0) {
+            echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL,'', $price_with_tax).'</font>'.TEXT_MONEY_SYMBOL;
+          } else {
+            echo $price_with_tax;
+          }
+        } else {
+          echo $price_with_tax;
+        }
+        echo '</b></td>' . "\n" .
        '      <!--<td class="dataTableContent" align="right" valign="top"><b>' . $currencies->format($order->products[$i]['final_price'] * $order->products[$i]['qty'],true,$order->info['currency'],$order->info['currency_value']) . '</b></td>-->' . "\n" .
-       '      <td class="dataTableContent" align="right" valign="top"><b>' . $tprice_with_tax . '</b></td>' . "\n";
+       '      <td class="dataTableContent" align="right" valign="top"><b>';
+        if ($price_with_tax != '---') {
+          if ($order->products[$i]['final_price'] < 0) {
+            echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL,'', $tprice_with_tax).'</font>'.TEXT_MONEY_SYMBOL;
+          } else {
+            echo $tprice_with_tax; 
+          }
+        } else {
+          echo $tprice_with_tax; 
+        }
+          echo '</b></td>' . "\n";
         echo '    </tr>' . "\n";
       }
   ?>
@@ -1435,13 +1455,13 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
           echo $currencies->format($order->totals[$i]['value']);
         }else{
           if($order->totals[$i]['class'] == 'ot_total'){
-          echo "<b><font color='red'>";
-          echo $currencies->format($order->totals[$i]['value']);
-          echo "</font></b>";
+          echo "<b><font color='#ff0000'>";
+          echo str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($order->totals[$i]['value']));
+          echo "</font></b>".TEXT_MONEY_SYMBOL;
           }else{
-          echo "<font color='red'>";
-          echo $currencies->format($order->totals[$i]['value']);
-          echo "</font>";
+          echo "<font color='#ff0000'>";
+          echo str_replace(TEXT_MONEY_SYMBOL, '',$currencies->format($order->totals[$i]['value']));
+          echo "</font>".TEXT_MONEY_SYMBOL;
           }
         }
         echo '</td>' . "\n" .
@@ -2557,11 +2577,16 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
       <?php
       } else {
       ?>
-      <font color="#999">
       <?php
       }
       ?>
-      <?php echo strip_tags(tep_get_pre_ot_total_by_orders_id_no_abs($orders['orders_id'],true));?>
+      <?php 
+      if ($orders['is_active'] == '1') {
+        echo tep_get_pre_ot_total_by_orders_id_no_abs($orders['orders_id'],true);
+      } else {
+        echo strip_tags(tep_get_pre_ot_total_by_orders_id_no_abs($orders['orders_id'],true));
+      }
+      ?>
       <?php
       if ($orders['is_active'] == '0') {
       ?>
@@ -2569,7 +2594,6 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
       <?php
       } else {
       ?>
-      </font>
       <?php
       }
       ?>
@@ -2579,7 +2603,13 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
       ?>
       <span style="color:#999999;"> 
       <?php }?> 
-      <?php echo strip_tags(tep_get_pre_ot_total_by_orders_id_no_abs($orders['orders_id'], true));?>
+      <?php 
+      if ($orders['is_active'] == '1') {
+        echo tep_get_pre_ot_total_by_orders_id_no_abs($orders['orders_id'], true);
+      } else {
+        echo strip_tags(tep_get_pre_ot_total_by_orders_id_no_abs($orders['orders_id'], true));
+      }
+      ?>
       <?php
       if ($orders['is_active'] == '0') {
       ?>

@@ -128,7 +128,11 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                     </td>                  
                     <td class="main">
                     <?php 
-                    echo $currencies->display_price($preorder_product_res['final_price'], $preorder_product_res['products_tax'], $preorder_product_res['products_quantity']); 
+                    if ($preorder_product_res['final_price'] < 0) {
+                      echo '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->display_price($preorder_product_res['final_price'], $preorder_product_res['products_tax'], $preorder_product_res['products_quantity'])).'</font>'.JPMONEY_UNIT_TEXT; 
+                    } else {
+                      echo $currencies->display_price($preorder_product_res['final_price'], $preorder_product_res['products_tax'], $preorder_product_res['products_quantity']); 
+                    }
                     ?>
                     </td>                  
                   </tr>

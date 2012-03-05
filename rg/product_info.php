@@ -114,7 +114,7 @@ function change_num(ob, targ, quan,a_quan)
         $currencies->display_price(tep_get_price($product_info['products_price'], $product_info['products_price_offset'], tep_get_price($product_info['products_price'],$product_info['products_small_sum'], '', $product_info['products_bflag']), $product_info['products_bflag']), tep_get_tax_rate($product_info['products_tax_class_id']));
     }
      
-    $description = $product_info['products_description'];
+    $description = replace_store_name($product_info['products_description']);
     $data1 = explode("//", $product_info['products_attention_1']);
     $data2 = explode("//", $product_info['products_attention_2']);
     $data3 = explode("//", $product_info['products_attention_3']);
@@ -550,7 +550,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
               <?php 
             //Edit ds-style 2005.11.29
             //echo stripslashes($product_info['products_description']);
-            echo replace_store_name($description);
+            echo $description;
             ?>
             </p>
          <?php }?>
