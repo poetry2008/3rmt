@@ -3275,7 +3275,7 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
   $str .= '</tr>';
   $str .= '</table>';
   
-  $str .= tep_draw_form('orders', FILENAME_ORDERS, urldecode($param_str).'oID='.$orders['orders_id'].'&action=deleteconfirm');
+  $str .= tep_draw_form('orders', FILENAME_ORDERS, urldecode($param_str).'&oID='.$orders['orders_id'].'&action=deleteconfirm');
   $str .= '<table border="0" cellpadding="0" cellspacing="0" class="popup_order_info" width="100%">';
   if (ORDER_INFO_TRANS_NOTICE == 'true') {
     if ($orders['orders_care_flag']) {
@@ -3684,7 +3684,7 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
   $str .= '<table class="popup_order_info" border="0" cellpadding="2" cellspacing="0" width="100%">';
   $str .= '<tr><td width="120">&nbsp;</td><td class="main" style="padding-left:20%;">';
   $str .= '<div id="order_del">'; 
-  $str .= '<a href="'.tep_href_link(FILENAME_ORDERS, urldecode($param_str).'oID='.$orders['orders_id'].'&action=edit').'">'.tep_html_element_button(IMAGE_DETAILS).'</a>'; 
+  $str .= '<a href="'.tep_href_link(FILENAME_ORDERS, urldecode($param_str).'&oID='.$orders['orders_id'].'&action=edit').'">'.tep_html_element_button(IMAGE_DETAILS).'</a>'; 
   if ($ocertify->npermission == 15) {
     $str .= '&nbsp;<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="delete_order_info(\''.$orders['orders_id'].'\', \''.urlencode($param_str).'\')"').'</a>'; 
   }

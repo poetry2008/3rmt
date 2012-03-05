@@ -178,7 +178,7 @@ if ($_POST['orders_id'] &&
                                                                                                                                                                                                            <?php if (!$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)) {?>
                                                                                                                                                                                                            <font color="#999">
       <?php }?>
-      <b><?php echo tep_output_string_protected($orders['customers_name']);?></b>
+      <a style="text-decoration:underline;" href="<?php echo tep_href_link('customers.php', 'page=1&cID='.tep_output_string_protected($orders['customers_id']).'&action=edit');?>"><b><?php echo tep_output_string_protected($orders['customers_name']);?></b></a>
                                                                                  <?php if (!$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)) {?>
                                                                                  </font>
       <?php }?>
@@ -1177,7 +1177,7 @@ if ($_POST['orders_id'] &&
   $html_str .= '</table>'; 
   echo $html_str;
 } else if (isset($_GET['action'])&&$_GET['action']=='cancel_del_info') {
-  $html_str = '<a href="'.tep_href_link(FILENAME_ORDERS, urldecode($_POST['param_str']).'oID='.$_POST['oID'].'&action=edit').'">'.tep_html_element_button(IMAGE_DETAILS).'</a>';
+  $html_str = '<a href="'.tep_href_link(FILENAME_ORDERS, urldecode($_POST['param_str']).'&oID='.$_POST['oID'].'&action=edit').'">'.tep_html_element_button(IMAGE_DETAILS).'</a>';
   $html_str .= '&nbsp;<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="delete_order_info(\''.$_POST['oID'].'\', \''.urlencode($_POST['param_str']).'\')"').'</a>';
   echo $html_str;
 } else if (isset($_GET['action'])&&$_GET['action']=='new_group') {

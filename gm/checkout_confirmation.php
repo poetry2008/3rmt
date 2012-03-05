@@ -5,20 +5,7 @@
 require('includes/application_top.php');
 require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_CHECKOUT_CONFIRMATION);
 require(DIR_WS_ACTIONS.'checkout_confirmation.php');
-page_head();
 ?>
-<script type="text/javascript">
-<!--
-var a_vars = Array();
-var pagename='';
-var visitesSite = 1;
-var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERVER; ?>/visites.php";
-<?php
-  require(DIR_WS_ACTIONS.'visites.js');
-?>
-//-->
-</script>
-</head>
 <body>
 <!-- header //-->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>

@@ -228,4 +228,15 @@ page_head();?>
       echo $payment_modules->javascript_validation($current_point['point']); 
     }
 ?>
+<script type="text/javascript">
+<!--
+var a_vars = Array();
+var pagename='';
+var visitesSite = 1;
+var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERVER; ?>/visites.php";
+<?php
+  require(DIR_WS_ACTIONS.'visites.js');
+?>
+//-->
+</script>
 </head>
