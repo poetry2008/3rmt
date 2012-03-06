@@ -447,7 +447,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
       ?>
    </div>
         </td>
-        <td>
+        <td class="main">
   &nbsp;個&nbsp;
       </td>
   </tr>

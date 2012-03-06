@@ -70,7 +70,7 @@
                     <td class="smallText"><?php echo HEADING_ORDER_DATE . ' ' . tep_date_long($order->info['date_purchased']); ?></td> 
                     <td class="smallText" align="right">
                     <?php 
-                    if ($order->info['total']) {
+                    if ($order->info['total'] < 0) {
                       echo HEADING_ORDER_TOTAL . ' ' . '<font color="#ff0000">' .abs($order->info['total']).'</font>'.MONEY_UNIT_ATEXT; 
                     } else {
                       echo HEADING_ORDER_TOTAL . ' ' .  abs($order->info['total']).MONEY_UNIT_ATEXT; 

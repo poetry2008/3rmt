@@ -150,7 +150,7 @@ foreach($cart as $key => $val){
           </tr>  
       <tr> 
         <td>
-        <table class="rg_pay_info" border="0" width="100%" cellspacing="0" cellpadding="0" summary="table">  
+        <table class="rg_pay_info" border="0" width="100%" cellspacing="0" cellpadding="2" summary="table">  
           <tr> 
             <td class="main">
             <b>ご注文の手続きを進めてください。</b><br>「次へ進む」をクリックして取引日時の選択へ。
