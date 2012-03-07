@@ -776,7 +776,7 @@ ele.className='orders_computer_checked';
 
 function showPreOrdersInfo(oID,ele,popup_type,param_str){
   param_str = decodeURIComponent(param_str);
-  data_str = "oid="+oID+"&param_str="+param_str;
+  data_str = "oid="+oID+"&"+param_str;
   if (popup_type == 1) {
     data_str += "&popup=1";
     popup_num = 2;
@@ -818,9 +818,10 @@ $(document).ready(function(){
 
 function delete_preorder_info(oID, param_str)
 {
+  param_str = decodeURIComponent(param_str);
    $.ajax({
 type:"POST",
-data:'oID='+oID+'&param_str='+param_str,
+data:'oID='+oID+'&'+param_str,
 async:false, 
 url: 'ajax_preorders.php?action=show_del_preorder_info',
 success: function(msg) {
@@ -830,9 +831,10 @@ success: function(msg) {
 }
 function cancel_del_preorder_info(oID, param_str)
 {
+  param_str = decodeURIComponent(param_str);
 $.ajax({
 type:"POST",
-data:'oID='+oID+'&param_str='+param_str,
+data:'oID='+oID+'&'+param_str,
 async:false, 
 url: 'ajax_preorders.php?action=cancel_del_preorder_info',
 success: function(msg) {

@@ -602,10 +602,17 @@ if ($_POST['orders_id'] &&
   $orders_info_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$_POST['oid']."'"); 
   $orders_info = tep_db_fetch_array($orders_info_raw); 
   require(DIR_WS_FUNCTIONS . 'visites.php');
+  $param_str = ''; 
+  foreach ($_POST as $key => $value) {
+    if (($key != 'oid') && ($key != 'popup')) {
+      $param_str .= $key.'='.$value.'&'; 
+    }
+  }
+  $param_str = substr($param_str, 0, -1); 
   if ($_POST['popup'] == '1') {
-    tep_get_pre_orders_products_string($orders_info, true, true, $_POST['param_str']);
+    tep_get_pre_orders_products_string($orders_info, true, true, $param_str);
   } else {
-    tep_get_pre_orders_products_string($orders_info, true, false, $_POST['param_str']);
+    tep_get_pre_orders_products_string($orders_info, true, false, $param_str);
   }
 
 } else if (isset($_GET['action'])&&$_GET['action']=='check_preorder_deadline') {
@@ -639,12 +646,30 @@ if ($_POST['orders_id'] &&
   }
 } else if (isset($_GET['action']) && $_GET['action'] == 'show_del_preorder_info') {
   require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_PREORDERS); 
+  $param_str = ''; 
+  foreach ($_POST as $key => $value) {
+    if (($key != 'oID') && ($key != 'popup')) {
+      $param_str .= $key.'='.$value.'&'; 
+    }
+  }
+  $param_str = substr($param_str, 0, -1); 
   $html_str = TEXT_INFO_DELETE_INTRO.'<br>';
   $html_str .= tep_html_element_submit(IMAGE_DELETE);
-  $html_str .= '&nbsp;<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CANCEL, 'onclick="cancel_del_preorder_info(\''.$_POST['oID'].'\', \''.urlencode($_POST['param_str']).'\')"').'</a>'; 
+  $html_str .= '&nbsp;<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CANCEL, 'onclick="cancel_del_preorder_info(\''.$_POST['oID'].'\', \''.urlencode($param_str).'\')"').'</a>'; 
   echo $html_str;
 } else if (isset($_GET['action']) && $_GET['action'] == 'cancel_del_preorder_info') {
-  $html_str = '<a href="'.tep_href_link(FILENAME_PREORDERS, urldecode($_POST['param_str']).'&oID='.$_POST['oID'].'&action=edit').'">'.tep_html_element_button(IMAGE_DETAILS).'</a>'; 
-  $html_str .= '&nbsp;<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="delete_preorder_info(\''.$_POST['oID'].'\', \''.urlencode($_POST['param_str']).'\')"').'</a>'; 
+  $param_str = ''; 
+  foreach ($_POST as $key => $value) {
+    if (($key != 'oID') && ($key != 'popup')) {
+      $param_str .= $key.'='.$value.'&'; 
+    }
+  }
+  $param_str = substr($param_str, 0, -1); 
+  $preorder_raw = tep_db_query("select is_active from ".TABLE_PREORDERS." where orders_id = '".$_POST['oID']."'"); 
+  $preorder = tep_db_fetch_array($preorder_raw);
+  if ($preorder['is_active'] == '1') {
+    $html_str = '<a href="'.tep_href_link(FILENAME_PREORDERS, $param_str.'&oID='.$_POST['oID'].'&action=edit').'">'.tep_html_element_button(IMAGE_DETAILS).'</a>'; 
+  }
+  $html_str .= '&nbsp;<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="delete_preorder_info(\''.$_POST['oID'].'\', \''.urlencode($param_str).'\')"').'</a>'; 
   echo $html_str;
 }

@@ -1088,7 +1088,9 @@ function tep_get_pre_orders_products_string($orders, $single = false, $popup = f
   
   $str .= '<tr><td width="120">&nbsp;</td><td class="main" style="padding-left:20%">'; 
   $str .= '<div id="order_del">';
-  $str .= '<a href="'.tep_href_link(FILENAME_PREORDERS, urldecode($param_str).'&oID='.$orders['orders_id'].'&action=edit').'">'.tep_html_element_button(IMAGE_DETAILS).'</a>'; 
+  if ($orders['is_active'] == 1) {
+    $str .= '<a href="'.tep_href_link(FILENAME_PREORDERS, urldecode($param_str).'&oID='.$orders['orders_id'].'&action=edit').'">'.tep_html_element_button(IMAGE_DETAILS).'</a>'; 
+  }
   if ($ocertify->npermission == 15) {
     $str .= '&nbsp;<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="delete_preorder_info(\''.$orders['orders_id'].'\', \''.urlencode($param_str).'\')"').'</a>'; 
   }

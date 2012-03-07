@@ -505,10 +505,17 @@ if ($_POST['orders_id'] &&
   $orders_info_raw = tep_db_query("select * from ".TABLE_ORDERS." where orders_id = '".$_POST['oid']."'"); 
   $orders_info = tep_db_fetch_array($orders_info_raw); 
   require(DIR_WS_FUNCTIONS . 'visites.php');
+  $param_str = ''; 
+  foreach ($_POST as $key => $value) {
+    if (($key != 'oid') && ($key != 'popup')) {
+      $param_str .= $key.'='.$value.'&'; 
+    }
+  }
+  $param_str = substr($param_str, 0, -1); 
   if ($_POST['popup'] == '1') {
-    tep_get_orders_products_string($orders_info, true, true, $_POST['param_str']);
+    tep_get_orders_products_string($orders_info, true, true, $param_str);
   } else {
-    tep_get_orders_products_string($orders_info, true, false, $_POST['param_str']);
+    tep_get_orders_products_string($orders_info, true, false, $param_str);
   }
 } else if (isset($_GET['action'])&&$_GET['action']=='get_oa_type') {
   $onsuit = false;
@@ -1158,6 +1165,13 @@ if ($_POST['orders_id'] &&
     echo implode('|||', $error_array);
 } else if (isset($_GET['action'])&&$_GET['action']=='show_del_info') {
   require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_ORDERS);
+  $param_str = ''; 
+  foreach ($_POST as $key => $value) {
+    if (($key != 'oID') && ($key != 'popup')) {
+      $param_str .= $key.'='.$value.'&'; 
+    }
+  }
+  $param_str = substr($param_str, 0, -1); 
   $html_str .= '<table class="del_order_notice">'; 
   $html_str .= '<tr><td>'; 
   $html_str .= TEXT_INFO_DELETE_INTRO.'&nbsp;&nbsp;';
@@ -1177,8 +1191,15 @@ if ($_POST['orders_id'] &&
   $html_str .= '</table>'; 
   echo $html_str;
 } else if (isset($_GET['action'])&&$_GET['action']=='cancel_del_info') {
-  $html_str = '<a href="'.tep_href_link(FILENAME_ORDERS, urldecode($_POST['param_str']).'&oID='.$_POST['oID'].'&action=edit').'">'.tep_html_element_button(IMAGE_DETAILS).'</a>';
-  $html_str .= '&nbsp;<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="delete_order_info(\''.$_POST['oID'].'\', \''.urlencode($_POST['param_str']).'\')"').'</a>';
+  $param_str = ''; 
+  foreach ($_POST as $key => $value) {
+    if (($key != 'oID') && ($key != 'popup')) {
+      $param_str .= $key.'='.$value.'&'; 
+    }
+  }
+  $param_str = substr($param_str, 0, -1); 
+  $html_str = '<a href="'.tep_href_link(FILENAME_ORDERS, $param_str.'&oID='.$_POST['oID'].'&action=edit').'">'.tep_html_element_button(IMAGE_DETAILS).'</a>';
+  $html_str .= '&nbsp;<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="delete_order_info(\''.$_POST['oID'].'\', \''.urlencode($param_str).'\')"').'</a>';
   echo $html_str;
 } else if (isset($_GET['action'])&&$_GET['action']=='new_group') {
   require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_OPTION_GROUP); 
