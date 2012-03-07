@@ -1232,10 +1232,7 @@ if (($action == 'edit') && ($order_exists == true)) {
                   echo  $currencies->ot_total_format($TotalDetails["Price"], true,
                       $order['currency'], $order['currency_value']);
                 }else{
-                  echo "<font color='red'>";
-                  echo  $currencies->ot_total_format($TotalDetails["Price"], true,
-                      $order['currency'], $order['currency_value']);
-                  echo "</font>";
+                  echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->ot_total_format($TotalDetails["Price"], true, $order['currency'], $order['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
                 }
                   echo '</b>' . 
                 "<input name='update_totals[$TotalIndex][title]' type='hidden' value='" . trim($TotalDetails["Name"]) . "' size='" . strlen($TotalDetails["Name"]) . "' >" . 
@@ -1253,10 +1250,7 @@ if (($action == 'edit') && ($order_exists == true)) {
                   echo  $currencies->ot_total_format($TotalDetails["Price"], true,
                       $order['currency'], $order['currency_value']);
            }else{
-             echo "<font color='red'>";
-             echo $currencies->format($TotalDetails["Price"], true, $order['currency'],
-               $order['currency_value']);
-             echo "</font>";
+             echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($TotalDetails["Price"], true, $order['currency'], $order['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
            }
             echo '</b>' . 
                 "<input name='update_totals[$TotalIndex][title]' type='hidden' value='" . trim($TotalDetails["Name"]) . "' size='" . strlen($TotalDetails["Name"]) . "' >" . 
