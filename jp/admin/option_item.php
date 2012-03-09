@@ -380,7 +380,7 @@ echo '<br>';
                   if (is_array($item_option['se_option'])) {
                     if (!empty($item_option['se_option'])) {
                       foreach ($item_option['se_option'] as $sokey => $sovalue) {
-                        echo $sovalue.'<br>'; 
+                        echo $sovalue.'&nbsp;'; 
                       }
                     }
                   }
