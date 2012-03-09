@@ -57,3 +57,6 @@ define('SR_PRODUCTS_POINT_SUM','合計点数:');
 define('SR_MONEY_SUM','合計金額:');
 define('SR_ONE_ORDERS','件');
 define('SR_POINT','点');
+define('AVG_ORDERS_SUM','平均件数:');
+define('AVG_PRODUCTS_POINT_SUM','平均点数:');
+define('AVG_MONEY_SUM','平均金額:');

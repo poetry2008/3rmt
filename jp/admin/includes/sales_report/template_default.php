@@ -256,6 +256,7 @@ date("Y") - $i; ?></option>
 $sum = 0;
 $orders_sum = 0;
 $products_point_sum = 0; 
+$row_num = 0;
 while ($sr->hasNext()) {
   $info = $sr->next();
   $last = sizeof($info) - 1;
@@ -296,7 +297,7 @@ while ($sr->hasNext()) {
                 }?> 
                 <td class="dataTableContent" align="right"><?php 
   if ($info[$last - 1]['totsum'] < 0) {
-    echo '<font color="red">'.$currencies->format(isset($info[$last - 1]['totsum'])?$info[$last - 1]['totsum']:'').'</font>';
+    echo '<font >'.$currencies->format(isset($info[$last - 1]['totsum'])?$info[$last - 1]['totsum']:'').'</font>';
   } else {
     echo $currencies->format(isset($info[$last - 1]['totsum'])?$info[$last - 1]['totsum']:'');
   }
@@ -305,6 +306,7 @@ while ($sr->hasNext()) {
               </tr>
               <?php
 if (isset($srDetail)){
+  $row_num++;
     for ($i = 0; $i < $last; $i++) {
       if ($srMax === '0' or $i < $srMax) {
 ?>
@@ -317,7 +319,7 @@ if (isset($srDetail)){
           if ($srDetail == 2) {?>
                 <td class="dataTableContent" align="right"><?php 
                   if ($info[$i]['psum'] < 0) {
-                    echo '<font color="red">'.$currencies->format($info[$i]['psum']).'</font>'; 
+                    echo '<font >'.$currencies->format($info[$i]['psum']).'</font>'; 
                   } else {
                     echo $currencies->format($info[$i]['psum']); 
                   }
@@ -343,8 +345,18 @@ SR_ORDERS_SUM.$orders_sum.SR_ONE_ORDERS;?></td>
 <td class="dataTableContent" align="right"><?php echo
 SR_PRODUCTS_POINT_SUM.$products_point_sum.SR_POINT;?></td>
 <td class="dataTableContent" align="right"><?php echo SR_MONEY_SUM.
-($t<0?'<font color="red">':'');?><?php echo $currencies->format($t);?><?php echo
+($t<0?'<font >':'');?><?php echo $currencies->format($t);?><?php echo
 ($t<0?'</font>':'');?></td></tr>
+<tr>
+<td class="dataTableContent" align="right"></td>
+<td class="dataTableContent" align="right"><?php echo
+AVG_ORDERS_SUM.number_format($orders_sum/$row_num,2).SR_ONE_ORDERS;?></td>
+<td class="dataTableContent" align="right"><?php echo
+AVG_PRODUCTS_POINT_SUM.number_format($products_point_sum/$row_num,2).SR_POINT;?></td>
+<td class="dataTableContent" align="right"><?php echo AVG_MONEY_SUM.
+($t<0?'<font >':'');?><?php echo $currencies->format($t/$row_num);?><?php echo
+($t<0?'</font>':'');?></td>
+</tr>
 <?php
 if ($srCompare > SR_COMPARE_NO) {
 ?>
@@ -384,7 +396,7 @@ if ($srCompare > SR_COMPARE_NO) {
                 <td class="dataTableContent" align="right"><?php 
                 if(isset($info[$last - 1]['totsum']) ) {
                   if ($info[$last - 1]['totsum']<0) {
-                    echo '<font color="red">'.$currencies->format($info[$last - 1]['totsum']).'</font>';
+                    echo '<font >'.$currencies->format($info[$last - 1]['totsum']).'</font>';
                   } else {
                     echo $currencies->format($info[$last - 1]['totsum']);
                   }
@@ -405,7 +417,7 @@ if ($srCompare > SR_COMPARE_NO) {
             if ($srDetail == 2) {?>
                 <td class="dataTableContent" align="right"><?php 
                   if ($info[$i]['psum'] < 0) {
-                    echo '<font color="red">'.$currencies->format($info[$i]['psum']).'</font>'; 
+                    echo '<font >'.$currencies->format($info[$i]['psum']).'</font>'; 
                   } else {
                     echo $currencies->format($info[$i]['psum']); 
                   }
