@@ -2308,29 +2308,39 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
             </form>
             </tr>
             </table>
-            </div>
-            </td>
-            </tr>
-            <!-- 订单商品 -->
-            <tr>
-            <td>
-            <table border="0" width="100%" cellspacing="0" cellpadding="2">
-            <tr class="dataTableHeadingRow">
-            <td class="dataTableHeadingContent" colspan="2"><?php echo TABLE_HEADING_PRODUCTS; ?></td>
-            <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_CHARACTER; ?></td>
-            <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_PRODUCTS_MODEL; ?></td>
-            <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TAX; ?></td>
-            <!--<td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_PRICE_EXCLUDING_TAX; ?></td>-->
-            <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_PRICE_INCLUDING_TAX; ?></td>
-            <!--<td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TOTAL_EXCLUDING_TAX; ?></td>-->
-            <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TOTAL_INCLUDING_TAX; ?></td>
-            </tr>
-            <?php
-            for ($i = 0, $n = sizeof($order->products); $i < $n; $i++) {
-              echo '    <tr class="dataTableRow">' . "\n" . 
-                '      <td class="dataTableContent" valign="top" align="right">' . $order->products[$i]['qty']. tep_get_full_count2($order->products[$i]['qty'], $order->products[$i]['id'], $order->products[$i]['rate']) . '&nbsp;x</td>' . "\n" .
-                '      <td class="dataTableContent" valign="top">' . $order->products[$i]['name'];
+          </div>
+        </td>
+      </tr>
+      <!-- 订单商品 -->
+      <tr>
+        <td>
+    <table border="0" width="100%" cellspacing="0" cellpadding="2">
+      <tr class="dataTableHeadingRow">
+        <td class="dataTableHeadingContent" colspan="2"><?php echo TABLE_HEADING_PRODUCTS; ?></td>
+        <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_CHARACTER; ?></td>
+        <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_PRODUCTS_MODEL; ?></td>
+        <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TAX; ?></td>
+        <!--<td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_PRICE_EXCLUDING_TAX; ?></td>-->
+        <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_PRICE_INCLUDING_TAX; ?></td>
+        <!--<td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TOTAL_EXCLUDING_TAX; ?></td>-->
+        <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TOTAL_INCLUDING_TAX; ?></td>
+      </tr>
+  <?php
+      for ($i = 0, $n = sizeof($order->products); $i < $n; $i++) {
+        echo '    <tr class="dataTableRow">' . "\n" . 
+       '      <td class="dataTableContent" valign="top" align="right">' . $order->products[$i]['qty']. tep_get_full_count2($order->products[$i]['qty'], $order->products[$i]['id'], $order->products[$i]['rate']) . '&nbsp;x</td>' . "\n" .
+       '      <td class="dataTableContent" valign="top">' . $order->products[$i]['name'];
 
+        if (isset($order->products[$i]['attributes']) && $order->products[$i]['attributes'] && ($k = sizeof($order->products[$i]['attributes'])) > 0) {
+          for ($j = 0; $j < $k; $j++) {
+            if (is_array($order->products[$i]['attributes'][$j]['option_info'])) {
+              echo '<br><nobr><small>&nbsp;<i> - ' .  $order->products[$i]['attributes'][$j]['option_info']['title'] . ': ' . $order->products[$i]['attributes'][$j]['option_info']['value'];
+            }
+            if ($order->products[$i]['attributes'][$j]['price'] != '0') echo ' (' .$currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . ')';
+              echo '</i></small></nobr>';
+          }
+        }
+              
               if (isset($order->products[$i]['attributes']) && $order->products[$i]['attributes'] && ($k = sizeof($order->products[$i]['attributes'])) > 0) {
                 for ($j = 0; $j < $k; $j++) {
                   echo '<br><nobr><small>&nbsp;<i> - ' . $order->products[$i]['attributes'][$j]['option'] . ': ' . $order->products[$i]['attributes'][$j]['value'];

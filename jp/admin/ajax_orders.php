@@ -1225,6 +1225,7 @@ if ($_POST['orders_id'] &&
   $html_str .= '</td>';
   $html_str .= '<td>';
   $html_str .= tep_draw_input_field('name', '', 'id="name"'); 
+  $html_str .= '<span id="name_error" style="color:#ff0000;"></span>'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
   
@@ -1269,7 +1270,7 @@ if ($_POST['orders_id'] &&
   $html_str .= '&nbsp;'; 
   $html_str .= '</td>';
   $html_str .= '<td style="padding-left:20%;">';
-  $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="check_group_info();"').'</a>&nbsp;'; 
+  $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="check_group_info(0, 0);"').'</a>&nbsp;'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
   $html_str .= '</table>';
@@ -1302,6 +1303,7 @@ if ($_POST['orders_id'] &&
   $html_str .= '</td>';
   $html_str .= '<td>';
   $html_str .= tep_draw_input_field('name', $group['name'], 'id="name"'); 
+  $html_str .= '<span id="name_error" style="color:#ff0000;"></span>'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
   
@@ -1351,8 +1353,7 @@ if ($_POST['orders_id'] &&
   $html_str .= '</td>';
   $html_str .= '<td style="padding-left:20%;">';
   $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_NEW_PROJECT, 'onclick="create_option_group();"').'</a>&nbsp;'; 
-  $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE,
-      'onclick="check_group_info();"').'</a>&nbsp;'; 
+  $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="check_group_info('.$group['id'].', 1);"').'</a>&nbsp;'; 
   $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="if(confirm(\''.TEXT_DEL_OPTION_GROUP.'\')) window.location.href = \''.tep_href_link(FILENAME_OPTION_GROUP, 'action=deleteconfirm&group_id='.$group['id']).'\';"').'</a>'; 
   $html_str .= tep_draw_hidden_field('group_id', $group['id']); 
   $html_str .= '</td>';
@@ -1367,6 +1368,23 @@ if ($_POST['orders_id'] &&
       $json_array[] = array('name' => $search_group['name']); 
     }
   echo json_encode($json_array); 
+} else if (isset($_GET['action'])&&$_GET['action']=='check_group') {
+  require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_OPTION_GROUP); 
+  if ($_POST['gname'] == '') {
+    echo ERROR_OPTION_GROUP_IS_NULL;
+    exit; 
+  }
+  if ($_POST['type'] == 0) {
+    $group_exists_raw = tep_db_query("select * from ".TABLE_OPTION_GROUP." where name = '".$_POST['gname']."'"); 
+    if (tep_db_num_rows($group_exists_raw)) {
+      echo ERROR_OPTION_GROUP_NAME_EXISTS;  
+    }
+  } else {
+    $group_exists_raw = tep_db_query("select * from ".TABLE_OPTION_GROUP." where name = '".$_POST['gname']."' and id != '".$_POST['gid']."'"); 
+    if (tep_db_num_rows($group_exists_raw)) {
+      echo ERROR_OPTION_GROUP_NAME_EXISTS;  
+    }
+  }
 } else if (isset($_GET['action'])&&$_GET['action']=='new_item') {
   require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_OPTION_ITEM); 
   require_once('enabledoptionitem.php'); 

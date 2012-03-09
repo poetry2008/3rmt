@@ -22,7 +22,7 @@ if (isset($cart->cartID) && tep_session_is_registered('cartID')) {
 if ( (STOCK_CHECK == 'true') && (STOCK_ALLOW_CHECKOUT != 'true') ) {
   $products = $cart->get_products();
   for ($i=0, $n=sizeof($products); $i<$n; $i++) {
-    if (tep_check_stock($products[$i]['id'], $products[$i]['quantity'])) {
+    if (tep_check_stock((int)$products[$i]['id'], $products[$i]['quantity'])) {
       tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
       break;
     }

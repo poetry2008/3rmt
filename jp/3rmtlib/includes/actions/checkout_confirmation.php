@@ -195,7 +195,7 @@ $order_total_modules = new order_total;
 $any_out_of_stock = false;
 if (STOCK_CHECK == 'true') {
   for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
-    if (tep_check_stock($order->products[$i]['id'], $order->products[$i]['qty'])) {
+    if (tep_check_stock((int)$order->products[$i]['id'], $order->products[$i]['qty'])) {
       $any_out_of_stock = true;
     }
   }

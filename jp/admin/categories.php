@@ -447,7 +447,7 @@
           $product_categories = $_POST['product_categories'];
 
       //option delete
-      tep_db_query("delete from products_attributes where products_id = '".$products_id."'");
+      //tep_db_query("delete from products_attributes where products_id = '".$products_id."'");
 
       for ($i = 0, $n = sizeof($product_categories); $i < $n; $i++) {
             tep_db_query("delete from " . TABLE_PRODUCTS_TO_CATEGORIES . " where products_id = '" . tep_db_input($product_id) . "' and categories_id = '" . tep_db_input($product_categories[$i]) . "'");
@@ -631,8 +631,9 @@
                                   'products_cart_buyflag' => tep_db_prepare_input($_POST['products_cart_buyflag']),
                                   'products_cart_min' => tep_db_prepare_input($_POST['products_cart_min']),
                                   'products_cartorder' => tep_db_prepare_input($_POST['products_cartorder']),
+                                  'belong_to_option' => tep_db_prepare_input($_POST['belong_to_option']),
                                   );
-          
+           
 
 
           if ($_POST['products_image']) {
@@ -738,7 +739,7 @@
                 //'products_description' => replace_store_name($des,$products_id,$site_id),
                 'products_description' => $des,
                 'products_status' => tep_db_prepare_input($_POST['products_status']),
-                'option_image_type' => tep_db_prepare_input($_POST['option_image_type']),
+                //'option_image_type' => tep_db_prepare_input($_POST['option_image_type']),
                 'products_url'         => tep_db_prepare_input($_POST['products_url'][$language_id]),
                 'preorder_status' => tep_db_prepare_input($_POST['preorder_status']) 
                 );
@@ -763,6 +764,7 @@
       $op2 -> オプション値ID
       $op3 -> 
       */
+      /* 
       $products_options_array = $_POST['products_options'];
       $options_array = explode("\n", $products_options_array);
       
@@ -827,6 +829,7 @@
         tep_db_perform('products_attributes', $op_sql_date_array);
       }
       }
+      */ 
       
       //-----------------------------------------
       // オプション値インサート終了
@@ -941,7 +944,6 @@
                   products_viewed,
                   site_id,
                   products_status, 
-                  option_image_type, 
                   romaji
                 ) values (
                   '" . $dup_products_id . "', 
@@ -952,7 +954,6 @@
                   '0',
                   '" . $description['site_id'] . "', 
                   '" . $description['products_status'] . "', 
-                  '" . $description['option_image_type'] . "', 
                   '" . $description['romaji']."'
                 )");
             }
@@ -1237,7 +1238,7 @@ $(document).ready(function(){
 <?php
 if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
   <script language='javascript'>
-    one_time_pwd('<?php echo $page_name;?>');
+    //one_time_pwd('<?php echo $page_name;?>');
   </script>
 <?php }?>
 <div id="spiffycalendar" class="text"></div>
@@ -1292,8 +1293,8 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                  p.products_cart_buyflag,
                  p.products_cart_image,
                  p.products_cart_min,
-                 pd.option_image_type, 
                  p.products_cartorder,
+                 p.belong_to_option,
                  pd.preorder_status
           from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
           where p.products_id = '" . $_GET['pID'] . "' 
@@ -1664,6 +1665,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
               <?php
 
       //オプションデータ取得
+      /* 
       if(isset($_GET['pID']) && $_GET['pID']) {
         $options_query = tep_db_query("select * from products_attributes where products_id = '".(int)$_GET['pID']."' order by products_attributes_id");
       if(tep_db_num_rows($options_query)) {
@@ -1677,10 +1679,38 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
       } else {
         $options_array = '';
       }
+      */ 
       ?>
+              <tr>
+                <td class="main">
+                <?php echo TEXT_PRODUCTS_OPTION_TEXT;?> 
+                </td>
+                <td class="main">
+                <?php
+                if (!empty($_GET['site_id'])) { 
+                  $option_group = tep_db_query("select id, name from ".TABLE_OPTION_GROUP." where id = '".$pInfo->belong_to_option."' order by sort_num asc"); 
+                  $option_group = tep_db_fetch_array($option_group); 
+                  echo $option_group['name'];
+                  echo '<input type="hidden" name="belong_to_option" value="'.$pInfo->belong_to_option.'">'; 
+                } else { 
+                ?>
+                <select name="belong_to_option"> 
+                <?php
+                $option_group = tep_db_query("select id, name from ".TABLE_OPTION_GROUP." order by sort_num asc"); 
+                while ($option_res = tep_db_fetch_array($option_group)) {
+                  echo '<option value="'.$option_res['id'].'"'.(($option_res['id'] == $pInfo->belong_to_option)?' selected':'').'>'.$option_res['name'].'</option>'; 
+                }
+                ?>
+                </select> 
+                <?php }?> 
+                </td>
+              </tr>
               <tr>
                 <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
               </tr>
+              <?php 
+              if (false) { 
+              ?> 
               <tr>
                 <td class="main" valign="top"><?php echo TEXT_PRODUCT_OPTIONS_TITLE;?></td>
                 <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;<span class="categories_textarea01">' . tep_draw_textarea_field('products_options', 'soft', '70', '15', $options_array, ($site_id ? 'class="readonly" readonly' : '')).'</span>'; ?></td>
@@ -1723,6 +1753,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                   </table>
 </td>
               </tr>
+              <?php }?> 
               <!-- //options -->
               <tr>
                   </table>
@@ -2035,7 +2066,6 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                  pd.products_description, 
                  pd.products_url, 
                  pd.romaji, 
-                 pd.option_image_type,
                  p.products_real_quantity + p.products_virtual_quantity as products_quantity,
                  p.products_real_quantity, 
                  p.products_virtual_quantity, 

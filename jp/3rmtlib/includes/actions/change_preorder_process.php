@@ -29,6 +29,8 @@ if ($preorder) {
   $payment_modules = payment::getInstance($preorder['site_id']);   
   $cpayment_code = payment::changeRomaji($preorder['payment_method'], PAYMENT_RETURN_TYPE_CODE);   
   
+  $option_info_array = get_preorder_total_info($cpayment_code, $preorder['orders_id'], $preorder_option_info);
+  
   $torihikihouhou_date_str = $_SESSION['preorder_info_date'].' '.$_SESSION['preorder_info_hour'].':'.$_SESSION['preorder_info_min'].':00';
   $default_status_raw = tep_db_query("select * from ".TABLE_ORDERS_STATUS." where orders_status_id = '".DEFAULT_ORDERS_STATUS_ID."'");
   $default_status_res = tep_db_fetch_array($default_status_raw); 
@@ -84,7 +86,7 @@ if ($preorder) {
                            'torihiki_Bahamut' => $preorder['torihiki_Bahamut'], 
                            'torihiki_houhou' => $_SESSION['preorder_info_tori'], 
                            'torihiki_date' => $torihikihouhou_date_str, 
-                           'code_fee' => $preorder['code_fee'], 
+                           'code_fee' => (isset($option_info_array['fee']))?$option_info_array['fee']:$preorder['code_fee'], 
                            'language_id' => $preorder['language_id'], 
                            'orders_status_name' => $default_status_res['orders_status_name'], 
                            'orders_status_image' => $preorder['orders_status_image'],
@@ -135,21 +137,37 @@ if ($preorder) {
   while ($preorder_total_res = tep_db_fetch_array($preorder_total_raw)) {
     if ($preorder_total_res['class'] == 'ot_total') {
       if (isset($_SESSION['preorder_campaign_fee'])) {
-        $preorder_total_num = $preorder_total_res['value'] + (int)$_SESSION['preorder_campaign_fee']; 
-        $preorder_total_print_num = $preorder_total_res['value'] + (int)$_SESSION['preorder_campaign_fee']; 
+        if (isset($option_info_array['total'])) {
+          $preorder_total_num = $option_info_array['total'] + (int)$_SESSION['preorder_campaign_fee']; 
+          $preorder_total_print_num = $option_info_array['total'] + (int)$_SESSION['preorder_campaign_fee']; 
+        } else {
+          $preorder_total_num = $preorder_total_res['value'] + (int)$_SESSION['preorder_campaign_fee']; 
+          $preorder_total_print_num = $preorder_total_res['value'] + (int)$_SESSION['preorder_campaign_fee']; 
+        }
       } else {
-        $preorder_total_num = $preorder_total_res['value'] - (int)$preorder_point; 
-        $preorder_total_print_num = $preorder_total_res['value'] - (int)$preorder_point; 
+        if (isset($option_info_array['total'])) {
+          $preorder_total_num = $option_info_array['total'] - (int)$preorder_point; 
+          $preorder_total_print_num = $option_info_array['total'] - (int)$preorder_point; 
+        } else {
+          $preorder_total_num = $preorder_total_res['value'] - (int)$preorder_point; 
+          $preorder_total_print_num = $preorder_total_res['value'] - (int)$preorder_point; 
+        }
       }
     } else if ($preorder_total_res['class'] == 'ot_point') {
       $preorder_total_num = (int)$preorder_point; 
+    } else if ($preorder_total_res['class'] == 'ot_subtotal') {
+      if (isset($option_info_array['subtotal'])) {
+        $preorder_total_num = $option_info_array['subtotal']; 
+      } else {
+        $preorder_total_num = $preorder_total_res['value']; 
+      }
     } else {
       $preorder_total_num = $preorder_total_res['value']; 
     }
     
-    if ($preorder_total_res['class'] == 'ot_subtotal') {
-      $preorder_subtotal_num = $preorder_total_res['value']; 
-    }
+    //if ($preorder_total_res['class'] == 'ot_subtotal') {
+      //$preorder_subtotal_num = $preorder_total_res['value']; 
+    //}
     $sql_data_array = array('orders_id' => $orders_id,
                             'title' => $preorder_total_res['title'], 
                             'text' => $preorder_total_res['text'], 
@@ -164,7 +182,6 @@ if ($preorder) {
     }
     tep_db_perform(TABLE_ORDERS_TOTAL, $sql_data_array);
   }
-  
   $order_comment_str = '';
   
   $comment_raw = tep_db_query("select comments from ".TABLE_PREORDERS_STATUS_HISTORY." where orders_id = '".$_SESSION['preorder_info_id']."' and comments != '' order by orders_status_history_id asc limit 1");
@@ -205,7 +222,7 @@ if ($preorder) {
                           'products_model' => $preorder_product_res['products_model'], 
                           'products_name' => $preorder_product_res['products_name'], 
                           'products_price' => $preorder_product_res['products_price'], 
-                          'final_price' => $preorder_product_res['final_price'], 
+                          'final_price' => (isset($option_info_array['final_price']))?$option_info_array['final_price']:$preorder_product_res['final_price'], 
                           'products_tax' => $preorder_product_res['products_tax'], 
                           'products_quantity' => $preorder_product_res['products_quantity'], 
                           'products_rate' => $preorder_product_res['products_rate'], 
@@ -222,25 +239,23 @@ if ($preorder) {
   }
   
   $products_ordered_atttibutes_text = '';
-  
-if (isset($_SESSION['preorder_info_attr'])) {
-   foreach ($_SESSION['preorder_info_attr'] as $key => $value) {
-      if (DOWNLOAD_ENABLED == 'true') {
-        $attributes_query = "select popt.products_options_name, poval.products_options_values_name, pa.options_values_price, pa.price_prefix, pa.products_at_quantity, pa.products_attributes_id, pad.products_attributes_maxdays, pad.products_attributes_maxcount , pad.products_attributes_filename from " . TABLE_PRODUCTS_OPTIONS . " popt, " . TABLE_PRODUCTS_OPTIONS_VALUES . " poval, " . TABLE_PRODUCTS_ATTRIBUTES . " pa left join " . TABLE_PRODUCTS_ATTRIBUTES_DOWNLOAD . " pad on pa.products_attributes_id=pad.products_attributes_id where pa.products_id = '" .  $preorder_product_res['products_id'] . "' and pa.options_id = '" . $key . "' and pa.options_id = popt.products_options_id and pa.options_values_id = '" . $value . "' and pa.options_values_id = poval.products_options_values_id and popt.language_id = '" . $languages_id . "' and poval.language_id = '" . $languages_id . "'";
-        $attributes = tep_db_query($attributes_query);
-      } else {
-        $attributes = tep_db_query("select popt.products_options_name, poval.products_options_values_name, pa.options_values_price, pa.price_prefix, pa.products_at_quantity, pa.products_attributes_id from " . TABLE_PRODUCTS_OPTIONS . " popt, " . TABLE_PRODUCTS_OPTIONS_VALUES .  " poval, " . TABLE_PRODUCTS_ATTRIBUTES . " pa where pa.products_id = '" . $preorder_product_res['products_id'] . "' and pa.options_id = '" .  $key . "' and pa.options_id = popt.products_options_id and pa.options_values_id = '" . $value . "' and pa.options_values_id = poval.products_options_values_id and popt.language_id = '" . $languages_id . "' and poval.language_id = '" . $languages_id . "'");
-      }
-      $attributes_values = tep_db_fetch_array($attributes);
+if (isset($_SESSION['preorder_option_info'])) {
+   foreach ($_SESSION['preorder_option_info'] as $op_key => $op_value) {
+      $op_key_info = explode('_', $op_key);
+      $option_attr_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name = '".$op_key_info['1']."' and id = '".$op_key_info[3]."'");
+      $option_attr_values = tep_db_fetch_array($option_attr_query);
       
-      $sql_data_array = array('orders_id' => $orders_id, 
-                              'orders_products_id' => $order_products_id, 
-                              'products_options' => $attributes_values['products_options_name'],
-                              'products_options_values' => $attributes_values['products_options_values_name'], 
-                              'options_values_price' => $attributes_values['options_values_price'], 
-                              'price_prefix' => $attributes_values['price_prefix'],
-                              'attributes_id'  => $attributes_values['products_attributes_id']);
-      // ccdd
+      if ($option_attr_values) {
+
+      $input_option_array = array('title' => $option_attr_values['front_title'], 'value' => $op_value);
+       
+      $sql_data_array = array('orders_id' => $orders_id,
+                              'orders_products_id' => $order_products_id,
+                              'options_values_price' => $option_attr_values['price'],
+                              'option_info' => serialize($input_option_array),
+                              'option_group_id' => $option_attr_values['group_id'],
+                              'option_item_id' => $option_attr_values['id'],
+                              ); 
       tep_db_perform(TABLE_ORDERS_PRODUCTS_ATTRIBUTES, $sql_data_array);
       
       if ((DOWNLOAD_ENABLED == 'true') && isset($attributes_values['products_attributes_filename']) && tep_not_null($attributes_values['products_attributes_filename'])) {
@@ -254,12 +269,12 @@ if (isset($_SESSION['preorder_info_attr'])) {
       }
       
       $products_ordered_attributes .= "\n"
-        .$attributes_values['products_options_name']
-        .str_repeat('　', intval((27-strlen($attributes_values['products_options_name']))/3))
-        .'：'.$attributes_values['products_options_values_name'];
+        .$option_attr_values['front_title']
+        .str_repeat('　', intval((27-strlen($option_attr_values['front_title']))/3))
+        .'：'.$op_value;
+   }
    }
 }
-
 
 $preorder_oa_raw = tep_db_query("select * from ".TABLE_PREORDERS_OA_FORMVALUE." where orders_id = '".$_SESSION['preorder_info_id']."'");
 
@@ -278,9 +293,9 @@ while ($preorder_oa_res = tep_db_fetch_array($preorder_oa_raw)) {
 $products_ordered_text .= $products_ordered_attributes;
 
 $products_ordered_text .= "\n".'個数　　　　　　　：' .  $preorder_product_res['products_quantity'] . '個' .  "\n";
-$products_ordered_text .= '単価　　　　　　　：' .  $currencies->display_price($preorder_product_res['final_price'], $preorder_product_res['products_tax']) . "\n";
+$products_ordered_text .= '単価　　　　　　　：' .  $currencies->display_price(isset($option_info_array['final_price'])?$option_info_array['final_price']:$preorder_product_res['final_price'], $preorder_product_res['products_tax']) . "\n";
 
-$products_ordered_text .= '小計　　　　　　　：' .  $currencies->display_price($preorder_product_res['final_price'], $preorder_product_res['products_tax'], $preorder_product_res['products_quantity']) . "\n";
+$products_ordered_text .= '小計　　　　　　　：' .  $currencies->display_price(isset($option_info_array['final_price'])?$option_info_array['final_price']:$preorder_product_res['final_price'], $preorder_product_res['products_tax'], $preorder_product_res['products_quantity']) . "\n";
 
 if (tep_not_null($_SESSION['preorder_info_character'])) {
   $products_ordered_text .= 'キャラクター名　　：' .$_SESSION['preorder_info_character']."\n";
@@ -316,7 +331,7 @@ $payment_modules->preorder_deal_mailoption($mailoption, $cpayment_code, $preorde
 
 
 $mailoption['ORDER_COUNT'] = $preorder_product_res['products_quantity'];
-$mailoption['ORDER_LTOTAL'] = number_format($preorder_product_res['final_price']*$preorder_product_res['products_quantity'], 0, '.', '');
+$mailoption['ORDER_LTOTAL'] = number_format((isset($option_info_array['final_price'])?$option_info_array['final_price']:$preorder_product_res['final_price'])*$preorder_product_res['products_quantity'], 0, '.', '');
 $mailoption['ORDER_ACTORNAME'] = $_SESSION['preorder_info_character'];
 if ($preorder_point){
   $mailoption['POINT']            = str_replace('円', '', $currencies->format(abs($preorder_point)));
@@ -329,7 +344,7 @@ if (isset($_SESSION['preorder_campaign_fee'])) {
 }
 
 if (!empty($preorder['code_fee'])) {
-  $mailoption['MAILFEE']          = str_replace('円', '', $currencies->format(abs($preorder['code_fee'])));
+  $mailoption['MAILFEE']          = str_replace('円', '', $currencies->format(isset($option_info_array['fee'])?abs($option_info_array['fee']):abs($preorder['code_fee'])));
 } else {
   $mailoption['MAILFEE']          = '0';
 }
@@ -383,8 +398,12 @@ if (isset($_SESSION['preorder_campaign_fee'])) {
   }
 }
 
-if (!empty($preoder['code_fee'])) {
-  $email_printing_order .= '手数料　　　　　：'.$preorder['code_fee'].'円'."\n";
+if (!empty($option_info_array['fee'])) {
+  $email_printing_order .= '手数料　　　　　：'.$option_info_array['fee'].'円'."\n";
+} else {
+  if (!empty($preoder['code_fee'])) {
+    $email_printing_order .= '手数料　　　　　：'.$preorder['code_fee'].'円'."\n";
+  }
 }
 
 $email_printing_order .= 'お支払金額　　　：' .  $currencies->format(abs($preorder_total_print_num)) . "\n";
@@ -433,7 +452,6 @@ $cpayment_class = $payment_modules->getModule($cpayment_code);
 if (method_exists($cpayment_class,'getMailString')){
   $email_printing_order .= $cpayment_class->getMailString($preorder_total_print_num);
 }
-
 if (SEND_EXTRA_ORDER_EMAILS_TO != '') {
   tep_mail('', PRINT_EMAIL_ADDRESS, STORE_NAME, $email_printing_order, $preorder['customers_name'], $preorder['customers_email_address'], '');
 }
@@ -502,6 +520,7 @@ tep_session_unregister('preorder_info_min');
 tep_session_unregister('preorder_info_character');
 tep_session_unregister('preorder_info_id');
 tep_session_unregister('preorder_info_pay');
+tep_session_unregister('preorder_option_info');
 if (MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
   tep_session_unregister('preorder_point');
   tep_session_unregister('preorder_real_point');
