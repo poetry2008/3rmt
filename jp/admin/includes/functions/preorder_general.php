@@ -768,16 +768,15 @@ function tep_get_pre_orders_products_string($orders, $single = false, $popup = f
     }
     $tmpArr[] = $p ;
     $products_attributes_query = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS_ATTRIBUTES." where orders_products_id='".$p['orders_products_id']."'");
-    if(in_array(array($p['products_id'],$p['orders_products_id']),$autocalculate_arr)&&
-        !empty($autocalculate_arr)){
+    if(in_array(array($p['products_id'],$p['orders_products_id']),$autocalculate_arr)&& !empty($autocalculate_arr)){
       $str .= '<tr><td class="main">'.TEXT_PREORDER_PRODUCTS_NAME.'<font color="red">「'.TEXT_PREORDER_PRODUCTS_ENTRANCE.'」</font></td><td class="main">'.$p['products_name'].'</td></tr>';
     }else{
       $str .= '<tr><td class="main">'.TEXT_PREORDER_PRODUCTS_NAME.'<font color="red">「'.TEXT_PREORDER_PRODUCTS_NOENTRANCE.'」</font></td><td class="main">'.$p['products_name'].'</td></tr>';
     }
     $str .= '<tr><td class="main">'.TEXT_PREORDER_PRODUCTS_NUM.'</td><td class="main">'.$p['products_quantity'].TEXT_PREORDER_PRODUCTS_UNIT.tep_get_full_count2($p['products_quantity'], $p['products_id'], $p['products_rate']).'</td></tr>';
-    while($pa = tep_db_fetch_array($products_attributes_query)){
-      $str .= '<tr><td class="main">'.$pa['products_options'].'：</td><td class="main">'.$pa['products_options_values'].'</td></tr>';
-    }
+    //while($pa = tep_db_fetch_array($products_attributes_query)){
+      //$str .= '<tr><td class="main">'.$pa['products_options'].'：</td><td class="main">'.$pa['products_options_values'].'</td></tr>';
+    //}
     $str .= '<tr><td class="main">'.TEXT_PREORDER_PRODUCTS_CHARACTER_NAME.'</td><td style="font-size:20px;color:#407416;">'.$p['products_character'].'</td></tr>';
     $names = tep_get_computers_names_by_preorders_id($orders['orders_id']);
     if ($names) {

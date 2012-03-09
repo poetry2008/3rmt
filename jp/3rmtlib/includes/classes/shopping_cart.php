@@ -20,17 +20,13 @@
         reset($this->contents);
         while (list($products_id, ) = each($this->contents)) {
           $qty = $this->contents[$products_id]['qty'];
-//ccdd
+//ccd     d
           $product_query = tep_db_query("select products_id from " . TABLE_CUSTOMERS_BASKET . " where customers_id = '" . $customer_id . "' and products_id = '" . $products_id . "'");
           if (!tep_db_num_rows($product_query)) {
 //ccdd
             tep_db_query("insert into " . TABLE_CUSTOMERS_BASKET . " (customers_id, products_id, customers_basket_quantity, customers_basket_date_added) values ('" . $customer_id . "', '" . $products_id . "', '" . $qty . "', '" . date('Ymd') . "')");
-            if (isset($this->contents[$products_id]['attributes'])) {
-              reset($this->contents[$products_id]['attributes']);
-              while (list($option, $value) = each($this->contents[$products_id]['attributes'])) {
-//ccdd
-                tep_db_query("insert into " . TABLE_CUSTOMERS_BASKET_ATTRIBUTES . " (customers_id, products_id, products_options_id, products_options_value_id) values ('" . $customer_id . "', '" . $products_id . "', '" . $option . "', '" . $value . "')");
-              }
+            if (isset($this->contents[$products_id]['op_attributes'])) {
+              tep_db_query("insert into " . TABLE_CUSTOMERS_BASKET_OPTIONS . " (customers_id, products_id, option_info) values ('" . $customer_id . "', '" . $products_id . "', '" . serialize($this->contents[$products_id]['op_attributes']) . "')");
             }
           } else {
 //ccdd
@@ -47,9 +43,9 @@
         $this->contents[$products['products_id']] = array('qty' => $products['customers_basket_quantity']);
 // attributes
 //ccdd
-        $attributes_query = tep_db_query("select products_options_id, products_options_value_id from " . TABLE_CUSTOMERS_BASKET_ATTRIBUTES . " where customers_id = '" . $customer_id . "' and products_id = '" . $products['products_id'] . "'");
+        $attributes_query = tep_db_query("select option_info from " . TABLE_CUSTOMERS_BASKET_OPTIONS . " where customers_id = '" . $customer_id . "' and products_id = '" . $products['products_id'] . "'");
         while ($attributes = tep_db_fetch_array($attributes_query)) {
-          $this->contents[$products['products_id']]['attributes'][$attributes['products_options_id']] = $attributes['products_options_value_id'];
+          $this->contents[$products['products_id']]['op_attributes'] = @unserialize($attributes['option_info']);
         }
       }
 
@@ -69,28 +65,27 @@
 //ccdd
         tep_db_query("delete from " . TABLE_CUSTOMERS_BASKET . " where customers_id = '" . $customer_id . "'");
 //ccdd
-        tep_db_query("delete from " . TABLE_CUSTOMERS_BASKET_ATTRIBUTES . " where customers_id = '" . $customer_id . "'");
+        tep_db_query("delete from " . TABLE_CUSTOMERS_BASKET_OPTIONS . " where customers_id = '" . $customer_id . "'");
       }
 
       unset($this->cartID);
       if (tep_session_is_registered('cartID')) tep_session_unregister('cartID');
     }
 
-    function add_cart($products_id, $qty = '1', $attributes = '', $notify = true) {
+    function add_cart($products_id, $qty = '1', $attributes = '', $notify = true, $option_info = array()) {
       global $new_products_id_in_cart, $customer_id;
-
       // check quantity
       $qty = (int)round((double)$qty);
       $qty = max($qty,1);
 
-      $products_id = tep_get_uprid($products_id, $attributes);
+      $products_id = $this->get_products_uprid($products_id, $option_info);
       if ($notify == true) {
         $new_products_id_in_cart = $products_id;
         tep_session_register('new_products_id_in_cart');
       }
 
       if ($this->in_cart($products_id)) {
-        $this->update_quantity($products_id, $qty, $attributes);
+        $this->update_quantity($products_id, $qty, $attributes, $option_info);
       } else {
         $this->contents[] = array($products_id);
         $this->contents[$products_id] = array('qty' => $qty);
@@ -98,14 +93,9 @@
 //ccdd
         if (tep_session_is_registered('customer_id')) tep_db_query("insert into " . TABLE_CUSTOMERS_BASKET . " (customers_id, products_id, customers_basket_quantity, customers_basket_date_added) values ('" . $customer_id . "', '" . $products_id . "', '" . $qty . "', '" . date('Ymd') . "')");
 
-        if (is_array($attributes)) {
-          reset($attributes);
-          while (list($option, $value) = each($attributes)) {
-            $this->contents[$products_id]['attributes'][$option] = $value;
-// insert into database
-//ccdd
-            if (tep_session_is_registered('customer_id')) tep_db_query("insert into " . TABLE_CUSTOMERS_BASKET_ATTRIBUTES . " (customers_id, products_id, products_options_id, products_options_value_id) values ('" . $customer_id . "', '" . $products_id . "', '" . $option . "', '" . $value . "')");
-          }
+        if (!empty($option_info)) {
+          $this->contents[$products_id]['op_attributes'] = $option_info; 
+          if (tep_session_is_registered('customer_id')) tep_db_query("insert into " . TABLE_CUSTOMERS_BASKET_OPTIONS . " (customers_id, products_id, option_info) values ('" . $customer_id . "', '" . $products_id .  "', '" . serialize($option_info) . "')");
         }
       }
       $this->cleanup();
@@ -114,7 +104,7 @@
       $this->cartID = $this->generate_cart_id();
     }
 
-    function update_quantity($products_id, $quantity = '', $attributes = '') {
+    function update_quantity($products_id, $quantity = '', $attributes = '', $option_info = array()) {
       global $customer_id;
 
       if (empty($quantity)) return true; // nothing needs to be updated if theres no quantity, so we return true..
@@ -124,14 +114,10 @@
 //ccdd
       if (tep_session_is_registered('customer_id')) tep_db_query("update " . TABLE_CUSTOMERS_BASKET . " set customers_basket_quantity = '" . $quantity . "' where customers_id = '" . $customer_id . "' and products_id = '" . $products_id . "'");
 
-      if (is_array($attributes)) {
-        reset($attributes);
-        while (list($option, $value) = each($attributes)) {
-          $this->contents[$products_id]['attributes'][$option] = $value;
-// update database
-//ccdd
-          if (tep_session_is_registered('customer_id')) tep_db_query("update " . TABLE_CUSTOMERS_BASKET_ATTRIBUTES . " set products_options_value_id = '" . $value . "' where customers_id = '" . $customer_id . "' and products_id = '" . $products_id . "' and products_options_id = '" . $option . "'");
-        }
+      if (!empty($option_info)) {
+        $this->contents[$products_id]['op_attributes'] = $option_info;
+        
+        if (tep_session_is_registered('customer_id')) tep_db_query("update " .  TABLE_CUSTOMERS_BASKET_OPTIONS . " set option_info = '" .  @serialize($option_info) . "' where customers_id = '" . $customer_id .  "' and products_id = '" . $products_id . "'");
       }
     }
 
@@ -147,7 +133,7 @@
 //ccdd
             tep_db_query("delete from " . TABLE_CUSTOMERS_BASKET . " where customers_id = '" . $customer_id . "' and products_id = '" . $key . "'");
 //ccdd
-            tep_db_query("delete from " . TABLE_CUSTOMERS_BASKET_ATTRIBUTES . " where customers_id = '" . $customer_id . "' and products_id = '" . $key . "'");
+            tep_db_query("delete from " . TABLE_CUSTOMERS_BASKET_OPTIONS . " where customers_id = '" . $customer_id . "' and products_id = '" . $key . "'");
           }
         }
       }
@@ -183,14 +169,13 @@
 
     function remove($products_id) {
       global $customer_id;
-
       unset($this->contents[$products_id]);
 // remove from database
       if (tep_session_is_registered('customer_id')) {
 //ccdd
         tep_db_query("delete from " . TABLE_CUSTOMERS_BASKET . " where customers_id = '" . $customer_id . "' and products_id = '" . $products_id . "'");
 //ccdd
-        tep_db_query("delete from " . TABLE_CUSTOMERS_BASKET_ATTRIBUTES . " where customers_id = '" . $customer_id . "' and products_id = '" . $products_id . "'");
+        tep_db_query("delete from " . TABLE_CUSTOMERS_BASKET_OPTIONS . " where customers_id = '" . $customer_id . "' and products_id = '" . $products_id . "'");
       }
 
 // assign a temporary unique ID to the order contents to prevent hack attempts during the checkout procedure
@@ -242,77 +227,65 @@
           $this->abs   += abs(tep_add_tax($products_price, $products_tax) * $qty);
           $this->weight += ($qty * $products_weight);
         }
-
 // attributes price
-        if (isset($this->contents[$products_id]['attributes'])) {
-          reset($this->contents[$products_id]['attributes']);
-          while (list($option, $value) = each($this->contents[$products_id]['attributes'])) {
-//ccdd
-            $attribute_price_query = tep_db_query("select options_values_price, price_prefix from " . TABLE_PRODUCTS_ATTRIBUTES . " where products_id = '" . $prid . "' and options_id = '" . $option . "' and options_values_id = '" . $value . "'");
+        if (isset($this->contents[$products_id]['op_attributes'])) {
+          foreach ($this->contents[$products_id]['op_attributes'] as $key => $value) {
+            $option_key_array = explode('_', $key);
+            $attribute_price_query = tep_db_query("select price from ".TABLE_OPTION_ITEM." where name = '".$option_key_array[1]."' and id = '".$option_key_array[3]."'"); 
             $attribute_price = tep_db_fetch_array($attribute_price_query);
-            if ($attribute_price['price_prefix'] == '+') {
-              $this->total += $qty * tep_add_tax($attribute_price['options_values_price'], $products_tax);
-            } else {
-              $this->total -= $qty * tep_add_tax($attribute_price['options_values_price'], $products_tax);
-            }
-            $this->abs += abs($qty * tep_add_tax($attribute_price['options_values_price'], $products_tax));
+            $this->total += $qty * tep_add_tax($attribute_price['price'], $products_tax);
+            $this->abs += abs($qty * tep_add_tax($attribute_price['price'], $products_tax));
           }
         }
       }
     }
 
     function attributes_price($products_id) {
-      if (isset($this->contents[$products_id]['attributes'])) {
-        reset($this->contents[$products_id]['attributes']);
-        while (list($option, $value) = each($this->contents[$products_id]['attributes'])) {
-//ccdd
-          $attribute_price_query = tep_db_query("select options_values_price, price_prefix from " . TABLE_PRODUCTS_ATTRIBUTES . " where products_id = '" . $products_id . "' and options_id = '" . $option . "' and options_values_id = '" . $value . "'");
+      if (isset($this->contents[$products_id]['op_attributes'])) {
+        foreach ($this->contents[$products_id]['op_attributes'] as $key => $value) {
+          $option_key_array = explode('_', $key);
+          $attribute_price_query = tep_db_query("select price from ".TABLE_OPTION_ITEM." where name = '".$option_key_array[1]."' and id = '".$option_key_array[3]."'"); 
           $attribute_price = tep_db_fetch_array($attribute_price_query);
-          if (!isset($attributes_price)) $attributes_price = NULL;
-          if ($attribute_price['price_prefix'] == '+') {
-            $attributes_price += $attribute_price['options_values_price'];
-          } else {
-            $attributes_price -= $attribute_price['options_values_price'];
+          if ($attribute_price) {
+            $attributes_price += $attribute_price['price'];
           }
         }
       }
-
       if(!isset($attributes_price)) $attributes_price = NULL;
       return $attributes_price;
     }
 
     function get_products() {
       global $languages_id;
-
       if (!is_array($this->contents)) return false;
-
       $products_array = array();
       reset($this->contents);
-      while (list($products_id, ) = each($this->contents)) {
-        $products = tep_get_product_by_id(tep_get_prid($products_id), SITE_ID,
-            $languages_id,true,'product_info');
+      while (list($products_id_info, ) = each($this->contents)) {
+        $products_id_array = explode('_', $products_id_info);
+        $products_id = $products_id_array[0];
+        
+        $products = tep_get_product_by_id($products_id, SITE_ID, $languages_id,true,'product_info');
         // for search
-        $search_products = tep_get_product_by_id(tep_get_prid($products_id), 0,
-            $languages_id,true,'product_info');
+        $search_products = tep_get_product_by_id($products_id, 0, $languages_id,true,'product_info');
         if ($products) {
           $prid = $products['products_id'];
           $products_price = $products['products_price'];
 
-      $products_price = tep_get_final_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum'], $this->contents[$products_id]['qty']);
+      $products_price = tep_get_final_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum'], $this->contents[$products_id_info]['qty']);
       # 追加エンド -------------------------------------------
 
-      if(!isset($this->contents[$products_id]['attributes'])) $this->contents[$products_id]['attributes']= NULL;
-          $products_array[] = array('id' => $products_id,
+      if(!isset($this->contents[$products_id_info]['op_attributes'])) $this->contents[$products_id_info]['op_attributes']= NULL;
+          $products_array[] = array('id' => $products_id_info,
                                     'name' => $products['products_name'],
                                     'search_name' => $search_products['products_name'],
                                     'model' => $products['products_model'],
                                     'price' => $products_price,
-                                    'quantity' => $this->contents[$products_id]['qty'],
+                                    'quantity' => $this->contents[$products_id_info]['qty'],
                                     'weight' => $products['products_weight'],
-                                    'final_price' => ($products_price + $this->attributes_price($products_id)),
+                                    'final_price' => ($products_price + $this->attributes_price($products_id_info)),
                                     'tax_class_id' => $products['products_tax_class_id'],
                                     'bflag' => $products['products_bflag'],
-                                    'attributes' => $this->contents[$products_id]['attributes']);
+                                    'op_attributes' => $this->contents[$products_id_info]['op_attributes']);
         }
       }
 
@@ -347,36 +320,16 @@
       if ( (DOWNLOAD_ENABLED == 'true') && ($this->count_contents() > 0) ) {
         reset($this->contents);
         while (list($products_id, ) = each($this->contents)) {
-          if (isset($this->contents[$products_id]['attributes'])) {
-            reset($this->contents[$products_id]['attributes']);
-            while (list(, $value) = each($this->contents[$products_id]['attributes'])) {
-//ccdd
-              $virtual_check_query = tep_db_query("select count(*) as total from " . TABLE_PRODUCTS_ATTRIBUTES . " pa, " . TABLE_PRODUCTS_ATTRIBUTES_DOWNLOAD . " pad where pa.products_id = '" . $products_id . "' and pa.options_values_id = '" . $value . "' and pa.products_attributes_id = pad.products_attributes_id");
-              $virtual_check = tep_db_fetch_array($virtual_check_query);
+          if (isset($this->contents[$products_id]['op_attributes'])) {
+            switch ($this->content_type) {
+              case 'virtual':
+                $this->content_type = 'mixed';
 
-              if ($virtual_check['total'] > 0) {
-                switch ($this->content_type) {
-                  case 'physical':
-                    $this->content_type = 'mixed';
-
-                    return $this->content_type;
-                    break;
-                  default:
-                    $this->content_type = 'virtual';
-                    break;
-                }
-              } else {
-                switch ($this->content_type) {
-                  case 'virtual':
-                    $this->content_type = 'mixed';
-
-                    return $this->content_type;
-                    break;
-                  default:
-                    $this->content_type = 'physical';
-                    break;
-                }
-              }
+                return $this->content_type;
+                break;
+              default:
+                $this->content_type = 'physical';
+                break;
             }
           } else {
             switch ($this->content_type) {
@@ -405,6 +358,29 @@
         $this->$key=$kv['value'];
       }
     }
-
+    
+    function get_products_uprid($products_id, $option_info_array)
+    {
+      $p_num = 1; 
+      if (!empty($this->contents)) {
+        foreach ($this->contents as $key => $value) {
+          $own_info = explode('_', $key);
+          if ($own_info[0] == $products_id) {
+            $p_num++; 
+            if (!empty($value['op_attributes'])) {
+              $diff_key_array = array_diff_key($value['op_attributes'], $option_info_array); 
+              $diff_value_array = array_diff($value['op_attributes'], $option_info_array); 
+              if (empty($diff_key_array) && empty($diff_value_array)) {
+                $auto_num = $own_info[1];   
+              }
+            }
+          }
+        }
+      }
+      if (isset($auto_num)) {
+        return $products_id.'_'.$auto_num; 
+      }
+      return $products_id.'_'.$p_num;
+    }
   }
 ?>

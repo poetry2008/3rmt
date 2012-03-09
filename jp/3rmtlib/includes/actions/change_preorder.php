@@ -43,7 +43,13 @@
       }
     }
   } 
+ 
+  require('option/HM_Option.php');
+  require('option/HM_Option_Group.php');
   
+  $hm_option = new HM_Option();
+  $option_info_array = array();
+
   unset($_SESSION['preorder_campaign_fee']);
   unset($_SESSION['preorder_camp_id']);
   
@@ -171,5 +177,9 @@
         $error = true;
         $point_error = TEXT_PREORDER_ERROR_CAMPAIGN;
       }
+    }
+   
+    if ($hm_option->check()) {
+      $error = true; 
     }
   }

@@ -171,12 +171,14 @@
 
         $subindex = 0;
 //ccdd
-        $attributes_query = tep_db_query("select products_options, products_options_values, options_values_price, price_prefix from " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " where orders_id = '" . tep_db_input($order_id) . "' and orders_products_id = '" . $orders_products['orders_products_id'] . "'");
+        $attributes_query = tep_db_query("select * from " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " where orders_id = '" . tep_db_input($order_id) . "' and orders_products_id = '" . $orders_products['orders_products_id'] . "'");
         if (tep_db_num_rows($attributes_query)) {
           while ($attributes = tep_db_fetch_array($attributes_query)) {
-            $this->products[$index]['attributes'][$subindex] = array('option' => $attributes['products_options'],
-                                                                     'value' => $attributes['products_options_values'],
-                                                                     'prefix' => $attributes['price_prefix'],
+            $this->products[$index]['op_attributes'][$subindex] = array(
+                                                                    'id' => $attributes['orders_products_attributes_id'],
+                                                                    'option_item_id' => $attributes['option_item_id'],
+                                                                     'option_group_id' => $attributes['option_group_id'],
+                                                                     'option_info' => @unserialize($attributes['option_info']),
                                                                      'price' => $attributes['options_values_price']);
 
             $subindex++;
@@ -339,32 +341,22 @@
                                         'weight' => $products[$i]['weight'],
                                         'id' => $products[$i]['id']);
 
-        if ($products[$i]['attributes']) {
+        if (!empty($products[$i]['op_attributes'])) {
           $subindex = 0;
-          reset($products[$i]['attributes']);
-          while (list($option, $value) = each($products[$i]['attributes'])) {
-//ccdd
-            $attributes_query = tep_db_query("
-                select popt.products_options_name, poval.products_options_values_name, pa.options_values_price, pa.price_prefix 
-                from " . TABLE_PRODUCTS_OPTIONS . " popt, " . TABLE_PRODUCTS_OPTIONS_VALUES . " poval, " . TABLE_PRODUCTS_ATTRIBUTES . " pa 
-                where pa.products_id = '" . $products[$i]['id'] . "' 
-                  and pa.options_id = '" . $option . "' 
-                  and pa.options_id = popt.products_options_id 
-                  and pa.options_values_id = '" . $value . "' 
-                  and pa.options_values_id = poval.products_options_values_id 
-                  and popt.language_id = '" . $languages_id . "' 
-                  and poval.language_id = '" . $languages_id . "'
-            ");
+          foreach($products[$i]['op_attributes'] as $op_key => $op_value) {
+            $op_key_array = explode('_', $op_key); 
+            $attributes_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name = '".$op_key_array[1]."' and id = '".$op_key_array[3]."'"); 
             $attributes = tep_db_fetch_array($attributes_query);
+            if ($attributes) {
+              $this->products[$index]['op_attributes'][$subindex] = array('front_title' => $attributes['front_title'],
+                                                                       'stock_num' => $attributes['stock_num'],
+                                                                       'item_id' => $attributes['id'],
+                                                                       'group_id' => $attributes['group_id'],
+                                                                       'value' => $op_value,
+                                                                       'price' => $attributes['price']);
 
-            $this->products[$index]['attributes'][$subindex] = array('option' => $attributes['products_options_name'],
-                                                                     'value' => $attributes['products_options_values_name'],
-                                                                     'option_id' => $option,
-                                                                     'value_id' => $value,
-                                                                     'prefix' => $attributes['price_prefix'],
-                                                                     'price' => $attributes['options_values_price']);
-
-            $subindex++;
+              $subindex++;
+            }
           }
         }
 

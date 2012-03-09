@@ -1299,8 +1299,8 @@ function tep_remove_product($product_id) {
   tep_db_query("delete from " . TABLE_PRODUCTS_TO_CATEGORIES . " where products_id = '" . tep_db_input($product_id) . "'");
   tep_db_query("delete from " . TABLE_PRODUCTS_DESCRIPTION . " where products_id = '" . tep_db_input($product_id) . "'");
   tep_db_query("delete from " . TABLE_PRODUCTS_ATTRIBUTES . " where products_id = '" . tep_db_input($product_id) . "'");
-  tep_db_query("delete from " . TABLE_CUSTOMERS_BASKET . " where products_id = '" . tep_db_input($product_id) . "'");
-  tep_db_query("delete from " . TABLE_CUSTOMERS_BASKET_ATTRIBUTES . " where products_id = '" . tep_db_input($product_id) . "'");
+  tep_db_query("delete from " . TABLE_CUSTOMERS_BASKET . " where products_id like ('%" . tep_db_input($product_id) . "%')");
+  tep_db_query("delete from " . TABLE_CUSTOMERS_BASKET_OPTIONS . " where products_id like ('%" . $product_id . "%')");
 
   $product_reviews_query = tep_db_query("select reviews_id from " . TABLE_REVIEWS . " where products_id = '" . tep_db_input($product_id) . "'");
   while ($product_reviews = tep_db_fetch_array($product_reviews_query)) {
@@ -3368,7 +3368,12 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
     }
     $str .= '<tr><td class="main">個数：</td><td class="main">'.$p['products_quantity'].'個'.tep_get_full_count2($p['products_quantity'], $p['products_id'], $p['products_rate']).'</td></tr>';
     while($pa = tep_db_fetch_array($products_attributes_query)){
-      $str .= '<tr><td class="main">'.$pa['products_options'].'：</td><td class="main">'.$pa['products_options_values'].'</td></tr>';
+      $input_option = @unserialize($pa['option_info']);
+      if ($input_option) {
+        if (isset($input_option['title'])) {
+          $str .= '<tr><td class="main">'.$input_option['title'].'：</td><td class="main">'.$input_option['value'].'</td></tr>';
+        }
+      }
     }
     $str .= '<tr><td class="main">キャラ名：</td><td class="main"  style="color:#407416;">'.$p['products_character'].'</td></tr>';
     $names = tep_get_computers_names_by_orders_id($orders['orders_id']);

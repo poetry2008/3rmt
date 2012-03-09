@@ -128,7 +128,7 @@ setlocale (LC_ALL, 'ja_JP.eucJP');
   define('TABLE_CURRENCIES', 'iimy_currencies');
   define('TABLE_CUSTOMERS', 'iimy_customers');
   define('TABLE_CUSTOMERS_BASKET', 'iimy_customers_basket');
-  define('TABLE_CUSTOMERS_BASKET_ATTRIBUTES', 'iimy_customers_basket_attributes');
+  //define('TABLE_CUSTOMERS_BASKET_ATTRIBUTES', 'iimy_customers_basket_attributes');
   define('TABLE_CUSTOMERS_INFO', 'iimy_customers_info');
   define('TABLE_LANGUAGES', 'iimy_languages');
   define('TABLE_MANUFACTURERS', 'manufacturers');

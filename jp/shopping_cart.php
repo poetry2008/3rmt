@@ -12,6 +12,7 @@
   $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
 ?>
 <?php page_head();?>
+<script type="text/javascript" src="./js/jquery-1.3.2.min.js"></script>
 <?php
   if (isset($_GET['action'])) {
     if ($_GET['action'] == 'delete') {
@@ -22,7 +23,7 @@
 ?>
 <script type="text/javascript">
 <!--
-function money_update(objid)
+function money_update(objid, targ)
 {
   var obj = document.getElementById(objid);
   var product_id = obj.id.substr(9);
@@ -35,7 +36,19 @@ function money_update(objid)
   var old_price_total  = document.getElementById("pri_" + product_id);
   var monetary_unit_pri = old_price_total.innerHTML.slice(-1);
   old_price_total.innerHTML = Math.abs(new_unit_price_total).toString() + monetary_unit_pri;
-
+  $('#pri_'+product_id).parent().find('small').each(function() {
+    old_option_price = $(this).find('i').html();
+    old_option_pri = old_option_price.slice(-1);
+    old_option_price_info =  old_option_price.slice(0, -1);
+    if (targ == 'up') {
+      old_num = Number(obj.value) - 1; 
+    } else {
+      old_num = Number(obj.value) + 1; 
+    }
+    old_single_option_price = old_option_price_info / old_num; 
+    new_option_price = Number(old_single_option_price)*Number(obj.value); 
+    $(this).html('<i>' + new_option_price + old_option_pri + '</i>');
+  });
   set_sub_total();
 }
 
@@ -61,9 +74,9 @@ function set_sub_total()
 
 }
   
-function update_cart(objid)
+function update_cart(objid, targ)
 {
-    money_update(objid);
+    money_update(objid, targ);
 }
 
 function change_num(ob,targ, quan,a_quan)
@@ -96,7 +109,7 @@ function change_num(ob,targ, quan,a_quan)
   product_quantity.value = num_value;
   if (product_quantity_num != num_value)
   { 
-    update_cart(product_quantity.id);
+    update_cart(product_quantity.id, targ);
   }
 }
 -->
@@ -130,31 +143,17 @@ function change_num(ob,targ, quan,a_quan)
     $products = $cart->get_products();
     for ($i=0, $n=sizeof($products); $i<$n; $i++) {
 // Push all attributes information in an array
-      if (isset($products[$i]['attributes'])) {
-        while (list($option, $value) = each($products[$i]['attributes'])) {
-          echo tep_draw_hidden_field('id[' . $products[$i]['id'] . '][' . $option . ']', $value);
-          // ccdd
-          $attributes = tep_db_query("select popt.products_options_name, 
-                                             poval.products_options_values_name, 
-                                             pa.options_values_price, 
-                                             pa.price_prefix, 
-                                             pa.products_at_quantity
-                                      from " . TABLE_PRODUCTS_OPTIONS . " popt, " . TABLE_PRODUCTS_OPTIONS_VALUES . " poval, " . TABLE_PRODUCTS_ATTRIBUTES . " pa
-                                      where pa.products_id = '" . $products[$i]['id'] . "'
-                                       and pa.options_id = '" . $option . "'
-                                       and pa.options_id = popt.products_options_id
-                                       and pa.options_values_id = '" . $value . "'
-                                       and pa.options_values_id = poval.products_options_values_id
-                                       and popt.language_id = '" . $languages_id . "'
-                                       and poval.language_id = '" . $languages_id . "'");
-          $attributes_values = tep_db_fetch_array($attributes);
-
-          $products[$i][$option]['products_options_name'] = $attributes_values['products_options_name'];
-          $products[$i][$option]['options_values_id'] = $value;
-          $products[$i][$option]['products_options_values_name'] = $attributes_values['products_options_values_name'];
-          $products[$i][$option]['options_values_price'] = $attributes_values['options_values_price'];
-          $products[$i][$option]['price_prefix'] = $attributes_values['price_prefix'];
-      $products[$i][$option]['products_at_quantity'] = $attributes_values['products_at_quantity'];
+      if (isset($products[$i]['op_attributes'])) {
+        foreach ($products[$i]['op_attributes'] as $op_key => $op_value) {
+          $op_key_array = explode('_', $op_key); 
+          $option_item_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name='".$op_key_array[1]."' and id= '".$op_key_array[3]."'");
+          $option_item_res = tep_db_fetch_array($option_item_query);
+          if ($option_item_res) {
+            $products[$i]['add_op_attributes'][$op_key]['option_name'] = $option_item_res['front_title'];
+            $products[$i]['add_op_attributes'][$op_key]['option_value'] = $op_value;
+            $products[$i]['add_op_attributes'][$op_key]['price'] = $option_item_res['price'];
+            $products[$i]['add_op_attributes'][$op_key]['stock_num'] = $option_item_res['stock_num'];
+          }
         }
       }
     }

@@ -50,6 +50,8 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
   define('LOCAL_EXE_UNZIP', '/usr/local/bin/unzip');
 
 // define the filenames used in the project
+  define('FILENAME_OPTION_GROUP', 'option_group.php');
+  define('FILENAME_OPTION_ITEM', 'option_item.php');
   define('FILENAME_CAMPAIGN', 'campaign.php');
   define('FILENAME_ASSETS', 'assets.php');
   define('FILENAME_PRINT_ASSETS', 'print_assets.php');
@@ -134,6 +136,9 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
 
 
 // define the database table names used in the project
+  define('TABLE_CUSTOMERS_BASKET_OPTIONS', 'customers_basket_options');
+  define('TABLE_OPTION_GROUP', 'option_group');
+  define('TABLE_OPTION_ITEM', 'option_item');
   define('TABLE_CAMPAIGN', 'campaign');
   define('TABLE_CUSTOMER_TO_CAMPAIGN', 'customer_to_campaign');
   define('TABLE_PREORDERS', 'preorders');
@@ -192,7 +197,7 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
   define('TABLE_CURRENCIES', 'currencies');
   define('TABLE_CUSTOMERS', 'customers');
   define('TABLE_CUSTOMERS_BASKET', 'customers_basket');
-  define('TABLE_CUSTOMERS_BASKET_ATTRIBUTES', 'customers_basket_attributes');
+  //define('TABLE_CUSTOMERS_BASKET_ATTRIBUTES', 'customers_basket_attributes');
   define('TABLE_CUSTOMERS_INFO', 'customers_info');
   define('TABLE_LANGUAGES', 'languages');
   define('TABLE_MANUFACTURERS', 'manufacturers');

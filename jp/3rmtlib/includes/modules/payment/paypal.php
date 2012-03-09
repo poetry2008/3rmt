@@ -158,40 +158,20 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
     $mail_body .= "\t" . '------------------------------------------'."\n";
 
       $products = $cart->get_products();
-      for ($i=0, $n=sizeof($products); $i<$n; $i++) {
-        if (isset($products[$i]['attributes'])) {
-          while (list($option, $value) = each($products[$i]['attributes'])) {
-            echo tep_draw_hidden_field('id[' . $products[$i]['id'] . '][' . $option . ']', $value);
-            $attributes = tep_db_query("select popt.products_options_name, poval.products_options_values_name, pa.options_values_price, pa.price_prefix, pa.products_at_quantity
-                                        from " . TABLE_PRODUCTS_OPTIONS . " popt, " . TABLE_PRODUCTS_OPTIONS_VALUES . " poval, " . TABLE_PRODUCTS_ATTRIBUTES . " pa
-                                        where pa.products_id = '" . $products[$i]['id'] . "'
-                                         and pa.options_id = '" . $option . "'
-                                         and pa.options_id = popt.products_options_id
-                                         and pa.options_values_id = '" . $value . "'
-                                         and pa.options_values_id = poval.products_options_values_id
-                                         and popt.language_id = '" . $languages_id . "'
-                                         and poval.language_id = '" . $languages_id . "'");
-            $attributes_values = tep_db_fetch_array($attributes);
-
-            $products[$i][$option]['products_options_name'] = $attributes_values['products_options_name'];
-            $products[$i][$option]['options_values_id'] = $value;
-            $products[$i][$option]['products_options_values_name'] = $attributes_values['products_options_values_name'];
-            $products[$i][$option]['options_values_price'] = $attributes_values['options_values_price'];
-            $products[$i][$option]['price_prefix'] = $attributes_values['price_prefix'];
-        $products[$i][$option]['products_at_quantity'] = $attributes_values['products_at_quantity'];
-          }
-        }
-      }
     
     for ($i=0, $n=sizeof($products); $i<$n; $i++) {
       $char_id = $products[$i]['id'];
     $mail_body .= '・' . $products[$i]['name'] . '×' . $products[$i]['quantity'] . '(キャラクター名:' . $_SESSION["character"][$char_id] . ')' . "\n";
-      $attributes_exist = ((isset($products[$i]['attributes'])) ? 1 : 0);
+      $attributes_exist = ((isset($products[$i]['op_attributes'])) ? 1 : 0);
 
         if ($attributes_exist == 1) {
-          reset($products[$i]['attributes']);
-          while (list($option, $value) = each($products[$i]['attributes'])) {
-            $mail_body .= '└' . $products[$i][$option]['products_options_name'] . ' ' . $products[$i][$option]['products_options_values_name'] . "\n";
+          foreach ($products[$i]['op_attributes'] as $op_key => $op_value) {
+            $op_key_array = explode('_', $op_key);
+            $option_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name = '".$op_key_array[1]."' and id = '".$op_key_array[3]."'"); 
+            $option_res = tep_db_fetch_array($option_query);
+            if ($option_res) {
+              $mail_body .= '└' . $option_res['front_title'] . ' ' . $op_value . "\n";
+            }
           }
         }
     }
@@ -593,20 +573,13 @@ function getpreexpress($pre_value, $pre_pid){
     if ($preorder_products_res) {
       $mail_body .= '・' . $preorder_products_res['products_name'] . '×' .  $preorder_products_res['products_quantity'] . '(キャラクター名:' .  $_SESSION["preorder_info_character"] . ')' . "\n";
    
-      if (isset($_SESSION['preorder_info_attr'])) {
-        foreach ($_SESSION['preorder_info_attr'] as $key => $value) {
-          $attributes = tep_db_query("select popt.products_options_name, poval.products_options_values_name, pa.options_values_price, pa.price_prefix, pa.products_at_quantity
-                                        from " . TABLE_PRODUCTS_OPTIONS . " popt, " . TABLE_PRODUCTS_OPTIONS_VALUES . " poval, " . TABLE_PRODUCTS_ATTRIBUTES . " pa
-                                        where pa.products_id = '" .  $preorder_products_res['products_id'] . "'
-                                         and pa.options_id = '" . $key . "'
-                                         and pa.options_id = popt.products_options_id
-                                         and pa.options_values_id = '" . $value . "'
-                                         and pa.options_values_id = poval.products_options_values_id
-                                         and popt.language_id = '" . $languages_id . "'
-                                         and poval.language_id = '" . $languages_id . "'");
-          $attributes_values = tep_db_fetch_array($attributes);
-          if ($attributes_values) {
-            $mail_body .= '└' . $attributes_values['products_options_name'] . ' ' .  $attributes_values['products_options_values_name'] . "\n";
+      if (isset($_SESSION['preorder_option_info'])) {
+        foreach ($_SESSION['preorder_option_info'] as $key => $value) {
+          $i_option = explode('_', $key);
+          $option_item_raw = tep_db_query("select front_title from ".TABLE_OPTION_ITEM." where name = '".$i_option[1]."' and id = '".$i_option[3]."'");
+          $option_item = tep_db_fetch_array($option_item_raw); 
+          if ($option_item) {
+            $mail_body .= '└' . $option_item['front_title'] . ' ' .  $value . "\n";
           }
         }
       }

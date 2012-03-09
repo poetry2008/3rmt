@@ -192,10 +192,10 @@
       // Update Any Attributes
       if (IsSet($products_details["attributes"])) {
         foreach ($products_details["attributes"] as $attributes_id => $attributes_details) {
-          $_SESSION['create_order2']['orders_products_attributes'][$orders_products_id][$attributes_id]['products_options'] = $attributes_details["option"];
-          $_SESSION['create_order2']['orders_products_attributes'][$orders_products_id][$attributes_id]['products_options_values'] = $attributes_details["value"];
+          $_SESSION['create_order2']['orders_products_attributes'][$orders_products_id][$attributes_id]['option_info'] = array('title' => $attributes_details['option'], 'value' => $attributes_details['value']);
         }
       }
+       
     } else { // b.) null quantity found --> delete
       unset($_SESSION['create_order2']['orders_products'][$orders_products_id]);
       unset($_SESSION['create_order2']['orders_products_attributes'][$orders_products_id]);
@@ -470,6 +470,8 @@
           $orders_product_attributes['orders_id'] = $new_orders2_id;
         }
           $orders_product_attributes['orders_products_id'] = $orders_products_id;
+          $orders_product_attributes['option_info'] = serialize($orders_product_attributes['option_info']);
+          
           tep_db_perform(TABLE_ORDERS_PRODUCTS_ATTRIBUTES, $orders_product_attributes);
         }
         /* 士入不需要操作库存 */
@@ -561,9 +563,9 @@
         // Has Attributes?
         if (sizeof($order2->products[$i]['attributes']) > 0) {
           for ($j=0; $j<sizeof($order2->products[$i]['attributes']); $j++) {
-            $orders_products_attributes_id = $order2->products[$i]['attributes'][$j]['orders_products_attributes_id'];
-            $products_ordered_mail .= tep_parse_input_field_data($order2->products[$i]['attributes'][$j]['option'], array("'"=>"&quot;")) . '　　　　　：';
-            $products_ordered_mail .= tep_parse_input_field_data($order2->products[$i]['attributes'][$j]['value'], array("'"=>"&quot;")) . "\n";
+            //$orders_products_attributes_id = $order2->products[$i]['attributes'][$j]['orders_products_attributes_id'];
+            $products_ordered_mail .= tep_parse_input_field_data($order2->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;")) . '　　　　　：';
+            $products_ordered_mail .= tep_parse_input_field_data($order2->products[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&quot;")) . "\n";
           }
         }
           
@@ -708,7 +710,6 @@
   $email_printing_order .= '最終確認　　　　　　：確認者名＿＿＿＿' . "\n";
   $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
   # ------------------------------------------
-
   tep_mail('',
       get_configuration_by_site_id('PRINT_EMAIL_ADDRESS',$order->info['site_id']),
       get_configuration_by_site_id('STORE_NAME',$order->info['site_id']),
@@ -896,23 +897,19 @@
         $add_product_options = $_POST['add_product_options'];
       }
       $AddedOptionsPrice = 0;
-
-      // 2.1.1 Get Product Attribute Info
-      if(IsSet($add_product_options))
-      {
-        foreach($add_product_options as $option_id => $option_value_id)
-        {
-          $result = tep_db_query("SELECT * FROM " . TABLE_PRODUCTS_ATTRIBUTES . " pa LEFT JOIN " . TABLE_PRODUCTS_OPTIONS . " po ON po.products_options_id=pa.options_id LEFT JOIN " . TABLE_PRODUCTS_OPTIONS_VALUES . " pov ON pov.products_options_values_id=pa.options_values_id WHERE products_id='$add_product_products_id' and options_id=$option_id and options_values_id=$option_value_id and po.language_id = '" . (int)$languages_id . "' and pov.language_id = '" . (int)$languages_id . "'");
-          $row = tep_db_fetch_array($result);
-          extract($row, EXTR_PREFIX_ALL, "opt");
-          $AddedOptionsPrice += $opt_options_values_price;
-          $option_value_details[$option_id][$option_value_id] = array ("options_values_price" => $opt_options_values_price);
-          $option_names[$option_id] = $opt_products_options_name;
-          $option_values_names[$option_value_id] = $opt_products_options_values_name;
-          $option_attributes_id[$option_value_id] = $opt_products_attributes_id;
+       
+      foreach ($_POST as $op_key => $op_value) {
+        $op_pos = substr($op_key, 0, 3);
+        if ($op_pos == 'op_') {
+          $op_info_array = explode('_', $op_key); 
+          $op_item_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name = '".$op_info_array[1]."' and id = '".$op_info_array[3]."'"); 
+          $op_item_res = tep_db_fetch_array($op_item_query);
+          if ($op_item_res) {
+            $AddedOptionsPrice += $op_item_res['price'];
+          }
         }
       }
-
+      
       // 2.1.2 Get Product Info
       $InfoQuery = "
         select p.products_model, 
@@ -966,18 +963,38 @@
       //tep_db_query("update " . TABLE_PRODUCTS . " set products_quantity = products_quantity - " . (int)$add_product_quantity . ", products_ordered = products_ordered + " . (int)$add_product_quantity . " where products_id = '" . $add_product_products_id . "'");
       //tep_db_query("update " . TABLE_PRODUCTS . " set products_quantity = 0 where products_quantity < 0 and products_id = '" . $add_product_products_id . "'");
 
-      if (IsSet($add_product_options)) {
-        foreach($add_product_options as $option_id => $option_value_id) {
-          $_SESSION['create_order2']['orders_products_attributes'][$add_product_products_id][$option_attributes_id[$option_value_id]] = array(
-            'orders_id' => $oID,
-            'orders_products_id'      => $new_product_id,
-            'products_options'        => $option_names[$option_id],
-            'products_options_values' => tep_db_input($option_values_names[$option_value_id]),
-            'options_values_price'    => $option_value_details[$option_id][$option_value_id]["options_values_price"],
-            'attributes_id'           => $option_attributes_id[$option_value_id],
-            'price_prefix'            => '+'
-          );
-          //tep_db_query($Query);
+      //if (IsSet($add_product_options)) {
+        //foreach($add_product_options as $option_id => $option_value_id) {
+          //$_SESSION['create_order2']['orders_products_attributes'][$add_product_products_id][$option_attributes_id[$option_value_id]] = array(
+            //'orders_id' => $oID,
+            //'orders_products_id'      => $new_product_id,
+            //'products_options'        => $option_names[$option_id],
+            //'products_options_values' => tep_db_input($option_values_names[$option_value_id]),
+            //'options_values_price'    => $option_value_details[$option_id][$option_value_id]["options_values_price"],
+            //'attributes_id'           => $option_attributes_id[$option_value_id],
+            //'price_prefix'            => '+'
+          //);
+        //}
+      //}
+      
+      unset($_SESSION['create_order2']['orders_products_attributes'][$add_product_products_id]); 
+      foreach ($_POST as $op_i_key => $op_i_value) {
+        $op_pos = substr($op_i_key, 0, 3);
+        if ($op_pos == 'op_') {
+          $i_op_array = explode('_', $op_i_key);
+          $ioption_item_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name = '".$i_op_array[1]."' and id = '".$i_op_array[3]."'");
+          $ioption_item_res = tep_db_fetch_array($ioption_item_query); 
+          if ($ioption_item_res) {
+            $input_option_array = array('title' => $ioption_item_res['front_title'], 'value' => $op_i_value); 
+            $_SESSION['create_order2']['orders_products_attributes'][$add_product_products_id][] = array(
+              'orders_id' => $oID,
+              'orders_products_id'      => $new_product_id,
+              'options_values_price'    => $ioption_item_res['price'],
+              'option_group_id'           => $ioption_item_res['group_id'],
+              'option_item_id'           => $ioption_item_res['id'],
+              'option_info'           => $input_option_array,
+            ); 
+          }
         }
       }
       
@@ -1234,16 +1251,15 @@ function check_add(){
 
     if ($_SESSION['create_order2']['orders_products_attributes'][$pid]) {
       foreach ($_SESSION['create_order2']['orders_products_attributes'][$pid] as $attributes) {
-        $order_products_attributes[$pid][] = array('option' => $attributes['products_options'],
-                                                         'value' => $attributes['products_options_values'],
-                                                         'prefix' => $attributes['price_prefix'],
-                                                         'price' => $attributes['options_values_price'],
-                                                         'attributes_id' => $attributes['attributes_id'],
-                                                         'orders_products_attributes_id' => $attributes['orders_products_attributes_id']);
+        $order_products_attributes[$pid][] = array(
+            'price' => $attributes['options_values_price'],
+            'option_info' => $attributes['option_info'],
+            'option_item_id' => $attributes['option_item_id'],
+            'option_group_id' => $attributes['option_group_id'],
+            );
       }
     }
   }
-  
 ?>
 <?php // Version without editable names & prices ?>
 <table border="0" width="100%" cellspacing="0" cellpadding="2">
@@ -1271,10 +1287,9 @@ function check_add(){
     if (sizeof($order_products_attributes[$pid]) > 0) {
       for ($j=0; $j<sizeof($order_products_attributes[$pid]); $j++) {
         //$orders_products_attributes_id = $order_products_attributes[$pid][$j]['orders_products_attributes_id'];
-        echo '<br><nobr><small>&nbsp;<i> - ' . 
-           '<input name="update_products[' . $pid . '][attributes][' . $order_products_attributes[$pid][$j]['attributes_id'] . '][option]" size="10" value="' . tep_parse_input_field_data($order_products_attributes[$pid][$j]['option'], array("'"=>"&quot;")) . '">' . 
+        echo '<br><nobr><small>&nbsp;<i> - ' .  '<input name="update_products[' .  $pid . '][attributes]['.$j.'][option]" size="10" value="' .  tep_parse_input_field_data($order_products_attributes[$pid][$j]['option_info']['title'], array("'"=>"&quot;")) . '">' . 
            ': ' . 
-           '<input name="update_products[' . $pid . '][attributes][' . $order_products_attributes[$pid][$j]['attributes_id'] . '][value]" size="35" value="' . tep_parse_input_field_data($order_products_attributes[$pid][$j]['value'], array("'"=>"&quot;"));
+           '<input name="update_products[' . $pid . '][attributes]['.$j.'][value]" size="35" value="' .  tep_parse_input_field_data($order_products_attributes[$pid][$j]['option_info']['value'], array("'"=>"&quot;"));
         echo '">';
         echo '</i></small></nobr>';
       }
@@ -1687,15 +1702,20 @@ function check_add(){
       print "</form></tr>\n";
       print "<tr><td colspan='3'>&nbsp;</td></tr>\n";
     }
-
+    require('option/HM_Option.php');
+    require('option/HM_Option_Group.php');
+    $hm_option = new HM_Option();
+    if(($step == 3) && ($add_product_products_id > 0) && isset($_POST['action_process'])) {
+      if (!$hm_option->check()) {
+        $step = 4; 
+      }
+    }
     // Step 3: Choose Options
     if(($step > 2) && ($add_product_products_id > 0))
     {
-      // Get Options for Products
-      $result = tep_db_query("SELECT * FROM " . TABLE_PRODUCTS_ATTRIBUTES . " pa LEFT JOIN " . TABLE_PRODUCTS_OPTIONS . " po ON po.products_options_id=pa.options_id LEFT JOIN " . TABLE_PRODUCTS_OPTIONS_VALUES . " pov ON pov.products_options_values_id=pa.options_values_id WHERE products_id='$add_product_products_id' and po.language_id = '" . (int)$languages_id . "'");
-      
-      // Skip to Step 4 if no Options
-      if(tep_db_num_rows($result) == 0)
+      $option_product_raw = tep_db_query("select belong_to_option from ".TABLE_PRODUCTS." where products_id = '".$add_product_products_id."'"); 
+      $option_product = tep_db_fetch_array($option_product_raw);
+      if(!$hm_option->admin_whether_show($option_product['belong_to_option']))
       {
         print "<tr class=\"dataTableRow\">\n";
         print "<td class='dataTableContent' align='right'><b>" . ADDPRODUCT_TEXT_STEP . " 3: </b></td>\n";
@@ -1705,34 +1725,16 @@ function check_add(){
       }
       else
       {
-        while($row = tep_db_fetch_array($result))
-        {
-          extract($row,EXTR_PREFIX_ALL,"db");
-          $Options[$db_products_options_id] = $db_products_options_name;
-          $ProductOptionValues[$db_products_options_id][$db_products_options_values_id] = $db_products_options_values_name;
-        }
       
         print "<tr class=\"dataTableRow\"><form action='$PHP_SELF?oID=$oID&action=$action' method='POST'>\n";
         print "<td class='dataTableContent' align='right'><b>" . ADDPRODUCT_TEXT_STEP . " 3: </b></td><td class='dataTableContent' valign='top'>";
-        foreach($ProductOptionValues as $OptionID => $OptionValues)
-        {
-          $OptionOption = "<b>" . $Options[$OptionID] . "</b> - <select name='add_product_options[$OptionID]'>";
-          foreach($OptionValues as $OptionValueID => $OptionValueName)
-          {
-          $OptionOption .= "<option value='$OptionValueID'> $OptionValueName\n";
-          }
-          $OptionOption .= "</select><br>\n";
-          
-          if(IsSet($add_product_options))
-          $OptionOption = str_replace("value='" . $add_product_options[$OptionID] . "'","value='" . $add_product_options[$OptionID] . "' selected",$OptionOption);
-          
-          print $OptionOption;
-        }   
+        print $hm_option->render($option_product['belong_to_option']); 
         print "</td>";
         print "<td class='dataTableContent' align='center'><input type='submit' value='" . ADDPRODUCT_TEXT_OPTIONS_CONFIRM . "'>";
         print "<input type='hidden' name='add_product_categories_id' value='$add_product_categories_id'>";
         print "<input type='hidden' name='add_product_products_id' value='$add_product_products_id'>";
-        print "<input type='hidden' name='step' value='4'>";
+        print "<input type='hidden' name='step' value='3'>";
+        print "<input type='hidden' name='action_process' value='1'>";
         print "</td>\n";
         print "</form></tr>\n";
       }
@@ -1749,11 +1751,10 @@ function check_add(){
         ADDPRODUCT_TEXT_CONFIRM_QUANTITY . '<input name="add_product_quantity" size="2" value="1" onkeyup="clearLibNum(this);">&nbsp;'.EDIT_ORDERS_NUM_UNIT.'&nbsp;&nbsp;'.TABLE_HEADING_UNIT_PRICE.'<input name="add_product_price" id="add_product_price" size="4" value="0" onkeyup="clearNoNum(this);">&nbsp;'.EDIT_ORDERS_PRICE_UNIT.'&nbsp;&nbsp;'.EDIT_ORDERS_PRO_DUMMY_NAME.'&nbsp;<input type="hidden" name="dummy" value="あいうえお眉幅"><input name="add_product_character" size="20" value=""></td>';
       echo "<td class='dataTableContent' align='center'><input type='submit' value='" . ADDPRODUCT_TEXT_CONFIRM_ADDNOW . "'>";
 
-      if(IsSet($add_product_options))
-      {
-        foreach($add_product_options as $option_id => $option_value_id)
-        {
-          print "<input type='hidden' name='add_product_options[$option_id]' value='$option_value_id'>";
+      foreach ($_POST as $op_key => $op_value) {
+        $op_pos = substr($op_key, 0, 3);
+        if ($op_pos == 'op_') {
+          echo "<input type='hidden' name='".$op_key."' value='".$op_value."'>"; 
         }
       }
       echo "<input type='hidden' name='add_product_categories_id' value='$add_product_categories_id'>";

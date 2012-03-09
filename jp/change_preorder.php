@@ -244,46 +244,15 @@ echo '</form>';
             </tr>
           </table> 
           <?php
-          $products_options_name_query = tep_db_query("
-              SELECT distinct popt.products_options_id, 
-                     popt.products_options_name 
-              FROM " . TABLE_PRODUCTS_OPTIONS . " popt, " . TABLE_PRODUCTS_ATTRIBUTES . " patrib 
-              WHERE patrib.products_id = '" . $preorder_product_res['products_id'] . "' 
-                AND patrib.options_id  = popt.products_options_id 
-                AND popt.language_id   = '" . $languages_id . "'
-          ");
-          if (tep_db_num_rows($products_options_name_query)) { 
+          if ($hm_option->whether_show($product_info_res['belong_to_option'])) { 
           ?>
-          <br> 
+          <br>
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
-            <?php
-        while ($products_options_name = tep_db_fetch_array($products_options_name_query)) {
-            $selected = 0;
-            $products_options_array = array();
-            echo '<tr><td class="main" width="150">' . $products_options_name['products_options_name'] . ':</td><td>' . "\n";
-        $products_options_query = tep_db_query("
-            SELECT pov.products_options_values_id, 
-                   pov.products_options_values_name, 
-                   pa.options_values_price, 
-                   pa.price_prefix, 
-                   pa.products_at_quantity, 
-                   pa.products_at_quantity 
-            FROM " . TABLE_PRODUCTS_ATTRIBUTES . " pa, " . TABLE_PRODUCTS_OPTIONS_VALUES . " pov 
-            WHERE pa.products_id = '" . $preorder_product_res['products_id'] . "' 
-              AND pa.options_id = '" . $products_options_name['products_options_id'] . "' 
-              AND pa.options_values_id = pov.products_options_values_id and pov.language_id = '" . $languages_id . "' 
-            ORDER BY pa.products_attributes_id");
-
-            while ($products_options = tep_db_fetch_array($products_options_query)) {
-              //add products_at_quantity - ds-style
-              if($products_options['products_at_quantity'] > 0) {
-                $products_options_array[] = array('id' => $products_options['products_options_values_id'], 'text' => $products_options['products_options_values_name']);
-              }
-            }
-            echo tep_draw_pull_down_menu('op_id[' .  $products_options_name['products_options_id'] . ']' , $products_options_array, isset($_POST['op_id'][$products_options_name['products_options_id']])?$_POST['op_id'][$products_options_name['products_options_id']]:'');
-            echo '</td></tr>';
-          }
-            ?>
+          <tr>
+            <td>
+            <?php echo $hm_option->render($product_info_res['belong_to_option'], true);?> 
+            </td>
+          </tr>
           </table> 
           <?php }?> 
           <br>

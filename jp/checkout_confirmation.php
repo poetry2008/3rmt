@@ -111,19 +111,19 @@ require(DIR_WS_ACTIONS.'checkout_confirmation.php');
                                                                                                                                                                                                                  }
 
 for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
-  $product_info = tep_get_product_by_id($order->products[$i]['id'], SITE_ID, $languages_id);
+  $product_info = tep_get_product_by_id((int)$order->products[$i]['id'], SITE_ID, $languages_id);
     
   echo '          <tr>' . "\n" .
-    '            <td class="main" align="center" valign="top" width="150">' . $order->products[$i]['qty'] . '&nbsp;個' . (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($order->products[$i]['qty'], $order->products[$i]['id']) ? '<br><span style="font-size:10px">'. tep_get_full_count_in_order2($order->products[$i]['qty'], $order->products[$i]['id']) .'</span>': '') . '</td>' . "\n" .
+    '            <td class="main" align="center" valign="top" width="150">' .
+    $order->products[$i]['qty'] . '&nbsp;個' .  (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($order->products[$i]['qty'], (int)$order->products[$i]['id']) ? '<br><span style="font-size:10px">'.  tep_get_full_count_in_order2($order->products[$i]['qty'], (int)$order->products[$i]['id']) .'</span>': '') . '</td>' . "\n" .
     '            <td class="main" valign="top">' . $order->products[$i]['name'];
 
   if (STOCK_CHECK == 'true') {
-    echo tep_check_stock($order->products[$i]['id'], $order->products[$i]['qty']);
+    echo tep_check_stock((int)$order->products[$i]['id'], $order->products[$i]['qty']);
   }
-
-  if ( (isset($order->products[$i]['attributes'])) && (sizeof($order->products[$i]['attributes']) > 0) ) {
-    for ($j=0, $n2=sizeof($order->products[$i]['attributes']); $j<$n2; $j++) {
-      echo '<br><small>&nbsp;<i> - ' . $order->products[$i]['attributes'][$j]['option'] . ': ' . $order->products[$i]['attributes'][$j]['value'] . '</i></small>';
+  if ( (isset($order->products[$i]['op_attributes'])) && (sizeof($order->products[$i]['op_attributes']) > 0) ) {
+    for ($j=0, $n2=sizeof($order->products[$i]['op_attributes']); $j<$n2; $j++) {
+      echo '<br><small>&nbsp;<i> - ' .  $order->products[$i]['op_attributes'][$j]['front_title'] . ': ' .  $order->products[$i]['op_attributes'][$j]['value'] . '</i></small>';
     }
   }
 
