@@ -332,7 +332,6 @@ function add_option_select()
       }
       $even = 'dataTableSecondRow';
       $odd  = 'dataTableRow';
-echo '<br>';
       if (isset($nowColor) && $nowColor == $odd) {
         $nowColor = $even; 
       } else {
