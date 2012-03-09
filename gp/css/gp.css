@@ -63,7 +63,6 @@ H4 {
     border: 1px solid #B8B8B8;
     padding: 5px;
 }
-.comment img{ vertical-align:middle\9;}
 .comment02 {
 	width: 698px;
 	width:710px\9;
@@ -290,7 +289,6 @@ UL {
 	text-align:left;
 	width:133px;
 }
-.l_m_categories_tree3 strong{ height:100%;}
 .l_m_categories_tree3 a{
 	font-size: 12px;
 	*font-size: 12px;
@@ -303,7 +301,6 @@ UL {
 	width:120px;
 	margin-top:-10px;
 	*margin-top:2px;
-	height:100%;
 }
 .l_m_categories_tree a:hover,l_m_categories_tree3 a:hover{
 	font-size: 12px;
@@ -1452,8 +1449,6 @@ TABLE：Info Box
 	padding: 5px;
 /*	width:430px\9;
 */}
-.product_info_box td{ font-size:12px;}
-.product_info_box p { font-size:12px;}
 .product_info_box01{
 	border: solid 1px #ccc;
 	background: #fff;
@@ -1690,8 +1685,8 @@ SPAN.greetUser {
 TABLE：Form area (the border)
 --------------------------- */
 TABLE.formArea {
-	background: #EEEEEE;
-	border-color: #ddd;
+	background: #f4f4f4;
+	border-color: #E8E8E8;
 	border-style: solid;
 	border-width: 1px;
 }
@@ -1729,7 +1724,7 @@ Mausuofu
 .moduleRow, .moduleRow td {
 	background: #e5e5e5;
 }
-.moduleRow td, .moduleRowSelected td { padding:3px 5px;}
+.moduleRow td { padding:3px 5px;}
 /* ---------------------------
 Mouse over
 --------------------------- */
@@ -2027,7 +2022,7 @@ border:2px solid #FF8080;
 	width:720px\9; 
 	padding:0 0 10px 10px;
 }
-.info_middle{ background-color:#fff; padding:5px; padding:5px 0\9; font-size:12px;}
+.info_middle{ background-color:#fff; padding:5px; padding:5px 0\9;}
 .comment_info_warpper{
   background-color:#fff;
   padding:5px;
@@ -2100,96 +2095,5 @@ border:2px solid #FF8080;
 .comment_info_warpper_reviews table { margin-left:5px\9;}
 #caemail p{ margin:5px 0 0 0;}
 #caemail p img { position:relative; /*left:10px;*/ top:3px;}
-.con_email01 { /*float:left;*/}
+.con_email01 { float:left;}
 .cemail_input_01{ float:left; width:150px;}
-.preorder_active_info { background-color:#ccc; font-size:13px; }
-.preorder_active_info td{ background-color:#fff; padding-left:2px; line-height:25px;}
-.preorder_active_line{ border-bottom:1px dashed #ccc; margin:0 0 10px 0;}
-.preorderBarcurrent{ font-size:11px; color:#000;}
-.preorderBarTo{ font-size:11px; color:#8c8c8c;}
-.c_pay_info{
-    background-color: #FFFFFF;
-    border: 1px solid #CCCCCC;
-    margin: 3px 0;
-    padding: 4px;
-}
-.preorderBarFrom{ font-size:11px; color:#8c8c8c;}
-.preorser_formArea{ background-color:#ccc; font-size:13px;}
-.preorser_formArea td{ background-color:#fff; padding-left:2px; line-height:25px;}
-.product_info_table{ background:#fff; padding:5px;}
-.formArea_td_info { width:360px\9; font-size:12px; line-height:1.5;}
-.preorder_info_box{	border: solid 1px #ccc; background: #fff; padding: 5px;}
-.active_email_name { font-size:11px; width:80px\9;}
-
-
-
-.checkout_payment_info{
-	border:1px solid #ccc;
-	background-color:#F4F4F4;
-	margin-top:15px;   
-	*margin-top:5px;
-	font-size:12px;
-	padding:5px;
-	line-height:1.5;                        
-}
-.float_left{
-	float:left;
-}
-.txt_right{
-	text-align:right;
-}
-.box_content_title {
-    background-color:#e5e5e5;
-    clear: both;
-    line-height:21px;
-    overflow: hidden;
-    width: 100%;
-}
-.box_content_title_selected{
-	background:#ccc;
-}
-.box_content_title input {
-    margin-right: 12px;
-	margin-top:4px;
-	*margin-top:0;
-}
-.frame_w70{
-	width:70%;
-	float:left;
-	padding-left:10px;
-}
-.float_right{
-	float:right;
-}
-.cp_content{
-	padding:0 20px;
-}
-.cp_content P{
-	color:#FF0000;
-}
-.cp_codefee{
-	margin-top:5px;
-}
-.txt_input_box{
-	overflow:hidden;
-	clear:both;
-	height:15%;
-}
-.frame_title{
-	width:30%;
-	float:left;
-	line-height:25px;
-}
-.clear{
-	clear:both;
-}
-.cp_description{
-	padding:0 20px;
-	margin:5px 0;
-}
-.box_waring {
-    background: none repeat scroll 0 0 #FFE6E6;
-    border: 1px solid #FF8E90;
-    padding: 5px;
-	font-size:12px;
-}

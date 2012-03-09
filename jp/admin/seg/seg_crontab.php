@@ -1,7 +1,6 @@
 #!/usr/bin/env php
 <?php
-define('PRO_ROOT_DIR','/home/szn/project/3rmt/jp/admin/seg');
-//define('PRO_ROOT_DIR','/home/.sites/22/site13/vhosts/jp/admin/seg');
+define('PRO_ROOT_DIR','/home/maker/project/3rmt/jp/admin/seg');
 ini_set('display_errors', 'On');
 error_reporting(E_ALL);
 //加载公用库页面
@@ -10,7 +9,6 @@ require_once(PRO_ROOT_DIR."/class/db.php");
 require_once(PRO_ROOT_DIR."/class/mission.php");
 define('LOG_FILE_NAME',LOG_DIR.date('Y-m-d_H_i_s',time()).'.log');
 define('LOG_FILE_NAME_LAST',LOG_DIR.'last.log');
-define('SLEEP_TIME','10');//number is seconds
 function cron_log($message){
   //如果文件不存在则建立
 
@@ -115,8 +113,6 @@ cron_log($m->name);
   }else {
   cron_log($ctm['id'] .' FAIED');
   }
-  cron_log( "SLEEP:".SLEEP_TIME);
-  sleep(SLEEP_TIME);
 cron_log('');
   
 }
@@ -157,9 +153,9 @@ function addMission($ctm,$rebuild=false){
       categories_id = '.$ctm['cid']);
   return $mission_id;
 
- }
+}
 //根据 ctm 数据 更新 mission
- function updateMission($ctm){
+function updateMission($ctm){
   $db = db::getConn();
   $db->query('update mission set keyword="'.$ctm['cmkey'].'" where id ='.$ctm['id']);
   if($db->error){

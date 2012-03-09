@@ -16,4 +16,3 @@ define('CHANGE_PREORDER_HANDLE_FEE_TEXT', '手数料:');
 define('CHANGE_PREORDER_POINT_TEXT', '今回の獲得予定ポイント:');
 define('CHANGE_PREORDER_CONFIRM_BUTTON_INFO', '<b>ご注文内容をご確認の上「注文する」をクリックしてください。</b>');
 define('CHANGE_PREORDER_BREADCRUMB_FETCH', '注文');
-define('CHANGE_PREORDER_POINT_TEXT_BUY','<b>買取はポイントがつきません</b>&nbsp;&nbsp;今回の獲得予定ポイント:');

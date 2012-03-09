@@ -8,7 +8,6 @@ if (!isset($_SESSION['preorder_info_id'])) {
 }
 
 require(DIR_WS_FUNCTIONS . 'visites.php');
-require(DIR_WS_CLASSES . 'payment.php');
 
 if (isset($preorder_real_point)) {
   $preorder_point = $preorder_real_point;
@@ -16,19 +15,20 @@ if (isset($preorder_real_point)) {
 
 include(DIR_WS_LANGUAGES . $language . '/change_preorder_process.php');
 
+require(DIR_WS_CLASSES.'payment.php');
+
 $preorder_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$_SESSION['preorder_info_id']."' and site_id = '".SITE_ID."'");
 $preorder = tep_db_fetch_array($preorder_raw);
 
 if ($preorder) {
-  //$order_query = tep_db_query("select * from ".TABLE_ORDERS." where orders_id = '".$_SESSION['preorder_info_id']."'"); 
-  //$orders_id = $_SESSION['preorder_info_id'];
+  $order_query = tep_db_query("select * from ".TABLE_ORDERS." where orders_id = '".$_SESSION['preorder_info_id']."'"); 
+  $orders_id = $_SESSION['preorder_info_id'];
   
-  //if (tep_db_num_rows($order_query)) {
+  if (tep_db_num_rows($order_query)) {
     $orders_id = date('Ymd').'-'.date('His').tep_get_order_end_num(); 
-  //}
-  $payment_modules = payment::getInstance($preorder['site_id']);   
-  $cpayment_code = payment::changeRomaji($preorder['payment_method'], PAYMENT_RETURN_TYPE_CODE);   
-  
+  }
+ 
+  $ppayment_list_arr = tep_preorder_get_payment_list();
   $torihikihouhou_date_str = $_SESSION['preorder_info_date'].' '.$_SESSION['preorder_info_hour'].':'.$_SESSION['preorder_info_min'].':00';
   $default_status_raw = tep_db_query("select * from ".TABLE_ORDERS_STATUS." where orders_status_id = '".DEFAULT_ORDERS_STATUS_ID."'");
   $default_status_res = tep_db_fetch_array($default_status_raw); 
@@ -97,8 +97,8 @@ if ($preorder) {
                            'orders_comment' => $preorder['orders_comment'], 
                            'orders_important_flag' => $preorder['orders_important_flag'], 
                            'orders_care_flag' => $preorder['orders_care_flag'], 
-                           'orders_wait_flag' => '1', 
-                           'orders_inputed_flag' => '0', 
+                           'orders_wait_flag' => $preorder['orders_wait_flag'], 
+                           'orders_inputed_flag' => $preorder['orders_inputed_flag'], 
                            'orders_screen_resolution' => $_SESSION['screenResolution'], 
                            'orders_color_depth' => $_SESSION['colorDepth'], 
                            'orders_flash_enable' => $_SESSION['flashEnable'], 
@@ -112,10 +112,24 @@ if ($preorder) {
                            'orders_http_accept_language' => $_SERVER['HTTP_ACCEPT_LANGUAGE'], 
                            'orders_system_language' => $_SESSION['systemLanguage'], 
                            'orders_user_language' => $_SESSION['userLanguage'], 
-                           'orders_work' => '', 
+                           'orders_work' => $preorder['orders_work'], 
                            'q_8_1' => $preorder['q_8_1'], 
+                           'telecom_name' => $preorder['telecom_name'], 
+                           'telecom_tel' => $preorder['telecom_tel'], 
+                           'telecom_money' => $preorder['telecom_money'], 
+                           'telecom_email' => $preorder['telecom_email'], 
+                           'telecom_clientip' => $preorder['telecom_clientip'], 
                            'telecom_option' => $_SESSION['preorder_option'], 
+                           'telecom_cont' => $preorder['telecom_cont'], 
+                           'telecom_sendid' => $preorder['telecom_sendid'], 
+                           'telecom_unknow' => $preorder['telecom_unknow'], 
                            'orders_ref_keywords' => strtolower(SBC2DBC(parseKeyword($_SESSION['referer']))), 
+                           'paypal_paymenttype' => $preorder['paypal_paymenttype'], 
+                           'paypal_payerstatus' => $preorder['paypal_payerstatus'], 
+                           'paypal_paymentstatus' => $preorder['paypal_paymentstatus'], 
+                           'paypal_countrycode' => $preorder['paypal_countrycode'], 
+                           'paypal_token' => $preorder['paypal_token'], 
+                           'paypal_playerid' => $preorder['paypal_playerid'], 
                            'flag_qaf' => $preorder['flag_qaf'], 
                            'end_user' => $preorder['end_user'], 
                            'confirm_payment_time' => $preorder['confirm_payment_time'],
@@ -125,8 +139,18 @@ if ($preorder) {
   if (isset($_SESSION['referer_adurl']) && $_SESSION['referer_adurl']) {
     $sql_data_array['orders_adurl'] = $_SESSION['referer_adurl'];
   }
-  
-  $telecom_option_ok = $payment_modules->preorderDealUnknow($sql_data_array, $cpayment_code); 
+  if ($_SESSION['preorder_option']) {
+    $telecom_unknow = tep_db_fetch_array(tep_db_query("select * from telecom_unknow where `option`='".$_SESSION['preorder_option']."' and rel='yes'"));
+    if ($telecom_unknow) {
+    $sql_data_array['telecom_name']  = $telecom_unknow['username'];
+    $sql_data_array['telecom_tel']   = $telecom_unknow['telno'];
+    $sql_data_array['telecom_email'] = $telecom_unknow['email'];
+    $sql_data_array['telecom_money'] = $telecom_unknow['money'];
+    tep_db_query("update `telecom_unknow` set type='success' where `option`='".$_SESSION['preorder_option']."' and rel='yes' order by date_added limit 1");
+
+    $telecom_option_ok = true;
+    }
+  }
   
   tep_db_perform(TABLE_ORDERS, $sql_data_array);
 
@@ -134,13 +158,8 @@ if ($preorder) {
   
   while ($preorder_total_res = tep_db_fetch_array($preorder_total_raw)) {
     if ($preorder_total_res['class'] == 'ot_total') {
-      if (isset($_SESSION['preorder_campaign_fee'])) {
-        $preorder_total_num = $preorder_total_res['value'] + (int)$_SESSION['preorder_campaign_fee']; 
-        $preorder_total_print_num = $preorder_total_res['value'] + (int)$_SESSION['preorder_campaign_fee']; 
-      } else {
-        $preorder_total_num = $preorder_total_res['value'] - (int)$preorder_point; 
-        $preorder_total_print_num = $preorder_total_res['value'] - (int)$preorder_point; 
-      }
+      $preorder_total_num = $preorder_total_res['value'] - (int)$preorder_point; 
+      $preorder_total_print_num = $preorder_total_res['value'] - (int)$preorder_point; 
     } else if ($preorder_total_res['class'] == 'ot_point') {
       $preorder_total_num = (int)$preorder_point; 
     } else {
@@ -158,32 +177,33 @@ if ($preorder) {
                             'sort_order' => $preorder_total_res['sort_order'], 
         ); 
     if ($preorder_total_res['class'] == 'ot_total') {
-      if ($telecom_option_ok != true) {
-        $telecom_option_ok = $payment_modules->getPreexpress((int)$preorder_total_res['value'], $orders_id, $cpayment_code); 
+      $cpayment_type = tep_preorder_get_payment_type($ppayment_list_arr, $preorder['payment_method']);   
+      if ($cpayment_type == 2) {
+        if (!class_exists('paypal')) {
+          include(DIR_WS_MODULES.'payment/paypal.php'); 
+        } 
+        $cpayment_module = new paypal(); 
+        $telecom_option_ok = $cpayment_module->getpreexpress((int)$preorder_total_res['value'], $orders_id); 
       }
     }
     tep_db_perform(TABLE_ORDERS_TOTAL, $sql_data_array);
   }
   
-  $order_comment_str = '';
-  
-  $comment_raw = tep_db_query("select comments from ".TABLE_PREORDERS_STATUS_HISTORY." where orders_id = '".$_SESSION['preorder_info_id']."' and comments != '' order by orders_status_history_id asc limit 1");
- 
-  $comment_res = tep_db_fetch_array($comment_raw);
-  if ($comment_res) {
-    $order_comment_str = $comment_res['comments'];
+  $preorder_status_history_raw = tep_db_query("select * from ".TABLE_PREORDERS_STATUS_HISTORY." where orders_id = '".$_SESSION['preorder_info_id']."' and comments != '' order by orders_status_history_id asc");  
+  $preorder_status_history_res = tep_db_fetch_array($preorder_status_history_raw);
+  $sh_comments = ''; 
+  if ($preorder_status_history_res) {
+    $sh_comments = $preorder_status_history_res['comments']; 
   }
-  
-  
   $customer_notification = (SEND_EMAILS == 'true') ? '1' : '0'; 
   $sql_data_array = array('orders_id' => $orders_id,
                           'orders_status_id' => DEFAULT_ORDERS_STATUS_ID, 
                           'date_added' => date('Y-m-d H:i:s', time()), 
                           'customer_notified' => $customer_notification, 
-                          'comments' => $order_comment_str, 
+                          'comments' => $sh_comments, 
       ); 
   tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
- 
+  
   if ($telecom_option_ok) {
     tep_db_perform(TABLE_ORDERS, array('orders_status' => '30'), 'update', "orders_id='".$orders_id."'");
     $sql_data_array = array('orders_id' => $orders_id, 
@@ -214,11 +234,10 @@ if ($preorder) {
                           'site_id' => SITE_ID
       );
   tep_db_perform(TABLE_ORDERS_PRODUCTS, $sql_data_array);
-  $order_products_id = tep_db_insert_id();
 
-  $products_ordered_text .= '注文商品　　　　　：'.$preorder_product_res['products_name'];
+  $products_ordered_text .= ''.$preorder_product_res['products_name'];
   if (tep_not_null($preorder_product_res['products_model'])) {
-    $products_ordered_text .= ' ('.$preorder_product_res['products_model'].')'; 
+    $products_ordered_text .= $preorder_product_res['products_model']; 
   }
   
   $products_ordered_atttibutes_text = '';
@@ -234,7 +253,7 @@ if (isset($_SESSION['preorder_info_attr'])) {
       $attributes_values = tep_db_fetch_array($attributes);
       
       $sql_data_array = array('orders_id' => $orders_id, 
-                              'orders_products_id' => $order_products_id, 
+                              'orders_products_id' => $preorder_product_res['products_id'], 
                               'products_options' => $attributes_values['products_options_name'],
                               'products_options_values' => $attributes_values['products_options_values_name'], 
                               'options_values_price' => $attributes_values['options_values_price'], 
@@ -245,7 +264,7 @@ if (isset($_SESSION['preorder_info_attr'])) {
       
       if ((DOWNLOAD_ENABLED == 'true') && isset($attributes_values['products_attributes_filename']) && tep_not_null($attributes_values['products_attributes_filename'])) {
         $sql_data_array = array('orders_id' => $orders_id, 
-                                'orders_products_id' => $order_products_id, 
+                                'orders_products_id' => $preorder_product_res['products_id'], 
                                 'orders_products_filename' => $attributes_values['products_attributes_filename'], 
                                 'download_maxdays' => $attributes_values['products_attributes_maxdays'], 
                                 'download_count' => $attributes_values['products_attributes_maxcount']);
@@ -277,10 +296,18 @@ while ($preorder_oa_res = tep_db_fetch_array($preorder_oa_raw)) {
 
 $products_ordered_text .= $products_ordered_attributes;
 
-$products_ordered_text .= "\n".'個数　　　　　　　：' .  $preorder_product_res['products_quantity'] . '個' .  "\n";
-$products_ordered_text .= '単価　　　　　　　：' .  $currencies->display_price($preorder_product_res['final_price'], $preorder_product_res['products_tax']) . "\n";
+$preorders_computer_raw = tep_db_query("select * from ".TABLE_PREORDERS_TO_COMPUTERS." where orders_id = '".$_SESSION['preorder_info_id']."'");
+while ($preorders_computers_res = tep_db_fetch_array($preorders_computer_raw)) {
+  $sql_data_array = array('orders_id' => $orders_id,
+                          'computers_id' => $preorders_computers_res['computers_id'], 
+      );
+  tep_db_perform('orders_to_computers', $sql_data_array);
+}
 
-$products_ordered_text .= '小計　　　　　　　：' .  $currencies->display_price($preorder_product_res['final_price'], $preorder_product_res['products_tax'], $preorder_product_res['products_quantity']) . "\n";
+$products_ordered_text .= "\n".'個数　　　　　　　：' .  $preorder_product_res['products_quantity'] . '個' .  "\n";
+$products_ordered_text .= '単価　　　　　　　：' .  number_format($preorder_product_res['final_price'], 0, '.', '') . "\n";
+
+$products_ordered_text .= '小計　　　　　　　：' .  number_format($preorder_product_res['final_price']*$preorder_product_res['products_quantity'], 0, '.', '') . "\n";
 
 if (tep_not_null($_SESSION['preorder_info_character'])) {
   $products_ordered_text .= 'キャラクター名　　：' .$_SESSION['preorder_info_character']."\n";
@@ -301,50 +328,31 @@ $mailoption['USER_NAME']        = $preorder['customers_name'];
 $mailoption['USER_MAILACCOUNT'] = $preorder['customers_email_address'];
 $mailoption['ORDER_TOTAL']      = $currencies->format(abs($preorder_total_print_num));
 
-$mailoption['TORIHIKIHOUHOU']   = $_SESSION['preorder_info_tori'];
 $mailoption['ORDER_PAYMENT']    = $preorder['payment_method'];
-$mailoption['ORDER_TTIME']      =  str_string($_SESSION['preorder_info_date']) .  $_SESSION['preorder_info_hour'] . '時' . $_SESSION['preorder_info_min'] .  '分　（24時間表記）';
-
-$mailoption['EXTRA_COMMENT']   = '';
+$mailoption['ORDER_TTIME']      =  str_string($_SESSION['preorder_info_date']) .  $_SESSION['preorder_info_hour'] . '時' . $_SESSION['preorder_info_min'] .  '分　（24時間表記）' . $_SESSION['preorder_info_tori'];
+$mailoption['ORDER_COMMENT']    = trim($preorder['comment_msg']);
 $mailoption['ORDER_PRODUCTS']   = $products_ordered_text;
-$mailoption['ORDER_TMETHOD']    = $torihikihouhou_date_str;
+$mailoption['ORDER_TMETHOD']    = $_SESSION['preorder_info_tori'];
 $mailoption['SITE_NAME']        = STORE_NAME;
 $mailoption['SITE_MAIL']        = SUPPORT_EMAIL_ADDRESS;
 $mailoption['SITE_URL']         = HTTP_SERVER;
-
-$payment_modules->preorder_deal_mailoption($mailoption, $cpayment_code, $preorder); 
-
-
 $mailoption['ORDER_COUNT'] = $preorder_product_res['products_quantity'];
 $mailoption['ORDER_LTOTAL'] = number_format($preorder_product_res['final_price']*$preorder_product_res['products_quantity'], 0, '.', '');
 $mailoption['ORDER_ACTORNAME'] = $_SESSION['preorder_info_character'];
 if ($preorder_point){
-  $mailoption['POINT']            = str_replace('円', '', $currencies->format(abs($preorder_point)));
+  $mailoption['POINT']            = $preorder_point . '円' ;
 }else {
     $mailoption['POINT']            = 0;
 }
-
-if (isset($_SESSION['preorder_campaign_fee'])) {
-  $mailoption['POINT']          = str_replace('円', '', $currencies->format(abs($_SESSION['preorder_campaign_fee'])));
-}
-
-if (!empty($preorder['code_fee'])) {
-  $mailoption['MAILFEE']          = str_replace('円', '', $currencies->format(abs($preorder['code_fee'])));
-} else {
-  $mailoption['MAILFEE']          = '0';
-}
-
+$mailoption['MAILFEE']          = '0円';
 
 $email_order_text = '';
 
-if (isset($payment_modules->modules[strtoupper($cpayment_code)]->show_add_comment)) {
-  $mailoption['ORDER_COMMENT']    = trim($preorder['comment_msg']);
-} else {
-  $mailoption['ORDER_COMMENT']    = trim($order_comment_str);
-}
-$mailoption['ADD_INFO'] = '';
+$cpayment_code = tep_preorder_get_payment_type($ppayment_list_arr, $preorder['payment_method'], true);   
+if ($cpayment_code != '') {
+  $email_order_text = preorder_get_mail_string($cpayment_code, $mailoption); 
+} 
 
-$email_order_text = $payment_modules->getOrderMailString($cpayment_code, $mailoption); 
 tep_mail($preorder['customers_name'], $preorder['customers_email_address'], EMAIL_TEXT_SUBJECT, $email_order_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
   
 if (SENTMAIL_ADDRESS != '') {
@@ -373,18 +381,8 @@ $email_printing_order .= 'メールアドレス　：' . $preorder['customers_em
 "\n";
 $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
 
-if (isset($_SESSION['preorder_campaign_fee'])) {
-  if (abs($_SESSION['preorder_campaign_fee']) > 0) {
-      $email_printing_order .= '割引　　　　　　：' .  abs($_SESSION['preorder_campaign_fee']). '円' . "\n";
-  }
-} else {
-  if ($preorder_point > 0) {
-      $email_printing_order .= '割引　　　　　　：' . (int)$preorder_point . '円' . "\n";
-  }
-}
-
-if (!empty($preoder['code_fee'])) {
-  $email_printing_order .= '手数料　　　　　：'.$preorder['code_fee'].'円'."\n";
+if ($preorder_point > 0) {
+    $email_printing_order .= '□ポイント割引　　：' . (int)$preorder_point . '円' . "\n";
 }
 
 $email_printing_order .= 'お支払金額　　　：' .  $currencies->format(abs($preorder_total_print_num)) . "\n";
@@ -393,12 +391,12 @@ $email_printing_order .= 'お支払方法　　　：' . $preorder['payment_meth
   
 
 $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-$email_printing_order .= $products_ordered_text;
+$email_printing_order .= $products_ordered;
 
 $email_printing_order .= '備考　　　　　　：' . "\n";
 
-if (!empty($order_comment_str)) {
-  $email_printing_order .= $order_comment_str . "\n";
+if (!empty($preorder['comment_msg'])) {
+  $email_printing_order .= $preorder['comment_msg'] . "\n";
 }
 $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
 $email_printing_order .= 'IPアドレス　　　　　　：' . $_SERVER["REMOTE_ADDR"] .
@@ -428,11 +426,47 @@ if ($credit_inquiry['customers_guest_chk'] == '1') { $email_printing_order .= '�
     }
 
 $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n\n\n";
+$print_single = 0;
 
-$cpayment_class = $payment_modules->getModule($cpayment_code);
-if (method_exists($cpayment_class,'getMailString')){
-  $email_printing_order .= $cpayment_class->getMailString($preorder_total_print_num);
+if ($cpayment_code != '') {
+  if (!class_exists($cpayment_code)) {
+    $cpayment_module = new payment($cpayment_code);
+    $payment_class = $$cpayment_module;
+    if (method_exists($payment_class,'getMailString')){
+      $email_printing_order .= $payment_class->getMailString();
+      $print_single = 1;
+    }
+  } else {
+    $cpayment_module = new $cpayment_code(); 
+    if (method_exists($cpayment_module,'getMailString')){
+      $email_printing_order .= $cpayment_module->getMailString();
+      $print_single = 1;
+    }
+  }
 }
+
+if (!$print_single){
+    $email_printing_order .= 'この注文は【販売】です。' . "\n";
+    $email_printing_order .= '------------------------------------------------------------------------' .  "\n";
+    $email_printing_order .= '備考の有無　　　　　：□ 無　　｜　　□ 有　→　□ 返答済' . "\n"; 
+    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+    $email_printing_order .= '在庫確認　　　　　　：□ 有　　｜　　□ 無　→　入金確認後仕入' . "\n";
+    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+    $email_printing_order .= '入金確認　　　　　●：＿＿月＿＿日　→　金額は' .  number_format(abs($preorder_total_print_num), 0, '.', '') . '円ですか？　□ はい' . "\n";
+    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+    $email_printing_order .= '入金確認メール送信　：□ 済' . "\n";
+    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+    $email_printing_order .= '発送　　　　　　　　：＿＿月＿＿日' . "\n"; 
+    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+    $email_printing_order .= '残量入力→誤差有無　：□ 無　　｜　　□ 有　→　報告　□' . "\n";
+    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+    $email_printing_order .= '発送完了メール送信　：□ 済' . "\n";    
+}
+
+
+$email_printing_order .= '------------------------------------------------------------------------' . "\n";
+$email_printing_order .= '最終確認　　　　　　：確認者名＿＿＿＿' . "\n";
+$email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
 
 if (SEND_EXTRA_ORDER_EMAILS_TO != '') {
   tep_mail('', PRINT_EMAIL_ADDRESS, STORE_NAME, $email_printing_order, $preorder['customers_name'], $preorder['customers_email_address'], '');
@@ -453,28 +487,6 @@ if ($link_customer_res) {
   if ($link_customer_res['customers_guest_chk'] == '1') {
     tep_db_query( "update " . TABLE_CUSTOMERS . " set point = '0' where customers_id = " . $preorder_cus_id );
   }
-}
-
-if (isset($_SESSION['preorder_campaign_fee'])) {
-  $campaign_raw = tep_db_query("select * from ".TABLE_CAMPAIGN." where id = '".$_SESSION['preorder_camp_id']."' and (site_id = '".SITE_ID."' or site_id = '0')"); 
-  $campaign = tep_db_fetch_array($campaign_raw); 
-  $sql_data_array = array(
-      'customer_id' => $preorder_cus_id,
-      'campaign_id' => $_SESSION['preorder_camp_id'],
-      'orders_id' => $orders_id,
-      'campaign_fee' => $_SESSION['preorder_campaign_fee'],
-      'campaign_title' => $campaign['title'],
-      'campaign_name' => $campaign['name'],
-      'campaign_keyword' => $campaign['keyword'],
-      'campaign_start_date' => $campaign['start_date'],
-      'campaign_end_date' => $campaign['end_date'],
-      'campaign_max_use' => $campaign['max_use'],
-      'campaign_point_value' => $campaign['point_value'],
-      'campaign_limit_value' => $campaign['limit_value'],
-      'campaign_type' => $campaign['type'],
-      'site_id' => SITE_ID
-      );
-  tep_db_perform(TABLE_CUSTOMER_TO_CAMPAIGN, $sql_data_array);
 }
 
 tep_db_query("delete from ".TABLE_PREORDERS." where orders_id = '".$_SESSION['preorder_info_id']."' and site_id = '".SITE_ID."'"); 
@@ -510,9 +522,6 @@ if (MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
 
 unset($_SESSION['preorder_option']);
 unset($_SESSION['referer_adurl']);
-
-unset($_SESSION['preorder_campaign_fee']);
-unset($_SESSION['preorder_camp_id']);
 
 tep_redirect(tep_href_link('change_preorder_success.php'));
 

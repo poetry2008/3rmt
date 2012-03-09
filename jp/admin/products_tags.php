@@ -73,14 +73,14 @@ function load_products_to_tags(){
       dataType: 'json',
       url: 'products_tags.php?action=load_products_to_tags&tags_id='+tid,
       success: function(pid) {
-          $('.products_checkbox').removeAttr('checked');
+          $('.products_checkbox').attr('checked','');
           for(i in pid){
             $('#products_'+pid[i]).attr('checked','checked');
           }
       }
     });
   } else if (count == 0) {
-    $('.products_checkbox').removeAttr('checked');
+    $('.products_checkbox').attr('checked','');
   }
 }
 function checked_count(){
@@ -116,7 +116,7 @@ function check_all(cid){
   if ($('#categories_'+cid).attr('checked')) {
     $('#d_'+cid+' input[type=checkbox]').attr('checked','checked');
   } else {
-    $('#d_'+cid+' input[type=checkbox]').removeAttr('checked');
+    $('#d_'+cid+' input[type=checkbox]').attr('checked','');
   }
 }
 </script>

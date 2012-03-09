@@ -111,13 +111,20 @@
       global $order;
       global $cart;
       global $payment, $currencies;
-      //先使用global 等支付方法修改 完毕 修改成使用POST 
       global $_POST;
 
       $show_handle_fee = 0;
-
-      if(isset($_POST['code_fee'])){
-      $show_handle_fee = intval($_POST['code_fee']); 
+      if (MODULE_ORDER_TOTAL_CONV_STATUS == 'true' && ($payment == 'convenience_store')) {
+        $show_handle_fee = intval($_POST['codt_fee']); 
+      }
+      if ($payment == 'moneyorder') {
+        $show_handle_fee = intval($_POST['money_order_fee']); 
+      }
+      if ($payment == 'postalmoneyorder') {
+        $show_handle_fee = intval($_POST['postal_money_order_fee']); 
+      }
+      if ($payment == 'telecom') {
+        $show_handle_fee = intval($_POST['telecom_order_fee']); 
       }
       $buying_fee = 0; 
       if (isset($cart)) { 
@@ -146,32 +153,12 @@
           if ($GLOBALS[$class]->enabled) {
             $size = sizeof($GLOBALS[$class]->output);
             for ($i=0; $i<$size; $i++) {
-              if ($class == 'ot_point') {
-                if (isset($_SESSION['campaign_fee'])) {
-                  if ($_SESSION['campaign_fee'] == 0) {
-                    continue; 
-                  }
-                } else {
-                  if ($GLOBALS[$class]->output[$i]['value'] == 0) {
-                    continue; 
-                  }
-                }
-              }
               $output_string .= '              <tr>' . "\n" .
                                 '                <td align="right" class="main">' . $GLOBALS[$class]->output[$i]['title'] . '</td>' . "\n" .
-                                '                <td align="right" class="main">';
-              if ($class == 'ot_point') {
-                if (isset($_SESSION['campaign_fee'])) {
-                 
-                  $output_string .= '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format_total(abs($_SESSION['campaign_fee']))) .  '</font>'.JPMONEY_UNIT_TEXT.'</td>' . "\n" .  '              </tr>';
-                } else {
-                  $output_string .= '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format_total($GLOBALS[$class]->output[$i]['value'])) . '</font>'.JPMONEY_UNIT_TEXT.'</td>' . "\n" .  '              </tr>';
-                }
-              } else {
-                $output_string .= $currencies->format_total($GLOBALS[$class]->output[$i]['value']) . '</td>' . "\n" .  '              </tr>';
-              }
+                                '                <td align="right" class="main">' .
+                                $currencies->format_total($GLOBALS[$class]->output[$i]['value']) . '</td>' . "\n" .
+                                '              </tr>';
             }
-            $_SESSION['mailfee'] = $currencies->format($total_handle_fee);   
             if ($class == 'ot_subtotal') {
               if (!empty($total_handle_fee)) {
                 $output_string .= '              <tr>' . "\n" .

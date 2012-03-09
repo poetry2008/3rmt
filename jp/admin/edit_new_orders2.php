@@ -15,7 +15,6 @@
   $currencies = new currencies(2);
 
   include(DIR_WS_CLASSES . 'order.php');
-  $payment_modules = payment::getInstance($_SESSION['create_order2']['orders']['site_id']);
 
 // START CONFIGURATION ################################
 
@@ -407,8 +406,7 @@
     $newtotal = '0';
   }
   
-  $handle_fee = $payment_modules->handle_calc_fee(
-    payment::changeRomaji($order['payment_method'],PAYMENT_RETURN_TYPE_CODE), $newtotal);
+  $handle_fee = calc_handle_fee($order['payment_method'], $newtotal);
   
   $newtotal = $newtotal+$handle_fee;
   if(!$total_value_more_zero){
@@ -630,10 +628,7 @@
   
   $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n\n\n";
   
-  $payment_class = $payment_modules->getModule(payment::changeRomaji($order['payment_method']));
-   $email_printing_order .=$payment_class->getMailString($ot['text']); 
-
- /* 
+  
 
   if ($order['payment_method'] === '銀行振込(買い取り)') {
     $email_printing_order .= '★★★★★★★★★★★★この注文は【買取】です。★★★★★★★★★★★★' . "\n";
@@ -703,7 +698,7 @@
     $email_printing_order .= '------------------------------------------------------------------------' . "\n";
     $email_printing_order .= '発送完了メール送信　：□ 済' . "\n";    
   }
- */ 
+  
   $email_printing_order .= '------------------------------------------------------------------------' . "\n";
   $email_printing_order .= '最終確認　　　　　　：確認者名＿＿＿＿' . "\n";
   $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
@@ -717,12 +712,12 @@
 
 
 // echo print 
-  /*
+/*
   print_r($_SESSION);
   var_dump("<br><br>");
   var_dump(str_replace("\n",'<br>',$email_printing_order));
   exit;
-  */
+*/
 
     if (isset($_POST['notify']) && ($_POST['notify'] == 'on')) {
       $order = new order($_SESSION['create_order2']['orders']['orders_id']);
@@ -771,6 +766,7 @@
           $total_details_mail .= '▼' . $totals['title'] . str_repeat('　', intval((16 - strlen($totals['title']))/2)) . '：' . strip_tags($totals['text']) . "\n";
         }
       }
+
 
 
       $email = '';
@@ -1038,8 +1034,7 @@
         }
       }
       
-      $handle_fee = $payment_modules->handle_calc_fee(
-          payment::changeRomaji($order['payment_method'],PAYMENT_RETURN_TYPE_CODE), $newtotal);
+      $handle_fee = calc_handle_fee($order['payment_method'], $newtotal);
       $newtotal = $newtotal+$handle_fee;    
       //$totals = "update " . TABLE_ORDERS_TOTAL . " set value = '".$newtotal."', text = '<b>".$currencies->format($newtotal, true, $order['currency'])."</b>' where class='ot_total' and orders_id = '".$oID."'";
       //tep_db_query($totals);
@@ -1186,11 +1181,7 @@ function check_add(){
               <tr>
                 <td class="main" valign="top"><b><?php echo EDIT_ORDERS_PAYMENT_METHOD;?></b></td>
                 <td class="main">
-<?php
-            $code_payment_method =
-            payment::changeRomaji($order->info['payment_method'],'code');
-          echo payment::makePaymentListPullDownMenu($code_payment_method);
-?>
+                  <?php echo tep_payment_method_menu($order->info['payment_method']);?>
                 </td>
               </tr>
               <!-- End Payment Block -->
@@ -1288,27 +1279,9 @@ function check_add(){
          '<input type="hidden" name="op_id_'.$pid.'" 
           value="'.tep_get_product_by_op_id($pid,'pid').'">' . "\n" .
            '</td>' . "\n" .
-         '      <td class="' . $RowStyle . '" align="right">';
-    if ($order_products[$pid]['final_price'] < 0) {
-      echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($order_products[$pid]['final_price'], $order_products[$pid]['tax']), true, $order['currency'], $order['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
-    } else {
-      echo $currencies->format(tep_add_tax($order_products[$pid]['final_price'], $order_products[$pid]['tax']), true, $order['currency'], $order['currency_value']);
-    }
-    echo '</td>' . "\n" . 
-         '      <td class="' . $RowStyle . '" align="right">';
-    if ($order_products[$pid]['final_price'] < 0) {
-      echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($order_products[$pid]['final_price'] * $order_products[$pid]['qty'], true, $order['currency'], $order['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
-    } else {
-      echo $currencies->format($order_products[$pid]['final_price'] * $order_products[$pid]['qty'], true, $order['currency'], $order['currency_value']);
-    }
-      echo '</td>' . "\n" . 
-         '      <td class="' . $RowStyle . '" align="right"><b>';
-    if ($order_products[$pid]['final_price'] < 0) {
-      echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($order_products[$pid]['final_price'], $order_products[$pid]['tax']) * $order_products[$pid]['qty'], true, $order['currency'], $order['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
-    } else {
-      echo $currencies->format(tep_add_tax($order_products[$pid]['final_price'], $order_products[$pid]['tax']) * $order_products[$pid]['qty'], true, $order['currency'], $order['currency_value']);
-    }
-      echo '</b></td>' . "\n" . 
+         '      <td class="' . $RowStyle . '" align="right">' . $currencies->format(tep_add_tax($order_products[$pid]['final_price'], $order_products[$pid]['tax']), true, $order['currency'], $order['currency_value']) . '</td>' . "\n" . 
+         '      <td class="' . $RowStyle . '" align="right">' . $currencies->format($order_products[$pid]['final_price'] * $order_products[$pid]['qty'], true, $order['currency'], $order['currency_value']) . '</td>' . "\n" . 
+         '      <td class="' . $RowStyle . '" align="right"><b>' . $currencies->format(tep_add_tax($order_products[$pid]['final_price'], $order_products[$pid]['tax']) * $order_products[$pid]['qty'], true, $order['currency'], $order['currency_value']) . '</b></td>' . "\n" . 
          '    </tr>' . "\n";
   }
   ?>
@@ -1390,7 +1363,10 @@ function check_add(){
                   echo  $currencies->ot_total_format($TotalDetails["Price"], true,
                       $order['currency'], $order['currency_value']);
                 }else{
-                  echo  '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->ot_total_format($TotalDetails["Price"], true, $order['currency'], $order['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
+                  echo "<font color='red'>";
+                  echo  $currencies->ot_total_format($TotalDetails["Price"], true,
+                      $order['currency'], $order['currency_value']);
+                  echo "</font>";
                 }
                   echo '</b>' . 
                 "<input name='update_totals[$TotalIndex][title]' type='hidden' value='" . trim($TotalDetails["Name"]) . "' size='" . strlen($TotalDetails["Name"]) . "' >" . 
@@ -1408,7 +1384,10 @@ function check_add(){
                   echo  $currencies->ot_total_format($TotalDetails["Price"], true,
                       $order['currency'], $order['currency_value']);
            }else{
-             echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($TotalDetails["Price"], true, $order['currency'], $order['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
+             echo "<font color='red'>";
+             echo $currencies->format($TotalDetails["Price"], true, $order['currency'],
+               $order['currency_value']);
+             echo "</font>";
            }
             echo '</b>' . 
                 "<input name='update_totals[$TotalIndex][title]' type='hidden' value='" . trim($TotalDetails["Name"]) . "' size='" . strlen($TotalDetails["Name"]) . "' >" . 

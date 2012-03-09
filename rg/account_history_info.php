@@ -68,15 +68,7 @@
                   </tr> 
                   <tr> 
                     <td class="smallText"><?php echo HEADING_ORDER_DATE . ' ' . tep_date_long($order->info['date_purchased']); ?></td> 
-                    <td class="smallText" align="right">
-                    <?php 
-                    if ($order->info['total'] < 0) {
-                      echo HEADING_ORDER_TOTAL . ' ' . '<font color="#ff0000">' .abs($order->info['total']).'</font>'.MONEY_UNIT_ATEXT; 
-                    } else {
-                      echo HEADING_ORDER_TOTAL . ' ' .  abs($order->info['total']).MONEY_UNIT_ATEXT; 
-                    }
-                    ?>
-                    </td> 
+                    <td class="smallText" align="right"><?php echo HEADING_ORDER_TOTAL . ' ' .  abs($order->info['total']).MONEY_UNIT_ATEXT; ?></td> 
                   </tr> 
                 </table></td> 
             </tr> 
@@ -153,13 +145,7 @@
 
     if (sizeof($order->info['tax_groups']) > 1) echo '            <td class="main" valign="top" align="right">' . tep_display_tax_value($order->products[$i]['tax']) . '%</td>' . "\n";
 
-    echo '            <td class="main" align="right" valign="top">';
-    if ($order->products[$i]['final_price'] < 0) {
-      echo '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value'])).'</font>'.JPMONEY_UNIT_TEXT;
-    } else {
-      echo $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']);
-    }
-    echo '</td>' . "\n" .
+    echo '            <td class="main" align="right" valign="top">' . $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . '</td>' . "\n" .
          '          </tr>' . "\n";
   }
 ?> 
@@ -199,34 +185,9 @@
                     <td width="70%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                         <?php
   for ($i=0, $n=sizeof($order->totals); $i<$n; $i++) {
-    if ($order->totals[$i]['class'] == 'ot_point') {
-      $campaign_info_query = tep_db_query("select * from ".TABLE_CUSTOMER_TO_CAMPAIGN." where orders_id = '".$_GET['order_id']."' and site_id = '".SITE_ID."'"); 
-      $campaign_info = tep_db_fetch_array($campaign_info_query);
-      if ($campaign_info) {
-        if ($campaign_info['campaign_fee'] == 0) {
-          continue; 
-        }
-      } else {
-        if ($order->totals[$i]['value'] == 0) {
-          continue; 
-        }
-      }
-    }
     echo '              <tr>' . "\n" .
          '                <td class="main" align="right" width="100%">' . $order->totals[$i]['title'] . '</td>' . "\n" .
-         '                <td class="main" align="right" nowrap>';
-         if ($order->totals[$i]['class'] == 'ot_point') {
-           $campaign_info_query = tep_db_query("select * from ".TABLE_CUSTOMER_TO_CAMPAIGN." where orders_id = '".$_GET['order_id']."' and site_id = '".SITE_ID."'"); 
-           $campaign_info = tep_db_fetch_array($campaign_info_query);
-           if ($campaign_info) {
-             echo '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format_total(abs($campaign_info['campaign_fee']))).'</font>'.JPMONEY_UNIT_TEXT; 
-           } else {
-             echo '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format_total($order->totals[$i]['value'])).'</font>'.JPMONEY_UNIT_TEXT; 
-           }
-         } else {
-           echo $currencies->format_total($order->totals[$i]['value']); 
-         }
-         echo '</td>' . "\n" .
+         '                <td class="main" align="right" nowrap>' .  $currencies->format_total($order->totals[$i]['value']) . '</td>' . "\n" .
          '              </tr>' . "\n";
     if ($i == 0) {
       echo '              <tr>' . "\n" .

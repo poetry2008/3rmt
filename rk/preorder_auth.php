@@ -11,22 +11,16 @@
 */
 
   require('includes/application_top.php');
- 
-  $exists_customer_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where check_login_str = '".$_GET['pid']."' and site_id = '".SITE_ID."' and is_active = '0'");  
-  if (!tep_db_num_rows($exists_customer_raw)) {
-    tep_redirect(tep_href_link('account_timeout.php')); 
-  }
-  $exists_customer = tep_db_fetch_array($exists_customer_raw);  
- 
-  $preorder_query = tep_db_query("select * from ".TABLE_PREORDERS." where customers_id = '".$exists_customer['customers_id']."' and is_active = 0 and site_id = '".SITE_ID."' order by orders_id desc limit 1");
+
+  $pid = $_GET['pid']; 
+  
+  $preorder_query = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$pid."' and is_active = 0 and site_id = '".SITE_ID."'");
   $preorder_res = tep_db_fetch_array($preorder_query); 
    
   if ($preorder_res) {
-    $pid = $preorder_res['orders_id']; 
     $now_time = time(); 
-    $preorder_customer_res = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = '".$preorder_res['customers_id']."'");     
-    $preorder_customer = tep_db_fetch_array($preorder_customer_res); 
-    if (($now_time - (int)$preorder_customer['send_mail_time']) > 60*60*24*3) {
+    
+    if (($now_time - $preorder_res['send_mail_time']) > 60*60*24*3) {
        
       tep_db_query("delete from ".TABLE_PREORDERS." where orders_id = '".$pid."' and site_id = '".SITE_ID."'"); 
       tep_db_query("delete from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$pid."'"); 
@@ -60,7 +54,7 @@
       $pre_name = '';
       $pre_num = 0;
       $pre_date = '';
-      $replace_info_arr = array('${PRODUCTS_NAME}', '${PRODUCTS_QUANTITY}', '${EFFECTIVE_TIME}', '${PAY}', '${NAME}', '${SITE_NAME}', '${SITE_URL}', '${PREORDER_N}', '${ORDER_COMMENT}'); 
+      $replace_info_arr = array('${PRODUCTS_NAME}', '${PRODUCTS_QUANTITY}', '${EFFECTIVE_TIME}'); 
       
       $pre_date_str = strtotime($preorder_res['predate']); 
       $pre_date = date('Y', $pre_date_str).PREORDER_YEAR_TEXT.date('m', $pre_date_str).PREORDER_MONTH_TEXT.date('d', $pre_date_str).PREORDER_DAY_TEXT; 
@@ -73,14 +67,15 @@
         $pre_num = $preorder_products_res['products_quantity']; 
       }
      
-      $pre_replace_info_arr = array($pre_name, $pre_num, $pre_date, $preorder_res['payment_method'], $preorder_res['customers_name'], STORE_NAME, HTTP_SERVER, $preorder_res['orders_id'], $preorder_res['comment_msg']);
+      $pre_replace_info_arr = array($pre_name, $pre_num, $pre_date);
      
       $preorder_email_text = str_replace($replace_info_arr, $pre_replace_info_arr, $preorder_email_text);
-      $pre_email_text = str_replace('${SITE_NAME}', STORE_NAME, PREORDER_MAIL_SUBJECT);
-      tep_mail($preorder_res['customers_name'], $preorder_res['customers_email_address'], $pre_email_text, $preorder_email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS); 
-      tep_mail('', SENTMAIL_ADDRESS, $pre_email_text, $preorder_email_text, $preorder_res['customers_name'], $preorder_res['customers_email_address']); 
+
+      tep_mail($preorder_res['customers_name'], $preorder_res['customers_email_address'],PREORDER_MAIL_SUBJECT, $preorder_email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS); 
       $send_preorder_id = $pid;
       tep_session_register('send_preorder_id');
+      $preorder_active = 1;
+      tep_session_register('preorder_active');
       tep_redirect(tep_href_link('preorder_success.php')); 
     }
   } else {

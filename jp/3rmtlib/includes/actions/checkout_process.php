@@ -2,10 +2,9 @@
 /*
   $Id$
 */
-
-ini_set("display_errors","Off");
+error_reporting(E_ALL^E_WARNING^E_DEPRECATED);
+ini_set("display_errors","On");
 require(DIR_WS_FUNCTIONS . 'visites.php');
-
 // user new point value it from checkout_confirmation.php 
 if(isset($real_point)){
   $point = $real_point;
@@ -38,7 +37,8 @@ if ( (STOCK_CHECK == 'true') && (STOCK_ALLOW_CHECKOUT != 'true') ) {
 include(DIR_WS_LANGUAGES . $language . '/' . FILENAME_CHECKOUT_PROCESS);
 // load selected payment module
 require(DIR_WS_CLASSES . 'payment.php');
-$payment_modules = payment::getInstance(SITE_ID);
+$payment_modules = new payment($payment);
+
 $insert_id = date("Ymd") . '-' . date("His") . tep_get_order_end_num();
 # Check
 //ccdd
@@ -50,17 +50,13 @@ if($NewOid['cnt'] > 0) {
     $insert_id = date("Ymd") . '-' . date("His") . tep_get_order_end_num();
 }
 
-$comments_info = $payment_modules->dealComment($payment,$comments);
-if (is_array($comments_info)) {
-  $comments = $comments_info['comment'];
-} else {
-  $comments = $comments_info;
-}
+$comments = $payment_modules->dealComment($comments);
+
 require(DIR_WS_CLASSES . 'order.php');
 $order = new order;
 
 // load the before_process function from the payment modules
-$payment_modules->before_process($payment);
+$payment_modules->before_process();
 
 require(DIR_WS_CLASSES . 'order_total.php');
 $order_total_modules = new order_total;
@@ -70,6 +66,7 @@ $order_totals = $order_total_modules->process();
   
 # Select
 //$cnt = strlen($NewOid);
+
 // 2003-06-06 add_telephone
 $sql_data_array = array('orders_id'         => $insert_id,
                         'customers_id'      => $customer_id,
@@ -107,7 +104,7 @@ $sql_data_array = array('orders_id'         => $insert_id,
                         'billing_country' => $order->billing['country']['title'], 
                         'billing_telephone' => $order->billing['telephone'], 
                         'billing_address_format_id' => $order->billing['format_id'], 
-                        'payment_method' => payment::changeRomaji($order->info['payment_method'], PAYMENT_RETURN_TYPE_TITLE), 
+                        'payment_method' => $order->info['payment_method'], 
                         'cc_type'    => $order->info['cc_type'], 
                         'cc_owner'   => $order->info['cc_owner'], 
                         'cc_number'  => $order->info['cc_number'], 
@@ -145,19 +142,22 @@ $sql_data_array = array('orders_id'         => $insert_id,
 if (isset($_SESSION['referer_adurl']) && $_SESSION['referer_adurl']) {
   $sql_data_array['orders_adurl'] = $_SESSION['referer_adurl'];
 }
-$telecom_option_ok = $payment_modules->dealUnknow($payment,$sql_data_array);
-//所有的费用 应该都叫 code_fee
-if (isset($_POST['code_fee'])) {
-  $sql_data_array['code_fee'] = intval($_POST['code_fee']);
-} else{
+$telecom_option_ok = $payment_modules->dealUnknow($sql_data_array);
+if (isset($_POST['codt_fee'])) {
+  $sql_data_array['code_fee'] = intval($_POST['codt_fee']);
+} else if (isset($_POST['money_order_fee'])) {
+  $sql_data_array['code_fee'] = intval($_POST['money_order_fee']);
+} else if (isset($_POST['postal_money_order_fee'])) {
+  $sql_data_array['code_fee'] = intval($_POST['postal_money_order_fee']);
+} else if (isset($_POST['telecom_order_fee'])) {
+  $sql_data_array['code_fee'] = intval($_POST['telecom_order_fee']);
+} else {
   $sql_data_array['code_fee'] = 0;
 }
-
 $bflag_single = ds_count_bflag();
-
 if ($bflag_single == 'View') {
   $orign_hand_fee = $sql_data_array['code_fee'];
-  $buy_handle_fee = $payment_modules->handle_calc_fee($payment,$order->info['total']); 
+  $buy_handle_fee = calc_buy_handle($order->info['total']); 
   $sql_data_array['code_fee'] = $orign_hand_fee + $buy_handle_fee; 
   $new_handle_fee = $sql_data_array['code_fee'];
 }
@@ -172,12 +172,9 @@ for ($i=0, $n=sizeof($order_totals); $i<$n; $i++) {
                           'text' => $order_totals[$i]['text'],
                           'value' => $order_totals[$i]['value'], 
                           'class' => $order_totals[$i]['code'], 
-                          'sort_order' => $order_totals[$i]['sort_order'],
-                          );
+                          'sort_order' => $order_totals[$i]['sort_order']);
   // ccdd
-  if($telecom_option_ok!=true){
-  $telecom_option_ok = $payment_modules->getExpress($payment,$order_totals,$i);
-  }
+  $telecom_option_ok = $payment_modules->getexpress($order_totals,$i);
   $total_data_arr[] = $sql_data_array;
 }
 foreach ($total_data_arr as $sql_data_array){
@@ -195,8 +192,24 @@ $sql_data_array = array('orders_id' => $insert_id,
 tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
   
 //# 追加分（買取情報）
+if(tep_session_is_registered('bank_name')) {
+  $bbbank = TEXT_BANK_NAME . '：' . $bank_name . "\n";
+  $bbbank .= TEXT_BANK_SHITEN . '：' . $bank_shiten . "\n";
+  $bbbank .= TEXT_BANK_KAMOKU . '：' . $bank_kamoku . "\n";
+  $bbbank .= TEXT_BANK_KOUZA_NUM . '：' . $bank_kouza_num . "\n";
+  $bbbank .= TEXT_BANK_KOUZA_NAME . '：' . $bank_kouza_name;
 
-if ($telecom_option_ok == true) {
+  $sql_data_array = array('orders_id' => $insert_id, 
+                          'orders_status_id' => $order->info['order_status'], 
+                          'date_added' => 'now()', 
+                          'customer_notified' => $customer_notification,
+                          'comments' => $bbbank);
+  // ccdd
+  tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
+}
+  
+
+if ($telecom_option_ok) {
   tep_db_perform(TABLE_ORDERS, array('orders_status' => '30'), 'update', "orders_id='".$insert_id."'");
   $sql_data_array = array('orders_id' => $insert_id, 
                           'orders_status_id' => '30', 
@@ -287,7 +300,7 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
                           'products_quantity' => $order->products[$i]['qty'],
                           'products_rate' => tep_get_products_rate(tep_get_prid($order->products[$i]['id'])),
                           'products_character' =>  stripslashes($chara),
-                          'site_id' => SITE_ID,
+                          'site_id' => SITE_ID
                           );
   // ccdd
   tep_db_perform(TABLE_ORDERS_PRODUCTS, $sql_data_array);
@@ -375,7 +388,7 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
   $total_tax += tep_calculate_tax($total_products_price, $products_tax) * $order->products[$i]['qty'];
   $total_cost += $total_products_price;
 
-  $products_ordered .= '注文商品　　　　　：' . $order->products[$i]['name'];
+  $products_ordered .= '' . $order->products[$i]['name'];
   if(tep_not_null($order->products[$i]['model'])) {
     $products_ordered .= ' (' . $order->products[$i]['model'] . ')';
   }
@@ -403,42 +416,6 @@ orders_updated($insert_id);
 
 $otq = tep_db_query("select * from ".TABLE_ORDERS_TOTAL." where class = 'ot_total' and orders_id = '".$insert_id."'");
 $ot = tep_db_fetch_array($otq);
-
-// mail oprion like mailprint
-// CUSTOMER_INFO
-$email_customer_info = '';
-$email_customer_info .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-$email_customer_info .= 'IPアドレス　　　　　　：' . $_SERVER["REMOTE_ADDR"] . "\n";
-$email_customer_info .= 'ホスト名　　　　　　　：' . @gethostbyaddr($_SERVER["REMOTE_ADDR"]) . "\n";
-$email_customer_info .= 'ユーザーエージェント　：' . $_SERVER["HTTP_USER_AGENT"] . "\n";
-$email_customer_info .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-$email_credit_research = ''; 
-$credit_inquiry_query = tep_db_query("select customers_fax, customers_guest_chk from " . TABLE_CUSTOMERS . " where customers_id = '" . $customer_id . "'");
-$credit_inquiry       = tep_db_fetch_array($credit_inquiry_query);
-$email_credit_research .= $credit_inquiry['customers_fax'] . "\n";
-$email_credit_research .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-$email_orders_history = '';
-  
-if ($credit_inquiry['customers_guest_chk'] == '1') { 
-  $email_orders_history .= 'ゲスト'; 
-} else { 
-  $email_orders_history .= '会員'; 
-}
-  
-$email_orders_history .= "\n";
-  
-$order_history_query_raw = "select o.orders_id, o.customers_name, o.customers_id,
-  o.date_purchased, s.orders_status_name, ot.value as order_total_value from " . TABLE_ORDERS . " o left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id), " . TABLE_ORDERS_STATUS . " s where o.customers_id = '" . tep_db_input($customer_id) . "' and o.orders_status = s.orders_status_id and s.language_id = '" . $languages_id . "' and ot.class = 'ot_total' order by o.date_purchased DESC limit 0,5";  
-//ccdd
-$order_history_query = tep_db_query($order_history_query_raw);
-while ($order_history = tep_db_fetch_array($order_history_query)) {
-  $email_orders_history .= $order_history['date_purchased'] . '　　' .
-    tep_output_string_protected($order_history['customers_name']) . '　　' .
-    abs(intval($order_history['order_total_value'])) . '円　　' . $order_history['orders_status_name'] . "\n";
-}
-  
-$email_orders_history .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n\n\n";
-
 # メール本文整形 --------------------------------------{
 
 //mailoption {
@@ -447,39 +424,26 @@ $mailoption['ORDER_DATE']       = tep_date_long(time())  ;
 $mailoption['USER_NAME']        = tep_get_fullname($order->customer['firstname'],$order->customer['lastname'])  ;
 $mailoption['USER_MAILACCOUNT'] = $order->customer['email_address'];
 $mailoption['ORDER_TOTAL']      = $currencies->format(abs($ot['value']));
-@$payment_class = $payment_modules->getModule($payment);
-
-$mailoption['TORIHIKIHOUHOU']   = $torihikihouhou;
+@$payment_class = $$payment;
 $mailoption['ORDER_PAYMENT']    = $payment_class->title ;
-$mailoption['ORDER_TTIME']      =  str_string($date) . $hour . '時' . $min . '分　（24時間表記）' ;
-$mailoption['ORDER_COMMENT']    = $_SESSION['mailcomments'];//
-unset($_SESSION['comments']);
-$mailoption['ADD_INFO']    = str_replace("\n".$mailoption['ORDER_COMMENT'],'',trim($order->info['comments']));
+$mailoption['ORDER_TTIME']      =  str_string($date) . $hour . '時' . $min . '分　（24時間表記）' . $torihikihouhou ;;
+$mailoption['ORDER_COMMENT']    = trim($order->info['comments']);
 $mailoption['ORDER_PRODUCTS']   = $products_ordered ;
-$mailoption['ORDER_TMETHOD']    = $insert_torihiki_date;
+$mailoption['ORDER_TMETHOD']    = $torihikihouhou ;
 $mailoption['SITE_NAME']        = STORE_NAME ;
 $mailoption['SITE_MAIL']        = SUPPORT_EMAIL_ADDRESS ;
 $mailoption['SITE_URL']         = HTTP_SERVER ;
-
-$payment_modules->deal_mailoption($mailoption, $payment);
-
 if ($point){
-  $mailoption['POINT']            = str_replace('円', '', $currencies->format(abs($point)));
+$mailoption['POINT']            = $point . '円' ;
 }else {
   $mailoption['POINT']            = 0;
 }
-if (isset($_SESSION['campaign_fee'])) {
-  $mailoption['POINT']            = str_replace('円', '', $currencies->format(abs($_SESSION['campaign_fee'])));
+if (isset($total_mail_fee) and $total_mail_fee > 0 ){
+  $mailoption['MAILFEE']          = $total_mail_fee.'円';
 }
-if(!isset($_SESSION['mailfee'])){
-  $total_mail_fee =0;
-}else{
-  $total_mail_fee = str_replace('円','',$_SESSION['mailfee']);
-}
-
-$mailoption['MAILFEE']          = str_replace('円','',$total_mail_fee);
 $email_order = '';
-$email_order = $payment_modules->getOrderMailString($payment,$mailoption);  
+$email_order = $payment_modules->getOrderMailString($mailoption);  
+  
 // 2003.03.08 Edit Japanese osCommerce
 tep_mail(tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], EMAIL_TEXT_SUBJECT, $email_order, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
   
@@ -505,18 +469,17 @@ $email_printing_order .= '注文番号　　　　：' . $insert_id . "\n";
 $email_printing_order .= '注文日　　　　　：' . tep_date_long(time()) . "\n";
 $email_printing_order .= 'メールアドレス　：' . $order->customer['email_address'] . "\n";
 $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-if (isset($_SESSION['campaign_fee'])) {
-  if (abs($_SESSION['campaign_fee']) > 0) {
-    $email_printing_order .= '割引　　　　　　：' . abs((int)$_SESSION['campaign_fee']) . '円' . "\n";
-  }
-} else if ($point > 0) {
-  $email_printing_order .= '割引　　：' . (int)$point . '円' . "\n";
+if ($point > 0) {
+  $email_printing_order .= '□ポイント割引　　：' . (int)$point . '円' . "\n";
 }
 if (!empty($total_mail_fee)) {
   $email_printing_order .= '手数料　　　　　：'.$total_mail_fee.'円'."\n"; 
 }
 $email_printing_order .= 'お支払金額　　　：' .  $currencies->format(abs($ot['value'])) . "\n";
-$email_printing_order .= 'お支払方法　　　：' . $payment_class->title . "\n";
+if (is_object($$payment)) {
+  $payment_class = $$payment;
+  $email_printing_order .= 'お支払方法　　　：' . $payment_class->title . "\n";
+}
   
 if(tep_not_null($bbbank)) {
   $email_printing_order .= 'お支払先金融機関' . "\n";
@@ -530,18 +493,62 @@ $email_printing_order .= '備考　　　　　　：' . "\n";
 if ($order->info['comments']) {
   $email_printing_order .= $order->info['comments'] . "\n";
 }
-$email_printing_order .= $email_customer_info;
+
+$email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
+$email_printing_order .= 'IPアドレス　　　　　　：' . $_SERVER["REMOTE_ADDR"] . "\n";
+$email_printing_order .= 'ホスト名　　　　　　　：' . @gethostbyaddr($_SERVER["REMOTE_ADDR"]) . "\n";
+$email_printing_order .= 'ユーザーエージェント　：' . $_SERVER["HTTP_USER_AGENT"] . "\n";
+$email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
 $email_printing_order .= '信用調査' . "\n";
-$email_printing_order .= $email_credit_research;
+$credit_inquiry_query = tep_db_query("select customers_fax, customers_guest_chk from " . TABLE_CUSTOMERS . " where customers_id = '" . $customer_id . "'");
+$credit_inquiry       = tep_db_fetch_array($credit_inquiry_query);
+$email_printing_order .= $credit_inquiry['customers_fax'] . "\n";
+$email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
 $email_printing_order .= '注文履歴　　　　　　　：';
-$email_printing_order .= $email_orders_history;
+  
+if ($credit_inquiry['customers_guest_chk'] == '1') { $email_printing_order .= 'ゲスト'; } else { $email_printing_order .= '会員'; }
+  
+$email_printing_order .= "\n";
+  
+$order_history_query_raw = "select o.orders_id, o.customers_name, o.customers_id,
+  o.date_purchased, s.orders_status_name, ot.value as order_total_value from " . TABLE_ORDERS . " o left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id), " . TABLE_ORDERS_STATUS . " s where o.customers_id = '" . tep_db_input($customer_id) . "' and o.orders_status = s.orders_status_id and s.language_id = '" . $languages_id . "' and ot.class = 'ot_total' order by o.date_purchased DESC limit 0,5";  
+//ccdd
+$order_history_query = tep_db_query($order_history_query_raw);
+while ($order_history = tep_db_fetch_array($order_history_query)) {
+  $email_printing_order .= $order_history['date_purchased'] . '　　' .
+    tep_output_string_protected($order_history['customers_name']) . '　　' .
+    abs(intval($order_history['order_total_value'])) . '円　　' . $order_history['orders_status_name'] . "\n";
+}
+  
+$email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n\n\n";
 
 if (method_exists($payment_class,'getMailString')){
-  $email_printing_order .=$payment_class->getMailString($ot['value']);
+  $email_printing_order .=$payment_class->getMailString();
+}else{
+  $email_printing_order .= 'この注文は【販売】です。' . "\n";
+  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+  $email_printing_order .= '備考の有無　　　　　：□ 無　　｜　　□ 有　→　□ 返答済' . "\n";
+  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+  $email_printing_order .= '在庫確認　　　　　　：□ 有　　｜　　□ 無　→　入金確認後仕入' . "\n";
+  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+  $email_printing_order .= '入金確認　　　　　●：＿＿月＿＿日　→　金額は' .    abs($ot['value']) . '円ですか？　□ はい' . "\n";
+  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+  $email_printing_order .= '入金確認メール送信　：□ 済' . "\n";
+  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+  $email_printing_order .= '発送　　　　　　　　：＿＿月＿＿日' . "\n";
+  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+  $email_printing_order .= '残量入力→誤差有無　：□ 無　　｜　　□ 有　→　報告　□' . "\n";
+  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+  $email_printing_order .= '発送完了メール送信　：□ 済' . "\n";    
 }
+
+
+$email_printing_order .= '------------------------------------------------------------------------' . "\n";
+$email_printing_order .= '最終確認　　　　　　：確認者名＿＿＿＿' . "\n";
+$email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
 # ------------------------------------------
 // send emails to other people
-echo '<br><br>';
+
 if (SEND_EXTRA_ORDER_EMAILS_TO != '') {
   tep_mail('', PRINT_EMAIL_ADDRESS, STORE_NAME, $email_printing_order, tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], '');
 }
@@ -555,7 +562,7 @@ if (SEND_EXTRA_ORDER_EMAILS_TO != '') {
 //tep_session_register('ac_total');
 
 // load the after_process function from the payment modules
-$payment_modules->after_process($payment);
+$payment_modules->after_process();
 
 $cart->reset(true);
 
@@ -569,28 +576,6 @@ if (MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
     //ccdd
 
     tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point - " . intval($point) . " where customers_id = " . $customer_id );
-  }
-  
-  if (isset($_SESSION['campaign_fee'])) {
-    $campaign_raw = tep_db_query("select * from ".TABLE_CAMPAIGN." where id = '".$_SESSION['camp_id']."' and (site_id = '".SITE_ID."' or site_id = '0')"); 
-    $campaign = tep_db_fetch_array($campaign_raw); 
-    $sql_data_array = array(
-        'customer_id' => $customer_id,
-        'campaign_id' => $_SESSION['camp_id'],
-        'orders_id' => $insert_id,
-        'campaign_fee' => $_SESSION['campaign_fee'],
-        'campaign_title' => $campaign['title'],
-        'campaign_name' => $campaign['name'],
-        'campaign_keyword' => $campaign['keyword'],
-        'campaign_start_date' => $campaign['start_date'],
-        'campaign_end_date' => $campaign['end_date'],
-        'campaign_max_use' => $campaign['max_use'],
-        'campaign_point_value' => $campaign['point_value'],
-        'campaign_limit_value' => $campaign['limit_value'],
-        'campaign_type' => $campaign['type'],
-        'site_id' => SITE_ID
-        );
-    tep_db_perform(TABLE_CUSTOMER_TO_CAMPAIGN, $sql_data_array);
   }
 }
   
@@ -620,21 +605,19 @@ tep_session_unregister('date');
 tep_session_unregister('hour');
 tep_session_unregister('min');
 tep_session_unregister('insert_torihiki_date');
-/*
+  
 tep_session_unregister('bank_name');
 tep_session_unregister('bank_shiten');
 tep_session_unregister('bank_kamoku');
 tep_session_unregister('bank_kouza_num');
 tep_session_unregister('bank_kouza_name');
-*/
+  
 #convenience_store
 unset($_SESSION['character']);
 unset($_SESSION['option']);
 unset($_SESSION['referer_adurl']);
 
   
-unset($_SESSION['campaign_fee']); 
-unset($_SESSION['camp_id']); 
 //$pr = '?SID=' . $convenience_sid;
   
 /*

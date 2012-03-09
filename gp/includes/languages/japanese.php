@@ -20,7 +20,7 @@ if (extension_loaded('mbstring')) {
 // on FreeBSD try 'en_US.ISO_8859-1'
 // on Windows try 'en', or 'English'
 //@setlocale(LC_TIME, 'ja_JP');
-//@setlocale(LC_TIME, 'en_US');
+@setlocale(LC_TIME, 'en_US');
 define('DATE_FORMAT_SHORT', '%Y/%m/%d');  // this is used for strftime()
 define('DATE_FORMAT_LONG', '%Y年%m月%d日 %A'); // this is used for strftime()
 define('DATE_FORMAT', 'Y/m/d'); // this is used for date()
@@ -191,7 +191,6 @@ define('JS_AGREEMENT', '* \'利用規約\' を同意してください。');
 
 define('JS_ERROR_NO_PAYMENT_MODULE_SELECTED', '* ご注文商品のお支払方法を選択してください。\n');
 define('JS_ERROR_SUBMITTED', 'このフォームは既に送信されています。Okボタンを押し処理が完了するまでもうしばらくお待ちください。');
-define('JS_ERROR_POINT','獲得ポイントより多くのポイントを指定しているか、マイナスの値を指定しています。');
 
 define('ERROR_NO_PAYMENT_MODULE_SELECTED', '* ご注文商品のお支払方法を選択してください。');
 
@@ -459,23 +458,4 @@ define('LEFT_SEARCH_CATEGORY_EIGHT_TEXT', 'ヤ');
 define('LEFT_SEARCH_CATEGORY_NINE_TEXT', 'ラ');
 define('LEFT_SEARCH_CATEGORY_TEN_TEXT', 'ワ');
 define('CONNECT_SYMBOL_TEXT', '～');
-
-define('PREORDER_SELECT_EMPTY_OPTION', '希望日を選択してください');
-define('PREORDER_YEAR_TEXT', '年');
-define('PREORDER_MONTH_TEXT', '月');
-define('PREORDER_DAY_TEXT', '日');
-define('PREORDER_MONDAY_TEXT', '月曜日');
-define('PREORDER_TUESDAY_TEXT', '火曜日');
-define('PREORDER_WENSDAY_TEXT', '水曜日');
-define('PREORDER_THIRSDAY_TEXT', '木曜日');
-define('PREORDER_FRIDAY_TEXT', '金曜日');
-define('PREORDER_STATURDAY_TEXT', '土曜日');
-define('PREORDER_SUNDAY_TEXT', '日曜日');
-define('PREORDER_HOUR_TEXT', '時');
-define('PREORDER_MIN_TEXT', '分');
-define('PREORDER_TRADER_LINE_TITLE', '取引情報');
-define('PREORDER_CONFIRM_LINE_TITLE', '最終確認');
-define('PREORDER_FINISH_LINE_TITLE', '手続き完了！');
-define('JPMONEY_UNIT_TEXT', '円');
-
 ?>

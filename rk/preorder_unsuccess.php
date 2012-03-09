@@ -57,4 +57,20 @@
 </div> 
 </body>
 </html>
-<?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>
+<?php 
+# For Guest - LogOff
+if($guestchk == '1') {
+  tep_session_unregister('customer_id');
+  tep_session_unregister('customer_default_address_id');
+  tep_session_unregister('customer_first_name');
+  tep_session_unregister('customer_last_name'); //Add Japanese osCommerce
+  tep_session_unregister('customer_country_id');
+  tep_session_unregister('customer_zone_id');
+  tep_session_unregister('comments');
+  tep_session_unregister('guestchk');
+
+  $cart->reset();  
+}
+
+require(DIR_WS_INCLUDES . 'application_bottom.php'); 
+?>

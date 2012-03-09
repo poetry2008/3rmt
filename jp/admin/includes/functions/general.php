@@ -3,6 +3,7 @@
    $Id$
  */
 
+
 //无权限修改 提示401
 function forward401()
 { 
@@ -10,42 +11,6 @@ function forward401()
   //  require("/home/hansir/project/OSC_3RMT/jp/".DIR_WS_MODULES  . '401.html');
   require( DIR_WS_MODULES. '401.html');
   exit;
-  //throw new Exception();
-}
-function one_time_pwd_forward401($page_name)
-{ 
-  $file_name = substr($page_name,7,strlen($page_name));
-  $inpagelist = true;
-  $pagelist = array(
-'handle_payment_time.php', 
-'pre_handle_payment_time.php', 
-'ajax_preorders.php', 
-'ajax_orders.php', 
-'handle_new_preorder.php', 
-'orders_csv_exe.php', 
-'preorders_csv_exe.php', 
-'pre_oa_answer_process.php', 
-'oa_answer_process.php', 
-'popup_image.php',
-'posts.php',
-'update_position.php',
-'item_process.php',
-'oa_ajax.php',
-'preorder_item_process.php',
-'set_ajax_dougyousya.php'
-      );
-  foreach($pagelist as $page){
-    if($file_name == $page){
-      $inpagelist = false;
-      break;
-    }
-  }
-  if($inpagelist){
-  header($_SERVER["SERVER_PROTOCOL"] . " 401Not Found");
-  //  require("/home/hansir/project/OSC_3RMT/jp/".DIR_WS_MODULES  . '401.html');
-  require( DIR_WS_MODULES. '401.html');
-  exit;
-  }
   //throw new Exception();
 }
 //在条件成立的时候，401
@@ -1246,10 +1211,9 @@ function tep_output_generated_category_path($id, $from = 'category') {
   $calculated_category_path = tep_generate_category_path($id, $from);
   for ($i = 0, $n = sizeof($calculated_category_path); $i < $n; $i++) {
     for ($j = 0, $k = sizeof($calculated_category_path[$i]); $j < $k; $j++) {
-      $calculated_category_path_string .= $calculated_category_path[$i][$j]['text'];
-      $calculated_category_path_string .= '&nbsp;&gt;&nbsp;';
+      $calculated_category_path_string .= $calculated_category_path[$i][$j]['text'] . '&nbsp;&gt;&nbsp;';
     }
-      $calculated_category_path_string = substr($calculated_category_path_string, 0, -16) . '<br>';
+    $calculated_category_path_string = substr($calculated_category_path_string, 0, -16) . '<br>';
   }
   $calculated_category_path_string = substr($calculated_category_path_string, 0, -4);
 
@@ -1330,7 +1294,6 @@ function tep_remove_order($order_id, $restock = false) {
   tep_db_query("delete from " . TABLE_ORDERS_TO_COMPUTERS . " where orders_id = '" . tep_db_input($order_id) . "'");
   tep_db_query("delete from orders_products_download where orders_id = '" . tep_db_input($order_id) . "'");
   tep_db_query("delete from ".TABLE_OA_FORMVALUE." where orders_id = '".tep_db_input($order_id)."'");
-  tep_db_query("delete from ".TABLE_CUSTOMER_TO_CAMPAIGN." where orders_id = '".tep_db_input($order_id)."'");
 }
 
 function tep_reset_cache_block($cache_block, $site_id='') {
@@ -2314,7 +2277,7 @@ function tep_site_filter($filename, $ca_single = false){
             if ($ca_single) {
               echo tep_href_link($filename, tep_get_all_get_params(array('site_id')));
             } else {
-              echo tep_href_link($filename, tep_get_all_get_params(array('site_id', 'page', 'oID', 'rID', 'cID', 'latest_news_id', 'bID', 'campaign_id')));
+              echo tep_href_link($filename, tep_get_all_get_params(array('site_id', 'page', 'oID', 'rID', 'cID')));
             }
           ?>">all</a></span> 
             <?php } ?>
@@ -2326,7 +2289,7 @@ function tep_site_filter($filename, $ca_single = false){
                       if ($ca_single) {
                         echo tep_href_link($filename, tep_get_all_get_params(array('site_id')) . 'site_id=' . $site['id']);
                       } else {
-                        echo tep_href_link($filename, tep_get_all_get_params(array('site_id', 'page', 'oID', 'rID', 'cID', 'pID', 'latest_news_id', 'bID', 'campaign_id')) . 'site_id=' . $site['id']);
+                        echo tep_href_link($filename, tep_get_all_get_params(array('site_id', 'page', 'oID', 'rID', 'cID', 'pID')) . 'site_id=' . $site['id']);
                       }
                     ?>"><?php echo $site['romaji'];?></a></span>
                       <?php }
@@ -2656,7 +2619,7 @@ function tep_get_faq_question($q_id){
 function tep_get_faq_category($c_id){
   return tep_db_fetch_array(tep_db_query("select * from ".TABLE_FAQ_CATEGORIES." where c_id = '".$c_id."'"));
 }
-/*
+
 function calc_handle_fee($payment_name, $products_total)
 {
   if ($products_total == 0) {
@@ -2678,8 +2641,7 @@ function calc_handle_fee($payment_name, $products_total)
   }
   return $handle_fee;
 }
-*/
-/*
+
 function new_calc_handle_fee($payment_name, $products_total, $oID)
 {
   $oid_query = tep_db_query("select * from ".TABLE_ORDERS." where orders_id = '".$oID."'"); 
@@ -2723,8 +2685,7 @@ function new_calc_handle_fee($payment_name, $products_total, $oID)
   }
   return $handle_fee;
 }
-*/
-/*
+
 function calc_fee_final($fee_set, $total_cost)
 {
   $return_fee = 0; 
@@ -2741,7 +2702,7 @@ function calc_fee_final($fee_set, $total_cost)
   }
   return $return_fee;
 }
-*/
+
 function tep_set_categories_status($categories_id, $status)
 {
   /*
@@ -2935,6 +2896,18 @@ function tep_get_site_id_by_orders_id($orders_id) {
   }
 }
 
+function get_configuration_by_site_id($key, $site_id = '0',$table_name='') {
+  if($table_name==''){
+    $config = tep_db_fetch_array(tep_db_query("select * from ".TABLE_CONFIGURATION." where configuration_key='".$key."' and site_id='".$site_id."'"));
+  }else{
+    $config = tep_db_fetch_array(tep_db_query("select * from ".$table_name." where configuration_key='".$key."' and site_id='".$site_id."'"));
+  }
+  if ($config) {
+    return $config['configuration_value'];
+  } else {
+    return false;
+  }
+}
 
 function get_url_by_site_id($site_id) {
   $site = tep_db_fetch_array(tep_db_query("select * from ".TABLE_SITES." where id='".$site_id."'"));
@@ -3261,29 +3234,59 @@ function tep_get_orders_products_names($orders_id) {
   return $str;
 }
 // orders.php
-
-function tep_get_orders_products_string($orders, $single = false, $popup = false, $param_str = '') {
-  global $ocertify; 
-  require_once(DIR_WS_CLASSES . 'payment.php');
+function tep_get_orders_products_string($orders, $single = false) {
   $str = '';
 
-  $str .= '<table border="0" cellpadding="2" cellspacing="0" class="popup_order_title" width="100%">';
-  $str .= '<tr>';
-  $str .= '<td width="20">'.tep_image(DIR_WS_IMAGES.'icon_info.gif', IMAGE_ICON_INFO,16,16).'&nbsp;</td>'; 
-  $str .= '<td align="left"><b>['.$orders['orders_id'].']&nbsp;&nbsp;'.tep_datetime_short_torihiki($orders['date_purchased']).'</b></td>'; 
-  $str .= '<td align="right"><a href="javascript:void(0);" onclick="hideOrdersInfo(1);">X</a></td>';
-  $str .= '</tr>';
-  $str .= '</table>';
-  
-  $str .= tep_draw_form('orders', FILENAME_ORDERS, urldecode($param_str).'&oID='.$orders['orders_id'].'&action=deleteconfirm');
-  $str .= '<table border="0" cellpadding="0" cellspacing="0" class="popup_order_info" width="100%">';
+
+  $str .= '<table border="0" cellpadding="0" cellspacing="0" class="orders_info_div" width="100%">';
+  $str .= '<tr><td class="main" colspan="2">&nbsp;</td><tr>';
+
+  /*
+     $str .= '<tr><td class="mian" align="center" colspan="2"><table width="100%"><tr><td class="main" width="50%" align="left">';
+     if ($orders['orders_inputed_flag']) {
+     $str .= '<font color="red"><b>入力済み</b></font>';
+     }
+     $str .= '</td><td class="mian" align="right" width="50%">';
+     if ($orders['orders_comment']) {
+     $str .= '<font color="blue"><b>メモ有り</b></font>';
+     }
+   */
+  /* 
+  $str .= '<tr><td class="mian" align="left" colspan="2">';
+  if ($orders['orders_inputed_flag']) {
+    $str .= '<font color="red"><b>入力済み</b></font>';
+  }
+  */ 
+  /*
+     $str .= '</td></tr><tr><td class="mian" align="left"colspan="2">';
+     if ($orders['orders_important_flag']) {
+     $str .= '<font color="red"><b>重要</b></font>';
+     }
+   */
+  /* 
+  $str .= '</td></tr><tr><td class="mian" align="left"colspan="2">';
+  if ($orders['orders_care_flag']) {
+    $str .= '<font color="red"><b>取扱注意</b></font>';
+  }
+  $str .= '</td></tr><tr><td class="mian" align="left"colspan="2">';
+  if ($orders['orders_comment']) {
+    $str .= '<font color="blue"><b>メモ有り</b></font>';
+  }
+
+  */
+
+
+  //$str .= '</td></tr>';
   if (ORDER_INFO_TRANS_NOTICE == 'true') {
     if ($orders['orders_care_flag']) {
       $str .= '<tr>'; 
       $str .= '<td class="main" colspan="2"><font color="red">';
+      $str .= '<b>';
       $str .= RIGHT_ORDER_INFO_TRANS_NOTICE; 
+      $str .= '</b>';
       $str .= '</font></td>'; 
       $str .= '</tr>'; 
+      $str .= '<tr><td colspan="2"><hr></td></tr>'; 
     }
   }
   
@@ -3291,9 +3294,12 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
     if ($orders['orders_wait_flag']) {
       $str .= '<tr>'; 
       $str .= '<td class="main" colspan="2"><font color="red">';
+      $str .= '<b>';
       $str .= RIGHT_ORDER_INFO_TRANS_WAIT; 
+      $str .= '</b>';
       $str .= '</font></td>'; 
       $str .= '</tr>'; 
+      $str .= '<tr><td colspan="2"><hr></td></tr>'; 
     } 
   }
   
@@ -3301,34 +3307,64 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
     if ($orders['orders_inputed_flag']) {
       $str .= '<tr>'; 
       $str .= '<td class="main" colspan="2"><font color="red">';
+      $str .= '<b>';
       $str .= RIGHT_ORDER_INFO_INPUT_FINISH; 
+      $str .= '</b>';
       $str .= '</font></td>'; 
       $str .= '</tr>'; 
+      $str .= '<tr><td colspan="2"><hr></td></tr>'; 
     } 
   }
   if(ORDER_INFO_BASIC_TEXT == 'true'){
     $str .= '<tr>';
-    $str .= '<td class="main" width="120">';
+    $str .= '<td class="main"><b>';
     $str .= TEXT_FUNCTION_HEADING_CUSTOMERS;
-    $str .= '</td>';
-    $str .= '<td class="main">';
+    $str .= '</b></td>';
+    $str .= '<td class="main"><b>';
     $str .= tep_output_string_protected($orders['customers_name']); 
-    $str .= '</td>';
+    $str .= '</b></td>';
     $str .= '</tr>';
+    $str .= '<tr><td colspan="2"><hr></td></tr>'; 
 
+    //$str .= '<tr>';
+    //$str .= '<td class="main"><b>';
+    //$str .= TEXT_FUNCTION_HEADING_ORDER_TOTAL;
+    //$str .= '</b></td>';
+    //$str .= '<td class="main"><b>';
+    //$str .= strip_tags(tep_get_ot_total_by_orders_id($orders['orders_id'], true));
+    //$str .= '</b></td>';
+    //$str .= '</tr>';
+
+    //$str .= '<tr>';
+    //$str .= '<td class="main"><b>';
+    //$str .= TEXT_FUNCTION_ORDER_ORDER_DATE;
+    //$str .= '</b></td>';
+    //$str .= '<td class="main"><b>';
+    //$str .= tep_datetime_short($orders['torihiki_date']);;
+    //$str .= '</b></td>';
+    //$str .= '</tr>';
+
+    //$str .= '<tr>';
+    //$str .= '<td class="main"><b>';
+    //$str .= TEXT_FUNCTION_HEADING_DATE_PURCHASED;
+    //$str .= '</b></td>';
+    //$str .= '<td class="main"><b>';
+    //$str .= tep_datetime_short($orders['date_purchased']); 
+    //$str .= '</b></td>';
+    //$str .= '</tr>';
   }
-  
-    $str .= '<tr><td class="main" width="120">支払方法：</td><td class="main" style="color:darkred;">'.payment::changeRomaji($orders['payment_method'],'title').'</td></tr>';
-    
+  //$str .= '<tr><td colspan="2">&nbsp;</td></tr>';
+  $str .= '<tr><td class="main" width="150"><b>支払方法：</b></td><td class="main" style="color:darkred;"><b>'.$orders['payment_method'].'</b></td></tr>';
+    //$str .= '<tr><td class="main"><b>入金日：</b></td><td class="main" style="color:red;"><b>'.($pay_time?date('m月d日',strtotime($pay_time)):'入金まだ').'</b></td></tr>';
     if ($orders['confirm_payment_time'] != '0000-00-00 00:00:00') {
       $time_str = date('Y年n月j日', strtotime($orders['confirm_payment_time'])); 
     }else if(tep_check_order_type($orders['orders_id'])!=2){
       $time_str = '入金まだ'; 
     }
     if($time_str){
-    $str .= '<tr><td class="main">入金日：</td><td class="main" style="color:red;">'.$time_str.'</td></tr>';
+    $str .= '<tr><td class="main"><b>入金日：</b></td><td class="main" style="color:red;"><b>'.$time_str.'</b></td></tr>';
     }
-  $str .= '<tr><td class="main">オプション：</td><td class="main" style="color:blue;">'.$orders['torihiki_houhou'].'</td></tr>';
+  $str .= '<tr><td class="main"><b>オプション：</b></td><td class="main" style="color:blue;"><b>'.$orders['torihiki_houhou'].'</b></td></tr>';
 
   $orders_products_query = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS." op,".TABLE_PRODUCTS." p where p.products_id = op.products_id and op.orders_id = '".$orders['orders_id']."'");
   $autocalculate_arr = array();
@@ -3358,63 +3394,64 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
     $products_attributes_query = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS_ATTRIBUTES." where orders_products_id='".$p['orders_products_id']."'");
     if(in_array(array($p['products_id'],$p['orders_products_id']),$autocalculate_arr)&&
         !empty($autocalculate_arr)){
-      $str .= '<tr><td class="main">商品：<font color="red">「入」</font></td><td class="main">'.$p['products_name'].'</td></tr>';
+      $str .= '<tr><td class="main"><b>商品：</b><font color="red">「入」</font></td><td class="main">'.$p['products_name'].'</td></tr>';
     }else{
-      $str .= '<tr><td class="main">商品：<font color="red">「未」</font></td><td class="main">'.$p['products_name'].'</td></tr>';
+      $str .= '<tr><td class="main"><b>商品：</b><font color="red">「未」</font></td><td class="main">'.$p['products_name'].'</td></tr>';
     }
-    $str .= '<tr><td class="main">個数：</td><td class="main">'.$p['products_quantity'].'個'.tep_get_full_count2($p['products_quantity'], $p['products_id'], $p['products_rate']).'</td></tr>';
+    $str .= '<tr><td class="main"><b>個数：</b></td><td class="main">'.$p['products_quantity'].'個'.tep_get_full_count2($p['products_quantity'], $p['products_id'], $p['products_rate']).'</td></tr>';
     while($pa = tep_db_fetch_array($products_attributes_query)){
-      $str .= '<tr><td class="main">'.$pa['products_options'].'：</td><td class="main">'.$pa['products_options_values'].'</td></tr>';
+      $str .= '<tr><td class="main"><b>'.$pa['products_options'].'：</b></td><td class="main">'.$pa['products_options_values'].'</td></tr>';
     }
-    $str .= '<tr><td class="main">キャラ名：</td><td class="main"  style="color:#407416;">'.$p['products_character'].'</td></tr>';
+    $str .= '<tr><td class="main"><b>キャラ名：</b></td><td class="main"  style="color:#407416;"><b>'.$p['products_character'].'</b></td></tr>';
     $names = tep_get_computers_names_by_orders_id($orders['orders_id']);
     if ($names) {
-      $str .= '<tr><td class="main">PC：</td><td class="main">'.implode('&nbsp;,&nbsp;', $names).'</td></tr>';
+      $str .= '<tr><td class="main"><b>PC：</b></td><td class="main">'.implode('&nbsp;,&nbsp;', $names).'</td></tr>';
     }
     $str .= '<tr><td class="main"></td><td class="main"></td></tr>';
     $i++;
   }
+  $str .= '<tr><td colspan="2"><hr></td></tr>'; 
   }
   
   
   if (ORDER_INFO_ORDER_INFO == 'true') {
     $str .= '<tr>'; 
-    $str .= '<td class="main">'.RIGHT_ORDER_INFO_ORDER_FROM.'</td>'; 
+    $str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_FROM.'</b></td>'; 
     $str .= '<td class="main">';
     $str .= tep_get_site_name_by_order_id($orders['orders_id']); 
     $str .= '</td>'; 
     $str .= '</tr>'; 
     
     $str .= '<tr>'; 
-    $str .= '<td class="main">'.RIGHT_ORDER_INFO_ORDER_FETCH_TIME.'</td>';
+    $str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_FETCH_TIME.'</b></td>';
     $str .= '<td class="main">';
     $str .= $orders['torihiki_date']; 
     $str .= '</td>'; 
     $str .= '</tr>'; 
     
     $str .= '<tr>'; 
-    $str .= '<td class="main">'.RIGHT_ORDER_INFO_ORDER_OPTION.'</td>';
+    $str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_OPTION.'</b></td>';
     $str .= '<td class="main">';
     $str .= $orders['torihiki_houhou'];    
     $str .= '</td>'; 
     $str .= '</tr>'; 
   
     $str .= '<tr>'; 
-    $str .= '<td class="main">'.RIGHT_ORDER_INFO_ORDER_ID.'</td>';
+    $str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_ID.'</b></td>';
     $str .= '<td class="main">';
     $str .= $orders['orders_id']; 
     $str .= '</td>'; 
     $str .= '</tr>'; 
   
     $str .= '<tr>'; 
-    $str .= '<td class="main">'.TEXT_FUNCTION_ORDER_ORDER_DATE.'</td>';
+    $str .= '<td class="main"><b>'.TEXT_FUNCTION_ORDER_ORDER_DATE.'</b></td>';
     $str .= '<td class="main">';
     $str .= tep_date_long($orders['date_purchased']); 
     $str .= '</td>'; 
     $str .= '</tr>'; 
   
     $str .= '<tr>'; 
-    $str .= '<td class="main">'.RIGHT_ORDER_INFO_ORDER_CUSTOMER_TYPE.'</td>';
+    $str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_CUSTOMER_TYPE.'</b></td>';
     $str .= '<td class="main">';
     if(get_guest_chk($orders['customers_id'])==0){
       $str .= TEXT_TEP_CFG_PAYMENT_CHECKBOX_OPTION_MEMBER;
@@ -3425,7 +3462,7 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
     $str .= '</tr>'; 
     
     $str .= '<tr>'; 
-    $str .= '<td class="main">'.RIGHT_ORDER_INFO_ORDER_CUSTOMER_NAME.'</td>';
+    $str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_CUSTOMER_NAME.'</b></td>';
     $str .= '<td class="main">';
     $str .= '<a href="">'.$orders['customers_name'].'</a>'; 
     $str .= '</td>'; 
@@ -3442,7 +3479,7 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
     $remoteurl = (defined('OST_SERVER')?OST_SERVER:'scp')."/tickets.php?a=open2".$parmStr."";
     
     $str .= '<tr>'; 
-    $str .= '<td class="main">'.RIGHT_ORDER_INFO_ORDER_EMAIL.'</td>';
+    $str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_EMAIL.'</b></td>';
     $str .= '<td class="main">';
     $str .= tep_output_string_protected($orders['customers_email_address']).'&nbsp;&nbsp;<a title="'.RIGHT_TICKIT_ID_TITLE.'" href="'.$remoteurl.'" target="_blank">'.RIGHT_TICKIT_EMAIL.'</a>&nbsp;&nbsp;<a href="telecom_unknow.php?keywords='.tep_output_string_protected($orders['customers_email_address']).'">'.RIGHT_TICKIT_CARD.'</a>'; 
     $str .= '</td>'; 
@@ -3450,58 +3487,59 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
   
     if ( (($orders['cc_type']) || ($orders['cc_owner']) || ($orders['cc_number'])) ) {  
       $str .= '<tr>'; 
-      $str .= '<td class="main">'.RIGHT_ORDER_INFO_ORDER_CREDITCARD_TYPE.'</td>';
+      $str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_CREDITCARD_TYPE.'</b></td>';
       $str .= '<td class="main">';
       $str .= $orders['cc_type']; 
       $str .= '</td>'; 
       $str .= '</tr>'; 
       
       $str .= '<tr>'; 
-      $str .= '<td class="main">'.RIGHT_ORDER_INFO_ORDER_CREDITCARD_OWNER.'</td>';
+      $str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_CREDITCARD_OWNER.'</b></td>';
       $str .= '<td class="main">';
       $str .= $orders['cc_owner']; 
       $str .= '</td>'; 
       $str .= '</tr>'; 
       
       $str .= '<tr>'; 
-      $str .= '<td class="main">'.RIGHT_ORDER_INFO_ORDER_CREDITCARD_ID.'</td>';
+      $str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_CREDITCARD_ID.'</b></td>';
       $str .= '<td class="main">';
       $str .= $orders['cc_number']; 
       $str .= '</td>'; 
       $str .= '</tr>'; 
       
       $str .= '<tr>'; 
-      $str .= '<td class="main">'.RIGHT_ORDER_INFO_ORDER_CREDITCARD_EXPIRE_TIME.'</td>';
+      $str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_CREDITCARD_EXPIRE_TIME.'</b></td>';
       $str .= '<td class="main">';
       $str .= $orders['cc_expires']; 
       $str .= '</td>'; 
       $str .= '</tr>'; 
   } 
+      $str .= '<tr><td colspan="2"><hr></td></tr>'; 
   }
   if (ORDER_INFO_CUSTOMER_INFO == 'true') {
     $str .= '<tr>'; 
-    $str .= '<td class="main">'.RIGHT_CUSTOMER_INFO_ORDER_IP.'</td>';
+    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_IP.'</b></td>';
     $str .= '<td class="main">';
     $str .= tep_high_light_by_keywords($orders['orders_ip'] ?  $orders['orders_ip'] : 'UNKNOW',IP_LIGHT_KEYWORDS); 
     $str .= '</td>'; 
     $str .= '</tr>'; 
     
     $str .= '<tr>'; 
-    $str .= '<td class="main">'.RIGHT_CUSTOMER_INFO_ORDER_HOST.'</td>';
+    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_HOST.'</b></td>';
     $str .= '<td class="main">';
     $str .= tep_high_light_by_keywords($orders['orders_host_name']?'<font'.($orders['orders_host_name'] == $orders['orders_ip'] ? ' color="red"':'').'>'.$orders['orders_host_name'].'</font>':'UNKNOW',HOST_NAME_LIGHT_KEYWORDS); 
     $str .= '</td>'; 
     $str .= '</tr>'; 
     
     $str .= '<tr>'; 
-    $str .= '<td class="main">'.RIGHT_CUSTOMER_INFO_ORDER_USER_AGEMT.'</td>';
+    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_USER_AGEMT.'</b></td>';
     $str .= '<td class="main">';
     $str .= tep_high_light_by_keywords($orders['orders_user_agent'] ?  $orders['orders_user_agent'] : 'UNKNOW',USER_AGENT_LIGHT_KEYWORDS); 
     $str .= '</td>'; 
     $str .= '</tr>'; 
   if ($orders['orders_user_agent']) { 
       $str .= '<tr>'; 
-      $str .= '<td class="main">'.RIGHT_CUSTOMER_INFO_ORDER_OS.'</td>';
+      $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_OS.'</b></td>';
       $str .= '<td class="main">';
       $str .= tep_high_light_by_keywords(getOS($orders['orders_user_agent']),OS_LIGHT_KEYWORDS); 
       $str .= '</td>'; 
@@ -3509,49 +3547,49 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
       
       $browser_info = getBrowserInfo($orders['orders_user_agent']); 
       $str .= '<tr>'; 
-      $str .= '<td class="main">'.RIGHT_CUSTOMER_INFO_ORDER_BROWSE_TYPE.'</td>';
+      $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_BROWSE_TYPE.'</b></td>';
       $str .= '<td class="main">';
       $str .= tep_high_light_by_keywords($browser_info['longName'] . ' ' .  $browser_info['version'],BROWSER_LIGHT_KEYWORDS); 
       $str .= '</td>'; 
       $str .= '</tr>'; 
   } 
     $str .= '<tr>'; 
-    $str .= '<td class="main">'.RIGHT_CUSTOMER_INFO_ORDER_BROWSE_LAN.'</td>';
+    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_BROWSE_LAN.'</b></td>';
     $str .= '<td class="main">';
     $str .= tep_high_light_by_keywords($orders['orders_http_accept_language'] ?  $orders['orders_http_accept_language'] : 'UNKNOW',HTTP_ACCEPT_LANGUAGE_LIGHT_KEYWORDS); 
     $str .= '</td>'; 
     $str .= '</tr>'; 
     
     $str .= '<tr>'; 
-    $str .= '<td class="main">'.RIGHT_CUSTOMER_INFO_ORDER_COMPUTER_LAN.'</td>';
+    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_COMPUTER_LAN.'</b></td>';
     $str .= '<td class="main">';
     $str .= tep_high_light_by_keywords($orders['orders_system_language'] ?  $orders['orders_system_language'] : 'UNKNOW',SYSTEM_LANGUAGE_LIGHT_KEYWORDS); 
     $str .= '</td>'; 
     $str .= '</tr>'; 
     
     $str .= '<tr>'; 
-    $str .= '<td class="main">'.RIGHT_CUSTOMER_INFO_ORDER_USER_LAN.'</td>';
+    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_USER_LAN.'</b></td>';
     $str .= '<td class="main">';
     $str .= tep_high_light_by_keywords($orders['orders_user_language'] ?  $orders['orders_user_language'] : 'UNKNOW',USER_LANGUAGE_LIGHT_KEYWORDS); 
     $str .= '</td>'; 
     $str .= '</tr>'; 
     
     $str .= '<tr>'; 
-    $str .= '<td class="main">'.RIGHT_CUSTOMER_INFO_ORDER_PIXEL.'</td>';
+    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_PIXEL.'</b></td>';
     $str .= '<td class="main">';
     $str .= tep_high_light_by_keywords($orders['orders_screen_resolution'] ?  $orders['orders_screen_resolution'] : 'UNKNOW',SCREEN_RESOLUTION_LIGHT_KEYWORDS); 
     $str .= '</td>'; 
     $str .= '</tr>'; 
     
     $str .= '<tr>'; 
-    $str .= '<td class="main">'.RIGHT_CUSTOMER_INFO_ORDER_COLOR.'</td>';
+    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_COLOR.'</b></td>';
     $str .= '<td class="main">';
     $str .= tep_high_light_by_keywords($orders['orders_color_depth'] ?  $orders['orders_color_depth'] : 'UNKNOW',COLOR_DEPTH_LIGHT_KEYWORDS); 
     $str .= '</td>'; 
     $str .= '</tr>'; 
     
     $str .= '<tr>'; 
-    $str .= '<td class="main">'.RIGHT_CUSTOMER_INFO_ORDER_FLASH.'</td>';
+    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_FLASH.'</b></td>';
     $str .= '<td class="main">';
     $str .= tep_high_light_by_keywords($orders['orders_flash_enable'] === '1' ?  'YES' : ($orders['orders_flash_enable'] === '0' ? 'NO' : 'UNKNOW'),FLASH_LIGHT_KEYWORDS); 
     $str .= '</td>'; 
@@ -3559,69 +3597,71 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
   
   if ($orders['orders_flash_enable']) {
       $str .= '<tr>'; 
-      $str .= '<td class="main">'.RIGHT_CUSTOMER_INFO_ORDER_FLASH_VERSION.'</td>';
+      $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_FLASH_VERSION.'</b></td>';
       $str .= '<td class="main">';
       $str .= tep_high_light_by_keywords($orders['orders_flash_version'],FLASH_VERSION_LIGHT_KEYWORDS); 
       $str .= '</td>'; 
       $str .= '</tr>'; 
   }
     $str .= '<tr>'; 
-    $str .= '<td class="main">'.RIGHT_CUSTOMER_INFO_ORDER_DIRECTOR.'</td>';
+    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_DIRECTOR.'</b></td>';
     $str .= '<td class="main">';
     $str .= tep_high_light_by_keywords($orders['orders_director_enable'] === '1' ? 'YES' : ($orders['orders_director_enable'] === '0' ? 'NO' : 'UNKNOW'),DIRECTOR_LIGHT_KEYWORDS); 
     $str .= '</td>'; 
     $str .= '</tr>'; 
   
     $str .= '<tr>'; 
-    $str .= '<td class="main">'.RIGHT_CUSTOMER_INFO_ORDER_QUICK_TIME.'</td>';
+    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_QUICK_TIME.'</b></td>';
     $str .= '<td class="main">';
     $str .= tep_high_light_by_keywords($orders['orders_quicktime_enable'] === '1' ? 'YES' : ($orders['orders_quicktime_enable'] === '0' ? 'NO' : 'UNKNOW'),QUICK_TIME_LIGHT_KEYWORDS); 
     $str .= '</td>'; 
     $str .= '</tr>'; 
   
     $str .= '<tr>'; 
-    $str .= '<td class="main">'.RIGHT_CUSTOMER_INFO_ORDER_REAL_PLAYER.'</td>';
+    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_REAL_PLAYER.'</b></td>';
     $str .= '<td class="main">';
     $str .= tep_high_light_by_keywords($orders['orders_realplayer_enable'] === '1' ?  'YES' : ($orders['orders_realplayer_enable'] === '0' ? 'NO' : 'UNKNOW'),REAL_PLAYER_LIGHT_KEYWORDS); 
     $str .= '</td>'; 
     $str .= '</tr>'; 
     
     $str .= '<tr>'; 
-    $str .= '<td class="main">'.RIGHT_CUSTOMER_INFO_ORDER_WINDOWS_MEDIA.'</td>';
+    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_WINDOWS_MEDIA.'</b></td>';
     $str .= '<td class="main">'; $str .= tep_high_light_by_keywords($orders['orders_windows_media_enable'] === '1' ? 'YES' : ($orders['orders_windows_media_enable'] === '0' ?  'NO' : 'UNKNOW'),WINDOWS_MEDIA_LIGHT_KEYWORDS); 
     $str .= '</td>'; 
     $str .= '</tr>'; 
     
     $str .= '<tr>'; 
-    $str .= '<td class="main">'.RIGHT_CUSTOMER_INFO_ORDER_PDF.'</td>';
+    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_PDF.'</b></td>';
     $str .= '<td class="main">';
     $str .= tep_high_light_by_keywords($orders['orders_pdf_enable'] === '1' ?  'YES' : ($orders['orders_pdf_enable'] === '0' ? 'NO' : 'UNKNOW'),PDF_LIGHT_KEYWORDS); 
     $str .= '</td>'; 
     $str .= '</tr>'; 
     
     $str .= '<tr>'; 
-    $str .= '<td class="main">'.RIGHT_CUSTOMER_INFO_ORDER_JAVA.'</td>';
+    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_JAVA.'</b></td>';
     $str .= '<td class="main">';
     $str .= tep_high_light_by_keywords($orders['orders_java_enable'] === '1' ?  'YES' : ($orders['orders_java_enable'] === '0' ? 'NO' : 'UNKNOW'),JAVA_LIGHT_KEYWORDS); 
     $str .= '</td>'; 
     $str .= '</tr>'; 
+    $str .= '<tr><td colspan="2"><hr></td></tr>'; 
   }
  
   if (ORDER_INFO_REFERER_INFO == 'true') {
     $str .= '<tr>'; 
-    $str .= '<td class="main">Referer Info：</td>';
+    $str .= '<td class="main"><b>Referer Info：</b></td>';
     $str .= '<td class="main">';
     $str .= urldecode($orders['orders_ref']); 
     $str .= '</td>'; 
     $str .= '</tr>'; 
     if ($orders['orders_ref_keywords']) {
       $str .= '<tr>'; 
-      $str .= '<td class="main">KEYWORDS：</td>';
+      $str .= '<td class="main"><b>KEYWORDS：</b></td>';
       $str .= '<td class="main">';
       $str .= $orders['orders_ref_keywords']; 
       $str .= '</td>'; 
       $str .= '</tr>'; 
     }
+    $str .= '<tr><td colspan="2"><hr></td></tr>'; 
   }
   
   if (ORDER_INFO_ORDER_HISTORY == 'true') {
@@ -3631,7 +3671,7 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
       $str .= '<td class="main" colspan="2">';      
       $str .= '<table width="100%" border="0" cellspacing="0" cellpadding="2">'; 
       $str .= '<tr>'; 
-      $str .= '<td colspan="4">Order History：</td>'; 
+      $str .= '<td colspan="4"><b>Order History：</b></td>'; 
       $str .= '</tr>'; 
       while ($order_history_list = tep_db_fetch_array($order_history_list_raw)) {
         $str .= '<tr>'; 
@@ -3654,44 +3694,37 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
       $str .= '</table>'; 
       $str .= '</td>';      
       $str .= '</tr>';      
+      $str .= '<tr><td colspan="2"><hr></td></tr>'; 
     }
   }
   
   if (ORDER_INFO_REPUTAION_SEARCH == 'true') {
     $str .= '<tr>'; 
     $str .= '<td class="main">';
-    $str .= RIGHT_ORDER_INFO_REPUTAION_SEARCH; 
+    $str .= '<b>'.RIGHT_ORDER_INFO_REPUTAION_SEARCH.'</b>'; 
     $str .= '</td>';
     $str .= '<td class="main">';
     $str .= tep_get_customers_fax_by_id($orders['customers_id']); 
     $str .= '</td>'; 
     $str .= '</tr>'; 
+    $str .= '<tr><td colspan="2"><hr></td></tr>'; 
   }
   
   if (ORDER_INFO_ORDER_COMMENT == 'true') {
     $str .= '<tr>'; 
     $str .= '<td class="main">';
-    $str .= RIGHT_ORDER_COMMENT_TITLE; 
+    $str .= '<b>'.RIGHT_ORDER_COMMENT_TITLE.'</b>'; 
     $str .= '</td>';
     $str .= '<td class="main">';
     $str .= nl2br($orders['orders_comment']); 
     $str .= '</td>'; 
     $str .= '</tr>'; 
+    $str .= '<tr><td colspan="2"><hr></td></tr>'; 
   }
   
   
+  $str .= '<tr><td class="main" colspan="2">&nbsp;</td><tr>';
   $str .= '</table>';
-  $str .= '<table class="popup_order_info" border="0" cellpadding="2" cellspacing="0" width="100%">';
-  $str .= '<tr><td width="120">&nbsp;</td><td class="main" style="padding-left:20%;">';
-  $str .= '<div id="order_del">'; 
-  $str .= '<a href="'.tep_href_link(FILENAME_ORDERS, urldecode($param_str).'&oID='.$orders['orders_id'].'&action=edit').'">'.tep_html_element_button(IMAGE_DETAILS).'</a>'; 
-  if ($ocertify->npermission == 15) {
-    $str .= '&nbsp;<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="delete_order_info(\''.$orders['orders_id'].'\', \''.urlencode($param_str).'\')"').'</a>'; 
-  }
-  $str .= '</div>'; 
-  $str .= '</td></tr>';
-  $str .= '</table>';
-  $str .= '</form>'; 
   $str=str_replace("\n","",$str);
   $str=str_replace("\r","",$str);
   if ($single) {
@@ -5293,8 +5326,50 @@ f(n) = (11 * avg  +  (12-1-10)*-200) /12  = -1600
     return false;
   }
 
+  function tep_payment_method_menu($payment_method = "") {
+    //$payment_text = "銀行振込\nクレジットカード決済\n銀行振込(買い取り)\nペイパル決済\nポイント(買い取り)\n来店支払い\nコンビニ決済\nゆうちょ銀行（郵便局）\n支払いなし";
+    $payment_text = tep_get_list_payment(); 
+    $payment_array = explode("\n", $payment_text);
+    //$payment_list[] = array('id' => '', 'text' => '支払方法を選択してください');
+    for($i=0; $i<sizeof($payment_array); $i++) {
+      $payment_list[] = array('id' => $payment_array[$i],
+          'text' => $payment_array[$i]);
+    }
+    return tep_draw_pull_down_menu('payment_method', $payment_list, $payment_method);
+  }
 
+  function tep_get_list_payment() {
+    global $language;
 
+    $payment_directory = DIR_FS_CATALOG_MODULES .'payment/';
+    $payment_array = array();
+    $payment_list_str = '';
+
+    if ($dh = @dir($payment_directory)) {
+      while ($payment_file = $dh->read()) {
+        if (!is_dir($payment_directory.$payment_file)) {
+          if (substr($payment_file, strrpos($payment_file, '.')) == '.php') {
+            $payment_array[] = $payment_file; 
+          }
+        }
+      }
+      sort($payment_array);
+      $dh->close();
+    }
+
+    for ($i = 0, $n = sizeof($payment_array); $i < $n; $i++) {
+      $payment_filename = $payment_array[$i]; 
+      include(DIR_WS_LANGUAGES . $language . '/modules/payment/' . $payment_filename); 
+      include($payment_directory . $payment_filename); 
+      $payment_class = substr($payment_filename, 0, strrpos($payment_filename, '.'));
+      if (tep_class_exists($payment_class)) {
+        $payment_module = new $payment_class; 
+        $payment_list_str .= $payment_module->title."\n"; 
+      }
+    }
+
+    return mb_substr($payment_list_str, 0, -1, 'UTF-8');
+  }
   function tep_get_faq_path($current_category_id = '') {
     global $cPath_array;
 
@@ -6313,13 +6388,10 @@ function tep_get_ot_total_by_orders_id_no_abs($orders_id, $single = false) {
     }
   }else{
     if ($single) {
-      if ($result['value'] < 0) {
-        return "<b><font color='#ff0000'>".str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($result['value'],true,DEFAULT_CURRENCY,'',false))."</font>".TEXT_MONEY_SYMBOL."</b>";
-      } else {
-        return "<b>".$currencies->format($result['value'],true,DEFAULT_CURRENCY,'',false)."</b>";
-      }
+      return "<b><font
+        color='ff0000'>".$currencies->format($result['value'],true,DEFAULT_CURRENCY,'',false)."</font></b>";
     } else {
-      return "<b><font color='#ff0000'>".$result['value']."".TEXT_MONEY_SYMBOL."</font></b>";
+      return "<b><font color='ff0000'>".$result['value']."".TEXT_MONEY_SYMBOL."</font></b>";
     }
   }
 }
@@ -6575,417 +6647,4 @@ function tep_get_relate_products_sum($pid,$site_id=0,$start='',$end='')
   }
   return $return_sum;
 
-}
-function tep_output_generated_category_path_asset($id, $from = 'category') {
-  $calculated_category_path_string = '';
-  $calculated_category_path = tep_generate_category_path($id, $from);
-  if($from=='category'){
-    krsort($calculated_category_path);
-  }
-  foreach ($calculated_category_path as $i=>$i_value) {
-    if($from=='category'){
-      krsort($calculated_category_path[$i]);
-    }
-    foreach ($calculated_category_path[$i] as $j=>$j_value) {
-      $calculated_category_path_string .= $calculated_category_path[$i][$j]['text'];
-      $calculated_category_path_string .= '&nbsp;&gt;&gt;&nbsp;';
-    }
-    /*
-      $calculated_category_path_string = substr($calculated_category_path_string, 0, -16) . '<br>';
-    */
-  }
-  $calculated_category_path_string = substr($calculated_category_path_string, 0, -20);
-
-  if (strlen($calculated_category_path_string) < 1) $calculated_category_path_string = TEXT_TOP;
-
-  return $calculated_category_path_string;
-
-}
-
-
-//从前台引用的方法
-  function tep_count_payment_modules() {
-    return tep_count_modules(MODULE_PAYMENT_INSTALLED);
-  }
-  function tep_count_modules($modules = '') {
-    $count = 0;
-
-    if (empty($modules)) return $count;
-
-    $modules_array = split(';', $modules);
-
-    for ($i=0, $n=sizeof($modules_array); $i<$n; $i++) {
-      $class = substr($modules_array[$i], 0, strrpos($modules_array[$i], '.'));
-
-      if (!isset($GLOBALS[$class])) $GLOBALS[$class]=NULL;
-      if (is_object($GLOBALS[$class])) {
-        if ($GLOBALS[$class]->enabled) {
-          $count++;
-        }
-      }
-    }
-    return $count;
-  }
-
-//根据email 返回 customer信息
-function tep_get_customer_id_by_email($email,$site_id=0){
-    $account_query = tep_db_query("select * from " . TABLE_CUSTOMERS . " where customers_email_address = '" . $email . "' and site_id = '".$site_id."'");
-    $account = tep_db_fetch_array($account_query);
-    if(!$account){
-      return false;
-    }
-    $customer = $account['customers_id'];
-    return $customer;
-}
-
-function tep_get_customer_by_id($id){
-    $account_query = tep_db_query("select * from " . TABLE_CUSTOMERS . " where customers_id = ".$id);
-    $account = tep_db_fetch_array($account_query);
-    if(!$account){
-      return false;
-    }
-    return $account;
-}
-function tep_get_address_by_cid($id){
-  $address_query = tep_db_query("select * from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $id . "'");
-  $address = tep_db_fetch_array($address_query);
-  return $address;
-}
-
-
-
-
-
-
-
-function tep_cfg_shipping_checkbox_option($check_array, $key_value, $key = '') {
-    $string = '';
-    for ($i = 0, $n = sizeof($check_array); $i < $n; $i++) {
-      $name = (($key) ? 'configuration[' . $key . ']' : 'configuration_value');
-      $string .= '<br><input type="checkbox" name="' . $name . '[]" value="' .  $check_array[$i] . '"';
-      if (in_array($check_array[$i], unserialize($key_value))) $string .= ' CHECKED';
-      $string .= '> '; 
-      if (($i+1) == 1) {
-        $string .= '会員'; 
-      } else {
-        $string .= 'ゲスト'; 
-      }
-    }
-    return $string;
-  }
-
-function tep_datetime_short_torihiki($raw_datetime) {
-  if ( ($raw_datetime == '0000-00-00 00:00:00') || ($raw_datetime == '') ) return false;
-
-  $year = (int)substr($raw_datetime, 0, 4);
-  $month = (int)substr($raw_datetime, 5, 2);
-  $day = (int)substr($raw_datetime, 8, 2);
-  $hour = (int)substr($raw_datetime, 11, 2);
-  $minute = (int)substr($raw_datetime, 14, 2);
-  $second = (int)substr($raw_datetime, 17, 2);
-
-  return strftime(DATE_TIME_FORMAT_TORIHIKI, mktime($hour, $minute, $second, $month, $day, $year));
-}
-function tep_get_torihiki_date_radio($start_time,$radio_name="torihiki_time",$default_check=false){
-  $arr = array();
-  $time_str = date('H:i',$start_time);
-  $time_arr = explode(':',$time_str);
-  $hour = $time_arr[0];
-  $mim_start = $time_arr[1];
-  $show_row = 0;
-  for($hour;$hour<24;$hour++){
-    for($mim_start;$mim_start<60;){
-      if($show_row ==0 ){
-        if($mim_start < 15){
-          $mim_start = 15;
-          $arr[]=null;
-        }else if($mim_start < 30){
-          $mim_start = 30;
-          $arr[]=null;
-          $arr[]=null;
-        }else if($mim_start < 45){
-          $mim_start = 45;
-          $arr[]=null;
-          $arr[]=null;
-          $arr[]=null;
-        }else if($mim_start >= 45){
-          $mim_start = 0;
-          break;
-        }
-      }
-      $s_start = $mim_start;
-      $mim_start+=14;
-      $e_start = $mim_start;
-      $return_str = "<input type='radio' name='".$radio_name."' value='".
-           sprintf('%02d',$hour).":".sprintf('%02d',$s_start)."-".
-           sprintf('%02d',$hour).":".sprintf('%02d',$e_start)."'";
-      if($default_check){
-        $return_str .= " checked >&nbsp;&nbsp;";
-        $default_check = false;
-      }else{
-        $return_str .= " >&nbsp;&nbsp;";
-      }
-      $return_str .= sprintf('%02d',$hour)."時".sprintf('%02d',$s_start)."分";
-      $return_str .= " ～ ";
-      $return_str .= sprintf('%02d',$hour)."時".sprintf('%02d',$e_start)."分";
-      $show_row ++;
-      $mim_start++;
-      $arr[]=$return_str;
-    }
-    $mim_start = 0;
-  }
-  return $arr;
-}
-
-
-/*
-  取得唯一值
-*/
-
-//以下是配送使用的方法
-  function tep_get_address_by_customers_id($customers_id, $address_id = 1, $html = false, $boln = '', $eoln = "\n") {
-//ccdd
-    $address_sql = "select address_book_id,entry_firstname as firstname,
-        entry_lastname as lastname, entry_firstname_f as firstname_f,
-        entry_lastname_f as lastname_f, entry_company as company,
-        entry_street_address as street_address, entry_suburb as suburb, entry_city
-        as city, entry_postcode as postcode, entry_state as state, entry_zone_id as
-        zone_id, entry_country_id as country_id, entry_telephone as telephone from "
-        . TABLE_ADDRESS_BOOK . " where customers_id = '" . (int)$customers_id . "'";
-    $res_arr = array();
-    $address_query = tep_db_query($address_sql);
-    $temp_arr = array();
-    $temp_arr['text'] = TEXT_SELECTED_ADDRESS_BOOK;
-    $temp_arr['value'] = 0; 
-    $res_arr[] = $temp_arr;
-    while($address = tep_db_fetch_array($address_query)){
-      $temp_arr = array();
-      $format_id = tep_get_address_format_id($address['country_id']);
-      $temp_arr['text'] = tep_address_format($format_id, $address, $html, $boln, $eoln);
-      $temp_arr['value'] = $address['address_book_id']; 
-      $res_arr[] = $temp_arr;
-    
-    }
-    return $res_arr;
-  }
-
-
-function tep_get_address_by_cid_aid($customers_id, $address_id = 1, $html = false, $boln = '', $eoln = "\n") {
-//ccdd
-    $address_sql = "select address_book_id,entry_firstname as firstname,
-        entry_lastname as lastname, entry_firstname_f as firstname_f,
-        entry_lastname_f as lastname_f, entry_company as company,
-        entry_street_address as street_address, entry_suburb as suburb, entry_city
-        as city, entry_postcode as postcode, entry_state as state, entry_zone_id as
-        zone_id, entry_country_id as country_id, entry_telephone as telephone from "
-        . TABLE_ADDRESS_BOOK . " where customers_id = '" . (int)$customers_id . "' 
-        and address_book_id ='".$address_id."'";
-    $res_arr = array();
-    $address_query = tep_db_query($address_sql);
-    while($address = tep_db_fetch_array($address_query)){
-      $temp_arr = array();
-      $format_id = tep_get_address_format_id($address['country_id']);
-      $temp_arr['text'] = tep_address_format($format_id, $address, $html, $boln, $eoln);
-      $temp_arr['value'] = $address['address_book_id']; 
-      $res_arr[] = $temp_arr;
-    
-    }
-    if(count($res_arr)>1){
-      return $res_arr;
-    }else{
-      return $res_arr[0];
-    }
-  }
-function tep_get_products_list_by_order_id($oid){
-  $sql = "select * from " . TABLE_ORDERS_PRODUCTS . " where orders_id
-    = '" . $oid. "'";
-  $query = tep_db_query($sql);
-  $products_list = array();
-  while($row = tep_db_fetch_array($query)){
-    $products_list[] = $row;
-  }
-  return $products_list;
-}
-/*
-function orders_products_updated($orders_id,$shipping_info){
-  $time_arr = explode('-',$shipping_info['shipping_time']);
-  $start = $shipping_info['shipping_date']." ".$time_arr[0];
-  $end = $shipping_info['shipping_date']." ".$time_arr[1];
-  //这里修改 订单的产品
-  $sql = "UPDATE ".TABLE_ORDERS_PRODUCTS." SET
-    `torihiki_date`='".$start."',
-    `torihiki_date_end`='".$end."',
-    `address_book_id`='".$shipping_info['shipping_address']."',
-    `shipping_method`='".$shipping_info['shipping_method']."',
-    `torihiki_houhou`='".$shipping_info['torihiki_houhou']."'
-    WHERE `orders_id` = '".$orders_id."'";
-  tep_db_query($sql);
-}
-function tep_get_shipping_products($oid){
-  $sql = "SELECT shipping_pid FROM ".TABLE_ORDERS_TOTAL." WHERE orders_id ='"
-    .$oid."'";
-  $query = tep_db_query($sql);
-  $pid_arr = array();
-  while($row = tep_db_fetch_array($query)){
-    if($row['shipping_pid']){
-      $pid_arr[] = $row['shipping_pid'];
-    }
-  }
-  if(empty($pid_arr)){
-    return false;
-  }else{
-    return $pid_arr;
-  }
-}
-*/
-function get_campaion_fee($total, $orders_id, $site_id)
-{
-  $return_fee = 0; 
-  if ($total == 0) {
-    return $return_fee; 
-  }
-  if ($total > 0) {
-    $campaion_query = tep_db_query("select * from ".TABLE_CUSTOMER_TO_CAMPAIGN." where orders_id = '".$orders_id."' and site_id = '".$site_id."' and campaign_type = '1'"); 
-  } else {
-    $campaion_query = tep_db_query("select * from ".TABLE_CUSTOMER_TO_CAMPAIGN." where orders_id = '".$orders_id."' and site_id = '".$site_id."' and campaign_type = '2'"); 
-  }
- 
-  $campaion_res = tep_db_fetch_array($campaion_query);
-  if ($campaion_res) {
-    if (abs($campaion_res['campaign_limit_value']) >= abs($total)) {
-      return $return_fee; 
-    }
-    $percent_pos = strpos($campaion_res['campaign_point_value'], '%');
-    if ($percent_pos !== false) {
-      $return_fee = $total*substr($campaion_res['campaign_point_value'], 0, -1)/100; 
-      if ($return_fee > 0) {
-       $return_fee = 0 - $return_fee; 
-      }
-    } else {
-      $return_fee = $campaion_res['campaign_point_value'];
-    }
-    @eval("\$return_fee = (int)$return_fee;"); 
-  }
-  return $return_fee;
-}
-
-function get_campaign_link_page($cid, $site_id, $st_id)
-{
-  $return_str = '';  
-  $campaign_query = tep_db_query("select created_at from ".TABLE_CAMPAIGN." where id = '".$cid."'");
-  $campaign_res = tep_db_fetch_array($campaign_query); 
-  
-  if ($campaign_res) {
-    if (empty($st_id)) {
-      $pre_campaign_query = tep_db_query("select id from ".TABLE_CAMPAIGN." where id != '".$cid."' and created_at >= '".$campaign_res['created_at']."' order by created_at asc limit 1"); 
-    } else {
-      $pre_campaign_query = tep_db_query("select id from ".TABLE_CAMPAIGN." where id != '".$cid."' and created_at >= '".$campaign_res['created_at']."' and site_id = '".$site_id."' order by created_at asc limit 1"); 
-    }
-    $pre_campaign_res = tep_db_fetch_array($pre_campaign_query); 
-    if ($pre_campaign_res) {
-      $return_str .= '<a href="javascript:void(0)" onclick="show_link_campaign_info(\''.$pre_campaign_res['id'].'\', \''.$st_id.'\');">'.TEXT_CAMPAIGN_PREV.'</a>'; 
-    }
-    
-    if (empty($st_id)) {
-      $next_campaign_query = tep_db_query("select id from ".TABLE_CAMPAIGN." where id != '".$cid."' and created_at <= '".$campaign_res['created_at']."' order by created_at desc limit 1"); 
-    } else {
-      $next_campaign_query = tep_db_query("select id from ".TABLE_CAMPAIGN." where id != '".$cid."' and created_at <= '".$campaign_res['created_at']."' and site_id = '".$site_id."' order by created_at desc limit 1"); 
-    }
-    $next_campaign_res = tep_db_fetch_array($next_campaign_query); 
-    if ($next_campaign_res) {
-      $return_str .= '&nbsp;&nbsp;<a href="javascript:void(0)" onclick="show_link_campaign_info(\''.$next_campaign_res['id'].'\', \''.$st_id.'\');">'.TEXT_CAMPAIGN_NEXT.'</a>'; 
-    }
-  }
-  
-  return $return_str;
-}
-
-function tep_get_relate_product_history_sum($relate_products_id,$date_sub,$site_id=0){
-  $sql ="select sum(op.products_quantity) as history_sum 
-        from ".TABLE_ORDERS_PRODUCTS." op left join ".TABLE_ORDERS.
-        " o on op.orders_id=o.orders_id left join ".TABLE_ORDERS_STATUS.
-        " os on o.orders_status=os.orders_status_id 
-        where 
-        op.products_id='".$relate_products_id."'
-        and os.calc_price = '1' 
-        and op.torihiki_date between ".
-        "DATE_SUB('".date('Y-m-d H:i:s')."',INTERVAL '"
-        .$date_sub."' DAY) and '".
-        date('Y-m-d H:i:s')."' ";
-  if($site_id!=0){
-    $sql .= " and o.site_id = '".$site_id."' ";
-  }
-  $query = tep_db_query($sql);
-  if($row = tep_db_fetch_array($query)){
-    return $row['history_sum'];
-  }else{
-    return 0;
-  }
-}
-function get_option_group_link($group_id, $keyword = '')
-{
-  $link_str = '';
-  $group_query = tep_db_query("select * from ".TABLE_OPTION_GROUP." where id = '".$group_id."'");
-  $group = tep_db_fetch_array($group_query);
-  
-  if ($group) {
-    if (trim($keyword) != '') {
-      $group_prev_query = tep_db_query("select * from ".TABLE_OPTION_GROUP." where id != '".$group_id."' and created_at >= '".$group['created_at']."' and name like '%".$keyword."%' order by created_at asc limit 1"); 
-    } else {
-      $group_prev_query = tep_db_query("select * from ".TABLE_OPTION_GROUP." where id != '".$group_id."' and created_at >= '".$group['created_at']."' order by created_at asc limit 1"); 
-    }
-    $group_prev = tep_db_fetch_array($group_prev_query); 
-    if ($group_prev) {
-      $link_str .= '<a href="javascript:void(0)" onclick="show_link_group_info(\''.$group_prev['id'].'\');">'.TEXT_GROUP_PREV.'</a>'; 
-    }
-    if (trim($keyword) != '') {
-      $group_next_query = tep_db_query("select * from ".TABLE_OPTION_GROUP." where id != '".$group_id."' and created_at <= '".$group['created_at']."'  and name like '%".$keyword."%' order by created_at desc limit 1"); 
-    } else {
-      $group_next_query = tep_db_query("select * from ".TABLE_OPTION_GROUP." where id != '".$group_id."' and created_at <= '".$group['created_at']."' order by created_at desc limit 1"); 
-    }
-    $group_next = tep_db_fetch_array($group_next_query); 
-    if ($group_next) {
-      $link_str .= '&nbsp;&nbsp;<a href="javascript:void(0)" onclick="show_link_group_info(\''.$group_next['id'].'\');">'.TEXT_GROUP_NEXT.'</a>'; 
-    }
-  }
-  
-  return $link_str;
-}
-
-function tep_get_random_option_item_name($length = 16)
-  {
-    $pattern = 'abcdefghijklmnopqrstuvwxyz';
-    while (true) {
-      $key = ''; 
-      for($i = 0; $i < $length; $i++) {
-        $key .= $pattern[mt_rand(0,25)]; 
-      }
-      $exists_item_name_raw = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name = '".$key."'"); 
-      if (!tep_db_num_rows($exists_item_name_raw)) {
-        return $key; 
-      }
-    }
-  }
-
-function get_option_item_link($group_id, $item_id)
-{
-  $link_str = '';
-  $item_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where id = '".$item_id."'");
-  $item = tep_db_fetch_array($item_query);
-  if ($item) {
-    $item_prev_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where group_id = '".$group_id."' and id != '".$item_id."' and created_at >= '".$item['created_at']."' order by created_at asc limit 1"); 
-    $item_prev = tep_db_fetch_array($item_prev_query); 
-    if ($item_prev) {
-      $link_str .= '<a href="javascript:void(0)" onclick="show_link_item_info(\''.$item_prev['id'].'\', \''.$group_id.'\');">'.TEXT_ITEM_PREV.'</a>'; 
-      
-    }
-    
-    $item_next_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where group_id = '".$group_id."' and id != '".$item_id."' and created_at <= '".$item['created_at']."' order by created_at desc limit 1"); 
-    $item_next = tep_db_fetch_array($item_next_query); 
-    if ($item_next) {
-      $link_str .= '&nbsp;&nbsp;<a href="javascript:void(0)" onclick="show_link_item_info(\''.$item_next['id'].'\', \''.$group_id.'\');">'.TEXT_ITEM_NEXT.'</a>'; 
-    }
-  }
-  
-  return $link_str;
 }

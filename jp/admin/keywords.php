@@ -54,12 +54,11 @@
 
 
 
-    <form action="<?php echo tep_href_link('keywords.php') ; ?>" method="get">
+    <form action="<?php echo tep_href_link('keywords.php','site_id='.$_GET['site_id']) ; ?>" method="get">
     <fieldset><!--<legend class="smallText"><b>xxxxx</b></legend>-->
     <table  border="0" align="center" cellpadding="0" cellspacing="2">
     <tr>
       <td class="smallText">
-      <input type="hidden" name="site_id" value="<?php echo $_GET['site_id'];?>"> 
       <?php echo KEYWORDS_SEARCH_START_TEXT;?> 
       <select name="s_y">
       <?php 
@@ -161,15 +160,8 @@
       ");
   $i = 1;
   while ($ref_site = tep_db_fetch_array($ref_site_query)) {
-      $even = 'dataTableSecondRow';
-      $odd  = 'dataTableRow';
-      if (isset($nowColor) && $nowColor == $odd) {
-        $nowColor = $even; 
-      } else {
-        $nowColor = $odd; 
-      }
 ?>
-              <tr class="<?php echo $nowColor;?>" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='<?php echo $nowColor;?>'">
+              <tr class="dataTableRow" onmouseover="this.className='dataTableRowOver';this.style.cursor='hand'" onmouseout="this.className='dataTableRow'">
                 <td class="dataTableContent"><?php echo $ref_site['orders_ref_keywords2'];?></td>
                 <td class="dataTableContent"><?php echo $ref_site['cnt'];?></td>
                 <td class="dataTableContent"><?php echo $i;?></td>

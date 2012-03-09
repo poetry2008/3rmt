@@ -42,16 +42,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET;?>">
 <title><?php echo TITLE; ?></title>
-<script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">
-<?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
-  <script language='javascript'>
-    one_time_pwd('<?php echo $page_name;?>');
-  </script>
-<?php }?>
 <!-- header //-->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
 <!-- header_eof //-->
@@ -110,7 +103,7 @@
           <?php }?>
             <td>
             <?php
-            echo tep_html_element_submit(IMAGE_SAVE);
+            echo tep_image_submit('button_save.gif', IMAGE_SAVE);
             echo "&nbsp;&nbsp;";
             echo '</td><td>'; 
             if (isset($from_url)) { 
@@ -118,7 +111,7 @@
             } else {
               echo '<a href="'.tep_href_link(FILENAME_RECORD).'">'; 
             }
-            echo tep_html_element_button(IMAGE_CANCEL) . '</a>'
+            echo tep_image_button('button_cancel.gif', IMAGE_CANCEL) . '</a>'
             ?>
             </td>
             </tr>

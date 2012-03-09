@@ -39,25 +39,9 @@ define('TEXT_CHECK_EIJI', '(英字)');
 define('TEXT_CHECK_24JI', '<b>(24時間表記)</b>');
 define('TEXT_PRESE_SELECT', '選択してください');
 
-define('TEXT_ERROR_BAHAMUTO', '<span class="errorText">【お届け先キャラクター名】が入力されていません</span>');
-define('TEXT_ERROR_BAHAMUTO_EIJI', '<span class="errorText">【お届け先キャラクター名】で使用できる文字は半角英字のみです</span>');
-define('TEXT_ERROR_TORIHIKIHOUHOU', '<span class="errorText">【オプション】を選択してください。</span>');
-define('TEXT_ERROR_DATE', '<span class="errorText">【取引希望日】を選択してください。</span>');
-define('TEXT_ERROR_JIKAN', '<span class="errorText">【取引希望時間】を選択してください。</span>');
-
-
-// from checkout product
-
-define('NAVBAR_TITLE', 'キャラクター名の入力');
-define('NAVBAR_TITLE_1', 'ショッピングカート');
-define('HEADING_TITLE', 'お客様のキャラクター名を入力してください。');
-
-define('TEXT_DATE_ADDED', '登録日:');
-define('TEXT_MANUFACTURER', 'メーカー:');
-define('TEXT_PRICE', '価格:');
-define('TEXT_CHARACTER', 'お客様のキャラクター名：');
-define('TEXT_TORIHIKIBOUBI_DEFAULT_SELECT','ご希望のお届け日時を指定してください');
-define('TEXT_CREATE_ADDRESS_BOOK','お届け先を選択する');
-define('TEXT_USE_ADDRESS_BOOK','新しいお届け先を入力する');
-define('TEXT_SHIPPING_INFO_ERROR','重要なお知らせ<br>内容に不備があります<br>必要な情報を正しく入力してください。');
+define('TEXT_ERROR_BAHAMUTO', '<span class="errorText">【'.mb_substr(TEXT_CARACTOR,0,(mb_strlen(TEXT_CARACTOR)-1)).'】が入力されていません</span>');
+define('TEXT_ERROR_BAHAMUTO_EIJI', '<span class="errorText">【'.mb_substr(TEXT_CARACTOR,0,(mb_strlen(TEXT_CARACTOR)-1)).'】で使用できる文字は半角英字のみです</span>');
+define('TEXT_ERROR_TORIHIKIHOUHOU', '<span class="errorText">【'.mb_substr(TEXT_TORIHIKIHOUHOU,0,(mb_strlen(TEXT_TORIHIKIHOUHOU)-1)).'】を選択してください。</span>');
+define('TEXT_ERROR_DATE', '<span class="errorText">【'.mb_substr(TEXT_TORIHIKIKIBOUBI,0,(mb_strlen(TEXT_TORIHIKIKIBOUBI)-1)).'】を選択してください。</span>');
+define('TEXT_ERROR_JIKAN', '<span class="errorText">【'.mb_substr(TEXT_TORIHIKIKIBOUJIKAN,0,(mb_strlen(TEXT_TORIHIKIKIBOUJIKAN)-1)).'】を選択してください。</span>');
 ?>

@@ -60,11 +60,11 @@
       echo '<td align="center" style=" background:#FFFFFF;padding-left:10px;padding-right:20px;">';
       echo '<table>'; 
       echo '<tr>'; 
-      echo '<td width="40">'; 
+      echo '<td>'; 
       echo tep_draw_input_field('cart_quantity[]', $products[$i]['quantity'], 'size="4" maxlength="4" class="input_text_short" id="quantity_'.$products[$i]['id'].'" onblur="update_cart(this);" onkeypress="return key(event);"');
       echo tep_draw_hidden_field('products_id[]', $products[$i]['id']);
       echo '</td>'; 
-      echo '<td width="20">'; 
+      echo '<td>'; 
       ?>
       <a style="display:block;" href="javascript:void(0)" onclick="change_num('<?php echo $p_id;?>', 'up',1,<?php echo $p_a_quan;?>); return false;"> 
       <img src="images/ico/nup.gif" alt="pic"> 
@@ -154,13 +154,7 @@
     if (!strstr($PHP_SELF, FILENAME_ACCOUNT_HISTORY_INFO)) {
       //echo '    <td align="right" class="main" style=" background:#dbfdff"><span id="pri_'.$products[$i]['id'] .'"><b>' .  $currencies->display_price($products[$i]['price'], tep_get_tax_rate($products[$i]['tax_class_id']), $products[$i]['quantity']) . '</b></span>';
       // edit total 
-      echo '    <td align="right" class="main" style="background:#FFFFFF"><span id="pri_'.$products[$i]['id'] .'">';
-      if ($products[$i]['price'] < 0) {
-        echo '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->display_price($products[$i]['price'], tep_get_tax_rate($products[$i]['tax_class_id']), $products[$i]['quantity'])).'</font>'.JPMONEY_UNIT_TEXT;
-      } else {
-        echo $currencies->display_price($products[$i]['price'], tep_get_tax_rate($products[$i]['tax_class_id']), $products[$i]['quantity']);
-      }
-      echo '</span>';
+      echo '    <td align="right" class="main" style="background:#FFFFFF"><span id="pri_'.$products[$i]['id'] .'">'.  $currencies->display_price($products[$i]['price'], tep_get_tax_rate($products[$i]['tax_class_id']), $products[$i]['quantity']) . '</span>';
     } else {
       echo '    <td align="right" class="main" style=" background:#FFFFFF"><b>' . $currencies->display_price($products[$i]['price'], $products[$i]['tax'], $products[$i]['quantity']) . '</b>';
     }

@@ -70,15 +70,6 @@ function toggle_leftColumn()
   if(menu_div_width>=480){
     $('#categories_tree').animate({width:(menu_div_width-5)+"px"});
   }
-  <?php
-  if ($_SERVER['PHP_SELF'] == '/admin/orders.php' || $_SERVER['PHP_SELF'] == '/admin/preorders.php') {
-    if (!isset($_GET['action'])) {
-    ?> 
-    showRightInfo(); 
-    <?php 
-    }
-  }
-  ?>
 }
 function toggle_lan(sobj)
 {

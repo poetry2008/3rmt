@@ -7,12 +7,15 @@
     var $site_id, $title, $output;
 
     function ot_total($site_id = 0) {
+
       $this->site_id = $site_id;
+
       $this->code = 'ot_total';
       $this->title = MODULE_ORDER_TOTAL_TOTAL_TITLE;
       $this->description = MODULE_ORDER_TOTAL_TOTAL_DESCRIPTION;
       $this->enabled = ((MODULE_ORDER_TOTAL_TOTAL_STATUS == 'true') ? true : false);
       $this->sort_order = MODULE_ORDER_TOTAL_TOTAL_SORT_ORDER;
+
       $this->output = array();
     }
 
@@ -21,10 +24,10 @@
 
       $total = @$order->info['total'];
       if ((MODULE_ORDER_TOTAL_CODT_STATUS == 'true')
-          //          && ($payment == 'cod_table')
-          && isset($_POST['code_fee'])
-          && (0 < intval($_POST['code_fee']))) {
-        $total += intval($_POST['code_fee']);
+          && ($payment == 'cod_table')
+          && isset($_POST['codt_fee'])
+          && (0 < intval($_POST['codt_fee']))) {
+        $total += intval($_POST['codt_fee']);
       }
     
     //Add point
@@ -33,6 +36,18 @@
         $total -= intval($point);
       }   
     
+    if(MODULE_ORDER_TOTAL_CONV_STATUS == 'true' && ($payment == 'convenience_store')) {
+        $total += isset($_POST['codt_fee']) ? intval($_POST['codt_fee']) : 0;
+    }
+      if ($payment == 'moneyorder') {
+        $total += intval($_POST['money_order_fee']);
+      }
+      if ($payment == 'postalmoneyorder') {
+        $total += intval($_POST['postal_money_order_fee']);
+      }
+      if ($payment == 'telecom') {
+        $total += intval($_POST['telecom_order_fee']);
+      }
       if (isset($cart)) {
       $bflag_single = $this->ds_count_bflags();
       if ($bflag_single == 'View') {
@@ -51,12 +66,6 @@
         $total += $buying_fee; 
       }
     }
-    
-    if (isset($_SESSION['campaign_fee'])) {
-      $total += $_SESSION['campaign_fee']; 
-    }
-    
-
                               /*
                               'text' => '<b>' . $currencies->format_total(
                                 $total, 

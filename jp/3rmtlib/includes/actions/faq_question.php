@@ -73,5 +73,4 @@ $faq_question_split = new splitPageResults($page,10,
     $faq_question_sql,$faq_query_number);
 */
 $last_faq_question_query = tep_db_query($last_faq_question_sql);
-$parent_category_info = $temp_category_info;
 }

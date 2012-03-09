@@ -68,7 +68,5 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == "true"){
  }else{
   define('TEXT_POINT','');
  }  
-define('TEXT_PREORDER_LOGIN_ERROR', '<font color="#ff0000">予約時の会員情報でログインしてください</font>');
-define('PREORDER_HEADING_TITLE', '注文移行手続き');
-define('PREORDER_LOGIN_HEAD_TEXT', '<font color="#ff0000" style="font-size:14px;">注文移行手続きを行うにはログインしていただく必要がございます。<br>予約時の会員情報にてログインしてください。</font>');
+  		
 ?>

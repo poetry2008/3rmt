@@ -163,9 +163,6 @@ class MailFetcher {
         $decodedStr.=mb_convert_encoding($mimeStr->text, $targetCharset, (in_array(strtolower($mimeStr->charset), $encodings) ? $mimeStr->charset : $fallbackCharset) ) ;
       }
     }
-    if ($decodedStr == '') {
-      return imap_utf8($mimeStr);
-    }
     return $decodedStr;
   }
   //Generic decoder - mirrors imap_utf8

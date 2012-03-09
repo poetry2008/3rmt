@@ -92,6 +92,7 @@ H4 {
 .faq_answer{ line-height:20px; overflow:hidden;}
 .faq_answer img ,.faq_ask img{ margin-right:10px; float:left;}
 .faq_answer span ,.faq_ask span{float:left; overflow:hidden; width:460px;}
+.active_email input{ height: 21px; width: 370px;}
 .comment_index02, .comment_index01 {
 	width: 500px;
  *width: 530px;
@@ -1911,96 +1912,12 @@ display:block;
 .product_list02 img{ margin-bottom:10px; height:50px;}
 .product_list02 input{ margin-top:10px;} 
 .text { color:#000; font-size:12px; line-height:18px;}
+.preorderBarcurrent{ font-size:11px; color:#000;}
+.preorderBarFrom,.preorderBarTo{ font-size:11px; color:#8C8C8C;}
 .comment img { vertical-align:middle\9;}
 .cemail_input_01 { float:left; width:150px;}
 .con_email01{ /*float:left;*/}
-/*preorder*/
-.information_color {
-    background-color: #FDEBAC;
-    color: #000000;
-    margin: 5px;
-    padding: 5px;
-    width: 100%;
-}
-
-
-
-.checkout_payment_info{
-	/*border:1px solid #ccc;*/
-	margin-top:15px;   
-	*margin-top:5px;
-	font-size:11px;
-	padding:5px;
-	line-height:1.5;                        
-}
-
-.preorder_payment_info{
-	border:1px solid #ccc;
-	margin-top:15px;   
-	*margin-top:5px;
-	font-size:11px;
-	padding:5px;
-	line-height:1.5;                        
-}
-
-.float_left{
-	float:left;
-}
-.txt_right{
-	text-align:right;
-}
-.box_content_title {
-    background-color:#e5e5e5;
-    clear: both;
-    line-height: 21px;
-    overflow: hidden;
-    width: 100%;
-}
-.box_content_title_selected{
-	background:#ccc;
-}
-.box_content_title input {
-    margin-right: 12px;
-	margin-top:4px;
-	*margin-top:0;
-}
-.frame_w70{
-	width:70%;
-	float:left;
-	padding-left:10px;
-}
-.float_right{
-	float:right;
-}
-.cp_content{
-	padding:0 20px;
-}
-.cp_content P{
-	color:#ff0000;
-}
-.cp_codefee{
-	margin-top:5px;
-}
-.txt_input_box{
-	overflow:hidden;
-	clear:both;
-	height:15%;
-}
-.frame_title{
-	width:30%;
-	float:left;
-	line-height:25px;
-}
-.clear{
-	clear:both;
-}
-.cp_description{
-	padding:0 20px;
-	margin:5px 0;
-}
-.box_waring {
-    background: none repeat scroll 0 0 #FFE6E6;
-    border: 1px solid #FF8E90;
-    padding: 5px;
-	font-size:11px;
-}
+.formArea_td { position:relative; top:-20px;}
+.preorder_active_line { border-bottom:1px dashed #999; margin:10px 0;}
+.preorder_active_info { font-size:13px; background-color:#999999;}
+.preorder_active_info td{ background-color:#fff; height:20px; padding-left:2px;}

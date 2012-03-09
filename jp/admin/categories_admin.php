@@ -460,7 +460,7 @@ while ($products = tep_db_fetch_array($products_query)) {
       if ($preorder_products_res['pre_total']) {
         echo $preorder_products_res['pre_total'];
       } else {
-        echo ''; 
+        echo '0'; 
       }
     } 
     ?>

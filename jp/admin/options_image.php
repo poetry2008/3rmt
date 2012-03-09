@@ -50,7 +50,7 @@
     
     </table>
     </td>
-    <td width="100%" valign="top">
+    <td>
     <table border="0" width="100%" cellspacing="0" cellpadding="0">
       <tr>
         <td class="pageHeading"><?php echo HEADING_IMAGE_TITLE?></td> 
@@ -86,7 +86,7 @@
     }
     echo '<tr><td align="right">'; 
     echo '<a href="'.tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES).'">'.tep_html_element_button(IMAGE_BACK).'</a></td>';
-    echo '<td>'.tep_html_element_submit(IMAGE_SAVE); 
+    echo '<td>'.tep_html_element_submit(IMAGE_INSERT); 
     echo '</td></tr>'; 
     echo '</table>'; 
     ?>

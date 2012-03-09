@@ -49,11 +49,7 @@ if(isset($info['subject'])){
     if(isset($_GET['products_name'])){
         $products_name = $_GET['products_name'].'について';
     }else {
-        if (isset($_GET['pname'])) {
-          $products_name = $_GET['pname'].'の確保期限について';
-        } else {
-          $products_name = '';
-        }
+        $products_name = '';
     }
  }
    echo '<input type="text" name="subject" size="35" value="'.$products_name.'">';

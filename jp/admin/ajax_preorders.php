@@ -1,44 +1,5 @@
 <?php
 require('includes/application_top.php');
-//one time pwd 
-$http_referer = $_SERVER['HTTP_REFERER'];
-$http_referer_arr = explode('?',$_SERVER['HTTP_REFERER']);
-$http_referer_arr = explode('admin',$http_referer_arr[0]);
-$request_page_name = '/admin'.$http_referer_arr[1];
-$request_one_time_sql = "select * from ".TABLE_PWD_CHECK." where page_name='".$request_page_name."'";
-$request_one_time_query = tep_db_query($request_one_time_sql);
-$request_one_time_arr = array();
-$request_one_time_flag = false; 
-while($request_one_time_row = tep_db_fetch_array($request_one_time_query)){
-  $request_one_time_arr[] = $request_one_time_row['check_value'];
-  $request_one_time_flag = true; 
-}
-
-if(count($request_one_time_arr)==1&&$request_one_time_arr[0]=='admin'&&$_SESSION['user_permission']!=15){
-  if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest"){
-    forward401();
-  }
-}
-if (!$request_one_time_flag && $_SESSION['user_permission']!=15) {
-  if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
-    forward401();
-  }
-}
-if(!in_array('onetime',$request_one_time_arr)&&$_SESSION['user_permission']!=15){
-  if(!(in_array('chief',$request_one_time_arr)&&in_array('staff',$request_one_time_arr))){
-  if($_SESSION['user_permission']==7&&in_array('chief',$request_one_time_arr)){
-    if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
-      forward401();
-    }
-  }
-  if($_SESSION['user_permission']==10&&in_array('staff',$request_one_time_arr)){
-    if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
-      forward401();
-    }
-  }
-  }
-}
-//end one time pwd
 
 require(DIR_WS_CLASSES . 'currencies.php');
 $currencies          = new currencies(2);
@@ -170,14 +131,13 @@ if ($_POST['orders_id'] &&
 					. 'oID='.$orders['orders_id']);?>';">
                                                                                                                         <a href="<?php echo tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID=' . $orders['orders_id'] . '&action=edit');?>"><?php echo tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW);?></a>&nbsp;
     <a href="<?php echo tep_href_link('preorders.php', 'cEmail=' . tep_output_string_protected($orders['customers_email_address']));?>"><?php echo tep_image(DIR_WS_ICONS . 'search.gif', '過去の注文');?></a>
-                                                                                                                                                                                                           
-<?php if (false) {?>
+                                                                                                                                                                                                           <?php if ($ocertify->npermission) {?>
                                                                                                                                                                                                            &nbsp;<a href="<?php echo tep_href_link('customers.php', 'page=1&cID=' . tep_output_string_protected($orders['customers_id']) . '&action=edit');?>"><?php echo tep_image(DIR_WS_ICONS . 'arrow_r_red.gif', '顧客情報');?></a>&nbsp;&nbsp;
                                                                                                                                                                                                            <?php }?>
                                                                                                                                                                                                            <?php if (!$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)) {?>
                                                                                                                                                                                                            <font color="#999">
       <?php }?>
-      <a style="text-decoration:underline;" href="<?php echo tep_href_link('customers.php', 'page=1&cID='.tep_output_string_protected($orders['customers_id']).'&action=edit');?>"><b><?php echo tep_output_string_protected($orders['customers_name']);?></b></a>
+      <b><?php echo tep_output_string_protected($orders['customers_name']);?></b>
                                                                                  <?php if (!$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)) {?>
                                                                                  </font>
       <?php }?>
@@ -189,11 +149,11 @@ if ($_POST['orders_id'] &&
 						tep_get_all_get_params(array('oID', 'action')) .
 						'oID='.$orders['orders_id']);?>';">
           <?php if (!$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)) {?>
-          <font color="#999"><?php echo strip_tags(tep_get_pre_ot_total_by_orders_id_no_abs($orders['orders_id'], true));?></font>
+          <font color="#999"><?php echo strip_tags(tep_get_pre_ot_total_by_orders_id($orders['orders_id'], true));?></font>
                                                                                                                     <?php } else { ?>
                                                                                                                     <?php
                                                                                                                       echo
-                                                                                                                      strip_tags(tep_get_pre_ot_total_by_orders_id_no_abs($orders['orders_id'], true));?>
+                                                                                                                      strip_tags(tep_get_pre_ot_total_by_orders_id($orders['orders_id'], true));?>
                                                                                                                     <?php }?>
                                                                                                                     </td>
                                                                                                                         <td style="border-bottom:1px solid
@@ -243,9 +203,11 @@ if ($_POST['orders_id'] &&
 							tep_get_all_get_params(array('oID', 'action')) .
 							'oID='.$orders['orders_id']);?>';"><font color="<?php echo $today_color; ?>"><?php echo $orders['orders_status_name']; ?></font></td>
                                                                                                                                                          <td style="border-bottom:1px solid
-#000000;background-color: darkred;" class="dataTableContent" align="right" onmouseover="if(popup_num == 1) showPreOrdersInfo('<?php echo $orders['orders_id']?>', this, 0 , '<?php echo urlencode(tep_get_all_get_params(array('oID', 'action')));?>');" onmouseout="if(popup_num == 1) hideOrdersInfo(0);">
-                                                                                                                                                         <?php
-                                                                                                                                                         echo '<a href="javascript:void(0);" onclick="showPreOrdersInfo(\''.$orders['orders_id'].'\', this, 1, \''.urlencode(tep_get_all_get_params(array('oID', 'action'))).'\');">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
+#000000;background-color: darkred;" class="dataTableContent"
+                                                                                                                                                         onmouseover="showPreOrdersInfo('<?php echo
+					$orders['orders_id'];?>',this);"
+                                                                                                                                                         onmouseout="hideOrdersInfo();" align="right"><?php 
+                                                                                                                                                         echo '<a href="' . tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params(array('oID','page')) . 'oID=' . $orders['orders_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
     ?>&nbsp;</td>
     </tr>
         <?php 
@@ -602,18 +564,7 @@ if ($_POST['orders_id'] &&
   $orders_info_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$_POST['oid']."'"); 
   $orders_info = tep_db_fetch_array($orders_info_raw); 
   require(DIR_WS_FUNCTIONS . 'visites.php');
-  $param_str = ''; 
-  foreach ($_POST as $key => $value) {
-    if (($key != 'oid') && ($key != 'popup')) {
-      $param_str .= $key.'='.$value.'&'; 
-    }
-  }
-  $param_str = substr($param_str, 0, -1); 
-  if ($_POST['popup'] == '1') {
-    tep_get_pre_orders_products_string($orders_info, true, true, $param_str);
-  } else {
-    tep_get_pre_orders_products_string($orders_info, true, false, $param_str);
-  }
+  tep_get_pre_orders_products_string($orders_info, true);
 
 } else if (isset($_GET['action'])&&$_GET['action']=='check_preorder_deadline') {
   $orders_info_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$_POST['pid']."'"); 
@@ -644,32 +595,5 @@ if ($_POST['orders_id'] &&
   } else {
     echo ''; 
   }
-} else if (isset($_GET['action']) && $_GET['action'] == 'show_del_preorder_info') {
-  require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_PREORDERS); 
-  $param_str = ''; 
-  foreach ($_POST as $key => $value) {
-    if (($key != 'oID') && ($key != 'popup')) {
-      $param_str .= $key.'='.$value.'&'; 
-    }
-  }
-  $param_str = substr($param_str, 0, -1); 
-  $html_str = TEXT_INFO_DELETE_INTRO.'<br>';
-  $html_str .= tep_html_element_submit(IMAGE_DELETE);
-  $html_str .= '&nbsp;<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_CANCEL, 'onclick="cancel_del_preorder_info(\''.$_POST['oID'].'\', \''.urlencode($param_str).'\')"').'</a>'; 
-  echo $html_str;
-} else if (isset($_GET['action']) && $_GET['action'] == 'cancel_del_preorder_info') {
-  $param_str = ''; 
-  foreach ($_POST as $key => $value) {
-    if (($key != 'oID') && ($key != 'popup')) {
-      $param_str .= $key.'='.$value.'&'; 
-    }
-  }
-  $param_str = substr($param_str, 0, -1); 
-  $preorder_raw = tep_db_query("select is_active from ".TABLE_PREORDERS." where orders_id = '".$_POST['oID']."'"); 
-  $preorder = tep_db_fetch_array($preorder_raw);
-  if ($preorder['is_active'] == '1') {
-    $html_str = '<a href="'.tep_href_link(FILENAME_PREORDERS, $param_str.'&oID='.$_POST['oID'].'&action=edit').'">'.tep_html_element_button(IMAGE_DETAILS).'</a>'; 
-  }
-  $html_str .= '&nbsp;<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="delete_preorder_info(\''.$_POST['oID'].'\', \''.urlencode($param_str).'\')"').'</a>'; 
-  echo $html_str;
 }
+

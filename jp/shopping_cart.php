@@ -27,32 +27,14 @@ function money_update(objid)
   var obj = document.getElementById(objid);
   var product_id = obj.id.substr(9);
   var unit_price = document.getElementById("unit_price_" + product_id);
-  var attr_prices = document.getElementsByName("attr_" + product_id);
-  var attr_prices_option = document.getElementsByName("attr_option_" + product_id);
   var sub_total = document.getElementById('sub_total_hidden');
-
 
   var new_unit_price_total = Number(unit_price.value) * Number(obj.value);
   new_unit_price_total = Math.round(new_unit_price_total);
-  
-  
+
   var old_price_total  = document.getElementById("pri_" + product_id);
   var monetary_unit_pri = old_price_total.innerHTML.slice(-1);
-  if (new_unit_price_total < 0) {
-    old_price_total.innerHTML = '<font color="#ff0000">'+Math.abs(new_unit_price_total).toString() +'</font>' +monetary_unit_pri;
-  } else {
-    old_price_total.innerHTML = Math.abs(new_unit_price_total).toString() + monetary_unit_pri;
-  }
-  for (var i = 0; i < attr_prices.length; i++)
-  {
-    var new_attr_price = Number(attr_prices[i].value) * Number(obj.value);
-    var old_price_attr = document.getElementById("attr_" + product_id + "_attr_" + attr_prices_option[i].value);
-    var prefix_attr = old_price_attr.innerHTML.slice(0,1);
-    var monetary_unit_attr = old_price_attr.innerHTML.slice(-1);
-    old_price_attr.innerHTML = prefix_attr + new_attr_price.toString() + monetary_unit_attr;
-
-  }
-
+  old_price_total.innerHTML = Math.abs(new_unit_price_total).toString() + monetary_unit_pri;
 
   set_sub_total();
 }
@@ -71,11 +53,7 @@ function set_sub_total()
 
   var sub_total_text = document.getElementById("sub_total");
   var monetary_sub_total = sub_total_text.innerHTML.slice(-1);
-  if (sub_total >= 0) {
-    sub_total_text.innerHTML = Math.abs(sub_total).toString() + monetary_sub_total;
-  } else {
-    sub_total_text.innerHTML = '<font color="#ff0000">' + Math.abs(sub_total).toString() + '</font>' + monetary_sub_total;
-  }
+  sub_total_text.innerHTML = Math.abs(sub_total).toString() + monetary_sub_total;
 
 }
   

@@ -56,12 +56,7 @@ function money_update(objid)
   
   var old_price_total  = document.getElementById("pri_" + product_id);
   var monetary_unit_pri = old_price_total.innerHTML.slice(-1);
-  
-  if (new_unit_price_total < 0) {
-    old_price_total.innerHTML = '<font color="#ff0000">' + Math.abs(new_unit_price_total).toString() + '</font>' +monetary_unit_pri;
-  } else {
-    old_price_total.innerHTML = Math.abs(new_unit_price_total).toString() + monetary_unit_pri;
-  }
+  old_price_total.innerHTML = Math.abs(new_unit_price_total).toString() + monetary_unit_pri;
 
   for (var i = 0; i < attr_prices.length; i++)
   {
@@ -92,11 +87,7 @@ function set_sub_total()
   sub_total = Math.round(sub_total);
   var sub_total_text = document.getElementById("sub_total");
   var monetary_sub_total = sub_total_text.innerHTML.slice(-1);
-  if (sub_total >= 0) {
-    sub_total_text.innerHTML = Math.abs(sub_total).toString() + monetary_sub_total;
-  } else {
-    sub_total_text.innerHTML = '<font color="#ff0000">' + Math.abs(sub_total).toString() + '</font>' + monetary_sub_total;
-  }
+  sub_total_text.innerHTML = Math.abs(sub_total).toString() + monetary_sub_total;
 
 }
   

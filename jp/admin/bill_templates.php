@@ -155,17 +155,10 @@ if (isset($_GET['action']) and $_GET['action']) {
       $cInfo = new objectInfo($bill_templates);
     }
 
-    $even = 'dataTableSecondRow';
-    $odd  = 'dataTableRow';
-    if (isset($nowColor) && $nowColor == $odd) {
-      $nowColor = $even; 
-    } else {
-      $nowColor = $odd; 
-    }
     if (isset($cInfo) && (is_object($cInfo)) && ($bill_templates['id'] == $cInfo->id) ) {
       echo '              <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_BILL_TEMPLATES, 'page=' . $_GET['page'] . '&cID=' . $cInfo->id . '&action=edit') . '\'">' . "\n";
     } else {
-      echo '              <tr class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_BILL_TEMPLATES, 'page=' . $_GET['page'] . '&cID=' . $bill_templates['id']) . '\'">' . "\n";
+      echo '              <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_BILL_TEMPLATES, 'page=' . $_GET['page'] . '&cID=' . $bill_templates['id']) . '\'">' . "\n";
     }
 ?>
                 <td class="dataTableContent"><?php echo $bill_templates['name']; ?></td>

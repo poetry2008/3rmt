@@ -425,14 +425,7 @@
     init();
   });
 </script>
-<script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
 <body style="text-align:center;">
-<?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
-  <script language='javascript'>
-    one_time_pwd('<?php echo $page_name;?>');
-  </script>
-<?php }?>
   <div style="margin:0 auto; width:100%;">
     <div id="content_html">
 <table border="0" width="100%" style=" margin-bottom:20px;" cellpadding="0" cellspacing="0" align="right">
@@ -644,15 +637,8 @@ function clear_all(ele,cid) {
                   $i = 1; 
                   $product_list_total = tep_db_num_rows($product_list_query); 
                   while ($product_list_res = tep_db_fetch_array($product_list_query)) {
-                    $even = 'dataTableSecondRow';
-                    $odd  = 'dataTableRow';
-                    if (isset($nowColor) && $nowColor == $odd) {
-                      $nowColor = $even; 
-                    } else {
-                      $nowColor = $odd; 
-                    }
                   ?>
-                  <tr class="<?php echo $nowColor;?>">
+                  <tr class="dataTableRow">
                     <?php
                     if ($product_list_total == $i) {
                       $style_str = 'border-bottom: 1px solid #000;padding-top:5px;'; 
@@ -727,7 +713,7 @@ function clear_all(ele,cid) {
                 <tr>
                   <td colspan="3" align="left"></td>
                   <td colspan="4" align="right">
-                  <?php echo tep_html_element_submit(APPLICATION_CREATE_TEXT);?> 
+                  <?php echo tep_html_element_submit('請求書作成');?> 
                   <a href="<?php echo tep_href_link(FILENAME_CUSTOMERS, str_replace('cpage', 'page', tep_get_all_get_params(array('page'))));?>"><?php echo tep_html_element_button(IMAGE_BACK);?></a> 
                   </td>
                 </tr>

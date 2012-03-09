@@ -331,20 +331,18 @@ while($tag = tep_db_fetch_array($tag_query)) {
                 <td height="30" class="main" style="padding-bottom:4px; ">
 <?php echo tep_draw_form('cart_quantity', tep_href_link(FILENAME_PRODUCT_INFO, tep_get_all_get_params(array('action')) . 'action=add_product')); ?>
                   <?php
-      if($product_info['products_quantity'] < 1) {
+      if($product_info['products_status'] == '2'){
+        echo '<br><span class="markProductOutOfStock"><a href=' . tep_href_link(FILENAME_PREORDER, 'products_id=' . $HTTP_GET_VARS['products_id']) . '>予約する</a></span>';
+      } else if($product_info['products_quantity'] < 1) {
         if($product_info['products_bflag'] == '1') {
           # 買い取り商品
-          echo '<br><span class="markProductOutOfStock">一時停止';
+          echo '<br><span class="markProductOutOfStock">一時停止</span>';
         } elseif ($product_info['products_cflag'] == '0') {
-          echo '<br><span class="markProductOutOfStock">売り切れ';
+          echo '<br><span class="markProductOutOfStock">売り切れ</span>';
         } else {
           # 通常商品
-          echo '<br><span class="markProductOutOfStock">在庫切れ';
+          echo '<br><span class="markProductOutOfStock">在庫切れ<br><img src="images/design/box/arrow_2.gif" width="5" height="5" hspace="5" border="0" align="absmiddle" alt=""><a href=' . tep_href_link(FILENAME_PREORDER, 'products_id=' . $_GET['products_id']) . '>' . $product_info['products_name'] . 'を予約する</a></span>';
         }
-        if ($product_info['preorder_status'] == '1') {
-          echo '<br><img src="images/design/box/arrow_2.gif" width="5" height="5" hspace="5" border="0" align="absmiddle" alt=""><a href=' .  tep_preorder_href_link($product_info['products_id'], $product_info['romaji']) . '>' . $product_info['products_name'] . 'を予約する</a>';
-        }
-        echo '</span>'; 
       }else{    
         // ccdd
         $products_attributes_query = tep_db_query("

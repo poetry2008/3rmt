@@ -6,7 +6,7 @@
 <div id="footer">
   <?php echo FOOTER_TEXT_BODY . "\n"; ?>
   <address>
-    Copyright&nbsp;&copy;&nbsp;<?php echo date("Y");?>&nbsp;Jackpot&nbsp;<a class="bold" href="http://www.iimy.co.jp/"><strong>RMT</strong>ジャックポット</a>
+    Copyright&nbsp;&copy;&nbsp;2011&nbsp;Jackpot&nbsp;<a class="bold" href="http://www.iimy.co.jp/"><strong>RMT</strong>ジャックポット</a>
   </address>
   <?php if ($banner = tep_banner_exists('dynamic', 'footer')) { echo  '<br><div align="center">' . "\n" . tep_display_banner('static', $banner) . '</div>'; }?>
 </div>
@@ -23,8 +23,8 @@ if (STORE_DB_TRANSACTIONS) {?>
     }
   }
    //&& print_r($logger->queries);
-  //print_r($_COOKIE);
-  //print_r($_SESSION);
+  print_r($_COOKIE);
+  print_r($_SESSION);
   ?>
   <?php //print_r($logger->times);?>
   </pre>

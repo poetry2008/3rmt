@@ -12,15 +12,10 @@
          else $site_arr="";
     switch ($_GET['action']) {
       case 'setflag':
-        $banner_exists_raw = tep_db_query("select * from ".TABLE_BANNERS." where banners_id = '".(int)$_GET['bID']."'");        
-        $banner_exists = tep_db_fetch_array($banner_exists_raw);
-        if ($banner_exists) {
-          if (($_GET['flag'] == '0') || ($_GET['flag'] == '1')) {
-            tep_set_banner_status($_GET['bID'], $_GET['flag'], $banner_exists['site_id']);
-            $messageStack->add_session(SUCCESS_BANNER_STATUS_UPDATED, 'success');
-          } else {
-            $messageStack->add_session(ERROR_UNKNOWN_STATUS_FLAG, 'error');
-          }
+        if ( (($_GET['flag'] == '0') || ($_GET['flag'] ==
+              '1'))&&(isset($_GET['site_id'])&&$_GET['site_id']!='')){
+          tep_set_banner_status($_GET['bID'], $_GET['flag'],$_GET['site_id']);
+          $messageStack->add_session(SUCCESS_BANNER_STATUS_UPDATED, 'success');
         } else {
           $messageStack->add_session(ERROR_UNKNOWN_STATUS_FLAG, 'error');
         }
@@ -450,19 +445,11 @@ function popupImageWindow(url) {
 
       $banners_shown = ($info['banners_shown'] != '') ? $info['banners_shown'] : '0';
       $banners_clicked = ($info['banners_clicked'] != '') ? $info['banners_clicked'] : '0';
-      
-      $even = 'dataTableSecondRow';
-      $odd  = 'dataTableRow';
-      if (isset($nowColor) && $nowColor == $odd) {
-        $nowColor = $even; 
-      } else {
-        $nowColor = $odd; 
-      }
-      
+
       if ( (isset($bInfo) && is_object($bInfo)) && ($banners['banners_id'] == $bInfo->banners_id) ) {
         echo '              <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_BANNER_STATISTICS, 'page=' . $_GET['page'] . '&bID=' . $bInfo->banners_id . (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '\'">' . "\n";
       } else {
-        echo '              <tr class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_BANNER_MANAGER, 'page=' . $_GET['page'] . '&bID=' . $banners['banners_id'] . (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '\'">' . "\n";
+        echo '              <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_BANNER_MANAGER, 'page=' . $_GET['page'] . '&bID=' . $banners['banners_id'] . (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '\'">' . "\n";
       }
 ?>
                 <td class="dataTableContent"><?php echo $banners['romaji'];?></td>

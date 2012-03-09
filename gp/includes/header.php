@@ -144,19 +144,7 @@ if (tep_session_is_registered('customer_id')) {
             <li>|</li>
             <li><a href="<?php echo tep_href_link(FILENAME_SITEMAP,'','NONSSL');?>"><?php echo HEADER_TITLE_SITEMAP ; ?></a></li>
         </ul>
-        <div class="header_bread">
-        <?php 
-        if ($_SERVER['PHP_SELF'] == '/change_preorder_confirm.php') {
-          echo '<a href="'.HTTP_SERVER.'" class="headerNavigation">'.HEADER_TITLE_TOP.'</a>'; 
-          echo ' &raquo; ';
-          echo '<a href="javascript:void(0);" class="headerNavigation" onclick="document.forms.order1.submit();">'.CHANGE_PREORDER_BREADCRUMB_FETCH.'</a>';
-          echo ' &raquo; ';
-          echo NAVBAR_CHANGE_PREORDER_TITLE; 
-        } else {
-          echo $breadcrumb->trail(' &raquo; '); 
-        }
-        ?>
-        </div>
+        <div class="header_bread"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
 </div>
 <?php
   if (isset($_GET['error_message']) && tep_not_null($_GET['error_message'])) {

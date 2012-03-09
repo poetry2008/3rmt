@@ -132,8 +132,7 @@ define('EDIT_ORDERS_FETCHTIME', '取引日時:');
 define('EDIT_ORDERS_TORI_TEXT', 'オプション:');
 define('EDIT_ORDERS_CUSTOMER_NAME_READ', '<font color="red">※</font>&nbsp;姓と名の間には<font color="red">半角スペース</font>を入力してください。');
 define('EDIT_ORDERS_PAYMENT_METHOD_READ', '<table><tr class="smalltext"><td><font color="red">※</font>&nbsp;コピペ用:</td><td>銀行振込</td><td>クレジットカード決済</td><td>銀行振込(買い取り)</td><td>ゆうちょ銀行（郵便局）</td><td>コンビニ決済</td></tr></table>');
-define('EDIT_ORDERS_FETCHTIME_READ', 
-    '<font color="red">※</font>&nbsp;日付・時間の書式:&nbsp;2008-01-01 10:30/2008-01-01 10:45');
+define('EDIT_ORDERS_FETCHTIME_READ', '<font color="red">※</font>&nbsp;日付・時間の書式:&nbsp;2008-01-01 10:30:00');
 define('EDIT_ORDERS_TORI_READ', '<table><tr class="smalltext"><td><font color="red">※</font>&nbsp;コピペ用:</td><td>指定した時間どおりに取引して欲しい</td><td>指定した時間より早くできるなら早く来て欲しい</td></tr></table>');
 define('EDIT_ORDERS_PRO_LIST_TITLE', '2. 注文商品');
 define('TABLE_HEADING_NUM_PRO_NAME', '数量 / 商品名');
@@ -169,13 +168,4 @@ define('EDIT_ORDERS_UPDATE_COMMENT', '<table width="100%" cellspacing="0" cellpa
 define('ERROR_INPUT_PRICE_NOTICE', '単価を書いてください');
 define('EDIT_ORDERS_PRICE_UNIT', '円');
 define('EDIT_ORDERS_NUM_UNIT', '個');
-
-define('TEXT_CREATE_ADDRESS_BOOK','お届け先を指定する');
-define('TEXT_USE_ADDRESS_BOOK','登録先に届ける');
-define('TEXT_TORIHIKIBOUBI_DEFAULT_SELECT','ご希望のお届け日時を指定してください');
-define('CREATE_ORDER_FETCH_DATE_TEXT', 'お届け希望日:');
-define('CREATE_ORDER_FETCH_TIME_TEXT', 'お届け希望時間:');
-
-
-define('MODULE_ORDER_TOTAL_SHIPPING_TITLE', '送料:');
 ?>

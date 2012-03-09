@@ -57,8 +57,6 @@
 <title><?php echo TITLE; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/general.js"></script>
-<script language="javascript" src="includes/javascript/jquery_include.js"></script>
-<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
 <script type="text/javascript">
 function select_all_group()
 {
@@ -77,11 +75,6 @@ function select_all_group()
 </script>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onload="SetFocus();">
-<?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
-  <script language='javascript'>
-    one_time_pwd('<?php echo $page_name;?>');
-  </script>
-<?php }?>
 <!-- header //-->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
 <!-- header_eof //-->
@@ -180,8 +173,8 @@ function ajaxUpdate(id,order){
               $has_item_res['title'].TEXT_DELETE_CONFRIM;?>')" href="<?php echo tep_href_link(FILENAME_OA_ITEM, 'gid='.$_GET['gid'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&eid='.$has_item_res['id'].'&action=del');?>"><?php echo DEL_ITEM_LINK_TEXT;?></a> 
               </td>
               <td><?php
-            echo '<input type="button" class="up" value=\''.TEXT_UP.'\' onclick="editorder(this)">';
-            echo '<input type="button" class="down" value=\''.TEXT_DOWN.'\' onclick="editorder(this)">';
+            echo '<input type="button" class="up" value=\'↑\' onclick="editorder(this)">';
+            echo '<input type="button" class="down" value=\'↓\' onclick="editorder(this)">';
 ?>
               </td>
             </tr>
@@ -192,7 +185,6 @@ function ajaxUpdate(id,order){
           <?php
           } else { 
           ?>
-          <?php echo TEXT_SELECT_GROUP_READ;?> 
           <?php echo tep_draw_form('selt_group', FILENAME_OA_GROUP, 'pcode='.$_GET['pcode'].'&type='.$_GET['type'].'&action=link_group');?> 
 <script type='text/javascript'>
 
@@ -309,8 +301,8 @@ if ($g_num % 2 == 0) {
                 echo '<a onclick="return confirm(\''.$group_list_res['name'].TEXT_DELETE_CONFRIM.'\')"'.'href="'.tep_href_link(FILENAME_OA_GROUP, 'action=del&gid='.$group_list_res['id'].'&pcode='.$_GET['pcode'].'&type='.$_GET['type']).'">'.DEL_GROUP_TEXT.'</a>'; 
                 echo '</td>'; 
                 echo '<td>';
-                echo '<input type="button" class="up" value=\''.TEXT_UP.'\' onclick="editorder(this)">';
-                echo '<input type="button" class="down" value=\''.TEXT_DOWN.'\' onclick="editorder(this)">';
+                echo '<input type="button" class="up" value=\'↑\' onclick="editorder(this)">';
+                echo '<input type="button" class="down" value=\'↓\' onclick="editorder(this)">';
                 echo '</td>'; 
                 echo '</tr>'; 
               }
