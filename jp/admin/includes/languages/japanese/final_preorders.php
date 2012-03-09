@@ -212,5 +212,4 @@ define('FORDERS_NOTICE_INPUT_ONCE_PWD', 'ワンタイムパスワードを入力
 define('FORDERS_NOTICE_ONCE_PWD_WRONG', 'パスワードが違います');
 define('PREORDER_PRODUCT_UNIT_TEXT', '個');
 define('ENTRY_EMAIL_TITLE', 'メールタイトル：');
-define('BUTTON_WRITE_PREORDER', '予約注文書コピー');
 ?>

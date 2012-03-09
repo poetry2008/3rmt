@@ -25,7 +25,6 @@ define('DATE_FORMAT_LONG', '%Y年%B%e日 %A'); // this is used for strftime()
 define('DATE_FORMAT', 'Y/m/d'); // this is used for date()
 define('PHP_DATE_TIME_FORMAT', 'Y/m/d H:i:s'); // this is used for date()
 define('DATE_TIME_FORMAT', DATE_FORMAT_SHORT . ' %H:%M:%S');
-define('DATE_TIME_FORMAT_TORIHIKI', '%Y/%m/%d %H:%M');
 
 ////
 // Return date in raw format
@@ -49,7 +48,7 @@ define('CHARSET', 'UTF-8');    // Shift_JIS / euc-jp / iso-2022-jp
 define('TITLE', STORE_NAME);  //ショップ名を記述してください。
 
 // header text in includes/header.php
-define('HEADER_TITLE_TOP', 'トップ');
+define('HEADER_TITLE_TOP', '管理メニュー');
 define('HEADER_TITLE_SUPPORT_SITE', 'サポートサイト');
 define('HEADER_TITLE_ONLINE_CATALOG', 'オンラインカタログ');
 define('HEADER_TITLE_ADMINISTRATION', '管理メニュー');
@@ -384,6 +383,20 @@ define('REFERER_TITLE_TEXT', 'アクセスランキング');
 define('REFERER_TITLE_URL', 'アクセス来たソース');
 define('REFERER_TITLE_NUM', '件数');
 define('REFERER_TITLE_SORT_NUM', '順位');
+define('SET_BAIRITU_TITLE', '無題ドキュメント');
+define('SET_BAIRITU_CURSET', '倍率設定：');
+define('SET_BAIRITU_SINGLE_PRICE', '単価の差額');
+define('SET_BAIRITU_PERCENT', 'パーセント：');
+define('SET_BAIRITU_SPRICE', '特別価格設定の計算');
+define('SET_BAIRITU_CAL', '計算：');
+define('SET_BAIRITU_CAL_SET', '計算設定');
+define('SET_BAIRITU_BESTSELLER', '人気商品アイコンの表示');
+define('SET_BAIRITU_BESTSELLER_READ', '日以内に注文があれば人気とする<br>0を入力するとアイコンは表示されません。');
+define('SET_BAIRITU_UPDATE_NOTICE', '更新されました。');
+define('SET_COMMENT_TITLE', '担当者登録');
+define('SET_COMMENT_USER', '担当者:');
+define('SET_COMMENT_SINGLE', '単価ルール:');
+define('SET_COMMENT_COMMENT_TEXT', 'コメント:');
 define('TELECOM_UNKNOW_TITLE', '決算管理');
 define('TELECOM_UNKNOW_SEARCH_SUCCESS', '成功');
 define('TELECOM_UNKNOW_SEARCH_FAIL', '失敗');
@@ -505,7 +518,7 @@ define('RIGHT_ORDER_INFO_REPUTAION_SEARCH', '信用調査：');
 define('TEXT_ECECUTE_PASSWORD_USER','パスワード変更');
 define('RIGHT_ORDER_COMMENT_TITLE', 'コメント：');
 define('BOX_LOCALIZATION_PREORDERS_STATUS', '予約ステータス設定');
-define('HEADER_TEXT_PREORDERS', '予約一覧');
+define('HEADER_TEXT_PREORDERS', '予約注文一覧');
 
 
 //order div 
@@ -525,33 +538,3 @@ define('FRONT_CONFIGURATION_TITLE_TEXT', 'フロントエンド：');
 define('ADMIN_CONFIGURATION_TITLE_TEXT', 'バックエンド：');
 define('FRONT_OR_ADMIN_CONFIGURATION_TITLE_TEXT', 'フロントエンド・バックエンド：');
 define('HEADER_TEXT_ORDER_INFO', '注文情報▼');
-
-
-//note
-
-define('TEXT_ADD_NOTE','メモ追加');
-define('TEXT_COMMENT_NOTE','内容');
-define('TEXT_COLOR','メモの色');
-define('TEXT_TITLE_NOTE','タイトル');
-define('HEADER_TEXT_CREATE_PREORDER', '予約作成');
-
-define('TEXT_TORIHIKI_REPLACE_STR','～');
-define('TEXT_TORIHIKI_HOUR_STR','時');
-define('TEXT_TORIHIKI_MIN_STR','分');
-define('TEXT_PREORDER_PAYMENT_METHOD', '支払方法：');
-define('TEXT_PREORDER_NOT_COST', '入金まだ');
-define('TEXT_PREORDER_COST_DATE', '入金日：');
-define('TEXT_PREORDER_PRODUCTS_NAME', '商品：');
-define('TEXT_PREORDER_PRODUCTS_NOENTRANCE', '未'); 
-define('TEXT_PREORDER_PRODUCTS_ENTRANCE', '入');
-define('TEXT_PREORDER_PRODUCTS_NUM', '個数：');
-define('TEXT_PREORDER_PRODUCTS_UNIT', '個');
-define('TEXT_PREORDER_PRODUCTS_CHARACTER_NAME', 'キャラ名：');
-
-
-
-
-define('TEXT_PAYMENT_NULL_TXT','支払方法を選択してください');
-define('TEXT_TORIHIKI_LIST_DEFAULT_TXT','選択してください');
-define('BOX_TOOLS_CAMPAIGN', 'キャンペーンコード設置');
-define('TEXT_CURRENT_CHARACTER_NAME', '当社のキャラクター名：');

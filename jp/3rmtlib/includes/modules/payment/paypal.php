@@ -3,34 +3,39 @@
   $Id$
 */
 //ペイパル実験
-require_once (DIR_WS_CLASSES . 'basePayment.php');
-  class paypal extends basePayment  implements paymentInterface  { 
-    var $site_id, $code, $title, $description, $enabled, $s_error, $email_footer, $show_payment_info;
+  class paypal{
+    var $site_id, $code, $title, $description, $enabled, $n_fee, $s_error, $email_footer;
 
 // class constructor
-    function loadSpecialSettings($site_id=0){
+    function paypal($site_id = 0) {
+      global $order, $_GET;
+      
       $this->site_id = $site_id;
-      $this->code        = 'paypal';
-      $this->form_action_url = MODULE_PAYMENT_PAYPAL_CONNECTION_URL ;
-      $this->show_payment_info = 2;
-    }
-  function fields($theData=false, $back=false){
-    if (!$back) { 
-    global $order;
-    $total_cost = $order->info['total'];
-    $code_fee = $this->calc_fee($total_cost); 
-    $added_hidden = tep_draw_hidden_field('code_fee', $code_fee);
-    return array(
-		 array(
-		       "code"=>'',
-		       "title"=>'',
-		       "field"=>$added_hidden,
-		       "rule"=>'',
-		       "message"=>"",
-		       ));      
-    }
-  }
 
+      $this->code        = 'paypal';
+      $this->title       = MODULE_PAYMENT_PAYPAL_TEXT_TITLE;
+      $this->description = MODULE_PAYMENT_PAYPAL_TEXT_DESCRIPTION;
+      $this->explain     = MODULE_PAYMENT_PAYPAL_TEXT_EXPLAIN;
+      $this->sort_order  = MODULE_PAYMENT_PAYPAL_SORT_ORDER;
+      $this->enabled     = ((MODULE_PAYMENT_PAYPAL_STATUS == 'True') ? true : false);
+
+      if ((int)MODULE_PAYMENT_PAYPAL_ORDER_STATUS_ID > 0) {
+        $this->order_status = MODULE_PAYMENT_PAYPAL_ORDER_STATUS_ID;
+      }
+
+      if (is_object($order)) $this->update_status();
+
+      //      $this->form_action_url = MODULE_PAYMENT_PAYPAL_CONNECTION_URL;
+      $this->form_action_url = MODULE_PAYMENT_PAYPAL_CONNECTION_URL ;
+
+      //      $this->form_action_url =      'https://api-3t.sandbox.paypal.com/nvp ';
+    
+    if(isset($_GET['submit_x']) || isset($_GET['submit_y'])){
+      $_GET['payment_error'] = 'paypal';
+    }
+    
+    $this->email_footer = MODULE_PAYMENT_PAYPAL_TEXT_EMAIL_FOOTER;
+    }
 
 // class methods
     function update_status() {
@@ -59,8 +64,31 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
       return false;
     }
 
+    function calc_fee($total_cost) {
+      $table_fee = split("[:,]" , MODULE_PAYMENT_PAYPAL_COST);
+      $f_find = false;
+      $this->n_fee = 0;
+      for ($i = 0; $i < count($table_fee); $i+=2) {
+        if ($total_cost <= $table_fee[$i]) { 
+          $additional_fee = $total_cost.$table_fee[$i+1]; 
+          @eval("\$additional_fee = $additional_fee;"); 
+          //$this->n_fee = $table_fee[$i+1]; 
+          if (is_numeric($additional_fee)) {
+            $this->n_fee = intval($additional_fee); 
+          } else {
+            $this->n_fee = 0; 
+          }
+          $f_find = true;
+          break;
+        }
+      }
+      if ( !$f_find ) {
+        $this->s_error = MODULE_PAYMENT_PAYPAL_TEXT_OVERFLOW_ERROR;
+      }
 
-    function selection($theData) {
+      return $f_find;
+    }
+    function selection() {
       global $currencies;
       global $order;
       
@@ -82,7 +110,7 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
     }
 
     function pre_confirmation_check() {
-      return true;
+      return false;
     }
 
     function confirmation() {
@@ -102,9 +130,9 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
         $s_message = $s_result ? '':('<font color="#FF0000">'.$_POST['paypal_order_fee_error'].'</font>'); 
       }
     return array(
-		 'title' => nl2br(constant("TS_MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_CONFIRMATION")),
+		 'title' => nl2br(constant("MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_CONFIRMATION")),
 		 'fields' => array(
-				   array('title' => constant("TS_MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_SHOW"), 'field' => ''),  
+				   array('title' => constant("MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_SHOW"), 'field' => ''),  
 				   array('title' => $s_message, 'field' => '')  
 				   )           
 		 );
@@ -138,14 +166,12 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
           $total += intval($this->n_fee); 
           // 追加 - 2007.01.05 ----------------------------------------------
     
-    if (isset($_SESSION['campaign_fee'])) {
-      $total += $_SESSION['campaign_fee']; 
-    }
     #mail送信
     $mail_body = '仮クレジットカード注文です。'."\n\n";
     
     # ユーザー情報----------------------------
     $mail_body .= '━━━━━━━━━━━━━━━━━━━━━'."\n";
+    $mail_body .= '▼注文番号　　　　：2007****-********'."\n";
     $mail_body .= '▼注文日　　　　　：' . tep_date_long(time())."\n";
     $mail_body .= '▼お名前　　　　　：' . $order->customer["lastname"] . ' ' . $order->customer["firstname"]."\n";
     $mail_body .= '▼メールアドレス　：' . $order->customer["email_address"]."\n";
@@ -309,7 +335,6 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
                  'MODULE_PAYMENT_PAYPAL_COST',
                  'MODULE_PAYMENT_PAYPAL_MONEY_LIMIT',
                  'MODULE_PAYMENT_PAYPAL_MAILSTRING',
-                 'MODULE_PAYMENT_PAYPAL_PRINT_MAILSTRING',
                   );
 
     /*  原来 返回值
@@ -330,7 +355,7 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
 
 
 
-  function getExpress($order_totals,$num){
+  function getexpress($order_totals,$num){
   if($order_totals[$num]['code'] =='ot_total' &&  array_key_exists('token', $_REQUEST)){
   $token = urlencode(htmlspecialchars($_REQUEST['token']));
   $amt = $order_totals[$num]['value'];
@@ -578,7 +603,7 @@ function getpreexpress($pre_value, $pre_pid){
     
     $mail_body = '仮クレジットカード注文です。'."\n\n";
     $mail_body .= '━━━━━━━━━━━━━━━━━━━━━'."\n";
-
+    $mail_body .= '▼注文番号　　　　：2007****-********'."\n";
     $mail_body .= '▼注文日　　　　　：' . tep_date_long(time())."\n";
     $mail_body .= '▼お名前　　　　　：' . $preorder_info['customers_name']."\n";
     $mail_body .= '▼メールアドレス　：' . $preorder_info['customers_email_address']."\n";
@@ -627,51 +652,9 @@ function getpreexpress($pre_value, $pre_pid){
     $hidden_param_str .= tep_draw_hidden_field('cpre_type', '1');
     $hidden_param_str .= tep_draw_hidden_field('amount', $preorder_total);
     $hidden_param_str .= tep_draw_hidden_field('RETURNURL', HTTP_SERVER.'/change_preorder_process.php');
-    $hidden_param_str .= tep_draw_hidden_field('CANCELURL', HTTP_SERVER.'/change_preorder.php?pid='.$preorder_info['check_preorder_str']);
+    $hidden_param_str .= tep_draw_hidden_field('CANCELURL', HTTP_SERVER.'/change_preorder.php?pid='.$_POST['pid']);
     echo $hidden_param_str; 
   }
-
- function getMailString($option='')
-  {
-    $email_printing_order ='';
-  $email_printing_order .= 'この注文は【販売】です。' . "\n";
-  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-  $email_printing_order .= '備考の有無　　　　　：□ 無　　｜　　□ 有　→　□ 返答済' . "\n";
-  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-  $email_printing_order .= '決済確認　　　　　●：＿＿月＿＿日' . "\n";
-  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-  $email_printing_order .= '在庫確認　　　　　　：□ 有　　｜　　□ 無　→　仕入困難ならお客様へ電話' . "\n";
-  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-  $email_printing_order .= '信用調査　　　　　　：□ 2回目以降　→　□ 常連（以下のチェック必要無）' . "\n";
-  $email_printing_order .= '　　　　　　　　　　　　　　　　　　　　□ 1. 過去に本人確認をしている' . "\n";
-  $email_printing_order .= '　　　　　　　　　　　　　　　　　　　　□ 2. 決済内容に変更がない' . "\n";
-  $email_printing_order .= '　　　　　　　　　　　　　　　　　　　　□ 3. 短期間に高額決済がない' . "\n";
-  $email_printing_order .= '　　　　　　　　　　----------------------------------------------------' . "\n";
-  $email_printing_order .= '　　　　　　　　　　　□ 初回　→　□ IP・ホストのチェック' . "\n";
-  $email_printing_order .= '　　　　　　　　　　　　　　　　　 　 電話確認をする' . "\n";
-  $email_printing_order .= '　　　　　　　　　　　　　　　　　 　 カード名義（カタカナ）＿＿＿＿＿＿' . "\n";
-  $email_printing_order .= '　　　　　　　　　　　　　　　　　 　 電話番号＿＿＿＿＿＿＿＿＿＿＿＿＿' . "\n";
-  $email_printing_order .= '　　　　　　　　　　　　　　　　　 　 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿' . "\n";
-  $email_printing_order .= '　　　　　　　　　　　　　　　　　 　 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿' . "\n";
-  $email_printing_order .= '　　　　　　　　　　　　　　　　　 　 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿' . "\n";
-  $email_printing_order .= '　　　　　　　　　　　　　　　　　 □ カード名義・商品名・キャラ名一致' . "\n";
-  $email_printing_order .= '　　　　　　　　　　　　　　　　　 　 本人確認日：＿＿月＿＿日' . "\n";
-  $email_printing_order .= '　　　　　　　　　　　　　　　　　 □ 信用調査入力' . "\n";
-  $email_printing_order .= '　　　　　　　　　　----------------------------------------------------' . "\n";
-  $email_printing_order .= '※ 疑わしい点があれば担当者へ報告をする　→　担当者＿＿＿＿の承諾を得た' . "\n";
-  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-  $email_printing_order .= '発送　　　　　　　　：＿＿月＿＿日' . "\n";
-  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-  $email_printing_order .= '残量入力→誤差有無　：□ 無　　｜　　□ 有　→　報告　□' . "\n";
-  $email_printing_order .= '------------------------------------------------------------------------' . "\n";
-  $email_printing_order .= '発送完了メール送信　：□ 済' . "\n";
-    $email_printing_order .=
-    '------------------------------------------------------------------------' . "\n";
-    $email_printing_order .= '最終確認　　　　　　：確認者名＿＿＿＿' . "\n";
-    $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-  return $email_printing_order;
-  }
-  
   }
 function PPHttpPost($methodName_, $nvpStr_) {
   //  global $environment;

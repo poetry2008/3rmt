@@ -103,7 +103,6 @@
               p.sort_order,
               pd.products_status, 
               pd.romaji, 
-              pd.preorder_status, 
               pd.site_id
         from " . TABLE_PRODUCTS . " p, " .  TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_MANUFACTURERS . " m 
         where pd.products_id = p.products_id 
@@ -173,7 +172,6 @@
                  p.products_tax_class_id, 
                  pd.products_status, 
                  pd.romaji, 
-                 pd.preorder_status, 
                  pd.site_id
           from ((" . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_PRODUCTS . " p )left join " . TABLE_MANUFACTURERS . " m on p.manufacturers_id = m.manufacturers_id, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c )
           where p.products_id = p2c.products_id 

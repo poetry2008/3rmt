@@ -55,10 +55,4 @@ define('CREATE_ORDER_COMMUNITY_SEARCH_READ_TWO', '記入例：WA-Aok-C2007/01/01
 define('CREATE_ORDER_SEARCH_TWO_TEXT','業者名を選択し「検索」ボタンをクリックしてください。');
 define('CREATE_ORDER_YEZHE_NAME_TEXT', '業者名：');
 define('CREATE_ORDER_SHIRU_TEXT', '仕入れ注文');
-define('CREATE_ORDER_TEL_TEXT', '電話番号:');
-define('TEXT_CREATE_ADDRESS_BOOK','お届け先を指定する');
-define('TEXT_USE_ADDRESS_BOOK','登録先に届ける');
-define('TEXT_TORIHIKIBOUBI_DEFAULT_SELECT','ご希望のお届け日時を指定してください');
-
-
 ?>

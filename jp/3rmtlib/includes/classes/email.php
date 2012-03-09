@@ -509,9 +509,8 @@
       $from_name = mb_convert_encoding($from_name, 'ISO-2022-JP'); // 追加
         $from_addr = mb_convert_encoding($from_addr, 'ISO-2022-JP'); // 追加
         */
-        
       $from_name = mb_convert_encoding($from_name, 'UTF-8'); // 追加
-      $from_addr = mb_convert_encoding($from_addr, 'UTF-8'); // 追加
+        $from_addr = mb_convert_encoding($from_addr, 'UTF-8'); // 追加
     }
     
     /*
@@ -525,9 +524,10 @@
       $to    = ($to_name != '')
           ? ('"' . mb_encode_mimeheader(mb_convert_kana($to_name, "KV"), 'UTF-8') . '" <' . $to_addr . '>')
           : $to_addr;
-       
-      $from  = ($from_name != '') ? ('"' .  mb_encode_mimeheader(mb_convert_kana($from_name, "KV"), 'UTF-8')  . '" <' . $from_addr. '>') : $from_addr;
-      
+      $from  = ($from_name != '')
+          ? ('"' . mb_encode_mimeheader(mb_convert_kana($from_name, "KV"), 'UTF-8')  . '" <' . $from_addr. '>')
+          : $from_addr;
+
       if (is_string($headers)) {
         $headers = explode($this->lf, trim($headers));
       }

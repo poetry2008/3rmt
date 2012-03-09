@@ -1,7 +1,0 @@
-<?php
-define('MODULE_SHIPPING_TABLE_TEXT_TITLE', '計算表による料金');
-define('MODULE_SHIPPING_TABLE_TEXT_DESCRIPTION', '計算表による料金');
-define('MODULE_SHIPPING_TABLE_TEXT_WAY', '最良の方法');
-define('MODULE_SHIPPING_TABLE_TEXT_WEIGHT', '重量');
-define('MODULE_SHIPPING_TABLE_TEXT_AMOUNT', '総額');
-?>

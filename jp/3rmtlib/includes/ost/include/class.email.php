@@ -161,11 +161,11 @@ class Email {
         $body = stripslashes(preg_replace("/(\r\n|\r)/s", "\n", trim($message)));
         $fromname=$this->getName();
         if(!empty($fromname)){
-          $fromname= "=?utf-8?B?" .base64_encode($this->getName())."?=";
+        $fromname= "=?utf-8?B?" .base64_encode($this->getName())."?=";
         }else {
           $fromname ='';
         }
-        $from =sprintf('"%s" <%s>',($fromname?$fromname:$this->getEmail()),$this->getEmail());
+        $from =sprintf('"%s"<%s>',($fromname?$fromname:$this->getEmail()),$this->getEmail());
 
         $headers = array ('From' => $from,
                           'To' => $to,

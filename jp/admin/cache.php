@@ -110,15 +110,8 @@
         }
         $dir->close();
       }
-      $even = 'dataTableSecondRow';
-      $odd  = 'dataTableRow';
-      if (isset($nowColor) && $nowColor == $odd) {
-        $nowColor = $even; 
-      } else {
-        $nowColor = $odd; 
-      }
 ?>
-              <tr class="<?php echo $nowColor;?>" onmouseover="this.className='dataTableRowOver'" onmouseout="this.className='<?php echo $nowColor;?>'">
+              <tr class="dataTableRow" onmouseover="this.className='dataTableRowOver'" onmouseout="this.className='dataTableRow'">
                 <td class="dataTableContent"><?php echo $cache_blocks[$i]['title']; ?></td>
                 <td class="dataTableContent" align="right"><?php echo $cache_mtime; ?></td>
                 <td class="dataTableContent" align="right"><?php echo '<a href="' . tep_href_link(FILENAME_CACHE, 'action=reset&block=' . $cache_blocks[$i]['code'], 'NONSSL') . '">' . tep_image(DIR_WS_IMAGES . 'icon_reset.gif', 'Reset', 13, 13) . '</a>'; ?>&nbsp;</td>

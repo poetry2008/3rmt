@@ -288,7 +288,7 @@
 
   <select name='year'>
   <?php for ($i=0;$i<10;$i++) {?>
-    <option value="<?php echo date('Y')-$i;?>" <?php (date('Y')-$i) == intval(date('Y', strtotime($rInfo->date_added))) && print('selected');?>><?php echo date('Y')-$i;?></option>
+    <option value="<?php echo date('Y')-$i;?>" <?php $i==intval(date('Y', strtotime($rInfo->date_added))) && print('selected');?>><?php echo date('Y')-$i;?></option>
   <?php }?>
   </select>/<select name='m'>
   <?php for ($i=1;$i<13;$i++) {?>
@@ -342,7 +342,7 @@
         <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
       </tr>
       <tr>
-        <td align="right" class="main"><?php echo tep_draw_hidden_field('reviews_id', $rInfo->reviews_id) .  tep_draw_hidden_field('products_id', $rInfo->products_id) .  tep_draw_hidden_field('products_name', $rInfo->products_name) .  tep_draw_hidden_field('products_image', $rInfo->products_image) .  tep_html_element_submit(IMAGE_PREVIEW) . ' <a class="new_product_reset" href="' . tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' . $_GET['rID'].(isset($_GET['lsite_id'])?'&site_id='.$_GET['lsite_id']:'')) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>'; ?></td>
+        <td align="right" class="main"><?php echo tep_draw_hidden_field('reviews_id', $rInfo->reviews_id) .  tep_draw_hidden_field('products_id', $rInfo->products_id) .  tep_draw_hidden_field('products_name', $rInfo->products_name) .  tep_draw_hidden_field('products_image', $rInfo->products_image) .  tep_html_element_submit(IMAGE_PREVIEW) . ' <a class="new_product_reset" href="' . tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' . $_GET['rID']) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>'; ?></td>
       </form></tr>
 <?php
   } elseif (isset($_GET['action']) && $_GET['action'] == 'preview') {
@@ -415,9 +415,11 @@
       while(list($key, $value) = each($_POST)) echo '<input type="hidden" name="' . $key . '" value="' . htmlspecialchars(stripslashes($value)) . '">';
 ?>
       <tr>
-        <td align="right" class="smallText"><?php echo '<a href="' .  tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' .  $rInfo->reviews_id .  '&action=edit'.(isset($_GET['lsite_id'])?'&lsite_id='.$_GET['lsite_id']:'')) . '">' .
+        <td align="right" class="smallText"><?php echo '<a href="' .
+        tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' .
+            $rInfo->reviews_id . '&action=edit') . '">' .
         tep_html_element_button(IMAGE_BACK) . '</a> ' .
-        tep_html_element_submit(IMAGE_SAVE) . ' <a href="' .  tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' .  $rInfo->reviews_id.(isset($_GET['lsite_id'])?'&site_id='.$_GET['lsite_id']:'')) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>'; ?></td>
+        tep_html_element_submit(IMAGE_SAVE) . ' <a href="' .  tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' .  $rInfo->reviews_id) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>'; ?></td>
       </form></tr>
 <?php
     } else {
@@ -426,7 +428,7 @@
         $back_url_params = '';
       } else {
         $back_url = FILENAME_REVIEWS;
-        $back_url_params = 'page=' . $_GET['page'] . '&rID=' .  $rInfo->reviews_id.(isset($_GET['site_id'])?'&site_id='.$_GET['site_id']:'');
+        $back_url_params = 'page=' . $_GET['page'] . '&rID=' . $rInfo->reviews_id;
       }
 ?>
       <tr>
@@ -511,21 +513,14 @@
         $rInfo = new objectInfo($rInfo_array);
       }
 
-      $even = 'dataTableSecondRow';
-      $odd  = 'dataTableRow';
-      if (isset($nowColor) && $nowColor == $odd) {
-        $nowColor = $even; 
-      } else {
-        $nowColor = $odd; 
-      }
       if ( isset($rInfo) && (is_object($rInfo)) && ($reviews['reviews_id'] == $rInfo->reviews_id) ) {
         echo '              <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' . $rInfo->reviews_id . '&site_id=' . (isset($_GET['site_id'])?$_GET['site_id']:''). '&action=preview') . '\'">' . "\n";
       } else {
-        echo '              <tr class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' . $reviews['reviews_id']. '&site_id=' . (isset($_GET['site_id'])?$_GET['site_id']:'')) . '\'">' . "\n";
+        echo '              <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' . $reviews['reviews_id']. '&site_id=' . (isset($_GET['site_id'])?$_GET['site_id']:'')) . '\'">' . "\n";
       }
 ?>
                 <td class="dataTableContent"><?php echo $reviews['site_name'];?></td>
-                <td class="dataTableContent"><?php echo '<a href="' .  tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' .  $reviews['reviews_id'] .  '&action=preview'.(isset($_GET['site_id'])?'&site_id='.$_GET['site_id']:'')) . '">' .  tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW) .  '</a>&nbsp;'.$reviews['products_name'];?></td>
+                <td class="dataTableContent"><?php echo '<a href="' .  tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' .  $reviews['reviews_id'] . '&action=preview') . '">' .  tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW) .  '</a>&nbsp;'.$reviews['products_name'];?></td>
         <td class="dataTableContent" align="center">
 <?php
       if ($reviews['reviews_status'] == '1') {
@@ -537,7 +532,7 @@
                 </td>
         <td class="dataTableContent" align="right"><?php echo tep_image(HTTP_CATALOG_SERVER . DIR_WS_CATALOG_IMAGES . 'stars_' . $reviews['reviews_rating'] . '.gif'); ?></td>
                 <td class="dataTableContent" align="right"><?php echo tep_date_short($reviews['date_added']) . ' ' .date('H:i:s', strtotime($reviews['date_added'])); ?></td>
-                <td class="dataTableContent" align="right"><?php if ( (isset($rInfo) && is_object($rInfo)) && ($reviews['reviews_id'] == $rInfo->reviews_id) ) { echo tep_image(DIR_WS_IMAGES .  'icon_arrow_right.gif'); } else { echo '<a href="' .  tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] .  '&rID=' . $reviews['reviews_id']) .  (isset($_GET['site_id'])?'&site_id='.$_GET['site_id']:'').'">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>&nbsp;</td>
+                <td class="dataTableContent" align="right"><?php if ( (isset($rInfo) && is_object($rInfo)) && ($reviews['reviews_id'] == $rInfo->reviews_id) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif'); } else { echo '<a href="' . tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' . $reviews['reviews_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>&nbsp;</td>
               </tr>
 <?php
     }
@@ -546,7 +541,7 @@
                 <td colspan="6"><table border="0" width="100%" cellspacing="0" cellpadding="2">
                   <tr>
                     <td class="smallText" valign="top"><?php echo $reviews_split->display_count($reviews_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_REVIEWS); ?></td>
-                    <td class="smallText" align="right"><?php echo $reviews_split->display_links($reviews_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'rID'))); ?></td>
+                    <td class="smallText" align="right"><?php echo $reviews_split->display_links($reviews_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page'))); ?></td>
                   </tr>
                 </table></td>
               </tr>

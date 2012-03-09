@@ -6,7 +6,6 @@
 require('includes/application_top.php');
 require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_FAQ_INFO);
 require(DIR_WS_ACTIONS.'faq_question.php');
-check_uri('/faq_info\.php/');
 define('FAQ_HTML_REPLACE','</td></tr><tr><td valign="top" style="float:left;"><img
     src="./images/a.gif" alt="" width="23" height="15"></td><td
     class="faq_answer_row">');
@@ -29,12 +28,10 @@ if (isset($body_option)) {
 <!-- header_eof //--> 
 <!--body -->
 <div id="main">
-
 <!-- left_navigation //-->
 <div id="l_menu">
 <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
 </div>
-<div class="m_menu">
 <div class="header_Navigation">
    <?php echo $breadcrumb->trail(' &raquo; '); ?>
 </div>
@@ -108,7 +105,6 @@ if (isset($body_option)) {
 
 
 
-</div>
 </div>
 <div id='r_menu'>
 <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 

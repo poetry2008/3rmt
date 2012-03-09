@@ -3,29 +3,46 @@
   $Id$
 */
 
-require_once (DIR_WS_CLASSES . 'basePayment.php');
-  class free_payment  extends basePayment  implements paymentInterface {
-    var $site_id, $code, $title, $description, $enabled, $s_error, $n_fee, $email_footer, $show_payment_info;
-    function loadSpecialSettings($site_id=0){
+  class free_payment {
+    var $site_id, $code, $title, $description, $enabled, $s_error, $n_fee, $email_footer;
+
+// class constructor
+    function free_payment ($site_id = 0) {
+      global $order;
+      
       $this->site_id = $site_id;
+
       $this->code        = 'free_payment';
-      $this->show_payment_info = 0;
-    }
-  function fields($theData=false, $back=false){
+      $this->title       = MODULE_PAYMENT_FREE_PAYMENT_TEXT_TITLE;
+      $this->description = MODULE_PAYMENT_FREE_PAYMENT_TEXT_DESCRIPTION;
+      $this->explain       = MODULE_PAYMENT_FREE_PAYMENT_TEXT_EXPLAIN;
+      $this->sort_order  = MODULE_PAYMENT_FREE_PAYMENT_SORT_ORDER;
+      $this->enabled     = ((MODULE_PAYMENT_FREE_PAYMENT_STATUS == 'True') ? true : false);
+
+      if ((int)MODULE_PAYMENT_FREE_PAYMENT_ORDER_STATUS_ID > 0) {
+        $this->order_status = MODULE_PAYMENT_FREE_PAYMENT_ORDER_STATUS_ID;
+      }
+
+      if (is_object($order)) $this->update_status();
+    
+      $this->email_footer = MODULE_PAYMENT_FREE_PAYMENT_TEXT_EMAIL_FOOTER;
     }
 
+// class methods
     function update_status() {
       global $order;
       return true;
     }
     
-    
+    function calc_fee($total_cost) {
+      return 0;
+    }
 
     function javascript_validation() {
       return false;
     }
 
-    function selection($theData) {
+    function selection() {
       global $currencies;
       global $order;
       
@@ -49,7 +66,7 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
     }
 
     function pre_confirmation_check() {
-      return true;
+      return false;
     }
 
     function confirmation() {
@@ -65,9 +82,9 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
         $s_message = $s_result ? '':('<font color="#FF0000">'.$_POST['free_payment_order_fee_error'].'</font>'); 
       }
     return array(
-		 'title' => nl2br(constant("TS_MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_CONFIRMATION")),
+		 'title' => nl2br(constant("MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_CONFIRMATION")),
 		 'fields' => array(
-				   array('title' => constant("TS_MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_SHOW"), 'field' => ''),  
+				   array('title' => constant("MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_SHOW"), 'field' => ''),  
 				   array('title' => $s_message, 'field' => '')  
 				   )           
 		 );
@@ -109,7 +126,7 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
       if (isset($_GET['payment_error']) && (strlen($_GET['payment_error']) > 0)) {
         $error_message = MODULE_PAYMENT_FREE_PAYMENT_TEXT_ERROR_MESSATE;
         
-        return array('title' => $this->title.' エラー!', 'error' => $error_message);
+        return array('title' => 'コンビニ決済 エラー!', 'error' => $error_message);
       } else {
         return false;
       }
@@ -145,53 +162,7 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
                    'MODULE_PAYMENT_FREE_PAYMENT_SORT_ORDER',
                    'MODULE_PAYMENT_FREE_PAYMENT_MONEY_LIMIT',
                    'MODULE_PAYMENT_FREE_PAYMENT_MAILSTRING',
-                   'MODULE_PAYMENT_FREE_PAYMENT_PRINT_MAILSTRING',
                    );
     }
-
-function getMailString($option=''){
-    $email_printing_order .= 'この注文は【販売】です。' . "\n";
-    $email_printing_order .=
-      '------------------------------------------------------------------------'
-      . "\n";
-    $email_printing_order .= '備考の有無　　　　　：□ 無　　｜　　□ 有　→　□
-      返答済' . "\n";
-    $email_printing_order .=
-      '------------------------------------------------------------------------'
-      . "\n";
-    $email_printing_order .= '在庫確認　　　　　　：□ 有　　｜　　□
-      無　→　入金確認後仕入' . "\n";
-    $email_printing_order .=
-      '------------------------------------------------------------------------'
-      . "\n";
-    $email_printing_order .=
-      '入金確認　　　　　●：＿＿月＿＿日　→　金額は' .
-      abs($option) . '円ですか？　□ はい' . "\n";
-    $email_printing_order .=
-      '------------------------------------------------------------------------'
-      . "\n";
-    $email_printing_order .= '入金確認メール送信　：□ 済' . "\n";
-    $email_printing_order .=
-      '------------------------------------------------------------------------'
-      . "\n";
-    $email_printing_order .=
-      '発送　　　　　　　　：＿＿月＿＿日' . "\n";
-    $email_printing_order .=
-      '------------------------------------------------------------------------'
-      . "\n";
-    $email_printing_order .= '残量入力→誤差有無　：□
-      無　　｜　　□ 有　→　報告　□' . "\n";
-    $email_printing_order .=
-      '------------------------------------------------------------------------'
-      . "\n";
-    $email_printing_order .= '発送完了メール送信　：□
-      済' . "\n";    
-    $email_printing_order .=
-    '------------------------------------------------------------------------' . "\n";
-    $email_printing_order .= '最終確認　　　　　　：確認者名＿＿＿＿' . "\n";
-    $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-    return $email_printing_order;
-  }
-
   }
 ?>

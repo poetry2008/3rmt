@@ -45,8 +45,8 @@
     $mag = tep_db_fetch_array($mag_query);
     
     $mag_count = $mail['count'] + $mag['count'];
-    
-    $confirm_string = '<table border="0" cellspacing="0" cellpadding="2">' . "\n" .
+
+      $confirm_string = '<table border="0" cellspacing="0" cellpadding="2">' . "\n" .
                         '  <tr>' . "\n" .
                         '    <td class="main"><font color="#ff0000"><b>' . sprintf(TEXT_COUNT_CUSTOMERS, $mag_count) . '</b></font></td>' . "\n" .
                         '  </tr>' . "\n" .
@@ -66,13 +66,9 @@
                         '    <td>' . tep_draw_separator('pixel_trans.gif', '1', '10') . '</td>' . "\n" .
                         '  </tr>' . "\n" .
                         '  <tr>' . "\n" .
-                        '    <td align="right">';
-                        if ($mag_count) {
-                          $confirm_string .= '<a href="' .  tep_href_link(FILENAME_NEWSLETTERS, 'page=' . $_GET['page'] . '&nID=' . $_GET['nID'] .  '&action=confirm_send' .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'') .(isset($_GET['send_site_id'])?('&send_site_id='.$_GET['send_site_id']):'')) . '">' . tep_html_element_button(IMAGE_SEND) .  '</a>';
-                        } else {
-                          $confirm_string .= '<a href="javascript:void(0);">' . tep_html_element_button(IMAGE_SEND, 'onclick="check_send_mail();"') .  '</a>';
-                        }
-                               $confirm_string .= '<a class="new_product_reset" href="' .  tep_href_link(FILENAME_NEWSLETTERS, 'page=' . $_GET['page'] . '&nID=' . $_GET['nID'] .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a></td>' . "\n" .
+                        '    <td align="right"><a href="' .  tep_href_link(FILENAME_NEWSLETTERS, 'page=' . $_GET['page'] . '&nID=' . $_GET['nID'] . '&action=confirm_send' .
+                        (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')
+                        .(isset($_GET['send_site_id'])?('&send_site_id='.$_GET['send_site_id']):'')) . '">' . tep_html_element_button(IMAGE_SEND) . '</a> <a class="new_product_reset" href="' .  tep_href_link(FILENAME_NEWSLETTERS, 'page=' . $_GET['page'] . '&nID=' . $_GET['nID'] .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a></td>' . "\n" .
                         '  </tr>' . "\n" .
                         '</table>';
 
@@ -88,7 +84,7 @@
       $mail_query = tep_db_query("select customers_firstname, customers_lastname, customers_email_address from " . TABLE_CUSTOMERS . " where customers_newsletter = '1'");
       }
 
-      $mimemessage = new email(array('X-Mailer: iimy Mailer'));
+      $mimemessage = new email(array('X-Mailer: osCommerce bulk mailer'));
       $mimemessage->add_text($this->content);
       $mimemessage->build_message();
       while ($mail = tep_db_fetch_array($mail_query)) {

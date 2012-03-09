@@ -16,7 +16,7 @@
   //error_reporting(0);
   //ini_set("display_errors", "On");
   //error_reporting(E_ALL);
-  //ini_set("display_errors", "On");
+  ini_set("display_errors", "On");
 
 // check if register_globals is enabled.
 // since this is a temporary measure this message is hardcoded. The requirement will be removed before 2.2 is finalized.
@@ -50,7 +50,6 @@
   define('WARN_DOWNLOAD_DIRECTORY_NOT_READABLE', 'true');
 
 // define the filenames used in the project
-  define('FILENAME_PREORDER_PAYMENT', 'preorder_payment.php');
   define('FILENAME_PREORDER_SUCCESS', 'preorder_success.php');
   define('FILENAME_PREORDER_UNSUCCESS', 'preorder_unsuccess.php');
   define('FILENAME_FAQ_INFO', 'faq_info.php');
@@ -132,9 +131,6 @@
   define('FILENAME_EMAIL_TROUBLE', 'email_trouble.php');
 
 // define the database table names used in the project
-  define('TABLE_CAMPAIGN', 'campaign'); 
-  define('TABLE_CUSTOMER_TO_CAMPAIGN', 'customer_to_campaign'); 
-  define('TABLE_ZIPCODE', 'zcode'); 
   define('TABLE_PREORDERS_OA_FORMVALUE', 'preorders_oa_formvalue'); 
   define('TABLE_PREORDERS', 'preorders');
   define('TABLE_PREORDERS_MAIL', 'preorders_mail');
@@ -393,7 +389,6 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
 
 // define our general functions used application-wide
   require(DIR_WS_FUNCTIONS . 'general.php');
-  require(DIR_WS_FUNCTIONS . 'generalBoth.php');
   require(DIR_WS_FUNCTIONS . 'html_output.php');
 
 // currency
@@ -472,7 +467,6 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
     $navigation = new navigationHistory();
   }
   $navigation->add_current_page();
-
 // Shopping cart actions
   if (isset($_GET['action'])) {
     if (DISPLAY_CART == 'true') {
@@ -486,7 +480,6 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
         $parameters = array('action', 'pid');
       }
     }
-
     switch ($_GET['action']) {
       // customer wants to update the product quantity in their shopping cart
       case 'update_product' : for ($i=0, $n=sizeof($_POST['products_id']); $i<$n; $i++) {
@@ -680,7 +673,7 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
       }
     }
   }
-
+  
   // include the breadcrumb class and start the breadcrumb trail
   require(DIR_WS_CLASSES . 'breadcrumb.php');
   $breadcrumb = new breadcrumb;

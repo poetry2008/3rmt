@@ -134,7 +134,7 @@ if (!isset($cat0[0])) $cat0[0] = NULL;
             <tr>
               <td><a href="<?php echo tep_href_link('rss.php') ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/rss.jpg','RSS') ; ?></a></td>
               <td><a href="<?php echo tep_href_link(FILENAME_SHOPPING_CART,'','SSL') ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/shopping_cart.jpg',HEADER_TITLE_CART_CONTENTS);?></a></td>
-              <td><a href="<?php echo tep_href_link(FILENAME_CHECKOUT_SHIPPING,'','SSL') ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/checkout.jpg',HEADER_TITLE_CHECKOUT);?></a></td>
+              <td><a href="<?php echo tep_href_link(FILENAME_CHECKOUT_PRODUCTS,'','SSL') ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/checkout.jpg',HEADER_TITLE_CHECKOUT);?></a></td>
               <td width="117"  style="background:url(images/design/button/subtotal.jpg);" align="right"><span id="jk-shoppingcart" style="font-size:12px"><?php echo $currencies->format($cart->show_total());?>&nbsp;&nbsp;&nbsp;</span></td>
             </tr>
           </table>
@@ -143,19 +143,7 @@ if (!isset($cat0[0])) $cat0[0] = NULL;
     </table>
   </div>
   <div class="header_Navigation">
-    <p class="header_Navigation_p"><a href="<?php echo tep_href_link(FILENAME_SITEMAP,'','NONSSL');?>"><?php echo HEADER_TITLE_SITEMAP ; ?></a>&nbsp;&nbsp;
-    <?php 
-      if ($_SERVER['PHP_SELF'] == '/change_preorder_confirm.php') {
-        echo '<a href="'.HTTP_SERVER.'" class="headerNavigation">'.HEADER_TITLE_TOP.'</a>'; 
-        echo ' &raquo; ';
-        echo '<a href="javascript:void(0);" class="headerNavigation" onclick="document.forms.order1.submit();">'.CHANGE_PREORDER_BREADCRUMB_FETCH.'</a>';
-        echo ' &raquo; ';
-        echo NAVBAR_CHANGE_PREORDER_TITLE; 
-      } else {
-        echo $breadcrumb->trail(' &raquo; '); 
-      }
-    ?>
-    </p>
+    <p class="header_Navigation_p"><a href="<?php echo tep_href_link(FILENAME_SITEMAP,'','NONSSL');?>"><?php echo HEADER_TITLE_SITEMAP ; ?></a>&nbsp;&nbsp;<?php echo $breadcrumb->trail(' &raquo; '); ?></p>
   </div>
 </div>
 <?php

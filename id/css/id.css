@@ -61,7 +61,6 @@ H4 {
  *margin-top:0;
 	font-size:12px;
 }
-.comment img { vertical-align:middle\9;}
 .comment table a{ font-size:12px;}
 .comment03 {
 	clear:both;
@@ -503,9 +502,7 @@ header
  * height: 18px;
 	color: #000;
 	font-size:12px;
-	width:180px;
 }
-.header_search_select option{ width:150px;}
 .header_search_submit {
 	width: 56px;
 	height: 20px;
@@ -2054,7 +2051,7 @@ P.description{
 .formAreaTitle {
 	font-size: 12px;
 	font-weight: bold;
-	color:#AE0E30;
+	color: #003639;
 }
 
 .smallText {
@@ -2199,105 +2196,6 @@ searching
  table-layout:fixed;
  width:673px;
 }
+.active_email input{ width:550px; height:21px;}
 .cemail_input_01 { float:left; width:150px;}
-.con_email01{    
-	float: left;
-    line-height: 20px;
-    vertical-align: top;
-	vertical-align:middle\9;
-    width: 150px;
-}
-.con_email01 input, .con_email02 input{ vertical-align:bottom; vertical-align:middle\9; height:20px;}
-.preorder_active_info{ background-color:#ccc; font-size:13px; line-height:25px;}
-.preorder_active_info td{ background-color:#fff; padding-left:2px;}
-.preorder_active_line{ border-bottom:1px dashed #666; margin:0 0 15px 0;}
-.preorderBarcurrent{ color:#000; font-size:12px;}
-.preorderBarTo{ font-size:12px; color:#8c8c8c;}
-.preorderBarFrom{ font-size:12px; color:#8c8c8c;}
-.preorser_formArea{ background-color:#ccc; font-size:13px; line-height:25px;}
-.preorser_formArea td{ background-color:#FFFFFF; padding-left:2px; font-size:13px;}
-.formArea_td_info { width:530px\9; line-height:1.5; font-size:11px;}
-.con_telnumber_input input, .con_telnumber_input_validate input { width:150px; height:20px;}
-.information_color {
-    background-color: #FDEBAC;
-    color: #000000;
-    margin: 5px;
-    padding: 5px;
-    width: 100%;
-}
-.header_search_select option{ width:150px;}
-.checkout_payment_info{
-	*margin-top:5px;
-	font-size:12px;
-	padding:5px;
-	background: none repeat scroll 0 0 #D2CECE;
-    /*border: 1px solid #BDBCBC;*/
-	line-height:1.5;
-}
-.preorder_payment_info{
-	*margin-top:5px;
-	font-size:12px;
-	padding:5px;
-	background: none repeat scroll 0 0 #D2CECE;
-    border: 1px solid #BDBCBC;
-	line-height:1.5;
-}
-.float_left{
-	float:left;
-}
-.txt_right{
-	text-align:right;
-}
-.box_content_title {
-    background-color:#F5F5F5;
-    clear: both;
-    line-height:21px;
-    overflow: hidden;
-    width: 100%;
-}
-.box_content_title_selected{
-	background:#eee;
-}
-.box_content_title input {
-    margin-right: 12px;
-	margin-top:4px;
-	*margin-top:0;
-}
-.frame_w70{
-	width:70%;
-	float:left;
-	padding-left:10px;
-}
-.float_right{
-	float:right;
-}
-.cp_content{
-	padding:0 20px;
-}
-.cp_content p{ color:#FF0000;}
-.cp_codefee{
-	margin-top:5px;
-}
-.txt_input_box{
-	overflow:hidden;
-	clear:both;
-	height:15%;
-}
-.frame_title{
-	width:40%;
-	float:left;
-	line-height:21px;
-}
-.clear{
-	clear:both;
-}
-.cp_description{
-	padding:0 20px;
-	margin:5px 0;
-}
-.box_waring {
-    background: none repeat scroll 0 0 #FFE6E6;
-    border: 1px solid #FF8E90;
-    padding: 5px;
-	font-size:12px;
-}
+.con_email01{ float:left;}

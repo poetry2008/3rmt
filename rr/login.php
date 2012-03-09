@@ -11,22 +11,6 @@
 */
 
   require('includes/application_top.php');
-  
-  if (isset($_GET['pid'])) {
-    $link_customer_email = ''; 
-    $preorder_info_raw = tep_db_query("select orders_id, customers_id, customers_email_address from ".TABLE_PREORDERS." where check_preorder_str = '".$_GET['pid']."' and site_id = '".SITE_ID."'");    
-    if (!tep_db_num_rows($preorder_info_raw)) {
-      forward404(); 
-    }
-    $preorder_info_res = tep_db_fetch_array($preorder_info_raw);  
-    
-    $link_customer_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = '".$preorder_info_res['customers_id']."'");
-    $link_customer_res = tep_db_fetch_array($link_customer_raw); 
-    
-    if ($link_customer_res) {
-      $link_customer_email = $preorder_info_res['customers_email_address'];    
-    }
-  }
 
 if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
   tep_redirect(tep_href_link(FILENAME_CREATE_ACCOUNT,'email_address='.$_POST['email_address']));
@@ -38,62 +22,6 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
 
     $email_address = tep_db_prepare_input($_POST['email_address']);
     $password = tep_db_prepare_input($_POST['password']);
-    
-    if (isset($_GET['pid'])) {
-      if ($link_customer_email == '') {
-        $_GET['login'] = 'failture';
-      } else {
-        if ($email_address != $link_customer_email) {
-          $_GET['login'] = 'failture';
-        } else {
-          if (!tep_validate_password($password, $link_customer_res['customers_password'])) {
-            $_GET['login'] = 'failture';
-          } else {
-            if (SESSION_RECREATE == 'True') {
-              tep_session_recreate();
-            }
-            
-            $check_country_query = tep_db_query("
-                SELECT entry_country_id, 
-                       entry_zone_id 
-                FROM " . TABLE_ADDRESS_BOOK . " 
-                WHERE customers_id = '" . $link_customer_res['customers_id'] . "' 
-                  AND address_book_id = '1'
-            ");
-            $check_country = tep_db_fetch_array($check_country_query);
-
-            $customer_id = $link_customer_res['customers_id'];
-            $customer_default_address_id = $link_customer_res['customers_default_address_id'];
-            $customer_first_name = $link_customer_res['customers_firstname'];
-            $customer_last_name = $link_customer_res['customers_lastname']; // 2003.03.08 Add Japanese osCommerce
-            $customer_country_id = $check_country['entry_country_id'];
-            $customer_zone_id = $check_country['entry_zone_id'];
-            tep_session_register('customer_id');
-            tep_session_register('customer_default_address_id');
-            tep_session_register('customer_first_name');
-            tep_session_register('customer_last_name'); // 2003.03.08 Add Japanese osCommerce
-            tep_session_register('customer_country_id');
-            tep_session_register('customer_zone_id');
-            $customer_emailaddress = $email_address;
-            tep_session_register('customer_emailaddress');
-
-            $guestchk = $link_customer_res['customers_guest_chk'];
-            tep_session_register('guestchk');
-
-            $date_now = date('Ymd');
-    //ccdd
-            tep_db_query("
-                UPDATE " . TABLE_CUSTOMERS_INFO . " 
-                SET customers_info_date_of_last_logon = now(), 
-                    customers_info_number_of_logons   = customers_info_number_of_logons+1 
-                WHERE customers_info_id = '" . $customer_id . "'
-            ");    
-             $cart->restore_contents();
-             tep_redirect(tep_href_link('change_preorder.php', 'pid='.$_GET['pid'], 'NONSSL'));
-          }
-        }
-      }
-    } else {
 
 // Check if email exists
 //ccdd
@@ -195,16 +123,8 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
         $cart->restore_contents();
 
         if (sizeof($navigation->snapshot) > 0) {
-          if ($navigation->snapshot['page'] != 'change_preorder.php') {
-            $origin_href = tep_href_link($navigation->snapshot['page'], tep_array_to_string($navigation->snapshot['get'], array(tep_session_name())), $navigation->snapshot['mode']);
-            $navigation->clear_snapshot();
-          } else {
-            if (ENABLE_SSL && $request_type == 'SSL') {
-              $origin_href = tep_href_link(FILENAME_DEFAULT, '', 'NONSSL').'?' . tep_session_name().'='.tep_session_id(); 
-            } else {
-              $origin_href = tep_href_link(FILENAME_DEFAULT); 
-            }
-          }
+          $origin_href = tep_href_link($navigation->snapshot['page'], tep_array_to_string($navigation->snapshot['get'], array(tep_session_name())), $navigation->snapshot['mode']);
+          $navigation->clear_snapshot();
           tep_redirect($origin_href);
         } else {
           if (ENABLE_SSL && $request_type == 'SSL') {
@@ -215,7 +135,6 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
         }
       }
     }
-  }
   }
 }
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_LOGIN);
@@ -242,25 +161,14 @@ function session_win() {
       </td>
       <!-- body_text //-->
       <td id="contents" valign="top">
-      <h1 class="pageHeading">
-      <span>
-      <?php 
-      if (!isset($_GET['pid'])) {
-        echo HEADING_TITLE;
-      } else {
-        echo PREORDER_HEADING_TITLE; 
-      }
-      ?> 
-      </span></h1>
-      <?php echo tep_draw_form('login', tep_href_link(FILENAME_LOGIN, 'action=process'.(isset($_GET['pid'])?'&pid='.$_GET['pid']:''), 'SSL')); ?>
+      <h1 class="pageHeading"><span><?php echo HEADING_TITLE; ?></span></h1>
+      <?php echo tep_draw_form('login', tep_href_link(FILENAME_LOGIN, 'action=process', 'SSL')); ?>
       <div class="comment">
       <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0" summary="content" class="product_info_box">
 
 <?php
   if (isset($_GET['login']) && ($_GET['login'] == 'fail')) {
     $info_message = TEXT_LOGIN_ERROR;
-  } elseif (isset($_GET['login']) && ($_GET['login'] == 'failture')) { 
-    $info_message = TEXT_PREORDER_LOGIN_ERROR;
   } elseif ($cart->count_contents()) {
     $info_message = TEXT_VISITORS_CART;
   }
@@ -276,42 +184,12 @@ function session_win() {
         <?php
   }
 ?>
-      <?php
-      if (isset($_GET['pid'])) {
-      ?>
-        <tr>
-          <td> 
-          <table border="0" width="100%" cellspacing="0" cellpadding="2" summary="table">
-          <tr>     
-          <td colspan="2" valign="top" class="main">
-            <table border="0" class="infoBox" summary="table" cellpadding="1" cellspacing="0" width="75%" align="center">
-              <tr>
-                <td>
-                  <table border="0" width="100%" cellspacing="0" cellpadding="2" class="infoBoxContents" summary="table">
-                    <tr>
-                      <td class="main" colspan="2">
-                      <?php echo PREORDER_LOGIN_HEAD_TEXT;?> 
-                      </td>
-                    </tr>
-                  </table> 
-                </td>
-              </tr>
-            </table> 
-          </td>
-          </tr>
-          </table> 
-        </td>
-        </tr>
-      <?php }?> 
         <tr>
           <td>
           <table border="0" width="100%" cellspacing="0" cellpadding="2" summary="table">
             <tr>
-              <td colspan="2" align="center" class="main">
-              <?php if (!isset($_GET['pid'])) {?> 
-              <b><?php echo HEADING_RETURNING_CUSTOMER; ?></b>
-              <?php }?>  
-                <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxContents_logo" summary="table">
+              <td colspan="2" valign="top" class="main"><b><?php echo HEADING_RETURNING_CUSTOMER; ?></b>
+                  <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxContents_logo" summary="table">
                     <tr>
                       <td class="main" colspan="2"><?php echo TEXT_RETURNING_CUSTOMER; ?></td>
                     </tr>
@@ -332,15 +210,10 @@ function session_win() {
                   </table></td>
             </tr>
             <tr>
-              <td colspan="2" valign="top" class="main">
-              <?php if (!isset($_GET['pid'])) {?> 
-              <b><?php echo HEADING_NEW_CUSTOMER; ?></b>
-              <?php }?> 
-              </td>
+              <td colspan="2" valign="top" class="main"><b><?php echo HEADING_NEW_CUSTOMER; ?></b></td>
             </tr>
-            <?php if (!isset($_GET['pid'])) {?> 
             <tr>
-              <td height="50%" colspan="2" align="center">
+              <td height="50%" colspan="2" valign="top">
                     <table class="infoBoxContents_logo"  cellpadding="2" cellspacing="1" border="0" summary="table">
                       <tr><td class="main" valign="top"><?php echo TEXT_NEW_CUSTOMER . '<br><br>' . TEXT_NEW_CUSTOMER_INTRODUCTION; ?></td></tr>
                       <tr><td align="right">
@@ -360,7 +233,6 @@ function session_win() {
                     </table>
               </td>
             </tr>
-            <?php }?> 
             <tr>
               <td width="50%" align="right" valign="top"></td>
               <td width="50%" align="right" valign="top"></td>

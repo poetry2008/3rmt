@@ -8,7 +8,6 @@ class google implements engine {
   var $pageCount;
   var $resultCount;
   var $dbdriver;
-  var $context;
   //    <div id="bd"><div id="inf"><strong>bobhero</strong> で検索した結果　1～10件目 / 約452件 - 0.38秒</div>
   //  var $countPreg = "/<div\sid=\"bd\"><div\sid=\"inf\"><strong>.*<\/strong>(.*)<\/div>/";
   //var $countPreg = "/<div\s+id=resultStats>約\s+(.*)件中\s+\d+\s+ページ目<nobr>\s+.(.*)秒.&nbsp;<\/nobr><\/div>/";
@@ -21,9 +20,6 @@ class google implements engine {
     $this->keyword = $keyword;
     $this->keywordi =     preg_replace("/ +/","+",$keyword);
     $this->countLimit = $countLimit;
-    $opts=array('http'=> array('user_agent'=>'Mozilla/5.0 (Windows NT 6.1)
-        AppleWebKit/534.30 (KHTML, like Gecko) Chrome/12.0.742.112 Safari/534.30'));
-    $this->context = stream_context_create($opts);
     //    $this->preSearch();
   }
 
@@ -33,8 +29,7 @@ class google implements engine {
     $this->currentPage = 1;
     
     while($this->currentPage < $this->pageCount){
-      $tmpPage =
-        file_get_contents($this->makeUrl($this->currentPage),false,$this->context);
+      $tmpPage = file_get_contents($this->makeUrl($this->currentPage));
       $this->dbdriver->saveResult($this->parseResult($tmpPage));
     }
 
@@ -68,7 +63,7 @@ class google implements engine {
   }
   //找出有多少结果,算出有多少页
   function preSearch(){
-    $this->currentHtml = file_get_contents($this->makeUrl(),false,$this->context);
+    $this->currentHtml = file_get_contents($this->makeUrl());
     $this->currentPageNumber = 1;
     $this->getPageCount();
   }
@@ -90,8 +85,8 @@ class google implements engine {
   }
   function parseResult($html){
   	//截取 搜索 结果列表
-    $cutStart  = "<div id=\"ires\">";
-    $cutEnd  = '</ol>';
+    $cutStart  = "<ol>";
+    $cutEnd  = '</ol></div>';
     $html = getMiddle($cutStart,$cutEnd,$html);
     //区分 是否是自己的搜索结果
     if(preg_match("/.*\<hr[^>]*\>(.*)/",$html,$tmp_html)){
@@ -100,7 +95,7 @@ class google implements engine {
     //$html = @iconv("SHIFT-JIS","UTF-8//TRANSLIT//IGNORE",$html);
     //var_dump($html);
     //分割 
-    $resultArray = explode('<li class="g"',$html);
+    $resultArray = explode('<li class=g',$html);
 //    $parsePreg = "/<a\shref=\"(.*)\">(.*)<\/a><div>(.*)<\/div>.*/";
     $parsePreg =
       '/<h3[^>]*><a[^>]*href=\"([^"]*)\"(.*)<\/a><\/h3>.*<div[^>]*>(.*)<\/div>.*/';
@@ -143,8 +138,7 @@ class google implements engine {
 
   function getCurrentPageResult(){
   	//读取每个页面
-    $this->currentHtml =
-      file_get_contents($this->makeUrl($this->currentPageNumber),false,$this->context);
+    $this->currentHtml = file_get_contents($this->makeUrl($this->currentPageNumber));
     return $this->parseResult($this->currentHtml);
   }
 

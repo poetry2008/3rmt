@@ -118,7 +118,7 @@ cellpadding="2">
       </td>
     </tr>
     <tr>
-      <td class="smallText" height="25" width="230" colspan="5">
+      <td class="smallText" height="25" width="230">
       <?php echo TEXT_ORDER_START_DATE;?>
       <select name="s_y">
       <?php for($i=2002; $i<=date('Y'); $i++) { if($i == date('Y')){ echo '<option value="'.$i.'" selected>'.$i.'</option>'."\n" ; }else{ echo '<option value="'.$i.'">'.$i.'</option>'."\n" ;} } ?>
@@ -139,48 +139,9 @@ cellpadding="2">
       }
       ?>    
       </select>
-      <?php echo TEXT_ORDER_DAY;?>
-      &nbsp;&nbsp;&nbsp;&nbsp;
-      <?php echo TEXT_ORDER_END_DATE;?>
-      <select name="e_y">
-      <?php
-      for($i=2002; $i<=date('Y'); $i++) {
-        if($i == date('Y')){
-          echo '<option value="'.$i.'" selected>'.$i.'</option>'."\n" ;
-        }else{
-          echo '<option value="'.$i.'">'.$i.'</option>'."\n" ;
-        } 
-      }
-      ?>    
-      </select>
-      <?php echo TEXT_ORDER_YEAR;?>
-      <select name="e_m">
-      <?php
-      for($i=1; $i<13; $i++) {
-        if($i == date('m')){
-          echo '<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'" selected>'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n";
-        }else{
-          echo '<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'">'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n";
-        } 
-      }
-      ?>    
-      </select>
-      <?php echo TEXT_ORDER_MONTH;?>
-      <select name="e_d">
-      <?php
-      for($i=1; $i<32; $i++) {
-        if($i == date('d')){
-          echo '<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'" selected>'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n";
-        }else{
-          echo '<option value="'.str_pad($i,2,0,STR_PAD_LEFT).'">'.str_pad($i,2,0,STR_PAD_LEFT).'</option>'."\n";
-        } 
-      }
-      ?>    
-      </select>
-      <?php echo TEXT_ORDER_DAY;?>
-      </td>
+      <?php echo TEXT_ORDER_DAY;?></td>
 <!--      <td width="80" align="center">～</td>
--->     <!-- <td class="smallText" colspan="4"><?php echo TEXT_ORDER_END_DATE;?>
+-->      <td class="smallText" colspan="4"><?php echo TEXT_ORDER_END_DATE;?>
       <select name="e_y">
       <?php
       for($i=2002; $i<=date('Y'); $i++) {
@@ -216,17 +177,16 @@ cellpadding="2">
       }
       ?>    
       </select>
-      <?php echo TEXT_ORDER_DAY;?></td>--></tr>
+      <?php echo TEXT_ORDER_DAY;?></td></tr>
       <tr>
-       <td class="smallText" height="30" width="180"><?php echo HEADING_TITLE_ORDER_STATUS . ' ' .
-       tep_draw_pull_down_menu('order_status', tep_array_merge(array(array('id' => '', 'text' => TEXT_ALL_ORDERS)), $all_orders_statuses), '', ''); ?>
-       </td>
+       <td class="smallText" height="30"><?php echo HEADING_TITLE_ORDER_STATUS . ' ' .
+       tep_draw_pull_down_menu('order_status', tep_array_merge(array(array('id' => '', 'text' => TEXT_ALL_ORDERS)), $all_orders_statuses), '', ''); ?></td>
        <td height="30" width="180"><?php 
     echo tep_html_element_submit(TEXT_ORDER_CSV_OUTPUT,"onclick='change_action(\"".tep_href_link('orders_csv_exe.php','csv_exe=true', 'SSL')."\")'");
     ?>
        </td>
-       <td align="center" width="150">|</td>
-       <td class="smallText" height="30" width="180"><?php echo HEADING_TITLE_PREORDER_STATUS . ' ' .
+       <td align="center" width="80">|</td>
+       <td class="smallText" height="30" width="230"><?php echo HEADING_TITLE_PREORDER_STATUS . ' ' .
        tep_draw_pull_down_menu('preorder_status', tep_array_merge(array(array('id' => '',
                  'text' => TEXT_ALL_PREORDERS)), $all_preorders_statuses), '', ''); ?></td>
        <td height="30">

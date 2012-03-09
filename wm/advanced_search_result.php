@@ -173,8 +173,6 @@
                     p.products_price, 
                     p.products_tax_class_id, 
                     pd.site_id,
-                    pd.romaji,
-                    pd.preorder_status, 
                     p.products_price_offset, p.products_small_sum"; 
   /*
   if(isset($_GET['colors']) && !empty($_GET['colors'])) {

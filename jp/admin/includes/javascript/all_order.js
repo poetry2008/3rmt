@@ -209,28 +209,22 @@ function showRequest(formData, jqForm, options) {
 } 
 
 // 列表右侧的订单信息显示
-function showOrdersInfo(oID,ele,popup_type,param_str){
-  param_str = decodeURIComponent(param_str);
-  data_str = "oid="+oID+"&"+param_str; 
-  if (popup_type == 1) {
-    data_str += "&popup=1"; 
-    popup_num = 2; 
-    ele = ele.parentNode; 
-  }
+function showOrdersInfo(oID,ele){
+
   $.ajax({
 type:"POST",
-data:data_str,
+data:"oid="+oID,
 async:false, 
 url: 'ajax_orders.php?action=show_right_order_info',
 success: function(msg) {
 
 $('#orders_info_box').html(msg);
 if(document.documentElement.clientHeight < document.body.scrollHeight){
-offset = ele.offsetTop + ele.offsetHeight + $('#orders_info_box').height() > $('#orders_list_table').height()? ele.offsetTop+$("#orders_list_table").position().top-1-$('#orders_info_box').height()-$('#offsetHeight').height():ele.offsetTop+$("#orders_list_table").position().top+ele.offsetHeight;
+offset = ele.offsetTop + ele.offsetHeight + $('#orders_info_box').height() > $('#orders_list_table').height()? ele.offsetTop+$("#orders_list_table").position().top-$('#tep_site_filter').height()-$('#orders_info_box').height()-$('#offsetHeight').height():ele.offsetTop+$("#orders_list_table").position().top+ele.offsetHeight;
 $('#orders_info_box').css('top',offset).show();
 }else{
 if(ele.offsetTop+$("#orders_list_table").position().top+ele.offsetTop + ele.offsetHeight + $('#orders_info_box').height() > document.documentElement.clientHeight){
-offset = ele.offsetTop+$("#orders_list_table").position().top-$('#orders_info_box').height()-$('#offsetHeight').height()-1;
+offset = ele.offsetTop+$("#orders_list_table").position().top-$('#orders_info_box').height()-$('#offsetHeight').height()-ele.offsetHeight;
 $('#orders_info_box').css('top',offset).show();
 }else{
 offset = ele.offsetTop+$("#orders_list_table").position().top+ele.offsetHeight;
@@ -243,12 +237,9 @@ $('#orders_info_box').css('top',offset).show();
 }
 
 // 列表右侧的订单信息隐藏
-function hideOrdersInfo(popup_type){
-  if (popup_type == 1) {
-    popup_num = 1; 
-  }
-  $("#orders_info_box").html("");
-  $("#orders_info_box").hide();
+function hideOrdersInfo(){
+  $('#orders_info_box').html('');
+  $('#orders_info_box').hide();
 }
 
 //播放提示音，需要warn_sound
@@ -308,7 +299,6 @@ if (
 // 如果有新订单和修改
 // 改变背景颜色
 $('body').css('background-color', '#ffcc99');// rgb(255, 204, 153)
-$('.preorder_head').css('background-color', '#ffcc99');
 // 在列表插入新订单
 newOrders(prev_customer_action != '' ? prev_customer_action : cfg_last_customer_action);
 // 修改最后检查时间
@@ -801,30 +791,3 @@ $(document).ready(function(){
     $(".dataTableContent").find("input|[type=checkbox][checked]").parent().parent().each(function(){
       if($(this).attr('class')!='dataTableRowSelected'){$(this).attr('style','background-color: rgb(240, 128, 128);')}})
     });
-
-function delete_order_info(oID, param_str)
-{
-  param_str = decodeURIComponent(param_str);
-  $.ajax({
-type:"POST",
-data:'oID='+oID+'&'+param_str,
-async:false, 
-url: 'ajax_orders.php?action=show_del_info',
-success: function(msg) {
-  $('#order_del').html(msg);
-}
-});
-}
-function cancel_del_order_info(oID, param_str)
-{
-  param_str = decodeURIComponent(param_str);
-$.ajax({
-type:"POST",
-data:'oID='+oID+'&'+param_str,
-async:false, 
-url: 'ajax_orders.php?action=cancel_del_info',
-success: function(msg) {
-  $('#order_del').html(msg);
-}
-});
-}

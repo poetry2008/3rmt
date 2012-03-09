@@ -51,7 +51,7 @@ case update:
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
   <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
-  <title><?php echo TEXT_LIST_RISUTOHYOUZI;?></title>
+  <title>リスト表示</title>
   <style>
 .dataTableHeadingRow {
 background-color: #808080;
@@ -84,8 +84,6 @@ color: #000000;
   </style>
   <script type="text/javascript" src="includes/javascript/jquery.js"></script>
   <script type="text/javascript" src="includes/javascript/udlr.js"></script>
-  <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-  <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
   <script type="text/javascript">
     // true = disabled, false = enabled
     var products = new Array();
@@ -282,12 +280,6 @@ color: #000000;
   </script>
 </head>
 <body  onload="">
-<?php
-if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
-    <script language='javascript'>
-          one_time_pwd('<?php echo $page_name;?>');
-    </script>
-<?php }?>
 <?php 
   $cid = $_GET['cpath'];
   
@@ -422,7 +414,7 @@ $rows = $count[0]>count($products)?$count[0]:count($products);
     <td class="dataTableContent" id="td_product_<?php echo $k;?>">
 <?php //if($k<count($products)) {?>
       <select class="productSelect" name="product[<?php echo $k;?>]" id="product_<?php echo $k;?>">
-        <option value='0'><?php echo TEXT_LIST_ENTAKUSHITEKUDASAI;?></option>
+        <option value='0'>--選択してください--</option>
 <?php foreach ($products as $ok => $op) {?>
         <option value='<?php echo $op['products_id'];?>'><?php echo $op['products_name'];?></option>
 <?php }?>
@@ -433,9 +425,7 @@ $rows = $count[0]>count($products)?$count[0]:count($products);
 <?php //if($k<count($products)) {?>
       <input pos="<?php echo $k;?>_0" class="udlr kakuukosuu_input" type="text" size='10' name="kakuukosuu[<?php echo $k;?>]" id="kakuukosuu_<?php echo $k;?>" value="" disabled>
 <?php //}?>
-      <!--<a href="javascript:void(0)"
-      onclick="$('.kakuukosuu_input').val($('#kakuukosuu_<?php echo
-      $k;?>').val())"><?php echo TEXT_LIST_TOUITU;?></a>-->
+      <!--<a href="javascript:void(0)" onclick="$('.kakuukosuu_input').val($('#kakuukosuu_<?php echo $k;?>').val())">統一</a>-->
       </td>
     <td class="dataTableContent" id="td_kakaku_<?php echo $k;?>">
 <?php //if($k<count($products)) {?>
@@ -444,18 +434,16 @@ $rows = $count[0]>count($products)?$count[0]:count($products);
       </td>
     <!--<td>
 <?php if ($k) {?>
-        <input type='button' onclick="exchange_product(<?php echo $k;?>)"
-          value='<?php echo TEXT_LIST_DISTPLAY_ADD;?>'>
+        <input type='button' onclick="exchange_product(<?php echo $k;?>)" value='↑'>
 <?php }?>
     </td>-->
   </tr>
 <?php }}?>
   </table>
     <input type="hidden" name="fullpath" value="<?php echo $_GET['fullpath']?>">
-    <input type="submit" value="<?php echo TEXT_LIST_KETTEI;?>">
-    <input type="button" value="<?php echo TEXT_LIST_RISETTO;?>" onclick="clear_page()">
-    <!--<input type="button" value="<?php echo TEXT_LIST_RISETTO;?>" onclick="reset_page()">-->
+    <input type="submit" value="決定">
+    <input type="button" value="リセット" onclick="clear_page()">
+    <!--<input type="button" value="リセット" onclick="reset_page()">-->
   </form>
-<?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
 </body>
 </html>

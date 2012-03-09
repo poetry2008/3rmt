@@ -33,7 +33,7 @@ define('TEXT_NO_RESULT','有効なデータが足りません');
 define('TEXT_SEARCH_ORDER','算出方法');
 define('TEXT_SEARCH_CATEGORY','カテゴリー');
 define('TEXT_SEARCH_SITE','サイト');
-define('TEXT_SEARCH_WHERE','表示方法');
+define('TEXT_SEARCH_WHERE','検索条件');
 define('TEXT_SEARCH_DATE','集計期間');
 define('TEXT_SEARCH_DATE_START','開始日');
 define('TEXT_SEARCH_DATE_END','終了日');

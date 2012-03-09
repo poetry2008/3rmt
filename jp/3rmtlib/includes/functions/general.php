@@ -1279,11 +1279,11 @@ function forward404Unless($condition)
 
     return $count;
   }
-/*
+
   function tep_count_payment_modules() {
     return tep_count_modules(MODULE_PAYMENT_INSTALLED);
   }
-*/
+
   function tep_count_shipping_modules() {
     return tep_count_modules(MODULE_SHIPPING_INSTALLED);
   }
@@ -1511,7 +1511,7 @@ function forward404Unless($condition)
     number_format($p['products_attention_1_3'] * $cnt);
   }
   
-  function tep_get_torihiki_select_by_products($product_ids = null,$select_name='')
+  function tep_get_torihiki_select_by_products($product_ids = null)
   {
     $torihiki_list = array();
     $torihiki_array = tep_get_torihiki_by_products($product_ids);
@@ -1521,11 +1521,7 @@ function forward404Unless($condition)
       );
     }
     if (!isset($torihikihouhou)) $torihikihouhou=NULL;
-    if($select_name){
-    return tep_draw_pull_down_menu($select_name, $torihiki_list, $torihikihouhou);
-    }else{
     return tep_draw_pull_down_menu('torihikihouhou', $torihiki_list, $torihikihouhou);
-    }
   }
   
   function tep_get_torihiki_by_products($product_ids = null)
@@ -1703,35 +1699,19 @@ function forward404Unless($condition)
     }
     switch (str_replace('/', '', $_SERVER['SCRIPT_NAME'])) {
       case FILENAME_FAQ:
-        global $current_faq_category_id;
+         global $current_faq_category_id;
            if($faq_category_info = tep_get_faq_category_info($current_faq_category_id)){
-             $sub_len = intval(MAX_META_FAQ_TITLE) - mb_strlen(' | '.TEXT_FAQ.' - '.STORE_NAME,'UTF-8');
-             if($sub_len>0){
-               $title = mb_substr(strip_tags($faq_category_info['title']),0,$sub_len,'UTF-8')
-               .' | '.TEXT_FAQ.' - '.STORE_NAME;
-             }else{
-               $title = ' | '.TEXT_FAQ.' - '.STORE_NAME;
-             }
+             $title = mb_substr(strip_tags($faq_category_info['title']),0,30,'UTF-8');
              $keywords = strip_tags($faq_category_info['keywords']);
-             $description = mb_substr(strip_tags($faq_category_info['description']),0,
-                 MAX_META_FAQ_DESCRIPTION,'UTF-8');
-             $use_mate_seo = true;
+             $description = strip_tags($faq_category_info['description']);
            }
         break;
       case FILENAME_FAQ_INFO:
          global $faq_question_id;
            if($faq_question_info = tep_get_faq_question_info($faq_question_id)){
-             $sub_len = intval(MAX_META_FAQ_TITLE) -  mb_strlen(' - '.STORE_NAME,'UTF-8');
-             if($sub_len>0){
-               $title = mb_substr(strip_tags($faq_question_info['ask']),0,$sub_len,'UTF-8').
-               ' - '.STORE_NAME;
-             }else{
-               $title = ' - '.STORE_NAME;
-             }
+             $title = mb_substr(strip_tags($faq_question_info['ask']),0,30,'UTF-8');
              $keywords = strip_tags($faq_question_info['keywords']);
-             $description = mb_substr(strip_tags($faq_question_info['answer']),0,
-                 MAX_META_FAQ_DESCRIPTION,'UTF-8');
-             $use_mate_seo = true;
+             $description = mb_substr(strip_tags($faq_question_info['answer']),0,80,'UTF-8');
            }
         break;
       case FILENAME_DEFAULT:
@@ -1900,12 +1880,10 @@ function forward404Unless($condition)
       case FILENAME_PASSWORD_FORGOTTEN:
       case FILENAME_ADVANCED_SEARCH_RESULT:
       case FILENAME_CREATE_ACCOUNT_SUCCESS:
-      case FILENAME_FAQ:
         $title = TITLE;
         break;
     }
     //exit($title);
-    if(!$use_mate_seo){
     $script_name = tep_get_filename(str_replace('/', '', $_SERVER['SCRIPT_NAME']));
     
 
@@ -2202,7 +2180,6 @@ function forward404Unless($condition)
     $keywords = str_replace(' &raquo; ', ' ', $keywords); 
     $description = str_replace(' &raquo; ', ' ', $description); 
     $copyright = str_replace(' &raquo; ', ' ', $copyright); 
-    }
   ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html <?php echo HTML_PARAMS; ?>>
@@ -2633,8 +2610,7 @@ function tep_unlink_temp_dir($dir)
                pd.site_id,
                pd.romaji, 
                pd.products_url,
-               pd.products_viewed,
-               pd.preorder_status
+               pd.products_viewed
         FROM " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
         WHERE p.products_id = '" . $pid . "' 
           AND pd.products_id = '" .  $pid . "'" . " 
@@ -2692,8 +2668,7 @@ function tep_unlink_temp_dir($dir)
                pd.romaji, 
                pd.option_image_type, 
                pd.products_url,
-               pd.products_viewed,
-               pd.preorder_status
+               pd.products_viewed
         FROM " .  TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
         WHERE p.products_id = '" . $pid . "' 
           AND pd.products_status != '0' 
@@ -2780,7 +2755,7 @@ function tep_unlink_temp_dir($dir)
     }
     return $questions;
   }
-/*  
+  
   function calc_buy_handle($total)
   {
     $buy_table_fee = split("[:,]", MODULE_PAYMENT_BUYING_COST);
@@ -2797,7 +2772,7 @@ function tep_unlink_temp_dir($dir)
     }
     return $buying_fee; 
   }
-*/
+
 function tep_orders_status_finished($osid){
     $query = tep_db_query("
         select * 
@@ -3054,6 +3029,15 @@ function orders_updated($orders_id) {
 function replace_store_name($str) {
   return str_replace('#STORE_NAME#', STORE_NAME, $str);
 }
+/*
+function replace_category_seo($input_str, $category_name) 
+{
+    global $_GET, $request_type, $breadcrumb;
+    $page    = isset($_GET['page']) && intval($_GET['page']) ? intval($_GET['page']) : 1 ;
+    $search  = array('#STORE_NAME#','#BREADCRUMB#', '#SEO_PAGE#', '#CATEGORY_NAME#');
+    $replace = array(STORE_NAME,$breadcrumb->trail_title(' &raquo; '), $page .  'ページ目', $category_name);
+    return str_replace($search, $replace, $input_str);
+}*/
 
 function tep_get_categories_id_by_parent_id($categories_id, $languages_id = 4) {
   $arr = array();
@@ -3808,6 +3792,27 @@ function tep_only_sell_product(){
   return true;
 
 }
+
+function tep_whether_show_payment($payment_key, $guest_chk) {
+
+  $payment_arr = unserialize($payment_key);  
+  
+  if (empty($payment_arr)) {
+    return false; 
+  }
+  if (count($payment_arr) == 1) { 
+    if ($payment_arr[0] == 1) {
+      if ($guest_chk != 0) {
+        return false; 
+      }
+    } else {
+      if ($guest_chk == 0) {
+        return false; 
+      }
+    }
+  }
+  return true;
+}
   
 function tep_get_all_subcategories($parent_id) 
 {
@@ -4174,7 +4179,7 @@ function preorders_updated($orders_id) {
   
 function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $exists_single = false) 
 {
-   global $currency, $currencies, $payment_modules; 
+   global $currency, $currencies; 
    $is_active = 1; 
    if ($tmp_cid) {
      $is_active = 0; 
@@ -4184,8 +4189,8 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
    } else {
      $customers_id = $cid; 
    }
-   $cpayment = $payment_modules->getModule($pInfo['pre_payment']); 
-   $payment_method = $cpayment->title;
+   $payment_module = new $pInfo['pre_payment']; 
+   $payment_method = $payment_module->title;
    $orders_status = DEFAULT_PREORDERS_STATUS_ID;
    $orders_status_raw = tep_db_query("select * from ".TABLE_PREORDERS_STATUS." where orders_status_id = '".$orders_status."'"); 
    $orders_status_res = tep_db_fetch_array($orders_status_raw);
@@ -4266,6 +4271,7 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
                            'code_fee' => 0, 
                            'predate' => $pInfo['predate'].' 00:00:00',
                            'is_active' => $is_active,
+                           'send_mail_time' => time(),
                            'delivery_name'  => tep_get_fullname($shipping_address['entry_firstname'],$shipping_address['entry_lastname']), 
                            'delivery_company' => $shipping_address['entry_company'],
                            'delivery_street_address' => $shipping_address['entry_street_address'],
@@ -4286,13 +4292,9 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
                            'billing_country' => $billing_address['countries_name'],
                            'billing_telephone' => $billing_address['entry_telephone'], 
                            'billing_address_format_id' => $billing_address['address_format_id'],  
-                           'comment_msg' => $pInfo['yourmessage'], 
+                           'comment_msg' => $pInfo['yourmessage'],  
                            );
-   
-   $payment_modules->deal_preorder_info($pInfo, $sql_data_array); 
-   $sh_comments = ''; 
-   $sh_comments = $payment_modules->deal_preorder_additional($pInfo, $sql_data_array); 
-   
+    
    tep_db_perform(TABLE_PREORDERS, $sql_data_array);
 
    require(DIR_WS_CLASSES.'order_total.php');
@@ -4311,6 +4313,18 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
    }
   
    $customer_notification = (SEND_EMAILS == 'true') ? '1' : '0';
+   $sh_comments = ''; 
+   if ($pInfo['pre_payment'] == 'convenience_store') {
+     $sh_comments .= 'PCメールアドレス:' .$pInfo['convenience_email']; 
+   }
+   if ($pInfo['pre_payment'] == 'rakuten_bank') {
+     $sh_comments .= '電話番号:'.$pInfo['rakuten_telnumber']; 
+   }
+   if (!empty($sh_comments)) {
+     $sh_comments .= "\n"; 
+   }
+   
+   $sh_comments .= $pInfo['yourmessage']; 
    
    $sql_data_array = array('orders_id' => $order_id, 
                            'orders_status_id' => $orders_status, 
@@ -4362,7 +4376,7 @@ function tep_get_preorder_end_num()
   
   return '01';
 }
-/*
+
 function tep_preorder_get_payment_list()
 {
   global $language; 
@@ -4385,19 +4399,30 @@ function tep_preorder_get_payment_list()
   }
   return $return_arr;
 }
-*/
-/*
-function tep_preorder_get_payment_type($payment_list, $payment_method)
+
+function tep_preorder_get_payment_type($payment_list, $payment_method, $return_single = false)
 {
   foreach ($payment_list as $key => $value) {
     if ($value == $payment_method) {
-      return $key; 
+      if ($return_single) {
+        return $key; 
+      } else {
+        if ($key == 'telecom') {
+          return 1; 
+        } else if ($key == 'paypal') {
+          return 2; 
+        }
+      }
     } 
   }
-  return ''; 
+  
+  if ($return_single) {
+    return ''; 
+  } else {
+    return 0;
+  }
 }
-*/
-/*
+
 function preorder_get_mail_string($payment_code, $mailoption) {
   $mailstring = constant("MODULE_PAYMENT_".strtoupper($payment_code).'_MAILSTRING');
   foreach ($mailoption as $key => $value) {
@@ -4406,433 +4431,8 @@ function preorder_get_mail_string($payment_code, $mailoption) {
   
   return $mailstring;
 }
-*/
+
 function preorder_last_customer_action() {
   tep_db_query("update ".TABLE_CONFIGURATION." set configuration_value=now() where configuration_key='PREORDER_LAST_CUSTOMER_ACTION'");
 }
 
-function tep_whether_show_preorder_payment($limit_setting) {
-  $payment_arr = unserialize($limit_setting);  
-  
-  if (empty($payment_arr)) {
-    return false; 
-  }
-  $tmp_arr = array(); 
-  
-  foreach ($payment_arr as $pkey => $pvalue) {
-    if (!empty($pvalue)) {
-      $tmp_arr[] = $pvalue; 
-    }
-  }
-  
-  if (empty($tmp_arr)) {
-    return false; 
-  }
-  
-  $payment_arr = $tmp_arr;
-
-  $num = count($payment_arr); 
-  if ($num == 1) {
-    if (empty($payment_arr[0])) {
-      return false; 
-    }
-  }
-  
-  if ($num == 2) {
-    $i = 0; 
-    foreach ($payment_arr as $key => $value) {
-      if (!empty($value)) {
-        $i++; 
-      }
-    }
-    if ($i == $num) {
-      return true; 
-    } else {
-      foreach ($payment_arr as $skey => $svalue) {
-        if (!empty($svalue)) {
-          if ($svalue == 1) {
-            if (!isset($_SESSION['customer_id'])) {
-              return false; 
-            } else  if (isset($_SESSION['customer_id']) && ($_SESSION['guestchk'] == '1')) {
-              return false; 
-            }
-          } else if ($svalue == 2) {
-            if (isset($_SESSION['customer_id']) && ($_SESSION['guestchk'] == '0')) {
-              return false; 
-            }
-          }
-          break; 
-        }
-      }  
-    }
-  } else {
-    if ($payment_arr[0] == 1) {
-      if (!isset($_SESSION['customer_id'])) {
-        return false; 
-      } else  if (isset($_SESSION['customer_id']) && ($_SESSION['guestchk'] == '1')) {
-        return false; 
-      }
-    } else if ($payment_arr[0] == 2) {
-      if (isset($_SESSION['customer_id']) && ($_SESSION['guestchk'] == '0')) {
-        return false; 
-      }
-    }
-  }
-
-  return true;
-}
-
-function tep_preorder_get_products_id_by_param()
-{
-   global $languages_id;
-   
-   $category_array = array();
-   
-   if (!isset($_GET['fromaji'])) {
-     return false; 
-   }
-   
-   if (!isset($_GET['promaji'])) {
-     return false; 
-   }
-   
-   $category_query = tep_db_query("select cd.categories_id from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd where c.categories_id = cd.categories_id and c.parent_id = '0' and cd.romaji = '".urldecode($_GET['fromaji'])."' and cd.language_id = '".$languages_id."' and (cd.site_id = '0' or cd.site_id = '".SITE_ID."') order by cd.site_id desc limit 1");
-   $category = tep_db_fetch_array($category_query);
-   if ($category) {
-     $category_array[] = $category['categories_id']; 
-     if (isset($_GET['sromaji'])) {
-       $child_category_query = tep_db_query("select cd.categories_id from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd where c.categories_id = cd.categories_id and c.parent_id = '".$category['categories_id']."' and cd.romaji = '".urldecode($_GET['sromaji'])."' and cd.language_id = '".$languages_id."' and (cd.site_id = '0' or cd.site_id = '".SITE_ID."') order by cd.site_id desc limit 1");
-       $child_category = tep_db_fetch_array($child_category_query);
-       
-       if ($child_category) {
-         $category_array[] = $child_category['categories_id']; 
-         if (isset($_GET['tromaji'])) {
-           $child_child_category_query = tep_db_query("select cd.categories_id from ".TABLE_CATEGORIES." c, ".TABLE_CATEGORIES_DESCRIPTION." cd where c.categories_id = cd.categories_id and c.parent_id = '".$child_category['categories_id']."' and cd.romaji = '".urldecode($_GET['tromaji'])."' and cd.language_id = '".$languages_id."' and (cd.site_id = '0' or cd.site_id = '".SITE_ID."') order by cd.site_id desc limit 1");
-           $child_child_category = tep_db_fetch_array($child_child_category_query);
-          
-           if ($child_child_category) {
-             $category_array[] = $child_child_category['categories_id']; 
-           }
-         }
-       }
-     }
-   }
-  
-   if (!empty($category_array)) {
-     $count_num = count($category_array); 
-     $product_info_query = tep_db_query("select pd.products_id from ".TABLE_PRODUCTS_DESCRIPTION." pd where pd.language_id = '".$languages_id."' and pd.romaji = '".urldecode($_GET['promaji'])."' and (pd.site_id = '0' or pd.site_id = '".SITE_ID."') group by products_id order by pd.site_id desc");
-     if (tep_db_num_rows($product_info_query) > 0) {
-       while ($product_info = tep_db_fetch_array($product_info_query)) {
-         $product_to_category_query = tep_db_query("select categories_id from ".TABLE_PRODUCTS_TO_CATEGORIES." where products_id = '".$product_info['products_id']."'"); 
-         while ($product_to_category = tep_db_fetch_array($product_to_category_query)) {
-           if ($product_to_category['categories_id'] == $category_array[$count_num-1]) {
-             return $product_info['products_id']; 
-           }
-         }
-       }
-     }
-   }
-   
-   return false;
-}
-function tep_get_torihiki_date_radio($start_time,$radio_name="torihiki_time"){
-  $arr = array();
-  $time_str = date('H:i',$start_time);
-  $time_arr = explode(':',$time_str);
-  $hour = $time_arr[0];
-  $mim_start = $time_arr[1];
-  $show_row = 0;
-  for($hour;$hour<24;$hour++){
-    for($mim_start;$mim_start<60;){
-      if($show_row ==0 ){
-        if($mim_start < 15){
-          $mim_start = 15;
-          $arr[]=null;
-        }else if($mim_start < 30){
-          $mim_start = 30;
-        }else if($mim_start < 30){
-        }else if($mim_start < 30){
-        }else if($mim_start < 45){
-          $mim_start = 45;
-          $arr[]=null;
-        }else if($mim_start < 30){
-        }else if($mim_start < 30){
-        }else if($mim_start < 30){
-        }else if($mim_start >= 45){
-          $mim_start = 0;
-          break;
-        }
-      }
-      $s_start = $mim_start;
-      $mim_start+=14;
-      $e_start = $mim_start;
-      $return_str = "<input type='radio' name='".$radio_name."' value='".
-           sprintf('%02d',$hour).":".sprintf('%02d',$s_start)."-".
-           sprintf('%02d',$hour).":".sprintf('%02d',$e_start)."'>&nbsp;&nbsp;";
-      $return_str .= sprintf('%02d',$hour)."時".sprintf('%02d',$s_start)."分";
-      $return_str .= " ～ ";
-      $return_str .= sprintf('%02d',$hour)."時".sprintf('%02d',$e_start)."分";
-      $show_row ++;
-      $mim_start++;
-      $arr[]=$return_str;
-    }
-    $mim_start = 0;
-  }
-  return $arr;
-}
-
-
-
-
-
-
-/*
-  取得唯一值
-*/
-
-
-//以下是配送使用的方法
-  /* 
-  function tep_get_address_by_customers_id($customers_id, $address_id = 1, $html = false, $boln = '', $eoln = "\n") {
-//ccdd
-    $address_sql = "select address_book_id,entry_firstname as firstname,
-        entry_lastname as lastname, entry_firstname_f as firstname_f,
-        entry_lastname_f as lastname_f, entry_company as company,
-        entry_street_address as street_address, entry_suburb as suburb, entry_city
-        as city, entry_postcode as postcode, entry_state as state, entry_zone_id as
-        zone_id, entry_country_id as country_id, entry_telephone as telephone from "
-        . TABLE_ADDRESS_BOOK . " where customers_id = '" . (int)$customers_id . "'";
-    $res_arr = array();
-    $address_query = tep_db_query($address_sql);
-    while($address = tep_db_fetch_array($address_query)){
-      $temp_arr = array();
-      $format_id = tep_get_address_format_id($address['country_id']);
-      $temp_arr['text'] = tep_address_format($format_id, $address, $html, $boln, $eoln);
-      $temp_arr['value'] = $address['address_book_id']; 
-      $res_arr[] = $temp_arr;
-    
-    }
-    return $res_arr;
-  }
-
-
-function tep_get_address_by_cid_aid($customers_id, $address_id = 1, $html = false, $boln = '', $eoln = "\n") {
-//ccdd
-    $address_sql = "select address_book_id,entry_firstname as firstname,
-        entry_lastname as lastname, entry_firstname_f as firstname_f,
-        entry_lastname_f as lastname_f, entry_company as company,
-        entry_street_address as street_address, entry_suburb as suburb, entry_city
-        as city, entry_postcode as postcode, entry_state as state, entry_zone_id as
-        zone_id, entry_country_id as country_id, entry_telephone as telephone from "
-        . TABLE_ADDRESS_BOOK . " where customers_id = '" . (int)$customers_id . "' 
-        and address_book_id ='".$address_id."'";
-    $res_arr = array();
-    $address_query = tep_db_query($address_sql);
-    while($address = tep_db_fetch_array($address_query)){
-      $temp_arr = array();
-      $format_id = tep_get_address_format_id($address['country_id']);
-      $temp_arr['text'] = tep_address_format($format_id, $address, $html, $boln, $eoln);
-      $temp_arr['value'] = $address['address_book_id']; 
-      $res_arr[] = $temp_arr;
-    
-    }
-    return $res_arr;
-  }
- */
-  function tep_get_products_list_by_order_id($oid){
-  $sql = "select * from " . TABLE_ORDERS_PRODUCTS . " where orders_id
-    = '" . $oid. "'";
-  $query = tep_db_query($sql);
-  $products_list = array();
-  while($row = tep_db_fetch_array($query)){
-    $products_list[] = $row;
-  }
-  return $products_list;
-}
-/*
-function tep_get_graph_axis_info() 
-{
-   $time_array = array();
-   $now_time = strtotime(date('Y-m-d H:00:00', time())); 
-   $now_time = strtotime('2011-12-17 10:00:00'); 
-   $time_str = strtotime('-1 hours', $now_time); 
-   $time_array[] = array($time_str, date('G', $time_str), date('Y-m-d H:i:s', $time_str));  
-   $time_array[] = array($now_time, date('G', $now_time), date('Y-m-d H:i:s', $now_time));  
-   
-   for($i=1; $i<=24; $i++) {
-     $time_str = strtotime('+ '.$i.' hours', $now_time); 
-     $hour_str = date('G', $time_str); 
-     $time_array[] = array($time_str, $hour_str, date('Y-m-d H:i:s', $time_str));  
-   }
-   return $time_array;
-}
-
-function tep_get_graph_value_info()
-{
-  global $languages_id;
-  $axis_info_array = tep_get_graph_axis_info();
-  $orders_status_array = array();
-  $axis_value_array = array();
-
-  $orders_status_raw = tep_db_query("select orders_status_id from ".TABLE_ORDERS_STATUS." where is_thzk = '1' and language_id = '".$languages_id."'"); 
-  while ($orders_status = tep_db_fetch_array($orders_status_raw)) {
-    $orders_status_array[] = $orders_status['orders_status_id']; 
-  }
-  foreach ($axis_info_array as $key => $value) {
-    $time_start = date('Y-m-d H:00:00', $value[0]);
-    $time_end = date('Y-m-d H:59:59', $value[0]);
-    if (!empty($orders_status_array)) {
-      $orders_products_count_raw = tep_db_query("select count(distinct o.orders_id) as total from ".TABLE_ORDERS." o, ".TABLE_ORDERS_PRODUCTS." op where o.orders_id = op.orders_id and op.torihiki_date >= '".$time_start."' and op.torihiki_date_end <= '".$time_end."' and o.orders_status in (".implode(',', $orders_status_array).") and o.language_id = '".$languages_id."' and o.site_id = '".SITE_ID."'"); 
-      $orders_products_count = tep_db_fetch_array($orders_products_count_raw);  
-      $axis_value_array[] = (int)$orders_products_count['total']; 
-    } else {
-      $axis_value_array[] = 0;      
-    }
-  }
-  return $axis_value_array;
-}
-*/
-//３１号删掉{{
-function tep_whether_show_payment(){
-  return true;
-}
-function check_money_limit() {
-  return false;
-}
-//}}
-
-
-//统一的输出 
-function tep_payment_out_selection(){
-global $selection;
-global $payment_modules;
-global $order;
-?>
-<!-- selection start -->
-<div class="checkout_payment_info">
-  <?php
-   //如果大于1个支付方法需要用户选择 ，如果小于则不需要选择了
-    if (sizeof($selection) > 1) {
-      echo "<div>";
-      echo '<div class="float_left">'.TEXT_SELECT_PAYMENT_METHOD."</div>";
-      echo '<div class="txt_right"><b>'.TITLE_PLEASE_SELECT.'</b><br>'.tep_image(DIR_WS_IMAGES . 'arrow_east_south.gif').'</div> ';
-      echo "</div> ";
-    }else {
-      echo "<div>";
-      echo '<div class="float_left">';
-      echo TEXT_ENTER_PAYMENT_INFORMATION;
-      echo '</div><div></div>';
-      echo "</div>";
-    }
-  ?>
-  <!-- loop start  -->
-<?php  
-     if(isset($_SESSION['payment_error'])){
-	 ?>
-     <div class="box_waring">
-     <?php
-     if(is_array($_SESSION['payment_error'])){
-           foreach($_SESSION['payment_error'] as $key=>$value){
-               if (is_array($value)) {
-                 echo $value[0]; 
-               } else {
-                 echo $selection[strtoupper($key)]['module'];
-                 echo TEXT_ERROR_PAYMENT_SUPPLY;
-                 echo $value;
-               }
-           }
-         }else{
-           echo $_SESSION['payment_error'];
-         }
-         unset($_SESSION['payment_error']);
-     ?>
-     </div><br>
-     <?php
-	 }
-    foreach ($selection as $key=>$singleSelection){
-      //判断支付范围 
-      if($payment_modules->moneyInRange($singleSelection['id'],$order->info['total'])){
-	continue;
-      }
-      if(!$payment_modules->showToUser($singleSelection['id'],$_SESSION['guestchk'])){
-        continue;
-      }
-?>
-	<div>
-       
-		<div class="box_content_title <?php if($_SESSION['payment']==$singleSelection['id']) { echo 'box_content_title_selected';}?> "  >
-			<div class="frame_w70"><b><?php echo $singleSelection['module'];?></b></div>
-			<div class="float_right">
-            	<?php echo tep_draw_radio_field('payment',$singleSelection['id'] ,$_SESSION['payment']==$singleSelection['id']); ?>
-			</div>
-		</div>
-		<div>
-                <p class="cp_description"> <?php  echo $singleSelection['description'];?></p>
-				<div class="cp_content">
-                	<div style="display: none;"  class="rowHide rowHide_<?php echo $singleSelection['id'];?>">
-                    <?php echo $singleSelection['fields_description']; 
-                    foreach ($singleSelection['fields'] as $key2=>$field){
-					?>
-                                                                                  
-                        <div class="txt_input_box">
-                        <?php if($field['title']){ ?>
-                            <div class="frame_title"><?php echo $field['title'];?></div>
-                            <?php }?>
-                            <div class="float_left"><?php echo $field['field'];?><small><font color="#AE0E30"><?php echo $field['message'];?></font></small></div>
-                        </div>
-					<?php 
-                                      }
-                                         echo $singleSelection['footer'];
-					?>
-					</div>
-					<div><?php echo $singleSelection['codefee'];?></div>
-				</div>
-		</div>
-	</div>
-<?
-    }
-?>
-<!-- loop end  -->
-</div>
-
-<!-- selection end -->
-<?php
-  }
-
-
-function tep_is_member_customer($customer_id){
-  $sql = "select customers_guest_chk from ".TABLE_CUSTOMERS." 
-    where customers_id='".$customer_id."' 
-    and site_id ='".SITE_ID."' 
-    and customers_guest_chk = '0' 
-    limit 1";
-  $query = tep_db_query($sql);
-  if($row = tep_db_fetch_array($query)){
-    return true;
-  }else{
-    return false;
-  }
-}
-
-function get_strip_campaign_info($c_str)
-{
-  $c_str = str_replace('　', '', $c_str);
-  $c_str = str_replace(' ', '', $c_str);
-  $arr = array(
-      'Ａ','Ｂ','Ｃ','Ｄ','Ｅ','Ｆ','Ｇ','Ｈ','Ｉ','Ｊ','Ｋ','Ｌ','Ｍ','Ｎ','Ｏ','Ｐ','Ｑ','Ｒ','Ｓ','Ｔ','Ｕ','Ｖ','Ｗ','Ｘ','Ｙ','Ｚ',
-      'ａ','ｂ','ｃ','ｄ','ｅ','ｆ','ｇ','ｈ','ｉ','ｊ','ｋ','ｌ','ｍ','ｎ','ｏ','ｐ','ｑ','ｒ','ｓ','ｔ','ｕ','ｖ','ｗ','ｘ','ｙ','ｚ',
-      '１','２','３','４','５','６','７','８','９','０',
-      '　'
-    );
-  $arr2 = array(
-      'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
-      'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
-      '1','2','3','4','5','6','7','8','9','0',
-      ' '
-  );
-  
-  $c_str = str_replace($arr, $arr2, $c_str);
-  $c_str = preg_replace('/[^0-9a-zA-Z]/','',$c_str);
-  
-  return $c_str;
-}

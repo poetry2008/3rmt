@@ -25,5 +25,4 @@ define('FORM_SELL_TEXT', '売');
 define('FORM_BUY_TEXT', '買');
 define('FORM_MIX_TEXT', '混');
 define('FORM_PREORDER_TEXT', '予');
-define('TEXT_PAYMENT_EMAIL_TEMPLATE','プリントメールのテンプレート');
 ?>
