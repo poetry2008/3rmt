@@ -2341,14 +2341,6 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
           }
         }
               
-              if (isset($order->products[$i]['attributes']) && $order->products[$i]['attributes'] && ($k = sizeof($order->products[$i]['attributes'])) > 0) {
-                for ($j = 0; $j < $k; $j++) {
-                  echo '<br><nobr><small>&nbsp;<i> - ' . $order->products[$i]['attributes'][$j]['option'] . ': ' . $order->products[$i]['attributes'][$j]['value'];
-                  if ($order->products[$i]['attributes'][$j]['price'] != '0') echo ' (' . $order->products[$i]['attributes'][$j]['prefix'] . $currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . ')<br>';
-                  echo '</i></small></nobr>';
-                }
-              }
-
               if ( DISPLAY_PRICE_WITH_TAX == 'true' ) {
                 $price_with_tax = $currencies->format(
                     tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']),
