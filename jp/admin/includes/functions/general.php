@@ -1298,7 +1298,7 @@ function tep_remove_product($product_id) {
   tep_db_query("delete from " . TABLE_PRODUCTS . " where products_id = '" . tep_db_input($product_id) . "'");
   tep_db_query("delete from " . TABLE_PRODUCTS_TO_CATEGORIES . " where products_id = '" . tep_db_input($product_id) . "'");
   tep_db_query("delete from " . TABLE_PRODUCTS_DESCRIPTION . " where products_id = '" . tep_db_input($product_id) . "'");
-  tep_db_query("delete from " . TABLE_PRODUCTS_ATTRIBUTES . " where products_id = '" . tep_db_input($product_id) . "'");
+  //tep_db_query("delete from " . TABLE_PRODUCTS_ATTRIBUTES . " where products_id = '" . tep_db_input($product_id) . "'");
   tep_db_query("delete from " . TABLE_CUSTOMERS_BASKET . " where products_id like ('%" . tep_db_input($product_id) . "%')");
   tep_db_query("delete from " . TABLE_CUSTOMERS_BASKET_OPTIONS . " where products_id like ('%" . $product_id . "%')");
 
