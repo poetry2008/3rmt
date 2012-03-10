@@ -923,7 +923,7 @@ switch ($_GET['action']) {
   case 'deleteconfirm':
     $oID = tep_db_prepare_input($_GET['oID']);
 
-    tep_remove_attributes($oID, $_POST['restock']);
+    //tep_remove_attributes($oID, $_POST['restock']);
 
     tep_remove_order($oID, $_POST['restock']);
 
