@@ -1603,4 +1603,18 @@ if ($_POST['orders_id'] &&
   require_once('option/'.$classname.'.php');
   $item_instance = new $classname();
   echo $item_instance->prepareFormWithParent($_POST['item_id']);
+} else if (isset($_GET['action'])&&$_GET['action']=='link_option') {
+  $option_group_raw = tep_db_query("select id from ".TABLE_OPTION_GROUP." where name = '".$_POST['keyword']."'");
+  $option_group = tep_db_fetch_array($option_group_raw);
+  if ($option_group) {
+    echo $option_group['id']; 
+  } else {
+    echo '';  
+  }
+} else if (isset($_GET['action'])&&$_GET['action']=='handle_option') {
+  $option_group_exists_raw = tep_db_query("select id from ".TABLE_OPTION_GROUP." where name = '".$_POST['keyword']."'");
+  if (!tep_db_num_rows($option_group_exists_raw)) {
+    $insert_sql = "insert into `".TABLE_OPTION_GROUP."` values(NULL, '".$_POST['keyword']."', '".$_POST['keyword']."', '', '', '1', '1000', '".date('Y-m-d H:i:s', time())."')";
+    tep_db_query($insert_sql);
+  }
 }

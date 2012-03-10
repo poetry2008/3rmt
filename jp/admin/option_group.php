@@ -39,6 +39,7 @@
       case 'deleteconfirm':
         tep_db_query('delete from '.TABLE_OPTION_GROUP.' where id = \''.$_GET['group_id'].'\''); 
         tep_db_query('delete from '.TABLE_OPTION_ITEM.' where group_id = \''.$_GET['group_id'].'\''); 
+        tep_db_query('update `'.TABLE_PRODUCTS.'` set `belong_to_option` = \'\' where `belong_to_option` = \''.$_GET['group_id'].'\''); 
         tep_redirect(FILENAME_OPTION_GROUP); 
         break; 
     }
@@ -231,7 +232,11 @@ $(function() {
     $rows = 0;
 
     if (isset($_GET['search'])) {
-      $group_query_raw = 'select * from '.TABLE_OPTION_GROUP.' where name like \'%'.$_GET['keyword'].'%\' order by created_at desc';
+      if ($_GET['search'] == '2') {
+        $group_query_raw = 'select * from '.TABLE_OPTION_GROUP.' where name = \''.$_GET['keyword'].'\' order by created_at desc';
+      } else {
+        $group_query_raw = 'select * from '.TABLE_OPTION_GROUP.' where name like \'%'.$_GET['keyword'].'%\' order by created_at desc';
+      }
     } else {
       $group_query_raw = 'select * from '.TABLE_OPTION_GROUP.' order by created_at desc';
     }

@@ -1076,10 +1076,12 @@
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
 <title><?php echo TITLE; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
+<link rel="stylesheet" type="text/css" href="includes/jquery.autocomplete.css">
 <script language="javascript" src="includes/general.js"></script>
 <script language="javascript" src="includes/javascript/jquery.js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript" src="includes/javascript/jquery.autocomplete.js"></script>
 <script language="javascript">
   function relate_products1(cid,rid){
     $.ajax({
@@ -1232,6 +1234,67 @@ $(document).ready(function(){
       $('#categories_tree').animate({width:"470px"});
     }
 });
+
+function clear_option()
+{
+  document.getElementById('option_keyword').value = '';
+  //document.getElementById('belong_to_option').value = '';
+}
+
+$(function() {
+      function format(group) {
+          return group.name;
+      }
+      $("#option_keyword").autocomplete('ajax_orders.php?action=search_group', {
+        multipleSeparator: '',
+        dataType: "json",
+        parse: function(data) {
+        return $.map(data, function(row) {
+            return {
+             data: row,
+             value: row.name,
+             result: row.name
+            }
+          });
+        },
+        formatItem: function(item) {
+          return format(item);
+        }
+      }).result(function(e, item) {
+      });
+});
+
+function link_to_option()
+{
+  $.ajax({
+      type:'POST', 
+      dataType: 'text',
+      url: 'ajax_orders.php?action=link_option',
+      data:'keyword='+document.getElementById('option_keyword').value,
+      async:false,
+      success: function(msg) {
+        $('#belong_to_option').val(msg); 
+      }
+      });
+}
+
+function handle_option()
+{
+   var option_value = document.getElementById('option_keyword').value;
+   if (option_value != '') {
+     $.ajax({
+        type:'POST',
+        dataType: 'text',
+        url: 'ajax_orders.php?action=handle_option',
+        data:'keyword='+option_value,
+        async:false,
+        success: function(msg) {
+          open_url = "<?php echo HTTP_SERVER;?>"+'/admin/option_group.php?keyword='+option_value+"&search=2";     
+          window.open(open_url, 'newwindow', ''); 
+        }
+        });  
+   } 
+}
 </script>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" >
@@ -1687,27 +1750,28 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                 </td>
                 <td class="main">
                 <?php
-                if (!empty($_GET['site_id'])) { 
-                  $option_group = tep_db_query("select id, name from ".TABLE_OPTION_GROUP." where id = '".$pInfo->belong_to_option."' order by sort_num asc"); 
-                  $option_group = tep_db_fetch_array($option_group); 
-                  echo $option_group['name'];
-                  echo '<input type="hidden" name="belong_to_option" value="'.$pInfo->belong_to_option.'">'; 
+                if (!$_GET['site_id']) { 
+                $option_keyword_str = ''; 
+                if (isset($pInfo->belong_to_option)) {
+                  $option_group_raw = tep_db_query("select name from ".TABLE_OPTION_GROUP." where id = '".$pInfo->belong_to_option."'"); 
+                  $option_group = tep_db_fetch_array($option_group_raw);
+                  if ($option_group) {
+                    $option_keyword_str = $option_group['name']; 
+                  }
+                }
+                ?>
+                <input type="text" name="option_keyword" id="option_keyword" value="<?php echo $option_keyword_str;?>">
+                <a href="javascript:void(0);"><?php echo tep_html_element_button(OPTION_PREVIEW, 'onclick="link_to_option();"');?></a> 
+                <a href="javascript:void(0);"><?php echo tep_html_element_button(OPTION_EDIT, 'onclick="handle_option();"');?></a> 
+                <a href="javascript:void(0);"><?php echo tep_html_element_button(OPTION_CLEAR, 'onclick="clear_option();"');?></a> 
+                <?php 
                 } else { 
+                  $option_group_raw = tep_db_query("select name from ".TABLE_OPTION_GROUP." where id = '".$pInfo->belong_to_option."'"); 
+                  $option_group = tep_db_fetch_array($option_group_raw);
+                  echo $option_group['name']; 
+                } 
                 ?>
-                <select name="belong_to_option"> 
-                <?php
-                $option_group = tep_db_query("select id, name from ".TABLE_OPTION_GROUP." order by sort_num asc"); 
-                if (empty($pInfo->belong_to_option)) {
-                  echo '<option value="" selected>--</option>';  
-                } else {
-                  echo '<option value="">--</option>';  
-                }
-                while ($option_res = tep_db_fetch_array($option_group)) {
-                  echo '<option value="'.$option_res['id'].'"'.(($option_res['id'] == $pInfo->belong_to_option)?' selected':'').'>'.$option_res['name'].'</option>'; 
-                }
-                ?>
-                </select> 
-                <?php }?> 
+                <input type="hidden" name="belong_to_option" id="belong_to_option" value="<?php echo isset($pInfo->belong_to_option)?$pInfo->belong_to_option:'';?>"> 
                 </td>
               </tr>
               <tr>
