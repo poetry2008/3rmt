@@ -1697,6 +1697,11 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                 <select name="belong_to_option"> 
                 <?php
                 $option_group = tep_db_query("select id, name from ".TABLE_OPTION_GROUP." order by sort_num asc"); 
+                if (empty($pInfo->belong_to_option)) {
+                  echo '<option value="" selected>--</option>';  
+                } else {
+                  echo '<option value="">--</option>';  
+                }
                 while ($option_res = tep_db_fetch_array($option_group)) {
                   echo '<option value="'.$option_res['id'].'"'.(($option_res['id'] == $pInfo->belong_to_option)?' selected':'').'>'.$option_res['name'].'</option>'; 
                 }
