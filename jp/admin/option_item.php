@@ -80,7 +80,15 @@
         }
         
         if (isset($_POST['iline'])) {
-          $option_array['iline'] = (int)$_POST['iline']; 
+          if (is_numeric($_POST['iline'])) {
+            if ($_POST['iline'] == 0) {
+              $option_array['iline'] = 1; 
+            } else {
+              $option_array['iline'] = $_POST['iline']; 
+            }
+          } else {
+            $option_array['iline'] = 1; 
+          }
         }
        
         if (isset($_POST['icomment'])) {
