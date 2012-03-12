@@ -4,6 +4,9 @@
 */
 require('includes/application_top.php');
 require('includes/step-by-step/new_application_top.php');
+require_once('includes/address/AD_Option.php');
+require_once('includes/address/AD_Option_Group.php');
+
 //此页能是POST过来 ，如果不是 则 跳转 到 CREATE_ORDER
 if(isGet()){
 tep_redirect(tep_redirect(tep_href_link(FILENAME_CREATE_ORDER, null, 'SSL')));
@@ -13,6 +16,21 @@ tep_redirect(tep_redirect(tep_href_link(FILENAME_CREATE_ORDER, null, 'SSL')));
 require(DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_CREATE_ORDER_PROCESS);
 
 
+//住所
+   
+  $hm_option = new AD_Option();  
+  $option_info_array = array(); 
+  if (!$hm_option->check()) {
+    foreach ($_POST as $p_key => $p_value) {
+      $op_single_str = substr($p_key, 0, 3);
+      if ($op_single_str == 'op_') {
+        $option_info_array[$p_key] = $p_value; 
+      } 
+    }
+  }else{
+    $error_str = true;
+  }
+  
 $payment_modules = payment::getInstance($_POST['site_id']);
 $customer_id    = tep_db_prepare_input($_POST['customers_id']);
 $firstname      = tep_db_prepare_input($_POST['firstname']);
@@ -122,6 +140,11 @@ if ($payment_method == 'payment_null') {
   $error = true;
   $entry_payment_method_error = true;
 } 
+
+if($error_str == true){
+
+  $error = true;
+}
 $payment_method_romaji = payment::changeRomaji($payment_method,PAYMENT_RETURN_TYPE_CODE);
 $validateModule = $payment_modules->admin_confirmation_check($payment_method);
 
@@ -187,6 +210,24 @@ $sql_data_array['orders_comment'] = $comment_arr['comment'];
 }
 //创建订单
 tep_db_perform(TABLE_ORDERS, $sql_data_array);
+
+//住所
+//tep_db_query("insert into ". TABLE_ADDRESS_ORDERS ." values(NULL,'{$insert_id}',{$customer_id},'{$options_str}')");
+//作所信息入库开始
+
+foreach($option_info_array as $op_key=>$op_value){
+  
+  $address_options_query = tep_db_query("select * from ". TABLE_ADDRESS ." where name_flag='". substr($op_key,3) ."'");
+  $address_options_array = tep_db_fetch_array($address_options_query);
+  tep_db_free_result($address_options_query);
+  $op_value = $op_value == $address_options_array['comment'] ? '' : $op_value;
+  $address_query = tep_db_query("insert into ". TABLE_ADDRESS_ORDERS ." values(NULL,'$insert_id',$customer_id,{$address_options_array['id']},'{$address_options_array['name_flag']}','$op_value')");
+  tep_db_free_result($address_query);
+}
+
+
+//作所信息入库结束
+
 
 
 last_customer_action();

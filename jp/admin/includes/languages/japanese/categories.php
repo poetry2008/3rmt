@@ -84,6 +84,8 @@ define('TEXT_PRODUCTS_URL_WITHOUT_HTTP', '<small>(http:// は不要)</small>');
 define('TEXT_PRODUCTS_PRICE', '商品の価格:');
 define('TEXT_PRODUCTS_WEIGHT', '商品の重量:');
 define('TEXT_PRODUCTS_OPTION', 'オプション:');
+define('TEXT_PRODUCTS_SHIPPING_TIME','お届け時間グループ指定:');
+define('TEXT_PRODUCTS_SHIPPING_WEIGHT','重量:');
 
 define('EMPTY_CATEGORY', '空カテゴリー');
 

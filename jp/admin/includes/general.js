@@ -1114,3 +1114,272 @@ document.edit_order.notify_comments.checked = false;
   window.alert("注文内容確認をキャンセルしました。\n\n【 重要 】メールは送信されていません。【 重要 】");
 }
 }
+
+function show_text(id,ele,type,sort,flag){
+
+      //$("div#show").load("show.php", {id:id});
+    if(ele != ''){
+      ele = ele.parentNode;
+    }
+    $.ajax({
+       url: 'ajax_address.php',
+       data: {id:id,type:type,sort:sort,flag:flag},
+       type: 'POST',
+       dataType: 'text',
+       async : false,
+       success: function(data){
+         $("div#show").html(data);
+        
+       if(ele != ''){
+         if(document.documentElement.clientHeight < document.body.scrollHeight){
+                   if(ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight+$('#show').height() > document.body.scrollHeight){
+                          offset = ele.offsetTop+$('#group_list_box').position().top-$('#show').height()-$('#offsetHeight').height();
+                          $('#show').css('top', offset).show(); 
+                      }else{
+                          offset = ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight;
+                          $('#show').css('top', offset).show(); 
+                      }
+          }else{
+                    if(ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight+$('#show').height() > document.documentElement.clientHeight){
+                          offset = ele.offsetTop+$('#group_list_box').position().top-$('#show').height()-$('#offsetHeight').height()-ele.offsetHeight;
+                          $('#show').css('top', offset).show(); 
+                    }else{
+                          offset = ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight;
+                          $('#show').css('top', offset).show(); 
+                    }
+         }
+      }
+         $("div#show").show();
+       }
+    }); 
+            
+}
+
+function show_text_fee(id,ele,flag){
+    
+    if(ele != ''){
+      ele = ele.parentNode;
+    } 
+    $.ajax({
+       url: 'ajax_country_fee.php',
+       data: {id:id,flag:flag},
+       type: 'POST',
+       dataType: 'text',
+       async : false,
+       success: function(data){
+         $("div#show").html(data);
+         
+         if(ele != ''){
+         if(document.documentElement.clientHeight < document.body.scrollHeight){
+                   if(ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight+$('#show').height() > document.body.scrollHeight){
+                          offset = ele.offsetTop+$('#group_list_box').position().top-$('#show').height()-$('#offsetHeight').height();
+                          $('#show').css('top', offset).show(); 
+                      }else{
+                          offset = ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight;
+                          $('#show').css('top', offset).show(); 
+                      }
+          }else{
+                    if(ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight+$('#show').height() > document.documentElement.clientHeight){
+                          offset = ele.offsetTop+$('#group_list_box').position().top-$('#show').height()-$('#offsetHeight').height()-ele.offsetHeight;
+                          $('#show').css('top', offset).show(); 
+                    }else{
+                          offset = ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight;
+                          $('#show').css('top', offset).show(); 
+                    }
+         }
+      }
+
+         $("div#show").show();
+       }
+    }); 
+            
+}
+
+function show_text_area(id,ele,fid,flag){
+    
+    if(ele != ''){
+      ele = ele.parentNode;
+    }
+    $.ajax({
+       url: 'ajax_country_area.php',
+       data: {id:id,fid:fid,flag:flag},
+       type: 'POST',
+       dataType: 'text',
+       async : false,
+       success: function(data){
+         $("div#show").html(data);
+     
+         if(ele != ''){
+         if(document.documentElement.clientHeight < document.body.scrollHeight){
+                   if(ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight+$('#show').height() > document.body.scrollHeight){
+                          offset = ele.offsetTop+$('#group_list_box').position().top-$('#show').height()-$('#offsetHeight').height();
+                          $('#show').css('top', offset).show(); 
+                      }else{
+                          offset = ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight;
+                          $('#show').css('top', offset).show(); 
+                      }
+          }else{
+                    if(ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight+$('#show').height() > document.documentElement.clientHeight){
+                          offset = ele.offsetTop+$('#group_list_box').position().top-$('#show').height()-$('#offsetHeight').height()-ele.offsetHeight;
+                          $('#show').css('top', offset).show(); 
+                    }else{
+                          offset = ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight;
+                          $('#show').css('top', offset).show(); 
+                    }
+         }
+      }
+
+         $("div#show").show();
+       }
+    }); 
+            
+}
+
+//商品配送时间
+function show_text_products(id,ele,flag){
+     
+    if(ele != ''){
+      ele = ele.parentNode;
+    }
+    $.ajax({
+       url: 'ajax_products_shipping_time.php',
+       data: {id:id,flag:flag},
+       type: 'POST',
+       dataType: 'text',
+       async : false,
+       success: function(data){
+         $("div#show").html(data);
+
+         if(ele != ''){
+         if(document.documentElement.clientHeight < document.body.scrollHeight){
+                   if(ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight+$('#show').height() > document.body.scrollHeight){
+                          offset = ele.offsetTop+$('#group_list_box').position().top-$('#show').height()-$('#offsetHeight').height();
+                          $('#show').css('top', offset).show(); 
+                      }else{
+                          offset = ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight;
+                          $('#show').css('top', offset).show(); 
+                      }
+          }else{
+                    if(ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight+$('#show').height() > document.documentElement.clientHeight){
+                          offset = ele.offsetTop+$('#group_list_box').position().top-$('#show').height()-$('#offsetHeight').height()-ele.offsetHeight;
+                          $('#show').css('top', offset).show(); 
+                    }else{
+                          offset = ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight;
+                          $('#show').css('top', offset).show(); 
+                    }
+         }
+      }
+
+         $("div#show").show();
+       }
+    }); 
+            
+}
+
+
+function hide_text(){
+
+        $("div#show").hide();
+}
+
+function check(action){
+  var tform = document.getElementById('addressform');
+  tform.action="address.php?action="+action;
+  tform.submit();
+}
+
+function check_fee(action){
+  var tform = document.getElementById('country_fee_form');
+  tform.action="country_fee.php?action="+action;
+  tform.submit();
+}
+
+function check_area(action){
+  var tform = document.getElementById('country_area_form');
+  tform.action="country_area.php?action="+action;
+  tform.submit();
+}
+
+function check_products(action){
+  var tform = document.getElementById('products_form');
+  tform.action="products_shipping_time.php?action="+action;
+  tform.submit();
+}
+
+function check_on(action,id){
+  location.href = "address.php?action="+action+"&id="+id;
+}
+
+function check_on_fee(action,id){
+  location.href = "country_fee.php?action="+action+"&id="+id;
+}
+
+function check_on_area(action,id,fid){
+  location.href = "country_area.php?action="+action+"&id="+id+"&fid="+fid;
+}
+
+function check_on_products(action,id,fid){
+  location.href = "products_shipping_time.php?action="+action+"&id="+id;
+}
+
+function check_del(num){
+  var num_set = document.getElementById('num').value;
+  num_set--;
+  document.getElementById('num').value = num_set;
+
+  $("#o"+num).remove();
+}
+
+function check_add(){
+  var str = '';
+  var i;
+  var num = document.getElementById('num').value;
+  var num_1 = document.getElementById('num_1').value;
+  num = parseInt(num);
+  num_1 = parseInt(num_1);
+
+  num += 5;
+  document.getElementById('num').value = num; 
+  for(i=num-5;i<num;i++){
+    str += '<tr id="o'+i+'"><td width="30%" height="30" align="left">&nbsp;選択肢</td><td width="41"></td><td><input type="text" name="option_comment[]" value=""><input type="radio" name="option_value" value="'+i+'"><input type="button" value="削除" onclick="check_del('+i+');"></td></tr>';
+
+  }
+  $("#button_add").append(str);
+}
+
+function check_form(){
+  var title = document.getElementById('title').value;
+  var name = document.getElementById('name').value;
+  
+  if(title == ''){
+    var error_title = '<font color="red">タイトル 空にすることはできません！</font>'; 
+    $("#error_title").html(error_title);
+    $("#title").focus();
+    return false;
+  }
+  
+ if(name == ''){
+    var error_name = '<font color="red">表示名 空にすることはできません！</font>'; 
+    $("#error_name").html(error_name);
+    $("#name").focus();
+    return false;
+  }
+
+ return true;
+
+}
+
+function check_form_products(){
+  var name = document.getElementById('name').value;
+   
+  if(name == ''){
+    var error_name = '<font color="red">表示名 空にすることはできません！</font>'; 
+    $("#error_name").html(error_name);
+    $("#name").focus();
+    return false;
+  }
+
+ return true;
+
+}
+

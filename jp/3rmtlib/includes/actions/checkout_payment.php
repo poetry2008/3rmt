@@ -28,7 +28,6 @@ if ( (STOCK_CHECK == 'true') && (STOCK_ALLOW_CHECKOUT != 'true') ) {
     }
   }
 }
-
 // if no billing destination address was selected, use the customers own address as default
 if (!tep_session_is_registered('billto')) {
   tep_session_register('billto');

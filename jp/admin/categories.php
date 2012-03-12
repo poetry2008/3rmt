@@ -617,7 +617,8 @@
                                   tep_db_prepare_input($_POST['products_bflag'])? 0 - abs(tep_db_prepare_input($_POST['products_price'])):abs(tep_db_prepare_input($_POST['products_price'])),
                                   'products_price_offset' => tep_db_prepare_input($HTTP_POST_VARS['products_price_offset']),
                                   'products_date_available' => $products_date_available,
-                                  'products_weight' => tep_db_prepare_input($_POST['products_weight']),
+                                  'products_shipping_time' => tep_db_prepare_input($_POST['products_shipping_time']),
+                                  'products_weight' => tep_db_prepare_input($_POST['products_shipping_weight']),
                                   'products_status' => tep_db_prepare_input($_POST['products_status']),
                                   'products_tax_class_id' => tep_db_prepare_input($_POST['products_tax_class_id']),
                                   'manufacturers_id' => tep_db_prepare_input($_POST['manufacturers_id']),
@@ -784,7 +785,7 @@
       $options_array = explode("\n", $products_options_array);
       
       //商品に対応するオプションを全削除
-      tep_db_query("delete from products_attributes where products_id = '".$products_id."'");
+      tep_db_query("delete from products_attributes_2 where products_id = '".$products_id."'");
       
       for($i=0; $i<sizeof($options_array); $i++) {
         $products_options = explode(",", $options_array[$i]);
@@ -832,7 +833,7 @@
           tep_db_query("insert into products_options_values_to_products_options (products_options_values_to_products_options_id,products_options_id,products_options_values_id) values ('', '".$op1."', '".$op2."')");
         }
         
-        //products_attributes
+        //products_attributes_2
         $op_sql_date_array = array('products_id' => tep_db_prepare_input($products_id),
                                   'options_id' => tep_db_prepare_input($op1),
                                   'options_values_id' => tep_db_prepare_input($op2),
@@ -841,7 +842,7 @@
                                   'products_at_quantity' => tep_db_prepare_input($products_at_quantity)
                      );
         
-        tep_db_perform('products_attributes', $op_sql_date_array);
+        tep_db_perform('products_attributes_2', $op_sql_date_array);
       }
       }
       */ 
@@ -1344,6 +1345,8 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                  p.products_date_added, 
                  p.products_last_modified, 
                  date_format(p.products_date_available, '%Y-%m-%d') as products_date_available, 
+                 p.products_shipping_time,
+                 p.products_weight,
                  pd.products_status, 
                  p.products_tax_class_id, 
                  p.manufacturers_id, 
@@ -1545,9 +1548,34 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
           <tr>
               <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
           </tr>
+<!--
           <tr>
               <td class="main"><?php echo TEXT_PRODUCTS_OPTION; ?></td>
               <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_pull_down_menu('option_type', tep_get_option_array(), isset($pInfo->option_type)?$pInfo->option_type:'', ($site_id ? 'class="readonly"  onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : '')); ?></td>
+              <td class="main">&nbsp;</td>
+          </tr>
+          <tr>
+            <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
+          </tr>
+-->
+<?php
+$products_shipping_time = '<select name="products_shipping_time">';
+$products_shipping_query = tep_db_query("select * from ". TABLE_PRODUCTS_SHIPPING_TIME ." where status='0' order by sort");
+while($products_shipping_array = tep_db_fetch_array($products_shipping_query)){
+
+  if($products_shipping_array['id'] == $pInfo->products_shipping_time){
+
+    $selected = 'selected';
+  }
+  $products_shipping_time .= '<option value="'. $products_shipping_array['id'] .'" '. $selected .'>'. $products_shipping_array['name'] .'</option>';  
+  $selected = '';
+}
+tep_db_free_result($products_shipping_query);
+$products_shipping_time .= '</select>';
+?>
+          <tr>
+              <td class="main"><?php echo TEXT_PRODUCTS_SHIPPING_TIME; ?></td>
+              <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . $products_shipping_time; ?></td>
               <td class="main">&nbsp;</td>
           </tr>
           <tr>
@@ -1564,6 +1592,23 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
               <?php
     }
 ?>
+              
+              <tr>
+              <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
+              </tr>
+              <tr>
+              <td class="main"><?php echo TEXT_PRODUCTS_SHIPPING_WEIGHT; ?></td>
+              <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;<input type="text" name="products_shipping_weight" value="'. ($pInfo->products_weight == '' ? 0 : $pInfo->products_weight) .'">'; ?></td><tr>
+            <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
+<!--
+          </tr>
+              <td class="main">&nbsp;</td>
+          </tr>
+-->
+          <tr>
+            <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
+          </tr>
+
               <tr>
                 <td class="main"><?php echo TEXT_PRODUCTS_ROMAJI;?></td> 
                 <td class="main">
@@ -1732,7 +1777,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
       //オプションデータ取得
       /* 
       if(isset($_GET['pID']) && $_GET['pID']) {
-        $options_query = tep_db_query("select * from products_attributes where products_id = '".(int)$_GET['pID']."' order by products_attributes_id");
+        $options_query = tep_db_query("select * from products_attributes_2 where products_id = '".(int)$_GET['pID']."' order by products_attributes_2_id");
       if(tep_db_num_rows($options_query)) {
         $options_array = '';
         while($options = tep_db_fetch_array($options_query)) {

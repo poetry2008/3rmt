@@ -98,6 +98,7 @@ define('EMAIL_TEXT_STORE_CONFIRMATION_FOOTER',
 
 define('ENTRY_EMAIL_TITLE', 'メールタイトル：');
 define('TEXT_CODE_HANDLE_FEE', '手数料:');
+define('TEXT_SHIPPING_FEE','お届け料金:');
 
 // old oa 
 define('TEXT_ORDER_ANSWER','Order Answer');

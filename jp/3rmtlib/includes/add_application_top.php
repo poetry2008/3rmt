@@ -185,13 +185,13 @@
   define('TABLE_ORDERS_STATUS_HISTORY', 'orders_status_history');
   define('TABLE_ORDERS_TOTAL', 'orders_total');
   define('TABLE_PRODUCTS', 'products');
-  define('TABLE_PRODUCTS_ATTRIBUTES', 'products_attributes');
-  define('TABLE_PRODUCTS_ATTRIBUTES_DOWNLOAD', 'products_attributes_download');
+  define('TABLE_PRODUCTS_ATTRIBUTES', 'products_attributes_2');
+  define('TABLE_PRODUCTS_ATTRIBUTES_DOWNLOAD', 'products_attributes_download_2');
   define('TABLE_PRODUCTS_DESCRIPTION', 'products_description');
   define('TABLE_PRODUCTS_NOTIFICATIONS', 'products_notifications');
-  define('TABLE_PRODUCTS_OPTIONS', 'products_options');
-  define('TABLE_PRODUCTS_OPTIONS_VALUES', 'products_options_values');
-  define('TABLE_PRODUCTS_OPTIONS_VALUES_TO_PRODUCTS_OPTIONS', 'products_options_values_to_products_options');
+  define('TABLE_PRODUCTS_OPTIONS', 'products_options_2');
+  define('TABLE_PRODUCTS_OPTIONS_VALUES', 'products_options_values_2');
+  define('TABLE_PRODUCTS_OPTIONS_VALUES_TO_PRODUCTS_OPTIONS', 'products_options_values_to_products_options_2');
   define('TABLE_PRODUCTS_TO_CATEGORIES', 'products_to_categories');
   define('TABLE_RECORD', 'record');
   define('TABLE_REVIEWS', 'reviews');
@@ -513,7 +513,7 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
                               if (isset($_POST['continue']) && $_POST['goto']) {
                                 tep_redirect($_POST['goto']);
                               } else if (isset($_POST['checkout'])) {
-                                tep_redirect(tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL'));
+                                tep_redirect(tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL'));
                               } else {
                                 tep_redirect(tep_href_link($goto, tep_get_all_get_params($parameters)));
                               }
@@ -521,7 +521,18 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
       // customer adds a product from the products page
       /*case 'add_product' :    if (isset($_POST['products_id']) && is_numeric($_POST['products_id'])) {
                                 $cart->add_cart($_POST['products_id'], $cart->get_quantity(tep_get_uprid($_POST['products_id'], $_POST['id']))+$_POST['quantity'], $_POST['id']);
+      }
+                              $_SESSION['cname'][tep_get_uprid($_POST['products_id'], $_POST['id'])] = $_POST['cname']; 
+                              unset($_SESSION['character']);
+                                
+                              foreach($cart as $key => $val){
+                                if($key == 'contents'){
+                                  foreach($val as $key2 => $val2){
+                                    $_SESSION['character'][$key2] = $_SESSION['cname'][$key2];
+                                  }
+                                }
                               }
+
                               tep_redirect(tep_href_link($goto, tep_get_all_get_params($parameters)));
                               break;*/
       // performed by the 'buy now' button in product listings and review page
@@ -839,4 +850,17 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
   define('TABLE_OA_FORM', 'oa_form'); 
   define('TABLE_OA_FORM_GROUP', 'oa_form_group'); 
   define('TABLE_OA_ITEM', 'oa_item'); 
-  define('TABLE_OA_FORMVALUE', 'oa_formvalue');
+  define('TABLE_OA_FORMVALUE', 'oa_formvalue'); 
+  define('TABLE_ADDRESS','address');
+  define('TABLE_OPTION_GROUP','option_group');
+  define('TABLE_OPTION_ITEM','option_item');
+  define('TABLE_PRODUCTS_SHIPPING_TIME','products_shipping_time');
+  define('TABLE_COUNTRY_FEE','country_fee');
+  define('TABLE_COUNTRY_AREA','country_area');
+  define('TABLE_ADDRESS_ORDERS','address_orders');
+  define('TABLE_ADDRESS_TITLE','住所');
+  define('TABLE_OPTION_NEW','登録先に届ける');
+  define('TABLE_OPTION_OLD','過去のお届け先を指定する');
+  define('TABLE_ADDRESS_SHOW','お届け先リストから選ぶ:');
+  define('ERROR_OPTION_ITEM_TEXT_NULL','入力してください');
+  define('ERROR_OPTION_ITEM_TEXT_TYPE_WRONG','に誤りがあります');

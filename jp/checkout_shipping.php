@@ -4,6 +4,7 @@
 */
   require('includes/application_top.php');
   require('includes/classes/http_client.php');
+  require(DIR_WS_ACTIONS.'checkout_shipping.php');
 
 // if the customer is not logged on, redirect them to the login page
   if (!tep_session_is_registered('customer_id')) {
@@ -30,8 +31,7 @@
 // if no shipping destination address was selected, use the customers own address as default
   if (!tep_session_is_registered('sendto')) {
     tep_session_register('sendto');
-    $sendto = $customer_default_address_id;
-  } else {
+    $sendto = $customer_default_address_id; } else {
 // verify the selected shipping address
 //ccdd
     $check_address_query = tep_db_query("select count(*) as total from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . $customer_id . "' and address_book_id = '" . $sendto . "'");
@@ -100,6 +100,40 @@
   $date = tep_db_prepare_input($_POST['date']);
   $hour = tep_db_prepare_input($_POST['hour']);
   $min = tep_db_prepare_input($_POST['min']);
+
+  //住所
+  $options_required = array();
+  $options_type_limit = array();
+  $options_type_len = array();
+  $address_query = tep_db_query("select * from ". TABLE_ADDRESS ." where type!='text' and status='0' order by sort");
+  while($address_required = tep_db_fetch_array($address_query)){
+    
+    $options_type[] = $address_required['type'];
+    $options_required[] = array($address_required['name'],$address_required['required']);
+    $options_type_array = unserialize($address_required['type_comment']);
+    $options_type_limit[] = array($address_required['name'],$options_type_array['type_limit']);
+    $options_type_len[] = array($address_required['name'],$address_required['num_limit']);
+    $options_comment[] = $address_required['comment'];
+  }
+
+  //获取配送费用
+  $weight_fee = tep_db_prepare_input($_POST['weight_fee']);
+  //获取免除配送费用的金额
+  $free_value = tep_db_prepare_input($_POST['free_value']);
+
+  //住所信息处理 
+  $option_info_array = array(); 
+  if (!$hm_option->check()) {
+    foreach ($_POST as $p_key => $p_value) {
+      $op_single_str = substr($p_key, 0, 3);
+      if ($op_single_str == 'op_') {
+        $option_info_array[$p_key] = $p_value; 
+      } 
+    }
+  }else{
+    $error_str = true;
+  }
+   
   
   $insert_torihiki_date = $date . ' ' . $hour . ':' . $min . ':00';
   
@@ -123,6 +157,11 @@
     $error = true;
     $jikan_error = TEXT_ERROR_JIKAN;
   }
+
+  if($error_str == true){
+
+    $error = true;
+  }
     
   
   if($error == false) {
@@ -131,7 +170,18 @@
     tep_session_register('hour');
     tep_session_register('min');
     tep_session_register('insert_torihiki_date');
-  
+    //住所信息 session
+    
+    $options = array();
+    foreach($option_info_array as $key=>$value){
+
+      $options[substr($key,3)] = array($_POST[substr($key,3)],$value);
+    }
+
+    tep_session_register('options');
+    tep_session_register('weight_fee');
+    tep_session_register('free_value');
+
     tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL'));
   }
   }
@@ -162,8 +212,9 @@
   $keys = array_keys($_SESSION['cart']->contents);
   $product_ids = array();
   foreach($keys as $akey){
-    if (!empty($akey)) {
-      $product_ids[] = (int)$akey;
+    $arr = explode('_', $akey);
+    if (!empty($arr[0])) {
+      $product_ids[] = $arr[0];
     }
   }
   //print_r($_COOKIES);
@@ -200,8 +251,255 @@ function rowOverEffect(object) {
 function rowOutEffect(object) {
   if (object.className == 'moduleRowOver') object.className = 'moduleRow';
 }
+
+function check(value){
+  var arr  = new Array();
+  var arr_set = new Array();
+<?php
+  $options_query = tep_db_query("select * from ". TABLE_ADDRESS ." where type='option' and status='0' order by sort");
+  $json_array = array();
+  $json_set_value = array();
+  while($options_array = tep_db_fetch_array($options_query)){
+    if(!isset($otpions_array_temp['select_value']) && $otpions_array_temp['select_value'] == ''){
+        $show_array[] = unserialize($options_array['type_comment']);
+    }
+  }
+
+  foreach($show_array as $show_value){
+    foreach($show_value as $show_key=>$show_val){
+
+      $json_array[$show_key] = $show_val;
+      $json_set_value[$show_key] = $show_val['select_value'];
+    } 
+  }
+
+  tep_db_free_result($options_query);
+  foreach($json_array as $key=>$value_temp){
+    echo 'arr["'. $key .'"] = new Array();';
+    echo 'arr_set["'. $key .'"] = new Array();';
+    $value_temp['option_list'] = array_values($value_temp['option_list']);
+    foreach($value_temp['option_list'] as $k=>$val){
+
+      echo 'arr["'. $key .'"]['. $k .'] = "'. $val .'";';
+    } 
+    echo 'arr_set["'. $key .'"] = "'. $json_set_value[$key] .'";';
+
+  }  
+?>
+  
+  var option_id = document.getElementById("list_option5");
+  option_id.options.length = 0;
+  len = arr[value].length;
+  option_id.options[option_id.options.length]=new Option('--',''); 
+  for(i = 0;i < len;i++){
+    if(arr_set[value] == arr[value][i]){
+
+      option_id.options[option_id.options.length]=new Option(arr[value][i], arr[value][i]);
+    }     
+  } 
+  for(i = 0;i < len;i++){
+    if(arr_set[value] == arr[value][i]){
+      continue; 
+    }
+    option_id.options[option_id.options.length]=new Option(arr[value][i], arr[value][i]);    
+  } 
+}
+
+function address_option_show(action){
+  switch(action){
+
+  case 'new' :
+    arr_new = new Array();
+    arr_color = new Array();
+    $("#address_show_id").hide();
+    
+<?php 
+  $address_new_query = tep_db_query("select * from ". TABLE_ADDRESS ." where type!='text' and status='0' order by sort");
+  while($address_new_array = tep_db_fetch_array($address_new_query)){
+    $address_new_arr = unserialize($address_new_array['type_comment']);
+    if($address_new_array['type'] == 'textarea'){
+      echo 'arr_new["'. $address_new_array['name_flag'] .'"] = "'. $address_new_array['comment'] .'";';
+      echo 'arr_color["'. $address_new_array['name_flag'] .'"] = "#999";';
+    }elseif($address_new_array['type'] == 'option' && $address_new_arr['select_value'] !=''){
+      echo 'arr_new["'. $address_new_array['name_flag'] .'"] = "'. $address_new_arr['select_value'] .'";';
+      echo 'arr_color["'. $address_new_array['name_flag'] .'"] = "#000";';
+    }else{
+
+      echo 'arr_new["'. $address_new_array['name_flag'] .'"] = "";';
+      echo 'arr_color["'. $address_new_array['name_flag'] .'"] = "#000";';
+
+
+    }
+  }
+  tep_db_free_result($address_new_query);
+?>
+  for(x in arr_new){
+     
+      var list_options = document.getElementById("op_"+x);
+      list_options.value = arr_new[x];
+      list_options.style.color = arr_color[x];
+    }
+    break;
+  case 'old' :
+    $("#address_show_id").show();
+    var arr_old  = new Array();
+<?php
+if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
+  $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_ORDERS ." where customers_id=". $_SESSION['customer_id'] ." group by orders_id");
+  
+   
+  $address_num = 0;
+  $json_str_array = array();
+  $json_old_array = array();
+
+  while($address_orders_group_array = tep_db_fetch_array($address_orders_group_query)){
+  
+  $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $address_orders_group_array['orders_id'] ."' order by id asc");
+
+   
+  $json_str_list = '';
+  unset($json_old_array);
+  $address_i = 0;
+  while($address_orders_array = tep_db_fetch_array($address_orders_query)){
+    
+    if($address_i == 7 || $address_i == 8 || $address_i == 9){
+
+      $json_str_list .= $address_orders_array['value'];
+    }
+    
+    $json_old_array[$address_orders_array['name']] = $address_orders_array['value'];
+    $address_i++;   
+        
+  }
+
+  
+  //这里判断，如果有重复的记录只显示一个
+  if(!in_array($json_str_list,$json_str_array)){
+      
+      $json_str_array[$address_num] = $json_str_list; 
+      echo 'arr_old['. $address_num .'] = new Array();';
+      foreach($json_old_array as $key=>$value){
+        echo 'arr_old['. $address_num .']["'. $key .'"] = "'. $value .'";';
+      }
+      $address_num++;
+  }
+ 
+  tep_db_free_result($address_orders_query); 
+  }
+}
+?>
+  var address_show_list = document.getElementById("address_show_list");
+
+  address_show_list.options.length = 0;
+
+  len = arr_old.length;
+  address_show_list.options[address_show_list.options.length]=new Option('--',''); 
+  for(i = 0;i < len;i++){
+    j = 0;
+    arr_str = '';
+    for(x in arr_old[i]){
+        if(j == 7 || j == 8 || j == 9){
+          arr_str += arr_old[i][x];
+        }
+        j++;
+    }
+    if(arr_str != ''){
+      address_show_list.options[address_show_list.options.length]=new Option(arr_str,i);
+    }
+
+  }   
+    break;
+  }
+}
+
+function address_option_list(value){
+  var arr_list = new Array();
+<?php
+  $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_ORDERS ." where customers_id=". $_SESSION['customer_id'] ." group by orders_id");
+  
+   
+  $address_num = 0;
+  $json_str_list = '';
+  $json_str_array = array();
+  
+  while($address_orders_group_array = tep_db_fetch_array($address_orders_group_query)){
+  
+  $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $address_orders_group_array['orders_id'] ."'");
+  
+  $address_i = 0;
+  while($address_orders_array = tep_db_fetch_array($address_orders_query)){
+    
+    if($address_i == 7 || $address_i == 8 || $address_i == 9){
+
+      $json_str_list .= $address_orders_array['value'];
+    }
+    
+    $json_old_array[$address_orders_array['name']] = $address_orders_array['value'];
+    $address_i++;   
+        
+  }
+
+  
+  //这里判断，如果有重复的记录只显示一个
+  if(!in_array($json_str_list,$json_str_array)){
+      
+      $json_str_array[] = $json_str_list; 
+      echo 'arr_list['. $address_num .'] = new Array();';
+      foreach($json_old_array as $key=>$value){
+        echo 'arr_list['. $address_num .']["'. $key .'"] = "'. $value .'";';
+      }
+      $address_num++;
+    }
+    $json_str_list = '';
+ 
+  tep_db_free_result($address_orders_query); 
+  }
+?>
+  ii = 0;
+  for(x in arr_list[value]){
+    var list_option = document.getElementById("op_"+x);
+    list_option.style.color = '#000';
+    list_option.value = arr_list[value][x];
+    //if(ii == 7){
+
+      //fee(arr_list[value][x]);
+    //}
+    ii++; 
+  }
+
+}
 --></script>
+<script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript" src="js/data.js"></script>
+<script type="text/javascript" src="js/address_search.js"></script>
+<script type="text/javascript">
+ function fee(address_value){
+
+  var address = document.getElementById("op_acgijkcoqrtivwyz").value;
+  var country = document.getElementById("op_acgijknoqrtuvwyz").value;
+ 
+  if(address_value != ''){
+
+    address = address_value;
+  }
+  $.ajax({
+       url: 'address_fee_ajax.php',
+       data: {country:country,address:address,weight:<?php echo $cart->weight; ?>},
+       type: 'POST',
+       dataType: 'text',
+       async : false,
+       success: function(data){
+           $("#address_fee").html(''); 
+           $("#address_fee").html(data);
+       }
+    }); 
+ }
+  $(document).ready(function(){
+   
+    fee();
+
+  });
+</script>
 </head>
 <body> 
 <div class="body_shadow" align="center"> 
@@ -223,16 +521,18 @@ function rowOutEffect(object) {
   
   <table border="0" width="97%" cellspacing="0" cellpadding="0"> 
                 <tr> 
+<!--
                     <td width="25%"><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                         <tr> 
                           <td width="50%" align="right"><?php echo tep_draw_separator('pixel_silver.gif', '1', '5'); ?></td> 
                           <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
                         </tr> 
                       </table></td> 
+-->
                   <td width="20%">
                   <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                       <tr> 
-                        <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
+                        <td width="50%"></td> 
                         <td><?php echo tep_image(DIR_WS_IMAGES . 'checkout_bullet.gif'); ?></td> 
                         <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
                       </tr> 
@@ -246,8 +546,10 @@ function rowOutEffect(object) {
                       </tr> 
                     </table></td> 
                 </tr> 
-                <tr> 
+                <tr>
+<!-- 
                   <td align="center" width="20%" class="checkoutBarFrom"><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL') . '" class="checkoutBarFrom">' . CHECKOUT_BAR_PRODUCTS . '</a>'; ?></td> 
+-->
                   <td align="center" width="20%" class="checkoutBarCurrent"><?php echo CHECKOUT_BAR_DELIVERY; ?></td> 
                   <td align="center" width="20%" class="checkoutBarTo"><?php echo CHECKOUT_BAR_PAYMENT; ?></td> 
                   <td align="center" width="20%" class="checkoutBarTo"><?php echo CHECKOUT_BAR_CONFIRMATION; ?></td> 
@@ -266,7 +568,118 @@ function rowOutEffect(object) {
                       </tr> 
                     </table>
 			</td> 
-          </tr> 
+          </tr>
+<?php
+  //根据购物车中的商品来生成取引时间
+  $cart_array = (array)$cart;
+  $cart_products_id = array();
+  foreach($cart_array['contents'] as $cart_key=>$cart_value){
+    
+    $cart_temp = explode('{',$cart_key);
+    $cart_products_id[] = $cart_temp[0]; 
+  }
+
+  //根据$cart_products_id数组中的商品ID来获取每个商品的取引时间
+  $cart_shipping_time = array();
+  foreach($cart_products_id as $cart_products_value){
+    
+    $shipping_time_query = tep_db_query("select * from ". TABLE_PRODUCTS ." where products_id=".(int)$cart_products_value);
+    $shipping_time_array = tep_db_fetch_array($shipping_time_query);
+    tep_db_free_result($shipping_time_query);
+    $cart_shipping_time[] = $shipping_time_array['products_shipping_time'];
+  } 
+  
+  $shipping_time_array = array();
+  foreach($cart_shipping_time as $cart_shipping_value){
+
+    $shipping_query = tep_db_query("select * from ". TABLE_PRODUCTS_SHIPPING_TIME ." where id=".$cart_shipping_value);
+    $shipping_array = tep_db_fetch_array($shipping_query);
+    $shipping_time_array['work'][] = $shipping_array['work'];
+    $shipping_time_array['sleep'][] = $shipping_array['sleep'];
+    $shipping_time_array['db_set_day'][] = $shipping_array['db_set_day'];
+    $shipping_time_array['shipping_time'][] = $shipping_array['shipping_time'];
+
+  }
+  
+  //work
+  $shipping_time_start = array();
+  $shipping_time_end = array();
+  foreach($shipping_time_array['work'] as $shipping_time_value){
+  
+    //$shipping_time_temp = preg_split('/[-－]+/',$shipping_time_value);
+    $shipping_time_temp = explode('－',$shipping_time_value);
+    if(count($shipping_time_temp) == 1){
+     
+      $shipping_time_temp = explode('-',$shipping_time_value);
+    }
+    $shipping_time_start[] = $shipping_time_temp[0];
+    $shipping_time_end[] = $shipping_time_temp[1]; 
+  }
+  
+  //可配送时间区域
+  natsort($shipping_time_start);
+  natsort($shipping_time_end);
+  $work_start = end($shipping_time_start);
+  $work_start = str_replace('：',':',$work_start);
+  $work_end = current($shipping_time_end);
+  $work_end = str_replace('：',':',$work_end);
+  //配送时间段
+  $sleep = max($shipping_time_array['sleep']);
+  //当日起几日后可以收货
+  $db_set_day = max($shipping_time_array['db_set_day']);
+  //可选收货期限
+  $shipping_time = max($shipping_time_array['shipping_time']);
+
+  $weight = $cart->weight;
+  //$weight = 1;
+  if($weight > 0){
+?>
+  <tr><td width="70%"><b><?php echo TABLE_ADDRESS_TITLE; ?></b></td></tr>
+  <tr><td>
+    <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
+                      <tr class="infoBoxContents">
+                        <td>
+                          <table border="0" width="100%" cellspacing="0" cellpadding="2">
+                            <tr>
+                            <td width="10"><?php tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td>
+                            <td>
+                            <input type="radio" name="address_option" value="new" onclick="address_option_show('new');" checked><?php echo TABLE_OPTION_NEW; ?>
+                            <input type="radio" name="address_option" value="old" onclick="address_option_show('old');"><?php echo TABLE_OPTION_OLD; ?>
+                            </td></tr>
+                          </table>
+                       </td>
+                      </tr>
+    </table>
+  </td></tr>
+  <tr><td height="6"></td></tr>
+
+         <tr> 
+            <td>
+                    <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
+                      <tr class="infoBoxContents">
+                        <td>
+                          <table border="0" width="100%" cellspacing="0" cellpadding="2" id="address_show">
+                          <tr id="address_show_id" style="display:none"><td width="10"><?php tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td>
+<td class="main" width="30%"><?php echo TABLE_ADDRESS_SHOW; ?></td>
+<td class="main" width="70%" height="30">
+<select name="address_show_list" id="address_show_list" onchange="address_option_list(this.value);">
+<option value="">--</option>
+</select>
+</td></tr>
+<?php
+    $hm_option->render('');
+    //echo '<tr><td width="10">'. tep_draw_separator('pixel_trans.gif', '10', '1') .'</td><td class="main" width="100%" height="30" colspan="2" style="word-break:break-all;"><span id="address_fee"></span></td></tr>'; 
+?>
+                          </table>
+                        </td>
+                      </tr> 
+                    </table>
+	    </td> 
+          </tr>
+        <tr><td>&nbsp;</td></tr>
+<?php
+  }
+?>
           <tr>
           <td width="70%"><b><?php echo TABLE_HEADING_SHIPPING_ADDRESS; ?></b></td></tr>
           <tr>
@@ -301,21 +714,31 @@ function rowOutEffect(object) {
 <?php
     $today = getdate();
       $m_num = $today['mon'];
-      $d_num = $today['mday'];
+      $d_num = $today['mday']+$db_set_day;
       $year = $today['year'];
     
     $hours = date('H');
     $mimutes = date('i');
 ?>
-  <select name="date" onChange="selectDate('<?php echo $hours; ?>', '<?php echo $mimutes; ?>')">
+  <select name="date" onChange="selectDate('<?php echo $work_start; ?>', '<?php echo $work_end; ?>',<?php echo $sleep; ?>);">
     <option value="">希望日を選択してください</option>
     <?php
           $oarr = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
           $newarr = array('月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日', '日曜日');
+     
+    for($j = 0;$j < $shipping_time;$j++){
+
+      echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'">'.str_replace($oarr, $newarr, date("Y年m月d日（l）", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
+
+    }
+
+    /*
     for($i=0; $i<7; $i++) {
       //echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$i,$year)).'">'.strftime("%Y年%m月%d日（%a）", mktime(0,0,0,$m_num,$d_num+$i,$year)).'</option>' . "\n";
       echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$i,$year)).'">'.str_replace($oarr, $newarr, date("Y年m月d日（l）", mktime(0,0,0,$m_num,$d_num+$i,$year))).'</option>' . "\n";
     }
+     */
+    
     ?>
   </select>
   </td>
@@ -331,11 +754,12 @@ function rowOutEffect(object) {
 <?php
   }
 ?>
-  <tr>
+  <tr id="shipping_list" style="display:none;">
     <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
   <td class="main"><?php echo TEXT_TORIHIKIKIBOUJIKAN; ?></td>
-    <td class="main">
-  <select name="hour" onChange="selectHour('<?php echo $hours; ?>', '<?php echo $mimutes; ?>')">
+    <td class="main" id="shipping_list_show">
+<!--
+  <select name="hour" onChange="selectHour('<?php //echo $hours; ?>', '<?php //echo $mimutes; ?>')">
     <option value="">--</option>
   </select>
   &nbsp;時&nbsp;
@@ -343,9 +767,17 @@ function rowOutEffect(object) {
     <option value="">--</option>
   </select>
   &nbsp;分&nbsp;
-  <?php echo TEXT_CHECK_24JI; ?>
+  <?php //echo TEXT_CHECK_24JI; ?>
+-->
   </td>
   </tr>
+ <tr id="shipping_list_min" style="display:none;">
+ <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+ <td class="main">&nbsp;</td>
+ <td class="main" id="shipping_list_show_min">
+ </td>
+ </tr>
+
 <?php
   if(isset($jikan_error) && $jikan_error != '') {
 ?>

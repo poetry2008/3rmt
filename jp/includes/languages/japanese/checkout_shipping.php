@@ -60,4 +60,6 @@ define('TEXT_TORIHIKIBOUBI_DEFAULT_SELECT','ご希望のお届け日時を指定
 define('TEXT_CREATE_ADDRESS_BOOK','お届け先を選択する');
 define('TEXT_USE_ADDRESS_BOOK','新しいお届け先を入力する');
 define('TEXT_SHIPPING_INFO_ERROR','重要なお知らせ<br>内容に不備があります<br>必要な情報を正しく入力してください。');
+define('TEXT_OPTIONS_ERROR','を入力してください。');
+define('TEXT_OPTIONS_ERROR_SELECT','を選択してください。');
 ?>

@@ -71,7 +71,8 @@
                  date_purchased, 
                  orders_status, 
                  last_modified ,
-                 code_fee
+                 code_fee,
+                 shipping_fee
           from " . TABLE_ORDERS . " 
           where orders_id = '" .  tep_db_input($order_id) . "' 
             and site_id = ".SITE_ID
@@ -111,6 +112,7 @@
                           'orders_status' => $order_status['orders_status_name'],
                           'last_modified' => $order['last_modified'],
                           'code_fee' => $order['code_fee'],
+                          'shipping_fee' => $order['shipping_fee'],
                           'total' => strip_tags($order_total['value']).'円',
                           'shipping_method' => ((substr($shipping_method['title'], -1) == ':') ? substr(strip_tags($shipping_method['title']), 0, -1) : strip_tags($shipping_method['title'])) );
 
@@ -178,7 +180,7 @@
                                                                     'id' => $attributes['orders_products_attributes_id'],
                                                                     'option_item_id' => $attributes['option_item_id'],
                                                                      'option_group_id' => $attributes['option_group_id'],
-                                                                     'option_info' => @unserialize($attributes['option_info']),
+                                                                     'option_info' => @unserialize(stripslashes($attributes['option_info'])),
                                                                      'price' => $attributes['options_values_price']);
 
             $subindex++;

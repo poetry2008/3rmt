@@ -140,7 +140,20 @@ $sql_data_array = array('orders_id'         => $insert_id,
                         'orders_user_language'        => $_SESSION['userLanguage'],
                         'orders_http_accept_language' => $_SERVER['HTTP_ACCEPT_LANGUAGE'],
                         'telecom_option'              => $_SESSION['option'],
-                        );
+                      );
+//作所信息入库开始
+
+foreach($_SESSION['options'] as $op_key=>$op_value){
+  
+  $address_options_query = tep_db_query("select id from ". TABLE_ADDRESS ." where name_flag='". $op_key ."'");
+  $address_options_array = tep_db_fetch_array($address_options_query);
+  tep_db_free_result($address_options_query);
+  $address_query = tep_db_query("insert into ". TABLE_ADDRESS_ORDERS ." values(NULL,'$insert_id',$customer_id,{$address_options_array['id']},'$op_key','$op_value[1]')");
+  tep_db_free_result($address_query);
+}
+
+
+//作所信息入库结束
   
 if (isset($_SESSION['referer_adurl']) && $_SESSION['referer_adurl']) {
   $sql_data_array['orders_adurl'] = $_SESSION['referer_adurl'];
@@ -151,6 +164,13 @@ if (isset($_POST['code_fee'])) {
   $sql_data_array['code_fee'] = intval($_POST['code_fee']);
 } else{
   $sql_data_array['code_fee'] = 0;
+}
+//配送费用
+if(isset($_POST['shipping_fee'])){
+
+  $sql_data_array['shipping_fee'] = intval($_POST['shipping_fee']);
+}else{
+  $sql_data_array['shipping_fee'] = 0;
 }
 
 $bflag_single = ds_count_bflag();
@@ -417,7 +437,16 @@ if(!isset($_SESSION['mailfee'])){
 
 $mailoption['MAILFEE']          = str_replace('円','',$total_mail_fee);
 $email_order = '';
-$email_order = $payment_modules->getOrderMailString($payment,$mailoption);  
+$email_order = $payment_modules->getOrderMailString($payment,$mailoption);
+
+$shipping_fee_value = isset($_POST['shipping_fee']) ? $_POST['shipping_fee'] : 0; 
+$email_temp = '▼ポイント割引';
+$email_temp_str = '▼ ポイント割引';
+$email_shipping_fee = '▼お届け料金　　   ：'.$shipping_fee_value.'円
+'.$email_temp;
+$email_order = str_replace($email_temp,$email_shipping_fee,$email_order);
+$email_order = str_replace($email_temp_str,$email_shipping_fee,$email_order);
+
 // 2003.03.08 Edit Japanese osCommerce
 tep_mail(tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], EMAIL_TEXT_SUBJECT, $email_order, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
   
@@ -443,6 +472,9 @@ $email_printing_order .= '注文番号　　　　：' . $insert_id . "\n";
 $email_printing_order .= '注文日　　　　　：' . tep_date_long(time()) . "\n";
 $email_printing_order .= 'メールアドレス　：' . $order->customer['email_address'] . "\n";
 $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
+if (!empty($_POST['shipping_fee'])) {
+  $email_printing_order .= 'お届け料金　　　　　：'.$_POST['shipping_fee'].'円'."\n"; 
+}
 if (isset($_SESSION['campaign_fee'])) {
   if (abs($_SESSION['campaign_fee']) > 0) {
     $email_printing_order .= '割引　　　　　　：' . abs((int)$_SESSION['campaign_fee']) . '円' . "\n";
@@ -572,6 +604,7 @@ unset($_SESSION['referer_adurl']);
   
 unset($_SESSION['campaign_fee']); 
 unset($_SESSION['camp_id']); 
+unset($_SESSION['options']);
 //$pr = '?SID=' . $convenience_sid;
   
 /*

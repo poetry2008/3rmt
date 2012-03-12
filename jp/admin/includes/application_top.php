@@ -133,6 +133,8 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
   define('FILENAME_OPTIONS_DL', 'options_dl.php');
   define('FILENAME_NEW_CUSTOMERS', 'new_customers.php');
   define('FILENAME_BILL_TEMPLATES', 'bill_templates.php');
+  define('FILENAME_ADDRESS', 'address.php');
+
 
 
 // define the database table names used in the project
@@ -180,6 +182,7 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
   define('TABLE_SESSION_LOG', 'session_log');
   define('TABLE_RECORD', 'record');
   define('TABLE_MISSION', 'mission');
+  define('TABLE_PRODUCTS_SHIPPING_TIME','products_shipping_time');
   define('TABLE_IMAGE_DOCUMENTS', 'image_documents');
   define('TABLE_IMAGE_DOCUMENT_TYPES', 'image_document_types');
   define('TABLE_PRODUCTS_TO_IMAGE_DOCUMENTS', 'products_to_image_documents');
@@ -211,13 +214,13 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
   define('TABLE_ORDERS_STATUS_HISTORY', 'orders_status_history');
   define('TABLE_ORDERS_TOTAL', 'orders_total');
   define('TABLE_PRODUCTS', 'products');
-  define('TABLE_PRODUCTS_ATTRIBUTES', 'products_attributes');
-  define('TABLE_PRODUCTS_ATTRIBUTES_DOWNLOAD', 'products_attributes_download');
+  define('TABLE_PRODUCTS_ATTRIBUTES', 'products_attributes_2');
+  define('TABLE_PRODUCTS_ATTRIBUTES_DOWNLOAD', 'products_attributes_download_2');
   define('TABLE_PRODUCTS_DESCRIPTION', 'products_description');
   define('TABLE_PRODUCTS_NOTIFICATIONS', 'products_notifications');
-  define('TABLE_PRODUCTS_OPTIONS', 'products_options');
-  define('TABLE_PRODUCTS_OPTIONS_VALUES', 'products_options_values');
-  define('TABLE_PRODUCTS_OPTIONS_VALUES_TO_PRODUCTS_OPTIONS', 'products_options_values_to_products_options');
+  define('TABLE_PRODUCTS_OPTIONS', 'products_options_2');
+  define('TABLE_PRODUCTS_OPTIONS_VALUES', 'products_options_values_2');
+  define('TABLE_PRODUCTS_OPTIONS_VALUES_TO_PRODUCTS_OPTIONS', 'products_options_values_to_products_options_2');
   define('TABLE_PRODUCTS_TO_CATEGORIES', 'products_to_categories');
   define('TABLE_REVIEWS', 'reviews');
   define('TABLE_REVIEWS_DESCRIPTION', 'reviews_description');
@@ -246,6 +249,11 @@ define('TABLE_PERMISSIONS','permissions');
   define('TABLE_COMPUTERS',  'computers');
   define('TABLE_ORDERS_TO_COMPUTERS',  'orders_to_computers');
   define('TABLE_BILL_TEMPLATES',  'bill_templates');
+  define('TABLE_ADDRESS','address');
+  define('TABLE_ADDRESS_ORDERS','address_orders');
+  define('TABLE_COUNTRY_FEE','country_fee');
+  define('TABLE_AREA_FEE','country_area');
+  define('TABLE_PRODUCTS_SHIPPING_TIME','products_shipping_time');
   
 // customization for the design layout
   define('BOX_WIDTH', 125); // how wide the boxes should be in pixels (default: 125)

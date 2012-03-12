@@ -36,7 +36,8 @@
           tep_session_unregister('customer_emailaddress');
           tep_session_unregister('guestchk');
 
-          $cart->reset();
+
+q
           
           tep_redirect(tep_href_link(FILENAME_LOGIN, 'pid='.$_GET['pid'], 'SSL'));
         }

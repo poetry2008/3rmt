@@ -15,7 +15,258 @@
  }
    $(document).ready(function(){hidden_payment()});
 
+//住所
 
+function check(value){
+  var arr  = new Array();
+  var arr_set = new Array();
+<?php
+  $options_query = tep_db_query("select * from ". TABLE_ADDRESS ." where type='option' and status='0' order by sort");
+  $json_array = array();
+  $json_set_value = array();
+  while($options_array = tep_db_fetch_array($options_query)){
+    if(!isset($otpions_array_temp['select_value']) && $otpions_array_temp['select_value'] == ''){
+        $show_array[] = unserialize($options_array['type_comment']);
+    }
+  }
+
+  foreach($show_array as $show_value){
+    foreach($show_value as $show_key=>$show_val){
+
+      $json_array[$show_key] = $show_val;
+      $json_set_value[$show_key] = $show_val['select_value'];
+    } 
+  }
+
+  tep_db_free_result($options_query);
+  foreach($json_array as $key=>$value_temp){
+    echo 'arr["'. $key .'"] = new Array();';
+    echo 'arr_set["'. $key .'"] = new Array();';
+    $value_temp['option_list'] = array_values($value_temp['option_list']);
+    foreach($value_temp['option_list'] as $k=>$val){
+
+      echo 'arr["'. $key .'"]['. $k .'] = "'. $val .'";';
+    } 
+    echo 'arr_set["'. $key .'"] = "'. $json_set_value[$key] .'";';
+
+  }  
+?>
+  
+  var option_id = document.getElementById("list_option5");
+  option_id.options.length = 0;
+  len = arr[value].length;
+  option_id.options[option_id.options.length]=new Option('--',''); 
+  for(i = 0;i < len;i++){
+    if(arr_set[value] == arr[value][i]){
+
+      option_id.options[option_id.options.length]=new Option(arr[value][i], arr[value][i]);
+    }     
+  } 
+  for(i = 0;i < len;i++){
+    if(arr_set[value] == arr[value][i]){
+      continue; 
+    }
+    option_id.options[option_id.options.length]=new Option(arr[value][i], arr[value][i]);    
+  } 
+}
+
+function address_option_show(action){
+  switch(action){
+
+  case 'new' :
+    arr_new = new Array();
+    arr_color = new Array();
+    $("#address_show_id").hide();
+    
+<?php 
+  $address_new_query = tep_db_query("select * from ". TABLE_ADDRESS ." where type!='text' and status='0' order by sort");
+  while($address_new_array = tep_db_fetch_array($address_new_query)){
+    $address_new_arr = unserialize($address_new_array['type_comment']);
+    if($address_new_array['type'] == 'textarea'){
+      echo 'arr_new["'. $address_new_array['name_flag'] .'"] = "'. $address_new_array['comment'] .'";';
+      echo 'arr_color["'. $address_new_array['name_flag'] .'"] = "#999";';
+    }elseif($address_new_array['type'] == 'option' && $address_new_arr['select_value'] !=''){
+      echo 'arr_new["'. $address_new_array['name_flag'] .'"] = "'. $address_new_arr['select_value'] .'";';
+      echo 'arr_color["'. $address_new_array['name_flag'] .'"] = "#000";';
+    }else{
+
+      echo 'arr_new["'. $address_new_array['name_flag'] .'"] = "";';
+      echo 'arr_color["'. $address_new_array['name_flag'] .'"] = "#000";';
+
+
+    }
+  }
+  tep_db_free_result($address_new_query);
+?>
+  for(x in arr_new){
+     
+      var list_options = document.getElementById("op_"+x);
+      list_options.value = arr_new[x];
+      list_options.style.color = arr_color[x];
+    }
+    break;
+  case 'old' :
+    $("#address_show_id").show();
+    var arr_old  = new Array();
+<?php
+if(isset($customerId) && $customerId != ''){
+  $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_ORDERS ." where customers_id=". $customerId ." group by orders_id");
+  
+   
+  $address_num = 0;
+  $json_str_array = array();
+  $json_old_array = array();
+
+  while($address_orders_group_array = tep_db_fetch_array($address_orders_group_query)){
+  
+  $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $address_orders_group_array['orders_id'] ."' order by id asc");
+
+   
+  $json_str_list = '';
+  unset($json_old_array);
+  $address_i = 0;
+  while($address_orders_array = tep_db_fetch_array($address_orders_query)){
+    
+    if($address_i == 7 || $address_i == 8 || $address_i == 9){
+
+      $json_str_list .= $address_orders_array['value'];
+    }
+    
+    $json_old_array[$address_orders_array['name']] = $address_orders_array['value'];
+    $address_i++;   
+        
+  }
+
+  
+  //这里判断，如果有重复的记录只显示一个
+  if(!in_array($json_str_list,$json_str_array)){
+      
+      $json_str_array[$address_num] = $json_str_list; 
+      echo 'arr_old['. $address_num .'] = new Array();';
+      foreach($json_old_array as $key=>$value){
+        echo 'arr_old['. $address_num .']["'. $key .'"] = "'. $value .'";';
+      }
+      $address_num++;
+  }
+ 
+  tep_db_free_result($address_orders_query); 
+  }
+}
+?>
+  var address_show_list = document.getElementById("address_show_list");
+
+  address_show_list.options.length = 0;
+
+  len = arr_old.length;
+  address_show_list.options[address_show_list.options.length]=new Option('--',''); 
+  for(i = 0;i < len;i++){
+    j = 0;
+    arr_str = '';
+    for(x in arr_old[i]){
+        if(j == 7 || j == 8 || j == 9){
+          arr_str += arr_old[i][x];
+        }
+        j++;
+    }
+    if(arr_str != ''){
+      address_show_list.options[address_show_list.options.length]=new Option(arr_str,i);
+    }
+
+  }   
+    break;
+  }
+}
+
+function address_option_list(value){
+  var arr_list = new Array();
+<?php
+if(isset($customerId) && $customerId != ''){
+
+  $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_ORDERS ." where customers_id=". $customerId ." group by orders_id");
+  
+   
+  $address_num = 0;
+  $json_str_list = '';
+  $json_str_array = array();
+  
+  while($address_orders_group_array = tep_db_fetch_array($address_orders_group_query)){
+  
+  $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $address_orders_group_array['orders_id'] ."'");
+  
+  $address_i = 0;
+  while($address_orders_array = tep_db_fetch_array($address_orders_query)){
+    
+    if($address_i == 7 || $address_i == 8 || $address_i == 9){
+
+      $json_str_list .= $address_orders_array['value'];
+    }
+    
+    $json_old_array[$address_orders_array['name']] = $address_orders_array['value'];
+    $address_i++;   
+        
+  }
+
+  
+  //这里判断，如果有重复的记录只显示一个
+  if(!in_array($json_str_list,$json_str_array)){
+      
+      $json_str_array[] = $json_str_list; 
+      echo 'arr_list['. $address_num .'] = new Array();';
+      foreach($json_old_array as $key=>$value){
+        echo 'arr_list['. $address_num .']["'. $key .'"] = "'. $value .'";';
+      }
+      $address_num++;
+    }
+    $json_str_list = '';
+ 
+  tep_db_free_result($address_orders_query); 
+  }
+}
+?>
+  ii = 0;
+  for(x in arr_list[value]){
+    var list_option = document.getElementById("op_"+x);
+    list_option.style.color = '#000';
+    list_option.value = arr_list[value][x];
+    //if(ii == 7){
+
+      //fee(arr_list[value][x]);
+    //}
+    ii++; 
+  }
+
+}
+
+function check_clear(){
+  var arr_clear = new Array();
+<?php
+
+  $address_clear_query = tep_db_query("select * from ". TABLE_ADDRESS ." where type='textarea' and status='0' order by sort");
+  while($address_clear_array = tep_db_fetch_array($address_clear_query)){
+
+    echo 'arr_clear["'. $address_clear_array['name_flag'] .'"] = "'. $address_clear_array['comment'] .'";';
+  }
+  tep_db_free_result($address_clear_query);
+?>
+  for(x in arr_clear){
+    document.getElementById("op_"+x).value = arr_clear[x];
+    document.getElementById("op_"+x).style.color = '#999';
+  }
+}
+
+$(document).ready(function(){
+<?php
+  if(isset($_SESSION['error_array']) && !empty($_SESSION['error_array'])){
+
+
+    foreach($_SESSION['error_array'] as $value){
+
+      echo '$("#error_'.$value.'").html("<font color=red>&nbsp;&nbsp;Error</font>");';
+    } 
+  }
+  unset($_SESSION['error_array']);
+?>
+});
 </script>
 
 <table border="0" width="100%" cellspacing="0" cellpadding="2">
@@ -245,10 +496,48 @@ foreach ($selections as $se){
 
 </table></td>
 </tr>
-
 </table>
 </td>
 </tr>
+
+<!-- 作所 -->
+
+<tr>
+    <td class="formAreaTitle"><br>
+                                                                                                       
+    <?php
+echo TEXT_ADDRESS;
+echo '&nbsp;&nbsp;<input type="button" value="'. TEXT_CLEAR .'" onclick="check_clear();">';
+  ?></td>
+  </tr>
+      <tr>
+      <td class="main"><table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">
+      <tr>
+      <td class="main"><table border="0" cellspacing="0" cellpadding="2">
+
+<tr>
+                            <td>&nbsp;</td>
+                            <td colspan="2">
+                            <input type="radio" name="address_option" value="new" onclick="address_option_show('new');" checked><?php echo TABLE_OPTION_NEW; ?>
+                            <input type="radio" name="address_option" value="old" onclick="address_option_show('old');"><?php echo TABLE_OPTION_OLD; ?>
+                            </td>
+</tr>
+<tr id="address_show_id" style="display:none;"><td>&nbsp;</td>
+<td class="main"><?php echo TABLE_ADDRESS_SHOW; ?></td>
+<td class="main" height="30">
+<select name="address_show_list" id="address_show_list" onchange="address_option_list(this.value);">
+<option value="">--</option>
+</select>
+</td></tr>
+
+<?php
+$hm_option->render('');    
+?>
+      </table></td>
+      </tr>
+      </table></td>
+      </tr>
+ 
 <tr>
 <td class="formAreaTitle"><br><?php echo CREATE_ORDER_FETCH_TIME_TITLE_TEXT;?></td>
 </tr>

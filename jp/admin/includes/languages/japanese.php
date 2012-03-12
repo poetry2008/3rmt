@@ -171,6 +171,11 @@ define('ENTRY_GENDER', '性別:');
 define('ENTRY_FIRST_NAME', '名:');
 define('ENTRY_LAST_NAME', '姓:');
 //add
+define('TEXT_ADDRESS','住所');
+define('TEXT_CLEAR','クリア');
+define('TABLE_OPTION_NEW','登録先に届ける');
+define('TABLE_OPTION_OLD','過去のお届け先を指定する'); 
+define('TABLE_ADDRESS_SHOW','お届け先リストから選ぶ:');
 define('ENTRY_FIRST_NAME_F', '名(フリガナ):');
 define('ENTRY_LAST_NAME_F', '姓(フリガナ):');
 define('ENTRY_DATE_OF_BIRTH', '生年月日:');

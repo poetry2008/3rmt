@@ -38,3 +38,6 @@ define('TEXT_TORIHIKIHOUHOU', 'オプション:');
 define('TEXT_TORIHIKIKIBOUBI', '取引希望日:');
 define('TEXT_TORIHIKIKIBOUJIKAN', '取引希望時間:');
 define('TEXT_HANDLE_FEE_CONFIRMATION', '手数料:');
+define('TEXT_SHIPPING_FEE','お届け料金:');
+define('TEXT_SHIPPING_FREE','無料');
+define('TEXT_OPTIONS_TITLE','住所&nbsp;');

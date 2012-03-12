@@ -34,3 +34,4 @@ define('HEADING_DOWNLOAD', 'ダウンロード・リンク');
 
 define('TEXT_FEE_HANDLE', '手数料:');
 define('MONEY_UNIT_ATEXT', '円');
+define('TEXT_SHIPPING_FEE','お届け料金:');
