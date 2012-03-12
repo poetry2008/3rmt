@@ -173,7 +173,7 @@
         // Check Options stock - add ds-style
         if (!strstr($PHP_SELF, FILENAME_ACCOUNT_HISTORY_INFO)) {
           if (STOCK_CHECK == 'true') {
-          echo $stock_check = tep_check_opstock($opa_value['stock_num'], $products[$i]['quantity']);
+          //echo $stock_check = tep_check_opstock($opa_value['stock_num'], $products[$i]['quantity']);
       if ($stock_check) $any_out_of_stock = 1;
         }
         }
