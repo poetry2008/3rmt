@@ -143,9 +143,11 @@
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
 <title><?php echo TITLE; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
+<link rel="stylesheet" type="text/css" href="includes/jquery.autocomplete.css">
 <script language="javascript" src="includes/general.js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript" src="includes/javascript/jquery.autocomplete.js"></script>
 <script text="text/javascript">
 function create_option_item(gid)
 {
@@ -265,6 +267,29 @@ function add_option_select()
   }
   $('#add_select').parent().before(html_str);
 }
+
+$(function() {
+      function format(group) {
+          return group.name;
+      }
+      $("#keyword").autocomplete('ajax_orders.php?action=search_group', {
+        multipleSeparator: '',
+        dataType: "json",
+        parse: function(data) {
+        return $.map(data, function(row) {
+            return {
+             data: row,
+             value: row.name,
+             result: row.name
+            }
+          });
+        },
+        formatItem: function(item) {
+          return format(item);
+        }
+      }).result(function(e, item) {
+      });
+});
 </script>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onload="SetFocus();">
@@ -291,7 +316,13 @@ function add_option_select()
         <td>
           <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr>
-              <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
+              <td class="pageHeading">
+              <?php
+               $option_group_raw = tep_db_query("select name from ".TABLE_OPTION_GROUP." where id = '".$_GET['group_id']."'");  
+               $option_group = tep_db_fetch_array($option_group_raw);
+               echo $option_group['name'];
+              ?>
+              </td>
               <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT); ?></td>
             </tr>
           </table>
@@ -300,6 +331,13 @@ function add_option_select()
       <tr>
         <td>
         <div id="show_item_info" style="display:none;"></div> 
+        <div align="right">
+        <?php echo tep_draw_form('form', FILENAME_OPTION_GROUP, '', 'get');?>
+        <input type="text" name="keyword" id="keyword">
+        <input type="hidden" name="search" value="1">
+        <?php echo tep_html_element_submit(IMAGE_SEARCH);?>
+        </form>
+        </div>
         <table id="item_list_box" border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
             <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
