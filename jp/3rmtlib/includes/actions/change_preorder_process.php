@@ -252,7 +252,7 @@ if (isset($_SESSION['preorder_option_info'])) {
       $sql_data_array = array('orders_id' => $orders_id,
                               'orders_products_id' => $order_products_id,
                               'options_values_price' => $option_attr_values['price'],
-                              'option_info' => serialize($input_option_array),
+                              'option_info' => tep_db_input(serialize($input_option_array)),
                               'option_group_id' => $option_attr_values['group_id'],
                               'option_item_id' => $option_attr_values['id'],
                               ); 

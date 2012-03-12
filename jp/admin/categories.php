@@ -631,7 +631,6 @@
                                   'products_cart_buyflag' => tep_db_prepare_input($_POST['products_cart_buyflag']),
                                   'products_cart_min' => tep_db_prepare_input($_POST['products_cart_min']),
                                   'products_cartorder' => tep_db_prepare_input($_POST['products_cartorder']),
-                                  'belong_to_option' => tep_db_prepare_input($_POST['belong_to_option']),
                                   );
            
 
@@ -651,12 +650,28 @@
 
 
           if ($_GET['action'] == 'insert_product') {
+            if ($site_id == 0) {
+              $option_group_raw = tep_db_query('select id from '.TABLE_OPTION_GROUP.' where name = \''.$_POST['option_keyword'].'\''); 
+              $option_group_res = tep_db_fetch_array($option_group_raw);
+              if ($option_group_res) {
+                $sql_data_array['belong_to_option'] = $option_group_res['id']; 
+              } 
+            } 
             $insert_sql_data = array('products_date_added' => 'now()');
             $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data);
             tep_db_perform(TABLE_PRODUCTS, $sql_data_array);
             $products_id = tep_db_insert_id();
             tep_db_query("insert into " . TABLE_PRODUCTS_TO_CATEGORIES . " (products_id, categories_id) values ('" . $products_id . "', '" . $current_category_id . "')");
           } elseif ($_GET['action'] == 'update_product') {
+            if ($site_id == 0) {
+              $option_group_raw = tep_db_query('select id from '.TABLE_OPTION_GROUP.' where name = \''.$_POST['option_keyword'].'\''); 
+              $option_group_res = tep_db_fetch_array($option_group_raw);
+              if ($option_group_res) {
+                $sql_data_array['belong_to_option'] = $option_group_res['id']; 
+               } else {
+                $sql_data_array['belong_to_option'] = ''; 
+               }
+            } 
             $update_sql_data = array('products_last_modified' => 'now()');
             $sql_data_array = tep_array_merge($sql_data_array, $update_sql_data);
             tep_db_perform(TABLE_PRODUCTS, $sql_data_array, 'update', 'products_id = \'' . tep_db_input($products_id) . '\'');
@@ -899,7 +914,8 @@
                 products_attention_2, 
                 products_attention_3, 
                 products_attention_4,
-                products_attention_5
+                products_attention_5,
+                belong_to_option
               ) values (
               '" . $product['real_quantity'] . "', 
               '" . $product['products_model'] . "', 
@@ -926,7 +942,8 @@
               '" . addslashes($description['products_attention_2']) . "', 
               '" . addslashes($description['products_attention_3']) . "', 
               '" . addslashes($description['products_attention_4']) . "', 
-              '" . addslashes($description['products_attention_5']) . "'
+              '" . addslashes($description['products_attention_5']) . "',
+              '" . $product['belong_to_option'] . "'
             )");
             $dup_products_id = tep_db_insert_id();
             $description_query = tep_db_query("
@@ -1238,7 +1255,6 @@ $(document).ready(function(){
 function clear_option()
 {
   document.getElementById('option_keyword').value = '';
-  //document.getElementById('belong_to_option').value = '';
 }
 
 $(function() {
@@ -1263,20 +1279,6 @@ $(function() {
       }).result(function(e, item) {
       });
 });
-
-function link_to_option()
-{
-  $.ajax({
-      type:'POST', 
-      dataType: 'text',
-      url: 'ajax_orders.php?action=link_option',
-      data:'keyword='+document.getElementById('option_keyword').value,
-      async:false,
-      success: function(msg) {
-        $('#belong_to_option').val(msg); 
-      }
-      });
-}
 
 function handle_option()
 {
@@ -1761,7 +1763,6 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                 }
                 ?>
                 <input type="text" name="option_keyword" id="option_keyword" value="<?php echo $option_keyword_str;?>">
-                <a href="javascript:void(0);"><?php echo tep_html_element_button(OPTION_PREVIEW, 'onclick="link_to_option();"');?></a> 
                 <a href="javascript:void(0);"><?php echo tep_html_element_button(OPTION_EDIT, 'onclick="handle_option();"');?></a> 
                 <a href="javascript:void(0);"><?php echo tep_html_element_button(OPTION_CLEAR, 'onclick="clear_option();"');?></a> 
                 <?php 
@@ -1771,7 +1772,6 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                   echo $option_group['name']; 
                 } 
                 ?>
-                <input type="hidden" name="belong_to_option" id="belong_to_option" value="<?php echo isset($pInfo->belong_to_option)?$pInfo->belong_to_option:'';?>"> 
                 </td>
               </tr>
               <tr>
