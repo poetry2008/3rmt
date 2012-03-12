@@ -286,7 +286,7 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
       $sql_data_array = array('orders_id' => $insert_id, 
                               'orders_products_id' => $order_products_id, 
                               'options_values_price' => $op_value['price'], 
-                              'option_info' => serialize($input_option_array),  
+                              'option_info' => tep_db_input(serialize($input_option_array)),  
                               'option_group_id' => $op_value['group_id'], 
                               'option_item_id' => $op_value['item_id'] 
                               );

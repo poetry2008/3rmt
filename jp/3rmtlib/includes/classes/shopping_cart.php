@@ -26,7 +26,7 @@
 //ccdd
             tep_db_query("insert into " . TABLE_CUSTOMERS_BASKET . " (customers_id, products_id, customers_basket_quantity, customers_basket_date_added) values ('" . $customer_id . "', '" . $products_id . "', '" . $qty . "', '" . date('Ymd') . "')");
             if (isset($this->contents[$products_id]['op_attributes'])) {
-              tep_db_query("insert into " . TABLE_CUSTOMERS_BASKET_OPTIONS . " (customers_id, products_id, option_info) values ('" . $customer_id . "', '" . $products_id . "', '" . serialize($this->contents[$products_id]['op_attributes']) . "')");
+              tep_db_query("insert into " . TABLE_CUSTOMERS_BASKET_OPTIONS . " (customers_id, products_id, option_info) values ('" . $customer_id . "', '" . $products_id . "', '" .  tep_db_input(serialize($this->contents[$products_id]['op_attributes'])) . "')");
             }
           } else {
 //ccdd
@@ -95,7 +95,7 @@
 
         if (!empty($option_info)) {
           $this->contents[$products_id]['op_attributes'] = $option_info; 
-          if (tep_session_is_registered('customer_id')) tep_db_query("insert into " . TABLE_CUSTOMERS_BASKET_OPTIONS . " (customers_id, products_id, option_info) values ('" . $customer_id . "', '" . $products_id .  "', '" . serialize($option_info) . "')");
+          if (tep_session_is_registered('customer_id')) tep_db_query("insert into " . TABLE_CUSTOMERS_BASKET_OPTIONS . " (customers_id, products_id, option_info) values ('" . $customer_id . "', '" . $products_id .  "', '" . tep_db_input(serialize($option_info)) . "')");
         }
       }
       $this->cleanup();
