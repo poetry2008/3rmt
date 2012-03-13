@@ -1461,15 +1461,6 @@ if ($_POST['orders_id'] &&
 
   $html_str .= '<tr>';
   $html_str .= '<td width="220">';
-  $html_str .= TABLE_HEADING_OPTION_ITEM_STORE_NUM; 
-  $html_str .= '</td>';
-  $html_str .= '<td>';
-  $html_str .= tep_draw_input_field('stock_num', '', 'id="stock_num" class="option_input"').TEXT_PREORDER_PRODUCTS_UNIT; 
-  $html_str .= '</td>';
-  $html_str .= '</tr>';
-
-  $html_str .= '<tr>';
-  $html_str .= '<td>';
   $html_str .= TABLE_HEADING_OPTION_ITEM_PRICE; 
   $html_str .= '</td>';
   $html_str .= '<td>';
@@ -1565,17 +1556,9 @@ if ($_POST['orders_id'] &&
   $html_str .= '</table>'; 
 
   $html_str .= '<table cellspacing="0" cellpadding="2" border="0" width="100%" class="campaign_body">';
+  
   $html_str .= '<tr>';
   $html_str .= '<td width="220">';
-  $html_str .= TABLE_HEADING_OPTION_ITEM_STORE_NUM; 
-  $html_str .= '</td>';
-  $html_str .= '<td>';
-  $html_str .= tep_draw_input_field('stock_num', $item['stock_num'], 'id="stock_num" class="option_input"').TEXT_PREORDER_PRODUCTS_UNIT; 
-  $html_str .= '</td>';
-  $html_str .= '</tr>';
-
-  $html_str .= '<tr>';
-  $html_str .= '<td>';
   $html_str .= TABLE_HEADING_OPTION_ITEM_PRICE; 
   $html_str .= '</td>';
   $html_str .= '<td>';
