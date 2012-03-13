@@ -20,7 +20,7 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
      }
      echo '<td>';
      if ($this->iline > 1) {
-       echo '<textarea name="op_'.$this->formname.'">'.(isset($_POST['op_'.$this->formname])?$_POST['op_'.$this->formname]:$this->itext).'</textarea>';    
+       echo '<textarea name="op_'.$this->formname.'">'.(isset($_POST['op_'.$this->formname])?$_POST['op_'.$this->formname]:$this->itext).'</textarea><br>'.$this->icomment;    
        echo '<span id="error_'.$this->formname.'" class="option_error">';
        if (isset($option_error_array[$this->formname])) {
          echo $option_error_array[$this->formname]; 
