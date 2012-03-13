@@ -18,7 +18,7 @@
 <?php page_head();?>
 <script type="text/javascript">
 </script>
-<script type="text/javascript" src="js/data.js"></script>
+<script type="text/javascript" src="js/pre_data.js"></script>
 </head>
 <body>
 <?php 
