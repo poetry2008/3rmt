@@ -163,7 +163,6 @@ function change_num(ob,targ, quan,a_quan)
             $products[$i]['add_op_attributes'][$op_key]['option_name'] = $option_item_res['front_title'];
             $products[$i]['add_op_attributes'][$op_key]['option_value'] = $op_value;
             $products[$i]['add_op_attributes'][$op_key]['price'] = $option_item_res['price'];
-            $products[$i]['add_op_attributes'][$op_key]['stock_num'] = $option_item_res['stock_num'];
           }
         }
       }
