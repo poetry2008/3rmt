@@ -137,11 +137,11 @@ function show_group_info(ele, gid, param_str)
   });
 }
 
-function show_link_group_info(gid)
+function show_link_group_info(gid, k_str)
 {
   $.ajax({
     url: 'ajax_orders.php?action=edit_group',
-    data:'group_id='+gid, 
+    data:'group_id='+gid+'&keyword='+k_str, 
     type: 'POST',
     dataType: 'text',
     async:false,
