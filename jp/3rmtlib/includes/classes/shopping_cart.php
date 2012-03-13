@@ -79,6 +79,7 @@
       $qty = max($qty,1);
 
       $products_id = $this->get_products_uprid($products_id, $option_info);
+      
       if ($notify == true) {
         $new_products_id_in_cart = $products_id;
         tep_session_register('new_products_id_in_cart');
@@ -361,26 +362,46 @@
     
     function get_products_uprid($products_id, $option_info_array)
     {
-      $p_num = 1; 
+      $p_num_array = array();
       if (!empty($this->contents)) {
-        foreach ($this->contents as $key => $value) {
-          $own_info = explode('_', $key);
-          if ($own_info[0] == $products_id) {
-            $p_num++; 
-            if (!empty($value['op_attributes'])) {
-              $diff_key_array = array_diff_key($value['op_attributes'], $option_info_array); 
-              $diff_value_array = array_diff($value['op_attributes'], $option_info_array); 
-              if (empty($diff_key_array) && empty($diff_value_array)) {
-                $auto_num = $own_info[1];   
+        if (empty($option_info_array)) {
+          foreach ($this->contents as $key => $value) {
+            $own_info = explode('_', $key);
+            $p_num_array[] = $own_info[1]; 
+            if ($own_info[0] == $products_id) {
+              if (empty($value['op_attributes'])) {
+                return $key; 
+              } 
+            } 
+          } 
+        } else {
+          foreach ($this->contents as $key => $value) {
+            $own_info = explode('_', $key);
+            if ($own_info[0] == $products_id) {
+              $p_num_array[] = $own_info[1]; 
+              if (!empty($value['op_attributes'])) {
+                $diff_key_array = array_diff_key($value['op_attributes'], $option_info_array); 
+                $diff_value_array = array_diff($value['op_attributes'], $option_info_array); 
+                if (empty($diff_key_array) && empty($diff_value_array)) {
+                  $auto_num = $own_info[1];   
+                }
               }
             }
           }
         }
       }
+      
       if (isset($auto_num)) {
         return $products_id.'_'.$auto_num; 
       }
-      return $products_id.'_'.$p_num;
+      
+      if (!empty($p_num_array)) {
+        rsort($p_num_array);
+        $next_num = $p_num_array[0]+1;
+        return $products_id.'_'.$next_num;
+      }
+      
+      return $products_id.'_1';
     }
   }
 ?>
