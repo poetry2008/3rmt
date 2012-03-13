@@ -622,7 +622,7 @@ if (tep_not_null($action)) {
             $mailoption['SITE_URL']         = get_url_by_site_id($order->info['site_id']);
 
             $payment_modules->admin_deal_mailoption($mailoption, $oID, payment::changeRomaji($order->info['payment_method'], PAYMENT_RETURN_TYPE_CODE)); 
-
+            $mailoption['ADD_INFO'] = isset($_SESSION['payment_bank_info'][$oID]['add_info'])?$_SESSION['payment_bank_info'][$oID]['add_info']:'';
             unset($_SESSION['orderinfo_mail_use']);
             $point = $mailpoint;
             if ($point){
