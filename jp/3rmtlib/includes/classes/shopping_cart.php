@@ -367,8 +367,8 @@
         if (empty($option_info_array)) {
           foreach ($this->contents as $key => $value) {
             $own_info = explode('_', $key);
-            $p_num_array[] = $own_info[1]; 
             if ($own_info[0] == $products_id) {
+              $p_num_array[] = $own_info[1]; 
               if (empty($value['op_attributes'])) {
                 return $key; 
               } 
