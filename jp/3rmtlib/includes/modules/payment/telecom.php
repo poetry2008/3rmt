@@ -109,7 +109,7 @@ class telecom  extends basePayment  implements paymentInterface  {
     
     for ($i=0, $n=sizeof($products); $i<$n; $i++) {
       $char_id = $products[$i]['id'];
-      $mail_body .= '・' . $products[$i]['name'] . '×' . $products[$i]['quantity'] . '(キャラクター名:' . $_SESSION["character"][$char_id] . ')' . "\n";
+      $mail_body .= '・' . $products[$i]['name'] . '×' . $products[$i]['quantity'] . "\n";
       $attributes_exist = ((isset($products[$i]['op_attributes'])) ? 1 : 0);
 
       if ($attributes_exist == 1) {
@@ -323,7 +323,7 @@ class telecom  extends basePayment  implements paymentInterface  {
     $preorder_products_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$pid."'");
     $preorder_products_res = tep_db_fetch_array($preorder_products_raw); 
     if ($preorder_products_res) {
-      $mail_body .= '・' . $preorder_products_res['products_name'] . '×' .  $preorder_products_res['products_quantity'] . '(キャラクター名:' .  $_SESSION["preorder_info_character"] . ')' . "\n";
+      $mail_body .= '・' . $preorder_products_res['products_name'] . '×' .  $preorder_products_res['products_quantity'] . "\n";
    
       if (isset($_SESSION['preorder_option_info'])) {
         foreach ($_SESSION['preorder_option_info'] as $key => $value) {

@@ -526,12 +526,13 @@ if (is_array($payment_modules->modules)) {
 }
 //character  
 
+/*
 if(isset($_SESSION['character'])){
   foreach($_SESSION['character'] as $ck => $cv){
     echo tep_draw_hidden_field("character[$ck]", $cv);
   }
 }
-
+*/
 
 echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER) . '</form>' . "\n";
 ?> </td> 

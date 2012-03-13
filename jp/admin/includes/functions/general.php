@@ -3371,7 +3371,6 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
         }
       }
     }
-    $str .= '<tr><td class="main">キャラ名：</td><td class="main"  style="color:#407416;">'.$p['products_character'].'</td></tr>';
     $names = tep_get_computers_names_by_orders_id($orders['orders_id']);
     if ($names) {
       $str .= '<tr><td class="main">PC：</td><td class="main">'.implode('&nbsp;,&nbsp;', $names).'</td></tr>';

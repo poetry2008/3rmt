@@ -40,16 +40,6 @@ if ($_GET['action'] == 'process') {
     if (isset($_POST['products_id']) && is_numeric($_POST['products_id'])) {
       $cart->add_cart($_POST['products_id'], $cart->get_quantity($cart->get_products_uprid($_POST['products_id'], $option_info_array))+$_POST['quantity'], '', true, $option_info_array);   
     }
-    $_SESSION['cname'][$cart->get_products_uprid($_POST['products_id'], $option_info_array)] = $_POST['cname']; 
-    unset($_SESSION['character']);
-                                
-                              foreach($cart as $key => $val){
-                                if($key == 'contents'){
-                                  foreach($val as $key2 => $val2){
-                                    $_SESSION['character'][$key2] = $_SESSION['cname'][$key2];
-                                  }
-                                }
-                              }    
     tep_redirect(tep_href_link($goto, tep_get_all_get_params($parameters))); 
   }
 }

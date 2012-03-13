@@ -190,7 +190,6 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
             </tr>
           </table>
           <br> 
-          <?php echo PREORDER_CONFIRM_CHARACTER.$_POST['p_character'];?> 
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
               <td class="main" width="30%" valign="top">

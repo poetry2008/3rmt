@@ -273,7 +273,6 @@ if (tep_not_null($action)) {
           $Query = "update " . TABLE_ORDERS_PRODUCTS . " set
             products_model = '" . $products_details["model"] . "',
                            products_name = '" . str_replace("'", "&#39;", $products_details["name"]) . "',
-                           products_character = '" . mysql_real_escape_string($products_details["character"]) . "',
                            final_price = '" . (tep_get_bflag_by_product_id((int)$order['products_id']) ? 0 - $products_details["final_price"] : $products_details["final_price"]) . "',
                            products_tax = '" . $products_details["tax"] . "',
                            products_quantity = '" . $products_details["qty"] . "'
@@ -555,7 +554,7 @@ if (tep_not_null($action)) {
             $products_ordered_mail .= "\t" . '個数　　　　　　　：' . $order->products[$i]['qty'] . '個' . tep_get_full_count2($order->products[$i]['qty'], $order->products[$i]['id']) . "\n";
             $products_ordered_mail .= "\t" . '単価　　　　　　　：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax']) . "\n";
             $products_ordered_mail .= "\t" . '小計　　　　　　　：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty']) . "\n";
-            $products_ordered_mail .= "\t" . 'キャラクター名　　：' . (EMAIL_USE_HTML === 'true' ? htmlspecialchars($order->products[$i]['character']) : $order->products[$i]['character']) . "\n";
+            //$products_ordered_mail .= "\t" . 'キャラクター名　　：' . (EMAIL_USE_HTML === 'true' ? htmlspecialchars($order->products[$i]['character']) : $order->products[$i]['character']) . "\n";
             $products_ordered_mail .= "\t" . '------------------------------------------' . "\n";
             if (tep_get_cflag_by_product_id($order->products[$i]['id'])) {
               if (tep_get_bflag_by_product_id($order->products[$i]['id'])) {
@@ -718,7 +717,6 @@ if (tep_not_null($action)) {
                     products_id = $add_product_products_id,
                     products_model = '$p_products_model',
                     products_name = '" . str_replace("'", "&#39;", $p_products_name) . "',
-                    products_character = '" . mysql_real_escape_string($add_product_character) . "',
                     products_price = '$p_products_price',
                     final_price = '" . ($p_products_price + $AddedOptionsPrice) . "',
                     products_tax = '$ProductsTax',
@@ -1046,7 +1044,6 @@ if (($action == 'edit') && ($order_exists == true)) {
     $order->products[$index] = array('qty' => $orders_products['products_quantity'],
         'name' => str_replace("'", "&#39;", $orders_products['products_name']),
         'model' => $orders_products['products_model'],
-        'character' => $orders_products['products_character'],
         'tax' => $orders_products['products_tax'],
         'price' => $orders_products['products_price'],
         'final_price' => $orders_products['final_price'],
@@ -1094,7 +1091,7 @@ if (($action == 'edit') && ($order_exists == true)) {
         $order->products[$i]['qty'] . "'><input class='update_products_qty' id='update_products_new_qty_$orders_products_id' name='update_products[$orders_products_id][qty]' size='2' value='" .
         $order->products[$i]['qty'] . "' onkeyup='clearLibNum(this);'>&nbsp;x</td>\n" . 
         '      <td class="' . $RowStyle . '">' . $order->products[$i]['name'] . "<input name='update_products[$orders_products_id][name]' size='64' id='update_products_name_$orders_products_id' type='hidden' value='" . $order->products[$i]['name'] . "'>\n" . 
-        '      &nbsp;&nbsp;'.EDIT_ORDERS_DUMMY_TITLE. "<input type='hidden' name='dummy' value='あいうえお眉幅'><input name='update_products[$orders_products_id][character]' size='20' value=\"" . htmlspecialchars($order->products[$i]['character']) . "\">";
+        '      &nbsp;&nbsp;'."<input type='hidden' name='dummy' value='あいうえお眉幅'>";
       // Has Attributes?
       if ($order->products[$i]['attributes'] && sizeof($order->products[$i]['attributes']) > 0) {
         for ($j=0; $j<sizeof($order->products[$i]['attributes']); $j++) {
@@ -1628,7 +1625,7 @@ if($action == "add_product")
   {
     print "<tr class=\"dataTableRow\"><form action='$PHP_SELF?oID=$oID&action=$action' method='POST'>\n";
     print "<td class='dataTableContent' align='right'><b>" . ADDPRODUCT_TEXT_STEP . " 4: </b></td>";
-    print "<td class='dataTableContent' valign='top'>" .  ADDPRODUCT_TEXT_CONFIRM_QUANTITY . "<input name='add_product_quantity' size='2' value='1' onkeyup='clearLibNum(this);'>&nbsp;個&nbsp;&nbsp;&nbsp;".EDIT_ORDERS_PRO_DUMMY_NAME."&nbsp;<input type='hidden' name='dummy' value='あいうえお眉幅'><input name='add_product_character' size='20' value=''></td>";
+    print "<td class='dataTableContent' valign='top'>" .  ADDPRODUCT_TEXT_CONFIRM_QUANTITY . "<input name='add_product_quantity' size='2' value='1' onkeyup='clearLibNum(this);'>&nbsp;個&nbsp;&nbsp;&nbsp;&nbsp;<input type='hidden' name='dummy' value='あいうえお眉幅'></td>";
     print "<td class='dataTableContent' align='center'><input type='submit' value='" . ADDPRODUCT_TEXT_CONFIRM_ADDNOW . "'>";
 
     foreach ($_POST as $op_key => $op_value)

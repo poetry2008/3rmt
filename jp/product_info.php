@@ -51,19 +51,6 @@ function change_num(ob,targ, quan,a_quan)
     update_cart(product_quantity.id);
   }
 }
-
-function check_form(){
-
-  var cname = document.getElementById("cname");
-
-  if(cname.value == ''){
-
-    alert('キャラクター名を入力して下さい。');
-    cname.focus();
-    return false;
-  }
-  return true;
-}
 -->
 </script>
 <script type="text/javascript"><!--
@@ -331,22 +318,6 @@ while($tag = tep_db_fetch_array($tag_query)) {
   }else{  
     $hm_option->render($product_info['belong_to_option']);
 ?>
-            <table border="0" width="100%" cellspacing="0" cellpadding="2">
-            <tr>
-            <td class="main">
-            <?php
-              echo "<br />";
-              echo TEXT_CHARACTER . tep_draw_input_field('cname','','id="cname"');
-              echo "<br /><br />";
-              echo '<font color="#C85050">ご入力されましたキャラクター名にお間違えはございませんか？</font>'; 
-            ?>
-          </td>
-          </tr>
-          <tr>
-            <td colspan="2" class="main">&nbsp;</td>
-          </tr>
-          </table>
-
                     <table align="right">
                       <tr>
                         <td class="main">数量:</td>
@@ -371,7 +342,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
       </td>
   </tr>
   </table>
-                        <td><?php echo tep_image_submit('button_in_cart.gif', IMAGE_BUTTON_IN_CART,'onclick="return check_form();"'); ?></td>
+                        <td><?php echo tep_image_submit('button_in_cart.gif', IMAGE_BUTTON_IN_CART); ?></td>
                       </tr>
                     </table>
         <?php echo tep_draw_hidden_field('products_id', $product_info['products_id']) ; ?>

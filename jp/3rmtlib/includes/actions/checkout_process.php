@@ -271,13 +271,14 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
   tep_db_query("update " . TABLE_PRODUCTS . " set products_ordered = products_ordered + " . sprintf('%d', $order->products[$i]['qty']) . " where products_id = '" . (int)$order->products[$i]['id'] . "'");
 
   $chara = '';
-  $character_id = $order->products[$i]['id'];
+  //$character_id = $order->products[$i]['id'];
+  /* 
   foreach($_SESSION['character'] as $st => $en) {
     if($_SESSION['character'][$character_id] == $_SESSION['character'][$st]) {
       $chara = $_SESSION['character'][$character_id];
     }
   }
-  
+  */ 
   $sql_data_array = array('orders_id' => $insert_id, 
                           'products_id' => (int)$order->products[$i]['id'], 
                           'products_model' => $order->products[$i]['model'], 
@@ -287,7 +288,6 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
                           'products_tax' => $order->products[$i]['tax'], 
                           'products_quantity' => $order->products[$i]['qty'],
                           'products_rate' => tep_get_products_rate((int)$order->products[$i]['id']),
-                          'products_character' =>  stripslashes($chara),
                           'site_id' => SITE_ID,
                           );
   // ccdd
@@ -341,9 +341,9 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
   $products_ordered .= '個数　　　　　　　：' . $order->products[$i]['qty'] . '個' .  tep_get_full_count2($order->products[$i]['qty'], (int)$order->products[$i]['id']) . "\n";
   $products_ordered .= '単価　　　　　　　：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax']) . "\n";
   $products_ordered .= '小計　　　　　　　：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty']) . "\n";
-  if(tep_not_null($chara)) {
-    $products_ordered .= 'キャラクター名　　：' .  (EMAIL_USE_HTML === 'true' ? htmlspecialchars(stripslashes($chara)) : stripslashes($chara)) . "\n";
-  }
+  //if(tep_not_null($chara)) {
+    //$products_ordered .= 'キャラクター名　　：' .  (EMAIL_USE_HTML === 'true' ? htmlspecialchars(stripslashes($chara)) : stripslashes($chara)) . "\n";
+  //}
   $products_ordered .= "------------------------------------------\n";
   if (tep_get_cflag_by_product_id((int)$order->products[$i]['id'])) {
     if (tep_get_bflag_by_product_id((int)$order->products[$i]['id'])) {

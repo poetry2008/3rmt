@@ -148,23 +148,6 @@ echo '</form>';
             <?php
               $product_info_raw = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".$preorder_product_res['products_id']."'"); 
               $product_info_res = tep_db_fetch_array($product_info_raw); 
-              
-              if ($product_info_res['products_cflag'] == 1) {
-            ?>
-            <tr>
-              <td class="main"><?php echo CHANGE_ORDER_PRODUCT_CHARACTER;?></td> 
-              <td class="main">
-              <?php 
-              $p_character_name = $preorder_product_res['products_character']; 
-              echo tep_draw_input_field('p_character', isset($_POST['p_character'])?$_POST['p_character']:$p_character_name);
-              if (isset($character_error)) {
-                echo '<br><font color="#ff0000">'.$character_error.'</font>'; 
-              }
-              ?> 
-              </td>
-            </tr>
-            <?php
-            }  
             ?>
             <tr>
               <td class="main">

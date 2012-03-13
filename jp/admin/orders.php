@@ -128,7 +128,6 @@ function tep_show_orders_products_info($orders_id) {
       while($pa = tep_db_fetch_array($products_attributes_query)){
         $str .= '<tr><td class="main"><b>'.$pa['products_options'].'：</b></td><td class="main">'.$pa['products_options_values'].'</td></tr>';
       }
-      $str .= '<tr><td class="main"><b>'.TEXT_FUNCTION_GAME_NAME.'</b></td><td class="main"  style="color:#407416; line-height:20px;"><font size="4"><b>'.$p['products_character'].'</b></font></td></tr>';
       $names = tep_get_computers_names_by_orders_id($orders['orders_id']);
       if ($names) {
         $str .= '<tr><td class="main"><b>PC：</b></td><td class="main">'.implode('&nbsp;,&nbsp;', $names).'</td></tr>';
@@ -2317,7 +2316,6 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
     <table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr class="dataTableHeadingRow">
         <td class="dataTableHeadingContent" colspan="2"><?php echo TABLE_HEADING_PRODUCTS; ?></td>
-        <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_CHARACTER; ?></td>
         <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_PRODUCTS_MODEL; ?></td>
         <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TAX; ?></td>
         <!--<td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_PRICE_EXCLUDING_TAX; ?></td>-->
@@ -2356,7 +2354,6 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
               }
 
               echo '      </td>' . "\n" .
-                '      <td class="dataTableContent" valign="top" style="font-size:20px">' . htmlspecialchars($order->products[$i]['character']) . '</td>' . "\n" .
                 '      <td class="dataTableContent" valign="top">' . $order->products[$i]['model'] . '</td>' . "\n" .
                 '      <td class="dataTableContent" align="right" valign="top">' . tep_display_tax_value($order->products[$i]['tax']) . '%</td>' . "\n" .
                 '      <!--<td class="dataTableContent" align="right" valign="top"><b>' . $currencies->format($order->products[$i]['final_price'], true, $order->info['currency'], $order->info['currency_value']) . '</b></td>-->' . "\n" .

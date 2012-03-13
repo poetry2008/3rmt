@@ -1370,7 +1370,6 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
     <table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr class="dataTableHeadingRow">
         <td class="dataTableHeadingContent" colspan="2"><?php echo TABLE_HEADING_PRODUCTS; ?></td>
-        <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_CHARACTER; ?></td>
         <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_PRODUCTS_MODEL; ?></td>
         <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TAX; ?></td>
         <!--<td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_PRICE_EXCLUDING_TAX; ?></td>-->
@@ -1407,7 +1406,6 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
       }
 
         echo '      </td>' . "\n" .
-       '      <td class="dataTableContent" valign="top" style="font-size:20px">' . htmlspecialchars($order->products[$i]['character']) . '</td>' . "\n" .
        '      <td class="dataTableContent" valign="top">' . $order->products[$i]['model'] . '</td>' . "\n" .
        '      <td class="dataTableContent" align="right" valign="top">' . tep_display_tax_value($order->products[$i]['tax']) . '%</td>' . "\n" .
        '      <!--<td class="dataTableContent" align="right" valign="top"><b>' . $currencies->format($order->products[$i]['final_price'], true, $order->info['currency'], $order->info['currency_value']) . '</b></td>-->' . "\n" .
