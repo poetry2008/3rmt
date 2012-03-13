@@ -1279,7 +1279,15 @@ if ($_POST['orders_id'] &&
 } else if (isset($_GET['action'])&&$_GET['action']=='edit_group') {
   require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_OPTION_GROUP); 
   $group_raw = tep_db_query("select * from ".TABLE_OPTION_GROUP." where id = '".$_POST['group_id']."'"); 
-  $group = tep_db_fetch_array($group_raw); 
+  $group = tep_db_fetch_array($group_raw);
+  
+  foreach ($_POST as $p_key => $p_value) {
+    if (($p_key != 'group_id') && ($p_key != 'action')) {
+      $param_str .= $p_key.'='.$p_value.'&'; 
+    }
+  }
+  $param_str = substr($param_str, 0, -1); 
+  
   $html_str = '';
   $html_str .= '<table cellspacing="0" cellpadding="2" border="0" width="100%" class="campaign_top">';
   $html_str .= '<tr>'; 
@@ -1295,7 +1303,7 @@ if ($_POST['orders_id'] &&
   $html_str .= '</td>'; 
   $html_str .= '</tr>'; 
   $html_str .= '</table>';
-  $html_str .= tep_draw_form('option_group', FILENAME_OPTION_GROUP, 'action=update'); 
+  $html_str .= tep_draw_form('option_group', FILENAME_OPTION_GROUP, 'action=update&'.$param_str); 
   $html_str .= '<table cellspacing="0" cellpadding="2" border="0" width="100%" class="campaign_body">';
   $html_str .= '<tr>';
   $html_str .= '<td width="220">';
@@ -1354,7 +1362,7 @@ if ($_POST['orders_id'] &&
   $html_str .= '<td style="padding-left:20%;">';
   $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_NEW_PROJECT, 'onclick="create_option_group();"').'</a>&nbsp;'; 
   $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="check_group_info('.$group['id'].', 1);"').'</a>&nbsp;'; 
-  $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="if(confirm(\''.TEXT_DEL_OPTION_GROUP.'\')) window.location.href = \''.tep_href_link(FILENAME_OPTION_GROUP, 'action=deleteconfirm&group_id='.$group['id']).'\';"').'</a>'; 
+  $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="if(confirm(\''.TEXT_DEL_OPTION_GROUP.'\')) window.location.href = \''.tep_href_link(FILENAME_OPTION_GROUP, 'action=deleteconfirm&group_id='.$group['id'].'&'.$param_str).'\';"').'</a>'; 
   $html_str .= tep_draw_hidden_field('group_id', $group['id']); 
   $html_str .= '</td>';
   $html_str .= '</tr>';

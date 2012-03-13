@@ -34,13 +34,15 @@
             tep_db_perform(TABLE_OPTION_GROUP, $sql_data_array); 
           }
         }
-        tep_redirect(FILENAME_OPTION_GROUP); 
+        $param_str = substr(tep_get_all_get_params(array('group_id', 'action')), 0, -1);
+        tep_redirect(tep_href_link(FILENAME_OPTION_GROUP, $param_str)); 
         break; 
       case 'deleteconfirm':
         tep_db_query('delete from '.TABLE_OPTION_GROUP.' where id = \''.$_GET['group_id'].'\''); 
         tep_db_query('delete from '.TABLE_OPTION_ITEM.' where group_id = \''.$_GET['group_id'].'\''); 
         tep_db_query('update `'.TABLE_PRODUCTS.'` set `belong_to_option` = \'\' where `belong_to_option` = \''.$_GET['group_id'].'\''); 
-        tep_redirect(FILENAME_OPTION_GROUP); 
+        $param_str = substr(tep_get_all_get_params(array('group_id', 'action')), 0, -1);
+        tep_redirect(tep_href_link(FILENAME_OPTION_GROUP, $param_str)); 
         break; 
     }
   }
@@ -98,12 +100,13 @@ function close_group_info()
   $('#show_group_info').hide(); 
 }
 
-function show_group_info(ele, gid, k_str)
+function show_group_info(ele, gid, param_str)
 {
   ele = ele.parentNode;
+  param_str = decodeURIComponent(param_str);
   $.ajax({
     url: 'ajax_orders.php?action=edit_group',      
-    data: 'group_id='+gid+'&keyword='+k_str,
+    data: 'group_id='+gid+'&'+param_str,
     type: 'POST',
     dataType: 'text',
     async:false,
@@ -280,7 +283,7 @@ $(function() {
                 
                 <td class="dataTableContent" align="right">
 <?php
-      echo '<a href="javascript:void(0);" onclick="show_group_info(this, \''.$group['id'].'\', \''.(!empty($_GET['keyword'])?$_GET['keyword']:'').'\')">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
+echo '<a href="javascript:void(0);" onclick="show_group_info(this, \''.$group['id'].'\', \''.urlencode(tep_get_all_get_params(array('group_id', 'action'))).'\')">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
     ?>&nbsp;
     </td>
               </tr>
