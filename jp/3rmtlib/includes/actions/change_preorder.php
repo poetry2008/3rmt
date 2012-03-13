@@ -36,9 +36,6 @@
           tep_session_unregister('customer_emailaddress');
           tep_session_unregister('guestchk');
 
-
-q
-          
           tep_redirect(tep_href_link(FILENAME_LOGIN, 'pid='.$_GET['pid'], 'SSL'));
         }
       }
