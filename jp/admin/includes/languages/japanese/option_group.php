@@ -10,7 +10,7 @@
   Released under the GNU General Public License
 */
 
-define('HEADING_TITLE', 'Option');
+define('HEADING_TITLE', '商品オプション');
 define('TABLE_HEADING_OPTION_GROUP_NAME','タイトル');
 define('TABLE_HEADING_OPTION_GROUP_TITLE','表示名');
 define('TABLE_HEADING_OPTION_GROUP_IS_PREORDER','予約注文');

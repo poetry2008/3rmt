@@ -77,16 +77,18 @@ function check_group_info(gid, type)
 {
   
   var group_name = document.getElementById('name').value; 
+  var group_title = document.getElementById('title').value; 
   $.ajax({
     url: 'ajax_orders.php?action=check_group',
     type: 'POST',
     dataType: 'text',
-    data:'type='+type+'&gname='+group_name+'&gid='+gid, 
+    data:'type='+type+'&gname='+group_name+'&gid='+gid+'&gtitle='+group_title, 
     async:false,
     success: function (data){
-      if (data != '') {
-        $('#name_error').html(data); 
-      } else {
+      var error_arr = data.split('||'); 
+      $('#name_error').html(error_arr[0]); 
+      $('#title_error').html(error_arr[1]); 
+      if (data == '||') {
         document.forms.option_group.submit(); 
       }
     }
@@ -137,11 +139,11 @@ function show_group_info(ele, gid, param_str)
   });
 }
 
-function show_link_group_info(gid)
+function show_link_group_info(gid, k_str)
 {
   $.ajax({
     url: 'ajax_orders.php?action=edit_group',
-    data:'group_id='+gid, 
+    data:'group_id='+gid+'&keyword='+k_str, 
     type: 'POST',
     dataType: 'text',
     async:false,

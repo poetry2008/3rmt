@@ -351,7 +351,6 @@
             $attributes = tep_db_fetch_array($attributes_query);
             if ($attributes) {
               $this->products[$index]['op_attributes'][$subindex] = array('front_title' => $attributes['front_title'],
-                                                                       'stock_num' => $attributes['stock_num'],
                                                                        'item_id' => $attributes['id'],
                                                                        'group_id' => $attributes['group_id'],
                                                                        'value' => $op_value,

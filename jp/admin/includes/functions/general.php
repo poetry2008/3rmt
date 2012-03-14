@@ -6940,7 +6940,7 @@ function get_option_group_link($group_id, $keyword = '')
     }
     $group_prev = tep_db_fetch_array($group_prev_query); 
     if ($group_prev) {
-      $link_str .= '<a href="javascript:void(0)" onclick="show_link_group_info(\''.$group_prev['id'].'\');">'.TEXT_GROUP_PREV.'</a>'; 
+      $link_str .= '<a href="javascript:void(0)" onclick="show_link_group_info(\''.$group_prev['id'].'\', \''.$keyword.'\');">'.TEXT_GROUP_PREV.'</a>'; 
     }
     if (trim($keyword) != '') {
       $group_next_query = tep_db_query("select * from ".TABLE_OPTION_GROUP." where id != '".$group_id."' and created_at <= '".$group['created_at']."'  and name like '%".$keyword."%' order by created_at desc limit 1"); 
@@ -6949,7 +6949,7 @@ function get_option_group_link($group_id, $keyword = '')
     }
     $group_next = tep_db_fetch_array($group_next_query); 
     if ($group_next) {
-      $link_str .= '&nbsp;&nbsp;<a href="javascript:void(0)" onclick="show_link_group_info(\''.$group_next['id'].'\');">'.TEXT_GROUP_NEXT.'</a>'; 
+      $link_str .= '&nbsp;&nbsp;<a href="javascript:void(0)" onclick="show_link_group_info(\''.$group_next['id'].'\', \''.$keyword.'\');">'.TEXT_GROUP_NEXT.'</a>'; 
     }
   }
   

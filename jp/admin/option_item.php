@@ -106,8 +106,7 @@
               '".tep_db_prepare_input($_POST['title'])."', `front_title` =
               '".tep_db_prepare_input($_POST['front_title'])."', `option` =
               '".tep_db_prepare_input(serialize($option_array))."', `type` =
-              '".tep_db_prepare_input(strtolower($_POST['type']))."', `stock_num` =
-              '".tep_db_prepare_input((int)$_POST['stock_num'])."', `price` =
+              '".tep_db_prepare_input(strtolower($_POST['type']))."', `price` =
               '".tep_db_prepare_input($_POST['price'])."', `sort_num` =
               '".tep_db_prepare_input((int)$_POST['sort_num'])."' where id =
               '".$_POST['item_id']."'"; 
@@ -119,7 +118,6 @@
               '".tep_db_prepare_input(tep_get_random_option_item_name())."', '',
               '".tep_db_prepare_input(serialize($option_array))."',
               '".tep_db_prepare_input(strtolower($_POST['type']))."',
-              '".tep_db_prepare_input((int)$_POST['stock_num'])."',
               '".tep_db_prepare_input($_POST['price'])."', '1',
               '".tep_db_prepare_input((int)$_POST['sort_num'])."', '".date('Y-m-d H:i:s',time())."')"; 
              tep_db_query($insert_sql); 
@@ -166,16 +164,24 @@ function create_option_item(gid)
 
 function check_item_info()
 {
-  var error_single = false; 
-  if (document.getElementById('title').value == '' || document.getElementById('front_title').value == '') {
-    error_single = true; 
-  }
+  var item_title = document.getElementById('title').value; 
+  var item_front_title = document.getElementById('front_title').value; 
   
-  if (error_single) {
-    alert('<?php echo ERROR_OPTION_ITEM_IS_NULL;?>'); 
-  } else {
-    document.forms.option_item.submit(); 
-  }
+  $.ajax({
+      url: 'ajax_orders.php?action=check_item',
+      type: 'POST',
+      dataType: 'text',
+      data:'ititle='+item_title+'&ifront_title='+item_front_title,
+      async:false,
+      success: function (data) {
+        var error_arr = data.split('||');
+        $('#title_error').html(error_arr[0]);
+        $('#front_error').html(error_arr[1]);
+        if (data == '||') {
+          document.forms.option_item.submit(); 
+        }
+      }
+      });
 }
 
 function close_item_info()
@@ -353,8 +359,6 @@ $(function() {
                 <td class="dataTableHeadingContent" align="left"><?php 
                 echo TABLE_HEADING_OPTION_ITEM_CONTENT; ?>&nbsp;</td>
                 <td class="dataTableHeadingContent" align="left"><?php 
-                echo TABLE_HEADING_OPTION_ITEM_STORE_NUM; ?>&nbsp;</td>
-                <td class="dataTableHeadingContent" align="left"><?php 
                 echo TABLE_HEADING_OPTION_ITEM_PRICE; ?>&nbsp;</td>
                 <td class="dataTableHeadingContent" align="left"><?php 
                 echo TABLE_HEADING_OPTION_ITEM_SORT_NUM; ?>&nbsp;</td>
@@ -432,7 +436,6 @@ $(function() {
                 }
                 ?>
                 </td>
-                <td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_OPTION_ITEM, 'page='.$_GET['page'].'&group_id=' .$_GET['group_id'].  '&item_id=' .$item['id']);?>'"><?php echo '&nbsp;' .  $item['stock_num']; ?></td>
                 <td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_OPTION_ITEM, 'page='.$_GET['page'].'&group_id=' .$_GET['group_id'].  '&item_id=' .$item['id']);?>'"><?php echo '&nbsp;' .  $currencies->format($item['price']); ?></td>
                 <td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_OPTION_ITEM, 'page='.$_GET['page'].'&group_id=' .$_GET['group_id'].  '&item_id=' .$item['id']);?>'"><?php echo '&nbsp;' .  $item['sort_num']; ?></td>
                 <td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_OPTION_ITEM, 'page='.$_GET['page'].'&group_id=' .$_GET['group_id'].  '&item_id=' .$item['id']);?>'">
