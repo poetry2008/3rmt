@@ -1235,6 +1235,7 @@ if ($_POST['orders_id'] &&
   $html_str .= '</td>';
   $html_str .= '<td>';
   $html_str .= tep_draw_input_field('title', '', 'id="title"'); 
+  $html_str .= '<span id="title_error" style="color:#ff0000;"></span>'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
   
@@ -1321,6 +1322,7 @@ if ($_POST['orders_id'] &&
   $html_str .= '</td>';
   $html_str .= '<td>';
   $html_str .= tep_draw_input_field('title', $group['title'], 'id="title"'); 
+  $html_str .= '<span id="title_error" style="color:#ff0000;"></span>'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
   
@@ -1378,21 +1380,33 @@ if ($_POST['orders_id'] &&
   echo json_encode($json_array); 
 } else if (isset($_GET['action'])&&$_GET['action']=='check_group') {
   require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_OPTION_GROUP); 
+  $error_array = array();
+  $error_array['name'] = '';
+  $error_array['title'] = '';
+  
   if ($_POST['gname'] == '') {
-    echo ERROR_OPTION_GROUP_IS_NULL;
-    exit; 
+    $error_array['name'] = ERROR_OPTION_GROUP_IS_NULL;
   }
   if ($_POST['type'] == 0) {
     $group_exists_raw = tep_db_query("select * from ".TABLE_OPTION_GROUP." where name = '".$_POST['gname']."'"); 
     if (tep_db_num_rows($group_exists_raw)) {
-      echo ERROR_OPTION_GROUP_NAME_EXISTS;  
+      if (empty($error_array['name'])) {
+        $error_array['name'] = ERROR_OPTION_GROUP_NAME_EXISTS;  
+      }
     }
   } else {
     $group_exists_raw = tep_db_query("select * from ".TABLE_OPTION_GROUP." where name = '".$_POST['gname']."' and id != '".$_POST['gid']."'"); 
     if (tep_db_num_rows($group_exists_raw)) {
-      echo ERROR_OPTION_GROUP_NAME_EXISTS;  
+      if (empty($error_array['name'])) {
+        $error_array['name'] = ERROR_OPTION_GROUP_NAME_EXISTS;  
+      } 
     }
   }
+  if ($_POST['gtitle'] == '') {
+    $error_array['title'] = ERROR_OPTION_GROUP_IS_NULL;
+  }
+  echo implode('||', $error_array);
+  
 } else if (isset($_GET['action'])&&$_GET['action']=='new_item') {
   require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_OPTION_ITEM); 
   require_once('enabledoptionitem.php'); 
