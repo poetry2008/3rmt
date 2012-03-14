@@ -45,7 +45,7 @@
 //ccdd
         $attributes_query = tep_db_query("select option_info from " . TABLE_CUSTOMERS_BASKET_OPTIONS . " where customers_id = '" . $customer_id . "' and products_id = '" . $products['products_id'] . "'");
         while ($attributes = tep_db_fetch_array($attributes_query)) {
-          $this->contents[$products['products_id']]['op_attributes'] = @unserialize($attributes['option_info']);
+          $this->contents[$products['products_id']]['op_attributes'] = @unserialize(stripslashes($attributes['option_info']));
         }
       }
 
@@ -118,7 +118,7 @@
       if (!empty($option_info)) {
         $this->contents[$products_id]['op_attributes'] = $option_info;
         
-        if (tep_session_is_registered('customer_id')) tep_db_query("update " .  TABLE_CUSTOMERS_BASKET_OPTIONS . " set option_info = '" .  @serialize($option_info) . "' where customers_id = '" . $customer_id .  "' and products_id = '" . $products_id . "'");
+        if (tep_session_is_registered('customer_id')) tep_db_query("update " .  TABLE_CUSTOMERS_BASKET_OPTIONS . " set option_info = '" .  tep_db_input(@serialize($option_info)) . "' where customers_id = '" . $customer_id .  "' and products_id = '" . $products_id . "'");
       }
     }
 
