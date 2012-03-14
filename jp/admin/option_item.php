@@ -164,16 +164,24 @@ function create_option_item(gid)
 
 function check_item_info()
 {
-  var error_single = false; 
-  if (document.getElementById('title').value == '' || document.getElementById('front_title').value == '') {
-    error_single = true; 
-  }
+  var item_title = document.getElementById('title').value; 
+  var item_front_title = document.getElementById('front_title').value; 
   
-  if (error_single) {
-    alert('<?php echo ERROR_OPTION_ITEM_IS_NULL;?>'); 
-  } else {
-    document.forms.option_item.submit(); 
-  }
+  $.ajax({
+      url: 'ajax_orders.php?action=check_item',
+      type: 'POST',
+      dataType: 'text',
+      data:'ititle='+item_title+'&ifront_title='+item_front_title,
+      async:false,
+      success: function (data) {
+        var error_arr = data.split('||');
+        $('#title_error').html(error_arr[0]);
+        $('#front_error').html(error_arr[1]);
+        if (data == '||') {
+          document.forms.option_item.submit(); 
+        }
+      }
+      });
 }
 
 function close_item_info()

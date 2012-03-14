@@ -1433,6 +1433,7 @@ if ($_POST['orders_id'] &&
   $html_str .= '</td>';
   $html_str .= '<td>';
   $html_str .= tep_draw_input_field('title', '', 'id="title" class="option_text"'); 
+  $html_str .= '<span id="title_error" style="color:#ff0000;"></span>'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
   
@@ -1442,6 +1443,7 @@ if ($_POST['orders_id'] &&
   $html_str .= '</td>';
   $html_str .= '<td>';
   $html_str .= tep_draw_input_field('front_title', '', 'id="front_title" class="option_text"'); 
+  $html_str .= '<span id="front_error" style="color:#ff0000;"></span>'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
   
@@ -1532,6 +1534,7 @@ if ($_POST['orders_id'] &&
   $html_str .= '</td>';
   $html_str .= '<td>';
   $html_str .= tep_draw_input_field('title', $item['title'], 'id="title" class="option_text"'); 
+  $html_str .= '<span id="title_error" style="color:#ff0000;"></span>'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
   
@@ -1541,6 +1544,7 @@ if ($_POST['orders_id'] &&
   $html_str .= '</td>';
   $html_str .= '<td>';
   $html_str .= tep_draw_input_field('front_title', $item['front_title'], 'id="front_title" class="option_text"'); 
+  $html_str .= '<span id="front_error" style="color:#ff0000;"></span>'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
   
@@ -1614,4 +1618,17 @@ if ($_POST['orders_id'] &&
     $insert_sql = "insert into `".TABLE_OPTION_GROUP."` values(NULL, '".$_POST['keyword']."', '".$_POST['keyword']."', '', '', '1', '1000', '".date('Y-m-d H:i:s', time())."')";
     tep_db_query($insert_sql);
   }
+} else if (isset($_GET['action'])&&$_GET['action']=='check_item') {
+  require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_OPTION_ITEM); 
+  $error_array = array();
+  $error_array['title'] = '';
+  $error_array['ftitle'] = '';
+  if ($_POST['ititle'] == '') {
+    $error_array['title'] = ERROR_OPTION_ITEM_IS_NULL;
+  }
+  
+  if ($_POST['ifront_title'] == '') {
+    $error_array['ftitle'] = ERROR_OPTION_ITEM_IS_NULL;
+  }
+  echo implode('||', $error_array);
 }
