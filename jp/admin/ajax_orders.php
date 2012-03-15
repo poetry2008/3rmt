@@ -1235,6 +1235,7 @@ if ($_POST['orders_id'] &&
   $html_str .= '</td>';
   $html_str .= '<td>';
   $html_str .= tep_draw_input_field('title', '', 'id="title"'); 
+  $html_str .= '<span id="title_error" style="color:#ff0000;"></span>'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
   
@@ -1279,7 +1280,15 @@ if ($_POST['orders_id'] &&
 } else if (isset($_GET['action'])&&$_GET['action']=='edit_group') {
   require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_OPTION_GROUP); 
   $group_raw = tep_db_query("select * from ".TABLE_OPTION_GROUP." where id = '".$_POST['group_id']."'"); 
-  $group = tep_db_fetch_array($group_raw); 
+  $group = tep_db_fetch_array($group_raw);
+  
+  foreach ($_POST as $p_key => $p_value) {
+    if (($p_key != 'group_id') && ($p_key != 'action')) {
+      $param_str .= $p_key.'='.$p_value.'&'; 
+    }
+  }
+  $param_str = substr($param_str, 0, -1); 
+  
   $html_str = '';
   $html_str .= '<table cellspacing="0" cellpadding="2" border="0" width="100%" class="campaign_top">';
   $html_str .= '<tr>'; 
@@ -1295,7 +1304,7 @@ if ($_POST['orders_id'] &&
   $html_str .= '</td>'; 
   $html_str .= '</tr>'; 
   $html_str .= '</table>';
-  $html_str .= tep_draw_form('option_group', FILENAME_OPTION_GROUP, 'action=update'); 
+  $html_str .= tep_draw_form('option_group', FILENAME_OPTION_GROUP, 'action=update&'.$param_str); 
   $html_str .= '<table cellspacing="0" cellpadding="2" border="0" width="100%" class="campaign_body">';
   $html_str .= '<tr>';
   $html_str .= '<td width="220">';
@@ -1313,6 +1322,7 @@ if ($_POST['orders_id'] &&
   $html_str .= '</td>';
   $html_str .= '<td>';
   $html_str .= tep_draw_input_field('title', $group['title'], 'id="title"'); 
+  $html_str .= '<span id="title_error" style="color:#ff0000;"></span>'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
   
@@ -1354,7 +1364,7 @@ if ($_POST['orders_id'] &&
   $html_str .= '<td style="padding-left:20%;">';
   $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_NEW_PROJECT, 'onclick="create_option_group();"').'</a>&nbsp;'; 
   $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="check_group_info('.$group['id'].', 1);"').'</a>&nbsp;'; 
-  $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="if(confirm(\''.TEXT_DEL_OPTION_GROUP.'\')) window.location.href = \''.tep_href_link(FILENAME_OPTION_GROUP, 'action=deleteconfirm&group_id='.$group['id']).'\';"').'</a>'; 
+  $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="if(confirm(\''.TEXT_DEL_OPTION_GROUP.'\')) window.location.href = \''.tep_href_link(FILENAME_OPTION_GROUP, 'action=deleteconfirm&group_id='.$group['id'].'&'.$param_str).'\';"').'</a>'; 
   $html_str .= tep_draw_hidden_field('group_id', $group['id']); 
   $html_str .= '</td>';
   $html_str .= '</tr>';
@@ -1370,21 +1380,33 @@ if ($_POST['orders_id'] &&
   echo json_encode($json_array); 
 } else if (isset($_GET['action'])&&$_GET['action']=='check_group') {
   require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_OPTION_GROUP); 
+  $error_array = array();
+  $error_array['name'] = '';
+  $error_array['title'] = '';
+  
   if ($_POST['gname'] == '') {
-    echo ERROR_OPTION_GROUP_IS_NULL;
-    exit; 
+    $error_array['name'] = ERROR_OPTION_GROUP_IS_NULL;
   }
   if ($_POST['type'] == 0) {
     $group_exists_raw = tep_db_query("select * from ".TABLE_OPTION_GROUP." where name = '".$_POST['gname']."'"); 
     if (tep_db_num_rows($group_exists_raw)) {
-      echo ERROR_OPTION_GROUP_NAME_EXISTS;  
+      if (empty($error_array['name'])) {
+        $error_array['name'] = ERROR_OPTION_GROUP_NAME_EXISTS;  
+      }
     }
   } else {
     $group_exists_raw = tep_db_query("select * from ".TABLE_OPTION_GROUP." where name = '".$_POST['gname']."' and id != '".$_POST['gid']."'"); 
     if (tep_db_num_rows($group_exists_raw)) {
-      echo ERROR_OPTION_GROUP_NAME_EXISTS;  
+      if (empty($error_array['name'])) {
+        $error_array['name'] = ERROR_OPTION_GROUP_NAME_EXISTS;  
+      } 
     }
   }
+  if ($_POST['gtitle'] == '') {
+    $error_array['title'] = ERROR_OPTION_GROUP_IS_NULL;
+  }
+  echo implode('||', $error_array);
+  
 } else if (isset($_GET['action'])&&$_GET['action']=='new_item') {
   require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_OPTION_ITEM); 
   require_once('enabledoptionitem.php'); 
@@ -1411,6 +1433,7 @@ if ($_POST['orders_id'] &&
   $html_str .= '</td>';
   $html_str .= '<td>';
   $html_str .= tep_draw_input_field('title', '', 'id="title" class="option_text"'); 
+  $html_str .= '<span id="title_error" style="color:#ff0000;"></span>'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
   
@@ -1420,6 +1443,7 @@ if ($_POST['orders_id'] &&
   $html_str .= '</td>';
   $html_str .= '<td>';
   $html_str .= tep_draw_input_field('front_title', '', 'id="front_title" class="option_text"'); 
+  $html_str .= '<span id="front_error" style="color:#ff0000;"></span>'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
   
@@ -1453,15 +1477,6 @@ if ($_POST['orders_id'] &&
 
   $html_str .= '<tr>';
   $html_str .= '<td width="220">';
-  $html_str .= TABLE_HEADING_OPTION_ITEM_STORE_NUM; 
-  $html_str .= '</td>';
-  $html_str .= '<td>';
-  $html_str .= tep_draw_input_field('stock_num', '', 'id="stock_num" class="option_input"').TEXT_PREORDER_PRODUCTS_UNIT; 
-  $html_str .= '</td>';
-  $html_str .= '</tr>';
-
-  $html_str .= '<tr>';
-  $html_str .= '<td>';
   $html_str .= TABLE_HEADING_OPTION_ITEM_PRICE; 
   $html_str .= '</td>';
   $html_str .= '<td>';
@@ -1519,6 +1534,7 @@ if ($_POST['orders_id'] &&
   $html_str .= '</td>';
   $html_str .= '<td>';
   $html_str .= tep_draw_input_field('title', $item['title'], 'id="title" class="option_text"'); 
+  $html_str .= '<span id="title_error" style="color:#ff0000;"></span>'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
   
@@ -1528,6 +1544,7 @@ if ($_POST['orders_id'] &&
   $html_str .= '</td>';
   $html_str .= '<td>';
   $html_str .= tep_draw_input_field('front_title', $item['front_title'], 'id="front_title" class="option_text"'); 
+  $html_str .= '<span id="front_error" style="color:#ff0000;"></span>'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
   
@@ -1557,17 +1574,9 @@ if ($_POST['orders_id'] &&
   $html_str .= '</table>'; 
 
   $html_str .= '<table cellspacing="0" cellpadding="2" border="0" width="100%" class="campaign_body">';
+  
   $html_str .= '<tr>';
   $html_str .= '<td width="220">';
-  $html_str .= TABLE_HEADING_OPTION_ITEM_STORE_NUM; 
-  $html_str .= '</td>';
-  $html_str .= '<td>';
-  $html_str .= tep_draw_input_field('stock_num', $item['stock_num'], 'id="stock_num" class="option_input"').TEXT_PREORDER_PRODUCTS_UNIT; 
-  $html_str .= '</td>';
-  $html_str .= '</tr>';
-
-  $html_str .= '<tr>';
-  $html_str .= '<td>';
   $html_str .= TABLE_HEADING_OPTION_ITEM_PRICE; 
   $html_str .= '</td>';
   $html_str .= '<td>';
@@ -1609,4 +1618,17 @@ if ($_POST['orders_id'] &&
     $insert_sql = "insert into `".TABLE_OPTION_GROUP."` values(NULL, '".$_POST['keyword']."', '".$_POST['keyword']."', '', '', '1', '1000', '".date('Y-m-d H:i:s', time())."')";
     tep_db_query($insert_sql);
   }
+} else if (isset($_GET['action'])&&$_GET['action']=='check_item') {
+  require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_OPTION_ITEM); 
+  $error_array = array();
+  $error_array['title'] = '';
+  $error_array['ftitle'] = '';
+  if ($_POST['ititle'] == '') {
+    $error_array['title'] = ERROR_OPTION_ITEM_IS_NULL;
+  }
+  
+  if ($_POST['ifront_title'] == '') {
+    $error_array['ftitle'] = ERROR_OPTION_ITEM_IS_NULL;
+  }
+  echo implode('||', $error_array);
 }

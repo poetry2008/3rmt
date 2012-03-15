@@ -105,6 +105,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
         }
 
         // update character
+        /* 
         if (isset($_POST['character']) && is_array($_POST['character'])){
           foreach($_POST['character'] as $pid=>$character){
             // ccdd
@@ -116,6 +117,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
             ");
           }
         }
+        */ 
         // update attributes
         /* 
         if($o->products){
@@ -366,9 +368,9 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
     
     $products_ordered .= $products_ordered_attributes . "\n";
     $products_ordered .= '個数　　　　　　　：' . $o->products[$i]['qty'] . '個' . tep_get_full_count2($o->products[$i]['qty'], $o->products[$i]['id']) . "\n";
-    if(tep_not_null($o->products[$i]['character'])) {
-      $products_ordered .= 'キャラクター名　　：' . (EMAIL_USE_HTML === 'true' ? htmlspecialchars($o->products[$i]['character']) : $o->products[$i]['character']) . "\n";
-    }
+    //if(tep_not_null($o->products[$i]['character'])) {
+      //$products_ordered .= 'キャラクター名　　：' . (EMAIL_USE_HTML === 'true' ? htmlspecialchars($o->products[$i]['character']) : $o->products[$i]['character']) . "\n";
+    //}
 
     $products_ordered .= '------------------------------------------' . "\n";
   }

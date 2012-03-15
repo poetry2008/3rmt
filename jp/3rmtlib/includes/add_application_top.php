@@ -858,4 +858,3 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
   define('TABLE_COUNTRY_FEE','country_fee');
   define('TABLE_COUNTRY_AREA','country_area');
   define('TABLE_ADDRESS_ORDERS','address_orders');
-  

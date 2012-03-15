@@ -39,7 +39,6 @@
           tep_session_unregister('comments');
           tep_session_unregister('customer_emailaddress');
           tep_session_unregister('guestchk');
-
           
           tep_redirect(tep_href_link(FILENAME_LOGIN, 'pid='.$_GET['pid'], 'SSL'));
         }
@@ -112,16 +111,6 @@
       $jikan_error = TEXT_PREORDER_ERROR_JIKAN;
     }
    
-    if (isset($_POST['p_character'])) {
-      $tmp_character = $_POST['p_character']; 
-      $tmp_character = str_replace(' ', '', $tmp_character); 
-      $tmp_character = str_replace('　', '', $tmp_character); 
-      if ($tmp_character == '') {
-        $error = true;
-        $character_error = TEXT_PREORDER_ERROR_CHARACTER;
-      }
-    }
-    
     if (isset($_POST['preorder_point'])) {
       $_POST['preorder_point'] = get_strip_campaign_info($_POST['preorder_point']); 
       if (!empty($_POST['preorder_point'])) { 

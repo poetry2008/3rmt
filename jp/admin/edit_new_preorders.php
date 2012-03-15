@@ -177,7 +177,6 @@
       
       $_SESSION['create_preorder']['orders_products'][$orders_products_id]['products_model'] = $products_details["model"];
       $_SESSION['create_preorder']['orders_products'][$orders_products_id]['products_name'] = str_replace("'", "&#39;", $products_details["name"]);
-      $_SESSION['create_preorder']['orders_products'][$orders_products_id]['products_character'] = mysql_real_escape_string($products_details["character"]);
       $_SESSION['create_preorder']['orders_products'][$orders_products_id]['final_price'] = (tep_get_bflag_by_product_id((int)$orders_products_id) ? 0 - $products_details["final_price"] : $products_details["final_price"]);
       $_SESSION['create_preorder']['orders_products'][$orders_products_id]['products_tax'] = $products_details["tax"];
       $_SESSION['create_preorder']['orders_products'][$orders_products_id]['products_quantity'] = $products_details["qty"];
@@ -700,7 +699,6 @@
         'products_id' => $add_product_products_id,
         'products_model' => $p_products_model,
         'products_name' => str_replace("'", "&#39;", $p_products_name),
-        'products_character' => mysql_real_escape_string($add_product_character),
         'products_price' => $p_products_price,
         'final_price' => $p_products_price + $AddedOptionsPrice,
         'products_tax' => $ProductsTax,
@@ -1067,7 +1065,6 @@ if (($action == 'edit') && ($order_exists == true)) {
       $order_products[$pid] = array('qty' => $orders_products['products_quantity'],
                                      'name' => str_replace("'", "&#39;", $orders_products['products_name']),
                                      'model' => $orders_products['products_model'],
-                                     'character' => $orders_products['products_character'],
                                      'tax' => $orders_products['products_tax'],
                                      'price' => $orders_products['products_price'],
                                      'final_price' => $orders_products['final_price'],
@@ -1107,7 +1104,7 @@ if (($action == 'edit') && ($order_exists == true)) {
          '      <td class="' . $RowStyle . '" align="left" valign="top" width="20">'
          . "<input name='update_products[$pid][qty]' size='2' value='" .  $order_products[$pid]['qty'] . "' onkeyup='clearLibNum(this);' class='update_products_qty'>&nbsp;x</td>\n" . 
          '      <td class="' . $RowStyle . '">' . $order_products[$pid]['name'] . "<input name='update_products[$pid][name]' size='64' type='hidden' value='" . $order_products[$pid]['name'] . "'>\n" . 
-       '      &nbsp;&nbsp;'.EDIT_ORDERS_DUMMY_TITLE.'<input type="hidden" name="dummy" value="あいうえお眉幅"><input name="update_products[' . $pid . '][character]" size="20" value="' . htmlspecialchars($order_products[$pid]['character']) . '">';
+       '      &nbsp;&nbsp;<input type="hidden" name="dummy" value="あいうえお眉幅">';
     // Has Attributes?
     if (sizeof($order_products_attributes[$pid]) > 0) {
       for ($j=0; $j<sizeof($order_products_attributes[$pid]); $j++) {
@@ -1612,7 +1609,7 @@ if (($action == 'edit') && ($order_exists == true)) {
       echo "<tr class=\"dataTableRow\"><form action='$PHP_SELF?oID=$oID&action=$action' method='POST' onsubmit='return check_add()' >\n";
       echo "<td class='dataTableContent' align='right'><b>" . ADDPRODUCT_TEXT_STEP .  " 3: </b></td>";
       echo '<td class="dataTableContent" valign="top">' .
-        ADDPRODUCT_TEXT_CONFIRM_QUANTITY . '<input name="add_product_quantity" size="2" value="1" onkeyup="clearLibNum(this);">&nbsp;'.EDIT_ORDERS_NUM_UNIT.'&nbsp;&nbsp;'.TABLE_HEADING_UNIT_PRICE.'<input name="add_product_price" id="add_product_price" size="4" value="0" onkeyup="clearNoNum(this);">&nbsp;'.EDIT_ORDERS_PRICE_UNIT.'&nbsp;&nbsp;'.EDIT_ORDERS_PRO_DUMMY_NAME.'&nbsp;<input type="hidden" name="dummy" value="あいうえお眉幅"><input name="add_product_character" size="20" value=""></td>';
+        ADDPRODUCT_TEXT_CONFIRM_QUANTITY . '<input name="add_product_quantity" size="2" value="1" onkeyup="clearLibNum(this);">&nbsp;'.EDIT_ORDERS_NUM_UNIT.'&nbsp;&nbsp;'.TABLE_HEADING_UNIT_PRICE.'<input name="add_product_price" id="add_product_price" size="4" value="0" onkeyup="clearNoNum(this);">&nbsp;'.EDIT_ORDERS_PRICE_UNIT.'&nbsp;&nbsp;&nbsp;<input type="hidden" name="dummy" value="あいうえお眉幅"></td>';
       echo "<td class='dataTableContent' align='center'><input type='submit' value='" . ADDPRODUCT_TEXT_CONFIRM_ADDNOW . "'>";
 
       if(IsSet($add_product_options))

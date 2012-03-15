@@ -57,7 +57,6 @@
   $preorder_info_date = $_POST['date'];
   $preorder_info_hour = $_POST['hour'];
   $preorder_info_min = $_POST['min'];
-  $preorder_info_character = $_POST['p_character'];
   $preorder_info_id = $_POST['pid'];
   
   if (!tep_session_is_registered('preorder_info_tori')) {
@@ -76,9 +75,6 @@
     tep_session_register('preorder_info_min'); 
   }
   
-  if (!tep_session_is_registered('preorder_info_character')) {
-    tep_session_register('preorder_info_character'); 
-  }
   
   if (!tep_session_is_registered('preorder_info_id')) {
     tep_session_register('preorder_info_id'); 

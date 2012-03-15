@@ -241,7 +241,6 @@ if ($preorder) {
                           'products_tax' => $preorder_product_res['products_tax'], 
                           'products_quantity' => $preorder_product_res['products_quantity'], 
                           'products_rate' => $preorder_product_res['products_rate'], 
-                          'products_character' => isset($_SESSION['preorder_info_character'])?$_SESSION['preorder_info_character']:'',
                           'torihiki_date' => $torihikihouhou_date_str, 
                           'site_id' => SITE_ID
       );
@@ -312,9 +311,9 @@ $products_ordered_text .= '単価　　　　　　　：' .  $currencies->displ
 
 $products_ordered_text .= '小計　　　　　　　：' .  $currencies->display_price(isset($option_info_array['final_price'])?$option_info_array['final_price']:$preorder_product_res['final_price'], $preorder_product_res['products_tax'], $preorder_product_res['products_quantity']) . "\n";
 
-if (tep_not_null($_SESSION['preorder_info_character'])) {
-  $products_ordered_text .= 'キャラクター名　　：' .$_SESSION['preorder_info_character']."\n";
-}
+//if (tep_not_null($_SESSION['preorder_info_character'])) {
+  //$products_ordered_text .= 'キャラクター名　　：' .$_SESSION['preorder_info_character']."\n";
+//}
 
 $products_ordered_text .= "------------------------------------------\n";
 if (tep_get_cflag_by_product_id($preorder_prodct_res['products_id'])) {
@@ -347,7 +346,8 @@ $payment_modules->preorder_deal_mailoption($mailoption, $cpayment_code, $preorde
 
 $mailoption['ORDER_COUNT'] = $preorder_product_res['products_quantity'];
 $mailoption['ORDER_LTOTAL'] = number_format((isset($option_info_array['final_price'])?$option_info_array['final_price']:$preorder_product_res['final_price'])*$preorder_product_res['products_quantity'], 0, '.', '');
-$mailoption['ORDER_ACTORNAME'] = $_SESSION['preorder_info_character'];
+//$mailoption['ORDER_ACTORNAME'] = $_SESSION['preorder_info_character'];
+$mailoption['ORDER_ACTORNAME'] = '';
 if ($preorder_point){
   $mailoption['POINT']            = str_replace('円', '', $currencies->format(abs($preorder_point)));
 }else {

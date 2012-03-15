@@ -17,7 +17,7 @@ class HM_Option_Item_Text extends HM_Option_Item_Basic
     echo '<td>'; 
     if (strlen($this->itextarea)) {
       echo $this->itextarea; 
-      echo '<input type="hidden" name="op_'.$this->formname.'" value="">'; 
+      echo '<input type="hidden" name="op_'.$this->formname.'" value="'.$this->itextarea.'">'; 
     }
     echo '</td>'; 
   }

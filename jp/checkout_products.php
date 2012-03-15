@@ -55,13 +55,13 @@
   if($error == 'F'){
     unset($_SESSION['character']);
     
-    foreach($cart as $key => $val){
-      if($key == 'contents'){
-        foreach($val as $key2 => $val2){
-        $_SESSION['character'][$key2] = $_POST['cname_' . $key2]; 
-      }
-      }
-    }
+    //foreach($cart as $key => $val){
+      //if($key == 'contents'){
+        //foreach($val as $key2 => $val2){
+        //$_SESSION['character'][$key2] = $_POST['cname_' . $key2]; 
+      //}
+      //}
+    //}
     tep_redirect(tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL', true, false));    
   }
   }

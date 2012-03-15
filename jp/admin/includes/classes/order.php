@@ -159,7 +159,7 @@
                                         'price'       => $orders_products['products_price'],
                                         'final_price' => $orders_products['final_price'],
                                         'rate'        => $orders_products['products_rate'],
-                                        'character'   => $orders_products['products_character'],
+                                        //'character'   => $orders_products['products_character'],
                                         );
 
         $subindex = 0;
