@@ -345,13 +345,20 @@
     while ($contents = tep_db_fetch_array($contents_query)) {
 
     $count++;
+    $even = 'dataTableSecondRow';
+    $odd  = 'dataTableRow';
+    if (isset($nowColor) && $nowColor == $odd) {
+      $nowColor = $even; 
+    } else {
+      $nowColor = $odd; 
+    }
     if ( ((isset($cID) && $contents['pID'] == $cID) || ((!isset($_GET['cID']) || !$_GET['cID']) && $count == 1)) ) {
         echo '          <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $contents['pID'] . '&action=edit') . '\'">' . "\n";
         if(!isset($_GET['cID']) || !$_GET['cID']) {
           $cID = $contents['pID'];
         }
       } else {
-        echo '          <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID')) . 'cID=' . $contents['pID']) . '\'">' . "\n";
+        echo '          <tr class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID')) . 'cID=' . $contents['pID']) . '\'">' . "\n";
       }
 ?> 
                     <td class="dataTableContent"><?php echo $contents['sromaji']; ?></td> 
@@ -365,7 +372,18 @@
               }
             ?></td>
             <td class="dataTableContent" align="right"><?php echo htmlspecialchars($contents['sort_id']); ?></td> 
-                      <td class="dataTableContent" align="right"><?php if ( ($contents['pID'] == $cID) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); } else { echo '<a href="' . tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID')) . 'cID=' . $contents['pID']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?> 
+                      <td class="dataTableContent" align="right">
+                      <?php 
+                      if ( ($contents['pID'] == $cID) ) { 
+                        echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); 
+                      } else { 
+                        if ($_GET['action'] == 'confirm') {
+                          echo '<a href="' . tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $contents['pID']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
+                        } else {
+                          echo '<a href="' . tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID')) . 'cID=' . $contents['pID']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; 
+                        }
+                      } 
+                      ?> 
 &nbsp;</td> 
                     </tr> <?php
     }

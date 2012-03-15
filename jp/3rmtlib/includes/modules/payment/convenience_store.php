@@ -4,85 +4,81 @@
 */
 
 // 代金引換払い(手数料が購入金額に連動)
-  class convenience_store {
-    var $site_id, $code, $title, $description, $enabled, $n_fee, $s_error, $email_footer;
+require_once (DIR_WS_CLASSES . 'basePayment.php');
+class convenience_store extends basePayment  implements paymentInterface  { 
+  var $site_id, $code, $title, $description, $enabled, $n_fee, $s_error, $email_footer, $show_payment_info;
+  function loadSpecialSettings($site_id = 0){
+    $this->site_id = $site_id;
+    $this->code        = 'convenience_store';
+    $this->footer      = TS_MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_FOOTER;
+    $this->show_payment_info = 0;
 
-// class constructor
-    function convenience_store($site_id = 0) {
-      global $order;
-      
-      $this->site_id = $site_id;
-
-      $this->code        = 'convenience_store';
-      $this->title       = MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_TITLE;
-      $this->description = MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_DESCRIPTION;
-      $this->sort_order  = MODULE_PAYMENT_CONVENIENCE_STORE_SORT_ORDER;
-      $this->enabled     = ((MODULE_PAYMENT_CONVENIENCE_STORE_STATUS == 'True') ? true : false);
-
-      if ((int)MODULE_PAYMENT_CONVENIENCE_STORE_ORDER_STATUS_ID > 0) {
-        $this->order_status = MODULE_PAYMENT_CONVENIENCE_STORE_ORDER_STATUS_ID;
-      }
-
-      if (is_object($order)) $this->update_status();
-
-      $this->email_footer = MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_EMAIL_FOOTER;
+  }
+  function fields($theData=false, $back=false){
+    if ($back) {
+    return array(
+                 array(
+                       "code"=>'con_email',
+                       "title"=>TS_MODULE_PAYMENT_CONVENIENCE_EMAIL_TEXT,
+                       "field"=>tep_draw_input_field('con_email', (isset($theData['con_email'])?$theData['con_email']:((isset($_GET['Customer_mail'])?$_GET['Customer_mail']:'')))),
+                       "rule"=>array(basePayment::RULE_NOT_NULL,basePayment::RULE_EMAIL),
+                       )
+     
+                ); 
+    } else {
+    global $order;
+    $total_cost = $order->info['total'];
+    $f_result = $this->calc_fee($total_cost);
+    $added_hidden = tep_draw_hidden_field('code_fee', $f_result); 
+    return array(
+                 array(
+                       "code"=>'convenience_email',
+                       "title"=>TS_MODULE_PAYMENT_CONVENIENCE_EMAIL_TEXT,
+                       "field"=>tep_draw_input_field('convenience_email', (isset($_SESSION['customer_emailaddress'])?$_SESSION['customer_emailaddress']:$theData['convenience_email']),'onpaste="return false"').TS_MODULE_PAYMENT_CONVENIENCE_MUST_INPUT, 
+                       "rule"=>array(basePayment::RULE_NOT_NULL,basePayment::RULE_EMAIL),
+                       "error_msg" => array(TS_MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE, TS_MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE)),
+                 array(
+                       "code"=>'convenience_email_again',
+                       "title"=>TS_MODULE_PAYMENT_CONVENIENCE_EMAIL_CONFIRMATION_TEXT,
+                       "field"=>tep_draw_input_field('convenience_email_again', isset($_SESSION['customer_emailaddress'])?$_SESSION['customer_emailaddress']:$theData['convenience_email_again'],'onpaste="return false"').TS_MODULE_PAYMENT_CONVENIENCE_MUST_INPUT,
+                       "rule"=>array(basePayment::RULE_NOT_NULL, basePayment::RULE_SAME_TO,basePayment::RULE_EMAIL),
+                       "params_code"=>'convenience_email',
+                       "error_msg" => array(TS_MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE, TS_MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE_NOE, TS_MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE) 
+                       ),
+                 array(
+                       "code"=>'',
+                       "title"=>'',
+                       "field"=>$added_hidden,
+                       "rule"=>'',
+                       ),
+                 );
     }
+  }
+  // class methods
+  function javascript_validation() {
+    return false;
+  }
 
-// class methods
-    function update_status() {
-      global $order;
-
-      if ( ($this->enabled == true) && ((int)MODULE_PAYMENT_CONVENIENCE_STORE_ZONE > 0) ) {
-        $check_flag = false;
-        $check_query = tep_db_query("select zone_id from " . TABLE_ZONES_TO_GEO_ZONES . " where geo_zone_id = '" . MODULE_PAYMENT_CONVENIENCE_STORE_ZONE . "' and zone_country_id = '" . $order->billing['country']['id'] . "' order by zone_id");
-        while ($check = tep_db_fetch_array($check_query)) {
-          if ($check['zone_id'] < 1) {
-            $check_flag = true;
-            break;
-          } elseif ($check['zone_id'] == $order->billing['zone_id']) {
-            $check_flag = true;
-            break;
-          }
-        }
-
-        if ($check_flag == false) {
-          $this->enabled = false;
-        }
-      }
-    }
-
-// 代引手数料を計算する
-    function calc_fee($total_cost) {
-      $table_fee = split("[:,]" , MODULE_PAYMENT_CONVENIENCE_STORE_COST);
-      $f_find = false;
-      $this->n_fee = 0;
-      for ($i = 0; $i < count($table_fee); $i+=2) {
-        if ($total_cost <= $table_fee[$i]) { 
-          $additional_fee = $total_cost.$table_fee[$i+1]; 
-          @eval("\$additional_fee = $additional_fee;"); 
-          //$this->n_fee = $table_fee[$i+1]; 
-          if (is_numeric($additional_fee)) {
-            $this->n_fee = intval($additional_fee); 
-          } else {
-            $this->n_fee = 0; 
-          }
-          $f_find = true;
-          break;
-        }
-      }
-      if ( !$f_find ) {
-        $this->s_error = MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_OVERFLOW_ERROR;
-      }
-
-      return $f_find;
-    }
-
-// class methods
-    function javascript_validation() {
+  function checkAdminSelection(){
+    if(isset($_POST['con_email']) and !empty($_POST['con_email'])){
+      return true;
+    }else {
       return false;
     }
-
-    function selection() {
+  }
+    function adminSelection()
+    {
+      return array(
+                   'code'=>$this->code,
+                   'fields'=>array(
+                                   array(
+                                         "title"=>"EMAIL",
+                                         "field"=>"<input type='text' name='con_email' />",
+                                         "message"=>"",
+                                         )));
+    }
+    /*
+    function selection($theData) {
       global $currencies;
       global $order;
 
@@ -90,8 +86,8 @@
       $f_result = $this->calc_fee($total_cost); // 手数料
 
       $added_hidden = $f_result
-          ? tep_draw_hidden_field('codt_fee', $this->n_fee).tep_draw_hidden_field('cod_total_cost', $total_cost)
-          : tep_draw_hidden_field('codt_fee_error', $this->s_error);
+        ? tep_draw_hidden_field('codt_fee', $this->n_fee).tep_draw_hidden_field('cod_total_cost', $total_cost)
+        : tep_draw_hidden_field('codt_fee_error', $this->s_error);
       if (!empty($this->n_fee)) {
         $s_message = $f_result ? (MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_FEE . '&nbsp;' . $currencies->format($this->n_fee)) : ('<font color="#FF0000">' . $this->s_error . '</font>');
       } else {
@@ -102,87 +98,59 @@
       if (isset($_SESSION['customer_emailaddress'])) {
         $email_default_str = $_SESSION['customer_emailaddress']; 
       }
-      if(SITE_ID == 1){
       $selection = array(
-          'id' => $this->code,
-          'module' => $this->title,
-          'fields' => array(array('title' => MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_PROCESS,
-                                  'field' => ''),
-                            array('title' => '<div class="rowHide
-                              rowHide_'.$this->code.'" id="cemail"
-                              style="display:none;">'.MODULE_PAYMENT_CONVENIENCE_INFO_TEXT.'<div
+                         'id' => $this->code,
+                         'module' => $this->title,
+                         'fields' => array(array('title' => MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_PROCESS,
+                                                 'field' => ''),
+                                           array('title' => '<div class="rowHide rowHide_'.$this->code.'" id="cemail" style="display:none;">'.MODULE_PAYMENT_CONVENIENCE_INFO_TEXT.'<div
                               class="cemail_input_info"><div class="cemail_front_text">'
-                              .MODULE_PAYMENT_CONVENIENCE_EMAIL_TEXT.'</div><div
+                                                 .MODULE_PAYMENT_CONVENIENCE_EMAIL_TEXT.'</div><div
                               class="con_email01">'.tep_draw_input_field('convenience_email',
-                                $email_default_str, 'onpaste="return
+                                                                         $email_default_str, 'onpaste="return
                                 false"').'
                               '.MODULE_PAYMENT_CONVENIENCE_MUST_INPUT."</div></div><div
                               class='cemail_input_info'><div
                               class='cemail_front_text'>"
-                              .MODULE_PAYMENT_CONVENIENCE_EMAIL_CONFIRMATION_TEXT."</div><div
+                                                 .MODULE_PAYMENT_CONVENIENCE_EMAIL_CONFIRMATION_TEXT."</div><div
                               class='con_email02'>".tep_draw_input_field('convenience_email_again',
-                                $email_default_str, 'onpaste="return false"').'
+                                                                         $email_default_str, 'onpaste="return false"').'
                               '.MODULE_PAYMENT_CONVENIENCE_MUST_INPUT.'</div></div></div>', 
-                                  'field' => '' 
-                                 ), 
-                            array('title' => '<div class="rowHide rowHide_'.$this->code.'" id="caemail" style="display:none;"><div class="cemail_input_02">'.'<div class="con_email02">'.'</div></div><p>'.MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_FOOTER.'</p></div>',
-                                  'field' => '' 
-                                 ), 
-                            array('title' => $s_message,
-                                  'field' => $added_hidden)
-        )
-      );
-      }else{
-      $selection = array(
-          'id' => $this->code,
-          'module' => $this->title,
-          'fields' => array(array('title' => MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_PROCESS,
-                                  'field' => ''),
-                            array('title' => '<div id="cemail" class="rowHide" style="display:none;">'.MODULE_PAYMENT_CONVENIENCE_INFO_TEXT.MODULE_PAYMENT_CONVENIENCE_EMAIL_TEXT.'<div class="con_email01">'.tep_draw_input_field('convenience_email', $email_default_str, 'onpaste="return false"').MODULE_PAYMENT_CONVENIENCE_MUST_INPUT.'</div></div>', 
-                                  'field' => '' 
-                                 ), 
-                            array('title' => '<div id="caemail" class="rowHide" style="display:none;">'.MODULE_PAYMENT_CONVENIENCE_EMAIL_CONFIRMATION_TEXT.'<div class="con_email02">'.tep_draw_input_field('convenience_email_again', $email_default_str, 'onpaste="return false"').MODULE_PAYMENT_CONVENIENCE_MUST_INPUT.'</div><p>'.MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_FOOTER.'</p></div>',
-                                  'field' => '' 
-                                 ), 
-                            array('title' => $s_message,
-                                  'field' => $added_hidden)
-        )
-      );
-
-      }
+                                                 'field' => '' 
+                                                 ), 
+                                           array('title' => '<div class="rowHide rowHide_'.$this->code.'" id="caemail" style="display:none;"><div class="cemail_input_02">'.'<div class="con_email02">'.'</div></div><p>'.MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_FOOTER.'</p>'. $added_hidden.'</div>',
+                                                 'field' => '' 
+                                                 ), 
+                                           array('title' => $s_message,
+                                                 'field' => '')
+                                           )
+                         );
 
       return $selection;
-    }
-
+      }*/
     function pre_confirmation_check() {
-      global $_POST;
-      /* 
-    if($_POST['convenience_store_l_name'] == "" || $_POST['convenience_store_f_name'] == "" || $_POST['convenience_store_tel'] == ""){
-      $payment_error_return = 'payment_error=' . $this->code ;
-        tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, $payment_error_return, 'SSL', true, false));
-    }else{
-      return false;
+      return true;
     }
-    */ 
+    /*    function pre_confirmation_check() {
       if ($_POST['convenience_email'] == "" || $_POST['convenience_email_again'] == "") {
-  $payment_error_return = 'payment_error=' . $this->code ;
+        $payment_error_return = 'payment_error=' . $this->code ;
         tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, $payment_error_return, 'SSL', true, false));
        
       } else if
-        (!ereg("^([^@])+@([a-za-z0-9_-])+(\.[a-za-z0-9_-])+",$_POST['convenience_email'])
-         || !ereg("^([^@])+@([a-za-z0-9_-])+(\.[a-za-z0-9_-])+",$_POST['convenience_email_again'])){
+          (!ereg("^([^@])+@([a-za-z0-9_-])+(\.[a-za-z0-9_-])+",$_POST['convenience_email'])
+           || !ereg("^([^@])+@([a-za-z0-9_-])+(\.[a-za-z0-9_-])+",$_POST['convenience_email_again'])){
         $payment_error_return = 'payment_error=' . $this->code ;
         tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, $payment_error_return, 'SSL', true, false));
       } else if ($_POST['convenience_email'] != $_POST['convenience_email_again']) {
-  $payment_error_return = 'payment_error=' . $this->code; 
+        $payment_error_return = 'payment_error=' . $this->code; 
         $redirect_url = tep_href_link(FILENAME_CHECKOUT_PAYMENT, $payment_error_return . '&type=noe', 'SSL', true, false);
         //do for &type turn into &amp;type url ,fix it afterlater
         $url_test = explode('?',$redirect_url);
         if ($url_test[1] == 'payment_error=convenience_store&amp;type=noe')
-        {
-          $url_test[1] = 'payment_error=convenience_store&type=noe';
-          $redirect_url = $url_test[0] .'?'. $url_test[1]; 
-        }
+          {
+            $url_test[1] = 'payment_error=convenience_store&type=noe';
+            $redirect_url = $url_test[0] .'?'. $url_test[1]; 
+          }
         //do for &type turn into &amp;type url ,fix it afterlater
         //tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, $payment_error_return . '&type=noe', 'SSL', true, false));
         tep_redirect($redirect_url);
@@ -208,21 +176,22 @@
         } else {
           $payment_error_return = 'payment_error=' . $this->code . '&type=nom' ;
 
-        //do for &type turn into &amp;type url ,fix it afterlater
+          //do for &type turn into &amp;type url ,fix it afterlater
           $redirect_url = tep_href_link(FILENAME_CHECKOUT_PAYMENT, $payment_error_return, 'SSL', true, false);
-        $url_test = explode('?',$redirect_url);
-        if ($url_test[1] == 'payment_error=convenience_store&amp;type=nom')
-        {
-          $url_test[1] = 'payment_error=convenience_store&type=nom';
-          $redirect_url = $url_test[0] .'?'. $url_test[1]; 
-        }
+          $url_test = explode('?',$redirect_url);
+          if ($url_test[1] == 'payment_error=convenience_store&amp;type=nom')
+            {
+              $url_test[1] = 'payment_error=convenience_store&type=nom';
+              $redirect_url = $url_test[0] .'?'. $url_test[1]; 
+            }
 
           //tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, $payment_error_return, 'SSL', true, false));
           tep_redirect($redirect_url);
-        //do for &type turn into &amp;type url ,fix it afterlater
+          //do for &type turn into &amp;type url ,fix it afterlater
         }
       }
     }
+    */
     
     function preorder_confirmation_check() {
       global $_POST;
@@ -230,8 +199,8 @@
       if ($_POST['convenience_email'] == "" || $_POST['convenience_email_again'] == "") {
         return 3; 
       } else if
-        (!ereg("^([^@])+@([a-za-z0-9_-])+(\.[a-za-z0-9_-])+",$_POST['convenience_email'])
-         || !ereg("^([^@])+@([a-za-z0-9_-])+(\.[a-za-z0-9_-])+",$_POST['convenience_email_again'])){
+          (!ereg("^([^@])+@([a-za-z0-9_-])+(\.[a-za-z0-9_-])+",$_POST['convenience_email'])
+           || !ereg("^([^@])+@([a-za-z0-9_-])+(\.[a-za-z0-9_-])+",$_POST['convenience_email_again'])){
         return 3; 
       } else if ($_POST['convenience_email'] != $_POST['convenience_email_again']) {
         return 1; 
@@ -264,21 +233,21 @@
       global $currencies;
       global $_POST;
 
-      $s_result = !$_POST['codt_fee_error'];
+      $s_result = !$_POST['code_fee_error'];
       
-      if (!empty($_POST['codt_fee'])) {
+      if (!empty($_POST['code_fee'])) {
         //$s_message = $s_result ? (MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_FEE . '&nbsp;' . $currencies->format($_POST['codt_fee'])) : ('<font color="#FF0000">' . $_POST['codt_fee_error'] . '</font>');
-        $s_message = $s_result ? '' : ('<font color="#FF0000">' . $_POST['codt_fee_error'] . '</font>');
+        $s_message = $s_result ? '' : ('<font color="#FF0000">' . $_POST['code_fee_error'] . '</font>');
       } else {
-        $s_message = $s_result ? '' : ('<font color="#FF0000">' . $_POST['codt_fee_error'] . '</font>');
+        $s_message = $s_result ? '' : ('<font color="#FF0000">' . $_POST['code_fee_error'] . '</font>');
       }
-                  return array(
-                               'title' => str_replace("#USER_MAIL#",$_POST['convenience_email_again'],nl2br(constant("MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_CONFIRMATION"))),
+      return array(
+                   'title' => str_replace("#USER_MAIL#",$_POST['convenience_email_again'],nl2br(constant("TS_MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_CONFIRMATION"))),
                    'fields' => array(
-                                     array('title' => constant("MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_SHOW"), 'field' => ''),  
+                                     array('title' => constant("TS_MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_SHOW"), 'field' => ''),  
                                      array('title' => $s_message, 'field' => '')  
-				     )           
-		   );
+                                     )           
+                   );
 
     }
 
@@ -296,27 +265,27 @@
         $total += intval($_POST['codt_fee']);
       }
     
-    //Add point
+      //Add point
       if ((MODULE_ORDER_TOTAL_POINT_STATUS == 'true')
           && (0 < intval($point))) {
         $total -= intval($point);
       }   
     
-    if(MODULE_ORDER_TOTAL_CONV_STATUS == 'true' && ($payment == 'convenience_store')) {
-        $total += intval($_POST['codt_fee']);
-    }
+      if(MODULE_ORDER_TOTAL_CONV_STATUS == 'true' && ($payment == 'convenience_store')) {
+        $total += intval($_POST['code_fee']);
+      }
       // 追加 - 2007.01.05 ----------------------------------------------
     
       // email_footer に使用する文字列
       $s_message = $_POST['codt_fee_error']
         ? $_POST['codt_fee_error']
         : sprintf(MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_MAILFOOTER,
-            $currencies->format($total),
-            $currencies->format($_POST['codt_fee']));
+                  $currencies->format($total),
+                  $currencies->format($_POST['code_fee']));
 
-    return tep_draw_hidden_field('codt_message', $s_message)
-            . tep_draw_hidden_field('convenience_email', $_POST['convenience_email']) 
-            . tep_draw_hidden_field('codt_fee',$_POST['codt_fee']); // for ot_codt
+      return tep_draw_hidden_field('codt_message', $s_message)
+        . tep_draw_hidden_field('convenience_email', $_POST['convenience_email']) 
+        . tep_draw_hidden_field('code_fee',$_POST['code_fee']); // for ot_codt
     }
 
     function before_process() {
@@ -334,40 +303,40 @@
 
       if (isset($_GET['payment_error']) && (strlen($_GET['payment_error']) > 0)) {
         if (isset($_GET['type']) && $_GET['type'] == 'noe')
-        {
-          $error_message = MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE_NOE;
-        }
+          {
+            $error_message = MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE_NOE;
+          }
         else if (isset($_GET['type']) && $_GET['type'] == 'nom')
-        {
-          $error_message = MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE_NOM;
-        }
+          {
+            $error_message = MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE_NOM;
+          }
         else
-        {
-          $error_message = MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE;
-        }
+          {
+            $error_message = MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE;
+          }
         
-    return array('title' => 'コンビニ決済 エラー!',
+        return array('title' => $this->title.' エラー!',
                      'error' => $error_message);
     
-    }else{
-      return false;
-    }
+      }else{
+        return false;
+      }
     }
     
     function get_preorder_error($error_type) {
-        if ($error_type == 1)
+      if ($error_type == 1)
         {
-          $error_message = MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE_NOE;
+          $error_message = TS_MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE_NOE;
         }
-        else if ($error_type == 2)
+      else if ($error_type == 2)
         {
-          $error_message = MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE_NOM;
+          $error_message = TS_MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE_NOM;
         }
-        else
+      else
         {
-          $error_message = MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE;
+          $error_message = TS_MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE;
         }
-        return $error_message; 
+      return $error_message; 
     }
 
     function check() {
@@ -399,6 +368,7 @@
       tep_db_query("delete from " . TABLE_CONFIGURATION . " where configuration_key in ('" . implode("', '", $this->keys()) . "') and site_id = '".$this->site_id."'");
     }
 
+
     function keys() {
       return array( 
                    'MODULE_PAYMENT_CONVENIENCE_STORE_STATUS',
@@ -415,15 +385,95 @@
                     );
     }
 
-    function dealComment($comment)
-  {
-    $pay_comments = 'PCメールアドレス:'.$_POST['convenience_email']; 
-    return $pay_comments ."\n".$comment;
-  }
+
+    function dealComment($comment, $session_paymentinfo_name)
+    {
+      if($_POST['convenience_email']){ 
+      $pay_comments = 'PCメールアドレス:'.$_POST['convenience_email']; 
+      }else if($_POST['con_email']){
+      $pay_comments = 'PCメールアドレス:'.$_POST['con_email']; 
+      }else{
+      $pay_comments = 'PCメールアドレス:'; 
+      }
+      $payment_bank_info['add_info'] = $pay_comments;
+      $res_arr = array('comment'=> $pay_comments ."\n".$comment,
+          'payment_bank_info' => $payment_bank_info);
+      return $res_arr;
+    }
 
     function preorder_process_button($pid, $preorder_total)
     {
+    
+    }
+    function deal_preorder_additional($pInfo, &$sql_data_array)
+    {
+      $pay_comments = 'PCメールアドレス:'.$pInfo['convenience_email']; 
+      $sql_data_array['cemail_text'] = $pay_comments; 
+       
+      return $pay_comments ."\n".$pInfo['yourmessage'];
+    } 
+    function checkPreorderConvEmail($email)
+    {
+      if (!empty($email)) {
+        return true; 
+      }
+      return false; 
+    }
+
+    function getMailString($option=''){
+      $email_printing_order .= 'この注文は【販売】です。' . "\n";
+      $email_printing_order .=
+        '------------------------------------------------------------------------'
+        . "\n";
+      $email_printing_order .= '備考の有無　　　　　：□ 無　　｜　　□ 有　→　□
+      返答済' . "\n";
+      $email_printing_order .=
+        '------------------------------------------------------------------------'
+        . "\n";
+      $email_printing_order .= '在庫確認　　　　　　：□ 有　　｜　　□
+      無　→　入金確認後仕入' . "\n";
+      $email_printing_order .=
+        '------------------------------------------------------------------------'
+        . "\n";
+      $email_printing_order .=
+        '入金確認　　　　　●：＿＿月＿＿日　→　金額は' .
+        abs($option) . '円ですか？　□ はい' . "\n";
+      $email_printing_order .=
+        '------------------------------------------------------------------------'
+        . "\n";
+      $email_printing_order .= '入金確認メール送信　：□ 済' . "\n";
+      $email_printing_order .=
+        '------------------------------------------------------------------------'
+        . "\n";
+      $email_printing_order .=
+        '発送　　　　　　　　：＿＿月＿＿日' . "\n";
+      $email_printing_order .=
+        '------------------------------------------------------------------------'
+        . "\n";
+      $email_printing_order .= '残量入力→誤差有無　：□
+      無　　｜　　□ 有　→　報告　□' . "\n";
+      $email_printing_order .=
+        '------------------------------------------------------------------------'
+        . "\n";
+      $email_printing_order .= '発送完了メール送信　：□
+      済' . "\n";    
+      $email_printing_order .=
+        '------------------------------------------------------------------------' . "\n";
+      $email_printing_order .= '最終確認　　　　　　：確認者名＿＿＿＿' . "\n";
+      $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
+      return $email_printing_order;
+    }
+
+    function admin_add_additional_info(&$sql_data_array)
+    {
+      global $_POST; 
+      $sql_data_array['cemail_text'] = 'PCメールアドレス:'.$_POST['con_email']; 
+    }
+    
+    function admin_deal_comment($order_info)
+    {
+      return $order_info['cemail_text']; 
     }
 
   }
-?>
+  ?>

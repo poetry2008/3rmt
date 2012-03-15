@@ -79,7 +79,7 @@
       $order = tep_db_fetch_array($order_query);
 //ccdd
       $totals_query = tep_db_query("
-          select title, text ,value 
+          select title, text ,value, class 
           from " . TABLE_ORDERS_TOTAL . " 
           where orders_id = '" . tep_db_input($order_id) . "' 
           order by sort_order
@@ -87,7 +87,8 @@
       while ($totals = tep_db_fetch_array($totals_query)) {
         $this->totals[] = array('title' => $totals['title'],
                                 'value' => $totals['value'],
-                                'text' => $totals['text']);
+                                'text' => $totals['text'],
+                                'class' => $totals['class']);
       }
 //ccdd
       $order_total_query = tep_db_query("select value from " . TABLE_ORDERS_TOTAL . " where orders_id = '" . $order_id . "' and class = 'ot_total'");
@@ -111,7 +112,7 @@
                           'last_modified' => $order['last_modified'],
                           'code_fee' => $order['code_fee'],
                           'total' => strip_tags($order_total['value']).'円',
-                          'shipping_method' => ((substr($shipping_method['title'], -1) == ':') ? substr(strip_tags($shipping_method['title']), 0, -1) : strip_tags($shipping_method['title'])));
+                          'shipping_method' => ((substr($shipping_method['title'], -1) == ':') ? substr(strip_tags($shipping_method['title']), 0, -1) : strip_tags($shipping_method['title'])) );
 
       $this->customer = array('id' => $order['customers_id'],
                               'name' => $order['customers_name'],

@@ -2,19 +2,22 @@
 <?php 
 set_time_limit(0);
 //file patch
-define('ROOT_DIR','/home/.sites/22/site13/vhosts/jp/admin');
-//define('ROOT_DIR','/home/szn/project/3rmt/jp/admin');
+//define('ROOT_DIR','/home/.sites/22/site13/vhosts/jp/admin');
+define('ROOT_DIR','/home/szn/project/3rmt/jp/admin');
 require(ROOT_DIR.'/includes/configure.php');
-// default email
-define('DEFAULT_EMAIL_FROM','sznforwork@yahoo.co.jp');
-// default title
-define('DEFAULT_POINT_MAIL_TITLE','point test');
 // default sleep second
-define('SLEEP_SECOND',3);
+define('SLEEP_SECOND',3);//秒単位設定
 // default send row to sleep
 define('SEND_ROWS',2);
+// debug module flag
+define('POINT_DEBUG_MODULE_FLAG','On'); // On or Off
+// default log file name
+define('LOG_FILE_NAME','cron___point_alert_send_mail_to_customer.log');
 
-
+if(POINT_DEBUG_MODULE_FLAG=='On'){
+  $log_str = '';
+}
+$send_row = 0;
 // link db
 $link = mysql_connect(DB_SERVER,DB_SERVER_USERNAME,DB_SERVER_PASSWORD);
 mysql_query('set names utf8');
@@ -25,7 +28,9 @@ function get_configuration_by_site_id($key, $site_id = '0',$table_name='') {
   if(!$site_id||!isset($site_id)){
     $site_id = '0';
   }
-  $config = mysql_fetch_array(mysql_query("select * from ".$table_name." where configuration_key='".$key."' and site_id='".$site_id."'"));
+  $config = mysql_fetch_array(mysql_query("select * from ".$table_name." where
+        configuration_key='".$key."' and (site_id='".$site_id."' or site_id = '0')
+        order by site_id desc"));
   if ($config) {
     return $config['configuration_value'];
   } else {
@@ -84,6 +89,7 @@ o.customers_name AS customer_name,
         DAY ) > now( ) , DATE_ADD( o.date_purchased, INTERVAL con.configuration_value
           DAY ) > now( ) )
   AND o.customers_id = c.customers_id
+  AND c.customers_guest_chk = 0 
   AND c.point > 0 
 AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
   AND con.configuration_key = 'MODULE_ORDER_TOTAL_POINT_LIMIT'
@@ -99,7 +105,9 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
       $email_template = $template_row['template'];
       $title = $template_row['mail_title'];
       if(!isset($title)||$title == ''){
-        $title = DEFAULT_POINT_MAIL_TITLE;
+
+        echo "Title ERROR \n";
+        exit;
       }
       //get time 
       //$last_login = strtotime($customer_info['point_date']);
@@ -118,8 +126,8 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
       /*
          var_dump($last_login."=====".$customer_info_arr['point_date']."===".date('Y-m-d',$out_time).
          "=====".$customer_info['customer_email']."\n---------------------\n");
-         */
-      if(($out_time>$now_time)&&($customer_info['config_date']>$value)&&
+       */
+      if(($out_time>$now_time)&&($customer_info['config_date']>=$value)&&
           intval(($out_time-$now_time)/86400)==$value){
         /*
            var_dump($customer_info_arr['point_date'].">>>".$value.">>>".$customer_info['customer_email']);
@@ -155,44 +163,63 @@ AND if( con.site_id = o.site_id, con.site_id = o.site_id, con.site_id =0 )
               ),
             $title);
         $sum_user++;
-        $to = $customer_info['customer_email'];
+        $to = '"=?UTF-8?B?'.base64_encode($customer_info['customer_name']).'?=" <'.$customer_info['customer_email'].'>'. "\r\n";
         $message = $show_email_template;
         $subject = "=?UTF-8?B?".base64_encode($title)."?=";
-        $headers = 'Content-type: text/plain; charset=UTF-8' . "\r\n";
-        $headers .= "Content-Transfer-Encoding: 8bit\r\n";  
-        $From_Mail = DEFAULT_EMAIL_FROM;
+        $headers = 'MIME-Version: 1.0'."\r\n";
+        $headers .= "X-Mailer: iimy Mailer\r\n";
+        $headers .= 'Content-type: text/plain; charset=utf-8' . "\r\n";
+        $headers .= "Content-Transfer-Encoding: 7bit\r\n";
+
         if(get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',
               $customer_info['site_id'],'configuration')){
           $From_Mail = get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',
               $customer_info['site_id'],'configuration');
+        }else{
+          echo "MailAddress ERROR \n";
+          exit;
         }
-        $headers .= 'From: '.$From_Mail. "\r\n";
+        $headers .= 'From: "=?UTF-8?B?'.base64_encode(get_configuration_by_site_id('STORE_NAME',$customer_info['site_id'],'configuration')).'?=" <'.$From_Mail.'>'. "\r\n";
 
-        // out put test
-        /*
-           var_dump($From_Mail);
-           var_dump($title);
-           var_dump($to);
-           var_dump($message);
-           echo "<br>";
-           echo "<span >from mail :".$From_Mail."</span>";
-           echo "<br>";
-           echo "<span >title :".$title."</span>";
-           echo "<br>";
-           echo "<span >to :".$to."</span>";
-           echo "<br>";
-           echo "<span >message :".preg_replace("/\r\n|\n/","<br>",$message)."</span>";
-           echo "<br>";
-           echo "==============================================";
-           echo "<br>";
-           echo "<br>";
-           echo "<br>";
-         */
-        //send mail 
-        mail($to, $subject, $message, $headers);
-        if(($sum_user%SEND_ROWS)==0){
-          sleep(SLEEP_SECOND);
+        $parameter = '-f'.$From_Mail;
+        $send_row++;
+        if(POINT_DEBUG_MODULE_FLAG != 'On'){
+          mail($to, $subject, $message, $headers,$parameter);
+          if(($sum_user%SEND_ROWS)==0){
+            sleep(SLEEP_SECOND);
+          }
+        }else{
+          $log_str .= "\n";
+          $log_str .= "Subject: ".$title."\n";
+          $log_str .= 'MIME-Version: 1.0'."\n";
+          $log_str .= "X-Mailer: iimy Mailer\n";
+          $log_str .= 'Content-type: text/plain; charset=utf-8' . "\n";
+          $log_str .= "Content-Transfer-Encoding: 7bit\n";
+          $log_str .= 'From: "'.get_configuration_by_site_id('STORE_NAME',$customer_info['site_id'],'configuration').'" <'.$From_Mail.'>'."\n";
+          $log_str .= "To: ".'"'.$customer_info['customer_name'].'" <'.$customer_info['customer_email'].'>'. "\n";
+          $log_str .= "Return-Path: <".$From_Mail.">\n";
+          $log_str .= "message: \n";
+          $log_str .= str_replace("\r\n","\n",$message);
+          $log_str .= "\n";
+          $log_str .= "==============================================";
+          $log_str .= "\n";
+          if($send_row == 1){
+            $to = '"=?UTF-8?B?'.base64_encode($customer_info['customer_name']).'?=" <lankankon@hotmail.co.jp>'. "\r\n";
+            mail($to, $subject, $message, $headers,$parameter);
+          }
         }
+        echo "SEND: ".$send_row." mail \n";
       }
     }
   }
+if(POINT_DEBUG_MODULE_FLAG == 'On'){
+  $fp = fopen(ROOT_DIR.'/log/'.LOG_FILE_NAME,'w');
+  $head = "SEND: ".$send_row." mail \n\n";
+  fwrite($fp,$head.$log_str); 
+  fclose($fp);
+}
+
+echo "Finish \n";
+
+
+?>

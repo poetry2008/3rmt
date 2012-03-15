@@ -590,11 +590,17 @@ function faq_question_romaji_can_copy_to(qromaji,site_id){
 
 function replace_romaji(romaji){
   //replace & + to a string
-  romaji = romaji.replace(/\&/g,'<11111111>');
-  romaji = romaji.replace(/\+/g,'<22222222>');
+romaji = romaji.replace(/\&/g,'<11111111>');
+romaji = romaji.replace(/\+/g,'<22222222>');
+romaji = romaji.replace(/\//g,'<33333333>');
+romaji = romaji.replace(/\%/g,'<44444444>');
+romaji = romaji.replace(/\#/g,'<55555555>');
+romaji = romaji.replace(/\?/g,'<66666666>');
+romaji = romaji.replace(/ /g,'<77777777>');
+romaji = romaji.replace(/\'/g,'<88888888>');
   return romaji;
 }
-function c_is_set_error_char(){
+function c_is_set_error_char(replace_single){
   var flag = true;
   var cromaji = $("#cromaji").val();
   cromaji = replace_romaji(cromaji);
@@ -607,8 +613,12 @@ function c_is_set_error_char(){
     success: function(data) {
       if(data!=''){
         flag = false;
-        $("#cromaji").val(data);
-        alert("禁止記号は全て「-」に置き換えられます");
+        if (replace_single == false) {
+          $("#cromaji").val(data); 
+          alert("禁止記号は全て「-」に置き換えられます。");
+        } else {
+          alert("ローマ字に禁止記号が含まれています。");
+        }
       }
     }
   });
@@ -751,9 +761,19 @@ return false;
 } 
 
 function pre_update_price() {
+  document.getElementById("h_predate").value = document.getElementById("date_predate").value;
+  document.getElementById("h_deadline").value = document.getElementById("date_ensure_deadline").value;
+  var num_is_null = false; 
 
   if (window.confirm("注文内容を確認しますか？")) {
+    $('.update_products_qty').each(function(){
+        if ($(this).val() == 0) {
+           num_is_null = true; 
+          alert('商品個数に0を入力してはいけません。');
+        }
+    });
 
+    if (!num_is_null) {
     //viladate
     $.ajax({
 url: 'ajax_orders.php?action=getallpwd',
@@ -813,7 +833,7 @@ document.edit_order.notify_comments.checked = false;
 }
 });
 
-
+}
 
 } else {
   window.alert("注文内容確認をキャンセルしました。\n\n【 重要 】メールは送信されていません。【 重要 】");
@@ -934,4 +954,163 @@ function clearLibNum(obj)
   if (error_single) {
     obj.value = obj.value.replace(/[^0-9]/g,"");
   }
+}
+
+function createPreorderChk() { 
+  document.getElementById("h_predate").value = document.getElementById("predate").value; 
+  var flag2 = true;
+  $.ajax({
+url: 'edit_new_preorders.php?action=check_session',
+type: 'GET',
+dataType: 'text',
+async : false,
+success: function(data) {
+if (data == 'error') {
+alert('エラー: 予約が存在しません。');
+flag2 = false;
+}
+}
+});
+if (flag2) {
+    $.ajax({
+url: 'ajax_preorders.php?action=getallpwd',
+type: 'POST',
+dataType: 'text',
+async : false,
+success: function(data) {
+var pwd_arr = data.split(",");;
+var flag_tmp = true;
+$(".once_pwd").each(function(index) {
+  var input_name = $(this).attr('name');
+  var input_val = $(this).val();
+  var op_id  = input_name.replace(/[^0-9]/ig," ").replace(/(^\s*)|(\s*$)/g, "");;
+  var tmp_str = "input[name=op_id_"+op_id+"]";
+  var percent = 0;
+  $.ajax({
+    url: 'ajax_preorders.php?action=getpercent',
+    data: 'pid='+op_id,
+    type: 'POST',
+    dataType: 'text',
+    async : false,
+    success: function(_data) {
+      percent = _data/100;  
+    }
+    });
+  var final_val = $(tmp_str).val();
+  if(input_val > Math.abs(final_val*(1+percent))||input_val < Math.abs(final_val*(1-percent))){
+    if(percent!=0){
+      flag_tmp=false;
+    }
+  }
+  });
+  if(!flag_tmp){
+  var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n","");
+  if(in_array(pwd,pwd_arr)){
+  $("input[name=update_viladate]").val(pwd);
+    _flag = true; 
+    //document.edit_order.submit();
+  }else{
+  alert("パスワードが違います");
+  $("input[name=update_viladate]").val('_false');
+  $("input[name=x]").val('43');
+  $("input[name=y]").val('12');
+  document.edit_order.submit();
+//  alert("更新をキャンセルしました。");
+  return false;
+  }
+  }else{
+    $("input[name=update_viladate]").val('');
+    $("input[name=x]").val('43');
+    $("input[name=y]").val('12');
+    _flag = true;
+    //document.edit_order.submit();
+  }
+}
+});
+return _flag; 
+} else {
+  location.href='create_preorder.php';
+}
+} 
+
+function create_preorder_price() {
+
+  var num_is_null = false; 
+  if (window.confirm("注文内容を確認しますか？")) {
+    $('.update_products_qty').each(function(){
+        if ($(this).val() == 0) {
+           num_is_null = true; 
+          alert('商品個数に0を入力してはいけません。');
+        }
+    });
+
+    if (!num_is_null) {
+    //viladate
+    $.ajax({
+url: 'ajax_orders.php?action=getallpwd',
+type: 'POST',
+dataType: 'text',
+async : false,
+success: function(data) {
+var pwd_arr = data.split(",");;
+var flag_tmp = true;
+$(".once_pwd").each(function(index) {
+  var input_name = $(this).attr('name');
+  var input_val = $(this).val();
+  var op_id  = input_name.replace(/[^0-9]/ig," ").replace(/(^\s*)|(\s*$)/g, "");;
+  var percent = 0;
+  $.ajax({
+    url: 'ajax_orders.php?action=getpercent',
+    data: 'pid='+op_id,
+    type: 'POST',
+    dataType: 'text',
+    async : false,
+    success: function(_data) {
+      percent = _data/100;  
+    }
+    });
+  var tmp_str = "input[name=op_id_"+op_id+"]";
+  var final_val = $(tmp_str).val();
+  if(input_val > Math.abs(final_val*(1+percent))||input_val < Math.abs(final_val*(1-percent))){
+    if(percent!=0){
+      flag_tmp = false;
+    }
+  }
+  });
+if(!flag_tmp){
+var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n","");
+if(in_array(pwd,pwd_arr)){
+$("input[name=update_viladate]").val(pwd);
+$("input[name=x]").val('');
+$("input[name=y]").val('');
+window.alert("注文内容を更新しました。合計金額を必ず確認してください。\n\n【 重要 】メールは送信されていません。【 重要 】");
+document.edit_order.submit();
+document.edit_order.notify.checked = true;
+document.edit_order.notify_comments.checked = false;
+}else{
+$("input[name=update_viladate]").val('_false');
+alert("パスワードが違います");
+$("input[name=x]").val('');
+$("input[name=y]").val('');
+document.edit_order.submit();
+//alert("更新をキャンセルしました。");
+document.edit_order.notify.checked = true;
+document.edit_order.notify_comments.checked = false;
+}
+}else{  
+$("input[name=update_viladate]").val('');
+$("input[name=x]").val('');
+$("input[name=y]").val('');
+window.alert("注文内容を更新しました。合計金額を必ず確認してください。\n\n【 重要 】メールは送信されていません。【 重要 】");
+document.edit_order.submit();
+document.edit_order.notify.checked = true;
+document.edit_order.notify_comments.checked = false;
+
+}
+}
+});
+}
+} else {
+  window.alert("注文内容確認をキャンセルしました。\n\n【 重要 】メールは送信されていません。【 重要 】");
+}
 }

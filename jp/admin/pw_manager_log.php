@@ -325,15 +325,22 @@ function delete_all(){
           (!@$pwInfo) && (substr(@$_GET['action'], 0, 3) != 'new')) {
       $pwInfo = new objectInfo($pw_manager_row);
     }
+      $even = 'dataTableSecondRow';
+      $odd  = 'dataTableRow';
+      if (isset($nowColor) && $nowColor == $odd) {
+        $nowColor = $even; 
+      } else {
+        $nowColor = $odd; 
+      }
     if (isset($pwInfo) && (is_object($pwInfo)) && ($pw_manager_row['id'] == $pwInfo->id) ) {
       echo '              <tr class="dataTableRowSelected"
         onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\''
         . tep_href_link(FILENAME_PW_MANAGER_LOG, 'page=' . $_GET['page'] .
             '&pw_l_id=' . $pwInfo->id . '&pw_id='.$pwid.'&site_id='.$site_id) . '\'">' . "\n";
     } else {
-      echo '              <tr class="dataTableRow"
+      echo '              <tr class="'.$nowColor.'"
         onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'"
-        onmouseout="this.className=\'dataTableRow\'"
+        onmouseout="this.className=\''.$nowColor.'\'"
         onclick="document.location.href=\'' . tep_href_link(FILENAME_PW_MANAGER_LOG,
         'page=' . $_GET['page'] . '&pw_l_id=' .
           $pw_manager_row['id'].'&pw_id='.$pwid.'&site_id='.$site_id) . '\'">' . "\n";
@@ -394,7 +401,7 @@ function delete_all(){
          <?php
           echo "<button type='button'
           onclick=\"delete_all()\">" .
-          TEXT_BUTTON_DELETE_ALL."</button>"; 
+          TEXT_BUTTON_DELETE_ALL."</button>&nbsp;&nbsp;"; 
           
           echo "<button type='button'
           onclick=\"location.href='".
@@ -490,7 +497,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
     break;
 }
   if (tep_has_pw_manager_log($pwid)&& (tep_not_null($heading)) && (tep_not_null($contents))) {
-    echo '            <td class="right_column01" width="25%" valign="top">' . "\n";
+    echo '            <td style="padding-top:20px;" width="25%" valign="top">' . "\n";
 
     $box = new box;
     echo $box->infoBox($heading, $contents);

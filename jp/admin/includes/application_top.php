@@ -17,7 +17,7 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
 // Set the level of error reporting
   //error_reporting(E_ALL & ~E_NOTICE);
   error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);
-  ini_set("display_errors", "On");
+  ini_set("display_errors", "Off");
 
 // Check if register_globals is enabled.
 // Since this is a temporary measure this message is hardcoded. The requirement will be removed before 2.2 is finalized.
@@ -50,6 +50,7 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
   define('LOCAL_EXE_UNZIP', '/usr/local/bin/unzip');
 
 // define the filenames used in the project
+  define('FILENAME_CAMPAIGN', 'campaign.php');
   define('FILENAME_ASSETS', 'assets.php');
   define('FILENAME_PRINT_ASSETS', 'print_assets.php');
   define('FILENAME_ORDERS_DOWNLOAD', 'orders_download.php');
@@ -133,8 +134,10 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
 
 
 // define the database table names used in the project
-  define('TABLE_PREORDERS_OA_FORMVALUE', 'preorders_oa_formvalue');
+  define('TABLE_CAMPAIGN', 'campaign');
+  define('TABLE_CUSTOMER_TO_CAMPAIGN', 'customer_to_campaign');
   define('TABLE_PREORDERS', 'preorders');
+  define('TABLE_PREORDERS_OA_FORMVALUE', 'preorders_oa_formvalue'); 
   define('TABLE_PREORDERS_MAIL', 'preorders_mail');
   define('TABLE_PREORDERS_OPERATOR', 'preorders_operator');
   define('TABLE_PREORDERS_PRODUCTS', 'preorders_products');
@@ -335,6 +338,7 @@ while($userslist= tep_db_fetch_array($sites_id)){
 
 // define our general functions used application-wide
   require(DIR_WS_FUNCTIONS . 'general.php');
+  require(DIR_WS_FUNCTIONS . 'generalBoth.php');
   require(DIR_WS_FUNCTIONS . 'preorder_general.php');
   require(DIR_WS_FUNCTIONS . 'html_output.php');
 
@@ -437,19 +441,33 @@ if(isset($_GET['his_url'])&&$_GET['his_url']){
   $one_time_sql = "select * from ".TABLE_PWD_CHECK." where page_name='".$page_name."'";
   $one_time_query = tep_db_query($one_time_sql);
   $one_time_arr = array();
+  $one_time_flag = false; 
   while($one_time_row = tep_db_fetch_array($one_time_query)){
     $one_time_arr[] = $one_time_row['check_value'];
+    $one_time_flag = true; 
   }
+  
   if(count($one_time_arr)==1&&$one_time_arr[0]=='admin'&&$_SESSION['user_permission']!=15){
-    forward401();
+    if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest"){
+      one_time_pwd_forward401($page_name);
+    }
+  }
+  if (!$one_time_flag && $_SESSION['user_permission']!=15) {
+    if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
+      one_time_pwd_forward401($page_name);
+    }
   }
   if(!in_array('onetime',$one_time_arr)&&$_SESSION['user_permission']!=15){
     if(!(in_array('chief',$one_time_arr)&&in_array('staff',$one_time_arr))){
     if($_SESSION['user_permission']==7&&in_array('chief',$one_time_arr)){
-      forward401();
+      if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
+        one_time_pwd_forward401($page_name);
+      }
     }
     if($_SESSION['user_permission']==10&&in_array('staff',$one_time_arr)){
-      forward401();
+      if ($_SERVER["HTTP_X_REQUESTED_WITH"] != "XMLHttpRequest") {
+        one_time_pwd_forward401($page_name);
+      }
     }
     }
   }

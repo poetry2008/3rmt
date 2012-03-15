@@ -190,7 +190,8 @@ TABLE： form eria（boundary line）
 TABLE.formArea {                           
 	border:1px solid #ccc;
 	margin-top:15px;   
-	*margin-top:5px;                        
+	*margin-top:5px;
+	font-size:14px;                        
 }
 /* ---------------------------
 TD：form eria（title）
@@ -761,19 +762,19 @@ border:0;
 background-image: url(../includes/languages/japanese/images/buttons/button_checkout02.gif);
 }
 .con_email01{
-display:inline;
-/*margin-left:50px;
-*/float:left;
+/*display:inline;
+*//*margin-left:50px;
+*/
 }
 .con_email01 input{
 /*width:120px;*/
 }
 .con_email02{
-display:inline;
-}
+/*display:inline;
+*/}
 .con_email02 input{
-width:120px;
-}
+/*width:120px;
+*/}
 .game_news_index01 {
 font-size:14px;
 padding-left:10px;
@@ -1216,7 +1217,8 @@ searching
  table-layout:fixed;
  width:440px;
 }
-.active_email input{ width:300px;}
+.active_email_name{ font-size:11px; width:80px;}
+.active_email input{ width:300px; width:220px\9;}
 .comment_faq {
     font-size: 14px;
 	font-weight:bold;
@@ -1238,3 +1240,104 @@ searching
 .header_Navigation { margin:5px; color:#339966; padding-top:10px; width:450px; line-height:20px; font-size:10px; float:left; word-wrap:break-word;}
 .header_Navigation a { color:#339966;}
 .cemail_input_01 { float:left; width:150px;}
+.comment_preoder { width:95%;}
+.preorder_active_info{ background-color:#ccc; line-height:20px; font-size:13px;}
+.preorder_active_info td{ background-color:#000; padding-left:2px;}
+.preorder_active_line { border-bottom:1px dashed #fff; margin:0 0 15px 0;}
+.preorderBarcurrent{ font-size:14px; color:#fff;}
+.preorderBarTo{ font-size:14px; color:#fff;}
+.preorderBarFrom { font-size:14px;}
+.input_text_short{   
+	height: 20px;
+    text-align: right;
+    width: 40px;
+}
+.comment_change_preorder{ width:96%;}
+.comment img, .comment_change_preorder img { vertical-align:middle\9;}
+.preorser_formArea{ background-color:#fff; font-size:13px; line-height:20px;}
+.preorser_formArea td{ background-color:#000; padding-left:2px;}
+.formArea_td{
+	width:120px;
+	width:132px\9;
+}
+.formArea_td_info{ width:260px\9;}
+.information_color{background-color: #FDEBAC; color: #000000; padding:5px; margin:5px; width:100%;}
+.checkout_payment_info{
+	border:1px solid #ccc;
+	margin-top:15px;   
+	*margin-top:5px;
+	font-size:14px;
+	padding:5px;
+	line-height:1.5;
+}
+.float_left{
+	float:left;
+}
+.txt_right{
+	text-align:right;
+}
+.box_content_title {
+    background-color:#333;
+    clear: both;
+    line-height:21px;
+    overflow: hidden;
+    width: 100%;
+}
+.box_content_title_selected{
+	background-color: #666666;
+}
+.box_content_title input {
+    margin-right: 12px;
+	margin-top:4px;
+	*margin-top:0;
+}
+.frame_w70{
+	width:70%;
+	float:left;
+	padding-left:10px;
+}
+.float_right{
+	float:right;
+}
+.cp_description{ 
+	font-size: 14px; 
+	padding:0 20px;
+	margin:5px 0;
+}
+.cp_content{
+	padding:0 20px;
+}
+.cp_content p{ color:#FF0000;}
+.txt_input_box{
+	overflow:hidden;
+	clear:both;
+	line-height:25px;
+	*height:6%;
+}
+.frame_title{
+	width:40%;
+	float:left;
+	line-height:25px;
+}
+.clear{
+	clear:both;
+}
+.box_waring {
+    background: none repeat scroll 0 0 #FFE6E6;
+    border: 1px solid #FF8E90;
+    padding: 5px;
+	font-size:12px;
+	color:#000000;
+}
+
+.table_ie{
+	font-size:14px;
+}
+
+
+
+
+
+
+
+

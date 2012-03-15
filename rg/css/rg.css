@@ -61,6 +61,7 @@ H4 {
 	background-color:#F2F0F0;
 	line-height:20px;
 }
+.comment img { vertical-align:middle\9;}
 .comment p a { font-size:12px;}
 .comment_index02 , .comment_index01{
 	width: 520px;
@@ -1551,7 +1552,7 @@ Mausuofu
 .moduleRow, .moduleRow td {
 	background: #e5e5e5;
 }
-.moduleRow td { padding:3px 5px;}
+.moduleRow td, .moduleRowSelected td { padding:3px 5px;}
 /* ---------------------------
 Mouse over
 --------------------------- */
@@ -1728,7 +1729,6 @@ border:2px solid #FF8080;
 .best_goods{ width:170px; margin:0 auto;}
 .best_goods_info { text-align:center; font-size:12px; padding:5px 0; border:1px solid #ccc;}
 .reorder{margin-top:8px; overflow:hidden;}
-.active_email input {width:365px;}
 .payment_comment{ 
  word-wrap:break-word;
  word-break:break-all;
@@ -1740,4 +1740,82 @@ border:2px solid #FF8080;
 #caemail p { margin:10px 0 0 0;}
 #caemail p img { position:relative;/* left:8px; */ top:3px\9;}
 .cemail_input_01 { float:left; width:150px;}
-.con_email01{ float:left;}
+.con_email01{ /*float:left;*/}
+.information_color {
+    background-color: #FDEBAC;
+    color: #000000;
+    margin: 5px;
+    padding: 5px;
+    width: 100%;
+}
+
+.checkout_payment_info{
+	border:1px solid #ccc;
+	background-color:#fff;
+	margin-top:15px;   
+	*margin-top:5px;
+	font-size:11px;
+	padding:5px;
+	line-height:1.5;                        
+}
+.float_left{
+	float:left;
+}
+.txt_right{
+	text-align:right;
+}
+.box_content_title {
+    background-color:#E5E5E5;
+    clear: both;
+    line-height:21px;
+    overflow: hidden;
+    width: 100%;
+}
+.box_content_title_selected{
+	background:#ccc;
+}
+.box_content_title input {
+    margin-right: 12px;
+	margin-top:4px;
+	*margin-top:0;
+}
+.frame_w70{
+	width:70%;
+	float:left;
+	padding-left:10px;
+}
+.float_right{
+	float:right;
+}
+.cp_content{
+	padding:0 20px;
+}
+.cp_content p{
+	color:#FF0000;
+}
+.cp_codefee{
+	margin-top:5px;
+}
+.txt_input_box{
+	overflow:hidden;
+	clear:both;
+	height:15%;
+}
+.frame_title{
+	width:30%;
+	float:left;
+	line-height:25px;
+}
+.clear{
+	clear:both;
+}
+.cp_description{
+	padding:0 20px;
+	margin:5px 0;
+}
+.box_waring {
+    background: none repeat scroll 0 0 #FFE6E6;
+    border: 1px solid #FF8E90;
+    padding: 5px;
+	font-size:11px;
+}

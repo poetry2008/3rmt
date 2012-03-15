@@ -106,7 +106,8 @@
       }
 
       tep_db_query("delete from " . TABLE_PREORDERS_STATUS . " where orders_status_id = '" . tep_db_input($oID) . "'");
-
+      tep_db_query("delete from " . TABLE_PREORDERS_MAIL . " where orders_status_id = '" . tep_db_input($oID) . "'");
+      
       tep_redirect(tep_href_link(FILENAME_PREORDERS_STATUS, 'page=' . $_GET['page']));
       break;
     case 'delete':
@@ -192,10 +193,17 @@
       $oInfo = new objectInfo($orders_status);
     }
 
+    $even = 'dataTableSecondRow';
+    $odd  = 'dataTableRow';
+    if (isset($nowColor) && $nowColor == $odd) {
+      $nowColor = $even; 
+    } else {
+      $nowColor = $odd; 
+    }
     if ( isset($oInfo) && (is_object($oInfo)) && ($orders_status['orders_status_id'] == $oInfo->orders_status_id) ) {
       echo '                  <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_PREORDERS_STATUS, 'page=' . $_GET['page'] . '&oID=' . $oInfo->orders_status_id . '&action=edit') . '\'">' . "\n";
     } else {
-      echo '                  <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_PREORDERS_STATUS, 'page=' . $_GET['page'] . '&oID=' . $orders_status['orders_status_id']) . '\'">' . "\n";
+      echo '                  <tr class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_PREORDERS_STATUS, 'page=' . $_GET['page'] . '&oID=' . $orders_status['orders_status_id']) . '\'">' . "\n";
     }
 
     if (DEFAULT_PREORDERS_STATUS_ID == $orders_status['orders_status_id']) {

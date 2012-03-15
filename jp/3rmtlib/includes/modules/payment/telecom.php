@@ -2,111 +2,43 @@
 /*
   $Id$
 */
-class telecom {
-  var $site_id, $code, $title, $description, $enabled, $n_fee, $s_error, $email_footer;
+require_once (DIR_WS_CLASSES . 'basePayment.php');
+class telecom  extends basePayment  implements paymentInterface  { 
+  var $site_id, $code, $title, $description, $enabled, $n_fee, $s_error, $email_footer, $show_payment_info;
 
   // class constructor
-  function telecom($site_id = 0) {
-    global $order, $_GET;
-      
+  function loadSpecialSettings($site_id=0){
     $this->site_id = $site_id;
-    $this->code        = 'telecom';
-    $this->title       = MODULE_PAYMENT_TELECOM_TEXT_TITLE;
-    $this->description = MODULE_PAYMENT_TELECOM_TEXT_DESCRIPTION;
-    $this->explain     = MODULE_PAYMENT_TELECOM_TEXT_EXPLAIN;
-    $this->sort_order  = MODULE_PAYMENT_TELECOM_SORT_ORDER;
-    $this->enabled     = ((MODULE_PAYMENT_TELECOM_STATUS == 'True') ? true : false);
-
-    if ((int)MODULE_PAYMENT_TELECOM_ORDER_STATUS_ID > 0) {
-      $this->order_status = MODULE_PAYMENT_TELECOM_ORDER_STATUS_ID;
-    }
-
-    if (is_object($order)) $this->update_status();
-
+    $this->code        = 'telecom';    
     $this->form_action_url = MODULE_PAYMENT_TELECOM_CONNECTION_URL;
-    
-    if(isset($_GET['submit_x']) || isset($_GET['submit_y'])){
-      $_GET['payment_error'] = 'telecom';
-    }
-    
-    $this->email_footer = MODULE_PAYMENT_TELECOM_TEXT_EMAIL_FOOTER;
+    $this->show_payment_info = 1;
   }
-
-  // class methods
-  function update_status() {
+  function fields($theData=false, $back=false){
+    if (!$back) { 
     global $order;
-
-    if (!defined('MODULE_PAYMENT_TELECOM_ZONE')) define('MODULE_PAYMENT_TELECOM_ZONE', NULL);
-    if ( ($this->enabled == true) && ((int)MODULE_PAYMENT_TELECOM_ZONE > 0) ) {
-      $check_flag = false;
-      $check_query = tep_db_query("select zone_id from " . TABLE_ZONES_TO_GEO_ZONES . " where geo_zone_id = '" . MODULE_PAYMENT_TELECOM_ZONE . "' and zone_country_id = '" . $order->billing['country']['id'] . "' order by zone_id");
-      while ($check = tep_db_fetch_array($check_query)) {
-        if ($check['zone_id'] < 1) {
-          $check_flag = true;
-          break;
-        } elseif ($check['zone_id'] == $order->billing['zone_id']) {
-          $check_flag = true;
-          break;
-        }
-      }
-
-      if ($check_flag == false) {
-        $this->enabled = false;
-      }
+    $total_cost = $order->info['total'];
+    $code_fee = $this->calc_fee($total_cost); 
+    //if($code_fee<=0){
+    //$added_hidden = tep_draw_hidden_field('code_fee', $code_fee);
+    //}else{
+    $added_hidden = tep_draw_hidden_field('code_fee', $code_fee);
+    //}
+    return array(
+		 array(
+		       "code"=>'',
+		       "title"=>'',
+		       "field"=>$added_hidden,
+		       "rule"=>'',
+		       "message"=>"",
+		       ));
     }
   }
-
   function javascript_validation() {
     return false;
   }
 
-  function calc_fee($total_cost) {
-    $table_fee = split("[:,]" , MODULE_PAYMENT_TELECOM_COST);
-    $f_find = false;
-    $this->n_fee = 0;
-    for ($i = 0; $i < count($table_fee); $i+=2) {
-      if ($total_cost <= $table_fee[$i]) { 
-        $additional_fee = $total_cost.$table_fee[$i+1]; 
-        @eval("\$additional_fee = $additional_fee;"); 
-        //$this->n_fee = $table_fee[$i+1]; 
-        if (is_numeric($additional_fee)) {
-          $this->n_fee = intval($additional_fee); 
-        } else {
-          $this->n_fee = 0; 
-        }
-        $f_find = true;
-        break;
-      }
-    }
-    if ( !$f_find ) {
-      $this->s_error = MODULE_PAYMENT_TELECOM_TEXT_OVERFLOW_ERROR;
-    }
-
-    return $f_find;
-  }
-  function selection() {
-    global $currencies;
-    global $order;
-      
-    $total_cost = $order->info['total'];
-    $f_result = $this->calc_fee($total_cost); 
-    $added_hidden = $f_result ? tep_draw_hidden_field('telecom_order_fee', $this->n_fee):tep_draw_hidden_field('telecom_order_fee_error', $this->s_error);
-      
-    if (!empty($this->n_fee)) {
-      $s_message = $f_result ? (MODULE_PAYMENT_TELECOM_TEXT_FEE . '&nbsp;' .  $currencies->format($this->n_fee)):('<font color="#FF0000">'.$this->s_error.'</font>'); 
-    } else {
-      $s_message = $f_result ? '':('<font color="#FF0000">'.$this->s_error.'</font>'); 
-    }
-    return array('id' => $this->code,
-                 'module' => $this->title,
-                 'fields' => array(array('title' => $this->explain,'field' => ''),
-                                   array('title' => $s_message, 'field' => $added_hidden) 
-                                   ));
-    //return array('id' => $this->code, 'module' => $this->title, 'fields' => array(array('title' => $this->explain,'field' => '')));
-  }
-
   function pre_confirmation_check() {
-    return false;
+    return true;
   }
 
   function confirmation() {
@@ -115,16 +47,16 @@ class telecom {
       
     $s_result = !$_POST['telecom_order_fee_error'];
      
-    if (!empty($_POST['telecom_order_fee'])) {
+    if (!empty($_POST['code_fee'])) {
       //$s_message = $s_result ? (MODULE_PAYMENT_TELECOM_TEXT_FEE . '&nbsp;' .  $currencies->format($_POST['telecom_order_fee'])):('<font color="#FF0000">'.$_POST['telecom_order_fee_error'].'</font>'); 
       $s_message = $s_result ? '':('<font color="#FF0000">'.$_POST['telecom_order_fee_error'].'</font>'); 
     } else {
       $s_message = $s_result ? '':('<font color="#FF0000">'.$_POST['telecom_order_fee_error'].'</font>'); 
     }
     return array(
-		 'title' => nl2br(constant("MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_CONFIRMATION")),
+		 'title' => nl2br(constant("TS_MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_CONFIRMATION")),
 		 'fields' => array(
-				   array('title' => constant("MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_SHOW"), 'field' => ''),  
+				   array('title' => constant("TS_MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_SHOW"), 'field' => ''),  
 				   array('title' => $s_message, 'field' => '')  
 				   )           
 		 );      
@@ -139,12 +71,7 @@ class telecom {
     // 追加 - 2007.01.05 ----------------------------------------------
     $total = $order->info['total'];
     $f_result = $this->calc_fee($total); 
-    if ((MODULE_ORDER_TOTAL_CODT_STATUS == 'true')
-        && ($payment == 'cod_table')
-        && isset($_POST['codt_fee'])
-        && (0 < intval($_POST['codt_fee']))) {
-      $total += intval($_POST['codt_fee']);
-    }
+    
     
     //Add point
     if ((MODULE_ORDER_TOTAL_POINT_STATUS == 'true')
@@ -152,11 +79,11 @@ class telecom {
       $total -= intval($point);
     }   
     
-    if(MODULE_ORDER_TOTAL_CONV_STATUS == 'true' && ($payment == 'convenience_store')) {
-      $total += intval($_POST['codt_fee']);
-    }
     $total += intval($this->n_fee); 
     // 追加 - 2007.01.05 ----------------------------------------------
+    if (isset($_SESSION['campaign_fee'])) {
+      $total += $_SESSION['campaign_fee']; 
+    }
     
     #mail送信
       $mail_body = '仮クレジットカード注文です。'."\n\n";
@@ -251,7 +178,7 @@ class telecom {
     //tep_draw_hidden_field('redirect_url', HTTPS_SERVER . tep_href_link(MODULE_PAYMENT_OK_URL, '', 'SSL')) .
     //tep_draw_hidden_field('redirect_back_url', HTTPS_SERVER . tep_href_link(MODULE_PAYMENT_NO_URL, '', 'SSL'));
    
-    $process_button_string .= tep_draw_hidden_field('telecom_order_message', htmlspecialchars($s_message)). tep_draw_hidden_field('telecom_order_fee', $_POST['telecom_order_fee']);
+    $process_button_string .= tep_draw_hidden_field('telecom_order_message', htmlspecialchars($s_message)). tep_draw_hidden_field('code_fee', $_POST['code_fee']);
     return $process_button_string;
   }
   
@@ -323,6 +250,7 @@ class telecom {
                  'MODULE_PAYMENT_TELECOM_COST',
                  'MODULE_PAYMENT_TELECOM_MONEY_LIMIT',
                  'MODULE_PAYMENT_TELECOM_MAILSTRING',
+                 'MODULE_PAYMENT_TELECOM_PRINT_MAILSTRING',
 );
   }
   
@@ -385,6 +313,10 @@ class telecom {
   $email_printing_order .= '残量入力→誤差有無　：□ 無　　｜　　□ 有　→　報告　□' . "\n";
   $email_printing_order .= '------------------------------------------------------------------------' . "\n";
   $email_printing_order .= '発送完了メール送信　：□ 済' . "\n";
+    $email_printing_order .=
+    '------------------------------------------------------------------------' . "\n";
+    $email_printing_order .= '最終確認　　　　　　：確認者名＿＿＿＿' . "\n";
+    $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
   return $email_printing_order;
   }
   
@@ -452,8 +384,47 @@ class telecom {
     $hidden_param_str .= tep_draw_hidden_field('clientip', MODULE_PAYMENT_TELECOM_KID);
     $hidden_param_str .= tep_draw_hidden_field('money', $preorder_total);
     $hidden_param_str .= tep_draw_hidden_field('redirect_url', HTTP_SERVER.'/change_preorder_process.php');
-    $hidden_param_str .= tep_draw_hidden_field('redirect_back_url', HTTP_SERVER.'/change_preorder.php?pid='.$_POST['pid']);
+    $hidden_param_str .= tep_draw_hidden_field('redirect_back_url', HTTP_SERVER.'/change_preorder.php?pid='.$preorder_info['check_preorder_str']);
     echo $hidden_param_str; 
   }
+  
+  function preorderDealUnknow(&$sql_data_array){
+    $telecom_option_ok = false;
+    if ($_SESSION['preorder_option']) {
+      $telecom_unknow = tep_db_fetch_array(tep_db_query("select * from telecom_unknow where `option`='".$_SESSION['preorder_option']."' and rel='yes'"));
+      if ($telecom_unknow) {
+        $sql_data_array['telecom_name']  = $telecom_unknow['username'];
+        $sql_data_array['telecom_tel']   = $telecom_unknow['telno'];
+        $sql_data_array['telecom_email'] = $telecom_unknow['email'];
+        $sql_data_array['telecom_money'] = $telecom_unknow['money'];
+        tep_db_query("update `telecom_unknow` set type='success' where `option`='".$_SESSION['preorder_option']."' and rel='yes' order by date_added limit 1");
+        $telecom_option_ok = true;
+      }
+    }
+  return $telecom_option_ok;
+  }
+  function admin_process_pay_email($order,$total_price_mail){
+    $email_credit = '';
+    $email_credit .= $order->customer['name'] . '様' . "\n\n";
+    $email_credit .= 'この度は、' . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . 'をご利用いただき、誠にありがとうございます。' . "\n\n";
+    $email_credit .= '注文番号' . $oID . 'の決済URLをお知らせいたします。' . "\n";
+    $email_credit .= '下記URLをクリックし、クレジットカード決済を完了してください。' . "\n";
+    $email_credit .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
+    $email_credit .= 'https://secure.telecomcredit.co.jp/inetcredit/secure/order.pl?clientip=76011&usrmail=' . $order->customer['email_address'] . '&money=' . $total_price_mail . "\n";
+    $email_credit .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
+    $email_credit .= '※ 上記URLをクリックしても決済ページが表示されない場合は、お手数ではご' . "\n";
+    $email_credit .= 'ざいますが「改行」を取り除きブラウザに直接入力してアクセスしてください。' . "\n\n\n";
+    $email_credit .= 'クレジットカード決済が成功しましたら、商品の手配に移らせていただきます。' . "\n";
+    $email_credit .= "\n\n\n";
+    $email_credit .= 'ご不明な点がございましたら、注文番号をご確認の上、' . "\n";
+    $email_credit .= '「' . STORE_NAME . '」までお問い合わせください。' . "\n\n";
+    $email_credit .= '[ご連絡・お問い合わせ先]━━━━━━━━━━━━' . "\n";
+    $email_credit .= '株式会社 iimy' . "\n";
+    $email_credit .= get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS',$order->info['site_id']) . "\n";
+    $email_credit .= get_url_by_site_id($order->info['site_id']) . "\n";
+    $email_credit .= '━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
+    return $email_credit;
+  }
+
 }
 ?>

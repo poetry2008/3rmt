@@ -248,7 +248,7 @@
           $language_id = $languages[$i]['id'];
           $sql_data_array = array(
                   'categories_name' => tep_db_prepare_input($categories_name_array[$language_id]),
-                  'romaji' => str_replace(array('/','_'), '-', tep_db_prepare_input($romaji[$language_id])),
+                  'romaji' => str_replace(array('/','_', ' ', '　'), '-', tep_db_prepare_input($romaji[$language_id])),
                   'categories_meta_text' => tep_db_prepare_input($categories_meta_text[$language_id]),
                   'seo_name' => tep_db_prepare_input($seo_name[$language_id]),
                   'seo_description' => tep_db_prepare_input($seo_description[$language_id]),
@@ -739,7 +739,9 @@
                 'products_description' => $des,
                 'products_status' => tep_db_prepare_input($_POST['products_status']),
                 'option_image_type' => tep_db_prepare_input($_POST['option_image_type']),
-                'products_url'         => tep_db_prepare_input($_POST['products_url'][$language_id]));
+                'products_url'         => tep_db_prepare_input($_POST['products_url'][$language_id]),
+                'preorder_status' => tep_db_prepare_input($_POST['preorder_status']) 
+                );
             if (isset($_GET['action']) && ($_GET['action'] == 'insert_product' || ($_GET['action'] == 'update_product' && !tep_products_description_exist($products_id,$site_id,$language_id)))) {
               $insert_sql_data = array('products_id' => $products_id,
                                        'language_id' => $language_id,
@@ -1093,7 +1095,7 @@
       window.location = url;
     }
   }
-function cmess() {
+function cmess(pid, cid, site_id) {
   if (document.getElementById('cname').value == "") {
     alert('<?php echo ERROR_CATEGORY_NAME_IS_NOT_NULL;?>'); 
     return false; 
@@ -1102,6 +1104,14 @@ function cmess() {
   if (document.getElementById('cromaji').value == "") {
     alert('<?php echo TEXT_ROMAJI_NOT_NULL;?>'); 
     return false; 
+  }
+  
+  flag1 = c_is_set_romaji(pid,cid,site_id);
+  flag2 = c_is_set_error_char(true); 
+  if(flag1&&flag2){
+    return true;
+  }else{
+    return false;
   }
 
 }
@@ -1283,7 +1293,8 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                  p.products_cart_image,
                  p.products_cart_min,
                  pd.option_image_type, 
-                 p.products_cartorder 
+                 p.products_cartorder,
+                 pd.preorder_status
           from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
           where p.products_id = '" . $_GET['pID'] . "' 
             and p.products_id = pd.products_id 
@@ -1430,6 +1441,10 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
             <td class="main"><?php echo TEXT_PRODUCTS_BUY_AND_SELL; ?></td>
             <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_radio_field('products_bflag', '0', $in_bflag, '', ($site_id?'onclick="return false;"':'')) . '&nbsp;' . TEXT_PRODUCT_USUALLY . '&nbsp;' . tep_draw_radio_field('products_bflag', '1', $out_bflag, '', ($site_id?'onclick="return false;"':'')) . '&nbsp;' . TEXT_PRODUCT_PURCHASE; ?></td>
             <td class="main">&nbsp;</td>
+          </tr>
+          <tr>
+            <td class="main"><?php echo TEXT_PRODUCTS_PREORDER_TEXT;?></td>
+            <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15'). '&nbsp;'.tep_draw_radio_field('preorder_status', '1', $pInfo->preorder_status == '1').'&nbsp;On'.tep_draw_radio_field('preorder_status', '0', (isset($pInfo->preorder_status)?($pInfo->preorder_status == '0'):true)).'&nbsp;Off'?></td>
           </tr>
           <tr>
             <td class="main"><?php echo TEXT_PRODUCTS_CHARACTER; ?></td>
@@ -2037,7 +2052,8 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                  p.products_attention_5,
                  p.relate_products_id,
                  pd.products_status, 
-                 p.manufacturers_id  
+                 p.manufacturers_id, 
+                 pd.preorder_status
           from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
           where p.products_id = pd.products_id 
             and p.products_id = '" . $_GET['pID'] . "' 
@@ -2260,7 +2276,7 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
       <tr>
         <th></th>
         <td class="main" align="right"><table cellspacing="0" cellpadding="0" border='0' width="100%"><tr><td align="left"><?php echo CATEGORY_TOTALNUM_TEXT;?></td><td align="right"><?php echo $sum_quantity;?><?php echo CATEGORY_GE_UNIT_TEXT;?></td></tr></table></td>
-        <td class="main" align="right"><table cellspacing="0" cellpadding="0" border='0' width="100%"><tr><td align="left"><?php echo CATEGORY_AVERAGENUM_TEXT;?></td><td align="right"><?php echo abs(@display_price($sum_price/$sum_quantity));?><?php echo CATEGORY_MONEY_UNIT_TEXT;?></td></tr></table></td>
+        <td class="main" align="right"><table cellspacing="0" cellpadding="0" border='0' width="100%"><tr><td align="left"><?php echo CATEGORY_AVERAGENUM_TEXT;?></td><td align="right"><?php echo display_price($sum_price/$sum_quantity);?><?php echo CATEGORY_MONEY_UNIT_TEXT;?></td></tr></table></td>
         <td class="main"> </td>
       </tr>
       <?php
@@ -2280,11 +2296,13 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
     order by o.torihiki_date desc
     limit 5
   ");
+  $relate_products_name = tep_get_relate_products_name($pInfo->products_id);
   ?>
   <br>
   <table width="95%" border="1" cellspacing="0" cellpadding="2">
     <tr>
-      <th colspan="4" align="left"><?php echo TEXT_PRODUCT_LINK_PRODUCT_TEXT;?><?php echo tep_get_relate_products_name($pInfo->products_id);?></th>
+      <th colspan="4" align="left"><?php echo TEXT_PRODUCT_LINK_PRODUCT_TEXT;?><?php 
+      echo $relate_products_name;?></th>
     </tr>
     <tr>
       <th><?php echo TABLE_HEADING_FETCHTIME_TEXT;?></th>
@@ -2327,6 +2345,14 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
   ?>
   </table>
   <?php
+  echo "<div class='relate_history_info'>";
+  $relate_sub_date = get_configuration_by_site_id('DB_CALC_PRICE_HISTORY_DATE');
+  $relate_row_count = tep_get_relate_product_history_sum(
+      $pInfo->relate_products_id,$relate_sub_date,$site_id);
+  $out_relate_sum_str = sprintf(TEXT_RELATE_ROW_COUNT
+      ,$relate_products_name,$relate_sub_date,intval($relate_row_count));
+  echo $out_relate_sum_str;
+  echo "</div>";
   }
   echo '</td>';
   echo '</tr></table>';
@@ -3061,6 +3087,16 @@ if (isset($nowColor) && $nowColor == $odd) {
     }
     $products_split = new splitPageResults($_GET['page'], MAX_DISPLAY_PRODUCTS_ADMIN, $products_query_raw, $products_query_numrows);
     $products_query = tep_db_query($products_query_raw);
+    $highlight_symbol = false; 
+    if (isset($_GET['pID'])) { 
+      while ($products_list = tep_db_fetch_array($products_query)) {
+         if ($products_list['products_id'] == $_GET['pID']) {
+           $highlight_symbol = true;
+           break;
+         }
+      } 
+    } 
+    $products_query = tep_db_query($products_query_raw);
     while ($products = tep_db_fetch_array($products_query)) {
       $products_count++;
       $rows++;
@@ -3080,7 +3116,13 @@ if (isset($nowColor) && $nowColor == $odd) {
         $pInfo_array = tep_array_merge($products, $reviews);
         $pInfo = new objectInfo($pInfo_array);
       }
-
+      if (!$highlight_symbol) {
+        $reviews_query = tep_db_query("select (avg(reviews_rating) / 5 * 100) as average_rating from " . TABLE_REVIEWS . " where products_id = '" . $products['products_id'] . "'");
+        $reviews = tep_db_fetch_array($reviews_query);
+        $pInfo_array = tep_array_merge($products, $reviews);
+        $pInfo = new objectInfo($pInfo_array);
+      }
+      $highlight_symbol = true; 
 // 列を色違いにする
 // products list
 $even = 'dataTableSecondRow';
@@ -3090,7 +3132,6 @@ if (isset($nowColor) && $nowColor == $odd) {
 } else {
   $nowColor = $odd;
 }
-
       if ( (isset($pInfo) && is_object($pInfo)) && ($products['products_id'] == $pInfo->products_id) ) {
         //echo '              <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . ($_GET['page'] ? ('&page=' . $_GET['page']) : '' ) .  '&pID=' . $products['products_id'] .  '&action=new_product_preview&read=only') . '\'">' . "\n";
         echo '              <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" >' . "\n";
@@ -3319,7 +3360,8 @@ if ($ocertify->npermission >= 10) { //表示制限
 </table>
 </td>
                      <td class="dataTableContent" align="right">
-                      <?php if ( isset($pInfo) && (is_object($pInfo)) && ($products['products_id'] == $pInfo->products_id) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); } else { echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . (isset($_GET['search'])?'&search='.$_GET['search']:'').'">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>
+                      <?php if ( isset($pInfo) && (is_object($pInfo)) && ($products['products_id'] == $pInfo->products_id) ) { echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); }
+                        else { echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' .  $products['products_id'].'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) .  (isset($_GET['search'])?'&search='.$_GET['search']:'').(isset($_GET['page'])?'&page='.$_GET['page']:'').'">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>
 &nbsp;</td>
                     </tr>
                     <?php
@@ -3353,7 +3395,7 @@ if ($ocertify->npermission >= 10) { //表示制限
     echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, $cPath_back . '&cID=' .  $current_category_id.'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0))) . '">' . tep_html_element_button(IMAGE_BACK) . '</a>&nbsp;';
   }
   if ((!isset($_GET['search']) || !$_GET['search']) && $ocertify->npermission >= 10) { //表示制限
-    echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&action=new_category') . '">' . tep_html_element_button(IMAGE_NEW_CATEGORY) .  '</a>&nbsp;<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&action=new_product') . '">' . tep_html_element_button(IMAGE_NEW_PRODUCT) . '</a>';
+    echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&action=new_category') . '">' . tep_html_element_button(IMAGE_NEW_CATEGORY) .  '</a>&nbsp;<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath .  '&action=new_product'.(isset($_GET['page'])?'&page='.$_GET['page']:'')) . '">' . tep_html_element_button(IMAGE_NEW_PRODUCT) . '</a>';
   }
 ?>&nbsp;</td>
                           </tr>
@@ -3372,16 +3414,20 @@ tep_display_google_results(FILENAME_CATEGORIES);
       case 'new_category':
         $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_NEW_CATEGORY . '</b>');
 
-        $contents = array('form' => tep_draw_form('newcategory', FILENAME_CATEGORIES, 'action=insert_category&cPath=' . $cPath, 'post', 'enctype="multipart/form-data" onSubmit="return cmess();"'));
+        $contents = array('form' => tep_draw_form('newcategory', FILENAME_CATEGORIES, 'action=insert_category&cPath=' . $cPath, 'post', 'enctype="multipart/form-data" onSubmit="return cmess(\''.$current_category_id.'\', \'\', \''.$site_id.'\');"'));
         $contents[] = array('text' => TEXT_NEW_CATEGORY_INTRO);
 
         $category_inputs_string = '';
         $languages = tep_get_languages();
         for ($i = 0, $n = sizeof($languages); $i < $n; $i++) {
-          $category_inputs_string .= '<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES .  $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .  tep_draw_input_field('categories_name[' . $languages[$i]['id'] . ']', '', 'id="cname"').'<br>'."\n".  '<br>Romaji:<br>' .  tep_image(DIR_WS_CATALOG_LANGUAGES .  $languages[$i]['directory'] .  '/images/' .  $languages[$i]['image'], $languages[$i]['name']) .  '&nbsp;' .  tep_draw_input_field('romaji[' . $languages[$i]['id'] . ']', '', 'id="cromaji"').'<input type="button" onclick =
+          $category_inputs_string .= '<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES .
+              $languages[$i]['directory'] . '/images/' . $languages[$i]['image'],
+              $languages[$i]['name']) . '&nbsp;' .
+            tep_draw_input_field('categories_name[' . $languages[$i]['id'] . ']',
+                '', 'id="cname"').'<br>'."\n".  '<br>'.TEXT_CATEGORY_ROMAJI.'<br>' .  tep_image(DIR_WS_CATALOG_LANGUAGES .  $languages[$i]['directory'] .  '/images/' .  $languages[$i]['image'], $languages[$i]['name']) .  '&nbsp;' .  tep_draw_input_field('romaji[' . $languages[$i]['id'] . ']', '', 'id="cromaji"').'<input type="button" onclick =
       "c_is_set_romaji(\''.$current_category_id.'\',\'\',\''.$site_id.'\')"
       value="'.TEXT_ROMAJI_IS_SET.'">'.
-      '<input type="button" onclick = "c_is_set_error_char()"
+      '<input type="button" onclick = "c_is_set_error_char(false)"
       value="'.IS_SET_ERROR_CHAR.'">'.
             '<br><br>'."\n";
           if (!empty($_GET['cPath'])) {
@@ -3417,9 +3463,9 @@ tep_display_google_results(FILENAME_CATEGORIES);
         $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_EDIT_CATEGORY . '</b>');
 
         if (isset($_GET['rdirect'])) {
-          $contents = array('form' => tep_draw_form('categories', FILENAME_CATEGORIES, 'action=update_category&cPath=' .  $cPath.'&rdirect=all', 'post', 'enctype="multipart/form-data" onSubmit="return cmess();"') . tep_draw_hidden_field('categories_id', $cInfo->categories_id));
+          $contents = array('form' => tep_draw_form('categories', FILENAME_CATEGORIES, 'action=update_category&cPath=' .  $cPath.'&rdirect=all', 'post', 'enctype="multipart/form-data" onSubmit="return cmess(\''.$current_category_id.'\', \''.$cInfo->categories_id.'\', \''.$site_id.'\');"') . tep_draw_hidden_field('categories_id', $cInfo->categories_id));
         } else {
-          $contents = array('form' => tep_draw_form('categories', FILENAME_CATEGORIES, 'action=update_category&cPath=' . $cPath, 'post', 'enctype="multipart/form-data" onSubmit="return cmess();"') . tep_draw_hidden_field('categories_id', $cInfo->categories_id));
+          $contents = array('form' => tep_draw_form('categories', FILENAME_CATEGORIES, 'action=update_category&cPath=' . $cPath, 'post', 'enctype="multipart/form-data" onSubmit="return cmess(\''.$current_category_id.'\', \''.$cInfo->categories_id.'\', \''.$site_id.'\');"') . tep_draw_hidden_field('categories_id', $cInfo->categories_id));
         }
         $contents[] = array('text' => TEXT_EDIT_INTRO.($site_id?('<br><b>'.tep_get_site_name_by_id($site_id).'</b>'):''));
         $contents[] = array('text' => tep_draw_hidden_field('site_id', $site_id));
@@ -3427,10 +3473,10 @@ tep_display_google_results(FILENAME_CATEGORIES);
         $category_inputs_string = '';
         $languages = tep_get_languages();
         for ($i = 0, $n = sizeof($languages); $i < $n; $i++) {
-          $category_inputs_string .= '<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES .  $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .  tep_draw_input_field('categories_name[' . $languages[$i]['id'] . ']', tep_get_category_name($cInfo->categories_id, $languages[$i]['id'], $site_id, true), 'id="cname"').'<br>'."\n".  '<br>Romaji:<br>' .  tep_image(DIR_WS_CATALOG_LANGUAGES .  $languages[$i]['directory'] .  '/images/' . $languages[$i]['image'], $languages[$i]['name']) .  '&nbsp;' . tep_draw_input_field('romaji[' .  $languages[$i]['id'] . ']', tep_get_category_romaji($cInfo->categories_id, $languages[$i]['id'], $site_id, true), 'id="cromaji"').'<input type="button" onclick =
+          $category_inputs_string .= '<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES .  $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .  tep_draw_input_field('categories_name[' . $languages[$i]['id'] . ']', tep_get_category_name($cInfo->categories_id, $languages[$i]['id'], $site_id, true), 'id="cname"').'<br>'."\n".  '<br>'.TEXT_CATEGORY_ROMAJI.'<br>' .  tep_image(DIR_WS_CATALOG_LANGUAGES .  $languages[$i]['directory'] .  '/images/' . $languages[$i]['image'], $languages[$i]['name']) .  '&nbsp;' . tep_draw_input_field('romaji[' .  $languages[$i]['id'] . ']', tep_get_category_romaji($cInfo->categories_id, $languages[$i]['id'], $site_id, true), 'id="cromaji"').'<input type="button" onclick =
       "c_is_set_romaji(\''.$current_category_id.'\',\''.$cInfo->categories_id.'\',\''.$site_id.'\')"
       value="'.TEXT_ROMAJI_IS_SET.'">'.
-      '<input type="button" onclick = "c_is_set_error_char()"
+      '<input type="button" onclick = "c_is_set_error_char(false)"
       value="'.IS_SET_ERROR_CHAR.'">'.
 '<br><br>'."\n";
           if (!empty($_GET['cPath'])) {

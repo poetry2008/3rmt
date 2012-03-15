@@ -3,7 +3,7 @@
 /*
   $Id$
 
-  商品评论详细页
+  商品隸・ｮｺ隸ｦ扈・｡ｵ
 */
   require('includes/application_top.php');
   
@@ -28,7 +28,7 @@
     if ($_GET['action'] == 'send') {
       if (empty($_POST['cemail'])) {
         $error = true;
-      } else if (!preg_match("/^([a-zA-Z0-9]+[_|\-|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\-|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/", $_POST['cemail'])) {
+      } else if (!tep_validate_email($_POST['cemail'])) {
         $error = true;
         $error_msg = WRONG_EMAIL_PATTERN_NOTICE; 
       } else if (tep_check_exists_cu_email($_POST['cemail'], $customers_res['customers_id'], 0)) {
@@ -44,9 +44,16 @@
         
         $email_text = stripslashes($customers_res['customers_lastname'].' '.$customers_res['customers_firstname']).EMAIL_NAME_COMMENT_LINK .  "\n\n";
         
-        $email_text .= str_replace('${URL}', HTTP_SERVER.'/m_token.php?aid='.$ac_email_srandom, ACTIVE_ACCOUNT_EMAIL_CONTENT);  
-        
-        tep_mail($mail_name, $_POST['cemail'], ACTIVE_ACCOUNT_EMAIL_TITLE, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
+        $old_str_array = array('${URL}', '${NAME}', '${SITE_NAME}', '${SITE_URL}'); 
+        $new_str_array = array(
+            HTTP_SERVER.'/m_token.php?aid='.$ac_email_srandom, 
+            $mail_name, 
+            STORE_NAME,
+            HTTP_SERVER
+            ); 
+        $email_text .= str_replace($old_str_array, $new_str_array, ACTIVE_ACCOUNT_EMAIL_CONTENT);  
+        $ac_email_text = str_replace('${SITE_NAME}', STORE_NAME, ACTIVE_ACCOUNT_EMAIL_TITLE);  
+        tep_mail($mail_name, $_POST['cemail'], $ac_email_text, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
         
         tep_db_query("update `".TABLE_CUSTOMERS."` set `check_login_str` = '".$ac_email_srandom."' where `customers_id` = '".$customers_res['customers_id']."' and site_id = '".SITE_ID."'"); 
         
@@ -73,7 +80,7 @@
       <td valign="top" id="contents"> 
         <h1 class="pageHeading"><?php echo HEADING_TITLE; ?></h1> 
         
-        <div> 
+        <div class="comment"> 
          <?php
          if ($error == true) {
            if (isset($error_msg)) {
@@ -93,39 +100,53 @@
          }
          ?>
          <?php echo tep_draw_form('form', tep_href_link('member_auth.php', 'action=send', 'SSL'));?> 
-          <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+          <table border="0" cellspacing="0" cellpadding="0" class="information_table"> 
             <tr> 
               <td>
-              <table>
+              <table class="information_table">
                 <tr>
-                  <td style="font-size:11px;">
+                	<td colspan="3"><img src="images/design/mail_top.gif" alt=""></td>
+                </tr>
+                <tr>
+                  <td colspan="3" class="information_color">
+                  <?php
+                    echo sprintf(NOTICE_SEND_TO_EMAIL_TEXT, (isset($_POST['cemail'])?$_POST['cemail']:$cus_email)); 
+                  ?>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="3">
+                  <br><?php echo ACTIVE_INFO_FRONT_COMMENT;?><br><br>
+                  </td>
+                </tr>
+                <tr>
+                  <td width="85">
                   <b><?php echo INPUT_SEND_MAIL;?>:</b> 
                   </td>
-                  <td class="active_email">
-                  <?php echo tep_draw_input_field('cemail', (isset($_POST['cemail'])?$_POST['cemail']:$cus_email));?> 
+                  <td width="360">
+                  <?php echo tep_draw_input_field('cemail',
+                      (isset($_POST['cemail'])?$_POST['cemail']:$cus_email),'size="58"');?> 
                   </td>
-                  <td>
-                  <?php echo tep_image_submit('button_send_mail.gif', SENDMAIL_BUTTON);?> 
+                  <td align="right">
+                  <?php echo tep_image_submit('button_send_mail.gif', SENDMAIL_BUTTON);?>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="3">
+                    <br><?php echo ACTIVE_INFO_END_COMMENT;?>
                   </td>
                 </tr>
               </table>
               </td> 
             </tr> 
-            <tr> 
-              <td style="font-size:11px;">
-              <?php echo ACTIVE_INFO_COMMENT;?> 
+            <tr>
+              <td colspan="3" align="center"><img src="images/design/mail_bottom.gif" alt=""></td>
+            </tr>
+            <tr>
+              <td>
+              <?php echo ACTIVE_INFO_EMAIL_READ;?>
               </td>
             </tr>
-            <tr> 
-              <td><br> 
-                <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
-                  <tr> 
-                    <td class="main" align="right"><?php echo '<a href="' .  tep_href_link(FILENAME_DEFAULT) . '">' .  tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></td> 
-                    <td align="right" class="main">
-                    </td> 
-                  </tr> 
-                </table></td> 
-            </tr> 
           </table> 
           </form> 
         </div></td> 

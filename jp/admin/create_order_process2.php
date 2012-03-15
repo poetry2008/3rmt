@@ -7,7 +7,7 @@
   require('includes/step-by-step/new_application_top.php');
 
   require(DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_CREATE_ORDER_PROCESS);
-
+  $payment_modules = payment::getInstance($_POST['site_id']);
   $customer_id    = tep_db_prepare_input($_POST['customers_id']);
   $firstname      = tep_db_prepare_input($_POST['firstname']);
   $lastname       = tep_db_prepare_input($_POST['lastname']);
@@ -98,7 +98,7 @@
   if ($payment_method == '') {
     $error = true;
     $entry_payment_method_error = true;
-  } elseif ($payment_method == '銀行振込(買い取り)') {
+  //} elseif ($payment_method == '銀行振込(買い取り)') {
     /*
     if ($bank_name == '') {
       $error = true;
@@ -128,7 +128,7 @@
       $entry_bank_kouza_name_error = false;
     }
     */
-    $entry_payment_method_error = false;
+    //$entry_payment_method_error = false;
   } else {
     $entry_payment_method_error = false;
   }
@@ -190,7 +190,7 @@
   $address = tep_db_fetch_array($address_query);
   //$customer = $account['customers_id'];
   }
-
+  $selections = $payment_modules->admin_selection();
   $from_page = 'create_order_process2';
   require(DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_CREATE_ORDER);
   
@@ -212,20 +212,20 @@
     one_time_pwd('<?php echo $page_name;?>');
   </script>
 <?php }?>
-<!-- header //-->
+<!-- header -->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-<!-- header_eof //-->
+<!-- header_eof -->
 
 
-<!-- body //-->
+<!-- body -->
 <table border="0" width="100%" cellspacing="2" cellpadding="2">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
-<!-- left_navigation //-->
+<!-- left_navigation -->
 <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-<!-- left_navigation_eof //-->
+<!-- left_navigation_eof -->
     </table></td>
-<!-- body_text //-->
+<!-- body_text -->
     <td width="100%" valign="top">
   <table border='0' bgcolor='#7c6bce' width='100%'>
       <tr>
@@ -254,12 +254,12 @@
   </td>
   </tr>
 </table>
-<!-- body_eof //-->
+<!-- body_eof -->
 
 
-<!-- footer //-->
+<!-- footer -->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-<!-- footer_eof //-->
+<!-- footer_eof -->
 
 <br>
 </body>
@@ -327,25 +327,10 @@
                 'comments' => '');
     tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
   */
-
+  $payment_method_romaji = payment::changeRomaji($payment_method, PAYMENT_RETURN_TYPE_CODE);  
+  $comment_arr = $payment_modules->dealComment($payment_method_romaji, '');
   // 買取（口座情報をコメントに追加）
-  if (isset($bank_name) && $bank_name != '') {
-
-    $comments  = '金融機関名　　　　：' . $bank_name . "\n";
-    $comments .= '支店名　　　　　　：' . $bank_shiten . "\n";
-    $comments .= '口座種別　　　　　：' . $bank_kamoku . "\n";
-    $comments .= '口座番号　　　　　：' . $bank_kouza_num . "\n";
-    $comments .= '口座名義　　　　　：' . $bank_kouza_name;
-    /*
-    $sql_data_array = array('orders_id' => $insert_id, 
-                'orders_status_id'  => $new_value, 
-                'date_added'        => 'now()', 
-                'customer_notified' => '1',
-                'comments'          => $bbbank);
-    tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
-    */
-    $_SESSION['create_order2']['comments'] = $comments;
-  }
+  $_SESSION['create_order2']['comments'] = $comment_arr['comment'];
   //insert into order total
   //=================================================
   

@@ -129,7 +129,48 @@ $origin_form_raw = tep_db_query("select * from ".TABLE_OA_FORM." where payment_r
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/general.js"></script>
 <script language="javascript" src="includes/javascript/jquery.js"></script>
+<script language="javascript" src="includes/javascript/jquery_include.js"></script>
+<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
 <script type="text/javascript">
+<?php
+if ($_GET['type'] == '4') {
+?>
+$(document).ready(function() {
+  $.ajax({
+    url: 'preorder_item_process.php',
+    type: 'POST',
+    <?php
+    if ($_GET['action'] == 'edit') {
+    ?>
+    data: "type=<?php echo $sel_type_str;?>"+"&eid=<?php echo $_GET['eid']?>", 
+    <?php
+    } else {
+    ?>
+    data: "type=<?php echo $sel_type_str;?>", 
+    <?php
+    }
+    ?>
+    async : false,
+    success: function(msg) {
+      $('#show_option').html(msg); 
+    }
+  });
+});
+function change_item_type()
+{
+  $.ajax({
+    url: 'preorder_item_process.php',
+    type: 'POST',
+    data: "type="+$('#itype').val(), 
+    async : false,
+    success: function(msg) {
+      $('#show_option').html(msg); 
+    }
+  });
+}
+<?php
+} else {
+?>
 $(document).ready(function() {
   $.ajax({
     url: 'item_process.php',
@@ -163,6 +204,9 @@ function change_item_type()
     }
   });
 }
+<?php
+}
+?>
 function add_option() {    
   var $table = $("#tab tr"); 
   var len = $table.length;
@@ -176,6 +220,11 @@ function deltr(index)
 </script>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onload="SetFocus();">
+<?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
+  <script language='javascript'>
+    one_time_pwd('<?php echo $page_name;?>');
+  </script>
+<?php }?>
 <!-- header //-->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
 <!-- header_eof //-->

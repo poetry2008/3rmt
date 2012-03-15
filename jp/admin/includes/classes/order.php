@@ -25,7 +25,7 @@
       $order = tep_db_fetch_array($order_query);
 
       $totals_query = tep_db_query("
-        select title, text,value  
+        select title, text,value,class  
         from " . TABLE_ORDERS_TOTAL . " 
         where orders_id = '" . tep_db_input($order_id) . "' 
         order by sort_order
@@ -33,7 +33,8 @@
       while ($totals = tep_db_fetch_array($totals_query)) {
         $this->totals[] = array('title' => $totals['title'],
                                 'value' => $totals['value'],
-                                'text'  => $totals['text']);
+                                'text'  => $totals['text'],
+                                'class' => $totals['class']);
       }
     
       $this->tori = array('Bahamut' => $order['torihiki_Bahamut'],
@@ -157,7 +158,8 @@
                                         'price'       => $orders_products['products_price'],
                                         'final_price' => $orders_products['final_price'],
                                         'rate'        => $orders_products['products_rate'],
-                                        'character'   => $orders_products['products_character']);
+                                        'character'   => $orders_products['products_character'],
+                                        );
 
         $subindex = 0;
         $attributes_query = tep_db_query("

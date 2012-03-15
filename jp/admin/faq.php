@@ -537,7 +537,7 @@ $(document).ready(function(){
                          (isset($_GET['cID']) && ($_GET['cID'] ==
                           $faq_category['faq_category_id']||
                           (isset($_GET['site_id'])&&$_GET['site_id']&&
-                          !tep_is_set_faq_question($_GET['cID'],$_GET['site_id'])))))
+                          !tep_is_set_faq_category($_GET['cID'],$_GET['site_id'])))))
                          && (!isset($faq_info) || !$faq_info) 
                          && (!isset($_GET['action']) || substr($_GET['action'], 0, 4) != 'new_')
                       ){
@@ -553,7 +553,7 @@ $(document).ready(function(){
                     // row color 
                     $even = 'dataTableSecondRow';
                     $odd = 'dataTableRow';
-                    if(isset($newColor) && $newColor == $odd) {
+                    if(isset($nowColor) && $nowColor == $odd) {
                       $nowColor = $even;
                     }else{
                       $nowColor = $odd;
