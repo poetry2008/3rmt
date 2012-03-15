@@ -194,4 +194,8 @@ define('TEXT_ORDER_TYPE_LAST', '」から検索');
 define('TEXT_ORDER_TYPE_SELL', '販売');
 define('TEXT_ORDER_TYPE_BUY', '買取');
 define('TEXT_ORDER_TYPE_MIX', '混合');
+define('TEXT_ORDER_HISTORY_FROM_ORDER', '注文');
+define('TEXT_ORDER_HISTORY_FROM_PREORDER', '予約');
+define('TEXT_SHIPPING_METHOD','配達方法');
+define('TEXT_SHIPPING_ADDRESS','配達先');
 ?>

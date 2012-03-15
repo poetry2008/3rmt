@@ -3,29 +3,19 @@
   $Id$
 */
 
-class fetch_good {
-  var $site_id, $code, $title, $description, $enabled, $s_error, $n_fee, $email_footer;
+require_once (DIR_WS_CLASSES . 'basePayment.php');
+class fetch_good extends basePayment  implements paymentInterface {
+  var $site_id, $code, $title, $description, $enabled, $s_error, $n_fee, $email_footer, $show_payment_info, $additional_title;
 
-  // class constructor
-  function fetch_good ($site_id = 0) {
-    global $order;
-      
+  function loadSpecialSettings($site_id = 0){
     $this->site_id = $site_id;
-
     $this->code        = 'fetch_good';
-    $this->title       = MODULE_PAYMENT_FETCH_GOOD_TEXT_TITLE;
-    $this->description = MODULE_PAYMENT_FETCH_GOOD_TEXT_DESCRIPTION;
-    $this->explain       = MODULE_PAYMENT_FETCH_GOOD_TEXT_EXPLAIN;
-    $this->sort_order  = MODULE_PAYMENT_FETCH_GOOD_SORT_ORDER;
-    $this->enabled     = ((MODULE_PAYMENT_FETCH_GOOD_STATUS == 'True') ? true : false);
+    $this->show_payment_info = 0;
+    $this->additional_title = TS_MODULE_PAYMENT_FETCH_GOOD_ADDITIONAL_TEXT_TITLE; 
+  }
+  function fields($theData=false, $back=false){
 
-    if ((int)MODULE_PAYMENT_FETCH_GOOD_ORDER_STATUS_ID > 0) {
-      $this->order_status = MODULE_PAYMENT_FETCH_GOOD_ORDER_STATUS_ID;
-    }
 
-    if (is_object($order)) $this->update_status();
-    
-    $this->email_footer = MODULE_PAYMENT_FETCH_GOOD_TEXT_EMAIL_FOOTER;
   }
 
   // class methods
@@ -34,15 +24,12 @@ class fetch_good {
     return true;
   }
     
-  function calc_fee($total_cost) {
-    return 0;
-  }
-
+  
   function javascript_validation() {
     return false;
   }
 
-  function selection() {
+  function selection($theData) {
     global $currencies;
     global $order;
       
@@ -63,13 +50,11 @@ class fetch_good {
                                    array('title' => str_replace('#STORE_NAME#', STORE_NAME,$this->description), 'field' => ''), 
                                    array('title' => $s_message, 'field' => '') 
                                    )             
-                 //'fields' => array('title' => $s_message, 'field' => $added_hidden) 
                  );
-    //return array('id' => $this->code, 'module' => '', 'fields' => '');
   }
 
   function pre_confirmation_check() {
-    return false;
+    return true;
   }
 
   function confirmation() {
@@ -148,7 +133,7 @@ class fetch_good {
     if (isset($_GET['payment_error']) && (strlen($_GET['payment_error']) > 0)) {
       $error_message = MODULE_PAYMENT_FETCH_GOOD_TEXT_ERROR_MESSATE;
         
-      return array('title' => 'コンビニ決済 エラー!', 'error' => $error_message);
+      return array('title' => $this->title.' エラー!', 'error' => $error_message);
     } else {
       return false;
     }
@@ -170,6 +155,8 @@ class fetch_good {
     tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('決済可能金額', 'MODULE_PAYMENT_FETCH_GOOD_MONEY_LIMIT', '0,99999999999', '決済可能金額の最大と最小値の設置 例：0,3000 0,3000円に入れると、0円から3000円までの金額が決済可能。設定範囲外の決済は不可。', '6', '0', now(), ".$this->site_id.")");
       
     tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added, site_id) values ('表示設定', 'MODULE_PAYMENT_FETCH_GOOD_LIMIT_SHOW', 'a:2:{i:0;s:1:\"1\";i:1;s:1:\"2\";}', '表示設定', '6', '1', 'tep_cfg_payment_checkbox_option(array(\'1\', \'2\'), ', now(), ".$this->site_id.");");
+    
+    tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added, site_id) values ('予約注文', 'MODULE_PAYMENT_FETCH_GOOD_PREORDER_SHOW', 'True', '予約注文で来店支払いを表示します', '6', '1', 'tep_cfg_select_option(array(\'True\', \'False\'), ', now(), ".$this->site_id.");");
   }
 
   //function remove() {
@@ -180,11 +167,40 @@ class fetch_good {
     return array(
                  'MODULE_PAYMENT_FETCH_GOOD_STATUS',
                  'MODULE_PAYMENT_FETCH_GOOD_LIMIT_SHOW',
+                 'MODULE_PAYMENT_FETCH_GOOD_PREORDER_SHOW', 
                  'MODULE_PAYMENT_FETCH_GOOD_ORDER_STATUS_ID',
                  'MODULE_PAYMENT_FETCH_GOOD_SORT_ORDER',
                  'MODULE_PAYMENT_FETCH_GOOD_MONEY_LIMIT',
                  'MODULE_PAYMENT_FETCH_GOOD_MAILSTRING',
+                 'MODULE_PAYMENT_FETCH_GOOD_PRINT_MAILSTRING',
                  );
+  }
+
+function getMailString($option=''){
+    $email_printing_order ='';
+    $email_printing_order .= '★★★★★★★★★★★★この注文は【買取】です。★★★★★★★★★★★★' . "\n";
+    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+    $email_printing_order .= '備考の有無　　　　　：□ 無　　｜　　□ 有　→　□ 返答済' . "\n";
+    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+    $email_printing_order .= 'キャラクターの有無　：□ 有　　｜　　□ 無　→　新規作成してお客様へ連絡' . "\n";
+    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+    $email_printing_order .= '受領　※注意※　　●：＿＿月＿＿日' . "\n";
+    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+    $email_printing_order .= '残量入力→誤差有無　：□ 無　　｜　　□ 有　→　□ 報告' . "\n";
+    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+    $email_printing_order .= '受領メール送信　　　：□ 済' . "\n";
+    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+    $email_printing_order .= '支払　　　　　　　　：＿＿月＿＿日　※総額5,000円未満は168円引く※' . "\n";
+    $email_printing_order .= '　　　　　　　　　　　□ JNB　　□ eBank　　□ ゆうちょ' . "\n";
+    $email_printing_order .= '　　　　　　　　　　　入金予定日＿＿月＿＿日　受付番号＿＿＿＿＿＿＿＿＿' . "\n";
+    $email_printing_order .= '------------------------------------------------------------------------' . "\n";
+    $email_printing_order .= '支払完了メール送信　：□ 済　　　※追加文章がないか確認しましたか？※' . "\n";
+    $email_printing_order .=
+    '------------------------------------------------------------------------' . "\n";
+    $email_printing_order .= '最終確認　　　　　　：確認者名＿＿＿＿' . "\n";
+    $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
+      
+    return $email_printing_order;
   }
 }
 ?>

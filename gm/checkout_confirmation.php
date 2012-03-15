@@ -2,106 +2,10 @@
 /*
   $Id$
 */
-
-  require('includes/application_top.php');
-
-  require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_CHECKOUT_CONFIRMATION);
-
-// if the customer is not logged on, redirect them to the login page
-  if (!tep_session_is_registered('customer_id')) {
-    $navigation->set_snapshot(array('mode' => 'SSL', 'page' => FILENAME_CHECKOUT_PAYMENT));
-    tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
-  }
-
-// if there is nothing in the customers cart, redirect them to the shopping cart page
-  if ($cart->count_contents() < 1) {
-    tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
-  }
-
-// avoid hack attempts during the checkout procedure by checking the internal cartID
-  if (isset($cart->cartID) && tep_session_is_registered('cartID')) {
-    if ($cart->cartID != $cartID) {
-      tep_redirect(tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL'));
-    }
-  }
-  
-  $sendto = false;
-
-// if no shipping method has been selected, redirect the customer to the shipping method selection page
-//  if (!tep_session_is_registered('shipping')) {
-//    tep_redirect(tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL'));
-//  }
-
-  if (!tep_session_is_registered('payment')) tep_session_register('payment');
-  if (isset($_POST['payment'])) $payment = $_POST['payment'];
-
-  if (!tep_session_is_registered('comments')) tep_session_register('comments');
-  if ($_POST['comments_added'] != '') {
-    $comments = tep_db_prepare_input($_POST['comments']);
-  }
-  
-////
-// check if bank info
-// load the selected payment module
-  require(DIR_WS_CLASSES . 'payment.php');
-  $payment_modules = new payment($payment);
-
-  require(DIR_WS_CLASSES . 'order.php');
-  $order = new order;
-
-  $payment_modules->update_status();
-
-  if ( ( is_array($payment_modules->modules) && (sizeof($payment_modules->modules) > 1) && !is_object($$payment) ) || (is_object($$payment) && ($$payment->enabled == false)) ) {
-    tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, 'error_message=' . urlencode(ERROR_NO_PAYMENT_MODULE_SELECTED), 'SSL'));
-  }
-
-  if (is_array($payment_modules->modules)) {
-    $payment_modules->pre_confirmation_check();
-  }
-
-// load the selected shipping module
-//  require(DIR_WS_CLASSES . 'shipping.php');
-//  $shipping_modules = new shipping($shipping);
-
-  require(DIR_WS_CLASSES . 'order_total.php');
-  $order_total_modules = new order_total;
-
-// Stock Check
-  $any_out_of_stock = false;
-  if (STOCK_CHECK == 'true') {
-    for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
-      if (tep_check_stock($order->products[$i]['id'], $order->products[$i]['qty'])) {
-        $any_out_of_stock = true;
-      }
-    }
-    // Out of Stock
-    if ( (STOCK_ALLOW_CHECKOUT != 'true') && ($any_out_of_stock == true) ) {
-      tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
-    }
-  }
-
-  $breadcrumb->add(NAVBAR_TITLE_1, tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
-  $breadcrumb->add(NAVBAR_TITLE_2);
-  
-  if (isset($$payment->form_action_url)) {
-    $form_action_url = $$payment->form_action_url;
-  } else {
-    $form_action_url = tep_href_link(FILENAME_CHECKOUT_PROCESS, '', 'SSL');
-  }
+require('includes/application_top.php');
+require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_CHECKOUT_CONFIRMATION);
+require(DIR_WS_ACTIONS.'checkout_confirmation.php');
 ?>
-<?php page_head();?>
-<script type="text/javascript">
-<!--
-var a_vars = Array();
-var pagename='';
-var visitesSite = 1;
-var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERVER; ?>/visites.php";
-<?php
-  require(DIR_WS_ACTIONS.'visites.js');
-?>
-//-->
-</script>
-</head>
 <body>
 <!-- header //-->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
@@ -115,7 +19,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
 <!-- left_navigation_eof //-->
 <!-- body_text //-->
 <div id="content">
-<?php echo tep_draw_form('checkout_confirmation', $form_action_url, 'post');?>
+<?php echo tep_draw_form('checkout_confirmation', $form_action_url, 'post', 'onSubmit="return check_confirm_payment(\''.$payment.'\')"');?>
 <div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
 <h1 class="pageHeading"><?php echo HEADING_TITLE; ?></h1>
 <table class="box_des" border="0" width="95%" cellspacing="0" cellpadding="0"> 
@@ -248,7 +152,13 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
 
     if (sizeof($order->info['tax_groups']) > 1) echo '            <td class="main" valign="top" align="right">' . tep_display_tax_value($order->products[$i]['tax']) . '%</td>' . "\n";
 
-    echo '            <td class="main" align="right" valign="top">' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty']) . '</td>' . "\n" .
+    echo '            <td class="main" align="right" valign="top">';
+    if ($order->products[$i]['final_price'] < 0) {
+      echo '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty'])).'</font>'.JPMONEY_UNIT_TEXT;
+    } else {
+      echo $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty']);
+    }
+    echo '</td>' . "\n" .
          '          </tr>' . "\n";
   }
 ?>
@@ -289,18 +199,11 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
               </td>
             </tr>
           </table>
-        </td>
+          <br> 
+          </td>
       </tr>
       <?php
-            if(method_exists(
-                             $payment_modules,
-                             'specialOutput'
-                             )){
-              call_user_method ('specialOutput',$payment_modules);
-
-              //              call_user$payment_modules
-              
-            }
+	      $payment_modules->specialOutput($payment);
 ?>
       <tr>
         <td class="main03"><b><?php echo HEADING_BILLING_INFORMATION; ?></b></td>
@@ -315,7 +218,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                     <td class="main"><?php echo '<b>' . HEADING_PAYMENT_METHOD . '</b> <a href="' . tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
                   </tr>
                   <tr>
-                    <td class="main"><?php echo $order->info['payment_method']; ?></td>
+                    <td class="main"><?php echo payment::changeRomaji($order->info['payment_method']); ?></td>
                   </tr>
                 </table>
               </td>
@@ -325,11 +228,11 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                 <table border="0" cellspacing="0" cellpadding="2" class="box_des">
                   <?php
   if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
-    if($_POST['point'] < $order->info['subtotal']) {
-    $point = $_POST['point'];
-  } else {
-    $point = $order->info['subtotal'];
-  }
+    if(@$_POST['point'] < $order->info['subtotal']) {
+      $point = isset($_POST['point'])?$_POST['point']:0;
+    } else {
+      $point = $order->info['subtotal'];
+    }
     $real_point = $point;
     tep_session_register('real_point');
     tep_session_register('point');
@@ -389,24 +292,40 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
   }
   // ここまでカスタマーレベルに応じたポイント還元率算出============================================================
   if ($order->info['subtotal'] > 0) {
-    $get_point = ($order->info['subtotal'] - (int)$point) * $point_rate;
+    if (isset($_SESSION['campaign_fee'])) {
+      $get_point = ($order->info['subtotal'] + $_SESSION['campaign_fee']) * $point_rate;
+    } else {
+      $get_point = ($order->info['subtotal'] - (int)$point) * $point_rate;
+    }
   } else {
     if ($payment == 'buyingpoint') {
-      $get_point = abs($order->info['subtotal']);
+      if (isset($_SESSION['campaign_fee'])) {
+        $get_point = abs($order->info['subtotal'])+abs($_SESSION['campaign_fee']);
+      } else {
+        $get_point = abs($order->info['subtotal']);
+      }
     } else {
       $get_point = 0;
     }
   }
-  
+  if ($guestchk == '1') {
+    $get_point = 0;
+  }
   tep_session_register('get_point');
+  if(isset($customer_id)&&tep_is_member_customer($customer_id)){
   echo '<tr>' . "\n";
   if (!tep_only_buy_product()) {
     echo '<td align="right" class="main"><br>'.TEXT_POINT_NOW.'</td>' . "\n";
   } else {
-    echo '<td align="right" class="main"><br>'.TEXT_POINT_NOW_TWO.'</td>' . "\n";
+    if ($get_point == 0) {
+      echo '<td align="right" class="main"><br>'.TS_TEXT_POINT_NOW_TWO.'</td>' . "\n";
+    } else {
+      echo '<td align="right" class="main"><br>'.TEXT_POINT_NOW.'</td>' . "\n";
+    }
   }
   echo '<td align="right" class="main"><br>'.(int)$get_point.'&nbsp;P</td>' . "\n";
   echo '</tr>' . "\n";
+  }
   }
 ?>
                 </table>
@@ -417,7 +336,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
       </tr>
       <?php
   if (is_array($payment_modules->modules)) {
-    if ($confirmation = $payment_modules->confirmation()) {
+    if ($confirmation = $payment_modules->confirmation($payment)) {
 ?>
       <tr>
         <td class="main03"><b><?php echo HEADING_PAYMENT_INFORMATION; ?></b></td>
@@ -474,7 +393,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
   if (tep_not_null($order->info['comments'])) {
 ?>
       <tr>
-        <td class="main"><?php echo '<b>' . HEADING_ORDER_COMMENTS . '</b> <a href="' . tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
+        <td class="main"><br><?php echo '<b>' . HEADING_ORDER_COMMENTS . '</b> <a href="' . tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
       </tr>
       <tr>
         <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
@@ -505,7 +424,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
           <td align="right" class="main">
 <?php
   if (is_array($payment_modules->modules)) {
-    echo $payment_modules->process_button();
+    echo $payment_modules->process_button($payment);
   }
   //character  
   if(isset($_SESSION['character'])){

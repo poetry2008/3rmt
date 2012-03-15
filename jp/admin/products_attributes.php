@@ -192,7 +192,7 @@ function go_option() {
                     <td class="main" colspan="3"><br><?php echo TEXT_OK_TO_DELETE; ?></td>
                   </tr>
                   <tr>
-                    <td class="main" align="right" colspan="3"><br><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, 'action=delete_option&option_id=' . $_GET['option_id'], 'NONSSL') . '">'; ?><?php echo tep_image_button('button_delete.gif', ' delete '); ?></a>&nbsp;&nbsp;&nbsp;<?php echo '<a href="' .  tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, '&order_by=' . $order_by . '&page=' .  $page, 'NONSSL') . '">'; ?><?php echo tep_html_element_button(IMAGE_CANCEL); ?></a>&nbsp;</td>
+                    <td class="main" align="right" colspan="3"><br><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, 'action=delete_option&option_id=' . $_GET['option_id'], 'NONSSL') . '">'; ?><?php echo tep_html_element_button(IMAGE_DELETE); ?></a>&nbsp;&nbsp;&nbsp;<?php echo '<a href="' .  tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, '&order_by=' . $order_by . '&page=' .  $page, 'NONSSL') . '">'; ?><?php echo tep_html_element_button(IMAGE_CANCEL); ?></a>&nbsp;</td>
                   </tr>
 <?php
     }
@@ -323,7 +323,7 @@ function go_option() {
 ?>
                 <td align="center" class="smallText">&nbsp;<?php echo $next_id; ?>&nbsp;</td>
                 <td class="smallText"><?php echo $inputs; ?></td>
-                <td align="center" class="smallText">&nbsp;<?php echo tep_html_element_submit(IMAGE_INSERT); ?>&nbsp;</td>
+                <td align="center" class="smallText">&nbsp;<?php echo tep_html_element_submit(IMAGE_SAVE); ?>&nbsp;</td>
 <?php
       echo '</form>';
 ?>
@@ -405,7 +405,7 @@ function go_option() {
                     <td class="main" colspan="3"><br><?php echo TEXT_OK_TO_DELETE; ?></td>
                   </tr>
                   <tr>
-                    <td class="main" align="right" colspan="3"><br><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, 'action=delete_value&value_id=' . $_GET['value_id'], 'NONSSL') . '">'; ?><?php echo tep_image_button('button_delete.gif', ' delete '); ?></a>&nbsp;&nbsp;&nbsp;<?php echo '<a href="' .  tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, '&option_page=' . $option_page .  '&value_page=' . $value_page . '&attribute_page=' . $attribute_page, 'NONSSL') . '">'; ?><?php echo tep_html_element_button(IMAGE_CANCEL); ?></a>&nbsp;</td>
+                    <td class="main" align="right" colspan="3"><br><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, 'action=delete_value&value_id=' . $_GET['value_id'], 'NONSSL') . '">'; ?><?php echo tep_html_element_button(IMAGE_DELETE); ?></a>&nbsp;&nbsp;&nbsp;<?php echo '<a href="' .  tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, '&option_page=' . $option_page .  '&value_page=' . $value_page . '&attribute_page=' . $attribute_page, 'NONSSL') . '">'; ?><?php echo tep_html_element_button(IMAGE_CANCEL); ?></a>&nbsp;</td>
                   </tr>
 <?php
     }
@@ -489,7 +489,7 @@ function go_option() {
               <tr class="<?php echo (floor($rows/2) == ($rows/2) ? 'attributes-even' : 'attributes-odd'); ?>">
 <?php
       if (isset($_GET['action']) && ($_GET['action'] == 'update_option_value') && ($_GET['value_id'] == $values_values['products_options_values_id'])) {
-        echo '<form name="values" action="' . tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, 'action=update_value', 'NONSSL') . '" method="post">';
+        echo '<form name="values" action="' .  tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, 'action=update_value'.(isset($_GET['value_page'])?'&value_page='.$_GET['value_page']:''), 'NONSSL') . '" method="post">';
         $inputs = '';
         for ($i = 0, $n = sizeof($languages); $i < $n; $i ++) {
           $value_name = tep_db_query("select products_options_values_name from " . TABLE_PRODUCTS_OPTIONS_VALUES . " where products_options_values_id = '" . $values_values['products_options_values_id'] . "' and language_id = '" . $languages[$i]['id'] . "'");
@@ -565,7 +565,7 @@ function go_option() {
 ?>
                 </select>&nbsp;</td>
                 <td class="smallText"><input type="hidden" name="value_id" value="<?php echo $next_id; ?>"><?php echo $inputs; ?></td>
-                <td align="center" class="smallText">&nbsp;<?php echo tep_html_element_submit(IMAGE_INSERT); ?>&nbsp;</td>
+                <td align="center" class="smallText">&nbsp;<?php echo tep_html_element_submit(IMAGE_SAVE); ?>&nbsp;</td>
 <?php
       echo '</form>';
 ?>
@@ -773,7 +773,7 @@ function go_option() {
             <td align="right" class="smallText">&nbsp;<b><?php echo $attributes_values["options_values_price"]; ?></b>&nbsp;</td>
             <td align="center" class="smallText">&nbsp;<?php echo isset($attributes_values['products_stock'])?$attributes_values["products_stock"]:''; ?>&nbsp;</td>
             <td align="center" class="smallText">&nbsp;<b><?php echo $attributes_values["price_prefix"]; ?></b>&nbsp;</td>
-            <td align="center" class="smallText">&nbsp;<b><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, 'action=delete_attribute&attribute_id=' . $_GET['attribute_id']) . '">'; ?><?php echo tep_image_button('button_confirm.gif', IMAGE_CONFIRM); ?></a>&nbsp;&nbsp;<?php echo '<a href="' . tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, '&option_page=' . $option_page . '&value_page=' . $value_page . '&attribute_page=' . $attribute_page, 'NONSSL') . '">'; ?><?php echo tep_image_button('button_cancel.gif', IMAGE_CANCEL); ?></a>&nbsp;</b></td>
+            <td align="center" class="smallText">&nbsp;<b><?php echo '<a href="' .  tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, 'action=delete_attribute&attribute_id=' . $_GET['attribute_id']) .  '">'; ?><?php echo tep_html_element_button(IMAGE_CONFIRM); ?></a>&nbsp;&nbsp;<?php echo '<a href="' .  tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, '&option_page=' . $option_page .  '&value_page=' . $value_page . '&attribute_page=' . $attribute_page, 'NONSSL') . '">'; ?><?php echo tep_html_element_button(IMAGE_CANCEL); ?></a>&nbsp;</b></td>
 <?php
     } else {
 ?>
@@ -834,7 +834,7 @@ function go_option() {
             <td align="right" class="smallText">&nbsp;<input type="text" name="value_price" size="6">&nbsp;</td>
       <td align="right" class="smallText">&nbsp;<input type="text" name="products_stock" size="6">&nbsp;</td>
             <td align="right" class="smallText">&nbsp;<input type="text" name="price_prefix" size="2" value="+">&nbsp;</td>
-            <td align="center" class="smallText">&nbsp;<?php echo tep_html_element_submit(IMAGE_INSERT); ?>&nbsp;</td>
+            <td align="center" class="smallText">&nbsp;<?php echo tep_html_element_submit(IMAGE_SAVE); ?>&nbsp;</td>
           </tr>
 <?php
       if (DOWNLOAD_ENABLED == 'true') {

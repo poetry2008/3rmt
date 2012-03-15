@@ -16,7 +16,6 @@ echo "<a href='".$_POST['redirect_url']
 .'&money='.$_POST['money']
 .'&email=makerwang@gmail.com'
 .'&clientip='.$_POST['clientip']
-.'&option=OPT'
 .'&cont=333'
 .'&sendid=SENDID'
 ."'>next</a>";
@@ -46,7 +45,6 @@ echo "<a href='".$_POST['redirect_url']
 .'&money='.$_POST['money']
 .'&email=makerwang@gmail.com'
 .'&clientip='.$_POST['clientip']
-.'&option=OPT'
 .'&cont=333'
 .'&sendid=SENDID'
 ."'>next</a>";

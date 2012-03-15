@@ -644,6 +644,13 @@ $c_id = tep_db_prepare_input($_GET['cID']);
     $list_query = tep_db_query($list_query_raw);
     while ($list = tep_db_fetch_array($list_query)) {
       $count++;
+      $even = 'dataTableSecondRow';
+      $odd  = 'dataTableRow';
+      if (isset($nowColor) && $nowColor == $odd) {
+        $nowColor = $even; 
+      } else {
+        $nowColor = $odd; 
+      }
       if ( ((isset($_GET['list_id']) && $list['id'] == $_GET['list_id']) || ((!isset($_GET['list_id']) || !$_GET['list_id']) && $count == 1)) ) {
       echo '          <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('list_id', 'action')) . 'list_id=' . $list['id'] . '&action=listview') . '\'">' . "\n";
       if(!isset($_GET['list_id']) || !$_GET['list_id']) {
@@ -651,7 +658,7 @@ $c_id = tep_db_prepare_input($_GET['cID']);
         $list_id = $list['id'];
       }
       } else {
-      echo '          <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('list_id')) . 'list_id=' . $list['id']) . '\'">' . "\n";
+      echo '          <tr class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('list_id')) . 'list_id=' . $list['id']) . '\'">' . "\n";
       }
   ?>
                     <td class="dataTableContent" align="center"><?php echo htmlspecialchars($list['family_name']); ?></td>
@@ -753,6 +760,13 @@ default:
     while ($present = tep_db_fetch_array($present_query)) {
 
       $count++;
+      $even = 'dataTableSecondRow';
+      $odd  = 'dataTableRow';
+      if (isset($nowColor) && $nowColor == $odd) {
+        $nowColor = $even; 
+      } else {
+        $nowColor = $odd; 
+      }
       if ( ((isset($cID) && $present['goods_id'] == $cID) || ((!isset($_GET['cID']) || !$_GET['cID']) && $count == 1)) ) {
         echo '          <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $present['goods_id'] . '&action=view') . '\'">' . "\n";
         
@@ -760,7 +774,7 @@ default:
           $cID = $present['goods_id'];
         }
       } else {
-        echo '          <tr class="dataTableRow" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\'dataTableRow\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID')) . 'cID=' . $present['goods_id']) . '\'">' . "\n";
+        echo '          <tr class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID')) . 'cID=' . $present['goods_id']) . '\'">' . "\n";
       }
 ?>
                           <td class="dataTableContent"><?php echo $present['romaji']; ?></td>

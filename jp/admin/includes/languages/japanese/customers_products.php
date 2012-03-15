@@ -20,4 +20,5 @@ define('TABLE_HEADING_PRODUCT_COST', '合計');
 define('TABLE_HEADING_ORDERS_STATUS', 'ステータス');
 define('PRODUCT_MONEY_UNIT', '円');
 define('PRODUCT_NUM_TEXT', '個');
+define('APPLICATION_CREATE_TEXT', '請求書作成');
 ?>

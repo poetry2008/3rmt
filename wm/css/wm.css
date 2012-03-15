@@ -55,6 +55,7 @@ H4 {
 	overflow: hidden;
 	background: url(../images/design/contents/headding_content.gif) repeat-y;
 }
+.comment img{ vertical-align:middle\9;}
 table.comment {
 	width:auto;
 	margin: 0px;
@@ -204,7 +205,9 @@ UL {
 	padding: 2px 2px 2px 2px;
 	line-height: 10px;
 	background: none;
+	height:100%;
 }
+.l_m_categories_tree3 strong{ height:100%;}
 .l_m_categories_tree a:hover, .l_m_categories_tree3 a:hover {
 	background: #f8f8f8 url(../images/design/box/dot.gif) bottom repeat-x;
 }
@@ -1352,7 +1355,7 @@ SPAN.errorText {
 }
 /*register checkbox select row*/
 .moduleRowSelected, .moduleRowSelected td {
-	background: #ccc;
+	background: #ccc; padding:3px 5px;
 }
 /*check out in turn*/
 .checkoutBarFrom, .checkoutBarTo {
@@ -1591,6 +1594,95 @@ searching
  table-layout:fixed;
  width:490px;
 }
-.active_email input{ width:340px;}
 .cemail_input_01 { float:left; width:150px;}
-.con_email01{ float:left;}
+.con_email01{ /*float:left;*/}
+.preorder_active_info { background-color:#ccc; line-height:20px; font-size:13px;}
+.preorder_active_info td { background-color:#fff; padding-left:2px;}
+.preorder_active_line{ border-bottom:1px dashed #666; margin:0 0 15px 0;}
+.preorder_active_box{ font-size:11px;}
+.preorderBarcurrent { font-size:11px; color:#000;}
+.preorderBarTo{ font-size:11px; color:#8c8c8c;}
+.preorderBarFrom{ font-size:11px; color:#8c8c8c;}
+.preorder_text{ font-size:11px;}
+.preorser_formArea{ background-color:#ccc; font-size:13px; line-height:20px;}
+.preorser_formArea td{ background-color:#FFFFFF; padding-left:2px;}
+.formArea_td_info{ width:270px\9; font-size: 11px; line-height: 1.5;}
+.information_color {
+    background-color: #FDEBAC;
+    color: #000000;
+    margin: 5px;
+    padding: 5px;
+    width: 100%;
+}
+
+
+
+.checkout_payment_info{
+	border:1px solid #ccc;
+	*margin-top:5px;
+	font-size:11px;
+	*font-size:10px;
+	padding:5px;
+	line-height:1.5;                        
+}
+.float_left{
+	float:left;
+}
+.txt_right{
+	text-align:right;
+}
+.box_content_title {
+    background-color:#e5e5e5;
+    clear: both;
+    line-height:21px;
+    overflow: hidden;
+    width: 100%;
+}
+.box_content_title_selected{
+	background:#ccc;
+}
+.box_content_title input {
+    margin-right: 12px;
+	margin-top:4px;
+	*margin-top:0;
+}
+.frame_w70{
+	width:70%;
+	float:left;
+	padding-left:10px;
+	font-size:11px\9;
+}
+.float_right{
+	float:right;
+}
+.cp_content{
+	padding:0 20px;
+}
+.cp_content p{ color:#FF0000;}
+.cp_codefee{
+	margin-top:5px;
+}
+.txt_input_box{
+	overflow:hidden;
+	clear:both;
+	height:15%;
+}
+.frame_title{
+	width:40%;
+	float:left;
+	line-height:21px;
+}
+.clear{
+	clear:both;
+}
+.cp_description{
+	padding:0 20px;
+	margin:5px 0;
+}
+.box_waring {
+    background: none repeat scroll 0 0 #FFE6E6;
+    border: 1px solid #FF8E90;
+    padding: 5px;
+	font-size:11px;
+}
+

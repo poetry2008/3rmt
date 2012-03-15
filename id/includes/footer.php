@@ -21,9 +21,9 @@
           <?php echo '|';?> 
           <a href="<?php echo HTTP_SERVER.'/link/';?>">相互リンク</a></div>
           <address class="footer_contacts">
-            <font color="#333333">当ウェブサイトに記載されている会社名·製品名·システム名などは、各社の登録商標、もしくは商標です。</font>
+            <font color="#333333">当ウェブサイトに記載されている会社名・製品名・システム名などは、各社の登録商標、もしくは商標です。</font>
         <?php //echo FOOTER_TEXT_BODY . "\n"; ?><br>
-              Copyright&nbsp;&copy;&nbsp;2011&nbsp;&nbsp;<a class="bold" href="<?php echo tep_href_link(FILENAME_DEFAULT);?>"><?php echo TITLE;?></a>
+              Copyright&nbsp;&copy;&nbsp;<?php echo date("Y");?>&nbsp;&nbsp;<a class="bold" href="<?php echo tep_href_link(FILENAME_DEFAULT);?>"><?php echo TITLE;?></a>
             </address>
             <?php if ($banner = tep_banner_exists('dynamic', 'footer')) { echo  '<div align="center" class="info_foot02">' . "\n" . tep_display_banner('static', $banner) . '</div>'; }?>
 

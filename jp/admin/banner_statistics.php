@@ -98,15 +98,21 @@
     $banner_id = $_GET['bID'];
     switch ($_GET['type']) {
       case 'yearly':
+        echo '<font size="2">'.sprintf(TEXT_BANNERS_YEARLY_STATISTICS, $banner['banners_title']).'</font>';
+        echo '<br>';
         include(DIR_WS_INCLUDES . 'graphs/banner_yearly.php');
         echo tep_image(DIR_WS_IMAGES . 'graphs/banner_yearly-' . $banner_id . '.' . $banner_extension);
         break;
       case 'monthly':
+        echo '<font size="2">'.sprintf(TEXT_BANNERS_MONTHLY_STATISTICS, $banner['banners_title'], (($_GET['year'])?$_GET['year']:date('Y'))).'</font>';
+        echo '<br>';
         include(DIR_WS_INCLUDES . 'graphs/banner_monthly.php');
         echo tep_image(DIR_WS_IMAGES . 'graphs/banner_monthly-' . $banner_id . '.' . $banner_extension);
         break;
       default:
       case 'daily':
+        echo '<font size="2">'.sprintf(TEXT_BANNERS_DAILY_STATISTICS, $banner['banners_title'], strftime('%B', mktime(0,0,0,(($_GET['month'])?$_GET['month']:date('n')))), (($_GET['year'])?$_GET['year']:date('Y'))).'</font>';
+        echo '<br>';
         include(DIR_WS_INCLUDES . 'graphs/banner_daily.php');
         echo tep_image(DIR_WS_IMAGES . 'graphs/banner_daily-' . $banner_id . '.' . $banner_extension);
         break;
@@ -151,7 +157,7 @@
         <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
       </tr>
       <tr>
-        <td class="main" align="right"><?php echo '<a href="' . tep_href_link(FILENAME_BANNER_MANAGER, 'page=' . $_GET['page'] . '&bID=' . $_GET['bID']) . '">' . tep_image_button('button_back.gif', IMAGE_BACK) . '</a>'; ?></td>
+        <td class="main" align="right"><?php echo '<a href="' .  tep_href_link(FILENAME_BANNER_MANAGER, 'page=' . $_GET['page'] . '&bID=' .  $_GET['bID']) . '">' . tep_html_element_button(IMAGE_BACK) . '</a>'; ?></td>
       </tr>
     </table></td>
 <!-- body_text_eof //-->

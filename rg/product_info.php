@@ -114,7 +114,7 @@ function change_num(ob, targ, quan,a_quan)
         $currencies->display_price(tep_get_price($product_info['products_price'], $product_info['products_price_offset'], tep_get_price($product_info['products_price'],$product_info['products_small_sum'], '', $product_info['products_bflag']), $product_info['products_bflag']), tep_get_tax_rate($product_info['products_tax_class_id']));
     }
      
-    $description = $product_info['products_description'];
+    $description = replace_store_name($product_info['products_description']);
     $data1 = explode("//", $product_info['products_attention_1']);
     $data2 = explode("//", $product_info['products_attention_2']);
     $data3 = explode("//", $product_info['products_attention_3']);
@@ -324,13 +324,17 @@ while($tag = tep_db_fetch_array($tag_query)) {
       if($product_info['products_quantity'] < 1) {
         if($product_info['products_bflag'] == '1') {
           # 買い取り商品
-          echo '<span class="markProductOutOfStock">一時停止</span>';
+          echo '<span class="markProductOutOfStock">一時停止';
         } elseif ($product_info['products_cflag'] == '0') {
-          echo '<span class="markProductOutOfStock">売り切れ</span>';
+          echo '<span class="markProductOutOfStock">売り切れ';
         } else {
           # 通常商品
-          echo '<br><span class="markProductOutOfStock">在庫切れ<br><img src="images/design/box/arrow_2.gif" width="5" height="5" hspace="5" border="0" align="absmiddle" alt=""><a href=' . tep_href_link(FILENAME_PREORDER, 'products_id=' . $_GET['products_id']) . '>' . $product_info['products_name'] . 'を予約する</a></span>';
+          echo '<br><span class="markProductOutOfStock">在庫切れ';
         }
+        if ($product_info['preorder_status'] == '1') {
+          echo '<br><img src="images/design/box/arrow_2.gif" width="5" height="5" hspace="5" border="0" align="absmiddle" alt=""><a href=' .  tep_preorder_href_link($product_info['products_id'], $product_info['romaji']) . '>' . $product_info['products_name'] . 'を予約する</a>';
+        }
+        echo '</span>'; 
       }else{    
     // ccdd
     $products_attributes_query = tep_db_query("
@@ -546,7 +550,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
               <?php 
             //Edit ds-style 2005.11.29
             //echo stripslashes($product_info['products_description']);
-            echo replace_store_name($description);
+            echo $description;
             ?>
             </p>
          <?php }?>

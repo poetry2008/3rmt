@@ -36,8 +36,19 @@ $categories_tab_query1 = tep_db_query("
 <?php 
   $number_of_categories = 0 ;
   $col = 0 ;
+  $categories_arr = array();
+  $cbt_arr = array();
   while($cbt = tep_db_fetch_array($categories_tab_query1)){
     $number_of_categories ++;
+    $cbt_arr[mb_strlen($cbt['categories_meta_text'],'utf-8')] = $cbt;
+    if (($number_of_categories/3) == floor($number_of_categories/3)) {
+      krsort($cbt_arr);
+      $categories_arr[] = $cbt_arr;
+      $cbt_arr = array();
+    }
+  }
+  foreach($categories_arr as $cbt_arr){
+    foreach($cbt_arr as $cbt_key => $cbt){
     echo '<td class="smallText">' . "\n";
     echo '<h3 class="Tlist"><a href="' . tep_href_link(FILENAME_DEFAULT,'cPath=' . $cbt['categories_id']) . '">' . "\n";
     echo tep_image(DIR_WS_IMAGES.'categories/'.$cbt['categories_image2'],$cbt['categories_name'], CATEGORY_IMAGE_WIDTH, CATEGORY_IMAGE_HEIGHT) . '<br>' . "\n";
@@ -48,12 +59,8 @@ $categories_tab_query1 = tep_db_query("
       }
     } 
     echo  '</a></h3>' . "\n" . '</td>' . "\n";
-  
-    if (($number_of_categories/3) == floor($number_of_categories/3)) {
-      echo '</tr>' . "\n" . '<tr align="center">' . "\n";
-    } else {
-      echo '';
-    }  
+    }
+    echo '</tr>' . "\n" . '<tr align="center">' . "\n";
   } 
 ?>
     <td></td><td></td><td></td>

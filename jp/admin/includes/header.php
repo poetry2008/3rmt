@@ -235,6 +235,9 @@ if (!isset($ocertify->npermission) || $ocertify->npermission >= 7) {
       <td class="menu01"><a class="t_link01" href="'.tep_href_link('create_order2.php',
     '', 'NONSSL').'">'.HEADER_TEXT_CREATE_ORDER2.'</a></td>
       </tr>
+      <tr>
+      <td class="menu01"><a class="t_link01" href="'.tep_href_link('create_preorder.php',
+    '', 'NONSSL').'">'.HEADER_TEXT_CREATE_PREORDER.'</a></td>
       </table>
       </td>
       <td><a href="' . tep_href_link(FILENAME_CUSTOMERS, '', 'NONSSL') . '" 

@@ -79,6 +79,7 @@ H4 {
 	line-height:15px;
 	font-size:12px;
 }
+.comment img { vertical-align:middle\9;}
 .comment_page {
 	width:698px;
 	width:708px\9;
@@ -1429,7 +1430,8 @@ TABLE：Info box (content)
 	line-height: 20px;
 	padding: 3px 5px;
 	background: #393838;
-}
+/*	border:1px solid #5e5e5e\9;
+*/}
 .infoBoxContents td a{
 	color: #fff;
 }
@@ -1901,4 +1903,108 @@ border:1px solid #CAC6BE;
 #caemail p { margin:5px 0 0 0;}
 #caemail p img { position:relative; /*left:70px;*/ top:2px;}
 .cemail_input_01 { float:left; width:150px;}
-.con_email01{ float:left;}
+.con_email01{ /*float:left;*/}
+.preorder_active_info{background-color:#ccc; font-size:13px;}
+.preorder_active_info td{ background-color:#373737; padding-left:2px; line-height:25px;}
+.preorder_active_line { border-bottom:1px dashed #fff; margin:0 0 15px 0;}
+.preorderBarcurrent { font-size:11px; color:#FFFFFF;}
+.preorderBarTo{ font-size:11px; color:#8c8c8c;}
+.preorderBarFrom{ font-size:11px; color:#8c8c8c;}.c_pay_info{
+   background-color: #4B4A4A;
+    border: 1px solid #444444;
+    color: #FFFFFF;
+    margin: 3px auto;
+    padding: 5px;
+    width: 698px;
+}
+.preorser_formArea{ background-color:#fff; font-size:13px; }
+.preorser_formArea td{ background-color:#373737; padding-left:2px; line-height:25px;}
+.formArea_td_info { width:530px\9; color:#FFFFFF; font-size:12px; line-height:1.5;}
+.active_email_name { font-size:11px;}
+
+
+
+.checkout_payment_info{
+	/*border:1px solid #ccc;*/
+	background-color:#393838;
+	margin-top:15px;   
+	*margin-top:5px;
+	font-size:12px;
+	padding:5px;
+	color:#fff;
+	line-height:1.5;                        
+}
+.preorder_payment_info{
+	border:1px solid #ccc;
+	background-color:#393838;
+	margin-top:15px;   
+	*margin-top:5px;
+	font-size:12px;
+	padding:5px;
+	color:#fff;
+	line-height:1.5;                        
+}
+.float_left{
+	float:left;
+}
+.txt_right{
+	text-align:right;
+}
+.box_content_title {
+    background-color:#303030;
+    clear: both;
+    line-height:21px;
+    overflow: hidden;
+    width: 100%;
+	color:#fff;
+}
+.box_content_title_selected{
+	background:#646464;
+	color:#ccc;
+}
+.box_content_title input {
+    margin-right: 12px;
+	margin-top:4px;
+	*margin-top:0;
+}
+.frame_w70{
+	width:70%;
+	float:left;
+	padding-left:10px;
+}
+.float_right{
+	float:right;
+}
+.cp_content{
+	padding:0 20px;
+}
+.cp_content P{
+	color:#FF0000;
+}
+.cp_codefee{
+	margin-top:5px;
+}
+.txt_input_box{
+	overflow:hidden;
+	clear:both;
+	height:15%;
+}
+.frame_title{
+	width:30%;
+	float:left;
+	line-height:25px;
+}
+.clear{
+	clear:both;
+}
+.cp_description{
+	padding:0 20px;
+	margin:5px 0;
+}
+.box_waring {
+    background: none repeat scroll 0 0 #F8C2C2;
+    border: 1px solid #FF8E90;
+    padding: 5px;
+	font-size:12px;
+	color:#000;
+}

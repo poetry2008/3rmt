@@ -7,9 +7,14 @@
 
   require('includes/application_top.php');
   require('includes/step-by-step/new_application_top.php');
-
   require(DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_EDIT_ORDERS);
-
+ 
+  $active_order_raw = tep_db_query("select is_active from ".TABLE_PREORDERS." where orders_id = '".$_GET['oID']."'");
+  $active_order_res = tep_db_fetch_array($active_order_raw);
+  if (!$active_order_res['is_active']) {
+    tep_redirect(FILENAME_PREORDERS); 
+  }
+  unset($cpayment); 
   require(DIR_WS_CLASSES . 'currencies.php');
   $currencies = new currencies(2);
 
@@ -64,6 +69,7 @@
   
   // 最新の注文情報取得
   $order = new preorder($oID);
+  $cpayment = payment::getInstance($order->info['site_id']); 
   // ポイントを取得する
   $customer_point_query = tep_db_query("
       select point 
@@ -194,7 +200,7 @@
       billing_postcode = '" . tep_db_input($update_customer_postcode) . "',
       billing_country = '" . tep_db_input(stripslashes($update_customer_country)) . "',";
     }
-    
+    $payment_method_info = payment::changeRomaji($_POST['payment_method'], PAYMENT_RETURN_TYPE_TITLE); 
     $UpdateOrders .= "delivery_name = '" . tep_db_input(stripslashes($update_delivery_name)) . "',
       delivery_name_f = '" . tep_db_input(stripslashes($update_delivery_name_f)) . "',
       delivery_company = '" . tep_db_input(stripslashes($update_delivery_company)) . "',
@@ -204,7 +210,7 @@
       delivery_state = '" . tep_db_input(stripslashes($update_delivery_state)) . "',
       delivery_postcode = '" . tep_db_input($update_delivery_postcode) . "',
       delivery_country = '" . tep_db_input(stripslashes($update_delivery_country)) . "',
-      payment_method = '" . tep_db_input($_POST['payment_method']) . "',
+      payment_method = '" . tep_db_input($payment_method_info) . "',
       torihiki_date = '" . tep_db_input($update_tori_torihiki_date) . "',
       torihiki_houhou = '" . tep_db_input($update_tori_torihiki_houhou) . "',
       predate = '" . tep_db_input($_POST['h_predate']) . " 00:00:00',
@@ -529,7 +535,7 @@
   //  $newtotal = '0';
   //}
   
-  $handle_fee = prenew_calc_handle_fee($_POST['payment_method'], $newtotal, $oID);
+  $handle_fee = $cpayment->handle_calc_fee($_POST['payment_method'], $newtotal);
   //$newtotal = $newtotal + $_POST['payment_code_fee']; 
   $newtotal = $newtotal+$handle_fee;
   /*
@@ -648,8 +654,12 @@ while ($totals = tep_db_fetch_array($totals_query)) {
       
       $pre_otm = (int)$select_total_res['value'].TEXT_MONEY_SYMBOL;
       
+      $ot_sub_query = tep_db_query("select value from " . TABLE_PREORDERS_TOTAL . " where orders_id = '".$oID."' and class = 'ot_subtotal'");
+      $ot_sub_result = tep_db_fetch_array($ot_sub_query);
+      $ot_sub_total = abs((int)$ot_sub_result['value']).TEXT_MONEY_SYMBOL;
+      
       $num_product = 0; 
-      $num_product_raw = tep_db_query("select products_quantity from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$oID."'"); 
+      $num_product_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$oID."'"); 
       $num_product_res = tep_db_fetch_array($num_product_raw); 
       if ($num_product_res) {
         $num_product = $num_product_res['products_quantity']; 
@@ -672,7 +682,10 @@ while ($totals = tep_db_fetch_array($totals_query)) {
         '${PAY_DATE}',
         '${ENSURE_TIME}',
         '${PRODUCTS_QUANTITY}',
-        '${EFFECTIVE_TIME}'
+        '${EFFECTIVE_TIME}',
+        '${PRODUCTS_NAME}',
+        '${PRODUCTS_PRICE}',
+        '${SUB_TOTAL}'
       ),array(
         $select_products_res['customers_name'],
         $select_products_res['customers_email_address'],
@@ -689,6 +702,9 @@ while ($totals = tep_db_fetch_array($totals_query)) {
         $ensure_date_arr[0],
         $num_product.PREORDER_PRODUCT_UNIT_TEXT,
         date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT,strtotime($select_products_res['predate'])),
+        $num_product_res['products_name'],
+        $currencies->display_price($num_product_res['final_price'], $num_product_res['products_tax']),
+        $ot_sub_total
       ),$email);
       
       if ($customer_guest['customers_guest_chk'] != 9) {
@@ -700,12 +716,6 @@ while ($totals = tep_db_fetch_array($totals_query)) {
           $email = str_replace('${REAL_ORDER_URL}', $change_preorder_url, $email); 
           
           tep_db_query("update ".TABLE_PREORDERS." set check_preorder_str = '".$change_preorder_url_param."' where orders_id = '".$oID."'"); 
-        }
-        if ($status == 33) {
-          $site_url_raw = tep_db_query("select * from sites where id = '".$order->info['site_id']."'"); 
-          $site_url_res = tep_db_fetch_array($site_url_raw); 
-          $change_preorder_url = $site_url_res['url'].'/extend_time.php?pid='.$oID; 
-          $email = str_replace('${ORDER_UP_DATE}', $change_preorder_url, $email); 
         }
         $preorder_email_title = $_POST['etitle']; 
         $select_status_raw = tep_db_query("select * from ".TABLE_PREORDERS_MAIL." where orders_status_id = '".$status."'"); 
@@ -734,7 +744,10 @@ while ($totals = tep_db_fetch_array($totals_query)) {
             '${PAY_DATE}',
             '${ENSURE_TIME}',
             '${PRODUCTS_QUANTITY}',
-            '${EFFECTIVE_TIME}'
+            '${EFFECTIVE_TIME}',
+            '${PRODUCTS_NAME}', 
+            '${PRODUCTS_PRICE}',
+            '${SUB_TOTAL}'
           ),array(
             $select_t_products_res['customers_name'],
             $select_t_products_res['customers_email_address'],
@@ -751,10 +764,14 @@ while ($totals = tep_db_fetch_array($totals_query)) {
             $ensure_date_arr[0],
             $num_product.PREORDER_PRODUCT_UNIT_TEXT,
             date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT,strtotime($select_products_res['predate'])),
+            $num_product_res['products_name'],
+            $currencies->display_price($num_product_res['final_price'], $num_product_res['products_tax']),
+            $ot_sub_total
           ),$preorder_email_title);
         }
-        
         tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $preorder_email_title, $email, get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $order->info['site_id']),$order->info['site_id']);
+        
+        tep_mail(get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS', $order->info['site_id']), $preorder_email_title, $email, $check_status['customers_name'], $check_status['customers_email_address'], $order->info['site_id']);
       } 
       //tep_mail(get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS', $order->info['site_id']), FORDERS_MAIL_UPDATE_CONTENT_MAIL.'【' . get_configuration_by_site_id('STORE_NAME', $order->info['site_id']) . '】', $email, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);
       $customer_notified = '1';
@@ -950,7 +967,8 @@ while ($totals = tep_db_fetch_array($totals_query)) {
           $newtotal = $total_value["total_value"];
         }
       }
-      $handle_fee = prenew_calc_handle_fee($order->info['payment_method'], $newtotal, $oID);
+      $payment_code = payment::changeRomaji($order->info['payment_method'], PAYMENT_RETURN_TYPE_CODE); 
+      $handle_fee = $cpayment->handle_calc_fee($payment_code, $newtotal);
       $newtotal   = $newtotal+$handle_fee;
       
       /* delete text for update 
@@ -1204,8 +1222,8 @@ textarea,input{
   font-size:12px;
 }
 textarea{
-  width:100%;
-}
+/*  width:100%;
+*/}
 .alarm_on{
   border:2px solid #ff8e90;
   background:#ffe6e6;
@@ -1264,6 +1282,8 @@ float:left;
                 <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
                 <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT); ?></td>
                 <td class="pageHeading" align="right">
+    <?php echo '<a href="' . tep_href_link('handle_new_preorder.php', 'oID='.$_GET['oID']) . '">' . tep_html_element_button(BUTTON_WRITE_PREORDER) . '</a>'; ?>
+    &nbsp; 
     <?php echo '<a href="' . tep_href_link(FILENAME_PREORDERS, tep_get_all_get_params()) . '">' . tep_html_element_button(IMAGE_BACK) . '</a>'; ?>
                 </td>
               </tr>
@@ -1304,20 +1324,23 @@ float:left;
               <tr>
                 <td class="main" valign="top"><b><?php echo EDIT_ORDERS_CUSTOMER_NAME;?></b></td>
                 <td class="main">
-                  <input name="update_customer_name" size="25" value="<?php echo tep_html_quotes($order->customer['name']); ?>">
+                  <input class="edit_input" name="update_customer_name" size="25" value="<?php echo tep_html_quotes($order->customer['name']); ?>">
                   <span class="smalltext"><?php echo EDIT_ORDERS_CUSTOMER_NAME_READ;?></span>
                 </td>
               </tr>
               <tr>
                 <td class="main" valign="top"><b><?php echo EDIT_ORDERS_EMAIL;?></b></td>
-                <td class="main"><input name="update_customer_email_address" size="45" value="<?php echo $order->customer['email_address']; ?>"></td>
+                <td class="main"><input class="edit_new_input" name="update_customer_email_address" size="45" value="<?php echo $order->customer['email_address']; ?>"></td>
               </tr>
               <!-- End Addresses Block -->
               <!-- Begin Payment Block -->
               <tr>
                 <td class="main" valign="top"><b><?php echo EDIT_ORDERS_PAYMENT_METHOD;?></b></td>
                 <td class="main">
-                  <?php echo tep_pre_payment_method_menu($order->info['payment_method']);?>
+                  <?php 
+                  $payment_code = payment::changeRomaji($order->info['payment_method'], PAYMENT_RETURN_TYPE_CODE); 
+                  echo payment::makePaymentListPullDownMenu($payment_code); 
+                  ?>
                   <?php echo EDIT_ORDERS_PAYMENT_METHOD_READ;?> 
                 </td>
               </tr>
@@ -1471,9 +1494,27 @@ float:left;
     //}
     echo '<input type="hidden" name="op_id_'.$orders_products_id.'" 
          value="'.tep_get_pre_product_by_op_id($orders_products_id).'">' . '</td>' . "\n" . 
-         '      <td class="' . $RowStyle . '" align="right">' . $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']), true, $order->info['currency'], $order->info['currency_value']) . '</td>' . "\n" . 
-         '      <td class="' . $RowStyle . '" align="right">' . $currencies->format($order->products[$i]['final_price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . '</td>' . "\n" . 
-         '      <td class="' . $RowStyle . '" align="right"><b>' . $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . '</b></td>' . "\n" . 
+         '      <td class="' . $RowStyle . '" align="right">';
+    if ($order->products[$i]['final_price'] < 0) {
+      echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']), true, $order->info['currency'], $order->info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
+    } else {
+      echo $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']), true, $order->info['currency'], $order->info['currency_value']);
+    }
+    echo '</td>' . "\n" . 
+         '      <td class="' . $RowStyle . '" align="right">';
+    if ($order->products[$i]['final_price'] < 0) {
+      echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($order->products[$i]['final_price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
+    } else {
+      echo $currencies->format($order->products[$i]['final_price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']);
+    }
+    echo '</td>' . "\n" . 
+         '      <td class="' . $RowStyle . '" align="right"><b>';
+    if ($order->products[$i]['final_price'] < 0) {
+      echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
+    } else {
+      echo $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']);
+    }
+    echo '</b></td>' . "\n" . 
          '    </tr>' . "\n";
   }
   ?>
@@ -1484,7 +1525,7 @@ float:left;
         <td>
           <table width="100%" cellpadding="0" cellspacing="0">
             <tr>
-              <td valign="top"><?php echo "<span class='smalltext'>" .  HINT_DELETE_POSITION . EDIT_ORDERS_ADD_PRO_READ."</span>"; ?></td>
+              <td valign="top"><?php //echo "<span class='smalltext'>" .  HINT_DELETE_POSITION . EDIT_ORDERS_ADD_PRO_READ."</span>"; ?></td>
               <td align="right"><?php //echo '<a href="' . $PHP_SELF . '?oID=' . $oID . '&action=add_product&step=1">' . tep_html_element_button(ADDING_TITLE) . '</a>'; ?></td>
             </tr>
           </table>
@@ -1548,10 +1589,7 @@ float:left;
                   echo $currencies->ot_total_format($TotalDetails["Price"], true,
                     $order->info['currency'], $order->info['currency_value']);
                 }else{
-                  echo "<font color='red'>";
-                  echo $currencies->ot_total_format($TotalDetails["Price"], true,
-                    $order->info['currency'], $order->info['currency_value']);
-                  echo "</font>";
+                  echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL ,'', $currencies->ot_total_format($TotalDetails["Price"], true, $order->info['currency'], $order->info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
                 }
                 echo '</b>' . 
                 "<input name='update_totals[$TotalIndex][title]' type='hidden' value='" . trim($TotalDetails["Name"]) . "' size='" . strlen($TotalDetails["Name"]) . "' >" . 
@@ -1569,10 +1607,7 @@ float:left;
                   echo $currencies->ot_total_format($TotalDetails["Price"], true,
                     $order->info['currency'], $order->info['currency_value']);
                 }else{
-                  echo "<font color='red'>";
-                  echo $currencies->format($TotalDetails["Price"], true,
-                    $order->info['currency'], $order->info['currency_value']);
-                  echo "</font>";
+                  echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL ,'', $currencies->format($TotalDetails["Price"], true, $order->info['currency'], $order->info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
                 }
                 echo '</b>' . 
                 "<input name='update_totals[$TotalIndex][title]' type='hidden' value='" . trim($TotalDetails["Name"]) . "' size='" . strlen($TotalDetails["Name"]) . "' >" . 
@@ -1602,14 +1637,11 @@ float:left;
       if ($customer_guest['customers_guest_chk'] == 0) { //会員
         $current_point = $customer_point['point'] + $TotalDetails["Price"];
         echo '  <tr>' . "\n" .
-             '    <td align="left" class="' . $TotalStyle . '">このお客様は会員です。入力可能ポイントは <font color="red"><b>残り' . $customer_point['point'] . '（合計' . $current_point . '）</b></font> です。−（マイナス）符号の入力は必要ありません。必ず正数を入力するように！</td>' . 
-             '    <td align="right" class="' . $TotalStyle . '">' . trim($TotalDetails["Name"]) . '</td>' . "\n" .
-             '    <td align="right" class="' . $TotalStyle . '" nowrap>−' . "<input name='update_totals[$TotalIndex][value]' size='6' value='" . $TotalDetails["Price"] . "'>" . 
+             '    <td colspan="4">' . "<input type='hidden' name='update_totals[$TotalIndex][value]' size='6' value='" . $TotalDetails["Price"] . "'>" . 
                 "<input type='hidden' name='update_totals[$TotalIndex][title]' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . 
                 "<input type='hidden' name='update_totals[$TotalIndex][class]' value='" . $TotalDetails["Class"] . "'>" . 
                 "<input type='hidden' name='update_totals[$TotalIndex][total_id]' value='" . $TotalDetails["TotalID"] . "'>" . 
                 "<input type='hidden' name='before_point' value='" . $TotalDetails["Price"] . "'>" . 
-             '    <td align="right" class="' . $TotalStyle . '"><b>' . tep_draw_separator('pixel_trans.gif', '1', '17') . '</b>' . 
              '   </td>' . "\n" .
              '  </tr>' . "\n";
       } else { //ゲスト
@@ -1657,7 +1689,7 @@ float:left;
               <td class="main" bgcolor="#FFCC99" width="10">&nbsp;</td>
               <td class="main" bgcolor="#F8B061" width="10">&nbsp;</td>
               <td class="main" bgcolor="#FF9933" width="120" align="center">
-<?php if (tep_is_oroshi($order->customer['id'])) { ?>
+<?php if (false) { ?>
                 <INPUT type="button" value="<?php echo EDIT_ORDERS_CONFIRM_BUTTON;?>" onClick="pre_update_price()">
 <?php } else { ?>
                 <INPUT type="button" value="<?php echo EDIT_ORDERS_CONFIRM_BUTTON;?>" onClick="pre_update_price2()">
@@ -1772,10 +1804,10 @@ if (tep_db_num_rows($orders_history_query)) {
       $mail_sele = tep_db_query($ma_se); 
       $mail_sql = tep_db_fetch_array($mail_sele); 
     ?>
-    <?php echo '<b>'.ENTRY_EMAIL_TITLE.'</b>'.tep_draw_input_field('etitle', $mail_sql['orders_status_title']);?> 
+    <?php echo '<b>'.ENTRY_EMAIL_TITLE.'</b>'.tep_draw_input_field('etitle', $mail_sql['orders_status_title'],' style="width:315px;"');?> 
     <br> 
     <br> 
-    <textarea style="font-family:monospace:font-size:12px;" name="comments" wrap="hard" rows="15" cols="74"><?php echo str_replace('${ORDER_A}', preorders_a($order->info['orders_id']), $mail_sql['orders_status_mail']);?></textarea> 
+    <textarea style="font-family:monospace; font-size:12px; width:400px;" name="comments" wrap="hard" rows="30" cols="74"><?php echo str_replace('${ORDER_A}', preorders_a($order->info['orders_id']), $mail_sql['orders_status_mail']);?></textarea> 
   </td>
   </tr>
 </table>

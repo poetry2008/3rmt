@@ -52,18 +52,18 @@
     one_time_pwd('<?php echo $page_name;?>');
   </script>
 <?php }?>
-<!-- header //-->
+<!-- header -->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-<!-- header_eof //-->
-<!-- body //-->
+<!-- header_eof -->
+<!-- body -->
 <table border="0" width="100%" cellspacing="2" cellpadding="2">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
-<!-- left_navigation //-->
+<!-- left_navigation -->
 <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-<!-- left_navigation_eof //-->
+<!-- left_navigation_eof -->
     </table></td>
-<!-- body_text //-->
+<!-- body_text -->
     <td width="100%" valign="top">
   <table border='0' bgcolor='#7c6bce' width='100%'>
       <tr>
@@ -116,18 +116,6 @@
 
     tep_draw_hidden_field($customer_id);    
 ?>
-<script type="text/javascript">
-function hidden_payment(){
-  var idx = document.create_order.elements["payment_method"].selectedIndex;
-  var CI = document.create_order.elements["payment_method"].options[idx].value;
-  
-  if(CI == '銀行振込(買い取り)'){
-    document.getElementById('trpass1').style.display = "";
-  }else{
-    document.getElementById('trpass1').style.display = "none";
-  }
-}
-</script>
 <table border="0" width="100%" cellspacing="0" cellpadding="2">
   <tr>
     <td class="formAreaTitle"><?php echo CATEGORY_CORRECT; ?></td>
@@ -246,19 +234,6 @@ function hidden_payment(){
   );
   */
 
-  // 口座科目の記憶
-  switch(isset($bank_kamoku)?$bank_kamoku:null) {
-    case '普通':
-      default:
-      $bank_sele_f = true;
-      $bank_sele_t = false;
-      break;
-    case '当座':
-      $bank_sele_f = false;
-      $bank_sele_t = true;
-      break;
-  }
-
 ?>
   <tr>
     <td class="formAreaTitle"><br><?php echo CREATE_ORDER_PAYMENT_TITLE;?></td>
@@ -269,7 +244,7 @@ function hidden_payment(){
           <td class="main"><table border="0" cellspacing="0" cellpadding="2">
               <tr>
                 <td class="main">&nbsp;<?php echo CREATE_ORDER_PAYMENT_TITLE;?>:</td>
-                <td class="main">&nbsp;<?php echo CREATE_ORDER_SHIRU_TEXT;?><input type="hidden" name="payment_method" value="銀行振込(買い取り)"></td>
+                <td class="main">&nbsp;<?php echo CREATE_ORDER_SHIRU_TEXT;?><input type="hidden" name="payment_method" value="<?php echo payment::changeRomaji('buying', PAYMENT_RETURN_TYPE_TITLE);?>"></td>
               </tr>
             </table></td>
         </tr>
@@ -337,11 +312,11 @@ function hidden_payment(){
   </td>
   </tr>
 </table>
-<!-- body_eof //-->
+<!-- body_eof -->
 
-<!-- footer //-->
+<!-- footer -->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-<!-- footer_eof //-->
+<!-- footer_eof -->
 
 <br>
 </body>

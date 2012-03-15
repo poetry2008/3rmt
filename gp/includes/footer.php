@@ -1,32 +1,46 @@
 <?php
 /*
-  $Id$
-*/
+   $Id$
+ */
 ?>
- <table class="footer_top"> 
-  <tr>
-    <td colspan="3">
-    <?php include(DIR_WS_BOXES.'information.php');?> 
-    <div class="buttom_warp02">
-    <?php if ($banner = tep_banner_exists('dynamic', 'footer')) { echo tep_display_banner('static', $banner); }?>
-    </div>
-    
-    <div class="buttom_warp03">
-    <?php echo DEFAULT_PAGE_BOTTOM_CONTENTS;?> 
-    </div>
-    
-    </td>
-  </tr>
- </table> 
+<script type="text/javascript">
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-29027754-1']);
+_gaq.push(['_trackPageview']);
+
+(function() {
+ var ga = document.createElement('script'); ga.type = 'text/javascript';
+ ga.async = true;
+ ga.src = ('https:' == document.location.protocol ? 'https://ssl' :
+   'http://www') + '.google-analytics.com/ga.js';
+ var s = document.getElementsByTagName('script')[0];
+ s.parentNode.insertBefore(ga, s);
+ })();
+</script>
+<table class="footer_top"> 
+<tr>
+<td colspan="3">
+<?php include(DIR_WS_BOXES.'information.php');?> 
+<div class="buttom_warp02">
+<?php if ($banner = tep_banner_exists('dynamic', 'footer')) { echo tep_display_banner('static', $banner); }?>
+</div>
+
+<div class="buttom_warp03">
+<?php echo DEFAULT_PAGE_BOTTOM_CONTENTS;?> 
+</div>
+
+</td>
+</tr>
+</table> 
 <div id="footer">
-          <address class="footer_contacts">
-        <?php echo FOOTER_TEXT_BODY . "\n"; ?><br>
-              Copyright&nbsp;&copy;&nbsp;2011&nbsp;&nbsp;
+<address class="footer_contacts">
+<?php echo FOOTER_TEXT_BODY . "\n"; ?><br>
+Copyright&nbsp;&copy;&nbsp;<?php echo date("Y");?>&nbsp;&nbsp;
 <?php
 echo '<a class = "bold" href="'.tep_href_link('/').'" ><strong>'.STORE_NAME.'</strong></a>';
 ?>
 
-            </address>
+</address>
 </div>
 <script type="text/javascript" src="js/access.js"></script>
 <noscript><img src="axs/dsw.cgi?pg=RMT&amp;&amp;p=g&amp;&amp;md=nj" alt="" height="1" width="1" ></noscript>
