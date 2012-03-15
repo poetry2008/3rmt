@@ -858,9 +858,4 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
   define('TABLE_COUNTRY_FEE','country_fee');
   define('TABLE_COUNTRY_AREA','country_area');
   define('TABLE_ADDRESS_ORDERS','address_orders');
-  define('TABLE_ADDRESS_TITLE','住所');
-  define('TABLE_OPTION_NEW','登録先に届ける');
-  define('TABLE_OPTION_OLD','過去のお届け先を指定する');
-  define('TABLE_ADDRESS_SHOW','お届け先リストから選ぶ:');
-  define('ERROR_OPTION_ITEM_TEXT_NULL','入力してください');
-  define('ERROR_OPTION_ITEM_TEXT_TYPE_WRONG','に誤りがあります');
+  

@@ -33,7 +33,7 @@ define('TEXT_CONTINUE_CHECKOUT_PROCEDURE', '「次へ進む」をクリックし
 define('TEXT_CARACTOR', 'お届け先キャラクター名:');
 define('TEXT_TORIHIKIHOUHOU', 'オプション:');
 define('TEXT_TORIHIKIKIBOUBI', '取引希望日:');
-define('TEXT_TORIHIKIKIBOUJIKAN', '取引希望時間:');
+define('TEXT_TORIHIKIKIBOUJIKAN', 'お届け希望時間:');
 
 define('TEXT_CHECK_EIJI', '(英字)');
 define('TEXT_CHECK_24JI', '<b>(24時間表記)</b>');
@@ -62,4 +62,10 @@ define('TEXT_USE_ADDRESS_BOOK','新しいお届け先を入力する');
 define('TEXT_SHIPPING_INFO_ERROR','重要なお知らせ<br>内容に不備があります<br>必要な情報を正しく入力してください。');
 define('TEXT_OPTIONS_ERROR','を入力してください。');
 define('TEXT_OPTIONS_ERROR_SELECT','を選択してください。');
+define('TABLE_ADDRESS_TITLE','住所');
+define('TABLE_OPTION_NEW','登録先に届ける');
+define('TABLE_OPTION_OLD','過去のお届け先を指定する');
+define('TABLE_ADDRESS_SHOW','お届け先リストから選ぶ:');
+define('ADDRESS_ERROR_OPTION_ITEM_TEXT_NULL','入力してください');
+define('ADDRESS_ERROR_OPTION_ITEM_TEXT_TYPE_WRONG','に誤りがあります');
 ?>

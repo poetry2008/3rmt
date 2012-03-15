@@ -39,6 +39,7 @@ if(isset($action) && $action != ''){
                    "',work='". $work .
                    "',sleep='". $sleep .
                    "',db_set_day='". $db_set_day .
+                   "',shipping_time='". $shipping_time .
                    "',sort='". $sort .
                    "' where id=". $products_id;
     }

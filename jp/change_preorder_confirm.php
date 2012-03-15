@@ -14,6 +14,98 @@
   require(DIR_WS_ACTIONS.'change_preorder_confirm.php');
   
   $breadcrumb->add(NAVBAR_CHANGE_PREORDER_TITLE, '');
+  /*
+ * 计算配送费用
+ */
+  foreach($_POST as $shipping_key=>$shipping_value){
+
+    if(substr($shipping_key,0,3) == 'op_'){
+
+      $shipping_fee_array[] = $shipping_value;
+    }
+  }
+  //计算商品的总价格及总重量
+  $weight_total = 0;
+  $money_total = 0;
+  $shipping_products_query = tep_db_query("select * from ". TABLE_PREORDERS_PRODUCTS ." where orders_id='". $_POST['pid'] ."'");
+  while($shipping_products_array = tep_db_fetch_array($shipping_products_query)){
+
+    $shipping_products_weight_query = tep_db_query("select products_weight from ". TABLE_PRODUCTS ." where products_id='". $shipping_products_array['products_id'] ."'");
+    $shipping_products_weight_array = tep_db_fetch_array($shipping_products_weight_query);
+    tep_db_free_result($shipping_products_weight_query);
+    $weight_total += $shipping_products_weight_array['products_weight']*$shipping_products_array['products_quantity'];
+    $money_total += $shipping_products_array['final_price']*$shipping_products_array['products_quantity'];
+  }
+  tep_db_free_result($shipping_products_query);
+
+
+$weight = $weight_total;
+
+foreach($shipping_fee_array as $op_value){
+  $address_query = tep_db_query("select * from ". TABLE_COUNTRY_AREA ." where name='". $op_value ."'");
+  $address_num = tep_db_num_rows($address_query);
+  
+  $country_query = tep_db_query("select * from ". TABLE_COUNTRY_FEE ." where name='". $op_value ."'");
+  $address_country_num = tep_db_num_rows($country_query);
+
+
+if($address_num > 0){
+  $address_array = tep_db_fetch_array($address_query);
+  tep_db_free_result($address_query);
+  $address_free_value = $address_array['free_value'];
+  $address_weight_fee_array = unserialize($address_array['weight_fee']);
+
+  //根据重量来获取相应的配送费用
+  foreach($address_weight_fee_array as $key=>$value){
+    
+    if(strpos($key,'-') > 0){
+
+      $temp_array = explode('-',$key);
+      $address_weight_fee = $weight >= $temp_array[0] && $weight <= $temp_array[1] ? $value : 0; 
+    }else{
+  
+      $address_weight_fee = $weight <= $key ? $value : 0;
+    }
+
+    if($address_weight_fee > 0){
+
+      break;
+    }
+  }
+}else{
+  if($address_country_num > 0){
+  $country_array = tep_db_fetch_array($country_query);
+  tep_db_free_result($country_query);
+  $country_free_value = $country_array['free_value'];
+  $country_weight_fee_array = unserialize($country_array['weight_fee']);
+
+  //根据重量来获取相应的配送费用
+  foreach($country_weight_fee_array as $key=>$value){
+    
+    if(strpos($key,'-') > 0){
+
+      $temp_array = explode('-',$key);
+      $country_weight_fee = $weight >= $temp_array[0] && $weight <= $temp_array[1] ? $value : 0; 
+    }else{
+  
+      $country_weight_fee = $weight <= $key ? $value : 0;
+    }
+
+    if($country_weight_fee > 0){
+
+      break;
+    }
+  }
+  }
+}
+
+}
+$weight_fee = $address_weight_fee != '' ? $address_weight_fee : $country_weight_fee;
+
+$free_value = $address_free_value != '' ? $address_free_value : $country_free_value;
+
+$shipping_fee = $money_total > $free_value ? 0 : $weight_fee;
+
 ?>
 <?php page_head();?>
 <script type="text/javascript">
@@ -150,7 +242,42 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
               </td>
             </tr>
           </table>
+          <br>
+<?php
+                    if($weight_total > 0){
+?>
+          <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
+            <tr>
+              <td class="main">
+                <?php echo TEXT_ADDRESS;?> 
+              </td>
+            </tr>
+            <tr>
+              <td class="main">
+                <table width="100%">
+<?php
+                    foreach($_POST as $ad_key=>$ad_value){
+
+                      if(substr($ad_key,0,3)=='op_' && $_POST[substr($ad_key,3)] != ''){
+
+                        echo '<tr>';
+                        echo '<td class="main">'. $_POST[substr($ad_key,3)] .':</td>';                  
+                        echo '<td class="main">';
+                        echo $_POST[$ad_key];
+                        echo '<input type="hidden" name="'. $ad_key .'" value="'. $ad_value .'"></td>';
+                        echo '</tr>';
+                      }
+                    }
+?> 
+                  
+                </table> 
+              </td>
+            </tr>
+          </table>
           <br> 
+<?php
+}
+?>
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
               <td class="main">
@@ -243,6 +370,10 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                         }
                       }
                     }
+                    if(isset($shipping_fee)){
+
+                      $total_param += $shipping_fee;
+                    }
                     
                   ?>
                   <?php
@@ -271,15 +402,15 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                     } else if ($preorder_total_res['class'] == 'ot_total') {
                       if (isset($_SESSION['preorder_campaign_fee'])) {
                         if (isset($preorder_total_info_array['total'])) {
-                          echo $currencies->format_total($preorder_total_info_array['total']+(int)$_SESSION['preorder_campaign_fee']);
+                          echo $currencies->format_total($preorder_total_info_array['total']+(int)$_SESSION['preorder_campaign_fee']+(int)$shipping_fee);
                         } else {
-                          echo $currencies->format_total($preorder_total_res['value']+(int)$_SESSION['preorder_campaign_fee']);
+                          echo $currencies->format_total($preorder_total_res['value']+(int)$_SESSION['preorder_campaign_fee']+(int)$shipping_fee);
                         }
                       } else {
                         if (isset($preorder_total_info_array['total'])) {
-                          echo $currencies->format_total($preorder_total_info_array['total']-(int)$preorder_point);
+                          echo $currencies->format_total($preorder_total_info_array['total']-(int)$preorder_point+(int)$shipping_fee);
                         } else {
-                          echo $currencies->format_total($preorder_total_res['value']-(int)$preorder_point);
+                          echo $currencies->format_total($preorder_total_res['value']-(int)$preorder_point+(int)$shipping_fee);
                         }
                       }
                     } else if($preorder_total_res['class'] == 'ot_subtotal') {
@@ -288,6 +419,14 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                       } else {
                         echo $currencies->format_total($preorder_total_res['value']);
                       }
+                      
+                      $shipping_fee_str = $shipping_fee == 0 ? TEXT_SHIPPING_FEE_NOT : $currencies->format_total($shipping_fee);
+                      ?>
+                    <tr>
+                    <td class="main" align="right"><input type="hidden" name="shipping_fee" value="<?php echo $shipping_fee;?>"><?php echo TEXT_SHIPPING_FEE;?></td> 
+                    <td class="main" align="right"><?php echo $shipping_fee_str;?></td> 
+                    </tr>
+                    <?php
                     } else {
                       echo $currencies->format_total($preorder_total_res['value']);
                     }

@@ -9,8 +9,7 @@
 // if the customer is not logged on, redirect them to the login page
   if (!tep_session_is_registered('customer_id')) {
     $navigation->set_snapshot();
-    tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
-  }
+    tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL')); }
 
 // if there is nothing in the customers cart, redirect them to the shopping cart page
   if ($cart->count_contents() < 1) {
@@ -96,7 +95,7 @@
     if (!tep_session_is_registered('comments')) tep_session_register('comments');
 
     if (!tep_session_is_registered('shipping')) tep_session_register('shipping');
-  $torihikihouhou = tep_db_prepare_input($_POST['torihikihouhou']);
+  //$torihikihouhou = tep_db_prepare_input($_POST['torihikihouhou']);
   $date = tep_db_prepare_input($_POST['date']);
   $hour = tep_db_prepare_input($_POST['hour']);
   $min = tep_db_prepare_input($_POST['min']);
@@ -138,10 +137,10 @@
   $insert_torihiki_date = $date . ' ' . $hour . ':' . $min . ':00';
   
   $error = false;
-  if($torihikihouhou == '') {
-    $error = true;
-    $torihikihouhou_error = TEXT_ERROR_TORIHIKIHOUHOU;
-  }
+  //if($torihikihouhou == '') {
+    //$error = true;
+    //$torihikihouhou_error = TEXT_ERROR_TORIHIKIHOUHOU;
+  //}
   
   if($date == '') {
     $error = true;
@@ -470,7 +469,7 @@ function address_option_list(value){
 }
 --></script>
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
-<script type="text/javascript" src="js/data.js"></script>
+<script type="text/javascript" src="js/date_time.js"></script>
 <script type="text/javascript" src="js/address_search.js"></script>
 <script type="text/javascript">
  function fee(address_value){
@@ -686,16 +685,18 @@ function address_option_list(value){
           <td width="10" height="5"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
           </tr>
           <tr> 
-            <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
-                <tr class="infoBoxContents"> 
+            <td><table border="0" width="100%" cellspacing="1" cellpadding="2"> 
+                <tr> 
                   <td>
           
 <table width="100%" border="0" cellspacing="0" cellpadding="2">
+<!--
   <tr>
     <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
   <td class="main"><?php echo TEXT_TORIHIKIHOUHOU; ?></td>
     <td class="main"><?php echo tep_get_torihiki_select_by_products($product_ids);//tep_draw_pull_down_menu('torihikihouhou', $torihiki_list, $torihikihouhou); ?></td>
   </tr>
+-->
 <?php
   if(isset($torihikihouhou_error) && $torihikihouhou_error != '') { //delnotice
 ?>

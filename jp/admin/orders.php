@@ -1968,7 +1968,26 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
             </tr>
             <?php
         }
-      ?>
+            ?>
+            <tr>
+            <td class="main">住所情報</td>
+            <td class="main">&nbsp;</td>
+            </tr>
+            <?php
+        $address_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."'");
+        while($address_array = tep_db_fetch_array($address_query)){
+
+          $address_title_query = tep_db_query("select * from ". TABLE_ADDRESS ." where id=".$address_array['address_id']); 
+          $address_title_array = tep_db_fetch_array($address_title_query);
+          echo '<tr>';
+          echo '<td class="main"><b>'. $address_title_array['name'] .':</b></td>';
+          echo '<td class="main">'. $address_array['value'] .'</td>';
+          echo '</tr>';
+          tep_db_free_result($address_title_query);
+        }
+        tep_db_free_result($address_query);
+              
+            ?>
         </table>
         </div>
         <div style="width:0.6%; background:#fff; float:left;">&nbsp;</div>
@@ -2452,6 +2471,16 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                   '      <td align="right" class="smallText">' . $currencies->format($order->info['code_fee']) . '</td>' . "\n" .
                   '    </tr>' . "\n";
               }
+
+              //配送费用
+             if ($i == 0) {
+              echo 
+               '    <tr>' . "\n" .
+               '      <td align="right" class="smallText">' . TEXT_SHIPPING_FEE . '</td>' . "\n" .
+               '      <td align="right" class="smallText">' . $currencies->format($order->info['shipping_fee']) . '</td>' . "\n" .
+               '    </tr>' . "\n";
+             }
+
             }
           ?>
             <tr>

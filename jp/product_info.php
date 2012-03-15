@@ -332,16 +332,18 @@ while($tag = tep_db_fetch_array($tag_query)) {
     $hm_option->render($product_info['belong_to_option']);
 ?>
             <table border="0" width="100%" cellspacing="0" cellpadding="2">
+            <!--
             <tr>
             <td class="main">
             <?php
-              echo "<br />";
-              echo TEXT_CHARACTER . tep_draw_input_field('cname','','id="cname"');
-              echo "<br /><br />";
-              echo '<font color="#C85050">ご入力されましたキャラクター名にお間違えはございませんか？</font>'; 
+              //echo "<br />";
+              //echo TEXT_CHARACTER . tep_draw_input_field('cname','','id="cname"');
+              //echo "<br /><br />";
+              //echo '<font color="#C85050">ご入力されましたキャラクター名にお間違えはございませんか？</font>'; 
             ?>
           </td>
           </tr>
+          -->
           <tr>
             <td colspan="2" class="main">&nbsp;</td>
           </tr>
@@ -371,7 +373,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
       </td>
   </tr>
   </table>
-                        <td><?php echo tep_image_submit('button_in_cart.gif', IMAGE_BUTTON_IN_CART,'onclick="return check_form();"'); ?></td>
+                        <td><?php echo tep_image_submit('button_in_cart.gif', IMAGE_BUTTON_IN_CART,''); ?></td>
                       </tr>
                     </table>
         <?php echo tep_draw_hidden_field('products_id', $product_info['products_id']) ; ?>

@@ -1,6 +1,10 @@
 <?php
   require(DIR_WS_LANGUAGES . $language . '/change_preorder.php');
-  
+  require('address_preorder/AD_Option.php');
+  require('address_preorder/AD_Option_Group.php');
+
+  $ad_option = new AD_Option();
+
   $preorder_raw = tep_db_query('select * from '.TABLE_PREORDERS." where check_preorder_str = '".$_GET['pid']."' and site_id = '".SITE_ID."' and is_active = '1'");
   $preorder_res = tep_db_fetch_array($preorder_raw); 
   if (!$preorder_res) {
@@ -36,8 +40,6 @@
           tep_session_unregister('customer_emailaddress');
           tep_session_unregister('guestchk');
 
-
-q
           
           tep_redirect(tep_href_link(FILENAME_LOGIN, 'pid='.$_GET['pid'], 'SSL'));
         }
@@ -72,6 +74,24 @@ q
     $preorder_date = tep_db_prepare_input($_POST['date']);
     $preorder_hour = tep_db_prepare_input($_POST['hour']);
     $preorder_min = tep_db_prepare_input($_POST['min']);
+
+    //住所信息处理 
+    $address_option_info_array = array(); 
+    if (!$ad_option->check()) {
+      foreach ($_POST as $ad_key => $ad_value) {
+        $ad_single_str = substr($ad_key, 0, 3);
+        if ($ad_single_str == 'op_') {
+          $address_option_info_array[$ad_key] = $ad_value; 
+        } 
+      }
+    }else{
+      $error_str = true;
+    }
+    
+    if($error_str == true){
+
+      $error = true;
+    }
     if ($preorder_torihikihouhou == '') {
       $error = true;
       $torihikihouhou_error = TEXT_PREORDER_ERROR_TORIHIKIHOUHOU;
