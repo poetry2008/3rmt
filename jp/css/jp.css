@@ -2517,3 +2517,21 @@ searching
 	font-weight:bold;
 	color:#000;
 }
+/*option*/
+.option_table{
+	width:100%;
+	font-size:12px;
+}
+.option_name{
+	width:85px;
+	vertical-align:top;
+}
+.option_input{
+	width:95%;
+}
+.option_error{
+	color:#ff0000;
+	font-size:12px;
+	padding-left:10px;
+	line-height:1.5;
+}

@@ -14,20 +14,20 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
   function render($option_error_array)
   {
      if (strlen($this->front_title)) {
-       echo '<td>';
+       echo '<td class="option_name">';
        echo $this->front_title.':';
        echo '</td>';
      }
      echo '<td>';
      if ($this->iline > 1) {
-       echo '<textarea name="op_'.$this->formname.'">'.(isset($_POST['op_'.$this->formname])?$_POST['op_'.$this->formname]:$this->itext).'</textarea><br>'.$this->icomment;    
+       echo '<textarea class="option_input" name="op_'.$this->formname.'">'.(isset($_POST['op_'.$this->formname])?$_POST['op_'.$this->formname]:$this->itext).'</textarea><br>'.$this->icomment;    
        echo '<span id="error_'.$this->formname.'" class="option_error">';
        if (isset($option_error_array[$this->formname])) {
          echo $option_error_array[$this->formname]; 
        }
        echo '</span>';
      } else {
-       echo '<input type="text" name="op_'.$this->formname.'" value="'.(isset($_POST['op_'.$this->formname])?$_POST['op_'.$this->formname]:$this->itext).'"><br>'.$this->icomment; 
+       echo '<input class="option_input" type="text" name="op_'.$this->formname.'" value="'.(isset($_POST['op_'.$this->formname])?$_POST['op_'.$this->formname]:$this->itext).'"><br>'.$this->icomment; 
        echo '<span id="error_'.$this->formname.'" class="option_error">';
        if (isset($option_error_array[$this->formname])) {
          echo $option_error_array[$this->formname]; 

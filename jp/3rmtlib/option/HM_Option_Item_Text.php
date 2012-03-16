@@ -10,7 +10,7 @@ class HM_Option_Item_Text extends HM_Option_Item_Basic
   function render($option_error_array)
   {
     if (strlen($this->front_title)) {
-      echo '<td>'; 
+      echo '<td class="option_name">'; 
       echo $this->front_title.':'; 
       echo '</td>'; 
     }
