@@ -33,4 +33,4 @@ define('TABLE_OPTION_NEW','登録先に届ける');
 define('TABLE_OPTION_OLD','過去のお届け先を指定する');
 define('TABLE_ADDRESS_SHOW','お届け先リストから選ぶ:');
 define('ADDRESS_ERROR_OPTION_ITEM_TEXT_NULL','入力してください');
-define('ADDRESS_ERROR_OPTION_ITEM_TEXT_TYPE_WRONG','に誤りがあります');
+define('ADDRESS_ERROR_OPTION_ITEM_TEXT_TYPE_WRONG','入力された文字が正しくないです。');

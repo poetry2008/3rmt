@@ -155,7 +155,7 @@ define('BOX_TELL_A_FRIEND_TEXT', 'この商品のURLを友達にメールする'
 
 // checkout procedure text
 define('CHECKOUT_BAR_PRODUCTS',    'キャラクター名');
-define('CHECKOUT_BAR_DELIVERY',    '取引日時');
+define('CHECKOUT_BAR_DELIVERY',    '配送方法');
 define('CHECKOUT_BAR_PAYMENT',     '支払方法');
 define('CHECKOUT_BAR_CONFIRMATION','最終確認');
 define('CHECKOUT_BAR_FINISHED',    '手続完了!');

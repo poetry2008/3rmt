@@ -1185,6 +1185,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     <span class="smalltext"><?php echo EDIT_ORDERS_FETCHTIME_READ;?></span>
     </td>
     </tr>
+<!--
     <tr>
     <td class="main" valign="top"><b><?php echo EDIT_ORDERS_TORI_TEXT;?></b></td>
     <td class="main">
@@ -1194,6 +1195,7 @@ if (($action == 'edit') && ($order_exists == true)) {
 
     </td>
     </tr>
+-->
 <tr>
 <td colspan="2">
     <input type="hidden" name="update_viladate" value="true">

@@ -71,8 +71,8 @@ if(isset($action) && $action != ''){
 
     }else{
       $products_id = $_POST['cid'];
-      $products_sql = "update ". TABLE_PRODUCTS_SHIPPING_TIME .
-                   " set status='1' where id=".$products_id;
+      $products_sql = "delete from ". TABLE_PRODUCTS_SHIPPING_TIME .
+                      " where id=".$products_id;
       $products_del_query = tep_db_query($products_sql);
 
       if($products_del_query == true){
@@ -106,6 +106,13 @@ if(isset($action) && $action != ''){
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
 <title><?php echo TITLE; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
+<style type="text/css">
+div#show {
+  left:18%;
+  width:70%;
+  position:absolute;
+}
+</style>
 <script language="javascript" src="includes/general.js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
@@ -152,7 +159,10 @@ if(isset($action) && $action != ''){
 <?php
 $even = 'dataTableSecondRow';
 $odd  = 'dataTableRow';
-$products_query = tep_db_query("select * from ". TABLE_PRODUCTS_SHIPPING_TIME);
+$products_sql = "select * from ". TABLE_PRODUCTS_SHIPPING_TIME;
+
+$products_page = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $products_sql, $products_query_numrows);
+$products_query = tep_db_query($products_sql);
 $i = 0;
 while($products_array = tep_db_fetch_array($products_query)){
   $nowColor = $i % 2 == 1 ? $even : $odd;
@@ -188,6 +198,13 @@ while($products_array = tep_db_fetch_array($products_query)){
 tep_db_free_result($products_query);
 tep_db_close();
 ?>
+<td colspan="4">
+<?php echo $products_page->display_count($products_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_CUSTOMERS); ?>
+</td>
+<td colspan="5" align="right">
+<?php echo $products_page->display_links($products_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page'))); ?>
+</td>
+</tr>
 <tr><td align="right" colspan="9"><button onclick="show_text_products(0,this);"><?php echo TABLE_BUTTON;?></button></td></tr>
 </table></td></tr></table></td></tr>
 </table></td>

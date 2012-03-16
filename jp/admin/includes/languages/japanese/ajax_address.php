@@ -21,4 +21,6 @@ define('TABLE_NEXT','次へ＞');
 define('TABLE_ADD','更に5行を追加');
 define('TABLE_NEW','新規項目');
 define('TABLE_LIST_12_1','に従属');
+define('TABLE_PROMPT_1','入力可能文字タイプ');
+define('TABLE_PROMPT_2','入力可能文字数の上限');
 ?>

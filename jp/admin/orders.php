@@ -1900,10 +1900,6 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
         <td class="main"><b style=" color:#0000FF"><?php echo $order->tori['date'];?></b></td>
         </tr>
         <tr>
-        <td class="main" valign="top"><b>オプション:</b></td>
-        <td class="main"><b style=" color:#0000FF"><?php echo $order->tori['houhou'];?></b></td>
-        </tr>
-        <tr>
         <td class="main" valign="top"><b>ご注文番号:</b></td>
         <td class="main"><?php echo $_GET['oID'] ?></td>
         </tr>

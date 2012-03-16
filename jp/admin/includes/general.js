@@ -1341,7 +1341,7 @@ function check_add(){
   num += 5;
   document.getElementById('num').value = num; 
   for(i=num-5;i<num;i++){
-    str += '<tr id="o'+i+'"><td width="30%" height="30" align="left">&nbsp;選択肢</td><td width="41"></td><td><input type="text" name="option_comment[]" value=""><input type="radio" name="option_value" value="'+i+'"><input type="button" value="削除" onclick="check_del('+i+');"></td></tr>';
+    str += '<tr id="o'+i+'"><td width="30%" height="30" align="left">&nbsp;選択肢</td><td width="112"></td><td><input type="text" name="option_comment[]" value=""><input type="radio" name="option_value" value="'+i+'"><input type="button" value="削除" onclick="check_del('+i+');"></td></tr>';
 
   }
   $("#button_add").append(str);
@@ -1350,30 +1350,41 @@ function check_add(){
 function check_form(){
   var title = document.getElementById('title').value;
   var name = document.getElementById('name').value;
-  
+  var error_title = '<font color="red">入力して下さい。</font>'; 
+  var error_name = '<font color="red">入力して下さい。</font>'; 
+
+  error_str = false;
   if(title == ''){
-    var error_title = '<font color="red">タイトル 空にすることはできません！</font>'; 
     $("#error_title").html(error_title);
     $("#title").focus();
-    return false;
+    error_str = true;
+  }else{
+    $("#error_title").html('');
   }
   
  if(name == ''){
-    var error_name = '<font color="red">表示名 空にすることはできません！</font>'; 
     $("#error_name").html(error_name);
     $("#name").focus();
-    return false;
+    error_str = true;
+  }else{
+    $("#error_name").html('');
   }
+ 
+ if(error_str == true){
+   return false;
+ }else{
+ 
+   return true;
+ }
 
- return true;
 
 }
 
 function check_form_products(){
   var name = document.getElementById('name').value;
-   
+  var error_name = '<font color="red">入力して下さい。</font>'; 
+
   if(name == ''){
-    var error_name = '<font color="red">表示名 空にすることはできません！</font>'; 
     $("#error_name").html(error_name);
     $("#name").focus();
     return false;
