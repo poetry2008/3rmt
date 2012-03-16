@@ -23,7 +23,12 @@ if(isset($id) && $id != 0){
      if(isset($flag) && $flag != ''){ 
        $id = $sort_id != '' ? $sort_id : $id;
      }
-
+   
+     $address_sort_query = tep_db_query("select max(id) maxsort,min(id) minsort from ". TABLE_COUNTRY_FEE);
+     $address_sort_array = tep_db_fetch_array($address_sort_query);
+     $maxsort = $address_sort_array['maxsort'];
+     $minsort = $address_sort_array['minsort'];
+     tep_db_free_result($address_sort_query);
    $country_fee_query = tep_db_query("select * from ". TABLE_COUNTRY_FEE ." where id=$id");
    $country_fee_array = tep_db_fetch_array($country_fee_query);
    $cid = $address_array['id'];
@@ -46,20 +51,32 @@ if(isset($id) && $id != 0){
 <?php
 if($id == 0){
 ?>
- <tr><td bgcolor="#000000" class="dataTableHeadingContent">&nbsp;&nbsp;<?php echo TABLE_NEW.TABLE_TITLE_1;?></td><td bgcolor="#000000" align="right"><a href="javascript:hide_text();"><font color="#FFFFFF">X</font></a></td></tr>
+ <tr><td bgcolor="#000000" class="dataTableHeadingContent" height="30"><?php echo tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO); ?>&nbsp;<?php echo TABLE_NEW.TABLE_TITLE_1;?></td><td bgcolor="#000000" align="right"><a href="javascript:hide_text();"><font color="#FFFFFF">X</font></a></td></tr>
 <?php
 }else{
+  $prev_str = '';
+  if($id > $minsort){
+
+    $prev_str = '<a href="javascript:show_text_fee('. $id .',\'\',0);"><font color="#FFFFFF">'. TABLE_PREV .'</font></a>';
+
+  }
+  $next_str = '';
+  if($id < $maxsort){
+
+    $next_str = '<a href="javascript:show_text_fee('. $id .',\'\',1);"><font color="#FFFFFF">'. TABLE_NEXT .'</font></a>';
+
+  }
 ?>
-  <tr><td bgcolor="#000000" class="dataTableHeadingContent">&nbsp;&nbsp;<?php echo $title.TABLE_TITLE_1;?></td><td bgcolor="#000000" align="right" class="dataTableHeadingContent" onmouseover="this.style.cursor=\'hand\'"><a href="javascript:show_text_fee(<?php echo $id;?>,'',0);"><font color="#FFFFFF"><?php echo TABLE_PREV;?></font></a>&nbsp;<a href="javascript:show_text_fee(<?php echo $id;?>,'',1);"><font color="#FFFFFF"><?php echo TABLE_NEXT;?></font></a>&nbsp;<a href="javascript:hide_text();"><font color="#FFFFFF">X</font></a></td></tr>
+  <tr><td bgcolor="#000000" class="dataTableHeadingContent" height="30"><?php echo tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO); ?>&nbsp;<?php echo $title.TABLE_TITLE_1;?></td><td bgcolor="#000000" align="right" class="dataTableHeadingContent" onmouseover="this.style.cursor=\'hand\'"><?php echo $prev_str;?>&nbsp;<?php echo $next_str;?>&nbsp;<a href="javascript:hide_text();"><font color="#FFFFFF">X</font></a></td></tr>
 <?php
 }
 ?>
 <tr><td>&nbsp;</td></tr>
-<tr><td width="30%" height="30" align="left">&nbsp;<?php echo TABLE_LIST_1;?></td><td><input type="text" name="title" id="title" value="<?php echo $title;?>"><span id="error_title"><font color="red">*</font></span><input type="hidden" name="cid" value="<?php echo $country_fee_array['id'];?>"></td></tr>
-<tr><td width="30%" height="30" align="left">&nbsp;<?php echo TABLE_LIST_2;?></td><td><input type="text" name="name" id="name" value="<?php echo $name;?>"><span id="error_name"><font color="red">*</font></span></td></tr>
+<tr><td width="30%" height="30" align="left">&nbsp;<?php echo TABLE_LIST_1;?></td><td><input type="text" name="title" id="title" value="<?php echo $title;?>"><span id="error_title"></span><input type="hidden" name="cid" value="<?php echo $country_fee_array['id'];?>"></td></tr>
+<tr><td width="30%" height="30" align="left">&nbsp;<?php echo TABLE_LIST_2;?></td><td><input type="text" name="name" id="name" value="<?php echo $name;?>"><span id="error_name"></span></td></tr>
 <tr><td width="30%" height="30" align="left">&nbsp;<?php echo TABLE_LIST_3;?></td><td>
-<input type="text" name="free_value" id="free_value" value="<?php echo $free_value;?>">&nbsp;<?php echo TABLE_UNIT;?>
-</td></tr>
+<input type="text" name="free_value" id="free_value" value="<?php echo $free_value;?>" style="text-align: right;">&nbsp;<?php echo TABLE_UNIT;?>
+<br><?php echo TABLE_PROMPT_1;?></td></tr>
 
 <tr><td width="30%" height="30" align="left">&nbsp;<?php echo TABLE_LIST_4;?></td><td>
 <?php
@@ -74,22 +91,22 @@ foreach($weight_fee_array as $weight_fee_value){
   $kg = $weight_fee_value == end($weight_fee_array) ? 'KG' : '';
 
   echo '<tr><td width="30%" height="30" align="left">&nbsp;'. $weight_fee_value. $kg .'</td><td>
-<input type="hidden" name="weight_fee_name[]" value="'. $weight_fee_value .'"><input type="text" name="weight_fee[]" value="'. $weight_fee_option_array[$weight_fee_value].'">&nbsp;'. TABLE_UNIT .'</td></tr>';
+<input type="hidden" name="weight_fee_name[]" value="'. $weight_fee_value .'"><input type="text" name="weight_fee[]" value="'. $weight_fee_option_array[$weight_fee_value].'" style="text-align: right;">&nbsp;'. TABLE_UNIT .'</td></tr>';
 
 }
 ?>
 
 <tr><td width="30%" height="30" align="left">&nbsp;<?php echo TABLE_LIST_5;?></td><td>
-<input type="text" name="weight_limit" id="weight_limit" value="<?php echo $weight_limit;?>">&nbsp;KG
-</td></tr>
+<input type="text" name="weight_limit" id="weight_limit" value="<?php echo $weight_limit;?>" style="text-align: right;">&nbsp;KG
+<br><?php echo TABLE_PROMPT_2;?></td></tr>
 
 <tr><td width="30%" height="30" align="left">&nbsp;<?php echo TABLE_LIST_6;?></td><td>
 <textarea name="email_comment" id="email_comment" rows="5" cols="30"><?php echo $email_comment; ?></textarea>
-</td></tr>
+<br><?php echo TABLE_PROMPT_3;?></td></tr>
 
 <tr><td width="30%" height="30" align="left">&nbsp;<?php echo TABLE_LIST_7;?></td><td><br />
 <textarea name="email_comment_1" id="email_comment_1" rows="5" cols="30"><?php echo $email_comment_1; ?></textarea>
-</td></tr>
+<br><?php echo TABLE_PROMPT_4;?></td></tr>
 
 
 

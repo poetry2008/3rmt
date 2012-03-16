@@ -1,8 +1,6 @@
 <?php
-global $language;
-require_once "HM_Option_Item_Basic.php";
-require_once DIR_WS_LANGUAGES . $language . '/option/HM_Option_Item_Textarea.php';
-class HM_Option_Item_Textarea extends HM_Option_Item_Basic
+require_once "AD_Option_Item_Basic.php";
+class AD_Option_Item_Text extends AD_Option_Item_Basic
 {
   var $hasRequire = true;
   var $has_text_default = true; 
@@ -14,27 +12,18 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
   function render($option_error_array)
   {
      if (strlen($this->front_title)) {
-       echo '<td class="option_name">';
+       echo '<td class="main" width="150">';
        echo $this->front_title.':';
        echo '</td>';
      }
-     echo '<td>';
-     if ($this->iline > 1) {
-       echo '<textarea class="option_input" name="op_'.$this->formname.'">'.(isset($_POST['op_'.$this->formname])?$_POST['op_'.$this->formname]:$this->itext).'</textarea><br>'.$this->icomment;    
-       echo '<span id="error_'.$this->formname.'" class="option_error">';
-       if (isset($option_error_array[$this->formname])) {
-         echo $option_error_array[$this->formname]; 
-       }
-       echo '</span>';
-     } else {
-       echo '<input class="option_input" type="text" name="op_'.$this->formname.'" value="'.(isset($_POST['op_'.$this->formname])?$_POST['op_'.$this->formname]:$this->itext).'"><br>'.$this->icomment; 
-       echo '<span id="error_'.$this->formname.'" class="option_error">';
-       if (isset($option_error_array[$this->formname])) {
-         echo $option_error_array[$this->formname]; 
-       }
-       echo '</span>';
+     echo '<td class="main">';
+     echo $this->comment; 
+     //echo '</pre>';
+     echo '<span id="error_'.$this->formname.'" class="option_error">';
+     if (isset($option_error_array[$this->formname])) {
+       echo $option_error_array[$this->formname]; 
      }
-      
+     echo '</span>'; 
      echo '</td>';
   }
   
@@ -53,10 +42,11 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
      
      if ($this->require == '1') {
        if ($input_text_str == '') {
-         $option_error_array[$this->formname] = ERROR_OPTION_ITEM_TEXT_NULL;  
+         $option_error_array[$this->formname] = ADDRESS_ERROR_OPTION_ITEM_TEXT_NULL;  
          return true; 
        }
        $input_text_len = mb_strlen($input_text_str, 'UTF-8');
+       
        if ($input_text_len > $this->imax_num) {
          $option_error_array[$this->formname] = sprintf(ERROR_OPTION_ITEM_TEXT_NUM_MAX, $this->imax_num);  
          return true; 
@@ -94,7 +84,7 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
        }
        
        if ($item_type_error) {
-         $option_error_array[$this->formname] = ERROR_OPTION_ITEM_TEXT_TYPE_WRONG;  
+         $option_error_array[$this->formname] = ADDRESS_ERROR_OPTION_ITEM_TEXT_TYPE_WRONG;  
          return true; 
        }
      }

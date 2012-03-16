@@ -83,7 +83,106 @@ if (tep_not_null($action)) {
   switch ($action) {
 
     // 1. UPDATE ORDER ###############################################################################################
-    case 'update_order':
+  case 'update_order':
+
+    
+    $shipping_array = array();
+    foreach($update_products as $products_key=>$products_value){
+
+      $shipping_products_query = tep_db_query("select * from ". TABLE_ORDERS_PRODUCTS ." where orders_products_id='". $products_key."'");
+      $shipping_products_array = tep_db_fetch_array($shipping_products_query);
+      tep_db_free_result($shipping_products_query);
+      $shipping_array[] = array('id'=>$shipping_products_array['products_id'],'qty'=>$products_value['qty'],'final_price'=>$products_value['final_price']);
+    }
+    //计算配送费用
+    $shipping_weight_total = 0;
+    $shipping_money_sum = 0;
+    foreach($shipping_array as $shipping_value){
+
+      $shipping_fee_query = tep_db_query("select products_weight from ". TABLE_PRODUCTS ." where products_id=". $shipping_value['id']);
+      $shipping_fee_array = tep_db_fetch_array($shipping_fee_query);
+      $shipping_weight_total += $shipping_value['qty'] * $shipping_fee_array['products_weight'];
+      $shipping_money_sum += $shipping_value['final_price']*$shipping_value['qty'];
+      tep_db_free_result($shipping_fee_query);
+    }
+
+    $weight = $shipping_weight_total;
+
+    $shipping_orders_array = array();
+    $shipping_address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."'");
+    while($shipping_address_orders_array = tep_db_fetch_array($shipping_address_orders_query)){
+
+      $shipping_orders_array[] = $shipping_address_orders_array['value'];
+    }
+    tep_db_free_result($shipping_address_orders_query);
+   foreach($shipping_orders_array  as $op_value){
+     $address_query = tep_db_query("select * from ". TABLE_COUNTRY_AREA ." where name='". $op_value ."'");
+     $address_num = tep_db_num_rows($address_query);
+  
+     $country_query = tep_db_query("select * from ". TABLE_COUNTRY_FEE ." where name='". $op_value ."'");
+     $address_country_num = tep_db_num_rows($country_query);
+
+
+  if($address_num > 0){
+    $address_array = tep_db_fetch_array($address_query);
+    tep_db_free_result($address_query);
+    $address_free_value = $address_array['free_value'];
+    $address_weight_fee_array = unserialize($address_array['weight_fee']);
+
+  //根据重量来获取相应的配送费用
+  foreach($address_weight_fee_array as $key=>$value){
+    
+    if(strpos($key,'-') > 0){
+
+      $temp_array = explode('-',$key);
+      $address_weight_fee = $weight >= $temp_array[0] && $weight <= $temp_array[1] ? $value : 0; 
+    }else{
+  
+      $address_weight_fee = $weight <= $key ? $value : 0;
+    }
+
+    if($address_weight_fee > 0){
+
+      break;
+    }
+  }
+  }else{
+    if($address_country_num > 0){
+    $country_array = tep_db_fetch_array($country_query);
+    tep_db_free_result($country_query);
+    $country_free_value = $country_array['free_value'];
+    $country_weight_fee_array = unserialize($country_array['weight_fee']);
+
+  //根据重量来获取相应的配送费用
+  foreach($country_weight_fee_array as $key=>$value){
+    
+    if(strpos($key,'-') > 0){
+
+      $temp_array = explode('-',$key);
+      $country_weight_fee = $weight >= $temp_array[0] && $weight <= $temp_array[1] ? $value : 0; 
+    }else{
+  
+      $country_weight_fee = $weight <= $key ? $value : 0;
+    }
+
+    if($country_weight_fee > 0){
+
+      break;
+    }
+  }
+  }
+ }
+
+}
+
+  $shipping_money_total = $shipping_money_sum;
+  $weight_fee = $address_weight_fee != '' ? $address_weight_fee : $country_weight_fee;
+
+  $free_value = $address_free_value != '' ? $address_free_value : $country_free_value;
+
+  $shipping_fee = $shipping_money_total > $free_value ? 0 : $weight_fee;
+
+  
       $oID = tep_db_prepare_input($_GET['oID']);
       $order = new order($oID);
       $status = tep_db_prepare_input($_POST['status']);
@@ -156,6 +255,7 @@ if (tep_not_null($action)) {
                        customers_postcode = '" . tep_db_input($update_customer_postcode) . "',
                        customers_country = '" . tep_db_input(stripslashes($update_customer_country)) . "',
                        customers_telephone = '" . tep_db_input($update_customer_telephone) . "',
+                       shipping_fee = '". tep_db_prepare_input($shipping_fee) ."',
                        customers_email_address = '" . tep_db_input($update_customer_email_address) . "',";
 
       if($SeparateBillingFields) {
@@ -515,7 +615,7 @@ if (tep_not_null($action)) {
          delete form  $totals = update .....
          , text = '<b>" . $currencies->ot_total_format(intval(floor($newtotal)), true, $order->info['currency']) . "</b>'
        */
-      $totals = "update " . TABLE_ORDERS_TOTAL . " set value = '" .  intval(floor($newtotal+$campaign_fee)) . "' where class='ot_total' and orders_id = '" . $oID . "'";
+      $totals = "update " . TABLE_ORDERS_TOTAL . " set value = '" .  intval(floor($newtotal+$campaign_fee+$shipping_fee)) . "' where class='ot_total' and orders_id = '" . $oID . "'";
       tep_db_query($totals);
 
       $update_orders_sql = "update ".TABLE_ORDERS." set code_fee = '".$handle_fee."' where orders_id = '".$oID."'";
@@ -850,7 +950,7 @@ if (tep_not_null($action)) {
            text = '<b>".$currencies->ot_total_format
            (intval(floor($newtotal)), true, $order->info['currency'])."</b>'
          */
-        $totals = "update " . TABLE_ORDERS_TOTAL . " set value = '".intval(floor($newtotal+$campaign_fee))."' where class='ot_total' and orders_id = '".$oID."'";
+        $totals = "update " . TABLE_ORDERS_TOTAL . " set value = '".intval(floor($newtotal+$campaign_fee+$shipping_fee))."' where class='ot_total' and orders_id = '".$oID."'";
         tep_db_query($totals);
 
         $update_orders_sql = "update ".TABLE_ORDERS." set code_fee = '".$handle_fee."' where orders_id = '".$oID."'";
@@ -874,6 +974,98 @@ if (($action == 'edit') && isset($_GET['oID'])) {
     $messageStack->add(sprintf(ERROR_ORDER_DOES_NOT_EXIST, $oID), 'error');
   }
 }
+
+//计算配送费用
+$shipping_array = $order->products;
+$shipping_weight_total = 0;
+
+foreach($shipping_array as $shipping_value){
+
+  $shipping_fee_query = tep_db_query("select products_weight from ". TABLE_PRODUCTS ." where products_id=". $shipping_value['id']);
+  $shipping_fee_array = tep_db_fetch_array($shipping_fee_query);
+  $shipping_weight_total += $shipping_value['qty'] * $shipping_fee_array['products_weight'];
+  tep_db_free_result($shipping_fee_query);
+}
+
+$weight = $shipping_weight_total;
+
+$shipping_orders_array = array();
+$shipping_address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."'");
+while($shipping_address_orders_array = tep_db_fetch_array($shipping_address_orders_query)){
+
+  $shipping_orders_array[] = $shipping_address_orders_array['value'];
+}
+tep_db_free_result($shipping_address_orders_query);
+foreach($shipping_orders_array  as $op_value){
+  $address_query = tep_db_query("select * from ". TABLE_COUNTRY_AREA ." where name='". $op_value ."'");
+  $address_num = tep_db_num_rows($address_query);
+  
+  $country_query = tep_db_query("select * from ". TABLE_COUNTRY_FEE ." where name='". $op_value ."'");
+  $address_country_num = tep_db_num_rows($country_query);
+
+
+if($address_num > 0){
+  $address_array = tep_db_fetch_array($address_query);
+  tep_db_free_result($address_query);
+  $address_free_value = $address_array['free_value'];
+  $address_weight_fee_array = unserialize($address_array['weight_fee']);
+
+  //根据重量来获取相应的配送费用
+  foreach($address_weight_fee_array as $key=>$value){
+    
+    if(strpos($key,'-') > 0){
+
+      $temp_array = explode('-',$key);
+      $address_weight_fee = $weight >= $temp_array[0] && $weight <= $temp_array[1] ? $value : 0; 
+    }else{
+  
+      $address_weight_fee = $weight <= $key ? $value : 0;
+    }
+
+    if($address_weight_fee > 0){
+
+      break;
+    }
+  }
+}else{
+  if($address_country_num > 0){
+  $country_array = tep_db_fetch_array($country_query);
+  tep_db_free_result($country_query);
+  $country_free_value = $country_array['free_value'];
+  $country_weight_fee_array = unserialize($country_array['weight_fee']);
+
+  //根据重量来获取相应的配送费用
+  foreach($country_weight_fee_array as $key=>$value){
+    
+    if(strpos($key,'-') > 0){
+
+      $temp_array = explode('-',$key);
+      $country_weight_fee = $weight >= $temp_array[0] && $weight <= $temp_array[1] ? $value : 0; 
+    }else{
+  
+      $country_weight_fee = $weight <= $key ? $value : 0;
+    }
+
+    if($country_weight_fee > 0){
+
+      break;
+    }
+  }
+  }
+}
+
+}
+
+$shipping_money_total = $order->totals[0]['value'];
+$weight_fee = $address_weight_fee != '' ? $address_weight_fee : $country_weight_fee;
+
+$free_value = $address_free_value != '' ? $address_free_value : $country_free_value;
+
+$shipping_fee = $shipping_money_total > $free_value ? 0 : $weight_fee;
+
+$shipping_fee = $order->info['shipping_fee'] != $shipping_fee ? $shipping_fee : $order->info['shipping_fee'];
+
+
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html <?php echo HTML_PARAMS; ?>>
@@ -993,6 +1185,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     <span class="smalltext"><?php echo EDIT_ORDERS_FETCHTIME_READ;?></span>
     </td>
     </tr>
+<!--
     <tr>
     <td class="main" valign="top"><b><?php echo EDIT_ORDERS_TORI_TEXT;?></b></td>
     <td class="main">
@@ -1002,6 +1195,7 @@ if (($action == 'edit') && ($order_exists == true)) {
 
     </td>
     </tr>
+-->
 <tr>
 <td colspan="2">
     <input type="hidden" name="update_viladate" value="true">
@@ -1168,7 +1362,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TOTAL_AMOUNT; ?></td>
     <td class="dataTableHeadingContent"width="1"><?php echo tep_draw_separator('pixel_trans.gif', '1', '1'); ?></td>
     </tr>
-    <?php
+<?php
     // Override order.php Class's Field Limitations
     $totals_query = tep_db_query("select * from " . TABLE_ORDERS_TOTAL . " where orders_id = '" . tep_db_input($oID) . "' order by sort_order");
   $order->totals = array();
@@ -1195,20 +1389,24 @@ if (($action == 'edit') && ($order_exists == true)) {
     $TotalsArray[] = array("Name" => $order->totals[$i]['title'], "Price" => tep_display_currency(number_format($order->totals[$i]['value'], 2, '.', '')), "Class" => $order->totals[$i]['class'], "TotalID" => $order->totals[$i]['orders_total_id']);
     $TotalsArray[] = array("Name" => "          ", "Price" => "", "Class" => "ot_custom", "TotalID" => "0");
   }
-
+  
   array_pop($TotalsArray);
+  $shipping_fee_subtotal = 0; //小计
+  $shipping_fee_tax = 0; //税
+  $shipping_fee_point = 0; //折点
   foreach ($TotalsArray as $TotalIndex => $TotalDetails) {
     $TotalStyle = "smallText";
     if ($TotalDetails["Class"] == "ot_total") {
+      $shipping_fee_total = ($shipping_fee_subtotal+$shipping_fee+$order->info["code_fee"]+$shipping_fee_tax-$shipping_fee_point) != $TotalDetails["Price"] ? $shipping_fee : 0; 
       echo '  <tr>' . "\n" .
         '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_OTTOTAL_READ.'</td>' . 
         '    <td align="right" class="' . $TotalStyle . '"><b>' . $TotalDetails["Name"] . '</b></td>' . 
         '    <td align="right" class="' . $TotalStyle . '"><b>';
       if($TotalDetails["Price"] >= 0 ){
-        echo $currencies->ot_total_format($TotalDetails["Price"], true,
+        echo $currencies->ot_total_format(($TotalDetails["Price"]+$shipping_fee_total), true,
             $order->info['currency'], $order->info['currency_value']);
       }else{
-        echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->ot_total_format($TotalDetails["Price"], true, $order->info['currency'], $order->info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
+        echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->ot_total_format(($TotalDetails["Price"]+$shipping_fee_total), true, $order->info['currency'], $order->info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
       }
       echo '</b>' . 
         "<input name='update_totals[$TotalIndex][title]' type='hidden' value='" . trim($TotalDetails["Name"]) . "' size='" . strlen($TotalDetails["Name"]) . "' >" . 
@@ -1218,6 +1416,7 @@ if (($action == 'edit') && ($order_exists == true)) {
         '    <td align="right" class="' . $TotalStyle . '"><b>' . tep_draw_separator('pixel_trans.gif', '1', '17') . '</b>' . 
         '  </tr>' . "\n";
     } elseif ($TotalDetails["Class"] == "ot_subtotal") {
+      $shipping_fee_subtotal = $TotalDetails["Price"];
       echo '  <tr>' . "\n" .
         '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_OTSUBTOTAL_READ.'</td>' . 
         '    <td align="right" class="' . $TotalStyle . '"><b>' . $TotalDetails["Name"] . '</b></td>' .
@@ -1227,22 +1426,29 @@ if (($action == 'edit') && ($order_exists == true)) {
             $order->info['currency'], $order->info['currency_value']);
       }else{
         echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($TotalDetails["Price"], true, $order->info['currency'], $order->info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
-      }
+      } 
       echo '</b>' . 
         "<input name='update_totals[$TotalIndex][title]' type='hidden' value='" . trim($TotalDetails["Name"]) . "' size='" . strlen($TotalDetails["Name"]) . "' >" . 
         "<input name='update_totals[$TotalIndex][value]' type='hidden' value='" . $TotalDetails["Price"] . "' size='6' >" . 
         "<input name='update_totals[$TotalIndex][class]' type='hidden' value='" . $TotalDetails["Class"] . "'>\n" . 
         "<input type='hidden' name='update_totals[$TotalIndex][total_id]' value='" . $TotalDetails["TotalID"] . "'>" . '</b></td>' . 
         '    <td align="right" class="' . $TotalStyle . '"><b>' . tep_draw_separator('pixel_trans.gif', '1', '17') . '</b>' . 
-        '  </tr>' . "\n".
+        '  </tr>' . "\n".       
         '  <tr>' . "\n" .
         '    <td align="left" class="' . $TotalStyle . '">&nbsp;</td>' . 
         '    <td align="right" class="' . $TotalStyle . '"><b>'.TEXT_CODE_HANDLE_FEE.'</b></td>' .
         '    <td align="right" class="' . $TotalStyle . '"><b>' . $currencies->format($order->info["code_fee"]) . '</b><input type="hidden" name="payment_code_fee" value="'.$order->info["code_fee"].'">' . 
         '</td>' . 
         '    <td align="right" class="' . $TotalStyle . '"><b>' . tep_draw_separator('pixel_trans.gif', '1', '17') . '</b>' . 
-        '  </tr>' . "\n";
+        '  </tr>' . "\n".
+        '  <tr>' . "\n" .
+        '    <td align="left" class="' . $TotalStyle .  '">&nbsp;</td>' . 
+        '    <td align="right" class="' . $TotalStyle . '"><b>' . TEXT_SHIPPING_FEE . '</b></td>' .
+        '    <td align="right" class="' . $TotalStyle . '"><b>'.
+        $currencies->format($shipping_fee) .'<input type="hidden" name="shipping_fee_num" value="'. $shipping_fee .'">'.
+        '  </tr>'. "\n"; 
     } elseif ($TotalDetails["Class"] == "ot_tax") {
+      $shipping_fee_tax = $TotalDetails["Price"];
       echo '  <tr>' . "\n" . 
         '    <td align="left" class="' . $TotalStyle . '">&nbsp;</td>' . 
         '    <td align="right" class="' . $TotalStyle . '"><b>' . trim($TotalDetails["Name"]) . "</b><input name='update_totals[$TotalIndex][title]' type='hidden' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . '</td>' . "\n" .
@@ -1253,6 +1459,7 @@ if (($action == 'edit') && ($order_exists == true)) {
         '    <td align="right" class="' . $TotalStyle . '"><b>' . tep_draw_separator('pixel_trans.gif', '1', '17') . '</b>' . 
         '  </tr>' . "\n";
     } elseif ($TotalDetails["Class"] == "ot_point") {
+      $shipping_fee_point = $TotalDetails["Price"];
       if ($customer_guest['customers_guest_chk'] == 0) { //会員
         $current_point = $customer_point['point'] + $TotalDetails["Price"];
         echo '  <tr>' . "\n" .

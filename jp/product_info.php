@@ -158,7 +158,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                 <tr>
                   <td><table width="100%" border="0" cellpadding="3" cellspacing="1">
                       <tr class="infoBoxContents">
-                        <td class="main" width="65"><font color="#0070AF">商品コード</font></td>
+                        <td class="main" width="85"><font color="#0070AF">商品コード</font></td>
                         <td class="main"><?php if (PRODUCT_LIST_MODEL > 0){ echo $product_info['products_model'] ; }else{ echo '-' ; } ?></td>
                       </tr>
                       <?php 
@@ -192,7 +192,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                         <td class="main"><?php include(DIR_WS_BOXES.'manufacturer_info.php') ; ?></td>
                       </tr>
                       <tr class="infoBoxContents">
-                        <td class="main" width="65"><font color="#0070AF">価格</font></td>
+                        <td class="main" width="85"><font color="#0070AF">価格</font></td>
                         <td class="main">
               <?php
                 # 追加スタート ---------------------------------------
@@ -298,7 +298,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
                     </table></td>
                 </tr>
                 <tr class="header2">
-                  <td height="30" class="main" style="padding-bottom:4px; " align="right">
+                  <td height="30" class="main" align="right">
 <?php echo tep_draw_form('cart_quantity', tep_href_link(FILENAME_PRODUCT_INFO, tep_get_all_get_params(array('action')) . 'action=process')) . "\n"; ?>
 <?php
   if($product_info['products_quantity'] < 1) {
@@ -316,16 +316,19 @@ while($tag = tep_db_fetch_array($tag_query)) {
     }
     echo '</span>'; 
   }else{  
-    $hm_option->render($product_info['belong_to_option']);
+    ?><br>
+    <div class="dot">&nbsp;</div>
+    <?php
+	$hm_option->render($product_info['belong_to_option']);
 ?>
-                    <table align="right">
+                    <table align="right" width="100%">
                       <tr>
-                        <td class="main">数量:</td>
+                        <td class="main" width="85">数量:</td>
                         <td class="main">
                         <table>
                         <tr>
                         <td>
-                        <input name="quantity" type="text" id="quantity" value="1" size="4" maxlength="4">
+                        <input name="quantity" type="text" id="quantity" value="1" size="20" maxlength="4">
 </td>
   <td>
   <div class="top_and_bottom">
@@ -353,7 +356,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
                   </td>
                 </tr>
                 <tr class="header2">
-                  <td height="40" align="right" valign="bottom" class="smallText"><div class="dot">&nbsp;</div>
+                  <td height="40" valign="bottom" class="smallText"><br><div class="dot">&nbsp;</div>
                     <a href="<?php echo tep_href_link(FILENAME_TELL_A_FRIEND,'products_id='.(int)$_GET['products_id']) ;  ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_tellafriend.jpg',BOX_HEADING_TELL_A_FRIEND);?></a>&nbsp; <a href="<?php echo tep_href_link(FILENAME_PRODUCT_REVIEWS_WRITE,'products_id='.(int)$_GET['products_id']) ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_review.jpg',BOX_REVIEWS_WRITE_REVIEW);?></a>&nbsp; 
   <?php echo tep_draw_form('open',tep_href_link('open.php'),'get');?><input type="image" style="vertical-align:bottom;" src="<?php echo DIR_WS_IMAGES;?>design/button/botton_question.jpg"><?php echo tep_draw_hidden_field('products', $product_info['products_name']) ; ?></form>
      </td>

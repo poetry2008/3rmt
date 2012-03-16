@@ -32,7 +32,9 @@ class AD_Option_Item_Option extends AD_Option_Item_Basic
          
            $option_array = $option[$_SESSION['select_value']]['option_list'];
            $select_value = $option[$_SESSION['select_value']]['select_value'];
+           unset($_SESSION['select_value']);
          }else{
+           $select_value = $option['select_value'];
            $_SESSION['select_value'] = $option['select_value']; 
          }
        

@@ -18,4 +18,5 @@ define('TABLE_LIST_6','整列順');
 define('TABLE_NEW','新規項目');
 define('TABLE_MIN','分');
 define('TABLE_DAY','日');
+define('TABLE_BUTTON_UNSET','取り消し');
 ?>

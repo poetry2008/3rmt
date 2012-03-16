@@ -21,10 +21,8 @@ $action = $_GET['action'];
 
 if(isset($action) && $action != ''){
 
-  switch($action){
-
-  case 'save':
-    $address_id = tep_db_prepare_input($_POST['cid']);
+  switch($action){ 
+  case 'save': $address_id = tep_db_prepare_input($_POST['cid']);
     $address_title = tep_db_prepare_input($_POST['title']);
     $address_name = tep_db_prepare_input($_POST['name']);
     $address_type = tep_db_prepare_input($_POST['type']);
@@ -209,6 +207,13 @@ if(isset($action) && $action != ''){
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
 <title><?php echo TITLE; ?></title>
+<style type="text/css">
+div#show {
+  left:18%;
+  width:70%;
+  position:absolute;
+}
+</style>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/general.js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
@@ -259,7 +264,10 @@ if(isset($action) && $action != ''){
 <?php
 $even = 'dataTableSecondRow';
 $odd  = 'dataTableRow';
-$address_query = tep_db_query("select * from ". TABLE_ADDRESS ." order by sort");
+$address_sql = "select * from ". TABLE_ADDRESS ." order by sort";
+
+$address_page = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $address_sql, $address_query_numrows);
+$address_query = tep_db_query($address_sql);
 $i = 0;
 while($address_array = tep_db_fetch_array($address_query)){
   $nowColor = $i % 2 == 1 ? $even : $odd;
@@ -314,6 +322,14 @@ while($address_array = tep_db_fetch_array($address_query)){
 tep_db_free_result($address_query);
 tep_db_close();
 ?>
+<tr>
+<td colspan="4">
+<?php echo $address_page->display_count($address_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_CUSTOMERS); ?>
+</td>
+<td colspan="5" align="right">
+<?php echo $address_page->display_links($address_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page'))); ?>
+</td>
+</tr>
 <tr><td align="right" colspan="9"><button onclick="show_text(0,this,'text',0);"><?php echo TABLE_BUTTON;?></button></td></tr>
 </table></td></tr></table></td></tr>
 </table></td>

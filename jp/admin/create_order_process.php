@@ -55,9 +55,18 @@ $new_value      = "1";
 $error          = false; // reset error flag
 $temp_amount    = "0";
 $temp_amount    = number_format($temp_amount, 2, '.', '');
-$date = tep_db_prepare_input($_POST['date']);
-$hour = tep_db_prepare_input($_POST['hour']);
-$min = tep_db_prepare_input($_POST['min']);
+$year_num = tep_db_prepare_input($_POST['year']);
+$mon_num = tep_db_prepare_input($_POST['mon']);
+$mon = $mon_num < 10 ? '0'.$mon_num : $mon_num;
+$day_num = tep_db_prepare_input($_POST['day']);
+$day = $day_num < 10 ? '0'.$day_num : $day_num;
+$date = $year_num.'-'.$mon.'-'.$day;
+$hour_num = tep_db_prepare_input($_POST['hour']);
+$hour = $hour_num;
+$min_num = tep_db_prepare_input($_POST['min']);
+$min = $min_num;
+$hour_1 = tep_db_prepare_input($_POST['hour_1']);
+$min_1 = tep_db_prepare_input($_POST['min_1']);
 $torihikihouhou = tep_db_prepare_input($_POST['torihikihouhou']);
 $payment_method = tep_db_prepare_input($_POST['payment_method']);
   
@@ -113,28 +122,6 @@ if (!tep_validate_email($email_address)) {
 } else {
   $entry_email_address_check_error = false;
 }
-
-
-if ($date == '') {
-    $error = true;
-    $entry_date_error = true;
-} else {
-    $entry_date_error = false;
-}
-
-  if ($hour == '' || $min == '') {
-    $error = true;
-    $entry_tardetime_error = true;
-  } else {
-    $entry_tradetime_error = false;
-  }
-
-  if ($torihikihouhou == '') {
-    $error = true;
-    $entry_torihikihouhou_error = true;
-  } else {
-    $entry_torihikihouhou_error = false;
-  }
 
 if ($payment_method == 'payment_null') {
   $error = true;

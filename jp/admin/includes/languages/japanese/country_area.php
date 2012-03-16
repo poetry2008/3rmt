@@ -11,4 +11,5 @@ define('TABLE_TITLE_4','日間');
 define('TABLE_TITLE_5','ステータス');
 define('TABLE_TITLE_6','操作');
 define('TABLE_BUTTON','新規作成');
+define('TABLE_HISTROY','戻る');
 ?>

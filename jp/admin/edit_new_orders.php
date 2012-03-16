@@ -1054,7 +1054,6 @@ echo "</table>";
             </td>
             </tr>
             <tr>
-            <td class="main" valign="top"><b><?php echo EDIT_ORDERS_TORI_TEXT;?></b></td>
             <td class="main">
             <?php echo $order->tori['houhou'];?>             
             <input type="hidden" name="update_viladate" value="true">

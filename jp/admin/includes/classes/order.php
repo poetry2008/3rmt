@@ -52,7 +52,7 @@
                           'orders_status'         => $order['orders_status'],
                           'orders_id'             => tep_db_input($order_id),
                           'code_fee'              => tep_db_input($order['code_fee']),
-                          'shipping_fee'              => tep_db_input($order['shipping_fee']), 
+                          'shipping_fee'          => tep_db_input($order['shipping_fee']), 
                           'site_id'               => tep_db_input($order['site_id']),
                           'orders_ip'             => $order['orders_ip'],
                           'orders_host_name'      => $order['orders_host_name'],

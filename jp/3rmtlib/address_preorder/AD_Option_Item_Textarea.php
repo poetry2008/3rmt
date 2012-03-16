@@ -1,48 +1,51 @@
 <?php
-global $language;
-require_once "HM_Option_Item_Basic.php";
-require_once DIR_WS_LANGUAGES . $language . '/option/HM_Option_Item_Textarea.php';
-class HM_Option_Item_Textarea extends HM_Option_Item_Basic
+require_once "AD_Option_Item_Basic.php";
+class AD_Option_Item_Textarea extends AD_Option_Item_Basic
 {
-  var $hasRequire = true;
-  var $has_text_default = true; 
-  var $has_text_comment = true; 
-  var $has_text_line = true;
-  var $has_text_check_type = true;
-  var $has_text_max_num = true; 
+  var $has_textarea_default = true; 
 
   function render($option_error_array)
   {
-     if (strlen($this->front_title)) {
-       echo '<td class="option_name">';
-       echo $this->front_title.':';
-       echo '</td>';
+    if (strlen($this->front_title)) {
+      echo '<td class="main" width="150"> '; 
+      echo $this->front_title.':'; 
+      echo ' </td>'; 
+    }
+    $options = unserialize($this->option);
+    if($options['rows'] == 1){
+
+      echo '<td class="main">';
+      $style_color = isset($_POST['op_'.$this->formname]) && $_POST['op_'.$this->formname] != $this->comment ?'color:#000;':'color:#999;';
+      echo '<input type="hidden" name="'.$this->formname.'" value="'.$this->front_title.'">';
+      echo '<input type="text" name="op_'.$this->formname.'" id="op_'.$this->formname.'" size="15" maxlength="'. $this->num_limit .'" value="'. (isset($_POST['op_'.$this->formname])?$_POST['op_'.$this->formname]:$this->comment) .'" style="'. $style_color .'" onfocus="this.style.color=\'#001\';if(this.value==\''. $this->comment.'\')this.value=\'\'" onblur="if(this.value==\'\'){this.value=\''. $this->comment .'\';this.style.color=\'#999\'}">';
+      echo '<span id="error_'.$this->formname.'" class="option_error"><font color="red">';
+     if (isset($option_error_array[$this->formname])) {
+       echo $option_error_array[$this->formname]; 
      }
-     echo '<td>';
-     if ($this->iline > 1) {
-       echo '<textarea class="option_input" name="op_'.$this->formname.'">'.(isset($_POST['op_'.$this->formname])?$_POST['op_'.$this->formname]:$this->itext).'</textarea><br>'.$this->icomment;    
-       echo '<span id="error_'.$this->formname.'" class="option_error">';
-       if (isset($option_error_array[$this->formname])) {
-         echo $option_error_array[$this->formname]; 
-       }
-       echo '</span>';
-     } else {
-       echo '<input class="option_input" type="text" name="op_'.$this->formname.'" value="'.(isset($_POST['op_'.$this->formname])?$_POST['op_'.$this->formname]:$this->itext).'"><br>'.$this->icomment; 
-       echo '<span id="error_'.$this->formname.'" class="option_error">';
-       if (isset($option_error_array[$this->formname])) {
-         echo $option_error_array[$this->formname]; 
-       }
-       echo '</span>';
+     echo '</font></span>'; 
+     echo '</td>';  
+    }else{
+    echo '<td class="main">'; 
+    echo '<input type="hidden" name="'.$this->formname.'" value="'.$this->front_title.'">';
+    echo '<textarea
+      name="op_'.$this->formname.'" id="op_'.$this->formname.'" rows="'. $options['rows'] .'" maxlength="'. $this->num_limit .'" onfocus="this.style.color=\'#001\';if(this.value==\''. $this->comment.'\')this.value=\'\'" onblur="if(this.value==\'\'){this.value=\''. $this->comment .'\';this.style.color=\'#999\'}">'.(isset($_POST['op_'.$this->formname])?$_POST['op_'.$this->formname]:'').'</textarea>'; 
+     echo '<span id="error_'.$this->formname.'" class="option_error"><font color="red">';
+     if (isset($option_error_array[$this->formname])) {
+       echo $option_error_array[$this->formname]; 
      }
-      
-     echo '</td>';
+     echo '</font></span>'; 
+    if (strlen($this->itextarea)) {
+      echo '<br>'.$this->itextarea; 
+    }
+     echo '</td>'; 
+    }
   }
+  
   
   static public function prepareForm($item_id = NULL)
   {
     return $formString;
   }
-
 
   function check(&$option_error_array)
   {
@@ -51,40 +54,43 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
      $input_text_str = str_replace(' ', '', $input_text_str); 
      $input_text_str = str_replace('　', '', $input_text_str); 
      
-     if ($this->require == '1') {
-       if ($input_text_str == '') {
-         $option_error_array[$this->formname] = ERROR_OPTION_ITEM_TEXT_NULL;  
+     if ($this->required == 'true') {
+       if ($input_text_str == '' || $input_text_str == $this->comment) {
+         $option_error_array[$this->formname] = ADDRESS_ERROR_OPTION_ITEM_TEXT_NULL;  
          return true; 
        }
        $input_text_len = mb_strlen($input_text_str, 'UTF-8');
-       if ($input_text_len > $this->imax_num) {
-         $option_error_array[$this->formname] = sprintf(ERROR_OPTION_ITEM_TEXT_NUM_MAX, $this->imax_num);  
+       
+       if ($input_text_len > $this->num_limit) {
+         $option_error_array[$this->formname] = sprintf(ERROR_OPTION_ITEM_TEXT_NUM_MAX, $this->num_limit);  
          return true; 
        }
      }
     
      if ($input_text_str != '') {
-       $item_type_error = false; 
-       switch ($this->ictype) {
-         case 1;
+       $item_type_error = false;
+       $type_limit_array = unserialize($this->option);
+       $type_limit = $type_limit_array['type_limit']; 
+       switch ($type_limit) {
+         case 'false_name';
            $item_type_error = $this->check_character($input_text_str); 
            break;
-         case 2;
+         case 'english_num';
            if (!preg_match('/^[0-9a-zA-Z]+$/', $input_text_str)) {
              $item_type_error = true; 
            }
            break;
-         case 3;
+         case 'english';
            if (!preg_match('/^[a-zA-Z]+$/', $input_text_str)) {
              $item_type_error = true; 
            }
            break;
-         case 4;
+         case 'num';
            if (!preg_match('/^[0-9]+$/', $input_text_str)) {
              $item_type_error = true; 
            }
            break;
-         case 5;
+         case 'email';
            if (!preg_match('/^[a-zA-Z0-9_\-\.\+]+@([a-zA-Z0-9]+[_|\-|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/', $input_text_str)) {
              $item_type_error = true; 
            }
@@ -94,7 +100,7 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
        }
        
        if ($item_type_error) {
-         $option_error_array[$this->formname] = ERROR_OPTION_ITEM_TEXT_TYPE_WRONG;  
+         $option_error_array[$this->formname] = ADDRESS_ERROR_OPTION_ITEM_TEXT_TYPE_WRONG;  
          return true; 
        }
      }
@@ -136,5 +142,6 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
     
     return false;
   }
+
 }
 

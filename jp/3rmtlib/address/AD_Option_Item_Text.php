@@ -43,7 +43,7 @@ class AD_Option_Item_Text extends AD_Option_Item_Basic
      
      if ($this->require == '1') {
        if ($input_text_str == '') {
-         $option_error_array[$this->formname] = ERROR_OPTION_ITEM_TEXT_NULL;  
+         $option_error_array[$this->formname] = ADDRESS_ERROR_OPTION_ITEM_TEXT_NULL;  
          return true; 
        }
        $input_text_len = mb_strlen($input_text_str, 'UTF-8');
@@ -85,7 +85,7 @@ class AD_Option_Item_Text extends AD_Option_Item_Basic
        }
        
        if ($item_type_error) {
-         $option_error_array[$this->formname] = ERROR_OPTION_ITEM_TEXT_TYPE_WRONG;  
+         $option_error_array[$this->formname] = ADDRESS_ERROR_OPTION_ITEM_TEXT_TYPE_WRONG;  
          return true; 
        }
      }

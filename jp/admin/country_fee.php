@@ -12,9 +12,7 @@ if(isset($action) && $action != ''){
 
   case 'save':
     $country_fee_id = tep_db_prepare_input($_POST['cid']);
-    $country_fee_title = tep_db_prepare_input($_POST['title']);
-    $country_fee_name = tep_db_prepare_input($_POST['name']);
-    $free_value = tep_db_prepare_input($_POST['free_value']);
+    $country_fee_title = tep_db_prepare_input($_POST['title']); $country_fee_name = tep_db_prepare_input($_POST['name']); $free_value = tep_db_prepare_input($_POST['free_value']);
     $weight_fee_name = tep_db_prepare_input($_POST['weight_fee_name']);
     $weight_fee = tep_db_prepare_input($_POST['weight_fee']);
     $weight_limit = tep_db_prepare_input($_POST['weight_limit']);
@@ -84,8 +82,8 @@ if(isset($action) && $action != ''){
 
     }else{
       $country_id = $_POST['cid'];
-      $country_sql = "update ". TABLE_COUNTRY_FEE .
-                   " set status='1' where id=".$country_id;
+      $country_sql = "delete from ". TABLE_COUNTRY_FEE .
+                   " where id=".$country_id;
       $country_del_query = tep_db_query($country_sql);
 
       if($country_del_query == true){
@@ -120,6 +118,13 @@ if(isset($action) && $action != ''){
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
 <title><?php echo TITLE; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
+<style type="text/css">
+div#show {
+  left:18%;
+  width:70%;
+  position:absolute;
+}
+</style>
 <script language="javascript" src="includes/general.js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
@@ -165,7 +170,10 @@ if(isset($action) && $action != ''){
 <?php
 $even = 'dataTableSecondRow';
 $odd  = 'dataTableRow';
-$country_fee_query = tep_db_query("select * from ". TABLE_COUNTRY_FEE);
+$country_fee_sql = "select * from ". TABLE_COUNTRY_FEE;
+
+$country_fee_page = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $country_fee_sql, $country_fee_query_numrows);
+$country_fee_query = tep_db_query($country_fee_sql);
 $i = 0;
 while($country_fee_array = tep_db_fetch_array($country_fee_query)){
   $nowColor = $i % 2 == 1 ? $even : $odd;
@@ -203,6 +211,14 @@ while($country_fee_array = tep_db_fetch_array($country_fee_query)){
 tep_db_free_result($country_fee_query);
 tep_db_close();
 ?>
+<tr>
+<td colspan="4">
+<?php echo $country_fee_page->display_count($country_fee_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_CUSTOMERS); ?>
+</td>
+<td colspan="5" align="right">
+<?php echo $country_fee_page->display_links($country_fee_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page'))); ?>
+</td>
+</tr>
 <tr><td align="right" colspan="9"><button onclick="show_text_fee(0,this);"><?php echo TABLE_BUTTON;?></button></td></tr>
 </table></td></tr></table></td></tr>
 </table></td>

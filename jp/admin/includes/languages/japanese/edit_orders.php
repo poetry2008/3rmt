@@ -178,4 +178,5 @@ define('CREATE_ORDER_FETCH_TIME_TEXT', 'お届け希望時間:');
 
 
 define('MODULE_ORDER_TOTAL_SHIPPING_TITLE', '送料:');
+define('TEXT_SHIPPING_FEE','配送料:');
 ?>

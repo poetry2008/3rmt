@@ -176,8 +176,17 @@
               }
             }
             $_SESSION['mailfee'] = $currencies->format($total_handle_fee);   
-            //配送费用
-            if ($class == 'ot_subtotal' && isset($_SESSION['free_value'])) {
+            if ($class == 'ot_subtotal') {
+              if (!empty($total_handle_fee)) {
+                $output_string .= '              <tr>' . "\n" .
+                                  '                <td align="right" class="main">'
+                                  . TEXT_HANDLE_FEE_CONFIRMATION . '</td>' . "\n" .
+                                  '                <td align="right" class="main">'
+                                  . $currencies->format($total_handle_fee) . '</td>' . "\n" .
+                                  '              </tr>';
+              }
+              //配送费用
+            if (isset($_SESSION['free_value'])) {
               if (!empty($_SESSION['weight_fee'])) {
                 $shipping_fee = $sub_total > $_SESSION['free_value'] ? TEXT_SHIPPING_FREE : '<input type="hidden" name="shipping_fee" value="'. $_SESSION['weight_fee'].'">'.$currencies->format($_SESSION['weight_fee']);
                 $output_string .= '              <tr>' . "\n" .
@@ -190,15 +199,7 @@
             }
              
           //配送结束
-           if ($class == 'ot_subtotal') {
-              if (!empty($total_handle_fee)) {
-                $output_string .= '              <tr>' . "\n" .
-                                  '                <td align="right" class="main">'
-                                  . TEXT_HANDLE_FEE_CONFIRMATION . '</td>' . "\n" .
-                                  '                <td align="right" class="main">'
-                                  . $currencies->format($total_handle_fee) . '</td>' . "\n" .
-                                  '              </tr>';
-              }
+
             }
           }
         }

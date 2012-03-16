@@ -1,9 +1,7 @@
 <?php
 /*
  * 地域料金設定
- */
-require('includes/application_top.php');
-
+ */ require('includes/application_top.php'); 
 $action = $_GET['action'];
 
 if(isset($action) && $action != ''){
@@ -97,8 +95,8 @@ if(isset($action) && $action != ''){
     }else{
       $area_id = $_POST['cid'];
       $area_fid = $_POST['fid'];
-      $area_sql = "update ". TABLE_AREA_FEE .
-                   " set status='1' where id=".$area_id;
+      $area_sql = "delete from ". TABLE_AREA_FEE .
+                   " where id=".$area_id;
       $area_del_query = tep_db_query($area_sql);
 
       if($area_del_query == true){
@@ -133,6 +131,13 @@ if(isset($action) && $action != ''){
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
 <title><?php echo TITLE; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
+<style type="text/css">
+div#show {
+  left:18%;
+  width:70%;
+  position:absolute;
+}
+</style>
 <script language="javascript" src="includes/general.js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
@@ -179,7 +184,10 @@ if(isset($action) && $action != ''){
 $fid = tep_db_prepare_input($_GET['fid']);
 $even = 'dataTableSecondRow';
 $odd  = 'dataTableRow';
-$area_fee_query = tep_db_query("select * from ". TABLE_AREA_FEE ." where fid=$fid");
+$area_fee_sql = "select * from ". TABLE_AREA_FEE ." where fid=$fid";
+
+$area_fee_page = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $area_fee_sql, $area_fee_query_numrows);
+$area_fee_query = tep_db_query($area_fee_sql);
 $i = 0;
 while($area_fee_array = tep_db_fetch_array($area_fee_query)){
   $nowColor = $i % 2 == 1 ? $even : $odd;
@@ -217,7 +225,15 @@ while($area_fee_array = tep_db_fetch_array($area_fee_query)){
 tep_db_free_result($area_fee_query);
 tep_db_close();
 ?>
-<tr><td align="right" colspan="9"><button onclick="show_text_area(0,this,<?php echo $_GET['fid']; ?>);"><?php echo TABLE_BUTTON;?></button></td></tr>
+<tr>
+<td colspan="4">
+<?php echo $area_fee_page->display_count($area_fee_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_CUSTOMERS); ?>
+</td>
+<td colspan="5" align="right">
+<?php echo $area_fee_page->display_links($area_fee_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page','fid'=>$_GET['fid']))); ?>
+</td>
+</tr>
+<tr><td align="right" colspan="9"><button onclick="javascript:location.href='country_fee.php';"><?php echo TABLE_HISTROY;?></button>&nbsp;<button onclick="show_text_area(0,this,<?php echo $_GET['fid']; ?>);"><?php echo TABLE_BUTTON;?></button></td></tr>
 </table></td></tr></table></td></tr>
 </table></td>
 </tr>

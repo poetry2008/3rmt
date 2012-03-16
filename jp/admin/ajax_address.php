@@ -24,9 +24,19 @@ if(isset($id) && $id != 0){
 
      $sort_id = $sort_id == '' ? tep_db_prepare_input($_POST['sort']) : $sort_id;
      tep_db_free_result($address_query);
-
+     
+     $address_sort_query = tep_db_query("select max(sort) maxsort,min(sort) minsort from ". TABLE_ADDRESS);
+     $address_sort_array = tep_db_fetch_array($address_sort_query);
+     $maxsort = $address_sort_array['maxsort'];
+     $minsort = $address_sort_array['minsort'];
+     tep_db_free_result($address_sort_query);
      $address_query = tep_db_query("select * from ". TABLE_ADDRESS ." where sort=$sort_id");
    }else{
+     $address_sort_query = tep_db_query("select max(sort) maxsort,min(sort) minsort from ". TABLE_ADDRESS);
+     $address_sort_array = tep_db_fetch_array($address_sort_query);
+     $maxsort = $address_sort_array['maxsort'];
+     $minsort = $address_sort_array['minsort'];
+     tep_db_free_result($address_sort_query);
      $address_query = tep_db_query("select * from ". TABLE_ADDRESS ." where id=$id");
 
    }
@@ -114,10 +124,10 @@ function check_option_show(value){
   var sel = '';
 
 if(!arr[value]){
-    html_str = '<tr id="o0"><td width="30%" height="30" align="left">&nbsp;初期選択肢</td><td width="41"></td><td><input type="text" name="option_comment[]" value=""><input type="radio" name="option_value" value="0" checked><input type="button" value="削除" onclick="check_del(\'0\');"></td></tr>';
+    html_str = '<tr id="o0"><td width="30%" height="30" align="left">&nbsp;初期選択肢</td><td width="112"></td><td><input type="text" name="option_comment[]" value=""><input type="radio" name="option_value" value="0" checked><input type="button" value="削除" onclick="check_del(\'0\');"></td></tr>';
     for(j=1;j<5;j++){
      
-      html_str += '<tr id="o'+j+'"><td width="30%" height="30" align="left">&nbsp;選択肢</td><td width="41"></td><td><input type="text" name="option_comment[]" value=""><input type="radio" name="option_value" value="'+j+'"><input type="button" value="削除" onclick="check_del('+j+');"></td></tr>';
+      html_str += '<tr id="o'+j+'"><td width="30%" height="30" align="left">&nbsp;選択肢</td><td width="112"></td><td><input type="text" name="option_comment[]" value=""><input type="radio" name="option_value" value="'+j+'"><input type="button" value="削除" onclick="check_del('+j+');"></td></tr>';
 
     }
     document.getElementById('num').value = 5;
@@ -127,7 +137,7 @@ if(!arr[value]){
     if(arr_set[value][0] == arr[value][x]){ sel = 'checked';
       show_title = '初期選択肢';
     
-      html_str += '<tr id="o0"><td width="30%" height="30" align="left">&nbsp;'+show_title+'</td><td width="41"></td><td><input type="text" name="option_comment[]" value="'+arr[value][x]+'"><input type="radio" name="option_value" value="0" '+sel+'></td></tr>';
+      html_str += '<tr id="o0"><td width="30%" height="30" align="left">&nbsp;'+show_title+'</td><td width="112"></td><td><input type="text" name="option_comment[]" value="'+arr[value][x]+'"><input type="radio" name="option_value" value="0" '+sel+'></td></tr>';
       i++;
       sel = '';
     }
@@ -136,7 +146,7 @@ if(!arr[value]){
     if(arr_set[value][0] == arr[value][x]){continue;}
     show_title = '選択肢';
      
-    html_str += '<tr id="o'+i+'"><td width="30%" height="30" align="left">&nbsp;'+show_title+'</td><td width="41"></td><td><input type="text" name="option_comment[]" value="'+arr[value][x]+'"><input type="radio" name="option_value" value="'+i+'" '+sel+'><input type="button" value="削除" onclick="check_del('+i+');"></td></tr>';
+    html_str += '<tr id="o'+i+'"><td width="30%" height="30" align="left">&nbsp;'+show_title+'</td><td width="112"></td><td><input type="text" name="option_comment[]" value="'+arr[value][x]+'"><input type="radio" name="option_value" value="'+i+'" '+sel+'><input type="button" value="削除" onclick="check_del('+i+');"></td></tr>';
     i++;
     sel = '';
   }
@@ -156,17 +166,29 @@ if(!arr[value]){
 <?php
 if($id == 0){
 ?>
- <tr><td bgcolor="#000000" class="dataTableHeadingContent">&nbsp;&nbsp;<?php echo TABLE_NEW.TABLE_TITLE_1;?></td><td bgcolor="#000000" align="right"><a href="javascript:hide_text();"><font color="#FFFFFF">X</font></a></td></tr>
+ <tr><td bgcolor="#000000" class="dataTableHeadingContent" height="30"><?php echo tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO); ?>&nbsp;<?php echo TABLE_NEW.TABLE_TITLE_1;?></td><td bgcolor="#000000" align="right"><a href="javascript:hide_text();"><font color="#FFFFFF">X</font></a></td></tr>
 <?php
 }else{
+  $prev_str = '';
+  if($sort > $minsort){
+
+    $prev_str = '<a href="javascript:show_text('. $id .',\'\',\'\','. $prev .',0);"><font color="#FFFFFF">'. TABLE_PREV .'</font></a>';
+
+  }
+  $next_str = '';
+  if($sort < $maxsort){
+
+    $next_str = '<a href="javascript:show_text('. $id .',\'\',\'\','. $next .',1);"><font color="#FFFFFF">'. TABLE_NEXT .'</font></a>';
+
+  }
 ?>
-  <tr><td bgcolor="#000000" class="dataTableHeadingContent">&nbsp;&nbsp;<?php echo $title.TABLE_TITLE_1;?></td><td bgcolor="#000000" align="right" class="dataTableHeadingContent" onmouseover="this.style.cursor=\'hand\'"><a href="javascript:show_text(<?php echo $id;?>,'','',<?php echo $prev;?>,0);"><font color="#FFFFFF"><?php echo TABLE_PREV;?></font></a>&nbsp;<a href="javascript:show_text(<?php echo $id;?>,'','',<?php echo $next;?>,1);"><font color="#FFFFFF"><?php echo TABLE_NEXT;?></font></a>&nbsp;<a href="javascript:hide_text();"><font color="#FFFFFF">X</font></a></td></tr>
+  <tr><td bgcolor="#000000" class="dataTableHeadingContent" height="30"><?php echo tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO); ?>&nbsp;<?php echo $title.TABLE_TITLE_1;?></td><td bgcolor="#000000" align="right" class="dataTableHeadingContent" onmouseover="this.style.cursor=\'hand\'"><?php echo $prev_str;?>&nbsp;<?php echo $next_str;?>&nbsp;<a href="javascript:hide_text();"><font color="#FFFFFF">X</font></a></td></tr>
 <?php
 }
 ?>
 <tr><td>&nbsp;</td></tr>
-<tr><td width="30%" height="30" align="left">&nbsp;<?php echo TABLE_LIST_1;?></td><td><input type="text" name="title" id="title" value="<?php echo $title;?>"><span id="error_title"><font color="red">*</font></span><input type="hidden" name="cid" value="<?php echo $address_array['id'];?>"</td></tr>
-<tr><td width="30%" height="30" align="left">&nbsp;<?php echo TABLE_LIST_2;?></td><td><input type="text" name="name" id="name" value="<?php echo $name;?>"><span id="error_name"><font color="red">*</font></span></td></tr>
+<tr><td width="30%" height="30" align="left">&nbsp;<?php echo TABLE_LIST_1;?></td><td><input type="text" name="title" id="title" value="<?php echo $title;?>"><span id="error_title"></span><input type="hidden" name="cid" value="<?php echo $address_array['id'];?>"</td></tr>
+<tr><td width="30%" height="30" align="left">&nbsp;<?php echo TABLE_LIST_2;?></td><td><input type="text" name="name" id="name" value="<?php echo $name;?>"><span id="error_name"></span></td></tr>
 <tr><td width="30%" height="30" align="left">&nbsp;<?php echo TABLE_LIST_3;?></td><td>
 <select name="type" onchange="show_text(<?php echo $id;?>,'',this.value);">
 <option value="text" <?php echo $type == 'text' ? 'selected' : '';?>>text</option>
@@ -203,7 +225,7 @@ if($type == 'text'){
  $select_email = $type_limit == 'email' ? 'selected' : '';
 
  echo '<tr><td width="30%" height="30" align="left">&nbsp;'. TABLE_LIST_6 .'</td><td><input type="text" name="comment" value="'. $comment .'"></td></tr>';
-  echo '<tr><td width="30%" height="30" align="left">&nbsp;'. TABLE_LIST_7 .'</td><td><input type="text" name="option_comment[]" value="'. $rows .'"></td></tr>';
+  echo '<tr><td width="30%" height="30" align="left">&nbsp;'. TABLE_LIST_7 .'</td><td><input type="text" name="option_comment[]" value="'. $rows .'" style="text-align: right;"></td></tr>';
   echo '<tr><td width="30%" height="30" align="left">&nbsp;'. TABLE_LIST_8 .'</td><td>
     <select name="text_type">
     <option value="all" '. $select_all .'>全て</option>
@@ -212,8 +234,8 @@ if($type == 'text'){
     <option value="english" '. $select_english .'>英</option>
     <option value="num" '. $select_num .'>数</option>
     <option value="email" '. $select_email .'>Email</option>
-    </td></tr>';
-  echo '<tr><td width="30%" height="30" align="left">&nbsp;'. TABLE_LIST_9 .'</td><td><input type="text" name="limit" value="'. $limit.'"></td></tr>';
+    </select><br>'. TABLE_PROMPT_1 .'</td></tr>';
+  echo '<tr><td width="30%" height="30" align="left">&nbsp;'. TABLE_LIST_9 .'</td><td><input type="text" name="limit" value="'. $limit.'" style="text-align: right;"><br>'. TABLE_PROMPT_2 .'</td></tr>';
   $required_true = $required == 'true' ? 'checked' : '';
   $required_false = $required == 'false' ? 'checked' : '';
   $required_true = $required == '' && $required_true == '' ? 'checked' : 'checked';
@@ -308,7 +330,7 @@ if($type == 'text'){
 
 ?>
 
-<tr><td width="30%" height="30" align="left">&nbsp;<?php echo TABLE_LIST_5;?></td><td><input type="text" name="sort" value="<?php echo $sort;?>"></td></tr>
+<tr><td width="30%" height="30" align="left">&nbsp;<?php echo TABLE_LIST_5;?></td><td><input type="text" name="sort" value="<?php echo $sort;?>" style="text-align: right;"></td></tr>
 <tr><td width="30%" height="30" colspan="2" align="right"><input type="button" name="new" value="<?php echo TABLE_BUTTON_SUBMIT;?>" onclick="show_text(0,'','text');">&nbsp;<input type="button" name="save" value="<?php echo TABLE_BUTTON_SAVE;?>" onclick="if(check_form()){check('save');}else{return check_form();}">&nbsp;
 
 <?php
