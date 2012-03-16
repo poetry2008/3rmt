@@ -1,6 +1,13 @@
 <?php
 require("includes/application_top.php");
 $id=tep_db_prepare_input($_POST['id']);
+$pos=$_POST['pos'];
+$end=$_POST['end'];
+
+
+
+
+
 $option_group_sql="select * from ".TABLE_OPTION_GROUP." where id='".$id."'";
 $option_group_query=tep_db_query($option_group_sql);
 $option_group_array=tep_db_fetch_array($option_group_query);
@@ -19,7 +26,7 @@ $not_in.=$val.",";
 }
 $not_in=substr($not_in,0,-1);
 
-$option_group_sqla="select * from ".TABLE_OPTION_GROUP." where id not in (".$not_in.") order by sort_num";
+$option_group_sqla="select * from ".TABLE_OPTION_GROUP." where id not in (".$not_in.") order by created_at desc";
 
 $option_group_querya=tep_db_query($option_group_sqla);
 while($option_group_arraya=tep_db_fetch_array($option_group_querya)){
@@ -42,8 +49,6 @@ $next=$maxsort;
 }
 ?>
 <table border="0" width="100%" cellspacing="0" cellpadding="0" valign="top" bgcolor="yellow">
-<?php
-?>
 <tr bgcolor="#000000">
 <td class="dataTableHeadingContent">
 &nbsp;&nbsp;
@@ -51,12 +56,32 @@ $next=$maxsort;
 &nbsp;&nbsp;&nbsp;<?php echo $option_group_array['name']?>
 </td>
 <td align="right" class ="dataTableHeadingContent">
-<a href="javascript:edit_text('<?php echo $prev;?>');hide_text('<?php echo $id;?>')"><font color="#FFFFFF"><?php echo AJAX_USELESS_OPTION_GROUP_PREV;?></font></a>
-&nbsp;
-<a href="javascript:edit_text('<?php echo $next;?>');hide_text('<?php echo $id;?>')"><font color="#FFFFFF"><?php echo AJAX_USELESS_OPTION_GROUP_NEXT;?></font></a>
+<?php 
+if($pos==0){
+	?>
+<!--<a href="javascript:edit_text('<?php echo $next;?>','<?php echo $pos+1;?>','<?php echo $end;?>');hide_text('<?php echo $id;?>')"><font color="#FFFFFF"><?php echo AJAX_USELESS_OPTION_GROUP_NEXT;?></font></a>-->
 &nbsp;
 <a href="javascript:hide_text('<?php echo $id;?>');"><font color="#FFFFFF"><?php echo AJAX_USELESS_OPTION_GROUP_CLOSE;?></font></a>
 &nbsp;
+<?php
+}elseif($pos==($end-1)){
+	?>
+<!--<a href="javascript:edit_text('<?php echo $prev;?>','<?php echo $pos-1;?>','<?php echo $end;?>');hide_text('<?php echo $id;?>')"><font color="#FFFFFF"><?php echo AJAX_USELESS_OPTION_GROUP_PREV;?></font></a>-->
+&nbsp;
+<a href="javascript:hide_text('<?php echo $id;?>');"><font color="#FFFFFF"><?php echo AJAX_USELESS_OPTION_GROUP_CLOSE;?></font></a>
+&nbsp;
+<?php
+}else{
+?>
+<!--<a href="javascript:edit_text('<?php echo $prev;?>','<?php echo $pos-1;?>','<?php echo $end;?>');hide_text('<?php echo $id;?>')"><font color="#FFFFFF"><?php echo AJAX_USELESS_OPTION_GROUP_PREV;?></font></a>
+&nbsp;
+<a href="javascript:edit_text('<?php echo $next;?>','<?php echo $pos+1;?>','<?php echo $end;?>');hide_text('<?php echo $id;?>')"><font color="#FFFFFF"><?php echo AJAX_USELESS_OPTION_GROUP_NEXT;?></font></a>
+&nbsp;-->
+<a href="javascript:hide_text('<?php echo $id;?>');"><font color="#FFFFFF"><?php echo AJAX_USELESS_OPTION_GROUP_CLOSE;?></font></a>
+&nbsp;
+<?php 
+}
+?>
 </td>
 </tr>
 
@@ -85,10 +110,10 @@ $next=$maxsort;
 <td>
 <?php 
 if($option_group_array['is_preorder']==0){
-	echo AJAX_USELESS_OPTION_GROUP_IS_PREORDER;
+	echo AJAX_USELESS_OPTION_GROUP_IS_NOT_PREORDER;
 
 }else{
-	echo AJAX_USELESS_OPTION_GROUP_IS_NOT_PREORDER;
+	echo AJAX_USELESS_OPTION_GROUP_IS_PREORDER;
 }
 ?>
 </td>

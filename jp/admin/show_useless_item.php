@@ -3,12 +3,13 @@
  *未使用オプション削除页面 
  */
 require('includes/application_top.php');
+require(DIR_WS_CLASSES.'currencies.php');
+$currencies = new currencies(2);
 $action = $_GET['action'];
-$option_group_id=$_GET['option_group_id'];
 
 switch($action){
 case 'del':
-	$option_group_id=$_GET['option_group_id'];
+
 	$item_id=array();
  $item_id=$_POST['option_item_id'];
 foreach($item_id as $id){
@@ -63,11 +64,27 @@ get_id[i].checked=true;
 }
 }
 }
-function edit_text(id){
-$("tr.ajax_show_useless_option1").hide();
+function del(){
+var get_id=document.getElementsByName('option_group_id[]');
+var flag=false;
+for(i=0;i<get_id.length;i++){
+	if(get_id[i].checked==true){
+	flag=true;	
+	}
+}
+if(flag==false){
+alert('選択してください!');
+}else{
+	if(confirm('削除しますか？')){
+get_action('del');
+}
+}
+}
+function edit_text(id,group_id,pos,end){
+$("tr.ajax_show_useless_item1").hide();
 	$.ajax({
 		url:'ajax_useless_item.php',
-		data:{id:id},	
+		data:{id:id,group_id:group_id,pos:pos,end:end},	
 		type:'POST',
 		dataType:'text',
 		async:false,
@@ -114,7 +131,7 @@ $("div#show_"+id).parent().parent().hide();
           <tr>
             <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
               <tr class="dataTableHeadingRow">
-
+              <td class="dataTableHeadingContent"><?php echo SHOW_USELESS_OPTION_ITEM_SELECTED;?></td>
 	      <td class="dataTableHeadingContent"><?php echo SHOW_USELESS_OPTION_ITEM_NAME;?></td>
 	      <td class="dataTableHeadingContent"><?php echo SHOW_USELESS_OPTION_ITEM_TITLE;?> </td>
 	      <td class="dataTableHeadingContent"><?php echo SHOW_USELESS_OPTION_ITEM_TYPE;?></td>
@@ -135,54 +152,38 @@ while($use_id_array=tep_db_fetch_array($use_id_query)){
 $use_group_id[]=$use_id_array['belong_to_option'];
 	}
 }
-//print_r($use_group_id);exit;
 $not_in="";
 foreach($use_group_id as $val){
 $not_in.=$val.",";
 }
 $not_in=substr($not_in,0,-1);
-$option_item_sql="SELECT *  FROM ".TABLE_OPTION_ITEM." WHERE `group_id`=".$option_group_id."  ORDER BY `sort_num` ASC";
+$option_group_id=$_GET['option_group_id'];
+$option_item_sql="SELECT *  FROM ".TABLE_OPTION_ITEM." WHERE `group_id`=".$_GET['option_group_id']."  ORDER BY `created_at` DESC";
 
+//$num_rows=tep_db_num_rows($option_item_query);
 
-$option_page=$_GET['option_page'];
-$per_page=15;
-$first_page=1;
-//$option_group_sql="SELECT *  FROM `option_group` WHERE `id` NOT IN (".$not_in.") ORDER BY `sort_num` ASC";
-if (!isset($option_page) || !$option_page) {
-    $option_page = 1;
-  }
-
-$prev_option_page = $option_page - 1;
-$next_option_page = $option_page + 1;
-
+$item_split = new splitPageResults($_GET['page'],MAX_DISPLAY_SEARCH_RESULTS,$option_item_sql,$num_rows);
 $option_item_query=tep_db_query($option_item_sql);
-
-  $option_page_start = ($per_page * $option_page) - $per_page;
-  $num_rows = tep_db_num_rows($option_item_query);
-if ($num_rows <= $per_page) {
-     $num_pages = 1;
-  } else if (($num_rows % $per_page) == 0) {
-     $num_pages = ($num_rows / $per_page);
-  } else {
-     $num_pages = ($num_rows / $per_page) + 1;
-  }
-  $num_pages = (int) $num_pages;
-$option_item_sql = $option_item_sql. " LIMIT $option_page_start, $per_page";
-$num_now=tep_db_num_rows($option_item_query);
-
-
-$option_item_query=tep_db_query($option_item_sql);
-$num_now=tep_db_num_rows($option_item_query);
-
+$now_num_row=tep_db_num_rows($option_item_query);
 $class_check=0;
 while($option_item_array=tep_db_fetch_array($option_item_query)){
-	$option_item_id=$option_item_array['id']
+	$option_item_id=$option_item_array['id'];
+		if(((!isset($_GET['item_id']) || !$_GET['item_id']) || ($_GET['item_id'] == $option_item_id)) && (!isset($selected) || !$selected)){
+	$selected= $option_item_array;	
+		}
+	if((isset($selected) && is_array($selected)) && ($option_item_array['id'] == $selected['id'])){
+echo "<tr class='dataTableRowSelected'>";
+	}else{
 ?>
 
 <tr class="<?php echo $class_check%2==0 ?'dataTableSecondRow' : 'dataTableRow'?>" onmouseover="this.className='dataTableRowOver'"  onmouseout="this.className='<?php echo $class_check%2==0 ?'dataTableSecondRow' : 'dataTableRow'?>'">
-<td><input type="checkbox" name="option_item_id[]" value="<?php echo $option_item_id;?>"><?php echo $option_item_array['title'];?></td>
-<td class="dataTableContent"><?php echo $option_item_array['front_title'];?></td>
-<td class="dataTableContent"><?php 
+<?php 
+	}
+?>
+<td><input type="checkbox" name="option_item_id[]" value="<?php echo $option_item_id;?>"></td>
+<td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_SHOW_USELESS_ITEM, 'option_group_id='.$option_group_id.'&page='.$_GET['page'].'&item_id='.$option_item_array['id']);?>'"><?php echo $option_item_array['title'];?></td>
+<td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_SHOW_USELESS_ITEM, 'option_group_id='.$option_group_id.'&page='.$_GET['page'].'&item_id='.$option_item_array['id']);?>'"><?php echo $option_item_array['front_title'];?></td>
+<td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_SHOW_USELESS_ITEM, 'option_group_id='.$option_group_id.'&page='.$_GET['page'].'&item_id='.$option_item_array['id']);?>'"><?php 
 		if($option_item_array['type']=='select'){
 	echo SHOW_USELESS_OPTION_ITEM_TYPE_SELECT;	
 		}elseif($option_item_array['type']=='text'){
@@ -193,14 +194,39 @@ while($option_item_array=tep_db_fetch_array($option_item_query)){
 		?>
 
 </td>
-<td class="dataTableContent"><?php echo $option_item_array['status'];?></td>
-<td class="dataTableContent"><?php echo $option_item_array['comment']?></td>
-<td class="dataTableContent"><?php echo $option_item_array['price']?>円</td>
-<td class="dataTableContent"><?php echo $option_item_array['sort_num']?></td>
-<td class="dataTableContent"><?php echo $option_item_array['status']==0 ? SHOW_USELESS_OPTION_ITEM_STATUS_YES : SHOW_USELESS_OPTION_ITEM_STATUS_NO ;?></td>
+<td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_SHOW_USELESS_ITEM, 'option_group_id='.$option_group_id.'&page='.$_GET['page'].'&item_id='.$option_item_array['id']);?>'"><?php 
+$option_item_option = @unserialize($option_item_array['option']);
+if(isset($option_item_option['require']) && $option_item_option['require']==1)	{
+echo SHOW_USELESS_OPTION_ITEM_IS_REQUIRE;
+}else{
+echo SHOW_USELESS_OPTION_ITEM_IS_NOT_REQUIRE;
+}
 
 
-<td class="dataTableContent" align="right" onclick="edit_text('<?php echo $option_item_array['id'];?>')"><?php echo tep_image(DIR_WS_IMAGES.'icon_info.gif',IMAGE_ICON_INFO);?>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+?></td>
+<td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_SHOW_USELESS_ITEM, 'option_group_id='.$option_group_id.'&page='.$_GET['page'].'&item_id='.$option_item_array['id']);?>'"><?php 
+if(isset($option_item_option['itext'])){
+echo $option_item_option['itext'];
+} elseif(isset($option_item_option['itextarea'])){
+echo $option_item_option['itextarea'];
+} elseif(isset($option_item_opton['se_option'])) {
+	if(is_array($option_item_option['se_option'])){
+		if(!empty($option_item_option['se_option']))	{
+			foreach($option_item_option['se_option'] as $key=>$val)	{
+		echo $val.'&nbsp;';
+			}
+		}
+	}
+}
+
+?>
+</td>
+<td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_SHOW_USELESS_ITEM, 'option_group_id='.$option_group_id.'&page='.$_GET['page'].'&item_id='.$option_item_array['id']);?>'"><?php echo $currencies->format($option_item_array['price']);?></td>
+<td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_SHOW_USELESS_ITEM, 'option_group_id='.$option_group_id.'&page='.$_GET['page'].'&item_id='.$option_item_array['id']);?>'"><?php echo $option_item_array['sort_num']?></td>
+<td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_SHOW_USELESS_ITEM, 'option_group_id='.$option_group_id.'&page='.$_GET['page'].'&item_id='.$option_item_array['id']);?>'"><?php echo $option_item_array['status']==0 ? SHOW_USELESS_OPTION_ITEM_STATUS_NO : SHOW_USELESS_OPTION_ITEM_STATUS_YES ;?></td>
+
+
+<td class="dataTableContent" align="right" onclick="edit_text('<?php echo $option_item_array['id'];?>','<?php echo $option_group_id;?>','<?php echo $class_check;?>','<?php echo $now_num_row;?>')"><?php echo tep_image(DIR_WS_IMAGES.'icon_info.gif',IMAGE_ICON_INFO);?>&nbsp;&nbsp;&nbsp;&nbsp;</td>
 </tr>
 <tr  style="display:none" class="ajax_show_useless_item1">
 <td>
@@ -215,10 +241,9 @@ $class_check++;
 
 </form>
 <tr><td class="smallText">&nbsp;&nbsp;&nbsp;
-<?php
-echo ($option_page_start+1)."∼".($option_page_start+$num_now)." 番目を表示 (".$num_rows." の顧客のうち)&nbsp;&nbsp;";
-?>
+<?php echo $item_split->display_count($num_rows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_CUSTOMERS);?>
 </td>
+<td></td>
 <td></td>
 <td></td>
 <td></td>
@@ -229,22 +254,10 @@ echo ($option_page_start+1)."∼".($option_page_start+$num_now)." 番目を表�
 
 <td align="right" class="smallText">
 <?php
-if ($prev_option_page) {
-    echo '<a class="pageResults" href="' . tep_href_link('show_useless_option.php?option_page=' . $prev_option_page) . '">&lt;&lt;  </a>  ';
-  }
-for ($i =1; $i <=$num_pages; $i++) {
-    if ($i != $option_page) {
-      echo '<a  class="pageResults" href="' . tep_href_link('show_useless_option.php?option_page=' . $i) . '">' . $i . '</a>   ';
-    } else {
-      echo '<b><font color="red">' . $i . '</font></b>';
-    }
-  }
-
-if ($option_page != $num_pages) {
-    echo '<a href="' . tep_href_link('show_useless_option.php?option_page=' . $next_option_page) . '">&gt;&gt; </a>';
-  }
+echo $item_split->display_links($num_rows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'item_id')));
 
 ?>
+
 &nbsp;&nbsp;&nbsp;
 </td></tr>
 <tr>
@@ -256,8 +269,10 @@ if ($option_page != $num_pages) {
 <td></td>
 <td></td>
 <td></td>
+<td></td>
+
 <td align="right">
-<button onclick="get_action('del','<?php echo $option_group_id;?>')"><?php echo SHOW_USELESS_OPTION_ITEM_DEL_LINK;?></button>&nbsp;<button onclick="del_all();get_action('del','<?php echo $option_group_id;?>')" ><?php echo SHOW_USELESS_OPTION_ITEM_ALL_DEL_LINK;?></button>
+<button onclick="del();"><?php echo SHOW_USELESS_OPTION_ITEM_DEL_LINK;?></button>&nbsp;<button onclick="del_all();" ><?php echo SHOW_USELESS_OPTION_ITEM_ALL_DEL_LINK;?></button>
 </td></tr>
 
 </table>

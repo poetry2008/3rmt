@@ -8,7 +8,6 @@ switch($action){
 case 'del':
 	$option_group_id=array();
  $option_group_id=$_POST['option_group_id'];
-//print_r($option_group_id);exit;
 foreach($option_group_id as $id){
  $option_group_sql="delete  from ".TABLE_OPTION_GROUP." where id='".$id."'";
 tep_db_query($option_group_sql);
@@ -18,7 +17,7 @@ tep_db_query($option_item_sql);
 header("location:show_useless_option.php");
 break;
 }
-
+//}
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html <?php echo HTML_PARAMS; ?>>
@@ -62,11 +61,27 @@ get_id[i].checked=true;
 }
 }
 }
-function edit_text(id){
+function del(){
+var get_id=document.getElementsByName('option_group_id[]');
+var flag=false;
+for(i=0;i<get_id.length;i++){
+	if(get_id[i].checked==true){
+	flag=true;	
+	}
+}
+if(flag==false){
+alert('選択してください!');
+}else{
+	if(confirm('削除しますか？')){
+get_action('del');
+}
+}
+}
+function edit_text(id,pos,end){
 $("tr.ajax_show_useless_option1").hide();
 	$.ajax({
 		url:'ajax_useless_option.php',
-		data:{id:id},	
+		data:{id:id,pos:pos,end:end},	
 		type:'POST',
 		dataType:'text',
 		async:false,
@@ -79,7 +94,52 @@ $("tr.ajax_show_useless_option1").hide();
 function hide_text(id){
 $("div#show_"+id).parent().parent().hide();
 }
- 	
+
+
+
+
+
+
+function close_group_info()
+{
+  $('#show_group_info').html(''); 
+  $('#show_group_info').hide(); 
+}
+ function show_group_info(ele, id, pos , end)
+{
+  ele = ele.parentNode;
+  $.ajax({
+    url: 'ajax_useless_option.php',      
+    data: {id:id,pos:pos,end:end},
+    type: 'POST',
+    dataType: 'text',
+    async:false,
+    success: function (data) {
+      $('#show_group_info').html(data); 
+      if (document.documentElement.clientHeight < document.body.scrollHeight) {
+        if
+        (ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight+$('#show_group_info').height() > document.body.scrollHeight) {
+          offset =
+          ele.offsetTop+$('#group_list_box').position().top-$('#show_group_info').height()-$('#offsetHeight').height();
+          $('#show_group_info').css('top', offset).show(); 
+        } else {
+          offset = ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight;
+          $('#show_group_info').css('top', offset).show(); 
+        }
+      } else {
+        if
+        (ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight+$('#show_group_info').height() > document.documentElement.clientHeight) {
+          offset = ele.offsetTop+$('#group_list_box').position().top-$('#show_group_info').height()-$('#offsetHeight').height()-ele.offsetHeight;
+          $('#show_group_info').css('top', offset).show(); 
+        } else {
+          offset = ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight;
+          $('#show_group_info').css('top', offset).show(); 
+        }
+      }
+      $('#show_group_info').show(); 
+    }
+  });
+}	
   </script>
 
 </head>
@@ -94,6 +154,8 @@ $("div#show_"+id).parent().parent().hide();
 <!-- header_eof //-->
 
 <!-- body //-->
+
+<div id="show_group_info" style="display:none"></div>
 <table border="0" width="100%" cellspacing="2" cellpadding="2">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft"><tr><td>
@@ -102,7 +164,7 @@ $("div#show_"+id).parent().parent().hide();
 <!-- body_text //-->
     <td width="100%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
-        <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
+        <td><table  id="group_list_box" border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
             <td class="pageHeading"><?php echo HEADING_USELESS_OPTION_TITLE; ?></td>
             <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', HEADING_IMAGE_WIDTH, HEADING_IMAGE_HEIGHT); ?></td>
@@ -114,10 +176,10 @@ $("div#show_"+id).parent().parent().hide();
           <tr>
             <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
               <tr class="dataTableHeadingRow">
-                <td class="dataTableHeadingContent"></td>
-		<td class="dataTableHeadingContent"><?php echo SHOW_USElESS_OPTION_GROUP_NAME;?></td>
+                <td class="dataTableHeadingContent"><?php echo SHOW_USELESS_OPTION_GROUP_SELECT;?></td>
+		<td class="dataTableHeadingContent"><?php echo SHOW_USELESS_OPTION_GROUP_NAME;?></td>
 		<td class="dataTableHeadingContent"><?php echo SHOW_USELESS_OPTION_GROUP_TITLE;?> </td>
-		<td class="dataTableHeadingContent"><?php echo SHOW_USELESS_OPTION_GROUP_IS_PREORDER;?></td>
+		<td class="dataTableHeadingContent"><?php echo SHOW_USELESS_OPTION_GROUP_PREORDER;?></td>
 		<td class="dataTableHeadingContent"><?php echo SHOW_USELESS_OPTION_GROUP_SORT_NUM;?></td>
  
 		 
@@ -142,55 +204,33 @@ $not_in.=$val.",";
 $not_in=substr($not_in,0,-1);
 
 
-$option_page=$_GET['option_page'];
-$per_page=15;
-$first_page=1;
-$option_group_sql="SELECT *  FROM ".TABLE_OPTION_GROUP." WHERE `id` NOT IN (".$not_in.") ORDER BY `sort_num` ASC";
-if (!isset($option_page) || !$option_page) {
-    $option_page = 1;
-  }
-
-$prev_option_page = $option_page - 1;
-$next_option_page = $option_page + 1;
-
-$option_query = tep_db_query($option_group_sql);
+$option_group_sql="SELECT *  FROM ".TABLE_OPTION_GROUP." WHERE `id` NOT IN (".$not_in.") ORDER BY `created_at` DESC";
+$group_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $option_group_sql, $num_rows);
 $option_group_query=tep_db_query($option_group_sql);
-
-  $option_page_start = ($per_page * $option_page) - $per_page;
-  $num_rows = tep_db_num_rows($option_group_query);
-if ($num_rows <= $per_page) {
-     $num_pages = 1;
-  } else if (($num_rows % $per_page) == 0) {
-     $num_pages = ($num_rows / $per_page);
-  } else {
-     $num_pages = ($num_rows / $per_page) + 1;
-  }
-  $num_pages = (int) $num_pages;
-$option_group_sql = $option_group_sql. " LIMIT $option_page_start, $per_page";
-
-
-
-$onclick_id=$_GET['onclick_id'];
-$option_group_query=tep_db_query($option_group_sql);
-$num_now=tep_db_num_rows($option_group_query);
+$now_num_row=tep_db_num_rows($option_group_query);
 $class_check=0;
 while($option_group_array=tep_db_fetch_array($option_group_query)){
   	$option_group_id=$option_group_array['id'];
-	if($onclick_id==$class_check){
-?>
-<tr class='dataTableRowSelected'>
-<?php
-	}else{
-?>
+	if(((!isset($_GET['group_id']) || !$_GET['group_id']) || ($_GET['group_id']==$option_group_id)) && (!isset($selected_item) || !$selected_item)){
+$selected_item = $option_group_array;	
+	}
+	
+	if((isset($selected_item) && is_array($selected_item)) && ($option_group_array['id'] == $selected_item['id'])){
 
-	<tr class="<?php echo $class_check%2==0 ?'dataTableSecondRow' : 'dataTableRow'?>" onmouseover="this.className='dataTableRowOver'"  onmouseout="this.className='<?php echo $class_check%2==0 ?'dataTableSecondRow' : 'dataTableRow'?>'" >
-	<?php }?>
-<td width="2%"><input type="checkbox" name="option_group_id[]" value="<?php echo $option_group_id;?>"></td>
-<td onclick="document.location.href='show_useless_option.php?onclick_id=<?php echo $class_check;?>'"><a href="show_useless_item.php?option_group_id=<?php echo $option_group_id;?>"><?php echo tep_image(DIR_WS_ICONS . 'folder.gif', ICON_FOLDER);?></a>&nbsp;&nbsp;<?php echo $option_group_array['name'];?></td>
-<td class="dataTableContent" onclick="document.location.href='show_useless_option.php?onclick_id=<?php echo $class_check;?>'"><?php echo $option_group_array['title'];?></td>
-<td class="dataTableContent" onclick="document.location.href='show_useless_option.php?onclick_id=<?php echo $class_check;?>'"><?php echo $option_group_array['is_preorder'];?></td>
-<td class="dataTableContent" onclick="document.location.href='show_useless_option.php?onclick_id=<?php echo $class_check;?>'"><?php echo $option_group_array['sort_num'];?></td>
-<td class="dataTableContent" align="right" ><a onclick="edit_text('<?php echo $option_group_id;?>')"><?php echo tep_image(DIR_WS_IMAGES.'icon_info.gif',IMAGE_ICON_INFO);?></a>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+echo "<tr class='dataTableRowSelected'>";
+	}else{
+	?>
+<tr class="<?php echo $class_check%2==0 ?'dataTableSecondRow' : 'dataTableRow'?>" onmouseover="this.className='dataTableRowOver'"  onmouseout="this.className='<?php echo $class_check%2==0 ?'dataTableSecondRow' : 'dataTableRow'?>'" >
+<?php	
+}
+
+?>
+<td width="4%"><input type="checkbox" name="option_group_id[]" value="<?php echo $option_group_id;?>"></td>
+<td onclick="document.location.href='<?php echo tep_href_link(FILENAME_SHOW_USELESS_OPTION, 'page='.$_GET['page'].'&group_id=' .  $option_group_array['id']);?>'"><a href="<?php echo tep_href_link(FILENAME_SHOW_USELESS_ITEM,'option_group_id='.$option_group_array['id']);?>"><?php echo tep_image(DIR_WS_ICONS . 'folder.gif', ICON_FOLDER);?></a>&nbsp;&nbsp;<?php echo $option_group_array['name'];?></td>
+<td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_SHOW_USELESS_OPTION, 'page='.$_GET['page'].'&group_id=' .  $option_group_array['id']);?>'"><?php echo $option_group_array['title'];?></td>
+<td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_SHOW_USELESS_OPTION, 'page='.$_GET['page'].'&group_id=' .  $option_group_array['id']);?>'"><?php echo $option_group_array['is_preorder'] == 0 ? SHOW_USELESS_OPTION_GROUP_IS_NOT_PREORDER : SHOW_USELESS_OPTION_GROUP_IS_PREORDER;?></td>
+<td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_SHOW_USELESS_OPTION, 'page='.$_GET['page'].'&group_id=' .  $option_group_array['id']);?>'"><?php echo $option_group_array['sort_num'];?></td>
+<td class="dataTableContent" align="right" ><a onclick="edit_text('<?php echo $option_group_id;?>','<?php echo $class_check;?>','<?php echo $now_num_row;?>')"><?php echo tep_image(DIR_WS_IMAGES.'icon_info.gif',IMAGE_ICON_INFO);?></a>&nbsp;&nbsp;&nbsp;&nbsp;</td>
 </tr>
 <tr  style="display:none" class="ajax_show_useless_option1">
 <td>
@@ -200,36 +240,20 @@ while($option_group_array=tep_db_fetch_array($option_group_query)){
 <?php
 $class_check++;
 }
+
 ?>
 
 </form>
 <tr>
 <td></td>
-<td class="smallText">
-<?php
-echo ($option_page_start+1)."∼".($option_page_start+$num_now)." 番目を表示 (".$num_rows." の顧客のうち)&nbsp;&nbsp;";
-?>
-</td>
+<td class="smallText" valign="top"><?php echo $group_split->display_count($num_rows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_CUSTOMERS); ?></td>
 
 <td></td>
 <td></td>
 <td></td>
 <td align="right" class="smallText">
 <?php
-if ($prev_option_page) {
-    echo '<a class="pageResults" href="' . tep_href_link('show_useless_option.php?option_page=' . $prev_option_page) . '">&lt;&lt;  </a>  ';
-  }
-for ($i =1; $i <=$num_pages; $i++) {
-    if ($i != $option_page) {
-      echo '<a  class="pageResults" href="' . tep_href_link('show_useless_option.php?option_page=' . $i) . '">' . $i . '</a>   ';
-    } else {
-      echo '<b><font color="red">' . $i . '</font></b>';
-    }
-  }
-
-if ($option_page != $num_pages) {
-    echo '<a href="' . tep_href_link('show_useless_option.php?option_page=' . $next_option_page) . '">&gt;&gt; </a>';
-  }
+echo $group_split->display_links($num_rows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'group_id')));
 
 ?>
 &nbsp;&nbsp;&nbsp;
@@ -241,7 +265,7 @@ if ($option_page != $num_pages) {
 <td></td>
 <td></td>
 <td align="right">
-<button onclick="get_action('del')"><?php echo SHOW_USELESS_DEL;?></button>&nbsp;&nbsp;&nbsp;<button onclick="del_all();get_action('del')" ><?php echo SHOW_USELESS_ALL_DEL;?></button>
+<button onclick="del();"><?php echo SHOW_USELESS_DEL;?></button>&nbsp;&nbsp;&nbsp;<button onclick="del_all();" ><?php echo SHOW_USELESS_ALL_DEL;?></button>
 </td></tr>
 
 </table>
