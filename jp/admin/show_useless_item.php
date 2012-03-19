@@ -97,6 +97,82 @@ $("tr.ajax_show_useless_item1").hide();
 function hide_text(id){
 $("div#show_"+id).parent().parent().hide();
 }
+
+function close_item_info()
+{
+  $('#show_item_info').html(''); 
+  $('#show_item_info').hide(); 
+}
+
+ function show_option_item(ele,id,group_id,pos , end)
+{
+  ele = ele.parentNode;
+  $.ajax({
+    url: 'ajax_useless_item.php',      
+    data: {id:id,group_id:group_id,pos:pos,end:end},
+    type: 'POST',
+    dataType: 'text',
+    async:false,
+    success: function (data) {
+      $('#show_item_info').html(data); 
+      if (document.documentElement.clientHeight < document.body.scrollHeight) {
+        if
+        (ele.offsetTop+$('#item_list_box').position().top+ele.offsetHeight+$('#show_item_info').height() > document.body.scrollHeight) {
+          offset =
+          ele.offsetTop+$('#item_list_box').position().top-$('#show_item_info').height()-$('#offsetHeight').height();
+          $('#show_item_info').css('top', offset).show(); 
+        } else {
+          offset = ele.offsetTop+$('#item_list_box').position().top+ele.offsetHeight;
+          $('#show_item_info').css('top', offset).show(); 
+        }
+      } else {
+        if
+        (ele.offsetTop+$('#item_list_box').position().top+ele.offsetHeight+$('#show_item_info').height() > document.documentElement.clientHeight) {
+          offset = ele.offsetTop+$('#item_list_box').position().top-$('#show_item_info').height()-$('#offsetHeight').height()-ele.offsetHeight;
+          $('#show_item_info').css('top', offset).show(); 
+        } else {
+          offset = ele.offsetTop+$('#item_list_box').position().top+ele.offsetHeight;
+          $('#show_item_info').css('top', offset).show(); 
+        }
+      }
+      $('#show_item_info').show(); 
+    }
+  });
+}	
+function show_option_item_ajax( id,group_id, pos , end)
+{
+  $.ajax({
+    url: 'ajax_useless_item.php',      
+    data: {id:id,group_id:group_id,pos:pos,end:end},
+    type: 'POST',
+    dataType: 'text',
+    async:false,
+    success: function (data) {
+      $('#show_item_info').html(data); 
+      if (document.documentElement.clientHeight < document.body.scrollHeight) {
+        if
+        (ele.offsetTop+$('#item_list_box').position().top+ele.offsetHeight+$('#show_item_info').height() > document.body.scrollHeight) {
+          offset =
+          ele.offsetTop+$('#item_list_box').position().top-$('#show_item_info').height()-$('#offsetHeight').height();
+          $('#show_item_info').css('top', offset).show(); 
+        } else {
+          offset = ele.offsetTop+$('#item_list_box').position().top+ele.offsetHeight;
+          $('#show_item_info').css('top', offset).show(); 
+        }
+      } else {
+        if
+        (ele.offsetTop+$('#item_list_box').position().top+ele.offsetHeight+$('#show_item_info').height() > document.documentElement.clientHeight) {
+          offset = ele.offsetTop+$('#item_list_box').position().top-$('#show_item_info').height()-$('#offsetHeight').height()-ele.offsetHeight;
+          $('#show_item_info').css('top', offset).show(); 
+        } else {
+          offset = ele.offsetTop+$('#item_list_box').position().top+ele.offsetHeight;
+          $('#show_item_info').css('top', offset).show(); 
+        }
+      }
+      $('#show_item_info').show(); 
+    }
+  });
+}
   </script>
 
 </head>
@@ -127,9 +203,10 @@ $("div#show_"+id).parent().parent().hide();
         </table></td>
       </tr>
       <tr>
+<div id="show_item_info" style="display:none">
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
-            <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+            <td valign="top"><table id="item_list_box" border="0" width="100%" cellspacing="0" cellpadding="2">
               <tr class="dataTableHeadingRow">
               <td class="dataTableHeadingContent"><?php echo SHOW_USELESS_OPTION_ITEM_SELECTED;?></td>
 	      <td class="dataTableHeadingContent"><?php echo SHOW_USELESS_OPTION_ITEM_NAME;?></td>
@@ -226,7 +303,7 @@ echo $option_item_option['itextarea'];
 <td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_SHOW_USELESS_ITEM, 'option_group_id='.$option_group_id.'&page='.$_GET['page'].'&item_id='.$option_item_array['id']);?>'"><?php echo $option_item_array['status']==0 ? SHOW_USELESS_OPTION_ITEM_STATUS_NO : SHOW_USELESS_OPTION_ITEM_STATUS_YES ;?></td>
 
 
-<td class="dataTableContent" align="right" onclick="edit_text('<?php echo $option_item_array['id'];?>','<?php echo $option_group_id;?>','<?php echo $class_check;?>','<?php echo $now_num_row;?>')"><?php echo tep_image(DIR_WS_IMAGES.'icon_info.gif',IMAGE_ICON_INFO);?>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td class="dataTableContent" align="right" onclick="show_option_item(this,'<?php echo $option_item_array['id'];?>','<?php echo $option_group_id;?>','<?php echo $class_check;?>','<?php echo $now_num_row;?>')"><?php echo tep_image(DIR_WS_IMAGES.'icon_info.gif',IMAGE_ICON_INFO);?>&nbsp;&nbsp;&nbsp;&nbsp;</td>
 </tr>
 <tr  style="display:none" class="ajax_show_useless_item1">
 <td>
@@ -240,18 +317,15 @@ $class_check++;
 ?>
 
 </form>
-<tr><td class="smallText">&nbsp;&nbsp;&nbsp;
+
+</table>
+<tr>
+<td>
+<table width="100%">
+<tr>
+<td class="smallText">&nbsp;&nbsp;&nbsp;
 <?php echo $item_split->display_count($num_rows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_CUSTOMERS);?>
 </td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-
 <td align="right" class="smallText">
 <?php
 echo $item_split->display_links($num_rows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'item_id')));
@@ -259,24 +333,24 @@ echo $item_split->display_links($num_rows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPL
 ?>
 
 &nbsp;&nbsp;&nbsp;
-</td></tr>
+</td>
+</tr>
+</table>
+</td>
+</tr>
 <tr>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
+<td>
+<table width="100%">
+<tr>
 
+
+</tr>
+</table>
+</td>
+</tr>
 <td align="right">
 <button onclick="del();"><?php echo SHOW_USELESS_OPTION_ITEM_DEL_LINK;?></button>&nbsp;<button onclick="del_all();" ><?php echo SHOW_USELESS_OPTION_ITEM_ALL_DEL_LINK;?></button>
-</td></tr>
-
-</table>
-
+</td>
 </td></tr></table></td></tr>
 </table></td>
 </tr>

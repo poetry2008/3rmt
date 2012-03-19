@@ -30,7 +30,7 @@ if($next==''){
 $next=$maxsort;
 }
 ?>
-<table border="0" width="100%" cellspacing="0" cellpadding="0" valign="top" bgcolor="yellow">
+<table style="font-size:14px;line-height:200%" border="0" width="100%" cellspacing="0" cellpadding="0" valign="top" bgcolor="yellow">
 <tr bgcolor="#000000">
 <td class="dataTableHeadingContent">
 &nbsp;&nbsp;
@@ -39,27 +39,34 @@ $next=$maxsort;
 </td>
 <td align="right" class ="dataTableHeadingContent">
 <?php 
-if($pos==0){
+if($end==1){
 	?>
-<!--<a href="javascript:edit_text('<?php echo $next;?>','<?php echo $group_id;?>','<?php echo $pos+1;?>','<?php echo $end;?>');hide_text('<?php echo $id;?>')"><font color="#FFFFFF"><?php echo AJAX_USELESS_OPTION_ITEM_NEXT;?></font></a>-->
+<a href="javascript:close_item_info();"><font color="#FFFFFF"><?php echo AJAX_USELESS_OPTION_ITEM_CLOSE;?></font></a>
 &nbsp;
-<a href="javascript:hide_text('<?php echo $id;?>');"><font color="#FFFFFF"><?php echo AJAX_USELESS_OPTION_ITEM_CLOSE;?></font></a>
+
+<?php
+}
+else if($pos==0){
+	?>
+<a href="javascript:show_option_item_ajax('<?php echo $next;?>','<?php echo $group_id;?>','<?php echo $pos+1;?>','<?php echo $end;?>');"><font color="#FFFFFF"><?php echo AJAX_USELESS_OPTION_ITEM_NEXT;?></font></a>
+&nbsp;
+<a href="javascript:close_item_info();"><font color="#FFFFFF"><?php echo AJAX_USELESS_OPTION_ITEM_CLOSE;?></font></a>
 &nbsp;
 <?php
 }elseif($pos==($end-1)){
 	?>
-<!--<a href="javascript:edit_text('<?php echo $prev;?>','<?php echo $group_id;?>','<?php echo $pos-1;?>','<?php echo $end;?>');hide_text('<?php echo $id;?>')"><font color="#FFFFFF"><?php echo AJAX_USELESS_OPTION_ITEM_PREV;?></font></a>-->
+<a href="javascript:show_option_item_ajax('<?php echo $prev;?>','<?php echo $group_id;?>','<?php echo $pos-1;?>','<?php echo $end;?>');"><font color="#FFFFFF"><?php echo AJAX_USELESS_OPTION_ITEM_PREV;?></font></a>
 &nbsp;
-<a href="javascript:hide_text('<?php echo $id;?>');"><font color="#FFFFFF"><?php echo AJAX_USELESS_OPTION_ITEM_CLOSE;?></font></a>
+<a href="javascript:close_item_info();"><font color="#FFFFFF"><?php echo AJAX_USELESS_OPTION_ITEM_CLOSE;?></font></a>
 &nbsp;
 <?php
 }else{
 ?>
-<!--<a href="javascript:edit_text('<?php echo $prev;?>','<?php echo $group_id;?>','<?php echo $pos-1;?>','<?php echo $end;?>');hide_text('<?php echo $id;?>')"><font color="#FFFFFF"><?php echo AJAX_USELESS_OPTION_ITEM_PREV;?></font></a>
+<a href="javascript:show_option_item_ajax('<?php echo $prev;?>','<?php echo $group_id;?>','<?php echo $pos-1;?>','<?php echo $end;?>');"><font color="#FFFFFF"><?php echo AJAX_USELESS_OPTION_ITEM_PREV;?></font></a>
 &nbsp;
-<a href="javascript:edit_text('<?php echo $next;?>','<?php echo $group_id;?>','<?php echo $pos+1;?>','<?php echo $end;?>');hide_text('<?php echo $id;?>')"><font color="#FFFFFF"><?php echo AJAX_USELESS_OPTION_ITEM_NEXT;?></font></a>-->
+<a href="javascript:show_option_item_ajax('<?php echo $next;?>','<?php echo $group_id;?>','<?php echo $pos+1;?>','<?php echo $end;?>');"><font color="#FFFFFF"><?php echo AJAX_USELESS_OPTION_ITEM_NEXT;?></font></a>
 &nbsp;
-<a href="javascript:hide_text('<?php echo $id;?>');"><font color="#FFFFFF"><?php echo AJAX_USELESS_OPTION_ITEM_CLOSE;?></font></a>
+<a href="javascript:close_item_info('<?php echo $id;?>');"><font color="#FFFFFF"><?php echo AJAX_USELESS_OPTION_ITEM_CLOSE;?></font></a>
 &nbsp;
 <?php 
 }

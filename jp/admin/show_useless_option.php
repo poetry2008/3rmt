@@ -25,25 +25,7 @@ break;
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
 <title><?php echo TITLE; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
-<style type="text/css">
-.show_ajax_useless_option {
-  width:660px;
-  height:400px;
-  position:absolute;
-  /**
-   * filter:alpha(opacity=0);
-   * opacity:0.6;
-   * **/
-margin-top:-20px;
-margin-left:200px;
-/*background:#ffffff;*/
-border:0px #FFF solid;
-padding:20px;
-font-size:14px;
-line-height:170%;
-}
-.show_ajax_useless_option1{} 
-</style>
+<link rel="stylesheet" type="text/css" href="includes/jquery.autocomplete.css">
 <script language="javascript" src="includes/general.js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
@@ -54,12 +36,11 @@ line-height:170%;
 	  getform.submit();
   }
 function del_all(){
-	if(confirm("全部削除しますか？")){
 var get_id=document.getElementsByName('option_group_id[]');
 for(i=0;i<get_id.length;i++){
 get_id[i].checked=true;
 }
-}
+
 }
 function del(){
 var get_id=document.getElementsByName('option_group_id[]');
@@ -105,9 +86,43 @@ function close_group_info()
   $('#show_group_info').html(''); 
   $('#show_group_info').hide(); 
 }
- function show_group_info(ele, id, pos , end)
+ function show_option_group(ele, id, pos , end)
 {
   ele = ele.parentNode;
+  $.ajax({
+    url: 'ajax_useless_option.php',      
+    data: {id:id,pos:pos,end:end},
+    type: 'POST',
+    dataType: 'text',
+    async:false,
+    success: function (data) {
+      $('#show_group_info').html(data); 
+      if (document.documentElement.clientHeight < document.body.scrollHeight) {
+        if
+        (ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight+$('#show_group_info').height() > document.body.scrollHeight) {
+          offset =
+          ele.offsetTop+$('#group_list_box').position().top-$('#show_group_info').height()-$('#offsetHeight').height();
+          $('#show_group_info').css('top', offset).show(); 
+        } else {
+          offset = ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight;
+          $('#show_group_info').css('top', offset).show(); 
+        }
+      } else {
+        if
+        (ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight+$('#show_group_info').height() > document.documentElement.clientHeight) {
+          offset = ele.offsetTop+$('#group_list_box').position().top-$('#show_group_info').height()-$('#offsetHeight').height()-ele.offsetHeight;
+          $('#show_group_info').css('top', offset).show(); 
+        } else {
+          offset = ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight;
+          $('#show_group_info').css('top', offset).show(); 
+        }
+      }
+      $('#show_group_info').show(); 
+    }
+  });
+}	
+function show_option_group_ajax( id, pos , end)
+{
   $.ajax({
     url: 'ajax_useless_option.php',      
     data: {id:id,pos:pos,end:end},
@@ -155,16 +170,15 @@ function close_group_info()
 
 <!-- body //-->
 
-<div id="show_group_info" style="display:none"></div>
 <table border="0" width="100%" cellspacing="2" cellpadding="2">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft"><tr><td>
 <!-- left_navigation //--> <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> <!-- left_navigation_eof //-->
     </td></tr></table></td>
 <!-- body_text //-->
-    <td width="100%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+    <td width="100%" valign="top"><table border="0" id="group_list_box" width="100%" cellspacing="0" cellpadding="2">
       <tr>
-        <td><table  id="group_list_box" border="0" width="100%" cellspacing="0" cellpadding="0">
+        <td><table   border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
             <td class="pageHeading"><?php echo HEADING_USELESS_OPTION_TITLE; ?></td>
             <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', HEADING_IMAGE_WIDTH, HEADING_IMAGE_HEIGHT); ?></td>
@@ -172,6 +186,7 @@ function close_group_info()
         </table></td>
       </tr>
       <tr>
+<div id="show_group_info" style="display:none"></div>
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
             <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
@@ -230,7 +245,8 @@ echo "<tr class='dataTableRowSelected'>";
 <td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_SHOW_USELESS_OPTION, 'page='.$_GET['page'].'&group_id=' .  $option_group_array['id']);?>'"><?php echo $option_group_array['title'];?></td>
 <td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_SHOW_USELESS_OPTION, 'page='.$_GET['page'].'&group_id=' .  $option_group_array['id']);?>'"><?php echo $option_group_array['is_preorder'] == 0 ? SHOW_USELESS_OPTION_GROUP_IS_NOT_PREORDER : SHOW_USELESS_OPTION_GROUP_IS_PREORDER;?></td>
 <td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_SHOW_USELESS_OPTION, 'page='.$_GET['page'].'&group_id=' .  $option_group_array['id']);?>'"><?php echo $option_group_array['sort_num'];?></td>
-<td class="dataTableContent" align="right" ><a onclick="edit_text('<?php echo $option_group_id;?>','<?php echo $class_check;?>','<?php echo $now_num_row;?>')"><?php echo tep_image(DIR_WS_IMAGES.'icon_info.gif',IMAGE_ICON_INFO);?></a>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<!--<td class="dataTableContent" align="right" ><a onclick="edit_text('<?php echo $option_group_id;?>','<?php echo $class_check;?>','<?php echo $now_num_row;?>')"><?php echo tep_image(DIR_WS_IMAGES.'icon_info.gif',IMAGE_ICON_INFO);?></a>&nbsp;&nbsp;&nbsp;&nbsp;</td>-->
+<td class="dataTableContent" align="right" ><a onclick="show_option_group(this,'<?php echo $option_group_id;?>','<?php echo $class_check;?>','<?php echo $now_num_row;?>')"><?php echo tep_image(DIR_WS_IMAGES.'icon_info.gif',IMAGE_ICON_INFO);?></a>&nbsp;&nbsp;&nbsp;&nbsp;</td>
 </tr>
 <tr  style="display:none" class="ajax_show_useless_option1">
 <td>
@@ -244,33 +260,35 @@ $class_check++;
 ?>
 
 </form>
-<tr>
-<td></td>
-<td class="smallText" valign="top"><?php echo $group_split->display_count($num_rows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_CUSTOMERS); ?></td>
 
-<td></td>
-<td></td>
-<td></td>
+</table>
+
+</td></tr></table></td></tr>
+<tr>
+<td>
+<table width="100%">
+<tr>
+<td class="smallText" valign="top"><?php echo $group_split->display_count($num_rows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_CUSTOMERS); ?></td>
 <td align="right" class="smallText">
 <?php
 echo $group_split->display_links($num_rows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'group_id')));
 
 ?>
 &nbsp;&nbsp;&nbsp;
-</td></tr>
-<tr>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td></td>
-<td align="right">
-<button onclick="del();"><?php echo SHOW_USELESS_DEL;?></button>&nbsp;&nbsp;&nbsp;<button onclick="del_all();" ><?php echo SHOW_USELESS_ALL_DEL;?></button>
-</td></tr>
-
+</td>
+</tr>
 </table>
-
-</td></tr></table></td></tr>
+</td>
+</tr>
+<tr>
+<td>
+<table width="100%">
+<tr><td align="right">
+<button onclick="del();"><?php echo SHOW_USELESS_DEL;?></button>&nbsp;&nbsp;&nbsp;<button onclick="del_all();" ><?php echo SHOW_USELESS_ALL_DEL;?></button>
+ </td></tr>
+</table>
+</td>
+</tr>
 </table></td>
 </tr>
 </table></td>
