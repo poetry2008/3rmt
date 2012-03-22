@@ -1,13 +1,19 @@
 <?php
 require("includes/application_top.php");
 $id=tep_db_prepare_input($_POST['id']);
+$group_id=tep_db_prepare_input($_POST['group_id']);
+$pos=$_POST['pos'];
+$end=$_POST['end'];
+
 $option_item_sql="select * from ".TABLE_OPTION_ITEM." where id='".$id."'";
 $option_item_query=tep_db_query($option_item_sql);
 $option_item_array=tep_db_fetch_array($option_item_query);
 $option_item_option=unserialize($option_item_array['option']);
 
-while($item_sort_array=tep_db_fetch_array($option_item_sql)){
-$array_sort[]=$option_sort_array['id'];
+
+$group_to_item_query=tep_db_query("select id from ".TABLE_OPTION_ITEM." where group_id='".$group_id."' order by created_at desc");
+while($item_sort_array=tep_db_fetch_array($group_to_item_query)){
+$array_sort[]=$item_sort_array['id'];
 }
 $minsort=$array_sort[0];
 $maxsort=end($array_sort);
@@ -24,9 +30,7 @@ if($next==''){
 $next=$maxsort;
 }
 ?>
-<table border="0" width="100%" cellspacing="0" cellpadding="0" valign="top" bgcolor="yellow">
-<?php
-?>
+<table style="font-size:14px;line-height:200%" border="0" width="100%" cellspacing="0" cellpadding="0" valign="top" bgcolor="yellow">
 <tr bgcolor="#000000">
 <td class="dataTableHeadingContent">
 &nbsp;&nbsp;
@@ -34,12 +38,39 @@ $next=$maxsort;
 &nbsp;&nbsp;&nbsp;<?php echo $option_item_array['title']?>
 </td>
 <td align="right" class ="dataTableHeadingContent">
-<a href="javascript:edit_text('<?php echo $prev;?>');hide_text('<?php echo $id;?>')"><font color="#FFFFFF"><?php echo AJAX_USELESS_OPTION_ITEM_PREV;?></font></a>
+<?php 
+if($end==1){
+	?>
+<a href="javascript:close_item_info();"><font color="#FFFFFF"><?php echo AJAX_USELESS_OPTION_ITEM_CLOSE;?></font></a>
 &nbsp;
-<a href="javascript:edit_text('<?php echo $next;?>');hide_text('<?php echo $id;?>')"><font color="#FFFFFF"><?php echo AJAX_USELESS_OPTION_ITEM_NEXT;?></font></a>
+
+<?php
+}
+else if($pos==0){
+	?>
+<a href="javascript:show_option_item_ajax('<?php echo $next;?>','<?php echo $group_id;?>','<?php echo $pos+1;?>','<?php echo $end;?>');"><font color="#FFFFFF"><?php echo AJAX_USELESS_OPTION_ITEM_NEXT;?></font></a>
 &nbsp;
-<a href="javascript:hide_text('<?php echo $id;?>');"><font color="#FFFFFF"><?php echo AJAX_USELESS_OPTION_ITEM_CLOSE;?></font></a>
+<a href="javascript:close_item_info();"><font color="#FFFFFF"><?php echo AJAX_USELESS_OPTION_ITEM_CLOSE;?></font></a>
 &nbsp;
+<?php
+}elseif($pos==($end-1)){
+	?>
+<a href="javascript:show_option_item_ajax('<?php echo $prev;?>','<?php echo $group_id;?>','<?php echo $pos-1;?>','<?php echo $end;?>');"><font color="#FFFFFF"><?php echo AJAX_USELESS_OPTION_ITEM_PREV;?></font></a>
+&nbsp;
+<a href="javascript:close_item_info();"><font color="#FFFFFF"><?php echo AJAX_USELESS_OPTION_ITEM_CLOSE;?></font></a>
+&nbsp;
+<?php
+}else{
+?>
+<a href="javascript:show_option_item_ajax('<?php echo $prev;?>','<?php echo $group_id;?>','<?php echo $pos-1;?>','<?php echo $end;?>');"><font color="#FFFFFF"><?php echo AJAX_USELESS_OPTION_ITEM_PREV;?></font></a>
+&nbsp;
+<a href="javascript:show_option_item_ajax('<?php echo $next;?>','<?php echo $group_id;?>','<?php echo $pos+1;?>','<?php echo $end;?>');"><font color="#FFFFFF"><?php echo AJAX_USELESS_OPTION_ITEM_NEXT;?></font></a>
+&nbsp;
+<a href="javascript:close_item_info('<?php echo $id;?>');"><font color="#FFFFFF"><?php echo AJAX_USELESS_OPTION_ITEM_CLOSE;?></font></a>
+&nbsp;
+<?php 
+}
+?>
 </td>
 </tr>
 
@@ -78,6 +109,10 @@ echo AJAX_USELESS_OPTION_ITEM_TYPE_TEXTAREA;
 </td>
 </tr>
 
+<?php 
+if($option_item_array['type']=='select'){
+
+?>
 <tr>
 <td>
 &nbsp;&nbsp;&nbsp;<?php echo AJAX_USELESS_OPTION_ITEM_FIRST_SELECT;?>:
@@ -95,6 +130,7 @@ echo $option_item_option['secomment'];
 </tr>
 
 <?php
+}
 for ($i=0;$i<count($option_item_option['se_option']);$i++){
 ?>
 <tr>

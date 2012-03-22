@@ -1,8 +1,8 @@
 <?php
 define('HEADING_USELESS_OPTION_TITLE', '未使用オプション削除');
-define('SHOW_USElESS_OPTION_GROUP_NAME','タイトル');
+define('SHOW_USELESS_OPTION_GROUP_NAME','タイトル');
 define('SHOW_USELESS_OPTION_GROUP_TITLE','表示名');
-define('SHOW_USELESS_OPTION_GROUP_IS_PREORDER','予約注文');
+define('SHOW_USELESS_OPTION_GROUP_PREORDER','予約注文');
 define('SHOW_USELESS_OPTION_GROUP_SORT_NUM','整列順');
 define('SHOW_USELESS_OPTION_GROUP_DESC','説明文');
 define('SHOW_USELESS_OPTION_GROUP_ACTION','操作');
@@ -13,4 +13,5 @@ define('SHOW_USELESS_TEXT_GROUP_PREV', '<前へ');
 define('SHOW_USELESS_TEXT_GROUP_NEXT', '次へ>');
 define('SHOW_USELESS_DEL','削除');
 define('SHOW_USELESS_ALL_DEL','全て削除');
+define('SHOW_USELESS_OPTION_GROUP_SELECT','選択');
 ?>
