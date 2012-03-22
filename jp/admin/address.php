@@ -264,13 +264,20 @@ div#show {
 <?php
 $even = 'dataTableSecondRow';
 $odd  = 'dataTableRow';
+$select_class = 'dataTableRowSelected';
 $address_sql = "select * from ". TABLE_ADDRESS ." order by sort";
 
 $address_page = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $address_sql, $address_query_numrows);
 $address_query = tep_db_query($address_sql);
 $i = 0;
 while($address_array = tep_db_fetch_array($address_query)){
-  $nowColor = $i % 2 == 1 ? $even : $odd;
+  if((int)$_GET['id'] == $address_array['id'] || ($i == 0 && !isset($_GET['id']))){
+    $nowColor = $select_class;
+    $onmouseover = 'onmouseover="this.className=\'dataTableRowSelected\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$select_class.'\'"';
+  }else{
+    $nowColor = $i % 2 == 1 ? $even : $odd; 
+    $onmouseover = 'onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"'; 
+  }
   switch($address_array['type']){
 
   case 'text':
@@ -289,24 +296,24 @@ while($address_array = tep_db_fetch_array($address_query)){
 
     //$status = '<a title="del" href="javascript:check(\'del\');"><img border="0" alt="" src="images/icon_status_blue.gif"></a>'; 
   //}
-  echo '<tr class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'">' . "\n";
-  echo '<td>'.$address_array['title'].'</td>';
-  echo '<td>'.$address_array['name'].'</td>';
-  echo '<td>'.$address_array['comment'].'</td>';
-  echo '<td>'.$address_type_str.'</td>';
-  echo '<td>'.$address_array['num_limit'].'</td>';
-  echo '<td>'.$address_array['required'].'</td>';
-  echo '<td>'.$address_array['sort'].'</td>';
-  echo '<td>';
+  echo '<tr class="'.$nowColor.'" '. $onmouseover .'>' . "\n";
+  echo '<td onclick="document.location.href=\'?page='. $_GET['page'] .'&id='. $address_array['id'] .'\'">'.$address_array['title'].'</td>';
+  echo '<td onclick="document.location.href=\'?page='. $_GET['page'] .'&id='. $address_array['id'] .'\'">'.$address_array['name'].'</td>';
+  echo '<td onclick="document.location.href=\'?page='. $_GET['page'] .'&id='. $address_array['id'] .'\'">'.$address_array['comment'].'</td>';
+  echo '<td onclick="document.location.href=\'?page='. $_GET['page'] .'&id='. $address_array['id'] .'\'">'.$address_type_str.'</td>';
+  echo '<td onclick="document.location.href=\'?page='. $_GET['page'] .'&id='. $address_array['id'] .'\'">'.$address_array['num_limit'].'</td>';
+  echo '<td onclick="document.location.href=\'?page='. $_GET['page'] .'&id='. $address_array['id'] .'\'">'.$address_array['required'].'</td>';
+  echo '<td onclick="document.location.href=\'?page='. $_GET['page'] .'&id='. $address_array['id'] .'\'">'.$address_array['sort'].'</td>';
+  echo '<td >';
   if($address_array['status'] == 0){
 ?>
-  <img border="0" src="images/icon_status_blue.gif" alt="有効" title="有効">
+  <img border="0" src="images/icon_status_green.gif" alt="有効" title="有効">
 <a title="無効にする" onclick="if(confirm('無効にしますか？')){check_on('del',<?php echo $address_array['id'];?>);}else{return false;}" href="javascript:void(0);"><img border="0" alt="" src="images/icon_status_red_light.gif"></a>
 
 <?php
 }else{
 ?>
-<a title="有効" onclick="if(confirm('有効にしますか？')){check_on('res',<?php echo $address_array['id'];?>);}else{return false;}" href="javascript:void(0);"><img border="0" alt="" src="images/icon_status_blue_light.gif"></a>
+<a title="有効" onclick="if(confirm('有効にしますか？')){check_on('res',<?php echo $address_array['id'];?>);}else{return false;}" href="javascript:void(0);"><img border="0" alt="" src="images/icon_status_green_light.gif"></a>
 <img border="0" alt="無効にする" src="images/icon_status_red.gif" title="無効にする">
 
 <?php

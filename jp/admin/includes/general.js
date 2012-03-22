@@ -1341,7 +1341,7 @@ function check_add(){
   num += 5;
   document.getElementById('num').value = num; 
   for(i=num-5;i<num;i++){
-    str += '<tr id="o'+i+'"><td width="30%" height="30" align="left">&nbsp;選択肢</td><td width="112"></td><td><input type="text" name="option_comment[]" value=""><input type="radio" name="option_value" value="'+i+'"><input type="button" value="削除" onclick="check_del('+i+');"></td></tr>';
+    str += '<tr id="o'+i+'"><td width="30%" height="30" align="left">&nbsp;&nbsp;&nbsp;&nbsp;選択肢</td><td width="112"></td><td><input type="text" name="option_comment[]" value=""><input type="radio" name="option_value" value="'+i+'"><input type="button" value="削除" onclick="check_del('+i+');"></td></tr>';
 
   }
   $("#button_add").append(str);
@@ -1402,7 +1402,7 @@ function work_add(){
   num = work_num.value;
   num = parseInt(num);
   work_num.value = num+1; 
-  var work_str = '<tr id="workid'+num+'"><td width="30%" height="30" align="left">&nbsp;お届け可能時間'+num+'</td><td><input type="text" name="work_start_hour[]" size="3" maxlength="2" value="">&nbsp;:&nbsp;<input type="text" name="work_start_min[]" size="3" maxlength="2" value="">&nbsp;～&nbsp;<input type="text" name="work_end_hour[]" size="3" maxlength="2" value="">&nbsp;:&nbsp;<input type="text" name="work_end_min[]" size="3" maxlength="2" value="">&nbsp;<input type="button" value="削除" onclick="work_del('+num+');"><br><span id="work_error'+num+'"></span></td></tr>';
+  var work_str = '<tr id="workid'+num+'"><td width="30%" height="30" align="left">&nbsp;&nbsp;&nbsp;&nbsp;お届け可能時間'+num+'</td><td><input type="text" name="work_start_hour[]" size="3" maxlength="2" value="">&nbsp;:&nbsp;<input type="text" name="work_start_min[]" size="3" maxlength="2" value="">&nbsp;～&nbsp;<input type="text" name="work_end_hour[]" size="3" maxlength="2" value="">&nbsp;:&nbsp;<input type="text" name="work_end_min[]" size="3" maxlength="2" value="">&nbsp;<input type="button" value="削除" onclick="work_del('+num+');"><br><span id="work_error'+num+'"></span></td></tr>';
 
  $("#work_list").append(work_str); 
 }

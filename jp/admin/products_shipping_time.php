@@ -2,8 +2,7 @@
 /*
  * お届け時間指定グループの設定
  */
-require('includes/application_top.php');
-
+require('includes/application_top.php'); 
 $action = $_GET['action'];
 
 if(isset($action) && $action != ''){
@@ -171,13 +170,20 @@ div#show {
 <?php
 $even = 'dataTableSecondRow';
 $odd  = 'dataTableRow';
+$select_class = 'dataTableRowSelected';
 $products_sql = "select * from ". TABLE_PRODUCTS_SHIPPING_TIME ." order by sort asc,id asc";
 
 $products_page = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $products_sql, $products_query_numrows);
 $products_query = tep_db_query($products_sql);
 $i = 0;
 while($products_array = tep_db_fetch_array($products_query)){
-  $nowColor = $i % 2 == 1 ? $even : $odd;
+  if((int)$_GET['id'] == $products_array['id'] || ($i == 0 && !isset($_GET['id']))){
+    $nowColor = $select_class;
+    $onmouseover = 'onmouseover="this.className=\'dataTableRowSelected\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$select_class.'\'"';
+  }else{
+    $nowColor = $i % 2 == 1 ? $even : $odd;
+    $onmouseover = 'onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"';
+  }
   $work_array = unserialize($products_array['work']);
   $work_str = '';
   foreach($work_array as $w_key=>$w_value){
@@ -192,21 +198,21 @@ while($products_array = tep_db_fetch_array($products_query)){
   }
 
 
-  echo '<tr class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'">' . "\n";
-  echo '<td>'.$products_array['name'].'</td>';
-  echo '<td>'.$work_str.'</td>';
-  echo '<td>'. $products_array['db_set_day'] .'</td>';
-  echo '<td>'. $products_array['sort'] .'</td>'; 
+  echo '<tr class="'.$nowColor.'" '. $onmouseover .'>' . "\n";
+  echo '<td onclick="document.location.href=\'?page='. $_GET['page'] .'&id='. $products_array['id'] .'\'">'.$products_array['name'].'</td>';
+  echo '<td onclick="document.location.href=\'?page='. $_GET['page'] .'&id='. $products_array['id'] .'\'">'.$work_str.'</td>';
+  echo '<td onclick="document.location.href=\'?page='. $_GET['page'] .'&id='. $products_array['id'] .'\'">'. $products_array['db_set_day'] .'</td>';
+  echo '<td onclick="document.location.href=\'?page='. $_GET['page'] .'&id='. $products_array['id'] .'\'">'. $products_array['sort'] .'</td>'; 
   echo '<td>';
   if($products_array['status'] == 0){
 ?>
-  <img border="0" src="images/icon_status_blue.gif" alt="" title="有効">
+  <img border="0" src="images/icon_status_green.gif" alt="" title="有効">
   <a title="無効にする" onclick="if(confirm('無効にしますか？')){check_on_products('del',<?php echo $products_array['id'];?>);}else{return false;}" href="javascript:void(0);"><img border="0" alt="" src="images/icon_status_red_light.gif"></a>
 
 <?php
 }else{
 ?>
-  <a title="有効" onclick="if(confirm('有効にしますか？')){check_on_products('res',<?php echo $products_array['id'];?>);}else{return false;}" href="javascript:void(0);"><img border="0" alt="" src="images/icon_status_blue_light.gif"></a>
+  <a title="有効" onclick="if(confirm('有効にしますか？')){check_on_products('res',<?php echo $products_array['id'];?>);}else{return false;}" href="javascript:void(0);"><img border="0" alt="" src="images/icon_status_green_light.gif"></a>
 <img border="0" alt="" src="images/icon_status_red.gif" title="無効にする">
 
 <?php

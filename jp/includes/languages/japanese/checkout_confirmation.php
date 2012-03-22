@@ -31,11 +31,11 @@ define('TEXT_EDIT', '変更する');
 //Add Point System
 define('TS_TEXT_POINT_NOW', '今回の獲得予定ポイント:');
 
-define('TEXT_TORIHIKI_TITLE', '取引時間&nbsp;');
+define('TEXT_TORIHIKI_TITLE', '届け時間&nbsp;');
 
 define('TEXT_CARACTOR', 'お届け先キャラクター名:');
 define('TEXT_TORIHIKIHOUHOU', 'オプション:');
-define('TEXT_TORIHIKIKIBOUBI', '取引希望日:');
+define('TEXT_TORIHIKIKIBOUBI', 'お届け希望日:');
 define('TEXT_TORIHIKIKIBOUJIKAN', 'お届け希望時間:');
 define('TEXT_HANDLE_FEE_CONFIRMATION', '手数料:');
 define('TEXT_SHIPPING_FEE','配送料:');

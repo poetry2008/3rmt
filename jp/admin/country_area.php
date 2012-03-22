@@ -185,33 +185,40 @@ div#show {
 $fid = tep_db_prepare_input($_GET['fid']);
 $even = 'dataTableSecondRow';
 $odd  = 'dataTableRow';
+$select_class = 'dataTableRowSelected';
 $area_fee_sql = "select * from ". TABLE_AREA_FEE ." where fid=$fid order by sort asc,id asc";
 
 $area_fee_page = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $area_fee_sql, $area_fee_query_numrows);
 $area_fee_query = tep_db_query($area_fee_sql);
 $i = 0;
 while($area_fee_array = tep_db_fetch_array($area_fee_query)){
-  $nowColor = $i % 2 == 1 ? $even : $odd;
+  if((int)$_GET['id'] == $area_fee_array['id'] || ($i == 0 && !isset($_GET['id']))){
+    $nowColor = $select_class;
+    $onmouseover = 'onmouseover="this.className=\'dataTableRowSelected\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$select_class.'\'"';
+  }else{
+    $nowColor = $i % 2 == 1 ? $even : $odd;
+    $onmouseover = 'onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"';
+  }
   
   $area_fee_option_array = unserialize($area_fee_array['weight_fee']);
 
   $fee = current($area_fee_option_array);
-  echo '<tr class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'">' . "\n";
-  echo '<td>'.$area_fee_array['title'].'</td>';
-  echo '<td>'.$area_fee_array['name'].'</td>';
-  echo '<td>'. $fee .'</td>';
-  echo '<td>'. $area_fee_array['date'] .'</td>';
-  echo '<td>'. $area_fee_array['sort'] .'</td>';
+  echo '<tr class="'.$nowColor.'" '. $onmouseover .'>' . "\n";
+  echo '<td onclick="document.location.href=\'?fid='. $area_fee_array['fid'] .'&page='. $_GET['page'] .'&id='. $area_fee_array['id'] .'\'">'.$area_fee_array['title'].'</td>';
+  echo '<td onclick="document.location.href=\'?fid='. $area_fee_array['fid'] .'&page='. $_GET['page'] .'&id='. $area_fee_array['id'] .'\'">'.$area_fee_array['name'].'</td>';
+  echo '<td onclick="document.location.href=\'?fid='. $area_fee_array['fid'] .'&page='. $_GET['page'] .'&id='. $area_fee_array['id'] .'\'">'. $fee .'</td>';
+  echo '<td onclick="document.location.href=\'?fid='. $area_fee_array['fid'] .'&page='. $_GET['page'] .'&id='. $area_fee_array['id'] .'\'">'. $area_fee_array['date'] .'</td>';
+  echo '<td onclick="document.location.href=\'?fid='. $area_fee_array['fid'] .'&page='. $_GET['page'] .'&id='. $area_fee_array['id'] .'\'">'. $area_fee_array['sort'] .'</td>';
   echo '<td>';
   if($area_fee_array['status'] == 0){
 ?>
-  <img border="0" src="images/icon_status_blue.gif" alt="" title="有効">
+  <img border="0" src="images/icon_status_green.gif" alt="" title="有効">
   <a title="無効にする" onclick="if(confirm('無効にしますか？')){check_on_area('del',<?php echo $area_fee_array['id'];?>,<?php echo $_GET['fid'];?>);}else{return false;}" href="javascript:void(0);"><img border="0" alt="" src="images/icon_status_red_light.gif"></a>
 
 <?php
 }else{
 ?>
-  <a title="有効" onclick="if(confirm('有効にしますか？')){check_on_area('res',<?php echo $area_fee_array['id'];?>,<?php echo $_GET['fid'];?>);}else{return false;}" href="javascript:void(0);"><img border="0" alt="" src="images/icon_status_blue_light.gif"></a>
+  <a title="有効" onclick="if(confirm('有効にしますか？')){check_on_area('res',<?php echo $area_fee_array['id'];?>,<?php echo $_GET['fid'];?>);}else{return false;}" href="javascript:void(0);"><img border="0" alt="" src="images/icon_status_green_light.gif"></a>
 <img border="0" alt="" src="images/icon_status_red.gif" title="無効にする">
 
 <?php

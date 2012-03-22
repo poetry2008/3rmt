@@ -32,7 +32,7 @@ define('TEXT_CONTINUE_CHECKOUT_PROCEDURE', '「次へ進む」をクリックし
 # Add ds-style
 define('TEXT_CARACTOR', 'お届け先キャラクター名:');
 define('TEXT_TORIHIKIHOUHOU', 'オプション:');
-define('TEXT_TORIHIKIKIBOUBI', '取引希望日:');
+define('TEXT_TORIHIKIKIBOUBI', 'お届け希望日:');
 define('TEXT_TORIHIKIKIBOUJIKAN', 'お届け希望時間:');
 
 define('TEXT_CHECK_EIJI', '(英字)');
@@ -42,7 +42,7 @@ define('TEXT_PRESE_SELECT', '選択してください');
 define('TEXT_ERROR_BAHAMUTO', '<span class="errorText">【お届け先キャラクター名】が入力されていません</span>');
 define('TEXT_ERROR_BAHAMUTO_EIJI', '<span class="errorText">【お届け先キャラクター名】で使用できる文字は半角英字のみです</span>');
 define('TEXT_ERROR_TORIHIKIHOUHOU', '<span class="errorText">【オプション】を選択してください。</span>');
-define('TEXT_ERROR_DATE', '<span class="errorText">【取引希望日】を選択してください。</span>');
+define('TEXT_ERROR_DATE', '<span class="errorText">【お届け希望日】を選択してください。</span>');
 define('TEXT_ERROR_JIKAN', '<span class="errorText">【お届け希望時間】を選択してください。</span>');
 
 
