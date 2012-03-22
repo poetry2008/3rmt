@@ -18,7 +18,11 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
       $style_color = isset($_POST['op_'.$this->formname]) && $_POST['op_'.$this->formname] != $this->comment ?'color:#000;':'color:#999;';
       echo '<input type="hidden" name="'.$this->formname.'" value="'.$this->front_title.'">';
       echo '<input type="text" name="op_'.$this->formname.'" id="op_'.$this->formname.'" size="15" maxlength="'. $this->num_limit .'" value="'. (isset($_POST['op_'.$this->formname])?$_POST['op_'.$this->formname]:$this->comment) .'" style="'. $style_color .'" onfocus="this.style.color=\'#001\';if(this.value==\''. $this->comment.'\')this.value=\'\'" onblur="if(this.value==\'\'){this.value=\''. $this->comment .'\';this.style.color=\'#999\'}">';
-      echo '<span id="error_'.$this->formname.'" class="option_error"><font color="red">';
+      if($this->required == 'true'){
+
+        echo '<font color="red">&nbsp;*必須</font>';
+      }
+      echo '<br><span id="error_'.$this->formname.'" class="option_error"><font color="red">';
      if (isset($option_error_array[$this->formname])) {
        echo $option_error_array[$this->formname]; 
      }

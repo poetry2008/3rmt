@@ -43,7 +43,7 @@ define('TEXT_ERROR_BAHAMUTO', '<span class="errorText">【お届け先キャラ�
 define('TEXT_ERROR_BAHAMUTO_EIJI', '<span class="errorText">【お届け先キャラクター名】で使用できる文字は半角英字のみです</span>');
 define('TEXT_ERROR_TORIHIKIHOUHOU', '<span class="errorText">【オプション】を選択してください。</span>');
 define('TEXT_ERROR_DATE', '<span class="errorText">【取引希望日】を選択してください。</span>');
-define('TEXT_ERROR_JIKAN', '<span class="errorText">【取引希望時間】を選択してください。</span>');
+define('TEXT_ERROR_JIKAN', '<span class="errorText">【お届け希望時間】を選択してください。</span>');
 
 
 // from checkout product
@@ -66,6 +66,6 @@ define('TABLE_ADDRESS_TITLE','住所');
 define('TABLE_OPTION_NEW','登録先に届ける');
 define('TABLE_OPTION_OLD','過去のお届け先を指定する');
 define('TABLE_ADDRESS_SHOW','お届け先リストから選ぶ:');
-define('ADDRESS_ERROR_OPTION_ITEM_TEXT_NULL','入力してください');
-define('ADDRESS_ERROR_OPTION_ITEM_TEXT_TYPE_WRONG','入力された文字が正しくないです。');
+define('ADDRESS_ERROR_OPTION_ITEM_TEXT_NULL','必須項目');
+define('ADDRESS_ERROR_OPTION_ITEM_TEXT_TYPE_WRONG','正しく入力してください');
 ?>

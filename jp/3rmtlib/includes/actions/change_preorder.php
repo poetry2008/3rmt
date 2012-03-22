@@ -69,7 +69,6 @@
   }
   $error = false;  
   if ($_POST['action'] == 'process') {
-    $preorder_torihikihouhou = tep_db_prepare_input($_POST['torihikihouhou']);
     $preorder_date = tep_db_prepare_input($_POST['date']);
     $preorder_hour = tep_db_prepare_input($_POST['hour']);
     $preorder_min = tep_db_prepare_input($_POST['min']);
@@ -91,24 +90,21 @@
 
       $error = true;
     }
-    if ($preorder_torihikihouhou == '') {
-      $error = true;
-      $torihikihouhou_error = TEXT_PREORDER_ERROR_TORIHIKIHOUHOU;
-    }
-    
+     
     if ($preorder_date == '') {
       $error = true; 
       $date_error = TEXT_PREORDER_ERROR_DATE; 
-    }
+    }else{
     
-    if ($preorder_hour == '') {
-      $error = true;
-      $jikan_error = TEXT_PREORDER_ERROR_JIKAN;
-    }
+      if ($preorder_hour == '') {
+        $error = true;
+        $jikan_error = TEXT_PREORDER_ERROR_JIKAN;
+      }
     
-    if ($preorder_min == '') {
-      $error = true;
-      $jikan_error = TEXT_PREORDER_ERROR_JIKAN;
+      if ($preorder_min == '') {
+        $error = true;
+        $jikan_error = TEXT_PREORDER_ERROR_JIKAN;
+      }
     }
    
     if (isset($_POST['preorder_point'])) {

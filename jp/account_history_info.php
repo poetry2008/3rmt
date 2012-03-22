@@ -88,7 +88,20 @@
 ?> 
                     <td width="30%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                         <tr> 
-                          <td class="main"><b><?php echo HEADING_DELIVERY_ADDRESS; ?></b></td> 
+                          <td class="main"><b><?php echo HEADING_DELIVERY_ADDRESS; ?></b>
+                          <br>
+                          <?php 
+                            $address_shipping_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $_GET['order_id'] ."'");
+                            $address_num = 0;
+                            while($address_shipping_array = tep_db_fetch_array($address_shipping_query)){
+                              if($address_num == 7 || $address_num == 8 || $address_num == 9){
+                                echo $address_shipping_array['value']; 
+                              }
+                              $address_num++;
+                            }
+                            tep_db_free_result($address_shipping_query);
+                          ?>
+                          </td> 
                         </tr> 
                         <tr>
                           <td class="main"><?php echo tep_address_format($order->delivery['format_id'], $order->delivery, 1, ' ', '<br>'); ?></td> 

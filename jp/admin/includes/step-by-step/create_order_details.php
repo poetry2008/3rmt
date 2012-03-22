@@ -107,10 +107,11 @@ function address_option_show(action){
     break;
   case 'old' :
     $("#address_show_id").show();
+    var first_num = 0;
     var arr_old  = new Array();
 <?php
 if(isset($customerId) && $customerId != ''){
-  $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_ORDERS ." where customers_id=". $customerId ." group by orders_id");
+  $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_ORDERS ." where customers_id=". $customerId ." group by orders_id order by orders_id desc");
   
    
   $address_num = 0;
@@ -158,7 +159,8 @@ if(isset($customerId) && $customerId != ''){
   address_show_list.options.length = 0;
 
   len = arr_old.length;
-  address_show_list.options[address_show_list.options.length]=new Option('--',''); 
+  //address_show_list.options[address_show_list.options.length]=new Option('--',''); 
+  j_num = 0;
   for(i = 0;i < len;i++){
     j = 0;
     arr_str = '';
@@ -169,10 +171,13 @@ if(isset($customerId) && $customerId != ''){
         j++;
     }
     if(arr_str != ''){
+      ++j_num;
+      if(j_num == 1){first_num = i;}
       address_show_list.options[address_show_list.options.length]=new Option(arr_str,i);
     }
 
-  }   
+  }
+    address_option_list(first_num);  
     break;
   }
 }
@@ -182,7 +187,7 @@ function address_option_list(value){
 <?php
 if(isset($customerId) && $customerId != ''){
 
-  $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_ORDERS ." where customers_id=". $customerId ." group by orders_id");
+  $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_ORDERS ." where customers_id=". $customerId ." group by orders_id order by orders_id desc");
   
    
   $address_num = 0;
@@ -505,6 +510,18 @@ function check_hour_1(value){
     }
   }
 }
+
+<?php
+if ((isset($_POST['address_option']) && ($_POST['address_option'] == 'old')) || !isset($_POST['address_option'])) {
+?>
+  $(document).ready(function(){
+    
+    address_option_show('old'); 
+    address_option_list(first_num);
+  });
+<?php
+}
+?>
 </script>
 
 <table border="0" width="100%" cellspacing="0" cellpadding="2">
@@ -797,8 +814,8 @@ echo '&nbsp;&nbsp;<input type="button" value="'. TEXT_CLEAR .'" onclick="check_c
 <tr>
                             <td>&nbsp;</td>
                             <td colspan="2">
-                            <input type="radio" name="address_option" value="new" onclick="address_option_show('new');" checked><?php echo TABLE_OPTION_NEW; ?>
-                            <input type="radio" name="address_option" value="old" onclick="address_option_show('old');"><?php echo TABLE_OPTION_OLD; ?>
+                            <input type="radio" name="address_option" value="old" onclick="address_option_show('old');" checked><?php echo TABLE_OPTION_OLD; ?>
+                            <input type="radio" name="address_option" value="new" onclick="address_option_show('new');"><?php echo TABLE_OPTION_NEW; ?> 
                             </td>
 </tr>
 <tr id="address_show_id" style="display:none;"><td>&nbsp;</td>

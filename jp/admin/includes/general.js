@@ -1115,7 +1115,7 @@ document.edit_order.notify_comments.checked = false;
 }
 }
 
-function show_text(id,ele,type,sort,flag){
+function show_text(id,ele,type,sort,flag,title,name){
 
       //$("div#show").load("show.php", {id:id});
     if(ele != ''){
@@ -1123,7 +1123,7 @@ function show_text(id,ele,type,sort,flag){
     }
     $.ajax({
        url: 'ajax_address.php',
-       data: {id:id,type:type,sort:sort,flag:flag},
+       data: {id:id,type:type,sort:sort,flag:flag,title:title,name:name},
        type: 'POST',
        dataType: 'text',
        async : false,
@@ -1195,14 +1195,14 @@ function show_text_fee(id,ele,flag){
             
 }
 
-function show_text_area(id,ele,fid,flag){
+function show_text_area(id,ele,fid,sort,flag){
     
     if(ele != ''){
       ele = ele.parentNode;
     }
     $.ajax({
        url: 'ajax_country_area.php',
-       data: {id:id,fid:fid,flag:flag},
+       data: {id:id,fid:fid,sort:sort,flag:flag},
        type: 'POST',
        dataType: 'text',
        async : false,
@@ -1236,14 +1236,14 @@ function show_text_area(id,ele,fid,flag){
 }
 
 //商品配送时间
-function show_text_products(id,ele,flag){
+function show_text_products(id,ele,sort,flag){
      
     if(ele != ''){
       ele = ele.parentNode;
     }
     $.ajax({
        url: 'ajax_products_shipping_time.php',
-       data: {id:id,flag:flag},
+       data: {id:id,sort:sort,flag:flag},
        type: 'POST',
        dataType: 'text',
        async : false,
@@ -1350,8 +1350,8 @@ function check_add(){
 function check_form(){
   var title = document.getElementById('title').value;
   var name = document.getElementById('name').value;
-  var error_title = '<font color="red">入力して下さい。</font>'; 
-  var error_name = '<font color="red">入力して下さい。</font>'; 
+  var error_title = '<font color="red">必須項目</font>'; 
+  var error_name = '<font color="red">必須項目</font>'; 
 
   error_str = false;
   if(title == ''){
@@ -1382,15 +1382,105 @@ function check_form(){
 
 function check_form_products(){
   var name = document.getElementById('name').value;
-  var error_name = '<font color="red">入力して下さい。</font>'; 
+  var error_name = '<font color="red">必須項目</font>'; 
 
   if(name == ''){
     $("#error_name").html(error_name);
     $("#name").focus();
     return false;
+  }else{
+  
+    $("#error_name").html('');
   }
 
  return true;
 
 }
 
+function work_add(){
+  var work_num = document.getElementById('work_num');
+  num = work_num.value;
+  num = parseInt(num);
+  work_num.value = num+1; 
+  var work_str = '<tr id="workid'+num+'"><td width="30%" height="30" align="left">&nbsp;お届け可能時間'+num+'</td><td><input type="text" name="work_start_hour[]" size="3" maxlength="2" value="">&nbsp;:&nbsp;<input type="text" name="work_start_min[]" size="3" maxlength="2" value="">&nbsp;～&nbsp;<input type="text" name="work_end_hour[]" size="3" maxlength="2" value="">&nbsp;:&nbsp;<input type="text" name="work_end_min[]" size="3" maxlength="2" value="">&nbsp;<input type="button" value="削除" onclick="work_del('+num+');"><br><span id="work_error'+num+'"></span></td></tr>';
+
+ $("#work_list").append(work_str); 
+}
+
+
+function work_check(){
+
+  var work_start_hour = document.getElementsByName("work_start_hour[]");
+  var work_start_min = document.getElementsByName("work_start_min[]");
+  var work_end_hour = document.getElementsByName("work_end_hour[]");
+  var work_end_min = document.getElementsByName("work_end_min[]");
+  var mode_hour = /^([0-1][0-9])|(2[0-3])$/;
+  var mode_hour_1 = /^[0-9]$/; 
+  var mode_min = /^[0-5][0-9]$/;
+  var mode_min_1 = /^[0-9]$/;
+  var error_str = false;
+  var error = false;
+  var error_1 = false;
+  var error_2 = false;
+
+  for(i = 0;i < work_start_hour.length;i++){
+    if(i == 0){
+      if(work_start_hour[i].value == '' || work_start_min[i].value == '' || work_end_hour[i].value == '' || work_end_min[i].value ==''){
+        error_1 = true;
+        //error_str = true;
+        error = true;
+      }else{
+        if((!mode_hour.test(work_start_hour[i].value) && !mode_hour_1.test(work_start_hour[i].value)) || (!mode_min.test(work_start_min[i].value) && !mode_min_1.test(work_start_min[i].value)) || (!mode_hour.test(work_end_hour[i].value) && !mode_hour_1.test(work_end_hour[i].value)) || (!mode_min.test(work_end_min[i].value) && !mode_min_1.test(work_end_min[i].value))){
+      
+          //error_str = true;
+          error_2 = true;
+          error = true;
+        }else{
+    
+          error_str = false;
+        } 
+      }
+    
+    }else{
+      if(work_start_hour[i].value != '' || work_start_min[i].value != '' || work_end_hour[i].value != '' || work_end_min[i].value !=''){ 
+        if((!mode_hour.test(work_start_hour[i].value) && !mode_hour_1.test(work_start_hour[i].value)) || (!mode_min.test(work_start_min[i].value) && !mode_min_1.test(work_start_min[i].value)) || (!mode_hour.test(work_end_hour[i].value) && !mode_hour_1.test(work_end_hour[i].value)) || (!mode_min.test(work_end_min[i].value) && !mode_min_1.test(work_end_min[i].value))){
+      
+          error_str = true;
+          error = true;
+        }else{
+    
+          error_str = false;
+        } 
+      }
+    }
+     
+    if(error_str == true){
+     
+      $("#work_error"+(i+1)).html('<font color="red">正しく入力してください</font>');
+      
+    }else{
+        if(error_1 == true && i == 0){
+      
+          $("#work_error"+(i+1)).html('<font color="red">必須項目</font>');
+        }else if(error_2 == true && i == 0){
+      
+          $("#work_error"+(i+1)).html('<font color="red">正しく入力してください</font>');
+        }else{
+          $("#work_error"+(i+1)).html(''); 
+        }
+    }
+  }
+
+  if(error){
+  
+    return false;
+  }else{
+  
+    return true;
+  }
+}
+
+function work_del(value){
+
+  $("#workid"+value).remove();
+}

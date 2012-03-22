@@ -19,4 +19,7 @@ define('TABLE_NEW','新規項目');
 define('TABLE_MIN','分');
 define('TABLE_DAY','日');
 define('TABLE_BUTTON_UNSET','取り消し');
+define('TABLE_REQUIRED','*必須');
+define('TABLE_ADD','追加');
+define('TABLE_BUTTON_DEL','削除');
 ?>

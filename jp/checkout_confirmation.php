@@ -284,11 +284,13 @@ $shipping_fee = $cart->total > $free_value ? 0 : $weight_fee;
   <tr>
   <td class="main" colspan="3"><b><?php echo TEXT_TORIHIKI_TITLE; ?></b><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
   </tr>
+<!--
   <tr>
   <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
   <td class="main"><?php echo TEXT_TORIHIKIHOUHOU; ?></td>
   <td class="main"><?php echo $torihikihouhou; ?></td>
   </tr>
+-->
   <tr>
   <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
   <td class="main" width="30%"><?php echo TEXT_TORIHIKIKIBOUBI; ?></td>

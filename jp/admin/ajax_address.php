@@ -7,6 +7,8 @@ $id = tep_db_prepare_input($_POST['id']);
 $type_value = tep_db_prepare_input($_POST['type']);
 $sort_id = tep_db_prepare_input($_POST['sort']);
 $flag = tep_db_prepare_input($_POST['flag']);
+$_title = tep_db_prepare_input($_POST['title']);
+$_name = tep_db_prepare_input($_POST['name']);
 
 if(isset($id) && $id != 0){
      
@@ -185,12 +187,14 @@ if($id == 0){
   <tr><td bgcolor="#000000" class="dataTableHeadingContent" height="30"><?php echo tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO); ?>&nbsp;<?php echo $title.TABLE_TITLE_1;?></td><td bgcolor="#000000" align="right" class="dataTableHeadingContent" onmouseover="this.style.cursor=\'hand\'"><?php echo $prev_str;?>&nbsp;<?php echo $next_str;?>&nbsp;<a href="javascript:hide_text();"><font color="#FFFFFF">X</font></a></td></tr>
 <?php
 }
+$title = $_title != '' ? $_title : $title;
+$name = $_name != '' ? $_name : $name;
 ?>
 <tr><td>&nbsp;</td></tr>
-<tr><td width="30%" height="30" align="left">&nbsp;<?php echo TABLE_LIST_1;?></td><td><input type="text" name="title" id="title" value="<?php echo $title;?>"><span id="error_title"></span><input type="hidden" name="cid" value="<?php echo $address_array['id'];?>"</td></tr>
-<tr><td width="30%" height="30" align="left">&nbsp;<?php echo TABLE_LIST_2;?></td><td><input type="text" name="name" id="name" value="<?php echo $name;?>"><span id="error_name"></span></td></tr>
+<tr><td width="30%" height="30" align="left">&nbsp;<?php echo TABLE_LIST_1;?></td><td><input type="text" name="title" id="title" class="option_text" value="<?php echo $title;?>">&nbsp;<font color="red"><?php echo TABLE_REQUIRED;?></font><br><span id="error_title"></span><input type="hidden" name="cid" value="<?php echo $address_array['id'];?>"</td></tr>
+<tr><td width="30%" height="30" align="left">&nbsp;<?php echo TABLE_LIST_2;?></td><td><input type="text" name="name" id="name" class="option_text" value="<?php echo $name;?>">&nbsp;<font color="red"><?php echo TABLE_REQUIRED;?></font><br><span id="error_name"></span></td></tr>
 <tr><td width="30%" height="30" align="left">&nbsp;<?php echo TABLE_LIST_3;?></td><td>
-<select name="type" onchange="show_text(<?php echo $id;?>,'',this.value);">
+<select name="type" onchange="show_text(<?php echo $id;?>,'',this.value,'','',document.getElementById('title').value,document.getElementById('name').value);">
 <option value="text" <?php echo $type == 'text' ? 'selected' : '';?>>text</option>
 <option value="textarea" <?php echo $type == 'textarea' ? 'selected' : '';?>>textarea</option>
 <option value="option" <?php echo $type == 'option' ? 'selected' : '';?>>option</option>
@@ -201,7 +205,7 @@ if($id == 0){
 if($type == 'text'){
 
 
-  echo '<tr><td width="30%" height="30" align="left">&nbsp;'. TABLE_LIST_4_1 .'</td><td><textarea name="comment" rows="6" cols="30">'. $comment .'</textarea></td></tr>';
+  echo '<tr><td width="30%" height="30" align="left">&nbsp;'. TABLE_LIST_4_1 .'</td><td><textarea name="comment" rows="6" cols="30" class="option_text">'. $comment .'</textarea></td></tr>';
   /*
   echo '<tr><td width="30%" height="30" align="left">&nbsp;'. TABLE_LIST_9 .'</td><td><input type="text" name="limit" value="'. $limit.'"></td></tr>';
   $required_true = $required == 'true' ? 'checked' : '';
@@ -224,7 +228,7 @@ if($type == 'text'){
  $select_num = $type_limit == 'num' ? 'selected' : '';
  $select_email = $type_limit == 'email' ? 'selected' : '';
 
- echo '<tr><td width="30%" height="30" align="left">&nbsp;'. TABLE_LIST_6 .'</td><td><input type="text" name="comment" value="'. $comment .'"></td></tr>';
+ echo '<tr><td width="30%" height="30" align="left">&nbsp;'. TABLE_LIST_6 .'</td><td><input type="text" name="comment" class="option_text" value="'. $comment .'"></td></tr>';
   echo '<tr><td width="30%" height="30" align="left">&nbsp;'. TABLE_LIST_7 .'</td><td><input type="text" name="option_comment[]" value="'. $rows .'" style="text-align: right;"></td></tr>';
   echo '<tr><td width="30%" height="30" align="left">&nbsp;'. TABLE_LIST_8 .'</td><td>
     <select name="text_type">
@@ -241,7 +245,7 @@ if($type == 'text'){
   $required_true = $required == '' && $required_true == '' ? 'checked' : 'checked';
 
   echo '<tr><td width="30%" height="30" align="left">&nbsp;'. TABLE_LIST_10 .'</td><td><input type="radio" name="required" value="true" '. $required_true .'>True&nbsp;<input type="radio" name="required" value="false" '. $required_false .'>False</td></tr>';
-  echo '<tr><td width="30%" height="30" align="left">&nbsp;'. TABLE_LIST_11 .'</td><td><input type="text" name="option_comment[]" value="'. $set_value .'"></td></tr>';
+  echo '<tr><td width="30%" height="30" align="left">&nbsp;'. TABLE_LIST_11 .'</td><td><input type="text" name="option_comment[]" class="option_text" value="'. $set_value .'"></td></tr>';
 
 }else{
 
@@ -291,7 +295,7 @@ if($type == 'text'){
   $options_str .= $options_str_temp;
   $options_str .= '</select>'; 
 
-  echo '<tr><td width="30%" height="30" align="left">&nbsp;'. TABLE_LIST_6     .'</td><td><input type="text" name="comment" value="'. $comment .'"></td></tr>';
+  echo '<tr><td width="30%" height="30" align="left">&nbsp;'. TABLE_LIST_6     .'</td><td><input type="text" name="comment" class="option_text" value="'. $comment .'"></td></tr>';
   //option 所属上一级
 
   if($parent_id != '' || $id == 0){
@@ -328,6 +332,7 @@ if($type == 'text'){
  
 }
 
+$sort = $id == 0 ? 1000 : $sort;
 ?>
 
 <tr><td width="30%" height="30" align="left">&nbsp;<?php echo TABLE_LIST_5;?></td><td><input type="text" name="sort" value="<?php echo $sort;?>" style="text-align: right;"></td></tr>

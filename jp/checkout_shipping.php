@@ -42,8 +42,7 @@
     }
   }
 
-  require(DIR_WS_CLASSES . 'order.php');
-  $order = new order;
+  require(DIR_WS_CLASSES . 'order.php'); $order = new order;
 
 // register a random ID in the session to check throughout the checkout procedure
 // against alterations in the shopping cart contents
@@ -145,16 +144,17 @@
   if($date == '') {
     $error = true;
     $date_error = TEXT_ERROR_DATE;
-  }
+  }else{
   
-  if($hour == '') {
-    $error = true;
-    $jikan_error = TEXT_ERROR_JIKAN;
-  }
+    if($hour == '') {
+      $error = true;
+      $jikan_error = TEXT_ERROR_JIKAN;
+    }
   
-  if($min == '') {
-    $error = true;
-    $jikan_error = TEXT_ERROR_JIKAN;
+    if($min == '') {
+      $error = true;
+      $jikan_error = TEXT_ERROR_JIKAN;
+    }
   }
 
   if($error_str == true){
@@ -304,6 +304,7 @@ function check(value){
   } 
 }
 
+var first_num = 0;
 function address_option_show(action){
   switch(action){
 
@@ -337,6 +338,7 @@ function address_option_show(action){
       var list_options = document.getElementById("op_"+x);
       list_options.value = arr_new[x];
       list_options.style.color = arr_color[x];
+      $("#error_"+x).html('');
     }
     break;
   case 'old' :
@@ -344,7 +346,7 @@ function address_option_show(action){
     var arr_old  = new Array();
 <?php
 if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
-  $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_ORDERS ." where customers_id=". $_SESSION['customer_id'] ." group by orders_id");
+  $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_ORDERS ." where customers_id=". $_SESSION['customer_id'] ." group by orders_id order by orders_id desc");
   
    
   $address_num = 0;
@@ -392,7 +394,7 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
   address_show_list.options.length = 0;
 
   len = arr_old.length;
-  address_show_list.options[address_show_list.options.length]=new Option('--',''); 
+  j_num = 0;
   for(i = 0;i < len;i++){
     j = 0;
     arr_str = '';
@@ -401,12 +403,16 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
           arr_str += arr_old[i][x];
         }
         j++;
+        $("#error_"+x).html('');
     }
     if(arr_str != ''){
+      ++j_num;
+      if(j_num == 1){first_num = i;}
       address_show_list.options[address_show_list.options.length]=new Option(arr_str,i);
     }
 
-  }   
+  }
+    address_option_list(first_num);  
     break;
   }
 }
@@ -414,7 +420,7 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
 function address_option_list(value){
   var arr_list = new Array();
 <?php
-  $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_ORDERS ." where customers_id=". $_SESSION['customer_id'] ." group by orders_id");
+  $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_ORDERS ." where customers_id=". $_SESSION['customer_id'] ." group by orders_id order by orders_id desc");
   
    
   $address_num = 0;
@@ -458,11 +464,7 @@ function address_option_list(value){
   for(x in arr_list[value]){
     var list_option = document.getElementById("op_"+x);
     list_option.style.color = '#000';
-    list_option.value = arr_list[value][x];
-    //if(ii == 7){
-
-      //fee(arr_list[value][x]);
-    //}
+    list_option.value = arr_list[value][x]; 
     ii++; 
   }
 
@@ -493,11 +495,18 @@ function address_option_list(value){
        }
     }); 
  }
-  $(document).ready(function(){
-   
-    fee();
 
+<?php
+if ((isset($_POST['address_option']) && ($_POST['address_option'] == 'old')) || !isset($_POST['address_option'])) {
+?>
+  $(document).ready(function(){
+    
+    address_option_show('old'); 
+    address_option_list(first_num);
   });
+<?php
+}
+?>
 </script>
 </head>
 <body> 
@@ -593,8 +602,7 @@ function address_option_list(value){
 
     $shipping_query = tep_db_query("select * from ". TABLE_PRODUCTS_SHIPPING_TIME ." where id=".$cart_shipping_value);
     $shipping_array = tep_db_fetch_array($shipping_query);
-    $shipping_time_array['work'][] = $shipping_array['work'];
-    $shipping_time_array['sleep'][] = $shipping_array['sleep'];
+    $shipping_time_array['work'][] = unserialize($shipping_array['work']);
     $shipping_time_array['db_set_day'][] = $shipping_array['db_set_day'];
     $shipping_time_array['shipping_time'][] = $shipping_array['shipping_time'];
 
@@ -603,27 +611,78 @@ function address_option_list(value){
   //work
   $shipping_time_start = array();
   $shipping_time_end = array();
-  foreach($shipping_time_array['work'] as $shipping_time_value){
+  $products_count_num = 0;
+  foreach($shipping_time_array['work'] as $shipping_time_key=>$shipping_time_value){
+
+    foreach($shipping_time_value as $k=>$val){
+
+      $shipping_time_start[$shipping_time_key][] = $val[0]; 
+      $shipping_time_end[$shipping_time_key][] = $val[1];
+    } 
+    $products_count_num++;  
+  }
+   
   
-    //$shipping_time_temp = preg_split('/[-－]+/',$shipping_time_value);
-    $shipping_time_temp = explode('－',$shipping_time_value);
-    if(count($shipping_time_temp) == 1){
-     
-      $shipping_time_temp = explode('-',$shipping_time_value);
+  $ship_array = array();
+  $ship_time_array = array();
+  foreach($shipping_time_start as $shipping_key=>$shipping_value){
+
+    foreach($shipping_value as $sh_key=>$sh_value){
+
+      $sh_start_array = explode(':',$sh_value);
+      $sh_end_array = explode(':', $shipping_time_end[$shipping_key][$sh_key]);
+
+      for($i = (int)$sh_start_array[0];$i <= (int)$sh_end_array[0];$i++){
+
+        $ship_array[$i]++; 
+        $ship_time_array[$i][] = array($sh_value,$shipping_time_end[$shipping_key][$sh_key]);
+      }
     }
-    $shipping_time_start[] = $shipping_time_temp[0];
-    $shipping_time_end[] = $shipping_time_temp[1]; 
   }
   
+  $ship_new_array = array();
+  foreach($ship_array as $ship_key=>$ship_value){
+
+    if($ship_value > $products_count_num-1){
+      $ship_temp_start = array();
+      $ship_temp_end = array(); 
+      foreach($ship_time_array[$ship_key] as $ship_k=>$ship_val){
+
+        $ship_temp_start[] = $ship_val[0];
+        $ship_temp_end[] = $ship_val[1];
+      }
+      natsort($ship_temp_start);
+      natsort($ship_temp_end);
+      $ship_new_array[$ship_key] = array(end($ship_temp_start),current($ship_temp_end));
+    }
+  }
+  
+  $ship_max_array = array();
+  $ship_min_array = array();
+  foreach($ship_new_array as $ship_new_value){
+  
+    $ship_max_array[] = $ship_new_value[0];
+    $ship_min_array[] = $ship_new_value[1];
+
+  }
+  $ship_max_array = array_unique($ship_max_array);
+  $ship_min_array = array_unique($ship_min_array);
+
+
+  $max_time_str = implode(',',$ship_max_array);
+  $min_time_str = implode(',',$ship_min_array);
+  //----------
+  if(count($shipping_time_array['work']) == 1){
+
+    $max_time_str = implode(',',$shipping_time_start[0]);
+    $min_time_str = implode(',',$shipping_time_end[0]);
+  }
+  
+
   //可配送时间区域
-  natsort($shipping_time_start);
-  natsort($shipping_time_end);
-  $work_start = end($shipping_time_start);
-  $work_start = str_replace('：',':',$work_start);
-  $work_end = current($shipping_time_end);
-  $work_end = str_replace('：',':',$work_end);
-  //配送时间段
-  $sleep = max($shipping_time_array['sleep']);
+  $work_start = $max_time_str.',';
+  $work_end = $min_time_str.',';
+
   //当日起几日后可以收货
   $db_set_day = max($shipping_time_array['db_set_day']);
   //可选收货期限
@@ -632,18 +691,30 @@ function address_option_list(value){
   $weight = $cart->weight;
   //$weight = 1;
   if($weight > 0){
+    $checked_str_old = '';
+    $checked_str_new = '';
+    $show_flag = '';
+    if ((isset($_POST['address_option']) && ($_POST['address_option'] == 'old')) || !isset($_POST['address_option'])){
+
+      $checked_str_old = 'checked';
+      $show_flag = 'block';
+    }else{
+
+      $checked_str_new = 'checked';
+      $show_flag = 'none';
+    }
 ?>
   <tr><td width="70%"><b><?php echo TABLE_ADDRESS_TITLE; ?></b></td></tr>
   <tr><td>
-    <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
+    <table border="0" width="100%" cellspacing="0" cellpadding="2" class="infoBox"> 
                       <tr class="infoBoxContents">
                         <td>
                           <table border="0" width="100%" cellspacing="0" cellpadding="2">
                             <tr>
                             <td width="10"><?php tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td>
-                            <td>
-                            <input type="radio" name="address_option" value="new" onclick="address_option_show('new');" checked><?php echo TABLE_OPTION_NEW; ?>
-                            <input type="radio" name="address_option" value="old" onclick="address_option_show('old');"><?php echo TABLE_OPTION_OLD; ?>
+                            <td class="main">
+                            <input type="radio" name="address_option" value="old" onclick="address_option_show('old');" <?php echo $checked_str_old;?>><?php echo TABLE_OPTION_OLD; ?>
+                            <input type="radio" name="address_option" value="new" onclick="address_option_show('new');" <?php echo $checked_str_new;?>><?php echo TABLE_OPTION_NEW; ?> 
                             </td></tr>
                           </table>
                        </td>
@@ -654,11 +725,11 @@ function address_option_list(value){
 
          <tr> 
             <td>
-                    <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
+                    <table border="0" width="100%" cellspacing="0" cellpadding="2" class="infoBox"> 
                       <tr class="infoBoxContents">
                         <td>
                           <table border="0" width="100%" cellspacing="0" cellpadding="2" id="address_show">
-                          <tr id="address_show_id" style="display:none"><td width="10"><?php tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td>
+                          <tr id="address_show_id" style="display:<?php echo $show_flag;?>;"><td width="10"><?php tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td>
 <td class="main" width="30%"><?php echo TABLE_ADDRESS_SHOW; ?></td>
 <td class="main" width="70%" height="30">
 <select name="address_show_list" id="address_show_list" onchange="address_option_list(this.value);">
@@ -721,7 +792,7 @@ function address_option_list(value){
     $hours = date('H');
     $mimutes = date('i');
 ?>
-  <select name="date" onChange="selectDate('<?php echo $work_start; ?>', '<?php echo $work_end; ?>',<?php echo $sleep; ?>);">
+  <select name="date" onChange="selectDate('<?php echo $work_start; ?>', '<?php echo $work_end; ?>');">
     <option value="">希望日を選択してください</option>
     <?php
           $oarr = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
@@ -729,7 +800,8 @@ function address_option_list(value){
      
     for($j = 0;$j < $shipping_time;$j++){
 
-      echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'">'.str_replace($oarr, $newarr, date("Y年m月d日（l）", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
+      $selected_str = date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == $_POST['date'] ? 'selected' : ''; 
+      echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'" '. $selected_str .'>'.str_replace($oarr, $newarr, date("Y年m月d日（l）", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
 
     }
 
@@ -753,7 +825,7 @@ function address_option_list(value){
     <td class="main"><?php echo $date_error; ?></td>
   </tr>
 <?php
-  }
+  } 
 ?>
   <tr id="shipping_list" style="display:none;">
     <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
@@ -780,6 +852,14 @@ function address_option_list(value){
  </tr>
 
 <?php
+  if(isset($_POST['date']) && $_POST['date'] != ''){
+
+    echo '<script>selectDate(\''. $work_start .' \', \''. $work_end .'\');$("#shipping_list").show();</script>';
+  }
+  if(isset($_POST['min']) && $_POST['min'] != ''){
+
+    echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\','. $_POST['hour'] .','. $_POST['min'] .');$("#shipping_list_min").show();</script>';
+  }
   if(isset($jikan_error) && $jikan_error != '') {
 ?>
   <tr>

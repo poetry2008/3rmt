@@ -13,20 +13,34 @@ if(isset($action) && $action != ''){
   case 'save':
     $products_id = tep_db_prepare_input($_POST['cid']);
     $products_name = tep_db_prepare_input($_POST['name']);
-    $work = tep_db_prepare_input($_POST['work']);
-    $sleep = tep_db_prepare_input($_POST['sleep']);
+    $work_start_hour = tep_db_prepare_input($_POST['work_start_hour']);
+    $work_start_min = tep_db_prepare_input($_POST['work_start_min']);
+    $work_end_hour = tep_db_prepare_input($_POST['work_end_hour']);
+    $work_end_min = tep_db_prepare_input($_POST['work_end_min']);
     $db_set_day = tep_db_prepare_input($_POST['db_set_day']);
     $shipping_time = tep_db_prepare_input($_POST['shipping_time']);
     $sort = tep_db_prepare_input($_POST['sort']);
 
+    $work = array();
+    foreach($work_start_hour as $w_key=>$w_value){
+      
+      if(trim($w_value) != ''){ 
+        $w_value = (int)$w_value < 10 ? '0'.(int)$w_value : $w_value;
+        $work_start_min[$w_key] = (int)$work_start_min[$w_key] < 10 ? '0'.(int)$work_start_min[$w_key] : $work_start_min[$w_key];
+        $work_end_hour[$w_key] = (int)$work_end_hour[$w_key] < 10 ? '0'.(int)$work_end_hour[$w_key] : $work_end_hour[$w_key];
+        $work_end_min[$w_key] = (int)$work_end_min[$w_key] < 10 ? '0'.(int)$work_end_min[$w_key] : $work_end_min[$w_key];
+        $work[] = array($w_value.':'.$work_start_min[$w_key],$work_end_hour[$w_key].':'.$work_end_min[$w_key]);
+      }
+    }
+
+    $work_str = serialize($work);
     //这里判断是添加，还是修改
     if($products_id == ''){
 
        $products_sql = "insert into ". TABLE_PRODUCTS_SHIPPING_TIME .
                    " values(NULL".
                    ",'". $products_name .
-                   "','". $work .
-                   "','". $sleep .
+                   "','". $work_str .
                    "','". $db_set_day .
                    "','". $shipping_time .
                    "','". $sort .                   
@@ -36,8 +50,7 @@ if(isset($action) && $action != ''){
       $products_sql = "update ". TABLE_PRODUCTS_SHIPPING_TIME .
                    " set ".
                    "name='". $products_name .
-                   "',work='". $work .
-                   "',sleep='". $sleep .
+                   "',work='". $work_str .
                    "',db_set_day='". $db_set_day .
                    "',shipping_time='". $shipping_time .
                    "',sort='". $sort .
@@ -150,7 +163,6 @@ div#show {
               <tr class="dataTableHeadingRow">
                 <td class="dataTableHeadingContent"><?php echo TABLE_TITLE_1; ?></td>
                 <td class="dataTableHeadingContent"><?php echo TABLE_TITLE_2; ?></td>
-                <td class="dataTableHeadingContent"><?php echo TABLE_TITLE_3; ?></td>
                 <td class="dataTableHeadingContent"><?php echo TABLE_TITLE_4; ?></td>
                 <td class="dataTableHeadingContent"><?php echo TABLE_TITLE_5; ?></td>                
                 <td class="dataTableHeadingContent"><?php echo TABLE_TITLE_6; ?></td>
@@ -159,18 +171,30 @@ div#show {
 <?php
 $even = 'dataTableSecondRow';
 $odd  = 'dataTableRow';
-$products_sql = "select * from ". TABLE_PRODUCTS_SHIPPING_TIME;
+$products_sql = "select * from ". TABLE_PRODUCTS_SHIPPING_TIME ." order by sort asc,id asc";
 
 $products_page = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $products_sql, $products_query_numrows);
 $products_query = tep_db_query($products_sql);
 $i = 0;
 while($products_array = tep_db_fetch_array($products_query)){
   $nowColor = $i % 2 == 1 ? $even : $odd;
-  
+  $work_array = unserialize($products_array['work']);
+  $work_str = '';
+  foreach($work_array as $w_key=>$w_value){
+
+    if($w_key < 3){
+      $work_str .= $w_value[0].'～'.$w_value[1].'<br>'; 
+    }else{
+
+      $work_str .= '......';
+      break;
+    }
+  }
+
+
   echo '<tr class="'.$nowColor.'" onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'">' . "\n";
   echo '<td>'.$products_array['name'].'</td>';
-  echo '<td>'.$products_array['work'].'</td>';
-  echo '<td>'.$products_array['sleep'].'</td>';
+  echo '<td>'.$work_str.'</td>';
   echo '<td>'. $products_array['db_set_day'] .'</td>';
   echo '<td>'. $products_array['sort'] .'</td>'; 
   echo '<td>';

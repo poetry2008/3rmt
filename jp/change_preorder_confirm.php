@@ -286,13 +286,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
             </tr>
             <tr>
               <td class="main">
-                <table width="100%"> 
-                  <tr>
-                    <td class="main"><?php echo PREORDER_CONFIRM_FETCH_TIME_READ;?></td>                  
-                    <td class="main">
-                    <?php echo $_POST['torihikihouhou'];?> 
-                    </td>                  
-                  </tr>
+                <table width="100%">  
                   <tr>
                     <td class="main"><?php echo PREORDER_CONFIRM_FETCH_TIME_DAY;?></td>                  
                     <td class="main">

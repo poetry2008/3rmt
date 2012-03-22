@@ -177,6 +177,7 @@ div#show {
                 <td class="dataTableHeadingContent"><?php echo TABLE_TITLE_2; ?></td>
                 <td class="dataTableHeadingContent"><?php echo TABLE_TITLE_3; ?></td>
                 <td class="dataTableHeadingContent"><?php echo TABLE_TITLE_4; ?></td>
+                <td class="dataTableHeadingContent"><?php echo TABLE_SORT; ?></td>
                 <td class="dataTableHeadingContent"><?php echo TABLE_TITLE_5; ?></td>                
                 <td class="dataTableHeadingContent"><?php echo TABLE_TITLE_6; ?></td>
               </tr>
@@ -184,7 +185,7 @@ div#show {
 $fid = tep_db_prepare_input($_GET['fid']);
 $even = 'dataTableSecondRow';
 $odd  = 'dataTableRow';
-$area_fee_sql = "select * from ". TABLE_AREA_FEE ." where fid=$fid";
+$area_fee_sql = "select * from ". TABLE_AREA_FEE ." where fid=$fid order by sort asc,id asc";
 
 $area_fee_page = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $area_fee_sql, $area_fee_query_numrows);
 $area_fee_query = tep_db_query($area_fee_sql);
@@ -200,6 +201,7 @@ while($area_fee_array = tep_db_fetch_array($area_fee_query)){
   echo '<td>'.$area_fee_array['name'].'</td>';
   echo '<td>'. $fee .'</td>';
   echo '<td>'. $area_fee_array['date'] .'</td>';
+  echo '<td>'. $area_fee_array['sort'] .'</td>';
   echo '<td>';
   if($area_fee_array['status'] == 0){
 ?>

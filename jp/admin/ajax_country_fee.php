@@ -72,8 +72,8 @@ if($id == 0){
 }
 ?>
 <tr><td>&nbsp;</td></tr>
-<tr><td width="30%" height="30" align="left">&nbsp;<?php echo TABLE_LIST_1;?></td><td><input type="text" name="title" id="title" value="<?php echo $title;?>"><span id="error_title"></span><input type="hidden" name="cid" value="<?php echo $country_fee_array['id'];?>"></td></tr>
-<tr><td width="30%" height="30" align="left">&nbsp;<?php echo TABLE_LIST_2;?></td><td><input type="text" name="name" id="name" value="<?php echo $name;?>"><span id="error_name"></span></td></tr>
+<tr><td width="30%" height="30" align="left">&nbsp;<?php echo TABLE_LIST_1;?></td><td><input type="text" name="title" id="title" class="option_text" value="<?php echo $title;?>">&nbsp;<font color="red"><?php echo TABLE_REQUIRED;?></font><br><span id="error_title"></span><input type="hidden" name="cid" value="<?php echo $country_fee_array['id'];?>"></td></tr>
+<tr><td width="30%" height="30" align="left">&nbsp;<?php echo TABLE_LIST_2;?></td><td><input type="text" name="name" id="name" class="option_text" value="<?php echo $name;?>">&nbsp;<font color="red"><?php echo TABLE_REQUIRED;?></font><br><span id="error_name"></span></td></tr>
 <tr><td width="30%" height="30" align="left">&nbsp;<?php echo TABLE_LIST_3;?></td><td>
 <input type="text" name="free_value" id="free_value" value="<?php echo $free_value;?>" style="text-align: right;">&nbsp;<?php echo TABLE_UNIT;?>
 <br><?php echo TABLE_PROMPT_1;?></td></tr>
@@ -101,11 +101,11 @@ foreach($weight_fee_array as $weight_fee_value){
 <br><?php echo TABLE_PROMPT_2;?></td></tr>
 
 <tr><td width="30%" height="30" align="left">&nbsp;<?php echo TABLE_LIST_6;?></td><td>
-<textarea name="email_comment" id="email_comment" rows="5" cols="30"><?php echo $email_comment; ?></textarea>
+<textarea name="email_comment" id="email_comment" rows="5" cols="30" class="option_text"><?php echo $email_comment; ?></textarea>
 <br><?php echo TABLE_PROMPT_3;?></td></tr>
 
 <tr><td width="30%" height="30" align="left">&nbsp;<?php echo TABLE_LIST_7;?></td><td><br />
-<textarea name="email_comment_1" id="email_comment_1" rows="5" cols="30"><?php echo $email_comment_1; ?></textarea>
+<textarea name="email_comment_1" id="email_comment_1" rows="5" cols="30" class="option_text"><?php echo $email_comment_1; ?></textarea>
 <br><?php echo TABLE_PROMPT_4;?></td></tr>
 
 
