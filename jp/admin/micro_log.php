@@ -16,12 +16,32 @@
       # HTTP/1.0
       header("Pragma: no-cache");
     switch ($_GET['action']) {
-
+      case 'set_read':
+        $log_read_raw = tep_db_query("select * from micro_to_user where user = '".$ocertify->auth_user."' and micro_id = '".$_POST['lid']."'" ); 
+        $log_read = tep_db_fetch_array($log_read_raw);
+        if ($log_read) {
+          tep_db_query("update `micro_to_user` set `is_read` = '".$_POST['is_read']."' where micro_id = '".$_POST['lid']."' and user = '".$ocertify->auth_user."'"); 
+        } else {
+          tep_db_query("insert into `micro_to_user` values('".$_POST['lid']."', '".$ocertify->auth_user."', '".$_POST['is_read']."')"); 
+        } 
+        
+        echo $_POST['is_read']; 
+        exit; 
+        break;
       case 'load':
         $logs = array();
         $query = tep_db_query("select * from micro_logs where deleted = '0' order by alarm='".date('Y-m-d')."' desc,sort_order desc limit 20");
-        while($l = tep_db_fetch_array($query))
+        while($l = tep_db_fetch_array($query)) {
+          $logs_read_raw = tep_db_query("select is_read from micro_to_user where micro_id = '".$l['log_id']."' and user = '".$ocertify->auth_user."'"); 
+          $logs_read = tep_db_fetch_array($logs_read_raw);
+          if ($logs_read) {
+            $l['is_read'] = $logs_read['is_read'];   
+          } else {
+            $l['is_read'] = 0;   
+          }
           $logs[] = $l;
+        }
+         
         exit(json_encode($logs));
       case 'more':
         $logs = array();
@@ -31,31 +51,85 @@
         exit(json_encode($logs));
       case 'delete': 
         tep_db_query("delete from micro_logs where log_id ='".$_GET['id']."'");
-        //tep_db_perform('micro_logs',array('deleted' => 1),'update','log_id='.$_GET['id']);
+        $notice_raw = tep_db_query("select id from ".TABLE_NOTICE." where from_notice = '".$_GET['id']."' and type = '1'"); 
+        $notice_res = tep_db_fetch_array($notice_raw);
+        if ($notice_res) {
+          tep_db_query("delete from ".TABLE_NOTICE_TO_MICRO_USER." where notice_id = '".$notice_res['id']."'"); 
+        }
+        tep_db_query("delete from ".TABLE_NOTICE." where from_notice = '".$_GET['id']."' and type = '1'"); 
+        tep_db_query("delete from micro_to_user where micro_id = '".$_GET['id']."'"); 
+        exit; 
         exit($_GET['id']);
         break;
       case 'new': 
+        $insert_time = date('Y-m-d H:i:s', time()); 
         $arr = array(
             'content' => $_POST['content'],
             'alarm'   => $_POST['alarm'],
             'author'  => $ocertify->auth_user,
             'sort_order' => time(),
-            'date_added' => date('Y-m-d H:i:s', time()),
+            'date_added' => $insert_time,
             'level' => $_POST['level']
           );
         tep_db_perform('micro_logs',$arr);
         $arr['log_id'] = tep_db_insert_id();
+        
+        if (!empty($_POST['alarm'])) {
+          $sql_data_array = array(
+              'type' => 1,
+              'title' => mb_substr($_POST['content'], 0, 30, 'utf-8'),
+              'set_time' => $_POST['alarm'].' 00:00:00',
+              'from_notice' => $arr['log_id'],
+              'created_at' => date('Y-m-d H:i:s', time()),
+              );
+          tep_db_perform(TABLE_NOTICE, $sql_data_array); 
+        } 
+        $arr['is_read'] = 0; 
         exit(json_encode($arr));
       case 'update':
         $arr = array(
             'content' => $_POST['content'],
-            'alarm'   => date('Y-n-j',strtotime($_POST['alarm'])),
             'last_modified' => time(),
             'level'   => $_POST['level']
           );
+        if (!empty($_POST['alarm'])) {
+          $arr['alarm'] = date('Y-n-j',strtotime($_POST['alarm'])); 
+        } else {
+          $arr['alarm'] = '0000-00-00'; 
+        }
         tep_db_perform('micro_logs',$arr,'update','log_id='.$_GET['id']);
-        //$arr['log_id'] = $_GET['id'];
+       
+        if (!empty($_POST['alarm'])) {
+          $notice_exists_raw = tep_db_query("select * from ".TABLE_NOTICE." where from_notice = '".$_GET['id']."' and type = '1'");  
+          if (tep_db_num_rows($notice_exists_raw) > 0) {
+            tep_db_query("update `".TABLE_NOTICE."` set `title` = '".mb_substr($_POST['content'], 0, 30, 'utf-8')."', `set_time` = '".date('Y-m-d 00:00:00', strtotime($_POST['alarm']))."' where `from_notice` = '".$_GET['id']."' and `type` = '1'"); 
+          } else {
+            $sql_data_array = array(
+                'type' => 1,
+                'title' => mb_substr($_POST['content'], 0, 30, 'utf-8'),
+                'set_time' => $_POST['alarm'].' 00:00:00',
+                'from_notice' => $_GET['id'],
+                'created_at' => date('Y-m-d H:i:s', time()),
+                );
+            tep_db_perform(TABLE_NOTICE, $sql_data_array); 
+          }
+        } else {
+          $notice_raw = tep_db_query("select id from ".TABLE_NOTICE." where from_notice = '".$_GET['id']."' and type = '1'"); 
+          $notice_res = tep_db_fetch_array($notice_raw);
+          if ($notice_res) {
+            tep_db_query("delete from ".TABLE_NOTICE_TO_MICRO_USER." where notice_id = '".$notice_res['id']."'"); 
+          }
+          tep_db_query("delete from ".TABLE_NOTICE." where from_notice = '".$_GET['id']."' and type = '1'"); 
+        }
+         
         $log = tep_db_fetch_array(tep_db_query("select * from micro_logs where log_id='".$_GET['id']."'"));
+        $log_read_raw = tep_db_query("select is_read from micro_to_user where micro_id = '".$_GET['id']."' and user = '".$ocertify->auth_user."'"); 
+        $log_read = tep_db_fetch_array($log_read_raw); 
+        if ($log_read) {
+          $log['is_read'] = $log_read['is_read'];   
+        } else {
+          $log['is_read'] = 0;   
+        }
         exit(json_encode($log));
       case 'chpos':
         $log1 = tep_db_fetch_array(tep_db_query("select * from micro_logs where log_id='".$_GET['id1']."'"));
@@ -247,10 +321,29 @@ $(function() {
     success: function(text){
             add_log(text);
             $('#log_form')[0].reset();
+            show_head_notice(0); 
     }
   }); 
   
 });
+
+function toggle_log_read(t_object, lid, is_read)
+{
+  $.ajax({
+    type: "POST",
+    data:'lid='+lid+'&is_read='+is_read,
+    async:false,
+    url: 'micro_log.php?action=set_read',
+    success: function (msg) {
+      if (msg == 1) {
+        str = '<a href="javascript:void(0);" onclick="toggle_log_read(this, \''+lid+'\', \'0\');"><img src="images/icons/green_right.gif"></a>'; 
+      } else {
+        str = '<a href="javascript:void(0);" onclick="toggle_log_read(this, \''+lid+'\', \'1\');"><img src="images/icons/gray_right.gif"></a>'; 
+      }
+      $(t_object).parent().html(str); 
+    }
+    });
+}
 
 function parseDate(str){  
   if(typeof str == 'string'){  
@@ -268,6 +361,7 @@ function parseDate(str){
 } 
 function log_html(text){
   t = new Date;
+  var c_admin_name = '<?php echo $ocertify->auth_user;?>'; 
   if (
     text['alarm'] == t.getFullYear() + '-' + (t.getMonth()+1) + '-' + t.getDate()
     || text['alarm'] == t.getFullYear() + '-0' + (t.getMonth()+1) + '-' + t.getDate()
@@ -281,6 +375,22 @@ function log_html(text){
   $str  = '<form action="?action=update&id='+text['log_id']+'" id="log_form_'+text['log_id']+'" method="post">';
   $str += '  <table cellpadding="0" cellspacing="0" class="log '+c+'" id="log_'+text['log_id']+'" width="100%" border="0">';
   $str += '    <tr>';
+  $str += '<td width="20">'; 
+  $str += '<div>';
+  if (text['is_read'] == 0) {
+    toggle_read = 1; 
+  } else {
+    toggle_read = 0; 
+  }
+  $str += '<a href="javascript:void(0);" onclick="toggle_log_read(this, \''+text['log_id']+'\', \''+toggle_read+'\');">'; 
+  if (text['is_read'] == 0) {
+    $str += '<img src="images/icons/gray_right.gif">'; 
+  } else {
+    $str += '<img src="images/icons/green_right.gif">'; 
+  }
+  $str += '</a>';
+  $str += '</div>'; 
+  $str += '</td>'; 
   $str += '      <td class="number" style="color:'+(text['level']!='0'?(text['level']=='2'?'red':'orange'):'black')+'">'+(parseInt(text['level'])+1)+'</td>';
   if(t2.getHours()<10){
      var hour = '0'+t2.getHours();
@@ -301,7 +411,7 @@ function log_html(text){
   $str += '      <td class="info02">';
   $str += '           <div class="level">'+parseInt(text['level'])+'</div>';
   $str += '           <div class="alarm">'+text['alarm']+'</div>';
-  $str += '           <div class="action"><a href="javascript:void(0);" onclick="edit_log('+text['log_id']+')"><img src="images/icons/preview.gif"></a> <a href="javascript:void(0);" onclick="delete_log('+text['log_id']+')"><img src="images/icons/delete.gif"></a> <a href="javascript:void(0)" onclick="up('+text['log_id']+')" ><img src="images/icons/up.gif"></a> <a href="javascript:void(0)" onclick="down('+text['log_id']+')" ><img src="images/icons/down.gif"></a></div>';
+  $str += '           <div class="action"><a href="javascript:void(0);" onclick="edit_log('+text['log_id']+')"><img src="images/icons/edit_img.gif"></a> <a href="javascript:void(0)" onclick="up('+text['log_id']+')" ><img src="images/icons/up.gif"></a> <a href="javascript:void(0);" onclick="delete_log('+text['log_id']+')"><img src="images/icons/del_img.gif"></a> <a href="javascript:void(0)" onclick="down('+text['log_id']+')" ><img src="images/icons/down.gif"></a></div>';
   $str += '           <div class="edit_action"><input type="submit" value="メモ保存" /></div>';
   $str += '      </td>';
   $str += '    </tr>';
@@ -321,6 +431,7 @@ function band_form(log_id){
   $('#log_form_'+log_id).ajaxForm({
     dataType:'json',
     success: function(j){
+      show_head_notice(0); 
       $('#log_form_'+j['log_id']).replaceWith(log_html(j));
       band_form(j['log_id']);
     }
@@ -363,6 +474,7 @@ function delete_log(id)
       dataType: 'text',
       success: function(text) {
         $('#log_' + id).hide();
+        show_head_notice(0); 
       }
     });
   }

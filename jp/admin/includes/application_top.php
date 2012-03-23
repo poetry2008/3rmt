@@ -50,6 +50,7 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
   define('LOCAL_EXE_UNZIP', '/usr/local/bin/unzip');
 
 // define the filenames used in the project
+  define('FILENAME_ALARM', 'alarm.php');
   define('FILENAME_CAMPAIGN', 'campaign.php');
   define('FILENAME_ASSETS', 'assets.php');
   define('FILENAME_PRINT_ASSETS', 'print_assets.php');
@@ -134,6 +135,9 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
 
 
 // define the database table names used in the project
+  define('TABLE_ALARM', 'alarm');
+  define('TABLE_NOTICE', 'notice');
+  define('TABLE_NOTICE_TO_MICRO_USER', 'notice_to_micro_user');
   define('TABLE_CAMPAIGN', 'campaign');
   define('TABLE_CUSTOMER_TO_CAMPAIGN', 'customer_to_campaign');
   define('TABLE_PREORDERS', 'preorders');
