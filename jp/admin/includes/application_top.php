@@ -132,7 +132,7 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
   define('FILENAME_OPTIONS_DL', 'options_dl.php');
   define('FILENAME_NEW_CUSTOMERS', 'new_customers.php');
   define('FILENAME_BILL_TEMPLATES', 'bill_templates.php');
-
+  define('FILENAME_SHOW_PRODUCTS_MANUAL','products_manual.php');
 
 // define the database table names used in the project
   define('TABLE_ALARM', 'alarm');
