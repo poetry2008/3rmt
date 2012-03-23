@@ -3704,6 +3704,7 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
   $str .= '<table class="popup_order_info" border="0" cellpadding="2" cellspacing="0" width="100%">';
   $str .= '<tr><td width="120">&nbsp;</td><td class="main" style="padding-left:20%;">';
   $str .= '<div id="order_del">'; 
+  $str .= '<a href="'.tep_href_link(FILENAME_ALARM, urldecode($param_str.'&oID='.$orders['orders_id'])).'">'.tep_html_element_button(TEXT_ORDER_ALARM_LINK).'</a>'; 
   $str .= '<a href="'.tep_href_link(FILENAME_ORDERS, urldecode($param_str).'&oID='.$orders['orders_id'].'&action=edit').'">'.tep_html_element_button(IMAGE_DETAILS).'</a>'; 
   if ($ocertify->npermission == 15) {
     $str .= '&nbsp;<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="delete_order_info(\''.$orders['orders_id'].'\', \''.urlencode($param_str).'\')"').'</a>'; 
@@ -7008,4 +7009,177 @@ function get_option_item_link($group_id, $item_id)
   }
   
   return $link_str;
+}
+
+function tep_get_notice_info($return_type = 0)
+{
+  global $ocertify;
+  
+  $order_notice_array = array();
+  $micro_notice_array = array();
+  
+  $order_notice_raw = tep_db_query("select id, title, set_time, from_notice from ".TABLE_NOTICE." where user = '".$ocertify->auth_user."' and type = '0' order by set_time asc, created_at desc limit 2");
+  
+  $notice_num = 0;
+  $notice_tmp_num = tep_db_num_rows($order_notice_raw); 
+  if ($notice_tmp_num) {
+    $notice_num = $notice_tmp_num; 
+  }
+  $order_notice = tep_db_fetch_array($order_notice_raw); 
+  if ($order_notice) {
+    $order_notice_array['id'] = $order_notice['id']; 
+    $order_notice_array['title'] = $order_notice['title']; 
+    $order_notice_array['set_time'] = $order_notice['set_time']; 
+    $order_notice_array['from_notice'] = $order_notice['from_notice']; 
+  }
+
+  $micro_notice_raw = tep_db_query("select id, title, set_time, from_notice from ".TABLE_NOTICE." where type = '1' and id not in (select notice_id from ".TABLE_NOTICE_TO_MICRO_USER." n where n.user = '".$ocertify->auth_user."') order by set_time asc, created_at desc limit 2");
+     
+  $micro_num = 0;
+  $micro_tmp_num = tep_db_num_rows($micro_notice_raw); 
+  if ($micro_tmp_num) {
+    $micro_num = $micro_tmp_num; 
+  }
+  $micro_notice = tep_db_fetch_array($micro_notice_raw); 
+  if ($micro_notice) {
+    $micro_notice_array['id'] = $micro_notice['id']; 
+    $micro_notice_array['title'] = $micro_notice['title']; 
+    $micro_notice_array['set_time'] = $micro_notice['set_time']; 
+    $micro_notice_array['from_notice'] = $micro_notice['from_notice']; 
+  }
+  
+  $show_type = 0; 
+  $rise_bg = 0;
+  $now_time = strtotime(date('Y-m-d H:i:00', time())); 
+  
+  if (!empty($order_notice_array)) { 
+    $order_notice_time = strtotime($order_notice_array['set_time']); 
+    $diff_o_time = $order_notice_time - $now_time; 
+    if ($diff_o_time <= 0) {
+      $rise_bg = 1;
+      $show_type = 1; 
+    } else {
+      if (!empty($micro_notice_array)) {
+        $micro_notice_time = strtotime($micro_notice_array['set_time']); 
+        $diff_m_time = $micro_notice_time - $now_time; 
+        if ($diff_m_time <= 0) {
+          $show_type = 2; 
+          $rise_bg = 1;
+        } else {
+          $o_compare_time = strtotime($order_notice_array['set_time']);
+          $m_compare_time = strtotime($micro_notice_array['set_time']);
+          
+          if ($o_compare_time <= $m_compare_time) {
+            $show_type = 1; 
+          } else {
+            $show_type = 2; 
+          }
+        }
+      } else {
+        $show_type = 1; 
+      }
+    }
+  } else {
+    if (!empty($micro_notice_array)) {
+      $show_type = 2; 
+      $micro_notice_time = strtotime($micro_notice_array['set_time']); 
+      $diff_m_time = $micro_notice_time - $now_time; 
+      if ($diff_m_time <= 0) {
+        $rise_bg = 1;
+      }
+    }
+  }
+  $more_single = 0; 
+  if ($show_type == 1) {
+    $order_notice_time = strtotime($order_notice_array['set_time']); 
+    $leave_time = $order_notice_time - $now_time; 
+    if ($leave_time > 0) {
+      $leave_time_day = floor($leave_time/(3600*24));
+      $leave_time_tmp = $leave_time % (3600*24);
+      $leave_time_seconds = $leave_time_tmp % 3600;
+      $leave_time_hour = ($leave_time_tmp - $leave_time_seconds) / 3600;
+      $leave_time_minute = $leave_time_seconds % 60;
+      $leave_time_minute = ($leave_time_seconds - $leave_time_minute) / 60;
+      $leave_date = sprintf('%02d', $leave_time_day).DAY_TEXT.sprintf('%02d', $leave_time_hour).HOUR_TEXT.sprintf('%02d', $leave_time_minute).MINUTE_TEXT;
+    } else {
+      $leave_date = '00'.DAY_TEXT.'00'.HOUR_TEXT.'00'.MINUTE_TEXT; 
+    }
+    $html_str = '<table cellspacing="0" cellpadding="0" border="0"  width="100%">';
+    $html_str .= '<tr>'; 
+    
+    $html_str .= '<td width="80">'; 
+    if (($notice_num + $micro_num) > 1) {
+      $more_single = 1; 
+      $html_str .= '&nbsp;<a href="javascript:void(0);" onclick="expend_all_notice(\''.$order_notice_array['id'].'\');" style="text-decoration:underline; color:#0000ff;"><font color="#0000ff">'.NOTICE_ALARM_TITLE.'▼</font></a>';
+    } else {
+      $html_str .= '&nbsp;'.NOTICE_ALARM_TITLE;
+    }
+    $html_str .= '</td>'; 
+    $html_str .= '<td class="notice_info">'; 
+    $alarm_raw = tep_db_query("select orders_id from ".TABLE_ALARM." where alarm_id = '".$order_notice_array['from_notice']."'"); 
+    $alarm = tep_db_fetch_array($alarm_raw); 
+    $html_str .= '<div style="float:left; width:125px;">'; 
+    $html_str .= NOTICE_DIFF_TIME_TEXT.'&nbsp;<span id="leave_time_'.$order_notice_array['id'].'">'.$leave_date.'</span>'; 
+    $html_str .= '</div>'; 
+    $html_str .= '<a href="'.tep_href_link(FILENAME_ORDERS, 'oID='.$alarm['orders_id'].'&action=edit').'">'.$order_notice_array['title'].'</a>'; 
+    $html_str .= '</td>'; 
+    $html_str .= '<td align="right">'; 
+    $html_str .= '<a href="javascript:void(0);" onclick="delete_alarm_notice(\''.$order_notice_array['id'].'\', \'0\');"><img src="images/icons/note_close.gif" alt="close"></a>'; 
+    $html_str .= '<script type="text/javascript">$(function(){calc_notice_time(\''.strtotime($order_notice_array['set_time']).'\', '.$order_notice_array['id'].', 0);});</script>'; 
+    $html_str .= '</td>'; 
+    $html_str .= '</tr>'; 
+    $html_str .= '</table>'; 
+    $html_str .= '<input type="hidden" value="'.$more_single.'" name="more_single" id="more_single">'; 
+    if ($return_type == 1) {
+      return $more_single.'|||'.$leave_time.'|||'.$order_notice_array['id'].'|||'.$html_str;
+    } 
+    return $html_str;
+  } else if ($show_type == 2) {
+    $micro_notice_time = strtotime($micro_notice_array['set_time']); 
+    $leave_time = $micro_notice_time - $now_time; 
+    if ($leave_time > 0) {
+      $leave_time_day = floor($leave_time/(3600*24));
+      $leave_time_tmp = $leave_time % (3600*24);
+      $leave_time_seconds = $leave_time_tmp % 3600;
+      $leave_time_hour = ($leave_time_tmp - $leave_time_seconds) / 3600;
+      $leave_time_minute = $leave_time_seconds % 60;
+      $leave_time_minute = ($leave_time_seconds - $leave_time_minute) / 60;
+      $leave_date = sprintf('%02d', $leave_time_day).DAY_TEXT.sprintf('%02d', $leave_time_hour).HOUR_TEXT.sprintf('%02d', $leave_time_minute).MINUTE_TEXT;
+    
+    } else {
+      $leave_date = '00'.DAY_TEXT.'00'.HOUR_TEXT.'00'.MINUTE_TEXT; 
+    }
+    
+    $html_str = '<table cellspacing="0" cellpadding="0" border="0"  width="100%">';
+    $html_str .= '<tr>'; 
+    
+    $html_str .= '<td width="80">'; 
+    if (($notice_num + $micro_num) > 1) {
+      $html_str .= '&nbsp;<a href="javascript:void(0);" onclick="expend_all_notice(\''.$micro_notice_array['id'].'\');" style="text-decoration:underline; color:#0000ff;"><font color="#0000ff">'.NOTICE_EXTEND_TITLE.'▼</font></a>';
+      $more_single = 1; 
+    } else {
+      $html_str .= '&nbsp;'.NOTICE_EXTEND_TITLE;
+    }
+    $html_str .= '</td>'; 
+    $html_str .= '<td class="notice_info">'; 
+    $html_str .= '<div style="float:left; width:125px;">'; 
+    $html_str .= NOTICE_DIFF_TIME_TEXT.'&nbsp;<span id="leave_time_'.$micro_notice_array['id'].'">'.$leave_date.'</span>'; 
+    $html_str .= '</div>'; 
+    $html_str .= '<a href="'.tep_href_link('micro_log.php').'">'.$micro_notice_array['title'].'</a>'; 
+    $html_str .= '</td>'; 
+    $html_str .= '<td align="right">'; 
+    $html_str .= '<a href="javascript:void(0);" onclick="delete_micro_notice(\''.$micro_notice_array['id'].'\', \'0\');"><img src="images/icons/note_close.gif" alt="close"></a>'; 
+    $html_str .= '<script type="text/javascript">$(function () {calc_notice_time(\''.strtotime($micro_notice_array['set_time']).'\', '.$micro_notice_array['id'].', 0);});</script>'; 
+    $html_str .= '</td>'; 
+    $html_str .= '</tr>'; 
+    $html_str .= '</table>'; 
+    $html_str .= '<input type="hidden" value="'.$more_single.'" name="more_single" id="more_single">'; 
+    
+    if ($return_type == 1) {
+      return $more_single.'|||'.$leave_time.'|||'.$micro_notice_array['id'].'|||'.$html_str; 
+    }
+    return $html_str;
+  }
+  
+  return '';
 }
