@@ -3261,7 +3261,27 @@ function tep_get_orders_products_names($orders_id) {
   return $str;
 }
 // orders.php
+function tep_get_orders_manual_title($orders_id,$products_id){
+$oID=$orders_id;
+$pID=$products_id;
+$products_info_query=tep_db_query("select products_id,site_id from ".TABLE_ORDERS_PRODUCTS." where orders_id='".$oID."' and products_id='".$pID."'");
+$products_info_array=tep_db_fetch_array($products_info_query);
 
+$categories_info_query=tep_db_query("select categories_id from ".TABLE_PRODUCTS_TO_CATEGORIES." where products_id='".$products_info_array['products_id']."'");
+$categories_info_array=tep_db_fetch_array($categories_info_query);
+$categories_pid_query=tep_db_query("select parent_id from ".TABLE_CATEGORIES." where categories_id='".$categories_info_array['categories_id']."'");
+$categories_pid_array=tep_db_fetch_array($categories_pid_query);
+$cp_manual_query=tep_db_query("select categories_name from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$categories_pid_array['parent_id']."' and site_id='".$products_info_array['site_id']."'");
+$cp_manual_array=tep_db_fetch_array($cp_manual_query);
+
+$c_manual_query=tep_db_query("select categories_name from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$categories_info_array['categories_id']."' and site_id='".$products_info_array['site_id']."'");
+$c_manual_array=tep_db_fetch_array($c_manual_query);
+
+$pro_manual_query=tep_db_query("select products_name from ".TABLE_PRODUCTS_DESCRIPTION." where products_id='".$products_info_array['products_id']."' and site_id='".$products_info_array."'");
+$pro_manual_array=tep_db_fetch_array($pro_manual_query);
+$manual_title=$cp_manual_array['categories_name'].'/'.$c_manual_array['categories_name'].'/'.$pro_manual_array['products_name'].'のマニュアル';
+return $manual_title;
+}
 function tep_get_orders_products_string($orders, $single = false, $popup = false, $param_str = '') {
   global $ocertify; 
   require_once(DIR_WS_CLASSES . 'payment.php');
@@ -3358,9 +3378,9 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
     $products_attributes_query = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS_ATTRIBUTES." where orders_products_id='".$p['orders_products_id']."'");
     if(in_array(array($p['products_id'],$p['orders_products_id']),$autocalculate_arr)&&
         !empty($autocalculate_arr)){
-      $str .= '<tr><td class="main">商品：<font color="red">「入」</font></td><td class="main">'.$p['products_name'].'</td></tr>';
+      $str .= '<tr><td class="main">商品：<font color="red">「入」</font></td><td class="main">'.$p['products_name'].'&nbsp;&nbsp;&nbsp;<a href="'.tep_href_link(FILENAME_ORDERS, urldecode($param_str).'&oID='.$orders['orders_id'].'&pID='.$p['products_id'].'&action=show_manual_info').'">'.tep_html_element_button('マニュアル').'</a></td></tr>';
     }else{
-      $str .= '<tr><td class="main">商品：<font color="red">「未」</font></td><td class="main">'.$p['products_name'].'</td></tr>';
+      $str .= '<tr><td class="main">商品：<font color="red">「未」</font></td><td class="main">'.$p['products_name'].'&nbsp;&nbsp;&nbsp;<a href="'.tep_href_link(FILENAME_ORDERS, urldecode($param_str).'&oID='.$orders['orders_id'].'&pID='.$p['products_id'].'&action=show_manual_info').'">'.tep_html_element_button('マニュアル').'</a></td></tr>';
     }
     $str .= '<tr><td class="main">個数：</td><td class="main">'.$p['products_quantity'].'個'.tep_get_full_count2($p['products_quantity'], $p['products_id'], $p['products_rate']).'</td></tr>';
     while($pa = tep_db_fetch_array($products_attributes_query)){

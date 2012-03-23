@@ -198,4 +198,10 @@ define('TEXT_ORDER_HISTORY_FROM_ORDER', '注文');
 define('TEXT_ORDER_HISTORY_FROM_PREORDER', '予約');
 define('TEXT_SHIPPING_METHOD','配達方法');
 define('TEXT_SHIPPING_ADDRESS','配達先');
+define('SHOW_MANUAL','マニュアル');
+define('SHOW_MANUAL_TITLE','のマニュアル');
+define('SHOW_MANUAL_SEARCH','検索');
+define('SHOW_MANUAL_NONE','マニュアルが設定されていません！！！');
+define('SHOW_MANUAL_RETURN','戻る');
+define('SEARCH_MANUAL_PRODUCTS_FAIL','検索されたマニュアルがありません！！！');
 ?>

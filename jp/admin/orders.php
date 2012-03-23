@@ -67,392 +67,392 @@ function tep_show_orders_products_info($orders_id) {
     $str .= '<tr>';
     $str .= '<td class="main"><b>';
     $str .= TEXT_FUNCTION_HEADING_CUSTOMERS;
-    $str .= '</b></td>';
-    $str .= '<td class="main"><b>';
-    $str .= tep_output_string_protected($orders['customers_name']); 
-    $str .= '</b></td>';
-    $str .= '</tr>';
-    $str .= '<tr><td colspan="2"><hr></td></tr>'; 
-  }
-  $show_payment_method =
-    payment::changeRomaji($orders['payment_method'],'title');
-  $str .= '<tr><td class="main"
-    width="70"><b>'.TEXT_FUNCTION_PAYMENT_METHOD.'</b></td><td class="main"
-    style="color:darkred;"><b>'.$show_payment_method.'</b></td></tr>';
-  if ($orders['confirm_payment_time'] != '0000-00-00 00:00:00') {
-    $time_str = date(TEXT_FUNCTION_DATE_STRING, strtotime($orders['confirm_payment_time'])); 
-  }else if(tep_check_order_type($orders['orders_id'])!=2){
-    $time_str = '入金まだ'; 
-  }
-  if($time_str){
-    $str .= '<tr><td class="main"><b>'.TEXT_FUNCTION_UN_GIVE_MONY_DAY.'</b></td><td class="main" style="color:red;"><b>'.$time_str.'</b></td></tr>';
-  }
-  $str .= '<tr><td class="main"><b>'.TEXT_FUNCTION_OPTION.'</b></td><td class="main" style="color:blue;"><b>'.$orders['torihiki_houhou'].'</b></td></tr>';
+$str .= '</b></td>';
+$str .= '<td class="main"><b>';
+$str .= tep_output_string_protected($orders['customers_name']); 
+$str .= '</b></td>';
+$str .= '</tr>';
+$str .= '<tr><td colspan="2"><hr></td></tr>'; 
+}
+$show_payment_method =
+payment::changeRomaji($orders['payment_method'],'title');
+$str .= '<tr><td class="main"
+width="70"><b>'.TEXT_FUNCTION_PAYMENT_METHOD.'</b></td><td class="main"
+style="color:darkred;"><b>'.$show_payment_method.'</b></td></tr>';
+if ($orders['confirm_payment_time'] != '0000-00-00 00:00:00') {
+$time_str = date(TEXT_FUNCTION_DATE_STRING, strtotime($orders['confirm_payment_time'])); 
+}else if(tep_check_order_type($orders['orders_id'])!=2){
+$time_str = '入金まだ'; 
+}
+if($time_str){
+$str .= '<tr><td class="main"><b>'.TEXT_FUNCTION_UN_GIVE_MONY_DAY.'</b></td><td class="main" style="color:red;"><b>'.$time_str.'</b></td></tr>';
+}
+$str .= '<tr><td class="main"><b>'.TEXT_FUNCTION_OPTION.'</b></td><td class="main" style="color:blue;"><b>'.$orders['torihiki_houhou'].'</b></td></tr>';
 
-  $orders_products_query = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS." op,".TABLE_PRODUCTS." p where p.products_id = op.products_id and op.orders_id = '".$orders['orders_id']."'");
-  $autocalculate_arr = array();
-  $autocalculate_sql = "select oaf.value as arr_str from ".TABLE_OA_FORMVALUE." oaf,".
-    TABLE_OA_ITEM." oai 
-    where oaf.item_id = oai.id 
-    and oai.type = 'autocalculate' 
-    and oaf.orders_id = '".$orders['orders_id']."' 
-    order by oaf.id asc limit 1 ";
-  $autocalculate_query = tep_db_query($autocalculate_sql);
-  $autocalculate_row = tep_db_fetch_array($autocalculate_query);
-  $arr_checked = explode('_',$autocalculate_row['arr_str']);
-  $autocalculate_arr = array();
-  foreach($arr_checked as $key=>$value){
-    $temp_arr = explode('|',$value);
-    if($temp_arr[0] != 0 && $temp_arr[3] != 0){
-      $autocalculate_arr[] = array($temp_arr[0],$temp_arr[3]);
-    }
-  }
-  $tmpArr = array();
-  if (ORDER_INFO_PRODUCT_LIST == 'true') { 
-    while ($p = tep_db_fetch_array($orders_products_query)) {
-      if(in_array($p,$tmpArr)){
-        continue;
-      }
-      $tmpArr[] = $p ;
-      $products_attributes_query = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS_ATTRIBUTES." where orders_products_id='".$p['orders_products_id']."'");
-      if(in_array(array($p['products_id'],$p['orders_products_id']),$autocalculate_arr)&&
-          !empty($autocalculate_arr)){
-        $str .= '<tr><td class="main"><b>'.TEXT_FUNCTION_CATEGORY.'</b><font
-          color="red">'.TEXT_FUNCTION_FINISH.'</font></td><td class="main">'.$p['products_name'].'</td></tr>';
-      }else{
-        $str .= '<tr><td class="main"><b>'.TEXT_FUNCTION_CATEGORY.'</b><font
-          color="red">'.TEXT_FUNCTION_UNFINISH.'</font></td><td class="main">'.$p['products_name'].'</td></tr>';
-      }
-      $str .= '<tr><td class="main"><b>'.TEXT_FUNCTION_NUMBER.'</b></td><td
-        class="main">'.$p['products_quantity'].TEXT_FUNCTION_NUM.tep_get_full_count2($p['products_quantity'], $p['products_id'], $p['products_rate']).'</td></tr>';
-      while($pa = tep_db_fetch_array($products_attributes_query)){
-        $str .= '<tr><td class="main"><b>'.$pa['products_options'].'：</b></td><td class="main">'.$pa['products_options_values'].'</td></tr>';
-      }
-      $str .= '<tr><td class="main"><b>'.TEXT_FUNCTION_GAME_NAME.'</b></td><td class="main"  style="color:#407416; line-height:20px;"><font size="4"><b>'.$p['products_character'].'</b></font></td></tr>';
-      $names = tep_get_computers_names_by_orders_id($orders['orders_id']);
-      if ($names) {
-        $str .= '<tr><td class="main"><b>PC：</b></td><td class="main">'.implode('&nbsp;,&nbsp;', $names).'</td></tr>';
-      }
-      $str .= '<tr><td class="main"></td><td class="main"></td></tr>';
-      $i++;
-    }
-    $str .= '<tr><td colspan="2"><hr></td></tr>'; 
-  }
+$orders_products_query = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS." op,".TABLE_PRODUCTS." p where p.products_id = op.products_id and op.orders_id = '".$orders['orders_id']."'");
+$autocalculate_arr = array();
+$autocalculate_sql = "select oaf.value as arr_str from ".TABLE_OA_FORMVALUE." oaf,".
+TABLE_OA_ITEM." oai 
+where oaf.item_id = oai.id 
+and oai.type = 'autocalculate' 
+and oaf.orders_id = '".$orders['orders_id']."' 
+order by oaf.id asc limit 1 ";
+$autocalculate_query = tep_db_query($autocalculate_sql);
+$autocalculate_row = tep_db_fetch_array($autocalculate_query);
+$arr_checked = explode('_',$autocalculate_row['arr_str']);
+$autocalculate_arr = array();
+foreach($arr_checked as $key=>$value){
+$temp_arr = explode('|',$value);
+if($temp_arr[0] != 0 && $temp_arr[3] != 0){
+$autocalculate_arr[] = array($temp_arr[0],$temp_arr[3]);
+}
+}
+$tmpArr = array();
+if (ORDER_INFO_PRODUCT_LIST == 'true') { 
+while ($p = tep_db_fetch_array($orders_products_query)) {
+if(in_array($p,$tmpArr)){
+continue;
+}
+$tmpArr[] = $p ;
+$products_attributes_query = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS_ATTRIBUTES." where orders_products_id='".$p['orders_products_id']."'");
+if(in_array(array($p['products_id'],$p['orders_products_id']),$autocalculate_arr)&&
+  !empty($autocalculate_arr)){
+$str .= '<tr><td class="main"><b>'.TEXT_FUNCTION_CATEGORY.'</b><font
+  color="red">'.TEXT_FUNCTION_FINISH.'</font></td><td class="main">'.$p['products_name'].'</td></tr>';
+}else{
+$str .= '<tr><td class="main"><b>'.TEXT_FUNCTION_CATEGORY.'</b><font
+  color="red">'.TEXT_FUNCTION_UNFINISH.'</font></td><td class="main">'.$p['products_name'].'</td></tr>';
+}
+$str .= '<tr><td class="main"><b>'.TEXT_FUNCTION_NUMBER.'</b></td><td
+class="main">'.$p['products_quantity'].TEXT_FUNCTION_NUM.tep_get_full_count2($p['products_quantity'], $p['products_id'], $p['products_rate']).'</td></tr>';
+while($pa = tep_db_fetch_array($products_attributes_query)){
+$str .= '<tr><td class="main"><b>'.$pa['products_options'].'：</b></td><td class="main">'.$pa['products_options_values'].'</td></tr>';
+}
+$str .= '<tr><td class="main"><b>'.TEXT_FUNCTION_GAME_NAME.'</b></td><td class="main"  style="color:#407416; line-height:20px;"><font size="4"><b>'.$p['products_character'].'</b></font></td></tr>';
+$names = tep_get_computers_names_by_orders_id($orders['orders_id']);
+if ($names) {
+$str .= '<tr><td class="main"><b>PC：</b></td><td class="main">'.implode('&nbsp;,&nbsp;', $names).'</td></tr>';
+}
+$str .= '<tr><td class="main"></td><td class="main"></td></tr>';
+$i++;
+}
+$str .= '<tr><td colspan="2"><hr></td></tr>'; 
+}
 
 
-  if (ORDER_INFO_ORDER_INFO == 'true') {
-    $str .= '<tr>'; 
-    $str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_FROM.'</b></td>'; 
-    $str .= '<td class="main">';
-    $str .= tep_get_site_name_by_order_id($orders['orders_id']); 
-    $str .= '</td>'; 
-    $str .= '</tr>'; 
+if (ORDER_INFO_ORDER_INFO == 'true') {
+$str .= '<tr>'; 
+$str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_FROM.'</b></td>'; 
+$str .= '<td class="main">';
+$str .= tep_get_site_name_by_order_id($orders['orders_id']); 
+$str .= '</td>'; 
+$str .= '</tr>'; 
 
-    $str .= '<tr>'; 
-    $str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_FETCH_TIME.'</b></td>';
-    $str .= '<td class="main">';
-    $str .= str_replace('/','<br>',$orders['torihiki_date']); 
-    $str .= '</td>'; 
-    $str .= '</tr>'; 
+$str .= '<tr>'; 
+$str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_FETCH_TIME.'</b></td>';
+$str .= '<td class="main">';
+$str .= str_replace('/','<br>',$orders['torihiki_date']); 
+$str .= '</td>'; 
+$str .= '</tr>'; 
 
-    $str .= '<tr>'; 
-    $str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_OPTION.'</b></td>';
-    $str .= '<td class="main">';
-    $str .= $orders['torihiki_houhou'];    
-    $str .= '</td>'; 
-    $str .= '</tr>'; 
+$str .= '<tr>'; 
+$str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_OPTION.'</b></td>';
+$str .= '<td class="main">';
+$str .= $orders['torihiki_houhou'];    
+$str .= '</td>'; 
+$str .= '</tr>'; 
 
-    $str .= '<tr>'; 
-    $str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_ID.'</b></td>';
-    $str .= '<td class="main">';
-    $str .= $orders['orders_id']; 
-    $str .= '</td>'; 
-    $str .= '</tr>'; 
+$str .= '<tr>'; 
+$str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_ID.'</b></td>';
+$str .= '<td class="main">';
+$str .= $orders['orders_id']; 
+$str .= '</td>'; 
+$str .= '</tr>'; 
 
-    $str .= '<tr>'; 
-    $str .= '<td class="main"><b>'.TEXT_FUNCTION_ORDER_ORDER_DATE.'</b></td>';
-    $str .= '<td class="main">';
-    $str .= tep_date_long($orders['date_purchased']); 
-    $str .= '</td>'; 
-    $str .= '</tr>'; 
+$str .= '<tr>'; 
+$str .= '<td class="main"><b>'.TEXT_FUNCTION_ORDER_ORDER_DATE.'</b></td>';
+$str .= '<td class="main">';
+$str .= tep_date_long($orders['date_purchased']); 
+$str .= '</td>'; 
+$str .= '</tr>'; 
 
-    $str .= '<tr>'; 
-    $str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_CUSTOMER_TYPE.'</b></td>';
-    $str .= '<td class="main">';
-    if(get_guest_chk($orders['customers_id'])==0){
-      $str .= TEXT_TEP_CFG_PAYMENT_CHECKBOX_OPTION_MEMBER;
-    }else{
-      $str .= TEXT_TEP_CFG_PAYMENT_CHECKBOX_OPTION_CUSTOMER;
-    }
-    $str .= '</td>'; 
-    $str .= '</tr>'; 
+$str .= '<tr>'; 
+$str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_CUSTOMER_TYPE.'</b></td>';
+$str .= '<td class="main">';
+if(get_guest_chk($orders['customers_id'])==0){
+$str .= TEXT_TEP_CFG_PAYMENT_CHECKBOX_OPTION_MEMBER;
+}else{
+$str .= TEXT_TEP_CFG_PAYMENT_CHECKBOX_OPTION_CUSTOMER;
+}
+$str .= '</td>'; 
+$str .= '</tr>'; 
 
-    $str .= '<tr>'; 
-    $str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_CUSTOMER_NAME.'</b></td>';
-    $str .= '<td class="main">';
-    $str .= '<a href="">'.$orders['customers_name'].'</a>'; 
-    $str .= '</td>'; 
-    $str .= '</tr>'; 
+$str .= '<tr>'; 
+$str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_CUSTOMER_NAME.'</b></td>';
+$str .= '<td class="main">';
+$str .= '<a href="">'.$orders['customers_name'].'</a>'; 
+$str .= '</td>'; 
+$str .= '</tr>'; 
 
-    $ostGetPara = array( "name"=>urlencode($orders['customers_name']),
-        "topicid"=>urlencode(constant("SITE_TOPIC_".$orders['site_id'])),
-        "source"=>urlencode('Email'), 
-        "email"=>urlencode($orders['customers_email_address']));
-    $parmStr = '';
-    foreach($ostGetPara as $key=>$value){
-      $parmStr.= '&'.$key.'='.$value; 
-    }
-    $remoteurl = (defined('OST_SERVER')?OST_SERVER:'scp')."/tickets.php?a=open2".$parmStr."";
+$ostGetPara = array( "name"=>urlencode($orders['customers_name']),
+"topicid"=>urlencode(constant("SITE_TOPIC_".$orders['site_id'])),
+"source"=>urlencode('Email'), 
+"email"=>urlencode($orders['customers_email_address']));
+$parmStr = '';
+foreach($ostGetPara as $key=>$value){
+$parmStr.= '&'.$key.'='.$value; 
+}
+$remoteurl = (defined('OST_SERVER')?OST_SERVER:'scp')."/tickets.php?a=open2".$parmStr."";
 
-    $str .= '<tr>'; 
-    $str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_EMAIL.'</b></td>';
-    $str .= '<td class="main">';
-    $str .= tep_output_string_protected($orders['customers_email_address']).'&nbsp;&nbsp;<a title="'.RIGHT_TICKIT_ID_TITLE.'" href="'.$remoteurl.'" target="_blank">'.RIGHT_TICKIT_EMAIL.'</a>&nbsp;&nbsp;<a href="telecom_unknow.php?keywords='.tep_output_string_protected($orders['customers_email_address']).'">'.RIGHT_TICKIT_CARD.'</a>'; 
-    $str .= '</td>'; 
-    $str .= '</tr>'; 
+$str .= '<tr>'; 
+$str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_EMAIL.'</b></td>';
+$str .= '<td class="main">';
+$str .= tep_output_string_protected($orders['customers_email_address']).'&nbsp;&nbsp;<a title="'.RIGHT_TICKIT_ID_TITLE.'" href="'.$remoteurl.'" target="_blank">'.RIGHT_TICKIT_EMAIL.'</a>&nbsp;&nbsp;<a href="telecom_unknow.php?keywords='.tep_output_string_protected($orders['customers_email_address']).'">'.RIGHT_TICKIT_CARD.'</a>'; 
+$str .= '</td>'; 
+$str .= '</tr>'; 
 
-    if ( (($orders['cc_type']) || ($orders['cc_owner']) || ($orders['cc_number'])) ) {  
-      $str .= '<tr>'; 
-      $str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_CREDITCARD_TYPE.'</b></td>';
-      $str .= '<td class="main">';
-      $str .= $orders['cc_type']; 
-      $str .= '</td>'; 
-      $str .= '</tr>'; 
+if ( (($orders['cc_type']) || ($orders['cc_owner']) || ($orders['cc_number'])) ) {  
+$str .= '<tr>'; 
+$str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_CREDITCARD_TYPE.'</b></td>';
+$str .= '<td class="main">';
+$str .= $orders['cc_type']; 
+$str .= '</td>'; 
+$str .= '</tr>'; 
 
-      $str .= '<tr>'; 
-      $str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_CREDITCARD_OWNER.'</b></td>';
-      $str .= '<td class="main">';
-      $str .= $orders['cc_owner']; 
-      $str .= '</td>'; 
-      $str .= '</tr>'; 
+$str .= '<tr>'; 
+$str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_CREDITCARD_OWNER.'</b></td>';
+$str .= '<td class="main">';
+$str .= $orders['cc_owner']; 
+$str .= '</td>'; 
+$str .= '</tr>'; 
 
-      $str .= '<tr>'; 
-      $str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_CREDITCARD_ID.'</b></td>';
-      $str .= '<td class="main">';
-      $str .= $orders['cc_number']; 
-      $str .= '</td>'; 
-      $str .= '</tr>'; 
+$str .= '<tr>'; 
+$str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_CREDITCARD_ID.'</b></td>';
+$str .= '<td class="main">';
+$str .= $orders['cc_number']; 
+$str .= '</td>'; 
+$str .= '</tr>'; 
 
-      $str .= '<tr>'; 
-      $str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_CREDITCARD_EXPIRE_TIME.'</b></td>';
-      $str .= '<td class="main">';
-      $str .= $orders['cc_expires']; 
-      $str .= '</td>'; 
-      $str .= '</tr>'; 
-    } 
-    $str .= '<tr><td colspan="2"><hr></td></tr>'; 
-  }
-  if (ORDER_INFO_CUSTOMER_INFO == 'true') {
-    $str .= '<tr>'; 
-    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_IP.'</b></td>';
-    $str .= '<td class="main">';
-    $str .= tep_high_light_by_keywords($orders['orders_ip'] ?  $orders['orders_ip'] : 'UNKNOW',IP_LIGHT_KEYWORDS); 
-    $str .= '</td>'; 
-    $str .= '</tr>'; 
+$str .= '<tr>'; 
+$str .= '<td class="main"><b>'.RIGHT_ORDER_INFO_ORDER_CREDITCARD_EXPIRE_TIME.'</b></td>';
+$str .= '<td class="main">';
+$str .= $orders['cc_expires']; 
+$str .= '</td>'; 
+$str .= '</tr>'; 
+} 
+$str .= '<tr><td colspan="2"><hr></td></tr>'; 
+}
+if (ORDER_INFO_CUSTOMER_INFO == 'true') {
+$str .= '<tr>'; 
+$str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_IP.'</b></td>';
+$str .= '<td class="main">';
+$str .= tep_high_light_by_keywords($orders['orders_ip'] ?  $orders['orders_ip'] : 'UNKNOW',IP_LIGHT_KEYWORDS); 
+$str .= '</td>'; 
+$str .= '</tr>'; 
 
-    $str .= '<tr>'; 
-    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_HOST.'</b></td>';
-    $str .= '<td class="main">';
-    $str .= tep_high_light_by_keywords($orders['orders_host_name']?'<font'.($orders['orders_host_name'] == $orders['orders_ip'] ? ' color="red"':'').'>'.$orders['orders_host_name'].'</font>':'UNKNOW',HOST_NAME_LIGHT_KEYWORDS); 
-    $str .= '</td>'; 
-    $str .= '</tr>'; 
+$str .= '<tr>'; 
+$str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_HOST.'</b></td>';
+$str .= '<td class="main">';
+$str .= tep_high_light_by_keywords($orders['orders_host_name']?'<font'.($orders['orders_host_name'] == $orders['orders_ip'] ? ' color="red"':'').'>'.$orders['orders_host_name'].'</font>':'UNKNOW',HOST_NAME_LIGHT_KEYWORDS); 
+$str .= '</td>'; 
+$str .= '</tr>'; 
 
-    $str .= '<tr>'; 
-    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_USER_AGEMT.'</b></td>';
-    $str .= '<td class="main">';
-    $str .= tep_high_light_by_keywords($orders['orders_user_agent'] ?  $orders['orders_user_agent'] : 'UNKNOW',USER_AGENT_LIGHT_KEYWORDS); 
-    $str .= '</td>'; 
-    $str .= '</tr>'; 
-    if ($orders['orders_user_agent']) { 
-      $str .= '<tr>'; 
-      $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_OS.'</b></td>';
-      $str .= '<td class="main">';
-      $str .= tep_high_light_by_keywords(getOS($orders['orders_user_agent']),OS_LIGHT_KEYWORDS); 
-      $str .= '</td>'; 
-      $str .= '</tr>'; 
+$str .= '<tr>'; 
+$str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_USER_AGEMT.'</b></td>';
+$str .= '<td class="main">';
+$str .= tep_high_light_by_keywords($orders['orders_user_agent'] ?  $orders['orders_user_agent'] : 'UNKNOW',USER_AGENT_LIGHT_KEYWORDS); 
+$str .= '</td>'; 
+$str .= '</tr>'; 
+if ($orders['orders_user_agent']) { 
+$str .= '<tr>'; 
+$str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_OS.'</b></td>';
+$str .= '<td class="main">';
+$str .= tep_high_light_by_keywords(getOS($orders['orders_user_agent']),OS_LIGHT_KEYWORDS); 
+$str .= '</td>'; 
+$str .= '</tr>'; 
 
-      $browser_info = getBrowserInfo($orders['orders_user_agent']); 
-      $str .= '<tr>'; 
-      $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_BROWSE_TYPE.'</b></td>';
-      $str .= '<td class="main">';
-      $str .= tep_high_light_by_keywords($browser_info['longName'] . ' ' .  $browser_info['version'],BROWSER_LIGHT_KEYWORDS); 
-      $str .= '</td>'; 
-      $str .= '</tr>'; 
-    } 
-    $str .= '<tr>'; 
-    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_BROWSE_LAN.'</b></td>';
-    $str .= '<td class="main">';
-    $str .= tep_high_light_by_keywords($orders['orders_http_accept_language'] ?  $orders['orders_http_accept_language'] : 'UNKNOW',HTTP_ACCEPT_LANGUAGE_LIGHT_KEYWORDS); 
-    $str .= '</td>'; 
-    $str .= '</tr>'; 
+$browser_info = getBrowserInfo($orders['orders_user_agent']); 
+$str .= '<tr>'; 
+$str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_BROWSE_TYPE.'</b></td>';
+$str .= '<td class="main">';
+$str .= tep_high_light_by_keywords($browser_info['longName'] . ' ' .  $browser_info['version'],BROWSER_LIGHT_KEYWORDS); 
+$str .= '</td>'; 
+$str .= '</tr>'; 
+} 
+$str .= '<tr>'; 
+$str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_BROWSE_LAN.'</b></td>';
+$str .= '<td class="main">';
+$str .= tep_high_light_by_keywords($orders['orders_http_accept_language'] ?  $orders['orders_http_accept_language'] : 'UNKNOW',HTTP_ACCEPT_LANGUAGE_LIGHT_KEYWORDS); 
+$str .= '</td>'; 
+$str .= '</tr>'; 
 
-    $str .= '<tr>'; 
-    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_COMPUTER_LAN.'</b></td>';
-    $str .= '<td class="main">';
-    $str .= tep_high_light_by_keywords($orders['orders_system_language'] ?  $orders['orders_system_language'] : 'UNKNOW',SYSTEM_LANGUAGE_LIGHT_KEYWORDS); 
-    $str .= '</td>'; 
-    $str .= '</tr>'; 
+$str .= '<tr>'; 
+$str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_COMPUTER_LAN.'</b></td>';
+$str .= '<td class="main">';
+$str .= tep_high_light_by_keywords($orders['orders_system_language'] ?  $orders['orders_system_language'] : 'UNKNOW',SYSTEM_LANGUAGE_LIGHT_KEYWORDS); 
+$str .= '</td>'; 
+$str .= '</tr>'; 
 
-    $str .= '<tr>'; 
-    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_USER_LAN.'</b></td>';
-    $str .= '<td class="main">';
-    $str .= tep_high_light_by_keywords($orders['orders_user_language'] ?  $orders['orders_user_language'] : 'UNKNOW',USER_LANGUAGE_LIGHT_KEYWORDS); 
-    $str .= '</td>'; 
-    $str .= '</tr>'; 
+$str .= '<tr>'; 
+$str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_USER_LAN.'</b></td>';
+$str .= '<td class="main">';
+$str .= tep_high_light_by_keywords($orders['orders_user_language'] ?  $orders['orders_user_language'] : 'UNKNOW',USER_LANGUAGE_LIGHT_KEYWORDS); 
+$str .= '</td>'; 
+$str .= '</tr>'; 
 
-    $str .= '<tr>'; 
-    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_PIXEL.'</b></td>';
-    $str .= '<td class="main">';
-    $str .= tep_high_light_by_keywords($orders['orders_screen_resolution'] ?  $orders['orders_screen_resolution'] : 'UNKNOW',SCREEN_RESOLUTION_LIGHT_KEYWORDS); 
-    $str .= '</td>'; 
-    $str .= '</tr>'; 
+$str .= '<tr>'; 
+$str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_PIXEL.'</b></td>';
+$str .= '<td class="main">';
+$str .= tep_high_light_by_keywords($orders['orders_screen_resolution'] ?  $orders['orders_screen_resolution'] : 'UNKNOW',SCREEN_RESOLUTION_LIGHT_KEYWORDS); 
+$str .= '</td>'; 
+$str .= '</tr>'; 
 
-    $str .= '<tr>'; 
-    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_COLOR.'</b></td>';
-    $str .= '<td class="main">';
-    $str .= tep_high_light_by_keywords($orders['orders_color_depth'] ?  $orders['orders_color_depth'] : 'UNKNOW',COLOR_DEPTH_LIGHT_KEYWORDS); 
-    $str .= '</td>'; 
-    $str .= '</tr>'; 
+$str .= '<tr>'; 
+$str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_COLOR.'</b></td>';
+$str .= '<td class="main">';
+$str .= tep_high_light_by_keywords($orders['orders_color_depth'] ?  $orders['orders_color_depth'] : 'UNKNOW',COLOR_DEPTH_LIGHT_KEYWORDS); 
+$str .= '</td>'; 
+$str .= '</tr>'; 
 
-    $str .= '<tr>'; 
-    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_FLASH.'</b></td>';
-    $str .= '<td class="main">';
-    $str .= tep_high_light_by_keywords($orders['orders_flash_enable'] === '1' ?  'YES' : ($orders['orders_flash_enable'] === '0' ? 'NO' : 'UNKNOW'),FLASH_LIGHT_KEYWORDS); 
-    $str .= '</td>'; 
-    $str .= '</tr>'; 
+$str .= '<tr>'; 
+$str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_FLASH.'</b></td>';
+$str .= '<td class="main">';
+$str .= tep_high_light_by_keywords($orders['orders_flash_enable'] === '1' ?  'YES' : ($orders['orders_flash_enable'] === '0' ? 'NO' : 'UNKNOW'),FLASH_LIGHT_KEYWORDS); 
+$str .= '</td>'; 
+$str .= '</tr>'; 
 
-    if ($orders['orders_flash_enable']) {
-      $str .= '<tr>'; 
-      $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_FLASH_VERSION.'</b></td>';
-      $str .= '<td class="main">';
-      $str .= tep_high_light_by_keywords($orders['orders_flash_version'],FLASH_VERSION_LIGHT_KEYWORDS); 
-      $str .= '</td>'; 
-      $str .= '</tr>'; 
-    }
-    $str .= '<tr>'; 
-    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_DIRECTOR.'</b></td>';
-    $str .= '<td class="main">';
-    $str .= tep_high_light_by_keywords($orders['orders_director_enable'] === '1' ? 'YES' : ($orders['orders_director_enable'] === '0' ? 'NO' : 'UNKNOW'),DIRECTOR_LIGHT_KEYWORDS); 
-    $str .= '</td>'; 
-    $str .= '</tr>'; 
+if ($orders['orders_flash_enable']) {
+$str .= '<tr>'; 
+$str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_FLASH_VERSION.'</b></td>';
+$str .= '<td class="main">';
+$str .= tep_high_light_by_keywords($orders['orders_flash_version'],FLASH_VERSION_LIGHT_KEYWORDS); 
+$str .= '</td>'; 
+$str .= '</tr>'; 
+}
+$str .= '<tr>'; 
+$str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_DIRECTOR.'</b></td>';
+$str .= '<td class="main">';
+$str .= tep_high_light_by_keywords($orders['orders_director_enable'] === '1' ? 'YES' : ($orders['orders_director_enable'] === '0' ? 'NO' : 'UNKNOW'),DIRECTOR_LIGHT_KEYWORDS); 
+$str .= '</td>'; 
+$str .= '</tr>'; 
 
-    $str .= '<tr>'; 
-    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_QUICK_TIME.'</b></td>';
-    $str .= '<td class="main">';
-    $str .= tep_high_light_by_keywords($orders['orders_quicktime_enable'] === '1' ? 'YES' : ($orders['orders_quicktime_enable'] === '0' ? 'NO' : 'UNKNOW'),QUICK_TIME_LIGHT_KEYWORDS); 
-    $str .= '</td>'; 
-    $str .= '</tr>'; 
+$str .= '<tr>'; 
+$str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_QUICK_TIME.'</b></td>';
+$str .= '<td class="main">';
+$str .= tep_high_light_by_keywords($orders['orders_quicktime_enable'] === '1' ? 'YES' : ($orders['orders_quicktime_enable'] === '0' ? 'NO' : 'UNKNOW'),QUICK_TIME_LIGHT_KEYWORDS); 
+$str .= '</td>'; 
+$str .= '</tr>'; 
 
-    $str .= '<tr>'; 
-    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_REAL_PLAYER.'</b></td>';
-    $str .= '<td class="main">';
-    $str .= tep_high_light_by_keywords($orders['orders_realplayer_enable'] === '1' ?  'YES' : ($orders['orders_realplayer_enable'] === '0' ? 'NO' : 'UNKNOW'),REAL_PLAYER_LIGHT_KEYWORDS); 
-    $str .= '</td>'; 
-    $str .= '</tr>'; 
+$str .= '<tr>'; 
+$str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_REAL_PLAYER.'</b></td>';
+$str .= '<td class="main">';
+$str .= tep_high_light_by_keywords($orders['orders_realplayer_enable'] === '1' ?  'YES' : ($orders['orders_realplayer_enable'] === '0' ? 'NO' : 'UNKNOW'),REAL_PLAYER_LIGHT_KEYWORDS); 
+$str .= '</td>'; 
+$str .= '</tr>'; 
 
-    $str .= '<tr>'; 
-    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_WINDOWS_MEDIA.'</b></td>';
-    $str .= '<td class="main">'; $str .= tep_high_light_by_keywords($orders['orders_windows_media_enable'] === '1' ? 'YES' : ($orders['orders_windows_media_enable'] === '0' ?  'NO' : 'UNKNOW'),WINDOWS_MEDIA_LIGHT_KEYWORDS); 
-    $str .= '</td>'; 
-    $str .= '</tr>'; 
+$str .= '<tr>'; 
+$str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_WINDOWS_MEDIA.'</b></td>';
+$str .= '<td class="main">'; $str .= tep_high_light_by_keywords($orders['orders_windows_media_enable'] === '1' ? 'YES' : ($orders['orders_windows_media_enable'] === '0' ?  'NO' : 'UNKNOW'),WINDOWS_MEDIA_LIGHT_KEYWORDS); 
+$str .= '</td>'; 
+$str .= '</tr>'; 
 
-    $str .= '<tr>'; 
-    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_PDF.'</b></td>';
-    $str .= '<td class="main">';
-    $str .= tep_high_light_by_keywords($orders['orders_pdf_enable'] === '1' ?  'YES' : ($orders['orders_pdf_enable'] === '0' ? 'NO' : 'UNKNOW'),PDF_LIGHT_KEYWORDS); 
-    $str .= '</td>'; 
-    $str .= '</tr>'; 
+$str .= '<tr>'; 
+$str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_PDF.'</b></td>';
+$str .= '<td class="main">';
+$str .= tep_high_light_by_keywords($orders['orders_pdf_enable'] === '1' ?  'YES' : ($orders['orders_pdf_enable'] === '0' ? 'NO' : 'UNKNOW'),PDF_LIGHT_KEYWORDS); 
+$str .= '</td>'; 
+$str .= '</tr>'; 
 
-    $str .= '<tr>'; 
-    $str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_JAVA.'</b></td>';
-    $str .= '<td class="main">';
-    $str .= tep_high_light_by_keywords($orders['orders_java_enable'] === '1' ?  'YES' : ($orders['orders_java_enable'] === '0' ? 'NO' : 'UNKNOW'),JAVA_LIGHT_KEYWORDS); 
-    $str .= '</td>'; 
-    $str .= '</tr>'; 
-    $str .= '<tr><td colspan="2"><hr></td></tr>'; 
-  }
+$str .= '<tr>'; 
+$str .= '<td class="main"><b>'.RIGHT_CUSTOMER_INFO_ORDER_JAVA.'</b></td>';
+$str .= '<td class="main">';
+$str .= tep_high_light_by_keywords($orders['orders_java_enable'] === '1' ?  'YES' : ($orders['orders_java_enable'] === '0' ? 'NO' : 'UNKNOW'),JAVA_LIGHT_KEYWORDS); 
+$str .= '</td>'; 
+$str .= '</tr>'; 
+$str .= '<tr><td colspan="2"><hr></td></tr>'; 
+}
 
-  if (ORDER_INFO_REFERER_INFO == 'true') {
-    $str .= '<tr>'; 
-    $str .= '<td class="main"><b>Referer Info：</b></td>';
-    $str .= '<td class="main">';
-    $str .= urldecode($orders['orders_ref']); 
-    $str .= '</td>'; 
-    $str .= '</tr>'; 
-    if ($orders['orders_ref_keywords']) {
-      $str .= '<tr>'; 
-      $str .= '<td class="main"><b>KEYWORDS：</b></td>';
-      $str .= '<td class="main">';
-      $str .= $orders['orders_ref_keywords']; 
-      $str .= '</td>'; 
-      $str .= '</tr>'; 
-    }
-    $str .= '<tr><td colspan="2"><hr></td></tr>'; 
-  }
+if (ORDER_INFO_REFERER_INFO == 'true') {
+$str .= '<tr>'; 
+$str .= '<td class="main"><b>Referer Info：</b></td>';
+$str .= '<td class="main">';
+$str .= urldecode($orders['orders_ref']); 
+$str .= '</td>'; 
+$str .= '</tr>'; 
+if ($orders['orders_ref_keywords']) {
+$str .= '<tr>'; 
+$str .= '<td class="main"><b>KEYWORDS：</b></td>';
+$str .= '<td class="main">';
+$str .= $orders['orders_ref_keywords']; 
+$str .= '</td>'; 
+$str .= '</tr>'; 
+}
+$str .= '<tr><td colspan="2"><hr></td></tr>'; 
+}
 
-  if (ORDER_INFO_ORDER_HISTORY == 'true') {
-    $order_history_list_raw = tep_db_query("select * from ".TABLE_ORDERS." where customers_email_address = '".$orders['customers_email_address']."' order by date_purchased desc limit 5"); 
-    if (tep_db_num_rows($order_history_list_raw)) {
-      $str .= '<tr>';      
-      $str .= '<td class="main" colspan="2">';      
-      $str .= '<table width="100%" border="0" cellspacing="0" cellpadding="2">'; 
-      $str .= '<tr>'; 
-      $str .= '<td colspan="4"><b>Order History：</b></td>'; 
-      $str .= '</tr>'; 
-      while ($order_history_list = tep_db_fetch_array($order_history_list_raw)) {
-        $str .= '<tr>'; 
-        $str .= '<td>'; 
-        $store_name_raw = tep_db_query("select * from ".TABLE_SITES." where id = '".$order_history_list['site_id']."'"); 
-        $store_name_res = tep_db_fetch_array($store_name_raw); 
-        $str .= $store_name_res['romaji']; 
-        $str .= '</td>'; 
-        $str .= '<td>'; 
-        $str .= $order_history_list['date_purchased']; 
-        $str .= '</td>'; 
-        $str .= '<td>'; 
-        $str .= strip_tags(tep_get_ot_total_by_orders_id($order_history_list['orders_id'], true)); 
-        $str .= '</td>'; 
-        $str .= '<td>'; 
-        $str .= $order_history_list['orders_status_name']; 
-        $str .= '</td>'; 
-        $str .= '</tr>'; 
-      }
-      $str .= '</table>'; 
-      $str .= '</td>';      
-      $str .= '</tr>';      
-      $str .= '<tr><td colspan="2"><hr></td></tr>'; 
-    }
-  }
+if (ORDER_INFO_ORDER_HISTORY == 'true') {
+$order_history_list_raw = tep_db_query("select * from ".TABLE_ORDERS." where customers_email_address = '".$orders['customers_email_address']."' order by date_purchased desc limit 5"); 
+if (tep_db_num_rows($order_history_list_raw)) {
+$str .= '<tr>';      
+$str .= '<td class="main" colspan="2">';      
+$str .= '<table width="100%" border="0" cellspacing="0" cellpadding="2">'; 
+$str .= '<tr>'; 
+$str .= '<td colspan="4"><b>Order History：</b></td>'; 
+$str .= '</tr>'; 
+while ($order_history_list = tep_db_fetch_array($order_history_list_raw)) {
+$str .= '<tr>'; 
+$str .= '<td>'; 
+$store_name_raw = tep_db_query("select * from ".TABLE_SITES." where id = '".$order_history_list['site_id']."'"); 
+$store_name_res = tep_db_fetch_array($store_name_raw); 
+$str .= $store_name_res['romaji']; 
+$str .= '</td>'; 
+$str .= '<td>'; 
+$str .= $order_history_list['date_purchased']; 
+$str .= '</td>'; 
+$str .= '<td>'; 
+$str .= strip_tags(tep_get_ot_total_by_orders_id($order_history_list['orders_id'], true)); 
+$str .= '</td>'; 
+$str .= '<td>'; 
+$str .= $order_history_list['orders_status_name']; 
+$str .= '</td>'; 
+$str .= '</tr>'; 
+}
+$str .= '</table>'; 
+$str .= '</td>';      
+$str .= '</tr>';      
+$str .= '<tr><td colspan="2"><hr></td></tr>'; 
+}
+}
 
-  if (ORDER_INFO_REPUTAION_SEARCH == 'true') {
-    $str .= '<tr>'; 
-    $str .= '<td class="main">';
-    $str .= '<b>'.RIGHT_ORDER_INFO_REPUTAION_SEARCH.'</b>'; 
-    $str .= '</td>';
-    $str .= '<td class="main">';
-    $str .= tep_get_customers_fax_by_id($orders['customers_id']); 
-    $str .= '</td>'; 
-    $str .= '</tr>'; 
-    $str .= '<tr><td colspan="2"><hr></td></tr>'; 
-  }
+if (ORDER_INFO_REPUTAION_SEARCH == 'true') {
+$str .= '<tr>'; 
+$str .= '<td class="main">';
+$str .= '<b>'.RIGHT_ORDER_INFO_REPUTAION_SEARCH.'</b>'; 
+$str .= '</td>';
+$str .= '<td class="main">';
+$str .= tep_get_customers_fax_by_id($orders['customers_id']); 
+$str .= '</td>'; 
+$str .= '</tr>'; 
+$str .= '<tr><td colspan="2"><hr></td></tr>'; 
+}
 
-  if (ORDER_INFO_ORDER_COMMENT == 'true') {
-    $str .= '<tr>'; 
-    $str .= '<td class="main">';
-    $str .= '<b>'.RIGHT_ORDER_COMMENT_TITLE.'</b>'; 
-    $str .= '</td>';
-    $str .= '<td class="main">';
-    $str .= nl2br($orders['orders_comment']); 
-    $str .= '</td>'; 
-    $str .= '</tr>'; 
-    $str .= '<tr><td colspan="2"><hr></td></tr>'; 
-  }
-  $str .= '<tr><td class="main" colspan="2">&nbsp;</td><tr>';
-  $str .= '</table>';
-  $str=str_replace("\n","",$str);
-  $str=str_replace("\r","",$str);
-  return $str;
-  return htmlspecialchars($str);
+if (ORDER_INFO_ORDER_COMMENT == 'true') {
+$str .= '<tr>'; 
+$str .= '<td class="main">';
+$str .= '<b>'.RIGHT_ORDER_COMMENT_TITLE.'</b>'; 
+$str .= '</td>';
+$str .= '<td class="main">';
+$str .= nl2br($orders['orders_comment']); 
+$str .= '</td>'; 
+$str .= '</tr>'; 
+$str .= '<tr><td colspan="2"><hr></td></tr>'; 
+}
+$str .= '<tr><td class="main" colspan="2">&nbsp;</td><tr>';
+$str .= '</table>';
+$str=str_replace("\n","",$str);
+$str=str_replace("\r","",$str);
+return $str;
+return htmlspecialchars($str);
 }
 require_once('oa/HM_Form.php'); 
 require_once('oa/HM_Group.php'); 
@@ -466,484 +466,484 @@ $all_search_status = array();
 $orders_status_query = tep_db_query("select orders_status_id, orders_status_name from " . TABLE_ORDERS_STATUS . " where language_id = '" . $languages_id . "'");
 
 while ($orders_status = tep_db_fetch_array($orders_status_query)) {
-  if (
-      $orders_status['orders_status_id'] != 17 
-      //&& $orders_status['orders_status_id'] != 31
-     )
-    $orders_statuses[] = array('id' => $orders_status['orders_status_id'],'text' => $orders_status['orders_status_name']);
+if (
+$orders_status['orders_status_id'] != 17 
+//&& $orders_status['orders_status_id'] != 31
+)
+$orders_statuses[] = array('id' => $orders_status['orders_status_id'],'text' => $orders_status['orders_status_name']);
 
-  $all_orders_statuses[] = array('id' => $orders_status['orders_status_id'], 'text' => $orders_status['orders_status_name']);
-  $orders_status_array[$orders_status['orders_status_id']] = $orders_status['orders_status_name'];
-  $all_search_status[$orders_status['orders_status_id']] = $orders_status['orders_status_name'];
+$all_orders_statuses[] = array('id' => $orders_status['orders_status_id'], 'text' => $orders_status['orders_status_name']);
+$orders_status_array[$orders_status['orders_status_id']] = $orders_status['orders_status_name'];
+$all_search_status[$orders_status['orders_status_id']] = $orders_status['orders_status_name'];
 }
 
 if (isset($_GET['action'])){ 
 switch ($_GET['action']) {
-  //一括変更----------------------------------
-  case 'sele_act':
-    if($_POST['chk'] == ""){
-      $messageStack->add_session(WARNING_ORDER_NOT_UPDATED, 'warning');
-      tep_redirect(tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('action'))));
-    }
-    //tep_redirect(tep_href_link(FILENAME_ORDERS));
+//一括変更----------------------------------
+case 'sele_act':
+if($_POST['chk'] == ""){
+$messageStack->add_session(WARNING_ORDER_NOT_UPDATED, 'warning');
+tep_redirect(tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('action'))));
+}
+//tep_redirect(tep_href_link(FILENAME_ORDERS));
 
-    foreach($_POST['chk'] as $value){
-      $oID      = $value;
-      $status   = tep_db_prepare_input($_POST['status']);
-      $title    = tep_db_prepare_input($_POST['os_title']);
-      $comments = tep_db_prepare_input($_POST['comments']);
-      $site_id  = tep_get_site_id_by_orders_id($value);
+foreach($_POST['chk'] as $value){
+$oID      = $value;
+$status   = tep_db_prepare_input($_POST['status']);
+$title    = tep_db_prepare_input($_POST['os_title']);
+$comments = tep_db_prepare_input($_POST['comments']);
+$site_id  = tep_get_site_id_by_orders_id($value);
 
-      $order_updated = false;
-      $check_status_query = tep_db_query("select customers_name, customers_id, customers_email_address, orders_status, date_purchased, payment_method, torihiki_date from " . TABLE_ORDERS . " where orders_id = '" . tep_db_input($oID) . "'");
-      $check_status = tep_db_fetch_array($check_status_query);
+$order_updated = false;
+$check_status_query = tep_db_query("select customers_name, customers_id, customers_email_address, orders_status, date_purchased, payment_method, torihiki_date from " . TABLE_ORDERS . " where orders_id = '" . tep_db_input($oID) . "'");
+$check_status = tep_db_fetch_array($check_status_query);
 
-      //Add Point System
-      if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && MODULE_ORDER_TOTAL_POINT_ADD_STATUS != '0') {
-        $pcount_query = tep_db_query("select count(*) as cnt from ".TABLE_ORDERS_STATUS_HISTORY." where orders_status_id = '".MODULE_ORDER_TOTAL_POINT_ADD_STATUS."' and orders_id = '".$oID."'");
-        $pcount = tep_db_fetch_array($pcount_query);
-        if($pcount['cnt'] == 0 && $status == MODULE_ORDER_TOTAL_POINT_ADD_STATUS) {
-          $query1  = tep_db_query("select customers_id from " . TABLE_ORDERS . " where orders_id = '".$oID."'");
-          $result1 = tep_db_fetch_array($query1);
-          $query2  = tep_db_query("select value from " . TABLE_ORDERS_TOTAL." where class = 'ot_point' and orders_id = '".tep_db_input($oID)."'");
-          $result2 = tep_db_fetch_array($query2);
-          $query3  = tep_db_query("select value from " . TABLE_ORDERS_TOTAL." where class = 'ot_subtotal' and orders_id = '".tep_db_input($oID)."'");
-          $result3 = tep_db_fetch_array($query3);
-          $query4  = tep_db_query("select point from " . TABLE_CUSTOMERS . " where customers_id = '".$result1['customers_id']."'");
-          $result4 = tep_db_fetch_array($query4);
+//Add Point System
+if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && MODULE_ORDER_TOTAL_POINT_ADD_STATUS != '0') {
+$pcount_query = tep_db_query("select count(*) as cnt from ".TABLE_ORDERS_STATUS_HISTORY." where orders_status_id = '".MODULE_ORDER_TOTAL_POINT_ADD_STATUS."' and orders_id = '".$oID."'");
+$pcount = tep_db_fetch_array($pcount_query);
+if($pcount['cnt'] == 0 && $status == MODULE_ORDER_TOTAL_POINT_ADD_STATUS) {
+  $query1  = tep_db_query("select customers_id from " . TABLE_ORDERS . " where orders_id = '".$oID."'");
+  $result1 = tep_db_fetch_array($query1);
+  $query2  = tep_db_query("select value from " . TABLE_ORDERS_TOTAL." where class = 'ot_point' and orders_id = '".tep_db_input($oID)."'");
+  $result2 = tep_db_fetch_array($query2);
+  $query3  = tep_db_query("select value from " . TABLE_ORDERS_TOTAL." where class = 'ot_subtotal' and orders_id = '".tep_db_input($oID)."'");
+  $result3 = tep_db_fetch_array($query3);
+  $query4  = tep_db_query("select point from " . TABLE_CUSTOMERS . " where customers_id = '".$result1['customers_id']."'");
+  $result4 = tep_db_fetch_array($query4);
 
-          // ここからカスタマーレベルに応じたポイント還元率算出============================================================
-          if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
-            $customer_id = $result1['customers_id'];
-            //設定した期間内の注文合計金額を算出------------
-            $ptoday = date("Y-m-d H:i:s", time());
-            $pstday_array = getdate();
-            $pstday = date("Y-m-d H:i:s", mktime($pstday_array[hours],$pstday_array[mimutes],$pstday_array[second],$pstday_array[mon],($pstday_array[mday] - MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL_KIKAN),$pstday_array[year]));
+  // ここからカスタマーレベルに応じたポイント還元率算出============================================================
+  if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
+    $customer_id = $result1['customers_id'];
+    //設定した期間内の注文合計金額を算出------------
+    $ptoday = date("Y-m-d H:i:s", time());
+    $pstday_array = getdate();
+    $pstday = date("Y-m-d H:i:s", mktime($pstday_array[hours],$pstday_array[mimutes],$pstday_array[second],$pstday_array[mon],($pstday_array[mday] - MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL_KIKAN),$pstday_array[year]));
 
-            $total_buyed_date = 0;
-            $customer_level_total_query = tep_db_query("select * from orders where customers_id = '".$customer_id."' and date_purchased >= '".$pstday."'");
-            if(tep_db_num_rows($customer_level_total_query)) {
-              while($customer_level_total = tep_db_fetch_array($customer_level_total_query)) {
-                $cltotal_subtotal_query = tep_db_query("select value from orders_total where orders_id = '".$customer_level_total['orders_id']."' and class = 'ot_subtotal'");
-                $cltotal_subtotal = tep_db_fetch_array($cltotal_subtotal_query);
+    $total_buyed_date = 0;
+    $customer_level_total_query = tep_db_query("select * from orders where customers_id = '".$customer_id."' and date_purchased >= '".$pstday."'");
+    if(tep_db_num_rows($customer_level_total_query)) {
+      while($customer_level_total = tep_db_fetch_array($customer_level_total_query)) {
+	$cltotal_subtotal_query = tep_db_query("select value from orders_total where orders_id = '".$customer_level_total['orders_id']."' and class = 'ot_subtotal'");
+	$cltotal_subtotal = tep_db_fetch_array($cltotal_subtotal_query);
 
-                $cltotal_point_query = tep_db_query("select value from orders_total where orders_id = '".$customer_level_total['orders_id']."' and class = 'ot_point'");
-                $cltotal_point = tep_db_fetch_array($cltotal_subtotal_query);
+	$cltotal_point_query = tep_db_query("select value from orders_total where orders_id = '".$customer_level_total['orders_id']."' and class = 'ot_point'");
+	$cltotal_point = tep_db_fetch_array($cltotal_subtotal_query);
 
-                $total_buyed_date += ($cltotal_subtotal['value'] - $cltotal_point['value']);
-              }
-            }
-            //----------------------------------------------
-            //今回の注文額は除外
-            $total_buyed_date = $total_buyed_date - ($result3['value'] - (int)$result2['value']);
-
-            //還元率を計算----------------------------------
-            if(mb_ereg("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK)) {
-              $back_rate_array = explode("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK);
-              $back_rate = MODULE_ORDER_TOTAL_POINT_FEE;
-              for($j=0; $j<sizeof($back_rate_array); $j++) {
-                $back_rate_array2 = explode(",", $back_rate_array[$j]);
-                if($back_rate_array2[2] <= $total_buyed_date) {
-                  $back_rate = $back_rate_array2[1];
-                  $back_rate_name = $back_rate_array2[0];
-                }
-              }
-            } else {
-              $back_rate_array = explode(",", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK);
-              if($back_rate_array[2] <= $total_buyed_date) {
-                $back_rate = $back_rate_array[1];
-                $back_rate_name = $back_rate_array[0];
-              }
-            }
-            //----------------------------------------------
-            $point_rate = $back_rate;
-          } else {
-            $point_rate = MODULE_ORDER_TOTAL_POINT_FEE;
-          }
-          // ここまでカスタマーレベルに応じたポイント還元率算出============================================================
-
-          if ($result3['value'] >= 0) {
-            $get_point = ($result3['value'] - (int)$result2['value']) * $point_rate;
-            tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " . 
-                $get_point . " where customers_id = '" . $result1['customers_id']."'
-                and customers_guest_chk = '0' ");
-          } else {
-            if ($check_status['payment_method'] == 'ポイント(買い取り)') {
-              $get_point = abs($result3['value']);
-            } else {
-              $get_point = 0;
-            }
-          }
-
-        }
-      }   
-
-      if ($check_status['orders_status'] != $status || $comments != '') {
-        tep_db_query("update " . TABLE_ORDERS . " set orders_status = '" . tep_db_input($status) . "', last_modified = now() where orders_id = '" . tep_db_input($oID) . "'");
-        orders_updated(tep_db_input($oID));
-        orders_wait_flag(tep_db_input($oID));
-
-        $customer_notified = '0';
-
-        if ($_POST['notify'] == 'on') {
-
-          $ot_query = tep_db_query("select value from " . TABLE_ORDERS_TOTAL . " where orders_id = '".$oID."' and class = 'ot_total'");
-          $ot_result = tep_db_fetch_array($ot_query);
-          $otm = (int)$ot_result['value'] . '円';
-
-          $os_query = tep_db_query("select orders_status_name from " . TABLE_ORDERS_STATUS . " where orders_status_id = '".$status."'");
-          $os_result = tep_db_fetch_array($os_query);
-          $title = str_replace(array(
-                '${NAME}',
-                '${MAIL}',
-                '${ORDER_D}',
-                '${ORDER_N}',
-                '${PAY}',
-                '${ORDER_M}',
-                '${TRADING}',
-                '${ORDER_S}',
-                '${SITE_NAME}',
-                '${SITE_URL}',
-                '${PAY_DATE}'
-
-                ),array(
-                  $check_status['customers_name'],
-                  $check_status['customers_email_address'],
-                  tep_date_long($check_status['date_purchased']),
-                  $oID,
-                  $check_status['payment_method'],
-                  $otm,
-                  tep_torihiki($check_status['torihiki_date']),
-                  $os_result['orders_status_name'],
-                  get_configuration_by_site_id('STORE_NAME', $site_id),
-                  get_url_by_site_id($site_id),
-                  date('Y年n月j日',strtotime(tep_get_pay_day()))
-                  ),$title
-                );
-          $comments = str_replace(array(
-                '${NAME}',
-                '${MAIL}',
-                '${ORDER_D}',
-                '${ORDER_N}',
-                '${PAY}',
-                '${ORDER_M}',
-                '${TRADING}',
-                '${ORDER_S}',
-                '${SITE_NAME}',
-                '${SITE_URL}',
-                '${SUPPORT_EMAIL}',
-                '${PAY_DATE}'
-                ),array(
-                  $check_status['customers_name'],
-                  $check_status['customers_email_address'],
-                  tep_date_long($check_status['date_purchased']),
-                  $oID,
-                  $check_status['payment_method'],
-                  $otm,
-                  tep_torihiki($check_status['torihiki_date']),
-                  $os_result['orders_status_name'],
-                  get_configuration_by_site_id('STORE_NAME', $site_id),
-                  get_url_by_site_id($site_id),
-                  get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
-                  date('Y年n月j日',strtotime(tep_get_pay_day()))
-                  ),$comments
-                );
-
-          if (!tep_is_oroshi($check_status['customers_id'])) {
-            tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
-          } 
-          tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS', $site_id), '送信済：'.$title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
-          $customer_notified = '1';
-        }
-
-
-        if($_POST['notify_comments'] == 'on') {
-          $customer_notified = '1';
-        } else {
-          $customer_notified = '0';
-        }
-        tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . $customer_notified . "', '')");
-
-        $order_updated = true;
-
-      }
-
-      if ($order_updated) {
-        $messageStack->add_session('注文ID' . $oID . 'の' . SUCCESS_ORDER_UPDATED, 'success');
-      } else {
-        $messageStack->add_session('注文ID' . $oID . 'の' . WARNING_ORDER_NOT_UPDATED, 'warning');
-      }
-      tep_order_status_change($oID,$status);
-    }
-    tep_redirect(tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('action'))));
-
-
-    break;
-    //------------------------------------------
-  case 'update_order':
-    $oID      = tep_db_prepare_input($_GET['oID']);
-    $status   = tep_db_prepare_input($_POST['s_status']);
-    $title    = tep_db_prepare_input($_POST['title']);
-    $comments = tep_db_prepare_input($_POST['comments']);
-    $site_id  = tep_get_site_id_by_orders_id($oID);
-    $order_updated = false;
-    $check_status_query = tep_db_query("
-        select orders_id, 
-        customers_name, 
-        customers_id,
-        customers_email_address, 
-        orders_status, 
-        date_purchased, 
-        payment_method, 
-        torihiki_date 
-        from " . TABLE_ORDERS . " 
-        where orders_id = '" . tep_db_input($oID) . "'");
-    $check_status = tep_db_fetch_array($check_status_query);
-    //oa start 如果状态发生改变，找到当前的订单的
-    //if ($check_status['orders_status']!=$status){
-    tep_order_status_change($oID,$status);
-    //}
-    //OA_END
-    /*
-       if ($status == '9') {
-       tep_db_query("update `".TABLE_ORDERS."` set `confirm_payment_time` = '".date('Y-m-d H:i:s', time())."' where `orders_id` = '".$oID."'");
-       }
-     */ 
-    //Add Point System
-    if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && MODULE_ORDER_TOTAL_POINT_ADD_STATUS != '0') {
-      $pcount_query = tep_db_query("select count(*) as cnt from ".TABLE_ORDERS_STATUS_HISTORY." where orders_status_id = '".MODULE_ORDER_TOTAL_POINT_ADD_STATUS."' and orders_id = '".$oID."'");
-      $pcount = tep_db_fetch_array($pcount_query);
-      if($pcount['cnt'] == 0 && $status == MODULE_ORDER_TOTAL_POINT_ADD_STATUS) {
-        $query1 = tep_db_query("select customers_id from " . TABLE_ORDERS . " where orders_id = '".$oID."'");
-        $result1 = tep_db_fetch_array($query1);
-        $query2 = tep_db_query("select value from ".TABLE_ORDERS_TOTAL." where class = 'ot_point' and orders_id = '".tep_db_input($oID)."'");
-        $result2 = tep_db_fetch_array($query2);
-        $query3 = tep_db_query("select value from ".TABLE_ORDERS_TOTAL." where class = 'ot_subtotal' and orders_id = '".tep_db_input($oID)."'");
-        $result3 = tep_db_fetch_array($query3);
-        $query4 = tep_db_query("select point from " . TABLE_CUSTOMERS . " where customers_id = '".$result1['customers_id']."'");
-        $result4 = tep_db_fetch_array($query4);
-
-
-
-        // ここからカスタマーレベルに応じたポイント還元率算出============================================================
-        if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
-          $customer_id = $result1['customers_id'];
-          //設定した期間内の注文合計金額を算出------------
-          $ptoday = date("Y-m-d H:i:s", time());
-          $pstday_array = getdate();
-          $pstday = date("Y-m-d H:i:s", mktime($pstday_array[hours],$pstday_array[mimutes],$pstday_array[second],$pstday_array[mon],($pstday_array[mday] - MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL_KIKAN),$pstday_array[year]));
-
-          $total_buyed_date = 0;
-          $customer_level_total_query = tep_db_query("select * from orders where customers_id = '".$customer_id."' and date_purchased >= '".$pstday."'");
-          if(tep_db_num_rows($customer_level_total_query)) {
-            while($customer_level_total = tep_db_fetch_array($customer_level_total_query)) {
-              $cltotal_subtotal_query = tep_db_query("select value from orders_total where orders_id = '".$customer_level_total['orders_id']."' and class = 'ot_subtotal'");
-              $cltotal_subtotal = tep_db_fetch_array($cltotal_subtotal_query);
-
-              $cltotal_point_query = tep_db_query("select value from orders_total where orders_id = '".$customer_level_total['orders_id']."' and class = 'ot_point'");
-              $cltotal_point = tep_db_fetch_array($cltotal_subtotal_query);
-
-              $total_buyed_date += ($cltotal_subtotal['value'] - $cltotal_point['value']);
-            }
-          }
-          //----------------------------------------------
-          //今回の注文額は除外
-          $total_buyed_date = $total_buyed_date - ($result3['value'] - (int)$result2['value']);
-
-          //還元率を計算----------------------------------
-          if(mb_ereg("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK)) {
-            $back_rate_array = explode("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK);
-            $back_rate = MODULE_ORDER_TOTAL_POINT_FEE;
-            for($j=0; $j<sizeof($back_rate_array); $j++) {
-              $back_rate_array2 = explode(",", $back_rate_array[$j]);
-              if($back_rate_array2[2] <= $total_buyed_date) {
-                $back_rate = $back_rate_array2[1];
-                $back_rate_name = $back_rate_array2[0];
-              }
-            }
-          } else {
-            $back_rate_array = explode(",", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK);
-            if($back_rate_array[2] <= $total_buyed_date) {
-              $back_rate = $back_rate_array[1];
-              $back_rate_name = $back_rate_array[0];
-            }
-          }
-          //----------------------------------------------
-          $point_rate = $back_rate;
-        } else {
-          $point_rate = MODULE_ORDER_TOTAL_POINT_FEE;
-        }
-        // ここまでカスタマーレベルに応じたポイント還元率算出============================================================
-        if ($result3['value'] >= 0) {
-          $get_point = ($result3['value'] - (int)$result2['value']) * $point_rate;
-        } else {
-          if ($result3['value'] > -200) {
-            if ($check_status['payment_method'] == '来店支払い') {
-              $get_point = 0;
-            } else {
-              $get_point = abs($result3['value']);
-            }
-          } else {
-            $get_point = 0;
-          }
-        }
-        //$plus = $result4['point'] + $get_point;
-
-        if($check_status['payment_method'] != 'ポイント(買い取り)'){
-          tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " . $get_point . 
-              " where customers_id = '" . $result1['customers_id']."' 
-              and customers_guest_chk = '0' ");
-        }
-      }else{
-        $os_query = tep_db_query("select orders_status_name from " . TABLE_ORDERS_STATUS . " where orders_status_id = '".$status."'");
-        $os_result = tep_db_fetch_array($os_query);
-        if($os_result['orders_status_name']=='支払通知*'){
-          $query1 = tep_db_query("select customers_id from " . TABLE_ORDERS . " where orders_id = '".$oID."'");
-          $result1 = tep_db_fetch_array($query1);
-          if ($check_status['payment_method'] == 'ポイント(買い取り)') {
-            $query_t = tep_db_query("select value from ".TABLE_ORDERS_TOTAL." where class = 'ot_total' and orders_id = '".tep_db_input($oID)."'");
-            $result_t = tep_db_fetch_array($query_t);
-            $get_point = abs(intval($result_t['value']));
-          } else {
-            $get_point = 0;
-          }
-          $point_done_query =tep_db_query("select count(orders_status_history_id) cnt from
-              ".TABLE_ORDERS_STATUS_HISTORY." where orders_status_id = '".$status."' and 
-              orders_id = '".tep_db_input($oID)."'");
-          $point_done_row  =  tep_db_fetch_array($point_done_query);
-          if($point_done_row['cnt'] <1 ){
-            tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " .
-                $get_point . " where customers_id = '" . $result1['customers_id']."' 
-                and customers_guest_chk = '0'");
-          }
-        }
+	$total_buyed_date += ($cltotal_subtotal['value'] - $cltotal_point['value']);
       }
     }
+    //----------------------------------------------
+    //今回の注文額は除外
+    $total_buyed_date = $total_buyed_date - ($result3['value'] - (int)$result2['value']);
 
-    if ($check_status['orders_status'] != $status || $comments != '') {
-      tep_db_query("update " . TABLE_ORDERS . " set orders_status = '" . tep_db_input($status) . "', last_modified = now() where orders_id = '" . tep_db_input($oID) . "'");
-      orders_updated(tep_db_input($oID));
-      orders_wait_flag(tep_db_input($oID));
-      $customer_notified = '0';
-
-      if ($_POST['notify'] == 'on') {
-
-        $ot_query = tep_db_query("select value from " . TABLE_ORDERS_TOTAL . " where orders_id = '".$oID."' and class = 'ot_total'");
-        $ot_result = tep_db_fetch_array($ot_query);
-        $otm = (int)$ot_result['value'] . '円';
-
-        $os_query = tep_db_query("select orders_status_name from " . TABLE_ORDERS_STATUS . " where orders_status_id = '".$status."'");
-        $os_result = tep_db_fetch_array($os_query);
-
-        $title = str_replace(array(
-              '${NAME}',
-              '${MAIL}',
-              '${ORDER_D}',
-              '${ORDER_N}',
-              '${PAY}',
-              '${ORDER_M}',
-              '${TRADING}',
-              '${ORDER_S}',
-              '${SITE_NAME}',
-              '${SITE_URL}',
-              '${SUPPORT_EMAIL}',
-              '${PAY_DATE}'
-              ),array(
-                $check_status['customers_name'],
-                $check_status['customers_email_address'],
-                tep_date_long($check_status['date_purchased']),
-                $oID,
-                $check_status['payment_method'],
-                $otm,
-                tep_torihiki($check_status['torihiki_date']),
-                $os_result['orders_status_name'],
-                get_configuration_by_site_id('STORE_NAME', $site_id),
-                get_url_by_site_id($site_id),
-                get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
-                date('Y年n月j日',strtotime(tep_get_pay_day()))
-                ),$title);
-
-        $comments = str_replace(array(
-              '${NAME}',
-              '${MAIL}',
-              '${ORDER_D}',
-              '${ORDER_N}',
-              '${PAY}',
-              '${ORDER_M}',
-              '${TRADING}',
-              '${ORDER_S}',
-              '${SITE_NAME}',
-              '${SITE_URL}',
-              '${SUPPORT_EMAIL}',
-              '${PAY_DATE}'
-              ),array(
-                $check_status['customers_name'],
-                $check_status['customers_email_address'],
-                tep_date_long($check_status['date_purchased']),
-                $oID,
-                $check_status['payment_method'],
-                $otm,
-                tep_torihiki($check_status['torihiki_date']),
-                $os_result['orders_status_name'],
-                get_configuration_by_site_id('STORE_NAME', $site_id),
-                get_url_by_site_id($site_id),
-                get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
-                date('Y年n月j日',strtotime(tep_get_pay_day()))
-                ),$comments);
-        if (!tep_is_oroshi($check_status['customers_id'])) {
-          tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
-        }
-        tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS', $site_id), '送信済：'.$title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
-        $customer_notified = '1';
+    //還元率を計算----------------------------------
+    if(mb_ereg("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK)) {
+      $back_rate_array = explode("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK);
+      $back_rate = MODULE_ORDER_TOTAL_POINT_FEE;
+      for($j=0; $j<sizeof($back_rate_array); $j++) {
+	$back_rate_array2 = explode(",", $back_rate_array[$j]);
+	if($back_rate_array2[2] <= $total_buyed_date) {
+	  $back_rate = $back_rate_array2[1];
+	  $back_rate_name = $back_rate_array2[0];
+	}
       }
-
-
-      if($_POST['notify_comments'] == 'on') {
-        $customer_notified = '1';
-      } else {
-        $customer_notified = '0';
-      }
-      tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . $customer_notified . "', '')");
-      // 同步问答
-      //    orders_status_updated_for_question($oID,tep_db_input($status),$_POST['notify_comments'] == 'on', $_POST['qu_type']);
-      $order_updated = true;
-    }
-
-    if ($order_updated) {
-      $messageStack->add_session(SUCCESS_ORDER_UPDATED, 'success');
     } else {
-      $messageStack->add_session(WARNING_ORDER_NOT_UPDATED, 'warning');
+      $back_rate_array = explode(",", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK);
+      if($back_rate_array[2] <= $total_buyed_date) {
+	$back_rate = $back_rate_array[1];
+	$back_rate_name = $back_rate_array[0];
+      }
     }
-    //if ($status == 6 or $status == 8) {
-    //  tep_redirect(tep_href_link(FILENAME_ORDERS));
-    //} else {
-    tep_redirect(tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('action')) . 'action=edit'));
-    //}
-    break;
-  case 'deleteconfirm':
-    $oID = tep_db_prepare_input($_GET['oID']);
+    //----------------------------------------------
+    $point_rate = $back_rate;
+  } else {
+    $point_rate = MODULE_ORDER_TOTAL_POINT_FEE;
+  }
+  // ここまでカスタマーレベルに応じたポイント還元率算出============================================================
 
-    tep_remove_attributes($oID, $_POST['restock']);
+  if ($result3['value'] >= 0) {
+    $get_point = ($result3['value'] - (int)$result2['value']) * $point_rate;
+    tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " . 
+	$get_point . " where customers_id = '" . $result1['customers_id']."'
+	and customers_guest_chk = '0' ");
+  } else {
+    if ($check_status['payment_method'] == 'ポイント(買い取り)') {
+      $get_point = abs($result3['value']);
+    } else {
+      $get_point = 0;
+    }
+  }
 
-    tep_remove_order($oID, $_POST['restock']);
+}
+}   
 
-    tep_redirect(tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action'))));
-    break;
+if ($check_status['orders_status'] != $status || $comments != '') {
+tep_db_query("update " . TABLE_ORDERS . " set orders_status = '" . tep_db_input($status) . "', last_modified = now() where orders_id = '" . tep_db_input($oID) . "'");
+orders_updated(tep_db_input($oID));
+orders_wait_flag(tep_db_input($oID));
+
+$customer_notified = '0';
+
+if ($_POST['notify'] == 'on') {
+
+  $ot_query = tep_db_query("select value from " . TABLE_ORDERS_TOTAL . " where orders_id = '".$oID."' and class = 'ot_total'");
+  $ot_result = tep_db_fetch_array($ot_query);
+  $otm = (int)$ot_result['value'] . '円';
+
+  $os_query = tep_db_query("select orders_status_name from " . TABLE_ORDERS_STATUS . " where orders_status_id = '".$status."'");
+  $os_result = tep_db_fetch_array($os_query);
+  $title = str_replace(array(
+	'${NAME}',
+	'${MAIL}',
+	'${ORDER_D}',
+	'${ORDER_N}',
+	'${PAY}',
+	'${ORDER_M}',
+	'${TRADING}',
+	'${ORDER_S}',
+	'${SITE_NAME}',
+	'${SITE_URL}',
+	'${PAY_DATE}'
+
+	),array(
+	  $check_status['customers_name'],
+	  $check_status['customers_email_address'],
+	  tep_date_long($check_status['date_purchased']),
+	  $oID,
+	  $check_status['payment_method'],
+	  $otm,
+	  tep_torihiki($check_status['torihiki_date']),
+	  $os_result['orders_status_name'],
+	  get_configuration_by_site_id('STORE_NAME', $site_id),
+	  get_url_by_site_id($site_id),
+	  date('Y年n月j日',strtotime(tep_get_pay_day()))
+	  ),$title
+	);
+  $comments = str_replace(array(
+	'${NAME}',
+	'${MAIL}',
+	'${ORDER_D}',
+	'${ORDER_N}',
+	'${PAY}',
+	'${ORDER_M}',
+	'${TRADING}',
+	'${ORDER_S}',
+	'${SITE_NAME}',
+	'${SITE_URL}',
+	'${SUPPORT_EMAIL}',
+	'${PAY_DATE}'
+	),array(
+	  $check_status['customers_name'],
+	  $check_status['customers_email_address'],
+	  tep_date_long($check_status['date_purchased']),
+	  $oID,
+	  $check_status['payment_method'],
+	  $otm,
+	  tep_torihiki($check_status['torihiki_date']),
+	  $os_result['orders_status_name'],
+	  get_configuration_by_site_id('STORE_NAME', $site_id),
+	  get_url_by_site_id($site_id),
+	  get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
+	  date('Y年n月j日',strtotime(tep_get_pay_day()))
+	  ),$comments
+	);
+
+  if (!tep_is_oroshi($check_status['customers_id'])) {
+    tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
+  } 
+  tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS', $site_id), '送信済：'.$title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
+  $customer_notified = '1';
+}
+
+
+if($_POST['notify_comments'] == 'on') {
+  $customer_notified = '1';
+} else {
+  $customer_notified = '0';
+}
+tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . $customer_notified . "', '')");
+
+$order_updated = true;
+
+}
+
+if ($order_updated) {
+$messageStack->add_session('注文ID' . $oID . 'の' . SUCCESS_ORDER_UPDATED, 'success');
+} else {
+$messageStack->add_session('注文ID' . $oID . 'の' . WARNING_ORDER_NOT_UPDATED, 'warning');
+}
+tep_order_status_change($oID,$status);
+}
+tep_redirect(tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('action'))));
+
+
+break;
+//------------------------------------------
+case 'update_order':
+$oID      = tep_db_prepare_input($_GET['oID']);
+$status   = tep_db_prepare_input($_POST['s_status']);
+$title    = tep_db_prepare_input($_POST['title']);
+$comments = tep_db_prepare_input($_POST['comments']);
+$site_id  = tep_get_site_id_by_orders_id($oID);
+$order_updated = false;
+$check_status_query = tep_db_query("
+select orders_id, 
+customers_name, 
+customers_id,
+customers_email_address, 
+orders_status, 
+date_purchased, 
+payment_method, 
+torihiki_date 
+from " . TABLE_ORDERS . " 
+where orders_id = '" . tep_db_input($oID) . "'");
+$check_status = tep_db_fetch_array($check_status_query);
+//oa start 如果状态发生改变，找到当前的订单的
+//if ($check_status['orders_status']!=$status){
+tep_order_status_change($oID,$status);
+//}
+//OA_END
+/*
+if ($status == '9') {
+tep_db_query("update `".TABLE_ORDERS."` set `confirm_payment_time` = '".date('Y-m-d H:i:s', time())."' where `orders_id` = '".$oID."'");
+}
+*/ 
+//Add Point System
+if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && MODULE_ORDER_TOTAL_POINT_ADD_STATUS != '0') {
+$pcount_query = tep_db_query("select count(*) as cnt from ".TABLE_ORDERS_STATUS_HISTORY." where orders_status_id = '".MODULE_ORDER_TOTAL_POINT_ADD_STATUS."' and orders_id = '".$oID."'");
+$pcount = tep_db_fetch_array($pcount_query);
+if($pcount['cnt'] == 0 && $status == MODULE_ORDER_TOTAL_POINT_ADD_STATUS) {
+$query1 = tep_db_query("select customers_id from " . TABLE_ORDERS . " where orders_id = '".$oID."'");
+$result1 = tep_db_fetch_array($query1);
+$query2 = tep_db_query("select value from ".TABLE_ORDERS_TOTAL." where class = 'ot_point' and orders_id = '".tep_db_input($oID)."'");
+$result2 = tep_db_fetch_array($query2);
+$query3 = tep_db_query("select value from ".TABLE_ORDERS_TOTAL." where class = 'ot_subtotal' and orders_id = '".tep_db_input($oID)."'");
+$result3 = tep_db_fetch_array($query3);
+$query4 = tep_db_query("select point from " . TABLE_CUSTOMERS . " where customers_id = '".$result1['customers_id']."'");
+$result4 = tep_db_fetch_array($query4);
+
+
+
+// ここからカスタマーレベルに応じたポイント還元率算出============================================================
+if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
+  $customer_id = $result1['customers_id'];
+  //設定した期間内の注文合計金額を算出------------
+  $ptoday = date("Y-m-d H:i:s", time());
+  $pstday_array = getdate();
+  $pstday = date("Y-m-d H:i:s", mktime($pstday_array[hours],$pstday_array[mimutes],$pstday_array[second],$pstday_array[mon],($pstday_array[mday] - MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL_KIKAN),$pstday_array[year]));
+
+  $total_buyed_date = 0;
+  $customer_level_total_query = tep_db_query("select * from orders where customers_id = '".$customer_id."' and date_purchased >= '".$pstday."'");
+  if(tep_db_num_rows($customer_level_total_query)) {
+    while($customer_level_total = tep_db_fetch_array($customer_level_total_query)) {
+      $cltotal_subtotal_query = tep_db_query("select value from orders_total where orders_id = '".$customer_level_total['orders_id']."' and class = 'ot_subtotal'");
+      $cltotal_subtotal = tep_db_fetch_array($cltotal_subtotal_query);
+
+      $cltotal_point_query = tep_db_query("select value from orders_total where orders_id = '".$customer_level_total['orders_id']."' and class = 'ot_point'");
+      $cltotal_point = tep_db_fetch_array($cltotal_subtotal_query);
+
+      $total_buyed_date += ($cltotal_subtotal['value'] - $cltotal_point['value']);
+    }
+  }
+  //----------------------------------------------
+  //今回の注文額は除外
+  $total_buyed_date = $total_buyed_date - ($result3['value'] - (int)$result2['value']);
+
+  //還元率を計算----------------------------------
+  if(mb_ereg("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK)) {
+    $back_rate_array = explode("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK);
+    $back_rate = MODULE_ORDER_TOTAL_POINT_FEE;
+    for($j=0; $j<sizeof($back_rate_array); $j++) {
+      $back_rate_array2 = explode(",", $back_rate_array[$j]);
+      if($back_rate_array2[2] <= $total_buyed_date) {
+	$back_rate = $back_rate_array2[1];
+	$back_rate_name = $back_rate_array2[0];
+      }
+    }
+  } else {
+    $back_rate_array = explode(",", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK);
+    if($back_rate_array[2] <= $total_buyed_date) {
+      $back_rate = $back_rate_array[1];
+      $back_rate_name = $back_rate_array[0];
+    }
+  }
+  //----------------------------------------------
+  $point_rate = $back_rate;
+} else {
+  $point_rate = MODULE_ORDER_TOTAL_POINT_FEE;
+}
+// ここまでカスタマーレベルに応じたポイント還元率算出============================================================
+if ($result3['value'] >= 0) {
+  $get_point = ($result3['value'] - (int)$result2['value']) * $point_rate;
+} else {
+  if ($result3['value'] > -200) {
+    if ($check_status['payment_method'] == '来店支払い') {
+      $get_point = 0;
+    } else {
+      $get_point = abs($result3['value']);
+    }
+  } else {
+    $get_point = 0;
+  }
+}
+//$plus = $result4['point'] + $get_point;
+
+if($check_status['payment_method'] != 'ポイント(買い取り)'){
+  tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " . $get_point . 
+      " where customers_id = '" . $result1['customers_id']."' 
+      and customers_guest_chk = '0' ");
+}
+}else{
+$os_query = tep_db_query("select orders_status_name from " . TABLE_ORDERS_STATUS . " where orders_status_id = '".$status."'");
+$os_result = tep_db_fetch_array($os_query);
+if($os_result['orders_status_name']=='支払通知*'){
+  $query1 = tep_db_query("select customers_id from " . TABLE_ORDERS . " where orders_id = '".$oID."'");
+  $result1 = tep_db_fetch_array($query1);
+  if ($check_status['payment_method'] == 'ポイント(買い取り)') {
+    $query_t = tep_db_query("select value from ".TABLE_ORDERS_TOTAL." where class = 'ot_total' and orders_id = '".tep_db_input($oID)."'");
+    $result_t = tep_db_fetch_array($query_t);
+    $get_point = abs(intval($result_t['value']));
+  } else {
+    $get_point = 0;
+  }
+  $point_done_query =tep_db_query("select count(orders_status_history_id) cnt from
+      ".TABLE_ORDERS_STATUS_HISTORY." where orders_status_id = '".$status."' and 
+      orders_id = '".tep_db_input($oID)."'");
+  $point_done_row  =  tep_db_fetch_array($point_done_query);
+  if($point_done_row['cnt'] <1 ){
+    tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " .
+	$get_point . " where customers_id = '" . $result1['customers_id']."' 
+	and customers_guest_chk = '0'");
+  }
+}
+}
+}
+
+if ($check_status['orders_status'] != $status || $comments != '') {
+tep_db_query("update " . TABLE_ORDERS . " set orders_status = '" . tep_db_input($status) . "', last_modified = now() where orders_id = '" . tep_db_input($oID) . "'");
+orders_updated(tep_db_input($oID));
+orders_wait_flag(tep_db_input($oID));
+$customer_notified = '0';
+
+if ($_POST['notify'] == 'on') {
+
+$ot_query = tep_db_query("select value from " . TABLE_ORDERS_TOTAL . " where orders_id = '".$oID."' and class = 'ot_total'");
+$ot_result = tep_db_fetch_array($ot_query);
+$otm = (int)$ot_result['value'] . '円';
+
+$os_query = tep_db_query("select orders_status_name from " . TABLE_ORDERS_STATUS . " where orders_status_id = '".$status."'");
+$os_result = tep_db_fetch_array($os_query);
+
+$title = str_replace(array(
+      '${NAME}',
+      '${MAIL}',
+      '${ORDER_D}',
+      '${ORDER_N}',
+      '${PAY}',
+      '${ORDER_M}',
+      '${TRADING}',
+      '${ORDER_S}',
+      '${SITE_NAME}',
+      '${SITE_URL}',
+      '${SUPPORT_EMAIL}',
+      '${PAY_DATE}'
+      ),array(
+	$check_status['customers_name'],
+	$check_status['customers_email_address'],
+	tep_date_long($check_status['date_purchased']),
+	$oID,
+	$check_status['payment_method'],
+	$otm,
+	tep_torihiki($check_status['torihiki_date']),
+	$os_result['orders_status_name'],
+	get_configuration_by_site_id('STORE_NAME', $site_id),
+	get_url_by_site_id($site_id),
+	get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
+	date('Y年n月j日',strtotime(tep_get_pay_day()))
+	),$title);
+
+$comments = str_replace(array(
+      '${NAME}',
+      '${MAIL}',
+      '${ORDER_D}',
+      '${ORDER_N}',
+      '${PAY}',
+      '${ORDER_M}',
+      '${TRADING}',
+      '${ORDER_S}',
+      '${SITE_NAME}',
+      '${SITE_URL}',
+      '${SUPPORT_EMAIL}',
+      '${PAY_DATE}'
+      ),array(
+	$check_status['customers_name'],
+	$check_status['customers_email_address'],
+	tep_date_long($check_status['date_purchased']),
+	$oID,
+	$check_status['payment_method'],
+	$otm,
+	tep_torihiki($check_status['torihiki_date']),
+	$os_result['orders_status_name'],
+	get_configuration_by_site_id('STORE_NAME', $site_id),
+	get_url_by_site_id($site_id),
+	get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
+	date('Y年n月j日',strtotime(tep_get_pay_day()))
+	),$comments);
+if (!tep_is_oroshi($check_status['customers_id'])) {
+  tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
+}
+tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS', $site_id), '送信済：'.$title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
+$customer_notified = '1';
+}
+
+
+if($_POST['notify_comments'] == 'on') {
+$customer_notified = '1';
+} else {
+$customer_notified = '0';
+}
+tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . $customer_notified . "', '')");
+// 同步问答
+//    orders_status_updated_for_question($oID,tep_db_input($status),$_POST['notify_comments'] == 'on', $_POST['qu_type']);
+$order_updated = true;
+}
+
+if ($order_updated) {
+$messageStack->add_session(SUCCESS_ORDER_UPDATED, 'success');
+} else {
+$messageStack->add_session(WARNING_ORDER_NOT_UPDATED, 'warning');
+}
+//if ($status == 6 or $status == 8) {
+//  tep_redirect(tep_href_link(FILENAME_ORDERS));
+//} else {
+tep_redirect(tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('action')) . 'action=edit'));
+//}
+break;
+case 'deleteconfirm':
+$oID = tep_db_prepare_input($_GET['oID']);
+
+tep_remove_attributes($oID, $_POST['restock']);
+
+tep_remove_order($oID, $_POST['restock']);
+
+tep_redirect(tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action'))));
+break;
 }
 }
 
 if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($_GET['oID']) ) {
-  $oID = tep_db_prepare_input($_GET['oID']);
+$oID = tep_db_prepare_input($_GET['oID']);
 
-  $orders_query = tep_db_query("
-      select orders_id 
-      from " . TABLE_ORDERS . " 
-      where orders_id = '" . tep_db_input($oID) . "'");
-  $order_exists = true;
-  if (!tep_db_num_rows($orders_query)) {
-    $order_exists = false;
-    $messageStack->add(sprintf(ERROR_ORDER_DOES_NOT_EXIST, $oID), 'error');
-  }
+$orders_query = tep_db_query("
+select orders_id 
+from " . TABLE_ORDERS . " 
+where orders_id = '" . tep_db_input($oID) . "'");
+$order_exists = true;
+if (!tep_db_num_rows($orders_query)) {
+$order_exists = false;
+$messageStack->add(sprintf(ERROR_ORDER_DOES_NOT_EXIST, $oID), 'error');
+}
 }
 
 include(DIR_WS_CLASSES . 'order.php');
@@ -952,652 +952,652 @@ include(DIR_WS_CLASSES . 'order.php');
 $suu = 0;
 $text_suu = 0;  
 $__orders_status_query = tep_db_query("
-    select orders_status_id 
-    from " . TABLE_ORDERS_STATUS . " 
-    where language_id = " . $languages_id . " 
-    order by orders_status_id");
+select orders_status_id 
+from " . TABLE_ORDERS_STATUS . " 
+where language_id = " . $languages_id . " 
+order by orders_status_id");
 $__orders_status_ids   = array();
 while($__orders_status = tep_db_fetch_array($__orders_status_query)){
-  $__orders_status_ids[] = $__orders_status['orders_status_id'];
+$__orders_status_ids[] = $__orders_status['orders_status_id'];
 }
 $select_query = tep_db_query("
-    select om.orders_status_mail,
-    om.orders_status_title,
-    os.orders_status_id,
-    os.nomail,
-    om.site_id
-    from ".TABLE_ORDERS_STATUS." os left join ".TABLE_ORDERS_MAIL." om on os.orders_status_id = om.orders_status_id
-    where os.language_id = " . $languages_id . " 
-    and os.orders_status_id IN (".join(',', $__orders_status_ids).")");
+select om.orders_status_mail,
+om.orders_status_title,
+os.orders_status_id,
+os.nomail,
+om.site_id
+from ".TABLE_ORDERS_STATUS." os left join ".TABLE_ORDERS_MAIL." om on os.orders_status_id = om.orders_status_id
+where os.language_id = " . $languages_id . " 
+and os.orders_status_id IN (".join(',', $__orders_status_ids).")");
 
 while($select_result = tep_db_fetch_array($select_query)){
-  if($suu == 0){
-    $select_select = $select_result['orders_status_id'];
-    $suu = 1;
-  }
+if($suu == 0){
+$select_select = $select_result['orders_status_id'];
+$suu = 1;
+}
 
-  $osid = $select_result['orders_status_id'];
+$osid = $select_result['orders_status_id'];
 
-  if($text_suu == 0){
-    $select_text = $select_result['orders_status_mail'];
-    $select_title = $select_result['orders_status_title'];
-    $text_suu = 1;
-    $select_nomail = $select_result['nomail'];
-  }
+if($text_suu == 0){
+$select_text = $select_result['orders_status_mail'];
+$select_title = $select_result['orders_status_title'];
+$text_suu = 1;
+$select_nomail = $select_result['nomail'];
+}
 
-  $mt[$osid][$select_result['site_id']?$select_result['site_id']:0] = $select_result['orders_status_mail'];
-  $mo[$osid][$select_result['site_id']?$select_result['site_id']:0] = $select_result['orders_status_title'];
-  $nomail[$osid] = $select_result['nomail'];
+$mt[$osid][$select_result['site_id']?$select_result['site_id']:0] = $select_result['orders_status_mail'];
+$mo[$osid][$select_result['site_id']?$select_result['site_id']:0] = $select_result['orders_status_title'];
+$nomail[$osid] = $select_result['nomail'];
 }
 
 //------------------------------------------------
 if(isset($_GET['reload'])) {
-  switch($_GET['reload']) {
-    case 'Yes':
-      $reload = 'yes';
-      tep_session_register('reload');
-      break;
-    case 'No':
-      $reload = 'no';
-      tep_session_register('reload');
-      break;
-  } 
+switch($_GET['reload']) {
+case 'Yes':
+$reload = 'yes';
+tep_session_register('reload');
+break;
+case 'No':
+$reload = 'no';
+tep_session_register('reload');
+break;
+} 
 } else {
-  if(tep_session_is_registered('reload')) {
-    //Read Session
-  } else {
-    $reload = 'yes';
-  }
+if(tep_session_is_registered('reload')) {
+//Read Session
+} else {
+$reload = 'yes';
+}
 }
 if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) {
 }else{
 #{{
-  $where_type = '';
-  $where_payment = '';
-  $from_payment = '';
-  $sort_table = '';
-  $sort_where = '';
-  $order_str = 'torihiki_date_error desc,date_purchased_error desc,';
-  if(!isset($HTTP_GET_VARS['order_sort'])||$HTTP_GET_VARS['order_sort']=='') {
-    $order_str .= 'o.torihiki_date DESC';
-  }else{
-    if($HTTP_GET_VARS['order_sort'] == 'site_romaji'){
-      $sort_table = " ,".TABLE_SITES." s ";
-      $sort_where = " o.site_id = s.id and ";
-      $order_str .= " s.romaji ".$HTTP_GET_VARS['order_type'];
-    }else if($HTTP_GET_VARS['order_sort'] == 'customers_name'){
-      $order_str .= " o.customers_name ".$HTTP_GET_VARS['order_type'];
-    }else if($HTTP_GET_VARS['order_sort'] == 'ot_total'){
-      $sort_table = " ,". TABLE_ORDERS_TOTAL." ot ";
-      $sort_where = " o.orders_id = ot.orders_id and ot.class  ='ot_total' and ";
-      $order_str .= " ot.value ".$HTTP_GET_VARS['order_type'];
-    }else if($HTTP_GET_VARS['order_sort'] == 'torihiki_date'){
-      $order_str .= " o.torihiki_date ".$HTTP_GET_VARS['order_type'];
-    }else if($HTTP_GET_VARS['order_sort'] == 'date_purchased'){
-      $order_str .= " o.date_purchased ".$HTTP_GET_VARS['order_type'];
-    }else if($HTTP_GET_VARS['order_sort'] == 'orders_status_name'){
-      $order_str .= " o.orders_status_name ".$HTTP_GET_VARS['order_type'];
-    }
-  }
-  if ($HTTP_GET_VARS['order_type'] == 'asc') {
-    $type_str = 'desc';
-  }else{
-    $type_str = 'asc';
-  }
-  if (isset($_GET['cEmail']) && $_GET['cEmail']) {
-    $cEmail = tep_db_prepare_input($_GET['cEmail']);
-    $orders_query_raw = "
-      select distinct o.orders_id, 
-             o.torihiki_date, 
-             IF( o.torihiki_date = '0000-00-00 00:00:00' or o.torihiki_date ='',1,0) 
-               as torihiki_date_error,
-             IF(o.date_purchased = '0000-00-00 00:00:00' or o.date_purchased ='',1,0) 
-               as date_purchased_error,
-             o.customers_name, 
-             o.customers_id, 
-             o.payment_method, 
-             o.date_purchased, 
-             o.last_modified, 
-             o.currency, 
-             o.currency_value, 
-             o.orders_status, 
-             o.orders_status_name, 
-             o.orders_important_flag,
-             o.orders_care_flag,
-             o.orders_wait_flag,
-             o.orders_inputed_flag,
-             o.orders_work,
-             o.customers_email_address,
-             o.orders_comment,
-             o.torihiki_houhou,
-             o.confirm_payment_time, 
-             o.site_id
-               from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
-               where ".$sort_where." o.customers_email_address = '" . tep_db_input($cEmail) . "' 
-               " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
-               " . $where_payment . $where_type . "
-               order by ".$order_str;
-    //torihiki_date_error DESC,o.torihiki_date DESC";
-  } else if (isset($_GET['cID']) && $_GET['cID']) {
-    $cID = tep_db_prepare_input($_GET['cID']);
-    $orders_query_raw = "
-      select distinct o.orders_id, 
-             o.torihiki_date, 
-             IF(o.torihiki_date = '0000-00-00 00:00:00' or o.torihiki_date ='',1,0) 
-               as torihiki_date_error,
-             IF(o.date_purchased = '0000-00-00 00:00:00' or o.date_purchased ='',1,0) 
-               as date_purchased_error,
-             o.customers_name, 
-             o.customers_id, 
-             o.payment_method, 
-             o.date_purchased, 
-             o.last_modified, 
-             o.currency, 
-             o.currency_value, 
-             o.orders_status, 
-             o.orders_status_name, 
-             o.orders_important_flag,
-             o.orders_care_flag,
-             o.orders_wait_flag,
-             o.orders_inputed_flag,
-             o.orders_work,
-             o.customers_email_address,
-             o.torihiki_houhou,
-             o.orders_comment,
-             o.confirm_payment_time, 
-             o.site_id
-               from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
-               where ".$sort_where." o.customers_id = '" . tep_db_input($cID) . "' 
-               " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
-               " . $where_payment . $where_type . "
-               order by ".$order_str;
-    //torihiki_date_error DESC,o.torihiki_date DESC";
-  } elseif (isset($_GET['status']) && $_GET['status']) {
-    $status = tep_db_prepare_input($_GET['status']);
-    $orders_query_raw = "
-      select distinct o.orders_id, 
-             o.torihiki_date, 
-             IF(o.torihiki_date = '0000-00-00 00:00:00' or o.torihiki_date ='',1,0) 
-               as torihiki_date_error,
-             IF(o.date_purchased = '0000-00-00 00:00:00' or o.date_purchased ='',1,0) 
-               as date_purchased_error,
-             o.customers_id, 
-             o.customers_name, 
-             o.payment_method, 
-             o.date_purchased, 
-             o.last_modified, 
-             o.currency, 
-             o.currency_value, 
-             o.orders_status, 
-             o.orders_status_name, 
-             o.orders_important_flag,
-             o.orders_care_flag,
-             o.orders_wait_flag,
-             o.orders_inputed_flag,
-             o.orders_work,
-             o.torihiki_houhou,
-             o.customers_email_address,
-             o.orders_comment,
-             o.confirm_payment_time, 
-             o.site_id
-               from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
-               where ".$sort_where."
-               o.orders_status = '" . tep_db_input($status) . "' 
-               " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
-               " . $where_payment . $where_type . "
-               order by ".$order_str;
-    //torihiki_date_error DESC,o.torihiki_date DESC";
-  }  elseif (isset($_GET['keywords']) && isset($_GET['search_type']) && $_GET['search_type'] == 'products_name' && !$_GET['type'] && !$payment) {
-    $orders_query_raw = " select distinct op.orders_id from " . TABLE_ORDERS_PRODUCTS . " op 
-      ".$sort_table." where ".$sort_where." op.products_name ";
-    if(isset($_GET['real_name'])&&$_GET['real_name']){
-      $orders_query_raw .=  "= '".$_GET['keywords']."' " ;
-    }else{
-      $orders_query_raw .=  "like '%".$_GET['keywords']."%' " ;
-    }
-    $orders_query_raw .= (isset($_GET['site_id']) &&
-        intval($_GET['site_id']) ? " and op.site_id = '" . intval($_GET['site_id'])
-        . "' " : '') . " order by op.torihiki_date DESC";
-    //op.torihiki_date desc";
-  } elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && preg_match('/^os_\d+$/', $_GET['search_type'])))) {
-    if (!empty($_GET['keywords'])) {
-      $orders_query_raw = "
-        select distinct(o.orders_id), 
-               o.torihiki_date, 
-               IF(o.torihiki_date = '0000-00-00 00:00:00' or o.torihiki_date ='',1,0) 
-                 as torihiki_date_error,
-               IF(o.date_purchased = '0000-00-00 00:00:00' or o.date_purchased ='',1,0) 
-                 as date_purchased_error,
-               o.customers_id, 
-               o.customers_name, 
-               o.payment_method, 
-               o.date_purchased, 
-               o.last_modified, 
-               o.currency, 
-               o.currency_value, 
-               o.orders_status, 
-               o.orders_status_name,
-               o.orders_important_flag,
-               o.orders_care_flag,
-               o.orders_wait_flag,
-               o.orders_inputed_flag,
-               o.orders_work,
-               o.customers_email_address,
-               o.torihiki_houhou,
-               o.orders_comment,
-               o.confirm_payment_time, 
-               o.site_id
-                 from " . TABLE_ORDERS . " o " . $from_payment . " ,
-               ".TABLE_ORDERS_PRODUCTS." op ".$sort_table." where ".$sort_where .
-                 (isset($_GET['site_id']) && intval($_GET['site_id']) ? " o.site_id =
-                  '" . intval($_GET['site_id']) . "' and " : '') . " o.orders_status =
-                  '".substr($_GET['search_type'], 3)."' and o.orders_id = op.orders_id and
-                  (o.orders_id like '%".$_GET['keywords']."%' or o.customers_name like
-                   '%".$_GET['keywords']."%' or o.customers_email_address like
-                   '%".$_GET['keywords']."%' or op.products_name like
-                   '%".$_GET['keywords']."%') " . $where_payment . $where_type .' order by
-                  '.$order_str;
-                  //o.torihiki_date DESC';
-                  } else {
-                  $orders_query_raw = "
-                  select distinct(o.orders_id), 
-                  o.torihiki_date, 
-                  IF(        o.torihiki_date = '0000-00-00 00:00:00' or o.torihiki_date ='',1,0) 
-                  as torihiki_date_error,
-                  IF(o.date_purchased = '0000-00-00 00:00:00' or o.date_purchased ='',1,0) 
-                  as date_purchased_error,
-                  o.customers_id, 
-                  o.customers_name, 
-                  o.payment_method, 
-                  o.date_purchased, 
-                  o.last_modified, 
-                  o.currency, 
-                  o.currency_value, 
-                  o.orders_status, 
-                  o.orders_status_name,
-                  o.orders_important_flag,
-                  o.orders_care_flag,
-                  o.orders_wait_flag,
-                  o.orders_inputed_flag,
-                  o.orders_work,
-                  o.customers_email_address,
-                  o.torihiki_houhou,
-                  o.orders_comment,
-                  o.confirm_payment_time, 
-                  o.site_id
-                    from " . TABLE_ORDERS . " o " . $from_payment . $sort_table." where 
-                    ".$sort_where .
-                    (isset($_GET['site_id']) && intval($_GET['site_id']) ? "
-                     o.site_id = '" . intval($_GET['site_id']) . "' and " : '') . "
-                     o.orders_status = '".substr($_GET['search_type'], 3)."'" . $where_payment
-                     . $where_type .' order by '.$order_str;
-                     //o.torihiki_date DESC';
-                     }
-                     } elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['search_type'] == 'orders_id'))) {
-                     $orders_query_raw = "
-                     select o.orders_id, 
-                     o.torihiki_date, 
-                     IF(o.torihiki_date = '0000-00-00 00:00:00' or o.torihiki_date ='',1,0) 
-                     as torihiki_date_error,
-                     IF(o.date_purchased = '0000-00-00 00:00:00' or o.date_purchased ='',1,0) 
-                     as date_purchased_error,
-                     o.customers_id, 
-                     o.customers_name, 
-                     o.payment_method, 
-                     o.date_purchased, 
-                     o.last_modified, 
-                     o.currency, 
-                     o.currency_value, 
-                     o.orders_status, 
-                     o.orders_status_name,
-                     o.orders_important_flag,
-                     o.orders_care_flag,
-                     o.orders_wait_flag,
-                     o.orders_inputed_flag,
-                     o.orders_work,
-                     o.customers_email_address,
-                     o.torihiki_houhou,
-                     o.orders_comment,
-                     o.confirm_payment_time, 
-                     o.site_id
-                       from " . TABLE_ORDERS . " o " . $from_payment .$sort_table ."
-                       where " . $sort_where.
-                       (isset($_GET['site_id']) &&
-                        intval($_GET['site_id']) ? " o.site_id = '" . intval($_GET['site_id']) .
-                        "' and " : '') . " o.orders_id like '%".$_GET['keywords']."%'" .
-                       $where_payment . $where_type.' order by '.$order_str;
-                    //o.torihiki_date DESC';
-                     } elseif ( isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['search_type'] == 'customers_name') or (isset($_GET['search_type']) && $_GET['search_type'] == 'email'))
-                         ) {
-                       $orders_query_raw = "
-                         select o.orders_id, 
-                                o.torihiki_date, 
-                                IF(o.torihiki_date = '0000-00-00 00:00:00' or o.torihiki_date ='',1,0) 
-                                  as torihiki_date_error,
-                                IF(o.date_purchased = '0000-00-00 00:00:00' or o.date_purchased ='',1,0) 
-                                  as date_purchased_error,
-                                o.customers_id, 
-                                o.customers_name, 
-                                o.payment_method, 
-                                o.date_purchased, 
-                                o.last_modified, 
-                                o.currency, 
-                                o.currency_value, 
-                                o.orders_status, 
-                                o.orders_status_name,
-                                o.orders_important_flag,
-                                o.orders_care_flag,
-                                o.orders_wait_flag,
-                                o.orders_inputed_flag,
-                                o.orders_work,
-                                o.customers_email_address,
-                                o.torihiki_houhou,
-                                o.orders_comment,
-                                o.confirm_payment_time, 
-                                o.site_id
-                                  from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
-                                  where   
-                                  " .$sort_where . " 1=1 ".
-                                  (isset($_GET['site_id']) && intval($_GET['site_id']) ? " o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
-                                  " . $where_payment . $where_type ;
+$where_type = '';
+$where_payment = '';
+$from_payment = '';
+$sort_table = '';
+$sort_where = '';
+$order_str = 'torihiki_date_error desc,date_purchased_error desc,';
+if(!isset($HTTP_GET_VARS['order_sort'])||$HTTP_GET_VARS['order_sort']=='') {
+$order_str .= 'o.torihiki_date DESC';
+}else{
+if($HTTP_GET_VARS['order_sort'] == 'site_romaji'){
+$sort_table = " ,".TABLE_SITES." s ";
+$sort_where = " o.site_id = s.id and ";
+$order_str .= " s.romaji ".$HTTP_GET_VARS['order_type'];
+}else if($HTTP_GET_VARS['order_sort'] == 'customers_name'){
+$order_str .= " o.customers_name ".$HTTP_GET_VARS['order_type'];
+}else if($HTTP_GET_VARS['order_sort'] == 'ot_total'){
+$sort_table = " ,". TABLE_ORDERS_TOTAL." ot ";
+$sort_where = " o.orders_id = ot.orders_id and ot.class  ='ot_total' and ";
+$order_str .= " ot.value ".$HTTP_GET_VARS['order_type'];
+}else if($HTTP_GET_VARS['order_sort'] == 'torihiki_date'){
+$order_str .= " o.torihiki_date ".$HTTP_GET_VARS['order_type'];
+}else if($HTTP_GET_VARS['order_sort'] == 'date_purchased'){
+$order_str .= " o.date_purchased ".$HTTP_GET_VARS['order_type'];
+}else if($HTTP_GET_VARS['order_sort'] == 'orders_status_name'){
+$order_str .= " o.orders_status_name ".$HTTP_GET_VARS['order_type'];
+}
+}
+if ($HTTP_GET_VARS['order_type'] == 'asc') {
+$type_str = 'desc';
+}else{
+$type_str = 'asc';
+}
+if (isset($_GET['cEmail']) && $_GET['cEmail']) {
+$cEmail = tep_db_prepare_input($_GET['cEmail']);
+$orders_query_raw = "
+select distinct o.orders_id, 
+     o.torihiki_date, 
+     IF( o.torihiki_date = '0000-00-00 00:00:00' or o.torihiki_date ='',1,0) 
+       as torihiki_date_error,
+     IF(o.date_purchased = '0000-00-00 00:00:00' or o.date_purchased ='',1,0) 
+       as date_purchased_error,
+     o.customers_name, 
+     o.customers_id, 
+     o.payment_method, 
+     o.date_purchased, 
+     o.last_modified, 
+     o.currency, 
+     o.currency_value, 
+     o.orders_status, 
+     o.orders_status_name, 
+     o.orders_important_flag,
+     o.orders_care_flag,
+     o.orders_wait_flag,
+     o.orders_inputed_flag,
+     o.orders_work,
+     o.customers_email_address,
+     o.orders_comment,
+     o.torihiki_houhou,
+     o.confirm_payment_time, 
+     o.site_id
+       from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
+       where ".$sort_where." o.customers_email_address = '" . tep_db_input($cEmail) . "' 
+       " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
+       " . $where_payment . $where_type . "
+       order by ".$order_str;
+//torihiki_date_error DESC,o.torihiki_date DESC";
+} else if (isset($_GET['cID']) && $_GET['cID']) {
+$cID = tep_db_prepare_input($_GET['cID']);
+$orders_query_raw = "
+select distinct o.orders_id, 
+     o.torihiki_date, 
+     IF(o.torihiki_date = '0000-00-00 00:00:00' or o.torihiki_date ='',1,0) 
+       as torihiki_date_error,
+     IF(o.date_purchased = '0000-00-00 00:00:00' or o.date_purchased ='',1,0) 
+       as date_purchased_error,
+     o.customers_name, 
+     o.customers_id, 
+     o.payment_method, 
+     o.date_purchased, 
+     o.last_modified, 
+     o.currency, 
+     o.currency_value, 
+     o.orders_status, 
+     o.orders_status_name, 
+     o.orders_important_flag,
+     o.orders_care_flag,
+     o.orders_wait_flag,
+     o.orders_inputed_flag,
+     o.orders_work,
+     o.customers_email_address,
+     o.torihiki_houhou,
+     o.orders_comment,
+     o.confirm_payment_time, 
+     o.site_id
+       from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
+       where ".$sort_where." o.customers_id = '" . tep_db_input($cID) . "' 
+       " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
+       " . $where_payment . $where_type . "
+       order by ".$order_str;
+//torihiki_date_error DESC,o.torihiki_date DESC";
+} elseif (isset($_GET['status']) && $_GET['status']) {
+$status = tep_db_prepare_input($_GET['status']);
+$orders_query_raw = "
+select distinct o.orders_id, 
+     o.torihiki_date, 
+     IF(o.torihiki_date = '0000-00-00 00:00:00' or o.torihiki_date ='',1,0) 
+       as torihiki_date_error,
+     IF(o.date_purchased = '0000-00-00 00:00:00' or o.date_purchased ='',1,0) 
+       as date_purchased_error,
+     o.customers_id, 
+     o.customers_name, 
+     o.payment_method, 
+     o.date_purchased, 
+     o.last_modified, 
+     o.currency, 
+     o.currency_value, 
+     o.orders_status, 
+     o.orders_status_name, 
+     o.orders_important_flag,
+     o.orders_care_flag,
+     o.orders_wait_flag,
+     o.orders_inputed_flag,
+     o.orders_work,
+     o.torihiki_houhou,
+     o.customers_email_address,
+     o.orders_comment,
+     o.confirm_payment_time, 
+     o.site_id
+       from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
+       where ".$sort_where."
+       o.orders_status = '" . tep_db_input($status) . "' 
+       " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
+       " . $where_payment . $where_type . "
+       order by ".$order_str;
+//torihiki_date_error DESC,o.torihiki_date DESC";
+}  elseif (isset($_GET['keywords']) && isset($_GET['search_type']) && $_GET['search_type'] == 'products_name' && !$_GET['type'] && !$payment) {
+$orders_query_raw = " select distinct op.orders_id from " . TABLE_ORDERS_PRODUCTS . " op 
+".$sort_table." where ".$sort_where." op.products_name ";
+if(isset($_GET['real_name'])&&$_GET['real_name']){
+$orders_query_raw .=  "= '".$_GET['keywords']."' " ;
+}else{
+$orders_query_raw .=  "like '%".$_GET['keywords']."%' " ;
+}
+$orders_query_raw .= (isset($_GET['site_id']) &&
+intval($_GET['site_id']) ? " and op.site_id = '" . intval($_GET['site_id'])
+. "' " : '') . " order by op.torihiki_date DESC";
+//op.torihiki_date desc";
+} elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && preg_match('/^os_\d+$/', $_GET['search_type'])))) {
+if (!empty($_GET['keywords'])) {
+$orders_query_raw = "
+select distinct(o.orders_id), 
+       o.torihiki_date, 
+       IF(o.torihiki_date = '0000-00-00 00:00:00' or o.torihiki_date ='',1,0) 
+	 as torihiki_date_error,
+       IF(o.date_purchased = '0000-00-00 00:00:00' or o.date_purchased ='',1,0) 
+	 as date_purchased_error,
+       o.customers_id, 
+       o.customers_name, 
+       o.payment_method, 
+       o.date_purchased, 
+       o.last_modified, 
+       o.currency, 
+       o.currency_value, 
+       o.orders_status, 
+       o.orders_status_name,
+       o.orders_important_flag,
+       o.orders_care_flag,
+       o.orders_wait_flag,
+       o.orders_inputed_flag,
+       o.orders_work,
+       o.customers_email_address,
+       o.torihiki_houhou,
+       o.orders_comment,
+       o.confirm_payment_time, 
+       o.site_id
+	 from " . TABLE_ORDERS . " o " . $from_payment . " ,
+       ".TABLE_ORDERS_PRODUCTS." op ".$sort_table." where ".$sort_where .
+	 (isset($_GET['site_id']) && intval($_GET['site_id']) ? " o.site_id =
+	  '" . intval($_GET['site_id']) . "' and " : '') . " o.orders_status =
+	  '".substr($_GET['search_type'], 3)."' and o.orders_id = op.orders_id and
+	  (o.orders_id like '%".$_GET['keywords']."%' or o.customers_name like
+	   '%".$_GET['keywords']."%' or o.customers_email_address like
+	   '%".$_GET['keywords']."%' or op.products_name like
+	   '%".$_GET['keywords']."%') " . $where_payment . $where_type .' order by
+	  '.$order_str;
+	  //o.torihiki_date DESC';
+	  } else {
+	  $orders_query_raw = "
+	  select distinct(o.orders_id), 
+	  o.torihiki_date, 
+	  IF(        o.torihiki_date = '0000-00-00 00:00:00' or o.torihiki_date ='',1,0) 
+	  as torihiki_date_error,
+	  IF(o.date_purchased = '0000-00-00 00:00:00' or o.date_purchased ='',1,0) 
+	  as date_purchased_error,
+	  o.customers_id, 
+	  o.customers_name, 
+	  o.payment_method, 
+	  o.date_purchased, 
+	  o.last_modified, 
+	  o.currency, 
+	  o.currency_value, 
+	  o.orders_status, 
+	  o.orders_status_name,
+	  o.orders_important_flag,
+	  o.orders_care_flag,
+	  o.orders_wait_flag,
+	  o.orders_inputed_flag,
+	  o.orders_work,
+	  o.customers_email_address,
+	  o.torihiki_houhou,
+	  o.orders_comment,
+	  o.confirm_payment_time, 
+	  o.site_id
+	    from " . TABLE_ORDERS . " o " . $from_payment . $sort_table." where 
+	    ".$sort_where .
+	    (isset($_GET['site_id']) && intval($_GET['site_id']) ? "
+	     o.site_id = '" . intval($_GET['site_id']) . "' and " : '') . "
+	     o.orders_status = '".substr($_GET['search_type'], 3)."'" . $where_payment
+	     . $where_type .' order by '.$order_str;
+	     //o.torihiki_date DESC';
+	     }
+	     } elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['search_type'] == 'orders_id'))) {
+	     $orders_query_raw = "
+	     select o.orders_id, 
+	     o.torihiki_date, 
+	     IF(o.torihiki_date = '0000-00-00 00:00:00' or o.torihiki_date ='',1,0) 
+	     as torihiki_date_error,
+	     IF(o.date_purchased = '0000-00-00 00:00:00' or o.date_purchased ='',1,0) 
+	     as date_purchased_error,
+	     o.customers_id, 
+	     o.customers_name, 
+	     o.payment_method, 
+	     o.date_purchased, 
+	     o.last_modified, 
+	     o.currency, 
+	     o.currency_value, 
+	     o.orders_status, 
+	     o.orders_status_name,
+	     o.orders_important_flag,
+	     o.orders_care_flag,
+	     o.orders_wait_flag,
+	     o.orders_inputed_flag,
+	     o.orders_work,
+	     o.customers_email_address,
+	     o.torihiki_houhou,
+	     o.orders_comment,
+	     o.confirm_payment_time, 
+	     o.site_id
+	       from " . TABLE_ORDERS . " o " . $from_payment .$sort_table ."
+	       where " . $sort_where.
+	       (isset($_GET['site_id']) &&
+		intval($_GET['site_id']) ? " o.site_id = '" . intval($_GET['site_id']) .
+		"' and " : '') . " o.orders_id like '%".$_GET['keywords']."%'" .
+	       $where_payment . $where_type.' order by '.$order_str;
+	    //o.torihiki_date DESC';
+	     } elseif ( isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['search_type'] == 'customers_name') or (isset($_GET['search_type']) && $_GET['search_type'] == 'email'))
+		 ) {
+	       $orders_query_raw = "
+		 select o.orders_id, 
+			o.torihiki_date, 
+			IF(o.torihiki_date = '0000-00-00 00:00:00' or o.torihiki_date ='',1,0) 
+			  as torihiki_date_error,
+			IF(o.date_purchased = '0000-00-00 00:00:00' or o.date_purchased ='',1,0) 
+			  as date_purchased_error,
+			o.customers_id, 
+			o.customers_name, 
+			o.payment_method, 
+			o.date_purchased, 
+			o.last_modified, 
+			o.currency, 
+			o.currency_value, 
+			o.orders_status, 
+			o.orders_status_name,
+			o.orders_important_flag,
+			o.orders_care_flag,
+			o.orders_wait_flag,
+			o.orders_inputed_flag,
+			o.orders_work,
+			o.customers_email_address,
+			o.torihiki_houhou,
+			o.orders_comment,
+			o.confirm_payment_time, 
+			o.site_id
+			  from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
+			  where   
+			  " .$sort_where . " 1=1 ".
+			  (isset($_GET['site_id']) && intval($_GET['site_id']) ? " o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
+			  " . $where_payment . $where_type ;
 
-                       $keywords = str_replace('　', ' ', $_GET['keywords']);
+	       $keywords = str_replace('　', ' ', $_GET['keywords']);
 
-                       tep_parse_search_string($keywords, $search_keywords);
+	       tep_parse_search_string($keywords, $search_keywords);
 
-                       if (isset($search_keywords) && (sizeof($search_keywords) > 0)) {
-                         $orders_query_raw .= " and ";
-                         for ($i=0, $n=sizeof($search_keywords); $i<$n; $i++ ) {
-                           switch ($search_keywords[$i]) {
-                             case '(':
-                             case ')':
-                             case 'and':
-                             case 'or':
-                               $orders_query_raw .= " " . tep_db_prepare_input($search_keywords[$i]) . " ";
-                               break;
-                             default:
-                               $keyword = tep_db_prepare_input($search_keywords[$i]);
-                               //$orders_query_raw .= "(";
-                               if (isset($_GET['search_type']) && $_GET['search_type'] == 'customers_name') {
-                                 $orders_query_raw .= "o.customers_name like '%" . tep_db_input($keyword) . "%' or ";
-                                 $orders_query_raw .= "o.customers_name_f like '%" . tep_db_input($keyword) . "%'";
-                               } else if (isset($_GET['search_type']) && $_GET['search_type'] == 'email') {
-                                 $orders_query_raw .= "o.customers_email_address like '%" . tep_db_input($keyword) . "%'";
-                               }
-                               //$orders_query_raw .= ")";
-                               break;
-                           }
-                         } 
-                         //$orders_query_raw .= ")";  
-                       }
+	       if (isset($search_keywords) && (sizeof($search_keywords) > 0)) {
+		 $orders_query_raw .= " and ";
+		 for ($i=0, $n=sizeof($search_keywords); $i<$n; $i++ ) {
+		   switch ($search_keywords[$i]) {
+		     case '(':
+		     case ')':
+		     case 'and':
+		     case 'or':
+		       $orders_query_raw .= " " . tep_db_prepare_input($search_keywords[$i]) . " ";
+		       break;
+		     default:
+		       $keyword = tep_db_prepare_input($search_keywords[$i]);
+		       //$orders_query_raw .= "(";
+		       if (isset($_GET['search_type']) && $_GET['search_type'] == 'customers_name') {
+			 $orders_query_raw .= "o.customers_name like '%" . tep_db_input($keyword) . "%' or ";
+			 $orders_query_raw .= "o.customers_name_f like '%" . tep_db_input($keyword) . "%'";
+		       } else if (isset($_GET['search_type']) && $_GET['search_type'] == 'email') {
+			 $orders_query_raw .= "o.customers_email_address like '%" . tep_db_input($keyword) . "%'";
+		       }
+		       //$orders_query_raw .= ")";
+		       break;
+		   }
+		 } 
+		 //$orders_query_raw .= ")";  
+	       }
 
-                       $orders_query_raw .= " order by ".$order_str;
-                       //o.torihiki_date DESC";
-                     }else if(isset($_GET['keywords']) && ((isset($_GET['search_type']) &&
-                             preg_match('/^payment_method/', $_GET['search_type'])))){
-                       $payment_m = explode('|',$_GET['search_type']);
-                       if (!empty($_GET['keywords'])) {
-                         $orders_query_raw = "
-                           select distinct(o.orders_id), 
-                                  o.torihiki_date, 
-                                  IF(o.torihiki_date = '0000-00-00 00:00:00' or o.torihiki_date ='',1,0) 
-                                    as torihiki_date_error,
-                                  IF(o.date_purchased = '0000-00-00 00:00:00' or o.date_purchased ='',1,0) 
-                                    as date_purchased_error,
-                                  o.customers_id, 
-                                  o.customers_name, 
-                                  o.payment_method, 
-                                  o.date_purchased, 
-                                  o.last_modified, 
-                                  o.currency, 
-                                  o.currency_value, 
-                                  o.orders_status, 
-                                  o.orders_status_name,
-                                  o.orders_important_flag,
-                                  o.orders_care_flag,
-                                  o.orders_wait_flag,
-                                  o.orders_inputed_flag,
-                                  o.orders_work,
-                                  o.customers_email_address,
-                                  o.torihiki_houhou,
-                                  o.orders_comment,
-                                  o.confirm_payment_time, 
-                                  o.site_id
-                                    from " . TABLE_ORDERS . " o " . $from_payment . " ,
-                                  ".TABLE_ORDERS_PRODUCTS." op ".$sort_table." where ".$sort_where .
-                                    (isset($_GET['site_id']) && intval($_GET['site_id']) ? " o.site_id =
-                                     '" . intval($_GET['site_id']) . "' and " : '') . " o.payment_method =
-                                     '".$payment_m[1]."' and o.orders_id = op.orders_id and
-                                     (o.orders_id like '%".$_GET['keywords']."%' or o.customers_name like
-                                      '%".$_GET['keywords']."%' or o.customers_email_address like
-                                      '%".$_GET['keywords']."%' or op.products_name like
-                                      '%".$_GET['keywords']."%') ".' order by
-                                     '.$order_str;
-                                     } else {
-                                     $orders_query_raw = "
-                                     select o.orders_id, 
-                                     o.torihiki_date, 
-                                     IF(o.torihiki_date = '0000-00-00 00:00:00' or o.torihiki_date ='',1,0) 
-                                     as torihiki_date_error,
-                                     IF(o.date_purchased = '0000-00-00 00:00:00' or o.date_purchased ='',1,0) 
-                                     as date_purchased_error,
-                                     o.customers_id, 
-                                     o.customers_name, 
-                                     o.payment_method, 
-                                     o.date_purchased, 
-                                     o.last_modified, 
-                                     o.currency, 
-                                     o.currency_value, 
-                                     o.orders_status, 
-                                     o.orders_status_name,
-                                     o.orders_important_flag,
-                                     o.orders_care_flag,
-                                     o.orders_wait_flag,
-                                     o.orders_inputed_flag,
-                                     o.orders_work,
-                                     o.customers_email_address,
-                                     o.torihiki_houhou,
-                                     o.orders_comment,
-                                     o.confirm_payment_time, 
-                                     o.site_id
-                                       from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
-                                       where ".$sort_where.(isset($_GET['site_id']) && intval($_GET['site_id']) ? " o.site_id =
-                                       '" . intval($_GET['site_id']) . "' and " : '') ." o.payment_method like '".$payment_m[1]."' ";
-                                    $orders_query_raw .= "order by ".$order_str;
-                                     }
-                     }else if(isset($_GET['keywords']) && ((isset($_GET['search_type']) &&
-                             preg_match('/^type/', $_GET['search_type'])))){
-                       $type_arr = explode('|',$_GET['search_type']);
-                       switch ($type_arr[1]) { 
-                         case 'sell':
-                           $w_type = 'orders_type = 1';  
-                           break;
-                         case 'buy':
-                           $w_type = 'orders_type = 2';  
-                           break;
-                         case 'mix':
-                           $w_type = 'orders_type = 3';  
-                           break;
-                       }
-                       if (!empty($_GET['keywords'])) {
-                         $orders_query_raw = "
-                           select distinct(o.orders_id), 
-                                  o.torihiki_date, 
-                                  IF(o.torihiki_date = '0000-00-00 00:00:00' or o.torihiki_date ='',1,0) 
-                                    as torihiki_date_error,
-                                  IF(o.date_purchased = '0000-00-00 00:00:00' or o.date_purchased ='',1,0) 
-                                    as date_purchased_error,
-                                  o.customers_id, 
-                                  o.customers_name, 
-                                  o.payment_method, 
-                                  o.date_purchased, 
-                                  o.last_modified, 
-                                  o.currency, 
-                                  o.currency_value, 
-                                  o.orders_status, 
-                                  o.orders_status_name,
-                                  o.orders_important_flag,
-                                  o.orders_care_flag,
-                                  o.orders_wait_flag,
-                                  o.orders_inputed_flag,
-                                  o.orders_work,
-                                  o.customers_email_address,
-                                  o.torihiki_houhou,
-                                  o.orders_comment,
-                                  o.confirm_payment_time, 
-                                  o.site_id
-                                    from " . TABLE_ORDERS . " o, " .TABLE_ORDERS_PRODUCTS." op ". $f_payment . $sort_table."
-                                    where ".$sort_where.(isset($_GET['site_id']) && intval($_GET['site_id']) ? " o.site_id =
-                                    '" . intval($_GET['site_id']) . "' and " : '') ." ".$w_type. " and o.orders_id = op.orders_id and (o.orders_id like '%".$_GET['keywords']."%' or o.customers_name like '%".$_GET['keywords']."%' or o.customers_email_address like '%".$_GET['keywords']."%' or op.products_name like '%".$_GET['keywords']."%') ";
-                         $orders_query_raw .= " order by ".$order_str;
-                       } else {
-                         $orders_query_raw = "
-                           select distinct(o.orders_id), 
-                                  o.torihiki_date, 
-                                  IF(o.torihiki_date = '0000-00-00 00:00:00' or o.torihiki_date ='',1,0) 
-                                    as torihiki_date_error,
-                                  IF(o.date_purchased = '0000-00-00 00:00:00' or o.date_purchased ='',1,0) 
-                                    as date_purchased_error,
-                                  o.customers_id, 
-                                  o.customers_name, 
-                                  o.payment_method, 
-                                  o.date_purchased, 
-                                  o.last_modified, 
-                                  o.currency, 
-                                  o.currency_value, 
-                                  o.orders_status, 
-                                  o.orders_status_name,
-                                  o.orders_important_flag,
-                                  o.orders_care_flag,
-                                  o.orders_wait_flag,
-                                  o.orders_inputed_flag,
-                                  o.orders_work,
-                                  o.customers_email_address,
-                                  o.torihiki_houhou,
-                                  o.orders_comment,
-                                  o.confirm_payment_time, 
-                                  o.site_id
-                                    from " . TABLE_ORDERS . " o " . $f_payment . $sort_table."
-                                    where ".$sort_where.(isset($_GET['site_id']) && intval($_GET['site_id']) ? " o.site_id =
-                                    '" . intval($_GET['site_id']) . "' and " : '') ." ".$w_type;
-                         $orders_query_raw .= " order by ".$order_str;
-                       }
-                     }elseif (isset($_GET['keywords']) && $_GET['keywords']) {
-                       $orders_query_raw = "
-                         select distinct(o.orders_id), 
-                                o.torihiki_date, 
-                                IF(o.torihiki_date = '0000-00-00 00:00:00' or o.torihiki_date ='',1,0) 
-                                  as torihiki_date_error,
-                                IF(o.date_purchased = '0000-00-00 00:00:00' or o.date_purchased ='',1,0) 
-                                  as date_purchased_error,
-                                o.customers_id, 
-                                o.customers_name, 
-                                o.payment_method, 
-                                o.date_purchased, 
-                                o.last_modified, 
-                                o.currency, 
-                                o.currency_value, 
-                                o.orders_status, 
-                                o.orders_status_name,
-                                o.orders_important_flag,
-                                o.orders_care_flag,
-                                o.orders_wait_flag,
-                                o.orders_inputed_flag,
-                                o.orders_work,
-                                o.customers_email_address,
-                                o.torihiki_houhou,
-                                o.orders_comment,
-                                o.confirm_payment_time, 
-                                o.site_id
-                                  from " . TABLE_ORDERS . " o " . $from_payment . ", " . TABLE_ORDERS_PRODUCTS . " op 
-                                  ".$sort_table."
-                                  where ".$sort_where." o.orders_id = op.orders_id
-                                  " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
-                                  " . $where_payment . $where_type ;
-                       $keywords = str_replace('　', ' ', $_GET['keywords']);
-                       tep_parse_search_string($keywords, $search_keywords);
-                       if (isset($search_keywords) && (sizeof($search_keywords) > 0)) {
-                         $orders_query_raw .= " and (";
-                         for ($i=0, $n=sizeof($search_keywords); $i<$n; $i++ ) {
-                           switch ($search_keywords[$i]) {
-                             case '(':
-                             case ')':
-                             case 'and':
-                             case 'or':
-                               $orders_query_raw .= " " . tep_db_prepare_input($search_keywords[$i]) . " ";
-                               break;
-                             default:
-                               $keyword = tep_db_prepare_input($search_keywords[$i]);
-                               $orders_query_raw .= "(";
-                               $orders_query_raw .= "o.customers_name like '%" . tep_db_input($keyword) . "%' or ";
-                               $orders_query_raw .= "o.customers_name_f like '%" . tep_db_input($keyword) . "%' or ";
-                               $orders_query_raw .= "o.customers_email_address like '%" . tep_db_input($keyword) . "%' or ";
-                               $orders_query_raw .= "o.customers_telephone like '%" . tep_db_input($keyword) . "%' or ";
-                               $orders_query_raw .= "op.products_name like '%" . tep_db_input($keyword) . "%'";
-                               $orders_query_raw .= ")";
-                               break;
-                           }
-                         } 
-                         $orders_query_raw .= ")";  
-                       }
+	       $orders_query_raw .= " order by ".$order_str;
+	       //o.torihiki_date DESC";
+	     }else if(isset($_GET['keywords']) && ((isset($_GET['search_type']) &&
+		     preg_match('/^payment_method/', $_GET['search_type'])))){
+	       $payment_m = explode('|',$_GET['search_type']);
+	       if (!empty($_GET['keywords'])) {
+		 $orders_query_raw = "
+		   select distinct(o.orders_id), 
+			  o.torihiki_date, 
+			  IF(o.torihiki_date = '0000-00-00 00:00:00' or o.torihiki_date ='',1,0) 
+			    as torihiki_date_error,
+			  IF(o.date_purchased = '0000-00-00 00:00:00' or o.date_purchased ='',1,0) 
+			    as date_purchased_error,
+			  o.customers_id, 
+			  o.customers_name, 
+			  o.payment_method, 
+			  o.date_purchased, 
+			  o.last_modified, 
+			  o.currency, 
+			  o.currency_value, 
+			  o.orders_status, 
+			  o.orders_status_name,
+			  o.orders_important_flag,
+			  o.orders_care_flag,
+			  o.orders_wait_flag,
+			  o.orders_inputed_flag,
+			  o.orders_work,
+			  o.customers_email_address,
+			  o.torihiki_houhou,
+			  o.orders_comment,
+			  o.confirm_payment_time, 
+			  o.site_id
+			    from " . TABLE_ORDERS . " o " . $from_payment . " ,
+			  ".TABLE_ORDERS_PRODUCTS." op ".$sort_table." where ".$sort_where .
+			    (isset($_GET['site_id']) && intval($_GET['site_id']) ? " o.site_id =
+			     '" . intval($_GET['site_id']) . "' and " : '') . " o.payment_method =
+			     '".$payment_m[1]."' and o.orders_id = op.orders_id and
+			     (o.orders_id like '%".$_GET['keywords']."%' or o.customers_name like
+			      '%".$_GET['keywords']."%' or o.customers_email_address like
+			      '%".$_GET['keywords']."%' or op.products_name like
+			      '%".$_GET['keywords']."%') ".' order by
+			     '.$order_str;
+			     } else {
+			     $orders_query_raw = "
+			     select o.orders_id, 
+			     o.torihiki_date, 
+			     IF(o.torihiki_date = '0000-00-00 00:00:00' or o.torihiki_date ='',1,0) 
+			     as torihiki_date_error,
+			     IF(o.date_purchased = '0000-00-00 00:00:00' or o.date_purchased ='',1,0) 
+			     as date_purchased_error,
+			     o.customers_id, 
+			     o.customers_name, 
+			     o.payment_method, 
+			     o.date_purchased, 
+			     o.last_modified, 
+			     o.currency, 
+			     o.currency_value, 
+			     o.orders_status, 
+			     o.orders_status_name,
+			     o.orders_important_flag,
+			     o.orders_care_flag,
+			     o.orders_wait_flag,
+			     o.orders_inputed_flag,
+			     o.orders_work,
+			     o.customers_email_address,
+			     o.torihiki_houhou,
+			     o.orders_comment,
+			     o.confirm_payment_time, 
+			     o.site_id
+			       from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
+			       where ".$sort_where.(isset($_GET['site_id']) && intval($_GET['site_id']) ? " o.site_id =
+			       '" . intval($_GET['site_id']) . "' and " : '') ." o.payment_method like '".$payment_m[1]."' ";
+			    $orders_query_raw .= "order by ".$order_str;
+			     }
+	     }else if(isset($_GET['keywords']) && ((isset($_GET['search_type']) &&
+		     preg_match('/^type/', $_GET['search_type'])))){
+	       $type_arr = explode('|',$_GET['search_type']);
+	       switch ($type_arr[1]) { 
+		 case 'sell':
+		   $w_type = 'orders_type = 1';  
+		   break;
+		 case 'buy':
+		   $w_type = 'orders_type = 2';  
+		   break;
+		 case 'mix':
+		   $w_type = 'orders_type = 3';  
+		   break;
+	       }
+	       if (!empty($_GET['keywords'])) {
+		 $orders_query_raw = "
+		   select distinct(o.orders_id), 
+			  o.torihiki_date, 
+			  IF(o.torihiki_date = '0000-00-00 00:00:00' or o.torihiki_date ='',1,0) 
+			    as torihiki_date_error,
+			  IF(o.date_purchased = '0000-00-00 00:00:00' or o.date_purchased ='',1,0) 
+			    as date_purchased_error,
+			  o.customers_id, 
+			  o.customers_name, 
+			  o.payment_method, 
+			  o.date_purchased, 
+			  o.last_modified, 
+			  o.currency, 
+			  o.currency_value, 
+			  o.orders_status, 
+			  o.orders_status_name,
+			  o.orders_important_flag,
+			  o.orders_care_flag,
+			  o.orders_wait_flag,
+			  o.orders_inputed_flag,
+			  o.orders_work,
+			  o.customers_email_address,
+			  o.torihiki_houhou,
+			  o.orders_comment,
+			  o.confirm_payment_time, 
+			  o.site_id
+			    from " . TABLE_ORDERS . " o, " .TABLE_ORDERS_PRODUCTS." op ". $f_payment . $sort_table."
+			    where ".$sort_where.(isset($_GET['site_id']) && intval($_GET['site_id']) ? " o.site_id =
+			    '" . intval($_GET['site_id']) . "' and " : '') ." ".$w_type. " and o.orders_id = op.orders_id and (o.orders_id like '%".$_GET['keywords']."%' or o.customers_name like '%".$_GET['keywords']."%' or o.customers_email_address like '%".$_GET['keywords']."%' or op.products_name like '%".$_GET['keywords']."%') ";
+		 $orders_query_raw .= " order by ".$order_str;
+	       } else {
+		 $orders_query_raw = "
+		   select distinct(o.orders_id), 
+			  o.torihiki_date, 
+			  IF(o.torihiki_date = '0000-00-00 00:00:00' or o.torihiki_date ='',1,0) 
+			    as torihiki_date_error,
+			  IF(o.date_purchased = '0000-00-00 00:00:00' or o.date_purchased ='',1,0) 
+			    as date_purchased_error,
+			  o.customers_id, 
+			  o.customers_name, 
+			  o.payment_method, 
+			  o.date_purchased, 
+			  o.last_modified, 
+			  o.currency, 
+			  o.currency_value, 
+			  o.orders_status, 
+			  o.orders_status_name,
+			  o.orders_important_flag,
+			  o.orders_care_flag,
+			  o.orders_wait_flag,
+			  o.orders_inputed_flag,
+			  o.orders_work,
+			  o.customers_email_address,
+			  o.torihiki_houhou,
+			  o.orders_comment,
+			  o.confirm_payment_time, 
+			  o.site_id
+			    from " . TABLE_ORDERS . " o " . $f_payment . $sort_table."
+			    where ".$sort_where.(isset($_GET['site_id']) && intval($_GET['site_id']) ? " o.site_id =
+			    '" . intval($_GET['site_id']) . "' and " : '') ." ".$w_type;
+		 $orders_query_raw .= " order by ".$order_str;
+	       }
+	     }elseif (isset($_GET['keywords']) && $_GET['keywords']) {
+	       $orders_query_raw = "
+		 select distinct(o.orders_id), 
+			o.torihiki_date, 
+			IF(o.torihiki_date = '0000-00-00 00:00:00' or o.torihiki_date ='',1,0) 
+			  as torihiki_date_error,
+			IF(o.date_purchased = '0000-00-00 00:00:00' or o.date_purchased ='',1,0) 
+			  as date_purchased_error,
+			o.customers_id, 
+			o.customers_name, 
+			o.payment_method, 
+			o.date_purchased, 
+			o.last_modified, 
+			o.currency, 
+			o.currency_value, 
+			o.orders_status, 
+			o.orders_status_name,
+			o.orders_important_flag,
+			o.orders_care_flag,
+			o.orders_wait_flag,
+			o.orders_inputed_flag,
+			o.orders_work,
+			o.customers_email_address,
+			o.torihiki_houhou,
+			o.orders_comment,
+			o.confirm_payment_time, 
+			o.site_id
+			  from " . TABLE_ORDERS . " o " . $from_payment . ", " . TABLE_ORDERS_PRODUCTS . " op 
+			  ".$sort_table."
+			  where ".$sort_where." o.orders_id = op.orders_id
+			  " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
+			  " . $where_payment . $where_type ;
+	       $keywords = str_replace('　', ' ', $_GET['keywords']);
+	       tep_parse_search_string($keywords, $search_keywords);
+	       if (isset($search_keywords) && (sizeof($search_keywords) > 0)) {
+		 $orders_query_raw .= " and (";
+		 for ($i=0, $n=sizeof($search_keywords); $i<$n; $i++ ) {
+		   switch ($search_keywords[$i]) {
+		     case '(':
+		     case ')':
+		     case 'and':
+		     case 'or':
+		       $orders_query_raw .= " " . tep_db_prepare_input($search_keywords[$i]) . " ";
+		       break;
+		     default:
+		       $keyword = tep_db_prepare_input($search_keywords[$i]);
+		       $orders_query_raw .= "(";
+		       $orders_query_raw .= "o.customers_name like '%" . tep_db_input($keyword) . "%' or ";
+		       $orders_query_raw .= "o.customers_name_f like '%" . tep_db_input($keyword) . "%' or ";
+		       $orders_query_raw .= "o.customers_email_address like '%" . tep_db_input($keyword) . "%' or ";
+		       $orders_query_raw .= "o.customers_telephone like '%" . tep_db_input($keyword) . "%' or ";
+		       $orders_query_raw .= "op.products_name like '%" . tep_db_input($keyword) . "%'";
+		       $orders_query_raw .= ")";
+		       break;
+		   }
+		 } 
+		 $orders_query_raw .= ")";  
+	       }
 
-                       $orders_query_raw .= "order by ".$order_str;
+	       $orders_query_raw .= "order by ".$order_str;
 
-                     }else {
-                       // orders_list 隐藏 「キャンセル」と「注文取消」
-                       $orders_query_raw = "
-                         select distinct o.orders_status as orders_status_id, 
-                                o.orders_id, 
-                                o.torihiki_date, 
-                                IF(o.torihiki_date = '0000-00-00 00:00:00' or o.torihiki_date ='',1,0) 
-                                  as torihiki_date_error,
-                                IF(o.date_purchased = '0000-00-00 00:00:00' or o.date_purchased ='',1,0) 
-                                  as date_purchased_error,
-                                o.customers_id, 
-                                o.customers_name, 
-                                o.payment_method, 
-                                o.date_purchased, 
-                                o.last_modified, 
-                                o.currency, 
-                                o.currency_value, 
-                                o.orders_status, 
-                                o.orders_status_name, 
-                                o.orders_status_image,
-                                o.orders_important_flag,
-                                o.orders_care_flag,
-                                o.orders_wait_flag,
-                                o.orders_inputed_flag,
-                                o.orders_work,
-                                o.customers_email_address,
-                                o.orders_comment,
-                                o.torihiki_houhou,
-                                o.confirm_payment_time, 
-                                o.site_id
-                                  from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
-                                  where 
-                                  ".$sort_where."
-                                  o.flag_qaf = 0 
-                                  -- and o.orders_status != '6'
-                                  -- and o.orders_status != '8'
-                                  " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
-                                  " . $where_payment . $where_type . "
-                                  order by ".$order_str;
-                       //o.torihiki_date DESC";
-                     }
-  // old sort is  order by torihiki_date_error DESC,o.torihiki_date DESC
-  // new sort is  order by o.torihiki_date DESC
-  //where
-  //(o.q_8_1 IS NULL or o.q_8_1 = '')
-  $from_pos = strpos($orders_query_raw, 'from orders');
-  $order_pos = strpos($orders_query_raw, 'order by');
-  $op_pos = strpos($orders_query_raw, 'distinct op.orders_id'); 
-  if (($from_pos !== false) && ($order_pos !== false)) {
-    if ($op_pos !== false) {
-      $sql_count_query = "select count(op.orders_id) as count ".substr($orders_query_raw, $from_pos, $order_pos - $from_pos);
-    } else {
-      $sql_count_query = "select count(o.orders_id) as count ".substr($orders_query_raw, $from_pos, $order_pos - $from_pos);
-    }
-  }
+	     }else {
+	       // orders_list 隐藏 「キャンセル」と「注文取消」
+	       $orders_query_raw = "
+		 select distinct o.orders_status as orders_status_id, 
+			o.orders_id, 
+			o.torihiki_date, 
+			IF(o.torihiki_date = '0000-00-00 00:00:00' or o.torihiki_date ='',1,0) 
+			  as torihiki_date_error,
+			IF(o.date_purchased = '0000-00-00 00:00:00' or o.date_purchased ='',1,0) 
+			  as date_purchased_error,
+			o.customers_id, 
+			o.customers_name, 
+			o.payment_method, 
+			o.date_purchased, 
+			o.last_modified, 
+			o.currency, 
+			o.currency_value, 
+			o.orders_status, 
+			o.orders_status_name, 
+			o.orders_status_image,
+			o.orders_important_flag,
+			o.orders_care_flag,
+			o.orders_wait_flag,
+			o.orders_inputed_flag,
+			o.orders_work,
+			o.customers_email_address,
+			o.orders_comment,
+			o.torihiki_houhou,
+			o.confirm_payment_time, 
+			o.site_id
+			  from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
+			  where 
+			  ".$sort_where."
+			  o.flag_qaf = 0 
+			  -- and o.orders_status != '6'
+			  -- and o.orders_status != '8'
+			  " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
+			  " . $where_payment . $where_type . "
+			  order by ".$order_str;
+	       //o.torihiki_date DESC";
+	     }
+// old sort is  order by torihiki_date_error DESC,o.torihiki_date DESC
+// new sort is  order by o.torihiki_date DESC
+//where
+//(o.q_8_1 IS NULL or o.q_8_1 = '')
+$from_pos = strpos($orders_query_raw, 'from orders');
+$order_pos = strpos($orders_query_raw, 'order by');
+$op_pos = strpos($orders_query_raw, 'distinct op.orders_id'); 
+if (($from_pos !== false) && ($order_pos !== false)) {
+if ($op_pos !== false) {
+$sql_count_query = "select count(op.orders_id) as count ".substr($orders_query_raw, $from_pos, $order_pos - $from_pos);
+} else {
+$sql_count_query = "select count(o.orders_id) as count ".substr($orders_query_raw, $from_pos, $order_pos - $from_pos);
+}
+}
 #}}
 
 }
@@ -1610,12 +1610,12 @@ header("Cache-Control: post-check=0, pre-check=0", false);
 # HTTP/1.0
 header("Pragma: no-cache");
 function check_torihiki_date_error($oid){
-  $query = tep_db_query("select * from " . TABLE_ORDERS . " where orders_id='" . $oid . "'");
-  $order = tep_db_fetch_array($query);
-  if ($order['torihiki_date'] == '0000-00-00 00:00:00') {
-    return true;
-  }
-  return false;
+$query = tep_db_query("select * from " . TABLE_ORDERS . " where orders_id='" . $oid . "'");
+$order = tep_db_fetch_array($query);
+if ($order['torihiki_date'] == '0000-00-00 00:00:00') {
+return true;
+}
+return false;
 }
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -1625,81 +1625,84 @@ function check_torihiki_date_error($oid){
 <?php 
 // 订单详细页，TITLE显示交易商品名
 if ($_GET['action']=='edit' && $_GET['oID']) {?>
-  <title><?php echo tep_get_orders_products_names($_GET['oID']); ?></title>
-    <?php } else { ?>
-      <title><?php echo TITLE; ?></title>
-        <?php }?>
-        <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
-        <script language="javascript" src="includes/javascript/jquery.js"></script>
-        <script language="javascript" src="includes/javascript/jquery.form.js"></script>
-        <script language="javascript" src="includes/javascript/all_order.js"></script>
-        <script language="javascript" src="includes/javascript/jquery_include.js"></script>
-        <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
-        <script language="javascript">
-        // 用作跳转
-        var base_url = '<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('questions_type')));?>';
-        // 非完成状态的订单不显示最终确认
-        var show_q_8_1_able  = <?php echo tep_orders_finished($_GET['oID']) && !check_torihiki_date_error($_GET['oID']) ?'true':'false';?>;
-        var cfg_last_customer_action = '<?php echo LAST_CUSTOMER_ACTION;?>';
+<title><?php echo tep_get_orders_products_names($_GET['oID']); ?></title>
+<?php } else if($_GET['action']=='show_manual_info' && $_GET['oID'] && $_GET['pID']){
+    ?><title><?php echo tep_get_orders_manual_title($_GET['oID'],$_GET['pID']); ?></title>
+<?php 
+}else { ?>
+<title><?php echo TITLE; ?></title>
+<?php }?>
+<link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
+<script language="javascript" src="includes/javascript/jquery.js"></script>
+<script language="javascript" src="includes/javascript/jquery.form.js"></script>
+<script language="javascript" src="includes/javascript/all_order.js"></script>
+<script language="javascript" src="includes/javascript/jquery_include.js"></script>
+<script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript">
+// 用作跳转
+var base_url = '<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('questions_type')));?>';
+// 非完成状态的订单不显示最终确认
+var show_q_8_1_able  = <?php echo tep_orders_finished($_GET['oID']) && !check_torihiki_date_error($_GET['oID']) ?'true':'false';?>;
+var cfg_last_customer_action = '<?php echo LAST_CUSTOMER_ACTION;?>';
 
-        <?php 
-        // 输出订单邮件
-        // title
-        foreach ($mo as $oskey => $value){
-          echo 'window.status_title['.$oskey.'] = new Array();'."\n";
-          foreach ($value as $sitekey => $svalue) {
-            echo 'window.status_title['.$oskey.']['.$sitekey.'] = "' . str_replace(array("\r\n","\r","\n"), array('\n', '\n', '\n'),$svalue) . '";' . "\n";
-          }
-        }
+<?php 
+// 输出订单邮件
+// title
+foreach ($mo as $oskey => $value){
+  echo 'window.status_title['.$oskey.'] = new Array();'."\n";
+  foreach ($value as $sitekey => $svalue) {
+    echo 'window.status_title['.$oskey.']['.$sitekey.'] = "' . str_replace(array("\r\n","\r","\n"), array('\n', '\n', '\n'),$svalue) . '";' . "\n";
+  }
+}
 
 //content
 foreach ($mt as $oskey => $value){
-  echo 'window.status_text['.$oskey.'] = new Array();'."\n";
-  foreach ($value as $sitekey => $svalue) {
-    echo 'window.status_text['.$oskey.']['.$sitekey.'] = "' . str_replace(array("\r\n","\r","\n"), array('\n', '\n', '\n'),$svalue) . '";' . "\n";
-  }
+echo 'window.status_text['.$oskey.'] = new Array();'."\n";
+foreach ($value as $sitekey => $svalue) {
+echo 'window.status_text['.$oskey.']['.$sitekey.'] = "' . str_replace(array("\r\n","\r","\n"), array('\n', '\n', '\n'),$svalue) . '";' . "\n";
+}
 }
 
 //no mail
 echo 'var nomail = new Array();'."\n";
 foreach ($nomail as $oskey => $value){
-  echo 'nomail['.$oskey.'] = "' . $value . '";' . "\n";
+echo 'nomail['.$oskey.'] = "' . $value . '";' . "\n";
 }
 ?>
 <?php
 /*
-   if($reload == 'yes') {
-   if((int)DS_ADMIN_ORDER_RELOAD < 1) {
-   $reloadcnt = '60';
-   } else {
-   $reloadcnt = DS_ADMIN_ORDER_RELOAD;
-   }
-   }
- */
+if($reload == 'yes') {
+if((int)DS_ADMIN_ORDER_RELOAD < 1) {
+$reloadcnt = '60';
+} else {
+$reloadcnt = DS_ADMIN_ORDER_RELOAD;
+}
+}
+*/
 ?>
 // 以当前时间为如今日
 function q_3_2(){
-  if ($('#q_3_1').attr('checked') == true){
-    if ($('#q_3_2_m').val() == '' || $('#q_3_2_m').val() == '') {
-      $('#q_3_2_m').val(new Date().getMonth()+1);
-      $('#q_3_2_d').val(new Date().getDate());
-    }
-  }
+if ($('#q_3_1').attr('checked') == true){
+if ($('#q_3_2_m').val() == '' || $('#q_3_2_m').val() == '') {
+$('#q_3_2_m').val(new Date().getMonth()+1);
+$('#q_3_2_d').val(new Date().getDate());
+}
+}
 }
 
 // 以当前时间为如今日
 function q_4_3(){
-  if ($('#q_4_2').attr('checked') == true){
-    if ($('#q_4_3_m').val() == '' || $('#q_4_3_m').val() == '') {
-      $('#q_4_3_m').val(new Date().getMonth()+1);
-      $('#q_4_3_d').val(new Date().getDate());
-    }
-  }
+if ($('#q_4_2').attr('checked') == true){
+if ($('#q_4_3_m').val() == '' || $('#q_4_3_m').val() == '') {
+$('#q_4_3_m').val(new Date().getMonth()+1);
+$('#q_4_3_d').val(new Date().getDate());
+}
+}
 }
 
 function del_confirm_payment_time(oid, status_id)
 {
-  $.ajax({
+$.ajax({
 url: 'ajax_orders.php?action=getallpwd',
 type: 'POST',
 dataType: 'text',
@@ -1721,59 +1724,69 @@ window.location.reload;
 }); 
 }
 } else {
-  window.alert("パスワードが違います"); 
+window.alert("パスワードが違います"); 
 }
 }
 });
 }
 function validate_comment(){
-  var o_comment = $('textarea|[name=orders_comment]');
-  if(o_comment.val()){
-    return true;
-  }else{
-    o_comment_flag = $('input|[name=orders_comment_flag]');
-    o_comment_flag.val('true');
-    return true;
-  }
+var o_comment = $('textarea|[name=orders_comment]');
+if(o_comment.val()){
+return true;
+}else{
+o_comment_flag = $('input|[name=orders_comment_flag]');
+o_comment_flag.val('true');
+return true;
+}
+}
+function check_manual_search_form(){
+var m_keyword=document.getElementById('keyword');
+if(m_keyword.value != ''){
+return true;
+}else{
+alert('検索したいマニュアルを入力して下さい!');
+return false;
+}
 }
 <?php
 if(isset($_GET['keywords'])&&$_GET['keywords']){
-  ?>
-    $("#keywords").val("<?php echo $_GET['keywords'];?>");
-  <?php
+?>
+$("#keywords").val("<?php echo $_GET['keywords'];?>");
+<?php
 }
 if(isset($_GET['search_type'])&&$_GET['search_type']){
-  ?>
-    $(document).ready(function(){ 
-        $("select[name=search_type]").find("option[value='<?php echo
-          urldecode($_GET['search_type']);?>']").attr("selected", "selected");
-        });
-  <?php
+?>
+$(document).ready(function(){ 
+$("select[name=search_type]").find("option[value='<?php echo
+  urldecode($_GET['search_type']);?>']").attr("selected", "selected");
+});
+<?php
 }
 
 ?>
 <?php
 if (!isset($_GET['action'])) {
-  ?>
-    $(function() {
-        left_show_height = $('#orders_list_table').height();
-        right_show_height = $('#rightinfo').height();
+?>
+$(function() {
+left_show_height = $('#orders_list_table').height();
+right_show_height = $('#rightinfo').height();
 
-        if (right_show_height <= left_show_height) {
-        $('#rightinfo').css('height', left_show_height);  
-        }
-        });
-  function showRightInfo() {
-    left_show_height = $('#orders_list_table').height();
-    $('#rightinfo').css('height', left_show_height);  
-  }
-  $(window).resize(function() {
-      showRightInfo();
-      });
-  <?php
+if (right_show_height <= left_show_height) {
+$('#rightinfo').css('height', left_show_height);  
+}
+});
+function showRightInfo() {
+left_show_height = $('#orders_list_table').height();
+$('#rightinfo').css('height', left_show_height);  
+}
+$(window).resize(function() {
+showRightInfo();
+});
+<?php
 }
 ?>
 var popup_num = 1;
+
 </script>
 </head>
 <body>
@@ -2628,7 +2641,162 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
 
                   <?php
                   // edit over
-        } else {
+}else if ($_GET['action']=='show_manual_info' && $_GET['oID'] && $_GET['pID']) {
+$oID=$_GET['oID'];
+$pID=$_GET['pID'];
+$page=$_GET['page'];
+//$site_id=isset($_GET['site_id']) ? $_GET['site_id']:0;
+
+$products_info_query=tep_db_query("select products_id,site_id from ".TABLE_ORDERS_PRODUCTS." where orders_id='".$oID."' and products_id='".$pID."'");
+$products_info_array=tep_db_fetch_array($products_info_query);
+$site_id=$products_info_array['site_id'];
+$categories_info_query=tep_db_query("select categories_id from ".TABLE_PRODUCTS_TO_CATEGORIES." where products_id='".$products_info_array['products_id']."'");
+$categories_info_array=tep_db_fetch_array($categories_info_query);
+$categories_pid_query=tep_db_query("select parent_id from ".TABLE_CATEGORIES." where categories_id='".$categories_info_array['categories_id']."'");
+$categories_pid_array=tep_db_fetch_array($categories_pid_query);
+$cp_manual_query=tep_db_query("select categories_name,c_manual from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$categories_pid_array['parent_id']."' and site_id='".$products_info_array['site_id']."'");
+$cp_manual_array=tep_db_fetch_array($cp_manual_query);
+
+$c_manual_query=tep_db_query("select categories_name,c_manual from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$categories_info_array['categories_id']."' and site_id='".$products_info_array['site_id']."'");
+$c_manual_array=tep_db_fetch_array($c_manual_query);
+
+$pro_manual_query=tep_db_query("select products_name,p_manual from ".TABLE_PRODUCTS_DESCRIPTION." where products_id='".$products_info_array['products_id']."' and site_id='".$products_info_array['site_id']."'");
+$pro_manual_array=tep_db_fetch_array($pro_manual_query);
+$params="oID=".$oID."&page=".$page;
+?>
+<tr>
+            <td width="100%" height="40">
+
+            <table border="0" width="100%" cellspacing="0" cellpadding="0">
+            <tr>
+            <td class="pageHeading"><?php echo $cp_manual_array['categories_name'].'/'.$c_manual_array['categories_name'].'/'.$pro_manual_array['products_name'].SHOW_MANUAL_TITLE; ?></td>
+            <td align="right" class="smallText">
+            <table width=""  border="0" cellspacing="1" cellpadding="0">
+            <tr>
+            <td class="smallText" valign='top'>
+	    <form name="manual" action="orders.php?site_id=<?php echo $site_id;?>&oID=<?php echo $oID;?>&page=<?php echo $page;?>&action=search_manual_info" method="post">
+<input name="keyword" style="width:200px;" type="text" id="keyword" size="40" value="">
+<input type="submit"  onclick="return check_manual_search_form();" value="<?php echo SHOW_MANUAL_SEARCH;?>">
+</form>
+	    </td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td>
+<table border="0" width="100%" cellspacing="0" cellpadding="10" >
+<tr>
+<td>
+<h2>□<?php echo $cp_manual_array['categories_name'].SHOW_MANUAL_TITLE?> </h2>
+<?php echo $cp_manual_array['c_manual']!='' ? stripslashes($cp_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
+<hr>
+<h2>□<?php echo $c_manual_array['categories_name'].SHOW_MANUAL_TITLE?></h2>
+<?php echo $c_manual_array['c_manual']!='' ? stripslashes($c_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
+<hr>
+<h2>
+□<?php echo $pro_manual_array['products_name'].SHOW_MANUAL_TITLE?>
+</h2>
+<?php echo $pro_manual_array['p_manual']!='' ? stripslashes($pro_manual_array['p_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>'?>
+<hr>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td align="right">
+<a href="<?php echo tep_href_link(FILENAME_ORDERS,$params)?>"><button><?php echo SHOW_MANUAL_RETURN;?></button></a>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<?php 
+}else if($_GET['action']=='search_manual_info'){
+$site_id=isset($_GET['site_id']) ? $_GET['site_id']:0;
+$oID=$_GET['oID'];
+$page=$_GET['page'];
+if(isset($_POST['keyword']) && $_POST['keyword']!=''){
+$keyword=$_POST['keyword'];
+$products_info_query=tep_db_query("select products_id,products_name,p_manual from ".TABLE_PRODUCTS_DESCRIPTION." where products_name='".$keyword."' and site_id='".$site_id."'");
+$products_info_array=tep_db_fetch_array($products_info_query);
+if(empty($products_info_array)){
+$search_title='<font color="red">'.SEARCH_MANUAL_PRODUCTS_FAIL.'</font>';
+}else{
+$categories_info_query=tep_db_query("select categories_id from ".TABLE_PRODUCTS_TO_CATEGORIES." where products_id='".$products_info_array['products_id']."'");
+$categories_info_array=tep_db_fetch_array($categories_info_query);
+$categories_pid_query=tep_db_query("select parent_id from ".TABLE_CATEGORIES." where categories_id='".$categories_info_array['categories_id']."'");
+$categories_pid_array=tep_db_fetch_array($categories_pid_query);
+$cp_manual_query=tep_db_query("select categories_name,c_manual from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$categories_pid_array['parent_id']."' and site_id='".$site_id."'");
+$cp_manual_array=tep_db_fetch_array($cp_manual_query);
+
+$c_manual_query=tep_db_query("select categories_name,c_manual from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$categories_info_array['categories_id']."' and site_id='".$site_id."'");
+$c_manual_array=tep_db_fetch_array($c_manual_query);
+$search_title=$cp_manual_array['categories_name'].'/'.$c_manual_array['categories_name'].'/'.$products_info_array['products_name'].SHOW_MANUAL_TITLE; 
+}
+}
+$params="oID=".$oID."&page=".$page
+?>
+<tr>
+            <td width="100%" height="40">
+
+            <table border="0" width="100%" cellspacing="0" cellpadding="0">
+            <tr>
+            <td class="pageHeading"><?php echo $search_title; ?></td>
+            <td align="right" class="smallText">
+            <table width=""  border="0" cellspacing="1" cellpadding="0">
+            <tr>
+            <td class="smallText" valign='top'>
+	    <form name="manual" action="orders.php?site_id=<?php echo $site_id;?>&page=<?php echo $page;?>&action=search_manual_info" method="post">
+<input name="keyword" style="width:320px;" type="text" id="keyword" size="40" value="">
+<input type="submit" onclick="return check_manual_search_form();" value="<?php echo SHOW_MANUAL_SEARCH;?>">
+</form>
+	    </td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td>
+<?php if(!empty($products_info_array)){ ?>
+<table border="0" width="100%" cellspacing="0" cellpadding="10" >
+<tr>
+<td>
+<h2>□<?php echo $cp_manual_array['categories_name'].SHOW_MANUAL_TITLE?> </h2>
+<?php echo $cp_manual_array['c_manual']!='' ? stripslashes($cp_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
+<hr>
+<h2>□<?php echo $c_manual_array['categories_name'].SHOW_MANUAL_TITLE?></h2>
+<?php echo $c_manual_array['c_manual']!='' ? stripslashes($c_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
+<hr>
+<h2>□<?php echo $products_info_array['products_name'].SHOW_MANUAL_TITLE; ?></h2>
+<?php echo $products_info_array['p_manual']!='' ? stripslashes($products_info_array['p_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>'?>
+<hr>
+</td>
+</tr>
+</table>
+<?php }?>
+</td>
+</tr>
+<tr>
+<td align="right">
+<a href="<?php echo tep_href_link(FILENAME_ORDERS,$params)?>"><button><?php echo SHOW_MANUAL_RETURN;?></button></a>
+</td>
+</tr>
+
+</table>
+</td>
+</tr>
+
+<?php
+}
+else {
           // list start
           ?>
             <tr>
@@ -3376,7 +3544,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                 $contents[] = array('text' => '<br>' . tep_draw_checkbox_field('restock', '', true) . ' ' . TEXT_INFO_RESTOCK_PRODUCT_QUANTITY);
                 $contents[] = array('align' => 'center', 'text' => '<br>' .  tep_html_element_submit(IMAGE_DELETE) . ' <a href="' .  tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID=' . $oInfo->orders_id) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>');
                 break;
-              default:
+	        default:
                 if (isset($oInfo) && is_object($oInfo)) {
                   $heading[] = array('text' => '<b>[' . $oInfo->orders_id . ']<br>' . tep_datetime_short_torihiki($oInfo->date_purchased) . '</b>');
 
