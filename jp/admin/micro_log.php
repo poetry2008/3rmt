@@ -123,6 +123,7 @@
         }
          
         $log = tep_db_fetch_array(tep_db_query("select * from micro_logs where log_id='".$_GET['id']."'"));
+        tep_db_query("delete from micro_to_user where micro_id = '".$_GET['id']."'"); 
         $log_read_raw = tep_db_query("select is_read from micro_to_user where micro_id = '".$_GET['id']."' and user = '".$ocertify->auth_user."'"); 
         $log_read = tep_db_fetch_array($log_read_raw); 
         if ($log_read) {

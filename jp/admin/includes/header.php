@@ -11,6 +11,17 @@ if (isset($messageStack) && $messageStack->size > 0) {
 $(function() {
    setTimeout(function() {show_head_notice(1)}, 35000);
 });
+
+function check_exists_function(funcName){
+  try{
+    if(typeof(eval(funcName)) == "function") {
+      return true;
+    }
+  }catch(e){
+    return false;
+  }
+}
+
 function calc_notice_time(leave_time, nid, start_calc)
 {
   
@@ -64,7 +75,9 @@ function calc_notice_time(leave_time, nid, start_calc)
       if (n_node.controls) {
         n_node.controls.play();  
       } else {
-        n_node.play();  
+        if (check_exists_function('play')) {
+          n_node.play();  
+        }
       }
     }
     setTimeout(function(){calc_notice_time(leave_time, nid, 1)}, 5000); 
