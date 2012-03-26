@@ -108,6 +108,7 @@ if (tep_not_null($action)) {
 
       //  错误信息处理
       //暂时关闭 日期错误处理
+         /*
          if (isset($update_tori_torihiki_date)) { //日時が有効かチェック
          if (!preg_match('/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/', $update_tori_torihiki_date, $m)) { // check the date format
          $messageStack->add('日時フォーマットが間違っています。 "2008-01-01 10:30:00"', 'error');
@@ -123,6 +124,7 @@ if (tep_not_null($action)) {
          $action = 'edit';
          break;
          }
+         */
 
       foreach ($update_totals as $total_index => $total_details) {    
         extract($total_details,EXTR_PREFIX_ALL,"ot");
@@ -173,7 +175,6 @@ if (tep_not_null($action)) {
         delivery_postcode = '" . tep_db_input($update_delivery_postcode) . "',
         delivery_country = '" . tep_db_input(stripslashes($update_delivery_country)) . "',
         payment_method = '" . payment::changeRomaji(tep_db_input($_POST['payment_method']),'title' ). "',
-        torihiki_date = '" . tep_db_input($update_tori_torihiki_date) . "',
         torihiki_houhou = '" . tep_db_input($update_tori_torihiki_houhou) . "',
         cc_type = '" . tep_db_input($update_info_cc_type) . "',
         cc_owner = '" . tep_db_input($update_info_cc_owner) . "',";

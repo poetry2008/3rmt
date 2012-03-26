@@ -39,7 +39,7 @@
     
       $this->tori = array('Bahamut' => $order['torihiki_Bahamut'],
                           'houhou'  => $order['torihiki_houhou'],
-                          'date'    => $order['torihiki_date']);
+                          'date'    => $order['torihiki_date'].'&nbsp;～&nbsp;'.date('H:i:s',strtotime($order['torihiki_date_end'])));
 
       $this->info = array('currency'              => $order['currency'],
                           'currency_value'        => $order['currency_value'],

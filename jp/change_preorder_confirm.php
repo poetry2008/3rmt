@@ -302,7 +302,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                     <td class="main"><?php echo PREORDER_CONFIRM_FETCH_TIME_DATE;?></td>                  
                     <td class="main">
                     <?php
-                    echo $_POST['hour'].PREORDER_HOUR_TEXT.$_POST['min'].PREORDER_MIN_TEXT; 
+                    echo $_POST['start_hour'].PREORDER_HOUR_TEXT.$_POST['start_min'].PREORDER_MIN_TEXT.'~'.$_POST['end_hour'].PREORDER_HOUR_TEXT.$_POST['end_min'].PREORDER_MIN_TEXT; 
                     ?>
                     </td>                  
                   </tr>

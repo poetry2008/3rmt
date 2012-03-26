@@ -158,17 +158,24 @@ function selectHour(start_time,end_time,hour,min_num){
 
         var string = '';
         var min_num = 0;
+        var start_hour_num = '';
+        var start_min_num = '';
+        var end_hour_num = '';
+        var end_min_num = '';
         for(n in array_start_time){
           
             if(hour >= array_start_time[n] && hour <= array_end_time[n]){
             
               string =  array_start_time[n]+'時'+array_start_min[n]+'分～'+array_end_time[n]+'時'+array_end_min[n]+'分';
               min_num = n;
+              start_hour_num = array_start_time[n];
+              start_min_num = array_start_min[n];
+              end_hour_num = array_end_time[n];
+              end_min_num = array_end_min[n];
             }
         }
-          //html_str += '<td><input type="radio" name="min" value="'+j+'" '+checked+'><font size="2">'+hour+'時'+j_str+'分～'+hour+'時'+(j_str+sleep-1)+'分</font></td>';
          
-          html_str += '<td><input type="radio" name="min" value="'+array_start_min[min_num]+'" checked><font size="2">'+string+'</font></td>';
+          html_str += '<td><input type="hidden" name="start_hour" value="'+start_hour_num+'"><input type="hidden" name="start_min" value="'+start_min_num+'"><input type="hidden" name="end_hour" value="'+end_hour_num+'"><input type="hidden" name="end_min" value="'+end_min_num+'"><input type="radio" name="min" value="'+array_start_min[min_num]+'" checked><font size="2">'+string+'</font></td>';
           
 
           html_str += '</tr><tr></table>'; 

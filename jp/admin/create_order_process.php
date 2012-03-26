@@ -184,8 +184,9 @@ $sql_data_array = array('orders_id'     => $insert_id,
 			'currency_value'              => $currency_value,
 			'payment_method'              => payment::changeRomaji($payment_method,
                             PAYMENT_RETURN_TYPE_TITLE),
-           	'torihiki_houhou'             => $torihikihouhou,
-			'torihiki_date'               => tep_db_input($date . ' ' . $hour . ':' . $min . ':00'),
+           	        'torihiki_houhou'             => $torihikihouhou,
+                        'torihiki_date'               => tep_db_input($date . ' ' . $hour . ':' . $min . ':00'),
+                        'torihiki_date_end'           => tep_db_input($date . ' ' . $hour_1 . ':' . $min_1 . ':00'), 
 			'site_id'                     => $site_id,
 			'orders_wait_flag'            => '1'
 			); 

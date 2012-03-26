@@ -300,10 +300,14 @@ $shipping_fee = $cart->total > $free_value ? 0 : $weight_fee;
   <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
   <td class="main"><?php echo TEXT_TORIHIKIKIBOUJIKAN; ?></td>
   <td class="main">
-  <?php echo $hour; ?>
-  &nbsp;時&nbsp;
-<?php echo $min; ?>
-&nbsp;分&nbsp;
+  <?php echo $start_hour; ?>
+  時
+<?php echo $start_min; ?>
+ 分&nbsp;～
+<?php echo $end_hour; ?>
+ 時
+<?php echo $end_min; ?>
+ 分
 </td>
 </tr>
 </table>

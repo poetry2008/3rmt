@@ -70,6 +70,7 @@ function check(value){
   } 
 }
 
+var first_num = 0;
 function address_option_show(action){
   switch(action){
 
@@ -83,8 +84,13 @@ function address_option_show(action){
   while($address_new_array = tep_db_fetch_array($address_new_query)){
     $address_new_arr = unserialize($address_new_array['type_comment']);
     if($address_new_array['type'] == 'textarea'){
-      echo 'arr_new["'. $address_new_array['name_flag'] .'"] = "'. $address_new_array['comment'] .'";';
-      echo 'arr_color["'. $address_new_array['name_flag'] .'"] = "#999";';
+      if($address_new_arr['set_value'] != ''){
+        echo 'arr_new["'. $address_new_array['name_flag'] .'"] = "'. $address_new_arr['set_value'] .'";';
+        echo 'arr_color["'. $address_new_array['name_flag'] .'"] = "#000";';
+      }else{
+        echo 'arr_new["'. $address_new_array['name_flag'] .'"] = "'. $address_new_array['comment'] .'";';
+        echo 'arr_color["'. $address_new_array['name_flag'] .'"] = "#999";';
+      }
     }elseif($address_new_array['type'] == 'option' && $address_new_arr['select_value'] !=''){
       echo 'arr_new["'. $address_new_array['name_flag'] .'"] = "'. $address_new_arr['select_value'] .'";';
       echo 'arr_color["'. $address_new_array['name_flag'] .'"] = "#000";';
@@ -103,11 +109,11 @@ function address_option_show(action){
       var list_options = document.getElementById("op_"+x);
       list_options.value = arr_new[x];
       list_options.style.color = arr_color[x];
+      $("#error_"+x).html('');
     }
     break;
   case 'old' :
-    $("#address_show_id").show();
-    var first_num = 0;
+    $("#address_show_id").show(); 
     var arr_old  = new Array();
 <?php
 if(isset($customerId) && $customerId != ''){
@@ -177,7 +183,7 @@ if(isset($customerId) && $customerId != ''){
     }
 
   }
-    address_option_list(first_num);  
+    //address_option_list(first_num);  
     break;
   }
 }
@@ -233,10 +239,7 @@ if(isset($customerId) && $customerId != ''){
     var list_option = document.getElementById("op_"+x);
     list_option.style.color = '#000';
     list_option.value = arr_list[value][x];
-    //if(ii == 7){
-
-      //fee(arr_list[value][x]);
-    //}
+    $("#error_"+x).html(''); 
     ii++; 
   }
 
@@ -256,6 +259,7 @@ function check_clear(){
   for(x in arr_clear){
     document.getElementById("op_"+x).value = arr_clear[x];
     document.getElementById("op_"+x).style.color = '#999';
+    $("#error_"+x).html('');
   }
 }
 
@@ -512,12 +516,19 @@ function check_hour_1(value){
 }
 
 <?php
-if ((isset($_POST['address_option']) && ($_POST['address_option'] == 'old')) || !isset($_POST['address_option'])) {
+if (!isset($_POST['address_option'])) {
 ?>
   $(document).ready(function(){
     
     address_option_show('old'); 
     address_option_list(first_num);
+  });
+<?php
+}elseif(isset($_POST['address_option']) && $_POST['address_option'] == 'old'){
+?>
+  $(document).ready(function(){
+    
+    address_option_show('old'); 
   });
 <?php
 }
@@ -812,10 +823,19 @@ echo '&nbsp;&nbsp;<input type="button" value="'. TEXT_CLEAR .'" onclick="check_c
       <td class="main"><table border="0" cellspacing="0" cellpadding="2">
 
 <tr>
+<?php
+if((isset($_POST['address_option']) && $_POST['address_option'] == 'old') || !isset($_POST['address_option'])){
+  $checked_old = 'checked';
+}else{
+  
+  $checked_new = 'checked';
+
+}
+?>
                             <td>&nbsp;</td>
                             <td colspan="2">
-                            <input type="radio" name="address_option" value="old" onclick="address_option_show('old');" checked><?php echo TABLE_OPTION_OLD; ?>
-                            <input type="radio" name="address_option" value="new" onclick="address_option_show('new');"><?php echo TABLE_OPTION_NEW; ?> 
+                            <input type="radio" name="address_option" value="old" onclick="address_option_show('old');address_option_list(first_num);" <?php echo $checked_old;?>><?php echo TABLE_OPTION_OLD; ?>
+                            <input type="radio" name="address_option" value="new" onclick="address_option_show('new');" <?php echo $checked_new;?>><?php echo TABLE_OPTION_NEW; ?> 
                             </td>
 </tr>
 <tr id="address_show_id" style="display:none;"><td>&nbsp;</td>

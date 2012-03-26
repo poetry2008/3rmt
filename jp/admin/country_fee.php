@@ -208,7 +208,7 @@ while($country_fee_array = tep_db_fetch_array($country_fee_query)){
 }
 ?>
 </td>
-<td><a href="country_area.php?fid=<?php echo $country_fee_array['id'];?>"><u><?php echo TABLE_TITLE_5;?></u></a></td>
+<td onclick="document.location.href='?page=<?php echo $_GET['page'];?>&id=<?php echo $country_fee_array['id'];?>';"><a href="country_area.php?fid=<?php echo $country_fee_array['id'];?>"><u><?php echo TABLE_TITLE_5;?></u></a></td>
 <?php
   echo '<td><a href="javascript:void(0);" onclick="show_text_fee('. $country_fee_array['id'] .',this);">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a></td>';
   echo '</tr>';

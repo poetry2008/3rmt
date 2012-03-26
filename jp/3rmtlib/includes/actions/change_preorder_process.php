@@ -31,7 +31,8 @@ if ($preorder) {
   
   $option_info_array = get_preorder_total_info($cpayment_code, $preorder['orders_id'], $preorder_option_info);
   
-  $torihikihouhou_date_str = $_SESSION['preorder_info_date'].' '.$_SESSION['preorder_info_hour'].':'.$_SESSION['preorder_info_min'].':00';
+  $torihikihouhou_date_str = $_SESSION['preorder_info_date'].' '. $_SESSION['preorder_info_start_hour'] .':'. $_SESSION['preorder_info_start_min'] .':00';
+  $torihikihouhou_date_end_str = $_SESSION['preorder_info_date'].' '. $_SESSION['preorder_info_end_hour'] .':'. $_SESSION['preorder_info_end_min'] .':00';
   $default_status_raw = tep_db_query("select * from ".TABLE_ORDERS_STATUS." where orders_status_id = '".DEFAULT_ORDERS_STATUS_ID."'");
   $default_status_res = tep_db_fetch_array($default_status_raw); 
   $preorder_cus_id = $preorder['customers_id']; 
@@ -86,6 +87,7 @@ if ($preorder) {
                            'torihiki_Bahamut' => $preorder['torihiki_Bahamut'], 
                            'torihiki_houhou' => $_SESSION['preorder_info_tori'], 
                            'torihiki_date' => $torihikihouhou_date_str, 
+                           'torihiki_date_end' => $torihikihouhou_date_end_str,
                            'code_fee' => (isset($option_info_array['fee']))?$option_info_array['fee']:$preorder['code_fee'], 
                            'shipping_fee' => $_POST['shipping_fee'],
                            'language_id' => $preorder['language_id'], 
@@ -332,7 +334,7 @@ $mailoption['ORDER_TOTAL']      = $currencies->format(abs($preorder_total_print_
 
 $mailoption['TORIHIKIHOUHOU']   = $_SESSION['preorder_info_tori'];
 $mailoption['ORDER_PAYMENT']    = $preorder['payment_method'];
-$mailoption['ORDER_TTIME']      =  str_string($_SESSION['preorder_info_date']) .  $_SESSION['preorder_info_hour'] . '時' . $_SESSION['preorder_info_min'] .  '分　（24時間表記）';
+$mailoption['ORDER_TTIME']      =  str_string($_SESSION['preorder_info_date']) .  $_SESSION['preorder_info_start_hour'] . '時' . $_SESSION['preorder_info_start_min'] .  '分~'. $_SESSION['preorder_info_end_hour'].'時'. $_SESSION['preorder_info_end_min'].'分　（24時間表記）';
 
 $mailoption['EXTRA_COMMENT']   = '';
 $mailoption['ORDER_PRODUCTS']   = $products_ordered_text;
@@ -385,7 +387,7 @@ $email_printing_order = '';
 $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
 $email_printing_order .= 'サイト名　　　　：' . STORE_NAME . "\n";
 $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-$email_printing_order .= '取引日時　　　　：' .  str_string($_SESSION['preorder_info_date']) . $_SESSION['preorder_info_hour'] . '時' .  $_SESSION['preorder_info_min'] . '分　（24時間表記）' . "\n";
+$email_printing_order .= '取引日時　　　　：' .  str_string($_SESSION['preorder_info_date']) . $_SESSION['preorder_info_start_hour'] . '時' .  $_SESSION['preorder_info_start_min'] . '分~'. $_SESSION['preorder_info_end_hour'] .'時'. $_SESSION['preorder_info_end_min'] .'分　（24時間表記）' . "\n";
 $email_printing_order .= 'オプション　　　：' . $_SESSION['preorder_info_tori'] . "\n";
 $email_printing_order .=
 '------------------------------------------------------------------------' . "\n";

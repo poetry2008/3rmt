@@ -182,7 +182,6 @@ if (tep_not_null($action)) {
 
   $shipping_fee = $shipping_money_total > $free_value ? 0 : $weight_fee;
 
-  
       $oID = tep_db_prepare_input($_GET['oID']);
       $order = new order($oID);
       $status = tep_db_prepare_input($_POST['status']);
@@ -205,9 +204,27 @@ if (tep_not_null($action)) {
         tep_redirect(tep_href_link("edit_orders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
         break;
       }
-      
-      if (isset($update_tori_torihiki_date)) { //日時が有効かチェック
-        if (!preg_match('/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/', $update_tori_torihiki_date, $m)) { // check the date format
+
+      $update_tori_torihiki_start_date = $update_tori_torihiki_date.' '.$update_tori_torihiki_start_date;
+      $update_tori_torihiki_end_date = $update_tori_torihiki_date.' '.$update_tori_torihiki_end_date; 
+      if (isset($update_tori_torihiki_start_date)) { //日時が有効かチェック
+        if (!preg_match('/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/', $update_tori_torihiki_start_date, $m)) { // check the date format
+          $messageStack->add('日時フォーマットが間違っています。 "2008-01-01 10:30:00"', 'error');
+          $action = 'edit';
+          break;
+        } elseif (!checkdate($m[2], $m[3], $m[1]) || $m[4] >= 24 || $m[5] >= 60 || $m[6] >= 60) { // make sure the date provided is a validate date
+          $messageStack->add('無効な日付または右記の数字を超えています。 "23:59:59"', 'error');
+          $action = 'edit';
+          break;
+        }
+      } else {
+        $messageStack->add('日時が入力されていません。', 'error');
+        $action = 'edit';
+        break;
+      }
+
+      if (isset($update_tori_torihiki_end_date)) { //日時が有効かチェック
+        if (!preg_match('/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/', $update_tori_torihiki_end_date, $m)) { // check the date format
           $messageStack->add('日時フォーマットが間違っています。 "2008-01-01 10:30:00"', 'error');
           $action = 'edit';
           break;
@@ -281,7 +298,8 @@ if (tep_not_null($action)) {
         delivery_postcode = '" . tep_db_input($update_delivery_postcode) . "',
         delivery_country = '" . tep_db_input(stripslashes($update_delivery_country)) . "',
         payment_method = '" .  tep_db_input(payment::changeRomaji($_POST['payment_method'], PAYMENT_RETURN_TYPE_TITLE)) . "',
-        torihiki_date = '" . tep_db_input($update_tori_torihiki_date) . "',
+        torihiki_date = '" . tep_db_input($update_tori_torihiki_start_date) . "',
+        torihiki_date_end = '" . tep_db_input($update_tori_torihiki_end_date) . "',
         torihiki_houhou = '" . tep_db_input($update_tori_torihiki_houhou) . "',
         cc_type = '" . tep_db_input($update_info_cc_type) . "',
         cc_owner = '" . tep_db_input($update_info_cc_owner) . "',";
@@ -1181,8 +1199,14 @@ if (($action == 'edit') && ($order_exists == true)) {
     <tr>
     <td class="main" valign="top"><b><?php echo EDIT_ORDERS_FETCHTIME;?></b></td>
     <td class="main">
-    <input class="edit_input" name='update_tori_torihiki_date' size='25' value='<?php echo $order->tori['date']; ?>'>
-    <span class="smalltext"><?php echo EDIT_ORDERS_FETCHTIME_READ;?></span>
+    <?php
+      $date_array = explode('～',$order->tori['date']);
+      $date_start_array = explode(' ',$date_array[0]);
+    ?>
+    <input name='update_tori_torihiki_date' size='15' value='<?php echo str_replace('&nbsp;','',$date_start_array[0]); ?>'>
+    <input name='update_tori_torihiki_start_date' size='10' value='<?php echo str_replace('&nbsp;','',$date_start_array[1]); ?>'>&nbsp;～
+    <input name='update_tori_torihiki_end_date' size='10' value='<?php echo str_replace('&nbsp;','',$date_array[1]); ?>'>
+    <br><br><span class="smalltext"><?php echo EDIT_ORDERS_FETCHTIME_READ;?></span>
     </td>
     </tr>
 <!--

@@ -56,6 +56,10 @@
   $preorder_info_tori = $_POST['torihikihouhou'];
   $preorder_info_date = $_POST['date'];
   $preorder_info_hour = $_POST['hour'];
+  $preorder_info_start_hour = $_POST['start_hour'];
+  $preorder_info_start_min = $_POST['start_min'];
+  $preorder_info_end_hour = $_POST['end_hour'];
+  $preorder_info_end_min = $_POST['end_min'];
   $preorder_info_min = $_POST['min'];
   $preorder_info_id = $_POST['pid'];
   
@@ -69,6 +73,22 @@
   
   if (!tep_session_is_registered('preorder_info_hour')) {
     tep_session_register('preorder_info_hour'); 
+  }
+  
+  if (!tep_session_is_registered('preorder_info_start_hour')) {
+    tep_session_register('preorder_info_start_hour'); 
+  }
+
+  if (!tep_session_is_registered('preorder_info_start_min')) {
+    tep_session_register('preorder_info_start_min'); 
+  } 
+  
+  if (!tep_session_is_registered('preorder_info_end_hour')) {
+    tep_session_register('preorder_info_end_hour'); 
+  }
+ 
+  if (!tep_session_is_registered('preorder_info_end_min')) {
+    tep_session_register('preorder_info_end_min'); 
   }
   
   if (!tep_session_is_registered('preorder_info_min')) {

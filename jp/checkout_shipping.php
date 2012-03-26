@@ -98,6 +98,10 @@
   $date = tep_db_prepare_input($_POST['date']);
   $hour = tep_db_prepare_input($_POST['hour']);
   $min = tep_db_prepare_input($_POST['min']);
+  $start_hour = tep_db_prepare_input($_POST['start_hour']);
+  $start_min = tep_db_prepare_input($_POST['start_min']);
+  $end_hour = tep_db_prepare_input($_POST['end_hour']);
+  $end_min = tep_db_prepare_input($_POST['end_min']);
 
   //住所
   $options_required = array();
@@ -133,7 +137,8 @@
   }
    
   
-  $insert_torihiki_date = $date . ' ' . $hour . ':' . $min . ':00';
+  $insert_torihiki_date = $date . ' ' . $start_hour . ':' . $start_min . ':00';
+  $insert_torihiki_date_end = $date . ' ' . $end_hour . ':' . $end_min . ':00';
   
   $error = false;
   //if($torihikihouhou == '') {
@@ -166,9 +171,14 @@
   if($error == false) {
     tep_session_register('torihikihouhou');
     tep_session_register('date');
-    tep_session_register('hour');
-    tep_session_register('min');
+    //tep_session_register('hour');
+    //tep_session_register('min');
+    tep_session_register('start_hour');
+    tep_session_register('start_min');
+    tep_session_register('end_hour');
+    tep_session_register('end_min');
     tep_session_register('insert_torihiki_date');
+    tep_session_register('insert_torihiki_date_end');
     //住所信息 session
     
     $options = array();
@@ -318,8 +328,13 @@ function address_option_show(action){
   while($address_new_array = tep_db_fetch_array($address_new_query)){
     $address_new_arr = unserialize($address_new_array['type_comment']);
     if($address_new_array['type'] == 'textarea'){
-      echo 'arr_new["'. $address_new_array['name_flag'] .'"] = "'. $address_new_array['comment'] .'";';
-      echo 'arr_color["'. $address_new_array['name_flag'] .'"] = "#999";';
+      if($address_new_arr['set_value'] != ''){
+        echo 'arr_new["'. $address_new_array['name_flag'] .'"] = "'. $address_new_arr['set_value'] .'";';
+        echo 'arr_color["'. $address_new_array['name_flag'] .'"] = "#000";';
+      }else{
+        echo 'arr_new["'. $address_new_array['name_flag'] .'"] = "'. $address_new_array['comment'] .'";';
+        echo 'arr_color["'. $address_new_array['name_flag'] .'"] = "#999";';
+      }
     }elseif($address_new_array['type'] == 'option' && $address_new_arr['select_value'] !=''){
       echo 'arr_new["'. $address_new_array['name_flag'] .'"] = "'. $address_new_arr['select_value'] .'";';
       echo 'arr_color["'. $address_new_array['name_flag'] .'"] = "#000";';
@@ -403,7 +418,7 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
           arr_str += arr_old[i][x];
         }
         j++;
-        $("#error_"+x).html('');
+        //$("#error_"+x).html('');
     }
     if(arr_str != ''){
       ++j_num;
@@ -412,7 +427,7 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
     }
 
   }
-    address_option_list(first_num);  
+    //address_option_list(first_num);  
     break;
   }
 }
@@ -464,7 +479,8 @@ function address_option_list(value){
   for(x in arr_list[value]){
     var list_option = document.getElementById("op_"+x);
     list_option.style.color = '#000';
-    list_option.value = arr_list[value][x]; 
+    list_option.value = arr_list[value][x];
+    $("#error_"+x).html('');
     ii++; 
   }
 
@@ -497,12 +513,19 @@ function address_option_list(value){
  }
 
 <?php
-if ((isset($_POST['address_option']) && ($_POST['address_option'] == 'old')) || !isset($_POST['address_option'])) {
+if (!isset($_POST['address_option'])) {
 ?>
   $(document).ready(function(){
     
     address_option_show('old'); 
     address_option_list(first_num);
+  });
+<?php
+}elseif(isset($_POST['address_option']) && $_POST['address_option'] == 'old'){
+?>
+ $(document).ready(function(){
+    
+    address_option_show('old'); 
   });
 <?php
 }
@@ -713,7 +736,7 @@ if ((isset($_POST['address_option']) && ($_POST['address_option'] == 'old')) || 
                             <tr>
                             <td width="10"><?php tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td>
                             <td class="main">
-                            <input type="radio" name="address_option" value="old" onclick="address_option_show('old');" <?php echo $checked_str_old;?>><?php echo TABLE_OPTION_OLD; ?>
+                            <input type="radio" name="address_option" value="old" onclick="address_option_show('old');address_option_list(first_num);" <?php echo $checked_str_old;?>><?php echo TABLE_OPTION_OLD; ?>
                             <input type="radio" name="address_option" value="new" onclick="address_option_show('new');" <?php echo $checked_str_new;?>><?php echo TABLE_OPTION_NEW; ?> 
                             </td></tr>
                           </table>

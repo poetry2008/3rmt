@@ -72,6 +72,10 @@
     $preorder_date = tep_db_prepare_input($_POST['date']);
     $preorder_hour = tep_db_prepare_input($_POST['hour']);
     $preorder_min = tep_db_prepare_input($_POST['min']);
+    $preorder_start_hour = tep_db_prepare_input($_POST['start_hour']);
+    $preorder_start_min = tep_db_prepare_input($_POST['start_min']);
+    $preorder_end_hour = tep_db_prepare_input($_POST['end_hour']);
+    $preorder_end_min = tep_db_prepare_input($_POST['end_min']);
 
     //住所信息处理 
     $address_option_info_array = array(); 
