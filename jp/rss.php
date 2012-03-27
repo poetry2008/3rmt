@@ -65,16 +65,20 @@ echo "<!-- RSS for " . STORE_NAME . ", generated on " . date('r') . " -->\n";
 <?php
 // Create SQL statement
 if ($_GET['cPath'] != "") {
-  $sql = "SELECT p.products_id, products_model, products_image, products_price, products_tax_class_id FROM products p, products_to_categories pc WHERE p.products_id = pc.products_id AND pc.categories_id = '" . $_GET['cPath'] . "' ORDER BY products_id DESC LIMIT " . MAX_DISPLAY_SEARCH_RESULTS;
+  $sql = "SELECT p.products_id, products_model, products_image, products_price, products_tax_class_id FROM products p, products_to_categories pc WHERE p.products_id = pc.products_id AND pc.categories_id = '" . $_GET['cPath'] . "' ORDER BY products_id DESC";
 } else {
-  $sql = "SELECT products_id, products_model, products_image, products_price, products_tax_class_id FROM products ORDER BY products_id DESC LIMIT " . MAX_DISPLAY_SEARCH_RESULTS;
+  $sql = "SELECT products_id, products_model, products_image, products_price, products_tax_class_id FROM products ORDER BY products_id DESC";
 }
 // Execute SQL query and get result
 //ccdd
 $sql_result = mysql_query($sql,$connection) or die("Couldn't execute query.");
 
+$i = 1;
 // Format results by row
 while ($row = mysql_fetch_array($sql_result)) {
+  if ($i > MAX_DISPLAY_SEARCH_RESULTS) {
+    break; 
+  }
   $id = $row["products_id"];
 
   // RSS Links for Ultimate SEO (Gareth Houston 10 May 2005)
@@ -162,6 +166,7 @@ while ($row = mysql_fetch_array($sql_result)) {
   </image>\n";
   }
     echo "</item>\n";
+  $i++;
 }
 // free resources and close connection
 mysql_free_result($sql_result);
