@@ -1585,4 +1585,20 @@ if ($_POST['orders_id'] &&
   require_once('option/'.$classname.'.php');
   $item_instance = new $classname();
   echo $item_instance->prepareFormWithParent($_POST['item_id']);
+}else if (isset($_GET['action'])&&$_GET['action']=='search_manual') {
+$json_array=array();
+$search_cat_manual_query=tep_db_query("select categories_name,categories_id from ".TABLE_CATEGORIES_DESCRIPTION." where categories_name like '%".$_GET['q']."%' and site_id='0'");
+while($search_cat_manual_array=tep_db_fetch_array($search_cat_manual_query)){
+	$check_query=tep_db_query("select parent_id from ".TABLE_CATEGORIES." where categories_id='".$search_cat_manual_array['categories_id']."'");
+	$check_array=tep_db_fetch_array($check_query);
+	if($check_array['parent_id']==0){
+$json_array[]=array('name'=>$search_cat_manual_array['categories_name']);
+	}
 }
+$search_pro_manual_query=tep_db_query("select products_name from ".TABLE_PRODUCTS_DESCRIPTION." where products_name like '%".$_GET['q']."%' and site_id='0'");
+while($search_pro_manual_array=tep_db_fetch_array($search_pro_manual_query)){
+$json_array[]=array('name'=>$search_pro_manual_array['products_name']);
+}
+echo json_encode($json_array);
+}
+
