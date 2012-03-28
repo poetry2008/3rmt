@@ -149,6 +149,8 @@ while ($row = mysql_fetch_array($sql_result)) {
   $desc = str_replace ('&ocirc;','・',$desc);
   $name = str_replace ('&nbsp;',' ',$name);
   $desc = str_replace ('&nbsp;',' ',$desc);
+  $name = str_replace ('&times;',TEXT_RIDE_RSS,$name);
+  $desc = str_replace ('&times;',TEXT_RIDE_RSS,$desc);
   
   echo "<item>
   <title>" . htmlspecialchars($name) . "</title>
