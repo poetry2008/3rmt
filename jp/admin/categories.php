@@ -3719,7 +3719,7 @@ tep_display_google_results(FILENAME_CATEGORIES);
               . $cPath . '&cID=' . $cInfo->categories_id . '&action=edit_category')
                 . '">' . tep_html_element_button(IMAGE_EDIT) . '</a> '  .
                 ($ocertify->npermission == 15 ? ( '<a href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' .  $cInfo->categories_id .  '&action=delete_category') .  '">' . tep_html_element_button(IMAGE_DELETE) . '</a> '):'')
-                . '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $cInfo->categories_id . '&action=move_category') . '">' .  tep_html_element_button(IMAGE_MOVE) . '</a>');
+                . '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&cID=' . $cInfo->categories_id . '&action=move_category') . '">' .  tep_html_element_button(IMAGE_MOVE) . '</a>'.'<a href="' . tep_href_link(FILENAME_PRODUCTS_MANUAL, 'cPath=' . $cPath . '&cID=' . $cInfo->categories_id .  '&action=show_categories_manual&site_id='.$site['id']) . '">' .  tep_html_element_button(IMAGE_MANUAL) . '</a>');
             }
             if (isset($_GET['site_id'])) {
             foreach(tep_get_sites() as $site){
@@ -3733,7 +3733,7 @@ tep_display_google_results(FILENAME_CATEGORIES);
                   (tep_categories_description_exist($cInfo->categories_id, $languages_id, $site['id']) 
                    ? (' <a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' .  $cPath . '&cID=' . $cInfo->categories_id .  '&action=delete_category_description&site_id='.$site['id']) .  '">'.tep_html_element_button(IMAGE_DELETE).'</a>')
                    :''
-                   ));
+                   ).'<a href="' . tep_href_link(FILENAME_PRODUCTS_MANUAL, 'cPath=' . $cPath . '&cID=' . $cInfo->categories_id .  '&action=show_categories_manual&site_id='.$site['id']) . '">' .  tep_html_element_button(IMAGE_MANUAL) . '</a>');
             }
             }
             $keyword_sql = "select m.keyword from ".TABLE_CATEGORIES_TO_MISSION." c2m,".TABLE_MISSION." m
@@ -3760,7 +3760,8 @@ tep_display_google_results(FILENAME_CATEGORIES);
             $contents[] = array('align' => 'left', 'text' => '関連付け: '.tep_get_relate_products_name($pInfo->products_id));
           if ($ocertify->npermission >= 10) { //表示制限
             if (empty($_GET['site_id'])) {
-            $contents[] = array('align' => 'left', 'text' => '<a href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' .  $pInfo->products_id .  '&action=new_product'.'&page='.$_GET['page']) . '">' .  tep_html_element_button(IMAGE_EDIT) . '</a>' . ($ocertify->npermission == 15 ? (' <a href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' .  $pInfo->products_id .  '&action=delete_product'.'&page='.$_GET['page']) . '">' .  tep_html_element_button(IMAGE_DELETE) . '</a>'):'') . ' <a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' .  $cPath . '&pID=' . $pInfo->products_id .  '&action=move_product'.'&page='.$_GET['page']) . '">' .  tep_html_element_button(IMAGE_MOVE) . '</a> <a href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' .  $pInfo->products_id . '&action=copy_to') . '">' . tep_html_element_button(IMAGE_COPY_TO) . '</a>' . ' <a href="' . tep_href_link(FILENAME_REVIEWS, 'cPath=' . $cPath .  '&products_id=' . $pInfo->products_id . '&action=new') . '">' .  tep_html_element_button(IMAGE_REVIEWS) . '</a>');
+            $contents[] = array('align' => 'left', 'text' => '<a href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' .  $pInfo->products_id .  '&action=new_product'.'&page='.$_GET['page']) . '">' .  tep_html_element_button(IMAGE_EDIT) . '</a>' . ($ocertify->npermission == 15 ? (' <a href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' .  $pInfo->products_id .  '&action=delete_product'.'&page='.$_GET['page']) . '">' .  tep_html_element_button(IMAGE_DELETE) . '</a>'):'') . ' <a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' .  $cPath . '&pID=' . $pInfo->products_id .  '&action=move_product'.'&page='.$_GET['page']) . '">' .  tep_html_element_button(IMAGE_MOVE) . '</a> <a href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' .  $pInfo->products_id . '&action=copy_to') . '">' . tep_html_element_button(IMAGE_COPY_TO) . '</a>' . ' <a href="' . tep_href_link(FILENAME_REVIEWS, 'cPath=' . $cPath .  '&products_id=' . $pInfo->products_id . '&action=new') . '">' .  tep_html_element_button(IMAGE_REVIEWS) . '</a>'.'<a href="' .  tep_href_link(FILENAME_PRODUCTS_MANUAL, 'cPath=' . $cPath . '&pID=' .  $pInfo->products_id . '&action=show_products_manual'. '&site_id='.
+                    $site['id'].'&page='.$_GET['page'])  .'">' . tep_html_element_button(IMAGE_MANUAL) . '</a>' );
             }
             if (isset($_GET['site_id'])) { 
             foreach(tep_get_sites() as $site){
@@ -3773,7 +3774,8 @@ tep_display_google_results(FILENAME_CATEGORIES);
                 tep_products_description_exist($pInfo->products_id, $site['id'],
                     $languages_id) ? ' <a href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' .  $pInfo->products_id .  '&action=delete_product_description&site_id='.$site['id'].'&page='.$_GET['page']) . '">' . tep_html_element_button(IMAGE_DELETE) . '</a>'
                 : ''
-                    ) );
+                    ).'<a href="' .  tep_href_link(FILENAME_PRODUCTS_MANUAL, 'cPath=' . $cPath . '&pID=' .  $pInfo->products_id . '&action=show_products_manual'. '&site_id='.
+                    $site['id'].'&page='.$_GET['page'])  .'">' . tep_html_element_button(IMAGE_MANUAL) . '</a>'  );
             }
             }
             //max min

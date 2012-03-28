@@ -204,4 +204,7 @@ define('SHOW_MANUAL_SEARCH','検索');
 define('SHOW_MANUAL_NONE','マニュアルが設定されていません！！！');
 define('SHOW_MANUAL_RETURN','戻る');
 define('SEARCH_MANUAL_PRODUCTS_FAIL','検索されたマニュアルがありません！！！');
+define('SEARCH_CAT_PRO_TITLE','カテゴリー / 商品');
+define('SEARCH_MANUAL_CONTENT','マニュアル');
+define('SEARCH_MANUAL_LOOK','操作');
 ?>
