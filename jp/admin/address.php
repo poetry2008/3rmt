@@ -35,7 +35,8 @@ if(isset($action) && $action != ''){
     $address_sort = $address_sort == '' ? 0 : $address_sort;
     $address_option_value = tep_db_prepare_input($_POST['option_value']);
     $parent_option = tep_db_prepare_input($_POST['parent_option']);
-
+    $show_title = tep_db_prepare_input($_POST['show_title']);
+    $show_title = $show_title != '' ? 1 : 0;
     //生成随即16位name
 
     
@@ -131,7 +132,8 @@ if(isset($action) && $action != ''){
                    "','". addslashes($sql_option_str) .
                    "'". $sql_str .
                    ",". $address_sort .
-                   ",'0')";
+                   ",'". $show_title .
+                   "','0')";
 
     }else{
       $address_sql = "update ". TABLE_ADDRESS .
@@ -143,7 +145,8 @@ if(isset($action) && $action != ''){
                    "',type_comment='". addslashes($sql_option_str) .
                    "'". $sql_str .
                    ",sort=". $address_sort .
-                   " where id=". $address_id;
+                   ",show_title='". $show_title .
+                   "' where id=". $address_id;
     }
     $address_update_query = tep_db_query($address_sql);
 
@@ -253,7 +256,7 @@ div#show {
               <tr class="dataTableHeadingRow">
                 <td class="dataTableHeadingContent"><?php echo TABLE_TITLE_1; ?></td>
                 <td class="dataTableHeadingContent"><?php echo TABLE_TITLE_2; ?></td>
-                <td class="dataTableHeadingContent"><?php echo TABLE_TITLE_3; ?></td>
+                <td class="dataTableHeadingContent" width="30%"><?php echo TABLE_TITLE_3; ?></td>
                 <td class="dataTableHeadingContent"><?php echo TABLE_TITLE_4; ?></td>
                 <td class="dataTableHeadingContent"><?php echo TABLE_TITLE_5; ?></td>
                 <td class="dataTableHeadingContent"><?php echo TABLE_TITLE_6; ?></td>

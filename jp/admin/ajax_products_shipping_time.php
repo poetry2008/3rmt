@@ -78,36 +78,36 @@ if(isset($id) && $id != 0){
 
 $sort = $sort == '' ? 0 : $sort;
 ?>
-<form name="form" method="post" id="products_form" action="products_shipping_time.php">
-<table border="0" width="100%" cellspacing="0" cellpadding="0" valign="top" bgcolor="yellow">
-
+<table border="0" width="100%" cellspacing="0" cellpadding="2" class="campaign_top">
 <?php
 if($id == 0 || $maxid == $minid){
 ?>
- <tr><td bgcolor="#000000" class="dataTableHeadingContent" height="35"><?php echo tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO); ?>&nbsp;<?php echo TABLE_NEW.TABLE_TITLE_1;?></td><td bgcolor="#000000" align="right"><a href="javascript:hide_text();"><font color="#FFFFFF">X</font></a></td></tr>
+ <tr><td width="20"><?php echo tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO); ?></td><td><?php echo '<b>'.TABLE_NEW.TABLE_TITLE_1.'</b>';?></td><td align="right"><a href="javascript:hide_text();"><font color="#FFFFFF">X</font></a></td></tr>
 <?php
 }else{
   $prev_str = '';
   $next_str = '';
   if($sort == $maxsort && $id == $maxid){
 
-    $prev_str = '<a href="javascript:show_text_products('. $id .',\'\','. $sort .',0);"><font color="#FFFFFF">'. TABLE_PREV .'</font></a>';
+    $prev_str = '<a href="javascript:show_text_products('. $id .',\'\','. $sort .',0);">'. TABLE_PREV .'</a>';
 
   }elseif($sort == $minsort && $id == $minid){
 
-    $next_str = '<a href="javascript:show_text_products('. $id .',\'\','. $sort .',1);"><font color="#FFFFFF">'. TABLE_NEXT .'</font></a>';
+    $next_str = '<a href="javascript:show_text_products('. $id .',\'\','. $sort .',1);">'. TABLE_NEXT .'</a>';
 
   }else{
-    $prev_str = '<a href="javascript:show_text_products('. $id .',\'\','. $sort .',0);"><font color="#FFFFFF">'. TABLE_PREV .'</font></a>';
-    $next_str = '<a href="javascript:show_text_products('. $id .',\'\','. $sort .',1);"><font color="#FFFFFF">'. TABLE_NEXT .'</font></a>';
+    $prev_str = '<a href="javascript:show_text_products('. $id .',\'\','. $sort .',0);">'. TABLE_PREV .'</a>';
+    $next_str = '<a href="javascript:show_text_products('. $id .',\'\','. $sort .',1);">'. TABLE_NEXT .'</a>';
   }
 ?>
-  <tr><td bgcolor="#000000" class="dataTableHeadingContent" height="35"><?php echo tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO); ?>&nbsp;<?php echo $name.TABLE_TITLE_1;?></td><td bgcolor="#000000" align="right" class="dataTableHeadingContent" onmouseover="this.style.cursor=\'hand\'"><?php echo $prev_str;?>&nbsp;<?php echo $next_str;?>&nbsp;<a href="javascript:hide_text();"><font color="#FFFFFF">X</font></a></td></tr>
+  <tr><td width="20"><?php echo tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO); ?></td><td><?php echo '<b>'.$name.TABLE_TITLE_1.'</b>';?></td><td align="right" onmouseover="this.style.cursor=\'hand\'"><?php echo $prev_str;?>&nbsp;<?php echo $next_str;?>&nbsp;<a href="javascript:hide_text();">X</a></td></tr>
 <?php
 }
 ?>
-<tr><td>&nbsp;</td></tr>
-<tr><td width="30%" height="30" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_1;?></td><td><input type="text" name="name" id="name" class="option_text" value="<?php echo $name;?>">&nbsp;<font color="red"><?php echo TABLE_REQUIRED;?></font><br><span id="error_name"></span><input type="hidden" name="cid" value="<?php echo $product_array['id'];?>"></td></tr>
+</table>
+<form name="form" method="post" id="products_form" action="products_shipping_time.php">
+<table border="0" width="100%" cellspacing="0" cellpadding="2" valign="top" bgcolor="yellow" class="campaign_body">
+<tr><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_1;?></td><td><input type="text" name="name" id="name" class="option_text" value="<?php echo $name;?>">&nbsp;<font color="red"><?php echo TABLE_REQUIRED;?></font><br><span id="error_name"></span><input type="hidden" name="cid" value="<?php echo $product_array['id'];?>"></td></tr>
 
 <?php 
 if(!empty($work_array)){
@@ -119,31 +119,34 @@ if(!empty($work_array)){
     $w_end_hour = $w_end_array[0];
     $w_end_min = $w_end_array[1];
     $w_num_str = $w_key+1 == 1 ? '' : $w_key+1;
-    $button_add = $w_key == 0 ? '&nbsp;<input type="button" value="'. TABLE_ADD .'" onclick="work_add();"><input type="hidden" id="work_num" value="'. (count($work_array)+1).'">' : '&nbsp;<input type="button" value="'. TABLE_BUTTON_DEL .'" onclick="work_del('. ($w_key+1) .');">';
+    $button_add = '&nbsp;<input type="button" value="'. TABLE_BUTTON_DEL .'" onclick="work_del('. ($w_key+1) .');">';
 ?>
 
-  <tr id="workid<?php echo $w_key+1;?>"><td width="30%" height="30" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_2.$w_num_str;?></td><td><input type="text" name="work_start_hour[]" size="3" maxlength="2" value="<?php echo $w_start_hour;?>">&nbsp;:&nbsp;<input type="text" name="work_start_min[]" size="3" maxlength="2" value="<?php echo $w_start_min;?>">&nbsp;～&nbsp;<input type="text" name="work_end_hour[]" size="3" maxlength="2" value="<?php echo $w_end_hour;?>">&nbsp;:&nbsp;<input type="text" name="work_end_min[]" size="3" maxlength="2" value="<?php echo $w_end_min;?>"><?php echo $button_add;?><br><span id="work_error<?php echo ($w_key+1);?>"></span></td></tr>
+  <tr id="workid<?php echo $w_key+1;?>"><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_2.$w_num_str;?></td><td><input type="text" name="work_start_hour[]" size="3" maxlength="2" value="<?php echo $w_start_hour;?>">&nbsp;:&nbsp;<input type="text" name="work_start_min[]" size="3" maxlength="2" value="<?php echo $w_start_min;?>">&nbsp;～&nbsp;<input type="text" name="work_end_hour[]" size="3" maxlength="2" value="<?php echo $w_end_hour;?>">&nbsp;:&nbsp;<input type="text" name="work_end_min[]" size="3" maxlength="2" value="<?php echo $w_end_min;?>"><?php echo $button_add;?><br><span id="work_error<?php echo ($w_key+1);?>"></span></td></tr>
 
 <?php
   }
 }else{
 ?>
 
-<tr id="workid1"><td width="30%" height="30" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_2?></td><td><input type="text" name="work_start_hour[]" size="3" maxlength="2" value="">&nbsp;:&nbsp;<input type="text" name="work_start_min[]" size="3" maxlength="2" value="">&nbsp;～&nbsp;<input type="text" name="work_end_hour[]" size="3" maxlength="2" value="">&nbsp;:&nbsp;<input type="text" name="work_end_min[]" size="3" maxlength="2" value="">&nbsp;<input type="button" value="<?php echo TABLE_ADD;?>" onclick="work_add();"><input type="hidden" id="work_num" value="2"><br><span id="work_error1"></span></td></tr>
+  <tr id="workid1"><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_2?></td><td><input type="text" name="work_start_hour[]" size="3" maxlength="2" value="">&nbsp;:&nbsp;<input type="text" name="work_start_min[]" size="3" maxlength="2" value="">&nbsp;～&nbsp;<input type="text" name="work_end_hour[]" size="3" maxlength="2" value="">&nbsp;:&nbsp;<input type="text" name="work_end_min[]" size="3" maxlength="2" value="">&nbsp;<input type="button" value="<?php echo TABLE_BUTTON_DEL;?>" onclick="work_del(1);"><br><span id="work_error1"></span></td></tr>
 
 <?php 
 }
+
+$work_num_value = !empty($work_array) ? count($work_array)+1 : 2;
 ?>
 <tr><td colspan="2">
-<table border="0" width="100%" cellspacing="0" cellpadding="0" valign="top" id="work_list">
+<table border="0" width="100%" cellspacing="0" cellpadding="2" valign="top" id="work_list">
 </table>
 </td></tr>
+<tr><td width="30%" align="left"><input type="hidden" id="work_num" value="<?php echo $work_num_value;?>"></td><td><input type="button" value="<?php echo TABLE_ADD;?>" onclick="work_add();"></td></tr>
 
-<tr><td width="30%" height="30" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_4;?></td><td><input type="text" name="db_set_day" id="db_set_day" value="<?php echo $db_set_day;?>" style="text-align: right;">&nbsp;<?php echo TABLE_DAY;?>
+<tr><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_4;?></td><td><input type="text" name="db_set_day" id="db_set_day" value="<?php echo $db_set_day;?>" style="text-align: right;">&nbsp;<?php echo TABLE_DAY;?>
 </td></tr>
 
 
-<tr><td width="30%" height="30" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_5;?></td><td>
+<tr><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_5;?></td><td>
 <input type="text" name="shipping_time" id="shipping_time" value="<?php echo $shipping_time;?>" style="text-align: right;">&nbsp;<?php echo TABLE_DAY;?>
 
 </td></tr>
@@ -154,12 +157,12 @@ if($id == 0){
   $sort = 1000;
 }
 ?>
-<tr><td width="30%" height="30" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_6;?></td><td>
+<tr><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_6;?></td><td>
 <input type="text" name="sort" id="sort" value="<?php echo $sort;?>" style="text-align: right;">
 </td></tr>
 
 </td></tr>
-<tr><td width="30%" height="30"></td><td style="padding-left:20%;">
+<tr><td width="30%"></td><td style="padding-left:10%;">
 <?php
 if($id != 0){
 ?>

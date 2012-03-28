@@ -19,6 +19,17 @@
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript">
 
+//js 判断某值是否存在某数组中
+  function in_array(value,arr){
+
+    for(vx in arr){
+      if(value == arr[vx]){
+
+        return true;
+      }
+    }
+    return false;
+  }
 var first_num = 0;
 function address_option_show(action){
   switch(action){
@@ -62,8 +73,21 @@ function address_option_show(action){
   case 'old' :
     $("#address_show_id").show();
     var arr_old  = new Array();
+    var arr_name = new Array();
 <?php
 if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
+  
+  //根据后台的设置来显示相应的地址列表
+  $address_list_arr = array();
+  $address_i = 0;
+  $address_list_query = tep_db_query("select name_flag from ". TABLE_ADDRESS ." where status='0' and show_title='1'");
+  while($address_list_array = tep_db_fetch_array($address_list_query)){
+
+    $address_list_arr[] = $address_list_array['name_flag'];
+    echo 'arr_name['. $address_i .'] = "'. $address_list_array['name_flag'] .'";';
+    $address_i++;
+  }
+  tep_db_free_result($address_list_query);
   $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_ORDERS ." where customers_id=". $_SESSION['customer_id'] ." group by orders_id order by orders_id desc");
   
    
@@ -78,16 +102,14 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
    
   $json_str_list = '';
   unset($json_old_array);
-  $address_i = 0;
   while($address_orders_array = tep_db_fetch_array($address_orders_query)){
     
-    if($address_i == 7 || $address_i == 8 || $address_i == 9){
+    if(in_array($address_orders_array['name'],$address_list_arr)){
 
       $json_str_list .= $address_orders_array['value'];
     }
     
     $json_old_array[$address_orders_array['name']] = $address_orders_array['value'];
-    $address_i++;   
         
   }
 
@@ -114,13 +136,11 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
   len = arr_old.length;
   j_num = 0;
   for(i = 0;i < len;i++){
-    j = 0;
     arr_str = '';
     for(x in arr_old[i]){
-        if(j == 7 || j == 8 || j == 9){
+        if(in_array(x,arr_name)){
           arr_str += arr_old[i][x];
         }
-        j++;
         //$("#error_"+x).html('');
     }
     if(arr_str != ''){
@@ -138,6 +158,14 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
 function address_option_list(value){
   var arr_list = new Array();
 <?php
+  //根据后台的设置来显示相应的地址列表
+  $address_list_arr = array();
+  $address_list_query = tep_db_query("select name_flag from ". TABLE_ADDRESS ." where status='0' and show_title='1'");
+  while($address_list_array = tep_db_fetch_array($address_list_query)){
+
+    $address_list_arr[] = $address_list_array['name_flag'];
+  }
+  tep_db_free_result($address_list_query);  
   $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_ORDERS ." where customers_id=". $_SESSION['customer_id'] ." group by orders_id order by orders_id desc");
   
    
@@ -151,16 +179,14 @@ function address_option_list(value){
 
   $json_str_list = '';
   unset($json_old_array); 
-  $address_i = 0;
   while($address_orders_array = tep_db_fetch_array($address_orders_query)){
     
-    if($address_i == 7 || $address_i == 8 || $address_i == 9){
+    if(in_array($address_orders_array['name'],$address_list_arr)){
 
       $json_str_list .= $address_orders_array['value'];
     }
     
     $json_old_array[$address_orders_array['name']] = $address_orders_array['value'];
-    $address_i++;   
         
   }
 

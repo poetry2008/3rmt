@@ -85,22 +85,12 @@
                   <tr class="infoBoxContents"> 
                     <?php
   if ($order->delivery != false) {
-?> 
+?>
+<!-- 
                     <td width="30%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                         <tr> 
                           <td class="main"><b><?php echo HEADING_DELIVERY_ADDRESS; ?></b>
                           <br>
-                          <?php 
-                            $address_shipping_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $_GET['order_id'] ."'");
-                            $address_num = 0;
-                            while($address_shipping_array = tep_db_fetch_array($address_shipping_query)){
-                              if($address_num == 7 || $address_num == 8 || $address_num == 9){
-                                echo $address_shipping_array['value']; 
-                              }
-                              $address_num++;
-                            }
-                            tep_db_free_result($address_shipping_query);
-                          ?>
                           </td> 
                         </tr> 
                         <tr>
@@ -119,6 +109,7 @@
     }
 ?> 
                       </table></td> 
+-->
                     <?php
   }
 ?> 
@@ -173,6 +164,38 @@
                   </tr> 
                 </table></td> 
             </tr> 
+            <!-- start -->        
+            <tr> 
+              <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+            </tr> 
+            <tr> 
+              <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
+                  <tr class="infoBoxContents"> 
+                    <td width="30%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+                      <tr><td class="main"><b><?php echo HEADING_DELIVERY_ADDRESS; ?></b></td></tr>
+                      <?php
+                            $address_list_query = tep_db_query("select id,name from ". TABLE_ADDRESS ." where status='0'");
+                            $address_array = array();
+                            while($address_list_array = tep_db_fetch_array($address_list_query)){
+                              
+                              $address_array[$address_list_array['id']] = $address_list_array['name'];
+                            }
+                            tep_db_free_result($address_list_query);
+                            $address_shipping_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $_GET['order_id'] ."'");
+                            while($address_shipping_array = tep_db_fetch_array($address_shipping_query)){
+                                echo '<tr><td class="main">';
+                                echo $address_array[$address_shipping_array['address_id']];
+                                echo ':</td><td class="main">';
+                                echo $address_shipping_array['value']; 
+                                echo '</td></tr>';
+                            }
+                            tep_db_free_result($address_shipping_query);
+                      ?>
+                    </table></td>
+                  </tr>
+              </table></td>
+            </tr>
+            <!-- end -->
             <tr> 
               <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
             </tr> 

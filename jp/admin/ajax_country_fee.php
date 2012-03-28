@@ -45,9 +45,7 @@ if(isset($id) && $id != 0){
 
 
 ?>
-<form name="form" method="post" id="country_fee_form" action="country_fee.php">
-<table border="0" width="100%" cellspacing="0" cellpadding="0" valign="top" bgcolor="yellow">
-
+<table border="0" width="100%" cellspacing="0" cellpadding="0" valign="top">
 <?php
 if($id == 0){
 ?>
@@ -71,6 +69,9 @@ if($id == 0){
 <?php
 }
 ?>
+</table>
+<form name="form" method="post" id="country_fee_form" action="country_fee.php">
+<table border="0" width="100%" cellspacing="0" cellpadding="0" valign="top" bgcolor="yellow">
 <tr><td>&nbsp;</td></tr>
 <tr><td width="30%" height="30" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_1;?></td><td><input type="text" name="title" id="title" class="option_text" value="<?php echo $title;?>">&nbsp;<font color="red"><?php echo TABLE_REQUIRED;?></font><br><span id="error_title"></span><input type="hidden" name="cid" value="<?php echo $country_fee_array['id'];?>"></td></tr>
 <tr><td width="30%" height="30" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_2;?></td><td><input type="text" name="name" id="name" class="option_text" value="<?php echo $name;?>">&nbsp;<font color="red"><?php echo TABLE_REQUIRED;?></font><br><span id="error_name"></span></td></tr>

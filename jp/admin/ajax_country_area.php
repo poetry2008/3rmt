@@ -81,9 +81,7 @@ if(isset($id) && $id != 0){
 $area_sort = $area_sort == '' ? 0 : $area_sort;
 $fid = $area_fee_array['fid'] !='' ? $area_fee_array['fid'] : $fid;
 ?>
-<form name="form" method="post" id="country_area_form" action="country_area.php">
-<table border="0" width="100%" cellspacing="0" cellpadding="0" valign="top" bgcolor="yellow">
-
+<table border="0" width="100%" cellspacing="0" cellpadding="0" valign="top">
 <?php
 if($id == 0 || $maxid == $minid){
 ?>
@@ -110,6 +108,9 @@ if($id == 0 || $maxid == $minid){
 <?php
 }
 ?>
+</table>
+<form name="form" method="post" id="country_area_form" action="country_area.php">
+<table border="0" width="100%" cellspacing="0" cellpadding="0" valign="top" bgcolor="yellow">
 <tr><td>&nbsp;</td></tr>
 <tr><td width="30%" height="30" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_1;?></td><td><input type="text" name="title" id="title" class="option_text" value="<?php echo $title;?>">&nbsp;<font color="red"><?php echo TABLE_REQUIRED;?></font><br><span id="error_title"></span><input type="hidden" name="cid" value="<?php echo $area_fee_array['id'];?>"><input type="hidden" name="fid" value="<?php echo $fid;?>"></td></tr>
 <tr><td width="30%" height="30" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_2;?></td><td><input type="text" name="name" id="name" class="option_text" value="<?php echo $name;?>">&nbsp;<font color="red"><?php echo TABLE_REQUIRED;?></font><br><span id="error_name"></span></td></tr>

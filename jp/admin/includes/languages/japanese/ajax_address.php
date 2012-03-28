@@ -24,4 +24,8 @@ define('TABLE_LIST_12_1','関連項目');
 define('TABLE_PROMPT_1','入力可能文字タイプ');
 define('TABLE_PROMPT_2','入力可能文字数の上限');
 define('TABLE_REQUIRED','*必須');
+define('TABLE_TEXT','テキストボックス');
+define('TABLE_TEXTAREA','テキストエリア');
+define('TABLE_SELECT','プルダウンメニュー');
+define('TABLE_SHOW_TITLE','タイトル項目');
 ?>

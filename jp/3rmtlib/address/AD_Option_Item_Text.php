@@ -13,7 +13,7 @@ class AD_Option_Item_Text extends AD_Option_Item_Basic
   {
      echo '<td width="10" height="30">'. tep_draw_separator('pixel_trans.gif', '10', '1') .'</td>';
      if (strlen($this->front_title)) {
-       echo '<td class="main" width="30%">';
+       echo '<td class="main" width="30%" valign="top">';
        echo $this->front_title.':';
        echo '</td>';
      }

@@ -66,7 +66,7 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
        $input_text_len = mb_strlen($input_text_str, 'UTF-8');
        
        if ($input_text_len > $this->num_limit) {
-         $option_error_array[$this->formname] = sprintf(ERROR_OPTION_ITEM_TEXT_NUM_MAX, $this->num_limit);  
+         $option_error_array[$this->formname] = sprintf(ADDRESS_ERROR_OPTION_ITEM_TEXT_NUM_MAX, $this->num_limit);  
          return true; 
        }
      }

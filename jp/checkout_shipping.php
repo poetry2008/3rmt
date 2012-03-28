@@ -102,6 +102,7 @@
   $start_min = tep_db_prepare_input($_POST['start_min']);
   $end_hour = tep_db_prepare_input($_POST['end_hour']);
   $end_min = tep_db_prepare_input($_POST['end_min']);
+  $address_option_value = tep_db_prepare_input($_POST['address_option']);
 
   //住所
   $options_required = array();
@@ -171,23 +172,35 @@
   if($error == false) {
     tep_session_register('torihikihouhou');
     tep_session_register('date');
-    //tep_session_register('hour');
-    //tep_session_register('min');
+    tep_session_register('hour');
+    tep_session_register('min');
     tep_session_register('start_hour');
     tep_session_register('start_min');
     tep_session_register('end_hour');
     tep_session_register('end_min');
+    //tep_session_register('address_option');
+    $_SESSION['address_option'] = $address_option_value;
     tep_session_register('insert_torihiki_date');
     tep_session_register('insert_torihiki_date_end');
     //住所信息 session
     
     $options = array();
+    $options_type_array = array();
     foreach($option_info_array as $key=>$value){
 
       $options[substr($key,3)] = array($_POST[substr($key,3)],$value);
     }
 
+    foreach($_POST as $post_key=>$post_value){
+
+      if(substr($post_key,0,5) == "type_"){
+
+        $options_type_array[substr($post_key,5)] = $post_value;
+      }
+    }
+
     tep_session_register('options');
+    tep_session_register('options_type_array');
     tep_session_register('weight_fee');
     tep_session_register('free_value');
 
@@ -313,7 +326,18 @@ function check(value){
     option_id.options[option_id.options.length]=new Option(arr[value][i], arr[value][i]);    
   } 
 }
+// start in_array
+function in_array(value,arr){
 
+  for(vx in arr){
+    if(value == arr[vx]){
+
+      return true;
+    } 
+  }
+  return false;
+}
+// end in_array
 var first_num = 0;
 function address_option_show(action){
   switch(action){
@@ -359,8 +383,21 @@ function address_option_show(action){
   case 'old' :
     $("#address_show_id").show();
     var arr_old  = new Array();
+    var arr_name = new Array();
 <?php
 if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
+
+  //根据后台的设置来显示相应的地址列表
+  $address_list_arr = array();
+  $address_i = 0;
+  $address_list_query = tep_db_query("select name_flag from ". TABLE_ADDRESS ." where status='0' and show_title='1'");
+  while($address_list_array = tep_db_fetch_array($address_list_query)){
+
+    $address_list_arr[] = $address_list_array['name_flag'];
+    echo 'arr_name['. $address_i .'] = "'. $address_list_array['name_flag'] .'";';
+    $address_i++;
+  }
+  tep_db_free_result($address_list_query);
   $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_ORDERS ." where customers_id=". $_SESSION['customer_id'] ." group by orders_id order by orders_id desc");
   
    
@@ -375,16 +412,14 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
    
   $json_str_list = '';
   unset($json_old_array);
-  $address_i = 0;
   while($address_orders_array = tep_db_fetch_array($address_orders_query)){
     
-    if($address_i == 7 || $address_i == 8 || $address_i == 9){
+    if(in_array($address_orders_array['name'],$address_list_arr)){
 
       $json_str_list .= $address_orders_array['value'];
     }
     
     $json_old_array[$address_orders_array['name']] = $address_orders_array['value'];
-    $address_i++;   
         
   }
 
@@ -411,13 +446,11 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
   len = arr_old.length;
   j_num = 0;
   for(i = 0;i < len;i++){
-    j = 0;
     arr_str = '';
     for(x in arr_old[i]){
-        if(j == 7 || j == 8 || j == 9){
+        if(in_array(x,arr_name)){
           arr_str += arr_old[i][x];
         }
-        j++;
         //$("#error_"+x).html('');
     }
     if(arr_str != ''){
@@ -435,6 +468,14 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
 function address_option_list(value){
   var arr_list = new Array();
 <?php
+  //根据后台的设置来显示相应的地址列表
+  $address_list_arr = array();
+  $address_list_query = tep_db_query("select name_flag from ". TABLE_ADDRESS ." where status='0' and show_title='1'");
+  while($address_list_array = tep_db_fetch_array($address_list_query)){
+
+    $address_list_arr[] = $address_list_array['name_flag'];
+  }
+  tep_db_free_result($address_list_query);
   $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_ORDERS ." where customers_id=". $_SESSION['customer_id'] ." group by orders_id order by orders_id desc");
   
    
@@ -446,16 +487,14 @@ function address_option_list(value){
   
   $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $address_orders_group_array['orders_id'] ."'");
   
-  $address_i = 0;
   while($address_orders_array = tep_db_fetch_array($address_orders_query)){
     
-    if($address_i == 7 || $address_i == 8 || $address_i == 9){
+    if(in_array($address_orders_array['name'],$address_list_arr)){
 
       $json_str_list .= $address_orders_array['value'];
     }
     
     $json_old_array[$address_orders_array['name']] = $address_orders_array['value'];
-    $address_i++;   
         
   }
 
@@ -485,6 +524,21 @@ function address_option_list(value){
   }
 
 }
+
+function session_value(){
+  var session_array = new Array();
+<?php
+  foreach($_SESSION['options'] as $see_key=>$see_value){
+
+    echo 'session_array["'. $see_key .'"] = "'. $see_value[1] .'";';
+  }
+?>
+  for(x in session_array){
+    var list_option = document.getElementById("op_"+x);
+    list_option.style.color = '#000';
+    list_option.value = session_array[x];
+  }
+}
 --></script>
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript" src="js/date_time.js"></script>
@@ -511,25 +565,51 @@ function address_option_list(value){
        }
     }); 
  }
+<?php
+  if(isset($_POST['address_option'])){
+    if($_POST['address_option'] == 'old'){
+?>
+      $(document).ready(function(){
+    
+        address_option_show('old'); 
+      }); 
+<?php
+   }else{
+?>
+      $(document).ready(function(){
+        $("#address_show_id").hide(); 
+      });
+<?php
+   }
+  }elseif(isset($_SESSION['address_option'])){
+    if($_SESSION['address_option'] == 'old'){
+?>
+      $(document).ready(function(){
+        address_option_show('old'); 
+        session_value(); 
+      });    
+<?php
+    }else{
+?>
+      $(document).ready(function(){
+        $("#address_show_id").hide(); 
+        session_value();
+      });
+<?php
+    }
+?>
+<?php
+  }else{
+?>
+    $(document).ready(function(){
 
+     address_option_show('old'); 
+     address_option_list(first_num); 
+    });
 <?php
-if (!isset($_POST['address_option'])) {
+  }
 ?>
-  $(document).ready(function(){
-    
-    address_option_show('old'); 
-    address_option_list(first_num);
-  });
-<?php
-}elseif(isset($_POST['address_option']) && $_POST['address_option'] == 'old'){
-?>
- $(document).ready(function(){
-    
-    address_option_show('old'); 
-  });
-<?php
-}
-?>
+
 </script>
 </head>
 <body> 
@@ -712,20 +792,38 @@ if (!isset($_POST['address_option'])) {
   $shipping_time = max($shipping_time_array['shipping_time']);
 
   $weight = $cart->weight;
-  //$weight = 1;
   if($weight > 0){
     $checked_str_old = '';
     $checked_str_new = '';
     $show_flag = '';
-    if ((isset($_POST['address_option']) && ($_POST['address_option'] == 'old')) || !isset($_POST['address_option'])){
+    if(isset($_POST['address_option'])){
+
+      if($_POST['address_option'] == 'old'){
+
+        $checked_str_old = 'checked';
+        $show_flag = 'block';
+      }else{
+
+        $checked_str_new = 'checked';
+        $show_flag = 'none';
+      }
+    }elseif(isset($_SESSION['address_option'])){
+
+      if($_SESSION['address_option'] == 'old'){
+
+        $checked_str_old = 'checked';
+        $show_flag = 'block';
+      }else{
+
+        $checked_str_new = 'checked';
+        $show_flag = 'none';
+      }
+    }else{
 
       $checked_str_old = 'checked';
       $show_flag = 'block';
-    }else{
-
-      $checked_str_new = 'checked';
-      $show_flag = 'none';
     }
+ 
 ?>
   <tr><td width="70%"><b><?php echo TABLE_ADDRESS_TITLE; ?></b></td></tr>
   <tr><td>
@@ -734,10 +832,10 @@ if (!isset($_POST['address_option'])) {
                         <td>
                           <table border="0" width="100%" cellspacing="0" cellpadding="2">
                             <tr>
-                            <td width="10"><?php tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td>
+                            <td><?php tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td>
                             <td class="main">
-                            <input type="radio" name="address_option" value="old" onclick="address_option_show('old');address_option_list(first_num);" <?php echo $checked_str_old;?>><?php echo TABLE_OPTION_OLD; ?>
-                            <input type="radio" name="address_option" value="new" onclick="address_option_show('new');" <?php echo $checked_str_new;?>><?php echo TABLE_OPTION_NEW; ?> 
+                            <input type="radio" name="address_option" value="old" onClick="address_option_show('old');address_option_list(first_num);" <?php echo $checked_str_old;?>><?php echo TABLE_OPTION_OLD; ?>
+                            <input type="radio" name="address_option" value="new" onClick="address_option_show('new');" <?php echo $checked_str_new;?>><?php echo TABLE_OPTION_NEW; ?> 
                             </td></tr>
                           </table>
                        </td>
@@ -753,9 +851,9 @@ if (!isset($_POST['address_option'])) {
                         <td>
                           <table border="0" width="100%" cellspacing="0" cellpadding="2" id="address_show">
                           <tr id="address_show_id" style="display:<?php echo $show_flag;?>;"><td width="10"><?php tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td>
-<td class="main" width="30%"><?php echo TABLE_ADDRESS_SHOW; ?></td>
-<td class="main" width="70%" height="30">
-<select name="address_show_list" id="address_show_list" onchange="address_option_list(this.value);">
+<td class="main"><?php echo TABLE_ADDRESS_SHOW; ?></td>
+<td class="main">
+<select name="address_show_list" id="address_show_list" onChange="address_option_list(this.value);">
 <option value="">--</option>
 </select>
 </td></tr>
@@ -774,7 +872,7 @@ if (!isset($_POST['address_option'])) {
   }
 ?>
           <tr>
-          <td width="70%"><b><?php echo TABLE_HEADING_SHIPPING_ADDRESS; ?></b></td></tr>
+          <td><b><?php echo TABLE_HEADING_SHIPPING_ADDRESS; ?></b></td></tr>
           <tr>
           <td width="10" height="5"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
           </tr>
@@ -804,8 +902,8 @@ if (!isset($_POST['address_option'])) {
 ?>
   <tr>
     <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-  <td class="main" width="30%"><?php echo TEXT_TORIHIKIKIBOUBI; ?></td>
-    <td class="main" width="70%">
+  <td class="main"><?php echo TEXT_TORIHIKIKIBOUBI; ?></td>
+    <td class="main">
 <?php
     $today = getdate();
       $m_num = $today['mon'];
@@ -822,8 +920,11 @@ if (!isset($_POST['address_option'])) {
           $newarr = array('月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日', '日曜日');
      
     for($j = 0;$j < $shipping_time;$j++){
-
-      $selected_str = date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == $_POST['date'] ? 'selected' : ''; 
+      if(isset($_POST['date']) && $_POST['date'] != ""){
+        $selected_str = date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == $_POST['date'] ? 'selected' : ''; 
+      }elseif(isset($_SESSION['date']) && $_SESSION['date'] != ''){
+        $selected_str = date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == $_SESSION['date'] ? 'selected' : '';
+      }
       echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'" '. $selected_str .'>'.str_replace($oarr, $newarr, date("Y年m月d日（l）", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
 
     }
@@ -875,13 +976,14 @@ if (!isset($_POST['address_option'])) {
  </tr>
 
 <?php
-  if(isset($_POST['date']) && $_POST['date'] != ''){
+  if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) && $_SESSION['date'] != '')){
 
     echo '<script>selectDate(\''. $work_start .' \', \''. $work_end .'\');$("#shipping_list").show();</script>';
   }
-  if(isset($_POST['min']) && $_POST['min'] != ''){
-
-    echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\','. $_POST['hour'] .','. $_POST['min'] .');$("#shipping_list_min").show();</script>';
+  if((isset($_POST['min']) && $_POST['min'] != '') || (isset($_SESSION['min']) && $_SESSION['min'] != '')){
+    $post_hour = isset($_SESSION['hour']) && $_SESSION['hour'] != '' ? $_SESSION['hour'] : $_POST['hour'];
+    $post_min = isset($_SESSION['min']) && $_SESSION['min'] != '' ? $_SESSION['min'] : $_POST['min'];
+    echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\','. $post_hour .','. $post_min .');$("#shipping_list_min").show();</script>';
   }
   if(isset($jikan_error) && $jikan_error != '') {
 ?>

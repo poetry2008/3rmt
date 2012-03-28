@@ -143,9 +143,19 @@ $sql_data_array = array('orders_id'         => $insert_id,
                         'telecom_option'              => $_SESSION['option'],
                       );
 //作所信息入库开始
-
 foreach($_SESSION['options'] as $op_key=>$op_value){
   
+  if($_SESSION['options_type_array'][$op_key] == 'num'){
+     
+    $input_text_str = $op_value[1];
+    $mode = array('/\s/','/－/','/－/','/-/');
+    $replace = array('','','','');
+    $mode_ban = array('1','2','3','4','5','6','7','8','9','0');
+    $mode_quan = array('/１/','/２/','/３/','/４/','/５/','/６/','/７/','/８/','/９/','/０/');
+    $input_text_str = preg_replace($mode,$replace,$input_text_str);
+    $input_text_str = preg_replace($mode_quan,$mode_ban,$input_text_str);
+    $op_value[1] = $input_text_str;
+  } 
   $address_options_query = tep_db_query("select id from ". TABLE_ADDRESS ." where name_flag='". $op_key ."'");
   $address_options_array = tep_db_fetch_array($address_options_query);
   tep_db_free_result($address_options_query);
@@ -589,6 +599,11 @@ tep_session_unregister('torihikihouhou');
 tep_session_unregister('date');
 tep_session_unregister('hour');
 tep_session_unregister('min');
+tep_session_unregister('start_hour');
+tep_session_unregister('start_min');
+tep_session_unregister('end_hour');
+tep_session_unregister('end_min');
+tep_session_unregister('address_option');
 tep_session_unregister('insert_torihiki_date');
 /*
 tep_session_unregister('bank_name');

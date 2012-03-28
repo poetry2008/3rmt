@@ -1115,7 +1115,7 @@ document.edit_order.notify_comments.checked = false;
 }
 }
 
-function show_text(id,ele,type,sort,flag,title,name){
+function show_text(id,ele,type,sort,flag,title,name,comment){
 
       //$("div#show").load("show.php", {id:id});
     if(ele != ''){
@@ -1123,7 +1123,7 @@ function show_text(id,ele,type,sort,flag,title,name){
     }
     $.ajax({
        url: 'ajax_address.php',
-       data: {id:id,type:type,sort:sort,flag:flag,title:title,name:name},
+       data: {id:id,type:type,sort:sort,flag:flag,title:title,name:name,comment:comment},
        type: 'POST',
        dataType: 'text',
        async : false,
@@ -1341,7 +1341,7 @@ function check_add(){
   num += 5;
   document.getElementById('num').value = num; 
   for(i=num-5;i<num;i++){
-    str += '<tr id="o'+i+'"><td width="30%" height="30" align="left">&nbsp;&nbsp;&nbsp;&nbsp;選択肢</td><td width="112"></td><td><input type="text" name="option_comment[]" value=""><input type="radio" name="option_value" value="'+i+'"><input type="button" value="削除" onclick="check_del('+i+');"></td></tr>';
+    str += '<tr id="o'+i+'"><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;選択肢</td><td><input type="text" name="option_comment[]" value=""><input type="radio" name="option_value" value="'+i+'"><input type="button" value="削除" onclick="check_del('+i+');"></td></tr>';
 
   }
   $("#button_add").append(str);
@@ -1402,7 +1402,7 @@ function work_add(){
   num = work_num.value;
   num = parseInt(num);
   work_num.value = num+1; 
-  var work_str = '<tr id="workid'+num+'"><td width="30%" height="30" align="left">&nbsp;&nbsp;&nbsp;&nbsp;お届け可能時間'+num+'</td><td><input type="text" name="work_start_hour[]" size="3" maxlength="2" value="">&nbsp;:&nbsp;<input type="text" name="work_start_min[]" size="3" maxlength="2" value="">&nbsp;～&nbsp;<input type="text" name="work_end_hour[]" size="3" maxlength="2" value="">&nbsp;:&nbsp;<input type="text" name="work_end_min[]" size="3" maxlength="2" value="">&nbsp;<input type="button" value="削除" onclick="work_del('+num+');"><br><span id="work_error'+num+'"></span></td></tr>';
+  var work_str = '<tr id="workid'+num+'"><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;お届け可能時間'+num+'</td><td><input type="text" name="work_start_hour[]" size="3" maxlength="2" value="">&nbsp;:&nbsp;<input type="text" name="work_start_min[]" size="3" maxlength="2" value="">&nbsp;～&nbsp;<input type="text" name="work_end_hour[]" size="3" maxlength="2" value="">&nbsp;:&nbsp;<input type="text" name="work_end_min[]" size="3" maxlength="2" value="">&nbsp;<input type="button" value="削除" onclick="work_del('+num+');"><br><span id="work_error'+num+'"></span></td></tr>';
 
  $("#work_list").append(work_str); 
 }
@@ -1422,8 +1422,20 @@ function work_check(){
   var error = false;
   var error_1 = false;
   var error_2 = false;
+  var error_3 = false;
 
   for(i = 0;i < work_start_hour.length;i++){
+    start_time_num = work_start_hour[i].value+work_start_min[i].value;
+    end_time_num = work_end_hour[i].value+work_end_min[i].value;
+    start_time_num = parseInt(start_time_num,10);
+    end_time_num = parseInt(end_time_num,10);
+    if(end_time_num < start_time_num){
+      error_3 = true;  
+      error = true;
+    }else{
+    
+      error_3 = false;
+    }
     if(i == 0){
       if(work_start_hour[i].value == '' || work_start_min[i].value == '' || work_end_hour[i].value == '' || work_end_min[i].value ==''){
         error_1 = true;
@@ -1464,6 +1476,8 @@ function work_check(){
           $("#work_error"+(i+1)).html('<font color="red">必須項目</font>');
         }else if(error_2 == true && i == 0){
       
+          $("#work_error"+(i+1)).html('<font color="red">正しく入力してください</font>');
+        }else if(error_3 == true){
           $("#work_error"+(i+1)).html('<font color="red">正しく入力してください</font>');
         }else{
           $("#work_error"+(i+1)).html(''); 

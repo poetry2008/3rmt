@@ -30,8 +30,7 @@ if(isset($action) && $action != ''){
         $work_end_min[$w_key] = (int)$work_end_min[$w_key] < 10 ? '0'.(int)$work_end_min[$w_key] : $work_end_min[$w_key];
         $work[] = array($w_value.':'.$work_start_min[$w_key],$work_end_hour[$w_key].':'.$work_end_min[$w_key]);
       }
-    }
-
+    } 
     $work_str = serialize($work);
     //这里判断是添加，还是修改
     if($products_id == ''){
@@ -189,7 +188,7 @@ while($products_array = tep_db_fetch_array($products_query)){
   foreach($work_array as $w_key=>$w_value){
 
     if($w_key < 3){
-      $work_str .= $w_value[0].'～'.$w_value[1].'<br>'; 
+      $work_str .= $w_value[0].'～'.$w_value[1].'&nbsp;&nbsp;'; 
     }else{
 
       $work_str .= '......';
