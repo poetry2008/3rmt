@@ -74,7 +74,7 @@
         tep_db_perform('micro_logs',$arr);
         $arr['log_id'] = tep_db_insert_id();
         
-        if (!empty($_POST['alarm'])) {
+        if (!empty($_POST['alarm']) && preg_match('/^(\d){4}-(\d){2}-(\d){2}$/', $_POST['alarm']) && ($_POST['alarm'] != '0000-00-00')) {
           $sql_data_array = array(
               'type' => 1,
               'title' => mb_substr($_POST['content'], 0, 30, 'utf-8'),
@@ -93,25 +93,37 @@
             'level'   => $_POST['level']
           );
         if (!empty($_POST['alarm'])) {
-          $arr['alarm'] = date('Y-n-j',strtotime($_POST['alarm'])); 
+          if (preg_match('/^(\d){4}-(\d){2}-(\d){2}$/', $_POST['alarm']) && ($_POST['alarm'] != '0000-00-00')) {
+            $arr['alarm'] = date('Y-n-j',strtotime($_POST['alarm'])); 
+          }
         } else {
           $arr['alarm'] = '0000-00-00'; 
         }
         tep_db_perform('micro_logs',$arr,'update','log_id='.$_GET['id']);
        
         if (!empty($_POST['alarm'])) {
-          $notice_exists_raw = tep_db_query("select * from ".TABLE_NOTICE." where from_notice = '".$_GET['id']."' and type = '1'");  
-          if (tep_db_num_rows($notice_exists_raw) > 0) {
-            tep_db_query("update `".TABLE_NOTICE."` set `title` = '".mb_substr($_POST['content'], 0, 30, 'utf-8')."', `set_time` = '".date('Y-m-d 00:00:00', strtotime($_POST['alarm']))."' where `from_notice` = '".$_GET['id']."' and `type` = '1'"); 
+          if (preg_match('/^(\d){4}-(\d){2}-(\d){2}$/', $_POST['alarm']) && ($_POST['alarm'] != '0000-00-00')) {
+          
+            $notice_exists_raw = tep_db_query("select * from ".TABLE_NOTICE." where from_notice = '".$_GET['id']."' and type = '1'");  
+            if (tep_db_num_rows($notice_exists_raw) > 0) {
+              tep_db_query("update `".TABLE_NOTICE."` set `title` = '".mb_substr($_POST['content'], 0, 30, 'utf-8')."', `set_time` = '".date('Y-m-d 00:00:00', strtotime($_POST['alarm']))."' where `from_notice` = '".$_GET['id']."' and `type` = '1'"); 
+            } else {
+              $sql_data_array = array(
+                  'type' => 1,
+                  'title' => mb_substr($_POST['content'], 0, 30, 'utf-8'),
+                  'set_time' => $_POST['alarm'].' 00:00:00',
+                  'from_notice' => $_GET['id'],
+                  'created_at' => date('Y-m-d H:i:s', time()),
+                  );
+              tep_db_perform(TABLE_NOTICE, $sql_data_array); 
+            }
           } else {
-            $sql_data_array = array(
-                'type' => 1,
-                'title' => mb_substr($_POST['content'], 0, 30, 'utf-8'),
-                'set_time' => $_POST['alarm'].' 00:00:00',
-                'from_notice' => $_GET['id'],
-                'created_at' => date('Y-m-d H:i:s', time()),
-                );
-            tep_db_perform(TABLE_NOTICE, $sql_data_array); 
+            $notice_raw = tep_db_query("select id from ".TABLE_NOTICE." where from_notice = '".$_GET['id']."' and type = '1'"); 
+            $notice_res = tep_db_fetch_array($notice_raw);
+            if ($notice_res) {
+              tep_db_query("delete from ".TABLE_NOTICE_TO_MICRO_USER." where notice_id = '".$notice_res['id']."'"); 
+            }
+            tep_db_query("delete from ".TABLE_NOTICE." where from_notice = '".$_GET['id']."' and type = '1'"); 
           }
         } else {
           $notice_raw = tep_db_query("select id from ".TABLE_NOTICE." where from_notice = '".$_GET['id']."' and type = '1'"); 
@@ -147,11 +159,10 @@
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
 <title><?php echo TITLE; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
-<link rel="stylesheet" type="text/css" href="includes/styles.css">
 
 <script language="javascript" src="includes/javascript/jquery.js"></script>
 <script language="javascript" src="includes/javascript/jquery.form.js"></script>
-<script language="javascript" src="includes/javascript/datePicker.js"></script>
+<script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
 <script>
@@ -163,10 +174,22 @@
 
 </script>
 <style type="text/css">
-a.date-picker{
-display:block;
-float:none;
+.yui3-skin-sam input {
+  float:left;
 }
+a.dpicker {
+	width: 16px;
+	height: 16px;
+	border: none;
+	color: #fff;
+	padding: 0;
+	margin: 0;
+	overflow: hidden;
+        display:block;	
+        cursor: pointer;
+	background: url(./includes/calendar.png) no-repeat; 
+	float:left;
+} 
 .popup-calendar {
 top:20px;
 left:-95px;
@@ -183,7 +206,7 @@ margin:0;
 padding:0;
 }
 .alarm_input{
-width:80px;
+width:75px;
 }
 .log{
   border:#999 solid 1px;
@@ -196,7 +219,6 @@ width:80px;
 }
 .log .alarm{
   display:none;
-  font-size:10px;
   background:url(images/icons/alarm.gif) no-repeat left center;
 }
 .log .level{
@@ -258,6 +280,22 @@ overflow:hidden;
 .popup-calendar-wrapper{
 float:left;
 }
+
+#new_yui3 {
+	margin-left:-170px;
+	margin-left:-19px\9;
+	top:235px;
+	top:208px\9;
+	position: absolute;
+}
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+#new_yui3{
+	top:208px;
+	margin-left:-430px;
+    padding-left:260px;
+	position: absolute;
+}
+}
 </style>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">
@@ -300,15 +338,21 @@ float:left;
               <input type="radio" name="level" value="1" id="level_1">重2
               <input type="radio" name="level" value="2" id="level_2">重3
             </td>
-            <td><!--<img src="images/icons/alarm.gif">--><input type="text" name="alarm" id="input_alarm" /></td>
+            <td>
+            <div class="yui3-skin-sam yui3-g">
+            <input type="text" name="alarm" id="input_alarm" /><a href="javascript:void(0);" onclick="open_new_calendar();" class="dpicker"></a>
+            <input type="hidden" name="toggle_open" value="0" id="toggle_open"> 
+            <div class="yui3-u" id="new_yui3">
+            <div id="mycalendar"></div>
+            </div> 
+            </div>
+            </td>
             <td align="right"><input type="submit" value="メモ保存" /></td>
           </tr>
           </table>
           </form>
 <script>
 $(function() {
-  $.datePicker.setDateFormat('ymd','-');
-  $('#input_alarm').datePicker();
   load_log();
   setInterval(function(){load_log()},1000 * 60 * 10);
   $('#log_form').ajaxForm({
@@ -326,8 +370,58 @@ $(function() {
     }
   }); 
   
+
 });
 
+function open_new_calendar()
+{
+  var is_open = $('#toggle_open').val(); 
+  if (is_open == 0) {
+    browser_str = navigator.userAgent.toLowerCase(); 
+    if (browser_str.indexOf("msie 9.0") > 0) {
+      $('#new_yui3').css('margin-left', '-170px'); 
+    }
+    $('#toggle_open').val('1'); 
+    YUI().use('calendar', 'datatype-date',  function(Y) {
+        var calendar = new Y.Calendar({
+            contentBox: "#mycalendar",
+            width:'170px',
+
+        }).render();
+      var dtdate = Y.DataType.Date;
+      calendar.on("selectionChange", function (ev) {
+        var newDate = ev.newSelection[0];
+        $("#input_alarm").val(dtdate.format(newDate)); 
+        $('#toggle_open').val('0');
+        $('#toggle_open').next().html('<div id="mycalendar"></div>');
+      });
+    });
+  }
+}
+function open_update_calendar(mid)
+{
+  var is_open = $('#toggle_open_'+mid).val(); 
+  if (is_open == 0) {
+    $('#toggle_open_'+mid).val('1'); 
+    c_y_pos = $("#dpk_"+mid).position().top+16; 
+    $("#pos_m_"+mid).css({"right":"87px", "position":"absolute"}); 
+    $("#pos_m_"+mid).css('top', c_y_pos+'px'); 
+    YUI().use('calendar', 'datatype-date',  function(Y) {
+      var calendar = new Y.Calendar({
+            contentBox: "#calc_"+mid+"_show",
+            width:'170px',
+
+        }).render();
+      var dtdate = Y.DataType.Date;
+      calendar.on("selectionChange", function (ev) {
+        var newDate = ev.newSelection[0];
+        $("#alarm_date_"+mid).val(dtdate.format(newDate)); 
+        $('#toggle_open_'+mid).val('0');
+        $('#toggle_open_'+mid).next().html('<div id="calc_'+mid+'_show"></div>');
+      });
+    });
+  }
+}
 function toggle_log_read(t_object, lid, is_read)
 {
   $.ajax({
@@ -390,7 +484,7 @@ function log_html(text){
     $str += '<img src="images/icons/green_right.gif">'; 
   }
   $str += '</a>';
-  $str += '</div>'; 
+  $str += '</div>';
   $str += '</td>'; 
   $str += '      <td class="number" style="color:'+(text['level']!='0'?(text['level']=='2'?'red':'orange'):'black')+'">'+(parseInt(text['level'])+1)+'</td>';
   if(t2.getHours()<10){
@@ -453,8 +547,9 @@ function append_log(text){
 function edit_log(id)
 {
   $('#log_'+id+' .content').html('<textarea name="content" style="height:'+ ($('#log_'+id+' .content').height()+ 20) +'px">'+$('#log_'+id+' .content').html().replace(/<br>/ig,'\n')+'</textarea>');
-  $('#log_'+id+' .alarm').html('<input class="alarm_input" type="text" name="alarm" value="'+$('#log_'+id+' .alarm').html()+'">');
-  $('#log_'+id+' .alarm input').datePicker();
+  
+  $('#log_'+id+' .alarm').html('<div id="demo" class="yui3-skin-sam yui3-g"><a id="dpk_'+id+'" href="javascript:void(0);" class="dpicker" onclick="open_update_calendar('+id+');"></a><input class="alarm_input" id="alarm_date_'+id+'" type="text" name="alarm" value="'+$('#log_'+id+' .alarm').html()+'"><input type="hidden" name="toggle_open_'+id+'" id="toggle_open_'+id+'" value="0"><div id="pos_m_'+id+'" class="yui3-u"><div id="calc_'+id+'_show"></div></div></div></div>');
+
   l = $('#log_'+id+' .level').html();
   $('#log_'+id+' .level').show().html('<input type="radio" name="level" value="0" '+(l == '0' ? 'checked' : '')+' />重1<input type="radio" name="level" value="1" '+(l == '1' ? 'checked' : '')+' />重2<input type="radio" name="level" value="2" '+(l == '2' ? 'checked' : '')+' />重3');
   $('#log_'+id+' .edit_action').show();

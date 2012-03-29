@@ -28,7 +28,7 @@
           'reviews_text' => $_POST['reviews_text']
         );
         tep_db_perform(TABLE_REVIEWS_DESCRIPTION, $sql_description_array);
-        tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath='.$_POST['cPath']));
+        tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath='.$_POST['cPath'].($_POST['search']?'&search='.$_POST['search']:'')));
         break;
       case 'setflag':
         $site_id = isset($_GET['site_id']) ? $_GET['site_id'] :0;
@@ -225,11 +225,11 @@
         <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
       </tr>
       <tr>
-        <td align="right" class="main"><?php echo tep_draw_hidden_field('cPath',
-            $_GET['cPath']) . tep_draw_hidden_field('products_id',
-              $rInfo->products_id) . tep_html_element_submit(
-                IMAGE_SAVE) . ' <a href="' . tep_href_link(FILENAME_REVIEWS, 'page='
-                . $_GET['page'] . '&rID=' . $_GET['rID']) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>'; ?></td>
+        <td align="right" class="main"><?php 
+        if (isset($_GET['search'])) {
+          echo tep_draw_hidden_field('search', $_GET['search']); 
+        }
+        echo tep_draw_hidden_field('cPath', $_GET['cPath']) . tep_draw_hidden_field('products_id', $rInfo->products_id) . tep_html_element_submit( IMAGE_SAVE) . ' <a href="' . tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' . $_GET['rID']) . '">' . tep_html_element_button(IMAGE_CANCEL) . '</a>'; ?></td>
       </form></tr>
 <?php
 

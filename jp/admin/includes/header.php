@@ -155,11 +155,17 @@ function show_head_notice(no_type)
           if (data_info[1] <= 0) {
             document.getElementById('leave_time_'+data_info[2]).parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.style.background = '#FFB3B5'; 
           } else {
-            document.getElementById('leave_time_'+data_info[2]).parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.style.background = '#FFFFFF'; 
+            orgin_bg = document.getElementById('leave_time_'+data_info[2]).parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.style.background; 
+            if (orgin_bg.indexOf('rgb(255, 179, 181)') > 0) {
+              document.getElementById('leave_time_'+data_info[2]).parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.style.background = '#FFFFFF'; 
+            }
           }
         } else {
           $('#show_head_notice').html(data); 
-          document.getElementById('show_head_notice').parentNode.parentNode.parentNode.parentNode.style.background = '#FFFFFF';
+          orgin_bg = document.getElementById('leave_time_'+data_info[2]).parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.style.background; 
+          if (orgin_bg.indexOf('rgb(255, 179, 181)') > 0) {
+            document.getElementById('leave_time_'+data_info[2]).parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.style.background = '#FFFFFF'; 
+          }
         }
         
         if (no_type == 1) {
@@ -429,7 +435,23 @@ if (!isset($ocertify->npermission) || $ocertify->npermission >= 7) {
       <tr>
       <td class="menu01"><a class="t_link01"
       onclick="javascript:goto_changepwd(\'changepwd_form\')"
-      href="javascript:void(0);">'.HEADER_TEXT_USERS.'</a></td>
+      href="javascript:void(0);">'.HEADER_TEXT_USERS.'</a>';
+if ($_SERVER['PHP_SELF'] != '/admin/preorders.php') {
+?>
+<embed id="head_sound" src="images/presound.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></embed>
+<?php
+}
+?>
+<?php
+if ($_SERVER['PHP_SELF'] != '/admin/orders.php') {
+?>
+<embed id="head_warn" src="images/warn.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></embed>
+<?php
+}
+?>
+<embed id="head_notice" src="images/notice.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></embed>
+<?php 
+  echo '</td>
       </tr>
       </table>
       </td>
@@ -458,24 +480,11 @@ if (!isset($ocertify->npermission) || $ocertify->npermission >= 7) {
     '?execute_logout_user=1" class="headerLink">'.HEADER_TEXT_LOGOUT.'</a>';
 }
 ?>
-<?php
-if ($_SERVER['PHP_SELF'] != '/admin/preorders.php') {
-?>
-<embed id="head_sound" src="images/presound.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></embed>
-<?php
-}
-?>
+
 </td>
 </tr>
 </table>
-<?php
-if ($_SERVER['PHP_SELF'] != '/admin/orders.php') {
-?>
-<embed id="head_warn" src="images/warn.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></embed>
-<?php
-}
-?>
-<embed id="head_notice" src="images/notice.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></embed>
+
 </td>
 </tr>
 </table>

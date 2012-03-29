@@ -2774,6 +2774,10 @@ $c_params='action=search_manual_info&site_id='.$site_id.'&cid='.$cid.'&s_pID='.$
 ?>
 <td width="100%" valign="top" id ='categories_right_td'>
 <table border="0" width="100%" cellspacing="0" cellpadding="0">
+<?php
+$site_id=isset($_GET['site_id']) ? $_GET['site_id']:0;
+$products_query=tep_db_query("select products_id from ".TABLE_PRODUCTS_TO_CATEGORIES." where categories_id='".$cid."'");
+?>
 <tr>
 <td width="100%" valign="top">
 <table border="0" width="100%" cellspacing="0" cellpadding="0">
@@ -2815,6 +2819,7 @@ $c_params='action=search_manual_info&site_id='.$site_id.'&cid='.$cid.'&s_pID='.$
 <td class="dataTableHeadingContent"><?php echo SEARCH_CAT_PRO_TITLE;?> </td>
 <td class="dataTableHeadingContent"><?php echo SEARCH_MANUAL_CONTENT;?> </td>
 <td class="dataTableHeadingContent" align="right"><?php echo SEARCH_MANUAL_LOOK;?> &nbsp;&nbsp;&nbsp;&nbsp;</td>
+=======
 </tr>
 
 <?php
@@ -2906,6 +2911,7 @@ $categories_s_query=tep_db_query("select categories_id from ".TABLE_CATEGORIES."
 
 ?>
 <td>
+
 
 <tr>
 <td width="100%" >
@@ -3020,7 +3026,6 @@ $search_res_arr[]=array('c_id'=>$categories_info_array['categories_id'],'c_name'
 }
 }
 ?>
-
 <tr>
 <td width="100%" >
 <table border="0" width="100%" cellspacing="0" cellpadding="0">
@@ -3086,6 +3091,8 @@ echo '<tr class='.$now_class.'>';
 ?>
 	<td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_ORDERS,'page='.$page.'&action=search_manual_info&s_pid='.$s_pid.'&s_cid='.$val['c_id'].'&keyword='.$keyword.'&site_id='.$site_id);?>'">
 <a href="<?php echo tep_href_link(FILENAME_ORDERS, 'cPath='.$val['c_id'].'&action=search_manual_info&site_id='.$site_id.'&s_cid='.$s_cid.'&p_keyword='.$keyword);?>"><?php echo tep_image(DIR_WS_ICONS.'folder.gif', ICON_FOLDER);?></a> 
+=======
+
 
 <?php echo $val['c_name']; ?>
 
@@ -3207,7 +3214,7 @@ $params="cid=".$cid."&page=".$page."&action=search_manual_info&site_id=".$site_i
 <table border="0" width="100%" cellspacing="0" cellpadding="0">
 
 <tr>
-            <td width="100%" height="40">
+            <td width="100%">
 
             <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr>
@@ -3252,6 +3259,18 @@ $params="cid=".$cid."&page=".$page."&action=search_manual_info&site_id=".$site_i
 </table>
 </td>
 </tr>
+
+<?php
+	}else if(!(isset($_GET['pID']) && $_GET['pID']!='') && (isset($_GET['cID']) && $_GET['cID']!='')){
+$cid=$_GET['cID'];
+	$categories_pid_query=tep_db_query("select parent_id from ".TABLE_CATEGORIES." where categories_id='".$cid."'");
+$categories_pid_array=tep_db_fetch_array($categories_pid_query);
+$cp_manual_query=tep_db_query("select categories_name,c_manual from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$categories_pid_array['parent_id']."' and site_id='".$site_id."'");
+$cp_manual_array=tep_db_fetch_array($cp_manual_query);
+
+$c_manual_query=tep_db_query("select categories_name,c_manual from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$cid."' and site_id='".$site_id."'");
+$c_manual_array=tep_db_fetch_array($c_manual_query);
+?>
 <tr>
 <td align="right">
 <a href="<?php echo tep_href_link(FILENAME_ORDERS,$c_params)?>"><button><?php echo SHOW_MANUAL_RETURN;?></button></a>
