@@ -2819,7 +2819,6 @@ $products_query=tep_db_query("select products_id from ".TABLE_PRODUCTS_TO_CATEGO
 <td class="dataTableHeadingContent"><?php echo SEARCH_CAT_PRO_TITLE;?> </td>
 <td class="dataTableHeadingContent"><?php echo SEARCH_MANUAL_CONTENT;?> </td>
 <td class="dataTableHeadingContent" align="right"><?php echo SEARCH_MANUAL_LOOK;?> &nbsp;&nbsp;&nbsp;&nbsp;</td>
-=======
 </tr>
 
 <?php
@@ -3091,7 +3090,6 @@ echo '<tr class='.$now_class.'>';
 ?>
 	<td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_ORDERS,'page='.$page.'&action=search_manual_info&s_pid='.$s_pid.'&s_cid='.$val['c_id'].'&keyword='.$keyword.'&site_id='.$site_id);?>'">
 <a href="<?php echo tep_href_link(FILENAME_ORDERS, 'cPath='.$val['c_id'].'&action=search_manual_info&site_id='.$site_id.'&s_cid='.$s_cid.'&p_keyword='.$keyword);?>"><?php echo tep_image(DIR_WS_ICONS.'folder.gif', ICON_FOLDER);?></a> 
-=======
 
 
 <?php echo $val['c_name']; ?>
@@ -3259,10 +3257,32 @@ $params="cid=".$cid."&page=".$page."&action=search_manual_info&site_id=".$site_i
 </table>
 </td>
 </tr>
+<tr>
+<td align="right">
+<a href="<?php echo tep_href_link(FILENAME_ORDERS,$c_params)?>"><button><?php echo SHOW_MANUAL_RETURN;?></button></a>
+
+</td>
+</tr>
 
 <?php
 	}else if(!(isset($_GET['pID']) && $_GET['pID']!='') && (isset($_GET['cID']) && $_GET['cID']!='')){
+
 $cid=$_GET['cID'];
+$page=$_GET['site_id'];
+$s_pid=$_GET['s_pid'];
+
+
+
+
+$cpath=$_GET['cPath'];
+$site_id=isset($_GET['site_id']) ? $_GET['site_id']:0;
+$s_cid=$_GET['s_cid'];
+$p_keyword=$_GET['p_keyword'];
+$page=$_GET['page'];
+$c_params="action=search_manual_info&site_id=".$site_id."&s_cid=".$s_cid."&page=".$page."&p_keyword=".$p_keyword."&cPath=".$cPath.'&s_pid='.$s_pid;
+
+
+
 	$categories_pid_query=tep_db_query("select parent_id from ".TABLE_CATEGORIES." where categories_id='".$cid."'");
 $categories_pid_array=tep_db_fetch_array($categories_pid_query);
 $cp_manual_query=tep_db_query("select categories_name,c_manual from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$categories_pid_array['parent_id']."' and site_id='".$site_id."'");
@@ -3271,6 +3291,50 @@ $cp_manual_array=tep_db_fetch_array($cp_manual_query);
 $c_manual_query=tep_db_query("select categories_name,c_manual from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$cid."' and site_id='".$site_id."'");
 $c_manual_array=tep_db_fetch_array($c_manual_query);
 ?>
+<td width="100%" valign="top" id ='categories_right_td'>
+<table border="0" width="100%" cellspacing="0" cellpadding="0">
+
+<tr>
+            <td width="100%" height="40">
+
+            <table border="0" width="100%" cellspacing="0" cellpadding="0">
+            <tr>
+            <td class="pageHeading"><?php echo $cp_manual_array['categories_name'].'/'.$c_manual_array['categories_name'].SHOW_MANUAL_TITLE; ?></td>
+            <td align="right" class="smallText">
+            <table width=""  border="0" cellspacing="1" cellpadding="0">
+            <tr>
+            <td class="smallText" valign='top'>
+<form name="manual" action="orders.php" method="get">
+<input name="keyword" style="width:200px;" type="text" id="keyword" size="40" value="">
+<input type="submit"  onclick="return check_manual_search_form();" value="<?php echo SHOW_MANUAL_SEARCH;?>">
+<input type="hidden" name="action" value="search_manual_info">
+</form>
+
+	    	    </td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<tr>
+<td>
+<table border="0" width="100%" cellspacing="0" cellpadding="10" >
+<tr>
+<td>
+<h2>□<?php echo $cp_manual_array['categories_name'].SHOW_MANUAL_TITLE?> </h2>
+<?php echo $cp_manual_array['c_manual']!='' ? stripslashes($cp_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
+<hr>
+<h2>□<?php echo $c_manual_array['categories_name'].SHOW_MANUAL_TITLE?></h2>
+<?php echo $c_manual_array['c_manual']!='' ? stripslashes($c_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
+<hr>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+
 <tr>
 <td align="right">
 <a href="<?php echo tep_href_link(FILENAME_ORDERS,$c_params)?>"><button><?php echo SHOW_MANUAL_RETURN;?></button></a>
