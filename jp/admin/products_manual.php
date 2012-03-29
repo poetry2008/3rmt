@@ -69,9 +69,12 @@ case 'save_products_manual':
 $cPath=$_GET['cPath'];
 $page=$_GET['page'];
 $pid=$_GET['pID'];
-$site_id=$_GET['site_id'];
+$site_id = (isset($_GET['site_id']))?$_GET['site_id']:0;
+
 if((isset($pid) && $pid!="") && (isset($site_id) && $site_id!="")){
+
 $products_manual_sql="update ".TABLE_PRODUCTS_DESCRIPTION." set p_manual='".addslashes($_POST['manual'])."' where products_id='".$pid."' and site_id='".$site_id."'";
+
 tep_db_query($products_manual_sql);
 }
 $param_str='cPath='.$cPath.'&pID='.$pid.'&site_id='.$site_id.'&page='.$page.'';
@@ -95,8 +98,7 @@ tep_redirect(tep_href_link(FILENAME_CATEGORIES, $param_str));
 
 break;
 }
- 
-
+$rand_num=time();
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html <?php echo HTML_PARAMS; ?>>
@@ -113,6 +115,10 @@ break;
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
 <script>
 $(document).ready(function(){
+	$('#elm1').xheditor({upLinkUrl:"upload.php",upLinkExt:"zip,rar,txt",upImgUrl:"upload.php?check=<?php echo $rand_num;?>",upImgExt:"jpg,jpeg,gif,png",upFlashUrl:"upload.php",upFlashExt:"swf",upMediaUrl:"upload.php",upMediaExt:"avi"});
+});
+
+$(document).ready(function(){
 var tmp_width=$(".xheLayout").attr("style");
 var start_pos=tmp_width.indexOf(":");
 var end_pos=tmp_width.indexOf(";");
@@ -120,6 +126,7 @@ var width=tmp_width.substring(start_pos+1,end_pos);
 $("#button_width").attr("width",width);
 });
 </script>
+
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onload="SetFocus();">
 <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
@@ -150,7 +157,7 @@ $("#button_width").attr("width",width);
 <table width="100%">
 
 <tr><td id="emd">
-<textarea id="emd1" class="xheditor" cols="147" rows="20" name="manual" width="765"><?php echo stripcslashes($manual_content);?></textarea>
+<textarea id="elm1" class="" cols="147" rows="20" name="manual" width="765"><?php echo stripcslashes($manual_content);?></textarea>
 
 
 <td></tr>
