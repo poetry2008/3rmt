@@ -74,7 +74,7 @@
         tep_db_perform('micro_logs',$arr);
         $arr['log_id'] = tep_db_insert_id();
         
-        if (!empty($_POST['alarm'])) {
+        if (!empty($_POST['alarm']) && preg_match('/^(\d){4}-(\d){2}-(\d){2}$/', $_POST['alarm']) && ($_POST['alarm'] != '0000-00-00')) {
           $sql_data_array = array(
               'type' => 1,
               'title' => mb_substr($_POST['content'], 0, 30, 'utf-8'),
@@ -93,25 +93,37 @@
             'level'   => $_POST['level']
           );
         if (!empty($_POST['alarm'])) {
-          $arr['alarm'] = date('Y-n-j',strtotime($_POST['alarm'])); 
+          if (preg_match('/^(\d){4}-(\d){2}-(\d){2}$/', $_POST['alarm']) && ($_POST['alarm'] != '0000-00-00')) {
+            $arr['alarm'] = date('Y-n-j',strtotime($_POST['alarm'])); 
+          }
         } else {
           $arr['alarm'] = '0000-00-00'; 
         }
         tep_db_perform('micro_logs',$arr,'update','log_id='.$_GET['id']);
        
         if (!empty($_POST['alarm'])) {
-          $notice_exists_raw = tep_db_query("select * from ".TABLE_NOTICE." where from_notice = '".$_GET['id']."' and type = '1'");  
-          if (tep_db_num_rows($notice_exists_raw) > 0) {
-            tep_db_query("update `".TABLE_NOTICE."` set `title` = '".mb_substr($_POST['content'], 0, 30, 'utf-8')."', `set_time` = '".date('Y-m-d 00:00:00', strtotime($_POST['alarm']))."' where `from_notice` = '".$_GET['id']."' and `type` = '1'"); 
+          if (preg_match('/^(\d){4}-(\d){2}-(\d){2}$/', $_POST['alarm']) && ($_POST['alarm'] != '0000-00-00')) {
+          
+            $notice_exists_raw = tep_db_query("select * from ".TABLE_NOTICE." where from_notice = '".$_GET['id']."' and type = '1'");  
+            if (tep_db_num_rows($notice_exists_raw) > 0) {
+              tep_db_query("update `".TABLE_NOTICE."` set `title` = '".mb_substr($_POST['content'], 0, 30, 'utf-8')."', `set_time` = '".date('Y-m-d 00:00:00', strtotime($_POST['alarm']))."' where `from_notice` = '".$_GET['id']."' and `type` = '1'"); 
+            } else {
+              $sql_data_array = array(
+                  'type' => 1,
+                  'title' => mb_substr($_POST['content'], 0, 30, 'utf-8'),
+                  'set_time' => $_POST['alarm'].' 00:00:00',
+                  'from_notice' => $_GET['id'],
+                  'created_at' => date('Y-m-d H:i:s', time()),
+                  );
+              tep_db_perform(TABLE_NOTICE, $sql_data_array); 
+            }
           } else {
-            $sql_data_array = array(
-                'type' => 1,
-                'title' => mb_substr($_POST['content'], 0, 30, 'utf-8'),
-                'set_time' => $_POST['alarm'].' 00:00:00',
-                'from_notice' => $_GET['id'],
-                'created_at' => date('Y-m-d H:i:s', time()),
-                );
-            tep_db_perform(TABLE_NOTICE, $sql_data_array); 
+            $notice_raw = tep_db_query("select id from ".TABLE_NOTICE." where from_notice = '".$_GET['id']."' and type = '1'"); 
+            $notice_res = tep_db_fetch_array($notice_raw);
+            if ($notice_res) {
+              tep_db_query("delete from ".TABLE_NOTICE_TO_MICRO_USER." where notice_id = '".$notice_res['id']."'"); 
+            }
+            tep_db_query("delete from ".TABLE_NOTICE." where from_notice = '".$_GET['id']."' and type = '1'"); 
           }
         } else {
           $notice_raw = tep_db_query("select id from ".TABLE_NOTICE." where from_notice = '".$_GET['id']."' and type = '1'"); 
