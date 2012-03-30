@@ -2920,7 +2920,7 @@ $categories_s_query=tep_db_query("select categories_id from ".TABLE_CATEGORIES."
 
 
 <tr>
-<td width="100%" >
+<td width="100%" height="40">
 <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr>
 	    <td class="pageHeading">
@@ -3041,7 +3041,7 @@ $search_res_arr[]=array('c_id'=>$categories_info_array['categories_id'],'c_name'
 }
 ?>
 <tr>
-<td width="100%" >
+<td width="100%" height="40">
 <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr>
 	    <td class="pageHeading">
