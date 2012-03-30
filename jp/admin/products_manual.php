@@ -23,7 +23,7 @@ $categories_s_info_query=tep_db_query("select categories_name from ".TABLE_CATEG
 $categories_s_info=tep_db_fetch_array($categories_s_info_query);
 }
 
-$products_info_query=tep_db_query("select products_name,p_manual from ".TABLE_PRODUCTS_DESCRIPTION." where products_id='".$pid."' and site_id='".$site_id."'");
+$products_info_query=tep_db_query("select products_name,p_manual from ".TABLE_PRODUCTS_DESCRIPTION." where products_id='".$pid."' and site_id='0'");
 $products_info_arr=tep_db_fetch_array($products_info_query);
 $title_char=$categories_p_info['categories_name'].'/'.$categories_s_info['categories_name'].'/'.$products_info_arr['products_name'].MANUAL_TITLE;
 $manual_content=$products_info_arr['p_manual'];
@@ -41,7 +41,8 @@ $title_char="";
 $cPath=$_GET['cPath'];
 $page=$_GET['page'];
 $cid=$_GET['cID'];
-$site_id = (isset($_GET['site_id']))?$_GET['site_id']:0;
+$site_id = (!empty($_GET['site_id']))?$_GET['site_id']:0;
+
 if(isset($_GET['cPath']) && $_GET['cPath']==''){
 $categories_s_info_query=tep_db_query("select categories_name,c_manual from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$_GET['cID']."' and site_id='".$site_id."'");
 $categories_s_info=tep_db_fetch_array($categories_s_info_query);
@@ -69,14 +70,11 @@ case 'save_products_manual':
 $cPath=$_GET['cPath'];
 $page=$_GET['page'];
 $pid=$_GET['pID'];
-$site_id = (isset($_GET['site_id']))?$_GET['site_id']:0;
+$site_id = (!empty($_GET['site_id']))?$_GET['site_id']:0;
 
-if((isset($pid) && $pid!="") && (isset($site_id) && $site_id!="")){
 
-$products_manual_sql="update ".TABLE_PRODUCTS_DESCRIPTION." set p_manual='".addslashes($_POST['manual'])."' where products_id='".$pid."' and site_id='".$site_id."'";
-
+$products_manual_sql="update ".TABLE_PRODUCTS_DESCRIPTION." set p_manual='".addslashes($_POST['manual'])."' where products_id='".(int)$pid."' and site_id='0'";
 tep_db_query($products_manual_sql);
-}
 $param_str='cPath='.$cPath.'&pID='.$pid.'&site_id='.$site_id.'&page='.$page.'';
 tep_redirect(tep_href_link(FILENAME_CATEGORIES, $param_str)); 
 
@@ -89,8 +87,9 @@ case 'save_categories_manual':
 $cPath=$_GET['cPath'];
 $page=$_GET['page'];
 $cid=$_GET['cID'];
-$site_id=$_GET['site_id'];
-$categories_manual_sql="update ".TABLE_CATEGORIES_DESCRIPTION." set c_manual='".addslashes($_POST['manual'])."' where categories_id='".$cid."' and site_id='".$site_id."'";
+$site_id=0;
+
+$categories_manual_sql="update ".TABLE_CATEGORIES_DESCRIPTION." set c_manual='".addslashes($_POST['manual'])."' where categories_id='".(int)$cid."' and site_id='".$site_id."'";
 
 tep_db_query($categories_manual_sql);
 $param_str='cPath='.$cPath.'&cID='.$cid.'&site_id='.$site_id.'&page='.$page.'';

@@ -3726,7 +3726,7 @@ tep_display_google_results(FILENAME_CATEGORIES);
                   (tep_categories_description_exist($cInfo->categories_id, $languages_id, $site['id']) 
                    ? (' <a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' .  $cPath . '&cID=' . $cInfo->categories_id .  '&action=delete_category_description&site_id='.$site['id'].($_GET['search']?'&search='.$_GET['search']:'')) .  '">'.tep_html_element_button(IMAGE_DELETE).'</a>')
                    :''
-                   ).'<a href="' . tep_href_link(FILENAME_PRODUCTS_MANUAL, 'cPath=' . $cPath . '&cID=' . $cInfo->categories_id .  '&action=show_categories_manual&site_id='.$site['id']) . '">' .  tep_html_element_button(IMAGE_MANUAL) . '</a>');
+                   ));
             }
             }
             $keyword_sql = "select m.keyword from ".TABLE_CATEGORIES_TO_MISSION." c2m,".TABLE_MISSION." m
@@ -3761,8 +3761,7 @@ tep_display_google_results(FILENAME_CATEGORIES);
                 continue; 
               }
               $contents[] = array('text' => '<b>' . $site['romaji'] . '</b>');
-              $contents[] = array('align' => 'left', 'text' => '<a href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' .  $pInfo->products_id . '&action=new_product'. '&site_id='.  $site['id'].'&page='.$_GET['page'].($_GET['search']?'&search='.$_GET['search']:''))  .'">' . tep_html_element_button(IMAGE_EDIT) . '</a>' . ( tep_products_description_exist($pInfo->products_id, $site['id'], $languages_id) ? ' <a href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' .  $pInfo->products_id .  '&action=delete_product_description&site_id='.$site['id'].'&page='.$_GET['page'].($_GET['search']?'&search='.$_GET['search']:'')) . '">' . tep_html_element_button(IMAGE_DELETE) . '</a>' : '').'<a href="' .  tep_href_link(FILENAME_PRODUCTS_MANUAL, 'cPath=' . $cPath . '&pID=' .  $pInfo->products_id . '&action=show_products_manual'. '&site_id='.
-                    $site['id'].'&page='.$_GET['page'])  .'">' . tep_html_element_button(IMAGE_MANUAL) . '</a>'  );
+              $contents[] = array('align' => 'left', 'text' => '<a href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' .  $pInfo->products_id . '&action=new_product'. '&site_id='.  $site['id'].'&page='.$_GET['page'].($_GET['search']?'&search='.$_GET['search']:''))  .'">' . tep_html_element_button(IMAGE_EDIT) . '</a>' . ( tep_products_description_exist($pInfo->products_id, $site['id'], $languages_id) ? ' <a href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' .  $pInfo->products_id .  '&action=delete_product_description&site_id='.$site['id'].'&page='.$_GET['page'].($_GET['search']?'&search='.$_GET['search']:'')) . '">' . tep_html_element_button(IMAGE_DELETE) . '</a>' : ''));
             }
             }
             //max min
