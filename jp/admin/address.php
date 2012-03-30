@@ -36,7 +36,6 @@ if(isset($action) && $action != ''){
     $address_option_value = tep_db_prepare_input($_POST['option_value']);
     $parent_option = tep_db_prepare_input($_POST['parent_option']);
     $show_title = tep_db_prepare_input($_POST['show_title']);
-    $show_title = $show_title != '' ? 1 : 0;
     //生成随即16位name
 
     

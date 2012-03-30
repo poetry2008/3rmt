@@ -163,6 +163,55 @@ foreach($_SESSION['options'] as $op_key=>$op_value){
   tep_db_free_result($address_query);
 }
 
+  $address_show_array = array(); 
+  $address_show_list_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where status='0' and show_title='1'");
+  while($address_show_list_array = tep_db_fetch_array($address_show_list_query)){
+
+    $address_show_array[$address_show_list_array['id']] = $address_show_list_array['name_flag'];
+  }
+  tep_db_free_result($address_show_list_query);
+  $address_temp_str = '';
+  foreach($_SESSION['options'] as $address_his_key=>$address_his_value){
+    
+      if(in_array($address_his_key,$address_show_array)){
+
+         $address_temp_str .= $address_his_value[1];
+      }
+  }
+  
+  $address_error = false;
+  $address_sh_his_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id='$customer_id' group by orders_id");
+  while($address_sh_his_array = tep_db_fetch_array($address_sh_his_query)){
+
+    $address_sh_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where customers_id='$customer_id' and orders_id='". $address_sh_his_array['orders_id'] ."'");
+    $add_temp_str = '';
+    while($address_sh_array = tep_db_fetch_array($address_sh_query)){
+     
+      if(in_array($address_sh_array['name'],$address_show_array)){
+
+        $add_temp_str .= $address_sh_array['value'];
+      }  
+    }
+    if($address_temp_str == $add_temp_str){
+
+      $address_error = true;
+      break;
+    }
+    tep_db_free_result($address_sh_query);
+  }
+  tep_db_free_result($address_sh_his_query);
+if($address_error == false){
+  foreach($_SESSION['options'] as $address_history_key=>$address_history_value){
+      $address_history_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where name_flag='". $address_history_key ."'");
+      $address_history_array = tep_db_fetch_array($address_history_query);
+      tep_db_free_result($address_history_query);
+      $address_history_id = $address_history_array['id'];
+      $address_history_add_query = tep_db_query("insert into ". TABLE_ADDRESS_HISTORY ." value(NULL,'$insert_id',{$customer_id},$address_history_id,'{$address_history_array['name_flag']}','$address_history_value[1]')");
+      tep_db_free_result($address_history_add_query);
+  }
+}
+
+
 
 //作所信息入库结束
   
@@ -457,7 +506,24 @@ $email_shipping_fee = '▼お届け料金　　   ：'.$shipping_fee_value.'円
 '.$email_temp;
 $email_order = str_replace($email_temp,$email_shipping_fee,$email_order);
 $email_order = str_replace($email_temp_str,$email_shipping_fee,$email_order);
+$email_address = '▼注文商品';
+//zhusuo
+$address_len_array = array();
+foreach($_SESSION['options'] as $address_value){
 
+  $address_len_array[] = strlen($address_value[0]);
+}
+$maxlen = max($address_len_array);
+$email_address_str = '▼住所情報'."\n";
+$email_address_str .= '------------------------------------------'."\n";
+foreach($_SESSION['options'] as $ad_value){
+  $ad_len = strlen($ad_value[0]);
+  $temp_str = str_repeat(' ',$maxlen-$ad_len);
+  $email_address_str .= $ad_value[0].$temp_str.'　　   ：'.$ad_value[1]."\n";
+}
+$email_address_str .= '------------------------------------------'."\n";
+$email_address_str .= $email_address;
+$email_order = str_replace($email_address,$email_address_str,$email_order);
 // 2003.03.08 Edit Japanese osCommerce
 tep_mail(tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], EMAIL_TEXT_SUBJECT, $email_order, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
   

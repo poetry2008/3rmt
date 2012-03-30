@@ -7,6 +7,9 @@
 
 require('includes/application_top.php');
 require('includes/step-by-step/new_application_top.php');
+require('includes/address_orders/AD_Option.php');
+require('includes/address_orders/AD_Option_Group.php');
+$ad_option = new AD_Option();
 
 require(DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_EDIT_ORDERS);
 
@@ -239,6 +242,22 @@ if (tep_not_null($action)) {
         break;
       }
       
+      //住所信息
+      $error_str = false;
+      $option_info_array = array(); 
+      if (!$ad_option->check()) {
+        foreach ($_POST as $p_key => $p_value) {
+          $op_single_str = substr($p_key, 0, 3);
+          if ($op_single_str == 'op_') {
+            $option_info_array[$p_key] = tep_db_prepare_input($p_value); 
+          } 
+        }
+      }else{
+        $action = 'edit';
+        $address_style = 'display: block;';
+        break;
+      } 
+      //end 
       foreach ($update_totals as $up_key => $up_total) {
         if ($up_total['class'] == 'ot_point') {
           $camp_exists_query = tep_db_query("select * from ".TABLE_CUSTOMER_TO_CAMPAIGN." where orders_id = '".$oID."' and site_id = '".$order->info['site_id']."'"); 
@@ -316,6 +335,15 @@ if (tep_not_null($action)) {
       $UpdateOrders .= " where orders_id = '" . tep_db_input($oID) . "';";
 
       tep_db_query($UpdateOrders);
+
+      //住所信息入库
+      
+      foreach($option_info_array as $ad_key=>$ad_value){
+
+        $ad_sql = "update ". TABLE_ADDRESS_ORDERS ." set value='". $ad_value ."' where name='". substr($ad_key,3) ."' and orders_id='". $oID ."'";
+        $ad_query = tep_db_query($ad_sql);
+        tep_db_free_result($ad_query);
+      } 
 
 
       orders_updated($oID);
@@ -1095,6 +1123,44 @@ $shipping_fee = $order->info['shipping_fee'] != $shipping_fee ? $shipping_fee : 
 <script language="javascript" src="includes/javascript/jquery.js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript">
+function address_show(){
+  
+  var style = $("#address_show_id").attr("style");
+  if(style == 'display: none;'){
+    $("#address_show_id").show(); 
+    $("#address_font").html("住所情報▲");
+  }else{
+
+    $("#address_show_id").hide();
+    $("#address_font").html("住所情報▼");
+  }
+}
+
+function address_list(){
+
+  var arr_list = new Array();
+<?php
+  $address_list_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."'");
+  while($address_list_array = tep_db_fetch_array($address_list_query)){
+ 
+    echo 'arr_list["'. $address_list_array['name'] .'"] = "'. $address_list_array['value'] .'";';
+
+  }
+  tep_db_free_result($address_list_query);
+?>
+  for(x in arr_list){
+    
+    var op_list = document.getElementById("op_"+x);
+    $("#op_"+x).val(arr_list[x]);
+    op_list.style.color = '#000';
+  }
+}
+
+$(document).ready(function(){            
+  address_list();
+});
+</script>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">
 <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
@@ -1209,6 +1275,21 @@ if (($action == 'edit') && ($order_exists == true)) {
     <br><br><span class="smalltext"><?php echo EDIT_ORDERS_FETCHTIME_READ;?></span>
     </td>
     </tr>
+    <!-- 住所信息 -->
+    <tr>
+    <td class="main" valign="top"><a href="javascript:void();" onclick="address_show();"><font color="blue"><b><u><span id="address_font"><?php echo TEXT_SHIPPING_ADDRESS;?></span></u></b></font></a></td>
+    <td class="main">
+    </td>
+    </tr>
+    <tr>
+    <?php
+      $address_style = isset($address_style) && $address_style != '' ? $address_style : 'display: none;'; 
+    ?>
+      <td colspan="2"><table width="100%" border="0" cellpadding="2" cellspacing="0" id="address_show_id" style="<?php echo $address_style;?>"><br> 
+    <?php
+      $ad_option->render('');
+    ?>
+    </table>
 <!--
     <tr>
     <td class="main" valign="top"><b><?php echo EDIT_ORDERS_TORI_TEXT;?></b></td>

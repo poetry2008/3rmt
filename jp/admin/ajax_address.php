@@ -49,7 +49,7 @@ if(isset($id) && $id != 0){
    $name = $address_array['name'];
    $type = $address_array['type'];
    $comment = $address_array['comment'];
-   $commnet_text = $address_array['comment'];
+   $comment_text = $address_array['comment'];
    $type_comment = $address_array['type_comment'];
    $sort = $address_array['sort'];
    $limit = $address_array['num_limit']; 
@@ -129,10 +129,10 @@ function check_option_show(value){
   var sel = '';
 
 if(!arr[value]){
-    html_str = '<tr id="o0"><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;初期選択肢</td><td width="112"></td><td><input type="text" name="option_comment[]" value=""><input type="radio" name="option_value" value="0" checked><input type="button" value="削除" onclick="check_del(\'0\');"></td></tr>';
+    html_str = '<tr id="o0"><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;初期選択肢</td><td><input type="text" name="option_comment[]" value=""><input type="radio" name="option_value" value="0" checked><input type="button" value="削除" onclick="check_del(\'0\');"></td></tr>';
     for(j=1;j<5;j++){
      
-      html_str += '<tr id="o'+j+'"><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;選択肢</td><td width="112"></td><td><input type="text" name="option_comment[]" value=""><input type="radio" name="option_value" value="'+j+'"><input type="button" value="削除" onclick="check_del('+j+');"></td></tr>';
+      html_str += '<tr id="o'+j+'"><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;選択肢</td><td><input type="text" name="option_comment[]" value=""><input type="radio" name="option_value" value="'+j+'"><input type="button" value="削除" onclick="check_del('+j+');"></td></tr>';
 
     }
     document.getElementById('num').value = 5;
@@ -142,7 +142,7 @@ if(!arr[value]){
     if(arr_set[value][0] == arr[value][x]){ sel = 'checked';
       show_title = '初期選択肢';
     
-      html_str += '<tr id="o0"><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;'+show_title+'</td><td width="112"></td><td><input type="text" name="option_comment[]" value="'+arr[value][x]+'"><input type="radio" name="option_value" value="0" '+sel+'></td></tr>';
+      html_str += '<tr id="o0"><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;'+show_title+'</td><td><input type="text" name="option_comment[]" value="'+arr[value][x]+'"><input type="radio" name="option_value" value="0" '+sel+'></td></tr>';
       i++;
       sel = '';
     }
@@ -151,7 +151,7 @@ if(!arr[value]){
     if(arr_set[value][0] == arr[value][x]){continue;}
     show_title = '選択肢';
      
-    html_str += '<tr id="o'+i+'"><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;'+show_title+'</td><td width="112"></td><td><input type="text" name="option_comment[]" value="'+arr[value][x]+'"><input type="radio" name="option_value" value="'+i+'" '+sel+'><input type="button" value="削除" onclick="check_del('+i+');"></td></tr>';
+    html_str += '<tr id="o'+i+'"><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;'+show_title+'</td><td><input type="text" name="option_comment[]" value="'+arr[value][x]+'"><input type="radio" name="option_value" value="'+i+'" '+sel+'><input type="button" value="削除" onclick="check_del('+i+');"></td></tr>';
     i++;
     sel = '';
   }
@@ -342,6 +342,7 @@ if($type == 'text'){
 
 $sort = $id == 0 ? 1000 : $sort;
 $checkbox_checked = $show_title == 1 ? ' checked' : '';
+$checkbox_checked_false = $show_title == 0 ? ' checked' : '';
 ?>
 
 <tr><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_5;?></td><td><input type="text" name="sort" value="<?php echo $sort;?>" style="text-align: right;"></td></tr>
@@ -349,7 +350,7 @@ $checkbox_checked = $show_title == 1 ? ' checked' : '';
 <?php
 if($type != 'text'){
 ?>
-<tr><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_SHOW_TITLE;?></td><td><input type="checkbox" name="show_title" value="1" style="text-align: right;"<?php echo $checkbox_checked;?>></td></tr>
+<tr><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_SHOW_TITLE;?></td><td><input type="radio" name="show_title" value="1" style="text-align: right;"<?php echo $checkbox_checked;?>>True&nbsp;<input type="radio" name="show_title" value="0" style="text-align: right;"<?php echo $checkbox_checked_false;?>>False</td></tr>
 <?php
 }
 ?>

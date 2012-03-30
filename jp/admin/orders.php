@@ -1975,7 +1975,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
           $address_title_query = tep_db_query("select * from ". TABLE_ADDRESS ." where id=".$address_array['address_id']); 
           $address_title_array = tep_db_fetch_array($address_title_query);
           echo '<tr>';
-          echo '<td class="main"><b>'. $address_title_array['name'] .':</b></td>';
+          echo '<td class="main" valign="top"><b>'. $address_title_array['name'] .':</b></td>';
           echo '<td class="main">'. $address_array['value'] .'</td>';
           echo '</tr>';
           tep_db_free_result($address_title_query);

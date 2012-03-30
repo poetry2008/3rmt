@@ -27,5 +27,5 @@ define('TABLE_REQUIRED','*必須');
 define('TABLE_TEXT','テキストボックス');
 define('TABLE_TEXTAREA','テキストエリア');
 define('TABLE_SELECT','プルダウンメニュー');
-define('TABLE_SHOW_TITLE','タイトル項目');
+define('TABLE_SHOW_TITLE','項目タイトル');
 ?>

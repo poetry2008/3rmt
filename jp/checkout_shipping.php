@@ -398,7 +398,7 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
     $address_i++;
   }
   tep_db_free_result($address_list_query);
-  $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_ORDERS ." where customers_id=". $_SESSION['customer_id'] ." group by orders_id order by orders_id desc");
+  $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id=". $_SESSION['customer_id'] ." group by orders_id order by orders_id desc");
   
    
   $address_num = 0;
@@ -407,7 +407,7 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
 
   while($address_orders_group_array = tep_db_fetch_array($address_orders_group_query)){
   
-  $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $address_orders_group_array['orders_id'] ."' order by id asc");
+  $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where orders_id='". $address_orders_group_array['orders_id'] ."' order by id asc");
 
    
   $json_str_list = '';
@@ -476,7 +476,7 @@ function address_option_list(value){
     $address_list_arr[] = $address_list_array['name_flag'];
   }
   tep_db_free_result($address_list_query);
-  $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_ORDERS ." where customers_id=". $_SESSION['customer_id'] ." group by orders_id order by orders_id desc");
+  $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id=". $_SESSION['customer_id'] ." group by orders_id order by orders_id desc");
   
    
   $address_num = 0;
@@ -485,7 +485,7 @@ function address_option_list(value){
   
   while($address_orders_group_array = tep_db_fetch_array($address_orders_group_query)){
   
-  $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $address_orders_group_array['orders_id'] ."'");
+  $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where orders_id='". $address_orders_group_array['orders_id'] ."'");
   
   while($address_orders_array = tep_db_fetch_array($address_orders_query)){
     
@@ -823,7 +823,7 @@ function session_value(){
       $checked_str_old = 'checked';
       $show_flag = 'block';
     }
- 
+    $show_flag = $show_flag == 'block' ? '' : $show_flag; 
 ?>
   <tr><td width="70%"><b><?php echo TABLE_ADDRESS_TITLE; ?></b></td></tr>
   <tr><td>

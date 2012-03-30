@@ -179,4 +179,8 @@ define('CREATE_ORDER_FETCH_TIME_TEXT', 'お届け希望時間:');
 
 define('MODULE_ORDER_TOTAL_SHIPPING_TITLE', '送料:');
 define('TEXT_SHIPPING_FEE','配送料:');
+define('TEXT_SHIPPING_ADDRESS','住所情報▼');
+define('ADDRESS_ERROR_OPTION_ITEM_TEXT_NULL','必須項目');
+define('ADDRESS_ERROR_OPTION_ITEM_TEXT_TYPE_WRONG','正しく入力してください');
+define('ADDRESS_ERROR_OPTION_ITEM_TEXT_NUM_MAX','入力可能な文字数を超えています');
 ?>
