@@ -15,13 +15,13 @@ include("includes/application_top.php");
  */
 header('Content-Type: text/html; charset=UTF-8');
 $inputName='filedata';//表单文件域name
-$attachDir='upload';//上传文件保存路径，结尾不要带/
-$dirType=1;//1:按天存入目录 2:按月存入目录 3:按扩展名存目录  建议使用按天存
+$attachDir='upload/manuals';//上传文件保存路径，结尾不要带/
+$dirType=4;//1:按天存入目录 2:按月存入目录 3:按扩展名存目录  建议使用按天存
 $maxAttachSize=2097152;//最大上传大小，默认是2M
 $upExt='txt,rar,zip,jpg,jpeg,gif,png,swf,wmv,avi,wma,mp3,mid';//上传扩展名
 $msgType=2;//返回上传参数的格式：1，只返回url，2，返回参数数组
 $immediate=isset($_GET['immediate'])?$_GET['immediate']:0;//立即上传模式，仅为演示用
-ini_set('date.timezone','Asia/Shanghai');//时区
+//ini_set('date.timezone','Asia/Shanghai');//时区
 
 $err = "";
 $msg = "''";
@@ -85,8 +85,9 @@ if($err==''){
 				case 1: $attachSubDir = 'day_'.date('ymd'); break;
 				case 2: $attachSubDir = 'month_'.date('ym'); break;
 				case 3: $attachSubDir = 'ext_'.$extension; break;
+				case 4: $attachSubDir = ''; break;
 			}
-			$attachDir = $attachDir.'/'.$attachSubDir;
+#			$attachDir = $attachDir.'/'.$attachSubDir;
 			if(!is_dir($attachDir))
 			{
 				@mkdir($attachDir, 0777);

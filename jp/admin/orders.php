@@ -2759,7 +2759,6 @@ $params="oID=".$oID."&page=".$page;
 $search_res_arr=array();
 
 
-
 if(isset($_GET['cid']) && $_GET['cid']!=""){
 $cid=$_GET['cid'];
 $p_cpath=$_GET['p_cPath'];
@@ -2782,7 +2781,15 @@ $products_query=tep_db_query("select products_id from ".TABLE_PRODUCTS_TO_CATEGO
 <td width="100%" valign="top">
 <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr>
-            <td class="pageHeading"><?php echo $search_title; ?></td>
+	    <td class="pageHeading">
+<?php
+if (isset($_GET['p_keyword'])) {
+  if ($_GET['p_keyword'] != '') {
+    echo $_GET['p_keyword'].MANUAL_SEARCH_HEAD; 
+  }
+}
+?>
+</td>
             <td align="right" class="smallText">
             <table width=""  border="0" cellspacing="1" cellpadding="0">
             <tr>
@@ -2873,7 +2880,7 @@ echo '<tr class='.$now_class.'>';
 <tr>
              <td colspan="10"><table border="0" width="100%" cellspacing="0" cellpadding="2">
                   <tr>
-                    <td class="smallText" valign="top"><?php echo $products_split->display_count($products_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_CUSTOMERS); ?></td>
+                    <td class="smallText" valign="top"><?php echo $products_split->display_count($products_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_MANUAL); ?></td>
                     <td class="smallText" align="right"><?php echo $products_split->display_links($products_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'pID'))); ?></td>
                   </tr>
 
@@ -2900,7 +2907,7 @@ echo '<tr class='.$now_class.'>';
 
 
 if(isset($_GET['cPath']) && $_GET['cPath']!=""){
-$cpath=$_GET['cPath'];
+	$cpath=$_GET['cPath'];
 $site_id=isset($_GET['site_id']) ? $_GET['site_id']:0;
 $s_cid=$_GET['s_cid'];
 $p_keyword=$_GET['p_keyword'];
@@ -2916,7 +2923,15 @@ $categories_s_query=tep_db_query("select categories_id from ".TABLE_CATEGORIES."
 <td width="100%" >
 <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr>
-            <td class="pageHeading"></td>
+	    <td class="pageHeading">
+<?php
+if (isset($_GET['p_keyword'])) {
+  if ($_GET['p_keyword'] != '') {
+    echo $_GET['p_keyword'].MANUAL_SEARCH_HEAD; 
+  }
+}
+?>
+</td>
             <td align="right" class="smallText">
             <table width=""  border="0" cellspacing="1" cellpadding="0">
             <tr>
@@ -3029,7 +3044,15 @@ $search_res_arr[]=array('c_id'=>$categories_info_array['categories_id'],'c_name'
 <td width="100%" >
 <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr>
-            <td class="pageHeading"></td>
+	    <td class="pageHeading">
+<?php
+if (isset($_GET['keyword'])) {
+  if ($_GET['keyword'] != '') {
+    echo $_GET['keyword'].MANUAL_SEARCH_HEAD; 
+  }
+}
+?>
+</td>
             <td align="right" class="smallText">
             <table width=""  border="0" cellspacing="1" cellpadding="0">
             <tr>
@@ -3057,6 +3080,7 @@ $search_res_arr[]=array('c_id'=>$categories_info_array['categories_id'],'c_name'
 <tr>
 <td>
 <?php //tep_site_filter(FILENAME_ORDERS);?>
+
 </td>
 </tr>
 </table>
@@ -3211,11 +3235,13 @@ $params="cid=".$cid."&page=".$page."&action=search_manual_info&site_id=".$site_i
 <table border="0" width="100%" cellspacing="0" cellpadding="0">
 
 <tr>
-            <td width="100%">
+            <td width="100%" height="40">
 
             <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr>
-            <td class="pageHeading" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="0"><tr><td><?php echo $cp_manual_array['categories_name'].'/'.$c_manual_array['categories_name'].'/'.$pro_manual_array['products_name'].SHOW_MANUAL_TITLE; ?></td></tr></table></td>
+	    <td class="pageHeading">
+<?php echo $cp_manual_array['categories_name'].'/'.$c_manual_array['categories_name'].'/'.$pro_manual_array['products_name'].SHOW_MANUAL_TITLE; ?>
+</td>
             <td align="right" class="smallText">
             <table width=""  border="0" cellspacing="1" cellpadding="0">
             <tr>

@@ -561,3 +561,4 @@ define('MINUTE_TEXT', '分');
 define('NOTICE_EXTEND_TITLE', '引継メモ');
 define('NOTICE_ALARM_TITLE', 'アラーム');
 define('NOTICE_DIFF_TIME_TEXT', '残り');
+define('TEXT_DISPLAY_NUMBER_OF_MANUAL', '<b>%d</b> &sim; <b>%d</b> 番目を表示 (<b>%d</b> 件のうち)');
