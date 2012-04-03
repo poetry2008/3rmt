@@ -252,7 +252,6 @@ $cPath=$_GET['cPath'];
 $page=$_GET['page'];
 $cid=$_GET['cID'];
 $site_id=0;
-
 $categories_manual_sql="update ".TABLE_CATEGORIES_DESCRIPTION." set c_manual='".addslashes($_POST['manual'])."' where categories_id='".(int)$cid."' and site_id='".$site_id."'";
 
 tep_db_query($categories_manual_sql);
@@ -261,7 +260,7 @@ $param_str=tep_get_all_get_params(array("action"))."action=show_search_manual";
 tep_redirect(tep_href_link(FILENAME_ORDERS, $param_str)); 
 }else{
 $param_str='cPath='.$cPath.'&cID='.$cid.'&site_id='.$site_id.'&page='.$page.'';
-//tep_redirect(tep_href_link(FILENAME_CATEGORIES, $param_str)); 
+tep_redirect(tep_href_link(FILENAME_CATEGORIES, $param_str)); 
 }
 }
 if(isset($_GET['pID']) && $_GET['pID']){
