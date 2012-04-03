@@ -107,7 +107,7 @@ $manual_content=$categories_s_info['c_manual'];
 $form_info='<form action="products_manual.php?cPath='.$cPath.'&action=save_categories_manual&cID='.$cid.'&site_id='.$site_id.'&page='.$page.'" method="post">';
 $param_str='cPath='.$cPath.'&cID='.$cid.'&site_id='.$site_id.'&page='.$page.'';
 $return_button='<a href="categories.php?'.$param_str.'"><input type="button" value="'.MANUAL_RETURN.'"></a>';
-
+break;
 } else if(isset($_GET['cPath']) && $_GET['cPath']!=''){
 if(isset($_GET['cID']) && $_GET['cID']){
 $categories_p_info_query=tep_db_query("select categories_name from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$_GET['cPath']."' and site_id='".$site_id."'");
@@ -117,9 +117,9 @@ $categories_s_info=tep_db_fetch_array($categories_s_info_query);
 $title_char=$categories_p_info['categories_name'].'/'.$categories_s_info['categories_name'].MANUAL_TITLE;
 $manual_content=$categories_s_info['c_manual'];
 $form_info            ='<form action="'.tep_href_link(FILENAME_PRODUCTS_MANUAL,tep_get_all_get_params(array("action"))."action=save_categories_manual").'" method="post">';
-$return_button        ='<a href="'.tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array("action"))."action=show_search_manual").'"><input type="button" value="'.MANUAL_RETURN.'"></a>';
+//$return_button        ='<a href="'.tep_href_link(FILENAME_ORDERS,tep_get_all_get_params(array("action"))."action=show_search_manual").'"><input type="button" value="'.MANUAL_RETURN.'"></a>';
 
-
+$return_button        ='<a href="'.tep_href_link(FILENAME_CATEGORIES,tep_get_all_get_params(array("action"))."action=show_search_manual").'"><input type="button" value="'.MANUAL_RETURN.'"></a>';
 //$form_info='<form action="products_manual.php?cPath='.$cPath.'&action=save_categories_manual&cID='.$cid.'&site_id='.$site_id.'&page='.$page.'" method="post">';
 //$param_str='cPath='.$cPath.'&cID='.$cid.'&site_id='.$site_id.'&page='.$page.'';
 //$return_button='<a href="categories.php?'.$param_str.'"><input type="button" value="'.MANUAL_RETURN.'"></a>';
