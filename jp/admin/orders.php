@@ -3038,7 +3038,7 @@ echo $categories_manual_array['c_manual']=='' ? "<font color='red'>".SHOW_MANUAL
 if(isset($_GET['keyword']) && $_GET['keyword']!=''){
 $keyword=$_GET['keyword'];
 $site_id=isset($_GET['site_id']) ? $_GET['site_id']:0;
-$categories_info_query=tep_db_query("select categories_id,categories_name,c_manual from ".TABLE_CATEGORIES_DESCRIPTION." where categories_name like '%".$keyword."%' and site_id='".$site_id."'");
+$categories_info_query=tep_db_query("select categories_id,categories_name,c_manual from ".TABLE_CATEGORIES_DESCRIPTION." where (categories_name like '%".$keyword."%' or c_manual like '".$keyword."') and site_id='".$site_id."'");
 while($categories_info_array=tep_db_fetch_array($categories_info_query)){
 $check_query=tep_db_query("select parent_id from ".TABLE_CATEGORIES." where categories_id='".$categories_info_array['categories_id']."'");
 $check_array=tep_db_fetch_array($check_query);
@@ -3144,7 +3144,7 @@ echo "<font color='red'>".SHOW_MANUAL_NONE."</font>";
 ?>
 
 <?php
-$products_info_sql="select products_id,products_name,p_manual from ".TABLE_PRODUCTS_DESCRIPTION." where products_name like '%".$keyword."%' and site_id='".$site_id."'";
+$products_info_sql="select products_id,products_name,p_manual from ".TABLE_PRODUCTS_DESCRIPTION." where (products_name like '%".$keyword."%' or p_manual like '".$keyword."') and site_id='".$site_id."'";
 $products_query_numrows=mysql_num_rows($products_info_query);
 $manual_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $products_info_sql, $products_query_numrows);
     $products_query = tep_db_query($products_info_sql);
