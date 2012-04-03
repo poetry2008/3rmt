@@ -2675,20 +2675,20 @@ $pID=$_GET['pID'];
 $page=$_GET['page'];
 //$site_id=isset($_GET['site_id']) ? $_GET['site_id']:0;
 
-$products_info_query=tep_db_query("select products_id,site_id from ".TABLE_ORDERS_PRODUCTS." where orders_id='".$oID."' and products_id='".$pID."'");
-$products_info_array=tep_db_fetch_array($products_info_query);
-$site_id=$products_info_array['site_id'];
-$categories_info_query=tep_db_query("select categories_id from ".TABLE_PRODUCTS_TO_CATEGORIES." where products_id='".$products_info_array['products_id']."'");
+//$products_info_query=tep_db_query("select products_id,site_id from ".TABLE_ORDERS_PRODUCTS." where orders_id='".$oID."' and products_id='".$pID."'");
+//$products_info_array=tep_db_fetch_array($products_info_query);
+$site_id=0;
+$categories_info_query=tep_db_query("select categories_id from ".TABLE_PRODUCTS_TO_CATEGORIES." where products_id='".$pID."'");
 $categories_info_array=tep_db_fetch_array($categories_info_query);
 $categories_pid_query=tep_db_query("select parent_id from ".TABLE_CATEGORIES." where categories_id='".$categories_info_array['categories_id']."'");
 $categories_pid_array=tep_db_fetch_array($categories_pid_query);
-$cp_manual_query=tep_db_query("select categories_name,c_manual from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$categories_pid_array['parent_id']."' and site_id='".$products_info_array['site_id']."'");
+$cp_manual_query=tep_db_query("select categories_name,c_manual from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$categories_pid_array['parent_id']."' and site_id='".$site_id."'");
 $cp_manual_array=tep_db_fetch_array($cp_manual_query);
 
-$c_manual_query=tep_db_query("select categories_name,c_manual from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$categories_info_array['categories_id']."' and site_id='".$products_info_array['site_id']."'");
+$c_manual_query=tep_db_query("select categories_name,c_manual from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$categories_info_array['categories_id']."' and site_id='".$site_id."'");
 $c_manual_array=tep_db_fetch_array($c_manual_query);
 
-$pro_manual_query=tep_db_query("select products_name,p_manual from ".TABLE_PRODUCTS_DESCRIPTION." where products_id='".$products_info_array['products_id']."' and site_id='".$products_info_array['site_id']."'");
+$pro_manual_query=tep_db_query("select products_name,p_manual from ".TABLE_PRODUCTS_DESCRIPTION." where products_id='".$pID."' and site_id='".$site_id."'");
 $pro_manual_array=tep_db_fetch_array($pro_manual_query);
 $params="oID=".$oID."&page=".$page;
 ?>
@@ -2696,13 +2696,13 @@ $params="oID=".$oID."&page=".$page;
 <table border="0" width="100%" cellspacing="0" cellpadding="0">
 
 <tr>
-            <td width="100%"  height="40">
+            <td width="100%" style="padding-top:10px;" valign="top">
 
             <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr>
             <td class="pageHeading"><?php echo $cp_manual_array['categories_name'].'/'.$c_manual_array['categories_name'].'/'.$pro_manual_array['products_name'].SHOW_MANUAL_TITLE; ?></td>
-            <td align="right" class="smallText">
-            <table width=""  border="0" cellspacing="1" cellpadding="0">
+            <td align="right" class="smallText" valign="top">
+            <table width="275px"  border="0" cellspacing="1" cellpadding="0">
             <tr>
             <td class="smallText" valign='top'>
 	    
@@ -2726,14 +2726,21 @@ $params="oID=".$oID."&page=".$page;
 <table border="0" width="100%" cellspacing="0" cellpadding="10">
 <tr>
 <td>
-<h2>□<?php echo $cp_manual_array['categories_name'].SHOW_MANUAL_TITLE?> </h2>
+<h2>
+□<?php echo $cp_manual_array['categories_name'].SHOW_MANUAL_TITLE?> 
+<a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=p_categories_manual')?>"><button><?php echo MANUAL_SEARCH_EDIT;?></button></a>
+</h2>
 <?php echo $cp_manual_array['c_manual']!='' ? stripslashes($cp_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
 <hr>
-<h2>□<?php echo $c_manual_array['categories_name'].SHOW_MANUAL_TITLE?></h2>
+<h2>
+□<?php echo $c_manual_array['categories_name'].SHOW_MANUAL_TITLE?>
+<a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=show_categories_manual')?>"><button><?php echo MANUAL_SEARCH_EDIT;?></button></a>
+</h2>
 <?php echo $c_manual_array['c_manual']!='' ? stripslashes($c_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
 <hr>
 <h2>
 □<?php echo $pro_manual_array['products_name'].SHOW_MANUAL_TITLE?>
+<a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=show_products_manual')?>"><button><?php echo MANUAL_SEARCH_EDIT;?></button></a>
 </h2>
 <?php echo $pro_manual_array['p_manual']!='' ? stripslashes($pro_manual_array['p_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>'?>
 <hr>
@@ -2778,7 +2785,7 @@ $products_query=tep_db_query("select products_id from ".TABLE_PRODUCTS_TO_CATEGO
 
 ?>
 <tr>
-<td width="100%" valign="top">
+<td width="100%" valign="top" style="padding-top:10px;" valign="top">
 <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr>
 	    <td class="pageHeading">
@@ -2790,8 +2797,8 @@ if (isset($_GET['p_keyword'])) {
 }
 ?>
 </td>
-            <td align="right" class="smallText">
-            <table width=""  border="0" cellspacing="1" cellpadding="0">
+            <td align="right" class="smallText" valign="top">
+            <table width="275px"  border="0" cellspacing="1" cellpadding="0">
             <tr>
             <td class="smallText" valign='top'>
 <form name="manual" action="orders.php" method="get">
@@ -2920,7 +2927,7 @@ $categories_s_query=tep_db_query("select categories_id from ".TABLE_CATEGORIES."
 
 
 <tr>
-<td width="100%" height="40">
+<td width="100%" style="padding-top:10px;" valign="top">
 <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr>
 	    <td class="pageHeading">
@@ -2932,8 +2939,8 @@ if (isset($_GET['p_keyword'])) {
 }
 ?>
 </td>
-            <td align="right" class="smallText">
-            <table width=""  border="0" cellspacing="1" cellpadding="0">
+            <td align="right" class="smallText" valign="top">
+            <table width="275px"  border="0" cellspacing="1" cellpadding="0">
             <tr>
             <td class="smallText">
 <form name="manual" action="orders.php" method="get">
@@ -3041,7 +3048,7 @@ $search_res_arr[]=array('c_id'=>$categories_info_array['categories_id'],'c_name'
 }
 ?>
 <tr>
-<td width="100%" height="40">
+<td width="100%" style="padding-top:10px;" valign="top">
 <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr>
 	    <td class="pageHeading">
@@ -3053,8 +3060,8 @@ if (isset($_GET['keyword'])) {
 }
 ?>
 </td>
-            <td align="right" class="smallText">
-            <table width=""  border="0" cellspacing="1" cellpadding="0">
+            <td align="right" class="smallText" valign="top">
+            <table width="275px"  border="0" cellspacing="1" cellpadding="0">
             <tr>
             <td class="smallText" valign='top'>
 <form name="manual" action="orders.php" method="get">
@@ -3235,15 +3242,15 @@ $params="cid=".$cid."&page=".$page."&action=search_manual_info&site_id=".$site_i
 <table border="0" width="100%" cellspacing="0" cellpadding="0">
 
 <tr>
-            <td width="100%" height="40">
+            <td width="100%" style="padding-top:10px;" valign="top">
 
             <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr>
 	    <td class="pageHeading">
 <?php echo $cp_manual_array['categories_name'].'/'.$c_manual_array['categories_name'].'/'.$pro_manual_array['products_name'].SHOW_MANUAL_TITLE; ?>
 </td>
-            <td align="right" class="smallText">
-            <table width=""  border="0" cellspacing="1" cellpadding="0">
+            <td align="right" class="smallText" valign="top">
+            <table width="275px"  border="0" cellspacing="1" cellpadding="0">
             <tr>
             <td class="smallText" >
 <form name="manual" action="orders.php" method="get">
@@ -3266,14 +3273,23 @@ $params="cid=".$cid."&page=".$page."&action=search_manual_info&site_id=".$site_i
 <table border="0" width="100%" cellspacing="0" cellpadding="10" >
 <tr>
 <td>
-<h2>□<?php echo $cp_manual_array['categories_name'].SHOW_MANUAL_TITLE?> </h2>
+<h2>
+□<?php echo $cp_manual_array['categories_name'].SHOW_MANUAL_TITLE?> 
+<a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=p_categories_manual')?>"><button><?php echo MANUAL_SEARCH_EDIT;?></button></a>
+</h2>
 <?php echo $cp_manual_array['c_manual']!='' ? stripslashes($cp_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
 <hr>
-<h2>□<?php echo $c_manual_array['categories_name'].SHOW_MANUAL_TITLE?></h2>
+<h2>
+□<?php echo $c_manual_array['categories_name'].SHOW_MANUAL_TITLE?>
+<a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=show_categories_manual')?>"><button><?php echo MANUAL_SEARCH_EDIT;?></button></a>
+</h2>
 <?php echo $c_manual_array['c_manual']!='' ? stripslashes($c_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
 <hr>
 <h2>
 □<?php echo $pro_manual_array['products_name'].SHOW_MANUAL_TITLE?>
+<a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=show_products_manual')?>"><button><?php echo MANUAL_SEARCH_EDIT;?></button></a>
+
+
 </h2>
 <?php echo $pro_manual_array['p_manual']!='' ? stripslashes($pro_manual_array['p_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>'?>
 <hr>
@@ -3292,19 +3308,15 @@ $params="cid=".$cid."&page=".$page."&action=search_manual_info&site_id=".$site_i
 <?php
 	}else if(!(isset($_GET['pID']) && $_GET['pID']!='') && (isset($_GET['cID']) && $_GET['cID']!='')){
 
-$cid=$_GET['cID'];
-$page=$_GET['site_id'];
-$s_pid=$_GET['s_pid'];
-
-
-
-
-$cpath=$_GET['cPath'];
-$site_id=isset($_GET['site_id']) ? $_GET['site_id']:0;
-$s_cid=$_GET['s_cid'];
-$p_keyword=$_GET['p_keyword'];
-$page=$_GET['page'];
-$c_params="action=search_manual_info&site_id=".$site_id."&s_cid=".$s_cid."&page=".$page."&p_keyword=".$p_keyword."&cPath=".$cPath.'&s_pid='.$s_pid;
+$cid       = $_GET['cID'];
+$page      = $_GET['site_id'];
+$s_pid     = $_GET['s_pid'];
+$cpath     = $_GET['cPath'];
+$site_id   = isset($_GET['site_id']) ? $_GET['site_id']:0;
+$s_cid     = $_GET['s_cid'];
+$p_keyword = $_GET['p_keyword'];
+$page      = $_GET['page'];
+$c_params  ="action=search_manual_info&site_id=".$site_id."&s_cid=".$s_cid."&page=".$page."&p_keyword=".$p_keyword."&cPath=".$cPath.'&s_pid='.$s_pid;
 
 
 
@@ -3320,13 +3332,13 @@ $c_manual_array=tep_db_fetch_array($c_manual_query);
 <table border="0" width="100%" cellspacing="0" cellpadding="0">
 
 <tr>
-            <td width="100%" height="40">
+            <td width="100%" style="padding-top:10px;" valign="top">
 
             <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr>
             <td class="pageHeading"><?php echo $cp_manual_array['categories_name'].'/'.$c_manual_array['categories_name'].SHOW_MANUAL_TITLE; ?></td>
-            <td align="right" class="smallText">
-            <table width=""  border="0" cellspacing="1" cellpadding="0">
+            <td align="right" class="smallText" valign="top">
+            <table width="275px"  border="0" cellspacing="1" cellpadding="0">
             <tr>
             <td class="smallText" valign='top'>
 <form name="manual" action="orders.php" method="get">
@@ -3348,10 +3360,16 @@ $c_manual_array=tep_db_fetch_array($c_manual_query);
 <table border="0" width="100%" cellspacing="0" cellpadding="10" >
 <tr>
 <td>
-<h2>□<?php echo $cp_manual_array['categories_name'].SHOW_MANUAL_TITLE?> </h2>
+<h2>
+□<?php echo $cp_manual_array['categories_name'].SHOW_MANUAL_TITLE?>
+<a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=p_categories_manual')?>"><button><?php echo MANUAL_SEARCH_EDIT;?></button></a>
+ </h2>
 <?php echo $cp_manual_array['c_manual']!='' ? stripslashes($cp_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
 <hr>
-<h2>□<?php echo $c_manual_array['categories_name'].SHOW_MANUAL_TITLE?></h2>
+<h2>
+□<?php echo $c_manual_array['categories_name'].SHOW_MANUAL_TITLE?>
+<a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=show_categories_manual')?>"><button><?php echo MANUAL_SEARCH_EDIT;?></button></a>
+</h2>
 <?php echo $c_manual_array['c_manual']!='' ? stripslashes($c_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
 <hr>
 </td>
@@ -3369,92 +3387,7 @@ $c_manual_array=tep_db_fetch_array($c_manual_query);
 </table>
 </td>
 <?php
-	}else if(!(isset($_GET['pID']) && $_GET['pID']!='') && (isset($_GET['cID']) && $_GET['cID']!='')){
-
-
-
-
-
-
-$cid=$_GET['cID'];
-$page=$_GET['site_id'];
-$s_pid=$_GET['s_pid'];
-
-
-
-
-$cpath=$_GET['cPath'];
-$site_id=isset($_GET['site_id']) ? $_GET['site_id']:0;
-$s_cid=$_GET['s_cid'];
-$p_keyword=$_GET['p_keyword'];
-$page=$_GET['page'];
-$c_params="action=search_manual_info&site_id=".$site_id."&s_cid=".$s_cid."&page=".$page."&p_keyword=".$p_keyword."&cPath=".$cPath.'&s_pid='.$s_pid;
-
-
-
-
-	$categories_pid_query=tep_db_query("select parent_id from ".TABLE_CATEGORIES." where categories_id='".$cid."'");
-$categories_pid_array=tep_db_fetch_array($categories_pid_query);
-$cp_manual_query=tep_db_query("select categories_name,c_manual from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$categories_pid_array['parent_id']."' and site_id='".$site_id."'");
-$cp_manual_array=tep_db_fetch_array($cp_manual_query);
-
-$c_manual_query=tep_db_query("select categories_name,c_manual from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$cid."' and site_id='".$site_id."'");
-$c_manual_array=tep_db_fetch_array($c_manual_query);
-$params="cPath=".$cPath."&page=".$page.'&action=search_manual_info&s_pid='.$s_pid.'&site_id='.$site_id;
-?>
-<td width="100%" valign="top" id ='categories_right_td'>
-<table border="0" width="100%" cellspacing="0" cellpadding="0">
-
-<tr>
-            <td width="100%" height="40">
-
-            <table border="0" width="100%" cellspacing="0" cellpadding="0">
-            <tr>
-            <td class="pageHeading"><?php echo $cp_manual_array['categories_name'].'/'.$c_manual_array['categories_name'].SHOW_MANUAL_TITLE; ?></td>
-            <td align="right" class="smallText">
-            <table width=""  border="0" cellspacing="1" cellpadding="0">
-            <tr>
-            <td class="smallText" valign='top'>
-<form name="manual" action="orders.php" method="get">
-<input name="keyword" style="width:200px;" type="text" id="keyword" size="40" value="">
-<input type="submit"  onclick="return check_manual_search_form();" value="<?php echo SHOW_MANUAL_SEARCH;?>">
-<input type="hidden" name="action" value="search_manual_info">
-</form>
-
-	    	    </td>
-</tr>
-</table>
-</td>
-</tr>
-</table>
-</td>
-</tr>
-<tr>
-<td>
-<table border="0" width="100%" cellspacing="0" cellpadding="10" >
-<tr>
-<td>
-<h2>□<?php echo $cp_manual_array['categories_name'].SHOW_MANUAL_TITLE?> </h2>
-<?php echo $cp_manual_array['c_manual']!='' ? stripslashes($cp_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
-<hr>
-<h2>□<?php echo $c_manual_array['categories_name'].SHOW_MANUAL_TITLE?></h2>
-<?php echo $c_manual_array['c_manual']!='' ? stripslashes($c_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
-<hr>
-</td>
-</tr>
-</table>
-</td>
-</tr>
-<tr>
-<td align="right">
-<a href="<?php echo tep_href_link(FILENAME_ORDERS,$c_params)?>"><button><?php echo SHOW_MANUAL_RETURN;?></button></a>
-
-</td>
-</tr>
-</table>
-</td>
-<?php
-	}else if(!(isset($_GET['pID']) && $_GET['pID']!='') && !(isset($_GET['cID']) && $_GET['cID']!='') && (isset($_GET['cPath']) && $_GET['cPath']!='')){
+		}else if(!(isset($_GET['pID']) && $_GET['pID']!='') && !(isset($_GET['cID']) && $_GET['cID']!='') && (isset($_GET['cPath']) && $_GET['cPath']!='')){
 $cpath=$_GET['cPath'];
 $keyword=$_GET['keyword'];
 $s_pid=$_GET['s_pid'];
@@ -3468,13 +3401,13 @@ $params="keyword=".$keyword."&action=search_manual_info&site_id=".$site_id."&s_p
 <table border="0" width="100%" cellspacing="0" cellpadding="0">
 
 <tr>
-            <td width="100%" height="40">
+            <td width="100%" style="padding-top:10px;" valign="top">
 
             <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr>
             <td class="pageHeading"><?php echo $cp_manual_array['categories_name'].SHOW_MANUAL_TITLE; ?></td>
-            <td align="right" class="smallText">
-            <table width=""  border="0" cellspacing="1" cellpadding="0">
+            <td align="right" class="smallText" valign="top">
+            <table width="275px"  border="0" cellspacing="1" cellpadding="0">
             <tr>
             <td class="smallText" valign='top'>
 <form name="manual" action="orders.php" method="get">
@@ -3496,7 +3429,11 @@ $params="keyword=".$keyword."&action=search_manual_info&site_id=".$site_id."&s_p
 <table border="0" width="100%" cellspacing="0" cellpadding="10" >
 <tr>
 <td>
-<h2>□<?php echo $cp_manual_array['categories_name'].SHOW_MANUAL_TITLE?> </h2>
+<h2>
+□<?php echo $cp_manual_array['categories_name'].SHOW_MANUAL_TITLE?>
+<a href="<?php echo tep_href_link(FILENAME_PRODUCTS_MANUAL, tep_get_all_get_params(array('action')).'action=p_categories_manual')?>"><button><?php echo MANUAL_SEARCH_EDIT;?></button></a>
+
+ </h2>
 <?php echo $cp_manual_array['c_manual']!='' ? stripslashes($cp_manual_array['c_manual']) : '<font color="red">'.SHOW_MANUAL_NONE.'</font>';?>
 <hr>
 </td>

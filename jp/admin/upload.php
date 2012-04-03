@@ -1,26 +1,13 @@
 <?php
 include("includes/application_top.php");
-/*!
- * upload demo for php
- * @requires xhEditor
- * 
- * @author Yanis.Wang<yanis.wang@gmail.com>
- * @site http://xheditor.com/
- * @licence LGPL(http://www.opensource.org/licenses/lgpl-license.php)
- * 
- * @Version: 0.9.6 (build 111027)
- * 
- * 注1：本程序仅为演示用，请您务必根据自己需求进行相应修改，或者重开发
- * 注2：本程序特别针对HTML5上传，加入了特殊处理
- */
 header('Content-Type: text/html; charset=UTF-8');
-$inputName='filedata';//表单文件域name
-$attachDir='upload/manuals';//上传文件保存路径，结尾不要带/
-$dirType=4;//1:按天存入目录 2:按月存入目录 3:按扩展名存目录  建议使用按天存
-$maxAttachSize=2097152;//最大上传大小，默认是2M
-$upExt='txt,rar,zip,jpg,jpeg,gif,png,swf,wmv,avi,wma,mp3,mid';//上传扩展名
-$msgType=2;//返回上传参数的格式：1，只返回url，2，返回参数数组
-$immediate=isset($_GET['immediate'])?$_GET['immediate']:0;//立即上传模式，仅为演示用
+$inputName='filedata';
+$attachDir='upload/manuals';
+$dirType=4;
+$maxAttachSize=2097152;
+$upExt='txt,rar,zip,jpg,jpeg,gif,png,swf,wmv,avi,wma,mp3,mid';
+$msgType=2;
+$immediate=isset($_GET['immediate'])?$_GET['immediate']:0;
 //ini_set('date.timezone','Asia/Shanghai');//时区
 
 $err = "";
@@ -28,11 +15,11 @@ $msg = "''";
 $tempPath=$attachDir.'/'.date("YmdHis").mt_rand(10000,99999).'.tmp';
 $localName='';
 
-if(isset($_SERVER['HTTP_CONTENT_DISPOSITION'])&&preg_match('/attachment;\s+name="(.+?)";\s+filename="(.+?)"/i',$_SERVER['HTTP_CONTENT_DISPOSITION'],$info)){//HTML5上传
+if(isset($_SERVER['HTTP_CONTENT_DISPOSITION'])&&preg_match('/attachment;\s+name="(.+?)";\s+filename="(.+?)"/i',$_SERVER['HTTP_CONTENT_DISPOSITION'],$info)){
 	file_put_contents($tempPath,file_get_contents("php://input"));
 	$localName=urldecode($info[2]);
 }
-else{//标准表单式上传
+else{
 	$upfile=@$_FILES[$inputName];
 	if(!isset($upfile))$err='文件域的name错误';
 	elseif(!empty($upfile['error'])){
@@ -102,7 +89,7 @@ if($err==''){
 			$targetPath=jsonString($targetPath);
 			if($immediate=='1')$targetPath='!'.$targetPath;
 			if($msgType==1)$msg="'$targetPath'";
-			else $msg="{'url':'".$targetPath."','localname':'".jsonString($localName)."','id':'1'}";//id参数固定不变，仅供演示，实际项目中可以是数据库ID
+			else $msg="{'url':'".$targetPath."','localname':'".jsonString($localName)."','id':'1'}";
 		}
 	}
 	else $err='上传文件扩展名必需为：'.$upExt;

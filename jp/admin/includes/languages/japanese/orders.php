@@ -208,4 +208,6 @@ define('SEARCH_CAT_PRO_TITLE','カテゴリー / 商品');
 define('SEARCH_MANUAL_CONTENT','マニュアル');
 define('SEARCH_MANUAL_LOOK','操作');
 define('MANUAL_SEARCH_HEAD', 'の検索結果');
+define('MANUAL_SEARCH_EDIT', '編集');
+
 ?>
