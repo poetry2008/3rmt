@@ -209,5 +209,5 @@ define('SEARCH_MANUAL_CONTENT','マニュアル');
 define('SEARCH_MANUAL_LOOK','操作');
 define('MANUAL_SEARCH_HEAD', 'の検索結果');
 define('MANUAL_SEARCH_EDIT', '編集');
-
+define('MANUAL_SEARCH_NORES','現在マニュアルは登録されていません... ');
 ?>
