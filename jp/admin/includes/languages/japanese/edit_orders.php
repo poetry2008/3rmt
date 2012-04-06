@@ -122,6 +122,7 @@ define('SELECT_STEP_TWO', 'STEP 2:');
 define('SELECT_STEP_THREE', 'STEP 3:');
 define('SELECT_STEP_FOUR', 'STEP 4:');
 define('TEXT_CODE_HANDLE_FEE', '手数料:');
+define('TEXT_CODE_SHIPPING_FEE', '配送料:');
 define('EDIT_ORDERS_UPDATE_NOTICE', '変更したい内容を慎重に入力してください。<b>空白などの余分な文字が入力されていないかチェックするように！</b>');
 define('EDIT_ORDERS_ID_TEXT', '注文番号:');
 define('EDIT_ORDERS_DATE_TEXT', '注文日:');
@@ -183,4 +184,6 @@ define('TEXT_SHIPPING_ADDRESS','住所情報▼');
 define('ADDRESS_ERROR_OPTION_ITEM_TEXT_NULL','必須項目');
 define('ADDRESS_ERROR_OPTION_ITEM_TEXT_TYPE_WRONG','正しく入力してください');
 define('ADDRESS_ERROR_OPTION_ITEM_TEXT_NUM_MAX','入力可能な文字数を超えています');
+define('ADDRESS_ERROR_OPTION_ITEM_TEXT_NUM_MIN','は少なくても');
+define('ADDRESS_ERROR_OPTION_ITEM_TEXT_NUM_MIN_1','文字以上必要です');
 ?>

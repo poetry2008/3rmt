@@ -41,39 +41,23 @@ function selectDate(start_time,end_time){
 	}
 	hour = (hour < 10)? 10 : hour;
         */
-        
-        var array_start_time = new Array();
-        var array_start_time_str = new Array();
-        array_start = start_time.split(','); 
-        for(x in array_start){
-        
-          array_start_str = array_start[x].split(':');
-          array_start_time[x] = array_start_str[0];
-          array_start_time_str[x] = array_start[x];
-        }
-
-        var array_end_time = new Array();
-        var array_end_time_str = new Array();
-        array_end = end_time.split(','); 
-        for(x in array_end){
-        
-          array_end_str = array_end[x].split(':');
-          array_end_time[x] = array_end_str[0];
-          array_end_time_str[x] = array_end[x];
-        }
+       
+        var array_start = Array();
+        array_start = start_time.split('||'); 
 
         //new
         html_str = '<table width="100%" border="0" cellspacing="2" cellpadding="2"><tr>';
         for(j=0;j<24;j++){
-          for(x in array_start_time){
+          flag = false;
+          for(x in array_start){
           
-            if(array_start_time[x] == j){
-            
-              hour_start = parseInt(array_start_time[x]);
-              hour_end = parseInt(array_end_time[x]);
+            if(array_start[x] == j){
+           
+              flag = true;
+              break;
             }
           } 
-          if(j >= hour_start && j <= hour_end){
+          if(flag == true){
             html_str += '<td id="hour'+j+'" bgcolor="#ccc" style="color:#000;cursor:pointer;" align="center" onclick="this.style.background=\'#F5F9FC\';selectHour(\''+start_time+'\',\''+end_time+'\','+j+');">'+j+'</td>';
           }else{
             html_str += '<td id="hour'+j+'" bgcolor="#f1f0ef" style="color:#ccc;" align="center">'+j+'</td>';
@@ -110,43 +94,23 @@ function selectDate(start_time,end_time){
 /*                            分セレクトボックス                               /
 /******************************************************************************/
 function selectHour(start_time,end_time,hour,min_num){
-
-        var array_start_time = new Array();
-        var array_start_time_str = new Array();
-        var array_start_min = new Array();
-        array_start = start_time.split(','); 
-        for(x in array_start){
         
-          array_start_str = array_start[x].split(':');
-          array_start_time[x] = array_start_str[0];
-          array_start_min[x] = array_start_str[1];
-          array_start_time_str[x] = array_start[x];
-        }
-
-        var array_end_time = new Array();
-        var array_end_time_str = new Array();
-        var array_end_min = new Array();
-        array_end = end_time.split(','); 
-        for(x in array_end){
-        
-          array_end_str = array_end[x].split(':');
-          array_end_time[x] = array_end_str[0];
-          array_end_min[x] = array_end_str[1];
-          array_end_time_str[x] = array_end[x];
-        }
+        var array_start = new Array();
+        array_start = start_time.split('||'); 
+        var array_end = new Array();
+        array_end = end_time.split('||');
          
         //整数化
 
         for(h = 0;h < 24;h++){
-          for(x in array_start_time){
+          flag = false;
+          for(x in array_start){
           
-            if(array_start_time[x] == h){
-            
-              hour_start = parseInt(array_start_time[x]);
-              hour_end = parseInt(array_end_time[x]);
+            if(array_start[x] == h){
+              flag = true; 
             }
           } 
-          if((h >= hour_start && h <= hour_end) && h != hour){
+          if(flag == true && h != hour){
               $("#hour"+h).css("background-color","#ccc"); 
           }
         }
@@ -157,25 +121,55 @@ function selectHour(start_time,end_time,hour,min_num){
         
 
         var string = '';
-        var min_num = 0;
         var start_hour_num = '';
         var start_min_num = '';
         var end_hour_num = '';
         var end_min_num = '';
-        for(n in array_start_time){
+        for(n in array_start){
           
-            if(hour >= array_start_time[n] && hour <= array_end_time[n]){
+            if(hour == array_start[n]){
             
-              string =  array_start_time[n]+'時'+array_start_min[n]+'分～'+array_end_time[n]+'時'+array_end_min[n]+'分';
-              min_num = n;
-              start_hour_num = array_start_time[n];
-              start_min_num = array_start_min[n];
-              end_hour_num = array_end_time[n];
-              end_min_num = array_end_min[n];
+              arr_time_d = array_end[n].split('|');
+              for(m in arr_time_d){
+                arr_time_t = arr_time_d[m].split(',');
+                if(m == 0){
+                    checked = ' checked';
+                    arr_time_temp_1 = arr_time_t[0].split(':');
+                    arr_time_temp_2 = arr_time_t[1].split(':');
+                    start_hour_num = arr_time_temp_1[0];
+                    start_min_num = arr_time_temp_1[1];
+                    end_hour_num = arr_time_temp_2[0];
+                    end_min_num = arr_time_temp_2[1];
+                }else{
+                    if(min_num != '' && min_num == m){
+                      checked = ' checked';
+                      arr_time_temp_1 = arr_time_t[0].split(':');
+                      arr_time_temp_2 = arr_time_t[1].split(':');
+                      start_hour_num = arr_time_temp_1[0];
+                      start_min_num = arr_time_temp_1[1];
+                      end_hour_num = arr_time_temp_2[0];
+                      end_min_num = arr_time_temp_2[1];
+                    }else{
+                       
+                      checked = ''; 
+                    }
+                }
+                for(k in arr_time_t){
+                
+                  arr_time_m = arr_time_t[k].split(':');
+             
+                  if(k != arr_time_t.length-1){
+                    string +=  '<input type="radio" id="m'+m+'" name="min" value="'+m+'"'+checked+' onclick="change_time('+m+',\''+array_end[n]+'\');">'+arr_time_m[0]+'時'+arr_time_m[1]+'分～';
+                  }else{
+                    string +=  arr_time_m[0]+'時'+arr_time_m[1]+'分'; 
+                  }
+                }
+                string += '<br>';
+              }
             }
         }
          
-          html_str += '<td><input type="hidden" name="start_hour" value="'+start_hour_num+'"><input type="hidden" name="start_min" value="'+start_min_num+'"><input type="hidden" name="end_hour" value="'+end_hour_num+'"><input type="hidden" name="end_min" value="'+end_min_num+'"><input type="radio" name="min" value="'+array_start_min[min_num]+'" checked><font size="2">'+string+'</font></td>';
+          html_str += '<td><input type="hidden" id="start_hour" name="start_hour" value="'+start_hour_num+'"><input type="hidden" id="start_min" name="start_min" value="'+start_min_num+'"><input type="hidden" id="end_hour"name="end_hour" value="'+end_hour_num+'"><input type="hidden" id="end_min" name="end_min" value="'+end_min_num+'"><font size="2">'+string+'</font></td>';
           
 
           html_str += '</tr><tr></table>'; 
@@ -183,7 +177,6 @@ function selectHour(start_time,end_time,hour,min_num){
         $("#shipping_list_show_min").html('');
         $("#shipping_list_show_min").html(html_str);
         $("#shipping_list_min").show();
-        
  
 	//'セレクトボックス値作成
         /*
@@ -205,3 +198,25 @@ function selectHour(start_time,end_time,hour,min_num){
         */
 }
 
+
+function change_time(value,end_time){
+              var start_hour_num = new Array();
+              var start_min_num = new Array();
+              arr_time_d = end_time.split('|');
+              for(m in arr_time_d){
+                 if(m == value){
+                    arr_time_t = arr_time_d[m].split(',');
+                    for(x in arr_time_t){
+                      arr_time_temp = arr_time_t[x].split(':');
+                      if(x == 0){
+                        document.getElementById("start_hour").value = arr_time_temp[0];  
+                        document.getElementById("start_min").value = arr_time_temp[1];
+                      }
+                      if(x == 1){
+                        document.getElementById("end_hour").value = arr_time_temp[0];  
+                        document.getElementById("end_min").value = arr_time_temp[1];
+                      }
+                    }
+                }
+              }
+}

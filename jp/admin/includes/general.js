@@ -21,6 +21,9 @@ function SetFocus() {
 
 
 function submitChk() { 
+  var date_orders = document.getElementById("date_orders");
+  var date_order = document.getElementById("date_order");
+  date_order.value = date_orders.value;
   /* 確認ダイアログ表示 */ 
   var flag = confirm ( "確認はしましたか？\n\n【 重要 】価格構成要素を変更した場合は、先に「注文内容確認」ボタンを押す必要があります。\n\n戻る場合は [キャンセル] ボタンをクリックしてください。"); 
   /* send_flg が TRUEなら送信、FALSEなら送信しない */ 
@@ -1280,30 +1283,76 @@ function show_text_products(id,ele,sort,flag){
 function hide_text(){
 
         $("div#show").hide();
+        window.location.reload();
+        
 }
 
 function check(action){
-  var tform = document.getElementById('addressform');
-  tform.action="address.php?action="+action;
-  tform.submit();
+  var options = {
+    url: 'address.php?action='+action,
+    type:  'POST',
+    success: function() {
+      if(action == 'save'){
+        alert('保存成功');
+      }else{
+        alert('削除成功');
+        window.location.reload();
+      }
+    }
+  };
+  $('#addressform').ajaxSubmit(options);
+  return false; 
 }
 
 function check_fee(action){
-  var tform = document.getElementById('country_fee_form');
-  tform.action="country_fee.php?action="+action;
-  tform.submit();
+  var options = {
+    url: 'country_fee.php?action='+action,
+    type:  'POST',
+    success: function() {
+      if(action == 'save'){
+        alert('保存成功');
+      }else{
+        alert('削除成功');
+        window.location.reload();
+      }
+    }
+  };
+  $('#country_fee_form').ajaxSubmit(options);
+  return false; 
 }
 
 function check_area(action){
-  var tform = document.getElementById('country_area_form');
-  tform.action="country_area.php?action="+action;
-  tform.submit();
+  var options = {
+    url: 'country_area.php?action='+action,
+    type:  'POST',
+    success: function() {
+      if(action == 'save'){
+        alert('保存成功');
+      }else{
+        alert('削除成功');
+        window.location.reload();
+      }
+    }
+  };
+  $('#country_area_form').ajaxSubmit(options);
+  return false;
 }
 
 function check_products(action){
-  var tform = document.getElementById('products_form');
-  tform.action="products_shipping_time.php?action="+action;
-  tform.submit();
+  var options = {
+    url: 'products_shipping_time.php?action='+action,
+    type:  'POST',
+    success: function() {
+      if(action == 'save'){
+        alert('保存成功');
+      }else{
+        alert('削除成功');
+        window.location.reload();
+      }
+    }
+  };
+  $('#products_form').ajaxSubmit(options);
+  return false;
 }
 
 function check_on(action,id){

@@ -1969,7 +1969,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
             <td class="main">&nbsp;</td>
             </tr>
             <?php
-        $address_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."'");
+        $address_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' order by id");
         while($address_array = tep_db_fetch_array($address_query)){
 
           $address_title_query = tep_db_query("select * from ". TABLE_ADDRESS ." where id=".$address_array['address_id']); 

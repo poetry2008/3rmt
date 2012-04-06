@@ -1,9 +1,6 @@
 <?php
 require_once('includes/application_top.php');
 require_once('includes/step-by-step/new_application_top.php');
-require_once('includes/address/AD_Option.php');
-require_once('includes/address/AD_Option_Group.php');
-$hm_option = new AD_Option();
 if(isset($_SESSION['payment_bank_info'])){
   unset($_SESSION['payment_bank_info']); 
 }

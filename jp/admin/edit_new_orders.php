@@ -16,6 +16,9 @@ $currencies = new currencies(2);
 $payment_bank_info = $_SESSION['payment_bank_info'];
 
 include(DIR_WS_CLASSES . 'order.php');
+require_once('includes/address/AD_Option.php');
+require_once('includes/address/AD_Option_Group.php');
+$ad_option = new AD_Option();
 //error_reporting(E_ALL);
 //ini_set("display_errors","On");
 // Optional Tax Rates, e.g. shipping tax of 17.5% is "17.5"
@@ -81,7 +84,109 @@ if (tep_not_null($action)) {
   $payment_modules = payment::getInstance($order->info['site_id']);
   switch ($action) {
     // 1. UPDATE ORDER ###############################################################################################
-    case 'update_order':
+      case 'update_order':
+      
+      $options_info_array = array(); 
+      if (!$ad_option->check()) {
+        foreach ($_POST as $p_key => $p_value) {
+          $op_single_str = substr($p_key, 0, 3);
+          if ($op_single_str == 'ad_') {
+            $options_info_array[$p_key] = $p_value; 
+          } 
+        }
+      }else{
+        $address_style = 'display: block;';
+        $action = 'edit';
+        break;
+      }
+      
+      $products_weight_total = 0; //商品总重量
+      $products_money_total = 0; //商品总价
+      $cart_shipping_time = array(); //商品取引时间
+      $products_address_query = tep_db_query("select * from ". TABLE_ORDERS_PRODUCTS ." where orders_id='". tep_db_input($oID) ."'");
+      while($products_address_array = tep_db_fetch_array($products_address_query)){
+
+        $products_weight_query = tep_db_query("select * from ". TABLE_PRODUCTS ." where products_id='". $products_address_array['products_id'] ."'");
+        $products_weight_array = tep_db_fetch_array($products_weight_query);
+                
+        $cart_shipping_time[] = $products_weight_array['products_shipping_time'];
+        $products_weight_total += $products_weight_array['products_weight']*$products_address_array['products_quantity'];
+        $products_money_total += $products_address_array['final_price']*$products_address_array['products_quantity'];
+        tep_db_free_result($products_weight_query);
+      }
+      tep_db_free_result($products_address_query);
+      // start
+     //计算配送费用 
+    $weight = $products_weight_total;
+ 
+   foreach($options_info_array  as $op_value){
+     $address_query = tep_db_query("select * from ". TABLE_COUNTRY_AREA ." where name='". $op_value ."'");
+     $address_num = tep_db_num_rows($address_query);
+  
+     $country_query = tep_db_query("select * from ". TABLE_COUNTRY_FEE ." where name='". $op_value ."'");
+     $address_country_num = tep_db_num_rows($country_query);
+
+
+  if($address_num > 0){
+    $address_array = tep_db_fetch_array($address_query);
+    tep_db_free_result($address_query);
+    $address_free_value = $address_array['free_value'];
+    $address_weight_fee_array = unserialize($address_array['weight_fee']);
+
+  //根据重量来获取相应的配送费用
+  foreach($address_weight_fee_array as $key=>$value){
+    
+    if(strpos($key,'-') > 0){
+
+      $temp_array = explode('-',$key);
+      $address_weight_fee = $weight >= $temp_array[0] && $weight <= $temp_array[1] ? $value : 0; 
+    }else{
+  
+      $address_weight_fee = $weight <= $key ? $value : 0;
+    }
+
+    if($address_weight_fee > 0){
+
+      break;
+    }
+  }
+  }else{
+    if($address_country_num > 0){
+    $country_array = tep_db_fetch_array($country_query);
+    tep_db_free_result($country_query);
+    $country_free_value = $country_array['free_value'];
+    $country_weight_fee_array = unserialize($country_array['weight_fee']);
+
+  //根据重量来获取相应的配送费用
+  foreach($country_weight_fee_array as $key=>$value){
+    
+    if(strpos($key,'-') > 0){
+
+      $temp_array = explode('-',$key);
+      $country_weight_fee = $weight >= $temp_array[0] && $weight <= $temp_array[1] ? $value : 0; 
+    }else{
+  
+      $country_weight_fee = $weight <= $key ? $value : 0;
+    }
+
+    if($country_weight_fee > 0){
+
+      break;
+    }
+  }
+  }
+ }
+
+}
+
+  $shipping_money_total = $products_money_total;
+  $weight_fee = $address_weight_fee != '' ? $address_weight_fee : $country_weight_fee;
+
+  $free_value = $address_free_value != '' ? $address_free_value : $country_free_value;
+
+  $shipping_fee = $shipping_money_total > $free_value ? 0 : $weight_fee;
+              // end
+
       //更新订单
 
       $oID = tep_db_prepare_input($_GET['oID']);
@@ -176,6 +281,9 @@ if (tep_not_null($action)) {
         delivery_country = '" . tep_db_input(stripslashes($update_delivery_country)) . "',
         payment_method = '" . payment::changeRomaji(tep_db_input($_POST['payment_method']),'title' ). "',
         torihiki_houhou = '" . tep_db_input($update_tori_torihiki_houhou) . "',
+        torihiki_date = '" . tep_db_input($_POST['date_orders'].' '.$_POST['start_hour'].':'.$_POST['start_min'].':00') . "',
+        torihiki_date_end = '" . tep_db_input($_POST['date_orders'].' '.$_POST['end_hour'].':'.$_POST['end_min'].':00') . "',
+        shipping_fee = '" . tep_db_input($shipping_fee) . "',
         cc_type = '" . tep_db_input($update_info_cc_type) . "',
         cc_owner = '" . tep_db_input($update_info_cc_owner) . "',";
 
@@ -189,9 +297,9 @@ if (tep_not_null($action)) {
         $UpdateOrders .= ", comments = '" . tep_db_input($comments) . "'";
       }
       $UpdateOrders .= " where orders_id = '" . tep_db_input($oID) . "';";
+       
 
-      tep_db_query($UpdateOrders);
-
+      tep_db_query($UpdateOrders); 
 
       orders_updated($oID);
 
@@ -199,6 +307,35 @@ if (tep_not_null($action)) {
 
       $check_status_query = tep_db_query("select customers_id, customers_name, customers_email_address, orders_status, date_purchased from " . TABLE_ORDERS . " where orders_id = '" . tep_db_input($oID) . "'");
       $check_status = tep_db_fetch_array($check_status_query);
+
+      //作所信息入库开始
+      $address_num_query = tep_db_query("select count(*) as count_num from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."'"); 
+      $address_num_array = tep_db_fetch_array($address_num_query);
+
+      if($address_num_array['count_num'] > 0){
+        foreach($options_info_array as $op_key=>$op_value){
+        
+        $address_options_query = tep_db_query("select * from ". TABLE_ADDRESS ." where name_flag='". substr($op_key,3) ."'");
+        $address_options_array = tep_db_fetch_array($address_options_query);
+        tep_db_free_result($address_options_query);
+        $op_value = $op_value == $address_options_array['comment'] ? '' : $op_value;
+        $address_query = tep_db_query("update ". TABLE_ADDRESS_ORDERS ." set value='".$op_value."' where name='".substr($op_key,3)."' and orders_id='".$oID."'");
+        tep_db_free_result($address_query);
+      }   
+      }else{
+
+      foreach($options_info_array as $op_key=>$op_value){
+  
+        $address_options_query = tep_db_query("select * from ". TABLE_ADDRESS ." where name_flag='". substr($op_key,3) ."'");
+        $address_options_array = tep_db_fetch_array($address_options_query);
+        tep_db_free_result($address_options_query);
+        $op_value = $op_value == $address_options_array['comment'] ? '' : $op_value;
+        $address_query = tep_db_query("insert into ". TABLE_ADDRESS_ORDERS ." values(NULL,'$oID',{$check_status['customers_id']},{$address_options_array['id']},'{$address_options_array['name_flag']}','$op_value')");
+        tep_db_free_result($address_query);
+      }
+    }
+
+     //作所信息入库结束
 
       // fin mise ・jour
       // 1.3 UPDATE PRODUCTS #####
@@ -487,7 +624,7 @@ if (tep_not_null($action)) {
       $handle_fee = $payment_modules->handle_calc_fee(
           payment::changeRomaji($order->info['payment_method'],PAYMENT_RETURN_TYPE_CODE), $newtotal);
 
-      $newtotal = $newtotal+$handle_fee;
+      $newtotal = $newtotal+$handle_fee+$shipping_fee;
 
       /*
          , text = '<b>" . $currencies->ot_total_format(intval(floor($newtotal)), true, $order->info['currency']) . "</b>'
@@ -612,8 +749,9 @@ if (tep_not_null($action)) {
 
             $mailoption['TORIHIKIHOUHOU']   =  $order->tori['houhou'];      //?
             $mailoption['ORDER_PAYMENT']    = $order->info['payment_method'] ;  //d
-            $trade_time = date('Y年m月d日H時i分', strtotime($order->tori['date'])); 
-            $mailoption['ORDER_TTIME']      = $trade_time . '　（24時間表記）';//d
+            $trade_time = date('Y年m月d日H時i分', strtotime($_POST['date_orders'].' '.$_POST['start_hour'].':'.$_POST['start_min'].':00')); 
+            $trade_time_1 = date('H時i分',strtotime($_POST['date_orders'].' '.$_POST['end_hour'].':'.$_POST['end_min'].':00'));
+            $mailoption['ORDER_TTIME']      = $trade_time . '～' . $trade_time_1 .'　（24時間表記）';//d
             $mailoption['ORDER_COMMENT']    = $notify_comments_mail;// = $comments;
             $mailoption['ORDER_PRODUCTS']   = $products_ordered_mail;//?
             $mailoption['ORDER_TMETHOD']    = $insert_torihiki_date;
@@ -850,7 +988,7 @@ if (tep_not_null($action)) {
           $handle_fee = $payment_modules->handle_calc_fee(
           payment::changeRomaji($order->info['payment_method'],PAYMENT_RETURN_TYPE_CODE), $newtotal);
 
-          $newtotal = $newtotal+$handle_fee;    
+          $newtotal = $newtotal+$handle_fee+$shipping_fee;    
           /*
              , text = '<b>".$currencies->ot_total_format(intval(floor($newtotal)), true, $order->info['currency'])."</b>'
            */
@@ -887,11 +1025,147 @@ if (tep_not_null($action)) {
     <!--京-->
     <title><?php echo TITLE; ?></title>
     <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
+    <link rel="stylesheet" type="text/css" href="includes/styles.css">
     <script language="javascript" src="includes/general.js"></script>
     <script language="javascript" src="includes/javascript/jquery.js"></script>
     <script language="javascript" src="includes/javascript/jquery_include.js"></script>
     <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
-<script type="text/javascript">
+    <script language="javascript" src="includes/javascript/datePicker.js"></script>
+<script type="text/javascript"> 
+  function address_show_list(){
+  var address_list = new Array();
+  <?php 
+    $address_show_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."'");
+    while($address_show_array = tep_db_fetch_array($address_show_query)){
+      
+      echo 'address_list["'. $address_show_array['name'] .'"] = "'. $address_show_array['value'] .'";';
+
+    } 
+    tep_db_free_result($address_show_query);
+  ?>
+   
+    for(x in address_list){
+      
+      var address_id = document.getElementById("ad_"+x);
+      $("#ad_"+x).val(address_list[x]);
+      address_id.style.color = '#000';
+    }
+
+  
+  }
+  function check_hour(value){
+  var hour_1 = document.getElementById('hour_1');
+  var hour_1_value = hour_1.value;
+  var min_1 = document.getElementById('min_1');
+  var min_1_value = min_1.value;
+  var min = document.getElementById('min');
+  var min_value = min.value;
+
+
+  if(parseInt(value) >= parseInt(hour_1.value)){ 
+    hour_1.options.length = 0;
+    value = parseInt(value);
+    for(h_i = value;h_i <= 23;h_i++){
+      h_i_str = h_i < 10 ? '0'+h_i : h_i;
+      hour_1.options[hour_1.options.length]=new Option(h_i_str,h_i_str,h_i_str==value); 
+    }
+    min_1.options.length = 0;
+    min_value = parseInt(min_value);
+    for(m_i = min_value;m_i <= 59;m_i++){
+      m_i_str = m_i < 10 ? '0'+m_i : m_i;
+      min_1.options[min_1.options.length]=new Option(m_i_str,m_i_str,m_i_str==min_value); 
+    }
+  }else{
+
+    hour_1.options.length = 0;
+    value = parseInt(value);
+    for(h_i = value;h_i <= 23;h_i++){
+      h_i_str = h_i < 10 ? '0'+h_i : h_i;
+      hour_1.options[hour_1.options.length]=new Option(h_i_str,h_i_str,h_i_str==hour_1_value); 
+    }
+    min_1.options.length = 0;
+    min_value = parseInt(min_value);
+    for(m_i = 0;m_i <= 59;m_i++){
+      m_i_str = m_i < 10 ? '0'+m_i : m_i;
+      min_1.options[min_1.options.length]=new Option(m_i_str,m_i_str,m_i_str==min_1_value); 
+    }
+  }
+}
+
+function check_min(value){
+  var min_1 = document.getElementById('min_1');
+  var min_1_value = min_1.value;
+  var hour_1 = document.getElementById('hour_1');
+  var hour_1_value = hour_1.value;
+  var hour = document.getElementById('hour');
+  var hour_value = hour.value;
+   
+  if(parseInt(value) >= parseInt(min_1.value) && parseInt(hour.value) >= parseInt(hour_1.value)){ 
+    min_1.options.length = 0;
+    value = parseInt(value);
+    for(mi_i = value;mi_i <= 59;mi_i++){
+      mi_i = mi_i < 10 ? '0'+mi_i : mi_i;
+      min_1.options[min_1.options.length]=new Option(mi_i,mi_i,mi_i==value); 
+    }
+  }else{
+   min_1.options.length = 0;
+    value = parseInt(value);
+    for(mi_i = value;mi_i <= 59;mi_i++){
+      mi_i = mi_i < 10 ? '0'+mi_i : mi_i;
+      min_1.options[min_1.options.length]=new Option(mi_i,mi_i,mi_i==min_1_value); 
+    }
+
+  }
+}
+
+function check_hour_1(value){
+  var min_1 = document.getElementById('min_1');
+  var min_1_value = min_1.value;
+  var hour = document.getElementById('hour');
+  var hour_value = hour.value;
+  var min = document.getElementById('min');
+  var min_value = min.value;
+
+  
+  if(hour_value == value){ 
+    min_1.options.length = 0;
+    min_value = parseInt(min_value);
+    for(mi_i = min_value;mi_i <= 59;mi_i++){
+      mi_i = mi_i < 10 ? '0'+mi_i : mi_i;
+      min_1.options[min_1.options.length]=new Option(mi_i,mi_i,mi_i==min_1_value); 
+    }
+  }else{
+
+    min_1.options.length = 0;
+    for(mi_i = 0;mi_i <= 59;mi_i++){
+      mi_i = mi_i < 10 ? '0'+mi_i : mi_i;
+      min_1.options[min_1.options.length]=new Option(mi_i,mi_i,mi_i==min_1_value); 
+    }
+  }
+}
+  $(function() {
+    $.datePicker.setDateFormat('ymd', '-');
+    $('#date_orders').datePicker();
+<?php
+    if(isset($_GET['action']) && $_GET['action'] == 'edit'){
+?>
+    address_show_list();
+<?php
+    }
+?>
+  });
+  function address_show(){
+  
+  var style = $("#address_show_id").attr("style");
+  if(style == 'display: none;'){
+    $("#address_show_id").show(); 
+    $("#address_font").html("住所情報▲");
+  }else{
+
+    $("#address_show_id").hide();
+    $("#address_font").html("住所情報▼");
+  }
+ }
   //todo:修改通性用
   function hidden_payment(){
   var idx = document.edit_order.elements["payment_method"].selectedIndex;
@@ -1042,18 +1316,319 @@ echo "</table>";
             </tr>
             <!-- End Payment Block -->
             <!-- Begin Trade Date Block -->
-            <tr>
             <?php 
 
             //这里判断 订单商品是否有配送 如果有用自己的配送 如果没有用session的
+            if(isset($_GET['action'])){
+              $products_weight_total = 0; //商品总重量
+              $products_money_total = 0; //商品总价
+              $cart_shipping_time = array(); //商品取引时间
+              $products_address_query = tep_db_query("select * from ". TABLE_ORDERS_PRODUCTS ." where orders_id='". tep_db_input($oID) ."'");
+              while($products_address_array = tep_db_fetch_array($products_address_query)){
+
+                $products_weight_query = tep_db_query("select * from ". TABLE_PRODUCTS ." where products_id='". $products_address_array['products_id'] ."'");
+                $products_weight_array = tep_db_fetch_array($products_weight_query);
+                
+                $cart_shipping_time[] = $products_weight_array['products_shipping_time'];
+                $products_weight_total += $products_weight_array['products_weight']*$products_address_array['products_quantity'];
+                $products_money_total += $products_address_array['final_price']*$products_address_array['products_quantity'];
+                tep_db_free_result($products_weight_query);
+              }
+              tep_db_free_result($products_address_query);
+      // start
+     //计算配送费用 
+    $weight = $products_weight_total;
+
+    $shipping_orders_array = array();
+    $shipping_address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."'");
+    while($shipping_address_orders_array = tep_db_fetch_array($shipping_address_orders_query)){
+
+      $shipping_orders_array[] = $shipping_address_orders_array['value'];
+    }
+    tep_db_free_result($shipping_address_orders_query);
+   foreach($shipping_orders_array  as $op_value){
+     $address_query = tep_db_query("select * from ". TABLE_COUNTRY_AREA ." where name='". $op_value ."'");
+     $address_num = tep_db_num_rows($address_query);
+  
+     $country_query = tep_db_query("select * from ". TABLE_COUNTRY_FEE ." where name='". $op_value ."'");
+     $address_country_num = tep_db_num_rows($country_query);
 
 
+  if($address_num > 0){
+    $address_array = tep_db_fetch_array($address_query);
+    tep_db_free_result($address_query);
+    $address_free_value = $address_array['free_value'];
+    $address_weight_fee_array = unserialize($address_array['weight_fee']);
+
+  //根据重量来获取相应的配送费用
+  foreach($address_weight_fee_array as $key=>$value){
+    
+    if(strpos($key,'-') > 0){
+
+      $temp_array = explode('-',$key);
+      $address_weight_fee = $weight >= $temp_array[0] && $weight <= $temp_array[1] ? $value : 0; 
+    }else{
+  
+      $address_weight_fee = $weight <= $key ? $value : 0;
+    }
+
+    if($address_weight_fee > 0){
+
+      break;
+    }
+  }
+  }else{
+    if($address_country_num > 0){
+    $country_array = tep_db_fetch_array($country_query);
+    tep_db_free_result($country_query);
+    $country_free_value = $country_array['free_value'];
+    $country_weight_fee_array = unserialize($country_array['weight_fee']);
+
+  //根据重量来获取相应的配送费用
+  foreach($country_weight_fee_array as $key=>$value){
+    
+    if(strpos($key,'-') > 0){
+
+      $temp_array = explode('-',$key);
+      $country_weight_fee = $weight >= $temp_array[0] && $weight <= $temp_array[1] ? $value : 0; 
+    }else{
+  
+      $country_weight_fee = $weight <= $key ? $value : 0;
+    }
+
+    if($country_weight_fee > 0){
+
+      break;
+    }
+  }
+  }
+ }
+
+}
+
+  $shipping_money_total = $products_money_total;
+  $weight_fee = $address_weight_fee != '' ? $address_weight_fee : $country_weight_fee;
+
+  $free_value = $address_free_value != '' ? $address_free_value : $country_free_value;
+
+  $shipping_fee = $shipping_money_total > $free_value ? 0 : $weight_fee;
+              // end
+              //根据订单商品表中的商品来生成取引时间 
+   
+  $cart_shipping_time = array_unique($cart_shipping_time); 
+  
+  $products_num = count($cart_shipping_time); 
+  $shipping_time_array = array();
+  foreach($cart_shipping_time as $cart_shipping_value){
+
+    $shipping_query = tep_db_query("select * from ". TABLE_PRODUCTS_SHIPPING_TIME ." where id=".$cart_shipping_value);
+    $shipping_array = tep_db_fetch_array($shipping_query);
+    $shipping_time_array['work'][] = unserialize($shipping_array['work']);
+    $shipping_time_array['db_set_day'][] = $shipping_array['db_set_day'];
+    $shipping_time_array['shipping_time'][] = $shipping_array['shipping_time'];
+
+  }
+  
+  //work
+  $shipping_time_start = array();
+  $shipping_time_end = array();
+  foreach($shipping_time_array['work'] as $shipping_time_key=>$shipping_time_value){
+
+    foreach($shipping_time_value as $k=>$val){
+
+      $shipping_time_start[$shipping_time_key][] = $val[0]; 
+      $shipping_time_end[$shipping_time_key][] = $val[1];
+    } 
+  }
+   
+  
+  $ship_array = array();
+  $ship_time_array = array();
+  $j = 0;
+  foreach($shipping_time_start as $shipping_key=>$shipping_value){
+    foreach($shipping_value as $sh_key=>$sh_value){
+      
+      $sh_start_array = explode(':',$sh_value);
+      $sh_end_array = explode(':', $shipping_time_end[$shipping_key][$sh_key]);
+      for($i = (int)$sh_start_array[0];$i <= (int)$sh_end_array[0];$i++){
+        if(isset($ship_time_array[$i]) && $ship_time_array[$i] != ''){
+          if($ship_temp_array[$i] != $j){$ship_array[$i]++;}
+          $ship_time_array[$i] .= '|'.$sh_value.','.$shipping_time_end[$shipping_key][$sh_key];
+        }else{
+          $ship_time_array[$i] = $sh_value.','.$shipping_time_end[$shipping_key][$sh_key]; 
+          $ship_temp_array[$i] = $j;
+        }
+      } 
+    }
+    
+    $j++;  
+  }
+
+  $s_array = array();
+  foreach($ship_array as $ship_k=>$ship_v){
+    if($ship_v >= $products_num-1){
+      $s_array[$ship_k] = $ship_v;
+    } 
+  } 
+  $ship_array = $s_array;
+  $shipp_array = array_keys($ship_array);
+  sort($shipp_array);
+  $ship_new_array = array();
+  foreach($shipp_array as $shipp_key=>$shipp_value){
+  
+    $ship_1_array = explode('|',$ship_time_array[$shipp_value]);
+    foreach($ship_1_array as $ship_1_value){
+
+      $ship_2_array = explode(',',$ship_1_value);
+      $ship_3_array[$shipp_key][] = $ship_2_array[0];
+      $ship_4_array[$shipp_key][] = $ship_2_array[1];
+    } 
+  }
+
+  foreach($ship_3_array as $ship_3_key=>$ship_3_value){
+
+    natsort($ship_3_array[$ship_3_key]); 
+    natsort($ship_4_array[$ship_3_key]);
+    $ship_new_array[] = end($ship_3_array[$ship_3_key]).','.current($ship_4_array[$ship_3_key]);
+  }
+  
+  $time_array = array(); 
+  $time_array = $ship_new_array;
+  //----------
+  if(count($shipping_time_array['work']) == 1){
+    
+    $shi_time_array = array();
+    foreach($shipping_time_start[0] as $shi_key=>$shi_value){
+
+      $shi_start_array = explode(':',$shi_value);
+      $shi_end_array = explode(':',$shipping_time_end[0][$shi_key]);
+
+      for($shi_i = (int)$shi_start_array[0];$shi_i <= (int)$shi_end_array[0];$shi_i++){
+
+        if(isset($shi_time_array[$shi_i]) && $shi_time_array[$shi_i] != ''){
+
+          
+          $shi_time_array[$shi_i] .= '|'.$shi_value.','.$shipping_time_end[0][$shi_key]; 
+        }else{
+
+          $shi_time_array[$shi_i] = $shi_value.','.$shipping_time_end[0][$shi_key]; 
+        }
+      }
+    }
+    $time_array = $shi_time_array;
+  }
+  
+
+  //可配送时间区域
+  $work_temp_str = current($time_array);
+  $work_temp_array = explode(',',$work_temp_str);
+  $work_start = $work_temp_array[0];
+  $work_end = $work_temp_array[1];
+  $work_start_array = explode(':',$work_start);
+  $work_end_array = explode(':',$work_end);
+  $work_start_hour = $work_start_array[0]; //开始时
+  $work_start_min = $work_start_array[1]; //开始分
+  $work_end_hour = $work_end_array[0]; //结束时
+  $work_end_min = $work_end_array[1]; //结束分
+
+  //当日起几日后可以收货
+  $db_set_day = max($shipping_time_array['db_set_day']);
+  $date_orders = date('Y-m-d',strtotime("+ ".$db_set_day."day"));
+  //可选收货期限
+  $shipping_time = max($shipping_time_array['shipping_time']);
+  //生成时间下拉框
+  $hour_str = '<select name="start_hour" id="hour" onchange="check_hour(this.value);">';
+  for($h_i = 0;$h_i <= 23;$h_i++){
+
+    $h_str = $h_i < 10 ? '0'.$h_i : $h_i;
+    if($h_str == $work_start_hour){
+
+      $selected = ' selected';
+    }else{
+
+      $selected = '';
+    }
+    $hour_str .= '<option value="'.$h_str.'"'.$selected.'>'.$h_str.'</option>';
+  } 
+  $hour_str .= '</select>';
+
+  $min_str = '<select name="start_min" id="min" onchange="check_min(this.value);">';
+  for($m_i = 0;$m_i <= 59;$m_i++){
+
+    $m_str = $m_i < 10 ? '0'.$m_i : $m_i;
+    if($m_str == $work_start_min){
+
+      $selected = ' selected';
+    }else{
+
+      $selected = '';
+    }
+    $min_str .= '<option value="'.$m_str.'"'.$selected.'>'.$m_str.'</option>';
+  } 
+  $min_str .= '</select>';
+
+  $hour_str_1 = '<select name="end_hour" id="hour_1" onchange="check_hour_1(this.value);">';
+  $hour_start_num = (int)$work_start_hour;
+  for($h1_i = $hour_start_num;$h1_i <= 23;$h1_i++){
+
+    $h1_str = $h1_i < 10 ? '0'.$h1_i : $h1_i;
+    if($h1_str == $work_end_hour){
+
+      $selected = ' selected';
+    }else{
+
+      $selected = '';
+    }
+    $hour_str_1 .= '<option value="'.$h1_str.'"'.$selected.'>'.$h1_str.'</option>';
+  } 
+  $hour_str_1 .= '</select>';
+
+  $min_str_1 = '<select name="end_min" id="min_1" onclick="">';
+  for($m1_i = 0;$m1_i <= 59;$m1_i++){
+
+    $m1_str = $m1_i < 10 ? '0'.$m1_i : $m1_i;
+    if($m1_str == $work_end_min){
+
+      $selected = ' selected';
+    }else{
+
+      $selected = '';
+    }
+    $min_str_1 .= '<option value="'.$m1_str.'"'.$selected.'>'.$m1_str.'</option>';
+  } 
+  $min_str_1 .= '</select>';
             ?>
+            <tr> 
             <td class="main" valign="top"><b><?php echo EDIT_ORDERS_FETCHTIME;?></b></td>
-            <td class="main">
-            <?php echo $order->tori['date'];?> 
+            <td class="main"> 
+            <input type="text" id="date_orders" size="15" value="<?php echo $date_orders;?>"> 
+            <input type="hidden" id="date_order" name="date_orders" value="<?php echo $date_orders;?>">
+            <?php
+              echo '&nbsp;'.$hour_str.'&nbsp;時&nbsp;'.$min_str.'&nbsp;分&nbsp;～&nbsp;'.$hour_str_1.'&nbsp;時&nbsp;'.$min_str_1.'&nbsp;分&nbsp;';
+            ?>
             </td>
             </tr>
+            <?php 
+              // 住所信息
+              if($products_weight_total > 0){
+                $address_style = isset($address_style) && $address_style != '' ? $address_style : 'display: none;';
+            ?>
+            <tr>
+            <td class="main" valign="top"><a href="javascript:void(0);" onclick="address_show();"><font color="blue"><b><u><span id="address_font"><?php echo TEXT_SHIPPING_ADDRESS;?></span></u></b></font></a></td>
+            <td class="main">
+            </td>
+            </tr> 
+            <tr><td colspan="2"><table width="100%" border="0" cellpadding="2" cellspacing="0" id="address_show_id" style="<?php echo $address_style;?>"><br>
+            <?php 
+                $ad_option->render('');
+            ?>
+            </table>
+            </td>
+            </tr>
+            <?php
+              }
+            } 
+            ?> 
             <tr>
             <td class="main">
             <?php echo $order->tori['houhou'];?>             
@@ -1258,24 +1833,26 @@ echo "</table>";
           foreach ($TotalsArray as $TotalIndex => $TotalDetails) {
             $TotalStyle = "smallText";
             if ($TotalDetails["Class"] == "ot_total") {
+              $shipping_fee_total = ($shipping_ot_subtotal+$shipping_fee+$shipping_ot_tax+$order->info["code_fee"]-$shipping_ot_point) != $TotalDetails["Price"] ? $shipping_fee : 0;
               echo '  <tr>' . "\n" .
                 '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_OTTOTAL_READ.'</td>' . 
                 '    <td align="right" class="' . $TotalStyle . '"><b>' . $TotalDetails["Name"] . '</b></td>' . 
                 '    <td align="right" class="' . $TotalStyle . '"><b>' ;
               if ($TotalDetails["Price"] >= 0){
-                echo $currencies->ot_total_format($TotalDetails["Price"], true,
+                echo $currencies->ot_total_format($TotalDetails["Price"]+$shipping_fee_total, true,
                     $order->info['currency'], $order->info['currency_value']);
               }else{
-                echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->ot_total_format($TotalDetails["Price"], true, $order->info['currency'], $order->info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
+                echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->ot_total_format($TotalDetails["Price"]+$shipping_fee_total, true, $order->info['currency'], $order->info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
               }
               echo '</b>' . 
                 "<input name='update_totals[$TotalIndex][title]' type='hidden' value='" . trim($TotalDetails["Name"]) . "' size='" . strlen($TotalDetails["Name"]) . "' >" . 
-                "<input name='update_totals[$TotalIndex][value]' type='hidden' value='" . $TotalDetails["Price"] . "' size='6' >" . 
+                "<input name='update_totals[$TotalIndex][value]' type='hidden' value='" . ($TotalDetails["Price"]+$shipping_fee_total) . "' size='6' >" . 
                 "<input name='update_totals[$TotalIndex][class]' type='hidden' value='" . $TotalDetails["Class"] . "'>\n" . 
                 "<input type='hidden' name='update_totals[$TotalIndex][total_id]' value='" . $TotalDetails["TotalID"] . "'>" . '</b></td>' . 
                 '    <td align="right" class="' . $TotalStyle . '"><b>' . tep_draw_separator('pixel_trans.gif', '1', '17') . '</b>' . 
                 '  </tr>' . "\n";
             } elseif ($TotalDetails["Class"] == "ot_subtotal") {
+              $shipping_ot_subtotal = $TotalDetails["Price"];
               echo '  <tr>' . "\n" .
                 '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_OTSUBTOTAL_READ.'</td>' . 
                 '    <td align="right" class="' . $TotalStyle . '"><b>' . $TotalDetails["Name"] . '</b></td>' .
@@ -1299,8 +1876,16 @@ echo "</table>";
                 '    <td align="right" class="' . $TotalStyle . '"><b>' . $currencies->format($order->info["code_fee"]) . '</b><input type="hidden" name="payment_code_fee" value="'.$order->info["code_fee"].'">' . 
                 '</td>' . 
                 '    <td align="right" class="' . $TotalStyle . '"><b>' . tep_draw_separator('pixel_trans.gif', '1', '17') . '</b>' . 
+                '  </tr>' . "\n".
+                '  <tr>' . "\n" .
+                '    <td align="left" class="' . $TotalStyle . '">&nbsp;</td>' . 
+                '    <td align="right" class="' . $TotalStyle . '"><b>'.TEXT_CODE_SHIPPING_FEE.'</b></td>' .
+                '    <td align="right" class="' . $TotalStyle . '"><b>' . $currencies->format($shipping_fee) . '</b><input type="hidden" name="shipping_fee" value="'.$shipping_fee.'">' . 
+                '</td>' . 
+                '    <td align="right" class="' . $TotalStyle . '"><b>' . tep_draw_separator('pixel_trans.gif', '1', '17') . '</b>' . 
                 '  </tr>' . "\n";
             } elseif ($TotalDetails["Class"] == "ot_tax") {
+              $shipping_ot_tax = $TotalDetails["Price"];
               echo '  <tr>' . "\n" . 
                 '    <td align="left" class="' . $TotalStyle . '">&nbsp;</td>' . 
                 '    <td align="right" class="' . $TotalStyle . '"><b>' . trim($TotalDetails["Name"]) . "</b><input name='update_totals[$TotalIndex][title]' type='hidden' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . '</td>' . "\n" .
@@ -1311,6 +1896,7 @@ echo "</table>";
                 '    <td align="right" class="' . $TotalStyle . '"><b>' . tep_draw_separator('pixel_trans.gif', '1', '17') . '</b>' . 
                 '  </tr>' . "\n";
             } elseif ($TotalDetails["Class"] == "ot_point") {
+              $shipping_ot_point = $TotalDetails["Price"];
               if ($customer_guest['customers_guest_chk'] == 0) { //会員
                 $current_point = $customer_point['point'] + $TotalDetails["Price"];
                 echo '  <tr>' . "\n" .

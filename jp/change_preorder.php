@@ -398,6 +398,7 @@ document.forms.order1.submit();
 
 
   //根据预约中的商品来生成取引时间
+  //根据$cart_products_id数组中的商品ID来获取每个商品的取引时间
   $cart_shipping_time = array();
   foreach($cart_products_id as $cart_products_value){
     
@@ -405,8 +406,11 @@ document.forms.order1.submit();
     $shipping_time_array = tep_db_fetch_array($shipping_time_query);
     tep_db_free_result($shipping_time_query);
     $cart_shipping_time[] = $shipping_time_array['products_shipping_time'];
-  } 
+  }
+   
+  $cart_shipping_time = array_unique($cart_shipping_time); 
   
+  $products_num = count($cart_shipping_time); 
   $shipping_time_array = array();
   foreach($cart_shipping_time as $cart_shipping_value){
 
@@ -421,7 +425,6 @@ document.forms.order1.submit();
   //work
   $shipping_time_start = array();
   $shipping_time_end = array();
-  $products_count_num = 0;
   foreach($shipping_time_array['work'] as $shipping_time_key=>$shipping_time_value){
 
     foreach($shipping_time_value as $k=>$val){
@@ -429,68 +432,89 @@ document.forms.order1.submit();
       $shipping_time_start[$shipping_time_key][] = $val[0]; 
       $shipping_time_end[$shipping_time_key][] = $val[1];
     } 
-    $products_count_num++;  
   }
    
   
   $ship_array = array();
   $ship_time_array = array();
+  $j = 0;
   foreach($shipping_time_start as $shipping_key=>$shipping_value){
-
     foreach($shipping_value as $sh_key=>$sh_value){
-
+      
       $sh_start_array = explode(':',$sh_value);
       $sh_end_array = explode(':', $shipping_time_end[$shipping_key][$sh_key]);
-
       for($i = (int)$sh_start_array[0];$i <= (int)$sh_end_array[0];$i++){
-
-        $ship_array[$i]++; 
-        $ship_time_array[$i][] = array($sh_value,$shipping_time_end[$shipping_key][$sh_key]);
-      }
+        if(isset($ship_time_array[$i]) && $ship_time_array[$i] != ''){
+          if($ship_temp_array[$i] != $j){$ship_array[$i]++;}
+          $ship_time_array[$i] .= '|'.$sh_value.','.$shipping_time_end[$shipping_key][$sh_key];
+        }else{
+          $ship_time_array[$i] = $sh_value.','.$shipping_time_end[$shipping_key][$sh_key]; 
+          $ship_temp_array[$i] = $j;
+        }
+      } 
     }
+    
+    $j++;  
   }
-  
+
+  $s_array = array();
+  foreach($ship_array as $ship_k=>$ship_v){
+    if($ship_v >= $products_num-1){
+      $s_array[$ship_k] = $ship_v;
+    } 
+  } 
+  $ship_array = $s_array;
+  $shipp_array = array_keys($ship_array);
+  sort($shipp_array);
   $ship_new_array = array();
-  foreach($ship_array as $ship_key=>$ship_value){
-
-    if($ship_value > $products_count_num-1){
-      $ship_temp_start = array();
-      $ship_temp_end = array(); 
-      foreach($ship_time_array[$ship_key] as $ship_k=>$ship_val){
-
-        $ship_temp_start[] = $ship_val[0];
-        $ship_temp_end[] = $ship_val[1];
-      }
-      natsort($ship_temp_start);
-      natsort($ship_temp_end);
-      $ship_new_array[$ship_key] = array(end($ship_temp_start),current($ship_temp_end));
-    }
-  }
+  foreach($shipp_array as $shipp_key=>$shipp_value){
   
-  $ship_max_array = array();
-  $ship_min_array = array();
-  foreach($ship_new_array as $ship_new_value){
-  
-    $ship_max_array[] = $ship_new_value[0];
-    $ship_min_array[] = $ship_new_value[1];
+    $ship_1_array = explode('|',$ship_time_array[$shipp_value]);
+    foreach($ship_1_array as $ship_1_value){
 
+      $ship_2_array = explode(',',$ship_1_value);
+      $ship_3_array[$shipp_key][] = $ship_2_array[0];
+      $ship_4_array[$shipp_key][] = $ship_2_array[1];
+    } 
   }
-  $ship_max_array = array_unique($ship_max_array);
-  $ship_min_array = array_unique($ship_min_array);
 
+  foreach($ship_3_array as $ship_3_key=>$ship_3_value){
 
-  $max_time_str = implode(',',$ship_max_array);
-  $min_time_str = implode(',',$ship_min_array);
+    natsort($ship_3_array[$ship_3_key]); 
+    natsort($ship_4_array[$ship_3_key]);
+    $ship_new_array[] = end($ship_3_array[$ship_3_key]).','.current($ship_4_array[$ship_3_key]);
+  }
+
+  $max_time_str = implode('||',$shipp_array);
+  $min_time_str = implode('||',$ship_new_array);
   //----------
   if(count($shipping_time_array['work']) == 1){
+    
+    $shi_time_array = array();
+    foreach($shipping_time_start[0] as $shi_key=>$shi_value){
 
-    $max_time_str = implode(',',$shipping_time_start[0]);
-    $min_time_str = implode(',',$shipping_time_end[0]);
-  } 
-   
+      $shi_start_array = explode(':',$shi_value);
+      $shi_end_array = explode(':',$shipping_time_end[0][$shi_key]);
+
+      for($shi_i = (int)$shi_start_array[0];$shi_i <= (int)$shi_end_array[0];$shi_i++){
+
+        if(isset($shi_time_array[$shi_i]) && $shi_time_array[$shi_i] != ''){
+
+          
+          $shi_time_array[$shi_i] .= '|'.$shi_value.','.$shipping_time_end[0][$shi_key]; 
+        }else{
+
+          $shi_time_array[$shi_i] = $shi_value.','.$shipping_time_end[0][$shi_key]; 
+        }
+      }
+    }
+    $max_time_str = implode('||',array_keys($shi_time_array));
+    $min_time_str = implode('||',$shi_time_array);
+  }
+     
   //可配送时间区域
-  $work_start = $max_time_str.',';
-  $work_end = $min_time_str.',';
+  $work_start = $max_time_str;
+  $work_end = $min_time_str;
   //当日起几日后可以收货
   $db_set_day = max($shipping_time_array['db_set_day']);
   //可选收货期限
@@ -513,14 +537,14 @@ document.forms.order1.submit();
         <div class="formAreaTitle"><?php echo TEXT_ADDRESS;?></div>
         <table border="0" width="100%" cellspacing="2" cellpadding="2" class="formArea"> 
             <tr>
-            <td colspan="2" class="main" height="30">
+            <td colspan="2" class="main">
               <input type="radio" name="address_option" value="old" onclick="address_option_show('old');address_option_list(first_num);" <?php echo $checked_str_old;?>><?php echo TABLE_OPTION_OLD; ?> 
               <input type="radio" name="address_option" value="new" onclick="address_option_show('new');" <?php echo $checked_str_new;?>><?php echo TABLE_OPTION_NEW; ?>
             </td>
             </tr>
             <tr id="address_show_id" style="display:none">
-            <td class="main" width="150"><?php echo TABLE_ADDRESS_SHOW; ?></td>
-            <td class="main" height="30">
+            <td class="main"><?php echo TABLE_ADDRESS_SHOW; ?></td>
+            <td class="main">
             <select name="address_show_list" id="address_show_list" onchange="address_option_list(this.value);">
             <option value="">--</option>
             </select>

@@ -136,12 +136,14 @@ if ($preorder) {
   tep_db_perform(TABLE_ORDERS, $sql_data_array);
 
   //住所信息录入
+  $add_list = array();
   foreach($_POST as $address_key=>$address_value){
     if(substr($address_key,0,3) == 'op_'){
-      $address_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where name_flag='". substr($address_key,3) ."'");
+      $address_query = tep_db_query("select id,name,name_flag from ". TABLE_ADDRESS ." where name_flag='". substr($address_key,3) ."'");
       $address_array = tep_db_fetch_array($address_query);
       tep_db_free_result($address_query);
       $address_id = $address_array['id'];
+      $add_list[] = array($address_array['name'],$address_value);
       $address_add_query = tep_db_query("insert into ". TABLE_ADDRESS_ORDERS ." value(NULL,'$orders_id',{$preorder_cus_id},$address_id,'{$address_array['name_flag']}','$address_value')");
       tep_db_free_result($address_add_query);
     }
@@ -419,7 +421,6 @@ if (!empty($preorder['code_fee'])) {
   $mailoption['MAILFEE']          = '0';
 }
 
-
 $email_order_text = '';
 
 if (isset($payment_modules->modules[strtoupper($cpayment_code)]->show_add_comment)) {
@@ -430,6 +431,32 @@ if (isset($payment_modules->modules[strtoupper($cpayment_code)]->show_add_commen
 $mailoption['ADD_INFO'] = '';
 
 $email_order_text = $payment_modules->getOrderMailString($cpayment_code, $mailoption); 
+$shipping_fee_value = isset($_POST['shipping_fee']) ? $_POST['shipping_fee'] : 0; 
+$email_temp = '▼ポイント割引';
+$email_temp_str = '▼ ポイント割引';
+$email_shipping_fee = '▼お届け料金　　　：'.$shipping_fee_value.'円
+'.$email_temp;
+$email_order_text = str_replace($email_temp,$email_shipping_fee,$email_order_text);
+$email_order_text = str_replace($email_temp_str,$email_shipping_fee,$email_order_text);
+$email_address = '▼注文商品';
+//zhusuo
+$address_len_array = array();
+foreach($add_list as $address_value){
+
+  $address_len_array[] = strlen($address_value[0]);
+}
+$maxlen = max($address_len_array);
+$email_address_str = '▼住所情報'."\n";
+$email_address_str .= '------------------------------------------'."\n";
+$maxlen = 9;
+foreach($add_list as $ad_value){
+  $ad_len = mb_strlen($ad_value[0],'utf8');
+  $temp_str = str_repeat('　',$maxlen-$ad_len);
+  $email_address_str .= $ad_value[0].$temp_str.'：'.$ad_value[1]."\n";
+}
+$email_address_str .= '------------------------------------------'."\n";
+$email_address_str .= $email_address;
+$email_order_text = str_replace($email_address,$email_address_str,$email_order_text);
 tep_mail($preorder['customers_name'], $preorder['customers_email_address'], EMAIL_TEXT_SUBJECT, $email_order_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
   
 if (SENTMAIL_ADDRESS != '') {

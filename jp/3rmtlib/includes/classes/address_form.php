@@ -78,7 +78,7 @@
                     $title = '<b>'.$title.'</b>';
                 }
                 echo '<tr>'
-                  .'<td class="main">&nbsp;'.$title.'</td>'
+                  .'<td class="main" width="120">&nbsp;'.$title.'</td>'
                   .'<td class="main">&nbsp;'.$this->formlines[$name]['value'].'</td>'
                   .'</tr>'."\n";
             }
