@@ -93,7 +93,7 @@ class AD_Option_Item_Basic
       if (!isset($item_value['se_option'])) {
         $i = 1;  
         for($i=1; $i<=5; $i++) {
-          $formString .= "<tr><td>".TEXT_ITEM_SELECT_HEAD."</td><td><input type='text' name='ad_".$i."' value='' style='width:35%;'>&nbsp;<input type='radio' name='dselect' value ='dp_".$i."'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='javascript:void(0);' onclick='del_option_select(this);'>".TEXT_ITEM_DEL_LINK."</a></td></tr>"; 
+          $formString .= "<tr><td>".TEXT_ITEM_SELECT_HEAD."</td><td><input type='text' name='op_".$i."' value='' style='width:35%;'>&nbsp;<input type='radio' name='dselect' value ='dp_".$i."'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='javascript:void(0);' onclick='del_option_select(this);'>".TEXT_ITEM_DEL_LINK."</a></td></tr>"; 
         }
         $formString .= "<tr><td>&nbsp;</td><td id='add_select'><a href='javascript:void(0);' onclick='add_option_select();'>".TEXT_ITEM_ADD_SELECT."</a></td></tr>"; 
       } else {
@@ -103,7 +103,7 @@ class AD_Option_Item_Basic
         }
         
         foreach ($item_value['se_option'] as $ikey => $ivalue) {
-          $formString .= "<tr><td>".TEXT_ITEM_SELECT_HEAD."</td><td><input type='text' name='ad_".$i."' value='".$ivalue."' style='width:35%;'>&nbsp;<input type='radio' ".((isset($se_num)) && ($se_num == ($i-1))?'checked ':'')."name='dselect' value ='dp_".$i."'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='javascript:void(0);' onclick='del_option_select(this);'>".TEXT_ITEM_DEL_LINK."</a></td></tr>"; 
+          $formString .= "<tr><td>".TEXT_ITEM_SELECT_HEAD."</td><td><input type='text' name='op_".$i."' value='".$ivalue."' style='width:35%;'>&nbsp;<input type='radio' ".((isset($se_num)) && ($se_num == ($i-1))?'checked ':'')."name='dselect' value ='dp_".$i."'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href='javascript:void(0);' onclick='del_option_select(this);'>".TEXT_ITEM_DEL_LINK."</a></td></tr>"; 
           $i++; 
         }
         $formString .= "<tr><td>&nbsp;</td><td id='add_select'><a href='javascript:void(0);' onclick='add_option_select();'>".TEXT_ITEM_ADD_SELECT."</a></td></tr>"; 

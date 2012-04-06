@@ -11,13 +11,12 @@ class AD_Option_Item_Text extends AD_Option_Item_Basic
 
   function render($option_error_array)
   {
-     echo '<td width="10" height="30">'. tep_draw_separator('pixel_trans.gif', '10', '1') .'</td>';
      if (strlen($this->front_title)) {
-       echo '<td class="main">';
+       echo '<td class="main" width="30%" valign="top">';
        echo $this->front_title.':';
        echo '</td>';
      }
-     echo '<td class="main">';
+     echo '<td class="main" width="30%">';
      echo $this->comment; 
      //echo '</pre>';
      echo '<span id="error_'.$this->formname.'" class="option_error">';
@@ -37,7 +36,7 @@ class AD_Option_Item_Text extends AD_Option_Item_Basic
   function check(&$option_error_array)
   {
      global $_POST;
-     $input_text_str = $_POST['op_'.$this->formname]; 
+     $input_text_str = $_POST['ad_'.$this->formname]; 
      $input_text_str = str_replace(' ', '', $input_text_str); 
      $input_text_str = str_replace('　', '', $input_text_str); 
      

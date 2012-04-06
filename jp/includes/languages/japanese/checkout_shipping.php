@@ -69,4 +69,6 @@ define('TABLE_ADDRESS_SHOW','お届け先リストから選ぶ:');
 define('ADDRESS_ERROR_OPTION_ITEM_TEXT_NULL','必須項目');
 define('ADDRESS_ERROR_OPTION_ITEM_TEXT_TYPE_WRONG','正しく入力してください');
 define('ADDRESS_ERROR_OPTION_ITEM_TEXT_NUM_MAX','入力可能な文字数を超えています');
+define('ADDRESS_ERROR_OPTION_ITEM_TEXT_NUM_MIN','は少なくても');
+define('ADDRESS_ERROR_OPTION_ITEM_TEXT_NUM_MIN_1','文字以上必要です');
 ?>

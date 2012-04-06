@@ -8,11 +8,11 @@ class AD_Option_Item_Option extends AD_Option_Item_Basic
   function render($option_error_array)
   {
      if (strlen($this->front_title)) {
-       echo '<td class="main" width="30%">'; 
+       echo '<td class="main" width="120">&nbsp;'; 
        echo $this->front_title.':';
        echo '</td>';
      }
-     echo '<td class="main" width="70%">'; 
+     echo '<td class="main">&nbsp;'; 
      echo '<input type="hidden" name="'.$this->formname.'" value="'.$this->front_title.'">';
      if (!empty($this->option)) {
         
@@ -47,7 +47,7 @@ class AD_Option_Item_Option extends AD_Option_Item_Basic
          echo '</select>'; 
       }
      } 
-     echo '<span id="error_'.$this->formname.'" class="shipping_error">';
+     echo '<span id="error_'.$this->formname.'" class="option_error">';
      if (isset($option_error_array[$this->formname])) {
        echo $option_error_array[$this->formname]; 
      }

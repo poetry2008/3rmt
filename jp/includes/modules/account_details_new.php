@@ -230,8 +230,11 @@ $(document).ready(function(){
 <?php 
   $address_form->printCategoryPersonal();
 ?>
+        </table>
+<table border="0" width="100%" cellspacing="0" cellpadding="0">
   <tr><td class="main" align="right" colspan="2"><input type="submit" value="<?php echo BUTTON_SAVE;?>">&nbsp;&nbsp;</td></tr>
-        </table></form></td>
+</table>
+</form></td>
       </tr>
     </table></td>
   </tr>
@@ -248,14 +251,14 @@ $(document).ready(function(){
           echo tep_draw_form('account_edit_address', tep_href_link(FILENAME_ACCOUNT_EDIT, '', 'SSL'), 'post', 'onSubmit=    "return check_form_address();"') . tep_draw_hidden_field('action', 'address');
         ?>
         <table border="0" cellspacing="0" cellpadding="2" summary="table">
-        <tr><td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1');?></td><td class="main" width="30%"><?php echo TITLE_ADDRESS_OPTION;?>     </td><td><input type="hidden" id="address_flag_id" name="address_flag_id" value="">
-        <select id="address_show_list" onchange="address_option_list(this.value);">
+        <tr><td class="main" width="120">&nbsp;<?php echo TITLE_ADDRESS_OPTION;?></td><td><input type="hidden" id="address_flag_id" name="address_flag_id" value="">
+        &nbsp;<select id="address_show_list" onchange="address_option_list(this.value);">
         </select>
         </td></tr>
         <?php       
           $hm_option->render(''); 
         ?> 
-          <tr><td class="main" align="right" colspan="3"><input type="button" value="<?php echo BUTTON_NEW;?>" onclick="address_clear();">&nbsp;<input type="submit" value="<?php echo BUTTON_SAVE;?>">&nbsp;<input type="button" value="<?php echo BUTTON_DEL;?>" onclick="if(confirm('このレコードを削除してもよろしいですか？')){location.href='<?php echo FILENAME_ACCOUNT_EDIT;?>?act='+document.getElementById('address_flag_id').value;}else{return false;}"></form>&nbsp;&nbsp;</td></tr>
+          <tr><td class="main" align="right" colspan="2"><input type="button" value="<?php echo BUTTON_DEL;?>" onclick="if(confirm('このレコードを削除してもよろしいですか？')){location.href='<?php echo FILENAME_ACCOUNT_EDIT;?>?act='+document.getElementById('address_flag_id').value;}else{return false;}">&nbsp;<input type="button" value="<?php echo BUTTON_NEW;?>" onclick="address_clear();">&nbsp;<input type="submit" value="<?php echo BUTTON_SAVE;?>"></form>&nbsp;&nbsp;</td></tr>
         </table></form>
         </td>
       </tr>
@@ -277,7 +280,7 @@ $(document).ready(function(){
         <td class="main"> 
         <table border="0" cellspacing="0" cellpadding="2" summary="table">
           <tr>
-            <td class="main">&nbsp;<?php echo ENTRY_NEWSLETTER; ?></td>
+            <td class="main" width="120">&nbsp;<?php echo ENTRY_NEWSLETTER; ?></td>
             <td class="main">&nbsp;
 <?php
   if ($is_read_only == true) {
@@ -349,7 +352,7 @@ if (!isset($guestchk)) $guestchk = NULL;
         ?>
           <table border="0" cellspacing="0" cellpadding="2" summary="table"> 
           <tr>
-            <td class="main">&nbsp;<?php echo ENTRY_PASSWORD; ?></td>
+            <td class="main" width="120">&nbsp;<?php echo ENTRY_PASSWORD; ?></td>
             <td class="main">&nbsp;
 <?php
     if ($error_pwd == true) {
@@ -378,9 +381,13 @@ if (!isset($guestchk)) $guestchk = NULL;
 <?php
     }
 ?>  
-    <tr><td>&nbsp;</td><td class="main" align="right"><input type="submit" value="<?php echo BUTTON_SAVE;?>">&nbsp;&nbsp;</td></tr>
-    </table></form></td>
+    </table>
+<table border="0" width="100%" cellspacing="0" cellpadding="0">
+      <tr><td>&nbsp;</td><td class="main" align="right"><input type="submit" value="<?php echo BUTTON_SAVE;?>">&nbsp;&nbsp;</td></tr>
+</table>
+      </td>
       </tr>
+      </form>
     </table></td>
   </tr>  
 <?php

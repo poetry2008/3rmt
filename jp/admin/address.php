@@ -1,6 +1,6 @@
 <?php
 /*
- * 住所作成
+ * 住所作成 action_ajax
  */
 require('includes/application_top.php');
 
@@ -30,6 +30,7 @@ if(isset($action) && $action != ''){
     $address_option_comment = tep_db_prepare_input($_POST['option_comment']);
     $address_text_type = tep_db_prepare_input($_POST['text_type']);
     $address_limit = tep_db_prepare_input($_POST['limit']);
+    $address_limit_min = tep_db_prepare_input($_POST['limit_min']);
     $address_required = tep_db_prepare_input($_POST['required']);
     $address_sort = tep_db_prepare_input($_POST['sort']);
     $address_sort = $address_sort == '' ? 0 : $address_sort;
@@ -87,20 +88,25 @@ if(isset($action) && $action != ''){
     $sql_option_str = serialize($sql_array);
 
     $sql_str = '';
-    if($address_limit != ''){
+    if($address_limit != '' || $address_limit_min != ''){
       if($address_id == ''){
         $sql_str = ','.$address_limit;
+        $sql_str .= ','.$address_limit_min;
       }else{
         $sql_str = ',num_limit='.$address_limit; 
+        $sql_str .= ',num_limit_min='.$address_limit_min;
       }
     }else{
       if($address_id == ''){
         $sql_str .= ',0';
+        $sql_str .= ',0';
       }else{
         $sql_str = ',num_limit=0'; 
+        $sql_str .= ',num_limit_min=0';
       }
 
     }
+    
     if($address_required != ''){
       if($address_id == ''){
         $sql_str .= ',\''.$address_required ."'";
@@ -133,7 +139,6 @@ if(isset($action) && $action != ''){
                    ",". $address_sort .
                    ",'". $show_title .
                    "','0')";
-
     }else{
       $address_sql = "update ". TABLE_ADDRESS .
                    " set ".
@@ -150,11 +155,10 @@ if(isset($action) && $action != ''){
     $address_update_query = tep_db_query($address_sql);
 
     if($address_update_query == true){
-      
+        
       tep_db_free_result($address_update_query);
       tep_db_close();
       header("location:address.php");
-
     }
 
     break;
@@ -220,6 +224,7 @@ div#show {
 <script language="javascript" src="includes/general.js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript" src="includes/jquery.form.js"></script>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onload="SetFocus();">
 <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>

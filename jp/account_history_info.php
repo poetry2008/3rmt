@@ -183,7 +183,7 @@
                             tep_db_free_result($address_list_query);
                             $address_shipping_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $_GET['order_id'] ."'");
                             while($address_shipping_array = tep_db_fetch_array($address_shipping_query)){
-                                echo '<tr><td class="main" valign="top">';
+                                echo '<tr><td class="main" width="30%" valign="top">';
                                 echo $address_array[$address_shipping_array['address_id']];
                                 echo ':</td><td class="main">';
                                 echo $address_shipping_array['value']; 

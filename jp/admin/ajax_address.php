@@ -53,6 +53,7 @@ if(isset($id) && $id != 0){
    $type_comment = $address_array['type_comment'];
    $sort = $address_array['sort'];
    $limit = $address_array['num_limit']; 
+   $limit_min = $address_array['num_limit_min'];
    $required = $address_array['required'];
    $show_title = $address_array['show_title'];
 
@@ -198,7 +199,7 @@ $title = $_title != '' ? $_title : $title;
 $name = $_name != '' ? $_name : $name;
 $comment = $_comment != '' ? $_comment : $comment;
 ?>
-<tr><td width="30%"align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_1;?></td><td><input type="text" name="title" id="title" class="option_text" value="<?php echo $title;?>">&nbsp;<font color="red"><?php echo TABLE_REQUIRED;?></font><br><span id="error_title"></span><input type="hidden" name="cid" value="<?php echo $address_array['id'];?>"</td></tr>
+<tr><td width="30%"align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_1;?></td><td><input type="text" name="title" id="title" class="option_text" value="<?php echo $title;?>">&nbsp;<font color="red"><?php echo TABLE_REQUIRED;?></font><br><span id="error_title"></span><input type="hidden" id="cid" name="cid" value="<?php echo $address_array['id'];?>"</td></tr>
 <tr><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_2;?></td><td><input type="text" name="name" id="name" class="option_text" value="<?php echo $name;?>">&nbsp;<font color="red"><?php echo TABLE_REQUIRED;?></font><br><span id="error_name"></span></td></tr>
 <tr><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_3;?></td><td>
 
@@ -235,6 +236,8 @@ if($type == 'text'){
  $select_english = $type_limit == 'english' ? 'selected' : '';
  $select_num = $type_limit == 'num' ? 'selected' : '';
  $select_email = $type_limit == 'email' ? 'selected' : '';
+ $limit = $limit == '' ? 0 : $limit;
+ $limit_min = $limit == '' ? 0 : $limit_min;
 
  echo '<tr><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;'. TABLE_LIST_6 .'</td><td><input type="text" id="comment" name="comment" class="option_text" value="'. $comment .'"></td></tr>';
   echo '<tr><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;'. TABLE_LIST_7 .'</td><td><input type="text" name="option_comment[]" value="'. $rows .'" style="text-align: right;"></td></tr>';
@@ -248,6 +251,7 @@ if($type == 'text'){
     <option value="email" '. $select_email .'>Email</option>
     </select><br>'. TABLE_PROMPT_1 .'</td></tr>';
   echo '<tr><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;'. TABLE_LIST_9 .'</td><td><input type="text" name="limit" value="'. $limit.'" style="text-align: right;"><br>'. TABLE_PROMPT_2 .'</td></tr>';
+  echo '<tr><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;'. TABLE_LIST_9_1 .'</td><td><input type="text" name="limit_min" value="'. $limit_min.'" style="text-align: right;"><br>'. TABLE_PROMPT_2_1 .'</td></tr>';
   $required_true = $required == 'true' ? 'checked' : '';
   $required_false = $required == 'false' ? 'checked' : '';
   $required_true = $required == '' && $required_true == '' ? 'checked' : 'checked';

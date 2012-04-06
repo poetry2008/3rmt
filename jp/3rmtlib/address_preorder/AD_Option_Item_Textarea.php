@@ -7,33 +7,35 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
   function render($option_error_array)
   {
     if (strlen($this->front_title)) {
-      echo '<td class="main" width="150"> '; 
+      echo '<td class="main" width="30%" valign="top"> '; 
       echo $this->front_title.':'; 
       echo ' </td>'; 
     }
     $options = unserialize($this->option);
+    $type_limit = $options['type_limit']; 
     if($options['rows'] == 1){
 
-      echo '<td class="main">';
+      echo '<td class="main" width="70%">';
       $style_color = isset($_POST['op_'.$this->formname]) && $_POST['op_'.$this->formname] != $this->comment ?'color:#000;':'color:#999;';
+      $style_size = $type_limit == 'num' ? 'size="25" ' : 'class="option_input" '; 
       echo '<input type="hidden" name="'.$this->formname.'" value="'.$this->front_title.'">';
-      echo '<input type="text" name="op_'.$this->formname.'" id="op_'.$this->formname.'" size="15" maxlength="'. $this->num_limit .'" value="'. (isset($_POST['op_'.$this->formname])?$_POST['op_'.$this->formname]:$this->comment) .'" style="'. $style_color .'" onfocus="this.style.color=\'#001\';if(this.value==\''. $this->comment.'\')this.value=\'\'" onblur="if(this.value==\'\'){this.value=\''. $this->comment .'\';this.style.color=\'#999\'}">';
+      echo '<input type="text" name="op_'.$this->formname.'" id="op_'.$this->formname.'" '. $style_size .' value="'. (isset($_POST['op_'.$this->formname])?$_POST['op_'.$this->formname]:$this->comment) .'" style="'. $style_color .'" onfocus="this.style.color=\'#001\';if(this.value==\''. $this->comment.'\')this.value=\'\'" onblur="if(this.value==\'\'){this.value=\''. $this->comment .'\';this.style.color=\'#999\'}">';
       if($this->required == 'true'){
 
         echo '<font color="red">&nbsp;*必須</font>';
       }
-      echo '<br><span id="error_'.$this->formname.'" class="option_error"><font color="red">';
+      echo '<br><span id="error_'.$this->formname.'" class="shipping_error"><font color="red">';
      if (isset($option_error_array[$this->formname])) {
        echo $option_error_array[$this->formname]; 
      }
      echo '</font></span>'; 
      echo '</td>';  
     }else{
-    echo '<td class="main">'; 
+    echo '<td class="main" width="70%">'; 
     echo '<input type="hidden" name="'.$this->formname.'" value="'.$this->front_title.'">';
     echo '<textarea
-      name="op_'.$this->formname.'" id="op_'.$this->formname.'" rows="'. $options['rows'] .'" maxlength="'. $this->num_limit .'" onfocus="this.style.color=\'#001\';if(this.value==\''. $this->comment.'\')this.value=\'\'" onblur="if(this.value==\'\'){this.value=\''. $this->comment .'\';this.style.color=\'#999\'}">'.(isset($_POST['op_'.$this->formname])?$_POST['op_'.$this->formname]:'').'</textarea>'; 
-     echo '<span id="error_'.$this->formname.'" class="option_error"><font color="red">';
+      name="op_'.$this->formname.'" id="op_'.$this->formname.'" rows="'. $options['rows'] .'" onfocus="this.style.color=\'#001\';if(this.value==\''. $this->comment.'\')this.value=\'\'" onblur="if(this.value==\'\'){this.value=\''. $this->comment .'\';this.style.color=\'#999\'}">'.(isset($_POST['op_'.$this->formname])?$_POST['op_'.$this->formname]:'').'</textarea>'; 
+     echo '<span id="error_'.$this->formname.'" class="shipping_error"><font color="red">';
      if (isset($option_error_array[$this->formname])) {
        echo $option_error_array[$this->formname]; 
      }
@@ -64,11 +66,20 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
          return true; 
        }
        $input_text_len = mb_strlen($input_text_str, 'UTF-8');
-       
-       if ($input_text_len > $this->num_limit) {
-         $option_error_array[$this->formname] = sprintf(ADDRESS_ERROR_OPTION_ITEM_TEXT_NUM_MAX, $this->num_limit);  
-         return true; 
+       if($this->num_limit != 0){
+         if ($input_text_len > $this->num_limit) {
+           $option_error_array[$this->formname] = sprintf(ADDRESS_ERROR_OPTION_ITEM_TEXT_NUM_MAX, $this->num_limit);  
+           return true; 
+         } 
        }
+       
+       if($this->num_limit_min != 0){
+         if ($input_text_len < $this->num_limit_min) {
+           $option_error_array[$this->formname] = "'$this->front_title'".ADDRESS_ERROR_OPTION_ITEM_TEXT_NUM_MIN.$this->num_limit_min.ADDRESS_ERROR_OPTION_ITEM_TEXT_NUM_MIN_1;  
+           return true; 
+         } 
+       }
+       
      }
     
      if ($input_text_str != '') {

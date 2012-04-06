@@ -15,13 +15,14 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
     $options = unserialize($this->option);
     $type_limit = $options['type_limit'];
     $style_color = isset($_POST['op_'.$this->formname]) && $_POST['op_'.$this->formname] != $this->comment ?'color:#000;':'color:#999;';
+    //$maxlen = $this->num_limit == 0 ? '' : ' maxlength="'. $this->num_limit .'"';
     if($options['rows'] == 1){
       
       $style_size = $type_limit == 'num' ? 'size="25" ' : 'class="option_input" ';
       echo '<td class="main" width="70%">';
       echo '<input type="hidden" name="'.$this->formname.'" value="'.$this->front_title.'">';
       echo '<input type="hidden" name="type_'.$this->formname.'" value="'.$type_limit.'">';
-      echo '<input '. $style_size .'type="text" name="op_'.$this->formname.'" id="op_'.$this->formname.'" size="15" maxlength="'. $this->num_limit .'" value="'. (isset($_POST['op_'.$this->formname])?$_POST['op_'.$this->formname]:$this->comment) .'" style="'. $style_color .'" onfocus="this.style.color=\'#001\';if(this.value==\''. $this->comment.'\')this.value=\'\'" onblur="if(this.value==\'\'){this.value=\''. $this->comment .'\';this.style.color=\'#999\'}">';
+      echo '<input '. $style_size .'type="text" name="op_'.$this->formname.'" id="op_'.$this->formname.'" size="15"'. $maxlen .' value="'. (isset($_POST['op_'.$this->formname])?$_POST['op_'.$this->formname]:$this->comment) .'" style="'. $style_color .'" onfocus="this.style.color=\'#001\';if(this.value==\''. $this->comment.'\')this.value=\'\'" onblur="if(this.value==\'\'){this.value=\''. $this->comment .'\';this.style.color=\'#999\'}">';
       if ($this->required == 'true') {
 
         echo '<font color="red">&nbsp;*必須</font>';
@@ -37,7 +38,7 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
     echo '<input type="hidden" name="'.$this->formname.'" value="'.$this->front_title.'">';
     echo '<input type="hidden" name="type_'.$this->formname.'" value="'.$type_limit.'">';
     echo '<textarea class="option_input" 
-      name="op_'.$this->formname.'" id="op_'.$this->formname.'" rows="'. $options['rows'] .'" maxlength="'. $this->num_limit .'" onfocus="this.style.color=\'#001\';if(this.value==\''. $this->comment.'\')this.value=\'\'" onblur="if(this.value==\'\'){this.value=\''. $this->comment .'\';this.style.color=\'#999\'}" style="'. $style_color .'">'.(isset($_POST['op_'.$this->formname])?$_POST['op_'.$this->formname]:'').'</textarea>'; 
+      name="op_'.$this->formname.'" id="op_'.$this->formname.'" rows="'. $options['rows'] .'"'. $maxlen .' onfocus="this.style.color=\'#001\';if(this.value==\''. $this->comment.'\')this.value=\'\'" onblur="if(this.value==\'\'){this.value=\''. $this->comment .'\';this.style.color=\'#999\'}" style="'. $style_color .'">'.(isset($_POST['op_'.$this->formname])?$_POST['op_'.$this->formname]:'').'</textarea>'; 
      if ($this->required == 'true') {
 
         echo '<font color="red">&nbsp;*必須</font>';
@@ -74,10 +75,22 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
        }
        $input_text_len = mb_strlen($input_text_str, 'UTF-8');
        
-       if ($input_text_len > $this->num_limit) {
-         $option_error_array[$this->formname] = sprintf(ADDRESS_ERROR_OPTION_ITEM_TEXT_NUM_MAX, $this->num_limit);  
-         return true; 
+       if($this->num_limit != 0){
+
+         if($input_text_len > $this->num_limit){
+           $option_error_array[$this->formname] = sprintf(ADDRESS_ERROR_OPTION_ITEM_TEXT_NUM_MAX, $this->num_limit);  
+           return true;   
+         }
        }
+        
+       if($this->num_limit_min != 0){
+
+         if($input_text_len < $this->num_limit_min){
+           $option_error_array[$this->formname] = "'$this->front_title'".ADDRESS_ERROR_OPTION_ITEM_TEXT_NUM_MIN.$this->num_limit_min.ADDRESS_ERROR_OPTION_ITEM_TEXT_NUM_MIN_1;  
+           return true;   
+         }
+       }
+       
      }
     
      if ($input_text_str != '') {

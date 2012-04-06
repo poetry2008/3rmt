@@ -7,8 +7,8 @@
 
 require('includes/application_top.php');
 require('includes/step-by-step/new_application_top.php');
-require('includes/address_orders/AD_Option.php');
-require('includes/address_orders/AD_Option_Group.php');
+require('includes/address/AD_Option.php');
+require('includes/address/AD_Option_Group.php');
 $ad_option = new AD_Option();
 
 require(DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_EDIT_ORDERS);
@@ -248,7 +248,7 @@ if (tep_not_null($action)) {
       if (!$ad_option->check()) {
         foreach ($_POST as $p_key => $p_value) {
           $op_single_str = substr($p_key, 0, 3);
-          if ($op_single_str == 'op_') {
+          if ($op_single_str == 'ad_') {
             $option_info_array[$p_key] = tep_db_prepare_input($p_value); 
           } 
         }
@@ -339,9 +339,13 @@ if (tep_not_null($action)) {
       //住所信息入库
       
       foreach($option_info_array as $ad_key=>$ad_value){
-
+        
+        $address_list_query = tep_db_query("select * from ". TABLE_ADDRESS ." where name_flag='". substr($ad_key,3) ."'");
+        $address_list_array = tep_db_fetch_array($address_list_query);
+        $ad_value = $address_list_array['comment'] == $ad_value ? '' : $ad_value;
         $ad_sql = "update ". TABLE_ADDRESS_ORDERS ." set value='". $ad_value ."' where name='". substr($ad_key,3) ."' and orders_id='". $oID ."'";
         $ad_query = tep_db_query($ad_sql);
+        tep_db_free_result($address_list_query);
         tep_db_free_result($ad_query);
       } 
 
@@ -1151,15 +1155,21 @@ function address_list(){
 ?>
   for(x in arr_list){
     
-    var op_list = document.getElementById("op_"+x);
-    $("#op_"+x).val(arr_list[x]);
+    var op_list = document.getElementById("ad_"+x);
+    $("#ad_"+x).val(arr_list[x]);
     op_list.style.color = '#000';
   }
 }
 
+<?php
+  if(isset($_GET['action']) && $_GET['action'] == 'edit'){
+?>
 $(document).ready(function(){            
   address_list();
 });
+<?php
+  }
+?>
 </script>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">
@@ -1277,7 +1287,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     </tr>
     <!-- 住所信息 -->
     <tr>
-    <td class="main" valign="top"><a href="javascript:void();" onclick="address_show();"><font color="blue"><b><u><span id="address_font"><?php echo TEXT_SHIPPING_ADDRESS;?></span></u></b></font></a></td>
+    <td class="main" valign="top"><a href="javascript:void(0);" onclick="address_show();"><font color="blue"><b><u><span id="address_font"><?php echo TEXT_SHIPPING_ADDRESS;?></span></u></b></font></a></td>
     <td class="main">
     </td>
     </tr>

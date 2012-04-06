@@ -554,7 +554,7 @@ $email_order = $payment_modules->getOrderMailString($payment,$mailoption);
 $shipping_fee_value = isset($_POST['shipping_fee']) ? $_POST['shipping_fee'] : 0; 
 $email_temp = '▼ポイント割引';
 $email_temp_str = '▼ ポイント割引';
-$email_shipping_fee = '▼お届け料金　　   ：'.$shipping_fee_value.'円
+$email_shipping_fee = '▼お届け料金　　　：'.$shipping_fee_value.'円
 '.$email_temp;
 $email_order = str_replace($email_temp,$email_shipping_fee,$email_order);
 $email_order = str_replace($email_temp_str,$email_shipping_fee,$email_order);
@@ -568,10 +568,11 @@ foreach($_SESSION['options'] as $address_value){
 $maxlen = max($address_len_array);
 $email_address_str = '▼住所情報'."\n";
 $email_address_str .= '------------------------------------------'."\n";
+$maxlen = 9;
 foreach($_SESSION['options'] as $ad_value){
-  $ad_len = strlen($ad_value[0]);
-  $temp_str = str_repeat(' ',$maxlen-$ad_len);
-  $email_address_str .= $ad_value[0].$temp_str.'　　   ：'.$ad_value[1]."\n";
+  $ad_len = mb_strlen($ad_value[0],'utf8');
+  $temp_str = str_repeat('　',$maxlen-$ad_len);
+  $email_address_str .= $ad_value[0].$temp_str.'：'.$ad_value[1]."\n";
 }
 $email_address_str .= '------------------------------------------'."\n";
 $email_address_str .= $email_address;

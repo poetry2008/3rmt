@@ -31,6 +31,7 @@ class AD_Option_Item extends AD_Option_DbRecord
     $this->instance->front_title = $this->name; 
     $this->instance->comment = $this->comment; 
     $this->instance->num_limit = $this->num_limit;
+    $this->instance->num_limit_min = $this->num_limit_min;
     $this->instance->required = $this->required;
     }
     return $this->instance;

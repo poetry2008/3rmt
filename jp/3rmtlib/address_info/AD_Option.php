@@ -34,7 +34,7 @@ class AD_Option extends AD_Option_DbRecord
     $error_single = false;
     foreach ($_POST as $key => $value) {
       $op_pos = substr($key, 0, 3); 
-      if ($op_pos == 'ad_') {
+      if ($op_pos == 'op_') {
         $option_info_array = explode('_', $key);
         $item_sql = "select * from ".TABLE_ADDRESS." where name_flag = '".$option_info_array[1]."'"; 
         $item = $this->getResultObject($item_sql, 'AD_Option_Item'); 

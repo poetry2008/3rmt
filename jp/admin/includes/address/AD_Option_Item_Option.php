@@ -7,13 +7,12 @@ class AD_Option_Item_Option extends AD_Option_Item_Basic
 
   function render($option_error_array)
   {
-     echo '<td width="10" height="30">'. tep_draw_separator('pixel_trans.gif', '10', '1') .'</td>';
      if (strlen($this->front_title)) {
-       echo '<td class="main">'; 
+       echo '<td class="main" width="30%">'; 
        echo $this->front_title.':';
        echo '</td>';
      }
-     echo '<td class="main">'; 
+     echo '<td class="main" width="70%">'; 
      echo '<input type="hidden" name="'.$this->formname.'" value="'.$this->front_title.'">';
      if (!empty($this->option)) {
         
@@ -21,11 +20,11 @@ class AD_Option_Item_Option extends AD_Option_Item_Basic
        $option = unserialize($this->option);
        if(!empty($option['option_list']) && count($option['option_list']) == 1){
 
-         echo current($option['option_list']).'<input type="hidden" name="op_'.$this->formname.'" value="'.current($option['option_list']).'">';
+         echo current($option['option_list']).'<input type="hidden" name="ad_'.$this->formname.'" value="'.current($option['option_list']).'">';
        }elseif(empty($option['option_list']) && count($option[$_SESSION['select_value']]['option_list']) == 1){
          echo '';
        }else{
-         echo '<select name="op_'.$this->formname.'" id="op_'.$this->formname.'">'; 
+         echo '<select name="ad_'.$this->formname.'" id="ad_'.$this->formname.'">'; 
        
          $option_array = $option['option_list'];  
          if(empty($option_array)){
@@ -39,8 +38,8 @@ class AD_Option_Item_Option extends AD_Option_Item_Basic
          }
        
          foreach ($option_array as $key => $value) {
-           if (isset($_POST['op_'.$this->formname])) {
-             echo '<option value="'.$value.'"'.(($_POST['op_'.$this->formname] == $value)?'selected ':'').'>'.$value.'</option>'; 
+           if (isset($_POST['ad_'.$this->formname])) {
+             echo '<option value="'.$value.'"'.(($_POST['ad_'.$this->formname] == $value)?'selected ':'').'>'.$value.'</option>'; 
            } else {
              echo '<option value="'.$value.'" '.((isset($select_value))&&($select_value==$value)?'selected':'').'>'.$value.'</option>'; 
            }

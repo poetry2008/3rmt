@@ -4,8 +4,8 @@
 */
 
   require('includes/application_top.php');
-  require('3rmtlib/address/AD_Option.php');
-  require('3rmtlib/address/AD_Option_Group.php');
+  require('3rmtlib/address_info/AD_Option.php');
+  require('3rmtlib/address_info/AD_Option_Group.php');
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_ACCOUNT_EDIT);
   $hm_option = new AD_Option();
   if (!tep_session_is_registered('customer_id')) {
@@ -17,9 +17,10 @@
   if($guestchk == '1') {
     tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
   }
-  
   //start
   // tamura 2002/12/30 「全角」英数字を「半角」に変換
+  $save_flag = false;
+  $del_flag = false; 
   $an_cols = array('password','confirmation','email_address','postcode','telephone','fax');
   if (ACCOUNT_DOB) $an_cols[] = 'dob';
   foreach ($an_cols as $col) {
@@ -31,7 +32,7 @@
     $address_flag_id_num = $_GET['act'];
     $address_del_sql = "delete from ". TABLE_ADDRESS_HISTORY ." where orders_id='". $address_flag_id_num ."' and customers_id='". $_SESSION['customer_id'] ."'";
     tep_db_query($address_del_sql);
-    echo '<script>alert("削除成功");location.href="'. FILENAME_ACCOUNT_EDIT .'";</script>';
+    $del_flag = true;
   }
 switch($_POST['action']){
   case 'per':
@@ -157,7 +158,8 @@ switch($_POST['action']){
 
       // ccdd
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array, 'update', "customers_id = '" . tep_db_input($customer_id) . "' and address_book_id = '" . tep_db_input($customer_default_address_id) . "'");
-        echo '<script>alert("保存成功");location.href="'. FILENAME_ACCOUNT_EDIT .'";</script>';
+        //echo '<script>alert("保存成功");location.href="'. FILENAME_ACCOUNT_EDIT .'";</script>';
+        $save_flag = true;
         //tep_redirect(tep_href_link(FILENAME_ACCOUNT_EDIT, '', 'SSL'));
       }else{
 
@@ -222,7 +224,8 @@ switch($_POST['action']){
         $address_sql = "insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'{$rand_num}',{$_SESSION['customer_id']},{$add_list_array[substr($address_key,3)]},'". substr($address_key,3) ."','{$address_value}')";
         tep_db_query($address_sql);
       }
-      echo '<script>alert("保存成功");location.href="'. FILENAME_ACCOUNT_EDIT .'";</script>';
+      //echo '<script>alert("保存成功");location.href="'. FILENAME_ACCOUNT_EDIT .'";</script>';
+      $save_flag = true; 
     }else{
       foreach($option_info_array as $address_key=>$address_value){
 
@@ -230,7 +233,8 @@ switch($_POST['action']){
         tep_db_query($address_sql);
       }
     }
-    echo '<script>alert("保存成功");location.href="'. FILENAME_ACCOUNT_EDIT .'";</script>'; 
+    //echo '<script>alert("保存成功");location.href="'. FILENAME_ACCOUNT_EDIT .'";</script>'; 
+    $save_flag = true;
   }
   break;
   case 'options':
@@ -238,7 +242,8 @@ switch($_POST['action']){
     tep_db_query("update ". TABLE_CUSTOMERS ." set new_customers_newsletter='". $newsletter ."' where customers_id='". $_SESSION['customer_id'] ."'");
     tep_db_query("update ". TABLE_CUSTOMERS ." set customers_newsletter='". $newsletter ."' where customers_id='". $_SESSION['customer_id'] ."'");
     tep_db_query("update " . TABLE_CUSTOMERS_INFO . " set customers_info_date_account_last_modified = now() where customers_info_id = '" . tep_db_input($customer_id) . "'");
-    echo '<script>alert("保存成功");location.href="'. FILENAME_ACCOUNT_EDIT .'";</script>'; 
+    //echo '<script>alert("保存成功");location.href="'. FILENAME_ACCOUNT_EDIT .'";</script>'; 
+    $save_flag = true;
   break;
   case 'pwd': 
     $error_pwd = false;
@@ -259,12 +264,14 @@ switch($_POST['action']){
     if($error_pwd == false){
 
       tep_db_query("update ". TABLE_CUSTOMERS ." set new_customers_password='".tep_encrypt_password($password) ."',customers_password='". tep_encrypt_password($password) ."' where customers_id='". $_SESSION['customer_id'] ."'");  
-      echo '<script>alert("保存成功");location.href="'. FILENAME_ACCOUNT_EDIT .'";</script>';
+      //echo '<script>alert("保存成功");location.href="'. FILENAME_ACCOUNT_EDIT .'";</script>';
+      $save_flag = true;
     }
   break;
 }
 
   //end
+  
   $breadcrumb->add(NAVBAR_TITLE_1, tep_href_link(FILENAME_ACCOUNT, '', 'SSL'));
   $breadcrumb->add(NAVBAR_TITLE_2, tep_href_link(FILENAME_ACCOUNT_EDIT, '', 'SSL'));
 ?>
@@ -325,4 +332,14 @@ switch($_POST['action']){
 </div> 
 </body>
 </html>
+<?php
+  if($save_flag == true){
+
+    echo '<script>alert("保存成功");location.href="'. FILENAME_ACCOUNT_EDIT .'";</script>';  
+  }
+  if($del_flag == true){
+ 
+    echo '<script>alert("削除成功");location.href="'. FILENAME_ACCOUNT_EDIT .'";</script>';
+  }
+?>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>
