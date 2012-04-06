@@ -11,9 +11,116 @@
 */
 
   require('includes/application_top.php');
-  require(DIR_WS_ACTIONS.'change_preorder.php');
+
   
-  $breadcrumb->add(NAVBAR_CHANGE_PREORDER_TITLE, '');
+  require(DIR_WS_LANGUAGES . $language . '/change_preorder.php');
+  
+  $preorder_raw = tep_db_query('select * from '.TABLE_PREORDERS." where check_preorder_str = '".$_GET['pid']."' and site_id = '".SITE_ID."' and is_active = '1'");
+  $preorder_res = tep_db_fetch_array($preorder_raw); 
+  if (!$preorder_res) {
+    forward404(); 
+  }
+  
+  $customer_info_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = '".$preorder_res['customers_id']."' and site_id = '".SITE_ID."'"); 
+  $customer_info_res = tep_db_fetch_array($customer_info_raw);
+  
+  $is_member_single = 0;
+  if ($customer_info_res['customers_guest_chk'] == '0') {
+    $is_member_single = 1; 
+  }
+  
+  if (!tep_session_is_registered('customer_id')) {
+      if ($customer_info_res['customers_guest_chk'] == '0') {
+        $navigation->set_snapshot();
+        tep_redirect(tep_href_link(FILENAME_LOGIN, 'pid='.$_GET['pid'], 'SSL'));
+      }
+  } else {
+    if ($is_member_single) { 
+      if ($guestchk == '0') {
+        if ($customer_emailaddress != $preorder_res['customers_email_address']) {
+          $navigation->set_snapshot();
+          
+          tep_session_unregister('customer_id');
+          tep_session_unregister('customer_default_address_id');
+          tep_session_unregister('customer_first_name');
+          tep_session_unregister('customer_last_name'); 
+          tep_session_unregister('customer_country_id');
+          tep_session_unregister('customer_zone_id');
+          tep_session_unregister('comments');
+          tep_session_unregister('customer_emailaddress');
+          tep_session_unregister('guestchk');
+
+          $cart->reset();
+          
+          tep_redirect(tep_href_link(FILENAME_LOGIN, 'pid='.$_GET['pid'], 'SSL'));
+        }
+      }
+    }
+  } 
+  $preorder_point = (int)$customer_info_res['point'];  
+  
+  $preorder_id = $preorder_res['orders_id'];
+ 
+  $ensure_date_info = explode(' ', $preorder_res['ensure_deadline']);
+  $year_info = explode('-', $ensure_date_info[0]);
+  $ensure_datetime = mktime(23, 59, 59, $year_info[1], $year_info[2], $year_info[0]);
+  if (time() > $ensure_datetime) {
+    $preorder_product_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$preorder_id."'"); 
+    $preorder_product_res = tep_db_fetch_array($preorder_product_raw); 
+    tep_redirect(tep_href_link('change_preorder_timeout.php?pname='.urlencode($preorder_product_res['products_name']))); 
+  }
+  $error = false;  
+  if ($_POST['action'] == 'process') {
+    $preorder_torihikihouhou = tep_db_prepare_input($_POST['torihikihouhou']);
+    $preorder_date = tep_db_prepare_input($_POST['date']);
+    $preorder_hour = tep_db_prepare_input($_POST['hour']);
+    $preorder_min = tep_db_prepare_input($_POST['min']);
+    if ($preorder_torihikihouhou == '') {
+      $error = true;
+      $torihikihouhou_error = TEXT_PREORDER_ERROR_TORIHIKIHOUHOU;
+    }
+    
+    if ($preorder_date == '') {
+      $error = true; 
+      $date_error = TEXT_PREORDER_ERROR_DATE; 
+    }
+    
+    if ($preorder_hour == '') {
+      $error = true;
+      $jikan_error = TEXT_PREORDER_ERROR_JIKAN;
+    }
+    
+    if ($preorder_min == '') {
+      $error = true;
+      $jikan_error = TEXT_PREORDER_ERROR_JIKAN;
+    }
+   
+    if (isset($_POST['p_character'])) {
+      if (empty($_POST['p_character'])) {
+        $error = true;
+        $character_error = TEXT_PREORDER_ERROR_CHARACTER;
+      }
+    }
+    
+    if (isset($_POST['preorder_point'])) {
+      if (is_numeric($_POST['preorder_point'])) {
+        if ($_POST['preorder_point'] > $preorder_point) {
+          if (($_POST['preorder_point'] != '0') && ($preroder_point != '0')) {
+            $error = true;
+            $point_error = TEXT_PREORDER_ERROR_POINT;
+          }
+        }
+        if (($_POST['preorder_point'] < 0)) {
+          $error = true;
+          $point_error = TEXT_PREORDER_ERROR_POINT;
+        }
+      } else {
+        $error = true;
+        $point_error = TEXT_PREORDER_ERROR_POINT;
+      }
+    }
+  }
+$breadcrumb->add(NAVBAR_CHANGE_PREORDER_TITLE, '');
 ?>
 <?php page_head();?>
 <script type="text/javascript">
@@ -27,14 +134,14 @@ echo tep_draw_form('order1', tep_href_link('change_preorder_confirm.php'));
 foreach ($_POST as $post_key => $post_value) {
   if (is_array($post_value)) {
     foreach ($post_value as $ps_key => $ps_value) {
-      echo '<input type="hidden" name="'.$post_key.'['.$ps_key.']" value="'.$ps_value.'">';  
+      echo tep_draw_hidden_field($post_key.'['.$ps_key.']', $ps_value); 
       $preorder_info_attr[] = $ps_value;
     }
   } else {
-    echo '<input type="hidden" name="'.$post_key.'" value="'.$post_value.'">'; 
+    echo tep_draw_hidden_field($post_key, $post_value); 
   }
 }
-echo '<input type="hidden" name="pid" value="'.$preorder_id.'">'; 
+echo tep_draw_hidden_field('pid', $preorder_id); 
 echo '</form>';
 ?>
 <script type="text/javascript">
@@ -43,18 +150,20 @@ echo '</form>';
 <?php
 } 
 ?>
+<div align="center"> 
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
   <!-- header_eof //--> 
   <!-- body //--> 
-  <div id="main"> 
-      <div id="l_menu"> <!-- left_navigation //--> 
+  <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border"> 
+    <tr> 
+      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"> <!-- left_navigation //--> 
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
-        <!-- left_navigation_eof //--> </div> 
+        <!-- left_navigation_eof //--> </td> 
       <!-- body_text //--> 
-      <div id="content">
-          <div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div> 
+      <td valign="top" id="contents"> 
           <h1 class="pageHeading"><?php echo NAVBAR_CHANGE_PREORDER_TITLE;?></h1> 
-          <div class="comment_change_preorder">
+          <div class="comment">
+          <table cellpadding="0" cellspacing="0" border="0" width="100%" class="product_info_box"><tr><td>
           <table border="0" cellspacing="0" cellpadding="0" border="0" width="90%" align="center">
             <tr>
               <td width="20%">
@@ -65,10 +174,10 @@ echo '</form>';
                   </tr>
                 </table> 
               </td>
-              <td width="58%">
+              <td width="60%">
               <?php echo tep_draw_separator('pixel_silver.gif', '100%', '1');?>
               </td>
-              <td width="22%">
+              <td width="20%">
                 <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                   <tr>
                     <td width="70%">
@@ -83,8 +192,8 @@ echo '</form>';
             </tr>
             <tr>
               <td align="left" width="20%" class="preorderBarcurrent"><?php echo PREORDER_TRADER_LINE_TITLE;?></td> 
-              <td align="center" width="58%" class="preorderBarTo"><?php echo PREORDER_CONFIRM_LINE_TITLE;?></td> 
-              <td align="right" width="22%" class="preorderBarTo"><?php echo PREORDER_FINISH_LINE_TITLE;?></td> 
+              <td align="center" width="60%" class="preorderBarTo"><?php echo PREORDER_CONFIRM_LINE_TITLE;?></td> 
+              <td align="right" width="20%" class="preorderBarTo"><?php echo PREORDER_FINISH_LINE_TITLE;?></td> 
             </tr>
           </table>
           <?php
@@ -96,7 +205,7 @@ echo '</form>';
               <?php echo TEXT_PREORDER_FETCH_BUTTON_INFO;?> 
               </td>
               <td class="main" align="right">
-                <?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE);?> 
+                <?php echo tep_image_submit('button_continue02.gif', IMAGE_BUTTON_CONTINUE);?> 
               </td>
             </tr>
           </table> 
@@ -154,8 +263,7 @@ echo '</form>';
               <td class="main"><?php echo CHANGE_ORDER_PRODUCT_CHARACTER;?></td> 
               <td class="main">
               <?php 
-              $p_character_name = $preorder_product_res['products_character']; 
-              echo tep_draw_input_field('p_character', isset($_POST['p_character'])?$_POST['p_character']:$p_character_name);
+              echo tep_draw_input_field('p_character', isset($_POST['p_character'])?$_POST['p_character']:'');
               if (isset($character_error)) {
                 echo '<br><font color="#ff0000">'.$character_error.'</font>'; 
               }
@@ -171,9 +279,6 @@ echo '</form>';
               </td>
               <td class="main">
               <?php echo $preorder_product_res['products_quantity'].PRODUCT_UNIT_TEXT;?> 
-              <?php echo
-              tep_get_full_count2($preorder_product_res['products_quantity'],
-                  $preorder_product_res['products_id']);?>
               </td>
             </tr>
         </table> 
@@ -303,24 +408,7 @@ echo '</form>';
             <tr>
               <td class="main" width="150"><?php echo TEXT_PREORDER_POINT_TEXT;?></td> 
               <td class="main">
-              <input type="text" name="preorder_point" size="24" value="<?php echo isset($_POST['preorder_campaign_info'])?$_POST['preorder_campaign_info']:(isset($_POST['preorder_point'])?$_POST['preorder_point']:'0');?>" style="text-align:right;">&nbsp;&nbsp;<?php echo $preorder_point;?> 
-              <?php 
-              echo TEXT_PREORDER_POINT_READ; 
-              if (isset($point_error)) {
-                echo '<br><font color="#ff0000">'.$point_error.'</font>'; 
-              }
-              ?>
-              </td> 
-            </tr>
-          </table>
-          <br>
-          <?php } else if ($is_member_single && MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && ($preorder_total < 0)) { 
-          ?>
-          <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
-            <tr>
-              <td class="main" width="150"><?php echo TEXT_PREORDER_POINT_TEXT;?></td> 
-              <td class="main">
-              <input type="text" name="camp_preorder_point" size="24" value="<?php echo isset($_POST['preorder_campaign_info'])?$_POST['preorder_campaign_info']:(isset($_POST['camp_preorder_point'])?$_POST['camp_preorder_point']:'0');?>" style="text-align:right;">
+              <input type="text" name="preorder_point" class="input_text_short" value="<?php echo isset($_POST['preorder_point'])?$_POST['preorder_point']:'0';?>">&nbsp;/&nbsp;<?php echo $preorder_point;?> 
               <?php 
               if (isset($point_error)) {
                 echo '<br><font color="#ff0000">'.$point_error.'</font>'; 
@@ -330,8 +418,7 @@ echo '</form>';
             </tr>
           </table>
           <br>
-          <?php
-          }?> 
+          <?php }?> 
           <table width="100%" cellpadding="0" cellspacing="0" border="0" class="c_pay_info">
             <tr>
               <td class="main">
@@ -343,24 +430,25 @@ echo '</form>';
                    echo '<input type="hidden" name="preorder_point" value="0">'; 
                  }
                 ?>
-                <?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE);?> 
+                <?php echo tep_image_submit('button_continue02.gif', IMAGE_BUTTON_CONTINUE);?> 
               </td>
             </tr>
           </table> 
           </form> 
-          </div>
+          </div></td></tr></table>
           <p class="pageBottom"></p>
-      </div> 
+      </td> 
       <!-- body_text_eof //--> 
-      <div id="r_menu"> <!-- right_navigation //--> 
+      <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation //--> 
         <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-        <!-- right_navigation_eof //--> </div> 
+        <!-- right_navigation_eof //--> </td> 
+  </table> 
   <!-- body_eof //--> 
   <!-- footer //--> 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
   <!-- footer_eof //--> 
 </div>
-</div> 
+</div>
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

@@ -11,8 +11,110 @@
 */
 
   require('includes/application_top.php');
-  require(DIR_WS_ACTIONS.'change_preorder_confirm.php');
+  
+  if (!isset($_POST['pid'])) {
+    forward404(); 
+  }
+  
+  $preorder_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$_POST['pid']."' and site_id = '".SITE_ID."'");
+  $preorder_res = tep_db_fetch_array($preorder_raw);
+  if (!$preorder_res) {
+    forward404(); 
+  } 
+  
+  $ppayment_list_arr = tep_preorder_get_payment_list();
+  $con_payment_code = tep_preorder_get_payment_type($ppayment_list_arr, $preorder_res['payment_method']);
+  if ($con_payment_code != '') {
+    $con_payment = new $con_payment_code(); 
+  } 
+  
+  $is_guest_single = 0;
+  $link_customer_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = '".$preorder_res['customers_id']."'");
+  $link_customer_res = tep_db_fetch_array($link_customer_raw);
+  if ($link_customer_res) {
+    if ($link_customer_res['customers_guest_chk'] == '1') {
+      $is_guest_single = 1; 
+    }
+  }
+  
+  $check_preorder_str = $preorder_res['check_preorder_str'];
  
+  $preorder_subtotal = 0;
+  $preorder_subtotal_raw = tep_db_query("select * from ".TABLE_PREORDERS_TOTAL." where orders_id = '".$_POST['pid']."' and class = 'ot_subtotal'");
+  $preorder_subtotal_res = tep_db_fetch_array($preorder_subtotal_raw);
+  if ($preorder_subtotal_res) {
+    $preorder_subtotal = number_format($preorder_subtotal_res['value'], 0, '.', ''); 
+  }
+
+  $preorder_info_attr = array();
+  foreach ($_POST as $pc_key => $pc_value) {
+    if (is_array($pc_value)) {
+      foreach ($pc_value as $pcs_key => $pcs_value) {
+        $preorder_info_attr[$pcs_key] =$pcs_value; 
+      }
+    }
+  }
+  
+  if (!tep_session_is_registered('preorder_info_attr')) {
+    tep_session_register('preorder_info_attr'); 
+  }
+  
+  
+  $preorder_info_tori = $_POST['torihikihouhou'];
+  $preorder_info_date = $_POST['date'];
+  $preorder_info_hour = $_POST['hour'];
+  $preorder_info_min = $_POST['min'];
+  $preorder_info_character = $_POST['p_character'];
+  $preorder_info_id = $_POST['pid'];
+  
+  if (!tep_session_is_registered('preorder_info_tori')) {
+    tep_session_register('preorder_info_tori'); 
+  }
+  
+  if (!tep_session_is_registered('preorder_info_date')) {
+    tep_session_register('preorder_info_date'); 
+  }
+  
+  if (!tep_session_is_registered('preorder_info_hour')) {
+    tep_session_register('preorder_info_hour'); 
+  }
+  
+  if (!tep_session_is_registered('preorder_info_min')) {
+    tep_session_register('preorder_info_min'); 
+  }
+  
+  if (!tep_session_is_registered('preorder_info_character')) {
+    tep_session_register('preorder_info_character'); 
+  }
+  
+  if (!tep_session_is_registered('preorder_info_id')) {
+    tep_session_register('preorder_info_id'); 
+  }
+  
+  if (MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
+    if (@$_POST['preorder_point'] < $preorder_subtotal) {
+      $preorder_point = isset($_POST['preorder_point'])?$_POST['preorder_point']:0; 
+    } else {
+      $preorder_point = $preorder_subtotal; 
+    }
+    $preorder_real_point = $preorder_point;
+    
+    if (!tep_session_is_registered('preorder_point')) {
+      tep_session_register('preorder_point'); 
+    } 
+    if (!tep_session_is_registered('preorder_real_point')) {
+      tep_session_register('preorder_real_point'); 
+    } 
+  }
+  
+  require(DIR_WS_LANGUAGES . $language . '/change_preorder_confirm.php');
+  
+$form_action_url = tep_href_link('change_preorder_process.php'); 
+if (isset($con_payment)) {
+  if (isset($con_payment->form_action_url)) {
+    $form_action_url = $con_payment->form_action_url; 
+  }
+}
   $breadcrumb->add(NAVBAR_CHANGE_PREORDER_TITLE, '');
 ?>
 <?php page_head();?>
@@ -31,27 +133,19 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
 //-->
 </script>
 </head>
-<body>
+<body><div align="center"> 
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
   <!-- header_eof //--> 
   <!-- body //--> 
-  <div id="main"> 
-      <div id="l_menu"> <!-- left_navigation //--> 
+  <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border"> 
+    <tr> 
+      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"> <!-- left_navigation //--> 
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
-        <!-- left_navigation_eof //--> </div> 
+        <!-- left_navigation_eof //--> </td> 
       <!-- body_text //--> 
-      <div id="content"> 
-          <div class="headerNavigation">
-          <?php   
-            echo '<a href="'.HTTP_SERVER.'" class="headerNavigation">'.HEADER_TITLE_TOP.'</a>'; 
-            echo ' &raquo; ';
-            echo '<a href="javascript:void(0);" class="headerNavigation" onclick="document.forms.order1.submit();">'.CHANGE_PREORDER_BREADCRUMB_FETCH.'</a>';
-            echo ' &raquo; ';
-            echo NAVBAR_CHANGE_PREORDER_TITLE; 
-          ?> 
-          </div>
+      <td valign="top" id="contents"> 
           <h1 class="pageHeading"><?php echo NAVBAR_CHANGE_PREORDER_TITLE;?></h1> 
-          <div class="comment">
+          <div class="comment"><div class="product_info_box">
           <table border="0" cellspacing="0" cellpadding="0" border="0" width="90%" align="center">
             <tr>
               <td width="20%">
@@ -62,7 +156,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                   </tr>
                 </table> 
               </td>
-              <td width="58%">
+              <td width="60%">
                 <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                   <tr>
                     <td width="50%">
@@ -73,7 +167,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                   </tr>
                 </table> 
               </td>
-              <td width="22%">
+              <td width="20%">
                 <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                   <tr>
                     <td width="70%">
@@ -88,8 +182,8 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
             </tr>
             <tr>
               <td align="left" width="20%" class="preorderBarFrom"><?php echo '<a href="javascript:void(0);" onclick="document.forms.order1.submit();">'.PREORDER_TRADER_LINE_TITLE.'</a>';?></td> 
-              <td align="center" width="58%" class="preorderBarcurrent"><?php echo PREORDER_CONFIRM_LINE_TITLE;?></td> 
-              <td align="right" width="22%" class="preorderBarTo"><?php echo PREORDER_FINISH_LINE_TITLE;?></td> 
+              <td align="center" width="60%" class="preorderBarcurrent"><?php echo PREORDER_CONFIRM_LINE_TITLE;?></td> 
+              <td align="right" width="20%" class="preorderBarTo"><?php echo PREORDER_FINISH_LINE_TITLE;?></td> 
             </tr>
           </table>
           <?php
@@ -101,7 +195,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
               <?php echo CHANGE_PREORDER_CONFIRM_BUTTON_INFO;?> 
               </td>
               <td class="main" align="right">
-                <?php echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONTINUE);?> 
+                <?php echo tep_image_submit('button_confirm_order02.gif', IMAGE_BUTTON_CONTINUE);?> 
               </td>
             </tr>
           </table>
@@ -116,13 +210,10 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
             ?>
             <tr>
               <td class="main">
-                <table width="100%" style="font-size:14px;"> 
+                <table width="100%"> 
                   <?php $preorder_product_res = tep_db_fetch_array($preorder_product_raw);?> 
                   <tr>
-                    <td class="main" align="center">
-                    <?php echo $preorder_product_res['products_quantity'].PRODUCT_UNIT_TEXT;?>
-                    <?php echo '<br>'.tep_get_full_count2($preorder_product_res['products_quantity'], $preorder_product_res['products_id']);?> 
-                    </td>                  
+                    <td class="main"><?php echo $preorder_product_res['products_quantity'].PRODUCT_UNIT_TEXT;?></td>                  
                     <td class="main">
                     <?php 
                     echo $preorder_product_res['products_name'];
@@ -142,11 +233,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                     </td>                  
                     <td class="main">
                     <?php 
-                    if ($preorder_product_res['final_price'] < 0) {
-                      echo '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->display_price($preorder_product_res['final_price'], $preorder_product_res['products_tax'], $preorder_product_res['products_quantity'])).'</font>'.JPMONEY_UNIT_TEXT; 
-                    } else {
-                      echo $currencies->display_price($preorder_product_res['final_price'], $preorder_product_res['products_tax'], $preorder_product_res['products_quantity']); 
-                    }
+                    echo $currencies->display_price($preorder_product_res['final_price'], $preorder_product_res['products_tax'], $preorder_product_res['products_quantity']); 
                     ?>
                     </td>                  
                   </tr>
@@ -163,7 +250,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
             </tr>
             <tr>
               <td class="main">
-                <table width="100%" style="font-size:14px;"> 
+                <table width="100%"> 
                   <tr>
                     <td class="main"><?php echo PREORDER_CONFIRM_FETCH_TIME_READ;?></td>                  
                     <td class="main">
@@ -198,7 +285,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
               <td class="main" width="30%" valign="top">
-                <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea_td" style="font-size:14px;"> 
+                <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea_td"> 
                   <tr>
                     <td class="main"><?php echo CHANGE_ORDER_CONFIRM_PAYMENT;?></td>                  
                   </tr>
@@ -210,7 +297,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                 </table> 
               </td>
               <td width="70%" align="right" valign="top">
-                <table border="0" cellpadding="2" cellspacing="0" style="font-size:14px;"> 
+                <table border="0" cellpadding="2" cellspacing="0"> 
                   <?php
                   if ($preorder_res['code_fee']) {
                   ?>
@@ -224,43 +311,18 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                   $preorder_total_raw = tep_db_query("select * from ".TABLE_PREORDERS_TOTAL." where orders_id = '".$_POST['pid']."' order by sort_order asc"); 
                   while ($preorder_total_res = tep_db_fetch_array($preorder_total_raw)) { 
                     if ($preorder_total_res['class'] == 'ot_total') {
-                      if (isset($_SESSION['preorder_campaign_fee'])) {
-                        $total_param = number_format($preorder_total_res['value'], 0, '.', '')+$_SESSION['preorder_campaign_fee']; 
-                      } else {
-                        $total_param = number_format($preorder_total_res['value'], 0, '.', '')-(int)$preorder_point; 
-                      }
+                      $total_param = number_format($preorder_total_res['value'], 0, '.', '')-(int)$preorder_point; 
                     }
                     
-                  ?>
-                  <?php
-                    if ($preorder_total_res['class'] == 'ot_point') {
-                      if (isset($_SESSION['preorder_campaign_fee'])) {
-                        if ($_SESSION['preorder_campaign_fee'] == 0) {
-                          continue; 
-                        }
-                      } else {
-                        if ((int)$preorder_point == 0) {
-                          continue; 
-                        }
-                      }
-                    }
                   ?>
                   <tr>
                     <td class="main" align="right"><?php echo $preorder_total_res['title'];?></td>                  
                     <td class="main" align="right">
                     <?php 
                     if ($preorder_total_res['class'] == 'ot_point') {
-                      if (isset($_SESSION['preorder_campaign_fee'])) {
-                        echo '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format_total(abs($_SESSION['preorder_campaign_fee']))).'</font>'.JPMONEY_UNIT_TEXT;
-                      } else {
-                        echo '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format_total((int)$preorder_point)).'</font>'.JPMONEY_UNIT_TEXT;
-                      }
+                      echo $currencies->format_total((int)$preorder_point);
                     } else if ($preorder_total_res['class'] == 'ot_total') {
-                      if (isset($_SESSION['preorder_campaign_fee'])) {
-                        echo $currencies->format_total($preorder_total_res['value']+(int)$_SESSION['preorder_campaign_fee']);
-                      } else {
-                        echo $currencies->format_total($preorder_total_res['value']-(int)$preorder_point);
-                      }
+                      echo $currencies->format_total($preorder_total_res['value']-(int)$preorder_point);
                     } else {
                       echo $currencies->format_total($preorder_total_res['value']);
                     }
@@ -317,19 +379,11 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
 }
 // ここまでカスタマーレベルに応じたポイント還元率算出============================================================
   if ($preorder_subtotal > 0) {
-    if (isset($_SESSION['preorder_campaign_fee'])) {
-      $preorder_get_point = ($preorder_subtotal + $_SESSION['preorder_campaign_fee']) * $point_rate;
-    } else {
-      $preorder_get_point = ($preorder_subtotal - (int)$preorder_point) * $point_rate;
-    }
+    $preorder_get_point = ($preorder_subtotal - (int)$preorder_point) * $point_rate;
   } else {
-    if (isset($payment_modules->modules[strtoupper($con_payment_code)]->show_point)) {
+    if (isset($con_payment->show_point)) {
       $show_point_single = true; 
-      if (isset($_SESSION['preorder_campaign_fee'])) {
-        $preorder_get_point = abs($preorder_subtotal)+abs($_SESSION['preorder_campaign_fee']);
-      } else {
-        $preorder_get_point = abs($preorder_subtotal);
-      }
+      $preorder_get_point = abs($preorder_subtotal);
     } else {
       $preorder_get_point = 0;
     }
@@ -348,11 +402,7 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
                     <td class="main" align="right">
                     <?php 
                     if (isset($show_point_single)) {
-                      if ($preorder_get_point == 0) {
-                        echo CHANGE_PREORDER_POINT_TEXT_BUY;
-                      } else {
-                        echo CHANGE_PREORDER_POINT_TEXT;
-                      }
+                      echo CHANGE_PREORDER_POINT_TEXT_BUY;
                     } else {
                       echo CHANGE_PREORDER_POINT_TEXT;
                     }
@@ -372,9 +422,13 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
               </td>
               <td class="main" align="right">
                 <?php
-                $payment_modules->preorder_process_button($con_payment_code, $_POST['pid'], $total_param); 
+                if (isset($con_payment)) {
+                  if (method_exists($con_payment, 'preorder_process_button')) {
+                    $con_payment->preorder_process_button($_POST['pid'], $total_param); 
+                  }
+                }
                 ?>
-                <?php echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONTINUE);?> 
+                <?php echo tep_image_submit('button_confirm_order02.gif', IMAGE_BUTTON_CONTINUE);?> 
               </td>
             </tr>
           </table> 
@@ -395,13 +449,14 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
           }
           echo '</form>';
           ?> 
-          </div>
+          </div></div>
           <p class="pageBottom"></p>
-      </div> 
+      </td> 
       <!-- body_text_eof //--> 
-      <div id="r_menu"> <!-- right_navigation //--> 
+      <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation //--> 
         <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-        <!-- right_navigation_eof //--> </div> 
+        <!-- right_navigation_eof //--> </td> 
+  </table> 
   <!-- body_eof //--> 
   <!-- footer //--> 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 

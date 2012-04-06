@@ -277,7 +277,7 @@ while ($preorder_oa_res = tep_db_fetch_array($preorder_oa_raw)) {
 
 $products_ordered_text .= $products_ordered_attributes;
 
-$products_ordered_text .= "\n".'個数　　　　　　　：' .  $preorder_product_res['products_quantity'] . '個' .  "\n";
+$products_ordered_text .= "\n".'個数　　　　　　　：' .  $preorder_product_res['products_quantity'] . '個' .  tep_get_full_count2($preorder_product_res['products_quantity'], $preorder_product_res['products_id'])."\n";
 $products_ordered_text .= '単価　　　　　　　：' .  $currencies->display_price($preorder_product_res['final_price'], $preorder_product_res['products_tax']) . "\n";
 
 $products_ordered_text .= '小計　　　　　　　：' .  $currencies->display_price($preorder_product_res['final_price'], $preorder_product_res['products_tax'], $preorder_product_res['products_quantity']) . "\n";
