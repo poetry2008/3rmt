@@ -35,3 +35,7 @@ define('OPTION_ITEM_OPTION_SELECT_TYPE', 'プルダウンメニュー');
 define('TEXT_ITEM_PREV', '<前へ');
 define('TEXT_ITEM_NEXT', '次へ>');
 define('OPTION_ITEM_SELECT_COMMENT_HEAD', '注釈');
+define('TABLE_HEADING_OPTION_ITEM_PLACE', '表示場所');
+define('OPTION_ITEM_TYPE_PRODUCT', '商品詳細ページ');
+define('OPTION_ITEM_TYPE_LAST', 'グイン後の商品オプションページ（会員過去のデータ保存）');
+define('OPTION_ITEM_PREVIEW_TEXT', 'レビュー');

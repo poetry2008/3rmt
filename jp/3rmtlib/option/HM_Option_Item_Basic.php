@@ -38,7 +38,7 @@ class HM_Option_Item_Basic
     
     if ($this->has_text_line) {
       $default_text = isset($item_value['iline'])?$item_value['iline']:'1'; 
-      $formString .= "<tr><td>".TEXT_ITEM_TEXT_LINE_HEAD."</td><td><input type='text' name='iline' value='".$default_text."'  class='option_input'>&nbsp;".TEXT_ITEM_LINE_UNIT."</td></tr>"; 
+      $formString .= "<tr><td>".TEXT_ITEM_TEXT_LINE_HEAD."</td><td><input type='text' name='iline' value='".$default_text."'  class='option_item_input'>&nbsp;".TEXT_ITEM_LINE_UNIT."</td></tr>"; 
     } 
     
     if ($this->has_text_check_type) {
@@ -56,7 +56,7 @@ class HM_Option_Item_Basic
     
     if ($this->has_text_max_num) {
       $default_text = isset($item_value['imax_num'])?$item_value['imax_num']:''; 
-      $formString .= "<tr><td>".TEXT_ITEM_TEXT_MAX_NUM_HEAD."</td><td><input type='text' name='imax_num' value='".$default_text."' class='option_input'>".TEXT_ITEM_CHARACTER_UNIT."<br>".TEXT_ITEM_INPUT_MAX_READ."</td></tr>"; 
+      $formString .= "<tr><td>".TEXT_ITEM_TEXT_MAX_NUM_HEAD."</td><td><input type='text' name='imax_num' value='".$default_text."' class='option_item_input'>".TEXT_ITEM_CHARACTER_UNIT."<br>".TEXT_ITEM_INPUT_MAX_READ."</td></tr>"; 
     } 
     
     if ($this->hasRequire){

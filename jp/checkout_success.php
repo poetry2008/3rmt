@@ -97,9 +97,7 @@
                         </tr> 
                       </table>
                     </td> 
-<!--
                     <td width="20%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
--->
                     <td width="20%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
                     <td width="20%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
                     <td width="20%">
@@ -110,11 +108,9 @@
                         </tr> 
                       </table>
                     </td> 
-                  </tr> 
+                  </tr>
                   <tr> 
-<!--
-                    <td align="center" width="20%" class="checkoutBarFrom"><?php echo CHECKOUT_BAR_PRODUCTS; ?></td> 
--->
+                    <td align="center" width="20%" class="checkoutBarFrom"><?php echo CHECKOUT_BAR_OPTION; ?></td> 
                     <td align="center" width="20%" class="checkoutBarFrom"><?php echo CHECKOUT_BAR_DELIVERY; ?></td> 
                     <td align="center" width="20%" class="checkoutBarFrom"><?php echo CHECKOUT_BAR_PAYMENT; ?></td> 
                     <td align="center" width="20%" class="checkoutBarFrom"><?php echo CHECKOUT_BAR_CONFIRMATION; ?></td> 

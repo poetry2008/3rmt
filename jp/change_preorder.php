@@ -633,7 +633,7 @@ document.forms.order1.submit();
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
           <tr>
             <td>
-            <?php echo $hm_option->render($product_info_res['belong_to_option'], true);?> 
+            <?php echo $hm_option->render($product_info_res['belong_to_option'], true, 2);?> 
             </td>
           </tr>
           </table> 

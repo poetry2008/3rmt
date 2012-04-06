@@ -238,6 +238,16 @@
             $this->abs += abs($qty * tep_add_tax($attribute_price['price'], $products_tax));
           }
         }
+        
+        if (!empty($this->contents[$products_id]['ck_attributes'])) {
+          foreach ($this->contents[$products_id]['ck_attributes'] as $ck_key => $ck_value) {
+            $option_ck_key_array = explode('_', $ck_key);
+            $ck_attribute_price_query = tep_db_query("select price from ".TABLE_OPTION_ITEM." where name = '".$option_ck_key_array[0]."' and id = '".$option_ck_key_array[2]."'"); 
+            $ck_attribute_price = tep_db_fetch_array($ck_attribute_price_query);
+            $this->total += $qty * tep_add_tax($ck_attribute_price['price'], $products_tax);
+            $this->abs += abs($qty * tep_add_tax($ck_attribute_price['price'], $products_tax));
+          }
+        }
       }
     }
 
@@ -249,6 +259,17 @@
           $attribute_price = tep_db_fetch_array($attribute_price_query);
           if ($attribute_price) {
             $attributes_price += $attribute_price['price'];
+          }
+        }
+      }
+      
+      if (isset($this->contents[$products_id]['ck_attributes'])) {
+        foreach ($this->contents[$products_id]['ck_attributes'] as $ck_key => $ck_value) {
+          $option_ck_key_array = explode('_', $ck_key);
+          $ck_attribute_price_query = tep_db_query("select price from ".TABLE_OPTION_ITEM." where name = '".$option_ck_key_array[0]."' and id = '".$option_ck_key_array[2]."'"); 
+          $ck_attribute_price = tep_db_fetch_array($ck_attribute_price_query);
+          if ($ck_attribute_price) {
+            $attributes_price += $ck_attribute_price['price'];
           }
         }
       }
@@ -274,8 +295,8 @@
 
       $products_price = tep_get_final_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum'], $this->contents[$products_id_info]['qty']);
       # 追加エンド -------------------------------------------
-
       if(!isset($this->contents[$products_id_info]['op_attributes'])) $this->contents[$products_id_info]['op_attributes']= NULL;
+      if(!isset($this->contents[$products_id_info]['ck_attributes'])) $this->contents[$products_id_info]['ck_attributes']= NULL;
           $products_array[] = array('id' => $products_id_info,
                                     'name' => $products['products_name'],
                                     'search_name' => $search_products['products_name'],
@@ -286,7 +307,8 @@
                                     'final_price' => ($products_price + $this->attributes_price($products_id_info)),
                                     'tax_class_id' => $products['products_tax_class_id'],
                                     'bflag' => $products['products_bflag'],
-                                    'op_attributes' => $this->contents[$products_id_info]['op_attributes']);
+                                    'op_attributes' => $this->contents[$products_id_info]['op_attributes'],
+                                    'ck_attributes' => $this->contents[$products_id_info]['ck_attributes']);
         }
       }
 
@@ -402,6 +424,28 @@
       }
       
       return $products_id.'_1';
+    }
+   
+    function add_checkout_option($option_array)
+    {
+      if (!is_array($this->contents)) return false;
+      if (!empty($this->contents)) {
+        foreach ($this->contents as $c_key => $c_value) {
+          $this->contents[$c_key]['ck_attributes'] = (isset($option_array[$c_key])?$option_array[$c_key]:NULL);           
+        }
+      }
+    }
+   
+    function clean_checkout_attributes()
+    {
+      if (is_array($this->contents)) {
+        reset($this->contents);
+        foreach ($this->contents as $c_key => $c_value) {
+          if (isset($this->contents[$c_key]['ck_attributes'])) {
+            unset($this->contents[$c_key]['ck_attributes']); 
+          }
+        }
+      }
     }
   }
 ?>

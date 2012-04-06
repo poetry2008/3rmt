@@ -1151,12 +1151,26 @@ a.s_column_bar {
     position: absolute;
     width: 70%;
 }
-.option_input{
+.option_item_input{
 	width:25%;
 	text-align:right;
 }
+.option_input{
+	width:80%;
+	width:75%\9;
+}
 .option_text{
 	width:60%;
+}
+.option_error{
+  color:#ff0000;
+}
+.option_name {
+  width:50px;
+  vertical-align:top;
+}
+.option_preview{
+	margin-left:51px;
 }
 /* end option group*/
 

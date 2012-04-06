@@ -357,8 +357,28 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
   //------insert customer choosen option to order--------
   $attributes_exist = '0';
   $products_ordered_attributes = '';
+  
+  $attribute_max_len = 0; 
+  $attribute_len_arrary = array(); 
+  if (!empty($order->products[$i]['op_attributes'])) {
+    foreach ($order->products[$i]['op_attributes'] as $op_m_key => $op_m_value) {
+      $attribute_len_array[] = mb_strlen($op_m_value['front_title'], 'utf-8'); 
+    }
+  }
+  
+  if (!empty($order->products[$i]['ck_attributes'])) {
+    foreach ($order->products[$i]['ck_attributes'] as $ck_m_key => $ck_m_value) {
+      $attribute_len_array[] = mb_strlen($ck_m_value['front_title'], 'utf-8'); 
+    } 
+  } 
+   
+  if (!empty($attribute_len_array)) {
+    $attribute_max_len = max($attribute_len_array); 
+  }
+  
   if (!empty($order->products[$i]['op_attributes'])) {
     $attributes_exist = '1';
+     
     foreach ($order->products[$i]['op_attributes'] as $op_key => $op_value) {
        
       
@@ -384,10 +404,42 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
       }
       $products_ordered_attributes .= "\n" 
         . $op_value['front_title'] 
-        . str_repeat('　',intval((27-strlen($op_value['front_title']))/3))
+        . str_repeat('　',intval(($attribute_max_len-mb_strlen($op_value['front_title'], 'utf-8'))))
         . '：' . $op_value['value'];
     }
   }
+  
+  if (!empty($order->products[$i]['ck_attributes'])) {
+    foreach ($order->products[$i]['ck_attributes'] as $ck_key => $ck_value) {
+      $input_option_array = array('title' => $ck_value['front_title'], 'value' => $ck_value['value']);
+      $sql_data_array = array('orders_id' => $insert_id, 
+                              'orders_products_id' => $order_products_id, 
+                              'options_values_price' => $ck_value['price'], 
+                              'option_info' => tep_db_input(serialize($input_option_array)),  
+                              'option_group_id' => $ck_value['group_id'], 
+                              'option_item_id' => $ck_value['item_id'] 
+                              );
+      // ccdd
+      tep_db_perform(TABLE_ORDERS_PRODUCTS_ATTRIBUTES, $sql_data_array);
+
+      if ((DOWNLOAD_ENABLED == 'true') && isset($attributes_values['products_attributes_filename']) && tep_not_null($attributes_values['products_attributes_filename'])) {
+        $sql_data_array = array('orders_id' => $insert_id, 
+                                'orders_products_id' => $order_products_id, 
+                                'orders_products_filename' => $attributes_values['products_attributes_filename'], 
+                                'download_maxdays' => $attributes_values['products_attributes_maxdays'], 
+                                'download_count' => $attributes_values['products_attributes_maxcount']);
+        // ccdd
+        tep_db_perform(TABLE_ORDERS_PRODUCTS_DOWNLOAD, $sql_data_array);
+      }
+      $products_ordered_attributes .= "\n" 
+        . $ck_value['front_title'] 
+        . str_repeat('　',intval(($attribute_max_len-mb_strlen($ck_value['front_title'], 'utf-8'))))
+        . '：' . $ck_value['value'];
+    }
+  }
+  
+  
+  
   //------insert customer choosen option eof ----
   $total_weight += ($order->products[$i]['qty'] * $order->products[$i]['weight']);
   $total_tax += tep_calculate_tax($total_products_price, $products_tax) * $order->products[$i]['qty'];

@@ -630,20 +630,18 @@ function session_value(){
           <tr> 
             <td>
   
-  <table border="0" width="97%" cellspacing="0" cellpadding="0"> 
+               <table border="0" width="97%" cellspacing="0" cellpadding="0"> 
                 <tr> 
-<!--
                     <td width="25%"><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                         <tr> 
                           <td width="50%" align="right"><?php echo tep_draw_separator('pixel_silver.gif', '1', '5'); ?></td> 
                           <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
                         </tr> 
                       </table></td> 
--->
                   <td width="20%">
                   <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                       <tr> 
-                        <td width="50%"></td> 
+                        <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
                         <td><?php echo tep_image(DIR_WS_IMAGES . 'checkout_bullet.gif'); ?></td> 
                         <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
                       </tr> 
@@ -655,12 +653,11 @@ function session_value(){
                         <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
                         <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '1', '5'); ?></td> 
                       </tr> 
-                    </table></td> 
-                </tr> 
+                    </table>
+                </td>
+                </tr>
                 <tr>
-<!-- 
-                  <td align="center" width="20%" class="checkoutBarFrom"><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL') . '" class="checkoutBarFrom">' . CHECKOUT_BAR_PRODUCTS . '</a>'; ?></td> 
--->
+                  <td align="center" width="20%" class="checkoutBarFrom"><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_OPTION, '', 'SSL') . '" class="checkoutBarFrom">' . CHECKOUT_BAR_OPTION . '</a>'; ?></td> 
                   <td align="center" width="20%" class="checkoutBarCurrent"><?php echo CHECKOUT_BAR_DELIVERY; ?></td> 
                   <td align="center" width="20%" class="checkoutBarTo"><?php echo CHECKOUT_BAR_PAYMENT; ?></td> 
                   <td align="center" width="20%" class="checkoutBarTo"><?php echo CHECKOUT_BAR_CONFIRMATION; ?></td> 

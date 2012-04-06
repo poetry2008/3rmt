@@ -7,17 +7,21 @@ class HM_Option_Item_Text extends HM_Option_Item_Basic
   //var $hasRequire = true;
   var $has_textarea_default = true; 
 
-  function render($option_error_array)
+  function render($option_error_array, $pre_item_str = '', $cart_obj = '', $ptype = false)
   {
     if (strlen($this->front_title)) {
-      echo '<td class="option_name">'; 
+      if ($ptype) {
+        echo '<td class="preorder_option_name">'; 
+      } else {
+        echo '<td class="option_name">'; 
+      }
       echo $this->front_title.':'; 
       echo '</td>'; 
     }
     echo '<td>'; 
     if (strlen($this->itextarea)) {
       echo $this->itextarea; 
-      echo '<input type="hidden" name="op_'.$this->formname.'" value="'.$this->itextarea.'">'; 
+      echo '<input type="hidden" name="'.$pre_item_str.'op_'.$this->formname.'" value="'.$this->itextarea.'">'; 
     }
     echo '</td>'; 
   }
@@ -28,7 +32,7 @@ class HM_Option_Item_Text extends HM_Option_Item_Basic
     return $formString;
   }
 
-  function check(&$option_error_array)
+  function check(&$option_error_array, $check_type = 0, $pre_error_str = '')
   {
     return false; 
   }

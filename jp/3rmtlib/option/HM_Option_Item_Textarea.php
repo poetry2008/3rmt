@@ -11,26 +11,61 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
   var $has_text_check_type = true;
   var $has_text_max_num = true; 
 
-  function render($option_error_array)
+  function render($option_error_array, $pre_item_str = '', $cart_obj = '', $ptype = false)
   {
      if (strlen($this->front_title)) {
-       echo '<td class="option_name">';
+       if ($ptype) {
+         echo '<td class="preorder_option_name">';
+       } else {
+         echo '<td class="option_name">';
+       }
        echo $this->front_title.':';
        echo '</td>';
      }
      echo '<td>';
      if ($this->iline > 1) {
-       echo '<textarea class="option_input" name="op_'.$this->formname.'">'.(isset($_POST['op_'.$this->formname])?$_POST['op_'.$this->formname]:$this->itext).'</textarea><br>'.$this->icomment;    
-       echo '<span id="error_'.$this->formname.'" class="option_error">';
-       if (isset($option_error_array[$this->formname])) {
-         echo $option_error_array[$this->formname]; 
+       $default_value = ''; 
+       if ($cart_obj != '') {
+         $pre_item_tmp_str = substr($pre_item_str, 0, -1); 
+         if (isset($cart_obj->contents[$pre_item_tmp_str]['ck_attributes'][$this->formname]) && !isset($_POST[$pre_item_str.'op_'.$this->formname])) {
+           $default_value = $cart_obj->contents[$pre_item_tmp_str]['ck_attributes'][$this->formname]; 
+         } else {
+           $default_value = (isset($_POST[$pre_item_str.'op_'.$this->formname])?$_POST[$pre_item_str.'op_'.$this->formname]:$this->itext);
+         }
+       } else {
+         $default_value = (isset($_POST[$pre_item_str.'op_'.$this->formname])?$_POST[$pre_item_str.'op_'.$this->formname]:$this->itext);
+       }
+       echo '<textarea class="option_input" name="'.$pre_item_str.'op_'.$this->formname.'">'.$default_value.'</textarea>';    
+       if ($this->require == '1') {
+         echo '<font color="#ff0000">'.OPTION_ITEM_TEXT_REQUIRE.'</font>'; 
+       }
+       echo '<br>'.$this->icomment; 
+       echo '<span id="'.$pre_item_str.'error_'.$this->formname.'" class="option_error">';
+       if (isset($option_error_array[$pre_item_str.$this->formname])) {
+         echo '<br>'.$option_error_array[$pre_item_str.$this->formname]; 
        }
        echo '</span>';
      } else {
-       echo '<input class="option_input" type="text" name="op_'.$this->formname.'" value="'.(isset($_POST['op_'.$this->formname])?$_POST['op_'.$this->formname]:$this->itext).'"><br>'.$this->icomment; 
-       echo '<span id="error_'.$this->formname.'" class="option_error">';
-       if (isset($option_error_array[$this->formname])) {
-         echo $option_error_array[$this->formname]; 
+       $default_value = ''; 
+       if ($cart_obj != '') {
+         $pre_item_tmp_str = substr($pre_item_str, 0, -1); 
+         if (isset($cart_obj->contents[$pre_item_tmp_str]['ck_attributes'][$this->formname]) && !isset($_POST[$pre_item_str.'op_'.$this->formname])) {
+           $default_value = $cart_obj->contents[$pre_item_tmp_str]['ck_attributes'][$this->formname]; 
+         } else {
+           $default_value = (isset($_POST[$pre_item_str.'op_'.$this->formname])?$_POST[$pre_item_str.'op_'.$this->formname]:$this->itext);
+         }
+       } else {
+         $default_value = (isset($_POST[$pre_item_str.'op_'.$this->formname])?$_POST[$pre_item_str.'op_'.$this->formname]:$this->itext);
+       }
+       echo '<input class="option_input" type="text" name="'.$pre_item_str.'op_'.$this->formname.'" value="'.$default_value.'">'; 
+       
+       if ($this->require == '1') {
+         echo '<font color="#ff0000">'.OPTION_ITEM_TEXT_REQUIRE.'</font>'; 
+       }
+       echo '<br>'.$this->icomment;  
+       echo '<span id="'.$pre_item_str.'error_'.$this->formname.'" class="option_error">';
+       if (isset($option_error_array[$pre_item_str.$this->formname])) {
+         echo '<br>'.$option_error_array[$pre_item_str.$this->formname]; 
        }
        echo '</span>';
      }
@@ -44,21 +79,21 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
   }
 
 
-  function check(&$option_error_array)
+  function check(&$option_error_array, $check_type = 0, $pre_error_str = '')
   {
      global $_POST;
-     $input_text_str = $_POST['op_'.$this->formname]; 
+     $input_text_str = $_POST[$pre_error_str.'op_'.$this->formname]; 
      $input_text_str = str_replace(' ', '', $input_text_str); 
      $input_text_str = str_replace('　', '', $input_text_str); 
      
      if ($this->require == '1') {
        if ($input_text_str == '') {
-         $option_error_array[$this->formname] = ERROR_OPTION_ITEM_TEXT_NULL;  
+         $option_error_array[$pre_error_str.$this->formname] = ERROR_OPTION_ITEM_TEXT_NULL;  
          return true; 
        }
        $input_text_len = mb_strlen($input_text_str, 'UTF-8');
        if ($input_text_len > $this->imax_num) {
-         $option_error_array[$this->formname] = sprintf(ERROR_OPTION_ITEM_TEXT_NUM_MAX, $this->imax_num);  
+         $option_error_array[$pre_error_str.$this->formname] = sprintf(ERROR_OPTION_ITEM_TEXT_NUM_MAX, $this->imax_num);  
          return true; 
        }
      }
@@ -94,7 +129,7 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
        }
        
        if ($item_type_error) {
-         $option_error_array[$this->formname] = ERROR_OPTION_ITEM_TEXT_TYPE_WRONG;  
+         $option_error_array[$pre_error_str.$this->formname] = ERROR_OPTION_ITEM_TEXT_TYPE_WRONG;  
          return true; 
        }
      }

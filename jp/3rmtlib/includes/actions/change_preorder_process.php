@@ -308,6 +308,24 @@ if($address_error == false){
   }
   
   $products_ordered_atttibutes_text = '';
+
+if (isset($_SESSION['preorder_option_info'])) {
+  $cl_len_array = array();  
+  $cl_max_len = 0; 
+  foreach ($_SESSION['preorder_option_info'] as $cl_key => $cl_value) {
+    $cl_key_info = explode('_', $cl_key);
+    $cl_attr_query = tep_db_query("select front_title from ".TABLE_OPTION_ITEM." where name = '".$cl_key_info['1']."' and id = '".$cl_key_info[3]."'");
+    $cl_attr_values = tep_db_fetch_array($cl_attr_query);
+    if ($cl_attr_values) {
+      $cl_len_array[] = mb_strlen($cl_attr_values['front_title'], 'utf-8'); 
+    }
+  }
+  
+  if (!empty($cl_len_array)) {
+    $cl_max_len = max($cl_len_array); 
+  }
+}
+
 if (isset($_SESSION['preorder_option_info'])) {
    foreach ($_SESSION['preorder_option_info'] as $op_key => $op_value) {
       $op_key_info = explode('_', $op_key);
@@ -339,7 +357,7 @@ if (isset($_SESSION['preorder_option_info'])) {
       
       $products_ordered_attributes .= "\n"
         .$option_attr_values['front_title']
-        .str_repeat('　', intval((27-strlen($option_attr_values['front_title']))/3))
+        .str_repeat('　', intval(($cl_max_len-mb_strlen($option_attr_values['front_title'],'utf-8'))))
         .'：'.$op_value;
    }
    }
@@ -522,6 +540,7 @@ $cpayment_class = $payment_modules->getModule($cpayment_code);
 if (method_exists($cpayment_class,'getMailString')){
   $email_printing_order .= $cpayment_class->getMailString($preorder_total_print_num);
 }
+
 if (SEND_EXTRA_ORDER_EMAILS_TO != '') {
   tep_mail('', PRINT_EMAIL_ADDRESS, STORE_NAME, $email_printing_order, $preorder['customers_name'], $preorder['customers_email_address'], '');
 }
