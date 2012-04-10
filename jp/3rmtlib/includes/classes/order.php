@@ -360,7 +360,25 @@
             }
           }
         }
+        
+        if (!empty($products[$i]['ck_attributes'])) {
+          $subindex = 0;
+          foreach($products[$i]['ck_attributes'] as $ck_key => $ck_value) {
+            $op_ck_key_array = explode('_', $ck_key); 
+            $ck_attributes_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name = '".$op_ck_key_array[0]."' and id = '".$op_ck_key_array[2]."'"); 
+            $ck_attributes = tep_db_fetch_array($ck_attributes_query);
+            if ($ck_attributes) {
+              $this->products[$index]['ck_attributes'][$subindex] = array('front_title' => $ck_attributes['front_title'],
+                                                                       'item_id' => $ck_attributes['id'],
+                                                                       'group_id' => $ck_attributes['group_id'],
+                                                                       'value' => $ck_value,
+                                                                       'price' => $ck_attributes['price']);
 
+              $subindex++;
+            }
+          }
+        }
+        
         $shown_price = tep_add_tax($this->products[$index]['final_price'], $this->products[$index]['tax']) * $this->products[$index]['qty'];
       if (!isset($this->info['subtotal'])) $this->info['subtotal']=NULL;
         $this->info['subtotal'] += $shown_price;

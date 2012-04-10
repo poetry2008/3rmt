@@ -15,9 +15,9 @@ class HM_Option_Item extends Option_DbRecord
     $this->getInstance();
     return $this;
   }
-  function render($option_error_array)
+  function render($option_error_array, $pre_item_str = '', $cart_obj = '', $ptype = false)
   {
-    $this->instance->render($option_error_array);
+    $this->instance->render($option_error_array, $pre_item_str, $cart_obj, $ptype);
   }
   function getInstance()
   {
@@ -42,9 +42,9 @@ class HM_Option_Item extends Option_DbRecord
     }
   }
   
-  function check(&$option_error_array)
+  function check(&$option_error_array, $check_type = 0, $pre_error_str = '')
   {
     $this->getInstance();
-    return $this->instance->check($option_error_array);
+    return $this->instance->check($option_error_array, $check_type, $pre_error_str);
   }
 }

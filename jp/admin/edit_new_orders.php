@@ -2236,7 +2236,7 @@ echo "</table>";
 
             print "<tr class=\"dataTableRow\"><form action='$PHP_SELF?oID=$oID&action=$action' method='POST'>\n";
             print "<td class='dataTableContent' align='right'><b>" . ADDPRODUCT_TEXT_STEP . " 3: </b></td><td class='dataTableContent' valign='top'>";
-            print $hm_option->render($option_product['belong_to_option']); 
+            print $hm_option->render($option_product['belong_to_option'], false, 2); 
             print "</td>";
             print "<td class='dataTableContent' align='center'><input type='submit' value='" . ADDPRODUCT_TEXT_OPTIONS_CONFIRM . "'>";
             print "<input type='hidden' name='add_product_categories_id' value='$add_product_categories_id'>";

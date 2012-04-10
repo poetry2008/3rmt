@@ -50,6 +50,7 @@
   define('WARN_DOWNLOAD_DIRECTORY_NOT_READABLE', 'true');
 
 // define the filenames used in the project
+  define('FILENAME_CHECKOUT_OPTION', 'checkout_option.php');
   define('FILENAME_PREORDER_PAYMENT', 'preorder_payment.php');
   define('FILENAME_PREORDER_SUCCESS', 'preorder_success.php');
   define('FILENAME_PREORDER_UNSUCCESS', 'preorder_unsuccess.php');
@@ -513,7 +514,7 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
                               if (isset($_POST['continue']) && $_POST['goto']) {
                                 tep_redirect($_POST['goto']);
                               } else if (isset($_POST['checkout'])) {
-                                tep_redirect(tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL'));
+                                tep_redirect(tep_href_link(FILENAME_CHECKOUT_OPTION, '', 'SSL'));
                               } else {
                                 tep_redirect(tep_href_link($goto, tep_get_all_get_params($parameters)));
                               }
@@ -859,3 +860,8 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
   define('TABLE_COUNTRY_AREA','country_area');
   define('TABLE_ADDRESS_ORDERS','address_orders');
   define('TABLE_ADDRESS_HISTORY','address_history');
+ 
+  $checkout_is_cart_pos = strpos($_SERVER['PHP_SELF'], FILENAME_SHOPPING_CART);
+  if ($checkout_is_cart_pos !== false) { 
+    $cart->clean_checkout_attributes(); 
+  } 

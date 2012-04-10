@@ -1433,12 +1433,18 @@ if ($_POST['orders_id'] &&
   $html_str .= '</td>';
   $html_str .= '<td>';
   $html_str .= tep_draw_input_field('title', '', 'id="title" class="option_text"'); 
+  $html_str .= '&nbsp;<a href="javascript:void(0);" onclick="search_item_title(0, 0);">'.tep_html_element_button(IMAGE_SEARCH, 'onclick=""').'</a>'; 
   $html_str .= '<span id="title_error" style="color:#ff0000;"></span>'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
+  $html_str .= '</table>'; 
   
+  $html_str .= '<table id="search_title" cellspacing="0" cellpadding="2" border="0" width="100%" style="padding:0 50px 0; margin-top:-10px;">';
+  $html_str .= '</table>'; 
+  
+  $html_str .= '<table cellspacing="0" cellpadding="2" border="0" width="100%" class="campaign_body">';
   $html_str .= '<tr>';
-  $html_str .= '<td>';
+  $html_str .= '<td width="220">';
   $html_str .= TABLE_HEADING_OPTION_ITEM_TITLE; 
   $html_str .= '</td>';
   $html_str .= '<td>';
@@ -1452,6 +1458,7 @@ if ($_POST['orders_id'] &&
   $html_str .= TABLE_HEADING_OPTION_ITEM_TYPE; 
   $html_str .= '</td>';
   $html_str .= '<td>';
+  $html_str .= '<div id="se_item">'; 
   $html_str .= '<select id="type" name="type" onchange="change_option_item_type(0);">'; 
   $i=0; 
   foreach ($enabled_item_array as $ekey => $evalue) {
@@ -1462,6 +1469,7 @@ if ($_POST['orders_id'] &&
     $i++; 
   }
   $html_str .= '</select>'; 
+  $html_str .= '</div>'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
   $html_str .= '</table>'; 
@@ -1480,7 +1488,7 @@ if ($_POST['orders_id'] &&
   $html_str .= TABLE_HEADING_OPTION_ITEM_PRICE; 
   $html_str .= '</td>';
   $html_str .= '<td>';
-  $html_str .= tep_draw_input_field('price', '', 'id="price" class="option_input"').TEXT_MONEY_SYMBOL; 
+  $html_str .= tep_draw_input_field('price', '', 'id="price" class="option_item_input"').TEXT_MONEY_SYMBOL; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
   
@@ -1489,7 +1497,18 @@ if ($_POST['orders_id'] &&
   $html_str .= TABLE_HEADING_OPTION_ITEM_SORT_NUM; 
   $html_str .= '</td>';
   $html_str .= '<td>';
-  $html_str .= tep_draw_input_field('sort_num', '1000', 'id="sort_num" class="option_input"'); 
+  $html_str .= tep_draw_input_field('sort_num', '1000', 'id="sort_num" class="option_item_input"'); 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  
+  $html_str .= '<tr>';
+  $html_str .= '<td>';
+  $html_str .= TABLE_HEADING_OPTION_ITEM_PLACE; 
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= '<div id="p_type">'; 
+  $html_str .= tep_draw_radio_field('place_type', '0', true).OPTION_ITEM_TYPE_PRODUCT.'&nbsp;&nbsp;'.tep_draw_radio_field('place_type', '1').OPTION_ITEM_TYPE_LAST; 
+  $html_str .= '</div>'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
   
@@ -1529,17 +1548,25 @@ if ($_POST['orders_id'] &&
   $html_str .= '<table cellspacing="0" cellpadding="2" border="0" width="100%" class="campaign_body">';
   $html_str .= '<tr>';
   $html_str .= '<td width="220">';
-  $html_str .= tep_draw_hidden_field('item_id', $item['id']); 
+  $html_str .= '<input type="hidden" name="item_id" value="'.$item_id.'" id="item_uid">'; 
   $html_str .= TABLE_HEADING_OPTION_ITEM_NAME; 
   $html_str .= '</td>';
   $html_str .= '<td>';
   $html_str .= tep_draw_input_field('title', $item['title'], 'id="title" class="option_text"'); 
+  $html_str .= '&nbsp;<a href="javascript:void(0);" onclick="search_item_title(1, '.$item['id'].');">'.tep_html_element_button(IMAGE_SEARCH, 'onclick=""').'</a>'; 
   $html_str .= '<span id="title_error" style="color:#ff0000;"></span>'; 
+  $html_str .= '<input type="hidden" name="is_more" id="is_more" value="0">'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
   
+  $html_str .= '</table>'; 
+  
+  $html_str .= '<table id="search_title" cellspacing="0" cellpadding="2" border="0" width="100%" class="campaign_body">';
+  $html_str .= '</table>'; 
+  
+  $html_str .= '<table cellspacing="0" cellpadding="2" border="0" width="100%" class="campaign_body">';
   $html_str .= '<tr>';
-  $html_str .= '<td>';
+  $html_str .= '<td width="220">';
   $html_str .= TABLE_HEADING_OPTION_ITEM_TITLE; 
   $html_str .= '</td>';
   $html_str .= '<td>';
@@ -1553,6 +1580,7 @@ if ($_POST['orders_id'] &&
   $html_str .= TABLE_HEADING_OPTION_ITEM_TYPE; 
   $html_str .= '</td>';
   $html_str .= '<td>';
+  $html_str .= '<div id="se_item">'; 
   $html_str .= '<select id="type" name="type" onchange="change_option_item_type(0);">'; 
   foreach ($enabled_item_array as $ekey => $evalue) {
     if (strtolower($evalue) == $item['type']) {
@@ -1562,6 +1590,7 @@ if ($_POST['orders_id'] &&
     }
   }
   $html_str .= '</select>'; 
+  $html_str .= '</div>'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
   $html_str .= '</table>'; 
@@ -1580,7 +1609,7 @@ if ($_POST['orders_id'] &&
   $html_str .= TABLE_HEADING_OPTION_ITEM_PRICE; 
   $html_str .= '</td>';
   $html_str .= '<td>';
-  $html_str .= tep_draw_input_field('price', number_format($item['price']), 'id="price" class="option_input"').TEXT_MONEY_SYMBOL; 
+  $html_str .= tep_draw_input_field('price', number_format($item['price']), 'id="price" class="option_item_input"').TEXT_MONEY_SYMBOL; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
   
@@ -1589,7 +1618,22 @@ if ($_POST['orders_id'] &&
   $html_str .= TABLE_HEADING_OPTION_ITEM_SORT_NUM; 
   $html_str .= '</td>';
   $html_str .= '<td>';
-  $html_str .= tep_draw_input_field('sort_num', $item['sort_num'], 'id="sort_num" class="option_input"'); 
+  $html_str .= tep_draw_input_field('sort_num', $item['sort_num'], 'id="sort_num" class="option_item_input"'); 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  
+  $html_str .= '<tr>';
+  $html_str .= '<td>';
+  $html_str .= TABLE_HEADING_OPTION_ITEM_PLACE; 
+  $html_str .= '</td>';
+  $html_str .= '<td>';
+  $html_str .= '<div id="p_type">'; 
+  if ($item['place_type'] == 0) {
+    $html_str .= tep_draw_radio_field('place_type', '0', true).OPTION_ITEM_TYPE_PRODUCT.'&nbsp;&nbsp;'.tep_draw_radio_field('place_type', '1').OPTION_ITEM_TYPE_LAST; 
+  } else {
+    $html_str .= tep_draw_radio_field('place_type', '0', false).OPTION_ITEM_TYPE_PRODUCT.'&nbsp;&nbsp;'.tep_draw_radio_field('place_type', '1', true).OPTION_ITEM_TYPE_LAST; 
+  }
+  $html_str .= '</div>'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
   
@@ -1631,4 +1675,82 @@ if ($_POST['orders_id'] &&
     $error_array['ftitle'] = ERROR_OPTION_ITEM_IS_NULL;
   }
   echo implode('||', $error_array);
-}
+} else if (isset($_GET['action'])&&$_GET['action']=='search_item_title') {
+  require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_OPTION_ITEM); 
+  $html_str = '';
+  $html_str_add = '0'; 
+  if (!empty($_POST['s_item_id'])) {
+    $other_item_raw = tep_db_query("select id, title from ".TABLE_OPTION_ITEM." where title like '%".$_POST['sea_title']."%' and id != '".(int)$_POST['s_item_id']."'");
+  } else {
+    $other_item_raw = tep_db_query("select id, title from ".TABLE_OPTION_ITEM." where title like '%".$_POST['sea_title']."%'");
+  }
+  while ($other_item = tep_db_fetch_array($other_item_raw)) {
+    $html_str .= '<tr>';
+    $html_str .= '<td width="220">';
+    $html_str .= TABLE_HEADING_OPTION_ITEM_NAME; 
+    $html_str .= '</td>';
+    $html_str .= '<td>';
+    $html_str .= tep_draw_input_field('stitle_'.$other_item['id'], $other_item['title'], 'class="option_text"'); 
+    $html_str .= '<a href="javascript:void(0);" onclick="preview_item(\''.$other_item['id'].'\', \''.$_POST['t_type'].'\');">'.tep_html_element_button(OPTION_ITEM_PREVIEW_TEXT, 'onclick=""', 'option_preview').'</a>'; 
+    $html_str .= '</td>';
+    $html_str .= '</tr>';
+  }
+  if ($html_str != '') {
+    $html_str_add = '1'; 
+  }
+  
+  echo $html_str.'|||'.$html_str_add;
+} else if (isset($_GET['action'])&&$_GET['action']=='preview_title') {
+  require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_OPTION_ITEM); 
+  require_once('enabledoptionitem.php'); 
+  $html_str = ''; 
+  $item_raw = tep_db_query("select * from ".TABLE_OPTION_ITEM." where id = '".$_POST['preview_id']."'");
+  $item = tep_db_fetch_array($item_raw);
+  if ($item) {
+    $show_item_array = array();
+    $show_item_array['title'] = $item['title'];     
+    $show_item_array['front_title'] = $item['front_title'];     
+    $show_item_array['price'] = (int)$item['price'];     
+    $show_item_array['sort_num'] = $item['sort_num'];     
+    $select_str .= '<select id="type" name="type" onchange="change_option_item_type(0);">'; 
+    
+    foreach ($enabled_item_array as $ekey => $evalue) {
+      if (strtolower($evalue) == $item['type']) {
+        $check_str = ' selected'; 
+      } else {
+        $check_str = ''; 
+      }
+      $select_str .= '<option value="'.$ekey.'"'.$check_str.'>'.strtolower($evalue).'</option>'; 
+    }
+    
+    $select_str .= '</select>';
+    $show_item_array['type'] = $select_str;     
+    
+    $place_str = ''; 
+    if ($item['place_type'] == '0') {
+      $place_str .= tep_draw_radio_field('place_type', '0', true).OPTION_ITEM_TYPE_PRODUCT.'&nbsp;&nbsp;'.tep_draw_radio_field('place_type', '1').OPTION_ITEM_TYPE_LAST; 
+    } else {
+      $place_str .= tep_draw_radio_field('place_type', '0').OPTION_ITEM_TYPE_PRODUCT.'&nbsp;&nbsp;'.tep_draw_radio_field('place_type', '1', true).OPTION_ITEM_TYPE_LAST; 
+    }
+    $show_item_array['place_type'] = $place_str;     
+    
+    
+    $classname = 'HM_Option_Item_'.ucfirst($item['type']);
+    require_once('option/'.$classname.'.php');
+    $item_instance = new $classname();
+    $element_str = $item_instance->prepareFormWithParent($item['id']);
+    
+    $show_item_array['item_element'] = $element_str;
+    
+    $show_item_array['del_title'] = IMAGE_DELETE;
+    $show_item_array['new_title'] = IMAGE_SAVE;
+    $show_item_array['new_title_info'] = sprintf(OPTION_SAVE_NOTICE_TEXT, $item['title']);
+    $show_item_array['item_id'] = $item['id']; 
+    $html_str = json_encode($show_item_array); 
+  
+   
+  }
+  $place_str = ''; 
+  
+  echo $html_str;
+} 

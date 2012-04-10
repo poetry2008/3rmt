@@ -453,4 +453,5 @@ define('PREORDER_CONFIRM_LINE_TITLE', '最終確認');
 define('PREORDER_FINISH_LINE_TITLE', '手続き完了！');
 define('JPMONEY_UNIT_TEXT', '円');
 define('TEXT_CHARACTER','お客様のキャラクター名：');
+define('CHECKOUT_BAR_OPTION', '商品オプション');
 ?>

@@ -108,7 +108,7 @@
               '".tep_db_prepare_input(serialize($option_array))."', `type` =
               '".tep_db_prepare_input(strtolower($_POST['type']))."', `price` =
               '".tep_db_prepare_input($_POST['price'])."', `sort_num` =
-              '".tep_db_prepare_input((int)$_POST['sort_num'])."' where id =
+              '".tep_db_prepare_input((int)$_POST['sort_num'])."', `place_type` = '".tep_db_prepare_input($_POST['place_type'])."' where id =
               '".$_POST['item_id']."'"; 
             tep_db_query($update_sql); 
           } else if ($_GET['action'] == 'insert') {
@@ -119,7 +119,7 @@
               '".tep_db_prepare_input(serialize($option_array))."',
               '".tep_db_prepare_input(strtolower($_POST['type']))."',
               '".tep_db_prepare_input($_POST['price'])."', '1',
-              '".tep_db_prepare_input((int)$_POST['sort_num'])."', '".date('Y-m-d H:i:s',time())."')"; 
+              '".tep_db_prepare_input((int)$_POST['sort_num'])."', '".tep_db_prepare_input($_POST['place_type'])."', '".date('Y-m-d H:i:s',time())."')"; 
              tep_db_query($insert_sql); 
              $item_id = tep_db_insert_id(); 
              $option_array['eid'] = $item_id;
@@ -129,7 +129,9 @@
         tep_redirect(tep_href_link(FILENAME_OPTION_ITEM, 'group_id='.$_GET['group_id'])); 
         break; 
       case 'deleteconfirm':
-        tep_db_query('delete from '.TABLE_OPTION_ITEM.' where id = \''.$_GET['item_id'].'\''); 
+        if (isset($_GET['item_id'])) {
+          tep_db_query('delete from '.TABLE_OPTION_ITEM.' where id = \''.(int)$_GET['item_id'].'\''); 
+        }
         tep_redirect(tep_href_link(FILENAME_OPTION_ITEM, 'group_id='.$_GET['group_id'])); 
         break; 
     }
@@ -147,6 +149,94 @@
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
 <script language="javascript" src="includes/javascript/jquery.autocomplete.js"></script>
 <script text="text/javascript">
+function search_item_title(t_type, s_item_id)
+{
+  var search_title = document.getElementById('title').value;
+  if (search_title) {
+    $.ajax({
+      url: 'ajax_orders.php?action=search_item_title',     
+      data: 'sea_title='+search_title+'&t_type='+t_type+'&s_item_id='+s_item_id, 
+      type:'POST',
+      dataType: 'text',
+      async:false,
+      success: function (data) {
+        data_array = data.split('|||'); 
+        $("#search_title").html(data_array[0]);
+        $("#is_more").val(data_array[1]);
+      }
+    });
+  }
+}
+
+function preview_item(preview_id, pt_type)
+{
+  $.ajax({
+    url: 'ajax_orders.php?action=preview_title',     
+    data: 'preview_id='+preview_id, 
+    type:'POST',
+    dataType: 'json',
+    async:false,
+    success: function (data) {
+      if (data != '') {
+        $('#front_title').val(data.front_title); 
+        $('#se_item').html(data.type); 
+        $('#price').val(data.price);
+        $('#sort_num').val(data.sort_num);
+        $('#p_type').html(data.place_type);
+        $('#show_select').html(data.item_element);
+      }
+    }
+  });
+}
+/*
+function del_together_item(del_item_id)
+{
+  $.ajax({
+      url: 'ajax_orders.php?action=popup_del_item',     
+      data: 'item_id='+del_item_id, 
+      type:'POST',
+      dataType: 'text',
+      async:false,
+      success: function (data) {
+        $("#del_item_notice").css('display', 'block');
+        $("#del_item_notice").html(data);
+      }
+    });
+}
+
+function del_together_update_item(del_item_id, del_uid)
+{
+  $.ajax({
+      url: 'ajax_orders.php?action=popup_del_update_item',     
+      data: 'link_item_id='+del_item_id+'&item_id='+del_uid, 
+      type:'POST',
+      dataType: 'text',
+      async:false,
+      success: function (data) {
+        $("#del_item_notice").css('display', 'block');
+        $("#del_item_notice").html(data);
+      }
+    });
+}
+
+function del_new_together_item(item_id) 
+{
+  if ($('#include_link_item').attr('checked') == 'checked') {
+    window.location.href = '<?php echo tep_href_link(FILENAME_OPTION_ITEM, 'action=deleteconfirm&group_id='.$_GET['group_id']);?>'+'&link_item_id='+item_id;
+  } else {
+    window.location.href = '<?php echo tep_href_link(FILENAME_OPTION_ITEM, 'action=deleteconfirm&group_id='.$_GET['group_id']);?>';
+  }
+}
+
+function del_update_together_item(link_item_id, item_id) 
+{
+  if ($('#include_link_item').attr('checked') == 'checked') {
+    window.location.href = '<?php echo tep_href_link(FILENAME_OPTION_ITEM, 'action=deleteconfirm&group_id='.$_GET['group_id']);?>'+'&link_item_id='+link_item_id+'&item_id='+item_id;
+  } else {
+    window.location.href = '<?php echo tep_href_link(FILENAME_OPTION_ITEM, 'action=deleteconfirm&group_id='.$_GET['group_id']);?>'+'&item_id='+item_id;
+  }
+}
+*/
 function create_option_item(gid)
 {
   $.ajax({

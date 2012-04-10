@@ -19,28 +19,44 @@ class HM_Option extends Option_DbRecord
     return $groups; 
   }
   
-  function render($belong_option_str, $ptype = false)
+  function render($belong_option_str, $ptype = false, $is_product_info = 0, $pre_item_str = '', $cart_obj = '')
   {
     $this->groups = $this->getGroups($belong_option_str, $ptype); 
     foreach ($this->groups as $group) {
-      $group->render($this->option_error_array); 
+      $group->render($this->option_error_array, $is_product_info, $pre_item_str, $cart_obj, $ptype); 
     }
   }
 
-  function check() 
+  function check($check_type = 0) 
   {
     global $_POST; 
     
     $error_single = false;
     foreach ($_POST as $key => $value) {
-      $op_pos = substr($key, 0, 3); 
-      if ($op_pos == 'op_') {
-        $option_info_array = explode('_', $key);
-        $item_sql = "select * from ".TABLE_OPTION_ITEM." where id = '".$option_info_array[3]."'"; 
-        $item = $this->getResultObject($item_sql, 'HM_Option_Item'); 
-        if ($item) {
-          if ($item->check($this->option_error_array)) {
-            $error_single = true;
+      if ($check_type == 1) {
+        $f_op_pos = strpos($key, 'op_');
+        if ($f_op_pos !== false) {
+          $op_str = substr($key, $f_op_pos);
+          $pre_error_str = substr($key, 0, $f_op_pos);
+          $option_info_array = explode('_', $op_str);
+          $item_sql = "select * from ".TABLE_OPTION_ITEM." where id = '".$option_info_array[3]."'"; 
+          $item = $this->getResultObject($item_sql, 'HM_Option_Item'); 
+          if ($item) {
+            if ($item->check($this->option_error_array, 1, $pre_error_str)) {
+              $error_single = true;
+            }
+          }
+        }
+      } else {
+        $op_pos = substr($key, 0, 3); 
+        if ($op_pos == 'op_') {
+          $option_info_array = explode('_', $key);
+          $item_sql = "select * from ".TABLE_OPTION_ITEM." where id = '".$option_info_array[3]."'"; 
+          $item = $this->getResultObject($item_sql, 'HM_Option_Item'); 
+          if ($item) {
+            if ($item->check($this->option_error_array)) {
+              $error_single = true;
+            }
           }
         }
       }

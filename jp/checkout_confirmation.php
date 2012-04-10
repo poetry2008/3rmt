@@ -21,7 +21,8 @@ require(DIR_WS_ACTIONS.'checkout_confirmation.php');
 <td valign="top" id="contents"> <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1>      
 <table class="table_ie" border="0" width="100%" cellspacing="0" cellpadding="0"> 
 <tr> 
-  <td><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+  <td>
+  <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
   <tr> 
   <td width="20%"><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
   <tr> 
@@ -29,9 +30,7 @@ require(DIR_WS_ACTIONS.'checkout_confirmation.php');
   <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
   </tr> 
   </table></td> 
-<!--
   <td width="20%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
--->
   <td width="20%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
   <td width="20%"><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
   <tr> 
@@ -45,11 +44,12 @@ require(DIR_WS_ACTIONS.'checkout_confirmation.php');
   <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
   <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '1', '5'); ?></td> 
   </tr> 
-  </table></td> 
-  </tr>
-<!--
-<td align="center" width="20%" class="checkoutBarFrom"><?php echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL') . '" class="checkoutBarFrom">' . CHECKOUT_BAR_PRODUCTS . '</a>'; ?></td> 
--->
+  </table>
+  
+  
+  </td> 
+</tr>
+<td align="center" width="20%" class="checkoutBarFrom"><?php echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_OPTION, '', 'SSL') . '" class="checkoutBarFrom">' .  CHECKOUT_BAR_OPTION . '</a>'; ?></td> 
 <td align="center" width="20%" class="checkoutBarFrom"><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL') . '" class="checkoutBarFrom">' . CHECKOUT_BAR_DELIVERY . '</a>'; ?></td> 
 <td align="center" width="20%" class="checkoutBarFrom"><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '" class="checkoutBarFrom">' . CHECKOUT_BAR_PAYMENT . '</a>'; ?></td> 
 <td align="center" width="20%" class="checkoutBarCurrent"><?php echo CHECKOUT_BAR_CONFIRMATION; ?></td> 
@@ -130,7 +130,12 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
       echo '<br><small>&nbsp;<i> - ' .  $order->products[$i]['op_attributes'][$j]['front_title'] . ': ' .  $order->products[$i]['op_attributes'][$j]['value'] . '</i></small>';
     }
   }
-
+  
+  if ( (isset($order->products[$i]['ck_attributes'])) && (sizeof($order->products[$i]['ck_attributes']) > 0) ) {
+    for ($jk=0, $n3=sizeof($order->products[$i]['ck_attributes']); $jk<$n3; $jk++) {
+      echo '<br><small>&nbsp;<i> - ' .  $order->products[$i]['ck_attributes'][$jk]['front_title'] . ': ' .  $order->products[$i]['ck_attributes'][$jk]['value'] . '</i></small>';
+    }
+  }
   echo '</td>' . "\n";
 
   if (sizeof($order->info['tax_groups']) > 1) echo '            <td class="main" valign="top" align="right">' . tep_display_tax_value($order->products[$i]['tax']) . '%</td>' . "\n";
