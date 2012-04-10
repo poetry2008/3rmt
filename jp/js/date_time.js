@@ -46,7 +46,7 @@ function selectDate(start_time,end_time){
         array_start = start_time.split('||'); 
 
         //new
-        html_str = '<table width="100%" border="0" cellspacing="2" cellpadding="2"><tr>';
+        html_str = '<table width="100%" border="0" cellspacing="2" cellpadding="2" id="group_list_box"><tr>';
         for(j=0;j<24;j++){
           flag = false;
           for(x in array_start){
@@ -58,7 +58,7 @@ function selectDate(start_time,end_time){
             }
           } 
           if(flag == true){
-            html_str += '<td id="hour'+j+'" bgcolor="#ccc" style="color:#000;cursor:pointer;" align="center" onclick="this.style.background=\'#F5F9FC\';selectHour(\''+start_time+'\',\''+end_time+'\','+j+');">'+j+'</td>';
+            html_str += '<td id="hour'+j+'" bgcolor="#ccc" style="color:#000;cursor:pointer;" align="center" onclick="if(document.getElementById(\'shipping_list_min\').style.display == \'table-row\' && this.style.backgroundColor == \'rgb(245, 249, 252)\'){check_out('+j+');}else{this.style.background=\'#F5F9FC\';selectHour(\''+start_time+'\',\''+end_time+'\','+j+',\'\',this);}">'+j+'</td>';
           }else{
             html_str += '<td id="hour'+j+'" bgcolor="#f1f0ef" style="color:#ccc;" align="center">'+j+'</td>';
           }
@@ -93,8 +93,11 @@ function selectDate(start_time,end_time){
 /******************************************************************************/
 /*                            分セレクトボックス                               /
 /******************************************************************************/
-function selectHour(start_time,end_time,hour,min_num){
-        
+function selectHour(start_time,end_time,hour,min_num,ele){
+     
+        document.getElementById("hour"+hour).style.color="blue";
+        document.getElementById("hour"+hour).style.textDecoration ="underline";
+        $("#hour"+hour).css("background-color","#F5F9FC");
         var array_start = new Array();
         array_start = start_time.split('||'); 
         var array_end = new Array();
@@ -112,6 +115,8 @@ function selectHour(start_time,end_time,hour,min_num){
           } 
           if(flag == true && h != hour){
               $("#hour"+h).css("background-color","#ccc"); 
+              document.getElementById("hour"+h).style.color="#000";
+              document.getElementById("hour"+h).style.textDecoration ="";
           }
         }
         
@@ -164,12 +169,14 @@ function selectHour(start_time,end_time,hour,min_num){
                     string +=  arr_time_m[0]+'時'+arr_time_m[1]+'分'; 
                   }
                 }
-                string += '<br>';
+                if(m % 2 == 1){
+                  string += '<br>';
+                }
               }
             }
         }
          
-          html_str += '<td><input type="hidden" id="start_hour" name="start_hour" value="'+start_hour_num+'"><input type="hidden" id="start_min" name="start_min" value="'+start_min_num+'"><input type="hidden" id="end_hour"name="end_hour" value="'+end_hour_num+'"><input type="hidden" id="end_min" name="end_min" value="'+end_min_num+'"><font size="2">'+string+'</font></td>';
+          html_str += '<td><input type="hidden" id="start_hour" name="start_hour" value="'+start_hour_num+'"><input type="hidden" id="start_min" name="start_min" value="'+start_min_num+'"><input type="hidden" id="end_hour"name="end_hour" value="'+end_hour_num+'"><input type="hidden" id="end_min" name="end_min" value="'+end_min_num+'"><div id="shipping_time_id" class="shipping_time">'+string+'</div></td>';
           
 
           html_str += '</tr><tr></table>'; 
@@ -177,7 +184,34 @@ function selectHour(start_time,end_time,hour,min_num){
         $("#shipping_list_show_min").html('');
         $("#shipping_list_show_min").html(html_str);
         $("#shipping_list_min").show();
- 
+        if(ele != ''){
+         if(document.documentElement.clientHeight < document.body.scrollHeight){
+                   if(ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight+$('#shipping_time_id').height() > document.body.scrollHeight){
+                          offset = ele.offsetTop+$('#group_list_box').position().top-$('#shipping_time_id').height()-$('#offsetHeight').height();
+                          $('#shipping_time_id').css('top', offset).show(); 
+                      }else{
+                          offset = ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight;
+                          $('#shipping_time_id').css('top', offset).show(); 
+                      }
+          }else{
+                    if(ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight+$('#shipping_time_id').height() > document.documentElement.clientHeight){
+                          offset = ele.offsetTop+$('#group_list_box').position().top-$('#shipping_time_id').height()-$('#offsetHeight').height()-ele.offsetHeight;
+                          $('#shipping_time_id').css('top', offset).show(); 
+                    }else{
+                          offset = ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight;
+                          $('#shipping_time_id').css('top', offset).show(); 
+                    }
+         }
+      }
+       
+        if(typeof(ele) != "object"){
+        
+          $('#shipping_time_id').css('top', ele).show();
+          $("#ele_id").val(ele);
+        }else{
+          
+          $("#ele_id").val(offset);
+        }
 	//'セレクトボックス値作成
         /*
 	for (i=min; i<60; i=i+10) {
@@ -219,4 +253,14 @@ function change_time(value,end_time){
                     }
                 }
               }
+}
+
+function check_out(num){
+      $("#shipping_time_id").hide();
+      var shipping_list_min = document.getElementById("shipping_list_min");
+      var hour = document.getElementById("hour"+num);
+      shipping_list_min.style.display = 'none';
+      hour.style.backgroundColor = '#ccc';
+      document.getElementById("hour"+num).style.color="#000";
+      document.getElementById("hour"+num).style.textDecoration ="";
 }

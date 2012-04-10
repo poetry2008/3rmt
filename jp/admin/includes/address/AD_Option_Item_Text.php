@@ -16,8 +16,8 @@ class AD_Option_Item_Text extends AD_Option_Item_Basic
        echo $this->front_title.':';
        echo '</td>';
      }
-     echo '<td class="main" width="30%">';
-     echo $this->comment; 
+     echo '<td class="main" width="70%">';
+     echo '<div style="width:90%;">'.$this->comment.'</div>'; 
      //echo '</pre>';
      echo '<span id="error_'.$this->formname.'" class="option_error">';
      if (isset($option_error_array[$this->formname])) {

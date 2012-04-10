@@ -3,7 +3,7 @@
  * 料金設定
  */
 
-define('HEADING_TITLE','料金設定１階層');
+define('HEADING_TITLE','料金設定');
 define('TABLE_TITLE_1','タイトル');
 define('TABLE_TITLE_2','表示名');
 define('TABLE_TITLE_3','共通料金');

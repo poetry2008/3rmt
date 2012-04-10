@@ -165,8 +165,7 @@ div#show {
                 <td class="dataTableHeadingContent"><?php echo TABLE_TITLE_2; ?></td>
                 <td class="dataTableHeadingContent"><?php echo TABLE_TITLE_3; ?></td>
                 <td class="dataTableHeadingContent"><?php echo TABLE_TITLE_4; ?></td>
-                <td class="dataTableHeadingContent"><?php echo TABLE_TITLE_5_1; ?></td>                
-                <td class="dataTableHeadingContent"><?php echo TABLE_TITLE_6; ?></td>
+                <td class="dataTableHeadingContent" align="right"><?php echo TABLE_TITLE_6; ?></td>
               </tr>
 <?php
 $even = 'dataTableSecondRow';
@@ -190,7 +189,7 @@ while($country_fee_array = tep_db_fetch_array($country_fee_query)){
 
   $fee = current($country_fee_option_array);
   echo '<tr class="'.$nowColor.'" '. $onmouseover .'>' . "\n";
-  echo '<td onclick="document.location.href=\'?page='. $_GET['page'] .'&id='. $country_fee_array['id'] .'\'">'.$country_fee_array['title'].'</td>';
+  echo '<td onclick="document.location.href=\'?page='. $_GET['page'] .'&id='. $country_fee_array['id'] .'\'"><a href="country_area.php?fid='. $country_fee_array['id'] .'"><img border="0" title=" フォルダ " alt="フォルダ" src="images/icons/folder.gif"></a>&nbsp;&nbsp;'.$country_fee_array['title'].'</td>';
   echo '<td onclick="document.location.href=\'?page='. $_GET['page'] .'&id='. $country_fee_array['id'] .'\'">'.$country_fee_array['name'].'</td>';
   echo '<td onclick="document.location.href=\'?page='. $_GET['page'] .'&id='. $country_fee_array['id'] .'\'">'. $fee .'</td>';
   echo '<td>';
@@ -209,9 +208,8 @@ while($country_fee_array = tep_db_fetch_array($country_fee_query)){
 }
 ?>
 </td>
-<td onclick="document.location.href='?page=<?php echo $_GET['page'];?>&id=<?php echo $country_fee_array['id'];?>';"><a href="country_area.php?fid=<?php echo $country_fee_array['id'];?>"><u><?php echo TABLE_TITLE_5;?></u></a></td>
 <?php
-  echo '<td><a href="javascript:void(0);" onclick="show_text_fee('. $country_fee_array['id'] .',this);">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a></td>';
+  echo '<td align="right"><a href="javascript:void(0);" onclick="show_text_fee('. $country_fee_array['id'] .',this);">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a></td>';
   echo '</tr>';
   $i++;
 }

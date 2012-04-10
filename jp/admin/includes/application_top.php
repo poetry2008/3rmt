@@ -254,6 +254,7 @@ define('TABLE_PERMISSIONS','permissions');
   define('TABLE_ADDRESS_ORDERS','address_orders');
   define('TABLE_COUNTRY_FEE','country_fee');
   define('TABLE_AREA_FEE','country_area');
+  define('TABLE_COUNTRY_CITY','country_city');
   define('TABLE_PRODUCTS_SHIPPING_TIME','products_shipping_time');
   define('TABLE_COUNTRY_AREA','country_area');
   define('TABLE_COUNTRY_FEE','country_fee');

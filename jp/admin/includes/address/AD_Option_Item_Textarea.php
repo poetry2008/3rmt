@@ -12,12 +12,14 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
       echo '</td>'; 
     }
     $options = unserialize($this->option);
+    $type_limit = $options['type_limit'];
     if($options['rows'] == 1){
 
       echo '<td class="main" width="70%">';
       $style_color = isset($_POST['ad_'.$this->formname]) && $_POST['ad_'.$this->formname] != $this->comment ?'color:#000;':'color:#999;';
+      $style_color .= $type_limit == 'num' ? 'width:30%;' : 'width:60%;';
       echo '<input type="hidden" name="'.$this->formname.'" value="'.$this->front_title.'">';
-      echo '<input type="text" name="ad_'.$this->formname.'" id="ad_'.$this->formname.'" size="25" value="'. (isset($_POST['ad_'.$this->formname])?$_POST['ad_'.$this->formname]:$this->comment) .'" style="'. $style_color .'" onfocus="this.style.color=\'#001\';if(this.value==\''. $this->comment.'\')this.value=\'\'" onblur="if(this.value==\'\'){this.value=\''. $this->comment .'\';this.style.color=\'#999\'}">';
+      echo '<input type="text" name="ad_'.$this->formname.'" id="ad_'.$this->formname.'" value="'. (isset($_POST['ad_'.$this->formname])?$_POST['ad_'.$this->formname]:$this->comment) .'" style="'. $style_color .'" onfocus="this.style.color=\'#001\';if(this.value==\''. $this->comment.'\')this.value=\'\'" onblur="if(this.value==\'\'){this.value=\''. $this->comment .'\';this.style.color=\'#999\'}">';
       echo '<span id="error_'.$this->formname.'" class="option_error"><font color="red">';
      if (isset($option_error_array[$this->formname])) {
        echo $option_error_array[$this->formname]; 

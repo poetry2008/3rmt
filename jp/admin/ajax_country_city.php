@@ -11,29 +11,29 @@ $flag = tep_db_prepare_input($_POST['flag']);
 if(isset($id) && $id != 0){
   if(isset($sort) && $sort != ''){
      if($flag == 1){ 
-       $area_sort_query = tep_db_query("select count(*) total,max(id) maxid from ". TABLE_AREA_FEE ." where fid=$fid and sort=$sort");
+       $area_sort_query = tep_db_query("select count(*) total,max(id) maxid from ". TABLE_COUNTRY_CITY ." where fid=$fid and sort=$sort");
        $area_sort_array = tep_db_fetch_array($area_sort_query);
        if($area_sort_array['total'] > 1){
          if($id < $area_sort_array['maxid']){
-           $area_query = tep_db_query("select * from ". TABLE_AREA_FEE ." where fid=$fid and sort=$sort and id>$id order by sort asc,id asc");
+           $area_query = tep_db_query("select * from ". TABLE_COUNTRY_CITY ." where fid=$fid and sort=$sort and id>$id order by sort asc,id asc");
          }else{
-           $area_query = tep_db_query("select * from ". TABLE_AREA_FEE ." where fid=$fid and sort>$sort order by sort asc limit 0,1");
+           $area_query = tep_db_query("select * from ". TABLE_COUNTRY_CITY ." where fid=$fid and sort>$sort order by sort asc limit 0,1");
          }
        }else{
-         $area_query = tep_db_query("select * from ". TABLE_AREA_FEE ." where fid=$fid and sort>$sort order by sort asc limit 0,1");
+         $area_query = tep_db_query("select * from ". TABLE_COUNTRY_CITY ." where fid=$fid and sort>$sort order by sort asc limit 0,1");
        }
      }elseif($flag == 0){
-       $area_sort_query = tep_db_query("select count(*) total,min(id) minid from ". TABLE_AREA_FEE ." where fid=$fid and sort=$sort");
+       $area_sort_query = tep_db_query("select count(*) total,min(id) minid from ". TABLE_COUNTRY_CITY ." where fid=$fid and sort=$sort");
        $area_sort_array = tep_db_fetch_array($area_sort_query);
        if($area_sort_array['total'] > 1){
          if($id > $area_sort_array['minid']){
             
-           $area_query = tep_db_query("select * from ". TABLE_AREA_FEE ." where fid=$fid and sort=$sort and id<$id order by sort desc,id desc");
+           $area_query = tep_db_query("select * from ". TABLE_COUNTRY_CITY ." where fid=$fid and sort=$sort and id<$id order by sort desc,id desc");
          }else{
-           $area_query = tep_db_query("select * from ". TABLE_AREA_FEE ." where fid=$fid and sort<$sort order by sort desc limit 0,1");  
+           $area_query = tep_db_query("select * from ". TABLE_COUNTRY_CITY ." where fid=$fid and sort<$sort order by sort desc limit 0,1");  
          }
        }else{
-         $area_query = tep_db_query("select * from ". TABLE_AREA_FEE ." where fid=$fid and sort<$sort order by sort desc,id desc limit 0,1");
+         $area_query = tep_db_query("select * from ". TABLE_COUNTRY_CITY ." where fid=$fid and sort<$sort order by sort desc,id desc limit 0,1");
        }
      }
   } 
@@ -47,22 +47,22 @@ if(isset($id) && $id != 0){
        $id = $sort_id != '' ? $sort_id : $id;
      }
    
-     $address_sort_query = tep_db_query("select max(sort) maxsort,min(sort) minsort from ". TABLE_AREA_FEE ." where fid=$fid");
+     $address_sort_query = tep_db_query("select max(sort) maxsort,min(sort) minsort from ". TABLE_COUNTRY_CITY ." where fid=$fid");
      $address_sort_array = tep_db_fetch_array($address_sort_query);
      $maxsort = $address_sort_array['maxsort'];
      $minsort = $address_sort_array['minsort'];
      tep_db_free_result($address_sort_query);
-     $address_sort_max_query = tep_db_query("select max(id) maxid from ". TABLE_AREA_FEE ." where fid=$fid and sort=$maxsort");
+     $address_sort_max_query = tep_db_query("select max(id) maxid from ". TABLE_COUNTRY_CITY ." where fid=$fid and sort=$maxsort");
      $address_sort_max_array = tep_db_fetch_array($address_sort_max_query); 
      $maxid = $address_sort_max_array['maxid'];
      tep_db_free_result($address_sort_max_query);
-     $address_sort_min_query = tep_db_query("select min(id) minid from ". TABLE_AREA_FEE ." where fid=$fid and sort=$minsort");
+     $address_sort_min_query = tep_db_query("select min(id) minid from ". TABLE_COUNTRY_CITY ." where fid=$fid and sort=$minsort");
      $address_sort_min_array = tep_db_fetch_array($address_sort_min_query); 
      $minid = $address_sort_min_array['minid'];
      tep_db_free_result($address_sort_min_query);     
 
 
-   $area_fee_query = tep_db_query("select * from ". TABLE_AREA_FEE ." where id=$id");
+   $area_fee_query = tep_db_query("select * from ". TABLE_COUNTRY_CITY ." where id=$id");
    $area_fee_array = tep_db_fetch_array($area_fee_query);
    $cid = $address_array['id'];
    $title = $area_fee_array['title'];
@@ -92,16 +92,16 @@ if($id == 0 || $maxid == $minid){
   $next_str = '';
   if($area_sort == $maxsort && $id == $maxid){
 
-    $prev_str = '<a href="javascript:show_text_area('. $id .',\'\','. $fid .','. $area_sort .',0);"><font color="#FFFFFF">'. TABLE_PREV .'</font></a>';
+    $prev_str = '<a href="javascript:show_text_city('. $id .',\'\','. $fid .','. $area_sort .',0);"><font color="#FFFFFF">'. TABLE_PREV .'</font></a>';
 
   }elseif($area_sort == $minsort && $id == $minid){
 
-    $next_str = '<a href="javascript:show_text_area('. $id .',\'\','. $fid .','. $area_sort .',1);"><font color="#FFFFFF">'. TABLE_NEXT .'</font></a>';
+    $next_str = '<a href="javascript:show_text_city('. $id .',\'\','. $fid .','. $area_sort .',1);"><font color="#FFFFFF">'. TABLE_NEXT .'</font></a>';
 
   }else{
 
-    $prev_str = '<a href="javascript:show_text_area('. $id .',\'\','. $fid .','. $area_sort .',0);"><font color="#FFFFFF">'. TABLE_PREV .'</font></a>';
-    $next_str = '<a href="javascript:show_text_area('. $id .',\'\','. $fid .','. $area_sort .',1);"><font color="#FFFFFF">'. TABLE_NEXT .'</font></a>';
+    $prev_str = '<a href="javascript:show_text_city('. $id .',\'\','. $fid .','. $area_sort .',0);"><font color="#FFFFFF">'. TABLE_PREV .'</font></a>';
+    $next_str = '<a href="javascript:show_text_city('. $id .',\'\','. $fid .','. $area_sort .',1);"><font color="#FFFFFF">'. TABLE_NEXT .'</font></a>';
   }
 ?>
   <tr><td><?php echo tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO); ?>&nbsp;<?php echo $title.TABLE_TITLE_1;?></td><td align="right" onmouseover="this.style.cursor=\'hand\'"><?php echo $prev_str;?>&nbsp;<?php echo $next_str;?>&nbsp;<a href="javascript:hide_text();"><font color="#FFFFFF">X</font></a></td></tr>
@@ -168,15 +168,15 @@ if($id == 0){
 <?php 
 if($id != 0){
 ?>
-<input type="button" name="new" value="<?php echo TABLE_BUTTON_SUBMIT;?>" onclick="show_text_area(0,'');">
+<input type="button" name="new" value="<?php echo TABLE_BUTTON_SUBMIT;?>" onclick="show_text_city(0,'');">
 <?php
 }
 ?>
-&nbsp;<input type="button" name="save" value="<?php echo TABLE_BUTTON_SAVE;?>" onclick="if(check_form()){check_area('save');}else{return check_form();}">&nbsp;
+&nbsp;<input type="button" name="save" value="<?php echo TABLE_BUTTON_SAVE;?>" onclick="if(check_form()){check_city('save');}else{return check_form();}">&nbsp;
 <?php
 if($id != 0){
 ?>
-<input type="button" name="del" value="<?php echo TABLE_BUTTON_DEL;?>" onclick="if(confirm('このレコードを削除してもよろしいですか？')){check_area('del');}else{return false;}">
+<input type="button" name="del" value="<?php echo TABLE_BUTTON_DEL;?>" onclick="if(confirm('このレコードを削除してもよろしいですか？')){check_city('del');}else{return false;}">
 <?php
 }else{
 ?>

@@ -45,11 +45,11 @@ if(isset($id) && $id != 0){
 
 
 ?>
-<table border="0" width="100%" cellspacing="0" cellpadding="0" valign="top">
+<table border="0" width="100%" cellspacing="0" cellpadding="2" valign="top" class="campaign_top">
 <?php
 if($id == 0){
 ?>
- <tr><td bgcolor="#000000" class="dataTableHeadingContent" height="35"><?php echo tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO); ?>&nbsp;<?php echo TABLE_NEW.TABLE_TITLE_1;?></td><td bgcolor="#000000" align="right"><a href="javascript:hide_text();"><font color="#FFFFFF">X</font></a></td></tr>
+ <tr><td><?php echo tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO); ?>&nbsp;<?php echo TABLE_NEW.TABLE_TITLE_1;?></td><td align="right"><a href="javascript:hide_text();"><font color="#FFFFFF">X</font></a></td></tr>
 <?php
 }else{
   $prev_str = '';
@@ -65,21 +65,20 @@ if($id == 0){
 
   }
 ?>
-  <tr><td bgcolor="#000000" class="dataTableHeadingContent" height="35"><?php echo tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO); ?>&nbsp;<?php echo $title.TABLE_TITLE_1;?></td><td bgcolor="#000000" align="right" class="dataTableHeadingContent" onmouseover="this.style.cursor=\'hand\'"><?php echo $prev_str;?>&nbsp;<?php echo $next_str;?>&nbsp;<a href="javascript:hide_text();"><font color="#FFFFFF">X</font></a></td></tr>
+  <tr><td><?php echo tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO); ?>&nbsp;<?php echo $title.TABLE_TITLE_1;?></td><td align="right" onmouseover="this.style.cursor=\'hand\'"><?php echo $prev_str;?>&nbsp;<?php echo $next_str;?>&nbsp;<a href="javascript:hide_text();"><font color="#FFFFFF">X</font></a></td></tr>
 <?php
 }
 ?>
 </table>
 <form name="form" method="post" id="country_fee_form" action="country_fee.php">
-<table border="0" width="100%" cellspacing="0" cellpadding="0" valign="top" bgcolor="yellow">
-<tr><td>&nbsp;</td></tr>
-<tr><td width="30%" height="30" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_1;?></td><td><input type="text" name="title" id="title" class="option_text" value="<?php echo $title;?>">&nbsp;<font color="red"><?php echo TABLE_REQUIRED;?></font><br><span id="error_title"></span><input type="hidden" name="cid" value="<?php echo $country_fee_array['id'];?>"></td></tr>
-<tr><td width="30%" height="30" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_2;?></td><td><input type="text" name="name" id="name" class="option_text" value="<?php echo $name;?>">&nbsp;<font color="red"><?php echo TABLE_REQUIRED;?></font><br><span id="error_name"></span></td></tr>
-<tr><td width="30%" height="30" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_3;?></td><td>
+<table border="0" width="100%" cellspacing="0" cellpadding="2" valign="top" bgcolor="yellow" class="campaign_body">
+<tr><td width="30%">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_1;?></td><td><input type="text" name="title" id="title" class="option_text" value="<?php echo $title;?>">&nbsp;<font color="red"><?php echo TABLE_REQUIRED;?></font><br><span id="error_title"></span><input type="hidden" name="cid" value="<?php echo $country_fee_array['id'];?>"></td></tr>
+<tr><td width="30%">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_2;?></td><td><input type="text" name="name" id="name" class="option_text" value="<?php echo $name;?>">&nbsp;<font color="red"><?php echo TABLE_REQUIRED;?></font><br><span id="error_name"></span></td></tr>
+<tr><td width="30%">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_3;?></td><td>
 <input type="text" name="free_value" id="free_value" value="<?php echo $free_value;?>" style="text-align: right;">&nbsp;<?php echo TABLE_UNIT;?>
 <br><?php echo TABLE_PROMPT_1;?></td></tr>
 
-<tr><td width="30%" height="30" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_4;?></td><td>
+<tr><td width="30%">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_4;?></td><td>
 <?php
 // SHIPPING_BOX_WEIGHT_LIST
 // 重量/料金
@@ -91,28 +90,28 @@ foreach($weight_fee_array as $weight_fee_value){
 
   $kg = $weight_fee_value == end($weight_fee_array) ? 'KG' : '';
 
-  echo '<tr><td width="30%" height="30" align="left">&nbsp;&nbsp;&nbsp;&nbsp;'. $weight_fee_value. $kg .'</td><td>
+  echo '<tr><td width="30%">&nbsp;&nbsp;&nbsp;&nbsp;'. $weight_fee_value. $kg .'</td><td>
 <input type="hidden" name="weight_fee_name[]" value="'. $weight_fee_value .'"><input type="text" name="weight_fee[]" value="'. $weight_fee_option_array[$weight_fee_value].'" style="text-align: right;">&nbsp;'. TABLE_UNIT .'</td></tr>';
 
 }
 ?>
 
-<tr><td width="30%" height="30" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_5;?></td><td>
+<tr><td width="30%">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_5;?></td><td>
 <input type="text" name="weight_limit" id="weight_limit" value="<?php echo $weight_limit;?>" style="text-align: right;">&nbsp;KG
 <br><?php echo TABLE_PROMPT_2;?></td></tr>
 
-<tr><td width="30%" height="30" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_6;?></td><td>
+<tr><td width="30%" valign="top">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_6;?></td><td>
 <textarea name="email_comment" id="email_comment" rows="5" cols="30" class="option_text"><?php echo $email_comment; ?></textarea>
 <br><?php echo TABLE_PROMPT_3;?></td></tr>
 
-<tr><td width="30%" height="30" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_7;?></td><td><br />
+<tr><td width="30%" valign="top">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_7;?></td><td>
 <textarea name="email_comment_1" id="email_comment_1" rows="5" cols="30" class="option_text"><?php echo $email_comment_1; ?></textarea>
 <br><?php echo TABLE_PROMPT_4;?></td></tr>
 
 
 
 </td></tr>
-<tr><td width="30%" height="30">&nbsp;</td><td style="padding-left:20%;"><input type="button" name="new" value="<?php echo TABLE_BUTTON_SUBMIT;?>" onclick="show_text_fee(0,'');">&nbsp;<input type="button" name="save" value="<?php echo TABLE_BUTTON_SAVE;?>" onclick="if(check_form()){check_fee('save');}else{return check_form();}">&nbsp;
+<tr><td width="30%">&nbsp;</td><td style="padding-left:10%;"><input type="button" name="new" value="<?php echo TABLE_BUTTON_SUBMIT;?>" onclick="show_text_fee(0,'');">&nbsp;<input type="button" name="save" value="<?php echo TABLE_BUTTON_SAVE;?>" onclick="if(check_form()){check_fee('save');}else{return check_form();}">&nbsp;
 
 <?php
 if($id != 0){

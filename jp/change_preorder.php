@@ -630,7 +630,7 @@ document.forms.order1.submit();
 </td>
 </tr>
 <tr id="shipping_list_min" style="display:none;">
-              <td class="main">&nbsp;</td> 
+              <td class="main">&nbsp;<input type="hidden" id="ele_id" name="ele" value=""></td> 
               <td class="main" id="shipping_list_show_min"> 
               </td> 
             </tr>
@@ -645,7 +645,7 @@ document.forms.order1.submit();
              }
              if(isset($_POST['min']) && $_POST['min'] != ''){
 
-                echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\','. $_POST['hour'] .','. $_POST['min'] .');$("#shipping_list_min").show();</script>';
+                echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\','. $_POST['hour'] .','. $_POST['min'] .','. $_POST['ele'] .');$("#shipping_list_min").show();</script>';
              }
              ?> 
 </td></tr>

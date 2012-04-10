@@ -103,6 +103,7 @@
   $end_hour = tep_db_prepare_input($_POST['end_hour']);
   $end_min = tep_db_prepare_input($_POST['end_min']);
   $address_option_value = tep_db_prepare_input($_POST['address_option']);
+  $ele = tep_db_prepare_input($_POST['ele']);
 
   //住所
   $options_required = array();
@@ -178,6 +179,7 @@
     tep_session_register('start_min');
     tep_session_register('end_hour');
     tep_session_register('end_min');
+    tep_session_register('ele');
     //tep_session_register('address_option');
     $_SESSION['address_option'] = $address_option_value;
     tep_session_register('insert_torihiki_date');
@@ -925,7 +927,7 @@ function session_value(){
 ?>
   <tr>
     <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-  <td class="main"><?php echo TEXT_TORIHIKIKIBOUBI; ?></td>
+  <td class="main" width="30%"><?php echo TEXT_TORIHIKIKIBOUBI; ?></td>
     <td class="main">
 <?php
     $today = getdate();
@@ -992,7 +994,7 @@ function session_value(){
   </td>
   </tr>
  <tr id="shipping_list_min" style="display:none;">
- <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+ <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?><input type="hidden" id="ele_id" name="ele" value=""></td> 
  <td class="main">&nbsp;</td>
  <td class="main" id="shipping_list_show_min">
  </td>
@@ -1006,7 +1008,8 @@ function session_value(){
   if((isset($_POST['min']) && $_POST['min'] != '') || (isset($_SESSION['min']) && $_SESSION['min'] != '')){
     $post_hour = isset($_SESSION['hour']) && $_SESSION['hour'] != '' ? $_SESSION['hour'] : $_POST['hour'];
     $post_min = isset($_SESSION['min']) && $_SESSION['min'] != '' ? $_SESSION['min'] : $_POST['min'];
-    echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\','. $post_hour .','. $post_min .');$("#shipping_list_min").show();</script>';
+    $ele = isset($_SESSION['ele']) && $_SESSION['ele'] != '' ? $_SESSION['ele'] : $_POST['ele'];
+    echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\','. $post_hour .','. $post_min .',\''.$ele.'\');$("#shipping_list_min").show();</script>';
   }
   if(isset($jikan_error) && $jikan_error != '') {
 ?>

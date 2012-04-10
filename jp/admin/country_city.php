@@ -37,7 +37,7 @@ if(isset($action) && $action != ''){
     //这里判断是添加，还是修改
     if($area_fee_id == ''){
 
-       $area_fee_sql = "insert into ". TABLE_AREA_FEE .
+       $area_fee_sql = "insert into ". TABLE_COUNTRY_CITY .
                    " values(NULL".
                    ",". $area_fee_fid .
                    ",'". $area_fee_title . 
@@ -52,7 +52,7 @@ if(isset($action) && $action != ''){
                    "','0')";
 
     }else{
-      $area_fee_sql = "update ". TABLE_AREA_FEE .
+      $area_fee_sql = "update ". TABLE_COUNTRY_CITY .
                    " set ".
                    "title='". $area_fee_title .
                    "',name='". $area_fee_name .
@@ -72,7 +72,7 @@ if(isset($action) && $action != ''){
       
       tep_db_free_result($area_fee_query);
       tep_db_close();
-      header("location:country_area.php?fid=$area_fee_fid");
+      header("location:country_city.php?fid=$area_fee_fid");
 
     }
 
@@ -81,7 +81,7 @@ if(isset($action) && $action != ''){
     if(isset($_GET['id']) && $_GET['id']){
       $area_id = $_GET['id'];
       $area_fid = $_GET['fid'];
-      $area_sql = "update ". TABLE_AREA_FEE .
+      $area_sql = "update ". TABLE_COUNTRY_CITY .
                    " set status='1' where id=".$area_id;
       $area_del_query = tep_db_query($area_sql);
 
@@ -89,13 +89,13 @@ if(isset($action) && $action != ''){
       
         tep_db_free_result($area_del_query);
         tep_db_close();
-        header("location:country_area.php?fid=$area_fid");
+        header("location:country_city.php?fid=$area_fid");
       }
 
     }else{
       $area_id = $_POST['cid'];
       $area_fid = $_POST['fid'];
-      $area_sql = "delete from ". TABLE_AREA_FEE .
+      $area_sql = "delete from ". TABLE_COUNTRY_CITY .
                    " where id=".$area_id;
       $area_del_query = tep_db_query($area_sql);
 
@@ -103,7 +103,7 @@ if(isset($action) && $action != ''){
       
         tep_db_free_result($area_del_query);
         tep_db_close();
-        header("location:country_area.php?fid=$area_fid");
+        header("location:country_city.php?fid=$area_fid");
       }
    }
     break;
@@ -111,23 +111,24 @@ if(isset($action) && $action != ''){
 
     $area_id = $_GET['id'];
     $area_fid = $_GET['fid'];
-    $area_sql = "update ". TABLE_AREA_FEE .
+    $area_sql = "update ". TABLE_COUNTRY_CITY .
                    " set status='0' where id=".$area_id;
     $area_del_query = tep_db_query($area_sql);
 
     if($area_del_query == true){
       tep_db_free_result($area_del_query);
       tep_db_close();
-      header("location:country_area.php?fid=$area_fid");
+      header("location:country_city.php?fid=$area_fid");
     }
     break;
 
   }  
 }
 
-$f_query = tep_db_query("select name from ". TABLE_COUNTRY_FEE ." where id=". tep_db_prepare_input($_GET['fid']));
+$f_query = tep_db_query("select fid,name from ". TABLE_COUNTRY_AREA ." where id=". tep_db_prepare_input($_GET['fid']));
 $f_array = tep_db_fetch_array($f_query);
 $f_title = $f_array['name'];
+$ff_id = $f_array['fid'];
 tep_db_free_result($f_query);
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -192,7 +193,7 @@ $fid = tep_db_prepare_input($_GET['fid']);
 $even = 'dataTableSecondRow';
 $odd  = 'dataTableRow';
 $select_class = 'dataTableRowSelected';
-$area_fee_sql = "select * from ". TABLE_AREA_FEE ." where fid=$fid order by sort asc,id asc";
+$area_fee_sql = "select * from ". TABLE_COUNTRY_CITY ." where fid=$fid order by sort asc,id asc";
 
 $area_fee_page = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $area_fee_sql, $area_fee_query_numrows);
 $area_fee_query = tep_db_query($area_fee_sql);
@@ -210,7 +211,7 @@ while($area_fee_array = tep_db_fetch_array($area_fee_query)){
 
   $fee = current($area_fee_option_array);
   echo '<tr class="'.$nowColor.'" '. $onmouseover .'>' . "\n";
-  echo '<td onclick="document.location.href=\'?fid='. $area_fee_array['fid'] .'&page='. $_GET['page'] .'&id='. $area_fee_array['id'] .'\'"><a href="country_city.php?fid='. $area_fee_array['id'] .'"><img border="0" title=" フォルダ " alt="フォルダ" src="images/icons/folder.gif"></a>&nbsp;&nbsp;'.$area_fee_array['title'].'</td>';
+  echo '<td onclick="document.location.href=\'?fid='. $area_fee_array['fid'] .'&page='. $_GET['page'] .'&id='. $area_fee_array['id'] .'\'">'.$area_fee_array['title'].'</td>';
   echo '<td onclick="document.location.href=\'?fid='. $area_fee_array['fid'] .'&page='. $_GET['page'] .'&id='. $area_fee_array['id'] .'\'">'.$area_fee_array['name'].'</td>';
   echo '<td onclick="document.location.href=\'?fid='. $area_fee_array['fid'] .'&page='. $_GET['page'] .'&id='. $area_fee_array['id'] .'\'">'. $fee .'</td>';
   echo '<td onclick="document.location.href=\'?fid='. $area_fee_array['fid'] .'&page='. $_GET['page'] .'&id='. $area_fee_array['id'] .'\'">'. $area_fee_array['date'] .'</td>';
@@ -219,12 +220,12 @@ while($area_fee_array = tep_db_fetch_array($area_fee_query)){
   if($area_fee_array['status'] == 0){
 ?>
   <img border="0" src="images/icon_status_green.gif" alt="" title="有効">
-  <a title="無効にする" onclick="if(confirm('無効にしますか？')){check_on_area('del',<?php echo $area_fee_array['id'];?>,<?php echo $_GET['fid'];?>);}else{return false;}" href="javascript:void(0);"><img border="0" alt="" src="images/icon_status_red_light.gif"></a>
+  <a title="無効にする" onclick="if(confirm('無効にしますか？')){check_on_city('del',<?php echo $area_fee_array['id'];?>,<?php echo $_GET['fid'];?>);}else{return false;}" href="javascript:void(0);"><img border="0" alt="" src="images/icon_status_red_light.gif"></a>
 
 <?php
 }else{
 ?>
-  <a title="有効" onclick="if(confirm('有効にしますか？')){check_on_area('res',<?php echo $area_fee_array['id'];?>,<?php echo $_GET['fid'];?>);}else{return false;}" href="javascript:void(0);"><img border="0" alt="" src="images/icon_status_green_light.gif"></a>
+  <a title="有効" onclick="if(confirm('有効にしますか？')){check_on_city('res',<?php echo $area_fee_array['id'];?>,<?php echo $_GET['fid'];?>);}else{return false;}" href="javascript:void(0);"><img border="0" alt="" src="images/icon_status_green_light.gif"></a>
 <img border="0" alt="" src="images/icon_status_red.gif" title="無効にする">
 
 <?php
@@ -232,7 +233,7 @@ while($area_fee_array = tep_db_fetch_array($area_fee_query)){
 ?>
 </td>
 <?php
-  echo '<td align="right"><a href="javascript:void(0);" onclick="show_text_area('. $area_fee_array['id'] .',this,'. $_GET['fid'] .');">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a></td>';
+  echo '<td align="right"><a href="javascript:void(0);" onclick="show_text_city('. $area_fee_array['id'] .',this,'. $_GET['fid'] .');">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a></td>';
   echo '</tr>';
   $i++;
 }
@@ -248,7 +249,7 @@ tep_db_close();
 <?php echo $area_fee_page->display_links($area_fee_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page','fid'=>$_GET['fid']))); ?>
 </td>
 </tr>
-<tr><td align="right" colspan="9"><button onclick="javascript:location.href='country_fee.php';"><?php echo TABLE_HISTROY;?></button>&nbsp;<button onclick="show_text_area(0,this,<?php echo $_GET['fid']; ?>);"><?php echo TABLE_BUTTON;?></button></td></tr>
+<tr><td align="right" colspan="9"><button onclick="javascript:location.href='country_area.php?fid=<?php echo $ff_id;?>';"><?php echo TABLE_HISTROY;?></button>&nbsp;<button onclick="show_text_city(0,this,<?php echo $_GET['fid']; ?>);"><?php echo TABLE_BUTTON;?></button></td></tr>
 </table></td></tr></table></td></tr>
 </table></td>
 </tr>

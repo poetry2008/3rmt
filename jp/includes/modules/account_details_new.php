@@ -232,7 +232,7 @@ $(document).ready(function(){
 ?>
         </table>
 <table border="0" width="100%" cellspacing="0" cellpadding="0">
-  <tr><td class="main" align="right" colspan="2"><input type="submit" value="<?php echo BUTTON_SAVE;?>">&nbsp;&nbsp;</td></tr>
+  <tr><td class="main" align="right" colspan="2"><input type="image" src="images/design/button/save.gif">&nbsp;&nbsp;</td></tr>
 </table>
 </form></td>
       </tr>
@@ -258,7 +258,7 @@ $(document).ready(function(){
         <?php       
           $hm_option->render(''); 
         ?> 
-          <tr><td class="main" align="right" colspan="2"><input type="button" value="<?php echo BUTTON_DEL;?>" onclick="if(confirm('このレコードを削除してもよろしいですか？')){location.href='<?php echo FILENAME_ACCOUNT_EDIT;?>?act='+document.getElementById('address_flag_id').value;}else{return false;}">&nbsp;<input type="button" value="<?php echo BUTTON_NEW;?>" onclick="address_clear();">&nbsp;<input type="submit" value="<?php echo BUTTON_SAVE;?>"></form>&nbsp;&nbsp;</td></tr>
+          <tr><td class="main" align="right" colspan="2"><a href="javascript:void(0);" onclick="if(confirm('このレコードを削除してもよろしいですか？')){location.href='<?php echo FILENAME_ACCOUNT_EDIT;?>?act='+document.getElementById('address_flag_id').value;}else{return false;}"><img src="images/design/button/delete.gif"></a>&nbsp;<a href="javascript:void(0);" onclick="address_clear();"><img src="images/design/button/new_found.gif"></a>&nbsp;<a href="javascript:void(0);" onclick="document.account_edit_address.submit();"><img src="images/design/button/save.gif"></a></form>&nbsp;&nbsp;</td></tr>
         </table></form>
         </td>
       </tr>
@@ -324,7 +324,7 @@ $(document).ready(function(){
 </table>
 </td>
 </tr>
-<tr><td>&nbsp;</td><td class="main" align="right"><input type="submit" value="<?php echo BUTTON_SAVE;?>">&nbsp;&nbsp;</td></tr>
+<tr><td>&nbsp;</td><td class="main" align="right"><input type="image" src="images/design/button/save.gif">&nbsp;&nbsp;</td></tr>
 </form>
 </table>
 </td>
@@ -383,7 +383,7 @@ if (!isset($guestchk)) $guestchk = NULL;
 ?>  
     </table>
 <table border="0" width="100%" cellspacing="0" cellpadding="0">
-      <tr><td>&nbsp;</td><td class="main" align="right"><input type="submit" value="<?php echo BUTTON_SAVE;?>">&nbsp;&nbsp;</td></tr>
+      <tr><td>&nbsp;</td><td class="main" align="right"><input type="image" src="images/design/button/save.gif">&nbsp;&nbsp;</td></tr>
 </table>
       </td>
       </tr>

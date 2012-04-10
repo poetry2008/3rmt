@@ -87,7 +87,6 @@ if (tep_not_null($action)) {
 
     // 1. UPDATE ORDER ###############################################################################################
   case 'update_order':
-
     
     $shipping_array = array();
     foreach($update_products as $products_key=>$products_value){
@@ -188,6 +187,12 @@ if (tep_not_null($action)) {
       $oID = tep_db_prepare_input($_GET['oID']);
       $order = new order($oID);
       $status = tep_db_prepare_input($_POST['status']);
+      $start_hour = tep_db_prepare_input($_POST['start_hour']);
+      $start_min_1 = tep_db_prepare_input($_POST['start_min_1']);
+      $start_min_2 = tep_db_prepare_input($_POST['start_min_2']);
+      $end_hour = tep_db_prepare_input($_POST['end_hour']);
+      $end_min_1 = tep_db_prepare_input($_POST['end_min_1']);
+      $end_min_2 = tep_db_prepare_input($_POST['end_min_2']);
       $goods_check = $order_query;
       /*
          if (tep_db_num_rows($goods_check) == 0) {
@@ -207,7 +212,9 @@ if (tep_not_null($action)) {
         tep_redirect(tep_href_link("edit_orders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
         break;
       }
-
+      
+      $update_tori_torihiki_start_date = $start_hour.':'.$start_min_1.$start_min_2.':00';
+      $update_tori_torihiki_end_date = $end_hour.':'.$end_min_1.$end_min_2.':00';
       $update_tori_torihiki_start_date = $update_tori_torihiki_date.' '.$update_tori_torihiki_start_date;
       $update_tori_torihiki_end_date = $update_tori_torihiki_date.' '.$update_tori_torihiki_end_date; 
       if (isset($update_tori_torihiki_start_date)) { //日時が有効かチェック
@@ -1123,10 +1130,12 @@ $shipping_fee = $order->info['shipping_fee'] != $shipping_fee ? $shipping_fee : 
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
 <title><?php echo TITLE; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
+<link rel="stylesheet" type="text/css" href="includes/styles.css">
 <script language="javascript" src="includes/general.js"></script>
 <script language="javascript" src="includes/javascript/jquery.js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript" src="includes/javascript/datePicker.js"></script>
 <script language="javascript">
 function address_show(){
   
@@ -1170,6 +1179,10 @@ $(document).ready(function(){
 <?php
   }
 ?>
+$(document).ready(function(){
+  $.datePicker.setDateFormat('ymd', '-');
+  $('#date_orders').datePicker();
+});
 </script>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">
@@ -1279,13 +1292,82 @@ if (($action == 'edit') && ($order_exists == true)) {
       $date_array = explode('～',$order->tori['date']);
       $date_start_array = explode(' ',$date_array[0]);
     ?>
-    <input name='update_tori_torihiki_date' size='15' value='<?php echo str_replace('&nbsp;','',$date_start_array[0]); ?>'>
-    <input name='update_tori_torihiki_start_date' size='10' value='<?php echo str_replace('&nbsp;','',$date_start_array[1]); ?>'>&nbsp;～
-    <input name='update_tori_torihiki_end_date' size='10' value='<?php echo str_replace('&nbsp;','',$date_array[1]); ?>'>
+    <input id="date_orders" name='date_orders' size='15' value='<?php echo str_replace('&nbsp;','',$date_start_array[0]); ?>'>
+    <input type="hidden" id="date_order" name="update_tori_torihiki_date" value="<?php echo str_replace('&nbsp;','',$date_start_array[0]); ?>">
+    <?php
+      // 生成时间下拉框
+      $date_start_array[1] = str_replace('&nbsp;','',$date_start_array[1]);
+      $start_temp = explode(":",$date_start_array[1]);
+      $hour_str = '&nbsp;<select name="start_hour">';
+      for($h = 0;$h <= 23;$h++){
+        
+        $h_str = $h < 10 ? '0'.$h : $h; 
+        $selected = (int)$start_temp[0] == $h ? ' selected' : '';
+        $hour_str .= '<option value="'.$h.'"'.$selected.'>'.$h_str.'</option>';
+
+      }
+      $hour_str .= '</select>&nbsp;時';
+      echo $hour_str;
+      $min_str_1 = '&nbsp;<select name="start_min_1">';
+      for($m_1 = 0;$m_1 <= 5;$m_1++){
+        
+        $selected = substr((int)$start_temp[1],0,1) == $m_1 ? ' selected' : '';
+        $min_str_1 .= '<option value="'.$m_1.'"'.$selected.'>'.$m_1.'</option>';
+
+      }
+      $min_str_1 .= '</select>';
+      echo $min_str_1;
+      $min_str_2 = '<select name="start_min_2">';
+      for($m_2 = 0;$m_2 <= 9;$m_2++){
+        
+        $selected = substr((int)$start_temp[1],1,1) == $m_2 ? ' selected' : '';
+        $min_str_2 .= '<option value="'.$m_2.'"'.$selected.'>'.$m_2.'</option>';
+
+      }
+      $min_str_2 .= '</select>&nbsp;分&nbsp;～';
+      echo $min_str_2;
+      $date_array[1] = str_replace('&nbsp;','',$date_array[1]);
+      $end_temp = explode(":",$date_array[1]);
+      $hour_str_1 = '&nbsp;<select name="end_hour">';
+      for($h_1 = 0;$h_1 <= 23;$h_1++){
+        
+        $h_str_1 = $h_1 < 10 ? '0'.$h_1 : $h_1; 
+        $selected = (int)$end_temp[0] == $h_1 ? ' selected' : '';
+        $hour_str_1 .= '<option value="'.$h_1.'"'.$selected.'>'.$h_str_1.'</option>';
+
+      }
+      $hour_str_1 .= '</select>&nbsp;時';
+      echo $hour_str_1;
+      $min_str_1_end = '&nbsp;<select name="end_min_1">';
+      for($m_1_end = 0;$m_1_end <= 5;$m_1_end++){
+        
+        $selected = substr((int)$end_temp[1],0,1) == $m_1_end ? ' selected' : '';
+        $min_str_1_end .= '<option value="'.$m_1_end.'"'.$selected.'>'.$m_1_end.'</option>';
+
+      }
+      $min_str_1_end .= '</select>';
+      echo $min_str_1_end;
+      $min_str_2_end = '<select name="end_min_2">';
+      for($m_2_end = 0;$m_2_end <= 9;$m_2_end++){
+        
+        $selected = substr((int)$end_temp[1],1,1) == $m_2_end ? ' selected' : '';
+        $min_str_2_end .= '<option value="'.$m_2_end.'"'.$selected.'>'.$m_2_end.'</option>';
+
+      }
+      $min_str_2_end .= '</select>&nbsp;分&nbsp;～';
+      echo $min_str_2_end;
+    ?>
+    <input type="hidden" name='update_tori_torihiki_start_date' size='10' value='<?php echo str_replace('&nbsp;','',$date_start_array[1]); ?>'>
+    <input type="hidden" name='update_tori_torihiki_end_date' size='10' value='<?php echo str_replace('&nbsp;','',$date_array[1]); ?>'>
     <br><br><span class="smalltext"><?php echo EDIT_ORDERS_FETCHTIME_READ;?></span>
     </td>
     </tr>
     <!-- 住所信息 -->
+    <?php
+      $address_temp_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."'");
+      $count_num = tep_db_num_rows($address_temp_query);
+      if($count_num > 0){
+    ?>
     <tr>
     <td class="main" valign="top"><a href="javascript:void(0);" onclick="address_show();"><font color="blue"><b><u><span id="address_font"><?php echo TEXT_SHIPPING_ADDRESS;?></span></u></b></font></a></td>
     <td class="main">
@@ -1299,7 +1381,10 @@ if (($action == 'edit') && ($order_exists == true)) {
     <?php
       $ad_option->render('');
     ?>
-    </table>
+    </table></td></tr>
+    <?php
+      }
+    ?>
 <!--
     <tr>
     <td class="main" valign="top"><b><?php echo EDIT_ORDERS_TORI_TEXT;?></b></td>

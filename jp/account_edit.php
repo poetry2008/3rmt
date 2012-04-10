@@ -335,7 +335,7 @@ switch($_POST['action']){
 <?php
   if($save_flag == true){
 
-    echo '<script>alert("保存成功");location.href="'. FILENAME_ACCOUNT_EDIT .'";</script>';  
+    echo '<script>alert("保存しました。");location.href="'. FILENAME_ACCOUNT_EDIT .'";</script>';  
   }
   if($del_flag == true){
  

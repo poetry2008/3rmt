@@ -1963,6 +1963,9 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
             </tr>
             <?php
         }
+            $address_temp_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."'");
+            $count_num = tep_db_num_rows($address_temp_query);
+            if($count_num > 0){
             ?>
             <tr>
             <td class="main">住所情報</td>
@@ -1981,7 +1984,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
           tep_db_free_result($address_title_query);
         }
         tep_db_free_result($address_query);
-              
+            } 
             ?>
         </table>
         </div>

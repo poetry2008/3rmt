@@ -2541,3 +2541,14 @@ searching
 	font-size:12px;
 	line-height:1.5;
 }
+.shipping_time{
+    width: 338px;
+	*width:358px;
+	font-size:12px;
+	background:#F5F9FC;
+    position:absolute; 
+}
+.shipping_time input{
+	margin-left:32px;
+	margin-left:28px\9;
+}
