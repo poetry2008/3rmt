@@ -46,7 +46,7 @@ $categories_tab_query1 = tep_db_query("
     $cbt_dec = explode(',',$cbt['categories_meta_text']);
     for($i=0; $i < sizeof($cbt_dec); $i++) {
       if($cbt_dec[$i] != ''){
-        echo strip_tags(substr($cbt_dec[$i],0,36)) . "\n";
+        echo strip_tags(mb_substr($cbt_dec[$i],0,36)) . "\n";
       }
     } 
     echo '<br><input type="radio" id="categories_id_' . $cbt['categories_id'] . '" name="categories_id" value="' . $cbt['categories_id'] . '" >';

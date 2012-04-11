@@ -2008,3 +2008,10 @@ border:1px solid #CAC6BE;
 	font-size:12px;
 	color:#000;
 }
+.information_color {
+    background-color: #FDEBAC;
+    color: #000000;
+    margin: 5px;
+    padding: 5px;
+    width: 100%;
+}

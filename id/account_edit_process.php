@@ -111,6 +111,39 @@
     $entry_password_confirmation_error = true;
   }
 
+  
+
+  if (preg_match('/[0-9]+/', $password)) {
+    if (!preg_match('/[a-zA-Z]+/', $password)) {
+      $error = true;
+      $entry_password_error = true;
+    }
+  } else {
+    $error = true;
+    $entry_password_error = true;
+  }
+  
+  if (preg_match('/[0-9]+/', $confirmation)) {
+    if (!preg_match('/[a-zA-Z]+/', $confirmation)) {
+      $error = true;
+      $entry_password_error = true;
+    }
+  } else {
+    $error = true;
+    $entry_password_error = true;
+  }
+ 
+  if (!$entry_password_error) {
+    $ex_customers_raw = tep_db_query("select customers_password from ".TABLE_CUSTOMERS." where customers_id = '".$customer_id."' and site_id = '".SITE_ID."'");
+    $ex_customers = tep_db_fetch_array($ex_customers_raw);
+    if ($ex_customers) {
+      if (tep_validate_password($password, $ex_customers['customers_password'])) {
+        $error = true;
+        $entry_password_error = true;
+        $entry_password_confirm_same_error = true;
+      }
+    }
+  }
 //ccdd
   $check_email_query = tep_db_query("select count(*) as total from " .  TABLE_CUSTOMERS . " where customers_email_address = '" .  tep_db_input($email_address) . "' and customers_id != '" .  tep_db_input($customer_id) . "' and site_id = '".SITE_ID."'");
   $check_email = tep_db_fetch_array($check_email_query);

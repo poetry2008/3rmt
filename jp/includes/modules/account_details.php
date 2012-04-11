@@ -161,7 +161,9 @@ if (!isset($guestchk)) $guestchk = NULL;
             <td class="main">&nbsp;
 <?php
     if ($error == true) {
-      if ($entry_password_confirmation_error == true) { 
+      if ($entry_password_confirm_same_error == true) { 
+        echo tep_draw_password_field('password') . '&nbsp;' .  ENTRY_NO_USE_OLD_PASSWORD;
+      } else if ($entry_password_confirmation_error == true) { 
         echo tep_draw_password_field('password') . '&nbsp;' . '<font color="red">ご入力されたパスワードが一致しておりません</font>';
       } else if($entry_password_error == true) {
         echo tep_draw_password_field('password') . '&nbsp;' . ENTRY_PASSWORD_ERROR;

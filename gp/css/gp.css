@@ -2193,3 +2193,10 @@ border:2px solid #FF8080;
     padding: 5px;
 	font-size:12px;
 }
+.information_color {
+    background-color: #FDEBAC;
+    color: #000000;
+    margin: 5px;
+    padding: 5px;
+    width: 100%;
+}
