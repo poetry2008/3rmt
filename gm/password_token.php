@@ -5,6 +5,7 @@
 
   require('includes/application_top.php');
   require(DIR_WS_ACTIONS.'password_token.php');
+  $breadcrumb->add(HEADING_TITLE);
 ?>
 <?php page_head();?>
 </head>
@@ -34,6 +35,11 @@
 				<td class="main"><?php echo UPDATE_ENTRY_PASSWORD_AGAINTEXT;?></td>
 				<td class="main"><?php echo tep_draw_password_field('up_password', '', 'class="input_text"'); ?>&nbsp;&nbsp;<small><?php echo UPDATE_ENTRY_PASSWORD_READ;?></small></td>
 			  </tr>
+          <tr>
+            <td colspan="2">
+            <font style="font-size:12px;"><?php echo UPDATE_PASSWORD_INFORM_TEXT;?></font> 
+            </td>
+          </tr>
           <tr>
             <td colspan="2"><br><table border="0" cellpadding="0" cellspacing="0" width="100%">
               <tr>

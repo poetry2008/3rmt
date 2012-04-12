@@ -33,35 +33,38 @@
     
     if ($_POST['u_password'] != $_POST['up_password']) {
       $error = true; 
-      $error_msg = UPDATE_ENTRY_PASSWORD_WORNG; 
+      $error_msg = UPDATE_ENTRY_PASSWORD_IS_NOT_SAME; 
     }
     
     $passlen = strlen($_POST['u_password']);
     $pass_a_len = strlen($_POST['up_password']);
     if (($passlen < ENTRY_PASSWORD_MIN_LENGTH) || ($pass_a_len < ENTRY_PASSWORD_MIN_LENGTH)) {
       $error = true; 
-      $error_msg = UPDATE_ENTRY_PASSWORD_WORNG; 
+      $error_msg = UPDATE_ENTRY_PASSWORD_LEN_SHORT; 
     }
    
-    if (preg_match('/[0-9]+/', $_POST['u_password'])) {
-      if (!preg_match('/[a-zA-Z]+/', $_POST['u_password'])) {
-        $error = true; 
+    if (!preg_match('/^(?=.*?[a-zA-Z])(?=.*?[0-9])[a-zA-Z0-9]{0,}$/', $_POST['u_password'])) {
+      $error = true; 
+      if (preg_match('/^[0-9]+$/', $_POST['u_password'])) {
+        $error_msg = UPDATE_ENTRY_PASSWORD_IS_NUM; 
+      } else if (preg_match('/^[a-zA-Z0-9]+$/', $_POST['u_password'])) {
+        $error_msg = UPDATE_ENTRY_PASSWORD_IS_ALPHA; 
+      } else {
         $error_msg = UPDATE_ENTRY_PASSWORD_WORNG; 
       }
-    } else {
-      $error = true; 
-      $error_msg = UPDATE_ENTRY_PASSWORD_WORNG; 
     }
     
-    if (preg_match('/[0-9]+/', $_POST['up_password'])) {
-      if (!preg_match('/[a-zA-Z]+/', $_POST['up_password'])) {
-        $error = true; 
+    if (!preg_match('/^(?=.*?[a-zA-Z])(?=.*?[0-9])[a-zA-Z0-9]{0,}$/', $_POST['up_password'])) {
+      $error = true; 
+      if (preg_match('/^[0-9]+$/', $_POST['up_password'])) {
+        $error_msg = UPDATE_ENTRY_PASSWORD_IS_NUM; 
+      } else if (preg_match('/^[a-zA-Z0-9]+$/', $_POST['up_password'])) {
+        $error_msg = UPDATE_ENTRY_PASSWORD_IS_ALPHA; 
+      } else {
         $error_msg = UPDATE_ENTRY_PASSWORD_WORNG; 
       }
-    } else {
-      $error = true; 
-      $error_msg = UPDATE_ENTRY_PASSWORD_WORNG; 
     }
+    
     
     if (!$error) {
       $crypted_password = tep_encrypt_password($_POST['u_password']);

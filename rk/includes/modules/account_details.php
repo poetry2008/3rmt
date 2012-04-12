@@ -152,15 +152,23 @@
         <td class="main"><table border="0" cellspacing="0" cellpadding="2" summary="table">
           <tr>
             <td class="main">&nbsp;<?php echo ENTRY_PASSWORD; ?></td>
-            <td class="main">&nbsp;
+            <td class="main" style="font-size:10px;">&nbsp;
 <?php
-    if ($error == true) {
+  $p_error_show_str = '';   
+  if ($error == true) {
       if ($entry_password_confirm_same_error == true) { 
-        echo tep_draw_password_field('password') . '&nbsp;' .  ENTRY_NO_USE_OLD_PASSWORD;
+        echo tep_draw_password_field('password', '', "class='input_text'") . '&nbsp;' .  ENTRY_PASSWORD_TEXT;
+        $p_error_show_str = ENTRY_NO_USE_OLD_PASSWORD;
       } else if ($entry_password_confirmation_error == true) { 
-        echo tep_draw_password_field('password') . '&nbsp;' . '<font color="red">ご入力されたパスワードが一致しておりません</font>';
+        echo tep_draw_password_field('password', '', "class='input_text'") . '&nbsp;' . ENTRY_PASSWORD_TEXT;
+        $p_error_show_str = '&nbsp;<font color="red">'.ENTRY_PASSWORD_IS_DIFFERENT.'</font>';
       } else if($entry_password_error == true) {
-        echo tep_draw_password_field('password') . '&nbsp;' . ENTRY_PASSWORD_ERROR;
+        echo tep_draw_password_field('password', '', "class='input_text'") . '&nbsp;' . ENTRY_PASSWORD_TEXT;
+        if (isset($entry_password_error_msg)) {
+          $p_error_show_str = $entry_password_error_msg; 
+        } else {
+          $p_error_show_str = ENTRY_PASSWORD_ERROR;
+        }
       } else {
         echo PASSWORD_HIDDEN . tep_draw_hidden_field('password', '', "class='input_text'") . tep_draw_hidden_field('confirmation');
       }
@@ -174,7 +182,7 @@
 ?>
           <tr>
             <td class="main">&nbsp;<?php echo ENTRY_PASSWORD_CONFIRMATION; ?></td>
-            <td class="main">&nbsp;
+            <td class="main" style="font-size:10px;">&nbsp;
 <?php
       echo tep_draw_password_field('confirmation', '', "class='input_text'") . '&nbsp;' . ENTRY_PASSWORD_CONFIRMATION_TEXT;
 ?></td>
@@ -182,6 +190,18 @@
 <?php
     }
 ?>  
+    <?php
+    if ($p_error_show_str != '') {
+    ?>
+    <tr>
+      <td class="main">&nbsp;</td>  
+      <td class="main" style="font-size:10px;">
+      <?php echo '&nbsp;'.$p_error_show_str;?> 
+      </td> 
+    </tr>
+    <?php
+    }
+    ?>
     </table></td>
       </tr>
     </table></td>

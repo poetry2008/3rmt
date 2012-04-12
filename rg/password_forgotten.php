@@ -32,7 +32,13 @@
           tep_db_query("insert into `customers_password_info` values('".$check_customer['customers_id']."', '".$_POST['email_address']."', '".$_SERVER["REMOTE_ADDR"]."', '".$random_str."', '".date('Y-m-d H:i:s',time())."')");
         }
         
-        tep_mail(tep_get_fullname($check_customer['customers_firstname'],$check_customer['customers_lastname']), $_POST['email_address'], EMAIL_PASSWORD_REMINDER_SUBJECT, sprintf(EMAIL_PASSWORD_REMINDER_BODY, $_SERVER["REMOTE_ADDR"], $send_url), STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
+        $email_body = SEND_PASSWORLD_EMAIL_CONTENT;
+        $email_body = str_replace('${URL}', $send_url, $email_body);
+        $email_body = str_replace('${SITE_NAME}', STORE_NAME, $email_body);
+        $email_body = str_replace('${SITE_URL}', HTTP_SERVER, $email_body);
+        $email_body = str_replace('${IP}', $_SERVER["REMOTE_ADDR"], $email_body);
+        
+        tep_mail(tep_get_fullname($check_customer['customers_firstname'],$check_customer['customers_lastname']), $_POST['email_address'], SEND_PASSWORLD_EMAIL_TITLE, $email_body, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
           
       tep_redirect(tep_href_link('send_success.php', 'send_mail='.$_POST['email_address']));
     } else {

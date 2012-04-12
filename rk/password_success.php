@@ -14,6 +14,7 @@
 
   require(DIR_WS_LANGUAGES . $language . '/password_success.php');
 
+  $breadcrumb->add(HEADING_TITLE);
 ?>
 <?php page_head();?>
 </head>
