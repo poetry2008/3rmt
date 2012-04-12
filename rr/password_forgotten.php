@@ -38,7 +38,7 @@
         $email_body = str_replace('${SITE_URL}', HTTP_SERVER, $email_body);
         $email_body = str_replace('${IP}', $_SERVER["REMOTE_ADDR"], $email_body);
         
-        tep_mail(tep_get_fullname($check_customer['customers_firstname'],$check_customer['customers_lastname']), $_POST['email_address'], SEND_PASSWORLD_EMAIL_TITLE, $email_body, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
+        tep_mail(tep_get_fullname($check_customer['customers_firstname'],$check_customer['customers_lastname']), $_POST['email_address'], str_replace('${SITE_NAME}', STORE_NAME, SEND_PASSWORLD_EMAIL_TITLE), $email_body, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
           
       tep_redirect(tep_href_link('send_success.php', 'send_mail='.$_POST['email_address']));
     } else {
