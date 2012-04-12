@@ -9,5 +9,5 @@ define('UPDATE_ENTRY_PASSWORD_LEN_SHORT', 'パスワードは'.ENTRY_PASSWORD_MI
 define('UPDATE_ENTRY_PASSWORD_IS_NOT_SAME', 'パスワードと再入力が違います。');
 define('UPDATE_ENTRY_PASSWORD_IS_NUM','英字（abcdef...z）が1文字以上必要です。英字と数字を組み合わせて設定してください。');
 define('UPDATE_ENTRY_PASSWORD_IS_ALPHA', '数字（0123456789）が1文字以上必要です。英字と数字を組み合わせて設定してください。');
-define('UPDATE_PASSWORD_INFORM_TEXT', '半角の英字、数字を組み合わせた'.ENTRY_PASSWORD_MIN_LENGTH.'文字以上を入力してください。<br> 英字、数字がそれぞれ1文字以上を必要です。大文字と小文字は区別されます。<br>記号は入力できません。');
+define('UPDATE_PASSWORD_INFORM_TEXT', '半角の英字、数字を組み合わせた'.ENTRY_PASSWORD_MIN_LENGTH.'文字以上を入力してください。<br> 英字、数字がそれぞれ1文字以上を必要です。大文字と小文字は区別されます。記号は入力できません。');
 ?>

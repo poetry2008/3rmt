@@ -455,5 +455,5 @@ define('ENTRY_NO_USE_OLD_PASSWORD', '&nbsp;<font color="#FF0000">安全のため
 define('ENTRY_PASSWORD_IS_NUM', '&nbsp;<font color="#FF0000">英字（abcdef...z）が1文字以上必要です。<br>&nbsp;&nbsp;英字と数字を組み合わせて設定してください。</font>');
 define('ENTRY_PASSWORD_IS_ALPHA', '&nbsp;<font color="#FF0000">数字（0123456789）が1文字以上必要です。<br>&nbsp;&nbsp;英字と数字を組み合わせて設定してください。</font>');
 define('ENTRY_PASSWORD_IS_DIFFERENT', 'パスワードと再入力が違います。');
-define('ENTRY_PASSWORD_INFORM_READ_TEXT', '&nbsp;半角の英字、数字を組み合わせた'.ENTRY_PASSWORD_MIN_LENGTH.'文字以上を入力してください。<br>&nbsp;英字、数字がそれぞれ1文字以上を必要です。大文字と小文字は区別されます。<br>&nbsp;記号は入力できません。');
+define('ENTRY_PASSWORD_INFORM_READ_TEXT', '&nbsp;半角の英字、数字を組み合わせた'.ENTRY_PASSWORD_MIN_LENGTH.'文字以上を入力してください。<br>&nbsp;英字、数字がそれぞれ1文字以上を必要です。大文字と小文字は区別されます。記号は入力できません。');
 ?>
