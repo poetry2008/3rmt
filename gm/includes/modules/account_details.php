@@ -222,6 +222,9 @@
   <?php
   }
   ?>
+    <tr>
+      <td class="main" colspan="2"><?php echo ENTRY_PASSWORD_INFORM_READ_TEXT;?></td> 
+    </tr>
   </table>
           </td>
         </tr>

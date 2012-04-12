@@ -85,11 +85,32 @@
     if ($password != $confirmation) {
       $error = true;
       $entry_password_error = true;
+      $entry_password_confirmation_error = true; 
     }
     
     if (empty($password) && empty($confirmation)) {
       $error = true;
       $entry_password_error = true;
+    }
+    
+    if (!preg_match('/^(?=.*?[a-zA-Z])(?=.*?[0-9])[a-zA-Z0-9]{0,}$/', $password)) {
+        $error = true; 
+        $entry_password_error = true;
+        if (preg_match('/^[0-9]+$/', $password)) {
+          $entry_password_error_msg = ENTRY_PASSWORD_IS_NUM; 
+        } else if (preg_match('/^[a-zA-Z0-9]+$/', $password)) {
+          $entry_password_error_msg = ENTRY_PASSWORD_IS_ALPHA; 
+        }
+    }
+    
+    if (!preg_match('/^(?=.*?[a-zA-Z])(?=.*?[0-9])[a-zA-Z0-9]{0,}$/', $confirmation)) {
+        $error = true; 
+        $entry_password_error = true;
+        if (preg_match('/^[0-9]+$/', $confirmation)) {
+          $entry_password_error_msg = ENTRY_PASSWORD_IS_NUM; 
+        } else if (preg_match('/^[a-zA-Z0-9]+$/', $confirmation)) {
+          $entry_password_error_msg = ENTRY_PASSWORD_IS_ALPHA; 
+        }
     }
   }
   
