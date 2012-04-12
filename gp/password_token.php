@@ -23,20 +23,26 @@
       <td valign="top" id="contents"> <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1> 
         
         <div class="comment">
-        <?php
-        if (isset($error_msg)) {
-          echo '<font color="#ff0000">'.$error_msg.'</font><br>'; 
-        }
-        ?>
         <?php echo tep_draw_form('password_forgotten', tep_href_link('password_token.php', 'action=process&pud='.$_GET['pud'])); ?>
           <table border="0" width="100%" cellspacing="0" cellpadding="2" class="product_info_box"> 
+          <?php
+          if (isset($error_msg)) {
+          ?>
           <tr>
-            <td class="main"><?php echo UPDATE_ENTRY_PASSWORD_TEXT;?></td>
-            <td class="main"><?php echo tep_draw_password_field('u_password'); ?>&nbsp;&nbsp;<?php echo UPDATE_ENTRY_PASSWORD_READ;?></td>
+            <td colspan="2" class="main">
+            <?php echo '<font color="#ff0000">'.$error_msg.'</font>'; ?>
+            </td>
+          </tr>
+          <?php
+          }
+          ?>
+          <tr>
+            <td class="main" style="width:110px;"><?php echo UPDATE_ENTRY_PASSWORD_TEXT;?></td>
+            <td class="main"><?php echo tep_draw_password_field('u_password', '', 'class="input_text"'); ?>&nbsp;&nbsp;<?php echo UPDATE_ENTRY_PASSWORD_READ;?></td>
           </tr>
           <tr>
             <td class="main"><?php echo UPDATE_ENTRY_PASSWORD_AGAINTEXT;?></td>
-            <td class="main"><?php echo tep_draw_password_field('up_password'); ?>&nbsp;&nbsp;<?php echo UPDATE_ENTRY_PASSWORD_READ;?></td>
+            <td class="main"><?php echo tep_draw_password_field('up_password', '', 'class="input_text"'); ?>&nbsp;&nbsp;<?php echo UPDATE_ENTRY_PASSWORD_READ;?></td>
           </tr>
           <tr>
             <td colspan="2" class="main">

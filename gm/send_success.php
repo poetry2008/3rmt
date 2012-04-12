@@ -22,6 +22,7 @@
         <!-- left_navigation_eof //--> </div> 
       <!-- body_text //--> 
       <div id="content"> 
+        <div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
         <h1 class="pageHeading"><?php echo HEADING_TITLE; ?></h1> 
         <div> 
           <table border="0" cellspacing="0" cellpadding="0" class="box_des" width="95%"> 

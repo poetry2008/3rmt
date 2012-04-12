@@ -28,12 +28,12 @@
         <?php echo tep_draw_form('password_forgotten', tep_href_link('password_token.php', 'action=process&pud='.$_GET['pud'])); ?>
           <table border="0" width="100%" cellspacing="0" cellpadding="2"> 
           <tr>
-            <td class="main"><?php echo UPDATE_ENTRY_PASSWORD_TEXT;?></td>
-            <td class="main"><?php echo tep_draw_password_field('u_password'); ?>&nbsp;&nbsp;<?php echo UPDATE_ENTRY_PASSWORD_READ;?></td>
+            <td class="main" style="width:110px;"><?php echo UPDATE_ENTRY_PASSWORD_TEXT;?></td>
+            <td class="main"><?php echo tep_draw_password_field('u_password', '', 'class="input_text"'); ?>&nbsp;&nbsp;<?php echo UPDATE_ENTRY_PASSWORD_READ;?></td>
           </tr>
           <tr>
             <td class="main"><?php echo UPDATE_ENTRY_PASSWORD_AGAINTEXT;?></td>
-            <td class="main"><?php echo tep_draw_password_field('up_password'); ?>&nbsp;&nbsp;<?php echo UPDATE_ENTRY_PASSWORD_READ;?></td>
+            <td class="main"><?php echo tep_draw_password_field('up_password', '', 'class="input_text"'); ?>&nbsp;&nbsp;<?php echo UPDATE_ENTRY_PASSWORD_READ;?></td>
           </tr>
           <tr>
             <td colspan="2" class="main">

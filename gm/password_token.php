@@ -18,16 +18,22 @@
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
         <!-- left_navigation_eof //--> </div> 
       <!-- body_text //--> 
-      <div id="content"> <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1> 
+      <div id="content"> 
+      <div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
+      <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1> 
         
-        <?php
-        if (isset($error_msg)) {
-          echo '<font color="#ff0000">'.$error_msg.'</font><br>'; 
-        }
-        ?>
         <?php echo tep_draw_form('password_forgotten', tep_href_link('password_token.php', 'action=process&pud='.$_GET['pud'])); ?>
           <table border="0" width="95%" cellspacing="0" cellpadding="2" class="box_des"> 
-			  <tr>
+            <?php 
+            if (isset($error_msg)) {
+            ?>
+            <tr>
+              <td colspan="2" class="main">
+              <?php echo '<font color="#ff0000">'.$error_msg.'</font>';?> 
+              </td> 
+            </tr>
+            <?php }?> 
+            <tr>
 				<td class="main"><?php echo UPDATE_ENTRY_PASSWORD_TEXT;?></td>
 				<td class="main"><?php echo tep_draw_password_field('u_password', '', 'class="input_text"'); ?>&nbsp;&nbsp;<small><?php echo UPDATE_ENTRY_PASSWORD_READ;?></small></td>
 			  </tr>
@@ -37,7 +43,7 @@
 			  </tr>
           <tr>
             <td colspan="2">
-            <font style="font-size:12px;"><?php echo UPDATE_PASSWORD_INFORM_TEXT;?></font> 
+            <?php echo UPDATE_PASSWORD_INFORM_TEXT;?> 
             </td>
           </tr>
           <tr>
