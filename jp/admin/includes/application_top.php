@@ -50,6 +50,7 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
   define('LOCAL_EXE_UNZIP', '/usr/local/bin/unzip');
 
 // define the filenames used in the project
+  define('FILENAME_RESET_PWD','reset_pwd.php');
   define('FILENAME_ALARM', 'alarm.php');
   define('FILENAME_CAMPAIGN', 'campaign.php');
   define('FILENAME_ASSETS', 'assets.php');
@@ -245,6 +246,7 @@ define('TABLE_PERMISSIONS','permissions');
   define('TABLE_COMPUTERS',  'computers');
   define('TABLE_ORDERS_TO_COMPUTERS',  'orders_to_computers');
   define('TABLE_BILL_TEMPLATES',  'bill_templates');
+  define('TABLE_OCONFIG',  'oconfig');
   
 // customization for the design layout
   define('BOX_WIDTH', 125); // how wide the boxes should be in pixels (default: 125)

@@ -57,6 +57,7 @@
   define('FILENAME_ACCOUNT', 'account.php');
   define('FILENAME_TAGS', 'tags.php');
   define('FILENAME_SEND_MAIL', 'send_mail.php');
+  define('FILENAME_SEND_SUCCESS', 'send_success.php');
   define('FILENAME_ACCOUNT_EDIT', 'account_edit.php');
   define('FILENAME_ACCOUNT_EDIT_PROCESS', 'account_edit_process.php');
   define('FILENAME_ACCOUNT_HISTORY', 'account_history.php');

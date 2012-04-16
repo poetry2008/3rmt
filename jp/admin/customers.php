@@ -4,7 +4,6 @@
 */
 
   require('includes/application_top.php');
-
   if (isset($_GET['action'])) {
     switch ($_GET['action']) {
       case 'update':
@@ -25,6 +24,12 @@
         $customers_newsletter    = tep_db_prepare_input($_POST['customers_newsletter']);
         $customers_gender        = tep_db_prepare_input($_POST['customers_gender']);
         $customers_dob           = tep_db_prepare_input($_POST['customers_dob']);
+        if ($_POST['reset_flag'] == 'on') {
+	$reset_flag = 1;
+        $reset_success = 0;
+        }else {
+	$reset_flag = 0;
+        }
 
         $sql_data_array = array('customers_firstname'     => $customers_firstname,
                                 'customers_lastname'      => $customers_lastname,
@@ -33,6 +38,8 @@
                                 'customers_email_address' => $customers_email_address,
                                 'customers_telephone'     => $customers_telephone,
                                 'customers_fax'           => $customers_fax,
+                                'reset_flag'           => $reset_flag,
+                                'reset_success'           => $reset_success,
                                 'customers_newsletter'    => $customers_newsletter);
 
         if (ACCOUNT_GENDER == 'true') $sql_data_array['customers_gender'] = $customers_gender;
@@ -59,7 +66,8 @@
 
         tep_db_perform(TABLE_CUSTOMERS, $sql_data_array, 'update', "customers_id = '" . tep_db_input($customers_id) . "'");
 
-        tep_db_query("update " . TABLE_CUSTOMERS_INFO . " set customers_info_date_account_last_modified = now() where customers_info_id = '" . tep_db_input($customers_id) . "'");
+        tep_db_query("update " . TABLE_CUSTOMERS_INFO . " set
+           customers_info_date_account_last_modified = now() where customers_info_id = '" . tep_db_input($customers_id) . "'");
 
         $default_address_id   = tep_db_prepare_input($_POST['default_address_id']);
         $entry_street_address = tep_db_prepare_input($_POST['entry_street_address']);
@@ -484,7 +492,7 @@ function check_form() {
         <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
       </tr>
     <?php if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {//Add Point System 
-    $cpoint_query = tep_db_query("select point from " . TABLE_CUSTOMERS . " where customers_id = '".$_GET['cID']."'");
+    $cpoint_query = tep_db_query("select point ,reset_flag,reset_success from " . TABLE_CUSTOMERS . " where customers_id = '".$_GET['cID']."'");
     $cpoint = tep_db_fetch_array($cpoint_query);
     ?>
       <tr>
@@ -495,6 +503,18 @@ function check_form() {
           <tr>
             <td class="main"><?php echo ENTRY_POINT; ?></td>
             <td class="main"><?php echo tep_draw_input_field('point', $cpoint['point'], 'maxlength="32" size="4" style="text-align:right"'); ?> P</td>
+          </tr>
+        </table></td>
+      </tr>
+      <tr>
+        <td class="formAreaTitle"><?php echo CUSTOMER_RESET; ?></td>
+      </tr>
+      <tr>
+        <td class="formArea"><table border="0" cellspacing="2" cellpadding="2">
+          <tr>
+            <td class="main"><?php echo CUSTOMER_RESET; ?></td>
+            <td class="main"><?php echo tep_draw_checkbox_field('reset_flag', 'on',
+                $cpoint['reset_flag']==1 and $cpoint['reset_success']!=1 ) ?></td>
           </tr>
         </table></td>
       </tr>

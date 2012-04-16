@@ -270,6 +270,10 @@
 
       // ccdd
       tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array, 'update', "customers_id = '" . tep_db_input($customer_id) . "' and address_book_id = '" . tep_db_input($customer_default_address_id) . "'");
+      tep_db_query("update `" . TABLE_CUSTOMERS_INFO . "` set `customer_last_resetpwd` = '".date('Y-m-d H:i:s', time())."' where `customers_info_id` = '" . tep_db_input($customer_id) . "'");
+      tep_db_query("update `" . TABLE_CUSTOMERS . "` set `reset_success` = '1' where `customers_id` = '" . tep_db_input($customer_id) . "'");
+      
+      unset($_SESSION['reset_flag']); 
         tep_redirect(tep_href_link(FILENAME_ACCOUNT, '', 'SSL'));
       }
     } 

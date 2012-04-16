@@ -4836,3 +4836,55 @@ function get_strip_campaign_info($c_str)
   
   return $c_str;
 }
+
+function tep_customer_in_reset_range($id){
+  $sql = "select reset_flag from ".TABLE_CUSTOMERS_INFO." 
+    where customers_Info_Id ='".$id."'";
+  $query = tep_db_query($sql);
+  $query = tep_db_fetch_array($query);
+  return $query['reset_flag']==1;	 
+}
+function tep_get_replaced_reset_msg($msg){
+//	 todo :fix it
+  $customer_id = $_SESSION['reset_customers_id'];
+  $c_sql = "select * from ".TABLE_CUSTOMERS." where customers_id='".
+    $customer_id."' limit 1 ";
+  $c_query = tep_db_query($c_sql);
+  $c_info = tep_db_fetch_array($c_query);
+  $msg = str_replace(
+  array(
+    "\n",
+    "\n\r",
+    '${NAME}',
+    '${MAIL}',
+    '${SITE_NAME}',
+    '${SUPPORT_EMAIL}',
+    '${SITE_URL}',
+    '${SITE_MAIL}'
+    ),
+  array(
+  '<br>',
+  '<br>',
+  tep_get_fullname($c_info['customers_firstname'],$c_info['customers_lastname']),
+  $c_info['customers_email_address'],
+  STORE_NAME,
+  SUPPORT_EMAIL_ADDRESS,
+  HTTP_SERVER,
+  SUPPORT_EMAIL_ADDRESS),$msg
+  );
+	 return $msg;
+	 
+}
+
+function tep_get_popup_url(){
+  $customer_id = $_SESSION['reset_customers_id'];
+  $c_sql = "select * from ".TABLE_CUSTOMERS." where customers_id='".
+    $customer_id."' limit 1 ";
+  $c_query = tep_db_query($c_sql);
+  $c_info = tep_db_fetch_array($c_query);
+  if($c_info){
+    return tep_href_link(FILENAME_SEND_SUCCESS,'send_mail='.$c_info['customers_email_address']);
+  }else{
+    return '';
+  }
+}

@@ -71,10 +71,15 @@
       
       if (!tep_validate_password($_POST['u_password'], $customers_info_res['customers_password'])) {
         tep_db_query("
-              update " . TABLE_CUSTOMERS . " 
-              set customers_password = '" . $crypted_password . "' 
-              where customers_id = '" . $customers_res['customers_id'] . "'
+              update `" . TABLE_CUSTOMERS . "` 
+              set `customers_password` = '" . $crypted_password . "', `reset_success` = '1'  
+              where `customers_id` = '" . $customers_res['customers_id'] . "'
         ");
+        
+        tep_db_query("update `" . TABLE_CUSTOMERS_INFO . "` set `customer_last_resetpwd` = '".date('Y-m-d H:i:s', time())."' where `customers_info_id` = '" . tep_db_input($customers_res['customers_id']) . "'");
+      
+        unset($_SESSION['reset_flag']);
+        
         tep_redirect(tep_href_link('password_success.php'));
       } else {
         $error = true; 
