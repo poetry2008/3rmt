@@ -271,8 +271,8 @@ $update_url = tep_get_popup_url();
 ?>
 </div>
 <div align="center" class="popup_notice_button">
-<a href="javascript:void(0);" onClick="close_popup_notice()"><img alt="次へ進む" src="images/design/popup_henkou.gif"></a>&nbsp;&nbsp;
-<a href="javascript:void(0);" onClick="update_notice('<?php echo $update_url;?>')"><img alt="次へ進む" src="images/design/popup_send.gif"></a>
+<a href="javascript:void(0);" onClick="close_popup_notice()"><img alt="変更しません" src="images/design/popup_henkou.gif"></a>&nbsp;&nbsp;
+<a href="javascript:void(0);" onClick="update_notice('<?php echo $update_url;?>')"><img alt="変更するので、メールを送ってください" src="images/design/popup_send.gif"></a>
 </div>
 </div>
 <?php
