@@ -269,7 +269,7 @@ screenwidth = $(window).width();
 screenheight = $(window).height();
 mytop = $(document).scrollTop();
 getPosLeft = screenwidth / 2 - 276;
-getPosTop = screenheight / 2 - 73;
+getPosTop = 50;
 
 $("#popup_notice").css('display', 'block');
 $("#popup_notice").css({ "left": getPosLeft, "top": getPosTop })
@@ -279,7 +279,7 @@ $(window).resize(function() {
            screenheight = $(window).height();
            mytop = $(document).scrollTop();
            getPosLeft = screenwidth / 2 - 276;
-           getPosTop = screenheight / 2 - 73;
+           getPosTop = 50;
            $("#popup_notice").css({ "left": getPosLeft, "top": getPosTop + mytop });
 
 });

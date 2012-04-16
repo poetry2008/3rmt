@@ -20,6 +20,11 @@ if ($_GET['action'] == 'check_search') {
   }
   echo $error_msg; 
   exit;
+} else if ($_GET['action'] == 'reset_all') {
+  tep_db_query("update `".TABLE_CUSTOMERS."` set `reset_flag` = '0', `reset_success` = '0'"); 
+  tep_db_query("update `".TABLE_OCONFIG."` set `value` = '' where `keyword` = 'reset_pwd_startdate'");  
+  tep_db_query("update `".TABLE_OCONFIG."` set `value` = '' where `keyword` = 'reset_pwd_enddate'");  
+  exit;
 }
 if($_SERVER['REQUEST_METHOD']=='POST'){
   if($_GET['type'] =='saveRange'){
@@ -116,6 +121,17 @@ function check_search_form()
     }
   });
 }
+
+function reset_customers_pwd() {
+  $.ajax({
+    url: 'reset_pwd.php?action=reset_all',
+    type: 'POST',
+    async:false,
+    success: function(msg) {
+      window.location.href = window.location.href; 
+    }
+  });
+}
 </script>
 <style type="text/css">
 .yui3-y{
@@ -179,7 +195,13 @@ function check_search_form()
     </tr>
     </table>
     </form>
-
+    <table border="0" cellpadding="2" cellspacing="0" width="100%">
+    <tr>
+      <td>
+        <input type="button" value="<?php echo RESET_BUTTON_TEXT;?>" onclick="reset_customers_pwd();">
+      </td>
+    </tr>
+    </table> 
     <form action='reset_pwd.php?type=saveMsg' method='post'>
     <table border="0" cellpadding="2" cellspacing="0">
     <tr>
@@ -217,9 +239,9 @@ function check_search_form()
     </tr>
     <tr class="dataTableSecondRow">
     <td><?php echo TEXT_RESET_PWD_ALL;?></td>
-    <td><?php echo $all_member_count;?></td>
-    <td><?php echo $need_reset_member_count;?></td>
-    <td><?php echo $reset_done;?></td>
+    <td><?php echo $all_member_count.NUM_UNIT_TEXT;?></td>
+    <td><?php echo $need_reset_member_count.NUM_UNIT_TEXT;?></td>
+    <td><?php echo $reset_done.NUM_UNIT_TEXT;?></td>
     </tr>
     </table>
     </td>

@@ -18,15 +18,13 @@ if ($_GET['action'] == 'process') {
             tep_db_query("insert into `customers_password_info` values('".$customers['customers_id']."', '".$customers['customers_email_address']."', '".$_SERVER["REMOTE_ADDR"]."', '".$random_str."', '".date('Y-m-d H:i:s',time())."')");
           }
           
-          $email_body = SEND_PASSWORLD_EMAIL_CONTENT;
+          $email_body = SEND_PASSWORLD_POPUP_EMAIL_CONTENT;
           $email_body = str_replace('${URL}', $send_url, $email_body);
           $email_body = str_replace('${SITE_NAME}', STORE_NAME, $email_body);
           $email_body = str_replace('${SITE_URL}', HTTP_SERVER, $email_body);
           $email_body = str_replace('${IP}', $_SERVER["REMOTE_ADDR"], $email_body);
           $email_body = str_replace('${NAME}', tep_get_fullname($customers['customers_firstname'], $customers['customers_lastname']), $email_body);
-         
-          tep_mail(tep_get_fullname($customers['customers_firstname'],$customers['customers_lastname']),
-              $customers['customers_email_address'], str_replace('${SITE_NAME}', STORE_NAME, SEND_PASSWORLD_EMAIL_TITLE), $email_body, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
+          tep_mail(tep_get_fullname($customers['customers_firstname'],$customers['customers_lastname']), $customers['customers_email_address'], str_replace('${SITE_NAME}', STORE_NAME, SEND_PASSWORLD_POPUP_EMAIL_TITLE), $email_body, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
         }
           
     }
