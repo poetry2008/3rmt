@@ -4014,6 +4014,9 @@ function   tep_order_status_change($oID,$status){
   if ($status == '9') {
     tep_db_query("update `".TABLE_ORDERS."` set `confirm_payment_time` = '".date('Y-m-d H:i:s', time())."' where `orders_id` = '".$oID."'");
   }
+  if($status == '17'){
+    tep_db_query("update `".TABLE_ORDERS."` set `orders_wait_flag` = '1' where `orders_id` = '".$oID."'");
+  }
 
   $form = tep_db_fetch_object(tep_db_query($oa_form_sql), "HM_Form");
   //如果存在，把每个元素找出来，看是否有自动更新
