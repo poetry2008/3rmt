@@ -57,10 +57,8 @@
           $product_info['products_price'], 'id="unit_price_'.$products[$i]['id'].'"');
       echo tep_draw_hidden_field('small_sum_' . $products[$i]['id'], $product_info['products_small_sum'], ' id="small_sum_'.$products[$i]['id'].'"');
       echo tep_draw_hidden_field('final_price', tep_add_tax($products[$i]['final_price'], tep_get_tax_rate($products[$i]['tax_class_id'])), 'id="id_'.$products[$i]['id'].'"');
-      echo tep_draw_input_field('cart_quantity[]', $products[$i]['quantity'],
-          'size="4" maxlength="4" class="input_text_short"
-          id="quantity_'.$products[$i]['id'] . '"') .
-        tep_draw_hidden_field('products_id[]', $products[$i]['id']);
+      echo tep_draw_input_field('cart_quantity[]', $products[$i]['quantity'], 'size="4" maxlength="4" class="input_text_short" id="quantity_'.$products[$i]['id'].'" onblur="update_cart(this);" onkeypress="return key(event);"');
+      echo   tep_draw_hidden_field('products_id[]', $products[$i]['id']);
       echo '</td>';
       echo '<td><div class="top_and_bottom">';
       echo '<a onclick="change_num(\'quantity_'.$products[$i]['id'].'\',\'up\',1,'.

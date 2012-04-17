@@ -20,6 +20,24 @@
   }
 ?>
 <script type="text/javascript">
+function key(e)
+{
+  if(window.event) {
+    if(e.keyCode<48   ||   e.keyCode>57||e.keyCode==8) {
+      return false;
+    } else {
+      return true;
+    }
+  } else if(e.which) {
+    if((e.which>47)   &&   (e.which<58)||(e.which==8)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+}
+</script>
+<script type="text/javascript">
 <!--
 function money_update(objid)
 {
