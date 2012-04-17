@@ -45,15 +45,24 @@ function money_update(objid)
   var obj = document.getElementById(objid);
   var product_id = obj.id.substr(9);
   var unit_price = document.getElementById("unit_price_" + product_id);
+  var small_sum = document.getElementById("small_sum_" + product_id);
   var attr_prices = document.getElementsByName("attr_" + product_id);
   var attr_prices_option = document.getElementsByName("attr_option_" + product_id);
   var sub_total = document.getElementById('sub_total_hidden');
+  var isum = small_sum.value.split(',');
+  var right_price = 0
+  for (var i=isum.length ;i>0;i--){
+    var tmplevel = isum[i-1].split(':');
+    if (parseInt(obj.value)>=parseInt(tmplevel[0])){
+      var right_price = tmplevel[1]
+      break;
+    }else{
+      continue;
+    }
+  }
 
-
-  var new_unit_price_total = Number(unit_price.value) * Number(obj.value);
+  final_price = parseInt(unit_price.value)+parseInt(right_price); var new_unit_price_total = Number(final_price) * Number(obj.value);
   new_unit_price_total = Math.round(new_unit_price_total);
-  
-  
   var old_price_total  = document.getElementById("pri_" + product_id);
   var monetary_unit_pri = old_price_total.innerHTML.slice(-1);
   
@@ -85,8 +94,7 @@ function set_sub_total()
   var sub_total = 0;
   for (var i=0; i<final_prices.length; i++)
   {
-    sub_total = sub_total + Number(final_prices[i].value)*Number(document.getElementById('quantity_' +
-            final_prices[i].id.substr(3)).value);
+    sub_total = sub_total +  Number(document.getElementById('pri_' + final_prices[i].id.substr(3)).innerHTML.split('円')[0].replace(',',''));
   }
 
   sub_total = Math.round(sub_total);
