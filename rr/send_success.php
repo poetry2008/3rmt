@@ -31,9 +31,13 @@
           <tr>
             <td>
             <table style="font-size:12px;">
+              <?php
+              if (!isset($_GET['show'])) { 
+              ?>
               <tr>
                 <td colspan="3"><?php echo SEND_MAIL_READ_TEXT;?></td>
               </tr>
+              <?php }?> 
               <tr>
                 <td colspan="3"><img src="images/design/send_mail_top.gif" alt=""></td>
               </tr>

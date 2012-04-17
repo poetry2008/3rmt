@@ -265,14 +265,14 @@ $("#greybackground").css({ "opacity": "0.5", "height": docheight });
 <div id="popup_notice" style="display:none;">
 <?php
 $oc_title_text = '';
-$oc_title_raw = tep_db_query("select value from oconfig where keyword = 'reset_pwd_title'");
+$oc_title_raw = tep_db_query("select value from ".TABLE_OTHER_CONFIG." where keyword = 'reset_pwd_title'");
 $oc_title = tep_db_fetch_array($oc_title_raw);
 if ($oc_title) {
 $oc_title_text = $oc_title['value'];
 //  echo $oc_title['value'].'<br>';
 }
 $oc_content_text = '';
-$oc_content_raw = tep_db_query("select value from oconfig where keyword = 'reset_pwd_content'");
+$oc_content_raw = tep_db_query("select value from ".TABLE_OTHER_CONFIG." where keyword = 'reset_pwd_content'");
 $oc_content = tep_db_fetch_array($oc_content_raw);
 if ($oc_content) {
 $oc_content_text = $oc_content;
@@ -290,8 +290,8 @@ $update_url = tep_get_popup_url();
 ?>
 </div>
 <div align="center" class="popup_notice_button">
-<a href="javascript:void(0);" onClick="close_popup_notice()"><img alt="変更しません" src="images/design/popup_henkou.gif"></a>&nbsp;&nbsp;
-<a href="javascript:void(0);" onClick="update_notice('<?php echo $update_url;?>')"><img alt="変更するので、メールを送ってください" src="images/design/popup_send.gif"></a>
+<a href="javascript:void(0);" onClick="close_popup_notice()"><img alt="変更しません" src="images/design/changeless.gif"></a>&nbsp;&nbsp;
+<a href="javascript:void(0);" onClick="update_notice('<?php echo $update_url;?>')"><img alt="変更します" src="images/design/change.gif"></a>
 </div>
 </div>
 <?php

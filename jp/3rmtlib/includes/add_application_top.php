@@ -133,6 +133,7 @@
   define('FILENAME_EMAIL_TROUBLE', 'email_trouble.php');
 
 // define the database table names used in the project
+  define('TABLE_OTHER_CONFIG', 'other_config'); 
   define('TABLE_CAMPAIGN', 'campaign'); 
   define('TABLE_CUSTOMER_TO_CAMPAIGN', 'customer_to_campaign'); 
   define('TABLE_ZIPCODE', 'zcode'); 
