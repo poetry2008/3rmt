@@ -246,7 +246,7 @@ define('TABLE_PERMISSIONS','permissions');
   define('TABLE_COMPUTERS',  'computers');
   define('TABLE_ORDERS_TO_COMPUTERS',  'orders_to_computers');
   define('TABLE_BILL_TEMPLATES',  'bill_templates');
-  define('TABLE_OCONFIG',  'oconfig');
+  define('TABLE_OCONFIG',  'other_config');
   
 // customization for the design layout
   define('BOX_WIDTH', 125); // how wide the boxes should be in pixels (default: 125)

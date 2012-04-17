@@ -265,14 +265,14 @@ $("#greybackground").css({ "opacity": "0.5", "height": docheight });
 <div id="popup_notice" style="display:none;">
 <?php
 $oc_title_text = '';
-$oc_title_raw = tep_db_query("select value from oconfig where keyword = 'reset_pwd_title'");
+$oc_title_raw = tep_db_query("select value from ".TABLE_OTHER_CONFIG." where keyword = 'reset_pwd_title'");
 $oc_title = tep_db_fetch_array($oc_title_raw);
 if ($oc_title) {
 $oc_title_text = $oc_title['value'];
 //  echo $oc_title['value'].'<br>';
 }
 $oc_content_text = '';
-$oc_content_raw = tep_db_query("select value from oconfig where keyword = 'reset_pwd_content'");
+$oc_content_raw = tep_db_query("select value from ".TABLE_OTHER_CONFIG." where keyword = 'reset_pwd_content'");
 $oc_content = tep_db_fetch_array($oc_content_raw);
 if ($oc_content) {
 $oc_content_text = $oc_content;
