@@ -4883,7 +4883,7 @@ function tep_get_popup_url(){
   $c_query = tep_db_query($c_sql);
   $c_info = tep_db_fetch_array($c_query);
   if($c_info){
-    return tep_href_link(FILENAME_SEND_SUCCESS,'send_mail='.$c_info['customers_email_address']);
+    return tep_href_link(FILENAME_SEND_SUCCESS,'send_mail='.$c_info['customers_email_address'].'&show=1');
   }else{
     return '';
   }
