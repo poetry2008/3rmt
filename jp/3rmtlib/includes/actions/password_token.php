@@ -17,6 +17,10 @@
     forward404(); 
   }
   
+  if (($now_time - $pa_time) > 60*60*24*3) {
+    forward404(); 
+  }
+  
   $customers_info_raw = tep_db_query("select site_id, customers_password from customers where customers_id = '".$customers_res['customers_id']."' and site_id = '".SITE_ID."'"); 
   if (!tep_db_num_rows($customers_info_raw)) {
     forward404(); 
