@@ -20,6 +20,7 @@
     }
   }
 ?>
+<?php //页面产品数量输入框 验证JS?>
 <script type="text/javascript">
 function key(e)
 {
@@ -92,8 +93,7 @@ function set_sub_total()
   var sub_total = 0;
   for (var i=0; i<final_prices.length; i++)
   {
-    sub_total = sub_total + Number(final_prices[i].value)*Number(document.getElementById('quantity_' +
-            final_prices[i].id.substr(3)).value);
+    sub_total = sub_total +  Number(document.getElementById('pri_' + final_prices[i].id.substr(3)).innerHTML.split('円')[0].replace(',',''));
   }
 
   sub_total = Math.round(sub_total);

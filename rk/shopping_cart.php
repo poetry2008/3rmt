@@ -20,6 +20,7 @@
     }
   }
 ?>
+<?php //页面产品数量输入框 验证JS?>
 <script type="text/javascript">
 function key(e)
 {
