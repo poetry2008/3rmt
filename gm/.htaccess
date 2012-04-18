@@ -46,6 +46,7 @@ Options +FollowSymLinks
 RewriteEngine On 
 RewriteBase /
 
+RewriteRule ^css/gm\d+.css$ css/gm.css
 #RewriteRule ^(.*)select.html$ index.php?action=select&%{QUERY_STRING}
 RewriteRule ^(.*)sitemap.xml$ ggsitemap.php
 

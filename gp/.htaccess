@@ -49,6 +49,7 @@ Options +FollowSymLinks
 RewriteEngine On 
 RewriteBase /
 
+RewriteRule ^css/gp\d+.css$ css/gp.css
 RewriteRule ^tags/$ tags.php
 RewriteRule ^tags/page(\d+).html$ tags.php?page=$1
 # www.itemdepot.jp/ff11 => www.itemdepot.jp/ff11/

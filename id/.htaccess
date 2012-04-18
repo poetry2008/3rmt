@@ -52,6 +52,7 @@ Options +FollowSymLinks
 RewriteEngine On 
 RewriteBase /
 
+RewriteRule ^css/id\d+.css$ css/id.css
 # www.itemdepot.jp/ff11 => www.3id.maker.200.com/ff11/
 RewriteRule ^([^/./?=]+)$ $1/ [L,R=301]
 
