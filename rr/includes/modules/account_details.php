@@ -88,8 +88,8 @@
       <tr>
         <td class="main"><table border="0" cellspacing="0" cellpadding="2" summary="table">
           <tr>
-            <td class="main">&nbsp;<?php echo ENTRY_NEWSLETTER; ?></td>
-            <td class="main">&nbsp;
+            <td class="main"><?php echo ENTRY_NEWSLETTER; ?></td>
+            <td class="main">
 <?php
   if ($is_read_only == true) {
     if ($account['customers_newsletter'] == '1') {
@@ -122,8 +122,8 @@
   
 ?>      
       <tr>
-        <td class="main">&nbsp;<?php echo ENTRY_GUEST; ?></td>
-        <td class="main">&nbsp;<?php echo tep_draw_pull_down_menu('guestchk', $guestchk_array, $guestchk, 'onchange="pass_hidd()"'); ?>&nbsp;&nbsp;<small><span class="red">※</span>&nbsp;会員登録をしないで購入することもできます。</small></td>
+        <td class="main"><?php echo ENTRY_GUEST; ?></td>
+        <td class="main"><?php echo tep_draw_pull_down_menu('guestchk', $guestchk_array, $guestchk, 'onchange="pass_hidd()"'); ?>&nbsp;&nbsp;<small><span class="red">※</span>&nbsp;会員登録をしないで購入することもできます。</small></td>
       </tr>
 <?php
     } else {
@@ -153,8 +153,8 @@
       <tr>
         <td class="main"><table border="0" cellspacing="0" cellpadding="2" summary="table">
           <tr>
-            <td class="main">&nbsp;<?php echo ENTRY_PASSWORD; ?></td>
-            <td class="main">&nbsp;
+            <td class="main" width="22%"><?php echo ENTRY_PASSWORD; ?></td>
+            <td class="main">
 <?php
   $p_error_show_str = '';   
   if ($error == true) {
@@ -163,7 +163,7 @@
         $p_error_show_str = ENTRY_NO_USE_OLD_PASSWORD;
       } else if ($entry_password_confirmation_error == true) { 
         echo tep_draw_password_field('password', '', "class='input_text'") . '&nbsp;' . ENTRY_PASSWORD_TEXT;
-        $p_error_show_str = '&nbsp;<font color="red">'.ENTRY_PASSWORD_IS_DIFFERENT.'</font>';
+        $p_error_show_str = '<font color="red">'.ENTRY_PASSWORD_IS_DIFFERENT.'</font>';
       } else if($entry_password_error == true) {
         echo tep_draw_password_field('password', '', "class='input_text'") . '&nbsp;' . ENTRY_PASSWORD_TEXT;
         if (isset($entry_password_error_msg)) {
@@ -183,8 +183,8 @@
     if ( ($error == false) || ($entry_password_error == true) ) {
 ?>
           <tr>
-            <td class="main">&nbsp;<?php echo ENTRY_PASSWORD_CONFIRMATION; ?></td>
-            <td class="main">&nbsp;
+            <td class="main" width="22%"><?php echo ENTRY_PASSWORD_CONFIRMATION; ?></td>
+            <td class="main">
 <?php
       echo tep_draw_password_field('confirmation', '', "class='input_text'") . '&nbsp;' . ENTRY_PASSWORD_CONFIRMATION_TEXT;
 ?></td>
@@ -196,9 +196,9 @@
   if ($p_error_show_str != '') {
   ?>
   <tr>
-    <td class="main">&nbsp;</td>  
+    <td class="main" width="22%">&nbsp;</td>  
     <td class="main" style="font-size:10px;">
-    <?php echo '&nbsp;'.$p_error_show_str;?> 
+    <?php echo $p_error_show_str;?> 
     </td> 
   </tr>
   <?php
