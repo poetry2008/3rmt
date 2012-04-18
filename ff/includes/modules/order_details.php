@@ -85,7 +85,9 @@
       echo (!empty($product_info['products_attention_1_3']) &&
           tep_get_full_count_in_order2($products[$i]['quantity'],
             $products[$i]['id']) ? '<span id="one_price_'.$products[$i]['id'].
-          '" style="display:none">'. tep_get_full_count_in_order2($products[$i]['quantity'], $products[$i]['id']) .'</span>': '') . '</td>' . "\n";
+          '" style="display:none">'.
+          tep_get_full_count_in_order2($products[$i]['quantity'],
+            $products[$i]['id'],true) .'</span>': '') . '</td>' . "\n";
     } else {
       echo '    <td align="center" class ="main" style=" background:#FFFFFF;padding-left:10px;padding-right:20px;">' . $products[$i]['quantity'] . '個';
       echo (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($products[$i]['quantity'], $products[$i]['id']) ? '<span style="font-size:10px">'. tep_get_full_count_in_order2($products[$i]['quantity'], $products[$i]['id']) .'</span>' : '');

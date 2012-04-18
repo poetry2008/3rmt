@@ -1505,10 +1505,14 @@ function forward404Unless($condition)
     . number_format($p['products_attention_1_3'] * $cnt) 
     . ')';
   }
-  function tep_get_full_count_in_order2($cnt, $pid){
+  function tep_get_full_count_in_order2($cnt, $pid,$flag=false){
     $p = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS." where products_id='".$pid."'"));
+    if($flag){
+      return number_format($p['products_attention_1_3']);
+    }else{
     return 
     number_format($p['products_attention_1_3'] * $cnt);
+    }
   }
   
   function tep_get_torihiki_select_by_products($product_ids = null,$select_name='')
