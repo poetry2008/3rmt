@@ -68,7 +68,12 @@
       echo '</div></td><td>';
       echo ' <font style="font-size:10px">個</font>';
       echo '</td></tr></table></td></tr><tr><td colspan="3" width="90">';
-      echo (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($products[$i]['quantity'], $products[$i]['id']) ? '<span style="font-size:10px">'. tep_get_full_count_in_order2($products[$i]['quantity'], $products[$i]['id']) .'</span>': '') . '</td>' . "\n";
+      echo (!empty($product_info['products_attention_1_3']) &&
+          tep_get_full_count_in_order2($products[$i]['quantity'],
+            $products[$i]['id']) ? '<span id="one_price_show_'.$products[$i]['id'].'" style="font-size:10px">'. tep_get_full_count_in_order2($products[$i]['quantity'], $products[$i]['id']) .'</span>': '')  . "\n";
+      echo (!empty($product_info['products_attention_1_3']) &&
+          tep_get_full_count_in_order2($products[$i]['quantity'],
+            $products[$i]['id']) ? '<span id= "one_price_'.$products[$i]['id'].'" style="display:none">'. tep_get_full_count_in_order2($products[$i]['quantity'], $products[$i]['id']) .'</span>': '') . '</td>' . "\n";
       echo '</td></tr></table>';
       echo  '</td>' . "\n";
     } else {
