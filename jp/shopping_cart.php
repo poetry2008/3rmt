@@ -39,6 +39,16 @@ function key(e)
 </script>
 <script type="text/javascript">
 <!--
+function fmoney(s)
+{
+ s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(0) + "";
+ var l = s.split(".")[0].split("").reverse();
+ var t = '';
+ for(i = 0; i < l.length; i ++ ){
+    t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+  }
+ return t.split("").reverse().join("");
+}
 function money_update(objid)
 {
   var obj = document.getElementById(objid);
@@ -91,8 +101,22 @@ function set_sub_total()
   {
     //sub_total = sub_total + Number(final_prices[i].value)*Number(document.getElementById('quantity_' +
     //sub_total = sub_total + document.getElementById('pri' +
-   
-    sub_total = sub_total +  Number(document.getElementById('pri_' + final_prices[i].id.substr(3)).innerHTML.split('円')[0].replace(',',''));
+
+    var p_l_html = document.getElementById('pri_' + final_prices[i].id.substr(3)).innerHTML.split('円')[0].replace(/,/g,'');
+    if(document.getElementById('one_price_show_'+ final_prices[i].id.substr(3))){
+    var one_price_money = document.getElementById('one_price_'+ final_prices[i].id.substr(3)).innerHTML.replace(/,/g,'');
+    var one_p_quantity = document.getElementById('quantity_'+ final_prices[i].id.substr(3)).value;
+    var res_one_price = Number(one_price_money) * Number(one_p_quantity);
+    var res_one_price_str = fmoney(res_one_price);
+    document.getElementById('one_price_show_'+ final_prices[i].id.substr(3)).innerHTML=res_one_price_str;
+    }
+    if(!isNaN(p_l_html)){
+      var p_l_price = p_l_html;
+    }else{
+      p_l_html = p_l_html.replace(/(<.*?[^>]>)/gi,"");
+      var p_l_price = 0 - Number(p_l_html);
+    }
+    sub_total = sub_total + Number(p_l_price);
   }
 
   sub_total = Math.round(sub_total);
