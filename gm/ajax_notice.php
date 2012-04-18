@@ -13,9 +13,9 @@ if ($_GET['action'] == 'process') {
           $send_url = HTTP_SERVER.'/password_token.php?pud='.$random_str;
           $exists_password_raw = tep_db_query("select customers_id from customers_password_info where customers_id = '".$customers['customers_id']."'"); 
           if (tep_db_num_rows($exists_password_raw)) {
-            tep_db_query("update `customers_password_info` set `customers_email` = '".$customers['customers_email_address']."', `customers_ip` = '".$_SERVER["REMOTE_ADDR"]."', `random_num` = '".$random_str."', `created_at` = '".date('Y-m-d H:i:s',time())."' where `customers_id` = '".$customers['customers_id']."'"); 
+            tep_db_query("update `customers_password_info` set `customers_email` = '".$customers['customers_email_address']."', `customers_ip` = '".$_SERVER["REMOTE_ADDR"]."', `random_num` = '".$random_str."', `created_at` = '".date('Y-m-d H:i:s',time())."', `is_update` = '0' where `customers_id` = '".$customers['customers_id']."'"); 
           } else {
-            tep_db_query("insert into `customers_password_info` values('".$customers['customers_id']."', '".$customers['customers_email_address']."', '".$_SERVER["REMOTE_ADDR"]."', '".$random_str."', '".date('Y-m-d H:i:s',time())."')");
+            tep_db_query("insert into `customers_password_info` values('".$customers['customers_id']."', '".$customers['customers_email_address']."', '".$_SERVER["REMOTE_ADDR"]."', '".$random_str."', '".date('Y-m-d H:i:s',time())."', '0')");
           }
           
           $email_body = SEND_PASSWORLD_POPUP_EMAIL_CONTENT;

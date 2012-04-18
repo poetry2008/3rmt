@@ -4,7 +4,7 @@
   if (!isset($_GET['pud'])) {
     forward404(); 
   }
-  $customers_raw = tep_db_query("select customers_id, created_at from customers_password_info where random_num='".$_GET['pud']."'"); 
+  $customers_raw = tep_db_query("select customers_id, created_at, is_update from customers_password_info where random_num='".$_GET['pud']."'"); 
   if (!tep_db_num_rows($customers_raw)) {
     forward404(); 
   }
@@ -12,8 +12,8 @@
   
   $now_time = time();
   $pa_time = strtotime($customers_res['created_at']);
-  
-  if (($now_time - $pa_time) > 60*60*24*3) {
+ 
+  if ($customers_res['is_update'] == '1') {
     forward404(); 
   }
   
@@ -77,7 +77,9 @@
         ");
         
         tep_db_query("update `" . TABLE_CUSTOMERS_INFO . "` set `customer_last_resetpwd` = '".date('Y-m-d H:i:s', time())."' where `customers_info_id` = '" . tep_db_input($customers_res['customers_id']) . "'");
-      
+     
+        tep_db_query("update `customers_password_info` set `is_update` = '1' where `customers_id` = '".$customers_res['customers_id']."'");
+        
         unset($_SESSION['reset_flag']);
         
         tep_redirect(tep_href_link('password_success.php'));
