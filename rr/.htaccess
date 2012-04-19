@@ -49,7 +49,6 @@ Options +FollowSymLinks
 RewriteEngine On 
 RewriteBase /
 
-RewriteRule ^css/rr\d+.css$ css/rr.css
 # www.itemdepot.jp/ff11 => www.itemdepot.jp/ff11/
 RewriteRule ^([^/./?=]+)$ $1/ [L,R=301]
 

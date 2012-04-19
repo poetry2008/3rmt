@@ -49,7 +49,6 @@ Options +FollowSymLinks
 RewriteEngine On 
 RewriteBase /
 
-RewriteRule ^css/rg\d+.css$ css/rg.css
 
 RewriteRule ^tags/$ tags.php
 RewriteRule ^tags/page(\d+).html$ tags.php?page=$1
