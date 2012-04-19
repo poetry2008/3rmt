@@ -13,6 +13,23 @@
     if ($_GET['action'] == 'reset') {
       tep_reset_cache_block($_GET['block']);
     }
+if(isset($_GET['action']) && $_GET['action']=="update_css_rand"){
+$css_rand_query = tep_db_query("select value from other_config where keyword='css_random_string'");
+$css_rand_array = tep_db_fetch_array($css_rand_query);
+$rand_num = $css_rand_array['value'];
+$rand_num = (int)$rand_num+1;
+$rand_num = (string)$rand_num;
+while(strlen($rand_num)<4){
+$rand_num ="0".$rand_num;
+}
+if($rand_num=="9999"){
+$sql = "update other_config set value='0000' where keyword='css_random_string'";
+tep_db_query($sql);
+}else{
+$sql = "update other_config set value='".$rand_num."' where keyword='css_random_string'";
+tep_db_query($sql);
+}
+}
     tep_redirect(tep_href_link(FILENAME_CACHE));
   }
 
@@ -31,6 +48,7 @@
       $messageStack->add(ERROR_CACHE_DIRECTORY_DOES_NOT_EXIST, 'error');
     }
   }
+
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html <?php echo HTML_PARAMS; ?>>
@@ -130,6 +148,28 @@
               <tr>
                 <td class="smallText" colspan="3"><?php echo TEXT_CACHE_DIRECTORY . ' ' . $dir_fs_cache; ?></td>
               </tr>
+<?php 
+$css_rand_query = tep_db_query("select id,value from other_config where keyword='css_random_string'");
+
+$css_rand_array = tep_db_fetch_array($css_rand_query)
+	?>
+<tr>
+<form name="" method="post" action="cache.php?action=update_css_rand">
+<td class="smallText" colspan="3" align="right">
+<?php echo CSS_RANDOM_STRING;?>
+<?php echo $css_rand_array['value']; ?>
+&nbsp;&nbsp;
+<?php echo CSS_RANDOM_INFO; ?>
+<input type="submit" value="<?php echo CSS_UPDATE_BUTTON?>">
+</td>
+</form>
+</tr>
+<tr>
+<td class="smallText" colspan="3" align="right">
+<?php echo CSS_EXAMPLE."(".NOW_RANDOM_VALUE."jp.css?v=".$css_rand_array['value'].")"?>
+</td>
+</tr>
+
             </table></td>
           </tr>
         </table></td>
