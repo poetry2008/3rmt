@@ -1505,10 +1505,14 @@ function forward404Unless($condition)
     . number_format($p['products_attention_1_3'] * $cnt) 
     . ')';
   }
-  function tep_get_full_count_in_order2($cnt, $pid){
+  function tep_get_full_count_in_order2($cnt, $pid,$flag=false){
     $p = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS." where products_id='".$pid."'"));
+    if($flag){
+      return number_format($p['products_attention_1_3']);
+    }else{
     return 
     number_format($p['products_attention_1_3'] * $cnt);
+    }
   }
   
   function tep_get_torihiki_select_by_products($product_ids = null,$select_name='')
@@ -2222,14 +2226,16 @@ function forward404Unless($condition)
 <base href="<?php echo (($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERVER) . DIR_WS_CATALOG; ?>">
 <?php
 $site_romaji = tep_get_site_romaji_by_id(SITE_ID);
-  if (isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"]=='on'){
-?>
-<link rel="stylesheet" type="text/css" href="<?php echo 'css/'.$site_romaji.'.css';?>"> 
-<?php }else{
-  ?>
-<link rel="stylesheet" type="text/css" href="<?php echo 'css/'.$site_romaji.date('Ymd',time()).'.css';?>"> 
-<?php
+$oconfig_raw = tep_db_query("select value from ".TABLE_OTHER_CONFIG." where keyword = 'css_random_string'");
+$oconfig_res = tep_db_fetch_array($oconfig_raw);
+if ($oconfig_res) {
+  $css_random_str = $oconfig_res['value'];
+} else {
+  $css_random_str = date('YmdHi', time());
 }
+?>
+<link rel="stylesheet" type="text/css" href="<?php echo 'css/'.$site_romaji.'.css?v='.$css_random_str;?>"> 
+<?php
     switch (str_replace('/', '', $_SERVER['SCRIPT_NAME'])) {
       case FILENAME_CATEGORY:
         if (isset($cPath) && $cPath || isset($_GET['tags_id']) || isset($_GET['manufacturers_id'])) {
