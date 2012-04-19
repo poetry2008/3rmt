@@ -2226,8 +2226,15 @@ function forward404Unless($condition)
 <base href="<?php echo (($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERVER) . DIR_WS_CATALOG; ?>">
 <?php
 $site_romaji = tep_get_site_romaji_by_id(SITE_ID);
+$oconfig_raw = tep_db_query("select value from ".TABLE_OTHER_CONFIG." where keyword = 'css_random_string'");
+$oconfig_res = tep_db_fetch_array($oconfig_raw);
+if ($oconfig_res) {
+  $css_random_str = $oconfig_res['value'];
+} else {
+  $css_random_str = date('YmdHi', time());
+}
 ?>
-<link rel="stylesheet" type="text/css" href="<?php echo 'css/'.$site_romaji.'.css?v='.date('YmdHi', time());?>"> 
+<link rel="stylesheet" type="text/css" href="<?php echo 'css/'.$site_romaji.'.css?v='.$css_random_str;?>"> 
 <?php
     switch (str_replace('/', '', $_SERVER['SCRIPT_NAME'])) {
       case FILENAME_CATEGORY:
