@@ -50,7 +50,6 @@ RewriteEngine On
 RewriteBase /
 
 
-RewriteRule ^css/wm\d+.css$ css/wm.css
 RewriteRule ^select.html$ index.php?action=select&%{QUERY_STRING}
 RewriteRule ^sitemap.xml$ ggsitemap.php
 

@@ -51,7 +51,6 @@ RewriteEngine On
 RewriteBase /
 
 #RewriteRule ^(.*)select.html$ index.php?action=select&%{QUERY_STRING}
-RewriteRule ^css/jp\d+.css$ css/jp.css
 
 RewriteRule ^tags/$ tags.php
 RewriteRule ^tags/page(\d+).html$ tags.php?page=$1

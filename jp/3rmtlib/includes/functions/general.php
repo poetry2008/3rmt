@@ -2222,14 +2222,9 @@ function forward404Unless($condition)
 <base href="<?php echo (($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERVER) . DIR_WS_CATALOG; ?>">
 <?php
 $site_romaji = tep_get_site_romaji_by_id(SITE_ID);
-  if (isset($_SERVER["HTTPS"]) && $_SERVER["HTTPS"]=='on'){
 ?>
-<link rel="stylesheet" type="text/css" href="<?php echo 'css/'.$site_romaji.'.css';?>"> 
-<?php }else{
-  ?>
-<link rel="stylesheet" type="text/css" href="<?php echo 'css/'.$site_romaji.date('Ymd',time()).'.css';?>"> 
+<link rel="stylesheet" type="text/css" href="<?php echo 'css/'.$site_romaji.'.css?v='.date('YmdHi', time());?>"> 
 <?php
-}
     switch (str_replace('/', '', $_SERVER['SCRIPT_NAME'])) {
       case FILENAME_CATEGORY:
         if (isset($cPath) && $cPath || isset($_GET['tags_id']) || isset($_GET['manufacturers_id'])) {
