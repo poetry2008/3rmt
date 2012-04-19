@@ -18,6 +18,10 @@
       $cart->remove($_GET['products_id']); 
       tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL')); 
     }
+    if ($_GET['action'] == 'save_quantity'){
+      $cart->update_quantity($_POST['pid'],$_POST['pquantity']);
+      exit;
+    }
   }
 ?>
 <?php //页面产品数量输入框 验证JS?>
@@ -39,8 +43,26 @@ function key(e)
   }
 }
 </script>
+<script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript">
 <!--
+function history_back(){
+  var final_prices = document.getElementsByName('final_price');
+  for (var i=0; i<final_prices.length; i++)
+  {
+    var t_pid = final_prices[i].id.substr(3);
+    var t_pquantity = document.getElementById('quantity_'+ final_prices[i].id.substr(3)).value;
+    $.ajax({
+      url: '<?php echo FILENAME_SHOPPING_CART;?>?action=save_quantity',
+      type: 'POST',
+      async: false,
+      data: 'pid='+t_pid+'&pquantity='+t_pquantity,
+      success: function(){
+      }
+    });
+  }
+  history.back()
+}
 function fmoney(s)
 {
  s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(0) + "";
@@ -353,7 +375,7 @@ B:ポイントの加算（<?php echo STORE_NAME;?>会員でなければ表示さ
                     <input type="hidden" name="goto" value="<?php echo tep_href_link($navigation->path[$back]['page'], tep_array_to_string($navigation->path[$back]['get'], array('action')), $navigation->path[$back]['mode']);?>">
                     <input type="submit" name="continue" value="" class="shopping_cart_continue">
 <?php } else { ?>
-                    <button  class="shopping_cart_continue" onClick="history.back(); return false;"></button>
+                    <button  class="shopping_cart_continue" onClick="history_back(); return false;"></button>
 <?php } ?>
                     </td>
                     <td align="left" class="main">
