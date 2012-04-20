@@ -153,8 +153,8 @@
   define('TABLE_PREORDERS_TOTAL', 'preorders_total');
   define('TABLE_PREORDERS_TO_COMPUTERS', 'preorders_to_computers');
   define('TABLE_FAQ_CATEGORIES', 'faq_categories');
-  define('TABLE_FAQ_CATEGORIES_DESCRIPTION', 'faq_categories_description');
   define('TABLE_FAQ_QUESTION',  'faq_question');
+  define('TABLE_FAQ_CATEGORIES_DESCRIPTION', 'faq_categories_description');
   define('TABLE_FAQ_QUESTION_DESCRIPTION',  'faq_question_description');
   define('TABLE_FAQ_QUESTION_TO_CATEGORIES','faq_question_to_categories');
   define('TABLE_ADDRESS_BOOK', 'address_book');
