@@ -237,6 +237,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
   $insert_id = $oID;
   
   $o = new order($oID);
+  $payment_code = payment::changeRomaji($o->info['payment_method'], PAYMENT_RETURN_TYPE_CODE); 
 
   # Check
   // ccdd
@@ -266,7 +267,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
   */
 
 // load the before_process function from the payment modules
-  $payment_modules->before_process();
+  $payment_modules->before_process($payment_code);
 
   require(DIR_WS_CLASSES . 'order_total.php');
   $order_total_modules = new order_total;
