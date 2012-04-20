@@ -26,4 +26,5 @@ define('CSS_RANDOM_INFO','（説明：この拡張子を添加して各サイト
 define('NOW_RANDOM_VALUE',"現在の値は：");
 define('CSS_EXAMPLE',"例えば：");
 define('CSS_UPDATE_BUTTON',"更新");
+define('TABLE_CSS_TITLE','ファイルタイトル');
 ?>
