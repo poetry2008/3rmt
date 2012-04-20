@@ -17,7 +17,7 @@
       tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL')); 
     }
     if ($_GET['action'] == 'save_quantity'){
-      $cart->update_quantity($_POST['pid'],$_POST['pquantity']);
+      $cart->update_quantity($_GET['pid'],$_GET['pquantity']);
       exit;
     }
   }
@@ -50,13 +50,11 @@ function history_back(){
   {
     var t_pid = final_prices[i].id.substr(3);
     var t_pquantity = document.getElementById('quantity_'+ final_prices[i].id.substr(3)).value;
-    $.ajax({
-      url: '<?php echo FILENAME_SHOPPING_CART;?>?action=save_quantity',
-      type: 'POST',
-      async: false,
-      data: 'pid='+t_pid+'&pquantity='+t_pquantity,
-      success: function(){
-      }
+    $.getJSON('http://<?php 
+        echo $_SERVER['HTTP_HOST'].'/';
+        echo FILENAME_SHOPPING_CART;
+        echo '?action=save_quantity&';
+        ?>pid='+t_pid+'&pquantity='+t_pquantity,function (data){
     });
   }
   history.back()
