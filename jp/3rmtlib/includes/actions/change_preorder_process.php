@@ -138,7 +138,7 @@ if ($preorder) {
   //住所信息录入
   $add_list = array();
   foreach($_POST as $address_key=>$address_value){
-    if(substr($address_key,0,3) == 'op_'){
+    if(substr($address_key,0,3) == 'ad_'){
       $address_query = tep_db_query("select id,name,name_flag from ". TABLE_ADDRESS ." where name_flag='". substr($address_key,3) ."'");
       $address_array = tep_db_fetch_array($address_query);
       tep_db_free_result($address_query);
@@ -158,7 +158,7 @@ if ($preorder) {
   tep_db_free_result($address_show_list_query);
   $address_temp_str = '';
   foreach($_POST as $address_his_key=>$address_his_value){
-    if(substr($address_his_key,0,3) == 'op_'){
+    if(substr($address_his_key,0,3) == 'ad_'){
     
       if(in_array(substr($address_his_key,3),$address_show_array)){
 
@@ -191,7 +191,7 @@ if ($preorder) {
   tep_db_free_result($address_sh_his_query);
 if($address_error == false){
   foreach($_POST as $address_history_key=>$address_history_value){
-    if(substr($address_history_key,0,3) == 'op_'){
+    if(substr($address_history_key,0,3) == 'ad_'){
       $address_history_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where name_flag='". substr($address_history_key,3) ."'");
       $address_history_array = tep_db_fetch_array($address_history_query);
       tep_db_free_result($address_history_query);

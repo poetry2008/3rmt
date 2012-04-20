@@ -203,6 +203,7 @@ define('IMAGE_NEXT', '次へ');
 define('IMAGE_BACKUP', 'バックアップ');
 define('IMAGE_CANCEL', '取り消し');
 define('IMAGE_CONFIRM', '確認');
+define('IMAGE_CONFIRM_NEXT', '次へ進む');
 define('IMAGE_COPY', 'コピー');
 define('IMAGE_COPY_TO', 'コピー先');
 define('IMAGE_DEFINE', '定義');

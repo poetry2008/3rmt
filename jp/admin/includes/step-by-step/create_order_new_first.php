@@ -10,36 +10,12 @@
 <script language="javascript" src="includes/javascript/address_search.js"></script>
 
 <script type="text/javascript">
-
-/*
-function fee(address_value){
-
-  var address = document.getElementById("list_option7").value;
-  var country = document.getElementById("list_option4").value;
- 
-  if(address_value != ''){
-
-    address = address_value;
-  }
-  $.ajax({
-       url: 'address_fee_ajax.php',
-       data: {country:country,address:address,weight:<?php echo $cart->weight; ?>},
-       type: 'POST',
-       dataType: 'text',
-       async : false,
-       success: function(data){
-           $("#address_fee").html(''); 
-           $("#address_fee").html(data);
-       }
-    }); 
- }
-  $(document).ready(function(){
-   
-    fee();
-
-  });
- */
-
+function check_submit(){
+  var fax = document.getElementById("fax");
+  var fax_value = document.getElementById("fax_value");
+  fax_value.value = fax.value;
+  document.create_order_form_1.submit();
+}
 </script>
 
 </head>
@@ -53,7 +29,9 @@ function fee(address_value){
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
 <!-- header_eof //-->
 
-
+<?php
+if($order_exists == true){
+?>
 <!-- body //-->
 <table border="0" width="100%" cellspacing="2" cellpadding="2">
   <tr>
@@ -76,13 +54,15 @@ function fee(address_value){
 <?php
                                                                 //显示用户查询表单
   echo '<form action="' . "create_order.php" . '" method="GET">' . "\n";
+  if(isset($_GET['oID']) && $_GET['oID'] != ''){
+    echo '<input type="hidden" name="oID" value="'.$_GET['oID'].'">';
+  }
   echo '<p class=main>'.CREATE_ORDER_SEARCH_TEXT.'<br>'.CREATE_ORDER_EMAIL_TEXT.'&nbsp;<input type="text" value="'.$lastemail.'" name="Customer_mail" size="40">'.tep_site_pull_down_menu('', false).'&nbsp;&nbsp;<input type="submit" value="'.CREATE_ORDER_SEARCH_BUTTON_TEXT.'"></p>' . "\n";
   echo '</form>' . "\n";
 ?>
   <br>
   <?php 
   }
-  echo tep_draw_form('create_order', FILENAME_CREATE_ORDER_PROCESS, '', 'post', '', '') ;
 ?>
 
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
@@ -101,6 +81,7 @@ function fee(address_value){
       <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
     </tr>
   </table>
+
 <?php
   //変数挿入
     require(DIR_WS_INCLUDES . 'step-by-step/create_order_details.php');
@@ -108,13 +89,15 @@ function fee(address_value){
   <br>
   <table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr>
-        <td class="main"><?php echo '<a href="' . tep_href_link(FILENAME_DEFAULT, '', 'SSL') . '">' . tep_html_element_button(IMAGE_BACK) . '</a>'; ?></td> <td class="main" align="right"><?php echo tep_html_element_submit(IMAGE_CONFIRM); ?></td>
+        <td class="main"><?php echo '<a href="' . tep_href_link(FILENAME_DEFAULT, '', 'SSL') . '">' . tep_html_element_button(IMAGE_BACK) . '</a>'; ?></td> <td class="main" align="right"><input type="button" value="<?php echo IMAGE_CONFIRM_NEXT; ?>" onclick="check_submit();"></td>
       </tr>
     </table>
-  </form>
   </td>
   </tr>
 </table>
+<?php
+}
+?>
 <!-- body_eof //-->
 
 <!-- footer //-->

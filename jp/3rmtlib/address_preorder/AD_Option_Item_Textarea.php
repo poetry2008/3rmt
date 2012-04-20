@@ -16,10 +16,10 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
     if($options['rows'] == 1){
 
       echo '<td class="main" width="70%">';
-      $style_color = isset($_POST['op_'.$this->formname]) && $_POST['op_'.$this->formname] != $this->comment ?'color:#000;':'color:#999;';
+      $style_color = isset($_POST['ad_'.$this->formname]) && $_POST['ad_'.$this->formname] != $this->comment ?'color:#000;':'color:#999;';
       $style_size = $type_limit == 'num' ? 'size="25" ' : 'class="option_input" '; 
       echo '<input type="hidden" name="'.$this->formname.'" value="'.$this->front_title.'">';
-      echo '<input type="text" name="op_'.$this->formname.'" id="op_'.$this->formname.'" '. $style_size .' value="'. (isset($_POST['op_'.$this->formname])?$_POST['op_'.$this->formname]:$this->comment) .'" style="'. $style_color .'" onfocus="this.style.color=\'#001\';if(this.value==\''. $this->comment.'\')this.value=\'\'" onblur="if(this.value==\'\'){this.value=\''. $this->comment .'\';this.style.color=\'#999\'}">';
+      echo '<input type="text" name="ad_'.$this->formname.'" id="ad_'.$this->formname.'" '. $style_size .' value="'. (isset($_POST['ad_'.$this->formname])?$_POST['ad_'.$this->formname]:$this->comment) .'" style="'. $style_color .'" onfocus="this.style.color=\'#001\';if(this.value==\''. $this->comment.'\')this.value=\'\'" onblur="if(this.value==\'\'){this.value=\''. $this->comment .'\';this.style.color=\'#999\'}">';
       if($this->required == 'true'){
 
         echo '<font color="red">&nbsp;*必須</font>';
@@ -34,7 +34,7 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
     echo '<td class="main" width="70%">'; 
     echo '<input type="hidden" name="'.$this->formname.'" value="'.$this->front_title.'">';
     echo '<textarea
-      name="op_'.$this->formname.'" id="op_'.$this->formname.'" rows="'. $options['rows'] .'" onfocus="this.style.color=\'#001\';if(this.value==\''. $this->comment.'\')this.value=\'\'" onblur="if(this.value==\'\'){this.value=\''. $this->comment .'\';this.style.color=\'#999\'}">'.(isset($_POST['op_'.$this->formname])?$_POST['op_'.$this->formname]:'').'</textarea>'; 
+      name="ad_'.$this->formname.'" id="ad_'.$this->formname.'" rows="'. $options['rows'] .'" onfocus="this.style.color=\'#001\';if(this.value==\''. $this->comment.'\')this.value=\'\'" onblur="if(this.value==\'\'){this.value=\''. $this->comment .'\';this.style.color=\'#999\'}">'.(isset($_POST['ad_'.$this->formname])?$_POST['ad_'.$this->formname]:'').'</textarea>'; 
      echo '<span id="error_'.$this->formname.'" class="shipping_error"><font color="red">';
      if (isset($option_error_array[$this->formname])) {
        echo $option_error_array[$this->formname]; 
@@ -56,7 +56,7 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
   function check(&$option_error_array)
   {
      global $_POST;
-     $input_text_str = $_POST['op_'.$this->formname]; 
+     $input_text_str = $_POST['ad_'.$this->formname]; 
      $input_text_str = str_replace(' ', '', $input_text_str); 
      $input_text_str = str_replace('　', '', $input_text_str); 
      

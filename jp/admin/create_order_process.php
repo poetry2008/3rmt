@@ -7,13 +7,13 @@ require('includes/step-by-step/new_application_top.php');
 
 //此页能是POST过来 ，如果不是 则 跳转 到 CREATE_ORDER
 if(isGet()){
-tep_redirect(tep_redirect(tep_href_link(FILENAME_CREATE_ORDER, null, 'SSL')));
+tep_redirect(tep_redirect(tep_href_link(FILENAME_CREATE_ORDER.'?oID='.tep_db_prepare_input($_POST['oID']), null, 'SSL')));
 }else if(!$_POST['email_address']){
-tep_redirect(tep_redirect(tep_href_link(FILENAME_CREATE_ORDER, null, 'SSL')));
+tep_redirect(tep_redirect(tep_href_link(FILENAME_CREATE_ORDER.'?oID='.tep_db_prepare_input($_POST['oID']), null, 'SSL')));
 }
 require(DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_CREATE_ORDER_PROCESS);
-  
-$payment_modules = payment::getInstance($_POST['site_id']);
+
+$oID = tep_db_prepare_input($_POST['oID']);
 $customer_id    = tep_db_prepare_input($_POST['customers_id']);
 $firstname      = tep_db_prepare_input($_POST['firstname']);
 $lastname       = tep_db_prepare_input($_POST['lastname']);
@@ -37,25 +37,8 @@ $new_value      = "1";
 $error          = false; // reset error flag
 $temp_amount    = "0";
 $temp_amount    = number_format($temp_amount, 2, '.', '');
-$year_num = tep_db_prepare_input($_POST['year']);
-$mon_num = tep_db_prepare_input($_POST['mon']);
-$mon = $mon_num < 10 ? '0'.$mon_num : $mon_num;
-$day_num = tep_db_prepare_input($_POST['day']);
-$day = $day_num < 10 ? '0'.$day_num : $day_num;
-$date = $year_num.'-'.$mon.'-'.$day;
-$hour_num = tep_db_prepare_input($_POST['hour']);
-$hour = $hour_num;
-$min_num = tep_db_prepare_input($_POST['min']);
-$min = $min_num;
-$hour_1 = tep_db_prepare_input($_POST['hour_1']);
-$min_1 = tep_db_prepare_input($_POST['min_1']);
-$torihikihouhou = tep_db_prepare_input($_POST['torihikihouhou']);
-$payment_method = tep_db_prepare_input($_POST['payment_method']);
-  
-$currency_text  = DEFAULT_CURRENCY . ",1";
-if(isset($_POST['Currency']) && !empty($_POST['Currency']))  {
-  $currency_text = tep_db_prepare_input($_POST['Currency']);
-}
+
+
 //{{检查信息是否全
 /*
   需要检查的信息有
@@ -105,29 +88,15 @@ if (!tep_validate_email($email_address)) {
   $entry_email_address_check_error = false;
 }
 
-if ($payment_method == 'payment_null') {
-  $error = true;
-  $entry_payment_method_error = true;
-} 
-
-$payment_method_romaji = payment::changeRomaji($payment_method,PAYMENT_RETURN_TYPE_CODE);
-$validateModule = $payment_modules->admin_confirmation_check($payment_method);
-
 //如果不通过 或是 有其它错误
-if ($validateModule['validated']===false or $error){
-  $selections = $payment_modules->admin_selection();
-  $selections[strtoupper($payment_method)] = $validateModule;
+if ($error){
   require_once 'create_order.php';
-  exit();
-}
+  exit(); }
 
-//开始生成订单
-$currency_array = explode(",", $currency_text);
-$currency = $currency_array[0];
-$currency_value = $currency_array[1];
-$insert_id = date("Ymd") . '-' . date("His") . tep_get_order_end_num();
-$sql_data_array = array('orders_id'     => $insert_id,
-			'customers_id'                => $customer_id,
+//开始更新订单
+
+$insert_id = $oID;
+$sql_data_array = array('customers_id'                => $customer_id,
 			'customers_name'              => tep_get_fullname($firstname,$lastname),
 			'customers_company'           => $company,
 			'customers_street_address'    => $street_address,
@@ -156,26 +125,17 @@ $sql_data_array = array('orders_id'     => $insert_id,
 			'billing_state'               => $state,
 			'billing_country'             => $country,
 			'billing_address_format_id'   => $format_id,
-			'date_purchased'              => 'now()', 
 			'orders_status'               => DEFAULT_ORDERS_STATUS_ID,
-			'currency'                    => $currency,
-			'currency_value'              => $currency_value,
-			'payment_method'              => payment::changeRomaji($payment_method,
-                            PAYMENT_RETURN_TYPE_TITLE),
-           	        'torihiki_houhou'             => $torihikihouhou,
-                        'torihiki_date'               => tep_db_input($date . ' ' . $hour . ':' . $min . ':00'),
-                        'torihiki_date_end'           => tep_db_input($date . ' ' . $hour_1 . ':' . $min_1 . ':00'), 
 			'site_id'                     => $site_id,
 			'orders_wait_flag'            => '1'
 			); 
-$comment_arr = $payment_modules->dealComment($payment_method,$comment);
 $_SESSION['payment_bank_info'][$insert_id] = $comment_arr['payment_bank_info'];
 if(isset($comment_arr['payment_bank_info']['add_info'])&&
     $comment_arr['payment_bank_info']['add_info']){
 $sql_data_array['orders_comment'] = $comment_arr['comment'];
 }
-//创建订单
-tep_db_perform(TABLE_ORDERS, $sql_data_array);
+//更新订单
+tep_db_perform(TABLE_ORDERS, $sql_data_array,'update','orders_id=\''.$oID.'\'');
 
 last_customer_action();
 orders_updated($insert_id);
@@ -187,82 +147,97 @@ $sql_data_array = array('orders_id' => $insert_id,
               'comments' => $comment_arr['comment']);
 tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
 
-require(DIR_FS_CATALOG . 'includes/classes/order.php');
-$order = new order($insert_id);
-require(DIR_WS_CLASSES . 'currencies.php');
-$currencies = new currencies;
-require(DIR_WS_CLASSES . 'order_total.php');
-$order_total = new order_total($site_id);
-/*
-$module_directory = DIR_FS_CATALOG_MODULES . 'order_total/';
-$module_type = 'order_total';
-$ot_tax_status = false;
+$payment_bank_info = array(); 
 
-if (defined('MODULE_ORDER_TOTAL_INSTALLED') && tep_not_null(MODULE_ORDER_TOTAL_INSTALLED)) {
-  $thismodules = explode(';', MODULE_ORDER_TOTAL_INSTALLED);
-  reset($thismodules);
-  while (list(, $value) = each($thismodules)) {
-    if($value != 'ot_tax.php') {
-      //      include(DIR_WS_LANGUAGES . $language . '/modules/' . $module_type . '/' . $value);
-      //      include($module_directory . $value);
-      $class = substr($value, 0, strrpos($value, '.'));
-      //      $GLOBALS[$class] = new $class;
-    } elseif($value == 'ot_tax.php') {
-      $ot_tax_status = true;
-    }
-  }
-}
-  
-$order_total_array = array();
-if (is_array($thismodules)) {
-  reset($thismodules);
-  while (list(, $value) = each($thismodules)) {
-    $class = substr($value, 0, strrpos($value, '.'));
-    if ($GLOBALS[$class]->enabled) {
-      $GLOBALS[$class]->process();
+// 1.3.1 Update orders_products Table
+      $products_delete = false;
+      foreach ($update_products as $orders_products_id => $products_details) {
+        // 1.3.1.1 Update Inventory Quantity
+        $op_query = tep_db_query("
+            select products_id, 
+            products_quantity
+            from " . TABLE_ORDERS_PRODUCTS . " 
+            where orders_id = '" . tep_db_input($oID) . "'
+            and orders_products_id='".$orders_products_id."'
+            ");
+        $order = tep_db_fetch_array($op_query);
+        if ($products_details["qty"] != $order['products_quantity'] ) {
+          $quantity_difference = ($products_details["qty"] - $order['products_quantity']);
+          $p = tep_db_fetch_array(tep_db_query("select * from products where products_id='".$order['products_id']."'"));
+          $pr_quantity = $p['products_real_quantity'];
+          $pv_quantity = $p['products_virtual_quantity'];
+          // 增加库存
+          if($quantity_difference < 0){
+            if ($_POST['update_products_real_quantity'][$orders_products_id]) {
+              // 增加实数
+              $pr_quantity = $pr_quantity - $quantity_difference;
+            } else {
+              // 增加架空
+              $pv_quantity = $pv_quantity - $quantity_difference;
+            }
+            // 减少库存
+          } else {
+            // 实数卖空
+            if ($pr_quantity - $quantity_difference < 0) {
+              $pr_quantity = 0;
+              $pv_quantity += ($pr_quantity - $quantity_difference);
+            } else {
+              $pr_quantity -= $quantity_difference;
+            }
+          }
+          // 如果是业者，不更新
+          if(!tep_is_oroshi($check_status['customers_id']))
+            tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = ".$pr_quantity.", products_virtual_quantity = ".$pv_quantity.", products_ordered = products_ordered + " . $quantity_difference . " where products_id = '" . (int)$order['products_id'] . "'");
+          tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = 0 where products_real_quantity < 0 and products_id = '" . (int)$order['products_id'] . "'");
+          tep_db_query("update " . TABLE_PRODUCTS . " set products_virtual_quantity = 0 where products_virtual_quantity < 0 and products_id = '" . (int)$order['products_id'] . "'");
+        }
 
-      for ($i=0, $n=sizeof($GLOBALS[$class]->output); $i<$n; $i++) {
-	if (tep_not_null($GLOBALS[$class]->output[$i]['title']) ) {
-	  $order_total_array[] = array('code' => $GLOBALS[$class]->code,
-				       'title' => $GLOBALS[$class]->output[$i]['title'],
-				       'text' => "",
-				       'value' => $GLOBALS[$class]->output[$i]['value'],
-				       'sort_order' => $GLOBALS[$class]->sort_order);
-	}
+        if($products_details["qty"] > 0) { // a.) quantity found --> add to list & sum    
+          $Query = "update " . TABLE_ORDERS_PRODUCTS . " set
+            products_model = '" . $products_details["model"] . "',
+                           products_name = '" . str_replace("'", "&#39;", $products_details["name"]) . "',
+                           final_price = '" . (tep_get_bflag_by_product_id((int)$order['products_id']) ? 0 - $products_details["final_price"] : $products_details["final_price"]) . "',
+                           products_tax = '" . $products_details["tax"] . "',
+                           products_quantity = '" . $products_details["qty"] . "'
+                             where orders_products_id = '$orders_products_id';";
+          tep_db_query($Query);
+
+          $RunningSubTotal += $products_details["qty"] * $products_details["final_price"]; // version WITHOUT tax
+          $RunningTax += (($products_details["tax"]/100) * ($products_details["qty"] * $products_details["final_price"]));
+
+          // Update Any Attributes
+          if (IsSet($products_details[attributes])) {
+            foreach ($products_details["attributes"] as $orders_products_attributes_id => $attributes_details) {
+              $input_option = array('title' => $attributes_details['option'], 'value'=> $attributes_details['value']); 
+              $Query = "update " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " set option_info = '" .tep_db_input(serialize($input_option)) . "' where orders_products_attributes_id = '$orders_products_attributes_id';";
+              tep_db_query($Query);
+            }
+          }
+        }else{ // b.) null quantity found --> delete
+          $Query = "delete from " . TABLE_ORDERS_PRODUCTS . " where orders_products_id
+            = '$orders_products_id';";
+          tep_db_query($Query);
+          $Query = "delete from " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " where
+            orders_products_id = '$orders_products_id';";
+          tep_db_query($Query);
+          $products_delete = true;
+        }
       }
-    }
 
-  }
-}
-*/
-$order_total_array = $order_total->process();
-  
-$order_totals = $order_total_array;
-for ($i=0, $n=sizeof($order_totals); $i<$n; $i++) {
-  $sql_data_array = array('orders_id' => $insert_id,
-			  'title' => $order_totals[$i]['title'],
-			  'value' => $order_totals[$i]['value'], 
-			  'text'=> "",
-			  'class' => $order_totals[$i]['code'], 
-			  'sort_order' => $order_totals[$i]['sort_order']);
-  tep_db_perform(TABLE_ORDERS_TOTAL, $sql_data_array);
-}
-  
-if($ot_tax_status == true) {
-  include(DIR_FS_CATALOG_LANGUAGES . $language . '/modules/' . $module_type . '/ot_tax.php');
-  include($module_directory . 'ot_tax.php');
-  $ot_tax = new ot_tax;
-  $sql_data_array = array('orders_id' => $insert_id,
-			  'title' => $ot_tax->title,
-			  'value' => 0, 
-			  'text' => "",
-			  'class' => $ot_tax->code, 
-			  'sort_order' => $ot_tax->sort_order);
-  tep_db_perform(TABLE_ORDERS_TOTAL, $sql_data_array);
-}
-  $payment_bank_info = array(); 
+      $orders_type_str = tep_get_order_type_info($oID);
+      tep_db_query("update `".TABLE_ORDERS."` set `orders_type` = '".$orders_type_str."' where orders_id = '".tep_db_input($oID)."'");
 
-tep_redirect(tep_href_link(FILENAME_EDIT_NEW_ORDERS, 'oID=' . $insert_id, 'SSL'));
+      //更新 orders_total 
+      $orders_price_total = 0;
+      $orders_total_query = tep_db_query("select final_price,products_quantity from ". TABLE_ORDERS_PRODUCTS ." where orders_id='". $oID ."'"); 
+      while($orders_total_array = tep_db_fetch_array($orders_total_query)){
+
+        $orders_price_total += $orders_total_array['final_price']*$orders_total_array['products_quantity'];
+      }
+      tep_db_free_result($orders_total_query);
+      tep_db_query("update ". TABLE_ORDERS_TOTAL ." set value=". $orders_price_total ." where orders_id='". $oID ."' and class='ot_total'");
+      tep_db_query("update ". TABLE_ORDERS_TOTAL ." set value=". $orders_price_total ." where orders_id='". $oID ."' and class='ot_subtotal'");
+      tep_redirect(tep_href_link(FILENAME_EDIT_NEW_ORDERS, 'oID=' . $insert_id, 'SSL'));
 
 
 

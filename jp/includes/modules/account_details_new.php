@@ -1,5 +1,111 @@
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript">
+function check(value){
+  var arr  = new Array();
+  var arr_set = new Array();
+<?php
+  $add_query = tep_db_query("select * from ". TABLE_ADDRESS ." where type='option' and status='0' order by sort");
+  while($add_array = tep_db_fetch_array($add_query)){
+
+    $add_temp_array = unserialize($add_array['type_comment']);
+    if(!isset($add_temp_array['select_value'])){
+       
+      $add_temp_first_array  = current($add_temp_array);
+      $parent_id = $add_temp_first_array['parent_id'];
+      $child_flag_name = $add_array['name_flag'];
+    }
+  }
+  tep_db_free_result($add_query);
+  $add_parent_query = tep_db_query("select * from ". TABLE_ADDRESS ." where id=$parent_id");
+  $add_parent_array = tep_db_fetch_array($add_parent_query);
+  $parent_flag_name = $add_parent_array['name_flag'];
+  tep_db_free_result($add_parent_query);
+
+  $options_query = tep_db_query("select * from ". TABLE_ADDRESS ." where type='option' and status='0' order by sort");
+  $json_array = array();
+  $json_set_value = array();
+  while($options_array = tep_db_fetch_array($options_query)){
+    if(!isset($otpions_array_temp['select_value']) && $otpions_array_temp['select_value'] == ''){
+        $show_array[] = unserialize($options_array['type_comment']);
+    }
+  }
+
+  foreach($show_array as $show_value){
+    foreach($show_value as $show_key=>$show_val){
+
+      $json_array[$show_key] = $show_val;
+      $json_set_value[$show_key] = $show_val['select_value'];
+    } 
+  }
+
+  tep_db_free_result($options_query);
+  foreach($json_array as $key=>$value_temp){
+    echo 'arr["'. $key .'"] = new Array();';
+    echo 'arr_set["'. $key .'"] = new Array();';
+    $value_temp['option_list'] = array_values($value_temp['option_list']);
+    foreach($value_temp['option_list'] as $k=>$val){
+
+      echo 'arr["'. $key .'"]['. $k .'] = "'. $val .'";';
+    } 
+    echo 'arr_set["'. $key .'"] = "'. $json_set_value[$key] .'";';
+
+  }  
+?>
+  
+  var option_id = document.getElementById("op_<?php echo $child_flag_name;?>");
+  option_id.options.length = 0;
+  len = arr[value].length;
+  //option_id.options[option_id.options.length]=new Option('--',''); 
+  for(i = 0;i < len;i++){
+    if(arr_set[value] == arr[value][i]){
+
+      option_id.options[option_id.options.length]=new Option(arr[value][i], arr[value][i]);
+    }     
+  } 
+  for(i = 0;i < len;i++){
+    if(arr_set[value] == arr[value][i]){
+      continue; 
+    }
+    option_id.options[option_id.options.length]=new Option(arr[value][i], arr[value][i]);    
+  } 
+}
+
+function check_form(){
+  var lastname = document.getElementsByName("lastname");
+  var first_name = document.getElementById("first_name");
+  first_name.value = lastname[0].value;
+  var firstname = document.getElementsByName("firstname");
+  var end_name = document.getElementById("end_name");
+  end_name.value = firstname[0].value;
+  var email_address = document.getElementsByName("email_address");
+  var emai = document.getElementById("email");
+  email.value = email_address[0].value;
+  var newsletter = document.getElementsByName("newsletter");
+  var options = document.getElementById("options");
+  options.value = newsletter[1].value;
+  var password = document.getElementsByName("password");
+  var pwd = document.getElementById("pwd");
+  pwd.value = password[1].value;
+  var confirmation = document.getElementsByName("confirmation");
+  var pwd_1 = document.getElementById("pwd_1");
+  pwd_1.value = confirmation[1].value;
+  var old_email_1 = document.getElementsByName("old_email_1");
+  var old_email = document.getElementById("old_email");
+  old_email.value = old_email_1[0].value;
+  var action_flag = document.getElementById("action_flag");
+  action_flag.value = 1;
+  document.account_edit_address.submit();
+}
+
+function check_form_address(){ 
+  var lastname = document.getElementsByName("lastname");
+  var first_name = document.getElementById("first_name");
+  first_name.value = lastname[0].value;
+  var firstname = document.getElementsByName("firstname");
+  var end_name = document.getElementById("end_name");
+  end_name.value = firstname[0].value;
+}
+
 function address_clear(){
   var arr_new = Array();
 <?php
@@ -122,6 +228,10 @@ function address_option_list(value){
     var list_option = document.getElementById("op_"+x);
     list_option.style.color = '#000';
     list_option.value = arr_list[value][x];
+    if('<?php echo $parent_flag_name;?>' == x){
+
+      check($("#op_"+x).val());
+    }
     $("#error_"+x).html("");
   }
   
@@ -137,16 +247,27 @@ $(document).ready(function(){
   address_option_list(0);
 });
 <?php
-  }else{
+  }elseif($_POST['action'] == 'address'){
 ?>
 $(document).ready(function(){ 
   address_list();
   $("#address_flag_id").val("<?php echo $_POST['address_flag_id'];?>");
 });
 <?php
- }
+  }else{
 ?>
-
+$(document).ready(function(){ 
+  address_list();
+  address_option_list(0);
+});
+<?php 
+  }
+?>
+$(document).ready(function(){
+  $("#op_<?php echo $parent_flag_name;?>").change(function(){
+    check($(this).val());
+  }); 
+});
 </script>
 <?php
 /*
@@ -224,7 +345,7 @@ $(document).ready(function(){
       <tr>
         <td class="main">
         <?php
-          echo tep_draw_form('account_edit_per', tep_href_link(FILENAME_ACCOUNT_EDIT, '', 'SSL'), 'post', 'onSubmit=    "return check_form_per();"') . tep_draw_hidden_field('action', 'per');
+          echo tep_draw_form('account_edit_per', tep_href_link(FILENAME_ACCOUNT_EDIT, '', 'SSL'), 'post', 'onSubmit=""') . tep_draw_hidden_field('action', 'per');
         ?>
         <table border="0" cellspacing="0" cellpadding="2" summary="table">
 <?php 
@@ -232,7 +353,7 @@ $(document).ready(function(){
 ?>
         </table>
 <table border="0" width="100%" cellspacing="0" cellpadding="0">
-  <tr><td class="main" align="right" colspan="2"><input type="image" src="images/design/button/save.gif">&nbsp;&nbsp;</td></tr>
+<tr><td class="main" align="right" colspan="2"><input type="hidden" name="old_email" value="<?php echo $account['customers_email_address'];?>"><input type="image" src="images/design/button/save.gif">&nbsp;&nbsp;</td></tr>
 </table>
 </form></td>
       </tr>
@@ -248,17 +369,26 @@ $(document).ready(function(){
       <tr>
         <td class="main">
         <?php
-          echo tep_draw_form('account_edit_address', tep_href_link(FILENAME_ACCOUNT_EDIT, '', 'SSL'), 'post', 'onSubmit=    "return check_form_address();"') . tep_draw_hidden_field('action', 'address');
+          echo tep_draw_form('account_edit_address', tep_href_link(FILENAME_ACCOUNT_EDIT, '', 'SSL'), 'post', 'onSubmit=""') . tep_draw_hidden_field('action', 'address');
         ?>
         <table border="0" cellspacing="0" cellpadding="2" summary="table">
         <tr><td class="main" width="120">&nbsp;<?php echo TITLE_ADDRESS_OPTION;?></td><td><input type="hidden" id="address_flag_id" name="address_flag_id" value="">
+        <!-- 隐藏信息-->
+        <input type="hidden" id="first_name" name="lastname" value="">
+        <input type="hidden" id="end_name" name="firstname" value="">
+        <input type="hidden" id="email" name="email_address" value="">
+        <input type="hidden" id="old_email" name="old_email" value="">
+        <input type="hidden" id="options" name="newsletter" value="">
+        <input type="hidden" id="pwd" name="password" value="">
+        <input type="hidden" id="pwd_1" name="confirmation" value="">
+        <input type="hidden" id="action_flag" name="action_flag" value="0">
         &nbsp;<select id="address_show_list" onchange="address_option_list(this.value);">
         </select>
         </td></tr>
         <?php       
           $hm_option->render(''); 
         ?> 
-          <tr><td class="main" align="right" colspan="2"><a href="javascript:void(0);" onclick="if(confirm('このレコードを削除してもよろしいですか？')){location.href='<?php echo FILENAME_ACCOUNT_EDIT;?>?act='+document.getElementById('address_flag_id').value;}else{return false;}"><img src="images/design/button/delete.gif"></a>&nbsp;<a href="javascript:void(0);" onclick="address_clear();"><img src="images/design/button/new_found.gif"></a>&nbsp;<a href="javascript:void(0);" onclick="document.account_edit_address.submit();"><img src="images/design/button/save.gif"></a></form>&nbsp;&nbsp;</td></tr>
+          <tr><td class="main" align="right" colspan="2"><a href="javascript:void(0);" onclick="if(confirm('このレコードを削除してもよろしいですか？')){location.href='<?php echo FILENAME_ACCOUNT_EDIT;?>?act='+document.getElementById('address_flag_id').value;}else{return false;}"><img src="images/design/button/delete.gif"></a>&nbsp;<a href="javascript:void(0);" onclick="address_clear();"><img src="images/design/button/new_found.gif"></a>&nbsp;<a href="javascript:void(0);" onclick="check_form_address();document.account_edit_address.submit();"><img src="images/design/button/save.gif"></a></form>&nbsp;&nbsp;</td></tr>
         </table></form>
         </td>
       </tr>
@@ -273,7 +403,7 @@ $(document).ready(function(){
   <tr>
     <td class="main">
     <?php 
-      echo tep_draw_form('account_edit_options', tep_href_link(FILENAME_ACCOUNT_EDIT, '', 'SSL'), 'post', 'onSubmit=    "return check_form_options();"') . tep_draw_hidden_field('action', 'options');
+      echo tep_draw_form('account_edit_options', tep_href_link(FILENAME_ACCOUNT_EDIT, '', 'SSL'), 'post', 'onSubmit=""') . tep_draw_hidden_field('action', 'options');
     ?>
     <table border="0" width="100%" summary="table" cellspacing="0" cellpadding="2" class="formArea">
       <tr>
@@ -348,7 +478,7 @@ if (!isset($guestchk)) $guestchk = NULL;
       <tr>
         <td class="main">
         <?php 
-          echo tep_draw_form('account_edit_pwd', tep_href_link(FILENAME_ACCOUNT_EDIT, '', 'SSL'), 'post', 'onSubmit=    "return check_form_pwd();"') . tep_draw_hidden_field('action', 'pwd');
+          echo tep_draw_form('account_edit_pwd', tep_href_link(FILENAME_ACCOUNT_EDIT, '', 'SSL'), 'post', 'onSubmit=""') . tep_draw_hidden_field('action', 'pwd');
         ?>
           <table border="0" cellspacing="0" cellpadding="2" summary="table"> 
           <tr>

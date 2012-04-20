@@ -206,7 +206,7 @@ $(document).ready(function(){
         <td class="main">
         <table border="0" cellspacing="0" cellpadding="2" summary="table">
           <tr>
-            <td class="main">&nbsp;<?php echo TITLE_ADDRESS_OPTION; ?></td>
+            <td class="main" width="120">&nbsp;<?php echo TITLE_ADDRESS_OPTION; ?></td>
             <td class="main">&nbsp;<select id="address_show_list" onchange="address_option_list(this.value);"></select>
             </td>
             </tr> 
@@ -239,7 +239,7 @@ $(document).ready(function(){
         <td class="main">
         <table border="0" cellspacing="0" cellpadding="2" summary="table">
           <tr>
-            <td class="main">&nbsp;<?php echo ENTRY_NEWSLETTER; ?></td>
+            <td class="main" width="120">&nbsp;<?php echo ENTRY_NEWSLETTER; ?></td>
             <td class="main">&nbsp;
 <?php
   if ($is_read_only == true) {

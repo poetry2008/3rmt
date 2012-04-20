@@ -98,6 +98,7 @@ if(isset($action) && $action != ''){
       $area_sql = "delete from ". TABLE_AREA_FEE .
                    " where id=".$area_id;
       $area_del_query = tep_db_query($area_sql);
+      tep_db_query("delete from ". TABLE_COUNTRY_CITY ." where fid=$area_id");
 
       if($area_del_query == true){
       

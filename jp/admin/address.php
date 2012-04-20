@@ -272,7 +272,7 @@ div#show {
 $even = 'dataTableSecondRow';
 $odd  = 'dataTableRow';
 $select_class = 'dataTableRowSelected';
-$address_sql = "select * from ". TABLE_ADDRESS ." order by sort";
+$address_sql = "select * from ". TABLE_ADDRESS ." order by sort,id asc";
 
 $address_page = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $address_sql, $address_query_numrows);
 $address_query = tep_db_query($address_sql);

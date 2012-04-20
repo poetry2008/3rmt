@@ -85,6 +85,13 @@ if(isset($action) && $action != ''){
       $country_sql = "delete from ". TABLE_COUNTRY_FEE .
                    " where id=".$country_id;
       $country_del_query = tep_db_query($country_sql);
+      $country_city_query = tep_db_query("select id from ". TABLE_COUNTRY_AREA ." where fid=$country_id"); 
+      while($country_city_array = tep_db_fetch_array($country_city_query)){
+
+        tep_db_query("delete from ". TABLE_COUNTRY_CITY ." where fid={$country_city_array['id']}");
+      }
+      tep_db_free_result($country_city_query); 
+      tep_db_query("delete from ". TABLE_COUNTRY_AREA ." where fid=$country_id");
 
       if($country_del_query == true){
       
