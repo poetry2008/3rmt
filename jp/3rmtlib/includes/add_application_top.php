@@ -16,7 +16,7 @@
   //error_reporting(0);
   //ini_set("display_errors", "On");
   //error_reporting(E_ALL);
-  //ini_set("display_errors", "On");
+  ini_set("display_errors", "Off");
 
 // check if register_globals is enabled.
 // since this is a temporary measure this message is hardcoded. The requirement will be removed before 2.2 is finalized.
@@ -153,14 +153,8 @@
   define('TABLE_PREORDERS_TOTAL', 'preorders_total');
   define('TABLE_PREORDERS_TO_COMPUTERS', 'preorders_to_computers');
   define('TABLE_FAQ_CATEGORIES', 'faq_categories');
+  define('TABLE_FAQ_CATEGORIES_DESCRIPTION', 'faq_categories_description');
   define('TABLE_FAQ_QUESTION',  'faq_question');
-  define('TABLE_FAQ_CATEGORIEScommit 6818bfb702801fb533b09e32cb6a5b48a8685d4d
-Author: kthiz <kthiz2006@gmail.com>
-Date:   Fri Apr 20 16:58:35 2012 +0800
-
-    specials edit
-
-_DESCRIPTION', 'faq_categories_description');
   define('TABLE_FAQ_QUESTION_DESCRIPTION',  'faq_question_description');
   define('TABLE_FAQ_QUESTION_TO_CATEGORIES','faq_question_to_categories');
   define('TABLE_ADDRESS_BOOK', 'address_book');
