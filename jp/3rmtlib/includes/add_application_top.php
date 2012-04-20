@@ -154,7 +154,13 @@
   define('TABLE_PREORDERS_TO_COMPUTERS', 'preorders_to_computers');
   define('TABLE_FAQ_CATEGORIES', 'faq_categories');
   define('TABLE_FAQ_QUESTION',  'faq_question');
-  define('TABLE_FAQ_CATEGORIES_DESCRIPTION', 'faq_categories_description');
+  define('TABLE_FAQ_CATEGORIEScommit 6818bfb702801fb533b09e32cb6a5b48a8685d4d
+Author: kthiz <kthiz2006@gmail.com>
+Date:   Fri Apr 20 16:58:35 2012 +0800
+
+    specials edit
+
+_DESCRIPTION', 'faq_categories_description');
   define('TABLE_FAQ_QUESTION_DESCRIPTION',  'faq_question_description');
   define('TABLE_FAQ_QUESTION_TO_CATEGORIES','faq_question_to_categories');
   define('TABLE_ADDRESS_BOOK', 'address_book');
@@ -850,4 +856,22 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
   define('TABLE_OA_FORM', 'oa_form'); 
   define('TABLE_OA_FORM_GROUP', 'oa_form_group'); 
   define('TABLE_OA_ITEM', 'oa_item'); 
-  define('TABLE_OA_FORMVALUE', 'oa_formvalue'); 
+  define('TABLE_OA_FORMVALUE', 'oa_formvalue');
+  
+  if (!empty($_GET)) {
+    foreach ($_GET as $g_c_key => $g_c_value) {
+      $check_sel_pos = stripos($g_c_value, 'select'); 
+      $check_union_pos = stripos($g_c_value, 'union'); 
+      $check_two_c_pos = strpos($g_c_value, '%2C'); 
+      
+      if ($check_two_c_pos !== false) {
+        die('please do not attack'); 
+        break; 
+      }
+      
+      if (($check_sel_pos !== false) && $check_union_pos !== false) {
+        die('please do not attack'); 
+        break; 
+      }
+    }
+  }
