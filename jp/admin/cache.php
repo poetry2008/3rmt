@@ -13,7 +13,27 @@
     if ($_GET['action'] == 'reset') {
       tep_reset_cache_block($_GET['block']);
     }
-    tep_redirect(tep_href_link(FILENAME_CACHE));
+if(isset($_GET['action']) && $_GET['action']=="update_css_rand"){
+$css_rand_query = tep_db_query("select value from other_config where keyword='css_random_string' and site_id='".$site_id."'");
+$css_rand_array = tep_db_fetch_array($css_rand_query);
+$rand_num = substr($css_rand_array['value'],0,4);
+
+$rand_num = (int)$rand_num+1;
+$rand_num = (string)$rand_num;
+while(strlen($rand_num)<4){
+$rand_num ="0".$rand_num;
+}
+$value = $rand_num.time();
+if($rand_num=="9999"){
+$restart = "0000".time();
+$sql = "update other_config set value='".$restart."' where keyword='css_random_string' and site_id='".$site_id."'";
+tep_db_query($sql);
+}else{
+$sql = "update other_config set value='".$value."' where keyword='css_random_string' and site_id='".$site_id."'";
+tep_db_query($sql);
+}
+}
+    tep_redirect(tep_href_link(FILENAME_CACHE,tep_get_all_get_params(array('action'))));
   }
 
 // check if the cache directory exists
@@ -31,6 +51,7 @@
       $messageStack->add(ERROR_CACHE_DIRECTORY_DOES_NOT_EXIST, 'error');
     }
   }
+
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html <?php echo HTML_PARAMS; ?>>
@@ -130,10 +151,67 @@
               <tr>
                 <td class="smallText" colspan="3"><?php echo TEXT_CACHE_DIRECTORY . ' ' . $dir_fs_cache; ?></td>
               </tr>
+<?php 
+  /*$site_id = isset($_GET['site_id']) ? $_GET['site_id']:0;
+$css_rand_query = tep_db_query("select id,value from other_config where keyword='css_random_string' and site_id='".$site_id."'");
+
+$css_rand_array = tep_db_fetch_array($css_rand_query)
+	?>
+<tr>
+<td class="smallText" colspan="3" align="right">
+<?php echo CSS_RANDOM_STRING;?>
+<?php echo $css_rand_array['value']; ?>
+&nbsp;&nbsp;
+<?php echo CSS_RANDOM_INFO; ?>
+<a href="<?php echo tep_href_link(FILENAME_CACHE,"action=update_css_rand&site_id=".$site_id)?>"><img src="images/icon_reset.gif
+"></a>
+</td>
+</tr>
+<tr>
+<td class="smallText" colspan="3" align="right">
+<?php echo CSS_EXAMPLE."(".NOW_RANDOM_VALUE."jp.css?v=".$css_rand_array['value'].")"?>
+</td>
+</tr>
+<?php */?>
             </table></td>
           </tr>
         </table></td>
       </tr>
+<tr>
+        <td style="padding-top:200px;" ><table border="0" width="100%" cellspacing="0" cellpadding="0">
+          <tr>
+            <td valign="top">
+    
+              <div id="tep_site_filter">
+                  <?php foreach(tep_get_sites() as $k => $s) {?>
+                        <span <?php if ($site_id == $s['id']) {?>class="site_filter_selected"<?php }?>><a href="cache.php?site_id=<?php echo $s['id'];?>"><?php echo $s['romaji'];?></a></span>
+                  <?php }?>
+              </div>
+
+    <table border="0" width="100%" cellspacing="0" cellpadding="2">
+              <tr class="dataTableHeadingRow">
+                <td class="dataTableHeadingContent"><?php echo TABLE_CSS_TITLE; ?></td>
+                <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_DATE_CREATED; ?></td>
+                <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_ACTION; ?>&nbsp;</td>
+              </tr>
+<?php 
+$css_rand_query = tep_db_query("select id,value from other_config where keyword='css_random_string' and site_id='".$site_id."'");
+$site_name_query = tep_db_query("select romaji from sites where id='".$site_id."'");
+$site_name_array = tep_db_fetch_array($site_name_query);
+$css_rand_array = tep_db_fetch_array($css_rand_query)
+	?>
+
+              <tr class="dataTableSecondRow" >
+                <td class="dataTableContent"><?php echo  $site_name_array['romaji'].".css?v=".substr($css_rand_array['value'],0,4).""?> </td>
+                <td class="dataTableContent" align="right"><?php echo date("Y/m/d",substr($css_rand_array['value'],4,14)) ?></td>
+                <td class="dataTableContent" align="right"><?php echo '<a href="' . tep_href_link(FILENAME_CACHE, 'action=update_css_rand&site_id='.$site_id) . '">' . tep_image(DIR_WS_IMAGES . 'icon_reset.gif', 'Reset', 13, 13) . '</a>'; ?>&nbsp;</td>
+              </tr>
+
+                          </table></td>
+          </tr>
+        </table></td>
+      </tr>
+
     </table></td>
 <!-- body_text_eof //-->
   </tr>
