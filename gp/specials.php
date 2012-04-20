@@ -4,6 +4,11 @@
 */
   require('includes/application_top.php');
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_SPECIALS);
+  if (isset($_GET['page'])) {
+    if (!preg_match('/^\d+$/', $_GET['page'])) {
+      die('please do not attack'); 
+    }
+  }
   $check_specials_query_raw = "
   select * 
   from (
