@@ -12,6 +12,16 @@
 
   if (isset($_GET['news_id'])) {
     //ccdd
+$check_array = array();
+$check_news_id_query = tep_db_query(' SELECT * FROM ' . TABLE_LATEST_NEWS . ' WHERE status = 1 AND (site_id = ' . SITE_ID . ' or site_id =0 ) ORDER BY isfirst DESC, date_added DESC ');
+while($check_news_id_array = tep_db_fetch_array($check_news_id_query)){
+$check_array[] = $check_news_id_array['news_id'];
+}
+//print_r($check_array);
+if(!in_array($_GET['news_id'],$check_array)){
+forward404Unless($latest_news);
+
+}
     $latest_news_query = tep_db_query('
         SELECT * 
         from ' . TABLE_LATEST_NEWS . ' 

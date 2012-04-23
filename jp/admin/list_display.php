@@ -11,7 +11,6 @@ if ($ocertify->npermission>7) {
 } else {
   $products = tep_get_products_by_categories_id($cID, 1);
 }
-
 switch ($_GET['action']){
 case update:
   if ($_POST['oroshi_datas'])
@@ -279,6 +278,19 @@ color: #000000;
         }
       }
     }
+    function check_input(pos){
+	    var value = pos.value;
+	    var arr = new Array();
+	    var len = value.length;
+	    arr = value.split(".");
+	    if(arr.length == 2){
+		    if(arr[1].length == 2){
+                         $(pos).attr("maxlength",len);
+
+		    }
+
+	    }
+    }
   </script>
 </head>
 <body  onload="">
@@ -439,7 +451,7 @@ $rows = $count[0]>count($products)?$count[0]:count($products);
       </td>
     <td class="dataTableContent" id="td_kakaku_<?php echo $k;?>">
 <?php //if($k<count($products)) {?>
-      <input pos="<?php echo $k;?>_1" class="udlr kakaku_input" type="text" size='10' name="kakaku[<?php echo $k;?>]" id="kakaku_<?php echo $k;?>" value="" disabled>
+      <input pos="<?php echo $k;?>_1" onkeyup="check_input(this);" class="udlr kakaku_input" type="text" size='10' name="kakaku[<?php echo $k;?>]" id="kakaku_<?php echo $k;?>" value="" disabled>
 <?php //}?>
       </td>
     <!--<td>
