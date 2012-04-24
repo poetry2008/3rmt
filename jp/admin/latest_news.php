@@ -65,7 +65,6 @@ tep_redirect(tep_href_link(FILENAME_LATEST_NEWS, (isset($_GET['site_id'])?('site
                                   'date_added' => 'now()', //uses the inbuilt mysql function 'now'
                                   'site_id'    => tep_db_prepare_input($_POST['site_id']),
                                   'status'     => '1' );
-//print_r($sql_data_array);exit;
           tep_db_perform(TABLE_LATEST_NEWS, $sql_data_array);
           $news_id = tep_db_insert_id(); //not actually used ATM -- just there in case
         }
@@ -101,7 +100,6 @@ tep_redirect(tep_href_link(FILENAME_LATEST_NEWS, (isset($_GET['site_id'])?('site
 				  'latest_update_date' => tep_db_prepare_input(time()-3600),
                                   'content'  => tep_db_prepare_input($_POST['content']) );
                                   
-	  //print_r($sql_data_array);exit;
           tep_db_perform(TABLE_LATEST_NEWS, $sql_data_array, 'update', "news_id = '" . tep_db_prepare_input($_GET['latest_news_id']) . "'");
         }
         $news_image = tep_get_uploaded_file('news_image');
