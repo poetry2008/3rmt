@@ -64,6 +64,44 @@ $(function() {
         }
     });
 });
+$(function() {
+    $("#saveorder2").bind('click',function(){
+      $("#orderstring").val('');
+      $("input[name='proid[]']").each(function(i){
+      $("#orderstring").val($("#orderstring").val() +','+this.value);
+        });
+      $("#targetstring").val('');
+      $("input[name='TARGET_INPUT[]']").each(function(i){
+      $("#targetstring").val($("#targetstring").val() +','+this.value);
+        });
+      return true;
+      //return false;
+      });
+    $(".udlr").udlr();
+    var key_sum=0;
+    // 给文本框加个keypress，即键盘按下的时候判断
+    $(".input_number").keypress(); 
+    $(".input_number").keypress(function(event) {
+        if (!$.browser.mozilla) {
+            if (event.keyCode && ((event.keyCode < 45 || event.keyCode > 57) && event.keyCode != 47)) {
+                // ie6,7,8,opera,chrome管用
+                event.preventDefault();
+                key_sum++;
+            }
+        } else {
+            if (event.charCode && ((event.charCode < 45 || event.charCode > 57) && event.charCode != 47)) {
+                // firefox管用
+                event.preventDefault();
+                key_sum++;
+            }
+        }
+        if(key_sum>4){
+           key_sum=0;
+          alert('数字とドット「.」でご入力ください');
+        }
+    });
+});
+
 function ex(id,tr_len){
   //alert(document.getElementsByName['sort_order[]']);
   tr_len = tr_len+1;
@@ -479,6 +517,16 @@ case 'dougyousya_categories':
   
   ?>
   <table border="1">
+   <tr>
+    <td colspan='<?php echo 2;?>'>
+      <input type="submit" name="b2" id = 'saveorder2' value="登録">
+      <input type='hidden' id='orderstring1' name='orderstring' />
+      <input type='hidden' id='targetstring1' name='targetstring' />
+      <input type="button" onclick="get_last_date()" value="LAST DATA">
+      <input type="button" onclick="$('.udlr').val('')" value="RESET">
+    </td>
+  </tr>
+
      <tr>
      <td <?php if ($ocertify->npermission>7) {?>colspan ='2'<?php }?>>カテゴリー / 商品</td>
 <?php 
@@ -613,12 +661,21 @@ case 'dougyousya_categories':
   }
   
   $products_arr = array();
-  while($col_datas=tep_db_fetch_array($res)){
+  $sort_products_arr = array();
+   while($col_datas=tep_db_fetch_array($res)){
     $products_arr[$col_datas['products_id']][] = $col_datas;
   }
-
   $color_arr = array('f44040','8fccad','f59a40','35cccc','cccc35','409af5','81cc35','3131f5','35cc35','9331f5');
-  ksort($products_arr);
+//  ksort($products_arr);
+ foreach($cid_list as $val){
+  foreach($products_arr as $key=>$val_products){
+	  if($key == $val) {
+	 $sort_products_arr[$key] = $val_products; 
+	 continue(2);
+	  }
+  }
+  }
+$products_arr = $sort_products_arr;
   foreach ($products_arr as $key=>$value)
     {
       $imgstr = '';

@@ -12,8 +12,9 @@
             tep_db_query("update " . TABLE_LATEST_NEWS . " set status = '" . $_GET['flag'] . "' where news_id = '" . $_GET['latest_news_id'] . "'");
           }
         }
+//tep_redirect(FILENAME_LATEST_NEWS,$params);
 
-        tep_redirect(tep_href_link(FILENAME_LATEST_NEWS, isset($_GET['site_id'])?('site_id='.$_GET['site_id']):''));
+        tep_redirect(tep_href_link(FILENAME_LATEST_NEWS, (isset($_GET['site_id'])?('site_id='.$_GET['site_id']):'').(isset($_GET['page'])?('&page='.$_GET['page']):'')));
         break;
       case 'setfirst':
         $latest_news = tep_get_latest_news_by_id($_GET['latest_news_id']);
@@ -39,27 +40,32 @@
             }
           //}
         }
-        tep_redirect(tep_href_link(FILENAME_LATEST_NEWS), isset($_GET['site_id'])?('site_id='.$_GET['site_id']):'');
+tep_redirect(tep_href_link(FILENAME_LATEST_NEWS, (isset($_GET['site_id'])?('site_id='.$_GET['site_id']):'').(isset($_GET['page'])?('&page='.$_GET['page']):'')));
+
         break;
       case 'delete_latest_news_confirm': //user has confirmed deletion of news article.
         if ($_POST['latest_news_id']) {
           $latest_news_id = tep_db_prepare_input($_POST['latest_news_id']);
           tep_db_query("delete from " . TABLE_LATEST_NEWS . " where news_id = '" . tep_db_input($latest_news_id) . "'");
         }
+tep_redirect(tep_href_link(FILENAME_LATEST_NEWS, (isset($_GET['site_id'])?('site_id='.$_GET['site_id']):'').(isset($_GET['page'])?('&page='.$_GET['page']):'')));
 
-        tep_redirect(tep_href_link(FILENAME_LATEST_NEWS, isset($_GET['site_id'])?('site_id='.$_GET['site_id']):''));
         break;
 
       case 'insert_latest_news': //insert a new news article.
         if ($_POST['headline']) {
+		
           $sql_data_array = array('headline'   => tep_db_prepare_input($_POST['headline']),
                                   'content'    => tep_db_prepare_input($_POST['content']),
+				  'author'     => tep_db_prepare_input($_POST['author']),
+				  'update_editor'=> tep_db_prepare_input($_POST['author']),
+				  'latest_update_date' => tep_db_prepare_input(mktime()-3600),
                                   'news_image' => tep_db_prepare_input($_POST['news_image']),
                                   'news_image_description' => tep_db_prepare_input($_POST['news_image_description']),
                                   'date_added' => 'now()', //uses the inbuilt mysql function 'now'
                                   'site_id'    => tep_db_prepare_input($_POST['site_id']),
                                   'status'     => '1' );
-
+//print_r($sql_data_array);exit;
           tep_db_perform(TABLE_LATEST_NEWS, $sql_data_array);
           $news_id = tep_db_insert_id(); //not actually used ATM -- just there in case
         }
@@ -91,8 +97,11 @@
           $latest_news = tep_get_latest_news_by_id($_GET['latest_news_id']);
           $sql_data_array = array('headline' => tep_db_prepare_input($_POST['headline']),
                                   'news_image_description' => tep_db_prepare_input($_POST['news_image_description']),
+                                  'update_editor'  => tep_db_prepare_input($_POST['update_editor']), 
+				  'latest_update_date' => tep_db_prepare_input(time()-3600),
                                   'content'  => tep_db_prepare_input($_POST['content']) );
                                   
+	  //print_r($sql_data_array);exit;
           tep_db_perform(TABLE_LATEST_NEWS, $sql_data_array, 'update', "news_id = '" . tep_db_prepare_input($_GET['latest_news_id']) . "'");
         }
         $news_image = tep_get_uploaded_file('news_image');
@@ -115,7 +124,7 @@
           where news_id = '" . $_GET['latest_news_id'] . "'");
           tep_copy_uploaded_file($news_image, $image_directory);
     }
-        tep_redirect(tep_href_link(FILENAME_LATEST_NEWS, isset($_GET['lsite_id'])?('site_id='.$_GET['lsite_id']):''));
+        tep_redirect(tep_href_link(FILENAME_LATEST_NEWS, (isset($_GET['lsite_id'])?('site_id='.$_GET['lsite_id']):'').(isset($_GET['page'])?('&page='.$_GET['page']):'').(isset($_GET['latest_news_id'])?('&latest_news_id='.$_GET['latest_news_id']):'')));
         break;
     }
   }
@@ -181,7 +190,9 @@
       <tr>
         <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
       </tr>
-      <tr><?php echo tep_draw_form('new_latest_news', FILENAME_LATEST_NEWS, (isset($_GET['latest_news_id']) ? ('latest_news_id=' . $_GET['latest_news_id'] . '&action=update_latest_news') : 'action=insert_latest_news').(isset($_GET['lsite_id'])?('&lsite_id='.$_GET['lsite_id']):''), 'post', 'enctype="multipart/form-data"'); ?>
+      <tr><?php echo tep_draw_form('new_latest_news', FILENAME_LATEST_NEWS, (isset($_GET['latest_news_id']) ? ('latest_news_id=' . $_GET['latest_news_id'] . '&action=update_latest_news') : 'action=insert_latest_news').(isset($_GET['lsite_id'])?('&lsite_id='.$_GET['lsite_id']):'').(isset($_GET['page'])?('&page='.$_GET['page']):''), 'post', 'enctype="multipart/form-data"'); ?>
+    <input type="hidden" name="author" value="<?php echo $user_info['name'];?>">
+    <input type="hidden" name="update_editor" value="<?php echo $user_info['name']?>">
         <td><table border="0" cellspacing="0" cellpadding="2">
           <tr>
             <td class="main"><?php echo ENTRY_SITE; ?></td>
@@ -222,7 +233,7 @@
       <tr>
         <td class="main" align="right">
           <?php
-            isset($_GET['latest_news_id']) ? $cancel_button = '&nbsp;&nbsp;<a class="new_product_reset" href="' . tep_href_link(FILENAME_LATEST_NEWS, 'latest_news_id=' . $_GET['latest_news_id']) . '">' .
+            isset($_GET['latest_news_id']) ? $cancel_button = '&nbsp;&nbsp;<a class="new_product_reset" href="' . tep_href_link(FILENAME_LATEST_NEWS, 'latest_news_id='. $_GET['latest_news_id'].(isset($_GET['lsite_id']) ? '&site_id='.$_GET['lsite_id']:'').(isset($_GET['page']) ? '&page='.$_GET['page']:'')) . '">' .
     tep_html_element_button(IMAGE_CANCEL) . '</a>' : $cancel_button = '';
             echo tep_html_element_submit(IMAGE_SAVE) . $cancel_button;
           ?>
@@ -252,6 +263,8 @@
               <tr class="dataTableHeadingRow">
                 <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_SITE; ?></td>
                 <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_LATEST_NEWS_HEADLINE; ?></td>
+                <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_DATE_ADDED; ?></td>
+
                 <td class="dataTableHeadingContent" align="center"><?php echo TABLE_HEADING_LATEST_NEWS_STATUS; ?></td>
                 <td class="dataTableHeadingContent" align="center"><?php echo TABLE_HEADING_LATEST_NEWS_ISFIRST; ?></td>
                 <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_LATEST_NEWS_ACTION; ?>&nbsp;</td>
@@ -263,6 +276,10 @@
     $latest_news_query_raw = '
         select n.news_id, 
                n.headline, 
+	       n.date_added,
+	       n.author,
+	       n.update_editor,
+	       n.latest_update_date,
                n.content, 
                n.status, 
                n.news_image, 
@@ -299,20 +316,22 @@
 ?>
                 <td class="dataTableContent"><?php echo '&nbsp;'.tep_get_site_romaji_by_id($latest_news['site_id']); ?></td>
                 <td class="dataTableContent"><?php echo '&nbsp;' . $latest_news['headline']; ?></td>
+                <td class="dataTableContent"><?php echo '&nbsp;' . date("Y-m-d",strtotime($latest_news['date_added'])); ?></td>
+
                 <td class="dataTableContent" align="center">
 <?php
       if ($latest_news['status'] == '1') {
-        echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN, 10, 10) . '&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'action=setflag&flag=0&latest_news_id=' . $latest_news['news_id']. (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) . '</a>';
+        echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN, 10, 10) . '&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'page='.$_GET['page'].'&action=setflag&flag=0&latest_news_id=' . $latest_news['news_id']. (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) . '</a>';
       } else {
-        echo '<a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'action=setflag&flag=1&latest_news_id=' . $latest_news['news_id'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT, 10, 10) . '</a>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED, 10, 10);
+        echo '<a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'page='.$_GET['page'].'&action=setflag&flag=1&latest_news_id=' . $latest_news['news_id'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT, 10, 10) . '</a>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED, 10, 10);
       }
 ?></td>
                 <td class="dataTableContent" align="center">
                 <?php
   if ($latest_news['isfirst']) {
-    echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN, 10, 10) . '&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'action=setfirst&isfirst=0&latest_news_id=' . $latest_news['news_id'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) . '</a>';
+    echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN, 10, 10) . '&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'page='.$_GET['page'].'&action=setfirst&isfirst=0&latest_news_id=' . $latest_news['news_id'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) . '</a>';
   } else {
-        echo '<a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'action=setfirst&isfirst=1&latest_news_id=' . $latest_news['news_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT, 10, 10) . '</a>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED, 10, 10);
+        echo '<a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'page='.$_GET['page'].'&action=setfirst&isfirst=1&latest_news_id=' . $latest_news['news_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT, 10, 10) . '</a>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED, 10, 10);
   }
                 ?>
                 </td>
@@ -328,7 +347,7 @@ if (isset($_GET['latest_news_id']) and $latest_news['news_id'] == $_GET['latest_
 
 ?>
               <tr>
-                <td colspan="5"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+                <td colspan="6"><table border="0" width="100%" cellspacing="0" cellpadding="2">
                   <tr>
                     <td class="smallText" valign="top"><?php echo $latest_news_split->display_count($latest_news_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_CUSTOMERS); ?></td>
                     <td class="smallText" align="right"><?php echo $latest_news_split->display_links($latest_news_query_numrows, MAX_DISPLAY_SEARCH_RESULTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y', 'latest_news_id'))); ?></td>
@@ -336,7 +355,7 @@ if (isset($_GET['latest_news_id']) and $latest_news['news_id'] == $_GET['latest_
                   <tr>
                     <td colspan="2" align="right" class="smallText"><?php echo
                     '&nbsp;<a href="' . tep_href_link(FILENAME_LATEST_NEWS,
-                    'action=new_latest_news'.(isset($_GET['site_id'])?('&lsite_id='.$_GET['site_id']):''))
+                    'action=new_latest_news'.(isset($_GET['site_id'])?('&lsite_id='.$_GET['site_id']):'').(isset($_GET['page'])?('&page='.$_GET['page']):''))
                     . '">' .tep_html_element_button(IMAGE_NEW_PROJECT) . '</a>'; ?>&nbsp;</td>
                   </tr>
                 </table></td>
@@ -349,12 +368,12 @@ if (isset($_GET['latest_news_id']) and $latest_news['news_id'] == $_GET['latest_
       case 'delete_latest_news': //generate box for confirming a news article deletion
         $heading[] = array('text'   => '<b>' . TEXT_INFO_HEADING_DELETE_ITEM . '</b>');
         
-        $contents = array('form'    => tep_draw_form('news', FILENAME_LATEST_NEWS, 'action=delete_latest_news_confirm'.(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . tep_draw_hidden_field('latest_news_id', $_GET['latest_news_id']));
+        $contents = array('form'    => tep_draw_form('news', FILENAME_LATEST_NEWS, 'action=delete_latest_news_confirm'.(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').(isset($_GET['page'])?('&page='.$_GET['page']):'')) . tep_draw_hidden_field('latest_news_id', $_GET['latest_news_id']));
         $contents[] = array('text'  => TEXT_DELETE_ITEM_INTRO);
         $contents[] = array('text'  => '<br><b>' . $selected_item['headline'] . '</b>');
         
         $contents[] = array('align' => 'center',
-                            'text'  => '<br>' .  tep_html_element_submit(IMAGE_DELETE) . ' <a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'latest_news_id=' . $selected_item['news_id']) . '">' .  tep_html_element_button(IMAGE_CANCEL) . '</a>');
+                            'text'  => '<br>' .  tep_html_element_submit(IMAGE_DELETE) . ' <a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'latest_news_id=' . $selected_item['news_id'].(isset($_GET['page'])?('&page='.$_GET['page']):'')) . '">' .  tep_html_element_button(IMAGE_CANCEL) . '</a>');
         break;
 
       default:
@@ -363,8 +382,12 @@ if (isset($_GET['latest_news_id']) and $latest_news['news_id'] == $_GET['latest_
             $heading[] = array('text' => '<b>' . $selected_item['headline'] . '</b>');
 
             $contents[] = array('align' => 'center', 
-                                'text' => '<a href="' .  tep_href_link(FILENAME_LATEST_NEWS, 'latest_news_id=' . $selected_item['news_id'] .  '&action=new_latest_news') .  (isset($_GET['site_id'])?('&lsite_id='.$_GET['site_id']):'').'">' . tep_html_element_button(IMAGE_EDIT) . '</a> <a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'latest_news_id=' . $selected_item['news_id'] .  '&action=delete_latest_news'.  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) .  '">' . tep_html_element_button(IMAGE_DELETE) .  '</a>');
+                                'text' => '<a href="' .  tep_href_link(FILENAME_LATEST_NEWS, 'latest_news_id=' . $selected_item['news_id'] .  '&action=new_latest_news') .  (isset($_GET['site_id'])?('&lsite_id='.$_GET['site_id']):'').(isset($_GET['page'])?('&page='.$_GET['page']):'').'">' . tep_html_element_button(IMAGE_EDIT) . '</a> <a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'latest_news_id=' . $selected_item['news_id'] .  '&action=delete_latest_news'.  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').  (isset($_GET['page'])?('&page='.$_GET['page']):'')) .  '">' . tep_html_element_button(IMAGE_DELETE) .  '</a>');
             $contents[] = array('text' => '<br>' . $selected_item['content']);
+$contents[] = array('text' => '<br>作成者：' . $selected_item['author']);
+$contents[] = array('text' => '<br>作成日時：' . $selected_item['date_added']);
+$contents[] = array('text' => '<br>更新者：' . $selected_item['update_editor']);
+$contents[] = array('text' => '<br>更新日時：' . date("Y-m-d H:i:s",$selected_item['latest_update_date']));
           }
         } else { // create category/product info
           $heading[] = array('text' => '<b>' . EMPTY_CATEGORY . '</b>');
