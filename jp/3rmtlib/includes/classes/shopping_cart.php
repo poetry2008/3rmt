@@ -45,6 +45,7 @@
       $products_query = tep_db_query("select products_id, customers_basket_quantity from " . TABLE_CUSTOMERS_BASKET . " where customers_id = '" . $customer_id . "'");
       while ($products = tep_db_fetch_array($products_query)) {
         $this->contents[$products['products_id']] = array('qty' => $products['customers_basket_quantity']);
+        //$this->contents[$products['products_id']]['qty'] = $products['customers_basket_quantity'];
 // attributes
 //ccdd
         $attributes_query = tep_db_query("select products_options_id, products_options_value_id from " . TABLE_CUSTOMERS_BASKET_ATTRIBUTES . " where customers_id = '" . $customer_id . "' and products_id = '" . $products['products_id'] . "'");
@@ -93,7 +94,7 @@
         $this->update_quantity($products_id, $qty, $attributes);
       } else {
         $this->contents[] = array($products_id);
-        $this->contents[$products_id] = array('qty' => $qty);
+        $this->contents[$products_id]['qty'] =  $qty;
 // insert into database
 //ccdd
         if (tep_session_is_registered('customer_id')) tep_db_query("insert into " . TABLE_CUSTOMERS_BASKET . " (customers_id, products_id, customers_basket_quantity, customers_basket_date_added) values ('" . $customer_id . "', '" . $products_id . "', '" . $qty . "', '" . date('Ymd') . "')");
@@ -119,7 +120,7 @@
 
       if (empty($quantity)) return true; // nothing needs to be updated if theres no quantity, so we return true..
 
-      $this->contents[$products_id] = array('qty' => $quantity);
+      $this->contents[$products_id]['qty'] =  $quantity;
 // update database
 //ccdd
       if (tep_session_is_registered('customer_id')) tep_db_query("update " . TABLE_CUSTOMERS_BASKET . " set customers_basket_quantity = '" . $quantity . "' where customers_id = '" . $customer_id . "' and products_id = '" . $products_id . "'");
