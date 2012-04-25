@@ -10,7 +10,9 @@ function in_array(value,arr){
   }
   return false;
 }
-
+<?php
+if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] !=''){
+?>
 function address_list(){
   var arr_old = new Array();
   var arr_name = new Array();
@@ -112,6 +114,9 @@ $(document).ready(function(){
   address_list();
   address_option_list(0);
 });
+<?php
+}
+?>
 </script>
 <?php
 /*
@@ -196,6 +201,9 @@ $(document).ready(function(){
     </table></td>
   </tr>
   <!-- zhusuo -->
+<?php
+  if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
+?>
   <tr>
     <td class="formAreaTitle"><br><?php echo TITLE_ADDRESS; ?></td>
   </tr>
@@ -228,6 +236,9 @@ $(document).ready(function(){
 </table>
 </td>
 </tr>
+<?php
+  }
+?>
   <!-- end -->
   <tr>
     <td class="formAreaTitle"><br><?php echo CATEGORY_OPTIONS; ?></td>
