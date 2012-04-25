@@ -91,6 +91,7 @@ if (tep_not_null($action)) {
     $status   = tep_db_prepare_input($_POST['s_status']);
     $title    = tep_db_prepare_input($_POST['title']);
     $comments = tep_db_prepare_input($_POST['comments']);
+    $comments_text = tep_db_prepare_input($_POST['comments_text']);
     $site_id  = tep_get_site_id_by_orders_id($oID);
     $order_updated = false;
     $check_status_query = tep_db_query("
@@ -304,12 +305,12 @@ if (tep_not_null($action)) {
       }
 
 
-      if($_POST['notify_comments'] == 'on') {
+      //if($_POST['notify'] == 'on') {
         $customer_notified = '1';
-      } else {
-        $customer_notified = '0';
-      }
-      tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . $customer_notified . "', '$comments')");
+      //} else {
+        //$customer_notified = '0';
+      //}
+      tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . $customer_notified . "', '$comments_text')");
       // 同步问答
       //    orders_status_updated_for_question($oID,tep_db_input($status),$_POST['notify_comments'] == 'on', $_POST['qu_type']);
       $order_updated = true;
@@ -461,7 +462,7 @@ if (tep_not_null($action)) {
 
       $oID = tep_db_prepare_input($_GET['oID']);
       $order = new order($oID);
-      $status = '1'; // 初期値
+      //$status = '1'; // 初期値
       $goods_check = $order_query;
       /*
          if (tep_db_num_rows($goods_check) == 0) {
@@ -2633,8 +2634,18 @@ echo "</table>";
             <td valign="top">
             <table border="0" cellspacing="0" cellpadding="2">
             <tr>
+<?php
+          $order_status_query = tep_db_query("select * from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='". $oID ."' order by orders_status_history_id desc limit 0,1");            
+          $order_status_num = tep_db_num_rows($order_status_query);
+          $order_status_array = tep_db_fetch_array($order_status_query);
+          $select_status = $order_status_array['orders_status_id'];
+          $customer_notified = $order_status_array['customer_notified'];           
+          $customer_notified = isset($customer_notified) ? $customer_notified : true;
+          $customer_notified = $select_status == 31 ? 0 : $customer_notified;
+          
+?>
             <td class="main"><b><?php echo ENTRY_STATUS; ?></b></td>
-            <td class="main"><?php echo tep_draw_pull_down_menu('s_status', $orders_statuses, $select_select, 'onChange="new_mail_text_orders(this, \'s_status\',\'comments\',\'title\')"');?>&nbsp;&nbsp;<?php echo EDIT_ORDERS_ORIGIN_VALUE_TEXT;?></td>
+            <td class="main"><?php echo tep_draw_pull_down_menu('s_status', $orders_statuses, $select_status, 'onChange="new_mail_text_orders(this, \'s_status\',\'comments\',\'title\')"');?>&nbsp;&nbsp;<?php echo EDIT_ORDERS_ORIGIN_VALUE_TEXT;?></td>
             </tr>
             <?php
 
@@ -2664,12 +2675,16 @@ echo "</table>";
             </tr>
             <tr>
             <td class="main"><?php echo EDIT_ORDERS_SEND_MAIL_TEXT;?></b></td>
-            <td class="main"><table bgcolor="red" cellspacing="5"><tr><td><?php echo tep_draw_checkbox_field('notify', '', true); ?></td></tr></table></td>
+            <td class="main"><table bgcolor="red" cellspacing="5"><tr><td><?php echo tep_draw_checkbox_field('notify', '', $customer_notified,'id="notify"'); ?></td></tr></table></td>
             </tr>
             <?php if($CommentsWithStatus) { ?>
               <tr>
                 <td class="main"><b><?php echo EDIT_ORDERS_RECORD_TEXT;?></b></td>
                 <td class="main"><?php echo tep_draw_checkbox_field('notify_comments', '', false); ?>&nbsp;&nbsp;<b style="color:#FF0000;"><?php echo EDIT_ORDERS_RECORD_READ;?></b></td>
+                </tr>
+              <tr>
+                <td class="main" valign="top"><b><?php echo TABLE_HEADING_COMMENTS;?>:</b></td>
+                <td class="main"><?php echo tep_draw_textarea_field('comments_text', 'hard', '74', '5', '','style=" font-family:monospace; font-size:12px; width:400px;"'); ?></td>
                 </tr>
                 <?php } ?>
                 </table>
@@ -2686,7 +2701,7 @@ echo "</table>";
                   //    echo tep_draw_textarea_field('comments', 'soft', '40', '5');
                 } else {
                   echo tep_draw_textarea_field('comments', 'hard', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('     ${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']),'style=" font-family:monospace; font-size:12px; width:400px;"');
-                }
+                } 
           ?>
             </td>
             </tr>

@@ -281,7 +281,12 @@ function check_hour_1(value){
   <td class="main"><table border="0" cellspacing="0" cellpadding="2">
   <tr>
   <td class="main">&nbsp;<?php echo ENTRY_CUSTOMERS_ID;?></td>
-  <td class="main">&nbsp;<?php echo tep_draw_hidden_field('customers_id', $customer_id) . $customer_id;?></td>
+  <td class="main">&nbsp;
+  <?php 
+    echo tep_draw_hidden_field('customers_id', $customer_id) . $customer_id;
+    echo tep_draw_hidden_field('customers_guest_chk', $customers_guest_chk)
+  ?>
+  </td>
   </tr>
   <tr>
   <td class="main">&nbsp;<?php echo ENTRY_LAST_NAME;?></td>

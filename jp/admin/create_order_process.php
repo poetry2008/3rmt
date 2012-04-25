@@ -140,12 +140,12 @@ tep_db_perform(TABLE_ORDERS, $sql_data_array,'update','orders_id=\''.$oID.'\'');
 last_customer_action();
 orders_updated($insert_id);
 
-$sql_data_array = array('orders_id' => $insert_id, 
-              'orders_status_id' => $new_value, 
-              'date_added' => 'now()', 
-              'customer_notified' => '1',
-              'comments' => $comment_arr['comment']);
-tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
+//$sql_data_array = array('orders_id' => $insert_id, 
+              //'orders_status_id' => $new_value, 
+              //'date_added' => 'now()', 
+              //'customer_notified' => '1',
+              //'comments' => $comment_arr['comment']);
+//tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
 
 $payment_bank_info = array(); 
 

@@ -221,6 +221,7 @@ if (tep_not_null($action)) {
       $oID = tep_db_prepare_input($_GET['oID']);
       $order = new order($oID);
       $status = tep_db_prepare_input($_POST['s_status']);
+      $comments_text = tep_db_prepare_input($_POST['comments_text']);
       $start_hour = tep_db_prepare_input($_POST['start_hour']);
       $start_min_1 = tep_db_prepare_input($_POST['start_min_1']);
       $start_min_2 = tep_db_prepare_input($_POST['start_min_2']);
@@ -934,7 +935,7 @@ if($address_error == false){
           tep_mail(get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS', $order->info['site_id']), '送信済：注文内容の変更を承りました【' . get_configuration_by_site_id('STORE_NAME', $order->info['site_id']) . '】', $email, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);
           $customer_notified = '1';
         }
-        tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . tep_db_input($customer_notified) . "', '" . mysql_real_escape_string($notify_comments) . "')");
+        tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . tep_db_input($customer_notified) . "', '" . mysql_real_escape_string($comments_text) . "')");
         $order_updated_2 = true;
       }
 
@@ -2137,9 +2138,20 @@ if (($action == 'edit') && ($order_exists == true)) {
     <tr>
     <td valign="top">
     <table border="0" cellspacing="0" cellpadding="2">
+<?php    
+          $order_status_num_query = tep_db_query("select * from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='". $oID ."'");
+          $order_status_num = tep_db_num_rows($order_status_num_query);
+          $order_status_query = tep_db_query("select * from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='". $oID ."' order by orders_status_history_id desc limit 0,1");            
+          $order_status_array = tep_db_fetch_array($order_status_query);
+          $select_status = $order_status_array['orders_status_id'];
+          $customer_notified = $order_status_array['customer_notified'];           
+          $customer_notified = isset($customer_notified) ? $customer_notified : true;
+          $customer_notified = $select_status == 31 ? 0 : $customer_notified;
+          $select_select = $order_status_num == 1 ? 16 : $select_status;
+?>
     <tr>
     <td class="main"><b><?php echo ENTRY_STATUS; ?></b></td>
-    <td class="main"><?php echo tep_draw_pull_down_menu('s_status', $orders_statuses, '16','onChange="new_mail_text_orders(this, \'s_status\',\'comments\',\'title\')"'); ?></td> 
+    <td class="main"><?php echo tep_draw_pull_down_menu('s_status', $orders_statuses, $select_select,'onChange="new_mail_text_orders(this, \'s_status\',\'comments\',\'title\')"'); ?></td> 
     </tr>
     <?php
 
@@ -2169,13 +2181,17 @@ if (($action == 'edit') && ($order_exists == true)) {
             </tr>
     <tr>
     <td class="main"><b><?php echo EDIT_ORDERS_SEND_MAIL_TEXT;?></b></td>
-    <td class="main"><table bgcolor="red" cellspacing="5"><tr><td><?php echo tep_draw_checkbox_field('notify', '', true); ?></td></tr></table></td>
+    <td class="main"><table bgcolor="red" cellspacing="5"><tr><td><?php echo tep_draw_checkbox_field('notify', '', $customer_notified); ?></td></tr></table></td>
     </tr>
     <?php if($CommentsWithStatus) { ?>
       <tr>
         <td class="main"><b><?php echo EDIT_ORDERS_RECORD_TEXT;?></b></td>
         <td class="main"><?php echo tep_draw_checkbox_field('notify_comments', '', false); ?>&nbsp;&nbsp;<b style="color:#FF0000;"><?php echo EDIT_ORDERS_RECORD_READ;?></b></td>
         </tr>
+      <tr>
+        <td class="main" valign="top"><b><?php echo TABLE_HEADING_COMMENTS;?>:</b></td>
+        <td class="main"><?php echo tep_draw_textarea_field('comments_text', 'hard', '74', '5', '','style=" font-family:monospace; font-size:12px; width:400px;"'); ?></td>
+      </tr>
         <?php } ?>
         </table>
         </td>

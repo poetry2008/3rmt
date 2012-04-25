@@ -314,6 +314,7 @@ $postcode       = isset($address['entry_postcode'])         ? $address['entry_po
 $city           = isset($address['entry_city'])             ? $address['entry_city']:'';//n
 $state          = isset($address['entry_zone_id'])          ? tep_get_zone_name($address['entry_zone_id']):'';//n
 $country        = isset($address['entry_country_id'])       ? tep_get_country_name($address['entry_country_id']):'';//n
+$customers_guest_chk = isset($account['customers_guest_chk']) ? $account['customers_guest_chk'] : '';
 
 $cpayment = payment::getInstance((int)$_GET['site_id']);
 $payment_array = payment::getPaymentList();

@@ -61,20 +61,26 @@ $(".once_pwd").each(function(index) {
   });
   if(!flag_tmp){
   var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n","");
+  if(pwd != null){
   if(in_array(pwd,pwd_arr)){
   $("input[name=update_viladate]").val(pwd);
     document.edit_order.submit();
   }else{
   alert("パスワードが違います");
   $("input[name=update_viladate]").val('_false');
-  document.edit_order.submit();
-//  alert("更新をキャンセルしました。");
+  //document.edit_order.submit();
+  //alert("更新をキャンセルしました。");
   return false;
+  }
+  }else{
+    alert("更新をキャンセルしました。");
+    return false;
   }
   }else{
     $("input[name=update_viladate]").val('');
     document.edit_order.submit();
   }
+  
 }
 });
 }else{
