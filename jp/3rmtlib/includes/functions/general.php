@@ -4337,7 +4337,43 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
                           'site_id' => SITE_ID
                           );
    tep_db_perform(TABLE_PREORDERS_PRODUCTS, $sql_data_array);
-   
+   $preorder_products_id = tep_db_insert_id();
+
+   foreach ($pInfo as $op_key => $op_value) {
+     $op_single_str = substr($op_key, 0, 3);
+     if ($op_single_str == 'op_') {
+       $op_info_array = explode('_', $op_key);
+       $item_raw = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name = '".$op_info_array[1]."' and id = '".$op_info_array[3]."'");
+       $item_res = tep_db_fetch_array($item_raw); 
+       if ($item_res) {
+         $item_price = 0; 
+         $input_option_array = array('title' => $item_res['front_title'], 'value' => $op_value); 
+         if ($item_res['type'] == 'radio') {
+           $ro_array = @unserialize($item_res['option']);
+           if (!empty($ro_array)) {
+             foreach ($ro_array['radio_image'] as $ro_key => $ro_value) {
+               if (trim($ro_value['title']) == trim($op_value)) {
+                 $item_price = $ro_value['money'];
+                 break; 
+               }
+             }
+           }
+         } else {
+           $item_price = $item_res['price']; 
+         }
+         $sql_data_array = array(
+           'orders_id' => $order_id,
+           'orders_products_id' => $preorder_products_id, 
+           'options_values_price' => $item_price, 
+           'option_info' => tep_db_input(serialize($input_option_array)), 
+           'option_group_id' => $item_res['group_id'], 
+           'option_item_id' => $item_res['id'], 
+         );
+         tep_db_perform(TABLE_PREORDERS_PRODUCTS_ATTRIBUTES, $sql_data_array);
+       }
+     }
+     
+   }
    preorders_updated($order_id);  
    
    if ($is_active == 1) {
@@ -4854,7 +4890,19 @@ function get_preorder_total_info($payment, $pid, $option_info_array)
       $option_item_raw = tep_db_query("select * from ".TABLE_OPTION_ITEM." where id = '".$tp_key_array[3]."' and name = '".$tp_key_array[1]."'"); 
       $option_item_res = tep_db_fetch_array($option_item_raw); 
       if ($option_item_res) {
-        $attr_total += $option_item_res['price']; 
+        if ($option_item_res['type'] == 'radio') {
+          $o_option_array = @unserialize($option_item_res['option']);
+          if (!empty($o_option_array['radio_image'])) {
+            foreach ($o_option_array['radio_image'] as $or_key => $or_value) {
+              if (trim($or_value['title']) == trim($tp_value)) {
+                $attr_total += $or_value['money']; 
+                break; 
+              }
+            }
+          }
+        } else {
+          $attr_total += $option_item_res['price']; 
+        }
       }
     }
     
@@ -4902,4 +4950,26 @@ function get_preorder_total_info($payment, $pid, $option_info_array)
   return $preorder_total_info;
 }
 
+function tep_get_show_attributes_price($item_id, $group_id, $att_value) 
+{
+  $item_raw = tep_db_query("select * from ".TABLE_OPTION_ITEM." where id = '".$item_id."' and group_id = '".$group_id."'"); 
+  $item_res = tep_db_fetch_array($item_raw);
+  
+  if ($item_res) {
+    if ($item_res['type'] == 'radio') {
+      $option_array = @unserialize($item_res['option']);
+      if (!empty($option_array)) {
+        foreach ($option_array['radio_image'] as $key => $value) {
+          if (trim($value['title']) == trim($att_value)) {
+            return $value['money']; 
+          }
+        }
+      }
+    } else {
+      return $item_res['price']; 
+    }
+  }
+  
+  return 0;
+}
     

@@ -207,6 +207,15 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                     <td class="main">
                     <?php 
                     echo $preorder_product_res['products_name'];
+                    $old_attr_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS_ATTRIBUTES." where orders_id = '".$_POST['pid']."'"); 
+                    while ($old_attr_res = tep_db_fetch_array($old_attr_raw)) {
+                      echo '<br>';  
+                      $old_attr_info = @unserialize(stripslashes($old_attr_res['option_info'])); 
+                      echo $old_attr_info['title'].':'.$old_attr_info['value'];
+                      if ($old_attr_res['options_values_price'] != '0') {
+                        echo ' ('.$currencies->format($old_attr_res['options_values_price']).')'; 
+                      }
+                    }
                     if (!empty($option_info_array)) {
                       echo '<br>';  
                       foreach ($option_info_array as $of_key => $of_value) {
@@ -214,7 +223,25 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                         $option_item_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where id = '".$of_key_array[3]."' and name = '".$of_key_array[1]."'");  
                         $option_item = tep_db_fetch_array($option_item_query); 
                         if ($option_item) {
-                          echo $option_item['front_title'].':'.$of_value.'<br>'; 
+                          echo $option_item['front_title'].':'.$of_value; 
+                          if ($option_item['type'] == 'radio') {
+                            $r_option_array = @unserialize($option_item['option']);
+                            if (!empty($r_option_array['radio_image'])) {
+                              foreach ($r_option_array['radio_image'] as $ro_key => $ro_value) {
+                                if (trim($ro_value['title']) == trim($of_value)) {
+                                  if ($ro_value['money'] != '') {
+                                    echo ' ('.$currencies->format($ro_value['money']*$preorder_product_res['products_quantity']).')'; 
+                                  }
+                                  break; 
+                                }
+                              }
+                            }
+                          } else {
+                            if ($option_item['price'] != '0') {
+                              echo ' ('.$currencies->format($option_item['price']*$preorder_product_res['products_quantity']).')'; 
+                            }
+                          }
+                          echo '<br>'; 
                         }
                       }
                     }

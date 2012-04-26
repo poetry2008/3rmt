@@ -23,6 +23,13 @@ class HM_Option_Item_Text extends HM_Option_Item_Basic
       echo $this->itextarea; 
       echo '<input type="hidden" name="'.$pre_item_str.'op_'.$this->formname.'" value="'.$this->itextarea.'">'; 
     }
+    
+    $sp_pos = strpos($_SERVER['PHP_SELF'], 'checkout_option.php');
+    if ($sp_pos !== false) {
+      if ($this->s_price != '0') {
+        echo '('.number_format($this->s_price).')'.OPTION_ITEM_TEXT_MONEY_UNIT; 
+      }
+    } 
     echo '</td>'; 
   }
   

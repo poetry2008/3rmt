@@ -1196,3 +1196,45 @@ a.s_column_bar {
 .del_order_notice td{
 	vertical-align:middle;
 }
+.option_show_border {
+	max-width:70%;
+	max-width:60%\9;
+	margin-bottom:5px;
+	float:left;
+}
+.option_hide_border {
+  max-width:70%;
+  max-width:60%\9;
+  float:left;
+  margin-bottom:5px;
+  cursor:pointer;
+}
+.option_show_border a, .option_show_border a:hover{ 
+	color:#000000; 
+	text-decoration:none;
+	padding:5px;
+	display:block;
+	border:1px solid #2864B4;
+}
+.option_hide_border a, .option_hide_border a:hover{
+	color:#000000; 
+	text-decoration:none;
+	display:block;
+	border:1px solid #ccc;
+	padding:5px;
+}
+.option_hide_border a:hover{
+	border:1px solid #2864B4;
+}
+.option_radio_img{ float:left;}
+.option_radio_list{
+	width:100%;
+	overflow:hidden;
+	*margin-bottom:5px;
+}
+/*shipping*/
+.shipping_error{
+	color:#ff0000;
+	font-size:12px;
+	line-height:1.5;
+}

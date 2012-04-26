@@ -8,6 +8,8 @@
     
 ?>
 <?php page_head();?>
+<script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
+<script type="text/javascript" src="js/option.js"></script>
 </head>
 <body> 
 <div class="body_shadow" align="center"> 

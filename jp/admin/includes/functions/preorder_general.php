@@ -142,7 +142,8 @@ function tep_show_preorders_products_info($orders_id) {
     $str .= '<tr><td class="main"><b>'.TEXT_FUNCTION_NUMBER.'</b></td><td
       class="main">'.$p['products_quantity'].TEXT_FUNCTION_NUM.tep_get_full_count2($p['products_quantity'], $p['products_id'], $p['products_rate']).'</td></tr>';
     while($pa = tep_db_fetch_array($products_attributes_query)){
-      $str .= '<tr><td class="main"><b>'.$pa['products_options'].'：</b></td><td class="main">'.$pa['products_options_values'].'</td></tr>';
+      $input_op_array = @unserialize(stripslashes($pa['option_info'])); 
+      $str .= '<tr><td class="main"><b>'.$input_op_array['title'].'：</b></td><td class="main">'.$input_op_array['values'].'</td></tr>';
     }
     $str .= '<tr><td class="main"><b>'.TEXT_FUNCTION_GAME_NAME.'</b></td><td class="main"  style="color:#407416; line-height:20px;"><font size="4"><b>'.$p['products_character'].'</b></font></td></tr>';
     $names = tep_get_computers_names_by_preorders_id($orders['orders_id']);
@@ -1211,4 +1212,32 @@ function tep_get_pre_ot_total_by_orders_id_no_abs($orders_id, $single = false) {
       return "<b><font color='#ff0000'>".$result['value']."".TEXT_MONEY_SYMBOL."</font></b>";
     }
   }
+}
+
+function tep_get_preorder_attr_mail($orders_id)
+{
+  $max_op_len = 0;
+  $max_info_array = array();
+  $attr_list_array = array();
+  $return_str = '';
+  
+  $preorder_attr_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS_ATTRIBUTES." where orders_id = '".$orders_id."'");
+
+  while ($preorder_attr_res = tep_db_fetch_array($preorder_attr_raw)) {
+    $input_op = @unserialize(stripslashes($preorder_attr_res['option_info'])); 
+    $max_info_array[] = mb_strlen($input_op['title'], 'utf-8');
+    $attr_list_array[] = array('title' => $input_op['title'], 'value' => $input_op['value']);
+  }
+  
+  if (!empty($max_info_array)) {
+    $max_op_len = max($max_info_array); 
+  }
+  
+  if (!empty($attr_list_array)) {
+    foreach ($attr_list_array as $key => $value) {
+      $return_str .= $value['title'].str_repeat('　', intval($max_op_len - mb_strlen($value['title'], 'utf-8'))).'：'.$value['value']."\n"; 
+    }
+  }
+ 
+  return $return_str;
 }

@@ -122,6 +122,17 @@ class telecom  extends basePayment  implements paymentInterface  {
           }
         }
       }
+    
+      if (isset($products[$i]['ck_attributes'])) {
+         foreach ($products[$i]['ck_attributes'] as $c_op_key => $c_op_value) {
+           $c_op_array = explode('_', $c_op_key);
+           $c_option_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name = '".$c_op_array[0]."' and id = '".$c_op_array[2]."'"); 
+           $c_option_res = tep_db_fetch_array($c_option_query);
+           if ($c_option_res) {
+             $mail_body .= '└' . $c_option_res['front_title'] . ' ' . $c_op_value . "\n";
+           }
+         }
+       }
     }
 
     /*    
@@ -324,7 +335,13 @@ class telecom  extends basePayment  implements paymentInterface  {
     $preorder_products_res = tep_db_fetch_array($preorder_products_raw); 
     if ($preorder_products_res) {
       $mail_body .= '・' . $preorder_products_res['products_name'] . '×' .  $preorder_products_res['products_quantity'] . "\n";
-   
+      
+      $old_attr_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS_ATTRIBUTES." where orders_id = '".$pid."'");
+      while ($old_attr_res = tep_db_fetch_array($old_attr_raw)) {
+        $old_attr_info = @unserialize(stripslashes($old_attr_res['option_info']));
+        $mail_body .= '└' . $old_attr_info['title'] . ' ' .  $old_attr_info['value'] . "\n";
+      }
+      
       if (isset($_SESSION['preorder_option_info'])) {
         foreach ($_SESSION['preorder_option_info'] as $key => $value) {
         $i_option = explode('_', $key);

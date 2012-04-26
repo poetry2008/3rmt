@@ -21,4 +21,11 @@ define('TEXT_ITEM_CHECK_TYPE_JAP', 'カナ');
 define('TEXT_ITEM_CHECK_TYPE_ALPHA_NUM', '英数');
 define('TEXT_ITEM_CHECK_TYPE_ALPHA', '英');
 define('TEXT_ITEM_CHECK_TYPE_NUM', '数');
+define('TEXT_ITEM_RADIO_DEFAULT_SELECT', '非選択');
+define('TEXT_ITEM_PIC_NAME', '画像');
+define('TEXT_ITEM_MONEY_NAME', '金額');
+define('TEXT_ITEM_DELETE_PIC', 'クリア');
+define('TEXT_ITEM_ADD_PIC', '追加');
+define('TEXT_ITEM_MONEY_UNIT', '円');
+define('TEXT_ITEM_SELECT_DEFAULT', '非選択');
 ?>

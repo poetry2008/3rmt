@@ -126,14 +126,25 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
     echo tep_check_stock((int)$order->products[$i]['id'], $order->products[$i]['qty']);
   }
   if ( (isset($order->products[$i]['op_attributes'])) && (sizeof($order->products[$i]['op_attributes']) > 0) ) {
-    for ($j=0, $n2=sizeof($order->products[$i]['op_attributes']); $j<$n2; $j++) {
-      echo '<br><small>&nbsp;<i> - ' .  $order->products[$i]['op_attributes'][$j]['front_title'] . ': ' .  $order->products[$i]['op_attributes'][$j]['value'] . '</i></small>';
+    for ($j=0, $n2=sizeof($order->products[$i]['op_attributes']); $j<$n2; $j++) {  
+      $op_price = tep_get_show_attributes_price($order->products[$i]['op_attributes'][$j]['item_id'], $order->products[$i]['op_attributes'][$j]['group_id'], $order->products[$i]['op_attributes'][$j]['value']); 
+       
+      echo '<br><small>&nbsp;<i> - ' .  $order->products[$i]['op_attributes'][$j]['front_title'] . ': ' .  $order->products[$i]['op_attributes'][$j]['value'];
+      if ($op_price != '0') {
+        echo ' ('.$currencies->format($op_price*$order->products[$i]['qty']).')'; 
+      }
+      echo '</i></small>';
     }
   }
   
   if ( (isset($order->products[$i]['ck_attributes'])) && (sizeof($order->products[$i]['ck_attributes']) > 0) ) {
     for ($jk=0, $n3=sizeof($order->products[$i]['ck_attributes']); $jk<$n3; $jk++) {
-      echo '<br><small>&nbsp;<i> - ' .  $order->products[$i]['ck_attributes'][$jk]['front_title'] . ': ' .  $order->products[$i]['ck_attributes'][$jk]['value'] . '</i></small>';
+      $cop_price = tep_get_show_attributes_price($order->products[$i]['ck_attributes'][$jk]['item_id'], $order->products[$i]['ck_attributes'][$jk]['group_id'], $order->products[$i]['ck_attributes'][$jk]['value']); 
+      echo '<br><small>&nbsp;<i> - ' .  $order->products[$i]['ck_attributes'][$jk]['front_title'] . ': ' .  $order->products[$i]['ck_attributes'][$jk]['value'];
+      if ($cop_price != '0') {
+        echo ' ('.$currencies->format($cop_price*$order->products[$i]['qty']).')'; 
+      }
+      echo '</i></small>';
     }
   }
   echo '</td>' . "\n";

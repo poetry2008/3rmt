@@ -689,21 +689,34 @@ if (tep_not_null($action)) {
         }
         if (isset($_POST['notify']) && ($_POST['notify'] == 'on')) {
           $products_ordered_mail = '';
+          $max_c_len = 0;
+          $max_len_array = array();
+          for ($mi=0; $mi<sizeof($order->products); $mi++) {
+            for ($mj=0; $mj<sizeof($order->products[$mi]['attributes']); $mj++) {
+              $max_len_array[] = mb_strlen($order->products[$mi]['attributes'][$mj]['option_info']['title'], 'utf-8'); 
+            } 
+          }
+          if (!empty($max_len_array)) {
+            $max_c_len = max($max_len_array); 
+          }
+          if ($max_c_len < 4) {
+            $max_c_len = 4; 
+          }
           for ($i=0; $i<sizeof($order->products); $i++) {
             //$orders_products_id = $order->products[$i]['orders_products_id'];
-            $products_ordered_mail .= "\t" . '注文商品　　　　　：' . $order->products[$i]['name'] . '（' . $order->products[$i]['model'] . '）' . "\n";
+            $products_ordered_mail .= "\t" . '注文商品'.str_repeat('　', intval($max_c_len - mb_strlen('注文商品', 'utf-8'))).'：' . $order->products[$i]['name'] . '（' . $order->products[$i]['model'] . '）' . "\n";
             // Has Attributes?
             if (sizeof($order->products[$i]['attributes']) > 0) {
               for ($j=0; $j<sizeof($order->products[$i]['attributes']); $j++) {
                 $orders_products_attributes_id = $order->products[$i]['attributes'][$j]['id'];
-                $products_ordered_mail .=  "\t" .  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;")) . '　　　　　：';
+                $products_ordered_mail .=  "\t" .  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;")) . str_repeat('　', intval($max_c_len - mb_strlen($order->products[$i]['attributes'][$j]['option_info']['title'], 'utf-8'))).'：';
                 $products_ordered_mail .= tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&quot;")) . "\n";
               }
             }
 
-            $products_ordered_mail .= "\t" . '個数　　　　　　　：' . $order->products[$i]['qty'] . '個' . tep_get_full_count2($order->products[$i]['qty'], $order->products[$i]['id']) . "\n";
-            $products_ordered_mail .= "\t" . '単価　　　　　　　：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax']) . "\n";
-            $products_ordered_mail .= "\t" . '小計　　　　　　　：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty']) . "\n";
+            $products_ordered_mail .= "\t" . '個数'.str_repeat('　', intval($max_c_len - mb_strlen('個数', 'utf-8'))).'：' . $order->products[$i]['qty'] . '個' . tep_get_full_count2($order->products[$i]['qty'], $order->products[$i]['id']) . "\n";
+            $products_ordered_mail .= "\t" . '単価'.str_repeat('　', intval($max_c_len - mb_strlen('単価', 'utf-8'))).'：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax']) . "\n";
+            $products_ordered_mail .= "\t" . '小計'.str_repeat('　', intval($max_c_len - mb_strlen('小計', 'utf-8'))).'：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty']) . "\n";
             //$products_ordered_mail .= "\t" . 'キャラクター名　　：' . (EMAIL_USE_HTML === 'true' ? htmlspecialchars($order->products[$i]['character']) : $order->products[$i]['character']) . "\n";
             $products_ordered_mail .= "\t" . '------------------------------------------' . "\n";
             if (tep_get_cflag_by_product_id($order->products[$i]['id'])) {
@@ -826,10 +839,21 @@ if (tep_not_null($action)) {
             $op_item_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name = '".$op_info_array[1]."' and id = '".$op_info_array[3]."'");
             $op_item_res = tep_db_fetch_array($op_item_query); 
             if ($op_item_res) {
-              $AddedOptionsPrice += $op_item_res['price'];
+              if ($op_item_res['type'] == 'radio') {
+                $o_option_array = @unserialize($op_item_res['option']);
+                if (!empty($o_option_array['radio_image'])) {
+                  foreach ($o_option_array['radio_image'] as $or_key => $or_value) {
+                    if (trim($or_value['title']) == trim($op_value)) {
+                      $AddedOptionsPrice += $or_value['money'];
+                      break; 
+                    }
+                  }
+                }
+              } else {
+                $AddedOptionsPrice += $op_item_res['price'];
+              }
             }
           }
-          
           //$option_value_details[$option_id][$option_value_id] = array ("options_values_price" => $opt_options_values_price);
           //$option_names[$option_id] = $opt_products_options_name;
           //$option_values_names[$option_value_id] = $opt_products_options_values_name;
@@ -928,11 +952,24 @@ if (tep_not_null($action)) {
             $ioption_item_res = tep_db_fetch_array($ioption_item_query); 
             if ($ioption_item_res) {
             $input_option_array = array('title' => $ioption_item_res['front_title'], 'value' => $op_i_value); 
-             
+            $op_price = 0; 
+            if ($ioption_item_res['type'] == 'radio') {
+              $io_option_array = @unserialize($ioption_item_res['option']);
+              if (!empty($io_option_array['radio_image'])) {
+                foreach ($io_option_array['radio_image'] as $ior_key => $ior_value) {
+                  if (trim($ior_value['title']) == trim($op_i_value)) {
+                    $op_price = $ior_value['money']; 
+                    break; 
+                  }
+                }
+              }
+            } else {
+              $op_price = $ioption_item_res['price']; 
+            }
             $Query = "insert into " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " set
               orders_id = '$oID',
                         orders_products_id = $new_product_id,
-                        options_values_price = '" .tep_db_input($ioption_item_res['price']) ."',
+                        options_values_price = '" .tep_db_input($op_price) ."',
                         option_group_id = '" . $ioption_item_res['group_id']. "',
                         option_item_id = '" . $ioption_item_res['id']. "',
                         option_info = '".tep_db_input(serialize($input_option_array))."';";
@@ -1410,6 +1447,9 @@ if (($action == 'edit') && ($order_exists == true)) {
             "<input name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][value]' size='35' value='" .  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&quot;"));
           //if ($order->products[$i]['attributes'][$j]['price'] != '0') echo ' (' . $order->products[$i]['attributes'][$j]['prefix'] . $currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . ')';
           echo "'>";
+          if ($order->products[$i]['attributes'][$j]['price'] != '0') {
+            echo ' ('.$currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty']).')'; 
+          }
           echo '</i></small></nobr>';
         }
       }
@@ -1903,6 +1943,7 @@ if($action == "add_product")
   require('option/HM_Option.php');
   require('option/HM_Option_Group.php');
   $hm_option = new HM_Option();
+  
   if (($step == 3) && ($add_product_products_id > 0) && isset($_POST['action_process'])) {
     if (!$hm_option->check()) {
       $step = 4; 
@@ -1925,18 +1966,21 @@ if($action == "add_product")
     else
     {
 
-      print "<tr class=\"dataTableRow\"><form action='$PHP_SELF?oID=$oID&action=$action' method='POST'>\n";
+      print "<tr class=\"dataTableRow\">";
       print "<td class='dataTableContent' align='right'><b>" . ADDPRODUCT_TEXT_STEP . " 3: </b></td><td class='dataTableContent' valign='top'>";
+      print "<form name='aform' action='$PHP_SELF?oID=$oID&action=$action' method='POST'>\n";
          
-      print $hm_option->render($option_product['belong_to_option']); 
-      print "</td>";
-      print "<td class='dataTableContent' align='center'><input type='submit' value='" . ADDPRODUCT_TEXT_OPTIONS_CONFIRM . "'>";
+      print $hm_option->render($option_product['belong_to_option'], false, 2); 
       print "<input type='hidden' name='add_product_categories_id' value='$add_product_categories_id'>";
       print "<input type='hidden' name='add_product_products_id' value='$add_product_products_id'>";
       print "<input type='hidden' name='step' value='3'>";
       print "<input type='hidden' name='action_process' value='1'>";
+      
+      print "</form>";
+      print "</td>";
+      print "<td class='dataTableContent' align='center'><input type='button' value='" . ADDPRODUCT_TEXT_OPTIONS_CONFIRM . "' onclick='document.forms.aform.submit();'>";
       print "</td>\n";
-      print "</form></tr>\n";
+      print "</tr>\n";
     }
 
     print "<tr><td colspan='3'>&nbsp;</td></tr>\n";

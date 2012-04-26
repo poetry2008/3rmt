@@ -2,5 +2,6 @@
 $enabled_item_array = array(
                             'Text'=>'Text', 
                             'Textarea'=>'Textarea', 
-                            'Select'=>'Select'
+                            'Select'=>'Select',
+                            'Radio' => 'Radio'
 );

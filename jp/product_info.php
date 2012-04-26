@@ -14,10 +14,26 @@
 
 <?php page_head();?>
 <script type="text/javascript" src="js/prototype.js"></script>
+<script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
+<script>
+var jq = jQuery.noConflict();
+</script>
 <script type="text/javascript" src="js/scriptaculous.js?load=effects"></script>
 <script type="text/javascript" src="js/lightbox.js"></script>
 <link rel="stylesheet" href="css/lightbox.css" type="text/css" media="screen">
 <script type="text/javascript">
+function select_item_radio(i_obj, t_str, o_str, p_str)
+{
+      jq(i_obj).parent().parent().parent().find('a').each(function() {
+        if (jq(this).parent()[0].className == 'option_show_border') {
+          jq(this).parent()[0].className = 'option_hide_border';
+        } 
+      });   
+      jq(i_obj).parent()[0].className = 'option_show_border'; 
+      origin_default_value = jq('#'+o_str).val(); 
+      jq('#'+o_str).parent().html("<input type='hidden' id='"+o_str+"' name='"+p_str+"' value='"+t_str+"'>"); 
+}
+
 function change_num(ob,targ, quan,a_quan)
 {
   var product_quantity = document.getElementById(ob);
@@ -298,7 +314,8 @@ while($tag = tep_db_fetch_array($tag_query)) {
                     </table></td>
                 </tr>
                 <tr class="header2">
-                  <td height="30" class="main" align="right">
+                  <td class="main" align="right">
+<div class="option_dot">
 <?php echo tep_draw_form('cart_quantity', tep_href_link(FILENAME_PRODUCT_INFO, tep_get_all_get_params(array('action')) . 'action=process')) . "\n"; ?>
 <?php
   if($product_info['products_quantity'] < 1) {
@@ -316,8 +333,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
     }
     echo '</span>'; 
   }else{  
-    ?><br>
-    <div class="dot">&nbsp;</div>
+    ?>
     <?php
 	$hm_option->render($product_info['belong_to_option']);
 ?>
@@ -328,7 +344,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
                         <table>
                         <tr>
                         <td>
-                        <input name="quantity" type="text" id="quantity" value="1" size="20" maxlength="4">
+                        <input name="quantity" type="text" id="quantity" value="<?php echo (isset($_POST['quantity'])?$_POST['quantity']:1)?>" size="20" maxlength="4">
 </td>
   <td>
   <div class="top_and_bottom">
@@ -353,13 +369,16 @@ while($tag = tep_db_fetch_array($tag_query)) {
  }
 ?>
 </form>
+                  </div> 
                   </td>
                 </tr>
                 <tr class="header2">
-                  <td height="40" valign="bottom" class="smallText"><br><div class="dot">&nbsp;</div>
+                  <td valign="bottom" class="smallText">
+                    <div class="option_dot"> 
                     <a href="<?php echo tep_href_link(FILENAME_TELL_A_FRIEND,'products_id='.(int)$_GET['products_id']) ;  ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_tellafriend.jpg',BOX_HEADING_TELL_A_FRIEND);?></a>&nbsp; <a href="<?php echo tep_href_link(FILENAME_PRODUCT_REVIEWS_WRITE,'products_id='.(int)$_GET['products_id']) ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_review.jpg',BOX_REVIEWS_WRITE_REVIEW);?></a>&nbsp; 
   <?php echo tep_draw_form('open',tep_href_link('open.php'),'get');?><input type="image" style="vertical-align:bottom;" src="<?php echo DIR_WS_IMAGES;?>design/button/botton_question.jpg"><?php echo tep_draw_hidden_field('products', $product_info['products_name']) ; ?></form>
-     </td>
+   </div>   
+  </td>
                 </tr>
               </table></td>
           </tr>

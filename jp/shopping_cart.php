@@ -162,7 +162,19 @@ function change_num(ob,targ, quan,a_quan)
           if ($option_item_res) {
             $products[$i]['add_op_attributes'][$op_key]['option_name'] = $option_item_res['front_title'];
             $products[$i]['add_op_attributes'][$op_key]['option_value'] = $op_value;
-            $products[$i]['add_op_attributes'][$op_key]['price'] = $option_item_res['price'];
+            if ($option_item_res['type'] == 'radio') {
+              $c_option = @unserialize($option_item_res['option']);
+              if (!empty($c_option)) {
+                foreach ($c_option['radio_image'] as $cr_key => $cr_value) {
+                  if (trim($cr_value['title']) == trim($op_value)) {
+                    $products[$i]['add_op_attributes'][$op_key]['price'] = $cr_value['money'];
+                    break;
+                  }
+                }
+              }
+            } else {
+              $products[$i]['add_op_attributes'][$op_key]['price'] = $option_item_res['price'];
+            }
           }
         }
       }

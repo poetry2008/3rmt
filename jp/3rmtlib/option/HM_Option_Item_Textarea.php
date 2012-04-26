@@ -13,6 +13,8 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
 
   function render($option_error_array, $pre_item_str = '', $cart_obj = '', $ptype = false)
   {
+     $sp_pos = strpos($_SERVER['PHP_SELF'], 'checkout_option.php');
+     
      if (strlen($this->front_title)) {
        if ($ptype) {
          echo '<td class="preorder_option_name">';
@@ -35,6 +37,19 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
        } else {
          $default_value = (isset($_POST[$pre_item_str.'op_'.$this->formname])?$_POST[$pre_item_str.'op_'.$this->formname]:$this->itext);
        }
+       
+       if ($sp_pos !== false) {
+         if (!isset($cart_obj->contents[$pre_item_tmp_str]['ck_attributes'][$this->formname]) && !isset($_POST[$pre_item_str.'op_'.$this->formname])) {
+           $o_attributes_raw = tep_db_query("select opa.* from ".TABLE_ORDERS_PRODUCTS_ATTRIBUTES." opa, ".TABLE_ORDERS." o where opa.orders_id = o.orders_id and o.customers_id = '".(int)$_SESSION['customer_id']."' and opa.option_group_id = '".$this->group_id."' and opa.option_item_id = '".$this->id."' order by opa.orders_id desc limit 1"); 
+           $o_attributes_res = tep_db_fetch_array($o_attributes_raw); 
+           if ($o_attributes_res) {
+             $old_option_info = @unserialize(stripslashes($o_attributes_res['option_info']));  
+             $default_value = $old_option_info['value']; 
+           }
+         }
+       
+       }
+       
        echo '<textarea class="option_input" name="'.$pre_item_str.'op_'.$this->formname.'">'.$default_value.'</textarea>';    
        if ($this->require == '1') {
          echo '<font color="#ff0000">'.OPTION_ITEM_TEXT_REQUIRE.'</font>'; 
@@ -57,11 +72,31 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
        } else {
          $default_value = (isset($_POST[$pre_item_str.'op_'.$this->formname])?$_POST[$pre_item_str.'op_'.$this->formname]:$this->itext);
        }
+       
+       if ($sp_pos !== false) {
+         if (!isset($cart_obj->contents[$pre_item_tmp_str]['ck_attributes'][$this->formname]) && !isset($_POST[$pre_item_str.'op_'.$this->formname])) {
+           $o_attributes_raw = tep_db_query("select opa.* from ".TABLE_ORDERS_PRODUCTS_ATTRIBUTES." opa, ".TABLE_ORDERS." o where opa.orders_id = o.orders_id and o.customers_id = '".(int)$_SESSION['customer_id']."' and opa.option_group_id = '".$this->group_id."' and opa.option_item_id = '".$this->id."' order by opa.orders_id desc limit 1"); 
+           $o_attributes_res = tep_db_fetch_array($o_attributes_raw); 
+           if ($o_attributes_res) {
+             $old_option_info = @unserialize(stripslashes($o_attributes_res['option_info']));  
+             $default_value = $old_option_info['value']; 
+           }
+         }
+       
+       }
+       
        echo '<input class="option_input" type="text" name="'.$pre_item_str.'op_'.$this->formname.'" value="'.$default_value.'">'; 
        
        if ($this->require == '1') {
          echo '<font color="#ff0000">'.OPTION_ITEM_TEXT_REQUIRE.'</font>'; 
        }
+       
+       if ($sp_pos !== false) {
+         if ($this->s_price != '0') {
+           echo '('.number_format($this->s_price).')'.OPTION_ITEM_TEXTAREA_MONEY_UNIT; 
+         }
+       } 
+       
        echo '<br>'.$this->icomment;  
        echo '<span id="'.$pre_item_str.'error_'.$this->formname.'" class="option_error">';
        if (isset($option_error_array[$pre_item_str.$this->formname])) {

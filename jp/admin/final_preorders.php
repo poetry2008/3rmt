@@ -322,10 +322,8 @@
       // Update Any Attributes
       if (IsSet($products_details[attributes])) {
         foreach ($products_details["attributes"] as $orders_products_attributes_id => $attributes_details) {
-          $Query = "update " . TABLE_PREORDERS_PRODUCTS_ATTRIBUTES . " set
-              products_options = '" . $attributes_details["option"] . "',
-              products_options_values = '" . $attributes_details["value"] . "'
-              where orders_products_attributes_id = '$orders_products_attributes_id';";
+          $input_option = array('title' => $attributes_details['option'], 'value' => $attributes_details['value']); 
+          $Query = "update " . TABLE_PREORDERS_PRODUCTS_ATTRIBUTES . " set option_info = '" . tep_db_input(serialize($input_option)) . "' where orders_products_attributes_id = '$orders_products_attributes_id';";
           tep_db_query($Query);
         }
       }
@@ -571,9 +569,9 @@
         // Has Attributes?
         if (sizeof($order->products[$i]['attributes']) > 0) {
           for ($j=0; $j<sizeof($order->products[$i]['attributes']); $j++) {
-            $orders_products_attributes_id = $order->products[$i]['attributes'][$j]['orders_products_attributes_id'];
-            $products_ordered_mail .=  "\t" . tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option'], array("'"=>"&quot;")) . '　　　　　：';
-            $products_ordered_mail .= tep_parse_input_field_data($order->products[$i]['attributes'][$j]['value'], array("'"=>"&quot;")) . "\n";
+            $orders_products_attributes_id = $order->products[$i]['attributes'][$j]['id'];
+            $products_ordered_mail .=  "\t" .  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;")) . '　　　　　：';
+            $products_ordered_mail .= tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&quot;")) . "\n";
           }
         }
 
@@ -589,7 +587,6 @@
             }
                 }
       }
-
 $total_details_mail = '';
 $totals_query = tep_db_query("select * from " . TABLE_PREORDERS_TOTAL . " where orders_id = '" . tep_db_input($oID) . "' order by sort_order");
 $order->totals = array();
@@ -1433,11 +1430,11 @@ float:left;
 
     if (tep_db_num_rows($attributes_query)) {
     while ($attributes = tep_db_fetch_array($attributes_query)) {
-      $order->products[$index]['attributes'][$subindex] = array('option' => $attributes['products_options'],
-                                                                'value' => $attributes['products_options_values'],
-                                                                'prefix' => $attributes['price_prefix'],
+      $order->products[$index]['attributes'][$subindex] = array('id' => $attributes['orders_products_attributes_id'],
+                                                                'option_info' => @unserialize(stripslashes($attributes['option_info'])),
                                                                 'price' => $attributes['options_values_price'],
-                                                                'orders_products_attributes_id' => $attributes['orders_products_attributes_id']);
+                                                                'option_item_id' => $attributes['options_item_id'],
+                                                                'option_group_id' => $attributes['option_group_id']);
       $subindex++;
       }
     }
@@ -1468,13 +1465,15 @@ float:left;
     // Has Attributes?
     if ($order->products[$i]['attributes'] && sizeof($order->products[$i]['attributes']) > 0) {
       for ($j=0; $j<sizeof($order->products[$i]['attributes']); $j++) {
-        $orders_products_attributes_id = $order->products[$i]['attributes'][$j]['orders_products_attributes_id'];
-        echo '<br><nobr><small>&nbsp;<i> - ' . 
-           "<input name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][option]' size='10' value='" . tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option'], array("'"=>"&quot;")) . "'>" . 
+        $orders_products_attributes_id = $order->products[$i]['attributes'][$j]['id'];
+        echo '<br><nobr><small>&nbsp;<i> - ' .  "<input name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][option]' size='10' value='" .  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;")) . "'>" . 
            ': ' . 
-           "<input name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][value]' size='35' value='" . tep_parse_input_field_data($order->products[$i]['attributes'][$j]['value'], array("'"=>"&quot;"));
+           "<input name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][value]' size='35' value='" .  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&quot;"));
         //if ($order->products[$i]['attributes'][$j]['price'] != '0') echo ' (' . $order->products[$i]['attributes'][$j]['prefix'] . $currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . ')';
         echo "'>";
+        if ($order->products[$i]['attributes'][$j]['price'] != '0') {
+          echo ' ('.$currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty']).')'; 
+        }
         echo '</i></small></nobr>';
       }
     }

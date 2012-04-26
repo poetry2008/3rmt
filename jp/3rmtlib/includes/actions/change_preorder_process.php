@@ -304,16 +304,10 @@ if($address_error == false){
   tep_db_perform(TABLE_ORDERS_PRODUCTS, $sql_data_array);
   $order_products_id = tep_db_insert_id();
 
-  $products_ordered_text .= '注文商品　　　　　：'.$preorder_product_res['products_name'];
-  if (tep_not_null($preorder_product_res['products_model'])) {
-    $products_ordered_text .= ' ('.$preorder_product_res['products_model'].')'; 
-  }
   
-  $products_ordered_atttibutes_text = '';
-
+  $cl_max_len = 0; 
 if (isset($_SESSION['preorder_option_info'])) {
   $cl_len_array = array();  
-  $cl_max_len = 0; 
   foreach ($_SESSION['preorder_option_info'] as $cl_key => $cl_value) {
     $cl_key_info = explode('_', $cl_key);
     $cl_attr_query = tep_db_query("select front_title from ".TABLE_OPTION_ITEM." where name = '".$cl_key_info['1']."' and id = '".$cl_key_info[3]."'");
@@ -323,9 +317,63 @@ if (isset($_SESSION['preorder_option_info'])) {
     }
   }
   
-  if (!empty($cl_len_array)) {
-    $cl_max_len = max($cl_len_array); 
+  
+}
+$old_attr_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS_ATTRIBUTES." where orders_id = '".$_SESSION['preorder_info_id']."'");
+
+while ($old_attr_res = tep_db_fetch_array($old_attr_raw)) {
+  $old_attr_info = @unserialize(stripslashes($old_attr_res['option_info'])); 
+  $cl_len_array[] = mb_strlen($old_attr_info['title'], 'utf-8');
+}
+
+if (!empty($cl_len_array)) {
+  $cl_max_len = max($cl_len_array); 
+}
+
+if($cl_max_len < 4) {
+  $cl_max_len = 4;
+}
+  
+  
+  $products_ordered_text .= '注文商品'.str_repeat('　', intval(($cl_max_len-mb_strlen('注文商品','utf-8')))).'：'.$preorder_product_res['products_name'];
+  if (tep_not_null($preorder_product_res['products_model'])) {
+    $products_ordered_text .= ' ('.$preorder_product_res['products_model'].')'; 
   }
+  
+  $products_ordered_atttibutes_text = '';
+
+
+$mold_attr_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS_ATTRIBUTES." where orders_id = '".$_SESSION['preorder_info_id']."'");
+while ($mold_attr_res = tep_db_fetch_array($mold_attr_raw)) {
+  $mold_attr_info = @unserialize(stripslashes($mold_attr_res['option_info'])); 
+
+  $sql_data_array = array('orders_id' => $orders_id,
+                          'orders_products_id' => $order_products_id,
+                          'options_values_price' => $mold_attr_res['options_values_price'],
+                          'option_info' => tep_db_input(serialize($mold_attr_info)),
+                          'option_group_id' => $mold_attr_res['option_group_id'],
+                          'option_item_id' => $mold_attr_res['option_item_id'],
+                          ); 
+  tep_db_perform(TABLE_ORDERS_PRODUCTS_ATTRIBUTES, $sql_data_array);
+  
+  if ((DOWNLOAD_ENABLED == 'true') && isset($attributes_values['products_attributes_filename']) && tep_not_null($attributes_values['products_attributes_filename'])) {
+    $sql_data_array = array('orders_id' => $orders_id, 
+                            'orders_products_id' => $order_products_id, 
+                            'orders_products_filename' => $attributes_values['products_attributes_filename'], 
+                            'download_maxdays' => $attributes_values['products_attributes_maxdays'], 
+                            'download_count' => $attributes_values['products_attributes_maxcount']);
+    // ccdd
+    tep_db_perform(TABLE_ORDERS_PRODUCTS_DOWNLOAD, $sql_data_array);
+  }
+
+  $products_ordered_attributes .= "\n"
+        .$mold_attr_info['title']
+        .str_repeat('　', intval(($cl_max_len-mb_strlen($mold_attr_info['title'],'utf-8'))))
+        .'：'.$mold_attr_info['value'];
+      if ($mold_attr_res['options_values_price'] != '0') {
+        $products_ordered_attributes .= '　('.$currencies->format($mold_attr_res['options_values_price']*$preorder_product_res['products_quantity']).')';
+      }
+
 }
 
 if (isset($_SESSION['preorder_option_info'])) {
@@ -337,10 +385,23 @@ if (isset($_SESSION['preorder_option_info'])) {
       if ($option_attr_values) {
 
       $input_option_array = array('title' => $option_attr_values['front_title'], 'value' => $op_value);
-       
+      $ao_price = 0; 
+      if ($option_attr_values['type'] == 'radio') {
+         $ao_option_array = @unserialize($option_attr_values['option']);
+         if (!empty($ao_option_array['radio_image'])) {
+           foreach ($ao_option_array['radio_image'] as $or_key => $or_value) {
+             if (trim($or_value['title']) == trim($op_value)) {
+               $ao_price = $or_value['money']; 
+               break; 
+             }
+           }
+         } 
+      } else {
+        $ao_price = $option_attr_values['price']; 
+      }
       $sql_data_array = array('orders_id' => $orders_id,
                               'orders_products_id' => $order_products_id,
-                              'options_values_price' => $option_attr_values['price'],
+                              'options_values_price' => $ao_price,
                               'option_info' => tep_db_input(serialize($input_option_array)),
                               'option_group_id' => $option_attr_values['group_id'],
                               'option_item_id' => $option_attr_values['id'],
@@ -361,6 +422,9 @@ if (isset($_SESSION['preorder_option_info'])) {
         .$option_attr_values['front_title']
         .str_repeat('　', intval(($cl_max_len-mb_strlen($option_attr_values['front_title'],'utf-8'))))
         .'：'.$op_value;
+      if ($ao_price != '0') {
+        $products_ordered_attributes .= '　('.$currencies->format($ao_price*$preorder_product_res['products_quantity']).')';
+      }
    }
    }
 }
@@ -381,10 +445,10 @@ while ($preorder_oa_res = tep_db_fetch_array($preorder_oa_raw)) {
 
 $products_ordered_text .= $products_ordered_attributes;
 
-$products_ordered_text .= "\n".'個数　　　　　　　：' .  $preorder_product_res['products_quantity'] . '個' .  "\n";
-$products_ordered_text .= '単価　　　　　　　：' .  $currencies->display_price(isset($option_info_array['final_price'])?$option_info_array['final_price']:$preorder_product_res['final_price'], $preorder_product_res['products_tax']) . "\n";
+$products_ordered_text .= "\n".'個数'.str_repeat('　', intval(($cl_max_len-mb_strlen('個数','utf-8')))).'：' .  $preorder_product_res['products_quantity'] . '個' .  tep_get_full_count2($preorder_product_res['products_quantity'], $preorder_product_res['products_id'])."\n";
+$products_ordered_text .= '単価'.str_repeat('　', intval(($cl_max_len-mb_strlen('単価','utf-8')))).'：' .  $currencies->display_price(isset($option_info_array['final_price'])?$option_info_array['final_price']:$preorder_product_res['final_price'], $preorder_product_res['products_tax']) . "\n";
 
-$products_ordered_text .= '小計　　　　　　　：' .  $currencies->display_price(isset($option_info_array['final_price'])?$option_info_array['final_price']:$preorder_product_res['final_price'], $preorder_product_res['products_tax'], $preorder_product_res['products_quantity']) . "\n";
+$products_ordered_text .= '小計'.str_repeat('　', intval(($cl_max_len-mb_strlen('小計','utf-8')))).'：' .  $currencies->display_price(isset($option_info_array['final_price'])?$option_info_array['final_price']:$preorder_product_res['final_price'], $preorder_product_res['products_tax'], $preorder_product_res['products_quantity']) . "\n";
 
 //if (tep_not_null($_SESSION['preorder_info_character'])) {
   //$products_ordered_text .= 'キャラクター名　　：' .$_SESSION['preorder_info_character']."\n";
@@ -475,6 +539,7 @@ foreach($add_list as $ad_value){
 $email_address_str .= '------------------------------------------'."\n";
 $email_address_str .= $email_address;
 $email_order_text = str_replace($email_address,$email_address_str,$email_order_text);
+
 tep_mail($preorder['customers_name'], $preorder['customers_email_address'], EMAIL_TEXT_SUBJECT, $email_order_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
   
 if (SENTMAIL_ADDRESS != '') {

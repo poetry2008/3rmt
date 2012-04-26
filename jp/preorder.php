@@ -78,9 +78,18 @@
   $breadcrumb->add($product_info['products_name'], tep_href_link(FILENAME_PRODUCT_INFO, 'products_id='.$product_info['products_id']));
   $breadcrumb->add(sprintf(HEADING_TITLE, $product_info['products_name']));
   $po_game_c = ds_tep_get_categories($product_info['products_id'],1);
+
+  require('option/HM_Option.php');
+  require('option/HM_Option_Group.php');
+  
+  $belong_option_raw = tep_db_query("select belong_to_option from ".TABLE_PRODUCTS." where products_id = '".$product_info['products_id']."'");
+  $belong_option = tep_db_fetch_array($belong_option_raw); 
+  
+  $hm_option = new HM_Option();
 ?>
 <?php page_head();?>
 <script type="text/javascript" src="./js/jquery-1.3.2.min.js"></script>
+<script type="text/javascript" src="./js/option.js"></script>
 </head>
 <body>
 <?php
@@ -169,6 +178,12 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
     } else {
       $predate_error = false;
     }
+    
+    if (isset($_POST['action']) && ($_POST['action'] == 'process')) {
+      if ($hm_option->check()) {
+        $error = true;
+      }
+    } 
     
     if (isset($_POST['action']) && ($_POST['action'] == 'process') && ($error == false)) {
       $_POST['quantity'] = tep_an_zen_to_han($_POST['quantity']);
@@ -270,7 +285,7 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
       <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
         <tr>
           <td class="main" valign="top" width="120">商品名:</td>
-          <td class="main">
+          <td class="formArea_td_info">
           <strong>
           <?php 
           if ($product_info['products_status'] == 0 || $product_info['products_status'] == 3)  {
@@ -284,8 +299,13 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
           </td>
         </tr>
         <tr>
+          <td colspan="2" class="preorder_option">
+          <?php $hm_option->render($belong_option['belong_to_option']);?> 
+          </td>
+        </tr>
+        <tr>
           <td class="main"><?php echo FORM_FIELD_FRIEND_NAME; ?></td>
-          <td class="main">
+          <td class="formArea_td_info">
 <?php
 if (!isset($_POST['quantity'])) $_POST['quantity'] = NULL; //del notice
 if (!isset($_GET['quantity'])) $_GET['quantity'] = NULL; //del notice
@@ -310,7 +330,7 @@ if (!isset($_GET['quantity'])) $_GET['quantity'] = NULL; //del notice
         <?php }?> 
         <tr>
           <td class="main"><?php echo FORM_FIELD_PREORDER_FIXDAY; ?></td>
-          <td class="main">
+          <td class="formArea_td_info">
 <?php
     $today = getdate();
       $m_num = $today['mon'];
