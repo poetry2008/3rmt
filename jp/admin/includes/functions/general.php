@@ -73,7 +73,7 @@ function tep_minitor_info(){
   $monitors  = tep_db_query("select id ,name,url from monitor m where m.enable='on'");
   while($monitor= tep_db_fetch_array($monitors)){
     $fiftheenbefore = date('Y-m-d H:i:s',time()-60*15);
-    $logIn15 = tep_db_query("select * from monitor_log where ng = 1 and m_id =".$monitor['id'].' and created_at > "'.$fiftheenbefore.'"');
+    $logIn15 = tep_db_query("select * from monitor_log where ng > 0 and m_id =".$monitor['id'].' and created_at > "'.$fiftheenbefore.'"');
     $tmpRow = tep_db_fetch_array($logIn15);
     if(mysql_num_rows($logIn15)){ //十五分钟内多于两件
 
@@ -98,7 +98,7 @@ function tep_minitor_info(){
       $errorString[] = $tmpString.$tmpString2;
     }
     else {
-      $log = "select name,obj, created_at from monitor_log where ng =1 and m_id = ".$monitor['id']. " order by id  desc limit 1";
+      $log = "select name,obj, created_at from monitor_log where ng >0 and m_id = ".$monitor['id']. " order by id  desc limit 1";
       $logsResult = tep_db_fetch_array(tep_db_query($log));
       if ($logsResult){
         $aString = '回線障害の最終日： ' . $logsResult['name'] . ' <a ';
