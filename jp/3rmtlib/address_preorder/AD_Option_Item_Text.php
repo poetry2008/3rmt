@@ -36,7 +36,7 @@ class AD_Option_Item_Text extends AD_Option_Item_Basic
   function check(&$option_error_array)
   {
      global $_POST;
-     $input_text_str = $_POST['op_'.$this->formname]; 
+     $input_text_str = $_POST['ad_'.$this->formname]; 
      $input_text_str = str_replace(' ', '', $input_text_str); 
      $input_text_str = str_replace('　', '', $input_text_str); 
      

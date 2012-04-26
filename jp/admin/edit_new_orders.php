@@ -14,7 +14,7 @@ require(DIR_FS_ADMIN . DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAM
 require(DIR_WS_CLASSES . 'currencies.php');
 $currencies = new currencies(2);
 $payment_bank_info = $_SESSION['payment_bank_info'];
-
+$oID = tep_db_input($_GET['oID']);
 include(DIR_WS_CLASSES . 'order.php');
 require_once('includes/address/AD_Option.php');
 require_once('includes/address/AD_Option_Group.php');
@@ -85,7 +85,243 @@ if (tep_not_null($action)) {
   switch ($action) {
     // 1. UPDATE ORDER ###############################################################################################
       case 'update_order':
-      
+
+      //订单状态更新
+    $oID      = tep_db_prepare_input($_GET['oID']);
+    $status   = tep_db_prepare_input($_POST['s_status']);
+    $title    = tep_db_prepare_input($_POST['title']);
+    $comments = tep_db_prepare_input($_POST['comments']);
+    $comments_text = tep_db_prepare_input($_POST['comments_text']);
+    $site_id  = tep_get_site_id_by_orders_id($oID);
+    $order_updated = false;
+    $check_status_query = tep_db_query("
+        select orders_id, 
+        customers_name, 
+        customers_id,
+        customers_email_address, 
+        orders_status, 
+        date_purchased, 
+        payment_method, 
+        torihiki_date 
+        from " . TABLE_ORDERS . " 
+        where orders_id = '" . tep_db_input($oID) . "'");
+    $check_status = tep_db_fetch_array($check_status_query);
+    //oa start 如果状态发生改变，找到当前的订单的
+    //if ($check_status['orders_status']!=$status){
+    tep_order_status_change($oID,$status);
+    //}
+    //OA_END
+    /*
+       if ($status == '9') {
+       tep_db_query("update `".TABLE_ORDERS."` set `confirm_payment_time` = '".date('Y-m-d H:i:s', time())."' where `orders_id` = '".$oID."'");
+       }
+     */ 
+    //Add Point System
+    if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && MODULE_ORDER_TOTAL_POINT_ADD_STATUS != '0') {
+      $pcount_query = tep_db_query("select count(*) as cnt from ".TABLE_ORDERS_STATUS_HISTORY." where orders_status_id = '".MODULE_ORDER_TOTAL_POINT_ADD_STATUS."' and orders_id = '".$oID."'");
+      $pcount = tep_db_fetch_array($pcount_query);
+      if($pcount['cnt'] == 0 && $status == MODULE_ORDER_TOTAL_POINT_ADD_STATUS) {
+        $query1 = tep_db_query("select customers_id from " . TABLE_ORDERS . " where orders_id = '".$oID."'");
+        $result1 = tep_db_fetch_array($query1);
+        $query2 = tep_db_query("select value from ".TABLE_ORDERS_TOTAL." where class = 'ot_point' and orders_id = '".tep_db_input($oID)."'");
+        $result2 = tep_db_fetch_array($query2);
+        $query3 = tep_db_query("select value from ".TABLE_ORDERS_TOTAL." where class = 'ot_subtotal' and orders_id = '".tep_db_input($oID)."'");
+        $result3 = tep_db_fetch_array($query3);
+        $query4 = tep_db_query("select point from " . TABLE_CUSTOMERS . " where customers_id = '".$result1['customers_id']."'");
+        $result4 = tep_db_fetch_array($query4);
+
+
+
+        // ここからカスタマーレベルに応じたポイント還元率算出============================================================
+        if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
+          $customer_id = $result1['customers_id'];
+          //設定した期間内の注文合計金額を算出------------
+          $ptoday = date("Y-m-d H:i:s", time());
+          $pstday_array = getdate();
+          $pstday = date("Y-m-d H:i:s", mktime($pstday_array[hours],$pstday_array[mimutes],$pstday_array[second],$pstday_array[mon],($pstday_array[mday] - MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL_KIKAN),$pstday_array[year]));
+
+          $total_buyed_date = 0;
+          $customer_level_total_query = tep_db_query("select * from orders where customers_id = '".$customer_id."' and date_purchased >= '".$pstday."'");
+          if(tep_db_num_rows($customer_level_total_query)) {
+            while($customer_level_total = tep_db_fetch_array($customer_level_total_query)) {
+              $cltotal_subtotal_query = tep_db_query("select value from orders_total where orders_id = '".$customer_level_total['orders_id']."' and class = 'ot_subtotal'");
+              $cltotal_subtotal = tep_db_fetch_array($cltotal_subtotal_query);
+
+              $cltotal_point_query = tep_db_query("select value from orders_total where orders_id = '".$customer_level_total['orders_id']."' and class = 'ot_point'");
+              $cltotal_point = tep_db_fetch_array($cltotal_subtotal_query);
+
+              $total_buyed_date += ($cltotal_subtotal['value'] - $cltotal_point['value']);
+            }
+          }
+          //----------------------------------------------
+          //今回の注文額は除外
+          $total_buyed_date = $total_buyed_date - ($result3['value'] - (int)$result2['value']);
+
+          //還元率を計算----------------------------------
+          if(mb_ereg("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK)) {
+            $back_rate_array = explode("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK);
+            $back_rate = MODULE_ORDER_TOTAL_POINT_FEE;
+            for($j=0; $j<sizeof($back_rate_array); $j++) {
+              $back_rate_array2 = explode(",", $back_rate_array[$j]);
+              if($back_rate_array2[2] <= $total_buyed_date) {
+                $back_rate = $back_rate_array2[1];
+                $back_rate_name = $back_rate_array2[0];
+              }
+            }
+          } else {
+            $back_rate_array = explode(",", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK);
+            if($back_rate_array[2] <= $total_buyed_date) {
+              $back_rate = $back_rate_array[1];
+              $back_rate_name = $back_rate_array[0];
+            }
+          }
+          //----------------------------------------------
+          $point_rate = $back_rate;
+        } else {
+          $point_rate = MODULE_ORDER_TOTAL_POINT_FEE;
+        }
+        // ここまでカスタマーレベルに応じたポイント還元率算出============================================================
+        if ($result3['value'] >= 0) {
+          $get_point = ($result3['value'] - (int)$result2['value']) * $point_rate;
+        } else {
+          if ($result3['value'] > -200) {
+            if ($check_status['payment_method'] == '来店支払い') {
+              $get_point = 0;
+            } else {
+              $get_point = abs($result3['value']);
+            }
+          } else {
+            $get_point = 0;
+          }
+        }
+        //$plus = $result4['point'] + $get_point;
+
+        if($check_status['payment_method'] != 'ポイント(買い取り)'){
+          tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " . $get_point . 
+              " where customers_id = '" . $result1['customers_id']."' 
+              and customers_guest_chk = '0' ");
+        }
+      }else{
+        $os_query = tep_db_query("select orders_status_name from " . TABLE_ORDERS_STATUS . " where orders_status_id = '".$status."'");
+        $os_result = tep_db_fetch_array($os_query);
+        if($os_result['orders_status_name']=='支払通知*'){
+          $query1 = tep_db_query("select customers_id from " . TABLE_ORDERS . " where orders_id = '".$oID."'");
+          $result1 = tep_db_fetch_array($query1);
+          if ($check_status['payment_method'] == 'ポイント(買い取り)') {
+            $query_t = tep_db_query("select value from ".TABLE_ORDERS_TOTAL." where class = 'ot_total' and orders_id = '".tep_db_input($oID)."'");
+            $result_t = tep_db_fetch_array($query_t);
+            $get_point = abs(intval($result_t['value']));
+          } else {
+            $get_point = 0;
+          }
+          $point_done_query =tep_db_query("select count(orders_status_history_id) cnt from
+              ".TABLE_ORDERS_STATUS_HISTORY." where orders_status_id = '".$status."' and 
+              orders_id = '".tep_db_input($oID)."'");
+          $point_done_row  =  tep_db_fetch_array($point_done_query);
+          if($point_done_row['cnt'] <1 ){
+            tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " .
+                $get_point . " where customers_id = '" . $result1['customers_id']."' 
+                and customers_guest_chk = '0'");
+          }
+        }
+      }
+    }
+
+    if ($check_status['orders_status'] != $status || $comments != '') {
+      tep_db_query("update " . TABLE_ORDERS . " set orders_status = '" . tep_db_input($status) . "', last_modified = now() where orders_id = '" . tep_db_input($oID) . "'");
+      orders_updated(tep_db_input($oID));
+      orders_wait_flag(tep_db_input($oID));
+      $customer_notified = '0';
+
+      if ($_POST['notify'] == 'on') {
+
+        $ot_query = tep_db_query("select value from " . TABLE_ORDERS_TOTAL . " where orders_id = '".$oID."' and class = 'ot_total'");
+        $ot_result = tep_db_fetch_array($ot_query);
+        $otm = (int)$ot_result['value'] . '円';
+
+        $os_query = tep_db_query("select orders_status_name from " . TABLE_ORDERS_STATUS . " where orders_status_id = '".$status."'");
+        $os_result = tep_db_fetch_array($os_query);
+
+        $title = str_replace(array(
+              '${NAME}',
+              '${MAIL}',
+              '${ORDER_D}',
+              '${ORDER_N}',
+              '${PAY}',
+              '${ORDER_M}',
+              '${TRADING}',
+              '${ORDER_S}',
+              '${SITE_NAME}',
+              '${SITE_URL}',
+              '${SUPPORT_EMAIL}',
+              '${PAY_DATE}'
+              ),array(
+                $check_status['customers_name'],
+                $check_status['customers_email_address'],
+                tep_date_long($check_status['date_purchased']),
+                $oID,
+                $check_status['payment_method'],
+                $otm,
+                tep_torihiki($check_status['torihiki_date']),
+                $os_result['orders_status_name'],
+                get_configuration_by_site_id('STORE_NAME', $site_id),
+                get_url_by_site_id($site_id),
+                get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
+                date('Y年n月j日',strtotime(tep_get_pay_day()))
+                ),$title);
+
+        $comments = str_replace(array(
+              '${NAME}',
+              '${MAIL}',
+              '${ORDER_D}',
+              '${ORDER_N}',
+              '${PAY}',
+              '${ORDER_M}',
+              '${TRADING}',
+              '${ORDER_S}',
+              '${SITE_NAME}',
+              '${SITE_URL}',
+              '${SUPPORT_EMAIL}',
+              '${PAY_DATE}'
+              ),array(
+                $check_status['customers_name'],
+                $check_status['customers_email_address'],
+                tep_date_long($check_status['date_purchased']),
+                $oID,
+                $check_status['payment_method'],
+                $otm,
+                tep_torihiki($check_status['torihiki_date']),
+                $os_result['orders_status_name'],
+                get_configuration_by_site_id('STORE_NAME', $site_id),
+                get_url_by_site_id($site_id),
+                get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
+                date('Y年n月j日',strtotime(tep_get_pay_day()))
+                ),$comments);
+        if (!tep_is_oroshi($check_status['customers_id'])) {
+          tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
+        }
+        tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS', $site_id), '送信済：'.$title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
+        $customer_notified = '1';
+      }
+
+
+      //if($_POST['notify'] == 'on') {
+        $customer_notified = '1';
+      //} else {
+        //$customer_notified = '0';
+      //}
+      tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . $customer_notified . "', '$comments_text')");
+      // 同步问答
+      //    orders_status_updated_for_question($oID,tep_db_input($status),$_POST['notify_comments'] == 'on', $_POST['qu_type']);
+      $order_updated = true;
+    }
+
+    if ($order_updated) {
+      $messageStack->add_session(SUCCESS_ORDER_UPDATED, 'success');
+    } else {
+      $messageStack->add_session(WARNING_ORDER_NOT_UPDATED, 'warning');
+    }
+      //订单状态更新结束 
       $options_info_array = array(); 
       if (!$ad_option->check()) {
         foreach ($_POST as $p_key => $p_value) {
@@ -103,31 +339,59 @@ if (tep_not_null($action)) {
       $products_weight_total = 0; //商品总重量
       $products_money_total = 0; //商品总价
       $cart_shipping_time = array(); //商品取引时间
-      $products_address_query = tep_db_query("select * from ". TABLE_ORDERS_PRODUCTS ." where orders_id='". tep_db_input($oID) ."'");
-      while($products_address_array = tep_db_fetch_array($products_address_query)){
-
-        $products_weight_query = tep_db_query("select * from ". TABLE_PRODUCTS ." where products_id='". $products_address_array['products_id'] ."'");
+      //$products_address_query = tep_db_query("select * from ". TABLE_ORDERS_PRODUCTS ." where orders_id='". tep_db_input($oID) ."'");
+      //while($products_address_array = tep_db_fetch_array($products_address_query)){
+      foreach($update_products as $update_key=>$update_value){
+        
+        $update_weight_query = tep_db_query("select products_id from ". TABLE_ORDERS_PRODUCTS ." where orders_products_id='". $update_key ."'");
+        $update_weight_array = tep_db_fetch_array($update_weight_query);
+        tep_db_free_result($update_weight_query);
+        $products_weight_query = tep_db_query("select * from ". TABLE_PRODUCTS ." where products_id='". $update_weight_array['products_id'] ."'");
         $products_weight_array = tep_db_fetch_array($products_weight_query);
-                
         $cart_shipping_time[] = $products_weight_array['products_shipping_time'];
-        $products_weight_total += $products_weight_array['products_weight']*$products_address_array['products_quantity'];
-        $products_money_total += $products_address_array['final_price']*$products_address_array['products_quantity'];
+        $products_weight_total += $products_weight_array['products_weight']*$update_value['qty'];
+        $products_money_total += $update_value['final_price']*$update_value['qty'];
         tep_db_free_result($products_weight_query);
       }
-      tep_db_free_result($products_address_query);
+      //tep_db_free_result($products_address_query);
       // start
      //计算配送费用 
     $weight = $products_weight_total;
  
-   foreach($options_info_array  as $op_value){
-     $address_query = tep_db_query("select * from ". TABLE_COUNTRY_AREA ." where name='". $op_value ."'");
+    foreach($options_info_array  as $op_value){
+     $city_query = tep_db_query("select * from ". TABLE_COUNTRY_CITY ." where name='". $op_value ."' and status='0'");
+     $city_num = tep_db_num_rows($city_query); 
+     
+     $address_query = tep_db_query("select * from ". TABLE_COUNTRY_AREA ." where name='". $op_value ."' and status='0'");
      $address_num = tep_db_num_rows($address_query);
   
-     $country_query = tep_db_query("select * from ". TABLE_COUNTRY_FEE ." where name='". $op_value ."'");
+     $country_query = tep_db_query("select * from ". TABLE_COUNTRY_FEE ." where name='". $op_value ."' and status='0'");
      $address_country_num = tep_db_num_rows($country_query);
 
+    if($city_num > 0){
+      $city_array = tep_db_fetch_array($city_query);
+      tep_db_free_result($city_query);
+      $city_free_value = $city_array['free_value'];
+      $city_weight_fee_array = unserialize($city_array['weight_fee']);
 
-  if($address_num > 0){
+  //根据重量来获取相应的配送费用
+      foreach($city_weight_fee_array as $key=>$value){
+    
+        if(strpos($key,'-') > 0){
+
+          $temp_array = explode('-',$key);
+          $city_weight_fee = $weight >= $temp_array[0] && $weight <= $temp_array[1] ? $value : 0; 
+        }else{
+  
+          $city_weight_fee = $weight <= $key ? $value : 0;
+        }
+
+        if($city_weight_fee > 0){
+
+          break;
+        }
+      }
+    }elseif($address_num > 0){
     $address_array = tep_db_fetch_array($address_query);
     tep_db_free_result($address_query);
     $address_free_value = $address_array['free_value'];
@@ -180,18 +444,25 @@ if (tep_not_null($action)) {
 }
 
   $shipping_money_total = $products_money_total;
-  $weight_fee = $address_weight_fee != '' ? $address_weight_fee : $country_weight_fee;
-
-  $free_value = $address_free_value != '' ? $address_free_value : $country_free_value;
+    if($city_weight_fee != ''){
+      $weight_fee = $city_weight_fee; 
+    }else{
+      $weight_fee = $address_weight_fee != '' ? $address_weight_fee : $country_weight_fee;
+    }
+    if($city_free_value != ''){
+      $free_value = $city_free_value;
+    }else{
+      $free_value = $address_free_value != '' ? $address_free_value : $country_free_value;
+    }
 
   $shipping_fee = $shipping_money_total > $free_value ? 0 : $weight_fee;
-              // end
+      // end
 
       //更新订单
 
       $oID = tep_db_prepare_input($_GET['oID']);
       $order = new order($oID);
-      $status = '1'; // 初期値
+      //$status = '1'; // 初期値
       $goods_check = $order_query;
       /*
          if (tep_db_num_rows($goods_check) == 0) {
@@ -281,8 +552,8 @@ if (tep_not_null($action)) {
         delivery_country = '" . tep_db_input(stripslashes($update_delivery_country)) . "',
         payment_method = '" . payment::changeRomaji(tep_db_input($_POST['payment_method']),'title' ). "',
         torihiki_houhou = '" . tep_db_input($update_tori_torihiki_houhou) . "',
-        torihiki_date = '" . tep_db_input($_POST['date_orders'].' '.$_POST['start_hour'].':'.$_POST['start_min'].':00') . "',
-        torihiki_date_end = '" . tep_db_input($_POST['date_orders'].' '.$_POST['end_hour'].':'.$_POST['end_min'].':00') . "',
+        torihiki_date = '" . tep_db_input($_POST['date_orders'].' '.$_POST['start_hour'].':'.$_POST['start_min'].$_POST['start_min_1'].':00') . "',
+        torihiki_date_end = '" . tep_db_input($_POST['date_orders'].' '.$_POST['end_hour'].':'.$_POST['end_min'].$_POST['end_min_1'].':00') . "',
         shipping_fee = '" . tep_db_input($shipping_fee) . "',
         cc_type = '" . tep_db_input($update_info_cc_type) . "',
         cc_owner = '" . tep_db_input($update_info_cc_owner) . "',";
@@ -334,6 +605,55 @@ if (tep_not_null($action)) {
         tep_db_free_result($address_query);
       }
     }
+
+  $address_show_array = array(); 
+  $address_show_list_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where status='0' and show_title='1'");
+  while($address_show_list_array = tep_db_fetch_array($address_show_list_query)){
+
+    $address_show_array[$address_show_list_array['id']] = $address_show_list_array['name_flag'];
+  }
+  tep_db_free_result($address_show_list_query);
+  $address_temp_str = '';
+  foreach($options_info_array as $address_his_key=>$address_his_value){
+    
+      if(in_array(substr($address_his_key,3),$address_show_array)){
+
+         $address_temp_str .= $address_his_value;
+      }
+  }
+  
+  $address_error = false;
+  $address_sh_his_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id='{$check_status['customers_id']}' group by orders_id");
+  while($address_sh_his_array = tep_db_fetch_array($address_sh_his_query)){
+
+    $address_sh_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where customers_id='{$check_status['customers_id']}' and orders_id='". $address_sh_his_array['orders_id'] ."'");
+    $add_temp_str = '';
+    while($address_sh_array = tep_db_fetch_array($address_sh_query)){
+     
+      if(in_array($address_sh_array['name'],$address_show_array)){
+
+        $add_temp_str .= $address_sh_array['value'];
+      }  
+    }
+    if($address_temp_str == $add_temp_str){
+
+      $address_error = true;
+      break;
+    }
+    tep_db_free_result($address_sh_query);
+  }
+  tep_db_free_result($address_sh_his_query);
+if($address_error == false){
+  foreach($options_info_array as $address_history_key=>$address_history_value){
+      $address_history_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where name_flag='". substr($address_history_key,3) ."'");
+      $address_history_array = tep_db_fetch_array($address_history_query);
+      tep_db_free_result($address_history_query);
+      $address_history_id = $address_history_array['id'];
+      $address_history_add_query = tep_db_query("insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'$oID',{$check_status['customers_id']},$address_history_id,'{$address_history_array['name_flag']}','$address_history_value')");
+      tep_db_free_result($address_history_add_query);
+  }
+}
+
 
      //作所信息入库结束
 
@@ -1066,16 +1386,182 @@ if (tep_not_null($action)) {
     <script language="javascript" src="includes/general.js"></script>
     <script language="javascript" src="includes/javascript/jquery.js"></script>
     <script language="javascript" src="includes/javascript/jquery_include.js"></script>
+    <script language="javascript" src="includes/javascript/all_orders.js"></script>
     <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
     <script language="javascript" src="includes/javascript/datePicker.js"></script>
-<script type="text/javascript"> 
+  <script type="text/javascript"> 
+function check(value){
+  var arr  = new Array();
+  var arr_set = new Array();
+<?php
+  $add_query = tep_db_query("select * from ". TABLE_ADDRESS ." where type='option' and status='0' order by sort");
+  while($add_array = tep_db_fetch_array($add_query)){
+
+    $add_temp_array = unserialize($add_array['type_comment']);
+    if(!isset($add_temp_array['select_value'])){
+       
+      $add_temp_first_array  = current($add_temp_array);
+      $parent_id = $add_temp_first_array['parent_id'];
+      $child_flag_name = $add_array['name_flag'];
+    }
+  }
+  tep_db_free_result($add_query);
+  $add_parent_query = tep_db_query("select * from ". TABLE_ADDRESS ." where id=$parent_id");
+  $add_parent_array = tep_db_fetch_array($add_parent_query);
+  $parent_flag_name = $add_parent_array['name_flag'];
+  tep_db_free_result($add_parent_query);
+
+  $options_query = tep_db_query("select * from ". TABLE_ADDRESS ." where type='option' and status='0' order by sort");
+  $json_array = array();
+  $json_set_value = array();
+  while($options_array = tep_db_fetch_array($options_query)){
+    if(!isset($otpions_array_temp['select_value']) && $otpions_array_temp['select_value'] == ''){
+        $show_array[] = unserialize($options_array['type_comment']);
+    }
+  }
+
+  foreach($show_array as $show_value){
+    foreach($show_value as $show_key=>$show_val){
+
+      $json_array[$show_key] = $show_val;
+      $json_set_value[$show_key] = $show_val['select_value'];
+    } 
+  }
+
+  tep_db_free_result($options_query);
+  foreach($json_array as $key=>$value_temp){
+    echo 'arr["'. $key .'"] = new Array();';
+    echo 'arr_set["'. $key .'"] = new Array();';
+    $value_temp['option_list'] = array_values($value_temp['option_list']);
+    foreach($value_temp['option_list'] as $k=>$val){
+
+      echo 'arr["'. $key .'"]['. $k .'] = "'. $val .'";';
+    } 
+    echo 'arr_set["'. $key .'"] = "'. $json_set_value[$key] .'";';
+
+  }  
+?>
+  
+  var option_id = document.getElementById("ad_<?php echo $child_flag_name;?>");
+  option_id.options.length = 0;
+  len = arr[value].length;
+  //option_id.options[option_id.options.length]=new Option('--',''); 
+  for(i = 0;i < len;i++){
+    if(arr_set[value] == arr[value][i]){
+
+      option_id.options[option_id.options.length]=new Option(arr[value][i], arr[value][i]);
+    }     
+  } 
+  for(i = 0;i < len;i++){
+    if(arr_set[value] == arr[value][i]){
+      continue; 
+    }
+    option_id.options[option_id.options.length]=new Option(arr[value][i], arr[value][i]);    
+  } 
+}
+
+<?php 
+//------------------------------------------------
+$suu = 0;
+$text_suu = 0;  
+$__orders_status_query = tep_db_query("
+    select orders_status_id 
+    from " . TABLE_ORDERS_STATUS . " 
+    where language_id = " . $languages_id . " 
+    order by orders_status_id");
+$__orders_status_ids   = array();
+while($__orders_status = tep_db_fetch_array($__orders_status_query)){
+  $__orders_status_ids[] = $__orders_status['orders_status_id'];
+}
+$select_query = tep_db_query("
+    select om.orders_status_mail,
+    om.orders_status_title,
+    os.orders_status_id,
+    os.nomail,
+    om.site_id
+    from ".TABLE_ORDERS_STATUS." os left join ".TABLE_ORDERS_MAIL." om on os.orders_status_id = om.orders_status_id
+    where os.language_id = " . $languages_id . " 
+    and os.orders_status_id IN (".join(',', $__orders_status_ids).")");
+
+while($select_result = tep_db_fetch_array($select_query)){
+  if($suu == 0){
+    $select_select = $select_result['orders_status_id'];
+    $suu = 1;
+  }
+
+  $osid = $select_result['orders_status_id'];
+
+  if($text_suu == 0){
+    $select_text = $select_result['orders_status_mail'];
+    $select_title = $select_result['orders_status_title'];
+    $text_suu = 1;
+    $select_nomail = $select_result['nomail'];
+  }
+
+  $mt[$osid][$select_result['site_id']?$select_result['site_id']:0] = $select_result['orders_status_mail'];
+  $mo[$osid][$select_result['site_id']?$select_result['site_id']:0] = $select_result['orders_status_title'];
+  $nomail[$osid] = $select_result['nomail'];
+}
+
+//------------------------------------------------
+
+        // 输出订单邮件
+        // title
+        foreach ($mo as $oskey => $value){
+          echo 'window.status_title['.$oskey.'] = new Array();'."\n";
+          foreach ($value as $sitekey => $svalue) {
+            echo 'window.status_title['.$oskey.']['.$sitekey.'] = "' . str_replace(array("\r\n","\r","\n"), array('\n', '\n', '\n'),$svalue) . '";' . "\n";
+          }
+        }
+
+//content
+foreach ($mt as $oskey => $value){
+  echo 'window.status_text['.$oskey.'] = new Array();'."\n";
+  foreach ($value as $sitekey => $svalue) {
+    echo 'window.status_text['.$oskey.']['.$sitekey.'] = "' . str_replace(array("\r\n","\r","\n"), array('\n', '\n', '\n'),$svalue) . '";' . "\n";
+  }
+}
+
+//no mail
+echo 'var nomail = new Array();'."\n";
+foreach ($nomail as $oskey => $value){
+  echo 'nomail['.$oskey.'] = "' . $value . '";' . "\n";
+}
+?>
+
   function address_show_list(){
   var address_list = new Array();
   <?php 
-    $address_show_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."'");
+    $products_weight_sum = 0;
+    $products_weight_query = tep_db_query("select * from ". TABLE_ORDERS_PRODUCTS ." where orders_id='". tep_db_input($oID) ."'");
+    while($products_weight_array = tep_db_fetch_array($products_weight_query)){
+      $product_weight_query = tep_db_query("select * from ". TABLE_PRODUCTS ." where products_id='". $products_weight_array['products_id'] ."'");
+      $product_weight_array = tep_db_fetch_array($product_weight_query);
+      tep_db_free_result($product_weight_query);
+      $products_weight_sum += $product_weight_array['products_weight']*$products_weight_array['products_quantity']; 
+    }
+    tep_db_free_result($products_weight_query);
+    $add_array = array();
+    $add_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_ORDERS ." where customers_id={$order->customer['id']} group by orders_id order by orders_id desc limit 0,1");
+    $add_group_array = tep_db_fetch_array($add_group_query);
+    tep_db_free_result($add_group_query);
+    $add_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."'");
+    $add_num = tep_db_num_rows($add_query);
+    tep_db_free_result($add_query);
+    
+    if($add_num == 0){
+
+      $oID_id = $add_group_array['orders_id'];
+    }else{
+
+      $oID_id = $oID;
+    }
+    $address_show_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID_id ."'");
+    $add_count = tep_db_num_rows($address_show_query);
     while($address_show_array = tep_db_fetch_array($address_show_query)){
       
       echo 'address_list["'. $address_show_array['name'] .'"] = "'. $address_show_array['value'] .'";';
+      $add_array[] = $address_show_array['value'];
 
     } 
     tep_db_free_result($address_show_query);
@@ -1085,6 +1571,10 @@ if (tep_not_null($action)) {
       
       var address_id = document.getElementById("ad_"+x);
       $("#ad_"+x).val(address_list[x]);
+      if('<?php echo $parent_flag_name;?>' == x){
+
+        check($("#ad_"+x).val());
+      }
       address_id.style.color = '#000';
     }
 
@@ -1184,21 +1674,23 @@ function check_hour_1(value){
     $.datePicker.setDateFormat('ymd', '-');
     $('#date_orders').datePicker();
 <?php
-    if(isset($_GET['action']) && $_GET['action'] == 'edit'){
+    if($add_count > 0 && $products_weight_sum > 0){
+      if(!(isset($_GET['action']) && $_GET['action'] == 'update_order')){
 ?>
     address_show_list();
 <?php
+      }
     }
 ?>
   });
   function address_show(){
-  
-  var style = $("#address_show_id").attr("style");
-  if(style == 'display: none;'){
+    var style = $("#address_show_id").attr("style");
+  if(style == 'display: none;' || style == "display: none"){
+    
     $("#address_show_id").show(); 
     $("#address_font").html("住所情報▲");
   }else{
-
+    
     $("#address_show_id").hide();
     $("#address_font").html("住所情報▼");
   }
@@ -1214,7 +1706,11 @@ function check_hour_1(value){
  }
    $(document).ready(function(){hidden_payment()});
 
-
+$(document).ready(function(){
+  $("#ad_<?php echo $parent_flag_name;?>").change(function(){
+    check($(this).val());
+  }); 
+});
 </script>
     </head>
     <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">
@@ -1328,9 +1824,24 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
                }
                echo tep_draw_pull_down_menu('payment_method', $payment_list,
                    $order->info['payment_method'],'onchange="hidden_payment()"');
-*/
-            $code_payment_method =
+ */        //获取用户最近一次使用的支付方式
+          $payment_array = payment::getPaymentList(); //支付方式列表
+          $orders_payment_query = tep_db_query("select payment_method from ". TABLE_ORDERS ." where customers_email_address='". $order->customer['email_address'] ."' order by orders_id desc limit 0,2"); 
+          $payment_i = 0;
+          while($orders_payment_array = tep_db_fetch_array($orders_payment_query)){
+
+            if($payment_i == 1){
+
+              $payment_num = array_search($orders_payment_array['payment_method'],$payment_array[1]);
+            }
+            $payment_i++;
+          }
+          tep_db_free_result($orders_payment_query);
+          $code_payment_method = $payment_array[0][$payment_num];
+          if($order->info['payment_method'] != ''){
+          $code_payment_method =
             payment::changeRomaji($order->info['payment_method'],'code');
+          }
           echo payment::makePaymentListPullDownMenu($code_payment_method);
 /*            
 echo "<table>";
@@ -1356,7 +1867,6 @@ echo "</table>";
             <?php 
 
             //这里判断 订单商品是否有配送 如果有用自己的配送 如果没有用session的
-            if(isset($_GET['action'])){
               $products_weight_total = 0; //商品总重量
               $products_money_total = 0; //商品总价
               $cart_shipping_time = array(); //商品取引时间
@@ -1383,15 +1893,43 @@ echo "</table>";
       $shipping_orders_array[] = $shipping_address_orders_array['value'];
     }
     tep_db_free_result($shipping_address_orders_query);
-   foreach($shipping_orders_array  as $op_value){
-     $address_query = tep_db_query("select * from ". TABLE_COUNTRY_AREA ." where name='". $op_value ."'");
+    if(empty($shipping_orders_array)){
+      $shipping_orders_array = $add_array;
+    }
+    foreach($shipping_orders_array  as $op_value){
+     $city_query = tep_db_query("select * from ". TABLE_COUNTRY_CITY ." where name='". $op_value ."' and status='0'");
+     $city_num = tep_db_num_rows($city_query);
+
+     $address_query = tep_db_query("select * from ". TABLE_COUNTRY_AREA ." where name='". $op_value ."' and status='0'");
      $address_num = tep_db_num_rows($address_query);
   
-     $country_query = tep_db_query("select * from ". TABLE_COUNTRY_FEE ." where name='". $op_value ."'");
+     $country_query = tep_db_query("select * from ". TABLE_COUNTRY_FEE ." where name='". $op_value ."' and status='0'");
      $address_country_num = tep_db_num_rows($country_query);
 
+    if($city_num > 0){
+      $city_array = tep_db_fetch_array($city_query);
+      tep_db_free_result($city_query);
+      $city_free_value = $city_array['free_value'];
+      $city_weight_fee_array = unserialize($city_array['weight_fee']);
 
-  if($address_num > 0){
+     //根据重量来获取相应的配送费用
+     foreach($city_weight_fee_array as $key=>$value){
+    
+       if(strpos($key,'-') > 0){
+
+         $temp_array = explode('-',$key);
+         $city_weight_fee = $weight >= $temp_array[0] && $weight <= $temp_array[1] ? $value : 0; 
+      }else{
+  
+         $city_weight_fee = $weight <= $key ? $value : 0;
+      }
+
+      if($city_weight_fee > 0){
+
+        break;
+     }
+    }
+    }elseif($address_num > 0){
     $address_array = tep_db_fetch_array($address_query);
     tep_db_free_result($address_query);
     $address_free_value = $address_array['free_value'];
@@ -1414,8 +1952,7 @@ echo "</table>";
       break;
     }
   }
-  }else{
-    if($address_country_num > 0){
+  }elseif($address_country_num > 0){
     $country_array = tep_db_fetch_array($country_query);
     tep_db_free_result($country_query);
     $country_free_value = $country_array['free_value'];
@@ -1439,18 +1976,29 @@ echo "</table>";
     }
   }
   }
- }
-
 }
-
   $shipping_money_total = $products_money_total;
-  $weight_fee = $address_weight_fee != '' ? $address_weight_fee : $country_weight_fee;
+  
+    if($city_weight_fee != ''){
 
-  $free_value = $address_free_value != '' ? $address_free_value : $country_free_value;
+      $weight_fee = $city_weight_fee;    
+    }else{
+       
+      $weight_fee = $address_weight_fee != '' ? $address_weight_fee : $country_weight_fee;
+    }
+    if($city_free_value != ''){
 
-  $shipping_fee = $shipping_money_total > $free_value ? 0 : $weight_fee;
+      $free_value = $city_free_value;
+    }else{
+       
+      $free_value = $address_free_value != '' ? $address_free_value : $country_free_value;
+    }
+    $shipping_fee = $shipping_money_total > $free_value ? 0 : $weight_fee;
+    if($weight == 0){
+      $shipping_fee = 0;
+    }
               // end
-              //根据订单商品表中的商品来生成取引时间 
+  //根据订单商品表中的商品来生成取引时间 
    
   $cart_shipping_time = array_unique($cart_shipping_time); 
   
@@ -1557,10 +2105,29 @@ echo "</table>";
   
 
   //可配送时间区域
-  $work_temp_str = current($time_array);
-  $work_temp_array = explode(',',$work_temp_str);
-  $work_start = $work_temp_array[0];
-  $work_end = $work_temp_array[1];
+  //获取更新后订单的取引时间
+  $orders_time_query = tep_db_query("select torihiki_date,torihiki_date_end from ". TABLE_ORDERS ." where orders_id='". $oID ."'");
+  $orders_time_array = tep_db_fetch_array($orders_time_query);
+  tep_db_free_result($orders_time_query);
+  if($orders_time_array['torihiki_date'] != '0000-00-00 00:00:00' && $orders_time_array['torihiki_date_end'] != '0000-00-00 00:00:00'){
+    $orders_temp_time_start = explode(' ',$orders_time_array['torihiki_date']);
+    $work_start = substr($orders_temp_time_start[1],0,5);
+    $orders_temp_time_end = explode(' ',$orders_time_array['torihiki_date_end']);
+    $work_end = substr($orders_temp_time_end[1],0,5);
+    $date_orders = date('Y-m-d',strtotime($orders_time_array['torihiki_date']));
+  }else{
+    $min_value_array = array_keys($time_array);
+    $min_value = min($min_value_array);
+    $work_temp_str = $time_array[$min_value];
+    $work_temp_array = explode(',',$work_temp_str);
+    $work_start = $work_temp_array[0];
+    $work_end = $work_temp_array[1];
+    //当日起几日后可以收货
+    $db_set_day = max($shipping_time_array['db_set_day']);
+    $date_orders = date('Y-m-d',strtotime("+ ".$db_set_day."day"));
+
+  }
+  
   $work_start_array = explode(':',$work_start);
   $work_end_array = explode(':',$work_end);
   $work_start_hour = $work_start_array[0]; //开始时
@@ -1568,13 +2135,10 @@ echo "</table>";
   $work_end_hour = $work_end_array[0]; //结束时
   $work_end_min = $work_end_array[1]; //结束分
 
-  //当日起几日后可以收货
-  $db_set_day = max($shipping_time_array['db_set_day']);
-  $date_orders = date('Y-m-d',strtotime("+ ".$db_set_day."day"));
   //可选收货期限
-  $shipping_time = max($shipping_time_array['shipping_time']);
+  $shipping_time = max($shipping_time_array['shipping_time']); 
   //生成时间下拉框
-  $hour_str = '<select name="start_hour" id="hour" onchange="check_hour(this.value);">';
+  $hour_str = '<select name="start_hour" id="hour">';
   for($h_i = 0;$h_i <= 23;$h_i++){
 
     $h_str = $h_i < 10 ? '0'.$h_i : $h_i;
@@ -1589,24 +2153,35 @@ echo "</table>";
   } 
   $hour_str .= '</select>';
 
-  $min_str = '<select name="start_min" id="min" onchange="check_min(this.value);">';
-  for($m_i = 0;$m_i <= 59;$m_i++){
+  $min_str = '<select name="start_min" id="min">';
+  for($m_i = 0;$m_i <= 5;$m_i++){
 
-    $m_str = $m_i < 10 ? '0'.$m_i : $m_i;
-    if($m_str == $work_start_min){
+    if($m_i == substr($work_start_min,0,1)){
 
       $selected = ' selected';
     }else{
 
       $selected = '';
     }
-    $min_str .= '<option value="'.$m_str.'"'.$selected.'>'.$m_str.'</option>';
+    $min_str .= '<option value="'.$m_i.'"'.$selected.'>'.$m_i.'</option>';
   } 
   $min_str .= '</select>';
+  $min_str_start = '<select name="start_min_1" id="min_1">';
+  for($m_i_1 = 0;$m_i_1 <= 9;$m_i_1++){
 
-  $hour_str_1 = '<select name="end_hour" id="hour_1" onchange="check_hour_1(this.value);">';
-  $hour_start_num = (int)$work_start_hour;
-  for($h1_i = $hour_start_num;$h1_i <= 23;$h1_i++){
+    if($m_i_1 == substr($work_start_min,1,1)){
+
+      $selected = ' selected';
+    }else{
+
+      $selected = '';
+    }
+    $min_str_start .= '<option value="'.$m_i_1.'"'.$selected.'>'.$m_i_1.'</option>';
+  } 
+  $min_str_start .= '</select>';
+
+  $hour_str_1 = '<select name="end_hour" id="hour_1">';
+  for($h1_i = 0;$h1_i <= 23;$h1_i++){
 
     $h1_str = $h1_i < 10 ? '0'.$h1_i : $h1_i;
     if($h1_str == $work_end_hour){
@@ -1620,20 +2195,36 @@ echo "</table>";
   } 
   $hour_str_1 .= '</select>';
 
-  $min_str_1 = '<select name="end_min" id="min_1" onclick="">';
-  for($m1_i = 0;$m1_i <= 59;$m1_i++){
+  $min_str_1 = '<select name="end_min" id="min_end">';
+  for($m1_i = 0;$m1_i <= 5;$m1_i++){
 
-    $m1_str = $m1_i < 10 ? '0'.$m1_i : $m1_i;
-    if($m1_str == $work_end_min){
+    if($m1_i == substr($work_end_min,0,1)){
 
       $selected = ' selected';
     }else{
 
       $selected = '';
     }
-    $min_str_1 .= '<option value="'.$m1_str.'"'.$selected.'>'.$m1_str.'</option>';
+    $min_str_1 .= '<option value="'.$m1_i.'"'.$selected.'>'.$m1_i.'</option>';
   } 
   $min_str_1 .= '</select>';
+  $min_str_end = '<select name="end_min_1" id="min_end_1">';
+  for($m1_i_1 = 0;$m1_i_1 <= 9;$m1_i_1++){
+
+    if($m1_i_1 == substr($work_end_min,1,1)){
+
+      $selected = ' selected';
+    }else{
+
+      $selected = '';
+    }
+    $min_str_end .= '<option value="'.$m1_i_1.'"'.$selected.'>'.$m1_i_1.'</option>';
+  } 
+  $min_str_end .= '</select>';
+  //获取手料费
+  $payment_modules = payment::getInstance($order->info['site_id']); 
+  $handle_fee_code = $payment_modules->handle_calc_fee(
+    payment::changeRomaji($code_payment_method,PAYMENT_RETURN_TYPE_CODE), $shipping_money_total);
             ?>
             <tr> 
             <td class="main" valign="top"><b><?php echo EDIT_ORDERS_FETCHTIME;?></b></td>
@@ -1641,7 +2232,7 @@ echo "</table>";
             <input type="text" id="date_orders" size="15" value="<?php echo $date_orders;?>"> 
             <input type="hidden" id="date_order" name="date_orders" value="<?php echo $date_orders;?>">
             <?php
-              echo '&nbsp;'.$hour_str.'&nbsp;時&nbsp;'.$min_str.'&nbsp;分&nbsp;～&nbsp;'.$hour_str_1.'&nbsp;時&nbsp;'.$min_str_1.'&nbsp;分&nbsp;';
+              echo '&nbsp;'.$hour_str.'&nbsp;時&nbsp;'.$min_str.$min_str_start.'&nbsp;分&nbsp;～&nbsp;'.$hour_str_1.'&nbsp;時&nbsp;'.$min_str_1.$min_str_end.'&nbsp;分&nbsp;';
             ?>
             </td>
             </tr>
@@ -1664,7 +2255,6 @@ echo "</table>";
             </tr>
             <?php
               }
-            } 
             ?> 
             <tr>
             <td class="main">
@@ -1818,7 +2408,10 @@ echo "</table>";
             <td>
             <table width="100%" cellpadding="0" cellspacing="0">
             <tr>
+            <td valign="top"><?php echo "<span class='smalltext'>" .  HINT_DELETE_POSITION . "</span>"; ?></td> <td align="right"></td>
+            <!--
             <td valign="top"><?php echo "<span class='smalltext'>" .  HINT_DELETE_POSITION . EDIT_ORDERS_ADD_PRO_READ . "</span>"; ?></td> <td align="right"><?php echo '<a href="' . $PHP_SELF . '?oID=' . $oID . '&action=add_product&step=1">' . tep_html_element_button(ADDING_TITLE) . '</a>'; ?></td>
+            -->
             </tr>
             </table>
             </td>
@@ -1862,7 +2455,8 @@ echo "</table>";
             }
           }
           // END OF MAKING ALL INPUT FIELDS THE SAME LENGTH
-
+          
+          $handle_fee_code = isset($order->info["code_fee"]) && $order->info["code_fee"] != 0 ? $order->info["code_fee"] : $handle_fee_code;
           $TotalsArray = array();
           for ($i=0; $i<sizeof($order->totals); $i++) {
             $TotalsArray[] = array("Name" => $order->totals[$i]['title'], "Price" => tep_display_currency(number_format($order->totals[$i]['value'], 2, '.', '')), "Class" => $order->totals[$i]['class'], "TotalID" => $order->totals[$i]['orders_total_id']);
@@ -1870,10 +2464,12 @@ echo "</table>";
           }
 
           array_pop($TotalsArray);
+          
           foreach ($TotalsArray as $TotalIndex => $TotalDetails) {
             $TotalStyle = "smallText";
             if ($TotalDetails["Class"] == "ot_total") {
               $shipping_fee_total = ($shipping_ot_subtotal+$shipping_fee+$shipping_ot_tax+$order->info["code_fee"]-$shipping_ot_point) != $TotalDetails["Price"] ? $shipping_fee : 0;
+              $shipping_fee_total += ($shipping_ot_subtotal+$shipping_fee+$shipping_ot_tax+$handle_fee_code-$shipping_ot_point) != $TotalDetails["Price"] ? $handle_fee_code : 0;
               echo '  <tr>' . "\n" .
                 '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_OTTOTAL_READ.'</td>' . 
                 '    <td align="right" class="' . $TotalStyle . '"><b>' . $TotalDetails["Name"] . '</b></td>' . 
@@ -1913,14 +2509,14 @@ echo "</table>";
                 '  <tr>' . "\n" .
                 '    <td align="left" class="' . $TotalStyle . '">&nbsp;</td>' . 
                 '    <td align="right" class="' . $TotalStyle . '"><b>'.TEXT_CODE_HANDLE_FEE.'</b></td>' .
-                '    <td align="right" class="' . $TotalStyle . '"><b>' . $currencies->format($order->info["code_fee"]) . '</b><input type="hidden" name="payment_code_fee" value="'.$order->info["code_fee"].'">' . 
+                '    <td align="right" class="' . $TotalStyle . '"><b>' . $currencies->format($handle_fee_code) . '</b><input type="hidden" name="payment_code_fee" value="'.$order->info["code_fee"].'">' . 
                 '</td>' . 
                 '    <td align="right" class="' . $TotalStyle . '"><b>' . tep_draw_separator('pixel_trans.gif', '1', '17') . '</b>' . 
                 '  </tr>' . "\n".
                 '  <tr>' . "\n" .
                 '    <td align="left" class="' . $TotalStyle . '">&nbsp;</td>' . 
                 '    <td align="right" class="' . $TotalStyle . '"><b>'.TEXT_CODE_SHIPPING_FEE.'</b></td>' .
-                '    <td align="right" class="' . $TotalStyle . '"><b>' . $currencies->format($shipping_fee) . '</b><input type="hidden" name="shipping_fee" value="'.$shipping_fee.'">' . 
+                '    <td align="right" class="' . $TotalStyle . '"><b>' . $currencies->format($shipping_fee) . '</b>' . 
                 '</td>' . 
                 '    <td align="right" class="' . $TotalStyle . '"><b>' . tep_draw_separator('pixel_trans.gif', '1', '17') . '</b>' . 
                 '  </tr>' . "\n";
@@ -2078,17 +2674,57 @@ echo "</table>";
             <td valign="top">
             <table border="0" cellspacing="0" cellpadding="2">
             <tr>
+<?php
+          $order_status_query = tep_db_query("select * from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='". $oID ."' order by orders_status_history_id desc limit 0,1");            
+          $order_status_num = tep_db_num_rows($order_status_query);
+          $order_status_array = tep_db_fetch_array($order_status_query);
+          $select_status = $order_status_array['orders_status_id'];
+          $customer_notified = $order_status_array['customer_notified'];           
+          $customer_notified = isset($customer_notified) ? $customer_notified : true;
+          $customer_notified = $select_status == 31 ? 0 : $customer_notified;
+          
+?>
             <td class="main"><b><?php echo ENTRY_STATUS; ?></b></td>
-            <td class="main">--&nbsp;&nbsp;<?php echo EDIT_ORDERS_ORIGIN_VALUE_TEXT;?></td>
+            <td class="main"><?php echo tep_draw_pull_down_menu('s_status', $orders_statuses, $select_status, 'onChange="new_mail_text_orders(this, \'s_status\',\'comments\',\'title\')"');?>&nbsp;&nbsp;<?php echo EDIT_ORDERS_ORIGIN_VALUE_TEXT;?></td>
+            </tr>
+            <?php
+
+            $ma_se = "select * from ".TABLE_ORDERS_MAIL." where ";
+          if(!isset($_GET['status']) || $_GET['status'] == ""){
+            $ma_se .= " orders_status_id = '".$order->info['orders_status']."' ";
+            //echo '<input type="hidden" name="status" value="' .$order->info['orders_status'].'">';
+
+            // 用来判断是否选中 送信&通知，如果nomail==1则不选中
+            $ma_s = tep_db_fetch_array(tep_db_query("select * from ".TABLE_ORDERS_STATUS." where orders_status_id = '".$order->info['orders_status']."'"));
+          }else{
+            $ma_se .= " orders_status_id = '".$_GET['status']."' ";
+            //echo '<input type="hidden" name="status" value="' .$_GET['status'].'">';
+
+            // 用来判断是否选中 送信&通知，如果nomail==1则不选中
+            $ma_s = tep_db_fetch_array(tep_db_query("select * from ".TABLE_ORDERS_STATUS." where orders_status_id = '".$_GET['status']."'"));
+          }
+          $ma_se .= "and site_id='0'";
+          $mail_sele = tep_db_query($ma_se);
+          $mail_sql  = tep_db_fetch_array($mail_sele);
+          $sta       = isset($_GET['status'])?$_GET['status']:'';
+          ?>
+
+            <tr>
+            <td class="main"><b><?php echo ENTRY_EMAIL_TITLE; ?></b></td>
+            <td class="main"><?php echo tep_draw_input_field('title', $mail_sql['orders_status_title'],'style="width:315px;"'); ?></td>
             </tr>
             <tr>
             <td class="main"><?php echo EDIT_ORDERS_SEND_MAIL_TEXT;?></b></td>
-            <td class="main"><table bgcolor="red" cellspacing="5"><tr><td><?php echo tep_draw_checkbox_field('notify', '', true); ?></td></tr></table></td>
+            <td class="main"><table bgcolor="red" cellspacing="5"><tr><td><?php echo tep_draw_checkbox_field('notify', '', $customer_notified,'id="notify"'); ?></td></tr></table></td>
             </tr>
             <?php if($CommentsWithStatus) { ?>
               <tr>
                 <td class="main"><b><?php echo EDIT_ORDERS_RECORD_TEXT;?></b></td>
                 <td class="main"><?php echo tep_draw_checkbox_field('notify_comments', '', false); ?>&nbsp;&nbsp;<b style="color:#FF0000;"><?php echo EDIT_ORDERS_RECORD_READ;?></b></td>
+                </tr>
+              <tr>
+                <td class="main" valign="top"><b><?php echo TABLE_HEADING_COMMENTS;?>:</b></td>
+                <td class="main"><?php echo tep_draw_textarea_field('comments_text', 'hard', '74', '5', '','style=" font-family:monospace; font-size:12px; width:400px;"'); ?></td>
                 </tr>
                 <?php } ?>
                 </table>
@@ -2101,11 +2737,11 @@ echo "</table>";
 
                   //<textarea style="font-family:monospace;font-size:x-small" name="comments" wrap="hard" rows="30" cols="74"></textarea>
 
-                  echo tep_draw_textarea_field('comments', 'hard', '74', '30', isset($order->info['comments'])?$order->info['comments']:'','style=" font-family:monospace; font-size:12px; width:400px;"');
+                  echo tep_draw_textarea_field('comments', 'hard', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('     ${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']),'style=" font-family:monospace; font-size:12px; width:400px;"');
                   //    echo tep_draw_textarea_field('comments', 'soft', '40', '5');
                 } else {
-                  echo tep_draw_textarea_field('comments', 'hard', '74', '30', isset($order->info['comments'])?$order->info['comments']:'','style=" font-family:monospace; font-size:12px; width:400px;"');
-                }
+                  echo tep_draw_textarea_field('comments', 'hard', '74', '30', isset($order->info['comments'])?$order->info['comments']:str_replace('     ${ORDER_A}',orders_a($order->info['orders_id']),$mail_sql['orders_status_mail']),'style=" font-family:monospace; font-size:12px; width:400px;"');
+                } 
           ?>
             </td>
             </tr>

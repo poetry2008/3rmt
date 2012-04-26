@@ -20,11 +20,11 @@ class AD_Option_Item_Option extends AD_Option_Item_Basic
        $option = unserialize($this->option);
        if(!empty($option['option_list']) && count($option['option_list']) == 1){
 
-         echo current($option['option_list']).'<input type="hidden" name="op_'.$this->formname.'" value="'.current($option['option_list']).'">';
+         echo current($option['option_list']).'<input type="hidden" name="ad_'.$this->formname.'" value="'.current($option['option_list']).'">';
        }elseif(empty($option['option_list']) && count($option[$_SESSION['select_value']]['option_list']) == 1){
          echo '';
        }else{
-         echo '<select name="op_'.$this->formname.'" id="op_'.$this->formname.'">'; 
+         echo '<select name="ad_'.$this->formname.'" id="ad_'.$this->formname.'">'; 
        
          $option_array = $option['option_list'];  
          if(empty($option_array)){
@@ -34,12 +34,12 @@ class AD_Option_Item_Option extends AD_Option_Item_Basic
            unset($_SESSION['select_value']);
          }else{
            $select_value = $option['select_value'];
-           $_SESSION['select_value'] = $option['select_value']; 
+           $_SESSION['select_value'] = isset($_POST['ad_'.$this->formname]) ? $_POST['ad_'.$this->formname] : $option['select_value'];
          }
        
          foreach ($option_array as $key => $value) {
-           if (isset($_POST['op_'.$this->formname])) {
-             echo '<option value="'.$value.'"'.(($_POST['op_'.$this->formname] == $value)?'selected ':'').'>'.$value.'</option>'; 
+           if (isset($_POST['ad_'.$this->formname])) {
+             echo '<option value="'.$value.'"'.(($_POST['ad_'.$this->formname] == $value)?'selected ':'').'>'.$value.'</option>'; 
            } else {
              echo '<option value="'.$value.'" '.((isset($select_value))&&($select_value==$value)?'selected':'').'>'.$value.'</option>'; 
            }

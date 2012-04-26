@@ -103,6 +103,7 @@
   $end_hour = tep_db_prepare_input($_POST['end_hour']);
   $end_min = tep_db_prepare_input($_POST['end_min']);
   $address_option_value = tep_db_prepare_input($_POST['address_option']);
+  $ele = tep_db_prepare_input($_POST['ele']);
 
   //住所
   $options_required = array();
@@ -178,6 +179,7 @@
     tep_session_register('start_min');
     tep_session_register('end_hour');
     tep_session_register('end_min');
+    tep_session_register('ele');
     //tep_session_register('address_option');
     $_SESSION['address_option'] = $address_option_value;
     tep_session_register('insert_torihiki_date');
@@ -278,6 +280,23 @@ function check(value){
   var arr  = new Array();
   var arr_set = new Array();
 <?php
+  $add_query = tep_db_query("select * from ". TABLE_ADDRESS ." where type='option' and status='0' order by sort");
+  while($add_array = tep_db_fetch_array($add_query)){
+
+    $add_temp_array = unserialize($add_array['type_comment']);
+    if(!isset($add_temp_array['select_value'])){
+       
+      $add_temp_first_array  = current($add_temp_array);
+      $parent_id = $add_temp_first_array['parent_id'];
+      $child_flag_name = $add_array['name_flag'];
+    }
+  }
+  tep_db_free_result($add_query);
+  $add_parent_query = tep_db_query("select * from ". TABLE_ADDRESS ." where id=$parent_id");
+  $add_parent_array = tep_db_fetch_array($add_parent_query);
+  $parent_flag_name = $add_parent_array['name_flag'];
+  tep_db_free_result($add_parent_query);
+
   $options_query = tep_db_query("select * from ". TABLE_ADDRESS ." where type='option' and status='0' order by sort");
   $json_array = array();
   $json_set_value = array();
@@ -309,10 +328,10 @@ function check(value){
   }  
 ?>
   
-  var option_id = document.getElementById("list_option5");
+  var option_id = document.getElementById("op_<?php echo $child_flag_name;?>");
   option_id.options.length = 0;
   len = arr[value].length;
-  option_id.options[option_id.options.length]=new Option('--',''); 
+  //option_id.options[option_id.options.length]=new Option('--',''); 
   for(i = 0;i < len;i++){
     if(arr_set[value] == arr[value][i]){
 
@@ -519,6 +538,10 @@ function address_option_list(value){
     var list_option = document.getElementById("op_"+x);
     list_option.style.color = '#000';
     list_option.value = arr_list[value][x];
+    if('<?php echo $parent_flag_name;?>' == x){
+
+      check($("#op_"+x).val());
+    }
     $("#error_"+x).html('');
     ii++; 
   }
@@ -535,8 +558,12 @@ function session_value(){
 ?>
   for(x in session_array){
     var list_option = document.getElementById("op_"+x);
-    list_option.style.color = '#000';
+    list_option.style.color = '#000'; 
     list_option.value = session_array[x];
+    if('<?php echo $parent_flag_name;?>' == x){
+
+      check($("#op_"+x).val());
+    }
   }
 }
 --></script>
@@ -609,7 +636,11 @@ function session_value(){
 <?php
   }
 ?>
-
+$(document).ready(function(){
+  $("#op_<?php echo $parent_flag_name;?>").change(function(){
+    check($(this).val());
+  }); 
+});
 </script>
 </head>
 <body> 
@@ -922,7 +953,7 @@ function session_value(){
 ?>
   <tr>
     <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-  <td class="main"><?php echo TEXT_TORIHIKIKIBOUBI; ?></td>
+  <td class="main" width="30%"><?php echo TEXT_TORIHIKIKIBOUBI; ?></td>
     <td class="main">
 <?php
     $today = getdate();
@@ -989,7 +1020,7 @@ function session_value(){
   </td>
   </tr>
  <tr id="shipping_list_min" style="display:none;">
- <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+ <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?><input type="hidden" id="ele_id" name="ele" value=""></td> 
  <td class="main">&nbsp;</td>
  <td class="main" id="shipping_list_show_min">
  </td>
@@ -1003,7 +1034,8 @@ function session_value(){
   if((isset($_POST['min']) && $_POST['min'] != '') || (isset($_SESSION['min']) && $_SESSION['min'] != '')){
     $post_hour = isset($_SESSION['hour']) && $_SESSION['hour'] != '' ? $_SESSION['hour'] : $_POST['hour'];
     $post_min = isset($_SESSION['min']) && $_SESSION['min'] != '' ? $_SESSION['min'] : $_POST['min'];
-    echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\','. $post_hour .','. $post_min .');$("#shipping_list_min").show();</script>';
+    $ele = isset($_SESSION['ele']) && $_SESSION['ele'] != '' ? $_SESSION['ele'] : $_POST['ele'];
+    echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\','. $post_hour .','. $post_min .',\''.$ele.'\');$("#shipping_list_min").show();</script>';
   }
   if(isset($jikan_error) && $jikan_error != '') {
 ?>

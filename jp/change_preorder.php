@@ -19,6 +19,77 @@
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript" src="js/option.js"></script>
 <script type="text/javascript">
+function check(value){
+  var arr  = new Array();
+  var arr_set = new Array();
+<?php
+  $add_query = tep_db_query("select * from ". TABLE_ADDRESS ." where type='option' and status='0' order by sort");
+  while($add_array = tep_db_fetch_array($add_query)){
+
+    $add_temp_array = unserialize($add_array['type_comment']);
+    if(!isset($add_temp_array['select_value'])){
+       
+      $add_temp_first_array  = current($add_temp_array);
+      $parent_id = $add_temp_first_array['parent_id'];
+      $child_flag_name = $add_array['name_flag'];
+    }
+  }
+  tep_db_free_result($add_query);
+  $add_parent_query = tep_db_query("select * from ". TABLE_ADDRESS ." where id=$parent_id");
+  $add_parent_array = tep_db_fetch_array($add_parent_query);
+  $parent_flag_name = $add_parent_array['name_flag'];
+  tep_db_free_result($add_parent_query);
+
+  $options_query = tep_db_query("select * from ". TABLE_ADDRESS ." where type='option' and status='0' order by sort");
+  $json_array = array();
+  $json_set_value = array();
+  while($options_array = tep_db_fetch_array($options_query)){
+    if(!isset($otpions_array_temp['select_value']) && $otpions_array_temp['select_value'] == ''){
+        $show_array[] = unserialize($options_array['type_comment']);
+    }
+  }
+
+  foreach($show_array as $show_value){
+    foreach($show_value as $show_key=>$show_val){
+
+      $json_array[$show_key] = $show_val;
+      $json_set_value[$show_key] = $show_val['select_value'];
+    } 
+  }
+
+  tep_db_free_result($options_query);
+  foreach($json_array as $key=>$value_temp){
+    echo 'arr["'. $key .'"] = new Array();';
+    echo 'arr_set["'. $key .'"] = new Array();';
+    $value_temp['option_list'] = array_values($value_temp['option_list']);
+    foreach($value_temp['option_list'] as $k=>$val){
+
+      echo 'arr["'. $key .'"]['. $k .'] = "'. $val .'";';
+    } 
+    echo 'arr_set["'. $key .'"] = "'. $json_set_value[$key] .'";';
+
+  }  
+?>
+  
+  var option_id = document.getElementById("ad_<?php echo $child_flag_name;?>");
+  option_id.options.length = 0;
+  len = arr[value].length;
+  //option_id.options[option_id.options.length]=new Option('--',''); 
+  for(i = 0;i < len;i++){
+    if(arr_set[value] == arr[value][i]){
+
+      option_id.options[option_id.options.length]=new Option(arr[value][i], arr[value][i]);
+    }     
+  } 
+  for(i = 0;i < len;i++){
+    if(arr_set[value] == arr[value][i]){
+      continue; 
+    }
+    option_id.options[option_id.options.length]=new Option(arr[value][i], arr[value][i]);    
+  } 
+}
+
+>>>>>>> d9fad36fa7764328fa0676aaa1a31ecdee96c16a
 //js 判断某值是否存在某数组中
   function in_array(value,arr){
 
@@ -64,7 +135,7 @@ function address_option_show(action){
 ?>
   for(x in arr_new){
      
-      var list_options = document.getElementById("op_"+x);
+      var list_options = document.getElementById("ad_"+x);
       list_options.value = arr_new[x];
       list_options.style.color = arr_color[x];
       $("#error_"+x).html('');
@@ -207,9 +278,13 @@ function address_option_list(value){
 ?>
   ii = 0;
   for(x in arr_list[value]){
-    var list_option = document.getElementById("op_"+x);
+    var list_option = document.getElementById("ad_"+x);
     list_option.style.color = '#000';
     list_option.value = arr_list[value][x];
+    if('<?php echo $parent_flag_name;?>' == x){
+
+      check($("#ad_"+x).val()); 
+    }
     $("#error_"+x).html('');
     ii++; 
   }
@@ -234,6 +309,11 @@ if (!isset($_POST['address_option'])) {
 <?php
 }
 ?>
+$(document).ready(function(){
+  $("#ad_<?php echo $parent_flag_name;?>").change(function(){
+    check($(this).val());
+  }); 
+});
 </script>
 <script type="text/javascript" src="js/date_time.js"></script>
 </head>
@@ -649,7 +729,7 @@ document.forms.order1.submit();
 </td>
 </tr>
 <tr id="shipping_list_min" style="display:none;">
-              <td class="main">&nbsp;</td> 
+              <td class="main">&nbsp;<input type="hidden" id="ele_id" name="ele" value=""></td> 
               <td class="main" id="shipping_list_show_min"> 
               </td> 
             </tr>
@@ -664,7 +744,7 @@ document.forms.order1.submit();
              }
              if(isset($_POST['min']) && $_POST['min'] != ''){
 
-                echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\','. $_POST['hour'] .','. $_POST['min'] .');$("#shipping_list_min").show();</script>';
+                echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\','. $_POST['hour'] .','. $_POST['min'] .','. $_POST['ele'] .');$("#shipping_list_min").show();</script>';
              }
              ?> 
 </td></tr>

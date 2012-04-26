@@ -12,37 +12,62 @@ $_name = tep_db_prepare_input($_POST['name']);
 $_comment = tep_db_prepare_input($_POST['comment']);
 
 if(isset($id) && $id != 0){
-     
-  if($sort_id > 0){
+  if(isset($sort_id) && $sort_id != ''){
      if($flag == 1){ 
-       $address_query = tep_db_query("select * from ". TABLE_ADDRESS ." where sort>$sort_id order by  sort asc limit 0,1");
+       $address_sort_query = tep_db_query("select count(*) total,max(id) maxid from ". TABLE_ADDRESS ." where sort=$sort_id");
+       $address_sort_array = tep_db_fetch_array($address_sort_query);
+       if($address_sort_array['total'] > 1){
+         if($id < $address_sort_array['maxid']){
+           $address_query = tep_db_query("select * from ". TABLE_ADDRESS ." where sort=$sort_id and id>$id order by sort asc,id asc");
+         }else{
+           $address_query = tep_db_query("select * from ". TABLE_ADDRESS ." where sort>$sort_id order by sort asc limit 0,1");
+         }
+       }else{
+         $address_query = tep_db_query("select * from ". TABLE_ADDRESS ." where sort>$sort_id order by sort asc limit 0,1");
+       }
      }elseif($flag == 0){
-       $address_query = tep_db_query("select * from ". TABLE_ADDRESS ." where sort<$sort_id order by sort desc limit 0,1"); 
-     }
+       $address_sort_query = tep_db_query("select count(*) total,min(id) minid from ". TABLE_ADDRESS ." where sort=$sort_id");
+       $address_sort_array = tep_db_fetch_array($address_sort_query);
+       if($address_sort_array['total'] > 1){
+         if($id > $address_sort_array['minid']){
+            
+           $address_query = tep_db_query("select * from ". TABLE_ADDRESS ." where sort=$sort_id and id<$id order by sort desc,id desc");
+         }else{
+           $address_query = tep_db_query("select * from ". TABLE_ADDRESS ." where sort<$sort_id order by sort desc limit 0,1");  
+         }
+       }else{
+         $address_query = tep_db_query("select * from ". TABLE_ADDRESS ." where sort<$sort_id order by sort desc,id desc limit 0,1");
+       }
+     } 
+  }
 
      if($address_query){
        $address_array = tep_db_fetch_array($address_query);
-       $sort_id = $address_array['sort'];
+       $sort_id = $address_array['id'];
      }
 
-     $sort_id = $sort_id == '' ? tep_db_prepare_input($_POST['sort']) : $sort_id;
      tep_db_free_result($address_query);
-     
-     $address_sort_query = tep_db_query("select max(sort) maxsort,min(sort) minsort from ". TABLE_ADDRESS);
-     $address_sort_array = tep_db_fetch_array($address_sort_query);
-     $maxsort = $address_sort_array['maxsort'];
-     $minsort = $address_sort_array['minsort'];
-     tep_db_free_result($address_sort_query);
-     $address_query = tep_db_query("select * from ". TABLE_ADDRESS ." where sort=$sort_id");
-   }else{
-     $address_sort_query = tep_db_query("select max(sort) maxsort,min(sort) minsort from ". TABLE_ADDRESS);
-     $address_sort_array = tep_db_fetch_array($address_sort_query);
-     $maxsort = $address_sort_array['maxsort'];
-     $minsort = $address_sort_array['minsort'];
-     tep_db_free_result($address_sort_query);
-     $address_query = tep_db_query("select * from ". TABLE_ADDRESS ." where id=$id");
+      
+     $add_sort_query = tep_db_query("select max(sort) maxsort,min(sort) minsort from ". TABLE_ADDRESS);
+     $add_sort_array = tep_db_fetch_array($add_sort_query);
+     $maxsort = $add_sort_array['maxsort'];
+     $minsort = $add_sort_array['minsort'];
+     tep_db_free_result($add_sort_query);
+     $address_sort_max_query = tep_db_query("select max(id) maxid from ". TABLE_ADDRESS ." where sort=$maxsort");
+     $address_sort_max_array = tep_db_fetch_array($address_sort_max_query); 
+     $maxid = $address_sort_max_array['maxid'];
+     tep_db_free_result($address_sort_max_query);
+     $address_sort_min_query = tep_db_query("select min(id) minid from ". TABLE_ADDRESS ." where sort=$minsort");
+     $address_sort_min_array = tep_db_fetch_array($address_sort_min_query); 
+     $minid = $address_sort_min_array['minid'];
+     tep_db_free_result($address_sort_min_query);
 
-   }
+     if(isset($flag) && $flag != ''){
+       $id = $sort_id != '' ? $sort_id : $id;
+     } 
+       
+   
+   $address_query = tep_db_query("select * from ". TABLE_ADDRESS ." where id=$id");
    $address_array = tep_db_fetch_array($address_query);
    $cid = $address_array['id'];
    $title = $address_array['title'];
@@ -57,14 +82,14 @@ if(isset($id) && $id != 0){
    $required = $address_array['required'];
    $show_title = $address_array['show_title'];
 
-   tep_db_free_result($address_query);
+   tep_db_free_result($address_query);     
+   
 }
+
+$sort = $sort == '' ? 0 : $sort;
 
 $type_start = $type;
 $type = $type_value != '' ? $type_value : $type;
-
-$prev = $sort;
-$next = $sort;
 
 $options_query = tep_db_query("select * from ". TABLE_ADDRESS ." where type='option' and status='0' order by sort");
 $json_array = array();
@@ -168,22 +193,24 @@ if(!arr[value]){
 </script>
 <table border="0" width="100%" cellspacing="0" cellpadding="2" valign="top" class="campaign_top">
 <?php
-if($id == 0){
+if($id == 0 || $maxid == $minid){
 ?>
  <tr><td width="20"><?php echo tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO); ?></td><td><b><?php echo TABLE_NEW.TABLE_TITLE_1;?></b></td><td align="right"><a href="javascript:hide_text();">X</a></td></tr>
 <?php
 }else{
   $prev_str = '';
-  if($sort > $minsort){
-
-    $prev_str = '<a href="javascript:show_text('. $id .',\'\',\'\','. $prev .',0);">'. TABLE_PREV .'</a>';
-
-  }
   $next_str = '';
-  if($sort < $maxsort){
+  if($sort == $maxsort && $id == $maxid){
 
-    $next_str = '<a href="javascript:show_text('. $id .',\'\',\'\','. $next .',1);">'. TABLE_NEXT .'</a>';
+    $prev_str = '<a href="javascript:show_text('. $id .',\'\',\'\','. $sort .',0);">'. TABLE_PREV .'</a>';
 
+  }elseif($sort == $minsort && $id == $minid){
+ 
+    $next_str = '<a href="javascript:show_text('. $id .',\'\',\'\','. $sort .',1);">'. TABLE_NEXT .'</a>';
+  }else{
+    
+    $prev_str = '<a href="javascript:show_text('. $id .',\'\',\'\','. $sort .',0);">'. TABLE_PREV .'</a>';
+    $next_str = '<a href="javascript:show_text('. $id .',\'\',\'\','. $sort .',1);">'. TABLE_NEXT .'</a>';
   }
 ?>
   <tr><td width="20"><?php echo tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO); ?></td><td><b><?php echo $title.TABLE_TITLE_1;?></b></td><td align="right" onmouseover="this.style.cursor=\'hand\'"><?php echo $prev_str;?>&nbsp;<?php echo $next_str;?>&nbsp;<a href="javascript:hide_text();">X</a></td></tr>
@@ -267,13 +294,27 @@ if($type == 'text'){
       $n = 0; 
       foreach($type_comment_array as $key=>$value){
         if($n == 0){ 
+          //$select_value = $type_comment_array[$key]['select_value'];
+          //$option_list = $type_comment_array[$key]['option_list'];
+          $parents_id = $type_comment_array[$key]['parent_id'];
+          //$parent_name = $type_comment_array[$key]['parent_name'];
+        }else{
+          break;
+        }
+        $n++;
+      }
+      $parents_query = tep_db_query("select * from ". TABLE_ADDRESS ." where id=".$parents_id);
+      $parents_row = tep_db_fetch_array($parents_query);
+      tep_db_free_result($parents_query);
+      $parents_type_comment = unserialize($parents_row['type_comment']);
+      foreach($type_comment_array as $key=>$value){
+        if($parents_type_comment['select_value'] == $key){ 
           $select_value = $type_comment_array[$key]['select_value'];
           $option_list = $type_comment_array[$key]['option_list'];
           $parent_id = $type_comment_array[$key]['parent_id'];
           $parent_name = $type_comment_array[$key]['parent_name'];
         }
-        $n++;
-     }
+      }
     }else{
       $select_value = $type_comment_array['select_value'];
       $option_list = $type_comment_array['option_list']; 
@@ -294,13 +335,14 @@ if($type == 'text'){
     tep_db_close();
     $options_str_1 = '<option value="'. $parent_id .'">'. $parent_row['name'] .'</option>';
     $options_str .= $options_str_1;
-    $options_string .= '<option value="'. $parent_name .'">'. $parent_name .'</option>'; 
+    //$options_string .= '<option value="'. $parent_name .'">'. $parent_name .'</option>'; 
 
     foreach($parent_type_array as $value){
 
-      if($parent_name != $value){
-        $options_string .= '<option value="'. $value .'">'. $value .'</option>'; 
-      }
+      //if($parent_name != $value){
+        $selected = $value == $parent_type_comment['select_value'] ? ' selected' : '';
+        $options_string .= '<option value="'. $value .'"'. $selected .'>'. $value .'</option>'; 
+      //}
     }
   }
   $options_str_temp = str_replace($options_str_1,'',$options_str_temp);

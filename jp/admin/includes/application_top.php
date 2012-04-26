@@ -254,9 +254,12 @@ define('TABLE_PERMISSIONS','permissions');
   define('TABLE_ADDRESS_ORDERS','address_orders');
   define('TABLE_COUNTRY_FEE','country_fee');
   define('TABLE_AREA_FEE','country_area');
+  define('TABLE_COUNTRY_CITY','country_city');
+  define('TABLE_ADDRESS_HISTORY','address_history');
   define('TABLE_PRODUCTS_SHIPPING_TIME','products_shipping_time');
   define('TABLE_COUNTRY_AREA','country_area');
   define('TABLE_COUNTRY_FEE','country_fee');
+  define('TABLE_COUNTRY_CITY','country_city');
   
 // customization for the design layout
   define('BOX_WIDTH', 125); // how wide the boxes should be in pixels (default: 125)

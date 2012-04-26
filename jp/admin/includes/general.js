@@ -61,20 +61,26 @@ $(".once_pwd").each(function(index) {
   });
   if(!flag_tmp){
   var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n","");
+  if(pwd != null){
   if(in_array(pwd,pwd_arr)){
   $("input[name=update_viladate]").val(pwd);
     document.edit_order.submit();
   }else{
   alert("パスワードが違います");
   $("input[name=update_viladate]").val('_false');
-  document.edit_order.submit();
-//  alert("更新をキャンセルしました。");
+  //document.edit_order.submit();
+  //alert("更新をキャンセルしました。");
   return false;
+  }
+  }else{
+    alert("更新をキャンセルしました。");
+    return false;
   }
   }else{
     $("input[name=update_viladate]").val('');
     document.edit_order.submit();
   }
+  
 }
 });
 }else{
@@ -1238,6 +1244,47 @@ function show_text_area(id,ele,fid,sort,flag){
             
 }
 
+//城市配送费用设置
+function show_text_city(id,ele,fid,sort,flag){
+    
+    if(ele != ''){
+      ele = ele.parentNode;
+    }
+    $.ajax({
+       url: 'ajax_country_city.php',
+       data: {id:id,fid:fid,sort:sort,flag:flag},
+       type: 'POST',
+       dataType: 'text',
+       async : false,
+       success: function(data){
+         $("div#show").html(data);
+     
+         if(ele != ''){
+         if(document.documentElement.clientHeight < document.body.scrollHeight){
+                   if(ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight+$('#show').height() > document.body.scrollHeight){
+                          offset = ele.offsetTop+$('#group_list_box').position().top-$('#show').height()-$('#offsetHeight').height();
+                          $('#show').css('top', offset).show(); 
+                      }else{
+                          offset = ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight;
+                          $('#show').css('top', offset).show(); 
+                      }
+          }else{
+                    if(ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight+$('#show').height() > document.documentElement.clientHeight){
+                          offset = ele.offsetTop+$('#group_list_box').position().top-$('#show').height()-$('#offsetHeight').height()-ele.offsetHeight;
+                          $('#show').css('top', offset).show(); 
+                    }else{
+                          offset = ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight;
+                          $('#show').css('top', offset).show(); 
+                    }
+         }
+      }
+
+         $("div#show").show();
+       }
+    }); 
+            
+}
+
 //商品配送时间
 function show_text_products(id,ele,sort,flag){
      
@@ -1293,7 +1340,7 @@ function check(action){
     type:  'POST',
     success: function() {
       if(action == 'save'){
-        alert('保存成功');
+        alert('保存しました。');
       }else{
         alert('削除成功');
         window.location.reload();
@@ -1310,7 +1357,7 @@ function check_fee(action){
     type:  'POST',
     success: function() {
       if(action == 'save'){
-        alert('保存成功');
+        alert('保存しました。');
       }else{
         alert('削除成功');
         window.location.reload();
@@ -1327,7 +1374,24 @@ function check_area(action){
     type:  'POST',
     success: function() {
       if(action == 'save'){
-        alert('保存成功');
+        alert('保存しました。');
+      }else{
+        alert('削除成功');
+        window.location.reload();
+      }
+    }
+  };
+  $('#country_area_form').ajaxSubmit(options);
+  return false;
+}
+
+function check_city(action){
+  var options = {
+    url: 'country_city.php?action='+action,
+    type:  'POST',
+    success: function() {
+      if(action == 'save'){
+        alert('保存しました。');
       }else{
         alert('削除成功');
         window.location.reload();
@@ -1344,7 +1408,7 @@ function check_products(action){
     type:  'POST',
     success: function() {
       if(action == 'save'){
-        alert('保存成功');
+        alert('保存しました。');
       }else{
         alert('削除成功');
         window.location.reload();
@@ -1365,6 +1429,10 @@ function check_on_fee(action,id){
 
 function check_on_area(action,id,fid){
   location.href = "country_area.php?action="+action+"&id="+id+"&fid="+fid;
+}
+
+function check_on_city(action,id,fid){
+  location.href = "country_city.php?action="+action+"&id="+id+"&fid="+fid;
 }
 
 function check_on_products(action,id,fid){

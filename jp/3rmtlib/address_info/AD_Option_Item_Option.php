@@ -34,7 +34,7 @@ class AD_Option_Item_Option extends AD_Option_Item_Basic
            unset($_SESSION['select_value']);
          }else{
            $select_value = $option['select_value'];
-           $_SESSION['select_value'] = $option['select_value']; 
+           $_SESSION['select_value'] = isset($_POST['op_'.$this->formname]) ? $_POST['op_'.$this->formname] : $option['select_value'];
          }
        
          foreach ($option_array as $key => $value) {
