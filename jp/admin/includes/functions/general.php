@@ -825,7 +825,57 @@ function tep_get_orders_status() {
 
   return $orders_status_array;
 }
+function tep_get_orders_manual_title_from_pID($products_id){
+$pID=$products_id;
+$categories_info_query=tep_db_query("select categories_id from ".TABLE_PRODUCTS_TO_CATEGORIES." where products_id='".$pID."'");
+$categories_info_array=tep_db_fetch_array($categories_info_query);
+$categories_pid_query=tep_db_query("select parent_id from ".TABLE_CATEGORIES." where categories_id='".$categories_info_array['categories_id']."'");
+$categories_pid_array=tep_db_fetch_array($categories_pid_query);
+$cp_manual_query=tep_db_query("select categories_name from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$categories_pid_array['parent_id']."' and site_id='0'");
+$cp_manual_array=tep_db_fetch_array($cp_manual_query);
 
+$c_manual_query=tep_db_query("select categories_name from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$categories_info_array['categories_id']."' and site_id='0'");
+$c_manual_array=tep_db_fetch_array($c_manual_query);
+
+$pro_manual_query=tep_db_query("select products_name from ".TABLE_PRODUCTS_DESCRIPTION." where products_id='".$pID."' and site_id='0'");
+$pro_manual_array=tep_db_fetch_array($pro_manual_query);
+$manual_title=$cp_manual_array['categories_name'].'/'.$c_manual_array['categories_name'].'/'.$pro_manual_array['products_name'].'のマニュアル';
+return $manual_title;
+}
+function tep_get_orders_manual_title_from_cID($categories_id){
+$cID=$categories_id;
+$categories_pid_query=tep_db_query("select parent_id from ".TABLE_CATEGORIES." where categories_id='".$cID."'");
+$categories_pid_array=tep_db_fetch_array($categories_pid_query);
+$cp_manual_query=tep_db_query("select categories_id,categories_name from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$categories_pid_array['parent_id']."' and site_id='0'");
+$cp_manual_array=tep_db_fetch_array($cp_manual_query);
+$check_categories_query = tep_db_query("select parent_id from ".TABLE_CATEGORIES." where categories_id='".$cp_manual_array['categories_id']."'");
+$check_categories_array = tep_db_fetch_array($check_categories_query);
+if($check_categories_array['parent_id'] !=0 ){
+$get_categories = tep_db_query("select categories_name from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$check_categories_array['parent_id']."' and site_id='0'");
+$get_categories_array = tep_db_fetch_array($get_categories);
+$title_cp = $get_categories_array['categories_name'].'/';
+}
+$c_manual_query=tep_db_query("select categories_name from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$cID."' and site_id='0'");
+$c_manual_array=tep_db_fetch_array($c_manual_query);
+
+$manual_title=$title_cp.$cp_manual_array['categories_name'].'/'.$c_manual_array['categories_name'].'のマニュアル';
+return $manual_title;
+}
+function tep_get_orders_manual_title_from_cPath($cPath){
+$categories_pid_query=tep_db_query("select parent_id from ".TABLE_CATEGORIES." where categories_id='".$cPath."'");
+$categories_pid_array=tep_db_fetch_array($categories_pid_query);
+$cp_manual_query=tep_db_query("select categories_name from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$categories_pid_array['parent_id']."' and site_id='0'");
+$cp_manual_array=tep_db_fetch_array($cp_manual_query);
+
+$c_manual_query=tep_db_query("select categories_name from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$cPath."' and site_id='0'");
+$c_manual_array=tep_db_fetch_array($c_manual_query);
+if($cp_manual_array['categories_name']!=""){
+$title_part1 = $cp_manual_array['categories_name'].'/';
+}
+$title_part2 = $c_manual_array['categories_name'];
+$manual_title=$title_part1.$title_part2.'のマニュアル';
+return $manual_title;
+}
 function tep_get_products_name($product_id, $language_id = 0, $site_id = 0, $default = false) {
   //echo $product_id,$language_id,$site_id;
   global $languages_id;
@@ -3290,7 +3340,7 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
 
   $str .= '<table border="0" cellpadding="2" cellspacing="0" class="popup_order_title" width="100%">';
   $str .= '<tr>';
-  $str .= '<td width="20">'.tep_image(DIR_WS_IMAGES.'icon_info.gif', IMAGE_ICON_INFO,16,16).'&nbsp;</td>'; 
+  $str .= '<td width="22">'.tep_image(DIR_WS_IMAGES.'icon_info.gif', IMAGE_ICON_INFO,16,16).'&nbsp;</td>'; 
   $str .= '<td align="left"><b>['.$orders['orders_id'].']&nbsp;&nbsp;'.tep_datetime_short_torihiki($orders['date_purchased']).'</b></td>'; 
   $str .= '<td align="right"><a href="javascript:void(0);" onclick="hideOrdersInfo(1);">X</a></td>';
   $str .= '</tr>';

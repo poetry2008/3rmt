@@ -859,12 +859,12 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
       $check_two_c_pos = strpos($g_c_value, '%2C'); 
       
       if ($check_two_c_pos !== false) {
-        die('please do not attack'); 
+        forward404(); 
         break; 
       }
       
       if (($check_sel_pos !== false) && $check_union_pos !== false) {
-        die('please do not attack'); 
+        forward404(); 
         break; 
       }
     }

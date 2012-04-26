@@ -6,7 +6,7 @@
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_SPECIALS);
   if (isset($_GET['page'])) {
     if (!preg_match('/^\d+$/', $_GET['page'])) {
-      die('please do not attack'); 
+      forward404(); 
     }
   }
   $check_specials_query_raw = "
