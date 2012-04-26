@@ -89,7 +89,6 @@ function check(value){
   } 
 }
 
->>>>>>> d9fad36fa7764328fa0676aaa1a31ecdee96c16a
 //js 判断某值是否存在某数组中
   function in_array(value,arr){
 
