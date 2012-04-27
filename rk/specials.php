@@ -6,7 +6,7 @@
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_SPECIALS);
   if (isset($_GET['page'])) {
     if (!preg_match('/^\d+$/', $_GET['page'])) {
-      die('please do not attack'); 
+      forward404(); 
     }
   }
   $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_SPECIALS));

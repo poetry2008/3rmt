@@ -366,7 +366,11 @@ B:ポイントの加算（<?php echo STORE_NAME;?>会員でなければ表示さ
                     <input type="hidden" name="goto" value="<?php echo tep_href_link($navigation->path[$back]['page'], tep_array_to_string($navigation->path[$back]['get'], array('action')), $navigation->path[$back]['mode']);?>">
                     <input type="submit" name="continue" value="" class="shopping_cart_continue">
 <?php } else { ?>
-                    <button  class="shopping_cart_continue" onClick="history_back(); return false;"></button>
+                    <button  class="shopping_cart_continue" onClick="history_back();<?php 
+                      if(!preg_match('/MSIE/',$_SERVER['HTTP_USER_AGENT'])){
+                        echo "return false;";
+                      }
+                      ?>"></button>
 <?php } ?>
                     </td>
                     <td align="left" class="main">

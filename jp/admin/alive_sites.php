@@ -90,15 +90,15 @@ class Monitor {
   function __toString(){
     return serialize($this);
   }
-  function report(){
+  function report($type=1){
     $sql = "
       INSERT INTO monitor_log (
           `id` ,`m_id` ,`name` ,`obj` ,`ng`,`created_at` 
           )VALUES (
-            NULL ,".$this->id.',\''.$this->name.'\',\''.sql_injection($this).'\','.'1'.',"'.date('Y-m-d H:i:s')."\"
+            NULL ,".$this->id.',\''.$this->name.'\',\''.sql_injection($this).'\','.'"'.$type.'"'.',"'.date('Y-m-d H:i:s')."\"
             );
     ";
-    //              echo $sql;
+              echo $sql;
     $result = db_query($sql);
     //              var_dump($result);
     //执行完成以后检查是否多于系统限制如果多于,则删除以前记录 
@@ -118,6 +118,9 @@ class Monitor {
     }
   }
 
+  function isReachable(){
+   return get_http_content($this->url)!=false;
+  }	
   function isAlive(){
     return strtoupper(trim(get_http_content($this->url)))=='WE ARE ALIVE.';
   }
@@ -130,6 +133,15 @@ if(count($domains) != 0){
   foreach ($domains as $key=>$domain){
     $cHost= $domain;
     if ($cHost!=FALSE){
+      if (!$cHost->isReachable()){
+        $sites[] = array('name'=>$cHost->name,'alive'=>false,'obj'=>$cHost);
+        $loglist[$cHost->name]= $cHost->emailMsg;
+        if(!isset($_SERVER["HTTP_USER_AGENT"])){
+          //如果页面执行 值显示记录不 生成日志
+          $cHost->report(2);
+          continue;
+}	
+      }
       if ($cHost->isAlive()){
         $sites[] = array('name'=>$cHost->name,'alive'=>true,'obj'=>$cHost);
       }else {

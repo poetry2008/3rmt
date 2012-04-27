@@ -3,6 +3,9 @@
   $Id$
 */
 
+if(!is_numeric($_GET['nID'])){
+  forward404();
+}
   $navigation->remove_current_page();
 
   // ccdd
@@ -26,7 +29,7 @@ function resize() {
   if (document.images[0]) window.resizeTo(document.images[0].width +30, document.images[0].height+60-i);
   self.focus();
 }
-//--></script>
+--></script>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
 <body onLoad="resize();">
 <?php echo tep_image(DIR_WS_IMAGES . $latest_news['news_image'], $latest_news['headline']); ?>
