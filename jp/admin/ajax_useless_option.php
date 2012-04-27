@@ -48,14 +48,14 @@ if($next==''){
 $next=$maxsort;
 }
 ?>
-<table  style="font-size:14px;line-height:200%"   border="0" width="100%" cellspacing="0" cellpadding="0" valign="top" bgcolor="yellow">
-<tr bgcolor="#000000">
-<td class="dataTableHeadingContent">
+<table class="campaign_top" width="100%" cellspacing="0" cellpadding="2" border="0">
+<tr>
+<td align="left" height="20">
 &nbsp;&nbsp;
 <?php echo tep_image(DIR_WS_IMAGES.'icon_info.gif',IMAGE_ICON_INFO);?>
 &nbsp;&nbsp;&nbsp;<?php echo $option_group_array['name']?>
 </td>
-<td align="right" class ="dataTableHeadingContent">
+<td align="right">
 <?php 
 if($end==1){
 	?>
@@ -91,6 +91,9 @@ else if($pos==0){
 ?>
 </td>
 </tr>
+
+</table>
+<table  style="line-height:200%" class="campaign_body"   border="0" width="100%" cellspacing="0" cellpadding="0" valign="top" >
 
 <tr>
 <td>
