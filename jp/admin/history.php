@@ -124,7 +124,22 @@ function ex(id,tr_len){
   */
 }
   </script>
-  <title>履歴表示</title>
+  <title>
+
+<?php
+  if ($HTTP_GET_VARS['action'] == 'oroshi') {
+    //echo '卸業者の履歴登録';
+    echo HISTORY_TITLE_THREE; 
+  } else if ($HTTP_GET_VARS['action'] == 'oroshi_c') {
+    //echo '卸業者の履歴表示';
+    echo HISTORY_TITLE_TWO; 
+  } else {
+    //echo '同業者の履歴登録';
+    echo HISTORY_TITLE_ONE; 
+  }
+  ?>
+
+</title>
   </head>
   <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" >
   <a name="top"></a>

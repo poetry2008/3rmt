@@ -209,7 +209,21 @@ $ex_site = $sites[0];
 <html <?php echo HTML_PARAMS; ?>>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
-  <title><?php echo TITLE; ?></title>
+  <title>
+<?php 
+if(isset($_GET['set']) && $_GET['set'] == "payment"){
+echo HEADING_TITLE_MODULES_PAYMENT;
+}else if(isset($_GET['set']) && $_GET['set'] == "order_total"){
+echo HEADING_TITLE_MODULES_ORDER_TOTAL;
+}else if(isset($_GET['set']) && $_GET['set'] == "metaseo"){
+echo HEADING_TITLE_MODULES_METASEO;
+}
+else{
+	echo TITLE;
+}
+?>
+
+</title>
   <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
   <script language="javascript" src="includes/javascript/jquery_include.js"></script>
   <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>

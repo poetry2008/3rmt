@@ -311,7 +311,20 @@
 <html <?php echo HTML_PARAMS; ?>>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
-<title><?php echo TITLE; ?></title>
+<title>
+<?php 
+$site_id = isset($_GET['site_id']) ? $_GET['site_id']:0;
+  if((isset($_GET['cPath']) && $_GET['cPath']=="" && isset($_GET['cID']) && $_GET['cID']!="")){
+  echo HEADING_TITLE;
+  }else if(isset($_GET['cPath']) && $_GET['cPath']!=""){
+$faq_query = tep_db_query("select title from ".TABLE_FAQ_CATEGORIES_DESCRIPTION." where faq_category_id='".$_GET['cPath']."'");
+ $faq_array = tep_db_fetch_array($faq_query);
+  echo HEADING_TITLE.$faq_array['title']; 
+  }else{
+ echo   HEADING_TITLE;
+  }
+?>
+</title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/general.js"></script>
 <script language="javascript" src="includes/javascript/jquery.js"></script>

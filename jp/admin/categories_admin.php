@@ -56,7 +56,27 @@ if (isset($_GET['action']) && $_GET['action']) {
 <html <?php echo HTML_PARAMS; ?>>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
-  <title><?php echo TITLE; ?></title>
+  <title>
+  <?php
+$site_id = isset($_GET['site_id']) ? $_GET['site_id']:0;
+	 if(isset($_GET['cPath']) && $_GET['cPath']!=""){
+		if(strpos($_GET['cPath'],"_")){
+		$cpath_arr = explode("_",$_GET['cPath']);
+	 	$cpath = end($cpath_arr);
+		}else{
+	        $cpath = $_GET['cPath']	;
+		}
+$categories_query = tep_db_query("select categories_name from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$cpath."' and site_id='".$site_id."'");
+$categories_array = tep_db_fetch_array($categories_query);
+echo CATEGORY_ADMIN_TITLE."&nbsp;&nbsp;&nbsp;".$categories_array['categories_name'];
+	}
+	
+	else{
+	echo CATEGORY_ADMIN_TITLE; 
+	}
+?>
+
+</title>
   <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
   <script type="text/javascript" src="includes/general.js"></script>
   <script type="text/javascript" src="includes/javascript/jquery.js"></script>
