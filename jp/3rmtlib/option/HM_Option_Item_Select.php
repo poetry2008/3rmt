@@ -93,7 +93,7 @@ class HM_Option_Item_Select extends HM_Option_Item_Basic
     $input_text_str = str_replace(' ', '', $input_text_str); 
     $input_text_str = str_replace('　', '', $input_text_str); 
     if ($input_text_str == '') {
-      $option_error_array[$pre_error_str.$this->formname] = ERROR_OPTION_ITEM_TEXT_NULL; 
+      $option_error_array[$pre_error_str.$this->formname] = ERROR_OPTION_ITEM_SELECT_TEXT_NULL; 
       return true; 
     }
     return false; 

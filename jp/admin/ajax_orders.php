@@ -1750,7 +1750,7 @@ if ($_POST['orders_id'] &&
   }
   if (!tep_db_num_rows($other_item_raw)) {
     $html_str .= '<tr><td colspan="2">';
-    $html_str .= OPTION_SEARCH_NO_RESULT; 
+    $html_str .= '<font color="ff0000">'.OPTION_SEARCH_NO_RESULT.'</font>'; 
     $html_str .= '</td></tr>';
     echo $html_str.'|||'.$html_str_add;
     exit;
