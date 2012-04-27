@@ -23,3 +23,6 @@ $the_manufacturer_query = tep_db_query("
     "); 
 $the_manufacturers = tep_db_fetch_array($the_manufacturer_query);
 // end dynamic meta tags query -->
+if (strtolower($_SERVER['REQUEST_METHOD']) == 'get') {
+  $_SESSION['history_url'] = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']; 
+}

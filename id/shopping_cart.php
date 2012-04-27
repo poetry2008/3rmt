@@ -44,7 +44,7 @@ function key(e)
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript">
 <!--
-function history_back(){
+function history_back(back_url){
   var final_prices = document.getElementsByName('final_price');
   for (var i=0; i<final_prices.length; i++)
   {
@@ -57,7 +57,8 @@ function history_back(){
         ?>pid='+t_pid+'&pquantity='+t_pquantity,function (data){
     });
   }
-  history.back()
+  //history.back()
+  window.location.href=back_url;
 }
 function fmoney(s)
 {
@@ -366,11 +367,14 @@ B:ポイントの加算（<?php echo STORE_NAME;?>会員でなければ表示さ
                     <input type="hidden" name="goto" value="<?php echo tep_href_link($navigation->path[$back]['page'], tep_array_to_string($navigation->path[$back]['get'], array('action')), $navigation->path[$back]['mode']);?>">
                     <input type="submit" name="continue" value="" class="shopping_cart_continue">
 <?php } else { ?>
-                    <button  class="shopping_cart_continue" onClick="history_back();<?php 
-                      if(!preg_match('/MSIE/',$_SERVER['HTTP_USER_AGENT'])){
-                        echo "return false;";
-                      }
-                      ?>"></button>
+<?php
+if (!empty($_SESSION['history_url'])) {
+  $back_url = $_SESSION['history_url'];
+} else {
+  $back_url = HTTP_SERVER;
+}
+?>
+                    <button  class="shopping_cart_continue" onClick="history_back('<?php echo $back_url;?>');<?php if(!preg_match('/MSIE/',$_SERVER['HTTP_USER_AGENT'])){ echo "return false;"; } ?>"></button>
 <?php } ?>
                     </td>
                     <td align="left" class="main">
