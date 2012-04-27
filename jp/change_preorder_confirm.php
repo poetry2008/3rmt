@@ -250,7 +250,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                       $old_attr_info = @unserialize(stripslashes($old_attr_res['option_info'])); 
                       echo $old_attr_info['title'].':'.$old_attr_info['value'];
                       if ($old_attr_res['options_values_price'] != '0') {
-                        echo ' ('.$currencies->format($old_attr_res['options_values_price']).')'; 
+                        echo ' ('.$currencies->format($old_attr_res['options_values_price']*$preorder_product_res['products_quantity']).')'; 
                       }
                     }
                     if (!empty($option_info_array)) {

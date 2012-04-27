@@ -507,6 +507,9 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
   if(tep_not_null($order->products[$i]['model'])) {
     $products_ordered .= ' (' . $order->products[$i]['model'] . ')';
   }
+  if ($order->products[$i]['price'] != '0') {
+    $products_ordered .= ' ('.$currencies->display_price($order->products[$i]['price'], $order->products[$i]['tax']).')'; 
+  }
   $products_ordered .= $products_ordered_attributes . "\n";
   $products_ordered .= '個数'.str_repeat('　',intval(($attribute_max_len-mb_strlen('個数', 'utf-8')))).'：' . $order->products[$i]['qty'] . '個' .  tep_get_full_count2($order->products[$i]['qty'], (int)$order->products[$i]['id']) . "\n";
   $products_ordered .= '単価'.str_repeat('　',intval(($attribute_max_len-mb_strlen('単価', 'utf-8')))).'：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax']) . "\n";

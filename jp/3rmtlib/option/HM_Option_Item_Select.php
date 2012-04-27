@@ -67,7 +67,7 @@ class HM_Option_Item_Select extends HM_Option_Item_Basic
     
      if ($sp_pos !== false) {
        if ($this->s_price != '0') {
-         echo '('.number_format($this->s_price).')'.OPTION_ITEM_SELECT_MONEY_UNIT; 
+         echo number_format($this->s_price).OPTION_ITEM_SELECT_MONEY_UNIT; 
        }
      }
      if ($this->secomment) {

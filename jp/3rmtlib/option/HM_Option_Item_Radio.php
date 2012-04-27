@@ -224,9 +224,12 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
              }
            }
          }
-         if (!empty($value['money'])) {
-           echo $value['money'].OPTION_ITEM_MONEY_UNIT; 
-         }
+                  
+         if ($sp_pos !== false) {
+           if ($value['money'] != '0') {
+             echo $value['money'].OPTION_ITEM_MONEY_UNIT; 
+           }
+         } 
          echo '</span>';
          echo '</div>';
          $i++; 

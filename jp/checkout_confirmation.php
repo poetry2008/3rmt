@@ -121,6 +121,11 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
     '            <td class="main" align="center" valign="top" width="150">' .
     $order->products[$i]['qty'] . '&nbsp;個' .  (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($order->products[$i]['qty'], (int)$order->products[$i]['id']) ? '<br><span style="font-size:10px">'.  tep_get_full_count_in_order2($order->products[$i]['qty'], (int)$order->products[$i]['id']) .'</span>': '') . '</td>' . "\n" .
     '            <td class="main" valign="top">' . $order->products[$i]['name'];
+  if ($order->productts[$i]['price'] < 0) {
+    echo ' (<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->display_price($order->products[$i]['price'], $order->products[$i]['tax'], $order->products[$i]['qty'])).'</font>'.JPMONEY_UNIT_TEXT.')';
+  } else {
+    echo ' ('.$currencies->display_price($order->products[$i]['price'], $order->products[$i]['tax'], $order->products[$i]['qty']).')';
+  }
 
   if (STOCK_CHECK == 'true') {
     echo tep_check_stock((int)$order->products[$i]['id'], $order->products[$i]['qty']);

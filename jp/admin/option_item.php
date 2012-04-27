@@ -458,7 +458,7 @@ function add_option_select()
   });   
   for (i=1; i<=5 ; i++) {
     i_num_add = i_num+i; 
-    html_str += '<tr><td><?php echo TEXT_OPTION_ITEM_SELECT;?></td><td><input type="text" name="op_'+i_num_add+'" value="" class="option_text">&nbsp;<input type="button" onclick="del_option_select(this);" value="<?php echo TEXT_OPTION_ITEM_DEL_LINK;?>"></td></tr>';   
+    html_str += '<tr><td align="left"><?php echo TEXT_OPTION_ITEM_SELECT;?></td><td align="left"><input type="text" name="op_'+i_num_add+'" value="" class="option_text">&nbsp;<input type="button" onclick="del_option_select(this);" value="<?php echo TEXT_OPTION_ITEM_DEL_LINK;?>"></td></tr>';   
   }
   $('#add_select').parent().before(html_str);
 }
@@ -475,18 +475,18 @@ function add_option_radio()
   });   
   for (i=1; i<=5 ; i++) {
     i_num_add = i_num+i; 
-    html_str += '<tr><td><?php echo TEXT_OPTION_ITEM_SELECT;?></td><td><input type="text" name="ro_'+i_num_add+'" value=""><a href="javascript:void(0);"><input type="button" value="<?php echo TEXT_OPTION_ITEM_DEL_LINK;?>" onclick="delete_radio(this, '+i_num_add+');"></a></td></tr>';   
+    html_str += '<tr><td align="left"><?php echo TEXT_OPTION_ITEM_SELECT;?></td><td align="left"><input type="text" style="width:35%;"name="ro_'+i_num_add+'" value=""><a href="javascript:void(0);"onclick="delete_radio(this, '+i_num_add+');"><input type="button" value="<?php echo TEXT_OPTION_ITEM_DEL_LINK;?>" class="element_button" onclick="redirect_new_url(this);"></a></td></tr>';   
     
-    html_str += '<tr><td>&nbsp;&nbsp;<?php echo TEXT_ITEM_PIC_NAME;?></td><td><input type="file" name="rop_'+i_num_add+'[]" value="">&nbsp;<a href="javascript:void(0);"><input type="button" value="<?php echo TEXT_ITEM_DELETE_PIC;?>" onclick="delete_item_pic(this);"></a><a href="javascript(0);"><input type="button" value="<?php echo TEXT_ITEM_ADD_PIC;?>" onclick="add_item_pic(this, '+i_num_add+');"></a></td></tr>'; 
+    html_str += '<tr><td align="left">&nbsp;&nbsp;<?php echo TEXT_ITEM_PIC_NAME;?></td><td align="left"><input type="file" name="rop_'+i_num_add+'[]" value="">&nbsp;<a href="javascript:void(0);" onclick="delete_item_pic(this);"><input type="button" value="<?php echo TEXT_ITEM_DELETE_PIC;?>" class="element_button"></a><a href="javascript:void(0);" onclick="add_item_pic(this, '+i_num_add+');"><input type="button" value="<?php echo TEXT_ITEM_ADD_PIC;?>" class="element_button"></a></td></tr>'; 
    
-    html_str += '<tr><td>&nbsp;&nbsp;<?php echo TEXT_ITEM_MONEY_NAME;?></td><td><input type="text" name="rom_'+i_num_add+'" value="" style="width:35%; text-align:right"><?php echo TEXT_MONEY_SYMBOL;?></td></tr>';
+    html_str += '<tr><td align="left">&nbsp;&nbsp;<?php echo TEXT_ITEM_MONEY_NAME;?></td><td align="left"><input type="text" name="rom_'+i_num_add+'" value="" style="width:35%; text-align:right"><?php echo TEXT_MONEY_SYMBOL;?></td></tr>';
   }
   $('#add_radio').parent().before(html_str);
 }
 
 function add_item_pic(i_obj, i_num)
 {
-  html_str = '<tr><td>&nbsp;&nbsp;<?php echo TEXT_ITEM_PIC_NAME;?></td><td><input type="file" name="rop_'+i_num+'[]" value="">&nbsp;<a href="javascript:void(0);"><input type="button" value="<?php echo TEXT_ITEM_DELETE_PIC;?>" onclick="delete_item_pic(this);"></a><a href="javascript(0);"><input type="button" value="<?php echo TEXT_ITEM_ADD_PIC;?>" onclick="add_item_pic(this, '+i_num+');"></a></td></tr>'; 
+  html_str = '<tr><td align="left">&nbsp;&nbsp;<?php echo TEXT_ITEM_PIC_NAME;?></td><td align="left"><input type="file" name="rop_'+i_num+'[]" value="">&nbsp;<a href="javascript:void(0);" onclick="delete_item_pic(this);"><input type="button" value="<?php echo TEXT_ITEM_DELETE_PIC;?>" class="element_button"></a><a href="javascript:void(0);" onclick="add_item_pic(this, '+i_num+');"><input type="button" value="<?php echo TEXT_ITEM_ADD_PIC;?>" class="element_button"></a></td></tr>'; 
   
   $(i_obj).parent().parent().after(html_str); 
 }
