@@ -1485,7 +1485,12 @@ function PageHeader() {
   echo '<html ' . HTML_PARAMS . '>' . "\n";
   echo '<head>' . "\n";
   echo '<meta http-equiv="Content-Type" content="text/html; charset=' . CHARSET . '">' . "\n";
-  echo '<title>' . TITLE . '</title>' . "\n";
+  if(isset($_POST['execute_new'])){echo '<title>'.HEADING_TITLE.'('.$_POST['execute_new'].')' . '</title>' . "\n";}
+  else if(isset($_POST['execute_user'])){echo '<title>'.HEADING_TITLE.'('.$_POST['execute_user'].')' . '</title>' . "\n";}
+  else if(isset($_POST['execute_permission'])){echo '<title>'.HEADING_TITLE.'('.$_POST['execute_permission'].')' . '</title>' . "\n";}
+  else if(isset($_POST['execute_change'])){echo '<title>'.HEADING_TITLE.'('.$_POST['execute_change'].')' . '</title>' . "\n";}
+  else{echo '<title>'.HEADING_TITLE.'(ユーザ管理メニュー)' . '</title>' . "\n"; }
+    
   echo '<link rel="stylesheet" type="text/css" href="includes/stylesheet.css">' . "\n";
 
   // ユーザ情報、パスワード変更、管理者権限のとき確認メッセージ JavaScript 出力

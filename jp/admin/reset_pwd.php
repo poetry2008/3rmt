@@ -65,7 +65,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 <html <?php echo HTML_PARAMS; ?>>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
-<title><?php echo TITLE; ?></title>
+<title><?php echo TEXT_RESET_PWD_TITLE; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/javascript/jquery.js"></script>
 <script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>

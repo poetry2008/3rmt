@@ -38,7 +38,7 @@
   if ($_GET['action']=='edit' && $_GET['oID']) {?>
 <title><?php echo tep_get_orders_products_names($_GET['oID']); ?></title>
 <?php } else { ?>
-<title><?php echo TITLE; ?></title>
+<title><?php echo TEXT_ORDER_DOWNLOPAD; ?></title>
 <?php }?>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>

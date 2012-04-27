@@ -9,7 +9,7 @@
 
   Released under the GNU General Public License
 */
-
+define('HEADING_TITLE','テンプレート管理');
 define('FORM_OPTION', 'オプション');
 define('ADD_GROUP', 'グループ作成');
 define('GROUP_NAME', 'タイトル');

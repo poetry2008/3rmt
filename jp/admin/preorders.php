@@ -686,7 +686,7 @@
   if ($_GET['action']=='edit' && $_GET['oID']) {?>
 <title><?php echo tep_get_preorders_products_names($_GET['oID']); ?></title>
 <?php } else { ?>
-<title><?php echo TITLE; ?></title>
+<title><?php echo HEADING_TITLE; ?></title>
 <?php }?>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <script language="javascript" src="includes/javascript/jquery.js"></script>
@@ -859,7 +859,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
     $order = new preorder($oID);
     $cpayment = payment::getInstance($order->info['site_id']);
     $payment_code = payment::changeRomaji($order->info['payment_method'], PAYMENT_RETURN_TYPE_CODE);
-    $show_payment_info = $cpayment->admin_show_payment_info($payment_code);
+   // $show_payment_info = $cpayment->admin_show_payment_info($payment_code);
 ?>
 <script>
   // 游戏人物名，订单详细页用来替换邮件内容
