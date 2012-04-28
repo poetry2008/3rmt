@@ -213,8 +213,8 @@ $payment_modules->specialOutput($payment);
 <td width="70%" valign="top" align="right"><table width="100%" border="0" cellspacing="0" cellpadding="2"> 
 <?php
 if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
-  if(@$_POST['point'] < $order->info['subtotal']) {
-    $point = isset($_POST['point'])?$_POST['point']:0;
+  if(@$_SESSION['h_point'] < $order->info['subtotal']) {
+    $point = isset($_SESSION['h_point'])?$_SESSION['h_point']:0;
   } else {
     $point = $order->info['subtotal'];
   }

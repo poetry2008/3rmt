@@ -100,12 +100,12 @@ class moneyorder extends basePayment implements paymentInterface {
 
   function confirmation() {
     global $currencies;
-    $s_result = $_POST['code_fee'];
-    if (!empty($_POST['code_fee'])) {
+    $s_result = $_SESSION['h_code_fee'];
+    if (!empty($_SESSION['h_code_fee'])) {
       //$s_message = $s_result ? (MODULE_PAYMENT_MONEY_ORDER_TEXT_FEE . '&nbsp;' .  $currencies->format($_POST['money_order_fee'])):('<font color="#FF0000">'.$_POST['money_order_fee_error'].'</font>'); 
-      $s_message = $s_result ? '':('<font color="#FF0000">'.$_POST['code_fee'].'</font>'); 
+      $s_message = $s_result ? '':('<font color="#FF0000">'.$_SESSION['h_code_fee'].'</font>'); 
     } else {
-      $s_message = $s_result ? '':('<font color="#FF0000">'.$_POST['code_fee'].'</font>'); 
+      $s_message = $s_result ? '':('<font color="#FF0000">'.$_SESSION['h_code_fee'].'</font>'); 
     }
     return array(
                  'title' => nl2br(constant("TS_MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_CONFIRMATION")),
@@ -124,12 +124,12 @@ class moneyorder extends basePayment implements paymentInterface {
 
     $total = $order->info['total'];
     if ($payment == 'moneyorder') {
-      $total += intval($_POST['code_fee']); 
+      $total += intval($_SESSION['h_code_fee']); 
     }
       
-    $s_message = $_POST['code_fee_error']?$_POST['money_order_fee_error']:sprintf(TS_MODULE_PAYMENT_MONEY_ORDER_TEXT_MAILFOOTER, $currencies->format($total), $currencies->format($_POST['code_fee']));
+    $s_message = $_POST['code_fee_error']?$_POST['money_order_fee_error']:sprintf(TS_MODULE_PAYMENT_MONEY_ORDER_TEXT_MAILFOOTER, $currencies->format($total), $currencies->format($_SESSION['h_code_fee']));
       
-    return tep_draw_hidden_field('money_order_message', htmlspecialchars($s_message)). tep_draw_hidden_field('code_fee', $_POST['code_fee']);
+    return tep_draw_hidden_field('money_order_message', htmlspecialchars($s_message)). tep_draw_hidden_field('code_fee', $_SESSION['h_code_fee']);
     //return false;
   }
 

@@ -659,5 +659,15 @@ class payment {
       }
     }
   }
+
+  function deal_other_info($payment, $pInfo)
+  {
+    $module = $this->getModule($payment);
+    if ($module) {
+      if (method_exists($module, 'deal_other_info')) {
+        $module->deal_other_info($pInfo); 
+      }
+    }
+  }
 }
 ?>

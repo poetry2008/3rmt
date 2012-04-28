@@ -78,12 +78,12 @@ class postalmoneyorder extends basePayment  implements paymentInterface  {
 
     $total = $order->info['total'];
     if ($payment == 'postalmoneyorder') {
-      $total += intval($_POST['code_fee']); 
+      $total += intval($_SESSION['h_code_fee']); 
     }
       
     $s_message = $_POST['postal_money_order_fee_error']?$_POST['postal_money_order_fee_error']:sprintf(MODULE_PAYMENT_POSTALMONEY_ORDER_TEXT_MAILFOOTER, $currencies->format($total), $currencies->format($_POST['postal_money_order_fee']));
       
-    return tep_draw_hidden_field('postal_money_order_message', htmlspecialchars($s_message)). tep_draw_hidden_field('code_fee', $_POST['code_fee']);
+    return tep_draw_hidden_field('postal_money_order_message', htmlspecialchars($s_message)). tep_draw_hidden_field('code_fee', $_SESSION['h_code_fee']);
     //return false;
   }
 

@@ -21,7 +21,13 @@ $sendto = false;
 //  if (!tep_session_is_registered('shipping')) {
 //    tep_redirect(tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL'));
 //  }
+require(DIR_WS_CLASSES . 'payment.php');
+$payment_modules = payment::getInstance(SITE_ID);
 
+require(DIR_WS_CLASSES . 'order.php');
+$order = new order;
+
+if (!isset($_GET['is_finish'])) {
 $payment = $_POST['payment']; tep_session_register('payment');
 //if (!tep_session_is_registered('payment'))
 if (!tep_session_is_registered('comments')) tep_session_register('comments');
@@ -33,11 +39,6 @@ $_SESSION['mailcomments'] = $_POST['comments'];
 // check if bank info
 
 // load the selected payment module
-require(DIR_WS_CLASSES . 'payment.php');
-$payment_modules = payment::getInstance(SITE_ID);
-
-require(DIR_WS_CLASSES . 'order.php');
-$order = new order;
 
 //判断支付方法是否存在， 支付方法是否被允许 
 if (!$payment_modules->moduleIsEnabled($payment)){
@@ -187,7 +188,19 @@ page_head();?>
   }
 
 }
-
+}
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+  if (isset($_POST['point'])) {
+    $h_point = $_POST['point']; 
+    tep_session_register('h_point');
+  }
+  if (isset($_POST['code_fee'])) {
+    $h_code_fee = $_POST['code_fee']; 
+    tep_session_register('h_code_fee');
+  }
+  $payment_modules->deal_other_info($payment, $_POST); 
+  header('Location:'.tep_href_link(FILENAME_CHECKOUT_CONFIRMATION, 'is_finish=1', 'SSL'));
+}
 require(DIR_WS_CLASSES . 'order_total.php');
 $order_total_modules = new order_total;
 
@@ -225,6 +238,8 @@ page_head();?>
   //输出payment 的javascript验证
   if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') 
     {
+      $point_query = tep_db_query("select point from " . TABLE_CUSTOMERS . " where customers_id = '" . $customer_id . "'");
+      $current_point = tep_db_fetch_array($point_query);
       echo $payment_modules->javascript_validation($current_point['point']); 
     }
 ?>

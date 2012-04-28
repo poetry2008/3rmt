@@ -235,14 +235,14 @@ class convenience_store extends basePayment  implements paymentInterface  {
 
       $s_result = !$_POST['code_fee_error'];
       
-      if (!empty($_POST['code_fee'])) {
+      if (!empty($_SESSION['h_code_fee'])) {
         //$s_message = $s_result ? (MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_FEE . '&nbsp;' . $currencies->format($_POST['codt_fee'])) : ('<font color="#FF0000">' . $_POST['codt_fee_error'] . '</font>');
         $s_message = $s_result ? '' : ('<font color="#FF0000">' . $_POST['code_fee_error'] . '</font>');
       } else {
         $s_message = $s_result ? '' : ('<font color="#FF0000">' . $_POST['code_fee_error'] . '</font>');
       }
       return array(
-                   'title' => str_replace("#USER_MAIL#",$_POST['convenience_email_again'],nl2br(constant("TS_MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_CONFIRMATION"))),
+                   'title' => str_replace("#USER_MAIL#",$_SESSION['h_convenience_email'],nl2br(constant("TS_MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_CONFIRMATION"))),
                    'fields' => array(
                                      array('title' => constant("TS_MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_SHOW"), 'field' => ''),  
                                      array('title' => $s_message, 'field' => '')  
@@ -272,7 +272,7 @@ class convenience_store extends basePayment  implements paymentInterface  {
       }   
     
       if(MODULE_ORDER_TOTAL_CONV_STATUS == 'true' && ($payment == 'convenience_store')) {
-        $total += intval($_POST['code_fee']);
+        $total += intval($_SESSION['h_code_fee']);
       }
       // 追加 - 2007.01.05 ----------------------------------------------
     
@@ -281,11 +281,11 @@ class convenience_store extends basePayment  implements paymentInterface  {
         ? $_POST['codt_fee_error']
         : sprintf(MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_MAILFOOTER,
                   $currencies->format($total),
-                  $currencies->format($_POST['code_fee']));
+                  $currencies->format($_SESSION['h_code_fee']));
 
       return tep_draw_hidden_field('codt_message', $s_message)
-        . tep_draw_hidden_field('convenience_email', $_POST['convenience_email']) 
-        . tep_draw_hidden_field('code_fee',$_POST['code_fee']); // for ot_codt
+        . tep_draw_hidden_field('convenience_email', $_SESSION['h_convenience_email']) 
+        . tep_draw_hidden_field('code_fee',$_SESSION['h_code_fee']); // for ot_codt
     }
 
     function before_process() {
@@ -475,5 +475,9 @@ class convenience_store extends basePayment  implements paymentInterface  {
       return $order_info['cemail_text']; 
     }
 
+    function deal_other_info($pInfo)
+    {
+      $_SESSION['h_convenience_email'] = $pInfo['convenience_email']; 
+    }
   }
   ?>

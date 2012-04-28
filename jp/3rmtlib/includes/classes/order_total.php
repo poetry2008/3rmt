@@ -116,8 +116,8 @@
 
       $show_handle_fee = 0;
 
-      if(isset($_POST['code_fee'])){
-      $show_handle_fee = intval($_POST['code_fee']); 
+      if(isset($_SESSION['h_code_fee'])){
+      $show_handle_fee = intval($_SESSION['h_code_fee']); 
       }
       $buying_fee = 0; 
       if (isset($cart)) { 

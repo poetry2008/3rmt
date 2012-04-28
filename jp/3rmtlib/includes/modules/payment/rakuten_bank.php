@@ -177,7 +177,7 @@ class rakuten_bank  extends basePayment  implements paymentInterface {
       $s_message = $s_result ? '' : ('<font color="#FF0000">' . $_POST['codt_fee_error'] . '</font>');
     }
     return array(
-                 'title' => str_replace("#TELNUMBER#",$_POST['rakuten_telnumber'],nl2br(constant("TS_MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_CONFIRMATION"))),
+                 'title' => str_replace("#TELNUMBER#",$_SESSION['h_rakuten_telnumber'],nl2br(constant("TS_MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_CONFIRMATION"))),
 		 'fields' => array(
 				   array('title' => constant("TS_MODULE_PAYMENT_".strtoupper($this->code)."_TEXT_SHOW"), 'field' => ''),  
 				   array('title' => $s_message, 'field' => '')  
@@ -219,7 +219,7 @@ class rakuten_bank  extends basePayment  implements paymentInterface {
           $currencies->format($_POST['codt_fee']));
 
     return tep_draw_hidden_field('codt_message', $s_message)
-      . tep_draw_hidden_field('rakuten_telnumber', $_POST['rakuten_telnumber']) 
+      . tep_draw_hidden_field('rakuten_telnumber', $_SESSION['h_rakuten_telnumber']) 
       . tep_draw_hidden_field('codt_fee',$_POST['codt_fee']); // for ot_codt
   }
 
@@ -436,6 +436,11 @@ function getMailString($option=''){
   function admin_deal_comment($order_info)
   {
     return $order_info['raku_text']; 
+  }
+  
+  function deal_other_info($pInfo)
+  {
+    $_SESSION['h_rakuten_telnumber'] = $pInfo['rakuten_telnumber']; 
   }
 }
 ?>
