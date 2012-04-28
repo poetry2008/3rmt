@@ -124,7 +124,7 @@ class HM_Option_Item_Basic
           
           $formString .= "<tr><td align='left'>&nbsp;&nbsp;".TEXT_ITEM_PIC_NAME."</td><td align='left'><input type='file' name='rop_".$i."[]' value=''>&nbsp;<a href=\"javascript:void(0);\" onclick=\"delete_item_pic(this);\">".tep_html_element_button(TEXT_ITEM_DELETE_PIC, 'onclick=""')."</a><a href=\"javascript:void(0);\" onclick=\"add_item_pic(this, ".$i.");\">".tep_html_element_button(TEXT_ITEM_ADD_PIC, 'onclick=""')."</a></td></tr>"; 
           
-          $formString .= "<tr><td align='left'>&nbsp;&nbsp;".TEXT_ITEM_MONEY_NAME."</td><td align='left'><input type='text' name='rom_".$i."' value='' style='width:35%; text-align:right;'>".TEXT_ITEM_MONEY_UNIT."</td></tr>"; 
+          $formString .= "<tr height='45'><td valign='top' align='left'>&nbsp;&nbsp;".TEXT_ITEM_MONEY_NAME."</td><td valign='top' align='left'><input type='text' name='rom_".$i."' value='' style='width:35%; text-align:right;'>&nbsp;".TEXT_ITEM_MONEY_UNIT."</td></tr>"; 
         }     
         $formString .= "<tr><td>&nbsp;</td><td id='add_radio' align='left'><a href='javascript:void(0);' onclick='add_option_radio();'>".TEXT_ITEM_ADD_SELECT."</a></td></tr>"; 
       } else {
@@ -145,7 +145,7 @@ class HM_Option_Item_Basic
             }
             $formString .= "</td></tr>"; 
             
-            $formString .= "<tr><td align='left'>&nbsp;&nbsp;".TEXT_ITEM_MONEY_NAME."</td><td align='left'><input type='text' name='rom_".$i."' value='".$ri_value['money']."' style='width:35%;text-align:right;'>".TEXT_ITEM_MONEY_UNIT."</td></tr>"; 
+            $formString .= "<tr height='45'><td valign='top' align='left'>&nbsp;&nbsp;".TEXT_ITEM_MONEY_NAME."</td><td valign='top' align='left'><input type='text' name='rom_".$i."' value='".$ri_value['money']."' style='width:35%;text-align:right;'>&nbsp;".TEXT_ITEM_MONEY_UNIT."</td></tr>"; 
             $i++; 
           }
           

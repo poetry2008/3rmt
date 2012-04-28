@@ -479,7 +479,7 @@ function add_option_radio()
     
     html_str += '<tr><td align="left">&nbsp;&nbsp;<?php echo TEXT_ITEM_PIC_NAME;?></td><td align="left"><input type="file" name="rop_'+i_num_add+'[]" value="">&nbsp;<a href="javascript:void(0);" onclick="delete_item_pic(this);"><input type="button" value="<?php echo TEXT_ITEM_DELETE_PIC;?>" class="element_button"></a><a href="javascript:void(0);" onclick="add_item_pic(this, '+i_num_add+');"><input type="button" value="<?php echo TEXT_ITEM_ADD_PIC;?>" class="element_button"></a></td></tr>'; 
    
-    html_str += '<tr><td align="left">&nbsp;&nbsp;<?php echo TEXT_ITEM_MONEY_NAME;?></td><td align="left"><input type="text" name="rom_'+i_num_add+'" value="" style="width:35%; text-align:right"><?php echo TEXT_MONEY_SYMBOL;?></td></tr>';
+    html_str += '<tr height="40"><td valign="top" align="left">&nbsp;&nbsp;<?php echo TEXT_ITEM_MONEY_NAME;?></td><td valign="top" align="left"><input type="text" name="rom_'+i_num_add+'" value="" style="width:35%; text-align:right">&nbsp;<?php echo TEXT_MONEY_SYMBOL;?></td></tr>';
   }
   $('#add_radio').parent().before(html_str);
 }
