@@ -681,10 +681,11 @@
 <html <?php echo HTML_PARAMS; ?>>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
+
 <?php 
   // 订单详细页，TITLE显示交易商品名
   if ($_GET['action']=='edit' && $_GET['oID']) {?>
-<title><?php echo tep_get_preorders_products_names($_GET['oID']); ?></title>
+<title><?php echo tep_get_preorders_products_names($_GET['oID'])." ".HEADING_TITLE;; ?></title>
 <?php } else { ?>
 <title><?php echo HEADING_TITLE; ?></title>
 <?php }?>

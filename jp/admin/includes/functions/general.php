@@ -825,6 +825,14 @@ function tep_get_orders_status() {
 
   return $orders_status_array;
 }
+function tep_get_orders_edit_title_from_oID($orders_id){
+$oid = $orders_id;
+$products_id_query = tep_db_query("select products_id from ".TABLE_ORDERS_PRODUCTS." where orders_id='".$oid."'");
+$products_id_array = tep_db_fetch_array($products_id_query);
+$products_name_query = tep_db_query("select products_name from ".TABLE_PRODUCTS_DESCRIPTION." where products_id='".$products_id_array['products_id']."'");
+$products_name_array = tep_db_fetch_array($products_name_query);
+return $products_name_array['products_name'];
+}
 function tep_get_orders_manual_title_from_pID($products_id){
 $pID=$products_id;
 $categories_info_query=tep_db_query("select categories_id from ".TABLE_PRODUCTS_TO_CATEGORIES." where products_id='".$pID."'");
@@ -6993,73 +7001,6 @@ function tep_get_relate_product_history_sum($relate_products_id,$date_sub,$site_
   }else{
     return 0;
   }
-}
-function get_option_group_link($group_id, $keyword = '')
-{
-  $link_str = '';
-  $group_query = tep_db_query("select * from ".TABLE_OPTION_GROUP." where id = '".$group_id."'");
-  $group = tep_db_fetch_array($group_query);
-  
-  if ($group) {
-    if (trim($keyword) != '') {
-      $group_prev_query = tep_db_query("select * from ".TABLE_OPTION_GROUP." where id != '".$group_id."' and created_at >= '".$group['created_at']."' and name like '%".$keyword."%' order by created_at asc limit 1"); 
-    } else {
-      $group_prev_query = tep_db_query("select * from ".TABLE_OPTION_GROUP." where id != '".$group_id."' and created_at >= '".$group['created_at']."' order by created_at asc limit 1"); 
-    }
-    $group_prev = tep_db_fetch_array($group_prev_query); 
-    if ($group_prev) {
-      $link_str .= '<a href="javascript:void(0)" onclick="show_link_group_info(\''.$group_prev['id'].'\');">'.TEXT_GROUP_PREV.'</a>'; 
-    }
-    if (trim($keyword) != '') {
-      $group_next_query = tep_db_query("select * from ".TABLE_OPTION_GROUP." where id != '".$group_id."' and created_at <= '".$group['created_at']."'  and name like '%".$keyword."%' order by created_at desc limit 1"); 
-    } else {
-      $group_next_query = tep_db_query("select * from ".TABLE_OPTION_GROUP." where id != '".$group_id."' and created_at <= '".$group['created_at']."' order by created_at desc limit 1"); 
-    }
-    $group_next = tep_db_fetch_array($group_next_query); 
-    if ($group_next) {
-      $link_str .= '&nbsp;&nbsp;<a href="javascript:void(0)" onclick="show_link_group_info(\''.$group_next['id'].'\');">'.TEXT_GROUP_NEXT.'</a>'; 
-    }
-  }
-  
-  return $link_str;
-}
-
-function tep_get_random_option_item_name($length = 16)
-  {
-    $pattern = 'abcdefghijklmnopqrstuvwxyz';
-    while (true) {
-      $key = ''; 
-      for($i = 0; $i < $length; $i++) {
-        $key .= $pattern[mt_rand(0,25)]; 
-      }
-      $exists_item_name_raw = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name = '".$key."'"); 
-      if (!tep_db_num_rows($exists_item_name_raw)) {
-        return $key; 
-      }
-    }
-  }
-
-function get_option_item_link($group_id, $item_id)
-{
-  $link_str = '';
-  $item_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where id = '".$item_id."'");
-  $item = tep_db_fetch_array($item_query);
-  if ($item) {
-    $item_prev_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where group_id = '".$group_id."' and id != '".$item_id."' and created_at >= '".$item['created_at']."' order by created_at asc limit 1"); 
-    $item_prev = tep_db_fetch_array($item_prev_query); 
-    if ($item_prev) {
-      $link_str .= '<a href="javascript:void(0)" onclick="show_link_item_info(\''.$item_prev['id'].'\', \''.$group_id.'\');">'.TEXT_ITEM_PREV.'</a>'; 
-      
-    }
-    
-    $item_next_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where group_id = '".$group_id."' and id != '".$item_id."' and created_at <= '".$item['created_at']."' order by created_at desc limit 1"); 
-    $item_next = tep_db_fetch_array($item_next_query); 
-    if ($item_next) {
-      $link_str .= '&nbsp;&nbsp;<a href="javascript:void(0)" onclick="show_link_item_info(\''.$item_next['id'].'\', \''.$group_id.'\');">'.TEXT_ITEM_NEXT.'</a>'; 
-    }
-  }
-  
-  return $link_str;
 }
 
 function tep_get_notice_info($return_type = 0)
