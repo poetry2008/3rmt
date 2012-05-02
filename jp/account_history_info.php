@@ -165,9 +165,15 @@
                 </table></td> 
             </tr> 
             <!-- start -->        
+            <?php
+            $address_shipping_num_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $_GET['order_id'] ."'");
+            $address_num = tep_db_num_rows($address_shipping_num_query);
+            tep_db_free_result($address_shipping_num_query);
+            if($address_num > 0){
+            ?>
             <tr> 
               <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-            </tr> 
+            </tr>  
             <tr> 
               <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
                   <tr class="infoBoxContents"> 
@@ -195,6 +201,9 @@
                   </tr>
               </table></td>
             </tr>
+            <?php
+            }
+            ?>
             <!-- end -->
             <tr> 
               <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 

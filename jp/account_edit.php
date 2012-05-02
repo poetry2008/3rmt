@@ -267,7 +267,14 @@ if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
   } else {
     $entry_email_address_check_error = false;
   }
-    
+
+  if(!preg_match('/[a-z]/',$password)){
+      $error = true;
+      $error_pwd = true;
+      $entry_password_english_error = true;
+  }else{
+      $entry_password_english_error = false; 
+  }
   if (strlen($password) < ENTRY_PASSWORD_MIN_LENGTH) {
     $error = true;
     $error_pwd = true;
@@ -278,7 +285,6 @@ if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
   if ($password !== $confirmation) {
     $error = true;
     $error_pwd = true;
-    $entry_password_error = true;
     $entry_password_confirmation_error = true;
   }
   
@@ -468,6 +474,12 @@ if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
     $error_pwd = false;
     $password = tep_db_prepare_input($_POST['password']);
     $confirmation = tep_db_prepare_input($_POST['confirmation']); 
+    if(!preg_match('/[a-z]/',$password)){
+      $error_pwd = true;
+      $entry_password_english_error = true;
+    }else{
+      $entry_password_english_error = false; 
+    }
     if (strlen($password) < ENTRY_PASSWORD_MIN_LENGTH) {
       $error_pwd = true;
       $entry_password_error = true;
@@ -477,7 +489,6 @@ if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
 
     if ($password !== $confirmation) {
       $error_pwd = true;
-      $entry_password_error = true;
       $entry_password_confirmation_error = true;
     }
     if($error_pwd == false){

@@ -2186,6 +2186,7 @@ echo "</table>";
   $min_str_end .= '</select>';
   //获取手料费
   $payment_modules = payment::getInstance($order->info['site_id']); 
+  $code_payment_method = isset($code_payment_method) && $code_payment_method != '' ? $code_payment_method : 'buying';
   $handle_fee_code = $payment_modules->handle_calc_fee(
     payment::changeRomaji($code_payment_method,PAYMENT_RETURN_TYPE_CODE), $shipping_money_total);
             ?>

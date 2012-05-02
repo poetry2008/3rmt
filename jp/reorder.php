@@ -693,12 +693,25 @@ function orderConfirmPage(){
   orderChanged = (orderChanged || document.getElementById('comment').value);
   
   // if order unchanged , does not commit
+  
+  var time_error = false;
+  var new_date = document.getElementById("new_date");
+  if(new_date.value == ''){
+    if(oldTime < today){
+      time_error = true; 
+    }
+  }
   if(!orderChanged){
     //alert('no change');
     document.getElementById('form_error').innerHTML = "<font color='red'>変更箇所がございません。</font>";
     document.getElementById('form_error').style.display = 'block';
     return false; 
   }
+  if(time_error){
+    document.getElementById('form_error').innerHTML = "<font color='red'>取引日時を指定してください。</font>";
+    document.getElementById('form_error').style.display = 'block';
+    return false; 
+  }  
   document.getElementById('form').style.display = 'none';
   document.getElementById('confirm').style.display = 'block';
   document.getElementById('confirm_content').innerHTML = text;

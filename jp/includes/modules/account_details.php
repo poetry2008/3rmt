@@ -202,7 +202,7 @@ $(document).ready(function(){
   </tr>
   <!-- zhusuo -->
 <?php
-  if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
+  if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != '' && isset($account['customers_email_address']) && $account['customers_email_address'] != ''){
 ?>
   <tr>
     <td class="formAreaTitle"><br><?php echo TITLE_ADDRESS; ?></td>
@@ -219,7 +219,7 @@ $(document).ready(function(){
             </td>
             </tr> 
       <?php
-        $address_query = tep_db_query("select * from ". TABLE_ADDRESS ." where status='0' order by sort");
+        $address_query = tep_db_query("select * from ". TABLE_ADDRESS ." where status='0' and type!='text' order by sort");
         while($address_array = tep_db_fetch_array($address_query)){
       ?>    
       <tr>
@@ -321,10 +321,12 @@ if (!isset($guestchk)) $guestchk = NULL;
             <td class="main">&nbsp;
 <?php
     if ($error == true) {
-      if ($entry_password_confirmation_error == true) { 
-        echo tep_draw_password_field('password') . '&nbsp;' . '<font color="red">ご入力されたパスワードが一致しておりません</font>';
+      if ($entry_password_english_error == true) { 
+        echo tep_draw_password_field('password') . '&nbsp;<font color="red">' . ENTRY_PASSWORD_ENGLISH .'</font>';
       } else if($entry_password_error == true) {
         echo tep_draw_password_field('password') . '&nbsp;' . ENTRY_PASSWORD_ERROR;
+      } else if($entry_password_confirmation_error == true){
+        echo tep_draw_password_field('password') . '&nbsp;' . '<font color="red">ご入力されたパスワードが一致しておりません</font>';
       } else {
         echo PASSWORD_HIDDEN . tep_draw_hidden_field('password') . tep_draw_hidden_field('confirmation');
       }
@@ -334,7 +336,7 @@ if (!isset($guestchk)) $guestchk = NULL;
 ?></td>
           </tr>
 <?php
-    if ( ($error == false) || ($entry_password_error == true) ) {
+    if ( ($error == false) || ($entry_password_error == true) || ($entry_password_english_error == true)|| ($entry_password_confirmation_error == true)) {
 ?>
           <tr>
             <td class="main">&nbsp;<?php echo ENTRY_PASSWORD_CONFIRMATION; ?></td>

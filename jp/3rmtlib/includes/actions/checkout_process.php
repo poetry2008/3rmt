@@ -560,23 +560,25 @@ $email_order = str_replace($email_temp,$email_shipping_fee,$email_order);
 $email_order = str_replace($email_temp_str,$email_shipping_fee,$email_order);
 $email_address = '▼注文商品';
 //zhusuo
-$address_len_array = array();
-foreach($_SESSION['options'] as $address_value){
+if(isset($_SESSION['options']) && !empty($_SESSION['options'])){
+  $address_len_array = array();
+  foreach($_SESSION['options'] as $address_value){
 
-  $address_len_array[] = strlen($address_value[0]);
+    $address_len_array[] = strlen($address_value[0]);
+  }
+  $maxlen = max($address_len_array);
+  $email_address_str = '▼住所情報'."\n";
+  $email_address_str .= '------------------------------------------'."\n";
+  $maxlen = 9;
+  foreach($_SESSION['options'] as $ad_value){
+    $ad_len = mb_strlen($ad_value[0],'utf8');
+    $temp_str = str_repeat('　',$maxlen-$ad_len);
+    $email_address_str .= $ad_value[0].$temp_str.'：'.$ad_value[1]."\n";
+  }
+  $email_address_str .= '------------------------------------------'."\n";
+  $email_address_str .= $email_address;
+  $email_order = str_replace($email_address,$email_address_str,$email_order);
 }
-$maxlen = max($address_len_array);
-$email_address_str = '▼住所情報'."\n";
-$email_address_str .= '------------------------------------------'."\n";
-$maxlen = 9;
-foreach($_SESSION['options'] as $ad_value){
-  $ad_len = mb_strlen($ad_value[0],'utf8');
-  $temp_str = str_repeat('　',$maxlen-$ad_len);
-  $email_address_str .= $ad_value[0].$temp_str.'：'.$ad_value[1]."\n";
-}
-$email_address_str .= '------------------------------------------'."\n";
-$email_address_str .= $email_address;
-$email_order = str_replace($email_address,$email_address_str,$email_order);
 // 2003.03.08 Edit Japanese osCommerce
 tep_mail(tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], EMAIL_TEXT_SUBJECT, $email_order, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
   
