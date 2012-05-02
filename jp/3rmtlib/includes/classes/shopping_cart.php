@@ -232,20 +232,50 @@
         if (isset($this->contents[$products_id]['op_attributes'])) {
           foreach ($this->contents[$products_id]['op_attributes'] as $key => $value) {
             $option_key_array = explode('_', $key);
-            $attribute_price_query = tep_db_query("select price from ".TABLE_OPTION_ITEM." where name = '".$option_key_array[1]."' and id = '".$option_key_array[3]."'"); 
+            $attribute_price_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name = '".$option_key_array[1]."' and id = '".$option_key_array[3]."'"); 
             $attribute_price = tep_db_fetch_array($attribute_price_query);
-            $this->total += $qty * tep_add_tax($attribute_price['price'], $products_tax);
-            $this->abs += abs($qty * tep_add_tax($attribute_price['price'], $products_tax));
+            if ($attribute_price) {
+              if ($attribute_price['type'] == 'radio') {
+                $a_option = @unserialize($attribute_price['option']);  
+                if (!empty($a_option['radio_image'])) {
+                  foreach ($a_option['radio_image'] as $a_key => $a_value) {
+                    if (trim($a_value['title']) == trim($value)) {
+                      $this->total += $qty * tep_add_tax($a_value['money'], $products_tax);
+                      $this->abs += abs($qty * tep_add_tax($a_value['money'], $products_tax));
+                      break; 
+                    }
+                  }
+                }
+              } else {
+                $this->total += $qty * tep_add_tax($attribute_price['price'], $products_tax);
+                $this->abs += abs($qty * tep_add_tax($attribute_price['price'], $products_tax));
+              }
+            }
           }
         }
         
         if (!empty($this->contents[$products_id]['ck_attributes'])) {
           foreach ($this->contents[$products_id]['ck_attributes'] as $ck_key => $ck_value) {
             $option_ck_key_array = explode('_', $ck_key);
-            $ck_attribute_price_query = tep_db_query("select price from ".TABLE_OPTION_ITEM." where name = '".$option_ck_key_array[0]."' and id = '".$option_ck_key_array[2]."'"); 
+            $ck_attribute_price_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name = '".$option_ck_key_array[0]."' and id = '".$option_ck_key_array[2]."'"); 
             $ck_attribute_price = tep_db_fetch_array($ck_attribute_price_query);
-            $this->total += $qty * tep_add_tax($ck_attribute_price['price'], $products_tax);
-            $this->abs += abs($qty * tep_add_tax($ck_attribute_price['price'], $products_tax));
+            if ($ck_attribute_price) {
+              if ($ck_attribute_price['type'] == 'radio') {
+                $ak_option = @unserialize($ck_attribute_price['option']);  
+                if (!empty($ak_option['radio_image'])) {
+                  foreach ($ak_option['radio_image'] as $ak_key => $ak_value) {
+                    if (trim($ak_value['title']) == trim($ck_value)) {
+                      $this->total += $qty * tep_add_tax($ak_value['money'], $products_tax);
+                      $this->abs += abs($qty * tep_add_tax($ak_value['money'], $products_tax));
+                      break; 
+                    } 
+                  }
+                }
+              } else {
+                $this->total += $qty * tep_add_tax($ck_attribute_price['price'], $products_tax);
+                $this->abs += abs($qty * tep_add_tax($ck_attribute_price['price'], $products_tax));
+              }
+            }
           }
         }
       }
@@ -255,10 +285,22 @@
       if (isset($this->contents[$products_id]['op_attributes'])) {
         foreach ($this->contents[$products_id]['op_attributes'] as $key => $value) {
           $option_key_array = explode('_', $key);
-          $attribute_price_query = tep_db_query("select price from ".TABLE_OPTION_ITEM." where name = '".$option_key_array[1]."' and id = '".$option_key_array[3]."'"); 
+          $attribute_price_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name = '".$option_key_array[1]."' and id = '".$option_key_array[3]."'"); 
           $attribute_price = tep_db_fetch_array($attribute_price_query);
           if ($attribute_price) {
-            $attributes_price += $attribute_price['price'];
+            if ($attribute_price['type'] == 'radio') {
+                $a_option = @unserialize($attribute_price['option']);  
+                if (!empty($a_option['radio_image'])) {
+                  foreach ($a_option['radio_image'] as $a_key => $a_value) {
+                    if (trim($a_value['title']) == trim($value)) {
+                      $attributes_price += $a_value['money'];
+                      break; 
+                    }
+                  }
+                }
+              } else {
+                $attributes_price += $attribute_price['price'];
+              }
           }
         }
       }
@@ -266,10 +308,22 @@
       if (isset($this->contents[$products_id]['ck_attributes'])) {
         foreach ($this->contents[$products_id]['ck_attributes'] as $ck_key => $ck_value) {
           $option_ck_key_array = explode('_', $ck_key);
-          $ck_attribute_price_query = tep_db_query("select price from ".TABLE_OPTION_ITEM." where name = '".$option_ck_key_array[0]."' and id = '".$option_ck_key_array[2]."'"); 
+          $ck_attribute_price_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name = '".$option_ck_key_array[0]."' and id = '".$option_ck_key_array[2]."'"); 
           $ck_attribute_price = tep_db_fetch_array($ck_attribute_price_query);
           if ($ck_attribute_price) {
-            $attributes_price += $ck_attribute_price['price'];
+            if ($ck_attribute_price['type'] == 'radio') {
+                $ak_option = @unserialize($ck_attribute_price['option']);  
+                if (!empty($ak_option['radio_image'])) {
+                  foreach ($ak_option['radio_image'] as $ak_key => $ak_value) {
+                    if (trim($ak_value['title']) == trim($ck_value)) {
+                      $attributes_price += $ak_value['money'];
+                      break; 
+                    } 
+                  }
+                }
+              } else {
+                $attributes_price += $ck_attribute_price['price'];
+              }
           }
         }
       }

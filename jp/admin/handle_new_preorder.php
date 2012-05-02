@@ -141,7 +141,18 @@ if(!in_array('onetime',$request_one_time_arr)&&$_SESSION['user_permission']!=15)
           'products_quantity' => $preorders_product['products_quantity'],
           ); 
     }
-    
+   
+    $preorder_attr_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS_ATTRIBUTES." where orders_id = '".$preorder_id."'");
+    while ($preorder_attr_res = tep_db_fetch_array($preorder_attr_raw)) {
+      $_SESSION['create_preorder']['orders_products_attributes'][$preorders_product['products_id']][] = array(
+           'orders_id' => $insert_id,
+           'orders_products_id' => $preorders_product['orders_products_id'],
+           'options_values_price' => $preorder_attr_res['options_values_price'],
+           'option_group_id' => $preorder_attr_res['option_group_id'],
+           'option_item_id' => $preorder_attr_res['option_item_id'],
+           'option_info' => @unserialize(stripslashes($preorder_attr_res['option_info'])),
+            );
+    }
     tep_redirect(tep_href_link('edit_new_preorders.php', 'oID='.$insert_id.'&action=edit&dtype=1'));
   } else {
     tep_redirect(tep_href_link('final_preorders.php', 'oID='.$_GET['oID'].'&action=edit'));

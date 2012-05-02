@@ -48,18 +48,18 @@
         } 
         
         $o_s_array = array();
-        $o_num = 0; 
+        //$o_num = 0; 
         
         foreach ($_POST as $pskey => $psvalue) {
           if (preg_match('/^(op_)\d{1,}/',$pskey)) {
-            $o_str = substr($pskey, 3);
-            if (isset($d_str)) {
-              if ($o_str == $d_str) {
-                $s_num = $o_num; 
-              }
-            }
+            //$o_str = substr($pskey, 3);
+            //if (isset($d_str)) {
+              //if ($o_str == $d_str) {
+                //$s_num = $o_num; 
+              //}
+            //}
             $o_s_array[] = $psvalue; 
-            $o_num++; 
+            //$o_num++; 
           }
         }
         
@@ -67,12 +67,16 @@
           $option_array['se_option'] = $o_s_array; 
         }
         
-        if (isset($s_num)) {
-          $option_array['se_num'] = $s_num; 
-        }
+        //if (isset($s_num)) {
+          //$option_array['se_num'] = $s_num; 
+        //}
        
         if (isset($_POST['secomment'])) {
           $option_array['secomment'] = $_POST['secomment']; 
+        }
+        
+        if (isset($_POST['sedefault'])) {
+          $option_array['sedefault'] = $_POST['sedefault']; 
         }
         
         if (isset($_POST['icomment'])) {
@@ -97,6 +101,84 @@
 
         if (isset($_POST['imax_num'])) {
           $option_array['imax_num'] = $_POST['imax_num']; 
+        }
+       
+        if (isset($_POST['racomment'])) {
+          $option_array['racomment'] = $_POST['racomment']; 
+        }
+        
+        if (isset($_POST['default_radio'])) {
+          $option_array['default_radio'] = $_POST['default_radio']; 
+        }
+        
+        $radio_option_array = array();
+        $r_num = 0; 
+        $image_directory = DIR_FS_CATALOG_IMAGES.'0/option_image/'; 
+       
+        if (($_GET['action'] == 'insert') && ($_POST['is_copy'] == '0')) {
+          foreach ($_POST as $r_key => $r_value) {
+            if (preg_match('/^(ro_)\d{1,}/',$r_key)) {
+              if ($r_value == '') {
+                continue; 
+              }
+              $radio_option_array[$r_num]['title'] = $r_value;
+              $re_num = substr($r_key, 3); 
+              $radio_option_array[$r_num]['money'] = (int)$_POST['rom_'.$re_num];
+              
+              $radio_option_array[$r_num]['images'] = array();
+              if (!empty($_FILES['rop_'.$re_num])) {
+                foreach ($_FILES['rop_'.$re_num]['name'] as $pic_key => $pic_value) {
+                  if (!empty($_FILES['rop_'.$re_num]['name'][$pic_key])) {
+                    $radio_option_array[$r_num]['images'][] = $_FILES['rop_'.$re_num]['name'][$pic_key];  
+                  } else {
+                    $radio_option_array[$r_num]['images'][] = '';  
+                  }
+                  if (is_uploaded_file($_FILES['rop_'.$re_num]['tmp_name'][$pic_key])) {
+                    move_uploaded_file($_FILES['rop_'.$re_num]['tmp_name'][$pic_key], $image_directory.$_FILES['rop_'.$re_num]['name'][$pic_key]); 
+                    chmod($image_directory.$_FILES['rop_'.$re_num]['name'][$pic_key], 0666); 
+                  }
+                }
+              }
+              $r_num++; 
+            }  
+          }
+        } 
+        
+        $ur_num = 0; 
+        if (($_GET['action'] == 'update') || ($_POST['is_copy'] == '1')) {
+          foreach ($_POST as $ur_key => $ur_value) {
+            if (preg_match('/^(ro_)\d{1,}/',$ur_key)) {
+              if ($ur_value == '') {
+                continue; 
+              }
+              
+              $radio_option_array[$ur_num]['title'] = $ur_value;
+              $re_num = substr($ur_key, 3); 
+              
+              $radio_option_array[$ur_num]['money'] = (int)$_POST['rom_'.$re_num];
+              $radio_option_array[$ur_num]['images'] = array();
+              
+              if (!empty($_FILES['rop_'.$re_num])) {
+                foreach ($_FILES['rop_'.$re_num]['name'] as $pic_key => $pic_value) {
+                  if (!empty($_FILES['rop_'.$re_num]['name'][$pic_key])) {
+                    $radio_option_array[$ur_num]['images'][] = $_FILES['rop_'.$re_num]['name'][$pic_key];  
+                  } else {
+                    $radio_option_array[$ur_num]['images'][] = isset($_POST['rou_'.$re_num][$pic_key])?$_POST['rou_'.$re_num][$pic_key]:'';  
+                  }
+                  
+                  if (is_uploaded_file($_FILES['rop_'.$re_num]['tmp_name'][$pic_key])) {
+                    move_uploaded_file($_FILES['rop_'.$re_num]['tmp_name'][$pic_key], $image_directory.$_FILES['rop_'.$re_num]['name'][$pic_key]); 
+                    chmod($image_directory.$_FILES['rop_'.$re_num]['name'][$pic_key], 0666); 
+                  }
+                } 
+              }
+              $ur_num++; 
+            } 
+          }
+        } 
+        
+        if (!empty($radio_option_array)) {
+          $option_array['radio_image'] =$radio_option_array;  
         }
         
         if (!$error) {
@@ -184,6 +266,7 @@ function preview_item(preview_id, pt_type)
         $('#sort_num').val(data.sort_num);
         $('#p_type').html(data.place_type);
         $('#show_select').html(data.item_element);
+        $('#is_copy').val('1');
       }
     }
   });
@@ -256,20 +339,33 @@ function check_item_info()
 {
   var item_title = document.getElementById('title').value; 
   var item_front_title = document.getElementById('front_title').value; 
+  var r_str = '';
+  var reg = /^ro_[0-9]+$/; 
+  
+  $('#show_select').find('input').each(function() {
+     ro_name = $(this).attr('name');
+     if (reg.exec(ro_name)) {
+       if ($(this).val() != '') {
+         r_str += $(this).val()+'<<<|||';    
+       }
+     }
+  });  
   
   $.ajax({
       url: 'ajax_orders.php?action=check_item',
       type: 'POST',
       dataType: 'text',
-      data:'ititle='+item_title+'&ifront_title='+item_front_title,
+      data:'ititle='+item_title+'&ifront_title='+item_front_title+'&r_str='+r_str,
       async:false,
       success: function (data) {
         var error_arr = data.split('||');
         $('#title_error').html(error_arr[0]);
         $('#front_error').html(error_arr[1]);
-        if (data == '||') {
+        $('#rname_error').html(error_arr[2]);
+        
+        if (data == '||||') {
           document.forms.option_item.submit(); 
-        }
+        } 
       }
       });
 }
@@ -340,6 +436,9 @@ function change_option_item_type(item_id)
      async: false,
      success: function(msg) {
        $('#show_select').html(msg); 
+       if (stype == 'Radio') {
+         $('#price').parent().parent().css('display', 'none'); 
+       }
      }
   });
 }
@@ -359,9 +458,58 @@ function add_option_select()
   });   
   for (i=1; i<=5 ; i++) {
     i_num_add = i_num+i; 
-    html_str += '<tr><td><?php echo TEXT_OPTION_ITEM_SELECT;?></td><td><input type="text" name="op_'+i_num_add+'" value="">&nbsp;<input type="radio" name="dselect" value="dp_'+i_num_add+'"></td><td><a href="javascript:void(0);" onclick="del_option_select(this);"><?php echo TEXT_OPTION_ITEM_DEL_LINK;?></a></td></tr>';   
+    html_str += '<tr><td align="left"><?php echo TEXT_OPTION_ITEM_SELECT;?></td><td align="left"><input type="text" name="op_'+i_num_add+'" value="" class="option_text">&nbsp;<input type="button" onclick="del_option_select(this);" value="<?php echo TEXT_OPTION_ITEM_DEL_LINK;?>"></td></tr>';   
   }
   $('#add_select').parent().before(html_str);
+}
+
+function add_option_radio()
+{
+  var i_num = 1; 
+  var html_str = '';
+
+  $('#show_select').find('input[type=text]').each(function(i) {
+    if ($(this).attr('name').substring(0, '3') == 'ro_') {
+      i_num = parseInt($(this).attr('name').substring('3')); 
+    }
+  });   
+  for (i=1; i<=5 ; i++) {
+    i_num_add = i_num+i; 
+    html_str += '<tr><td align="left"><?php echo TEXT_OPTION_ITEM_SELECT;?></td><td align="left"><input type="text" style="width:35%;"name="ro_'+i_num_add+'" value=""><a href="javascript:void(0);"onclick="delete_radio(this, '+i_num_add+');"><input type="button" value="<?php echo TEXT_OPTION_ITEM_DEL_LINK;?>" class="element_button" onclick="redirect_new_url(this);"></a></td></tr>';   
+    
+    html_str += '<tr><td align="left">&nbsp;&nbsp;<?php echo TEXT_ITEM_PIC_NAME;?></td><td align="left"><input type="file" name="rop_'+i_num_add+'[]" value="">&nbsp;<a href="javascript:void(0);" onclick="delete_item_pic(this);"><input type="button" value="<?php echo TEXT_ITEM_DELETE_PIC;?>" class="element_button"></a><a href="javascript:void(0);" onclick="add_item_pic(this, '+i_num_add+');"><input type="button" value="<?php echo TEXT_ITEM_ADD_PIC;?>" class="element_button"></a></td></tr>'; 
+   
+    html_str += '<tr height="40"><td valign="top" align="left">&nbsp;&nbsp;<?php echo TEXT_ITEM_MONEY_NAME;?></td><td valign="top" align="left"><input type="text" name="rom_'+i_num_add+'" value="" style="width:35%; text-align:right">&nbsp;<?php echo TEXT_MONEY_SYMBOL;?></td></tr>';
+  }
+  $('#add_radio').parent().before(html_str);
+}
+
+function add_item_pic(i_obj, i_num)
+{
+  html_str = '<tr><td align="left">&nbsp;&nbsp;<?php echo TEXT_ITEM_PIC_NAME;?></td><td align="left"><input type="file" name="rop_'+i_num+'[]" value="">&nbsp;<a href="javascript:void(0);" onclick="delete_item_pic(this);"><input type="button" value="<?php echo TEXT_ITEM_DELETE_PIC;?>" class="element_button"></a><a href="javascript:void(0);" onclick="add_item_pic(this, '+i_num+');"><input type="button" value="<?php echo TEXT_ITEM_ADD_PIC;?>" class="element_button"></a></td></tr>'; 
+  
+  $(i_obj).parent().parent().after(html_str); 
+}
+
+function delete_radio(i_obj, i_num)
+{
+  $('#show_select').find('input[type=file]').each(function(i) {
+    if ($(this).attr('name') == 'rop_'+i_num+'[]') {
+      $(this).parent().parent().remove();
+    }
+  });
+  
+  $(i_obj).parent().parent().remove(); 
+  $('#show_select').find('input[type=text]').each(function(i) {
+    if ($(this).attr('name') == 'rom_'+i_num) {
+      $(this).parent().parent().remove();
+    }
+  });
+}
+
+function delete_item_pic(i_obj)
+{
+  $(i_obj).parent().parent().remove();
 }
 
 $(function() {
@@ -419,21 +567,22 @@ $(function() {
                echo $option_group['name'];
               ?>
               </td>
-              <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT); ?></td>
+              <td align="right">
+              <div id="show_item_info" style="display:none;"></div> 
+              <div align="right">
+              <?php echo tep_draw_form('form', FILENAME_OPTION_GROUP, '', 'get');?>
+              <input type="text" name="keyword" id="keyword">
+              <input type="hidden" name="search" value="1">
+              <?php echo tep_html_element_submit(IMAGE_SEARCH);?>
+              </form>
+              </div>      
+              </td>
             </tr>
           </table>
         </td>
       </tr>
       <tr>
         <td>
-        <div id="show_item_info" style="display:none;"></div> 
-        <div align="right">
-        <?php echo tep_draw_form('form', FILENAME_OPTION_GROUP, '', 'get');?>
-        <input type="text" name="keyword" id="keyword">
-        <input type="hidden" name="search" value="1">
-        <?php echo tep_html_element_submit(IMAGE_SEARCH);?>
-        </form>
-        </div>
         <table id="item_list_box" border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
             <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
@@ -495,6 +644,8 @@ $(function() {
                   echo OPTION_ITEM_OPTION_TEXTAREA_TYPE; 
                 } else if ($item['type'] == 'select'){
                   echo OPTION_ITEM_OPTION_SELECT_TYPE; 
+                } else if ($item['type'] == 'radio') {
+                  echo OPTION_ITEM_OPTION_RADIO_TYPE; 
                 }
                 ?> 
                 </td>
@@ -526,7 +677,7 @@ $(function() {
                 }
                 ?>
                 </td>
-                <td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_OPTION_ITEM, 'page='.$_GET['page'].'&group_id=' .$_GET['group_id'].  '&item_id=' .$item['id']);?>'"><?php echo '&nbsp;' .  $currencies->format($item['price']); ?></td>
+                <td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_OPTION_ITEM, 'page='.$_GET['page'].'&group_id=' .$_GET['group_id'].  '&item_id=' .$item['id']);?>'"><?php echo '&nbsp;' .  $currencies->format($item['price'], true, DEFAULT_CURRENCY, '', false); ?></td>
                 <td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_OPTION_ITEM, 'page='.$_GET['page'].'&group_id=' .$_GET['group_id'].  '&item_id=' .$item['id']);?>'"><?php echo '&nbsp;' .  $item['sort_num']; ?></td>
                 <td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_OPTION_ITEM, 'page='.$_GET['page'].'&group_id=' .$_GET['group_id'].  '&item_id=' .$item['id']);?>'">
                 <?php

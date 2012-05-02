@@ -30,6 +30,7 @@ class HM_Option_Item extends Option_DbRecord
     $this->instance->group_id= $this->group_id;
     $this->instance->init($this->option);
     $this->instance->front_title = $this->front_title; 
+    $this->instance->s_price = $this->price; 
     }
     return $this->instance;
   }

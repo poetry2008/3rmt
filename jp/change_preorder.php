@@ -17,6 +17,7 @@
 ?>
 <?php page_head();?>
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
+<script type="text/javascript" src="js/option.js"></script>
 <script type="text/javascript">
 function check(value){
   var arr  = new Array();
@@ -441,6 +442,25 @@ document.forms.order1.submit();
               </td>
             </tr>
             <?php
+            $old_attr_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS_ATTRIBUTES." where orders_id = '".$preorder_id."'"); 
+            while ($old_attr_res = tep_db_fetch_array($old_attr_raw)) {
+              $old_attr_info = @unserialize(stripslashes($old_attr_res['option_info'])); 
+            ?>
+            <tr>
+              <td class="main"><?php echo $old_attr_info['title'];?>:</td> 
+              <td class="main">
+              <?php 
+              echo $old_attr_info['value'];
+              if ($old_attr_res['options_values_price'] != '0') {
+                echo ' ('.$currencies->format($old_attr_res['options_values_price'] * $preorder_product_res['products_quantity']).')'; 
+              }
+              ?>
+              </td> 
+            </tr>
+            <?php
+            }
+            ?>
+            <?php
               $product_info_raw = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".$preorder_product_res['products_id']."'"); 
               $product_info_res = tep_db_fetch_array($product_info_raw); 
             ?>
@@ -735,7 +755,7 @@ document.forms.order1.submit();
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
           <tr>
             <td>
-            <?php echo $hm_option->render($product_info_res['belong_to_option'], true, 2);?> 
+            <?php echo $hm_option->render($product_info_res['belong_to_option'], true, 1);?> 
             </td>
           </tr>
           </table> 

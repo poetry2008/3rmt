@@ -99,6 +99,22 @@
             <?php echo $preorder_product['products_name'];?> 
             </td>
             </tr> 
+            <?php
+            $preorder_attributes_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS_ATTRIBUTES." where orders_id = '".$preorder_id."'"); 
+            while ($preorder_attributes = tep_db_fetch_array($preorder_attributes_raw)) {
+              $option_info_array = @unserialize(stripslashes($preorder_attributes['option_info'])); 
+            ?>
+            <tr>
+              <td>
+              <?php echo $option_info_array['title'].'：';?> 
+              </td>
+              <td>
+              <?php echo $option_info_array['value'];?> 
+              </td>
+            </tr>
+            <?php
+            }
+            ?>
             <tr> 
             <td> 
             <?php echo PREORDER_SUCCESS_APPOINT_PRODUCT_NUM;?>

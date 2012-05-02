@@ -590,7 +590,9 @@ function orderConfirmPage(){
   nowMinutes   = now.getHours() * 60 + now.getMinutes();
 
   oldTime = '<?php echo tep_date_long(strtotime($order['torihiki_date']));?> <?php echo date('H:i', strtotime($order['torihiki_date']));?>';
+  oldTime_value = '<?php echo strtotime($order['torihiki_date']);?>';
   today   = '<?php echo tep_date_long(time());?>';
+  today_value = '<?php echo time();?>';
   
 <?php foreach($o->products as $p){?>
   productName[<?php echo $p['id'];?>] = '<?php echo $p['name'];?>';
@@ -697,7 +699,7 @@ function orderConfirmPage(){
   var time_error = false;
   var new_date = document.getElementById("new_date");
   if(new_date.value == ''){
-    if(oldTime < today){
+    if(oldTime_value <= today_value){
       time_error = true; 
     }
   }

@@ -163,8 +163,8 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
       $char_id = $products[$i]['id'];
     $mail_body .= '・' . $products[$i]['name'] . '×' . $products[$i]['quantity'] . "\n";
       $attributes_exist = ((isset($products[$i]['op_attributes'])) ? 1 : 0);
-
-        if ($attributes_exist == 1) {
+       
+       if ($attributes_exist == 1) {
           foreach ($products[$i]['op_attributes'] as $op_key => $op_value) {
             $op_key_array = explode('_', $op_key);
             $option_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name = '".$op_key_array[1]."' and id = '".$op_key_array[3]."'"); 
@@ -174,6 +174,17 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
             }
           }
         }
+    
+       if (isset($products[$i]['ck_attributes'])) {
+         foreach ($products[$i]['ck_attributes'] as $c_op_key => $c_op_value) {
+           $c_op_array = explode('_', $c_op_key);
+           $c_option_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name = '".$c_op_array[0]."' and id = '".$c_op_array[2]."'"); 
+           $c_option_res = tep_db_fetch_array($c_option_query);
+           if ($c_option_res) {
+             $mail_body .= '└' . $c_option_res['front_title'] . ' ' . $c_op_value . "\n";
+           }
+         }
+       }
     }
 
 /*    
@@ -573,6 +584,12 @@ function getpreexpress($pre_value, $pre_pid){
     if ($preorder_products_res) {
       $mail_body .= '・' . $preorder_products_res['products_name'] . '×' .  $preorder_products_res['products_quantity'] . "\n";
    
+      $old_attr_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS_ATTRIBUTES." where orders_id = '".$pid."'");
+      while ($old_attr_res = tep_db_fetch_array($old_attr_raw)) {
+        $old_attr_info = @unserialize(stripslashes($old_attr_res['option_info']));
+        $mail_body .= '└' . $old_attr_info['title'] . ' ' .  $old_attr_info['value'] . "\n";
+      }
+      
       if (isset($_SESSION['preorder_option_info'])) {
         foreach ($_SESSION['preorder_option_info'] as $key => $value) {
           $i_option = explode('_', $key);
@@ -583,6 +600,7 @@ function getpreexpress($pre_value, $pre_pid){
           }
         }
       }
+      
     }
 
     $mail_body .= "\t" . '------------------------------------------'."\n";

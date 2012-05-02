@@ -203,21 +203,22 @@ $(function() {
           <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr>
               <td class="pageHeading"><?php echo HEADING_TITLE; ?></td>
-              <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT); ?></td>
+              <td align="right">
+              <div id="show_group_info" style="display:none;"></div> 
+              <div align="right">
+              <?php echo tep_draw_form('form', FILENAME_OPTION_GROUP, '', 'get');?> 
+              <input type="text" name="keyword" id="keyword">
+              <input type="hidden" name="search" value="1">
+              <?php echo tep_html_element_submit(IMAGE_SEARCH);?>
+              </form> 
+              </div>      
+              </td>
             </tr>
           </table>
         </td>
       </tr>
       <tr>
         <td>
-        <div id="show_group_info" style="display:none;"></div> 
-        <div align="right">
-        <?php echo tep_draw_form('form', FILENAME_OPTION_GROUP, '', 'get');?> 
-        <input type="text" name="keyword" id="keyword">
-        <input type="hidden" name="search" value="1">
-        <?php echo tep_html_element_submit(IMAGE_SEARCH);?>
-        </form> 
-        </div>
         <table id="group_list_box" border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
             <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
@@ -238,9 +239,9 @@ $(function() {
 
     if (isset($_GET['search'])) {
       if ($_GET['search'] == '2') {
-        $group_query_raw = 'select * from '.TABLE_OPTION_GROUP.' where name = \''.$_GET['keyword'].'\' order by created_at desc';
+        $group_query_raw = 'select * from '.TABLE_OPTION_GROUP.' where name = \''.tep_replace_full_character($_GET['keyword']).'\' order by created_at desc';
       } else {
-        $group_query_raw = 'select * from '.TABLE_OPTION_GROUP.' where name like \'%'.$_GET['keyword'].'%\' order by created_at desc';
+        $group_query_raw = 'select * from '.TABLE_OPTION_GROUP.' where name like \'%'.tep_replace_full_character($_GET['keyword']).'%\' order by created_at desc';
       }
     } else {
       $group_query_raw = 'select * from '.TABLE_OPTION_GROUP.' order by created_at desc';

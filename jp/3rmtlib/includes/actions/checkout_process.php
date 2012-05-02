@@ -376,6 +376,10 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
     $attribute_max_len = max($attribute_len_array); 
   }
   
+  if ($attribute_max_len < 4) {
+    $attribute_max_len = 4; 
+  }
+  
   if (!empty($order->products[$i]['op_attributes'])) {
     $attributes_exist = '1';
      
@@ -383,9 +387,31 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
        
       
       $input_option_array = array('title' => $op_value['front_title'], 'value' => $op_value['value']);
+      $option_item_raw = tep_db_query("select * from ".TABLE_OPTION_ITEM." where id = '".$op_value['item_id']."'"); 
+      $option_item_res = tep_db_fetch_array($option_item_raw); 
+      $op_price = 0; 
+      
+      if ($option_item_res) {
+        if ($option_item_res['type'] == 'radio') {
+           $ao_option_array = @unserialize($option_item_res['option']);
+           if (!empty($ao_option_array['radio_image'])) {
+             foreach ($ao_option_array['radio_image'] as $or_key => $or_value) {
+               if (trim($or_value['title']) == trim($op_value['value'])) {
+                 $op_price = $or_value['money']; 
+                 break; 
+               }
+             }
+           } 
+        } else {
+          $op_price = $option_item_res['price']; 
+        }
+      } else {
+        $op_price = $op_value['price']; 
+      }
+      
       $sql_data_array = array('orders_id' => $insert_id, 
                               'orders_products_id' => $order_products_id, 
-                              'options_values_price' => $op_value['price'], 
+                              'options_values_price' => $op_price, 
                               'option_info' => tep_db_input(serialize($input_option_array)),  
                               'option_group_id' => $op_value['group_id'], 
                               'option_item_id' => $op_value['item_id'] 
@@ -406,15 +432,43 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
         . $op_value['front_title'] 
         . str_repeat('　',intval(($attribute_max_len-mb_strlen($op_value['front_title'], 'utf-8'))))
         . '：' . $op_value['value'];
+      
+      if ($op_price != '0') {
+        $products_ordered_attributes .= '　('.$currencies->format($op_price*$order->products[$i]['qty']).')'; 
+      }
     }
   }
   
   if (!empty($order->products[$i]['ck_attributes'])) {
     foreach ($order->products[$i]['ck_attributes'] as $ck_key => $ck_value) {
       $input_option_array = array('title' => $ck_value['front_title'], 'value' => $ck_value['value']);
+      
+      $coption_item_raw = tep_db_query("select * from ".TABLE_OPTION_ITEM." where id = '".$ck_value['item_id']."'"); 
+      $coption_item_res = tep_db_fetch_array($coption_item_raw); 
+      $c_op_price = 0; 
+      
+      if ($coption_item_res) {
+        if ($coption_item_res['type'] == 'radio') {
+           $aco_option_array = @unserialize($coption_item_res['option']);
+           if (!empty($aco_option_array['radio_image'])) {
+             foreach ($aco_option_array['radio_image'] as $cor_key => $cor_value) {
+               if (trim($cor_value['title']) == trim($ck_value['value'])) {
+                 $c_op_price = $cor_value['money']; 
+                 break; 
+               }
+             }
+           } 
+        } else {
+          $c_op_price = $coption_item_res['price']; 
+        }
+      } else {
+        $c_op_price = $ck_value['price']; 
+      }
+      
+      
       $sql_data_array = array('orders_id' => $insert_id, 
                               'orders_products_id' => $order_products_id, 
-                              'options_values_price' => $ck_value['price'], 
+                              'options_values_price' => $c_op_price, 
                               'option_info' => tep_db_input(serialize($input_option_array)),  
                               'option_group_id' => $ck_value['group_id'], 
                               'option_item_id' => $ck_value['item_id'] 
@@ -435,6 +489,10 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
         . $ck_value['front_title'] 
         . str_repeat('　',intval(($attribute_max_len-mb_strlen($ck_value['front_title'], 'utf-8'))))
         . '：' . $ck_value['value'];
+      
+      if ($c_op_price != '0') {
+        $products_ordered_attributes .= '　('.$currencies->format($c_op_price*$order->products[$i]['qty']).')'; 
+      }
     }
   }
   
@@ -445,14 +503,17 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
   $total_tax += tep_calculate_tax($total_products_price, $products_tax) * $order->products[$i]['qty'];
   $total_cost += $total_products_price;
 
-  $products_ordered .= '注文商品　　　　　：' . $order->products[$i]['name'];
+  $products_ordered .= '注文商品'.str_repeat('　',intval(($attribute_max_len-mb_strlen('注文商品', 'utf-8')))).'：' . $order->products[$i]['name'];
   if(tep_not_null($order->products[$i]['model'])) {
     $products_ordered .= ' (' . $order->products[$i]['model'] . ')';
   }
+  if ($order->products[$i]['price'] != '0') {
+    $products_ordered .= ' ('.$currencies->display_price($order->products[$i]['price'], $order->products[$i]['tax']).')'; 
+  }
   $products_ordered .= $products_ordered_attributes . "\n";
-  $products_ordered .= '個数　　　　　　　：' . $order->products[$i]['qty'] . '個' .  tep_get_full_count2($order->products[$i]['qty'], (int)$order->products[$i]['id']) . "\n";
-  $products_ordered .= '単価　　　　　　　：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax']) . "\n";
-  $products_ordered .= '小計　　　　　　　：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty']) . "\n";
+  $products_ordered .= '個数'.str_repeat('　',intval(($attribute_max_len-mb_strlen('個数', 'utf-8')))).'：' . $order->products[$i]['qty'] . '個' .  tep_get_full_count2($order->products[$i]['qty'], (int)$order->products[$i]['id']) . "\n";
+  $products_ordered .= '単価'.str_repeat('　',intval(($attribute_max_len-mb_strlen('単価', 'utf-8')))).'：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax']) . "\n";
+  $products_ordered .= '小計'.str_repeat('　',intval(($attribute_max_len-mb_strlen('小計', 'utf-8')))).'：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty']) . "\n";
   //if(tep_not_null($chara)) {
     //$products_ordered .= 'キャラクター名　　：' .  (EMAIL_USE_HTML === 'true' ? htmlspecialchars(stripslashes($chara)) : stripslashes($chara)) . "\n";
   //}
