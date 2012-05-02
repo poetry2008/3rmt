@@ -52,6 +52,7 @@ class HM_Option_Item_Select extends HM_Option_Item_Basic
        
      }
      echo '<td>'; 
+     echo '<div class="option_info_text">'; 
      if (!empty($this->se_option)) {
        $i = 1; 
        echo '<select name="'.$pre_item_str.'op_'.$this->formname.'">'; 
@@ -67,11 +68,12 @@ class HM_Option_Item_Select extends HM_Option_Item_Basic
     
      if ($sp_pos !== false) {
        if ($this->s_price != '0') {
-         echo number_format($this->s_price).OPTION_ITEM_SELECT_MONEY_UNIT; 
+         echo '<span class="option_money">'.number_format($this->s_price).OPTION_ITEM_SELECT_MONEY_UNIT.'</span>'; 
        }
      }
+     echo '</div>'; 
      if ($this->secomment) {
-       echo '<br>'.$this->secomment; 
+       echo $this->secomment; 
      }
      echo '<span id="'.$pre_item_str.'error_'.$this->formname.'" class="option_error">';
      if (isset($option_error_array[$pre_item_str.$this->formname])) {

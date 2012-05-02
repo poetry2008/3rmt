@@ -50,11 +50,20 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
        
        }
        
-       echo '<textarea class="option_input" name="'.$pre_item_str.'op_'.$this->formname.'">'.$default_value.'</textarea>';    
+       echo '<div class="option_info_text">'; 
+       echo '<textarea class="option_input" name="'.$pre_item_str.'op_'.$this->formname.'" rows="'.$this->iline.'">'.$default_value.'</textarea>';    
        if ($this->require == '1') {
-         echo '<font color="#ff0000">'.OPTION_ITEM_TEXT_REQUIRE.'</font>'; 
+         echo '<font color="#ff0000" style="float:left;">'.OPTION_ITEM_TEXT_REQUIRE.'</font>'; 
        }
-       echo '<br>'.$this->icomment; 
+       if ($sp_pos !== false) {
+         if ($this->s_price != '0') {
+           echo '<span class="option_money">'.number_format($this->s_price).OPTION_ITEM_TEXTAREA_MONEY_UNIT.'</span>'; 
+         }
+       }
+       echo '</div>'; 
+       if ($this->icomment) {
+         echo $this->icomment; 
+       }
        echo '<span id="'.$pre_item_str.'error_'.$this->formname.'" class="option_error">';
        if (isset($option_error_array[$pre_item_str.$this->formname])) {
          echo '<br>'.$option_error_array[$pre_item_str.$this->formname]; 
@@ -84,20 +93,22 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
          }
        
        }
-       
+       echo '<div class="option_info_text">'; 
        echo '<input class="option_input" type="text" name="'.$pre_item_str.'op_'.$this->formname.'" value="'.$default_value.'">'; 
        
        if ($this->require == '1') {
-         echo '<font color="#ff0000">'.OPTION_ITEM_TEXT_REQUIRE.'</font>'; 
+         echo '<font color="#ff0000" style="float:left">'.OPTION_ITEM_TEXT_REQUIRE.'</font>'; 
        }
        
        if ($sp_pos !== false) {
          if ($this->s_price != '0') {
-           echo number_format($this->s_price).OPTION_ITEM_TEXTAREA_MONEY_UNIT; 
+           echo '<span class="option_money">'.number_format($this->s_price).OPTION_ITEM_TEXTAREA_MONEY_UNIT.'</span>'; 
          }
        } 
-       
-       echo '<br>'.$this->icomment;  
+       echo '</div>'; 
+       if ($this->icomment) {
+         echo $this->icomment;  
+       }
        echo '<span id="'.$pre_item_str.'error_'.$this->formname.'" class="option_error">';
        if (isset($option_error_array[$pre_item_str.$this->formname])) {
          echo '<br>'.$option_error_array[$pre_item_str.$this->formname]; 

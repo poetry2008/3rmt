@@ -2527,7 +2527,8 @@ searching
 	vertical-align:top;
 }
 .option_input{
-	width:85%;
+	width:80%;
+	float:left;
 }
 .option_error{
 	color:#ff0000;
@@ -2593,6 +2594,16 @@ searching
 .preorder_option .option_name{
 	width:120px;
 }
+.option_money{
+	float:right;
+	line-height:18px;
+}
+.option_info_text{
+	overflow:hidden;
+	width:100%;
+	margin-bottom:5px;
+}
+.option_info_text select{ float:left;}
 /*shipping*/
 .shipping_error{
 	color:#ff0000;
