@@ -2362,9 +2362,9 @@ echo "</table>";
                   '<input name="update_products[' . $orders_products_id .  '][attributes][' . $orders_products_attributes_id . '][value]" size="35" value="' .  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&quot;"));
                 //if ($order->products[$i]['attributes'][$j]['price'] != '0') echo ' (' . $order->products[$i]['attributes'][$j]['prefix'] . $currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . ')';
                 echo '">';
-                if ($order->products[$i]['attributes'][$j]['price'] != '0') {
-                  echo ' ('.$currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty']).')'; 
-                }
+                //if ($order->products[$i]['attributes'][$j]['price'] != '0') {
+                  //echo ' ('.$currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty']).')'; 
+                //}
                 echo '</i></small></nobr>';
               }
             }

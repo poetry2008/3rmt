@@ -451,9 +451,9 @@ document.forms.order1.submit();
               <td class="main">
               <?php 
               echo $old_attr_info['value'];
-              if ($old_attr_res['options_values_price'] != '0') {
-                echo ' ('.$currencies->format($old_attr_res['options_values_price'] * $preorder_product_res['products_quantity']).')'; 
-              }
+              //if ($old_attr_res['options_values_price'] != '0') {
+                //echo ' ('.$currencies->format($old_attr_res['options_values_price'] * $preorder_product_res['products_quantity']).')'; 
+              //}
               ?>
               </td> 
             </tr>

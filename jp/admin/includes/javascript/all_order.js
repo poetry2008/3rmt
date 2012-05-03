@@ -828,3 +828,85 @@ success: function(msg) {
 }
 });
 }
+
+function recalc_order_price(oid, opd, o_str, op_str)
+{
+  var op_array = op_str.split('|||');
+  var p_op_info = 0; 
+  for (var i=0; i<op_array.length; i++) {
+    if (op_array[i] != '') {
+      p_op_info += parseInt(document.getElementsByName('update_products['+opd+'][attributes]['+op_array[i]+'][price]')[0].value); 
+    }
+  }
+  pro_num = document.getElementById('update_products_new_qty_'+opd).value;
+  p_price = document.getElementsByName('update_products['+opd+'][p_price]')[0].value;
+  
+  $.ajax({
+    type: "POST",
+    data:'oid='+oid+'&opd='+opd+'&o_str='+o_str+'&op_price='+p_op_info+'&p_num='+pro_num+'&p_price='+p_price,
+    async:false,
+    url: 'ajax_orders.php?action=recalc_price',
+    success: function(msg) {
+      msg_info = msg.split('|||');
+      document.getElementsByName('update_products['+opd+'][final_price]')[0].value = msg_info[0];
+      document.getElementById('update_products['+opd+'][a_price]').innerHTML = msg_info[1];
+      document.getElementById('update_products['+opd+'][b_price]').innerHTML = msg_info[2];
+      document.getElementById('update_products['+opd+'][c_price]').innerHTML = msg_info[3];
+    }
+  });
+}
+
+function recalc_all_product_price(oid, or_str)
+{
+  p_info = or_str.split('|||');
+ 
+  o_str = '';
+  for (i=0; i<p_info.length; i++) {
+    j = 0; 
+    $('#ctable').find('input').each(function() {
+      if ($(this).attr('type') == 'text') {
+        regex = 'update_products['+p_info[i]+'][attributes]'; 
+        regex_p = 'update_products['+p_info[i]+'][p_price]';
+        regex_n = 'update_products['+p_info[i]+'][qty]';
+        
+        if ($(this).attr('name').indexOf(regex) == 0) {
+          regex_o = '[price]';
+          if ($(this).attr('name').indexOf(regex_o) > 0) {
+            o_str += $(this).attr('name')+'='+$(this).val()+'&';  
+          }
+        }
+        
+        if ($(this).attr('name').indexOf(regex_p) == 0) {
+          o_str += $(this).attr('name')+'='+$(this).val()+'&';  
+        }  
+        
+        if ($(this).attr('name').indexOf(regex_n) == 0) {
+          o_str += $(this).attr('name')+'='+$(this).val()+'&';  
+        }  
+        
+        j++; 
+      } 
+   }); 
+  }
+   
+  $.ajax({
+    type: "POST",
+    data:o_str+'op_i='+or_str+'&oid='+oid,
+    async:false,
+    url: 'ajax_orders.php?action=recalc_all_price',
+    success: function(msg) {
+      msg_array = msg.split('|||');
+      for (m=0; m<msg_array.length; m++) {
+        mp_array = msg_array[m].split(':::');
+        op_id = mp_array[0];
+        sp_array = mp_array[1].split('<<<');
+        
+        document.getElementsByName('update_products['+op_id+'][final_price]')[0].value = sp_array[0];
+        document.getElementById('update_products['+op_id+'][a_price]').innerHTML = sp_array[1];
+        document.getElementById('update_products['+op_id+'][b_price]').innerHTML = sp_array[2];
+        document.getElementById('update_products['+op_id+'][c_price]').innerHTML = sp_array[3];
+        
+      }
+    }
+  }); 
+}
