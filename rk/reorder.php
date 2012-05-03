@@ -120,7 +120,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
         // update attributes
         if($o->products){
           foreach($o->products as $p){
-            if($p['attributes']){
+            if(isset($p['attributes']) && $p['attributes']){
               foreach($p['attributes'] as $a) {
                 if(isset($_POST['id'][$p['id']])) {
                   // old attribute
@@ -230,8 +230,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
 
   // load selected payment module
   require(DIR_WS_CLASSES . 'payment.php');
-  if (!isset($payment)) $payment = NULL; //del notice
-  $payment_modules = new payment($payment);
+  $payment_modules = new payment(isset($payment) ? $payment : '');
 
   # OrderNo
   $insert_id = $oID;
@@ -490,7 +489,7 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
   <td><input type='text' id='character_<?php echo $value['id'];?>' name='character[<?php echo $value['id'];?>]' value="<?php echo htmlspecialchars($value['character'])?>" class="input_text" ></td>
  </tr>
 <?php }?>
-<?php if($value['attributes'])foreach ($value['attributes'] as $att) {?>
+<?php if(isset($value['attributes']) && $value['attributes'])foreach ($value['attributes'] as $att) {?>
  <tr>
   <td bgcolor="#eeeeee"><?php echo $att['option'];?>(変更前)</td>
   <td><?php echo $att['value'];?></td>
@@ -546,7 +545,10 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
             }
             $products_options_array = array_merge(array(array('id' => '', 'text' => '--')), $products_options_array);
             if (!isset($cart->contents[$value['id']]['attributes'][$products_options_name['products_options_id']])) $cart->contents[$value['id']]['attributes'][$products_options_name['products_options_id']] = NULL;//del notice
-            echo tep_draw_pull_down_menu('id['.$value['id'].'][' . $products_options_name['products_options_id'] . ']', $products_options_array, $cart->contents[$value['id']]['attributes'][$products_options_name['products_options_id']]);
+            echo tep_draw_pull_down_menu(
+                'id['.$value['id'].'][' . $products_options_name['products_options_id'] . ']', 
+                $products_options_array, 
+                isset($cart->contents[$value['id']]['attributes'][$products_options_name['products_options_id']])?  $cart->contents[$value['id']]['attributes'][$products_options_name['products_options_id']]:'');
             echo '</td></tr>';
           }
           //echo '</table>';
@@ -662,9 +664,11 @@ function orderConfirmPage(){
       text += "<tr><td bgcolor='#eeeeee'>\n";
       text += "キャラクター名(変更後)";
       text += "</td><td>\n";
-      text += document.getElementById('character_'+i).value + "\n";
+      if(document.getElementById('character_'+i)){
+      text += document.getElementById('character_'+i).value.replace(/\</ig,"&lt;").replace(/\>/ig,"&gt;") + "\n";
       text += "</td></tr>";
       orderChanged = orderChanged || (oldCharacter[i] != document.getElementById('character_'+i).value);
+      }
     }
 
     
