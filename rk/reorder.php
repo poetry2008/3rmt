@@ -271,7 +271,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
   require(DIR_WS_CLASSES . 'order_total.php');
   $order_total_modules = new order_total;
 
-  //$order_totals = $order_total_modules->process();
+  $order_totals = $order_total_modules->process();
   
   # Random
 
@@ -325,9 +325,20 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
     }
 //------insert customer choosen option eof ----
 
-    $total_weight += ($o->products[$i]['qty'] * $o->products[$i]['weight']);
-    $total_tax += tep_calculate_tax($total_products_price, $products_tax) * $o->products[$i]['qty'];
-    $total_cost += $total_products_price;
+    if(isset($o->products[$i]['weight']) && isset($o->products[$i]['qty'])){
+      $total_weight += ($o->products[$i]['qty'] * $o->products[$i]['weight']);
+    }
+    if(isset($o->products[$i]['qty'])) {
+      $total_tax += tep_calculate_tax(
+        isset($total_products_price)?$total_products_price:0, 
+        (isset($products_tax)?$products_tax:0)
+        ) * $o->products[$i]['qty'];
+    }
+    if(isset($total_cost)){
+      $total_cost += isset($total_products_price)?$total_products_price:0;
+    } else {
+      $total_cost = 0;
+    }
 
     $products_ordered .= '注文商品　　　　　：' . $o->products[$i]['name'];
     if(tep_not_null($o->products[$i]['model'])) {
@@ -544,7 +555,6 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
               }
             }
             $products_options_array = array_merge(array(array('id' => '', 'text' => '--')), $products_options_array);
-            if (!isset($cart->contents[$value['id']]['attributes'][$products_options_name['products_options_id']])) $cart->contents[$value['id']]['attributes'][$products_options_name['products_options_id']] = NULL;//del notice
             echo tep_draw_pull_down_menu(
                 'id['.$value['id'].'][' . $products_options_name['products_options_id'] . ']', 
                 $products_options_array, 
