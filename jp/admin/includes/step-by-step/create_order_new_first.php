@@ -8,6 +8,7 @@
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
 <script language="javascript" src="includes/javascript/address_search.js"></script>
+<script language="javascript" src="includes/general.js"></script>
 
 <script type="text/javascript">
 function check_submit(){
