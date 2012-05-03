@@ -339,7 +339,10 @@ if($cl_max_len < 4) {
   if (tep_not_null($preorder_product_res['products_model'])) {
     $products_ordered_text .= ' ('.$preorder_product_res['products_model'].')'; 
   }
-  
+ 
+  if ($preorder_product_res['final_price'] != '0') {
+    $products_ordered_text .= '('.$currencies->display_price($preorder_product_res['final_price'], $preorder_product_res['products_tax']).')'; 
+  }
   $products_ordered_atttibutes_text = '';
 
 
@@ -370,9 +373,9 @@ while ($mold_attr_res = tep_db_fetch_array($mold_attr_raw)) {
         .$mold_attr_info['title']
         .str_repeat('　', intval(($cl_max_len-mb_strlen($mold_attr_info['title'],'utf-8'))))
         .'：'.$mold_attr_info['value'];
-      if ($mold_attr_res['options_values_price'] != '0') {
-        $products_ordered_attributes .= '　('.$currencies->format($mold_attr_res['options_values_price']*$preorder_product_res['products_quantity']).')';
-      }
+      //if ($mold_attr_res['options_values_price'] != '0') {
+        //$products_ordered_attributes .= '　('.$currencies->format($mold_attr_res['options_values_price']*$preorder_product_res['products_quantity']).')';
+      //}
 
 }
 

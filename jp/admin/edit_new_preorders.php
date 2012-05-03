@@ -1141,9 +1141,9 @@ if (($action == 'edit') && ($order_exists == true)) {
            ': ' . 
            '<input name="update_products[' . $pid . '][attributes]['.$j.'][value]" size="35" value="' .  tep_parse_input_field_data($order_products_attributes[$pid][$j]['option_info']['value'], array("'"=>"&quot;"));
         echo '">';
-        if ($order_products_attributes[$pid][$j]['price'] != '0') {
-          echo ' ('.$currencies->format($order_products_attributes[$pid][$j]['price'] * $order_products[$pid]['qty']).')'; 
-        }
+        //if ($order_products_attributes[$pid][$j]['price'] != '0') {
+          //echo ' ('.$currencies->format($order_products_attributes[$pid][$j]['price'] * $order_products[$pid]['qty']).')'; 
+        //}
         echo '</i></small></nobr>';
       }
     }

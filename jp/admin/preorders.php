@@ -1388,7 +1388,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
             if (is_array($order->products[$i]['attributes'][$j]['option_info'])) {
               echo '<br><nobr><small>&nbsp;<i> - ' .  $order->products[$i]['attributes'][$j]['option_info']['title'] . ': ' . $order->products[$i]['attributes'][$j]['option_info']['value'];
             }
-            if ($order->products[$i]['attributes'][$j]['price'] != '0') echo ' (' . $order->products[$i]['attributes'][$j]['prefix'] . $currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . ')';
+            //if ($order->products[$i]['attributes'][$j]['price'] != '0') echo ' (' . $order->products[$i]['attributes'][$j]['prefix'] . $currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . ')';
               echo '</i></small></nobr>';
           }
         }
