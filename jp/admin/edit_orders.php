@@ -1913,7 +1913,6 @@ if (($action == 'edit') && ($order_exists == true)) {
         echo $b_price_str; 
       }
       echo '</div>'; 
-      echo '</div>'; 
       echo '<input type="hidden" value="'.(isset($_POST['update_products'][$orders_products_id]['bh_price'])?$_POST['update_products'][$orders_products_id]['bh_price']:$b_price_str).'" name="update_products['.$orders_products_id.'][bh_price]" id="update_products['.$orders_products_id.'][bh_price]">'; 
       echo '</td>' . "\n" . 
         '      <td class="' . $RowStyle . '" align="right"><b>';
@@ -1928,7 +1927,6 @@ if (($action == 'edit') && ($order_exists == true)) {
       } else {
         echo $c_price_str; 
       }
-      echo '</div>'; 
       echo '</div>'; 
       echo '</b>'; 
       echo '<input type="hidden" value="'.(isset($_POST['update_products'][$orders_products_id]['ch_price'])?$_POST['update_products'][$orders_products_id]['ch_price']:$c_price_str).'" name="update_products['.$orders_products_id.'][ch_price]" id="update_products['.$orders_products_id.'][ch_price]">'; 
