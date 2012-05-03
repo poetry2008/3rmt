@@ -1925,9 +1925,9 @@ if (($action == 'edit') && ($order_exists == true)) {
     <tr>
     <td valign="top"><?php echo "<span class='smalltext'>" .  HINT_DELETE_POSITION . EDIT_ORDERS_ADD_PRO_READ."</span>"; ?></td>
     <td align="right">
-    <a href="javascript:void(0);"><?php echo
-    tep_html_element_button(CALC_PRODUCTS_TEXT,
-        'onclick="recalc_all_product_price(\''.$oID.'\', \''.implode('|||', $all_p_info_array).'\');"');?></a> 
+    <?php if (false) {?> 
+    <a href="javascript:void(0);"><?php echo tep_html_element_button(CALC_PRODUCTS_TEXT, 'onclick="recalc_all_product_price(\''.$oID.'\', \''.implode('|||', $all_p_info_array).'\');"');?></a> 
+    <?php }?>
     <?php echo '<a href="' . $PHP_SELF . '?oID=' . $oID . '&action=add_product&step=1">' . tep_html_element_button(ADDING_TITLE) . '</a>'; ?>
     </td>
     </tr>
