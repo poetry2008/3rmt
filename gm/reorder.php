@@ -589,15 +589,22 @@ function orderConfirmPage(){
   nowMinutes   = now.getHours() * 60 + now.getMinutes();
 
   oldTime = '<?php echo tep_date_long(strtotime($order['torihiki_date']));?> <?php echo date('H:i', strtotime($order['torihiki_date']));?>';
+  oldTime_value = '<?php echo strtotime($order['torihiki_date']);?>';
   today   = '<?php echo tep_date_long(time());?>';
+  today_value = '<?php echo time();?>';
   
 <?php foreach($o->products as $p){?>
   productName[<?php echo $p['id'];?>] = '<?php echo $p['name'];?>';
   oldCharacter[<?php echo $p['id'];?>] = "<?php echo htmlspecialchars(addslashes($p['character']));?>";
   oldAttribute[<?php echo $p['id'];?>] = new Array();
-<?php   if($p['attributes'])foreach($p['attributes'] as $a){?>
+<?php   if($p['attributes'])foreach($p['attributes'] as $a){
+          if($a['option_id']){
+?>
   oldAttribute[<?php echo $p['id'];?>][<?php echo $a['option_id'];?>] = new Array('<?php echo $a['option'];?>', '<?php echo $a['value'];?>');
-<?php   }?>
+<?php   
+          } 
+        }
+?>
 <?php }?>
   text += "<table class='information_table' summary='table'>\n";
   text += "<tr><td width='130'>\n";
@@ -690,12 +697,28 @@ function orderConfirmPage(){
   text += "</table><br >\n"
   
   orderChanged = (orderChanged || document.getElementById('comment').value);
-  
+
+
+   var time_error = false;
+   var new_date = document.getElementById("new_date");
+   if(new_date.value == ''){
+     if(oldTime_value <= today_value){
+       time_error = true; 
+     }
+   } 
   // if order unchanged , does not commit
   if(!orderChanged){
     //alert('no change');
     document.getElementById('form_error').innerHTML = "<font color='red'>変更箇所がございません。</font>";
     document.getElementById('form_error').style.display = 'block';
+  }
+
+  if(time_error){
+    document.getElementById('date_error').innerHTML = "<font color='red'>取引日時を指定してください。</font>";
+    document.getElementById('date_error').style.display = 'block';
+  }
+
+  if(!orderChanged || time_error){
     return false; 
   }
   document.getElementById('form').style.display = 'none';
