@@ -1166,6 +1166,7 @@ $orders_query_raw = " select distinct op.orders_id from " . TABLE_ORDERS_PRODUCT
 $orders_query_raw .= (isset($_GET['site_id']) &&
 intval($_GET['site_id']) ? " and op.site_id = '" . intval($_GET['site_id'])
 . "' " : '') . " order by op.torihiki_date DESC";
+
 //op.torihiki_date desc";
 } elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && preg_match('/^os_\d+$/', $_GET['search_type'])))) {
 if (!empty($_GET['keywords'])) {
