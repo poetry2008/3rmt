@@ -464,8 +464,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
                 <option value=''>--</option>
               </select>
               <span id="date_error"></span>
-              <br >
-              <font color="red">ご希望のお時間に添えない場合は、弊社より「取引時間」をご連絡させていただきます。</font>
+              <div><font color="red">ご希望のお時間に添えない場合は、弊社より「取引時間」をご連絡させていただきます。</font></div>
             </td>
           </tr>
         </table>
@@ -622,8 +621,8 @@ function orderConfirmPage(){
   text += "取引日時（変更後）</td><td>";
   
   if((document.getElementById('new_date').selectedIndex != 0 || document.getElementById('new_hour').selectedIndex != 0 || document.getElementById('new_minute').selectedIndex != 0) && !(document.getElementById('new_date').selectedIndex != 0 && document.getElementById('new_hour').selectedIndex != 0 && document.getElementById('new_minute').selectedIndex != 0)){
-      document.getElementById('date_error').innerHTML = "<br> <font color='red'>【取引日時（変更後）】を選択してください。</font>";
-      document.getElementById('date_error').style.display = 'inline';
+      document.getElementById('date_error').innerHTML = "<font color='red'>【取引日時（変更後）】を選択してください。</font>";
+      document.getElementById('date_error').style.display = 'block';
       return false;
   }
 
@@ -637,8 +636,8 @@ function orderConfirmPage(){
       && ((document.getElementById('new_hour').options[document.getElementById('new_hour').selectedIndex].value * 60) + parseInt(document.getElementById('new_minute').options[document.getElementById('new_minute').selectedIndex].value)) < (nowMinutes + <?php echo MINUTES;?>)) 
     {
       // time error
-      document.getElementById('date_error').innerHTML = "<br><font color='red'>取引時間は現在時刻より20分後以降を選択してください。</font>";
-      document.getElementById('date_error').style.display = 'inline';
+      document.getElementById('date_error').innerHTML = "<font color='red'>取引時間は現在時刻より20分後以降を選択してください。</font>";
+      document.getElementById('date_error').style.display = 'block';
       return false;
     }
     text += newTime + "</td></tr></table><br >\n";
@@ -677,6 +676,7 @@ function orderConfirmPage(){
       text += "</td></tr><tr><td>\n";
       text += oldAttribute[i][j][0];
       text += "(変更後)</td><td>\n";
+      if(document.getElementById('id[' + i + '][' + j + ']')){
       if (document.getElementById('id[' + i + '][' + j + ']').selectedIndex != 0) {
         text += document.getElementById('id[' + i + '][' + j + ']').options[document.getElementById('id[' + i + '][' + j + ']').selectedIndex].innerHTML + "\n";
       } else {
@@ -684,6 +684,7 @@ function orderConfirmPage(){
       }
       text += "</td></tr>\n";
       orderChanged = orderChanged || (document.getElementById('id[' + i + '][' + j + ']').selectedIndex != 0);
+      }
     }
     text += "</table><br >\n";
   }
@@ -714,7 +715,7 @@ function orderConfirmPage(){
   }
 
   if(time_error){
-    document.getElementById('date_error').innerHTML = "<font color='red'>取引日時を指定してください。</font>";
+    document.getElementById('date_error').innerHTML = "<font color='red'>【取引日時（変更後）】を選択してください。</font>";
     document.getElementById('date_error').style.display = 'block';
   }
 
