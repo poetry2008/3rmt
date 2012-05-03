@@ -13,7 +13,7 @@
 define('NAVBAR_TITLE_1', 'ショッピングカート');
 define('NAVBAR_TITLE_2', '取引日時の指定');
 
-define('HEADING_TITLE', '取引日時の指定');
+define('HEADING_TITLE', '配送方法');
 
 define('TABLE_HEADING_SHIPPING_ADDRESS', 'ご希望の取引日時を指定してください');
 define('TEXT_CHOOSE_SHIPPING_DESTINATION', 'お届け先のご住所をご確認ください。<br>（下のボタンをクリックして、お届け先を変更することもできます。）');

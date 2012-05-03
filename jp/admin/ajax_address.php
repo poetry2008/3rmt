@@ -88,7 +88,7 @@ if(isset($id) && $id != 0){
 
 $sort = $sort == '' ? 0 : $sort;
 
-$type_start = $type;
+$type_start = $address_array['type'];
 $type = $type_value != '' ? $type_value : $type;
 
 $options_query = tep_db_query("select * from ". TABLE_ADDRESS ." where type='option' and status='0' order by sort");
@@ -356,6 +356,7 @@ if($type == 'text'){
     echo '<tr><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;'. TABLE_LIST_12_1 .'</td><td>'. $options_str .'&nbsp;<select name="parent_option[]" id="parent" onchange="check_option_show(this.value);">'. $options_string .'</select></td></tr>';
   }
   echo '<tr><td colspan="2"><table border="0" width="100%" cellspacing="0" cellpadding="0" id="show_id">';
+  $select_value = $type_start == 'option' ? $select_value : '';
   echo '<tr><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;'. TABLE_LIST_12 .'</td><td><input type="text" name="option_comment[]" value="'. $select_value .'"><input type="radio" name="option_value" value="0" checked></td></tr>';
   $option_num = 0;
   unset($option_list[array_search($select_value,$option_list)]);

@@ -137,10 +137,7 @@ foreach($weight_fee_array as $weight_fee_value){
 
 <tr><td width="30%">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_5;?></td><td>
 <input type="text" name="weight_limit" id="weight_limit" value="<?php echo $weight_limit;?>" style="text-align: right;">&nbsp;KG
-<br><?php echo TABLE_PROMPT_2;?></td></tr>
-
-<tr><td width="30%" valign="top">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_6;?></td><td>
-<textarea name="email_comment" id="email_comment" rows="5" cols="30" class="option_text"><?php echo $email_comment; ?></textarea>
+<br><?php echo TABLE_PROMPT_2;?></td></tr> <tr><td width="30%" valign="top">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_6;?></td><td> <textarea name="email_comment" id="email_comment" rows="5" cols="30" class="option_text"><?php echo $email_comment; ?></textarea>
 <br><?php echo TABLE_PROMPT_3;?></td></tr>
 
 <tr><td width="30%" valign="top">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_7;?></td><td>
@@ -168,7 +165,7 @@ if($id == 0){
 <?php 
 if($id != 0){
 ?>
-<input type="button" name="new" value="<?php echo TABLE_BUTTON_SUBMIT;?>" onclick="show_text_area(0,'');">
+  <input type="button" name="new" value="<?php echo TABLE_BUTTON_SUBMIT;?>" onclick="show_text_area(0,'',<?php echo $fid;?>);">
 <?php
 }
 ?>

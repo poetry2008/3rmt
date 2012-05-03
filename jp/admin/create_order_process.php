@@ -7,10 +7,25 @@ require('includes/step-by-step/new_application_top.php');
 
 //此页能是POST过来 ，如果不是 则 跳转 到 CREATE_ORDER
 if(isGet()){
-tep_redirect(tep_redirect(tep_href_link(FILENAME_CREATE_ORDER.'?oID='.tep_db_prepare_input($_POST['oID']), null, 'SSL')));
-}else if(!$_POST['email_address']){
-tep_redirect(tep_redirect(tep_href_link(FILENAME_CREATE_ORDER.'?oID='.tep_db_prepare_input($_POST['oID']), null, 'SSL')));
+  tep_redirect(tep_redirect(tep_href_link(FILENAME_CREATE_ORDER, null, 'SSL')));
+}else{
+
+  if(!$_POST['email_address'] && !isset($_POST['update_products'])){
+
+    tep_redirect(tep_redirect(tep_href_link(FILENAME_CREATE_ORDER, null, 'SSL')));
+  }
+
+  if(!$_POST['email_address']){
+
+    tep_redirect(tep_redirect(tep_href_link(FILENAME_CREATE_ORDER.'?oID='.tep_db_prepare_input($_POST['oID']), null, 'SSL')));
+  }
+
+  if(!isset($_POST['update_products'])){
+
+    tep_redirect(tep_redirect(tep_href_link(FILENAME_CREATE_ORDER.'?Customer_mail='.tep_db_prepare_input($_POST['email_address']).'&site_id='.tep_db_prepare_input($_POST['site_id']), null, 'SSL')));
+  }
 }
+
 require(DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_CREATE_ORDER_PROCESS);
 
 $oID = tep_db_prepare_input($_POST['oID']);

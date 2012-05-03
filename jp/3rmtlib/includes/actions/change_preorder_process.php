@@ -525,19 +525,24 @@ $email_order_text = str_replace($email_temp,$email_shipping_fee,$email_order_tex
 $email_order_text = str_replace($email_temp_str,$email_shipping_fee,$email_order_text);
 $email_address = '▼注文商品';
 //zhusuo
-$address_len_array = array();
-foreach($add_list as $address_value){
+if(!empty($add_list)){
+  $address_len_array = array();
+  foreach($add_list as $address_value){
 
-  $address_len_array[] = strlen($address_value[0]);
-}
-$maxlen = max($address_len_array);
-$email_address_str = '▼住所情報'."\n";
-$email_address_str .= '------------------------------------------'."\n";
-$maxlen = 9;
-foreach($add_list as $ad_value){
-  $ad_len = mb_strlen($ad_value[0],'utf8');
-  $temp_str = str_repeat('　',$maxlen-$ad_len);
-  $email_address_str .= $ad_value[0].$temp_str.'：'.$ad_value[1]."\n";
+    $address_len_array[] = strlen($address_value[0]);
+  }
+  $maxlen = max($address_len_array);
+  $email_address_str = '▼住所情報'."\n";
+  $email_address_str .= '------------------------------------------'."\n";
+  $maxlen = 9;
+  foreach($add_list as $ad_value){
+    $ad_len = mb_strlen($ad_value[0],'utf8');
+    $temp_str = str_repeat('　',$maxlen-$ad_len);
+    $email_address_str .= $ad_value[0].$temp_str.'：'.$ad_value[1]."\n";
+  }
+  $email_address_str .= '------------------------------------------'."\n";
+  $email_address_str .= $email_address;
+  $email_order_text = str_replace($email_address,$email_address_str,$email_order_text);
 }
 $email_address_str .= '------------------------------------------'."\n";
 $email_address_str .= $email_address;

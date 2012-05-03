@@ -74,6 +74,12 @@
   
   if($guestchk == '0') {
     $passlen = strlen($password);
+    if(!preg_match('/[a-z]/',$password)){
+      $error = true;
+      $entry_password_english_error = true;
+    }else{
+      $entry_password_english_error = false; 
+    }
     if ($passlen < ENTRY_PASSWORD_MIN_LENGTH) {
       $error = true;
       $entry_password_error = true;
@@ -83,7 +89,7 @@
 
     if ($password != $confirmation) {
       $error = true;
-      $entry_password_error = true;
+      $entry_password_confirmation_error = true;
     }
     
     if (empty($password) && empty($confirmation)) {
@@ -133,8 +139,7 @@
           $customer_id = $check_email_res['customers_id'];
       
           $sql_data_array = array('customers_id' => $customer_id,
-                                  'address_book_id' => 1,
-                                  'entry_firstname' => $firstname,
+                                  'address_book_id' => 1, 'entry_firstname' => $firstname,
                                   'entry_lastname' => $lastname,
                                   'entry_firstname_f' => $firstname_f,
                                   'entry_lastname_f' => $lastname_f,

@@ -168,7 +168,7 @@ if($id == 0){
 <?php 
 if($id != 0){
 ?>
-<input type="button" name="new" value="<?php echo TABLE_BUTTON_SUBMIT;?>" onclick="show_text_city(0,'');">
+  <input type="button" name="new" value="<?php echo TABLE_BUTTON_SUBMIT;?>" onclick="show_text_city(0,'',<?php echo $fid;?>);">
 <?php
 }
 ?>

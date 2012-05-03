@@ -398,19 +398,26 @@ if(isset($_GET['oID']) && $_GET['oID'] != ''){
   $oID = date("Ymd") . '-' . date("His") . tep_get_order_end_num();
 }
 ?>
+<tr><td>
+<table border="0" width="100%" cellspacing="0" cellpadding="0">
 <tr>
-<td class="formAreaTitle"><br>
+<td class="pageHeading"><br>
   <?php
-  echo CREATE_ORDER_PRODUCTS_ADD_TITLE;?></td>
+  echo CREATE_ORDER_PRODUCTS_ADD_TITLE;?>:</td>
   </tr>
-  <tr>
+<tr>
+<td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
+</tr>
+<tr>
+<td class="formAreaTitle"><?php echo EDIT_ORDERS_PRO_LIST_TITLE;?></td>
+</tr>
+</table>
+</td></tr>
+<tr>
   <td class="main"><table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">
   <tr>
   <td class="main"><input type="hidden" name="oID" value="<?php echo $oID;?>"><table border="0" cellspacing="0" cellpadding="2">
-  <!-- Begin Products Listing Block -->
-            <tr>
-            <td class="SubTitle"><?php echo EDIT_ORDERS_PRO_LIST_TITLE;?></td>
-            </tr>
+  <!-- Begin Products Listing Block --> 
             <tr>
             <td>      
             <?php
@@ -448,14 +455,14 @@ if(isset($_GET['oID']) && $_GET['oID'] != ''){
           ?>
             <?php // Version without editable names & prices ?>
             <table border="0" width="100%" cellspacing="0" cellpadding="2">
-            <tr class="dataTableHeadingRow">
-            <td class="dataTableHeadingContent" colspan="2"><?php echo TABLE_HEADING_NUM_PRO_NAME;?></td>
-            <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_PRODUCTS_MODEL; ?></td>
-            <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_CURRENICY;?></td>
-            <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_PRICE_BEFORE;?></td>
-            <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_PRICE_AFTER;?></td>
-            <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TOTAL_BEFORE;?></td>
-            <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TOTAL_AFTER;?></td>
+            <tr style="background-color: #e1f9fe;">
+            <td class="dataTableContent" colspan="2" width="120"><?php echo TABLE_HEADING_NUM_PRO_NAME;?></td>
+            <td class="dataTableContent" width="120"><?php echo TABLE_HEADING_PRODUCTS_MODEL; ?></td>
+            <td class="dataTableContent" width="120"><?php echo TABLE_HEADING_CURRENICY;?></td>
+            <td class="dataTableContent" align="right" width="120"><?php echo TABLE_HEADING_PRICE_BEFORE;?></td>
+            <td class="dataTableContent" align="right" width="120"><?php echo TABLE_HEADING_PRICE_AFTER;?></td>
+            <td class="dataTableContent" align="right" width="120"><?php echo TABLE_HEADING_TOTAL_BEFORE;?></td>
+            <td class="dataTableContent" align="right" width="120"><?php echo TABLE_HEADING_TOTAL_AFTER;?></td>
             </tr>
 
             <?php
@@ -466,7 +473,7 @@ if(isset($_GET['oID']) && $_GET['oID'] != ''){
               $only_buy= false;
             }
             $RowStyle = "dataTableContent";
-            echo '    <tr class="dataTableRow">' . "\n" .
+            echo '    <tr>' . "\n" .
               '      <td class="' . $RowStyle . '" align="left" valign="top" width="20">'
               . "<input type='hidden' id='update_products_qty_$orders_products_id' value='" . $order->products[$i]['qty'] . "'><input class='update_products_qty' id='update_products_new_qty_$orders_products_id' name='update_products[$orders_products_id][qty]' size='2' value='" .  $order->products[$i]['qty'] . "' onkeyup=\"clearLibNum(this);\">&nbsp;x</td>\n" . 
               '      <td class="' . $RowStyle . '">' . $order->products[$i]['name'] . "<input id='update_products_name_$orders_products_id' name='update_products[$orders_products_id][name]' size='64' type='hidden' value='" . $order->products[$i]['name'] . "'>\n" . 
@@ -519,6 +526,7 @@ if(isset($_GET['oID']) && $_GET['oID'] != ''){
             </table>
 
             </td>
+            </tr>
             <tr>
             <td>
             <table width="100%" cellpadding="0" cellspacing="0">
@@ -527,19 +535,19 @@ if(isset($_GET['oID']) && $_GET['oID'] != ''){
             </tr>
             </table>
             </td>
-            </tr>     
-            <!-- End Products Listings Block -->
-  <tr></form>
-          <td width="100%">
-          <table border="0" width="100%" cellspacing="0" cellpadding="0">
-          <tr>
-          <td class="pageHeading"><?php echo ADDING_TITLE; ?> (Nr. <?php echo $oID; ?>)</td>
-          <td class="pageHeading" align="right"><?php echo tep_draw_separator('pixel_trans.gif', 1, HEADING_IMAGE_HEIGHT); ?></td>
-          <td class="pageHeading" align="right"></td>
-          </tr>
-          </table>
-          </td>
-          </tr>
+            </tr></form>     
+</table></td>
+</tr>
+</table>
+</td>
+</tr>
+  <tr>
+  <td class="formAreaTitle"><br><?php echo ADDING_TITLE; ?> (Nr. <?php echo $oID; ?>)</td>
+  </tr>
+  <tr>
+  <td class="main"><table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">
+  <tr>
+  <td class="main"><input type="hidden" name="oID" value="<?php echo $oID;?>"><table border="0" cellspacing="0" cellpadding="2">  
 
           <?php
           // ############################################################################
@@ -606,7 +614,7 @@ if(isset($_GET['oID']) && $_GET['oID'] != ''){
 
         // Step 1: Choose Category
         
-        print "<tr class=\"dataTableRow\"><form action='$PHP_SELF?oID=$oID&action=add_product$param_str' method='POST'>\n";
+        print "<tr><form action='$PHP_SELF?oID=$oID&action=add_product$param_str' method='POST'>\n";
         print "<td class='dataTableContent' align='right'><b>" . ADDPRODUCT_TEXT_STEP . " 1:</b></td>\n";
         print "<td class='dataTableContent' valign='top'>";
         echo ' ' . tep_draw_pull_down_menu('add_product_categories_id', tep_get_category_tree(), $current_category_id, 'onChange="this.form.submit();"');
@@ -614,12 +622,12 @@ if(isset($_GET['oID']) && $_GET['oID'] != ''){
         print "</td>\n";
         print "<td class='dataTableContent'>" . ADDPRODUCT_TEXT_STEP1 . "</td>\n";
         print "</form></tr>\n";
-        print "<tr><td colspan='3'>&nbsp;</td></tr>\n";
+        //print "<tr><td colspan='3'>&nbsp;</td></tr>\n";
 
         // Step 2: Choose Product
         if(($step > 1) && ($add_product_categories_id > 0))
         {
-          print "<tr class=\"dataTableRow\"><form action='$PHP_SELF?oID=$oID&action=$action$param_str' method='POST'>\n";
+          print "<tr><form action='$PHP_SELF?oID=$oID&action=$action$param_str' method='POST'>\n";
           print "<td class='dataTableContent' align='right'><b>" . ADDPRODUCT_TEXT_STEP . " 2: </b></td>\n";
           print "<td class='dataTableContent' valign='top'><select name=\"add_product_products_id\" onChange=\"this.form.submit();\">";
           $ProductOptions = "<option value='0'>" .  ADDPRODUCT_TEXT_SELECT_PRODUCT . "\n";
@@ -635,7 +643,7 @@ if(isset($_GET['oID']) && $_GET['oID'] != ''){
           print "<input type='hidden' name='step' value='3'>\n";
           print "<td class='dataTableContent'>" . ADDPRODUCT_TEXT_STEP2 . "</td>\n";
           print "</form></tr>\n";
-          print "<tr><td colspan='3'>&nbsp;</td></tr>\n";
+          //print "<tr><td colspan='3'>&nbsp;</td></tr>\n";
         }
         require('option/HM_Option.php');
         require('option/HM_Option_Group.php');
@@ -652,7 +660,7 @@ if(isset($_GET['oID']) && $_GET['oID'] != ''){
           $option_product = tep_db_fetch_array($option_product_raw); 
           if(!$hm_option->admin_whether_show($option_product['belong_to_option']))
           {
-            print "<tr class=\"dataTableRow\">\n";
+            print "<tr>\n";
             print "<td class='dataTableContent' align='right'><b>" . ADDPRODUCT_TEXT_STEP . " 3: </b></td>\n";
             print "<td class='dataTableContent' valign='top' colspan='2'><i>" . ADDPRODUCT_TEXT_OPTIONS_NOTEXIST . "</i></td>\n";
             print "</tr>\n";
@@ -660,7 +668,7 @@ if(isset($_GET['oID']) && $_GET['oID'] != ''){
           }
           else
           {
-            print "<tr class=\"dataTableRow\"><form action='$PHP_SELF?oID=$oID&action=$action$param_str' method='POST'>\n";
+            print "<tr><form action='$PHP_SELF?oID=$oID&action=$action$param_str' method='POST'>\n";
             print "<td class='dataTableContent' align='right'><b>" . ADDPRODUCT_TEXT_STEP . " 3: </b></td><td class='dataTableContent' valign='top'>";
             print $hm_option->render($option_product['belong_to_option'], false, 2); 
             print "</td>";
@@ -673,7 +681,7 @@ if(isset($_GET['oID']) && $_GET['oID'] != ''){
             print "</form></tr>\n";
           }
 
-          echo "<tr><td colspan='3'>&nbsp;</td></tr>\n";
+          //echo "<tr><td colspan='3'>&nbsp;</td></tr>\n";
         }
 
         // Step 4: Confirm
@@ -682,7 +690,7 @@ if(isset($_GET['oID']) && $_GET['oID'] != ''){
           $products_query = tep_db_query("select products_price from ".TABLE_PRODUCTS." where products_id = '".$add_product_products_id."'");
           $products_array = tep_db_fetch_array($products_query);
           tep_db_free_result($products_query);  
-          echo "<tr class=\"dataTableRow\"><form action='$PHP_SELF?oID=$oID&action=$action$param_str' method='POST'>\n";
+          echo "<tr><form action='$PHP_SELF?oID=$oID&action=$action$param_str' method='POST'>\n";
           echo "<td class='dataTableContent' align='right'><b>" . ADDPRODUCT_TEXT_STEP . " 4: </b></td>";
           echo '<td class="dataTableContent" valign="top">' .  ADDPRODUCT_TEXT_CONFIRM_QUANTITY . '<input name="add_product_quantity" size="2" value="1" onkeyup="clearLibNum(this);">&nbsp;'.EDIT_ORDERS_NUM_UNIT.'&nbsp;&nbsp;&nbsp;&nbsp;<input type="hidden" name="dummy" value="あいうえお眉幅">';
           echo TABLE_HEADING_UNIT_PRICE.'<input class="once_pwd" onkeyup="clearNoNum(this);" value="'. (int)$products_array['products_price'] .'" size="9" name="add_product_price">&nbsp;'. EDIT_ORDERS_PRICE_UNIT .'</td>';
@@ -708,7 +716,6 @@ if(isset($_GET['oID']) && $_GET['oID'] != ''){
 </table>
 </td>
 </tr>
-<form id="create_order_form_2" name="create_order_form_2" method="post" action="edit_create_order.php">
 <tr>
 <td class="formAreaTitle"><br>
   
@@ -761,7 +768,6 @@ echo CREATE_ORDER_COMMUNITY_SEARCH_READ_TWO;?></b></td>
 </table>
 </td>
 </tr>
-</form>
 <!--
 
 <tr>
