@@ -347,7 +347,6 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
   
     //ccdd
     $product_info = tep_get_product_by_id($o->products[$i]['id'], SITE_ID ,$languages_id);
-    $data1 = explode("//", $product_info['products_attention_1']);
   
     $products_ordered .= $products_ordered_attributes . "\n";
     $products_ordered .= '個数　　　　　　　：' . $o->products[$i]['qty'] . '個' . tep_get_full_count2($o->products[$i]['qty'], $o->products[$i]['id']) . "\n";
