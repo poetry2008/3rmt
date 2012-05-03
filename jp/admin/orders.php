@@ -1159,6 +1159,14 @@ $orders_query_raw .= (isset($_GET['site_id']) &&
 intval($_GET['site_id']) ? " and op.site_id = '" . intval($_GET['site_id'])
 . "' " : '') . " order by op.torihiki_date DESC";
 //op.torihiki_date desc";
+}elseif (isset($_GET['products_id']) && isset($_GET['search_type']) && $_GET['search_type'] == 'products_id' ) {
+$orders_query_raw = " select distinct op.orders_id from " . TABLE_ORDERS_PRODUCTS . " op 
+".$sort_table." where ".$sort_where." op.products_id='".$_GET['products_id']."'";
+
+$orders_query_raw .= (isset($_GET['site_id']) &&
+intval($_GET['site_id']) ? " and op.site_id = '" . intval($_GET['site_id'])
+. "' " : '') . " order by op.torihiki_date DESC";
+//op.torihiki_date desc";
 } elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && preg_match('/^os_\d+$/', $_GET['search_type'])))) {
 if (!empty($_GET['keywords'])) {
 $orders_query_raw = "
@@ -1625,7 +1633,12 @@ return false;
 <?php 
 // 订单详细页，TITLE显示交易商品名
 if ($_GET['action']=='edit' && $_GET['oID']) {?>
-<title><?php echo HEADING_TITLE; ?></title>
+	<title>
+<?php 
+echo tep_get_orders_edit_title_from_oID($_GET['oID'])." ". HEADING_TITLE; 
+
+?>
+</title>
 <?php } else if($_GET['action']=='show_manual_info' && $_GET['oID'] && $_GET['pID']){
     ?><title><?php echo tep_get_orders_manual_title_from_pID($_GET['pID']); ?></title>
 <?php 
