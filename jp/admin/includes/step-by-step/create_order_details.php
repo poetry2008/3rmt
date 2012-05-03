@@ -668,8 +668,9 @@ if(isset($_GET['oID']) && $_GET['oID'] != ''){
           }
           else
           {
-            print "<tr><form action='$PHP_SELF?oID=$oID&action=$action$param_str' method='POST'>\n";
+            print "<tr>\n";
             print "<td class='dataTableContent' align='right'><b>" . ADDPRODUCT_TEXT_STEP . " 3: </b></td><td class='dataTableContent' valign='top'>";
+            print "<form action='$PHP_SELF?oID=$oID&action=$action$param_str' method='POST'>";
             print $hm_option->render($option_product['belong_to_option'], false, 2); 
             print "</td>";
             print "<td class='dataTableContent' align='center'><input type='submit' value='" . ADDPRODUCT_TEXT_OPTIONS_CONFIRM . "'>";
@@ -677,8 +678,8 @@ if(isset($_GET['oID']) && $_GET['oID'] != ''){
             print "<input type='hidden' name='add_product_products_id' value='$add_product_products_id'>";
             print "<input type='hidden' name='step' value='3'>";
             print "<input type='hidden' name='action_process' value='1'>";
-            print "</td>\n";
-            print "</form></tr>\n";
+            print "</form></td>\n";
+            print "</tr>\n";
           }
 
           //echo "<tr><td colspan='3'>&nbsp;</td></tr>\n";

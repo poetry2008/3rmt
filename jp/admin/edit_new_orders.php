@@ -2650,7 +2650,7 @@ echo "</table>";
               echo '  </tr>' . "\n";
             }
           } else {
-            echo '  <tr>' . "\n" .
+            //echo '  <tr>' . "\n" .
               '    <td class="smallText" colspan="5">' . TEXT_NO_ORDER_HISTORY . '</td>' . "\n" .
               '  </tr>' . "\n";
           }
