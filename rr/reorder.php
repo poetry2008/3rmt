@@ -480,7 +480,7 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
     <option value=''>--</option>
    </select>
    <span id="date_error"></span>
-   <div><font color="red">ご希望のお時間に添えない場合は、弊社より「取引時間」をご連絡させていただきます。</font></div>
+   <div>ご希望のお時間に添えない場合は、弊社より「取引時間」をご連絡させていただきます。</div>
   </td>
  </tr>
 </table>
@@ -569,7 +569,7 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
 <table class="information_table" summary="table">
 <tr>
 <td width="130" bgcolor="#333333">備考</td>
-<td bgcolor="#333333"><textarea name='comment' id='comment'></textarea></td>
+<td bgcolor="#333333"><textarea name='comment' id='comment' rows="5"></textarea></td>
 </tr>
 </table>
 <br>

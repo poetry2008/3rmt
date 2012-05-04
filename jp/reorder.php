@@ -453,7 +453,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
     <option value=''>--</option>
    </select>
    <span id="date_error"></span>
-   <div><font color="red">ご希望のお時間に添えない場合は、弊社より「取引時間」をご連絡させていただきます。</font></div>
+   <div>ご希望のお時間に添えない場合は、弊社より「取引時間」をご連絡させていただきます。</div>
   </td>
  </tr>
 </table>
@@ -542,7 +542,7 @@ foreach ($value['attributes'] as $att) {?>
 <table class="information_table" summary="table">
 <tr>
 <td width="130" bgcolor="#eeeeee">備考</td>
-<td><textarea name='comment' id='comment'></textarea></td>
+<td><textarea name='comment' id='comment' rows="5"></textarea></td>
 </tr>
 </table>
 <br>
