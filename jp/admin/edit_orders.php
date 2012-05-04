@@ -512,7 +512,7 @@ if($address_error == false){
           $Query = "update " . TABLE_ORDERS_PRODUCTS . " set
             products_model = '" . $products_details["model"] . "',
                            products_name = '" . str_replace("'", "&#39;", $products_details["name"]) . "',
-                           products_price = '".$products_details["p_price"]."', 
+                           products_price = '" .  (tep_get_bflag_by_product_id((int)$order['products_id']) ? 0 - $products_details["p_price"] : $products_details["p_price"]) . "',
                            final_price = '" . (tep_get_bflag_by_product_id((int)$order['products_id']) ? 0 - $products_details["final_price"] : $products_details["final_price"]) . "',
                            products_tax = '" . $products_details["tax"] . "',
                            products_quantity = '" . $products_details["qty"] . "'
@@ -1889,47 +1889,75 @@ if (($action == 'edit') && ($order_exists == true)) {
       echo '<div id="update_products['.$orders_products_id.'][a_price]">'; 
       if ($order->products[$i]['final_price'] < 0) {
         $a_price_str = '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']), true, $order->info['currency'], $order->info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
+        $a_price_h_str = '-'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']), true, $order->info['currency'], $order->info['currency_value']));
       } else {
         $a_price_str = $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']), true, $order->info['currency'], $order->info['currency_value']);
+        $a_price_h_str = '+'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']), true, $order->info['currency'], $order->info['currency_value']));
       }
       if (isset($_POST['update_products'][$orders_products_id]['ah_price'])) {
-        echo $_POST['update_products'][$orders_products_id]['ah_price']; 
+        $symbol_str = substr($_POST['update_products'][$orders_products_id]['ah_price'], 0, 1); 
+        if ($symbol_str == '+') {
+          echo substr($_POST['update_products'][$orders_products_id]['ah_price'], 1).TEXT_MONEY_SYMBOL; 
+        } else {
+          echo '<font color="#ff0000">'.substr($_POST['update_products'][$orders_products_id]['ah_price'], 1).'</font>'.TEXT_MONEY_SYMBOL; 
+        }
       } else {
         echo $a_price_str; 
       }
       echo '</div>'; 
-      echo '<input type="hidden" value="'.(isset($_POST['update_products'][$orders_products_id]['ah_price'])?$_POST['update_products'][$orders_products_id]['ah_price']:$a_price_str).'" name="update_products['.$orders_products_id.'][ah_price]" id="update_products['.$orders_products_id.'][ah_price]">'; 
+      
+      echo '<input type="hidden" value="'.(isset($_POST['update_products'][$orders_products_id]['ah_price'])?$_POST['update_products'][$orders_products_id]['ah_price']:$a_price_h_str).'" name="update_products['.$orders_products_id.'][ah_price]" id="update_products['.$orders_products_id.'][ah_price]">'; 
       echo '</td>' . "\n" . 
         '      <td class="' . $RowStyle . '" align="right">';
       echo '<div id="update_products['.$orders_products_id.'][b_price]">'; 
       if ($order->products[$i]['final_price'] < 0) {
         $b_price_str = '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($order->products[$i]['final_price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
+        
+        $b_price_h_str = '-'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($order->products[$i]['final_price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']));
       } else {
         $b_price_str = $currencies->format($order->products[$i]['final_price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']);
+        $b_price_h_str = '+'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($order->products[$i]['final_price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']));
       }
+      
       if (isset($_POST['update_products'][$orders_products_id]['bh_price'])) {
-        echo $_POST['update_products'][$orders_products_id]['bh_price']; 
+        $symbol_str = substr($_POST['update_products'][$orders_products_id]['bh_price'], 0, 1); 
+        if ($symbol_str == '+') {
+          echo substr($_POST['update_products'][$orders_products_id]['bh_price'], 1).TEXT_MONEY_SYMBOL; 
+        } else {
+          echo '<font color="#ff0000">'.substr($_POST['update_products'][$orders_products_id]['bh_price'], 1).'</font>'.TEXT_MONEY_SYMBOL; 
+        }
       } else {
         echo $b_price_str; 
       }
+      
       echo '</div>'; 
-      echo '<input type="hidden" value="'.(isset($_POST['update_products'][$orders_products_id]['bh_price'])?$_POST['update_products'][$orders_products_id]['bh_price']:$b_price_str).'" name="update_products['.$orders_products_id.'][bh_price]" id="update_products['.$orders_products_id.'][bh_price]">'; 
-      echo '</td>' . "\n" . 
+      echo '<input type="hidden" value="'.(isset($_POST['update_products'][$orders_products_id]['bh_price'])?$_POST['update_products'][$orders_products_id]['bh_price']:$b_price_h_str).'" name="update_products['.$orders_products_id.'][bh_price]" id="update_products['.$orders_products_id.'][bh_price]">';      echo '</td>' . "\n" . 
         '      <td class="' . $RowStyle . '" align="right"><b>';
       echo '<div id="update_products['.$orders_products_id.'][c_price]">'; 
       if ($order->products[$i]['final_price'] < 0) {
         $c_price_str = '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value'])).'</font>' .TEXT_MONEY_SYMBOL;
+        $c_price_h_str = '-'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']));
       } else {
         $c_price_str = $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']);
+        
+        $c_price_h_str = '+'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']));
       }
+      
       if (isset($_POST['update_products'][$orders_products_id]['ch_price'])) {
-        echo $_POST['update_products'][$orders_products_id]['ch_price']; 
+        $symbol_str = substr($_POST['update_products'][$orders_products_id]['ch_price'], 0, 1); 
+        if ($symbol_str == '+') {
+          echo substr($_POST['update_products'][$orders_products_id]['ch_price'], 1).TEXT_MONEY_SYMBOL; 
+        } else {
+          echo '<font color="#ff0000">'.substr($_POST['update_products'][$orders_products_id]['ch_price'], 1).'</font>'.TEXT_MONEY_SYMBOL; 
+        }
       } else {
         echo $c_price_str; 
       }
+      
+      
       echo '</div>'; 
       echo '</b>'; 
-      echo '<input type="hidden" value="'.(isset($_POST['update_products'][$orders_products_id]['ch_price'])?$_POST['update_products'][$orders_products_id]['ch_price']:$c_price_str).'" name="update_products['.$orders_products_id.'][ch_price]" id="update_products['.$orders_products_id.'][ch_price]">'; 
+      echo '<input type="hidden" value="'.(isset($_POST['update_products'][$orders_products_id]['ch_price'])?$_POST['update_products'][$orders_products_id]['ch_price']:$c_price_h_str).'" name="update_products['.$orders_products_id.'][ch_price]" id="update_products['.$orders_products_id.'][ch_price]">'; 
       
       echo '</td>' . "\n" . 
         '    </tr>' . "\n";
