@@ -1857,7 +1857,7 @@ if (($action == 'edit') && ($order_exists == true)) {
       // Has Attributes?
       if ($order->products[$i]['attributes'] && sizeof($order->products[$i]['attributes']) > 0) {
         $op_info_array = array();
-        for ($i_num = 0; $i_num < sizeof($order->products[$i]); $i_num++) {
+        for ($i_num = 0; $i_num < sizeof($order->products[$i]['attributes']); $i_num++) {
           $op_info_array[] = $order->products[$i]['attributes'][$i_num]['id']; 
         }
         $op_info_str = implode('|||', $op_info_array);
