@@ -564,11 +564,11 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
         </table>
         <?php }?>
         <br>
-        <table class="information_table" summary="table">
+        <table class="information_table" summary="table" style="width:100%">
           <tr>
             <td width="130">備考</td>
             <td>
-              <textarea name='comment' id='comment' rows="5"></textarea>
+              <textarea name='comment' id='comment' rows="5" style="width:100%"></textarea>
             </td>
           </tr>
         </table>
