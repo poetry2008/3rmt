@@ -4972,4 +4972,28 @@ function tep_get_show_attributes_price($item_id, $group_id, $att_value)
   
   return 0;
 }
-    
+
+function tep_check_also_products_attr()
+{
+   global $cart, $hm_option;
+   $return_single = true; 
+
+   $list_products = $cart->get_products();
+   $c_array = array();
+
+   for ($j=0, $k=sizeof($list_products); $j<$k; $j++) {
+     $belong_option_raw = tep_db_query("select belong_to_option from ".TABLE_PRODUCTS." where products_id = '".(int)$list_products[$j]['id']."'"); 
+     $belong_option = tep_db_fetch_array($belong_option_raw); 
+     
+     if ($belong_option) {
+       if ($hm_option->check_old_symbol_show($belong_option['belong_to_option'])) {
+         $c_array[] = (int)$list_products[$j]['id']; 
+       }
+     }
+   }
+   
+   if (!empty($c_array)) {
+     $return_single = false; 
+   }
+   return $return_single;
+}

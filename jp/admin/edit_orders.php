@@ -507,12 +507,12 @@ if($address_error == false){
           tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = 0 where products_real_quantity < 0 and products_id = '" . (int)$order['products_id'] . "'");
           tep_db_query("update " . TABLE_PRODUCTS . " set products_virtual_quantity = 0 where products_virtual_quantity < 0 and products_id = '" . (int)$order['products_id'] . "'");
         }
-
+        
         if($products_details["qty"] > 0) { // a.) quantity found --> add to list & sum
           $Query = "update " . TABLE_ORDERS_PRODUCTS . " set
             products_model = '" . $products_details["model"] . "',
                            products_name = '" . str_replace("'", "&#39;", $products_details["name"]) . "',
-                           products_price = '".$products_details["p_price"]."', 
+                           products_price = '" .  (tep_check_product_type($orders_products_id) ? 0 - $products_details["p_price"] : $products_details["p_price"]) . "',
                            final_price = '" . (tep_get_bflag_by_product_id((int)$order['products_id']) ? 0 - $products_details["final_price"] : $products_details["final_price"]) . "',
                            products_tax = '" . $products_details["tax"] . "',
                            products_quantity = '" . $products_details["qty"] . "'
@@ -862,13 +862,21 @@ if($address_error == false){
           }
           for ($i=0; $i<sizeof($order->products); $i++) {
             //$orders_products_id = $order->products[$i]['orders_products_id'];
-            $products_ordered_mail .= "\t" . '注文商品'.str_repeat('　', intval($max_c_len - mb_strlen('注文商品', 'utf-8'))).'：' . $order->products[$i]['name'] . '（' . $order->products[$i]['model'] . '）' . "\n";
+            $products_ordered_mail .= "\t" . '注文商品'.str_repeat('　', intval($max_c_len - mb_strlen('注文商品', 'utf-8'))).'：' . $order->products[$i]['name'] . '（' . $order->products[$i]['model'] . '）';
+            if ($order->products[$i]['price'] != '0') {
+              $products_ordered_mail .= '（'.$currencies->display_price($order->products[$i]['price'], $order->products[$i]['tax']).'）'; 
+            }
+            $products_ordered_mail .= "\n"; 
             // Has Attributes?
             if (sizeof($order->products[$i]['attributes']) > 0) {
               for ($j=0; $j<sizeof($order->products[$i]['attributes']); $j++) {
                 $orders_products_attributes_id = $order->products[$i]['attributes'][$j]['id'];
                 $products_ordered_mail .=  "\t" .  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;")) . str_repeat('　', intval($max_c_len - mb_strlen($order->products[$i]['attributes'][$j]['option_info']['title'], 'utf-8'))).'：';
-                $products_ordered_mail .= tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&quot;")) . "\n";
+                $products_ordered_mail .= tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&quot;"));
+                if ($order->products[$i]['attributes'][$j]['price'] != '0') {
+                  $products_ordered_mail .= '（'.$currencies->format($order->products[$i]['attributes'][$j]['price']).'）'; 
+                }
+                $products_ordered_mail .= "\n"; 
               }
             }
 
@@ -1853,26 +1861,25 @@ if (($action == 'edit') && ($order_exists == true)) {
         name='update_products_real_quantity[$orders_products_id]'
         id='update_products_real_quantity_$orders_products_id' value='1'><input
         type='hidden' id='update_products_qty_$orders_products_id' value='" .
-        $order->products[$i]['qty'] . "'><input type='text' class='update_products_qty' id='update_products_new_qty_$orders_products_id' name='update_products[$orders_products_id][qty]' size='2' value='" .
-        $order->products[$i]['qty'] . "' onkeyup='clearLibNum(this);'>&nbsp;x</td>\n" . 
+        $order->products[$i]['qty'] . "'><input type='text' class='update_products_qty' id='update_products_new_qty_$orders_products_id' name='update_products[$orders_products_id][qty]' size='2' value='" .  (isset($_POST['update_products'][$orders_products_id]['qty'])?$_POST['update_products'][$orders_products_id]['qty']:$order->products[$i]['qty']) . "' onkeyup='clearLibNum(this);'>&nbsp;x</td>\n" . 
         '      <td class="' . $RowStyle . '">' . $order->products[$i]['name'] . "<input name='update_products[$orders_products_id][name]' size='64' id='update_products_name_$orders_products_id' type='hidden' value='" . $order->products[$i]['name'] . "'>\n" . 
         '      &nbsp;&nbsp;'."<input type='hidden' name='dummy' value='あいうえお眉幅'>";
       // Has Attributes?
       if ($order->products[$i]['attributes'] && sizeof($order->products[$i]['attributes']) > 0) {
         $op_info_array = array();
-        for ($i_num = 0; $i_num < sizeof($order->products[$i]); $i_num++) {
+        for ($i_num = 0; $i_num < sizeof($order->products[$i]['attributes']); $i_num++) {
           $op_info_array[] = $order->products[$i]['attributes'][$i_num]['id']; 
         }
         $op_info_str = implode('|||', $op_info_array);
 
         for ($j=0; $j<sizeof($order->products[$i]['attributes']); $j++) {
           $orders_products_attributes_id = $order->products[$i]['attributes'][$j]['id'];
-          echo '<br><nobr><small>&nbsp;<i> - ' .  "<input type='text' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][option]' size='10' value='" .  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;")) . "'>" . 
+          echo '<br><nobr><small>&nbsp;<i> - ' .  "<input type='text' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][option]' size='10' value='" .  (isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['option'])?tep_parse_input_field_data($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['option'], array("'"=>"&quot;")):tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;"))) . "'>" . 
             ': ' . 
-            "<input type='text' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][value]' size='35' value='" .  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&quot;"));
+            "<input type='text' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][value]' size='35' value='" .  (isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['value'])?tep_parse_input_field_data($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['value'], array("'"=>"&quot;")):tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&quot;")));
           //if ($order->products[$i]['attributes'][$j]['price'] != '0') echo ' (' . $order->products[$i]['attributes'][$j]['prefix'] . $currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . ')';
           echo "'>";
-          echo "<input type='text' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][price]' value='".number_format($order->products[$i]['attributes'][$j]['price'])."' onkeyup=\"recalc_order_price('".$oID."', '".$orders_products_id."', '1', '".$op_info_str."');\">";   
+          echo "<input type='text' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][price]' value='".(int)(isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price'])?$_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price']:$order->products[$i]['attributes'][$j]['price'])."' onkeyup=\"recalc_order_price('".$oID."', '".$orders_products_id."', '1', '".$op_info_str."');\">";   
           echo TEXT_MONEY_SYMBOL; 
           echo '</i></small></nobr>';
         }
@@ -1883,37 +1890,84 @@ if (($action == 'edit') && ($order_exists == true)) {
         '      <td class="' . $RowStyle . '" align="right">' .
         tep_display_tax_value($order->products[$i]['tax']) . "<input name='update_products[$orders_products_id][tax]' size='2' type='hidden' value='" . tep_display_tax_value($order->products[$i]['tax']) . "'>" .  '%</td>' . "\n";
       
-      echo '<td class="'.$RowStyle.'" align="right"><input type="text" class="once_pwd" name="update_products['.$orders_products_id.'][p_price]" size="9" value="'.tep_display_currency(number_format(abs($order->products[$i]['price']), 2)).'" onkeyup="recalc_order_price(\''.$oID.'\', \''.$orders_products_id.'\', \'2\', \''.$op_info_str.'\')"></td>'; 
+      echo '<td class="'.$RowStyle.'" align="right"><input type="text" class="once_pwd" name="update_products['.$orders_products_id.'][p_price]" size="9" value="'.tep_display_currency(number_format(abs(isset($_POST['update_products'][$orders_products_id]['p_price'])?$_POST['update_products'][$orders_products_id]['p_price']:$order->products[$i]['price']), 2)).'" onkeyup="recalc_order_price(\''.$oID.'\', \''.$orders_products_id.'\', \'2\', \''.$op_info_str.'\')"></td>'; 
       
-      echo  '<td class="' . $RowStyle . '" align="right">' . "<input type='text' class='once_pwd' name='update_products[$orders_products_id][final_price]' size='9' value='" . tep_display_currency(number_format(abs($order->products[$i]['final_price']),2)) .  "'" .' onkeyup="clearNoNum(this)" >'.  
+      echo  '<td class="' . $RowStyle . '" align="right">' . "<input type='text' class='once_pwd' name='update_products[$orders_products_id][final_price]' size='9' value='" .  tep_display_currency(number_format(abs(isset($_POST['update_products'][$orders_products_id]['final_price'])?$_POST['update_products'][$orders_products_id]['final_price']:$order->products[$i]['final_price']),2)) .  "'" .' onkeyup="clearNoNum(this)" >'.  
         '<input type="hidden" name="op_id_'.$orders_products_id.'" 
         value="'.tep_get_product_by_op_id($orders_products_id).'">' . '</td>' . "\n" . 
         '      <td class="' . $RowStyle . '" align="right">';
       echo '<div id="update_products['.$orders_products_id.'][a_price]">'; 
       if ($order->products[$i]['final_price'] < 0) {
-        echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']), true, $order->info['currency'], $order->info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
+        $a_price_str = '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']), true, $order->info['currency'], $order->info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
+        $a_price_h_str = '-'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']), true, $order->info['currency'], $order->info['currency_value']));
       } else {
-        echo $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']), true, $order->info['currency'], $order->info['currency_value']);
+        $a_price_str = $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']), true, $order->info['currency'], $order->info['currency_value']);
+        $a_price_h_str = '+'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']), true, $order->info['currency'], $order->info['currency_value']));
+      }
+      if (isset($_POST['update_products'][$orders_products_id]['ah_price'])) {
+        $symbol_str = substr($_POST['update_products'][$orders_products_id]['ah_price'], 0, 1); 
+        if ($symbol_str == '+') {
+          echo substr($_POST['update_products'][$orders_products_id]['ah_price'], 1).TEXT_MONEY_SYMBOL; 
+        } else {
+          echo '<font color="#ff0000">'.substr($_POST['update_products'][$orders_products_id]['ah_price'], 1).'</font>'.TEXT_MONEY_SYMBOL; 
+        }
+      } else {
+        echo $a_price_str; 
       }
       echo '</div>'; 
+      
+      echo '<input type="hidden" value="'.(isset($_POST['update_products'][$orders_products_id]['ah_price'])?$_POST['update_products'][$orders_products_id]['ah_price']:$a_price_h_str).'" name="update_products['.$orders_products_id.'][ah_price]" id="update_products['.$orders_products_id.'][ah_price]">'; 
       echo '</td>' . "\n" . 
         '      <td class="' . $RowStyle . '" align="right">';
       echo '<div id="update_products['.$orders_products_id.'][b_price]">'; 
       if ($order->products[$i]['final_price'] < 0) {
-        echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($order->products[$i]['final_price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
+        $b_price_str = '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($order->products[$i]['final_price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
+        
+        $b_price_h_str = '-'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($order->products[$i]['final_price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']));
       } else {
-        echo $currencies->format($order->products[$i]['final_price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']);
+        $b_price_str = $currencies->format($order->products[$i]['final_price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']);
+        $b_price_h_str = '+'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($order->products[$i]['final_price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']));
       }
+      
+      if (isset($_POST['update_products'][$orders_products_id]['bh_price'])) {
+        $symbol_str = substr($_POST['update_products'][$orders_products_id]['bh_price'], 0, 1); 
+        if ($symbol_str == '+') {
+          echo substr($_POST['update_products'][$orders_products_id]['bh_price'], 1).TEXT_MONEY_SYMBOL; 
+        } else {
+          echo '<font color="#ff0000">'.substr($_POST['update_products'][$orders_products_id]['bh_price'], 1).'</font>'.TEXT_MONEY_SYMBOL; 
+        }
+      } else {
+        echo $b_price_str; 
+      }
+      
       echo '</div>'; 
-      echo '</td>' . "\n" . 
-        '      <td class="' . $RowStyle . '" align="right"><b>';
+      echo '<input type="hidden" value="'.(isset($_POST['update_products'][$orders_products_id]['bh_price'])?$_POST['update_products'][$orders_products_id]['bh_price']:$b_price_h_str).'" name="update_products['.$orders_products_id.'][bh_price]" id="update_products['.$orders_products_id.'][bh_price]">';      echo '</td>' . "\n" . 
+        '      <td class="' . $RowStyle . '" align="right">';
       echo '<div id="update_products['.$orders_products_id.'][c_price]">'; 
       if ($order->products[$i]['final_price'] < 0) {
-        echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value'])).'</font>' .TEXT_MONEY_SYMBOL. '</b>';
+        $c_price_str = '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value'])).'</font>' .TEXT_MONEY_SYMBOL;
+        $c_price_h_str = '-'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']));
       } else {
-        echo $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . '</b>';
+        $c_price_str = $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']);
+        
+        $c_price_h_str = '+'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']));
       }
+     
+      if (isset($_POST['update_products'][$orders_products_id]['ch_price'])) {
+        $symbol_str = substr($_POST['update_products'][$orders_products_id]['ch_price'], 0, 1); 
+        if ($symbol_str == '+') {
+          echo '<b>'.substr($_POST['update_products'][$orders_products_id]['ch_price'], 1).TEXT_MONEY_SYMBOL.'</b>'; 
+        } else {
+          echo '<b><font color="#ff0000">'.substr($_POST['update_products'][$orders_products_id]['ch_price'], 1).'</font>'.TEXT_MONEY_SYMBOL.'</b>'; 
+        }
+      } else {
+        echo '<b>'.$c_price_str.'</b>'; 
+      }
+      
+      
       echo '</div>'; 
+      echo '<input type="hidden" value="'.(isset($_POST['update_products'][$orders_products_id]['ch_price'])?$_POST['update_products'][$orders_products_id]['ch_price']:$c_price_h_str).'" name="update_products['.$orders_products_id.'][ch_price]" id="update_products['.$orders_products_id.'][ch_price]">'; 
+      
       echo '</td>' . "\n" . 
         '    </tr>' . "\n";
     }

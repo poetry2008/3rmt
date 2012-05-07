@@ -50,6 +50,7 @@
   define('WARN_DOWNLOAD_DIRECTORY_NOT_READABLE', 'true');
 
 // define the filenames used in the project
+  define('FILENAME_CHECKOUT_ATTRIBUTES', 'checkout_attributes.php'); 
   define('FILENAME_CHECKOUT_OPTION', 'checkout_option.php');
   define('FILENAME_PREORDER_PAYMENT', 'preorder_payment.php');
   define('FILENAME_PREORDER_SUCCESS', 'preorder_success.php');
@@ -514,7 +515,7 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
                               if (isset($_POST['continue']) && $_POST['goto']) {
                                 tep_redirect($_POST['goto']);
                               } else if (isset($_POST['checkout'])) {
-                                tep_redirect(tep_href_link(FILENAME_CHECKOUT_OPTION, '', 'SSL'));
+                                tep_redirect(tep_href_link(FILENAME_CHECKOUT_ATTRIBUTES, '', 'SSL'));
                               } else {
                                 tep_redirect(tep_href_link($goto, tep_get_all_get_params($parameters)));
                               }

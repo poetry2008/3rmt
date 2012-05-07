@@ -851,7 +851,10 @@ function recalc_order_price(oid, opd, o_str, op_str)
       document.getElementsByName('update_products['+opd+'][final_price]')[0].value = msg_info[0];
       document.getElementById('update_products['+opd+'][a_price]').innerHTML = msg_info[1];
       document.getElementById('update_products['+opd+'][b_price]').innerHTML = msg_info[2];
-      document.getElementById('update_products['+opd+'][c_price]').innerHTML = msg_info[3];
+      document.getElementById('update_products['+opd+'][c_price]').innerHTML = '<b>'+msg_info[3]+'</b>';
+      document.getElementById('update_products['+opd+'][ah_price]').value = msg_info[4];
+      document.getElementById('update_products['+opd+'][bh_price]').value = msg_info[5];
+      document.getElementById('update_products['+opd+'][ch_price]').value = msg_info[6];
     }
   });
 }

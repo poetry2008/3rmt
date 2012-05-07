@@ -213,4 +213,5 @@ define('FORDERS_NOTICE_ONCE_PWD_WRONG', 'パスワードが違います');
 define('PREORDER_PRODUCT_UNIT_TEXT', '個');
 define('ENTRY_EMAIL_TITLE', 'メールタイトル：');
 define('BUTTON_WRITE_PREORDER', '予約注文書コピー');
+define('TABLE_HEADING_PRODUCTS_PRICE', '単価');
 ?>

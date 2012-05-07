@@ -1224,7 +1224,7 @@ if ($_POST['orders_id'] &&
   $html_str .= TABLE_HEADING_OPTION_GROUP_NAME; 
   $html_str .= '</td>';
   $html_str .= '<td align="left">';
-  $html_str .= tep_draw_input_field('name', '', 'id="name"'); 
+  $html_str .= tep_draw_input_field('name', '', 'id="name" class="campaign_input"'); 
   $html_str .= '<span id="name_error" style="color:#ff0000;"></span>'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
@@ -1234,7 +1234,7 @@ if ($_POST['orders_id'] &&
   $html_str .= TABLE_HEADING_OPTION_GROUP_TITLE; 
   $html_str .= '</td>';
   $html_str .= '<td align="left">';
-  $html_str .= tep_draw_input_field('title', '', 'id="title"'); 
+  $html_str .= tep_draw_input_field('title', '', 'id="title" class="campaign_input"'); 
   $html_str .= '<span id="title_error" style="color:#ff0000;"></span>'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
@@ -1253,7 +1253,7 @@ if ($_POST['orders_id'] &&
   $html_str .= TABLE_HEADING_OPTION_GROUP_DESC; 
   $html_str .= '</td>';
   $html_str .= '<td align="left">';
-  $html_str .= tep_draw_textarea_field('comment', 'hard', '30', '10'); 
+  $html_str .= tep_draw_textarea_field('comment', 'hard', '30', '10', '', 'class="campaign_input"'); 
   $html_str .= '</td>';
   $html_str .= '</tr>';
   
@@ -1311,7 +1311,7 @@ if ($_POST['orders_id'] &&
   $html_str .= TABLE_HEADING_OPTION_GROUP_NAME; 
   $html_str .= '</td>';
   $html_str .= '<td align="left">';
-  $html_str .= tep_draw_input_field('name', $group['name'], 'id="name"'); 
+  $html_str .= tep_draw_input_field('name', $group['name'], 'id="name" class="campaign_input"'); 
   $html_str .= '<span id="name_error" style="color:#ff0000;"></span>'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
@@ -1321,7 +1321,7 @@ if ($_POST['orders_id'] &&
   $html_str .= TABLE_HEADING_OPTION_GROUP_TITLE; 
   $html_str .= '</td>';
   $html_str .= '<td align="left">';
-  $html_str .= tep_draw_input_field('title', $group['title'], 'id="title"'); 
+  $html_str .= tep_draw_input_field('title', $group['title'], 'id="title" class="campaign_input"'); 
   $html_str .= '<span id="title_error" style="color:#ff0000;"></span>'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
@@ -1344,7 +1344,7 @@ if ($_POST['orders_id'] &&
   $html_str .= TABLE_HEADING_OPTION_GROUP_DESC; 
   $html_str .= '</td>';
   $html_str .= '<td align="left">';
-  $html_str .= tep_draw_textarea_field('comment', 'hard', '30', '10', $group['comment']); 
+  $html_str .= tep_draw_textarea_field('comment', 'hard', '30', '10', $group['comment'], 'class="campaign_input"'); 
   $html_str .= '</td>';
   $html_str .= '</tr>';
   
@@ -1838,7 +1838,7 @@ if ($_POST['orders_id'] &&
   $orders_p_raw = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS." where orders_products_id = '".$_POST['opd']."'");
   $orders_p = tep_db_fetch_array($orders_p_raw);
   
-  if (tep_get_bflag_by_product_id($orders_p['products_id'])) {
+  if (tep_check_product_type($_POST['opd'])) {
     $p_price = 0 - tep_replace_full_character($_POST['p_price']); 
   } else {
     $p_price = tep_replace_full_character($_POST['p_price']); 
@@ -1853,14 +1853,22 @@ if ($_POST['orders_id'] &&
     
     $price_array[] = '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($final_price*tep_replace_full_character($_POST['p_num']), true, $orders_info['currency'], $orders_info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL; 
     
-    $price_array[] = '<b><font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($final_price, $orders_p['products_tax'])*tep_replace_full_character($_POST['p_num']), true, $orders_info['currency'], $orders_info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL.'</b>'; 
+    $price_array[] = '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($final_price, $orders_p['products_tax'])*tep_replace_full_character($_POST['p_num']), true, $orders_info['currency'], $orders_info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL; 
   
+    $price_array[] = '-'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($final_price, $orders_p['products_tax']), true, $orders_info['currency'], $orders_info['currency_value'])); 
+    
+    $price_array[] = '-'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($final_price*tep_replace_full_character($_POST['p_num']), true, $orders_info['currency'], $orders_info['currency_value'])); 
+    $price_array[] = '-'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($final_price, $orders_p['products_tax'])*tep_replace_full_character($_POST['p_num']), true, $orders_info['currency'], $orders_info['currency_value'])); 
   } else {
     $price_array[] = $currencies->format(tep_add_tax($final_price, $orders_p['products_tax']), true, $orders_info['currency'], $orders_info['currency_value']); 
     
     $price_array[] = $currencies->format($final_price*tep_replace_full_character($_POST['p_num']), true, $orders_info['currency'], $orders_info['currency_value']); 
     
-    $price_array[] = '<b>'.$currencies->format(tep_add_tax($final_price, $orders_p['products_tax'])*tep_replace_full_character($_POST['p_num']), true, $orders_info['currency'], $orders_info['currency_value']).'</b>'; 
+    $price_array[] = $currencies->format(tep_add_tax($final_price, $orders_p['products_tax'])*tep_replace_full_character($_POST['p_num']), true, $orders_info['currency'], $orders_info['currency_value']); 
+    $price_array[] = '+'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($final_price, $orders_p['products_tax']), true, $orders_info['currency'], $orders_info['currency_value'])); 
+    
+    $price_array[] = '+'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($final_price*tep_replace_full_character($_POST['p_num']), true, $orders_info['currency'], $orders_info['currency_value'])); 
+    $price_array[] = '+'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($final_price, $orders_p['products_tax'])*tep_replace_full_character($_POST['p_num']), true, $orders_info['currency'], $orders_info['currency_value'])); 
   }
   
   echo implode('|||', $price_array);
@@ -1905,14 +1913,14 @@ if ($_POST['orders_id'] &&
       
       $price_array[$value][] = '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($final_price*tep_replace_full_character($_POST['update_products'][$value]['qty']), true, $orders_info['currency'], $orders_info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL; 
       
-      $price_array[$value][] = '<b><font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($final_price, $orders_p['products_tax'])*tep_replace_full_character($_POST['update_products'][$value]['qty']), true, $orders_info['currency'], $orders_info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL.'</b>'; 
+      $price_array[$value][] = '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($final_price, $orders_p['products_tax'])*tep_replace_full_character($_POST['update_products'][$value]['qty']), true, $orders_info['currency'], $orders_info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL; 
     
     } else {
       $price_array[$value][] = $currencies->format(tep_add_tax($final_price, $orders_p['products_tax']), true, $orders_info['currency'], $orders_info['currency_value']); 
       
       $price_array[$value][] = $currencies->format($final_price*tep_replace_full_character($_POST['update_products'][$value]['qty']), true, $orders_info['currency'], $orders_info['currency_value']); 
       
-      $price_array[$value][] = '<b>'.$currencies->format(tep_add_tax($final_price, $orders_p['products_tax'])*tep_replace_full_character($_POST['update_products'][$value]['qty']), true, $orders_info['currency'], $orders_info['currency_value']).'</b>'; 
+      $price_array[$value][] = $currencies->format(tep_add_tax($final_price, $orders_p['products_tax'])*tep_replace_full_character($_POST['update_products'][$value]['qty']), true, $orders_info['currency'], $orders_info['currency_value']); 
     }
   }
   

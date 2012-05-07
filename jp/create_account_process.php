@@ -694,7 +694,7 @@ function pass_hidd(){
 
     if($guestchk == '1') {
       # For Guest
-      tep_redirect(tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL'));
+      tep_redirect(tep_href_link(FILENAME_CHECKOUT_ATTRIBUTES, '', 'SSL'));
     } else {
       # For Member
       //$email_text .= EMAIL_WELCOME . EMAIL_TEXT . EMAIL_CONTACT . EMAIL_WARNING;

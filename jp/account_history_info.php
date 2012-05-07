@@ -137,7 +137,11 @@
     echo '          <tr>' . "\n" .
          '            <td class="main" align="right" valign="top" width="30">' . $order->products[$i]['qty'] . '&nbsp;x</td>' . "\n" .
          '            <td class="main" valign="top">' . $order->products[$i]['name'];
-
+    if ($order->products[$i]['price'] != '0') {
+      echo ' ('.$currencies->format($order->products[$i]['price'], true, $order->info['currency'], $order->info['currency_value']).')';
+    } else if ($order->products[$i]['final_price'] != '0') {
+      echo ' ('.$currencies->format($order->products[$i]['final_price'], true, $order->info['currency'], $order->info['currency_value']).')';
+    }
     if ( (isset($order->products[$i]['op_attributes'])) && (sizeof($order->products[$i]['op_attributes']) > 0) ) {
       for ($j=0, $n2=sizeof($order->products[$i]['op_attributes']); $j<$n2; $j++) {
         echo '<br><small>&nbsp;<i> - ' .  $order->products[$i]['op_attributes'][$j]['option_info']['title'] . ': ' .  $order->products[$i]['op_attributes'][$j]['option_info']['value'];

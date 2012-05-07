@@ -92,4 +92,20 @@ class HM_Option extends Option_DbRecord
      }
      return false; 
   }
+  
+  function check_old_symbol_show($belong_option)
+  {
+    if (empty($belong_option)) {
+      return false; 
+    }
+    $exists_group_raw = tep_db_query("select id from ".TABLE_OPTION_GROUP." where id ='".$belong_option."'");  
+    $exists_group_res = tep_db_fetch_array($exists_group_raw);
+    if ($exists_group_res) {
+      $item_raw = tep_db_query("select id from ".TABLE_OPTION_ITEM." where group_id = '".$exists_group_res['id']."' and place_type = '1'");   
+      if (!tep_db_num_rows($item_raw)) {
+        return false; 
+      }
+    }
+    return true;
+  }
 }
