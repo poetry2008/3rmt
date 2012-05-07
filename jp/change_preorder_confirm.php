@@ -248,7 +248,9 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                     <td class="main">
                     <?php 
                     echo $preorder_product_res['products_name'];
-                    if ($preorder_product_res['final_price'] != '0') {
+                    if ($preorder_product_res['products_price'] != '0') {
+                      echo ' ('.$currencies->display_price($preorder_product_res['products_price'], $preorder_product_res['products_tax']).')'; 
+                    } else if ($preorder_product_res['final_price'] != '0') {
                       echo ' ('.$currencies->display_price($preorder_product_res['final_price'], $preorder_product_res['products_tax']).')'; 
                     }
                     $old_attr_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS_ATTRIBUTES." where orders_id = '".$_POST['pid']."'"); 
@@ -257,7 +259,9 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                       $old_attr_info = @unserialize(stripslashes($old_attr_res['option_info'])); 
                       echo $old_attr_info['title'].':'.$old_attr_info['value'];
                       if ($old_attr_res['options_values_price'] != '0') {
-                        //echo ' ('.$currencies->format($old_attr_res['options_values_price']*$preorder_product_res['products_quantity']).')'; 
+                        if ($preorder_product_res['products_price'] != '0') {
+                          echo ' ('.$currencies->format($old_attr_res['options_values_price']*$preorder_product_res['products_quantity']).')'; 
+                        } 
                       }
                     }
                     if (!empty($option_info_array)) {

@@ -11,6 +11,7 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
   function render($option_error_array, $pre_item_str = '', $cart_obj = '', $ptype = false)
   {
     $sp_pos = strpos($_SERVER['PHP_SELF'], 'checkout_option.php');
+    $ac_pos = strpos($_SERVER['PHP_SELF'], 'admin/create_order.php');
     
     if (strlen($this->front_title)) {
        if ($ptype) {
@@ -227,7 +228,7 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
           
          echo '</span>';
          
-         if ($sp_pos !== false) {
+         if (($sp_pos !== false) || ($ac_pos !== false)) {
            if ($value['money'] != '0') {
              echo '<span class="option_money">'.$value['money'].OPTION_ITEM_MONEY_UNIT.'</span>'; 
            }

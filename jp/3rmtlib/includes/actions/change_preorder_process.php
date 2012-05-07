@@ -340,7 +340,9 @@ if($cl_max_len < 4) {
     $products_ordered_text .= ' ('.$preorder_product_res['products_model'].')'; 
   }
  
-  if ($preorder_product_res['final_price'] != '0') {
+  if ($preorder_product_res['products_price'] != '0') {
+    $products_ordered_text .= '('.$currencies->display_price($preorder_product_res['products_price'], $preorder_product_res['products_tax']).')'; 
+  } else if ($preorder_product_res['final_price'] != '0') {
     $products_ordered_text .= '('.$currencies->display_price($preorder_product_res['final_price'], $preorder_product_res['products_tax']).')'; 
   }
   $products_ordered_atttibutes_text = '';
@@ -373,9 +375,12 @@ while ($mold_attr_res = tep_db_fetch_array($mold_attr_raw)) {
         .$mold_attr_info['title']
         .str_repeat('　', intval(($cl_max_len-mb_strlen($mold_attr_info['title'],'utf-8'))))
         .'：'.$mold_attr_info['value'];
-      //if ($mold_attr_res['options_values_price'] != '0') {
-        //$products_ordered_attributes .= '　('.$currencies->format($mold_attr_res['options_values_price']*$preorder_product_res['products_quantity']).')';
-      //}
+      if ($mold_attr_res['options_values_price'] != '0') {
+        if ($preorder_product_res['products_price'] != '0') {
+          //$products_ordered_attributes .= '　('.$currencies->format($mold_attr_res['options_values_price']*$preorder_product_res['products_quantity']).')';
+          $products_ordered_attributes .= '　('.$currencies->format($mold_attr_res['options_values_price']).')';
+        } 
+      }
 
 }
 
@@ -426,7 +431,8 @@ if (isset($_SESSION['preorder_option_info'])) {
         .str_repeat('　', intval(($cl_max_len-mb_strlen($option_attr_values['front_title'],'utf-8'))))
         .'：'.$op_value;
       if ($ao_price != '0') {
-        $products_ordered_attributes .= '　('.$currencies->format($ao_price*$preorder_product_res['products_quantity']).')';
+        //$products_ordered_attributes .= '　('.$currencies->format($ao_price*$preorder_product_res['products_quantity']).')';
+        $products_ordered_attributes .= '　('.$currencies->format($ao_price).')';
       }
    }
    }
@@ -544,9 +550,6 @@ if(!empty($add_list)){
   $email_address_str .= $email_address;
   $email_order_text = str_replace($email_address,$email_address_str,$email_order_text);
 }
-$email_address_str .= '------------------------------------------'."\n";
-$email_address_str .= $email_address;
-$email_order_text = str_replace($email_address,$email_address_str,$email_order_text);
 
 tep_mail($preorder['customers_name'], $preorder['customers_email_address'], EMAIL_TEXT_SUBJECT, $email_order_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
   

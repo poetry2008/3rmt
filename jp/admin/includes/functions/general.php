@@ -7012,3 +7012,22 @@ function tep_replace_full_character($c_str)
   $c_str = str_replace($arr, $arr2, $c_str);
   return $c_str;
 }
+
+function tep_check_product_type($orders_products_id)
+{
+  $orders_products_raw = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS." where orders_products_id = '".$orders_products_id."'");
+  $orders_products = tep_db_fetch_array($orders_products_raw);
+  
+  $product_query = tep_db_query("select products_bflag from " . TABLE_PRODUCTS . " where products_id = '" . $orders_products['products_id'] . "'");
+  $product = tep_db_fetch_array($product_query);
+  
+  if ($product) {
+    return $product['products_bflag'];
+  } else {
+    if ($orders_products['products_price'] < 0) {
+      return 1; 
+    }
+  }
+  
+  return 0;
+}

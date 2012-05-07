@@ -434,7 +434,8 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
         . '：' . $op_value['value'];
       
       if ($op_price != '0') {
-        $products_ordered_attributes .= '　('.$currencies->format($op_price*$order->products[$i]['qty']).')'; 
+        //$products_ordered_attributes .= '　('.$currencies->format($op_price*$order->products[$i]['qty']).')'; 
+        $products_ordered_attributes .= '　('.$currencies->format($op_price).')'; 
       }
     }
   }
@@ -491,7 +492,8 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
         . '：' . $ck_value['value'];
       
       if ($c_op_price != '0') {
-        $products_ordered_attributes .= '　('.$currencies->format($c_op_price*$order->products[$i]['qty']).')'; 
+        //$products_ordered_attributes .= '　('.$currencies->format($c_op_price*$order->products[$i]['qty']).')'; 
+        $products_ordered_attributes .= '　('.$currencies->format($c_op_price).')'; 
       }
     }
   }

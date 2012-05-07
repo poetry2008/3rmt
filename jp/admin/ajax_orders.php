@@ -1838,7 +1838,7 @@ if ($_POST['orders_id'] &&
   $orders_p_raw = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS." where orders_products_id = '".$_POST['opd']."'");
   $orders_p = tep_db_fetch_array($orders_p_raw);
   
-  if (tep_get_bflag_by_product_id($orders_p['products_id'])) {
+  if (tep_check_product_type($_POST['opd'])) {
     $p_price = 0 - tep_replace_full_character($_POST['p_price']); 
   } else {
     $p_price = tep_replace_full_character($_POST['p_price']); 

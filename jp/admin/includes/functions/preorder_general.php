@@ -1241,3 +1241,22 @@ function tep_get_preorder_attr_mail($orders_id)
  
   return $return_str;
 }
+
+function tep_check_pre_product_type($orders_products_id)
+{
+  $orders_products_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_products_id = '".$orders_products_id."'");
+  $orders_products = tep_db_fetch_array($orders_products_raw);
+ 
+  $product_query = tep_db_query("select products_bflag from " . TABLE_PRODUCTS . " where products_id = '" . $orders_products['products_id'] . "'");
+  $product = tep_db_fetch_array($product_query);
+  
+  if ($product) {
+    return $product['products_bflag'];
+  } else {
+    if ($orders_products['products_price'] < 0) {
+      return 1; 
+    }
+  } 
+  
+  return 0;
+}

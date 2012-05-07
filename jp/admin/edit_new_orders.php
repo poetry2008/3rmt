@@ -1002,7 +1002,8 @@ if($address_error == false){
                 $products_ordered_mail .= tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&quot;"));
                 
                 if ($order->products[$i]['attributes'][$j]['price'] != '0') {
-                  $products_ordered_mail .= '（'.$currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty']).'）'; 
+                  //$products_ordered_mail .= '（'.$currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty']).'）'; 
+                  $products_ordered_mail .= '（'.$currencies->format($order->products[$i]['attributes'][$j]['price']).'）'; 
                 }
                 $products_ordered_mail .= "\n"; 
               }
