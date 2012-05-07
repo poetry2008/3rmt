@@ -590,14 +590,30 @@ function faq_question_romaji_can_copy_to(qromaji,site_id){
 
 function replace_romaji(romaji){
   //replace & + to a string
-romaji = romaji.replace(/\&/g,'<11111111>');
-romaji = romaji.replace(/\+/g,'<22222222>');
-romaji = romaji.replace(/\//g,'<33333333>');
-romaji = romaji.replace(/\%/g,'<44444444>');
-romaji = romaji.replace(/\#/g,'<55555555>');
-romaji = romaji.replace(/\?/g,'<66666666>');
-romaji = romaji.replace(/ /g,'<77777777>');
-romaji = romaji.replace(/\'/g,'<88888888>');
+romaji = romaji.replace(/\&/g,'11111111');
+romaji = romaji.replace(/\+/g,'22222222');
+romaji = romaji.replace(/\//g,'33333333');
+romaji = romaji.replace(/\%/g,'44444444');
+romaji = romaji.replace(/\#/g,'55555555');
+romaji = romaji.replace(/\?/g,'66666666');
+romaji = romaji.replace(/ /g,'77777777');
+romaji = romaji.replace(/\,/g,'88888888');
+romaji = romaji.replace(/\</g,'aaaaaaaa');
+romaji = romaji.replace(/\>/g,'bbbbbbbb');
+romaji = romaji.replace(/\{/g,'cccccccc');
+romaji = romaji.replace(/\}/g,'dddddddd');
+romaji = romaji.replace(/\(/g,'eeeeeeee');
+romaji = romaji.replace(/\)/g,'ffffffff');
+romaji = romaji.replace(/\|/g,'gggggggg');
+romaji = romaji.replace(/\^/g,'hhhhhhhh');
+romaji = romaji.replace(/\[/g,'iiiiiiii');
+romaji = romaji.replace(/\]/g,'jjjjjjjj');
+romaji = romaji.replace(/\`/g,'kkkkkkkk');
+romaji = romaji.replace(/\~/g,'llllllll');
+romaji = romaji.replace(/\\/g,'mmmmmmmm');
+romaji = romaji.replace(/\*/g,'nnnnnnnn');
+romaji = romaji.replace(/\"/g,'oooooooo');
+romaji = romaji.replace(/\=/g,'pppppppp');
   return romaji;
 }
 function c_is_set_error_char(replace_single){

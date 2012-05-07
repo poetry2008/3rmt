@@ -289,14 +289,30 @@ if ($_POST['orders_id'] &&
   }
 }else if(isset($_GET['action'])&&$_GET['action'] == 'faq_c_is_set_romaji'){
   $romaji = $_POST['romaji'];
-  $romaji = str_replace('<11111111>','&',$romaji);
-  $romaji = str_replace('<22222222>','+',$romaji);
-  $romaji = str_replace('<33333333>','/',$romaji);
-  $romaji = str_replace('<44444444>','%',$romaji);
-  $romaji = str_replace('<55555555>','#',$romaji);
-  $romaji = str_replace('<66666666>','?',$romaji);
-  $romaji = str_replace('<77777777>',' ',$romaji);
-  $romaji = str_replace('<88888888>',"'",$romaji);
+  $romaji = str_replace('11111111','&',$romaji);
+  $romaji = str_replace('22222222','+',$romaji);
+  $romaji = str_replace('33333333','/',$romaji);
+  $romaji = str_replace('44444444','%',$romaji);
+  $romaji = str_replace('55555555','#',$romaji);
+  $romaji = str_replace('66666666','?',$romaji);
+  $romaji = str_replace('77777777',' ',$romaji);
+  $romaji = str_replace('88888888',"'",$romaji);
+  $romaji = str_replace('aaaaaaaa',"<",$romaji);
+  $romaji = str_replace('bbbbbbbb',">",$romaji);
+  $romaji = str_replace('cccccccc',"{",$romaji);
+  $romaji = str_replace('dddddddd',"}",$romaji);
+  $romaji = str_replace('eeeeeeee',"(",$romaji);
+  $romaji = str_replace('ffffffff',")",$romaji);
+  $romaji = str_replace('gggggggg',"|",$romaji);
+  $romaji = str_replace('hhhhhhhh',"^",$romaji);
+  $romaji = str_replace('iiiiiiii',"[",$romaji);
+  $romaji = str_replace('jjjjjjjj',"]",$romaji);
+  $romaji = str_replace('kkkkkkkk',"`",$romaji);
+  $romaji = str_replace('llllllll',"~",$romaji);
+  $romaji = str_replace('mmmmmmmm',"\\",$romaji);
+  $romaji = str_replace('nnnnnnnn',"*",$romaji);
+  $romaji = str_replace('oooooooo',"\"",$romaji);
+  $romaji = str_replace('pppppppp',"=",$romaji);
   $site_id = isset($_POST['site_id'])?$_POST['site_id']:0;
   $sql =  "select * from ".TABLE_FAQ_CATEGORIES." fc,
 		".TABLE_FAQ_CATEGORIES_DESCRIPTION." 
@@ -315,14 +331,30 @@ if ($_POST['orders_id'] &&
   }
 }else if(isset($_GET['action'])&&$_GET['action'] == 'faq_q_is_set_romaji'){
   $romaji = $_POST['romaji'];
-  $romaji = str_replace('<11111111>','&',$romaji);
-  $romaji = str_replace('<22222222>','+',$romaji);
-  $romaji = str_replace('<33333333>','/',$romaji);
-  $romaji = str_replace('<44444444>','%',$romaji);
-  $romaji = str_replace('<55555555>','#',$romaji);
-  $romaji = str_replace('<66666666>','?',$romaji);
-  $romaji = str_replace('<77777777>',' ',$romaji);
-  $romaji = str_replace('<88888888>',"'",$romaji);
+  $romaji = str_replace('11111111','&',$romaji);
+  $romaji = str_replace('22222222','+',$romaji);
+  $romaji = str_replace('33333333','/',$romaji);
+  $romaji = str_replace('44444444','%',$romaji);
+  $romaji = str_replace('55555555','#',$romaji);
+  $romaji = str_replace('66666666','?',$romaji);
+  $romaji = str_replace('77777777',' ',$romaji);
+  $romaji = str_replace('88888888',"'",$romaji);
+  $romaji = str_replace('aaaaaaaa',"<",$romaji);
+  $romaji = str_replace('bbbbbbbb',">",$romaji);
+  $romaji = str_replace('cccccccc',"{",$romaji);
+  $romaji = str_replace('dddddddd',"}",$romaji);
+  $romaji = str_replace('eeeeeeee',"(",$romaji);
+  $romaji = str_replace('ffffffff',")",$romaji);
+  $romaji = str_replace('gggggggg',"|",$romaji);
+  $romaji = str_replace('hhhhhhhh',"^",$romaji);
+  $romaji = str_replace('iiiiiiii',"[",$romaji);
+  $romaji = str_replace('jjjjjjjj',"]",$romaji);
+  $romaji = str_replace('kkkkkkkk',"`",$romaji);
+  $romaji = str_replace('llllllll',"~",$romaji);
+  $romaji = str_replace('mmmmmmmm',"\\",$romaji);
+  $romaji = str_replace('nnnnnnnn',"*",$romaji);
+  $romaji = str_replace('oooooooo',"\"",$romaji);
+  $romaji = str_replace('pppppppp',"=",$romaji);
   $site_id = isset($_POST['site_id'])?$_POST['site_id']:0;
   $sql = "select * from  
 		".TABLE_FAQ_QUESTION_DESCRIPTION." fqd,
@@ -342,18 +374,34 @@ if ($_POST['orders_id'] &&
   }
 }else if(isset($_GET['action'])&&$_GET['action'] == 'check_romaji'){
   $romaji = $_POST['romaji'];
-  $romaji = str_replace('<11111111>','&',$romaji);
-  $romaji = str_replace('<22222222>','+',$romaji);
-  $romaji = str_replace('<33333333>','/',$romaji);
-  $romaji = str_replace('<44444444>','%',$romaji);
-  $romaji = str_replace('<55555555>','#',$romaji);
-  $romaji = str_replace('<66666666>','?',$romaji);
-  $romaji = str_replace('<77777777>',' ',$romaji);
-  $romaji = str_replace('<88888888>',"'",$romaji);
+  $romaji = str_replace('11111111','&',$romaji);
+  $romaji = str_replace('22222222','+',$romaji);
+  $romaji = str_replace('33333333','/',$romaji);
+  $romaji = str_replace('44444444','%',$romaji);
+  $romaji = str_replace('55555555','#',$romaji);
+  $romaji = str_replace('66666666','?',$romaji);
+  $romaji = str_replace('77777777',' ',$romaji);
+  $romaji = str_replace('88888888',"'",$romaji);
+  $romaji = str_replace('aaaaaaaa',"<",$romaji);
+  $romaji = str_replace('bbbbbbbb',">",$romaji);
+  $romaji = str_replace('cccccccc',"{",$romaji);
+  $romaji = str_replace('dddddddd',"}",$romaji);
+  $romaji = str_replace('eeeeeeee',"(",$romaji);
+  $romaji = str_replace('ffffffff',")",$romaji);
+  $romaji = str_replace('gggggggg',"|",$romaji);
+  $romaji = str_replace('hhhhhhhh',"^",$romaji);
+  $romaji = str_replace('iiiiiiii',"[",$romaji);
+  $romaji = str_replace('jjjjjjjj',"]",$romaji);
+  $romaji = str_replace('kkkkkkkk',"`",$romaji);
+  $romaji = str_replace('llllllll',"~",$romaji);
+  $romaji = str_replace('mmmmmmmm',"\\",$romaji);
+  $romaji = str_replace('nnnnnnnn',"*",$romaji);
+  $romaji = str_replace('oooooooo',"\"",$romaji);
+  $romaji = str_replace('pppppppp',"=",$romaji);
   $replace_str = '\s|　';
-  if(preg_match('/[\'\&\+\/\%\#\?\.\s]/u',$romaji)){
-    $new_romaji =
-      preg_replace('/[\'\&\+\/\%\#\?\.\s]/u','-', $romaji);
+  if(preg_match('/[\'\&\+\/\%\#\?\.\(\)\{\}\[\]\<\>\^\~\`\|\\\"\=\*\s]/u',$romaji)){
+    $new_romaji = preg_replace(
+        '/[\'\&\+\/\%\#\?\.\(\)\{\}\[\]\<\>\^\~\`\|\\\"\*\=\s]/u','-', $romaji);
     if(preg_match('/'.$replace_str.'/',$new_romaji)){
       $new_romaji = preg_replace('/'.$replace_str.'/','-',$new_romaji);
     }
@@ -368,14 +416,30 @@ if ($_POST['orders_id'] &&
   }
 }else if(isset($_GET['action'])&&$_GET['action'] == 'c_is_set_romaji'){
   $romaji = $_POST['romaji'];
-  $romaji = str_replace('<11111111>','&',$romaji);
-  $romaji = str_replace('<22222222>','+',$romaji);
-  $romaji = str_replace('<33333333>','/',$romaji);
-  $romaji = str_replace('<44444444>','%',$romaji);
-  $romaji = str_replace('<55555555>','#',$romaji);
-  $romaji = str_replace('<66666666>','?',$romaji);
-  $romaji = str_replace('<77777777>',' ',$romaji);
-  $romaji = str_replace('<88888888>',"'",$romaji);
+  $romaji = str_replace('11111111','&',$romaji);
+  $romaji = str_replace('22222222','+',$romaji);
+  $romaji = str_replace('33333333','/',$romaji);
+  $romaji = str_replace('44444444','%',$romaji);
+  $romaji = str_replace('55555555','#',$romaji);
+  $romaji = str_replace('66666666','?',$romaji);
+  $romaji = str_replace('77777777',' ',$romaji);
+  $romaji = str_replace('88888888',"'",$romaji);
+  $romaji = str_replace('aaaaaaaa',"<",$romaji);
+  $romaji = str_replace('bbbbbbbb',">",$romaji);
+  $romaji = str_replace('cccccccc',"{",$romaji);
+  $romaji = str_replace('dddddddd',"}",$romaji);
+  $romaji = str_replace('eeeeeeee',"(",$romaji);
+  $romaji = str_replace('ffffffff',")",$romaji);
+  $romaji = str_replace('gggggggg',"|",$romaji);
+  $romaji = str_replace('hhhhhhhh',"^",$romaji);
+  $romaji = str_replace('iiiiiiii',"[",$romaji);
+  $romaji = str_replace('jjjjjjjj',"]",$romaji);
+  $romaji = str_replace('kkkkkkkk',"`",$romaji);
+  $romaji = str_replace('llllllll',"~",$romaji);
+  $romaji = str_replace('mmmmmmmm',"\\",$romaji);
+  $romaji = str_replace('nnnnnnnn',"*",$romaji);
+  $romaji = str_replace('oooooooo',"\"",$romaji);
+  $romaji = str_replace('pppppppp',"=",$romaji);
   $site_id = isset($_POST['site_id'])?$_POST['site_id']:0;
   $sql =  "select * from ".TABLE_CATEGORIES." c,
 		".TABLE_CATEGORIES_DESCRIPTION." 
@@ -394,14 +458,30 @@ if ($_POST['orders_id'] &&
   }
 }else if(isset($_GET['action'])&&$_GET['action'] == 'p_is_set_romaji'){
   $romaji = $_POST['romaji'];
-  $romaji = str_replace('<11111111>','&',$romaji);
-  $romaji = str_replace('<22222222>','+',$romaji);
-  $romaji = str_replace('<33333333>','/',$romaji);
-  $romaji = str_replace('<44444444>','%',$romaji);
-  $romaji = str_replace('<55555555>','#',$romaji);
-  $romaji = str_replace('<66666666>','?',$romaji);
-  $romaji = str_replace('<77777777>',' ',$romaji);
-  $romaji = str_replace('<88888888>',"'",$romaji);
+  $romaji = str_replace('11111111','&',$romaji);
+  $romaji = str_replace('22222222','+',$romaji);
+  $romaji = str_replace('33333333','/',$romaji);
+  $romaji = str_replace('44444444','%',$romaji);
+  $romaji = str_replace('55555555','#',$romaji);
+  $romaji = str_replace('66666666','?',$romaji);
+  $romaji = str_replace('77777777',' ',$romaji);
+  $romaji = str_replace('88888888',"'",$romaji);
+  $romaji = str_replace('aaaaaaaa',"<",$romaji);
+  $romaji = str_replace('bbbbbbbb',">",$romaji);
+  $romaji = str_replace('cccccccc',"{",$romaji);
+  $romaji = str_replace('dddddddd',"}",$romaji);
+  $romaji = str_replace('eeeeeeee',"(",$romaji);
+  $romaji = str_replace('ffffffff',")",$romaji);
+  $romaji = str_replace('gggggggg',"|",$romaji);
+  $romaji = str_replace('hhhhhhhh',"^",$romaji);
+  $romaji = str_replace('iiiiiiii',"[",$romaji);
+  $romaji = str_replace('jjjjjjjj',"]",$romaji);
+  $romaji = str_replace('kkkkkkkk',"`",$romaji);
+  $romaji = str_replace('llllllll',"~",$romaji);
+  $romaji = str_replace('mmmmmmmm',"\\",$romaji);
+  $romaji = str_replace('nnnnnnnn',"*",$romaji);
+  $romaji = str_replace('oooooooo',"\"",$romaji);
+  $romaji = str_replace('pppppppp',"=",$romaji);
   $site_id = isset($_POST['site_id'])?$_POST['site_id']:0;
   $sql = "select * from  
 		".TABLE_PRODUCTS_DESCRIPTION." pd,
