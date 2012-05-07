@@ -11,8 +11,8 @@ if(isGet()){
 }else{
 
   if(!$_POST['email_address'] && !isset($_POST['update_products'])){
-
-    tep_redirect(tep_redirect(tep_href_link(FILENAME_CREATE_ORDER, null, 'SSL')));
+     
+    tep_redirect(tep_redirect(tep_href_link(FILENAME_CREATE_ORDER.'?error=1', null, 'SSL')));
   }
 
   if(!$_POST['email_address']){
@@ -21,8 +21,19 @@ if(isGet()){
   }
 
   if(!isset($_POST['update_products'])){
+    
+    tep_redirect(tep_redirect(tep_href_link(FILENAME_CREATE_ORDER.'?Customer_mail='.tep_db_prepare_input($_POST['email_address']).'&site_id='.tep_db_prepare_input($_POST['site_id']).'&error=1', null, 'SSL')));
+  }else{
+    $qty = 0;
+    foreach($_POST['update_products'] as $update_value){
+      $qty += $update_value['qty']; 
+    }
 
-    tep_redirect(tep_redirect(tep_href_link(FILENAME_CREATE_ORDER.'?Customer_mail='.tep_db_prepare_input($_POST['email_address']).'&site_id='.tep_db_prepare_input($_POST['site_id']), null, 'SSL')));
+    if($qty == 0){
+
+       
+      tep_redirect(tep_redirect(tep_href_link(FILENAME_CREATE_ORDER.'?oID='.tep_db_prepare_input($_POST['oID']).'&Customer_mail='.tep_db_prepare_input($_POST['email_address']).'&site_id='.tep_db_prepare_input($_POST['site_id']).'&error=1', null, 'SSL')));
+    } 
   }
 }
 

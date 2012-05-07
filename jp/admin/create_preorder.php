@@ -43,12 +43,36 @@
 <title><?php echo TITLE; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <link rel="stylesheet" type="text/css" href="includes/styles.css">
+<link rel="stylesheet" type="text/css" href="includes/jquery.autocomplete.css">
 <?php require('includes/step-by-step/form_check.js.php'); ?>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
 <script language="javascript" src="includes/javascript/jquery.form.js"></script>
 <script language="javascript" src="includes/javascript/datePicker.js"></script>
+<script language="javascript" src="includes/javascript/jquery.autocomplete.js"></script>
 <script type="text/javascript">
+$(function() {
+      function format(group) {
+          return group.name;
+      }
+      $("#keyword").autocomplete('ajax_create_order.php?action=search_email', {
+        multipleSeparator: '',
+        dataType: "json",
+        parse: function(data) {
+        return $.map(data, function(row) {
+            return {
+             data: row,
+             value: row.name,
+             result: row.name
+            }
+          });
+        },
+        formatItem: function(item) {
+          return format(item);
+        }
+      }).result(function(e, item) {
+      });
+});
 function hidden_payment()
 {
 
@@ -178,7 +202,7 @@ float:left;
 <?php
   echo '<form action="' . $PHP_SELF . '" method="GET">' . "\n";
   echo '<p class=main>'.CREATE_ORDER_SEARCH_TEXT.'<br>';
-  echo CREATE_ORDER_EMAIL_TEXT.'&nbsp;<input type="text" name="Customer_mail" size="40">'.tep_site_pull_down_menu('', false).'&nbsp;&nbsp;<input type="submit" value="  '.CREATE_ORDER_SEARCH_BUTTON_TEXT.'  "></p>' . "\n";
+  echo CREATE_ORDER_EMAIL_TEXT.'&nbsp;<input type="text" id="keyword" name="Customer_mail" size="40" value="'.$_GET['Customer_mail'].'">'.tep_site_pull_down_menu('', false).'&nbsp;&nbsp;<input type="submit" value="  '.CREATE_ORDER_SEARCH_BUTTON_TEXT.'  "></p>' . "\n";
   echo '</form>' . "\n";
 ?>
   <br>

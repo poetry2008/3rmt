@@ -398,28 +398,8 @@ if(isset($_GET['oID']) && $_GET['oID'] != ''){
   $oID = date("Ymd") . '-' . date("His") . tep_get_order_end_num();
 }
 ?>
-<tr><td>
-<table border="0" width="100%" cellspacing="0" cellpadding="0">
-<tr>
-<td class="pageHeading"><br>
-  <?php
-  echo CREATE_ORDER_PRODUCTS_ADD_TITLE;?>:</td>
-  </tr>
-<tr>
-<td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
-</tr>
-<tr>
-<td class="formAreaTitle"><?php echo EDIT_ORDERS_PRO_LIST_TITLE;?></td>
-</tr>
-</table>
-</td></tr>
-<tr>
-  <td class="main"><table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">
-  <tr>
-  <td class="main"><input type="hidden" name="oID" value="<?php echo $oID;?>"><table border="0" cellspacing="0" cellpadding="2">
-  <!-- Begin Products Listing Block --> 
-            <tr>
-            <td>      
+
+<!-- Begin Products Listing Block --> 
             <?php
             $order = new order($oID);
             // Override order.php Class's Field Limitations
@@ -451,9 +431,38 @@ if(isset($_GET['oID']) && $_GET['oID'] != ''){
             }
             $index++;
           }
-
           ?>
             <?php // Version without editable names & prices ?>
+<tr><td>
+<table border="0" width="100%" cellspacing="0" cellpadding="0">
+<tr>
+<td class="pageHeading"><br>
+  <?php
+  echo CREATE_ORDER_PRODUCTS_ADD_TITLE;?>:</td>
+  </tr>
+<?php
+if($index > 0){
+?>
+<tr>
+<td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
+</tr>
+<tr>
+<td class="formAreaTitle"><?php echo EDIT_ORDERS_PRO_LIST_TITLE;?></td>
+</tr>
+<?php
+}
+?>
+</table>
+</td></tr>
+
+<?php
+if($index > 0){
+?>
+<tr>
+  <td class="main"><table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">
+  <tr>
+  <td class="main"><input type="hidden" name="oID" value="<?php echo $oID;?>">
+  
             <table border="0" width="100%" cellspacing="0" cellpadding="2">
             <tr style="background-color: #e1f9fe;">
             <td class="dataTableContent" colspan="2" width="120"><?php echo TABLE_HEADING_NUM_PRO_NAME;?></td>
@@ -528,21 +537,17 @@ if(isset($_GET['oID']) && $_GET['oID'] != ''){
             </td>
             </tr>
             <tr>
-            <td>
-            <table width="100%" cellpadding="0" cellspacing="0">
-            <tr>
             <td valign="top"><?php echo "<span class='smalltext'>" .  HINT_DELETE_POSITION . "</span>"; ?></td> <td align="right"></td>
-            </tr>
-            </table>
-            </td>
-            </tr></form>     
-</table></td>
-</tr>
+            </tr>     
 </table>
 </td>
 </tr>
+<?php
+}
+?>
+</form>
   <tr>
-  <td class="formAreaTitle"><br><?php echo ADDING_TITLE; ?> (Nr. <?php echo $oID; ?>)</td>
+  <td class="formAreaTitle"><?php echo $index > 0 ? '<br>' : tep_draw_separator('pixel_trans.gif', '100%', '10');echo ADDING_TITLE; ?> (Nr. <?php echo $oID; ?>)</td>
   </tr>
   <tr>
   <td class="main"><table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">
@@ -613,14 +618,17 @@ if(isset($_GET['oID']) && $_GET['oID'] != ''){
           $add_product_products_id = 0;
 
         // Step 1: Choose Category
-        
+        $product_error = isset($_GET['error']) && $_GET['error'] ? PRODUCT_ERROR : '';
+        //if($_GET['error']){
+          //$product_error = $index > 0 ? '' : PRODUCT_ERROR;
+        //}
         print "<tr><form action='$PHP_SELF?oID=$oID&action=add_product$param_str' method='POST'>\n";
         print "<td class='dataTableContent' align='right'><b>" . ADDPRODUCT_TEXT_STEP . " 1:</b></td>\n";
         print "<td class='dataTableContent' valign='top'>";
         echo ' ' . tep_draw_pull_down_menu('add_product_categories_id', tep_get_category_tree(), $current_category_id, 'onChange="this.form.submit();"');
         print "<input type='hidden' name='step' value='2'>";
         print "</td>\n";
-        print "<td class='dataTableContent'>" . ADDPRODUCT_TEXT_STEP1 . "</td>\n";
+        print "<td class='dataTableContent'>" . ADDPRODUCT_TEXT_STEP1 . "&nbsp;<span><font color='red'>".$product_error."</font></span></td>\n";
         print "</form></tr>\n";
         //print "<tr><td colspan='3'>&nbsp;</td></tr>\n";
 

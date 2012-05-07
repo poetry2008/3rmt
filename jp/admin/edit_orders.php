@@ -771,7 +771,8 @@ if($address_error == false){
         orders_status, 
         date_purchased, 
         payment_method, 
-        torihiki_date 
+        torihiki_date,
+        torihiki_date_end
         from " . TABLE_ORDERS . " 
         where orders_id = '" . tep_db_input($oID) . "'");
         $check_status = tep_db_fetch_array($check_status_query);
@@ -795,7 +796,7 @@ if($address_error == false){
                 $oID,
                 $check_status['payment_method'],
                 $otm,
-                tep_torihiki($check_status['torihiki_date']),
+                tep_torihiki($check_status['torihiki_date']).'～'.date('H時i分',strtotime($check_status['torihiki_date_end'])).'　（24時間表記）',
                 $os_result['orders_status_name'],
                 get_configuration_by_site_id('STORE_NAME', $site_id),
                 get_url_by_site_id($site_id),
@@ -823,7 +824,7 @@ if($address_error == false){
                 $oID,
                 $check_status['payment_method'],
                 $otm,
-                tep_torihiki($check_status['torihiki_date']),
+                tep_torihiki($check_status['torihiki_date']).'～'.date('H時i分',strtotime($check_status['torihiki_date_end'])).'　（24時間表記）',
                 $os_result['orders_status_name'],
                 get_configuration_by_site_id('STORE_NAME', $site_id),
                 get_url_by_site_id($site_id),
@@ -1355,6 +1356,7 @@ $shipping_fee = $order->info['shipping_fee'] != $shipping_fee ? $shipping_fee : 
 <script language="javascript" src="includes/javascript/jquery.js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="includes/javascript/all_order.js"></script>
+<script language="javascript" src="includes/javascript/all_orders.js"></script>
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
 <script language="javascript" src="includes/javascript/datePicker.js"></script>
 <script language="javascript">

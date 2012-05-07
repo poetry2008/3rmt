@@ -715,7 +715,14 @@ $(document).ready(function(){
   foreach($cart_array['contents'] as $cart_key=>$cart_value){
     
     $cart_temp = explode('{',$cart_key);
-    $cart_products_id[] = $cart_temp[0]; 
+    if(count($cart_temp) == 1){
+
+      $cart_temp = explode('_',$cart_key);
+    }
+
+    if($cart_temp[0] != ''){
+      $cart_products_id[] = $cart_temp[0]; 
+    }
   }
 
   //根据$cart_products_id数组中的商品ID来获取每个商品的取引时间
@@ -805,6 +812,11 @@ $(document).ready(function(){
     $ship_new_array[] = end($ship_3_array[$ship_3_key]).','.current($ship_4_array[$ship_3_key]);
   }
 
+  foreach($ship_new_array as $_s_key=>$_s_value){
+      $s_temp_array = explode('|',$_s_value);    
+      sort($s_temp_array);
+      $ship_new_array[$_s_key] = implode('|',$s_temp_array); 
+  } 
   $max_time_str = implode('||',$shipp_array);
   $min_time_str = implode('||',$ship_new_array);
   //----------
@@ -828,6 +840,13 @@ $(document).ready(function(){
         }
       }
     }
+
+    foreach($shi_time_array as $_s_key=>$_s_value){
+      $s_temp_array = explode('|',$_s_value);    
+      sort($s_temp_array);
+      $shi_time_array[$_s_key] = implode('|',$s_temp_array); 
+    }
+
     $max_time_str = implode('||',array_keys($shi_time_array));
     $min_time_str = implode('||',$shi_time_array);
   }
@@ -875,9 +894,17 @@ $(document).ready(function(){
       $show_flag = 'block';
     }
     $show_flag = $show_flag == 'block' ? '' : $show_flag; 
+
+    //判断用户是否是会员
+    $quest_query = tep_db_query("select customers_guest_chk from ". TABLE_CUSTOMERS ." where customers_id={$_SESSION['customer_id']}");
+    $quest_array = tep_db_fetch_array($quest_query);
+    tep_db_free_result($quest_query);
 ?>
-  <tr><td width="70%"><b><?php echo TABLE_ADDRESS_TITLE; ?></b></td></tr>
-  <tr><td>
+  <tr><td width="70%"><b><?php echo TABLE_ADDRESS_TITLE; ?></b></td></tr> 
+  <?php
+     if($quest_array['customers_guest_chk'] == 0){
+  ?>
+  <tr><td> 
     <table border="0" width="100%" cellspacing="0" cellpadding="2" class="infoBox"> 
                       <tr class="infoBoxContents">
                         <td>
@@ -893,6 +920,9 @@ $(document).ready(function(){
                       </tr>
     </table>
   </td></tr>
+  <?php 
+     }
+  ?>
   <tr><td height="6"></td></tr>
 
          <tr> 
@@ -901,6 +931,9 @@ $(document).ready(function(){
                       <tr class="infoBoxContents">
                         <td>
                           <table border="0" width="100%" cellspacing="0" cellpadding="2" id="address_show">
+                          <?php
+                            if($quest_array['customers_guest_chk'] == 0){
+                          ?>
                           <tr id="address_show_id" style="display:<?php echo $show_flag;?>;"><td width="10"><?php tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td>
 <td class="main"><?php echo TABLE_ADDRESS_SHOW; ?></td>
 <td class="main">
@@ -909,6 +942,7 @@ $(document).ready(function(){
 </select>
 </td></tr>
 <?php
+                         }
     $hm_option->render('');
     //echo '<tr><td width="10">'. tep_draw_separator('pixel_trans.gif', '10', '1') .'</td><td class="main" width="100%" height="30" colspan="2" style="word-break:break-all;"><span id="address_fee"></span></td></tr>'; 
 ?>

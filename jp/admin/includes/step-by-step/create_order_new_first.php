@@ -4,11 +4,13 @@
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
 <title><?php echo TITLE; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
+<link rel="stylesheet" type="text/css" href="includes/jquery.autocomplete.css">
 <?php require('includes/step-by-step/form_check.js.php'); ?>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
 <script language="javascript" src="includes/javascript/address_search.js"></script>
 <script language="javascript" src="includes/general.js"></script>
+<script language="javascript" src="includes/javascript/jquery.autocomplete.js"></script>
 
 <script type="text/javascript">
 function check_submit(){
@@ -17,6 +19,29 @@ function check_submit(){
   fax_value.value = fax.value;
   document.create_order_form_1.submit();
 }
+
+$(function() {
+      function format(group) {
+          return group.name;
+      }
+      $("#keyword").autocomplete('ajax_create_order.php?action=search_email', {
+        multipleSeparator: '',
+        dataType: "json",
+        parse: function(data) {
+        return $.map(data, function(row) {
+            return {
+             data: row,
+             value: row.name,
+             result: row.name
+            }
+          });
+        },
+        formatItem: function(item) {
+          return format(item);
+        }
+      }).result(function(e, item) {
+      });
+});
 </script>
 
 </head>
@@ -58,7 +83,7 @@ if($order_exists == true){
   if(isset($_GET['oID']) && $_GET['oID'] != ''){
     echo '<input type="hidden" name="oID" value="'.$_GET['oID'].'">';
   }
-  echo '<p class=main>'.CREATE_ORDER_SEARCH_TEXT.'<br>'.CREATE_ORDER_EMAIL_TEXT.'&nbsp;<input type="text" value="'.$lastemail.'" name="Customer_mail" size="40">'.tep_site_pull_down_menu('', false).'&nbsp;&nbsp;<input type="submit" value="'.CREATE_ORDER_SEARCH_BUTTON_TEXT.'"></p>' . "\n";
+  echo '<p class=main>'.CREATE_ORDER_SEARCH_TEXT.'<br>'.CREATE_ORDER_EMAIL_TEXT.'&nbsp;<input type="text" value="'.$lastemail.'" id="keyword" name="Customer_mail" size="40">'.tep_site_pull_down_menu('', false).'&nbsp;&nbsp;<input type="submit" value="'.CREATE_ORDER_SEARCH_BUTTON_TEXT.'"></p>' . "\n";
   echo '</form>' . "\n";
 ?>
   <br>

@@ -583,6 +583,11 @@ document.forms.order1.submit();
     $ship_new_array[] = end($ship_3_array[$ship_3_key]).','.current($ship_4_array[$ship_3_key]);
   }
 
+  foreach($ship_new_array as $_s_key=>$_s_value){
+      $s_temp_array = explode('|',$_s_value);
+      sort($s_temp_array);
+      $ship_new_array[$_s_key] = implode('|',$s_temp_array);
+  } 
   $max_time_str = implode('||',$shipp_array);
   $min_time_str = implode('||',$ship_new_array);
   //----------
@@ -605,6 +610,12 @@ document.forms.order1.submit();
           $shi_time_array[$shi_i] = $shi_value.','.$shipping_time_end[0][$shi_key]; 
         }
       }
+    }
+
+    foreach($shi_time_array as $_s_key=>$_s_value){
+        $s_temp_array = explode('|',$_s_value);
+        sort($s_temp_array);
+        $shi_time_array[$_s_key] = implode('|',$s_temp_array);
     }
     $max_time_str = implode('||',array_keys($shi_time_array));
     $min_time_str = implode('||',$shi_time_array);
@@ -631,9 +642,17 @@ document.forms.order1.submit();
             $checked_str_new = 'checked';
             $show_flag = 'none';
           }
+
+          //判断用户是否是会员
+          $quest_query = tep_db_query("select customers_guest_chk from ". TABLE_CUSTOMERS ." where customers_id={$_SESSION['customer_id']}");
+          $quest_array = tep_db_fetch_array($quest_query);
+          tep_db_free_result($quest_query);
         ?>
         <div class="formAreaTitle"><?php echo TEXT_ADDRESS;?></div>
         <table border="0" width="100%" cellspacing="2" cellpadding="2" class="formArea"> 
+        <?php
+          if($quest_array['customers_guest_chk'] == 0){
+        ?>
             <tr>
             <td colspan="2" class="main">
               <input type="radio" name="address_option" value="old" onclick="address_option_show('old');address_option_list(first_num);" <?php echo $checked_str_old;?>><?php echo TABLE_OPTION_OLD; ?> 
@@ -649,7 +668,7 @@ document.forms.order1.submit();
             </td></tr>
 
         <?php
-        
+         } 
           $ad_option->render('');  
         ?>
         </table>
