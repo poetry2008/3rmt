@@ -399,9 +399,9 @@ if ($_POST['orders_id'] &&
   $romaji = str_replace('oooooooo',"\"",$romaji);
   $romaji = str_replace('pppppppp',"=",$romaji);
   $replace_str = '\s|　';
-  if(preg_match('/[\'\&\+\/\%\#\?\.\(\)\{\}\[\]\<\>\^\~\`\|\\\"\=\*\s]/u',$romaji)){
+  if(preg_match('/[\'\&\+\/\%\#\?\.\(\)\{\}\[\]\<\>\^\~\`\|\\\"\=\*\,\s]/u',$romaji)){
     $new_romaji = preg_replace(
-        '/[\'\&\+\/\%\#\?\.\(\)\{\}\[\]\<\>\^\~\`\|\\\"\*\=\s]/u','-', $romaji);
+        '/[\'\&\+\/\%\#\?\.\(\)\{\}\[\]\<\>\^\~\`\|\\\"\*\=\,\s]/u','-', $romaji);
     if(preg_match('/'.$replace_str.'/',$new_romaji)){
       $new_romaji = preg_replace('/'.$replace_str.'/','-',$new_romaji);
     }
