@@ -149,6 +149,7 @@ define('JS_LAST_NAME_F', '* \'姓(フリガナ)\' は少なくても ' . ENTRY_L
 
 define('JS_DOB', '* \'生年月日\' は次の形式で入力ください: xxxx/xx/xx (年/月/日)。\n');
 define('JS_EMAIL_ADDRESS', '* \'E-Mail アドレス\' は少なくても ' . ENTRY_EMAIL_ADDRESS_MIN_LENGTH . ' 文字以上必要です。\n');
+define('JS_EMAIL_ADDRESS_MATCH_ERROR','*  入力されたメールアドレスは不正です!');
 define('JS_ADDRESS', '* \'住所１\' は少なくても ' . ENTRY_STREET_ADDRESS_MIN_LENGTH . ' 文字以上必要です。\n');
 define('JS_POST_CODE', '* \'郵便番号\' は少なくても ' . ENTRY_POSTCODE_MIN_LENGTH . ' 文字以上必要です。\n');
 define('JS_CITY', '* \'市区町村\' は少なくても ' . ENTRY_CITY_MIN_LENGTH . ' 文字以上必要です。\n');

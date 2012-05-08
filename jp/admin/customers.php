@@ -220,6 +220,12 @@ function check_form() {
     error_message = error_message + "<?php echo JS_EMAIL_ADDRESS; ?>";
     error = 1;
   }
+  var pattern = /^[-+\\.0-9=a-z_]+@([-0-9a-z]+\\.)+([0-9a-z]){2,4}$/;
+  chkFlag = pattern.test(customers_email_address);
+  if(!chkFlag){
+    error_message = error_message + "<?php echo JS_EMAIL_ADDRESS_MATCH_ERROR; ?>";
+    error = 1;
+  }
 <?php if (ACCOUNT_STATE == 'true') { ?>
   if (document.customers.entry_zone_id.options.length <= 1) {
     if (document.customers.entry_state.value == "" || document.customers.entry_state.length < 4 ) {
