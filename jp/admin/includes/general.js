@@ -614,6 +614,7 @@ romaji = romaji.replace(/\\/g,'mmmmmmmm');
 romaji = romaji.replace(/\*/g,'nnnnnnnn');
 romaji = romaji.replace(/\"/g,'oooooooo');
 romaji = romaji.replace(/\=/g,'pppppppp');
+romaji = romaji.replace(/\'/g,'qqqqqqqq');
   return romaji;
 }
 function c_is_set_error_char(replace_single){
