@@ -338,7 +338,7 @@ tep_redirect(tep_href_link(FILENAME_LATEST_NEWS, (isset($_GET['site_id'])?('site
 if (isset($_GET['latest_news_id']) and $latest_news['news_id'] == $_GET['latest_news_id']) { 
     echo tep_image(DIR_WS_IMAGES . 'icon_arrow_right.gif', ''); 
 } else { 
-    echo '<a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'latest_news_id=' . $latest_news['news_id']. (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>&nbsp;</td>
+    echo '<a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'latest_news_id=' . $latest_news['news_id']. (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):''). (isset($_GET['page'])?('&page='.$_GET['page']):'')) . '">' . tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO) . '</a>'; } ?>&nbsp;</td>
               </tr>
 <?php
     }
