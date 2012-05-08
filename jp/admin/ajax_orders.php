@@ -296,7 +296,7 @@ if ($_POST['orders_id'] &&
   $romaji = str_replace('55555555','#',$romaji);
   $romaji = str_replace('66666666','?',$romaji);
   $romaji = str_replace('77777777',' ',$romaji);
-  $romaji = str_replace('88888888',"'",$romaji);
+  $romaji = str_replace('88888888',",",$romaji);
   $romaji = str_replace('aaaaaaaa',"<",$romaji);
   $romaji = str_replace('bbbbbbbb',">",$romaji);
   $romaji = str_replace('cccccccc',"{",$romaji);
@@ -313,6 +313,7 @@ if ($_POST['orders_id'] &&
   $romaji = str_replace('nnnnnnnn',"*",$romaji);
   $romaji = str_replace('oooooooo',"\"",$romaji);
   $romaji = str_replace('pppppppp',"=",$romaji);
+  $romaji = str_replace('qqqqqqqq',"\'",$romaji);
   $site_id = isset($_POST['site_id'])?$_POST['site_id']:0;
   $sql =  "select * from ".TABLE_FAQ_CATEGORIES." fc,
 		".TABLE_FAQ_CATEGORIES_DESCRIPTION." 
@@ -338,7 +339,7 @@ if ($_POST['orders_id'] &&
   $romaji = str_replace('55555555','#',$romaji);
   $romaji = str_replace('66666666','?',$romaji);
   $romaji = str_replace('77777777',' ',$romaji);
-  $romaji = str_replace('88888888',"'",$romaji);
+  $romaji = str_replace('88888888',",",$romaji);
   $romaji = str_replace('aaaaaaaa',"<",$romaji);
   $romaji = str_replace('bbbbbbbb',">",$romaji);
   $romaji = str_replace('cccccccc',"{",$romaji);
@@ -355,6 +356,7 @@ if ($_POST['orders_id'] &&
   $romaji = str_replace('nnnnnnnn',"*",$romaji);
   $romaji = str_replace('oooooooo',"\"",$romaji);
   $romaji = str_replace('pppppppp',"=",$romaji);
+  $romaji = str_replace('qqqqqqqq',"\'",$romaji);
   $site_id = isset($_POST['site_id'])?$_POST['site_id']:0;
   $sql = "select * from  
 		".TABLE_FAQ_QUESTION_DESCRIPTION." fqd,
@@ -381,7 +383,7 @@ if ($_POST['orders_id'] &&
   $romaji = str_replace('55555555','#',$romaji);
   $romaji = str_replace('66666666','?',$romaji);
   $romaji = str_replace('77777777',' ',$romaji);
-  $romaji = str_replace('88888888',"'",$romaji);
+  $romaji = str_replace('88888888',",",$romaji);
   $romaji = str_replace('aaaaaaaa',"<",$romaji);
   $romaji = str_replace('bbbbbbbb',">",$romaji);
   $romaji = str_replace('cccccccc',"{",$romaji);
@@ -398,6 +400,7 @@ if ($_POST['orders_id'] &&
   $romaji = str_replace('nnnnnnnn',"*",$romaji);
   $romaji = str_replace('oooooooo',"\"",$romaji);
   $romaji = str_replace('pppppppp',"=",$romaji);
+  $romaji = str_replace('qqqqqqqq',"\'",$romaji);
   $replace_str = '\s|　';
   if(preg_match('/[\'\&\+\/\%\#\?\.\(\)\{\}\[\]\<\>\^\~\`\|\\\"\=\*\,\s]/u',$romaji)){
     $new_romaji = preg_replace(
@@ -423,7 +426,7 @@ if ($_POST['orders_id'] &&
   $romaji = str_replace('55555555','#',$romaji);
   $romaji = str_replace('66666666','?',$romaji);
   $romaji = str_replace('77777777',' ',$romaji);
-  $romaji = str_replace('88888888',"'",$romaji);
+  $romaji = str_replace('88888888',",",$romaji);
   $romaji = str_replace('aaaaaaaa',"<",$romaji);
   $romaji = str_replace('bbbbbbbb',">",$romaji);
   $romaji = str_replace('cccccccc',"{",$romaji);
@@ -440,6 +443,7 @@ if ($_POST['orders_id'] &&
   $romaji = str_replace('nnnnnnnn',"*",$romaji);
   $romaji = str_replace('oooooooo',"\"",$romaji);
   $romaji = str_replace('pppppppp',"=",$romaji);
+  $romaji = str_replace('qqqqqqqq',"\'",$romaji);
   $site_id = isset($_POST['site_id'])?$_POST['site_id']:0;
   $sql =  "select * from ".TABLE_CATEGORIES." c,
 		".TABLE_CATEGORIES_DESCRIPTION." 
@@ -465,7 +469,7 @@ if ($_POST['orders_id'] &&
   $romaji = str_replace('55555555','#',$romaji);
   $romaji = str_replace('66666666','?',$romaji);
   $romaji = str_replace('77777777',' ',$romaji);
-  $romaji = str_replace('88888888',"'",$romaji);
+  $romaji = str_replace('88888888',",",$romaji);
   $romaji = str_replace('aaaaaaaa',"<",$romaji);
   $romaji = str_replace('bbbbbbbb',">",$romaji);
   $romaji = str_replace('cccccccc',"{",$romaji);
@@ -482,6 +486,7 @@ if ($_POST['orders_id'] &&
   $romaji = str_replace('nnnnnnnn',"*",$romaji);
   $romaji = str_replace('oooooooo',"\"",$romaji);
   $romaji = str_replace('pppppppp',"=",$romaji);
+  $romaji = str_replace('qqqqqqqq',"\'",$romaji);
   $site_id = isset($_POST['site_id'])?$_POST['site_id']:0;
   $sql = "select * from  
 		".TABLE_PRODUCTS_DESCRIPTION." pd,
