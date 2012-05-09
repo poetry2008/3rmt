@@ -101,18 +101,21 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
          echo '<font color="#ff0000" style="float:left">'.OPTION_ITEM_TEXT_REQUIRE.'</font>'; 
        }
        
-       if (($sp_pos !== false) || ($ac_pos !== false)) {
+       //if (($sp_pos !== false) || ($ac_pos !== false)) {
          if ($this->s_price != '0') {
            echo '<span class="option_money">'.number_format($this->s_price).OPTION_ITEM_TEXTAREA_MONEY_UNIT.'</span>'; 
          }
-       } 
+       //} 
        echo '</div>'; 
        if ($this->icomment) {
          echo $this->icomment;  
        }
        echo '<span id="'.$pre_item_str.'error_'.$this->formname.'" class="option_error">';
        if (isset($option_error_array[$pre_item_str.$this->formname])) {
-         echo '<br>'.$option_error_array[$pre_item_str.$this->formname]; 
+         if ($this->icomment) {
+           echo '<br>'; 
+         }
+         echo $option_error_array[$pre_item_str.$this->formname]; 
        }
        echo '</span>';
      }

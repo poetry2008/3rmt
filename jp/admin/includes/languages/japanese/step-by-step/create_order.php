@@ -88,5 +88,7 @@ define('TEXT_USE_ADDRESS_BOOK','登録先に届ける');
 define('TEXT_TORIHIKIBOUBI_DEFAULT_SELECT','ご希望のお届け日時を指定してください');
 define('ERROR_ORDER_DOES_NOT_EXIST','エラー: 注文が存在しません。');
 define('PRODUCT_ERROR','商品がありません。注文作成するには、まず商品を追加してください。');
+define('ADDPRODUCT_TEXT_STEP1_TITLE', 'カテゴリ選択:');
+define('ADDPRODUCT_TEXT_STEP2_TITLE', '商品選択:');
 
 ?>

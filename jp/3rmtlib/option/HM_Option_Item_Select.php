@@ -67,11 +67,11 @@ class HM_Option_Item_Select extends HM_Option_Item_Basic
        echo '</select>'; 
      }
     
-     if (($sp_pos !== false) || ($ac_pos !== false)) {
+     //if (($sp_pos !== false) || ($ac_pos !== false)) {
        if ($this->s_price != '0') {
          echo '<span class="option_money">'.number_format($this->s_price).OPTION_ITEM_SELECT_MONEY_UNIT.'</span>'; 
        }
-     }
+     //}
      echo '</div>'; 
      if ($this->secomment) {
        echo $this->secomment; 

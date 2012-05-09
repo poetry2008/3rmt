@@ -1026,24 +1026,10 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
             ?>
               </table>
             </div>
-            <div style="width:0.6%; background:#fff; float:left;">&nbsp;</div>
-            <div id="orders_comment">
-              <h3>Order Comment</h3>
-                <form action="ajax_preorders.php" id='form_orders_comment' method="post">
-
-                <textarea name="orders_comment" cols="100" rows="10" class="pageHeading_box03"><?php echo $order->info['orders_comment'];?></textarea><br>
-                <input type="hidden" name="orders_id" value="<?php echo $order->info['orders_id'];?>">
-                <input type="hidden" name="page" value="<?php echo $_GET['page'];?>">
-                <div align="right" style="clear:both;"><input type="Submit" value="<?php echo TEXT_ORDER_SAVE;?>"></div>
-                </form>
-              </div>
-
-            </div>
             <!-- /left -->
             <!-- right -->
-            <div class="pageHeading_box02">
               <?php // 订单备注 ?>
-            <div style="float:left; width:49%;">
+            <div style="float:left; width:100%;">
             <div id="orders_client">
               <h3>Customer Info</h3>
               <table width="100%" border="0" cellspacing="0" cellpadding="2">
@@ -1307,7 +1293,19 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
               ?>
             </div>
             </div>
-            <div style="width:0.6%; background:#fff; float:left;">&nbsp;</div>
+            </div> 
+            <div class="pageHeading_box02">
+            <div id="orders_comment">
+              <h3>Order Comment</h3>
+                <form action="ajax_preorders.php" id='form_orders_comment' method="post">
+
+                <textarea name="orders_comment" cols="100" rows="10" class="pageHeading_box03"><?php echo $order->info['orders_comment'];?></textarea><br>
+                <input type="hidden" name="orders_id" value="<?php echo $order->info['orders_id'];?>">
+                <input type="hidden" name="page" value="<?php echo $_GET['page'];?>">
+                <div align="right" style="clear:both;"><input type="Submit" value="<?php echo TEXT_ORDER_SAVE;?>"></div>
+                </form>
+              </div>
+            
             <div id="orders_answer">
 <?php
   // 取得问答的答案

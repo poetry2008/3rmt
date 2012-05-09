@@ -228,11 +228,11 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
           
          echo '</span>';
          
-         if (($sp_pos !== false) || ($ac_pos !== false)) {
+         //if (($sp_pos !== false) || ($ac_pos !== false)) {
            if ($value['money'] != '0') {
              echo '<span class="option_money">'.$value['money'].OPTION_ITEM_MONEY_UNIT.'</span>'; 
            }
-         }
+         //}
          
          echo '</div>';
          $i++; 
@@ -248,6 +248,9 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
      echo '</span>'; 
      echo '<span id="'.$pre_item_str.'error_'.$this->formname.'" class="option_error">'; 
      if (isset($option_error_array[$pre_item_str.$this->formname])) {
+       if ($this->racomment) {
+         echo '<br>'; 
+       }
        echo $option_error_array[$pre_item_str.$this->formname]; 
      }
      echo '</span>'; 

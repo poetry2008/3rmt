@@ -552,7 +552,7 @@ if($index > 0){
   <tr>
   <td class="main"><table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">
   <tr>
-  <td class="main"><input type="hidden" name="oID" value="<?php echo $oID;?>"><table border="0" cellspacing="0" cellpadding="2">  
+  <td class="main"><input type="hidden" name="oID" value="<?php echo $oID;?>"><table border="0" cellspacing="0" cellpadding="2" width="100%">  
 
           <?php
           // ############################################################################
@@ -606,7 +606,7 @@ if($index > 0){
         if(isset($Customer_mail) && $Customer_mail != '' && isset($site_id) && $site_id != ''){
           $param_str = "&Customer_mail=$Customer_mail&site_id=$site_id";
         }
-        print "<tr><td><table border='0'>\n";
+        print "<tr><td><table border='0' width='100%'>\n";
         
         $Customer_mail = tep_db_prepare_input($_GET['Customer_mail']);
         $site_id = tep_db_prepare_input($_GET['site_id']);
@@ -622,22 +622,38 @@ if($index > 0){
         //if($_GET['error']){
           //$product_error = $index > 0 ? '' : PRODUCT_ERROR;
         //}
-        print "<tr><form action='$PHP_SELF?oID=$oID&action=add_product$param_str' method='POST'>\n";
-        print "<td class='dataTableContent' align='right'><b>" . ADDPRODUCT_TEXT_STEP . " 1:</b></td>\n";
-        print "<td class='dataTableContent' valign='top'>";
-        echo ' ' . tep_draw_pull_down_menu('add_product_categories_id', tep_get_category_tree(), $current_category_id, 'onChange="this.form.submit();"');
+        print "<tr>\n";
+        print "<td class='dataTableContent' width='70'><b>" . ADDPRODUCT_TEXT_STEP . " 1:</b></td>\n";
+        print "<td class='dataTableContent'>";
+        print "<form action='$PHP_SELF?oID=$oID&action=add_product$param_str' method='POST'>\n";
+        print '<table>'; 
+        print '<tr>';
+        print '<td width="150">'; 
+        print ADDPRODUCT_TEXT_STEP1_TITLE; 
+        print '</td>'; 
+        print '<td>'; 
+        print tep_draw_pull_down_menu('add_product_categories_id', tep_get_category_tree(), $current_category_id, 'onChange="this.form.submit();"');
         print "<input type='hidden' name='step' value='2'>";
+        print '<td></tr>'; 
+        print '</table>'; 
+        print "</form>";
         print "</td>\n";
-        print "<td class='dataTableContent'>" . ADDPRODUCT_TEXT_STEP1 . "&nbsp;<span><font color='red'>".$product_error."</font></span></td>\n";
-        print "</form></tr>\n";
+        print "<td class='dataTableContent'>&nbsp;<span><font color='red'>".$product_error."</font></span></td>\n";
+        print "</tr>\n";
         //print "<tr><td colspan='3'>&nbsp;</td></tr>\n";
 
         // Step 2: Choose Product
         if(($step > 1) && ($add_product_categories_id > 0))
         {
-          print "<tr><form action='$PHP_SELF?oID=$oID&action=$action$param_str' method='POST'>\n";
-          print "<td class='dataTableContent' align='right'><b>" . ADDPRODUCT_TEXT_STEP . " 2: </b></td>\n";
-          print "<td class='dataTableContent' valign='top'><select name=\"add_product_products_id\" onChange=\"this.form.submit();\">";
+          print "<tr>\n";
+          print "<td class='dataTableContent'><b>" . ADDPRODUCT_TEXT_STEP . " 2: </b></td>\n";
+          print "<td class='dataTableContent'>";
+          print "<form action='$PHP_SELF?oID=$oID&action=$action$param_str' method='POST'>\n";
+          print "<table>"; 
+          print "<tr><td width='150'>"; 
+          print ADDPRODUCT_TEXT_STEP2_TITLE."</td>";
+          print "<td>";
+          print "<select name=\"add_product_products_id\" onChange=\"this.form.submit();\">";
           $ProductOptions = "<option value='0'>" .  ADDPRODUCT_TEXT_SELECT_PRODUCT . "\n";
           asort($ProductList[$add_product_categories_id]);
           foreach($ProductList[$add_product_categories_id] as $ProductID => $ProductName)
@@ -646,11 +662,16 @@ if($index > 0){
           }
           $ProductOptions = str_replace("value='$add_product_products_id'","value='$add_product_products_id' selected", $ProductOptions);
           print $ProductOptions;
-          print "</select></td>\n";
+          print "</select>";
           print "<input type='hidden' name='add_product_categories_id' value='$add_product_categories_id'>";
           print "<input type='hidden' name='step' value='3'>\n";
-          print "<td class='dataTableContent'>" . ADDPRODUCT_TEXT_STEP2 . "</td>\n";
-          print "</form></tr>\n";
+          print "</td>";
+          print "</tr>";
+          print "</table>";
+          print "</form>";
+          print "</td>\n";
+          print "<td class='dataTableContent'>&nbsp;</td>\n";
+          print "</tr>\n";
           //print "<tr><td colspan='3'>&nbsp;</td></tr>\n";
         }
         require('option/HM_Option.php');
@@ -669,7 +690,7 @@ if($index > 0){
           if(!$hm_option->admin_whether_show($option_product['belong_to_option']))
           {
             print "<tr>\n";
-            print "<td class='dataTableContent' align='right'><b>" . ADDPRODUCT_TEXT_STEP . " 3: </b></td>\n";
+            print "<td class='dataTableContent' valign='top'><b>" . ADDPRODUCT_TEXT_STEP . " 3: </b></td>\n";
             print "<td class='dataTableContent' valign='top' colspan='2'><i>" . ADDPRODUCT_TEXT_OPTIONS_NOTEXIST . "</i></td>\n";
             print "</tr>\n";
             $step = 4;
@@ -677,17 +698,23 @@ if($index > 0){
           else
           {
             print "<tr>\n";
-            print "<td class='dataTableContent' align='right'><b>" . ADDPRODUCT_TEXT_STEP . " 3: </b></td><td class='dataTableContent' valign='top'>";
-            print "<form action='$PHP_SELF?oID=$oID&action=$action$param_str' method='POST'>";
+            print "<td class='dataTableContent' valign='top'><b>" . ADDPRODUCT_TEXT_STEP . " 3: </b></td><td class='dataTableContent' valign='top'>";
+            print "<form name='coform' action='$PHP_SELF?oID=$oID&action=$action$param_str' method='POST'>";
             print $hm_option->render($option_product['belong_to_option'], false, 2); 
             print "</td>";
-            print "<td class='dataTableContent' align='center'><input type='submit' value='" . ADDPRODUCT_TEXT_OPTIONS_CONFIRM . "'>";
+            print "<td class='dataTableContent' align='center' valign='top'>";
+            //print "<input type='submit' value='" . ADDPRODUCT_TEXT_OPTIONS_CONFIRM . "'>";
             print "<input type='hidden' name='add_product_categories_id' value='$add_product_categories_id'>";
             print "<input type='hidden' name='add_product_products_id' value='$add_product_products_id'>";
             print "<input type='hidden' name='step' value='3'>";
             print "<input type='hidden' name='action_process' value='1'>";
             print "</form></td>\n";
             print "</tr>\n";
+            print "<tr>"; 
+            print "<td colspan='3' class='dataTableContent' align='right'>"; 
+            print "<div style='margin-right:40%;'><input type='button' value='" .  ADDPRODUCT_TEXT_OPTIONS_CONFIRM . "' onclick='document.forms.coform.submit();'></div>";
+            print "</td>"; 
+            print "</tr>"; 
           }
 
           //echo "<tr><td colspan='3'>&nbsp;</td></tr>\n";
@@ -700,7 +727,7 @@ if($index > 0){
           $products_array = tep_db_fetch_array($products_query);
           tep_db_free_result($products_query);  
           echo "<tr><form action='$PHP_SELF?oID=$oID&action=$action$param_str' method='POST'>\n";
-          echo "<td class='dataTableContent' align='right'><b>" . ADDPRODUCT_TEXT_STEP . " 4: </b></td>";
+          echo "<td class='dataTableContent'><b>" . ADDPRODUCT_TEXT_STEP . " 4: </b></td>";
           echo '<td class="dataTableContent" valign="top">' .  ADDPRODUCT_TEXT_CONFIRM_QUANTITY . '<input name="add_product_quantity" size="2" value="1" onkeyup="clearLibNum(this);">&nbsp;'.EDIT_ORDERS_NUM_UNIT.'&nbsp;&nbsp;&nbsp;&nbsp;<input type="hidden" name="dummy" value="あいうえお眉幅">';
           echo TABLE_HEADING_UNIT_PRICE.'<input class="once_pwd" onkeyup="clearNoNum(this);" value="'. (int)$products_array['products_price'] .'" size="9" name="add_product_price">&nbsp;'. EDIT_ORDERS_PRICE_UNIT .'</td>';
           echo "<td class='dataTableContent' align='center'><input type='submit' value='" . ADDPRODUCT_TEXT_CONFIRM_ADDNOW . "'>";
