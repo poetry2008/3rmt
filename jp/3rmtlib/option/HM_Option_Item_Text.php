@@ -25,11 +25,12 @@ class HM_Option_Item_Text extends HM_Option_Item_Basic
     }
     
     $sp_pos = strpos($_SERVER['PHP_SELF'], 'checkout_option.php');
-    //if ($sp_pos !== false) {
+    $ac_pos = strpos($_SERVER['PHP_SELF'], 'admin/create_order.php');
+    if (($sp_pos !== false) || ($ac_pos !== false)) {
       if ($this->s_price != '0') {
         echo '<span class="option_money">'.number_format($this->s_price).OPTION_ITEM_TEXT_MONEY_UNIT.'</span>'; 
       }
-    //} 
+    } 
     echo '</td>'; 
   }
   
