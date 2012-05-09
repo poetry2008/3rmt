@@ -1177,8 +1177,12 @@ function UserInfor_execute() {
   PageBody('t', PAGE_TITLE_USERINFO);   // ユーザ管理画面のタイトル部表示（ユーザ情報）
 
   // 氏名 の入力チェック
+  require('includes/step-by-step/new_application_top.php');
   $ret_err = checkNotnull($GLOBALS['aval']['name']);
+  $email_err = tep_validate_email($GLOBALS['aval']['email']);
   if ($ret_err != "") set_errmsg_array($aerror, '<b>' . TABLE_HEADING_NAME . '</b>:' . $ret_err);   // 氏名
+  if (!$email_err) set_errmsg_array($aerror, '<b>' . TABLE_HEADING_EMAIL . '</b>:'
+      .USER_EMAIL_ERROR);  
 
   echo tep_draw_form('users', basename($GLOBALS['PHP_SELF']));      // <form>タグの出力
 
