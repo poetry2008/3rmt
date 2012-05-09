@@ -167,7 +167,7 @@
 
 // Product price  
     if (!strstr($PHP_SELF, FILENAME_ACCOUNT_HISTORY_INFO)) {
-      echo '    <td align="right" class="main" style=""><b id="pri_'.  $products[$i]['id'] .'" >';
+      echo '    <td align="right" class="main" style=""><br><b id="pri_'.  $products[$i]['id'] .'" >';
       if ($products[$i]['price'] < 0) {
         echo '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->display_price($products[$i]['price'], tep_get_tax_rate($products[$i]['tax_class_id']), $products[$i]['quantity'])).'</font>'.JPMONEY_UNIT_TEXT;
       } else {

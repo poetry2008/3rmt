@@ -51,15 +51,24 @@ function money_update(objid, targ)
   var attr_prices_option = document.getElementsByName("attr_option_" + product_id);
   var sub_total = document.getElementById('sub_total_hidden');
 
-
-  var new_unit_price_total = Number(unit_price.value) * Number(obj.value);
-  new_unit_price_total = Math.round(new_unit_price_total);
-  
   
   var old_price_total  = document.getElementById("pri_" + product_id);
-  var monetary_unit_pri = old_price_total.innerHTML.slice(-1);
+  var old_price_total_str = old_price_total.innerHTML; 
+     
+  var old_price_total_replace_str = old_price_total_str.replace('<font color="#ff0000">', ''); 
+  old_price_total_replace_str = old_price_total_replace_str.replace('</font>', ''); 
+  
+  var monetary_unit_pri = old_price_total_replace_str.slice(-1);
+   
+  if (targ == 'up') {
+    old_p_num = Number(obj.value) - 1; 
+  } else {
+    old_p_num = Number(obj.value) + 1; 
+  }
+  var new_unit_price_total = (Number(old_price_total_replace_str.slice(0, -1)) / old_p_num) * Number(obj.value);
+  new_unit_price_total = Math.round(new_unit_price_total);
 
-  if (new_unit_price_total < 0) {
+  if (unit_price.value < 0) {
     old_price_total.innerHTML = '<font color="#ff0000">'+Math.abs(new_unit_price_total).toString() +'</font>' +monetary_unit_pri;
   } else {
     old_price_total.innerHTML = Math.abs(new_unit_price_total).toString() + monetary_unit_pri;
