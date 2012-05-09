@@ -58,9 +58,9 @@ function selectDate(start_time,end_time){
             }
           } 
           if(flag == true){
-            html_str += '<td id="hour'+j+'" bgcolor="#ccc" style="color:#000;cursor:pointer;" align="center" onclick="if(document.getElementById(\'shipping_list_min\').style.display == \'table-row\' && this.style.backgroundColor == \'rgb(245, 249, 252)\'){check_out('+j+');}else{this.style.background=\'#F5F9FC\';selectHour(\''+start_time+'\',\''+end_time+'\','+j+',\'\',this);}">'+j+'</td>';
+            html_str += '<td id="hour'+j+'" bgcolor="#cccccc" style="color:#000000;cursor:pointer;" align="center" onclick="if((document.getElementById(\'shipping_list_min\').style.display == \'table-row\' && this.style.backgroundColor == \'rgb(245, 249, 252)\') || (document.getElementById(\'shipping_list_min\').style.display == \'block\' && this.style.backgroundColor == \'#f5f9fc\')){check_out('+j+');}else{this.style.background=\'#F5F9FC\';selectHour(\''+start_time+'\',\''+end_time+'\','+j+',\'\',this);}">'+j+'</td>';
           }else{
-            html_str += '<td id="hour'+j+'" bgcolor="#f1f0ef" style="color:#ccc;" align="center">'+j+'</td>';
+            html_str += '<td id="hour'+j+'" bgcolor="#f1f0ef" style="color:#cccccc;" align="center">'+j+'</td>';
           }
           if((j+1) % 6 == 0){
           
@@ -274,7 +274,7 @@ function check_out(num){
       var shipping_list_min = document.getElementById("shipping_list_min");
       var hour = document.getElementById("hour"+num);
       shipping_list_min.style.display = 'none';
-      hour.style.backgroundColor = '#ccc';
-      document.getElementById("hour"+num).style.color="#000";
+      hour.style.backgroundColor = '#cccccc';
+      document.getElementById("hour"+num).style.color="#000000";
       document.getElementById("hour"+num).style.textDecoration ="";
 }
