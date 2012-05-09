@@ -115,7 +115,12 @@
     foreach ($_POST as $po_key => $po_value) {
         $po_single_str = substr($po_key, 0, 3);
         if ($po_single_str == 'op_') {
-          $n_option_info_array[$po_key] = $po_value; 
+          $po_tmp_value = str_replace(' ', '', $po_value);
+          $po_tmp_value = str_replace('　', '', $po_value);
+          
+          if ($po_tmp_value != '') {
+            $n_option_info_array[$po_key] = $po_value; 
+          }
         } 
     }
     

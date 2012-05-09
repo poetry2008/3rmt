@@ -459,7 +459,11 @@
               if (!empty($value['op_attributes'])) {
                 $diff_key_array = array_diff_key($value['op_attributes'], $option_info_array); 
                 $diff_value_array = array_diff($value['op_attributes'], $option_info_array); 
-                if (empty($diff_key_array) && empty($diff_value_array)) {
+                
+                $diff_key_r_array = array_diff_key($option_info_array, $value['op_attributes']); 
+                $diff_value_r_array = array_diff($option_info_array, $value['op_attributes']); 
+
+                if (empty($diff_key_array) && empty($diff_value_array) && empty($diff_key_r_array) && empty($diff_value_r_array)) {
                   $auto_num = $own_info[1];   
                 }
               }

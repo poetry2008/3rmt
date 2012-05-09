@@ -27,7 +27,11 @@
   foreach ($_POST as $p_key => $p_value) {
     $op_single_str = substr($p_key, 0, 3);
     if ($op_single_str == 'op_') {
-      $option_info_array[$p_key] = $p_value; 
+      $p_tmp_value = str_replace(' ', '', $p_value);
+      $p_tmp_value = str_replace('　', '', $p_value);
+      if ($p_tmp_value != '') {
+        $option_info_array[$p_key] = $p_value; 
+      }
     }
   }
   

@@ -649,6 +649,11 @@
       foreach ($_POST as $op_key => $op_value) {
         $op_pos = substr($op_key, 0, 3);
         if ($op_pos == 'op_') {
+            $op_tmp_value = str_replace(' ', '', $op_value);
+            $op_tmp_value = str_replace('　', '', $op_value);
+            if ($op_tmp_value == '') {
+              continue; 
+            }
             $op_info_array = explode('_', $op_key); 
             $op_item_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name = '".$op_info_array[1]."' and id = '".$op_info_array[3]."'"); 
             $op_item_res = tep_db_fetch_array($op_item_query);
@@ -721,6 +726,11 @@
       foreach($_POST as $op_i_key => $op_i_value) {
         $op_pos = substr($op_i_key, 0, 3);
         if ($op_pos == 'op_') {
+          $op_i_tmp_value = str_replace(' ', '', $op_i_value);
+          $op_i_tmp_value = str_replace('　', '', $op_i_value);
+          if ($op_i_tmp_value == '') {
+            continue; 
+          }
           $i_op_array = explode('_', $op_i_key);
           $ioption_item_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name = '".$i_op_array[1]."' and id = '".$i_op_array[3]."'");
           $ioption_item_res = tep_db_fetch_array($ioption_item_query); 

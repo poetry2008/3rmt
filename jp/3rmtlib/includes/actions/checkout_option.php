@@ -48,7 +48,12 @@
         if ($op_pos !== false) {
           $cart_products_id = substr($p_key, 0, $op_pos-1); 
           $o_key_str = substr($p_key, $op_pos+3); 
-          $option_array[$cart_products_id][$o_key_str] = $p_value; 
+          
+          $p_tmp_value = str_replace(' ', '', $p_value);
+          $p_tmp_value = str_replace('　', '', $p_value);
+          if ($p_tmp_value != '') {
+            $option_array[$cart_products_id][$o_key_str] = $p_value; 
+          }
         }
       }
       if (!empty($option_array)) {

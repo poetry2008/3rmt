@@ -4356,6 +4356,11 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
    foreach ($pInfo as $op_key => $op_value) {
      $op_single_str = substr($op_key, 0, 3);
      if ($op_single_str == 'op_') {
+       $op_tmp_value = str_replace(' ', '', $op_value);
+       $op_tmp_value = str_replace('　', '', $op_value);
+       if ($op_tmp_value == '') {
+         continue; 
+       }
        $op_info_array = explode('_', $op_key);
        $item_raw = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name = '".$op_info_array[1]."' and id = '".$op_info_array[3]."'");
        $item_res = tep_db_fetch_array($item_raw); 
