@@ -2429,7 +2429,7 @@ if($action == "add_product")
   //   Add Products Steps
   // ############################################################################
 
-  print "<tr><td><table border='0'>\n";
+  print "<tr><td><table border='0' width='60%'>\n";
 
   // Set Defaults
   if(!IsSet($add_product_categories_id))
@@ -2440,12 +2440,12 @@ if($action == "add_product")
 
   // Step 1: Choose Category
   print "<tr class=\"dataTableRow\"><form action='$PHP_SELF?oID=$oID&action=$action' method='POST'>\n";
-  print "<td class='dataTableContent' align='right'><b>" . ADDPRODUCT_TEXT_STEP . " 1:</b></td>\n";
+  print "<td class='dataTableContent' align='right' width='80'><b>" . ADDPRODUCT_TEXT_STEP . " 1:</b></td>\n";
   print "<td class='dataTableContent' valign='top'>";
   echo ' ' . tep_draw_pull_down_menu('add_product_categories_id', tep_get_category_tree(), $current_category_id, 'onChange="this.form.submit();"');
   print "<input type='hidden' name='step' value='2'>";
   print "</td>\n";
-  print "<td class='dataTableContent'>" . ADDPRODUCT_TEXT_STEP1 . "</td>\n";
+  print "<td class='dataTableContent' width='90'>" . ADDPRODUCT_TEXT_STEP1 . "</td>\n";
   print "</form></tr>\n";
   print "<tr><td colspan='3'>&nbsp;</td></tr>\n";
 
@@ -2499,6 +2499,7 @@ if($action == "add_product")
 
       print "<tr class=\"dataTableRow\">";
       print "<td class='dataTableContent' align='right'><b>" . ADDPRODUCT_TEXT_STEP . " 3: </b></td><td class='dataTableContent' valign='top'>";
+      print "<div class=\"pro_option\">"; 
       print "<form name='aform' action='$PHP_SELF?oID=$oID&action=$action' method='POST'>\n";
          
       print $hm_option->render($option_product['belong_to_option'], false, 2); 
@@ -2508,6 +2509,7 @@ if($action == "add_product")
       print "<input type='hidden' name='action_process' value='1'>";
       
       print "</form>";
+      print "</div>"; 
       print "</td>";
       print "<td class='dataTableContent' align='center'><input type='button' value='" . ADDPRODUCT_TEXT_OPTIONS_CONFIRM . "' onclick='document.forms.aform.submit();'>";
       print "</td>\n";
