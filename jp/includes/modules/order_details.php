@@ -196,7 +196,7 @@
           }
         } else {
 // Keep price aligned with corresponding option
-          //echo '<br><small><i>&nbsp;</i></small>';
+          echo '<br><small><i>&nbsp;</i></small>';
         }
       }
     }
