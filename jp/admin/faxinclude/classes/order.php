@@ -95,7 +95,7 @@ class order {
 				'date' => $order['date_purchased']);
 
 		$index = 0;
-		$orders_products_query = tep_db_query("select products_id, orders_products_id, products_name, products_model, products_price, products_tax, products_quantity, final_price, products_character from " .$table_order_product. " where orders_id = '" . tep_db_input($order_id) . "'");
+		$orders_products_query = tep_db_query("select products_id, orders_products_id, products_name, products_model, products_price, products_tax, products_quantity, final_price from " .$table_order_product. " where orders_id = '" . tep_db_input($order_id) . "'");
 		while ($orders_products = tep_db_fetch_array($orders_products_query)) {
 			$this->products[$index] = array('id' => $orders_products['products_id'],
 					'qty' => $orders_products['products_quantity'],
@@ -103,8 +103,7 @@ class order {
 					'model' => $orders_products['products_model'],
 					'tax' => $orders_products['products_tax'],
 					'price' => $orders_products['products_price'],
-					'final_price' => $orders_products['final_price'],
-					'character' => $orders_products['products_character']);
+					'final_price' => $orders_products['final_price']);
 
 			$subindex = 0;
 			$attributes_query = tep_db_query("select orders_products_attributes_id, attributes_id, products_options, products_options_values, options_values_price, price_prefix from " .$table_order_product_attributes . " where orders_id = '" . tep_db_input($order_id) . "' and orders_products_id = '" . $orders_products['orders_products_id'] . "'");

@@ -1027,24 +1027,10 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
             ?>
               </table>
             </div>
-            <div style="width:0.6%; background:#fff; float:left;">&nbsp;</div>
-            <div id="orders_comment">
-              <h3>Order Comment</h3>
-                <form action="ajax_preorders.php" id='form_orders_comment' method="post">
-
-                <textarea name="orders_comment" cols="100" rows="10" class="pageHeading_box03"><?php echo $order->info['orders_comment'];?></textarea><br>
-                <input type="hidden" name="orders_id" value="<?php echo $order->info['orders_id'];?>">
-                <input type="hidden" name="page" value="<?php echo $_GET['page'];?>">
-                <div align="right" style="clear:both;"><input type="Submit" value="<?php echo TEXT_ORDER_SAVE;?>"></div>
-                </form>
-              </div>
-
-            </div>
             <!-- /left -->
             <!-- right -->
-            <div class="pageHeading_box02">
               <?php // 订单备注 ?>
-            <div style="float:left; width:49%;">
+            <div style="float:left; width:100%;">
             <div id="orders_client">
               <h3>Customer Info</h3>
               <table width="100%" border="0" cellspacing="0" cellpadding="2">
@@ -1308,7 +1294,19 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
               ?>
             </div>
             </div>
-            <div style="width:0.6%; background:#fff; float:left;">&nbsp;</div>
+            </div> 
+            <div class="pageHeading_box02">
+            <div id="orders_comment">
+              <h3>Order Comment</h3>
+                <form action="ajax_preorders.php" id='form_orders_comment' method="post">
+
+                <textarea name="orders_comment" cols="100" rows="10" class="pageHeading_box03"><?php echo $order->info['orders_comment'];?></textarea><br>
+                <input type="hidden" name="orders_id" value="<?php echo $order->info['orders_id'];?>">
+                <input type="hidden" name="page" value="<?php echo $_GET['page'];?>">
+                <div align="right" style="clear:both;"><input type="Submit" value="<?php echo TEXT_ORDER_SAVE;?>"></div>
+                </form>
+              </div>
+            
             <div id="orders_answer">
 <?php
   // 取得问答的答案
@@ -1371,7 +1369,6 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
     <table border="0" width="100%" cellspacing="0" cellpadding="2">
       <tr class="dataTableHeadingRow">
         <td class="dataTableHeadingContent" colspan="2"><?php echo TABLE_HEADING_PRODUCTS; ?></td>
-        <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_CHARACTER; ?></td>
         <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_PRODUCTS_MODEL; ?></td>
         <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_TAX; ?></td>
         <!--<td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_PRICE_EXCLUDING_TAX; ?></td>-->
@@ -1387,8 +1384,10 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
 
         if (isset($order->products[$i]['attributes']) && $order->products[$i]['attributes'] && ($k = sizeof($order->products[$i]['attributes'])) > 0) {
           for ($j = 0; $j < $k; $j++) {
-            echo '<br><nobr><small>&nbsp;<i> - ' . $order->products[$i]['attributes'][$j]['option'] . ': ' . $order->products[$i]['attributes'][$j]['value'];
-            if ($order->products[$i]['attributes'][$j]['price'] != '0') echo ' (' . $order->products[$i]['attributes'][$j]['prefix'] . $currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . ')<br>';
+            if (is_array($order->products[$i]['attributes'][$j]['option_info'])) {
+              echo '<br><nobr><small>&nbsp;<i> - ' .  $order->products[$i]['attributes'][$j]['option_info']['title'] . ': ' . $order->products[$i]['attributes'][$j]['option_info']['value'];
+            }
+            //if ($order->products[$i]['attributes'][$j]['price'] != '0') echo ' (' . $order->products[$i]['attributes'][$j]['prefix'] . $currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . ')';
               echo '</i></small></nobr>';
           }
         }
@@ -1408,7 +1407,6 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
       }
 
         echo '      </td>' . "\n" .
-       '      <td class="dataTableContent" valign="top" style="font-size:20px">' . htmlspecialchars($order->products[$i]['character']) . '</td>' . "\n" .
        '      <td class="dataTableContent" valign="top">' . $order->products[$i]['model'] . '</td>' . "\n" .
        '      <td class="dataTableContent" align="right" valign="top">' . tep_display_tax_value($order->products[$i]['tax']) . '%</td>' . "\n" .
        '      <!--<td class="dataTableContent" align="right" valign="top"><b>' . $currencies->format($order->products[$i]['final_price'], true, $order->info['currency'], $order->info['currency_value']) . '</b></td>-->' . "\n" .

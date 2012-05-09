@@ -78,8 +78,8 @@
                     $title = '<b>'.$title.'</b>';
                 }
                 echo '<tr>'
-                  .'<td class="main">'.((SITE_ID == '2')?'&nbsp;':'').$title.'</td>'
-                  .'<td class="main">'.((SITE_ID == '2')?'&nbsp;':'').$this->formlines[$name]['value'].'</td>'
+                  .'<td class="main" width="120">&nbsp;'.$title.'</td>'
+                  .'<td class="main">&nbsp;'.$this->formlines[$name]['value'].'</td>'
                   .'</tr>'."\n";
             }
         }

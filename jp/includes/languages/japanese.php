@@ -155,7 +155,7 @@ define('BOX_TELL_A_FRIEND_TEXT', 'この商品のURLを友達にメールする'
 
 // checkout procedure text
 define('CHECKOUT_BAR_PRODUCTS',    'キャラクター名');
-define('CHECKOUT_BAR_DELIVERY',    '取引日時');
+define('CHECKOUT_BAR_DELIVERY',    '配送方法');
 define('CHECKOUT_BAR_PAYMENT',     '支払方法');
 define('CHECKOUT_BAR_CONFIRMATION','最終確認');
 define('CHECKOUT_BAR_FINISHED',    '手続完了!');
@@ -452,6 +452,8 @@ define('PREORDER_TRADER_LINE_TITLE', '取引情報');
 define('PREORDER_CONFIRM_LINE_TITLE', '最終確認');
 define('PREORDER_FINISH_LINE_TITLE', '手続き完了！');
 define('JPMONEY_UNIT_TEXT', '円');
+define('TEXT_CHARACTER','お客様のキャラクター名：');
+define('CHECKOUT_BAR_OPTION', '商品オプション');
 define('TEXT_RIDE_RSS','×');
 define('ENTRY_NO_USE_OLD_PASSWORD', '<font color="#FF0000">安全のため、古いパスワードと違うパスワードを設定してください。</font>');
 define('ENTRY_PASSWORD_IS_NUM', '<font color="#FF0000">英字（abcdef...z）が1文字以上必要です。英字と数字を組み合わせて設定してください。</font>');

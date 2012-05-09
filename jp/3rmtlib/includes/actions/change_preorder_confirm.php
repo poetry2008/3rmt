@@ -22,6 +22,22 @@
     }
   }
   
+  $option_info_array = array();
+
+  foreach ($_POST as $p_key => $p_value) {
+    $op_single_str = substr($p_key, 0, 3);
+    if ($op_single_str == 'op_') {
+      $option_info_array[$p_key] = $p_value; 
+    }
+  }
+  
+  $preorder_option_info = $option_info_array;
+  
+  if (!tep_session_is_registered('preorder_option_info')) {
+    tep_session_register('preorder_option_info'); 
+  }
+ 
+  
   $check_preorder_str = $preorder_res['check_preorder_str'];
  
   $preorder_subtotal = 0;
@@ -30,26 +46,21 @@
   if ($preorder_subtotal_res) {
     $preorder_subtotal = number_format($preorder_subtotal_res['value'], 0, '.', ''); 
   }
-
-  $preorder_info_attr = array();
-  foreach ($_POST as $pc_key => $pc_value) {
-    if (is_array($pc_value)) {
-      foreach ($pc_value as $pcs_key => $pcs_value) {
-        $preorder_info_attr[$pcs_key] =$pcs_value; 
-      }
-    }
-  }
   
-  if (!tep_session_is_registered('preorder_info_attr')) {
-    tep_session_register('preorder_info_attr'); 
-  }
+  $preorder_total_info_array = get_preorder_total_info($con_payment_code, $_POST['pid'], $option_info_array);  
   
+  if (isset($preorder_total_info_array['subtotal'])) {
+    $preorder_subtotal = number_format($preorder_total_info_array['subtotal'], 0, '.', ''); 
+  }
   
   $preorder_info_tori = $_POST['torihikihouhou'];
   $preorder_info_date = $_POST['date'];
   $preorder_info_hour = $_POST['hour'];
+  $preorder_info_start_hour = $_POST['start_hour'];
+  $preorder_info_start_min = $_POST['start_min'];
+  $preorder_info_end_hour = $_POST['end_hour'];
+  $preorder_info_end_min = $_POST['end_min'];
   $preorder_info_min = $_POST['min'];
-  $preorder_info_character = $_POST['p_character'];
   $preorder_info_id = $_POST['pid'];
   
   if (!tep_session_is_registered('preorder_info_tori')) {
@@ -64,13 +75,26 @@
     tep_session_register('preorder_info_hour'); 
   }
   
+  if (!tep_session_is_registered('preorder_info_start_hour')) {
+    tep_session_register('preorder_info_start_hour'); 
+  }
+
+  if (!tep_session_is_registered('preorder_info_start_min')) {
+    tep_session_register('preorder_info_start_min'); 
+  } 
+  
+  if (!tep_session_is_registered('preorder_info_end_hour')) {
+    tep_session_register('preorder_info_end_hour'); 
+  }
+ 
+  if (!tep_session_is_registered('preorder_info_end_min')) {
+    tep_session_register('preorder_info_end_min'); 
+  }
+  
   if (!tep_session_is_registered('preorder_info_min')) {
     tep_session_register('preorder_info_min'); 
   }
   
-  if (!tep_session_is_registered('preorder_info_character')) {
-    tep_session_register('preorder_info_character'); 
-  }
   
   if (!tep_session_is_registered('preorder_info_id')) {
     tep_session_register('preorder_info_id'); 
@@ -117,3 +141,5 @@ $form_action_url = tep_href_link('change_preorder_process.php');
 if (isset($payment_modules->modules[strtoupper($con_payment_code)]->form_action_url) && $payment_modules->modules[strtoupper($con_payment_code)]->form_action_url) {
   $form_action_url = $payment_modules->modules[strtoupper($con_payment_code)]->form_action_url; 
 }
+
+

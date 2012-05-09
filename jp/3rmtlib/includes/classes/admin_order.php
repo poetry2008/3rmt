@@ -88,33 +88,27 @@
                              'date' => $order['date_purchased']);
 
       $index = 0;
-      $orders_products_query = tep_db_query("select products_id, orders_products_id, products_name, products_model, products_price, products_tax, products_quantity, final_price, products_character from " . TABLE_ORDERS_PRODUCTS . " where orders_id = '" . tep_db_input($order_id) . "'");
+      $orders_products_query = tep_db_query("select products_id, orders_products_id, products_name, products_model, products_price, products_tax, products_quantity, final_price from " . TABLE_ORDERS_PRODUCTS . " where orders_id = '" . tep_db_input($order_id) . "'");
       while ($orders_products = tep_db_fetch_array($orders_products_query)) {
         $this->products[$index] = array('id' => $orders_products['products_id'],
                                         'qty' => $orders_products['products_quantity'],
+                                        'orders_products_id' => $orders_products['orders_products_id'],
                                         'name' => $orders_products['products_name'],
                                         'model' => $orders_products['products_model'],
                                         'tax' => $orders_products['products_tax'],
                                         'price' => $orders_products['products_price'],
-                                        'final_price' => $orders_products['final_price'],
-                    'character' => $orders_products['products_character']);
+                                        'final_price' => $orders_products['final_price']);
 
         $subindex = 0;
-        $attributes_query = tep_db_query("select orders_products_attributes_id, attributes_id, products_options, products_options_values, options_values_price, price_prefix from " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " where orders_id = '" . tep_db_input($order_id) . "' and orders_products_id = '" . $orders_products['orders_products_id'] . "'");
+        $attributes_query = tep_db_query("select * from " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " where orders_id = '" . tep_db_input($order_id) . "' and orders_products_id = '" . $orders_products['orders_products_id'] . "'");
         if (tep_db_num_rows($attributes_query)) {
           while ($attributes = tep_db_fetch_array($attributes_query)) {
-            // maker 2009-4-14
-            $option = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS_OPTIONS." where products_options_name='".$attributes['products_options']."'"));
-            $value  = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS_OPTIONS_VALUES." where products_options_values_name='".$attributes['products_options_values']."'"));
             
-            $this->products[$index]['attributes'][$subindex] = array(
+            $this->products[$index]['op_attributes'][$subindex] = array(
                                                                      'id' => $attributes['orders_products_attributes_id'],
-                                                                     'attributes_id' => $attributes['attributes_id'],
-                                                                     'option' => $option['products_options_name'],
-                                           'option_id' => $option['products_options_id'],
-                                                                     'value' => $attributes['products_options_values'],
-                                           'value_id' => $value['products_options_values_id'],
-                                                                     'prefix' => $attributes['price_prefix'],
+                                                                     'option_item_id' => $attributes['option_item_id'],
+                                                                     'option_group_id' => $attributes['option_group_id'],
+                                                                     'option_info' => @unserialize(stripslashes($attributes['option_info'])),
                                                                      'price' => $attributes['options_values_price']);
 
             $subindex++;

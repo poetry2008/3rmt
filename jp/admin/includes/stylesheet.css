@@ -240,10 +240,10 @@ body {
  padding:5px 0 0 5px;
 }
 .pageHeading_box{
-	width:100%; overflow:hidden; display: block; clear:both;
+	width:49%; overflow:hidden; display: block; float:left;
 }
 .pageHeading_box02{
-	width:100%; overflow:hidden; display: block; clear:both;
+	width:50%; overflow:hidden; display: block; float:right;
 }
 .pageHeading_box03{width:99.3%; float:left; height:136px; height:138px\9; overflow:hidden;}
 /* ---------------------------
@@ -595,8 +595,8 @@ legend {
 #orders_info {
 	margin-bottom: 10px;
 	background: #f0f1f1;
-	float:left;
-	width:49%;
+	clear:both;
+	width:100%;
 /*	margin-right:10px;
 */}
 #orders_client {
@@ -615,14 +615,13 @@ legend {
 	margin-bottom: 10px;
 	text-align:center;
 	background: #f0f1f1;
-	float:left;
-	width:50%;
+	clear:both;
+	width:100%;
 }
 #orders_answer {
 	margin-bottom: 10px;
 	background: #f0f1f1;
-	float:left;
-	width:50%;
+	width:100%;
 }
 #orders_credit {
 	margin-bottom: 10px;
@@ -1151,12 +1150,25 @@ a.s_column_bar {
     position: absolute;
     width: 70%;
 }
-.option_input{
+.option_item_input{
 	width:25%;
 	text-align:right;
 }
+.option_input{
+	width:75%;
+}
 .option_text{
 	width:60%;
+}
+.option_error{
+  color:#ff0000;
+}
+.option_name {
+  width:150px;
+  vertical-align:top;
+}
+.option_preview{
+	margin-left:51px;
 }
 /* end option group*/
 
@@ -1182,6 +1194,64 @@ a.s_column_bar {
 .del_order_notice td{
 	vertical-align:middle;
 }
+.option_show_border {
+	width:170px;
+	float:left;
+	padding:1px;
+	background:#2864B4;
+}
+.option_hide_border {
+	width:170px;
+	float:left;
+	cursor:pointer;
+	padding:1px;
+}
+.option_show_border a, .option_show_border a:hover{ 
+	color:#fff; 
+	border:1px solid #2864B4;
+	display:block;
+	text-decoration:none;
+}
+.option_hide_border a, .option_hide_border a:hover{
+	color:#000000; 
+	display:block;
+	border:1px solid #ccc;
+	text-decoration:none;
+}
+.option_hide_border a:hover{
+	border:1px solid #2864B4;
+}
+.option_radio_img{ float:left;}
+.option_radio_list{
+	width:100%;
+	overflow:hidden;
+	margin-bottom:5px;
+}
+.option_info_text input, .option_info_text textarea{
+	float:left;
+}
+.option_money {
+    float: right;
+    line-height: 18px;
+	text-align:right;
+}
+.option_info_text {
+    margin-bottom: 5px;
+    overflow: hidden;
+    width: 100%;
+}
+.option_table{ width:50%;}
+.pro_option table{
+	width:100%;
+}
+
+/*shipping*/
+.shipping_error{
+	color:#ff0000;
+	font-size:12px;
+	line-height:1.5;
+}
+
 /*notice*/
 #show_head_notice td, #show_all_notice td{
 	line-height:21px;

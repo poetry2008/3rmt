@@ -20,7 +20,7 @@
   if ( (STOCK_CHECK == 'true') && (STOCK_ALLOW_CHECKOUT != 'true') ) {
     $products = $cart->get_products();
     for ($i=0, $n=sizeof($products); $i<$n; $i++) {
-      if (tep_check_stock($products[$i]['id'], $products[$i]['quantity'])) {
+      if (tep_check_stock((int)$products[$i]['id'], $products[$i]['quantity'])) {
         tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
         break;
       }else{
@@ -31,7 +31,7 @@
             $n_products_sum += intval($products[$j]['quantity']);
           }
         }
-        if(tep_check_stock($products[$i]['id'], $n_products_sum)){
+        if(tep_check_stock((int)$products[$i]['id'], $n_products_sum)){
           tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
         }
       }
@@ -55,13 +55,13 @@
   if($error == 'F'){
     unset($_SESSION['character']);
     
-    foreach($cart as $key => $val){
-      if($key == 'contents'){
-        foreach($val as $key2 => $val2){
-        $_SESSION['character'][$key2] = $_POST['cname_' . $key2]; 
-      }
-      }
-    }
+    //foreach($cart as $key => $val){
+      //if($key == 'contents'){
+        //foreach($val as $key2 => $val2){
+        //$_SESSION['character'][$key2] = $_POST['cname_' . $key2]; 
+      //}
+      //}
+    //}
     tep_redirect(tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL', true, false));    
   }
   }
