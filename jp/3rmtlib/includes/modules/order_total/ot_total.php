@@ -56,6 +56,13 @@
       $total += $_SESSION['campaign_fee']; 
     }
     
+    if(isset($_SESSION['free_value']) && isset($_SESSION['weight_fee'])){
+
+      if($total <= $_SESSION['free_value']){
+
+        $total += $_SESSION['weight_fee'];  
+      }
+    } 
 
                               /*
                               'text' => '<b>' . $currencies->format_total(

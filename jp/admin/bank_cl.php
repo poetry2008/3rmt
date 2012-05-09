@@ -70,16 +70,7 @@ if($_POST['updata'] == 'on') {
   tep_redirect(tep_href_link(FILENAME_BANK_CL, 'action=success&date='.$_POST['date']));
 }
 ?>
-<?php
 
-if($_GET['action'] == 'success') {
-  echo '<table border="0" cellspacing="0" cellpadding="0" width="100%">' . "\n";
-  echo '<tr>' . "\n";
-  echo '<td class="messageStackSuccess" height="20" align="center"><strong>更新しました。</strong></td>' . "\n";
-  echo '</tr>' . "\n";
-  echo '</table><br>' . "\n";
-}
-?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html <?php echo HTML_PARAMS; ?>>
 <head>
@@ -91,6 +82,17 @@ if($_GET['action'] == 'success') {
 <script language="javascript" src="includes/general.js"></script>
 </head>
 <body bgcolor="#FFFFFF" onLoad="SetFocus();">
+<?php
+
+if($_GET['action'] == 'success') {
+  echo '<table border="0" cellspacing="0" cellpadding="0" width="100%">' . "\n";
+  echo '<tr>' . "\n";
+  echo '<td class="messageStackSuccess" height="20" align="center"><strong>更新しました。</strong></td>' . "\n";
+  echo '</tr>' . "\n";
+  echo '</table><br>' . "\n";
+}
+?>
+
 <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
   <script language='javascript'>
     one_time_pwd('<?php echo $page_name;?>');

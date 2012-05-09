@@ -289,14 +289,31 @@ if ($_POST['orders_id'] &&
   }
 }else if(isset($_GET['action'])&&$_GET['action'] == 'faq_c_is_set_romaji'){
   $romaji = $_POST['romaji'];
-  $romaji = str_replace('<11111111>','&',$romaji);
-  $romaji = str_replace('<22222222>','+',$romaji);
-  $romaji = str_replace('<33333333>','/',$romaji);
-  $romaji = str_replace('<44444444>','%',$romaji);
-  $romaji = str_replace('<55555555>','#',$romaji);
-  $romaji = str_replace('<66666666>','?',$romaji);
-  $romaji = str_replace('<77777777>',' ',$romaji);
-  $romaji = str_replace('<88888888>',"'",$romaji);
+  $romaji = str_replace('11111111','&',$romaji);
+  $romaji = str_replace('22222222','+',$romaji);
+  $romaji = str_replace('33333333','/',$romaji);
+  $romaji = str_replace('44444444','%',$romaji);
+  $romaji = str_replace('55555555','#',$romaji);
+  $romaji = str_replace('66666666','?',$romaji);
+  $romaji = str_replace('77777777',' ',$romaji);
+  $romaji = str_replace('88888888',",",$romaji);
+  $romaji = str_replace('aaaaaaaa',"<",$romaji);
+  $romaji = str_replace('bbbbbbbb',">",$romaji);
+  $romaji = str_replace('cccccccc',"{",$romaji);
+  $romaji = str_replace('dddddddd',"}",$romaji);
+  $romaji = str_replace('eeeeeeee',"(",$romaji);
+  $romaji = str_replace('ffffffff',")",$romaji);
+  $romaji = str_replace('gggggggg',"|",$romaji);
+  $romaji = str_replace('hhhhhhhh',"^",$romaji);
+  $romaji = str_replace('iiiiiiii',"[",$romaji);
+  $romaji = str_replace('jjjjjjjj',"]",$romaji);
+  $romaji = str_replace('kkkkkkkk',"`",$romaji);
+  $romaji = str_replace('llllllll',"~",$romaji);
+  $romaji = str_replace('mmmmmmmm',"\\",$romaji);
+  $romaji = str_replace('nnnnnnnn',"*",$romaji);
+  $romaji = str_replace('oooooooo',"\"",$romaji);
+  $romaji = str_replace('pppppppp',"=",$romaji);
+  $romaji = str_replace('qqqqqqqq',"\'",$romaji);
   $site_id = isset($_POST['site_id'])?$_POST['site_id']:0;
   $sql =  "select * from ".TABLE_FAQ_CATEGORIES." fc,
 		".TABLE_FAQ_CATEGORIES_DESCRIPTION." 
@@ -315,14 +332,31 @@ if ($_POST['orders_id'] &&
   }
 }else if(isset($_GET['action'])&&$_GET['action'] == 'faq_q_is_set_romaji'){
   $romaji = $_POST['romaji'];
-  $romaji = str_replace('<11111111>','&',$romaji);
-  $romaji = str_replace('<22222222>','+',$romaji);
-  $romaji = str_replace('<33333333>','/',$romaji);
-  $romaji = str_replace('<44444444>','%',$romaji);
-  $romaji = str_replace('<55555555>','#',$romaji);
-  $romaji = str_replace('<66666666>','?',$romaji);
-  $romaji = str_replace('<77777777>',' ',$romaji);
-  $romaji = str_replace('<88888888>',"'",$romaji);
+  $romaji = str_replace('11111111','&',$romaji);
+  $romaji = str_replace('22222222','+',$romaji);
+  $romaji = str_replace('33333333','/',$romaji);
+  $romaji = str_replace('44444444','%',$romaji);
+  $romaji = str_replace('55555555','#',$romaji);
+  $romaji = str_replace('66666666','?',$romaji);
+  $romaji = str_replace('77777777',' ',$romaji);
+  $romaji = str_replace('88888888',",",$romaji);
+  $romaji = str_replace('aaaaaaaa',"<",$romaji);
+  $romaji = str_replace('bbbbbbbb',">",$romaji);
+  $romaji = str_replace('cccccccc',"{",$romaji);
+  $romaji = str_replace('dddddddd',"}",$romaji);
+  $romaji = str_replace('eeeeeeee',"(",$romaji);
+  $romaji = str_replace('ffffffff',")",$romaji);
+  $romaji = str_replace('gggggggg',"|",$romaji);
+  $romaji = str_replace('hhhhhhhh',"^",$romaji);
+  $romaji = str_replace('iiiiiiii',"[",$romaji);
+  $romaji = str_replace('jjjjjjjj',"]",$romaji);
+  $romaji = str_replace('kkkkkkkk',"`",$romaji);
+  $romaji = str_replace('llllllll',"~",$romaji);
+  $romaji = str_replace('mmmmmmmm',"\\",$romaji);
+  $romaji = str_replace('nnnnnnnn',"*",$romaji);
+  $romaji = str_replace('oooooooo',"\"",$romaji);
+  $romaji = str_replace('pppppppp',"=",$romaji);
+  $romaji = str_replace('qqqqqqqq',"\'",$romaji);
   $site_id = isset($_POST['site_id'])?$_POST['site_id']:0;
   $sql = "select * from  
 		".TABLE_FAQ_QUESTION_DESCRIPTION." fqd,
@@ -342,18 +376,35 @@ if ($_POST['orders_id'] &&
   }
 }else if(isset($_GET['action'])&&$_GET['action'] == 'check_romaji'){
   $romaji = $_POST['romaji'];
-  $romaji = str_replace('<11111111>','&',$romaji);
-  $romaji = str_replace('<22222222>','+',$romaji);
-  $romaji = str_replace('<33333333>','/',$romaji);
-  $romaji = str_replace('<44444444>','%',$romaji);
-  $romaji = str_replace('<55555555>','#',$romaji);
-  $romaji = str_replace('<66666666>','?',$romaji);
-  $romaji = str_replace('<77777777>',' ',$romaji);
-  $romaji = str_replace('<88888888>',"'",$romaji);
+  $romaji = str_replace('11111111','&',$romaji);
+  $romaji = str_replace('22222222','+',$romaji);
+  $romaji = str_replace('33333333','/',$romaji);
+  $romaji = str_replace('44444444','%',$romaji);
+  $romaji = str_replace('55555555','#',$romaji);
+  $romaji = str_replace('66666666','?',$romaji);
+  $romaji = str_replace('77777777',' ',$romaji);
+  $romaji = str_replace('88888888',",",$romaji);
+  $romaji = str_replace('aaaaaaaa',"<",$romaji);
+  $romaji = str_replace('bbbbbbbb',">",$romaji);
+  $romaji = str_replace('cccccccc',"{",$romaji);
+  $romaji = str_replace('dddddddd',"}",$romaji);
+  $romaji = str_replace('eeeeeeee',"(",$romaji);
+  $romaji = str_replace('ffffffff',")",$romaji);
+  $romaji = str_replace('gggggggg',"|",$romaji);
+  $romaji = str_replace('hhhhhhhh',"^",$romaji);
+  $romaji = str_replace('iiiiiiii',"[",$romaji);
+  $romaji = str_replace('jjjjjjjj',"]",$romaji);
+  $romaji = str_replace('kkkkkkkk',"`",$romaji);
+  $romaji = str_replace('llllllll',"~",$romaji);
+  $romaji = str_replace('mmmmmmmm',"\\",$romaji);
+  $romaji = str_replace('nnnnnnnn',"*",$romaji);
+  $romaji = str_replace('oooooooo',"\"",$romaji);
+  $romaji = str_replace('pppppppp',"=",$romaji);
+  $romaji = str_replace('qqqqqqqq',"\'",$romaji);
   $replace_str = '\s|　';
-  if(preg_match('/[\'\&\+\/\%\#\?\.\s]/u',$romaji)){
-    $new_romaji =
-      preg_replace('/[\'\&\+\/\%\#\?\.\s]/u','-', $romaji);
+  if(preg_match('/[\'\&\+\/\%\#\?\.\(\)\{\}\[\]\<\>\^\~\`\|\\\"\=\*\,\s]/u',$romaji)){
+    $new_romaji = preg_replace(
+        '/[\'\&\+\/\%\#\?\.\(\)\{\}\[\]\<\>\^\~\`\|\\\"\*\=\,\s]/u','-', $romaji);
     if(preg_match('/'.$replace_str.'/',$new_romaji)){
       $new_romaji = preg_replace('/'.$replace_str.'/','-',$new_romaji);
     }
@@ -368,14 +419,31 @@ if ($_POST['orders_id'] &&
   }
 }else if(isset($_GET['action'])&&$_GET['action'] == 'c_is_set_romaji'){
   $romaji = $_POST['romaji'];
-  $romaji = str_replace('<11111111>','&',$romaji);
-  $romaji = str_replace('<22222222>','+',$romaji);
-  $romaji = str_replace('<33333333>','/',$romaji);
-  $romaji = str_replace('<44444444>','%',$romaji);
-  $romaji = str_replace('<55555555>','#',$romaji);
-  $romaji = str_replace('<66666666>','?',$romaji);
-  $romaji = str_replace('<77777777>',' ',$romaji);
-  $romaji = str_replace('<88888888>',"'",$romaji);
+  $romaji = str_replace('11111111','&',$romaji);
+  $romaji = str_replace('22222222','+',$romaji);
+  $romaji = str_replace('33333333','/',$romaji);
+  $romaji = str_replace('44444444','%',$romaji);
+  $romaji = str_replace('55555555','#',$romaji);
+  $romaji = str_replace('66666666','?',$romaji);
+  $romaji = str_replace('77777777',' ',$romaji);
+  $romaji = str_replace('88888888',",",$romaji);
+  $romaji = str_replace('aaaaaaaa',"<",$romaji);
+  $romaji = str_replace('bbbbbbbb',">",$romaji);
+  $romaji = str_replace('cccccccc',"{",$romaji);
+  $romaji = str_replace('dddddddd',"}",$romaji);
+  $romaji = str_replace('eeeeeeee',"(",$romaji);
+  $romaji = str_replace('ffffffff',")",$romaji);
+  $romaji = str_replace('gggggggg',"|",$romaji);
+  $romaji = str_replace('hhhhhhhh',"^",$romaji);
+  $romaji = str_replace('iiiiiiii',"[",$romaji);
+  $romaji = str_replace('jjjjjjjj',"]",$romaji);
+  $romaji = str_replace('kkkkkkkk',"`",$romaji);
+  $romaji = str_replace('llllllll',"~",$romaji);
+  $romaji = str_replace('mmmmmmmm',"\\",$romaji);
+  $romaji = str_replace('nnnnnnnn',"*",$romaji);
+  $romaji = str_replace('oooooooo',"\"",$romaji);
+  $romaji = str_replace('pppppppp',"=",$romaji);
+  $romaji = str_replace('qqqqqqqq',"\'",$romaji);
   $site_id = isset($_POST['site_id'])?$_POST['site_id']:0;
   $sql =  "select * from ".TABLE_CATEGORIES." c,
 		".TABLE_CATEGORIES_DESCRIPTION." 
@@ -394,14 +462,31 @@ if ($_POST['orders_id'] &&
   }
 }else if(isset($_GET['action'])&&$_GET['action'] == 'p_is_set_romaji'){
   $romaji = $_POST['romaji'];
-  $romaji = str_replace('<11111111>','&',$romaji);
-  $romaji = str_replace('<22222222>','+',$romaji);
-  $romaji = str_replace('<33333333>','/',$romaji);
-  $romaji = str_replace('<44444444>','%',$romaji);
-  $romaji = str_replace('<55555555>','#',$romaji);
-  $romaji = str_replace('<66666666>','?',$romaji);
-  $romaji = str_replace('<77777777>',' ',$romaji);
-  $romaji = str_replace('<88888888>',"'",$romaji);
+  $romaji = str_replace('11111111','&',$romaji);
+  $romaji = str_replace('22222222','+',$romaji);
+  $romaji = str_replace('33333333','/',$romaji);
+  $romaji = str_replace('44444444','%',$romaji);
+  $romaji = str_replace('55555555','#',$romaji);
+  $romaji = str_replace('66666666','?',$romaji);
+  $romaji = str_replace('77777777',' ',$romaji);
+  $romaji = str_replace('88888888',",",$romaji);
+  $romaji = str_replace('aaaaaaaa',"<",$romaji);
+  $romaji = str_replace('bbbbbbbb',">",$romaji);
+  $romaji = str_replace('cccccccc',"{",$romaji);
+  $romaji = str_replace('dddddddd',"}",$romaji);
+  $romaji = str_replace('eeeeeeee',"(",$romaji);
+  $romaji = str_replace('ffffffff',")",$romaji);
+  $romaji = str_replace('gggggggg',"|",$romaji);
+  $romaji = str_replace('hhhhhhhh',"^",$romaji);
+  $romaji = str_replace('iiiiiiii',"[",$romaji);
+  $romaji = str_replace('jjjjjjjj',"]",$romaji);
+  $romaji = str_replace('kkkkkkkk',"`",$romaji);
+  $romaji = str_replace('llllllll',"~",$romaji);
+  $romaji = str_replace('mmmmmmmm',"\\",$romaji);
+  $romaji = str_replace('nnnnnnnn',"*",$romaji);
+  $romaji = str_replace('oooooooo',"\"",$romaji);
+  $romaji = str_replace('pppppppp',"=",$romaji);
+  $romaji = str_replace('qqqqqqqq',"\'",$romaji);
   $site_id = isset($_POST['site_id'])?$_POST['site_id']:0;
   $sql = "select * from  
 		".TABLE_PRODUCTS_DESCRIPTION." pd,
@@ -1201,6 +1286,21 @@ if ($_POST['orders_id'] &&
   $html_str = '<a href="'.tep_href_link(FILENAME_ORDERS, $param_str.'&oID='.$_POST['oID'].'&action=edit').'">'.tep_html_element_button(IMAGE_DETAILS).'</a>';
   $html_str .= '&nbsp;<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="delete_order_info(\''.$_POST['oID'].'\', \''.urlencode($param_str).'\')"').'</a>';
   echo $html_str;
+} else if (isset($_GET['action'])&&$_GET['action']=='search_manual') {
+$json_array=array();
+$search_cat_manual_query=tep_db_query("select categories_name,categories_id from ".TABLE_CATEGORIES_DESCRIPTION." where categories_name like '%".$_GET['q']."%' and site_id='0'");
+while($search_cat_manual_array=tep_db_fetch_array($search_cat_manual_query)){
+	$check_query=tep_db_query("select parent_id from ".TABLE_CATEGORIES." where categories_id='".$search_cat_manual_array['categories_id']."'");
+	$check_array=tep_db_fetch_array($check_query);
+	if($check_array['parent_id']==0){
+$json_array[]=array('name'=>$search_cat_manual_array['categories_name']);
+	}
+}
+$search_pro_manual_query=tep_db_query("select products_name from ".TABLE_PRODUCTS_DESCRIPTION." where products_name like '%".$_GET['q']."%' and site_id='0'");
+while($search_pro_manual_array=tep_db_fetch_array($search_pro_manual_query)){
+$json_array[]=array('name'=>$search_pro_manual_array['products_name']);
+}
+echo json_encode($json_array);
 } else if (isset($_GET['action'])&&$_GET['action']=='new_group') {
   require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_OPTION_GROUP); 
   $html_str = '';
@@ -1220,46 +1320,48 @@ if ($_POST['orders_id'] &&
   $html_str .= tep_draw_form('option_group', FILENAME_OPTION_GROUP, 'action=insert'); 
   $html_str .= '<table cellspacing="0" cellpadding="2" border="0" width="100%" class="campaign_body">';
   $html_str .= '<tr>';
-  $html_str .= '<td width="220">';
+  $html_str .= '<td width="220" align="left">';
   $html_str .= TABLE_HEADING_OPTION_GROUP_NAME; 
   $html_str .= '</td>';
-  $html_str .= '<td>';
-  $html_str .= tep_draw_input_field('name', '', 'id="name"'); 
+  $html_str .= '<td align="left">';
+  $html_str .= tep_draw_input_field('name', '', 'id="name" class="campaign_input"'); 
+  $html_str .= '<span id="name_error" style="color:#ff0000;"></span>'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
   
   $html_str .= '<tr>';
-  $html_str .= '<td width="220">';
+  $html_str .= '<td width="220" align="left">';
   $html_str .= TABLE_HEADING_OPTION_GROUP_TITLE; 
   $html_str .= '</td>';
-  $html_str .= '<td>';
-  $html_str .= tep_draw_input_field('title', '', 'id="title"'); 
+  $html_str .= '<td align="left">';
+  $html_str .= tep_draw_input_field('title', '', 'id="title" class="campaign_input"'); 
+  $html_str .= '<span id="title_error" style="color:#ff0000;"></span>'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
   
   $html_str .= '<tr>';
-  $html_str .= '<td width="220">';
+  $html_str .= '<td width="220" align="left">';
   $html_str .= TABLE_HEADING_OPTION_GROUP_IS_PREORDER; 
   $html_str .= '</td>';
-  $html_str .= '<td>';
+  $html_str .= '<td align="left">';
   $html_str .= tep_draw_radio_field('is_preorder',1,false,'','id="is_preorder"').OPTION_GROUP_IS_PREORDER.'&nbsp;'.tep_draw_radio_field('is_preorder',0,true,'','id="is_preorder"').OPTION_GROUP_IS_NOT_PREORDER; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
   
   $html_str .= '<tr>';
-  $html_str .= '<td width="220">';
+  $html_str .= '<td width="220" align="left">';
   $html_str .= TABLE_HEADING_OPTION_GROUP_DESC; 
   $html_str .= '</td>';
-  $html_str .= '<td>';
-  $html_str .= tep_draw_textarea_field('comment', 'hard', '30', '10'); 
+  $html_str .= '<td align="left">';
+  $html_str .= tep_draw_textarea_field('comment', 'hard', '30', '10', '', 'class="campaign_input"'); 
   $html_str .= '</td>';
   $html_str .= '</tr>';
   
   $html_str .= '<tr>';
-  $html_str .= '<td width="220">';
+  $html_str .= '<td width="220" align="left">';
   $html_str .= TABLE_HEADING_OPTION_GROUP_SORT_NUM; 
   $html_str .= '</td>';
-  $html_str .= '<td>';
+  $html_str .= '<td align="left">';
   $html_str .= tep_draw_input_field('sort_num', '1000', 'size="31" id="sort_num" style="text-align:right;"'); 
   $html_str .= '</td>';
   $html_str .= '</tr>';
@@ -1268,8 +1370,8 @@ if ($_POST['orders_id'] &&
   $html_str .= '<td>';
   $html_str .= '&nbsp;'; 
   $html_str .= '</td>';
-  $html_str .= '<td style="padding-left:20%;">';
-  $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="check_group_info();"').'</a>&nbsp;'; 
+  $html_str .= '<td style="padding-left:20%;" align="left">';
+  $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="check_group_info(0, 0);"').'</a>&nbsp;'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
   $html_str .= '</table>';
@@ -1278,7 +1380,15 @@ if ($_POST['orders_id'] &&
 } else if (isset($_GET['action'])&&$_GET['action']=='edit_group') {
   require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_OPTION_GROUP); 
   $group_raw = tep_db_query("select * from ".TABLE_OPTION_GROUP." where id = '".$_POST['group_id']."'"); 
-  $group = tep_db_fetch_array($group_raw); 
+  $group = tep_db_fetch_array($group_raw);
+  
+  foreach ($_POST as $p_key => $p_value) {
+    if (($p_key != 'group_id') && ($p_key != 'action')) {
+      $param_str .= $p_key.'='.$p_value.'&'; 
+    }
+  }
+  $param_str = substr($param_str, 0, -1); 
+  
   $html_str = '';
   $html_str .= '<table cellspacing="0" cellpadding="2" border="0" width="100%" class="campaign_top">';
   $html_str .= '<tr>'; 
@@ -1294,31 +1404,33 @@ if ($_POST['orders_id'] &&
   $html_str .= '</td>'; 
   $html_str .= '</tr>'; 
   $html_str .= '</table>';
-  $html_str .= tep_draw_form('option_group', FILENAME_OPTION_GROUP, 'action=update'); 
+  $html_str .= tep_draw_form('option_group', FILENAME_OPTION_GROUP, 'action=update&'.$param_str); 
   $html_str .= '<table cellspacing="0" cellpadding="2" border="0" width="100%" class="campaign_body">';
   $html_str .= '<tr>';
-  $html_str .= '<td width="220">';
+  $html_str .= '<td width="220" align="left">';
   $html_str .= TABLE_HEADING_OPTION_GROUP_NAME; 
   $html_str .= '</td>';
-  $html_str .= '<td>';
-  $html_str .= tep_draw_input_field('name', $group['name'], 'id="name"'); 
+  $html_str .= '<td align="left">';
+  $html_str .= tep_draw_input_field('name', $group['name'], 'id="name" class="campaign_input"'); 
+  $html_str .= '<span id="name_error" style="color:#ff0000;"></span>'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
   
   $html_str .= '<tr>';
-  $html_str .= '<td width="220">';
+  $html_str .= '<td width="220" align="left">';
   $html_str .= TABLE_HEADING_OPTION_GROUP_TITLE; 
   $html_str .= '</td>';
-  $html_str .= '<td>';
-  $html_str .= tep_draw_input_field('title', $group['title'], 'id="title"'); 
+  $html_str .= '<td align="left">';
+  $html_str .= tep_draw_input_field('title', $group['title'], 'id="title" class="campaign_input"'); 
+  $html_str .= '<span id="title_error" style="color:#ff0000;"></span>'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
   
   $html_str .= '<tr>';
-  $html_str .= '<td width="220">';
+  $html_str .= '<td width="220" align="left">';
   $html_str .= TABLE_HEADING_OPTION_GROUP_IS_PREORDER; 
   $html_str .= '</td>';
-  $html_str .= '<td>';
+  $html_str .= '<td align="left">';
   if ($group['is_preorder'] == '1') {
     $html_str .= tep_draw_radio_field('is_preorder',1,true,'','id="is_preorder"').OPTION_GROUP_IS_PREORDER.'&nbsp;'.tep_draw_radio_field('is_preorder',0,false,'','id="is_preorder"').OPTION_GROUP_IS_NOT_PREORDER; 
   } else {
@@ -1328,19 +1440,19 @@ if ($_POST['orders_id'] &&
   $html_str .= '</tr>';
   
   $html_str .= '<tr>';
-  $html_str .= '<td width="220">';
+  $html_str .= '<td width="220" align="left">';
   $html_str .= TABLE_HEADING_OPTION_GROUP_DESC; 
   $html_str .= '</td>';
-  $html_str .= '<td>';
-  $html_str .= tep_draw_textarea_field('comment', 'hard', '30', '10', $group['comment']); 
+  $html_str .= '<td align="left">';
+  $html_str .= tep_draw_textarea_field('comment', 'hard', '30', '10', $group['comment'], 'class="campaign_input"'); 
   $html_str .= '</td>';
   $html_str .= '</tr>';
   
   $html_str .= '<tr>';
-  $html_str .= '<td width="220">';
+  $html_str .= '<td width="220" align="left">';
   $html_str .= TABLE_HEADING_OPTION_GROUP_SORT_NUM; 
   $html_str .= '</td>';
-  $html_str .= '<td>';
+  $html_str .= '<td align="left">';
   $html_str .= tep_draw_input_field('sort_num', $group['sort_num'], 'size="31" id="sort_num" style="text-align:right;"'); 
   $html_str .= '</td>';
   $html_str .= '</tr>';
@@ -1349,11 +1461,10 @@ if ($_POST['orders_id'] &&
   $html_str .= '<td>';
   $html_str .= '&nbsp;'; 
   $html_str .= '</td>';
-  $html_str .= '<td style="padding-left:20%;">';
+  $html_str .= '<td style="padding-left:20%;" align="left">';
   $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_NEW_PROJECT, 'onclick="create_option_group();"').'</a>&nbsp;'; 
-  $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE,
-      'onclick="check_group_info();"').'</a>&nbsp;'; 
-  $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="if(confirm(\''.TEXT_DEL_OPTION_GROUP.'\')) window.location.href = \''.tep_href_link(FILENAME_OPTION_GROUP, 'action=deleteconfirm&group_id='.$group['id']).'\';"').'</a>'; 
+  $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="check_group_info('.$group['id'].', 1);"').'</a>&nbsp;'; 
+  $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="if(confirm(\''.TEXT_DEL_OPTION_GROUP.'\')) window.location.href = \''.tep_href_link(FILENAME_OPTION_GROUP, 'action=deleteconfirm&group_id='.$group['id'].'&'.$param_str).'\';"').'</a>'; 
   $html_str .= tep_draw_hidden_field('group_id', $group['id']); 
   $html_str .= '</td>';
   $html_str .= '</tr>';
@@ -1362,15 +1473,68 @@ if ($_POST['orders_id'] &&
   echo $html_str;
 } else if (isset($_GET['action'])&&$_GET['action']=='search_group') {
   $json_array = array(); 
-  $search_group_query = tep_db_query("select name from ".TABLE_OPTION_GROUP." where name like '%".$_GET['q']."%' order by created_at desc");
+  $search_group_query = tep_db_query("select name from ".TABLE_OPTION_GROUP." where name like '%".tep_replace_full_character($_GET['q'])."%' order by created_at desc");
     while ($search_group = tep_db_fetch_array($search_group_query)) {
       $json_array[] = array('name' => $search_group['name']); 
     }
   echo json_encode($json_array); 
+} else if (isset($_GET['action'])&&$_GET['action']=='check_group') {
+  require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_OPTION_GROUP); 
+  $error_array = array();
+  $error_array['name'] = '';
+  $error_array['title'] = '';
+  
+  if ($_POST['gname'] == '') {
+    $error_array['name'] = ERROR_OPTION_GROUP_IS_NULL;
+  }
+  if ($_POST['type'] == 0) {
+    $group_exists_raw = tep_db_query("select * from ".TABLE_OPTION_GROUP." where name = '".$_POST['gname']."'"); 
+    if (tep_db_num_rows($group_exists_raw)) {
+      if (empty($error_array['name'])) {
+        $error_array['name'] = ERROR_OPTION_GROUP_NAME_EXISTS;  
+      }
+    }
+  } else {
+    $group_exists_raw = tep_db_query("select * from ".TABLE_OPTION_GROUP." where name = '".$_POST['gname']."' and id != '".$_POST['gid']."'"); 
+    if (tep_db_num_rows($group_exists_raw)) {
+      if (empty($error_array['name'])) {
+        $error_array['name'] = ERROR_OPTION_GROUP_NAME_EXISTS;  
+      } 
+    }
+  }
+  if ($_POST['gtitle'] == '') {
+    $error_array['title'] = ERROR_OPTION_GROUP_IS_NULL;
+  }
+  echo implode('||', $error_array);
+  
 } else if (isset($_GET['action'])&&$_GET['action']=='new_item') {
   require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_OPTION_ITEM); 
   require_once('enabledoptionitem.php'); 
   $html_str = '';
+  
+  $html_str = '<script>$(function() {
+      function format_item(item) {
+          return item.name;
+      }
+      $("#title").autocomplete(\'ajax_orders.php?action=search_title\', {
+        multipleSeparator: \'\',
+        dataType: "json",
+        parse: function(data) {
+        return $.map(data, function(row) {
+            return {
+             data: row,
+             value: row.name,
+             result: row.name
+            }
+          });
+        },
+        formatItem: function(item) {
+          return format_item(item);
+        }
+      }).result(function(e, item) {
+      });
+});</script>'; 
+  
   $html_str .= '<table cellspacing="0" cellpadding="2" border="0" width="100%" class="campaign_top">';
   $html_str .= '<tr>';
   $html_str .= '<td width="20">'; 
@@ -1385,31 +1549,40 @@ if ($_POST['orders_id'] &&
   $html_str .= '</tr>'; 
   $html_str .= '</table>';
   
-  $html_str .= tep_draw_form('option_item', FILENAME_OPTION_ITEM, 'action=insert&group_id='.$_POST['group_id']); 
+  $html_str .= tep_draw_form('option_item', FILENAME_OPTION_ITEM, 'action=insert&group_id='.$_POST['group_id'], 'post', 'enctype="multipart/form-data"'); 
   $html_str .= '<table cellspacing="0" cellpadding="2" border="0" width="100%" class="campaign_body">';
   $html_str .= '<tr>';
-  $html_str .= '<td width="220">';
+  $html_str .= '<td width="220" align="left">';
   $html_str .= TABLE_HEADING_OPTION_ITEM_NAME; 
   $html_str .= '</td>';
-  $html_str .= '<td>';
-  $html_str .= tep_draw_input_field('title', '', 'id="title" class="option_text"'); 
+  $html_str .= '<td align="left">';
+  $html_str .= tep_draw_input_field('title', '', 'id="title" class="option_text" autocomplete="off"'); 
+  $html_str .= '&nbsp;<a href="javascript:void(0);" onclick="search_item_title(0, 0);">'.tep_html_element_button(IMAGE_SEARCH, 'onclick=""').'</a>'; 
+  $html_str .= '<span id="title_error" style="color:#ff0000;"></span>'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
+  $html_str .= '</table>'; 
   
+  $html_str .= '<table id="search_title" cellspacing="0" cellpadding="2" border="0" width="100%" style="padding:0 50px 0; margin-top:-10px;">';
+  $html_str .= '</table>'; 
+  
+  $html_str .= '<table cellspacing="0" cellpadding="2" border="0" width="100%" class="campaign_body">';
   $html_str .= '<tr>';
-  $html_str .= '<td>';
+  $html_str .= '<td width="220" align="left">';
   $html_str .= TABLE_HEADING_OPTION_ITEM_TITLE; 
   $html_str .= '</td>';
-  $html_str .= '<td>';
+  $html_str .= '<td align="left">';
   $html_str .= tep_draw_input_field('front_title', '', 'id="front_title" class="option_text"'); 
+  $html_str .= '<span id="front_error" style="color:#ff0000;"></span>'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
   
   $html_str .= '<tr>';
-  $html_str .= '<td>';
+  $html_str .= '<td align="left">';
   $html_str .= TABLE_HEADING_OPTION_ITEM_TYPE; 
   $html_str .= '</td>';
-  $html_str .= '<td>';
+  $html_str .= '<td align="left">';
+  $html_str .= '<div id="se_item">'; 
   $html_str .= '<select id="type" name="type" onchange="change_option_item_type(0);">'; 
   $i=0; 
   foreach ($enabled_item_array as $ekey => $evalue) {
@@ -1420,6 +1593,7 @@ if ($_POST['orders_id'] &&
     $i++; 
   }
   $html_str .= '</select>'; 
+  $html_str .= '</div>'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
   $html_str .= '</table>'; 
@@ -1434,29 +1608,31 @@ if ($_POST['orders_id'] &&
   $html_str .= '<table cellspacing="0" cellpadding="2" border="0" width="100%" class="campaign_body">';
 
   $html_str .= '<tr>';
-  $html_str .= '<td width="220">';
-  $html_str .= TABLE_HEADING_OPTION_ITEM_STORE_NUM; 
-  $html_str .= '</td>';
-  $html_str .= '<td>';
-  $html_str .= tep_draw_input_field('stock_num', '', 'id="stock_num" class="option_input"').TEXT_PREORDER_PRODUCTS_UNIT; 
-  $html_str .= '</td>';
-  $html_str .= '</tr>';
-
-  $html_str .= '<tr>';
-  $html_str .= '<td>';
+  $html_str .= '<td width="220" align="left">';
   $html_str .= TABLE_HEADING_OPTION_ITEM_PRICE; 
   $html_str .= '</td>';
-  $html_str .= '<td>';
-  $html_str .= tep_draw_input_field('price', '', 'id="price" class="option_input"').TEXT_MONEY_SYMBOL; 
+  $html_str .= '<td align="left">';
+  $html_str .= tep_draw_input_field('price', '', 'id="price" class="option_item_input"').TEXT_MONEY_SYMBOL; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
   
   $html_str .= '<tr>';
-  $html_str .= '<td>';
+  $html_str .= '<td width="220" align="left">';
   $html_str .= TABLE_HEADING_OPTION_ITEM_SORT_NUM; 
   $html_str .= '</td>';
-  $html_str .= '<td>';
-  $html_str .= tep_draw_input_field('sort_num', '1000', 'id="sort_num" class="option_input"'); 
+  $html_str .= '<td align="left">';
+  $html_str .= tep_draw_input_field('sort_num', '1000', 'id="sort_num" class="option_item_input"'); 
+  $html_str .= '</td>';
+  $html_str .= '</tr>';
+  
+  $html_str .= '<tr>';
+  $html_str .= '<td align="left">';
+  $html_str .= TABLE_HEADING_OPTION_ITEM_PLACE; 
+  $html_str .= '</td>';
+  $html_str .= '<td align="left">';
+  $html_str .= '<div id="p_type">'; 
+  $html_str .= tep_draw_radio_field('place_type', '0', true).OPTION_ITEM_TYPE_PRODUCT.'&nbsp;&nbsp;'.tep_draw_radio_field('place_type', '1').OPTION_ITEM_TYPE_LAST; 
+  $html_str .= '</div>'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
   
@@ -1464,7 +1640,8 @@ if ($_POST['orders_id'] &&
   $html_str .= '<td>';
   $html_str .= '&nbsp;'; 
   $html_str .= '</td>';
-  $html_str .= '<td style="padding-left:20%;">';
+  $html_str .= '<td style="padding-left:20%;" align="left">';
+  $html_str .= '<input type="hidden" name="is_copy" value="0" id="is_copy">'; 
   $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="check_item_info()"').'</a>&nbsp;'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
@@ -1478,6 +1655,31 @@ if ($_POST['orders_id'] &&
   $item_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where id = '".$_POST['item_id']."'"); 
   $item = tep_db_fetch_array($item_query); 
   $html_str = '';
+  
+  $html_str = '<script>$(function() {
+      function format_item(item) {
+          return item.name;
+      }
+      $("#title").autocomplete(\'ajax_orders.php?action=search_title\', {
+        multipleSeparator: \'\',
+        dataType: "json",
+        parse: function(data) {
+        return $.map(data, function(row) {
+            return {
+             data: row,
+             value: row.name,
+             result: row.name
+            }
+          });
+        },
+        formatItem: function(item) {
+          return format_item(item);
+        }
+      }).result(function(e, item) {
+      });
+});</script>';
+  
+  
   $html_str .= '<table cellspacing="0" cellpadding="2" border="0" width="100%" class="campaign_top">';
   $html_str .= '<tr>'; 
   $html_str .= '<td width="20">'; 
@@ -1492,32 +1694,43 @@ if ($_POST['orders_id'] &&
   $html_str .= '</td>'; 
   $html_str .= '</tr>';
   $html_str .= '</table>';
-  $html_str .= tep_draw_form('option_item', FILENAME_OPTION_ITEM, 'action=update&group_id='.$_POST['group_id']); 
+  $html_str .= tep_draw_form('option_item', FILENAME_OPTION_ITEM, 'action=update&group_id='.$_POST['group_id'], 'post', 'enctype="multipart/form-data"'); 
   $html_str .= '<table cellspacing="0" cellpadding="2" border="0" width="100%" class="campaign_body">';
   $html_str .= '<tr>';
-  $html_str .= '<td width="220">';
-  $html_str .= tep_draw_hidden_field('item_id', $item['id']); 
+  $html_str .= '<td width="220" align="left">';
+  $html_str .= '<input type="hidden" name="item_id" value="'.$item_id.'" id="item_uid">'; 
   $html_str .= TABLE_HEADING_OPTION_ITEM_NAME; 
   $html_str .= '</td>';
-  $html_str .= '<td>';
-  $html_str .= tep_draw_input_field('title', $item['title'], 'id="title" class="option_text"'); 
+  $html_str .= '<td align="left">';
+  $html_str .= tep_draw_input_field('title', $item['title'], 'id="title" class="option_text" autocomplete="off"'); 
+  $html_str .= '&nbsp;<a href="javascript:void(0);" onclick="search_item_title(1, '.$item['id'].');">'.tep_html_element_button(IMAGE_SEARCH, 'onclick=""').'</a>'; 
+  $html_str .= '<span id="title_error" style="color:#ff0000;"></span>'; 
+  $html_str .= '<input type="hidden" name="is_more" id="is_more" value="0">'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
   
+  $html_str .= '</table>'; 
+  
+  $html_str .= '<table id="search_title" cellspacing="0" cellpadding="2" border="0" width="100%" class="campaign_body">';
+  $html_str .= '</table>'; 
+  
+  $html_str .= '<table cellspacing="0" cellpadding="2" border="0" width="100%" class="campaign_body">';
   $html_str .= '<tr>';
-  $html_str .= '<td>';
+  $html_str .= '<td width="220" align="left">';
   $html_str .= TABLE_HEADING_OPTION_ITEM_TITLE; 
   $html_str .= '</td>';
-  $html_str .= '<td>';
+  $html_str .= '<td align="left">';
   $html_str .= tep_draw_input_field('front_title', $item['front_title'], 'id="front_title" class="option_text"'); 
+  $html_str .= '<span id="front_error" style="color:#ff0000;"></span>'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
   
   $html_str .= '<tr>';
-  $html_str .= '<td>';
+  $html_str .= '<td align="left">';
   $html_str .= TABLE_HEADING_OPTION_ITEM_TYPE; 
   $html_str .= '</td>';
-  $html_str .= '<td>';
+  $html_str .= '<td align="left">';
+  $html_str .= '<div id="se_item">'; 
   $html_str .= '<select id="type" name="type" onchange="change_option_item_type(0);">'; 
   foreach ($enabled_item_array as $ekey => $evalue) {
     if (strtolower($evalue) == $item['type']) {
@@ -1527,6 +1740,7 @@ if ($_POST['orders_id'] &&
     }
   }
   $html_str .= '</select>'; 
+  $html_str .= '</div>'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
   $html_str .= '</table>'; 
@@ -1539,30 +1753,38 @@ if ($_POST['orders_id'] &&
   $html_str .= '</table>'; 
 
   $html_str .= '<table cellspacing="0" cellpadding="2" border="0" width="100%" class="campaign_body">';
+  
+  if ($item['type'] != 'radio') {
+    $html_str .= '<tr>';
+    $html_str .= '<td width="220" align="left">';
+    $html_str .= TABLE_HEADING_OPTION_ITEM_PRICE; 
+    $html_str .= '</td>';
+    $html_str .= '<td align="left">';
+    $html_str .= tep_draw_input_field('price', number_format($item['price']), 'id="price" class="option_item_input"').TEXT_MONEY_SYMBOL; 
+    $html_str .= '</td>';
+    $html_str .= '</tr>';
+  } 
   $html_str .= '<tr>';
-  $html_str .= '<td width="220">';
-  $html_str .= TABLE_HEADING_OPTION_ITEM_STORE_NUM; 
+  $html_str .= '<td width="220" align="left">';
+  $html_str .= TABLE_HEADING_OPTION_ITEM_SORT_NUM; 
   $html_str .= '</td>';
-  $html_str .= '<td>';
-  $html_str .= tep_draw_input_field('stock_num', $item['stock_num'], 'id="stock_num" class="option_input"').TEXT_PREORDER_PRODUCTS_UNIT; 
-  $html_str .= '</td>';
-  $html_str .= '</tr>';
-
-  $html_str .= '<tr>';
-  $html_str .= '<td>';
-  $html_str .= TABLE_HEADING_OPTION_ITEM_PRICE; 
-  $html_str .= '</td>';
-  $html_str .= '<td>';
-  $html_str .= tep_draw_input_field('price', number_format($item['price']), 'id="price" class="option_input"').TEXT_MONEY_SYMBOL; 
+  $html_str .= '<td align="left">';
+  $html_str .= tep_draw_input_field('sort_num', $item['sort_num'], 'id="sort_num" class="option_item_input"'); 
   $html_str .= '</td>';
   $html_str .= '</tr>';
   
   $html_str .= '<tr>';
-  $html_str .= '<td>';
-  $html_str .= TABLE_HEADING_OPTION_ITEM_SORT_NUM; 
+  $html_str .= '<td align="left">';
+  $html_str .= TABLE_HEADING_OPTION_ITEM_PLACE; 
   $html_str .= '</td>';
-  $html_str .= '<td>';
-  $html_str .= tep_draw_input_field('sort_num', $item['sort_num'], 'id="sort_num" class="option_input"'); 
+  $html_str .= '<td align="left">';
+  $html_str .= '<div id="p_type">'; 
+  if ($item['place_type'] == 0) {
+    $html_str .= tep_draw_radio_field('place_type', '0', true).OPTION_ITEM_TYPE_PRODUCT.'&nbsp;&nbsp;'.tep_draw_radio_field('place_type', '1').OPTION_ITEM_TYPE_LAST; 
+  } else {
+    $html_str .= tep_draw_radio_field('place_type', '0', false).OPTION_ITEM_TYPE_PRODUCT.'&nbsp;&nbsp;'.tep_draw_radio_field('place_type', '1', true).OPTION_ITEM_TYPE_LAST; 
+  }
+  $html_str .= '</div>'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
   
@@ -1570,7 +1792,8 @@ if ($_POST['orders_id'] &&
   $html_str .= '<td>';
   $html_str .= '&nbsp;'; 
   $html_str .= '</td>';
-  $html_str .= '<td style="padding-left:20%;">';
+  $html_str .= '<td style="padding-left:20%;" align="left">';
+  $html_str .= '<input type="hidden" name="is_copy" value="0" id="is_copy">'; 
   $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_NEW_PROJECT, 'onclick="create_option_item(\''.$_POST['group_id'].'\');"').'</a>&nbsp;'; 
   $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="check_item_info();"').'</a>&nbsp;'; 
   $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="if(confirm(\''.TEXT_DEL_OPTION_ITEM.'\')) window.location.href = \''.tep_href_link(FILENAME_OPTION_ITEM, 'action=deleteconfirm&item_id='.$item['id'].'&group_id='.$_POST['group_id']).'\';"').'</a>'; 
@@ -1585,20 +1808,225 @@ if ($_POST['orders_id'] &&
   require_once('option/'.$classname.'.php');
   $item_instance = new $classname();
   echo $item_instance->prepareFormWithParent($_POST['item_id']);
-}else if (isset($_GET['action'])&&$_GET['action']=='search_manual') {
-$json_array=array();
-$search_cat_manual_query=tep_db_query("select categories_name,categories_id from ".TABLE_CATEGORIES_DESCRIPTION." where categories_name like '%".$_GET['q']."%' and site_id='0'");
-while($search_cat_manual_array=tep_db_fetch_array($search_cat_manual_query)){
-	$check_query=tep_db_query("select parent_id from ".TABLE_CATEGORIES." where categories_id='".$search_cat_manual_array['categories_id']."'");
-	$check_array=tep_db_fetch_array($check_query);
-	if($check_array['parent_id']==0){
-$json_array[]=array('name'=>$search_cat_manual_array['categories_name']);
-	}
-}
-$search_pro_manual_query=tep_db_query("select products_name from ".TABLE_PRODUCTS_DESCRIPTION." where products_name like '%".$_GET['q']."%' and site_id='0'");
-while($search_pro_manual_array=tep_db_fetch_array($search_pro_manual_query)){
-$json_array[]=array('name'=>$search_pro_manual_array['products_name']);
-}
-echo json_encode($json_array);
-}
+} else if (isset($_GET['action'])&&$_GET['action']=='handle_option') {
+  $option_group_exists_raw = tep_db_query("select id from ".TABLE_OPTION_GROUP." where name = '".$_POST['keyword']."'");
+  if (!tep_db_num_rows($option_group_exists_raw)) {
+    $insert_sql = "insert into `".TABLE_OPTION_GROUP."` values(NULL, '".$_POST['keyword']."', '".$_POST['keyword']."', '', '', '1', '1000', '".date('Y-m-d H:i:s', time())."')";
+    tep_db_query($insert_sql);
+  }
+} else if (isset($_GET['action'])&&$_GET['action']=='check_item') {
+  require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_OPTION_ITEM); 
+  $error_array = array();
+  $error_array['title'] = '';
+  $error_array['ftitle'] = '';
+  $error_array['rname'] = '';
+  if ($_POST['ititle'] == '') {
+    $error_array['title'] = ERROR_OPTION_ITEM_IS_NULL;
+  }
+  
+  if ($_POST['ifront_title'] == '') {
+    $error_array['ftitle'] = ERROR_OPTION_ITEM_IS_NULL;
+  }
+ 
+  if ($_POST['r_str'] != '') {
+    $r_str = substr($_POST['r_str'], 0, -6);
+    $r_str_array = explode('<<<|||', $r_str);
+    $unique_array = array_unique($r_str_array);
+    $r_count = count($r_str_array);
+    $ru_count = count($unique_array); 
+    if ($r_count != $ru_count) {
+      $error_array['rname'] = ERROR_OPTION_ITEM_RADIO_IS_SAME; 
+    }
+  }
+  echo implode('||', $error_array);
+} else if (isset($_GET['action'])&&$_GET['action']=='search_item_title') {
+  require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_OPTION_ITEM); 
+  $html_str = '';
+  $html_str_add = '0'; 
+  if (!empty($_POST['s_item_id'])) {
+    $other_item_raw = tep_db_query("select id, title from ".TABLE_OPTION_ITEM." where title like '%".$_POST['sea_title']."%' and id != '".(int)$_POST['s_item_id']."'");
+  } else {
+    $other_item_raw = tep_db_query("select id, title from ".TABLE_OPTION_ITEM." where title like '%".$_POST['sea_title']."%'");
+  }
+  if (!tep_db_num_rows($other_item_raw)) {
+    $html_str .= '<tr><td colspan="2">';
+    $html_str .= '<font color="ff0000">'.OPTION_SEARCH_NO_RESULT.'</font>'; 
+    $html_str .= '</td></tr>';
+    echo $html_str.'|||'.$html_str_add;
+    exit;
+  }
+  while ($other_item = tep_db_fetch_array($other_item_raw)) {
+    $html_str .= '<tr>';
+    $html_str .= '<td width="220" align="left">';
+    $html_str .= TABLE_HEADING_OPTION_ITEM_NAME; 
+    $html_str .= '</td>';
+    $html_str .= '<td align="left">';
+    $html_str .= tep_draw_input_field('stitle_'.$other_item['id'], $other_item['title'], 'class="option_text"'); 
+    $html_str .= '<a href="javascript:void(0);" onclick="preview_item(\''.$other_item['id'].'\', \''.$_POST['t_type'].'\');">'.tep_html_element_button(OPTION_ITEM_PREVIEW_TEXT, 'onclick=""', 'option_preview').'</a>'; 
+    $html_str .= '</td>';
+    $html_str .= '</tr>';
+  }
+  if ($html_str != '') {
+    $html_str_add = '1'; 
+  }
+  
+  echo $html_str.'|||'.$html_str_add;
+} else if (isset($_GET['action'])&&$_GET['action']=='preview_title') {
+  require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_OPTION_ITEM); 
+  require_once('enabledoptionitem.php'); 
+  $html_str = ''; 
+  $item_raw = tep_db_query("select * from ".TABLE_OPTION_ITEM." where id = '".$_POST['preview_id']."'");
+  $item = tep_db_fetch_array($item_raw);
+  if ($item) {
+    $show_item_array = array();
+    $show_item_array['title'] = $item['title'];     
+    $show_item_array['front_title'] = $item['front_title'];     
+    $show_item_array['price'] = (int)$item['price'];     
+    $show_item_array['sort_num'] = $item['sort_num'];     
+    $select_str .= '<select id="type" name="type" onchange="change_option_item_type(0);">'; 
+    
+    foreach ($enabled_item_array as $ekey => $evalue) {
+      if (strtolower($evalue) == $item['type']) {
+        $check_str = ' selected'; 
+      } else {
+        $check_str = ''; 
+      }
+      $select_str .= '<option value="'.$ekey.'"'.$check_str.'>'.strtolower($evalue).'</option>'; 
+    }
+    
+    $select_str .= '</select>';
+    $show_item_array['type'] = $select_str;     
+    
+    $place_str = ''; 
+    if ($item['place_type'] == '0') {
+      $place_str .= tep_draw_radio_field('place_type', '0', true).OPTION_ITEM_TYPE_PRODUCT.'&nbsp;&nbsp;'.tep_draw_radio_field('place_type', '1').OPTION_ITEM_TYPE_LAST; 
+    } else {
+      $place_str .= tep_draw_radio_field('place_type', '0').OPTION_ITEM_TYPE_PRODUCT.'&nbsp;&nbsp;'.tep_draw_radio_field('place_type', '1', true).OPTION_ITEM_TYPE_LAST; 
+    }
+    $show_item_array['place_type'] = $place_str;     
+    
+    
+    $classname = 'HM_Option_Item_'.ucfirst($item['type']);
+    require_once('option/'.$classname.'.php');
+    $item_instance = new $classname();
+    $element_str = $item_instance->prepareFormWithParent($item['id']);
+    
+    $show_item_array['item_element'] = $element_str;
+    
+    $show_item_array['del_title'] = IMAGE_DELETE;
+    $show_item_array['new_title'] = IMAGE_SAVE;
+    $show_item_array['new_title_info'] = sprintf(OPTION_SAVE_NOTICE_TEXT, $item['title']);
+    $show_item_array['item_id'] = $item['id']; 
+    $html_str = json_encode($show_item_array); 
+  
+   
+  }
+  $place_str = ''; 
+  
+  echo $html_str;
+} else if (isset($_GET['action'])&&$_GET['action']=='search_title') {
+  $json_array = array(); 
+  $search_item_query = tep_db_query("select title from ".TABLE_OPTION_ITEM." where title like '%".tep_replace_full_character($_GET['q'])."%' order by created_at desc");
+  while ($search_item = tep_db_fetch_array($search_item_query)) {
+    $json_array[] = array('name' => $search_item['title']); 
+  }
+  echo json_encode($json_array); 
+} else if (isset($_GET['action'])&&$_GET['action']=='recalc_price') {
+  $orders_info_raw = tep_db_query("select currency, currency_value from ".TABLE_ORDERS." where orders_id = '".$_POST['oid']."'");
+  $orders_info = tep_db_fetch_array($orders_info_raw);
+  
+  $orders_p_raw = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS." where orders_products_id = '".$_POST['opd']."'");
+  $orders_p = tep_db_fetch_array($orders_p_raw);
+  
+  if (tep_check_product_type($_POST['opd'])) {
+    $p_price = 0 - tep_replace_full_character($_POST['p_price']); 
+  } else {
+    $p_price = tep_replace_full_character($_POST['p_price']); 
+  }
+  
+  $final_price = $p_price + tep_replace_full_character($_POST['op_price']);
+   
+  $price_array[] = tep_display_currency(number_format(abs($final_price), 2));
+  
+  if ($final_price < 0) {
+    $price_array[] = '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($final_price, $orders_p['products_tax']), true, $orders_info['currency'], $orders_info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL; 
+    
+    $price_array[] = '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($final_price*tep_replace_full_character($_POST['p_num']), true, $orders_info['currency'], $orders_info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL; 
+    
+    $price_array[] = '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($final_price, $orders_p['products_tax'])*tep_replace_full_character($_POST['p_num']), true, $orders_info['currency'], $orders_info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL; 
+  
+    $price_array[] = '-'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($final_price, $orders_p['products_tax']), true, $orders_info['currency'], $orders_info['currency_value'])); 
+    
+    $price_array[] = '-'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($final_price*tep_replace_full_character($_POST['p_num']), true, $orders_info['currency'], $orders_info['currency_value'])); 
+    $price_array[] = '-'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($final_price, $orders_p['products_tax'])*tep_replace_full_character($_POST['p_num']), true, $orders_info['currency'], $orders_info['currency_value'])); 
+  } else {
+    $price_array[] = $currencies->format(tep_add_tax($final_price, $orders_p['products_tax']), true, $orders_info['currency'], $orders_info['currency_value']); 
+    
+    $price_array[] = $currencies->format($final_price*tep_replace_full_character($_POST['p_num']), true, $orders_info['currency'], $orders_info['currency_value']); 
+    
+    $price_array[] = $currencies->format(tep_add_tax($final_price, $orders_p['products_tax'])*tep_replace_full_character($_POST['p_num']), true, $orders_info['currency'], $orders_info['currency_value']); 
+    $price_array[] = '+'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($final_price, $orders_p['products_tax']), true, $orders_info['currency'], $orders_info['currency_value'])); 
+    
+    $price_array[] = '+'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($final_price*tep_replace_full_character($_POST['p_num']), true, $orders_info['currency'], $orders_info['currency_value'])); 
+    $price_array[] = '+'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($final_price, $orders_p['products_tax'])*tep_replace_full_character($_POST['p_num']), true, $orders_info['currency'], $orders_info['currency_value'])); 
+  }
+  
+  echo implode('|||', $price_array);
+} else if (isset($_GET['action'])&&$_GET['action']=='recalc_all_price') {
+  
+  $op_array = explode('|||', $_POST['op_i']);
+ 
+  $price_array = array(); 
 
+  $orders_info_raw = tep_db_query("select currency, currency_value from ".TABLE_ORDERS." where orders_id = '".$_POST['oid']."'");
+  $orders_info = tep_db_fetch_array($orders_info_raw);
+  
+  foreach ($op_array as $key => $value) {
+    $op_value = 0; 
+    $p_price = 0; 
+    if (isset($_POST['update_products'][$value]['attributes'])) {
+      foreach ($_POST['update_products'][$value]['attributes'] as $o_key => $o_value) {
+        $op_value += tep_replace_full_character($o_value['price']); 
+      }
+    }
+     
+    if (isset($_POST['update_products'][$value]['p_price'])) {
+      $p_price = tep_replace_full_character($_POST['update_products'][$value]['p_price']); 
+    }
+    
+  
+    $orders_p_raw = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS." where orders_products_id = '".$value."'");
+    $orders_p = tep_db_fetch_array($orders_p_raw);
+  
+    if (tep_get_bflag_by_product_id($orders_p['products_id'])) {
+      $p_price = 0 - $p_price; 
+    } else {
+      $p_price = $p_price; 
+    }
+    
+    $final_price = $p_price + $op_value;
+
+    $price_array[$value][] = tep_display_currency(number_format(abs($final_price), 2));
+    
+    if ($final_price < 0) {
+      $price_array[$value][] = '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($final_price, $orders_p['products_tax']), true, $orders_info['currency'], $orders_info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL; 
+      
+      $price_array[$value][] = '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($final_price*tep_replace_full_character($_POST['update_products'][$value]['qty']), true, $orders_info['currency'], $orders_info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL; 
+      
+      $price_array[$value][] = '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($final_price, $orders_p['products_tax'])*tep_replace_full_character($_POST['update_products'][$value]['qty']), true, $orders_info['currency'], $orders_info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL; 
+    
+    } else {
+      $price_array[$value][] = $currencies->format(tep_add_tax($final_price, $orders_p['products_tax']), true, $orders_info['currency'], $orders_info['currency_value']); 
+      
+      $price_array[$value][] = $currencies->format($final_price*tep_replace_full_character($_POST['update_products'][$value]['qty']), true, $orders_info['currency'], $orders_info['currency_value']); 
+      
+      $price_array[$value][] = $currencies->format(tep_add_tax($final_price, $orders_p['products_tax'])*tep_replace_full_character($_POST['update_products'][$value]['qty']), true, $orders_info['currency'], $orders_info['currency_value']); 
+    }
+  }
+  
+  $price_tmp_array = array();
+  foreach ($price_array as $p_key => $p_value) {
+    $price_tmp_array[] = $p_key.':::'.implode('<<<', $p_value); 
+  }
+  echo implode('|||', $price_tmp_array);
+}

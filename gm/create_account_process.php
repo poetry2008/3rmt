@@ -28,6 +28,7 @@
   
   $dob = tep_db_prepare_input($_POST['dob']);
   $email_address = tep_db_prepare_input($_POST['email_address']);
+  $email_address  = str_replace("\xe2\x80\x8b", '', $email_address);
   $telephone = tep_db_prepare_input($_POST['telephone']);
   $fax = tep_db_prepare_input($_POST['fax']);
   $newsletter = tep_db_prepare_input($_POST['newsletter']);

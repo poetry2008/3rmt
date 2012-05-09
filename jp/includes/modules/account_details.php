@@ -1,4 +1,124 @@
- <?php
+<script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
+<script type="text/javascript">
+//判断数组中是否含有某值
+function in_array(value,arr){
+  
+  for(vx in arr){
+    if(value == arr[vx]){
+      return true;
+    }
+  }
+  return false;
+}
+<?php
+if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] !=''){
+?>
+function address_list(){
+  var arr_old = new Array();
+  var arr_name = new Array();
+<?php
+//根据后台的设置来显示相应的地址列表
+  $address_i = 0;
+  $address_list_query = tep_db_query("select name_flag from ". TABLE_ADDRESS ." where status='0' and show_title='1'");
+  while($address_list_array = tep_db_fetch_array($address_list_query)){
+
+    echo 'arr_name['. $address_i .'] = "'. $address_list_array['name_flag'] .'";';
+    $address_i++;
+  }
+  tep_db_free_result($address_list_query);
+  $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id=". $_SESSION['customer_id'] ." group by orders_id order by orders_id desc");
+  
+   
+  $address_num = 0;
+
+  while($address_orders_group_array = tep_db_fetch_array($address_orders_group_query)){
+  
+  $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where orders_id='". $address_orders_group_array['orders_id'] ."' and customers_id=". $_SESSION['customer_id'] ." order by id asc");
+
+   
+  echo 'arr_old['. $address_num .'] = new Array();';
+  while($address_orders_array = tep_db_fetch_array($address_orders_query)){
+    
+    
+    echo 'arr_old['. $address_num .']["'. $address_orders_array['name'] .'"] = "'. $address_orders_array['value'] .'";';
+  }
+
+  $address_num++; 
+  tep_db_free_result($address_orders_query); 
+  } 
+
+  
+  tep_db_free_result($address_orders_group_query); 
+?>
+  var address_show_list = document.getElementById("address_show_list");
+
+  address_show_list.options.length = 0;
+
+  len = arr_old.length;
+  for(i = 0;i < len;i++){
+    arr_str = '';
+    for(x in arr_old[i]){
+        if(in_array(x,arr_name)){
+          arr_str += arr_old[i][x];
+        }
+    }
+    if(arr_str != ''){
+      address_show_list.options[address_show_list.options.length]=new Option(arr_str,i);
+    }
+
+  }
+}
+
+function address_option_list(value){
+  var arr_list = new Array();
+  var arr_flag = new Array();
+<?php
+  //根据后台的设置来显示相应的地址列表
+  $address_list_arr = array();
+  $address_list_query = tep_db_query("select name_flag from ". TABLE_ADDRESS ." where status='0' and show_title='1'");
+  while($address_list_array = tep_db_fetch_array($address_list_query)){
+
+    $address_list_arr[] = $address_list_array['name_flag'];
+  }
+  tep_db_free_result($address_list_query);
+  $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id=". $_SESSION['customer_id'] ." group by orders_id order by orders_id desc");
+  
+   
+  $address_num = 0;
+  
+  while($address_orders_group_array = tep_db_fetch_array($address_orders_group_query)){
+  
+  $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where orders_id='". $address_orders_group_array['orders_id'] ."' and customers_id=". $_SESSION['customer_id'] ." order by id asc");
+  
+   
+  echo 'arr_list['. $address_num .'] = new Array();';
+  echo 'arr_flag['. $address_num .'] = "'. $address_orders_group_array['orders_id'] .'";'; 
+    while($address_orders_array = tep_db_fetch_array($address_orders_query)){
+          
+      echo 'arr_list['. $address_num .']["'. $address_orders_array['name'] .'"] = "'. $address_orders_array['value'] .'";';
+    }
+  $address_num++;
+  tep_db_free_result($address_orders_query); 
+  }
+  tep_db_free_result($address_orders_group_query); 
+?>
+  for(x in arr_list[value]){
+    $("#op_"+x).html(arr_list[value][x]);
+  }
+  
+  $("#address_flag_id").val(arr_flag[value]);
+
+}
+
+$(document).ready(function(){ 
+  address_list();
+  address_option_list(0);
+});
+<?php
+}
+?>
+</script>
+<?php
 /*
   $Id$
 
@@ -80,6 +200,46 @@
       </tr>
     </table></td>
   </tr>
+  <!-- zhusuo -->
+<?php
+  if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != '' && isset($account['customers_email_address']) && $account['customers_email_address'] != ''){
+?>
+  <tr>
+    <td class="formAreaTitle"><br><?php echo TITLE_ADDRESS; ?></td>
+  </tr>
+  <tr>
+    <td class="main">
+    <table border="0" width="100%" summary="table" cellspacing="0" cellpadding="2" class="formArea">
+      <tr>
+        <td class="main">
+        <table border="0" cellspacing="0" cellpadding="2" summary="table">
+          <tr>
+            <td class="main" width="120">&nbsp;<?php echo TITLE_ADDRESS_OPTION; ?></td>
+            <td class="main">&nbsp;<select id="address_show_list" onchange="address_option_list(this.value);"></select>
+            </td>
+            </tr> 
+      <?php
+        $address_query = tep_db_query("select * from ". TABLE_ADDRESS ." where status='0' and type!='text' order by sort");
+        while($address_array = tep_db_fetch_array($address_query)){
+      ?>    
+      <tr>
+        <td class="main" valign="top">&nbsp;<?php echo $address_array['name'].':'; ?></td>
+        <td class="main">&nbsp;<span id="op_<?php echo $address_array['name_flag'];?>"></span></td>
+      </tr>
+      <?php
+        }
+        tep_db_free_result($address_query);
+      ?>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+<?php
+  }
+?>
+  <!-- end -->
   <tr>
     <td class="formAreaTitle"><br><?php echo CATEGORY_OPTIONS; ?></td>
   </tr>
@@ -184,7 +344,7 @@ if (!isset($guestchk)) $guestchk = NULL;
 ?></td>
           </tr>
 <?php
-    if ( ($error == false) || ($entry_password_error == true) ) {
+    if ( ($error == false) || ($entry_password_error == true) || ($entry_password_english_error == true)|| ($entry_password_confirmation_error == true)) {
 ?>
           <tr>
             <td class="main" width="22%"><?php echo ENTRY_PASSWORD_CONFIRMATION; ?></td>

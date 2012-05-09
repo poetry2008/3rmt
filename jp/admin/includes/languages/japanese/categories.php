@@ -84,6 +84,8 @@ define('TEXT_PRODUCTS_URL_WITHOUT_HTTP', '<small>(http:// は不要)</small>');
 define('TEXT_PRODUCTS_PRICE', '商品の価格:');
 define('TEXT_PRODUCTS_WEIGHT', '商品の重量:');
 define('TEXT_PRODUCTS_OPTION', 'オプション:');
+define('TEXT_PRODUCTS_SHIPPING_TIME','お届け時間グループ指定:');
+define('TEXT_PRODUCTS_SHIPPING_WEIGHT','重量:');
 
 define('EMPTY_CATEGORY', '空カテゴリー');
 
@@ -225,7 +227,10 @@ define('NOTICE_HAS_NO_PREVILEGE_EDIT', '権限がありません');
 define('TEXT_CATEGORY_ROMAJI', 'ローマ字:');
 define('TEXT_RELATE_ROW_COUNT', '%sは過去%d日に%d個注文がありました。');
 define('TEXT_PRODUCTS_PREORDER_TEXT', '予約:');
+define('TEXT_PRODUCTS_OPTION_TEXT', 'オプショングループ:');
+define('OPTION_PREVIEW', 'レビュー');
+define('OPTION_EDIT', '編集');
+define('OPTION_CLEAR', 'クリア');
 define('IMAGE_MANUAL','マニュアル');
 define('TEXT_USER_ADDED','登録者:');
 define('TEXT_USER_UPDATE','更新者:');
-

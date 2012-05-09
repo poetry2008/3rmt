@@ -22,7 +22,32 @@ $the_manufacturer_query = tep_db_query("
       AND p.manufacturers_id = m.manufacturers_id
     "); 
 $the_manufacturers = tep_db_fetch_array($the_manufacturer_query);
-// end dynamic meta tags query -->
+
+require('option/HM_Option.php');
+require('option/HM_Option_Group.php');
+
+$hm_option = new HM_Option();
+
+if ($_GET['action'] == 'process') {
+  $option_info_array = array(); 
+  if (!$hm_option->check()) {
+    foreach ($_POST as $p_key => $p_value) {
+      $op_single_str = substr($p_key, 0, 3);
+      if ($op_single_str == 'op_') {
+        $p_tmp_value = str_replace(' ', '', $p_value);
+        $p_tmp_value = str_replace('　', '', $p_value);
+        if ($p_tmp_value != '') {
+          $option_info_array[$p_key] = $p_value; 
+        }
+      } 
+    }
+    if (isset($_POST['products_id']) && is_numeric($_POST['products_id'])) {
+      $cart->add_cart($_POST['products_id'], $cart->get_quantity($cart->get_products_uprid($_POST['products_id'], $option_info_array))+$_POST['quantity'], '', true, $option_info_array);   
+    }
+    tep_redirect(tep_href_link($goto, tep_get_all_get_params($parameters))); 
+  }
+}
+
 if (strtolower($_SERVER['REQUEST_METHOD']) == 'get') {
   $_SESSION['history_url'] = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']; 
 }

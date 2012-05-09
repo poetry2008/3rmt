@@ -72,7 +72,8 @@
                 <td class="menuBoxContent">
     <?php 
     echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_CATALOG_CATEGORIES_PRODUCTS . '</a><br>' .
-                                   '<a href="' . tep_href_link(FILENAME_PRODUCTS_ATTRIBUTES, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_CATALOG_CATEGORIES_PRODUCTS_ATTRIBUTES . '</a><br>' .
+'<a href="' . tep_href_link(FILENAME_SHOW_USELESS_OPTION, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_CATALOG_SHOW_SHOW_USELESS_OPTION . '</a><br>' .
+                                   '<a href="' . tep_href_link(FILENAME_OPTION_GROUP, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_CATALOG_CATEGORIES_PRODUCTS_ATTRIBUTES . '</a><br>' .
                                    '<a href="' . tep_href_link(FILENAME_TAGS, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_CATALOG_PRODUCTS_TAGS . '</a><br>' .
                                    '<a href="' . tep_href_link('products_tags.php', '', 'NONSSL') . '" class="menuBoxContent_Link">'.FILENAME_PRODUCTS_TAGS_TEXT.'</a><br>' .
                                    '<a href="' . tep_href_link(FILENAME_MANUFACTURERS, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_CATALOG_MANUFACTURERS . '</a><br>'.
@@ -88,7 +89,14 @@
                                    '"class="menuBoxContent_Link">'.FILENAME_CLEATE_DOUGYOUSYA_TEXT.'</a><br>'.
                                    '<a href="'.tep_href_link(FILENAME_CATEGORIES_ADMIN,'','NONSSL').'"
                                    class="menuBoxContent_Link">'.FILENAME_CATEGORIES_ADMIN_TEXT.
-                                   '</a><br>';
+                                     '</a><br>'.
+                                   '<a href="'.tep_href_link('address.php','','NONSSL').'"
+                                   class="menuBoxContent_Link">住所作成<br>
+                                   <a href="'.tep_href_link('country_fee.php','','NONSSL').'"
+                                   class="menuBoxContent_Link">料金設定<br>
+                                   <a href="'.tep_href_link('products_shipping_time.php','','NONSSL').'"
+                                   class="menuBoxContent_Link">商品届け時間';
+
 ?>
                 </td>
               </tr>

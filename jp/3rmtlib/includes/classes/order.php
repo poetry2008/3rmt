@@ -71,7 +71,8 @@
                  date_purchased, 
                  orders_status, 
                  last_modified ,
-                 code_fee
+                 code_fee,
+                 shipping_fee
           from " . TABLE_ORDERS . " 
           where orders_id = '" .  tep_db_input($order_id) . "' 
             and site_id = ".SITE_ID
@@ -111,6 +112,7 @@
                           'orders_status' => $order_status['orders_status_name'],
                           'last_modified' => $order['last_modified'],
                           'code_fee' => $order['code_fee'],
+                          'shipping_fee' => $order['shipping_fee'],
                           'total' => strip_tags($order_total['value']).'円',
                           'shipping_method' => ((substr($shipping_method['title'], -1) == ':') ? substr(strip_tags($shipping_method['title']), 0, -1) : strip_tags($shipping_method['title'])) );
 
@@ -171,12 +173,14 @@
 
         $subindex = 0;
 //ccdd
-        $attributes_query = tep_db_query("select products_options, products_options_values, options_values_price, price_prefix from " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " where orders_id = '" . tep_db_input($order_id) . "' and orders_products_id = '" . $orders_products['orders_products_id'] . "'");
+        $attributes_query = tep_db_query("select * from " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " where orders_id = '" . tep_db_input($order_id) . "' and orders_products_id = '" . $orders_products['orders_products_id'] . "'");
         if (tep_db_num_rows($attributes_query)) {
           while ($attributes = tep_db_fetch_array($attributes_query)) {
-            $this->products[$index]['attributes'][$subindex] = array('option' => $attributes['products_options'],
-                                                                     'value' => $attributes['products_options_values'],
-                                                                     'prefix' => $attributes['price_prefix'],
+            $this->products[$index]['op_attributes'][$subindex] = array(
+                                                                    'id' => $attributes['orders_products_attributes_id'],
+                                                                    'option_item_id' => $attributes['option_item_id'],
+                                                                     'option_group_id' => $attributes['option_group_id'],
+                                                                     'option_info' => @unserialize(stripslashes($attributes['option_info'])),
                                                                      'price' => $attributes['options_values_price']);
 
             $subindex++;
@@ -339,35 +343,42 @@
                                         'weight' => $products[$i]['weight'],
                                         'id' => $products[$i]['id']);
 
-        if ($products[$i]['attributes']) {
+        if (!empty($products[$i]['op_attributes'])) {
           $subindex = 0;
-          reset($products[$i]['attributes']);
-          while (list($option, $value) = each($products[$i]['attributes'])) {
-//ccdd
-            $attributes_query = tep_db_query("
-                select popt.products_options_name, poval.products_options_values_name, pa.options_values_price, pa.price_prefix 
-                from " . TABLE_PRODUCTS_OPTIONS . " popt, " . TABLE_PRODUCTS_OPTIONS_VALUES . " poval, " . TABLE_PRODUCTS_ATTRIBUTES . " pa 
-                where pa.products_id = '" . $products[$i]['id'] . "' 
-                  and pa.options_id = '" . $option . "' 
-                  and pa.options_id = popt.products_options_id 
-                  and pa.options_values_id = '" . $value . "' 
-                  and pa.options_values_id = poval.products_options_values_id 
-                  and popt.language_id = '" . $languages_id . "' 
-                  and poval.language_id = '" . $languages_id . "'
-            ");
+          foreach($products[$i]['op_attributes'] as $op_key => $op_value) {
+            $op_key_array = explode('_', $op_key); 
+            $attributes_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name = '".$op_key_array[1]."' and id = '".$op_key_array[3]."'"); 
             $attributes = tep_db_fetch_array($attributes_query);
+            if ($attributes) {
+              $this->products[$index]['op_attributes'][$subindex] = array('front_title' => $attributes['front_title'],
+                                                                       'item_id' => $attributes['id'],
+                                                                       'group_id' => $attributes['group_id'],
+                                                                       'value' => $op_value,
+                                                                       'price' => $attributes['price']);
 
-            $this->products[$index]['attributes'][$subindex] = array('option' => $attributes['products_options_name'],
-                                                                     'value' => $attributes['products_options_values_name'],
-                                                                     'option_id' => $option,
-                                                                     'value_id' => $value,
-                                                                     'prefix' => $attributes['price_prefix'],
-                                                                     'price' => $attributes['options_values_price']);
-
-            $subindex++;
+              $subindex++;
+            }
           }
         }
+        
+        if (!empty($products[$i]['ck_attributes'])) {
+          $subindex = 0;
+          foreach($products[$i]['ck_attributes'] as $ck_key => $ck_value) {
+            $op_ck_key_array = explode('_', $ck_key); 
+            $ck_attributes_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name = '".$op_ck_key_array[0]."' and id = '".$op_ck_key_array[2]."'"); 
+            $ck_attributes = tep_db_fetch_array($ck_attributes_query);
+            if ($ck_attributes) {
+              $this->products[$index]['ck_attributes'][$subindex] = array('front_title' => $ck_attributes['front_title'],
+                                                                       'item_id' => $ck_attributes['id'],
+                                                                       'group_id' => $ck_attributes['group_id'],
+                                                                       'value' => $ck_value,
+                                                                       'price' => $ck_attributes['price']);
 
+              $subindex++;
+            }
+          }
+        }
+        
         $shown_price = tep_add_tax($this->products[$index]['final_price'], $this->products[$index]['tax']) * $this->products[$index]['qty'];
       if (!isset($this->info['subtotal'])) $this->info['subtotal']=NULL;
         $this->info['subtotal'] += $shown_price;

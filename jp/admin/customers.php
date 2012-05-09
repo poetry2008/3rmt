@@ -118,7 +118,7 @@
         tep_db_query("delete from " . TABLE_CUSTOMERS . " where customers_id = '" . tep_db_input($customers_id) . "'");
         tep_db_query("delete from " . TABLE_CUSTOMERS_INFO . " where customers_info_id = '" . tep_db_input($customers_id) . "'");
         tep_db_query("delete from " . TABLE_CUSTOMERS_BASKET . " where customers_id = '" . tep_db_input($customers_id) . "'");
-        tep_db_query("delete from " . TABLE_CUSTOMERS_BASKET_ATTRIBUTES . " where customers_id = '" . tep_db_input($customers_id) . "'");
+        tep_db_query("delete from " . TABLE_CUSTOMERS_BASKET_OPTIONS . " where customers_id = '" . tep_db_input($customers_id) . "'");
         tep_db_query("delete from " . TABLE_WHOS_ONLINE . " where customer_id = '" . tep_db_input($customers_id) . "'");
 
         tep_redirect(tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID', 'action')))); 
@@ -142,6 +142,11 @@
   if (isset($_GET['action']) && $_GET['action'] == 'edit') {
 ?>
 <script language="javascript"><!--
+function isEmail( str ){  
+  var myReg = /^[-_A-Za-z0-9]+@([_A-Za-z0-9]+\.)+[A-Za-z0-9]{2,3}$/; 
+  if(myReg.test(str)) return true; 
+  return false; 
+}
 function resetStateText(theForm) {
   theForm.entry_state.value = '';
   if (theForm.entry_zone_id.options.length > 1) {
@@ -187,6 +192,8 @@ function check_form() {
 <?php if (ACCOUNT_COMPANY == 'true') echo 'var entry_company = document.customers.entry_company.value;' . "\n"; ?>
 <?php if (ACCOUNT_DOB == 'true') echo 'var customers_dob = document.customers.customers_dob.value;' . "\n"; ?>
   var customers_email_address = document.customers.customers_email_address.value;  
+  customers_email_address = customers_email_address.replace(/\u200b/g, '');
+  document.customers.customers_email_address.value=customers_email_address;  
   //var entry_street_address = document.customers.entry_street_address.value;
   //var entry_postcode = document.customers.entry_postcode.value;
   //var entry_city = document.customers.entry_city.value;
@@ -218,6 +225,10 @@ function check_form() {
 
   if (customers_email_address == "" || customers_email_address.length < <?php echo ENTRY_EMAIL_ADDRESS_MIN_LENGTH; ?>) {
     error_message = error_message + "<?php echo JS_EMAIL_ADDRESS; ?>";
+    error = 1;
+  }
+  if(!isEmail(customers_email_address)){
+    error_message = error_message + "<?php echo JS_EMAIL_ADDRESS_MATCH_ERROR; ?>";
     error = 1;
   }
 <?php if (ACCOUNT_STATE == 'true') { ?>

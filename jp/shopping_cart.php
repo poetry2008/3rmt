@@ -4,6 +4,7 @@
 */
 
   require("includes/application_top.php");
+
   check_uri('/page=\d+/');
 
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_SHOPPING_CART);
@@ -11,40 +12,19 @@
   $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
 ?>
 <?php page_head();?>
+<script type="text/javascript" src="./js/jquery-1.3.2.min.js"></script>
 <?php
   if (isset($_GET['action'])) {
     if ($_GET['action'] == 'delete') {
       $cart->remove($_GET['products_id']); 
       tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL')); 
     }
-    if ($_GET['action'] == 'save_quantity'){
-      $cart->update_quantity($_POST['pid'],$_POST['pquantity']);
-      exit;
-    }
   }
 ?>
 <script type="text/javascript">
-function key(e)
-{
-  if(window.event) {
-    if(e.keyCode<48   ||   e.keyCode>57||e.keyCode==8) {
-      return false;
-    } else {
-      return true;
-    }
-  } else if(e.which) {
-    if((e.which>47)   &&   (e.which<58)||(e.which==8)) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-}
-</script>
-<script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
-<script type="text/javascript">
 <!--
 function history_back(back_url){
+  /* 
   var final_prices = document.getElementsByName('final_price');
   for (var i=0; i<final_prices.length; i++)
   {
@@ -59,60 +39,57 @@ function history_back(back_url){
       }
     });
   }
-  //history.back()
+  */ 
   window.location.href=back_url;
 }
-function fmoney(s)
-{
- s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(0) + "";
- var l = s.split(".")[0].split("").reverse();
- var t = '';
- for(i = 0; i < l.length; i ++ ){
-    t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
-  }
- return t.split("").reverse().join("");
-}
-function money_update(objid)
+function money_update(objid, targ)
 {
   var obj = document.getElementById(objid);
   var product_id = obj.id.substr(9);
   var unit_price = document.getElementById("unit_price_" + product_id);
-  var small_sum = document.getElementById("small_sum_" + product_id);
   var attr_prices = document.getElementsByName("attr_" + product_id);
   var attr_prices_option = document.getElementsByName("attr_option_" + product_id);
   var sub_total = document.getElementById('sub_total_hidden');
-  var isum = small_sum.value.split(',');
-  var right_price = 0
-  for (var i=isum.length ;i>0;i--){
-    var tmplevel = isum[i-1].split(':');
-    if (parseInt(obj.value)>=parseInt(tmplevel[0])){
-      var right_price = tmplevel[1]
-      break;
-    }else{
-      continue;
-    }
-  }
 
-  final_price = parseInt(unit_price.value)+parseInt(right_price); var new_unit_price_total = Number(final_price) * Number(obj.value);
-  new_unit_price_total = Math.round(new_unit_price_total);
+  
   var old_price_total  = document.getElementById("pri_" + product_id);
-  var monetary_unit_pri = old_price_total.innerHTML.slice(-1);
-  if (new_unit_price_total < 0) {
+  var old_price_total_str = old_price_total.innerHTML; 
+     
+  var old_price_total_replace_str = old_price_total_str.replace('<font color="#ff0000">', ''); 
+  old_price_total_replace_str = old_price_total_replace_str.replace('</font>', ''); 
+  
+  var monetary_unit_pri = old_price_total_replace_str.slice(-1);
+   
+  if (targ == 'up') {
+    old_p_num = Number(obj.value) - 1; 
+  } else {
+    old_p_num = Number(obj.value) + 1; 
+  }
+  var new_unit_price_total = (Number(old_price_total_replace_str.slice(0, -1)) / old_p_num) * Number(obj.value);
+  new_unit_price_total = Math.round(new_unit_price_total);
+
+  if (unit_price.value < 0) {
     old_price_total.innerHTML = '<font color="#ff0000">'+Math.abs(new_unit_price_total).toString() +'</font>' +monetary_unit_pri;
   } else {
     old_price_total.innerHTML = Math.abs(new_unit_price_total).toString() + monetary_unit_pri;
   }
-  for (var i = 0; i < attr_prices.length; i++)
-  {
-    var new_attr_price = Number(attr_prices[i].value) * Number(obj.value);
-    var old_price_attr = document.getElementById("attr_" + product_id + "_attr_" + attr_prices_option[i].value);
-    var prefix_attr = old_price_attr.innerHTML.slice(0,1);
-    var monetary_unit_attr = old_price_attr.innerHTML.slice(-1);
-    old_price_attr.innerHTML = prefix_attr + new_attr_price.toString() + monetary_unit_attr;
-
-  }
-
-
+  
+  $('#pri_'+product_id).parent().find('small').each(function() {
+    old_option_price = $(this).find('i').html();
+    if (old_option_price != '&nbsp;') {
+      old_option_pri = old_option_price.slice(-1);
+      old_option_price_info =  old_option_price.slice(0, -1);
+      if (targ == 'up') {
+        old_num = Number(obj.value) - 1; 
+      } else {
+        old_num = Number(obj.value) + 1; 
+      }
+      old_single_option_price = old_option_price_info / old_num; 
+      new_option_price = Number(old_single_option_price)*Number(obj.value); 
+      $(this).html('<i>' + new_option_price + old_option_pri + '</i>');
+    }
+  });
+  
   set_sub_total();
 }
 
@@ -122,24 +99,8 @@ function set_sub_total()
   var sub_total = 0;
   for (var i=0; i<final_prices.length; i++)
   {
-    //sub_total = sub_total + Number(final_prices[i].value)*Number(document.getElementById('quantity_' +
-    //sub_total = sub_total + document.getElementById('pri' +
-
-    var p_l_html = document.getElementById('pri_' + final_prices[i].id.substr(3)).innerHTML.split('円')[0].replace(/,/g,'');
-    if(document.getElementById('one_price_show_'+ final_prices[i].id.substr(3))){
-    var one_price_money = document.getElementById('one_price_'+ final_prices[i].id.substr(3)).innerHTML.replace(/,/g,'');
-    var one_p_quantity = document.getElementById('quantity_'+ final_prices[i].id.substr(3)).value;
-    var res_one_price = Number(one_price_money) * Number(one_p_quantity);
-    var res_one_price_str = fmoney(res_one_price);
-    document.getElementById('one_price_show_'+ final_prices[i].id.substr(3)).innerHTML=res_one_price_str;
-    }
-    if(!isNaN(p_l_html)){
-      var p_l_price = p_l_html;
-    }else{
-      p_l_html = p_l_html.replace(/(<.*?[^>]>)/gi,"");
-      var p_l_price = 0 - Number(p_l_html);
-    }
-    sub_total = sub_total + Number(p_l_price);
+    sub_total = sub_total + Number(final_prices[i].value)*Number(document.getElementById('quantity_' +
+            final_prices[i].id.substr(3)).value);
   }
 
   sub_total = Math.round(sub_total);
@@ -154,9 +115,9 @@ function set_sub_total()
 
 }
   
-function update_cart(objid)
+function update_cart(objid, targ)
 {
-    money_update(objid);
+    money_update(objid, targ);
 }
 
 function change_num(ob,targ, quan,a_quan)
@@ -189,7 +150,7 @@ function change_num(ob,targ, quan,a_quan)
   product_quantity.value = num_value;
   if (product_quantity_num != num_value)
   { 
-    update_cart(product_quantity.id);
+    update_cart(product_quantity.id, targ);
   }
 }
 -->
@@ -223,31 +184,28 @@ function change_num(ob,targ, quan,a_quan)
     $products = $cart->get_products();
     for ($i=0, $n=sizeof($products); $i<$n; $i++) {
 // Push all attributes information in an array
-      if (isset($products[$i]['attributes'])) {
-        while (list($option, $value) = each($products[$i]['attributes'])) {
-          echo tep_draw_hidden_field('id[' . $products[$i]['id'] . '][' . $option . ']', $value);
-          // ccdd
-          $attributes = tep_db_query("select popt.products_options_name, 
-                                             poval.products_options_values_name, 
-                                             pa.options_values_price, 
-                                             pa.price_prefix, 
-                                             pa.products_at_quantity
-                                      from " . TABLE_PRODUCTS_OPTIONS . " popt, " . TABLE_PRODUCTS_OPTIONS_VALUES . " poval, " . TABLE_PRODUCTS_ATTRIBUTES . " pa
-                                      where pa.products_id = '" . $products[$i]['id'] . "'
-                                       and pa.options_id = '" . $option . "'
-                                       and pa.options_id = popt.products_options_id
-                                       and pa.options_values_id = '" . $value . "'
-                                       and pa.options_values_id = poval.products_options_values_id
-                                       and popt.language_id = '" . $languages_id . "'
-                                       and poval.language_id = '" . $languages_id . "'");
-          $attributes_values = tep_db_fetch_array($attributes);
-
-          $products[$i][$option]['products_options_name'] = $attributes_values['products_options_name'];
-          $products[$i][$option]['options_values_id'] = $value;
-          $products[$i][$option]['products_options_values_name'] = $attributes_values['products_options_values_name'];
-          $products[$i][$option]['options_values_price'] = $attributes_values['options_values_price'];
-          $products[$i][$option]['price_prefix'] = $attributes_values['price_prefix'];
-      $products[$i][$option]['products_at_quantity'] = $attributes_values['products_at_quantity'];
+      if (isset($products[$i]['op_attributes'])) {
+        foreach ($products[$i]['op_attributes'] as $op_key => $op_value) {
+          $op_key_array = explode('_', $op_key); 
+          $option_item_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name='".$op_key_array[1]."' and id= '".$op_key_array[3]."'");
+          $option_item_res = tep_db_fetch_array($option_item_query);
+          if ($option_item_res) {
+            $products[$i]['add_op_attributes'][$op_key]['option_name'] = $option_item_res['front_title'];
+            $products[$i]['add_op_attributes'][$op_key]['option_value'] = $op_value;
+            if ($option_item_res['type'] == 'radio') {
+              $c_option = @unserialize($option_item_res['option']);
+              if (!empty($c_option)) {
+                foreach ($c_option['radio_image'] as $cr_key => $cr_value) {
+                  if (trim($cr_value['title']) == trim($op_value)) {
+                    $products[$i]['add_op_attributes'][$op_key]['price'] = $cr_value['money'];
+                    break;
+                  }
+                }
+              }
+            } else {
+              $products[$i]['add_op_attributes'][$op_key]['price'] = $option_item_res['price'];
+            }
+          }
         }
       }
     }

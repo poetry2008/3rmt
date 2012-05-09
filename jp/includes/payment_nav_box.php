@@ -48,7 +48,7 @@
   </tr> 
   <tr> 
     <td align="center" width="20%" class="checkoutBarFrom">
-      <?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL') . '" class="checkoutBarFrom">' . CHECKOUT_BAR_PRODUCTS . '</a>'; ?>
+      <?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_OPTION, '', 'SSL') .  '" class="checkoutBarFrom">' . CHECKOUT_BAR_OPTION . '</a>'; ?>
     </td> 
     <td align="center" width="20%" class="checkoutBarFrom">
       <?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL') . '" class="checkoutBarFrom">' . CHECKOUT_BAR_DELIVERY . '</a>'; ?>

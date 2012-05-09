@@ -14,10 +14,26 @@
 
 <?php page_head();?>
 <script type="text/javascript" src="js/prototype.js"></script>
+<script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
+<script>
+var jq = jQuery.noConflict();
+</script>
 <script type="text/javascript" src="js/scriptaculous.js?load=effects"></script>
 <script type="text/javascript" src="js/lightbox.js"></script>
 <link rel="stylesheet" href="css/lightbox.css" type="text/css" media="screen">
 <script type="text/javascript">
+function select_item_radio(i_obj, t_str, o_str, p_str)
+{
+      jq(i_obj).parent().parent().parent().find('a').each(function() {
+        if (jq(this).parent()[0].className == 'option_show_border') {
+          jq(this).parent()[0].className = 'option_hide_border';
+        } 
+      });   
+      jq(i_obj).parent()[0].className = 'option_show_border'; 
+      origin_default_value = jq('#'+o_str).val(); 
+      jq('#'+o_str).parent().html("<input type='hidden' id='"+o_str+"' name='"+p_str+"' value='"+t_str+"'>"); 
+}
+
 function change_num(ob,targ, quan,a_quan)
 {
   var product_quantity = document.getElementById(ob);
@@ -158,7 +174,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                 <tr>
                   <td><table width="100%" border="0" cellpadding="3" cellspacing="1">
                       <tr class="infoBoxContents">
-                        <td class="main" width="65"><font color="#0070AF">商品コード</font></td>
+                        <td class="main" width="85"><font color="#0070AF">商品コード</font></td>
                         <td class="main"><?php if (PRODUCT_LIST_MODEL > 0){ echo $product_info['products_model'] ; }else{ echo '-' ; } ?></td>
                       </tr>
                       <?php 
@@ -192,7 +208,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                         <td class="main"><?php include(DIR_WS_BOXES.'manufacturer_info.php') ; ?></td>
                       </tr>
                       <tr class="infoBoxContents">
-                        <td class="main" width="65"><font color="#0070AF">価格</font></td>
+                        <td class="main" width="85"><font color="#0070AF">価格</font></td>
                         <td class="main">
               <?php
                 # 追加スタート ---------------------------------------
@@ -298,8 +314,9 @@ while($tag = tep_db_fetch_array($tag_query)) {
                     </table></td>
                 </tr>
                 <tr class="header2">
-                  <td height="30" class="main" style="padding-bottom:4px; " align="right">
-<?php echo tep_draw_form('cart_quantity', tep_href_link(FILENAME_PRODUCT_INFO, tep_get_all_get_params(array('action')) . 'action=add_product')) . "\n"; ?>
+                  <td class="main" align="right">
+<div class="option_dot">
+<?php echo tep_draw_form('cart_quantity', tep_href_link(FILENAME_PRODUCT_INFO, tep_get_all_get_params(array('action')) . 'action=process')) . "\n"; ?>
 <?php
   if($product_info['products_quantity'] < 1) {
     if($product_info['products_bflag'] == '1') {
@@ -316,126 +333,18 @@ while($tag = tep_db_fetch_array($tag_query)) {
     }
     echo '</span>'; 
   }else{  
-    // ccdd
-    $products_attributes_query = tep_db_query("
-        SELECT count(*) as total 
-        FROM " . TABLE_PRODUCTS_OPTIONS . " popt, " . TABLE_PRODUCTS_ATTRIBUTES . " patrib 
-        WHERE patrib.products_id = '" . (int)$_GET['products_id'] . "' 
-          AND patrib.options_id  = popt.products_options_id 
-          AND popt.language_id   = '" . $languages_id . "'
-    ");
-    $products_attributes = tep_db_fetch_array($products_attributes_query);
-    if ($products_attributes['total'] > 0) {
-      echo '<!-- 商品オプション -->' ;
-      echo '<br>'."\n".'<b>' . TEXT_PRODUCT_OPTIONS . '</b><br>' .
-           '<table border="0" cellpadding="2" cellspacing="0">';
-    // ccdd
-      $products_options_name_query = tep_db_query("
-          SELECT distinct popt.products_options_id, 
-                 popt.products_options_name 
-          FROM " . TABLE_PRODUCTS_OPTIONS . " popt, " . TABLE_PRODUCTS_ATTRIBUTES . " patrib 
-          WHERE patrib.products_id = '" . (int)$_GET['products_id'] . "' 
-            AND patrib.options_id  = popt.products_options_id 
-            AND popt.language_id   = '" . $languages_id . "'
-      "); 
-      if ($product_info['option_image_type'] == 'select') {
-        while ($products_options_name = tep_db_fetch_array($products_options_name_query)) {
-          $selected = 0;
-          $products_options_array = array();
-          echo '<tr><td class="main">' . $products_options_name['products_options_name'] . ':</td><td>' . "\n";
-          // ccdd
-          $products_options_query = tep_db_query("
-              SELECT pov.products_options_values_id, 
-                     pov.products_options_values_name, 
-                     pa.options_values_price, 
-                     pa.price_prefix, 
-                     pa.products_at_quantity, 
-                     pa.products_at_quantity 
-              FROM " . TABLE_PRODUCTS_ATTRIBUTES . " pa, " . TABLE_PRODUCTS_OPTIONS_VALUES . " pov 
-              WHERE pa.products_id = '" . (int)$_GET['products_id'] . "' 
-                AND pa.options_id = '" . $products_options_name['products_options_id'] . "' 
-                AND pa.options_values_id = pov.products_options_values_id and pov.language_id = '" . $languages_id . "' 
-              ORDER BY pa.products_attributes_id");
-          while ($products_options = tep_db_fetch_array($products_options_query)) {
-            if($products_options['products_at_quantity'] > 0) {
-              $products_options_array[] = array('id' => $products_options['products_options_values_id'], 'text' => $products_options['products_options_values_name']);
-              if ($products_options['options_values_price'] != '0') {
-                $products_options_array[sizeof($products_options_array)-1]['text'] .= ' (' . $products_options['price_prefix'] . $currencies->display_price($products_options['options_values_price'], tep_get_tax_rate($product_info['products_tax_class_id'])) .') ';
-              }
-            }
-          }
-          echo tep_draw_pull_down_menu('id[' . $products_options_name['products_options_id'] . ']' , $products_options_array, isset($cart->contents[$_GET['products_id']]['attributes'][$products_options_name['products_options_id']])?$cart->contents[$_GET['products_id']]['attributes'][$products_options_name['products_options_id']]:NULL);
-          echo '</td></tr>';
-        }
-      } else {
-        while ($products_options_name = tep_db_fetch_array($products_options_name_query)) {
-          $selected = 0;
-          $products_options_array = array();
-          // ccdd
-          $products_options_query = tep_db_query("
-              SELECT pov.products_options_values_id, 
-                     pov.products_options_values_name, 
-                     pa.options_values_price, 
-                     pa.price_prefix, 
-                     pa.products_at_quantity, 
-                     pa.products_at_quantity 
-              FROM " . TABLE_PRODUCTS_ATTRIBUTES . " pa, " . TABLE_PRODUCTS_OPTIONS_VALUES . " pov 
-              WHERE pa.products_id = '" . (int)$_GET['products_id'] . "' 
-                AND pa.options_id = '" . $products_options_name['products_options_id'] . "' 
-                AND pa.options_values_id = pov.products_options_values_id and pov.language_id = '" . $languages_id . "' 
-              ORDER BY pa.products_attributes_id");
-          $n_row = 0; 
-          $start_row = 0; 
-          echo '<tr>'; 
-          while ($products_options = tep_db_fetch_array($products_options_query)) {
-            if($products_options['products_at_quantity'] > 0) {
-              $option_image_raw = tep_db_query("select * from products_options_image where products_options_values_id = '".$products_options['products_options_values_id']."' and (site_id = 0 or site_id = ".SITE_ID.") order by site_id desc limit 1"); 
-              $option_image_res = tep_db_fetch_array($option_image_raw); 
-              echo '<td class="product_list02" align="center"><div style=" height:50px;">'; 
-              echo tep_image(DIR_WS_IMAGES.'op_image/'.$option_image_res['option_image'], $products_options['products_options_values_name'], 50, 50); 
-              echo '</div><br> <span>';
-              echo $products_options_name['products_options_name'].':'.$products_options['products_options_values_name']; 
-        echo '</span>';
-              if ($products_options['options_values_price'] != '0') {
-                echo '<br>(' . $products_options['price_prefix'] . $currencies->display_price($products_options['options_values_price'], tep_get_tax_rate($product_info['products_tax_class_id'])) .') ';
-              }
-              echo '<br>';
-              if (isset($cart->contents[$_GET['products_id']]['attributes'][$products_options_name['products_options_id']])) {
-                if ($cart->contents[$_GET['products_id']]['attributes'][$products_options_name['products_options_id']] == $products_options['products_options_values_id']) {
-                  echo '<input type="radio" name="id['.$products_options_name['products_options_id'].']" value="'.$products_options['products_options_values_id'].'" checked>';  
-                } else {
-                  echo '<input type="radio" name="id['.$products_options_name['products_options_id'].']" value="'.$products_options['products_options_values_id'].'">';  
-                }
-              } else {
-                if ($start_row == 0) {
-                  echo '<input type="radio" name="id['.$products_options_name['products_options_id'].']" value="'.$products_options['products_options_values_id'].'" checked>';  
-                } else {
-                  echo '<input type="radio" name="id['.$products_options_name['products_options_id'].']" value="'.$products_options['products_options_values_id'].'">';  
-                }
-              }
-              echo '</td>'; 
-              $n_row++;
-              $start_row++;
-              if ($n_row > 2) {
-                echo '</tr><tr>'; 
-                $n_row = 0; 
-              }
-            }
-          }
-          echo '</tr>'; 
-        }
-      }
-      echo '</table>';
-    }
+    ?>
+    <?php
+	$hm_option->render($product_info['belong_to_option']);
 ?>
-                    <table align="right">
+                    <table align="right" width="100%">
                       <tr>
-                        <td class="main">数量:</td>
+                        <td class="main" width="85">数量:</td>
                         <td class="main">
                         <table>
                         <tr>
                         <td>
-                        <input name="quantity" type="text" id="quantity" value="1" size="4" maxlength="4">
+                        <input name="quantity" type="text" id="quantity" value="<?php echo (isset($_POST['quantity'])?$_POST['quantity']:1)?>" size="20" maxlength="4">
 </td>
   <td>
   <div class="top_and_bottom">
@@ -460,13 +369,16 @@ while($tag = tep_db_fetch_array($tag_query)) {
  }
 ?>
 </form>
+                  </div> 
                   </td>
                 </tr>
                 <tr class="header2">
-                  <td height="40" align="right" valign="bottom" class="smallText"><div class="dot">&nbsp;</div>
+                  <td valign="bottom" class="smallText">
+                    <div class="option_dot"> 
                     <a href="<?php echo tep_href_link(FILENAME_TELL_A_FRIEND,'products_id='.(int)$_GET['products_id']) ;  ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_tellafriend.jpg',BOX_HEADING_TELL_A_FRIEND);?></a>&nbsp; <a href="<?php echo tep_href_link(FILENAME_PRODUCT_REVIEWS_WRITE,'products_id='.(int)$_GET['products_id']) ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_review.jpg',BOX_REVIEWS_WRITE_REVIEW);?></a>&nbsp; 
   <?php echo tep_draw_form('open',tep_href_link('open.php'),'get');?><input type="image" style="vertical-align:bottom;" src="<?php echo DIR_WS_IMAGES;?>design/button/botton_question.jpg"><?php echo tep_draw_hidden_field('products', $product_info['products_name']) ; ?></form>
-     </td>
+   </div>   
+  </td>
                 </tr>
               </table></td>
           </tr>
