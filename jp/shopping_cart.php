@@ -67,16 +67,18 @@ function money_update(objid, targ)
   
   $('#pri_'+product_id).parent().find('small').each(function() {
     old_option_price = $(this).find('i').html();
-    old_option_pri = old_option_price.slice(-1);
-    old_option_price_info =  old_option_price.slice(0, -1);
-    if (targ == 'up') {
-      old_num = Number(obj.value) - 1; 
-    } else {
-      old_num = Number(obj.value) + 1; 
+    if (old_option_price != '&nbsp;') {
+      old_option_pri = old_option_price.slice(-1);
+      old_option_price_info =  old_option_price.slice(0, -1);
+      if (targ == 'up') {
+        old_num = Number(obj.value) - 1; 
+      } else {
+        old_num = Number(obj.value) + 1; 
+      }
+      old_single_option_price = old_option_price_info / old_num; 
+      new_option_price = Number(old_single_option_price)*Number(obj.value); 
+      $(this).html('<i>' + new_option_price + old_option_pri + '</i>');
     }
-    old_single_option_price = old_option_price_info / old_num; 
-    new_option_price = Number(old_single_option_price)*Number(obj.value); 
-    $(this).html('<i>' + new_option_price + old_option_pri + '</i>');
   });
   
   set_sub_total();
