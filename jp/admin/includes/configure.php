@@ -7,27 +7,27 @@
 
   Released under the GNU General Public License
 */
-$libpath = "/home/hm1001/rr/jp/3rmtlib/";
+$libpath = "/home/kthiz/project/9rmt/jp/3rmtlib/";
 ini_set('include_path',ini_get('include_path').':'.$libpath);
 
 // Define the webserver and path parameters
 // * DIR_FS_* = Filesystem directories (local/physical)
 // * DIR_WS_* = Webserver directories (virtual/URL)
   //define('HTTP_SERVER', 'http://aionbunsin.3322.org'); // eg, http://localhost or - https://localhost should not be empty for productive servers
-  define('HTTP_SERVER', 'http://rr.zy.200.com'); // eg, http://localhost or - https://localhost should not be empty for productive servers
+  define('HTTP_SERVER', 'http://3jp.kthiz.200.com'); // eg, http://localhost or - https://localhost should not be empty for productive servers
   //define('HTTP_CATALOG_SERVER', 'http://aionbunsin.3322.org');
-  define('HTTP_CATALOG_SERVER', 'http://rr.zy.200.com');
+  define('HTTP_CATALOG_SERVER', 'http://3jp.kthiz.200.com');
   //define('HTTPS_CATALOG_SERVER', 'https://aionbunsin.3322.org');
-  define('HTTPS_CATALOG_SERVER', 'http://rr.zy.200.com');
+  define('HTTPS_CATALOG_SERVER', 'http://3jp.kthiz.200.com');
   define('BACKEND_LAN_URL_ENABLED',false);
   define('ENABLE_SSL_CATALOG', 'false'); // secure webserver for catalog module
 
-  define('DIR_FS_DOCUMENT_ROOT', '/home/hm1001/rr/jp/admin/'); // where the pages are located on the server
+  define('DIR_FS_DOCUMENT_ROOT', '/home/kthiz/project/9rmt/jp/admin/'); // where the pages are located on the server
   define('DIR_WS_ADMIN', '/admin/'); // absolute path required
-  define('DIR_FS_ADMIN', '/home/hm1001/rr/jp/admin/'); // absolute pate required
+  define('DIR_FS_ADMIN', '/home/kthiz/project/9rmt/jp/admin/'); // absolute pate required
 
   define('DIR_WS_CATALOG', '/'); // absolute path required
-  define('DIR_FS_CATALOG', '/home/hm1001/rr/jp/admin/'); // absolute path required
+  define('DIR_FS_CATALOG', '/home/kthiz/project/9rmt/jp/admin/'); // absolute path required
   define('DIR_WS_IMAGES', 'images/');
   define('DIR_WS_ICONS', DIR_WS_IMAGES . 'icons/');
 
@@ -45,7 +45,7 @@ ini_set('include_path',ini_get('include_path').':'.$libpath);
   define('DIR_FS_CATALOG_LANGUAGES', DIR_FS_ADMIN . 'includes/languages/');
 
   define('DIR_FS_CATALOG_IMAGES', DIR_FS_CATALOG . 'upload_images/');
-  define('DIR_FS_3RMTLIB', '/home/hm1001/rr/jp/3rmtlib/');
+  define('DIR_FS_3RMTLIB', '/home/kthiz/project/9rmt/jp/3rmtlib/');
 
   define('DIR_FS_CATALOG_MODULES', $libpath. 'includes/modules/');
   //define('DIR_FS_BACKUP', DIR_FS_ADMIN . 'backups/');

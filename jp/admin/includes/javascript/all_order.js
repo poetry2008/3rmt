@@ -225,6 +225,7 @@ url: 'ajax_orders.php?action=show_right_order_info',
 success: function(msg) {
 
 $('#orders_info_box').html(msg);
+/*
 if(document.documentElement.clientHeight < document.body.scrollHeight){
 offset = ele.offsetTop + ele.offsetHeight + $('#orders_info_box').height() > $('#orders_list_table').height()? ele.offsetTop+$("#orders_list_table").position().top-1-$('#orders_info_box').height()-$('#offsetHeight').height():ele.offsetTop+$("#orders_list_table").position().top+ele.offsetHeight;
 $('#orders_info_box').css('top',offset).show();
@@ -237,6 +238,27 @@ offset = ele.offsetTop+$("#orders_list_table").position().top+ele.offsetHeight;
 $('#orders_info_box').css('top',offset).show();
 }
 }
+*/
+if(document.documentElement.clientHeight < document.body.scrollHeight){
+	if((document.documentElement.clientHeight-ele.offsetTop) < ele.offsetTop){
+		if(ele.offsetTop < $('#orders_info_box').height()){
+	offset = ele.offsetTop+$("#orders_list_table").position().top+ele.offsetHeight;	
+		}else{
+	offset = ele.offsetTop+$("#orders_list_table").position().top-1-$('#orders_info_box').height()-$('#offsetHeight').height();}
+	}else{
+offset = ele.offsetTop+$("#orders_list_table").position().top+ele.offsetHeight;	
+	}
+$('#orders_info_box').css('top',offset).show();
+}else{
+if((document.documentElement.clientHeight-ele.offsetTop) < ele.offsetTop){
+	offset = ele.offsetTop+$("#orders_list_table").position().top-1-$('#orders_info_box').height()-$('#offsetHeight').height();
+	}else{
+offset = ele.offsetTop+$("#orders_list_table").position().top+ele.offsetHeight;	
+	}
+$('#orders_info_box').css('top',offset).show();
+}
+
+
 }
 });
 

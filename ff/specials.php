@@ -4,6 +4,11 @@
 */
   require('includes/application_top.php');
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_SPECIALS);
+  if (isset($_GET['page'])) {
+    if (!preg_match('/^\d+$/', $_GET['page'])) {
+      forward404(); 
+    }
+  }
   $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_SPECIALS));
 ?>
 <?php page_head();?>

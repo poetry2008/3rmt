@@ -171,6 +171,9 @@ echo '</form>';
               </td>
               <td class="main">
               <?php echo $preorder_product_res['products_quantity'].PRODUCT_UNIT_TEXT;?> 
+              <?php echo
+              tep_get_full_count2($preorder_product_res['products_quantity'],
+                  $preorder_product_res['products_id']);?>
               </td>
             </tr>
         </table> 

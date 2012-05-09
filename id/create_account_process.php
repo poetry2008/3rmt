@@ -85,10 +85,31 @@
     if ($password != $confirmation) {
       $error = true;
       $entry_password_error = true;
+      $entry_password_confirmation_error = true; 
     }
     if (empty($password) && empty($confirmation)) {
       $error = true;
       $entry_password_error = true;
+    }
+  
+    if (!preg_match('/^(?=.*?[a-zA-Z])(?=.*?[0-9])[a-zA-Z0-9]{0,}$/', $password)) {
+        $error = true; 
+        $entry_password_error = true;
+        if (preg_match('/^[0-9]+$/', $password)) {
+          $entry_password_error_msg = ENTRY_PASSWORD_IS_NUM; 
+        } else if (preg_match('/^[a-zA-Z0-9]+$/', $password)) {
+          $entry_password_error_msg = ENTRY_PASSWORD_IS_ALPHA; 
+        }
+    }
+    
+    if (!preg_match('/^(?=.*?[a-zA-Z])(?=.*?[0-9])[a-zA-Z0-9]{0,}$/', $confirmation)) {
+        $error = true; 
+        $entry_password_error = true;
+        if (preg_match('/^[0-9]+$/', $confirmation)) {
+          $entry_password_error_msg = ENTRY_PASSWORD_IS_NUM; 
+        } else if (preg_match('/^[a-zA-Z0-9]+$/', $confirmation)) {
+          $entry_password_error_msg = ENTRY_PASSWORD_IS_ALPHA; 
+        }
     }
   }
 
@@ -293,7 +314,7 @@ function pass_hidd(){
     <tr> 
       <!-- body_text //--> 
       <td valign="top" id="contents"><?php echo tep_draw_form('account_edit', tep_href_link(FILENAME_CREATE_ACCOUNT_PROCESS, '', 'SSL'), 'post', 'onSubmit="return check_form();"') . tep_draw_hidden_field('action', 'process'); ?> 
-        <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1> 
+        <h1 class="pageHeading"><span class="game_t"><?php echo HEADING_TITLE ; ?></span></h1> 
         
         <div class="comment"> 
           <table border="0" width="100%" cellspacing="0" cellpadding="0">  

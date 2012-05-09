@@ -52,6 +52,8 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
 // define the filenames used in the project
   define('FILENAME_OPTION_GROUP', 'option_group.php');
   define('FILENAME_OPTION_ITEM', 'option_item.php');
+  define('FILENAME_RESET_PWD','reset_pwd.php');
+  define('FILENAME_ALARM', 'alarm.php');
   define('FILENAME_CAMPAIGN', 'campaign.php');
   define('FILENAME_ASSETS', 'assets.php');
   define('FILENAME_PRINT_ASSETS', 'print_assets.php');
@@ -133,6 +135,7 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
   define('FILENAME_OPTIONS_DL', 'options_dl.php');
   define('FILENAME_NEW_CUSTOMERS', 'new_customers.php');
   define('FILENAME_BILL_TEMPLATES', 'bill_templates.php');
+  
   define('FILENAME_ADDRESS', 'address.php');
   define('FILENAME_SHOW_USELESS_OPTION','show_useless_option.php');
   define('FILENAME_SHOW_USELESS_ITEM','show_useless_item.php');
@@ -142,6 +145,12 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
   define('TABLE_CUSTOMERS_BASKET_OPTIONS', 'customers_basket_options');
   define('TABLE_OPTION_GROUP', 'option_group');
   define('TABLE_OPTION_ITEM', 'option_item');
+  define('FILENAME_PRODUCTS_MANUAL','products_manual.php');
+
+// define the database table names used in the project
+  define('TABLE_ALARM', 'alarm');
+  define('TABLE_NOTICE', 'notice');
+  define('TABLE_NOTICE_TO_MICRO_USER', 'notice_to_micro_user');
   define('TABLE_CAMPAIGN', 'campaign');
   define('TABLE_CUSTOMER_TO_CAMPAIGN', 'customer_to_campaign');
   define('TABLE_PREORDERS', 'preorders');
@@ -260,6 +269,7 @@ define('TABLE_PERMISSIONS','permissions');
   define('TABLE_COUNTRY_AREA','country_area');
   define('TABLE_COUNTRY_FEE','country_fee');
   define('TABLE_COUNTRY_CITY','country_city');
+  define('TABLE_OCONFIG',  'other_config');
   
 // customization for the design layout
   define('BOX_WIDTH', 125); // how wide the boxes should be in pixels (default: 125)

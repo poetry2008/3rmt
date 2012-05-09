@@ -54,6 +54,8 @@
     .  '<a href="' . tep_href_link(FILENAME_ORDERS, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_CUSTOMERS_ORDERS . '</a><br>'.
       '<a href="' . tep_href_link('telecom_unknow.php') . '"
       class="menuBoxContent_Link">'.FILENAME_TELECOM_UNKNOW_TEXT.'</a><br>' . 
+      '<a href="' . tep_href_link(FILENAME_RESET_PWD) . '"
+      class="menuBoxContent_Link">'.FILENAME_FILENAME_RESET_PWD_TEXT.'</a><br>' . 
       '<a href="' . tep_href_link('bill_templates.php') . '"
       class="menuBoxContent_Link">'.FILENAME_BILL_TEMPLATES_TEXT.'</a><br>';?> 
                 </td>

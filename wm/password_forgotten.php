@@ -22,22 +22,31 @@
     if (tep_db_num_rows($check_customer_query)) {
       $check_customer = tep_db_fetch_array($check_customer_query);
     if($check_customer['customers_guest_chk'] == '0') {
-        // Crypted password mods - create a new password, update the database and mail it to them
-        $newpass = tep_create_random_value(ENTRY_PASSWORD_MIN_LENGTH);
-        $crypted_password = tep_encrypt_password($newpass);
-//ccdd
-        tep_db_query("
-            update " . TABLE_CUSTOMERS . " 
-            set customers_password = '" . $crypted_password . "' 
-            where customers_id = '" . $check_customer['customers_id'] . "'
-        ");
-        tep_mail(tep_get_fullname($check_customer['customers_firstname'],$check_customer['customers_lastname']), $_POST['email_address'], EMAIL_PASSWORD_REMINDER_SUBJECT, sprintf(EMAIL_PASSWORD_REMINDER_BODY, $newpass), STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
-        tep_redirect(tep_href_link(FILENAME_LOGIN, 'info_message=' . urlencode(TEXT_PASSWORD_SENT), 'SSL', true, false));
+      $random_str = md5(time().$check_customer['customers_id'].$_POST['email_address']); 
+        
+        $send_url = HTTP_SERVER.'/password_token.php?pud='.$random_str;
+        $exists_password_raw = tep_db_query("select customers_id from customers_password_info where customers_id = '".$check_customer['customers_id']."'"); 
+        if (tep_db_num_rows($exists_password_raw)) {
+          tep_db_query("update `customers_password_info` set `customers_email` = '".$_POST['email_address']."', `customers_ip` = '".$_SERVER["REMOTE_ADDR"]."', `random_num` = '".$random_str."', `created_at` = '".date('Y-m-d H:i:s',time())."', `is_update` = '0' where `customers_id` = '".$check_customer['customers_id']."'"); 
+        } else {
+          tep_db_query("insert into `customers_password_info` values('".$check_customer['customers_id']."', '".$_POST['email_address']."', '".$_SERVER["REMOTE_ADDR"]."', '".$random_str."', '".date('Y-m-d H:i:s',time())."', '0')");
+        }
+        
+        $email_body = SEND_PASSWORLD_EMAIL_CONTENT;
+        $email_body = str_replace('${URL}', $send_url, $email_body);
+        $email_body = str_replace('${SITE_NAME}', STORE_NAME, $email_body);
+        $email_body = str_replace('${SITE_URL}', HTTP_SERVER, $email_body);
+        $email_body = str_replace('${IP}', $_SERVER["REMOTE_ADDR"], $email_body);
+        $email_body = str_replace('${NAME}', tep_get_fullname($check_customer['customers_firstname'], $check_customer['customers_lastname']), $email_body);
+        
+        tep_mail(tep_get_fullname($check_customer['customers_firstname'],$check_customer['customers_lastname']), $_POST['email_address'], str_replace('${SITE_NAME}', STORE_NAME, SEND_PASSWORLD_EMAIL_TITLE), $email_body, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
+          
+      tep_redirect(tep_href_link('send_success.php', 'send_mail='.$_POST['email_address']));
     } else {
-      tep_redirect(tep_href_link(FILENAME_PASSWORD_FORGOTTEN, 'email=nonexistent', 'SSL'));
+      tep_redirect(tep_href_link('send_success.php', 'send_mail='.$_POST['email_address']));
     }
     } else {
-      tep_redirect(tep_href_link(FILENAME_PASSWORD_FORGOTTEN, 'email=nonexistent', 'SSL'));
+      tep_redirect(tep_href_link('send_success.php', 'send_mail='.$_POST['email_address']));
     }
   } else {
 

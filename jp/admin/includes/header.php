@@ -7,7 +7,173 @@ if (isset($messageStack) && $messageStack->size > 0) {
   echo $messageStack->output();
 }
 ?>
-  <script type="text/javascript">
+<script type="text/javascript">
+$(function() {
+   setTimeout(function() {show_head_notice(1)}, 35000);
+});
+
+function check_exists_function(funcName){
+  try{
+    if(typeof(eval(funcName)) == "function") {
+      return true;
+    }
+  }catch(e){
+    return false;
+  }
+}
+
+function calc_notice_time(leave_time, nid, start_calc)
+{
+  
+  var now_timestamp = Date.parse(new Date());
+  
+  now_timestamp_str = now_timestamp.toString().substr(0, 10);
+
+  now_timestamp_tmp = parseInt(now_timestamp_str);
+  
+  leave_time_diff = leave_time - now_timestamp_tmp;
+  
+  n_day = Math.floor(leave_time_diff / (24*3600)); 
+  leave_time_tmp = leave_time_diff % (24*3600);
+  leave_time_seconds = leave_time_tmp % 3600;
+  n_hour = (leave_time_tmp - leave_time_seconds) / 3600;
+  leave_time_minute = leave_time_seconds % 60;
+  n_minute = (leave_time_seconds - leave_time_minute) / 60; 
+  
+  if (n_day < 10) {
+    n_show_day = '0'+n_day; 
+  } else {
+    n_show_day = n_day; 
+  }
+  
+  if (n_hour < 10) {
+    n_show_hour = '0'+n_hour; 
+  } else {
+    n_show_hour = n_hour; 
+  }
+  
+  if (n_minute < 10) {
+    n_show_minute = '0'+n_minute; 
+  } else {
+    n_show_minute = n_minute; 
+  }
+  
+  if (leave_time_diff <= 0) {
+    n_show_day = '00'; 
+    n_show_hour = '00'; 
+    n_show_minute = '00';
+    n_day = 0; 
+    n_hour = 0;
+    n_minute = 0;
+  }
+  
+  if (document.getElementById('leave_time_'+nid)) {
+    document.getElementById('leave_time_'+nid).innerHTML = n_show_day+'<?php echo DAY_TEXT;?>'+n_show_hour+'<?php echo HOUR_TEXT;?>'+n_show_minute+'<?php echo MINUTE_TEXT;?>'; 
+    if ((n_hour == 0) && (n_minute == 0) && (n_day == 0)) {
+      document.getElementById('leave_time_'+nid).parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.style.background = '#FFB3B5'; 
+      var n_node=document.getElementById('head_notice');  
+      if (n_node.controls) {
+        n_node.controls.play();  
+      } else {
+        if (check_exists_function('play')) {
+          n_node.play();  
+        }
+      }
+    }
+    setTimeout(function(){calc_notice_time(leave_time, nid, 1)}, 5000); 
+  } 
+}
+
+function expend_all_notice(aid)
+{
+  if ($('#show_all_notice').css('display') == 'none') {
+    $('#show_all_notice').css('display', 'block');
+    $.ajax({
+      url: 'ajax_notice.php?action=show_all_notice',     
+      data: 'aid='+aid, 
+      type: 'POST',
+      dataType: 'text',
+      async: false,
+      success: function(data) {
+        $('#show_all_notice').html(data); 
+      }
+    });
+  } else {
+    $('#show_all_notice').css('display', 'none');
+    $('#show_all_notice').html(''); 
+  }
+}
+function delete_alarm_notice(nid, e_type)
+{
+  $.ajax({
+      url: 'ajax_notice.php?action=delete_alarm',
+      data: 'nid='+nid,
+      type: 'POST',
+      dataType: 'text',
+      async: false,
+      success: function(data) {
+        $('#show_all_notice').css('display', 'none');
+        $('#show_all_notice').html(''); 
+        show_head_notice(0);
+      } 
+      });
+}
+function delete_micro_notice(nid, e_type)
+{
+  $.ajax({
+      url: 'ajax_notice.php?action=delete_micro',
+      data: 'nid='+nid,
+      type: 'POST',
+      dataType: 'text',
+      async: false,
+      success: function(data) {
+        $('#show_all_notice').css('display', 'none');
+        $('#show_all_notice').html(''); 
+        show_head_notice(0);
+      } 
+      });
+}
+function show_head_notice(no_type)
+{
+  $.ajax({
+      url: 'ajax_notice.php?action=show_head_notice',
+      type: 'POST',
+      dataType: 'text',
+      async: false,
+      success: function(data) {
+        if (data != '') {
+          data_info = data.split('|||');
+          
+          if (document.getElementById('leave_time_'+data_info[2])) {
+            if (data_info[0] != document.getElementById('more_single').value) {
+              $('#show_head_notice').html(data_info[3]); 
+            }
+          } else {
+            $('#show_head_notice').html(data_info[3]); 
+          }
+          
+          if (data_info[1] <= 0) {
+            document.getElementById('leave_time_'+data_info[2]).parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.style.background = '#FFB3B5'; 
+          } else {
+            orgin_bg = document.getElementById('leave_time_'+data_info[2]).parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.style.background; 
+            if (orgin_bg.indexOf('rgb(255, 179, 181)') > 0) {
+              document.getElementById('leave_time_'+data_info[2]).parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.style.background = '#FFFFFF'; 
+            }
+          }
+        } else {
+          $('#show_head_notice').html(data); 
+          orgin_bg = document.getElementById('leave_time_'+data_info[2]).parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.style.background; 
+          if (orgin_bg.indexOf('rgb(255, 179, 181)') > 0) {
+            document.getElementById('leave_time_'+data_info[2]).parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.parentNode.style.background = '#FFFFFF'; 
+          }
+        }
+        
+        if (no_type == 1) {
+          setTimeout(function() {show_head_notice(1)}, 35000);
+        }
+      } 
+      });
+}
 function showmenu(elmnt)
 {
   document.getElementById(elmnt).style.visibility="visible"
@@ -41,7 +207,7 @@ function toggle_header_menu(elmnt)
         document.getElementById('tutorials').style.visibility="hidden";
         document.getElementById('ordermenu').style.visibility="hidden";
         document.getElementById('redirecturl').style.visibility="hidden";
-        break;
+        break; 
       case 'redirecturl':
         document.getElementById('headerorder').style.visibility="hidden";
         document.getElementById('tutorials').style.visibility="hidden";
@@ -60,7 +226,7 @@ function toggle_header_menu(elmnt)
 function goto_changepwd(id){
   document.getElementById(id).action="<?php echo FILENAME_CHANGEPWD;?>";
   document.getElementById(id).submit();
-  return false;
+  return false; 
 }
 <?php
 if ($_SERVER['PHP_SELF'] != '/admin/preorders.php') {
@@ -143,8 +309,16 @@ $(function(){
 </script>
 <table border="0" width="100%" cellspacing="0" cellpadding="0" class="preorder_head">
 <tr>
+  <td colspan="2">
+  <div id="show_head_notice">
+<?php echo tep_get_notice_info();?>
+</div>
+<div id="show_all_notice" style="display:none;"></div>
+  </td>
+</tr>
+<tr>
 <td><?php echo tep_image(DIR_WS_CATALOG .DIR_WS_IMAGES . ADMINPAGE_LOGO_IMAGE, STORE_NAME, '', ''); ?></td>
-<td align="right">
+<td align="right" valign="bottom" width="60%">
 <?php echo tep_draw_form('changepwd', FILENAME_CHANGEPWD,'','post','
     id=\'changepwd_form\'');
 echo tep_draw_hidden_field("execute_password",TEXT_ECECUTE_PASSWORD_USER);
@@ -167,6 +341,7 @@ if (isset($ocertify) && $ocertify->npermission == 15) {
 echo "</a>";
 ?>
 </b>&nbsp;<?php echo HEADER_TEXT_LOGINED;?>&nbsp;
+<br>
 </td>
 </tr>
 <?php
@@ -260,7 +435,23 @@ if (!isset($ocertify->npermission) || $ocertify->npermission >= 7) {
       <tr>
       <td class="menu01"><a class="t_link01"
       onclick="javascript:goto_changepwd(\'changepwd_form\')"
-      href="javascript:void(0);">'.HEADER_TEXT_USERS.'</a></td>
+      href="javascript:void(0);">'.HEADER_TEXT_USERS.'</a>';
+if ($_SERVER['PHP_SELF'] != '/admin/preorders.php') {
+?>
+<embed id="head_sound" src="images/presound.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></embed>
+<?php
+}
+?>
+<?php
+if ($_SERVER['PHP_SELF'] != '/admin/orders.php') {
+?>
+<embed id="head_warn" src="images/warn.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></embed>
+<?php
+}
+?>
+<embed id="head_notice" src="images/notice.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></embed>
+<?php 
+  echo '</td>
       </tr>
       </table>
       </td>
@@ -289,23 +480,10 @@ if (!isset($ocertify->npermission) || $ocertify->npermission >= 7) {
     '?execute_logout_user=1" class="headerLink">'.HEADER_TEXT_LOGOUT.'</a>';
 }
 ?>
-<?php
-if ($_SERVER['PHP_SELF'] != '/admin/preorders.php') {
-?>
-<embed id="head_sound" src="images/presound.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></embed>
-<?php
-}
-?>
+
 </td>
 </tr>
 </table>
-<?php
-if ($_SERVER['PHP_SELF'] != '/admin/orders.php') {
-?>
-<embed id="head_warn" src="images/warn.mp3" type="application/x-ms-wmp" width="0" height="0" loop="false" autostart="false"></embed>
-<?php
-}
-?>
 
 </td>
 </tr>

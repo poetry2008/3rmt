@@ -261,9 +261,9 @@ define('ENTRY_NEWSLETTER_NO', '購読しない');
 define('ENTRY_NEWSLETTER_ERROR', '');
 define('ENTRY_PASSWORD', 'パスワード:');
 define('ENTRY_PASSWORD_CONFIRMATION', 'パスワードを再入力:');
-define('ENTRY_PASSWORD_CONFIRMATION_TEXT', '&nbsp;<small>' . ENTRY_PASSWORD_MIN_LENGTH . '文字以上&nbsp;(例. abcdef) <font color="#FC0000">必須</font></small>');
-define('ENTRY_PASSWORD_ERROR', '&nbsp;<small><font color="#FF0000">少なくても ' . ENTRY_PASSWORD_MIN_LENGTH . ' 文字</font></small>');
-define('ENTRY_PASSWORD_TEXT', '&nbsp;<small>' . ENTRY_PASSWORD_MIN_LENGTH . '文字以上&nbsp;(例. abcdef) <font color="#FC0000">必須</font></small>');
+define('ENTRY_PASSWORD_CONFIRMATION_TEXT', '&nbsp;<small>(例. abcd1234) <font color="#FC0000">必須</font></small>');
+define('ENTRY_PASSWORD_ERROR', '<small><font color="#FF0000">少なくても ' . ENTRY_PASSWORD_MIN_LENGTH . ' 文字</font></small>');
+define('ENTRY_PASSWORD_TEXT', '&nbsp;<small>(例. abcd1234) <font color="#FC0000">必須</font></small>');
 define('PASSWORD_HIDDEN', '********');
 define('ENTRY_AGREEMENT_TEXT', '同意する');
 
@@ -455,5 +455,10 @@ define('PREORDER_TRADER_LINE_TITLE', '取引情報');
 define('PREORDER_CONFIRM_LINE_TITLE', '最終確認');
 define('PREORDER_FINISH_LINE_TITLE', '手続き完了！');
 define('JPMONEY_UNIT_TEXT', '円');
+define('ENTRY_NO_USE_OLD_PASSWORD', '<font color="#FF0000">安全のため、古いパスワードと違うパスワードを設定してください。</font>');
+define('ENTRY_PASSWORD_IS_NUM', '<font color="#FF0000">英字（abcdef...z）が1文字以上必要です。英字と数字を組み合わせて設定してください。</font>');
+define('ENTRY_PASSWORD_IS_ALPHA', '&nbsp;<font color="#FF0000">数字（0123456789）が1文字以上必要です。英字と数字を組み合わせて設定してください。</font>');
+define('ENTRY_PASSWORD_IS_DIFFERENT', 'パスワードと再入力が違います。');
+define('ENTRY_PASSWORD_INFORM_READ_TEXT', '半角の英字、数字を組み合わせた'.ENTRY_PASSWORD_MIN_LENGTH.'文字以上を入力してください。<br>英字、数字がそれぞれ1文字以上を必要です。大文字と小文字は区別されます。記号は入力できません。');
 
 ?>

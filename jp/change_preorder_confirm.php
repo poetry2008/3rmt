@@ -240,10 +240,11 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                 <table width="100%"> 
                   <?php $preorder_product_res = tep_db_fetch_array($preorder_product_raw);?> 
                   <tr>
-                    <td class="main">
-                    <?php 
-                    echo $preorder_product_res['products_quantity'].PRODUCT_UNIT_TEXT;
-                    ?>
+                    
+                    <td class="main" align="center">
+                    <?php echo $preorder_product_res['products_quantity'].PRODUCT_UNIT_TEXT;?>
+                    <?php echo '<br>'.tep_get_full_count2($preorder_product_res['products_quantity'], $preorder_product_res['products_id']);?> 
+                    
                     </td>                  
                     <td class="main">
                     <?php 

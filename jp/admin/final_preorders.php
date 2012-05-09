@@ -127,6 +127,12 @@
       break;
     }
     */
+    //valadate email
+  if (!tep_validate_email($_POST['update_customer_email_address'])){
+        $messageStack->add(EDIT_ORDERS_NOTICE_EMAIL_MATCH_TEXT, 'error');
+        $action = 'edit';
+        break;
+  }
   if (isset($_POST['h_predate'])) { //日時が有効かチェック
       if (!preg_match('/^(\d\d\d\d)-(\d\d)-(\d\d)$/', $_POST['h_predate'], $m)) { // check the date format
         $messageStack->add(EDIT_ORDERS_NOTICE_DATE_WRONG_TEXT, 'error');

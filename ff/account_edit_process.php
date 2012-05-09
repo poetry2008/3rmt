@@ -111,6 +111,38 @@
     $entry_password_confirmation_error = true;
   }
 
+
+  if (!preg_match('/^(?=.*?[a-zA-Z])(?=.*?[0-9])[a-zA-Z0-9]{0,}$/', $password)) {
+      $error = true; 
+      $entry_password_error = true;
+      if (preg_match('/^[0-9]+$/', $password)) {
+        $entry_password_error_msg = ENTRY_PASSWORD_IS_NUM; 
+      } else if (preg_match('/^[a-zA-Z0-9]+$/', $password)) {
+        $entry_password_error_msg = ENTRY_PASSWORD_IS_ALPHA; 
+      }
+  }
+  
+  if (!preg_match('/^(?=.*?[a-zA-Z])(?=.*?[0-9])[a-zA-Z0-9]{0,}$/', $confirmation)) {
+      $error = true; 
+      $entry_password_error = true;
+      if (preg_match('/^[0-9]+$/', $confirmation)) {
+        $entry_password_error_msg = ENTRY_PASSWORD_IS_NUM; 
+      } else if (preg_match('/^[a-zA-Z0-9]+$/', $confirmation)) {
+        $entry_password_error_msg = ENTRY_PASSWORD_IS_ALPHA; 
+      }
+  }
+
+  if (!$entry_password_error) {
+    $ex_customers_raw = tep_db_query("select customers_password from ".TABLE_CUSTOMERS." where customers_id = '".$customer_id."' and site_id = '".SITE_ID."'");
+    $ex_customers = tep_db_fetch_array($ex_customers_raw);
+    if ($ex_customers) {
+      if (tep_validate_password($password, $ex_customers['customers_password'])) {
+        $error = true;
+        $entry_password_error = true;
+        $entry_password_confirm_same_error = true;
+      }
+    }
+  }
 //ccdd
   $check_email_query = tep_db_query("select count(*) as total from " .  TABLE_CUSTOMERS . " where customers_email_address = '" .  tep_db_input($email_address) . "' and customers_id != '" .  tep_db_input($customer_id) . "' and site_id = '".SITE_ID."'");
   $check_email = tep_db_fetch_array($check_email_query);
@@ -236,6 +268,10 @@
 
       // ccdd
       tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array, 'update', "customers_id = '" . tep_db_input($customer_id) . "' and address_book_id = '" . tep_db_input($customer_default_address_id) . "'");
+      tep_db_query("update `" . TABLE_CUSTOMERS_INFO . "` set `customer_last_resetpwd` = '".date('Y-m-d H:i:s', time())."' where `customers_info_id` = '" . tep_db_input($customer_id) . "'");
+      tep_db_query("update `" . TABLE_CUSTOMERS . "` set `reset_success` = '1' where `customers_id` = '" . tep_db_input($customer_id) . "'");
+      
+      unset($_SESSION['reset_flag']); 
         tep_redirect(tep_href_link(FILENAME_ACCOUNT, '', 'SSL'));
       }
     } 

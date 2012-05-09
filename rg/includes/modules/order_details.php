@@ -55,7 +55,9 @@
       $p_a_quan = $a_quantity['products_quantity'];
       $p_id = 'quantity_'.$products[$i]['id'];
       $product_price_after_tax = tep_add_tax($products[$i]['price'], tep_get_tax_rate($products[$i]['tax_class_id'])); 
-      echo tep_draw_hidden_field($products[$i]['id'].'_unit_price', $product_price_after_tax, 'id="unit_price_'.$products[$i]['id'].'"');
+      echo tep_draw_hidden_field($products[$i]['id'].'_unit_price', 
+          $product_info['products_price'], 'id="unit_price_'.$products[$i]['id'].'"');
+      echo tep_draw_hidden_field('small_sum_' . $products[$i]['id'], $product_info['products_small_sum'], ' id="small_sum_'.$products[$i]['id'].'"');
       echo tep_draw_hidden_field('final_price', tep_add_tax($products[$i]['final_price'], tep_get_tax_rate($products[$i]['tax_class_id'])), 'id="id_'.$products[$i]['id'].'"');
       echo '<td align="center" style=" background:#FFFFFF;padding-left:10px;padding-right:20px;">';
       echo '<table>'; 
@@ -77,7 +79,15 @@
       echo '<td><font style="font-size:10px">個</font></td>';
       echo '</tr>'; 
       echo '</table>'; 
-      echo (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($products[$i]['quantity'], $products[$i]['id']) ? '<span style="font-size:10px">'. tep_get_full_count_in_order2($products[$i]['quantity'], $products[$i]['id']) .'</span>': '') . '</td>' . "\n";
+      echo (!empty($product_info['products_attention_1_3']) &&
+          tep_get_full_count_in_order2($products[$i]['quantity'],
+            $products[$i]['id']) ? '<span id="one_price_show_'. $products[$i]['id'].'" style="font-size:10px">'. tep_get_full_count_in_order2($products[$i]['quantity'], $products[$i]['id']) .'</span>': '') . "\n";
+      echo (!empty($product_info['products_attention_1_3']) &&
+          tep_get_full_count_in_order2($products[$i]['quantity'],
+            $products[$i]['id']) ? '<span id="one_price_'. $products[$i]['id']
+          .'" style="display:none">'.
+          tep_get_full_count_in_order2($products[$i]['quantity'],
+            $products[$i]['id'],true) .'</span>': '') . '</td>' . "\n";
     } else {
       echo '    <td align="center" class ="main" style=" background:#FFFFFF;padding-left:10px;padding-right:20px;">' . $products[$i]['quantity'] . '個' ;
       echo (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($products[$i]['quantity'], $products[$i]['id']) ? '<span style="font-size:10px">'. tep_get_full_count_in_order2($products[$i]['quantity'], $products[$i]['id']) .'</span>' : '');

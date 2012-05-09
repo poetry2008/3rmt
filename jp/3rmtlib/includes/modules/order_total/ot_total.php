@@ -22,9 +22,9 @@
       $total = @$order->info['total'];
       if ((MODULE_ORDER_TOTAL_CODT_STATUS == 'true')
           //          && ($payment == 'cod_table')
-          && isset($_POST['code_fee'])
-          && (0 < intval($_POST['code_fee']))) {
-        $total += intval($_POST['code_fee']);
+          && isset($_SESSION['h_code_fee'])
+          && (0 < intval($_SESSION['h_code_fee']))) {
+        $total += intval($_SESSION['h_code_fee']);
       }
     
     //Add point

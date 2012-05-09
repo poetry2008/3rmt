@@ -456,7 +456,6 @@ $products_ordered_text .= $products_ordered_attributes;
 
 $products_ordered_text .= "\n".'個数'.str_repeat('　', intval(($cl_max_len-mb_strlen('個数','utf-8')))).'：' .  $preorder_product_res['products_quantity'] . '個' .  tep_get_full_count2($preorder_product_res['products_quantity'], $preorder_product_res['products_id'])."\n";
 $products_ordered_text .= '単価'.str_repeat('　', intval(($cl_max_len-mb_strlen('単価','utf-8')))).'：' .  $currencies->display_price(isset($option_info_array['final_price'])?$option_info_array['final_price']:$preorder_product_res['final_price'], $preorder_product_res['products_tax']) . "\n";
-
 $products_ordered_text .= '小計'.str_repeat('　', intval(($cl_max_len-mb_strlen('小計','utf-8')))).'：' .  $currencies->display_price(isset($option_info_array['final_price'])?$option_info_array['final_price']:$preorder_product_res['final_price'], $preorder_product_res['products_tax'], $preorder_product_res['products_quantity']) . "\n";
 
 //if (tep_not_null($_SESSION['preorder_info_character'])) {

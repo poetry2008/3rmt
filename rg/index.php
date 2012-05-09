@@ -35,6 +35,8 @@ if(isset($_GET['cmd'])&&$_GET['cmd']){
   //}
 ?>
 <?php page_head();?>
+<script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
+<script type="text/javascript" src="js/notice.js"></script>
 </head>
 <?php
   if (isset($body_option)) {
@@ -213,6 +215,75 @@ if ($category_depth == 'nested') {
   require(DIR_WS_ACTIONS.'index_select.php');
 } else { 
   require(DIR_WS_ACTIONS.'index_default.php');
+?>
+<?php 
+if ($_SESSION['reset_flag'] == true){
+unset($_SESSION['reset_flag']);
+?>
+<script type="text/javascript">
+$(document).ready(function() {
+var docheight = $(document).height();
+var screenwidth, screenheight, mytop, getPosLeft, getPosTop
+screenwidth = $(window).width();
+screenheight = $(window).height();
+mytop = $(document).scrollTop();
+getPosLeft = screenwidth / 2 - 276;
+getPosTop = 50;
+
+$("#popup_notice").css('display', 'block');
+$("#popup_notice").css({ "left": getPosLeft, "top": getPosTop })
+
+$(window).resize(function() {
+            screenwidth = $(window).width();
+           screenheight = $(window).height();
+           mytop = $(document).scrollTop();
+           getPosLeft = screenwidth / 2 - 276;
+           getPosTop = 50;
+           $("#popup_notice").css({ "left": getPosLeft, "top": getPosTop + mytop });
+
+});
+
+
+$("body").append("<div id='greybackground'></div>");
+$("#greybackground").css({ "opacity": "0.5", "height": docheight });
+});
+</script>
+<div id="popup_notice" style="display:none;">
+<?php
+$oc_title_text = '';
+$oc_title_raw = tep_db_query("select value from ".TABLE_OTHER_CONFIG." where keyword = 'reset_pwd_title'");
+$oc_title = tep_db_fetch_array($oc_title_raw);
+if ($oc_title) {
+$oc_title_text = $oc_title['value'];
+//  echo $oc_title['value'].'<br>';
+}
+$oc_content_text = '';
+$oc_content_raw = tep_db_query("select value from ".TABLE_OTHER_CONFIG." where keyword = 'reset_pwd_content'");
+$oc_content = tep_db_fetch_array($oc_content_raw);
+if ($oc_content) {
+$oc_content_text = $oc_content;
+//  echo tep_get_replaced_reset_msg($oc_content['value']).'<br>';
+}
+
+?>
+<div class="popup_notice_text">
+	<?php echo $oc_title['value'];?>
+</div>
+<div class="popup_notice_middle">
+<?php 
+echo tep_get_replaced_reset_msg($oc_content['value']).'<br>';
+$update_url = tep_get_popup_url();
+?>
+</div>
+<div align="center" class="popup_notice_button">
+<a href="javascript:void(0);" onClick="close_popup_notice()"><img alt="変更しません" src="images/design/changeless.gif"></a>&nbsp;&nbsp;
+<a href="javascript:void(0);" onClick="update_notice('<?php echo $update_url;?>')"><img alt="変更します" src="images/design/change.gif"></a>
+</div>
+</div>
+<?php
+}
+?>
+<?php
 }
 ?> 
     </tr> 

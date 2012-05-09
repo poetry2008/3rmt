@@ -697,7 +697,7 @@ function tep_get_pre_orders_products_string($orders, $single = false, $popup = f
 
   $str .= '<table border="0" cellpadding="2" cellspacing="0" class="popup_order_title" width="100%">';
   $str .= '<tr>';
-  $str .= '<td width="20">'.tep_image(DIR_WS_IMAGES.'icon_info.gif',IMAGE_ICON_INFO,16,16).'&nbsp;</td>'; 
+  $str .= '<td width="22">'.tep_image(DIR_WS_IMAGES.'icon_info.gif',IMAGE_ICON_INFO,16,16).'&nbsp;</td>'; 
   $str .= '<td align="left"><b>['.$orders['orders_id'].']&nbsp;&nbsp;'.tep_datetime_short_torihiki($orders['date_purchased']).'</b></td>'; 
   $str .= '<td align="right"><a href="javascript:void(0);" onclick="hideOrdersInfo(1);">X</a></td></tr>';
   $str .= '</table>'; 
@@ -770,9 +770,9 @@ function tep_get_pre_orders_products_string($orders, $single = false, $popup = f
     $tmpArr[] = $p ;
     $products_attributes_query = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS_ATTRIBUTES." where orders_products_id='".$p['orders_products_id']."'");
     if(in_array(array($p['products_id'],$p['orders_products_id']),$autocalculate_arr)&& !empty($autocalculate_arr)){
-      $str .= '<tr><td class="main">'.TEXT_PREORDER_PRODUCTS_NAME.'<font color="red">「'.TEXT_PREORDER_PRODUCTS_ENTRANCE.'」</font></td><td class="main">'.$p['products_name'].'</td></tr>';
+      $str .= '<tr><td class="main">'.TEXT_PREORDER_PRODUCTS_NAME.'<font color="red">「'.TEXT_PREORDER_PRODUCTS_ENTRANCE.'」</font></td><td class="main">'.$p['products_name'].'&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" onclick="javascript:window.open(\'orders.php?'.urldecode($param_str).'&oID='.$orders['orders_id'].'&pID='.$p['products_id'].'&action=show_manual_info\');">'.tep_html_element_button('マニュアル').'</a></td></tr>';
     }else{
-      $str .= '<tr><td class="main">'.TEXT_PREORDER_PRODUCTS_NAME.'<font color="red">「'.TEXT_PREORDER_PRODUCTS_NOENTRANCE.'」</font></td><td class="main">'.$p['products_name'].'</td></tr>';
+      $str .= '<tr><td class="main">'.TEXT_PREORDER_PRODUCTS_NAME.'<font color="red">「'.TEXT_PREORDER_PRODUCTS_NOENTRANCE.'」</font></td><td class="main">'.$p['products_name'].'&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" onclick="javascript:window.open(\'orders.php?'.urldecode($param_str).'&oID='.$orders['orders_id'].'&pID='.$p['products_id'].'&action=show_manual_info\');">'.tep_html_element_button('マニュアル').'</a></td></tr>';
     }
     $str .= '<tr><td class="main">'.TEXT_PREORDER_PRODUCTS_NUM.'</td><td class="main">'.$p['products_quantity'].TEXT_PREORDER_PRODUCTS_UNIT.tep_get_full_count2($p['products_quantity'], $p['products_id'], $p['products_rate']).'</td></tr>';
     //while($pa = tep_db_fetch_array($products_attributes_query)){

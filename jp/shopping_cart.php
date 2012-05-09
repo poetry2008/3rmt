@@ -23,6 +23,25 @@
 ?>
 <script type="text/javascript">
 <!--
+function history_back(back_url){
+  /* 
+  var final_prices = document.getElementsByName('final_price');
+  for (var i=0; i<final_prices.length; i++)
+  {
+    var t_pid = final_prices[i].id.substr(3);
+    var t_pquantity = document.getElementById('quantity_'+ final_prices[i].id.substr(3)).value;
+    $.ajax({
+      url: '<?php echo FILENAME_SHOPPING_CART;?>?action=save_quantity',
+      type: 'POST',
+      async: false,
+      data: 'pid='+t_pid+'&pquantity='+t_pquantity,
+      success: function(){
+      }
+    });
+  }
+  */ 
+  window.location.href=back_url;
+}
 function money_update(objid, targ)
 {
   var obj = document.getElementById(objid);
@@ -306,7 +325,14 @@ B:ポイントの加算（<?php echo STORE_NAME;?>会員でなければ表示さ
                     <input type="hidden" name="goto" value="<?php echo tep_href_link($navigation->path[$back]['page'], tep_array_to_string($navigation->path[$back]['get'], array('action')), $navigation->path[$back]['mode']);?>">
                     <input type="submit" name="continue" value="" class="shopping_cart_continue">
 <?php } else { ?>
-                    <button  class="shopping_cart_continue" onClick="history.back(); return false;"></button>
+<?php
+if (!empty($_SESSION['history_url'])) {
+  $back_url = $_SESSION['history_url'];
+} else {
+  $back_url = HTTP_SERVER;
+}
+?>
+  <button  class="shopping_cart_continue" onClick="history_back('<?php echo $back_url;?>'); return false;"></button>
 <?php } ?>
                     
                   </td>

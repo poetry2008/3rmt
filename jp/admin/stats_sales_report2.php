@@ -95,7 +95,7 @@
   require('includes/application_top.php');
 
   require(DIR_WS_CLASSES . 'currencies.php');
-  $currencies = new currencies();
+  $currencies = new currencies(2);
 
 
   // report views (1: yearly 2: monthly 3: weekly 4: daily)

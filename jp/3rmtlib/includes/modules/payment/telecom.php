@@ -47,7 +47,7 @@ class telecom  extends basePayment  implements paymentInterface  {
       
     $s_result = !$_POST['telecom_order_fee_error'];
      
-    if (!empty($_POST['code_fee'])) {
+    if (!empty($_SESSION['h_code_fee'])) {
       //$s_message = $s_result ? (MODULE_PAYMENT_TELECOM_TEXT_FEE . '&nbsp;' .  $currencies->format($_POST['telecom_order_fee'])):('<font color="#FF0000">'.$_POST['telecom_order_fee_error'].'</font>'); 
       $s_message = $s_result ? '':('<font color="#FF0000">'.$_POST['telecom_order_fee_error'].'</font>'); 
     } else {
@@ -170,7 +170,7 @@ class telecom  extends basePayment  implements paymentInterface  {
     //tep_draw_hidden_field('redirect_url', HTTPS_SERVER . tep_href_link(MODULE_PAYMENT_OK_URL, '', 'SSL')) .
     //tep_draw_hidden_field('redirect_back_url', HTTPS_SERVER . tep_href_link(MODULE_PAYMENT_NO_URL, '', 'SSL'));
    
-    $process_button_string .= tep_draw_hidden_field('telecom_order_message', htmlspecialchars($s_message)). tep_draw_hidden_field('code_fee', $_POST['code_fee']);
+    $process_button_string .= tep_draw_hidden_field('telecom_order_message', htmlspecialchars($s_message)). tep_draw_hidden_field('code_fee', $_SESSION['h_code_fee']);
     return $process_button_string;
   }
   

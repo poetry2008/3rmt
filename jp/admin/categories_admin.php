@@ -56,7 +56,27 @@ if (isset($_GET['action']) && $_GET['action']) {
 <html <?php echo HTML_PARAMS; ?>>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
-  <title><?php echo TITLE; ?></title>
+  <title>
+  <?php
+$site_id = isset($_GET['site_id']) ? $_GET['site_id']:0;
+	 if(isset($_GET['cPath']) && $_GET['cPath']!=""){
+		if(strpos($_GET['cPath'],"_")){
+		$cpath_arr = explode("_",$_GET['cPath']);
+	 	$cpath = end($cpath_arr);
+		}else{
+	        $cpath = $_GET['cPath']	;
+		}
+$categories_query = tep_db_query("select categories_name from ".TABLE_CATEGORIES_DESCRIPTION." where categories_id='".$cpath."' and site_id='".$site_id."'");
+$categories_array = tep_db_fetch_array($categories_query);
+echo CATEGORY_ADMIN_TITLE."&nbsp;&nbsp;&nbsp;".$categories_array['categories_name'];
+	}
+	
+	else{
+	echo CATEGORY_ADMIN_TITLE; 
+	}
+?>
+
+</title>
   <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
   <script type="text/javascript" src="includes/general.js"></script>
   <script type="text/javascript" src="includes/javascript/jquery.js"></script>
@@ -436,7 +456,9 @@ while ($products = tep_db_fetch_array($products_query)) {
   <td class="dataTableContent1">
 <?php echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'from=admin&cPath=' . $cPath . '&pID=' . $products['products_id'] . '&action=new_product_preview&read=only') . '">' . tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW) . '</a>&nbsp;&nbsp;';?>
      <?php 
-     echo '<a style="margin-left:-4px;" href="orders.php?real_name=true&search_type=products_name&keywords=' . urlencode($products['products_name']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_time.gif', '', 16, 16) . '</a>&nbsp;&nbsp;<span id="products_name_'.$products['products_id'].'">' . $products['products_name'] . '</span>'; 
+     //echo '<a style="margin-left:-4px;" href="orders.php?real_name=true&search_type=products_name&keywords=' . urlencode($products['products_name']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_time.gif', '', 16, 16) . '</a>&nbsp;&nbsp;<span id="products_name_'.$products['products_id'].'">' . $products['products_name'] . '</span>'; 
+echo '<a style="margin-left:-4px;" href="orders.php?search_type=products_id&products_id=' .$products['products_id']. '">' . tep_image(DIR_WS_IMAGES . 'icon_time.gif', '', 16, 16) . '</a>&nbsp;&nbsp;<span id="products_name_'.$products['products_id'].'">' . $products['products_name'] . '</span>'; 
+
   ?>
   </td>
       <?php
@@ -491,7 +513,7 @@ while ($products = tep_db_fetch_array($products_query)) {
     }
   ?>
   </td>
-  <td align='right' class="dataTableContent2" ><span class = 'TRADER_INPUT'  name="TRADER_INPUT[]"  id="TRADER_<?php echo $products['products_id']; ?>"><?php echo $kakaku_treder?$kakaku_treder:0;?></span></td>
+  <td align='right' class="dataTableContent2" ><span class = 'TRADER_INPUT'  name="TRADER_INPUT[]"  id="TRADER_<?php echo $products['products_id']; ?>"><?php echo $kakaku_treder?round($kakaku_treder,2):0;?></span></td>
 <?php //価格業者  ?>
   <td align='right' class="dataTableContent6" ><span name="INCREASE_INPUT" class = 'INCREASE_INPUT'>
     <?php //echo ceil($kakaku_treder*$col['bairitu']);?>

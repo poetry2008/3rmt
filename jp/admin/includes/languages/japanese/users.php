@@ -115,4 +115,5 @@ define('JAVA_SCRIPT_INFO_ADMIN2CHIEF', 'Admin権限を取り消します。\nよ
 define('TEXT_ERRINFO_USER_STAFF', '<b>権限を与える</b>:Staffを選択してください');
 define('TEXT_ERRINFO_USER_CHIEF', '<b>権限を取消す</b>:Chiefを選択してください');
 define('TEXT_ERRINFO_USER_ADMIN', '<b>権限を取消す</b>:Adminを選択してください');
+define('USER_EMAIL_ERROR','入力されたメールアドレスは不正です!');
 ?>

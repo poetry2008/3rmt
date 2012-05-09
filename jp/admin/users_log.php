@@ -283,7 +283,7 @@ function PageHeader() {
   echo '<html ' . HTML_PARAMS . '>' . "\n";
   echo '<head>' . "\n";
   echo '<meta http-equiv="Content-Type" content="text/html; charset=' . CHARSET . '">' . "\n";
-  echo '<title>' . TITLE . '</title>' . "\n";
+  echo '<title>' .HEADING_TITLE . '</title>' . "\n";
   echo '<link rel="stylesheet" type="text/css" href="includes/stylesheet.css">' . "\n";
   putJavaScript_ConfirmMsg();           // 確認メッセージを表示する JavaScript
   echo '<script language="javascript" src="includes/javascript/jquery_include.js"></script>'."\n";

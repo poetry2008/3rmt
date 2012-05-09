@@ -1,0 +1,10 @@
+jp/admin/ajax_orders.php
+jp/admin/ajax_preorders.php
+jp/admin/edit_new_orders.php
+jp/admin/edit_new_orders2.php
+jp/admin/edit_new_preorders.php
+jp/admin/edit_orders.php
+jp/admin/final_preorders.php
+jp/admin/includes/functions/preorder_general.php
+jp/admin/includes/javascript/all_order.js
+jp/admin/includes/javascript/all_preorder.js

@@ -1251,3 +1251,22 @@ a.s_column_bar {
 	font-size:12px;
 	line-height:1.5;
 }
+
+/*notice*/
+#show_head_notice td, #show_all_notice td{
+	line-height:21px;
+	background:#FFB3B5;
+}
+#show_all_notice{
+	position:absolute;
+	background:#fff;
+	width:100%;
+}
+.notice_info a {
+	color:#0000FF;
+	text-decoration:underline;
+}
+.check_button{
+	text-align:right;
+}
+/*end-notice*/

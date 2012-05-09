@@ -335,8 +335,8 @@ UL {
 	padding:3px 5px;
 }
 .input_text {
-	width: 180px;
-	width:200px\09;
+	width: 170px;
+	width:185px\09;
 	height:20px;
 }
 .input_text_short {
@@ -1686,3 +1686,43 @@ searching
 	font-size:11px;
 }
 
+/*密码*/
+#greybackground{
+	background:#000000;
+	width:100%; 
+	display:block; 
+	z-index:100; 
+	top:0px; 
+	left:0px;
+	position:absolute;
+}
+#popup_notice{
+	width:522px;
+	*width:554px;
+	background:#fff;
+	z-index:101;
+	position:absolute;
+	padding:10px 15px;
+	font-size:12px;
+	text-align:left;
+	line-height:21px;
+
+}
+.popup_notice_text{
+	clear:both;
+	padding:5px 0;
+	text-align:center;
+	font-size:14px;
+	font-weight:bold;
+}
+.popup_notice_middle{
+	clear:both;
+	padding:5px 0;
+}
+.popup_notice_button{
+	vertical-align:bottom;
+	padding:10px 0;
+}
+.popup_notice_button a{
+	margin:0 20px;
+}

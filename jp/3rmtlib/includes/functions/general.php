@@ -1505,10 +1505,14 @@ function forward404Unless($condition)
     . number_format($p['products_attention_1_3'] * $cnt) 
     . ')';
   }
-  function tep_get_full_count_in_order2($cnt, $pid){
+  function tep_get_full_count_in_order2($cnt, $pid,$flag=false){
     $p = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS." where products_id='".$pid."'"));
+    if($flag){
+      return number_format($p['products_attention_1_3']);
+    }else{
     return 
     number_format($p['products_attention_1_3'] * $cnt);
+    }
   }
   
   function tep_get_torihiki_select_by_products($product_ids = null,$select_name='')
@@ -2222,8 +2226,15 @@ function forward404Unless($condition)
 <base href="<?php echo (($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERVER) . DIR_WS_CATALOG; ?>">
 <?php
 $site_romaji = tep_get_site_romaji_by_id(SITE_ID);
+$oconfig_raw = tep_db_query("select value from ".TABLE_OTHER_CONFIG." where keyword = 'css_random_string' and site_id = '".SITE_ID."'");
+$oconfig_res = tep_db_fetch_array($oconfig_raw);
+if ($oconfig_res) {
+  $css_random_str = substr($oconfig_res['value'], 0, 4);
+} else {
+  $css_random_str = date('YmdHi', time());
+}
 ?>
-<link rel="stylesheet" type="text/css" href="<?php echo 'css/'.$site_romaji.'.css';?>"> 
+<link rel="stylesheet" type="text/css" href="<?php echo 'css/'.$site_romaji.'.css?v='.$css_random_str;?>"> 
 <?php
     switch (str_replace('/', '', $_SERVER['SCRIPT_NAME'])) {
       case FILENAME_CATEGORY:
@@ -4015,6 +4026,9 @@ function   tep_order_status_change($oID,$status){
   if ($status == '9') {
     tep_db_query("update `".TABLE_ORDERS."` set `confirm_payment_time` = '".date('Y-m-d H:i:s', time())."' where `orders_id` = '".$oID."'");
   }
+  if($status == '17'){
+    tep_db_query("update `".TABLE_ORDERS."` set `orders_wait_flag` = '1' where `orders_id` = '".$oID."'");
+  }
 
   $form = tep_db_fetch_object(tep_db_query($oa_form_sql), "HM_Form");
   //如果存在，把每个元素找出来，看是否有自动更新
@@ -4996,4 +5010,56 @@ function tep_check_also_products_attr()
      $return_single = false; 
    }
    return $return_single;
+}
+
+function tep_customer_in_reset_range($id){
+  $sql = "select reset_flag from ".TABLE_CUSTOMERS_INFO." 
+    where customers_Info_Id ='".$id."'";
+  $query = tep_db_query($sql);
+  $query = tep_db_fetch_array($query);
+  return $query['reset_flag']==1;	 
+}
+function tep_get_replaced_reset_msg($msg){
+//	 todo :fix it
+  $customer_id = $_SESSION['reset_customers_id'];
+  $c_sql = "select * from ".TABLE_CUSTOMERS." where customers_id='".
+    $customer_id."' limit 1 ";
+  $c_query = tep_db_query($c_sql);
+  $c_info = tep_db_fetch_array($c_query);
+  $msg = str_replace(
+  array(
+    "\n",
+    "\n\r",
+    '${NAME}',
+    '${MAIL}',
+    '${SITE_NAME}',
+    '${SUPPORT_EMAIL}',
+    '${SITE_URL}',
+    '${SITE_MAIL}'
+    ),
+  array(
+  '<br>',
+  '<br>',
+  tep_get_fullname($c_info['customers_firstname'],$c_info['customers_lastname']),
+  $c_info['customers_email_address'],
+  STORE_NAME,
+  SUPPORT_EMAIL_ADDRESS,
+  HTTP_SERVER,
+  SUPPORT_EMAIL_ADDRESS),$msg
+  );
+	 return $msg;
+	 
+}
+
+function tep_get_popup_url(){
+  $customer_id = $_SESSION['reset_customers_id'];
+  $c_sql = "select * from ".TABLE_CUSTOMERS." where customers_id='".
+    $customer_id."' limit 1 ";
+  $c_query = tep_db_query($c_sql);
+  $c_info = tep_db_fetch_array($c_query);
+  if($c_info){
+    return tep_href_link(FILENAME_SEND_SUCCESS,'send_mail='.$c_info['customers_email_address'].'&show=1');
+  }else{
+    return '';
+  }
 }

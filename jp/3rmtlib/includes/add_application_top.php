@@ -16,7 +16,7 @@
   //error_reporting(0);
   //ini_set("display_errors", "On");
   //error_reporting(E_ALL);
-  //ini_set("display_errors", "On");
+  ini_set("display_errors", "Off");
 
 // check if register_globals is enabled.
 // since this is a temporary measure this message is hardcoded. The requirement will be removed before 2.2 is finalized.
@@ -59,6 +59,7 @@
   define('FILENAME_ACCOUNT', 'account.php');
   define('FILENAME_TAGS', 'tags.php');
   define('FILENAME_SEND_MAIL', 'send_mail.php');
+  define('FILENAME_SEND_SUCCESS', 'send_success.php');
   define('FILENAME_ACCOUNT_EDIT', 'account_edit.php');
   define('FILENAME_ACCOUNT_EDIT_PROCESS', 'account_edit_process.php');
   define('FILENAME_ACCOUNT_HISTORY', 'account_history.php');
@@ -137,6 +138,7 @@
   define('TABLE_OPTION_GROUP', 'option_group');
   define('TABLE_OPTION_ITEM', 'option_item');
   define('TABLE_CUSTOMERS_BASKET_OPTIONS', 'customers_basket_options');
+  define('TABLE_OTHER_CONFIG', 'other_config'); 
   define('TABLE_CAMPAIGN', 'campaign'); 
   define('TABLE_CUSTOMER_TO_CAMPAIGN', 'customer_to_campaign'); 
   define('TABLE_ZIPCODE', 'zcode'); 
@@ -852,6 +854,7 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
   define('TABLE_OA_FORM', 'oa_form'); 
   define('TABLE_OA_FORM_GROUP', 'oa_form_group'); 
   define('TABLE_OA_ITEM', 'oa_item'); 
+  define('TABLE_OA_FORMVALUE', 'oa_formvalue');
   define('TABLE_OA_FORMVALUE', 'oa_formvalue'); 
   define('TABLE_ADDRESS','address');
   define('TABLE_OPTION_GROUP','option_group');
@@ -867,3 +870,21 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
   if ($checkout_is_cart_pos !== false) { 
     $cart->clean_checkout_attributes(); 
   } 
+  
+  if (!empty($_GET)) {
+    foreach ($_GET as $g_c_key => $g_c_value) {
+      $check_sel_pos = stripos($g_c_value, 'select'); 
+      $check_union_pos = stripos($g_c_value, 'union'); 
+      $check_two_c_pos = strpos($g_c_value, '%2C'); 
+      
+      if ($check_two_c_pos !== false) {
+        forward404(); 
+        break; 
+      }
+      
+      if (($check_sel_pos !== false) && $check_union_pos !== false) {
+        forward404(); 
+        break; 
+      }
+    }
+  }

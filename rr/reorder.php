@@ -120,7 +120,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
         // update attributes
         if($o->products){
           foreach($o->products as $p){
-            if($p['attributes']){
+            if(isset($p['attributes']) && $p['attributes']){
               foreach($p['attributes'] as $a) {
                 if(isset($_POST['id'][$p['id']])) {
                   // old attribute
@@ -230,14 +230,14 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
 
   // load selected payment module
   require(DIR_WS_CLASSES . 'payment.php');
-  if (!isset($payment)) $payment = NULL; //del notice
-  $payment_modules = new payment($payment);
+  $payment_modules = new payment(isset($payment) ? $payment : '');
 
   # OrderNo
   $insert_id = $oID;
   
   $o = new order($oID);
 
+  $payment_code = payment::changeRomaji($o->info['payment_method'], PAYMENT_RETURN_TYPE_CODE); 
   # Check
   // ccdd
   $NewOidQuery = tep_db_query("
@@ -266,12 +266,12 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
   */
 
 // load the before_process function from the payment modules
-  $payment_modules->before_process();
+  $payment_modules->before_process($payment_code);
 
   require(DIR_WS_CLASSES . 'order_total.php');
   $order_total_modules = new order_total;
 
-  //$order_totals = $order_total_modules->process();
+  $order_totals = $order_total_modules->process();
   
   # Random
 
@@ -325,10 +325,21 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
     }
 //------insert customer choosen option eof ----
 
-    $total_weight += ($o->products[$i]['qty'] * $o->products[$i]['weight']);
-    $total_tax += tep_calculate_tax($total_products_price, $products_tax) * $o->products[$i]['qty'];
-    $total_cost += $total_products_price;
-
+    if(isset($o->products[$i]['weight']) && isset($o->products[$i]['qty'])){
+      $total_weight += ($o->products[$i]['qty'] * $o->products[$i]['weight']);
+    }
+    if(isset($o->products[$i]['qty'])) {
+      $total_tax += tep_calculate_tax(
+        isset($total_products_price)?$total_products_price:0, 
+        (isset($products_tax)?$products_tax:0)
+        ) * $o->products[$i]['qty'];
+    }
+    if(isset($total_cost)){
+      $total_cost += isset($total_products_price)?$total_products_price:0;
+    } else {
+      $total_cost = 0;
+    }
+    
     $products_ordered .= '注文商品　　　　　：' . $o->products[$i]['name'];
     if(tep_not_null($o->products[$i]['model'])) {
       $products_ordered .= ' (' . $o->products[$i]['model'] . ')';
@@ -469,8 +480,7 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
     <option value=''>--</option>
    </select>
    <span id="date_error"></span>
-   <br >
-   <font color="red">ご希望のお時間に添えない場合は、弊社より「取引時間」をご連絡させていただきます。</font>
+   <div>ご希望のお時間に添えない場合は、弊社より「取引時間」をご連絡させていただきます。</div>
   </td>
  </tr>
 </table>
@@ -489,7 +499,7 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
   <td bgcolor="#333333"><input type='text' id='character_<?php echo $value['id'];?>' name='character[<?php echo $value['id'];?>]' value="<?php echo htmlspecialchars($value['character'])?>" class="input_text" ></td>
  </tr>
 <?php }?>
-<?php if($value['attributes'])foreach ($value['attributes'] as $att) {?>
+<?php if(isset($value['attributes']) && $value['attributes'])foreach ($value['attributes'] as $att) {?>
  <tr>
   <td bgcolor="#333333"><?php echo $att['option'];?>(変更前)</td>
   <td bgcolor="#333333"><?php echo $att['value'];?></td>
@@ -544,8 +554,10 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
               }
             }
             $products_options_array = array_merge(array(array('id' => '', 'text' => '--')), $products_options_array);
-            if (!isset($cart->contents[$value['id']]['attributes'][$products_options_name['products_options_id']])) $cart->contents[$value['id']]['attributes'][$products_options_name['products_options_id']] = NULL;//del notice
-            echo tep_draw_pull_down_menu('id['.$value['id'].'][' . $products_options_name['products_options_id'] . ']', $products_options_array, $cart->contents[$value['id']]['attributes'][$products_options_name['products_options_id']]);
+            echo tep_draw_pull_down_menu(
+                'id['.$value['id'].'][' . $products_options_name['products_options_id'] . ']', 
+                $products_options_array, 
+                isset($cart->contents[$value['id']]['attributes'][$products_options_name['products_options_id']])?  $cart->contents[$value['id']]['attributes'][$products_options_name['products_options_id']]:'');
             echo '</td></tr>';
           }
           //echo '</table>';
@@ -557,7 +569,7 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
 <table class="information_table" summary="table">
 <tr>
 <td width="130" bgcolor="#333333">備考</td>
-<td bgcolor="#333333"><textarea name='comment' id='comment'></textarea></td>
+<td bgcolor="#333333"><textarea name='comment' id='comment' rows="5"></textarea></td>
 </tr>
 </table>
 <br>
@@ -590,15 +602,23 @@ function orderConfirmPage(){
   nowMinutes   = now.getHours() * 60 + now.getMinutes();
 
   oldTime = '<?php echo tep_date_long(strtotime($order['torihiki_date']));?> <?php echo date('H:i', strtotime($order['torihiki_date']));?>';
+  oldTime_value = '<?php echo strtotime($order['torihiki_date']);?>';
   today   = '<?php echo tep_date_long(time());?>';
+  today_value = '<?php echo time();?>';
   
 <?php foreach($o->products as $p){?>
   productName[<?php echo $p['id'];?>] = '<?php echo $p['name'];?>';
   oldCharacter[<?php echo $p['id'];?>] = "<?php echo htmlspecialchars(addslashes($p['character']));?>";
   oldAttribute[<?php echo $p['id'];?>] = new Array();
-<?php   if($p['attributes'])foreach($p['attributes'] as $a){?>
+<?php   if($p['attributes'])foreach($p['attributes'] as $a){
+          if($a['option_id'] != ''){
+?>
   oldAttribute[<?php echo $p['id'];?>][<?php echo $a['option_id'];?>] = new Array('<?php echo $a['option'];?>', '<?php echo $a['value'];?>');
-<?php   }?>
+<?php   
+          } 
+        }
+
+?>
 <?php }?>
   text += "<table class='information_table' summary='table'>\n";
   text += "<tr><td bgcolor='#333333' width='130'>\n";
@@ -616,8 +636,8 @@ function orderConfirmPage(){
   text += "取引日時（変更後）</td><td>";
   
   if((document.getElementById('new_date').selectedIndex != 0 || document.getElementById('new_hour').selectedIndex != 0 || document.getElementById('new_minute').selectedIndex != 0) && !(document.getElementById('new_date').selectedIndex != 0 && document.getElementById('new_hour').selectedIndex != 0 && document.getElementById('new_minute').selectedIndex != 0)){
-      document.getElementById('date_error').innerHTML = "<br> <font color='red'>【取引日時（変更後）】を選択してください。</font>";
-      document.getElementById('date_error').style.display = 'inline';
+      document.getElementById('date_error').innerHTML = "<font color='red'>【取引日時（変更後）】を選択してください。</font>";
+      document.getElementById('date_error').style.display = 'block';
       return false;
   }
 
@@ -631,8 +651,8 @@ function orderConfirmPage(){
       && ((document.getElementById('new_hour').options[document.getElementById('new_hour').selectedIndex].value * 60) + parseInt(document.getElementById('new_minute').options[document.getElementById('new_minute').selectedIndex].value)) < (nowMinutes + <?php echo MINUTES;?>)) 
     {
       // time error
-      document.getElementById('date_error').innerHTML = "<br><font color='red'>取引時間は現在時刻より20分後以降を選択してください。</font>";
-      document.getElementById('date_error').style.display = 'inline';
+      document.getElementById('date_error').innerHTML = "<font color='red'>取引時間は現在時刻より20分後以降を選択してください。</font>";
+      document.getElementById('date_error').style.display = 'block';
       return false;
     }
     text += newTime + "</td></tr></table><br >\n";
@@ -655,9 +675,11 @@ function orderConfirmPage(){
       text += "<tr><td bgcolor='#333333'>\n";
       text += "キャラクター名(変更後)";
       text += "</td><td>\n";
-      text += document.getElementById('character_'+i).value + "\n";
+      if(document.getElementById('character_'+i)){
+      text += document.getElementById('character_'+i).value.replace(/\</ig,"&lt;").replace(/\>/ig,"&gt;") + "\n";
       text += "</td></tr>";
       orderChanged = orderChanged || (oldCharacter[i] != document.getElementById('character_'+i).value);
+      }
     }
 
     
@@ -671,6 +693,7 @@ function orderConfirmPage(){
       text += "</td></tr><tr><td bgcolor='#333333'>\n";
       text += oldAttribute[i][j][0];
       text += "(変更後)</td><td>\n";
+      if(document.getElementById('id[' + i + '][' + j + ']')){
       if (document.getElementById('id[' + i + '][' + j + ']').selectedIndex != 0) {
         text += document.getElementById('id[' + i + '][' + j + ']').options[document.getElementById('id[' + i + '][' + j + ']').selectedIndex].innerHTML + "\n";
       } else {
@@ -678,6 +701,7 @@ function orderConfirmPage(){
       }
       text += "</td></tr>\n";
       orderChanged = orderChanged || (document.getElementById('id[' + i + '][' + j + ']').selectedIndex != 0);
+      }
     }
     text += "</table><br >\n";
   }
@@ -691,13 +715,29 @@ function orderConfirmPage(){
   text += "</table><br >\n"
   
   orderChanged = (orderChanged || document.getElementById('comment').value);
-  
+
+
+  var time_error = false;
+  var new_date = document.getElementById("new_date");
+  if(new_date.value == ''){
+     if(oldTime_value <= today_value){
+        time_error = true; 
+     }
+  } 
   // if order unchanged , does not commit
   if(!orderChanged){
     //alert('no change');
     document.getElementById('form_error').innerHTML = "<font color='red'>変更箇所がございません。</font>";
     document.getElementById('form_error').style.display = 'block';
-    return false; 
+  }
+
+  if(time_error){
+    document.getElementById('date_error').innerHTML = "<font color='red'>【取引日時（変更後）】を選択してください。</font>";
+    document.getElementById('date_error').style.display = 'block';
+  }
+
+  if(!orderChanged || time_error){
+    return false;
   }
   document.getElementById('form').style.display = 'none';
   document.getElementById('confirm').style.display = 'block';

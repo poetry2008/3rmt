@@ -74,7 +74,7 @@ while ($sr->hasNext()) {
     }
   }
 }
-
+exit;
 if ($srCompare > SR_COMPARE_NO) {
   $sum = 0;
   while ($sr2->hasNext()) {

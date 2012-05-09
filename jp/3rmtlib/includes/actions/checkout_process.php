@@ -815,6 +815,9 @@ unset($_SESSION['options']);
   exit;
 */
 
+tep_session_unregister('h_code_fee');
+tep_session_unregister('h_point');
+
 tep_redirect(tep_href_link(FILENAME_CHECKOUT_SUCCESS,'','SSL'),'T');
     
 require(DIR_WS_INCLUDES . 'application_bottom.php');

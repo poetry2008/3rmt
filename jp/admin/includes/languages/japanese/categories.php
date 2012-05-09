@@ -231,3 +231,4 @@ define('TEXT_PRODUCTS_OPTION_TEXT', 'オプショングループ:');
 define('OPTION_PREVIEW', 'レビュー');
 define('OPTION_EDIT', '編集');
 define('OPTION_CLEAR', 'クリア');
+define('IMAGE_MANUAL','マニュアル');

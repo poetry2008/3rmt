@@ -22,9 +22,15 @@ require(DIR_WS_CLASSES . 'payment.php');
 // check_email
   function tep_validate_email($email) {
     $valid_address = true;
+    $e = "/^[-+\\.0-9=a-z_]+@([-0-9a-z]+\\.)+([0-9a-z]){2,4}$/i";
+    if(!preg_match($e, $email)) {
+      $valid_address = false;
+    }
+    /*
 
-    $mail_pat = '^(.+)@(.+)$';
-    $valid_chars = "[^] \(\)<>@,;:\\\"\[]";
+    //$mail_pat = '^(.+)@(.+)$';
+    $mail_pat = '^(.{2,})@(.{1,}\..{2,4})$';
+    $valid_chars = "[^] \(\)<>@,;/:\\\"\[]";
     $atom = "$valid_chars+";
     $quoted_user='(\"[^\"]*\")';
     $word = "($atom|$quoted_user)";
@@ -50,8 +56,6 @@ require(DIR_WS_CLASSES . 'payment.php');
         else {
           // Domain is a name, not an IP
           if (eregi($domain_pat, $domain)) {
-            /* domain name seems valid, but now make sure that it ends in a valid TLD or ccTLD
-               and that there's a hostname preceding the domain or country. */
             $domain_components = explode(".", $domain);
             // Make sure there's a host name preceding the domain.
             if (sizeof($domain_components) < 2) {
@@ -97,6 +101,7 @@ require(DIR_WS_CLASSES . 'payment.php');
         $valid_address = false;
       }
     }
+    */
     return $valid_address;
   }
 

@@ -96,7 +96,9 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
                customers_password, 
                customers_email_address, 
                customers_default_address_id, 
-               customers_guest_chk 
+               customers_guest_chk,
+               reset_flag,
+               reset_success
         FROM " . TABLE_CUSTOMERS .  " 
         WHERE customers_email_address = '" . tep_db_input($email_address) . "' 
           AND site_id = ".SITE_ID." AND is_active = 1");
@@ -108,6 +110,11 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
       if (!tep_validate_password($password, $check_customer['customers_password'])) {
         $_GET['login'] = 'fail';
       } else {
+	  if($check_customer['reset_flag'] and $check_customer['reset_success']!=1 ){
+	       $_SESSION['reset_flag'] = true;
+               $_SESSION['reset_customers_id'] = $check_customer['customers_id'];
+       	       tep_redirect(tep_href_link(FILENAME_DEFAULT));	    
+	  }
         if (SESSION_RECREATE == 'True') { // 2004/04/25 Add session management
           tep_session_recreate();
         }
