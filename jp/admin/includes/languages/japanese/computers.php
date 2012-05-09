@@ -18,3 +18,8 @@ define('TEXT_COMPUTERS_NAME_EXISTS', 'ボタンはもう存在しています');
 define('TEXT_DISPLAY_NUMBER_OF_COMPUTERS', '<b>%d</b>~<b>%d</b>番目を表示（<b>%d</b>ボタンのうち） ');
 define('TEXT_CONFIRM_DELETE_COMPUTER', 'アイコンを削除');
 define('TABLE_HEADING_COMPUTER_ORDER', '整列順');
+define('TEXT_USER_ADDED','登録者:');
+define('TEXT_USER_UPDATE','更新者:');
+define('TEXT_DATE_ADDED','登録日:');
+define('TEXT_DATE_UPDATE','更新日:');
+

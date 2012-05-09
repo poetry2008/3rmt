@@ -64,4 +64,9 @@ define('ERROR_UNKNOWN_STATUS_FLAG', "エラー: 不明なステータスです�
 
 define('ERROR_GRAPHS_DIRECTORY_DOES_NOT_EXIST', "エラー:  'graphs' ディレクトリが存在しません。 'images' ディレクトリ内に'graphs'ディレクトリを作成してください。");
 define('ERROR_GRAPHS_DIRECTORY_NOT_WRITEABLE', "エラー:  'images/graphs' ディレクトリに書き込みができません。正しいユーザ権限を設定してください。");
+define('TEXT_USER_ADDED','登録者:');
+define('TEXT_USER_UPDATE','更新者:');
+define('TEXT_DATE_ADDED','登録日:');
+define('TEXT_DATE_UPDATE','更新日:');
+
 ?>

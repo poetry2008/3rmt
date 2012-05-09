@@ -226,4 +226,6 @@ define('TEXT_CATEGORY_ROMAJI', 'ローマ字:');
 define('TEXT_RELATE_ROW_COUNT', '%sは過去%d日に%d個注文がありました。');
 define('TEXT_PRODUCTS_PREORDER_TEXT', '予約:');
 define('IMAGE_MANUAL','マニュアル');
+define('TEXT_USER_ADDED','登録者:');
+define('TEXT_USER_UPDATE','更新者:');
 

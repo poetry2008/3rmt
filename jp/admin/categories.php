@@ -97,6 +97,14 @@
                                  'products_price'            =>
                                  tep_get_bflag_by_product_id($products_id) ? 0 - abs(tep_db_prepare_input($_POST['products_price'])): abs(tep_db_prepare_input($_POST['products_price'])));
         tep_db_perform(TABLE_PRODUCTS, $update_sql_data, 'update', 'products_id = \'' . tep_db_input($products_id) . '\'');
+if($site_id=="" || $site_id==0){
+$update_sql = "update ".TABLE_PRODUCTS_DESCRIPTION." set products_last_modified=now() where products_id='".$products_id."'";
+tep_db_query($update_sql);
+//	  tep_db_perform(TABLE_CATEGORIES_DESCRIPTION, $update_sql_data, 'update', 'categories_id = \'' . $categories_id . '\'');
+	  }else{
+$update_sql = "update ".TABLE_PRODUCTS_DESCRIPTION." set products_last_modified=now() where products_id='".$products_id."' and site_id='".$site_id."'";
+tep_db_query($update_sql);
+	  }
         if ($_GET['from'] == 'admin') {
           tep_redirect(tep_href_link(FILENAME_CATEGORIES_ADMIN, 'cPath=' . $_GET['cPath']));
         } else {
@@ -199,6 +207,8 @@
           max_inventory="'.$max_inventory.'",
           min_inventory="'.$min_inventory.'"
           where products_id="'.$products_id.'"'; 
+	$update_latest_date = "update ".TABLE_PRODUCTS_DESCRIPTION." set products_last_modified=now() where products_id='".$products_id."' and site_id='".$_GET['site_id']."'";
+	tep_db_query($update_latest_date);
         tep_db_query($upload_inventory_sql);
         tep_redirect(tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $products_id.($_GET['search']?'&search='.$_GET['search']:'')));
         }
@@ -214,17 +224,26 @@
          forward401Unless(editPermission($site_arr, $site_id));
         $sort_order = tep_db_prepare_input($_POST['sort_order']);
         $sql_data_array = array('sort_order' => $sort_order);
-
+        
         if ($_GET['action'] == 'insert_category') {
           $insert_sql_data = array('parent_id' => $current_category_id,
+		                   'user_added'=> $_POST['user_added'],
                                    'date_added' => 'now()');
           $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data);
           tep_db_perform(TABLE_CATEGORIES, $sql_data_array);
           $categories_id = tep_db_insert_id();
         } elseif ($_GET['action'] == 'update_category') {
-          $update_sql_data = array('last_modified' => 'now()');
+		$update_sql_data = array('last_modified' => 'now()');
           $sql_data_array = tep_array_merge($sql_data_array, $update_sql_data);
           tep_db_perform(TABLE_CATEGORIES, $sql_data_array, 'update', 'categories_id = \'' . $categories_id . '\'');
+	  if($site_id=="" || $site_id==0){
+$update_sql = "update ".TABLE_CATEGORIES_DESCRIPTION." set last_modified=now(),user_last_modified='".$_POST['user_last_modified']."' where categories_id='".$categories_id."'";
+
+tep_db_query($update_sql);
+	  }else{
+$update_sql = "update ".TABLE_CATEGORIES_DESCRIPTION." set last_modified=now(),user_last_modified='".$_POST['user_last_modified']."' where categories_id='".$categories_id."' and site_id='".$site_id."'";
+tep_db_query($update_sql);
+	  }
         }
 
         $languages = tep_get_languages();
@@ -647,7 +666,7 @@
 
 
           if ($_GET['action'] == 'insert_product') {
-            $insert_sql_data = array('products_date_added' => 'now()');
+            $insert_sql_data = array('products_date_added' => 'now()','products_user_added'=>$_POST['products_user_added']);
             $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data);
             tep_db_perform(TABLE_PRODUCTS, $sql_data_array);
             $products_id = tep_db_insert_id();
@@ -656,6 +675,15 @@
             $update_sql_data = array('products_last_modified' => 'now()');
             $sql_data_array = tep_array_merge($sql_data_array, $update_sql_data);
             tep_db_perform(TABLE_PRODUCTS, $sql_data_array, 'update', 'products_id = \'' . tep_db_input($products_id) . '\'');
+//print_r($_POST);exit;
+if($site_id=="" || $site_id==0){
+$update_sql = "update ".TABLE_PRODUCTS_DESCRIPTION." set products_last_modified=now(),products_user_update='".$_POST['products_user_update']."' where products_id='".$products_id."'";
+tep_db_query($update_sql);
+//	  tep_db_perform(TABLE_CATEGORIES_DESCRIPTION, $update_sql_data, 'update', 'categories_id = \'' . $categories_id . '\'');
+	  }else{
+$update_sql = "update ".TABLE_PRODUCTS_DESCRIPTION." set products_last_modified=now(),products_user_update='".$_POST['products_user_update']."' where products_id='".$products_id."' and site_id='".$site_id."'";
+tep_db_query($update_sql);
+	  }
           }
         
         if (isset($_POST['carttags']) && $site_id == '0') {
@@ -1307,8 +1335,10 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                  p.products_price, 
                  p.products_price_offset,
                  p.products_weight, 
+		 p.products_user_added,
                  p.products_date_added, 
-                 p.products_last_modified, 
+                 pd.products_last_modified, 
+                 pd.products_user_update,
                  date_format(p.products_date_available, '%Y-%m-%d') as products_date_available, 
                  pd.products_status, 
                  p.products_tax_class_id, 
@@ -1439,6 +1469,8 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
             'post', 'enctype="multipart/form-data" onSubmit="return products_form_validator(\''.
         $current_category_id.'\',\''.$pInfo->products_id.'\',\''.$site_id.'\');"'); ?>
         <input type="hidden" name="site_id" value="<?php echo $site_id;?>">
+	<input type="hidden" name="products_user_added" value="<?php echo $user_info['name']?>"> 
+        <input type="hidden" name="products_user_update" value="<?php echo $user_info['name']?>">
           <td><table border="0" cellspacing="0" cellpadding="2">
               <tr>
                 <td class="main" valign="top"><?php echo $site_id?('<br><b>'.tep_get_site_name_by_id($site_id).'</b>'):'';?></td>
@@ -2714,7 +2746,9 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                c.parent_id, 
                c.sort_order, 
                c.date_added, 
-               c.last_modified, 
+	       c.user_added,
+               cd.last_modified, 
+	       cd.user_last_modified,
                cd.character_romaji,
                cd.alpha_romaji,
                cd.site_id
@@ -3109,9 +3143,12 @@ if (isset($nowColor) && $nowColor == $odd) {
                p.products_image3, 
                p.products_price, 
                p.products_price_offset,
+               p.products_user_added,
                p.products_date_added, 
-               p.products_last_modified, 
-               p.products_date_available, 
+               pd.products_last_modified, 
+               pd.products_user_update,
+
+                              p.products_date_available, 
                pd.products_status, 
                p2c.categories_id 
         from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c 
@@ -3138,8 +3175,11 @@ if (isset($nowColor) && $nowColor == $odd) {
                p.products_image3, 
                p.products_price, 
                p.products_price_offset,
+               p.products_user_added,
                p.products_date_added, 
-               p.products_last_modified, 
+               pd.products_last_modified, 
+               pd.products_user_update,
+
                p.products_date_available, 
                pd.site_id, 
                p.sort_order, 
@@ -3217,7 +3257,13 @@ if (isset($nowColor) && $nowColor == $odd) {
                    }
                    ?> 
                     <?php //echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $products['products_id'] . '&action=new_product_preview&read=only') . '">' . tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW) . '</a>&nbsp;&nbsp;<a href="orders.php?search_type=products_name&keywords=' . urlencode($products['products_name']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_time.gif', '', 16, 16) . '</a>&nbsp;&nbsp;' . $products['products_name']; ?>
-<?php echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $products['products_id'] . '&action=new_product_preview&read=only') . '">' . tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW) . '</a>&nbsp;&nbsp;<a href="orders.php?search_type=products_id&products_id=' . $products['products_id'] . '">' . tep_image(DIR_WS_IMAGES . 'icon_time.gif', '', 16, 16) . '</a>&nbsp;&nbsp;' . $products['products_name']; ?>
+		   
+<?php 
+if(!isset($_GET['site_id']) || $_GET['site_id']==0){
+echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $products['products_id'] . '&action=new_product_preview&read=only') . '">' . tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW) . '</a>&nbsp;&nbsp;<a href="orders.php?search_type=products_id&products_id=' . $products['products_id'] . '">' . tep_image(DIR_WS_IMAGES . 'icon_time.gif', '', 16, 16) . '</a>&nbsp;&nbsp;'; 
+}
+	echo $products['products_name']; 
+?>
 
                     </td>
                    <?php 
@@ -3522,7 +3568,7 @@ tep_display_google_results(FILENAME_CATEGORIES);
                    '<br>'.CATEGORY_META_DES_TEXT.'<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('meta_description[' . $languages[$i]['id'] . ']','soft',30,3).
                    "\n";
         }
-
+        $contents[]=array('text'=>'<input type=hidden name=user_added value='.$user_info['name'].'>');
         $contents[] = array('text' => '<br>' . TEXT_CATEGORIES_NAME . $category_inputs_string);
         $contents[] = array('text' => '<br>' . TEXT_CATEGORIES_IMAGE . '<br>' . tep_draw_file_field('categories_image'));
         $contents[] = array('text' => '<br>' . TEXT_SORT_ORDER . '<br>' .  tep_draw_input_field('sort_order', '', 'size="2" onkeyup="clearLibNum(this);"'));
@@ -3572,7 +3618,7 @@ tep_display_google_results(FILENAME_CATEGORIES);
          '<br>'.CATEGORY_META_DES_TEXT.'<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('meta_description[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_meta_description($cInfo->categories_id, $languages[$i]['id'], $site_id, true)).
          '';
         }
-
+        $contents[]=array('text'=>'<input type=hidden name=user_last_modified value='.$user_info['name'].'>');
         $contents[] = array('text' => '<br>' . TEXT_EDIT_CATEGORIES_NAME . $category_inputs_string);
         $contents[] = array('text' => '<br>' . tep_image(tep_get_web_upload_dir($site_id).'categories/'. $cInfo->categories_image, $cInfo->categories_name) . '<br>' . tep_get_upload_dir($site_id). 'categories/<br><b>' . $cInfo->categories_image . '</b>');
         $contents[] = array('text' => '<br>' . TEXT_EDIT_CATEGORIES_IMAGE . '<br>' . tep_draw_file_field('categories_image'));
@@ -3766,9 +3812,14 @@ tep_display_google_results(FILENAME_CATEGORIES);
                 'text' => '<a href="'. tep_href_link(FILENAME_CATEGORIES, 'cPath=' .  $cPath . '&cID=' . $cInfo->categories_id . '&action=edit_keyword'.($_GET['search']?'&search='.$_GET['search']:'')) .  '">'.tep_html_element_button(TEXT_KEYWORD, '', 'element_button01') . '</a> ');
             }
 }
+            $contents[] = array('text' => '<br>' . TEXT_USER_ADDED . ' ' . $cInfo->user_added);
+            $contents[] = array('text' =>  '<br>' .TEXT_DATE_ADDED . ' ' . tep_datetime_short($cInfo->date_added));
 
-            $contents[] = array('text' => '<br>' . TEXT_DATE_ADDED . ' ' . tep_date_short($cInfo->date_added));
-            if (tep_not_null($cInfo->last_modified)) $contents[] = array('text' => TEXT_LAST_MODIFIED . ' ' . tep_date_short($cInfo->last_modified));
+	    if (tep_not_null($cInfo->last_modified)) {
+                    $contents[] = array('text' => '<br>' . TEXT_USER_UPDATE . ' ' . $cInfo->user_last_modified);
+
+		    $contents[] = array('text' => '<br>' . TEXT_LAST_MODIFIED . ' ' . tep_datetime_short($cInfo->last_modified));
+	    }
             $contents[] = array('text' => '<br>' . tep_info_image('categories/'.$cInfo->categories_image, $cInfo->categories_name, HEADING_IMAGE_WIDTH, HEADING_IMAGE_HEIGHT, 0) . '<br>' . $cInfo->categories_image);
             $contents[] = array('text' => '<br>' . TEXT_SUBCATEGORIES . ' ' . $cInfo->childs_count . '<br>' . TEXT_PRODUCTS . ' ' . $cInfo->products_count);
           } elseif (isset($pInfo) && is_object($pInfo)) { // product info box contents
@@ -3803,9 +3854,13 @@ tep_display_google_results(FILENAME_CATEGORIES);
 }else{
             $contents[] = array('align' => 'left', 'text' => '<a href="' .  tep_href_link(FILENAME_REVIEWS, 'cPath=' . $cPath . '&products_id=' . $pInfo->products_id . '&action=new') . '">' . tep_html_element_button(IMAGE_REVIEWS) . '</a>');
 }
-
-            $contents[] = array('text' => '<br>' . TEXT_DATE_ADDED . ' ' . tep_date_short($pInfo->products_date_added));
-            if (tep_not_null($pInfo->products_last_modified)) $contents[] = array('text' => TEXT_LAST_MODIFIED . ' ' . tep_datetime_short($pInfo->products_last_modified));
+            $contents[] = array('text' => '<br>' . TEXT_USER_ADDED .' ' . $pInfo->products_user_added);
+            $contents[] = array('text' => '<br>' . TEXT_DATE_ADDED . ' ' . tep_datetime_short($pInfo->products_date_added));
+	    if (tep_not_null($pInfo->products_last_modified)){
+        $contents[] = array('text' => '<br>' . TEXT_USER_UPDATE .' ' . $pInfo->products_user_update);
+	$contents[] = array('text' => '<br>'.TEXT_LAST_MODIFIED . ' ' . tep_datetime_short($pInfo->products_last_modified));
+        
+	    }
             if (date('Y-m-d') < $pInfo->products_date_available) $contents[] = array('text' => TEXT_DATE_AVAILABLE . ' ' . tep_date_short($pInfo->products_date_available));
             $contents[] = array('text' => '<br>' . tep_info_image('products/'.$pInfo->products_image, $pInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 0) . '<br>' . $pInfo->products_image);
             if($pInfo->products_image2) {

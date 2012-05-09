@@ -67,7 +67,7 @@
         tep_db_perform(TABLE_CUSTOMERS, $sql_data_array, 'update', "customers_id = '" . tep_db_input($customers_id) . "'");
 
         tep_db_query("update " . TABLE_CUSTOMERS_INFO . " set
-           customers_info_date_account_last_modified = now() where customers_info_id = '" . tep_db_input($customers_id) . "'");
+           customers_info_date_account_last_modified = now(),user_update='".$_POST['user_update']."' where customers_info_id = '" . tep_db_input($customers_id) . "'");
 
         $default_address_id   = tep_db_prepare_input($_POST['default_address_id']);
         $entry_street_address = tep_db_prepare_input($_POST['entry_street_address']);
@@ -364,7 +364,8 @@ function check_form() {
     $address_form->setFormLine('country',ENTRY_COUNTRY,$a_value);
     $a_hidden = tep_draw_hidden_field('entry_country_id',$cInfo->entry_country_id);
     $address_form->setFormHidden('country',$a_hidden); // in case without country
-
+    $a_hidden = tep_draw_hidden_field('user_update',$user_info['name']);
+    $address_form->setFormHidden('user_update',$a_hidden);
     // state
     $a_value = tep_draw_pull_down_menu('entry_zone_id', tep_prepare_country_zones_pull_down($cInfo->entry_country_id), $cInfo->entry_zone_id, 'onChange="resetStateText(this.form);"');
     $address_form->setFormLine('zone_id',ENTRY_STATE,$a_value);
@@ -525,7 +526,7 @@ function check_form() {
       </tr>   
     <?php } ?>
       <tr>
-        <td align="right" class="main"><?php echo tep_html_element_submit(IMAGE_SAVE) . '&nbsp;&nbsp;<a href="' .  tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action'))) .'">' . tep_html_element_button(IMAGE_CANCEL) . '</a>'; ?></td>
+      <td align="right" class="main"><?php echo tep_html_element_submit(IMAGE_SAVE) . '&nbsp;&nbsp;<a href="' .  tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('action'))) .'">' . tep_html_element_button(IMAGE_CANCEL) . '</a>'; ?><input type="hidden" name="user_update" value="<?php echo $user_info['name'];?>"></td>
       </tr></form>
 <?php
   } else {
@@ -569,6 +570,7 @@ function check_form() {
              c.customers_email_address, 
              a.entry_country_id, 
              c.customers_guest_chk,
+	     ci.user_update,
              ci.customers_info_date_account_created as date_account_created, 
              ci.customers_info_date_account_last_modified as date_account_last_modified, 
              ci.customers_info_date_of_last_logon as date_last_logon, 
@@ -711,8 +713,10 @@ function check_form() {
             <a href="' . tep_href_link(FILENAME_MAIL, 'selected_box=tools&customer='
           .
           $cInfo->customers_email_address.'&'.tep_get_all_get_params(array('page')).'&customer_page='.$_GET['page']) .  '">' .tep_html_element_button(IMAGE_EMAIL) . '</a>');
-        $contents[] = array('text' => '<br>' . TEXT_DATE_ACCOUNT_CREATED . ' ' . tep_date_short($cInfo->date_account_created));
-        $contents[] = array('text' => '<br>' . TEXT_DATE_ACCOUNT_LAST_MODIFIED . ' ' . tep_date_short($cInfo->date_account_last_modified));
+	$contents[] = array('text' => '<br>'.TEXT_USER_ADDED.' '.$cInfo->customers_firstname.' '.$cInfo->customers_lastname);
+        $contents[] = array('text' => '<br>' . TEXT_DATE_ACCOUNT_CREATED . ' ' . tep_datetime_short($cInfo->date_account_created));
+        $contents[] = array('text' => '<br>'.TEXT_USER_UPDATE.' '.$cInfo->user_update);
+        $contents[] = array('text' => '<br>' . TEXT_DATE_ACCOUNT_LAST_MODIFIED . ' ' . tep_datetime_short($cInfo->date_account_last_modified));
         $contents[] = array('text' => '<br>' . TEXT_INFO_DATE_LAST_LOGON . ' '  . tep_date_short($cInfo->date_last_logon));
         $contents[] = array('text' => '<br>' . TEXT_INFO_NUMBER_OF_LOGONS . ' ' . $cInfo->number_of_logons);
         $contents[] = array('text' => '<br>' . TEXT_INFO_NUMBER_OF_REVIEWS . ' ' . $cInfo->number_of_reviews);

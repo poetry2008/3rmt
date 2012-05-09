@@ -61,7 +61,9 @@
                                 'text_information' => $text_information,
                                 'status' => $status,
                                 'romaji' => $romaji,
-                                'sort_id' => $sort_id
+                                'sort_id' => $sort_id,
+				'user_update' =>$_POST['user_update'],
+				'date_update' =>'now()'
                                 );
 
         if ($error == false) {
@@ -112,6 +114,10 @@
                                 'status' => $status,
                                 'romaji' => $romaji,
                                 'sort_id' => $sort_id,
+				'user_added' => $_POST['user_added'],
+				'user_update'=> $_POST['user_update'],
+				'date_added' =>'now()',
+				'date_update' =>'now()',
                                 'site_id' => $site_id);
 
         if ($error == false) {
@@ -200,6 +206,7 @@
               .((isset($_GET['site_id'])&&$_GET['site_id'])?'&site_id='.$_GET['site_id']:'')); ?> 
             <table border="0" cellspacing="0" cellpadding="5"> 
               <tr> 
+	      <input type="hidden" name="user_update" value="<?php echo $user_info['name']?>">
                 <td class="main"><?php echo ENTRY_SITE; ?></td> 
               <td class="main"><?php echo 
               tep_get_site_name_by_id($detail['site_id']);?></td>
@@ -258,6 +265,9 @@
           <td> <?php echo tep_draw_form('update', FILENAME_CONTENTS, 'act=insert'); ?> 
             <table border="0" cellspacing="0" cellpadding="5"> 
               <tr> 
+<input type="hidden" name="user_added" value="<?php echo $user_info['name']?>">
+<input type="hidden" name="user_update" value="<?php echo $user_info['name']?>">
+
                 <td class="main"><?php echo ENTRY_SITE; ?></td> 
               <td class="main"><?php echo tep_site_pull_down_menu();?></td>
               </tr> 
@@ -428,6 +438,14 @@
 
         $contents[] = array('align' => 'center', 'text' => '<br>このページのリンクを表示させるには以下のソースコードを表示したい箇所にコピーしてください。<br>'.tep_draw_textarea_field('link','soft',30,5,'<a href="'.tep_catalog_href_link('page.php','pID='.(isset($_GET['cID'])?$_GET['cID']:'')).'">'.$c_title.'</a>').'<br><a href="' . tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID .  '&action=edit') . '">' . tep_html_element_button(IMAGE_EDIT) . '</a>' .  ($ocertify->npermission == 15 ? ( ' <a href="' .  tep_href_link(FILENAME_CONTENTS, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID .  '&action=confirm') . '">' .  tep_html_element_button(IMAGE_DELETE) . '</a>'):''));
       }
+$info_query = tep_db_query("select * from information_page where PID='".$_GET['cID']."'");
+$info_array = tep_db_fetch_array($info_query);
+$contents[] = array('text' => '<br>'. TEXT_USER_ADDED. ' ' .$info_array['user_added']);
+$contents[] = array('text' => '<br>'. TEXT_DATE_ADDED. ' ' .tep_datetime_short($info_array['date_added']));
+$contents[] = array('text' => '<br>'. TEXT_USER_UPDATE. ' ' .$info_array['user_update']);
+$contents[] = array('text' => '<br>'. TEXT_DATE_UPDATE. ' ' .tep_datetime_short($info_array['date_update']));
+
+
       break;
   }
 

@@ -45,6 +45,10 @@ require('includes/application_top.php');
               text, 
               start_date, 
               limit_date,
+	      user_added,
+	      user_update,
+	      date_added,
+	      date_update,
               site_id
             ) values (
               '".$ins_title."',
@@ -53,6 +57,10 @@ require('includes/application_top.php');
               '".$ins_text."',
               '".$ins_period1."',
               '".$ins_period2."',
+	      '".$_POST['user_added']."',
+'".$_POST['user_update']."',
+now(),
+now(),
               '".$site_id."')";
 
           
@@ -86,9 +94,9 @@ require('includes/application_top.php');
     $up_period2 = tep_db_prepare_input($_POST['limit_y']).tep_db_prepare_input($_POST['limit_m']).tep_db_prepare_input($_POST['limit_d']);
 
       if($filepath2 == ""){
-      $up = "update ".TABLE_PRESENT_GOODS." set title='".$up_title."', html_check='".$up_ht."', text='".$up_text."',start_date='".$up_period1."',limit_date='".$up_period2."' where goods_id='".$up_id."'";
+      $up = "update ".TABLE_PRESENT_GOODS." set title='".$up_title."', html_check='".$up_ht."', text='".$up_text."',start_date='".$up_period1."',limit_date='".$up_period2."',user_update='".$_POST['user_update']."',date_update=now() where goods_id='".$up_id."'";
       }else{
-      $up = "update ".TABLE_PRESENT_GOODS." set title='".$up_title."', html_check='".$up_ht."', image='".$filepath2."',text='".$up_text."',start_date='".$up_period1."',limit_date='".$up_period2."' where goods_id='".$up_id."'";
+      echo $up = "update ".TABLE_PRESENT_GOODS." set title='".$up_title."', html_check='".$up_ht."', image='".$filepath2."',text='".$up_text."',start_date='".$up_period1."',limit_date='".$up_period2."',user_update='".$_POST['user_update']."',date_update=now() where goods_id='".$up_id."'";
       }
     $mess = mysql_query($up) or die("データ追加エラー");
       if($mess == true){
@@ -197,7 +205,9 @@ case 'input' :
               <table width="100%" align="center" border="0" cellspacing="0" cellpadding="8">
                 <tr>
                   <td valign="middle" class="pageHeading" height="10"><?php echo PRESENT_CREATE_TITLE;?></td>
-                  <td align="right" valign="top">&nbsp;</td>
+		  <td align="right" valign="top">
+<input type="hidden" name="user_added" value="<?php echo $user_info['name']?>">&nbsp;</td>
+<input type="hidden" name="user_update" value="<?php echo $user_info['name']?>">
                 </tr>
                 <tr>
                   <td colspan="2"><p>&nbsp;</p>
@@ -379,7 +389,7 @@ $sele_lid = substr($sql1['limit_date'],8,2);
               <table width="100%" align="center" border="0" cellspacing="0" cellpadding="8">
                 <tr>
                   <td valign="middle" class="pageHeading" height="10"><?php echo PRESENT_UPDATE_TITLE;?></td>
-                  <td align="right" valign="top">&nbsp;</td>
+		  <td align="right" valign="top"><input type="hidden" name="user_update" value="<?php echo $user_info['name']?>">&nbsp;</td>
                 </tr>
                 <tr>
                   <td colspan="2"><p>&nbsp;</p>
@@ -842,6 +852,13 @@ default:
             $heading[] = array('text' => '<b>' . $c_title . '</b>');
         
             $present[] = array('align' => 'center', 'text' => '<br><br><a href="' .  tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=view') . '">' .  tep_html_element_button(IMAGE_EDIT) . '</a> <a href="' .  tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action')) . 'cID=' . $cID . '&action=deleform') . '">' .  tep_html_element_button(IMAGE_DELETE) . '</a> <a href="' .  tep_href_link(FILENAME_PRESENT, tep_get_all_get_params(array('cID', 'action','page')) . 'cID=' . $cID . '&action=list') . '">' .  tep_html_element_button('リスト') . '</a>' );
+$present_query = tep_db_query("select * from present_goods where goods_id='".$cID."'");
+$present_array = tep_db_fetch_array($present_query);
+$present[] = array('text' => '<br>'. TEXT_USER_ADDED. ' ' .$present_array['user_added']);
+$present[] = array('text' => '<br>'. TEXT_DATE_ADDED. ' ' .tep_datetime_short($present_array['date_added']));
+$present[] = array('text' => '<br>'. TEXT_USER_UPDATE. ' ' .$present_array['user_update']);
+$present[] = array('text' => '<br>'. TEXT_DATE_UPDATE. ' ' .tep_datetime_short($present_array['date_update']));
+
             }
             break;
           }

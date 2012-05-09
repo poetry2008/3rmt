@@ -58,11 +58,11 @@
         $reviews_status = tep_db_prepare_input($_POST['reviews_status']);
         $date_added     = $_POST['year'].'-'.$_POST['m'].'-'.$_POST['d'].' '.$_POST['h'].':'.$_POST['i'].':'.$_POST['s'];
         $customers_name = $_POST['customers_name'] ? $_POST['customers_name'] : '匿名';
-
         tep_db_query("
             update " . TABLE_REVIEWS . " 
             set reviews_rating = '" . tep_db_input($reviews_rating) . "', 
                 last_modified = now(), 
+	        user_update = '".$_POST['user_update']."',
                 reviews_status = '".$reviews_status."',
                 date_added = '".$date_added."',
                 customers_name = '".$customers_name."'
@@ -242,6 +242,8 @@
                r.customers_name, 
                r.date_added, 
                r.last_modified, 
+	       r.user_added,
+	       r.user_update,
                r.reviews_read, 
                rd.reviews_text, 
                r.reviews_rating, 
@@ -281,6 +283,7 @@
         <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
             <td class="main" valign="top">
+	    <input type="hidden" name="user_update" value="<?php echo $user_info['name']?>">
       <b><?php echo ENTRY_SITE; ?>:</b> <?php echo $reviews['site_name']; ?><br>
       <b><?php echo ENTRY_PRODUCT; ?></b> <?php echo $rInfo->products_name; ?><br>
       <b><?php echo ENTRY_FROM; ?></b> <input type="text" name="customers_name" value="<?php echo tep_output_string_protected($rInfo->customers_name); ?>" /><br>
@@ -356,6 +359,8 @@
                  r.customers_name, 
                  r.date_added, 
                  r.last_modified, 
+		 r.user_added,
+		 r.user_update,
                  r.reviews_read, 
                  rd.reviews_text, 
                  r.reviews_rating ,
@@ -457,6 +462,8 @@
              r.products_id, 
              r.date_added, 
              r.last_modified, 
+	     r.user_added,
+	     r.user_update,
              r.reviews_rating, 
              r.reviews_status ,
              s.romaji,
@@ -570,8 +577,13 @@
         $contents[] = array('align' => 'center', 'text' => 
           '<a href="' . tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] .  '&rID=' . $rInfo->reviews_id . '&action=edit' .  (isset($_GET['site_id'])?('&lsite_id='.$_GET['site_id']):'')) . '">' .  tep_html_element_button(IMAGE_EDIT) . '</a>' . ($ocertify->npermission == 15 ? (' <a href="' .  tep_href_link(FILENAME_REVIEWS, 'page=' . $_GET['page'] . '&rID=' .  $rInfo->reviews_id . '&action=delete' .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' .  tep_html_element_button(IMAGE_DELETE) . '</a>'):'')
         );
-        $contents[] = array('text' => '<br>' . TEXT_INFO_DATE_ADDED . ' ' . tep_date_short($rInfo->date_added));
-        if (tep_not_null($rInfo->last_modified)) $contents[] = array('text' => TEXT_INFO_LAST_MODIFIED . ' ' . tep_date_short($rInfo->last_modified));
+$contents[] = array('text' => '<br>'. TEXT_USER_ADDED. ' ' .$rInfo->customers_name);
+$contents[] = array('text' => '<br>'. TEXT_DATE_ADDED. ' ' .tep_datetime_short($rInfo->date_added));
+$contents[] = array('text' => '<br>'. TEXT_USER_UPDATE. ' ' .$rInfo->user_update);
+$contents[] = array('text' => '<br>'. TEXT_DATE_UPDATE. ' ' .tep_datetime_short($rInfo->last_modified));
+
+//        $contents[] = array('text' => '<br>' . TEXT_INFO_DATE_ADDED . ' ' . tep_date_short($rInfo->date_added));
+//        if (tep_not_null($rInfo->last_modified)) $contents[] = array('text' => TEXT_INFO_LAST_MODIFIED . ' ' . tep_date_short($rInfo->last_modified));
         $contents[] = array('text' => '<br>' . tep_info_image('products/'.$rInfo->products_image, $rInfo->products_name, SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, $rInfo->site_id));
         $contents[] = array('text' => '<br>' . TEXT_INFO_REVIEW_AUTHOR . ' ' . tep_output_string_protected($rInfo->customers_name));
         $contents[] = array('text' => TEXT_INFO_REVIEW_RATING . ' ' . tep_image(HTTP_CATALOG_SERVER . DIR_WS_CATALOG_IMAGES . 'stars_' . $rInfo->reviews_rating . '.gif'));

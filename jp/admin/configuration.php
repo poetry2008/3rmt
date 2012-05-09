@@ -64,9 +64,9 @@ WHERE
       $path = DIR_FS_CATALOG . DIR_WS_IMAGES . $upfile_name;
       move_uploaded_file($upfile, $path);
       $configuration_value = tep_db_input($upfile_name);
-      tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . tep_db_input($upfile_name) . "', last_modified = now() where configuration_id = '" . tep_db_input($cID) . "'");
+      tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . tep_db_input($upfile_name) . "', last_modified = now(),user_update='".$_POST['user_update']."' where configuration_id = '" . tep_db_input($cID) . "'");
   }
-        tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . tep_db_input($configuration_value) . "', last_modified = now() where configuration_id = '" . tep_db_input($cID) . "'");
+        tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . tep_db_input($configuration_value) . "', last_modified = now(),user_update='".$_POST['user_update']."' where configuration_id = '" . tep_db_input($cID) . "'");
         tep_redirect(tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' .  tep_get_default_configuration_id_by_id($cID)));
   break;
     case 'tdel':
@@ -252,7 +252,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
         && (!isset($cInfo) || !$cInfo) 
         && (!isset($_GET['action']) or substr($_GET['action'], 0, 3) != 'new')
     ) {
-  $cfg_extra_query = tep_db_query("select  configuration_key, configuration_description, date_added, last_modified, use_function, set_function from " . TABLE_CONFIGURATION . " where configuration_id = '" . $configuration['configuration_id'] . "'");
+  $cfg_extra_query = tep_db_query("select  configuration_key, configuration_description, date_added, last_modified, use_function, set_function,user_added,user_update from " . TABLE_CONFIGURATION . " where configuration_id = '" . $configuration['configuration_id'] . "'");
 //  $cfg_extra_query = tep_db_query("select configuration_key,configuration_description,date_added,last_modified,use_function,set_function  from ".TABLE_CONFIGURATION. " where configuration_key = ( select configuration_key from " . TABLE_CONFIGURATION . " where configuration_id = '" . $configuration['configuration_id'] . "')");
   $cfg_extra= tep_db_fetch_array($cfg_extra_query);
 /*  while($cfg_extra = tep_db_fetch_array($cfg_extra_query))
@@ -309,6 +309,7 @@ case 'edit':
     } else {
   $contents = array('form' => tep_draw_form('configuration', FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' . $cInfo->configuration_id . '&action=save'));
     }
+    $contents[] = array('text' => '<input type="hidden" name="user_update" value="'.$user_info['name'].'">');
     $contents[] = array('text' => TEXT_INFO_EDIT_INTRO);
     $contents[] = array('text' => '<br><b>' . $cInfo->configuration_title . '</b><br>' . $cInfo->configuration_description . '<br>' . $value_field);
   
@@ -453,8 +454,13 @@ default:
 
         $contents[] = array('align' => 'center', 'text' => '<a href="' .  tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' .  $cInfo->configuration_id . '&action=edit') . '">' .  tep_html_element_button(IMAGE_EDIT) . '</a>');
         $contents[] = array('text' => '<br>' . $cInfo->configuration_description);
-        $contents[] = array('text' => '<br>' . TEXT_INFO_DATE_ADDED . ' ' . tep_date_short($cInfo->date_added));
-        if (tep_not_null($cInfo->last_modified)) $contents[] = array('text' => TEXT_INFO_LAST_MODIFIED . ' ' . tep_date_short($cInfo->last_modified));
+$contents[] = array('text' => '<br>' . TEXT_USER_ADDED . ' ' . $cInfo->user_added);
+$contents[] = array('text' => '<br>' . TEXT_INFO_DATE_ADDED . ' ' . tep_datetime_short($cInfo->date_added));
+
+if (tep_not_null($cInfo->last_modified)){
+$contents[] = array('text' => '<br>' . TEXT_USER_UPDATE . ' ' . $cInfo->user_update);
+$contents[] = array('text' =>'<br>'. TEXT_INFO_LAST_MODIFIED . ' ' . tep_datetime_short($cInfo->last_modified));
+    }
     }
     break;
 }

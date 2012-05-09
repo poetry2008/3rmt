@@ -86,10 +86,14 @@
                                   'banners_url'       => $banners_url,
                                   'banners_image'     => $db_image_location,
                                   'banners_group'     => $banners_group,
-                                  'banners_html_text' => $html_text);
+				  'banners_html_text' => $html_text,
+				  'user_update' =>$_POST['user_update'],
+				  'date_update' =>'now()',
+			  );
 
           if ($_GET['action'] == 'insert') {
             $insert_sql_data = array('date_added' => 'now()',
+		                     'user_added' => $_POST['user_added'],
                                       'status' => '1',
                                       'site_id' => $site_id
                                      );
@@ -334,6 +338,8 @@ function popupImageWindow(url) {
       }?>
         <td><table border="0" cellspacing="0" cellpadding="2">
           <tr>
+	  <input type="hidden" name="user_update" value="<?php echo $user_info['name']?>">
+	  <input type="hidden" name="user_added" value="<?php echo $user_info['name']?>">
             <td class="main"><?php echo ENTRY_SITE; ?></td>
             <td class="main"><?php echo (isset($_GET['bID']) && $_GET['bID'])?$banner['site_name']:tep_site_pull_down_menu(); ?></td>
           </tr>
@@ -431,6 +437,9 @@ function popupImageWindow(url) {
              b.date_status_change, 
              b.date_scheduled, 
              b.date_added,
+	     b.user_added,
+	     b.user_update,
+	     b.date_update,
              s.romaji,
              s.name as site_name
       from " . TABLE_BANNERS . " b, ".TABLE_SITES." s
@@ -516,7 +525,12 @@ function popupImageWindow(url) {
 
         $contents[] = array('align' => 'center', 'text' => '<a href="' . tep_href_link(FILENAME_BANNER_MANAGER, 'page=' .  $_GET['page'] . '&bID=' . $bInfo->banners_id . '&action=new' .  (isset($_GET['site_id'])?('&lsite_id='.$_GET['site_id']):'')) . '">' .  tep_html_element_button(IMAGE_EDIT) . '</a>' . ($ocertify->npermission == 15 ? (' <a href="' .  tep_href_link(FILENAME_BANNER_MANAGER, 'page=' . $_GET['page'] . '&bID=' . $bInfo->banners_id . '&action=delete' .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' .  tep_html_element_button(IMAGE_DELETE) . '</a>'):'')
         );
-        $contents[] = array('text' => '<br>' . TEXT_BANNERS_DATE_ADDED . ' ' . tep_date_short($bInfo->date_added));
+//        $contents[] = array('text' => '<br>' . TEXT_BANNERS_DATE_ADDED . ' ' . tep_date_short($bInfo->date_added));
+$contents[] = array('text' => '<br>'. TEXT_USER_ADDED. ' ' .$bInfo->user_added);
+$contents[] = array('text' => '<br>'. TEXT_DATE_ADDED. ' ' .tep_datetime_short($bInfo->date_added));
+$contents[] = array('text' => '<br>'. TEXT_USER_UPDATE. ' ' .$bInfo->user_update);
+$contents[] = array('text' => '<br>'. TEXT_DATE_UPDATE. ' ' .tep_datetime_short($bInfo->date_update));
+
 
         if ( (function_exists('imagecreate')) && ($dir_ok) && ($banner_extension) ) {
           $banner_id = $bInfo->banners_id;

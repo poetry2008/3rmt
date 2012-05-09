@@ -38,4 +38,9 @@ define('TEXT_DELETE_WARNING_PRODUCTS', '<b>警告:</b> このメーカーにま�
 
 define('ERROR_DIRECTORY_NOT_WRITEABLE', 'エラー: このディレクトリに書き込みできません。正しいユーザ権限を %s に設定してください。');
 define('ERROR_DIRECTORY_DOES_NOT_EXIST', 'エラー: %s ディレクトリが存在しません。');
+define('TEXT_USER_ADDED','追加者:');
+define('TEXT_USER_UPDATE','更新者:');
+//define('TEXT_DATE_ADDED','作成日:');
+define('TEXT_DATE_UPDATE','更新日:');
+
 ?>
