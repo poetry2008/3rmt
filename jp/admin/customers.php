@@ -142,6 +142,11 @@
   if (isset($_GET['action']) && $_GET['action'] == 'edit') {
 ?>
 <script language="javascript"><!--
+function isEmail( str ){  
+  var myReg = /^[-_A-Za-z0-9]+@([_A-Za-z0-9]+\.)+[A-Za-z0-9]{2,3}$/; 
+  if(myReg.test(str)) return true; 
+  return false; 
+}
 function resetStateText(theForm) {
   theForm.entry_state.value = '';
   if (theForm.entry_zone_id.options.length > 1) {
@@ -187,6 +192,8 @@ function check_form() {
 <?php if (ACCOUNT_COMPANY == 'true') echo 'var entry_company = document.customers.entry_company.value;' . "\n"; ?>
 <?php if (ACCOUNT_DOB == 'true') echo 'var customers_dob = document.customers.customers_dob.value;' . "\n"; ?>
   var customers_email_address = document.customers.customers_email_address.value;  
+  customers_email_address = customers_email_address.replace(/\u200b/g, '');
+  document.customers.customers_email_address.value=customers_email_address;  
   //var entry_street_address = document.customers.entry_street_address.value;
   //var entry_postcode = document.customers.entry_postcode.value;
   //var entry_city = document.customers.entry_city.value;
@@ -220,9 +227,7 @@ function check_form() {
     error_message = error_message + "<?php echo JS_EMAIL_ADDRESS; ?>";
     error = 1;
   }
-  var pattern = /^[-+\\.0-9=a-z_]+@([-0-9a-z]+\\.)+([0-9a-z]){2,4}$/;
-  chkFlag = pattern.test(customers_email_address);
-  if(!chkFlag){
+  if(!isEmail(customers_email_address)){
     error_message = error_message + "<?php echo JS_EMAIL_ADDRESS_MATCH_ERROR; ?>";
     error = 1;
   }
