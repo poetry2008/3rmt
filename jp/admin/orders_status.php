@@ -21,7 +21,6 @@
             'finished' => tep_db_prepare_input((int)$_POST['finished']),
             'nomail' => tep_db_prepare_input((int)$_POST['nomail']),
             'calc_price' => tep_db_prepare_input((int)$_POST['calc_price']),
-            'is_thzk' => tep_db_prepare_input((int)$_POST['is_thzk']),
 	    'user_update' => $_POST['user_update'],
             'date_update' => 'now()',
             );

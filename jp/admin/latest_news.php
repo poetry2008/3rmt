@@ -97,7 +97,7 @@ tep_redirect(tep_href_link(FILENAME_LATEST_NEWS, (isset($_GET['site_id'])?('site
           $sql_data_array = array('headline' => tep_db_prepare_input($_POST['headline']),
                                   'news_image_description' => tep_db_prepare_input($_POST['news_image_description']),
                                   'update_editor'  => tep_db_prepare_input($_POST['update_editor']), 
-				  'latest_update_date' => tep_db_prepare_input(time()-3600),
+				  'latest_update_date' => tep_db_prepare_input(time()),
                                   'content'  => tep_db_prepare_input($_POST['content']) );
                                   
           tep_db_perform(TABLE_LATEST_NEWS, $sql_data_array, 'update', "news_id = '" . tep_db_prepare_input($_GET['latest_news_id']) . "'");
@@ -382,10 +382,10 @@ if (isset($_GET['latest_news_id']) and $latest_news['news_id'] == $_GET['latest_
             $contents[] = array('align' => 'center', 
                                 'text' => '<a href="' .  tep_href_link(FILENAME_LATEST_NEWS, 'latest_news_id=' . $selected_item['news_id'] .  '&action=new_latest_news') .  (isset($_GET['site_id'])?('&lsite_id='.$_GET['site_id']):'').(isset($_GET['page'])?('&page='.$_GET['page']):'').'">' . tep_html_element_button(IMAGE_EDIT) . '</a> <a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'latest_news_id=' . $selected_item['news_id'] .  '&action=delete_latest_news'.  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'').  (isset($_GET['page'])?('&page='.$_GET['page']):'')) .  '">' . tep_html_element_button(IMAGE_DELETE) .  '</a>');
             $contents[] = array('text' => '<br>' . $selected_item['content']);
-$contents[] = array('text' => '<br>作成者：' . $selected_item['author']);
-$contents[] = array('text' => '<br>作成日時：' . $selected_item['date_added']);
-$contents[] = array('text' => '<br>更新者：' . $selected_item['update_editor']);
-$contents[] = array('text' => '<br>更新日時：' . date("Y-m-d H:i:s",$selected_item['latest_update_date']));
+$contents[] = array('text' => '<br>' .TEXT_USER_ADDED. $selected_item['author']);
+$contents[] = array('text' => '<br>' .TEXT_DATE_ADDED. $selected_item['date_added']);
+$contents[] = array('text' => '<br>' .TEXT_USER_UPDATE. $selected_item['update_editor']);
+$contents[] = array('text' => '<br>' .TEXT_DATE_UPDATE. date("Y-m-d H:i:s",$selected_item['latest_update_date']));
           }
         } else { // create category/product info
           $heading[] = array('text' => '<b>' . EMPTY_CATEGORY . '</b>');
