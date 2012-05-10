@@ -19,6 +19,8 @@
         $customers_firstname_f   = tep_db_prepare_input($_POST['customers_firstname_f']);
         $customers_lastname_f    = tep_db_prepare_input($_POST['customers_lastname_f']);
         $customers_email_address = tep_db_prepare_input($_POST['customers_email_address']);
+        $customers_email_address = str_replace("\xe2\x80\x8b",
+            '',$customers_email_address);
         $customers_telephone     = tep_db_prepare_input($_POST['customers_telephone']);
         $customers_fax           = tep_db_prepare_input($_POST['customers_fax']);
         $customers_newsletter    = tep_db_prepare_input($_POST['customers_newsletter']);
@@ -118,7 +120,7 @@
         tep_db_query("delete from " . TABLE_CUSTOMERS . " where customers_id = '" . tep_db_input($customers_id) . "'");
         tep_db_query("delete from " . TABLE_CUSTOMERS_INFO . " where customers_info_id = '" . tep_db_input($customers_id) . "'");
         tep_db_query("delete from " . TABLE_CUSTOMERS_BASKET . " where customers_id = '" . tep_db_input($customers_id) . "'");
-        tep_db_query("delete from " . TABLE_CUSTOMERS_BASKET_OPTIONS . " where customers_id = '" . tep_db_input($customers_id) . "'");
+        tep_db_query("delete from " . TABLE_CUSTOMERS_BASKET_ATTRIBUTES . " where customers_id = '" . tep_db_input($customers_id) . "'");
         tep_db_query("delete from " . TABLE_WHOS_ONLINE . " where customer_id = '" . tep_db_input($customers_id) . "'");
 
         tep_redirect(tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID', 'action')))); 

@@ -36,6 +36,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
   }
   
   $cEmail = tep_db_prepare_input($_POST['email']);
+  $cEmail = str_replace("\xe2\x80\x8b", '', $cEmail);
   
   $o      = new order($oID);
   // ccdd

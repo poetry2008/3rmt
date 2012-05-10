@@ -19,6 +19,9 @@
                                          'created_at' => 'now()',
                                          'updated_at' => 'now()');
            tep_db_perform(TABLE_POINT_MAIL,$sql_point_mail_array);
+	   $last_insert_id = mysql_insert_id();
+           tep_redirect(tep_href_link(FILENAME_POINT_EMAIL,'page='.$_GET['page'].'&id='.$last_insert_id));
+
         }else if($_GET['action'] == 'save'){
            $sql_point_mail_array = array('mail_date' => $point_mail_date,
                                          'mail_title' => $point_mail_title,
