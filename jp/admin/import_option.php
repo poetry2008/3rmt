@@ -49,6 +49,7 @@ while($array = mysql_fetch_array($query)){
 
       if(($options_array_one['name'] == $val['name']) && (serialize($options_array_one['value']) == serialize($tmp_options_array['value']))){
         $new = $val['value']['eid'];
+        break;
       }
     }
   }
