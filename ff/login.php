@@ -37,6 +37,7 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
     $_POST['email_address'] = tep_an_zen_to_han($_POST['email_address']);
 
     $email_address = tep_db_prepare_input($_POST['email_address']);
+    $email_address  = str_replace("\xe2\x80\x8b", '', $email_address);
     $password = tep_db_prepare_input($_POST['password']);
     
     if (isset($_GET['pid'])) {
@@ -68,16 +69,15 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
             $customer_last_name = $link_customer_res['customers_lastname']; // 2003.03.08 Add Japanese osCommerce
             $customer_country_id = $check_country['entry_country_id'];
             $customer_zone_id = $check_country['entry_zone_id'];
+            $customer_emailaddress = $email_address;
+            $guestchk = $link_customer_res['customers_guest_chk'];
             tep_session_register('customer_id');
             tep_session_register('customer_default_address_id');
             tep_session_register('customer_first_name');
             tep_session_register('customer_last_name'); // 2003.03.08 Add Japanese osCommerce
             tep_session_register('customer_country_id');
             tep_session_register('customer_zone_id');
-            $customer_emailaddress = $email_address;
             tep_session_register('customer_emailaddress');
-
-            $guestchk = $link_customer_res['customers_guest_chk'];
             tep_session_register('guestchk');
 
             $date_now = date('Ymd');

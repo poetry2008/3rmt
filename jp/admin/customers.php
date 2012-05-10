@@ -19,6 +19,8 @@
         $customers_firstname_f   = tep_db_prepare_input($_POST['customers_firstname_f']);
         $customers_lastname_f    = tep_db_prepare_input($_POST['customers_lastname_f']);
         $customers_email_address = tep_db_prepare_input($_POST['customers_email_address']);
+        $customers_email_address = str_replace("\xe2\x80\x8b",
+            '',$customers_email_address);
         $customers_telephone     = tep_db_prepare_input($_POST['customers_telephone']);
         $customers_fax           = tep_db_prepare_input($_POST['customers_fax']);
         $customers_newsletter    = tep_db_prepare_input($_POST['customers_newsletter']);

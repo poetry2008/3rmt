@@ -23,18 +23,18 @@
   $an_cols = array('password','confirmation','email_address','postcode','telephone','fax');
   if (ACCOUNT_DOB) $an_cols[] = 'dob';
   foreach ($an_cols as $col) {
-    if (!isset($_POST[$col])) $_POST[$col]=NULL; //del notice
+    if (!isset($_POST[$col])) $_POST[$col] =NULL;
     $_POST[$col] = tep_an_zen_to_han($_POST[$col]);
   }
 
-    if (!isset($_POST['gender'])) $_POST['gender']=NULL; //del notice
+  if (!isset($_POST['gender'])) $_POST['gender'] =NULL;
   $gender = tep_db_prepare_input($_POST['gender']);
   $firstname = tep_db_prepare_input($_POST['firstname']);
   $lastname = tep_db_prepare_input($_POST['lastname']);
   //add
-    if (!isset($_POST['firstname_f'])) $_POST['firstname_f']=NULL; //del notice
+  if (!isset($_POST['firstname_f'])) $_POST['firstname_f'] =NULL;
   $firstname_f = tep_db_prepare_input($_POST['firstname_f']);
-    if (!isset($_POST['lastname_f'])) $_POST['lastname_f']=NULL; //del notice
+  if (!isset($_POST['lastname_f'])) $_POST['lastname_f'] =NULL;
   $lastname_f = tep_db_prepare_input($_POST['lastname_f']);
   $dob = tep_db_prepare_input($_POST['dob']);
   $email_address = tep_db_prepare_input($_POST['email_address']);
@@ -45,21 +45,21 @@
   $newsletter = tep_db_prepare_input($_POST['newsletter']);
   $password = tep_db_prepare_input($_POST['password']);
   $confirmation = tep_db_prepare_input($_POST['confirmation']);
-    if (!isset($_POST['stree_address'])) $_POST['street_address']=NULL; //del notice
+  if (!isset($_POST['street_address'])) $_POST['street_address'] =NULL;
   $street_address = tep_db_prepare_input($_POST['street_address']);
-    if (!isset($_POST['company'])) $_POST['company']=NULL; //del notice
+  if (!isset($_POST['company'])) $_POST['company'] =NULL;
   $company = tep_db_prepare_input($_POST['company']);
-    if (!isset($_POST['suburb'])) $_POST['suburb']=NULL; //del notice
+  if (!isset($_POST['suburb'])) $_POST['suburb'] =NULL;
   $suburb = tep_db_prepare_input($_POST['suburb']);
   $postcode = tep_db_prepare_input($_POST['postcode']);
-    if (!isset($_POST['city'])) $_POST['city']=NULL; //del notice
+  if (!isset($_POST['city'])) $_POST['city'] =NULL;
   $city = tep_db_prepare_input($_POST['city']);
-    if (!isset($_POST['zone_id'])) $_POST['zone_id']=NULL; //del notice
+  if (!isset($_POST['zone_id'])) $_POST['zone_id'] =NULL;
   $zone_id = tep_db_prepare_input($_POST['zone_id']);
-    if (!isset($_POST['state'])) $_POST['state']=NULL; //del notice
+  if (!isset($_POST['state'])) $_POST['state'] =NULL;
   $state = tep_db_prepare_input($_POST['state']);
   $country = tep_db_prepare_input($_POST['country']);
-
+ 
   $error = false; // reset error flag
 /*
   if (ACCOUNT_GENDER == 'true') {
@@ -84,16 +84,6 @@
   } else {
     $entry_lastname_error = false;
   }
-/*
-  if (ACCOUNT_DOB == 'true') {
-    if (checkdate(substr(tep_date_raw($dob), 4, 2), substr(tep_date_raw($dob), 6, 2), substr(tep_date_raw($dob), 0, 4))) {
-      $entry_date_of_birth_error = false;
-    } else {
-      $error = true;
-      $entry_date_of_birth_error = true;
-    }
-  }
-*/
 
   if (strlen($email_address) < ENTRY_EMAIL_ADDRESS_MIN_LENGTH) {
     $error = true;
@@ -179,17 +169,17 @@
 <?php require('includes/form_check.js.php'); ?>
 </head>
 <body>
-<!-- header //--> 
+<!-- header --> 
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
-<!-- header_eof //--> 
-<!-- body //--> 
+<!-- header_eof --> 
+<!-- body --> 
 <div id="main">
-<!-- left_navigation //-->
+<!-- left_navigation -->
 <div id="l_menu">
 <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
 </div>
-<!-- left_navigation_eof //-->
-<!-- body_text //-->
+<!-- left_navigation_eof -->
+<!-- body_text -->
 <div id="content">
   <?php echo tep_draw_form('account_edit', tep_href_link(FILENAME_ACCOUNT_EDIT_PROCESS, '', 'SSL'), 'post', 'onSubmit="return check_form();"') . tep_draw_hidden_field('action', 'process'); ?>
   <div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
@@ -219,16 +209,16 @@
     </form> 
   </div>
 </div>
-<!-- body_text_eof //--> 
-<!-- right_navigation //--> 
+<!-- body_text_eof --> 
+<!-- right_navigation --> 
 <div id="r_menu">
 <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
 </div>
-<!-- right_navigation_eof //-->
-  <!-- body_eof //-->
-  <!-- footer //-->
+<!-- right_navigation_eof -->
+  <!-- body_eof -->
+  <!-- footer -->
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-  <!-- footer_eof //-->
+  <!-- footer_eof -->
 </div>
 </body>
 </html>
