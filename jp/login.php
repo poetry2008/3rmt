@@ -34,7 +34,156 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
   if (isset($_GET['action']) && ($_GET['action'] == 'process')) {
     // tamura 2002/12/30 「全角」英数字を「半角」に変換
     $_POST['email_address'] = tep_an_zen_to_han($_POST['email_address']);
+    $flag_error = false;
+    $user_ip = explode('.',$_SERVER['REMOTE_ADDR']);
+    $user_ip4 = 0;
+    while (list($u_key, $u_byte) = each($user_ip)) {
+      $user_ip4 = ($user_ip4 << 8) | (int)$u_byte;
+    }
+    //被封IP时间
+    $user_ip_time_query = tep_db_query("select logintime from ". TABLE_USER_LOGIN ." where seal_ip='1' and address='{$user_ip4}' and loginstatus='p' order by logintime desc limit 0,1");
+    $user_ip_time_array = tep_db_fetch_array($user_ip_time_query);
+    tep_db_free_result($user_ip_time_query);
+    $seal_ip_time = $user_ip_time_array['logintime'];
 
+    $user_time_query = tep_db_query("select max(logintime) as max_time from ". TABLE_USER_LOGIN ." where address='{$user_ip4}' and loginstatus='p'");
+    $user_time_array = tep_db_fetch_array($user_time_query);
+    $user_max_time = $user_time_array['max_time'];
+    tep_db_free_result($user_time_query);
+    $user_query = tep_db_query("select loginstatus from ". TABLE_USER_LOGIN ." where address='{$user_ip4}' and loginstatus='p'");
+    $user_num_rows = tep_db_num_rows($user_query);
+    tep_db_free_result($user_query);
+    //判断如果是新注册用户不受IP被封限制
+    $new_user_query = tep_db_query("select ci.customers_info_date_account_created new_user_time,ci.customer_last_resetpwd resetpwd_time from ". TABLE_CUSTOMERS ." c left join ". TABLE_CUSTOMERS_INFO ." ci on c.customers_id = ci.customers_info_id where c.customers_email_address='{$_POST['email_address']}'");
+    $new_user_array = tep_db_fetch_array($new_user_query);
+    tep_db_free_result($new_user_query);
+    //新注册用户或者修改密码用户的特殊处理 start
+    $edit_user_query = tep_db_query("select loginstatus from ". TABLE_USER_LOGIN ." where logintime>'{$new_user_array['new_user_time']}' and address='{$user_ip4}' and loginstatus='p' and account='{$_POST['email_address']}'");
+    $edit_user_num_rows = tep_db_num_rows($edit_user_query);
+    tep_db_free_result($edit_user_query);
+
+    $edit_old_user_query = tep_db_query("select loginstatus from ". TABLE_USER_LOGIN ." where logintime>'{$new_user_array['resetpwd_time']}' and address='{$user_ip4}' and loginstatus='p' and account='{$_POST['email_address']}'");
+    $edit_old_user_num_rows = tep_db_num_rows($edit_old_user_query);
+    tep_db_free_result($edit_old_user_query);
+    $new_user_time = strtotime($new_user_array['new_user_time']);
+    $old_user_resetpwd_time = strtotime($new_user_array['resetpwd_time']);
+    $old_user_time = strtotime($user_max_time);
+    $flag_true = $old_user_resetpwd_time != false ? $old_user_resetpwd_time <= $old_user_time : false; 
+
+    $seal_ip_flag = false; 
+    if(strtotime($seal_ip_time)){
+      $seal_ip_flag = strtotime($seal_ip_time.'+24 hour') >= time(); 
+    } 
+
+  if($edit_old_user_num_rows >= 5){
+    //end 
+    if($flag_true == true){
+      if($user_num_rows >= 5){
+         
+         $user_time = strtotime($user_max_time.'+24 hour');
+         $user_now = time();
+         
+         if($user_time >= $user_now){
+               
+               if(!$seal_ip_flag){ 
+                 tep_db_query("update ". TABLE_USER_LOGIN ." set seal_ip='1' where address='{$user_ip4}' and loginstatus='p' and logintime='$user_max_time'");           
+               }
+               $flag_error = true; 
+               $_GET['login'] = 'ip_error';
+         }
+        
+      }
+    }
+
+    if($new_user_time <= $old_user_time && $old_user_resetpwd_time == false){
+        
+        if($user_num_rows >= 5){
+         
+         $user_time = strtotime($user_max_time.'+24 hour');
+         $user_now = time();
+         
+         if($user_time >= $user_now){
+
+                
+               if(!$seal_ip_flag){ 
+                 tep_db_query("update ". TABLE_USER_LOGIN ." set seal_ip='1' where address='{$user_ip4}' and loginstatus='p' and logintime='$user_max_time'"); 
+               }
+               $flag_error = true; 
+               $_GET['login'] = 'ip_error';
+         }
+        
+      }
+    }
+  } 
+
+  if($edit_user_num_rows >= 5 && $old_user_resetpwd_time == false){
+    //end 
+    if($flag_true == true){
+      if($user_num_rows >= 5){
+         
+         $user_time = strtotime($user_max_time.'+24 hour');
+         $user_now = time();
+         
+         if($user_time >= $user_now){
+
+               $flag_error = true; 
+               $_GET['login'] = 'ip_error';
+         }
+        
+      }
+    }
+
+    if($new_user_time <= $old_user_time && $old_user_resetpwd_time == false){
+        
+        if($user_num_rows >= 5){
+         
+         $user_time = strtotime($user_max_time.'+24 hour');
+         $user_now = time();
+         
+         if($user_time >= $user_now){
+
+               $flag_error = true; 
+               $_GET['login'] = 'ip_error';
+         }
+        
+      }
+    }
+  }
+
+  if($edit_old_user_num_rows < 5 && $edit_user_num_rows < 5){
+    if($flag_true == true){
+      if($user_num_rows >= 5){
+         
+         $user_time = strtotime($user_max_time.'+24 hour');
+         $user_now = time();
+         
+         if($user_time >= $user_now){
+
+               $flag_error = true; 
+               $_GET['login'] = 'ip_error';
+         }
+        
+      }
+    }
+
+    if($new_user_time <= $old_user_time && $old_user_resetpwd_time == false && $new_user_time <= strtotime($seal_ip_time)){
+        
+        if($user_num_rows >= 5){
+         
+         $user_time = strtotime($user_max_time.'+24 hour');
+         $user_now = time();
+         
+         if($user_time >= $user_now){
+
+               $flag_error = true; 
+               $_GET['login'] = 'ip_error';
+         }
+        
+      }
+    } 
+  }
+
+ if($flag_error == false){
     $email_address = tep_db_prepare_input($_POST['email_address']);
     $password = tep_db_prepare_input($_POST['password']);
     
@@ -86,7 +235,12 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
                 SET customers_info_date_of_last_logon = now(), 
                     customers_info_number_of_logons   = customers_info_number_of_logons+1 
                 WHERE customers_info_id = '" . $customer_id . "'
-            ");    
+                ");    
+            //把登录信息写入数据表 
+            tep_db_query("
+              INSERT INTO ". TABLE_USER_LOGIN ." 
+              VALUES('". session_id() ."',now(),now(),'{$_POST['email_address']}','a','','{$user_ip4}','0') 
+              ");
              $cart->restore_contents();
              tep_redirect(tep_href_link('change_preorder.php', 'pid='.$_GET['pid'], 'NONSSL'));
           }
@@ -109,7 +263,7 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
         FROM " . TABLE_CUSTOMERS .  " 
         WHERE customers_email_address = '" . tep_db_input($email_address) . "' 
           AND site_id = ".SITE_ID." AND is_active = 1");
-
+    
     if (!tep_db_num_rows($check_customer_query)) {
       $_GET['login'] = 'fail';
     } else {
@@ -117,6 +271,12 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
       // Check that password is good
       if (!tep_validate_password($password, $check_customer['customers_password'])) {
         $_GET['login'] = 'fail';
+        //把登录信息写入数据表 
+            session_regenerate_id();  
+            tep_db_query("
+              INSERT INTO ". TABLE_USER_LOGIN ." 
+              VALUES('". session_id() ."',now(),now(),'{$_POST['email_address']}','p','','{$user_ip4}','0') 
+              ");
       } else {
 
 //reset{{    
@@ -167,7 +327,12 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
             SET customers_info_date_of_last_logon = now(), 
                 customers_info_number_of_logons   = customers_info_number_of_logons+1 
             WHERE customers_info_id = '" . $customer_id . "'
-        ");
+            ");
+        //把登录信息写入数据表 
+        tep_db_query("
+            INSERT INTO ". TABLE_USER_LOGIN ." 
+            VALUES('". session_id() ."',now(),now(),'{$_POST['email_address']}','a','','{$user_ip4}','0') 
+            ");
     
     //POINT_LIMIT CHECK ポイントの有効期限チェック ds-style
     if(MODULE_ORDER_TOTAL_POINT_LIMIT != '0') {
@@ -220,6 +385,7 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
         }
       }
     }
+    } 
     }
   }
 }
@@ -259,13 +425,17 @@ function session_win() {
       <?php echo tep_draw_form('login', tep_href_link(FILENAME_LOGIN, 'action=process'.(isset($_GET['pid'])?'&pid='.$_GET['pid']:''), 'SSL')); ?>
       <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
 
-        <?php
-  if (isset($_GET['login']) && ($_GET['login'] == 'fail')) {
-    $info_message = TEXT_LOGIN_ERROR;
-  } elseif (isset($_GET['login']) && ($_GET['login'] == 'failture')) { 
-    $info_message = TEXT_PREORDER_LOGIN_ERROR;
-  } elseif ($cart->count_contents()) {
-    $info_message = TEXT_VISITORS_CART;
+<?php
+  if(isset($_GET['login']) && ($_GET['login'] == 'ip_error')){
+      $info_message = TEXT_LOGIN_IP_ERROR;
+  }else{
+    if (isset($_GET['login']) && ($_GET['login'] == 'fail')) {
+      $info_message = TEXT_LOGIN_ERROR;
+    } elseif (isset($_GET['login']) && ($_GET['login'] == 'failture')) { 
+      $info_message = TEXT_PREORDER_LOGIN_ERROR;
+    } elseif ($cart->count_contents()) {
+      $info_message = TEXT_VISITORS_CART;
+    }
   }
 
   if (isset($info_message)) {

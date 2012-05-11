@@ -270,7 +270,9 @@ define('TABLE_PERMISSIONS','permissions');
 
 
   //=======================================================  
-
+// email classes
+  require(DIR_WS_CLASSES . 'mime.php');
+  require(DIR_WS_CLASSES . 'email.php');
 // initialize the logger class
   require(DIR_WS_CLASSES . 'logger.php');
 
@@ -375,10 +377,6 @@ while($userslist= tep_db_fetch_array($sites_id)){
 
 // entry/item info classes
   require(DIR_WS_CLASSES . 'object_info.php');
-
-// email classes
-  require(DIR_WS_CLASSES . 'mime.php');
-  require(DIR_WS_CLASSES . 'email.php');
 
 // calculate category path
   $cPath = isset($_GET['cPath']) ? $_GET['cPath'] : null;

@@ -136,7 +136,6 @@
   define('TABLE_OTHER_CONFIG', 'other_config'); 
   define('TABLE_CAMPAIGN', 'campaign'); 
   define('TABLE_CUSTOMER_TO_CAMPAIGN', 'customer_to_campaign'); 
-  define('TABLE_ZIPCODE', 'zcode'); 
   define('TABLE_PREORDERS_OA_FORMVALUE', 'preorders_oa_formvalue'); 
   define('TABLE_PREORDERS', 'preorders');
   define('TABLE_PREORDERS_MAIL', 'preorders_mail');
@@ -173,6 +172,7 @@
   define('TABLE_CUSTOMERS_BASKET', 'customers_basket');
   define('TABLE_CUSTOMERS_BASKET_ATTRIBUTES', 'customers_basket_attributes');
   define('TABLE_CUSTOMERS_INFO', 'customers_info');
+  define('TABLE_USER_LOGIN','user_login');
   define('TABLE_LANGUAGES', 'languages');
   define('TABLE_MANUFACTURERS', 'manufacturers');
   define('TABLE_MANUFACTURERS_INFO', 'manufacturers_info');
