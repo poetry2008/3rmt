@@ -72,15 +72,26 @@
               } 
             } else {
               if (!empty($products_id_array)) {
-                sort($products_id_array); 
-                $p_total_count = count($products_id_array); 
-                $end_product_info = explode('_', $products_id_array[$p_total_count-1]); 
-                
-                $tmp_insert = $end_product_info[1]+1; 
-                
-                $insert_product_id = $end_product_info[0].'_'.$tmp_insert;
+                $pi_single = false; 
+                foreach ($products_id_array as $pi_key => $pi_value) {
+                  $basket_attr_raw = tep_db_query("select option_info from ".TABLE_CUSTOMERS_BASKET_OPTIONS." where customers_id = '".$customer_id."' and products_id = '".$pi_value."'");       
+                  if (!tep_db_num_rows($basket_attr_raw)) {
+                    tep_db_query("update " . TABLE_CUSTOMERS_BASKET . " set customers_basket_quantity = '" . $qty . "' where customers_id = '" . $customer_id . "' and products_id = '" . $products_id . "'");
+                    $pi_single = true; 
+                    break; 
+                  }
+                }
+                if (!$pi_single) {
+                  sort($products_id_array); 
+                  $p_total_count = count($products_id_array); 
+                  $end_product_info = explode('_', $products_id_array[$p_total_count-1]); 
+                  
+                  $tmp_insert = $end_product_info[1]+1; 
+                  
+                  $insert_product_id = $end_product_info[0].'_'.$tmp_insert;
 
-                tep_db_query("insert into " . TABLE_CUSTOMERS_BASKET . " (customers_id, products_id, customers_basket_quantity, customers_basket_date_added) values ('" . $customer_id . "', '" . $insert_product_id . "', '" . $qty . "', '" . date('Ymd') . "')");
+                  tep_db_query("insert into " . TABLE_CUSTOMERS_BASKET . " (customers_id, products_id, customers_basket_quantity, customers_basket_date_added) values ('" . $customer_id . "', '" . $insert_product_id . "', '" . $qty . "', '" . date('Ymd') . "')");
+                }
               }
             }
             
