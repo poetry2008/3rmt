@@ -185,8 +185,8 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
 
  if($flag_error == false){
     $email_address = tep_db_prepare_input($_POST['email_address']);
+    $email_address  = str_replace("\xe2\x80\x8b", '', $email_address);
     $password = tep_db_prepare_input($_POST['password']);
-    
     if (isset($_GET['pid'])) {
       if ($link_customer_email == '') {
         $_GET['login'] = 'failture';
@@ -224,7 +224,6 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
             tep_session_register('customer_zone_id');
             $customer_emailaddress = $email_address;
             tep_session_register('customer_emailaddress');
-
             $guestchk = $link_customer_res['customers_guest_chk'];
             tep_session_register('guestchk');
 
@@ -257,13 +256,16 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
                customers_password, 
                customers_email_address, 
                customers_default_address_id, 
-               customers_guest_chk ,
+               customers_guest_chk,
                reset_flag,
                reset_success
         FROM " . TABLE_CUSTOMERS .  " 
         WHERE customers_email_address = '" . tep_db_input($email_address) . "' 
           AND site_id = ".SITE_ID." AND is_active = 1");
+<<<<<<< HEAD
     
+=======
+>>>>>>> 658dc7df446fbb286984bfd57b557739fbc10875
     if (!tep_db_num_rows($check_customer_query)) {
       $_GET['login'] = 'fail';
     } else {
@@ -279,17 +281,11 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
               ");
       } else {
 
-//reset{{    
 	  if($check_customer['reset_flag'] and $check_customer['reset_success']!=1 ){
 	       $_SESSION['reset_flag'] = true;
                $_SESSION['reset_customers_id'] = $check_customer['customers_id'];
        	       tep_redirect(tep_href_link(FILENAME_DEFAULT));	    
 	  }
-
-
-//reset}}
-
-
         if (SESSION_RECREATE == 'True') {
           tep_session_recreate();
         }
@@ -303,14 +299,14 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
         ");
         $check_country = tep_db_fetch_array($check_country_query);
 
-        $customer_id                 = $check_customer['customers_id'];
+        $customer_id = $check_customer['customers_id'];
         $customer_default_address_id = $check_customer['customers_default_address_id'];
-        $customer_first_name         = $check_customer['customers_firstname'];
-        $customer_last_name          = $check_customer['customers_lastname']; // 2003.03.08 Add Japanese osCommerce
-        $customer_country_id         = $check_country['entry_country_id'];
-        $customer_zone_id            = $check_country['entry_zone_id'];
-        $customer_emailaddress       = $email_address; 
-        $guestchk                    = $check_customer['customers_guest_chk'];
+        $customer_first_name = $check_customer['customers_firstname'];
+        $customer_last_name = $check_customer['customers_lastname']; // 2003.03.08 Add Japanese osCommerce
+        $customer_country_id = $check_country['entry_country_id'];
+        $customer_zone_id = $check_country['entry_zone_id'];
+        $customer_emailaddress = $email_address; 
+        $guestchk = $check_customer['customers_guest_chk'];
         tep_session_register('customer_id');
         tep_session_register('customer_default_address_id');
         tep_session_register('customer_first_name');

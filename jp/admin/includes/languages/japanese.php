@@ -149,6 +149,7 @@ define('JS_LAST_NAME_F', '* \'姓(フリガナ)\' は少なくても ' . ENTRY_L
 
 define('JS_DOB', '* \'生年月日\' は次の形式で入力ください: xxxx/xx/xx (年/月/日)。\n');
 define('JS_EMAIL_ADDRESS', '* \'E-Mail アドレス\' は少なくても ' . ENTRY_EMAIL_ADDRESS_MIN_LENGTH . ' 文字以上必要です。\n');
+define('JS_EMAIL_ADDRESS_MATCH_ERROR','*  入力されたメールアドレスは不正です!');
 define('JS_ADDRESS', '* \'住所１\' は少なくても ' . ENTRY_STREET_ADDRESS_MIN_LENGTH . ' 文字以上必要です。\n');
 define('JS_POST_CODE', '* \'郵便番号\' は少なくても ' . ENTRY_POSTCODE_MIN_LENGTH . ' 文字以上必要です。\n');
 define('JS_CITY', '* \'市区町村\' は少なくても ' . ENTRY_CITY_MIN_LENGTH . ' 文字以上必要です。\n');
@@ -171,6 +172,11 @@ define('ENTRY_GENDER', '性別:');
 define('ENTRY_FIRST_NAME', '名:');
 define('ENTRY_LAST_NAME', '姓:');
 //add
+define('TEXT_ADDRESS','住所');
+define('TEXT_CLEAR','クリア');
+define('TABLE_OPTION_NEW','登録先に届ける');
+define('TABLE_OPTION_OLD','過去のお届け先を指定する'); 
+define('TABLE_ADDRESS_SHOW','お届け先リストから選ぶ:');
 define('ENTRY_FIRST_NAME_F', '名(フリガナ):');
 define('ENTRY_LAST_NAME_F', '姓(フリガナ):');
 define('ENTRY_DATE_OF_BIRTH', '生年月日:');
@@ -198,6 +204,7 @@ define('IMAGE_NEXT', '次へ');
 define('IMAGE_BACKUP', 'バックアップ');
 define('IMAGE_CANCEL', '取り消し');
 define('IMAGE_CONFIRM', '確認');
+define('IMAGE_CONFIRM_NEXT', '次へ進む');
 define('IMAGE_COPY', 'コピー');
 define('IMAGE_COPY_TO', 'コピー先');
 define('IMAGE_DEFINE', '定義');
@@ -555,6 +562,7 @@ define('TEXT_PAYMENT_NULL_TXT','支払方法を選択してください');
 define('TEXT_TORIHIKI_LIST_DEFAULT_TXT','選択してください');
 define('BOX_TOOLS_CAMPAIGN', 'キャンペーンコード設置');
 define('TEXT_CURRENT_CHARACTER_NAME', '当社のキャラクター名：');
+define('BOX_CATALOG_SHOW_SHOW_USELESS_OPTION','未使用オプション削除');
 define('TEXT_ORDER_ALARM_LINK', 'アラーム');
 define('HOUR_TEXT', '時');
 define('MINUTE_TEXT', '分');

@@ -1357,9 +1357,9 @@ function tep_remove_product($product_id) {
   tep_db_query("delete from " . TABLE_PRODUCTS . " where products_id = '" . tep_db_input($product_id) . "'");
   tep_db_query("delete from " . TABLE_PRODUCTS_TO_CATEGORIES . " where products_id = '" . tep_db_input($product_id) . "'");
   tep_db_query("delete from " . TABLE_PRODUCTS_DESCRIPTION . " where products_id = '" . tep_db_input($product_id) . "'");
-  tep_db_query("delete from " . TABLE_PRODUCTS_ATTRIBUTES . " where products_id = '" . tep_db_input($product_id) . "'");
-  tep_db_query("delete from " . TABLE_CUSTOMERS_BASKET . " where products_id = '" . tep_db_input($product_id) . "'");
-  tep_db_query("delete from " . TABLE_CUSTOMERS_BASKET_ATTRIBUTES . " where products_id = '" . tep_db_input($product_id) . "'");
+  //tep_db_query("delete from " . TABLE_PRODUCTS_ATTRIBUTES . " where products_id = '" . tep_db_input($product_id) . "'");
+  tep_db_query("delete from " . TABLE_CUSTOMERS_BASKET . " where products_id like ('%" . tep_db_input($product_id) . "%')");
+  tep_db_query("delete from " . TABLE_CUSTOMERS_BASKET_OPTIONS . " where products_id like ('%" . $product_id . "%')");
 
   $product_reviews_query = tep_db_query("select reviews_id from " . TABLE_REVIEWS . " where products_id = '" . tep_db_input($product_id) . "'");
   while ($product_reviews = tep_db_fetch_array($product_reviews_query)) {
@@ -3443,9 +3443,13 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
     }
     $str .= '<tr><td class="main">個数：</td><td class="main">'.$p['products_quantity'].'個'.tep_get_full_count2($p['products_quantity'], $p['products_id'], $p['products_rate']).'</td></tr>';
     while($pa = tep_db_fetch_array($products_attributes_query)){
-      $str .= '<tr><td class="main">'.$pa['products_options'].'：</td><td class="main">'.$pa['products_options_values'].'</td></tr>';
+      $input_option = @unserialize($pa['option_info']);
+      if ($input_option) {
+        if (isset($input_option['title'])) {
+          $str .= '<tr><td class="main">'.$input_option['title'].'：</td><td class="main">'.$input_option['value'].'</td></tr>';
+        }
+      }
     }
-    $str .= '<tr><td class="main">キャラ名：</td><td class="main"  style="color:#407416;">'.$p['products_character'].'</td></tr>';
     $names = tep_get_computers_names_by_orders_id($orders['orders_id']);
     if ($names) {
       $str .= '<tr><td class="main">PC：</td><td class="main">'.implode('&nbsp;,&nbsp;', $names).'</td></tr>';
@@ -7001,6 +7005,111 @@ function tep_get_relate_product_history_sum($relate_products_id,$date_sub,$site_
   }else{
     return 0;
   }
+}
+function get_option_group_link($group_id, $keyword = '')
+{
+  $link_str = '';
+  $group_query = tep_db_query("select * from ".TABLE_OPTION_GROUP." where id = '".$group_id."'");
+  $group = tep_db_fetch_array($group_query);
+  
+  if ($group) {
+    if (trim($keyword) != '') {
+      $group_prev_query = tep_db_query("select * from ".TABLE_OPTION_GROUP." where id != '".$group_id."' and created_at >= '".$group['created_at']."' and name like '%".$keyword."%' order by created_at asc limit 1"); 
+    } else {
+      $group_prev_query = tep_db_query("select * from ".TABLE_OPTION_GROUP." where id != '".$group_id."' and created_at >= '".$group['created_at']."' order by created_at asc limit 1"); 
+    }
+    $group_prev = tep_db_fetch_array($group_prev_query); 
+    if ($group_prev) {
+      $link_str .= '<a href="javascript:void(0)" onclick="show_link_group_info(\''.$group_prev['id'].'\', \''.$keyword.'\');">'.TEXT_GROUP_PREV.'</a>'; 
+    }
+    if (trim($keyword) != '') {
+      $group_next_query = tep_db_query("select * from ".TABLE_OPTION_GROUP." where id != '".$group_id."' and created_at <= '".$group['created_at']."'  and name like '%".$keyword."%' order by created_at desc limit 1"); 
+    } else {
+      $group_next_query = tep_db_query("select * from ".TABLE_OPTION_GROUP." where id != '".$group_id."' and created_at <= '".$group['created_at']."' order by created_at desc limit 1"); 
+    }
+    $group_next = tep_db_fetch_array($group_next_query); 
+    if ($group_next) {
+      $link_str .= '&nbsp;&nbsp;<a href="javascript:void(0)" onclick="show_link_group_info(\''.$group_next['id'].'\', \''.$keyword.'\');">'.TEXT_GROUP_NEXT.'</a>'; 
+    }
+  }
+  
+  return $link_str;
+}
+
+function tep_get_random_option_item_name($length = 16)
+  {
+    $pattern = 'abcdefghijklmnopqrstuvwxyz';
+    while (true) {
+      $key = ''; 
+      for($i = 0; $i < $length; $i++) {
+        $key .= $pattern[mt_rand(0,25)]; 
+      }
+      $exists_item_name_raw = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name = '".$key."'"); 
+      if (!tep_db_num_rows($exists_item_name_raw)) {
+        return $key; 
+      }
+    }
+  }
+
+function get_option_item_link($group_id, $item_id)
+{
+  $link_str = '';
+  $item_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where id = '".$item_id."'");
+  $item = tep_db_fetch_array($item_query);
+  if ($item) {
+    $item_prev_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where group_id = '".$group_id."' and id != '".$item_id."' and created_at >= '".$item['created_at']."' order by created_at asc limit 1"); 
+    $item_prev = tep_db_fetch_array($item_prev_query); 
+    if ($item_prev) {
+      $link_str .= '<a href="javascript:void(0)" onclick="show_link_item_info(\''.$item_prev['id'].'\', \''.$group_id.'\');">'.TEXT_ITEM_PREV.'</a>'; 
+      
+    }
+    
+    $item_next_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where group_id = '".$group_id."' and id != '".$item_id."' and created_at <= '".$item['created_at']."' order by created_at desc limit 1"); 
+    $item_next = tep_db_fetch_array($item_next_query); 
+    if ($item_next) {
+      $link_str .= '&nbsp;&nbsp;<a href="javascript:void(0)" onclick="show_link_item_info(\''.$item_next['id'].'\', \''.$group_id.'\');">'.TEXT_ITEM_NEXT.'</a>'; 
+    }
+  }
+  
+  return $link_str;
+}
+
+function tep_replace_full_character($c_str)
+{
+  $arr = array(
+      'Ａ','Ｂ','Ｃ','Ｄ','Ｅ','Ｆ','Ｇ','Ｈ','Ｉ','Ｊ','Ｋ','Ｌ','Ｍ','Ｎ','Ｏ','Ｐ','Ｑ','Ｒ','Ｓ','Ｔ','Ｕ','Ｖ','Ｗ','Ｘ','Ｙ','Ｚ',
+      'ａ','ｂ','ｃ','ｄ','ｅ','ｆ','ｇ','ｈ','ｉ','ｊ','ｋ','ｌ','ｍ','ｎ','ｏ','ｐ','ｑ','ｒ','ｓ','ｔ','ｕ','ｖ','ｗ','ｘ','ｙ','ｚ',
+      '１','２','３','４','５','６','７','８','９','０',
+      '　'
+    );
+  $arr2 = array(
+      'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
+      'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
+      '1','2','3','4','5','6','7','8','9','0',
+      ' '
+  );
+  
+  $c_str = str_replace($arr, $arr2, $c_str);
+  return $c_str;
+}
+
+function tep_check_product_type($orders_products_id)
+{
+  $orders_products_raw = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS." where orders_products_id = '".$orders_products_id."'");
+  $orders_products = tep_db_fetch_array($orders_products_raw);
+  
+  $product_query = tep_db_query("select products_bflag from " . TABLE_PRODUCTS . " where products_id = '" . $orders_products['products_id'] . "'");
+  $product = tep_db_fetch_array($product_query);
+  
+  if ($product) {
+    return $product['products_bflag'];
+  } else {
+    if ($orders_products['products_price'] < 0) {
+      return 1; 
+    }
+  }
+  
+  return 0;
 }
 
 function tep_get_notice_info($return_type = 0)

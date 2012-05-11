@@ -61,6 +61,7 @@ define('ENTRY_SHIPPING', '配送方法:');
 define('ENTRY_TOTAL', '合計:');
 define('ENTRY_DATE_PURCHASED', '注文日:');
 define('ENTRY_STATUS', 'ステータス:');
+define('ENTRY_EMAIL_TITLE', 'メールタイトル:');
 define('ENTRY_DATE_LAST_UPDATED', '更新日:');
 define('ENTRY_NOTIFY_CUSTOMER', '処理状況を通知:');
 define('ENTRY_NOTIFY_COMMENTS', 'コメントを追加:');
@@ -122,18 +123,19 @@ define('SELECT_STEP_TWO', 'STEP 2:');
 define('SELECT_STEP_THREE', 'STEP 3:');
 define('SELECT_STEP_FOUR', 'STEP 4:');
 define('TEXT_CODE_HANDLE_FEE', '手数料:');
+define('TEXT_CODE_SHIPPING_FEE', '配送料:');
 define('EDIT_ORDERS_UPDATE_NOTICE', '変更したい内容を慎重に入力してください。<b>空白などの余分な文字が入力されていないかチェックするように！</b>');
 define('EDIT_ORDERS_ID_TEXT', '注文番号:');
 define('EDIT_ORDERS_DATE_TEXT', '注文日:');
 define('EDIT_ORDERS_CUSTOMER_NAME', '顧客名:');
 define('EDIT_ORDERS_EMAIL', 'メールアドレス:');
 define('EDIT_ORDERS_PAYMENT_METHOD', '支払方法:');
-define('EDIT_ORDERS_FETCHTIME', '取引日時:');
+define('EDIT_ORDERS_FETCHTIME', '届け時間:');
 define('EDIT_ORDERS_TORI_TEXT', 'オプション:');
 define('EDIT_ORDERS_CUSTOMER_NAME_READ', '<font color="red">※</font>&nbsp;姓と名の間には<font color="red">半角スペース</font>を入力してください。');
 define('EDIT_ORDERS_PAYMENT_METHOD_READ', '<table><tr class="smalltext"><td><font color="red">※</font>&nbsp;コピペ用:</td><td>銀行振込</td><td>クレジットカード決済</td><td>銀行振込(買い取り)</td><td>ゆうちょ銀行（郵便局）</td><td>コンビニ決済</td></tr></table>');
 define('EDIT_ORDERS_FETCHTIME_READ', 
-    '<font color="red">※</font>&nbsp;日付・時間の書式:&nbsp;2008-01-01 10:30/2008-01-01 10:45');
+    '<font color="red">※</font>&nbsp;日付・時間の書式:&nbsp;2008-01-01 10:30:00&nbsp;～&nbsp;10:45:00');
 define('EDIT_ORDERS_TORI_READ', '<table><tr class="smalltext"><td><font color="red">※</font>&nbsp;コピペ用:</td><td>指定した時間どおりに取引して欲しい</td><td>指定した時間より早くできるなら早く来て欲しい</td></tr></table>');
 define('EDIT_ORDERS_PRO_LIST_TITLE', '2. 注文商品');
 define('TABLE_HEADING_NUM_PRO_NAME', '数量 / 商品名');
@@ -178,4 +180,13 @@ define('CREATE_ORDER_FETCH_TIME_TEXT', 'お届け希望時間:');
 
 
 define('MODULE_ORDER_TOTAL_SHIPPING_TITLE', '送料:');
+define('TEXT_SHIPPING_FEE','配送料:');
+define('TEXT_SHIPPING_ADDRESS','住所情報▼');
+define('ADDRESS_ERROR_OPTION_ITEM_TEXT_NULL','必須項目');
+define('ADDRESS_ERROR_OPTION_ITEM_TEXT_TYPE_WRONG','正しく入力してください');
+define('ADDRESS_ERROR_OPTION_ITEM_TEXT_NUM_MAX','入力可能な文字数を超えています');
+define('ADDRESS_ERROR_OPTION_ITEM_TEXT_NUM_MIN','は少なくても');
+define('ADDRESS_ERROR_OPTION_ITEM_TEXT_NUM_MIN_1','文字以上必要です');
+define('TABLE_HEADING_PRODUCTS_PRICE', '単価');
+define('CALC_PRODUCTS_TEXT', '計算');
 ?>

@@ -33,3 +33,8 @@ define('TEXT_INFO_BILL_TEMPLATES_DATA11','DATA10:');
 define('TEXT_INFO_BILL_TEMPLATES_EMAIL','E-Mail:');
 define('TEXT_INFO_BILL_TEMPLATES_RESPONSIBLE','名前:');
 define('TEXT_INFO_BILL_TEMPLATES_SORT_ORDER','整列順:');
+define('TEXT_USER_ADDED','作成者:');
+define('TEXT_USER_UPDATE','更新者:');
+define('TEXT_DATE_ADDED','作成日:');
+define('TEXT_DATE_UPDATE','更新日:');
+

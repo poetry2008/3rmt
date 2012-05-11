@@ -39,7 +39,11 @@
         if (!$newsletter_error) {
           $sql_data_array = array('title' => $title,
                                   'content' => $content,
-                                  'module' => $newsletter_module);
+				  'module' => $newsletter_module,
+				  'user_added' => $_POST['user_added'],
+				  'user_update'=> $_POST['user_update'],
+				  'last_modified' => 'now()',
+			  );
 
           if ($_GET['action'] == 'insert') {
             $site_id = tep_db_prepare_input($_POST['site_id']);
@@ -47,7 +51,9 @@
             $sql_data_array['status'] = '0';
             $sql_data_array['locked'] = '0';
             $sql_data_array['site_id'] = $site_id;
-
+	    //$sql_data_array['user_added'] = $_POST['user_added'];
+	    //$sql_data_array['user_update'] = $_POST['user_update'];
+	    //$sql_data_array['last_modified'] = 'now()';
             tep_db_perform(TABLE_NEWSLETTERS, $sql_data_array);
             $newsletter_id = tep_db_insert_id();
           } elseif ($_GET['action'] == 'update') {
@@ -188,7 +194,11 @@ function check_send_mail()
       <tr><?php echo tep_draw_form('newsletter', FILENAME_NEWSLETTERS, 'page=' . (isset($_GET['page'])?$_GET['page']:'') . '&action=' . $form_action.(isset($_GET['lsite_id'])?('&lsite_id='.$_GET['lsite_id']):'')); if ($form_action == 'update') echo tep_draw_hidden_field('newsletter_id', $nID); ?>
         <td><table border="0" cellspacing="0" cellpadding="2">
           <tr>
-            <td class="main"><?php echo ENTRY_SITE; ?></td>
+	    <td class="main">
+<input type="hidden" name="user_added" value="<?php echo $user_info['name'];?>">
+<input type="hidden" name="user_update" value="<?php echo $user_info['name'];?>">
+<?php echo ENTRY_SITE; ?>
+</td>
             <td class="main"><?php echo isset($_GET['nID']) && $_GET['nID']?$newsletter['site_name']:tep_site_pull_down_menu(); ?></td>
           </tr>
           <tr>
@@ -361,6 +371,9 @@ function check_send_mail()
              length(n.content) as content_length, 
              n.module, 
              n.date_added, 
+	     n.user_added,
+	     n.user_update,
+	     n.last_modified,
              n.date_sent, 
              n.status, 
              n.locked, 
@@ -449,8 +462,12 @@ function check_send_mail()
           . ' <a href="' . tep_href_link(FILENAME_NEWSLETTERS, 'page=' .  $_GET['page'] . '&nID=' . $nInfo->newsletters_id . '&action=lock' .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' .  tep_html_element_button(IMAGE_LOCK) . '</a>'
           );
         }
-        $contents[] = array('text' => '<br>' . TEXT_NEWSLETTER_DATE_ADDED . ' ' . tep_date_short($nInfo->date_added));
-        if ($nInfo->status == '1') $contents[] = array('text' => TEXT_NEWSLETTER_DATE_SENT . ' ' . tep_date_short($nInfo->date_sent));
+$contents[] = array('text' => '<br>' . TEXT_USER_ADDED . ' ' . $nInfo->user_added);
+$contents[] = array('text' => '<br>' . TEXT_NEWSLETTER_DATE_ADDED . ' ' . tep_datetime_short($nInfo->date_added));
+$contents[] = array('text' => '<br>' . TEXT_USER_UPDATE . ' ' . $nInfo->user_update);
+$contents[] = array('text' => '<br>' . TEXT_LAST_MODIFIED . ' ' . tep_datetime_short($nInfo->last_modified));
+
+        if ($nInfo->status == '1') $contents[] = array('text' => '<br>'.TEXT_NEWSLETTER_DATE_SENT . ' ' . tep_datetime_short($nInfo->date_sent));
       }
       break;
   }

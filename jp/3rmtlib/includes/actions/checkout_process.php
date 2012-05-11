@@ -28,7 +28,7 @@ if (isset($cart->cartID) && tep_session_is_registered('cartID')) {
 if ( (STOCK_CHECK == 'true') && (STOCK_ALLOW_CHECKOUT != 'true') ) {
   $products = $cart->get_products();
   for ($i=0, $n=sizeof($products); $i<$n; $i++) {
-    if (tep_check_stock($products[$i]['id'], $products[$i]['quantity'])) {
+    if (tep_check_stock((int)$products[$i]['id'], $products[$i]['quantity'])) {
       tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
       break;
     }
@@ -119,6 +119,7 @@ $sql_data_array = array('orders_id'         => $insert_id,
                         'torihiki_houhou'   => $torihikihouhou,
                         'site_id'           => SITE_ID,
                         'torihiki_date'     => $insert_torihiki_date,
+                        'torihiki_date_end' => $insert_torihiki_date_end,
                         'orders_ref'        => $_SESSION['referer'],
                         'orders_ref_site'   => tep_get_domain($_SESSION['referer']),
                         'orders_ref_keywords' => strtolower(SBC2DBC(parseKeyword($_SESSION['referer']))),
@@ -140,7 +141,79 @@ $sql_data_array = array('orders_id'         => $insert_id,
                         'orders_user_language'        => $_SESSION['userLanguage'],
                         'orders_http_accept_language' => $_SERVER['HTTP_ACCEPT_LANGUAGE'],
                         'telecom_option'              => $_SESSION['option'],
-                        );
+                      );
+//作所信息入库开始
+foreach($_SESSION['options'] as $op_key=>$op_value){
+  
+  if($_SESSION['options_type_array'][$op_key] == 'num'){
+     
+    $input_text_str = $op_value[1];
+    $mode = array('/\s/','/－/','/－/','/-/');
+    $replace = array('','','','');
+    $mode_ban = array('1','2','3','4','5','6','7','8','9','0');
+    $mode_quan = array('/１/','/２/','/３/','/４/','/５/','/６/','/７/','/８/','/９/','/０/');
+    $input_text_str = preg_replace($mode,$replace,$input_text_str);
+    $input_text_str = preg_replace($mode_quan,$mode_ban,$input_text_str);
+    $op_value[1] = $input_text_str;
+  } 
+  $address_options_query = tep_db_query("select id from ". TABLE_ADDRESS ." where name_flag='". $op_key ."'");
+  $address_options_array = tep_db_fetch_array($address_options_query);
+  tep_db_free_result($address_options_query);
+  $address_query = tep_db_query("insert into ". TABLE_ADDRESS_ORDERS ." values(NULL,'$insert_id',$customer_id,{$address_options_array['id']},'$op_key','$op_value[1]')");
+  tep_db_free_result($address_query);
+}
+
+  $address_show_array = array(); 
+  $address_show_list_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where status='0' and show_title='1'");
+  while($address_show_list_array = tep_db_fetch_array($address_show_list_query)){
+
+    $address_show_array[$address_show_list_array['id']] = $address_show_list_array['name_flag'];
+  }
+  tep_db_free_result($address_show_list_query);
+  $address_temp_str = '';
+  foreach($_SESSION['options'] as $address_his_key=>$address_his_value){
+    
+      if(in_array($address_his_key,$address_show_array)){
+
+         $address_temp_str .= $address_his_value[1];
+      }
+  }
+  
+  $address_error = false;
+  $address_sh_his_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id='$customer_id' group by orders_id");
+  while($address_sh_his_array = tep_db_fetch_array($address_sh_his_query)){
+
+    $address_sh_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where customers_id='$customer_id' and orders_id='". $address_sh_his_array['orders_id'] ."'");
+    $add_temp_str = '';
+    while($address_sh_array = tep_db_fetch_array($address_sh_query)){
+     
+      if(in_array($address_sh_array['name'],$address_show_array)){
+
+        $add_temp_str .= $address_sh_array['value'];
+      }  
+    }
+    if($address_temp_str == $add_temp_str){
+
+      $address_error = true;
+      break;
+    }
+    tep_db_free_result($address_sh_query);
+  }
+  tep_db_free_result($address_sh_his_query);
+if($address_error == false){
+  foreach($_SESSION['options'] as $address_history_key=>$address_history_value){
+      $address_history_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where name_flag='". $address_history_key ."'");
+      $address_history_array = tep_db_fetch_array($address_history_query);
+      tep_db_free_result($address_history_query);
+      $address_history_id = $address_history_array['id'];
+      $address_history_add_query = tep_db_query("insert into ". TABLE_ADDRESS_HISTORY ." value(NULL,'$insert_id',{$customer_id},$address_history_id,'{$address_history_array['name_flag']}','$address_history_value[1]')");
+      tep_db_free_result($address_history_add_query);
+  }
+}
+
+
+
+//作所信息入库结束
   
 if (isset($_SESSION['referer_adurl']) && $_SESSION['referer_adurl']) {
   $sql_data_array['orders_adurl'] = $_SESSION['referer_adurl'];
@@ -151,6 +224,13 @@ if (isset($_POST['code_fee'])) {
   $sql_data_array['code_fee'] = intval($_POST['code_fee']);
 } else{
   $sql_data_array['code_fee'] = 0;
+}
+//配送费用
+if(isset($_POST['shipping_fee'])){
+
+  $sql_data_array['shipping_fee'] = intval($_POST['shipping_fee']);
+}else{
+  $sql_data_array['shipping_fee'] = 0;
 }
 
 $bflag_single = ds_count_bflag();
@@ -219,26 +299,7 @@ $total_tax = 0;
 for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
   // Stock Update - Joao Correia
   if (STOCK_LIMITED == 'true') {
-    if (DOWNLOAD_ENABLED == 'true') {
-      $stock_query_raw = "SELECT products_real_quantity,products_virtual_quantity, pad.products_attributes_filename 
-                            FROM " . TABLE_PRODUCTS . " p
-                            LEFT JOIN " . TABLE_PRODUCTS_ATTRIBUTES . " pa
-                             ON p.products_id=pa.products_id
-                            LEFT JOIN " . TABLE_PRODUCTS_ATTRIBUTES_DOWNLOAD . " pad
-                             ON pa.products_attributes_id=pad.products_attributes_id
-                            WHERE p.products_id = '" . tep_get_prid($order->products[$i]['id']) . "'";
-      // Will work with only one option for downloadable products
-      // otherwise, we have to build the query dynamically with a loop
-      $products_attributes = $order->products[$i]['attributes'];
-      if (is_array($products_attributes)) {
-        $stock_query_raw .= " AND pa.options_id = '" . $products_attributes[0]['option_id'] . "' AND pa.options_values_id = '" . $products_attributes[0]['value_id'] . "'";
-      }
-      //ccdd
-      $stock_query = tep_db_query($stock_query_raw);
-    } else {
-      //ccdd
-      $stock_query = tep_db_query("select products_real_quantity,products_virtual_quantity from " . TABLE_PRODUCTS . " where products_id = '" . tep_get_prid($order->products[$i]['id']) . "'");
-    }
+    $stock_query = tep_db_query("select products_real_quantity,products_virtual_quantity from " . TABLE_PRODUCTS .  " where products_id = '" . (int)$order->products[$i]['id'] . "'");
     if (tep_db_num_rows($stock_query) > 0) {
       $stock_values = tep_db_fetch_array($stock_query);
       if ($order->products[$i]['qty'] > $stock_values['products_real_quantity']) {
@@ -250,7 +311,7 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
                              'products_real_quantity'    => 0
                              ),
                        'update',
-                       "products_id = '" . tep_get_prid($order->products[$i]['id']) . "'"
+                       "products_id = '" . (int)$order->products[$i]['id'] . "'"
                        );
       } else {
         tep_db_perform(
@@ -259,7 +320,7 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
                              'products_real_quantity' => $stock_values['products_real_quantity'] - $order->products[$i]['qty'],
                              ),
                        'update',
-                       "products_id = '" . tep_get_prid($order->products[$i]['id']) . "'"
+                       "products_id = '" . (int)$order->products[$i]['id'] . "'"
                        );
       }
     }
@@ -267,26 +328,26 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
 
   // Update products_ordered (for bestsellers list)
   //ccdd
-  tep_db_query("update " . TABLE_PRODUCTS . " set products_ordered = products_ordered + " . sprintf('%d', $order->products[$i]['qty']) . " where products_id = '" . tep_get_prid($order->products[$i]['id']) . "'");
+  tep_db_query("update " . TABLE_PRODUCTS . " set products_ordered = products_ordered + " . sprintf('%d', $order->products[$i]['qty']) . " where products_id = '" . (int)$order->products[$i]['id'] . "'");
 
   $chara = '';
-  $character_id = $order->products[$i]['id'];
+  //$character_id = $order->products[$i]['id'];
+  /* 
   foreach($_SESSION['character'] as $st => $en) {
     if($_SESSION['character'][$character_id] == $_SESSION['character'][$st]) {
       $chara = $_SESSION['character'][$character_id];
     }
   }
-  
+  */ 
   $sql_data_array = array('orders_id' => $insert_id, 
-                          'products_id' => tep_get_prid($order->products[$i]['id']), 
+                          'products_id' => (int)$order->products[$i]['id'], 
                           'products_model' => $order->products[$i]['model'], 
                           'products_name' => $order->products[$i]['search_name'], // for search, insert products_name where site_id = 0
                           'products_price' => $order->products[$i]['price'], 
                           'final_price' => $order->products[$i]['final_price'], 
                           'products_tax' => $order->products[$i]['tax'], 
                           'products_quantity' => $order->products[$i]['qty'],
-                          'products_rate' => tep_get_products_rate(tep_get_prid($order->products[$i]['id'])),
-                          'products_character' =>  stripslashes($chara),
+                          'products_rate' => tep_get_products_rate((int)$order->products[$i]['id']),
                           'site_id' => SITE_ID,
                           );
   // ccdd
@@ -296,62 +357,65 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
   //------insert customer choosen option to order--------
   $attributes_exist = '0';
   $products_ordered_attributes = '';
-  if (isset($order->products[$i]['attributes'])) {
+  
+  $attribute_max_len = 0; 
+  $attribute_len_arrary = array(); 
+  if (!empty($order->products[$i]['op_attributes'])) {
+    foreach ($order->products[$i]['op_attributes'] as $op_m_key => $op_m_value) {
+      $attribute_len_array[] = mb_strlen($op_m_value['front_title'], 'utf-8'); 
+    }
+  }
+  
+  if (!empty($order->products[$i]['ck_attributes'])) {
+    foreach ($order->products[$i]['ck_attributes'] as $ck_m_key => $ck_m_value) {
+      $attribute_len_array[] = mb_strlen($ck_m_value['front_title'], 'utf-8'); 
+    } 
+  } 
+   
+  if (!empty($attribute_len_array)) {
+    $attribute_max_len = max($attribute_len_array); 
+  }
+  
+  if ($attribute_max_len < 4) {
+    $attribute_max_len = 4; 
+  }
+  
+  if (!empty($order->products[$i]['op_attributes'])) {
     $attributes_exist = '1';
-    for ($j=0, $n2=sizeof($order->products[$i]['attributes']); $j<$n2; $j++) {
-      if (DOWNLOAD_ENABLED == 'true') {
-        $attributes_query = "select popt.products_options_name, poval.products_options_values_name, pa.options_values_price, pa.price_prefix, pa.products_at_quantity, pa.products_attributes_id, pad.products_attributes_maxdays, pad.products_attributes_maxcount , pad.products_attributes_filename 
-                               from " . TABLE_PRODUCTS_OPTIONS . " popt, " . TABLE_PRODUCTS_OPTIONS_VALUES . " poval, " . TABLE_PRODUCTS_ATTRIBUTES . " pa 
-                               left join " . TABLE_PRODUCTS_ATTRIBUTES_DOWNLOAD . " pad
-                                on pa.products_attributes_id=pad.products_attributes_id
-                               where pa.products_id = '" . $order->products[$i]['id'] . "' 
-                                and pa.options_id = '" . $order->products[$i]['attributes'][$j]['option_id'] . "' 
-                                and pa.options_id = popt.products_options_id 
-                                and pa.options_values_id = '" . $order->products[$i]['attributes'][$j]['value_id'] . "' 
-                                and pa.options_values_id = poval.products_options_values_id 
-                                and popt.language_id = '" . $languages_id . "' 
-                                and poval.language_id = '" . $languages_id . "'";
-        //ccdd
-        $attributes = tep_db_query($attributes_query);
-      } else {
-        //ccdd
-        $attributes = tep_db_query("select popt.products_options_name, poval.products_options_values_name, pa.options_values_price, pa.price_prefix, pa.products_at_quantity, pa.products_attributes_id from " . TABLE_PRODUCTS_OPTIONS . " popt, " . TABLE_PRODUCTS_OPTIONS_VALUES . " poval, " . TABLE_PRODUCTS_ATTRIBUTES . " pa where pa.products_id = '" . $order->products[$i]['id'] . "' and pa.options_id = '" . $order->products[$i]['attributes'][$j]['option_id'] . "' and pa.options_id = popt.products_options_id and pa.options_values_id = '" . $order->products[$i]['attributes'][$j]['value_id'] . "' and pa.options_values_id = poval.products_options_values_id and popt.language_id = '" . $languages_id . "' and poval.language_id = '" . $languages_id . "'");
-      }
-      $attributes_values = tep_db_fetch_array($attributes);
-    
-      //---------------------------------------
-      // オプションの在庫数減処理 - 2005.09.20
-      //---------------------------------------
-      if (STOCK_LIMITED == 'true') {
-        $zaiko = $attributes_values['products_at_quantity']-$order->products[$i]['qty'];
-        //ccdd
-        tep_db_query("update ".TABLE_PRODUCTS_ATTRIBUTES." set products_at_quantity = '". $zaiko ."' where products_id = '" . tep_get_prid($order->products[$i]['id']) . "' and options_id = '" . $order->products[$i]['attributes'][$j]['option_id'] . "' and options_values_id = '" . $order->products[$i]['attributes'][$j]['value_id'] . "'");
-
-        //全てのオプション値が「0」担った時点で商品のステータスを（falseに）更新
-        //ccdd
-        $attributes_stock_check_query = tep_db_query("select * from ".TABLE_PRODUCTS_ATTRIBUTES." where products_id = '" . tep_get_prid($order->products[$i]['id']) . "'");
-        $stock_cnt = 0;
-        while($attributes_stock_check = tep_db_fetch_array($attributes_stock_check_query)) {
-          $stock_cnt += $attributes_stock_check['products_at_quantity'];
-        }
-    
-        if($stock_cnt > 0) {
-          //Not process
+     
+    foreach ($order->products[$i]['op_attributes'] as $op_key => $op_value) {
+       
+      
+      $input_option_array = array('title' => $op_value['front_title'], 'value' => $op_value['value']);
+      $option_item_raw = tep_db_query("select * from ".TABLE_OPTION_ITEM." where id = '".$op_value['item_id']."'"); 
+      $option_item_res = tep_db_fetch_array($option_item_raw); 
+      $op_price = 0; 
+      
+      if ($option_item_res) {
+        if ($option_item_res['type'] == 'radio') {
+           $ao_option_array = @unserialize($option_item_res['option']);
+           if (!empty($ao_option_array['radio_image'])) {
+             foreach ($ao_option_array['radio_image'] as $or_key => $or_value) {
+               if (trim($or_value['title']) == trim($op_value['value'])) {
+                 $op_price = $or_value['money']; 
+                 break; 
+               }
+             }
+           } 
         } else {
-          //Update products_status(TABLE: PRODUCTS)
-          //ccdd
-          tep_db_query("update " . TABLE_PRODUCTS_DESCRIPTION . " set products_status = '0' where products_id = '" . tep_get_prid($order->products[$i]['id']) . "'");
+          $op_price = $option_item_res['price']; 
         }
+      } else {
+        $op_price = $op_value['price']; 
       }
-      //--------------------------------------END
-
+      
       $sql_data_array = array('orders_id' => $insert_id, 
                               'orders_products_id' => $order_products_id, 
-                              'products_options' => $attributes_values['products_options_name'],
-                              'products_options_values' => $attributes_values['products_options_values_name'], 
-                              'options_values_price' => $attributes_values['options_values_price'], 
-                              'price_prefix' => $attributes_values['price_prefix'],
-                              'attributes_id'  => $attributes_values['products_attributes_id']);
+                              'options_values_price' => $op_price, 
+                              'option_info' => tep_db_input(serialize($input_option_array)),  
+                              'option_group_id' => $op_value['group_id'], 
+                              'option_item_id' => $op_value['item_id'] 
+                              );
       // ccdd
       tep_db_perform(TABLE_ORDERS_PRODUCTS_ATTRIBUTES, $sql_data_array);
 
@@ -365,30 +429,99 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
         tep_db_perform(TABLE_ORDERS_PRODUCTS_DOWNLOAD, $sql_data_array);
       }
       $products_ordered_attributes .= "\n" 
-        . $attributes_values['products_options_name'] 
-        . str_repeat('　',intval((27-strlen($attributes_values['products_options_name']))/3))
-        . '：' . $attributes_values['products_options_values_name'];
+        . $op_value['front_title'] 
+        . str_repeat('　',intval(($attribute_max_len-mb_strlen($op_value['front_title'], 'utf-8'))))
+        . '：' . $op_value['value'];
+      
+      if ($op_price != '0') {
+        //$products_ordered_attributes .= '　('.$currencies->format($op_price*$order->products[$i]['qty']).')'; 
+        $products_ordered_attributes .= '　('.$currencies->format($op_price).')'; 
+      }
     }
   }
+  
+  if (!empty($order->products[$i]['ck_attributes'])) {
+    foreach ($order->products[$i]['ck_attributes'] as $ck_key => $ck_value) {
+      $input_option_array = array('title' => $ck_value['front_title'], 'value' => $ck_value['value']);
+      
+      $coption_item_raw = tep_db_query("select * from ".TABLE_OPTION_ITEM." where id = '".$ck_value['item_id']."'"); 
+      $coption_item_res = tep_db_fetch_array($coption_item_raw); 
+      $c_op_price = 0; 
+      
+      if ($coption_item_res) {
+        if ($coption_item_res['type'] == 'radio') {
+           $aco_option_array = @unserialize($coption_item_res['option']);
+           if (!empty($aco_option_array['radio_image'])) {
+             foreach ($aco_option_array['radio_image'] as $cor_key => $cor_value) {
+               if (trim($cor_value['title']) == trim($ck_value['value'])) {
+                 $c_op_price = $cor_value['money']; 
+                 break; 
+               }
+             }
+           } 
+        } else {
+          $c_op_price = $coption_item_res['price']; 
+        }
+      } else {
+        $c_op_price = $ck_value['price']; 
+      }
+      
+      
+      $sql_data_array = array('orders_id' => $insert_id, 
+                              'orders_products_id' => $order_products_id, 
+                              'options_values_price' => $c_op_price, 
+                              'option_info' => tep_db_input(serialize($input_option_array)),  
+                              'option_group_id' => $ck_value['group_id'], 
+                              'option_item_id' => $ck_value['item_id'] 
+                              );
+      // ccdd
+      tep_db_perform(TABLE_ORDERS_PRODUCTS_ATTRIBUTES, $sql_data_array);
+
+      if ((DOWNLOAD_ENABLED == 'true') && isset($attributes_values['products_attributes_filename']) && tep_not_null($attributes_values['products_attributes_filename'])) {
+        $sql_data_array = array('orders_id' => $insert_id, 
+                                'orders_products_id' => $order_products_id, 
+                                'orders_products_filename' => $attributes_values['products_attributes_filename'], 
+                                'download_maxdays' => $attributes_values['products_attributes_maxdays'], 
+                                'download_count' => $attributes_values['products_attributes_maxcount']);
+        // ccdd
+        tep_db_perform(TABLE_ORDERS_PRODUCTS_DOWNLOAD, $sql_data_array);
+      }
+      $products_ordered_attributes .= "\n" 
+        . $ck_value['front_title'] 
+        . str_repeat('　',intval(($attribute_max_len-mb_strlen($ck_value['front_title'], 'utf-8'))))
+        . '：' . $ck_value['value'];
+      
+      if ($c_op_price != '0') {
+        //$products_ordered_attributes .= '　('.$currencies->format($c_op_price*$order->products[$i]['qty']).')'; 
+        $products_ordered_attributes .= '　('.$currencies->format($c_op_price).')'; 
+      }
+    }
+  }
+  
+  
+  
   //------insert customer choosen option eof ----
   $total_weight += ($order->products[$i]['qty'] * $order->products[$i]['weight']);
   $total_tax += tep_calculate_tax($total_products_price, $products_tax) * $order->products[$i]['qty'];
   $total_cost += $total_products_price;
 
-  $products_ordered .= '注文商品　　　　　：' . $order->products[$i]['name'];
+  $products_ordered .= '注文商品'.str_repeat('　',intval(($attribute_max_len-mb_strlen('注文商品', 'utf-8')))).'：' . $order->products[$i]['name'];
   if(tep_not_null($order->products[$i]['model'])) {
     $products_ordered .= ' (' . $order->products[$i]['model'] . ')';
   }
-  $products_ordered .= $products_ordered_attributes . "\n";
-  $products_ordered .= '個数　　　　　　　：' . $order->products[$i]['qty'] . '個' . tep_get_full_count2($order->products[$i]['qty'], $order->products[$i]['id']) . "\n";
-  $products_ordered .= '単価　　　　　　　：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax']) . "\n";
-  $products_ordered .= '小計　　　　　　　：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty']) . "\n";
-  if(tep_not_null($chara)) {
-    $products_ordered .= 'キャラクター名　　：' .  (EMAIL_USE_HTML === 'true' ? htmlspecialchars(stripslashes($chara)) : stripslashes($chara)) . "\n";
+  if ($order->products[$i]['price'] != '0') {
+    $products_ordered .= ' ('.$currencies->display_price($order->products[$i]['price'], $order->products[$i]['tax']).')'; 
   }
+  $products_ordered .= $products_ordered_attributes . "\n";
+  $products_ordered .= '個数'.str_repeat('　',intval(($attribute_max_len-mb_strlen('個数', 'utf-8')))).'：' . $order->products[$i]['qty'] . '個' .  tep_get_full_count2($order->products[$i]['qty'], (int)$order->products[$i]['id']) . "\n";
+  $products_ordered .= '単価'.str_repeat('　',intval(($attribute_max_len-mb_strlen('単価', 'utf-8')))).'：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax']) . "\n";
+  $products_ordered .= '小計'.str_repeat('　',intval(($attribute_max_len-mb_strlen('小計', 'utf-8')))).'：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty']) . "\n";
+  //if(tep_not_null($chara)) {
+    //$products_ordered .= 'キャラクター名　　：' .  (EMAIL_USE_HTML === 'true' ? htmlspecialchars(stripslashes($chara)) : stripslashes($chara)) . "\n";
+  //}
   $products_ordered .= "------------------------------------------\n";
-  if (tep_get_cflag_by_product_id($order->products[$i]['id'])) {
-    if (tep_get_bflag_by_product_id($order->products[$i]['id'])) {
+  if (tep_get_cflag_by_product_id((int)$order->products[$i]['id'])) {
+    if (tep_get_bflag_by_product_id((int)$order->products[$i]['id'])) {
       $products_ordered .= "※ 当社キャラクター名は、お取引10分前までに電子メールにてお知らせいたします。\n\n";
     } else {
       $products_ordered .= "※ 当社キャラクター名は、お支払い確認後に電子メールにてお知らせいたします。\n\n";
@@ -451,7 +584,7 @@ $mailoption['ORDER_TOTAL']      = $currencies->format(abs($ot['value']));
 
 $mailoption['TORIHIKIHOUHOU']   = $torihikihouhou;
 $mailoption['ORDER_PAYMENT']    = $payment_class->title ;
-$mailoption['ORDER_TTIME']      =  str_string($date) . $hour . '時' . $min . '分　（24時間表記）' ;
+$mailoption['ORDER_TTIME']      =  str_string($date) . $start_hour . '時' . $start_min . '分~'. $end_hour .'時'. $end_min .'分　（24時間表記）' ;
 $mailoption['ORDER_COMMENT']    = $_SESSION['mailcomments'];//
 unset($_SESSION['comments']);
 $mailoption['ADD_INFO']    = str_replace("\n".$mailoption['ORDER_COMMENT'],'',trim($order->info['comments']));
@@ -479,7 +612,36 @@ if(!isset($_SESSION['mailfee'])){
 
 $mailoption['MAILFEE']          = str_replace('円','',$total_mail_fee);
 $email_order = '';
-$email_order = $payment_modules->getOrderMailString($payment,$mailoption);  
+$email_order = $payment_modules->getOrderMailString($payment,$mailoption);
+
+$shipping_fee_value = isset($_POST['shipping_fee']) ? $_POST['shipping_fee'] : 0; 
+$email_temp = '▼ポイント割引';
+$email_temp_str = '▼ ポイント割引';
+$email_shipping_fee = '▼お届け料金　　　：'.$shipping_fee_value.'円
+'.$email_temp;
+$email_order = str_replace($email_temp,$email_shipping_fee,$email_order);
+$email_order = str_replace($email_temp_str,$email_shipping_fee,$email_order);
+$email_address = '▼注文商品';
+//zhusuo
+if(isset($_SESSION['options']) && !empty($_SESSION['options'])){
+  $address_len_array = array();
+  foreach($_SESSION['options'] as $address_value){
+
+    $address_len_array[] = strlen($address_value[0]);
+  }
+  $maxlen = max($address_len_array);
+  $email_address_str = '▼住所情報'."\n";
+  $email_address_str .= '------------------------------------------'."\n";
+  $maxlen = 9;
+  foreach($_SESSION['options'] as $ad_value){
+    $ad_len = mb_strlen($ad_value[0],'utf8');
+    $temp_str = str_repeat('　',$maxlen-$ad_len);
+    $email_address_str .= $ad_value[0].$temp_str.'：'.$ad_value[1]."\n";
+  }
+  $email_address_str .= '------------------------------------------'."\n";
+  $email_address_str .= $email_address;
+  $email_order = str_replace($email_address,$email_address_str,$email_order);
+}
 // 2003.03.08 Edit Japanese osCommerce
 tep_mail(tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], EMAIL_TEXT_SUBJECT, $email_order, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
   
@@ -494,7 +656,7 @@ $email_printing_order = '';
 $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
 $email_printing_order .= 'サイト名　　　　：' . STORE_NAME . "\n";
 $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-$email_printing_order .= '取引日時　　　　：' . str_string($date) . $hour . '時' . $min . '分　（24時間表記）' . "\n";
+$email_printing_order .= '取引日時　　　　：' . str_string($date) . $start_hour . '時' . $start_min . '分~'. $end_hour .'時'. $end_min .'分　（24時間表記）' . "\n";
 $email_printing_order .= 'オプション　　　：' . $torihikihouhou . "\n";
 $email_printing_order .= '------------------------------------------------------------------------' . "\n";
 $email_printing_order .= '日時変更　　　　：' . date('Y') . ' 年  月  日  時  分' . "\n";
@@ -505,6 +667,9 @@ $email_printing_order .= '注文番号　　　　：' . $insert_id . "\n";
 $email_printing_order .= '注文日　　　　　：' . tep_date_long(time()) . "\n";
 $email_printing_order .= 'メールアドレス　：' . $order->customer['email_address'] . "\n";
 $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
+if (!empty($_POST['shipping_fee'])) {
+  $email_printing_order .= 'お届け料金　　　　　：'.$_POST['shipping_fee'].'円'."\n"; 
+}
 if (isset($_SESSION['campaign_fee'])) {
   if (abs($_SESSION['campaign_fee']) > 0) {
     $email_printing_order .= '割引　　　　　　：' . abs((int)$_SESSION['campaign_fee']) . '円' . "\n";
@@ -541,7 +706,6 @@ if (method_exists($payment_class,'getMailString')){
 }
 # ------------------------------------------
 // send emails to other people
-echo '<br><br>';
 if (SEND_EXTRA_ORDER_EMAILS_TO != '') {
   tep_mail('', PRINT_EMAIL_ADDRESS, STORE_NAME, $email_printing_order, tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], '');
 }
@@ -619,6 +783,11 @@ tep_session_unregister('torihikihouhou');
 tep_session_unregister('date');
 tep_session_unregister('hour');
 tep_session_unregister('min');
+tep_session_unregister('start_hour');
+tep_session_unregister('start_min');
+tep_session_unregister('end_hour');
+tep_session_unregister('end_min');
+tep_session_unregister('address_option');
 tep_session_unregister('insert_torihiki_date');
 /*
 tep_session_unregister('bank_name');
@@ -635,6 +804,7 @@ unset($_SESSION['referer_adurl']);
   
 unset($_SESSION['campaign_fee']); 
 unset($_SESSION['camp_id']); 
+unset($_SESSION['options']);
 //$pr = '?SID=' . $convenience_sid;
   
 /*

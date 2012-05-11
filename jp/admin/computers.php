@@ -18,8 +18,8 @@ if (isset($_GET['action']) and $_GET['action']) {
           $messageStack->add_session(TEXT_COMPUTERS_NAME_EXISTS, 'error');
           tep_redirect(tep_href_link(FILENAME_COMPUTERS, 'cPath=&action=new'));
         }
-
-        tep_db_query("insert into " . TABLE_COMPUTERS . " (computers_name, sort_order) values ('" . tep_db_input($computers_name) . "','" . tep_db_input($sort_order) . "')");
+echo "insert into " . TABLE_COMPUTERS . " (computers_name, sort_order,user_added,date_added,user_update,date_update) values ('" . tep_db_input($computers_name) . "','" . tep_db_input($sort_order) . "','".$_POST['user_added']."',now(),'".$_POST['user_update']."',now())";exit;
+        tep_db_query("insert into " . TABLE_COMPUTERS . " (computers_name, sort_order,user_added,date_added,user_update,date_update) values ('" . tep_db_input($computers_name) . "','" . tep_db_input($sort_order) . "','".$_POST['user_added']."',now(),'".$_POST['user_update']."',now())");
         tep_redirect(tep_href_link(FILENAME_COMPUTERS));
         break;
       case 'save':
@@ -33,8 +33,7 @@ if (isset($_GET['action']) and $_GET['action']) {
           $messageStack->add_session(TEXT_COMPUTERS_NAME_EXISTS, 'error');
           tep_redirect(tep_href_link(FILENAME_COMPUTERS, 'cPath=&action=new'));
         }
-
-        tep_db_query("update " . TABLE_COMPUTERS . " set computers_name = '" . tep_db_input($computers_name) . "',sort_order = '" . tep_db_input($sort_order) . "' where computers_id = '" . tep_db_input($computers_id) . "'");
+        tep_db_query("update " . TABLE_COMPUTERS . " set computers_name = '" . tep_db_input($computers_name) . "',sort_order = '" . tep_db_input($sort_order) . "' ,user_update='".$_POST["user_update"]."',date_update=now() where computers_id = '" . tep_db_input($computers_id) . "'");
         tep_redirect(tep_href_link(FILENAME_COMPUTERS, 'page=' . $_GET['page'] . '&cID=' . $computers_id));
         break;
       case 'deleteconfirm':
@@ -155,6 +154,9 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
 
       $contents = array('form' => tep_draw_form('computers', FILENAME_COMPUTERS, 'page=' . $_GET['page'] . '&action=insert', 'post', 'enctype="multipart/form-data"'));
       $contents[] = array('text' => TEXT_INFO_INSERT_INTRO);
+      $contents[] = array('text' => '<input type="hidden" name="user_added" value="'.$user_info['name'].'">');
+      $contents[] = array('text' => '<input type="hidden" name="user_update" value="'.$user_info['name'].'">');
+
       $contents[] = array('text' => '<br>' . TEXT_INFO_COMPUTERS_NAME . '<br>' . tep_draw_input_field('computers_name'));
       $contents[] = array('text' => '<br>'.TABLE_HEADING_COMPUTER_ORDER.'<br>' . tep_draw_input_field('sort_order'));
       $contents[] = array('align' => 'center', 'text' => '<br>' .
@@ -165,6 +167,8 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
 
       $contents = array('form' => tep_draw_form('computers', FILENAME_COMPUTERS, 'page=' . $_GET['page'] . '&cID=' . $cInfo->computers_id . '&action=save', 'post', 'enctype="multipart/form-data"'));
       $contents[] = array('text' => TEXT_INFO_EDIT_INTRO);
+      $contents[] = array('text' => '<input type="hidden" name="user_update" value="'.$user_info['name'].'">');
+
       $contents[] = array('text' => '<br>' . TEXT_INFO_COMPUTERS_NAME . '<br>' . tep_draw_input_field('computers_name', $cInfo->computers_name));
       $contents[] = array('text' => '<br>'.TABLE_HEADING_COMPUTER_ORDER.'<br>' . tep_draw_input_field('sort_order', $cInfo->sort_order));
       $contents[] = array('align' => 'center', 'text' => '<br>' .
@@ -186,6 +190,11 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
           . ($ocertify->npermission == 15 ? (' <a href="' .  tep_href_link(FILENAME_COMPUTERS, 'page=' . $_GET['page'] . '&cID=' .  $cInfo->computers_id . '&action=delete') . '">' . tep_html_element_button(IMAGE_DELETE) . '</a>'):'')
         );
         $contents[] = array('text' => '<br>' . TEXT_INFO_COMPUTERS_NAME . '<br>' . $cInfo->computers_name . '<br>');
+$contents[] = array('text' => '<br>'. TEXT_USER_ADDED. ' ' .$cInfo->user_added);
+$contents[] = array('text' => '<br>'. TEXT_DATE_ADDED. ' ' .tep_datetime_short($cInfo->date_added));
+$contents[] = array('text' => '<br>'. TEXT_USER_UPDATE. ' ' .$cInfo->user_update);
+$contents[] = array('text' => '<br>'. TEXT_DATE_UPDATE. ' ' .tep_datetime_short($cInfo->date_update));
+
 
       }
       break;

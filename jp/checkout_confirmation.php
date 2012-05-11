@@ -21,7 +21,8 @@ require(DIR_WS_ACTIONS.'checkout_confirmation.php');
 <td valign="top" id="contents"> <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1>      
 <table class="table_ie" border="0" width="100%" cellspacing="0" cellpadding="0"> 
 <tr> 
-  <td><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+  <td>
+  <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
   <tr> 
   <td width="20%"><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
   <tr> 
@@ -43,9 +44,12 @@ require(DIR_WS_ACTIONS.'checkout_confirmation.php');
   <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
   <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '1', '5'); ?></td> 
   </tr> 
-  </table></td> 
-  </tr>
-<td align="center" width="20%" class="checkoutBarFrom"><?php echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL') . '" class="checkoutBarFrom">' . CHECKOUT_BAR_PRODUCTS . '</a>'; ?></td> 
+  </table>
+  
+  
+  </td> 
+</tr>
+<td align="center" width="20%" class="checkoutBarFrom"><?php echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_OPTION, '', 'SSL') . '" class="checkoutBarFrom">' .  CHECKOUT_BAR_OPTION . '</a>'; ?></td> 
 <td align="center" width="20%" class="checkoutBarFrom"><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL') . '" class="checkoutBarFrom">' . CHECKOUT_BAR_DELIVERY . '</a>'; ?></td> 
 <td align="center" width="20%" class="checkoutBarFrom"><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '" class="checkoutBarFrom">' . CHECKOUT_BAR_PAYMENT . '</a>'; ?></td> 
 <td align="center" width="20%" class="checkoutBarCurrent"><?php echo CHECKOUT_BAR_CONFIRMATION; ?></td> 
@@ -111,22 +115,43 @@ require(DIR_WS_ACTIONS.'checkout_confirmation.php');
                                                                                                                                                                                                                  }
 
 for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
-  $product_info = tep_get_product_by_id($order->products[$i]['id'], SITE_ID, $languages_id);
+  $product_info = tep_get_product_by_id((int)$order->products[$i]['id'], SITE_ID, $languages_id);
     
   echo '          <tr>' . "\n" .
-    '            <td class="main" align="center" valign="top" width="150">' . $order->products[$i]['qty'] . '&nbsp;個' . (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($order->products[$i]['qty'], $order->products[$i]['id']) ? '<br><span style="font-size:10px">'. tep_get_full_count_in_order2($order->products[$i]['qty'], $order->products[$i]['id']) .'</span>': '') . '</td>' . "\n" .
+    '            <td class="main" align="center" valign="top" width="150">' .
+    $order->products[$i]['qty'] . '&nbsp;個' .  (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($order->products[$i]['qty'], (int)$order->products[$i]['id']) ? '<br><span style="font-size:10px">'.  tep_get_full_count_in_order2($order->products[$i]['qty'], (int)$order->products[$i]['id']) .'</span>': '') . '</td>' . "\n" .
     '            <td class="main" valign="top">' . $order->products[$i]['name'];
+  if ($order->productts[$i]['price'] < 0) {
+    echo ' (<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->display_price($order->products[$i]['price'], $order->products[$i]['tax'])).'</font>'.JPMONEY_UNIT_TEXT.')';
+  } else {
+    echo ' ('.$currencies->display_price($order->products[$i]['price'], $order->products[$i]['tax']).')';
+  }
 
   if (STOCK_CHECK == 'true') {
-    echo tep_check_stock($order->products[$i]['id'], $order->products[$i]['qty']);
+    echo tep_check_stock((int)$order->products[$i]['id'], $order->products[$i]['qty']);
   }
-
-  if ( (isset($order->products[$i]['attributes'])) && (sizeof($order->products[$i]['attributes']) > 0) ) {
-    for ($j=0, $n2=sizeof($order->products[$i]['attributes']); $j<$n2; $j++) {
-      echo '<br><small>&nbsp;<i> - ' . $order->products[$i]['attributes'][$j]['option'] . ': ' . $order->products[$i]['attributes'][$j]['value'] . '</i></small>';
+  if ( (isset($order->products[$i]['op_attributes'])) && (sizeof($order->products[$i]['op_attributes']) > 0) ) {
+    for ($j=0, $n2=sizeof($order->products[$i]['op_attributes']); $j<$n2; $j++) {  
+      $op_price = tep_get_show_attributes_price($order->products[$i]['op_attributes'][$j]['item_id'], $order->products[$i]['op_attributes'][$j]['group_id'], $order->products[$i]['op_attributes'][$j]['value']); 
+       
+      echo '<br><small>&nbsp;<i> - ' .  $order->products[$i]['op_attributes'][$j]['front_title'] . ': ' .  $order->products[$i]['op_attributes'][$j]['value'];
+      if ($op_price != '0') {
+        echo ' ('.$currencies->format($op_price*$order->products[$i]['qty']).')'; 
+      }
+      echo '</i></small>';
     }
   }
-
+  
+  if ( (isset($order->products[$i]['ck_attributes'])) && (sizeof($order->products[$i]['ck_attributes']) > 0) ) {
+    for ($jk=0, $n3=sizeof($order->products[$i]['ck_attributes']); $jk<$n3; $jk++) {
+      $cop_price = tep_get_show_attributes_price($order->products[$i]['ck_attributes'][$jk]['item_id'], $order->products[$i]['ck_attributes'][$jk]['group_id'], $order->products[$i]['ck_attributes'][$jk]['value']); 
+      echo '<br><small>&nbsp;<i> - ' .  $order->products[$i]['ck_attributes'][$jk]['front_title'] . ': ' .  $order->products[$i]['ck_attributes'][$jk]['value'];
+      if ($cop_price != '0') {
+        echo ' ('.$currencies->format($cop_price*$order->products[$i]['qty']).')'; 
+      }
+      echo '</i></small>';
+    }
+  }
   echo '</td>' . "\n";
 
   if (sizeof($order->info['tax_groups']) > 1) echo '            <td class="main" valign="top" align="right">' . tep_display_tax_value($order->products[$i]['tax']) . '%</td>' . "\n";
@@ -151,6 +176,162 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
 <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
 </tr> 
 
+<!-- 住所信息生成 -->
+
+<?php
+if(!empty($_SESSION['options'])){
+?>
+<tr> 
+<td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
+  <tr class="infoBoxContents"> 
+  <td>
+  <table width="100%" border="0" cellspacing="0" cellpadding="2">
+  <tr>
+  <td class="main" colspan="3"><b><?php echo TEXT_OPTIONS_TITLE; ?></b><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
+  </tr>
+<?php
+  foreach($_SESSION['options'] as $key=>$value){
+?>
+  <tr>
+  <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+  <td class="main" width="30%" valign="top"><?php echo $value[0]; ?>:</td>
+  <td class="main" width="70%"><?php echo $value[1]; ?></td>
+  </tr>
+<?php
+  }
+?>
+<!-- 配送费用计算-->
+<?php
+/*
+ * 计算配送费用
+ */
+
+
+//$address = tep_db_prepare_input($_POST['address']);
+//$country = tep_db_prepare_input($_POST['country']);
+$weight = $cart->weight;
+
+foreach($_SESSION['options'] as $op_value){
+  $city_query = tep_db_query("select * from ". TABLE_COUNTRY_CITY ." where name='". $op_value[1] ."' and status='0'");
+  $city_num = tep_db_num_rows($city_query);
+
+  $address_query = tep_db_query("select * from ". TABLE_COUNTRY_AREA ." where name='". $op_value[1] ."' and status='0'");
+  $address_num = tep_db_num_rows($address_query);
+  
+  $country_query = tep_db_query("select * from ". TABLE_COUNTRY_FEE ." where name='". $op_value[1] ."' and status='0'");
+  $address_country_num = tep_db_num_rows($country_query);
+
+if($city_num > 0){
+  $city_array = tep_db_fetch_array($city_query);
+  tep_db_free_result($city_query);
+  $city_free_value = $city_array['free_value'];
+  $city_weight_fee_array = unserialize($city_array['weight_fee']);
+
+  //根据重量来获取相应的配送费用
+  foreach($city_weight_fee_array as $key=>$value){
+    
+    if(strpos($key,'-') > 0){
+
+      $temp_array = explode('-',$key);
+      $city_weight_fee = $weight >= $temp_array[0] && $weight <= $temp_array[1] ? $value : 0; 
+    }else{
+  
+      $city_weight_fee = $weight <= $key ? $value : 0;
+    }
+
+    if($city_weight_fee > 0){
+
+      break;
+    }
+  }
+}elseif($address_num > 0){
+  $address_array = tep_db_fetch_array($address_query);
+  tep_db_free_result($address_query);
+  $address_free_value = $address_array['free_value'];
+  $address_weight_fee_array = unserialize($address_array['weight_fee']);
+
+  //根据重量来获取相应的配送费用
+  foreach($address_weight_fee_array as $key=>$value){
+    
+    if(strpos($key,'-') > 0){
+
+      $temp_array = explode('-',$key);
+      $address_weight_fee = $weight >= $temp_array[0] && $weight <= $temp_array[1] ? $value : 0; 
+    }else{
+  
+      $address_weight_fee = $weight <= $key ? $value : 0;
+    }
+
+    if($address_weight_fee > 0){
+
+      break;
+    }
+  }
+}else{
+  if($address_country_num > 0){
+  $country_array = tep_db_fetch_array($country_query);
+  tep_db_free_result($country_query);
+  $country_free_value = $country_array['free_value'];
+  $country_weight_fee_array = unserialize($country_array['weight_fee']);
+
+  //根据重量来获取相应的配送费用
+  foreach($country_weight_fee_array as $key=>$value){
+    
+    if(strpos($key,'-') > 0){
+
+      $temp_array = explode('-',$key);
+      $country_weight_fee = $weight >= $temp_array[0] && $weight <= $temp_array[1] ? $value : 0; 
+    }else{
+  
+      $country_weight_fee = $weight <= $key ? $value : 0;
+    }
+
+    if($country_weight_fee > 0){
+
+      break;
+    }
+  }
+  }
+}
+
+}
+if($city_weight_fee != ''){
+
+  $weight_fee = $city_weight_fee;
+}else{
+  $weight_fee = $address_weight_fee != '' ? $address_weight_fee : $country_weight_fee;
+}
+
+if($city_free_value != ''){
+
+  $free_value = $city_free_value;
+}else{
+  $free_value = $address_free_value != '' ? $address_free_value : $country_free_value;
+}
+
+$shipping_fee = $cart->total > $free_value ? 0 : $weight_fee;
+//echo $flag;
+//echo '<br />';
+//echo '<input type="hidden" name="weight_fee" value="'. $weight_fee .'">今回のお届け料金は<font color="red"><b>'. $shipping_fee .'</b></font>円です。';
+//echo '<br />';
+//echo '<input type="hidden" name="free_value" value="'. $free_value .'">※お買い物の総額は<font color="red"><b>'. $free_value .'</b></font>円以上にお買いいただければ、お届け料金は無料になります。';
+//echo '<br />';
+//tep_db_close();
+?>
+
+  </table>
+</td>
+</tr>
+</table></td>
+</tr> 
+<tr>
+<td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+</tr> 
+
+<?php
+}
+?>
+<!-- 住所信息生成结束 -->
 <tr> 
 <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
   <tr class="infoBoxContents"> 
@@ -159,11 +340,13 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
   <tr>
   <td class="main" colspan="3"><b><?php echo TEXT_TORIHIKI_TITLE; ?></b><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
   </tr>
+<!--
   <tr>
   <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
   <td class="main"><?php echo TEXT_TORIHIKIHOUHOU; ?></td>
   <td class="main"><?php echo $torihikihouhou; ?></td>
   </tr>
+-->
   <tr>
   <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
   <td class="main" width="30%"><?php echo TEXT_TORIHIKIKIBOUBI; ?></td>
@@ -173,10 +356,14 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
   <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
   <td class="main"><?php echo TEXT_TORIHIKIKIBOUJIKAN; ?></td>
   <td class="main">
-  <?php echo $hour; ?>
-  &nbsp;時&nbsp;
-<?php echo $min; ?>
-&nbsp;分&nbsp;
+  <?php echo $start_hour; ?>
+  時
+<?php echo $start_min; ?>
+ 分&nbsp;～
+<?php echo $end_hour; ?>
+ 時
+<?php echo $end_min; ?>
+ 分
 </td>
 </tr>
 </table>
@@ -401,12 +588,13 @@ if (is_array($payment_modules->modules)) {
 }
 //character  
 
+/*
 if(isset($_SESSION['character'])){
   foreach($_SESSION['character'] as $ck => $cv){
     echo tep_draw_hidden_field("character[$ck]", $cv);
   }
 }
-
+*/
 
 echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER) . '</form>' . "\n";
 ?> </td> 

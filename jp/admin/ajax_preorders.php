@@ -672,4 +672,37 @@ if ($_POST['orders_id'] &&
   }
   $html_str .= '&nbsp;<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="delete_preorder_info(\''.$_POST['oID'].'\', \''.urlencode($param_str).'\')"').'</a>'; 
   echo $html_str;
+} else if (isset($_GET['action'])&&$_GET['action']=='recalc_price') {
+  $orders_info_raw = tep_db_query("select currency, currency_value from ".TABLE_PREORDERS." where orders_id = '".$_POST['oid']."'");
+  $orders_info = tep_db_fetch_array($orders_info_raw);
+  
+  $orders_p_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_products_id = '".$_POST['opd']."'");
+  $orders_p = tep_db_fetch_array($orders_p_raw);
+  
+  if (tep_check_pre_product_type($_POST['opd'])) {
+    $p_price = 0 - tep_replace_full_character($_POST['p_price']); 
+  } else {
+    $p_price = tep_replace_full_character($_POST['p_price']); 
+  }
+  
+  $final_price = $p_price + tep_replace_full_character($_POST['op_price']);
+   
+  $price_array[] = tep_display_currency(number_format(abs($final_price), 2));
+  
+  if ($final_price < 0) {
+    $price_array[] = '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($final_price, $orders_p['products_tax']), true, $orders_info['currency'], $orders_info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL; 
+    
+    $price_array[] = '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($final_price*tep_replace_full_character($_POST['p_num']), true, $orders_info['currency'], $orders_info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL; 
+    
+    $price_array[] = '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($final_price, $orders_p['products_tax'])*tep_replace_full_character($_POST['p_num']), true, $orders_info['currency'], $orders_info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL; 
+  
+  } else {
+    $price_array[] = $currencies->format(tep_add_tax($final_price, $orders_p['products_tax']), true, $orders_info['currency'], $orders_info['currency_value']); 
+    
+    $price_array[] = $currencies->format($final_price*tep_replace_full_character($_POST['p_num']), true, $orders_info['currency'], $orders_info['currency_value']); 
+    
+    $price_array[] = $currencies->format(tep_add_tax($final_price, $orders_p['products_tax'])*tep_replace_full_character($_POST['p_num']), true, $orders_info['currency'], $orders_info['currency_value']); 
+  }
+  
+  echo implode('|||', $price_array);
 }

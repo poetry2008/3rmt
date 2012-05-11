@@ -50,6 +50,8 @@
   define('WARN_DOWNLOAD_DIRECTORY_NOT_READABLE', 'true');
 
 // define the filenames used in the project
+  define('FILENAME_CHECKOUT_ATTRIBUTES', 'checkout_attributes.php'); 
+  define('FILENAME_CHECKOUT_OPTION', 'checkout_option.php');
   define('FILENAME_PREORDER_PAYMENT', 'preorder_payment.php');
   define('FILENAME_PREORDER_SUCCESS', 'preorder_success.php');
   define('FILENAME_PREORDER_UNSUCCESS', 'preorder_unsuccess.php');
@@ -133,6 +135,9 @@
   define('FILENAME_EMAIL_TROUBLE', 'email_trouble.php');
 
 // define the database table names used in the project
+  define('TABLE_OPTION_GROUP', 'option_group');
+  define('TABLE_OPTION_ITEM', 'option_item');
+  define('TABLE_CUSTOMERS_BASKET_OPTIONS', 'customers_basket_options');
   define('TABLE_OTHER_CONFIG', 'other_config'); 
   define('TABLE_CAMPAIGN', 'campaign'); 
   define('TABLE_CUSTOMER_TO_CAMPAIGN', 'customer_to_campaign'); 
@@ -170,7 +175,7 @@
   define('TABLE_CURRENCIES', 'currencies');
   define('TABLE_CUSTOMERS', 'customers');
   define('TABLE_CUSTOMERS_BASKET', 'customers_basket');
-  define('TABLE_CUSTOMERS_BASKET_ATTRIBUTES', 'customers_basket_attributes');
+  //define('TABLE_CUSTOMERS_BASKET_ATTRIBUTES', 'customers_basket_attributes');
   define('TABLE_CUSTOMERS_INFO', 'customers_info');
   define('TABLE_USER_LOGIN','user_login');
   define('TABLE_LANGUAGES', 'languages');
@@ -184,13 +189,13 @@
   define('TABLE_ORDERS_STATUS_HISTORY', 'orders_status_history');
   define('TABLE_ORDERS_TOTAL', 'orders_total');
   define('TABLE_PRODUCTS', 'products');
-  define('TABLE_PRODUCTS_ATTRIBUTES', 'products_attributes');
-  define('TABLE_PRODUCTS_ATTRIBUTES_DOWNLOAD', 'products_attributes_download');
+  define('TABLE_PRODUCTS_ATTRIBUTES', 'products_attributes_2');
+  define('TABLE_PRODUCTS_ATTRIBUTES_DOWNLOAD', 'products_attributes_download_2');
   define('TABLE_PRODUCTS_DESCRIPTION', 'products_description');
   define('TABLE_PRODUCTS_NOTIFICATIONS', 'products_notifications');
-  define('TABLE_PRODUCTS_OPTIONS', 'products_options');
-  define('TABLE_PRODUCTS_OPTIONS_VALUES', 'products_options_values');
-  define('TABLE_PRODUCTS_OPTIONS_VALUES_TO_PRODUCTS_OPTIONS', 'products_options_values_to_products_options');
+  define('TABLE_PRODUCTS_OPTIONS', 'products_options_2');
+  define('TABLE_PRODUCTS_OPTIONS_VALUES', 'products_options_values_2');
+  define('TABLE_PRODUCTS_OPTIONS_VALUES_TO_PRODUCTS_OPTIONS', 'products_options_values_to_products_options_2');
   define('TABLE_PRODUCTS_TO_CATEGORIES', 'products_to_categories');
   define('TABLE_RECORD', 'record');
   define('TABLE_REVIEWS', 'reviews');
@@ -495,21 +500,9 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
                                 if (in_array($_POST['products_id'][$i], (is_array($_POST['cart_delete']) ? $_POST['cart_delete'] : array()))) {
                                   $cart->remove($_POST['products_id'][$i]);
                                 } else {
-                                  if (PHP_VERSION < 4) {
-                                    // if PHP3, make correction for lack of multidimensional array.
-                                    reset($_POST);
-                                    while (list($key, $value) = each($_POST)) {
-                                      if (is_array($value)) {
-                                        while (list($key2, $value2) = each($value)) {
-                                          if (ereg ("(.*)\]\[(.*)", $key2, $var)) {
-                                            $id2[$var[1]][$var[2]] = $value2;
-                                          }
-                                        }
-                                      }
-                                    }
-                                    $attributes = ($id2[$_POST['products_id'][$i]]) ? $id2[$_POST['products_id'][$i]] : '';
-                                  } else {
-                                    $attributes = ($_POST['id'][$_POST['products_id'][$i]]) ? $_POST['id'][$_POST['products_id'][$i]] : '';
+                                  $hide_option_info = array(); 
+                                  if (isset($_POST['option_info'][$i])) {
+                                    $hide_option_info = @unserialize($_POST['option_info'][$i]); 
                                   }
                                   // tamura 2002/12/30 「全角」英数字を「半角」に変換
                                   $_POST['cart_quantity'][$i] = tep_an_zen_to_han($_POST['cart_quantity'][$i]);                 
@@ -517,24 +510,35 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
                                     $cart->remove($_POST['products_id'][$i]);
                                     tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL')); 
                                   } else {
-                                    $cart->add_cart($_POST['products_id'][$i], $_POST['cart_quantity'][$i], $attributes, false);
+                                    $cart->add_cart((int)$_POST['products_id'][$i], $_POST['cart_quantity'][$i], '', false, $hide_option_info);
                                   }
                                 }
                               }
                               if (isset($_POST['continue']) && $_POST['goto']) {
                                 tep_redirect($_POST['goto']);
                               } else if (isset($_POST['checkout'])) {
-                                tep_redirect(tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL'));
+                                tep_redirect(tep_href_link(FILENAME_CHECKOUT_ATTRIBUTES, '', 'SSL'));
                               } else {
                                 tep_redirect(tep_href_link($goto, tep_get_all_get_params($parameters)));
                               }
                               break;
       // customer adds a product from the products page
-      case 'add_product' :    if (isset($_POST['products_id']) && is_numeric($_POST['products_id'])) {
+      /*case 'add_product' :    if (isset($_POST['products_id']) && is_numeric($_POST['products_id'])) {
                                 $cart->add_cart($_POST['products_id'], $cart->get_quantity(tep_get_uprid($_POST['products_id'], $_POST['id']))+$_POST['quantity'], $_POST['id']);
+      }
+                              $_SESSION['cname'][tep_get_uprid($_POST['products_id'], $_POST['id'])] = $_POST['cname']; 
+                              unset($_SESSION['character']);
+                                
+                              foreach($cart as $key => $val){
+                                if($key == 'contents'){
+                                  foreach($val as $key2 => $val2){
+                                    $_SESSION['character'][$key2] = $_SESSION['cname'][$key2];
+                                  }
+                                }
                               }
+
                               tep_redirect(tep_href_link($goto, tep_get_all_get_params($parameters)));
-                              break;
+                              break;*/
       // performed by the 'buy now' button in product listings and review page
       case 'buy_now' :        forward404();
                               if (isset($_GET['products_id'])) {
@@ -851,6 +855,21 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
   define('TABLE_OA_FORM_GROUP', 'oa_form_group'); 
   define('TABLE_OA_ITEM', 'oa_item'); 
   define('TABLE_OA_FORMVALUE', 'oa_formvalue');
+  define('TABLE_OA_FORMVALUE', 'oa_formvalue'); 
+  define('TABLE_ADDRESS','address');
+  define('TABLE_OPTION_GROUP','option_group');
+  define('TABLE_OPTION_ITEM','option_item');
+  define('TABLE_PRODUCTS_SHIPPING_TIME','products_shipping_time');
+  define('TABLE_COUNTRY_FEE','country_fee');
+  define('TABLE_COUNTRY_AREA','country_area');
+  define('TABLE_COUNTRY_CITY','country_city');
+  define('TABLE_ADDRESS_ORDERS','address_orders');
+  define('TABLE_ADDRESS_HISTORY','address_history');
+ 
+  $checkout_is_cart_pos = strpos($_SERVER['PHP_SELF'], FILENAME_SHOPPING_CART);
+  if ($checkout_is_cart_pos !== false) { 
+    $cart->clean_checkout_attributes(); 
+  } 
   
   if (!empty($_GET)) {
     foreach ($_GET as $g_c_key => $g_c_value) {

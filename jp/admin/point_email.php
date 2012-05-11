@@ -14,13 +14,19 @@
            $sql_point_mail_array = array('mail_date' => $point_mail_date,
                                          'mail_title' => $point_mail_title,
                                          'description' => $point_mail_description,
+					 'user_added' => $_POST['user_added'],
+					 'user_update' =>$_POST['user_update'],
                                          'created_at' => 'now()',
                                          'updated_at' => 'now()');
            tep_db_perform(TABLE_POINT_MAIL,$sql_point_mail_array);
+	   $last_insert_id = mysql_insert_id();
+           tep_redirect(tep_href_link(FILENAME_POINT_EMAIL,'page='.$_GET['page'].'&id='.$last_insert_id));
+
         }else if($_GET['action'] == 'save'){
            $sql_point_mail_array = array('mail_date' => $point_mail_date,
                                          'mail_title' => $point_mail_title,
                                          'description' => $point_mail_description,
+					 'user_update' =>$_POST['user_update'],
                                          'updated_at' => 'now()');
            tep_db_perform(TABLE_POINT_MAIL,$sql_point_mail_array,'update',
                'id='.tep_db_input($_POST['id']));
@@ -184,6 +190,9 @@ while($point_mail = tep_db_fetch_array($point_mail_query)){
       $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_NEW . '</b>');
 
       $contents = array('form' => tep_draw_form('status', FILENAME_POINT_EMAIL, 'page=' . $_GET['page'] . '&action=insert', 'post', 'enctype="multipart/form-data"'));
+$contents[] = array('text' => '<input type="hidden" name="user_added" value="'.$user_info['name'].'">');
+$contents[] = array('text' => '<input type="hidden" name="user_update" value="'.$user_info['name'].'">');
+
     //point mail date
     $point_mail_inputs_string .= '' . TEXT_INFO_POINT_MAIL_DATE .
       '<br>' . tep_draw_input_field('mail_date');
@@ -208,6 +217,7 @@ while($point_mail = tep_db_fetch_array($point_mail_query)){
             'page=' . $_GET['page'] . '&id=' . $point_info->id  . '&action=save', 'post', 'enctype="multipart/form-data"'));
       $contents[] = array('text' => '<input type="hidden" name="id"
           value="'.$point_info->id.'">');
+      $contents[] = array('text' => '<input type="hidden" name="user_update" value="'.$user_info['name'].'">');
 
       $point_mail_inputs_string = '';
 
@@ -257,6 +267,11 @@ while($point_mail = tep_db_fetch_array($point_mail_query)){
             '<a href="'.tep_href_link(FILENAME_POINT_EMAIL, 'page=' . $_GET['page'] .'&id='.$point_info->id.'&action=edit').'">'.tep_html_element_button(IMAGE_EDIT).'</a>'.
             '<a href="'.tep_href_link(FILENAME_POINT_EMAIL, 'page=' . $_GET['page'] .'&id='.$point_info->id.'&action=delete').'">'.tep_html_element_button(IMAGE_DELETE).'</a>');
       }
+$contents[] = array('text' => '<br>'. TEXT_USER_ADDED. ' ' .$point_info->user_added);
+$contents[] = array('text' => '<br>'. TEXT_DATE_ADDED. ' ' .tep_datetime_short($point_info->created_at));
+$contents[] = array('text' => '<br>'. TEXT_USER_UPDATE. ' ' .$point_info->user_update);
+$contents[] = array('text' => '<br>'. TEXT_DATE_UPDATE. ' ' .tep_datetime_short($point_info->updated_at));
+
       break;
   }
 

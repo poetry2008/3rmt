@@ -44,6 +44,9 @@ define('TEXT_OF_5_STARS', '5点中の %s点!');
 define('TEXT_GOOD', '<small><font color="#ff0000"><b>良い</b></font></small>');
 define('TEXT_BAD', '<small><font color="#ff0000"><b>悪い</b></font></small>');
 define('TEXT_INFO_HEADING_DELETE_REVIEW', 'レビューを削除');
-define('REVIEWS_CHARACTER_TOTAL', '漢字数:');
-define('REVIEWS_NOTICE_TOTALNUM_ERROR', 'レビューの文章は少なくても 50 文字以上必要です');
+define('TEXT_USER_ADDED','投稿者:');
+define('TEXT_USER_UPDATE','更新者:');
+define('TEXT_DATE_ADDED','投稿日:');
+define('TEXT_DATE_UPDATE','更新日:');
+
 ?>

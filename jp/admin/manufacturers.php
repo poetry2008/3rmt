@@ -9,18 +9,19 @@
   switch ($_GET['action']) {
     case 'insert':
     case 'save':
+	    //print_r($_POST);exit;
       $manufacturers_id = tep_db_prepare_input($_GET['mID']);
       $manufacturers_name = tep_db_prepare_input($_POST['manufacturers_name']);
 
       $sql_data_array = array('manufacturers_name' => $manufacturers_name);
 
       if ($_GET['action'] == 'insert') {
-        $insert_sql_data = array('date_added' => 'now()');
+        $insert_sql_data = array('date_added' => 'now()','last_modified' => 'now()','user_added' => $_POST['user_added'],'user_update' => $_POST['user_update']);
         $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data);
         tep_db_perform(TABLE_MANUFACTURERS, $sql_data_array);
         $manufacturers_id = tep_db_insert_id();
       } elseif ($_GET['action'] == 'save') {
-        $update_sql_data = array('last_modified' => 'now()');
+        $update_sql_data = array('last_modified' => 'now()','user_update' => $_POST['user_update']);
         $sql_data_array = tep_array_merge($sql_data_array, $update_sql_data);
         tep_db_perform(TABLE_MANUFACTURERS, $sql_data_array, 'update', "manufacturers_id = '" . tep_db_input($manufacturers_id) . "'");
       }
@@ -142,7 +143,7 @@
                 <td class="dataTableHeadingContent" align="right"><?php echo TABLE_HEADING_ACTION; ?>&nbsp;</td>
               </tr>
 <?php
-  $manufacturers_query_raw = "select manufacturers_id, manufacturers_name, manufacturers_image, date_added, last_modified from " . TABLE_MANUFACTURERS . " order by manufacturers_name";
+  $manufacturers_query_raw = "select manufacturers_id, manufacturers_name, manufacturers_image, date_added, last_modified,user_added,user_update from " . TABLE_MANUFACTURERS . " order by manufacturers_name";
   $manufacturers_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $manufacturers_query_raw, $manufacturers_query_numrows);
   $manufacturers_query = tep_db_query($manufacturers_query_raw);
   while ($manufacturers = tep_db_fetch_array($manufacturers_query)) {
@@ -204,6 +205,8 @@
       $heading[] = array('text' => '<b>' . TEXT_HEADING_NEW_MANUFACTURER . '</b>');
 
       $contents = array('form' => tep_draw_form('manufacturers', FILENAME_MANUFACTURERS, 'action=insert', 'post', 'enctype="multipart/form-data"'));
+      $contents[] = array('text' => '<input type="hidden" name="user_added" value="'.$user_info['name'].'">');
+      $contents[] = array('text' => '<input type="hidden" name="user_update" value="'.$user_info['name'].'">');
       $contents[] = array('text' => TEXT_NEW_INTRO);
       $contents[] = array('text' => '<br>' . TEXT_MANUFACTURERS_NAME . '<br>' . tep_draw_input_field('manufacturers_name'));
       $contents[] = array('text' => '<br>' . TEXT_MANUFACTURERS_IMAGE . '<br>' . tep_draw_file_field('manufacturers_image'));
@@ -222,6 +225,8 @@
 
       $contents = array('form' => tep_draw_form('manufacturers', FILENAME_MANUFACTURERS, 'page=' . $_GET['page'] . '&mID=' . $mInfo->manufacturers_id . '&action=save', 'post', 'enctype="multipart/form-data"'));
       $contents[] = array('text' => TEXT_EDIT_INTRO);
+      $contents[] = array('text' => '<input type="hidden" name="user_update" value="'.$user_info['name'].'">');
+
       $contents[] = array('text' => '<br>' . TEXT_MANUFACTURERS_NAME . '<br>' . tep_draw_input_field('manufacturers_name', $mInfo->manufacturers_name));
       $contents[] = array('text' => '<br>' . TEXT_MANUFACTURERS_IMAGE . '<br>' . tep_draw_file_field('manufacturers_image') . '<br>' . $mInfo->manufacturers_image);
 
@@ -257,8 +262,13 @@
           '<a href="' . tep_href_link(FILENAME_MANUFACTURERS, 'page=' .  $_GET['page'] . '&mID=' . $mInfo->manufacturers_id . '&action=edit') .  '">' . tep_html_element_button(IMAGE_EDIT) . '</a>' 
         . ($ocertify->npermission == 15 ? (' <a href="' .  tep_href_link(FILENAME_MANUFACTURERS, 'page=' . $_GET['page'] . '&mID=' . $mInfo->manufacturers_id . '&action=delete') . '">' .  tep_html_element_button(IMAGE_DELETE) . '</a>'):'')
         );
-        $contents[] = array('text' => '<br>' . TEXT_DATE_ADDED . ' ' . tep_date_short($mInfo->date_added));
-        if (tep_not_null($mInfo->last_modified)) $contents[] = array('text' => TEXT_LAST_MODIFIED . ' ' . tep_date_short($mInfo->last_modified));
+$contents[] = array('text' => '<br>'. TEXT_USER_ADDED. ' ' .$mInfo->user_added);
+$contents[] = array('text' => '<br>'. TEXT_DATE_ADDED. ' ' .tep_datetime_short($mInfo->date_added));
+$contents[] = array('text' => '<br>'. TEXT_USER_UPDATE. ' ' .$mInfo->user_update);
+$contents[] = array('text' => '<br>'. TEXT_DATE_UPDATE. ' ' .tep_datetime_short($mInfo->last_modified));
+
+ //       $contents[] = array('text' => '<br>' . TEXT_DATE_ADDED . ' ' . tep_date_short($mInfo->date_added));
+  //      if (tep_not_null($mInfo->last_modified)) $contents[] = array('text' => TEXT_LAST_MODIFIED . ' ' . tep_date_short($mInfo->last_modified));
         $contents[] = array('text' => '<br>' . tep_info_image('manufacturers/' . $mInfo->manufacturers_image, $mInfo->manufacturers_name));
         $contents[] = array('text' => '<br>' . TEXT_PRODUCTS . ' ' . $mInfo->products_count);
       }

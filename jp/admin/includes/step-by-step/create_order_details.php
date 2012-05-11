@@ -6,19 +6,270 @@
 <script type="text/javascript">
   //todo:修改通性用
   function hidden_payment(){
-  var idx = document.create_order.elements["payment_method"].selectedIndex;
-  var CI = document.create_order.elements["payment_method"].options[idx].value;
-  $(".rowHide").hide();
-  $(".rowHide").find("input").attr("disabled","true");
-  $(".rowHide_"+CI).show();
-  $(".rowHide_"+CI).find("input").removeAttr("disabled");
+  //var idx = document.create_order.elements["payment_method"].selectedIndex;
+  //var CI = document.create_order.elements["payment_method"].options[idx].value;
+  //$(".rowHide").hide();
+  //$(".rowHide").find("input").attr("disabled","true");
+  //$(".rowHide_"+CI).show();
+  //$(".rowHide_"+CI).find("input").removeAttr("disabled");
  }
    $(document).ready(function(){hidden_payment()});
 
+$(document).ready(function(){
+<?php
+  if(isset($_SESSION['error_array']) && !empty($_SESSION['error_array'])){
 
+
+    foreach($_SESSION['error_array'] as $value){
+
+      echo '$("#error_'.$value.'").html("<font color=red>&nbsp;&nbsp;Error</font>");';
+    } 
+  }
+  unset($_SESSION['error_array']);
+?>
+});
+<?php 
+$t_today = getdate();
+$t_mon = $t_today['mon'];
+$t_day = $t_today['mday'];
+$t_year = $t_today['year'];
+$t_hour = $t_today['hours'];
+$t_min = $t_today['minutes'];
+?>
+
+function check_year(value){
+  var mon = document.getElementById('mon');
+  var mon_value = mon.value;
+  var day = document.getElementById('day');
+  var day_value = day.value;
+  var hour = document.getElementById('hour');
+  var hour_value = hour.value; 
+  var min = document.getElementById('min');
+  var min_value = min.value; 
+
+
+  var run_num;
+  if((value % 4 == 0 && value % 100 != 0) || value % 400 == 0){
+
+    run_num = 29;
+  }else{
+
+    run_num = 28;
+  } 
+  var day_num;
+  switch(mon_value){
+
+  case '1':
+  case '3':
+  case '5':
+  case '7':
+  case '8':
+  case '10':
+  case '12':
+    day_num = 31;
+    break;
+  case '4':
+  case '6':
+  case '9':
+  case '11':
+    day_num = 30;
+    break;
+  case '2':
+    day_num = run_num;
+    break;
+  } 
+  if(value != <?php echo $t_year;?>){
+    mon.options.length = 0;
+    for(m_i = 1;m_i <= 12;m_i++){
+      mon.options[mon.options.length]=new Option(m_i,m_i,m_i==mon_value); 
+    }
+    day.options.length = 0;
+    for(d_i = 1;d_i <= day_num;d_i++){
+      day.options[day.options.length]=new Option(d_i,d_i,d_i==day_value); 
+    }
+    hour.options.length = 0;
+    for(h_i = 1;h_i <= 24;h_i++){
+      h_i_str = h_i == 24 ? '00' : h_i;
+      hour.options[hour.options.length]=new Option(h_i_str,h_i_str,h_i_str==hour_value); 
+    }
+    min.options.length = 0;
+    for(mi_i = 0;mi_i <= 59;mi_i++){
+      min.options[min.options.length]=new Option(mi_i,mi_i,mi_i==min_value); 
+    }
+  }else{
+    mon.options.length = 0;
+    for(m_i = <?php echo $t_mon;?>;m_i <= 12;m_i++){
+      mon.options[mon.options.length]=new Option(m_i,m_i,m_i==mon_value); 
+    }
+    day.options.length = 0;
+    for(d_i = <?php echo $t_day;?>;d_i <= day_num;d_i++){
+      day.options[day.options.length]=new Option(d_i,d_i,d_i==day_value); 
+    }
+    hour.options.length = 0;
+    for(h_i = <?php echo $t_hour;?>;h_i <= 24;h_i++){
+      h_i_str = h_i == 24 ? '00' : h_i;
+      hour.options[hour.options.length]=new Option(h_i_str,h_i_str,h_i_str==hour_value); 
+    }
+    min.options.length = 0;
+    for(mi_i = <?php echo $t_min;?>;mi_i <= 59;mi_i++){
+      min.options[min.options.length]=new Option(mi_i,mi_i,mi_i==min_value); 
+    } 
+  } 
+}
+
+function check_mon(value){
+  var year = document.getElementById('year');
+  var year_value = year.value;
+  var mon = document.getElementById('mon');
+  var mon_value = mon.value;
+  var day = document.getElementById('day');
+  var day_value = day.value;
+  var hour = document.getElementById('hour');
+  var hour_value = hour.value; 
+  var min = document.getElementById('min');
+  var min_value = min.value;
+  
+  var run_num;
+  if((year_value % 4 == 0 && year_value % 100 != 0) || year_value % 400 == 0){
+
+    run_num = 29;
+  }else{
+
+    run_num = 28;
+  } 
+  var day_num;
+  switch(value){
+
+  case '1':
+  case '3':
+  case '5':
+  case '7':
+  case '8':
+  case '10':
+  case '12':
+    day_num = 31;
+    break;
+  case '4':
+  case '6':
+  case '9':
+  case '11':
+    day_num = 30;
+    break;
+  case '2':
+    day_num = run_num;
+    break;
+  } 
+  if(year_value == <?php echo $t_year;?> && value == <?php echo $t_mon;?>){
+    day.options.length = 0;
+    for(d_i = <?php echo $t_day;?>;d_i <= day_num;d_i++){
+      day.options[day.options.length]=new Option(d_i,d_i,d_i==day_value); 
+    }
+    hour.options.length = 0;
+    for(h_i = <?php echo $t_hour;?>;h_i <= 24;h_i++){
+      h_i_str = h_i == 24 ? '00' : h_i;
+      hour.options[hour.options.length]=new Option(h_i_str,h_i_str,h_i_str==hour_value); 
+    }
+    min.options.length = 0;
+    for(mi_i = <?php echo $t_min;?>;mi_i <= 59;mi_i++){
+      min.options[min.options.length]=new Option(mi_i,mi_i,mi_i==min_value); 
+    } 
+  }else{
+    day.options.length = 0;
+    for(d_i = 1;d_i <= day_num;d_i++){
+      day.options[day.options.length]=new Option(d_i,d_i,d_i==day_value); 
+    } 
+    hour.options.length = 0;
+    for(h_i = 1;h_i <= 24;h_i++){
+      h_i_str = h_i == 24 ? '00' : h_i;
+      hour.options[hour.options.length]=new Option(h_i_str,h_i_str,h_i_str==hour_value); 
+    }
+    min.options.length = 0;
+    for(mi_i = 0;mi_i <= 59;mi_i++){
+      min.options[min.options.length]=new Option(mi_i,mi_i,mi_i==min_value); 
+    }
+  }
+}
+
+function check_day(value){
+  var year = document.getElementById('year');
+  var year_value = year.value;
+  var mon = document.getElementById('mon');
+  var mon_value = mon.value;
+  var hour = document.getElementById('hour');
+  var hour_value = hour.value;
+  var min = document.getElementById('min');
+  var min_value = min.value;
+   
+  if(year_value == <?php echo $t_year;?> && mon_value == <?php echo $t_mon;?> && value == <?php echo $t_day;?>){
+    hour.options.length = 0;
+    for(h_i = <?php echo $t_hour;?>;h_i <= 24;h_i++){
+      h_i_str = h_i == 24 ? '00' : h_i;
+      hour.options[hour.options.length]=new Option(h_i_str,h_i_str,h_i_str==hour_value); 
+    }
+    min.options.length = 0;
+    for(mi_i = <?php echo $t_min;?>;mi_i <= 59;mi_i++){
+      min.options[min.options.length]=new Option(mi_i,mi_i,mi_i==min_value); 
+    }
+  }else{
+    hour.options.length = 0;
+    for(h_i = 1;h_i <= 24;h_i++){
+      h_i_str = h_i == 24 ? '00' : h_i;
+      hour.options[hour.options.length]=new Option(h_i_str,h_i_str,h_i_str==hour_value); 
+    }
+    min.options.length = 0;
+    for(mi_i = 0;mi_i <= 59;mi_i++){
+      min.options[min.options.length]=new Option(mi_i,mi_i,mi_i==min_value); 
+    } 
+  }
+}
+
+function check_hour(value){
+  var hour_1 = document.getElementById('hour_1');
+  var hour_1_value = hour_1.value;
+   
+  hour_1.options.length = 0;
+  value = value == '00' ? 0 : value;
+  for(h_i = value;h_i <= 24;h_i++){
+      if(h_i == 0){continue;}
+      h_i_str = h_i == 24 ? '00' : h_i;
+      hour_1.options[hour_1.options.length]=new Option(h_i_str,h_i_str,h_i_str==value); 
+    }
+}
+
+function check_min(value){
+  var min_1 = document.getElementById('min_1');
+  var min_1_value = min_1.value;
+   
+    min_1.options.length = 0;
+    for(mi_i = value;mi_i <= 59;mi_i++){
+      min_1.options[min_1.options.length]=new Option(mi_i,mi_i,mi_i==value); 
+    }
+}
+
+function check_hour_1(value){
+  var min_1 = document.getElementById('min_1');
+  var min_1_value = min_1.value;
+  var hour = document.getElementById('hour');
+  var hour_value = hour.value;
+
+  
+  if(hour_value == value){ 
+    min_1.options.length = 0;
+    for(mi_i = min_1_value;mi_i <= 59;mi_i++){
+      min_1.options[min_1.options.length]=new Option(mi_i,mi_i,mi_i==min_1_value); 
+    }
+  }else{
+
+    min_1.options.length = 0;
+    for(mi_i = 0;mi_i <= 59;mi_i++){
+      min_1.options[min_1.options.length]=new Option(mi_i,mi_i,mi_i==min_1_value); 
+    }
+  }
+}
 </script>
-
 <table border="0" width="100%" cellspacing="0" cellpadding="2">
+<form id="create_order_form_1" name="create_order_form_1" method="post" action="create_order_process.php">
+<input type="hidden" id="fax_value" name="fax" value="">
   <tr>
   <td class="formAreaTitle">
   <?php
@@ -30,7 +281,12 @@
   <td class="main"><table border="0" cellspacing="0" cellpadding="2">
   <tr>
   <td class="main">&nbsp;<?php echo ENTRY_CUSTOMERS_ID;?></td>
-  <td class="main">&nbsp;<?php echo tep_draw_hidden_field('customers_id', $customer_id) . $customer_id;?></td>
+  <td class="main">&nbsp;
+  <?php 
+    echo tep_draw_hidden_field('customers_id', $customer_id) . $customer_id;
+    echo tep_draw_hidden_field('customers_guest_chk', $customers_guest_chk)
+  ?>
+  </td>
   </tr>
   <tr>
   <td class="main">&nbsp;<?php echo ENTRY_LAST_NAME;?></td>
@@ -135,153 +391,367 @@ if (ACCOUNT_COMPANY == 'true' && false) {
 
 
 <?php
-// オプションのリスト作成
-$torihiki_array = explode("\n", DS_TORIHIKI_HOUHOU);
-$torihiki_list[] = array('id' => '', 'text' => '選択してください');
-for($i=0; $i<sizeof($torihiki_array); $i++) {
-  $torihiki_list[] = array('id' => $torihiki_array[$i],
-                           'text' => $torihiki_array[$i]);
-}
-// 取引日のリスト作成
-$today = getdate();
-$m_num = $today['mon'];
-$d_num = $today['mday'];
-$year = $today['year'];
-$date_list[] = array('id' => '', 'text' => '取引日を選択してください');
-for($i=0; $i<14; $i++) {
-  $date_list[] = array('id' => date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$i,$year)),
-                       'text' => strftime("%Y年%m月%d日（%a）", mktime(0,0,0,$m_num,$d_num+$i,$year)));
-}
-// 取引時間のリスト作成
-$hour_list[] = array('id' => '', 'text' => '--');
-for($i=0; $i<24; $i++) {
-  $hour_num = str_pad($i, 2, "0", STR_PAD_LEFT);
-  $hour_list[] = array('id' => $hour_num,
-                       'text' => $hour_num);
-}
-  
-$min_list[] = array('id' => '', 'text' => '--');
-for($i=0; $i<6; $i++) {
-  $min_num = str_pad($i, 2, "0", STR_PAD_RIGHT);
-  $min_list[] = array('id' => $min_num,
-                      'text' => $min_num);
-}
-for($i=0; $i<sizeof($payment_array[0]); $i++) {
-  $payment_list[] = array('id' => $payment_array[0][$i],
-                          'text' => $payment_array[1][$i]);
-}
 
+if(isset($_GET['oID']) && $_GET['oID'] != ''){
+  $oID = $_GET['oID'];
+}else{
+  $oID = date("Ymd") . '-' . date("His") . tep_get_order_end_num();
+}
+?>
 
+<!-- Begin Products Listing Block --> 
+            <?php
+            $order = new order($oID);
+            // Override order.php Class's Field Limitations
+            $index = 0;
+          $order->products = array();
+          $orders_products_query = tep_db_query("select * from " . TABLE_ORDERS_PRODUCTS . " where orders_id = '" . tep_db_input($oID) . "'");
+          while ($orders_products = tep_db_fetch_array($orders_products_query)) {
+            $order->products[$index] = array('qty' => $orders_products['products_quantity'],
+                'name' => str_replace("'", "&#39;", $orders_products['products_name']),
+                'model' => $orders_products['products_model'],
+                'tax' => $orders_products['products_tax'],
+                'price' => $orders_products['products_price'],
+                'final_price' => $orders_products['final_price'],
+                'orders_products_id' => $orders_products['orders_products_id']);
+
+            $subindex = 0;
+            $attributes_query_string = "select * from " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " where orders_id = '" . tep_db_input($oID) . "' and orders_products_id = '" . (int)$orders_products['orders_products_id'] . "'";
+            $attributes_query = tep_db_query($attributes_query_string);
+
+            if (tep_db_num_rows($attributes_query)) {
+              while ($attributes = tep_db_fetch_array($attributes_query)) {
+                $order->products[$index]['attributes'][$subindex] = array('id' => $attributes['orders_products_attributes_id'],
+                    'option_info' => @unserialize($attributes['option_info']),                    
+                    'option_group_id' => $attributes['option_group_id'],                    
+                    'option_item_id' => $attributes['option_item_id'],                    
+                    'price' => $attributes['options_values_price']);
+                $subindex++;
+              }
+            }
+            $index++;
+          }
+          ?>
+            <?php // Version without editable names & prices ?>
+<tr><td>
+<table border="0" width="100%" cellspacing="0" cellpadding="0">
+<tr>
+<td class="pageHeading"><br>
+  <?php
+  echo CREATE_ORDER_PRODUCTS_ADD_TITLE;?>:</td>
+  </tr>
+<?php
+if($index > 0){
 ?>
 <tr>
-<td class="formAreaTitle"><br>
-  <?php
-  echo CREATE_ORDER_PAYMENT_TITLE;?></td>
-  </tr>
-  <tr>
+<td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
+</tr>
+<tr>
+<td class="formAreaTitle"><?php echo EDIT_ORDERS_PRO_LIST_TITLE;?></td>
+</tr>
+<?php
+}
+?>
+</table>
+</td></tr>
+
+<?php
+if($index > 0){
+?>
+<tr>
   <td class="main"><table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">
   <tr>
-  <td class="main"><table border="0" cellspacing="0" cellpadding="2">
-  <tr>
-  <td class="main" valign="top">&nbsp;
-<?php
-echo CREATE_ORDER_PAYMENT_TITLE;?>:</td>
-<td class="main">&nbsp;
+  <td class="main"><input type="hidden" name="oID" value="<?php echo $oID;?>">
+  
+            <table border="0" width="100%" cellspacing="0" cellpadding="2">
+            <tr style="background-color: #e1f9fe;">
+            <td class="dataTableContent" colspan="2" width="120"><?php echo TABLE_HEADING_NUM_PRO_NAME;?></td>
+            <td class="dataTableContent" width="120"><?php echo TABLE_HEADING_PRODUCTS_MODEL; ?></td>
+            <td class="dataTableContent" width="120"><?php echo TABLE_HEADING_CURRENICY;?></td>
+            <td class="dataTableContent" align="right" width="120"><?php echo TABLE_HEADING_PRICE_BEFORE;?></td>
+            <td class="dataTableContent" align="right" width="120"><?php echo TABLE_HEADING_PRICE_AFTER;?></td>
+            <td class="dataTableContent" align="right" width="120"><?php echo TABLE_HEADING_TOTAL_BEFORE;?></td>
+            <td class="dataTableContent" align="right" width="120"><?php echo TABLE_HEADING_TOTAL_AFTER;?></td>
+            </tr>
 
-<?php
- 
-//diff order and order2
-if(isset($from_page)&&$from_page == 'create_order_process2'){
-  echo $payment_method;
-  echo tep_draw_hidden_field('payment_method',$payment_method);
-}else{ 
-  echo tep_draw_pull_down_menu('payment_method', $payment_list, isset($payment_method)?$payment_method:'', 'onchange="hidden_payment()"'); 
-}
+            <?php
+            $only_buy= true;
+          for ($i=0; $i<sizeof($order->products); $i++) {
+            $orders_products_id = $order->products[$i]['orders_products_id'];
+            if(!tep_get_bflag_by_product_id($orders_products_id)){
+              $only_buy= false;
+            }
+            $RowStyle = "dataTableContent";
+            echo '    <tr>' . "\n" .
+              '      <td class="' . $RowStyle . '" align="left" valign="top" width="20">'
+              . "<input type='hidden' id='update_products_qty_$orders_products_id' value='" . $order->products[$i]['qty'] . "'><input class='update_products_qty' id='update_products_new_qty_$orders_products_id' name='update_products[$orders_products_id][qty]' size='2' value='" .  $order->products[$i]['qty'] . "' onkeyup=\"clearLibNum(this);\">&nbsp;x</td>\n" . 
+              '      <td class="' . $RowStyle . '">' . $order->products[$i]['name'] . "<input id='update_products_name_$orders_products_id' name='update_products[$orders_products_id][name]' size='64' type='hidden' value='" . $order->products[$i]['name'] . "'>\n" . 
+              '      &nbsp;&nbsp:<input type="hidden" name="dummy" value="あいうえお眉幅">';
+            // Has Attributes?
+            if (sizeof($order->products[$i]['attributes']) > 0) {
+              for ($j=0; $j<sizeof($order->products[$i]['attributes']); $j++) {
+                $orders_products_attributes_id = $order->products[$i]['attributes'][$j]['id'];
+                echo '<br><nobr><small>&nbsp;<i> - ' .  '<input name="update_products[' . $orders_products_id .  '][attributes][' . $orders_products_attributes_id . '][option]" size="10" value="' .  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;")) . '">' . 
+                  ': ' . 
+                  '<input name="update_products[' . $orders_products_id .  '][attributes][' . $orders_products_attributes_id . '][value]" size="35" value="' .  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&quot;"));
+                //if ($order->products[$i]['attributes'][$j]['price'] != '0') echo ' (' . $order->products[$i]['attributes'][$j]['prefix'] . $currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . ')';
+                echo '">';
+                echo '</i></small></nobr>';
+              }
+            }
 
-if (isset($entry_payment_method_error ) && $entry_payment_method_error == true) { 
-  echo '&nbsp;&nbsp;<font color="red">Error</font>'; 
-} 
-?>
-<?php
+            echo '      </td>' . "\n" .
+              '      <td class="' . $RowStyle . '">' . $order->products[$i]['model'] . "<input name='update_products[$orders_products_id][model]' size='12' type='hidden' value='" . $order->products[$i]['model'] . "'>" . '</td>' . "\n" .
+              '      <td class="' . $RowStyle . '" align="right">' . tep_display_tax_value($order->products[$i]['tax']) . "<input name='update_products[$orders_products_id][tax]' size='2' type='hidden' value='" . tep_display_tax_value($order->products[$i]['tax']) . "'>" . '%</td>' . "\n" .
+              '      <td class="' . $RowStyle . '" align="right">' . "<input
+              class='once_pwd' name='update_products[$orders_products_id][final_price]' size='9' value='" . tep_display_currency(number_format(abs($order->products[$i]['final_price']),2)) 
+              . "' onkeyup='clearNoNum(this)' >" .
+              '<input type="hidden" name="op_id_'.$orders_products_id.'" 
+              value="'.tep_get_product_by_op_id($orders_products_id).'">' . "\n" . '</td>' . "\n" . 
+              '      <td class="' . $RowStyle . '" align="right">';
+            if ($order->products[$i]['final_price'] < 0) {
+              echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']), true, $order->info['currency'], $order->info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
+            } else {
+              echo $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']), true, $order->info['currency'], $order->info['currency_value']);
+            }
+            echo '</td>' . "\n" . 
+              '      <td class="' . $RowStyle . '" align="right">';
+            if ($order->products[$i]['final_price'] < 0) {
+              echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($order->products[$i]['final_price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
+            } else {
+              echo $currencies->format($order->products[$i]['final_price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']);
+            }
+            echo '</td>' . "\n" . 
+              '      <td class="' . $RowStyle . '" align="right"><b>';
+            if ($order->products[$i]['final_price'] < 0) {
+              echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
+            } else {
+              echo $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']);
+            }
+            echo '</b></td>' . "\n" . 
+              '    </tr>' . "\n";
+          }
+          ?>
+            </table>
 
-
-if(isset($from_page)&&$from_page == 'create_order_process2'){
-
-foreach ($selections as $se){
-if ($se['id'] == payment::changeRomaji($_POST['payment_method'],PAYMENT_RETURN_TYPE_CODE)) {
-foreach($se['fields'] as $field ){
-    echo '<tr>';
-    echo '<td class="main">';
-    echo "&nbsp;".$field['title']."</td>";
-    echo "<td class='main'>";
-    echo "&nbsp;&nbsp;".$field['field'];
-    echo "</td>";
-    echo "</tr>";
-  }
-}
-}
-} else {
-foreach ($selections as $se){
-?>
-<?php
-  foreach($se['fields'] as $field ){
-    echo '<tr class="rowHide rowHide_'.$se['id'].'">';
-    echo '<td class="main">';
-    echo "&nbsp;".$field['title']."</td>";
-    echo "<td class='main'>";
-    echo "&nbsp;&nbsp;".$field['field'];
-    echo "<font color='#red'>".$field['message']."</font>";
-    echo "</td>";
-    echo "</tr>";
-  }?>
-<?php
-}
-}
-?>
-
-</td>
-</tr>
-
-
-</table></td>
-</tr>
-
+            </td>
+            </tr>
+            <tr>
+            <td valign="top"><?php echo "<span class='smalltext'>" .  HINT_DELETE_POSITION . "</span>"; ?></td> <td align="right"></td>
+            </tr>     
 </table>
 </td>
 </tr>
-<tr>
-<td class="formAreaTitle"><br><?php echo CREATE_ORDER_FETCH_TIME_TITLE_TEXT;?></td>
-</tr>
-<tr>
-  <td class="main"><table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">
-      <tr>
-        <td class="main"><table border="0" cellspacing="0" cellpadding="2">
-            <tr>
-      <td class="main">&nbsp;<?php echo CREATE_ORDER_FETCH_DATE_TEXT;?></td>
-              <td class="main">&nbsp;<?php echo tep_draw_pull_down_menu('date', $date_list, isset($date)?$date:''); ?><?php if (isset($entry_date_error) && $entry_date_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
-            </tr>
-            <tr>
-              <td class="main">&nbsp;<?php echo CREATE_ORDER_FETCH_TIME_TEXT;?></td>
-              <td class="main">&nbsp;
-              <?php 
-              echo tep_draw_pull_down_menu('hour', $hour_list, isset($hour)?$hour:''); 
-              ?>&nbsp;時&nbsp;<?php 
-              echo tep_draw_pull_down_menu('min', $min_list, isset($min)?$min:''); 
-              ?>&nbsp;分&nbsp;<b><?php echo CREATE_ORDER_FETCH_ALLTIME_TEXT;?></b><?php 
-              if (isset($entry_tardetime_error ) && $entry_tardetime_error == true) { 
-                echo '&nbsp;&nbsp;<font color="red">Error</font>'; 
-              } ?></td>
-            </tr>
-            <tr>
-              <td class="main">&nbsp;<?php echo CREATE_ORDER_FETCH_TIME_SELECT_TEXT;?></td>
-              <td class="main">&nbsp;<?php echo tep_draw_pull_down_menu('torihikihouhou', tep_get_all_torihiki(), isset($torihikihouhou)?$torihikihouhou:''); ?><?php if (isset($entry_torihikihouhou_error) && $entry_torihikihouhou_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
-            </tr>
-          </table></td>
-      </tr>
-    </table>
-</td>
+<?php
+}
+?>
+</form>
+  <tr>
+  <td class="formAreaTitle"><?php echo $index > 0 ? '<br>' : tep_draw_separator('pixel_trans.gif', '100%', '10');echo ADDING_TITLE; ?> (Nr. <?php echo $oID; ?>)</td>
   </tr>
+  <tr>
+  <td class="main"><table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">
+  <tr>
+  <td class="main"><input type="hidden" name="oID" value="<?php echo $oID;?>"><table border="0" cellspacing="0" cellpadding="2" width="100%">  
 
+          <?php
+          // ############################################################################
+          //   Get List of All Products
+          // ############################################################################
+
+          $result = tep_db_query("
+              SELECT products_name, 
+              p.products_id, 
+              cd.categories_name, 
+              ptc.categories_id 
+              FROM " . TABLE_PRODUCTS . " p LEFT JOIN " . TABLE_PRODUCTS_DESCRIPTION . " pd ON pd.products_id=p.products_id LEFT JOIN " . TABLE_PRODUCTS_TO_CATEGORIES . " ptc ON ptc.products_id=p.products_id LEFT JOIN " . TABLE_CATEGORIES_DESCRIPTION . " cd ON cd.categories_id=ptc.categories_id 
+              where pd.language_id = '" . (int)$languages_id . "' 
+              and cd.site_id = '0'
+              and pd.site_id = '0'
+              ORDER BY categories_name");
+        while($row = tep_db_fetch_array($result))
+        {
+          extract($row,EXTR_PREFIX_ALL,"db");
+          $ProductList[$db_categories_id][$db_products_id] = $db_products_name;
+          $CategoryList[$db_categories_id] = $db_categories_name;
+          $LastCategory = $db_categories_name;
+        }
+
+        // ksort($ProductList);
+
+        $LastOptionTag = "";
+        $ProductSelectOptions = "<option value='0'>Don't Add New Product" . $LastOptionTag . "\n";
+        $ProductSelectOptions .= "<option value='0'>&nbsp;" . $LastOptionTag . "\n";
+        foreach($ProductList as $Category => $Products)
+        {
+          $ProductSelectOptions .= "<option value='0'>$Category" . $LastOptionTag . "\n";
+          $ProductSelectOptions .= "<option value='0'>---------------------------" . $LastOptionTag . "\n";
+          asort($Products);
+          foreach($Products as $Product_ID => $Product_Name)
+          {
+            $ProductSelectOptions .= "<option value='$Product_ID'> &nbsp; $Product_Name" . $LastOptionTag . "\n";
+          }
+
+          if($Category != $LastCategory)
+          {
+            $ProductSelectOptions .= "<option value='0'>&nbsp;" . $LastOptionTag . "\n";
+            $ProductSelectOptions .= "<option value='0'>&nbsp;" . $LastOptionTag . "\n";
+          }
+        }
+
+
+        // ############################################################################
+        //   Add Products Steps
+        // ############################################################################
+        if(isset($Customer_mail) && $Customer_mail != '' && isset($site_id) && $site_id != ''){
+          $param_str = "&Customer_mail=$Customer_mail&site_id=$site_id";
+        }
+        print "<tr><td><table border='0' width='100%'>\n";
+        
+        $Customer_mail = tep_db_prepare_input($_GET['Customer_mail']);
+        $site_id = tep_db_prepare_input($_GET['site_id']);
+        // Set Defaults
+        if(!isset($add_product_categories_id))
+          $add_product_categories_id = 0;
+
+        if(!isset($add_product_products_id))
+          $add_product_products_id = 0;
+
+        // Step 1: Choose Category
+        $product_error = isset($_GET['error']) && $_GET['error'] ? PRODUCT_ERROR : '';
+        //if($_GET['error']){
+          //$product_error = $index > 0 ? '' : PRODUCT_ERROR;
+        //}
+        print "<tr>\n";
+        print "<td class='dataTableContent' width='70'><b>" . ADDPRODUCT_TEXT_STEP . " 1:</b></td>\n";
+        print "<td class='dataTableContent'>";
+        print "<form action='$PHP_SELF?oID=$oID&action=add_product$param_str' method='POST'>\n";
+        print '<table>'; 
+        print '<tr>';
+        print '<td width="150">'; 
+        print ADDPRODUCT_TEXT_STEP1_TITLE; 
+        print '</td>'; 
+        print '<td>'; 
+        print tep_draw_pull_down_menu('add_product_categories_id', tep_get_category_tree(), $current_category_id, 'onChange="this.form.submit();"');
+        print "<input type='hidden' name='step' value='2'>";
+        print '<td></tr>'; 
+        print '</table>'; 
+        print "</form>";
+        print "</td>\n";
+        print "<td class='dataTableContent'>&nbsp;<span><font color='red'>".$product_error."</font></span></td>\n";
+        print "</tr>\n";
+        //print "<tr><td colspan='3'>&nbsp;</td></tr>\n";
+
+        // Step 2: Choose Product
+        if(($step > 1) && ($add_product_categories_id > 0))
+        {
+          print "<tr>\n";
+          print "<td class='dataTableContent'><b>" . ADDPRODUCT_TEXT_STEP . " 2: </b></td>\n";
+          print "<td class='dataTableContent'>";
+          print "<form action='$PHP_SELF?oID=$oID&action=$action$param_str' method='POST'>\n";
+          print "<table>"; 
+          print "<tr><td width='150'>"; 
+          print ADDPRODUCT_TEXT_STEP2_TITLE."</td>";
+          print "<td>";
+          print "<select name=\"add_product_products_id\" onChange=\"this.form.submit();\">";
+          $ProductOptions = "<option value='0'>" .  ADDPRODUCT_TEXT_SELECT_PRODUCT . "\n";
+          asort($ProductList[$add_product_categories_id]);
+          foreach($ProductList[$add_product_categories_id] as $ProductID => $ProductName)
+          {
+            $ProductOptions .= "<option value='$ProductID'> $ProductName\n";
+          }
+          $ProductOptions = str_replace("value='$add_product_products_id'","value='$add_product_products_id' selected", $ProductOptions);
+          print $ProductOptions;
+          print "</select>";
+          print "<input type='hidden' name='add_product_categories_id' value='$add_product_categories_id'>";
+          print "<input type='hidden' name='step' value='3'>\n";
+          print "</td>";
+          print "</tr>";
+          print "</table>";
+          print "</form>";
+          print "</td>\n";
+          print "<td class='dataTableContent'>&nbsp;</td>\n";
+          print "</tr>\n";
+          //print "<tr><td colspan='3'>&nbsp;</td></tr>\n";
+        }
+        require('option/HM_Option.php');
+        require('option/HM_Option_Group.php');
+        $hm_option = new HM_Option();
+        if(($step == 3) && ($add_product_products_id > 0) && isset($_POST['action_process'])) {
+          if (!$hm_option->check()) {
+            $step = 4; 
+          }
+        }
+        // Step 3: Choose Options
+        if(($step > 2) && ($add_product_products_id > 0))
+        {
+          $option_product_raw = tep_db_query("select belong_to_option from ".TABLE_PRODUCTS." where products_id = '".$add_product_products_id."'"); 
+          $option_product = tep_db_fetch_array($option_product_raw); 
+          if(!$hm_option->admin_whether_show($option_product['belong_to_option']))
+          {
+            print "<tr>\n";
+            print "<td class='dataTableContent' valign='top'><b>" . ADDPRODUCT_TEXT_STEP . " 3: </b></td>\n";
+            print "<td class='dataTableContent' valign='top' colspan='2'><i>" . ADDPRODUCT_TEXT_OPTIONS_NOTEXIST . "</i></td>\n";
+            print "</tr>\n";
+            $step = 4;
+          }
+          else
+          {
+            print "<tr>\n";
+            print "<td class='dataTableContent' valign='top'><b>" . ADDPRODUCT_TEXT_STEP . " 3: </b></td><td class='dataTableContent' valign='top'>";
+            print "<form name='coform' action='$PHP_SELF?oID=$oID&action=$action$param_str' method='POST'>";
+            print $hm_option->render($option_product['belong_to_option'], false, 2); 
+            print "</td>";
+            print "<td class='dataTableContent' align='center' valign='top'>";
+            //print "<input type='submit' value='" . ADDPRODUCT_TEXT_OPTIONS_CONFIRM . "'>";
+            print "<input type='hidden' name='add_product_categories_id' value='$add_product_categories_id'>";
+            print "<input type='hidden' name='add_product_products_id' value='$add_product_products_id'>";
+            print "<input type='hidden' name='step' value='3'>";
+            print "<input type='hidden' name='action_process' value='1'>";
+            print "</form></td>\n";
+            print "</tr>\n";
+            print "<tr>"; 
+            print "<td colspan='3' class='dataTableContent' align='right'>"; 
+            print "<div style='margin-right:40%;'><input type='button' value='" .  ADDPRODUCT_TEXT_OPTIONS_CONFIRM . "' onclick='document.forms.coform.submit();'></div>";
+            print "</td>"; 
+            print "</tr>"; 
+          }
+
+          //echo "<tr><td colspan='3'>&nbsp;</td></tr>\n";
+        }
+
+        // Step 4: Confirm
+        if($step > 3)
+        {
+          $products_query = tep_db_query("select products_price from ".TABLE_PRODUCTS." where products_id = '".$add_product_products_id."'");
+          $products_array = tep_db_fetch_array($products_query);
+          tep_db_free_result($products_query);  
+          echo "<tr><form action='$PHP_SELF?oID=$oID&action=$action$param_str' method='POST'>\n";
+          echo "<td class='dataTableContent'><b>" . ADDPRODUCT_TEXT_STEP . " 4: </b></td>";
+          echo '<td class="dataTableContent" valign="top">' .  ADDPRODUCT_TEXT_CONFIRM_QUANTITY . '<input name="add_product_quantity" size="2" value="1" onkeyup="clearLibNum(this);">&nbsp;'.EDIT_ORDERS_NUM_UNIT.'&nbsp;&nbsp;&nbsp;&nbsp;<input type="hidden" name="dummy" value="あいうえお眉幅">';
+          echo TABLE_HEADING_UNIT_PRICE.'<input class="once_pwd" onkeyup="clearNoNum(this);" value="'. (int)$products_array['products_price'] .'" size="9" name="add_product_price">&nbsp;'. EDIT_ORDERS_PRICE_UNIT .'</td>';
+          echo "<td class='dataTableContent' align='center'><input type='submit' value='" . ADDPRODUCT_TEXT_CONFIRM_ADDNOW . "'>";
+
+          foreach ($_POST as $op_key => $op_value) {
+            $op_pos = substr($op_key, 0, 3);
+            if ($op_pos == 'op_') {
+              echo "<input type='hidden' name='".$op_key."' value='".$op_value."'>"; 
+            }
+          }
+          echo "<input type='hidden' name='add_product_categories_id' value='$add_product_categories_id'>";
+          echo "<input type='hidden' name='add_product_products_id' value='$add_product_products_id'>";
+          echo "<input type='hidden' name='step' value='5'>";
+          echo "</td>\n";
+          echo "</form></tr>\n";
+        }
+
+        echo "</table></td></tr>\n";
+?> 
+</table></td>
+</tr>
+</table>
+</td>
+</tr>
 <tr>
 <td class="formAreaTitle"><br>
   
@@ -313,7 +783,7 @@ echo tep_draw_input_field('telephone', $telephone) . '&nbsp;' . ENTRY_TELEPHONE_
 echo CREATE_ORDER_COMMUNITY_SEARCH_TEXT;?></td>
 <td class="main">&nbsp;
 <?php
-echo tep_draw_input_field('fax', $fax, 'size="60" maxlength="255"');
+echo tep_draw_input_field('fax_1', $fax, 'id="fax" size="60" maxlength="255"');
 ?>&nbsp;&nbsp;
 <?php
 echo CREATE_ORDER_COMMUNITY_SEARCH_READ;?></td>
@@ -334,7 +804,6 @@ echo CREATE_ORDER_COMMUNITY_SEARCH_READ_TWO;?></b></td>
 </table>
 </td>
 </tr>
-
 <!--
 
 <tr>

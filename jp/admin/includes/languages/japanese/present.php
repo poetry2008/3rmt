@@ -49,4 +49,9 @@ define('PRESENT_CUSTOMER_TABLE_NAME', '名');
 define('PRESENT_CUSTOMER_TABLE_APPLYDAY', '申し込み日');
 define('PRESENT_CUSTOMER_TABLE_OPERATE', '操作');
 define('TEXT_PRESENT_NEW','新規作成');
+define('TEXT_USER_ADDED','作成者:');
+define('TEXT_USER_UPDATE','更新者:');
+define('TEXT_DATE_ADDED','作成日:');
+define('TEXT_DATE_UPDATE','更新日:');
+
 ?>

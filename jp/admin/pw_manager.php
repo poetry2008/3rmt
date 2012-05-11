@@ -119,20 +119,23 @@ if(isset($_GET['action']) &&
                 . $_GET['page'].'&site_id='.$site_id));
         }
         if($_GET['action']=='insert'){
+		
           $insert_sql_data = array(
             'self' => $user_self,
             'privilege' => tep_db_prepare_input($_POST['privilege']),
+            'user_added' => $_POST['user_added'],
             'created_at' => 'now()',
-            'operator' => $pw_operator,
+	    'operator' => $pw_operator,
             );
           $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data);
           tep_db_perform(TABLE_IDPW, $sql_data_array);
+          $last_insert_id = mysql_insert_id();
           $insert_sql_data_log = array(
             'idpw_id' => tep_db_insert_id(), 
               );
           $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data_log);
           tep_db_perform(TABLE_IDPW_LOG, $sql_data_array);
-          tep_redirect(tep_href_link(FILENAME_PW_MANAGER,'sort='.$_GET['sort'].'&type='.$_GET['type']));
+	            tep_redirect(tep_href_link(FILENAME_PW_MANAGER,'sort='.$_GET['sort'].'&type='.$_GET['type'].'&pw_id='.$last_insert_id));
         }
         break;
       case 'deleteconfirm':
@@ -211,7 +214,7 @@ if(isset($_GET['action']) &&
                              loginurl,username,password,comment,memo
                              ,".$next_str."
                              nextdate
-                             ,privilege,self,operator,created_at,
+                             ,privilege,self,operator,user_added,created_at,
                              updated_at,onoff,update_user
                               from 
                              ".TABLE_IDPW." " 
@@ -226,7 +229,7 @@ if(isset($_GET['action']) &&
                              loginurl,username,password,comment,memo
                              ,".$next_str."
                              nextdate
-                             ,privilege,self,operator,created_at,
+                             ,privilege,self,operator,user_added,created_at,
                              updated_at,onoff,update_user
                               from 
                              ".TABLE_IDPW." 
@@ -241,7 +244,7 @@ if(isset($_GET['action']) &&
     $pw_manager_query_raw = "select id,title,priority,site_id,url,
                              loginurl,username,password,comment,memo
                              ,".$next_str."                             nextdate
-                             ,privilege,self,operator,created_at,
+                             ,privilege,self,operator,user_added,created_at,
                              updated_at,onoff,update_user
                               from 
                              ".TABLE_IDPW." where site_id='".$site_id."'
@@ -269,7 +272,7 @@ if(isset($_GET['action']) &&
                              loginurl,username,password,comment,memo
                              ,".$next_str."
                              nextdate
-                             ,privilege,self,operator,created_at,
+                             ,privilege,self,operator,user_added,created_at,
                              updated_at,onoff,update_user
                               from 
                              ".TABLE_IDPW." " 
@@ -283,7 +286,7 @@ if(isset($_GET['action']) &&
                              loginurl,username,password,comment,memo
                              ,".$next_str."
                              nextdate
-                             ,privilege,self,operator,created_at,
+                             ,privilege,self,operator,user_added,created_at,
                              updated_at,onoff,update_user
                              from
                              ".TABLE_IDPW." 
@@ -298,7 +301,7 @@ if(isset($_GET['action']) &&
                              loginurl,username,password,comment,memo
                              ,".$next_str."
                              nextdate,
-                             privilege,self,operator,created_at,
+                             privilege,self,operator,user_added,created_at,
                              updated_at,onoff,update_user
                               from 
                              ".TABLE_IDPW." 
@@ -923,6 +926,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
           tep_draw_radio_field('priority',2,false).TEXT_PRIORITY_2."".
           tep_draw_radio_field('priority',3,false).TEXT_PRIORITY_3
           );
+      $contents[] = array('text' => '<input type="hidden" name="user_added" value="'.$user_info['name'].'">');
       $contents[] = array('text' => '<br>' . TEXT_INFO_SITE_ID . '<br>' .
           tep_site_pull_down("name='site_id'"));
       $contents[] = array('text' => '<br>' . TEXT_INFO_URL . '<br>' .
@@ -1130,13 +1134,16 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
           tep_draw_textarea_field('comment', 'soft', '30', '5', $pwInfo->comment, 'class="pw_textarea"'));
       $contents[] = array('text' => '<br>' . TEXT_INFO_MEMO . '<br>' .
           tep_draw_textarea_field('memo', 'soft', '30', '5', $pwInfo->memo, 'class="pw_textarea"'));
+      
+      $contents[] = array('align' => '','text' => '<br>' . TEXT_USER_ADDED .  '&nbsp;&nbsp;&nbsp;' .
+          $pwInfo->user_added);
       $contents[] = array('align' => '','text' => '<br>' . TEXT_INFO_CREATED .  '&nbsp;&nbsp;&nbsp;' .
           $pwInfo->created_at);
-      $contents[] = array('align' => '','text' => '<br>' . TEXT_INFO_UPDATED . '&nbsp;&nbsp;&nbsp;' .
-          $pwInfo->updated_at);
       $contents[] = array('align' => '','text' => '<br>' . TEXT_INFO_OPRATER . '&nbsp;&nbsp;&nbsp;' .
           $pwInfo->update_user);
-    }
+      $contents[] = array('align' => '','text' => '<br>' . TEXT_INFO_UPDATED . '&nbsp;&nbsp;&nbsp;' .
+          $pwInfo->updated_at);
+          }
     break;
 }
   if ( (tep_not_null($heading)) && (tep_not_null($contents)) ) {

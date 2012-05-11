@@ -35,4 +35,9 @@ define('ROMAJI_NOT_NULL', 'ローマ字をご入力ください');
 
 define('ROMAJI_EXISTS', 'ローマ字はもう存在しています。');
 define('ROMAJI_WRONG_FORMAT', '英数文字及び「_」で記入してください');
+define('TEXT_USER_ADDED','作成者:');
+define('TEXT_USER_UPDATE','更新者:');
+define('TEXT_DATE_ADDED','作成日:');
+define('TEXT_DATE_UPDATE','更新日:');
+
 ?>

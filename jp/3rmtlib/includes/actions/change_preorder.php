@@ -1,6 +1,10 @@
 <?php
   require(DIR_WS_LANGUAGES . $language . '/change_preorder.php');
-  
+  require('address_preorder/AD_Option.php');
+  require('address_preorder/AD_Option_Group.php');
+
+  $ad_option = new AD_Option();
+
   $preorder_raw = tep_db_query('select * from '.TABLE_PREORDERS." where check_preorder_str = '".$_GET['pid']."' and site_id = '".SITE_ID."' and is_active = '1'");
   $preorder_res = tep_db_fetch_array($preorder_raw); 
   if (!$preorder_res) {
@@ -35,15 +39,20 @@
           tep_session_unregister('comments');
           tep_session_unregister('customer_emailaddress');
           tep_session_unregister('guestchk');
-
-          $cart->reset();
           
           tep_redirect(tep_href_link(FILENAME_LOGIN, 'pid='.$_GET['pid'], 'SSL'));
         }
       }
     }
   } 
+ 
+  require('option/HM_Option.php');
+  require('option/HM_Option_Group.php');
   
+  $hm_option = new HM_Option();
+  $option_info_array = array();
+  $n_option_info_array = array();
+
   unset($_SESSION['preorder_campaign_fee']);
   unset($_SESSION['preorder_camp_id']);
   
@@ -61,38 +70,58 @@
   }
   $error = false;  
   if ($_POST['action'] == 'process') {
-    $preorder_torihikihouhou = tep_db_prepare_input($_POST['torihikihouhou']);
     $preorder_date = tep_db_prepare_input($_POST['date']);
     $preorder_hour = tep_db_prepare_input($_POST['hour']);
     $preorder_min = tep_db_prepare_input($_POST['min']);
-    if ($preorder_torihikihouhou == '') {
-      $error = true;
-      $torihikihouhou_error = TEXT_PREORDER_ERROR_TORIHIKIHOUHOU;
+    $preorder_start_hour = tep_db_prepare_input($_POST['start_hour']);
+    $preorder_start_min = tep_db_prepare_input($_POST['start_min']);
+    $preorder_end_hour = tep_db_prepare_input($_POST['end_hour']);
+    $preorder_end_min = tep_db_prepare_input($_POST['end_min']);
+
+    //住所信息处理 
+    $address_option_info_array = array(); 
+    if (!$ad_option->check()) {
+      foreach ($_POST as $ad_key => $ad_value) {
+        $ad_single_str = substr($ad_key, 0, 3);
+        if ($ad_single_str == 'op_') {
+          $address_option_info_array[$ad_key] = $ad_value; 
+        } 
+      }
+    }else{
+      $error_str = true;
     }
     
+    if($error_str == true){
+
+      $error = true;
+    }
+     
     if ($preorder_date == '') {
       $error = true; 
       $date_error = TEXT_PREORDER_ERROR_DATE; 
-    }
+    }else{
     
-    if ($preorder_hour == '') {
-      $error = true;
-      $jikan_error = TEXT_PREORDER_ERROR_JIKAN;
-    }
+      if ($preorder_hour == '') {
+        $error = true;
+        $jikan_error = TEXT_PREORDER_ERROR_JIKAN;
+      }
     
-    if ($preorder_min == '') {
-      $error = true;
-      $jikan_error = TEXT_PREORDER_ERROR_JIKAN;
+      if ($preorder_min == '') {
+        $error = true;
+        $jikan_error = TEXT_PREORDER_ERROR_JIKAN;
+      }
     }
    
-    if (isset($_POST['p_character'])) {
-      $tmp_character = $_POST['p_character']; 
-      $tmp_character = str_replace(' ', '', $tmp_character); 
-      $tmp_character = str_replace('　', '', $tmp_character); 
-      if ($tmp_character == '') {
-        $error = true;
-        $character_error = TEXT_PREORDER_ERROR_CHARACTER;
-      }
+    foreach ($_POST as $po_key => $po_value) {
+        $po_single_str = substr($po_key, 0, 3);
+        if ($po_single_str == 'op_') {
+          $po_tmp_value = str_replace(' ', '', $po_value);
+          $po_tmp_value = str_replace('　', '', $po_value);
+          
+          if ($po_tmp_value != '') {
+            $n_option_info_array[$po_key] = $po_value; 
+          }
+        } 
     }
     
     if (isset($_POST['preorder_point'])) {
@@ -117,11 +146,13 @@
           $max_campaign_res = tep_db_fetch_array($max_campaign_query);
           if ((int)$max_campaign_res['total'] < $campaign_res['max_use']) {
             $preorder_subtotal = 0; 
-            $preorder_subtotal_raw = tep_db_query("select * from ".TABLE_PREORDERS_TOTAL." where orders_id = '".$preorder_res['orders_id']."' and class = 'ot_subtotal'");
-            $preorder_subtotal_res = tep_db_fetch_array($preorder_subtotal_raw);
-            if ($preorder_subtotal_res) {
-              $preorder_subtotal = number_format($preorder_subtotal_res['value'], 0, '.', ''); 
-            }
+            //$preorder_subtotal_raw = tep_db_query("select * from ".TABLE_PREORDERS_TOTAL." where orders_id = '".$preorder_res['orders_id']."' and class = 'ot_subtotal'");
+            //$preorder_subtotal_res = tep_db_fetch_array($preorder_subtotal_raw);
+            //if ($preorder_subtotal_res) {
+              //$preorder_subtotal = number_format($preorder_subtotal_res['value'], 0, '.', ''); 
+            //}
+            $preorder_total_info_array = get_preorder_total_info(payment::changeRomaji($preorder_res['payment_method'], PAYMENT_RETURN_TYPE_CODE), $preorder_res['orders_id'], $n_option_info_array);  
+            $preorder_subtotal = $preorder_total_info_array['subtotal'];            
             if ($campaign_res['limit_value'] < $preorder_subtotal) {
               $_POST['preorder_point'] = 0;
               $_POST['preorder_campaign_id'] = $campaign_res['id'];
@@ -151,11 +182,14 @@
           $max_campaign_res = tep_db_fetch_array($max_campaign_query);
           if ((int)$max_campaign_res['total'] < $campaign_res['max_use']) {
             $preorder_subtotal = 0; 
-            $preorder_subtotal_raw = tep_db_query("select * from ".TABLE_PREORDERS_TOTAL." where orders_id = '".$preorder_res['orders_id']."' and class = 'ot_subtotal'");
-            $preorder_subtotal_res = tep_db_fetch_array($preorder_subtotal_raw);
-            if ($preorder_subtotal_res) {
-              $preorder_subtotal = number_format($preorder_subtotal_res['value'], 0, '.', ''); 
-            }
+            //$preorder_subtotal_raw = tep_db_query("select * from ".TABLE_PREORDERS_TOTAL." where orders_id = '".$preorder_res['orders_id']."' and class = 'ot_subtotal'");
+            //$preorder_subtotal_res = tep_db_fetch_array($preorder_subtotal_raw);
+            //if ($preorder_subtotal_res) {
+              //$preorder_subtotal = number_format($preorder_subtotal_res['value'], 0, '.', ''); 
+            //}
+            $preorder_total_info_array = get_preorder_total_info(payment::changeRomaji($preorder_res['payment_method'], PAYMENT_RETURN_TYPE_CODE), $preorder_res['orders_id'], $n_option_info_array);  
+            $preorder_subtotal = $preorder_total_info_array['subtotal'];            
+            
             if ($campaign_res['limit_value'] > $preorder_subtotal) {
               $_POST['preorder_campaign_id'] = $campaign_res['id'];
               $_POST['preorder_campaign_info'] = $campaign_res['keyword'];
@@ -171,5 +205,9 @@
         $error = true;
         $point_error = TEXT_PREORDER_ERROR_CAMPAIGN;
       }
+    }
+   
+    if ($hm_option->check()) {
+      $error = true; 
     }
   }

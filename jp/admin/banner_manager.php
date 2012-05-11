@@ -32,13 +32,15 @@
         //print_r($_POST);
         //exit;
  forward401Unless(editPermission($site_arr, $lsite_id));
-        $site_id              = tep_db_prepare_input($_POST['site_id']);
+//        $site_id              = tep_db_prepare_input($_POST['site_id']);
         if (empty($site_id)) {
           $messageStack->add(SITE_ID_NOT_NULL, 'error');
           $banner_error = true;
         }
       case 'update':
  forward401Unless(editPermission($site_arr, $lsite_id));
+        $site_id              = tep_db_prepare_input($_POST['site_id']);
+
         $banners_id           = tep_db_prepare_input($_POST['banners_id']);
         $banners_title        = tep_db_prepare_input($_POST['banners_title']);
         $banners_url          = tep_db_prepare_input($_POST['banners_url']);
@@ -86,10 +88,14 @@
                                   'banners_url'       => $banners_url,
                                   'banners_image'     => $db_image_location,
                                   'banners_group'     => $banners_group,
-                                  'banners_html_text' => $html_text);
+				  'banners_html_text' => $html_text,
+				  'user_update' =>$_POST['user_update'],
+				  'date_update' =>'now()'
+			  );
 
           if ($_GET['action'] == 'insert') {
             $insert_sql_data = array('date_added' => 'now()',
+		                     'user_added' => $_POST['user_added'],
                                       'status' => '1',
                                       'site_id' => $site_id
                                      );
@@ -277,7 +283,7 @@ function popupImageWindow(url) {
       $bID = tep_db_prepare_input($_GET['bID']);
       $site_id = tep_db_prepare_input($_GET['lsite_id']);
       $form_action = 'update';
-
+/*
       $banner_query = tep_db_query("
           select b.banners_title, 
                  b.banners_url, 
@@ -297,8 +303,27 @@ function popupImageWindow(url) {
             and s.id = b.site_id
             and b.site_id = '". tep_db_input($lsite_id) . "'
           ");
-      $banner = tep_db_fetch_array($banner_query);
+ */
+$banner_query = tep_db_query("
+          select b.banners_title, 
+                 b.banners_url, 
+                 b.banners_image, 
+                 b.banners_group, 
+                 b.banners_html_text, 
+                 b.status, 
+                 date_format(b.date_scheduled, '%d/%m/%Y') as date_scheduled, 
+                 date_format(b.expires_date, '%d/%m/%Y') as expires_date, 
+                 b.expires_impressions, 
+                 b.date_status_change,
+                 b.site_id,
+                 s.romaji,
+                 s.name as site_name
+          from " . TABLE_BANNERS . " b, ".TABLE_SITES." s
+          where banners_id = '" . tep_db_input($bID) . "'
+            and s.id = b.site_id
+          ");
 
+      $banner = tep_db_fetch_array($banner_query);
       $bInfo = new objectInfo($banner);
     } elseif ($_POST) {
       $bInfo = new objectInfo($_POST);
@@ -329,11 +354,12 @@ function popupImageWindow(url) {
           (isset($_GET['lsite_id'])?('&lsite_id='.$_GET['lsite_id']):''), 'post',
           'enctype="multipart/form-data"'); if ($form_action == 'update') {
         echo tep_draw_hidden_field('banners_id', $bID); 
-        echo tep_draw_hidden_field('site_id', $site_id); 
-        
+        echo tep_draw_hidden_field('site_id', $banner['site_id']); 
       }?>
         <td><table border="0" cellspacing="0" cellpadding="2">
           <tr>
+	  <input type="hidden" name="user_update" value="<?php echo $user_info['name']?>">
+	  <input type="hidden" name="user_added" value="<?php echo $user_info['name']?>">
             <td class="main"><?php echo ENTRY_SITE; ?></td>
             <td class="main"><?php echo (isset($_GET['bID']) && $_GET['bID'])?$banner['site_name']:tep_site_pull_down_menu(); ?></td>
           </tr>
@@ -431,6 +457,9 @@ function popupImageWindow(url) {
              b.date_status_change, 
              b.date_scheduled, 
              b.date_added,
+	     b.user_added,
+	     b.user_update,
+	     b.date_update,
              s.romaji,
              s.name as site_name
       from " . TABLE_BANNERS . " b, ".TABLE_SITES." s
@@ -516,7 +545,12 @@ function popupImageWindow(url) {
 
         $contents[] = array('align' => 'center', 'text' => '<a href="' . tep_href_link(FILENAME_BANNER_MANAGER, 'page=' .  $_GET['page'] . '&bID=' . $bInfo->banners_id . '&action=new' .  (isset($_GET['site_id'])?('&lsite_id='.$_GET['site_id']):'')) . '">' .  tep_html_element_button(IMAGE_EDIT) . '</a>' . ($ocertify->npermission == 15 ? (' <a href="' .  tep_href_link(FILENAME_BANNER_MANAGER, 'page=' . $_GET['page'] . '&bID=' . $bInfo->banners_id . '&action=delete' .  (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' .  tep_html_element_button(IMAGE_DELETE) . '</a>'):'')
         );
-        $contents[] = array('text' => '<br>' . TEXT_BANNERS_DATE_ADDED . ' ' . tep_date_short($bInfo->date_added));
+//        $contents[] = array('text' => '<br>' . TEXT_BANNERS_DATE_ADDED . ' ' . tep_date_short($bInfo->date_added));
+$contents[] = array('text' => '<br>'. TEXT_USER_ADDED. ' ' .$bInfo->user_added);
+$contents[] = array('text' => '<br>'. TEXT_DATE_ADDED. ' ' .tep_datetime_short($bInfo->date_added));
+$contents[] = array('text' => '<br>'. TEXT_USER_UPDATE. ' ' .$bInfo->user_update);
+$contents[] = array('text' => '<br>'. TEXT_DATE_UPDATE. ' ' .tep_datetime_short($bInfo->date_update));
+
 
         if ( (function_exists('imagecreate')) && ($dir_ok) && ($banner_extension) ) {
           $banner_id = $bInfo->banners_id;

@@ -42,3 +42,8 @@ define('TEXT_ORDERS_STATUS_NOMAIL', 'DON\'T SEND MAIL');
 define('TEXT_ORDERS_STATUS_AVG_PRICE','平均単価の算出条件に設定');
 define('TEXT_ORDERS_STATUS_PIC_DEL', 'アイコンを削除');
 define('TEXT_PREORDER_NYUUKA', '入荷連絡');
+define('TEXT_USER_ADDED','作成者:');
+define('TEXT_USER_UPDATE','更新者:');
+define('TEXT_DATE_ADDED','作成日:');
+define('TEXT_DATE_UPDATE','更新日:');
+

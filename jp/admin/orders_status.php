@@ -21,7 +21,8 @@
             'finished' => tep_db_prepare_input((int)$_POST['finished']),
             'nomail' => tep_db_prepare_input((int)$_POST['nomail']),
             'calc_price' => tep_db_prepare_input((int)$_POST['calc_price']),
-            'is_thzk' => tep_db_prepare_input((int)$_POST['is_thzk']),
+	    'user_update' => $_POST['user_update'],
+            'date_update' => 'now()',
             );
 
         if ($_GET['action'] == 'insert') {
@@ -32,7 +33,9 @@
           }
 
           $insert_sql_data = array('orders_status_id' => $orders_status_id,
-                                   'language_id' => $language_id
+                                   'language_id' => $language_id,
+				   'user_added' => $_POST['user_added'],
+				   'date_added' => 'now()'
                                    );
           $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data);
           tep_db_perform(TABLE_ORDERS_STATUS, $sql_data_array);
@@ -253,6 +256,8 @@
       $contents = array('form' => tep_draw_form('status', FILENAME_ORDERS_STATUS, 'page=' . $_GET['page'] . '&action=insert', 'post', 'enctype="multipart/form-data"'));
       $contents[] = array('text' => TEXT_INFO_INSERT_INTRO);
       $contents[] = array('text' => '<input type="hidden" name="site_id" value="'.$site_id.'">');
+      $contents[] = array('text' => '<input type="hidden" name="user_added" value="'.$user_info['name'].'">');
+      $contents[] = array('text' => '<input type="hidden" name="user_update" value="'.$user_info['name'].'">');
 
       $orders_status_inputs_string = '';
       $languages = tep_get_languages();
@@ -286,6 +291,7 @@
 
       $contents = array('form' => tep_draw_form('status', FILENAME_ORDERS_STATUS, 'page=' . $_GET['page'] . '&oID=' . $oInfo->orders_status_id  . '&action=save', 'post', 'enctype="multipart/form-data"'));
       $contents[] = array('text' => TEXT_INFO_EDIT_INTRO);
+      $contents[] = array('text' => '<input type="hidden" name="user_update" value="'.$user_info['name'].'">');
 
       $orders_status_inputs_string = '';
       $languages = tep_get_languages();
@@ -342,10 +348,10 @@
     default:
   if (isset($oInfo) and is_object($oInfo)) {
         $heading[] = array('text' => '<b>' . $oInfo->orders_status_name . '</b>');
-
         $contents[] = array('align' => 'ledt', 'text' => 
           '<a href="' . tep_href_link(FILENAME_ORDERS_STATUS, 'page=' .  $_GET['page'] . '&oID=' . $oInfo->orders_status_id . '&action=edit') .  '">' . tep_html_element_button(IMAGE_EDIT) . '</a>' . ($ocertify->npermission == 15 ? (' <a href="' .  tep_href_link(FILENAME_ORDERS_STATUS, 'page=' . $_GET['page'] . '&oID=' . $oInfo->orders_status_id . '&action=delete') . '">' .  tep_html_element_button(IMAGE_DELETE) . '</a>'):'')
         );
+
 /*
         foreach(tep_get_sites() as $s){
           $contents[] = array('text' => '<b>' . $s['romaji'] . '</b>');
@@ -360,6 +366,11 @@
 
         $contents[] = array('text' => $orders_status_inputs_string);
       }
+$contents[] = array('text' => '<br>'. TEXT_USER_ADDED. ' ' .$oInfo->user_added);
+$contents[] = array('text' => '<br>'. TEXT_DATE_ADDED. ' ' .tep_datetime_short($oInfo->date_added));
+$contents[] = array('text' => '<br>'. TEXT_USER_UPDATE. ' ' .$oInfo->user_update);
+$contents[] = array('text' => '<br>'. TEXT_DATE_UPDATE. ' ' .tep_datetime_short($oInfo->date_update));
+
       break;
   }
 

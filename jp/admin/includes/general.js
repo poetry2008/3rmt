@@ -21,6 +21,9 @@ function SetFocus() {
 
 
 function submitChk() { 
+  var date_orders = document.getElementById("date_orders");
+  var date_order = document.getElementById("date_order");
+  date_order.value = date_orders.value;
   /* 確認ダイアログ表示 */ 
   var flag = confirm ( "確認はしましたか？\n\n【 重要 】価格構成要素を変更した場合は、先に「注文内容確認」ボタンを押す必要があります。\n\n戻る場合は [キャンセル] ボタンをクリックしてください。"); 
   /* send_flg が TRUEなら送信、FALSEなら送信しない */ 
@@ -58,20 +61,26 @@ $(".once_pwd").each(function(index) {
   });
   if(!flag_tmp){
   var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n","");
+  if(pwd != null){
   if(in_array(pwd,pwd_arr)){
   $("input[name=update_viladate]").val(pwd);
     document.edit_order.submit();
   }else{
   alert("パスワードが違います");
   $("input[name=update_viladate]").val('_false');
-  document.edit_order.submit();
-//  alert("更新をキャンセルしました。");
+  //document.edit_order.submit();
+  //alert("更新をキャンセルしました。");
   return false;
+  }
+  }else{
+    alert("更新をキャンセルしました。");
+    return false;
   }
   }else{
     $("input[name=update_viladate]").val('');
     document.edit_order.submit();
   }
+  
 }
 });
 }else{
@@ -1130,4 +1139,508 @@ document.edit_order.notify_comments.checked = false;
 } else {
   window.alert("注文内容確認をキャンセルしました。\n\n【 重要 】メールは送信されていません。【 重要 】");
 }
+}
+
+function show_text(id,ele,type,sort,flag,title,name,comment){
+
+      //$("div#show").load("show.php", {id:id});
+    if(ele != ''){
+      ele = ele.parentNode;
+    }
+    $.ajax({
+       url: 'ajax_address.php',
+       data: {id:id,type:type,sort:sort,flag:flag,title:title,name:name,comment:comment},
+       type: 'POST',
+       dataType: 'text',
+       async : false,
+       success: function(data){
+         $("div#show").html(data);
+        
+       if(ele != ''){
+         if(document.documentElement.clientHeight < document.body.scrollHeight){
+                   if(ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight+$('#show').height() > document.body.scrollHeight){
+                          offset = ele.offsetTop+$('#group_list_box').position().top-$('#show').height()-$('#offsetHeight').height();
+                          $('#show').css('top', offset).show(); 
+                      }else{
+                          offset = ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight;
+                          $('#show').css('top', offset).show(); 
+                      }
+          }else{
+                    if(ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight+$('#show').height() > document.documentElement.clientHeight){
+                          offset = ele.offsetTop+$('#group_list_box').position().top-$('#show').height()-$('#offsetHeight').height()-ele.offsetHeight;
+                          $('#show').css('top', offset).show(); 
+                    }else{
+                          offset = ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight;
+                          $('#show').css('top', offset).show(); 
+                    }
+         }
+      }
+         $("div#show").show();
+       }
+    }); 
+            
+}
+
+function show_text_fee(id,ele,flag){
+    
+    if(ele != ''){
+      ele = ele.parentNode;
+    } 
+    $.ajax({
+       url: 'ajax_country_fee.php',
+       data: {id:id,flag:flag},
+       type: 'POST',
+       dataType: 'text',
+       async : false,
+       success: function(data){
+         $("div#show").html(data);
+         
+         if(ele != ''){
+         if(document.documentElement.clientHeight < document.body.scrollHeight){
+                   if(ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight+$('#show').height() > document.body.scrollHeight){
+                          offset = ele.offsetTop+$('#group_list_box').position().top-$('#show').height()-$('#offsetHeight').height();
+                          $('#show').css('top', offset).show(); 
+                      }else{
+                          offset = ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight;
+                          $('#show').css('top', offset).show(); 
+                      }
+          }else{
+                    if(ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight+$('#show').height() > document.documentElement.clientHeight){
+                          offset = ele.offsetTop+$('#group_list_box').position().top-$('#show').height()-$('#offsetHeight').height()-ele.offsetHeight;
+                          $('#show').css('top', offset).show(); 
+                    }else{
+                          offset = ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight;
+                          $('#show').css('top', offset).show(); 
+                    }
+         }
+      }
+
+         $("div#show").show();
+       }
+    }); 
+            
+}
+
+function show_text_area(id,ele,fid,sort,flag){
+    
+    if(ele != ''){
+      ele = ele.parentNode;
+    }
+    $.ajax({
+       url: 'ajax_country_area.php',
+       data: {id:id,fid:fid,sort:sort,flag:flag},
+       type: 'POST',
+       dataType: 'text',
+       async : false,
+       success: function(data){
+         $("div#show").html(data);
+     
+         if(ele != ''){
+         if(document.documentElement.clientHeight < document.body.scrollHeight){
+                   if(ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight+$('#show').height() > document.body.scrollHeight){
+                          offset = ele.offsetTop+$('#group_list_box').position().top-$('#show').height()-$('#offsetHeight').height();
+                          $('#show').css('top', offset).show(); 
+                      }else{
+                          offset = ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight;
+                          $('#show').css('top', offset).show(); 
+                      }
+          }else{
+                    if(ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight+$('#show').height() > document.documentElement.clientHeight){
+                          offset = ele.offsetTop+$('#group_list_box').position().top-$('#show').height()-$('#offsetHeight').height()-ele.offsetHeight;
+                          $('#show').css('top', offset).show(); 
+                    }else{
+                          offset = ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight;
+                          $('#show').css('top', offset).show(); 
+                    }
+         }
+      }
+
+         $("div#show").show();
+       }
+    }); 
+            
+}
+
+//城市配送费用设置
+function show_text_city(id,ele,fid,sort,flag){
+    
+    if(ele != ''){
+      ele = ele.parentNode;
+    }
+    $.ajax({
+       url: 'ajax_country_city.php',
+       data: {id:id,fid:fid,sort:sort,flag:flag},
+       type: 'POST',
+       dataType: 'text',
+       async : false,
+       success: function(data){
+         $("div#show").html(data);
+     
+         if(ele != ''){
+         if(document.documentElement.clientHeight < document.body.scrollHeight){
+                   if(ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight+$('#show').height() > document.body.scrollHeight){
+                          offset = ele.offsetTop+$('#group_list_box').position().top-$('#show').height()-$('#offsetHeight').height();
+                          $('#show').css('top', offset).show(); 
+                      }else{
+                          offset = ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight;
+                          $('#show').css('top', offset).show(); 
+                      }
+          }else{
+                    if(ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight+$('#show').height() > document.documentElement.clientHeight){
+                          offset = ele.offsetTop+$('#group_list_box').position().top-$('#show').height()-$('#offsetHeight').height()-ele.offsetHeight;
+                          $('#show').css('top', offset).show(); 
+                    }else{
+                          offset = ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight;
+                          $('#show').css('top', offset).show(); 
+                    }
+         }
+      }
+
+         $("div#show").show();
+       }
+    }); 
+            
+}
+
+//商品配送时间
+function show_text_products(id,ele,sort,flag){
+     
+    if(ele != ''){
+      ele = ele.parentNode;
+    }
+    $.ajax({
+       url: 'ajax_products_shipping_time.php',
+       data: {id:id,sort:sort,flag:flag},
+       type: 'POST',
+       dataType: 'text',
+       async : false,
+       success: function(data){
+         $("div#show").html(data);
+
+         if(ele != ''){
+         if(document.documentElement.clientHeight < document.body.scrollHeight){
+                   if(ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight+$('#show').height() > document.body.scrollHeight){
+                          offset = ele.offsetTop+$('#group_list_box').position().top-$('#show').height()-$('#offsetHeight').height();
+                          $('#show').css('top', offset).show(); 
+                      }else{
+                          offset = ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight;
+                          $('#show').css('top', offset).show(); 
+                      }
+          }else{
+                    if(ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight+$('#show').height() > document.documentElement.clientHeight){
+                          offset = ele.offsetTop+$('#group_list_box').position().top-$('#show').height()-$('#offsetHeight').height()-ele.offsetHeight;
+                          $('#show').css('top', offset).show(); 
+                    }else{
+                          offset = ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight;
+                          $('#show').css('top', offset).show(); 
+                    }
+         }
+      }
+
+         $("div#show").show();
+       }
+    }); 
+            
+}
+
+
+function hide_text(){
+
+        $("div#show").hide();
+        window.location.reload();
+        
+}
+
+function check(action){
+  var options = {
+    url: 'address.php?action='+action,
+    type:  'POST',
+    success: function() {
+      if(action == 'save'){
+        alert('保存しました。');
+      }else{
+        alert('削除成功');
+        window.location.reload();
+      }
+    }
+  };
+  $('#addressform').ajaxSubmit(options);
+  return false; 
+}
+
+function check_fee(action){
+  var options = {
+    url: 'country_fee.php?action='+action,
+    type:  'POST',
+    success: function() {
+      if(action == 'save'){
+        alert('保存しました。');
+      }else{
+        alert('削除成功');
+        window.location.reload();
+      }
+    }
+  };
+  $('#country_fee_form').ajaxSubmit(options);
+  return false; 
+}
+
+function check_area(action){
+  var options = {
+    url: 'country_area.php?action='+action,
+    type:  'POST',
+    success: function() {
+      if(action == 'save'){
+        alert('保存しました。');
+      }else{
+        alert('削除成功');
+        window.location.reload();
+      }
+    }
+  };
+  $('#country_area_form').ajaxSubmit(options);
+  return false;
+}
+
+function check_city(action){
+  var options = {
+    url: 'country_city.php?action='+action,
+    type:  'POST',
+    success: function() {
+      if(action == 'save'){
+        alert('保存しました。');
+      }else{
+        alert('削除成功');
+        window.location.reload();
+      }
+    }
+  };
+  $('#country_area_form').ajaxSubmit(options);
+  return false;
+}
+
+function check_products(action){
+  var options = {
+    url: 'products_shipping_time.php?action='+action,
+    type:  'POST',
+    success: function() {
+      if(action == 'save'){
+        alert('保存しました。');
+      }else{
+        alert('削除成功');
+        window.location.reload();
+      }
+    }
+  };
+  $('#products_form').ajaxSubmit(options);
+  return false;
+}
+
+function check_on(action,id){
+  location.href = "address.php?action="+action+"&id="+id;
+}
+
+function check_on_fee(action,id){
+  location.href = "country_fee.php?action="+action+"&id="+id;
+}
+
+function check_on_area(action,id,fid){
+  location.href = "country_area.php?action="+action+"&id="+id+"&fid="+fid;
+}
+
+function check_on_city(action,id,fid){
+  location.href = "country_city.php?action="+action+"&id="+id+"&fid="+fid;
+}
+
+function check_on_products(action,id,fid){
+  location.href = "products_shipping_time.php?action="+action+"&id="+id;
+}
+
+function check_del(num){
+  var num_set = document.getElementById('num').value;
+  num_set--;
+  document.getElementById('num').value = num_set;
+
+  $("#o"+num).remove();
+}
+
+function check_add(){
+  var str = '';
+  var i;
+  var num = document.getElementById('num').value;
+  var num_1 = document.getElementById('num_1').value;
+  num = parseInt(num);
+  num_1 = parseInt(num_1);
+
+  num += 5;
+  document.getElementById('num').value = num; 
+  for(i=num-5;i<num;i++){
+    str += '<tr id="o'+i+'"><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;選択肢</td><td><input type="text" name="option_comment[]" value=""><input type="radio" name="option_value" value="'+i+'"><input type="button" value="削除" onclick="check_del('+i+');"></td></tr>';
+
+  }
+  $("#button_add").append(str);
+}
+
+function check_form(){
+  var title = document.getElementById('title').value;
+  var name = document.getElementById('name').value;
+  var error_title = '<font color="red">必須項目</font>'; 
+  var error_name = '<font color="red">必須項目</font>'; 
+
+  error_str = false;
+  if(title == ''){
+    $("#error_title").html(error_title);
+    $("#title").focus();
+    error_str = true;
+  }else{
+    $("#error_title").html('');
+  }
+  
+ if(name == ''){
+    $("#error_name").html(error_name);
+    $("#name").focus();
+    error_str = true;
+  }else{
+    $("#error_name").html('');
+  }
+ 
+ if(error_str == true){
+   return false;
+ }else{
+ 
+   return true;
+ }
+
+
+}
+
+function check_form_products(){
+  var name = document.getElementById('name').value;
+  var error_name = '<font color="red">必須項目</font>'; 
+
+  if(name == ''){
+    $("#error_name").html(error_name);
+    $("#name").focus();
+    return false;
+  }else{
+  
+    $("#error_name").html('');
+  }
+
+ return true;
+
+}
+
+function work_add(){
+  var work_num = document.getElementById('work_num');
+  num = work_num.value;
+  num = parseInt(num);
+  work_num.value = num+1; 
+  var work_str = '<tr id="workid'+num+'"><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;お届け可能時間'+num+'</td><td><input type="text" name="work_start_hour[]" size="3" maxlength="2" value="">&nbsp;:&nbsp;<input type="text" name="work_start_min[]" size="3" maxlength="2" value="">&nbsp;～&nbsp;<input type="text" name="work_end_hour[]" size="3" maxlength="2" value="">&nbsp;:&nbsp;<input type="text" name="work_end_min[]" size="3" maxlength="2" value="">&nbsp;<input type="button" value="削除" onclick="work_del('+num+');"><br><span id="work_error'+num+'"></span></td></tr>';
+
+ $("#work_list").append(work_str); 
+}
+
+
+function work_check(){
+
+  var work_start_hour = document.getElementsByName("work_start_hour[]");
+  var work_start_min = document.getElementsByName("work_start_min[]");
+  var work_end_hour = document.getElementsByName("work_end_hour[]");
+  var work_end_min = document.getElementsByName("work_end_min[]");
+  var mode_hour = /^([0-1][0-9])|(2[0-3])$/;
+  var mode_hour_1 = /^[0-9]$/; 
+  var mode_min = /^[0-5][0-9]$/;
+  var mode_min_1 = /^[0-9]$/;
+  var error_str = false;
+  var error = false;
+  var error_1 = false;
+  var error_2 = false;
+  var error_3 = false;
+
+  for(i = 0;i < work_start_hour.length;i++){
+    start_time_num = work_start_hour[i].value+work_start_min[i].value;
+    end_time_num = work_end_hour[i].value+work_end_min[i].value;
+    start_time_num = parseInt(start_time_num,10);
+    end_time_num = parseInt(end_time_num,10);
+    if(end_time_num < start_time_num){
+      error_3 = true;  
+      error = true;
+    }else{
+    
+      error_3 = false;
+    }
+    if(i == 0){
+      if(work_start_hour[i].value == '' || work_start_min[i].value == '' || work_end_hour[i].value == '' || work_end_min[i].value ==''){
+        error_1 = true;
+        //error_str = true;
+        error = true;
+      }else{
+        if((!mode_hour.test(work_start_hour[i].value) && !mode_hour_1.test(work_start_hour[i].value)) || (!mode_min.test(work_start_min[i].value) && !mode_min_1.test(work_start_min[i].value)) || (!mode_hour.test(work_end_hour[i].value) && !mode_hour_1.test(work_end_hour[i].value)) || (!mode_min.test(work_end_min[i].value) && !mode_min_1.test(work_end_min[i].value))){
+      
+          //error_str = true;
+          error_2 = true;
+          error = true;
+        }else{
+    
+          error_str = false;
+        } 
+      }
+    
+    }else{
+      if(work_start_hour[i].value != '' || work_start_min[i].value != '' || work_end_hour[i].value != '' || work_end_min[i].value !=''){ 
+        if((!mode_hour.test(work_start_hour[i].value) && !mode_hour_1.test(work_start_hour[i].value)) || (!mode_min.test(work_start_min[i].value) && !mode_min_1.test(work_start_min[i].value)) || (!mode_hour.test(work_end_hour[i].value) && !mode_hour_1.test(work_end_hour[i].value)) || (!mode_min.test(work_end_min[i].value) && !mode_min_1.test(work_end_min[i].value))){
+      
+          error_str = true;
+          error = true;
+        }else{
+    
+          error_str = false;
+        } 
+      }
+    }
+     
+    if(error_str == true){
+     
+      $("#work_error"+(i+1)).html('<font color="red">正しく入力してください</font>');
+      
+    }else{
+        if(error_1 == true && i == 0){
+      
+          $("#work_error"+(i+1)).html('<font color="red">必須項目</font>');
+        }else if(error_2 == true && i == 0){
+      
+          $("#work_error"+(i+1)).html('<font color="red">正しく入力してください</font>');
+        }else if(error_3 == true){
+          $("#work_error"+(i+1)).html('<font color="red">正しく入力してください</font>');
+        }else{
+          $("#work_error"+(i+1)).html(''); 
+        }
+    }
+  }
+
+  if(error){
+  
+    return false;
+  }else{
+  
+    return true;
+  }
+}
+
+function work_del(value){
+
+  $("#workid"+value).remove();
+}
+
+function select_item_radio(i_obj, t_str, o_str, p_str)
+{
+      $(i_obj).parent().parent().parent().find('a').each(function() {
+        if ($(this).parent()[0].className == 'option_show_border') {
+          $(this).parent()[0].className = 'option_hide_border';
+        } 
+      });   
+      $(i_obj).parent()[0].className = 'option_show_border'; 
+      origin_default_value = $('#'+o_str).val(); 
+      $('#'+o_str).parent().html("<input type='hidden' id='"+o_str+"' name='"+p_str+"' value='"+t_str+"'>"); 
 }

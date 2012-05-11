@@ -47,4 +47,5 @@ define('CUSTOMER_COMMUNITY_SEARCH_TWO_TEXT', 'クレカ初回決済日：C2007/0
 define('CUSTOMER_COMMUNITY_SEARCH_THREE_TEXT', '記入例：WA-Aok-C2007/01/01-Hok-RグーグルFF11 RMT');
 define('CUSTOMER_SEARCH_READ_TITLE', '※検索対象：「顧客名（姓/名/）」「ふりがな（姓/名）」「メールアドレス」');
 define('CUSTOMER_RESET', 'パスワード変更依頼');
-
+define('TEXT_USER_ADDED','アカウント作成者:');
+define('TEXT_USER_UPDATE','アカウント更新者:');

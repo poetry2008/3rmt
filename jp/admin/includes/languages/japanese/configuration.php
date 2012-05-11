@@ -38,5 +38,6 @@ define('HEADING_TITLE_900','アフィリエイトプログラム');
 define('HEADING_TITLE_30','警告文字列設定');
 define('HEADING_TITLE_2030','簡易注文情報');
 define('HEADING_TITLE_3000','混雑グラフ設定');
-
+define('TEXT_USER_ADDED','登録者:');
+define('TEXT_USER_UPDATE','更新者:');
 ?>

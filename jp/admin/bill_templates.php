@@ -40,6 +40,10 @@ if (isset($_GET['action']) and $_GET['action']) {
           'data11' => $data11,
           'email' => $email,
           'responsible' => $responsible,
+	  'last_modified' => 'now()',
+	  'date_added' => 'now()',
+	  'user_added' => $_POST['user_added'],
+	  'user_update'=> $_POST['user_update'],
           'sort_order'  => $sort_order
         ));
         tep_redirect(tep_href_link(FILENAME_BILL_TEMPLATES));
@@ -85,7 +89,9 @@ if (isset($_GET['action']) and $_GET['action']) {
           'data11' => $data11,
           'email' => $email,
           'responsible' => $responsible,
-          'sort_order' => $sort_order
+          'sort_order' => $sort_order,
+	  'last_modified' => 'now()',
+	  'user_update' => $_POST['user_update']
         ), 'update', "id = '" . tep_db_input($bill_templates_id) . "'");
         tep_redirect(tep_href_link(FILENAME_BILL_TEMPLATES, 'page=' . $_GET['page'] . '&cID=' . $bill_templates_id));
         break;
@@ -208,7 +214,9 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
 
       $contents = array('form' => tep_draw_form('bill_templates', FILENAME_BILL_TEMPLATES, 'page=' . $_GET['page'] . '&action=insert', 'post', 'enctype="multipart/form-data"'));
       $contents[] = array('text' => TEXT_INFO_INSERT_INTRO);
-      
+      $contents[] = array('text' => '<input type="hidden" name="user_added" value="'.$user_info['name'].'">');
+      $contents[] = array('text' => '<input type="hidden" name="user_update" value="'.$user_info['name'].'">');
+
       $contents[] = array('text' => '<br>' . TEXT_INFO_BILL_TEMPLATES_NAME  . '<br>' . tep_draw_input_field('name'));
       $contents[] = array('text' => '<br>' . TEXT_INFO_BILL_TEMPLATES_DATA1 . '<br>' . tep_draw_textarea_field('data1','','25',''));
       $contents[] = array('text' => '<br>' . TEXT_INFO_BILL_TEMPLATES_DATA2 . '<br>' . tep_draw_textarea_field('data2','','25',''));
@@ -233,6 +241,8 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
 
       $contents = array('form' => tep_draw_form('bill_templates', FILENAME_BILL_TEMPLATES, 'page=' . $_GET['page'] . '&cID=' . $cInfo->id . '&action=save', 'post', 'enctype="multipart/form-data"'));
       $contents[] = array('text' => TEXT_INFO_EDIT_INTRO);
+      $contents[] = array('text' => '<input type="hidden" name="user_update" value="'.$user_info['name'].'">');
+
       $contents[] = array('text' => '<br>' . TEXT_INFO_BILL_TEMPLATES_NAME  . '<br>' . tep_draw_input_field('name', $cInfo->name));
       $contents[] = array('text' => '<br>' . TEXT_INFO_BILL_TEMPLATES_DATA1 . '<br>' . tep_draw_textarea_field('data1','','25','',$cInfo->data1));
       $contents[] = array('text' => '<br>' . TEXT_INFO_BILL_TEMPLATES_DATA2 . '<br>' . tep_draw_textarea_field('data2','','25','',$cInfo->data2));
@@ -267,6 +277,11 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
         $contents[] = array('align' => 'center', 'text' => '<a href="' . tep_href_link(FILENAME_BILL_TEMPLATES, 'page=' .  $_GET['page'] . '&cID=' . $cInfo->id . '&action=edit') . '">' .  tep_html_element_button(IMAGE_EDIT) . '</a>' . ($ocertify->npermission == 15 ? (' <a href="' .  tep_href_link(FILENAME_BILL_TEMPLATES, 'page=' . $_GET['page'] .  '&cID=' . $cInfo->id . '&action=delete') . '">' . tep_html_element_button(IMAGE_DELETE) . '</a>'):'')
         );
         $contents[] = array('text' => '<br>' . TEXT_INFO_BILL_TEMPLATES_NAME . '<br>' . $cInfo->name . '<br>');
+$contents[] = array('text' => '<br>'. TEXT_USER_ADDED. ' ' .$cInfo->user_added);
+$contents[] = array('text' => '<br>'. TEXT_DATE_ADDED. ' ' .tep_datetime_short($cInfo->date_added));
+$contents[] = array('text' => '<br>'. TEXT_USER_UPDATE. ' ' .$cInfo->user_update);
+$contents[] = array('text' => '<br>'. TEXT_DATE_UPDATE. ' ' .tep_datetime_short($cInfo->last_modified));
+
       }
       break;
   }

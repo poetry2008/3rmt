@@ -36,6 +36,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
   }
   
   $cEmail = tep_db_prepare_input($_POST['email']);
+  $cEmail = str_replace("\xe2\x80\x8b", '', $cEmail);
   
   $o      = new order($oID);
   // ccdd
@@ -105,6 +106,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
         }
 
         // update character
+        /* 
         if (isset($_POST['character']) && is_array($_POST['character'])){
           foreach($_POST['character'] as $pid=>$character){
             // ccdd
@@ -116,7 +118,9 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
             ");
           }
         }
+        */ 
         // update attributes
+        /* 
         if($o->products){
           foreach($o->products as $p){
             if(isset($p['attributes']) && $p['attributes']){
@@ -169,7 +173,8 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
             }
           }
         }
-          //change order status and insert order status history
+        */ 
+        //change order status and insert order status history
         if ($date && $hour && $minute) {
           tep_db_query("
               update `".TABLE_ORDERS."` 
@@ -229,13 +234,13 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
 
   // load selected payment module
   require(DIR_WS_CLASSES . 'payment.php');
-  $payment_modules = new payment(isset($payment) ? $payment : '');
+  $payment_modules = payment::getInstance(SITE_ID);
 
   # OrderNo
   $insert_id = $oID;
   
   $o = new order($oID);
-  $payment_code = payment::changeRomaji($o->info['payment_method'], PAYMENT_RETURN_TYPE_CODE); 
+  $payment_code = payment::changeRomaji($o->info['payment_method'], PAYMENT_RETURN_TYPE_CODE);
 
   # Check
   // ccdd
@@ -287,6 +292,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
   //------insert customer choosen option to order--------
     $attributes_exist = '0';
     $products_ordered_attributes = '';
+    /*  
     if (isset($o->products[$i]['attributes'])) {
       for ($j=0, $n2=sizeof($o->products[$i]['attributes']); $j<$n2; $j++) {
         if (DOWNLOAD_ENABLED == 'true') {
@@ -330,7 +336,15 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
         . '：' . $attributes_values['products_options_values_name'];
       }
     }
+    */
 //------insert customer choosen option eof ----
+    if (isset($o->products[$i]['op_attributes'])) {
+      foreach ($o->products[$i]['op_attributes'] as $opa_order) {
+        $products_ordered_attributes .= "\n" .$opa_order['option_info']['title'] 
+        . str_repeat('　',intval((18-strlen($opa_order['option_info']['title']))/2))
+        . '：' . $opa_order['option_info']['value'];
+      }
+    }
     if(isset($o->products[$i]['weight']) && isset($o->products[$i]['qty'])){
       $total_weight += ($o->products[$i]['qty'] * $o->products[$i]['weight']);
     }
@@ -356,9 +370,9 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
     
     $products_ordered .= $products_ordered_attributes . "\n";
     $products_ordered .= '個数　　　　　　　：' . $o->products[$i]['qty'] . '個' . tep_get_full_count2($o->products[$i]['qty'], $o->products[$i]['id']) . "\n";
-    if(tep_not_null($o->products[$i]['character'])) {
-      $products_ordered .= 'キャラクター名　　：' . (EMAIL_USE_HTML === 'true' ? htmlspecialchars($o->products[$i]['character']) : $o->products[$i]['character']) . "\n";
-    }
+    //if(tep_not_null($o->products[$i]['character'])) {
+      //$products_ordered .= 'キャラクター名　　：' . (EMAIL_USE_HTML === 'true' ? htmlspecialchars($o->products[$i]['character']) : $o->products[$i]['character']) . "\n";
+    //}
 
     $products_ordered .= '------------------------------------------' . "\n";
   }
@@ -481,6 +495,7 @@ foreach ($value['attributes'] as $att) {?>
 <?php }?>
  <?php
  // ccdd
+        /* 
         $products_attributes_query = tep_db_query("
             select count(*) as total 
             from " . TABLE_PRODUCTS_OPTIONS . " popt, " . TABLE_PRODUCTS_ATTRIBUTES . " patrib 
@@ -535,6 +550,7 @@ foreach ($value['attributes'] as $att) {?>
           }
           //echo '</table>';
         }
+        */ 
     ?>
 </table>
 <?php }?>
@@ -697,6 +713,14 @@ function orderConfirmPage(){
      }
   } 
   // if order unchanged , does not commit
+  
+  var time_error = false;
+  var new_date = document.getElementById("new_date");
+  if(new_date.value == ''){
+    if(oldTime_value <= today_value){
+      time_error = true; 
+    }
+  }
   if(!orderChanged){
     //alert('no change');
     document.getElementById('form_error').innerHTML = "<font color='red'>変更箇所がございません。</font>";
@@ -710,6 +734,11 @@ function orderConfirmPage(){
   if(!orderChanged || time_error){
     return false; 
   }
+  if(time_error){
+    document.getElementById('form_error').innerHTML = "<font color='red'>取引日時を指定してください。</font>";
+    document.getElementById('form_error').style.display = 'block';
+    return false; 
+  }  
   document.getElementById('form').style.display = 'none';
   document.getElementById('confirm').style.display = 'block';
   document.getElementById('confirm_content').innerHTML = text;

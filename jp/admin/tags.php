@@ -24,7 +24,7 @@ if (isset($_GET['action']) and $_GET['action']) {
           tep_copy_uploaded_file($tags_images, $image_directory);
         }
 
-        tep_db_query("insert into " . TABLE_TAGS . " (tags_checked, tags_images, tags_name) values ('0', '" . (isset($tags_images['name']) ? 'tags/'.$tags_images['name'] : '') . "', '" . tep_db_input($tags_name) . "')");
+        tep_db_query("insert into " . TABLE_TAGS . " (tags_checked, tags_images, tags_name,user_added,date_added,user_update,date_update) values ('0', '" . (isset($tags_images['name']) ? 'tags/'.$tags_images['name'] : '') . "', '" . tep_db_input($tags_name) . "','".$_POST['user_added']."',now(),'".$_POST['user_update']."',now())");
         if($sort_str){
         tep_redirect(tep_href_link(FILENAME_TAGS.'?'.$sort_str));
         }else{
@@ -56,7 +56,7 @@ if (isset($_GET['action']) and $_GET['action']) {
           tep_copy_uploaded_file($tags_image, $image_directory);
         }
 
-        tep_db_query("update " . TABLE_TAGS . " set " . (isset($tags_image['name']) && $tags_image['name'] ? "tags_images = 'tags/" . tep_db_input($tags_image['name'])."', " : '') . " tags_name = '" . tep_db_input($tags_name) . "' where tags_id = '" . tep_db_input($tags_id) . "'");
+        tep_db_query("update " . TABLE_TAGS . " set " . (isset($tags_image['name']) && $tags_image['name'] ? "tags_images = 'tags/" . tep_db_input($tags_image['name'])."', " : '') . " tags_name = '" . tep_db_input($tags_name) . "',user_update='".$_POST['user_update']."',date_update=now() where tags_id = '" . tep_db_input($tags_id) . "'");
         tep_redirect(tep_href_link(FILENAME_TAGS, 'page=' . $_GET['page'] . '&cID=' . $tags_id.$sort_str));
         break;
       case 'deleteconfirm':
@@ -150,7 +150,7 @@ if (isset($_GET['action']) and $_GET['action']) {
 <?php
   //echo MAX_DISPLAY_SEARCH_RESULTS;
   $tags_query_raw = "
-  select t.tags_id, t.tags_name, t.tags_images, t.tags_checked 
+  select t.tags_id, t.tags_name, t.tags_images, t.tags_checked, t.user_added,t.date_added,t.user_update,t.date_update
   from " . TABLE_TAGS . " t order by t.tags_order,t.tags_name";
   if(isset($_GET['sort'])&&$_GET['sort']){
     $tags_query_raw = "
@@ -231,6 +231,9 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_NEW_TAG . '</b>');
 
       $contents = array('form' => tep_draw_form('tags', FILENAME_TAGS, 'page=' . $_GET['page'] . '&action=insert'.$sort_str, 'post', 'enctype="multipart/form-data"'));
+$contents[] = array('text' => '<input type="hidden" name="user_added" value="'.$user_info['name'].'">');
+$contents[] = array('text' => '<input type="hidden" name="user_update" value="'.$user_info['name'].'">');
+
       $contents[] = array('text' => TEXT_INFO_INSERT_INTRO);
       $contents[] = array('text' => '<br>' . TEXT_INFO_TAGS_NAME . '<br>' . tep_draw_input_field('tags_name'));
       $contents[] = array('text' => '<br>' . TEXT_INFO_TAGS_IMAGE . '<br>' . tep_draw_file_field('tags_images')) ;
@@ -241,6 +244,7 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
       $heading[] = array('text' => '<b>' . TEXT_INFO_HEADING_EDIT_TAG . '</b>');
 
       $contents = array('form' => tep_draw_form('tags', FILENAME_TAGS, 'page=' . $_GET['page'] . '&cID=' . $cInfo->tags_id . '&action=save'.$sort_str, 'post', 'enctype="multipart/form-data"'));
+      $contents[] = array('text' => '<input type="hidden" name="user_update" value="'.$user_info['name'].'">');
       $contents[] = array('text' => TEXT_INFO_EDIT_INTRO);
       $contents[] = array('text' => '<br>' . TEXT_INFO_TAGS_NAME . '<br>' . tep_draw_input_field('tags_name', $cInfo->tags_name));
       $contents[] = array('text' => '<br>' . TEXT_INFO_TAGS_IMAGE . '<br>' . tep_draw_file_field('tags_images')) ;
@@ -276,6 +280,11 @@ switch (isset($_GET['action'])? $_GET['action']:'') {
         if ($cInfo->tags_images) {
           $contents[] = array('text' => '<br>' . TEXT_INFO_TAGS_IMAGE . '<br>' . tep_image(tep_get_web_upload_dir(). $cInfo->tags_images) . '<br>');
         }
+$contents[] = array('text' => '<br>'. TEXT_USER_ADDED. ' ' .$cInfo->user_added);
+$contents[] = array('text' => '<br>'. TEXT_DATE_ADDED. ' ' .tep_datetime_short($cInfo->date_added));
+$contents[] = array('text' => '<br>'. TEXT_USER_UPDATE. ' ' .$cInfo->user_update);
+$contents[] = array('text' => '<br>'. TEXT_DATE_UPDATE. ' ' .tep_datetime_short($cInfo->date_update));
+
       }
       break;
   }

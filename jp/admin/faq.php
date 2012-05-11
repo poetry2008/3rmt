@@ -137,6 +137,8 @@
 
          if($_GET['action'] == 'insert_faq_question') {
            $insert_sql_data = array('updated_at' => 'now()',
+		                    'user_update' => $_POST['user_update'],
+				    'user_added' => $_POST['user_added'],
                                     'created_at' => 'now()');
            $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data);
            tep_db_perform(TABLE_FAQ_QUESTION, $sql_data_array);
@@ -145,7 +147,7 @@
                                 'faq_question_id' => $faq_question_id);
            tep_db_perform(TABLE_FAQ_QUESTION_TO_CATEGORIES, $faq_c2q_arr);
          }else{
-           $update_sql_data = array('updated_at' => 'now()');
+           $update_sql_data = array('updated_at' => 'now()','user_update' => $_POST['user_update']);
            $sql_data_array = tep_array_merge($sql_data_array, $update_sql_data);
            tep_db_perform(TABLE_FAQ_QUESTION, $sql_data_array, 'update',
                'id = \'' . $faq_question_id . '\'');
@@ -231,13 +233,15 @@
 
          if($_GET['action'] == 'insert_faq_category') {
            $insert_sql_data = array('parent_id' => $current_category_id,
+		                    'user_added'=> $_POST['user_added'],
+				    'user_update'=>$_POST['user_update'],
                                     'updated_at' => 'now()',
                                     'created_at' => 'now()');
            $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data);
            tep_db_perform(TABLE_FAQ_CATEGORIES, $sql_data_array);
            $faq_category_id = tep_db_insert_id();
          }else{
-           $update_sql_data = array('updated_at' => 'now()');
+           $update_sql_data = array('updated_at' => 'now()','user_update' => $_POST['user_update']);
            $sql_data_array = tep_array_merge($sql_data_array, $update_sql_data);
            tep_db_perform(TABLE_FAQ_CATEGORIES, $sql_data_array, 'update',
                'id = \'' . $faq_category_id . '\'');
@@ -483,6 +487,8 @@ $(document).ready(function(){
                         fcd.is_show,
                         fcd.faq_category_id,
                         fc.parent_id,
+                        fc.user_added,
+			fc.user_update,
                         fc.created_at,
                         fc.updated_at,
                         fc.sort_order,
@@ -514,6 +520,8 @@ $(document).ready(function(){
                         fc.parent_id,
                         fc.created_at,
                         fc.updated_at,
+			fc.user_added,
+			fc.user_update,
                         fc.sort_order,
                         fcd.site_id,
                         fcd.romaji,
@@ -689,6 +697,8 @@ $(document).ready(function(){
                       fq.sort_order,
                       fq.created_at,
                       fq.updated_at,
+		      fq.user_added,
+		      fq.user_update,
                       fqd.site_id 
                       from ".TABLE_FAQ_QUESTION." fq, 
                            ".TABLE_FAQ_QUESTION_DESCRIPTION." fqd ,
@@ -717,6 +727,8 @@ $(document).ready(function(){
                       fq.sort_order,
                       fq.created_at,
                       fq.updated_at,
+		      fq.user_added,
+		      fq.user_update,
                       fqd.site_id 
                       from ".TABLE_FAQ_QUESTION." fq, 
                            ".TABLE_FAQ_QUESTION_DESCRIPTION." fqd ,
@@ -907,6 +919,9 @@ switch (isset($_action)? $_action:'') {
         tep_draw_form('newfaqcategory',FILENAME_FAQ,'action=insert_faq_category&cPath='.$cPath,
           'post','onsubmit="return faq_category_form_validator(\''.$current_category_id.'\',\'\',\''.$site_id.'\')"'));
     $contents[] = array('text' => TEXT_NEW_FAQ_CATEGORY_INFO);
+    $contents[] = array('text' => '<input type="hidden" name="user_update" value="'.$user_info['name'].'">');
+    $contents[] = array('text' => '<input type="hidden" name="user_added" value="'.$user_info['name'].'">');
+
     $faq_category_inputs_string = ''; 
     $faq_category_inputs_string .= '<br>URL:<br>'.
       tep_draw_input_field('romaji','','id="cromaji"').
@@ -938,6 +953,9 @@ switch (isset($_action)? $_action:'') {
           '&site_id='.$site_id.'&qID='.$_GET['qID'],'post',
           'onsubmit="return faq_question_form_validator(\''.$current_category_id.'\',\'\',\''.$site_id.'\')"'));
     $contents[] = array('text' => TEXT_NEW_FAQ_QUESTION_INFO);
+    $contents[] = array('text' => '<input type="hidden" name="user_update" value="'.$user_info['name'].'">');
+    $contents[] = array('text' => '<input type="hidden" name="user_added" value="'.$user_info['name'].'">');
+
     $faq_question_inputs_string = ''; 
     $faq_question_inputs_string .= '<br>URL:<br>'.
       tep_draw_input_field('romaji','','id="qromaji"').
@@ -968,6 +986,8 @@ switch (isset($_action)? $_action:'') {
         tep_draw_form('newfaqcategory',FILENAME_FAQ,'action=update_faq_category&cPath='.$cPath,
           'post','onsubmit="return faq_category_form_validator(\''.$current_category_id.'\',\''.$faq_info->faq_category_id.'\',\''.$site_id.'\')"'));
     $contents[] = array('text' => TEXT_EDIT_FAQ_CATEGORY_INFO);
+    $contents[] = array('text' => '<input type="hidden" name="user_update" value="'.$user_info['name'].'">');
+
     $faq_category_inputs_string = ''; 
     $faq_category_inputs_string .= '<br>URL:<br>'.
       tep_draw_input_field('romaji',$faq_info->romaji,'id="cromaji"').
@@ -999,6 +1019,7 @@ switch (isset($_action)? $_action:'') {
           '&site_id='.$site_id.'&qID='.$_GET['qID'],'post',
           'onsubmit="return faq_question_form_validator(\''.$current_category_id.'\',\''.$qInfo->faq_question_id.'\',\''.$site_id.'\')"'));
     $contents[] = array('text' => TEXT_EDIT_FAQ_QUESTION_INFO);
+    $contents[] = array('text' => '<input type="hidden" name="user_update" value="'.$user_info['name'].'">');
     $faq_question_inputs_string = ''; 
     $faq_question_inputs_string .= '<br>URL:<br>'.
       tep_draw_input_field('romaji',$qInfo->romaji,'id="qromaji"').
@@ -1102,10 +1123,16 @@ switch (isset($_action)? $_action:'') {
           
 
         }
+$contents[] = array('text' => '<br>'. TEXT_USER_ADDED. ' '
+                  .$faq_info->user_added);
+
               $contents[] = array('text' => '<br>'. TEXT_CREATED_AT. ' '
-                  .tep_date_short($faq_info->created_at));
+                  .tep_datetime_short($faq_info->created_at));
+$contents[] = array('text' => '<br>'. TEXT_USER_UPDATE. ' '
+                  .$faq_info->user_update);
+
               $contents[] = array('text' => '<br>'. TEXT_UPDATED_AT. ' '
-                  .tep_date_short($faq_info->updated_at));
+                  .tep_datetime_short($faq_info->updated_at));
 
       }else if(isset($qInfo)&&is_object($qInfo)){
         $heading[] = array('text' => '<b>'.$qInfo->ask.'</b>');
@@ -1129,10 +1156,16 @@ switch (isset($_action)? $_action:'') {
             //默认只显示question 数据
           
           }
+$contents[] = array('text' => '<br>'. TEXT_USER_ADDED. ' '
+                  .$qInfo->user_added);
+
               $contents[] = array('text' => '<br>'. TEXT_CREATED_AT. ' '
-                  .tep_date_short($qInfo->created_at));
+                  .tep_datetime_short($qInfo->created_at));
+$contents[] = array('text' => '<br>'. TEXT_USER_UPDATE. ' '
+                  .$qInfo->user_update);
+
               $contents[] = array('text' => '<br>'. TEXT_UPDATED_AT. ' '
-                  .tep_date_short($qInfo->updated_at));
+                  .tep_datetime_short($qInfo->updated_at));
         }
       }
 

@@ -64,9 +64,9 @@ WHERE
       $path = DIR_FS_CATALOG . DIR_WS_IMAGES . $upfile_name;
       move_uploaded_file($upfile, $path);
       $configuration_value = tep_db_input($upfile_name);
-      tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . tep_db_input($upfile_name) . "', last_modified = now() where configuration_id = '" . tep_db_input($cID) . "'");
+      tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . tep_db_input($upfile_name) . "', last_modified = now(),user_update='".$_POST['user_update']."' where configuration_id = '" . tep_db_input($cID) . "'");
   }
-        tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . tep_db_input($configuration_value) . "', last_modified = now() where configuration_id = '" . tep_db_input($cID) . "'");
+        tep_db_query("update " . TABLE_CONFIGURATION . " set configuration_value = '" . tep_db_input($configuration_value) . "', last_modified = now(),user_update='".$_POST['user_update']."' where configuration_id = '" . tep_db_input($cID) . "'");
         tep_redirect(tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' .  tep_get_default_configuration_id_by_id($cID)));
   break;
     case 'tdel':
@@ -94,7 +94,7 @@ $cfg_group = tep_db_fetch_array($cfg_group_query);
 <html <?php echo HTML_PARAMS; ?>>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
-    <title>
+<title>
 <?php 
 switch($_GET['gID']){
 case "901":
@@ -252,7 +252,7 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
         && (!isset($cInfo) || !$cInfo) 
         && (!isset($_GET['action']) or substr($_GET['action'], 0, 3) != 'new')
     ) {
-  $cfg_extra_query = tep_db_query("select  configuration_key, configuration_description, date_added, last_modified, use_function, set_function from " . TABLE_CONFIGURATION . " where configuration_id = '" . $configuration['configuration_id'] . "'");
+  $cfg_extra_query = tep_db_query("select  configuration_key, configuration_description, date_added, last_modified, use_function, set_function,user_added,user_update from " . TABLE_CONFIGURATION . " where configuration_id = '" . $configuration['configuration_id'] . "'");
 //  $cfg_extra_query = tep_db_query("select configuration_key,configuration_description,date_added,last_modified,use_function,set_function  from ".TABLE_CONFIGURATION. " where configuration_key = ( select configuration_key from " . TABLE_CONFIGURATION . " where configuration_id = '" . $configuration['configuration_id'] . "')");
   $cfg_extra= tep_db_fetch_array($cfg_extra_query);
 /*  while($cfg_extra = tep_db_fetch_array($cfg_extra_query))
@@ -264,14 +264,13 @@ while ($configuration = tep_db_fetch_array($configuration_query)) {
   $cInfo_array = tep_array_merge($configuration, $cfg_extra);
   $cInfo = new objectInfo($cInfo_array);
     }
-
-    $even = 'dataTableSecondRow';
-    $odd  = 'dataTableRow';
-    if (isset($nowColor) && $nowColor == $odd) {
-      $nowColor = $even; 
-    } else {
-      $nowColor = $odd; 
-    }
+  $even = 'dataTableSecondRow';
+  $odd  = 'dataTableRow';
+  if (isset($nowColor) && $nowColor == $odd) {
+    $nowColor = $even; 
+  } else {
+    $nowColor = $odd; 
+  }
     if ( (isset($cInfo) && is_object($cInfo)) && ($configuration['configuration_id'] == $cInfo->configuration_id) ) {
   echo '                  <tr class="dataTableRowSelected" onmouseover="this.style.cursor=\'hand\'" onclick="document.location.href=\'' . tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' . $cInfo->configuration_id . '&action=edit') . '\'">' . "\n";
     } else {
@@ -309,6 +308,7 @@ case 'edit':
     } else {
   $contents = array('form' => tep_draw_form('configuration', FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' . $cInfo->configuration_id . '&action=save'));
     }
+    $contents[] = array('text' => '<input type="hidden" name="user_update" value="'.$user_info['name'].'">');
     $contents[] = array('text' => TEXT_INFO_EDIT_INTRO);
     $contents[] = array('text' => '<br><b>' . $cInfo->configuration_title . '</b><br>' . $cInfo->configuration_description . '<br>' . $value_field);
   
@@ -388,49 +388,8 @@ case 'edit':
   } else {
       $contents_site = array('form' => tep_draw_form('configuration', FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' . $fetch_result['configuration_id'] . '&action=save'));
   }
-//  $contents_site[] = array('text' => TEXT_INFO_EDIT_INTRO);
-  $replace_title_arr = array('MAX_DISPLAY_SEARCH_RESULTS', 
-                             'C_ORDER', 
-                             'C_COD_TABLE',
-                             'C_CONVENIENCE_STORE',
-                             'ENTRY_FIRST_NAME_MIN_LENGTH',
-                             'ENTRY_LAST_NAME_MIN_LENGTH',
-                             'ENTRY_DOB_MIN_LENGTH',
-                             'ENTRY_EMAIL_ADDRESS_MIN_LENGTH',
-                             'ENTRY_STREET_ADDRESS_MIN_LENGTH',
-                             'ENTRY_COMPANY_LENGTH',
-                             'ENTRY_POSTCODE_MIN_LENGTH',
-                             'ENTRY_CITY_MIN_LENGTH',
-                             'ENTRY_PASSWORD_MIN_LENGTH',
-                             'CC_OWNER_MIN_LENGTH',
-                             'CC_NUMBER_MIN_LENGTH',
-                             'STORE_ORIGIN_COUNTRY',
-                             'STORE_ORIGIN_ZONE',
-                             'STORE_ORIGIN_ZIP',
-                             'SHIPPING_MAX_WEIGHT',
-                             'SHIPPING_BOX_WEIGHT',
-                             'SHIPPING_BOX_PADDING',
-                             'STORE_PAGE_PARSE_TIME',
-                             'STORE_PAGE_PARSE_TIME_LOG',
-                             'STORE_PARSE_DATE_TIME_FORMAT',
-                             'DISPLAY_PAGE_PARSE_TIME',
-                             'STORE_DB_TRANSACTIONS',
-                             'USE_CACHE',
-                             'DIR_FS_CACHE',
-                             'EMAIL_TRANSPORT',
-                             'EMAIL_LINEFEED',
-                             'EMAIL_USE_HTML',
-                             'ENTRY_EMAIL_ADDRESS_CHECK',
-                             'SEND_EMAILS',
-                             'DOWNLOAD_ENABLED',
-                             'DOWNLOAD_BY_REDIRECT'
-                             ); 
-  if (in_array($cInfo->configuration_key, $replace_title_arr)) {
-    $contents_site[] = array('text' => '<br><b>' .  str_replace(FRONT_OR_ADMIN_CONFIGURATION_TITLE_TEXT, FRONT_CONFIGURATION_TITLE_TEXT, $fetch_result['configuration_title']) . '</b><br>' . $fetch_result['configuration_description'] . '<br>' . $value_field);
-  } else {
-    $contents_site[] = array('text' => '<br><b>' . $fetch_result['configuration_title'] . '</b><br>' . $fetch_result['configuration_description'] . '<br>' . $value_field);
-  }
-
+//  $contents_site[] = array('text' => TEXT_INFO_EDIT_INTRO); 
+  $contents_site[] = array('text' => '<br><b>' . $fetch_result['configuration_title'] . '</b><br>' . $fetch_result['configuration_description'] . '<br>' . $value_field);
   //if exists ,can be delete ,or  can not 
   if (is_numeric($fetch_result['configuration_id'])){
   $contents_site[] = array(
@@ -453,8 +412,13 @@ default:
 
         $contents[] = array('align' => 'center', 'text' => '<a href="' .  tep_href_link(FILENAME_CONFIGURATION, 'gID=' . $_GET['gID'] . '&cID=' .  $cInfo->configuration_id . '&action=edit') . '">' .  tep_html_element_button(IMAGE_EDIT) . '</a>');
         $contents[] = array('text' => '<br>' . $cInfo->configuration_description);
-        $contents[] = array('text' => '<br>' . TEXT_INFO_DATE_ADDED . ' ' . tep_date_short($cInfo->date_added));
-        if (tep_not_null($cInfo->last_modified)) $contents[] = array('text' => TEXT_INFO_LAST_MODIFIED . ' ' . tep_date_short($cInfo->last_modified));
+$contents[] = array('text' => '<br>' . TEXT_USER_ADDED . ' ' . $cInfo->user_added);
+$contents[] = array('text' => '<br>' . TEXT_INFO_DATE_ADDED . ' ' . tep_datetime_short($cInfo->date_added));
+
+if (tep_not_null($cInfo->last_modified)){
+$contents[] = array('text' => '<br>' . TEXT_USER_UPDATE . ' ' . $cInfo->user_update);
+$contents[] = array('text' =>'<br>'. TEXT_INFO_LAST_MODIFIED . ' ' . tep_datetime_short($cInfo->last_modified));
+    }
     }
     break;
 }

@@ -21,4 +21,9 @@ define('LISTING_TITLE_A_TO_Z','タイトル Ａ～Ｚ');
 define('LISTING_TITLE_Z_TO_A','タイトル Ｚ～Ａ');
 define('LISTING_TITLE_A_TO_N','タイトル あ～ん');
 define('LISTING_TITLE_N_TO_A','タイトル ん～あ');
+define('TEXT_USER_ADDED','作成者:');
+define('TEXT_USER_UPDATE','更新者:');
+define('TEXT_DATE_ADDED','作成日:');
+define('TEXT_DATE_UPDATE','更新日:');
+
 ?>
