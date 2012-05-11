@@ -52,7 +52,7 @@
                     $diff_tmp_value_array = array_diff($this->contents[$products_id]['op_attributes'], $compare_attr); 
                     if (empty($diff_key_array) && empty($diff_value_array) && empty($diff_tmp_key_array) && empty($diff_tmp_value_array)) {
                       $i_single = true; 
-                      tep_db_query("update " . TABLE_CUSTOMERS_BASKET . " set customers_basket_quantity = '" . $qty . "' where customers_id = '" . $customer_id . "' and products_id = '" . $products_id . "'");
+                      tep_db_query("update " . TABLE_CUSTOMERS_BASKET . " set customers_basket_quantity = '" . $qty . "' where customers_id = '" . $customer_id . "' and products_id = '" . $p_value . "'");
                       break; 
                     } 
                   }
@@ -76,7 +76,7 @@
                 foreach ($products_id_array as $pi_key => $pi_value) {
                   $basket_attr_raw = tep_db_query("select option_info from ".TABLE_CUSTOMERS_BASKET_OPTIONS." where customers_id = '".$customer_id."' and products_id = '".$pi_value."'");       
                   if (!tep_db_num_rows($basket_attr_raw)) {
-                    tep_db_query("update " . TABLE_CUSTOMERS_BASKET . " set customers_basket_quantity = '" . $qty . "' where customers_id = '" . $customer_id . "' and products_id = '" . $products_id . "'");
+                    tep_db_query("update " . TABLE_CUSTOMERS_BASKET . " set customers_basket_quantity = '" . $qty . "' where customers_id = '" . $customer_id . "' and products_id = '" .  $pi_value . "'");
                     $pi_single = true; 
                     break; 
                   }
