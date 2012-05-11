@@ -2029,4 +2029,10 @@ echo json_encode($json_array);
     $price_tmp_array[] = $p_key.':::'.implode('<<<', $p_value); 
   }
   echo implode('|||', $price_tmp_array);
+}else if($_GET['action'] == 'validate_email'){
+  require('includes/step-by-step/new_application_top.php');
+  $email = $_POST['email'];
+  if(tep_validate_email($email)){
+    echo "true";
+  }
 }
