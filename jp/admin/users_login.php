@@ -82,6 +82,10 @@ if (isset($erf)) {
   if ($erf == 2) {
     $msg = '<div align="center"><font color="#FF0000">'.TEXT_ERRINFO_IP.'</font></div>';
   }
+
+  if ($erf == 3) {
+    $msg = '';
+  }
 }
 echo '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">' . "\n";
 echo '<html ' . HTML_PARAMS . '>' . "\n";

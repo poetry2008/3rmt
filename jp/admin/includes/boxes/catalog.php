@@ -79,10 +79,10 @@
                                    '<a href="' . tep_href_link(FILENAME_MANUFACTURERS, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_CATALOG_MANUFACTURERS . '</a><br>'.
                                     (isset($_color_l)?$_color_l:'') .
                                    '<a href="' . tep_href_link(FILENAME_REVIEWS, '', 'NONSSL') . '" class="menuBoxContent_Link">' . BOX_CATALOG_REVIEWS . '</a><br>' .
-                                   '<a href="' .
-                                   tep_href_link(FILENAME_PRODUCTS_EXPECTED, '',
-                                     'NONSSL') . '" class="menuBoxContent_Link">' .
-                                   BOX_CATALOG_PRODUCTS_EXPECTED . '</a><br>'.
+                                  // '<a href="' .
+                                  // tep_href_link(FILENAME_PRODUCTS_EXPECTED, '',
+                                   //  'NONSSL') . '" class="menuBoxContent_Link">' .
+                                   //BOX_CATALOG_PRODUCTS_EXPECTED . '</a><br>'.
                                    '<a href="'.tep_href_link('cleate_oroshi.php', '', 'NONSSL').'"
                                     class="menuBoxContent_Link">'.FILENAME_CLEATE_OROSHI_TEXT.'</a><br>'.
                                    '<a href="'.tep_href_link('cleate_dougyousya.php', '', 'NONSSL').

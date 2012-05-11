@@ -30,7 +30,71 @@
             }
           } else {
 //ccdd
-            tep_db_query("update " . TABLE_CUSTOMERS_BASKET . " set customers_basket_quantity = '" . $qty . "' where customers_id = '" . $customer_id . "' and products_id = '" . $products_id . "'");
+            $p_info_array = explode('_', $products_id);
+            $products_id_array = array(); 
+            $basket_info_raw = tep_db_query("select products_id from ".TABLE_CUSTOMERS_BASKET." where products_id like '".$p_info_array[0]."_%' and customers_id = '".$customer_id."'");
+            while ($basket_info = tep_db_fetch_array($basket_info_raw)) {
+               $products_id_array[] = $basket_info['products_id'];  
+            }
+            
+            if (isset($this->contents[$products_id]['op_attributes'])) {
+              if (!empty($products_id_array)) {
+                $i_single = false; 
+                foreach ($products_id_array as $p_key => $p_value) {
+                  $basket_attr_raw = tep_db_query("select option_info from ".TABLE_CUSTOMERS_BASKET_OPTIONS." where customers_id = '".$customer_id."' and products_id = '".$p_value."'");       
+                  $basket_attr_res = tep_db_fetch_array($basket_attr_raw); 
+                  if ($basket_attr_res) {
+                    $compare_attr = @unserialize(stripslashes($basket_attr_res['option_info'])); 
+                    $diff_key_array = array_diff_key($compare_attr, $this->contents[$products_id]['op_attributes']); 
+                    $diff_value_array = array_diff($compare_attr, $this->contents[$products_id]['op_attributes']); 
+                    
+                    $diff_tmp_key_array = array_diff_key($this->contents[$products_id]['op_attributes'], $compare_attr); 
+                    $diff_tmp_value_array = array_diff($this->contents[$products_id]['op_attributes'], $compare_attr); 
+                    if (empty($diff_key_array) && empty($diff_value_array) && empty($diff_tmp_key_array) && empty($diff_tmp_value_array)) {
+                      $i_single = true; 
+                      tep_db_query("update " . TABLE_CUSTOMERS_BASKET . " set customers_basket_quantity = '" . $qty . "' where customers_id = '" . $customer_id . "' and products_id = '" . $p_value . "'");
+                      break; 
+                    } 
+                  }
+                }
+                
+                if (!$i_single) {
+                  sort($products_id_array); 
+                  $p_total_count = count($products_id_array); 
+                  $end_product_info = explode('_', $products_id_array[$p_total_count-1]); 
+                  $tmp_insert = $end_product_info[1]+1; 
+                  $insert_product_id = $end_product_info[0].'_'.$tmp_insert;
+                  
+                  tep_db_query("insert into " . TABLE_CUSTOMERS_BASKET . " (customers_id, products_id, customers_basket_quantity, customers_basket_date_added) values ('" . $customer_id . "', '" . $insert_product_id . "', '" . $qty . "', '" . date('Ymd') . "')");
+                  
+                  tep_db_query("insert into " . TABLE_CUSTOMERS_BASKET_OPTIONS . " (customers_id, products_id, option_info) values ('" .  $customer_id . "', '" . $insert_product_id . "', '" .  tep_db_input(serialize($this->contents[$products_id]['op_attributes'])) . "')");
+                }
+              } 
+            } else {
+              if (!empty($products_id_array)) {
+                $pi_single = false; 
+                foreach ($products_id_array as $pi_key => $pi_value) {
+                  $basket_attr_raw = tep_db_query("select option_info from ".TABLE_CUSTOMERS_BASKET_OPTIONS." where customers_id = '".$customer_id."' and products_id = '".$pi_value."'");       
+                  if (!tep_db_num_rows($basket_attr_raw)) {
+                    tep_db_query("update " . TABLE_CUSTOMERS_BASKET . " set customers_basket_quantity = '" . $qty . "' where customers_id = '" . $customer_id . "' and products_id = '" .  $pi_value . "'");
+                    $pi_single = true; 
+                    break; 
+                  }
+                }
+                if (!$pi_single) {
+                  sort($products_id_array); 
+                  $p_total_count = count($products_id_array); 
+                  $end_product_info = explode('_', $products_id_array[$p_total_count-1]); 
+                  
+                  $tmp_insert = $end_product_info[1]+1; 
+                  
+                  $insert_product_id = $end_product_info[0].'_'.$tmp_insert;
+
+                  tep_db_query("insert into " . TABLE_CUSTOMERS_BASKET . " (customers_id, products_id, customers_basket_quantity, customers_basket_date_added) values ('" . $customer_id . "', '" . $insert_product_id . "', '" . $qty . "', '" . date('Ymd') . "')");
+                }
+              }
+            }
+            
           }
         }
       }

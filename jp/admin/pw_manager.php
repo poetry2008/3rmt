@@ -129,12 +129,13 @@ if(isset($_GET['action']) &&
             );
           $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data);
           tep_db_perform(TABLE_IDPW, $sql_data_array);
+          $last_insert_id = mysql_insert_id();
           $insert_sql_data_log = array(
             'idpw_id' => tep_db_insert_id(), 
               );
           $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data_log);
           tep_db_perform(TABLE_IDPW_LOG, $sql_data_array);
-          tep_redirect(tep_href_link(FILENAME_PW_MANAGER,'sort='.$_GET['sort'].'&type='.$_GET['type']));
+	            tep_redirect(tep_href_link(FILENAME_PW_MANAGER,'sort='.$_GET['sort'].'&type='.$_GET['type'].'&pw_id='.$last_insert_id));
         }
         break;
       case 'deleteconfirm':

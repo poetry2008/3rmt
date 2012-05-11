@@ -30,6 +30,8 @@ class user_certify {
     var $auth_user = '';
     
     var $ipLimitErr = FALSE;
+
+    var $ipSealErr = FALSE;
 /* -------------------------------------
     機  能 : コンストラクタ
     引  数 : $s_sid             - (i) セッションID
@@ -37,6 +39,43 @@ class user_certify {
     説  明 : ユーザの認証を行う
  ------------------------------------ */
     function user_certify($s_sid) {
+        //判断用户IP是否是被封IP,如果是给出提示，并无法登录
+        $user_ip = explode('.',$_SERVER['REMOTE_ADDR']); 
+        $user_ip4 = 0;
+        while (list($u_key, $u_byte) = each($user_ip)) {
+                $user_ip4 = ($user_ip4 << 8) | (int)$u_byte;
+        }  
+        
+        $user_time_query = tep_db_query("select max(logintime) as max_time from login where address='{$user_ip4}' and loginstatus='p'");
+        $user_time_array = tep_db_fetch_array($user_time_query);
+        $user_max_time = $user_time_array['max_time'];
+        tep_db_free_result($user_time_query);
+        $user_query = tep_db_query("select loginstatus from login where address='{$user_ip4}' and loginstatus='p'");
+        $user_num_rows = tep_db_num_rows($user_query);
+
+        if($user_num_rows >= 5){
+
+          $user_time = strtotime($user_max_time.'+24 hour'); 
+          $user_now = time();
+       
+          if($user_time >= $user_now){
+             
+            if($user_num_rows == 5 && !isset($_SESSION['ip_num'])){
+              
+              $_SESSION['ip_num'] = 1; 
+              $mail_title = str_replace('${IP}',$_SERVER['REMOTE_ADDR'],IP_SEAL_EMAIL_TITLE);
+              $mail_array = array('${IP}','${ID}','${PWD}');
+              $mail_replace = array($_SERVER['REMOTE_ADDR'],$_POST['loginuid'],$_POST['loginpwd']);
+              $mail_text = str_replace($mail_array,$mail_replace,IP_SEAL_EMAIL_TEXT);
+              tep_mail(STORE_OWNER,IP_SEAL_EMAIL_ADDRESS,$mail_title,$mail_text,STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS,'');
+            } 
+            $this->isErr = TRUE;
+            $this->ipSealErr = TRUE;
+          }
+           
+        }
+        
+    if($this->isErr == FALSE && $this->ipSealErr == FALSE){
         $this->user_admin_entry();           // 管理者（admin）登録
 
         // タイムアウト時刻を取得
@@ -152,6 +191,7 @@ class user_certify {
                 $this->isErr = TRUE;
             }
         }
+    }
     }
 
 /* -------------------------------------
@@ -371,10 +411,14 @@ if (!tep_session_is_registered('user_permission')) {
 }
 $ocertify = new user_certify(session_id());     // 認証
 if ($ocertify->isErr) { 
-  if ($ocertify->ipLimitErr) {
-    logout_user(2,'',$_GET['his_url']); 
-  } else {
-    logout_user(1,'',$_GET['his_url']); 
+  if($ocertify->ipSealErr){
+    logout_user(3,'',$_GET['his_url']);
+  }else{
+    if ($ocertify->ipLimitErr) {
+      logout_user(2,'',$_GET['his_url']); 
+    } else {
+      logout_user(1,'',$_GET['his_url']); 
+    }
   }
 } elseif ($ocertify->isFirstTime) { logout_user(); }
 

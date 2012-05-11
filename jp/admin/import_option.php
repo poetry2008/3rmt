@@ -13,8 +13,8 @@ $all_options = array();
 $i_num = 1;
 $now_time = time()-3600*24*15;
 $past_time = time()-3600*24*7;
-while($array=mysql_fetch_array($query)){
-  $products_attributes_query=mysql_query("select * from products_attributes where products_id='".$array['products_id']."'");
+while($array = mysql_fetch_array($query)){
+  $products_attributes_query = mysql_query("select * from products_attributes where products_id='".$array['products_id']."'");
   $options_array_one = array();
   while($products_attributes_array=mysql_fetch_array($products_attributes_query)){
     $get_options_sql = "select o.products_options_name from products_options as o where o.products_options_id='".$products_attributes_array['options_id']."'";
@@ -38,6 +38,8 @@ while($array=mysql_fetch_array($query)){
   }
   
   $options_array_one['value']['se_option'] = array_reverse($options_array_one['value']['se_option']);
+  $new = 0; 
+  
   if(empty($all_options)){
     $new = 0;
   }else{
@@ -47,11 +49,11 @@ while($array=mysql_fetch_array($query)){
 
       if(($options_array_one['name'] == $val['name']) && (serialize($options_array_one['value']) == serialize($tmp_options_array['value']))){
         $new = $val['value']['eid'];
-      }else{
-        $new = 0;	
+        break;
       }
     }
   }
+  
   if($new == 0){
     $sql_group = "INSERT INTO `option_group` (`id`, `name`, `title`, `option`, `comment`, `is_preorder`, `sort_num`, `created_at`) VALUES (NULL, '".$options_array_one['name']."_".(count($all_options)+1)."', '".$options_array_one['name']."', '', '', '1', '1000', '".date('Y-m-d H:i:s', $now_time+$i_num)."')";
     mysql_query($sql_group);
