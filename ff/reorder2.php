@@ -37,12 +37,17 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder2.php'));
           $character = tep_db_prepare_input($_POST['character']);
           $product   = tep_db_prepare_input($_POST['product']);
           $comment   = tep_db_prepare_input($_POST['comment']);
+          $email = tep_db_prepare_input($_POST['email']);
+          $email = str_replace("\xe2\x80\x8b", '',$email);
 
           $datetime = $date.' '.$hour.':'.$minute;
           $time     = strtotime($datetime);
           if ($date && $hour && $minute && ($time < (time() - MINUTES * 60) or $time > (time() + (7*86400)))) {
             // time error
             echo '<div class="comment">取引時間は前もって一時間以上に設定してください <div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" width="70" height="25" alt=""></a></div></div>';
+            $email_error = false;
+          } else if(!tep_validate_email($email)){
+            $email_error = true;
           } else {
             echo '<div class="comment"><div class="product_info_box">注文内容の変更を承りました。電子メールをご確認ください。 <div align="right"><a href="/"><img src="includes/languages/japanese/images/buttons/button_back_home.gif" width="63" height="18" alt="TOPに戻る" title="TOPに戻る"></a></div></div></div>';
             // sent mail to customer
@@ -91,8 +96,10 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder2.php'));
               tep_mail('', SEND_EXTRA_ORDER_EMAILS_TO, $mail_title, $email_order, $o->customer['name'], $o->customer['email_address'], '');
             }
             last_customer_action();
+            $email_error = false;
           }
-         }else{?>
+         }
+if(!isset($email_error)||$email_error == true){?>
 <div class="comment">
 <div class="product_info_box"><?php
 echo tep_draw_form('order', tep_href_link('reorder2.php'));
@@ -101,19 +108,35 @@ echo tep_draw_form('order', tep_href_link('reorder2.php'));
 <table class="information_table">
  <tr>
   <td bgcolor="#eeeeee" width='120'>お名前</td>
-  <td><input type='text'  name='name' value='' id='new_name' class="input_text" ><span id='name_error'></span></td>
+  <td><input type='text'  name='name' value='<?php
+  if(isset($name)&&$name){
+    echo $name;
+  }?>' id='new_name' class="input_text" ><span id='name_error'></span></td>
  </tr>
  <tr>
   <td bgcolor="#eeeeee">メールアドレス</td>
-  <td><input type='text'  name='email' value='' id='new_email' class="input_text" ><span id='email_error'></span></td>
+  <td><input type='text'  name='email' value='<?php
+  if(isset($email)&&$email){
+    echo $email;
+  }?>' id='new_email' class="input_text" ><span id='email_error'></span><?php
+ if(isset($email_error)&&$email_error){
+   echo "<br>";
+   echo "<font color='red'>入力されたメールアドレスは不正です!</font>";
+ }?></td>
  </tr>
  <tr>
   <td bgcolor="#eeeeee">ゲームタイトル</td>
-  <td><input type='text'  name='product' value='' id='new_product' class="input_text" ><span id='product_error'></span></td>
+  <td><input type='text'  name='product' value='<?php
+  if(isset($product)&&$product){
+    echo $product;
+  }?>' id='new_product' class="input_text" ><span id='product_error'></span></td>
  </tr>
  <tr>
   <td bgcolor="#eeeeee">キャラクター名</td>
-  <td><input type='text'  name='character' value='' id='new_character' class="input_text" ><span id='character_error'></span></td>
+  <td><input type='text'  name='character' value='<?php
+  if(isset($character)&&$character){
+    echo $character;
+  }?>' id='new_character' class="input_text" ><span id='character_error'></span></td>
  </tr>
  <tr>
   <td bgcolor="#eeeeee">取引日時</td>
@@ -137,7 +160,10 @@ echo tep_draw_form('order', tep_href_link('reorder2.php'));
  </tr>
 <tr>
 <td bgcolor="#eeeeee">備考</td>
-<td><textarea name='comment' id='comment' cols="3" rows="3"></textarea></td>
+<td><textarea name='comment' id='comment' cols="3" rows="3"><?php
+if(isset($comment)&&$comment){
+  echo $comment;
+}?></textarea></td>
 </tr>
 </table>
 <br>
