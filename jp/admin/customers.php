@@ -145,8 +145,19 @@
 ?>
 <script language="javascript"><!--
 function isEmail( str ){  
-  var myReg = /^[-_A-Za-z0-9]+@([_A-Za-z0-9]+\.)+[A-Za-z0-9]{2,3}$/; 
-  if(myReg.test(str)) return true; 
+var res_flag;
+$.ajax({
+    url: 'ajax_orders.php?action=validate_email',
+    data: 'email='+str,
+    type: 'POST',
+    dataType: 'text',
+    async : false,
+    success: function(_data) {
+      res_flag = _data;      
+    }
+    });
+
+  if(res_flag) return true; 
   return false; 
 }
 function resetStateText(theForm) {
