@@ -262,10 +262,7 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
         FROM " . TABLE_CUSTOMERS .  " 
         WHERE customers_email_address = '" . tep_db_input($email_address) . "' 
           AND site_id = ".SITE_ID." AND is_active = 1");
-<<<<<<< HEAD
     
-=======
->>>>>>> 658dc7df446fbb286984bfd57b557739fbc10875
     if (!tep_db_num_rows($check_customer_query)) {
       $_GET['login'] = 'fail';
     } else {
