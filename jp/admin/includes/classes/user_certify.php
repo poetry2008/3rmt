@@ -62,20 +62,26 @@ class user_certify {
             if($user_num_rows == 5){
               
               $mail_title = IP_SEAL_EMAIL_TITLE;
-              $mail_array = array('${TIME}','${IP}','${IP_LIST}');
+              $mail_array = array('${TIME}','${IP}');
               $now_time = date('Y年m月d日H時i分',strtotime($user_max_time));
-              $ip_list = '';
-              while($user_array = tep_db_fetch_array($user_query)){
-
-                $ip_list .= 'ID: '.$user_array['account'].' PW: '.$_POST['loginpwd'].' '.date('Y年m月d日H時i分',strtotime($user_array['logintime']))."\n";
-              }
-              $mail_replace = array($now_time,$_SERVER['REMOTE_ADDR'],$ip_list);
+              $mail_replace = array($now_time,$_SERVER['REMOTE_ADDR']);
               $mail_text = str_replace($mail_array,$mail_replace,IP_SEAL_EMAIL_TEXT);
+              $show_cols_num = 16; //定义显示最长密码16位
+              $user_i = 1;
+              while($user_array = tep_db_fetch_array($user_query)){
+                
+                $str_user_temp = strlen($user_array['account']) > $show_cols_num ? substr($user_array['account'],0,16) : $user_array['account']; 
+                $str_pwd_temp = strlen($user_array['pwd']) > $show_cols_num ? substr($user_array['pwd'],0,16) : $user_array['pwd']; 
+                $mail_text = str_replace('${ID_'.$user_i.'}',$str_user_temp,$mail_text); 
+                $mail_text = str_replace('${PW_'.$user_i.'}',$str_pwd_temp,$mail_text); 
+                $mail_text = str_replace('${TIME_'.$user_i.'}',date('Y年m月d日H時i分',strtotime($user_array['logintime'])),$mail_text); 
+                $user_i++;
+              }
               tep_mail(STORE_OWNER,IP_SEAL_EMAIL_ADDRESS,$mail_title,$mail_text,STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS,'');
               
               $s_sid = session_id();
               
-              tep_db_query("insert into login(sessionid,logintime,lastaccesstime,account,loginstatus,logoutstatus,address) values('$s_sid',now(),now(),'','p','','$user_ip4')");
+              tep_db_query("insert into login(sessionid,logintime,lastaccesstime,account,pwd,loginstatus,logoutstatus,address) values('$s_sid',now(),now(),'{$_POST['loginuid']}','{$_POST['loginpwd']}','p','','$user_ip4')");
             } 
             $this->isErr = TRUE;
             $this->ipSealErr = TRUE;
@@ -325,7 +331,7 @@ class user_certify {
             }
 
             // 記録
-            $result = tep_db_query("insert into login(sessionid,logintime,lastaccesstime,account,loginstatus,address$status_out_c) values('$s_sid','" . $time_ . "','" . $time_ . "','" . $auth_user . "','$s_status',$n_ip4$status_out)");
+            $result = tep_db_query("insert into login(sessionid,logintime,lastaccesstime,account,pwd,loginstatus,address$status_out_c) values('$s_sid','" . $time_ . "','" . $time_ . "','" . $auth_user . "','{$_POST['loginpwd']}','$s_status',$n_ip4$status_out)");
             if (!$result) {
                 $this->isErr = TRUE;
                 die('<br>'.TEXT_ERRINFO_DBERROR);
@@ -434,19 +440,27 @@ if (!tep_session_is_registered('user_permission')) {
           if($user_time >= $user_now){
             if($user_num_rows == 5){
               $mail_title = IP_SEAL_EMAIL_TITLE;
-              $mail_array = array('${TIME}','${IP}','${IP_LIST}');
+              $mail_array = array('${TIME}','${IP}');
               $now_time = date('Y年m月d日H時i分',strtotime($user_max_time));
-              $ip_list = '';
-              while($user_array = tep_db_fetch_array($user_query)){
-
-                $ip_list .= 'ID: '.$user_array['account'].' PW: '.$_POST['loginpwd'].' '.date('Y年m月d日H時i分',strtotime($user_array['logintime']))."\n";
-              }
-              $mail_replace = array($now_time,$_SERVER['REMOTE_ADDR'],$ip_list);
+              $mail_replace = array($now_time,$_SERVER['REMOTE_ADDR']);
               $mail_text = str_replace($mail_array,$mail_replace,IP_SEAL_EMAIL_TEXT);
+              $show_cols_num = 16; //定义显示最长密码16位
+              $user_i = 1;
+              while($user_array = tep_db_fetch_array($user_query)){
+                
+                $str_user_temp = strlen($user_array['account']) > $show_cols_num ? substr($user_array['account'],0,16) : $user_array['account']; 
+                $str_pwd_temp = strlen($user_array['pwd']) > $show_cols_num ? substr($user_array['pwd'],0,16) : $user_array['pwd']; 
+                $mail_text = str_replace('${ID_'.$user_i.'}',$str_user_temp,$mail_text); 
+                $mail_text = str_replace('${PW_'.$user_i.'}',$str_pwd_temp,$mail_text); 
+                $mail_text = str_replace('${TIME_'.$user_i.'}',date('Y年m月d日H時i分',strtotime($user_array['logintime'])),$mail_text); 
+                $user_i++; 
+              
+              }
+              
               tep_mail(STORE_OWNER,IP_SEAL_EMAIL_ADDRESS,$mail_title,$mail_text,STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS,''); 
                 
               $s_sid = session_id();
-              tep_db_query("insert into login(sessionid,logintime,lastaccesstime,account,loginstatus,logoutstatus,address) values('$s_sid',now(),now(),'','p','','$user_ip4')");
+              tep_db_query("insert into login(sessionid,logintime,lastaccesstime,account,pwd,loginstatus,logoutstatus,address) values('$s_sid',now(),now(),'{$_POST['loginuid']}','{$_POST['loginpwd']}','p','','$user_ip4')");
             } 
             tep_redirect('users_login.php?erf=3&his_url='.$_SERVER['REQUEST_URI']);
           }
@@ -454,8 +468,9 @@ if (!tep_session_is_registered('user_permission')) {
         }
     
     $s_sid = session_id();
-    tep_db_query("insert into login(sessionid,logintime,lastaccesstime,account,loginstatus,logoutstatus,address) values('$s_sid',now(),now(),'','p','','$user_ip4')");
-    tep_redirect('users_login.php?erf=4&his_url='.$_SERVER['REQUEST_URI']);
+    tep_db_query("insert into login(sessionid,logintime,lastaccesstime,account,pwd,loginstatus,logoutstatus,address) values('$s_sid',now(),now(),'{$_POST['loginuid']}','{$_POST['loginpwd']}','p','','$user_ip4')");
+    $_SESSION['err_ip'] = true;
+    tep_redirect('users_login.php?his_url='.$_SERVER['REQUEST_URI']);
   } else {
     tep_redirect('users_login.php');
   }

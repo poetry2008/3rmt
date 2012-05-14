@@ -77,12 +77,16 @@ if (file_exists(DIR_WS_LANGUAGES . $language . '/user_certify.php')) {
   ログイン画面表示
  ------------------------------------ */
 // エラーメッセージ
-$msg = (isset($erf) && $erf ? '<div align="center"><font color="#FF0000">'.TEXT_ERRINFO_LOGIN.'</font></div>' : '');
-if (isset($erf)) {
 
-  if($erf == 4){
-    $msg =  '<div align="center"><font color="#FF0000">'.TEXT_ERRINFO_LOGIN.'</font></div>';
-  }
+$msg = (isset($erf) && $erf ? '<div align="center"><font color="#FF0000">'.TEXT_ERRINFO_LOGIN.'</font></div>' : '');
+
+if(isset($_SESSION['err_ip']) && $_SESSION['err_ip'] == true){
+  $msg =  '<div align="center"><font color="#FF0000">'.TEXT_ERRINFO_LOGIN.'</font></div>';
+  unset($_SESSION['err_ip']);
+}
+
+if (isset($erf)) {
+ 
   if ($erf == 2) {
     $msg = '<div align="center"><font color="#FF0000">'.TEXT_ERRINFO_IP.'</font></div>';
   }
