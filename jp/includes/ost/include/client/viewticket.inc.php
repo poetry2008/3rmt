@@ -1,4 +1,6 @@
 <?php
+$cfg_1= new Config(1);
+$allow_file_show = $cfg_1->config['allowed_filetypes'];
 if(!defined('OSTCLIENTINC') || !is_object($thisclient) || !is_object($ticket)) die('Kwaheri'); //bye..see ya
 //Double check access one last time...
 if(strcasecmp($thisclient->getEmail(),$ticket->getEmail())) die('Access Denied');
@@ -122,7 +124,9 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
             </div>
             <? if($cfg->allowOnlineAttachments()) {?>
             <div align="left">
-                添付ファイル<br><input type="file" name="attachment" id="attachment" size=30px value="<?=$info['attachment']?>" /> 
+                添付ファイル<br><input type="file" name="attachment" id="attachment"
+                size=30px value="<?=$info['attachment']?>" />
+                <br><font color="#656565">許可されているファイル形式は、拡張子が<?php echo $allow_file_show;?>のいずれかとなるものです。<br>ファイル名に「.(ドット)」を2つ以上含むファイルは添付できません。</font>
                     <font class="error">&nbsp;<?=$errors['attachment']?></font>
             </div>
             <?}?>

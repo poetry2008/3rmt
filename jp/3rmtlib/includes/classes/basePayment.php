@@ -140,8 +140,17 @@ class BasePayment
     }
   }
   function validation_email($value){
+    /*
     $e = "/^[-+\\.0-9=a-z_]+@([-0-9a-z]+\\.)+([0-9a-z]){2,4}$/i";
     if(!preg_match($e, $value)) {
+      if (!empty($this->p_error_msg)) {
+        return $this->p_error_msg; 
+      } else {
+        return self::RULE_EMAIL_MSG;
+      } 
+    }
+    */
+    if(!tep_validate_email($value)){
       if (!empty($this->p_error_msg)) {
         return $this->p_error_msg; 
       } else {

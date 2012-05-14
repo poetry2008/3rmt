@@ -120,7 +120,7 @@
         tep_db_query("delete from " . TABLE_CUSTOMERS . " where customers_id = '" . tep_db_input($customers_id) . "'");
         tep_db_query("delete from " . TABLE_CUSTOMERS_INFO . " where customers_info_id = '" . tep_db_input($customers_id) . "'");
         tep_db_query("delete from " . TABLE_CUSTOMERS_BASKET . " where customers_id = '" . tep_db_input($customers_id) . "'");
-        tep_db_query("delete from " . TABLE_CUSTOMERS_BASKET_ATTRIBUTES . " where customers_id = '" . tep_db_input($customers_id) . "'");
+        tep_db_query("delete from " . TABLE_CUSTOMERS_BASKET_OPTIONS . " where customers_id = '" . tep_db_input($customers_id) . "'");
         tep_db_query("delete from " . TABLE_WHOS_ONLINE . " where customer_id = '" . tep_db_input($customers_id) . "'");
 
         tep_redirect(tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID', 'action')))); 
@@ -145,8 +145,19 @@
 ?>
 <script language="javascript"><!--
 function isEmail( str ){  
-  var myReg = /^[-_A-Za-z0-9]+@([_A-Za-z0-9]+\.)+[A-Za-z0-9]{2,3}$/; 
-  if(myReg.test(str)) return true; 
+var res_flag;
+$.ajax({
+    url: 'ajax_orders.php?action=validate_email',
+    data: 'email='+str,
+    type: 'POST',
+    dataType: 'text',
+    async : false,
+    success: function(_data) {
+      res_flag = _data;      
+    }
+    });
+
+  if(res_flag) return true; 
   return false; 
 }
 function resetStateText(theForm) {

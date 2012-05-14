@@ -141,7 +141,6 @@
   define('TABLE_OTHER_CONFIG', 'other_config'); 
   define('TABLE_CAMPAIGN', 'campaign'); 
   define('TABLE_CUSTOMER_TO_CAMPAIGN', 'customer_to_campaign'); 
-  define('TABLE_ZIPCODE', 'zcode'); 
   define('TABLE_PREORDERS_OA_FORMVALUE', 'preorders_oa_formvalue'); 
   define('TABLE_PREORDERS', 'preorders');
   define('TABLE_PREORDERS_MAIL', 'preorders_mail');
@@ -178,6 +177,7 @@
   define('TABLE_CUSTOMERS_BASKET', 'customers_basket');
   //define('TABLE_CUSTOMERS_BASKET_ATTRIBUTES', 'customers_basket_attributes');
   define('TABLE_CUSTOMERS_INFO', 'customers_info');
+  define('TABLE_USER_LOGIN','user_login');
   define('TABLE_LANGUAGES', 'languages');
   define('TABLE_MANUFACTURERS', 'manufacturers');
   define('TABLE_MANUFACTURERS_INFO', 'manufacturers_info');
@@ -876,8 +876,14 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
       $check_sel_pos = stripos($g_c_value, 'select'); 
       $check_union_pos = stripos($g_c_value, 'union'); 
       $check_two_c_pos = strpos($g_c_value, '%2C'); 
+      $check_nine_pos = strpos($g_c_value, '9999999999'); 
       
       if ($check_two_c_pos !== false) {
+        forward404(); 
+        break; 
+      }
+      
+      if ($check_nine_pos !== false) {
         forward404(); 
         break; 
       }
