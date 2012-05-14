@@ -1,4 +1,5 @@
 <?php
+$allow_file_show = $cfg->config['allowed_filetypes'];
 if(!defined('OSTCLIENTINC')) die('Kwaheri rafiki!'); //Say bye to our friend..
 
 $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the post data
@@ -78,7 +79,9 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
     <tr>
         <th valign="top">添付ファイル</th>
         <td>
-            <input type="file" name="attachment"><font class="error">&nbsp;<?=$errors['attachment']?></font>
+            <input type="file" name="attachment">
+            <br><font color="#656565">許可されているファイル形式は、拡張子が<?php echo $allow_file_show;?>のいずれかとなるものです。<br>ファイル名に「.(ドット)」を2つ以上含むファイルは添付できません。</font>
+            <br><font class="error">&nbsp;<?=$errors['attachment']?></font>
         </td>
     </tr>
     <?}?>
@@ -101,11 +104,6 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
     <?}?>
 </table>
     <div class="login_inc_button"> 
-  <?php /*
-      <input class="button" type="image" name="submit_x" value="&#36865;&#20449;" src="includes/languages/japanese/images/buttons/button_send_mail.gif">
-      <input class="button" type="image" value="&#12522;&#12475;&#12483;&#12488;" src="includes/languages/japanese/images/buttons/open_users01.gif">
-      <input class="button" type="image" name="cancel" value="&#12461;&#12515;&#12531;&#12475;&#12523;" onClick='window.location.href="<?php echo FILENAME_CONTACT_US;?>"' src="includes/languages/japanese/images/buttons/open_users02.gif">    
-  */ ?>
       <button type="submit" class="button" style="padding:0;background:none;border:none;" value="送信"><img src="includes/languages/japanese/images/buttons/button_send_mail.gif" /></button>
       <button type="reset"  class="button" style="padding:0;background:none;border:none;" value="リセット"><img src="includes/languages/japanese/images/buttons/open_users01.gif" /></button>
       <button type="button" class="button" style="padding:0;background:none;border:none;" value="キャンセル" onClick='window.location.href="<?php echo FILENAME_CONTACT_US;?>";'><img src="includes/languages/japanese/images/buttons/open_users02.gif" /></button>
