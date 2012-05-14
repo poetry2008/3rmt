@@ -9,6 +9,7 @@
 
   if (isset($_GET['action']) && ($_GET['action'] == 'process')) {
 //ccdd
+    $_POST['email_address'] =  str_replace("\xe2\x80\x8b", '',$_POST['email_address']);
     $check_customer_query = tep_db_query("
         select customers_firstname, 
                customers_lastname, 
@@ -22,7 +23,8 @@
     if (tep_db_num_rows($check_customer_query)) {
       $check_customer = tep_db_fetch_array($check_customer_query);
     if($check_customer['customers_guest_chk'] == '0') {
-      $random_str = md5(time().$check_customer['customers_id'].$_POST['email_address']); 
+        $random_str = md5(time().$check_customer['customers_id'].$_POST['email_address']); 
+
         $send_url = HTTP_SERVER.'/password_token.php?pud='.$random_str;
         $exists_password_raw = tep_db_query("select customers_id from customers_password_info where customers_id = '".$check_customer['customers_id']."'"); 
         if (tep_db_num_rows($exists_password_raw)) {
@@ -37,9 +39,7 @@
         $email_body = str_replace('${SITE_URL}', HTTP_SERVER, $email_body);
         $email_body = str_replace('${IP}', $_SERVER["REMOTE_ADDR"], $email_body);
         $email_body = str_replace('${NAME}', tep_get_fullname($check_customer['customers_firstname'], $check_customer['customers_lastname']), $email_body);
-        
         tep_mail(tep_get_fullname($check_customer['customers_firstname'],$check_customer['customers_lastname']), $_POST['email_address'], str_replace('${SITE_NAME}', STORE_NAME, SEND_PASSWORLD_EMAIL_TITLE), $email_body, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
-   
       tep_redirect(tep_href_link('send_success.php', 'send_mail='.$_POST['email_address']));
     } else {
       tep_redirect(tep_href_link('send_success.php', 'send_mail='.$_POST['email_address']));
