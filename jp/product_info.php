@@ -22,9 +22,44 @@ var jq = jQuery.noConflict();
 <script type="text/javascript" src="js/lightbox.js"></script>
 <link rel="stylesheet" href="css/lightbox.css" type="text/css" media="screen">
 <script type="text/javascript">
+jq(document).ready(function () {
+   calc_product_final_price("<?php echo (int)$_GET['products_id'];?>"); 
+});
+function calc_product_final_price(pid)
+{
+   var attr_price = 0; 
+   jq.getJSON("<?php echo HTTP_SERVER;?>"+"/ajax_process.php?action=get_option&p_id="+pid, function(data) {
+       var url_str = ''; 
+       if (data != '') {
+         for (var i = 0; i < data[0].length; i++) {
+           url_str += "op_"+data[0][i]+"="+document.getElementsByName("op_"+data[0][i])[0].value+"&"; 
+         }
+       }
+       
+       if (url_str != '') {
+         url_str = url_str + "p_id="+pid+'&qty='+document.getElementById("quantity").value; 
+       } else {
+         url_str = "p_id="+pid+'&qty='+document.getElementById("quantity").value; 
+       }
+       jq.getJSON("<?php echo HTTP_SERVER;?>"+"/ajax_process.php?action=calc_price&"+url_str, function(msg) {
+           
+         document.getElementById("show_price").innerHTML = msg; 
+       });
+  });
+}
+
+function recalc_product_price(t_obj)
+{
+  i_data = jq(t_obj).val();
+  i_data = i_data.replace(/\s/g, ''); 
+  if (i_data != '') {
+    calc_product_final_price("<?php echo (int)$_GET['products_id'];?>");
+  }
+}
+
 function select_item_radio(i_obj, t_str, o_str, p_str)
 {
-      jq(i_obj).parent().parent().parent().find('a').each(function() {
+      jq(i_obj).parent().parent().parent().parent().find('a').each(function() {
         if (jq(this).parent()[0].className == 'option_show_border') {
           jq(this).parent()[0].className = 'option_hide_border';
         } 
@@ -32,9 +67,11 @@ function select_item_radio(i_obj, t_str, o_str, p_str)
       jq(i_obj).parent()[0].className = 'option_show_border'; 
       origin_default_value = jq('#'+o_str).val(); 
       jq('#'+o_str).parent().html("<input type='hidden' id='"+o_str+"' name='"+p_str+"' value='"+t_str+"'>"); 
+      
+    calc_product_final_price("<?php echo (int)$_GET['products_id'];?>");
 }
 
-function change_num(ob,targ, quan,a_quan)
+function change_num(ob,targ, quan, a_quan)
 {
   var product_quantity = document.getElementById(ob);
   var product_quantity_num = parseInt(product_quantity.value);
@@ -62,10 +99,7 @@ function change_num(ob,targ, quan,a_quan)
   }
 
   product_quantity.value = num_value;
-  if (product_quantity_num != num_value)
-  { 
-    update_cart(product_quantity.id);
-  }
+  calc_product_final_price("<?php echo (int)$_GET['products_id'];?>");
 }
 -->
 </script>
@@ -136,41 +170,8 @@ function showimage($1) {
         <h2 class="line"><?php echo ds_tep_get_categories((int)$_GET['products_id'],1); ?> <?php echo ds_tep_get_categories((int)$_GET['products_id'],2); ?></h2>
         <table width="689"  border="0" cellpadding="0" cellspacing="0" border=1>
           <tr>
-            <td width="250" valign="top"><table width="100%" border="0" cellpadding="0" cellspacing="0">
-                <?php
-    if (tep_not_null($product_info['products_image'])) {
-?>
-                <tr>
-                  <td align="center" class="smallText"><script type="text/javascript"><!--
-document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_info['products_image'].'" rel="lightbox[products]">' . tep_image3(DIR_WS_IMAGES . 'products/'. $product_info['products_image'], addslashes($product_info['products_name']), PRODUCT_INFO_IMAGE_WIDTH, PRODUCT_INFO_IMAGE_HEIGHT, 'name="lrgproduct" id="lrgproduct"') . '<br>' . TEXT_CLICK_TO_ENLARGE . '<\'+\'/a>'; ?>');
---></script>
-                    <noscript>
-                    <?php echo '<a href="' . tep_href_link(DIR_WS_IMAGES . 'products/' . urlencode($product_info['products_image'])) . '">' . tep_image3(DIR_WS_IMAGES . 'products/' . $product_info['products_image'], $product_info['products_name'], PRODUCT_INFO_IMAGE_WIDTH, PRODUCT_INFO_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '<br>' . TEXT_CLICK_TO_ENLARGE . '</a>'; ?>
-                    </noscript>
-                  </td>
-                </tr>
-                <tr>
-                  <td align="center"><table border="0" cellspacing="6" cellpadding="0">
-                      <tr>
-                        <?php if (tep_not_null($product_info['products_image'])) { ?>
-                        <td width="60" height="60" align="center" class="image_border"><a href="<?php echo DIR_WS_IMAGES .'products/'. $product_info['products_image'] ; ?>" rel="lightbox[products]"><?php echo tep_image2(DIR_WS_IMAGES .'products/'. $product_info['products_image'], $product_info['products_name'], 50, 50, 'name="prod_thum_1"') ;?></a></td>
-                        <?php } ?>
-                        <?php if (tep_not_null($product_info['products_image2'])) { ?>
-                        <td width="60" align="center" class="image_border"><a href="<?php echo DIR_WS_IMAGES . 'products/'.$product_info['products_image2'] ; ?>" rel="lightbox[products]"><?php echo tep_image2(DIR_WS_IMAGES .'products/'. $product_info['products_image2'], $product_info['products_name'], 50, 50, 'name="prod_thum_1"') ;?></a></td>
-                        <?php } ?>
-                        <?php if (tep_not_null($product_info['products_image3'])) { ?>
-                        <td width="60" align="center" class="image_border"><a href="<?php echo DIR_WS_IMAGES.'products/'.$product_info['products_image3'] ; ?>" rel="lightbox[products]"><?php echo tep_image2(DIR_WS_IMAGES .'products/'. $product_info['products_image3'], $product_info['products_name'], 50, 50, 'name="prod_thum_1"') ;?></a></td>
-                        <?php } ?>
-                      </tr>
-                    </table>
-                    <?php
-    }
-?>
-                  </td>
-                </tr>
-              </table></td>
-            <td><img src="images/design/spacer.gif" width="15" height="1" alt="img"></td>
-            <td valign="top"><table width="100%"  border="0" cellpadding="0" cellspacing="0" class="infoBox">
+                        
+              <td valign="top"><table width="100%"  border="0" cellpadding="0" cellspacing="0">
                 <tr>
                   <td><table width="100%" border="0" cellpadding="3" cellspacing="1">
                       <tr class="infoBoxContents">
@@ -313,8 +314,47 @@ while($tag = tep_db_fetch_array($tag_query)) {
                       <?php } ?>
                     </table></td>
                 </tr>
-                <tr class="header2">
-                  <td class="main" align="right">
+                
+              </table></td>
+          <td width="250" valign="top"><table width="100%" border="0" cellpadding="0" cellspacing="0">
+                <?php
+    if (tep_not_null($product_info['products_image'])) {
+?>
+                <tr>
+                  <td align="center" class="smallText"><script type="text/javascript"><!--
+document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_info['products_image'].'" rel="lightbox[products]">' . tep_image3(DIR_WS_IMAGES . 'products/'. $product_info['products_image'], addslashes($product_info['products_name']), PRODUCT_INFO_IMAGE_WIDTH, PRODUCT_INFO_IMAGE_HEIGHT, 'name="lrgproduct" id="lrgproduct"') . '<br>' . TEXT_CLICK_TO_ENLARGE . '<\'+\'/a>'; ?>');
+--></script>
+                    <noscript>
+                    <?php echo '<a href="' . tep_href_link(DIR_WS_IMAGES . 'products/' . urlencode($product_info['products_image'])) . '">' . tep_image3(DIR_WS_IMAGES . 'products/' . $product_info['products_image'], $product_info['products_name'], PRODUCT_INFO_IMAGE_WIDTH, PRODUCT_INFO_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '<br>' . TEXT_CLICK_TO_ENLARGE . '</a>'; ?>
+                    </noscript>
+                  </td>
+                </tr>
+                <tr>
+                  <td align="center"><table border="0" cellspacing="6" cellpadding="0">
+                      <tr>
+                        <?php if (tep_not_null($product_info['products_image'])) { ?>
+                        <td width="60" height="60" align="center" class="image_border"><a href="<?php echo DIR_WS_IMAGES .'products/'. $product_info['products_image'] ; ?>" rel="lightbox[products]"><?php echo tep_image2(DIR_WS_IMAGES .'products/'. $product_info['products_image'], $product_info['products_name'], 50, 50, 'name="prod_thum_1"') ;?></a></td>
+                        <?php } ?>
+                        <?php if (tep_not_null($product_info['products_image2'])) { ?>
+                        <td width="60" align="center" class="image_border"><a href="<?php echo DIR_WS_IMAGES . 'products/'.$product_info['products_image2'] ; ?>" rel="lightbox[products]"><?php echo tep_image2(DIR_WS_IMAGES .'products/'. $product_info['products_image2'], $product_info['products_name'], 50, 50, 'name="prod_thum_1"') ;?></a></td>
+                        <?php } ?>
+                        <?php if (tep_not_null($product_info['products_image3'])) { ?>
+                        <td width="60" align="center" class="image_border"><a href="<?php echo DIR_WS_IMAGES.'products/'.$product_info['products_image3'] ; ?>" rel="lightbox[products]"><?php echo tep_image2(DIR_WS_IMAGES .'products/'. $product_info['products_image3'], $product_info['products_name'], 50, 50, 'name="prod_thum_1"') ;?></a></td>
+                        <?php } ?>
+                      </tr>
+                    </table>
+                    <?php
+    }
+?>
+                  </td>
+                </tr>
+              </table></td>
+
+              </tr>
+        </table>
+		<table border="0" cellpadding="0" cellspacing="0" width="100%">
+		   <tr class="header2">
+             <td class="main" align="right">
 <div class="option_dot">
 <?php echo tep_draw_form('cart_quantity', tep_href_link(FILENAME_PRODUCT_INFO, tep_get_all_get_params(array('action')) . 'action=process')) . "\n"; ?>
 <?php
@@ -340,11 +380,10 @@ while($tag = tep_db_fetch_array($tag_query)) {
                     <table align="right" width="100%">
                       <tr>
                         <td class="main" width="85">数量:</td>
-                        <td class="main">
-                        <table>
+                        <td class="main" colspan="2">
+                        <table cellspacing="0" cellpadding="0" border="0">
                         <tr>
-                        <td>
-                        <input name="quantity" type="text" id="quantity" value="<?php echo (isset($_POST['quantity'])?$_POST['quantity']:1)?>" size="20" maxlength="4">
+                        <td><input name="quantity" type="text" id="quantity" value="<?php echo (isset($_POST['quantity'])?$_POST['quantity']:1)?>" size="20" maxlength="4">
 </td>
   <td>
   <div class="top_and_bottom">
@@ -361,6 +400,14 @@ while($tag = tep_db_fetch_array($tag_query)) {
       </td>
   </tr>
   </table>
+                      </tr>
+                      <tr>
+                        <td class="main" width="85">
+                        <div class="calc_show_price">価格:</div>
+                        </td>
+                        <td width="325">
+                        <div id="show_price"></div>
+                        </td>
                         <td><?php echo tep_image_submit('button_in_cart.gif', IMAGE_BUTTON_IN_CART); ?></td>
                       </tr>
                     </table>
@@ -372,17 +419,16 @@ while($tag = tep_db_fetch_array($tag_query)) {
                   </div> 
                   </td>
                 </tr>
-                <tr class="header2">
-                  <td valign="bottom" class="smallText">
+				<tr class="header2">
+                  <td align="right" class="smallText">
                     <div class="option_dot"> 
                     <a href="<?php echo tep_href_link(FILENAME_TELL_A_FRIEND,'products_id='.(int)$_GET['products_id']) ;  ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_tellafriend.jpg',BOX_HEADING_TELL_A_FRIEND);?></a>&nbsp; <a href="<?php echo tep_href_link(FILENAME_PRODUCT_REVIEWS_WRITE,'products_id='.(int)$_GET['products_id']) ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_review.jpg',BOX_REVIEWS_WRITE_REVIEW);?></a>&nbsp; 
   <?php echo tep_draw_form('open',tep_href_link('open.php'),'get');?><input type="image" style="vertical-align:bottom;" src="<?php echo DIR_WS_IMAGES;?>design/button/botton_question.jpg"><?php echo tep_draw_hidden_field('products', $product_info['products_name']) ; ?></form>
    </div>   
   </td>
                 </tr>
-              </table></td>
-          </tr>
-        </table>
+
+		</table>
         <?php
           //サブ画像
         // ccdd

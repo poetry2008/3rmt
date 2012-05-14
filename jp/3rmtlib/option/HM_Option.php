@@ -108,4 +108,52 @@ class HM_Option extends Option_DbRecord
     }
     return true;
   }
+  
+  function get_product_option($belong_option_str, $pid)
+  {
+    $return_array = array(); 
+    $this->groups = $this->getGroups($belong_option_str, false); 
+    foreach ($this->groups as $group) {
+      $return_array[] = $group->get_product_option(); 
+    }
+    return $return_array; 
+  }
+  
+  function calc_option_price($option_array)
+  {
+    $calc_price = 0; 
+    if (!empty($option_array)) {
+      foreach ($option_array as $key => $value) {
+        $option_info_array = explode('_', $key); 
+        $item_info_raw = tep_db_query("select * from ".TABLE_OPTION_ITEM." where id = '".$option_info_array[3]."' and name = '".$option_info_array[1]."' and group_id = '".$option_info_array[2]."'"); 
+        $item_info = tep_db_fetch_array($item_info_raw); 
+        if ($item_info) {
+          if ($item_info['type'] == 'radio') {
+            $r_info_array = @unserialize($item_info['option']); 
+            if (!empty($r_info_array['radio_image'])) {
+              foreach ($r_info_array['radio_image'] as $rkey => $rvalue) {
+                if (trim($rvalue['title']) == trim($value)) {
+                  $calc_price += $rvalue['money']; 
+                }
+              }
+            }
+          } else if ($item_info['type'] == 'textarea') {
+            $t_info_array = @unserialize($item_info['option']); 
+            if ($t_info_array['require'] == '1') {
+              $calc_price += $item_info['price'];  
+            } else {
+              $tmp_value = str_replace(' ', '', $value);
+              $tmp_value = str_replace('　', '', $value);
+              if ($value != '') {
+                $calc_price += $item_info['price'];  
+              }
+            }
+          } else {
+            $calc_price += $item_info['price'];  
+          }
+        }
+      }
+    }
+    return $calc_price; 
+  }
 }
