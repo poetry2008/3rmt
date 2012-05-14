@@ -124,8 +124,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
             </div>
             <? if($cfg->allowOnlineAttachments()) {?>
             <div align="left">
-                添付ファイル<br><input type="file" name="attachment" id="attachment"
-                size=30px value="<?=$info['attachment']?>" />
+                添付ファイル<br><input type="file" name="attachment" id="attachment" size=30px value="<?=$info['attachment']?>" />
                 <br><font color="#656565">許可されているファイル形式は、拡張子が<?php echo $allow_file_show;?>のいずれかとなるものです。<br>ファイル名に「.(ドット)」を2つ以上含むファイルは添付できません。</font>
                     <font class="error">&nbsp;<?=$errors['attachment']?></font>
             </div>
