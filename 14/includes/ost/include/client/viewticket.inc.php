@@ -1,6 +1,4 @@
 <?php
-$cfg_1= new Config(1);
-$allow_file_show = $cfg_1->config['allowed_filetypes'];
 if(!defined('OSTCLIENTINC') || !is_object($thisclient) || !is_object($ticket)) die('Kwaheri'); //bye..see ya
 //Double check access one last time...
 if(strcasecmp($thisclient->getEmail(),$ticket->getEmail())) die('Access Denied');
@@ -47,7 +45,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
        </td>
     </tr>
 </table>
-<div class="msg">件名<?=Format::htmlchars($ticket->getSubject())?></div>
+<div class="msg">件名 <?=Format::htmlchars($ticket->getSubject())?></div>
 <div>
     <?if($errors['err']) {?>
         <p align="center" id="errormessage"><?=$errors['err']?></p>
@@ -120,15 +118,12 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
             <input type="hidden" name="respid" value="<?=$respID?>">
             <input type="hidden" name="a" value="postmessage">
             <div align="left" style="font-size:12px;">
-                返信する場合は、内容を入力し「送信」ボタンをクリックしてください。 <font class="error">*&nbsp;<?=$errors['message']?></font><br/>
+                返信する場合は、内容を入力し「送信」ボタンをクリックしてください。<font class="error">*&nbsp;<?=$errors['message']?></font><br/>
                 <textarea name="message" id="message" cols="60" rows="7" wrap="soft"><?=$info['message']?></textarea>
             </div>
             <? if($cfg->allowOnlineAttachments()) {?>
             <div align="left" style="font-size:12px;">
                 添付ファイル<br><input type="file" name="attachment" id="attachment" size=30px value="<?=$info['attachment']?>" /> 
-                <br><font>許可されているファイル形式は、拡張子が <?php 
-                echo $allow_file_show;
-                ?>のいずれかとなるものです。<br>ファイル名に「. (ドット)」を2つ以上含むファイルは添付できません。</font>
                     <font class="error">&nbsp;<?=$errors['attachment']?></font>
             </div>
             <?}?>
