@@ -36,11 +36,7 @@ function calc_product_final_price(pid)
          }
        }
        
-       if (url_str != '') {
-         url_str = url_str + "p_id="+pid+'&qty='+document.getElementById("quantity").value; 
-       } else {
-         url_str = "p_id="+pid+'&qty='+document.getElementById("quantity").value; 
-       }
+       url_str = url_str + "p_id="+pid+'&qty='+document.getElementById("quantity").value; 
        jq.getJSON("<?php echo HTTP_SERVER;?>"+"/ajax_process.php?action=calc_price&"+url_str, function(msg) {
            
          document.getElementById("show_price").innerHTML = msg; 
