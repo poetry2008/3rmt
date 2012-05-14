@@ -95,7 +95,7 @@ if(isset($info['subject'])){
         <th>添付ファイル</th>
         <td>
             <input type="file" name="attachment">
-            <br><font color="#ffffff">許可されているファイル形式は、拡張子が<?php echo $allow_file_show;?>のいずれかとなるものです。<br>ファイル名に「.(ドット)」を2つ以上含むファイルは添付できません。</font>
+            <br><font color="#ffffff" size="2">許可されているファイル形式は、拡張子が<?php echo $allow_file_show;?>のいずれかとなるものです。<br>ファイル名に「.(ドット)」を2つ以上含むファイルは添付できません。</font>
             <br><font class="error">&nbsp;<?=$errors['attachment']?></font>
         </td>
     </tr>
