@@ -37,4 +37,15 @@ class HM_Option_Group extends Option_DbRecord
     }
     echo "</table>";
   }
+ 
+  function get_product_option()
+  {
+    $return_array = array(); 
+    foreach ($this->items as $item){
+      if ($item->place_type == 0) {
+        $return_array[] = $item->name.'_'.$item->group_id.'_'.$item->id; 
+      }
+    }
+    return $return_array; 
+  }
 }

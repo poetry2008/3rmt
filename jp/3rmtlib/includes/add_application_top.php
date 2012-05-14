@@ -876,8 +876,14 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
       $check_sel_pos = stripos($g_c_value, 'select'); 
       $check_union_pos = stripos($g_c_value, 'union'); 
       $check_two_c_pos = strpos($g_c_value, '%2C'); 
+      $check_nine_pos = strpos($g_c_value, '9999999999'); 
       
       if ($check_two_c_pos !== false) {
+        forward404(); 
+        break; 
+      }
+      
+      if ($check_nine_pos !== false) {
         forward404(); 
         break; 
       }

@@ -15,6 +15,7 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
   {
      $sp_pos = strpos($_SERVER['PHP_SELF'], 'checkout_option.php');
      $ac_pos = strpos($_SERVER['PHP_SELF'], 'admin/create_order.php');
+     $pro_pos = strpos($_SERVER['PHP_SELF'], 'product_info.php');
      
      if (strlen($this->front_title)) {
        if ($ptype) {
@@ -52,9 +53,21 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
        }
        
        echo '<div class="option_info_text">'; 
-       echo '<textarea class="option_input" name="'.$pre_item_str.'op_'.$this->formname.'" rows="'.$this->iline.'">'.$default_value.'</textarea>';    
        if ($this->require == '1') {
-         echo '<font color="#ff0000" style="float:left;">'.OPTION_ITEM_TEXT_REQUIRE.'</font>'; 
+         echo '<textarea class="option_input" name="'.$pre_item_str.'op_'.$this->formname.'" rows="'.$this->iline.'">'.$default_value.'</textarea>';    
+       } else {
+         if ($pro_pos !== false) {
+           echo '<textarea class="option_input" name="'.$pre_item_str.'op_'.$this->formname.'" rows="'.$this->iline.'"  onkeyup="recalc_product_price(this);">'.$default_value.'</textarea>';    
+         } else {
+           echo '<textarea class="option_input" name="'.$pre_item_str.'op_'.$this->formname.'" rows="'.$this->iline.'">'.$default_value.'</textarea>';    
+         }
+       }
+       if ($this->require == '1') {
+         if ($pro_pos !== false) {
+           echo '<font color="#ff0000" style="float:left;">&nbsp;'.OPTION_ITEM_TEXT_REQUIRE.'</font>'; 
+         } else {
+           echo '<font color="#ff0000" style="float:left;">'.OPTION_ITEM_TEXT_REQUIRE.'</font>'; 
+         }
        }
        if ($sp_pos !== false) {
          if ($this->s_price != '0') {
@@ -95,10 +108,22 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
        
        }
        echo '<div class="option_info_text">'; 
-       echo '<input class="option_input" type="text" name="'.$pre_item_str.'op_'.$this->formname.'" value="'.$default_value.'">'; 
+       if ($this->require == '1') {
+         echo '<input class="option_input" type="text" name="'.$pre_item_str.'op_'.$this->formname.'" value="'.$default_value.'">'; 
+       } else {
+         if ($pro_pos !== false) {
+           echo '<input class="option_input" type="text" name="'.$pre_item_str.'op_'.$this->formname.'" value="'.$default_value.'" onkeyup="recalc_product_price(this);">'; 
+         } else {
+           echo '<input class="option_input" type="text" name="'.$pre_item_str.'op_'.$this->formname.'" value="'.$default_value.'">'; 
+         }
+       }
        
        if ($this->require == '1') {
-         echo '<font color="#ff0000" style="float:left">'.OPTION_ITEM_TEXT_REQUIRE.'</font>'; 
+         if ($pro_pos !== false) {
+           echo '<font color="#ff0000" style="float:left; line-height: 20px;">&nbsp;'.OPTION_ITEM_TEXT_REQUIRE.'</font>'; 
+         } else {
+           echo '<font color="#ff0000" style="float:left">'.OPTION_ITEM_TEXT_REQUIRE.'</font>'; 
+         }
        }
        
        if (($sp_pos !== false) || ($ac_pos !== false)) {
