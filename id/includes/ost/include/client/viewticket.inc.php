@@ -127,18 +127,13 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
             <? if($cfg->allowOnlineAttachments()) {?>
             <div align="left" style=" font-size:11px;">
                 添付ファイル<br><input type="file" name="attachment" id="attachment" size=30px value="<?=$info['attachment']?>" /> 
-                <br><font>許可されているファイル形式は、拡張子が <?php 
-                echo $allow_file_show;
-                ?>のいずれかとなるものです。<br>ファイル名に「. (ドット)」を2つ以上含むファイルは添付できません。</font>
+  <div style="background-color:#EEF2F7;border-top:1px solid #CCCCCC;padding:5px;margin-top:5px;">
+  <P>許可されているファイル形式は、拡張子が<?php echo $allow_file_show;?>のいずれかとなるものです。</P>
+  <P>ファイル名に「.(ドット)」を2つ以上含むファイルは添付できません。</P></div>
                     <font class="error">&nbsp;<?=$errors['attachment']?></font>
             </div>
             <?}?>
             <div style="padding:10px 0 10px 0; text-align:left;">
-              <?php /*
-                <input class="button" type='image' value='送信' src="includes/languages/japanese/images/buttons/button_send_mail.gif"/>
-                <input class="button" type='image' value='リセット' src="includes/languages/japanese/images/buttons/open_users01.gif"/>
-                <input class="button" type='image' value='キャンセル' onClick='window.location.href="view.php"' src="includes/languages/japanese/images/buttons/open_users02.gif"/>
-                */ ?>
                 <button type="submit" class="button" style="padding:0;background:none;border:none;" value="送信"><img src="includes/languages/japanese/images/buttons/button_send_mail.gif" /></button>
                 <button type="reset"  class="button" style="padding:0;background:none;border:none;" value="リセット"><img src="includes/languages/japanese/images/buttons/open_users01.gif" /></button>
                 <button type="button" class="button" style="padding:0;background:none;border:none;" value="キャンセル" onClick='window.location.href="view.php";'><img src="includes/languages/japanese/images/buttons/open_users02.gif" /></button>
