@@ -2585,6 +2585,30 @@ searching
 	border:1px solid #2864B4;
 }
 .option_radio_img{ float:left;}
+.option_product_default_radio{
+	clear:both;
+	overflow:hidden;
+	margin-bottom:5px;
+}
+.option_product_radio_list{
+	overflow:hidden;
+	height:100%;
+}
+.option_product_single_radio{
+	padding-bottom:5px;
+	float:left;
+}
+.option_product_single_radio div{
+	width:50px;
+}
+.option_product_single_radio span{
+	margin-right:20px;
+}
+.option_product_radio_img_list{
+	clear:both;
+	*padding-top:3px;
+	width:85%;
+}
 .option_radio_list{
 	width:100%;
 	overflow:hidden;
@@ -2609,6 +2633,16 @@ searching
 	margin-bottom:5px;
 }
 .option_info_text select{ float:left;}
+#show_price{
+	font-size:20px;
+	font-weight:bold;
+	color:#2864B4;
+}
+.calc_show_price{
+	color:#2864B4;
+	font-size:20px;
+	font-weight:bold;
+}
 /*shipping*/
 .shipping_error{
 	color:#ff0000;

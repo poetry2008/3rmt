@@ -12,6 +12,7 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
   {
     $sp_pos = strpos($_SERVER['PHP_SELF'], 'checkout_option.php');
     $ac_pos = strpos($_SERVER['PHP_SELF'], 'admin/create_order.php');
+    $pro_pos = strpos($_SERVER['PHP_SELF'], 'product_info.php');
     
     if (strlen($this->front_title)) {
        if ($ptype) {
@@ -72,9 +73,17 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
          }
        
      }
-     echo '<div class="option_radio_list">';
-     if ($is_default == 1) {
+     if ($pro_pos !== false) {
+       echo '<div class="option_product_radio_list">';
+     } else {
        echo '<div class="option_radio_list">';
+     }
+     if ($is_default == 1) {
+       if ($pro_pos !== false) {
+         echo '<div class="option_product_default_radio">';
+       } else {
+         echo '<div class="option_radio_list">';
+       }
        if (!empty($_POST[$pre_item_str.'op_'.$this->formname])) {
          echo '<div class="option_hide_border">'; 
          echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\');">'.$this->default_radio.'</a>';
@@ -102,8 +111,15 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
      }
      $i = 0; 
      if (!empty($this->radio_image)) {
+       if ($pro_pos !== false) {
+         echo '<div class="option_product_radio_img_list">';  
+       } 
        foreach ($this->radio_image as $key => $value) {
-         echo '<div class="option_radio_list">';  
+         if ($pro_pos !== false) {
+           echo '<div class="option_product_single_radio">';  
+         } else {
+           echo '<div class="option_radio_list">';  
+         }
          if ($is_default == 1) {
            if ($is_post == 1) {
              if (trim($value['title']) == trim($default_value)) {
@@ -237,6 +253,9 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
          echo '</div>';
          $i++; 
        }
+       if ($pro_pos !== false) {
+         echo '</div>';
+       } 
      }
      echo '</div>';
      if ($this->racomment) {
