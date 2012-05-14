@@ -79,6 +79,10 @@ if (file_exists(DIR_WS_LANGUAGES . $language . '/user_certify.php')) {
 // エラーメッセージ
 $msg = (isset($erf) && $erf ? '<div align="center"><font color="#FF0000">'.TEXT_ERRINFO_LOGIN.'</font></div>' : '');
 if (isset($erf)) {
+
+  if($erf == 4){
+    $msg =  '<div align="center"><font color="#FF0000">'.TEXT_ERRINFO_LOGIN.'</font></div>';
+  }
   if ($erf == 2) {
     $msg = '<div align="center"><font color="#FF0000">'.TEXT_ERRINFO_IP.'</font></div>';
   }

@@ -50,7 +50,7 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
     $user_time_array = tep_db_fetch_array($user_time_query);
     $user_max_time = $user_time_array['max_time'];
     tep_db_free_result($user_time_query);
-    $user_query = tep_db_query("select loginstatus from ". TABLE_USER_LOGIN ." where address='{$user_ip4}' and loginstatus='p'");
+    $user_query = tep_db_query("select loginstatus from ". TABLE_USER_LOGIN ." where address='{$user_ip4}' and loginstatus='p' and datediff(now(),logintime)<1");
     $user_num_rows = tep_db_num_rows($user_query);
     tep_db_free_result($user_query);
     //判断如果是新注册用户不受IP被封限制
@@ -58,11 +58,11 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
     $new_user_array = tep_db_fetch_array($new_user_query);
     tep_db_free_result($new_user_query);
     //新注册用户或者修改密码用户的特殊处理 start
-    $edit_user_query = tep_db_query("select loginstatus from ". TABLE_USER_LOGIN ." where logintime>'{$new_user_array['new_user_time']}' and address='{$user_ip4}' and loginstatus='p' and account='{$_POST['email_address']}'");
+    $edit_user_query = tep_db_query("select loginstatus from ". TABLE_USER_LOGIN ." where logintime>'{$new_user_array['new_user_time']}' and address='{$user_ip4}' and loginstatus='p' and account='{$_POST['email_address']}' and datediff(now(),logintime)<1");
     $edit_user_num_rows = tep_db_num_rows($edit_user_query);
     tep_db_free_result($edit_user_query);
 
-    $edit_old_user_query = tep_db_query("select loginstatus from ". TABLE_USER_LOGIN ." where logintime>'{$new_user_array['resetpwd_time']}' and address='{$user_ip4}' and loginstatus='p' and account='{$_POST['email_address']}'");
+    $edit_old_user_query = tep_db_query("select loginstatus from ". TABLE_USER_LOGIN ." where logintime>'{$new_user_array['resetpwd_time']}' and address='{$user_ip4}' and loginstatus='p' and account='{$_POST['email_address']}' and datediff(now(),logintime)<1");
     $edit_old_user_num_rows = tep_db_num_rows($edit_old_user_query);
     tep_db_free_result($edit_old_user_query);
     $new_user_time = strtotime($new_user_array['new_user_time']);
@@ -236,10 +236,10 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
                 WHERE customers_info_id = '" . $customer_id . "'
                 ");    
             //把登录信息写入数据表 
-            tep_db_query("
-              INSERT INTO ". TABLE_USER_LOGIN ." 
-              VALUES('". session_id() ."',now(),now(),'{$_POST['email_address']}','a','','{$user_ip4}','0') 
-              ");
+            //tep_db_query("
+              //INSERT INTO ". TABLE_USER_LOGIN ." 
+              //VALUES('". session_id() ."',now(),now(),'{$_POST['email_address']}','a','','{$user_ip4}','0') 
+              //");
              $cart->restore_contents();
              tep_redirect(tep_href_link('change_preorder.php', 'pid='.$_GET['pid'], 'NONSSL'));
           }
@@ -265,6 +265,12 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
     
     if (!tep_db_num_rows($check_customer_query)) {
       $_GET['login'] = 'fail';
+      //把登录信息写入数据表 
+            session_regenerate_id();  
+            tep_db_query("
+              INSERT INTO ". TABLE_USER_LOGIN ." 
+              VALUES('". session_id() ."',now(),now(),'{$_POST['email_address']}','p','','{$user_ip4}','0') 
+              ");
     } else {
       $check_customer = tep_db_fetch_array($check_customer_query);
       // Check that password is good
@@ -322,10 +328,10 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
             WHERE customers_info_id = '" . $customer_id . "'
             ");
         //把登录信息写入数据表 
-        tep_db_query("
-            INSERT INTO ". TABLE_USER_LOGIN ." 
-            VALUES('". session_id() ."',now(),now(),'{$_POST['email_address']}','a','','{$user_ip4}','0') 
-            ");
+        //tep_db_query("
+            //INSERT INTO ". TABLE_USER_LOGIN ." 
+            //VALUES('". session_id() ."',now(),now(),'{$_POST['email_address']}','a','','{$user_ip4}','0') 
+            //");
     
     //POINT_LIMIT CHECK ポイントの有効期限チェック ds-style
     if(MODULE_ORDER_TOTAL_POINT_LIMIT != '0') {
