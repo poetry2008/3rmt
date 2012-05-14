@@ -30,6 +30,7 @@ $loginmsg='情報を入力し「送信」ボタンをクリックしてくださ
 if($_POST && (!empty($_POST['lemail']) && !empty($_POST['lticket']))):
     $loginmsg='Authentication Required';
     $email=trim($_POST['lemail']);
+    $email=str_replace("\xe2\x80\x8b", '', $email);
     $ticketID=trim($_POST['lticket']);
     //$_SESSION['_client']=array(); #Uncomment to disable login strikes.
     

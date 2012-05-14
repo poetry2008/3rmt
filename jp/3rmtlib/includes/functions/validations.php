@@ -65,7 +65,7 @@ function tep_validate_email($email) {
     } else if (!preg_match('/^[\]\\:[A-Za-z0-9\\-\\.]+$/', $domain)) {
       // character not valid in domain part
       $isValid = false;
-    } else if (preg_match('/\\.\\./', $domain)) {
+    } else if (preg_match('/\\.\\./', $domain)||preg_match('/^\./',$domain)) {
       // domain part has two consecutive dots
       $isValid = false;
     } else if (!preg_match('/^(\\\\."|[A-Za-z0-9!#%&`_=\\/$\'*+?^{}|~.-])+$/',
