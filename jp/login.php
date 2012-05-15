@@ -74,7 +74,6 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
     if(strtotime($seal_ip_time)){
       $seal_ip_flag = strtotime($seal_ip_time.'+24 hour') >= time(); 
     } 
-
   if($edit_old_user_num_rows >= 5){
     //end 
     if($flag_true == true){
@@ -118,6 +117,7 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
 
   if($edit_user_num_rows >= 5 && $old_user_resetpwd_time == false){
     //end 
+
     if($flag_true == true){
       if($user_num_rows >= 5){
          
@@ -151,7 +151,11 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
   }
 
   if($edit_old_user_num_rows < 5 && $edit_user_num_rows < 5){
-    if($flag_true == true){
+    if(!$seal_ip_flag && $user_num_rows == 5){ 
+      tep_db_query("update ". TABLE_USER_LOGIN ." set seal_ip='1' where address='{$user_ip4}' and loginstatus='p' and logintime='$user_max_time'");           
+    }
+    if($flag_true == true && ($old_user_resetpwd_time == true && $old_user_resetpwd_time <= strtotime($seal_ip_time))){
+
       if($user_num_rows >= 5){
          
          $user_time = strtotime($user_max_time.'+24 hour');
