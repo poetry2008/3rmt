@@ -81,7 +81,9 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
         <td>
             <input type="file" name="attachment">
             <br><font color="#ffffff" size="2">許可されているファイル形式は、拡張子が<?php echo $allow_file_show;?>のいずれかとなるものです。<br>ファイル名に「.(ドット)」を2つ以上含むファイルは添付できません。</font>
+            <?php if(isset($errors['attachment'])&&$errors['attachment']){ ?>
             <br><font class="error">&nbsp;<?=$errors['attachment']?></font>
+            <?php } ?>
         </td>
     </tr>
     <?}?>
