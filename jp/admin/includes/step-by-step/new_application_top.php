@@ -36,11 +36,8 @@ function tep_validate_email($email) {
     } else if ($domainLen < 1 || $domainLen > 255) {
       // back @  length 
       $isValid = false;
-    } else if ($local[0] == '.' || $local[$localLen-1] == '.') {
+    } else if ($local[0] == '.') {
       // dot at start or end
-      $isValid = false;
-    } else if (preg_match('/\\.\\./', $local)) {
-      //  two dots
       $isValid = false;
     } else if (!preg_match('/^[\]\\:[A-Za-z0-9\\-\\.]+$/', $domain)) {
       // character not valid in domain part
@@ -48,7 +45,7 @@ function tep_validate_email($email) {
     } else if (preg_match('/\\.\\./', $domain)||preg_match('/^\./',$domain)) {
       // domain part has two consecutive dots
       $isValid = false;
-    } else if (!preg_match('/^(\\\\."|[A-Za-z0-9!#%&`_=\\/$\'*+?^{}|~.-])+$/',
+    } else if(!preg_match('/^(\\\\."|[\(\)\<\>\[\]\:\;\,A-Za-z0-9!#%&`_=\\/$\'*+?^{}|~.-])+$/',
           str_replace("\\\\","",$local))) {
       // character not valid in local part unless 
       // local part is quoted

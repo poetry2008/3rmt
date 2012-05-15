@@ -127,7 +127,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
             <div align="left" style="font-size:12px;">
                 添付ファイル<br><input type="file" name="attachment" id="attachment" size=30px value="<?=$info['attachment']?>" /> 
                 <br><font color="#ffffff">許可されているファイル形式は、拡張子が<?php echo $allow_file_show;?>のいずれかとなるものです。<br>ファイル名に「.(ドット)」を2つ以上含むファイルは添付できません。</font>
-                    <br><font class="error">&nbsp;<?=$errors['attachment']?></font>
+                    <font class="error">&nbsp;<?=$errors['attachment']?></font>
             </div>
             <?}?>
             <div align="left"  style="padding:10px 0 10px 0;">
