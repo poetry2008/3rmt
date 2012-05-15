@@ -299,7 +299,8 @@ case 'edit':
         if($cInfo->configuration_key == 'ADMINPAGE_LOGO_IMAGE') {
       $value_field = tep_draw_file_field('upfile') . '<br>' . $cInfo->configuration_value;
   } else {
-      $value_field = tep_draw_input_field('configuration_value', $cInfo->configuration_value);
+    //$value_field = tep_draw_input_field('configuration_value', $cInfo->configuration_value);
+      $value_field = '<textarea name="configuration_value" rows="5" cols="35">'. $cInfo->configuration_value .'</textarea>';
   }
     }
 // 针对 logo—image 做特殊处理
@@ -380,7 +381,8 @@ case 'edit':
       if($fetch_result['configuration_key'] == 'ADMINPAGE_LOGO_IMAGE') {
     $value_field = tep_draw_file_field('upfile'). '<br>' . $fetch_result['configuration_value'];
       } else {
-    $value_field = tep_draw_input_field('configuration_value', $fetch_result['configuration_value']);
+        //$value_field = tep_draw_input_field('configuration_value', $fetch_result['configuration_value']);
+          $value_field = '<textarea name="configuration_value" rows="5" cols="35">'. $fetch_result['configuration_value'] .'</textarea>';
       }
   }
   if($fetch_result['configuration_key'] == 'ADMINPAGE_LOGO_IMAGE') {
