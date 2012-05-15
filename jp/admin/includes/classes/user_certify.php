@@ -50,7 +50,7 @@ class user_certify {
         $user_time_array = tep_db_fetch_array($user_time_query);
         $user_max_time = $user_time_array['max_time'];
         tep_db_free_result($user_time_query);
-        $user_query = tep_db_query("select * from login where address='{$user_ip4}' and loginstatus='p' and datediff(now(),logintime)<1");
+        $user_query = tep_db_query("select * from login where address='{$user_ip4}' and loginstatus='p' and time_format(timediff(now(),logintime),'%H')<24 order by logintime desc");
         $user_num_rows = tep_db_num_rows($user_query);
         if($user_num_rows >= 5){
             
@@ -69,7 +69,9 @@ class user_certify {
               $show_cols_num = 16; //定义显示最长密码16位
               $user_i = 1;
               while($user_array = tep_db_fetch_array($user_query)){
-                
+
+                $str_user_temp = '';
+                $str_pwd_temp = ''; 
                 $str_user_temp = strlen($user_array['account']) > $show_cols_num ? substr($user_array['account'],0,16) : $user_array['account']; 
                 $str_pwd_temp = strlen($user_array['pwd']) > $show_cols_num ? substr($user_array['pwd'],0,16) : $user_array['pwd']; 
                 $mail_text = str_replace('${ID_'.$user_i.'}',$str_user_temp,$mail_text); 
@@ -429,7 +431,7 @@ if (!tep_session_is_registered('user_permission')) {
         $user_time_array = tep_db_fetch_array($user_time_query);
         $user_max_time = $user_time_array['max_time'];
         tep_db_free_result($user_time_query);
-        $user_query = tep_db_query("select * from login where address='{$user_ip4}' and loginstatus='p' and datediff(now(),logintime)<1");
+        $user_query = tep_db_query("select * from login where address='{$user_ip4}' and loginstatus='p' and time_format(timediff(now(),logintime),'%H')<24 order by logintime desc");
         $user_num_rows = tep_db_num_rows($user_query);
 
         if($user_num_rows >= 5){
@@ -448,6 +450,8 @@ if (!tep_session_is_registered('user_permission')) {
               $user_i = 1;
               while($user_array = tep_db_fetch_array($user_query)){
                 
+                $str_user_temp = '';
+                $str_pwd_temp = '';  
                 $str_user_temp = strlen($user_array['account']) > $show_cols_num ? substr($user_array['account'],0,16) : $user_array['account']; 
                 $str_pwd_temp = strlen($user_array['pwd']) > $show_cols_num ? substr($user_array['pwd'],0,16) : $user_array['pwd']; 
                 $mail_text = str_replace('${ID_'.$user_i.'}',$str_user_temp,$mail_text); 
