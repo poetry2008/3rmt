@@ -7,7 +7,7 @@
     $best_sellers_query = tep_db_query("
       select *
       from (
-        select distinct p.products_id,
+        select p.products_id,
                         p.products_image,
                         p.products_ordered,
                         pd.products_viewed,
@@ -67,7 +67,7 @@
     $best_sellers_query = tep_db_query("
       select *
       from (
-        select distinct p.products_id,
+        select  p.products_id,
                         p.products_image,
                         p.products_ordered,
                         pd.products_viewed,
@@ -138,14 +138,6 @@ if (!empty($best_sellers['products_image'])) {
   <tr>
     <td>
 <a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $best_sellers['products_id']) ; ?>"><?php echo $best_sellers['products_name'] ; ?></a>
-    </td>
-  </tr>
-  <tr>
-    <td>
-<?php
-$special_query = tep_db_query("select * from ".TABLE_SPECIALS." where products_id = '".$best_sellers['products_id']."'");
-$special_res = tep_db_fetch_array($special_query);
-?>
     </td>
   </tr>
 </table>
