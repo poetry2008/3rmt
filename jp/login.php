@@ -41,28 +41,28 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
       $user_ip4 = ($user_ip4 << 8) | (int)$u_byte;
     }
     //被封IP时间
-    $user_ip_time_query = tep_db_query("select logintime from ". TABLE_USER_LOGIN ." where seal_ip='1' and address='{$user_ip4}' and loginstatus='p' order by logintime desc limit 0,1");
+    $user_ip_time_query = tep_db_query("select logintime from ". TABLE_USER_LOGIN ." where seal_ip='1' and address='{$user_ip4}' and loginstatus='p' and site_id='1' order by logintime desc limit 0,1");
     $user_ip_time_array = tep_db_fetch_array($user_ip_time_query);
     tep_db_free_result($user_ip_time_query);
     $seal_ip_time = $user_ip_time_array['logintime'];
 
-    $user_time_query = tep_db_query("select max(logintime) as max_time from ". TABLE_USER_LOGIN ." where address='{$user_ip4}' and loginstatus='p'");
+    $user_time_query = tep_db_query("select max(logintime) as max_time from ". TABLE_USER_LOGIN ." where address='{$user_ip4}' and loginstatus='p' and site_id='1'");
     $user_time_array = tep_db_fetch_array($user_time_query);
     $user_max_time = $user_time_array['max_time'];
     tep_db_free_result($user_time_query);
-    $user_query = tep_db_query("select loginstatus from ". TABLE_USER_LOGIN ." where address='{$user_ip4}' and loginstatus='p' and time_format(timediff(now(),logintime),'%H')<24");
+    $user_query = tep_db_query("select loginstatus from ". TABLE_USER_LOGIN ." where address='{$user_ip4}' and loginstatus='p' and time_format(timediff(now(),logintime),'%H')<24 and site_id='1'");
     $user_num_rows = tep_db_num_rows($user_query);
     tep_db_free_result($user_query);
     //判断如果是新注册用户不受IP被封限制
-    $new_user_query = tep_db_query("select ci.customers_info_date_account_created new_user_time,ci.customer_last_resetpwd resetpwd_time from ". TABLE_CUSTOMERS ." c left join ". TABLE_CUSTOMERS_INFO ." ci on c.customers_id = ci.customers_info_id where c.customers_email_address='{$_POST['email_address']}'");
+    $new_user_query = tep_db_query("select ci.customers_info_date_account_created new_user_time,ci.customer_last_resetpwd resetpwd_time from ". TABLE_CUSTOMERS ." c left join ". TABLE_CUSTOMERS_INFO ." ci on c.customers_id = ci.customers_info_id where c.customers_email_address='{$_POST['email_address']}' and c.site_id=1");
     $new_user_array = tep_db_fetch_array($new_user_query);
     tep_db_free_result($new_user_query);
     //新注册用户或者修改密码用户的特殊处理 start
-    $edit_user_query = tep_db_query("select loginstatus from ". TABLE_USER_LOGIN ." where logintime>'{$new_user_array['new_user_time']}' and address='{$user_ip4}' and loginstatus='p' and account='{$_POST['email_address']}' and time_format(timediff(now(),logintime),'%H')<24");
+    $edit_user_query = tep_db_query("select loginstatus from ". TABLE_USER_LOGIN ." where logintime>'{$new_user_array['new_user_time']}' and address='{$user_ip4}' and loginstatus='p' and account='{$_POST['email_address']}' and time_format(timediff(now(),logintime),'%H')<24 and site_id='1'");
     $edit_user_num_rows = tep_db_num_rows($edit_user_query);
     tep_db_free_result($edit_user_query);
 
-    $edit_old_user_query = tep_db_query("select loginstatus from ". TABLE_USER_LOGIN ." where logintime>'{$new_user_array['resetpwd_time']}' and address='{$user_ip4}' and loginstatus='p' and account='{$_POST['email_address']}' and time_format(timediff(now(),logintime),'%H')<24");
+    $edit_old_user_query = tep_db_query("select loginstatus from ". TABLE_USER_LOGIN ." where logintime>'{$new_user_array['resetpwd_time']}' and address='{$user_ip4}' and loginstatus='p' and account='{$_POST['email_address']}' and time_format(timediff(now(),logintime),'%H')<24 and site_id='1'");
     $edit_old_user_num_rows = tep_db_num_rows($edit_old_user_query);
     tep_db_free_result($edit_old_user_query);
     $new_user_time = strtotime($new_user_array['new_user_time']);
@@ -85,7 +85,7 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
          if($user_time >= $user_now){
                
                if(!$seal_ip_flag){ 
-                 tep_db_query("update ". TABLE_USER_LOGIN ." set seal_ip='1' where address='{$user_ip4}' and loginstatus='p' and logintime='$user_max_time'");           
+                 tep_db_query("update ". TABLE_USER_LOGIN ." set seal_ip='1' where address='{$user_ip4}' and loginstatus='p' and logintime='$user_max_time' and site_id='1'");           
                }
                $flag_error = true; 
                $_GET['login'] = 'ip_error';
@@ -105,7 +105,7 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
 
                 
                if(!$seal_ip_flag){ 
-                 tep_db_query("update ". TABLE_USER_LOGIN ." set seal_ip='1' where address='{$user_ip4}' and loginstatus='p' and logintime='$user_max_time'"); 
+                 tep_db_query("update ". TABLE_USER_LOGIN ." set seal_ip='1' where address='{$user_ip4}' and loginstatus='p' and logintime='$user_max_time' and site_id='1'"); 
                }
                $flag_error = true; 
                $_GET['login'] = 'ip_error';
@@ -152,7 +152,7 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
 
   if($edit_old_user_num_rows < 5 && $edit_user_num_rows < 5){
     if(!$seal_ip_flag && $user_num_rows == 5){ 
-      tep_db_query("update ". TABLE_USER_LOGIN ." set seal_ip='1' where address='{$user_ip4}' and loginstatus='p' and logintime='$user_max_time'");           
+      tep_db_query("update ". TABLE_USER_LOGIN ." set seal_ip='1' where address='{$user_ip4}' and loginstatus='p' and logintime='$user_max_time' and site_id='1'");           
     }
     if($flag_true == true && ($old_user_resetpwd_time == true && $old_user_resetpwd_time <= strtotime($seal_ip_time))){
 
@@ -163,7 +163,7 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
          
          if($user_time >= $user_now){
 
-               tep_db_query("delete from ". TABLE_USER_LOGIN ." where time_format(timediff(now(),logintime),'%H')>168");
+               tep_db_query("delete from ". TABLE_USER_LOGIN ." where time_format(timediff(now(),logintime),'%H')>168 and site_id='1'");
                $flag_error = true; 
                $_GET['login'] = 'ip_error';
          }
@@ -180,7 +180,7 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
          
          if($user_time >= $user_now){
                
-               tep_db_query("delete from ". TABLE_USER_LOGIN ." where time_format(timediff(now(),logintime),'%H')>168");
+               tep_db_query("delete from ". TABLE_USER_LOGIN ." where time_format(timediff(now(),logintime),'%H')>168 and site_id='1'");
                $flag_error = true; 
                $_GET['login'] = 'ip_error';
          }
@@ -275,7 +275,7 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
             session_regenerate_id();  
             tep_db_query("
               INSERT INTO ". TABLE_USER_LOGIN ." 
-              VALUES('". session_id() ."',now(),now(),'{$_POST['email_address']}','p','','{$user_ip4}','0') 
+              VALUES('". session_id() ."',now(),now(),'{$_POST['email_address']}','p','','{$user_ip4}','0','1') 
               ");
     } else {
       $check_customer = tep_db_fetch_array($check_customer_query);
@@ -286,7 +286,7 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
             session_regenerate_id();  
             tep_db_query("
               INSERT INTO ". TABLE_USER_LOGIN ." 
-              VALUES('". session_id() ."',now(),now(),'{$_POST['email_address']}','p','','{$user_ip4}','0') 
+              VALUES('". session_id() ."',now(),now(),'{$_POST['email_address']}','p','','{$user_ip4}','0','1') 
               ");
       } else {
 
