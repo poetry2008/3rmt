@@ -65,8 +65,9 @@ if(isset($info['subject'])){
     <tr>
         <th valign="top">ご質問内容</th>
         <td>
-            <? if($errors['message']) {?> <font class="error"><b>&nbsp;<?=$errors['message']?></b></font><br/><?}?>
-            <textarea name="message" cols="35" rows="8" style="width:85%"><?=$info['message']?></textarea></td>
+            <textarea name="message" cols="35" rows="8" style="width:85%"><?=$info['message']?></textarea>
+            <? if($errors['message']) {?> <font class="error">*&nbsp;<?=$errors['message']?></font><br/><?}?>
+        </td>
     </tr>
     <?
     if($cfg->allowPriorityChange() ) {
@@ -109,11 +110,11 @@ if(isset($info['subject'])){
         ?>
     <tr>
         <th valign="top">認証コード</th>
-        <td><img src="captcha.php" border="0" align="left" alt="img">
-        <span>&nbsp;&nbsp;<input type="text" name="captcha" size="7" value="">&nbsp;<i class="captcha_comment">認証画像の内容をご入力ください.</i></span>
+        <td style="line-height: 21px;">
+        <img src="captcha.php" border="0" align="left" alt="img">&nbsp;&nbsp;<input type="text" name="captcha" size="7" value="">&nbsp;<i class="captcha_comment">認証画像の内容をご入力ください.</i>
         <?php if($errors['captcha']){?>
         <br/>
-                <font class="error">&nbsp;<?=$errors['captcha']?></font>
+                <font class="error"><?=$errors['captcha']?></font>
         <?php }?>
         </td>
     </tr>
