@@ -66,7 +66,7 @@ if($_POST && is_object($ticket) && $ticket->getId()):
                 //$errors['attachment']='Invalid file type [ '.$_FILES['attachment']['name'].' ]';
                 $errors['attachment']='無効なファイル形式です [ '.Format::htmlchars($_FILES['attachment']['name']).' ]';
             elseif($_FILES['attachment']['size']>$cfg->getMaxFileSize())
-                $errors['attachment']='File is too big. Max '.$cfg->getMaxFileSize().' bytes allowed';
+                $errors['attachment']='添付ファイルの上限サイズ'.$cfg->getMaxFileSize().' bytes  を超えています。';
         }
                     
         if(!$errors){
