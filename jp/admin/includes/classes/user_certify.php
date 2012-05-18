@@ -420,6 +420,7 @@ if (!tep_session_is_registered('user_permission')) {
   $check_login_pos = strpos($_SERVER['REQUEST_URI'], 'users_login.php'); 
   session_regenerate_id(); 
   if ($check_login_pos === false) {
+   if(isset($_POST['loginuid'])){
     $user_ip = explode('.',$_SERVER['REMOTE_ADDR']); 
     $user_ip4 = 0;
     while (list($u_key, $u_byte) = each($user_ip)) {
@@ -465,16 +466,20 @@ if (!tep_session_is_registered('user_permission')) {
                 
               $s_sid = session_id();
               tep_db_query("insert into login(sessionid,logintime,lastaccesstime,account,pwd,loginstatus,logoutstatus,address) values('$s_sid',now(),now(),'{$_POST['loginuid']}','{$_POST['loginpwd']}','p','','$user_ip4')");
-            } 
-            tep_redirect('users_login.php?erf=3&his_url='.$_SERVER['REQUEST_URI']);
+            }   
+            tep_redirect('users_login.php?erf=1&his_url='.$_SERVER['REQUEST_URI']);
           }
            
         }
     
     $s_sid = session_id();
-    tep_db_query("insert into login(sessionid,logintime,lastaccesstime,account,pwd,loginstatus,logoutstatus,address) values('$s_sid',now(),now(),'{$_POST['loginuid']}','{$_POST['loginpwd']}','p','','$user_ip4')");
-    $_SESSION['err_ip'] = true;
-    tep_redirect('users_login.php?his_url='.$_SERVER['REQUEST_URI']);
+        tep_db_query("insert into login(sessionid,logintime,lastaccesstime,account,pwd,loginstatus,logoutstatus,address) values('$s_sid',now(),now(),'{$_POST['loginuid']}','{$_POST['loginpwd']}','p','','$user_ip4')");
+  }
+    if(isset($_POST['loginuid'])){
+      tep_redirect('users_login.php?erf=1&his_url='.$_SERVER['REQUEST_URI']);
+    }else{
+      tep_redirect('users_login.php?his_url='.$_SERVER['REQUEST_URI']);
+    }
   } else {
     tep_redirect('users_login.php');
   }
@@ -482,7 +487,7 @@ if (!tep_session_is_registered('user_permission')) {
 $ocertify = new user_certify(session_id());     // 認証
 if ($ocertify->isErr) { 
   if($ocertify->ipSealErr){
-    logout_user(3,'',$_GET['his_url']);
+    logout_user(1,'',$_GET['his_url']);
   }else{
     if ($ocertify->ipLimitErr) {
       logout_user(2,'',$_GET['his_url']); 
