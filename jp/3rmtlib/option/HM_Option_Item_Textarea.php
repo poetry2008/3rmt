@@ -99,7 +99,7 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
        if ($this->require == '1') {
          if ($back_pos !== false) {
            if (!isset($option_error_array[$pre_item_str.$this->formname])) {
-             if (isset($_POST['cstep']) || $_POST['action'] == 'action_process') {
+             if (isset($_POST['cstep'])) {
                if ($pro_pos !== false) {
                  echo '<font color="#ff0000" style="float:left; line-height: 20px;">&nbsp;'.OPTION_ITEM_TEXT_REQUIRE.'</font>'; 
                } else {
@@ -149,7 +149,7 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
        if ($this->require == '1') {
          if ($back_pos !== false) {
            if (!isset($option_error_array[$pre_item_str.$this->formname])) {
-             if (isset($_POST['cstep']) || $_POST['action'] == 'action_process') {
+             if (isset($_POST['cstep'])) { 
                if ($pro_pos !== false) {
                  echo '<font color="#ff0000" style="float:left; line-height: 20px;">&nbsp;'.OPTION_ITEM_TEXT_REQUIRE.'</font>'; 
                } else {
