@@ -1399,7 +1399,7 @@ if($address_error == false){
     <script language="javascript" src="includes/javascript/jquery_include.js"></script>
     <script language="javascript" src="includes/javascript/all_orders.js"></script>
     <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
-    <script language="javascript" src="includes/javascript/datePicker.js"></script>
+    <script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
   <script type="text/javascript"> 
 function check(value){
   var arr  = new Array();
@@ -1682,8 +1682,8 @@ function check_hour_1(value){
   }
 }
   $(function() {
-    $.datePicker.setDateFormat('ymd', '-');
-    $('#date_orders').datePicker();
+    //$.datePicker.setDateFormat('ymd', '-');
+    //$('#date_orders').datePicker();
 <?php
     if($add_count > 0 && $products_weight_sum > 0){
       if(!(isset($_GET['action']) && $_GET['action'] == 'update_order')){
@@ -1722,6 +1722,32 @@ $(document).ready(function(){
     check($(this).val());
   }); 
 });
+
+function open_calendar()
+{
+  var is_open = $('#toggle_open').val(); 
+  if (is_open == 0) {
+    browser_str = navigator.userAgent.toLowerCase(); 
+    if (browser_str.indexOf("msie 9.0") > 0) {
+      $('#new_yui3').css('margin-left', '-90px'); 
+    }
+    $('#toggle_open').val('1'); 
+    YUI().use('calendar', 'datatype-date',  function(Y) {
+        var calendar = new Y.Calendar({
+            contentBox: "#mycalendar",
+            width:'170px',
+
+        }).render();
+      var dtdate = Y.DataType.Date;
+      calendar.on("selectionChange", function (ev) {
+        var newDate = ev.newSelection[0];
+        $("#date_orders").val(dtdate.format(newDate)); 
+        $('#toggle_open').val('0');
+        $('#toggle_open').next().html('<div id="mycalendar"></div>');
+      });
+    });
+  }
+}
 </script>
     </head>
     <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">
@@ -1741,7 +1767,27 @@ $(document).ready(function(){
           font-weight: bold;
 color: #FF6600;
         }
-      </style>
+ .yui3-skin-sam input {
+  float:left;
+}
+a.dpicker {
+	width: 16px;
+	height: 16px;
+	border: none;
+	color: #fff;
+	padding: 0;
+	margin: 0;
+	overflow: hidden;
+        display:block;	
+        cursor: pointer;
+	background: url(./includes/calendar.png) no-repeat; 
+	float:left;
+}
+#new_yui3{
+	position:absolute;
+	left:580px\9;
+}     
+</style>
         <!-- header_eof //-->
         <!-- body //-->
         <table border="0" width="100%" cellspacing="2" cellpadding="2">
@@ -2241,8 +2287,15 @@ echo "</table>";
             <tr> 
             <td class="main" valign="top"><b><?php echo EDIT_ORDERS_FETCHTIME;?></b></td>
             <td class="main"> 
-            <input type="text" id="date_orders" size="15" value="<?php echo $date_orders;?>"> 
-            <input type="hidden" id="date_order" name="date_orders" value="<?php echo $date_orders;?>">
+            <div class="yui3-skin-sam yui3-g"> 
+              <input type="text" id="date_orders" size="15" value="<?php echo $date_orders;?>"> 
+              <a href="javascript:void(0);" onclick="open_calendar();" class="dpicker"></a> 
+              <input type="hidden" id="date_order" name="date_orders" value="<?php echo $date_orders;?>">
+              <input type="hidden" name="toggle_open" value="0" id="toggle_open"> 
+              <div class="yui3-u" id="new_yui3">
+              <div id="mycalendar"></div> 
+              </div>
+            </div> 
             <?php
               echo '&nbsp;'.$hour_str.'&nbsp;時&nbsp;'.$min_str.$min_str_start.'&nbsp;分&nbsp;～&nbsp;'.$hour_str_1.'&nbsp;時&nbsp;'.$min_str_1.$min_str_end.'&nbsp;分&nbsp;';
             ?>

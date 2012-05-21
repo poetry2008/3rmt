@@ -442,5 +442,10 @@ function getMailString($option=''){
   {
     $_SESSION['h_rakuten_telnumber'] = $pInfo['rakuten_telnumber']; 
   }
+
+  function get_preorder_add_info($order_info)
+  {
+    return $order_info['raku_text'] ."\n".$order_info['comment_msg'];
+  }
 }
 ?>

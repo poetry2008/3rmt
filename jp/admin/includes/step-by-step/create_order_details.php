@@ -712,7 +712,7 @@ if($index > 0){
             print "</tr>\n";
             print "<tr>"; 
             print "<td colspan='3' class='dataTableContent' align='right'>"; 
-            print "<div style='margin-right:40%;'><input type='button' value='" .  ADDPRODUCT_TEXT_OPTIONS_CONFIRM . "' onclick='document.forms.coform.submit();'></div>";
+            print "<div style='margin-right:30%;'><input type='button' value='" .  ADDPRODUCT_TEXT_OPTIONS_CONFIRM . "' onclick='document.forms.coform.submit();'></div>";
             print "</td>"; 
             print "</tr>"; 
           }

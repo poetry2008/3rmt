@@ -817,6 +817,8 @@ unset($_SESSION['options']);
 
 tep_session_unregister('h_code_fee');
 tep_session_unregister('h_point');
+tep_session_unregister('hc_point');
+tep_session_unregister('hc_camp_point');
 
 tep_redirect(tep_href_link(FILENAME_CHECKOUT_SUCCESS,'','SSL'),'T');
     

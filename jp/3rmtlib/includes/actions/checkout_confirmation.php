@@ -36,6 +36,8 @@ if (isset($_POST['comments_added']) && $_POST['comments_added'] != '') {
 
 }
 $_SESSION['mailcomments'] = $_POST['comments'];
+tep_session_unregister('hc_point'); 
+tep_session_unregister('hc_camp_point'); 
 // check if bank info
 
 // load the selected payment module
@@ -79,6 +81,8 @@ if (is_array($payment_modules->modules) ){
         if (isset($_POST['point'])) {
           $_POST['point'] = 0; 
         }
+        $hc_camp_point = $_POST['camp_point'];
+        tep_session_register('hc_camp_point');
         $percent_pos = strpos($campaign_res['point_value'], '%'); 
         if ($percent_pos !== false) {
           $campaign_fee = $order->info['subtotal']*substr($campaign_res['point_value'], 0, -1)/100; 
@@ -121,6 +125,8 @@ if (is_array($payment_modules->modules) ){
           } 
           
           if (!$campaign_error) {
+            $hc_point = $_POST['point']; 
+            tep_session_register('hc_point'); 
             $_POST['point'] = 0; 
             $percent_pos = strpos($campaign_res['point_value'], '%'); 
             if ($percent_pos !== false) {
@@ -153,7 +159,7 @@ if (is_array($payment_modules->modules) ){
   }
  
   if ($campaign_error) {
-    $campaign_error_str = isset($_POST['point'])?$_POST['point']:(isset($_POST['preorder_point'])?$_POST['preorder_point']:0);
+    $campaign_error_str = isset($_POST['point'])?$_POST['point']:(isset($_POST['camp_point'])?$_POST['camp_point']:0);
   }
   if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
       $point_query = tep_db_query("select point from " . TABLE_CUSTOMERS . " where customers_id = '" . $customer_id . "'");

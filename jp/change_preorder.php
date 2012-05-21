@@ -397,7 +397,7 @@ document.forms.order1.submit();
               </td>
             </tr>
           </table> 
-          <div class="formAreaTitle"><?php echo CHANGE_ORDER_CUSTOMER_DETAILS?></div> 
+          <div class="formAreaTitle" style="font-size:12px;"><?php echo CHANGE_ORDER_CUSTOMER_DETAILS?></div> 
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
               <td class="main" width="150">
@@ -421,7 +421,7 @@ document.forms.order1.submit();
             $preorder_product_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$preorder_id."'"); 
             $preorder_product_res = tep_db_fetch_array($preorder_product_raw); 
           ?> 
-          <div class="formAreaTitle"><?php echo CHANGE_ORDER_PRODUCT_DETAILS;?></div> 
+          <div class="formAreaTitle" style="font-size:12px;"><?php echo CHANGE_ORDER_PRODUCT_DETAILS;?></div> 
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
               <td class="main" width="150">
@@ -649,7 +649,7 @@ document.forms.order1.submit();
           $quest_array = tep_db_fetch_array($quest_query);
           tep_db_free_result($quest_query);
         ?>
-        <div class="formAreaTitle"><?php echo TEXT_ADDRESS;?></div>
+        <div class="formAreaTitle" style="font-size:12px;"><?php echo TEXT_ADDRESS;?></div>
         <table border="0" width="100%" cellspacing="2" cellpadding="2" class="formArea"> 
         <?php
           if($quest_array['customers_guest_chk'] == 0){
@@ -679,7 +679,7 @@ document.forms.order1.submit();
         ?>
         
         <!-- 住所结束 -->
-        <div class="formAreaTitle"><?php echo CHANGE_ORDER_FETCH_TIME_TITLE;?></div> 
+        <div class="formAreaTitle" style="font-size:12px;"><?php echo CHANGE_ORDER_FETCH_TIME_TITLE;?></div> 
         <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
 <!--
         <tr>

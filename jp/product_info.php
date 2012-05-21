@@ -28,29 +28,32 @@ jq(document).ready(function () {
 function calc_product_final_price(pid)
 {
    var attr_price = 0; 
-   jq.getJSON("<?php echo HTTP_SERVER;?>"+"/ajax_process.php?action=get_option&p_id="+pid, function(data) {
-       var url_str = ''; 
-       if (data != '') {
-         for (var i = 0; i < data[0].length; i++) {
-           url_str += "op_"+data[0][i]+"="+document.getElementsByName("op_"+data[0][i])[0].value+"&"; 
+   jq('.option_table').find('input').each(function() {
+       if (jq(this).attr('type') == 'hidden') {
+         var reg_str = /^tp1_(.*)$/g;
+         if (reg_str.exec(jq(this).attr('name'))) {
+           attr_price += Number(jq(this).val());  
+         }
+         var reg_rstr = /^tp0_(.*)$/g;
+         if (reg_rstr.exec(jq(this).attr('name'))) {
+           var o_name = jq(this).attr('name').substr(4);
+           i_data = document.getElementsByName('op_'+o_name)[0].value;
+           i_data = i_data.replace(/\s/g, '');
+           if (i_data != '') {
+             attr_price += Number(jq(this).val());  
+           }
          }
        }
-       
-       url_str = url_str + "p_id="+pid+'&qty='+document.getElementById("quantity").value; 
-       jq.getJSON("<?php echo HTTP_SERVER;?>"+"/ajax_process.php?action=calc_price&"+url_str, function(msg) {
-           
-         document.getElementById("show_price").innerHTML = msg; 
-       });
+   }); 
+   
+   jq.getJSON("<?php echo HTTP_SERVER;?>"+"/ajax_process.php?action=calc_price&p_id="+pid+"&oprice="+attr_price+"&qty="+jq('#quantity').val(), function(msg) { 
+       document.getElementById("show_price").innerHTML = msg; 
   });
 }
 
 function recalc_product_price(t_obj)
 {
-  i_data = jq(t_obj).val();
-  i_data = i_data.replace(/\s/g, ''); 
-  if (i_data != '') {
-    calc_product_final_price("<?php echo (int)$_GET['products_id'];?>");
-  }
+  calc_product_final_price("<?php echo (int)$_GET['products_id'];?>");
 }
 
 function select_item_radio(i_obj, t_str, o_str, p_str)
@@ -64,7 +67,30 @@ function select_item_radio(i_obj, t_str, o_str, p_str)
       origin_default_value = jq('#'+o_str).val(); 
       jq('#'+o_str).parent().html("<input type='hidden' id='"+o_str+"' name='"+p_str+"' value='"+t_str+"'>"); 
       
-    calc_product_final_price("<?php echo (int)$_GET['products_id'];?>");
+      item_info = p_str.split('_');
+      item_id = item_info[3];
+      var r_tmp_name = p_str.substr(3);
+      if (t_str == '') {
+        jq('#tp1_'+r_tmp_name).val(0);
+        calc_product_final_price("<?php echo (int)$_GET['products_id'];?>");
+      } else {
+        jq.getJSON(encodeURI("<?php echo HTTP_SERVER;?>"+"/ajax_process.php?action=calc_radio_price&it_id="+item_id+"&rvalue="+t_str), function(msg) { 
+            jq('#tp1_'+r_tmp_name).val(msg);
+            calc_product_final_price("<?php echo (int)$_GET['products_id'];?>");
+        });
+        /* 
+        jq.ajax({
+          type:"POST",
+          data:"it_id="+item_id+"&rvalue="+t_str,
+          async:false,
+          url:'ajax_process.php?action=calc_radio_price',
+          success: function(msg) {
+            jq('#tp1_'+r_tmp_name).val(msg);
+            calc_product_final_price("<?php echo (int)$_GET['products_id'];?>");
+          }
+        });
+        */
+      }
 }
 
 function change_num(ob,targ, quan, a_quan)
