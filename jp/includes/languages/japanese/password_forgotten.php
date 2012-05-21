@@ -36,4 +36,5 @@ define('EMAIL_PASSWORD_REMINDER_BODY',
 も、弊社のサービスをよろしくお願いします。'."\n"
 );
 define('TEXT_PASSWORD_SENT', '新しいパスワードをご登録のメールアドレスに送信しました。');
+define('PASSWORD_USER_EMAIL_ERROR','<font color="#ff0000"><b>ご注意:</b></font> 入力されたメールアドレスは不正です!');
 ?>

@@ -40,12 +40,19 @@
         $email_body = str_replace('${IP}', $_SERVER["REMOTE_ADDR"], $email_body);
         $email_body = str_replace('${NAME}', tep_get_fullname($check_customer['customers_firstname'], $check_customer['customers_lastname']), $email_body);
         tep_mail(tep_get_fullname($check_customer['customers_firstname'],$check_customer['customers_lastname']), $_POST['email_address'], str_replace('${SITE_NAME}', STORE_NAME, SEND_PASSWORLD_EMAIL_TITLE), $email_body, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
-      tep_redirect(tep_href_link('send_success.php', 'send_mail='.$_POST['email_address']));
+      tep_redirect(tep_href_link('send_success.php',
+            'send_mail='.rawurlencode($_POST['email_address'])));
     } else {
-      tep_redirect(tep_href_link('send_success.php', 'send_mail='.$_POST['email_address']));
+      tep_redirect(tep_href_link('send_success.php',
+            'send_mail='.rawurlencode($_POST['email_address'])));
     }
     } else {
-      tep_redirect(tep_href_link('send_success.php', 'send_mail='.$_POST['email_address']));
+      if(tep_validate_email($_POST['email_address'])){
+      tep_redirect(tep_href_link('send_success.php',
+            'send_mail='.rawurlencode($_POST['email_address'])));
+      }else{
+        tep_redirect(tep_href_link(FILENAME_PASSWORD_FORGOTTEN, 'error=1', 'SSL'));
+      }
     }
   } else {
 
@@ -94,6 +101,10 @@
     echo '          <tr>' . "\n";
     echo '            <td colspan="2" class="smallText">' .  TEXT_NO_EMAIL_ADDRESS_FOUND . '</td>' . "\n";
     echo '          </tr>' . "\n";
+  }else if(isset($error)&&$error){
+    echo '<tr>';
+    echo '<td colspan="2" class="smallText">'.PASSWORD_USER_EMAIL_ERROR.'</td>';
+    echo '</tr>';
   }
 ?>
           </table>
