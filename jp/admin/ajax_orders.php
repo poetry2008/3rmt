@@ -1549,7 +1549,7 @@ echo json_encode($json_array);
   $html_str .= '</tr>'; 
   $html_str .= '</table>';
   
-  $html_str .= tep_draw_form('option_item', FILENAME_OPTION_ITEM, 'action=insert&group_id='.$_POST['group_id'], 'post', 'enctype="multipart/form-data"'); 
+  $html_str .= tep_draw_form('option_item', FILENAME_OPTION_ITEM, 'action=insert&group_id='.$_POST['group_id'].(!empty($_POST['gpage'])?'&gpage='.$_POST['gpage']:''), 'post', 'enctype="multipart/form-data"'); 
   $html_str .= '<table cellspacing="0" cellpadding="2" border="0" width="100%" class="campaign_body">';
   $html_str .= '<tr>';
   $html_str .= '<td width="220" align="left">';
@@ -1694,7 +1694,7 @@ echo json_encode($json_array);
   $html_str .= '</td>'; 
   $html_str .= '</tr>';
   $html_str .= '</table>';
-  $html_str .= tep_draw_form('option_item', FILENAME_OPTION_ITEM, 'action=update&group_id='.$_POST['group_id'], 'post', 'enctype="multipart/form-data"'); 
+  $html_str .= tep_draw_form('option_item', FILENAME_OPTION_ITEM, 'action=update&group_id='.$_POST['group_id'].(!empty($_POST['gpage'])?'&gpage='.$_POST['gpage']:''), 'post', 'enctype="multipart/form-data"'); 
   $html_str .= '<table cellspacing="0" cellpadding="2" border="0" width="100%" class="campaign_body">';
   $html_str .= '<tr>';
   $html_str .= '<td width="220" align="left">';
@@ -1796,7 +1796,7 @@ echo json_encode($json_array);
   $html_str .= '<input type="hidden" name="is_copy" value="0" id="is_copy">'; 
   $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_NEW_PROJECT, 'onclick="create_option_item(\''.$_POST['group_id'].'\');"').'</a>&nbsp;'; 
   $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_SAVE, 'onclick="check_item_info();"').'</a>&nbsp;'; 
-  $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="if(confirm(\''.TEXT_DEL_OPTION_ITEM.'\')) window.location.href = \''.tep_href_link(FILENAME_OPTION_ITEM, 'action=deleteconfirm&item_id='.$item['id'].'&group_id='.$_POST['group_id']).'\';"').'</a>'; 
+  $html_str .= '<a href="javascript:void(0);">'.tep_html_element_button(IMAGE_DELETE, 'onclick="if(confirm(\''.TEXT_DEL_OPTION_ITEM.'\')) window.location.href = \''.tep_href_link(FILENAME_OPTION_ITEM, 'action=deleteconfirm&item_id='.$item['id'].'&group_id='.$_POST['group_id'].(!empty($_POST['gpage'])?'&gpage='.$_POST['gpage']:'')).'\';"').'</a>'; 
   $html_str .= '</td>';
   $html_str .= '</tr>';
   

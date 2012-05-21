@@ -136,7 +136,7 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
        
       echo '<br><small>&nbsp;<i> - ' .  $order->products[$i]['op_attributes'][$j]['front_title'] . ': ' .  $order->products[$i]['op_attributes'][$j]['value'];
       if ($op_price != '0') {
-        echo ' ('.$currencies->format($op_price*$order->products[$i]['qty']).')'; 
+        echo ' ('.$currencies->format($op_price).')'; 
       }
       echo '</i></small>';
     }
@@ -147,7 +147,7 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
       $cop_price = tep_get_show_attributes_price($order->products[$i]['ck_attributes'][$jk]['item_id'], $order->products[$i]['ck_attributes'][$jk]['group_id'], $order->products[$i]['ck_attributes'][$jk]['value']); 
       echo '<br><small>&nbsp;<i> - ' .  $order->products[$i]['ck_attributes'][$jk]['front_title'] . ': ' .  $order->products[$i]['ck_attributes'][$jk]['value'];
       if ($cop_price != '0') {
-        echo ' ('.$currencies->format($cop_price*$order->products[$i]['qty']).')'; 
+        echo ' ('.$currencies->format($cop_price).')'; 
       }
       echo '</i></small>';
     }

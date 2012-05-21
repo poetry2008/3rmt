@@ -256,13 +256,14 @@ if($address_error == false){
   }
   $order_comment_str = '';
   
-  $comment_raw = tep_db_query("select comments from ".TABLE_PREORDERS_STATUS_HISTORY." where orders_id = '".$_SESSION['preorder_info_id']."' and comments != '' order by orders_status_history_id asc limit 1");
+  //$comment_raw = tep_db_query("select comments from ".TABLE_PREORDERS_STATUS_HISTORY." where orders_id = '".$_SESSION['preorder_info_id']."' and comments != '' order by orders_status_history_id asc limit 1");
  
-  $comment_res = tep_db_fetch_array($comment_raw);
-  if ($comment_res) {
-    $order_comment_str = $comment_res['comments'];
-  }
+  //$comment_res = tep_db_fetch_array($comment_raw);
+  //if ($comment_res) {
+    //$order_comment_str = $comment_res['comments'];
+  //}
   
+  $order_comment_str = $payment_modules->get_preorder_add_info($cpayment_code, $preorder); 
   
   $customer_notification = (SEND_EMAILS == 'true') ? '1' : '0'; 
   $sql_data_array = array('orders_id' => $orders_id,

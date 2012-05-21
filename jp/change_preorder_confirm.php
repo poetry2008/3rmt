@@ -241,7 +241,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                   <?php $preorder_product_res = tep_db_fetch_array($preorder_product_raw);?> 
                   <tr>
                     
-                    <td class="main" align="center">
+                    <td class="main" align="center" valign="top">
                     <?php echo $preorder_product_res['products_quantity'].PRODUCT_UNIT_TEXT;?>
                     <?php echo '<br>'.tep_get_full_count2($preorder_product_res['products_quantity'], $preorder_product_res['products_id']);?> 
                     
@@ -261,7 +261,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                       echo $old_attr_info['title'].':'.$old_attr_info['value'];
                       if ($old_attr_res['options_values_price'] != '0') {
                         if ($preorder_product_res['products_price'] != '0') {
-                          echo ' ('.$currencies->format($old_attr_res['options_values_price']*$preorder_product_res['products_quantity']).')'; 
+                          echo ' ('.$currencies->format($old_attr_res['options_values_price']).')'; 
                         } 
                       }
                     }
@@ -279,7 +279,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                               foreach ($r_option_array['radio_image'] as $ro_key => $ro_value) {
                                 if (trim($ro_value['title']) == trim($of_value)) {
                                   if ($ro_value['money'] != '') {
-                                    echo ' ('.$currencies->format($ro_value['money']*$preorder_product_res['products_quantity']).')'; 
+                                    echo ' ('.$currencies->format($ro_value['money']).')'; 
                                   }
                                   break; 
                                 }
@@ -287,7 +287,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                             }
                           } else {
                             if ($option_item['price'] != '0') {
-                              echo ' ('.$currencies->format($option_item['price']*$preorder_product_res['products_quantity']).')'; 
+                              echo ' ('.$currencies->format($option_item['price']).')'; 
                             }
                           }
                           echo '<br>'; 
@@ -296,7 +296,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                     }
                     ?>
                     </td>                  
-                    <td class="main">
+                    <td class="main" align="right" valign="top">
                     <?php 
                     if (isset($preorder_total_info_array['final_price'])) {
                       if ($preorder_total_info_array['final_price'] < 0) {

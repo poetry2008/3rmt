@@ -853,7 +853,7 @@
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
 <script language="javascript" src="includes/javascript/jquery.form.js"></script>
-<script language="javascript" src="includes/javascript/datePicker.js"></script>
+<script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
 <script>
 function check_add(){
   price = document.getElementById('add_product_price').value;
@@ -889,15 +889,53 @@ function check_prestatus() {
     }
   });
 }  
-$(function() {
-$.datePicker.setDateFormat('ymd', '-');    
-$('#predate').datePicker();
-});
+
+function open_calendar()
+{
+  var is_open = $('#toggle_open').val(); 
+  if (is_open == 0) {
+    browser_str = navigator.userAgent.toLowerCase(); 
+    if (browser_str.indexOf("msie 9.0") > 0) {
+      $('#new_yui3').css('margin-left', '-90px'); 
+    }
+    $('#toggle_open').val('1'); 
+    YUI().use('calendar', 'datatype-date',  function(Y) {
+        var calendar = new Y.Calendar({
+            contentBox: "#mycalendar",
+            width:'170px',
+
+        }).render();
+      var dtdate = Y.DataType.Date;
+      calendar.on("selectionChange", function (ev) {
+        var newDate = ev.newSelection[0];
+        $("#predate").val(dtdate.format(newDate)); 
+        $('#toggle_open').val('0');
+        $('#toggle_open').next().html('<div id="mycalendar"></div>');
+      });
+    });
+  }
+}
 </script>
 <style type="text/css">
-a.date-picker{
-display:block;
-float:none;
+.yui3-skin-sam input {
+  float:left;
+}
+a.dpicker {
+	width: 16px;
+	height: 16px;
+	border: none;
+	color: #fff;
+	padding: 0;
+	margin: 0;
+	overflow: hidden;
+        display:block;	
+        cursor: pointer;
+	background: url(./includes/calendar.png) no-repeat; 
+	float:left;
+}
+#new_yui3{
+	position:absolute;
+	left:603px\9;
 }
 .popup-calendar {
 top:20px;
@@ -1083,8 +1121,15 @@ if (($action == 'edit') && ($order_exists == true)) {
               <tr>
                 <td class="main" valign="top"><b><?php echo EDIT_ORDERS_PREDATE_TEXT;?></b></td>
                 <td class="main">
+                <div class="yui3-skin-sam yui3-g">
                 <?php echo tep_draw_input_field('predate', $order['predate'], 'id="predate"'); ?>
                 <input type="hidden" id="h_predate" name="h_predate"> 
+                <a href="javascript:void(0);" onclick="open_calendar();" class="dpicker"></a> 
+                <input type="hidden" name="toggle_open" value="0" id="toggle_open"> 
+                <div class="yui3-u" id="new_yui3">
+                <div id="mycalendar"></div> 
+                </div>
+                </div>
                 </td>
               </tr>
             </table>
@@ -1549,7 +1594,7 @@ if (($action == 'edit') && ($order_exists == true)) {
   //   Add Products Steps
   // ############################################################################
   
-    print "<tr><td><table border='0' width='60%'>\n";
+    print "<tr><td><table border='0' width='100%'>\n";
     
     // Set Defaults
       if(!IsSet($add_product_categories_id))

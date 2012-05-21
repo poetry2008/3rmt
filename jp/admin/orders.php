@@ -2379,7 +2379,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
             if (is_array($order->products[$i]['attributes'][$j]['option_info'])) {
               echo '<br><nobr><small>&nbsp;<i> - ' .  $order->products[$i]['attributes'][$j]['option_info']['title'] . ': ' . $order->products[$i]['attributes'][$j]['option_info']['value'];
             }
-            if ($order->products[$i]['attributes'][$j]['price'] != '0') echo ' (' .$currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . ')';
+            if ($order->products[$i]['attributes'][$j]['price'] != '0') echo ' (' .$currencies->format($order->products[$i]['attributes'][$j]['price'], true, $order->info['currency'], $order->info['currency_value']) . ')';
               echo '</i></small></nobr>';
           }
         }
