@@ -74,10 +74,11 @@ function select_item_radio(i_obj, t_str, o_str, p_str)
         jq('#tp1_'+r_tmp_name).val(0);
         calc_product_final_price("<?php echo (int)$_GET['products_id'];?>");
       } else {
-	//jq.getJSON("<?php echo HTTP_SERVER;?>"+"/ajax_process.php?action=calc_radio_price&it_id="+item_id+"&rvalue="+t_str, function(msg) { 
-            //jq('#tp1_'+r_tmp_name).val(msg);
-            //calc_product_final_price("<?php echo (int)$_GET['products_id'];?>");
-        //});
+        jq.getJSON(encodeURI("<?php echo HTTP_SERVER;?>"+"/ajax_process.php?action=calc_radio_price&it_id="+item_id+"&rvalue="+t_str), function(msg) { 
+            jq('#tp1_'+r_tmp_name).val(msg);
+            calc_product_final_price("<?php echo (int)$_GET['products_id'];?>");
+        });
+        /* 
         jq.ajax({
           type:"POST",
           data:"it_id="+item_id+"&rvalue="+t_str,
@@ -87,7 +88,8 @@ function select_item_radio(i_obj, t_str, o_str, p_str)
             jq('#tp1_'+r_tmp_name).val(msg);
             calc_product_final_price("<?php echo (int)$_GET['products_id'];?>");
           }
-        }); 
+        });
+        */
       }
 }
 

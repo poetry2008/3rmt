@@ -23,6 +23,7 @@ if ($_GET['action'] == 'calc_price') {
 
   $hm_option = new HM_Option();
   $price_array = array();
-  $price_array['price'] = $hm_option->calc_radio_price($_POST['it_id'], $_POST['rvalue']);
+  //$price_array['price'] = $hm_option->calc_radio_price($_POST['it_id'], $_POST['rvalue']);
+  $price_array['price'] = $hm_option->calc_radio_price($_GET['it_id'], $_GET['rvalue']);
   echo $price_array['price'];
 }
