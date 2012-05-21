@@ -2529,6 +2529,7 @@ if($action == "add_product")
     print "</select></td>\n";
     print "<input type='hidden' name='add_product_categories_id' value='$add_product_categories_id'>";
     print "<input type='hidden' name='step' value='3'>\n";
+    print "<input type='hidden' name='cstep' value='1'>\n";
     print "<td class='dataTableContent'>" . ADDPRODUCT_TEXT_STEP2 . "</td>\n";
     print "</form></tr>\n";
     print "<tr><td colspan='3'>&nbsp;</td></tr>\n";

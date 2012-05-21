@@ -17,6 +17,7 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
      $ac_pos = strpos($_SERVER['PHP_SELF'], 'admin/create_order.php');
      $ed_pos = strpos($_SERVER['PHP_SELF'], 'admin/edit_orders.php');
      $pro_pos = strpos($_SERVER['PHP_SELF'], 'product_info.php');
+     $back_pos = strpos($_SERVER['PHP_SELF'], 'admin/');
      
      if (strlen($this->front_title)) {
        if ($ptype) {
@@ -94,13 +95,31 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
            echo '<textarea class="option_input" name="'.$pre_item_str.'op_'.$this->formname.'" rows="'.$this->iline.'">'.$default_value.'</textarea>';    
          }
        }
+       
        if ($this->require == '1') {
-         if ($pro_pos !== false) {
-           echo '<font color="#ff0000" style="float:left;">&nbsp;'.OPTION_ITEM_TEXT_REQUIRE.'</font>'; 
+         if ($back_pos !== false) {
+           if (!isset($option_error_array[$pre_item_str.$this->formname])) {
+             if (isset($_POST['cstep']) || $_POST['action'] == 'action_process') {
+               if ($pro_pos !== false) {
+                 echo '<font color="#ff0000" style="float:left; line-height: 20px;">&nbsp;'.OPTION_ITEM_TEXT_REQUIRE.'</font>'; 
+               } else {
+                 echo '<font color="#ff0000" style="float:left">'.OPTION_ITEM_TEXT_REQUIRE.'</font>'; 
+               }
+             }
+           }
          } else {
-           echo '<font color="#ff0000" style="float:left;">'.OPTION_ITEM_TEXT_REQUIRE.'</font>'; 
+           if (!isset($option_error_array[$pre_item_str.$this->formname])) {
+             if ($_SERVER['REQUEST_METHOD'] != 'POST') {
+               if ($pro_pos !== false) {
+                 echo '<font color="#ff0000" style="float:left; line-height: 20px;">&nbsp;'.OPTION_ITEM_TEXT_REQUIRE.'</font>'; 
+               } else {
+                 echo '<font color="#ff0000" style="float:left">'.OPTION_ITEM_TEXT_REQUIRE.'</font>'; 
+               }
+             }
+           } 
          }
        }
+       
        if ($sp_pos !== false) {
          if ($this->s_price != '0') {
            echo '<span class="option_money">'.number_format($this->s_price).OPTION_ITEM_TEXTAREA_MONEY_UNIT.'</span>'; 
@@ -128,10 +147,26 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
        }
        
        if ($this->require == '1') {
-         if ($pro_pos !== false) {
-           echo '<font color="#ff0000" style="float:left; line-height: 20px;">&nbsp;'.OPTION_ITEM_TEXT_REQUIRE.'</font>'; 
+         if ($back_pos !== false) {
+           if (!isset($option_error_array[$pre_item_str.$this->formname])) {
+             if (isset($_POST['cstep']) || $_POST['action'] == 'action_process') {
+               if ($pro_pos !== false) {
+                 echo '<font color="#ff0000" style="float:left; line-height: 20px;">&nbsp;'.OPTION_ITEM_TEXT_REQUIRE.'</font>'; 
+               } else {
+                 echo '<font color="#ff0000" style="float:left">'.OPTION_ITEM_TEXT_REQUIRE.'</font>'; 
+               }
+             }
+           }
          } else {
-           echo '<font color="#ff0000" style="float:left">'.OPTION_ITEM_TEXT_REQUIRE.'</font>'; 
+           if (!isset($option_error_array[$pre_item_str.$this->formname])) {
+             if ($_SERVER['REQUEST_METHOD'] != 'POST') {
+               if ($pro_pos !== false) {
+                 echo '<font color="#ff0000" style="float:left; line-height: 20px;">&nbsp;'.OPTION_ITEM_TEXT_REQUIRE.'</font>'; 
+               } else {
+                 echo '<font color="#ff0000" style="float:left">'.OPTION_ITEM_TEXT_REQUIRE.'</font>'; 
+               }
+             }
+           } 
          }
        }
        
