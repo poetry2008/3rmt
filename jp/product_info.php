@@ -78,18 +78,6 @@ function select_item_radio(i_obj, t_str, o_str, p_str)
             jq('#tp1_'+r_tmp_name).val(msg);
             calc_product_final_price("<?php echo (int)$_GET['products_id'];?>");
         });
-        /* 
-        jq.ajax({
-          type:"POST",
-          data:"it_id="+item_id+"&rvalue="+t_str,
-          async:false,
-          url:'ajax_process.php?action=calc_radio_price',
-          success: function(msg) {
-            jq('#tp1_'+r_tmp_name).val(msg);
-            calc_product_final_price("<?php echo (int)$_GET['products_id'];?>");
-          }
-        });
-        */
       }
 }
 
