@@ -612,7 +612,7 @@ switch ($_GET['action']) {
                   $oID,
                   $check_status['payment_method'],
                   $otm,
-                  tep_torihiki($check_status['torihiki_date']),
+                  tep_torihiki($check_status['torihiki_date']).'～'.date('H時i分',strtotime($check_status['torihiki_date_end'])).'　（24時間表記）',
                   $os_result['orders_status_name'],
                   get_configuration_by_site_id('STORE_NAME', $site_id),
                   get_url_by_site_id($site_id),
@@ -639,7 +639,7 @@ switch ($_GET['action']) {
                   $oID,
                   $check_status['payment_method'],
                   $otm,
-                  tep_torihiki($check_status['torihiki_date']),
+                  tep_torihiki($check_status['torihiki_date']).'～'.date('H時i分',strtotime($check_status['torihiki_date_end'])).'　（24時間表記）',
                   $os_result['orders_status_name'],
                   get_configuration_by_site_id('STORE_NAME', $site_id),
                   get_url_by_site_id($site_id),
@@ -1996,7 +1996,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
             if($count_num > 0){
             ?>
             <tr>
-            <td class="main">住所情報</td>
+            <td class="main"><font color="blue"><b>住所情報</b></font></td>
             <td class="main">&nbsp;</td>
             </tr>
             <?php

@@ -53,6 +53,7 @@ define('EDIT_ORDERS_PRICE_UNIT', '円');
 define('EDIT_ORDERS_PRO_LIST_TITLE', '注文商品');
 define('TABLE_HEADING_NUM_PRO_NAME', '数量 / 商品名');
 define('TABLE_HEADING_CURRENICY', '税率');
+define('TABLE_HEADING_PRODUCTS_PRICE', '単価');
 define('TABLE_HEADING_PRICE_BEFORE', '価格(税別)');
 define('TABLE_HEADING_PRICE_AFTER', '価格(税込)');
 define('TABLE_HEADING_TOTAL_BEFORE', '合計(税別)');

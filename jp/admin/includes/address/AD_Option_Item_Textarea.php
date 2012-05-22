@@ -19,8 +19,11 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
       $style_color = isset($_POST['ad_'.$this->formname]) && $_POST['ad_'.$this->formname] != $this->comment ?'color:#000;':'color:#999;';
       $style_color .= $type_limit == 'num' ? 'width:30%;' : 'width:60%;';
       echo '<input type="hidden" name="'.$this->formname.'" value="'.$this->front_title.'">';
-      echo '<input type="text" name="ad_'.$this->formname.'" id="ad_'.$this->formname.'" value="'. (isset($_POST['ad_'.$this->formname])?$_POST['ad_'.$this->formname]:$this->comment) .'" style="'. $style_color .'" onfocus="this.style.color=\'#001\';if(this.value==\''. $this->comment.'\')this.value=\'\'" onblur="if(this.value==\'\'){this.value=\''. $this->comment .'\';this.style.color=\'#999\'}">';
-      echo '<span id="error_'.$this->formname.'" class="option_error"><font color="red">';
+      echo '<input type="text" name="ad_'.$this->formname.'" id="ad_'.$this->formname.'" value="'. (isset($_POST['ad_'.$this->formname])?$_POST['ad_'.$this->formname]:$this->comment) .'" style="'. $style_color .'" onfocus="this.style.color=\'#001\';if(this.value==\''. $this->comment.'\')this.value=\'\'" onblur="if(this.value==\'\'){this.value=\''. $this->comment .'\';this.style.color=\'#999\'}">'; 
+      if ($this->required == 'true') {
+        echo '<font color="red">&nbsp;*必須</font>&nbsp;&nbsp;';
+      } 
+      echo '<span id="error_'.$this->formname.'" class="option_error"><font color="red">'; 
      if (isset($option_error_array[$this->formname])) {
        echo $option_error_array[$this->formname]; 
      }
@@ -31,7 +34,10 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
     echo '<input type="hidden" name="'.$this->formname.'" value="'.$this->front_title.'">';
     echo '<textarea style="width:60%;" 
       name="ad_'.$this->formname.'" id="ad_'.$this->formname.'" rows="'. $options['rows'] .'" onfocus="this.style.color=\'#001\';if(this.value==\''. $this->comment.'\')this.value=\'\'" onblur="if(this.value==\'\'){this.value=\''. $this->comment .'\';this.style.color=\'#999\'}">'.(isset($_POST['ad_'.$this->formname])?$_POST['ad_'.$this->formname]:'').'</textarea>'; 
-     echo '<span id="error_'.$this->formname.'" class="option_error"><font color="red">';
+    if ($this->required == 'true') {
+      echo '<font color="red">&nbsp;*必須</font>&nbsp;&nbsp;';
+    }
+    echo '<span id="error_'.$this->formname.'" class="option_error"><font color="red">'; 
      if (isset($option_error_array[$this->formname])) {
        echo $option_error_array[$this->formname]; 
      }
@@ -57,11 +63,11 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
      $input_text_str = str_replace('　', '', $input_text_str); 
 
      
-     //if ($this->required == 'true') {
-       //if ($input_text_str == '' || $input_text_str == $this->comment) {
-         //$option_error_array[$this->formname] = ERROR_OPTION_ITEM_TEXT_NULL; 
-         //return true; 
-     //}
+     if ($this->required == 'true') {
+       if ($input_text_str == '' || $input_text_str == $this->comment) {
+         $option_error_array[$this->formname] = ADDRESS_ERROR_OPTION_ITEM_TEXT_NULL; 
+         return true; 
+       }
        
       $input_text_len = mb_strlen($input_text_str, 'UTF-8');
       if(trim($input_text_str) != '' && $input_text_str != $this->comment){
@@ -80,7 +86,7 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
          }
        }
       }
-     //}
+     }
     
      if ($input_text_str != '' && $input_text_str != $this->comment) {
        

@@ -487,21 +487,23 @@ if (!isset($guestchk)) $guestchk = NULL;
 <?php
     if ($error_pwd == true) {
       if ($entry_password_english_error == true) { 
-        echo tep_draw_password_field('password') . '&nbsp;<font color="red">' . ENTRY_PASSWORD_ENGLISH .'</font>';
+        echo tep_draw_password_field('password') . '<br><font color="red">' . ENTRY_PASSWORD_ENGLISH .'</font>';
       } else if($entry_password_error == true) {
-        echo tep_draw_password_field('password') . '&nbsp;' . ENTRY_PASSWORD_ERROR;
+        echo tep_draw_password_field('password') . '<br>' . ENTRY_PASSWORD_ERROR;
       } else if($entry_password_confirmation_error == true){
-        echo tep_draw_password_field('password') . '&nbsp;' . '<font color="red">ご入力されたパスワードが一致しておりません</font>';
+        echo tep_draw_password_field('password') . '<br>' . '<font color="red">ご入力されたパスワードが一致しておりません</font>';
+      } else if($entry_password_old_error == true){
+         echo tep_draw_password_field('password') . '<br>' . '<font color="red">安全のため、古いパスワードと違うパスワードを設定してください。</font>';
       } else {
         echo PASSWORD_HIDDEN . tep_draw_hidden_field('password') . tep_draw_hidden_field('confirmation');
       }
     } else {
-      echo tep_draw_password_field('password') . '&nbsp;' . ENTRY_PASSWORD_TEXT;
+      echo tep_draw_password_field('password') . '<br>' . ENTRY_PASSWORD_TEXT;
     }
 ?></td>
           </tr>
 <?php
-    if ( ($error_pwd == false) || ($entry_password_error == true) || ($entry_password_english_error == true) || ($entry_password_confirmation_error == true)) {
+    if ( ($error_pwd == false) || ($entry_password_error == true) || ($entry_password_english_error == true) || ($entry_password_confirmation_error == true) || ($entry_password_old_error == true)) {
 ?>
           <tr>
             <td class="main">&nbsp;<?php echo ENTRY_PASSWORD_CONFIRMATION; ?></td>

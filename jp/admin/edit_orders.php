@@ -1378,6 +1378,436 @@ $shipping_fee = $order->info['shipping_fee'] != $shipping_fee ? $shipping_fee : 
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
 <script language="javascript" src="includes/javascript/datePicker.js"></script>
 <script language="javascript">
+function check_hour(value){
+  var hour_1 = document.getElementById('hour_1');
+  var hour_1_value = hour_1.value;
+  var min_1 = document.getElementById('min_1');
+  var min_1_value = min_1.value;
+  var min = document.getElementById('min');
+  var min_value = min.value;
+  var min_end_1 = document.getElementById('min_end_1');
+  var min_end_1_value = min_end_1.value;
+  var min_end = document.getElementById('min_end');
+  var min_end_value = min_end.value;
+
+
+  if(parseInt(value) >= parseInt(hour_1.value)){ 
+    hour_1.options.length = 0;
+    value = parseInt(value);
+    for(h_i = value;h_i <= 23;h_i++){
+      h_i_str = h_i < 10 ? '0'+h_i : h_i;
+      hour_1.options[hour_1.options.length]=new Option(h_i_str,h_i_str,h_i_str==value); 
+    }
+    min_end.options.length = 0;
+    min_value = parseInt(min_value);
+    for(m_i = min_value;m_i <= 5;m_i++){
+      min_end.options[min_end.options.length]=new Option(m_i,m_i,m_i==min_value); 
+    }
+
+    min_end_1.options.length = 0;
+    min_1_value = parseInt(min_1_value);
+    for(m_i_1 = min_1_value;m_i_1 <= 9;m_i_1++){
+      min_end_1.options[min_end_1.options.length]=new Option(m_i_1,m_i_1,m_i_1==min_1_value); 
+    }
+  }else{
+
+    hour_1.options.length = 0;
+    value = parseInt(value);
+    for(h_i = value;h_i <= 23;h_i++){
+      h_i_str = h_i < 10 ? '0'+h_i : h_i;
+      hour_1.options[hour_1.options.length]=new Option(h_i_str,h_i_str,h_i_str==hour_1_value); 
+    }
+    min_end.options.length = 0;
+    min_value = parseInt(min_value);
+    for(m_i = 0;m_i <= 5;m_i++){
+      min_end.options[min_end.options.length]=new Option(m_i,m_i,m_i==min_end_value); 
+    }
+
+    min_end_1.options.length = 0;
+    min_1_value = parseInt(min_1_value);
+    for(m_i_1 = 0;m_i_1 <= 9;m_i_1++){
+      min_end_1.options[min_end_1.options.length]=new Option(m_i_1,m_i_1,m_i_1==min_end_1_value); 
+    } 
+  }
+}
+
+function check_min(value){
+  var min_1 = document.getElementById('min_1');
+  var min_1_value = min_1.value;
+  var min_end = document.getElementById('min_end');
+  var min_end_value = min_end.value;
+  var min_end_1 = document.getElementById('min_end_1');
+  var min_end_1_value = min_end_1.value;
+  var hour_1 = document.getElementById('hour_1');
+  var hour_1_value = hour_1.value;
+  var hour = document.getElementById('hour');
+  var hour_value = hour.value;
+   
+  if(parseInt(value) >= parseInt(min_end_value) && parseInt(hour.value) >= parseInt(hour_1.value)){ 
+    min_end.options.length = 0;
+    value = parseInt(value);
+    for(mi_i = value;mi_i <= 5;mi_i++){
+      min_end.options[min_end.options.length]=new Option(mi_i,mi_i,mi_i==value); 
+    }
+    min_end_1.options.length = 0;
+    for(mi_i_end = min_1_value;mi_i_end <= 9;mi_i_end++){
+      min_end_1.options[min_end_1.options.length]=new Option(mi_i_end,mi_i_end,mi_i_end==min_end_1_value); 
+    }
+  }else if(parseInt(value) <  parseInt(min_end_value) && parseInt(hour.value) >= parseInt(hour_1.value)){
+   min_end.options.length = 0;
+    value = parseInt(value);
+    for(mi_i = value;mi_i <= 5;mi_i++){
+      min_end.options[min_end.options.length]=new Option(mi_i,mi_i,mi_i==min_end_value); 
+    }
+    min_end_1.options.length = 0;
+    for(mi_i_end = 0;mi_i_end <= 9;mi_i_end++){
+      min_end_1.options[min_end_1.options.length]=new Option(mi_i_end,mi_i_end,mi_i_end==min_end_1_value); 
+    }
+  }
+}
+
+function check_min_1(value){
+  var min = document.getElementById('min');
+  var min_value = min.value;
+  var min_1 = document.getElementById('min_1');
+  var min_1_value = min_1.value;
+  var min_end = document.getElementById('min_end');
+  var min_end_value = min_end.value;
+  var min_end_1 = document.getElementById('min_end_1');
+  var min_end_1_value = min_end_1.value;
+  var hour_1 = document.getElementById('hour_1');
+  var hour_1_value = hour_1.value;
+  var hour = document.getElementById('hour');
+  var hour_value = hour.value;
+   
+  if(parseInt(value) >= parseInt(min_end_1_value) && parseInt(hour.value) >= parseInt(hour_1.value) && parseInt(min.value) >= parseInt(min_end.value)){ 
+    min_end_1.options.length = 0;
+    value = parseInt(value);
+    for(mi_i = value;mi_i <= 9;mi_i++){
+      min_end_1.options[min_end_1.options.length]=new Option(mi_i,mi_i,mi_i==value); 
+    }
+  }else if(parseInt(value) < parseInt(min_end_1_value) && parseInt(hour.value) >= parseInt(hour_1.value) && parseInt(min.value) >= parseInt(min_end.value)){
+   min_end_1.options.length = 0;
+    value = parseInt(value);
+    for(mi_i = value;mi_i <= 9;mi_i++){
+      min_end_1.options[min_end_1.options.length]=new Option(mi_i,mi_i,mi_i==min_end_1_value); 
+    }
+
+  }
+}
+
+function check_hour_1(value){
+  var min = document.getElementById('min');
+  var min_value = min.value;
+  var min_1 = document.getElementById('min_1');
+  var min_1_value = min_1.value;
+  var min_end = document.getElementById('min_end');
+  var min_end_value = min_end.value;
+  var min_end_1 = document.getElementById('min_end_1');
+  var min_end_1_value = min_end_1.value;
+  var hour = document.getElementById('hour');
+  var hour_value = hour.value;
+
+  
+  if(hour_value == value){ 
+    min_end.options.length = 0;
+    min_value = parseInt(min_value);
+    for(mi_i = min_value;mi_i <= 5;mi_i++){
+      min_end.options[min_end.options.length]=new Option(mi_i,mi_i,mi_i==min_1_value); 
+    }
+    if(min_end_value <= min_value ){
+      min_end_1.options.length = 0;
+      min_1_value = parseInt(min_1_value);
+      for(mi_i = min_1_value;mi_i <= 9;mi_i++){
+        min_end_1.options[min_end_1.options.length]=new Option(mi_i,mi_i,mi_i==min_end_1_value); 
+      }
+    }else{
+      min_end_1.options.length = 0;
+      min_1_value = parseInt(min_1_value);
+      for(mi_i = 0;mi_i <= 9;mi_i++){
+        min_end_1.options[min_end_1.options.length]=new Option(mi_i,mi_i,mi_i==min_end_1_value); 
+      } 
+    }
+  }else{
+
+    min_end.options.length = 0;
+    min_value = parseInt(min_value);
+    for(mi_i = 0;mi_i <= 5;mi_i++){
+      min_end.options[min_end.options.length]=new Option(mi_i,mi_i,mi_i==min_1_value); 
+    }
+    min_end_1.options.length = 0;
+    min_1_value = parseInt(min_1_value);
+    for(mi_i = 0;mi_i <= 9;mi_i++){
+      min_end_1.options[min_end_1.options.length]=new Option(mi_i,mi_i,mi_i==min_end_1_value); 
+    }
+    
+  }
+}
+
+function check_end_min(value){
+  var min = document.getElementById('min');
+  var min_value = min.value;
+  var min_1 = document.getElementById('min_1');
+  var min_1_value = min_1.value; 
+  var min_end_1 = document.getElementById('min_end_1');
+  var min_end_1_value = min_end_1.value;
+  var hour = document.getElementById('hour');
+  var hour_value = hour.value;
+  var hour_1 = document.getElementById('hour_1');
+  var hour_1_value = hour_1.value;
+  
+  if(parseInt(value) == parseInt(min_value) && parseInt(hour.value) == parseInt(hour_1.value)){ 
+    min_end_1.options.length = 0;
+    min_1_value = parseInt(min_1_value);
+    for(mi_i = min_1_value;mi_i <= 9;mi_i++){
+      min_end_1.options[min_end_1.options.length]=new Option(mi_i,mi_i,mi_i==min_end_1_value); 
+    }
+  }else{
+    min_end_1.options.length = 0;
+    for(mi_i = 0;mi_i <= 9;mi_i++){
+      min_end_1.options[min_end_1.options.length]=new Option(mi_i,mi_i,mi_i==min_end_1_value); 
+    }    
+  }
+}
+
+
+
+function address_clear_error(){
+  
+  var list_error = new Array();
+  <?php 
+    $error_i = 0; 
+    $address_error_query = tep_db_query("select name_flag from ". TABLE_ADDRESS ." where status='0'");
+    while($address_error_array = tep_db_fetch_array($address_error_query)){
+     
+      echo 'list_error['. $error_i .'] = "'. $address_error_array['name_flag'] .'";';
+      $error_i++;
+    }
+    tep_db_free_result($address_error_query);
+   ?>
+   
+    for(x in list_error){
+      
+      $("#error_"+list_error[x]).html("");
+    }
+
+}
+function in_array(value,arr){
+
+  for(vx in arr){
+    if(value == arr[vx]){
+
+      return true;
+    } 
+  }
+  return false;
+}
+// end in_array
+var first_num = 0;
+function address_option_show(action){
+  switch(action){
+
+  case 'new' :
+    arr_new = new Array();
+    arr_color = new Array();
+    $("#address_list_id").hide();
+    
+<?php 
+  $address_new_query = tep_db_query("select * from ". TABLE_ADDRESS ." where type!='text' and status='0' order by sort");
+  while($address_new_array = tep_db_fetch_array($address_new_query)){
+    $address_new_arr = unserialize($address_new_array['type_comment']);
+    if($address_new_array['type'] == 'textarea'){
+      if($address_new_arr['set_value'] != ''){
+        echo 'arr_new["'. $address_new_array['name_flag'] .'"] = "'. $address_new_arr['set_value'] .'";';
+        echo 'arr_color["'. $address_new_array['name_flag'] .'"] = "#000";';
+      }else{
+        echo 'arr_new["'. $address_new_array['name_flag'] .'"] = "'. $address_new_array['comment'] .'";';
+        echo 'arr_color["'. $address_new_array['name_flag'] .'"] = "#999";';
+      }
+    }elseif($address_new_array['type'] == 'option' && $address_new_arr['select_value'] !=''){
+      echo 'arr_new["'. $address_new_array['name_flag'] .'"] = "'. $address_new_arr['select_value'] .'";';
+      echo 'arr_color["'. $address_new_array['name_flag'] .'"] = "#000";';
+    }else{
+
+      echo 'arr_new["'. $address_new_array['name_flag'] .'"] = "";';
+      echo 'arr_color["'. $address_new_array['name_flag'] .'"] = "#000";';
+
+
+    }
+  }
+  tep_db_free_result($address_new_query);
+?>
+  for(x in arr_new){
+     
+      var list_options = document.getElementById("ad_"+x);
+      list_options.value = arr_new[x];
+      list_options.style.color = arr_color[x];
+      $("#error_"+x).html('');
+    }
+    break;
+  case 'old' :
+    $("#address_list_id").show();
+    var arr_old  = new Array();
+    var arr_name = new Array();
+<?php
+
+  //根据后台的设置来显示相应的地址列表
+  $address_list_arr = array();
+  $address_i = 0;
+  $address_list_query = tep_db_query("select name_flag from ". TABLE_ADDRESS ." where status='0' and show_title='1'");
+  while($address_list_array = tep_db_fetch_array($address_list_query)){
+
+    $address_list_arr[] = $address_list_array['name_flag'];
+    echo 'arr_name['. $address_i .'] = "'. $address_list_array['name_flag'] .'";';
+    $address_i++;
+  }
+  tep_db_free_result($address_list_query);
+  $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id=". $order->customer['id'] ." group by orders_id order by orders_id desc");
+  
+   
+  $address_num = 0;
+  $json_str_array = array();
+  $json_old_array = array();
+
+  while($address_orders_group_array = tep_db_fetch_array($address_orders_group_query)){
+  
+  $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where orders_id='". $address_orders_group_array['orders_id'] ."' order by id asc");
+
+   
+  $json_str_list = '';
+  unset($json_old_array);
+  while($address_orders_array = tep_db_fetch_array($address_orders_query)){
+    
+    if(in_array($address_orders_array['name'],$address_list_arr)){
+
+      $json_str_list .= $address_orders_array['value'];
+    }
+    
+    $json_old_array[$address_orders_array['name']] = $address_orders_array['value'];
+        
+  }
+
+  
+  //这里判断，如果有重复的记录只显示一个
+  if(!in_array($json_str_list,$json_str_array)){
+      
+      $json_str_array[$address_num] = $json_str_list; 
+      echo 'arr_old['. $address_num .'] = new Array();';
+      foreach($json_old_array as $key=>$value){
+        echo 'arr_old['. $address_num .']["'. $key .'"] = "'. $value .'";';
+      }
+      $address_num++;
+  }
+ 
+  tep_db_free_result($address_orders_query); 
+  }
+
+  echo "\n".'var address_str = "";'."\n";
+  $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."'");
+  while($address_orders_array = tep_db_fetch_array($address_orders_query)){
+  
+    if(in_array($address_orders_array['name'],$address_list_arr)){
+
+      echo "\n".'address_str += "'. $address_orders_array['value'] .'";'."\n";
+    }
+  }
+  tep_db_free_result($address_orders_query);
+?>
+  var address_show_list = document.getElementById("address_show_list");
+
+  address_show_list.options.length = 0;
+
+  len = arr_old.length;
+  j_num = 0;
+  for(i = 0;i < len;i++){
+    arr_str = '';
+    for(x in arr_old[i]){
+        if(in_array(x,arr_name)){
+          arr_str += arr_old[i][x];
+        }
+        //$("#error_"+x).html('');
+    }
+    if(arr_str != ''){
+      ++j_num;
+      if(j_num == 1){first_num = i;}
+
+      if(arr_str == address_str){
+        address_show_list.options[address_show_list.options.length]=new Option(arr_str,i,true);
+      }else{
+        address_show_list.options[address_show_list.options.length]=new Option(arr_str,i);
+      }
+    }
+
+  }
+    //address_list();  
+    break;
+  }
+}
+
+function address_option_list(value){
+  var arr_list = new Array();
+<?php
+  //根据后台的设置来显示相应的地址列表
+  $address_list_arr = array();
+  $address_list_query = tep_db_query("select name_flag from ". TABLE_ADDRESS ." where status='0' and show_title='1'");
+  while($address_list_array = tep_db_fetch_array($address_list_query)){
+
+    $address_list_arr[] = $address_list_array['name_flag'];
+  }
+  tep_db_free_result($address_list_query);
+  $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id=". $order->customer['id'] ." group by orders_id order by orders_id desc");
+  
+   
+  $address_num = 0;
+  $json_str_list = '';
+  $json_str_array = array();
+  
+  while($address_orders_group_array = tep_db_fetch_array($address_orders_group_query)){
+  
+  $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where orders_id='". $address_orders_group_array['orders_id'] ."'");
+  
+  while($address_orders_array = tep_db_fetch_array($address_orders_query)){
+    
+    if(in_array($address_orders_array['name'],$address_list_arr)){
+
+      $json_str_list .= $address_orders_array['value'];
+    }
+    
+    $json_old_array[$address_orders_array['name']] = $address_orders_array['value'];
+        
+  }
+
+  
+  //这里判断，如果有重复的记录只显示一个
+  if(!in_array($json_str_list,$json_str_array)){
+      
+      $json_str_array[] = $json_str_list; 
+      echo 'arr_list['. $address_num .'] = new Array();';
+      foreach($json_old_array as $key=>$value){
+        echo 'arr_list['. $address_num .']["'. $key .'"] = "'. $value .'";';
+      }
+      $address_num++;
+    }
+    $json_str_list = '';
+ 
+  tep_db_free_result($address_orders_query); 
+  }
+?>
+  ii = 0;
+  for(x in arr_list[value]){
+    var list_option = document.getElementById("ad_"+x);
+    list_option.style.color = '#000';
+    list_option.value = arr_list[value][x];
+    if('<?php echo $parent_flag_name;?>' == x){
+
+      check($("#ad_"+x).val());
+    }
+    $("#error_"+x).html('');
+    ii++; 
+  }
+
+}
+
 function check(value){
   var arr  = new Array();
   var arr_set = new Array();
@@ -1522,6 +1952,7 @@ function address_show(){
   if(style == 'display: none;' || style == 'display: none'){
     $("#address_show_id").show(); 
     $("#address_font").html("住所情報▲");
+ 
   }else{
 
     $("#address_show_id").hide();
@@ -1554,10 +1985,32 @@ function address_list(){
 }
 
 <?php
-  if(isset($_GET['action']) && $_GET['action'] == 'edit'){
+  if(isset($_GET['action']) && $_GET['action'] == 'edit' && $shipping_weight_total > 0){
 ?>
 $(document).ready(function(){            
   address_list();
+  address_option_show('old');
+  address_clear_error();
+});
+<?php
+  }
+?>
+
+<?php
+  if(isset($_POST['address_option']) && $_POST['address_option'] == 'new'){
+?>
+$(document).ready(function(){            
+  $("#address_list_id").hide();
+});
+<?php
+  }
+?>
+
+<?php
+  if(isset($_POST['address_option']) && $_POST['address_option'] == 'old'){
+?>
+$(document).ready(function(){            
+  address_option_show('old');
 });
 <?php
   }
@@ -1684,7 +2137,7 @@ if (($action == 'edit') && ($order_exists == true)) {
       // 生成时间下拉框
       $date_start_array[1] = str_replace('&nbsp;','',$date_start_array[1]);
       $start_temp = explode(":",$date_start_array[1]);
-      $hour_str = '&nbsp;<select name="start_hour">';
+      $hour_str = '&nbsp;<select name="start_hour" id="hour" onchange="check_hour(this.value);">';
       for($h = 0;$h <= 23;$h++){
         
         $h_str = $h < 10 ? '0'.$h : $h; 
@@ -1694,7 +2147,7 @@ if (($action == 'edit') && ($order_exists == true)) {
       }
       $hour_str .= '</select>&nbsp;時';
       echo $hour_str;
-      $min_str_1 = '&nbsp;<select name="start_min_1">';
+      $min_str_1 = '&nbsp;<select name="start_min_1" id="min" onchange="check_min(this.value);">';
       for($m_1 = 0;$m_1 <= 5;$m_1++){
         
         $selected = substr((int)$start_temp[1],0,1) == $m_1 ? ' selected' : '';
@@ -1703,7 +2156,7 @@ if (($action == 'edit') && ($order_exists == true)) {
       }
       $min_str_1 .= '</select>';
       echo $min_str_1;
-      $min_str_2 = '<select name="start_min_2">';
+      $min_str_2 = '<select name="start_min_2" id="min_1" onchange="check_min_1(this.value);">';
       for($m_2 = 0;$m_2 <= 9;$m_2++){
         
         $selected = substr((int)$start_temp[1],1,1) == $m_2 ? ' selected' : '';
@@ -1714,7 +2167,7 @@ if (($action == 'edit') && ($order_exists == true)) {
       echo $min_str_2;
       $date_array[1] = str_replace('&nbsp;','',$date_array[1]);
       $end_temp = explode(":",$date_array[1]);
-      $hour_str_1 = '&nbsp;<select name="end_hour">';
+      $hour_str_1 = '&nbsp;<select name="end_hour" id="hour_1" onchange="check_hour_1(this.value);">';
       for($h_1 = 0;$h_1 <= 23;$h_1++){
         
         $h_str_1 = $h_1 < 10 ? '0'.$h_1 : $h_1; 
@@ -1724,7 +2177,7 @@ if (($action == 'edit') && ($order_exists == true)) {
       }
       $hour_str_1 .= '</select>&nbsp;時';
       echo $hour_str_1;
-      $min_str_1_end = '&nbsp;<select name="end_min_1">';
+      $min_str_1_end = '&nbsp;<select name="end_min_1" id="min_end" onchange="check_end_min(this.value);">';
       for($m_1_end = 0;$m_1_end <= 5;$m_1_end++){
         
         $selected = substr((int)$end_temp[1],0,1) == $m_1_end ? ' selected' : '';
@@ -1733,7 +2186,7 @@ if (($action == 'edit') && ($order_exists == true)) {
       }
       $min_str_1_end .= '</select>';
       echo $min_str_1_end;
-      $min_str_2_end = '<select name="end_min_2">';
+      $min_str_2_end = '<select name="end_min_2" id="min_end_1">';
       for($m_2_end = 0;$m_2_end <= 9;$m_2_end++){
         
         $selected = substr((int)$end_temp[1],1,1) == $m_2_end ? ' selected' : '';
@@ -1761,9 +2214,26 @@ if (($action == 'edit') && ($order_exists == true)) {
     </tr>
     <tr>
     <?php
-      $address_style = isset($address_style) && $address_style != '' ? $address_style : 'display: none;'; 
+        $address_style = isset($address_style) && $address_style != '' ? $address_style : 'display: none;'; 
+        $old_checked = !isset($_POST['address_option']) || $_POST['address_option'] == 'old' ? 'checked' : '';
+        $new_checked = isset($_POST['address_option']) && $_POST['address_option'] == 'new' ? 'checked' : '';
     ?>
-      <td colspan="2"><table width="100%" border="0" cellpadding="2" cellspacing="0" id="address_show_id" style="<?php echo $address_style;?>"><br> 
+      <td colspan="2"><table width="100%" border="0" cellpadding="2" cellspacing="0" id="address_show_id" style="<?php echo $address_style;?>">
+      <tr>
+        <td class="main" width="30%">
+        <input type="radio" name="address_option" value="old" onClick="address_option_show('old');address_list();address_clear_error();" <?php echo $old_checked;?>><?php echo TABLE_OPTION_OLD; ?>
+        <input type="radio" name="address_option" value="new" onClick="address_option_show('new');" <?php echo $new_checked;?>><?php echo TABLE_OPTION_NEW; ?> 
+        </td>
+        <td class="main" width="70%"></td>
+      </tr>
+      <tr id="address_list_id">
+<td class="main" width="30%"><?php echo TABLE_ADDRESS_SHOW; ?></td>
+<td class="main" width="70%">
+<select name="address_show_list" id="address_show_list" onChange="address_option_list(this.value);">
+<option value="">--</option>
+</select>
+</td></tr>
+
     <?php
       $ad_option->render('');
     ?>
@@ -2259,7 +2729,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     <tr class="dataTableHeadingRow">
     <td class="dataTableHeadingContent" align="left"><?php echo TABLE_HEADING_STATUS; ?></td>
     <td class="main" width="10">&nbsp;</td>
-    <td class="dataTableHeadingContent" align="left"><?php echo TABLE_HEADING_COMMENTS; ?></td>
+    <td class="dataTableHeadingContent" align="left"><?php echo TABLE_HEADING_EMAIL_COMMENTS; ?></td>
     </tr>
     <tr>
     <td valign="top">
