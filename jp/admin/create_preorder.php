@@ -48,7 +48,7 @@
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
 <script language="javascript" src="includes/javascript/jquery.form.js"></script>
-<script language="javascript" src="includes/javascript/datePicker.js"></script>
+<script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
 <script language="javascript" src="includes/javascript/jquery.autocomplete.js"></script>
 <script type="text/javascript">
 $(function() {
@@ -81,15 +81,55 @@ function hidden_payment()
   $(".rowHide").hide(); 
   $(".rowHide_"+CI).show();
 }
-$(function() {
-$.datePicker.setDateFormat('ymd', '-');
-$('#predate').datePicker();
-});
+
+function open_calendar()
+{
+  var is_open = $('#toggle_open').val(); 
+  if (is_open == 0) {
+    browser_str = navigator.userAgent.toLowerCase(); 
+    if (browser_str.indexOf("msie 9.0") > 0) {
+      $('#new_yui3').css('margin-left', '1px'); 
+    }
+    $('#toggle_open').val('1'); 
+    YUI().use('calendar', 'datatype-date',  function(Y) {
+        var calendar = new Y.Calendar({
+            contentBox: "#mycalendar",
+            width:'170px',
+
+        }).render();
+      var dtdate = Y.DataType.Date;
+      calendar.on("selectionChange", function (ev) {
+        var newDate = ev.newSelection[0];
+        $("#predate").val(dtdate.format(newDate)); 
+        $('#toggle_open').val('0');
+        $('#toggle_open').next().html('<div id="mycalendar"></div>');
+      });
+    });
+  }
+}
+
 </script>
 <style type="text/css">
-a.date-picker{
-display:block;
-float:none;
+
+.yui3-skin-sam input {
+  float:left;
+}
+a.dpicker {
+	width: 16px;
+	height: 16px;
+	border: none;
+	color: #fff;
+	padding: 0;
+	margin: 0;
+	overflow: hidden;
+        display:block;	
+        cursor: pointer;
+	background: url(./includes/calendar.png) no-repeat; 
+	float:left;
+}
+#new_yui3{ 
+	position:absolute;
+	left:216px\9;
 }
 .popup-calendar {
 top:20px;
@@ -320,7 +360,15 @@ float:left;
     }
   }
   $selection = $cpayment->admin_selection();
-
+  
+  $default_payment = '';
+  if (isset($_GET['Customer_mail']) && isset($_GET['site_id'])) {
+    $last_order_raw = tep_db_query("select payment_method from ".TABLE_PREORDERS." where customers_id = '".$customer."' and site_id = '".$_GET['site_id']."' order by orders_id desc limit 1");  
+     $last_order = tep_db_fetch_array($last_order_raw);
+     if ($last_order) {
+       $default_payment = payment::changeRomaji($last_order['payment_method'], PAYMENT_RETURN_TYPE_CODE); 
+     }
+  }
 ?>
   <tr>
     <td class="formAreaTitle"><br><?php echo CREATE_ORDER_PAYMENT_TITLE;?></td>
@@ -333,14 +381,14 @@ float:left;
               <tr>
                 <td class="main">&nbsp;<?php echo CREATE_ORDER_PAYMENT_TITLE;?>:</td>
                 <td class="main">
-                <?php echo tep_draw_pull_down_menu('payment_method', $payment_list, '', 'onchange="hidden_payment()"');?>  
+                <?php echo tep_draw_pull_down_menu('payment_method', $payment_list, $default_payment, 'onchange="hidden_payment()"');?>  
                 </td>
               </tr>
               <?php
               foreach ($selection as $skey => $singleton) { 
               foreach ($singleton['fields'] as $fkey => $field) { 
               ?>
-              <tr class="rowHide rowHide_<?php echo $singleton['id'];?>">
+              <tr class="rowHide rowHide_<?php echo $singleton['id'];?>" <?php echo ($default_payment == $singleton['id'])?'style="display: table-row;"':'';?>>
                 <td class="main">
                 &nbsp;<?php echo $field['title'];?> 
                 </td>
@@ -371,7 +419,14 @@ float:left;
             &nbsp;<?php echo CREATE_PREORDER_PREDATE;?>: 
             </td>
             <td class="main">
+            <div class="yui3-skin-sam yui3-g">
             <?php echo tep_draw_input_field('predate', '', 'id="predate"');?> 
+            <a href="javascript:void(0);" onclick="open_calendar();" class="dpicker"></a>
+            <input type="hidden" name="toggle_open" value="0" id="toggle_open">
+            <div class="yui3-u" id="new_yui3">
+            <div id="mycalendar"></div> 
+            </div>
+            </div>
             </td>
           </tr>
         </table>

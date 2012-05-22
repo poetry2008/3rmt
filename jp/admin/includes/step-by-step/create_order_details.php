@@ -675,6 +675,7 @@ if($index > 0){
           print "</select>";
           print "<input type='hidden' name='add_product_categories_id' value='$add_product_categories_id'>";
           print "<input type='hidden' name='step' value='3'>\n";
+          print "<input type='hidden' name='cstep' value='1'>\n";
           print "</td>";
           print "</tr>";
           print "</table>";
@@ -722,7 +723,7 @@ if($index > 0){
             print "</tr>\n";
             print "<tr>"; 
             print "<td colspan='3' class='dataTableContent' align='right'>"; 
-            print "<div style='margin-right:40%;'><input type='button' value='" .  ADDPRODUCT_TEXT_OPTIONS_CONFIRM . "' onclick='document.forms.coform.submit();'></div>";
+            print "<div style='margin-right:30%;'><input type='button' value='" .  ADDPRODUCT_TEXT_OPTIONS_CONFIRM . "' onclick='document.forms.coform.submit();'></div>";
             print "</td>"; 
             print "</tr>"; 
           }

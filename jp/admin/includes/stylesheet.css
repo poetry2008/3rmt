@@ -1229,18 +1229,42 @@ a.s_column_bar {
 }
 .option_info_text input, .option_info_text textarea{
 	float:left;
+	width:30%;
 }
 .option_money {
     float: right;
     line-height: 18px;
 	text-align:right;
 }
+.option_product_default_radio{
+	clear:both;
+	overflow:hidden;
+	margin-bottom:5px;
+}
+
+.option_product_single_radio{
+	padding-bottom:5px;
+	float:left;
+}
+.option_product_single_radio div{
+	width:50px;
+}
+.option_product_single_radio span{
+	margin-right:20px;
+}
+.option_product_radio_img_list{
+	clear:both;
+	*padding-top:3px;
+	width:100%;
+	overflow:hidden;
+}
+
 .option_info_text {
     margin-bottom: 5px;
     overflow: hidden;
     width: 100%;
 }
-.option_table{ width:50%;}
+.option_table{ width:100%;}
 .pro_option table{
 	width:100%;
 }
@@ -1270,3 +1294,4 @@ a.s_column_bar {
 	text-align:right;
 }
 /*end-notice*/
+

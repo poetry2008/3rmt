@@ -80,20 +80,11 @@ if (file_exists(DIR_WS_LANGUAGES . $language . '/user_certify.php')) {
 
 $msg = (isset($erf) && $erf ? '<div align="center"><font color="#FF0000">'.TEXT_ERRINFO_LOGIN.'</font></div>' : '');
 
-if(isset($_SESSION['err_ip']) && $_SESSION['err_ip'] == true){
-  $msg =  '<div align="center"><font color="#FF0000">'.TEXT_ERRINFO_LOGIN.'</font></div>';
-  unset($_SESSION['err_ip']);
-}
-
 if (isset($erf)) {
  
   if ($erf == 2) {
     $msg = '<div align="center"><font color="#FF0000">'.TEXT_ERRINFO_IP.'</font></div>';
-  }
-
-  if ($erf == 3) {
-    $msg = '';
-  }
+  } 
 }
 echo '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">' . "\n";
 echo '<html ' . HTML_PARAMS . '>' . "\n";

@@ -1376,7 +1376,7 @@ $shipping_fee = $order->info['shipping_fee'] != $shipping_fee ? $shipping_fee : 
 <script language="javascript" src="includes/javascript/all_order.js"></script>
 <script language="javascript" src="includes/javascript/all_orders.js"></script>
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
-<script language="javascript" src="includes/javascript/datePicker.js"></script>
+<script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
 <script language="javascript">
 function check_hour(value){
   var hour_1 = document.getElementById('hour_1');
@@ -2016,12 +2016,38 @@ $(document).ready(function(){
   }
 ?>
 $(document).ready(function(){
-  $.datePicker.setDateFormat('ymd', '-');
-  $('#date_orders').datePicker();
+  //$.datePicker.setDateFormat('ymd', '-');
+  //$('#date_orders').datePicker();
   $("#ad_<?php echo $parent_flag_name;?>").change(function(){
     check($(this).val());
   });
 });
+
+function open_calendar()
+{
+  var is_open = $('#toggle_open').val(); 
+  if (is_open == 0) {
+    browser_str = navigator.userAgent.toLowerCase(); 
+    if (browser_str.indexOf("msie 9.0") > 0) {
+      $('#new_yui3').css('margin-left', '-90px'); 
+    }
+    $('#toggle_open').val('1'); 
+    YUI().use('calendar', 'datatype-date',  function(Y) {
+        var calendar = new Y.Calendar({
+            contentBox: "#mycalendar",
+            width:'170px',
+
+        }).render();
+      var dtdate = Y.DataType.Date;
+      calendar.on("selectionChange", function (ev) {
+        var newDate = ev.newSelection[0];
+        $("#date_orders").val(dtdate.format(newDate)); 
+        $('#toggle_open').val('0');
+        $('#toggle_open').next().html('<div id="mycalendar"></div>');
+      });
+    });
+  }
+}
 </script>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF">
@@ -2041,6 +2067,26 @@ $(document).ready(function(){
       font-weight: bold;
 color: #FF6600;
     }
+.yui3-skin-sam input {
+  float:left;
+}
+a.dpicker {
+	width: 16px;
+	height: 16px;
+	border: none;
+	color: #fff;
+	padding: 0;
+	margin: 0;
+	overflow: hidden;
+        display:block;	
+        cursor: pointer;
+	background: url(./includes/calendar.png) no-repeat; 
+	float:left;
+}
+#new_yui3{
+	position:absolute;
+	left:580px\9;
+}
 </style>
 <!-- header_eof //-->
 <!-- body //-->
@@ -2131,8 +2177,15 @@ if (($action == 'edit') && ($order_exists == true)) {
       $date_array = explode('～',$order->tori['date']);
       $date_start_array = explode(' ',$date_array[0]);
     ?>
+    <div class="yui3-skin-sam yui3-g">
     <input id="date_orders" name='date_orders' size='15' value='<?php echo str_replace('&nbsp;','',$date_start_array[0]); ?>'>
+    <a href="javascript:void(0);" onclick="open_calendar();" class="dpicker"></a> 
     <input type="hidden" id="date_order" name="update_tori_torihiki_date" value="<?php echo str_replace('&nbsp;','',$date_start_array[0]); ?>">
+    <input type="hidden" name="toggle_open" value="0" id="toggle_open"> 
+    <div class="yui3-u" id="new_yui3">
+    <div id="mycalendar"></div> 
+    </div>
+    </div>
     <?php
       // 生成时间下拉框
       $date_start_array[1] = str_replace('&nbsp;','',$date_start_array[1]);
@@ -2909,7 +2962,7 @@ if($action == "add_product")
   //   Add Products Steps
   // ############################################################################
 
-  print "<tr><td><table border='0' width='60%'>\n";
+  print "<tr><td><table border='0' width='100%'>\n";
 
   // Set Defaults
   if(!IsSet($add_product_categories_id))
@@ -2946,6 +2999,7 @@ if($action == "add_product")
     print "</select></td>\n";
     print "<input type='hidden' name='add_product_categories_id' value='$add_product_categories_id'>";
     print "<input type='hidden' name='step' value='3'>\n";
+    print "<input type='hidden' name='cstep' value='1'>\n";
     print "<td class='dataTableContent'>" . ADDPRODUCT_TEXT_STEP2 . "</td>\n";
     print "</form></tr>\n";
     print "<tr><td colspan='3'>&nbsp;</td></tr>\n";

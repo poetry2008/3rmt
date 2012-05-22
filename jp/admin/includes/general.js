@@ -1635,7 +1635,7 @@ function work_del(value){
 
 function select_item_radio(i_obj, t_str, o_str, p_str)
 {
-      $(i_obj).parent().parent().parent().find('a').each(function() {
+      $(i_obj).parent().parent().parent().parent().find('a').each(function() {
         if ($(this).parent()[0].className == 'option_show_border') {
           $(this).parent()[0].className = 'option_hide_border';
         } 

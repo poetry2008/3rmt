@@ -36,6 +36,7 @@ define('TEXT_RETURNING_CUSTOMER', 'メールアドレスとパスワードを入
 define('TEXT_PASSWORD_FORGOTTEN', 'パスワードをお忘れの場合はこちらをクリック!');
 
 define('TEXT_LOGIN_ERROR', '<font color="#ff0000"><b>エラー:</b>"メールアドレス" または "パスワード" が一致しませんでした。</font>');
+define('TEXT_LOGIN_IP_ERROR','<font color="#ff0000">一定の回数以上ログインに失敗されますと、セキュリティ上の配慮から、しばらくログインができなくなります。</font><br>お急ぎの場合は、<a href="'. tep_href_link(FILENAME_CONTACT_US, '', 'SSL') .'">サポートセンター</a>へご連絡ください。また、「<a href="'. tep_href_link(FILENAME_PASSWORD_FORGOTTEN, '', 'SSL') .'">パスワード再発行手続き</a>」ページよりお手続きいただくことでロックが自動的に解除されます。');
 define('TEXT_VISITORS_CART', '<font color="#ff0000"><b>ご注意:</b></font> ログインすると、[ショッピングカート] の商品は [メンバーズ・ショッピングカート] へ自動的に移動します。 <a href="javascript:session_win();"> [詳細情報]</a>');
 
 if(MODULE_ORDER_TOTAL_POINT_STATUS == "true"){

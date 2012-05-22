@@ -778,7 +778,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
       //tep_mail(get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS', $order->info['site_id']), FORDERS_MAIL_UPDATE_CONTENT_MAIL.'【' . get_configuration_by_site_id('STORE_NAME', $order->info['site_id']) . '】', $email, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);
       $customer_notified = '1';
     }
-    tep_db_query("insert into " . TABLE_PREORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . tep_db_input($customer_notified) . "', '" . mysql_real_escape_string($notify_comments) . "')");
+    tep_db_query("insert into " . TABLE_PREORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments) values ('" .  tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" .  tep_db_input($customer_notified) . "', '" .  mysql_real_escape_string(tep_db_prepare_input($_POST['comments_text'])) . "')");
     $order_updated_2 = true;
   }
 
@@ -1013,7 +1013,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
 <script language="javascript" src="includes/javascript/jquery.form.js"></script>
-<script language="javascript" src="includes/javascript/datePicker.js"></script>
+<script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
 <script language="javascript">
 $(document).ready(function() {
    var se_status = document.getElementById('status').value;  
@@ -1172,19 +1172,84 @@ function recalc_preorder_price(oid, opd, o_str, op_str)
   });
 }
 
+function open_calendar()
+{
+  var is_open = $('#toggle_open').val(); 
+  if (is_open == 0) {
+    browser_str = navigator.userAgent.toLowerCase(); 
+    if (browser_str.indexOf("msie 9.0") > 0) {
+      $('#new_yui3').css('margin-left', '-90px'); 
+    }
+    $('#toggle_open').val('1'); 
+    YUI().use('calendar', 'datatype-date',  function(Y) {
+        var calendar = new Y.Calendar({
+            contentBox: "#mycalendar",
+            width:'170px',
+
+        }).render();
+      var dtdate = Y.DataType.Date;
+      calendar.on("selectionChange", function (ev) {
+        var newDate = ev.newSelection[0];
+        $("#date_predate").val(dtdate.format(newDate)); 
+        $('#toggle_open').val('0');
+        $('#toggle_open').next().html('<div id="mycalendar"></div>');
+      });
+    });
+  }
+}
+
+function open_ensure_calendar()
+{
+  var is_open = $('#toggle_ensure').val(); 
+  if (is_open == 0) {
+    browser_str = navigator.userAgent.toLowerCase(); 
+    if (browser_str.indexOf("msie 9.0") > 0) {
+      $('#ensure_yui3').css('margin-left', '-90px'); 
+    }
+    $('#toggle_ensure').val('1'); 
+    YUI().use('calendar', 'datatype-date',  function(Y) {
+        var calendar = new Y.Calendar({
+            contentBox: "#ecalendar",
+            width:'170px',
+
+        }).render();
+      var dtdate = Y.DataType.Date;
+      calendar.on("selectionChange", function (ev) {
+        var newDate = ev.newSelection[0];
+        $("#date_ensure_deadline").val(dtdate.format(newDate)); 
+        $('#toggle_ensure').val('0');
+        $('#toggle_ensure').next().html('<div id="ecalendar"></div>');
+      });
+    });
+  }
+}
 </script>
 <script language="javascript">
-$(function() {
- $.datePicker.setDateFormat('ymd', '-');
- $('#date_predate').datePicker();
- $('#date_ensure_deadline').datePicker();
-});
+//$(function() {
+ //$.datePicker.setDateFormat('ymd', '-');
+ //$('#date_predate').datePicker();
+ //$('#date_ensure_deadline').datePicker();
+//});
 </script>
 <style type="text/css">
-a.date-picker{
-display:block;
-float:none;
+.yui3-skin-sam input {
+  float:left;
 }
+a.dpicker {
+	width: 16px;
+	height: 16px;
+	border: none;
+	color: #fff;
+	padding: 0;
+	margin: 0;
+	overflow: hidden;
+        display:block;	
+        cursor: pointer;
+	background: url(./includes/calendar.png) no-repeat; 
+	float:left;
+} 
+
+
 .popup-calendar {
 top:20px;
 }
@@ -1265,6 +1330,10 @@ overflow:hidden;
 }
 .popup-calendar-wrapper{
 float:left;
+}
+#new_yui3, #ensure_yui3{
+	position:absolute;
+	left:628px\9;
 }
 </style>
 </head>
@@ -1397,8 +1466,14 @@ float:left;
                   <?php
                     $predate_arr = explode(' ', $order->info['predate']); 
                   ?>
-                  <input id="date_predate" name='update_predate' size='25' value='<?php echo $predate_arr[0]; ?>'>
-                  <br> 
+                  <div class="yui3-skin-sam yui3-g" style="overflow:hidden">
+                    <input id="date_predate" name='update_predate' size='25' value='<?php echo $predate_arr[0]; ?>'>
+                    <a href="javascript:void(0);" onclick="open_calendar();" class="dpicker"></a> 
+                    <input type="hidden" name="toggle_open" value="0" id="toggle_open"> 
+                    <div class="yui3-u" id="new_yui3">
+                    <div id="mycalendar"></div> 
+                    </div>
+                  </div>
                   <span class="smalltext"><?php echo EDIT_ORDERS_FETCHTIME_READ;?></span>
                   <input type="hidden" name='update_tori_torihiki_date' size='25' value='<?php echo $order->tori['date']; ?>'>
                   <input type="hidden" name='update_tori_torihiki_houhou' size='45' value='<?php echo $order->tori['houhou']; ?>'>
@@ -1431,8 +1506,14 @@ float:left;
                   <?php
                   $ensure_arr = explode(' ', $order->info['ensure_deadline']);  
                   ?>
-                  <input id='date_ensure_deadline' name='update_ensure_deadline' size='25' value='<?php echo $ensure_arr[0]; ?>'>
-                  <br> 
+                  <div class="yui3-skin-sam yui3-g" style="overflow:hidden;">
+                    <input id='date_ensure_deadline' name='update_ensure_deadline' size='25' value='<?php echo $ensure_arr[0]; ?>'>
+                    <a href="javascript:void(0)" onclick="open_ensure_calendar();" class="dpicker"></a> 
+                    <input type="hidden" name="toggle_ensure" value="0" id="toggle_ensure"> 
+                    <div class="yui3-u" id="ensure_yui3">
+                    <div id="ecalendar"></div>
+                    </div>
+                  </div>
                   <span class="smalltext"><?php echo EDIT_ORDERS_FETCHTIME_READ;?></span>
               </tr>
             </table>
@@ -1844,6 +1925,10 @@ if (tep_db_num_rows($orders_history_query)) {
         <tr>
           <td class="main"><b><?php echo EDIT_ORDERS_RECORD_TEXT;?></b></td>
           <td class="main"><?php echo tep_draw_checkbox_field('notify_comments', '', false); ?>&nbsp;&nbsp;<b style="color:#FF0000;"><?php echo EDIT_ORDERS_RECORD_READ;?></b></td>
+        </tr>
+        <tr>
+          <td class="main" valign="top"><b><?php echo TABLE_HEADING_COMMENTS;?>:</b></td>
+          <td class="main"><?php echo tep_draw_textarea_field('comments_text', 'hard', '74', '5', '', 'style="font-family:monospace; font-size:12px; width:400px;"');?></td> 
         </tr>
         <?php } ?>
       </table>
