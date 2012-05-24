@@ -47,6 +47,7 @@ case 'per':
   $lastname_f = tep_db_prepare_input($_POST['lastname_f']);
   $dob = tep_db_prepare_input($_POST['dob']);
   $email_address = tep_db_prepare_input($_POST['email_address']);
+  $email_address  = str_replace("\xe2\x80\x8b", '', $email_address);
   $old_email_address = tep_db_prepare_input($_POST['old_email']);
   $telephone = tep_db_prepare_input($_POST['telephone']);
   $fax = tep_db_prepare_input($_POST['fax']);
@@ -208,6 +209,7 @@ if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
   $lastname_f = tep_db_prepare_input($_POST['lastname_f']);
   $dob = tep_db_prepare_input($_POST['dob']);
   $email_address = tep_db_prepare_input($_POST['email_address']);
+  $email_address  = str_replace("\xe2\x80\x8b", '', $email_address);
   $old_email_address = tep_db_prepare_input($_POST['old_email']);
   $telephone = tep_db_prepare_input($_POST['telephone']);
   $fax = tep_db_prepare_input($_POST['fax']);
