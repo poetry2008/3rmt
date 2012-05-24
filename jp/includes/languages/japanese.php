@@ -299,6 +299,7 @@ define('IMAGE_BUTTON_CONTINUE_SHOPPING', 'ショッピングを続ける');
 define('IMAGE_BUTTON_DELETE', '削除する');
 define('IMAGE_BUTTON_EDIT_ACCOUNT', 'お客様情報の編集');
 define('IMAGE_BUTTON_HISTORY', 'ご注文履歴');
+define('IMAGE_BUTTON_CUSTOMERS_EXIT', '退会を申し込む');
 define('IMAGE_BUTTON_LOGIN', 'ログイン');
 define('IMAGE_BUTTON_IN_CART', 'カートに入れる');
 define('IMAGE_BUTTON_NOTIFICATIONS', 'お知らせの設定');
