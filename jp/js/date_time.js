@@ -94,10 +94,13 @@ function selectDate(start_time,end_time){
 /*                            分セレクトボックス                               /
 /******************************************************************************/
 function selectHour(start_time,end_time,hour,min_num,ele){
-     
-        document.getElementById("hour"+hour).style.color="blue";
-        document.getElementById("hour"+hour).style.textDecoration ="underline";
-        $("#hour"+hour).css("background-color","#F5F9FC");
+        $("#jikan_error").remove(); 
+        if(hour != ''){
+          hour = parseInt(hour); 
+          document.getElementById("hour"+hour).style.color="blue";
+          document.getElementById("hour"+hour).style.textDecoration ="underline";
+          $("#hour"+hour).css("background-color","#F5F9FC");
+        }
         var array_start = new Array();
         array_start = start_time.split('||'); 
         var array_end = new Array();
@@ -271,6 +274,7 @@ function change_time(value,end_time){
 
 function check_out(num){
       $("#shipping_time_id").hide();
+      $("input[name='hour']").remove();
       var shipping_list_min = document.getElementById("shipping_list_min");
       var hour = document.getElementById("hour"+num);
       shipping_list_min.style.display = 'none';

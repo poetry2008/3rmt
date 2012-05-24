@@ -1502,6 +1502,17 @@ function address_option_show(action){
       list_options.value = arr_new[x];
       list_options.style.color = arr_color[x];
       $("#error_"+x).html('');
+      <?php
+      if(!isset($_POST['address_option']) || $_POST['address_option'] == 'old'){
+      ?>
+      if(document.getElementById("l_"+x)){
+          if($("#l_"+x).val() == 'true'){
+            $("#r_"+x).html("&nbsp;*必須");
+          }
+      } 
+      <?php
+      }
+      ?>
     }
     break;
   case 'old' :
@@ -1584,6 +1595,17 @@ function address_option_show(action){
         if(in_array(x,arr_name)){
           arr_str += arr_old[i][x];
         }
+        <?php
+          if(!isset($_POST['address_option']) || $_POST['address_option'] == 'new'){
+        ?>
+        if(document.getElementById("l_"+x)){
+          if($("#l_"+x).val() == 'true'){
+            $("#r_"+x).html("&nbsp;*必須");
+          }
+        }
+        <?php
+         }
+        ?>
         //$("#error_"+x).html('');
     }
     if(arr_str != ''){
@@ -2097,9 +2119,19 @@ $(document).ready(function(){
      
    var address_show_list = document.getElementById("address_show_list");
    if(address_show_list){
+     <?php
+      if(!($_POST['address_option'] == 'new')){
+     ?>
      address_option_show('old');
-     address_option_list(first_num);
-     address_clear_error();
+     <?php 
+     }
+     if(!isset($_GET['action'])){
+     ?>
+       address_option_list(first_num);
+       address_clear_error();
+    <?php
+     }
+    ?>
    }
 });
 
@@ -2363,7 +2395,20 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
               echo $field['title']."</td>";
               echo "<td class='main'>";
               echo "&nbsp;&nbsp;".$field['field'];
-              echo "<font color='#red'>".$field['message']."</font>";
+              if(isset($_POST['payment_method'])){
+                $pay_arr = array();
+                preg_match_all('/name="(.*?)"/',$field['field'],$pay_arr);
+                if(trim($_POST[$pay_arr[1][0]]) == ''){
+                  $field['message'] = $field['message'] != '' ? '必須項目' : ''; 
+                }else{
+                  $field['message'] = $field['message'] != '' ? '正しく入力してください' : ''; 
+                }
+              }else{
+                if($field['title'] != '口座種別:'){
+                  $field['message'] = '*必須';
+                }
+              }
+              echo "<font color='red'>&nbsp;".$field['message']."</font>";
               echo "</td>";
               echo "</tr>";
            } 
@@ -2761,6 +2806,22 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
                 $address_style = isset($address_style) && $address_style != '' ? $address_style : 'display: none;';
                 $old_checked = !isset($_POST['address_option']) || $_POST['address_option'] == 'old' ? 'checked' : '';
                 $new_checked = isset($_POST['address_option']) && $_POST['address_option'] == 'new' ? 'checked' : '';
+                $address_historys_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where customers_id='". $order->customer['id'] ."'");
+                $address_historys_num = tep_db_num_rows($address_historys_query);
+                tep_db_free_result($address_historys_query);
+                if($address_historys_num == 0 && !isset($_POST['address_option'])){
+                    $old_checked = '';
+                    $new_checked = 'checked';
+                
+            ?>
+              <script type="text/javascript">
+              $(document).ready(function(){
+                address_option_show('new'); 
+              }); 
+              </script>
+
+            <?php
+               }
             ?>
             <tr>
             <td class="main" valign="top"><a href="javascript:void(0);" onclick="address_show();"><font color="blue"><b><u><span id="address_font"><?php echo TEXT_SHIPPING_ADDRESS;?></span></u></b></font></a></td>
@@ -3018,7 +3079,7 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
                 '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_OTTOTAL_READ.'</td>' . 
                 '    <td align="right" class="' . $TotalStyle . '"><b>' . $TotalDetails["Name"] . '</b></td>' . 
                 '    <td align="right" class="' . $TotalStyle . '"><b>' ;
-              if ($TotalDetails["Price"] >= 0){
+              if (($TotalDetails["Price"]+$shipping_fee_total) >= 0){
                 echo $currencies->ot_total_format($TotalDetails["Price"]+$shipping_fee_total, true,
                     $order->info['currency'], $order->info['currency_value']);
               }else{

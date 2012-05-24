@@ -83,6 +83,7 @@ $customer_guest_query = tep_db_query("
 $customer_guest = tep_db_fetch_array($customer_guest_query);
 
 if (tep_not_null($action)) {
+  $payment_modules = payment::getInstance($order->info['site_id']);
   switch ($action) {
 
     // 1. UPDATE ORDER ###############################################################################################
@@ -220,6 +221,7 @@ if (tep_not_null($action)) {
 
       $oID = tep_db_prepare_input($_GET['oID']);
       $order = new order($oID);
+      $payment_method = tep_db_prepare_input($_POST['payment_method']);
       $status = tep_db_prepare_input($_POST['s_status']);
       $comments_text = tep_db_prepare_input($_POST['comments_text']);
       $start_hour = tep_db_prepare_input($_POST['start_hour']);
@@ -283,7 +285,6 @@ if (tep_not_null($action)) {
         $action = 'edit';
         break;
       }
-      
       //住所信息
       $error_str = false;
       $option_info_array = array(); 
@@ -295,10 +296,22 @@ if (tep_not_null($action)) {
           } 
         }
       }else{
-        $action = 'edit';
+        $error_str = true;
         $address_style = 'display: block;';
+      }      
+
+      $payment_method_romaji = payment::changeRomaji($payment_method,PAYMENT_RETURN_TYPE_CODE);
+      $validateModule = $payment_modules->admin_confirmation_check($payment_method);
+
+      if ($validateModule['validated']===false || $error_str == true){
+
+        $selections = $payment_modules->admin_selection();
+        $selections[strtoupper($payment_method)] = $validateModule;
+        $action = 'edit';
         break;
       } 
+    $comment_arr = $payment_modules->dealComment($payment_method,$comment); 
+       
       //end 
       foreach ($update_totals as $up_key => $up_total) {
         if ($up_total['class'] == 'ot_point') {
@@ -364,6 +377,10 @@ if (tep_not_null($action)) {
         torihiki_houhou = '" . tep_db_input($update_tori_torihiki_houhou) . "',
         cc_type = '" . tep_db_input($update_info_cc_type) . "',
         cc_owner = '" . tep_db_input($update_info_cc_owner) . "',";
+
+      if(isset($comment_arr['comment']) && !empty($comment_arr['comment'])){
+        $UpdateOrders .= "orders_comment = '{$comment_arr['comment']}',";
+      }
 
       if(substr($update_info_cc_number,0,8) != "(Last 4)") {
         $UpdateOrders .= "cc_number = '$update_info_cc_number',";
@@ -926,7 +943,7 @@ if($address_error == false){
           }
 
           $email = '';
-          $email .= $order->customer['name'] . '様' . "\n\n";
+          //$email .= $order->customer['name'] . '様' . "\n\n";
           $email .= 'いつも' . get_configuration_by_site_id('STORE_NAME', $order->info['site_id']) . 'をご利用いただき、誠にありがとうございます。' . "\n";
           $email .= '下記の内容にて変更を承りましたので、ご確認ください。' . "\n\n";
           $email .= $notify_comments_mail;
@@ -958,7 +975,7 @@ if($address_error == false){
           tep_mail(get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS', $order->info['site_id']), '送信済：注文内容の変更を承りました【' . get_configuration_by_site_id('STORE_NAME', $order->info['site_id']) . '】', $email, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);
           $customer_notified = '1';
         }
-        tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . tep_db_input($customer_notified) . "', '" . mysql_real_escape_string($comments_text) . "')");
+        tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . tep_db_input($customer_notified) . "', '" . mysql_real_escape_string($comment_arr['comment']."\n".$comments_text) . "')");
         $order_updated_2 = true;
       }
 
@@ -1643,6 +1660,17 @@ function address_option_show(action){
       list_options.value = arr_new[x];
       list_options.style.color = arr_color[x];
       $("#error_"+x).html('');
+      <?php
+      if(!isset($_POST['address_option']) || $_POST['address_option'] == 'old'){
+      ?>
+        if(document.getElementById("l_"+x)){
+          if($("#l_"+x).val() == 'true'){
+            $("#r_"+x).html("&nbsp;*必須");
+          }
+        }
+      <?php
+      }
+      ?>
     }
     break;
   case 'old' :
@@ -1725,6 +1753,17 @@ function address_option_show(action){
         if(in_array(x,arr_name)){
           arr_str += arr_old[i][x];
         }
+        <?php
+        if(!isset($_POST['address_option']) || $_POST['address_option'] == 'new'){ 
+        ?>
+        if(document.getElementById("l_"+x)){
+          if($("#l_"+x).val() == 'true'){
+            $("#r_"+x).html("&nbsp;*必須");
+          }
+        }
+        <?php
+        }
+        ?>
         //$("#error_"+x).html('');
     }
     if(arr_str != ''){
@@ -1803,6 +1842,7 @@ function address_option_list(value){
       check($("#ad_"+x).val());
     }
     $("#error_"+x).html('');
+    $("#r_"+x).html("&nbsp;*必須");
     ii++; 
   }
 
@@ -1985,12 +2025,22 @@ function address_list(){
 }
 
 <?php
-  if(isset($_GET['action']) && $_GET['action'] == 'edit' && $shipping_weight_total > 0){
+  if($shipping_weight_total > 0){
 ?>
 $(document).ready(function(){            
-  address_list();
+  <?php
+  if(!($_POST['address_option'] == 'new')){
+  ?>
   address_option_show('old');
+  <?php
+  }
+  if(!isset($_POST['address_option'])){
+  ?> 
+  address_list();
   address_clear_error();
+  <?php
+  }
+  ?>
 });
 <?php
   }
@@ -2015,12 +2065,27 @@ $(document).ready(function(){
 <?php
   }
 ?>
+  //todo:修改通性用
+  function hidden_payment(){
+     var idx = document.edit_order.elements["payment_method"].selectedIndex;
+     var CI = 
+     document.edit_order.elements["payment_method"].options[idx].value;
+     $(".rowHide").hide();
+     $(".rowHide").find("input").attr("disabled","true");
+     $(".rowHide_"+CI).show();
+     $(".rowHide_"+CI).find("input").removeAttr("disabled");
+  }
+$(document).ready(function(){hidden_payment()});
 $(document).ready(function(){
   //$.datePicker.setDateFormat('ymd', '-');
   //$('#date_orders').datePicker();
   $("#ad_<?php echo $parent_flag_name;?>").change(function(){
     check($(this).val());
   });
+  $("select[name='payment_method']").change(function(){
+    hidden_payment();
+  });
+
 });
 
 function open_calendar()
@@ -2166,8 +2231,83 @@ if (($action == 'edit') && ($order_exists == true)) {
     <tr>
     <td class="main" valign="top"><b><?php echo EDIT_ORDERS_PAYMENT_METHOD;?></b></td>
     <td class="main">
-    <?php echo payment::makePaymentListPullDownMenu(payment::changeRomaji($order->info['payment_method'], PAYMENT_RETURN_TYPE_CODE));?>
-    <?php echo EDIT_ORDERS_PAYMENT_METHOD_READ;?> 
+    <?php echo payment::makePaymentListPullDownMenu(payment::changeRomaji($order->info['payment_method'], PAYMENT_RETURN_TYPE_CODE));?> 
+    <?php 
+    $pay_method = isset($_POST['payment_method']) ? $_POST['payment_method'] : $order->info['payment_method'];
+    $pay_comment = $order->info['orders_comment'];
+    echo "\n".'<script language="javascript">'."\n"; 
+          echo '$(document).ready(function(){'."\n";
+          switch($pay_method){
+
+          case '銀行振込(買い取り)':
+            $pay_array = explode("\n",trim($pay_comment));
+            $bank_name = explode(':',$pay_array[0]);
+            $bank_name[1] = isset($_POST['bank_name']) ? $_POST['bank_name'] : $bank_name[1]; 
+            echo 'document.getElementsByName("bank_name")[0].value = "'. $bank_name[1] .'";'."\n"; 
+            $bank_shiten = explode(':',$pay_array[1]); 
+            $bank_shiten[1] = isset($_POST['bank_shiten']) ? $_POST['bank_shiten'] : $bank_shiten[1];
+            echo 'document.getElementsByName("bank_shiten")[0].value = "'. $bank_shiten[1] .'";'."\n"; 
+            $bank_kamoku = explode(':',$pay_array[2]);
+            $bank_kamoku[1] = isset($_POST['bank_kamoku']) ? $_POST['bank_kamoku'] : $bank_kamoku[1];
+            if($bank_kamoku[1] == '普通'){
+               echo 'document.getElementsByName("bank_kamoku")[0].checked = true;'."\n"; 
+            }else{
+               echo 'document.getElementsByName("bank_kamoku")[1].checked = true;'."\n"; 
+            }
+            $bank_kouza_num = explode(':',$pay_array[3]);
+            $bank_kouza_num[1] = isset($_POST['bank_kouza_num']) ? $_POST['bank_kouza_num'] : $bank_kouza_num[1];
+            echo 'document.getElementsByName("bank_kouza_num")[0].value = "'.$bank_kouza_num[1].'";'."\n";
+            $bank_kouza_name = explode(':',$pay_array[4]);
+            $bank_kouza_name[1] = isset($_POST['"bank_kouza_name']) ? $_POST['"bank_kouza_name'] : $bank_kouza_name[1];
+            echo 'document.getElementsByName("bank_kouza_name")[0].value = "'.$bank_kouza_name[1].'";'."\n";
+            break;
+          case 'コンビニ決済':
+            $con_email = explode(":",trim($pay_comment));
+            $con_email[1] = isset($_POST['con_email']) ? $_POST['con_email'] : $con_email[1];
+            echo 'document.getElementsByName("con_email")[0].value = "'.$con_email[1].'";'."\n";
+            break;
+          case '楽天銀行':
+            $rak_tel = explode(":",trim($pay_comment));
+            $rak_tel[1] = isset($_POST['rak_tel']) ? $_POST['rak_tel'] : $rak_tel[1];
+            echo 'document.getElementsByName("rak_tel")[0].value = "'.$rak_tel[1].'";'."\n";
+            break;
+          }
+          echo '});'."\n";
+          echo '</script>'."\n";
+      
+          $cpayment = payment::getInstance((int)SITE_ID);
+          if(!isset($selections)){
+            $selections = $cpayment->admin_selection();
+          } 
+          echo '<table>';
+          foreach ($selections as $se){
+            foreach($se['fields'] as $field ){
+              echo '<tr class="rowHide rowHide_'.$se['id'].'">';
+              echo '<td class="main">';
+              echo $field['title']."</td>";
+              echo "<td class='main'>";
+              echo "&nbsp;&nbsp;".$field['field'];
+              if(isset($_POST['payment_method'])){
+                $pay_arr = array();
+                preg_match_all('/name="(.*?)"/',$field['field'],$pay_arr);
+                if(trim($_POST[$pay_arr[1][0]]) == ''){
+                  $field['message'] = $field['message'] != '' ? '必須項目' : ''; 
+                }else{
+                  $field['message'] = $field['message'] != '' ? '正しく入力してください' : ''; 
+                }
+              }else{
+                if($field['title'] != '口座種別:'){
+                  $field['message'] = '*必須';
+                }
+              }
+              echo "<font color='red'>&nbsp;".$field['message']."</font>";
+              echo "</td>";
+              echo "</tr>";
+           } 
+         }
+         echo '</table>'; 
+    echo EDIT_ORDERS_PAYMENT_METHOD_READ;
+    ?> 
     </td>
     </tr>
     <tr>

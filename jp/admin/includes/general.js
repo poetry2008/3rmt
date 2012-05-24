@@ -377,7 +377,6 @@ function in_array(needle, haystack) {
   return false;
 }
 */
-
 function clearNoNum(obj)
 {
   /*
@@ -399,6 +398,41 @@ function clearNoNum(obj)
     //only one '.'
     obj.value = obj.value.replace(/\.{2,}/g,".");
     obj.value = obj.value.replace(".","$#$").replace(/\./g,"").replace("$#$",".");
+    return true;
+  }
+  return false;
+}
+
+function clearNoNum_1(obj)
+{
+  /*
+  e = (window.event)? window.event:"";
+  var key = e.keyCode?e.keyCode:e.which;
+  if(!(key == 37 || key == 38 || key == 39 || key ==40)){
+  */
+  var re = /^\-?[0-9]+\.?[0-9]*$/;
+  var show_error_msg = false;  
+  var temp_value = obj.value;
+  if(!re.test(obj.value) && obj.value != ''){
+    if(!(obj.value.substr(0,1) == '-' && obj.value.length == 1)){
+      show_error_msg = true; 
+      alert('登録できない文字が入力されました。その文字を消します。'); 
+    }  
+  } 
+  if(show_error_msg){
+    //replace all un number and '.'
+    obj.value = obj.value.replace(/[^\d.]/g,"");
+    //first char must be number
+    obj.value = obj.value.replace(/^\./g,"");
+    //only one '.'
+    obj.value = obj.value.replace(/\.{2,}/g,".");
+    obj.value = obj.value.replace(".","$#$").replace(/\./g,"").replace("$#$",".");
+    if(temp_value.indexOf("-") == 0 || (temp_value.indexOf("-") == 1 && isNaN(temp_value.substr(0,1)))){ 
+      obj.value = '-'+obj.value;
+    }
+    if(temp_value.indexOf("-") == 1 && !isNaN(temp_value.substr(0,1))){
+      obj.value = temp_value.substr(1); 
+    }
   }
 }
 

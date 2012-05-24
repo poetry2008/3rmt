@@ -78,7 +78,7 @@ function check_form(){
   var end_name = document.getElementById("end_name");
   end_name.value = firstname[0].value;
   var email_address = document.getElementsByName("email_address");
-  var emai = document.getElementById("email");
+  var email = document.getElementById("email");
   email.value = email_address[0].value;
   var newsletter = document.getElementsByName("newsletter");
   var options = document.getElementById("options");
@@ -121,6 +121,12 @@ function address_clear(){
   for(x in arr_new){
 
     $("#op_"+arr_new[x]).val("");
+    if(document.getElementById("l_"+arr_new[x])){
+      if($("#l_"+arr_new[x]).val() == 'true'){
+        $("#r_"+arr_new[x]).html("&nbsp;*必須");
+      }
+    }
+    $("#error_"+arr_new[x]).html("");
   }
   $("#address_flag_id").val("");
 }
@@ -177,6 +183,7 @@ function address_list(){
   address_show_list.options.length = 0;
 
   len = arr_old.length;
+if(len > 0){
   for(i = 0;i < len;i++){
     arr_str = '';
     for(x in arr_old[i]){
@@ -189,6 +196,10 @@ function address_list(){
     }
 
   }
+}else{
+
+  $("#address_histroy_id").hide();
+}
 }
 
 function address_option_list(value){
@@ -231,6 +242,11 @@ function address_option_list(value){
     if('<?php echo $parent_flag_name;?>' == x){
 
       check($("#op_"+x).val());
+    }
+    if(document.getElementById("l_"+x)){
+      if($("#l_"+x).val() == 'true'){
+        $("#r_"+x).html("&nbsp;*必須");
+      }
     }
     $("#error_"+x).html("");
   }
@@ -372,7 +388,7 @@ $(document).ready(function(){
           echo tep_draw_form('account_edit_address', tep_href_link(FILENAME_ACCOUNT_EDIT, '', 'SSL'), 'post', 'onSubmit=""') . tep_draw_hidden_field('action', 'address');
         ?>
         <table border="0" cellspacing="0" cellpadding="2" summary="table">
-        <tr><td class="main" width="120">&nbsp;<?php echo TITLE_ADDRESS_OPTION;?></td><td><input type="hidden" id="address_flag_id" name="address_flag_id" value="">
+        <tr id="address_histroy_id"><td class="main" width="120">&nbsp;<?php echo TITLE_ADDRESS_OPTION;?></td><td><input type="hidden" id="address_flag_id" name="address_flag_id" value="">
         <!-- 隐藏信息-->
         <input type="hidden" id="first_name" name="lastname" value="">
         <input type="hidden" id="end_name" name="firstname" value="">
@@ -487,18 +503,18 @@ if (!isset($guestchk)) $guestchk = NULL;
 <?php
     if ($error_pwd == true) {
       if ($entry_password_english_error == true) { 
-        echo tep_draw_password_field('password') . '<br><font color="red">' . ENTRY_PASSWORD_ENGLISH .'</font>';
+        echo tep_draw_password_field('password') . ENTRY_PASSWORD_TEXT;
       } else if($entry_password_error == true) {
-        echo tep_draw_password_field('password') . '<br>' . ENTRY_PASSWORD_ERROR;
+        echo tep_draw_password_field('password') . ENTRY_PASSWORD_TEXT;
       } else if($entry_password_confirmation_error == true){
-        echo tep_draw_password_field('password') . '<br>' . '<font color="red">ご入力されたパスワードが一致しておりません</font>';
+        echo tep_draw_password_field('password') . ENTRY_PASSWORD_TEXT;
       } else if($entry_password_old_error == true){
-         echo tep_draw_password_field('password') . '<br>' . '<font color="red">安全のため、古いパスワードと違うパスワードを設定してください。</font>';
+         echo tep_draw_password_field('password') . ENTRY_PASSWORD_TEXT;
       } else {
         echo PASSWORD_HIDDEN . tep_draw_hidden_field('password') . tep_draw_hidden_field('confirmation');
       }
     } else {
-      echo tep_draw_password_field('password') . '<br>' . ENTRY_PASSWORD_TEXT;
+      echo tep_draw_password_field('password') . ENTRY_PASSWORD_TEXT;
     }
 ?></td>
           </tr>
@@ -509,12 +525,33 @@ if (!isset($guestchk)) $guestchk = NULL;
             <td class="main">&nbsp;<?php echo ENTRY_PASSWORD_CONFIRMATION; ?></td>
             <td class="main">&nbsp;
 <?php
-      echo tep_draw_password_field('confirmation') . '&nbsp;' . ENTRY_PASSWORD_CONFIRMATION_TEXT;
+      echo tep_draw_password_field('confirmation') . ENTRY_PASSWORD_CONFIRMATION_TEXT;
 ?></td>
           </tr>
 <?php
     }
-?>  
+?> 
+          <tr>
+           <td class="main">&nbsp;</td>
+           <td class="main" style="padding-left:10px;">
+  <?php
+    if ($error_pwd == true) {
+      if ($entry_password_english_error == true) { 
+        echo '<font color="red">' . ENTRY_PASSWORD_ENGLISH .'</font>';
+      } else if($entry_password_error == true) {
+        echo ENTRY_PASSWORD_ERROR;
+      } else if($entry_password_confirmation_error == true){
+        echo '<font color="red">ご入力されたパスワードが一致しておりません</font>';
+      } else if($entry_password_old_error == true){
+         echo '<font color="red">安全のため、古いパスワードと違うパスワードを設定してください。</font>';
+      }     
+    }  
+  ?> 
+           </td>
+          </tr> 
+        <tr>
+        <td class="main" colspan="2"><?php echo ENTRY_PASSWORD_INFORM_READ_TEXT;?></td>
+        </tr>
     </table>
 <table border="0" width="100%" cellspacing="0" cellpadding="0">
       <tr><td>&nbsp;</td><td class="main" align="right"><input type="image" src="images/design/button/save.gif">&nbsp;&nbsp;</td></tr>
