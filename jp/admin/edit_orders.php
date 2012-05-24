@@ -2097,12 +2097,61 @@ function open_calendar()
       $('#new_yui3').css('margin-left', '-90px'); 
     }
     $('#toggle_open').val('1'); 
+    
+    var rules = {
+           "all": {
+                  "all": {
+                           "all": {
+                                      "all": "current_s_day",
+                                }
+                     }
+            }};
+    if ($("#date_orders").val() != '') {
+      if ($("#date_orders").val() == '0000-00-00') {
+        date_info_str = '<?php echo date('Y-m-d', time())?>';  
+        date_info = date_info_str.split('-');  
+      } else {
+        date_info = $("#date_orders").val().split('-'); 
+      }
+    } else {
+      date_info_str = '<?php echo date('Y-m-d', time())?>';  
+      date_info = date_info_str.split('-');  
+    }
+    new_date = new Date(date_info[0], date_info[1]-1, date_info[2]); 
     YUI().use('calendar', 'datatype-date',  function(Y) {
         var calendar = new Y.Calendar({
             contentBox: "#mycalendar",
             width:'170px',
+            date: new_date
 
         }).render();
+      if (rules != '') {
+       month_tmp = date_info[1].substr(0, 1);
+       if (month_tmp == '0') {
+         month_tmp = date_info[1].substr(1);
+         month_tmp = month_tmp-1;
+       } else {
+         month_tmp = date_info[1]-1; 
+       }
+       day_tmp = date_info[2].substr(0, 1);
+       
+       if (day_tmp == '0') {
+         day_tmp = date_info[2].substr(1);
+       } else {
+         day_tmp = date_info[2];   
+       }
+       data_tmp_str = date_info[0]+'-'+month_tmp+'-'+day_tmp;
+       
+       calendar.set("customRenderer", {
+            rules: rules,
+               filterFunction: function (date, node, rules) {
+                 cmp_tmp_str = date.getFullYear()+'-'+date.getMonth()+'-'+date.getDate();
+                 if (cmp_tmp_str == data_tmp_str) {
+                   node.addClass("redtext"); 
+                 }
+               }
+       });
+     }
       var dtdate = Y.DataType.Date;
       calendar.on("selectionChange", function (ev) {
         var newDate = ev.newSelection[0];
@@ -2126,6 +2175,9 @@ function open_calendar()
     require(DIR_WS_INCLUDES . 'header.php');
     ?>
     <style type="text/css">
+.yui3-skin-sam .redtext {
+    color:#0066CC;
+}
     .Subtitle {
       font-family: Verdana, Arial, Helvetica, sans-serif;
       font-size: 11px;
