@@ -47,7 +47,6 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
           and `customers_email_address` = '".$cEmail."'
         "));
 
-
   if ($order) {
     if (isset($_POST['hour'])){
       $date   = tep_db_prepare_input($_POST['date']);
@@ -69,8 +68,8 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
       } else {
         // update time
         if ($date && $hour && $minute) {
-          /*
           // ccdd
+          /*
           tep_db_query("
               update `".TABLE_ORDERS."` 
               set `orders_status`='17' ,
@@ -192,8 +191,8 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
           orders_updated($order_id);
           last_customer_action();
         }
-          // insert a history
         tep_order_status_change($order_id,17);
+          // insert a history
           $sql = "
             INSERT INTO `".TABLE_ORDERS_STATUS_HISTORY."` (
                 `orders_status_history_id`,
@@ -235,8 +234,8 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
   $insert_id = $oID;
   
   $o = new order($oID);
-
   $payment_code = payment::changeRomaji($o->info['payment_method'], PAYMENT_RETURN_TYPE_CODE); 
+
   # Check
   // ccdd
   $NewOidQuery = tep_db_query("
@@ -304,6 +303,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
           //ccdd
           $attributes = tep_db_query($attributes_query);
         } else {
+          // ccdd
           $sql = "select popt.products_options_name, poval.products_options_values_name, pa.options_values_price, pa.price_prefix, pa.products_at_quantity, pa.products_attributes_id from " . TABLE_PRODUCTS_OPTIONS . " popt, " . TABLE_PRODUCTS_OPTIONS_VALUES . " poval, " . TABLE_PRODUCTS_ATTRIBUTES . " pa 
           where pa.products_id = '" . $o->products[$i]['id'] . "' 
           and pa.options_id = '" . $o->products[$i]['attributes'][$j]['option_id'] . "' 
@@ -313,7 +313,6 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
           and popt.language_id = '" . $languages_id . "' 
           and poval.language_id = '" . $languages_id . "'";
 
-          //ccdd
           $attributes = tep_db_query($sql);
         }
         $attributes_values = tep_db_fetch_array($attributes);
