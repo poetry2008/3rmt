@@ -133,8 +133,9 @@
   define('FILENAME_TELL_A_FRIEND', 'tell_a_friend.php');
   define('FILENAME_UPCOMING_PRODUCTS', 'upcoming_products.php'); // This is the bottom of default.php (found in modules)
   define('FILENAME_EMAIL_TROUBLE', 'email_trouble.php');
-
+  define('FILENAME_ACCOUNT_EXIT', 'account_exit.php');
 // define the database table names used in the project
+  define('TABLE_CUSTOMERS_EXIT','customers_exit');
   define('TABLE_OPTION_GROUP', 'option_group');
   define('TABLE_OPTION_ITEM', 'option_item');
   define('TABLE_CUSTOMERS_BASKET_OPTIONS', 'customers_basket_options');
