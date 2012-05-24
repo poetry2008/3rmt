@@ -1294,4 +1294,7 @@ a.s_column_bar {
 	text-align:right;
 }
 /*end-notice*/
+.dataTableContent nobr {
+font-size:14px;
+}
 
