@@ -485,5 +485,19 @@ class buying extends basePayment  implements paymentInterface  {
       $mailoption['ADD_INFO'] = $_SESSION['payment_bank_info'][$oID]['add_info'];
     }
   }
+
+  function get_preorder_add_info($order_info)
+  {
+    $buying_info = explode('<<<|||', $order_info['bank_info']); 
+    $bbbank = TS_TEXT_BANK_NAME . '：' . $buying_info[0] . "\n";
+    $bbbank .= TS_TEXT_BANK_SHITEN . '：' . $buying_info[1] . "\n";
+    $bbbank .= TS_TEXT_BANK_KAMOKU . '：' . $buying_info[2] . "\n";
+    $bbbank .= TS_TEXT_BANK_KOUZA_NUM . '：' . $buying_info[3] . "\n";
+    $bbbank .= TS_TEXT_BANK_KOUZA_NAME . '：' . $buying_info[4];
+    
+    $comment = $bbbank ."\n".$order_info['comment_msg'];
+    return $comment;
+  }
+
 }
 ?>

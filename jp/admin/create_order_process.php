@@ -221,8 +221,9 @@ $payment_bank_info = array();
         if($products_details["qty"] > 0) { // a.) quantity found --> add to list & sum    
           $Query = "update " . TABLE_ORDERS_PRODUCTS . " set
             products_model = '" . $products_details["model"] . "',
-                           products_name = '" . str_replace("'", "&#39;", $products_details["name"]) . "',
-                           final_price = '" . (tep_get_bflag_by_product_id((int)$order['products_id']) ? 0 - $products_details["final_price"] : $products_details["final_price"]) . "',
+            products_name = '" . str_replace("'", "&#39;", $products_details["name"]) . "',
+            products_price = '" .  (tep_check_product_type($orders_products_id) ? 0 - $products_details["p_price"] : $products_details["p_price"]) . "',
+            final_price = '" . (tep_get_bflag_by_product_id((int)$order['products_id']) ? 0 - $products_details["final_price"] : $products_details["final_price"]) . "',
                            products_tax = '" . $products_details["tax"] . "',
                            products_quantity = '" . $products_details["qty"] . "'
                              where orders_products_id = '$orders_products_id';";
@@ -235,7 +236,7 @@ $payment_bank_info = array();
           if (IsSet($products_details[attributes])) {
             foreach ($products_details["attributes"] as $orders_products_attributes_id => $attributes_details) {
               $input_option = array('title' => $attributes_details['option'], 'value'=> $attributes_details['value']); 
-              $Query = "update " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " set option_info = '" .tep_db_input(serialize($input_option)) . "' where orders_products_attributes_id = '$orders_products_attributes_id';";
+              $Query = "update " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " set option_info = '" .tep_db_input(serialize($input_option)) . "',options_values_price = '".$attributes_details['price']."' where orders_products_attributes_id = '$orders_products_attributes_id';";
               tep_db_query($Query);
             }
           }

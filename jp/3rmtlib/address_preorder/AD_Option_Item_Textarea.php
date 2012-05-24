@@ -17,13 +17,16 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
 
       echo '<td class="main" width="70%">';
       $style_color = isset($_POST['ad_'.$this->formname]) && $_POST['ad_'.$this->formname] != $this->comment ?'color:#000;':'color:#999;';
-      $style_size = $type_limit == 'num' ? 'size="25" ' : 'class="option_input" '; 
+      $style_size = $type_limit == 'num' ? 'size="25" ' : 'class="width:75%;" '; 
       echo '<input type="hidden" name="'.$this->formname.'" value="'.$this->front_title.'">';
+      echo '<input type="hidden" id="l_'.$this->formname.'" value="'.$this->required.'">';
       echo '<input type="text" name="ad_'.$this->formname.'" id="ad_'.$this->formname.'" '. $style_size .' value="'. (isset($_POST['ad_'.$this->formname])?$_POST['ad_'.$this->formname]:$this->comment) .'" style="'. $style_color .'" onfocus="this.style.color=\'#001\';if(this.value==\''. $this->comment.'\')this.value=\'\'" onblur="if(this.value==\'\'){this.value=\''. $this->comment .'\';this.style.color=\'#999\'}">';
-      if($this->required == 'true'){
+      echo '<font id="r_'.$this->formname.'" color="red">';
+      if($this->required == 'true' && !isset($option_error_array[$this->formname]) && !isset($_POST['ad_'.$this->formname])){
 
-        echo '<font color="red">&nbsp;*必須</font>';
+        echo '&nbsp;*必須';
       }
+      echo '</font>';
       echo '<br><span id="error_'.$this->formname.'" class="shipping_error"><font color="red">';
      if (isset($option_error_array[$this->formname])) {
        echo $option_error_array[$this->formname]; 
@@ -33,8 +36,15 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
     }else{
     echo '<td class="main" width="70%">'; 
     echo '<input type="hidden" name="'.$this->formname.'" value="'.$this->front_title.'">';
+    echo '<input type="hidden" id="l_'.$this->formname.'" value="'.$this->required.'">';
     echo '<textarea
       name="ad_'.$this->formname.'" id="ad_'.$this->formname.'" rows="'. $options['rows'] .'" onfocus="this.style.color=\'#001\';if(this.value==\''. $this->comment.'\')this.value=\'\'" onblur="if(this.value==\'\'){this.value=\''. $this->comment .'\';this.style.color=\'#999\'}">'.(isset($_POST['ad_'.$this->formname])?$_POST['ad_'.$this->formname]:'').'</textarea>'; 
+     echo '<font id="r_'.$this->formname.'" color="red">';
+     if($this->required == 'true' && !isset($option_error_array[$this->formname]) && !isset($_POST['ad_'.$this->formname])){
+
+        echo '&nbsp;*必須';
+     }
+     echo '</font>';
      echo '<span id="error_'.$this->formname.'" class="shipping_error"><font color="red">';
      if (isset($option_error_array[$this->formname])) {
        echo $option_error_array[$this->formname]; 

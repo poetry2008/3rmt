@@ -18,6 +18,16 @@
 $_noemailclass = true;
   require_once('includes/application_top.php');
 //require('includes/configure.php');
+if(isset($_POST)&&$_POST){
+  foreach($_POST as $pos_key => $pos_val){
+    if(is_array($pos_val)){
+      continue;
+    }else{
+      $_POST[$pos_key] = tep_db_prepare_input($_POST[$pos_key]);
+    }
+  }
+  $_POST['email'] = str_replace("\xe2\x80\x8b", '',$_POST['email']);
+}
 require_once(DIR_OST.'client.inc.php');
 define('SOURCE','Web'); //Ticket source.
 $inc='open.inc.php';    //default include.

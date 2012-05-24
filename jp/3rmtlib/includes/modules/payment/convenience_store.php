@@ -479,5 +479,10 @@ class convenience_store extends basePayment  implements paymentInterface  {
     {
       $_SESSION['h_convenience_email'] = $pInfo['convenience_email']; 
     }
+  
+    function get_preorder_add_info($order_info)
+    {
+      return $order_info['cemail_text'] ."\n".$order_info['comment_msg'];
+    }
   }
   ?>

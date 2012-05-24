@@ -146,7 +146,7 @@
       for ($j=0, $n2=sizeof($order->products[$i]['op_attributes']); $j<$n2; $j++) {
         echo '<br><small>&nbsp;<i> - ' .  $order->products[$i]['op_attributes'][$j]['option_info']['title'] . ': ' .  $order->products[$i]['op_attributes'][$j]['option_info']['value'];
         if ($order->products[$i]['op_attributes'][$j]['price'] != '0') {
-          echo ' ('.$currencies->format($order->products[$i]['op_attributes'][$j]['price']*$order->products[$i]['qty']).')';        
+          echo ' ('.$currencies->format($order->products[$i]['op_attributes'][$j]['price']).')';        
         }
         echo '</i></small>';
       }

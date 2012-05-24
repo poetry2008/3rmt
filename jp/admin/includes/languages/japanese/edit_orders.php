@@ -17,6 +17,7 @@ define('ADDING_TITLE', '商品の追加');
 
 define('ENTRY_UPDATE_TO_CC', '(Update to <b>Credit Card</b> to view CC fields.)');
 define('TABLE_HEADING_COMMENTS', 'コメント');
+define('TABLE_HEADING_EMAIL_COMMENTS', 'メールのテンプレート');
 define('TABLE_HEADING_CUSTOMERS', '顧客名');
 define('TABLE_HEADING_ORDER_TOTAL', '注文総額');
 define('TABLE_HEADING_DATE_PURCHASED', '注文日');
