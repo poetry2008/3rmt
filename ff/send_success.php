@@ -44,7 +44,7 @@
               <tr>
                 <td colspan="3"  class="information_color">
                 <?php 
-                  echo sprintf(NOTICE_SEND_TO_EMAIL_TEXT, rawurldecode($_GET['send_mail'])); 
+                  echo sprintf(NOTICE_SEND_TO_EMAIL_TEXT, tep_db_prepare_input(rawurldecode($_GET['send_mail']))); 
                 ?>
                 </td>
               </tr>
