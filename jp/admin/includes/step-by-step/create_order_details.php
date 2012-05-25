@@ -465,13 +465,14 @@ if($index > 0){
   
             <table border="0" width="100%" cellspacing="0" cellpadding="2">
             <tr style="background-color: #e1f9fe;">
-            <td class="dataTableContent" colspan="2" width="120"><?php echo TABLE_HEADING_NUM_PRO_NAME;?></td>
-            <td class="dataTableContent" width="120"><?php echo TABLE_HEADING_PRODUCTS_MODEL; ?></td>
-            <td class="dataTableContent" width="120"><?php echo TABLE_HEADING_CURRENICY;?></td>
-            <td class="dataTableContent" align="right" width="120"><?php echo TABLE_HEADING_PRICE_BEFORE;?></td>
-            <td class="dataTableContent" align="right" width="120"><?php echo TABLE_HEADING_PRICE_AFTER;?></td>
-            <td class="dataTableContent" align="right" width="120"><?php echo TABLE_HEADING_TOTAL_BEFORE;?></td>
-            <td class="dataTableContent" align="right" width="120"><?php echo TABLE_HEADING_TOTAL_AFTER;?></td>
+            <td class="dataTableContent" colspan="2"><?php echo TABLE_HEADING_NUM_PRO_NAME;?></td>
+            <td class="dataTableContent"><?php echo TABLE_HEADING_PRODUCTS_MODEL; ?></td>
+            <td class="dataTableContent"><?php echo TABLE_HEADING_CURRENICY;?></td>
+            <td class="dataTableContent" align="center"><?php echo TABLE_HEADING_PRODUCTS_PRICE; ?></td>
+            <td class="dataTableContent" align="right"><?php echo TABLE_HEADING_PRICE_BEFORE;?></td>
+            <td class="dataTableContent" align="right"><?php echo TABLE_HEADING_PRICE_AFTER;?></td>
+            <td class="dataTableContent" align="right"><?php echo TABLE_HEADING_TOTAL_BEFORE;?></td>
+            <td class="dataTableContent" align="right"><?php echo TABLE_HEADING_TOTAL_AFTER;?></td>
             </tr>
 
             <?php
@@ -489,6 +490,11 @@ if($index > 0){
               '      &nbsp;&nbsp:<input type="hidden" name="dummy" value="あいうえお眉幅">';
             // Has Attributes?
             if (sizeof($order->products[$i]['attributes']) > 0) {
+              $op_info_array = array();
+                 for ($i_num = 0; $i_num < sizeof($order->products[$i]['attributes']); $i_num++) {
+                 $op_info_array[] = $order->products[$i]['attributes'][$i_num]['id'];
+              }
+              $op_info_str = implode('|||', $op_info_array);
               for ($j=0; $j<sizeof($order->products[$i]['attributes']); $j++) {
                 $orders_products_attributes_id = $order->products[$i]['attributes'][$j]['id'];
                 echo '<br><nobr><small>&nbsp;<i> - ' .  '<input name="update_products[' . $orders_products_id .  '][attributes][' . $orders_products_attributes_id . '][option]" size="10" value="' .  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;")) . '">' . 
@@ -496,39 +502,43 @@ if($index > 0){
                   '<input name="update_products[' . $orders_products_id .  '][attributes][' . $orders_products_attributes_id . '][value]" size="35" value="' .  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&quot;"));
                 //if ($order->products[$i]['attributes'][$j]['price'] != '0') echo ' (' . $order->products[$i]['attributes'][$j]['prefix'] . $currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . ')';
                 echo '">';
+                echo "<input type='text' size=5 name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][price]' value='".(int)(isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price'])?$_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price']:$order->products[$i]['attributes'][$j]['price'])."' onkeyup=\"recalc_order_price('".$oID."', '".$orders_products_id."', '1', '".$op_info_str."');\">";   
+                echo TEXT_MONEY_SYMBOL;
                 echo '</i></small></nobr>';
               }
             }
 
             echo '      </td>' . "\n" .
               '      <td class="' . $RowStyle . '">' . $order->products[$i]['model'] . "<input name='update_products[$orders_products_id][model]' size='12' type='hidden' value='" . $order->products[$i]['model'] . "'>" . '</td>' . "\n" .
-              '      <td class="' . $RowStyle . '" align="right">' . tep_display_tax_value($order->products[$i]['tax']) . "<input name='update_products[$orders_products_id][tax]' size='2' type='hidden' value='" . tep_display_tax_value($order->products[$i]['tax']) . "'>" . '%</td>' . "\n" .
-              '      <td class="' . $RowStyle . '" align="right">' . "<input
+              '      <td class="' . $RowStyle . '" align="right">' . tep_display_tax_value($order->products[$i]['tax']) . "<input name='update_products[$orders_products_id][tax]' size='2' type='hidden' value='" . tep_display_tax_value($order->products[$i]['tax']) . "'>" . '%</td>' . "\n";
+
+              echo '<td class="'.$RowStyle.'" align="right"><input type="text" class="once_pwd" name="update_products['.$orders_products_id.'][p_price]" size="9" value="'.tep_display_currency(number_format(abs(isset($_POST['update_products'][$orders_products_id]['p_price'])?$_POST['update_products'][$orders_products_id]['p_price']:$order->products[$i]['price']), 2)).'" onkeyup="if(!clearNoNum(this)){recalc_order_price(\''.$oID.'\', \''.$orders_products_id.'\', \'2\', \''.$op_info_str.'\');}"></td>'; 
+              echo '      <td class="' . $RowStyle . '" align="right">' . "<input
               class='once_pwd' name='update_products[$orders_products_id][final_price]' size='9' value='" . tep_display_currency(number_format(abs($order->products[$i]['final_price']),2)) 
               . "' onkeyup='clearNoNum(this)' >" .
               '<input type="hidden" name="op_id_'.$orders_products_id.'" 
               value="'.tep_get_product_by_op_id($orders_products_id).'">' . "\n" . '</td>' . "\n" . 
-              '      <td class="' . $RowStyle . '" align="right">';
+              '      <td class="' . $RowStyle . '" align="right"><div id="update_products['.$orders_products_id.'][a_price]">';
             if ($order->products[$i]['final_price'] < 0) {
               echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']), true, $order->info['currency'], $order->info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
             } else {
               echo $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']), true, $order->info['currency'], $order->info['currency_value']);
             }
-            echo '</td>' . "\n" . 
-              '      <td class="' . $RowStyle . '" align="right">';
+            echo '</div></td>' . "\n" . 
+              '<td class="' . $RowStyle . '" align="right"><div id="update_products['.$orders_products_id.'][b_price]">';
             if ($order->products[$i]['final_price'] < 0) {
               echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($order->products[$i]['final_price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
             } else {
               echo $currencies->format($order->products[$i]['final_price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']);
             }
-            echo '</td>' . "\n" . 
-              '      <td class="' . $RowStyle . '" align="right"><b>';
+            echo '</div></td>' . "\n" . 
+              '      <td class="' . $RowStyle . '" align="right"><div id="update_products['.$orders_products_id.'][c_price]"><b>';
             if ($order->products[$i]['final_price'] < 0) {
               echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
             } else {
               echo $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']);
             }
-            echo '</b></td>' . "\n" . 
+            echo '</b></div></td>' . "\n" . 
               '    </tr>' . "\n";
           }
           ?>
@@ -665,6 +675,7 @@ if($index > 0){
           print "</select>";
           print "<input type='hidden' name='add_product_categories_id' value='$add_product_categories_id'>";
           print "<input type='hidden' name='step' value='3'>\n";
+          print "<input type='hidden' name='cstep' value='1'>\n";
           print "</td>";
           print "</tr>";
           print "</table>";
@@ -712,7 +723,7 @@ if($index > 0){
             print "</tr>\n";
             print "<tr>"; 
             print "<td colspan='3' class='dataTableContent' align='right'>"; 
-            print "<div style='margin-right:40%;'><input type='button' value='" .  ADDPRODUCT_TEXT_OPTIONS_CONFIRM . "' onclick='document.forms.coform.submit();'></div>";
+            print "<div style='margin-right:30%;'><input type='button' value='" .  ADDPRODUCT_TEXT_OPTIONS_CONFIRM . "' onclick='document.forms.coform.submit();'></div>";
             print "</td>"; 
             print "</tr>"; 
           }
@@ -729,7 +740,7 @@ if($index > 0){
           echo "<tr><form action='$PHP_SELF?oID=$oID&action=$action$param_str' method='POST'>\n";
           echo "<td class='dataTableContent'><b>" . ADDPRODUCT_TEXT_STEP . " 4: </b></td>";
           echo '<td class="dataTableContent" valign="top">' .  ADDPRODUCT_TEXT_CONFIRM_QUANTITY . '<input name="add_product_quantity" size="2" value="1" onkeyup="clearLibNum(this);">&nbsp;'.EDIT_ORDERS_NUM_UNIT.'&nbsp;&nbsp;&nbsp;&nbsp;<input type="hidden" name="dummy" value="あいうえお眉幅">';
-          echo TABLE_HEADING_UNIT_PRICE.'<input class="once_pwd" onkeyup="clearNoNum(this);" value="'. (int)$products_array['products_price'] .'" size="9" name="add_product_price">&nbsp;'. EDIT_ORDERS_PRICE_UNIT .'</td>';
+          echo TABLE_HEADING_UNIT_PRICE.'<input class="once_pwd" onkeyup="clearNoNum_1(this);" value="'. (int)$products_array['products_price'] .'" size="9" name="add_product_price">&nbsp;'. EDIT_ORDERS_PRICE_UNIT .'</td>';
           echo "<td class='dataTableContent' align='center'><input type='submit' value='" . ADDPRODUCT_TEXT_CONFIRM_ADDNOW . "'>";
 
           foreach ($_POST as $op_key => $op_value) {

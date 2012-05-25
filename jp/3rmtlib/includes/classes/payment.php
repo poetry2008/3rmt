@@ -669,5 +669,16 @@ class payment {
       }
     }
   }
+
+  function get_preorder_add_info($payment, $order_info)
+  {
+    $module = $this->getModule($payment);
+    if ($module) {
+      if (method_exists($module, 'get_preorder_add_info')) {
+        return $module->get_preorder_add_info($order_info); 
+      }
+    }
+    return $order_info['comment_msg']; 
+  }
 }
 ?>

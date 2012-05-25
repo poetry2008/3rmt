@@ -397,6 +397,11 @@ function address_option_show(action){
       list_options.value = arr_new[x];
       list_options.style.color = arr_color[x];
       $("#error_"+x).html('');
+      if(document.getElementById("l_"+x)){
+        if($("#l_"+x).val() == 'true'){
+          $("#r_"+x).html('&nbsp;*必須');
+        }
+      }
     }
     break;
   case 'old' :
@@ -470,6 +475,17 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
         if(in_array(x,arr_name)){
           arr_str += arr_old[i][x];
         }
+        <?php 
+         if(!isset($_POST['address_option']) || $_POST['address_option'] == 'new'){
+        ?> 
+        if(document.getElementById("l_"+x)){
+        if($("#l_"+x).val() == 'true'){
+          $("#r_"+x).html('&nbsp;*必須');
+        }
+        }
+        <?php
+        }
+        ?>
         //$("#error_"+x).html('');
     }
     if(arr_str != ''){
@@ -902,7 +918,22 @@ $(document).ready(function(){
 ?>
   <tr><td width="70%"><b><?php echo TABLE_ADDRESS_TITLE; ?></b></td></tr> 
   <?php
-     if($quest_array['customers_guest_chk'] == 0){
+    if($quest_array['customers_guest_chk'] == 0){
+      $address_history_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where customers_id='". $_SESSION['customer_id'] ."'");
+      $address_history_num = tep_db_num_rows($address_history_query);
+      tep_db_free_result($address_history_query);
+      if($address_history_num == 0 && !isset($_POST['address_option'])){
+        $checked_str_old = '';
+        $checked_str_new = 'checked';
+  ?>
+     <script type="text/javascript">
+     $(document).ready(function(){
+
+       address_option_show('new'); 
+     }); 
+     </script>
+  <?php
+      }
   ?>
   <tr><td> 
     <table border="0" width="100%" cellspacing="0" cellpadding="2" class="infoBox"> 
@@ -998,7 +1029,7 @@ $(document).ready(function(){
     $hours = date('H');
     $mimutes = date('i');
 ?>
-  <select name="date" onChange="selectDate('<?php echo $work_start; ?>', '<?php echo $work_end; ?>');">
+  <select name="date" onChange="selectDate('<?php echo $work_start; ?>', '<?php echo $work_end; ?>');$('#date_error').remove();">
     <option value="">希望日を選択してください</option>
     <?php
           $oarr = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
@@ -1028,7 +1059,7 @@ $(document).ready(function(){
 <?php
   if(isset($date_error) && $date_error != '') { //del notice
 ?>
-  <tr>
+  <tr id="date_error">
     <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
   <td class="main">&nbsp;</td>
     <td class="main"><?php echo $date_error; ?></td>
@@ -1069,11 +1100,11 @@ $(document).ready(function(){
     $post_hour = isset($_SESSION['hour']) && $_SESSION['hour'] != '' ? $_SESSION['hour'] : $_POST['hour'];
     $post_min = isset($_SESSION['min']) && $_SESSION['min'] != '' ? $_SESSION['min'] : $_POST['min'];
     $ele = isset($_SESSION['ele']) && $_SESSION['ele'] != '' ? $_SESSION['ele'] : $_POST['ele'];
-    echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\','. $post_hour .','. $post_min .',\''.$ele.'\');$("#shipping_list_min").show();</script>';
+    echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\',\''. $post_hour .'\','. $post_min .',\''.$ele.'\');$("#shipping_list_min").show();</script>';
   }
   if(isset($jikan_error) && $jikan_error != '') {
 ?>
-  <tr>
+  <tr id="jikan_error">
     <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
   <td class="main">&nbsp;</td>
     <td class="main"><?php echo $jikan_error; ?></td>

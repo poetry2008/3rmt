@@ -571,3 +571,4 @@ define('NOTICE_ALARM_TITLE', 'アラーム');
 define('NOTICE_DIFF_TIME_TEXT', '残り');
 define('TEXT_DISPLAY_NUMBER_OF_MANUAL', '<b>%d</b> &sim; <b>%d</b> 番目を表示 (<b>%d</b> 件のうち)');
 define('FILENAME_FILENAME_RESET_PWD_TEXT','一括パスワードリセット');
+define('FILENAME_CUSTOMERS_EXIT_TEXT','退会顧客管理');

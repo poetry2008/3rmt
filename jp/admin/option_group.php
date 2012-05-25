@@ -269,7 +269,7 @@ $(function() {
       }
 ?>
                 <td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_OPTION_GROUP, 'page='.$_GET['page'].'&group_id=' .  $group['id']);?>'">
-                <a href="<?php echo tep_href_link(FILENAME_OPTION_ITEM, 'group_id='.$group['id']);?>"><?php echo tep_image(DIR_WS_ICONS.'folder.gif', ICON_FOLDER);?></a> 
+                <a href="<?php echo tep_href_link(FILENAME_OPTION_ITEM, 'group_id='.$group['id'].(isset($_GET['page'])?'&gpage='.$_GET['page']:''));?>"><?php echo tep_image(DIR_WS_ICONS.'folder.gif', ICON_FOLDER);?></a> 
                 <?php echo '&nbsp;' . $group['name']; ?>
                 </td>
                 <td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_OPTION_GROUP, 'page='.$_GET['page'].'&group_id=' .  $group['id']);?>'"><?php echo '&nbsp;' . $group['title']; ?></td>

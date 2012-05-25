@@ -12,7 +12,9 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
   {
     $sp_pos = strpos($_SERVER['PHP_SELF'], 'checkout_option.php');
     $ac_pos = strpos($_SERVER['PHP_SELF'], 'admin/create_order.php');
+    $ed_pos = strpos($_SERVER['PHP_SELF'], 'admin/edit_orders.php');
     $pro_pos = strpos($_SERVER['PHP_SELF'], 'product_info.php');
+    $ped_pos = strpos($_SERVER['PHP_SELF'], 'admin/edit_new_preorders.php');
     
     if (strlen($this->front_title)) {
        if ($ptype) {
@@ -20,7 +22,7 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
        } else {
          echo '<td class="option_name">'; 
        }
-       echo $this->front_title;
+       echo $this->front_title.':';
        echo '</td>';
      }
      $is_default = 0;
@@ -73,13 +75,60 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
          }
        
      }
-     if ($pro_pos !== false) {
+     
+     if ($ac_pos !== false) {
+         if (($_GET['action'] == 'add_product') && isset($_GET['Customer_mail']) && isset($_GET['site_id']) && !isset($_POST[$pre_item_str.'op_'.$this->formname])) {
+            $customer_info_raw = tep_db_query("select customers_id from ".TABLE_CUSTOMERS." where customers_email_address = '".$_GET['Customer_mail']."' and site_id = '".$_GET['site_id']."'");   
+            $customer_info = tep_db_fetch_array($customer_info_raw); 
+            if ($customer_info) {
+              $o_attributes_raw = tep_db_query("select opa.* from ".TABLE_ORDERS_PRODUCTS_ATTRIBUTES." opa, ".TABLE_ORDERS." o where opa.orders_id = o.orders_id and o.customers_id = '".(int)$customer_info['customers_id']."' and opa.option_group_id = '".$this->group_id."' and opa.option_item_id = '".$this->id."' order by opa.orders_id desc limit 1"); 
+              $o_attributes_res = tep_db_fetch_array($o_attributes_raw); 
+              if ($o_attributes_res) {
+                $old_option_info = @unserialize(stripslashes($o_attributes_res['option_info']));  
+                if (!empty($this->radio_image)) {
+                  foreach ($this->radio_image as $car_key => $car_value) {
+                     if (trim($car_value['title']) == trim($old_option_info['value'])) {
+                       $a_old_single = true;
+                       $default_value = $old_option_info['value'];
+                       break;
+                     }
+                  }
+                }
+              }
+            }
+         }
+     }
+     
+     if ($ed_pos !== false) {
+         if (($_GET['action'] == 'add_product') && !isset($_POST[$pre_item_str.'op_'.$this->formname])) {
+            $origin_order_raw = tep_db_query("select customers_id, site_id from ".TABLE_ORDERS." where orders_id = '".$_GET['oID']."'"); 
+            $origin_order = tep_db_fetch_array($origin_order_raw);
+            if ($origin_order) {
+                $o_attributes_raw = tep_db_query("select opa.* from ".TABLE_ORDERS_PRODUCTS_ATTRIBUTES." opa, ".TABLE_ORDERS." o where opa.orders_id = o.orders_id and o.customers_id = '".(int)$origin_order['customers_id']."' and opa.option_group_id = '".$this->group_id."' and opa.option_item_id = '".$this->id."' order by opa.orders_id desc limit 1"); 
+                $o_attributes_res = tep_db_fetch_array($o_attributes_raw); 
+                if ($o_attributes_res) {
+                  $old_option_info = @unserialize(stripslashes($o_attributes_res['option_info']));  
+                  if (!empty($this->radio_image)) {
+                    foreach ($this->radio_image as $cer_key => $cer_value) {
+                       if (trim($cer_value['title']) == trim($old_option_info['value'])) {
+                         $a_old_single = true;
+                         $default_value = $old_option_info['value'];
+                         break;
+                       }
+                    }
+                  }
+                }
+            }
+         }
+     }
+     
+     if (($pro_pos !== false) || ($ac_pos !== false) || ($ped_pos !== false) || ($ed_pos !== false)) {
        echo '<div class="option_product_radio_list">';
      } else {
        echo '<div class="option_radio_list">';
      }
      if ($is_default == 1) {
-       if ($pro_pos !== false) {
+       if (($pro_pos !== false) || ($ac_pos !== false) || ($ped_pos !== false) || ($ed_pos !== false)) {
          echo '<div class="option_product_default_radio">';
        } else {
          echo '<div class="option_radio_list">';
@@ -101,7 +150,15 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
              echo '</div>'; 
            }
          } else {
-           echo '<div class="option_show_border">'; 
+           if (isset($a_old_single)) {
+             if (trim($default_value) == trim($this->default_radio)) {
+               echo '<div class="option_show_border">'; 
+             } else {
+               echo '<div class="option_hide_border">'; 
+             }
+           } else {
+             echo '<div class="option_show_border">'; 
+           }
            echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\');">'.$this->default_radio.'</a>';
            echo '</div>'; 
          }
@@ -111,11 +168,11 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
      }
      $i = 0; 
      if (!empty($this->radio_image)) {
-       if ($pro_pos !== false) {
+       if (($pro_pos !== false) || ($ac_pos !== false) || ($ped_pos !== false) || ($ed_pos !== false)) {
          echo '<div class="option_product_radio_img_list">';  
        } 
        foreach ($this->radio_image as $key => $value) {
-         if ($pro_pos !== false) {
+         if (($pro_pos !== false) || ($ac_pos !== false) || ($ped_pos !== false) || ($ed_pos !== false)) {
            echo '<div class="option_product_single_radio">';  
          } else {
            echo '<div class="option_radio_list">';  
@@ -150,7 +207,15 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
                  echo '</div>'; 
                }
              } else {
-               echo '<div class="option_hide_border">'; 
+               if (isset($a_old_single)) {
+                 if (trim($default_value) == trim($value['title'])) {
+                   echo '<div class="option_show_border">'; 
+                 } else {
+                   echo '<div class="option_hide_border">'; 
+                 }
+               } else {
+                 echo '<div class="option_hide_border">'; 
+               }
                echo '<a href="javascript:void(0);" onclick="select_item_radio(this,\''.$value['title'].'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\');">'.$value['title'].'</a>';
                echo '</div>'; 
              }
@@ -218,12 +283,28 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
                }
              } else {
                if ($i == 0) {
-                 $default_i_value = $value['title']; 
-                 echo '<div class="option_show_border">'; 
+                 if (isset($a_old_single)) {
+                   if (trim($default_value) == trim($value['title'])) {
+                     echo '<div class="option_show_border">'; 
+                   } else {
+                     echo '<div class="option_hide_border">'; 
+                   }
+                 } else {
+                   echo '<div class="option_show_border">'; 
+                   $default_i_value = $value['title']; 
+                 }
                  echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \''.$value['title'].'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\');">'.$value['title'].'</a>';
                  echo '</div>'; 
                } else {
-                 echo '<div class="option_hide_border">'; 
+                 if (isset($a_old_single)) {
+                   if (trim($default_value) == trim($value['title'])) {
+                     echo '<div class="option_show_border">'; 
+                   } else {
+                     echo '<div class="option_hide_border">'; 
+                   }
+                 } else {
+                   echo '<div class="option_hide_border">'; 
+                 }
                  echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \''.$value['title'].'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\');">'.$value['title'].'</a>';
                  echo '</div>'; 
                }
@@ -244,7 +325,7 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
           
          echo '</span>';
          
-         if (($sp_pos !== false) || ($ac_pos !== false)) {
+         if ($sp_pos !== false) {
            if ($value['money'] != '0') {
              echo '<span class="option_money">'.$value['money'].OPTION_ITEM_MONEY_UNIT.'</span>'; 
            }
@@ -253,7 +334,7 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
          echo '</div>';
          $i++; 
        }
-       if ($pro_pos !== false) {
+       if (($pro_pos !== false) || ($ac_pos !== false) || ($ped_pos !== false) || ($ed_pos !== false)) {
          echo '</div>';
        } 
      }
@@ -273,6 +354,21 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
        echo $option_error_array[$pre_item_str.$this->formname]; 
      }
      echo '</span>'; 
+     if ($pro_pos !== false) {
+       $default_price = 0; 
+       $d_tmp_value = (isset($default_i_value)?$default_i_value:$default_value);
+       if (!$d_tmp_value == '') {
+         if (!empty($this->radio_image)) {
+           foreach ($this->radio_image as $dp_key => $dp_value) {
+             if (trim($dp_value['title']) == $d_tmp_value) {
+               $default_price = $dp_value['money'];
+               break;
+             }
+           } 
+         }
+       } 
+       echo '<input id="tp1_'.$pre_item_str.$this->formname.'" type="hidden" name="tp1_'.$pre_item_str.$this->formname.'" value="'.number_format($default_price).'">'; 
+     }
      echo '</td>';
   }
   

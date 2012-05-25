@@ -8,40 +8,68 @@
   check_uri('/page=\d+/');
 
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_SHOPPING_CART);
-
-  $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
-?>
-<?php page_head();?>
-<script type="text/javascript" src="./js/jquery-1.3.2.min.js"></script>
-<?php
+  
   if (isset($_GET['action'])) {
     if ($_GET['action'] == 'delete') {
       $cart->remove($_GET['products_id']); 
       tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL')); 
+    } else if ($_GET['action'] == 'save_quantity'){
+      $p_info = explode('<<', $_POST['sp_info']);
+      foreach ($p_info as $p_key => $p_value) {
+        if (empty($p_value)) {
+          continue; 
+        }
+        $tp_info = explode('||', $p_value);
+        $cart->update_quantity($tp_info[0], $tp_info[1]);
+      }
+      exit; 
     }
   }
+  
+  $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
 ?>
+<?php page_head();?>
+<script type="text/javascript" src="./js/jquery-1.3.2.min.js"></script>
+
 <script type="text/javascript">
 <!--
 function history_back(back_url){
-  /* 
+  
   var final_prices = document.getElementsByName('final_price');
+  var url_param_str = ''; 
   for (var i=0; i<final_prices.length; i++)
   {
     var t_pid = final_prices[i].id.substr(3);
     var t_pquantity = document.getElementById('quantity_'+ final_prices[i].id.substr(3)).value;
-    $.ajax({
-      url: '<?php echo FILENAME_SHOPPING_CART;?>?action=save_quantity',
-      type: 'POST',
-      async: false,
-      data: 'pid='+t_pid+'&pquantity='+t_pquantity,
-      success: function(){
-      }
-    });
+    url_param_str += t_pid + "||" + t_pquantity + "<<"; 
   }
-  */ 
-  window.location.href=back_url;
+  
+  if (url_param_str != '') {
+    $.ajax({
+        url: '<?php echo FILENAME_SHOPPING_CART;?>?action=save_quantity',
+        type: 'POST',
+        async: false,
+        data: 'sp_info='+url_param_str,
+        success: function(msg){
+          window.location.href=back_url;
+        }
+    });
+  } else {
+    window.location.href=back_url;
+  }
 }
+
+function fmoney(s)
+{
+ s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(0) + "";
+ var l = s.split(".")[0].split("").reverse();
+ var t = '';
+ for(i = 0; i < l.length; i ++ ){
+    t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+  }
+ return t.split("").reverse().join("");
+}
+
 function money_update(objid, targ)
 {
   var obj = document.getElementById(objid);
@@ -53,32 +81,23 @@ function money_update(objid, targ)
 
   
   var old_price_total  = document.getElementById("pri_" + product_id);
-  var old_price_total_str = old_price_total.innerHTML; 
      
-  var old_price_total_replace_str = old_price_total_str.replace('<font color="#ff0000">', ''); 
-  old_price_total_replace_str = old_price_total_replace_str.replace('</font>', ''); 
   
-  var monetary_unit_pri = old_price_total_replace_str.slice(-1);
-   
-  if (targ == 'up') {
-    old_p_num = Number(obj.value) - 1; 
-  } else {
-    old_p_num = Number(obj.value) + 1; 
-  }
-  var new_unit_price_total = (Number(old_price_total_replace_str.slice(0, -1)) / old_p_num) * Number(obj.value);
+  
+  var new_unit_price_total = unit_price.value * Number(obj.value);
   new_unit_price_total = Math.round(new_unit_price_total);
 
   if (unit_price.value < 0) {
-    old_price_total.innerHTML = '<font color="#ff0000">'+Math.abs(new_unit_price_total).toString() +'</font>' +monetary_unit_pri;
+    old_price_total.innerHTML = '<font color="#ff0000">'+Math.abs(new_unit_price_total).toString() +'</font>' + '<?php echo JPMONEY_UNIT_TEXT;?>';
   } else {
-    old_price_total.innerHTML = Math.abs(new_unit_price_total).toString() + monetary_unit_pri;
+    old_price_total.innerHTML = Math.abs(new_unit_price_total).toString() + '<?php echo JPMONEY_UNIT_TEXT;?>';
   }
   
   $('#pri_'+product_id).parent().find('small').each(function() {
     old_option_price = $(this).find('i').html();
     if (old_option_price != '&nbsp;') {
       old_option_pri = old_option_price.slice(-1);
-      old_option_price_info =  old_option_price.slice(0, -1);
+      old_option_price_info =  old_option_price.slice(0, -1).replace(/,/g, '');
       if (targ == 'up') {
         old_num = Number(obj.value) - 1; 
       } else {
@@ -89,7 +108,16 @@ function money_update(objid, targ)
       $(this).html('<i>' + new_option_price + old_option_pri + '</i>');
     }
   });
-  
+ 
+  var one_price_str = document.getElementById('one_price_show_'+product_id).innerHTML.replace(/,/g, '');
+  if (targ == 'up') {
+    old_tmp_num = Number(obj.value) - 1; 
+  } else {
+    old_tmp_num = Number(obj.value) + 1; 
+  }
+  var one_price = Number(one_price_str) / old_tmp_num  * Number(obj.value);
+  document.getElementById('one_price_show_'+product_id).innerHTML = fmoney(one_price);
+   
   set_sub_total();
 }
 

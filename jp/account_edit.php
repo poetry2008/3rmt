@@ -47,6 +47,7 @@ case 'per':
   $lastname_f = tep_db_prepare_input($_POST['lastname_f']);
   $dob = tep_db_prepare_input($_POST['dob']);
   $email_address = tep_db_prepare_input($_POST['email_address']);
+  $email_address  = str_replace("\xe2\x80\x8b", '', $email_address);
   $old_email_address = tep_db_prepare_input($_POST['old_email']);
   $telephone = tep_db_prepare_input($_POST['telephone']);
   $fax = tep_db_prepare_input($_POST['fax']);
@@ -208,6 +209,7 @@ if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
   $lastname_f = tep_db_prepare_input($_POST['lastname_f']);
   $dob = tep_db_prepare_input($_POST['dob']);
   $email_address = tep_db_prepare_input($_POST['email_address']);
+  $email_address  = str_replace("\xe2\x80\x8b", '', $email_address);
   $old_email_address = tep_db_prepare_input($_POST['old_email']);
   $telephone = tep_db_prepare_input($_POST['telephone']);
   $fax = tep_db_prepare_input($_POST['fax']);
@@ -268,7 +270,7 @@ if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
     $entry_email_address_check_error = false;
   }
 
-  if(!preg_match('/[a-z]/',$password)){
+  if(!(preg_match('/[a-zA-Z]/',$password) && preg_match('/[0-9]/',$password))){
       $error = true;
       $error_pwd = true;
       $entry_password_english_error = true;
@@ -286,6 +288,16 @@ if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
     $error = true;
     $error_pwd = true;
     $entry_password_confirmation_error = true;
+  }
+
+  $check_pwd_query = tep_db_query("select customers_password from ". TABLE_CUSTOMERS ." where customers_id='". tep_db_input($customer_id) ."'");
+  $check_pwd_array = tep_db_fetch_array($check_pwd_query);
+  tep_db_free_result($check_pwd_query);
+
+  if(!tep_validate_password($_POST['u_password'], $check_pwd_array['customers_password'])){
+    $error = true;
+    $error_pwd = true;
+    $entry_password_old_error = true;
   }
   
 //ccdd
@@ -474,7 +486,7 @@ if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
     $error_pwd = false;
     $password = tep_db_prepare_input($_POST['password']);
     $confirmation = tep_db_prepare_input($_POST['confirmation']); 
-    if(!preg_match('/[a-z]/',$password)){
+    if(!(preg_match('/[a-zA-Z]/',$password) && preg_match('/[0-9]/',$password))){
       $error_pwd = true;
       $entry_password_english_error = true;
     }else{
@@ -490,7 +502,20 @@ if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
     if ($password !== $confirmation) {
       $error_pwd = true;
       $entry_password_confirmation_error = true;
+    } else {
+      $entry_password_confirmation_error = false;
     }
+
+   $check_pwd_query = tep_db_query("select customers_password from ". TABLE_CUSTOMERS ." where customers_id='". tep_db_input($customer_id) ."'");
+   $check_pwd_array = tep_db_fetch_array($check_pwd_query);
+   tep_db_free_result($check_pwd_query);
+
+   if(!tep_validate_password($_POST['u_password'], $check_pwd_array['customers_password'])){
+     $error_pwd = true;
+     $entry_password_old_error = true;
+   }else{
+      $entry_password_old_error = false;
+   }
     if($error_pwd == false){
 
       tep_db_query("update ". TABLE_CUSTOMERS ." set new_customers_password='".tep_encrypt_password($password) ."',customers_password='". tep_encrypt_password($password) ."' where customers_id='". $_SESSION['customer_id'] ."'");  

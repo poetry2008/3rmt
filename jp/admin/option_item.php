@@ -10,7 +10,7 @@
     switch ($_GET['action']) {
       case 'setflag':
         tep_db_query("update `".TABLE_OPTION_ITEM."` set `status` = '".(int)$_GET['flag']."' where id = '".$_GET['item_id']."'"); 
-        tep_redirect(tep_href_link(FILENAME_OPTION_ITEM, 'group_id='.$_GET['group_id']));  
+        tep_redirect(tep_href_link(FILENAME_OPTION_ITEM, 'group_id='.$_GET['group_id'].(isset($_GET['gpage'])?'&gpage='.$_GET['gpage']:'')));  
         break;
       case 'update':
       case 'insert':
@@ -208,13 +208,13 @@
              tep_db_query("update `".TABLE_OPTION_ITEM."` set `option` = '".tep_db_prepare_input(serialize($option_array))."' where `id` = '".$item_id."'");
           }
         }
-        tep_redirect(tep_href_link(FILENAME_OPTION_ITEM, 'group_id='.$_GET['group_id'])); 
+        tep_redirect(tep_href_link(FILENAME_OPTION_ITEM, 'group_id='.$_GET['group_id'].(isset($_GET['gpage'])?'&gpage='.$_GET['gpage']:''))); 
         break; 
       case 'deleteconfirm':
         if (isset($_GET['item_id'])) {
           tep_db_query('delete from '.TABLE_OPTION_ITEM.' where id = \''.(int)$_GET['item_id'].'\''); 
         }
-        tep_redirect(tep_href_link(FILENAME_OPTION_ITEM, 'group_id='.$_GET['group_id'])); 
+        tep_redirect(tep_href_link(FILENAME_OPTION_ITEM, 'group_id='.$_GET['group_id'].(isset($_GET['gpage'])?'&gpage='.$_GET['gpage']:''))); 
         break; 
     }
   }
@@ -324,7 +324,7 @@ function create_option_item(gid)
 {
   $.ajax({
     url: 'ajax_orders.php?action=new_item',
-    data:'group_id='+gid, 
+    data:'group_id='+gid+'&gpage=<?php echo (isset($_GET['gpage'])?'&gpage='.$_GET['gpage']:'');?>', 
     type: 'POST',
     dataType: 'text',
     async:false,
@@ -381,24 +381,23 @@ function show_item_info(ele, item_id, gid)
   ele = ele.parentNode;
   $.ajax({
     url: 'ajax_orders.php?action=edit_item',      
-    data: 'group_id='+gid+'&item_id='+item_id,
+    data: 'group_id='+gid+'&item_id='+item_id+'&gpage=<?php echo (isset($_GET['gpage'])?'&gpage='.$_GET['gpage']:'');?>',
     type: 'POST',
     dataType: 'text',
     async:false,
     success: function (data) {
       $('#show_item_info').html(data); 
       if (document.documentElement.clientHeight < document.body.scrollHeight) {
-        if
-        (ele.offsetTop+$('#item_list_box').position().top+ele.offsetHeight+$('#show_item_info').height() > document.body.scrollHeight) {
-          offset =
-          ele.offsetTop+$('#item_list_box').position().top-$('#show_item_info').height()-$('#offsetHeight').height();
+        if (ele.offsetTop+$('#item_list_box').position().top+ele.offsetHeight+$('#show_item_info').height() > document.body.scrollHeight) {
+          offset = ele.offsetTop+$('#item_list_box').position().top-$('#show_item_info').height()-$('#offsetHeight').height();
           $('#show_item_info').css('top', offset).show(); 
         } else {
           offset = ele.offsetTop+$('#item_list_box').position().top+ele.offsetHeight;
           $('#show_item_info').css('top', offset).show(); 
         }
       } else {
-        if (ele.offsetTop+$('#item_list_box').position().top+ele.offsetHeight+$('#show_item_info').height() > document.documentElement.clientHeight) {
+        //if (ele.offsetTop+$('#item_list_box').position().top+ele.offsetHeight+$('#show_item_info').height() > document.documentElement.clientHeight) {
+        if ((document.documentElement.clientHeight-ele.offsetTop) < ele.offsetTop) {
           offset = ele.offsetTop+$('#item_list_box').position().top-$('#show_item_info').height()-$('#offsetHeight').height()-ele.offsetHeight;
           $('#show_item_info').css('top', offset).show(); 
         } else {
@@ -475,7 +474,7 @@ function add_option_radio()
   });   
   for (i=1; i<=5 ; i++) {
     i_num_add = i_num+i; 
-    html_str += '<tr><td align="left"><?php echo TEXT_OPTION_ITEM_SELECT;?></td><td align="left"><input type="text" style="width:35%;"name="ro_'+i_num_add+'" value=""><a href="javascript:void(0);"onclick="delete_radio(this, '+i_num_add+');"><input type="button" value="<?php echo TEXT_OPTION_ITEM_DEL_LINK;?>" class="element_button" onclick="redirect_new_url(this);"></a></td></tr>';   
+    html_str += '<tr><td align="left"><?php echo TEXT_OPTION_ITEM_SELECT;?></td><td align="left"><input type="text" class="option_text"name="ro_'+i_num_add+'" value="">&nbsp;<a href="javascript:void(0);"onclick="delete_radio(this, '+i_num_add+');"><input type="button" value="<?php echo TEXT_OPTION_ITEM_DEL_LINK;?>" class="element_button" onclick="redirect_new_url(this);"></a></td></tr>';   
     
     html_str += '<tr><td align="left">&nbsp;&nbsp;<?php echo TEXT_ITEM_PIC_NAME;?></td><td align="left"><input type="file" name="rop_'+i_num_add+'[]" value="">&nbsp;<a href="javascript:void(0);" onclick="delete_item_pic(this);"><input type="button" value="<?php echo TEXT_ITEM_DELETE_PIC;?>" class="element_button"></a><a href="javascript:void(0);" onclick="add_item_pic(this, '+i_num_add+');"><input type="button" value="<?php echo TEXT_ITEM_ADD_PIC;?>" class="element_button"></a></td></tr>'; 
    
@@ -682,9 +681,9 @@ $(function() {
                 <td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_OPTION_ITEM, 'page='.$_GET['page'].'&group_id=' .$_GET['group_id'].  '&item_id=' .$item['id']);?>'">
                 <?php
                 if ($item['status'] == '1') {
-                  echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN, 10, 10) . '&nbsp;&nbsp;<a href="' .  tep_href_link(FILENAME_OPTION_ITEM, 'action=setflag&flag=0&item_id=' .  $item['id'].'&group_id='.$_GET['group_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) . '</a>';
+                  echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN, 10, 10) . '&nbsp;&nbsp;<a href="' .  tep_href_link(FILENAME_OPTION_ITEM, 'action=setflag&flag=0&item_id=' .  $item['id'].'&group_id='.$_GET['group_id'].(isset($_GET['gpage'])?'&gpage='.$_GET['gpage']:'')) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) . '</a>';
                 } else {
-                  echo '<a href="' . tep_href_link(FILENAME_OPTION_ITEM, 'action=setflag&flag=1&item_id=' .  $item['id'].'&group_id='.$_GET['group_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT, 10, 10) . '</a>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED, 10, 10);
+                  echo '<a href="' . tep_href_link(FILENAME_OPTION_ITEM, 'action=setflag&flag=1&item_id=' .  $item['id'].'&group_id='.$_GET['group_id'].(isset($_GET['gpage'])?'&gpage='.$_GET['gpage']:'')) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT, 10, 10) . '</a>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED, 10, 10);
                 }
                 ?>
                 </td>
@@ -708,7 +707,7 @@ $(function() {
                   <tr>
                     <td colspan="2" align="right" class="smallText">
                     <?php 
-                    echo '&nbsp;<a href="'.tep_href_link(FILENAME_OPTION_GROUP, 'group_id='.$_GET['group_id']).'">' .tep_html_element_button(IMAGE_BACK) . '</a>'; 
+                    echo '&nbsp;<a href="'.tep_href_link(FILENAME_OPTION_GROUP, 'group_id='.$_GET['group_id'].(isset($_GET['gpage'])?'&page='.$_GET['gpage']:'')).'">' .tep_html_element_button(IMAGE_BACK) . '</a>'; 
                     echo '&nbsp;<a href="javascript:void(0);" onclick="create_option_item(\''.$_GET['group_id'].'\');">' .tep_html_element_button(IMAGE_NEW_PROJECT, 'onclick=""') . '</a>'; 
                     ?>
                     &nbsp;

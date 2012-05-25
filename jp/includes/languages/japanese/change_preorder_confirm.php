@@ -20,4 +20,4 @@ define('CHANGE_PREORDER_POINT_TEXT_BUY','<b>買取はポイントがつきませ
 define('TEXT_ADDRESS','住所:');
 define('TEXT_SHIPPING_FEE','配送料:');
 define('TEXT_SHIPPING_FEE_NOT','無料');
-
+define('TEXT_TIME_LINK', '～');
