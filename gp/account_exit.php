@@ -51,6 +51,7 @@ tep_db_query($account_info_del_sql);
   tep_session_unregister('customer_zone_id');
   tep_session_unregister('comments');
   tep_session_unregister('comment_emailaddress');
+  $navigation->clear_snapshot();
 
 }
 //如果没有登陆 则在历史中加上此页，并跳转到登录页

@@ -50,6 +50,8 @@ tep_db_query($account_info_del_sql);
   tep_session_unregister('customer_zone_id');
   tep_session_unregister('comments');
   tep_session_unregister('comment_emailaddress');
+  $navigation->clear_snapshot();
+
 }
 //加载语言
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_ACCOUNT_EXIT);
