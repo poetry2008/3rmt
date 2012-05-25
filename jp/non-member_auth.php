@@ -24,6 +24,7 @@
   $customers_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = '".(int)$gud_id."' and site_id = '".SITE_ID."'");
   $customers_res = tep_db_fetch_array($customers_raw); 
   if(isset($_POST['cemail'])){
+    $_POST['cemail'] = tep_db_prepare_input($_POST['cemail']);
     $_POST['cemail'] = str_replace("\xe2\x80\x8b", '', $_POST['cemail']);
   }
   if ($customers_res) {

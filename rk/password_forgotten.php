@@ -9,6 +9,7 @@
 
   if (isset($_GET['action']) && ($_GET['action'] == 'process')) {
 //ccdd
+    $_POST['email_address'] = tep_db_prepare_input($_POST['email_address']);
     $_POST['email_address'] =  str_replace("\xe2\x80\x8b", '',$_POST['email_address']);
     $check_customer_query = tep_db_query("
         select customers_firstname, 

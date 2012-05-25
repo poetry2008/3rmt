@@ -22,6 +22,7 @@
   $customers_raw = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id = '".(int)$gud_id."' and site_id = '".SITE_ID."'");
   $customers_res = tep_db_fetch_array($customers_raw); 
   if(isset($_POST['cemail'])){
+    $_POST['cemail'] = tep_db_prepare_input($_POST['cemail']);
     $_POST['cemail'] = str_replace("\xe2\x80\x8b", '', $_POST['cemail']);
   }
   if ($customers_res) {
@@ -45,13 +46,13 @@
         $email_text = stripslashes($customers_res['customers_lastname'].' '.$customers_res['customers_firstname']).EMAIL_NAME_COMMENT_LINK .  "\n\n"; 
         $old_str_array = array('${URL}', '${NAME}', '${SITE_NAME}', '${SITE_URL}'); 
         $new_str_array = array(
-              HTTP_SERVER.'/nm_token.php?gud='.$gu_email_srandom,
-              $mail_name, 
-              STORE_NAME,
-              HTTP_SERVER
-              ); 
+            HTTP_SERVER.'/nm_token.php?gud='.$gu_email_srandom,
+            $mail_name, 
+            STORE_NAME,
+            HTTP_SERVER
+            ); 
         $email_text .= str_replace($old_str_array, $new_str_array, GUEST_LOGIN_EMAIL_CONTENT);  
-        $gu_email_text = str_replace('${SITE_NAME}', STORE_NAME, GUEST_LOGIN_EMAIL_TITLE); 
+        $gu_email_text = str_replace('${SITE_NAME}', STORE_NAME, GUEST_LOGIN_EMAIL_TITLE);
         tep_mail($mail_name, $_POST['cemail'], $gu_email_text, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
         
         tep_db_query("update `".TABLE_CUSTOMERS."` set `check_login_str` = '".$gu_email_srandom."' where `customers_id` = '".$customers_res['customers_id']."' and site_id = '".SITE_ID."'"); 
