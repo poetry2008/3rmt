@@ -1235,7 +1235,7 @@ class Ticket{
 
             elseif($_FILES['attachment']['size']>$cfg->getMaxFileSize())
               //                $errors['attachment']='File is too big. Max '.$cfg->getMaxFileSize().' bytes allowed';
-                $errors['attachment']='重すぎます. 最も重さは '.$cfg->getMaxFileSize().' bytes です';
+                $errors['attachment']='添付ファイルの上限サイズ '.$cfg->getMaxFileSize().' bytes を超えています。';
 
         }
 
