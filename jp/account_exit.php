@@ -62,7 +62,7 @@ $breadcrumb->add(NAVBAR_TITLE_1, tep_href_link(FILENAME_ACCOUNT_EXIT, '', 'SSL')
                   <td class="main"><table border="0" cellspacing="0" cellpadding="2" width="100%">
 <?php
   if(isset($_GET['action']) && $_GET['action']=="quit_success" && isset($_GET['check_flag']) && $_GET['check_flag']!=""){
- // $account_sql = "update customers set is_quited='1',quited_date=now() where customers_id='".$customer_id."'";
+$cart->remove_all();
 $customers_info            = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id='".$customer_id."'");
 $account_created_date      = tep_db_query("select customers_info_date_account_created from ".TABLE_CUSTOMERS_INFO." where customers_info_id='$customer_id'");
 $account_created_date_info = tep_db_fetch_array($account_created_date);
@@ -81,6 +81,7 @@ $account_del_sql = "delete from ".TABLE_CUSTOMERS." where customers_id='".$custo
 tep_db_query($account_del_sql);
 $account_info_del_sql = "delete from ".TABLE_CUSTOMERS_INFO." where customers_info_id='".$customer_id."'";
 tep_db_query($account_info_del_sql);
+
   tep_session_unregister('customer_id');
   tep_session_unregister('customer_default_address_id');
   tep_session_unregister('customer_first_name');
