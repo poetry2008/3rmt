@@ -21,8 +21,8 @@
                cd.alpha_romaji,
                c.sort_order
         from " . TABLE_CATEGORIES . " c, " . TABLE_CATEGORIES_DESCRIPTION . " cd 
-        where c.parent_id = '0' 
-          and c.categories_id = cd.categories_id 
+        where  
+           c.categories_id = cd.categories_id 
           and cd.language_id='" . $languages_id ."' 
         order by site_id DESC
       ) c 
@@ -46,9 +46,20 @@
       if ($row % 3 == 0) {
         $ca_list_str .= '<div class="search_list_category">'; 
       }
-      
+$check_category_query = tep_db_query("select parent_id from categories where categories_id='".$category['categories_id']."'");
+$check_category_array = tep_db_fetch_array($check_category_query);
+if($check_category_array['parent_id'] == 0){
       $ca_list_str .= '<a class="search_category_name" href="'.tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id']).'">'.$category['categories_name'].'</a>'; 
-      
+}else{
+$check_category_p_query = tep_db_query("select parent_id from categories where categories_id='".$check_category_array['parent_id']."'");
+$check_category_p_array = tep_db_fetch_array($check_category_p_query);
+if($check_category_p_array['parent_id'] == 0){
+$ca_list_str .= '<a class="search_category_name" href="'.tep_href_link(FILENAME_DEFAULT, 'cPath='.$check_category_array['parent_id']."_".$category['categories_id']).'">'.$category['categories_name'].'</a>'; 
+}else{
+$ca_list_str .= '<a class="search_category_name" href="'.tep_href_link(FILENAME_DEFAULT, 'cPath='.$check_category_p_array['parent_id']."_".$check_category_array['parent_id']."_".$category['categories_id']).'">'.$category['categories_name'].'</a>'; 
+}
+} 
+
       $row++; 
       
       if ($row % 3 == 0) {
