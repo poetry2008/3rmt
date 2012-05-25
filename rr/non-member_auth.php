@@ -119,12 +119,12 @@
               <table>
                 <tr>
                 <td style="color: rgb(255, 0, 0);" colspan="3">
-                <font size="3"><b><?php echo EMAIL_RED_TEXT_INFO;?></b></font>
+                <font size="3"><b><?php echo sprintf(NOTICE_SEND_TO_EMAIL_TEXT, (isset($_post['cemail'])?$_post['cemail']:$cus_email));?></b></font>
                 </td>
               </tr>
               <tr>
                 <td style="font-size:11px;" colspan="3">
-                <?php echo EMAIL_READ_INFO_TEXT;?>
+                <?php echo ACTIVE_INFO_FRONT_COMMENT;?>
                 <br>
                 </td>
               </tr>
@@ -144,7 +144,7 @@
             </tr>
             <tr>
               <td>
-              <?php echo GUEST_SUCCESS_INFO_COMMENT;?> 
+              <?php echo ACTIVE_INFO_FRONT_COMMENT;?> 
               </td>
             </tr>
             <?php }?> 
