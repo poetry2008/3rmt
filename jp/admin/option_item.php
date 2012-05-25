@@ -388,17 +388,16 @@ function show_item_info(ele, item_id, gid)
     success: function (data) {
       $('#show_item_info').html(data); 
       if (document.documentElement.clientHeight < document.body.scrollHeight) {
-        if
-        (ele.offsetTop+$('#item_list_box').position().top+ele.offsetHeight+$('#show_item_info').height() > document.body.scrollHeight) {
-          offset =
-          ele.offsetTop+$('#item_list_box').position().top-$('#show_item_info').height()-$('#offsetHeight').height();
+        if (ele.offsetTop+$('#item_list_box').position().top+ele.offsetHeight+$('#show_item_info').height() > document.body.scrollHeight) {
+          offset = ele.offsetTop+$('#item_list_box').position().top-$('#show_item_info').height()-$('#offsetHeight').height();
           $('#show_item_info').css('top', offset).show(); 
         } else {
           offset = ele.offsetTop+$('#item_list_box').position().top+ele.offsetHeight;
           $('#show_item_info').css('top', offset).show(); 
         }
       } else {
-        if (ele.offsetTop+$('#item_list_box').position().top+ele.offsetHeight+$('#show_item_info').height() > document.documentElement.clientHeight) {
+        //if (ele.offsetTop+$('#item_list_box').position().top+ele.offsetHeight+$('#show_item_info').height() > document.documentElement.clientHeight) {
+        if ((document.documentElement.clientHeight-ele.offsetTop) < ele.offsetTop) {
           offset = ele.offsetTop+$('#item_list_box').position().top-$('#show_item_info').height()-$('#offsetHeight').height()-ele.offsetHeight;
           $('#show_item_info').css('top', offset).show(); 
         } else {

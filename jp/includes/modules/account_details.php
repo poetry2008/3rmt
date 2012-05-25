@@ -250,14 +250,14 @@ $(document).ready(function(){
         <td class="main">
         <table border="0" cellspacing="0" cellpadding="2" summary="table">
           <tr>
-            <td class="main"><?php echo ENTRY_NEWSLETTER; ?></td>
+            <td class="main" width="120"><?php echo ENTRY_NEWSLETTER; ?></td>
             <td class="main">
 <?php
   if ($is_read_only == true) {
     if ($account['customers_newsletter'] == '1') {
-      echo ENTRY_NEWSLETTER_YES;
+      echo '&nbsp;'.ENTRY_NEWSLETTER_YES;
     } else {
-      echo ENTRY_NEWSLETTER_NO;
+      echo '&nbsp;'.ENTRY_NEWSLETTER_NO;
     }
   } elseif ($processed == true) {
     if ($newsletter == '1') {

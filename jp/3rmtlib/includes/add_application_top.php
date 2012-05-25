@@ -133,8 +133,9 @@
   define('FILENAME_TELL_A_FRIEND', 'tell_a_friend.php');
   define('FILENAME_UPCOMING_PRODUCTS', 'upcoming_products.php'); // This is the bottom of default.php (found in modules)
   define('FILENAME_EMAIL_TROUBLE', 'email_trouble.php');
-
+  define('FILENAME_ACCOUNT_EXIT', 'account_exit.php');
 // define the database table names used in the project
+  define('TABLE_CUSTOMERS_EXIT','customers_exit');
   define('TABLE_OPTION_GROUP', 'option_group');
   define('TABLE_OPTION_ITEM', 'option_item');
   define('TABLE_CUSTOMERS_BASKET_OPTIONS', 'customers_basket_options');
@@ -189,13 +190,13 @@
   define('TABLE_ORDERS_STATUS_HISTORY', 'orders_status_history');
   define('TABLE_ORDERS_TOTAL', 'orders_total');
   define('TABLE_PRODUCTS', 'products');
-  define('TABLE_PRODUCTS_ATTRIBUTES', 'products_attributes_2');
-  define('TABLE_PRODUCTS_ATTRIBUTES_DOWNLOAD', 'products_attributes_download_2');
+  define('TABLE_PRODUCTS_ATTRIBUTES', 'products_attributes');
+  define('TABLE_PRODUCTS_ATTRIBUTES_DOWNLOAD', 'products_attributes_download');
   define('TABLE_PRODUCTS_DESCRIPTION', 'products_description');
   define('TABLE_PRODUCTS_NOTIFICATIONS', 'products_notifications');
-  define('TABLE_PRODUCTS_OPTIONS', 'products_options_2');
-  define('TABLE_PRODUCTS_OPTIONS_VALUES', 'products_options_values_2');
-  define('TABLE_PRODUCTS_OPTIONS_VALUES_TO_PRODUCTS_OPTIONS', 'products_options_values_to_products_options_2');
+  define('TABLE_PRODUCTS_OPTIONS', 'products_options');
+  define('TABLE_PRODUCTS_OPTIONS_VALUES', 'products_options_values');
+  define('TABLE_PRODUCTS_OPTIONS_VALUES_TO_PRODUCTS_OPTIONS', 'products_options_values_to_products_options');
   define('TABLE_PRODUCTS_TO_CATEGORIES', 'products_to_categories');
   define('TABLE_RECORD', 'record');
   define('TABLE_REVIEWS', 'reviews');

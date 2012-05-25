@@ -12,18 +12,17 @@ if ($_GET['action'] == 'calc_price') {
   $final_price = $products_price + $attributes_price;
   $price_array = array();
   if ($final_price < 0) {
-    $price_array['price'] = $currencies->display_price($final_price, tep_get_tax_rate($products_info['products_tax_class_id  ']), $_GET['qty']); 
+    $price_array['price'] = '<font color="ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->display_price($final_price, tep_get_tax_rate($products_info['products_tax_class_id']), $_GET['qty'])).JPMONEY_UNIT_TEXT.'</font>'; 
   } else {
-    $price_array['price'] = $currencies->display_price($final_price, tep_get_tax_rate($products_info['products_tax_class_id  ']), $_GET['qty']); 
+    $price_array['price'] = $currencies->display_price($final_price, tep_get_tax_rate($products_info['products_tax_class_id']), $_GET['qty']); 
   }
-  echo json_encode($price_array['price']);
+  echo json_encode($price_array);
 } else if ($_GET['action'] == 'calc_radio_price') {
   require('option/HM_Option.php');
   require('option/HM_Option_Group.php');
 
   $hm_option = new HM_Option();
   $price_array = array();
-  //$price_array['price'] = $hm_option->calc_radio_price($_POST['it_id'], $_POST['rvalue']);
   $price_array['price'] = $hm_option->calc_radio_price($_GET['it_id'], $_GET['rvalue']);
-  echo $price_array['price'];
+  echo json_encode($price_array);
 }
