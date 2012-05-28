@@ -105,17 +105,17 @@ if(!isset($email_error)||$email_error == true){?>
 <table class="information_table">
  <tr>
   <td bgcolor="#eeeeee" width='120'>お名前</td>
-  <td><input type='text'  name='name' value='<?php 
+  <td><input type='text'  name='name' value='<?php
   if(isset($name)&&$name){
     echo $name;
-  }?>' id='new_name' class="input_text" ><span id='name_error'><?php 
+  }?>' id='new_name' class="input_text" ><span id='name_error'><?php
   if(isset($name)&&$name==''){
     echo TEXT_REORDER2_MUST_INPUT;
   }?></span></td>
  </tr>
  <tr>
   <td bgcolor="#eeeeee">メールアドレス</td>
-  <td><input type='text'  name='email' <?php 
+  <td><input type='text'  name='email' <?php
   if(isset($email)&&$email){
     if(preg_match('/\'/',$email)){
       echo ' value="'.$email.'" ';
@@ -125,7 +125,7 @@ if(!isset($email_error)||$email_error == true){?>
   }?> id='new_email' class="input_text" ><span id='email_error'><?php 
  if(isset($email)&&$email==''){
    echo TEXT_REORDER2_MUST_INPUT;
- }?></span><?php 
+ }?></span><?php
  if(isset($email_error)&&$email_error&&$email!=''&&!tep_validate_email($email)){
    echo "<br>";
    echo "<font color='red'>入力されたメールアドレスは不正です!</font>";
@@ -133,20 +133,20 @@ if(!isset($email_error)||$email_error == true){?>
  </tr>
  <tr>
   <td bgcolor="#eeeeee">ゲームタイトル</td>
-  <td><input type='text'  name='product' value='<?php 
+  <td><input type='text'  name='product' value='<?php
   if(isset($product)&&$product){
     echo $product;
-  }?>' id='new_product' class="input_text" ><span id='product_error'><?php 
+  }?>' id='new_product' class="input_text" ><span id='product_error'><?php
  if(isset($product)&&$product==''){
    echo TEXT_REORDER2_MUST_INPUT;
  }?></span></td>
  </tr>
  <tr>
   <td bgcolor="#eeeeee">キャラクター名</td>
-  <td><input type='text'  name='character' value='<?php 
+  <td><input type='text'  name='character' value='<?php
   if(isset($character)&&$character){
     echo $character;
-  }?>' id='new_character' class="input_text" ><span id='character_error'><?php 
+  }?>' id='new_character' class="input_text" ><span id='character_error'><?php
  if(isset($character)&&$character==''){
    echo TEXT_REORDER2_MUST_INPUT;
  }?></span></td>
@@ -166,7 +166,7 @@ if(!isset($email_error)||$email_error == true){?>
    <select name='minute' id='new_minute'>
     <option value=''>--</option>
    </select>
-   <span id='date_error'><?php 
+   <span id='date_error'><?php
    if($hour==''||$date==''||$minute==''){
      echo TEXT_REORDER2_TORIHIKI_ERROR;
    }?></span>
