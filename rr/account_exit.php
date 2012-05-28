@@ -17,6 +17,7 @@
     tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
   }
 if(isset($_GET['action']) && $_GET['action']=="quit_success" && isset($_GET['check_flag']) && $_GET['check_flag']!=""){
+$cart->remove_all();
  // $account_sql = "update customers set is_quited='1',quited_date=now() where customers_id='".$customer_id."'";
 $customers_info            = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id='".$customer_id."'");
 $account_created_date      = tep_db_query("select customers_info_date_account_created from ".TABLE_CUSTOMERS_INFO." where customers_info_id='$customer_id'");
@@ -28,12 +29,6 @@ $customers_lastname        = addslashes($customers_info_array['customers_lastnam
 $customers_firstname_f     = addslashes($customers_info_array['customers_firstname_f']);
 $customers_lastname_f      = addslashes($customers_info_array['customers_lastname_f']);
 $customers_email_address   = addslashes($customers_info_array['customers_email_address']);
-
-//$customers_firstname       = $customers_info_array['customers_firstname'];
-//$customers_lastname        = $customers_info_array['customers_lastname'];
-//$customers_firstname_f     = $customers_info_array['customers_firstname_f'];
-//$customers_lastname_f      = $customers_info_array['customers_lastname_f'];
-//$customers_email_address   = $customers_info_array['customers_email_address'];
 $site_id                   = $customers_info_array['site_id'];
 $customers_info_date_account_created = $account_created_date_info['customers_info_date_account_created'];
 $customers_quited_info = "insert into ".TABLE_CUSTOMERS_EXIT." (id,customers_id,customers_firstname,customers_lastname,customers_firstname_f,customers_lastname_f,customers_email_address,site_id,customers_info_date_account_created,quited_date) values (NULL,'".$customers_id."','".$customers_firstname."','".$customers_lastname."','".$customers_firstname_f."','".$customers_lastname_f."','".$customers_email_address."','".$site_id."','".$customers_info_date_account_created."',now())";
@@ -50,6 +45,7 @@ tep_db_query($account_info_del_sql);
   tep_session_unregister('customer_zone_id');
   tep_session_unregister('comments');
   tep_session_unregister('comment_emailaddress');
+  $navigation->clear_snapshot();
 
 }
 //加载语言

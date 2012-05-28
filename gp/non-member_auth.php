@@ -30,13 +30,14 @@
   $customers_res = tep_db_fetch_array($customers_raw); 
   if(isset($_POST['cemail'])){
     $_POST['cemail'] = str_replace("\xe2\x80\x8b", '', $_POST['cemail']);
+    $val_email = tep_db_prepare_input($_POST['cemail']);
   }
   if ($customers_res) {
     $cus_email = $customers_res['customers_email_address']; 
     if ($_GET['action'] == 'send') {
       if (empty($_POST['cemail'])) {
         $error = true;
-      } else if (!tep_validate_email($_POST['cemail'])) {
+      } else if (!tep_validate_email($val_email)) {
         $error = true;
         $error_msg = WRONG_EMAIL_PATTERN_NOTICE; 
       } else if (tep_check_exists_cu_email($_POST['cemail'], $customers_res['customers_id'], 1)) {
@@ -58,7 +59,7 @@
             HTTP_SERVER
             ); 
         $email_text .= str_replace($old_str_array, $new_str_array, GUEST_LOGIN_EMAIL_CONTENT);  
-        $gu_email_text = str_replace('${SITE_NAME}', STORE_NAME, GUEST_LOGIN_EMAIL_TITLE); 
+        $gu_email_text = str_replace('${SITE_NAME}', STORE_NAME, GUEST_LOGIN_EMAIL_TITLE);
         tep_mail($mail_name, $_POST['cemail'], $gu_email_text, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
         
         tep_db_query("update `".TABLE_CUSTOMERS."` set `check_login_str` = '".$gu_email_srandom."' where `customers_id` = '".$customers_res['customers_id']."' and site_id = '".SITE_ID."'"); 
@@ -124,12 +125,12 @@
           <table>
             <tr>
                 <td style="color: rgb(255, 0, 0);" colspan="3">
-                <font size="3"><b><?php echo EMAIL_RED_TEXT_INFO;?></b></font>
+                <font size="3"><b><?php echo sprintf(NOTICE_SEND_TO_EMAIL_TEXT, (isset($_post['cemail'])?$_post['cemail']:$cus_email));;?></b></font>
                 </td>
               </tr>
               <tr>
                 <td style="font-size:11px;" colspan="3">
-                <?php echo EMAIL_READ_INFO_TEXT;?>
+                <?php echo ACTIVE_INFO_FRONT_COMMENT;?>
                 <br>
                 </td>
               </tr>
@@ -149,7 +150,7 @@
         </tr>
         <tr>
           <td>
-          <?php echo GUEST_SUCCESS_INFO_COMMENT;?> 
+          <?php echo ACTIVE_INFO_END_COMMENT;?> 
           </td>
         </tr>
         <?php }?> 
