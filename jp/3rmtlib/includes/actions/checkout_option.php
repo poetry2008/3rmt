@@ -52,7 +52,7 @@
           $p_tmp_value = str_replace(' ', '', $p_value);
           $p_tmp_value = str_replace('　', '', $p_value);
           if ($p_tmp_value != '') {
-            $option_array[$cart_products_id][$o_key_str] = $p_value; 
+            $option_array[$cart_products_id][$o_key_str] = str_replace('<BR>', '<br>', $p_value); 
           }
         }
       }

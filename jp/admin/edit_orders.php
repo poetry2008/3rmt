@@ -889,7 +889,7 @@ if($address_error == false){
               for ($j=0; $j<sizeof($order->products[$i]['attributes']); $j++) {
                 $orders_products_attributes_id = $order->products[$i]['attributes'][$j]['id'];
                 $products_ordered_mail .=  "\t" .  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;")) . str_repeat('　', intval($max_c_len - mb_strlen($order->products[$i]['attributes'][$j]['option_info']['title'], 'utf-8'))).'：';
-                $products_ordered_mail .= tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&quot;"));
+                $products_ordered_mail .= tep_parse_input_field_data(str_replace(array("<br>", "<BR>"), "\n", $order->products[$i]['attributes'][$j]['option_info']['value']), array("'"=>"&quot;"));
                 if ($order->products[$i]['attributes'][$j]['price'] != '0') {
                   $products_ordered_mail .= '（'.$currencies->format($order->products[$i]['attributes'][$j]['price']).'）'; 
                 }
@@ -1013,6 +1013,7 @@ if($address_error == false){
         //}
         $AddedOptionsPrice = 0;
 
+        $replace_arr = array("<br>", "<br />", "<br/>", "\r", "\n", "\r\n", "<BR>");
         // 2.1.1 Get Product Attribute Info
         foreach($_POST as $op_key => $op_value)
         {
@@ -1031,7 +1032,7 @@ if($address_error == false){
                 $o_option_array = @unserialize($op_item_res['option']);
                 if (!empty($o_option_array['radio_image'])) {
                   foreach ($o_option_array['radio_image'] as $or_key => $or_value) {
-                    if (trim($or_value['title']) == trim($op_value)) {
+                    if (trim(str_replace($replace_arr, '', nl2br($or_value['title']))) == trim(str_replace($replace_arr, '', nl2br($op_value)))) {
                       $AddedOptionsPrice += $or_value['money'];
                       break; 
                     }
@@ -1144,13 +1145,13 @@ if($address_error == false){
             $ioption_item_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name = '".$i_op_array[1]."' and id = '".$i_op_array[3]."'"); 
             $ioption_item_res = tep_db_fetch_array($ioption_item_query); 
             if ($ioption_item_res) {
-            $input_option_array = array('title' => $ioption_item_res['front_title'], 'value' => $op_i_value); 
+            $input_option_array = array('title' => $ioption_item_res['front_title'], 'value' => str_replace("<BR>", "<br>", $op_i_value)); 
             $op_price = 0; 
             if ($ioption_item_res['type'] == 'radio') {
               $io_option_array = @unserialize($ioption_item_res['option']);
               if (!empty($io_option_array['radio_image'])) {
                 foreach ($io_option_array['radio_image'] as $ior_key => $ior_value) {
-                  if (trim($ior_value['title']) == trim($op_i_value)) {
+                  if (trim(str_replace($replace_arr, '', nl2br($ior_value['title']))) == trim(str_replace($replace_arr, '', nl2br($op_i_value)))) {
                     $op_price = $ior_value['money']; 
                     break; 
                   }

@@ -4353,6 +4353,7 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
    tep_db_perform(TABLE_PREORDERS_PRODUCTS, $sql_data_array);
    $preorder_products_id = tep_db_insert_id();
 
+   $replace_arr = array("<br>", "<br />", "<br/>", "\r", "\n", "\r\n", "<BR>");
    foreach ($pInfo as $op_key => $op_value) {
      $op_single_str = substr($op_key, 0, 3);
      if ($op_single_str == 'op_') {
@@ -4366,12 +4367,12 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
        $item_res = tep_db_fetch_array($item_raw); 
        if ($item_res) {
          $item_price = 0; 
-         $input_option_array = array('title' => $item_res['front_title'], 'value' => $op_value); 
+         $input_option_array = array('title' => $item_res['front_title'], 'value' => str_replace("<BR>", "<br>", $op_value)); 
          if ($item_res['type'] == 'radio') {
            $ro_array = @unserialize($item_res['option']);
            if (!empty($ro_array)) {
              foreach ($ro_array['radio_image'] as $ro_key => $ro_value) {
-               if (trim($ro_value['title']) == trim($op_value)) {
+               if (trim(str_replace($replace_arr, '', nl2br($ro_value['title']))) == trim(str_replace($replace_arr, '', nl2br($op_value)))) {
                  $item_price = $ro_value['money'];
                  break; 
                }
@@ -4902,6 +4903,7 @@ function get_preorder_total_info($payment, $pid, $option_info_array)
   $preorder_product_info_raw = tep_db_query("select final_price, products_quantity, products_tax from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$pid."'");
   $preorder_product_info = tep_db_fetch_array($preorder_product_info_raw);  
   
+  $replace_arr = array("<br>", "<br />", "<br/>", "\r", "\n", "\r\n", "<BR>");
   if (!empty($option_info_array)) {
     $attr_total = 0; 
     foreach ($option_info_array as $tp_key => $tp_value) {
@@ -4913,7 +4915,7 @@ function get_preorder_total_info($payment, $pid, $option_info_array)
           $o_option_array = @unserialize($option_item_res['option']);
           if (!empty($o_option_array['radio_image'])) {
             foreach ($o_option_array['radio_image'] as $or_key => $or_value) {
-              if (trim($or_value['title']) == trim($tp_value)) {
+              if (trim(str_replace($replace_arr, '', nl2br($or_value['title']))) == trim(str_replace($replace_arr, '', nl2br($tp_value)))) {
                 $attr_total += $or_value['money']; 
                 break; 
               }
@@ -4974,12 +4976,13 @@ function tep_get_show_attributes_price($item_id, $group_id, $att_value)
   $item_raw = tep_db_query("select * from ".TABLE_OPTION_ITEM." where id = '".$item_id."' and group_id = '".$group_id."'"); 
   $item_res = tep_db_fetch_array($item_raw);
   
+  $replace_arr = array("<br>", "<br />", "<br/>", "\r", "\n", "\r\n", "<BR>");
   if ($item_res) {
     if ($item_res['type'] == 'radio') {
       $option_array = @unserialize($item_res['option']);
       if (!empty($option_array)) {
         foreach ($option_array['radio_image'] as $key => $value) {
-          if (trim($value['title']) == trim($att_value)) {
+          if (trim(str_replace($replace_arr, '', nl2br($value['title']))) == trim(str_replace($replace_arr, '', nl2br($att_value)))) {
             return $value['money']; 
           }
         }
@@ -5068,3 +5071,8 @@ function tep_get_popup_url(){
     return '';
   }
 }
+
+function new_nl2br($string) {
+  $string = str_replace(array("\r\n", "\r", "\n"), "<br>", $string);
+  return $string;
+} 
