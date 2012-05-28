@@ -50,7 +50,7 @@
     } else {
       if(tep_validate_email($val_email_address)){
       tep_redirect(tep_href_link('send_success.php',
-            'send_mail='.rawurlencode($_POST['email_address'])));
+            'send_mail='.rawurlencode($val_email_address)));
       }else{
         tep_redirect(tep_href_link(FILENAME_PASSWORD_FORGOTTEN, 'error=1', 'SSL'));
       }

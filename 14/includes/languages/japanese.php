@@ -73,7 +73,7 @@ define('MYACCOUNT_EDIT', 'お客様情報の編集');
 define('MYACCOUNT_ADDRESS', 'アドレス帳');
 define('MYACCOUNT_HISTORY', '注文履歴');
 define('MYACCOUNT_NOTIFICATION', 'ショップからのお知らせ');
-define('MENU_MU','メーカ一覧');
+define('MENU_MU','メーカー一覧');
 
 // footer text in includes/footer.php
 define('FOOTER_TEXT_REQUESTS_SINCE', 'リクエスト ('); // 'requests since'
@@ -294,8 +294,9 @@ define('IMAGE_BUTTON_BACK', '前に戻る');
 define('IMAGE_BUTTON_CHANGE_ADDRESS', 'アドレスを変更');
 define('IMAGE_BUTTON_CHECKOUT', 'レジに進む');
 define('IMAGE_BUTTON_CONFIRM_ORDER', '注文する!');
-define('IMAGE_BUTTON_CONTINUE1', '次へ進む');
 define('IMAGE_BUTTON_CONTINUE', '次に進む');
+define('IMAGE_BUTTON_CONTINUE1', '次へ進む');
+
 define('IMAGE_BUTTON_CONTINUE_SHOPPING', 'ショッピングを続ける');
 define('IMAGE_BUTTON_DELETE', '削除する');
 define('IMAGE_BUTTON_EDIT_ACCOUNT', 'お客様情報の編集');
@@ -436,8 +437,7 @@ define('LEFT_REORDER_TITLE', '取引日時変更');
 define('ENTRY_GUEST_EMAIL_NOT_ACTIVE', '&nbsp;<small><font color="#FF0000">認証手続きはまだ完了していません。</font></small>');
 define('CHECK_EMAIL_EXISTS_ERROR', 'エラーが発生しました。<br>お手数をお掛けいたしますが、こちらから<a href="'.HTTP_SERVER.'?'.tep_session_name().'='.tep_session_id().'">トップページ</a>に戻り再度やり直してください。');
 define('SENDMAIL_SUCCESS_COMMENT_TEXT', '正常に受信できる場合：「送信」後5分以内で'.STORE_NAME.'からの確認メールが届きます。<br>受信できない場合：「送信」後5分以上経過しても受信できない場合は、スパムフィルター等で受け取りを拒否されている可能性が高いです。');
-define('ALREADY_SEND_MAIL_TEXT', 'エラーが発生しました。\nお手数をお掛けいたしますが、トップページに戻り再度やり直してください。');
-define('FOOTER_LINK_TEXT', '相互リンク');
+define('ALREADY_SEND_MAIL_TEXT', 'エラーが発生しました。\nお手数をお掛けいたしますが、トップページに戻り再度やり直してください');
 
 define('PREORDER_SELECT_EMPTY_OPTION', '希望日を選択してください');
 define('PREORDER_YEAR_TEXT', '年');
@@ -458,10 +458,9 @@ define('PREORDER_FINISH_LINE_TITLE', '手続き完了！');
 define('JPMONEY_UNIT_TEXT', '円');
 define('ENTRY_NO_USE_OLD_PASSWORD', '<font color="#FF0000">安全のため、古いパスワードと違うパスワードを設定してください。</font>');
 define('ENTRY_PASSWORD_IS_NUM', '<font color="#FF0000">英字（abcdef...z）が1文字以上必要です。英字と数字を組み合わせて設定してください。</font>');
-define('ENTRY_PASSWORD_IS_ALPHA', '&nbsp;<font color="#FF0000">数字（0123456789）が1文字以上必要です。英字と数字を組み合わせて設定してください。</font>');
+define('ENTRY_PASSWORD_IS_ALPHA', '<font color="#FF0000">数字（0123456789）が1文字以上必要です。英字と数字を組み合わせて設定してください。</font>');
 define('ENTRY_PASSWORD_IS_DIFFERENT', 'パスワードと再入力が違います。');
 define('ENTRY_PASSWORD_INFORM_READ_TEXT', '半角の英字、数字を組み合わせた'.ENTRY_PASSWORD_MIN_LENGTH.'文字以上を入力してください。<br>英字、数字がそれぞれ1文字以上を必要です。大文字と小文字は区別されます。記号は入力できません。');
 define('IMAGE_BUTTON_CUSTOMERS_EXIT', '退会を申し込む');
-define('TEXT_REORDER2_MUST_INPUT','<font color="red">必須項目</font>');
-define('TEXT_REORDER2_TORIHIKI_ERROR','<br><font color="red">【取引日時】を選択してください。</font>');
+
 ?>
