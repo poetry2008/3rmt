@@ -122,8 +122,10 @@ if(!isset($email_error)||$email_error == true){?>
     }else{
       echo ' value=\''.$email.'\' ';
     }
-  }?> id='new_email' class="input_text" >
-              <span id='email_error'></span><?php
+  }?> id='new_email' class="input_text" ><span id='email_error'><?php 
+ if(isset($email)&&$email==''){
+   echo TEXT_REORDER2_MUST_INPUT;
+ }?></span><?php
  if(isset($email_error)&&$email_error&&$email!=''&&!tep_validate_email($email)){
    echo "<br>";
    echo "<font color='red'>入力されたメールアドレスは不正です!</font>";

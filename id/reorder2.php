@@ -99,10 +99,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder2.php'));
          }
 if(!isset($email_error)||$email_error == true){?>
 <div class="comment">
-<!--<form action="reorder2.php" method="post" name="order">-->
-<?php 
-echo tep_draw_form('order', tep_href_link('reorder2.php'));
-?>
+<form action="reorder2.php" method="post" name="order">
 <input type="hidden" name="dummy" value="あいうえお眉幅">
 <table class="information_table">
  <tr>
@@ -124,7 +121,10 @@ echo tep_draw_form('order', tep_href_link('reorder2.php'));
     }else{
       echo ' value=\''.$email.'\' ';
     }
-  }?> id='new_email' class="input_text" ><span id='email_error'></span><?php
+  }?> id='new_email' class="input_text" ><span id='email_error'><?php 
+ if(isset($email)&&$email==''){
+   echo TEXT_REORDER2_MUST_INPUT;
+ }?></span><?php
  if(isset($email_error)&&$email_error&&$email!=''&&!tep_validate_email($email)){
    echo "<br>";
    echo "<font color='red'>入力されたメールアドレスは不正です!</font>";
