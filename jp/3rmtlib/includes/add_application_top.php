@@ -871,7 +871,9 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
   if ($checkout_is_cart_pos !== false) { 
     $cart->clean_checkout_attributes(); 
   } 
-  
+  if(!preg_match('/^\d+$/',trim($_GET['page']))&&trim($_GET['page'])){
+    forward404();
+  }
   if (!empty($_GET)) {
     foreach ($_GET as $g_c_key => $g_c_value) {
       $check_sel_pos = stripos($g_c_value, 'select'); 

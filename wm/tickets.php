@@ -20,8 +20,8 @@ $_noemailclass = true;
 
 require_once('includes/application_top.php');
 require_once('includes/ost/secure.inc.php');
-
 $breadcrumb->add('お問い合わせ', tep_href_link(FILENAME_CONTACT_US));
+
 if(!is_object($thisclient) || !$thisclient->isValid()) die('Access denied'); //Double check again.
 
 require_once(INCLUDE_DIR.'class.ticket.php');
@@ -29,6 +29,7 @@ require_once(INCLUDE_DIR.'class.ticket.php');
 $ticket=null;
 $inc='tickets.inc.php'; //Default page...show all tickets.
 //Check if any id is given...
+
 if(($id=$_REQUEST['id']?$_REQUEST['id']:$_POST['ticket_id']) && is_numeric($id)) {
     //id given fetch the ticket info and check perm.
 
@@ -65,8 +66,8 @@ if($_POST && is_object($ticket) && $ticket->getId()):
               //                $errors['attachment']='Invalid file type [ '.$_FILES['attachment']['name'].' ]';
                 $errors['attachment']='無効なファイル形式です [ '.Format::htmlchars($_FILES['attachment']['name']).' ]';
             elseif($_FILES['attachment']['size']>$cfg->getMaxFileSize())
-              //                $errors['attachment']='File is too big. Max '.$cfg->getMaxFileSize().' bytes allowed';
                 $errors['attachment']='添付ファイルの上限サイズ'.$cfg->getMaxFileSize().' bytes  を超えています。';
+            //                $errors['attachment']='File is too big. Max '.$cfg->getMaxFileSize().' bytes allowed';
         }
                     
         if(!$errors){
@@ -74,7 +75,6 @@ if($_POST && is_object($ticket) && $ticket->getId()):
             if(($msgid=$ticket->postMessage($_POST['message'],'Web'))) {
                 if($_FILES['attachment']['name'] && $cfg->canUploadFiles() && $cfg->allowOnlineAttachments())
                     $ticket->uploadAttachment($_FILES['attachment'],$msgid,'M');
-                    
                 $msg='送信完了';
                 // 跳转之后就不显示信息了
                 tep_redirect($_SERVER['REQUEST_URI']);

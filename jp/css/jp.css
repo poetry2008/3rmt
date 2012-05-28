@@ -2534,7 +2534,7 @@ searching
 .option_error{
 	color:#ff0000;
 	font-size:12px;
-	padding-left:10px;
+	/*padding-left:10px;*/
 	line-height:1.5;
 }
 .option_product_title{
@@ -2553,38 +2553,89 @@ searching
 	width:150px;
 	vertical-align:top;
 }
-.option_show_border {
-	/*max-width:70%;*/
-	width:170px;
+.option_product_single_radio{
 	float:left;
-	/*border:1px solid #2864B4;*/
-	padding:1px;
-	background:#2864B4;
+	margin-bottom:5px;
 }
-.option_hide_border {
-  /*max-width:70%;*/
-  width:170px;
-  float:left;
-  cursor:pointer;
-  padding:1px;
+.option_show_border {
+	float:left;
+	margin-right:5px;
+	overflow:hidden;
+	position:relative;
 }
-.option_show_border a, .option_show_border a:hover{ 
-	color:#fff; 
-	border:1px solid #2864B4;
-	display:block;
+.option_show_border .option_tick{
+	position:absolute;
+	*position: absolute;
+	right:0px;
+	top:0px;
+	*right:0;
+	*top:0;
+	text-align:right;
+	opacity:1.0;
+	display:inline-block;
+}
+.option_show_border span{ float:left;}
+.option_show_border .option_conent{
+		border:3px solid #FF6701;
+		overflow:hidden;
+	    padding:2px;
+		*display:inline-block;
+		float:left;
+		line-height:18px;
+}
+.option_show_border a{ 
+	color:#2864B4; 
+	/*display:block;*/
 	text-decoration:none;
+	display:block;
 }
-.option_hide_border a, .option_hide_border a:hover{
+
+.option_hide_border {
+	float:left;
+	margin-right:5px;
+	position:relative;
+}
+.option_hide_border .option_tick{
+	position:absolute;
+	*position: absolute;
+	right:0px;
+	top:0px;
+	*right:0;
+	*top:0;
+	opacity:0;
+	filter: Alpha(Opacity=0);
+	z-index:90;
+	display:inline-block;
+	text-align:right;
+}
+/*.option_show_border .option_conent:hover{
+	border:3px solid #FF6701;
+	margin:-2px;
+}
+*/.option_hide_border .option_conent:hover{	
+	border:3px solid #FF6701;
+	margin:0;
+}
+.option_hide_border .option_conent{
+	border:1px solid #ccc;
+	overflow:hidden;
+	padding:2px;
+	*display:inline-block;
+	float:left;
+	line-height:18px;
+	margin:2px;
+}
+.option_hide_border span{ float:left; overflow:hidden;}
+.option_hide_border a{
 	color:#000000; 
 	display:block;
-	border:1px solid #ccc;
 	text-decoration:none;
 	
 }
-.option_hide_border a:hover{
-	border:1px solid #2864B4;
+/*.option_hide_border a:hover{
+	border:2px solid #2864B4;
 }
-.option_radio_img{ float:left;}
+*/.option_radio_img img{ float:left;}
 .option_product_default_radio{
 	clear:both;
 	overflow:hidden;
@@ -2592,22 +2643,14 @@ searching
 }
 .option_product_radio_list{
 	overflow:hidden;
-	height:100%;
-}
-.option_product_single_radio{
-	padding-bottom:5px;
-	float:left;
-}
-.option_product_single_radio div{
-	width:50px;
-}
-.option_product_single_radio span{
-	margin-right:20px;
-}
-.option_product_radio_img_list{
-	clear:both;
-	*padding-top:3px;
 	width:85%;
+}
+
+.option_product_radio_img_list{
+	width:100%;
+	*float:left;
+	clear:both;
+	*margin-top:5px;
 }
 .option_radio_list{
 	width:100%;

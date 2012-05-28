@@ -48,7 +48,6 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
           and `customers_email_address` = '".$cEmail."'
         "));
 
-
   if ($order) {
     if (isset($_POST['hour'])){
       $date   = tep_db_prepare_input($_POST['date']);
@@ -82,7 +81,6 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
           ");
           orders_updated($order_id);
           last_customer_action();
-          tep_order_status_change($order_id,17);
           // insert a history
           $sql = "
             INSERT INTO `".TABLE_ORDERS_STATUS_HISTORY."` (
@@ -237,8 +235,8 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
   $insert_id = $oID;
   
   $o = new order($oID);
-
   $payment_code = payment::changeRomaji($o->info['payment_method'], PAYMENT_RETURN_TYPE_CODE); 
+
   # Check
   // ccdd
   $NewOidQuery = tep_db_query("
@@ -315,7 +313,6 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
           and popt.language_id = '" . $languages_id . "' 
           and poval.language_id = '" . $languages_id . "'";
 
-          //ccdd
           $attributes = tep_db_query($sql);
         }
         $attributes_values = tep_db_fetch_array($attributes);
@@ -325,7 +322,6 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
       }
     }
 //------insert customer choosen option eof ----
-
     if(isset($o->products[$i]['weight']) && isset($o->products[$i]['qty'])){
       $total_weight += ($o->products[$i]['qty'] * $o->products[$i]['weight']);
     }
@@ -345,10 +341,10 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
     if(tep_not_null($o->products[$i]['model'])) {
       $products_ordered .= ' (' . $o->products[$i]['model'] . ')';
     }
-
-    //ccdd
+    
+    // ccdd
     $product_info = tep_get_product_by_id($o->products[$i]['id'], SITE_ID ,$languages_id);
-
+    
     $products_ordered .= $products_ordered_attributes . "\n";
     $products_ordered .= '個数　　　　　　　：' . $o->products[$i]['qty'] . '個' . tep_get_full_count2($o->products[$i]['qty'], $o->products[$i]['id']) . "\n";
     if(tep_not_null($o->products[$i]['character'])) {
@@ -375,15 +371,6 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
   $_time = explode(':',$_datetime[1]);
   $_hour = $_time[0]; 
   $_minute = $_time[1];
-  //$otq = tep_db_query("select * from ".TABLE_ORDERS_TOTAL." where class = 'ot_point' and orders_id = '".$insert_id."'");
-  //$op = tep_db_fetch_array($otq);
-  
-  //$email_order .= $o->customer['name'] . '様' . "\n\n";
-  //$email_order .= 'この度は、' . STORE_NAME . 'をご利用いただき、誠にあり' . "\n";
-  //$email_order .= 'がとうございます。' . "\n";
-  //$email_order .= '下記の内容にてご注文を承りましたので、ご確認ください。' . "\n";
-  //$email_order .= 'ご不明な点がございましたら、注文番号をご確認の上、' . "\n";
-  //$email_order .= '「' . STORE_NAME . '」までお問い合わせください。' . "\n\n";
 
   $email_order .= '━━━━━━━━━━━━━━━━━━━━━' . "\n";
   $email_order .= '▼注文番号　　　　：' . $insert_id . "\n";
@@ -391,38 +378,16 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
   $email_order .= '▼お名前　　　　　：' . $o->customer['name'] . "\n";
   $email_order .= '▼メールアドレス　：' . $o->customer['email_address'] . "\n";
   $email_order .= '━━━━━━━━━━━━━━━━━━━━━' . "\n\n";
-
-/*
-  if ($op['value'] > 0) {
-    $email_order .= '▼ポイント割引　　：' . $op['text'] . "\n";
-  }
-  $email_order .= '▼お支払金額　　　：' . strip_tags($ot['text']) . "\n";
-  $email_order .= '▼お支払方法　　　：' . $o->info['payment_method'] . "\n\n";
-*/
-
   $email_order .= '▼注文商品' . "\n";
   $email_order .= '------------------------------------------' . "\n";
   $email_order .= $products_ordered . "\n";
-
-  //$email_order .= '━━━━━━━━━━━━━━━━━━━━━' . "\n";
   $email_order .= '▼取引日時　　　　：' . str_string($_date) . $_hour . '時' . $_minute . '分　（24時間表記）' . "\n";
-  //$email_order .= '　　　　　　　　　：' . $torihikihouhou . "\n";
-  
 
   if ($comment) {
     $email_order .= '▼備考　　　　　　：' . "\n";
-    //$email_order .= tep_db_output($comment) . "\n";
     $email_order .= $comment . "\n";
   }
   
-  
-  //$email_order .= "\n\n\n";
-  //$email_order .= '[ご連絡・お問い合わせ先]━━━━━━━━━━━━' . "\n";
-  //$email_order .= '株式会社 iimy' . "\n";
-  //$email_order .= SUPPORT_EMAIL_ADDRESS . "\n";
-  //$email_order .= HTTP_SERVER . "\n";
-  //$email_order .= '━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-
   $mail_title = "[" . $order['orders_id'] . "]再配達確認メール【" . STORE_NAME . "】";
   $email_order = str_replace(array('${NAME}', '${TIME}', '${CONTENT}', '${SITE_NAME}', '${SITE_URL}', '${SUPPORT_EMAIL}'), array($o->customer['name'], date('Y-m-d H:i:s'), $email_order, STORE_NAME, HTTP_SERVER, SUPPORT_EMAIL_ADDRESS), $mail_content);
 
@@ -544,7 +509,6 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
                 order by pa.products_attributes_id
             ");
             while ($products_options = tep_db_fetch_array($products_options_query)) {
-              //add products_at_quantity - ds-style
               if($products_options['products_at_quantity'] > 0) {
                 $products_options_array[] = array('id' => $products_options['products_options_values_id'], 'text' => $products_options['products_options_values_name']);
                 if ($products_options['options_values_price'] != '0') {
@@ -714,14 +678,14 @@ function orderConfirmPage(){
   text += "</table><br >\n"
   
   orderChanged = (orderChanged || document.getElementById('comment').value);
-
+  
 
   var time_error = false;
   var new_date = document.getElementById("new_date");
   if(new_date.value == ''){
-    if(oldTime_value <= today_value){
-      time_error = true; 
-    }
+     if(oldTime_value <= today_value){
+       time_error = true; 
+     }
   } 
   // if order unchanged , does not commit
   if(!orderChanged){
@@ -734,9 +698,8 @@ function orderConfirmPage(){
     document.getElementById('date_error').innerHTML = "<font color='red'>【取引日時（変更後）】を選択してください。</font>";
     document.getElementById('date_error').style.display = 'block';
   }
-
   if(!orderChanged || time_error){
-    return false;
+    return false; 
   }
   document.getElementById('form').style.display = 'none';
   document.getElementById('confirm').style.display = 'block';

@@ -342,7 +342,7 @@ function check_item_info()
   var r_str = '';
   var reg = /^ro_[0-9]+$/; 
   
-  $('#show_select').find('input').each(function() {
+  $('#show_select').find('textarea').each(function() {
      ro_name = $(this).attr('name');
      if (reg.exec(ro_name)) {
        if ($(this).val() != '') {
@@ -474,7 +474,7 @@ function add_option_radio()
   });   
   for (i=1; i<=5 ; i++) {
     i_num_add = i_num+i; 
-    html_str += '<tr><td align="left"><?php echo TEXT_OPTION_ITEM_SELECT;?></td><td align="left"><input type="text" class="option_text"name="ro_'+i_num_add+'" value="">&nbsp;<a href="javascript:void(0);"onclick="delete_radio(this, '+i_num_add+');"><input type="button" value="<?php echo TEXT_OPTION_ITEM_DEL_LINK;?>" class="element_button" onclick="redirect_new_url(this);"></a></td></tr>';   
+    html_str += '<tr><td align="left"><?php echo TEXT_OPTION_ITEM_SELECT;?></td><td align="left"><textarea cols="30" rows="5" class="option_text"name="ro_'+i_num_add+'"></textarea>&nbsp;<a href="javascript:void(0);"onclick="delete_radio(this, '+i_num_add+');"><input type="button" value="<?php echo TEXT_OPTION_ITEM_DEL_LINK;?>" class="element_button" onclick="redirect_new_url(this);"></a></td></tr>';   
     
     html_str += '<tr><td align="left">&nbsp;&nbsp;<?php echo TEXT_ITEM_PIC_NAME;?></td><td align="left"><input type="file" name="rop_'+i_num_add+'[]" value="">&nbsp;<a href="javascript:void(0);" onclick="delete_item_pic(this);"><input type="button" value="<?php echo TEXT_ITEM_DELETE_PIC;?>" class="element_button"></a><a href="javascript:void(0);" onclick="add_item_pic(this, '+i_num_add+');"><input type="button" value="<?php echo TEXT_ITEM_ADD_PIC;?>" class="element_button"></a></td></tr>'; 
    

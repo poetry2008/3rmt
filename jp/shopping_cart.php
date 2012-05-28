@@ -203,6 +203,7 @@ function change_num(ob,targ, quan,a_quan)
   <?php echo tep_draw_form('cart_quantity', tep_href_link(FILENAME_SHOPPING_CART, 'action=update_product', 'SSL')); ?> 
         <table border="0" width="100%" cellspacing="0" cellpadding="0">
           <?php
+  $replace_arr = array("<br>", "<br />", "<br/>", "\r", "\n", "\r\n", "<BR>");
   if ($cart->count_contents() > 0) {
 ?>
           <tr>
@@ -224,7 +225,7 @@ function change_num(ob,targ, quan,a_quan)
               $c_option = @unserialize($option_item_res['option']);
               if (!empty($c_option)) {
                 foreach ($c_option['radio_image'] as $cr_key => $cr_value) {
-                  if (trim($cr_value['title']) == trim($op_value)) {
+                  if (trim(str_replace($replace_arr, '', nl2br($cr_value['title']))) == trim(str_replace($replace_arr, '', nl2br($op_value)))) {
                     $products[$i]['add_op_attributes'][$op_key]['price'] = $cr_value['money'];
                     break;
                   }
