@@ -153,7 +153,11 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
              echo '</div>'; 
              echo '</div>'; 
            } else {
-             echo '<div class="option_show_border">'; 
+             if (trim(nl2br($default_value)) == trim(nl2br($this->default_radio))) {
+               echo '<div class="option_show_border">'; 
+             } else {
+               echo '<div class="option_hide_border">'; 
+             }
              if (file_exists(DIR_FS_CATALOG.'default_images/design/tick.png')) {
                echo '<div class="option_tick"><img src="default_images/design/tick.png" alt=""></div>'; 
              } else {
@@ -242,7 +246,12 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
                    echo '<span>'.new_nl2br($value['title']).'</span>';
                  }
                } else {
-                 echo '<div class="option_hide_border">'; 
+                 //echo '<div class="option_hide_border">'; 
+                 if (trim(str_replace($replace_arr, '',nl2br($default_value))) == trim(str_replace($replace_arr, '',nl2br($value['title'])))) {
+                   echo '<div class="option_show_border">'; 
+                 } else {
+                   echo '<div class="option_hide_border">'; 
+                 }
                  if (file_exists(DIR_FS_CATALOG.'default_images/design/tick.png')) {
                    echo '<div class="option_tick"><img src="default_images/design/tick.png" alt=""></div>'; 
                  } else {
