@@ -1012,8 +1012,8 @@ if($address_error == false){
           //$add_product_options = $_POST['add_product_options'];
         //}
         $AddedOptionsPrice = 0;
-
-        $replace_arr = array("<br>", "<br />", "<br/>", "\r", "\n", "\r\n", "<BR>");
+        
+        $replace_arr = array("<br>", "<br />", "<br/>", "\r", "\n", "\r\n", "<BR>", "'", "\"");
         // 2.1.1 Get Product Attribute Info
         foreach($_POST as $op_key => $op_value)
         {
@@ -1032,7 +1032,7 @@ if($address_error == false){
                 $o_option_array = @unserialize($op_item_res['option']);
                 if (!empty($o_option_array['radio_image'])) {
                   foreach ($o_option_array['radio_image'] as $or_key => $or_value) {
-                    if (trim(str_replace($replace_arr, '', nl2br($or_value['title']))) == trim(str_replace($replace_arr, '', nl2br($op_value)))) {
+                    if (trim(str_replace($replace_arr, '', nl2br(stripslashes($or_value['title']))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($op_value)))))) {
                       $AddedOptionsPrice += $or_value['money'];
                       break; 
                     }
@@ -1145,13 +1145,13 @@ if($address_error == false){
             $ioption_item_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name = '".$i_op_array[1]."' and id = '".$i_op_array[3]."'"); 
             $ioption_item_res = tep_db_fetch_array($ioption_item_query); 
             if ($ioption_item_res) {
-            $input_option_array = array('title' => $ioption_item_res['front_title'], 'value' => str_replace("<BR>", "<br>", $op_i_value)); 
+            $input_option_array = array('title' => $ioption_item_res['front_title'], 'value' => str_replace("<BR>", "<br>", stripslashes($op_i_value))); 
             $op_price = 0; 
             if ($ioption_item_res['type'] == 'radio') {
               $io_option_array = @unserialize($ioption_item_res['option']);
               if (!empty($io_option_array['radio_image'])) {
                 foreach ($io_option_array['radio_image'] as $ior_key => $ior_value) {
-                  if (trim(str_replace($replace_arr, '', nl2br($ior_value['title']))) == trim(str_replace($replace_arr, '', nl2br($op_i_value)))) {
+                  if (trim(str_replace($replace_arr, '', nl2br(stripslashes($ior_value['title'])))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($op_i_value))))) {
                     $op_price = $ior_value['money']; 
                     break; 
                   }
@@ -3258,7 +3258,7 @@ if($action == "add_product")
     {
       $op_pos = substr($op_key, 0, 3); 
       if ($op_pos == 'op_') {
-        print "<input type='hidden' name='".$op_key."' value='".$op_value."'>";
+        print "<input type='hidden' name='".$op_key."' value='".tep_parse_input_field_data(stripslashes($op_value), array("'" => "&quot;"))."'>";
       } 
     }
     print "<input type='hidden' name='add_product_categories_id' value='$add_product_categories_id'>";

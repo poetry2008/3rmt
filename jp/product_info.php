@@ -71,7 +71,7 @@ function select_item_radio(i_obj, t_str, o_str, p_str, r_price)
       
       jq(i_obj).parent().parent()[0].className = 'option_show_border'; 
       origin_default_value = jq('#'+o_str).val(); 
-      jq('#'+o_str).parent().html("<input type='hidden' id='"+o_str+"' name='"+p_str+"' value='"+t_str+"'>"); 
+      jq('#'+o_str).parent().html("<input type='hidden' id='"+o_str+"' name='"+p_str+"' value=\""+t_str+"\">"); 
       
       item_info = p_str.split('_');
       item_id = item_info[3];

@@ -67,7 +67,6 @@ $order_total_modules = new order_total;
 
 $order_totals = $order_total_modules->process();
   
-  
 # Select
 //$cnt = strlen($NewOid);
 // 2003-06-06 add_telephone
@@ -397,7 +396,7 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
            $ao_option_array = @unserialize($option_item_res['option']);
            if (!empty($ao_option_array['radio_image'])) {
              foreach ($ao_option_array['radio_image'] as $or_key => $or_value) {
-               if (trim(str_replace($replace_arr, '', nl2br($or_value['title']))) == trim(str_replace($replace_arr, '', nl2br($op_value['value'])))) {
+               if (trim(str_replace($replace_arr, '', nl2br(stripslashes($or_value['title'])))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($op_value['value']))))) {
                  $op_price = $or_value['money']; 
                  break; 
                }
@@ -454,7 +453,7 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
            $aco_option_array = @unserialize($coption_item_res['option']);
            if (!empty($aco_option_array['radio_image'])) {
              foreach ($aco_option_array['radio_image'] as $cor_key => $cor_value) {
-               if (trim(str_replace($replace_arr, '', nl2br($cor_value['title']))) == trim(str_replace($replace_arr, '', nl2br($ck_value['value'])))) {
+               if (trim(str_replace($replace_arr, '', nl2br(stripslashes($cor_value['title'])))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($ck_value['value']))))) {
                  $c_op_price = $cor_value['money']; 
                  break; 
                }

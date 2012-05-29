@@ -21,7 +21,7 @@ class HM_Option_Item_Text extends HM_Option_Item_Basic
     echo '<td>'; 
     if (strlen($this->itextarea)) {
       echo $this->itextarea; 
-      echo '<input type="hidden" name="'.$pre_item_str.'op_'.$this->formname.'" value="'.$this->itextarea.'">'; 
+      echo '<input type="hidden" name="'.$pre_item_str.'op_'.$this->formname.'" value="'.stripslashes($this->itextarea).'">'; 
     }
     
     $sp_pos = strpos($_SERVER['PHP_SELF'], 'checkout_option.php');

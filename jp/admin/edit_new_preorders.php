@@ -645,7 +645,7 @@
       }
       $AddedOptionsPrice = 0;
 
-      $replace_arr = array("<br>", "<br />", "<br/>", "\r", "\n", "\r\n", "<BR>");
+      $replace_arr = array("<br>", "<br />", "<br/>", "\r", "\n", "\r\n", "<BR>", "'", "\"");
       // 2.1.1 Get Product Attribute Info
       foreach ($_POST as $op_key => $op_value) {
         $op_pos = substr($op_key, 0, 3);
@@ -663,7 +663,7 @@
                     $o_option_array = @unserialize($op_item_res['option']);
                     if (!empty($o_option_array['radio_image'])) {
                       foreach ($o_option_array['radio_image'] as $or_key => $or_value) {
-                        if (trim(str_replace($replace_arr, '', nl2br($or_value['title']))) == trim(str_replace($replace_arr, '', nl2br($op_value)))) {
+                        if (trim(str_replace($replace_arr, '', nl2br(stripslashes($or_value['title'])))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($op_value))))) {
                           $AddedOptionsPrice += $or_value['money'];
                           break;
                         }
@@ -675,7 +675,6 @@
             }
         }
       }
-
       // 2.1.2 Get Product Info
       $InfoQuery = "
         select p.products_model, 
@@ -736,13 +735,13 @@
           $ioption_item_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name = '".$i_op_array[1]."' and id = '".$i_op_array[3]."'");
           $ioption_item_res = tep_db_fetch_array($ioption_item_query); 
           if ($ioption_item_res) {
-            $input_option_array = array('title' => $ioption_item_res['front_title'], 'value' => str_replace("<BR>", "<br>", $op_i_value)); 
+            $input_option_array = array('title' => $ioption_item_res['front_title'], 'value' => str_replace("<BR>", "<br>", stripslashes($op_i_value))); 
             $op_price = 0; 
             if ($ioption_item_res['type'] == 'radio') {
               $io_option_array = @unserialize($ioption_item_res['option']);
               if (!empty($io_option_array['radio_image'])) {
                 foreach ($io_option_array['radio_image'] as $ior_key => $ior_value) {
-                  if (trim(str_replace($replace_arr, '', nl2br($ior_value['title']))) == trim(str_replace($replace_arr, '', nl2br($op_i_value)))) {
+                  if (trim(str_replace($replace_arr, '', nl2br(stripslashes($ior_value['title'])))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($op_i_value))))) {
                     $op_price = $ior_value['money']; 
                     break; 
                   }
@@ -751,8 +750,7 @@
             } else {
               $op_price = $ioption_item_res['price']; 
             }
-            
-            $_SESSION['create_preorder']['orders_products_attributes'][$add_product_products_id][] = array(
+           $_SESSION['create_preorder']['orders_products_attributes'][$add_product_products_id][] = array(
               'orders_id' => $oID,
               'orders_products_id'      => $new_product_id,
               'options_values_price'    => $op_price,
@@ -763,7 +761,6 @@
           }
         }
       }
-      
       // 2.2.2 Calculate Tax and Sub-Totals
       $order = $_SESSION['create_preorder']['orders'];
       $RunningSubTotal = 0;
@@ -1217,7 +1214,7 @@ if (($action == 'edit') && ($order_exists == true)) {
       }
     }
   }
-?>
+    ?>
 <?php // Version without editable names & prices ?>
 <table border="0" width="100%" cellspacing="0" cellpadding="2">
   <tr class="dataTableHeadingRow">
@@ -1242,10 +1239,9 @@ if (($action == 'edit') && ($order_exists == true)) {
     // Has Attributes?
     if (sizeof($order_products_attributes[$pid]) > 0) {
       for ($j=0; $j<sizeof($order_products_attributes[$pid]); $j++) {
-        echo '<br><nobr><small>&nbsp;<i> - ' .  '<input name="update_products[' . $pid . '][attributes]['.$j.'][option]" size="10" value="' .  tep_parse_input_field_data($order_products_attributes[$pid][$j]['option_info']['title'], array("'"=>"&quot;")) . '">' . 
+        echo '<br><nobr><small>&nbsp;<i> - ' .  '<input name="update_products[' .  $pid . '][attributes]['.$j.'][option]" size="10" value=\'' .  tep_parse_input_field_data(stripslashes($order_products_attributes[$pid][$j]['option_info']['title']), array("'"=>"&quot;")) . '\'>' . 
            ': ' . 
-           '<input name="update_products[' . $pid . '][attributes]['.$j.'][value]" size="35" value="' .  tep_parse_input_field_data($order_products_attributes[$pid][$j]['option_info']['value'], array("'"=>"&quot;"));
-        echo '">';
+           '<input name="update_products[' . $pid . '][attributes]['.$j.'][value]" size="35" value=\'' .  tep_parse_input_field_data(stripslashes($order_products_attributes[$pid][$j]['option_info']['value']), array("'"=>"&quot;")); echo '\'>';
         //if ($order_products_attributes[$pid][$j]['price'] != '0') {
           //echo ' ('.$currencies->format($order_products_attributes[$pid][$j]['price'] * $order_products[$pid]['qty']).')'; 
         //}
@@ -1746,7 +1742,7 @@ if (($action == 'edit') && ($order_exists == true)) {
       foreach ($_POST as $op_key => $op_value) {
         $op_pos = substr($op_key, 0, 3);
         if ($op_pos == 'op_') {
-          echo "<input type='hidden' name='".$op_key."' value='".$op_value."'>"; 
+          echo "<input type='hidden' name='".$op_key."' value='".tep_parse_input_field_data(stripslashes($op_value), array("'" => "&quot;"))."'>"; 
         }
       }
       echo "<input type='hidden' name='add_product_categories_id' value='$add_product_categories_id'>";

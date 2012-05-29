@@ -400,7 +400,7 @@ if (isset($_SESSION['preorder_option_info'])) {
          $ao_option_array = @unserialize($option_attr_values['option']);
          if (!empty($ao_option_array['radio_image'])) {
            foreach ($ao_option_array['radio_image'] as $or_key => $or_value) {
-             if (trim(str_replace($replace_arr, '', nl2br($or_value['title']))) == trim(str_replace($replace_arr, '', nl2br($op_value)))) {
+             if (trim(str_replace($replace_arr, '', nl2br(stripslashes($or_value['title'])))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($op_value))))) {
                $ao_price = $or_value['money']; 
                break; 
              }
@@ -549,7 +549,6 @@ if(!empty($add_list)){
   $email_address_str .= $email_address;
   $email_order_text = str_replace($email_address,$email_address_str,$email_order_text);
 }
-
 tep_mail($preorder['customers_name'], $preorder['customers_email_address'], EMAIL_TEXT_SUBJECT, $email_order_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
   
 if (SENTMAIL_ADDRESS != '') {

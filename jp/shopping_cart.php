@@ -225,7 +225,7 @@ function change_num(ob,targ, quan,a_quan)
               $c_option = @unserialize($option_item_res['option']);
               if (!empty($c_option)) {
                 foreach ($c_option['radio_image'] as $cr_key => $cr_value) {
-                  if (trim(str_replace($replace_arr, '', nl2br($cr_value['title']))) == trim(str_replace($replace_arr, '', nl2br($op_value)))) {
+                  if (trim(str_replace($replace_arr, '', nl2br(stripslashes($cr_value['title'])))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($op_value))))) {
                     $products[$i]['add_op_attributes'][$op_key]['price'] = $cr_value['money'];
                     break;
                   }

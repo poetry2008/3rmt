@@ -84,6 +84,8 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
          }
        }
      
+      $default_value = stripslashes($default_value);
+      
       if ($this->iline > 1) {
        echo '<div class="option_info_text">'; 
        if ($this->require == '1') {

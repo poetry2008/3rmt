@@ -482,7 +482,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
               foreach ($_POST as $op_s_key => $op_s_value) {
                 $ops_single_str = substr($op_s_key, 0, 3);
                 if ($ops_single_str == 'op_') {
-                  echo tep_draw_hidden_field($op_s_key, $op_s_value); 
+                  echo tep_draw_hidden_field($op_s_key, stripslashes($op_s_value)); 
                 }
               }
             ?>
@@ -503,7 +503,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
        foreach ($_POST as $op_key => $op_value) {
          $op_single_str = substr($op_key, 0, 3);
          if ($op_single_str == 'op_') {
-           echo tep_draw_hidden_field($op_key, $op_value); 
+           echo tep_draw_hidden_field($op_key, stripslashes($op_value)); 
          }
        }
     ?>

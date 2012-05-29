@@ -746,7 +746,7 @@ if($index > 0){
           foreach ($_POST as $op_key => $op_value) {
             $op_pos = substr($op_key, 0, 3);
             if ($op_pos == 'op_') {
-              echo "<input type='hidden' name='".$op_key."' value='".$op_value."'>"; 
+              echo "<input type='hidden' name='".$op_key."' value='".tep_parse_input_field_data(stripslashes($op_value), array("'" => "&quot;"))."'>"; 
             }
           }
           echo "<input type='hidden' name='add_product_categories_id' value='$add_product_categories_id'>";

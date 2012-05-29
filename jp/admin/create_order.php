@@ -48,7 +48,7 @@ case 'add_product':
         if($step == 5)
         {
           // 2.1 GET ORDER INFO #####
-          $replace_arr = array("<br>", "<br />", "<br/>", "\r", "\n", "\r\n", "<BR>");
+          $replace_arr = array("<br>", "<br />", "<br/>", "\r", "\n", "\r\n", "<BR>", "'", "\"");
 
           $oID = tep_db_prepare_input($_GET['oID']);
           $order = new order($oID);
@@ -71,7 +71,7 @@ case 'add_product':
                   $o_option_array = @unserialize($op_item_res['option']);
                   if (!empty($o_option_array['radio_image'])) {
                     foreach ($o_option_array['radio_image'] as $or_key => $or_value) {
-                      if (trim(str_replace($replace_arr, '', nl2br($or_value['title']))) == trim(str_replace($replace_arr, '', nl2br($op_value)))) {
+                      if (trim(str_replace($replace_arr, '', nl2br(stripslashes($or_value['title'])))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($op_value))))) {
                         $AddedOptionsPrice += $or_value['money'];
                       }
                     }
@@ -157,7 +157,6 @@ case 'add_product':
           //tep_db_query("update " . TABLE_PRODUCTS . " set products_quantity = 0 where products_quantity < 0 and products_id = '" . $add_product_products_id . "'");
           tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = 0 where products_real_quantity < 0 and products_id = '" . $add_product_products_id . "'");
           tep_db_query("update " . TABLE_PRODUCTS . " set products_virtual_quantity = 0 where products_virtual_quantity < 0 and products_id = '" . $add_product_products_id . "'");
-
             foreach($_POST as $op_i_key => $op_i_value) {
               $op_pos = substr($op_i_key, 0, 3);
               if ($op_pos == 'op_') {
@@ -170,14 +169,13 @@ case 'add_product':
                 $ioption_item_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name = '".$i_op_array[1]."' and id = '".$i_op_array[3]."'"); 
                 $ioption_item_res = tep_db_fetch_array($ioption_item_query);
                 if ($ioption_item_res) {
-                  $input_option_array = array('title' =>
-                      $ioption_item_res['front_title'], 'value' => str_replace("<BR>", "<br>", $op_i_value)); 
+                  $input_option_array = array('title' => $ioption_item_res['front_title'], 'value' => str_replace("<BR>", "<br>", stripslashes($op_i_value))); 
                   $op_price = 0; 
                   if ($ioption_item_res['type'] == 'radio') {
                     $io_option_array = @unserialize($ioption_item_res['option']);
                     if (!empty($io_option_array['radio_image'])) {
                       foreach ($io_option_array['radio_image'] as $ior_key => $ior_value) {
-                        if (trim(str_replace($replace_arr, '', nl2br($ior_value['title']))) == trim(str_replace($replace_arr, '', nl2br($op_i_value)))) {
+                        if (trim(str_replace($replace_arr, '', nl2br(stripslashes($ior_value['title'])))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($op_i_value))))) {
                           $op_price = $ior_value['money']; 
                           break; 
                         }
@@ -197,7 +195,6 @@ case 'add_product':
                 }
               }
             }
-
           // 2.2.2 Calculate Tax and Sub-Totals
           // TOTAL START
       $order_total_query = tep_db_query("select * from ". TABLE_ORDERS_TOTAL ." where orders_id='".$oID."'");

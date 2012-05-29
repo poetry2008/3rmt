@@ -278,7 +278,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                             $r_option_array = @unserialize($option_item['option']);
                             if (!empty($r_option_array['radio_image'])) {
                               foreach ($r_option_array['radio_image'] as $ro_key => $ro_value) {
-                                if (trim(str_replace($replace_arr, '', nl2br($ro_value['title']))) == trim(str_replace($replace_arr, '', nl2br($of_value)))) {
+                                if (trim(str_replace($replace_arr, '', nl2br(stripslashes($ro_value['title'])))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($of_value))))) {
                                   if ($ro_value['money'] != '') {
                                     echo ' ('.$currencies->format($ro_value['money']).')'; 
                                   }
@@ -630,7 +630,7 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
                 echo tep_draw_hidden_field($post_key.'['.$ps_key.']', $ps_value); 
               }
             } else {
-              echo tep_draw_hidden_field($post_key, $post_value); 
+              echo tep_draw_hidden_field($post_key, stripslashes($post_value)); 
             }
           }
           echo '</form>';
