@@ -187,7 +187,7 @@
             $update_sql = "update `".TABLE_OPTION_ITEM."` set `title` =
               '".tep_db_prepare_input($_POST['title'])."', `front_title` =
               '".tep_db_prepare_input($_POST['front_title'])."', `option` =
-              '".tep_db_prepare_input(serialize($option_array))."', `type` =
+              '".addslashes(serialize($option_array))."', `type` =
               '".tep_db_prepare_input(strtolower($_POST['type']))."', `price` =
               '".tep_db_prepare_input($_POST['price'])."', `sort_num` =
               '".tep_db_prepare_input((int)$_POST['sort_num'])."', `place_type` = '".tep_db_prepare_input($_POST['place_type'])."' where id =
@@ -198,14 +198,14 @@
               '".$_GET['group_id']."', '".tep_db_prepare_input($_POST['title'])."',
               '".tep_db_prepare_input($_POST['front_title'])."',
               '".tep_db_prepare_input(tep_get_random_option_item_name())."', '',
-              '".tep_db_prepare_input(serialize($option_array))."',
+              '".addslashes(serialize($option_array))."',
               '".tep_db_prepare_input(strtolower($_POST['type']))."',
               '".tep_db_prepare_input($_POST['price'])."', '1',
               '".tep_db_prepare_input((int)$_POST['sort_num'])."', '".tep_db_prepare_input($_POST['place_type'])."', '".date('Y-m-d H:i:s',time())."')"; 
              tep_db_query($insert_sql); 
              $item_id = tep_db_insert_id(); 
              $option_array['eid'] = $item_id;
-             tep_db_query("update `".TABLE_OPTION_ITEM."` set `option` = '".tep_db_prepare_input(serialize($option_array))."' where `id` = '".$item_id."'");
+             tep_db_query("update `".TABLE_OPTION_ITEM."` set `option` = '".addslashes(serialize($option_array))."' where `id` = '".$item_id."'");
           }
         }
         tep_redirect(tep_href_link(FILENAME_OPTION_ITEM, 'group_id='.$_GET['group_id'].(isset($_GET['gpage'])?'&gpage='.$_GET['gpage']:''))); 
