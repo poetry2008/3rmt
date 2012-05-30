@@ -455,7 +455,7 @@ foreach ($_POST as $post_key => $post_value) {
       $preorder_info_attr[] = $ps_value;
     }
   } else {
-    echo '<input type="hidden" name="'.$post_key.'" value="'.$post_value.'">'; 
+    echo '<input type="hidden" name="'.$post_key.'" value="'.stripslashes($post_value).'">'; 
   }
 }
 echo '<input type="hidden" name="pid" value="'.$preorder_id.'">'; 
@@ -919,7 +919,10 @@ document.forms.order1.submit();
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
           <tr>
             <td>
-            <?php echo $hm_option->render($product_info_res['belong_to_option'], true, 1);?> 
+            <?php 
+            $p_cflag = tep_get_cflag_by_product_id($preorder_product_res['products_id']);
+            echo $hm_option->render($product_info_res['belong_to_option'], true, 1, '', '', (int)$p_cflag);
+            ?> 
             </td>
           </tr>
           </table> 

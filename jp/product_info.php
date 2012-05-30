@@ -56,29 +56,32 @@ function recalc_product_price(t_obj)
   calc_product_final_price("<?php echo (int)$_GET['products_id'];?>");
 }
 
-function select_item_radio(i_obj, t_str, o_str, p_str)
+function select_item_radio(i_obj, t_str, o_str, p_str, r_price)
 {
-      jq(i_obj).parent().parent().parent().parent().find('a').each(function() {
-        if (jq(this).parent()[0].className == 'option_show_border') {
-          jq(this).parent()[0].className = 'option_hide_border';
+      jq(i_obj).parent().parent().parent().parent().parent().find('a').each(function() {
+        if (jq(this).parent().parent()[0].className == 'option_show_border') {
+          jq(this).parent().parent()[0].className = 'option_hide_border';
         } 
       });   
-      jq(i_obj).parent()[0].className = 'option_show_border'; 
+      if (t_str == '') {
+        t_str = jq(i_obj).children("span:first").html(); 
+      } else {
+        t_str = ''; 
+      }
+      
+      jq(i_obj).parent().parent()[0].className = 'option_show_border'; 
       origin_default_value = jq('#'+o_str).val(); 
-      jq('#'+o_str).parent().html("<input type='hidden' id='"+o_str+"' name='"+p_str+"' value='"+t_str+"'>"); 
+      jq('#'+o_str).parent().html("<input type='hidden' id='"+o_str+"' name='"+p_str+"' value=\""+t_str+"\">"); 
       
       item_info = p_str.split('_');
       item_id = item_info[3];
       var r_tmp_name = p_str.substr(3);
       if (t_str == '') {
         jq('#tp1_'+r_tmp_name).val(0);
-        calc_product_final_price("<?php echo (int)$_GET['products_id'];?>");
       } else {
-        jq.getJSON(encodeURI("<?php echo HTTP_SERVER;?>"+"/ajax_process.php?action=calc_radio_price&it_id="+item_id+"&rvalue="+t_str), function(msg) { 
-            jq('#tp1_'+r_tmp_name).val(msg.price);
-            calc_product_final_price("<?php echo (int)$_GET['products_id'];?>");
-        });
+        jq('#tp1_'+r_tmp_name).val(r_price);
       }
+      calc_product_final_price("<?php echo (int)$_GET['products_id'];?>");
 }
 
 function change_num(ob,targ, quan, a_quan)
@@ -385,9 +388,10 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
   }else{  
     ?>
     <?php
-	$hm_option->render($product_info['belong_to_option']);
-?>
-                    <table align="right" width="100%">
+    $p_cflag = tep_get_cflag_by_product_id($product_info['products_id']); 
+    $hm_option->render($product_info['belong_to_option'], false, 0, '', '', $p_cflag);
+    ?>
+                    <table align="right" width="100%" cellspacing="0" cellpadding="6" border="0">
                       <tr>
                         <td class="main" width="85">数量:</td>
                         <td class="main" colspan="2">

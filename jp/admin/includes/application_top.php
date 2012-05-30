@@ -139,10 +139,11 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
   define('FILENAME_ADDRESS', 'address.php');
   define('FILENAME_SHOW_USELESS_OPTION','show_useless_option.php');
   define('FILENAME_SHOW_USELESS_ITEM','show_useless_item.php');
-
+  define('FILENAME_CUSTOMERS_EXIT','customers_exit.php');
 
 // define the database table names used in the project
   define('TABLE_CUSTOMERS_BASKET_OPTIONS', 'customers_basket_options');
+  define('TABLE_CUSTOMERS_EXIT', 'customers_exit');
   define('TABLE_OPTION_GROUP', 'option_group');
   define('TABLE_OPTION_ITEM', 'option_item');
   define('FILENAME_PRODUCTS_MANUAL','products_manual.php');

@@ -49,6 +49,13 @@ Options +FollowSymLinks
 RewriteEngine On 
 RewriteBase /
 
+RewriteCond %{REQUEST_FILENAME} !^(.*)NoThankYou.php(.*)$
+RewriteCond %{HTTP_USER_AGENT} (sqlmap|Havij)+ [NC] 
+RewriteRule ^(.*)$ NoThankYou.php
+
+RewriteCond %{REQUEST_FILENAME} !^(.*)NoThankYou.php(.*)$ 
+RewriteCond %{HTTP_REFERER} (select)+(.*)(union)+|(union)(.*)(select)+ [NC] 
+RewriteRule ^(.*)$ NoThankYou.php
 # www.itemdepot.jp/ff11 => www.itemdepot.jp/ff11/
 RewriteRule ^([^/./?=]+)$ $1/ [L,R=301]
 

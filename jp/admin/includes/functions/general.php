@@ -7284,3 +7284,8 @@ function tep_get_notice_info($return_type = 0)
   
   return '';
 }
+
+function new_nl2br($string) {
+  $string = str_replace(array("\r\n", "\r", "\n"), "<br>", $string);
+  return $string;
+} 

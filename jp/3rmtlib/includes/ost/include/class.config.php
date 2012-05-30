@@ -444,7 +444,7 @@ class Config {
     }
 
     function canUploadFileType($filename) {       
-        $ext = strtolower(preg_replace("/.*\.(.{3,4})$/", "$1", $filename));
+        $ext = strtolower(preg_replace("/[^.]*\.(.{3,4})$/", "$1", $filename));
         $allowed=$this->config['allowed_filetypes']?array_map('trim',explode(',',strtolower($this->config['allowed_filetypes']))):null;
         return ($ext && is_array($allowed) && (in_array(".$ext",$allowed) || in_array(".*",$allowed)))?TRUE:FALSE;
     }

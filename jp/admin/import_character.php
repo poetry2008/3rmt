@@ -29,7 +29,6 @@ while ($order_products = mysql_fetch_array($order_products_raw)) {
     mysql_query($insert_sql); 
   }
  
-  echo $show_num;
   $show_num++;
 }
 

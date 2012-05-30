@@ -50,6 +50,13 @@ RewriteEngine On
 RewriteBase /
 
 
+RewriteCond %{REQUEST_FILENAME} !^(.*)NoThankYou.php(.*)$
+RewriteCond %{HTTP_USER_AGENT} (sqlmap|Havij)+ [NC] 
+RewriteRule ^(.*)$ NoThankYou.php
+
+RewriteCond %{REQUEST_FILENAME} !^(.*)NoThankYou.php(.*)$ 
+RewriteCond %{HTTP_REFERER} (select)+(.*)(union)+|(union)(.*)(select)+ [NC] 
+RewriteRule ^(.*)$ NoThankYou.php
 RewriteRule ^select.html$ index.php?action=select&%{QUERY_STRING}
 RewriteRule ^sitemap.xml$ ggsitemap.php
 

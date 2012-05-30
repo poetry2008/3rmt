@@ -23,13 +23,14 @@
   $customers_res = tep_db_fetch_array($customers_raw); 
   if(isset($_POST['cemail'])){
     $_POST['cemail'] = str_replace("\xe2\x80\x8b", '', $_POST['cemail']);
+    $val_email = tep_db_prepare_input($_POST['cemail']);
   }
   if ($customers_res) {
     $cus_email = $customers_res['customers_email_address']; 
     if ($_GET['action'] == 'send') {
       if (empty($_POST['cemail'])) {
         $error = true;
-      } else if (!tep_validate_email($_POST['cemail'])) {
+      } else if (!tep_validate_email($val_email)) {
         $error = true;
         $error_msg = WRONG_EMAIL_PATTERN_NOTICE; 
       } else if (tep_check_exists_cu_email($_POST['cemail'], $customers_res['customers_id'], 1)) {
@@ -43,7 +44,6 @@
         $gu_email_srandom = md5(time().$customers_res['customers_id'].$_POST['cemail']); 
         
         $email_text = stripslashes($customers_res['customers_lastname'].' '.$customers_res['customers_firstname']).EMAIL_NAME_COMMENT_LINK .  "\n\n"; 
-        
         $old_str_array = array('${URL}', '${NAME}', '${SITE_NAME}', '${SITE_URL}'); 
         $new_str_array = array(
             HTTP_SERVER.'/nm_token.php?gud='.$gu_email_srandom,

@@ -21,16 +21,17 @@ class HM_Option_Item_Text extends HM_Option_Item_Basic
     echo '<td>'; 
     if (strlen($this->itextarea)) {
       echo $this->itextarea; 
-      echo '<input type="hidden" name="'.$pre_item_str.'op_'.$this->formname.'" value="'.$this->itextarea.'">'; 
+      echo '<input type="hidden" name="'.$pre_item_str.'op_'.$this->formname.'" value="'.stripslashes($this->itextarea).'">'; 
     }
     
     $sp_pos = strpos($_SERVER['PHP_SELF'], 'checkout_option.php');
+    /* 
     if ($sp_pos !== false) {
       if ($this->s_price != '0') {
         echo '<span class="option_money">'.number_format($this->s_price).OPTION_ITEM_TEXT_MONEY_UNIT.'</span>'; 
       }
     } 
-    
+    */ 
     $pro_pos = strpos($_SERVER['PHP_SELF'], 'product_info.php');
     if ($pro_pos !== false) {
        echo '<input id="tp1_'.$pre_item_str.$this->formname.'" type="hidden" name="tp1_'.$pre_item_str.$this->formname.'" value="'.number_format($this->s_price).'">'; 
