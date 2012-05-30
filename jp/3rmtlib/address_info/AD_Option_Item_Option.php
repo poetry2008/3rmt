@@ -12,8 +12,9 @@ class AD_Option_Item_Option extends AD_Option_Item_Basic
        echo $this->front_title.':';
        echo '</td>';
      }
-     echo '<td class="main">&nbsp;'; 
+     echo '<td class="main" style="padding-left:10px;">'; 
      echo '<input type="hidden" name="'.$this->formname.'" value="'.$this->front_title.'">';
+    if($this->fixed_option){
      if (!empty($this->option)) {
         
        
@@ -47,6 +48,10 @@ class AD_Option_Item_Option extends AD_Option_Item_Basic
          echo '</select>'; 
       }
      } 
+    }else{
+
+      echo '<select name="op_'.$this->formname.'" id="op_'.$this->formname.'"></select>';
+    }
      echo '<span id="error_'.$this->formname.'" class="option_error">';
      if (isset($option_error_array[$this->formname])) {
        echo $option_error_array[$this->formname]; 

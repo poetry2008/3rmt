@@ -294,7 +294,7 @@ if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
   $check_pwd_array = tep_db_fetch_array($check_pwd_query);
   tep_db_free_result($check_pwd_query);
 
-  if(!tep_validate_password($_POST['u_password'], $check_pwd_array['customers_password'])){
+  if(tep_validate_password($password,$check_pwd_array['customers_password'])){
     $error = true;
     $error_pwd = true;
     $entry_password_old_error = true;
@@ -510,7 +510,7 @@ if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
    $check_pwd_array = tep_db_fetch_array($check_pwd_query);
    tep_db_free_result($check_pwd_query);
 
-   if(!tep_validate_password($_POST['u_password'], $check_pwd_array['customers_password'])){
+   if(tep_validate_password($password,$check_pwd_array['customers_password'])){
      $error_pwd = true;
      $entry_password_old_error = true;
    }else{

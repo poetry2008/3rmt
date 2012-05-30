@@ -189,6 +189,9 @@
   define('TABLE_ORDERS_STATUS_HISTORY', 'orders_status_history');
   define('TABLE_ORDERS_TOTAL', 'orders_total');
   define('TABLE_PRODUCTS', 'products');
+  define('TABLE_COUNTRY_FEE','country_fee');
+  define('TABLE_COUNTRY_AREA','country_area');
+  define('TABLE_COUNTRY_CITY','country_city');
   define('TABLE_PRODUCTS_ATTRIBUTES', 'products_attributes');
   define('TABLE_PRODUCTS_ATTRIBUTES_DOWNLOAD', 'products_attributes_download');
   define('TABLE_PRODUCTS_DESCRIPTION', 'products_description');
@@ -513,7 +516,48 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
                                     $cart->add_cart((int)$_POST['products_id'][$i], $_POST['cart_quantity'][$i], '', false, $hide_option_info);
                                   }
                                 }
-                              }
+                               }
+      $weight_count = 0;                        
+      foreach($_POST['products_id'] as $p_key=>$p_value){
+
+        $p_array = explode("_",$p_value);
+        $products_id_query = tep_db_query("select products_weight from ". TABLE_PRODUCTS ." where products_id='". $p_array[0] ."'");
+        $products_id_array = tep_db_fetch_array($products_id_query);
+        tep_db_free_result($products_id_query);
+        $weight_count += $products_id_array['products_weight']*$_POST['cart_quantity'][$p_key];
+      }
+
+      $max_weight_array  = array();
+      $products_error = false;
+      $country_fee_query = tep_db_query("select weight_limit from ". TABLE_COUNTRY_FEE ." where status='0'");
+      while($country_fee_array = tep_db_fetch_array($country_fee_query)){ 
+        $max_weight_array[] = $country_fee_array['weight_limit'];
+      }
+
+      $max_area_weight_array = array();
+      $country_area_query = tep_db_query("select weight_limit from ". TABLE_COUNTRY_AREA ." where status='0'");
+      while($country_area_array = tep_db_fetch_array($country_area_query)){ 
+        $max_area_weight_array[] = $country_area_array['weight_limit'];
+      }
+
+      $max_city_weight_array = array();
+      $country_city_query = tep_db_query("select weight_limit from ". TABLE_COUNTRY_CITY ." where status='0'");
+      while($country_city_array = tep_db_fetch_array($country_city_query)){ 
+        $max_city_weight_array[] = $country_city_array['weight_limit'];
+      } 
+
+      $max_weight = max($max_weight_array);
+      $max_area_weight = max($max_area_weight_array);
+      $max_city_weight = max($max_city_weight_array);
+
+      $max_weight_count = 0;
+      $max_weight_count = max($max_weight,$max_area_weight,$max_city_weight);
+      if($weight_count > $max_weight_count){
+
+        $products_error = true;
+      }
+                           if($products_error == false){
+
                               if (isset($_POST['continue']) && $_POST['goto']) {
                                 tep_redirect($_POST['goto']);
                               } else if (isset($_POST['checkout'])) {
@@ -521,6 +565,7 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
                               } else {
                                 tep_redirect(tep_href_link($goto, tep_get_all_get_params($parameters)));
                               }
+                            }
                               break;
       // customer adds a product from the products page
       /*case 'add_product' :    if (isset($_POST['products_id']) && is_numeric($_POST['products_id'])) {
@@ -856,7 +901,7 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
   define('TABLE_OA_ITEM', 'oa_item'); 
   define('TABLE_OA_FORMVALUE', 'oa_formvalue');
   define('TABLE_OA_FORMVALUE', 'oa_formvalue'); 
-  define('TABLE_ADDRESS','address');
+  define('TABLE_ADDRESS','address_1');
   define('TABLE_OPTION_GROUP','option_group');
   define('TABLE_OPTION_ITEM','option_item');
   define('TABLE_PRODUCTS_SHIPPING_TIME','products_shipping_time');

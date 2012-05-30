@@ -334,6 +334,16 @@ B:ポイントの加算（<?php echo STORE_NAME;?>会員でなければ表示さ
   }
 ?>
 <?php
+    if($products_error == true){
+?>
+          <tr>
+            <td class="stockWarning" align="center"><br>
+              <?php echo OUT_OF_STOCK_CANT_CHECKOUT; ?></td>
+          </tr>
+<?php
+    }
+?>
+<?php
     if ($any_out_of_stock == 1) {
       if (STOCK_ALLOW_CHECKOUT == 'true') {
 ?>
