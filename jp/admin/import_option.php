@@ -86,7 +86,6 @@ while($array = mysql_fetch_array($query)){
     $sql_products = "UPDATE `products` SET `belong_to_option` = '".$new."' WHERE `products_id` =".$array['products_id']."";
     mysql_query($sql_products);
   }
-  echo $i_num; 
   $i_num++;
 }
 echo "Complete!";
