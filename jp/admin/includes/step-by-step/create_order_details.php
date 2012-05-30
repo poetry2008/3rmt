@@ -708,10 +708,11 @@ if($index > 0){
           }
           else
           {
+            $p_cflag = tep_get_cflag_by_product_id($add_product_products_id);
             print "<tr>\n";
             print "<td class='dataTableContent' valign='top'><b>" . ADDPRODUCT_TEXT_STEP . " 3: </b></td><td class='dataTableContent' valign='top'>";
             print "<form name='coform' action='$PHP_SELF?oID=$oID&action=$action$param_str' method='POST'>";
-            print $hm_option->render($option_product['belong_to_option'], false, 2); 
+            print $hm_option->render($option_product['belong_to_option'], false, 2, '', '', $p_cflag); 
             print "</td>";
             print "<td class='dataTableContent' align='center' valign='top'>";
             //print "<input type='submit' value='" . ADDPRODUCT_TEXT_OPTIONS_CONFIRM . "'>";

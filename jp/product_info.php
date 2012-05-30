@@ -388,7 +388,8 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
   }else{  
     ?>
     <?php
-	$hm_option->render($product_info['belong_to_option']);
+    $p_cflag = tep_get_cflag_by_product_id($product_info['products_id']); 
+    $hm_option->render($product_info['belong_to_option'], false, 0, '', '', $p_cflag);
     ?>
                     <table align="right" width="100%" cellspacing="0" cellpadding="6" border="0">
                       <tr>

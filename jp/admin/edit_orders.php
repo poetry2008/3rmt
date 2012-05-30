@@ -3224,12 +3224,13 @@ if($action == "add_product")
     else
     {
 
+      $p_cflag = tep_get_cflag_by_product_id($add_product_products_id);
       print "<tr class=\"dataTableRow\">";
       print "<td class='dataTableContent' align='right'><b>" . ADDPRODUCT_TEXT_STEP . " 3: </b></td><td class='dataTableContent' valign='top'>";
       print "<div class=\"pro_option\">"; 
       print "<form name='aform' action='$PHP_SELF?oID=$oID&action=$action' method='POST'>\n";
          
-      print $hm_option->render($option_product['belong_to_option'], false, 2); 
+      print $hm_option->render($option_product['belong_to_option'], false, 2, '', '', $p_cflag); 
       print "<input type='hidden' name='add_product_categories_id' value='$add_product_categories_id'>";
       print "<input type='hidden' name='add_product_products_id' value='$add_product_products_id'>";
       print "<input type='hidden' name='step' value='3'>";

@@ -300,7 +300,10 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
         </tr>
         <tr>
           <td colspan="2" class="preorder_option">
-          <?php $hm_option->render($belong_option['belong_to_option']);?> 
+          <?php 
+          $p_cflag = tep_get_cflag_by_product_id($product_info['products_id']);
+          $hm_option->render($belong_option['belong_to_option'], false, 0, '', '', $p_cflag);
+          ?> 
           </td>
         </tr>
         <tr>

@@ -807,7 +807,10 @@ document.forms.order1.submit();
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
           <tr>
             <td>
-            <?php echo $hm_option->render($product_info_res['belong_to_option'], true, 1);?> 
+            <?php 
+            $p_cflag = tep_get_cflag_by_product_id($preorder_product_res['products_id']);
+            echo $hm_option->render($product_info_res['belong_to_option'], true, 1, '', '', (int)$p_cflag);
+            ?> 
             </td>
           </tr>
           </table> 
