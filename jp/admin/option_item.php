@@ -538,7 +538,7 @@ $(function() {
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" onload="SetFocus();">
 <?php if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
   <script language='javascript'>
-    //one_time_pwd('<?php echo $page_name;?>');
+    one_time_pwd('<?php echo $page_name;?>');
   </script>
 <?php }?>
 <!-- header //-->
