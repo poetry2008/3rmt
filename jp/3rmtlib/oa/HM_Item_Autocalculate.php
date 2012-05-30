@@ -21,7 +21,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
       echo "</td>";
     }
     echo "<td>";
-    if ($this->loaded){
+    if (!$this->loaded){
       $this->defaultValue = $this->loadedValue;
     }  
  
@@ -86,7 +86,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
         $check = 'checked';
       }
 
-      if(!$op){ //if no products  ,continue;
+      if(!$op && $opp['products_bflag']==1){ //if no products  ,continue;
 	  
         echo "<input class='".$classrequire."'
           value='".$opp['products_id']."|".$opp['orders_products_id']."'  
@@ -108,8 +108,7 @@ class HM_Item_Autocalculate extends HM_Item_Basic
 
 
       echo "<div class='autocalculate_div'>";
-
-      if($op){
+      if($op && $opp['products_bflag']==1){
         echo "<input class='".$classrequire."'
           value='".$opp['products_id']."|".$opp['orders_products_id']."'  
         onchange='".$this->formname."Change_option(".$opp['products_id'].",this,".$i.")' 
