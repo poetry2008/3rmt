@@ -84,6 +84,7 @@ class HM_Option_Item_Select extends HM_Option_Item_Basic
             }
          }
        }
+     $default_value = stripslashes($default_value); 
      echo '<td>'; 
      echo '<div class="option_info_text">'; 
      if (!empty($this->se_option)) {
@@ -93,17 +94,19 @@ class HM_Option_Item_Select extends HM_Option_Item_Basic
          echo '<option value="">'.$this->sedefault.'</option>'; 
        }
        foreach ($this->se_option as $key => $value) {
-         echo '<option value="'.$value.'"'.(($default_value == $value)?'selected ':'').'>'.$value.'</option>'; 
+         echo '<option value="'.$value.'"'.(($default_value == stripslashes($value))?'selected ':'').'>'.stripslashes($value).'</option>'; 
          $i++; 
        }
        echo '</select>'; 
      }
-    
+     
+     /*
      if ($sp_pos !== false) {
        if ($this->s_price != '0') {
          echo '<span class="option_money">'.number_format($this->s_price).OPTION_ITEM_SELECT_MONEY_UNIT.'</span>'; 
        }
      }
+     */ 
      echo '</div>'; 
      if ($this->secomment) {
        echo $this->secomment; 

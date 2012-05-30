@@ -343,7 +343,7 @@ foreach ($_POST as $post_key => $post_value) {
       $preorder_info_attr[] = $ps_value;
     }
   } else {
-    echo '<input type="hidden" name="'.$post_key.'" value="'.$post_value.'">'; 
+    echo '<input type="hidden" name="'.$post_key.'" value="'.stripslashes($post_value).'">'; 
   }
 }
 echo '<input type="hidden" name="pid" value="'.$preorder_id.'">'; 

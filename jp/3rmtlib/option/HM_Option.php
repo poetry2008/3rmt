@@ -108,25 +108,4 @@ class HM_Option extends Option_DbRecord
     }
     return true;
   }
-
-  function calc_radio_price($r_id, $r_value)
-  {
-    $return_price = 0; 
-    $item_raw = tep_db_query("select * from ".TABLE_OPTION_ITEM." where id = '".$r_id."'"); 
-    $item_info = tep_db_fetch_array($item_raw);
-    if ($item_info) {
-      if ($item_info['type'] == 'radio') {
-        $r_info_array = @unserialize($item_info['option']); 
-        if (!empty($r_info_array['radio_image'])) {
-          foreach ($r_info_array['radio_image'] as $key => $value) {
-            if (trim($value['title']) == trim($r_value)) {
-              $return_price = $value['money'];
-              break;
-            }
-          }
-        }      
-      }
-    }
-    return number_format($return_price); 
-  }
 }

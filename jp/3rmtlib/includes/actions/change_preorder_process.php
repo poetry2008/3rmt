@@ -375,7 +375,7 @@ while ($mold_attr_res = tep_db_fetch_array($mold_attr_raw)) {
   $products_ordered_attributes .= "\n"
         .$mold_attr_info['title']
         .str_repeat('　', intval(($cl_max_len-mb_strlen($mold_attr_info['title'],'utf-8'))))
-        .'：'.$mold_attr_info['value'];
+        .'：'.str_replace(array("<BR>", "<br>"), "\n", $mold_attr_info['value']);
       if ($mold_attr_res['options_values_price'] != '0') {
         if ($preorder_product_res['products_price'] != '0') {
           //$products_ordered_attributes .= '　('.$currencies->format($mold_attr_res['options_values_price']*$preorder_product_res['products_quantity']).')';
@@ -385,6 +385,7 @@ while ($mold_attr_res = tep_db_fetch_array($mold_attr_raw)) {
 
 }
 
+$replace_arr = array("<br>", "<br />", "<br/>", "\r", "\n", "\r\n", "<BR>");
 if (isset($_SESSION['preorder_option_info'])) {
    foreach ($_SESSION['preorder_option_info'] as $op_key => $op_value) {
       $op_key_info = explode('_', $op_key);
@@ -393,13 +394,13 @@ if (isset($_SESSION['preorder_option_info'])) {
       
       if ($option_attr_values) {
 
-      $input_option_array = array('title' => $option_attr_values['front_title'], 'value' => $op_value);
+      $input_option_array = array('title' => $option_attr_values['front_title'], 'value' => str_replace(array("<BR>"), "<br>", $op_value));
       $ao_price = 0; 
       if ($option_attr_values['type'] == 'radio') {
          $ao_option_array = @unserialize($option_attr_values['option']);
          if (!empty($ao_option_array['radio_image'])) {
            foreach ($ao_option_array['radio_image'] as $or_key => $or_value) {
-             if (trim($or_value['title']) == trim($op_value)) {
+             if (trim(str_replace($replace_arr, '', nl2br(stripslashes($or_value['title'])))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($op_value))))) {
                $ao_price = $or_value['money']; 
                break; 
              }
@@ -428,9 +429,7 @@ if (isset($_SESSION['preorder_option_info'])) {
       }
       
       $products_ordered_attributes .= "\n"
-        .$option_attr_values['front_title']
-        .str_repeat('　', intval(($cl_max_len-mb_strlen($option_attr_values['front_title'],'utf-8'))))
-        .'：'.$op_value;
+        .$option_attr_values['front_title'] .str_repeat('　', intval(($cl_max_len-mb_strlen($option_attr_values['front_title'],'utf-8')))) .'：'.str_replace(array("<BR>", "<br>"), "\n", $op_value);
       if ($ao_price != '0') {
         //$products_ordered_attributes .= '　('.$currencies->format($ao_price*$preorder_product_res['products_quantity']).')';
         $products_ordered_attributes .= '　('.$currencies->format($ao_price).')';
@@ -550,7 +549,6 @@ if(!empty($add_list)){
   $email_address_str .= $email_address;
   $email_order_text = str_replace($email_address,$email_address_str,$email_order_text);
 }
-
 tep_mail($preorder['customers_name'], $preorder['customers_email_address'], EMAIL_TEXT_SUBJECT, $email_order_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
   
 if (SENTMAIL_ADDRESS != '') {

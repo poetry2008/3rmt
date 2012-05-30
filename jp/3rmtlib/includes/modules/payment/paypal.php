@@ -170,7 +170,7 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
             $option_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name = '".$op_key_array[1]."' and id = '".$op_key_array[3]."'"); 
             $option_res = tep_db_fetch_array($option_query);
             if ($option_res) {
-              $mail_body .= '└' . $option_res['front_title'] . ' ' . $op_value . "\n";
+              $mail_body .= '└' . $option_res['front_title'] . ' ' .  str_replace(array("<BR>", "<br>"), "\n", $op_value) . "\n";
             }
           }
         }
@@ -181,7 +181,7 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
            $c_option_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name = '".$c_op_array[0]."' and id = '".$c_op_array[2]."'"); 
            $c_option_res = tep_db_fetch_array($c_option_query);
            if ($c_option_res) {
-             $mail_body .= '└' . $c_option_res['front_title'] . ' ' . $c_op_value . "\n";
+             $mail_body .= '└' . $c_option_res['front_title'] . ' ' .  str_replace(array("<BR>", "<br>"), "\n", $c_op_value) . "\n";
            }
          }
        }
@@ -587,7 +587,7 @@ function getpreexpress($pre_value, $pre_pid){
       $old_attr_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS_ATTRIBUTES." where orders_id = '".$pid."'");
       while ($old_attr_res = tep_db_fetch_array($old_attr_raw)) {
         $old_attr_info = @unserialize(stripslashes($old_attr_res['option_info']));
-        $mail_body .= '└' . $old_attr_info['title'] . ' ' .  $old_attr_info['value'] . "\n";
+        $mail_body .= '└' . $old_attr_info['title'] . ' ' .  str_replace(array("<BR>", "<br>"), "\n", $old_attr_info['value']) . "\n";
       }
       
       if (isset($_SESSION['preorder_option_info'])) {
@@ -596,7 +596,7 @@ function getpreexpress($pre_value, $pre_pid){
           $option_item_raw = tep_db_query("select front_title from ".TABLE_OPTION_ITEM." where name = '".$i_option[1]."' and id = '".$i_option[3]."'");
           $option_item = tep_db_fetch_array($option_item_raw); 
           if ($option_item) {
-            $mail_body .= '└' . $option_item['front_title'] . ' ' .  $value . "\n";
+            $mail_body .= '└' . $option_item['front_title'] . ' ' .  str_replace(array("<BR>", "<br>"), "\n", $value) . "\n";
           }
         }
       }

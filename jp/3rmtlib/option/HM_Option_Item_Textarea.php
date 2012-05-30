@@ -84,6 +84,8 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
          }
        }
      
+      $default_value = stripslashes($default_value);
+      
       if ($this->iline > 1) {
        echo '<div class="option_info_text">'; 
        if ($this->require == '1') {
@@ -119,12 +121,14 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
            } 
          }
        }
-       
+      
+       /*
        if ($sp_pos !== false) {
          if ($this->s_price != '0') {
            echo '<span class="option_money">'.number_format($this->s_price).OPTION_ITEM_TEXTAREA_MONEY_UNIT.'</span>'; 
          }
        }
+       */ 
        echo '</div>'; 
        if ($this->icomment) {
          echo $this->icomment; 
@@ -169,12 +173,13 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
            } 
          }
        }
-       
+       /* 
        if ($sp_pos !== false) {
          if ($this->s_price != '0') {
            echo '<span class="option_money">'.number_format($this->s_price).OPTION_ITEM_TEXTAREA_MONEY_UNIT.'</span>'; 
          }
        } 
+       */ 
        echo '</div>'; 
        if ($this->icomment) {
          echo $this->icomment;  

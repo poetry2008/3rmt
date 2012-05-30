@@ -30,7 +30,7 @@
       $p_tmp_value = str_replace(' ', '', $p_value);
       $p_tmp_value = str_replace('　', '', $p_value);
       if ($p_tmp_value != '') {
-        $option_info_array[$p_key] = $p_value; 
+        $option_info_array[$p_key] = stripslashes($p_value); 
       }
     }
   }
