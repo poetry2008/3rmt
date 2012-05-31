@@ -1459,7 +1459,36 @@ function check(select_value){
   var arr = new Array();
   <?php
     $weight_count = $shipping_weight_total;
-    $country_fee_query = tep_db_query("select id,name from ". TABLE_COUNTRY_FEE ." where status='0' and weight_limit>=". $weight_count ." order by id");
+    $country_fee_temp_array = array();
+    $country_fee_show_query = tep_db_query("select * from ". TABLE_COUNTRY_FEE ." where status='0'");
+    while($country_fee_show_array = tep_db_fetch_array($country_fee_show_query)){
+
+      $country_fee_temp_array[$country_fee_show_array['name']][] = $country_fee_show_array['weight_limit'];
+      $country_area_show_query = tep_db_query("select * from ". TABLE_COUNTRY_AREA ." where status='0' and fid=". $country_fee_show_array['id']);
+      while($country_area_show_array = tep_db_fetch_array($country_area_show_query)){
+
+        $country_fee_temp_array[$country_fee_show_array['name']][] = $country_area_show_array['weight_limit'];
+        $country_city_show_query = tep_db_query("select * from ". TABLE_COUNTRY_CITY ." where status='0' and fid=". $country_area_show_array['id']);
+        while($country_city_show_array = tep_db_fetch_array($country_city_show_query)){
+
+          $country_fee_temp_array[$country_fee_show_array['name']][] = $country_city_show_array['weight_limit'];
+        }
+        tep_db_free_result($country_city_show_query);
+      }
+      tep_db_free_result($country_area_show_query);
+    }
+    tep_db_free_result($country_fee_show_query);
+
+    $country_temp_str = '';
+    foreach($country_fee_temp_array as $c_f_key=>$c_f_value){
+
+      $max_temp = max($c_f_value);
+      if($weight_count > $max_temp){
+
+         $country_temp_str .= " and name!='".$c_f_key."'";
+      }
+    }
+    $country_fee_query = tep_db_query("select id,name from ". TABLE_COUNTRY_FEE ." where status='0'".$country_temp_str." order by id");
     while($country_fee_array = tep_db_fetch_array($country_fee_query)){
 
       echo 'arr["'.$country_fee_array['name'].'"] = "'. $country_fee_array['name'] .'";'."\n";
@@ -1480,8 +1509,32 @@ function country_check(value,select_value){
    var arr = new Array();
   <?php
     $weight_count = $shipping_weight_total;
+    $country_fee_temp_array = array();
+
+      $country_area_show_query = tep_db_query("select * from ". TABLE_COUNTRY_AREA ." where status='0'");
+      while($country_area_show_array = tep_db_fetch_array($country_area_show_query)){
+
+        $country_fee_temp_array[$country_area_show_array['name']][] = $country_area_show_array['weight_limit'];
+        $country_city_show_query = tep_db_query("select * from ". TABLE_COUNTRY_CITY ." where status='0' and fid=". $country_area_show_array['id']);
+        while($country_city_show_array = tep_db_fetch_array($country_city_show_query)){
+
+          $country_fee_temp_array[$country_area_show_array['name']][] = $country_city_show_array['weight_limit'];
+        }
+        tep_db_free_result($country_city_show_query);
+      }
+      tep_db_free_result($country_area_show_query);
+
+    $country_temp_str = '';
+    foreach($country_fee_temp_array as $c_f_key=>$c_f_value){
+
+      $max_temp = max($c_f_value);
+      if($weight_count > $max_temp){
+
+         $country_temp_str .= " and name!='".$c_f_key."'";
+      }
+    }
     $country_array = array();
-    $country_area_query = tep_db_query("select id,fid,name from ". TABLE_COUNTRY_AREA ." where status='0' and weight_limit>=". $weight_count ." order by sort");
+    $country_area_query = tep_db_query("select id,fid,name from ". TABLE_COUNTRY_AREA ." where status='0'".$country_temp_str." order by sort");
     while($country_area_array = tep_db_fetch_array($country_area_query)){
       
       $country_fee_fid_query = tep_db_query("select name from ". TABLE_COUNTRY_FEE ." where id='".$country_area_array['fid']."'"); 
@@ -1891,7 +1944,7 @@ function address_option_show(action){
   }
 
   echo "\n".'var address_str = "";'."\n";
-  $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."'");
+  $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' order by id");
   while($address_orders_array = tep_db_fetch_array($address_orders_query)){
   
     if(in_array($address_orders_array['name'],$address_list_arr)){
@@ -1963,7 +2016,7 @@ function address_option_list(value){
   
   while($address_orders_group_array = tep_db_fetch_array($address_orders_group_query)){
   
-  $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where orders_id='". $address_orders_group_array['orders_id'] ."'");
+  $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where orders_id='". $address_orders_group_array['orders_id'] ."' order by id");
   
   while($address_orders_array = tep_db_fetch_array($address_orders_query)){
     
@@ -2572,7 +2625,7 @@ if (($action == 'edit') && ($order_exists == true)) {
       $date_array[1] = str_replace('&nbsp;','',$date_array[1]);
       $end_temp = explode(":",$date_array[1]);
       $hour_str_1 = '&nbsp;<select name="end_hour" id="hour_1" onchange="check_hour_1(this.value);">';
-      for($h_1 = 0;$h_1 <= 23;$h_1++){
+      for($h_1 = (int)$start_temp[0];$h_1 <= 23;$h_1++){
         
         $h_str_1 = $h_1 < 10 ? '0'.$h_1 : $h_1; 
         $selected = (int)$end_temp[0] == $h_1 ? ' selected' : '';
@@ -2582,7 +2635,8 @@ if (($action == 'edit') && ($order_exists == true)) {
       $hour_str_1 .= '</select>&nbsp;時';
       echo $hour_str_1;
       $min_str_1_end = '&nbsp;<select name="end_min_1" id="min_end" onchange="check_end_min(this.value);">';
-      for($m_1_end = 0;$m_1_end <= 5;$m_1_end++){
+      $min_start = (int)substr((int)$end_temp[1],0,1); 
+      for($m_1_end = $min_start;$m_1_end <= 5;$m_1_end++){
         
         $selected = substr((int)$end_temp[1],0,1) == $m_1_end ? ' selected' : '';
         $min_str_1_end .= '<option value="'.$m_1_end.'"'.$selected.'>'.$m_1_end.'</option>';
@@ -2591,7 +2645,8 @@ if (($action == 'edit') && ($order_exists == true)) {
       $min_str_1_end .= '</select>';
       echo $min_str_1_end;
       $min_str_2_end = '<select name="end_min_2" id="min_end_1">';
-      for($m_2_end = 0;$m_2_end <= 9;$m_2_end++){
+      $min_end = (int)substr((int)$end_temp[1],1,1);
+      for($m_2_end = $min_end;$m_2_end <= 9;$m_2_end++){
         
         $selected = substr((int)$end_temp[1],1,1) == $m_2_end ? ' selected' : '';
         $min_str_2_end .= '<option value="'.$m_2_end.'"'.$selected.'>'.$m_2_end.'</option>';

@@ -14,7 +14,7 @@ class AD_Option_Item_Option extends AD_Option_Item_Basic
      }
      echo '<td class="main" style="padding-left:10px;">'; 
      echo '<input type="hidden" name="'.$this->formname.'" value="'.$this->front_title.'">';
-    if($this->fixed_option){
+    if($this->fixed_option == 0){
      if (!empty($this->option)) {
         
        

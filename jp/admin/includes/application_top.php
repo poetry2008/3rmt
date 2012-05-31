@@ -260,7 +260,7 @@ define('TABLE_PERMISSIONS','permissions');
   define('TABLE_COMPUTERS',  'computers');
   define('TABLE_ORDERS_TO_COMPUTERS',  'orders_to_computers');
   define('TABLE_BILL_TEMPLATES',  'bill_templates');
-  define('TABLE_ADDRESS','address');
+  define('TABLE_ADDRESS','address_1');
   define('TABLE_ADDRESS_ORDERS','address_orders');
   define('TABLE_COUNTRY_FEE','country_fee');
   define('TABLE_AREA_FEE','country_area');

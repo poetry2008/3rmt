@@ -902,7 +902,7 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
   define('TABLE_OA_ITEM', 'oa_item'); 
   define('TABLE_OA_FORMVALUE', 'oa_formvalue');
   define('TABLE_OA_FORMVALUE', 'oa_formvalue'); 
-  define('TABLE_ADDRESS','address');
+  define('TABLE_ADDRESS','address_1');
   define('TABLE_OPTION_GROUP','option_group');
   define('TABLE_OPTION_ITEM','option_item');
   define('TABLE_PRODUCTS_SHIPPING_TIME','products_shipping_time');
