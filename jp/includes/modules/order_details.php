@@ -78,10 +78,8 @@
       echo tep_draw_hidden_field('h_op_'.$products[$i]['id'], $sh_option_str, 'id=h_op_'.$products[$i]['id']); 
       echo '</td>';
       echo '<td><div class="top_and_bottom">';
-      echo '<a onclick="change_num(\'quantity_'.$products[$i]['id'].'\',\'up\',1,'.
-        $product_info['products_quantity'].',  \''.$products[$i]['quantity'].'\', \''.$origin_small.'\')" style="display:block"><img src="images/nup.gif" style="vertical-align:bottom;"></a>';
-      echo '<a onclick="change_num(\'quantity_'.$products[$i]['id'].'\',\'down\',1,'.
-        $product_info['products_quantity'].',  \''.$products[$i]['quantity'].'\', \''.$origin_small.'\')" style="display:block"><img src="images/ndown.gif" style="vertical-align:top;"></a>';
+      echo '<a onclick="change_num(\'quantity_'.$products[$i]['id'].'\',\'up\',1,'.  $product_info['products_quantity'].',  \''.$products[$i]['quantity'].'\', \''.$origin_small.'\')" style="display:block"><img src="images/nup.gif" style="vertical-align:bottom;"></a>';
+      echo '<a onclick="change_num(\'quantity_'.$products[$i]['id'].'\',\'down\',1,'.  $product_info['products_quantity'].',  \''.$products[$i]['quantity'].'\', \''.$origin_small.'\')" style="display:block"><img src="images/ndown.gif" style="vertical-align:top;"></a>';
       echo '</div></td><td>';
       echo ' <font style="font-size:10px">個</font>';
       echo '</td></tr></table></td></tr><tr><td colspan="3" width="90">';
