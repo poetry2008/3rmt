@@ -39,7 +39,8 @@ function address_list(){
   echo 'arr_old['. $address_num .'] = new Array();';
   while($address_orders_array = tep_db_fetch_array($address_orders_query)){
     
-    
+     
+    $address_orders_array['value'] = str_replace("\r\n","<br>",$address_orders_array['value']); 
     echo 'arr_old['. $address_num .']["'. $address_orders_array['name'] .'"] = "'. $address_orders_array['value'] .'";';
   }
 
@@ -94,7 +95,8 @@ function address_option_list(value){
   echo 'arr_list['. $address_num .'] = new Array();';
   echo 'arr_flag['. $address_num .'] = "'. $address_orders_group_array['orders_id'] .'";'; 
     while($address_orders_array = tep_db_fetch_array($address_orders_query)){
-          
+       
+      $address_orders_array['value'] = str_replace("\r\n","<br>",$address_orders_array['value']); 
       echo 'arr_list['. $address_num .']["'. $address_orders_array['name'] .'"] = "'. $address_orders_array['value'] .'";';
     }
   $address_num++;

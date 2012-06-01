@@ -100,7 +100,6 @@ while($array = mysql_fetch_assoc($query)){
     mysql_query($customers_b_op_sql);
   }
 
-echo $show_num;
 $show_num++;
 
 }

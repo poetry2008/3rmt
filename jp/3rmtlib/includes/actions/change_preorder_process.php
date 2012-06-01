@@ -172,7 +172,7 @@ if ($preorder) {
   $address_sh_his_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id='$preorder_cus_id' group by orders_id");
   while($address_sh_his_array = tep_db_fetch_array($address_sh_his_query)){
 
-    $address_sh_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where customers_id='$preorder_cus_id' and orders_id='". $address_sh_his_array['orders_id'] ."'");
+    $address_sh_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where customers_id='$preorder_cus_id' and orders_id='". $address_sh_his_array['orders_id'] ."' order by id");
     $add_temp_str = '';
     while($address_sh_array = tep_db_fetch_array($address_sh_query)){
      

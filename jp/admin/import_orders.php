@@ -52,7 +52,6 @@ while($orders_products_attributes_array = mysql_fetch_array($orders_products_att
       }
     }
   }
-  echo $show_num; 
   $show_num++;
 }
 echo "finsh!";
