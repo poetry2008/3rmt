@@ -39,13 +39,53 @@ class user_certify {
     説  明 : ユーザの認証を行う
  ------------------------------------ */
     function user_certify($s_sid) {
-        //判断用户IP是否是被封IP,如果是给出提示，并无法登录
-        $user_ip = explode('.',$_SERVER['REMOTE_ADDR']); 
-        $user_ip4 = 0;
-        while (list($u_key, $u_byte) = each($user_ip)) {
-                $user_ip4 = ($user_ip4 << 8) | (int)$u_byte;
-        }  
-        
+      //判断用户IP是否是被封IP,如果是给出提示，并无法登录
+      $user_ip = explode('.',$_SERVER['REMOTE_ADDR']); 
+      $user_ip4 = 0;
+      while (list($u_key, $u_byte) = each($user_ip)) {
+        $user_ip4 = ($user_ip4 << 8) | (int)$u_byte;
+      }
+      $admin_ip_limit = false;
+      $admin_name = $_POST['loginuid'];
+      $admin_pwd = $_POST['loginpwd'];
+      $admin_ip_query = tep_db_query("select * from user_ip where userid='". $admin_name ."'");
+      $admin_ip_num = tep_db_num_rows($admin_ip_query);
+      if($admin_ip_num > 0){
+        $admin_ip_array = tep_db_fetch_array($admin_ip_query);
+        $admin_ip_str = trim($admin_ip_array['limit_ip']);
+        $admin_ip_user_array = explode('.',trim($_SERVER['REMOTE_ADDR']));
+        $admin_ip_temp_array = explode('.',$admin_ip_str);
+
+        if($admin_ip_temp_array[2] == '*' && $admin_ip_temp_array[3] == '*'){
+
+          if($admin_ip_user_array[0] == $admin_ip_temp_array[0] && $admin_ip_user_array[1] == $admin_ip_temp_array[1]){
+
+            $admin_ip_limit = true;
+          }
+        }elseif($admin_ip_temp_array[3] == '*'){
+
+          if($admin_ip_user_array[0] == $admin_ip_temp_array[0] && $admin_ip_user_array[1] == $admin_ip_temp_array[1] && $admin_ip_user_array[2] == $admin_ip_temp_array[2]){
+
+            $admin_ip_limit = true;
+          }
+        }else{
+
+          if($admin_ip_str == $_SERVER['REMOTE_ADDR']){
+
+            $admin_ip_limit = true;
+          }
+        }
+      }
+      
+      $admin_pwd_query = tep_db_query("select * from users where userid='".$admin_name."'");
+      $admin_pwd_array = tep_db_fetch_array($admin_pwd_query);
+      tep_db_free_result($admin_pwd_query);
+      if($admin_ip_limit == true && $this->password_check($s_sid,$admin_pwd_array['password'],$admin_name)){
+
+        tep_db_query("delete from login where address='".$user_ip4."' and loginstatus='p'");
+      }
+      if($admin_ip_limit == false){
+           
         $user_time_query = tep_db_query("select max(logintime) as max_time from login where address='{$user_ip4}' and loginstatus='p'");
         $user_time_array = tep_db_fetch_array($user_time_query);
         $user_max_time = $user_time_array['max_time'];
@@ -90,7 +130,7 @@ class user_certify {
           }
            
         }
-        
+      } 
     if($this->isErr == FALSE && $this->ipSealErr == FALSE){
         $this->user_admin_entry();           // 管理者（admin）登録
 
@@ -159,7 +199,7 @@ class user_certify {
                     $ip_limit_num = tep_db_num_rows($ip_limit_query);
                     if ($ip_limit_num > 0) {
                       $ip_limit_arr = array();
-                      $login_ip_check = false; 
+                      $login_ip_check = true; 
                       while ($ip_limit_res = tep_db_fetch_array($ip_limit_query)) {
                         $ip_limit_arr = explode('.', $ip_limit_res['limit_ip']);
                         $reg_str = ''; 
