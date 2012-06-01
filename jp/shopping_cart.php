@@ -127,11 +127,6 @@ function money_update(objid, targ, origin_qty, origin_small)
   } 
    
   if (document.getElementById('one_price_show_'+product_id)) {
-    if (targ == 'up') {
-      old_tmp_num = Number(obj.value) - 1; 
-    } else {
-      old_tmp_num = Number(obj.value) + 1; 
-    }
     var one_price = Number(origin_small.replace(/,/g, '')) / origin_qty  * Number(obj.value);
     document.getElementById('one_price_show_'+product_id).innerHTML = fmoney(one_price);
   }  
@@ -175,8 +170,6 @@ function money_blur_update(objid, o_num, old_small)
   }
  
   if (document.getElementById('one_price_show_'+product_id)) {
-    var one_price_str = document.getElementById('one_price_show_'+product_id).innerHTML.replace(/,/g, '');
-    
     var one_price = Number(old_small.replace(/,/g, '')) / o_num  * Number(obj.value);
     document.getElementById('one_price_show_'+product_id).innerHTML = fmoney(one_price);
   }
