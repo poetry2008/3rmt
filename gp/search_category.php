@@ -30,7 +30,7 @@
          or site_id = 0
       group by categories_id
       having c.categories_status != '1' and c.categories_status != '3'  
-      order by sort_order, categories_name
+      order by categories_name 
   ");
   $ca_str = '<div class="close_search_category"><a href="javascript:void(0);" onclick="close_top_category(\'showca\');"><img src="images/design/box/action_stop.gif" alt=""></a></div>'; 
   $ca_str .= '<div class="search_list_category_content">'; 

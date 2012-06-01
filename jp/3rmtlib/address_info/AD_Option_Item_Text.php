@@ -16,7 +16,7 @@ class AD_Option_Item_Text extends AD_Option_Item_Basic
        echo $this->front_title.':';
        echo '</td>';
      }
-     echo '<td class="main">&nbsp;';
+     echo '<td class="main" style="padding-left:10px;">';
      echo $this->comment; 
      //echo '</pre>';
      echo '<span id="error_'.$this->formname.'" class="option_error">';

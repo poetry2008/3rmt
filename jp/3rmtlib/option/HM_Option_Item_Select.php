@@ -84,6 +84,7 @@ class HM_Option_Item_Select extends HM_Option_Item_Basic
             }
          }
        }
+     $default_value = stripslashes($default_value); 
      echo '<td>'; 
      echo '<div class="option_info_text">'; 
      if (!empty($this->se_option)) {
@@ -93,7 +94,7 @@ class HM_Option_Item_Select extends HM_Option_Item_Basic
          echo '<option value="">'.$this->sedefault.'</option>'; 
        }
        foreach ($this->se_option as $key => $value) {
-         echo '<option value="'.$value.'"'.(($default_value == $value)?'selected ':'').'>'.$value.'</option>'; 
+         echo '<option value="'.$value.'"'.(($default_value == stripslashes($value))?'selected ':'').'>'.stripslashes($value).'</option>'; 
          $i++; 
        }
        echo '</select>'; 

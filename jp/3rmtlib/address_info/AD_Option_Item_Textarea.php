@@ -16,8 +16,8 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
     $style_color = isset($_POST['op_'.$this->formname]) && $_POST['op_'.$this->formname] != $this->comment ?'color:#000;':'color:#999;';
     if($options['rows'] == 1){
       
-      $style_size = $type_limit == 'num' ? 'size="25" ' : 'class="width:75%;" ';
-      echo '<td class="main">&nbsp;';
+      $style_size = $type_limit == 'num' ? 'size="25" ' : 'style="width:75%;" ';
+      echo '<td class="main" style="padding-left:10px;">';
       echo '<input type="hidden" name="'.$this->formname.'" value="'.$this->front_title.'">';
       echo '<input type="hidden" name="type_'.$this->formname.'" value="'.$type_limit.'">';
       echo '<input type="hidden" id="l_'.$this->formname.'" value="'.$this->required.'">';
@@ -28,14 +28,14 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
         echo '&nbsp;*必須';
       }
       echo '</font>';
-      echo '<br><span id="error_'.$this->formname.'" class="shipping_error"><font color="red">&nbsp;';
+      echo '<br><span id="error_'.$this->formname.'" class="shipping_error"><font color="red">';
      if (isset($option_error_array[$this->formname])) {
        echo $option_error_array[$this->formname]; 
      }
      echo '</font></span>'; 
      echo '</td>';  
     }else{
-    echo '<td class="main">&nbsp;'; 
+    echo '<td class="main" valign="top" style="padding-left:10px;">'; 
     echo '<input type="hidden" name="'.$this->formname.'" value="'.$this->front_title.'">';
     echo '<input type="hidden" name="type_'.$this->formname.'" value="'.$type_limit.'">';
     echo '<input type="hidden" id="l_'.$this->formname.'" value="'.$this->required.'">';
@@ -47,7 +47,7 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
         echo '&nbsp;*必須';
      }
      echo '</font>';
-     echo '<span id="error_'.$this->formname.'" class="shipping_error"><font color="red">&nbsp;';
+     echo '<span id="error_'.$this->formname.'" class="shipping_error"><font color="red">';
      if (isset($option_error_array[$this->formname])) {
        echo $option_error_array[$this->formname]; 
      }

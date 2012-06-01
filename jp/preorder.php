@@ -190,7 +190,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
       echo tep_draw_form('pform', tep_href_link(FILENAME_PREORDER_PAYMENT));
       foreach ($_POST as $p_key => $p_value) {
         if ($p_key != 'x' && $p_key != 'y') {
-          echo tep_draw_hidden_field($p_key, $p_value); 
+          echo tep_draw_hidden_field($p_key, stripslashes($p_value)); 
         }
       }
       $product_query = tep_db_query("select products_price, products_price_offset, products_tax_class_id, products_small_sum from ".TABLE_PRODUCTS." where products_id = '".$_POST['products_id']."'"); 
@@ -300,7 +300,10 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
         </tr>
         <tr>
           <td colspan="2" class="preorder_option">
-          <?php $hm_option->render($belong_option['belong_to_option']);?> 
+          <?php 
+          $p_cflag = tep_get_cflag_by_product_id($product_info['products_id']);
+          $hm_option->render($belong_option['belong_to_option'], false, 0, '', '', $p_cflag);
+          ?> 
           </td>
         </tr>
         <tr>

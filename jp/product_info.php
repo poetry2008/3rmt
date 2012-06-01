@@ -71,7 +71,7 @@ function select_item_radio(i_obj, t_str, o_str, p_str, r_price)
       
       jq(i_obj).parent().parent()[0].className = 'option_show_border'; 
       origin_default_value = jq('#'+o_str).val(); 
-      jq('#'+o_str).parent().html("<input type='hidden' id='"+o_str+"' name='"+p_str+"' value='"+t_str+"'>"); 
+      jq('#'+o_str).parent().html("<input type='hidden' id='"+o_str+"' name='"+p_str+"' value=\""+t_str+"\">"); 
       
       item_info = p_str.split('_');
       item_id = item_info[3];
@@ -388,7 +388,8 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
   }else{  
     ?>
     <?php
-	$hm_option->render($product_info['belong_to_option']);
+    $p_cflag = tep_get_cflag_by_product_id($product_info['products_id']); 
+    $hm_option->render($product_info['belong_to_option'], false, 0, '', '', $p_cflag);
     ?>
                     <table align="right" width="100%" cellspacing="0" cellpadding="6" border="0">
                       <tr>

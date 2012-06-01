@@ -18,7 +18,7 @@ class HM_Option_Group extends Option_DbRecord
     return $items;
   }
 
-  function render($option_error_array, $is_product_info = 0, $pre_item_str = '', $cart_obj = '', $ptype = false)
+  function render($option_error_array, $is_product_info = 0, $pre_item_str = '', $cart_obj = '', $ptype = false, $cflag)
   {
     $pro_pos  = strpos($_SERVER['PHP_SELF'], 'product_info.php');
     if ($pro_pos !== false) {
@@ -33,6 +33,11 @@ class HM_Option_Group extends Option_DbRecord
         }
       } else if ($is_product_info == 0) {
         if ($item->place_type == 1) {
+          continue; 
+        }
+      }
+      if ($item->front_title == OPTION_CHARACTER_NAME) {
+        if ($cflag == 0) {
           continue; 
         }
       }

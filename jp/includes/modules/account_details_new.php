@@ -1,73 +1,115 @@
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript">
-function check(value){
-  var arr  = new Array();
-  var arr_set = new Array();
 <?php
-  $add_query = tep_db_query("select * from ". TABLE_ADDRESS ." where type='option' and status='0' order by sort");
-  while($add_array = tep_db_fetch_array($add_query)){
+  $address_fixed_query = tep_db_query("select name_flag,fixed_option from ". TABLE_ADDRESS ." where fixed_option!='0' and status='0'");
+  while($address_fixed_array = tep_db_fetch_array($address_fixed_query)){
 
-    $add_temp_array = unserialize($add_array['type_comment']);
-    if(!isset($add_temp_array['select_value'])){
-       
-      $add_temp_first_array  = current($add_temp_array);
-      $parent_id = $add_temp_first_array['parent_id'];
-      $child_flag_name = $add_array['name_flag'];
+    switch($address_fixed_array['fixed_option']){
+
+    case '1':
+      echo 'var country_fee_id = "op_'. $address_fixed_array['name_flag'] .'";'."\n";
+      $country_fee_id = 'op_'.$address_fixed_array['name_flag'];
+      break;
+    case '2':
+      echo 'var country_area_id = "op_'. $address_fixed_array['name_flag'] .'";'."\n";
+      $country_area_id = 'op_'.$address_fixed_array['name_flag'];
+      break;
+      break;
+    case '3':
+      echo 'var country_city_id = "op_'. $address_fixed_array['name_flag'] .'";'."\n";
+      $country_city_id = 'op_'.$address_fixed_array['name_flag'];
+      break;
+      break;
     }
   }
-  tep_db_free_result($add_query);
-  $add_parent_query = tep_db_query("select * from ". TABLE_ADDRESS ." where id=$parent_id");
-  $add_parent_array = tep_db_fetch_array($add_parent_query);
-  $parent_flag_name = $add_parent_array['name_flag'];
-  tep_db_free_result($add_parent_query);
-
-  $options_query = tep_db_query("select * from ". TABLE_ADDRESS ." where type='option' and status='0' order by sort");
-  $json_array = array();
-  $json_set_value = array();
-  while($options_array = tep_db_fetch_array($options_query)){
-    if(!isset($otpions_array_temp['select_value']) && $otpions_array_temp['select_value'] == ''){
-        $show_array[] = unserialize($options_array['type_comment']);
-    }
-  }
-
-  foreach($show_array as $show_value){
-    foreach($show_value as $show_key=>$show_val){
-
-      $json_array[$show_key] = $show_val;
-      $json_set_value[$show_key] = $show_val['select_value'];
-    } 
-  }
-
-  tep_db_free_result($options_query);
-  foreach($json_array as $key=>$value_temp){
-    echo 'arr["'. $key .'"] = new Array();';
-    echo 'arr_set["'. $key .'"] = new Array();';
-    $value_temp['option_list'] = array_values($value_temp['option_list']);
-    foreach($value_temp['option_list'] as $k=>$val){
-
-      echo 'arr["'. $key .'"]['. $k .'] = "'. $val .'";';
-    } 
-    echo 'arr_set["'. $key .'"] = "'. $json_set_value[$key] .'";';
-
-  }  
 ?>
-  
-  var option_id = document.getElementById("op_<?php echo $child_flag_name;?>");
-  option_id.options.length = 0;
-  len = arr[value].length;
-  //option_id.options[option_id.options.length]=new Option('--',''); 
-  for(i = 0;i < len;i++){
-    if(arr_set[value] == arr[value][i]){
 
-      option_id.options[option_id.options.length]=new Option(arr[value][i], arr[value][i]);
-    }     
-  } 
-  for(i = 0;i < len;i++){
-    if(arr_set[value] == arr[value][i]){
-      continue; 
+function check(select_value){
+
+  var arr = new Array();
+  <?php
+    $country_fee_query = tep_db_query("select id,name from ". TABLE_COUNTRY_FEE ." where status='0' order by id");
+    while($country_fee_array = tep_db_fetch_array($country_fee_query)){
+
+      echo 'arr["'.$country_fee_array['name'].'"] = "'. $country_fee_array['name'] .'";'."\n";
     }
-    option_id.options[option_id.options.length]=new Option(arr[value][i], arr[value][i]);    
-  } 
+    tep_db_free_result($country_fee_query);
+  ?>
+    var country_fee = document.getElementById(country_fee_id);
+    country_fee.options.length = 0;
+    for(x in arr){
+
+      country_fee.options[country_fee.options.length]=new Option(arr[x], x,x==select_value);
+    }
+}
+function country_check(value,select_value){
+   
+   var arr = new Array();
+  <?php
+    $country_array = array();
+    $country_area_query = tep_db_query("select id,fid,name from ". TABLE_COUNTRY_AREA ." where status='0' order by sort");
+    while($country_area_array = tep_db_fetch_array($country_area_query)){
+      
+      $country_fee_fid_query = tep_db_query("select name from ". TABLE_COUNTRY_FEE ." where id='".$country_area_array['fid']."'"); 
+      $country_fee_fid_array = tep_db_fetch_array($country_fee_fid_query);
+      tep_db_free_result($country_fee_fid_query);
+      $country_array[$country_fee_fid_array['name']][$country_area_array['name']] = $country_area_array['name'];
+      
+    }
+    tep_db_free_result($country_area_query);
+    foreach($country_array as $country_key=>$country_value){
+      
+      echo 'arr["'.$country_key.'"] = new Array();'."\n";
+      foreach($country_value as $c_key=>$c_value){
+      
+        echo 'arr["'.$country_key.'"]["'.$c_key.'"] = "'. $c_value .'";'."\n";
+
+      }
+
+    }
+  ?>
+    var country_area = document.getElementById(country_area_id);
+    country_area.options.length = 0;
+    for(x in arr[value]){
+
+      country_area.options[country_area.options.length]=new Option(arr[value][x], x,x==select_value);
+    }
+
+}
+
+function country_area_check(value,select_value){
+   
+   var arr = new Array();
+  <?php
+    $country_array = array();
+    $country_city_query = tep_db_query("select id,fid,name from ". TABLE_COUNTRY_CITY ." where status='0' order by sort");
+    while($country_city_array = tep_db_fetch_array($country_city_query)){
+      
+      $country_area_fid_query = tep_db_query("select name from ". TABLE_COUNTRY_AREA ." where id='".$country_city_array['fid']."'"); 
+      $country_area_fid_array = tep_db_fetch_array($country_area_fid_query);
+      tep_db_free_result($country_area_fid_query); 
+      $country_array[$country_area_fid_array['name']][$country_city_array['name']] = $country_city_array['name'];
+      
+    }
+    tep_db_free_result($country_city_query);
+    foreach($country_array as $country_key=>$country_value){
+      
+      echo 'arr["'.$country_key.'"] = new Array();'."\n";
+      foreach($country_value as $c_key=>$c_value){
+      
+        echo 'arr["'.$country_key.'"]["'.$c_key.'"] = "'. $c_value .'";'."\n";
+
+      }
+
+    }
+  ?>
+    var country_city = document.getElementById(country_city_id);
+    country_city.options.length = 0;
+    for(x in arr[value]){
+
+      country_city.options[country_city.options.length]=new Option(arr[value][x], x,x==select_value);
+    }
+
 }
 
 function check_form(){
@@ -108,19 +150,23 @@ function check_form_address(){
 
 function address_clear(){
   var arr_new = Array();
+  var arr_comment = Array();
 <?php
   $address_new_i = 0;
-  $address_new_query = tep_db_query("select name_flag from ". TABLE_ADDRESS ." where status='0'");
+  $address_new_query = tep_db_query("select name_flag,comment from ". TABLE_ADDRESS ." where type='textarea' and status='0'");
   while($address_new_array = tep_db_fetch_array($address_new_query)){
 
     echo 'arr_new['. $address_new_i .'] = "'. $address_new_array['name_flag'] .'";';
+    echo 'arr_comment['. $address_new_i .'] = "'. $address_new_array['comment'] .'";';
     $address_new_i++;
   } 
   tep_db_free_result($address_new_query);
 ?>
   for(x in arr_new){
 
-    $("#op_"+arr_new[x]).val("");
+    $("#op_"+arr_new[x]).val(arr_comment[x]);
+    var op_comment = document.getElementById("op_"+arr_new[x]);
+    op_comment.style.color = '#999';
     if(document.getElementById("l_"+arr_new[x])){
       if($("#l_"+arr_new[x]).val() == 'true'){
         $("#r_"+arr_new[x]).html("&nbsp;*必須");
@@ -167,7 +213,8 @@ function address_list(){
   echo 'arr_old['. $address_num .'] = new Array();';
   while($address_orders_array = tep_db_fetch_array($address_orders_query)){
     
-    
+    $address_orders_array['value'] = str_replace("\n","",$address_orders_array['value']); 
+    $address_orders_array['value'] = str_replace("\r","",$address_orders_array['value']); 
     echo 'arr_old['. $address_num .']["'. $address_orders_array['name'] .'"] = "'. $address_orders_array['value'] .'";';
   }
 
@@ -227,7 +274,9 @@ function address_option_list(value){
   echo 'arr_list['. $address_num .'] = new Array();';
   echo 'arr_flag['. $address_num .'] = "'. $address_orders_group_array['orders_id'] .'";'; 
     while($address_orders_array = tep_db_fetch_array($address_orders_query)){
-          
+       
+      $address_orders_array['value'] = str_replace("\n","",$address_orders_array['value']); 
+      $address_orders_array['value'] = str_replace("\r","",$address_orders_array['value']); 
       echo 'arr_list['. $address_num .']["'. $address_orders_array['name'] .'"] = "'. $address_orders_array['value'] .'";';
     }
   $address_num++;
@@ -235,23 +284,36 @@ function address_option_list(value){
   }
   tep_db_free_result($address_orders_group_query); 
 ?>
+if(arr_list.length > 0){
   for(x in arr_list[value]){
-    var list_option = document.getElementById("op_"+x);
-    list_option.style.color = '#000';
-    list_option.value = arr_list[value][x];
-    if('<?php echo $parent_flag_name;?>' == x){
-
-      check($("#op_"+x).val());
+   if(document.getElementById("op_"+x)){
+     var list_option = document.getElementById("op_"+x);
+     if('<?php echo $country_fee_id;?>' == 'op_'+x){
+      check(arr_list[value][x]);
+    }else if('<?php echo $country_area_id;?>' == 'op_'+x){
+      country_check(document.getElementById(country_fee_id).value,arr_list[value][x]);
+     
+    }else if('<?php echo $country_city_id;?>' == 'op_'+x){
+      country_area_check(document.getElementById(country_area_id).value,arr_list[value][x]);
+    }else{
+      list_option.style.color = '#000';
+      list_option.value = arr_list[value][x]; 
     }
+     
     if(document.getElementById("l_"+x)){
       if($("#l_"+x).val() == 'true'){
         $("#r_"+x).html("&nbsp;*必須");
       }
     }
     $("#error_"+x).html("");
+   }
   }
   
   $("#address_flag_id").val(arr_flag[value]);
+}else{
+
+  address_clear();
+}
 
 }
 
@@ -280,9 +342,50 @@ $(document).ready(function(){
   }
 ?>
 $(document).ready(function(){
-  $("#op_<?php echo $parent_flag_name;?>").change(function(){
-    check($(this).val());
+  $("#"+country_fee_id).change(function(){
+    country_check($("#"+country_fee_id).val());
+    country_area_check($("#"+country_area_id).val());
   }); 
+  $("#"+country_area_id).change(function(){
+    country_area_check($("#"+country_area_id).val());
+  });
+  <?php
+    if(isset($_POST[$country_fee_id])){
+  ?>  
+    check("<?php echo isset($_POST[$country_fee_id]) ? $_POST[$country_fee_id] : '';?>");
+  <?php
+   }else{
+  ?>
+    check();
+    address_option_list(0);
+  <?php
+  }
+  ?>
+  <?php
+    if(isset($_POST[$country_area_id])){
+  ?>
+    country_check($("#"+country_fee_id).val(),"<?php echo $_POST[$country_area_id];?>");
+  <?php
+   }else{
+  ?>
+    country_check($("#"+country_fee_id).val());
+    address_option_list(0);
+  <?php
+  }
+  ?>
+  <?php
+    if(isset($_POST[$country_city_id])){
+  ?>
+     
+     country_area_check($("#"+country_area_id).val(),"<?php echo $_POST[$country_city_id];?>");
+  <?php
+   }else{
+  ?>
+    country_area_check($("#"+country_area_id).val());
+    address_option_list(0);
+  <?php
+  }
+  ?>   
 });
 </script>
 <?php
@@ -388,7 +491,7 @@ $(document).ready(function(){
           echo tep_draw_form('account_edit_address', tep_href_link(FILENAME_ACCOUNT_EDIT, '', 'SSL'), 'post', 'onSubmit=""') . tep_draw_hidden_field('action', 'address');
         ?>
         <table border="0" cellspacing="0" cellpadding="2" summary="table">
-        <tr id="address_histroy_id"><td class="main" width="120">&nbsp;<?php echo TITLE_ADDRESS_OPTION;?></td><td><input type="hidden" id="address_flag_id" name="address_flag_id" value="">
+        <tr id="address_histroy_id"><td class="main" width="120">&nbsp;<?php echo TITLE_ADDRESS_OPTION;?></td><td style="padding-left:10px;"><input type="hidden" id="address_flag_id" name="address_flag_id" value="">
         <!-- 隐藏信息-->
         <input type="hidden" id="first_name" name="lastname" value="">
         <input type="hidden" id="end_name" name="firstname" value="">
@@ -398,7 +501,7 @@ $(document).ready(function(){
         <input type="hidden" id="pwd" name="password" value="">
         <input type="hidden" id="pwd_1" name="confirmation" value="">
         <input type="hidden" id="action_flag" name="action_flag" value="0">
-        &nbsp;<select id="address_show_list" onchange="address_option_list(this.value);">
+        <select id="address_show_list" onchange="address_option_list(this.value);">
         </select>
         </td></tr>
         <?php       
@@ -490,12 +593,13 @@ if (!isset($guestchk)) $guestchk = NULL;
     <td class="formAreaTitle"><br><?php echo CATEGORY_PASSWORD; ?></td>
   </tr> 
   <tr id="trpass2">
-    <td class="main"><table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea" summary="table">
+    <td class="main">
+    <?php 
+      echo tep_draw_form('account_edit_pwd', tep_href_link(FILENAME_ACCOUNT_EDIT, '', 'SSL'), 'post', 'onSubmit=""') . tep_draw_hidden_field('action', 'pwd');
+    ?>
+    <table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea" summary="table"> 
       <tr>
-        <td class="main">
-        <?php 
-          echo tep_draw_form('account_edit_pwd', tep_href_link(FILENAME_ACCOUNT_EDIT, '', 'SSL'), 'post', 'onSubmit=""') . tep_draw_hidden_field('action', 'pwd');
-        ?>
+        <td class="main"> 
           <table border="0" cellspacing="0" cellpadding="2" summary="table"> 
           <tr>
             <td class="main" width="120">&nbsp;<?php echo ENTRY_PASSWORD; ?></td>
@@ -552,14 +656,11 @@ if (!isset($guestchk)) $guestchk = NULL;
         <tr>
         <td class="main" colspan="2"><?php echo ENTRY_PASSWORD_INFORM_READ_TEXT;?></td>
         </tr>
+        <tr><td>&nbsp;</td><td class="main" align="right"><input type="image" src="images/design/button/save.gif">&nbsp;&nbsp;</td></tr>
     </table>
-<table border="0" width="100%" cellspacing="0" cellpadding="0">
-      <tr><td>&nbsp;</td><td class="main" align="right"><input type="image" src="images/design/button/save.gif">&nbsp;&nbsp;</td></tr>
-</table>
       </td>
-      </tr>
-      </form>
-    </table></td>
+      </tr> 
+    </table></form></td>
   </tr>  
 <?php
   }

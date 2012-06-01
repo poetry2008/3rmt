@@ -342,6 +342,8 @@
                                         'final_price' => $products[$i]['price'] + $cart->attributes_price($products[$i]['id']),
                                         'weight' => $products[$i]['weight'],
                                         'id' => $products[$i]['id']);
+  
+        $replace_arr = array("<br>", "<br />", "<br/>", "\r", "\n", "\r\n", "<BR>");
 
         if (!empty($products[$i]['op_attributes'])) {
           $subindex = 0;
@@ -350,17 +352,29 @@
             $attributes_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name = '".$op_key_array[1]."' and id = '".$op_key_array[3]."'"); 
             $attributes = tep_db_fetch_array($attributes_query);
             if ($attributes) {
+              if ($attributes['type'] == 'radio') {
+              $a_tmp_option = @unserialize($attributes['option']);
+              if (!empty($a_tmp_option)) {
+                foreach ($a_tmp_option['radio_image'] as $a_key => $a_value) {
+                  if (trim(str_replace($replace_arr, '', nl2br(stripslashes($a_value['title'])))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($op_value))))) {
+                    $tmp_r_price =  $a_value['money'];
+                    break;
+                  }
+                }
+              }
+            } else {
+              $tmp_r_price = $attributes['price'];
+            }
               $this->products[$index]['op_attributes'][$subindex] = array('front_title' => $attributes['front_title'],
                                                                        'item_id' => $attributes['id'],
                                                                        'group_id' => $attributes['group_id'],
                                                                        'value' => $op_value,
-                                                                       'price' => $attributes['price']);
+                                                                       'price' => $tmp_r_price);
 
               $subindex++;
             }
           }
         }
-        
         if (!empty($products[$i]['ck_attributes'])) {
           $subindex = 0;
           foreach($products[$i]['ck_attributes'] as $ck_key => $ck_value) {
@@ -368,11 +382,25 @@
             $ck_attributes_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name = '".$op_ck_key_array[0]."' and id = '".$op_ck_key_array[2]."'"); 
             $ck_attributes = tep_db_fetch_array($ck_attributes_query);
             if ($ck_attributes) {
+              if ($ck_attributes['type'] == 'radio') {
+              $ck_tmp_option = @unserialize($ck_attributes['option']);
+              if (!empty($ck_tmp_option)) {
+                foreach ($ck_tmp_option['radio_image'] as $ca_key => $ca_value) {
+                  if (trim(str_replace($replace_arr, '', nl2br(stripslashes($ca_value['title'])))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($ca_value))))) {
+                    $ck_tmp_r_price =  $ca_value['money'];
+                    break;
+                  }
+                }
+              }
+            } else {
+              $ck_tmp_r_price = $ck_attributes['price'];
+            }
+
               $this->products[$index]['ck_attributes'][$subindex] = array('front_title' => $ck_attributes['front_title'],
                                                                        'item_id' => $ck_attributes['id'],
                                                                        'group_id' => $ck_attributes['group_id'],
                                                                        'value' => $ck_value,
-                                                                       'price' => $ck_attributes['price']);
+                                                                       'price' => $ck_tmp_r_price);
 
               $subindex++;
             }

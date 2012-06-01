@@ -145,7 +145,7 @@ function tep_show_preorders_products_info($orders_id) {
       $input_op_array = @unserialize(stripslashes($pa['option_info'])); 
       $str .= '<tr><td class="main"><b>'.$input_op_array['title'].'：</b></td><td class="main">'.$input_op_array['values'].'</td></tr>';
     }
-    $str .= '<tr><td class="main"><b>'.TEXT_FUNCTION_GAME_NAME.'</b></td><td class="main"  style="color:#407416; line-height:20px;"><font size="4"><b>'.$p['products_character'].'</b></font></td></tr>';
+    //$str .= '<tr><td class="main"><b>'.TEXT_FUNCTION_GAME_NAME.'</b></td><td class="main"  style="color:#407416; line-height:20px;"><font size="4"><b>'.$p['products_character'].'</b></font></td></tr>';
     $names = tep_get_computers_names_by_preorders_id($orders['orders_id']);
     if ($names) {
       $str .= '<tr><td class="main"><b>PC：</b></td><td class="main">'.implode('&nbsp;,&nbsp;', $names).'</td></tr>';
@@ -778,7 +778,7 @@ function tep_get_pre_orders_products_string($orders, $single = false, $popup = f
     //while($pa = tep_db_fetch_array($products_attributes_query)){
       //$str .= '<tr><td class="main">'.$pa['products_options'].'：</td><td class="main">'.$pa['products_options_values'].'</td></tr>';
     //}
-    $str .= '<tr><td class="main">'.TEXT_PREORDER_PRODUCTS_CHARACTER_NAME.'</td><td style="font-size:20px;color:#407416;">'.$p['products_character'].'</td></tr>';
+    //$str .= '<tr><td class="main">'.TEXT_PREORDER_PRODUCTS_CHARACTER_NAME.'</td><td style="font-size:20px;color:#407416;">'.$p['products_character'].'</td></tr>';
     $names = tep_get_computers_names_by_preorders_id($orders['orders_id']);
     if ($names) {
       $str .= '<tr><td class="main">PC：</td><td class="main">'.implode('&nbsp;,&nbsp;', $names).'</td></tr>';

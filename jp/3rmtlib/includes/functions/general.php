@@ -4367,12 +4367,12 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
        $item_res = tep_db_fetch_array($item_raw); 
        if ($item_res) {
          $item_price = 0; 
-         $input_option_array = array('title' => $item_res['front_title'], 'value' => str_replace("<BR>", "<br>", $op_value)); 
+         $input_option_array = array('title' => $item_res['front_title'], 'value' => str_replace("<BR>", "<br>", stripslashes($op_value))); 
          if ($item_res['type'] == 'radio') {
            $ro_array = @unserialize($item_res['option']);
            if (!empty($ro_array)) {
              foreach ($ro_array['radio_image'] as $ro_key => $ro_value) {
-               if (trim(str_replace($replace_arr, '', nl2br($ro_value['title']))) == trim(str_replace($replace_arr, '', nl2br($op_value)))) {
+               if (trim(str_replace($replace_arr, '', nl2br(stripslashes($ro_value['title'])))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($op_value))))) {
                  $item_price = $ro_value['money'];
                  break; 
                }
@@ -4915,7 +4915,7 @@ function get_preorder_total_info($payment, $pid, $option_info_array)
           $o_option_array = @unserialize($option_item_res['option']);
           if (!empty($o_option_array['radio_image'])) {
             foreach ($o_option_array['radio_image'] as $or_key => $or_value) {
-              if (trim(str_replace($replace_arr, '', nl2br($or_value['title']))) == trim(str_replace($replace_arr, '', nl2br($tp_value)))) {
+              if (trim(str_replace($replace_arr, '', nl2br(stripslashes($or_value['title'])))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($tp_value))))) {
                 $attr_total += $or_value['money']; 
                 break; 
               }
@@ -4982,7 +4982,7 @@ function tep_get_show_attributes_price($item_id, $group_id, $att_value)
       $option_array = @unserialize($item_res['option']);
       if (!empty($option_array)) {
         foreach ($option_array['radio_image'] as $key => $value) {
-          if (trim(str_replace($replace_arr, '', nl2br($value['title']))) == trim(str_replace($replace_arr, '', nl2br($att_value)))) {
+          if (trim(str_replace($replace_arr, '', nl2br(stripslashes($value['title'])))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($att_value))))) {
             return $value['money']; 
           }
         }

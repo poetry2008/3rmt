@@ -305,7 +305,7 @@
                 $a_option = @unserialize($attribute_price['option']);  
                 if (!empty($a_option['radio_image'])) {
                   foreach ($a_option['radio_image'] as $a_key => $a_value) {
-                    if (trim(str_replace($replace_arr, '', nl2br($a_value['title']))) == trim(str_replace($replace_arr, '', nl2br($value)))) {
+                    if (trim(str_replace($replace_arr, '', nl2br(stripslashes($a_value['title'])))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($value))))) {
                       $this->total += $qty * tep_add_tax($a_value['money'], $products_tax);
                       $this->abs += abs($qty * tep_add_tax($a_value['money'], $products_tax));
                       break; 
@@ -330,7 +330,7 @@
                 $ak_option = @unserialize($ck_attribute_price['option']);  
                 if (!empty($ak_option['radio_image'])) {
                   foreach ($ak_option['radio_image'] as $ak_key => $ak_value) {
-                    if (trim(str_replace($replace_arr, '', nl2br($ak_value['title']))) == trim(str_replace($replace_arr, '', nl2br($ck_value)))) {
+                    if (trim(str_replace($replace_arr, '', nl2br(stripslashes($ak_value['title'])))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($ck_value))))) {
                       $this->total += $qty * tep_add_tax($ak_value['money'], $products_tax);
                       $this->abs += abs($qty * tep_add_tax($ak_value['money'], $products_tax));
                       break; 
@@ -359,7 +359,7 @@
                 $a_option = @unserialize($attribute_price['option']);  
                 if (!empty($a_option['radio_image'])) {
                   foreach ($a_option['radio_image'] as $a_key => $a_value) {
-                    if (trim(str_replace($replace_arr, '', nl2br($a_value['title']))) == trim(str_replace($replace_arr, '', nl2br($value)))) {
+                    if (trim(str_replace($replace_arr, '', nl2br(stripslashes($a_value['title'])))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($value))))) {
                       $attributes_price += $a_value['money'];
                       break; 
                     }
@@ -382,7 +382,7 @@
                 $ak_option = @unserialize($ck_attribute_price['option']);  
                 if (!empty($ak_option['radio_image'])) {
                   foreach ($ak_option['radio_image'] as $ak_key => $ak_value) {
-                    if (trim(str_replace($replace_arr, '', nl2br($ak_value['title']))) == trim(str_replace($replace_arr, '', nl2br($ck_value)))) {
+                    if (trim(str_replace($replace_arr, '', nl2br(stripslashes($ak_value['title'])))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($ck_value))))) {
                       $attributes_price += $ak_value['money'];
                       break; 
                     } 

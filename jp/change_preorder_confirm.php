@@ -21,7 +21,7 @@
 
     if(substr($shipping_key,0,3) == 'ad_'){
 
-      $shipping_fee_array[] = $shipping_value;
+      $shipping_fee_array[substr($shipping_key,3)] = $shipping_value;
     }
   }
   //计算商品的总价格及总重量
@@ -39,19 +39,32 @@
   tep_db_free_result($shipping_products_query);
 
 
+  $country_fee_array = array();
+  $country_fee_id_query = tep_db_query("select name_flag,fixed_option from ". TABLE_ADDRESS ." where fixed_option!='0' and status='0'");
+  while($country_fee_id_array = tep_db_fetch_array($country_fee_id_query)){
+
+    $country_fee_array[$country_fee_id_array['fixed_option']] = $country_fee_id_array['name_flag'];
+  }
+  tep_db_free_result($country_fee_id_query);
 $weight = $weight_total;
 
-foreach($shipping_fee_array as $op_value){
-  $city_query = tep_db_query("select * from ". TABLE_COUNTRY_CITY ." where name='". $op_value ."' and status='0'");
-  $city_num = tep_db_num_rows($city_query);
+foreach($shipping_fee_array as $op_key=>$op_value){
+  if($op_key == $country_fee_array[3]){
+    $city_query = tep_db_query("select * from ". TABLE_COUNTRY_CITY ." where name='". $op_value ."' and status='0'");
+    $city_num = tep_db_num_rows($city_query);
+  }
 
-  $address_query = tep_db_query("select * from ". TABLE_COUNTRY_AREA ." where name='". $op_value ."' and status='0'");
-  $address_num = tep_db_num_rows($address_query);
-  
-  $country_query = tep_db_query("select * from ". TABLE_COUNTRY_FEE ." where name='". $op_value ."' and status='0'");
-  $address_country_num = tep_db_num_rows($country_query);
+  if($op_key == $country_fee_array[2]){
+    $address_query = tep_db_query("select * from ". TABLE_COUNTRY_AREA ." where name='". $op_value ."' and status='0'");
+    $address_num = tep_db_num_rows($address_query);
+  }
 
-if($city_num > 0){
+  if($op_key == $country_fee_array[1]){ 
+    $country_query = tep_db_query("select * from ". TABLE_COUNTRY_FEE ." where name='". $op_value ."' and status='0'");
+    $address_country_num = tep_db_num_rows($country_query);
+  }
+
+if($city_num > 0 && $op_key == $country_fee_array[3]){
   $city_array = tep_db_fetch_array($city_query);
   tep_db_free_result($city_query);
   $city_free_value = $city_array['free_value'];
@@ -74,7 +87,7 @@ if($city_num > 0){
       break;
     }
   }
-}elseif($address_num > 0){
+}elseif($address_num > 0 && $op_key == $country_fee_array[2]){
   $address_array = tep_db_fetch_array($address_query);
   tep_db_free_result($address_query);
   $address_free_value = $address_array['free_value'];
@@ -98,7 +111,7 @@ if($city_num > 0){
     }
   }
 }else{
-  if($address_country_num > 0){
+  if($address_country_num > 0 && $op_key == $country_fee_array[1]){
   $country_array = tep_db_fetch_array($country_query);
   tep_db_free_result($country_query);
   $country_free_value = $country_array['free_value'];
@@ -278,7 +291,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                             $r_option_array = @unserialize($option_item['option']);
                             if (!empty($r_option_array['radio_image'])) {
                               foreach ($r_option_array['radio_image'] as $ro_key => $ro_value) {
-                                if (trim(str_replace($replace_arr, '', nl2br($ro_value['title']))) == trim(str_replace($replace_arr, '', nl2br($of_value)))) {
+                                if (trim(str_replace($replace_arr, '', nl2br(stripslashes($ro_value['title'])))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($of_value))))) {
                                   if ($ro_value['money'] != '') {
                                     echo ' ('.$currencies->format($ro_value['money']).')'; 
                                   }
@@ -630,7 +643,7 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
                 echo tep_draw_hidden_field($post_key.'['.$ps_key.']', $ps_value); 
               }
             } else {
-              echo tep_draw_hidden_field($post_key, $post_value); 
+              echo tep_draw_hidden_field($post_key, stripslashes($post_value)); 
             }
           }
           echo '</form>';
