@@ -100,9 +100,22 @@ function money_update(objid, targ, origin_qty, origin_small)
   
   var old_price_total  = document.getElementById("pri_" + product_id);
      
+  var small_sum = document.getElementById("small_sum_" + product_id);
+  var right_price = 0;
+  var isum = small_sum.value.split(',');
+  for (var i=isum.length ;i>0;i--){
+    var tmplevel = isum[i-1].split(':');
+    if (parseInt(obj.value)>=parseInt(tmplevel[0])){
+      var right_price = tmplevel[1]
+      break;
+    }else{
+      continue;
+    }
+  }
   
+  var final_price = parseInt(unit_price.value) + parseInt(right_price);
   
-  var new_unit_price_total = unit_price.value * Number(obj.value);
+  var new_unit_price_total = final_price * Number(obj.value);
   new_unit_price_total = Math.round(new_unit_price_total);
 
   if (unit_price.value < 0) {
@@ -146,7 +159,22 @@ function money_blur_update(objid, o_num, old_small)
   var old_price_total  = document.getElementById("pri_" + product_id);
      
     
-  var new_unit_price_total = unit_price.value * Number(obj.value);
+  var small_sum = document.getElementById("small_sum_" + product_id);
+  var right_price = 0;
+  var isum = small_sum.value.split(',');
+  for (var i=isum.length ;i>0;i--){
+    var tmplevel = isum[i-1].split(':');
+    if (parseInt(obj.value)>=parseInt(tmplevel[0])){
+      var right_price = tmplevel[1]
+      break;
+    }else{
+      continue;
+    }
+  }
+  
+  var final_price = parseInt(unit_price.value) + parseInt(right_price);
+  
+  var new_unit_price_total = final_price * Number(obj.value);
   new_unit_price_total = Math.round(new_unit_price_total);
   
   if (unit_price.value < 0) {
@@ -182,12 +210,33 @@ function set_sub_total()
   var sub_total = 0;
   for (var i=0; i<final_prices.length; i++)
   {
-    sub_total = sub_total + Number(final_prices[i].value)*Number(document.getElementById('quantity_' +
-            final_prices[i].id.substr(3)).value);
+
+    var p_l_html = document.getElementById('pri_' + final_prices[i].id.substr(3)).innerHTML.split('円')[0].replace(/,/g,'');
+    if(document.getElementById('one_price_show_'+ final_prices[i].id.substr(3))){
+    var one_price_money = document.getElementById('one_price_'+ final_prices[i].id.substr(3)).innerHTML.replace(/,/g,'');
+    var one_p_quantity = document.getElementById('quantity_'+ final_prices[i].id.substr(3)).value;
+    var res_one_price = Number(one_price_money) * Number(one_p_quantity);
+    var res_one_price_str = fmoney(res_one_price);
+    document.getElementById('one_price_show_'+ final_prices[i].id.substr(3)).innerHTML=res_one_price_str;
+    }
+    if(!isNaN(p_l_html)){
+      var p_l_price = p_l_html;
+    }else{
+      p_l_html = p_l_html.replace(/(<.*?[^>]>)/gi,"");
+      var p_l_price = 0 - Number(p_l_html);
+    }
+    op_price_str = document.getElementById('h_op_'+final_prices[i].id.substr(3)).value; 
+    var op_price_total = 0; 
+    if (op_price_str != '') {
+      op_price_arr = op_price_str.split(',');
+      for (var j=0; j<op_price_arr.length; j++) {
+        op_price_total = op_price_total + Number(op_price_arr[j])*Number(one_p_quantity); 
+      }
+    }
+    sub_total = sub_total + Number(p_l_price)+op_price_total;
   }
 
   sub_total = Math.round(sub_total);
-
   var sub_total_text = document.getElementById("sub_total");
   var monetary_sub_total = sub_total_text.innerHTML.slice(-1);
   if (sub_total >= 0) {
@@ -195,7 +244,6 @@ function set_sub_total()
   } else {
     sub_total_text.innerHTML = '<font color="#ff0000">' + Math.abs(sub_total).toString() + '</font>' + monetary_sub_total;
   }
-
 }
   
 function update_cart(objid, targ, origin_qty, origin_small)
