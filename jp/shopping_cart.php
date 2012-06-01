@@ -88,7 +88,7 @@ function fmoney(s)
  return t.split("").reverse().join("");
 }
 
-function money_update(objid, targ)
+function money_update(objid, targ, origin_qty, origin_small)
 {
   var obj = document.getElementById(objid);
   var product_id = obj.id.substr(9);
@@ -96,7 +96,7 @@ function money_update(objid, targ)
   var attr_prices = document.getElementsByName("attr_" + product_id);
   var attr_prices_option = document.getElementsByName("attr_option_" + product_id);
   var sub_total = document.getElementById('sub_total_hidden');
-
+  var hop_price_str = document.getElementById("h_op_" + product_id).value;
   
   var old_price_total  = document.getElementById("pri_" + product_id);
      
@@ -111,30 +111,28 @@ function money_update(objid, targ)
     old_price_total.innerHTML = Math.abs(new_unit_price_total).toString() + '<?php echo JPMONEY_UNIT_TEXT;?>';
   }
   
+  if (hop_price_str != '') {
+  hop_array = hop_price_str.split(",");
+  var hop_num = 0;
   $('#pri_'+product_id).parent().find('small').each(function() {
     old_option_price = $(this).find('i').html();
     if (old_option_price != '&nbsp;') {
       old_option_pri = old_option_price.slice(-1);
       old_option_price_info =  old_option_price.slice(0, -1).replace(/,/g, '');
-      if (targ == 'up') {
-        old_num = Number(obj.value) - 1; 
-      } else {
-        old_num = Number(obj.value) + 1; 
-      }
-      old_single_option_price = old_option_price_info / old_num; 
-      new_option_price = Number(old_single_option_price)*Number(obj.value); 
+      new_option_price = Number(hop_array[hop_num])*Number(obj.value); 
       $(this).html('<i>' + new_option_price + old_option_pri + '</i>');
+      hop_num++; 
     }
   });
- 
+  } 
+   
   if (document.getElementById('one_price_show_'+product_id)) {
-    var one_price_str = document.getElementById('one_price_show_'+product_id).innerHTML.replace(/,/g, '');
     if (targ == 'up') {
       old_tmp_num = Number(obj.value) - 1; 
     } else {
       old_tmp_num = Number(obj.value) + 1; 
     }
-    var one_price = Number(one_price_str) / old_tmp_num  * Number(obj.value);
+    var one_price = Number(origin_small.replace(/,/g, '')) / origin_qty  * Number(obj.value);
     document.getElementById('one_price_show_'+product_id).innerHTML = fmoney(one_price);
   }  
   set_sub_total();
@@ -152,10 +150,10 @@ function money_blur_update(objid, o_num, old_small)
   
   var old_price_total  = document.getElementById("pri_" + product_id);
      
-  
+    
   var new_unit_price_total = unit_price.value * Number(obj.value);
   new_unit_price_total = Math.round(new_unit_price_total);
-
+  
   if (unit_price.value < 0) {
     old_price_total.innerHTML = '<font color="#ff0000">'+Math.abs(new_unit_price_total).toString() +'</font>' + '<?php echo JPMONEY_UNIT_TEXT;?>';
   } else {
@@ -207,12 +205,12 @@ function set_sub_total()
 
 }
   
-function update_cart(objid, targ)
+function update_cart(objid, targ, origin_qty, origin_small)
 {
-    money_update(objid, targ);
+    money_update(objid, targ, origin_qty, origin_small);
 }
 
-function change_num(ob,targ, quan,a_quan)
+function change_num(ob,targ, quan,a_quan, origin_qty, origin_small)
 {
   var product_quantity = document.getElementById(ob);
   var product_quantity_num = parseInt(product_quantity.value);
@@ -242,7 +240,7 @@ function change_num(ob,targ, quan,a_quan)
   product_quantity.value = num_value;
   if (product_quantity_num != num_value)
   { 
-    update_cart(product_quantity.id, targ);
+    update_cart(product_quantity.id, targ, origin_qty, origin_small);
   }
 }
 -->
