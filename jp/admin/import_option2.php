@@ -73,7 +73,7 @@ function tep_get_top_category_name($cid)
 
    if (!empty($return_name_array)) {
       $reverse_tmp_array = array_reverse($return_name_array);  
-      return implode('>>', $reverse_tmp_array); 
+      return implode('･', $reverse_tmp_array); 
    }
    return '';
 }
