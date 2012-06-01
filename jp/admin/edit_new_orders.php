@@ -660,7 +660,7 @@ if (tep_not_null($action)) {
   $address_sh_his_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id='{$check_status['customers_id']}' group by orders_id");
   while($address_sh_his_array = tep_db_fetch_array($address_sh_his_query)){
 
-    $address_sh_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where customers_id='{$check_status['customers_id']}' and orders_id='". $address_sh_his_array['orders_id'] ."'");
+    $address_sh_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where customers_id='{$check_status['customers_id']}' and orders_id='". $address_sh_his_array['orders_id'] ."' order by id");
     $add_temp_str = '';
     while($address_sh_array = tep_db_fetch_array($address_sh_query)){
      
@@ -1798,7 +1798,7 @@ function check(select_value){
       country_fee.options.length = 0;
     for(x in arr){
 
-      country_fee.options[country_fee.options.length]=new Option(arr[x], x,x==select_value);
+      country_fee.options[country_fee.options.length]=new Option(arr[x], x,x==select_value,x==select_value);
     }
   }
 }
@@ -1858,7 +1858,7 @@ function country_check(value,select_value){
     country_area.options.length = 0;
     for(x in arr[value]){
 
-      country_area.options[country_area.options.length]=new Option(arr[value][x], x,x==select_value);
+      country_area.options[country_area.options.length]=new Option(arr[value][x], x,x==select_value,x==select_value);
     }
   }
 
@@ -1896,7 +1896,7 @@ function country_area_check(value,select_value){
     country_city.options.length = 0;
     for(x in arr[value]){
 
-      country_city.options[country_city.options.length]=new Option(arr[value][x], x,x==select_value);
+      country_city.options[country_city.options.length]=new Option(arr[value][x], x,x==select_value,x==select_value);
     }
   }
 

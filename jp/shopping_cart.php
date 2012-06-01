@@ -339,7 +339,7 @@ B:ポイントの加算（<?php echo STORE_NAME;?>会員でなければ表示さ
 ?>
           <tr>
             <td class="stockWarning" align="center"><br>
-              <?php echo OUT_OF_STOCK_CANT_CHECKOUT; ?></td>
+              <?php echo PRODUCTS_WEIGHT_ERROR; ?></td>
           </tr>
 <?php
     }
