@@ -57,29 +57,17 @@
       echo tep_draw_hidden_field('unit_price_' . $products[$i]['id'], $products[$i]['price'], 'id="unit_price_'.$products[$i]['id'].'"');
       echo tep_draw_hidden_field('small_sum_' . $products[$i]['id'], $product_info['products_small_sum'], ' id="small_sum_'.$products[$i]['id'].'"');
       echo tep_draw_hidden_field('final_price', tep_add_tax($products[$i]['final_price'], tep_get_tax_rate($products[$i]['tax_class_id'])), 'id="id_'.$products[$i]['id'].'"');
-      $origin_small = ''; 
-      if (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($products[$i]['quantity'], $products[$i]['id'])) {
-        $origin_small = tep_get_full_count_in_order2($products[$i]['quantity'], $products[$i]['id']); 
-      } 
-      echo tep_draw_input_field('cart_quantity[]', $products[$i]['quantity'], 'size="4" maxlength="4" class="input_text_short" id="quantity_'.$products[$i]['id'].'" onkeypress="return key(event);" onblur="money_blur_update(\'quantity_'.$products[$i]['id'].'\', \''.$products[$i]['quantity'].'\', \''.$origin_small.'\')"');
+      //echo tep_draw_input_field('cart_quantity[]', $products[$i]['quantity'], 'size="4" maxlength="4" class="input_text_short" id="quantity_'.$products[$i]['id'].'" onblur="update_cart(this);" onkeypress="return key(event);"');
+      echo tep_draw_input_field('cart_quantity[]', $products[$i]['quantity'], 'size="4" maxlength="4" class="input_text_short" id="quantity_'.$products[$i]['id'].'"');
       echo   tep_draw_hidden_field('products_id[]', $products[$i]['id']);
       echo tep_draw_hidden_field('option_info[]', serialize($products[$i]['op_attributes'])); 
       
-      $sh_option_info = array();
-      foreach ($products[$i]['add_op_attributes'] as $hp_key => $hp_value) {
-        if ($hp_value['price'] != '0.0000') {
-          $sh_option_info[] = number_format($hp_value['price']); 
-        }
-      } 
-      $sh_option_str = ''; 
-      if (!empty($sh_option_info)) {
-        $sh_option_str = implode(',', $sh_option_info); 
-      }
-      echo tep_draw_hidden_field('h_op_'.$products[$i]['id'], $sh_option_str, 'id=h_op_'.$products[$i]['id']); 
       echo '</td>';
       echo '<td><div class="top_and_bottom">';
-      echo '<a onclick="change_num(\'quantity_'.$products[$i]['id'].'\',\'up\',1,'.  $product_info['products_quantity'].',  \''.$products[$i]['quantity'].'\', \''.$origin_small.'\')" style="display:block"><img src="images/nup.gif" style="vertical-align:bottom;"></a>';
-      echo '<a onclick="change_num(\'quantity_'.$products[$i]['id'].'\',\'down\',1,'.  $product_info['products_quantity'].',  \''.$products[$i]['quantity'].'\', \''.$origin_small.'\')" style="display:block"><img src="images/ndown.gif" style="vertical-align:top;"></a>';
+      echo '<a onclick="change_num(\'quantity_'.$products[$i]['id'].'\',\'up\',1,'.
+        $product_info['products_quantity'].')" style="display:block"><img src="images/nup.gif" style="vertical-align:bottom;"></a>';
+      echo '<a onclick="change_num(\'quantity_'.$products[$i]['id'].'\',\'down\',1,'.
+        $product_info['products_quantity'].')" style="display:block"><img src="images/ndown.gif" style="vertical-align:top;"></a>';
       echo '</div></td><td>';
       echo ' <font style="font-size:10px">個</font>';
       echo '</td></tr></table></td></tr><tr><td colspan="3" width="90">';

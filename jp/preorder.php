@@ -211,6 +211,11 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
       }
     } 
     
+    if(isset($_POST['action']) && ($_POST['action'] == 'process') && !empty($_POST['quantity'])){
+
+      
+      $product_weight_query = tep_db_query("select products_weight from ".TABLE_PRODUCTS." where products_id = '".$_POST['products_id']."'"); 
+    }  
     if (isset($_POST['action']) && ($_POST['action'] == 'process') && ($error == false)) {
       $_POST['quantity'] = tep_an_zen_to_han($_POST['quantity']);
       echo tep_draw_form('pform', tep_href_link(FILENAME_PREORDER_PAYMENT));

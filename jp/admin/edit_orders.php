@@ -451,7 +451,7 @@ if (tep_not_null($action)) {
   $address_sh_his_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id='{$check_status['customers_id']}' group by orders_id");
   while($address_sh_his_array = tep_db_fetch_array($address_sh_his_query)){
 
-    $address_sh_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where customers_id='{$check_status['customers_id']}' and orders_id='". $address_sh_his_array['orders_id'] ."'");
+    $address_sh_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where customers_id='{$check_status['customers_id']}' and orders_id='". $address_sh_his_array['orders_id'] ."' order by id");
     $add_temp_str = '';
     while($address_sh_array = tep_db_fetch_array($address_sh_query)){
      
@@ -810,6 +810,14 @@ if($address_error == false){
         from " . TABLE_ORDERS . " 
         where orders_id = '" . tep_db_input($oID) . "'");
         $check_status = tep_db_fetch_array($check_status_query);
+        
+        $ot_query = tep_db_query("select value from " . TABLE_ORDERS_TOTAL . " where orders_id = '".$oID."' and class = 'ot_total'");
+        $ot_result = tep_db_fetch_array($ot_query);
+        $otm = (int)$ot_result['value'] . '円';
+
+        $os_query = tep_db_query("select orders_status_name from " . TABLE_ORDERS_STATUS . " where orders_status_id = '".$status."'");
+        $os_result = tep_db_fetch_array($os_query);
+        
         $title = str_replace(array(
               '${NAME}',
               '${MAIL}',
@@ -832,9 +840,9 @@ if($address_error == false){
                 $otm,
                 tep_torihiki($check_status['torihiki_date']).'～'.date('H時i分',strtotime($check_status['torihiki_date_end'])).'　（24時間表記）',
                 $os_result['orders_status_name'],
-                get_configuration_by_site_id('STORE_NAME', $site_id),
-                get_url_by_site_id($site_id),
-                get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
+                get_configuration_by_site_id('STORE_NAME', $order->info['site_id']),
+                get_url_by_site_id($order->info['site_id']),
+                get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $order->info['site_id']),
                 date('Y年n月j日',strtotime(tep_get_pay_day()))
                 ),$title);
 
@@ -860,9 +868,9 @@ if($address_error == false){
                 $otm,
                 tep_torihiki($check_status['torihiki_date']).'～'.date('H時i分',strtotime($check_status['torihiki_date_end'])).'　（24時間表記）',
                 $os_result['orders_status_name'],
-                get_configuration_by_site_id('STORE_NAME', $site_id),
-                get_url_by_site_id($site_id),
-                get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
+                get_configuration_by_site_id('STORE_NAME', $order->info['site_id']),
+                get_url_by_site_id($order->info['site_id']),
+                get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $order->info['site_id']),
                 date('Y年n月j日',strtotime(tep_get_pay_day()))
                 ),$comments);
         tep_order_status_change($oID,$status);
@@ -961,31 +969,30 @@ if($address_error == false){
 
           $email = '';
           //$email .= $order->customer['name'] . '様' . "\n\n";
-          $email .= 'いつも' . get_configuration_by_site_id('STORE_NAME', $order->info['site_id']) . 'をご利用いただき、誠にありがとうございます。' . "\n";
-          $email .= '下記の内容にて変更を承りましたので、ご確認ください。' . "\n\n";
+          //$email .= 'いつも' . get_configuration_by_site_id('STORE_NAME', $order->info['site_id']) . 'をご利用いただき、誠にありがとうございます。' . "\n";
+          //$email .= '下記の内容にて変更を承りましたので、ご確認ください。' . "\n\n";
           $email .= $notify_comments_mail;
-          $email .= '━━━━━━━━━━━━━━━━━━━━━' . "\n";
-          $email .= '▼注文番号　　　　：' . $oID . "\n";
-          $email .= '▼お名前　　　　　：' . $order->customer['name'] . '様' . "\n";
-          $email .= '▼メールアドレス　：' . $order->customer['email_address'] . "\n";
-          $email .= '▼支払方法　　　　：' . $order->info['payment_method'] . "\n";
-          $email .= '▼取引日時　　　　：' . str_replace('&nbsp;',' ',$order->tori['date']) . '（24時間表記）' . "\n";
-          $email .= '▼オプション　　　：' . $order->tori['houhou'] . "\n";
-          $email .= '━━━━━━━━━━━━━━━━━━━━━' . "\n\n";
-          $email .= '▼注文商品' . "\n";
-          $email .= "\t" . '------------------------------------------' . "\n";
-          $email .= $products_ordered_mail;
-          $email .= $total_details_mail;
-          $email .= "\n\n\n\n";
+          //$email .= '━━━━━━━━━━━━━━━━━━━━━' . "\n";
+          //$email .= '▼注文番号　　　　：' . $oID . "\n";
+          //$email .= '▼お名前　　　　　：' . $order->customer['name'] . '様' . "\n";
+          //$email .= '▼メールアドレス　：' . $order->customer['email_address'] . "\n";
+          //$email .= '▼支払方法　　　　：' . $order->info['payment_method'] . "\n";
+          //$email .= '▼取引日時　　　　：' . str_replace('&nbsp;',' ',$order->tori['date']) . '（24時間表記）' . "\n";
+          //$email .= '▼オプション　　　：' . $order->tori['houhou'] . "\n";
+          //$email .= '━━━━━━━━━━━━━━━━━━━━━' . "\n\n";
+          //$email .= '▼注文商品' . "\n";
+          //$email .= "\t" . '------------------------------------------' . "\n";
+          //$email .= $products_ordered_mail;
+          //$email .= $total_details_mail;
+          //$email .= "\n\n\n\n";
           //      $email .= '会員のお客様は' . EMAIL_TEXT_INVOICE_URL . ' ' . tep_catalog_href_link(FILENAME_CATALOG_ACCOUNT_HISTORY_INFO, 'order_id=' . $oID, 'SSL') . "\n\n\n\n";
-          $email .= 'ご不明な点がございましたら、注文番号をご確認の上、' . "\n";
-          $email .= '「' . get_configuration_by_site_id('STORE_NAME', $order->info['site_id']) . '」までお問い合わせください。' . "\n\n";
-          $email .= '[ご連絡・お問い合わせ先]━━━━━━━━━━━━' . "\n";
-          $email .= '株式会社 iimy' . "\n";
-          $email .= get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $order->info['site_id']) . "\n";
-          $email .= get_url_by_site_id($order->info['site_id']) . "\n";
-          $email .= '━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-          
+          //$email .= 'ご不明な点がございましたら、注文番号をご確認の上、' . "\n";
+          //$email .= '「' . get_configuration_by_site_id('STORE_NAME', $order->info['site_id']) . '」までお問い合わせください。' . "\n\n";
+          //$email .= '[ご連絡・お問い合わせ先]━━━━━━━━━━━━' . "\n";
+          //$email .= '株式会社 iimy' . "\n";
+          //$email .= get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $order->info['site_id']) . "\n";
+          //$email .= get_url_by_site_id($order->info['site_id']) . "\n";
+          //$email .= '━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
           if ($customer_guest['customers_guest_chk'] != 9)
             tep_mail($check_status['customers_name'], $check_status['customers_email_address'], '注文内容の変更を承りました【' . get_configuration_by_site_id('STORE_NAME', $order->info['site_id']) . '】', $email, get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $order->info['site_id']),$order->info['site_id']);
 
@@ -1500,7 +1507,7 @@ function check(select_value){
     country_fee.options.length = 0;
     for(x in arr){
 
-      country_fee.options[country_fee.options.length]=new Option(arr[x], x,x==select_value);
+      country_fee.options[country_fee.options.length]=new Option(arr[x], x,x==select_value,x==select_value);
     }
   }
 }
@@ -1560,7 +1567,7 @@ function country_check(value,select_value){
     country_area.options.length = 0;
     for(x in arr[value]){
 
-      country_area.options[country_area.options.length]=new Option(arr[value][x], x,x==select_value);
+      country_area.options[country_area.options.length]=new Option(arr[value][x], x,x==select_value,x==select_value);
     }
   }
 
@@ -1598,7 +1605,7 @@ function country_area_check(value,select_value){
     country_city.options.length = 0;
     for(x in arr[value]){
 
-      country_city.options[country_city.options.length]=new Option(arr[value][x], x,x==select_value);
+      country_city.options[country_city.options.length]=new Option(arr[value][x], x,x==select_value,x==select_value);
     }
   }
 
