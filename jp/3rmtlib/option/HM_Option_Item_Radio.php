@@ -16,6 +16,8 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
     $pro_pos = strpos($_SERVER['PHP_SELF'], 'product_info.php');
     $ped_pos = strpos($_SERVER['PHP_SELF'], 'admin/edit_new_preorders.php');
     
+    $replace_arr = array("<br>", "<br />", "<br/>", "\r", "\n", "\r\n", "<BR>");
+
     if (strlen($this->front_title)) {
        if ($ptype) {
          echo '<td class="preorder_option_name">';      
@@ -54,7 +56,7 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
          $default_value = ''; 
        }
      }
-     echo '<td>';
+     echo '<td valign="top">';
     
      if ($sp_pos !== false) {
          if (!isset($cart_obj->contents[$pre_item_tmp_str]['ck_attributes'][$this->formname]) && !isset($_POST[$pre_item_str.'op_'.$this->formname])) {
@@ -64,9 +66,9 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
              $old_option_info = @unserialize(stripslashes($o_attributes_res['option_info']));  
              if (!empty($this->radio_image)) {
                foreach ($this->radio_image as $cr_key => $cr_value) {
-                 if (trim($cr_value['title']) == trim($old_option_info['value'])) {
+                 if (trim(str_replace($replace_arr, '', nl2br($cr_value['title']))) == trim(str_replace($replace_arr, '', nl2br($old_option_info['value'])))) {
                    $old_sel_single = true; 
-                   $default_value = $old_option_info['value'];
+                   $default_value = new_nl2br($cr_value['title']);
                    break;
                  }
                }
@@ -87,9 +89,9 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
                 $old_option_info = @unserialize(stripslashes($o_attributes_res['option_info']));  
                 if (!empty($this->radio_image)) {
                   foreach ($this->radio_image as $car_key => $car_value) {
-                     if (trim($car_value['title']) == trim($old_option_info['value'])) {
+                     if (trim(str_replace($replace_arr, '', nl2br($car_value['title']))) == trim(str_replace($replace_arr, '', nl2br($old_option_info['value'])))) {
                        $a_old_single = true;
-                       $default_value = $old_option_info['value'];
+                       $default_value = new_nl2br($car_value['title']);
                        break;
                      }
                   }
@@ -110,9 +112,9 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
                   $old_option_info = @unserialize(stripslashes($o_attributes_res['option_info']));  
                   if (!empty($this->radio_image)) {
                     foreach ($this->radio_image as $cer_key => $cer_value) {
-                       if (trim($cer_value['title']) == trim($old_option_info['value'])) {
+                       if (trim(str_replace($replace_arr, '', nl2br($cer_value['title']))) == trim(str_replace($replace_arr, '', nl2br($old_option_info['value'])))) {
                          $a_old_single = true;
-                         $default_value = $old_option_info['value'];
+                         $default_value = new_nl2br($cer_value['title']);
                          break;
                        }
                     }
@@ -122,36 +124,55 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
          }
      }
      
-     if (($pro_pos !== false) || ($ac_pos !== false) || ($ped_pos !== false) || ($ed_pos !== false)) {
-       echo '<div class="option_product_radio_list">';
-     } else {
-       echo '<div class="option_radio_list">';
-     }
+     $default_value = stripslashes($default_value);
+     
+     echo '<div class="option_product_radio_list">';
      if ($is_default == 1) {
-       if (($pro_pos !== false) || ($ac_pos !== false) || ($ped_pos !== false) || ($ed_pos !== false)) {
-         echo '<div class="option_product_default_radio">';
-       } else {
-         echo '<div class="option_radio_list">';
-       }
+       echo '<div class="option_product_default_radio">';
        if (!empty($_POST[$pre_item_str.'op_'.$this->formname])) {
          echo '<div class="option_hide_border">'; 
-         echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\');">'.$this->default_radio.'</a>';
+         if (file_exists(DIR_FS_CATALOG.'default_images/design/tick.png')) {
+           echo '<div class="option_tick"><img src="default_images/design/tick.png" alt=""></div>'; 
+         } else {
+           echo '<div class="option_tick"><img src="upload_images/0/design/tick.png" alt=""></div>'; 
+         }
+         echo '<div class="option_conent">'; 
+         echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'1\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\', \'0\');"><span>'.stripslashes($this->default_radio).'</span></a>';
+         echo '</div>'; 
          echo '</div>'; 
        } else {
          if ($cart_obj != '') {
            $pre_item_tmp_str = substr($pre_item_str, 0, -1);
            if (isset($cart_obj->contents[$pre_item_tmp_str]['ck_attributes'][$this->formname]) && (!isset($_POST[$pre_item_str.'op_'.$this->formname]))) {
              echo '<div class="option_hide_border">'; 
-             echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\');">'.$this->default_radio.'</a>';
+             if (file_exists(DIR_FS_CATALOG.'default_images/design/tick.png')) {
+               echo '<div class="option_tick"><img src="default_images/design/tick.png" alt=""></div>'; 
+             } else {
+               echo '<div class="option_tick"><img src="upload_images/0/design/tick.png" alt=""></div>'; 
+             }
+             echo '<div class="option_conent">'; 
+             echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'1\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\', \'0\');"><span>'.stripslashes($this->default_radio).'<span></a>';
+             echo '</div>'; 
              echo '</div>'; 
            } else {
-             echo '<div class="option_show_border">'; 
-             echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\');">'.$this->default_radio.'</a>';
+             if (trim(nl2br($default_value)) == trim(nl2br($this->default_radio))) {
+               echo '<div class="option_show_border">'; 
+             } else {
+               echo '<div class="option_hide_border">'; 
+             }
+             if (file_exists(DIR_FS_CATALOG.'default_images/design/tick.png')) {
+               echo '<div class="option_tick"><img src="default_images/design/tick.png" alt=""></div>'; 
+             } else {
+               echo '<div class="option_tick"><img src="upload_images/0/design/tick.png" alt=""></div>'; 
+             }
+             echo '<div class="option_conent">'; 
+             echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'1\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\', \'0\');"><span>'.stripslashes($this->default_radio).'</span></a>';
+             echo '</div>'; 
              echo '</div>'; 
            }
          } else {
            if (isset($a_old_single)) {
-             if (trim($default_value) == trim($this->default_radio)) {
+             if (trim(nl2br($default_value)) == trim(nl2br(stripslashes($this->default_radio)))) {
                echo '<div class="option_show_border">'; 
              } else {
                echo '<div class="option_hide_border">'; 
@@ -159,7 +180,14 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
            } else {
              echo '<div class="option_show_border">'; 
            }
-           echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\');">'.$this->default_radio.'</a>';
+           if (file_exists(DIR_FS_CATALOG.'default_images/design/tick.png')) {
+             echo '<div class="option_tick"><img src="default_images/design/tick.png" alt=""></div>'; 
+           } else {
+             echo '<div class="option_tick"><img src="upload_images/0/design/tick.png" alt=""></div>'; 
+           }
+           echo '<div class="option_conent">'; 
+           echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'1\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\', \'0\');"><span>'.stripslashes($this->default_radio).'</span></a>';
+           echo '</div>'; 
            echo '</div>'; 
          }
          
@@ -168,47 +196,76 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
      }
      $i = 0; 
      if (!empty($this->radio_image)) {
-       if (($pro_pos !== false) || ($ac_pos !== false) || ($ped_pos !== false) || ($ed_pos !== false)) {
-         echo '<div class="option_product_radio_img_list">';  
-       } 
+       echo '<div class="option_product_radio_img_list">';  
        foreach ($this->radio_image as $key => $value) {
-         if (($pro_pos !== false) || ($ac_pos !== false) || ($ped_pos !== false) || ($ed_pos !== false)) {
-           echo '<div class="option_product_single_radio">';  
-         } else {
-           echo '<div class="option_radio_list">';  
-         }
+         echo '<div class="option_product_single_radio">';  
          if ($is_default == 1) {
            if ($is_post == 1) {
-             if (trim($value['title']) == trim($default_value)) {
+             if (trim(str_replace($replace_arr, '', nl2br(stripslashes($value['title'])))) == trim(str_replace($replace_arr, '', nl2br($default_value)))) {
                echo '<div class="option_show_border">'; 
-               echo '<a href="javascript:void(0);" onclick="select_item_radio(this,\''.$value['title'].'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\');">'.$value['title'].'</a>';
-               echo '</div>'; 
+               if (file_exists(DIR_FS_CATALOG.'default_images/design/tick.png')) {
+                 echo '<div class="option_tick"><img src="default_images/design/tick.png" alt=""></div>'; 
+               } else {
+                 echo '<div class="option_tick"><img src="upload_images/0/design/tick.png" alt=""></div>'; 
+               }
+               echo '<div class="option_conent">'; 
+               echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\', \''.number_format($value['money']).'\');">';
+               echo '<span>'.new_nl2br(stripslashes($value['title'])).'</span>';
              } else {
                echo '<div class="option_hide_border">'; 
-               echo '<a href="javascript:void(0);" onclick="select_item_radio(this,\''.$value['title'].'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\');">'.$value['title'].'</a>';
-               echo '</div>'; 
+               if (file_exists(DIR_FS_CATALOG.'default_images/design/tick.png')) {
+                 echo '<div class="option_tick"><img src="default_images/design/tick.png" alt=""></div>'; 
+               } else {
+                 echo '<div class="option_tick"><img src="upload_images/0/design/tick.png" alt=""></div>'; 
+               }
+               echo '<div class="option_conent">'; 
+               echo '<a href="javascript:void(0);" onclick="select_item_radio(this,\'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\', \''.number_format($value['money']).'\');">'; 
+               echo '<span>'.new_nl2br(stripslashes($value['title'])).'</span>';
              }
            } else {
              if ($cart_obj != '') {
                $pre_item_tmp_str = substr($pre_item_str, 0, -1);
                if (isset($cart_obj->contents[$pre_item_tmp_str]['ck_attributes'][$this->formname]) && (!isset($_POST[$pre_item_str.'op_'.$this->formname]))) {
-                 if (trim($cart_obj->contents[$pre_item_tmp_str]['ck_attributes'][$this->formname]) == trim($value['title'])) {
+                 if (trim(str_replace($replace_arr, '', nl2br($cart_obj->contents[$pre_item_tmp_str]['ck_attributes'][$this->formname]))) == trim(str_replace($replace_arr, '',nl2br(stripslashes($value['title']))))) {
                    echo '<div class="option_show_border">'; 
-                   echo '<a href="javascript:void(0);" onclick="select_item_radio(this,\''.$value['title'].'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\');">'.$value['title'].'</a>';
-                   echo '</div>'; 
+                   if (file_exists(DIR_FS_CATALOG.'default_images/design/tick.png')) {
+                     echo '<div class="option_tick"><img src="default_images/design/tick.png" alt=""></div>'; 
+                   } else {
+                     echo '<div class="option_tick"><img src="upload_images/0/design/tick.png" alt=""></div>'; 
+                   }
+                   echo '<div class="option_conent">'; 
+                   echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\', \''.number_format($value['money']).'\');">';
+                   echo '<span>'.new_nl2br(stripslashes($value['title'])).'</span>';
                  } else {
                    echo '<div class="option_hide_border">'; 
-                   echo '<a href="javascript:void(0);" onclick="select_item_radio(this,\''.$value['title'].'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\');">'.$value['title'].'</a>';
-                   echo '</div>'; 
+                   if (file_exists(DIR_FS_CATALOG.'default_images/design/tick.png')) {
+                     echo '<div class="option_tick"><img src="default_images/design/tick.png" alt=""></div>'; 
+                   } else {
+                     echo '<div class="option_tick"><img src="upload_images/0/design/tick.png" alt=""></div>'; 
+                   }
+                   echo '<div class="option_conent">'; 
+                   echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\', \''.number_format($value['money']).'\');">';
+                   echo '<span>'.new_nl2br(stripslashes($value['title'])).'</span>';
                  }
                } else {
-                 echo '<div class="option_hide_border">'; 
-                 echo '<a href="javascript:void(0);" onclick="select_item_radio(this,\''.$value['title'].'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\');">'.$value['title'].'</a>';
-                 echo '</div>'; 
+                 //echo '<div class="option_hide_border">'; 
+                 if (trim(str_replace($replace_arr, '',nl2br($default_value))) == trim(str_replace($replace_arr, '',nl2br(stripslashes($value['title']))))) {
+                   echo '<div class="option_show_border">'; 
+                 } else {
+                   echo '<div class="option_hide_border">'; 
+                 }
+                 if (file_exists(DIR_FS_CATALOG.'default_images/design/tick.png')) {
+                   echo '<div class="option_tick"><img src="default_images/design/tick.png" alt=""></div>'; 
+                 } else {
+                   echo '<div class="option_tick"><img src="upload_images/0/design/tick.png" alt=""></div>'; 
+                 }
+                 echo '<div class="option_conent">'; 
+                 echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\', \''.number_format($value['money']).'\');">';
+                 echo '<span>'.new_nl2br(stripslashes($value['title'])).'</span>';
                }
              } else {
                if (isset($a_old_single)) {
-                 if (trim($default_value) == trim($value['title'])) {
+                 if (trim(nl2br($default_value)) == trim(nl2br(stripslashes($value['title'])))) {
                    echo '<div class="option_show_border">'; 
                  } else {
                    echo '<div class="option_hide_border">'; 
@@ -216,67 +273,133 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
                } else {
                  echo '<div class="option_hide_border">'; 
                }
-               echo '<a href="javascript:void(0);" onclick="select_item_radio(this,\''.$value['title'].'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\');">'.$value['title'].'</a>';
-               echo '</div>'; 
+               if (file_exists(DIR_FS_CATALOG.'default_images/design/tick.png')) {
+                 echo '<div class="option_tick"><img src="default_images/design/tick.png" alt=""></div>'; 
+               } else {
+                 echo '<div class="option_tick"><img src="upload_images/0/design/tick.png" alt=""></div>'; 
+               }
+               echo '<div class="option_conent">'; 
+               echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\', \''.number_format($value['money']).'\');">';
+               echo '<span>'.new_nl2br(stripslashes($value['title'])).'</span>';
              }
              
            }
          } else {
            if ($is_post == 1) {
-             if (trim($value['title']) == trim($default_value)) {
+             if (trim(str_replace($replace_arr, '', nl2br(stripslashes($value['title'])))) == trim(str_replace($replace_arr, '', nl2br($default_value)))) {
                echo '<div class="option_show_border">'; 
-               echo '<a href="javascript:void(0);" onclick="select_item_radio(this,\''.$value['title'].'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\');">'.$value['title'].'</a>';
-               echo '</div>'; 
+               if (file_exists(DIR_FS_CATALOG.'default_images/design/tick.png')) {
+                 echo '<div class="option_tick"><img src="default_images/design/tick.png" alt=""></div>'; 
+               } else {
+                 echo '<div class="option_tick"><img src="upload_images/0/design/tick.png" alt=""></div>'; 
+               }
+               echo '<div class="option_conent">'; 
+               echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\', \''.number_format($value['money']).'\');">';
+               echo '<span>'.new_nl2br(stripslashes($value['title'])).'</span>';
              } else {
                echo '<div class="option_hide_border">'; 
-               echo '<a href="javascript:void(0);" onclick="select_item_radio(this,\''.$value['title'].'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\');">'.$value['title'].'</a>';
-               echo '</div>'; 
+               if (file_exists(DIR_FS_CATALOG.'default_images/design/tick.png')) {
+                 echo '<div class="option_tick"><img src="default_images/design/tick.png" alt=""></div>'; 
+               } else {
+                 echo '<div class="option_tick"><img src="upload_images/0/design/tick.png" alt=""></div>'; 
+               }
+               echo '<div class="option_conent">'; 
+               echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\', \''.number_format($value['money']).'\');">';
+               echo '<span>'.new_nl2br(stripslashes($value['title'])).'</span>';
              }
            } else {
              if ($cart_obj != '') {
                $pre_item_tmp_str = substr($pre_item_str, 0, -1);
                if (isset($cart_obj->contents[$pre_item_tmp_str]['ck_attributes'][$this->formname]) && (!isset($_POST[$pre_item_str.'op_'.$this->formname]))) {
-                 if (trim($cart_obj->contents[$pre_item_tmp_str]['ck_attributes'][$this->formname]) == trim($value['title'])) {
+                 if (trim(str_replace($replace_arr, '', nl2br($cart_obj->contents[$pre_item_tmp_str]['ck_attributes'][$this->formname]))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($value['title']))))) {
                    echo '<div class="option_show_border">'; 
-                   echo '<a href="javascript:void(0);" onclick="select_item_radio(this,\''.$value['title'].'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\');">'.$value['title'].'</a>';
-                   echo '</div>'; 
+                   if (file_exists(DIR_FS_CATALOG.'default_images/design/tick.png')) {
+                     echo '<div class="option_tick"><img src="default_images/design/tick.png" alt=""></div>'; 
+                   } else {
+                     echo '<div class="option_tick"><img src="upload_images/0/design/tick.png" alt=""></div>'; 
+                   }
+                   echo '<div class="option_conent">'; 
+                   echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\', \''.number_format($value['money']).'\');">';
+                   echo '<span>'.new_nl2br(stripslashes($value['title'])).'</span>';
                  } else {
                    echo '<div class="option_hide_border">'; 
-                   echo '<a href="javascript:void(0);" onclick="select_item_radio(this,\''.$value['title'].'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\');">'.$value['title'].'</a>';
-                   echo '</div>'; 
+                   if (file_exists(DIR_FS_CATALOG.'default_images/design/tick.png')) {
+                     echo '<div class="option_tick"><img src="default_images/design/tick.png" alt=""></div>'; 
+                   } else {
+                     echo '<div class="option_tick"><img src="upload_images/0/design/tick.png" alt=""></div>'; 
+                   }
+                   echo '<div class="option_conent">'; 
+                   echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\', \''.number_format($value['money']).'\');">';
+                   echo '<span>'.new_nl2br(stripslashes($value['title'])).'</span>';
                  }
                } else {
                  if (isset($_POST[$pre_item_str.'op_'.$this->formname])) {
-                   if (trim($_POST[$pre_item_str.'op_'.$this->formname]) == trim($value['title'])) {
+                   if (trim(str_replace($replace_arr, '', nl2br($_POST[$pre_item_str.'op_'.$this->formname]))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($value['title']))))) {
                      echo '<div class="option_show_border">'; 
-                     echo '<a href="javascript:void(0);" onclick="select_item_radio(this,\''.$value['title'].'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\');">'.$value['title'].'</a>';
-                     echo '</div>'; 
+                     if (file_exists(DIR_FS_CATALOG.'default_images/design/tick.png')) {
+                       echo '<div class="option_tick"><img src="default_images/design/tick.png" alt=""></div>'; 
+                     } else {
+                       echo '<div class="option_tick"><img src="upload_images/0/design/tick.png" alt=""></div>'; 
+                     }
+                     echo '<div class="option_conent">'; 
+                     echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\', \''.number_format($value['money']).'\');">';
+                     echo '<span>'.new_nl2br(stripslashes($value['title'])).'</span>';
                    } else {
                      echo '<div class="option_hide_border">'; 
-                     echo '<a href="javascript:void(0);" onclick="select_item_radio(this,\''.$value['title'].'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\');">'.$value['title'].'</a>';
-                     echo '</div>'; 
+                     if (file_exists(DIR_FS_CATALOG.'default_images/design/tick.png')) {
+                       echo '<div class="option_tick"><img src="default_images/design/tick.png" alt=""></div>'; 
+                     } else {
+                       echo '<div class="option_tick"><img src="upload_images/0/design/tick.png" alt=""></div>'; 
+                     }
+                     echo '<div class="option_conent">'; 
+                     echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\', \''.number_format($value['money']).'\');">';
+                     echo '<span>'.new_nl2br(stripslashes($value['title'])).'</span>';
                    }
                  } else {
                    if (isset($old_sel_single)) {
-                     if (trim($value['title']) == trim($default_value)) {
+                     if (trim(str_replace($replace_arr, '', nl2br(stripslashes($value['title'])))) == trim(str_replace($replace_arr, '', nl2br($default_value)))) {
                        echo '<div class="option_show_border">'; 
-                       echo '<a href="javascript:void(0);" onclick="select_item_radio(this,\''.$value['title'].'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\');">'.$value['title'].'</a>';
-                       echo '</div>'; 
+                       if (file_exists(DIR_FS_CATALOG.'default_images/design/tick.png')) {
+                         echo '<div class="option_tick"><img src="default_images/design/tick.png" alt=""></div>'; 
+                       } else {
+                         echo '<div class="option_tick"><img src="upload_images/0/design/tick.png" alt=""></div>'; 
+                       }
+                       echo '<div class="option_conent">'; 
+                       echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\', \''.number_format($value['money']).'\');">';
+                       echo '<span>'.new_nl2br(stripslashes($value['title'])).'</span>';
                      } else {
                        echo '<div class="option_hide_border">'; 
-                       echo '<a href="javascript:void(0);" onclick="select_item_radio(this,\''.$value['title'].'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\');">'.$value['title'].'</a>';
-                       echo '</div>'; 
+                       if (file_exists(DIR_FS_CATALOG.'default_images/design/tick.png')) {
+                         echo '<div class="option_tick"><img src="default_images/design/tick.png" alt=""></div>'; 
+                       } else {
+                         echo '<div class="option_tick"><img src="upload_images/0/design/tick.png" alt=""></div>'; 
+                       }
+                       echo '<div class="option_conent">'; 
+                       echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\', \''.number_format($value['money']).'\');">';
+                       echo '<span>'.new_nl2br(stripslashes($value['title'])).'</span>';
                      }
                    } else {
                      if ($i == 0) {
-                       $default_i_value = $value['title']; 
+                       $default_i_value = new_nl2br($value['title']); 
                        echo '<div class="option_show_border">'; 
-                       echo '<a href="javascript:void(0);" onclick="select_item_radio(this,\''.$value['title'].'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\');">'.$value['title'].'</a>';
-                       echo '</div>'; 
+                       if (file_exists(DIR_FS_CATALOG.'default_images/design/tick.png')) {
+                         echo '<div class="option_tick"><img src="default_images/design/tick.png" alt=""></div>'; 
+                       } else {
+                         echo '<div class="option_tick"><img src="upload_images/0/design/tick.png" alt=""></div>'; 
+                       }
+                       echo '<div class="option_conent">'; 
+                       echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\', \''.number_format($value['money']).'\');">';
+                       echo '<span>'.new_nl2br(stripslashes($value['title'])).'</span>';
                      } else {
                        echo '<div class="option_hide_border">'; 
-                       echo '<a href="javascript:void(0);" onclick="select_item_radio(this,\''.$value['title'].'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\');">'.$value['title'].'</a>';
-                       echo '</div>'; 
+                       if (file_exists(DIR_FS_CATALOG.'default_images/design/tick.png')) {
+                         echo '<div class="option_tick"><img src="default_images/design/tick.png" alt=""></div>'; 
+                       } else {
+                         echo '<div class="option_tick"><img src="upload_images/0/design/tick.png" alt=""></div>'; 
+                       }
+                       echo '<div class="option_conent">'; 
+                       echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\', \''.number_format($value['money']).'\');">';
+                       echo '<span>'.new_nl2br(stripslashes($value['title'])).'</span>';
                      }
                    }
                  }
@@ -284,20 +407,26 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
              } else {
                if ($i == 0) {
                  if (isset($a_old_single)) {
-                   if (trim($default_value) == trim($value['title'])) {
+                   if (trim(str_replace($replace_arr, '', nl2br($default_value))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($value['title']))))) {
                      echo '<div class="option_show_border">'; 
                    } else {
                      echo '<div class="option_hide_border">'; 
                    }
                  } else {
                    echo '<div class="option_show_border">'; 
-                   $default_i_value = $value['title']; 
+                   $default_i_value = new_nl2br($value['title']); 
                  }
-                 echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \''.$value['title'].'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\');">'.$value['title'].'</a>';
-                 echo '</div>'; 
+                 if (file_exists(DIR_FS_CATALOG.'default_images/design/tick.png')) {
+                   echo '<div class="option_tick"><img src="default_images/design/tick.png" alt=""></div>'; 
+                 } else {
+                   echo '<div class="option_tick"><img src="upload_images/0/design/tick.png" alt=""></div>'; 
+                 }
+                 echo '<div class="option_conent">'; 
+                 echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\', \''.number_format($value['money']).'\');">';
+                 echo '<span>'.new_nl2br(stripslashes($value['title'])).'</span>';
                } else {
                  if (isset($a_old_single)) {
-                   if (trim($default_value) == trim($value['title'])) {
+                   if (trim(str_replace($replace_arr, '', nl2br($default_value))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($value['title']))))) {
                      echo '<div class="option_show_border">'; 
                    } else {
                      echo '<div class="option_hide_border">'; 
@@ -305,8 +434,14 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
                  } else {
                    echo '<div class="option_hide_border">'; 
                  }
-                 echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \''.$value['title'].'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\');">'.$value['title'].'</a>';
-                 echo '</div>'; 
+                 if (file_exists(DIR_FS_CATALOG.'default_images/design/tick.png')) {
+                   echo '<div class="option_tick"><img src="default_images/design/tick.png" alt=""></div>'; 
+                 } else {
+                   echo '<div class="option_tick"><img src="upload_images/0/design/tick.png" alt=""></div>'; 
+                 }
+                 echo '<div class="option_conent">'; 
+                 echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\', \''.number_format($value['money']).'\');">';
+                 echo '<span>'.new_nl2br(stripslashes($value['title'])).'</span>';
                }
              }
            }
@@ -325,18 +460,20 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
           
          echo '</span>';
          
+         /*
          if ($sp_pos !== false) {
            if ($value['money'] != '0') {
              echo '<span class="option_money">'.$value['money'].OPTION_ITEM_MONEY_UNIT.'</span>'; 
            }
          }
-         
+         */ 
+         echo '</div>';
+         echo '</a>';
+         echo '</div>';
          echo '</div>';
          $i++; 
        }
-       if (($pro_pos !== false) || ($ac_pos !== false) || ($ped_pos !== false) || ($ed_pos !== false)) {
          echo '</div>';
-       } 
      }
      echo '</div>';
      if ($this->racomment) {
@@ -344,7 +481,7 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
      }
      
      echo '<span>'; 
-     echo '<input id="'.$pre_item_str.'h_'.$this->formname.'" type="hidden" name="'.$pre_item_str.'op_'.$this->formname.'" value="'.(isset($default_i_value)?$default_i_value:$default_value).'">'; 
+     echo '<input id="'.$pre_item_str.'h_'.$this->formname.'" type="hidden" name="'.$pre_item_str.'op_'.$this->formname.'" value="'.(isset($default_i_value)?stripslashes($default_i_value):$default_value).'">'; 
      echo '</span>'; 
      echo '<span id="'.$pre_item_str.'error_'.$this->formname.'" class="option_error">'; 
      if (isset($option_error_array[$pre_item_str.$this->formname])) {
@@ -360,7 +497,7 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
        if (!$d_tmp_value == '') {
          if (!empty($this->radio_image)) {
            foreach ($this->radio_image as $dp_key => $dp_value) {
-             if (trim($dp_value['title']) == $d_tmp_value) {
+             if (trim(str_replace($replace_arr, '', nl2br($dp_value['title']))) == str_replace($replace_arr, '', nl2br($d_tmp_value))) {
                $default_price = $dp_value['money'];
                break;
              }

@@ -43,6 +43,9 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder2.php'));
             // time error
             echo '<div><div class="comment">取引時間は前もって一時間以上に設定してください <div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" alt=""></a></div></div>';
             $email_error = false;
+          } else if($name==''||$date==''||$minute==''||$hour==''||
+              $character==''||$product==''){
+            $email_error = true;
           } else if(!tep_validate_email($email)){
             $email_error = true;
           } else {
@@ -104,17 +107,26 @@ if(!isset($email_error)||$email_error == true){?>
   if(isset($name)&&$name){
     echo $name;
   }?>' id='new_name' class="input_text" >
-              <span id='name_error'></span></td>
+              <span id='name_error'><?php
+  if(isset($name)&&$name==''){
+    echo TEXT_REORDER2_MUST_INPUT;
+  }?></span></td>
           </tr>
           <tr>
             <td>メールアドレス</td>
             <td>
-              <input type='text'  name='email' value='<?php
+              <input type='text'  name='email' <?php
   if(isset($email)&&$email){
-    echo $email;
-  }?>' id='new_email' class="input_text" >
-              <span id='email_error'></span><?php
- if(isset($email_error)&&$email_error){
+    if(preg_match('/\'/',$email)){
+      echo ' value="'.$email.'" ';
+    }else{
+      echo ' value=\''.$email.'\' ';
+    }
+  }?> id='new_email' class="input_text" ><span id='email_error'><?php 
+ if(isset($email)&&$email==''){
+   echo TEXT_REORDER2_MUST_INPUT;
+ }?></span><?php
+ if(isset($email_error)&&$email_error&&$email!=''&&!tep_validate_email($email)){
    echo "<br>";
    echo "<font color='red'>入力されたメールアドレスは不正です!</font>";
  }?></td>
@@ -126,7 +138,10 @@ if(!isset($email_error)||$email_error == true){?>
   if(isset($product)&&$product){
     echo $product;
   }?>' id='new_product' class="input_text" >
-              <span id='product_error'></span></td>
+              <span id='product_error'><?php
+ if(isset($product)&&$product==''){
+   echo TEXT_REORDER2_MUST_INPUT;
+ }?></span></td>
           </tr>
           <tr>
             <td>キャラクター名</td>
@@ -135,7 +150,10 @@ if(!isset($email_error)||$email_error == true){?>
   if(isset($character)&&$character){
     echo $character;
   }?>' id='new_character' class="input_text" >
-              <span id='character_error'></span></td>
+              <span id='character_error'><?php
+ if(isset($character)&&$character==''){
+   echo TEXT_REORDER2_MUST_INPUT;
+ }?></span></td>
           </tr>
           <tr>
             <td>取引日時</td>
@@ -153,7 +171,10 @@ if(!isset($email_error)||$email_error == true){?>
               <select name='minute' id='new_minute'>
                 <option value=''>--</option>
               </select>
-              <span id='date_error'></span>
+              <span id='date_error'><?php
+   if($hour==''||$date==''||$minute==''){
+     echo TEXT_REORDER2_TORIHIKI_ERROR;
+   }?></span>
               <br >
               <font color="red">ご希望のお時間に添えない場合は、弊社より「取引時間」をご連絡させていただきます。</font>
             </td>
@@ -170,58 +191,12 @@ if(!isset($email_error)||$email_error == true){?>
         </table>
         <br>
         <p align="center">
-          <input type='image' src="includes/languages/japanese/images/buttons/button_submit2.gif" alt="確定する" title="確定する" onclick='return check()' >
+          <input type='image' src="includes/languages/japanese/images/buttons/button_submit2.gif" alt="確定する" title="確定する" >
           <input type='image' src="includes/languages/japanese/images/buttons/button_reset.gif" alt="クリア" title="クリア" onclick='javascript:document.order.reset();return false;' >
         </p>
       </form>
       <?php }?>
     </div>
-    <script type="text/javascript">
-function check(){
-  commit = true;
-  document.getElementById('name_error').innerHTML = '';
-  document.getElementById('date_error').innerHTML = '';
-  document.getElementById('product_error').innerHTML = '';
-  //document.getElementById('comment_error').innerHTML = '';
-  document.getElementById('email_error').innerHTML = '';
-  document.getElementById('character_error').innerHTML = '';
-  
-  if((document.getElementById('new_date').selectedIndex != 0 || document.getElementById('new_hour').selectedIndex != 0 || document.getElementById('new_minute').selectedIndex != 0) && !(document.getElementById('new_date').selectedIndex != 0 && document.getElementById('new_hour').selectedIndex != 0 && document.getElementById('new_minute').selectedIndex != 0)){
-    document.getElementById('date_error').innerHTML = "<br><font color='red'>【取引日時】を選択してください。</font>";
-    commit = false;
-  }
-  if(document.getElementById('new_date').selectedIndex == 0 && document.getElementById('new_hour').selectedIndex == 0 && document.getElementById('new_minute').selectedIndex == 0){
-    document.getElementById('date_error').innerHTML = "<font color='red'>必須項目</font>";
-    commit = false;
-  }
-  if(document.getElementById('new_name').value == ''){
-    document.getElementById('name_error').innerHTML = "<font color='red'>必須項目</font>";
-    commit = false;
-  }
-  if(document.getElementById('new_email').value == ''){
-    document.getElementById('email_error').innerHTML = "<font color='red'>必須項目</font>";
-    commit = false;
-  }else{
-    if(!/(\S)+[@]{1}(\S)+[.]{1}(\w)+/.test(document.getElementById('new_email').value)){
-      document.getElementById('email_error').innerHTML = "<br><font color='red'>メールアドレスを正しくご入力ください</font>";
-      commit = false;
-    }
-  }
-  if(document.getElementById('new_product').value == ''){
-    document.getElementById('product_error').innerHTML = "<font color='red'>必須項目</font>";
-    commit = false;
-  }
-  if(document.getElementById('new_character').value == ''){
-    document.getElementById('character_error').innerHTML = "<font color='red'>必須項目</font>";
-    commit = false;
-  }
-  if (commit){
-    return true;
-  } else {
-    return false
-  }
-}
-</script>
     <p class="pageBottom"></p>
   </div>
   <!-- body_text_eof //-->

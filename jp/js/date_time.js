@@ -97,7 +97,7 @@ function selectHour(start_time,end_time,hour,min_num,ele){
         $("#jikan_error").remove(); 
         if(hour != ''){
           hour = parseInt(hour); 
-          document.getElementById("hour"+hour).style.color="blue";
+          document.getElementById("hour"+hour).style.color="#A9A9A9";
           document.getElementById("hour"+hour).style.textDecoration ="underline";
           $("#hour"+hour).css("background-color","#F5F9FC");
         }
@@ -167,9 +167,9 @@ function selectHour(start_time,end_time,hour,min_num,ele){
                   arr_time_m = arr_time_t[k].split(':');
              
                   if(k != arr_time_t.length-1){
-                    string +=  '<input type="radio" id="m'+m+'" name="min" value="'+m+'"'+checked+' onclick="change_time('+m+',\''+array_end[n]+'\');">'+arr_time_m[0]+'時'+arr_time_m[1]+'分～';
+                    string +=  '<input type="radio" id="m'+m+'" name="min" value="'+m+'"'+checked+' onclick="change_time('+m+',\''+array_end[n]+'\');"><label for="m'+m+'">'+arr_time_m[0]+'時'+arr_time_m[1]+'分～';
                   }else{
-                    string +=  arr_time_m[0]+'時'+arr_time_m[1]+'分'; 
+                    string +=  arr_time_m[0]+'時'+arr_time_m[1]+'分</label>'; 
                   }
                 }
                 if(m % 2 == 1){

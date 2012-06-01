@@ -1044,6 +1044,12 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
   }else{
     $type_str = 'asc';
   }
+  $str = "";
+ 	$check_customers_id = tep_db_query("select customers_id from customers_exit ");
+  while($check_customers_id_arr = tep_db_fetch_array($check_customers_id)){
+ $str .= $check_customers_id_arr['customers_id']."," ;
+  }
+ $str = substr($str,0,-1)   ;
   if (isset($_GET['cEmail']) && $_GET['cEmail']) {
     $cEmail = tep_db_prepare_input($_GET['cEmail']);
     $orders_query_raw = "
@@ -1075,7 +1081,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
                where ".$sort_where." o.customers_email_address = '" . tep_db_input($cEmail) . "' 
                " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
-               " . $where_payment . $where_type . "
+               " . $where_payment . $where_type . " and o.customers_id not in (".$str.")
                order by ".$order_str;
     //torihiki_date_error DESC,o.torihiki_date DESC";
   } else if (isset($_GET['cID']) && $_GET['cID']) {
@@ -1109,7 +1115,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
                where ".$sort_where." o.customers_id = '" . tep_db_input($cID) . "' 
                " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
-               " . $where_payment . $where_type . "
+               " . $where_payment . $where_type . " and o.customers_id not in (".$str.")
                order by ".$order_str;
     //torihiki_date_error DESC,o.torihiki_date DESC";
   } elseif (isset($_GET['status']) && $_GET['status']) {
@@ -1144,7 +1150,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                where ".$sort_where."
                o.orders_status = '" . tep_db_input($status) . "' 
                " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
-               " . $where_payment . $where_type . "
+               " . $where_payment . $where_type . " and o.customers_id not in (".$str.")
                order by ".$order_str;
     //torihiki_date_error DESC,o.torihiki_date DESC";
   }  elseif (isset($_GET['keywords']) && isset($_GET['search_type']) && $_GET['search_type'] == 'products_name' && !$_GET['type'] && !$payment) {
@@ -1195,8 +1201,8 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                   (o.orders_id like '%".$_GET['keywords']."%' or o.customers_name like
                    '%".$_GET['keywords']."%' or o.customers_email_address like
                    '%".$_GET['keywords']."%' or op.products_name like
-                   '%".$_GET['keywords']."%') " . $where_payment . $where_type .' order by
-                  '.$order_str;
+                   '%".$_GET['keywords']."%') " . $where_payment . $where_type ." and o.customers_id not in (".$str.") order by
+                  ".$order_str;
                   //o.torihiki_date DESC';
                   } else {
                   $orders_query_raw = "
@@ -1230,7 +1236,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                     (isset($_GET['site_id']) && intval($_GET['site_id']) ? "
                      o.site_id = '" . intval($_GET['site_id']) . "' and " : '') . "
                      o.orders_status = '".substr($_GET['search_type'], 3)."'" . $where_payment
-                     . $where_type .' order by '.$order_str;
+                     . $where_type ." and o.customers_id not in (".$str.") order by ".$order_str;
                      //o.torihiki_date DESC';
                      }
                      } elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['search_type'] == 'orders_id'))) {
@@ -1265,7 +1271,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                        (isset($_GET['site_id']) &&
                         intval($_GET['site_id']) ? " o.site_id = '" . intval($_GET['site_id']) .
                         "' and " : '') . " o.orders_id like '%".$_GET['keywords']."%'" .
-                       $where_payment . $where_type.' order by '.$order_str;
+                       $where_payment . $where_type." and o.customers_id not in (".$str.") order by ".$order_str;
                     //o.torihiki_date DESC';
                      } elseif ( isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['search_type'] == 'customers_name') or (isset($_GET['search_type']) && $_GET['search_type'] == 'email'))
                          ) {
@@ -1297,7 +1303,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                 o.site_id
                                   from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
                                   where   
-                                  " .$sort_where . " 1=1 ".
+                                  " .$sort_where . " 1=1 and o.customers_id not in (".$str.")".
                                   (isset($_GET['site_id']) && intval($_GET['site_id']) ? " o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
                                   " . $where_payment . $where_type ;
 
@@ -1371,8 +1377,8 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                      (o.orders_id like '%".$_GET['keywords']."%' or o.customers_name like
                                       '%".$_GET['keywords']."%' or o.customers_email_address like
                                       '%".$_GET['keywords']."%' or op.products_name like
-                                      '%".$_GET['keywords']."%') ".' order by
-                                     '.$order_str;
+                                      '%".$_GET['keywords']."%') "." and o.customers_id not in (".$str.") order by
+                                     ".$order_str;
                                      } else {
                                      $orders_query_raw = "
                                      select o.orders_id, 
@@ -1402,7 +1408,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                      o.site_id
                                        from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
                                        where ".$sort_where.(isset($_GET['site_id']) && intval($_GET['site_id']) ? " o.site_id =
-                                       '" . intval($_GET['site_id']) . "' and " : '') ." o.payment_method like '".$payment_m[1]."' ";
+                                       '" . intval($_GET['site_id']) . "' and " : '') ." o.payment_method like '".$payment_m[1]."' and o.customers_id not in (".$str.")";
                                     $orders_query_raw .= "order by ".$order_str;
                                      }
                      }else if(isset($_GET['keywords']) && ((isset($_GET['search_type']) &&
@@ -1448,7 +1454,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                   o.site_id
                                     from " . TABLE_ORDERS . " o, " .TABLE_ORDERS_PRODUCTS." op ". $f_payment . $sort_table."
                                     where ".$sort_where.(isset($_GET['site_id']) && intval($_GET['site_id']) ? " o.site_id =
-                                    '" . intval($_GET['site_id']) . "' and " : '') ." ".$w_type. " and o.orders_id = op.orders_id and (o.orders_id like '%".$_GET['keywords']."%' or o.customers_name like '%".$_GET['keywords']."%' or o.customers_email_address like '%".$_GET['keywords']."%' or op.products_name like '%".$_GET['keywords']."%') ";
+                                    '" . intval($_GET['site_id']) . "' and " : '') ." ".$w_type. " and o.orders_id = op.orders_id and (o.orders_id like '%".$_GET['keywords']."%' or o.customers_name like '%".$_GET['keywords']."%' or o.customers_email_address like '%".$_GET['keywords']."%' or op.products_name like '%".$_GET['keywords']."%') and o.customers_id not in (".$str.")";
                          $orders_query_raw .= " order by ".$order_str;
                        } else {
                          $orders_query_raw = "
@@ -1580,7 +1586,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                   -- and o.orders_status != '6'
                                   -- and o.orders_status != '8'
                                   " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
-                                  " . $where_payment . $where_type . "
+                                  " . $where_payment . $where_type . " and o.customers_id not in (".$str.")
                                   order by ".$order_str;
                        //o.torihiki_date DESC";
                      }

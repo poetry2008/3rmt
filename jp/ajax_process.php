@@ -17,12 +17,4 @@ if ($_GET['action'] == 'calc_price') {
     $price_array['price'] = $currencies->display_price($final_price, tep_get_tax_rate($products_info['products_tax_class_id']), $_GET['qty']); 
   }
   echo json_encode($price_array);
-} else if ($_GET['action'] == 'calc_radio_price') {
-  require('option/HM_Option.php');
-  require('option/HM_Option_Group.php');
-
-  $hm_option = new HM_Option();
-  $price_array = array();
-  $price_array['price'] = $hm_option->calc_radio_price($_GET['it_id'], $_GET['rvalue']);
-  echo json_encode($price_array);
-}
+} 

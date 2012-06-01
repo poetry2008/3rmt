@@ -264,7 +264,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
           $item_f_raw = tep_db_query("select front_title from ".TABLE_OPTION_ITEM." where name = '".$ma_op_info['1']."' and id = '".$ma_op_info[3]."'"); 
           $item_f_res = tep_db_fetch_array($item_f_raw);
           if ($item_f_res) {
-            $mail_option_str .= $item_f_res['front_title'].str_repeat('　', intval($max_op_len - mb_strlen($item_f_res['front_title'], 'utf-8'))).'：'.$mao_value."\n"; 
+            $mail_option_str .= $item_f_res['front_title'].str_repeat('　', intval($max_op_len - mb_strlen($item_f_res['front_title'], 'utf-8'))).'：'.str_replace(array("<br>", "<BR>"), "\n", stripslashes($mao_value))."\n"; 
           }
         }
       }
@@ -482,7 +482,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
               foreach ($_POST as $op_s_key => $op_s_value) {
                 $ops_single_str = substr($op_s_key, 0, 3);
                 if ($ops_single_str == 'op_') {
-                  echo tep_draw_hidden_field($op_s_key, $op_s_value); 
+                  echo tep_draw_hidden_field($op_s_key, stripslashes($op_s_value)); 
                 }
               }
             ?>
@@ -503,7 +503,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
        foreach ($_POST as $op_key => $op_value) {
          $op_single_str = substr($op_key, 0, 3);
          if ($op_single_str == 'op_') {
-           echo tep_draw_hidden_field($op_key, $op_value); 
+           echo tep_draw_hidden_field($op_key, stripslashes($op_value)); 
          }
        }
     ?>

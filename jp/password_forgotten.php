@@ -10,6 +10,7 @@
   if (isset($_GET['action']) && ($_GET['action'] == 'process')) {
 //ccdd
     $_POST['email_address'] =  str_replace("\xe2\x80\x8b", '',$_POST['email_address']);
+    $val_email_address = tep_db_prepare_input($_POST['email_address']);
     $check_customer_query = tep_db_query("
         select customers_firstname, 
                customers_lastname, 
@@ -41,15 +42,15 @@
         $email_body = str_replace('${NAME}', tep_get_fullname($check_customer['customers_firstname'], $check_customer['customers_lastname']), $email_body);
         tep_mail(tep_get_fullname($check_customer['customers_firstname'],$check_customer['customers_lastname']), $_POST['email_address'], str_replace('${SITE_NAME}', STORE_NAME, SEND_PASSWORLD_EMAIL_TITLE), $email_body, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
       tep_redirect(tep_href_link('send_success.php',
-            'send_mail='.rawurlencode($_POST['email_address'])));
+              'send_mail='.rawurlencode($val_email_address)));
     } else {
       tep_redirect(tep_href_link('send_success.php',
-            'send_mail='.rawurlencode($_POST['email_address'])));
+              'send_mail='.rawurlencode($val_email_address)));
     }
     } else {
-      if(tep_validate_email($_POST['email_address'])){
+      if(tep_validate_email($val_email_address)){
         tep_redirect(tep_href_link('send_success.php',
-              'send_mail='.rawurlencode($_POST['email_address'])));
+              'send_mail='.rawurlencode($val_email_address)));
       }else{
         tep_redirect(tep_href_link(FILENAME_PASSWORD_FORGOTTEN, 'error=1', 'SSL'));
       }

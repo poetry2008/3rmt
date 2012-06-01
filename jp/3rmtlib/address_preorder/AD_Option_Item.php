@@ -33,6 +33,7 @@ class AD_Option_Item extends AD_Option_DbRecord
     $this->instance->num_limit = $this->num_limit;
     $this->instance->num_limit_min = $this->num_limit_min;
     $this->instance->required = $this->required;
+    $this->instance->fixed_option = $this->fixed_option;
     }
     return $this->instance;
   }
