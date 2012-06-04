@@ -280,7 +280,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                     while ($old_attr_res = tep_db_fetch_array($old_attr_raw)) {
                       echo '<br>';  
                       $old_attr_info = @unserialize(stripslashes($old_attr_res['option_info'])); 
-                      echo $old_attr_info['title'].':'.$old_attr_info['value'];
+                      echo $old_attr_info['title'].':'.str_replace(array("<br>", "<BR>"), '', $old_attr_info['value']);
                       if ($old_attr_res['options_values_price'] != '0') {
                         if ($preorder_product_res['products_price'] != '0') {
                           echo ' ('.$currencies->format($old_attr_res['options_values_price']).')'; 
@@ -294,7 +294,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                         $option_item_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where id = '".$of_key_array[3]."' and name = '".$of_key_array[1]."'");  
                         $option_item = tep_db_fetch_array($option_item_query); 
                         if ($option_item) {
-                          echo $option_item['front_title'].':'.$of_value; 
+                          echo $option_item['front_title'].':'.str_replace(array("<br>", "<BR>"), '', $of_value); 
                           if ($option_item['type'] == 'radio') {
                             $r_option_array = @unserialize($option_item['option']);
                             if (!empty($r_option_array['radio_image'])) {
