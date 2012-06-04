@@ -88,7 +88,7 @@ function fmoney(s)
  return t.split("").reverse().join("");
 }
 
-function money_update(objid, targ)
+function money_update(objid, targ, origin_qty, origin_small)
 {
   var obj = document.getElementById(objid);
   var product_id = obj.id.substr(9);
@@ -96,13 +96,26 @@ function money_update(objid, targ)
   var attr_prices = document.getElementsByName("attr_" + product_id);
   var attr_prices_option = document.getElementsByName("attr_option_" + product_id);
   var sub_total = document.getElementById('sub_total_hidden');
-
+  var hop_price_str = document.getElementById("h_op_" + product_id).value;
   
   var old_price_total  = document.getElementById("pri_" + product_id);
      
+  var small_sum = document.getElementById("small_sum_" + product_id);
+  var right_price = 0;
+  var isum = small_sum.value.split(',');
+  for (var i=isum.length ;i>0;i--){
+    var tmplevel = isum[i-1].split(':');
+    if (parseInt(obj.value)>=parseInt(tmplevel[0])){
+      var right_price = tmplevel[1]
+      break;
+    }else{
+      continue;
+    }
+  }
   
+  var final_price = parseInt(unit_price.value) + parseInt(right_price);
   
-  var new_unit_price_total = unit_price.value * Number(obj.value);
+  var new_unit_price_total = final_price * Number(obj.value);
   new_unit_price_total = Math.round(new_unit_price_total);
 
   if (unit_price.value < 0) {
@@ -111,30 +124,23 @@ function money_update(objid, targ)
     old_price_total.innerHTML = Math.abs(new_unit_price_total).toString() + '<?php echo JPMONEY_UNIT_TEXT;?>';
   }
   
+  if (hop_price_str != '') {
+  hop_array = hop_price_str.split(",");
+  var hop_num = 0;
   $('#pri_'+product_id).parent().find('small').each(function() {
     old_option_price = $(this).find('i').html();
     if (old_option_price != '&nbsp;') {
       old_option_pri = old_option_price.slice(-1);
       old_option_price_info =  old_option_price.slice(0, -1).replace(/,/g, '');
-      if (targ == 'up') {
-        old_num = Number(obj.value) - 1; 
-      } else {
-        old_num = Number(obj.value) + 1; 
-      }
-      old_single_option_price = old_option_price_info / old_num; 
-      new_option_price = Number(old_single_option_price)*Number(obj.value); 
+      new_option_price = Number(hop_array[hop_num])*Number(obj.value); 
       $(this).html('<i>' + new_option_price + old_option_pri + '</i>');
+      hop_num++; 
     }
   });
- 
+  } 
+   
   if (document.getElementById('one_price_show_'+product_id)) {
-    var one_price_str = document.getElementById('one_price_show_'+product_id).innerHTML.replace(/,/g, '');
-    if (targ == 'up') {
-      old_tmp_num = Number(obj.value) - 1; 
-    } else {
-      old_tmp_num = Number(obj.value) + 1; 
-    }
-    var one_price = Number(one_price_str) / old_tmp_num  * Number(obj.value);
+    var one_price = Number(origin_small.replace(/,/g, '')) / origin_qty  * Number(obj.value);
     document.getElementById('one_price_show_'+product_id).innerHTML = fmoney(one_price);
   }  
   set_sub_total();
@@ -152,10 +158,25 @@ function money_blur_update(objid, o_num, old_small)
   
   var old_price_total  = document.getElementById("pri_" + product_id);
      
+    
+  var small_sum = document.getElementById("small_sum_" + product_id);
+  var right_price = 0;
+  var isum = small_sum.value.split(',');
+  for (var i=isum.length ;i>0;i--){
+    var tmplevel = isum[i-1].split(':');
+    if (parseInt(obj.value)>=parseInt(tmplevel[0])){
+      var right_price = tmplevel[1]
+      break;
+    }else{
+      continue;
+    }
+  }
   
-  var new_unit_price_total = unit_price.value * Number(obj.value);
+  var final_price = parseInt(unit_price.value) + parseInt(right_price);
+  
+  var new_unit_price_total = final_price * Number(obj.value);
   new_unit_price_total = Math.round(new_unit_price_total);
-
+  
   if (unit_price.value < 0) {
     old_price_total.innerHTML = '<font color="#ff0000">'+Math.abs(new_unit_price_total).toString() +'</font>' + '<?php echo JPMONEY_UNIT_TEXT;?>';
   } else {
@@ -177,8 +198,6 @@ function money_blur_update(objid, o_num, old_small)
   }
  
   if (document.getElementById('one_price_show_'+product_id)) {
-    var one_price_str = document.getElementById('one_price_show_'+product_id).innerHTML.replace(/,/g, '');
-    
     var one_price = Number(old_small.replace(/,/g, '')) / o_num  * Number(obj.value);
     document.getElementById('one_price_show_'+product_id).innerHTML = fmoney(one_price);
   }
@@ -191,12 +210,33 @@ function set_sub_total()
   var sub_total = 0;
   for (var i=0; i<final_prices.length; i++)
   {
-    sub_total = sub_total + Number(final_prices[i].value)*Number(document.getElementById('quantity_' +
-            final_prices[i].id.substr(3)).value);
+
+    var p_l_html = document.getElementById('pri_' + final_prices[i].id.substr(3)).innerHTML.split('円')[0].replace(/,/g,'');
+    if(document.getElementById('one_price_show_'+ final_prices[i].id.substr(3))){
+    var one_price_money = document.getElementById('one_price_'+ final_prices[i].id.substr(3)).innerHTML.replace(/,/g,'');
+    var one_p_quantity = document.getElementById('quantity_'+ final_prices[i].id.substr(3)).value;
+    var res_one_price = Number(one_price_money) * Number(one_p_quantity);
+    var res_one_price_str = fmoney(res_one_price);
+    document.getElementById('one_price_show_'+ final_prices[i].id.substr(3)).innerHTML=res_one_price_str;
+    }
+    if(!isNaN(p_l_html)){
+      var p_l_price = p_l_html;
+    }else{
+      p_l_html = p_l_html.replace(/(<.*?[^>]>)/gi,"");
+      var p_l_price = 0 - Number(p_l_html);
+    }
+    op_price_str = document.getElementById('h_op_'+final_prices[i].id.substr(3)).value; 
+    var op_price_total = 0; 
+    if (op_price_str != '') {
+      op_price_arr = op_price_str.split(',');
+      for (var j=0; j<op_price_arr.length; j++) {
+        op_price_total = op_price_total + Number(op_price_arr[j])*Number(one_p_quantity); 
+      }
+    }
+    sub_total = sub_total + Number(p_l_price)+op_price_total;
   }
 
   sub_total = Math.round(sub_total);
-
   var sub_total_text = document.getElementById("sub_total");
   var monetary_sub_total = sub_total_text.innerHTML.slice(-1);
   if (sub_total >= 0) {
@@ -204,15 +244,14 @@ function set_sub_total()
   } else {
     sub_total_text.innerHTML = '<font color="#ff0000">' + Math.abs(sub_total).toString() + '</font>' + monetary_sub_total;
   }
-
 }
   
-function update_cart(objid, targ)
+function update_cart(objid, targ, origin_qty, origin_small)
 {
-    money_update(objid, targ);
+    money_update(objid, targ, origin_qty, origin_small);
 }
 
-function change_num(ob,targ, quan,a_quan)
+function change_num(ob,targ, quan,a_quan, origin_qty, origin_small)
 {
   var product_quantity = document.getElementById(ob);
   var product_quantity_num = parseInt(product_quantity.value);
@@ -242,7 +281,7 @@ function change_num(ob,targ, quan,a_quan)
   product_quantity.value = num_value;
   if (product_quantity_num != num_value)
   { 
-    update_cart(product_quantity.id, targ);
+    update_cart(product_quantity.id, targ, origin_qty, origin_small);
   }
 }
 -->

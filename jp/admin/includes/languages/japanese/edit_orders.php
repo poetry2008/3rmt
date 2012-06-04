@@ -131,7 +131,7 @@ define('EDIT_ORDERS_DATE_TEXT', '注文日:');
 define('EDIT_ORDERS_CUSTOMER_NAME', '顧客名:');
 define('EDIT_ORDERS_EMAIL', 'メールアドレス:');
 define('EDIT_ORDERS_PAYMENT_METHOD', '支払方法:');
-define('EDIT_ORDERS_FETCHTIME', '届け時間:');
+define('EDIT_ORDERS_FETCHTIME', 'お届け日時:');
 define('EDIT_ORDERS_TORI_TEXT', 'オプション:');
 define('EDIT_ORDERS_CUSTOMER_NAME_READ', '<font color="red">※</font>&nbsp;姓と名の間には<font color="red">半角スペース</font>を入力してください。');
 define('EDIT_ORDERS_PAYMENT_METHOD_READ', '<table><tr class="smalltext"><td><font color="red">※</font>&nbsp;コピペ用:</td><td>銀行振込</td><td>クレジットカード決済</td><td>銀行振込(買い取り)</td><td>ゆうちょ銀行（郵便局）</td><td>コンビニ決済</td></tr></table>');

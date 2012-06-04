@@ -221,7 +221,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
               </td>
             </tr>
             <tr>
-              <td align="left" width="20%" class="preorderBarFrom"><?php echo '<a href="javascript:void(0);" onclick="document.forms.order1.submit();" class="preorderBarFrom">'.PREORDER_TRADER_LINE_TITLE.'</a>';?></td> 
+              <td align="left" width="20%" class="preorderBarFrom"><?php echo '<a href="'.tep_href_link('change_preorder.php', 'pid='.$preorder_res['check_preorder_str'], 'SSL').'" onclick="document.forms.order1.submit();" class="preorderBarFrom">'.PREORDER_TRADER_LINE_TITLE.'</a>';?></td> 
               <td align="center" width="60%" class="preorderBarcurrent"><?php echo PREORDER_CONFIRM_LINE_TITLE;?></td> 
               <td align="right" width="20%" class="preorderBarTo"><?php echo PREORDER_FINISH_LINE_TITLE;?></td> 
             </tr>
@@ -280,7 +280,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                     while ($old_attr_res = tep_db_fetch_array($old_attr_raw)) {
                       echo '<br>';  
                       $old_attr_info = @unserialize(stripslashes($old_attr_res['option_info'])); 
-                      echo $old_attr_info['title'].':'.$old_attr_info['value'];
+                      echo $old_attr_info['title'].':'.str_replace(array("<br>", "<BR>"), '', $old_attr_info['value']);
                       if ($old_attr_res['options_values_price'] != '0') {
                         if ($preorder_product_res['products_price'] != '0') {
                           echo ' ('.$currencies->format($old_attr_res['options_values_price']).')'; 
@@ -294,7 +294,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                         $option_item_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where id = '".$of_key_array[3]."' and name = '".$of_key_array[1]."'");  
                         $option_item = tep_db_fetch_array($option_item_query); 
                         if ($option_item) {
-                          echo $option_item['front_title'].':'.$of_value; 
+                          echo $option_item['front_title'].':'.str_replace(array("<br>", "<BR>"), '', $of_value); 
                           if ($option_item['type'] == 'radio') {
                             $r_option_array = @unserialize($option_item['option']);
                             if (!empty($r_option_array['radio_image'])) {
