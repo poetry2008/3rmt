@@ -133,7 +133,7 @@ $options_str_temp = '';
       }
     ?>
       for(x in arr[value]){
-          str += '<tr><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;選択肢</td><td>'+arr[value][x]+'</td></tr>';
+          str += '<tr><td width="30%" height="20" align="left">&nbsp;&nbsp;&nbsp;&nbsp;選択肢</td><td>'+arr[value][x]+'</td></tr>';
       }
       str += '</table>';
       
@@ -205,7 +205,7 @@ $options_str_temp = '';
       }
       ?> 
       for(x in arr[value]){
-          str += '<tr><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;選択肢</td><td>'+arr[value][x]+'</td></tr>';
+          str += '<tr><td width="30%" height="20" align="left">&nbsp;&nbsp;&nbsp;&nbsp;選択肢</td><td>'+arr[value][x]+'</td></tr>';
       }
       str += '</table>';
       

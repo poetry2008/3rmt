@@ -151,7 +151,7 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
                echo '<div class="option_tick"><img src="upload_images/0/design/tick.png" alt=""></div>'; 
              }
              echo '<div class="option_conent">'; 
-             echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'1\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\', \'0\');"><span>'.stripslashes($this->default_radio).'<span></a>';
+             echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'1\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\', \'0\');"><span>'.stripslashes($this->default_radio).'</span></a>';
              echo '</div>'; 
              echo '</div>'; 
            } else {

@@ -58,7 +58,7 @@ function selectDate(start_time,end_time){
             }
           } 
           if(flag == true){
-            html_str += '<td id="hour'+j+'" bgcolor="#cccccc" style="color:#000000;cursor:pointer;" align="center" onclick="if((document.getElementById(\'shipping_list_min\').style.display == \'table-row\' && this.style.backgroundColor == \'rgb(245, 249, 252)\') || (document.getElementById(\'shipping_list_min\').style.display == \'block\' && this.style.backgroundColor == \'#f5f9fc\')){check_out('+j+');}else{this.style.background=\'#F5F9FC\';selectHour(\''+start_time+'\',\''+end_time+'\','+j+',\'\',this);}">'+j+'</td>';
+            html_str += '<td id="hour'+j+'" bgcolor="#cccccc" style="color:#000000;cursor:pointer;" align="center" onclick="if((document.getElementById(\'shipping_list_min\').style.display == \'table-row\' && this.style.backgroundColor == \'rgb(245, 249, 252)\') || (document.getElementById(\'shipping_list_min\').style.display == \'block\' && this.style.backgroundColor == \'#383838\')){check_out('+j+');}else{this.style.background=\'#383838\';selectHour(\''+start_time+'\',\''+end_time+'\','+j+',\'\',this);}">'+j+'</td>';
           }else{
             html_str += '<td id="hour'+j+'" bgcolor="#f1f0ef" style="color:#cccccc;" align="center">'+j+'</td>';
           }
@@ -97,9 +97,9 @@ function selectHour(start_time,end_time,hour,min_num,ele){
         $("#jikan_error").remove(); 
         if(hour != ''){
           hour = parseInt(hour); 
-          document.getElementById("hour"+hour).style.color="#A9A9A9";
+          document.getElementById("hour"+hour).style.color="#ffffff";
           document.getElementById("hour"+hour).style.textDecoration ="underline";
-          $("#hour"+hour).css("background-color","#F5F9FC");
+          $("#hour"+hour).css("background-color","#383838");
         }
         var array_start = new Array();
         array_start = start_time.split('||'); 

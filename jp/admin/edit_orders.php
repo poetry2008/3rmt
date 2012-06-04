@@ -1507,7 +1507,7 @@ function check(select_value){
     country_fee.options.length = 0;
     for(x in arr){
 
-      country_fee.options[country_fee.options.length]=new Option(arr[x], x,x==select_value);
+      country_fee.options[country_fee.options.length]=new Option(arr[x], x,x==select_value,x==select_value);
     }
   }
 }
@@ -1567,7 +1567,7 @@ function country_check(value,select_value){
     country_area.options.length = 0;
     for(x in arr[value]){
 
-      country_area.options[country_area.options.length]=new Option(arr[value][x], x,x==select_value);
+      country_area.options[country_area.options.length]=new Option(arr[value][x], x,x==select_value,x==select_value);
     }
   }
 
@@ -1605,7 +1605,7 @@ function country_area_check(value,select_value){
     country_city.options.length = 0;
     for(x in arr[value]){
 
-      country_city.options[country_city.options.length]=new Option(arr[value][x], x,x==select_value);
+      country_city.options[country_city.options.length]=new Option(arr[value][x], x,x==select_value,x==select_value);
     }
   }
 
