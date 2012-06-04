@@ -43,15 +43,18 @@
 
     case '1':
       echo 'var country_fee_id = "ad_'. $address_fixed_array['name_flag'] .'";'."\n";
+      echo 'var country_fee_id_one = "'. $address_fixed_array['name_flag'] .'";'."\n";
       $country_fee_id = 'ad_'.$address_fixed_array['name_flag'];
       break;
     case '2':
       echo 'var country_area_id = "ad_'. $address_fixed_array['name_flag'] .'";'."\n";
+      echo 'var country_area_id_one = "'. $address_fixed_array['name_flag'] .'";'."\n";
       $country_area_id = 'ad_'.$address_fixed_array['name_flag'];
       break;
       break;
     case '3':
       echo 'var country_city_id = "ad_'. $address_fixed_array['name_flag'] .'";'."\n";
+      echo 'var country_city_id_one = "'. $address_fixed_array['name_flag'] .'";'."\n";
       $country_city_id = 'ad_'.$address_fixed_array['name_flag'];
       break;
       break;
@@ -101,9 +104,19 @@ function check(select_value){
   ?>
     var country_fee = document.getElementById(country_fee_id);
     country_fee.options.length = 0;
+    var i = 0;
     for(x in arr){
 
       country_fee.options[country_fee.options.length]=new Option(arr[x], x,x==select_value);
+      i++;
+    }
+
+    if(i == 0){
+
+      $("#td_"+country_fee_id_one).hide();
+    }else{
+       
+      $("#td_"+country_fee_id_one).show();
     }
 }
 function country_check(value,select_value){
@@ -158,9 +171,19 @@ function country_check(value,select_value){
   ?>
     var country_area = document.getElementById(country_area_id);
     country_area.options.length = 0;
+    var i = 0;
     for(x in arr[value]){
 
       country_area.options[country_area.options.length]=new Option(arr[value][x], x,x==select_value);
+      i++;
+    }
+
+    if(i == 0){
+
+      $("#td_"+country_area_id_one).hide();
+    }else{
+       
+      $("#td_"+country_area_id_one).show();
     }
 
 }
@@ -193,9 +216,19 @@ function country_area_check(value,select_value){
   ?>
     var country_city = document.getElementById(country_city_id);
     country_city.options.length = 0;
+    var i = 0;
     for(x in arr[value]){
 
       country_city.options[country_city.options.length]=new Option(arr[value][x], x,x==select_value);
+      i++;
+    }
+
+    if(i == 0){
+
+      $("#td_"+country_city_id_one).hide();
+    }else{
+       
+      $("#td_"+country_city_id_one).show();
     }
 
 }

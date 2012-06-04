@@ -90,7 +90,7 @@ define('JAVA_SCRIPT_INFO_DELETE', 'ユーザ管理情報を削除します。\n�
 define('JAVA_SCRIPT_INFO_PASSWORD', 'パスワードを変更します。\nよろしいですか？');
 define('JAVA_SCRIPT_INFO_GRANT', '管理者権限を与えます。\nよろしいですか？');
 define('JAVA_SCRIPT_INFO_REVOKE', '管理者権限を取り消します。\nよろしいですか？');
-define('TABLE_HEADING_IP_LIMIT', 'IP制限設置');
+define('TABLE_HEADING_IP_LIMIT', 'IP制限されない設置');
 define('JAVA_SCRIPT_INFO_C_PERMISSION','ユーザ管理の権限を変更する。\nよろしいですか？');
 define('TEXT_RAND_PWD_INFO','<p>書式： 2011/2/22 01:00での例  桁数:計算式</p>
     <p>3:Y+n+d　＝2011+2+22となり結果は2035です。ここから桁数制限が3となりますので、パスワードは035となります。</p>

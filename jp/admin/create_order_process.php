@@ -25,14 +25,63 @@ if(isGet()){
     tep_redirect(tep_redirect(tep_href_link(FILENAME_CREATE_ORDER.'?Customer_mail='.tep_db_prepare_input($_POST['email_address']).'&site_id='.tep_db_prepare_input($_POST['site_id']).'&error=1', null, 'SSL')));
   }else{
     $qty = 0;
-    foreach($_POST['update_products'] as $update_value){
+    $weight_count = 0;
+    $products_qty = array();
+    foreach($_POST['update_products'] as $update_key=>$update_value){
+      $orders_products_query = tep_db_query("select products_id from ". TABLE_ORDERS_PRODUCTS ." where orders_products_id='". $update_key ."'");
+      $orders_products_array = tep_db_fetch_array($orders_products_query);
+      tep_db_free_result($orders_products_query);
+      $products_weight_query = tep_db_query("select products_weight from ". TABLE_PRODUCTS ." where products_id='". $orders_products_array['products_id'] ."'");
+      $products_weight_array = tep_db_fetch_array($products_weight_query);
+      $weight_count += $products_weight_array['products_weight'] * $update_value['qty'];
+      tep_db_free_result($products_weight_query);
       $qty += $update_value['qty']; 
+      $products_qty[$update_key] = $update_value['qty']; 
     }
+    $_SESSION['products_qty'] = $products_qty;
 
     if($qty == 0){
 
        
       tep_redirect(tep_redirect(tep_href_link(FILENAME_CREATE_ORDER.'?oID='.tep_db_prepare_input($_POST['oID']).'&Customer_mail='.tep_db_prepare_input($_POST['email_address']).'&site_id='.tep_db_prepare_input($_POST['site_id']).'&error=1', null, 'SSL')));
+    }else{
+      
+      $country_max_fee = 0; 
+      $country_fee_max_array = array();
+      $country_fee_query = tep_db_query("select weight_limit from ". TABLE_COUNTRY_FEE ." where status='0'");
+      while($country_fee_array = tep_db_fetch_array($country_fee_query)){
+
+        $country_fee_max_array[] = $country_fee_array['weight_limit'];
+      }
+      tep_db_free_result($country_fee_query);
+      $country_max_fee = max($country_fee_max_array);
+
+      $country_max_area = 0; 
+      $country_area_max_array = array();
+      $country_area_query = tep_db_query("select weight_limit from ". TABLE_COUNTRY_AREA ." where status='0'");
+      while($country_area_array = tep_db_fetch_array($country_area_query)){
+
+        $country_area_max_array[] = $country_area_array['weight_limit'];
+      }
+      tep_db_free_result($country_area_query);
+      $country_max_area = max($country_area_max_array);
+
+      $country_max_city = 0; 
+      $country_city_max_array = array();
+      $country_city_query = tep_db_query("select weight_limit from ". TABLE_COUNTRY_CITY ." where status='0'");
+      while($country_city_array = tep_db_fetch_array($country_city_query)){
+
+        $country_city_max_array[] = $country_city_array['weight_limit'];
+      }
+      tep_db_free_result($country_city_query);
+      $country_max_city = max($country_city_max_array);
+
+      $weight_count_limit = max($country_max_fee,$country_max_area,$country_max_city);
+
+      if($weight_count > $weight_count_limit){
+
+        tep_redirect(tep_redirect(tep_href_link(FILENAME_CREATE_ORDER.'?oID='.tep_db_prepare_input($_POST['oID']).'&Customer_mail='.tep_db_prepare_input($_POST['email_address']).'&site_id='.tep_db_prepare_input($_POST['site_id']).'&error=2&weight='.$weight_count_limit, null, 'SSL')));
+      }
     } 
   }
 }

@@ -62,6 +62,8 @@ define('EDIT_ORDERS_DUMMY_TITLE', 'キャラ名：');
 define('EDIT_ORDERS_ADD_PRO_READ', '商品追加と他の項目は同時に変更できません。<b>「 商品の追加 」は単体で行ってください。</b>');
 define('TABLE_HEADING_PRODUCTS_MODEL', '型番');
 define('HINT_DELETE_POSITION', '<font color="#FF0000">ヒント: </font>商品を削除する場合は個数に「0」と入力して更新してください。');
+define('CREATE_ORDER_PRODUCTS_WEIGHT','総重量が規定の範囲を超えました。商品を削除するか、または個数を変更して（');
+define('CREATE_ORDER_PRODUCTS_WEIGHT_ONE','）kg以内にしてください。');
 define('CREATE_ORDER_PC_TEXT', 'PCメールアドレス:');
 define('CREATE_ORDER_BANK_NAME_TEXT', '金融機関名:');
 define('CREATE_ORDER_BANK_SHITEN_TEXT', '支店名:');

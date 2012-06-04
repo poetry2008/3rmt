@@ -248,6 +248,47 @@ if (tep_not_null($action)) {
       $end_min_1 = tep_db_prepare_input($_POST['end_min_1']);
       $end_min_2 = tep_db_prepare_input($_POST['end_min_2']);
       $goods_check = $order_query;
+
+      // products weight
+      $country_max_fee = 0; 
+      $country_fee_max_array = array();
+      $country_fee_query = tep_db_query("select weight_limit from ". TABLE_COUNTRY_FEE ." where status='0'");
+      while($country_fee_array = tep_db_fetch_array($country_fee_query)){
+
+        $country_fee_max_array[] = $country_fee_array['weight_limit'];
+      }
+      tep_db_free_result($country_fee_query);
+      $country_max_fee = max($country_fee_max_array);
+
+      $country_max_area = 0; 
+      $country_area_max_array = array();
+      $country_area_query = tep_db_query("select weight_limit from ". TABLE_COUNTRY_AREA ." where status='0'");
+      while($country_area_array = tep_db_fetch_array($country_area_query)){
+
+        $country_area_max_array[] = $country_area_array['weight_limit'];
+      }
+      tep_db_free_result($country_area_query);
+      $country_max_area = max($country_area_max_array);
+
+      $country_max_city = 0; 
+      $country_city_max_array = array();
+      $country_city_query = tep_db_query("select weight_limit from ". TABLE_COUNTRY_CITY ." where status='0'");
+      while($country_city_array = tep_db_fetch_array($country_city_query)){
+
+        $country_city_max_array[] = $country_city_array['weight_limit'];
+      }
+      tep_db_free_result($country_city_query);
+      $country_max_city = max($country_city_max_array);
+
+      $weight_count_limit = max($country_max_fee,$country_max_area,$country_max_city);
+
+      $weight_error = false;
+      if($weight > $weight_count_limit){
+
+        $weight_error = true;
+        $action = 'edit';
+        break;
+      }
       /*
          if (tep_db_num_rows($goods_check) == 0) {
          $messageStack->add('商品が追加されていません。', 'error');
@@ -419,18 +460,45 @@ if (tep_not_null($action)) {
       $check_status = tep_db_fetch_array($check_status_query);
 
       //住所信息入库
-      
+
+      $address_id_list_array = array();
+      $address_old_list_array = array();
+      $address_old_query = tep_db_query("select * from ". TABLE_ADDRESS ." where status='0' and type!='text'");
+      while($address_old_array = tep_db_fetch_array($address_old_query)){
+
+        $address_old_list_array[] = $address_old_array['id'];
+      }
+      tep_db_free_result($address_old_query);
       foreach($option_info_array as $ad_key=>$ad_value){
         
         $address_list_query = tep_db_query("select * from ". TABLE_ADDRESS ." where name_flag='". substr($ad_key,3) ."'");
         $address_list_array = tep_db_fetch_array($address_list_query);
         $ad_value = $address_list_array['comment'] == $ad_value ? '' : $ad_value;
-        $ad_sql = "update ". TABLE_ADDRESS_ORDERS ." set value='". $ad_value ."' where name='". substr($ad_key,3) ."' and orders_id='". $oID ."'";
+
+        $address_search_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where name='". substr($ad_key,3) ."' and orders_id='". $oID ."'");
+        $address_search_num = tep_db_num_rows($address_search_query);
+        if($address_search_num > 0){
+
+          $address_search_array = tep_db_fetch_array($address_search_query);
+          $address_id_list_array[] = $address_search_array['address_id'];
+          $ad_sql = "update ". TABLE_ADDRESS_ORDERS ." set value='". $ad_value ."' where name='". substr($ad_key,3) ."' and orders_id='". $oID ."'";
+        }else{
+          
+          $ad_sql = "insert into ". TABLE_ADDRESS_ORDERS ." values(NULL,'".$oID."','{$check_status['customers_id']}','{$address_list_array['id']}','". substr($ad_key,3) ."','$ad_value')";
+        }
+        tep_db_free_result($address_search_query);
         $ad_query = tep_db_query($ad_sql);
         tep_db_free_result($address_list_query);
         tep_db_free_result($ad_query);
       }
 
+      $address_diff_id = array_diff($address_old_list_array,$address_id_list_array);
+      $address_diff_str = implode(",",$address_diff_id);
+
+      if($address_diff_str != ''){
+        echo "delete from ". TABLE_ADDRESS_ORDERS ." where address_id in (".$address_diff_str.") and orders_id='". $oID ."'";
+      }
+      
       $address_show_array = array(); 
   $address_show_list_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where status='0' and show_title='1'");
   while($address_show_list_array = tep_db_fetch_array($address_show_list_query)){
@@ -1445,17 +1513,18 @@ $shipping_fee = $order->info['shipping_fee'] != $shipping_fee ? $shipping_fee : 
 
     case '1':
       echo 'var country_fee_id = "ad_'. $address_fixed_array['name_flag'] .'";'."\n";
+      echo 'var country_fee_id_one = "'. $address_fixed_array['name_flag'] .'";'."\n";
       $country_fee_id = 'ad_'.$address_fixed_array['name_flag'];
       break;
     case '2':
       echo 'var country_area_id = "ad_'. $address_fixed_array['name_flag'] .'";'."\n";
+      echo 'var country_area_id_one = "'. $address_fixed_array['name_flag'] .'";'."\n";
       $country_area_id = 'ad_'.$address_fixed_array['name_flag'];
-      break;
       break;
     case '3':
       echo 'var country_city_id = "ad_'. $address_fixed_array['name_flag'] .'";'."\n";
+      echo 'var country_city_id_one = "'. $address_fixed_array['name_flag'] .'";'."\n";
       $country_city_id = 'ad_'.$address_fixed_array['name_flag'];
-      break;
       break;
     }
   }
@@ -1505,10 +1574,20 @@ function check(select_value){
   if(document.getElementById(country_fee_id)){
     var country_fee = document.getElementById(country_fee_id);
     country_fee.options.length = 0;
+    var i = 0;
     for(x in arr){
 
       country_fee.options[country_fee.options.length]=new Option(arr[x], x,x==select_value,x==select_value);
+      i++;
     }
+
+    if(i ==  0){
+
+      $("#td_"+country_fee_id_one).hide();
+    }else{
+
+      $("#td_"+country_fee_id_one).show();
+    } 
   }
 }
 function country_check(value,select_value){
@@ -1565,9 +1644,19 @@ function country_check(value,select_value){
   if(document.getElementById(country_area_id)){ 
     var country_area = document.getElementById(country_area_id);
     country_area.options.length = 0;
+    var i = 0;
     for(x in arr[value]){
 
       country_area.options[country_area.options.length]=new Option(arr[value][x], x,x==select_value,x==select_value);
+      i++;
+    }
+
+    if(i ==  0){
+
+      $("#td_"+country_area_id_one).hide();
+    }else{
+
+      $("#td_"+country_area_id_one).show();
     }
   }
 
@@ -1603,9 +1692,19 @@ function country_area_check(value,select_value){
   if(document.getElementById(country_city_id)){
     var country_city = document.getElementById(country_city_id);
     country_city.options.length = 0;
+    var i = 0;
     for(x in arr[value]){
 
       country_city.options[country_city.options.length]=new Option(arr[value][x], x,x==select_value,x==select_value);
+      i++;
+    }
+
+    if(i ==  0){
+
+      $("#td_"+country_city_id_one).hide();
+    }else{
+      
+      $("#td_"+country_city_id_one).show();
     }
   }
 
@@ -2933,6 +3032,15 @@ if (($action == 'edit') && ($order_exists == true)) {
     <?php echo '<a href="' . $PHP_SELF . '?oID=' . $oID . '&action=add_product&step=1">' . tep_html_element_button(ADDING_TITLE) . '</a>'; ?>
     </td>
     </tr>
+    <?php
+     if($weight_error == true){
+    ?>
+    <tr>
+    <td valign="top" colspan="2"><?php echo '<span class="smalltext"><font color="#FF0000">' . CREATE_ORDER_PRODUCTS_WEIGHT . $weight_count_limit . CREATE_ORDER_PRODUCTS_WEIGHT_ONE .'</span>'; ?></td>
+    </tr>
+    <?php
+     }
+    ?>
     </table>
     </td>
     </tr>     
