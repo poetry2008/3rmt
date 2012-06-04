@@ -366,6 +366,10 @@ $(document).ready(function(){
   ?>
     country_check($("#"+country_fee_id).val(),"<?php echo $_POST[$country_area_id];?>");
   <?php
+   }elseif(isset($_POST[$country_fee_id]) && isset($_POST[$country_area_id])){
+  ?>
+   country_check($("#"+country_fee_id).val(),"<?php echo $_POST[$country_area_id];?>");
+  <?php
    }else{
   ?>
     country_check($("#"+country_fee_id).val());
@@ -378,6 +382,10 @@ $(document).ready(function(){
   ?>
      
      country_area_check($("#"+country_area_id).val(),"<?php echo $_POST[$country_city_id];?>");
+  <?php
+   }elseif(isset($_POST[$country_fee_id]) && isset($_POST[$country_area_id])){
+  ?>
+     country_area_check($("#"+country_area_id).val(),"<?php echo $_POST[$country_city_id];?>"); 
   <?php
    }else{
   ?>
