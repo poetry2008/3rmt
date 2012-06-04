@@ -15,6 +15,7 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
     $ed_pos = strpos($_SERVER['PHP_SELF'], 'admin/edit_orders.php');
     $pro_pos = strpos($_SERVER['PHP_SELF'], 'product_info.php');
     $ped_pos = strpos($_SERVER['PHP_SELF'], 'admin/edit_new_preorders.php');
+    $cp_pos = strpos($_SERVER['PHP_SELF'], 'change_preorder.php');
     
     $replace_arr = array("<br>", "<br />", "<br/>", "\r", "\n", "\r\n", "<BR>");
 
@@ -123,7 +124,14 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
             }
          }
      }
-     
+     if ($cp_pos !== false) {
+         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+         if (isset($_SESSION['preorder_information'][$pre_item_str.'op_'.$this->formname])) {
+           $default_value = $_SESSION['preorder_information'][$pre_item_str.'op_'.$this->formname]; 
+           $a_old_single = true;
+         }
+         }
+     }
      $default_value = stripslashes($default_value);
      
      echo '<div class="option_product_radio_list">';

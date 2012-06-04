@@ -1,13 +1,25 @@
 <?php
   require(DIR_WS_CLASSES. 'payment.php'); 
+ 
+  if (!isset($_GET['is_finish'])) {
+    $preorder_information = $_POST;
+    tep_session_register('preorder_information'); 
+  } 
   
-  $_POST = $preorder_information;
-
-  if (!isset($_POST['pid'])) {
-    forward404(); 
+  if (!isset($_GET['is_finish'])) {
+    if (!isset($_POST['pid'])) {
+      forward404(); 
+    }
+  } else {
+    if (!isset($preorder_information['pid'])) {
+      forward404(); 
+    }
   }
-  
-  $preorder_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$_POST['pid']."' and site_id = '".SITE_ID."'");
+  if (isset($_GET['is_finish'])) {
+    $preorder_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$preorder_information['pid']."' and site_id = '".SITE_ID."'");
+  } else {
+    $preorder_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$_POST['pid']."' and site_id = '".SITE_ID."'");
+  }
   $preorder_res = tep_db_fetch_array($preorder_raw);
   if (!$preorder_res) {
     forward404(); 
@@ -25,7 +37,8 @@
   }
   
   $option_info_array = array();
-
+  
+  if (!isset($_GET['is_finish'])) {
   foreach ($_POST as $p_key => $p_value) {
     $op_single_str = substr($p_key, 0, 3);
     if ($op_single_str == 'op_') {
@@ -42,23 +55,32 @@
   if (!tep_session_is_registered('preorder_option_info')) {
     tep_session_register('preorder_option_info'); 
   }
+  }
  
   
   $check_preorder_str = $preorder_res['check_preorder_str'];
  
   $preorder_subtotal = 0;
-  $preorder_subtotal_raw = tep_db_query("select * from ".TABLE_PREORDERS_TOTAL." where orders_id = '".$_POST['pid']."' and class = 'ot_subtotal'");
+  if (isset($_GET['is_finish'])) {
+    $preorder_subtotal_raw = tep_db_query("select * from ".TABLE_PREORDERS_TOTAL." where orders_id = '".$preorder_information['pid']."' and class = 'ot_subtotal'");
+  } else {
+    $preorder_subtotal_raw = tep_db_query("select * from ".TABLE_PREORDERS_TOTAL." where orders_id = '".$_POST['pid']."' and class = 'ot_subtotal'");
+  }
   $preorder_subtotal_res = tep_db_fetch_array($preorder_subtotal_raw);
   if ($preorder_subtotal_res) {
     $preorder_subtotal = number_format($preorder_subtotal_res['value'], 0, '.', ''); 
   }
   
-  $preorder_total_info_array = get_preorder_total_info($con_payment_code, $_POST['pid'], $option_info_array);  
-  
+  if (!isset($_GET['is_finish'])) {
+    $preorder_total_info_array = get_preorder_total_info($con_payment_code, $_POST['pid'], $option_info_array);  
+  } else {
+    $preorder_total_info_array = get_preorder_total_info($con_payment_code, $preorder_information['pid'], $preorder_option_info);  
+  }
   if (isset($preorder_total_info_array['subtotal'])) {
     $preorder_subtotal = number_format($preorder_total_info_array['subtotal'], 0, '.', ''); 
   }
-  
+   
+  if (!isset($_GET['is_finish'])) {
   $preorder_info_tori = $_POST['torihikihouhou'];
   $preorder_info_date = $_POST['date'];
   $preorder_info_hour = $_POST['hour'];
@@ -105,7 +127,9 @@
   if (!tep_session_is_registered('preorder_info_id')) {
     tep_session_register('preorder_info_id'); 
   }
+  }
   
+  if (!isset($_GET['is_finish'])) {
   if (MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
     if (@$_POST['preorder_point'] < $preorder_subtotal) {
       $preorder_point = isset($_POST['preorder_point'])?$_POST['preorder_point']:0; 
@@ -139,7 +163,7 @@
       tep_session_register('preorder_camp_id');
     }
   }
-  
+  }
   require(DIR_WS_LANGUAGES . $language . '/change_preorder_confirm.php');
   
 
@@ -148,4 +172,6 @@ if (isset($payment_modules->modules[strtoupper($con_payment_code)]->form_action_
   $form_action_url = $payment_modules->modules[strtoupper($con_payment_code)]->form_action_url; 
 }
 
-
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+  header('Location:'.tep_href_link('change_preorder_confirm.php', 'is_finish=1', 'SSL'));
+}
