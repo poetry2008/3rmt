@@ -537,12 +537,12 @@ if ($error == false && $_POST['action'] == 'process') {
 foreach ($_POST as $post_key => $post_value) {
   if (is_array($post_value)) {
     foreach ($post_value as $ps_key => $ps_value) {
-      echo '<input type="hidden" name="'.$post_key.'['.$ps_key.']" value="'.$ps_value.'">'; 
+      //echo '<input type="hidden" name="'.$post_key.'['.$ps_key.']" value="'.$ps_value.'">'; 
       //$preorder_info_attr[] = $ps_value;
       $preorder_information[$post_key][$ps_key] = $ps_value; 
     }
   } else {
-    echo '<input type="hidden" name="'.$post_key.'" value="'.stripslashes($post_value).'">'; 
+    //echo '<input type="hidden" name="'.$post_key.'" value="'.stripslashes($post_value).'">'; 
       $preorder_information[$post_key] = stripslashes($post_value); 
   }
 }
