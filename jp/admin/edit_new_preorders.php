@@ -1340,9 +1340,9 @@ if (($action == 'edit') && ($order_exists == true)) {
     // Has Attributes?
     if (sizeof($order_products_attributes[$pid]) > 0) {
       for ($j=0; $j<sizeof($order_products_attributes[$pid]); $j++) {
-        echo '<br><nobr><small>&nbsp;<i> - ' .tep_parse_input_field_data(stripslashes($order_products_attributes[$pid][$j]['option_info']['title']), array("'"=>"&quot;")) . '<input type="hidden" name="update_products[' .  $pid . '][attributes]['.$j.'][option]" size="10" value=\'' .  tep_parse_input_field_data(stripslashes($order_products_attributes[$pid][$j]['option_info']['title']), array("'"=>"&quot;")) . '\'>' . 
+        echo '<br><nobr><small>&nbsp;<i> - ' .str_replace(array("<br>", "<BR>"), '', tep_parse_input_field_data(stripslashes($order_products_attributes[$pid][$j]['option_info']['title']), array("'"=>"&quot;"))) . '<input type="hidden" name="update_products[' .  $pid . '][attributes]['.$j.'][option]" size="10" value=\'' .  tep_parse_input_field_data(stripslashes($order_products_attributes[$pid][$j]['option_info']['title']), array("'"=>"&quot;")) . '\'>' . 
            ': ' . 
-           tep_parse_input_field_data(stripslashes($order_products_attributes[$pid][$j]['option_info']['value']), array("'"=>"&quot;")).'<input type="hidden" name="update_products[' . $pid .  '][attributes]['.$j.'][value]" size="35" value=\'' .  tep_parse_input_field_data(stripslashes($order_products_attributes[$pid][$j]['option_info']['value']), array("'"=>"&quot;")).'\'>';
+           str_replace(array("<br>", "<BR>"), '', tep_parse_input_field_data(stripslashes($order_products_attributes[$pid][$j]['option_info']['value']), array("'"=>"&quot;"))).'<input type="hidden" name="update_products[' . $pid .  '][attributes]['.$j.'][value]" size="35" value=\'' .  tep_parse_input_field_data(stripslashes($order_products_attributes[$pid][$j]['option_info']['value']), array("'"=>"&quot;")).'\'>';
         //if ($order_products_attributes[$pid][$j]['price'] != '0') {
           //echo ' ('.$currencies->format($order_products_attributes[$pid][$j]['price'] * $order_products[$pid]['qty']).')'; 
         //}
