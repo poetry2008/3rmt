@@ -152,7 +152,7 @@
     }
     if ( (isset($order->products[$i]['op_attributes'])) && (sizeof($order->products[$i]['op_attributes']) > 0) ) {
       for ($j=0, $n2=sizeof($order->products[$i]['op_attributes']); $j<$n2; $j++) {
-        echo '<br><small>&nbsp;<i> - ' .  $order->products[$i]['op_attributes'][$j]['option_info']['title'] . ': ' .  $order->products[$i]['op_attributes'][$j]['option_info']['value'];
+        echo '<br><small>&nbsp;<i> - ' .  $order->products[$i]['op_attributes'][$j]['option_info']['title'] . ': ' .  str_replace(array("<br>", "<BR>"), '', $order->products[$i]['op_attributes'][$j]['option_info']['value']);
         if ($order->products[$i]['op_attributes'][$j]['price'] != '0') {
           echo ' ('.$currencies->format($order->products[$i]['op_attributes'][$j]['price']).')';        
         }
