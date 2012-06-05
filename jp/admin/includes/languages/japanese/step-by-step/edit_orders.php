@@ -131,4 +131,6 @@ define('MENUE_TITLE_TOTAL', '4. 配送、決済、税金');
 define('MENUE_TITLE_STATUS', '5. 注文ステータス、コメント通知');
 define('MENUE_TITLE_UPDATE', '6. データを更新');
 define('TEXT_CODE_HANDLE_FEE', '手数料:');
+define('CREATE_ORDER_PRODUCTS_WEIGHT','総重量が規定の範囲を超えました。商品を削除するか、または個数を変更して（');
+define('CREATE_ORDER_PRODUCTS_WEIGHT_ONE','）kg以内にしてください。');
 ?>

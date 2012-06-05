@@ -340,6 +340,8 @@ define('TEXT_NO_NEW_PRODUCTS', '現在商品は登録されていません...');
 define('TEXT_UNKNOWN_TAX_RATE', '税率不明');
 
 define('TEXT_REQUIRED', '必須');
+define('TEXT_WEIGHT_ERROR','※要問合※&nbsp;総重量が規定の範囲を超えました。');
+define('TEXT_WEIGHT_ERROR_ONE','個以内に個数を変更してください。<br><b>予約注文を承っておりますので、お問い合わせをお願いいたします。</b>');
 
 define('TEXT_TIME_SPECIFY', 'お届けする時間帯: '); // add for Japanese update
 

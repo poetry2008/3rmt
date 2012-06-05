@@ -190,4 +190,6 @@ define('ADDRESS_ERROR_OPTION_ITEM_TEXT_NUM_MIN','は少なくても');
 define('ADDRESS_ERROR_OPTION_ITEM_TEXT_NUM_MIN_1','文字以上必要です');
 define('TABLE_HEADING_PRODUCTS_PRICE', '単価');
 define('CALC_PRODUCTS_TEXT', '計算');
+define('CREATE_ORDER_PRODUCTS_WEIGHT','総重量が規定の範囲を超えました。商品を削除するか、または個数を変更して（');
+define('CREATE_ORDER_PRODUCTS_WEIGHT_ONE','）kg以内にしてください。');
 ?>

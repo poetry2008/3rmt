@@ -99,6 +99,8 @@ define('ADDPRODUCT_TEXT_OPTIONS_CONFIRM', 'OK');
 define('ADDPRODUCT_TEXT_OPTIONS_NOTEXIST', 'オプションはありません: スキップします..');
 define('ADDPRODUCT_TEXT_CONFIRM_QUANTITY', '数量');
 define('ADDPRODUCT_TEXT_CONFIRM_ADDNOW', '追加');
+define('CREATE_ORDER_PRODUCTS_WEIGHT','総重量が規定の範囲を超えました。商品を削除するか、または個数を変更して（');
+define('CREATE_ORDER_PRODUCTS_WEIGHT_ONE','）kg以内にしてください。');
 
 // Add Japanese osCommerce
 define('EMAIL_TEXT_STORE_CONFIRMATION', ' へのご予約、誠にありがとうございます。' . "\n" . 

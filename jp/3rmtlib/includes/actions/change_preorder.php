@@ -2,6 +2,7 @@
   require(DIR_WS_LANGUAGES . $language . '/change_preorder.php');
   require('address_preorder/AD_Option.php');
   require('address_preorder/AD_Option_Group.php');
+  $error = false;  
 
   $ad_option = new AD_Option();
 
@@ -68,8 +69,12 @@
     $preorder_product_res = tep_db_fetch_array($preorder_product_raw); 
     tep_redirect(tep_href_link('change_preorder_timeout.php?pname='.urlencode($preorder_product_res['products_name']))); 
   }
-  $error = false;  
-  if ($_POST['action'] == 'process') {
+  
+  if ($_POST['action'] == 'process' || isset($_GET['is_check'])) {
+    if (tep_session_is_registered('preorder_information') && isset($_GET['is_check'])) {
+      $_POST = $preorder_information; 
+    }
+     
     $preorder_date = tep_db_prepare_input($_POST['date']);
     $preorder_hour = tep_db_prepare_input($_POST['hour']);
     $preorder_min = tep_db_prepare_input($_POST['min']);
@@ -209,5 +214,25 @@
    
     if ($hm_option->check()) {
       $error = true; 
+    }
+    
+    if ($error == true) {
+      if (!isset($_GET['is_check'])) {
+      foreach ($_POST as $post_e_key => $post_e_value) {
+        if (is_array($post_e_value)) {
+          foreach ($post_e_value as $ps_e_key => $ps_e_value) {
+            $preorder_information[$post_e_key][$ps_e_key] = $ps_e_value; 
+          }
+        } else {
+          $preorder_information[$post_e_key] = stripslashes($post_e_value); 
+        }
+      }
+      $preorder_information['pid'] = $preorder_id; 
+      if (!tep_session_is_registered('preorder_information')) {
+        tep_session_register('preorder_information'); 
+      }
+      //tep_redirect(tep_href_link('change_preorder_handle.php', 'pid='.$_GET['pid'], 'SSL')); 
+      tep_redirect(tep_href_link('change_preorder.php', 'pid='.$_GET['pid'].'&is_check=1', 'SSL'));
+      }
     }
   }

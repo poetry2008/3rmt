@@ -484,6 +484,7 @@ if($index > 0){
             }
             $RowStyle = "dataTableContent";
             $porducts_qty = isset($_GET['error']) && $_GET['error'] == 1 ? 0 : $order->products[$i]['qty'];
+            $porducts_qty = isset($_SESSION['products_qty'][$orders_products_id]) ? $_SESSION['products_qty'][$orders_products_id] : $order->products[$i]['qty'];
             echo '    <tr>' . "\n" .
               '      <td class="' . $RowStyle . '" align="left" valign="top" width="20">'
               . "<input type='hidden' id='update_products_qty_$orders_products_id' value='" . $order->products[$i]['qty'] . "'><input class='update_products_qty' id='update_products_new_qty_$orders_products_id' name='update_products[$orders_products_id][qty]' size='2' value='" . $porducts_qty . "' onkeyup=\"clearLibNum(this);\">&nbsp;x</td>\n" . 
@@ -498,9 +499,9 @@ if($index > 0){
               $op_info_str = implode('|||', $op_info_array);
               for ($j=0; $j<sizeof($order->products[$i]['attributes']); $j++) {
                 $orders_products_attributes_id = $order->products[$i]['attributes'][$j]['id'];
-                echo '<br><nobr><small>&nbsp;<i> - ' .  '<input name="update_products[' . $orders_products_id .  '][attributes][' . $orders_products_attributes_id . '][option]" size="10" value="' .  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;")) . '">' . 
+                echo '<br><nobr><small>&nbsp;<i> - ' .tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;")) . '<input type="hidden" name="update_products[' . $orders_products_id .  '][attributes][' . $orders_products_attributes_id . '][option]" size="10" value="' .  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;")) . '">' . 
                   ': ' . 
-                  '<input name="update_products[' . $orders_products_id .  '][attributes][' . $orders_products_attributes_id . '][value]" size="35" value="' .  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&quot;"));
+                  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&quot;")).'<input type="hidden" name="update_products[' . $orders_products_id .  '][attributes][' . $orders_products_attributes_id . '][value]" size="35" value="' .  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&quot;"));
                 //if ($order->products[$i]['attributes'][$j]['price'] != '0') echo ' (' . $order->products[$i]['attributes'][$j]['prefix'] . $currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . ')';
                 echo '">';
                 echo "<input type='text' size=5 name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][price]' value='".(int)(isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price'])?$_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price']:$order->products[$i]['attributes'][$j]['price'])."' onkeyup=\"recalc_order_price('".$oID."', '".$orders_products_id."', '1', '".$op_info_str."');\">";   
@@ -549,7 +550,16 @@ if($index > 0){
             </tr>
             <tr>
             <td valign="top"><?php echo "<span class='smalltext'>" .  HINT_DELETE_POSITION . "</span>"; ?></td> <td align="right"></td>
-            </tr>     
+            </tr>    
+            <?php 
+            if($_GET['error'] == 2 && isset($_GET['weight'])){ 
+            ?> 
+            <tr>
+            <td valign="top"><?php echo '<span class="smalltext"><font color="#FF0000">' .  CREATE_ORDER_PRODUCTS_WEIGHT . $_GET['weight'] . CREATE_ORDER_PRODUCTS_WEIGHT_ONE .'</span>'; ?></td><td align="right"></td>
+            </tr>
+            <?php
+             }
+            ?>
 </table>
 </td>
 </tr>
@@ -629,7 +639,7 @@ if($index > 0){
           $add_product_products_id = 0;
 
         // Step 1: Choose Category
-        $product_error = isset($_GET['error']) && $_GET['error'] ? PRODUCT_ERROR : '';
+        $product_error = isset($_GET['error']) && $_GET['error']==1 ? PRODUCT_ERROR : '';
         //if($_GET['error']){
           //$product_error = $index > 0 ? '' : PRODUCT_ERROR;
         //}

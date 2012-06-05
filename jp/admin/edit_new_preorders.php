@@ -125,6 +125,58 @@
 
     $order = $_SESSION['create_preorder']['orders'];
 
+
+    // products weight
+      $pro_weight_total = 0; //商品总重量
+      foreach($_SESSION['create_preorder']['orders_products'] as $up_key=>$up_value){
+        
+        $pro_weight_query = tep_db_query("select * from ". TABLE_PRODUCTS ." where products_id='". $up_value['products_id'] ."'");
+        $pro_weight_array = tep_db_fetch_array($pro_weight_query);
+        echo $_POST['update_products['.$up_value['products_id'].'][qty]'];
+        $pro_weight_total += $pro_weight_array['products_weight']*$_POST['update_products'][$up_value['products_id']]['qty'];
+        tep_db_free_result($pro_weight_query);
+      } 
+
+      $weight_count = $pro_weight_total;
+      $country_max_fee = 0; 
+      $country_fee_max_array = array();
+      $country_fee_query = tep_db_query("select weight_limit from ". TABLE_COUNTRY_FEE ." where status='0'");
+      while($country_fee_array = tep_db_fetch_array($country_fee_query)){
+
+        $country_fee_max_array[] = $country_fee_array['weight_limit'];
+      }
+      tep_db_free_result($country_fee_query);
+      $country_max_fee = max($country_fee_max_array);
+
+      $country_max_area = 0; 
+      $country_area_max_array = array();
+      $country_area_query = tep_db_query("select weight_limit from ". TABLE_COUNTRY_AREA ." where status='0'");
+      while($country_area_array = tep_db_fetch_array($country_area_query)){
+
+        $country_area_max_array[] = $country_area_array['weight_limit'];
+      }
+      tep_db_free_result($country_area_query);
+      $country_max_area = max($country_area_max_array);
+
+      $country_max_city = 0; 
+      $country_city_max_array = array();
+      $country_city_query = tep_db_query("select weight_limit from ". TABLE_COUNTRY_CITY ." where status='0'");
+      while($country_city_array = tep_db_fetch_array($country_city_query)){
+
+        $country_city_max_array[] = $country_city_array['weight_limit'];
+      }
+      tep_db_free_result($country_city_query);
+      $country_max_city = max($country_city_max_array);
+
+      $weight_count_limit = max($country_max_fee,$country_max_area,$country_max_city);
+
+      $weight_error = false;
+      if($weight_count > $weight_count_limit){
+
+        $weight_error = true;
+        $action = 'edit';
+        break;
+      }
      
     if ($update_totals) 
     foreach ($update_totals as $total_index => $total_details) {    
@@ -639,6 +691,54 @@
       
       $oID = tep_db_prepare_input($_SESSION['create_preorder']['orders']['orders_id']);
       $order = $_SESSION['create_preorder']['orders'];
+
+      // products weight
+      $pro_weight_total = 0; //商品总重量
+        
+        $pro_weight_query = tep_db_query("select * from ". TABLE_PRODUCTS ." where products_id='". $_POST['add_product_products_id'] ."'");
+        $pro_weight_array = tep_db_fetch_array($pro_weight_query);
+        $pro_weight_total = $pro_weight_array['products_weight']*$_POST['add_product_quantity'];
+        tep_db_free_result($pro_weight_query);
+
+      $weight_count = $pro_weight_total;
+      $country_max_fee = 0; 
+      $country_fee_max_array = array();
+      $country_fee_query = tep_db_query("select weight_limit from ". TABLE_COUNTRY_FEE ." where status='0'");
+      while($country_fee_array = tep_db_fetch_array($country_fee_query)){
+
+        $country_fee_max_array[] = $country_fee_array['weight_limit'];
+      }
+      tep_db_free_result($country_fee_query);
+      $country_max_fee = max($country_fee_max_array);
+
+      $country_max_area = 0; 
+      $country_area_max_array = array();
+      $country_area_query = tep_db_query("select weight_limit from ". TABLE_COUNTRY_AREA ." where status='0'");
+      while($country_area_array = tep_db_fetch_array($country_area_query)){
+
+        $country_area_max_array[] = $country_area_array['weight_limit'];
+      }
+      tep_db_free_result($country_area_query);
+      $country_max_area = max($country_area_max_array);
+
+      $country_max_city = 0; 
+      $country_city_max_array = array();
+      $country_city_query = tep_db_query("select weight_limit from ". TABLE_COUNTRY_CITY ." where status='0'");
+      while($country_city_array = tep_db_fetch_array($country_city_query)){
+
+        $country_city_max_array[] = $country_city_array['weight_limit'];
+      }
+      tep_db_free_result($country_city_query);
+      $country_max_city = max($country_city_max_array);
+
+      $weight_count_limit = max($country_max_fee,$country_max_area,$country_max_city);
+
+      $weight_error = false;
+      if($weight_count > $weight_count_limit){
+
+        $weight_error = true;
+        break;
+      }
 
       if (isset($_POST['add_product_options'])) {
         $add_product_options = $_POST['add_product_options'];
@@ -1231,17 +1331,18 @@ if (($action == 'edit') && ($order_exists == true)) {
 <?php
   foreach ($order_products as $pid => $orders_products) {
     $RowStyle = "dataTableContent";
+    $orders_products_num = isset($_POST['update_products'][$pid]['qty']) ? $_POST['update_products'][$pid]['qty'] : $order_products[$pid]['qty'];
     echo '    <tr class="dataTableRow">' . "\n" .
          '      <td class="' . $RowStyle . '" align="left" valign="top" width="20">'
-         . "<input name='update_products[$pid][qty]' size='2' value='" .  $order_products[$pid]['qty'] . "' onkeyup='clearLibNum(this);' class='update_products_qty'>&nbsp;x</td>\n" . 
+         . "<input name='update_products[$pid][qty]' size='2' value='" . $orders_products_num . "' onkeyup='clearLibNum(this);' class='update_products_qty'>&nbsp;x</td>\n" . 
          '      <td class="' . $RowStyle . '">' . $order_products[$pid]['name'] . "<input name='update_products[$pid][name]' size='64' type='hidden' value='" . $order_products[$pid]['name'] . "'>\n" . 
        '      &nbsp;&nbsp;<input type="hidden" name="dummy" value="あいうえお眉幅">';
     // Has Attributes?
     if (sizeof($order_products_attributes[$pid]) > 0) {
       for ($j=0; $j<sizeof($order_products_attributes[$pid]); $j++) {
-        echo '<br><nobr><small>&nbsp;<i> - ' .  '<input name="update_products[' .  $pid . '][attributes]['.$j.'][option]" size="10" value=\'' .  tep_parse_input_field_data(stripslashes($order_products_attributes[$pid][$j]['option_info']['title']), array("'"=>"&quot;")) . '\'>' . 
+        echo '<br><nobr><small>&nbsp;<i> - ' .tep_parse_input_field_data(stripslashes($order_products_attributes[$pid][$j]['option_info']['title']), array("'"=>"&quot;")) . '<input type="hidden" name="update_products[' .  $pid . '][attributes]['.$j.'][option]" size="10" value=\'' .  tep_parse_input_field_data(stripslashes($order_products_attributes[$pid][$j]['option_info']['title']), array("'"=>"&quot;")) . '\'>' . 
            ': ' . 
-           '<input name="update_products[' . $pid . '][attributes]['.$j.'][value]" size="35" value=\'' .  tep_parse_input_field_data(stripslashes($order_products_attributes[$pid][$j]['option_info']['value']), array("'"=>"&quot;")); echo '\'>';
+           tep_parse_input_field_data(stripslashes($order_products_attributes[$pid][$j]['option_info']['value']), array("'"=>"&quot;")).'<input type="hidden" name="update_products[' . $pid .  '][attributes]['.$j.'][value]" size="35" value=\'' .  tep_parse_input_field_data(stripslashes($order_products_attributes[$pid][$j]['option_info']['value']), array("'"=>"&quot;")).'\'>';
         //if ($order_products_attributes[$pid][$j]['price'] != '0') {
           //echo ' ('.$currencies->format($order_products_attributes[$pid][$j]['price'] * $order_products[$pid]['qty']).')'; 
         //}
@@ -1280,6 +1381,11 @@ if (($action == 'edit') && ($order_exists == true)) {
     echo '</b></td>' . "\n" . 
          '    </tr>' . "\n";
   }
+  if($weight_error == true){
+
+        echo '<tr><td colspan="7"><font color="#FF0000">'.CREATE_ORDER_PRODUCTS_WEIGHT.$weight_count_limit.CREATE_ORDER_PRODUCTS_WEIGHT_ONE.'</font></td></tr>';
+  }
+   
   ?>
 </table>
 
@@ -1734,12 +1840,19 @@ if (($action == 'edit') && ($order_exists == true)) {
     // Step 4: Confirm
     if($step > 3)
     {
-      echo "<tr class=\"dataTableRow\"><form action='$PHP_SELF?oID=$oID&action=$action' method='POST' onsubmit='return check_add()' >\n";
+      echo "<tr class=\"dataTableRow\"><form action='$PHP_SELF?oID=$oID&action=$action' method='POST'>\n";
       echo "<td class='dataTableContent' align='right'><b>" . ADDPRODUCT_TEXT_STEP .  " 3: </b></td>";
+      $products_num = isset($_POST['add_product_quantity']) ? $_POST['add_product_quantity'] : 1;
+      $products_price = isset($_POST['add_product_price']) ? $_POST['add_product_price'] : 0;
       echo '<td class="dataTableContent" valign="top">' .
-        ADDPRODUCT_TEXT_CONFIRM_QUANTITY . '<input name="add_product_quantity" size="2" value="1" onkeyup="clearLibNum(this);">&nbsp;'.EDIT_ORDERS_NUM_UNIT.'&nbsp;&nbsp;'.TABLE_HEADING_UNIT_PRICE.'<input name="add_product_price" id="add_product_price" size="4" value="0" onkeyup="clearNoNum(this);">&nbsp;'.EDIT_ORDERS_PRICE_UNIT.'&nbsp;&nbsp;&nbsp;<input type="hidden" name="dummy" value="あいうえお眉幅"></td>';
-      echo "<td class='dataTableContent' align='center'><input type='submit' value='" . ADDPRODUCT_TEXT_CONFIRM_ADDNOW . "'>";
+        ADDPRODUCT_TEXT_CONFIRM_QUANTITY . '<input name="add_product_quantity" size="2" value="'.$products_num.'" onkeyup="clearLibNum(this);">&nbsp;'.EDIT_ORDERS_NUM_UNIT.'&nbsp;&nbsp;'.TABLE_HEADING_UNIT_PRICE.'<input name="add_product_price" id="add_product_price" size="4" value="'.$products_price.'" onkeyup="clearNoNum(this);">&nbsp;'.EDIT_ORDERS_PRICE_UNIT.'&nbsp;&nbsp;&nbsp;<input type="hidden" name="dummy" value="あいうえお眉幅">';
+      if($weight_error == true){
 
+        echo '&nbsp;<font color="#FF0000">'.CREATE_ORDER_PRODUCTS_WEIGHT.$weight_count_limit.CREATE_ORDER_PRODUCTS_WEIGHT_ONE.'</font>';
+      } 
+      echo '</td>';
+      echo "<td class='dataTableContent' align='center'><input type='submit' value='" . ADDPRODUCT_TEXT_CONFIRM_ADDNOW . "'>";
+       
       foreach ($_POST as $op_key => $op_value) {
         $op_pos = substr($op_key, 0, 3);
         if ($op_pos == 'op_') {

@@ -549,6 +549,7 @@ if(!empty($add_list)){
   $email_address_str .= $email_address;
   $email_order_text = str_replace($email_address,$email_address_str,$email_order_text);
 }
+
 tep_mail($preorder['customers_name'], $preorder['customers_email_address'], EMAIL_TEXT_SUBJECT, $email_order_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
   
 if (SENTMAIL_ADDRESS != '') {
@@ -711,6 +712,7 @@ tep_session_unregister('preorder_info_character');
 tep_session_unregister('preorder_info_id');
 tep_session_unregister('preorder_info_pay');
 tep_session_unregister('preorder_option_info');
+tep_session_unregister('preorder_information');
 if (MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
   tep_session_unregister('preorder_point');
   tep_session_unregister('preorder_real_point');
