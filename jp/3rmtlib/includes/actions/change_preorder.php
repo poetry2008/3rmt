@@ -227,6 +227,7 @@
           $preorder_information[$post_e_key] = stripslashes($post_e_value); 
         }
       }
+      $preorder_information['pid'] = $preorder_id; 
       if (!tep_session_is_registered('preorder_information')) {
         tep_session_register('preorder_information'); 
       }
