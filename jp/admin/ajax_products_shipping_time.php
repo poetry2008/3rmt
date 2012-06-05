@@ -107,7 +107,7 @@ if($id == 0 || $maxid == $minid){
 </table>
 <form name="form" method="post" id="products_form" action="products_shipping_time.php">
 <table border="0" width="100%" cellspacing="0" cellpadding="2" valign="top" bgcolor="yellow" class="campaign_body">
-<tr><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_1;?></td><td><input type="text" name="name" id="name" class="option_text" value="<?php echo $name;?>">&nbsp;<font color="red"><?php echo TABLE_REQUIRED;?></font><br><span id="error_name"></span><input type="hidden" name="cid" value="<?php echo $product_array['id'];?>"></td></tr>
+<tr><td width="30%" align="left"><?php echo TABLE_LIST_1;?></td><td><input type="text" name="name" id="name" class="option_text" value="<?php echo $name;?>">&nbsp;<font color="red"><?php echo TABLE_REQUIRED;?></font><br><span id="error_name"></span><input type="hidden" name="cid" value="<?php echo $product_array['id'];?>"></td></tr>
 
 <?php 
 if(!empty($work_array)){
@@ -122,14 +122,14 @@ if(!empty($work_array)){
     $button_add = '&nbsp;<input type="button" value="'. TABLE_BUTTON_DEL .'" onclick="work_del('. ($w_key+1) .');">';
 ?>
 
-  <tr id="workid<?php echo $w_key+1;?>"><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_2.$w_num_str;?></td><td><input type="text" name="work_start_hour[]" size="3" maxlength="2" value="<?php echo $w_start_hour;?>">&nbsp;:&nbsp;<input type="text" name="work_start_min[]" size="3" maxlength="2" value="<?php echo $w_start_min;?>">&nbsp;～&nbsp;<input type="text" name="work_end_hour[]" size="3" maxlength="2" value="<?php echo $w_end_hour;?>">&nbsp;:&nbsp;<input type="text" name="work_end_min[]" size="3" maxlength="2" value="<?php echo $w_end_min;?>"><?php echo $button_add;?><br><span id="work_error<?php echo ($w_key+1);?>"></span></td></tr>
+  <tr id="workid<?php echo $w_key+1;?>"><td width="30%" align="left"><?php echo TABLE_LIST_2.$w_num_str;?></td><td><input type="text" name="work_start_hour[]" size="3" maxlength="2" value="<?php echo $w_start_hour;?>">&nbsp;:&nbsp;<input type="text" name="work_start_min[]" size="3" maxlength="2" value="<?php echo $w_start_min;?>">&nbsp;～&nbsp;<input type="text" name="work_end_hour[]" size="3" maxlength="2" value="<?php echo $w_end_hour;?>">&nbsp;:&nbsp;<input type="text" name="work_end_min[]" size="3" maxlength="2" value="<?php echo $w_end_min;?>"><?php echo $button_add;?><br><span id="work_error<?php echo ($w_key+1);?>"></span></td></tr>
 
 <?php
   }
 }else{
 ?>
 
-  <tr id="workid1"><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_2?></td><td><input type="text" name="work_start_hour[]" size="3" maxlength="2" value="">&nbsp;:&nbsp;<input type="text" name="work_start_min[]" size="3" maxlength="2" value="">&nbsp;～&nbsp;<input type="text" name="work_end_hour[]" size="3" maxlength="2" value="">&nbsp;:&nbsp;<input type="text" name="work_end_min[]" size="3" maxlength="2" value="">&nbsp;<input type="button" value="<?php echo TABLE_BUTTON_DEL;?>" onclick="work_del(1);"><br><span id="work_error1"></span></td></tr>
+  <tr id="workid1"><td width="30%" align="left"><?php echo TABLE_LIST_2?></td><td><input type="text" name="work_start_hour[]" size="3" maxlength="2" value="">&nbsp;:&nbsp;<input type="text" name="work_start_min[]" size="3" maxlength="2" value="">&nbsp;～&nbsp;<input type="text" name="work_end_hour[]" size="3" maxlength="2" value="">&nbsp;:&nbsp;<input type="text" name="work_end_min[]" size="3" maxlength="2" value="">&nbsp;<input type="button" value="<?php echo TABLE_BUTTON_DEL;?>" onclick="work_del(1);"><br><span id="work_error1"></span></td></tr>
 
 <?php 
 }
@@ -142,11 +142,11 @@ $work_num_value = !empty($work_array) ? count($work_array)+1 : 2;
 </td></tr>
 <tr><td width="30%" align="left"><input type="hidden" id="work_num" value="<?php echo $work_num_value;?>"></td><td><input type="button" value="<?php echo TABLE_ADD;?>" onclick="work_add();"></td></tr>
 
-<tr><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_4;?></td><td><input type="text" name="db_set_day" id="db_set_day" value="<?php echo $db_set_day;?>" style="text-align: right;">&nbsp;<?php echo TABLE_DAY;?>
+<tr><td width="30%" align="left"><?php echo TABLE_LIST_4;?></td><td><input type="text" name="db_set_day" id="db_set_day" value="<?php echo $db_set_day;?>" style="text-align: right;">&nbsp;<?php echo TABLE_DAY;?>
 </td></tr>
 
 
-<tr><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_5;?></td><td>
+<tr><td width="30%" align="left"><?php echo TABLE_LIST_5;?></td><td>
 <input type="text" name="shipping_time" id="shipping_time" value="<?php echo $shipping_time;?>" style="text-align: right;">&nbsp;<?php echo TABLE_DAY;?>
 
 </td></tr>
@@ -157,7 +157,7 @@ if($id == 0){
   $sort = 1000;
 }
 ?>
-<tr><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_6;?></td><td>
+<tr><td width="30%" align="left"><?php echo TABLE_LIST_6;?></td><td>
 <input type="text" name="sort" id="sort" value="<?php echo $sort;?>" style="text-align: right;">
 </td></tr>
 

@@ -167,9 +167,9 @@ function selectHour(start_time,end_time,hour,min_num,ele){
                   arr_time_m = arr_time_t[k].split(':');
              
                   if(k != arr_time_t.length-1){
-                    string +=  '<input type="radio" id="m'+m+'" name="min" value="'+m+'"'+checked+' onclick="change_time('+m+',\''+array_end[n]+'\');"><label for="m'+m+'">'+arr_time_m[0]+'時'+arr_time_m[1]+'分～';
+                    string +=  '<div class="time_radio"><input type="radio" id="m'+m+'" name="min" value="'+m+'"'+checked+' onclick="change_time('+m+',\''+array_end[n]+'\');"></div><div class="time_label"><label for="m'+m+'"><a href="javascript:void(0);"onclick="change_new_time('+m+',\''+array_end[n]+'\');" >'+arr_time_m[0]+'時'+arr_time_m[1]+'分～';
                   }else{
-                    string +=  arr_time_m[0]+'時'+arr_time_m[1]+'分</label>'; 
+                    string +=  arr_time_m[0]+'時'+arr_time_m[1]+'分</a></label></div>'; 
                   }
                 }
                 if(m % 2 == 1){
@@ -209,16 +209,28 @@ function selectHour(start_time,end_time,hour,min_num,ele){
       
         var temp_value = 0;
         if(hour < 6){
-          temp_value = -85; 
+          if(navigator.userAgent.indexOf("MSIE")>0) {
+            temp_value = -77;
+          } else {
+            temp_value = -85;
+          }
         }else if(hour >= 6 && hour <= 11){
         
-          temp_value = -60;
+          if(navigator.userAgent.indexOf("MSIE")>0) {
+            temp_value = -56;
+          } else {
+            temp_value = -60;
+          }
         }else if(hour >= 12 && hour <= 17){
         
           temp_value = -35;
         }else{
         
-          temp_value = -10;
+          if(navigator.userAgent.indexOf("MSIE")>0) {
+            temp_value = -11;
+          } else {
+            temp_value = -10;
+          }
         }
         $('#shipping_time_id').css('top', temp_value).show();
         if(typeof(ele) != "object"){
@@ -272,6 +284,36 @@ function change_time(value,end_time){
               }
 }
 
+function change_new_time(value,end_time){
+  var radio_list = document.getElementsByName("min");
+  for (var i=0; i<radio_list.length; i++) {
+      document.getElementById('m'+value).checked=false;   
+  } 
+  for (var i=0; i<radio_list.length; i++) {
+    if (radio_list[i].id == 'm'+value) {
+      document.getElementById('m'+value).checked=true;   
+    } 
+  }
+  var start_hour_num = new Array();
+              var start_min_num = new Array();
+              arr_time_d = end_time.split('|');
+              for(m in arr_time_d){
+                 if(m == value){
+                    arr_time_t = arr_time_d[m].split(',');
+                    for(x in arr_time_t){
+                      arr_time_temp = arr_time_t[x].split(':');
+                      if(x == 0){
+                        document.getElementById("start_hour").value = arr_time_temp[0];  
+                        document.getElementById("start_min").value = arr_time_temp[1];
+                      }
+                      if(x == 1){
+                        document.getElementById("end_hour").value = arr_time_temp[0];  
+                        document.getElementById("end_min").value = arr_time_temp[1];
+                      }
+                    }
+                }
+              }
+}
 function check_out(num){
       $("#shipping_time_id").hide();
       $("input[name='hour']").remove();

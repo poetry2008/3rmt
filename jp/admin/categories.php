@@ -56,7 +56,7 @@
           $site_arr="";
         }
         $site_id = (isset($_GET['site_id']))?$_GET['site_id']:0;  
-        //forward401Unless(editPermission($site_arr, $site_id));
+//        forward401Unless(editPermission($site_arr, $site_id));
         tep_insert_pwd_log($_GET['once_pwd'],$ocertify->auth_user);
         
         $p_page = (isset($_GET['page']))?'&page='.$_GET['page']:''; 
@@ -224,16 +224,16 @@ tep_db_query($update_sql);
          forward401Unless(editPermission($site_arr, $site_id));
         $sort_order = tep_db_prepare_input($_POST['sort_order']);
         $sql_data_array = array('sort_order' => $sort_order);
-
+        
         if ($_GET['action'] == 'insert_category') {
           $insert_sql_data = array('parent_id' => $current_category_id,
-                   'user_added'=> $_POST['user_added'],
+		                   'user_added'=> $_POST['user_added'],
                                    'date_added' => 'now()');
           $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data);
           tep_db_perform(TABLE_CATEGORIES, $sql_data_array);
           $categories_id = tep_db_insert_id();
         } elseif ($_GET['action'] == 'update_category') {
-$update_sql_data = array('last_modified' => 'now()');
+		$update_sql_data = array('last_modified' => 'now()');
           $sql_data_array = tep_array_merge($sql_data_array, $update_sql_data);
           tep_db_perform(TABLE_CATEGORIES, $sql_data_array, 'update', 'categories_id = \'' . $categories_id . '\'');
 	  if($site_id=="" || $site_id==0){
@@ -463,7 +463,7 @@ tep_db_query($update_sql);
           $product_categories = $_POST['product_categories'];
 
       //option delete
-      tep_db_query("delete from products_attributes where products_id = '".$products_id."'");
+      //tep_db_query("delete from products_attributes where products_id = '".$products_id."'");
 
       for ($i = 0, $n = sizeof($product_categories); $i < $n; $i++) {
             tep_db_query("delete from " . TABLE_PRODUCTS_TO_CATEGORIES . " where products_id = '" . tep_db_input($product_id) . "' and categories_id = '" . tep_db_input($product_categories[$i]) . "'");
@@ -633,7 +633,8 @@ tep_db_query($update_sql);
                                   tep_db_prepare_input($_POST['products_bflag'])? 0 - abs(tep_db_prepare_input($_POST['products_price'])):abs(tep_db_prepare_input($_POST['products_price'])),
                                   'products_price_offset' => tep_db_prepare_input($HTTP_POST_VARS['products_price_offset']),
                                   'products_date_available' => $products_date_available,
-                                  'products_weight' => tep_db_prepare_input($_POST['products_weight']),
+                                  'products_shipping_time' => tep_db_prepare_input($_POST['products_shipping_time']),
+                                  'products_weight' => tep_db_prepare_input($_POST['products_shipping_weight']),
                                   'products_status' => tep_db_prepare_input($_POST['products_status']),
                                   'products_tax_class_id' => tep_db_prepare_input($_POST['products_tax_class_id']),
                                   'manufacturers_id' => tep_db_prepare_input($_POST['manufacturers_id']),
@@ -648,7 +649,7 @@ tep_db_query($update_sql);
                                   'products_cart_min' => tep_db_prepare_input($_POST['products_cart_min']),
                                   'products_cartorder' => tep_db_prepare_input($_POST['products_cartorder']),
                                   );
-          
+           
 
 
           if ($_POST['products_image']) {
@@ -666,15 +667,32 @@ tep_db_query($update_sql);
 
 
           if ($_GET['action'] == 'insert_product') {
-            $insert_sql_data = array('products_date_added' => 'now()','products_user_added' => $_POST['products_user_added']);
+            if ($site_id == 0) {
+              $option_group_raw = tep_db_query('select id from '.TABLE_OPTION_GROUP.' where name = \''.$_POST['option_keyword'].'\''); 
+              $option_group_res = tep_db_fetch_array($option_group_raw);
+              if ($option_group_res) {
+                $sql_data_array['belong_to_option'] = $option_group_res['id']; 
+              } 
+            } 
+            $insert_sql_data = array('products_date_added' => 'now()','products_user_added'=>$_POST['products_user_added']);
             $sql_data_array = tep_array_merge($sql_data_array, $insert_sql_data);
             tep_db_perform(TABLE_PRODUCTS, $sql_data_array);
             $products_id = tep_db_insert_id();
             tep_db_query("insert into " . TABLE_PRODUCTS_TO_CATEGORIES . " (products_id, categories_id) values ('" . $products_id . "', '" . $current_category_id . "')");
           } elseif ($_GET['action'] == 'update_product') {
+            if ($site_id == 0) {
+              $option_group_raw = tep_db_query('select id from '.TABLE_OPTION_GROUP.' where name = \''.$_POST['option_keyword'].'\''); 
+              $option_group_res = tep_db_fetch_array($option_group_raw);
+              if ($option_group_res) {
+                $sql_data_array['belong_to_option'] = $option_group_res['id']; 
+               } else {
+                $sql_data_array['belong_to_option'] = ''; 
+               }
+            } 
             $update_sql_data = array('products_last_modified' => 'now()');
             $sql_data_array = tep_array_merge($sql_data_array, $update_sql_data);
             tep_db_perform(TABLE_PRODUCTS, $sql_data_array, 'update', 'products_id = \'' . tep_db_input($products_id) . '\'');
+//print_r($_POST);exit;
 if($site_id=="" || $site_id==0){
 $update_sql = "update ".TABLE_PRODUCTS_DESCRIPTION." set products_last_modified=now(),products_user_update='".$_POST['products_user_update']."' where products_id='".$products_id."'";
 tep_db_query($update_sql);
@@ -684,8 +702,6 @@ $update_sql = "update ".TABLE_PRODUCTS_DESCRIPTION." set products_last_modified=
 tep_db_query($update_sql);
 	  }
           }
-
-
         
         if (isset($_POST['carttags']) && $site_id == '0') {
           tep_db_query("delete from products_to_carttag where products_id='".$products_id."'");
@@ -764,7 +780,7 @@ tep_db_query($update_sql);
                 //'products_description' => replace_store_name($des,$products_id,$site_id),
                 'products_description' => $des,
                 'products_status' => tep_db_prepare_input($_POST['products_status']),
-                'option_image_type' => tep_db_prepare_input($_POST['option_image_type']),
+                //'option_image_type' => tep_db_prepare_input($_POST['option_image_type']),
                 'products_url'         => tep_db_prepare_input($_POST['products_url'][$language_id]),
                 'preorder_status' => tep_db_prepare_input($_POST['preorder_status']) 
                 );
@@ -800,11 +816,12 @@ tep_db_query($update_sql);
       $op2 -> オプション値ID
       $op3 -> 
       */
+      /* 
       $products_options_array = $_POST['products_options'];
       $options_array = explode("\n", $products_options_array);
       
       //商品に対応するオプションを全削除
-      tep_db_query("delete from products_attributes where products_id = '".$products_id."'");
+      tep_db_query("delete from products_attributes_2 where products_id = '".$products_id."'");
       
       for($i=0; $i<sizeof($options_array); $i++) {
         $products_options = explode(",", $options_array[$i]);
@@ -852,7 +869,7 @@ tep_db_query($update_sql);
           tep_db_query("insert into products_options_values_to_products_options (products_options_values_to_products_options_id,products_options_id,products_options_values_id) values ('', '".$op1."', '".$op2."')");
         }
         
-        //products_attributes
+        //products_attributes_2
         $op_sql_date_array = array('products_id' => tep_db_prepare_input($products_id),
                                   'options_id' => tep_db_prepare_input($op1),
                                   'options_values_id' => tep_db_prepare_input($op2),
@@ -861,9 +878,10 @@ tep_db_query($update_sql);
                                   'products_at_quantity' => tep_db_prepare_input($products_at_quantity)
                      );
         
-        tep_db_perform('products_attributes', $op_sql_date_array);
+        tep_db_perform('products_attributes_2', $op_sql_date_array);
       }
       }
+      */ 
       
       //-----------------------------------------
       // オプション値インサート終了
@@ -934,7 +952,8 @@ tep_db_query($update_sql);
                 products_attention_2, 
                 products_attention_3, 
                 products_attention_4,
-                products_attention_5
+                products_attention_5,
+                belong_to_option
               ) values (
               '" . $product['real_quantity'] . "', 
               '" . $product['products_model'] . "', 
@@ -961,7 +980,8 @@ tep_db_query($update_sql);
               '" . addslashes($description['products_attention_2']) . "', 
               '" . addslashes($description['products_attention_3']) . "', 
               '" . addslashes($description['products_attention_4']) . "', 
-              '" . addslashes($description['products_attention_5']) . "'
+              '" . addslashes($description['products_attention_5']) . "',
+              '" . $product['belong_to_option'] . "'
             )");
             $dup_products_id = tep_db_insert_id();
             $description_query = tep_db_query("
@@ -979,7 +999,6 @@ tep_db_query($update_sql);
                   products_viewed,
                   site_id,
                   products_status, 
-                  option_image_type, 
                   romaji
                 ) values (
                   '" . $dup_products_id . "', 
@@ -990,7 +1009,6 @@ tep_db_query($update_sql);
                   '0',
                   '" . $description['site_id'] . "', 
                   '" . $description['products_status'] . "', 
-                  '" . $description['option_image_type'] . "', 
                   '" . $description['romaji']."'
                 )");
             }
@@ -1136,10 +1154,12 @@ echo HEADING_TITLE.$categories_array['categories_name'];
 ?>
 </title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
+<link rel="stylesheet" type="text/css" href="includes/jquery.autocomplete.css">
 <script language="javascript" src="includes/general.js"></script>
 <script language="javascript" src="includes/javascript/jquery.js"></script>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
+<script language="javascript" src="includes/javascript/jquery.autocomplete.js"></script>
 <script language="javascript">
   function relate_products1(cid,rid){
     $.ajax({
@@ -1292,6 +1312,52 @@ $(document).ready(function(){
       $('#categories_tree').animate({width:"470px"});
     }
 });
+
+function clear_option()
+{
+  document.getElementById('option_keyword').value = '';
+}
+
+$(function() {
+      function format(group) {
+          return group.name;
+      }
+      $("#option_keyword").autocomplete('ajax_orders.php?action=search_group', {
+        multipleSeparator: '',
+        dataType: "json",
+        parse: function(data) {
+        return $.map(data, function(row) {
+            return {
+             data: row,
+             value: row.name,
+             result: row.name
+            }
+          });
+        },
+        formatItem: function(item) {
+          return format(item);
+        }
+      }).result(function(e, item) {
+      });
+});
+
+function handle_option()
+{
+   var option_value = document.getElementById('option_keyword').value;
+   if (option_value != '') {
+     $.ajax({
+        type:'POST',
+        dataType: 'text',
+        url: 'ajax_orders.php?action=handle_option',
+        data:'keyword='+option_value,
+        async:false,
+        success: function(msg) {
+          open_url = "<?php echo HTTP_SERVER;?>"+'/admin/option_group.php?keyword='+option_value+"&search=2";     
+          window.open(open_url, 'newwindow', ''); 
+        }
+        });  
+   } 
+}
 </script>
 </head>
 <body marginwidth="0" marginheight="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0" bgcolor="#FFFFFF" >
@@ -1302,18 +1368,18 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
   </script>
 <?php }?>
 <div id="spiffycalendar" class="text"></div>
-<!-- header -->
+<!-- header //-->
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-<!-- header_eof -->
-<!-- body -->
+<!-- header_eof //-->
+<!-- body //-->
 <table border="0" width="100%" cellspacing="2" cellpadding="2">
   <tr>
     <td width="<?php echo BOX_WIDTH; ?>" valign="top"><table border="0" width="<?php echo BOX_WIDTH; ?>" cellspacing="1" cellpadding="1" class="columnLeft">
-        <!-- left_navigation -->
+        <!-- left_navigation //-->
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-        <!-- left_navigation_eof -->
+        <!-- left_navigation_eof //-->
       </table></td>
-    <!-- body_text -->
+    <!-- body_text //-->
     <td width="100%" valign="top" id='categories_right_td'><table border="0" width="100%" cellspacing="0" cellpadding="2">
         <?php
   if (isset($_GET['action']) && $_GET['action'] == 'new_product') {
@@ -1336,9 +1402,13 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                  p.products_price, 
                  p.products_price_offset,
                  p.products_weight, 
+		 p.products_user_added,
                  p.products_date_added, 
                  pd.products_last_modified, 
+                 pd.products_user_update,
                  date_format(p.products_date_available, '%Y-%m-%d') as products_date_available, 
+                 p.products_shipping_time,
+                 p.products_weight,
                  pd.products_status, 
                  p.products_tax_class_id, 
                  p.manufacturers_id, 
@@ -1353,8 +1423,8 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                  p.products_cart_buyflag,
                  p.products_cart_image,
                  p.products_cart_min,
-                 pd.option_image_type, 
                  p.products_cartorder,
+                 p.belong_to_option,
                  pd.preorder_status
           from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd 
           where p.products_id = '" . $_GET['pID'] . "' 
@@ -1468,7 +1538,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
             'post', 'enctype="multipart/form-data" onSubmit="return products_form_validator(\''.
         $current_category_id.'\',\''.$pInfo->products_id.'\',\''.$site_id.'\');"'); ?>
         <input type="hidden" name="site_id" value="<?php echo $site_id;?>">
-        <input type="hidden" name="products_user_added" value="<?php echo $user_info['name']?>"> 
+	<input type="hidden" name="products_user_added" value="<?php echo $user_info['name']?>"> 
         <input type="hidden" name="products_user_update" value="<?php echo $user_info['name']?>">
           <td><table border="0" cellspacing="0" cellpadding="2">
               <tr>
@@ -1566,9 +1636,34 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
           <tr>
               <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
           </tr>
+<!--
           <tr>
               <td class="main"><?php echo TEXT_PRODUCTS_OPTION; ?></td>
               <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_pull_down_menu('option_type', tep_get_option_array(), isset($pInfo->option_type)?$pInfo->option_type:'', ($site_id ? 'class="readonly"  onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : '')); ?></td>
+              <td class="main">&nbsp;</td>
+          </tr>
+          <tr>
+            <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
+          </tr>
+-->
+<?php
+$products_shipping_time = '<select name="products_shipping_time">';
+$products_shipping_query = tep_db_query("select * from ". TABLE_PRODUCTS_SHIPPING_TIME ." where status='0' order by sort");
+while($products_shipping_array = tep_db_fetch_array($products_shipping_query)){
+
+  if($products_shipping_array['id'] == $pInfo->products_shipping_time){
+
+    $selected = 'selected';
+  }
+  $products_shipping_time .= '<option value="'. $products_shipping_array['id'] .'" '. $selected .'>'. $products_shipping_array['name'] .'</option>';  
+  $selected = '';
+}
+tep_db_free_result($products_shipping_query);
+$products_shipping_time .= '</select>';
+?>
+          <tr>
+              <td class="main"><?php echo TEXT_PRODUCTS_SHIPPING_TIME; ?></td>
+              <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . $products_shipping_time; ?></td>
               <td class="main">&nbsp;</td>
           </tr>
           <tr>
@@ -1585,6 +1680,23 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
               <?php
     }
 ?>
+              
+              <tr>
+              <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
+              </tr>
+              <tr>
+              <td class="main"><?php echo TEXT_PRODUCTS_SHIPPING_WEIGHT; ?></td>
+              <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;<input type="text" name="products_shipping_weight" value="'. ($pInfo->products_weight == '' ? 0 : $pInfo->products_weight) .'">'; ?></td><tr>
+            <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
+<!--
+          </tr>
+              <td class="main">&nbsp;</td>
+          </tr>
+-->
+          <tr>
+            <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
+          </tr>
+
               <tr>
                 <td class="main"><?php echo TEXT_PRODUCTS_ROMAJI;?></td> 
                 <td class="main">
@@ -1757,8 +1869,9 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
               <?php
 
       //オプションデータ取得
+      /* 
       if(isset($_GET['pID']) && $_GET['pID']) {
-        $options_query = tep_db_query("select * from products_attributes where products_id = '".(int)$_GET['pID']."' order by products_attributes_id");
+        $options_query = tep_db_query("select * from products_attributes_2 where products_id = '".(int)$_GET['pID']."' order by products_attributes_2_id");
       if(tep_db_num_rows($options_query)) {
         $options_array = '';
         while($options = tep_db_fetch_array($options_query)) {
@@ -1770,10 +1883,42 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
       } else {
         $options_array = '';
       }
+      */ 
       ?>
+              <tr>
+                <td class="main">
+                <?php echo TEXT_PRODUCTS_OPTION_TEXT;?> 
+                </td>
+                <td class="main">
+                <?php
+                if (!$_GET['site_id']) { 
+                $option_keyword_str = ''; 
+                if (isset($pInfo->belong_to_option)) {
+                  $option_group_raw = tep_db_query("select name from ".TABLE_OPTION_GROUP." where id = '".$pInfo->belong_to_option."'"); 
+                  $option_group = tep_db_fetch_array($option_group_raw);
+                  if ($option_group) {
+                    $option_keyword_str = $option_group['name']; 
+                  }
+                }
+                ?>
+                <input type="text" name="option_keyword" id="option_keyword" value="<?php echo $option_keyword_str;?>">
+                <a href="javascript:void(0);"><?php echo tep_html_element_button(OPTION_EDIT, 'onclick="handle_option();"');?></a> 
+                <a href="javascript:void(0);"><?php echo tep_html_element_button(OPTION_CLEAR, 'onclick="clear_option();"');?></a> 
+                <?php 
+                } else { 
+                  $option_group_raw = tep_db_query("select name from ".TABLE_OPTION_GROUP." where id = '".$pInfo->belong_to_option."'"); 
+                  $option_group = tep_db_fetch_array($option_group_raw);
+                  echo $option_group['name']; 
+                } 
+                ?>
+                </td>
+              </tr>
               <tr>
                 <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
               </tr>
+              <?php 
+              if (false) { 
+              ?> 
               <tr>
                 <td class="main" valign="top"><?php echo TEXT_PRODUCT_OPTIONS_TITLE;?></td>
                 <td class="main"><?php echo tep_draw_separator('pixel_trans.gif',
@@ -1817,6 +1962,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                   </table>
 </td>
               </tr>
+              <?php }?> 
               <!-- //options -->
               <tr>
                   </table>
@@ -2134,7 +2280,6 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                  pd.products_description, 
                  pd.products_url, 
                  pd.romaji, 
-                 pd.option_image_type,
                  p.products_real_quantity + p.products_virtual_quantity as products_quantity,
                  p.products_real_quantity, 
                  p.products_virtual_quantity, 
@@ -2145,7 +2290,6 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                  p.products_price, 
                  p.products_bflag,
                  p.products_weight, 
-		 p.products_user_added,
                  p.products_date_added, 
                  p.products_last_modified, 
                  p.products_date_available, 
@@ -2745,10 +2889,10 @@ if (isset($_GET['read']) && $_GET['read'] == 'only' && (!isset($_GET['origin']) 
                c.categories_image, 
                c.parent_id, 
                c.sort_order, 
-	       c.user_added,
                c.date_added, 
+	       c.user_added,
                cd.last_modified, 
-               cd.user_last_modified,
+	       cd.user_last_modified,
                cd.character_romaji,
                cd.alpha_romaji,
                cd.site_id
@@ -3148,7 +3292,7 @@ if (isset($nowColor) && $nowColor == $odd) {
                pd.products_last_modified, 
                pd.products_user_update,
 
-               p.products_date_available, 
+                              p.products_date_available, 
                pd.products_status, 
                p2c.categories_id 
         from " . TABLE_PRODUCTS . " p, " . TABLE_PRODUCTS_DESCRIPTION . " pd, " . TABLE_PRODUCTS_TO_CATEGORIES . " p2c 
@@ -3179,6 +3323,7 @@ if (isset($nowColor) && $nowColor == $odd) {
                p.products_date_added, 
                pd.products_last_modified, 
                pd.products_user_update,
+
                p.products_date_available, 
                pd.site_id, 
                p.sort_order, 
@@ -3258,7 +3403,7 @@ if (isset($nowColor) && $nowColor == $odd) {
                     <?php //echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $products['products_id'] . '&action=new_product_preview&read=only') . '">' . tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW) . '</a>&nbsp;&nbsp;<a href="orders.php?search_type=products_name&keywords=' . urlencode($products['products_name']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_time.gif', '', 16, 16) . '</a>&nbsp;&nbsp;' . $products['products_name']; ?>
 		   
 <?php 
-if(!isset($_GET['site_id'])){
+if(!isset($_GET['site_id']) || $_GET['site_id']==0){
 echo '<a href="' . tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' . $products['products_id'] . '&action=new_product_preview&read=only') . '">' . tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW) . '</a>&nbsp;&nbsp;<a href="orders.php?search_type=products_id&products_id=' . $products['products_id'] . '">' . tep_image(DIR_WS_IMAGES . 'icon_time.gif', '', 16, 16) . '</a>&nbsp;&nbsp;'; 
 }
 	echo $products['products_name']; 
@@ -3323,8 +3468,9 @@ $p_page = (isset($_GET['page']))?'&page='.$_GET['page']:'';
     $accept_pro_site_arr = array(); 
   }
   if (!in_array($repro_site_id, $accept_pro_site_arr)) {
-   // $unaccept_pro_edit_single = true;
-  $unaccept_pro_edit_single = false;
+$unaccept_pro_edit_single = false;
+
+  //  $unaccept_pro_edit_single = true;
   }
   if ($_SESSION['user_permission'] == 15) {
     $unaccept_pro_edit_single = false;
@@ -3595,18 +3741,18 @@ tep_display_google_results(FILENAME_CATEGORIES);
       '<input type="button" onclick = "c_is_set_error_char(false)"
       value="'.IS_SET_ERROR_CHAR.'">'.
 '<br><br>'."\n";
-          if (!empty($_GET['cPath'])) {
+  //        if (!empty($_GET['cPath'])) {
             $c_tmp_arr = explode('_', $_GET['cPath']); 
             if (count($c_tmp_arr) == 1 && empty($_GET['cID'])) {
               $category_inputs_string .= HEAD_SEARCH_TITLE.'<br><br>'; 
               $category_inputs_string .= CATEGORY_CHARACTER_ROMAJI.'<br>'.tep_draw_input_field('character_romaji['.$languages[$i]['id'].']', $cInfo->character_romaji, 'cromaji').'<br>'.HEAD_SEARCH_CHARACTER_COMMENT.'<br><br>'; 
               $category_inputs_string .= CATEGORY_ALPHA_ROMAJI.'<br>'.tep_draw_input_field('alpha_romaji['.$languages[$i]['id'].']', $cInfo->alpha_romaji, 'alromaji').'<br>'.HEAD_SEARCH_ALPHA_COMMENT.'<br>'; 
             }
-          } else {
+  //        } else {
               $category_inputs_string .= HEAD_SEARCH_TITLE.'<br><br>'; 
               $category_inputs_string .= CATEGORY_CHARACTER_ROMAJI.'<br>'.tep_draw_input_field('character_romaji['.$languages[$i]['id'].']', $cInfo->character_romaji, 'cromaji').'<br>'.HEAD_SEARCH_CHARACTER_COMMENT.'<br><br>'; 
               $category_inputs_string .= CATEGORY_ALPHA_ROMAJI.'<br>'.tep_draw_input_field('alpha_romaji['.$languages[$i]['id'].']', $cInfo->alpha_romaji, 'alromaji').'<br>'.HEAD_SEARCH_ALPHA_COMMENT.'<br>'; 
-          }
+         // }
           $category_inputs_string .= '<br>'.tep_image(tep_get_web_upload_dir($site_id) .'categories/'.  $cInfo->categories_image2, $cInfo->categories_name).'<br>' .  tep_get_upload_dir($site_id) . 'categories/<br><b>' .  $cInfo->categories_image2 . '</b><br><br>'.CATEGORY_IMAGE_SHOW_TEXT.'<br>'.tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;'.tep_draw_file_field('categories_image2').'<br>'."\n".  '<br>'.tep_image(tep_get_web_upload_dir($site_id) . 'categories/'.  $cInfo->categories_image3, $cInfo->categories_name).'<br>' .  tep_get_upload_dir($site_id). 'categories/<br><b>' .  $cInfo->categories_image3 .  '</b><br><br>'.CATEGORY_SECOND_IMAGE_SHOW_TEXT.'<br>'.tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) .  '&nbsp;'.tep_draw_file_field('categories_image3').'<br>'.CATEGORY_META_COMMENT_TEXT.'<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' .tep_draw_textarea_field('categories_meta_text[' . $languages[$i]['id'] . ']','soft',30,3,tep_get_category_meta_text($cInfo->categories_id, $languages[$i]['id'], $site_id, true)).
 
          '<br>'.CATEGORY_SEO_TITLE_TEXT.'<br>' . tep_image(DIR_WS_CATALOG_LANGUAGES . $languages[$i]['directory'] . '/images/' . $languages[$i]['image'], $languages[$i]['name']) . '&nbsp;' . tep_draw_input_field('seo_name[' . $languages[$i]['id'] . ']', tep_get_seo_name($cInfo->categories_id, $languages[$i]['id'], $site_id, true)).'<br>'."\n".
@@ -3815,7 +3961,7 @@ tep_display_google_results(FILENAME_CATEGORIES);
             $contents[] = array('text' => '<br>' . TEXT_USER_ADDED . ' ' . $cInfo->user_added);
             $contents[] = array('text' =>  '<br>' .TEXT_DATE_ADDED . ' ' . tep_datetime_short($cInfo->date_added));
 
-    if (tep_not_null($cInfo->last_modified)) {
+	    if (tep_not_null($cInfo->last_modified)) {
                     $contents[] = array('text' => '<br>' . TEXT_USER_UPDATE . ' ' . $cInfo->user_last_modified);
 
 		    $contents[] = array('text' => '<br>' . TEXT_LAST_MODIFIED . ' ' . tep_datetime_short($cInfo->last_modified));
@@ -3856,7 +4002,7 @@ tep_display_google_results(FILENAME_CATEGORIES);
 }
             $contents[] = array('text' => '<br>' . TEXT_USER_ADDED .' ' . $pInfo->products_user_added);
             $contents[] = array('text' => '<br>' . TEXT_DATE_ADDED . ' ' . tep_datetime_short($pInfo->products_date_added));
-   if (tep_not_null($pInfo->products_last_modified)){
+	    if (tep_not_null($pInfo->products_last_modified)){
         $contents[] = array('text' => '<br>' . TEXT_USER_UPDATE .' ' . $pInfo->products_user_update);
 	$contents[] = array('text' => '<br>'.TEXT_LAST_MODIFIED . ' ' . tep_datetime_short($pInfo->products_last_modified));
         
@@ -3906,13 +4052,13 @@ $contents[] = array('text' => '<br>' . TEXT_PRODUCTS_AVERAGE_RATING . ' ' . numb
   }
 ?>
       </table></td>
-    <!-- body_text_eof -->
+    <!-- body_text_eof //-->
   </tr>
 </table>
-<!-- body_eof -->
-<!-- footer -->
+<!-- body_eof //-->
+<!-- footer //-->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-<!-- footer_eof -->
+<!-- footer_eof //-->
 <br>
 </body>
 </html>

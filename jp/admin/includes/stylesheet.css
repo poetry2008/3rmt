@@ -1337,14 +1337,21 @@ a.s_column_bar {
 .pro_option table{
 	width:100%;
 }
+.order_option_list{
+	overflow:hidden;
+	margin-bottom:5px;
+	margin-bottom:1px\9;
+}
+
 .order_option_info{
 	float:left;
 	width:60%;
-
+	line-height:21px;
 }
 .order_option_price{
 	float:left;
 }
+.order_option_price input{ text-align:right;}
 /*shipping*/
 .shipping_error{
 	color:#ff0000;

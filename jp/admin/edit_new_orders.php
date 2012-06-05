@@ -1120,7 +1120,8 @@ if($address_error == false){
             $trade_time = date('Y年m月d日H時i分', strtotime($_POST['date_orders'].' '.$_POST['start_hour'].':'.$_POST['start_min'].':00')); 
             $trade_time_1 = date('H時i分',strtotime($_POST['date_orders'].' '.$_POST['end_hour'].':'.$_POST['end_min'].':00'));
             $mailoption['ORDER_TTIME']      = $trade_time . '～' . $trade_time_1 .'　（24時間表記）';//d
-            $mailoption['ORDER_COMMENT']    = $notify_comments_mail;// = $comments;
+            //$mailoption['ORDER_COMMENT']    = $notify_comments_mail;// = $comments;
+            $mailoption['ORDER_COMMENT']    = $_POST['comments_text'];// = $comments;
             $mailoption['ORDER_PRODUCTS']   = $products_ordered_mail;//?
             $mailoption['ORDER_TMETHOD']    = $insert_torihiki_date;
             $mailoption['SITE_NAME']        = get_configuration_by_site_id('STORE_NAME',$order->info['site_id']);//d
@@ -3301,12 +3302,12 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
             echo '      </td>' . "\n" .
               '      <td class="' . $RowStyle . '">' . $order->products[$i]['model'] . "<input name='update_products[$orders_products_id][model]' size='12' type='hidden' value='" . $order->products[$i]['model'] . "'>" . '</td>' . "\n" .
               '      <td class="' . $RowStyle . '" align="right">' . tep_display_tax_value($order->products[$i]['tax']) . "<input name='update_products[$orders_products_id][tax]' size='2' type='hidden' value='" . tep_display_tax_value($order->products[$i]['tax']) . "'>" . '%</td>' . "\n";
-              echo '<td class="'.$RowStyle.'" align="right"><input type="text" class="once_pwd" name="update_products['.$orders_products_id.'][p_price]" size="9" value="'.tep_display_currency(number_format(abs(isset($_POST['update_products'][$orders_products_id]['p_price'])?$_POST['update_products'][$orders_products_id]['p_price']:$order->products[$i]['price']), 2)).'" onkeyup="recalc_order_price(\''.$oID.'\', \''.$orders_products_id.'\', \'2\',\''.$op_info_str.'\')"></td>';
+              echo '<td class="'.$RowStyle.'" align="right"><input type="text" style="text-align:right;" class="once_pwd" name="update_products['.$orders_products_id.'][p_price]" size="9" value="'.tep_display_currency(number_format(abs(isset($_POST['update_products'][$orders_products_id]['p_price'])?$_POST['update_products'][$orders_products_id]['p_price']:$order->products[$i]['price']), 2)).'" onkeyup="recalc_order_price(\''.$oID.'\', \''.$orders_products_id.'\', \'2\',\''.$op_info_str.'\')">'.TEXT_MONEY_SYMBOL.'</td>';
               echo '      <td class="' . $RowStyle . '" align="right">' . "<input
-              class='once_pwd' name='update_products[$orders_products_id][final_price]' size='9' value='" . tep_display_currency(number_format(abs($order->products[$i]['final_price']),2)) 
+              class='once_pwd' style='text-align:right;' name='update_products[$orders_products_id][final_price]' size='9' value='" . tep_display_currency(number_format(abs($order->products[$i]['final_price']),2)) 
               . "' onkeyup='clearNoNum(this)' >" .
               '<input type="hidden" name="op_id_'.$orders_products_id.'" 
-              value="'.tep_get_product_by_op_id($orders_products_id).'">' . "\n" . '</td>' . "\n" . 
+              value="'.tep_get_product_by_op_id($orders_products_id).'">' .TEXT_MONEY_SYMBOL. "\n" . '</td>' . "\n" . 
               '      <td class="' . $RowStyle . '" align="right"><div id="update_products['.$orders_products_id.'][a_price]">';
             if ($order->products[$i]['final_price'] < 0) {
               echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']), true, $order->info['currency'], $order->info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;

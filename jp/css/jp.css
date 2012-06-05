@@ -2696,14 +2696,29 @@ searching
 /*    width: 338px;
 	*width:358px;
 */	font-size:12px;
-	background:#F5F9FC;
-    position:relative; 
+	background:#383838;
+	line-height:25px;
+    position:relative;
+	color:#FFFFFF;
+	*height:25px;
+	overflow:hidden;
 }
 .shipping_time input{
+/*	margin-left:32px;
+	margin-left:28px\9;
+*/}
+.time_radio{
+	float:left;
 	margin-left:32px;
+	margin-top:2px;
 	margin-left:28px\9;
 }
-
+.time_label{
+	float:left;
+	line-height:25px;
+}
+.time_label a{ color:#FFFFFF; cursor:pointer;}
+.time_label a:hover{ color:#FFFFFF; cursor:pointer;}
 #greybackground{
 	background:#000000;
 	width:100%; 

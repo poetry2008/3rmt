@@ -1714,16 +1714,16 @@ float:left;
          '      <td class="' . $RowStyle . '">' . $order->products[$i]['model'] . "<input name='update_products[$orders_products_id][model]' size='12' type='hidden' value='" . $order->products[$i]['model'] . "'>" . '</td>' . "\n" .
          '      <td class="' . $RowStyle . '" align="right">' .  tep_display_tax_value($order->products[$i]['tax']) . "<input name='update_products[$orders_products_id][tax]' size='2' type='hidden' value='" . tep_display_tax_value($order->products[$i]['tax']) . "'>" .  '%</td>' . "\n";
     
-    echo '<td class="'.$RowStyle.'" align="right"><input type="text" class="once_pwd" name="update_products['.$orders_products_id.'][p_price]" size="9" value="'.tep_display_currency(number_format(abs($order->products[$i]['price']), 2)).'" onkeyup="recalc_preorder_price(\''.$oID.'\', \''.$orders_products_id.'\', \'2\', \''.$op_info_str.'\');" ></td>'; 
+    echo '<td class="'.$RowStyle.'" align="right"><input type="text" style="text-align:right;" class="once_pwd" name="update_products['.$orders_products_id.'][p_price]" size="9" value="'.tep_display_currency(number_format(abs($order->products[$i]['price']), 2)).'" onkeyup="recalc_preorder_price(\''.$oID.'\', \''.$orders_products_id.'\', \'2\', \''.$op_info_str.'\');" >'.TEXT_MONEY_SYMBOL.'</td>'; 
     
     echo '<td class="' . $RowStyle . '" align="right">';
     //if ($ocertify->npermission == 7) {
-      echo "<input type='text' class='once_pwd' name='update_products[$orders_products_id][final_price]' size='9' value='" .  tep_display_currency(number_format(abs($order->products[$i]['final_price']),2)) .  "'" .' onkeyup="clearNoNum(this)" >';
+      echo "<input type='text' style='text-align:right;' class='once_pwd' name='update_products[$orders_products_id][final_price]' size='9' value='" .  tep_display_currency(number_format(abs($order->products[$i]['final_price']),2)) .  "'" .' onkeyup="clearNoNum(this)" >';
     //} else {
       //echo "<input type='hidden' name='update_products[$orders_products_id][final_price]' value='" .  tep_display_currency(number_format(abs($order->products[$i]['final_price']),2)) .  "'" .'>'.tep_display_currency(number_format(abs($order->products[$i]['final_price']),2));
     //}
     echo '<input type="hidden" name="op_id_'.$orders_products_id.'" 
-         value="'.tep_get_pre_product_by_op_id($orders_products_id).'">' . '</td>' . "\n" . 
+         value="'.tep_get_pre_product_by_op_id($orders_products_id).'">' .TEXT_MONEY_SYMBOL. '</td>' . "\n" . 
          '      <td class="' . $RowStyle . '" align="right">';
     echo '<div id="update_products['.$orders_products_id.'][a_price]">'; 
     if ($order->products[$i]['final_price'] < 0) {
