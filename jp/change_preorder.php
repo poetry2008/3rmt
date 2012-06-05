@@ -566,6 +566,7 @@ $(document).ready(function(){
 <?php 
 if ($error == false && $_POST['action'] == 'process') { 
 //echo tep_draw_form('order1', tep_href_link('change_preorder_confirm.php'));
+$preorder_information = array();
 foreach ($_POST as $post_key => $post_value) {
   if (is_array($post_value)) {
     foreach ($post_value as $ps_key => $ps_value) {

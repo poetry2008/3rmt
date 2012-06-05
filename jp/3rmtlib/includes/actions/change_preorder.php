@@ -218,6 +218,7 @@
     
     if ($error == true) {
       if (!isset($_GET['is_check'])) {
+      $preorder_information = array(); 
       foreach ($_POST as $post_e_key => $post_e_value) {
         if (is_array($post_e_value)) {
           foreach ($post_e_value as $ps_e_key => $ps_e_value) {
