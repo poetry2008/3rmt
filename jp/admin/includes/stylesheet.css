@@ -1351,6 +1351,7 @@ a.s_column_bar {
 .order_option_price{
 	float:left;
 }
+.order_option_price input{ text-align:right;}
 /*shipping*/
 .shipping_error{
 	color:#ff0000;
