@@ -3324,7 +3324,7 @@ $p_page = (isset($_GET['page']))?'&page='.$_GET['page']:'';
   }
   if (!in_array($repro_site_id, $accept_pro_site_arr)) {
    // $unaccept_pro_edit_single = true;
-	  $unaccept_pro_edit_single = false;
+  $unaccept_pro_edit_single = false;
   }
   if ($_SESSION['user_permission'] == 15) {
     $unaccept_pro_edit_single = false;
