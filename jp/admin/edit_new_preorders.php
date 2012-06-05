@@ -123,60 +123,7 @@
     $_SESSION['create_preorder']['orders']['orders_status_name'] = $preorder_status['orders_status_name']; 
    
 
-    $order = $_SESSION['create_preorder']['orders'];
-
-
-    // products weight
-      $pro_weight_total = 0; //商品总重量
-      foreach($_SESSION['create_preorder']['orders_products'] as $up_key=>$up_value){
-        
-        $pro_weight_query = tep_db_query("select * from ". TABLE_PRODUCTS ." where products_id='". $up_value['products_id'] ."'");
-        $pro_weight_array = tep_db_fetch_array($pro_weight_query);
-        echo $_POST['update_products['.$up_value['products_id'].'][qty]'];
-        $pro_weight_total += $pro_weight_array['products_weight']*$_POST['update_products'][$up_value['products_id']]['qty'];
-        tep_db_free_result($pro_weight_query);
-      } 
-
-      $weight_count = $pro_weight_total;
-      $country_max_fee = 0; 
-      $country_fee_max_array = array();
-      $country_fee_query = tep_db_query("select weight_limit from ". TABLE_COUNTRY_FEE ." where status='0'");
-      while($country_fee_array = tep_db_fetch_array($country_fee_query)){
-
-        $country_fee_max_array[] = $country_fee_array['weight_limit'];
-      }
-      tep_db_free_result($country_fee_query);
-      $country_max_fee = max($country_fee_max_array);
-
-      $country_max_area = 0; 
-      $country_area_max_array = array();
-      $country_area_query = tep_db_query("select weight_limit from ". TABLE_COUNTRY_AREA ." where status='0'");
-      while($country_area_array = tep_db_fetch_array($country_area_query)){
-
-        $country_area_max_array[] = $country_area_array['weight_limit'];
-      }
-      tep_db_free_result($country_area_query);
-      $country_max_area = max($country_area_max_array);
-
-      $country_max_city = 0; 
-      $country_city_max_array = array();
-      $country_city_query = tep_db_query("select weight_limit from ". TABLE_COUNTRY_CITY ." where status='0'");
-      while($country_city_array = tep_db_fetch_array($country_city_query)){
-
-        $country_city_max_array[] = $country_city_array['weight_limit'];
-      }
-      tep_db_free_result($country_city_query);
-      $country_max_city = max($country_city_max_array);
-
-      $weight_count_limit = max($country_max_fee,$country_max_area,$country_max_city);
-
-      $weight_error = false;
-      if($weight_count > $weight_count_limit){
-
-        $weight_error = true;
-        $action = 'edit';
-        break;
-      }
+    $order = $_SESSION['create_preorder']['orders']; 
      
     if ($update_totals) 
     foreach ($update_totals as $total_index => $total_details) {    
@@ -690,55 +637,7 @@
       // 2.1 GET ORDER INFO #####
       
       $oID = tep_db_prepare_input($_SESSION['create_preorder']['orders']['orders_id']);
-      $order = $_SESSION['create_preorder']['orders'];
-
-      // products weight
-      $pro_weight_total = 0; //商品总重量
-        
-        $pro_weight_query = tep_db_query("select * from ". TABLE_PRODUCTS ." where products_id='". $_POST['add_product_products_id'] ."'");
-        $pro_weight_array = tep_db_fetch_array($pro_weight_query);
-        $pro_weight_total = $pro_weight_array['products_weight']*$_POST['add_product_quantity'];
-        tep_db_free_result($pro_weight_query);
-
-      $weight_count = $pro_weight_total;
-      $country_max_fee = 0; 
-      $country_fee_max_array = array();
-      $country_fee_query = tep_db_query("select weight_limit from ". TABLE_COUNTRY_FEE ." where status='0'");
-      while($country_fee_array = tep_db_fetch_array($country_fee_query)){
-
-        $country_fee_max_array[] = $country_fee_array['weight_limit'];
-      }
-      tep_db_free_result($country_fee_query);
-      $country_max_fee = max($country_fee_max_array);
-
-      $country_max_area = 0; 
-      $country_area_max_array = array();
-      $country_area_query = tep_db_query("select weight_limit from ". TABLE_COUNTRY_AREA ." where status='0'");
-      while($country_area_array = tep_db_fetch_array($country_area_query)){
-
-        $country_area_max_array[] = $country_area_array['weight_limit'];
-      }
-      tep_db_free_result($country_area_query);
-      $country_max_area = max($country_area_max_array);
-
-      $country_max_city = 0; 
-      $country_city_max_array = array();
-      $country_city_query = tep_db_query("select weight_limit from ". TABLE_COUNTRY_CITY ." where status='0'");
-      while($country_city_array = tep_db_fetch_array($country_city_query)){
-
-        $country_city_max_array[] = $country_city_array['weight_limit'];
-      }
-      tep_db_free_result($country_city_query);
-      $country_max_city = max($country_city_max_array);
-
-      $weight_count_limit = max($country_max_fee,$country_max_area,$country_max_city);
-
-      $weight_error = false;
-      if($weight_count > $weight_count_limit){
-
-        $weight_error = true;
-        break;
-      }
+      $order = $_SESSION['create_preorder']['orders']; 
 
       if (isset($_POST['add_product_options'])) {
         $add_product_options = $_POST['add_product_options'];
@@ -952,7 +851,48 @@
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
 <script language="javascript" src="includes/javascript/jquery.form.js"></script>
 <script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
+<script language="javascript" src="includes/jquery.form.js"></script>
 <script>
+function submit_check(){
+  var qty = document.getElementById('add_product_quantity').value;
+
+  var products_id = document.getElementById('add_product_products_id').value;
+
+  $.ajax({
+    dataType: 'text',
+    url: 'ajax_orders_weight.php?action=edit_preorder',
+    data: 'qty='+qty+'&products_id='+products_id, 
+    type:'POST',
+    async: false,
+    success: function(data) {
+      if(data != ''){
+
+        alert(data);
+      }
+    }
+  });
+    
+}
+
+function submit_order_check(products_id,op_id){
+  var qty = document.getElementById('p_'+op_id).value;
+
+  $.ajax({
+    dataType: 'text',
+    url: 'ajax_orders_weight.php?action=edit_preorder',
+    data: 'qty='+qty+'&products_id='+products_id, 
+    type:'POST',
+    async: false,
+    success: function(data) {
+      if(data != ''){
+
+        alert(data);
+      }
+    }
+  });
+    
+}
+
 function check_add(){
   price = document.getElementById('add_product_price').value;
   if(price != '' && price != 0  && price > 0){
@@ -1216,7 +1156,7 @@ if (($action == 'edit') && ($order_exists == true)) {
             <?php echo tep_draw_separator(); ?>
           </td>
         </tr> 
-        <tr><?php echo tep_draw_form('edit_order', "edit_new_preorders.php", tep_get_all_get_params(array('action','paycc')) . 'action=update_order', 'post', 'onSubmit="return createPreorderChk();"'); ?>
+        <tr><?php echo tep_draw_form('edit_order', "edit_new_preorders.php", tep_get_all_get_params(array('action','paycc')) . 'action=update_order', 'post', 'id="edit_order_id_one" onSubmit="return createPreorderChk();"'); ?>
           <td>
             <!-- Begin Update Block -->
             <table width="100%" border="0" cellpadding="2" cellspacing="1">
@@ -1334,7 +1274,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     $orders_products_num = isset($_POST['update_products'][$pid]['qty']) ? $_POST['update_products'][$pid]['qty'] : $order_products[$pid]['qty'];
     echo '    <tr class="dataTableRow">' . "\n" .
          '      <td class="' . $RowStyle . '" align="left" valign="top" width="20">'
-         . "<input name='update_products[$pid][qty]' size='2' value='" . $orders_products_num . "' onkeyup='clearLibNum(this);' class='update_products_qty'>&nbsp;x</td>\n" . 
+         . "<input name='update_products[$pid][qty]' id='p_".$pid."' size='2' value='" . $orders_products_num . "' onkeyup='clearLibNum(this);' class='update_products_qty'>&nbsp;x</td>\n" . 
          '      <td class="' . $RowStyle . '">' . $order_products[$pid]['name'] . "<input name='update_products[$pid][name]' size='64' type='hidden' value='" . $order_products[$pid]['name'] . "'>\n" . 
        '      &nbsp;&nbsp;<input type="hidden" name="dummy" value="あいうえお眉幅">';
     // Has Attributes?
@@ -1381,11 +1321,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     echo '</b></td>' . "\n" . 
          '    </tr>' . "\n";
   }
-  if($weight_error == true){
-
-        echo '<tr><td colspan="7"><font color="#FF0000">'.CREATE_ORDER_PRODUCTS_WEIGHT.$weight_count_limit.CREATE_ORDER_PRODUCTS_WEIGHT_ONE.'</font></td></tr>';
-  }
-   
+    
   ?>
 </table>
 
@@ -1566,7 +1502,7 @@ if (($action == 'edit') && ($order_exists == true)) {
               <td class="main" bgcolor="#FFBBFF" width="10">&nbsp;</td>
               <td class="main" bgcolor="#FF99FF" width="10">&nbsp;</td>
               <td class="main" bgcolor="#FF77FF" width="10">&nbsp;</td>
-              <td class="main" bgcolor="#FF55FF" width="120" align="center"><INPUT type="button" value="<?php echo EDIT_ORDERS_CONFIRM_BUTTON; ?>" onClick="create_preorder_price()"></td>
+              <td class="main" bgcolor="#FF55FF" width="120" align="center"><INPUT type="button" value="<?php echo EDIT_ORDERS_CONFIRM_BUTTON; ?>" onClick="submit_order_check(<?php echo $pid;?>,<?php echo $pid;?>);create_preorder_price()"></td>
             </tr>
           </table>
         </td>
@@ -1667,7 +1603,7 @@ if (($action == 'edit') && ($order_exists == true)) {
               <td class="main" bgcolor="#FF55FF" width="120" align="center">
               <input type="hidden" name="x" value="43"> 
               <input type="hidden" name="y" value="12"> 
-              <?php echo tep_html_element_submit(IMAGE_UPDATE); ?>
+              <?php echo tep_html_element_submit(IMAGE_UPDATE,'onclick="submit_order_check('.$pid.','.$pid.');"'); ?>
               </td>
           </tr>
           </table>
@@ -1840,18 +1776,14 @@ if (($action == 'edit') && ($order_exists == true)) {
     // Step 4: Confirm
     if($step > 3)
     {
-      echo "<tr class=\"dataTableRow\"><form action='$PHP_SELF?oID=$oID&action=$action' method='POST'>\n";
+      echo "<tr class=\"dataTableRow\"><form action='$PHP_SELF?oID=$oID&action=$action' method='POST' id='edit_order_id' onsubmit='return submit_check();'>\n";
       echo "<td class='dataTableContent' align='right'><b>" . ADDPRODUCT_TEXT_STEP .  " 4: </b></td>";
       $products_num = isset($_POST['add_product_quantity']) ? $_POST['add_product_quantity'] : 1;
       $products_price = isset($_POST['add_product_price']) ? $_POST['add_product_price'] : 0;
       echo '<td class="dataTableContent" valign="top">' .
-        ADDPRODUCT_TEXT_CONFIRM_QUANTITY . '<input name="add_product_quantity" size="2" value="'.$products_num.'" onkeyup="clearLibNum(this);">&nbsp;'.EDIT_ORDERS_NUM_UNIT.'&nbsp;&nbsp;'.TABLE_HEADING_UNIT_PRICE.'<input name="add_product_price" id="add_product_price" size="4" value="'.$products_price.'" onkeyup="clearNoNum(this);">&nbsp;'.EDIT_ORDERS_PRICE_UNIT.'&nbsp;&nbsp;&nbsp;<input type="hidden" name="dummy" value="あいうえお眉幅">';
-      if($weight_error == true){
-
-        echo '&nbsp;<font color="#FF0000">'.CREATE_ORDER_PRODUCTS_WEIGHT.$weight_count_limit.CREATE_ORDER_PRODUCTS_WEIGHT_ONE.'</font>';
-      } 
+        ADDPRODUCT_TEXT_CONFIRM_QUANTITY . '<input id="add_product_quantity" name="add_product_quantity" size="2" value="'.$products_num.'" onkeyup="clearLibNum(this);">&nbsp;'.EDIT_ORDERS_NUM_UNIT.'&nbsp;&nbsp;'.TABLE_HEADING_UNIT_PRICE.'<input name="add_product_price" id="add_product_price" size="4" value="'.$products_price.'" onkeyup="clearNoNum(this);">&nbsp;'.EDIT_ORDERS_PRICE_UNIT.'&nbsp;&nbsp;&nbsp;<input type="hidden" name="dummy" value="あいうえお眉幅">'; 
       echo '</td>';
-      echo "<td class='dataTableContent' align='center'><input type='submit' value='" . ADDPRODUCT_TEXT_CONFIRM_ADDNOW . "'>";
+      echo '<td class="dataTableContent" align="center"><input type="submit" value="' . ADDPRODUCT_TEXT_CONFIRM_ADDNOW . '">';
        
       foreach ($_POST as $op_key => $op_value) {
         $op_pos = substr($op_key, 0, 3);
@@ -1860,7 +1792,7 @@ if (($action == 'edit') && ($order_exists == true)) {
         }
       }
       echo "<input type='hidden' name='add_product_categories_id' value='$add_product_categories_id'>";
-      echo "<input type='hidden' name='add_product_products_id' value='$add_product_products_id'>";
+      echo "<input type='hidden' id='add_product_products_id' name='add_product_products_id' value='$add_product_products_id'>";
       echo "<input type='hidden' name='step' value='5'>";
       echo "</td>\n";
       echo "</form></tr>\n";

@@ -12,13 +12,23 @@
 <script language="javascript" src="includes/javascript/address_search.js"></script>
 <script language="javascript" src="includes/general.js"></script>
 <script language="javascript" src="includes/javascript/jquery.autocomplete.js"></script>
-
+<script language="javascript" src="includes/jquery.form.js"></script>
 <script type="text/javascript">
 function check_submit(){
-  var fax = document.getElementById("fax");
-  var fax_value = document.getElementById("fax_value");
-  fax_value.value = fax.value;
-  document.create_order_form_1.submit();
+  var options = {
+    url: 'ajax_orders_weight.php?action=create_orders',
+    type:  'POST',
+    success: function(data) {
+      if(data != ''){
+        alert(data);
+      }
+      var fax = document.getElementById("fax");
+      var fax_value = document.getElementById("fax_value");
+      fax_value.value = fax.value;
+      document.create_order_form_1.submit();
+    }
+  };
+  $('#create_order_form_1').ajaxSubmit(options); 
 }
 
 $(function() {

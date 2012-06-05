@@ -552,16 +552,7 @@ if($index > 0){
             </tr>
             <tr>
             <td valign="top"><?php echo "<span class='smalltext'>" .  HINT_DELETE_POSITION . "</span>"; ?></td> <td align="right"></td>
-            </tr>    
-            <?php 
-            if($_GET['error'] == 2 && isset($_GET['weight'])){ 
-            ?> 
-            <tr>
-            <td valign="top"><?php echo '<span class="smalltext"><font color="#FF0000">' .  CREATE_ORDER_PRODUCTS_WEIGHT . $_GET['weight'] . CREATE_ORDER_PRODUCTS_WEIGHT_ONE .'</span>'; ?></td><td align="right"></td>
-            </tr>
-            <?php
-             }
-            ?>
+            </tr>     
 </table>
 </td>
 </tr>

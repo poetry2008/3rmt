@@ -360,5 +360,6 @@ $payment_list[] = array('id' => 'payment_null', 'text' => TEXT_PAYMENT_NULL_TXT)
 require_once(DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_CREATE_ORDER);
 require_once("includes/step-by-step/create_order_new_first.php");
 ?>
+</script>
 
 

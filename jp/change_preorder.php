@@ -1010,7 +1010,7 @@ document.forms.order1.submit();
 
       $selected_str = date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == $_POST['date'] ? 'selected' : ''; 
       if(!isset($_POST['date'])){
-        $selected_str = date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == $_SESSION['preorder_info_date'] ? 'selected' : ''; 
+        $selected_str = date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == $_SESSION['preorder_information']['date'] ? 'selected' : ''; 
       }
       echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'" '. $selected_str .'>'.str_replace($oarr, $newarr, date("Y年m月d日（l）", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
 
@@ -1054,7 +1054,7 @@ document.forms.order1.submit();
                 echo '<script>selectDate(\''. $work_start .' \', \''. $work_end .'\');$("#shipping_list").show();</script>';
              }else{
 
-                if(isset($_SESSION['date']) && $_SESSION['date'] != ''){
+                if(isset($_SESSION['preorder_information']['date']) && $_SESSION['preorder_information']['date'] != ''){
 
                   echo '<script>selectDate(\''. $work_start .' \', \''. $work_end .'\');$("#shipping_list").show();</script>';
                 }
@@ -1064,9 +1064,9 @@ document.forms.order1.submit();
                 echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\',\''. $_POST['hour'] .'\','. $_POST['min'] .','. $_POST['ele'] .');$("#shipping_list_min").show();</script>';
              }else{
 
-                if(isset($_SESSION['min']) && $_SESSION['min'] != ''){
+                if(isset($_SESSION['preorder_information']['min']) && $_SESSION['preorder_information']['min'] != ''){
 
-                  echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\',\''. $_SESSION['preorder_info_hour'] .'\','. $_SESSION['preorder_info_min'] .','. $_SESSION['preorder_information']['ele'] .');$("#shipping_list_min").show();</script>';
+                  echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\',\''. $_SESSION['preorder_information']['hour'] .'\','. $_SESSION['preorder_information']['min'] .','. $_SESSION['preorder_information']['ele'] .');$("#shipping_list_min").show();</script>';
                 }
              }
              ?> 

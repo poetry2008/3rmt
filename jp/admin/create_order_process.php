@@ -44,44 +44,6 @@ if(isGet()){
 
        
       tep_redirect(tep_redirect(tep_href_link(FILENAME_CREATE_ORDER.'?oID='.tep_db_prepare_input($_POST['oID']).'&Customer_mail='.tep_db_prepare_input($_POST['email_address']).'&site_id='.tep_db_prepare_input($_POST['site_id']).'&error=1', null, 'SSL')));
-    }else{
-      
-      $country_max_fee = 0; 
-      $country_fee_max_array = array();
-      $country_fee_query = tep_db_query("select weight_limit from ". TABLE_COUNTRY_FEE ." where status='0'");
-      while($country_fee_array = tep_db_fetch_array($country_fee_query)){
-
-        $country_fee_max_array[] = $country_fee_array['weight_limit'];
-      }
-      tep_db_free_result($country_fee_query);
-      $country_max_fee = max($country_fee_max_array);
-
-      $country_max_area = 0; 
-      $country_area_max_array = array();
-      $country_area_query = tep_db_query("select weight_limit from ". TABLE_COUNTRY_AREA ." where status='0'");
-      while($country_area_array = tep_db_fetch_array($country_area_query)){
-
-        $country_area_max_array[] = $country_area_array['weight_limit'];
-      }
-      tep_db_free_result($country_area_query);
-      $country_max_area = max($country_area_max_array);
-
-      $country_max_city = 0; 
-      $country_city_max_array = array();
-      $country_city_query = tep_db_query("select weight_limit from ". TABLE_COUNTRY_CITY ." where status='0'");
-      while($country_city_array = tep_db_fetch_array($country_city_query)){
-
-        $country_city_max_array[] = $country_city_array['weight_limit'];
-      }
-      tep_db_free_result($country_city_query);
-      $country_max_city = max($country_city_max_array);
-
-      $weight_count_limit = max($country_max_fee,$country_max_area,$country_max_city);
-
-      if($weight_count > $weight_count_limit){
-
-        tep_redirect(tep_redirect(tep_href_link(FILENAME_CREATE_ORDER.'?oID='.tep_db_prepare_input($_POST['oID']).'&Customer_mail='.tep_db_prepare_input($_POST['email_address']).'&site_id='.tep_db_prepare_input($_POST['site_id']).'&error=2&weight='.$weight_count_limit, null, 'SSL')));
-      }
     } 
   }
 }
@@ -312,7 +274,7 @@ $payment_bank_info = array();
       }
       tep_db_free_result($orders_total_query);
       tep_db_query("update ". TABLE_ORDERS_TOTAL ." set value=". $orders_price_total ." where orders_id='". $oID ."' and class='ot_total'");
-      tep_db_query("update ". TABLE_ORDERS_TOTAL ." set value=". $orders_price_total ." where orders_id='". $oID ."' and class='ot_subtotal'");
+      tep_db_query("update ". TABLE_ORDERS_TOTAL ." set value=". $orders_price_total ." where orders_id='". $oID ."' and class='ot_subtotal'"); 
       tep_redirect(tep_href_link(FILENAME_EDIT_NEW_ORDERS, 'oID=' . $insert_id, 'SSL'));
 
 

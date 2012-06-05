@@ -107,62 +107,7 @@ if (tep_not_null($action)) {
         $address_style = 'display: block;';
         $error = true;
       }
-
-      // products weight
-      $pro_weight_total = 0; //商品总重量
-      $products_qty_array = array();
-      foreach($update_products as $up_key=>$up_value){
-        
-        $up_weight_query = tep_db_query("select products_id from ". TABLE_ORDERS_PRODUCTS ." where orders_products_id='". $up_key ."'");
-        $up_weight_array = tep_db_fetch_array($up_weight_query);
-        tep_db_free_result($up_weight_query);
-        $pro_weight_query = tep_db_query("select * from ". TABLE_PRODUCTS ." where products_id='". $up_weight_array['products_id'] ."'");
-        $pro_weight_array = tep_db_fetch_array($pro_weight_query);
-        $products_qty_array[$up_weight_array['products_id']] = $up_value['qty'];
-        $pro_weight_total += $pro_weight_array['products_weight']*$up_value['qty'];
-        tep_db_free_result($pro_weight_query);
-      } 
-      $weight_count = $pro_weight_total;
-      $country_max_fee = 0; 
-      $country_fee_max_array = array();
-      $country_fee_query = tep_db_query("select weight_limit from ". TABLE_COUNTRY_FEE ." where status='0'");
-      while($country_fee_array = tep_db_fetch_array($country_fee_query)){
-
-        $country_fee_max_array[] = $country_fee_array['weight_limit'];
-      }
-      tep_db_free_result($country_fee_query);
-      $country_max_fee = max($country_fee_max_array);
-
-      $country_max_area = 0; 
-      $country_area_max_array = array();
-      $country_area_query = tep_db_query("select weight_limit from ". TABLE_COUNTRY_AREA ." where status='0'");
-      while($country_area_array = tep_db_fetch_array($country_area_query)){
-
-        $country_area_max_array[] = $country_area_array['weight_limit'];
-      }
-      tep_db_free_result($country_area_query);
-      $country_max_area = max($country_area_max_array);
-
-      $country_max_city = 0; 
-      $country_city_max_array = array();
-      $country_city_query = tep_db_query("select weight_limit from ". TABLE_COUNTRY_CITY ." where status='0'");
-      while($country_city_array = tep_db_fetch_array($country_city_query)){
-
-        $country_city_max_array[] = $country_city_array['weight_limit'];
-      }
-      tep_db_free_result($country_city_query);
-      $country_max_city = max($country_city_max_array);
-
-      $weight_count_limit = max($country_max_fee,$country_max_area,$country_max_city);
-
-      $weight_error = false;
-      if($weight_count > $weight_count_limit){
-
-        $weight_error = true;
-        $action = 'edit';
-        break;
-      }
-      
+ 
       $payment_method_romaji = payment::changeRomaji($payment_method,PAYMENT_RETURN_TYPE_CODE);
       $validateModule = $payment_modules->admin_confirmation_check($payment_method);
 
@@ -1497,8 +1442,22 @@ if($address_error == false){
     <script language="javascript" src="includes/javascript/jquery_include.js"></script>
     <script language="javascript" src="includes/javascript/all_orders.js"></script>
     <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
-    <script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
+  <script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
+  <script language="javascript" src="includes/jquery.form.js"></script>
   <script type="text/javascript"> 
+  function submit_check(){
+
+    var options = {
+    url: 'ajax_orders_weight.php?action=create_new_orders',
+    type:  'POST',
+    success: function(data) {
+      if(data != ''){
+        alert(data);
+      } 
+    }
+  };
+  $('#edit_order_id').ajaxSubmit(options);
+  }
   <?php
   $address_fixed_query = tep_db_query("select name_flag,fixed_option from ". TABLE_ADDRESS ." where fixed_option!='0' and status='0'");
   while($address_fixed_array = tep_db_fetch_array($address_fixed_query)){
@@ -2583,7 +2542,7 @@ a.dpicker {
             <?php echo tep_draw_separator(); ?>
             </td>
             </tr> 
-            <tr><?php echo tep_draw_form('edit_order', "edit_new_orders.php", tep_get_all_get_params(array('action','paycc')) . 'action=update_order', 'post', 'onSubmit="return submitChk()"'); ?>
+            <tr><?php echo tep_draw_form('edit_order', "edit_new_orders.php", tep_get_all_get_params(array('action','paycc')) . 'action=update_order', 'post', 'id="edit_order_id" onSubmit="return submitChk()"'); ?>
 
             <td>
             <!-- Begin Update Block -->
@@ -3383,16 +3342,7 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
             <!--
             <td valign="top"><?php echo "<span class='smalltext'>" .  HINT_DELETE_POSITION . EDIT_ORDERS_ADD_PRO_READ . "</span>"; ?></td> <td align="right"><?php echo '<a href="' . $PHP_SELF . '?oID=' . $oID . '&action=add_product&step=1">' . tep_html_element_button(ADDING_TITLE) . '</a>'; ?></td>
             -->
-            </tr>
-            <?php
-             if($weight_error == true){
-            ?>
-            <tr>
-            <td valign="top" colspan="2"><?php echo '<span class="smalltext"><font color="#FF0000">' . CREATE_ORDER_PRODUCTS_WEIGHT . $weight_count_limit . CREATE_ORDER_PRODUCTS_WEIGHT_ONE .'</span>'; ?></td>
-            </tr>
-            <?php
-             }
-            ?>
+            </tr> 
             </table>
             </td>
             </tr>     
@@ -3574,7 +3524,7 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
             <?php if (tep_is_oroshi($order->customer['id'])) { ?>
               <INPUT type="button" value="<?php echo EDIT_ORDERS_CONFIRM_BUTTON;?>" onClick="update_price()">
                 <?php } else { ?>
-                  <INPUT type="button" value="<?php echo EDIT_ORDERS_CONFIRM_BUTTON;?>" onClick="update_price2()">
+                  <INPUT type="button" value="<?php echo EDIT_ORDERS_CONFIRM_BUTTON;?>" onClick="submit_check();update_price2();">
                     <?php } ?>
                     </td>
                     </tr>
@@ -3747,7 +3697,7 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
             <td class="main" bgcolor="#FFBBFF" width="10">&nbsp;</td>
             <td class="main" bgcolor="#FF99FF" width="10">&nbsp;</td>
             <td class="main" bgcolor="#FF77FF" width="10">&nbsp;</td>
-            <td class="main" bgcolor="#FF55FF" width="120" align="center"><?php echo tep_html_element_submit(IMAGE_UPDATE); ?></td>
+            <td class="main" bgcolor="#FF55FF" width="120" align="center"><?php echo tep_html_element_submit(IMAGE_UPDATE,'onclick="submit_check();"'); ?></td>
             </tr>
             </table>
             </td>

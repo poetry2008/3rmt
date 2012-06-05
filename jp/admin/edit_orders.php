@@ -248,47 +248,7 @@ if (tep_not_null($action)) {
       $end_min_1 = tep_db_prepare_input($_POST['end_min_1']);
       $end_min_2 = tep_db_prepare_input($_POST['end_min_2']);
       $goods_check = $order_query;
-
-      // products weight
-      $country_max_fee = 0; 
-      $country_fee_max_array = array();
-      $country_fee_query = tep_db_query("select weight_limit from ". TABLE_COUNTRY_FEE ." where status='0'");
-      while($country_fee_array = tep_db_fetch_array($country_fee_query)){
-
-        $country_fee_max_array[] = $country_fee_array['weight_limit'];
-      }
-      tep_db_free_result($country_fee_query);
-      $country_max_fee = max($country_fee_max_array);
-
-      $country_max_area = 0; 
-      $country_area_max_array = array();
-      $country_area_query = tep_db_query("select weight_limit from ". TABLE_COUNTRY_AREA ." where status='0'");
-      while($country_area_array = tep_db_fetch_array($country_area_query)){
-
-        $country_area_max_array[] = $country_area_array['weight_limit'];
-      }
-      tep_db_free_result($country_area_query);
-      $country_max_area = max($country_area_max_array);
-
-      $country_max_city = 0; 
-      $country_city_max_array = array();
-      $country_city_query = tep_db_query("select weight_limit from ". TABLE_COUNTRY_CITY ." where status='0'");
-      while($country_city_array = tep_db_fetch_array($country_city_query)){
-
-        $country_city_max_array[] = $country_city_array['weight_limit'];
-      }
-      tep_db_free_result($country_city_query);
-      $country_max_city = max($country_city_max_array);
-
-      $weight_count_limit = max($country_max_fee,$country_max_area,$country_max_city);
-
-      $weight_error = false;
-      if($weight > $weight_count_limit){
-
-        $weight_error = true;
-        $action = 'edit';
-        break;
-      }
+ 
       /*
          if (tep_db_num_rows($goods_check) == 0) {
          $messageStack->add('商品が追加されていません。', 'error');
@@ -1481,7 +1441,22 @@ $shipping_fee = $order->info['shipping_fee'] != $shipping_fee ? $shipping_fee : 
 <script language="javascript" src="includes/javascript/all_orders.js"></script>
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
 <script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
+<script language="javascript" src="includes/jquery.form.js"></script>
 <script language="javascript">
+function submit_check(){
+
+    var options = {
+    url: 'ajax_orders_weight.php?action=edit_orders',
+    type:  'POST',
+    success: function(data) {
+      if(data != ''){
+        alert(data);
+      } 
+    }
+  };
+  $('#edit_order_id').ajaxSubmit(options);
+  }
+
 <?php
   $address_fixed_query = tep_db_query("select name_flag,fixed_option from ". TABLE_ADDRESS ." where fixed_option!='0' and status='0'");
   while($address_fixed_array = tep_db_fetch_array($address_fixed_query)){
@@ -2532,7 +2507,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     <?php echo tep_draw_separator(); ?>
     </td>
     </tr> 
-    <tr><?php echo tep_draw_form('edit_order', "edit_orders.php", tep_get_all_get_params(array('action','paycc')) . 'action=update_order', 'post', 'onSubmit="return submitChk()"'); ?>
+    <tr><?php echo tep_draw_form('edit_order', "edit_orders.php", tep_get_all_get_params(array('action','paycc')) . 'action=update_order', 'post', 'id="edit_order_id" onSubmit="return submitChk()"'); ?>
 
     <td>
     <!-- Begin Update Block -->
@@ -3010,16 +2985,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     <?php }?>
     <?php echo '<a href="' . $PHP_SELF . '?oID=' . $oID . '&action=add_product&step=1">' . tep_html_element_button(ADDING_TITLE) . '</a>'; ?>
     </td>
-    </tr>
-    <?php
-     if($weight_error == true){
-    ?>
-    <tr>
-    <td valign="top" colspan="2"><?php echo '<span class="smalltext"><font color="#FF0000">' . CREATE_ORDER_PRODUCTS_WEIGHT . $weight_count_limit . CREATE_ORDER_PRODUCTS_WEIGHT_ONE .'</span>'; ?></td>
-    </tr>
-    <?php
-     }
-    ?>
+    </tr> 
     </table>
     </td>
     </tr>     
@@ -3077,11 +3043,12 @@ if (($action == 'edit') && ($order_exists == true)) {
     $TotalStyle = "smallText";
     if ($TotalDetails["Class"] == "ot_total") {
       $shipping_fee_total = ($shipping_fee_subtotal+$shipping_fee+$order->info["code_fee"]+$shipping_fee_tax-$shipping_fee_point) != $TotalDetails["Price"] ? $shipping_fee : 0; 
+      
       echo '  <tr>' . "\n" .
         '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_OTTOTAL_READ.'</td>' . 
         '    <td align="right" class="' . $TotalStyle . '"><b>' . $TotalDetails["Name"] . '</b></td>' . 
         '    <td align="right" class="' . $TotalStyle . '"><b>';
-      if($TotalDetails["Price"] >= 0 ){
+      if($TotalDetails["Price"]+$shipping_fee_total >= 0 ){
         echo $currencies->ot_total_format(($TotalDetails["Price"]+$shipping_fee_total), true, $order->info['currency'], $order->info['currency_value']);
       }else{
         echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->ot_total_format(($TotalDetails["Price"]+$shipping_fee_total), true, $order->info['currency'], $order->info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
@@ -3208,7 +3175,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     <?php if (tep_is_oroshi($order->customer['id'])) { ?>
       <INPUT type="button" value="<?php echo EDIT_ORDERS_CONFIRM_BUTTON;?>" onClick="update_price()">
         <?php } else { ?>
-          <INPUT type="button" value="<?php echo EDIT_ORDERS_CONFIRM_BUTTON;?>" onClick="update_price2()">
+          <INPUT type="button" value="<?php echo EDIT_ORDERS_CONFIRM_BUTTON;?>" onClick="submit_check();update_price2()">
             <?php } ?>
             </td>
             </tr>
@@ -3382,7 +3349,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     <td class="main" bgcolor="#FBE2C8" width="10">&nbsp;</td>
     <td class="main" bgcolor="#FFCC99" width="10">&nbsp;</td>
     <td class="main" bgcolor="#F8B061" width="10">&nbsp;</td>
-    <td class="main" bgcolor="#FF9933" width="120" align="center"><?php echo tep_html_element_submit(IMAGE_UPDATE); ?></td>
+    <td class="main" bgcolor="#FF9933" width="120" align="center"><?php echo tep_html_element_submit(IMAGE_UPDATE,'onclick="submit_check();"'); ?></td>
     </tr>
     </table>
     </td>
