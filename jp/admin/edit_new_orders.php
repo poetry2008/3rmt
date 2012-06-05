@@ -672,18 +672,8 @@ if (tep_not_null($action)) {
       $address_num_query = tep_db_query("select count(*) as count_num from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."'"); 
       $address_num_array = tep_db_fetch_array($address_num_query);
 
-      if($address_num_array['count_num'] > 0){
-        foreach($options_info_array as $op_key=>$op_value){
-        
-        $address_options_query = tep_db_query("select * from ". TABLE_ADDRESS ." where name_flag='". substr($op_key,3) ."'");
-        $address_options_array = tep_db_fetch_array($address_options_query);
-        tep_db_free_result($address_options_query);
-        $op_value = $op_value == $address_options_array['comment'] ? '' : $op_value;
-        $address_query = tep_db_query("update ". TABLE_ADDRESS_ORDERS ." set value='".$op_value."' where name='".substr($op_key,3)."' and orders_id='".$oID."'");
-        tep_db_free_result($address_query);
-      }   
-      }else{
-
+      tep_db_query("delete from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and customers_id='".$check_status['customers_id']."'");
+      
       foreach($options_info_array as $op_key=>$op_value){
   
         $address_options_query = tep_db_query("select * from ". TABLE_ADDRESS ." where name_flag='". substr($op_key,3) ."'");
@@ -693,7 +683,6 @@ if (tep_not_null($action)) {
         $address_query = tep_db_query("insert into ". TABLE_ADDRESS_ORDERS ." values(NULL,'$oID',{$check_status['customers_id']},{$address_options_array['id']},'{$address_options_array['name_flag']}','$op_value')");
         tep_db_free_result($address_query);
       }
-    }
 
   $address_show_array = array(); 
   $address_show_list_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where status='0' and show_title='1'");

@@ -461,43 +461,19 @@ if (tep_not_null($action)) {
 
       //住所信息入库
 
-      $address_id_list_array = array();
-      $address_old_list_array = array();
-      $address_old_query = tep_db_query("select * from ". TABLE_ADDRESS ." where status='0' and type!='text'");
-      while($address_old_array = tep_db_fetch_array($address_old_query)){
-
-        $address_old_list_array[] = $address_old_array['id'];
-      }
-      tep_db_free_result($address_old_query);
+      tep_db_query("delete from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and customers_id='".$check_status['customers_id']."'");
       foreach($option_info_array as $ad_key=>$ad_value){
         
         $address_list_query = tep_db_query("select * from ". TABLE_ADDRESS ." where name_flag='". substr($ad_key,3) ."'");
         $address_list_array = tep_db_fetch_array($address_list_query);
         $ad_value = $address_list_array['comment'] == $ad_value ? '' : $ad_value;
-
-        $address_search_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where name='". substr($ad_key,3) ."' and orders_id='". $oID ."'");
-        $address_search_num = tep_db_num_rows($address_search_query);
-        if($address_search_num > 0){
-
-          $address_search_array = tep_db_fetch_array($address_search_query);
-          $address_id_list_array[] = $address_search_array['address_id'];
-          $ad_sql = "update ". TABLE_ADDRESS_ORDERS ." set value='". $ad_value ."' where name='". substr($ad_key,3) ."' and orders_id='". $oID ."'";
-        }else{
-          
-          $ad_sql = "insert into ". TABLE_ADDRESS_ORDERS ." values(NULL,'".$oID."','{$check_status['customers_id']}','{$address_list_array['id']}','". substr($ad_key,3) ."','$ad_value')";
-        }
-        tep_db_free_result($address_search_query);
+   
+        $ad_sql = "insert into ". TABLE_ADDRESS_ORDERS ." values(NULL,'".$oID."','{$check_status['customers_id']}','{$address_list_array['id']}','". substr($ad_key,3) ."','$ad_value')";
         $ad_query = tep_db_query($ad_sql);
         tep_db_free_result($address_list_query);
         tep_db_free_result($ad_query);
       }
-
-      $address_diff_id = array_diff($address_old_list_array,$address_id_list_array);
-      $address_diff_str = implode(",",$address_diff_id);
-
-      if($address_diff_str != ''){
-        echo "delete from ". TABLE_ADDRESS_ORDERS ." where address_id in (".$address_diff_str.") and orders_id='". $oID ."'";
-      }
+ 
       
       $address_show_array = array(); 
   $address_show_list_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where status='0' and show_title='1'");
