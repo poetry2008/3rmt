@@ -1337,7 +1337,14 @@ a.s_column_bar {
 .pro_option table{
 	width:100%;
 }
+.order_option_info{
+	float:left;
+	width:60%;
 
+}
+.order_option_price{
+	float:left;
+}
 /*shipping*/
 .shipping_error{
 	color:#ff0000;

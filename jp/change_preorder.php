@@ -569,12 +569,12 @@ if ($error == false && $_POST['action'] == 'process') {
 foreach ($_POST as $post_key => $post_value) {
   if (is_array($post_value)) {
     foreach ($post_value as $ps_key => $ps_value) {
-      echo '<input type="hidden" name="'.$post_key.'['.$ps_key.']" value="'.$ps_value.'">'; 
+      //echo '<input type="hidden" name="'.$post_key.'['.$ps_key.']" value="'.$ps_value.'">'; 
       //$preorder_info_attr[] = $ps_value;
       $preorder_information[$post_key][$ps_key] = $ps_value; 
     }
   } else {
-    echo '<input type="hidden" name="'.$post_key.'" value="'.stripslashes($post_value).'">'; 
+    //echo '<input type="hidden" name="'.$post_key.'" value="'.stripslashes($post_value).'">'; 
       $preorder_information[$post_key] = stripslashes($post_value); 
   }
 }
@@ -1101,7 +1101,7 @@ document.forms.order1.submit();
             <tr>
               <td class="main" width="150"><?php echo TEXT_PREORDER_POINT_TEXT;?></td> 
               <td class="main">
-              <input type="text" name="preorder_point" size="24" value="<?php echo isset($_POST['preorder_campaign_info'])?$_POST['preorder_campaign_info']:(isset($_POST['preorder_point'])?$_POST['preorder_point']:'0');?>" style="text-align:right;">&nbsp;&nbsp;<?php echo $preorder_point;?> 
+              <input type="text" name="preorder_point" size="24" value="<?php echo isset($_POST['preorder_campaign_info'])?$_POST['preorder_campaign_info']:(isset($_POST['preorder_point'])?$_POST['preorder_point']:(isset($_SESSION['preorder_information']['preorder_point'])?$_SESSION['preorder_information']['preorder_point']:'0'));?>" style="text-align:right;">&nbsp;&nbsp;<?php echo $preorder_point;?> 
               <?php 
               echo TEXT_PREORDER_POINT_READ; 
               if (isset($point_error)) {
@@ -1118,7 +1118,7 @@ document.forms.order1.submit();
             <tr>
               <td class="main" width="150"><?php echo TEXT_PREORDER_POINT_TEXT;?></td> 
               <td class="main">
-              <input type="text" name="camp_preorder_point" size="24" value="<?php echo isset($_POST['preorder_campaign_info'])?$_POST['preorder_campaign_info']:(isset($_POST['camp_preorder_point'])?$_POST['camp_preorder_point']:'0');?>" style="text-align:right;">
+              <input type="text" name="camp_preorder_point" size="24" value="<?php echo isset($_POST['preorder_campaign_info'])?$_POST['preorder_campaign_info']:(isset($_POST['camp_preorder_point'])?$_POST['camp_preorder_point']:(isset($_SESSION['preorder_information']['preorder_campaign_point'])?$_SESSION['preorder_information']['preorder_campaign_point']:'0'));?>" style="text-align:right;">
               <?php 
               if (isset($point_error)) {
                 echo '<br><font color="#ff0000">'.$point_error.'</font>'; 

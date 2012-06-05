@@ -273,7 +273,7 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
                }
              } else {
                if (isset($a_old_single)) {
-                 if (trim(nl2br($default_value)) == trim(nl2br(stripslashes($value['title'])))) {
+                 if (trim(str_replace($replace_arr, '', nl2br($default_value))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($value['title']))))) {
                    echo '<div class="option_show_border">'; 
                  } else {
                    echo '<div class="option_hide_border">'; 

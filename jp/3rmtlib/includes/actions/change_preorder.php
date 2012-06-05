@@ -227,10 +227,12 @@
           $preorder_information[$post_e_key] = stripslashes($post_e_value); 
         }
       }
+      $preorder_information['pid'] = $preorder_id; 
       if (!tep_session_is_registered('preorder_information')) {
         tep_session_register('preorder_information'); 
       }
-      tep_redirect(tep_href_link('change_preorder_handle.php', 'pid='.$_GET['pid'], 'SSL')); 
+      //tep_redirect(tep_href_link('change_preorder_handle.php', 'pid='.$_GET['pid'], 'SSL')); 
+      tep_redirect(tep_href_link('change_preorder.php', 'pid='.$_GET['pid'].'&is_check=1', 'SSL'));
       }
     }
   }
