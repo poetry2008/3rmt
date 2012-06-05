@@ -1841,7 +1841,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     if($step > 3)
     {
       echo "<tr class=\"dataTableRow\"><form action='$PHP_SELF?oID=$oID&action=$action' method='POST'>\n";
-      echo "<td class='dataTableContent' align='right'><b>" . ADDPRODUCT_TEXT_STEP .  " 3: </b></td>";
+      echo "<td class='dataTableContent' align='right'><b>" . ADDPRODUCT_TEXT_STEP .  " 4: </b></td>";
       $products_num = isset($_POST['add_product_quantity']) ? $_POST['add_product_quantity'] : 1;
       $products_price = isset($_POST['add_product_price']) ? $_POST['add_product_price'] : 0;
       echo '<td class="dataTableContent" valign="top">' .
