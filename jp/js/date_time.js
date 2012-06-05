@@ -209,16 +209,28 @@ function selectHour(start_time,end_time,hour,min_num,ele){
       
         var temp_value = 0;
         if(hour < 6){
-          temp_value = -85; 
+          if(navigator.userAgent.indexOf("MSIE")>0) {
+            temp_value = -77;
+          } else {
+            temp_value = -85;
+          }
         }else if(hour >= 6 && hour <= 11){
         
-          temp_value = -60;
+          if(navigator.userAgent.indexOf("MSIE")>0) {
+            temp_value = -56;
+          } else {
+            temp_value = -60;
+          }
         }else if(hour >= 12 && hour <= 17){
         
           temp_value = -35;
         }else{
         
-          temp_value = -10;
+          if(navigator.userAgent.indexOf("MSIE")>0) {
+            temp_value = -11;
+          } else {
+            temp_value = -10;
+          }
         }
         $('#shipping_time_id').css('top', temp_value).show();
         if(typeof(ele) != "object"){
