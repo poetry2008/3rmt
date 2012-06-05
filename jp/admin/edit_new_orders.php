@@ -813,7 +813,8 @@ if($address_error == false){
           if (IsSet($products_details[attributes])) {
             foreach ($products_details["attributes"] as $orders_products_attributes_id => $attributes_details) {
               $input_option = array('title' => $attributes_details['option'], 'value'=> $attributes_details['value']); 
-              $Query = "update " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " set option_info = '" .tep_db_input(serialize($input_option)) . "',options_values_price = '".$attributes_details['price']."' where orders_products_attributes_id = '$orders_products_attributes_id';";
+              //$Query = "update " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " set option_info = '" .tep_db_input(serialize($input_option)) . "',options_values_price = '".$attributes_details['price']."' where orders_products_attributes_id = '$orders_products_attributes_id';";
+              $Query = "update " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " set options_values_price = '".$attributes_details['price']."' where orders_products_attributes_id = '$orders_products_attributes_id';";
               tep_db_query($Query);
             }
           }
