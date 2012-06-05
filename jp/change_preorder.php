@@ -233,6 +233,25 @@ function country_area_check(value,select_value){
 
 }
 
+function session_value(){
+
+  var session_array = new Array();
+  <?php
+    foreach($_SESSION['preorder_information'] as $p_key=>$p_value){
+
+      if(substr($p_key,0,3) == 'ad_'){
+
+        echo 'session_array["'. $p_key .'"] = "'. $p_value .'";'."\n";
+      }
+    }
+  ?>
+  
+    for(x in session_array){
+
+      $("#"+x).val(session_array[x]);
+    }
+
+}
 //js 判断某值是否存在某数组中
   function in_array(value,arr){
 
@@ -494,10 +513,15 @@ $(document).ready(function(){
   ?>  
     check("<?php echo isset($_POST[$country_fee_id]) ? $_POST[$country_fee_id] : '';?>");
   <?php
-   }else{
+   }elseif(!isset($_SESSION['preorder_information'])){
   ?>
     check();
     address_option_list(first_num);
+  <?php
+  }else{
+  ?>
+    check("<?php echo $_SESSION['preorder_information'][$country_fee_id];?>");
+    session_value();
   <?php
   }
   ?>
@@ -506,10 +530,14 @@ $(document).ready(function(){
   ?>
     country_check($("#"+country_fee_id).val(),"<?php echo $_POST[$country_area_id];?>");
   <?php
-   }else{
+   }elseif(!isset($_SESSION['preorder_information'])){
   ?>
     country_check($("#"+country_fee_id).val());
     address_option_list(first_num);
+  <?php
+  }else{
+  ?>
+    country_check($("#"+country_fee_id).val(),"<?php echo $_SESSION['preorder_information'][$country_area_id];?>");
   <?php
   }
   ?>
@@ -519,10 +547,14 @@ $(document).ready(function(){
      
      country_area_check($("#"+country_area_id).val(),"<?php echo $_POST[$country_city_id];?>");
   <?php
-   }else{
+   }elseif(!isset($_SESSION['preorder_information'])){
   ?>
     country_area_check($("#"+country_area_id).val());
     address_option_list(first_num);
+  <?php
+  }else{
+  ?>
+    country_area_check($("#"+country_area_id).val(),"<?php echo $_SESSION['preorder_information'][$country_city_id]?>");
   <?php
   }
   ?>
@@ -856,10 +888,16 @@ document.forms.order1.submit();
           $checked_str_old = '';
           $checked_str_new = '';
           $show_flag = '';
-          if ((isset($_POST['address_option']) && ($_POST['address_option'] == 'old')) || !isset($_POST['address_option'])){
+          if ((isset($_POST['address_option']) && ($_POST['address_option'] == 'old')) || (!isset($_POST['address_option']) && !isset($_SESSION['preorder_information']['address_option']))){
 
             $checked_str_old = 'checked';
             $show_flag = 'block';
+          }elseif(isset($_SESSION['preorder_information']['address_option']) && $_SESSION['preorder_information']['address_option'] == 'old'){
+            $checked_str_old = 'checked';
+            $show_flag = 'block';           
+          }elseif(isset($_SESSION['preorder_information']['address_option']) && $_SESSION['preorder_information']['address_option'] == 'new'){
+            $checked_str_new = 'checked';
+            $show_flag = 'none';
           }else{
 
             $checked_str_new = 'checked';
@@ -886,19 +924,32 @@ document.forms.order1.submit();
          $(document).ready(function(){
   
            address_option_show('new'); 
+           
          }); 
         </script>
 
         <?php
             }
         ?>
+        <script type="text/javascript">
+         $(document).ready(function(){
+  
+           <?php
+              if($show_flag == 'none'){
+          ?>   
+               $("#address_show_id").hide();
+          <?php
+              }
+           ?>
+         }); 
+        </script>
             <tr>
             <td colspan="2" class="main">
               <input type="radio" name="address_option" value="old" onclick="address_option_show('old');address_option_list(first_num);" <?php echo $checked_str_old;?>><?php echo TABLE_OPTION_OLD; ?> 
               <input type="radio" name="address_option" value="new" onclick="address_option_show('new');" <?php echo $checked_str_new;?>><?php echo TABLE_OPTION_NEW; ?>
             </td>
             </tr>
-            <tr id="address_show_id" style="display:none">
+            <tr id="address_show_id">
             <td class="main"><?php echo TABLE_ADDRESS_SHOW; ?></td>
             <td class="main">
             <select name="address_show_list" id="address_show_list" onchange="address_option_list(this.value);">
@@ -958,6 +1009,9 @@ document.forms.order1.submit();
     for($j = 0;$j < $shipping_time;$j++){
 
       $selected_str = date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == $_POST['date'] ? 'selected' : ''; 
+      if(!isset($_POST['date'])){
+        $selected_str = date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == $_SESSION['preorder_info_date'] ? 'selected' : ''; 
+      }
       echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'" '. $selected_str .'>'.str_replace($oarr, $newarr, date("Y年m月d日（l）", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
 
     }
@@ -998,10 +1052,22 @@ document.forms.order1.submit();
              if(isset($_POST['date']) && $_POST['date'] != ''){
 
                 echo '<script>selectDate(\''. $work_start .' \', \''. $work_end .'\');$("#shipping_list").show();</script>';
+             }else{
+
+                if(isset($_SESSION['date']) && $_SESSION['date'] != ''){
+
+                  echo '<script>selectDate(\''. $work_start .' \', \''. $work_end .'\');$("#shipping_list").show();</script>';
+                }
              }
              if(isset($_POST['min']) && $_POST['min'] != ''){
 
                 echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\',\''. $_POST['hour'] .'\','. $_POST['min'] .','. $_POST['ele'] .');$("#shipping_list_min").show();</script>';
+             }else{
+
+                if(isset($_SESSION['min']) && $_SESSION['min'] != ''){
+
+                  echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\',\''. $_SESSION['preorder_info_hour'] .'\','. $_SESSION['preorder_info_min'] .','. $_SESSION['preorder_information']['ele'] .');$("#shipping_list_min").show();</script>';
+                }
              }
              ?> 
 </td></tr>

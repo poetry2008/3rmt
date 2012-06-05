@@ -825,7 +825,11 @@ $(document).ready(function(){
   ?>  
     check("<?php echo isset($_POST[$country_fee_id]) ? $_POST[$country_fee_id] : '';?>");
   <?php
-   }elseif(empty($_SESSION['options'])){
+   }elseif(isset($_SESSION['options'])){
+  ?>
+    check("<?php echo $_SESSION['options'][substr($country_fee_id,3)][1];?>");
+  <?php
+  }else{
   ?>
     check();
     address_option_list(first_num); 
@@ -837,7 +841,11 @@ $(document).ready(function(){
   ?>
     country_check($("#"+country_fee_id).val(),"<?php echo $_POST[$country_area_id];?>");
   <?php
-   }elseif(empty($_SESSION['options'])){
+   }elseif(isset($_SESSION['options'])){
+  ?>
+    country_check($("#"+country_fee_id).val(),"<?php echo $_SESSION['options'][substr($country_area_id,3)][1];?>");
+  <?php
+   }else{
   ?>
     country_check($("#"+country_fee_id).val());
     address_option_list(first_num);
@@ -850,7 +858,11 @@ $(document).ready(function(){
      
      country_area_check($("#"+country_area_id).val(),"<?php echo $_POST[$country_city_id];?>");
   <?php
-   }elseif(empty($_SESSION['options'])){
+   }elseif(isset($_SESSION['options'])){
+  ?>
+     country_area_check($("#"+country_area_id).val(),"<?php echo $_SESSION['options'][substr($country_city_id,3)][1];?>");
+  <?php
+  }else{
   ?>
     country_area_check($("#"+country_area_id).val());
     address_option_list(first_num);
