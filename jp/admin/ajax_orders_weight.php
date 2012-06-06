@@ -2,15 +2,15 @@
 /*
  * ajax orders weight
  */
-require('includes/application_top.php');
-require('includes/languages/japanese/step-by-step/create_order.php');
+      require('includes/application_top.php');
+      require('includes/languages/japanese/step-by-step/create_order.php');
       $action = $_GET['action'];
 
       $country_max_fee = 0; 
       $country_fee_max_array = array();
       $country_fee_query = tep_db_query("select weight_limit from ". TABLE_COUNTRY_FEE ." where status='0'");
       while($country_fee_array = tep_db_fetch_array($country_fee_query)){
-$country_fee_max_array[] = $country_fee_array['weight_limit'];
+        $country_fee_max_array[] = $country_fee_array['weight_limit'];
       }
       tep_db_free_result($country_fee_query);
       $country_max_fee = max($country_fee_max_array);
@@ -83,7 +83,7 @@ case 'create_new_orders':
       } 
       break;
 case 'edit_orders':
-  // products weight
+    // products weight
     $shipping_array = array();
     foreach($update_products as $products_key=>$products_value){
 
@@ -101,6 +101,14 @@ case 'edit_orders':
       tep_db_free_result($shipping_fee_query);
     }
 
+    // shipping fee
+    $fixed_option_query = tep_db_query("select name_flag from ". TABLE_ADDRESS ." where fixed_option!='0'");
+    while($fixed_option_array = tep_db_fetch_array($fixed_option_query)){
+
+      $ship_fee_array[$fixed_option_array['fixed_option']] = $fixed_option_array['name_flag'];
+    }
+    tep_db_free_result();
+
     $weight_count = $shipping_weight_total;      
      if($weight_count > $weight_count_limit){
         echo CREATE_ORDER_PRODUCTS_WEIGHT.$weight_count_limit.CREATE_ORDER_PRODUCTS_WEIGHT_ONE;
@@ -109,8 +117,8 @@ case 'edit_orders':
       } 
     break;
 case 'edit_preorder':
-  // products weight
-      $pro_weight_total = 0; //商品总重量
+        // products weight
+        $pro_weight_total = 0; //商品总重量
        
         $pro_weight_query = tep_db_query("select * from ". TABLE_PRODUCTS ." where products_id='". $_POST['products_id'] ."'");
         $pro_weight_array = tep_db_fetch_array($pro_weight_query);
@@ -118,11 +126,11 @@ case 'edit_preorder':
         tep_db_free_result($pro_weight_query);
 
         $weight_count = $pro_weight_total;
-     if($weight_count > $weight_count_limit){
-        echo CREATE_ORDER_PRODUCTS_WEIGHT.$weight_count_limit.CREATE_ORDER_PRODUCTS_WEIGHT_ONE;
-      }else{
-        echo '';
-      } 
+        if($weight_count > $weight_count_limit){
+          echo CREATE_ORDER_PRODUCTS_WEIGHT.$weight_count_limit.CREATE_ORDER_PRODUCTS_WEIGHT_ONE;
+        }else{
+          echo '';
+        } 
   break;
 }
 ?>

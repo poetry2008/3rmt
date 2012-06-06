@@ -1485,38 +1485,8 @@ function submit_check(){
 function check(select_value){
 
   var arr = new Array();
-  <?php
-    $weight_count = $shipping_weight_total;
-    $country_fee_temp_array = array();
-    $country_fee_show_query = tep_db_query("select * from ". TABLE_COUNTRY_FEE ." where status='0'");
-    while($country_fee_show_array = tep_db_fetch_array($country_fee_show_query)){
-
-      $country_fee_temp_array[$country_fee_show_array['name']][] = $country_fee_show_array['weight_limit'];
-      $country_area_show_query = tep_db_query("select * from ". TABLE_COUNTRY_AREA ." where status='0' and fid=". $country_fee_show_array['id']);
-      while($country_area_show_array = tep_db_fetch_array($country_area_show_query)){
-
-        $country_fee_temp_array[$country_fee_show_array['name']][] = $country_area_show_array['weight_limit'];
-        $country_city_show_query = tep_db_query("select * from ". TABLE_COUNTRY_CITY ." where status='0' and fid=". $country_area_show_array['id']);
-        while($country_city_show_array = tep_db_fetch_array($country_city_show_query)){
-
-          $country_fee_temp_array[$country_fee_show_array['name']][] = $country_city_show_array['weight_limit'];
-        }
-        tep_db_free_result($country_city_show_query);
-      }
-      tep_db_free_result($country_area_show_query);
-    }
-    tep_db_free_result($country_fee_show_query);
-
-    $country_temp_str = '';
-    foreach($country_fee_temp_array as $c_f_key=>$c_f_value){
-
-      $max_temp = max($c_f_value);
-      if($weight_count > $max_temp){
-
-         $country_temp_str .= " and name!='".$c_f_key."'";
-      }
-    }
-    $country_fee_query = tep_db_query("select id,name from ". TABLE_COUNTRY_FEE ." where status='0'".$country_temp_str." order by id");
+  <?php  
+    $country_fee_query = tep_db_query("select id,name from ". TABLE_COUNTRY_FEE ." where status='0' order by id");
     while($country_fee_array = tep_db_fetch_array($country_fee_query)){
 
       echo 'arr["'.$country_fee_array['name'].'"] = "'. $country_fee_array['name'] .'";'."\n";
@@ -1545,34 +1515,9 @@ function check(select_value){
 function country_check(value,select_value){
    
    var arr = new Array();
-  <?php
-    $weight_count = $shipping_weight_total;
-    $country_fee_temp_array = array();
-
-      $country_area_show_query = tep_db_query("select * from ". TABLE_COUNTRY_AREA ." where status='0'");
-      while($country_area_show_array = tep_db_fetch_array($country_area_show_query)){
-
-        $country_fee_temp_array[$country_area_show_array['name']][] = $country_area_show_array['weight_limit'];
-        $country_city_show_query = tep_db_query("select * from ". TABLE_COUNTRY_CITY ." where status='0' and fid=". $country_area_show_array['id']);
-        while($country_city_show_array = tep_db_fetch_array($country_city_show_query)){
-
-          $country_fee_temp_array[$country_area_show_array['name']][] = $country_city_show_array['weight_limit'];
-        }
-        tep_db_free_result($country_city_show_query);
-      }
-      tep_db_free_result($country_area_show_query);
-
-    $country_temp_str = '';
-    foreach($country_fee_temp_array as $c_f_key=>$c_f_value){
-
-      $max_temp = max($c_f_value);
-      if($weight_count > $max_temp){
-
-         $country_temp_str .= " and name!='".$c_f_key."'";
-      }
-    }
+  <?php 
     $country_array = array();
-    $country_area_query = tep_db_query("select id,fid,name from ". TABLE_COUNTRY_AREA ." where status='0'".$country_temp_str." order by sort");
+    $country_area_query = tep_db_query("select id,fid,name from ". TABLE_COUNTRY_AREA ." where status='0' order by sort");
     while($country_area_array = tep_db_fetch_array($country_area_query)){
       
       $country_fee_fid_query = tep_db_query("select name from ". TABLE_COUNTRY_FEE ." where id='".$country_area_array['fid']."'"); 
@@ -1618,9 +1563,8 @@ function country_area_check(value,select_value){
    
    var arr = new Array();
   <?php
-    $weight_count = $shipping_weight_total;
     $country_array = array();
-    $country_city_query = tep_db_query("select id,fid,name from ". TABLE_COUNTRY_CITY ." where status='0' and weight_limit>=". $weight_count ." order by sort");
+    $country_city_query = tep_db_query("select id,fid,name from ". TABLE_COUNTRY_CITY ." where status='0' order by sort");
     while($country_city_array = tep_db_fetch_array($country_city_query)){
       
       $country_area_fid_query = tep_db_query("select name from ". TABLE_COUNTRY_AREA ." where id='".$country_city_array['fid']."'"); 
