@@ -329,8 +329,6 @@ function check(select_value){
 
       $("#td_"+country_fee_id_one).show();
     }
-    //$("#error_"+country_fee_id_one).html('');
-    //$("#prompt_"+country_fee_id_one).html('');
   }
 }
 function country_check(value,select_value){
@@ -376,8 +374,6 @@ function country_check(value,select_value){
       $("#td_"+country_area_id_one).show();
     }
 
-    //$("#error_"+country_area_id_one).html('');
-    //$("#prompt_"+country_area_id_one).html('');
  }
 
 }
@@ -426,9 +422,7 @@ function country_area_check(value,select_value){
       $("#td_"+country_city_id_one).show();
 
     }
-
-    //$("#error_"+country_city_id_one).html('');
-    //$("#prompt_"+country_city_id_one).html('');
+ 
   }
 
 }
@@ -663,7 +657,12 @@ function address_option_list(value){
     ii++; 
    }
   }
-
+    $("#error_"+country_fee_id_one).html('');
+    $("#prompt_"+country_fee_id_one).html('');
+    $("#error_"+country_area_id_one).html('');
+    $("#prompt_"+country_area_id_one).html('');
+    $("#error_"+country_city_id_one).html('');
+    $("#prompt_"+country_city_id_one).html('');
 }
 
 function session_value(){
@@ -768,9 +767,21 @@ $(document).ready(function(){
   $("#"+country_fee_id).change(function(){
     country_check($("#"+country_fee_id).val());
     country_area_check($("#"+country_area_id).val());
+    $("#error_"+country_fee_id_one).html('');
+    $("#prompt_"+country_fee_id_one).html('');
+    $("#error_"+country_area_id_one).html('');
+    $("#prompt_"+country_area_id_one).html('');
+    $("#error_"+country_city_id_one).html('');
+    $("#prompt_"+country_city_id_one).html('');
   }); 
   $("#"+country_area_id).change(function(){
     country_area_check($("#"+country_area_id).val());
+    $("#error_"+country_fee_id_one).html('');
+    $("#prompt_"+country_fee_id_one).html('');
+    $("#error_"+country_area_id_one).html('');
+    $("#prompt_"+country_area_id_one).html('');
+    $("#error_"+country_city_id_one).html('');
+    $("#prompt_"+country_city_id_one).html('');
   });
   <?php
     if(isset($_POST[$country_fee_id])){
