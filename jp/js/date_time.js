@@ -187,55 +187,55 @@ function selectHour(start_time,end_time,hour,min_num,ele){
         $("#shipping_list_show_min").html('');
         $("#shipping_list_show_min").html(html_str);
         $("#shipping_list_min").show();
-        if(ele != ''){
-         if(document.documentElement.clientHeight < document.body.scrollHeight){
-                   if(ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight+$('#shipping_time_id').height() > document.body.scrollHeight){
-                          offset = ele.offsetTop+$('#group_list_box').position().top-$('#shipping_time_id').height()-$('#offsetHeight').height();
-                          $('#shipping_time_id').css('top', offset).show(); 
-                      }else{
-                          offset = ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight;
-                          $('#shipping_time_id').css('top', offset).show(); 
-                      }
-          }else{
-                    if(ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight+$('#shipping_time_id').height() > document.documentElement.clientHeight){
-                          offset = ele.offsetTop+$('#group_list_box').position().top-$('#shipping_time_id').height()-$('#offsetHeight').height()-ele.offsetHeight;
-                          $('#shipping_time_id').css('top', offset).show(); 
-                    }else{
-                          offset = ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight;
-                          $('#shipping_time_id').css('top', offset).show(); 
-                    }
-         }
-      }
-      
+        
         var temp_value = 0;
         if(hour < 6){
-          if(navigator.userAgent.indexOf("MSIE")>0) {
-            temp_value = -77;
+          if(navigator.userAgent.indexOf("MSIE 9.0")>0) {
+              temp_value = -77;
           } else {
-            temp_value = -85;
+            if(navigator.userAgent.indexOf("MSIE")>0) {
+              temp_value = -86;
+            } else {
+              temp_value = -85;
+            }
           }
         }else if(hour >= 6 && hour <= 11){
         
-          if(navigator.userAgent.indexOf("MSIE")>0) {
-            temp_value = -56;
+          if(navigator.userAgent.indexOf("MSIE 9.0")>0) {
+              temp_value = -56;
           } else {
-            temp_value = -60;
+            if(navigator.userAgent.indexOf("MSIE")>0) {
+              temp_value = -61;
+            } else {
+              temp_value = -60;
+            }
           }
         }else if(hour >= 12 && hour <= 17){
         
-          temp_value = -35;
+          if(navigator.userAgent.indexOf("MSIE 9.0")>0) {
+            temp_value = -35;
+          } else {
+          if(navigator.userAgent.indexOf("MSIE")>0) {
+            temp_value = -36;
+          } else {
+            temp_value = -35;
+          }
+          }
         }else{
-        
+          if(navigator.userAgent.indexOf("MSIE 9.0")>0) {
+            temp_value = -11;
+          } else {
           if(navigator.userAgent.indexOf("MSIE")>0) {
             temp_value = -11;
           } else {
             temp_value = -10;
           }
+          }
         }
         $('#shipping_time_id').css('top', temp_value).show();
         if(typeof(ele) != "object"){
         
-          $('#shipping_time_id').css('top', ele).show();
+          //$('#shipping_time_id').css('top', ele).show();
           $("#ele_id").val(ele);
         }else{
           
