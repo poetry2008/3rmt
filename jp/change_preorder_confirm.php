@@ -362,7 +362,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                         echo '<td class="main">'. $_POST[substr($ad_key,3)] .':</td>';                  
                         echo '<td class="main">';
                         echo $_POST[$ad_key];
-                        echo '<input type="hidden" name="'. $ad_key .'" value="'. $ad_value .'"></td>';
+                        //echo '<input type="hidden" name="'. $ad_key .'" value="'. $ad_value .'"></td>';
                         echo '</tr>';
                       }
                     }
@@ -513,9 +513,17 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                       }
                       
                       $shipping_fee_str = $shipping_fee == 0 ? TEXT_SHIPPING_FEE_NOT : $currencies->format_total($shipping_fee);
+                      $preorder_shipping_fee = (int)$shipping_fee;
+                      if (!tep_session_is_registered('preorder_shipping_fee')) {
+                        tep_session_register('preorder_shipping_fee'); 
+                      }
                       ?>
                     <tr>
-                    <td class="main" align="right"><input type="hidden" name="shipping_fee" value="<?php echo $shipping_fee;?>"><?php echo TEXT_SHIPPING_FEE;?></td> 
+                    <td class="main" align="right">
+                    <?php if (false) {?> 
+                    <input type="hidden" name="shipping_fee" value="<?php echo $shipping_fee;?>">
+                    <?php }?> 
+                    <?php echo TEXT_SHIPPING_FEE;?></td> 
                     <td class="main" align="right"><?php echo $shipping_fee_str;?></td> 
                     </tr>
                     <?php
