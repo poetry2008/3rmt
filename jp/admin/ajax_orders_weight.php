@@ -79,7 +79,58 @@ case 'create_new_orders':
       if($weight_count > $weight_count_limit){
         echo CREATE_ORDER_PRODUCTS_WEIGHT.$weight_count_limit.CREATE_ORDER_PRODUCTS_WEIGHT_ONE;
       }else{
-        echo '';
+  //products shipping fee  
+  $fixed_option_list_array = array();
+  $fixed_option_query = tep_db_query("select name_flag,fixed_option from ". TABLE_ADDRESS ." where status='0' and fixed_option!='0'");
+  while($fixed_option_array = tep_db_fetch_array($fixed_option_query)){
+
+    $fixed_option_list_array[$fixed_option_array['fixed_option']] = $fixed_option_array['name_flag'];
+  }
+  tep_db_free_result($fixed_option_query);
+
+  if(isset($_POST['ad_'.$fixed_option_list_array[3]])){
+
+    $country_city_search_query = tep_db_query("select weight_limit from ". TABLE_COUNTRY_CITY ." where name='".$_POST['ad_'.$fixed_option_list_array[3]]."' and status='0'");
+    $country_city_search_array = tep_db_fetch_array($country_city_search_query);
+    tep_db_free_result($country_city_search_query);
+    $weight_limit = $country_city_search_array['weight_limit'];
+
+    if($weight_count > $weight_limit){
+       echo PRODUCTS_WEIGHT_ERROR_ONE.$_POST['ad_'.$fixed_option_list_array[3]].PRODUCTS_WEIGHT_ERROR_TWO."\n".PRODUCTS_WEIGHT_ERROR_THREE.$weight_limit.PRODUCTS_WEIGHT_ERROR_FOUR;
+    }else{
+       echo ''; 
+    }
+  }elseif(isset($_POST['ad_'.$fixed_option_list_array[2]])){
+    $country_area_search_query = tep_db_query("select weight_limit from ". TABLE_COUNTRY_AREA ." where name='".$_POST['ad_'.$fixed_option_list_array[2]]."' and status='0'");
+    $country_area_search_array = tep_db_fetch_array($country_area_search_query);
+    tep_db_free_result($country_area_search_query);
+    $weight_limit = $country_area_search_array['weight_limit'];
+
+    if($weight_count > $weight_limit){
+
+      echo PRODUCTS_WEIGHT_ERROR_ONE.$_POST['ad_'.$fixed_option_list_array[2]].PRODUCTS_WEIGHT_ERROR_TWO."\n".PRODUCTS_WEIGHT_ERROR_THREE.$weight_limit.PRODUCTS_WEIGHT_ERROR_FOUR;
+      
+    }else{
+
+      echo '';
+    }
+  }elseif(isset($_POST['ad_'.$fixed_option_list_array[1]])){
+
+    $country_fee_search_query = tep_db_query("select weight_limit from ". TABLE_COUNTRY_FEE ." where name='".$_POST['ad_'.$fixed_option_list_array[1]]."' and status='0'");
+    $country_fee_search_array = tep_db_fetch_array($country_fee_search_query);
+    tep_db_free_result($country_fee_search_query);
+    $weight_limit = $country_fee_search_array['weight_limit'];
+
+    if($weight_count > $weight_limit){
+
+       
+      echo PRODUCTS_WEIGHT_ERROR_ONE.$_POST['ad_'.$fixed_option_list_array[1]].PRODUCTS_WEIGHT_ERROR_TWO."\n".PRODUCTS_WEIGHT_ERROR_THREE.$weight_limit.PRODUCTS_WEIGHT_ERROR_FOUR;
+      
+    }else{
+
+       echo '';
+    }
+  } 
       } 
       break;
 case 'edit_orders':
@@ -101,19 +152,63 @@ case 'edit_orders':
       tep_db_free_result($shipping_fee_query);
     }
 
-    // shipping fee
-    $fixed_option_query = tep_db_query("select name_flag from ". TABLE_ADDRESS ." where fixed_option!='0'");
-    while($fixed_option_array = tep_db_fetch_array($fixed_option_query)){
-
-      $ship_fee_array[$fixed_option_array['fixed_option']] = $fixed_option_array['name_flag'];
-    }
-    tep_db_free_result();
-
     $weight_count = $shipping_weight_total;      
      if($weight_count > $weight_count_limit){
         echo CREATE_ORDER_PRODUCTS_WEIGHT.$weight_count_limit.CREATE_ORDER_PRODUCTS_WEIGHT_ONE;
-      }else{
-        echo '';
+     }else{
+
+  //products shipping fee  
+  $fixed_option_list_array = array();
+  $fixed_option_query = tep_db_query("select name_flag,fixed_option from ". TABLE_ADDRESS ." where status='0' and fixed_option!='0'");
+  while($fixed_option_array = tep_db_fetch_array($fixed_option_query)){
+
+    $fixed_option_list_array[$fixed_option_array['fixed_option']] = $fixed_option_array['name_flag'];
+  }
+  tep_db_free_result($fixed_option_query);
+
+  if(isset($_POST['ad_'.$fixed_option_list_array[3]])){
+
+    $country_city_search_query = tep_db_query("select weight_limit from ". TABLE_COUNTRY_CITY ." where name='".$_POST['ad_'.$fixed_option_list_array[3]]."' and status='0'");
+    $country_city_search_array = tep_db_fetch_array($country_city_search_query);
+    tep_db_free_result($country_city_search_query);
+    $weight_limit = $country_city_search_array['weight_limit'];
+
+    if($weight_count > $weight_limit){
+       echo PRODUCTS_WEIGHT_ERROR_ONE.$_POST['ad_'.$fixed_option_list_array[3]].PRODUCTS_WEIGHT_ERROR_TWO."\n".PRODUCTS_WEIGHT_ERROR_THREE.$weight_limit.PRODUCTS_WEIGHT_ERROR_FOUR;
+    }else{
+       echo ''; 
+    }
+  }elseif(isset($_POST['ad_'.$fixed_option_list_array[2]])){
+    $country_area_search_query = tep_db_query("select weight_limit from ". TABLE_COUNTRY_AREA ." where name='".$_POST['ad_'.$fixed_option_list_array[2]]."' and status='0'");
+    $country_area_search_array = tep_db_fetch_array($country_area_search_query);
+    tep_db_free_result($country_area_search_query);
+    $weight_limit = $country_area_search_array['weight_limit'];
+
+    if($weight_count > $weight_limit){
+
+      echo PRODUCTS_WEIGHT_ERROR_ONE.$_POST['ad_'.$fixed_option_list_array[2]].PRODUCTS_WEIGHT_ERROR_TWO."\n".PRODUCTS_WEIGHT_ERROR_THREE.$weight_limit.PRODUCTS_WEIGHT_ERROR_FOUR;
+      
+    }else{
+
+      echo '';
+    }
+  }elseif(isset($_POST['ad_'.$fixed_option_list_array[1]])){
+
+    $country_fee_search_query = tep_db_query("select weight_limit from ". TABLE_COUNTRY_FEE ." where name='".$_POST['ad_'.$fixed_option_list_array[1]]."' and status='0'");
+    $country_fee_search_array = tep_db_fetch_array($country_fee_search_query);
+    tep_db_free_result($country_fee_search_query);
+    $weight_limit = $country_fee_search_array['weight_limit'];
+
+    if($weight_count > $weight_limit){
+
+       
+      echo PRODUCTS_WEIGHT_ERROR_ONE.$_POST['ad_'.$fixed_option_list_array[1]].PRODUCTS_WEIGHT_ERROR_TWO."\n".PRODUCTS_WEIGHT_ERROR_THREE.$weight_limit.PRODUCTS_WEIGHT_ERROR_FOUR;
+      
+    }else{
+
+       echo '';
+    }
+  }
       } 
     break;
 case 'edit_preorder':

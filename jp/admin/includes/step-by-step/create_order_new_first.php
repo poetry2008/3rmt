@@ -20,12 +20,19 @@ function check_submit(){
     type:  'POST',
     success: function(data) {
       if(data != ''){
-        alert(data);
+        if(confirm(data)){
+         
+           var fax = document.getElementById("fax");
+           var fax_value = document.getElementById("fax_value");
+           fax_value.value = fax.value;
+           document.create_order_form_1.submit();
+        }
+      }else{
+        var fax = document.getElementById("fax");
+        var fax_value = document.getElementById("fax_value");
+        fax_value.value = fax.value;
+        document.create_order_form_1.submit();
       }
-      var fax = document.getElementById("fax");
-      var fax_value = document.getElementById("fax_value");
-      fax_value.value = fax.value;
-      document.create_order_form_1.submit();
     }
   };
   $('#create_order_form_1').ajaxSubmit(options); 

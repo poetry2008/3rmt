@@ -1443,6 +1443,7 @@ $shipping_fee = $order->info['shipping_fee'] != $shipping_fee ? $shipping_fee : 
 <script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
 <script language="javascript" src="includes/jquery.form.js"></script>
 <script language="javascript">
+
 function submit_check(){
 
     var options = {
@@ -1450,13 +1451,38 @@ function submit_check(){
     type:  'POST',
     success: function(data) {
       if(data != ''){
-        alert(data);
+        if(confirm(data)){
+
+          update_price2();
+        }
+      }else{
+
+        update_price2();
       } 
     }
   };
   $('#edit_order_id').ajaxSubmit(options);
-  }
+}
 
+function submit_check_con(){
+
+    var options = {
+    url: 'ajax_orders_weight.php?action=edit_orders',
+    type:  'POST',
+    success: function(data) {
+      if(data != ''){
+        if(confirm(data)){
+
+          submitChk(); 
+        }
+      }else{
+
+        submitChk();
+      } 
+    }
+  };
+  $('#edit_order_id').ajaxSubmit(options);
+}
 <?php
   $address_fixed_query = tep_db_query("select name_flag,fixed_option from ". TABLE_ADDRESS ." where fixed_option!='0' and status='0'");
   while($address_fixed_array = tep_db_fetch_array($address_fixed_query)){
@@ -2451,7 +2477,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     <?php echo tep_draw_separator(); ?>
     </td>
     </tr> 
-    <tr><?php echo tep_draw_form('edit_order', "edit_orders.php", tep_get_all_get_params(array('action','paycc')) . 'action=update_order', 'post', 'id="edit_order_id" onSubmit="return submitChk()"'); ?>
+    <tr><?php echo tep_draw_form('edit_order', "edit_orders.php", tep_get_all_get_params(array('action','paycc')) . 'action=update_order', 'post', 'id="edit_order_id"'); ?>
 
     <td>
     <!-- Begin Update Block -->
@@ -3119,7 +3145,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     <?php if (tep_is_oroshi($order->customer['id'])) { ?>
       <INPUT type="button" value="<?php echo EDIT_ORDERS_CONFIRM_BUTTON;?>" onClick="update_price()">
         <?php } else { ?>
-          <INPUT type="button" value="<?php echo EDIT_ORDERS_CONFIRM_BUTTON;?>" onClick="submit_check();update_price2()">
+          <INPUT type="button" value="<?php echo EDIT_ORDERS_CONFIRM_BUTTON;?>" onClick="submit_check();">
             <?php } ?>
             </td>
             </tr>
@@ -3293,7 +3319,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     <td class="main" bgcolor="#FBE2C8" width="10">&nbsp;</td>
     <td class="main" bgcolor="#FFCC99" width="10">&nbsp;</td>
     <td class="main" bgcolor="#F8B061" width="10">&nbsp;</td>
-    <td class="main" bgcolor="#FF9933" width="120" align="center"><?php echo tep_html_element_submit(IMAGE_UPDATE,'onclick="submit_check();"'); ?></td>
+    <td class="main" bgcolor="#FF9933" width="120" align="center"><INPUT type="button" value="<?php echo IMAGE_UPDATE;?>" onClick="submit_check_con();"></td>
     </tr>
     </table>
     </td>

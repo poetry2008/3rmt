@@ -192,4 +192,8 @@ define('TABLE_HEADING_PRODUCTS_PRICE', '単価');
 define('CALC_PRODUCTS_TEXT', '計算');
 define('CREATE_ORDER_PRODUCTS_WEIGHT','総重量が規定の範囲を超えました。商品を削除するか、または個数を変更して（');
 define('CREATE_ORDER_PRODUCTS_WEIGHT_ONE','）kg以内にしてください。');
+define('PRODUCTS_WEIGHT_ERROR_ONE','総重量が（');
+define('PRODUCTS_WEIGHT_ERROR_TWO','）の規定の重量を超えました。');
+define('PRODUCTS_WEIGHT_ERROR_THREE','商品を削除するか、または個数を変更して（');
+define('PRODUCTS_WEIGHT_ERROR_FOUR','）kg以内にしてください。');
 ?>

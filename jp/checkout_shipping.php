@@ -484,7 +484,13 @@ function address_option_show(action){
           $("#r_"+x).html('&nbsp;*必須');
         }
       }
-    }
+   }
+    $("#error_"+country_fee_id_one).html('');
+    $("#prompt_"+country_fee_id_one).html('');
+    $("#error_"+country_area_id_one).html('');
+    $("#prompt_"+country_area_id_one).html('');
+    $("#error_"+country_city_id_one).html('');
+    $("#prompt_"+country_city_id_one).html('');   
     break;
   case 'old' :
     $("#address_show_id").show();

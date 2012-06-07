@@ -83,6 +83,21 @@
     $preorder_end_hour = tep_db_prepare_input($_POST['end_hour']);
     $preorder_end_min = tep_db_prepare_input($_POST['end_min']);
 
+    //计算商品的总价格及总重量
+  $shi_preorders_query = tep_db_query("select * from ".TABLE_PREORDERS." where check_preorder_str = '".$_GET['pid']."'");
+  $shi_preorders_array = tep_db_fetch_array($shi_preorders_query);
+  $shi_pid = $shi_preorders_array['orders_id'];
+  tep_db_free_result($shi_preorders_query);
+  $weight_count = 0; 
+  $shi_products_query = tep_db_query("select * from ". TABLE_PREORDERS_PRODUCTS ." where orders_id='". $shi_pid ."'");
+  while($shi_products_array = tep_db_fetch_array($shi_products_query)){
+
+    $shi_products_weight_query = tep_db_query("select products_weight from ". TABLE_PRODUCTS ." where products_id='". $shi_products_array['products_id'] ."'");
+    $shi_products_weight_array = tep_db_fetch_array($shi_products_weight_query);
+    tep_db_free_result($shi_products_weight_query);
+    $weight_count += $shi_products_weight_array['products_weight']*$shi_products_array['products_quantity'];
+  }
+  tep_db_free_result($shi_products_query);
     //住所信息处理 
     $address_option_info_array = array(); 
     if (!$ad_option->check()) {

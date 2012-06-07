@@ -1453,7 +1453,33 @@ if($address_error == false){
     type:  'POST',
     success: function(data) {
       if(data != ''){
-        alert(data);
+        if(confirm(data)){
+
+          update_price2();
+        }
+      }else{
+
+          update_price2();
+      } 
+    }
+  };
+  $('#edit_order_id').ajaxSubmit(options);
+  }
+
+  function submit_check_con(){
+
+    var options = {
+    url: 'ajax_orders_weight.php?action=create_new_orders',
+    type:  'POST',
+    success: function(data) {
+      if(data != ''){
+        if(confirm(data)){
+
+          submitChk();
+        }
+      }else{
+
+        submitChk();
       } 
     }
   };
@@ -1762,38 +1788,8 @@ function address_option_list(value){
 function check(select_value){
 
   var arr = new Array();
-  <?php
-    $weight_count = $p_weight_total;
-    $country_fee_temp_array = array();
-    $country_fee_show_query = tep_db_query("select * from ". TABLE_COUNTRY_FEE ." where status='0'");
-    while($country_fee_show_array = tep_db_fetch_array($country_fee_show_query)){
-
-      $country_fee_temp_array[$country_fee_show_array['name']][] = $country_fee_show_array['weight_limit'];
-      $country_area_show_query = tep_db_query("select * from ". TABLE_COUNTRY_AREA ." where status='0' and fid=". $country_fee_show_array['id']);
-      while($country_area_show_array = tep_db_fetch_array($country_area_show_query)){
-
-        $country_fee_temp_array[$country_fee_show_array['name']][] = $country_area_show_array['weight_limit'];
-        $country_city_show_query = tep_db_query("select * from ". TABLE_COUNTRY_CITY ." where status='0' and fid=". $country_area_show_array['id']);
-        while($country_city_show_array = tep_db_fetch_array($country_city_show_query)){
-
-          $country_fee_temp_array[$country_fee_show_array['name']][] = $country_city_show_array['weight_limit'];
-        }
-        tep_db_free_result($country_city_show_query);
-      }
-      tep_db_free_result($country_area_show_query);
-    }
-    tep_db_free_result($country_fee_show_query);
-
-    $country_temp_str = '';
-    foreach($country_fee_temp_array as $c_f_key=>$c_f_value){
-
-      $max_temp = max($c_f_value);
-      if($weight_count > $max_temp){
-
-         $country_temp_str .= " and name!='".$c_f_key."'";
-      }
-    }
-    $country_fee_query = tep_db_query("select id,name from ". TABLE_COUNTRY_FEE ." where status='0'".$country_temp_str." order by id");
+  <?php 
+    $country_fee_query = tep_db_query("select id,name from ". TABLE_COUNTRY_FEE ." where status='0' order by id");
     while($country_fee_array = tep_db_fetch_array($country_fee_query)){
 
       echo 'arr["'.$country_fee_array['name'].'"] = "'. $country_fee_array['name'] .'";'."\n";
@@ -1823,34 +1819,9 @@ function check(select_value){
 function country_check(value,select_value){
    
    var arr = new Array();
-  <?php
-    $weight_count = $p_weight_total;
-    $country_fee_temp_array = array();
-
-      $country_area_show_query = tep_db_query("select * from ". TABLE_COUNTRY_AREA ." where status='0'");
-      while($country_area_show_array = tep_db_fetch_array($country_area_show_query)){
-
-        $country_fee_temp_array[$country_area_show_array['name']][] = $country_area_show_array['weight_limit'];
-        $country_city_show_query = tep_db_query("select * from ". TABLE_COUNTRY_CITY ." where status='0' and fid=". $country_area_show_array['id']);
-        while($country_city_show_array = tep_db_fetch_array($country_city_show_query)){
-
-          $country_fee_temp_array[$country_area_show_array['name']][] = $country_city_show_array['weight_limit'];
-        }
-        tep_db_free_result($country_city_show_query);
-      }
-      tep_db_free_result($country_area_show_query);
-
-    $country_temp_str = '';
-    foreach($country_fee_temp_array as $c_f_key=>$c_f_value){
-
-      $max_temp = max($c_f_value);
-      if($weight_count > $max_temp){
-
-         $country_temp_str .= " and name!='".$c_f_key."'";
-      }
-    }
+  <?php 
     $country_array = array();
-    $country_area_query = tep_db_query("select id,fid,name from ". TABLE_COUNTRY_AREA ." where status='0'".$country_temp_str." order by sort");
+    $country_area_query = tep_db_query("select id,fid,name from ". TABLE_COUNTRY_AREA ." where status='0' order by sort");
     while($country_area_array = tep_db_fetch_array($country_area_query)){
       
       $country_fee_fid_query = tep_db_query("select name from ". TABLE_COUNTRY_FEE ." where id='".$country_area_array['fid']."'"); 
@@ -1898,7 +1869,7 @@ function country_area_check(value,select_value){
   <?php
     $weight_count = $p_weight_total;
     $country_array = array();
-    $country_city_query = tep_db_query("select id,fid,name from ". TABLE_COUNTRY_CITY ." where status='0' and weight_limit>=". $weight_count ." order by sort");
+    $country_city_query = tep_db_query("select id,fid,name from ". TABLE_COUNTRY_CITY ." where status='0' order by sort");
     while($country_city_array = tep_db_fetch_array($country_city_query)){
       
       $country_area_fid_query = tep_db_query("select name from ". TABLE_COUNTRY_AREA ." where id='".$country_city_array['fid']."'"); 
@@ -2543,7 +2514,7 @@ a.dpicker {
             <?php echo tep_draw_separator(); ?>
             </td>
             </tr> 
-            <tr><?php echo tep_draw_form('edit_order', "edit_new_orders.php", tep_get_all_get_params(array('action','paycc')) . 'action=update_order', 'post', 'id="edit_order_id" onSubmit="return submitChk()"'); ?>
+            <tr><?php echo tep_draw_form('edit_order', "edit_new_orders.php", tep_get_all_get_params(array('action','paycc')) . 'action=update_order', 'post', 'id="edit_order_id"'); ?>
 
             <td>
             <!-- Begin Update Block -->
@@ -3525,7 +3496,7 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
             <?php if (tep_is_oroshi($order->customer['id'])) { ?>
               <INPUT type="button" value="<?php echo EDIT_ORDERS_CONFIRM_BUTTON;?>" onClick="update_price()">
                 <?php } else { ?>
-                  <INPUT type="button" value="<?php echo EDIT_ORDERS_CONFIRM_BUTTON;?>" onClick="submit_check();update_price2();">
+                  <INPUT type="button" value="<?php echo EDIT_ORDERS_CONFIRM_BUTTON;?>" onClick="submit_check();">
                     <?php } ?>
                     </td>
                     </tr>
@@ -3698,7 +3669,7 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
             <td class="main" bgcolor="#FFBBFF" width="10">&nbsp;</td>
             <td class="main" bgcolor="#FF99FF" width="10">&nbsp;</td>
             <td class="main" bgcolor="#FF77FF" width="10">&nbsp;</td>
-            <td class="main" bgcolor="#FF55FF" width="120" align="center"><?php echo tep_html_element_submit(IMAGE_UPDATE,'onclick="submit_check();"'); ?></td>
+            <td class="main" bgcolor="#FF55FF" width="120" align="center"><INPUT type="button" value="<?php echo IMAGE_UPDATE;?>" onClick="submit_check_con();"></td>
             </tr>
             </table>
             </td>
