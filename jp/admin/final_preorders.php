@@ -1016,6 +1016,60 @@ while ($totals = tep_db_fetch_array($totals_query)) {
 <script language="javascript" src="includes/javascript/jquery.form.js"></script>
 <script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
 <script language="javascript">
+function submit_order_check(products_id,op_id){
+  var qty = document.getElementById('update_products_new_qty_'+op_id).value;
+
+  $.ajax({
+    dataType: 'text',
+    url: 'ajax_orders_weight.php?action=edit_new_preorder',
+    data: 'qty='+qty+'&products_id='+products_id, 
+    type:'POST',
+    async: false,
+    success: function(data) {
+      if(data != ''){
+
+        if(confirm(data)){
+
+          pre_update_price2();
+        }
+      }else{
+
+        pre_update_price2();
+      }
+    }
+  });
+    
+}
+
+function submit_order_check_one(products_id,op_id){
+  var qty = document.getElementById('update_products_new_qty_'+op_id).value;
+
+  $.ajax({
+    dataType: 'text',
+    url: 'ajax_orders_weight.php?action=edit_new_preorder',
+    data: 'qty='+qty+'&products_id='+products_id, 
+    type:'POST',
+    async: false,
+    success: function(data) {
+      if(data != ''){
+
+        if(confirm(data)){
+
+          check_mail_product_status('<?php echo $_GET['oID'];?>');
+          presubmitChk();
+          document.edit_order.submit();
+        }
+      }else{
+  
+         check_mail_product_status('<?php echo $_GET['oID'];?>');
+        presubmitChk();
+        document.edit_order.submit();
+      }
+    }
+  });
+    
+}
+
 $(document).ready(function() {
    var se_status = document.getElementById('status').value;  
   $.ajax({
@@ -1494,7 +1548,7 @@ float:left;
             <?php echo tep_draw_separator(); ?>
           </td>
         </tr> 
-        <tr><?php echo tep_draw_form('edit_order', FILENAME_FINAL_PREORDERS, tep_get_all_get_params(array('action','paycc')) . 'action=update_order', 'post', 'onSubmit="return presubmitChk()"'); ?>
+        <tr><?php echo tep_draw_form('edit_order', FILENAME_FINAL_PREORDERS, tep_get_all_get_params(array('action','paycc')) . 'action=update_order', 'post',''); ?>
           
           <td>
             <!-- Begin Update Block -->
@@ -1643,6 +1697,7 @@ float:left;
                                      'tax' => $orders_products['products_tax'],
                                      'price' => $orders_products['products_price'],
                                      'final_price' => $orders_products['final_price'],
+                                     'products_id' => $orders_products['products_id'],
                                      'orders_products_id' => $orders_products['orders_products_id']);
 
     $subindex = 0;
@@ -1931,7 +1986,7 @@ float:left;
 <?php if (false) { ?>
                 <INPUT type="button" value="<?php echo EDIT_ORDERS_CONFIRM_BUTTON;?>" onClick="pre_update_price()">
 <?php } else { ?>
-                <INPUT type="button" value="<?php echo EDIT_ORDERS_CONFIRM_BUTTON;?>" onClick="pre_update_price2()">
+<INPUT type="button" value="<?php echo EDIT_ORDERS_CONFIRM_BUTTON;?>" onClick="submit_order_check(<?php echo $order->products[0]['products_id'];?>,<?php echo $order->products[0]['orders_products_id'];?>);">
 <?php } ?>
               </td>
             </tr>
@@ -2076,7 +2131,7 @@ if (tep_db_num_rows($orders_history_query)) {
               <td class="main" bgcolor="#FFCC99" width="10">&nbsp;</td>
               <td class="main" bgcolor="#F8B061" width="10">&nbsp;</td>
               <td class="main" bgcolor="#FF9933" width="120" align="center">
-              <?php echo tep_html_element_button(IMAGE_UPDATE, 'onclick="check_mail_product_status(\''.$_GET['oID'].'\')"');?> 
+              <?php echo tep_html_element_button(IMAGE_UPDATE, 'onclick="submit_order_check_one('.$order->products[0]['products_id'].','.$order->products[0]['orders_products_id'].');"');?> 
               </td>
           </tr>
           </table>

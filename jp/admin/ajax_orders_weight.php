@@ -226,6 +226,25 @@ case 'edit_preorder':
         }else{
           echo '';
         } 
-  break;
+        break;
+case 'edit_new_preorder':
+
+      // products weight   
+      $pro_weight_total = 0; //商品总重量
+      
+      $products_query = tep_db_query("select products_weight from ". TABLE_PRODUCTS ." where products_id='". $_POST['products_id'] ."'");
+      $products_array = tep_db_fetch_array($products_query);
+      tep_db_free_result($products_query);
+
+      $pro_weight_total = $products_array['products_weight'] * $_POST['qty'];
+
+      $weight_count = $pro_weight_total;
+
+      if($weight_count > $weight_count_limit){
+          echo CREATE_ORDER_PRODUCTS_WEIGHT.$weight_count_limit.CREATE_ORDER_PRODUCTS_WEIGHT_ONE;
+      }else{
+          echo '';
+      }
+      break;
 }
 ?>
