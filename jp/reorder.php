@@ -331,6 +331,13 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
       }
     }
 //------insert customer choosen option eof ----
+    if (isset($o->products[$i]['op_attributes'])) {
+      foreach ($o->products[$i]['op_attributes'] as $opa_order) {
+        $products_ordered_attributes .= "\n" .$opa_order['option_info']['title'] 
+        . str_repeat('　',intval((18-strlen($opa_order['option_info']['title']))/2))
+        . '：' . $opa_order['option_info']['value'];
+      }
+    }
     if(isset($o->products[$i]['weight']) && isset($o->products[$i]['qty'])){
       $total_weight += ($o->products[$i]['qty'] * $o->products[$i]['weight']);
     }
@@ -489,7 +496,7 @@ foreach ($value['attributes'] as $att) {?>
               and popt.language_id = '" . $languages_id . "'
         ");
         $products_attributes = tep_db_fetch_array($products_attributes_query);
-        if ($products_attributes['total'] > 0) {
+        if (false) {
           //ccdd
           $products_options_name_query = tep_db_query("
               select distinct popt.products_options_id, 
