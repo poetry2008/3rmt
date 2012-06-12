@@ -126,6 +126,7 @@
   $free_value = tep_db_prepare_input($_POST['free_value']);
 
   //住所信息处理 
+  $weight_count = $cart->weight;
   $option_info_array = array(); 
   if (!$hm_option->check()) {
     foreach ($_POST as $p_key => $p_value) {
@@ -168,8 +169,7 @@
 
     $error = true;
   }
-    
-  
+
   if($error == false) {
     tep_session_register('torihikihouhou');
     tep_session_register('date');
@@ -245,6 +245,32 @@
 ?>
 <?php page_head();?>
 <script type="text/javascript"><!--
+  <?php
+  $address_fixed_query = tep_db_query("select name_flag,fixed_option from ". TABLE_ADDRESS ." where fixed_option!='0' and status='0'");
+  while($address_fixed_array = tep_db_fetch_array($address_fixed_query)){
+
+    switch($address_fixed_array['fixed_option']){
+
+    case '1':
+      echo 'var country_fee_id = "op_'. $address_fixed_array['name_flag'] .'";'."\n";
+      echo 'var country_fee_id_one = "'. $address_fixed_array['name_flag'] .'";'."\n";
+      $country_fee_id = 'op_'.$address_fixed_array['name_flag'];
+      break;
+    case '2':
+      echo 'var country_area_id = "op_'. $address_fixed_array['name_flag'] .'";'."\n";
+      echo 'var country_area_id_one = "'. $address_fixed_array['name_flag'] .'";'."\n";
+      $country_area_id = 'op_'.$address_fixed_array['name_flag'];
+      break;
+      break;
+    case '3':
+      echo 'var country_city_id = "op_'. $address_fixed_array['name_flag'] .'";'."\n";
+      echo 'var country_city_id_one = "'. $address_fixed_array['name_flag'] .'";'."\n";
+      $country_city_id = 'op_'.$address_fixed_array['name_flag'];
+      break;
+      break;
+    }
+  }
+?>
 var selected;
 
 function selectRowEffect(object, buttonSelect) {
@@ -276,75 +302,131 @@ function rowOutEffect(object) {
   if (object.className == 'moduleRowOver') object.className = 'moduleRow';
 }
 
-function check(value){
-  var arr  = new Array();
-  var arr_set = new Array();
-<?php
-  $add_query = tep_db_query("select * from ". TABLE_ADDRESS ." where type='option' and status='0' order by sort");
-  while($add_array = tep_db_fetch_array($add_query)){
+function check(select_value){
 
-    $add_temp_array = unserialize($add_array['type_comment']);
-    if(!isset($add_temp_array['select_value'])){
-       
-      $add_temp_first_array  = current($add_temp_array);
-      $parent_id = $add_temp_first_array['parent_id'];
-      $child_flag_name = $add_array['name_flag'];
+  var arr = new Array();
+  <?php 
+    $country_fee_query = tep_db_query("select id,name from ". TABLE_COUNTRY_FEE ." where status='0' order by id");
+    while($country_fee_array = tep_db_fetch_array($country_fee_query)){
+
+      echo 'arr["'.$country_fee_array['name'].'"] = "'. $country_fee_array['name'] .'";'."\n";
+    }
+    tep_db_free_result($country_fee_query);
+   ?>
+  if(document.getElementById(country_fee_id)){
+    var country_fee = document.getElementById(country_fee_id);
+    country_fee.options.length = 0;
+
+    var i = 0;
+    for(x in arr){
+
+      country_fee.options[country_fee.options.length]=new Option(arr[x], x,x==select_value,x==select_value);
+      i++;
+    }
+    if(i == 0){ 
+      $("#td_"+country_fee_id_one).hide();
+    }else{
+
+      $("#td_"+country_fee_id_one).show();
     }
   }
-  tep_db_free_result($add_query);
-  $add_parent_query = tep_db_query("select * from ". TABLE_ADDRESS ." where id=$parent_id");
-  $add_parent_array = tep_db_fetch_array($add_parent_query);
-  $parent_flag_name = $add_parent_array['name_flag'];
-  tep_db_free_result($add_parent_query);
-
-  $options_query = tep_db_query("select * from ". TABLE_ADDRESS ." where type='option' and status='0' order by sort");
-  $json_array = array();
-  $json_set_value = array();
-  while($options_array = tep_db_fetch_array($options_query)){
-    if(!isset($otpions_array_temp['select_value']) && $otpions_array_temp['select_value'] == ''){
-        $show_array[] = unserialize($options_array['type_comment']);
-    }
-  }
-
-  foreach($show_array as $show_value){
-    foreach($show_value as $show_key=>$show_val){
-
-      $json_array[$show_key] = $show_val;
-      $json_set_value[$show_key] = $show_val['select_value'];
-    } 
-  }
-
-  tep_db_free_result($options_query);
-  foreach($json_array as $key=>$value_temp){
-    echo 'arr["'. $key .'"] = new Array();';
-    echo 'arr_set["'. $key .'"] = new Array();';
-    $value_temp['option_list'] = array_values($value_temp['option_list']);
-    foreach($value_temp['option_list'] as $k=>$val){
-
-      echo 'arr["'. $key .'"]['. $k .'] = "'. $val .'";';
-    } 
-    echo 'arr_set["'. $key .'"] = "'. $json_set_value[$key] .'";';
-
-  }  
-?>
-  
-  var option_id = document.getElementById("op_<?php echo $child_flag_name;?>");
-  option_id.options.length = 0;
-  len = arr[value].length;
-  //option_id.options[option_id.options.length]=new Option('--',''); 
-  for(i = 0;i < len;i++){
-    if(arr_set[value] == arr[value][i]){
-
-      option_id.options[option_id.options.length]=new Option(arr[value][i], arr[value][i]);
-    }     
-  } 
-  for(i = 0;i < len;i++){
-    if(arr_set[value] == arr[value][i]){
-      continue; 
-    }
-    option_id.options[option_id.options.length]=new Option(arr[value][i], arr[value][i]);    
-  } 
 }
+function country_check(value,select_value){
+   
+   var arr = new Array();
+  <?php 
+    $country_array = array();
+    $country_area_query = tep_db_query("select id,fid,name from ". TABLE_COUNTRY_AREA ." where status='0' order by sort");
+    while($country_area_array = tep_db_fetch_array($country_area_query)){
+      
+      $country_fee_fid_query = tep_db_query("select name from ". TABLE_COUNTRY_FEE ." where id='".$country_area_array['fid']."'"); 
+      $country_fee_fid_array = tep_db_fetch_array($country_fee_fid_query);
+      tep_db_free_result($country_fee_fid_query);
+      $country_array[$country_fee_fid_array['name']][$country_area_array['name']] = $country_area_array['name'];
+      
+    }
+    tep_db_free_result($country_area_query);
+    foreach($country_array as $country_key=>$country_value){
+      
+      echo 'arr["'.$country_key.'"] = new Array();'."\n";
+      foreach($country_value as $c_key=>$c_value){
+      
+        echo 'arr["'.$country_key.'"]["'.$c_key.'"] = "'. $c_value .'";'."\n";
+
+      }
+
+    }
+   ?>
+ if(document.getElementById(country_area_id)){
+    var country_area = document.getElementById(country_area_id);
+    country_area.options.length = 0;
+    var i = 0;
+    for(x in arr[value]){
+
+      country_area.options[country_area.options.length]=new Option(arr[value][x], x,x==select_value, x==select_value);
+      i++;
+    }
+
+    if(i == 0){ 
+      $("#td_"+country_area_id_one).hide();
+    }else{
+      
+      $("#td_"+country_area_id_one).show();
+    }
+
+ }
+
+}
+
+function country_area_check(value,select_value){
+   
+   var arr = new Array();
+  <?php
+    $country_array = array();
+    $country_city_query = tep_db_query("select id,fid,name from ". TABLE_COUNTRY_CITY ." where status='0' order by sort");
+    while($country_city_array = tep_db_fetch_array($country_city_query)){
+      
+      $country_area_fid_query = tep_db_query("select name from ". TABLE_COUNTRY_AREA ." where id='".$country_city_array['fid']."'"); 
+      $country_area_fid_array = tep_db_fetch_array($country_area_fid_query);
+      tep_db_free_result($country_area_fid_query); 
+      $country_array[$country_area_fid_array['name']][$country_city_array['name']] = $country_city_array['name'];
+      
+    }
+    tep_db_free_result($country_city_query);
+    foreach($country_array as $country_key=>$country_value){
+      
+      echo 'arr["'.$country_key.'"] = new Array();'."\n";
+      foreach($country_value as $c_key=>$c_value){
+      
+        echo 'arr["'.$country_key.'"]["'.$c_key.'"] = "'. $c_value .'";'."\n";
+
+      }
+
+    }
+  ?>
+
+  if(document.getElementById(country_city_id)){
+    var country_city = document.getElementById(country_city_id);
+    country_city.options.length = 0;
+    var i = 0;
+    for(x in arr[value]){
+
+      country_city.options[country_city.options.length]=new Option(arr[value][x], x,x==select_value,x==select_value);
+      i++;
+    }
+    
+    if(i == 0){ 
+      $("#td_"+country_city_id_one).hide();
+    }else{
+      
+      $("#td_"+country_city_id_one).show();
+
+    }
+ 
+  }
+
+}
+
 // start in_array
 function in_array(value,arr){
 
@@ -402,7 +484,13 @@ function address_option_show(action){
           $("#r_"+x).html('&nbsp;*必須');
         }
       }
-    }
+   }
+    $("#error_"+country_fee_id_one).html('');
+    $("#prompt_"+country_fee_id_one).html('');
+    $("#error_"+country_area_id_one).html('');
+    $("#prompt_"+country_area_id_one).html('');
+    $("#error_"+country_city_id_one).html('');
+    $("#prompt_"+country_city_id_one).html('');   
     break;
   case 'old' :
     $("#address_show_id").show();
@@ -454,6 +542,8 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
       $json_str_array[$address_num] = $json_str_list; 
       echo 'arr_old['. $address_num .'] = new Array();';
       foreach($json_old_array as $key=>$value){
+        $value = str_replace("\n","",$value);
+        $value = str_replace("\r","",$value);
         echo 'arr_old['. $address_num .']["'. $key .'"] = "'. $value .'";';
       }
       $address_num++;
@@ -463,6 +553,7 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
   }
 }
 ?>
+  if(document.getElementById("address_show_list")){
   var address_show_list = document.getElementById("address_show_list");
 
   address_show_list.options.length = 0;
@@ -495,6 +586,7 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
     }
 
   }
+  }
     //address_option_list(first_num);  
     break;
   }
@@ -520,7 +612,7 @@ function address_option_list(value){
   
   while($address_orders_group_array = tep_db_fetch_array($address_orders_group_query)){
   
-  $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where orders_id='". $address_orders_group_array['orders_id'] ."'");
+  $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where orders_id='". $address_orders_group_array['orders_id'] ."' order by id");
   
   while($address_orders_array = tep_db_fetch_array($address_orders_query)){
     
@@ -540,6 +632,8 @@ function address_option_list(value){
       $json_str_array[] = $json_str_list; 
       echo 'arr_list['. $address_num .'] = new Array();';
       foreach($json_old_array as $key=>$value){
+        $value = str_replace("\n","",$value);
+        $value = str_replace("\r","",$value);
         echo 'arr_list['. $address_num .']["'. $key .'"] = "'. $value .'";';
       }
       $address_num++;
@@ -551,35 +645,58 @@ function address_option_list(value){
 ?>
   ii = 0;
   for(x in arr_list[value]){
+   if(document.getElementById("op_"+x)){
     var list_option = document.getElementById("op_"+x);
-    list_option.style.color = '#000';
-    list_option.value = arr_list[value][x];
-    if('<?php echo $parent_flag_name;?>' == x){
-
-      check($("#op_"+x).val());
+    if('<?php echo $country_fee_id;?>' == 'op_'+x){
+      check(arr_list[value][x]);
+    }else if('<?php echo $country_area_id;?>' == 'op_'+x){
+      country_check(document.getElementById(country_fee_id).value,arr_list[value][x]);
+     
+    }else if('<?php echo $country_city_id;?>' == 'op_'+x){
+      country_area_check(document.getElementById(country_area_id).value,arr_list[value][x]);
+    }else{
+      list_option.style.color = '#000';
+      list_option.value = arr_list[value][x];
     }
+     
     $("#error_"+x).html('');
     ii++; 
+   }
   }
-
+    $("#error_"+country_fee_id_one).html('');
+    $("#prompt_"+country_fee_id_one).html('');
+    $("#error_"+country_area_id_one).html('');
+    $("#prompt_"+country_area_id_one).html('');
+    $("#error_"+country_city_id_one).html('');
+    $("#prompt_"+country_city_id_one).html('');
 }
 
 function session_value(){
   var session_array = new Array();
 <?php
   foreach($_SESSION['options'] as $see_key=>$see_value){
-
+    $see_value[1] = str_replace("\n","",$see_value[1]);
+    $see_value[1] = str_replace("\r","",$see_value[1]);
     echo 'session_array["'. $see_key .'"] = "'. $see_value[1] .'";';
   }
 ?>
   for(x in session_array){
+   if(document.getElementById("op_"+x)){
     var list_option = document.getElementById("op_"+x);
-    list_option.style.color = '#000'; 
-    list_option.value = session_array[x];
-    if('<?php echo $parent_flag_name;?>' == x){
+    
+    if('<?php echo $country_fee_id;?>' == 'op_'+x){
+      check(session_array[x]);
+    }else if('<?php echo $country_area_id;?>' == 'op_'+x){
+      country_check(document.getElementById(country_fee_id).value,session_array[x]);
+     
+    }else if('<?php echo $country_city_id;?>' == 'op_'+x){
+      country_area_check(document.getElementById(country_area_id).value,session_array[x]);
+    }else{
 
-      check($("#op_"+x).val());
+      list_option.style.color = '#000'; 
+      list_option.value = session_array[x];
     }
+   }
   }
 }
 --></script>
@@ -653,9 +770,74 @@ function session_value(){
   }
 ?>
 $(document).ready(function(){
-  $("#op_<?php echo $parent_flag_name;?>").change(function(){
-    check($(this).val());
+  $("#"+country_fee_id).change(function(){
+    country_check($("#"+country_fee_id).val());
+    country_area_check($("#"+country_area_id).val());
+    $("#error_"+country_fee_id_one).html('');
+    $("#prompt_"+country_fee_id_one).html('');
+    $("#error_"+country_area_id_one).html('');
+    $("#prompt_"+country_area_id_one).html('');
+    $("#error_"+country_city_id_one).html('');
+    $("#prompt_"+country_city_id_one).html('');
   }); 
+  $("#"+country_area_id).change(function(){
+    country_area_check($("#"+country_area_id).val());
+    $("#error_"+country_fee_id_one).html('');
+    $("#prompt_"+country_fee_id_one).html('');
+    $("#error_"+country_area_id_one).html('');
+    $("#prompt_"+country_area_id_one).html('');
+    $("#error_"+country_city_id_one).html('');
+    $("#prompt_"+country_city_id_one).html('');
+  });
+  <?php
+    if(isset($_POST[$country_fee_id])){
+  ?>  
+    check("<?php echo isset($_POST[$country_fee_id]) ? $_POST[$country_fee_id] : '';?>");
+  <?php
+   }elseif(isset($_SESSION['options'])){
+  ?>
+    check("<?php echo $_SESSION['options'][substr($country_fee_id,3)][1];?>");
+  <?php
+  }else{
+  ?>
+    check();
+    address_option_list(first_num); 
+  <?php
+  }
+  ?>
+  <?php
+    if(isset($_POST[$country_area_id])){
+  ?>
+    country_check($("#"+country_fee_id).val(),"<?php echo $_POST[$country_area_id];?>");
+  <?php
+   }elseif(isset($_SESSION['options'])){
+  ?>
+    country_check($("#"+country_fee_id).val(),"<?php echo $_SESSION['options'][substr($country_area_id,3)][1];?>");
+  <?php
+   }else{
+  ?>
+    country_check($("#"+country_fee_id).val());
+    address_option_list(first_num);
+  <?php
+  }
+  ?>
+  <?php
+    if(isset($_POST[$country_city_id])){
+  ?>
+     
+     country_area_check($("#"+country_area_id).val(),"<?php echo $_POST[$country_city_id];?>");
+  <?php
+   }elseif(isset($_SESSION['options'])){
+  ?>
+     country_area_check($("#"+country_area_id).val(),"<?php echo $_SESSION['options'][substr($country_city_id,3)][1];?>");
+  <?php
+  }else{
+  ?>
+    country_area_check($("#"+country_area_id).val());
+    address_option_list(first_num);
+  <?php
+  }
+  ?>
 });
 </script>
 </head>
@@ -973,7 +1155,8 @@ $(document).ready(function(){
 </select>
 </td></tr>
 <?php
-                         }
+                            }
+    //print_r($_SESSION);
     $hm_option->render('');
     //echo '<tr><td width="10">'. tep_draw_separator('pixel_trans.gif', '10', '1') .'</td><td class="main" width="100%" height="30" colspan="2" style="word-break:break-all;"><span id="address_fee"></span></td></tr>'; 
 ?>

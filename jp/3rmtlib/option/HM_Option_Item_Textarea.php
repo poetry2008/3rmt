@@ -18,6 +18,7 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
      $ed_pos = strpos($_SERVER['PHP_SELF'], 'admin/edit_orders.php');
      $pro_pos = strpos($_SERVER['PHP_SELF'], 'product_info.php');
      $back_pos = strpos($_SERVER['PHP_SELF'], 'admin/');
+     $cp_pos = strpos($_SERVER['PHP_SELF'], 'change_preorder.php');
      
      if (strlen($this->front_title)) {
        if ($ptype) {
@@ -83,7 +84,14 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
             }
          }
        }
-     
+    
+       if ($cp_pos !== false) {
+         if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+           if (isset($_SESSION['preorder_information'][$pre_item_str.'op_'.$this->formname])) {
+             $default_value = $_SESSION['preorder_information'][$pre_item_str.'op_'.$this->formname]; 
+           }
+         }
+       }
       $default_value = stripslashes($default_value);
       
       if ($this->iline > 1) {

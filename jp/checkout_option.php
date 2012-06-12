@@ -81,8 +81,9 @@
             if ($belong_option) {
               $is_checkout_item_raw = tep_db_query("select id from ".TABLE_OPTION_ITEM." where place_type = '1' and group_id = '".$belong_option['belong_to_option']."' and status = '1'"); 
               if (tep_db_num_rows($is_checkout_item_raw)) {
+                $p_cflag = tep_get_cflag_by_product_id((int)$list_products[$j]['id']); 
                 echo '<div class="option_render">'; 
-                $hm_option->render($belong_option['belong_to_option'], false, 1, $list_products[$j]['id'].'_', $cart); 
+                $hm_option->render($belong_option['belong_to_option'], false, 1, $list_products[$j]['id'].'_', $cart, (int)$p_cflag); 
                 echo '</div>'; 
               }
             }

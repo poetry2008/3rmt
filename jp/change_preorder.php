@@ -14,81 +14,191 @@
   require(DIR_WS_ACTIONS.'change_preorder.php');
   
   $breadcrumb->add(NAVBAR_CHANGE_PREORDER_TITLE, '');
+  //计算商品的总价格及总重量
+  $shi_preorders_query = tep_db_query("select * from ".TABLE_PREORDERS." where check_preorder_str = '".$_GET['pid']."'");
+  $shi_preorders_array = tep_db_fetch_array($shi_preorders_query);
+  $shi_pid = $shi_preorders_array['orders_id'];
+  tep_db_free_result($shi_preorders_query);
+  $weight_count = 0; 
+  $shi_products_query = tep_db_query("select * from ". TABLE_PREORDERS_PRODUCTS ." where orders_id='". $shi_pid ."'");
+  while($shi_products_array = tep_db_fetch_array($shi_products_query)){
+
+    $shi_products_weight_query = tep_db_query("select products_weight from ". TABLE_PRODUCTS ." where products_id='". $shi_products_array['products_id'] ."'");
+    $shi_products_weight_array = tep_db_fetch_array($shi_products_weight_query);
+    tep_db_free_result($shi_products_weight_query);
+    $weight_count += $shi_products_weight_array['products_weight']*$shi_products_array['products_quantity'];
+  }
+  tep_db_free_result($shi_products_query);
 ?>
 <?php page_head();?>
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript" src="js/option.js"></script>
 <script type="text/javascript">
-function check(value){
-  var arr  = new Array();
-  var arr_set = new Array();
+
 <?php
-  $add_query = tep_db_query("select * from ". TABLE_ADDRESS ." where type='option' and status='0' order by sort");
-  while($add_array = tep_db_fetch_array($add_query)){
+  $address_fixed_query = tep_db_query("select name_flag,fixed_option from ". TABLE_ADDRESS ." where fixed_option!='0' and status='0'");
+  while($address_fixed_array = tep_db_fetch_array($address_fixed_query)){
 
-    $add_temp_array = unserialize($add_array['type_comment']);
-    if(!isset($add_temp_array['select_value'])){
-       
-      $add_temp_first_array  = current($add_temp_array);
-      $parent_id = $add_temp_first_array['parent_id'];
-      $child_flag_name = $add_array['name_flag'];
+    switch($address_fixed_array['fixed_option']){
+
+    case '1':
+      echo 'var country_fee_id = "ad_'. $address_fixed_array['name_flag'] .'";'."\n";
+      echo 'var country_fee_id_one = "'. $address_fixed_array['name_flag'] .'";'."\n";
+      $country_fee_id = 'ad_'.$address_fixed_array['name_flag'];
+      break;
+    case '2':
+      echo 'var country_area_id = "ad_'. $address_fixed_array['name_flag'] .'";'."\n";
+      echo 'var country_area_id_one = "'. $address_fixed_array['name_flag'] .'";'."\n";
+      $country_area_id = 'ad_'.$address_fixed_array['name_flag'];
+      break;
+      break;
+    case '3':
+      echo 'var country_city_id = "ad_'. $address_fixed_array['name_flag'] .'";'."\n";
+      echo 'var country_city_id_one = "'. $address_fixed_array['name_flag'] .'";'."\n";
+      $country_city_id = 'ad_'.$address_fixed_array['name_flag'];
+      break;
+      break;
     }
   }
-  tep_db_free_result($add_query);
-  $add_parent_query = tep_db_query("select * from ". TABLE_ADDRESS ." where id=$parent_id");
-  $add_parent_array = tep_db_fetch_array($add_parent_query);
-  $parent_flag_name = $add_parent_array['name_flag'];
-  tep_db_free_result($add_parent_query);
-
-  $options_query = tep_db_query("select * from ". TABLE_ADDRESS ." where type='option' and status='0' order by sort");
-  $json_array = array();
-  $json_set_value = array();
-  while($options_array = tep_db_fetch_array($options_query)){
-    if(!isset($otpions_array_temp['select_value']) && $otpions_array_temp['select_value'] == ''){
-        $show_array[] = unserialize($options_array['type_comment']);
-    }
-  }
-
-  foreach($show_array as $show_value){
-    foreach($show_value as $show_key=>$show_val){
-
-      $json_array[$show_key] = $show_val;
-      $json_set_value[$show_key] = $show_val['select_value'];
-    } 
-  }
-
-  tep_db_free_result($options_query);
-  foreach($json_array as $key=>$value_temp){
-    echo 'arr["'. $key .'"] = new Array();';
-    echo 'arr_set["'. $key .'"] = new Array();';
-    $value_temp['option_list'] = array_values($value_temp['option_list']);
-    foreach($value_temp['option_list'] as $k=>$val){
-
-      echo 'arr["'. $key .'"]['. $k .'] = "'. $val .'";';
-    } 
-    echo 'arr_set["'. $key .'"] = "'. $json_set_value[$key] .'";';
-
-  }  
 ?>
-  
-  var option_id = document.getElementById("ad_<?php echo $child_flag_name;?>");
-  option_id.options.length = 0;
-  len = arr[value].length;
-  //option_id.options[option_id.options.length]=new Option('--',''); 
-  for(i = 0;i < len;i++){
-    if(arr_set[value] == arr[value][i]){
 
-      option_id.options[option_id.options.length]=new Option(arr[value][i], arr[value][i]);
-    }     
-  } 
-  for(i = 0;i < len;i++){
-    if(arr_set[value] == arr[value][i]){
-      continue; 
+function check(select_value){
+
+  var arr = new Array();
+<?php 
+    $country_fee_query = tep_db_query("select id,name from ". TABLE_COUNTRY_FEE ." where status='0' order by id");
+    while($country_fee_array = tep_db_fetch_array($country_fee_query)){
+
+      echo 'arr["'.$country_fee_array['name'].'"] = "'. $country_fee_array['name'] .'";'."\n";
     }
-    option_id.options[option_id.options.length]=new Option(arr[value][i], arr[value][i]);    
-  } 
+    tep_db_free_result($country_fee_query);
+  ?>
+    var country_fee = document.getElementById(country_fee_id);
+    country_fee.options.length = 0;
+    var i = 0;
+    for(x in arr){
+
+      country_fee.options[country_fee.options.length]=new Option(arr[x], x,x==select_value,x==select_value);
+      i++;
+    }
+
+    if(i == 0){
+
+      $("#td_"+country_fee_id_one).hide();
+    }else{
+       
+      $("#td_"+country_fee_id_one).show();
+    }
+}
+function country_check(value,select_value){
+   
+   var arr = new Array();
+<?php 
+    $country_array = array();
+    $country_area_query = tep_db_query("select id,fid,name from ". TABLE_COUNTRY_AREA ." where status='0' order by sort");
+    while($country_area_array = tep_db_fetch_array($country_area_query)){
+      
+      $country_fee_fid_query = tep_db_query("select name from ". TABLE_COUNTRY_FEE ." where id='".$country_area_array['fid']."'"); 
+      $country_fee_fid_array = tep_db_fetch_array($country_fee_fid_query);
+      tep_db_free_result($country_fee_fid_query);
+      $country_array[$country_fee_fid_array['name']][$country_area_array['name']] = $country_area_array['name'];
+      
+    }
+    tep_db_free_result($country_area_query);
+    foreach($country_array as $country_key=>$country_value){
+      
+      echo 'arr["'.$country_key.'"] = new Array();'."\n";
+      foreach($country_value as $c_key=>$c_value){
+      
+        echo 'arr["'.$country_key.'"]["'.$c_key.'"] = "'. $c_value .'";'."\n";
+
+      }
+
+    }
+  ?>
+    var country_area = document.getElementById(country_area_id);
+    country_area.options.length = 0;
+    var i = 0;
+    for(x in arr[value]){
+
+      country_area.options[country_area.options.length]=new Option(arr[value][x], x,x==select_value,x==select_value);
+      i++;
+    }
+
+    if(i == 0){
+
+      $("#td_"+country_area_id_one).hide();
+    }else{
+       
+      $("#td_"+country_area_id_one).show();
+    }
+
 }
 
+function country_area_check(value,select_value){
+   
+   var arr = new Array();
+  <?php
+    $country_array = array();
+    $country_city_query = tep_db_query("select id,fid,name from ". TABLE_COUNTRY_CITY ." where status='0' order by sort");
+    while($country_city_array = tep_db_fetch_array($country_city_query)){
+      
+      $country_area_fid_query = tep_db_query("select name from ". TABLE_COUNTRY_AREA ." where id='".$country_city_array['fid']."'"); 
+      $country_area_fid_array = tep_db_fetch_array($country_area_fid_query);
+      tep_db_free_result($country_area_fid_query); 
+      $country_array[$country_area_fid_array['name']][$country_city_array['name']] = $country_city_array['name'];
+      
+    }
+    tep_db_free_result($country_city_query);
+    foreach($country_array as $country_key=>$country_value){
+      
+      echo 'arr["'.$country_key.'"] = new Array();'."\n";
+      foreach($country_value as $c_key=>$c_value){
+      
+        echo 'arr["'.$country_key.'"]["'.$c_key.'"] = "'. $c_value .'";'."\n";
+
+      }
+
+    }
+  ?>
+    var country_city = document.getElementById(country_city_id);
+    country_city.options.length = 0;
+    var i = 0;
+    for(x in arr[value]){
+
+      country_city.options[country_city.options.length]=new Option(arr[value][x], x,x==select_value,x==select_value);
+      i++;
+    }
+
+    if(i == 0){
+
+      $("#td_"+country_city_id_one).hide();
+    }else{
+       
+      $("#td_"+country_city_id_one).show();
+    }
+
+}
+
+function session_value(){
+
+  var session_array = new Array();
+  <?php
+    foreach($_SESSION['preorder_information'] as $p_key=>$p_value){
+
+      if(substr($p_key,0,3) == 'ad_'){
+
+        echo 'session_array["'. $p_key .'"] = "'. $p_value .'";'."\n";
+      }
+    }
+  ?>
+  
+    for(x in session_array){
+
+      $("#"+x).val(session_array[x]);
+    }
+
+}
 //js 判断某值是否存在某数组中
   function in_array(value,arr){
 
@@ -133,7 +243,7 @@ function address_option_show(action){
   tep_db_free_result($address_new_query);
 ?>
   for(x in arr_new){
-     
+    if(document.getElementById("ad_"+x)){ 
       var list_options = document.getElementById("ad_"+x);
       list_options.value = arr_new[x];
       list_options.style.color = arr_color[x];
@@ -144,6 +254,13 @@ function address_option_show(action){
         }
       }
     }
+  }
+    $("#error_"+country_fee_id_one).html('');
+    $("#prompt_"+country_fee_id_one).html('');
+    $("#error_"+country_area_id_one).html('');
+    $("#prompt_"+country_area_id_one).html('');
+    $("#error_"+country_city_id_one).html('');
+    $("#prompt_"+country_city_id_one).html('');
     break;
   case 'old' :
     $("#address_show_id").show();
@@ -195,6 +312,8 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
       $json_str_array[$address_num] = $json_str_list; 
       echo 'arr_old['. $address_num .'] = new Array();';
       foreach($json_old_array as $key=>$value){
+        $value = str_replace("\n","",$value);
+        $value = str_replace("\r","",$value);
         echo 'arr_old['. $address_num .']["'. $key .'"] = "'. $value .'";';
       }
       $address_num++;
@@ -261,7 +380,7 @@ function address_option_list(value){
   
   while($address_orders_group_array = tep_db_fetch_array($address_orders_group_query)){
   
-  $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where orders_id='". $address_orders_group_array['orders_id'] ."'");
+  $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where orders_id='". $address_orders_group_array['orders_id'] ."' order by id");
 
   $json_str_list = '';
   unset($json_old_array); 
@@ -283,6 +402,8 @@ function address_option_list(value){
       $json_str_array[] = $json_str_list; 
       echo 'arr_list['. $address_num .'] = new Array();';
       foreach($json_old_array as $key=>$value){
+        $value = str_replace("\n","",$value);
+        $value = str_replace("\r","",$value);
         echo 'arr_list['. $address_num .']["'. $key .'"] = "'. $value .'";';
       }
       $address_num++;
@@ -293,16 +414,31 @@ function address_option_list(value){
 ?>
   ii = 0;
   for(x in arr_list[value]){
-    var list_option = document.getElementById("ad_"+x);
-    list_option.style.color = '#000';
-    list_option.value = arr_list[value][x];
-    if('<?php echo $parent_flag_name;?>' == x){
-
-      check($("#ad_"+x).val()); 
+   if(document.getElementById("ad_"+x)){
+     var list_option = document.getElementById("ad_"+x);
+     if('<?php echo $country_fee_id;?>' == 'ad_'+x){
+      check(arr_list[value][x]);
+    }else if('<?php echo $country_area_id;?>' == 'ad_'+x){
+      country_check(document.getElementById(country_fee_id).value,arr_list[value][x]);
+     
+    }else if('<?php echo $country_city_id;?>' == 'ad_'+x){
+      country_area_check(document.getElementById(country_area_id).value,arr_list[value][x]);
+    }else{
+      list_option.style.color = '#000';
+      list_option.value = arr_list[value][x];   
     }
+     
     $("#error_"+x).html('');
     ii++; 
+   }
   }
+
+    $("#error_"+country_fee_id_one).html('');
+    $("#prompt_"+country_fee_id_one).html('');
+    $("#error_"+country_area_id_one).html('');
+    $("#prompt_"+country_area_id_one).html('');
+    $("#error_"+country_city_id_one).html('');
+    $("#prompt_"+country_city_id_one).html('');
 
 }
 
@@ -325,9 +461,75 @@ if (!isset($_POST['address_option'])) {
 }
 ?>
 $(document).ready(function(){
-  $("#ad_<?php echo $parent_flag_name;?>").change(function(){
-    check($(this).val());
+  $("#"+country_fee_id).change(function(){
+    country_check($("#"+country_fee_id).val());
+    country_area_check($("#"+country_area_id).val());
+    $("#error_"+country_fee_id_one).html('');
+    $("#prompt_"+country_fee_id_one).html('');
+    $("#error_"+country_area_id_one).html('');
+    $("#prompt_"+country_area_id_one).html('');
+    $("#error_"+country_city_id_one).html('');
+    $("#prompt_"+country_city_id_one).html('');
   }); 
+  $("#"+country_area_id).change(function(){
+    country_area_check($("#"+country_area_id).val());
+    $("#error_"+country_fee_id_one).html('');
+    $("#prompt_"+country_fee_id_one).html('');
+    $("#error_"+country_area_id_one).html('');
+    $("#prompt_"+country_area_id_one).html('');
+    $("#error_"+country_city_id_one).html('');
+    $("#prompt_"+country_city_id_one).html('');
+  });
+  <?php
+    if(isset($_POST[$country_fee_id])){
+  ?>  
+    check("<?php echo isset($_POST[$country_fee_id]) ? $_POST[$country_fee_id] : '';?>");
+  <?php
+   }elseif(!isset($_SESSION['preorder_information'])){
+  ?>
+    check();
+    address_option_list(first_num);
+  <?php
+  }else{
+  ?>
+    check("<?php echo $_SESSION['preorder_information'][$country_fee_id];?>");
+    session_value();
+  <?php
+  }
+  ?>
+  <?php
+    if(isset($_POST[$country_area_id])){
+  ?>
+    country_check($("#"+country_fee_id).val(),"<?php echo $_POST[$country_area_id];?>");
+  <?php
+   }elseif(!isset($_SESSION['preorder_information'])){
+  ?>
+    country_check($("#"+country_fee_id).val());
+    address_option_list(first_num);
+  <?php
+  }else{
+  ?>
+    country_check($("#"+country_fee_id).val(),"<?php echo $_SESSION['preorder_information'][$country_area_id];?>");
+  <?php
+  }
+  ?>
+  <?php
+    if(isset($_POST[$country_city_id])){
+  ?>
+     
+     country_area_check($("#"+country_area_id).val(),"<?php echo $_POST[$country_city_id];?>");
+  <?php
+   }elseif(!isset($_SESSION['preorder_information'])){
+  ?>
+    country_area_check($("#"+country_area_id).val());
+    address_option_list(first_num);
+  <?php
+  }else{
+  ?>
+    country_area_check($("#"+country_area_id).val(),"<?php echo $_SESSION['preorder_information'][$country_city_id]?>");
+  <?php
+  }
+  ?>
 });
 </script>
 <script type="text/javascript" src="js/date_time.js"></script>
@@ -335,19 +537,28 @@ $(document).ready(function(){
 <body>
 <?php 
 if ($error == false && $_POST['action'] == 'process') { 
-echo tep_draw_form('order1', tep_href_link('change_preorder_confirm.php'));
+//echo tep_draw_form('order1', tep_href_link('change_preorder_confirm.php'));
+$preorder_information = array();
 foreach ($_POST as $post_key => $post_value) {
   if (is_array($post_value)) {
     foreach ($post_value as $ps_key => $ps_value) {
-      echo '<input type="hidden" name="'.$post_key.'['.$ps_key.']" value="'.$ps_value.'">'; 
-      $preorder_info_attr[] = $ps_value;
+      //echo '<input type="hidden" name="'.$post_key.'['.$ps_key.']" value="'.$ps_value.'">'; 
+      //$preorder_info_attr[] = $ps_value;
+      $preorder_information[$post_key][$ps_key] = $ps_value; 
     }
   } else {
-    echo '<input type="hidden" name="'.$post_key.'" value="'.stripslashes($post_value).'">'; 
+    //echo '<input type="hidden" name="'.$post_key.'" value="'.stripslashes($post_value).'">'; 
+      $preorder_information[$post_key] = stripslashes($post_value); 
   }
 }
-echo '<input type="hidden" name="pid" value="'.$preorder_id.'">'; 
-echo '</form>';
+
+$preorder_information['pid'] = $preorder_id; 
+if (!tep_session_is_registered('preorder_information')) {
+   tep_session_register('preorder_information');
+}
+tep_redirect(tep_href_link('change_preorder_confirm.php', '', 'SSL'));
+//echo '<input type="hidden" name="pid" value="'.$preorder_id.'">'; 
+//echo '</form>';
 ?>
 <script type="text/javascript">
 document.forms.order1.submit(); 
@@ -650,10 +861,16 @@ document.forms.order1.submit();
           $checked_str_old = '';
           $checked_str_new = '';
           $show_flag = '';
-          if ((isset($_POST['address_option']) && ($_POST['address_option'] == 'old')) || !isset($_POST['address_option'])){
+          if ((isset($_POST['address_option']) && ($_POST['address_option'] == 'old')) || (!isset($_POST['address_option']) && !isset($_SESSION['preorder_information']['address_option']))){
 
             $checked_str_old = 'checked';
             $show_flag = 'block';
+          }elseif(isset($_SESSION['preorder_information']['address_option']) && $_SESSION['preorder_information']['address_option'] == 'old'){
+            $checked_str_old = 'checked';
+            $show_flag = 'block';           
+          }elseif(isset($_SESSION['preorder_information']['address_option']) && $_SESSION['preorder_information']['address_option'] == 'new'){
+            $checked_str_new = 'checked';
+            $show_flag = 'none';
           }else{
 
             $checked_str_new = 'checked';
@@ -680,19 +897,32 @@ document.forms.order1.submit();
          $(document).ready(function(){
   
            address_option_show('new'); 
+           
          }); 
         </script>
 
         <?php
             }
         ?>
+        <script type="text/javascript">
+         $(document).ready(function(){
+  
+           <?php
+              if($show_flag == 'none'){
+          ?>   
+               $("#address_show_id").hide();
+          <?php
+              }
+           ?>
+         }); 
+        </script>
             <tr>
             <td colspan="2" class="main">
               <input type="radio" name="address_option" value="old" onclick="address_option_show('old');address_option_list(first_num);" <?php echo $checked_str_old;?>><?php echo TABLE_OPTION_OLD; ?> 
               <input type="radio" name="address_option" value="new" onclick="address_option_show('new');" <?php echo $checked_str_new;?>><?php echo TABLE_OPTION_NEW; ?>
             </td>
             </tr>
-            <tr id="address_show_id" style="display:none">
+            <tr id="address_show_id">
             <td class="main"><?php echo TABLE_ADDRESS_SHOW; ?></td>
             <td class="main">
             <select name="address_show_list" id="address_show_list" onchange="address_option_list(this.value);">
@@ -752,6 +982,9 @@ document.forms.order1.submit();
     for($j = 0;$j < $shipping_time;$j++){
 
       $selected_str = date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == $_POST['date'] ? 'selected' : ''; 
+      if(!isset($_POST['date'])){
+        $selected_str = date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == $_SESSION['preorder_information']['date'] ? 'selected' : ''; 
+      }
       echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'" '. $selected_str .'>'.str_replace($oarr, $newarr, date("Y年m月d日（l）", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
 
     }
@@ -792,10 +1025,22 @@ document.forms.order1.submit();
              if(isset($_POST['date']) && $_POST['date'] != ''){
 
                 echo '<script>selectDate(\''. $work_start .' \', \''. $work_end .'\');$("#shipping_list").show();</script>';
+             }else{
+
+                if(isset($_SESSION['preorder_information']['date']) && $_SESSION['preorder_information']['date'] != ''){
+
+                  echo '<script>selectDate(\''. $work_start .' \', \''. $work_end .'\');$("#shipping_list").show();</script>';
+                }
              }
              if(isset($_POST['min']) && $_POST['min'] != ''){
 
                 echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\',\''. $_POST['hour'] .'\','. $_POST['min'] .','. $_POST['ele'] .');$("#shipping_list_min").show();</script>';
+             }else{
+
+                if(isset($_SESSION['preorder_information']['min']) && $_SESSION['preorder_information']['min'] != ''){
+
+                  echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\',\''. $_SESSION['preorder_information']['hour'] .'\','. $_SESSION['preorder_information']['min'] .','. $_SESSION['preorder_information']['ele'] .');$("#shipping_list_min").show();</script>';
+                }
              }
              ?> 
 </td></tr>
@@ -807,7 +1052,10 @@ document.forms.order1.submit();
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
           <tr>
             <td>
-            <?php echo $hm_option->render($product_info_res['belong_to_option'], true, 1);?> 
+            <?php 
+            $p_cflag = tep_get_cflag_by_product_id($preorder_product_res['products_id']);
+            echo $hm_option->render($product_info_res['belong_to_option'], true, 1, '', '', (int)$p_cflag);
+            ?> 
             </td>
           </tr>
           </table> 
@@ -826,7 +1074,7 @@ document.forms.order1.submit();
             <tr>
               <td class="main" width="150"><?php echo TEXT_PREORDER_POINT_TEXT;?></td> 
               <td class="main">
-              <input type="text" name="preorder_point" size="24" value="<?php echo isset($_POST['preorder_campaign_info'])?$_POST['preorder_campaign_info']:(isset($_POST['preorder_point'])?$_POST['preorder_point']:'0');?>" style="text-align:right;">&nbsp;&nbsp;<?php echo $preorder_point;?> 
+              <input type="text" name="preorder_point" size="24" value="<?php echo isset($_POST['preorder_campaign_info'])?$_POST['preorder_campaign_info']:(isset($_POST['preorder_point'])?$_POST['preorder_point']:(isset($_SESSION['preorder_information']['preorder_point'])?$_SESSION['preorder_information']['preorder_point']:'0'));?>" style="text-align:right;">&nbsp;&nbsp;<?php echo $preorder_point;?> 
               <?php 
               echo TEXT_PREORDER_POINT_READ; 
               if (isset($point_error)) {
@@ -843,7 +1091,7 @@ document.forms.order1.submit();
             <tr>
               <td class="main" width="150"><?php echo TEXT_PREORDER_POINT_TEXT;?></td> 
               <td class="main">
-              <input type="text" name="camp_preorder_point" size="24" value="<?php echo isset($_POST['preorder_campaign_info'])?$_POST['preorder_campaign_info']:(isset($_POST['camp_preorder_point'])?$_POST['camp_preorder_point']:'0');?>" style="text-align:right;">
+              <input type="text" name="camp_preorder_point" size="24" value="<?php echo isset($_POST['preorder_campaign_info'])?$_POST['preorder_campaign_info']:(isset($_POST['camp_preorder_point'])?$_POST['camp_preorder_point']:(isset($_SESSION['preorder_information']['preorder_campaign_point'])?$_SESSION['preorder_information']['preorder_campaign_point']:'0'));?>" style="text-align:right;">
               <?php 
               if (isset($point_error)) {
                 echo '<br><font color="#ff0000">'.$point_error.'</font>'; 

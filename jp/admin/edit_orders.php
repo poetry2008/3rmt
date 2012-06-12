@@ -112,23 +112,40 @@ if (tep_not_null($action)) {
     $weight = $shipping_weight_total;
 
     $shipping_orders_array = array();
-    $shipping_address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."'");
-    while($shipping_address_orders_array = tep_db_fetch_array($shipping_address_orders_query)){
+    foreach($_POST as $post_key=>$post_value){
 
-      $shipping_orders_array[] = $shipping_address_orders_array['value'];
+      if(substr($post_key,0,3) == 'ad_'){
+
+        $shipping_orders_array[substr($post_key,3)] = $post_value;
+      }
     }
-    tep_db_free_result($shipping_address_orders_query);
-  foreach($shipping_orders_array  as $op_value){
-     $city_query = tep_db_query("select * from ". TABLE_COUNTRY_CITY ." where name='". $op_value ."' and status='0'");
-     $city_num = tep_db_num_rows($city_query);
 
-     $address_query = tep_db_query("select * from ". TABLE_COUNTRY_AREA ." where name='". $op_value ."' and status='0'");
-     $address_num = tep_db_num_rows($address_query);
-  
-     $country_query = tep_db_query("select * from ". TABLE_COUNTRY_FEE ." where name='". $op_value ."' and status='0'");
-     $address_country_num = tep_db_num_rows($country_query);
+    $country_fee_array = array();
+    $country_fee_id_query = tep_db_query("select name_flag,fixed_option from ". TABLE_ADDRESS ." where fixed_option!='0' and status='0'");
+    while($country_fee_id_array = tep_db_fetch_array($country_fee_id_query)){
 
-  if($city_num > 0){
+      $country_fee_array[$country_fee_id_array['fixed_option']] = $country_fee_id_array['name_flag'];
+    }
+    tep_db_free_result($country_fee_id_query);
+  foreach($shipping_orders_array  as $op_key=>$op_value){
+     if($op_key == $country_fee_array[3]){
+       $city_query = tep_db_query("select * from ". TABLE_COUNTRY_CITY ." where name='". $op_value ."' and status='0'");
+       $city_num = tep_db_num_rows($city_query);
+     }
+
+     
+     if($op_key == $country_fee_array[2]){
+       $address_query = tep_db_query("select * from ". TABLE_COUNTRY_AREA ." where name='". $op_value ."' and status='0'");
+       $address_num = tep_db_num_rows($address_query);
+     }
+
+      
+     if($op_key == $country_fee_array[1]){
+       $country_query = tep_db_query("select * from ". TABLE_COUNTRY_FEE ." where name='". $op_value ."' and status='0'");
+       $address_country_num = tep_db_num_rows($country_query);
+     }
+
+  if($city_num > 0 && $op_key == $country_fee_array[3]){
     $city_array = tep_db_fetch_array($city_query);
     tep_db_free_result($city_query);
     $city_free_value = $city_array['free_value'];
@@ -151,7 +168,7 @@ if (tep_not_null($action)) {
       break;
     }
   }    
-  }elseif($address_num > 0){
+  }elseif($address_num > 0 && $op_key == $country_fee_array[2]){
     $address_array = tep_db_fetch_array($address_query);
     tep_db_free_result($address_query);
     $address_free_value = $address_array['free_value'];
@@ -175,7 +192,7 @@ if (tep_not_null($action)) {
     }
   }
   }else{
-    if($address_country_num > 0){
+    if($address_country_num > 0 && $op_key == $country_fee_array[1]){
     $country_array = tep_db_fetch_array($country_query);
     tep_db_free_result($country_query);
     $country_free_value = $country_array['free_value'];
@@ -231,6 +248,7 @@ if (tep_not_null($action)) {
       $end_min_1 = tep_db_prepare_input($_POST['end_min_1']);
       $end_min_2 = tep_db_prepare_input($_POST['end_min_2']);
       $goods_check = $order_query;
+ 
       /*
          if (tep_db_num_rows($goods_check) == 0) {
          $messageStack->add('商品が追加されていません。', 'error');
@@ -402,18 +420,21 @@ if (tep_not_null($action)) {
       $check_status = tep_db_fetch_array($check_status_query);
 
       //住所信息入库
-      
+
+      tep_db_query("delete from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' and customers_id='".$check_status['customers_id']."'");
       foreach($option_info_array as $ad_key=>$ad_value){
         
         $address_list_query = tep_db_query("select * from ". TABLE_ADDRESS ." where name_flag='". substr($ad_key,3) ."'");
         $address_list_array = tep_db_fetch_array($address_list_query);
         $ad_value = $address_list_array['comment'] == $ad_value ? '' : $ad_value;
-        $ad_sql = "update ". TABLE_ADDRESS_ORDERS ." set value='". $ad_value ."' where name='". substr($ad_key,3) ."' and orders_id='". $oID ."'";
+   
+        $ad_sql = "insert into ". TABLE_ADDRESS_ORDERS ." values(NULL,'".$oID."','{$check_status['customers_id']}','{$address_list_array['id']}','". substr($ad_key,3) ."','$ad_value')";
         $ad_query = tep_db_query($ad_sql);
         tep_db_free_result($address_list_query);
         tep_db_free_result($ad_query);
       }
-
+ 
+      
       $address_show_array = array(); 
   $address_show_list_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where status='0' and show_title='1'");
   while($address_show_list_array = tep_db_fetch_array($address_show_list_query)){
@@ -434,7 +455,7 @@ if (tep_not_null($action)) {
   $address_sh_his_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id='{$check_status['customers_id']}' group by orders_id");
   while($address_sh_his_array = tep_db_fetch_array($address_sh_his_query)){
 
-    $address_sh_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where customers_id='{$check_status['customers_id']}' and orders_id='". $address_sh_his_array['orders_id'] ."'");
+    $address_sh_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where customers_id='{$check_status['customers_id']}' and orders_id='". $address_sh_his_array['orders_id'] ."' order by id");
     $add_temp_str = '';
     while($address_sh_array = tep_db_fetch_array($address_sh_query)){
      
@@ -551,7 +572,8 @@ if($address_error == false){
             foreach ($products_details["attributes"] as $orders_products_attributes_id => $attributes_details) {
               $input_option = array('title' => $attributes_details["option"], 'value' => $attributes_details["value"]); 
               
-              $Query = "update " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " set option_info = '".tep_db_input(serialize($input_option))."', options_values_price = '".$attributes_details['price']."' where orders_products_attributes_id = '$orders_products_attributes_id';"; 
+              //$Query = "update " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " set option_info = '".tep_db_input(serialize($input_option))."', options_values_price = '".$attributes_details['price']."' where orders_products_attributes_id = '$orders_products_attributes_id';"; 
+              $Query = "update " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " set options_values_price = '".$attributes_details['price']."' where orders_products_attributes_id = '$orders_products_attributes_id';"; 
               tep_db_query($Query);
             }
           }
@@ -793,6 +815,14 @@ if($address_error == false){
         from " . TABLE_ORDERS . " 
         where orders_id = '" . tep_db_input($oID) . "'");
         $check_status = tep_db_fetch_array($check_status_query);
+        
+        $ot_query = tep_db_query("select value from " . TABLE_ORDERS_TOTAL . " where orders_id = '".$oID."' and class = 'ot_total'");
+        $ot_result = tep_db_fetch_array($ot_query);
+        $otm = (int)$ot_result['value'] . '円';
+
+        $os_query = tep_db_query("select orders_status_name from " . TABLE_ORDERS_STATUS . " where orders_status_id = '".$status."'");
+        $os_result = tep_db_fetch_array($os_query);
+        
         $title = str_replace(array(
               '${NAME}',
               '${MAIL}',
@@ -815,9 +845,9 @@ if($address_error == false){
                 $otm,
                 tep_torihiki($check_status['torihiki_date']).'～'.date('H時i分',strtotime($check_status['torihiki_date_end'])).'　（24時間表記）',
                 $os_result['orders_status_name'],
-                get_configuration_by_site_id('STORE_NAME', $site_id),
-                get_url_by_site_id($site_id),
-                get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
+                get_configuration_by_site_id('STORE_NAME', $order->info['site_id']),
+                get_url_by_site_id($order->info['site_id']),
+                get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $order->info['site_id']),
                 date('Y年n月j日',strtotime(tep_get_pay_day()))
                 ),$title);
 
@@ -843,9 +873,9 @@ if($address_error == false){
                 $otm,
                 tep_torihiki($check_status['torihiki_date']).'～'.date('H時i分',strtotime($check_status['torihiki_date_end'])).'　（24時間表記）',
                 $os_result['orders_status_name'],
-                get_configuration_by_site_id('STORE_NAME', $site_id),
-                get_url_by_site_id($site_id),
-                get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
+                get_configuration_by_site_id('STORE_NAME', $order->info['site_id']),
+                get_url_by_site_id($order->info['site_id']),
+                get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $order->info['site_id']),
                 date('Y年n月j日',strtotime(tep_get_pay_day()))
                 ),$comments);
         tep_order_status_change($oID,$status);
@@ -944,31 +974,30 @@ if($address_error == false){
 
           $email = '';
           //$email .= $order->customer['name'] . '様' . "\n\n";
-          $email .= 'いつも' . get_configuration_by_site_id('STORE_NAME', $order->info['site_id']) . 'をご利用いただき、誠にありがとうございます。' . "\n";
-          $email .= '下記の内容にて変更を承りましたので、ご確認ください。' . "\n\n";
+          //$email .= 'いつも' . get_configuration_by_site_id('STORE_NAME', $order->info['site_id']) . 'をご利用いただき、誠にありがとうございます。' . "\n";
+          //$email .= '下記の内容にて変更を承りましたので、ご確認ください。' . "\n\n";
           $email .= $notify_comments_mail;
-          $email .= '━━━━━━━━━━━━━━━━━━━━━' . "\n";
-          $email .= '▼注文番号　　　　：' . $oID . "\n";
-          $email .= '▼お名前　　　　　：' . $order->customer['name'] . '様' . "\n";
-          $email .= '▼メールアドレス　：' . $order->customer['email_address'] . "\n";
-          $email .= '▼支払方法　　　　：' . $order->info['payment_method'] . "\n";
-          $email .= '▼取引日時　　　　：' . str_replace('&nbsp;',' ',$order->tori['date']) . '（24時間表記）' . "\n";
-          $email .= '▼オプション　　　：' . $order->tori['houhou'] . "\n";
-          $email .= '━━━━━━━━━━━━━━━━━━━━━' . "\n\n";
-          $email .= '▼注文商品' . "\n";
-          $email .= "\t" . '------------------------------------------' . "\n";
-          $email .= $products_ordered_mail;
-          $email .= $total_details_mail;
-          $email .= "\n\n\n\n";
+          //$email .= '━━━━━━━━━━━━━━━━━━━━━' . "\n";
+          //$email .= '▼注文番号　　　　：' . $oID . "\n";
+          //$email .= '▼お名前　　　　　：' . $order->customer['name'] . '様' . "\n";
+          //$email .= '▼メールアドレス　：' . $order->customer['email_address'] . "\n";
+          //$email .= '▼支払方法　　　　：' . $order->info['payment_method'] . "\n";
+          //$email .= '▼取引日時　　　　：' . str_replace('&nbsp;',' ',$order->tori['date']) . '（24時間表記）' . "\n";
+          //$email .= '▼オプション　　　：' . $order->tori['houhou'] . "\n";
+          //$email .= '━━━━━━━━━━━━━━━━━━━━━' . "\n\n";
+          //$email .= '▼注文商品' . "\n";
+          //$email .= "\t" . '------------------------------------------' . "\n";
+          //$email .= $products_ordered_mail;
+          //$email .= $total_details_mail;
+          //$email .= "\n\n\n\n";
           //      $email .= '会員のお客様は' . EMAIL_TEXT_INVOICE_URL . ' ' . tep_catalog_href_link(FILENAME_CATALOG_ACCOUNT_HISTORY_INFO, 'order_id=' . $oID, 'SSL') . "\n\n\n\n";
-          $email .= 'ご不明な点がございましたら、注文番号をご確認の上、' . "\n";
-          $email .= '「' . get_configuration_by_site_id('STORE_NAME', $order->info['site_id']) . '」までお問い合わせください。' . "\n\n";
-          $email .= '[ご連絡・お問い合わせ先]━━━━━━━━━━━━' . "\n";
-          $email .= '株式会社 iimy' . "\n";
-          $email .= get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $order->info['site_id']) . "\n";
-          $email .= get_url_by_site_id($order->info['site_id']) . "\n";
-          $email .= '━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-          
+          //$email .= 'ご不明な点がございましたら、注文番号をご確認の上、' . "\n";
+          //$email .= '「' . get_configuration_by_site_id('STORE_NAME', $order->info['site_id']) . '」までお問い合わせください。' . "\n\n";
+          //$email .= '[ご連絡・お問い合わせ先]━━━━━━━━━━━━' . "\n";
+          //$email .= '株式会社 iimy' . "\n";
+          //$email .= get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $order->info['site_id']) . "\n";
+          //$email .= get_url_by_site_id($order->info['site_id']) . "\n";
+          //$email .= '━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
           if ($customer_guest['customers_guest_chk'] != 9)
             tep_mail($check_status['customers_name'], $check_status['customers_email_address'], '注文内容の変更を承りました【' . get_configuration_by_site_id('STORE_NAME', $order->info['site_id']) . '】', $email, get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $order->info['site_id']),$order->info['site_id']);
 
@@ -1274,20 +1303,37 @@ $shipping_orders_array = array();
 $shipping_address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."'");
 while($shipping_address_orders_array = tep_db_fetch_array($shipping_address_orders_query)){
 
-  $shipping_orders_array[] = $shipping_address_orders_array['value'];
+  $shipping_orders_array[$shipping_address_orders_array['name']] = $shipping_address_orders_array['value'];
 }
 tep_db_free_result($shipping_address_orders_query);
-foreach($shipping_orders_array  as $op_value){
-  $city_query = tep_db_query("select * from ". TABLE_COUNTRY_CITY ." where name='". $op_value ."' and status='0'");
-  $city_num = tep_db_num_rows($city_query);
 
-  $address_query = tep_db_query("select * from ". TABLE_COUNTRY_AREA ." where name='". $op_value ."' and status='0'");
-  $address_num = tep_db_num_rows($address_query);
+$country_fee_array = array();
+$country_fee_id_query = tep_db_query("select name_flag,fixed_option from ". TABLE_ADDRESS ." where fixed_option!='0' and status='0'");
+while($country_fee_id_array = tep_db_fetch_array($country_fee_id_query)){
+
+  $country_fee_array[$country_fee_id_array['fixed_option']] = $country_fee_id_array['name_flag'];
+}
+tep_db_free_result($country_fee_id_query);
+
+foreach($shipping_orders_array  as $op_key=>$op_value){
+  if($op_key == $country_fee_array[3]){
+    $city_query = tep_db_query("select * from ". TABLE_COUNTRY_CITY ." where name='". $op_value ."' and status='0'");
+    $city_num = tep_db_num_rows($city_query);
+  }
+ 
   
-  $country_query = tep_db_query("select * from ". TABLE_COUNTRY_FEE ." where name='". $op_value ."' and status='0'");
-  $address_country_num = tep_db_num_rows($country_query);
+  if($op_key == $country_fee_array[2]){
+    $address_query = tep_db_query("select * from ". TABLE_COUNTRY_AREA ." where name='". $op_value ."' and status='0'");
+    $address_num = tep_db_num_rows($address_query);
+  }
 
-if($city_num > 0){
+   
+  if($op_key == $country_fee_array[1]){
+    $country_query = tep_db_query("select * from ". TABLE_COUNTRY_FEE ." where name='". $op_value ."' and status='0'");
+    $address_country_num = tep_db_num_rows($country_query);
+  }
+
+if($city_num > 0 && $op_key == $country_fee_array[3]){
   $city_array = tep_db_fetch_array($city_query);
   tep_db_free_result($city_query);
   $city_free_value = $city_array['free_value'];
@@ -1310,7 +1356,7 @@ if($city_num > 0){
       break;
     }
   }
-}elseif($address_num > 0){
+}elseif($address_num > 0 && $op_key == $country_fee_array[2]){
   $address_array = tep_db_fetch_array($address_query);
   tep_db_free_result($address_query);
   $address_free_value = $address_array['free_value'];
@@ -1334,7 +1380,7 @@ if($city_num > 0){
     }
   }
 }else{
-  if($address_country_num > 0){
+  if($address_country_num > 0 && $op_key == $country_fee_array[1]){
   $country_array = tep_db_fetch_array($country_query);
   tep_db_free_result($country_query);
   $country_free_value = $country_array['free_value'];
@@ -1395,7 +1441,197 @@ $shipping_fee = $order->info['shipping_fee'] != $shipping_fee ? $shipping_fee : 
 <script language="javascript" src="includes/javascript/all_orders.js"></script>
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
 <script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
+<script language="javascript" src="includes/jquery.form.js"></script>
 <script language="javascript">
+
+function submit_check(){
+
+    var options = {
+    url: 'ajax_orders_weight.php?action=edit_orders',
+    type:  'POST',
+    success: function(data) {
+      if(data != ''){
+        if(confirm(data)){
+
+          update_price2();
+        }
+      }else{
+
+        update_price2();
+      } 
+    }
+  };
+  $('#edit_order_id').ajaxSubmit(options);
+}
+
+function submit_check_con(){
+
+    var options = {
+    url: 'ajax_orders_weight.php?action=edit_orders',
+    type:  'POST',
+    success: function(data) {
+      if(data != ''){
+        if(confirm(data)){
+
+          submitChk(); 
+        }
+      }else{
+
+        submitChk();
+      } 
+    }
+  };
+  $('#edit_order_id').ajaxSubmit(options);
+}
+<?php
+  $address_fixed_query = tep_db_query("select name_flag,fixed_option from ". TABLE_ADDRESS ." where fixed_option!='0' and status='0'");
+  while($address_fixed_array = tep_db_fetch_array($address_fixed_query)){
+
+    switch($address_fixed_array['fixed_option']){
+
+    case '1':
+      echo 'var country_fee_id = "ad_'. $address_fixed_array['name_flag'] .'";'."\n";
+      echo 'var country_fee_id_one = "'. $address_fixed_array['name_flag'] .'";'."\n";
+      $country_fee_id = 'ad_'.$address_fixed_array['name_flag'];
+      break;
+    case '2':
+      echo 'var country_area_id = "ad_'. $address_fixed_array['name_flag'] .'";'."\n";
+      echo 'var country_area_id_one = "'. $address_fixed_array['name_flag'] .'";'."\n";
+      $country_area_id = 'ad_'.$address_fixed_array['name_flag'];
+      break;
+    case '3':
+      echo 'var country_city_id = "ad_'. $address_fixed_array['name_flag'] .'";'."\n";
+      echo 'var country_city_id_one = "'. $address_fixed_array['name_flag'] .'";'."\n";
+      $country_city_id = 'ad_'.$address_fixed_array['name_flag'];
+      break;
+    }
+  }
+?>
+
+function check(select_value){
+
+  var arr = new Array();
+  <?php  
+    $country_fee_query = tep_db_query("select id,name from ". TABLE_COUNTRY_FEE ." where status='0' order by id");
+    while($country_fee_array = tep_db_fetch_array($country_fee_query)){
+
+      echo 'arr["'.$country_fee_array['name'].'"] = "'. $country_fee_array['name'] .'";'."\n";
+    }
+    tep_db_free_result($country_fee_query);
+   ?>
+  if(document.getElementById(country_fee_id)){
+    var country_fee = document.getElementById(country_fee_id);
+    country_fee.options.length = 0;
+    var i = 0;
+    for(x in arr){
+
+      country_fee.options[country_fee.options.length]=new Option(arr[x], x,x==select_value,x==select_value);
+      i++;
+    }
+
+    if(i ==  0){
+
+      $("#td_"+country_fee_id_one).hide();
+    }else{
+
+      $("#td_"+country_fee_id_one).show();
+    } 
+  }
+}
+function country_check(value,select_value){
+   
+   var arr = new Array();
+  <?php 
+    $country_array = array();
+    $country_area_query = tep_db_query("select id,fid,name from ". TABLE_COUNTRY_AREA ." where status='0' order by sort");
+    while($country_area_array = tep_db_fetch_array($country_area_query)){
+      
+      $country_fee_fid_query = tep_db_query("select name from ". TABLE_COUNTRY_FEE ." where id='".$country_area_array['fid']."'"); 
+      $country_fee_fid_array = tep_db_fetch_array($country_fee_fid_query);
+      tep_db_free_result($country_fee_fid_query);
+      $country_array[$country_fee_fid_array['name']][$country_area_array['name']] = $country_area_array['name'];
+      
+    }
+    tep_db_free_result($country_area_query);
+    foreach($country_array as $country_key=>$country_value){
+      
+      echo 'arr["'.$country_key.'"] = new Array();'."\n";
+      foreach($country_value as $c_key=>$c_value){
+      
+        echo 'arr["'.$country_key.'"]["'.$c_key.'"] = "'. $c_value .'";'."\n";
+
+      }
+
+    }
+  ?>
+  if(document.getElementById(country_area_id)){ 
+    var country_area = document.getElementById(country_area_id);
+    country_area.options.length = 0;
+    var i = 0;
+    for(x in arr[value]){
+
+      country_area.options[country_area.options.length]=new Option(arr[value][x], x,x==select_value,x==select_value);
+      i++;
+    }
+
+    if(i ==  0){
+
+      $("#td_"+country_area_id_one).hide();
+    }else{
+
+      $("#td_"+country_area_id_one).show();
+    }
+  }
+
+}
+
+function country_area_check(value,select_value){
+   
+   var arr = new Array();
+  <?php
+    $country_array = array();
+    $country_city_query = tep_db_query("select id,fid,name from ". TABLE_COUNTRY_CITY ." where status='0' order by sort");
+    while($country_city_array = tep_db_fetch_array($country_city_query)){
+      
+      $country_area_fid_query = tep_db_query("select name from ". TABLE_COUNTRY_AREA ." where id='".$country_city_array['fid']."'"); 
+      $country_area_fid_array = tep_db_fetch_array($country_area_fid_query);
+      tep_db_free_result($country_area_fid_query); 
+      $country_array[$country_area_fid_array['name']][$country_city_array['name']] = $country_city_array['name'];
+      
+    }
+    tep_db_free_result($country_city_query);
+    foreach($country_array as $country_key=>$country_value){
+      
+      echo 'arr["'.$country_key.'"] = new Array();'."\n";
+      foreach($country_value as $c_key=>$c_value){
+      
+        echo 'arr["'.$country_key.'"]["'.$c_key.'"] = "'. $c_value .'";'."\n";
+
+      }
+
+    }
+  ?>
+  if(document.getElementById(country_city_id)){
+    var country_city = document.getElementById(country_city_id);
+    country_city.options.length = 0;
+    var i = 0;
+    for(x in arr[value]){
+
+      country_city.options[country_city.options.length]=new Option(arr[value][x], x,x==select_value,x==select_value);
+      i++;
+    }
+
+    if(i ==  0){
+
+      $("#td_"+country_city_id_one).hide();
+    }else{
+      
+      $("#td_"+country_city_id_one).show();
+    }
+  }
+
+}
+
 function check_hour(value){
   var hour_1 = document.getElementById('hour_1');
   var hour_1_value = hour_1.value;
@@ -1656,7 +1892,7 @@ function address_option_show(action){
   tep_db_free_result($address_new_query);
 ?>
   for(x in arr_new){
-     
+    if(document.getElementById("ad_"+x)){ 
       var list_options = document.getElementById("ad_"+x);
       list_options.value = arr_new[x];
       list_options.style.color = arr_color[x];
@@ -1672,6 +1908,7 @@ function address_option_show(action){
       <?php
       }
       ?>
+    }
     }
     break;
   case 'old' :
@@ -1723,6 +1960,9 @@ function address_option_show(action){
       $json_str_array[$address_num] = $json_str_list; 
       echo 'arr_old['. $address_num .'] = new Array();';
       foreach($json_old_array as $key=>$value){
+        
+        $value = str_replace("\n","",$value); 
+        $value = str_replace("\r","",$value); 
         echo 'arr_old['. $address_num .']["'. $key .'"] = "'. $value .'";';
       }
       $address_num++;
@@ -1732,7 +1972,7 @@ function address_option_show(action){
   }
 
   echo "\n".'var address_str = "";'."\n";
-  $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."'");
+  $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' order by id");
   while($address_orders_array = tep_db_fetch_array($address_orders_query)){
   
     if(in_array($address_orders_array['name'],$address_list_arr)){
@@ -1804,7 +2044,7 @@ function address_option_list(value){
   
   while($address_orders_group_array = tep_db_fetch_array($address_orders_group_query)){
   
-  $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where orders_id='". $address_orders_group_array['orders_id'] ."'");
+  $address_orders_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where orders_id='". $address_orders_group_array['orders_id'] ."' order by id");
   
   while($address_orders_array = tep_db_fetch_array($address_orders_query)){
     
@@ -1824,6 +2064,9 @@ function address_option_list(value){
       $json_str_array[] = $json_str_list; 
       echo 'arr_list['. $address_num .'] = new Array();';
       foreach($json_old_array as $key=>$value){
+        
+        $value = str_replace("\n","",$value); 
+        $value = str_replace("\r","",$value); 
         echo 'arr_list['. $address_num .']["'. $key .'"] = "'. $value .'";';
       }
       $address_num++;
@@ -1835,88 +2078,26 @@ function address_option_list(value){
 ?>
   ii = 0;
   for(x in arr_list[value]){
-    var list_option = document.getElementById("ad_"+x);
-    list_option.style.color = '#000';
-    list_option.value = arr_list[value][x];
-    if('<?php echo $parent_flag_name;?>' == x){
-
-      check($("#ad_"+x).val());
+   if(document.getElementById("ad_"+x)){
+     var list_option = document.getElementById("ad_"+x);
+     if('<?php echo $country_fee_id;?>' == 'ad_'+x){
+      check(arr_list[value][x]);
+    }else if('<?php echo $country_area_id;?>' == 'ad_'+x){
+      country_check(document.getElementById(country_fee_id).value,arr_list[value][x]);
+     
+    }else if('<?php echo $country_city_id;?>' == 'ad_'+x){
+      country_area_check(document.getElementById(country_area_id).value,arr_list[value][x]);
+    }else{
+      list_option.style.color = '#000';
+      list_option.value = arr_list[value][x];   
     }
+     
     $("#error_"+x).html('');
     $("#r_"+x).html("&nbsp;*必須");
     ii++; 
+   }
   }
 
-}
-
-function check(value){
-  var arr  = new Array();
-  var arr_set = new Array();
-<?php
-  $add_query = tep_db_query("select * from ". TABLE_ADDRESS ." where type='option' and status='0' order by sort");
-  while($add_array = tep_db_fetch_array($add_query)){
-
-    $add_temp_array = unserialize($add_array['type_comment']);
-    if(!isset($add_temp_array['select_value'])){
-       
-      $add_temp_first_array  = current($add_temp_array);
-      $parent_id = $add_temp_first_array['parent_id'];
-      $child_flag_name = $add_array['name_flag'];
-    }
-  }
-  tep_db_free_result($add_query);
-  $add_parent_query = tep_db_query("select * from ". TABLE_ADDRESS ." where id=$parent_id");
-  $add_parent_array = tep_db_fetch_array($add_parent_query);
-  $parent_flag_name = $add_parent_array['name_flag'];
-  tep_db_free_result($add_parent_query);
-
-  $options_query = tep_db_query("select * from ". TABLE_ADDRESS ." where type='option' and status='0' order by sort");
-  $json_array = array();
-  $json_set_value = array();
-  while($options_array = tep_db_fetch_array($options_query)){
-    if(!isset($otpions_array_temp['select_value']) && $otpions_array_temp['select_value'] == ''){
-        $show_array[] = unserialize($options_array['type_comment']);
-    }
-  }
-
-  foreach($show_array as $show_value){
-    foreach($show_value as $show_key=>$show_val){
-
-      $json_array[$show_key] = $show_val;
-      $json_set_value[$show_key] = $show_val['select_value'];
-    } 
-  }
-
-  tep_db_free_result($options_query);
-  foreach($json_array as $key=>$value_temp){
-    echo 'arr["'. $key .'"] = new Array();';
-    echo 'arr_set["'. $key .'"] = new Array();';
-    $value_temp['option_list'] = array_values($value_temp['option_list']);
-    foreach($value_temp['option_list'] as $k=>$val){
-
-      echo 'arr["'. $key .'"]['. $k .'] = "'. $val .'";';
-    } 
-    echo 'arr_set["'. $key .'"] = "'. $json_set_value[$key] .'";';
-
-  }  
-?>
-  
-  var option_id = document.getElementById("ad_<?php echo $child_flag_name;?>");
-  option_id.options.length = 0;
-  len = arr[value].length;
-  //option_id.options[option_id.options.length]=new Option('--',''); 
-  for(i = 0;i < len;i++){
-    if(arr_set[value] == arr[value][i]){
-
-      option_id.options[option_id.options.length]=new Option(arr[value][i], arr[value][i]);
-    }     
-  } 
-  for(i = 0;i < len;i++){
-    if(arr_set[value] == arr[value][i]){
-      continue; 
-    }
-    option_id.options[option_id.options.length]=new Option(arr[value][i], arr[value][i]);    
-  } 
 }
 
 <?php 
@@ -2014,7 +2195,7 @@ function address_list(){
   tep_db_free_result($address_list_query);
 ?>
   for(x in arr_list){
-    
+   if(document.getElementById("ad_"+x)){ 
     var op_list = document.getElementById("ad_"+x);
     $("#ad_"+x).val(arr_list[x]);
     if('<?php echo $parent_flag_name;?>' == x){
@@ -2022,6 +2203,7 @@ function address_list(){
       check($("#ad_"+x).val());
     }
     op_list.style.color = '#000';
+   }
   }
 }
 
@@ -2080,9 +2262,66 @@ $(document).ready(function(){hidden_payment()});
 $(document).ready(function(){
   //$.datePicker.setDateFormat('ymd', '-');
   //$('#date_orders').datePicker();
-  $("#ad_<?php echo $parent_flag_name;?>").change(function(){
-    check($(this).val());
+  $("#"+country_fee_id).change(function(){
+    country_check($("#"+country_fee_id).val());
+    country_area_check($("#"+country_area_id).val());
+  }); 
+  $("#"+country_area_id).change(function(){
+    country_area_check($("#"+country_area_id).val());
   });
+  <?php
+    $address_name = array();
+    $address_id_query = tep_db_query("select name,value from ". TABLE_ADDRESS_ORDERS ." where orders_id='". tep_db_input($oID) ."' and (name='". substr($country_fee_id,3) ."' or name='". substr($country_area_id,3) ."' or name='". substr($country_city_id,3) ."')");
+    while($address_id_array = tep_db_fetch_array($address_id_query)){
+
+      $address_name[$address_id_array['name']] = $address_id_array['value'];
+    }
+    tep_db_free_result($address_id_query);
+    if(isset($_POST[$country_fee_id])){
+  ?>  
+    check("<?php echo isset($_POST[$country_fee_id]) ? $_POST[$country_fee_id] : '';?>");
+  <?php
+   }elseif(!empty($address_name)){
+  ?>
+    check("<?php echo $address_name[substr($country_fee_id,3)];?>");
+  <?php
+  }else{
+  ?>
+    check();
+  <?php
+  }
+  ?>
+  <?php
+    if(isset($_POST[$country_area_id])){
+  ?>
+    country_check($("#"+country_fee_id).val(),"<?php echo $_POST[$country_area_id];?>");
+  <?php
+   }elseif(!empty($address_name)){
+  ?>
+    country_check($("#"+country_fee_id).val(),"<?php echo $address_name[substr($country_area_id,3)];?>");
+  <?php
+   }else{
+  ?>
+    country_check($("#"+country_fee_id).val());
+  <?php
+  }
+  ?>
+  <?php
+    if(isset($_POST[$country_city_id])){
+  ?>
+     
+     country_area_check($("#"+country_area_id).val(),"<?php echo $_POST[$country_city_id];?>");
+  <?php
+   }elseif(!empty($address_name)){
+  ?>
+    country_area_check($("#"+country_area_id).val(),"<?php echo $address_name[substr($country_city_id,3)];?>");
+  <?php
+   }else{
+  ?>
+    country_area_check($("#"+country_area_id).val());
+  <?php
+  }
+  ?>   
   $("select[name='payment_method']").change(function(){
     hidden_payment();
   });
@@ -2238,7 +2477,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     <?php echo tep_draw_separator(); ?>
     </td>
     </tr> 
-    <tr><?php echo tep_draw_form('edit_order', "edit_orders.php", tep_get_all_get_params(array('action','paycc')) . 'action=update_order', 'post', 'onSubmit="return submitChk()"'); ?>
+    <tr><?php echo tep_draw_form('edit_order', "edit_orders.php", tep_get_all_get_params(array('action','paycc')) . 'action=update_order', 'post', 'id="edit_order_id"'); ?>
 
     <td>
     <!-- Begin Update Block -->
@@ -2414,7 +2653,7 @@ if (($action == 'edit') && ($order_exists == true)) {
       $date_array[1] = str_replace('&nbsp;','',$date_array[1]);
       $end_temp = explode(":",$date_array[1]);
       $hour_str_1 = '&nbsp;<select name="end_hour" id="hour_1" onchange="check_hour_1(this.value);">';
-      for($h_1 = 0;$h_1 <= 23;$h_1++){
+      for($h_1 = (int)$start_temp[0];$h_1 <= 23;$h_1++){
         
         $h_str_1 = $h_1 < 10 ? '0'.$h_1 : $h_1; 
         $selected = (int)$end_temp[0] == $h_1 ? ' selected' : '';
@@ -2424,7 +2663,8 @@ if (($action == 'edit') && ($order_exists == true)) {
       $hour_str_1 .= '</select>&nbsp;時';
       echo $hour_str_1;
       $min_str_1_end = '&nbsp;<select name="end_min_1" id="min_end" onchange="check_end_min(this.value);">';
-      for($m_1_end = 0;$m_1_end <= 5;$m_1_end++){
+      $min_start = (int)substr((int)$end_temp[1],0,1); 
+      for($m_1_end = $min_start;$m_1_end <= 5;$m_1_end++){
         
         $selected = substr((int)$end_temp[1],0,1) == $m_1_end ? ' selected' : '';
         $min_str_1_end .= '<option value="'.$m_1_end.'"'.$selected.'>'.$m_1_end.'</option>';
@@ -2433,7 +2673,8 @@ if (($action == 'edit') && ($order_exists == true)) {
       $min_str_1_end .= '</select>';
       echo $min_str_1_end;
       $min_str_2_end = '<select name="end_min_2" id="min_end_1">';
-      for($m_2_end = 0;$m_2_end <= 9;$m_2_end++){
+      $min_end = (int)substr((int)$end_temp[1],1,1);
+      for($m_2_end = $min_end;$m_2_end <= 9;$m_2_end++){
         
         $selected = substr((int)$end_temp[1],1,1) == $m_2_end ? ' selected' : '';
         $min_str_2_end .= '<option value="'.$m_2_end.'"'.$selected.'>'.$m_2_end.'</option>';
@@ -2565,7 +2806,7 @@ if (($action == 'edit') && ($order_exists == true)) {
   ?>
     <table border="0" width="100%" cellspacing="0" cellpadding="2" id="ctable">
     <tr class="dataTableHeadingRow">
-    <td class="dataTableHeadingContent" colspan="2"><?php echo TABLE_HEADING_NUM_PRO_NAME;?></td>
+    <td class="dataTableHeadingContent" colspan="2" width="35%"><?php echo TABLE_HEADING_NUM_PRO_NAME;?></td>
     <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_PRODUCTS_MODEL; ?></td>
     <td class="dataTableHeadingContent"><?php echo TABLE_HEADING_CURRENICY; ?></td>
     <td class="dataTableHeadingContent" align="center"><?php echo TABLE_HEADING_PRODUCTS_PRICE; ?></td>
@@ -2600,14 +2841,16 @@ if (($action == 'edit') && ($order_exists == true)) {
 
         for ($j=0; $j<sizeof($order->products[$i]['attributes']); $j++) {
           $orders_products_attributes_id = $order->products[$i]['attributes'][$j]['id'];
-          echo '<br><nobr><small>&nbsp;<i> - ' .  "<input type='text' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][option]' size='10' value='" .  (isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['option'])?tep_parse_input_field_data($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['option'], array("'"=>"&quot;")):tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;"))) . "'>" . 
+          echo '<br><div><small>&nbsp;<i><div class="order_option_info"> - ' .str_replace(array("<br>", "<BR>"), '', tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;"))) . "<input type='hidden' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][option]' size='10' value='" .  (isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['option'])?tep_parse_input_field_data($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['option'], array("'"=>"&quot;")):tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;"))) . "'>" . 
             ': ' . 
-            "<input type='text' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][value]' size='35' value='" .  (isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['value'])?tep_parse_input_field_data($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['value'], array("'"=>"&quot;")):tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&quot;")));
+            str_replace(array("<br>", "<BR>"), '', tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&quot;")))."<input type='hidden' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][value]' size='35' value='" .  (isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['value'])?tep_parse_input_field_data($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['value'], array("'"=>"&quot;")):tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&quot;")));
           //if ($order->products[$i]['attributes'][$j]['price'] != '0') echo ' (' . $order->products[$i]['attributes'][$j]['prefix'] . $currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . ')';
-          echo "'>";
-          echo "<input type='text' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][price]' value='".(int)(isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price'])?$_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price']:$order->products[$i]['attributes'][$j]['price'])."' onkeyup=\"recalc_order_price('".$oID."', '".$orders_products_id."', '1', '".$op_info_str."');\">";   
+          echo "'></div>";
+          echo '<div class="order_option_price">'; 
+          echo "<input type='text' size='9' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][price]' value='".(int)(isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price'])?$_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price']:$order->products[$i]['attributes'][$j]['price'])."' onkeyup=\"recalc_order_price('".$oID."', '".$orders_products_id."', '1', '".$op_info_str."');\">";   
           echo TEXT_MONEY_SYMBOL; 
-          echo '</i></small></nobr>';
+          echo '</div>'; 
+          echo '</i></small></div>';
         }
       }
 
@@ -2616,11 +2859,11 @@ if (($action == 'edit') && ($order_exists == true)) {
         '      <td class="' . $RowStyle . '" align="right">' .
         tep_display_tax_value($order->products[$i]['tax']) . "<input name='update_products[$orders_products_id][tax]' size='2' type='hidden' value='" . tep_display_tax_value($order->products[$i]['tax']) . "'>" .  '%</td>' . "\n";
       
-      echo '<td class="'.$RowStyle.'" align="right"><input type="text" class="once_pwd" name="update_products['.$orders_products_id.'][p_price]" size="9" value="'.tep_display_currency(number_format(abs(isset($_POST['update_products'][$orders_products_id]['p_price'])?$_POST['update_products'][$orders_products_id]['p_price']:$order->products[$i]['price']), 2)).'" onkeyup="recalc_order_price(\''.$oID.'\', \''.$orders_products_id.'\', \'2\', \''.$op_info_str.'\')"></td>'; 
+      echo '<td class="'.$RowStyle.'" align="right"><input type="text" class="once_pwd" style="text-align:right;" name="update_products['.$orders_products_id.'][p_price]" size="9" value="'.tep_display_currency(number_format(abs(isset($_POST['update_products'][$orders_products_id]['p_price'])?$_POST['update_products'][$orders_products_id]['p_price']:$order->products[$i]['price']), 2)).'" onkeyup="recalc_order_price(\''.$oID.'\', \''.$orders_products_id.'\', \'2\', \''.$op_info_str.'\')">'.TEXT_MONEY_SYMBOL.'</td>'; 
       
-      echo  '<td class="' . $RowStyle . '" align="right">' . "<input type='text' class='once_pwd' name='update_products[$orders_products_id][final_price]' size='9' value='" .  tep_display_currency(number_format(abs(isset($_POST['update_products'][$orders_products_id]['final_price'])?$_POST['update_products'][$orders_products_id]['final_price']:$order->products[$i]['final_price']),2)) .  "'" .' onkeyup="clearNoNum(this)" >'.  
+      echo  '<td class="' . $RowStyle . '" align="right">' . "<input type='text' style='text-align:right' class='once_pwd' name='update_products[$orders_products_id][final_price]' size='9' value='" .  tep_display_currency(number_format(abs(isset($_POST['update_products'][$orders_products_id]['final_price'])?$_POST['update_products'][$orders_products_id]['final_price']:$order->products[$i]['final_price']),2)) .  "'" .' onkeyup="clearNoNum(this)" >'.  
         '<input type="hidden" name="op_id_'.$orders_products_id.'" 
-        value="'.tep_get_product_by_op_id($orders_products_id).'">' . '</td>' . "\n" . 
+        value="'.tep_get_product_by_op_id($orders_products_id).'">' .TEXT_MONEY_SYMBOL. '</td>' . "\n" . 
         '      <td class="' . $RowStyle . '" align="right">';
       echo '<div id="update_products['.$orders_products_id.'][a_price]">'; 
       if ($order->products[$i]['final_price'] < 0) {
@@ -2712,7 +2955,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     <?php }?>
     <?php echo '<a href="' . $PHP_SELF . '?oID=' . $oID . '&action=add_product&step=1">' . tep_html_element_button(ADDING_TITLE) . '</a>'; ?>
     </td>
-    </tr>
+    </tr> 
     </table>
     </td>
     </tr>     
@@ -2770,11 +3013,12 @@ if (($action == 'edit') && ($order_exists == true)) {
     $TotalStyle = "smallText";
     if ($TotalDetails["Class"] == "ot_total") {
       $shipping_fee_total = ($shipping_fee_subtotal+$shipping_fee+$order->info["code_fee"]+$shipping_fee_tax-$shipping_fee_point) != $TotalDetails["Price"] ? $shipping_fee : 0; 
+      
       echo '  <tr>' . "\n" .
         '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_OTTOTAL_READ.'</td>' . 
         '    <td align="right" class="' . $TotalStyle . '"><b>' . $TotalDetails["Name"] . '</b></td>' . 
         '    <td align="right" class="' . $TotalStyle . '"><b>';
-      if($TotalDetails["Price"] >= 0 ){
+      if($TotalDetails["Price"]+$shipping_fee_total >= 0 ){
         echo $currencies->ot_total_format(($TotalDetails["Price"]+$shipping_fee_total), true, $order->info['currency'], $order->info['currency_value']);
       }else{
         echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->ot_total_format(($TotalDetails["Price"]+$shipping_fee_total), true, $order->info['currency'], $order->info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
@@ -2901,7 +3145,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     <?php if (tep_is_oroshi($order->customer['id'])) { ?>
       <INPUT type="button" value="<?php echo EDIT_ORDERS_CONFIRM_BUTTON;?>" onClick="update_price()">
         <?php } else { ?>
-          <INPUT type="button" value="<?php echo EDIT_ORDERS_CONFIRM_BUTTON;?>" onClick="update_price2()">
+          <INPUT type="button" value="<?php echo EDIT_ORDERS_CONFIRM_BUTTON;?>" onClick="submit_check();">
             <?php } ?>
             </td>
             </tr>
@@ -3075,7 +3319,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     <td class="main" bgcolor="#FBE2C8" width="10">&nbsp;</td>
     <td class="main" bgcolor="#FFCC99" width="10">&nbsp;</td>
     <td class="main" bgcolor="#F8B061" width="10">&nbsp;</td>
-    <td class="main" bgcolor="#FF9933" width="120" align="center"><?php echo tep_html_element_submit(IMAGE_UPDATE); ?></td>
+    <td class="main" bgcolor="#FF9933" width="120" align="center"><INPUT type="button" value="<?php echo IMAGE_UPDATE;?>" onClick="submit_check_con();"></td>
     </tr>
     </table>
     </td>
@@ -3224,12 +3468,13 @@ if($action == "add_product")
     else
     {
 
+      $p_cflag = tep_get_cflag_by_product_id($add_product_products_id);
       print "<tr class=\"dataTableRow\">";
       print "<td class='dataTableContent' align='right'><b>" . ADDPRODUCT_TEXT_STEP . " 3: </b></td><td class='dataTableContent' valign='top'>";
       print "<div class=\"pro_option\">"; 
       print "<form name='aform' action='$PHP_SELF?oID=$oID&action=$action' method='POST'>\n";
          
-      print $hm_option->render($option_product['belong_to_option'], false, 2); 
+      print $hm_option->render($option_product['belong_to_option'], false, 2, '', '', $p_cflag); 
       print "<input type='hidden' name='add_product_categories_id' value='$add_product_categories_id'>";
       print "<input type='hidden' name='add_product_products_id' value='$add_product_products_id'>";
       print "<input type='hidden' name='step' value='3'>";

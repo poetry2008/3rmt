@@ -138,7 +138,7 @@ if(isset($action) && $action != ''){
                    "'". $sql_str .
                    ",". $address_sort .
                    ",'". $show_title .
-                   "','0')";
+                   "','0','0')";
     }else{
       $address_sql = "update ". TABLE_ADDRESS .
                    " set ".
@@ -280,10 +280,10 @@ $i = 0;
 while($address_array = tep_db_fetch_array($address_query)){
   if((int)$_GET['id'] == $address_array['id'] || ($i == 0 && !isset($_GET['id']))){
     $nowColor = $select_class;
-    $onmouseover = 'onmouseover="this.className=\'dataTableRowSelected\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$select_class.'\'"';
+    $onmouseover = 'onmouseover="this.className=\'dataTableRowSelected\';this.style.cursor=\'hand\';" onmouseout="this.className=\''.$select_class.'\'"';
   }else{
     $nowColor = $i % 2 == 1 ? $even : $odd; 
-    $onmouseover = 'onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\'" onmouseout="this.className=\''.$nowColor.'\'"'; 
+    $onmouseover = 'onmouseover="this.className=\'dataTableRowOver\';this.style.cursor=\'hand\';" onmouseout="this.className=\''.$nowColor.'\'"'; 
   }
   switch($address_array['type']){
 

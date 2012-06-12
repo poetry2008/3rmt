@@ -81,6 +81,7 @@ if(isset($id) && $id != 0){
    $limit_min = $address_array['num_limit_min'];
    $required = $address_array['required'];
    $show_title = $address_array['show_title'];
+   $fixed_option = $address_array['fixed_option'];
 
    tep_db_free_result($address_query);     
    
@@ -107,6 +108,109 @@ $options_str_temp = '';
   tep_db_free_result($options_query); 
 ?>
 <script type="text/javascript">
+  function country_option(value){
+    var arr = new Array(); 
+    var str ='<table border="0" width="100%" cellspacing="0" cellpadding="0">';
+    <?php
+      $country_array = array();
+      $country_area_query = tep_db_query("select fid,name from ". TABLE_COUNTRY_AREA ." where status='0'");
+      while($country_area_array = tep_db_fetch_array($country_area_query)){
+
+        $country_array[$country_area_array['fid']][] = $country_area_array['name'];
+      }
+      tep_db_free_result($country_area_query);
+ 
+      $country_num = 0;
+      foreach($country_array as $country_key=>$country_value){
+
+        echo 'arr['. $country_key .'] = new Array();'."\n";
+       
+        foreach($country_value as $c_key=>$c_value){
+       
+          echo 'arr['. $country_key .']['. $c_key .'] = "'. $c_value .'";'."\n";
+        }
+        $country_num++;
+      }
+    ?>
+      for(x in arr[value]){
+          str += '<tr><td width="30%" height="20" align="left">&nbsp;&nbsp;&nbsp;&nbsp;選択肢</td><td>'+arr[value][x]+'</td></tr>';
+      }
+      str += '</table>';
+      
+      $("#country_option_list").html(str); 
+
+  }
+
+  function country_option_area(value){
+    var arr = new Array(); 
+    <?php
+      $country_array = array();
+      $country_area_query = tep_db_query("select id,fid,name from ". TABLE_COUNTRY_AREA ." where status='0'");
+      while($country_area_array = tep_db_fetch_array($country_area_query)){
+
+        $country_array[$country_area_array['fid']][$country_area_array['id']] = $country_area_array['name'];
+      }
+      tep_db_free_result($country_area_query);
+ 
+      $country_num = 0;
+      foreach($country_array as $country_key=>$country_value){
+
+        echo 'arr['. $country_key .'] = new Array();'."\n";
+       
+        foreach($country_value as $c_key=>$c_value){
+       
+          echo 'arr['. $country_key .']['. $c_key .'] = "'. $c_value .'";'."\n";
+        }
+        $country_num++;
+      }
+     ?>
+      var country_area_id = document.getElementById("country_area_id");
+      country_area_id.options.length = 0;
+      for(x in arr[value]){
+
+        country_area_id.options[country_area_id.options.length]=new Option(arr[value][x], x);
+      }
+
+     <?php
+       if($fixed_option == 3){
+      ?>
+        country_option_city(document.getElementById("country_area_id").value);
+     <?php  
+      }
+     ?>
+  }
+
+  function country_option_city(value){
+    var arr = new Array(); 
+    var str ='<table border="0" width="100%" cellspacing="0" cellpadding="0">';
+    <?php
+      $country_array = array();
+      $country_area_query = tep_db_query("select fid,name from ". TABLE_COUNTRY_CITY ." where status='0'");
+      while($country_area_array = tep_db_fetch_array($country_area_query)){
+
+        $country_array[$country_area_array['fid']][] = $country_area_array['name'];
+      }
+      tep_db_free_result($country_area_query);
+ 
+      $country_num = 0;
+      foreach($country_array as $country_key=>$country_value){
+
+        echo 'arr['. $country_key .'] = new Array();'."\n";
+       
+        foreach($country_value as $c_key=>$c_value){
+       
+          echo 'arr['. $country_key .']['. $c_key .'] = "'. $c_value .'";'."\n";
+        }
+        $country_num++;
+      }
+      ?> 
+      for(x in arr[value]){
+          str += '<tr><td width="30%" height="20" align="left">&nbsp;&nbsp;&nbsp;&nbsp;選択肢</td><td>'+arr[value][x]+'</td></tr>';
+      }
+      str += '</table>';
+      
+      $("#country_option_list").html(str);
+  }
 function check_option(value){
   var arr  = new Array();
 <?php
@@ -190,6 +294,25 @@ if(!arr[value]){
 
 }
 
+<?php
+  if($fixed_option == 2){
+?>
+$(document).ready(function(){
+  country_option(document.getElementById("country_id").value);
+});
+<?php  
+  }
+?>
+
+<?php
+  if($fixed_option == 3){
+?>
+$(document).ready(function(){
+  country_option_city(document.getElementById("country_area_id").value);
+});
+<?php  
+  }
+?>
 </script>
 <table border="0" width="100%" cellspacing="0" cellpadding="2" valign="top" class="campaign_top">
 <?php
@@ -213,7 +336,7 @@ if($id == 0 || $maxid == $minid){
     $next_str = '<a href="javascript:show_text('. $id .',\'\',\'\','. $sort .',1);">'. TABLE_NEXT .'</a>';
   }
 ?>
-  <tr><td width="20"><?php echo tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO); ?></td><td><b><?php echo $title.TABLE_TITLE_1;?></b></td><td align="right" onmouseover="this.style.cursor=\'hand\'"><?php echo $prev_str;?>&nbsp;<?php echo $next_str;?>&nbsp;<a href="javascript:hide_text();">X</a></td></tr>
+  <tr><td width="20"><?php echo tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO); ?></td><td><b><?php echo $title.TABLE_TITLE_1;?></b></td><td align="right" onmouseover="this.style.cursor='hand';"><?php echo $prev_str;?>&nbsp;<?php echo $next_str;?>&nbsp;<a href="javascript:hide_text();">X</a></td></tr>
 <?php
 }
 ?>
@@ -228,6 +351,10 @@ $comment = $_comment != '' ? $_comment : $comment;
 ?>
 <tr><td width="30%"align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_1;?></td><td><input type="text" name="title" id="title" class="option_text" value="<?php echo $title;?>">&nbsp;<font color="red"><?php echo TABLE_REQUIRED;?></font><br><span id="error_title"></span><input type="hidden" id="cid" name="cid" value="<?php echo $address_array['id'];?>"</td></tr>
 <tr><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_2;?></td><td><input type="text" name="name" id="name" class="option_text" value="<?php echo $name;?>">&nbsp;<font color="red"><?php echo TABLE_REQUIRED;?></font><br><span id="error_name"></span></td></tr>
+
+<?php
+if($fixed_option == 0){
+?>
 <tr><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_3;?></td><td>
 
 <select name="type" onchange="show_text(<?php echo $id;?>,'',this.value,'','',document.getElementById('title').value,document.getElementById('name').value,document.getElementById('comment').value);">
@@ -237,7 +364,7 @@ $comment = $_comment != '' ? $_comment : $comment;
 </select>
 </td></tr>
 <?php
-
+}
 if($type == 'text'){
 
 
@@ -288,6 +415,7 @@ if($type == 'text'){
 
 }else{
 
+if($fixed_option == 0){
   $type_comment_array = unserialize($type_comment);
   if($type_start == 'option'){ 
     if(!isset($type_comment_array['select_value']) && $type_comment_array['select_value'] == ''){ 
@@ -385,6 +513,66 @@ if($type == 'text'){
   echo '<tr><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;'. TABLE_LIST_10 .'</td><td><input type="radio" name="required" value="true" '. $required_true .'>True&nbsp;<input type="radio" name="required" value="false" '. $required_false .'>False</td></tr>';
 
  
+}elseif($fixed_option == 1){
+  
+  echo '<tr><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;'. TABLE_LIST_6     .'</td><td><input type="text" id="comment" name="comment" class="option_text" value="'. $comment .'"><input type="hidden" name="type" value="option"></td></tr>';
+  $country_fee_query = tep_db_query("select name from ". TABLE_COUNTRY_FEE ." where status='0' order by id asc");
+  while($country_fee_array = tep_db_fetch_array($country_fee_query)){
+
+    echo '<tr><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;'. TABLE_LIST_13 .'</td><td>'. $country_fee_array['name'] .'</td></tr>';
+  }
+  tep_db_free_result($country_fee_query);
+}elseif($fixed_option == 2){
+  
+  $country_name_query = tep_db_query("select name from ". TABLE_ADDRESS ." where status='0' and fixed_option='1'");
+  $country_name_array = tep_db_fetch_array($country_name_query);
+  tep_db_free_result($country_name_query);
+  echo '<tr><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;'. TABLE_LIST_6     .'</td><td><input type="text" id="comment" name="comment" class="option_text" value="'. $comment .'"><input type="hidden" name="type" value="option"></td></tr>';
+  $country_fee_query = tep_db_query("select id,name from ". TABLE_COUNTRY_FEE ." where status='0' order by id asc");
+  echo '<tr><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;'.$country_name_array['name'].'</td><td><select id="country_id" onchange="country_option(this.value);">';
+  while($country_fee_array = tep_db_fetch_array($country_fee_query)){
+
+    echo '<option value="'. $country_fee_array['id'] .'">'. $country_fee_array['name'] .'</option>';
+  }
+  echo '</select></td></tr>';
+  tep_db_free_result($country_fee_query);
+  echo '<tr><td colspan="2" id="country_option_list"></td></tr>';
+
+}elseif($fixed_option == 3){
+
+  $country_name_query = tep_db_query("select name from ". TABLE_ADDRESS ." where status='0' and fixed_option='1'");
+  $country_name_array = tep_db_fetch_array($country_name_query);
+  tep_db_free_result($country_name_query);
+  $country_area_name_query = tep_db_query("select name from ". TABLE_ADDRESS ." where status='0' and fixed_option='2'");
+  $country_area_name_array = tep_db_fetch_array($country_area_name_query);
+  tep_db_free_result($country_area_name_query);
+  echo '<tr><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;'. TABLE_LIST_6     .'</td><td><input type="text" id="comment" name="comment" class="option_text" value="'. $comment .'"><input type="hidden" name="type" value="option"></td></tr>';
+  $country_fee_query = tep_db_query("select id,name from ". TABLE_COUNTRY_FEE ." where status='0' order by id asc");
+  echo '<tr><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;'.$country_name_array['name'].'</td><td><select id="country_id" onchange="country_option_area(this.value);">';
+  $country_i = 0;
+  $country_fid = 0;
+  while($country_fee_array = tep_db_fetch_array($country_fee_query)){
+
+    if($country_i == 0){
+
+      $country_fid = $country_fee_array['id'];
+    } 
+    echo '<option value="'. $country_fee_array['id'] .'">'. $country_fee_array['name'] .'</option>';
+    $country_i++;
+  }
+  echo '</select></td></tr>';
+  tep_db_free_result($country_fee_query);
+  $country_area_query = tep_db_query("select id,name from ". TABLE_COUNTRY_AREA ." where status='0' and fid='". $country_fid ."' order by id asc");
+  echo '<tr><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;'.$country_area_name_array['name'].'</td><td><select id="country_area_id" onchange="country_option_city(this.value);">';
+  while($country_area_array = tep_db_fetch_array($country_area_query)){
+
+    echo '<option value="'. $country_area_array['id'] .'">'. $country_area_array['name'] .'</option>';
+  }
+  echo '</select></td></tr>';
+  tep_db_free_result($country_area_query);
+  echo '<tr><td colspan="2" id="country_option_list"></td></tr>';
+}
+
 }
 
 $sort = $id == 0 ? 1000 : $sort;
@@ -404,7 +592,7 @@ if($type != 'text'){
 <tr><td width="30%">&nbsp;</td><td style="padding-left:10%;"><input type="button" name="new" value="<?php echo TABLE_BUTTON_SUBMIT;?>" onclick="show_text(0,'','text');">&nbsp;<input type="button" name="save" value="<?php echo TABLE_BUTTON_SAVE;?>" onclick="if(check_form()){check('save');}else{return check_form();}">&nbsp;
 
 <?php
-if($id != 0){
+if($id != 0 && $fixed_option == '0'){
 ?>
 <input type="button" name="del" value="<?php echo TABLE_BUTTON_DEL;?>" onclick="if(confirm('このレコードを削除してもよろしいですか？')){check('del');}else{return false;}">
 <?php

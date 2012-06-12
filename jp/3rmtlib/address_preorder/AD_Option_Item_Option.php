@@ -14,6 +14,7 @@ class AD_Option_Item_Option extends AD_Option_Item_Basic
      }
      echo '<td class="main" width="70%">'; 
      echo '<input type="hidden" name="'.$this->formname.'" value="'.$this->front_title.'">';
+    if($this->fixed_option == '0'){
      if (!empty($this->option)) {
         
        
@@ -47,12 +48,25 @@ class AD_Option_Item_Option extends AD_Option_Item_Basic
          echo '</select>'; 
       }
      } 
-     echo '<span id="error_'.$this->formname.'" class="shipping_error">';
+    }else{
+      
+      echo '<select name="ad_'.$this->formname.'" id="ad_'.$this->formname.'"></select>';    
+      echo '<span id="prompt_'.$this->formname.'" class="markProductOutOfStock">';
+      if(isset($option_error_array['prompt_'.$this->formname])){
+
+        echo '&nbsp;'.$option_error_array['prompt_'.$this->formname];
+
+      }
+      echo '</span>';
+    }
+     echo '<br>';
+     echo '<span id="error_'.$this->formname.'" class="shipping_error"><font color="red">';
      if (isset($option_error_array[$this->formname])) {
        echo $option_error_array[$this->formname]; 
      }
-     echo '</span>'; 
-     echo '</td>'; 
+     echo '</font></span>'; 
+     echo '</td>';
+     
   }
   static public function prepareForm($item_id = NULL)
   {
@@ -61,6 +75,60 @@ class AD_Option_Item_Option extends AD_Option_Item_Basic
   
   function check(&$option_error_array)
   {
+    global $_POST;
+    global $weight_count;
+    global $weight_limit;
+    $prompt_str = '<a style="color:#CC0033" href="'.tep_href_link('open.php','products='.urlencode($product_info['products_name'])).'">' . STOCK_MARK_PRODUCT_OUT_OF_STOCK . '</a>'; 
+    $weight_prompt_str = '<br>'.PRODUCTS_WEIGHT_ERROR_THREE . $weight_limit . PRODUCTS_WEIGHT_ERROR_FOUR;
+  //products shipping fee  
+  $fixed_option_list_array = array();
+  $fixed_option_query = tep_db_query("select name_flag,fixed_option from ". TABLE_ADDRESS ." where status='0' and fixed_option!='0'");
+  while($fixed_option_array = tep_db_fetch_array($fixed_option_query)){
+
+    $fixed_option_list_array[$fixed_option_array['fixed_option']] = $fixed_option_array['name_flag'];
+  }
+  tep_db_free_result($fixed_option_query);
+
+  if(isset($_POST['ad_'.$fixed_option_list_array[3]])){
+
+    $country_city_search_query = tep_db_query("select weight_limit from ". TABLE_COUNTRY_CITY ." where name='".$_POST['ad_'.$fixed_option_list_array[3]]."' and status='0'");
+    $country_city_search_array = tep_db_fetch_array($country_city_search_query);
+    tep_db_free_result($country_city_search_query);
+    $weight_limit = $country_city_search_array['weight_limit'];
+
+    if($weight_count > $weight_limit){
+
+      $option_error_array['prompt_'.$fixed_option_list_array[3]] = $prompt_str;
+      $option_error_array[$fixed_option_list_array[3]] = PRODUCTS_WEIGHT_ERROR_ONE . $_POST['ad_'.$fixed_option_list_array[3]] . PRODUCTS_WEIGHT_ERROR_TWO.$weight_prompt_str;
+      return  true;
+    }
+  }elseif(isset($_POST['ad_'.$fixed_option_list_array[2]])){
+    $country_area_search_query = tep_db_query("select weight_limit from ". TABLE_COUNTRY_AREA ." where name='".$_POST['ad_'.$fixed_option_list_array[2]]."' and status='0'");
+    $country_area_search_array = tep_db_fetch_array($country_area_search_query);
+    tep_db_free_result($country_area_search_query);
+    $weight_limit = $country_area_search_array['weight_limit'];
+
+    if($weight_count > $weight_limit){
+
+      $option_error_array['prompt_'.$fixed_option_list_array[2]] = $prompt_str;
+      $option_error_array[$fixed_option_list_array[2]] = PRODUCTS_WEIGHT_ERROR_ONE . $_POST['ad_'.$fixed_option_list_array[2]] . PRODUCTS_WEIGHT_ERROR_TWO.$weight_prompt_str;
+      return true;
+    }
+  }elseif(isset($_POST['ad_'.$fixed_option_list_array[1]])){
+
+    $country_fee_search_query = tep_db_query("select weight_limit from ". TABLE_COUNTRY_FEE ." where name='".$_POST['ad_'.$fixed_option_list_array[1]]."' and status='0'");
+    $country_fee_search_array = tep_db_fetch_array($country_fee_search_query);
+    tep_db_free_result($country_fee_search_query);
+    $weight_limit = $country_fee_search_array['weight_limit'];
+
+    if($weight_count > $weight_limit){
+
+      $option_error_array['prompt_'.$fixed_option_list_array[1]] = $prompt_str;
+      $option_error_array[$fixed_option_list_array[1]] = PRODUCTS_WEIGHT_ERROR_ONE . $_POST['ad_'.$fixed_option_list_array[1]] . PRODUCTS_WEIGHT_ERROR_TWO.$weight_prompt_str;
+      return true;
+    }
+  }
+        
     return false; 
   }
 }

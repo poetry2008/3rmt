@@ -138,13 +138,21 @@
          '            <td class="main" align="right" valign="top" width="30">' . $order->products[$i]['qty'] . '&nbsp;x</td>' . "\n" .
          '            <td class="main" valign="top">' . $order->products[$i]['name'];
     if ($order->products[$i]['price'] != '0') {
-      echo ' ('.$currencies->format($order->products[$i]['price'], true, $order->info['currency'], $order->info['currency_value']).')';
+      if ($order->products[$i]['price'] < 0) {
+        echo ' (<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format($order->products[$i]['price'], true, $order->info['currency'], $order->info['currency_value'])).'</font>'.JPMONEY_UNIT_TEXT.')';
+      } else {
+        echo ' ('.$currencies->format($order->products[$i]['price'], true, $order->info['currency'], $order->info['currency_value']).')';
+      }
     } else if ($order->products[$i]['final_price'] != '0') {
-      echo ' ('.$currencies->format($order->products[$i]['final_price'], true, $order->info['currency'], $order->info['currency_value']).')';
+      if ($order->products[$i]['final_price'] < 0) {
+        echo ' (<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format($order->products[$i]['final_price'], true, $order->info['currency'], $order->info['currency_value'])).'</font>'.JPMONEY_UNIT_TEXT.')';
+      } else {
+        echo ' ('.$currencies->format($order->products[$i]['final_price'], true, $order->info['currency'], $order->info['currency_value']).')';
+      }
     }
     if ( (isset($order->products[$i]['op_attributes'])) && (sizeof($order->products[$i]['op_attributes']) > 0) ) {
       for ($j=0, $n2=sizeof($order->products[$i]['op_attributes']); $j<$n2; $j++) {
-        echo '<br><small>&nbsp;<i> - ' .  $order->products[$i]['op_attributes'][$j]['option_info']['title'] . ': ' .  $order->products[$i]['op_attributes'][$j]['option_info']['value'];
+        echo '<br><small>&nbsp;<i> - ' .  $order->products[$i]['op_attributes'][$j]['option_info']['title'] . ': ' .  str_replace(array("<br>", "<BR>"), '', $order->products[$i]['op_attributes'][$j]['option_info']['value']);
         if ($order->products[$i]['op_attributes'][$j]['price'] != '0') {
           echo ' ('.$currencies->format($order->products[$i]['op_attributes'][$j]['price']).')';        
         }
@@ -188,14 +196,14 @@
                     <td width="30%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
                       <tr><td class="main"><b><?php echo HEADING_DELIVERY_ADDRESS; ?></b></td></tr>
                       <?php
-                            $address_list_query = tep_db_query("select id,name from ". TABLE_ADDRESS ." where status='0'");
+                            $address_list_query = tep_db_query("select id,name from ". TABLE_ADDRESS ." where status='0' order by sort");
                             $address_array = array();
                             while($address_list_array = tep_db_fetch_array($address_list_query)){
                               
                               $address_array[$address_list_array['id']] = $address_list_array['name'];
                             }
                             tep_db_free_result($address_list_query);
-                            $address_shipping_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $_GET['order_id'] ."'");
+                            $address_shipping_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $_GET['order_id'] ."' order by id");
                             while($address_shipping_array = tep_db_fetch_array($address_shipping_query)){
                                 echo '<tr><td class="main" width="30%" valign="top">';
                                 echo $address_array[$address_shipping_array['address_id']];

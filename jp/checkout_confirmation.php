@@ -121,7 +121,7 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
     '            <td class="main" align="center" valign="top" width="150">' .
     $order->products[$i]['qty'] . '&nbsp;個' .  (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($order->products[$i]['qty'], (int)$order->products[$i]['id']) ? '<br><span style="font-size:10px">'.  tep_get_full_count_in_order2($order->products[$i]['qty'], (int)$order->products[$i]['id']) .'</span>': '') . '</td>' . "\n" .
     '            <td class="main" valign="top">' . $order->products[$i]['name'];
-  if ($order->productts[$i]['price'] < 0) {
+  if ($order->products[$i]['price'] < 0) {
     echo ' (<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->display_price($order->products[$i]['price'], $order->products[$i]['tax'])).'</font>'.JPMONEY_UNIT_TEXT.')';
   } else {
     echo ' ('.$currencies->display_price($order->products[$i]['price'], $order->products[$i]['tax']).')';
@@ -134,7 +134,7 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
     for ($j=0, $n2=sizeof($order->products[$i]['op_attributes']); $j<$n2; $j++) {  
       $op_price = tep_get_show_attributes_price($order->products[$i]['op_attributes'][$j]['item_id'], $order->products[$i]['op_attributes'][$j]['group_id'], $order->products[$i]['op_attributes'][$j]['value']); 
        
-      echo '<br><small>&nbsp;<i> - ' .  $order->products[$i]['op_attributes'][$j]['front_title'] . ': ' .  $order->products[$i]['op_attributes'][$j]['value'];
+      echo '<br><small>&nbsp;<i> - ' .  $order->products[$i]['op_attributes'][$j]['front_title'] . ': ' .  str_replace(array("<br>", "<BR>"), '', $order->products[$i]['op_attributes'][$j]['value']);
       if ($op_price != '0') {
         echo ' ('.$currencies->format($op_price).')'; 
       }
@@ -145,7 +145,7 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
   if ( (isset($order->products[$i]['ck_attributes'])) && (sizeof($order->products[$i]['ck_attributes']) > 0) ) {
     for ($jk=0, $n3=sizeof($order->products[$i]['ck_attributes']); $jk<$n3; $jk++) {
       $cop_price = tep_get_show_attributes_price($order->products[$i]['ck_attributes'][$jk]['item_id'], $order->products[$i]['ck_attributes'][$jk]['group_id'], $order->products[$i]['ck_attributes'][$jk]['value']); 
-      echo '<br><small>&nbsp;<i> - ' .  $order->products[$i]['ck_attributes'][$jk]['front_title'] . ': ' .  $order->products[$i]['ck_attributes'][$jk]['value'];
+      echo '<br><small>&nbsp;<i> - ' .  $order->products[$i]['ck_attributes'][$jk]['front_title'] . ': ' .  str_replace(array("<br>", "<BR>"), '', $order->products[$i]['ck_attributes'][$jk]['value']);
       if ($cop_price != '0') {
         echo ' ('.$currencies->format($cop_price).')'; 
       }
@@ -209,19 +209,32 @@ if(!empty($_SESSION['options'])){
 
 //$address = tep_db_prepare_input($_POST['address']);
 //$country = tep_db_prepare_input($_POST['country']);
+  $country_fee_array = array();
+  $country_fee_id_query = tep_db_query("select name_flag,fixed_option from ". TABLE_ADDRESS ." where fixed_option!='0' and status='0'");
+  while($country_fee_id_array = tep_db_fetch_array($country_fee_id_query)){
+
+    $country_fee_array[$country_fee_id_array['fixed_option']] = $country_fee_id_array['name_flag'];
+  }
+  tep_db_free_result($country_fee_id_query);
 $weight = $cart->weight;
 
-foreach($_SESSION['options'] as $op_value){
-  $city_query = tep_db_query("select * from ". TABLE_COUNTRY_CITY ." where name='". $op_value[1] ."' and status='0'");
-  $city_num = tep_db_num_rows($city_query);
-
-  $address_query = tep_db_query("select * from ". TABLE_COUNTRY_AREA ." where name='". $op_value[1] ."' and status='0'");
-  $address_num = tep_db_num_rows($address_query);
+foreach($_SESSION['options'] as $op_key=>$op_value){
+  if($op_key == $country_fee_array[3]){
+    $city_query = tep_db_query("select * from ". TABLE_COUNTRY_CITY ." where name='". $op_value[1] ."' and status='0'");
+    $city_num = tep_db_num_rows($city_query);
+  }
   
-  $country_query = tep_db_query("select * from ". TABLE_COUNTRY_FEE ." where name='". $op_value[1] ."' and status='0'");
-  $address_country_num = tep_db_num_rows($country_query);
+  if($op_key == $country_fee_array[2]){
+    $address_query = tep_db_query("select * from ". TABLE_COUNTRY_AREA ." where name='". $op_value[1] ."' and status='0'");
+    $address_num = tep_db_num_rows($address_query);
+  }
+  
+  if($op_key == $country_fee_array[1]){ 
+    $country_query = tep_db_query("select * from ". TABLE_COUNTRY_FEE ." where name='". $op_value[1] ."' and status='0'");
+    $address_country_num = tep_db_num_rows($country_query);
+  }
 
-if($city_num > 0){
+if($city_num > 0 && $op_key == $country_fee_array[3]){
   $city_array = tep_db_fetch_array($city_query);
   tep_db_free_result($city_query);
   $city_free_value = $city_array['free_value'];
@@ -244,7 +257,7 @@ if($city_num > 0){
       break;
     }
   }
-}elseif($address_num > 0){
+}elseif($address_num > 0 && $op_key == $country_fee_array[2]){
   $address_array = tep_db_fetch_array($address_query);
   tep_db_free_result($address_query);
   $address_free_value = $address_array['free_value'];
@@ -267,7 +280,7 @@ if($city_num > 0){
       break;
     }
   }
-}else{
+}elseif($address_country_num && $op_key == $country_fee_array[1]){
   if($address_country_num > 0){
   $country_array = tep_db_fetch_array($country_query);
   tep_db_free_result($country_query);
@@ -301,7 +314,6 @@ if($city_weight_fee != ''){
 }else{
   $weight_fee = $address_weight_fee != '' ? $address_weight_fee : $country_weight_fee;
 }
-
 if($city_free_value != ''){
 
   $free_value = $city_free_value;

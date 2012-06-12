@@ -81,6 +81,21 @@
 ?>
 <?php page_head();?>
 <script type="text/javascript" src="./js/jquery-1.3.2.min.js"></script>
+<script type="text/javascript">
+  function check_products_num(pid)  {
+ var products_num = document.getElementById('quantity').value;
+ $.ajax({
+	 url:'ajax_check_products_num.php',
+         type:'POST',
+	 dataType: 'text',
+	 data: 'pid='+pid+'&quantity='+products_num,
+	 async:false,
+	 success:function(data){
+	$('#preorder_info_message').html(data);
+	 }
+ })
+  }
+</script>
 </head>
 <body>
 <?php
@@ -108,7 +123,12 @@
 ?>
 <?php
     $error = false;
-    
+    $products_num_query = mysql_query("select products_real_quantity,products_virtual_quantity from products where products_id='".$_POST['products_id']."'");
+$products_num_array = mysql_fetch_array($products_num_query);
+//$products_num = $products_num_array['products_real_quantity'];
+ $products_num = $products_num_array['products_real_quantity'] + $products_num_array['products_virtual_quantity'];
+
+
     if (isset($_POST['action']) && ($_POST['action'] == 'process') && empty($_POST['quantity'])) {
       $quantity_error = true;
       $error = true;
@@ -121,7 +141,16 @@
         $quantity_error = true;
         $error = true;
        } else {
+	       if (isset($_POST['action']) && ($_POST['action'] == 'process') && ($products_num >= $_POST['quantity'])){
+//	 $quantity_error = true;
+		       $num_error = true;
+        $error = true;
+      
+	       }else{
         $quantity_error = false;
+	       }
+
+      //  $quantity_error = false;
        }
       }
     }
@@ -206,7 +235,7 @@ if (!isset($_GET['firstname'])) $_GET['firstname'] = NULL; //del notice
         if ($firstname_error == true) $first_name_prompt .= '&nbsp;<span class="errorText">' . TEXT_REQUIRED . '</span>';
 if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
         $your_email_address_prompt = tep_draw_input_field('from', (($fromemail_error == true) ? $_POST['from'] : $_GET['from']) , 'size="30" class="input_text"') . '&nbsp;&nbsp;携帯電話メールアドレス推奨';
-        if ($fromemail_error == true) $your_email_address_prompt .= ENTRY_EMAIL_ADDRESS_CHECK_ERROR;
+        if ($fromemail_error == true) $your_email_address_prompt .="<br>".ENTRY_EMAIL_ADDRESS_CHECK_ERROR;
       }
 ?>
       <div align="center">
@@ -288,11 +317,14 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
           <td class="main">
 <?php
 if (!isset($_POST['quantity'])) $_POST['quantity'] = NULL; //del notice
-if (!isset($_GET['quantity'])) $_GET['quantity'] = NULL; //del notice
-            echo tep_draw_input_field('quantity', (($quantity_error == true) ? $_POST['quantity'] : $_GET['quantity']) , 'size="7" maxlength="15" class="input_text_short"');
+//echo tep_draw_input_field('quantity', (($quantity_error == true) ? $_POST['quantity'] : $_GET['quantity']) , 'size="7" maxlength="15" id="quantity" class="input_text_short" onblur="check_products_num('.$product_info['products_id'].');"');
+echo tep_draw_input_field('quantity', (($quantity_error == true) ? $_POST['quantity'] : $_GET['quantity']) , 'size="7" maxlength="15" id="quantity" class="input_text_short" ');
+
             echo '&nbsp;&nbsp;個';
-      if ($quantity_error == true) echo '&nbsp;<span class="errorText">' . TEXT_REQUIRED . '</span>';
-      if (!isset($_GET['send_to'])) $_GET['send_to'] = NULL; //del notice
+if ($quantity_error == true) { echo '&nbsp;<span class="errorText">' . TEXT_REQUIRED . '</span>';}
+if ($num_error == true){echo '<span id="preorder_info_message" class="errorText"><br>予約の必要がございません。<br>'.(int)$_POST['quantity'].'個は注文可能です。<a href='.tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $products_id) .'>コチラ</a> からお手続きください。 </span>' ;}
+
+         if (!isset($_GET['send_to'])) $_GET['send_to'] = NULL; //del notice
 ?>
           </td>
         </tr>

@@ -25,9 +25,20 @@ if(isGet()){
     tep_redirect(tep_redirect(tep_href_link(FILENAME_CREATE_ORDER.'?Customer_mail='.tep_db_prepare_input($_POST['email_address']).'&site_id='.tep_db_prepare_input($_POST['site_id']).'&error=1', null, 'SSL')));
   }else{
     $qty = 0;
-    foreach($_POST['update_products'] as $update_value){
+    $weight_count = 0;
+    $products_qty = array();
+    foreach($_POST['update_products'] as $update_key=>$update_value){
+      $orders_products_query = tep_db_query("select products_id from ". TABLE_ORDERS_PRODUCTS ." where orders_products_id='". $update_key ."'");
+      $orders_products_array = tep_db_fetch_array($orders_products_query);
+      tep_db_free_result($orders_products_query);
+      $products_weight_query = tep_db_query("select products_weight from ". TABLE_PRODUCTS ." where products_id='". $orders_products_array['products_id'] ."'");
+      $products_weight_array = tep_db_fetch_array($products_weight_query);
+      $weight_count += $products_weight_array['products_weight'] * $update_value['qty'];
+      tep_db_free_result($products_weight_query);
       $qty += $update_value['qty']; 
+      $products_qty[$update_key] = $update_value['qty']; 
     }
+    $_SESSION['products_qty'] = $products_qty;
 
     if($qty == 0){
 
@@ -263,7 +274,7 @@ $payment_bank_info = array();
       }
       tep_db_free_result($orders_total_query);
       tep_db_query("update ". TABLE_ORDERS_TOTAL ." set value=". $orders_price_total ." where orders_id='". $oID ."' and class='ot_total'");
-      tep_db_query("update ". TABLE_ORDERS_TOTAL ." set value=". $orders_price_total ." where orders_id='". $oID ."' and class='ot_subtotal'");
+      tep_db_query("update ". TABLE_ORDERS_TOTAL ." set value=". $orders_price_total ." where orders_id='". $oID ."' and class='ot_subtotal'"); 
       tep_redirect(tep_href_link(FILENAME_EDIT_NEW_ORDERS, 'oID=' . $insert_id, 'SSL'));
 
 

@@ -56,7 +56,7 @@
           $site_arr="";
         }
         $site_id = (isset($_GET['site_id']))?$_GET['site_id']:0;  
-        forward401Unless(editPermission($site_arr, $site_id));
+//        forward401Unless(editPermission($site_arr, $site_id));
         tep_insert_pwd_log($_GET['once_pwd'],$ocertify->auth_user);
         
         $p_page = (isset($_GET['page']))?'&page='.$_GET['page']:''; 
@@ -1364,7 +1364,7 @@ function handle_option()
 <?php
 if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pwd']){?>
   <script language='javascript'>
-    //one_time_pwd('<?php echo $page_name;?>');
+    one_time_pwd('<?php echo $page_name;?>');
   </script>
 <?php }?>
 <div id="spiffycalendar" class="text"></div>
@@ -3459,7 +3459,7 @@ if (empty($products['products_quantity']) or $products['products_quantity'] == 0
                    <td style="width:60px" align="center">
             <?php
 $p_page = (isset($_GET['page']))?'&page='.$_GET['page']:'';
-if ($ocertify->npermission >= 10) { //表示制限
+//if ($ocertify->npermission >= 10) { //表示制限
   $repro_site_id = (isset($_GET['site_id']))?$_GET['site_id']:0; 
   $unaccept_pro_edit_single = false;
   if (isset($_SESSION['site_permission'])) {
@@ -3468,7 +3468,9 @@ if ($ocertify->npermission >= 10) { //表示制限
     $accept_pro_site_arr = array(); 
   }
   if (!in_array($repro_site_id, $accept_pro_site_arr)) {
-    $unaccept_pro_edit_single = true;
+$unaccept_pro_edit_single = false;
+
+  //  $unaccept_pro_edit_single = true;
   }
   if ($_SESSION['user_permission'] == 15) {
     $unaccept_pro_edit_single = false;
@@ -3486,7 +3488,7 @@ if ($ocertify->npermission >= 10) { //表示制限
                }
              } else {
                if ($unaccept_pro_edit_single) {
-                 echo '<a href="javascript:void(0);" onclick="window_alert(\'' .NOTICE_HAS_NO_PREVILEGE_EDIT.  '\')" title="'.implode(',', $pro_svalue).'">' .  tep_image(DIR_WS_IMAGES .  'icon_status_blue_light.gif', '', 10, 10) . '</a>&nbsp;'; 
+                 echo '<a href="javascript:void(0);" onclick="window.alert(\'' .NOTICE_HAS_NO_PREVILEGE_EDIT.  '\')" title="'.implode(',', $pro_svalue).'">' .  tep_image(DIR_WS_IMAGES .  'icon_status_blue_light.gif', '', 10, 10) . '</a>&nbsp;'; 
                } else {
                  echo '<a href="javascript:void(0);" onclick="check_toggle_status(\'' .  tep_href_link(FILENAME_CATEGORIES, 'action=setflag&flag=2&pID=' .  $products['products_id'] .  '&cPath=' .  $cPath.'&site_id='.((isset($_GET['site_id'])?$_GET['site_id']:0)).$p_page) .  '\')" title="'.implode(',', $pro_svalue).'">' .  tep_image(DIR_WS_IMAGES .  'icon_status_blue_light.gif', '', 10, 10) . '</a>&nbsp;'; 
                }
@@ -3589,7 +3591,7 @@ if ($ocertify->npermission >= 10) { //表示制限
       }
       }
       }
-} else {
+/*} else {
   // 価格更新警告
   $last_modified_array = getdate(strtotime(tep_datetime_short($products['products_last_modified'])));
   $today_array = getdate();
@@ -3607,7 +3609,7 @@ if ($ocertify->npermission >= 10) { //表示制限
   
   echo '&nbsp;&nbsp;' . tep_image(DIR_WS_ICONS . 'battery_0.gif', CATEGORY_BUTTON_NUM_UNCOMMON);
   
-}
+}*/
 ?>
 </td>
 <?php 

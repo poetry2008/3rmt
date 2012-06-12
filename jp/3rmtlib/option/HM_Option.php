@@ -19,11 +19,11 @@ class HM_Option extends Option_DbRecord
     return $groups; 
   }
   
-  function render($belong_option_str, $ptype = false, $is_product_info = 0, $pre_item_str = '', $cart_obj = '')
+  function render($belong_option_str, $ptype = false, $is_product_info = 0, $pre_item_str = '', $cart_obj = '', $cflag)
   {
     $this->groups = $this->getGroups($belong_option_str, $ptype); 
     foreach ($this->groups as $group) {
-      $group->render($this->option_error_array, $is_product_info, $pre_item_str, $cart_obj, $ptype); 
+      $group->render($this->option_error_array, $is_product_info, $pre_item_str, $cart_obj, $ptype, $cflag); 
     }
   }
 

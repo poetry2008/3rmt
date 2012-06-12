@@ -66,7 +66,9 @@ require(DIR_WS_CLASSES . 'order_total.php');
 $order_total_modules = new order_total;
 
 $order_totals = $order_total_modules->process();
-  
+$customers_referer_query = tep_db_query("select referer from ".TABLE_CUSTOMERS." where customers_id='".$customer_id."'");
+$customers_referer_array = tep_db_fetch_array($customers_referer_query);
+$referer = $customers_referer_array['referer'];
 # Select
 //$cnt = strlen($NewOid);
 // 2003-06-06 add_telephone
@@ -119,7 +121,7 @@ $sql_data_array = array('orders_id'         => $insert_id,
                         'site_id'           => SITE_ID,
                         'torihiki_date'     => $insert_torihiki_date,
                         'torihiki_date_end' => $insert_torihiki_date_end,
-                        'orders_ref'        => $_SESSION['referer'],
+                        'orders_ref'        => $referer,
                         'orders_ref_site'   => tep_get_domain($_SESSION['referer']),
                         'orders_ref_keywords' => strtolower(SBC2DBC(parseKeyword($_SESSION['referer']))),
                         'orders_ip'         => $_SERVER['REMOTE_ADDR'],
@@ -182,7 +184,7 @@ foreach($_SESSION['options'] as $op_key=>$op_value){
   $address_sh_his_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id='$customer_id' group by orders_id");
   while($address_sh_his_array = tep_db_fetch_array($address_sh_his_query)){
 
-    $address_sh_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where customers_id='$customer_id' and orders_id='". $address_sh_his_array['orders_id'] ."'");
+    $address_sh_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where customers_id='$customer_id' and orders_id='". $address_sh_his_array['orders_id'] ."' order by id");
     $add_temp_str = '';
     while($address_sh_array = tep_db_fetch_array($address_sh_query)){
      
@@ -198,7 +200,7 @@ foreach($_SESSION['options'] as $op_key=>$op_value){
     }
     tep_db_free_result($address_sh_query);
   }
-  tep_db_free_result($address_sh_his_query);
+  tep_db_free_result($address_sh_his_query); 
 if($address_error == false){
   foreach($_SESSION['options'] as $address_history_key=>$address_history_value){
       $address_history_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where name_flag='". $address_history_key ."'");

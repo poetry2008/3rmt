@@ -6,7 +6,7 @@ mysql_select_db(DB_DATABASE);
 mysql_query('set names utf8');
 echo "starting...<br>";
 
-$order_products_raw = mysql_query('select orders_products_id, products_id, orders_id, products_character from orders_products');
+$order_products_raw = mysql_query('select orders_products_id, products_id, orders_id, products_character from preorders_products');
 $show_num = 0;
 while ($order_products = mysql_fetch_array($order_products_raw)) {
   if ($order_products['products_character'] != '') {
@@ -25,7 +25,7 @@ while ($order_products = mysql_fetch_array($order_products_raw)) {
       }
     }
     $option_info = array('title' => 'お客様のキャラクター名', 'value' => $order_products['products_character']); 
-    $insert_sql = 'insert into `orders_products_attributes` values (NULL, \''.$order_products['orders_id'].'\', \''.$order_products['orders_products_id'].'\', \'\', \'\', 0, \'\', 0, \''.addslashes(serialize($option_info)).'\',\''.$option_group_id.'\', \''.$option_item_id.'\')';
+    $insert_sql = 'insert into `preorders_products_attributes` values (NULL, \''.$order_products['orders_id'].'\', \''.$order_products['orders_products_id'].'\', \'\', \'\', 0, \'\', 0, \''.addslashes(serialize($option_info)).'\',\''.$option_group_id.'\', \''.$option_item_id.'\')';
     mysql_query($insert_sql); 
   }
  
