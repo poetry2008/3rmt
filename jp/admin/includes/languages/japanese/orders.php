@@ -117,6 +117,7 @@ define('TEXT_ORDER_SEND_MAIL','メール送信');
 define('TEXT_ORDER_STATUS','ステータス通知');
 define('TEXT_ORDER_HAS_ERROR','間違い探しはしましたか？');
 define('TEXT_ORDER_FIND','検索 :');
+define('TEXT_ORDER_AMOUNT_SEARCH','注文金額検索');
 define('TEXT_ORDER_FIND_SELECT','--------選択してください--------');
 define('TEXT_ORDER_FIND_NAME','名前から検索');
 define('TEXT_ORDER_FIND','検索 :');
