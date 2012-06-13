@@ -2340,7 +2340,7 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
 elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['search_type'] == 'value'))) {
    $keywords = $_GET['keywords'];
    $orders_total_query = tep_db_query("select * from ".TABLE_PREORDERS_TOTAL." where
-       class='ot_total' and (value='".$keywords.".0000' or value='-".$keywords."')");
+       class='ot_total' and value='".$keywords.".0000'");
       $orders_like_str = '';
       $orders_total_array = array();
       while($orders_total_array = tep_db_fetch_array($orders_total_query)){

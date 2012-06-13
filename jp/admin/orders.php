@@ -1346,7 +1346,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
   
  elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['search_type'] == 'value'))) {
               $keywords = $_GET['keywords'];
-             $orders_total_query = tep_db_query("select * from ". TABLE_ORDERS_TOTAL ." where class='ot_total' and (value='".$keywords.".0000' or value='-".$keywords.".0000')" );
+             $orders_total_query = tep_db_query("select * from ". TABLE_ORDERS_TOTAL ." where class='ot_total' and value='".$keywords.".0000'" );
              $orders_like_str = '';
              $orders_like_array = array();
              while($orders_total_array = tep_db_fetch_array($orders_total_query)){
