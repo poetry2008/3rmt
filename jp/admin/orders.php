@@ -1304,7 +1304,8 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                   from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
                                   where   
                                   " .$sort_where . " 1=1 and o.customers_id not in (".$str.")".
-                                  (isset($_GET['site_id']) && intval($_GET['site_id']) ? " o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
+                                  (isset($_GET['site_id']) && intval($_GET['site_id']
+                                ) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
                                   " . $where_payment . $where_type ;
 
                        $keywords = str_replace('　', ' ', $_GET['keywords']);
@@ -3756,6 +3757,11 @@ if($c_parent_array['parent_id'] == 0){
             <option value="type|mix"><?php echo 
             TEXT_ORDER_TYPE_PRE.TEXT_ORDER_TYPE_MIX.TEXT_ORDER_TYPE_LAST;?></option>
             </select>
+            <?php
+                if (isset($_GET['site_id'])) {
+                  echo tep_draw_hidden_field('site_id', $_GET['site_id']); 
+                }
+            ?>
             </form>
             </td>
             </tr>

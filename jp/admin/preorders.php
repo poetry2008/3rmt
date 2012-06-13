@@ -1688,6 +1688,11 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                 }
                 ?>
               </select>
+              <?php
+              if (isset($_GET['site_id'])) {
+                echo tep_draw_hidden_field('site_id', $_GET['site_id']); 
+              }
+              ?>
               </form>
             </td>
           </tr>
@@ -2231,7 +2236,6 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
     
     $sk_raw = '';
     if (isset($search_keywords) && (sizeof($search_keywords) > 0)) {
-      $orders_query_raw .= " and ";
       for ($i=0, $n=sizeof($search_keywords); $i<$n; $i++ ) {
       switch ($search_keywords[$i]) {
       case '(':
@@ -2245,7 +2249,9 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
         if (isset($_GET['search_type']) && $_GET['search_type'] == 'customers_name') {
           $sk_raw .= "o.customers_name like '%" . tep_db_input($keyword) . "%' or "; 
           $sk_raw .= "o.customers_name_f like '%" . tep_db_input($keyword) . "%'";
-           
+          if($i<$n-1){
+            $sk_raw .= ' or ';
+          }
         } else if (isset($_GET['search_type']) && $_GET['search_type'] == 'email') {
           $orders_query_raw .= "o.customers_email_address like '%" . tep_db_input($keyword) . "%'";
         }
