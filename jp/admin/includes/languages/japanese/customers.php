@@ -49,3 +49,4 @@ define('CUSTOMER_SEARCH_READ_TITLE', '※検索対象：「顧客名（姓/名/�
 define('CUSTOMER_RESET', 'パスワード変更依頼');
 define('TEXT_USER_ADDED','アカウント作成者:');
 define('TEXT_USER_UPDATE','アカウント更新者:');
+define('CUSTOMER_IS_SEAL','注文禁止');

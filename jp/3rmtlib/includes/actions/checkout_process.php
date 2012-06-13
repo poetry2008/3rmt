@@ -15,6 +15,15 @@ if (!tep_session_is_registered('customer_id')) {
   $navigation->set_snapshot(array('mode' => 'SSL', 'page' => FILENAME_CHECKOUT_PAYMENT));
   tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
 }
+$seal_user_sql = "select is_seal from ".TABLE_CUSTOMERS." where customers_id
+='".$customer_id."' limit 1";
+$seal_user_query = tep_db_query($seal_user_sql);
+if ($seal_user_row = tep_db_fetch_array($seal_user_query)){
+  if($seal_user_row['is_seal']){
+    tep_redirect(tep_href_link(FILENAME_CHECKOUT_CONFIRMATION, 'is_finish=1', 'SSL')); 
+    exit;
+  }
+}
 if ((tep_not_null(MODULE_PAYMENT_INSTALLED)) && (!tep_session_is_registered('payment')) ) {
   tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL')); 
 }
