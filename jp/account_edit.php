@@ -315,7 +315,7 @@ if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
     foreach ($_POST as $p_key => $p_value) {
       $op_single_str = substr($p_key, 0, 3);
       if ($op_single_str == 'op_') {
-        $option_info_array[$p_key] = tep_db_prepare_input($p_value); 
+        $option_info_array[$p_key] = tep_db_input($p_value); 
       } 
     }
   }else{
@@ -437,7 +437,7 @@ if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
     foreach ($_POST as $p_key => $p_value) {
       $op_single_str = substr($p_key, 0, 3);
       if ($op_single_str == 'op_') {
-        $option_info_array[$p_key] = tep_db_prepare_input($p_value); 
+        $option_info_array[$p_key] = tep_db_input($p_value); 
       } 
     }
   }else{
@@ -587,14 +587,18 @@ if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
 </div> 
 </body>
 </html>
+<script type="text/javascript">
+$(document).ready(function(){
 <?php
   if($save_flag == true){
 
-    echo '<script>alert("保存しました。");location.href="'. FILENAME_ACCOUNT_EDIT .'";</script>';  
+    echo 'alert("保存しました。");location.href="'. FILENAME_ACCOUNT_EDIT .'";';  
   }
   if($del_flag == true){
  
-    echo '<script>alert("削除成功");location.href="'. FILENAME_ACCOUNT_EDIT .'";</script>';
+    echo 'alert("削除成功");location.href="'. FILENAME_ACCOUNT_EDIT .'";';
   }
 ?>
+});
+</script>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

@@ -28,6 +28,7 @@ define('SUB_TITLE_SUB_TOTAL', '小計:');
 define('SUB_TITLE_TOTAL', '合計:');
 
 define('OUT_OF_STOCK_CANT_CHECKOUT', STOCK_MARK_PRODUCT_OUT_OF_STOCK . ' 印の商品はご希望の数量を確保できません。<br><b>予約注文を承っておりますので、お問い合わせをお願いいたします。</b>');
+define('PRODUCTS_WEIGHT_ERROR', STOCK_MARK_PRODUCT_OUT_OF_STOCK . ' 総重量が規定の範囲を超えました。<br>商品を削除するか、または個数を変更して（'.$max_weight_count.'）kg以内にしてください。<br><b>予約注文を承っておりますので、お問い合わせをお願いいたします。</b>');
 //define('OUT_OF_STOCK_CAN_CHECKOUT', STOCK_MARK_PRODUCT_OUT_OF_STOCK . ' 印の商品はご希望の数量が在庫にございません。<br>このまま購入手続きを続行していただくと、ご注文の確認画面で発送可能な数量を確認することができます。');
 define('OUT_OF_STOCK_CAN_CHECKOUT', STOCK_MARK_PRODUCT_OUT_OF_STOCK . ' 印の商品はご希望の数量が在庫にございません。<br>このまま購入手続きを続行していただくと、後程納期をご連絡させていただきます。');
 

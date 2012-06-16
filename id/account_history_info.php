@@ -82,13 +82,14 @@
                 </table></td> 
             </tr> 
             <tr> 
-              <td><table border="0" width="100%" cellspacing="0" cellpadding="2" > 
+              <td><table border="0" width="100%" cellspacing="0" cellpadding="2" class="infoBoxContents"> 
                   <tr> 
                     <?php
-  if ($order->delivery != false) {
+  //if ($order->delivery != false) {
+  if (false) {
 ?> 
                     <td width="30%" valign="top">
-                    <table border="0" width="100%" cellspacing="0" cellpadding="2" > 
+                    <table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                         <tr> 
                           <td class="main"><b><?php echo HEADING_DELIVERY_ADDRESS; ?></b></td> 
                         </tr> 
@@ -112,10 +113,10 @@
                     <?php
   }
 ?> 
-                    <td width="<?php echo (($order->delivery != false) ? '70%' : '100%'); ?>" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2" > 
+                    <td width="<?php echo (($order->delivery != false) ? '70%' : '100%'); ?>" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                         <tr> 
                           <td>
-                            <table class="infoBoxContents"> 
+                            <table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                               <?php
   if (sizeof($order->info['tax_groups']) > 1) {
 ?> 
@@ -144,11 +145,29 @@
          '            <td class="main" align="right" valign="top" width="30">' . $order->products[$i]['qty'] . '&nbsp;x</td>' . "\n" .
          '            <td class="main" valign="top">' . $order->products[$i]['name'];
 
-    if ( (isset($order->products[$i]['attributes'])) && (sizeof($order->products[$i]['attributes']) > 0) ) {
-      for ($j=0, $n2=sizeof($order->products[$i]['attributes']); $j<$n2; $j++) {
-        echo '<br><small>&nbsp;<i> - ' . $order->products[$i]['attributes'][$j]['option'] . ': ' . $order->products[$i]['attributes'][$j]['value'] . '</i></small>';
+    if ($order->products[$i]['price'] != '0') {
+      if ($order->products[$i]['price'] < 0) {
+        echo ' (<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format($order->products[$i]['price'], true, $order->info['currency'], $order->info['currency_value'])).'</font>'.JPMONEY_UNIT_TEXT.')';
+      } else {
+        echo ' ('.$currencies->format($order->products[$i]['price'], true, $order->info['currency'], $order->info['currency_value']).')';
+      }
+    } else if ($order->products[$i]['final_price'] != '0') {
+      if ($order->products[$i]['final_price'] < 0) {
+        echo ' (<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format($order->products[$i]['final_price'], true, $order->info['currency'], $order->info['currency_value'])).'</font>'.JPMONEY_UNIT_TEXT.')';
+      } else {
+        echo ' ('.$currencies->format($order->products[$i]['final_price'], true, $order->info['currency'], $order->info['currency_value']).')';
       }
     }
+    if ( (isset($order->products[$i]['op_attributes'])) && (sizeof($order->products[$i]['op_attributes']) > 0) ) {
+      for ($j=0, $n2=sizeof($order->products[$i]['op_attributes']); $j<$n2; $j++) {
+        echo '<br><small>&nbsp;<i> - ' .  $order->products[$i]['op_attributes'][$j]['option_info']['title'] . ': ' .  str_replace(array("<br>", "<BR>"), '', $order->products[$i]['op_attributes'][$j]['option_info']['value']);
+        if ($order->products[$i]['op_attributes'][$j]['price'] != '0') {
+          echo ' ('.$currencies->format($order->products[$i]['op_attributes'][$j]['price']).')';        
+        }
+        echo '</i></small>';
+      }
+    }
+    
 
     echo '</td>' . "\n";
 
@@ -170,13 +189,49 @@
                   </tr> 
                 </table></td> 
             </tr> 
+            <?php
+            $address_shipping_num_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $_GET['order_id'] ."'");
+            $address_num = tep_db_num_rows($address_shipping_num_query);
+            tep_db_free_result($address_shipping_num_query);
+            if($address_num > 0){
+            ?>
+            <tr><td>&nbsp;</td></tr>
+            <tr> 
+              <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxContents"> 
+                  <tr> 
+                    <td width="30%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
+                      <tr><td class="main"><b><?php echo HEADING_DELIVERY_ADDRESS; ?></b></td></tr>
+                      <?php
+                            $address_list_query = tep_db_query("select id,name from ". TABLE_ADDRESS ." where status='0' order by sort");
+                            $address_array = array();
+                            while($address_list_array = tep_db_fetch_array($address_list_query)){
+                              
+                              $address_array[$address_list_array['id']] = $address_list_array['name'];
+                            }
+                            tep_db_free_result($address_list_query);
+                            $address_shipping_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $_GET['order_id'] ."' order by id");
+                            while($address_shipping_array = tep_db_fetch_array($address_shipping_query)){
+                                echo '<tr><td class="main" width="120" valign="top">';
+                                echo $address_array[$address_shipping_array['address_id']];
+                                echo ':</td><td class="main">';
+                                echo $address_shipping_array['value']; 
+                                echo '</td></tr>';
+                            }
+                            tep_db_free_result($address_shipping_query);
+                      ?>
+                    </table></td>
+                  </tr>
+              </table></td>
+            </tr>
+            <?php
+            }
+            ?>
             <tr> 
               <td class="main"><b><?php echo HEADING_BILLING_INFORMATION; ?></b></td> 
             </tr> 
             <tr> 
-              <td><table class="infoBoxContents"> 
+              <td><table class="infoBoxContents"  border="0" cellspacing="0" cellpadding="2"> 
                   <tr> 
-            <td><table width="100%"><tr><td>
                     <td width="30%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                         <tr> 
                           <td class="main"><b><?php echo HEADING_BILLING_ADDRESS; ?></b></td> 
@@ -230,11 +285,20 @@
            '              </tr>' . "\n";
     
     }
+  
+    if ($i == 0) {
+      echo '              <tr>' . "\n" .
+           '                <td class="main" align="right" width="100%">' . TEXT_SHIPPING_FEE . '</td>' . "\n" .
+           '                <td class="main" align="right" nowrap>' .$currencies->format($order->info['shipping_fee'])  . '</td>' . "\n" .
+           '              </tr>' . "\n";
+    
+    }
   }
 ?> 
-                      </table></td></tr></table></td> 
+                      </table></td>
                   </tr> 
-                </table></td> 
+                </table>
+             </td> 
             </tr> 
             <tr> 
               <td class="main"><b><?php echo HEADING_ORDER_HISTORY; ?></b></td> 

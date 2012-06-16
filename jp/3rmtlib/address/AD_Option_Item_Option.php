@@ -5,9 +5,11 @@ class AD_Option_Item_Option extends AD_Option_Item_Basic
   var $hasSelect = true; 
   var $hasComment = true;
 
-  function render($option_error_array)
+  function render($option_error_array, $is_space = false)
   {
-     echo '<td width="10">'. tep_draw_separator('pixel_trans.gif', '10', '1') .'</td>';
+     if (!$is_space) {
+      echo '<td width="10">'. tep_draw_separator('pixel_trans.gif', '10', '1') .'</td>';
+     }
      if (strlen($this->front_title)) {
        echo '<td class="main" width="30%">'; 
        echo $this->front_title.':';
@@ -53,13 +55,13 @@ class AD_Option_Item_Option extends AD_Option_Item_Basic
     
     }else{
       echo '<select name="op_'.$this->formname.'" id="op_'.$this->formname.'"></select>';    
-      echo '<span id="prompt_'.$this->formname.'" class="markProductOutOfStock">';
+      echo '<span id="prompt_'.$this->formname.'"><font color="#FF0000"><b>';
       if(isset($option_error_array['prompt_'.$this->formname])){
 
         echo '&nbsp;'.$option_error_array['prompt_'.$this->formname];
 
       }
-      echo '</span>';
+      echo '</b></font></span>';
     }
      echo '<br>';
      echo '<span id="error_'.$this->formname.'" class="shipping_error"><font color="red">';

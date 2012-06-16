@@ -1234,9 +1234,9 @@ a.s_column_bar {
 	display:block;
 }
 
-.option_show_border .option_conent:hover,.option_hide_border .option_conent:hover{
-	border:3px solid #FF6701;
-	margin:0;
+.option_hide_border .option_conent a:hover, .option_show_border .option_conent a:hover{
+	text-decoration:none;
+	cursor:pointer;	
 }
 .option_hide_border {
   float:left;

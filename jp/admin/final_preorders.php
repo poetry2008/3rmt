@@ -1056,14 +1056,12 @@ function submit_order_check_one(products_id,op_id){
         if(confirm(data)){
 
           check_mail_product_status('<?php echo $_GET['oID'];?>');
-          presubmitChk();
-          document.edit_order.submit();
+          
         }
       }else{
   
          check_mail_product_status('<?php echo $_GET['oID'];?>');
-        presubmitChk();
-        document.edit_order.submit();
+         
       }
     }
   });
@@ -1548,7 +1546,7 @@ float:left;
             <?php echo tep_draw_separator(); ?>
           </td>
         </tr> 
-        <tr><?php echo tep_draw_form('edit_order', FILENAME_FINAL_PREORDERS, tep_get_all_get_params(array('action','paycc')) . 'action=update_order', 'post',''); ?>
+        <tr><?php echo tep_draw_form('edit_order', FILENAME_FINAL_PREORDERS, tep_get_all_get_params(array('action','paycc')) . 'action=update_order', 'post','onSubmit="return presubmitChk();"'); ?>
           
           <td>
             <!-- Begin Update Block -->

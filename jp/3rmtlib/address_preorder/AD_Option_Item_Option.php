@@ -8,11 +8,11 @@ class AD_Option_Item_Option extends AD_Option_Item_Basic
   function render($option_error_array)
   {
      if (strlen($this->front_title)) {
-       echo '<td class="main" width="30%">'; 
+       echo '<td class="main" width="150">'; 
        echo $this->front_title.':';
        echo '</td>';
      }
-     echo '<td class="main" width="70%">'; 
+     echo '<td class="main">'; 
      echo '<input type="hidden" name="'.$this->formname.'" value="'.$this->front_title.'">';
     if($this->fixed_option == '0'){
      if (!empty($this->option)) {
@@ -51,13 +51,13 @@ class AD_Option_Item_Option extends AD_Option_Item_Basic
     }else{
       
       echo '<select name="ad_'.$this->formname.'" id="ad_'.$this->formname.'"></select>';    
-      echo '<span id="prompt_'.$this->formname.'" class="markProductOutOfStock">';
+      echo '<span id="prompt_'.$this->formname.'"><font color="#FF0000"><b>';
       if(isset($option_error_array['prompt_'.$this->formname])){
 
         echo '&nbsp;'.$option_error_array['prompt_'.$this->formname];
 
       }
-      echo '</span>';
+      echo '</b></font></span>';
     }
      echo '<br>';
      echo '<span id="error_'.$this->formname.'" class="shipping_error"><font color="red">';

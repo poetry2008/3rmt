@@ -163,11 +163,16 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
              echo '</div>'; 
              echo '</div>'; 
            } else {
-             if (trim(nl2br($default_value)) == trim(nl2br($this->default_radio))) {
-               echo '<div class="option_show_border">'; 
+             if (isset($a_old_single) || isset($old_sel_single)) {
+               if (trim(nl2br($default_value)) == trim(nl2br($this->default_radio))) {
+                 echo '<div class="option_show_border">'; 
+               } else {
+                 echo '<div class="option_hide_border">'; 
+               }
              } else {
-               echo '<div class="option_hide_border">'; 
+               echo '<div class="option_show_border">'; 
              }
+             
              if (file_exists(DIR_FS_CATALOG.'default_images/design/tick.png')) {
                echo '<div class="option_tick"><img src="default_images/design/tick.png" alt=""></div>'; 
              } else {
@@ -179,7 +184,7 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
              echo '</div>'; 
            }
          } else {
-           if (isset($a_old_single)) {
+           if (isset($a_old_single) || isset($old_sel_single)) {
              if (trim(nl2br($default_value)) == trim(nl2br(stripslashes($this->default_radio)))) {
                echo '<div class="option_show_border">'; 
              } else {

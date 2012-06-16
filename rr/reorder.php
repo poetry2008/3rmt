@@ -323,6 +323,27 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
       }
     }
 //------insert customer choosen option eof ----
+    $attribute_len_array = array();
+    $attribute_max_len = 0;
+
+    if (isset($o->products[$i]['op_attributes'])) {
+      foreach ($o->products[$i]['op_attributes'] as $opa_l_order) {
+        $attribute_len_array[] = mb_strlen($opa_l_order['option_info']['title'], 'utf-8'); 
+      }
+    }
+    
+    if (!empty($attribute_len_array)) {
+      $attribute_max_len = max($attribute_len_array); 
+    }
+   
+    if ($attribute_max_len < 4) {
+      $attribute_max_len = 4; 
+    }
+    if (isset($o->products[$i]['op_attributes'])) {
+      foreach ($o->products[$i]['op_attributes'] as $opa_order) {
+        $products_ordered_attributes .= "\n" .$opa_order['option_info']['title'] .  str_repeat('　',intval(($attribute_max_len - mb_strlen($opa_order['option_info']['title'], 'utf-8')))) . '：' .  str_replace("<br>", "\n", $opa_order['option_info']['value']);
+      }
+    }
     if(isset($o->products[$i]['weight']) && isset($o->products[$i]['qty'])){
       $total_weight += ($o->products[$i]['qty'] * $o->products[$i]['weight']);
     }
@@ -338,7 +359,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
       $total_cost = 0;
     }
     
-    $products_ordered .= '注文商品　　　　　：' . $o->products[$i]['name'];
+    $products_ordered .= '注文商品'.str_repeat('　',intval(($attribute_max_len - mb_strlen('注文商品', 'utf-8')))).'：' . $o->products[$i]['name'];
     if(tep_not_null($o->products[$i]['model'])) {
       $products_ordered .= ' (' . $o->products[$i]['model'] . ')';
     }
@@ -347,7 +368,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
     $product_info = tep_get_product_by_id($o->products[$i]['id'], SITE_ID ,$languages_id);
   
     $products_ordered .= $products_ordered_attributes . "\n";
-    $products_ordered .= '個数　　　　　　　：' . $o->products[$i]['qty'] . '個' . tep_get_full_count2($o->products[$i]['qty'], $o->products[$i]['id']) . "\n";
+    $products_ordered .= '個数'.str_repeat('　',intval(($attribute_max_len - mb_strlen('個数', 'utf-8')))).'：' . $o->products[$i]['qty'] . '個' . tep_get_full_count2($o->products[$i]['qty'], $o->products[$i]['id']) . "\n";
     if(tep_not_null($o->products[$i]['character'])) {
       $products_ordered .= 'キャラクター名　　：' . (EMAIL_USE_HTML === 'true' ? htmlspecialchars($o->products[$i]['character']) : $o->products[$i]['character']) . "\n";
     }
@@ -482,7 +503,7 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
               and popt.language_id = '" . $languages_id . "'
         ");
         $products_attributes = tep_db_fetch_array($products_attributes_query);
-        if ($products_attributes['total'] > 0) {
+        if (false) {
           //ccdd
           $products_options_name_query = tep_db_query("
               select distinct popt.products_options_id, 

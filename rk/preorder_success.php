@@ -2,12 +2,6 @@
 /*
   $Id$
 
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
   require('includes/application_top.php');
@@ -68,62 +62,77 @@
 ?>
 <?php page_head();?>
 </head>
-<body><div align="center"> 
-  <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
-  <!-- header_eof //--> 
-  <!-- body //--> 
-  <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border"> 
-    <tr> 
-      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"> <!-- left_navigation //--> 
-        <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
-        <!-- left_navigation_eof //--> </td> 
-      <!-- body_text //--> 
-      <td valign="top" id="contents"> 
-      <h1 class="pageHeading">
-      <?php 
-        echo PREORDER_SUCCESS_ACTIVE_HEAD_TITLE;
-      ?></h1> 
-      <div class="comment">
-      <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size:11px;">
-        <tr>
-        <td style="font-size:15px; color:#ff0000;">
-          <?php echo PREORDER_ACTIVE_SUCCESS_READ_HEAD.'<br><br>';?> 
-        </td>
-        </tr>
-        <tr>
-          <td>
-          <table class="infotable" border="0" cellpadding="0" cellspacing="1" width="100%"> 
-          <tr> 
-          <td colspan="2"> 
-          <?php echo PREORDER_SUCCESS_APPOINT_CONTENT;?>
-          <br>
-          </td> 
-          </tr> 
-          <tr> 
-          <td width="100"> 
-          <?php echo PREORDER_SUCCESS_APPOINT_PRODUCT_NAME;?>
-          </td>
-          <td>
-          <?php echo $preorder_product['products_name'];?> 
-          </td>
-          </tr> 
-          <tr> 
-          <td> 
-          <?php echo PREORDER_SUCCESS_APPOINT_PRODUCT_NUM;?>
-          </td>
-          <td>
-          <?php echo $preorder_product['products_quantity'].PREORDER_SUCCESS_UNIT_TEXT;?> 
+<body>
+<div align="center">
+  <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
+  <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border">
+    <tr>
+      <td width="<?php echo BOX_WIDTH; ?>" valign="top" class="left_colum_border">
+        <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
+      </td>
+      <td valign="top" id="contents">
+        <h1 class="pageHeading">
+        <?php 
+          echo PREORDER_SUCCESS_ACTIVE_HEAD_TITLE;
+        ?>
+        </h1>
+      	<div class="comment">
+        <table border="0" width="100%" cellspacing="0" cellpadding="0">
+          <tr>
+          <td style="font-size:15px; color:#ff0000;">
+            <?php echo PREORDER_ACTIVE_SUCCESS_READ_HEAD.'<br><br>';?> 
           </td>
           </tr>
           <tr>
-          <td>
-          <?php echo PREORDER_SUCCESS_APPOINT_PRODUCT_DATE;?>
-          </td>
-          <td>
-          <?php echo date('Y'.PREORDER_SUCCESS_YEAR_TEXT.'m'.PREORDER_SUCCESS_MONTH_TEXT.'d'.PREORDER_SUCCESS_DAY_TEXT, strtotime($preorder['predate']));?>
-          </td>
-          </tr>
-          <tr>
+            <td>
+            <table class="infotable" border="0" cellpadding="0" cellspacing="1" width="100%"> 
+            <tr> 
+            <td colspan="2"> 
+            <?php echo PREORDER_SUCCESS_APPOINT_CONTENT;?>
+            <br>
+            </td> 
+            </tr> 
+            <tr> 
+            <td width="150"> 
+            <?php echo PREORDER_SUCCESS_APPOINT_PRODUCT_NAME;?>
+            </td>
+            <td>
+            <?php echo $preorder_product['products_name'];?> 
+            </td>
+            </tr> 
+            <?php
+            $preorder_attributes_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS_ATTRIBUTES." where orders_id = '".$preorder_id."'"); 
+            while ($preorder_attributes = tep_db_fetch_array($preorder_attributes_raw)) {
+              $option_info_array = @unserialize(stripslashes($preorder_attributes['option_info'])); 
+            ?>
+            <tr>
+              <td>
+              <?php echo $option_info_array['title'].'：';?> 
+              </td>
+              <td>
+              <?php echo $option_info_array['value'];?> 
+              </td>
+            </tr>
+            <?php
+            }
+            ?>
+            <tr> 
+            <td> 
+            <?php echo PREORDER_SUCCESS_APPOINT_PRODUCT_NUM;?>
+            </td>
+            <td>
+            <?php echo $preorder_product['products_quantity'].PREORDER_SUCCESS_UNIT_TEXT;?> 
+            </td>
+            </tr>
+            <tr>
+            <td>
+            <?php echo PREORDER_SUCCESS_APPOINT_PRODUCT_DATE;?>
+            </td>
+            <td>
+            <?php echo date('Y'.PREORDER_SUCCESS_YEAR_TEXT.'m'.PREORDER_SUCCESS_MONTH_TEXT.'d'.PREORDER_SUCCESS_DAY_TEXT, strtotime($preorder['predate']));?>
+            </td>
+            </tr>
+            <tr>
               <td>
               <?php echo PREORDER_SUCCESS_APPOINT_PAYMENT_NAME;?>
               </td>
@@ -139,40 +148,37 @@
               <?php echo nl2br($preorder['comment_msg']);?> 
               </td>
             </tr>
-          </table><br>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <?php 
-            echo PREORDER_ACTIVE_SUCCESS_READ_INFO.'<br>';
-            ?>
-          </td>
-        </tr>
-        <tr>
-          <td>
-                <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
-                  <tr> 
-                    <td class="main" align="right"><?php echo '<a href="' .tep_href_link(FILENAME_DEFAULT). '">' .  tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></td> 
-                    <td align="right" class="main">
-                    </td> 
-                  </tr> 
-                </table></td> 
-        </tr>
-      </table>
-      </div>
-      <p class="pageBottom"></p> 
-      </td> 
-      <!-- body_text_eof //--> 
-      <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation //--> 
-        <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-        <!-- right_navigation_eof //--> </td> 
-  </table> 
-  <!-- body_eof //--> 
-  <!-- footer //--> 
-  <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
-  <!-- footer_eof //--> 
-</div>
+            </table>
+            <br>
+            </td>
+          </tr>
+          <tr>
+            <td style=" font-size:11px;">
+              <?php 
+              echo PREORDER_ACTIVE_SUCCESS_READ_INFO.'<br>';
+              ?>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+                  <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+                    <tr> 
+                      <td class="main" align="right"><?php echo '<a href="' .tep_href_link(FILENAME_DEFAULT). '">' .  tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></td> 
+                      <td align="right" class="main">
+                      </td> 
+                    </tr> 
+                  </table></td> 
+          </tr>
+        </table>
+        </div>
+        <p class="pageBottom"></p>
+      </td>
+      <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>">
+        <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?>
+      </td>
+    </tr>
+  </table>
+  <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
 </div>
 </body>
 </html>

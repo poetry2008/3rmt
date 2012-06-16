@@ -71,9 +71,18 @@ function address_list(){
 }
 
 function address_option_list(value){
+  var arr_address = new Array();
   var arr_list = new Array();
   var arr_flag = new Array();
 <?php
+  $address_i = 0;
+  $address_option_query = tep_db_query("select name_flag from ". TABLE_ADDRESS ." where status='0'");
+  while($address_option_array = tep_db_fetch_array($address_option_query)){
+
+    echo 'arr_address['.$address_i.'] = "'.$address_option_array['name_flag'].'";'."\n";
+    $address_i++;
+  }
+  tep_db_free_result($address_option_query);
   //根据后台的设置来显示相应的地址列表
   $address_list_arr = array();
   $address_list_query = tep_db_query("select name_flag from ". TABLE_ADDRESS ." where status='0' and show_title='1'");
@@ -104,8 +113,13 @@ function address_option_list(value){
   }
   tep_db_free_result($address_orders_group_query); 
 ?>
+  for(y in arr_address){
+
+    $("#tr_"+arr_address[y]).hide();
+  }
   for(x in arr_list[value]){
     $("#op_"+x).html(arr_list[value][x]);
+    $("#tr_"+x).show();
   }
   
   $("#address_flag_id").val(arr_flag[value]);
@@ -204,7 +218,10 @@ $(document).ready(function(){
   </tr>
   <!-- zhusuo -->
 <?php
-  if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != '' && isset($account['customers_email_address']) && $account['customers_email_address'] != ''){
+  $address_history_query = tep_db_query("select customers_id from ". TABLE_ADDRESS_HISTORY ." where customers_id='".$_SESSION['customer_id']."'");
+  $address_history_num = tep_db_num_rows($address_history_query);
+  tep_db_free_result($address_history_query);
+  if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != '' && isset($account['customers_email_address']) && $account['customers_email_address'] != '' && $address_history_num > 0){
 ?>
   <tr>
     <td class="formAreaTitle"><br><?php echo TITLE_ADDRESS; ?></td>
@@ -224,7 +241,7 @@ $(document).ready(function(){
         $address_query = tep_db_query("select * from ". TABLE_ADDRESS ." where status='0' and type!='text' order by sort");
         while($address_array = tep_db_fetch_array($address_query)){
       ?>    
-      <tr>
+      <tr id="tr_<?php echo $address_array['name_flag'];?>">
         <td class="main" valign="top">&nbsp;<?php echo $address_array['name'].':'; ?></td>
         <td class="main">&nbsp;<span id="op_<?php echo $address_array['name_flag'];?>"></span></td>
       </tr>

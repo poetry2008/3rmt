@@ -7,7 +7,7 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
   function render($option_error_array)
   {
     if (strlen($this->front_title)) {
-      echo '<td class="main" width="30%" valign="top"> '; 
+      echo '<td class="main" width="150" valign="top"> '; 
       echo $this->front_title.':'; 
       echo ' </td>'; 
     }
@@ -15,7 +15,7 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
     $type_limit = $options['type_limit']; 
     if($options['rows'] == 1){
 
-      echo '<td class="main" width="70%">';
+      echo '<td class="main">';
       $style_color = isset($_POST['ad_'.$this->formname]) && $_POST['ad_'.$this->formname] != $this->comment ?'color:#000;':'color:#999;';
       $style_size = $type_limit == 'num' ? 'size="25" ' : 'class="width:75%;" '; 
       echo '<input type="hidden" name="'.$this->formname.'" value="'.$this->front_title.'">';
@@ -34,7 +34,7 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
      echo '</font></span>'; 
      echo '</td>';  
     }else{
-    echo '<td class="main" width="70%">'; 
+    echo '<td class="main">'; 
     echo '<input type="hidden" name="'.$this->formname.'" value="'.$this->front_title.'">';
     echo '<input type="hidden" id="l_'.$this->formname.'" value="'.$this->required.'">';
     echo '<textarea

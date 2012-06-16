@@ -64,7 +64,7 @@ if (tep_session_is_registered('customer_id')) {
         <li>|</li>
         <li><a href="<?php echo tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL');?>">カートを見る</a></li>
         <li>|</li>
-        <li><a href="<?php echo  tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL');?>">レジへ進む
+        <li><a href="<?php echo  tep_href_link(FILENAME_CHECKOUT_ATTRIBUTES, '', 'SSL');?>">レジへ進む
   </a></li>
 </ul>
 </td></tr>
@@ -90,7 +90,7 @@ if (tep_session_is_registered('customer_id')) {
         <li>|</li>
         <li><a href="<?php echo tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL');?>">カートを見る</a></li>
         <li>|</li>
-        <li><a href="<?php echo  tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL');?>">レジへ進む  </a></li>
+        <li><a href="<?php echo  tep_href_link(FILENAME_CHECKOUT_ATTRIBUTES, '', 'SSL');?>">レジへ進む  </a></li>
         <li>|</li>
         <li><a href="<?php echo tep_href_link(FILENAME_LOGIN, '', 'SSL');?>">ログイン</a></li>
  </ul>

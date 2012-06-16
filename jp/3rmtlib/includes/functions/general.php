@@ -4760,7 +4760,7 @@ function check_money_limit() {
 
 
 //统一的输出 
-function tep_payment_out_selection(){
+function tep_payment_out_selection($is_show = false){
 global $selection;
 global $payment_modules;
 global $order;
@@ -4770,10 +4770,14 @@ global $order;
   <?php
    //如果大于1个支付方法需要用户选择 ，如果小于则不需要选择了
     if (sizeof($selection) > 1) {
-      echo "<div>";
+      if (!$is_show) {
+        echo "<div>";
+      }
       echo '<div class="float_left">'.TEXT_SELECT_PAYMENT_METHOD."</div>";
       echo '<div class="txt_right"><b>'.TITLE_PLEASE_SELECT.'</b><br>'.tep_image(DIR_WS_IMAGES . 'arrow_east_south.gif').'</div> ';
-      echo "</div> ";
+      if (!$is_show) {
+        echo "</div> ";
+      } 
     }else {
       echo "<div>";
       echo '<div class="float_left">';

@@ -1,7 +1,7 @@
 /******************************************************************************/
 /*                            時間セレクトボックス                             /
 /******************************************************************************/
-function selectDate(start_time,end_time){
+function selectDate(start_time,end_time,value){
 	//var num    = document.order.date.selectedIndex; //'選択セレクトボックス番号
 	//var myD    = new Date();                        //'日付オブジェクト
 //	var myHour = myD.getHours();                    //'時間
@@ -70,7 +70,11 @@ function selectDate(start_time,end_time){
         
         html_str += '</tr></table>';
         $("#shipping_list_show").html('');
-        $("#shipping_list").show();
+        if(value != ''){
+          $("#shipping_list").show();
+        }else{
+          $("#shipping_list").hide();
+        }
         $("#shipping_list_show").html(html_str);
 
         $("#shipping_list_show_min").html('');
@@ -194,31 +198,31 @@ function selectHour(start_time,end_time,hour,min_num,ele){
               temp_value = -77;
           } else {
             if(navigator.userAgent.indexOf("MSIE")>0) {
-              temp_value = -86;
+              temp_value = -77;
             } else {
-              temp_value = -85;
+              temp_value = -76;
             }
           }
         }else if(hour >= 6 && hour <= 11){
         
           if(navigator.userAgent.indexOf("MSIE 9.0")>0) {
-              temp_value = -56;
+              temp_value = -53;
           } else {
             if(navigator.userAgent.indexOf("MSIE")>0) {
-              temp_value = -61;
+              temp_value = -54;
             } else {
-              temp_value = -60;
+              temp_value = -53;
             }
           }
         }else if(hour >= 12 && hour <= 17){
         
           if(navigator.userAgent.indexOf("MSIE 9.0")>0) {
-            temp_value = -35;
+            temp_value = -32;
           } else {
           if(navigator.userAgent.indexOf("MSIE")>0) {
-            temp_value = -36;
+            temp_value = -33;
           } else {
-            temp_value = -35;
+            temp_value = -32;
           }
           }
         }else{

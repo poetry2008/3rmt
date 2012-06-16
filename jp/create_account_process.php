@@ -75,7 +75,7 @@
   
   if($guestchk == '0') {
     $passlen = strlen($password);
-    if(!preg_match('/[a-z]/',$password)){
+    if(!(preg_match('/[a-zA-Z]/',$password) && preg_match('/[0-9]/',$password))){
       $error = true;
       $entry_password_english_error = true;
     }else{

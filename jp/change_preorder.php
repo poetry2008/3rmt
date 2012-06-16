@@ -351,7 +351,17 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
     if(arr_str != ''){
       ++j_num;
       if(j_num == 1){first_num = i;}
-      address_show_list.options[address_show_list.options.length]=new Option(arr_str,i);
+        <?php
+  if(isset($_POST['address_show_list']) && $_POST['address_show_list'] != ''){
+
+    echo 'var address_show_list_one = "'. $_POST['address_show_list'] .'";'."\n"; 
+  }elseif(isset($_SESSION['preorder_information']['address_show_list']) && $_SESSION['preorder_information']['address_show_list'] != ''){
+    echo 'var address_show_list_one = "'. $_SESSION['preorder_information']['address_show_list'] .'";'."\n";
+  }else{
+    echo 'var address_show_list_one = first_num;'."\n"; 
+  }
+        ?>
+      address_show_list.options[address_show_list.options.length]=new Option(arr_str,i,i==address_show_list_one,i==address_show_list_one);
     }
 
   } 
@@ -361,6 +371,9 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
 }
 
 function address_option_list(value){
+  $("#td_"+country_fee_id_one).hide();
+  $("#td_"+country_area_id_one).hide();
+  $("#td_"+country_city_id_one).hide();
   var arr_list = new Array();
 <?php
   //根据后台的设置来显示相应的地址列表
@@ -481,14 +494,27 @@ $(document).ready(function(){
     $("#prompt_"+country_city_id_one).html('');
   });
   <?php
+    $address_histroy_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id='". $_SESSION['customer_id'] ."'"); 
+    $address_histroy_num = tep_db_num_rows($address_histroy_query);
+    tep_db_free_result($address_histroy_query); 
     if(isset($_POST[$country_fee_id])){
   ?>  
     check("<?php echo isset($_POST[$country_fee_id]) ? $_POST[$country_fee_id] : '';?>");
   <?php
    }elseif(!isset($_SESSION['preorder_information'])){
   ?>
+  <?php
+    if($address_histroy_num > 0){
+  ?>
     check();
     address_option_list(first_num);
+  <?php
+    }else{
+  ?>
+   check();
+  <?php
+   }
+  ?>
   <?php
   }else{
   ?>
@@ -504,8 +530,18 @@ $(document).ready(function(){
   <?php
    }elseif(!isset($_SESSION['preorder_information'])){
   ?>
+  <?php
+    if($address_histroy_num > 0){
+  ?>
     country_check($("#"+country_fee_id).val());
-    address_option_list(first_num);
+    address_option_list(first_num);  
+  <?php
+    }else{
+  ?>
+    country_check($("#"+country_fee_id).val());
+  <?php
+   }
+  ?> 
   <?php
   }else{
   ?>
@@ -521,8 +557,18 @@ $(document).ready(function(){
   <?php
    }elseif(!isset($_SESSION['preorder_information'])){
   ?>
+  <?php
+    if($address_histroy_num > 0){
+  ?>
     country_area_check($("#"+country_area_id).val());
     address_option_list(first_num);
+  <?php
+    }else{
+  ?>
+    country_area_check($("#"+country_area_id).val());
+  <?php
+   }
+  ?> 
   <?php
   }else{
   ?>
@@ -532,7 +578,7 @@ $(document).ready(function(){
   ?>
 });
 </script>
-<script type="text/javascript" src="js/date_time.js"></script>
+<script type="text/javascript" src="js/predate_time.js"></script>
 </head>
 <body>
 <?php 
@@ -918,14 +964,14 @@ document.forms.order1.submit();
         </script>
             <tr>
             <td colspan="2" class="main">
-              <input type="radio" name="address_option" value="old" onclick="address_option_show('old');address_option_list(first_num);" <?php echo $checked_str_old;?>><?php echo TABLE_OPTION_OLD; ?> 
-              <input type="radio" name="address_option" value="new" onclick="address_option_show('new');" <?php echo $checked_str_new;?>><?php echo TABLE_OPTION_NEW; ?>
+              <input type="radio" name="address_option" value="old" onClick="address_option_show('old');address_option_list(first_num);" <?php echo $checked_str_old;?>><?php echo TABLE_OPTION_OLD; ?> 
+              <input type="radio" name="address_option" value="new" onClick="address_option_show('new');" <?php echo $checked_str_new;?>><?php echo TABLE_OPTION_NEW; ?>
             </td>
             </tr>
             <tr id="address_show_id">
             <td class="main"><?php echo TABLE_ADDRESS_SHOW; ?></td>
             <td class="main">
-            <select name="address_show_list" id="address_show_list" onchange="address_option_list(this.value);">
+            <select name="address_show_list" id="address_show_list" onChange="address_option_list(this.value);">
             <option value="">--</option>
             </select>
             </td></tr>
@@ -1012,16 +1058,27 @@ document.forms.order1.submit();
 -->
 </td>
 </tr>
+<?php
+if (isset($jikan_error)) {
+?>
+<tr><td class="main">&nbsp;</td><td class="main">
+<?php
+  echo '<font id="jikan_error" color="#ff0000">'.$jikan_error.'</font>'; 
+?>
+</td></tr>
+<?php
+}
+?>
+          </table>  
+<table border="0" cellpadding="0" cellspacing="0" style=" position:absolute; width:503px; *width:524px;">
 <tr id="shipping_list_min" style="display:none;">
-              <td class="main">&nbsp;<input type="hidden" id="ele_id" name="ele" value=""></td> 
+              <td class="main" width="160">&nbsp;<input type="hidden" id="ele_id" name="ele" value=""></td> 
               <td class="main" id="shipping_list_show_min"> 
               </td> 
             </tr>
-<tr><td class="main">&nbsp;</td><td class="main">
-             <?php  
-             if (isset($jikan_error)) {
-                echo '<font id="jikan_error" color="#ff0000">'.$jikan_error.'</font>'; 
-             }
+</table>
+<table>
+             <?php   
              if(isset($_POST['date']) && $_POST['date'] != ''){
 
                 echo '<script>selectDate(\''. $work_start .' \', \''. $work_end .'\');$("#shipping_list").show();</script>';
@@ -1041,17 +1098,15 @@ document.forms.order1.submit();
 
                   echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\',\''. $_SESSION['preorder_information']['hour'] .'\','. $_SESSION['preorder_information']['min'] .','. $_SESSION['preorder_information']['ele'] .');$("#shipping_list_min").show();</script>';
                 }
-             }
+             } 
              ?> 
-</td></tr>
-          </table>  
           <?php
-          if ($hm_option->whether_show($product_info_res['belong_to_option'])) { 
+          if ($hm_option->preorder_whether_show($product_info_res['belong_to_option'])) { 
           ?>
           <br>
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
           <tr>
-            <td>
+            <td style="padding:0;">
             <?php 
             $p_cflag = tep_get_cflag_by_product_id($preorder_product_res['products_id']);
             echo $hm_option->render($product_info_res['belong_to_option'], true, 1, '', '', (int)$p_cflag);

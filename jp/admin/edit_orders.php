@@ -1984,7 +1984,9 @@ function address_option_show(action){
 ?>
   var address_show_list = document.getElementById("address_show_list");
 
-  address_show_list.options.length = 0;
+  if(document.getElementById("address_show_list")){
+    address_show_list.options.length = 0;
+  }
 
   len = arr_old.length;
   j_num = 0;
@@ -2526,7 +2528,11 @@ if (($action == 'edit') && ($order_exists == true)) {
     <?php echo payment::makePaymentListPullDownMenu(payment::changeRomaji($order->info['payment_method'], PAYMENT_RETURN_TYPE_CODE));?> 
     <?php 
     $pay_method = isset($_POST['payment_method']) ? $_POST['payment_method'] : $order->info['payment_method'];
-    $pay_comment = $order->info['orders_comment'];
+    //$pay_comment = $order->info['orders_comment'];
+    $orders_status_history_query = tep_db_query("select comments from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='".$oID."' order by date_added desc limit 0,1"); 
+    $orders_status_history_array = tep_db_fetch_array($orders_status_history_query);
+    $pay_comment = $orders_status_history_array['comments']; 
+    tep_db_free_result($orders_status_history_query);
     echo "\n".'<script language="javascript">'."\n"; 
           echo '$(document).ready(function(){'."\n";
           switch($pay_method){

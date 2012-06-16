@@ -15,9 +15,9 @@ class AD_Option_Item extends AD_Option_DbRecord
     $this->getInstance();
     return $this;
   }
-  function render($option_error_array)
+  function render($option_error_array, $is_space = false)
   {
-    $this->instance->render($option_error_array);
+    $this->instance->render($option_error_array, $is_space);
   }
   function getInstance()
   {

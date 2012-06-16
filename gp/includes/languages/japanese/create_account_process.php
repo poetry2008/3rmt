@@ -50,4 +50,5 @@ define('EMAIL_WARNING',
 . '━━━━━━━━━━━━━━━━━━━━━━━' . "\n");
 
 define('EMAIL_NAME_COMMENT_LINK', ' 様 ');
+define('ENTRY_PASSWORD_ENGLISH','英字（abcdef...z）が1文字以上必要です。英字と数字を組み合わせて設定してください。');
 ?>

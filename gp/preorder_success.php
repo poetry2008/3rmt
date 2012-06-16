@@ -1,6 +1,7 @@
 <?php
 /*
   $Id$
+
 */
 
   require('includes/application_top.php');
@@ -71,14 +72,12 @@
       </td>
       <td valign="top" id="contents">
         <div class="pageHeading">
-        <h1>
         <?php 
           echo PREORDER_SUCCESS_ACTIVE_HEAD_TITLE;
         ?>
-        </h1>
         </div>
-                <div class="comment">
-        <table border="0" width="100%" class="preorder_info_box" cellspacing="0" cellpadding="0">
+        <div class="comment">
+        <table border="0" width="100%" cellspacing="0" cellpadding="0" class="preorder_info_box">
           <tr>
           <td style="font-size:15px; color:#ff0000;">
             <?php echo PREORDER_ACTIVE_SUCCESS_READ_HEAD.'<br><br>';?> 
@@ -94,13 +93,29 @@
             </td> 
             </tr> 
             <tr> 
-            <td width="100"> 
+            <td width="150"> 
             <?php echo PREORDER_SUCCESS_APPOINT_PRODUCT_NAME;?>
             </td>
             <td>
             <?php echo $preorder_product['products_name'];?> 
             </td>
             </tr> 
+            <?php
+            $preorder_attributes_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS_ATTRIBUTES." where orders_id = '".$preorder_id."'"); 
+            while ($preorder_attributes = tep_db_fetch_array($preorder_attributes_raw)) {
+              $option_info_array = @unserialize(stripslashes($preorder_attributes['option_info'])); 
+            ?>
+            <tr>
+              <td>
+              <?php echo $option_info_array['title'].'：';?> 
+              </td>
+              <td>
+              <?php echo $option_info_array['value'];?> 
+              </td>
+            </tr>
+            <?php
+            }
+            ?>
             <tr> 
             <td> 
             <?php echo PREORDER_SUCCESS_APPOINT_PRODUCT_NUM;?>
@@ -133,29 +148,29 @@
               <?php echo nl2br($preorder['comment_msg']);?> 
               </td>
             </tr>
-            </table><br>
+            </table>
+            <br>
             </td>
           </tr>
           <tr>
-            <td>
-              <font size="2"><?php 
+            <td style=" font-size:12px;">
+              <?php 
               echo PREORDER_ACTIVE_SUCCESS_READ_INFO.'<br>';
-              ?></font>
+              ?>
             </td>
           </tr>
           <tr>
             <td><br>
                   <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                     <tr> 
-                      <td class="main" align="right"><?php echo '<a href="' .tep_href_link(FILENAME_DEFAULT). '">' .  tep_image_button('button_continue02.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></td> 
+                      <td class="main" align="right"><?php echo '<a href="' .tep_href_link(FILENAME_DEFAULT). '">' .  tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></td> 
                       <td align="right" class="main">
                       </td> 
                     </tr> 
                   </table></td> 
           </tr>
         </table>
-                </div>
-                <p class="pageBottom"></p>
+        </div>
       </td>
       <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>">
         <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?>

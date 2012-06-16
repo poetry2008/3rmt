@@ -779,7 +779,6 @@ if (MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
   tep_session_unregister('real_point');
 }
   
-tep_session_unregister('torihikihouhou');
 tep_session_unregister('date');
 tep_session_unregister('hour');
 tep_session_unregister('min');
@@ -787,8 +786,11 @@ tep_session_unregister('start_hour');
 tep_session_unregister('start_min');
 tep_session_unregister('end_hour');
 tep_session_unregister('end_min');
+tep_session_unregister('ele');
 tep_session_unregister('address_option');
 tep_session_unregister('insert_torihiki_date');
+tep_session_unregister('insert_torihiki_date_end');
+tep_session_unregister('address_show_list');
 /*
 tep_session_unregister('bank_name');
 tep_session_unregister('bank_shiten');
@@ -805,6 +807,7 @@ unset($_SESSION['referer_adurl']);
 unset($_SESSION['campaign_fee']); 
 unset($_SESSION['camp_id']); 
 unset($_SESSION['options']);
+unset($_SESSION['options_type_array']);
 //$pr = '?SID=' . $convenience_sid;
   
 /*

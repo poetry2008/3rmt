@@ -133,7 +133,7 @@ echo tep_draw_form('quick_find', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, 
                 <a href="<?php echo tep_href_link(FILENAME_SHOPPING_CART,'','SSL') ; ?>" class="header_menu_2">ショッピングカート<?php //echo tep_image(DIR_WS_IMAGES.'design/button/shopping_cart.gif',HEADER_TITLE_CART_CONTENTS);?></a>
             </td>
             <td>          
-                <a href="<?php echo tep_href_link(FILENAME_CHECKOUT_PRODUCTS,'','SSL') ; ?>" class="header_menu_3">レジへ進む<?php //echo tep_image(DIR_WS_IMAGES.'design/button/checkout.gif',HEADER_TITLE_CHECKOUT);?></a>
+                <a href="<?php echo tep_href_link(FILENAME_CHECKOUT_ATTRIBUTES,'','SSL') ; ?>" class="header_menu_3">レジへ進む<?php //echo tep_image(DIR_WS_IMAGES.'design/button/checkout.gif',HEADER_TITLE_CHECKOUT);?></a>
             </td>
             <td align="right">
                 <div class="header_menu_4"><span id="jk-shoppingcart" style="font-size:12px"><?php echo $currencies->format($cart->show_total());?></span></div>

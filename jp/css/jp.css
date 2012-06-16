@@ -2608,13 +2608,9 @@ searching
 	display:inline-block;
 	text-align:right;
 }
-/*.option_show_border .option_conent:hover{
-	border:3px solid #FF6701;
-	margin:-2px;
-}
-*/.option_hide_border .option_conent:hover{	
-	border:3px solid #FF6701;
-	margin:0;
+.option_hide_border .option_conent a:hover, .option_show_border .option_conent a:hover{
+	text-decoration:none;
+	cursor:pointer;	
 }
 .option_hide_border .option_conent{
 	border:1px solid #ccc;
@@ -2686,6 +2682,8 @@ searching
 	font-size:20px;
 	font-weight:bold;
 }
+#group_list_box td{ height:20px; padding:0;}
+
 /*shipping*/
 .shipping_error{
 	color:#ff0000;
@@ -2702,6 +2700,7 @@ searching
 	color:#FFFFFF;
 	*height:25px;
 	overflow:hidden;
+	*overflow:none;
 }
 .shipping_time input{
 /*	margin-left:32px;

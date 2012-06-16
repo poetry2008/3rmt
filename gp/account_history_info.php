@@ -57,10 +57,10 @@
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
         <!-- left_navigation_eof //--> </td> 
       <!-- body_text //--> 
-      <td valign="top" id="contents"> <div class="pageHeading"><h1><?php echo HEADING_TITLE ; ?></h1></div> 
+      <td valign="top" id="contents"> <div class="pageHeading"><?php echo HEADING_TITLE ; ?></div> 
         
         <div class="comment"> 
-          <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+          <table border="0" width="100%" cellspacing="0" cellpadding="0" class="product_info_box"> 
             <tr> 
               <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                   <tr> 
@@ -81,10 +81,10 @@
                 </table></td> 
             </tr> 
             <tr> 
-              <td><table border="0" width="100%" cellspacing="0" cellpadding="2" > 
+              <td><table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea"> 
                   <tr> 
                     <?php
-  if ($order->delivery != false) {
+  if (false) {
 ?> 
                     <td width="30%" valign="top">
                     <table border="0" width="100%" cellspacing="0" cellpadding="2" > 
@@ -112,9 +112,7 @@
   }
 ?> 
                     <td width="<?php echo (($order->delivery != false) ? '70%' : '100%'); ?>" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2" > 
-                        <tr> 
-                          <td>
-                            <table class="infoBoxContents"> 
+                        
                               <?php
   if (sizeof($order->info['tax_groups']) > 1) {
 ?> 
@@ -143,9 +141,26 @@
          '            <td class="main" align="right" valign="top" width="30">' . $order->products[$i]['qty'] . '&nbsp;x</td>' . "\n" .
          '            <td class="main" valign="top">' . $order->products[$i]['name'];
 
-    if ( (isset($order->products[$i]['attributes'])) && (sizeof($order->products[$i]['attributes']) > 0) ) {
-      for ($j=0, $n2=sizeof($order->products[$i]['attributes']); $j<$n2; $j++) {
-        echo '<br><small>&nbsp;<i> - ' . $order->products[$i]['attributes'][$j]['option'] . ': ' . $order->products[$i]['attributes'][$j]['value'] . '</i></small>';
+    if ($order->products[$i]['price'] != '0') {
+      if ($order->products[$i]['price'] < 0) {
+        echo ' (<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format($order->products[$i]['price'], true, $order->info['currency'], $order->info['currency_value'])).'</font>'.JPMONEY_UNIT_TEXT.')';
+      } else {
+        echo ' ('.$currencies->format($order->products[$i]['price'], true, $order->info['currency'], $order->info['currency_value']).')';
+      }
+    } else if ($order->products[$i]['final_price'] != '0') {
+      if ($order->products[$i]['final_price'] < 0) {
+        echo ' (<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format($order->products[$i]['final_price'], true, $order->info['currency'], $order->info['currency_value'])).'</font>'.JPMONEY_UNIT_TEXT.')';
+      } else {
+        echo ' ('.$currencies->format($order->products[$i]['final_price'], true, $order->info['currency'], $order->info['currency_value']).')';
+      }
+    }
+    if ( (isset($order->products[$i]['op_attributes'])) && (sizeof($order->products[$i]['op_attributes']) > 0) ) {
+      for ($j=0, $n2=sizeof($order->products[$i]['op_attributes']); $j<$n2; $j++) {
+        echo '<br><small>&nbsp;<i> - ' .  $order->products[$i]['op_attributes'][$j]['option_info']['title'] . ': ' .  str_replace(array("<br>", "<BR>"), '', $order->products[$i]['op_attributes'][$j]['option_info']['value']);
+        if ($order->products[$i]['op_attributes'][$j]['price'] != '0') {
+          echo ' ('.$currencies->format($order->products[$i]['op_attributes'][$j]['price']).')';        
+        }
+        echo '</i></small>';
       }
     }
 
@@ -163,19 +178,55 @@
          '          </tr>' . "\n";
   }
 ?> 
-                            </table></td></tr></table></td> 
+                           </table></td> 
                         </tr> 
                       </table></td> 
                   </tr> 
                 </table></td> 
             </tr> 
+            <?php
+            $address_shipping_num_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $_GET['order_id'] ."'");
+            $address_num = tep_db_num_rows($address_shipping_num_query);
+            tep_db_free_result($address_shipping_num_query);
+            if($address_num > 0){
+            ?>
+            <tr> 
+              <td>&nbsp;</td> 
+            </tr>  
+            <tr> 
+              <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="formArea"> 
+                 
+                      <tr><td class="main"><b><?php echo HEADING_DELIVERY_ADDRESS; ?></b></td></tr>
+                      <?php
+                            $address_list_query = tep_db_query("select id,name from ". TABLE_ADDRESS ." where status='0' order by sort");
+                            $address_array = array();
+                            while($address_list_array = tep_db_fetch_array($address_list_query)){
+                              
+                              $address_array[$address_list_array['id']] = $address_list_array['name'];
+                            }
+                            tep_db_free_result($address_list_query);
+                            $address_shipping_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $_GET['order_id'] ."' order by id");
+                            while($address_shipping_array = tep_db_fetch_array($address_shipping_query)){
+                                echo '<tr><td class="main" width="30%" valign="top">';
+                                echo $address_array[$address_shipping_array['address_id']];
+                                echo ':</td><td class="main">';
+                                echo $address_shipping_array['value']; 
+                                echo '</td></tr>';
+                            }
+                            tep_db_free_result($address_shipping_query);
+                      ?>
+                    
+              </table></td>
+            </tr>
+            <?php
+            }
+            ?>
             <tr> 
               <td class="main"><b><?php echo HEADING_BILLING_INFORMATION; ?></b></td> 
             </tr> 
             <tr> 
-              <td><table class="infoBoxContents"> 
-                  <tr> 
-            <td><table width="100%"><tr><td>
+              <td><table class="formArea" width="100%"> 
+                  <tr>
                     <td width="30%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                         <tr> 
                           <td class="main"><b><?php echo HEADING_BILLING_ADDRESS; ?></b></td> 
@@ -229,9 +280,17 @@
            '              </tr>' . "\n";
     
     }
+  
+    if ($i == 0) {
+      echo '              <tr>' . "\n" .
+           '                <td class="main" align="right" width="100%">' . TEXT_SHIPPING_FEE . '</td>' . "\n" .
+           '                <td class="main" align="right" nowrap>' .$currencies->format($order->info['shipping_fee'])  . '</td>' . "\n" .
+           '              </tr>' . "\n";
+    
+    }
   }
 ?> 
-                      </table></td></tr></table></td> 
+                      </table></td> 
                   </tr> 
                 </table></td> 
             </tr> 
@@ -239,7 +298,7 @@
               <td class="main"><b><?php echo HEADING_ORDER_HISTORY; ?></b></td> 
             </tr> 
             <tr> 
-              <td><table class="infoBoxContents"> 
+              <td><table class="formArea" width="100%"> 
                   <tr> 
                     <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                         <?php
@@ -263,6 +322,7 @@
             <?php
   if (DOWNLOAD_ENABLED == 'true') include(DIR_WS_MODULES . 'downloads.php');
 ?> 
+            <tr><td>&nbsp;</td></tr>
             <tr> 
               <td align="right" class="main"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT_HISTORY, tep_get_all_get_params(array('order_id')), 'SSL') . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td> 
             </tr> 

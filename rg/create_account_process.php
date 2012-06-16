@@ -76,6 +76,12 @@
   
   if($guestchk == '0') {
     $passlen = strlen($password);
+    if(!(preg_match('/[a-zA-Z]/',$password) && preg_match('/[0-9]/',$password))){
+      $error = true;
+      $entry_password_english_error = true;
+    }else{
+      $entry_password_english_error = false; 
+    }
     if ($passlen < ENTRY_PASSWORD_MIN_LENGTH) {
       $error = true;
       $entry_password_error = true;
@@ -706,7 +712,7 @@ function pass_hidd(){
 
     if($guestchk == '1') {
     # For Guest
-    tep_redirect(tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL'));
+    tep_redirect(tep_href_link(FILENAME_CHECKOUT_ATTRIBUTES, '', 'SSL'));
   } else {
     # For Member
     $email_text .= C_CREAT_ACCOUNT ;

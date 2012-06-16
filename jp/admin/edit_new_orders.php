@@ -2576,19 +2576,24 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
                    $order->info['payment_method'],'onchange="hidden_payment()"');
  */        //获取用户最近一次使用的支付方式
           $payment_array = payment::getPaymentList(); //支付方式列表
-          $orders_payment_query = tep_db_query("select payment_method,orders_comment from ". TABLE_ORDERS ." where customers_email_address='". $order->customer['email_address'] ."' order by orders_id desc limit 0,2"); 
+          $orders_payment_query = tep_db_query("select payment_method,orders_id from ". TABLE_ORDERS ." where customers_email_address='". $order->customer['email_address'] ."' and site_id='".$order->info['site_id']."' order by orders_id desc limit 0,2"); 
           $payment_i = 0;
           while($orders_payment_array = tep_db_fetch_array($orders_payment_query)){
 
             if($payment_i == 1){
 
               $payment_num = array_search($orders_payment_array['payment_method'],$payment_array[1]);
-              $pay_comment = $orders_payment_array['orders_comment'];
+              $pay_orders_id = $orders_payment_array['orders_id'];
               $pay_method = $orders_payment_array['payment_method'];
             }
             $payment_i++;
           }
           tep_db_free_result($orders_payment_query);
+          
+          $orders_status_history_query = tep_db_query("select comments from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='".$pay_orders_id."' order by date_added desc limit 0,1"); 
+    $orders_status_history_array = tep_db_fetch_array($orders_status_history_query);
+    $pay_comment = $orders_status_history_array['comments']; 
+    tep_db_free_result($orders_status_history_query);
           $code_payment_method = $payment_array[0][$payment_num];
           if($order->info['payment_method'] != ''){
           $code_payment_method =

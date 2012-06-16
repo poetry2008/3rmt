@@ -94,7 +94,6 @@
     if (!tep_session_is_registered('comments')) tep_session_register('comments');
 
     if (!tep_session_is_registered('shipping')) tep_session_register('shipping');
-  //$torihikihouhou = tep_db_prepare_input($_POST['torihikihouhou']);
   $date = tep_db_prepare_input($_POST['date']);
   $hour = tep_db_prepare_input($_POST['hour']);
   $min = tep_db_prepare_input($_POST['min']);
@@ -104,6 +103,7 @@
   $end_min = tep_db_prepare_input($_POST['end_min']);
   $address_option_value = tep_db_prepare_input($_POST['address_option']);
   $ele = tep_db_prepare_input($_POST['ele']);
+  $address_show_list = $_POST['address_show_list'];
 
   //住所
   $options_required = array();
@@ -120,10 +120,7 @@
     $options_comment[] = $address_required['comment'];
   }
 
-  //获取配送费用
-  $weight_fee = tep_db_prepare_input($_POST['weight_fee']);
-  //获取免除配送费用的金额
-  $free_value = tep_db_prepare_input($_POST['free_value']);
+  
 
   //住所信息处理 
   $weight_count = $cart->weight;
@@ -144,10 +141,7 @@
   $insert_torihiki_date_end = $date . ' ' . $end_hour . ':' . $end_min . ':00';
   
   $error = false;
-  //if($torihikihouhou == '') {
-    //$error = true;
-    //$torihikihouhou_error = TEXT_ERROR_TORIHIKIHOUHOU;
-  //}
+  
   
   if($date == '') {
     $error = true;
@@ -171,7 +165,6 @@
   }
 
   if($error == false) {
-    tep_session_register('torihikihouhou');
     tep_session_register('date');
     tep_session_register('hour');
     tep_session_register('min');
@@ -180,7 +173,7 @@
     tep_session_register('end_hour');
     tep_session_register('end_min');
     tep_session_register('ele');
-    //tep_session_register('address_option');
+    tep_session_register('address_show_list');
     $_SESSION['address_option'] = $address_option_value;
     tep_session_register('insert_torihiki_date');
     tep_session_register('insert_torihiki_date_end');
@@ -203,8 +196,6 @@
 
     tep_session_register('options');
     tep_session_register('options_type_array');
-    tep_session_register('weight_fee');
-    tep_session_register('free_value');
 
     tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL'));
   }
@@ -582,7 +573,17 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
     if(arr_str != ''){
       ++j_num;
       if(j_num == 1){first_num = i;}
-      address_show_list.options[address_show_list.options.length]=new Option(arr_str,i);
+        <?php
+  if(isset($_POST['address_show_list']) && $_POST['address_show_list'] != ''){
+
+    echo 'var address_show_list_one = "'. $_POST['address_show_list'] .'";'."\n"; 
+  }elseif(isset($_SESSION['address_show_list']) && $_SESSION['address_show_list'] != ''){
+    echo 'var address_show_list_one = "'. $_SESSION['address_show_list'] .'";'."\n";
+  }else{
+    echo 'var address_show_list_one = first_num;'."\n"; 
+  }
+        ?>
+      address_show_list.options[address_show_list.options.length]=new Option(arr_str,i,i==address_show_list_one,i==address_show_list_one);
     }
 
   }
@@ -702,29 +703,7 @@ function session_value(){
 --></script>
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript" src="js/date_time.js"></script>
-<script type="text/javascript" src="js/address_search.js"></script>
-<script type="text/javascript">
- function fee(address_value){
-
-  var address = document.getElementById("op_acgijkcoqrtivwyz").value;
-  var country = document.getElementById("op_acgijknoqrtuvwyz").value;
- 
-  if(address_value != ''){
-
-    address = address_value;
-  }
-  $.ajax({
-       url: 'address_fee_ajax.php',
-       data: {country:country,address:address,weight:<?php echo $cart->weight; ?>},
-       type: 'POST',
-       dataType: 'text',
-       async : false,
-       success: function(data){
-           $("#address_fee").html(''); 
-           $("#address_fee").html(data);
-       }
-    }); 
- }
+<script type="text/javascript"> 
 <?php
   if(isset($_POST['address_option'])){
     if($_POST['address_option'] == 'old'){
@@ -765,6 +744,13 @@ function session_value(){
 
      address_option_show('old'); 
      address_option_list(first_num); 
+     <?php
+     if($_SESSION['options']){ 
+     ?>
+     session_value();
+     <?php
+     } 
+     ?>
     });
 <?php
   }
@@ -817,7 +803,6 @@ $(document).ready(function(){
    }else{
   ?>
     country_check($("#"+country_fee_id).val());
-    address_option_list(first_num);
   <?php
   }
   ?>
@@ -834,7 +819,6 @@ $(document).ready(function(){
   }else{
   ?>
     country_area_check($("#"+country_area_id).val());
-    address_option_list(first_num);
   <?php
   }
   ?>
@@ -1112,6 +1096,7 @@ $(document).ready(function(){
      $(document).ready(function(){
 
        address_option_show('new'); 
+       session_value();
      }); 
      </script>
   <?php
@@ -1200,7 +1185,7 @@ $(document).ready(function(){
   }
 ?>
   <tr>
-    <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+    <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1');?></td> 
   <td class="main" width="30%"><?php echo TEXT_TORIHIKIKIBOUBI; ?></td>
     <td class="main">
 <?php
@@ -1212,17 +1197,22 @@ $(document).ready(function(){
     $hours = date('H');
     $mimutes = date('i');
 ?>
-  <select name="date" onChange="selectDate('<?php echo $work_start; ?>', '<?php echo $work_end; ?>');$('#date_error').remove();">
+  <select name="date" onChange="selectDate('<?php echo $work_start; ?>', '<?php echo
+  $work_end; ?>',this.value);$('#date_error').remove();$('#jikan_error').remove();">
     <option value="">希望日を選択してください</option>
     <?php
           $oarr = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
           $newarr = array('月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日', '日曜日');
-     
+    $date_session_flag = false; 
     for($j = 0;$j < $shipping_time;$j++){
       if(isset($_POST['date']) && $_POST['date'] != ""){
         $selected_str = date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == $_POST['date'] ? 'selected' : ''; 
       }elseif(isset($_SESSION['date']) && $_SESSION['date'] != ''){
         $selected_str = date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == $_SESSION['date'] ? 'selected' : '';
+      }
+      if(date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == $_SESSION['date']){
+
+        $date_session_flag = true;
       }
       echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'" '. $selected_str .'>'.str_replace($oarr, $newarr, date("Y年m月d日（l）", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
 
@@ -1267,29 +1257,34 @@ $(document).ready(function(){
 -->
   </td>
   </tr>
- <tr id="shipping_list_min" style="display:none;">
+</table>
+<table border="0" cellpadding="0" cellspacing="0" style=" position:absolute; width:520px;">
+<tr id="shipping_list_min" style="display:none;">
  <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?><input type="hidden" id="ele_id" name="ele" value=""></td> 
- <td class="main">&nbsp;</td>
+ <td class="main" width="162">&nbsp;</td>
  <td class="main" id="shipping_list_show_min">
  </td>
  </tr>
-
+</table>
+<table>
 <?php
-  if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) && $_SESSION['date'] != '')){
+if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) && $_SESSION['date'] != '' && $date_session_flag == true)){
 
     echo '<script>selectDate(\''. $work_start .' \', \''. $work_end .'\');$("#shipping_list").show();</script>';
   }
-  if((isset($_POST['min']) && $_POST['min'] != '') || (isset($_SESSION['min']) && $_SESSION['min'] != '')){
+  if((isset($_POST['min']) && $_POST['min'] != '') || (isset($_SESSION['min']) && $_SESSION['min'] != '' && $date_session_flag == true)){
     $post_hour = isset($_SESSION['hour']) && $_SESSION['hour'] != '' ? $_SESSION['hour'] : $_POST['hour'];
     $post_min = isset($_SESSION['min']) && $_SESSION['min'] != '' ? $_SESSION['min'] : $_POST['min'];
     $ele = isset($_SESSION['ele']) && $_SESSION['ele'] != '' ? $_SESSION['ele'] : $_POST['ele'];
     echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\',\''. $post_hour .'\','. $post_min .',\''.$ele.'\');$("#shipping_list_min").show();</script>';
   }
+?>
+<?php
   if(isset($jikan_error) && $jikan_error != '') {
 ?>
   <tr id="jikan_error">
     <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-  <td class="main">&nbsp;</td>
+  <td class="main" width="153">&nbsp;</td>
     <td class="main"><?php echo $jikan_error; ?></td>
   </tr>
 <?php

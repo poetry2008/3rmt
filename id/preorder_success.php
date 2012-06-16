@@ -1,6 +1,7 @@
 <?php
 /*
   $Id$
+
 */
 
   require('includes/application_top.php');
@@ -66,14 +67,15 @@
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
   <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border">
     <tr>
-      <td valign="top" id="contents">
-       <h1 class="pageHeading">
-         <span class="game_t"><?php 
+     
+      <td valign="top" id="contents_long">
+        <h1 class="pageHeading_long">
+        <span class="game_t"><?php 
           echo PREORDER_SUCCESS_ACTIVE_HEAD_TITLE;
         ?></span>
         </h1>
         <div class="comment">
-        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size:12px;">
+        <table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
           <td style="font-size:15px; color:#ff0000;">
             <?php echo PREORDER_ACTIVE_SUCCESS_READ_HEAD.'<br><br>';?> 
@@ -89,13 +91,29 @@
             </td> 
             </tr> 
             <tr> 
-            <td width="100"> 
+            <td width="150"> 
             <?php echo PREORDER_SUCCESS_APPOINT_PRODUCT_NAME;?>
             </td>
             <td>
             <?php echo $preorder_product['products_name'];?> 
             </td>
             </tr> 
+            <?php
+            $preorder_attributes_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS_ATTRIBUTES." where orders_id = '".$preorder_id."'"); 
+            while ($preorder_attributes = tep_db_fetch_array($preorder_attributes_raw)) {
+              $option_info_array = @unserialize(stripslashes($preorder_attributes['option_info'])); 
+            ?>
+            <tr>
+              <td>
+              <?php echo $option_info_array['title'].'：';?> 
+              </td>
+              <td>
+              <?php echo $option_info_array['value'];?> 
+              </td>
+            </tr>
+            <?php
+            }
+            ?>
             <tr> 
             <td> 
             <?php echo PREORDER_SUCCESS_APPOINT_PRODUCT_NUM;?>
@@ -128,11 +146,12 @@
               <?php echo nl2br($preorder['comment_msg']);?> 
               </td>
             </tr>
-            </table><br>
+            </table>
+            <br>
             </td>
           </tr>
           <tr>
-            <td>
+            <td style=" font-size:12px;">
               <?php 
               echo PREORDER_ACTIVE_SUCCESS_READ_INFO.'<br>';
               ?>

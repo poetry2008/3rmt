@@ -212,9 +212,9 @@ function set_sub_total()
   {
 
     var p_l_html = document.getElementById('pri_' + final_prices[i].id.substr(3)).innerHTML.split('円')[0].replace(/,/g,'');
+    var one_p_quantity = document.getElementById('quantity_'+ final_prices[i].id.substr(3)).value;
     if(document.getElementById('one_price_show_'+ final_prices[i].id.substr(3))){
     var one_price_money = document.getElementById('one_price_'+ final_prices[i].id.substr(3)).innerHTML.replace(/,/g,'');
-    var one_p_quantity = document.getElementById('quantity_'+ final_prices[i].id.substr(3)).value;
     var res_one_price = Number(one_price_money) * Number(one_p_quantity);
     var res_one_price_str = fmoney(res_one_price);
     document.getElementById('one_price_show_'+ final_prices[i].id.substr(3)).innerHTML=res_one_price_str;
