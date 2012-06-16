@@ -1304,7 +1304,8 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                   from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
                                   where   
                                   " .$sort_where . " 1=1 and o.customers_id not in (".$str.")".
-                                  (isset($_GET['site_id']) && intval($_GET['site_id']) ? " o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
+                                  (isset($_GET['site_id']) && intval($_GET['site_id']
+                                ) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
                                   " . $where_payment . $where_type ;
 
                        $keywords = str_replace('　', ' ', $_GET['keywords']);
@@ -1339,7 +1340,63 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
 
                        $orders_query_raw .= " order by ".$order_str;
                        //o.torihiki_date DESC";
-                     }else if(isset($_GET['keywords']) && ((isset($_GET['search_type']) &&
+                     }
+  
+  
+  
+ elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['search_type'] == 'value'))) {
+              $keywords = $_GET['keywords'];
+             $orders_total_query = tep_db_query("select * from ". TABLE_ORDERS_TOTAL ." where class='ot_total' and value='".$keywords.".0000'" );
+             $orders_like_str = '';
+             $orders_like_array = array();
+             while($orders_total_array = tep_db_fetch_array($orders_total_query)){
+                $orders_like_array[] = $orders_total_array['orders_id'];
+             }
+             $orders_like_str = implode("','",$orders_like_array);
+             if(count($orders_like_array) == 1){
+               $orders_str = "='".$orders_like_str."'";
+             }else{
+              // $orders_str = "'%".$orders_like_str."%'";
+               $orders_str = " in ('".$orders_like_str."')";
+              }
+	     $orders_query_raw = "
+	     select o.orders_id, 
+	     o.torihiki_date, 
+	     IF(o.torihiki_date = '0000-00-00 00:00:00' or o.torihiki_date ='',1,0) 
+	     as torihiki_date_error,
+	     IF(o.date_purchased = '0000-00-00 00:00:00' or o.date_purchased ='',1,0) 
+	     as date_purchased_error,
+	     o.customers_id, 
+	     o.customers_name, 
+	     o.payment_method, 
+	     o.date_purchased, 
+	     o.last_modified, 
+	     o.currency, 
+	     o.currency_value, 
+	     o.orders_status, 
+	     o.orders_status_name,
+	     o.orders_important_flag,
+	     o.orders_care_flag,
+	     o.orders_wait_flag,
+	     o.orders_inputed_flag,
+	     o.orders_work,
+	     o.customers_email_address,
+	     o.torihiki_houhou,
+	     o.orders_comment,
+	     o.confirm_payment_time, 
+	     o.site_id
+	       from " . TABLE_ORDERS . " o " . $from_payment .$sort_table ."
+	       where " . $sort_where.
+	       (isset($_GET['site_id']) &&
+		intval($_GET['site_id']) ? " o.site_id = '" . intval($_GET['site_id']) .
+		"' and " : '') . " o.orders_id" .$orders_str.
+	       $where_payment . $where_type.' order by '.$order_str;
+	    //o.torihiki_date DESC';
+	     }
+
+  
+  
+                    else if(isset($_GET['keywords']) && ((isset($_GET['search_type']) &&
                              preg_match('/^payment_method/', $_GET['search_type'])))){
                        $payment_m = explode('|',$_GET['search_type']);
                        if (!empty($_GET['keywords'])) {
@@ -3736,6 +3793,7 @@ if($c_parent_array['parent_id'] == 0){
             <option value="customers_name"><?php echo TEXT_ORDER_FIND_NAME;?></option>
             <option value="email"><?php echo TEXT_ORDER_FIND_MAIL_ADD;?></option>
             <option value="products_name"><?php echo TEXT_ORDER_FIND_PRODUCT_NAME ;?></option>
+            <option value="value"><?php echo TEXT_ORDER_AMOUNT_SEARCH;?></option>
             <?php
             foreach ($all_search_status as $as_key => $as_value) {
               ?>
@@ -3756,6 +3814,11 @@ if($c_parent_array['parent_id'] == 0){
             <option value="type|mix"><?php echo 
             TEXT_ORDER_TYPE_PRE.TEXT_ORDER_TYPE_MIX.TEXT_ORDER_TYPE_LAST;?></option>
             </select>
+            <?php
+                if (isset($_GET['site_id'])) {
+                  echo tep_draw_hidden_field('site_id', $_GET['site_id']); 
+                }
+            ?>
             </form>
             </td>
             </tr>

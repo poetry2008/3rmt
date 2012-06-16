@@ -137,8 +137,7 @@ if(!isset($email_error)||$email_error == true){?>
               <input type='text'  name='product' value='<?php
   if(isset($product)&&$product){
     echo $product;
-  }?>' id='new_product' class="input_text" >
-              <span id='product_error'><?php
+  }?>' id='new_product' class="input_text" ><span id='product_error'><?php
  if(isset($product)&&$product==''){
    echo TEXT_REORDER2_MUST_INPUT;
  }?></span></td>

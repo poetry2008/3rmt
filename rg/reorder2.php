@@ -178,7 +178,7 @@ if(!isset($email_error)||$email_error == true){?>
 <td bgcolor="#eeeeee">備考</td>
 <td><textarea name='comment' id='comment' cols="3" rows="3"><?php
 if(isset($comment)&&$comment){
-    echo $comment;
+  echo $comment;
 }?></textarea></td>
 </tr>
 </table>

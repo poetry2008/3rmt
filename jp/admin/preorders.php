@@ -1672,11 +1672,19 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                 <option value="orders_id"<?php echo ($_GET['search_type'] == 'orders_id')?' selected="selected"':'';?>><?php echo TEXT_ORDER_FIND_OID;?></option> 
                 <option value="customers_name"<?php echo ($_GET['search_type'] == 'customers_name')?' selected="selected"':'';?>><?php echo TEXT_ORDER_FIND_NAME;?></option>
                 <option value="email"<?php echo ($_GET['search_type'] == 'email')?' selected="selected"':'';?>><?php echo TEXT_ORDER_FIND_MAIL_ADD;?></option>
-                <option value="products_name"<?php echo ($_GET['search_type'] == 'products_name')?' selected="selected"':'';?>><?php echo TEXT_ORDER_FIND_PRODUCT_NAME ;?></option>
+                <option value="products_name"<?php echo ($_GET['search_type'] ==
+                    'products_name')?' selected="selected"':'';?>><?php echo
+                TEXT_ORDER_FIND_PRODUCT_NAME ;?></option>
+
+                <option value="value"<?php echo ($_GET['search_type'] == 'value')?'
+                selected="selected"':'';?>><?php echo TEXT_PREORDER_AMOUNT_SEARCH ;?></option>
+
+
                 <?php
                 foreach ($all_preorders_status as $ap_key => $ap_value) {
                 ?>
-                <option value="<?php echo 'os_'.$ap_key;?>"<?php echo ($_GET['search_type'] == 'os_'.$ap_key)?' selected="selected"':'';?>><?php echo PREORDERS_STATUS_SELECT_PRE.$ap_value.PREORDERS_STATUS_SELECT_LAST;?></option> 
+                
+                  <option value="<?php echo 'os_'.$ap_key;?>"<?php echo ($_GET['search_type'] == 'os_'.$ap_key)?' selected="selected"':'';?>><?php echo PREORDERS_STATUS_SELECT_PRE.$ap_value.PREORDERS_STATUS_SELECT_LAST;?></option> 
                 <?php
                 }
                 ?>
@@ -1688,6 +1696,11 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
                 }
                 ?>
               </select>
+              <?php
+              if (isset($_GET['site_id'])) {
+                echo tep_draw_hidden_field('site_id', $_GET['site_id']); 
+              }
+              ?>
               </form>
             </td>
           </tr>
@@ -2231,7 +2244,6 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
     
     $sk_raw = '';
     if (isset($search_keywords) && (sizeof($search_keywords) > 0)) {
-      $orders_query_raw .= " and ";
       for ($i=0, $n=sizeof($search_keywords); $i<$n; $i++ ) {
       switch ($search_keywords[$i]) {
       case '(':
@@ -2245,7 +2257,9 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
         if (isset($_GET['search_type']) && $_GET['search_type'] == 'customers_name') {
           $sk_raw .= "o.customers_name like '%" . tep_db_input($keyword) . "%' or "; 
           $sk_raw .= "o.customers_name_f like '%" . tep_db_input($keyword) . "%'";
-           
+          if($i<$n-1){
+            $sk_raw .= ' or ';
+          }
         } else if (isset($_GET['search_type']) && $_GET['search_type'] == 'email') {
           $orders_query_raw .= "o.customers_email_address like '%" . tep_db_input($keyword) . "%'";
         }
@@ -2321,7 +2335,58 @@ tep_get_all_get_params(array('oID', 'action', 'reload')) . 'reload=Yes');
           where ".$sort_where." 1=1 " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and
           o.site_id = '" . intval($_GET['site_id']) . "' " : '') . " and o.payment_method = '".$payment_m[1]."'" .  $where_payment .  $where_type.' order by '.$order_str;
     }
-  } elseif (isset($_GET['keywords']) && $_GET['keywords']) {
+  } 
+  
+elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['search_type'] == 'value'))) {
+   $keywords = $_GET['keywords'];
+   $orders_total_query = tep_db_query("select * from ".TABLE_PREORDERS_TOTAL." where
+       class='ot_total' and value='".$keywords.".0000'");
+      $orders_like_str = '';
+      $orders_total_array = array();
+      while($orders_total_array = tep_db_fetch_array($orders_total_query)){
+       $orders_like_array[] = $orders_total_array['orders_id'];
+      }
+     $orders_like_str = implode("','",$orders_like_array);
+     if(count($orders_like_array) == 1){
+       $orders_str = "='".$orders_like_str."'";
+           }else{
+       $orders_str = " in ('".$orders_like_str."')";
+           }
+   $orders_query_raw = "
+        select distinct(o.orders_id), 
+               o.torihiki_date, 
+               IF(o.torihiki_date = '0000-00-00 00:00:00',1,0) as torihiki_date_error,
+               o.customers_id, 
+               o.customers_name, 
+               o.payment_method, 
+               o.date_purchased, 
+               o.last_modified, 
+               o.currency, 
+               o.currency_value, 
+               o.orders_status, 
+               o.orders_status_name,
+               o.orders_important_flag,
+               o.orders_care_flag,
+               o.orders_wait_flag,
+               o.predate, 
+               o.orders_inputed_flag,
+               o.orders_work,
+               o.customers_email_address,
+               o.torihiki_houhou,
+               o.orders_comment,
+               o.confirm_payment_time, 
+               o.is_active, 
+               o.site_id
+           from " . TABLE_PREORDERS . " o " . $from_payment .$sort_table ."
+	       where " . $sort_where.
+	       (isset($_GET['site_id']) &&
+		intval($_GET['site_id']) ? " o.site_id = '" . intval($_GET['site_id']) .
+		"' and " : '') . " o.orders_id" .$orders_str.
+	       $where_payment . $where_type.' order by '.$order_str; 
+              }
+
+  
+  elseif (isset($_GET['keywords']) && $_GET['keywords']) {
     $orders_query_raw = "
         select distinct(o.orders_id), 
                o.torihiki_date, 

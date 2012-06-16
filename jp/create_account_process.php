@@ -17,7 +17,6 @@
   foreach ($an_cols as $col) {
     $_POST[$col] = tep_an_zen_to_han($_POST[$col]);
   }
-
   $gender         = tep_db_prepare_input($_POST['gender']);
   $firstname      = tep_db_prepare_input($_POST['firstname']);
   $lastname       = tep_db_prepare_input($_POST['lastname']);
@@ -42,7 +41,7 @@
   $state          = tep_db_prepare_input($_POST['state']);
   $country        = tep_db_prepare_input($_POST['country']);
   $guestchk       = tep_db_prepare_input($_POST['guestchk']);
-
+  $referer        = tep_db_prepare_input($_SESSION['referer']);
   $error = false; // reset error flag
 
   if (strlen($firstname) < ENTRY_FIRST_NAME_MIN_LENGTH) {
@@ -150,7 +149,7 @@
                                   'customers_default_address_id' => 1,
                                   'customers_guest_chk' => '0',
                                   'send_mail_time' => time(),
-                                  'origin_password' => $NewPass, 
+                                  'origin_password' =>  tep_encrypt_password($NewPass), 
                                   'point' => '0');
 
           if (ACCOUNT_GENDER == 'true') $sql_data_array['customers_gender'] = $gender;
@@ -437,8 +436,10 @@ function pass_hidd(){
                                 'customers_guest_chk' => '1',
                                 'send_mail_time' => time(),
                                 'site_id' => SITE_ID,
+                                'referer' => 'referer',
+				//'referer' => $_SESSION['referer'],
                                 'point' => '0');
-
+print_r($sql_data_array);exit;
         if (ACCOUNT_GENDER == 'true') $sql_data_array['customers_gender'] = $gender;
         if (ACCOUNT_DOB == 'true') $sql_data_array['customers_dob'] = tep_date_raw($dob);
 
@@ -501,7 +502,7 @@ function pass_hidd(){
                                 'customers_guest_chk' => '0',
                                 'is_active' => '1',
                                 'send_mail_time' => time(),
-                                'origin_password' => $NewPass,
+                                'origin_password' => tep_encrypt_password($NewPass),
                                 'point' => '0');
          
         if ($check['customers_guest_chk'] == '1' && $check['is_active'] == '0') {
@@ -566,12 +567,12 @@ function pass_hidd(){
                                 'customers_guest_chk' => '0',
                                 'send_mail_time' => time(),
                                 'site_id' => SITE_ID,
-                                'origin_password' => $NewPass,
+                                'origin_password' => tep_encrypt_password($NewPass),
+				'referer' => $referer,
                                 'point' => '0');
 
         if (ACCOUNT_GENDER == 'true') $sql_data_array['customers_gender'] = $gender;
         if (ACCOUNT_DOB == 'true') $sql_data_array['customers_dob'] = tep_date_raw($dob);
-
         // ccdd
         tep_db_perform(TABLE_CUSTOMERS, $sql_data_array);
 
