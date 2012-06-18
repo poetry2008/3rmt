@@ -16,4 +16,5 @@ define('FORM_FIELD_PREORDER_FIXDAY', '有効期限:');
 define('FORM_FIELD_PREORDER_PAYMENT', 'お支払い方法');
 define('FORM_FIELD_CUSTOMER_LASTNAME', '姓:');
 define('FORM_FIELD_CUSTOMER_FIRSTNAME', '名:');
+define('PREORDER_TEXT_REQUIRED', '必須項目');
 ?>

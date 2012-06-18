@@ -297,8 +297,8 @@ if (!isset($_GET['lastname'])) $_GET['lastname'] = NULL; //del notice
 if (!isset($_GET['firstname'])) $_GET['firstname'] = NULL; //del notice
         $last_name_prompt = tep_draw_input_field('lastname', (($lastname_error == true) ? $_POST['lastname'] : $_GET['lastname']), 'class="input_text"');
         $first_name_prompt = tep_draw_input_field('firstname', (($firstname_error == true) ? $_POST['firstname'] : $_GET['firstname']), 'class="input_text"');
-        if ($lastname_error == true) $last_name_prompt .= '&nbsp;<span class="errorText">' . TEXT_REQUIRED . '</span>';
-        if ($firstname_error == true) $first_name_prompt .= '&nbsp;<span class="errorText">' . TEXT_REQUIRED . '</span>';
+        if ($lastname_error == true) $last_name_prompt .= '&nbsp;<span class="errorText">' . PREORDER_TEXT_REQUIRED . '</span>';
+        if ($firstname_error == true) $first_name_prompt .= '&nbsp;<span class="errorText">' . PREORDER_TEXT_REQUIRED . '</span>';
 if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
         $your_email_address_prompt = tep_draw_input_field('from', (($fromemail_error == true) ? $_POST['from'] : $_GET['from']) , 'size="30" class="input_text"') . '&nbsp;&nbsp;携帯電話メールアドレス推奨';
         if ($fromemail_error == true) $your_email_address_prompt .="<br>".ENTRY_EMAIL_ADDRESS_CHECK_ERROR;
@@ -396,7 +396,7 @@ if (!isset($_GET['quantity'])) $_GET['quantity'] = NULL; //del notice
             if($products_weight_error == true){ 
               echo '<span class="markProductOutOfStock"><a style="color:#CC0033" href="'.tep_href_link('open.php', 'products_name='.urlencode($product_info['products_name'])).'">' . STOCK_MARK_PRODUCT_OUT_OF_STOCK . '</a></span>';
             }
-      if ($quantity_error == true) echo '&nbsp;<span class="errorText">' . TEXT_REQUIRED . '</span>';
+      if ($quantity_error == true) echo '&nbsp;<span class="errorText">' . PREORDER_TEXT_REQUIRED . '</span>';
       if ($num_error == true){echo '<span id="preorder_info_message" class="errorText"><br>予約の必要がございません。<br>'.(int)$_POST['quantity'].'個は注文可能です。<a href='.tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $products_id) .'>コチラ</a> からお手続きください。 </span>' ;}
       if (!isset($_GET['send_to'])) $_GET['send_to'] = NULL; //del notice
 ?>
@@ -442,7 +442,7 @@ if (!isset($_GET['quantity'])) $_GET['quantity'] = NULL; //del notice
     ?>
   </select>
           <?php
-          if ($predate_error == true) echo '&nbsp;<span class="errorText">' . TEXT_REQUIRED . '</span>';
+          if ($predate_error == true) echo '&nbsp;<span class="errorText">' . PREORDER_TEXT_REQUIRED . '</span>';
           ?>
           </td>
         </tr>
