@@ -258,8 +258,8 @@ tep_db_query($update_sql);
           $meta_keywords          = $_POST['meta_keywords'];
           $meta_description       = $_POST['meta_description'];
           $romaji                 = $_POST['romaji'];
-          $character_romaji       = $_POST['character_romaji'];
-          $alpha_romaji           = $_POST['alpha_romaji'];
+          $character_romaji       = tep_replace_full_character($_POST['character_romaji']);
+          $alpha_romaji           = tep_replace_full_character($_POST['alpha_romaji']);
           
           $language_id = $languages[$i]['id'];
           $sql_data_array = array(

@@ -64,8 +64,8 @@ $categories_query = tep_db_query("
 $tmp_array = array();
 $tmp_i = 0;
 while ($category = tep_db_fetch_array($categories_query))  {
-    $ca_romaji_arr = explode(',', strtolower(tep_replace_all_full_character($category['character_romaji'])));  
-    $al_romaji_arr = explode(',', strtolower(tep_replace_all_full_character($category['alpha_romaji']))); 
+    $ca_romaji_arr = explode(',', $category['character_romaji']);  
+    $al_romaji_arr = explode(',', strtolower($category['alpha_romaji'])); 
 
     $ins_arr = array_intersect($romaji_symbol, $ca_romaji_arr);
     $alp_arr = array_intersect($romaji_symbol, $al_romaji_arr); 
