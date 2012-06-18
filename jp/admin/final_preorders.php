@@ -1580,7 +1580,7 @@ float:left;
                 <td class="main" valign="top"><b><?php echo EDIT_ORDERS_CUSTOMER_NAME;?></b></td>
                 <td class="main">
                   <input class="edit_input" name="update_customer_name" size="25" value="<?php echo tep_html_quotes($order->customer['name']); ?>">
-                  <span class="smalltext"><?php echo EDIT_ORDERS_CUSTOMER_NAME_READ;?></span>
+                  <br><span class="smalltext"><?php echo EDIT_ORDERS_CUSTOMER_NAME_READ;?></span>
                 </td>
               </tr>
               <tr>

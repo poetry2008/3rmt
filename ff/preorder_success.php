@@ -111,7 +111,7 @@
               <?php echo $option_info_array['title'].'：';?> 
               </td>
               <td>
-              <?php echo $option_info_array['value'];?> 
+              <?php echo str_replace(array("<br>", "<BR>"), '', $option_info_array['value']);?> 
               </td>
             </tr>
             <?php
