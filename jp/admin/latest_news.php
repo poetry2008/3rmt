@@ -325,14 +325,17 @@ tep_redirect(tep_href_link(FILENAME_LATEST_NEWS, (isset($_GET['site_id'])?('site
       }
 ?></td>
                 <td class="dataTableContent" align="center">
-                <?php
+              <?php
   if ($latest_news['isfirst']) {
-    echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN, 10, 10) . '&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'page='.$_GET['page'].'&action=setfirst&isfirst=0&latest_news_id=' . $latest_news['news_id'].(isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) . '</a>';
+     echo tep_image(DIR_WS_IMAGES . 'icon_status_green.gif', IMAGE_ICON_STATUS_GREEN, 10, 10) . '&nbsp;&nbsp;<a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'action=setfirst&isfirst=0&latest_news_id=' . $latest_news['news_id']. (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '"> 
+             ' . tep_image(DIR_WS_IMAGES . 'icon_status_red_light.gif', IMAGE_ICON_STATUS_RED_LIGHT, 10, 10) . '</a>';
+
   } else {
-        echo '<a href="' . tep_href_link(FILENAME_LATEST_NEWS, 'page='.$_GET['page'].'&action=setfirst&isfirst=1&latest_news_id=' . $latest_news['news_id']) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT, 10, 10) . '</a>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED, 10, 10);
-  }
+ 
+   echo '<a href="' . tep_href_link(FILENAME_LATEST_NEWS,'action=setfirst&isfirst=1&latest_news_id=' . $latest_news['news_id']. (isset($_GET['site_id'])?('&site_id='.$_GET['site_id']):'')) . '">' . tep_image(DIR_WS_IMAGES . 'icon_status_green_light.gif', IMAGE_ICON_STATUS_GREEN_LIGHT, 10, 10) . '</a>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'icon_status_red.gif', IMAGE_ICON_STATUS_RED, 10, 10);
+ }
                 ?>
-                </td>
+                             </td>
                 <td class="dataTableContent" align="right">
 <?php
 if (isset($_GET['latest_news_id']) and $latest_news['news_id'] == $_GET['latest_news_id']) { 

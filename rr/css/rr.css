@@ -1909,13 +1909,14 @@ border:1px solid #CAC6BE;
 .preorder_active_line { border-bottom:1px dashed #fff; margin:0 0 15px 0;}
 .preorderBarcurrent { font-size:11px; color:#FFFFFF;}
 .preorderBarTo{ font-size:11px; color:#8c8c8c;}
-.preorderBarFrom{ font-size:11px; color:#8c8c8c;}.c_pay_info{
+.preorderBarFrom{ font-size:11px; color:#8c8c8c;}
+.c_pay_info{
    background-color: #4B4A4A;
     border: 1px solid #444444;
     color: #FFFFFF;
     margin: 3px auto;
     padding: 5px;
-    width: 698px;
+    /*width: 698px;*/
 }
 .preorser_formArea{ background-color:#fff; font-size:13px; }
 .preorser_formArea td{ background-color:#373737; padding-left:2px; line-height:25px;}
@@ -2055,3 +2056,211 @@ border:1px solid #CAC6BE;
 .popup_notice_button a{
 	margin:0 20px;
 }
+/*option*/
+.preorderBarTo { font-size:12px; color:#8c8c8c;}
+.preorderBarFrom { font-size:12px; color:#8c8c8c;}
+
+.option_table{
+	width:100%;
+	font-size:12px;
+	line-height:1.5;
+	color:#fff;
+}
+.option_name{
+	width:100px;
+	vertical-align:top;
+	color:#FFFFFF;
+}
+.option_name td{ padding:3px 5px;}
+.option_input{
+	width:75%;
+	float:left;
+}
+.option_error{
+	color:#ff0000;
+	font-size:12px;
+	/*padding-left:10px;*/
+	line-height:1.5;
+}
+.option_product_title{
+	font-size:12px;
+	line-height:25px;
+	
+}
+.option_render{
+	border:1px solid #ccc;
+	padding:5px;
+}
+.option_render table{
+	*width:98%;
+}
+.preorder_option_name{
+	width:150px;
+	vertical-align:top;
+}
+.option_product_single_radio{
+	float:left;
+	margin-bottom:5px;
+}
+.option_show_border {
+	float:left;
+	margin-right:5px;
+	overflow:hidden;
+	position:relative;
+}
+.option_show_border .option_tick{
+	position:absolute;
+	*position: absolute;
+	right:0px;
+	top:0px;
+	*right:0;
+	*top:0;
+	text-align:right;
+	opacity:1.0;
+	display:inline-block;
+}
+.option_show_border span{ float:left;}
+.option_show_border .option_conent{
+	border:3px solid #FF6701;
+	overflow:hidden;
+	padding:2px;
+	*display:inline-block;
+	float:left;
+	line-height:18px;
+}
+.option_show_border a{ 
+	color:#fff; 
+	text-decoration:none;
+	display:block;
+}
+
+.option_hide_border {
+	float:left;
+	margin-right:5px;
+	position:relative;
+}
+.option_hide_border .option_tick{
+	position:absolute;
+	*position: absolute;
+	right:0px;
+	top:0px;
+	*right:0;
+	*top:0;
+	opacity:0;
+	filter: Alpha(Opacity=0);
+	z-index:90;
+	display:inline-block;
+	text-align:right;
+}
+.option_hide_border .option_conent a:hover, .option_show_border .option_conent a:hover{
+	text-decoration:none;
+	cursor:pointer;	
+}
+.option_hide_border .option_conent{
+	border:1px solid #ccc;
+	overflow:hidden;
+	padding:2px;
+	*display:inline-block;
+	float:left;
+	line-height:18px;
+	margin:2px;
+}
+.option_hide_border span{ float:left; overflow:hidden;}
+.option_hide_border a{
+	color:#fff; 
+	display:block;
+	text-decoration:none;
+	
+}
+.option_radio_img img{ float:left;}
+.option_product_default_radio{
+	clear:both;
+	overflow:hidden;
+	margin-bottom:5px;
+}
+.option_product_radio_list{
+	overflow:hidden;
+	width:100%;
+}
+
+.option_product_radio_img_list{
+	width:100%;
+	*float:left;
+	clear:both;
+	*margin-top:5px;
+}
+.option_radio_list{
+	width:100%;
+	overflow:hidden;
+	margin-bottom:5px;
+}
+.option_dot{
+	margin-top:20px;
+	padding-top:20px;
+	background:url(../images/design/box/dot.gif) repeat-x;
+	overflow:hidden; 
+}
+.preorder_option{ padding:0;}
+.preorder_option .option_name{
+	width:123px;
+	padding:0;
+}
+.option_money{
+	float:right;
+	line-height:18px;
+}
+.option_info_text{
+	overflow:hidden;
+	width:100%;
+	margin-bottom:5px;
+}
+.option_info_text textarea{ width:75%; height:80px;}
+.option_info_text select{ float:left;}
+#show_price{
+	font-size:20px;
+	font-weight:bold;
+	color:#fff;
+}
+.calc_show_price{
+	color:#fff;
+	font-size:20px;
+	font-weight:bold;
+}
+.formArea_td_info{
+	*width:82%;
+}
+#group_list_box td{ height:20px; padding:0;}
+.address_item_info{ padding-left:4px;}
+/*配送*/
+.preorder_shipping{
+	background: none repeat scroll 0 0 #3A3A3A;
+    border: 1px solid #4B4A4A;
+}
+.shipping_error{
+	color:#ff0000;
+	font-size:12px;
+	line-height:1.5;
+}
+.shipping_time{
+	font-size:12px;
+	background:#666;
+	line-height:25px;
+    position:relative;
+	color:#FFFFFF;
+	*height:25px;
+	overflow:hidden;
+}
+.time_radio{
+	float:left;
+	margin-left:32px;
+	margin-top:2px;
+	margin-left:28px\9;
+}
+.time_label{
+	float:left;
+	line-height:25px;
+}
+.time_label a{ color:#FFFFFF; cursor:pointer;}
+.time_label a:hover{ color:#FFFFFF; cursor:pointer;}
+.product_open{ overflow:hidden; line-height:20px; height:20px;}
+.product_open a{ *float:left;}

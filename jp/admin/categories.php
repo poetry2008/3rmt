@@ -56,7 +56,7 @@
           $site_arr="";
         }
         $site_id = (isset($_GET['site_id']))?$_GET['site_id']:0;  
-        forward401Unless(editPermission($site_arr, $site_id));
+//        forward401Unless(editPermission($site_arr, $site_id));
         tep_insert_pwd_log($_GET['once_pwd'],$ocertify->auth_user);
         
         $p_page = (isset($_GET['page']))?'&page='.$_GET['page']:''; 
@@ -258,8 +258,8 @@ tep_db_query($update_sql);
           $meta_keywords          = $_POST['meta_keywords'];
           $meta_description       = $_POST['meta_description'];
           $romaji                 = $_POST['romaji'];
-          $character_romaji       = $_POST['character_romaji'];
-          $alpha_romaji           = $_POST['alpha_romaji'];
+          $character_romaji       = tep_replace_full_character($_POST['character_romaji']);
+          $alpha_romaji           = tep_replace_full_character($_POST['alpha_romaji']);
           
           $language_id = $languages[$i]['id'];
           $sql_data_array = array(
@@ -3468,7 +3468,9 @@ $p_page = (isset($_GET['page']))?'&page='.$_GET['page']:'';
     $accept_pro_site_arr = array(); 
   }
   if (!in_array($repro_site_id, $accept_pro_site_arr)) {
-    $unaccept_pro_edit_single = true;
+$unaccept_pro_edit_single = false;
+
+  //  $unaccept_pro_edit_single = true;
   }
   if ($_SESSION['user_permission'] == 15) {
     $unaccept_pro_edit_single = false;

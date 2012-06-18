@@ -26,6 +26,7 @@
         $customers_newsletter    = tep_db_prepare_input($_POST['customers_newsletter']);
         $customers_gender        = tep_db_prepare_input($_POST['customers_gender']);
         $customers_dob           = tep_db_prepare_input($_POST['customers_dob']);
+        $customers_is_seal           = tep_db_prepare_input($_POST['is_seal']);
         if ($_POST['reset_flag'] == 'on') {
 	$reset_flag = 1;
         $reset_success = 0;
@@ -42,7 +43,8 @@
                                 'customers_fax'           => $customers_fax,
                                 'reset_flag'           => $reset_flag,
                                 'reset_success'           => $reset_success,
-                                'customers_newsletter'    => $customers_newsletter);
+                                'customers_newsletter'    => $customers_newsletter,
+                                'is_seal' => $customers_is_seal);
 
         if (ACCOUNT_GENDER == 'true') $sql_data_array['customers_gender'] = $customers_gender;
         if (ACCOUNT_DOB    == 'true') $sql_data_array['customers_dob']    = tep_date_raw($customers_dob);
@@ -120,7 +122,7 @@
         tep_db_query("delete from " . TABLE_CUSTOMERS . " where customers_id = '" . tep_db_input($customers_id) . "'");
         tep_db_query("delete from " . TABLE_CUSTOMERS_INFO . " where customers_info_id = '" . tep_db_input($customers_id) . "'");
         tep_db_query("delete from " . TABLE_CUSTOMERS_BASKET . " where customers_id = '" . tep_db_input($customers_id) . "'");
-        tep_db_query("delete from " . TABLE_CUSTOMERS_BASKET_OPTIONS . " where customers_id = '" . tep_db_input($customers_id) . "'");
+        tep_db_query("delete from " . TABLE_CUSTOMERS_BASKET_ATTRIBUTES . " where customers_id = '" . tep_db_input($customers_id) . "'");
         tep_db_query("delete from " . TABLE_WHOS_ONLINE . " where customer_id = '" . tep_db_input($customers_id) . "'");
 
         tep_redirect(tep_href_link(FILENAME_CUSTOMERS, tep_get_all_get_params(array('cID', 'action')))); 
@@ -318,6 +320,7 @@ function check_form() {
                c.customers_fax, 
                c.customers_newsletter, 
                c.customers_default_address_id,
+               c.is_seal,
                s.romaji,
                s.name as site_name
         from " . TABLE_CUSTOMERS . " c 
@@ -545,6 +548,19 @@ function check_form() {
           </tr>
         </table></td>
       </tr>
+      <tr>
+        <td class="formAreaTitle"><?php echo CUSTOMER_IS_SEAL; ?></td>
+      </tr>
+      <tr>
+        <td class="formArea"><table border="0" cellspacing="2" cellpadding="2">
+          <tr>
+            <td class="main"><?php echo CUSTOMER_IS_SEAL; ?></td>
+            <td class="main"><?php echo tep_draw_checkbox_field('is_seal', '1',
+                $cInfo->is_seal );?></td>
+          </tr>
+        </table></td>
+      </tr>
+
       <tr>
         <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
       </tr>   

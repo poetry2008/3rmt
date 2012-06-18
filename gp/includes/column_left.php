@@ -18,7 +18,7 @@ if ($_SERVER['PHP_SELF'] == '/product_info.php') {
   echo '<font color="#ff0000">'.$currencies->format($cart->show_total()).'</font>';
   echo '</div>';
   echo '<div class="left_total_money_link"><a href="'.tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL').'"><img src="images/design/s_img_a.gif" alt="'.HEADER_TITLE_CART_CONTENTS.'"></a></div>';
-  echo '<div class="left_total_money_link"><a href="'.tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL').'"><img src="images/design/s_img_b.gif" alt="'.HEADER_TITLE_CHECKOUT.'"></a></div>';
+  echo '<div class="left_total_money_link"><a href="'.tep_href_link(FILENAME_CHECKOUT_ATTRIBUTES, '', 'SSL').'"><img src="images/design/s_img_b.gif" alt="'.HEADER_TITLE_CHECKOUT.'"></a></div>';
 ?>
 </div>
 </div>
@@ -46,7 +46,7 @@ if($_SERVER['PHP_SELF'] == '/faq.php'||$_SERVER['PHP_SELF'] == '/faq_info.php'
     ||strpos($_SERVER['PHP_SELF'], 'browser_ie6x.php')
     ||strpos($_SERVER['PHP_SELF'], 'latest_news.php')
     ||strpos($_SERVER['PHP_SELF'], 'password_forgotten.php')
-    ||strpos($_SERVER['PHP_SELF'], 'checkout_products.php')
+    ||strpos($_SERVER['PHP_SELF'], 'checkout_option.php')
     ||strpos($_SERVER['PHP_SELF'], 'checkout_shipping.php')
     ||strpos($_SERVER['PHP_SELF'], 'logoff.php')
     ||strpos($_SERVER['PHP_SELF'], 'open.php')
@@ -203,7 +203,7 @@ if ($_SERVER['PHP_SELF'] != '/product_info.php') {
   echo '<font color="#ff0000">'.$currencies->format($cart->show_total()).'</font>';
   echo '</div>';
   echo '<div class="left_total_money_link"><a href="'.tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL').'"><img src="images/design/s_img_a.gif" alt="'.HEADER_TITLE_CART_CONTENTS.'"></a></div>';
-  echo '<div class="left_total_money_link"><a href="'.tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL').'"><img src="images/design/s_img_b.gif" alt="'.HEADER_TITLE_CHECKOUT.'"></a></div>';
+  echo '<div class="left_total_money_link"><a href="'.tep_href_link(FILENAME_CHECKOUT_ATTRIBUTES, '', 'SSL').'"><img src="images/design/s_img_b.gif" alt="'.HEADER_TITLE_CHECKOUT.'"></a></div>';
 ?>
 </div>
 </div>

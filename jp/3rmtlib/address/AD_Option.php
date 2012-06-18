@@ -19,11 +19,11 @@ class AD_Option extends AD_Option_DbRecord
     return $groups; 
   }
   
-  function render($belong_option_str, $ptype = false)
+  function render($belong_option_str, $ptype = false, $is_space = false)
   {
     $this->groups = $this->getGroups($belong_option_str, $ptype); 
     foreach ($this->groups as $group) {
-      $group->render($this->option_error_array); 
+      $group->render($this->option_error_array, $is_space); 
     }
   }
 

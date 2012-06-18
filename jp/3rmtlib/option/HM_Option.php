@@ -108,4 +108,19 @@ class HM_Option extends Option_DbRecord
     }
     return true;
   }
+
+  function preorder_whether_show($belong_option_str)
+  {
+    if (empty($belong_option_str)) {
+      return false; 
+    }
+    $exists_group_raw = tep_db_query("select id from ".TABLE_OPTION_GROUP." where id in ('".$belong_option_str."') and is_preorder = '1'");  
+     if (tep_db_num_rows($exists_group_raw)) {
+       $exists_item_raw = tep_db_query("select id from ".TABLE_OPTION_ITEM." where group_id in ('".$belong_option_str."') and status = 1 and place_type = 1"); 
+       if (tep_db_num_rows($exists_item_raw)) {
+         return true; 
+       }
+     }
+     return false; 
+  }
 }

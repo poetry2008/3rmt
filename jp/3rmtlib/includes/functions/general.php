@@ -4760,7 +4760,7 @@ function check_money_limit() {
 
 
 //统一的输出 
-function tep_payment_out_selection(){
+function tep_payment_out_selection($is_show = false){
 global $selection;
 global $payment_modules;
 global $order;
@@ -4770,10 +4770,14 @@ global $order;
   <?php
    //如果大于1个支付方法需要用户选择 ，如果小于则不需要选择了
     if (sizeof($selection) > 1) {
-      echo "<div>";
+      if (!$is_show) {
+        echo "<div>";
+      }
       echo '<div class="float_left">'.TEXT_SELECT_PAYMENT_METHOD."</div>";
       echo '<div class="txt_right"><b>'.TITLE_PLEASE_SELECT.'</b><br>'.tep_image(DIR_WS_IMAGES . 'arrow_east_south.gif').'</div> ';
-      echo "</div> ";
+      if (!$is_show) {
+        echo "</div> ";
+      } 
     }else {
       echo "<div>";
       echo '<div class="float_left">';
@@ -5076,3 +5080,22 @@ function new_nl2br($string) {
   $string = str_replace(array("\r\n", "\r", "\n"), "<br>", $string);
   return $string;
 } 
+function tep_replace_all_full_character($c_str)
+{
+  $arr = array(
+      'Ａ','Ｂ','Ｃ','Ｄ','Ｅ','Ｆ','Ｇ','Ｈ','Ｉ','Ｊ','Ｋ','Ｌ','Ｍ','Ｎ','Ｏ','Ｐ','Ｑ','Ｒ','Ｓ','Ｔ','Ｕ','Ｖ','Ｗ','Ｘ','Ｙ','Ｚ',
+      'ａ','ｂ','ｃ','ｄ','ｅ','ｆ','ｇ','ｈ','ｉ','ｊ','ｋ','ｌ','ｍ','ｎ','ｏ','ｐ','ｑ','ｒ','ｓ','ｔ','ｕ','ｖ','ｗ','ｘ','ｙ','ｚ',
+      '１','２','３','４','５','６','７','８','９','０',
+      '　'
+    );
+  $arr2 = array(
+      'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
+      'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
+      '1','2','3','4','5','6','7','8','9','0',
+      ' '
+  );
+  
+  $c_str = str_replace($arr, $arr2, $c_str);
+  return $c_str;
+}
+

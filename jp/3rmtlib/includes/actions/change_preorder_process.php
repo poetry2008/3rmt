@@ -89,7 +89,7 @@ if ($preorder) {
                            'torihiki_date' => $torihikihouhou_date_str, 
                            'torihiki_date_end' => $torihikihouhou_date_end_str,
                            'code_fee' => (isset($option_info_array['fee']))?$option_info_array['fee']:$preorder['code_fee'], 
-                           'shipping_fee' => $_POST['shipping_fee'],
+                           'shipping_fee' => $_SESSION['preorder_shipping_fee'],
                            'language_id' => $preorder['language_id'], 
                            'orders_status_name' => $default_status_res['orders_status_name'], 
                            'orders_status_image' => $preorder['orders_status_image'],
@@ -137,7 +137,7 @@ if ($preorder) {
 
   //住所信息录入
   $add_list = array();
-  foreach($_POST as $address_key=>$address_value){
+  foreach($_SESSION['preorder_information'] as $address_key=>$address_value){
     if(substr($address_key,0,3) == 'ad_'){
       $address_query = tep_db_query("select id,name,name_flag from ". TABLE_ADDRESS ." where name_flag='". substr($address_key,3) ."'");
       $address_array = tep_db_fetch_array($address_query);
@@ -157,7 +157,7 @@ if ($preorder) {
   }
   tep_db_free_result($address_show_list_query);
   $address_temp_str = '';
-  foreach($_POST as $address_his_key=>$address_his_value){
+  foreach($_SESSION['preorder_information'] as $address_his_key=>$address_his_value){
     if(substr($address_his_key,0,3) == 'ad_'){
     
       if(in_array(substr($address_his_key,3),$address_show_array)){
@@ -190,7 +190,7 @@ if ($preorder) {
   }
   tep_db_free_result($address_sh_his_query);
 if($address_error == false){
-  foreach($_POST as $address_history_key=>$address_history_value){
+  foreach($_SESSION['preorder_information'] as $address_history_key=>$address_history_value){
     if(substr($address_history_key,0,3) == 'ad_'){
       $address_history_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where name_flag='". substr($address_history_key,3) ."'");
       $address_history_array = tep_db_fetch_array($address_history_query);
@@ -210,19 +210,19 @@ if($address_error == false){
     if ($preorder_total_res['class'] == 'ot_total') {
       if (isset($_SESSION['preorder_campaign_fee'])) {
         if (isset($option_info_array['total'])) {
-          $preorder_total_num = $option_info_array['total'] + (int)$_SESSION['preorder_campaign_fee']+(int)$_POST['shipping_fee']; 
-          $preorder_total_print_num = $option_info_array['total'] + (int)$_SESSION['preorder_campaign_fee']+(int)$_POST['shipping_fee']; 
+          $preorder_total_num = $option_info_array['total'] + (int)$_SESSION['preorder_campaign_fee']+(int)$_SESSION['preorder_shipping_fee']; 
+          $preorder_total_print_num = $option_info_array['total'] + (int)$_SESSION['preorder_campaign_fee']+(int)$_SESSION['preorder_shipping_fee']; 
         } else {
-          $preorder_total_num = $preorder_total_res['value'] + (int)$_SESSION['preorder_campaign_fee']+(int)$_POST['shipping_fee']; 
-          $preorder_total_print_num = $preorder_total_res['value'] + (int)$_SESSION['preorder_campaign_fee']+(int)$_POST['shipping_fee']; 
+          $preorder_total_num = $preorder_total_res['value'] + (int)$_SESSION['preorder_campaign_fee']+(int)$_SESSION['preorder_shipping_fee']; 
+          $preorder_total_print_num = $preorder_total_res['value'] + (int)$_SESSION['preorder_campaign_fee']+(int)$_SESSION['preorder_shipping_fee']; 
         }
       } else {
         if (isset($option_info_array['total'])) {
-          $preorder_total_num = $option_info_array['total'] - (int)$preorder_point+(int)$_POST['shipping_fee']; 
-          $preorder_total_print_num = $option_info_array['total'] - (int)$preorder_point+(int)$_POST['shipping_fee']; 
+          $preorder_total_num = $option_info_array['total'] - (int)$preorder_point+(int)$_SESSION['preorder_shipping_fee']; 
+          $preorder_total_print_num = $option_info_array['total'] - (int)$preorder_point+(int)$_SESSION['preorder_shipping_fee']; 
         } else {
-          $preorder_total_num = $preorder_total_res['value'] - (int)$preorder_point+(int)$_POST['shipping_fee']; 
-          $preorder_total_print_num = $preorder_total_res['value'] - (int)$preorder_point+(int)$_POST['shipping_fee']; 
+          $preorder_total_num = $preorder_total_res['value'] - (int)$preorder_point+(int)$_SESSION['preorder_shipping_fee']; 
+          $preorder_total_print_num = $preorder_total_res['value'] - (int)$preorder_point+(int)$_SESSION['preorder_shipping_fee']; 
         }
       }
     } else if ($preorder_total_res['class'] == 'ot_point') {
@@ -521,7 +521,7 @@ if (isset($payment_modules->modules[strtoupper($cpayment_code)]->show_add_commen
 $mailoption['ADD_INFO'] = '';
 
 $email_order_text = $payment_modules->getOrderMailString($cpayment_code, $mailoption); 
-$shipping_fee_value = isset($_POST['shipping_fee']) ? $_POST['shipping_fee'] : 0; 
+$shipping_fee_value = !empty($_SESSION['preorder_shipping_fee']) ? $_SESSION['preorder_shipping_fee'] : 0; 
 $email_temp = '▼ポイント割引';
 $email_temp_str = '▼ ポイント割引';
 $email_shipping_fee = '▼お届け料金　　　：'.$shipping_fee_value.'円
@@ -549,6 +549,7 @@ if(!empty($add_list)){
   $email_address_str .= $email_address;
   $email_order_text = str_replace($email_address,$email_address_str,$email_order_text);
 }
+
 tep_mail($preorder['customers_name'], $preorder['customers_email_address'], EMAIL_TEXT_SUBJECT, $email_order_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
   
 if (SENTMAIL_ADDRESS != '') {
@@ -711,6 +712,8 @@ tep_session_unregister('preorder_info_character');
 tep_session_unregister('preorder_info_id');
 tep_session_unregister('preorder_info_pay');
 tep_session_unregister('preorder_option_info');
+tep_session_unregister('preorder_information');
+tep_session_unregister('preorder_shipping_fee');
 if (MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
   tep_session_unregister('preorder_point');
   tep_session_unregister('preorder_real_point');

@@ -1,6 +1,8 @@
 <?php
   require(DIR_WS_CLASSES. 'payment.php'); 
   
+  $_POST = $preorder_information;
+
   if (!isset($_POST['pid'])) {
     forward404(); 
   }

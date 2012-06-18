@@ -156,7 +156,7 @@ define('BOX_TELL_A_FRIEND_TEXT', 'この商品のURLを友達にメールする'
 
 // checkout procedure text
 define('CHECKOUT_BAR_PRODUCTS',    'キャラクター名');
-define('CHECKOUT_BAR_DELIVERY',    '取引日時');
+define('CHECKOUT_BAR_DELIVERY',    '配送方法');
 define('CHECKOUT_BAR_PAYMENT',     '支払方法');
 define('CHECKOUT_BAR_CONFIRMATION','最終確認');
 define('CHECKOUT_BAR_FINISHED',    '手続完了!');
@@ -238,7 +238,7 @@ define('ENTRY_SUBURB_ERROR', '');
 define('ENTRY_SUBURB_TEXT', '');
 define('ENTRY_POST_CODE', '郵便番号:');
 define('ENTRY_POST_CODE_ERROR', '&nbsp;<small><font color="#FF0000">少なくても ' . ENTRY_POSTCODE_MIN_LENGTH . ' 文字</font></small>');
-define('ENTRY_POST_CODE_TEXT', '&nbsp;<small>(例. 331-0814) <font color="#AABBDD">必須</font></small>');
+define('ENTRY_POST_CODE_TEXT', '&nbsp;<small>(例. 0010000) <font color="#AABBDD">必須</font></small>');
 define('ENTRY_CITY', '市区町村:');
 define('ENTRY_CITY_ERROR', '&nbsp;<small><font color="#FF0000">少なくても ' . ENTRY_CITY_MIN_LENGTH . ' 文字</font></small>');
 define('ENTRY_CITY_TEXT', '&nbsp;<small>(例. さいたま市) <font color="#AABBDD">必須</font></small>');
@@ -339,6 +339,8 @@ define('TEXT_NO_NEW_PRODUCTS', '現在商品は登録されていません...');
 define('TEXT_UNKNOWN_TAX_RATE', '税率不明');
 
 define('TEXT_REQUIRED', '必須');
+define('TEXT_WEIGHT_ERROR','※要問合※&nbsp;総重量が規定の範囲を超えました。');
+define('TEXT_WEIGHT_ERROR_ONE','個以内に個数を変更してください。<br><b>予約注文を承っておりますので、お問い合わせをお願いいたします。</b>');
 
 define('TEXT_TIME_SPECIFY', 'お届けする時間帯: '); // add for Japanese update
 
@@ -457,6 +459,9 @@ define('PREORDER_TRADER_LINE_TITLE', '取引情報');
 define('PREORDER_CONFIRM_LINE_TITLE', '最終確認');
 define('PREORDER_FINISH_LINE_TITLE', '手続き完了！');
 define('JPMONEY_UNIT_TEXT', '円');
+define('TEXT_CHARACTER','お客様のキャラクター名：');
+define('CHECKOUT_BAR_OPTION', '商品オプション');
+define('TEXT_RIDE_RSS','×');
 define('ENTRY_NO_USE_OLD_PASSWORD', '<font color="#FF0000">安全のため、古いパスワードと違うパスワードを設定してください。</font>');
 define('ENTRY_PASSWORD_IS_NUM', '<font color="#FF0000">英字（abcdef...z）が1文字以上必要です。英字と数字を組み合わせて設定してください。</font>');
 define('ENTRY_PASSWORD_IS_ALPHA', '&nbsp;<font color="#FF0000">数字（0123456789）が1文字以上必要です。英字と数字を組み合わせて設定してください。</font>');
@@ -465,4 +470,5 @@ define('ENTRY_PASSWORD_INFORM_READ_TEXT', '半角の英字、数字を組み合�
 define('IMAGE_BUTTON_CUSTOMERS_EXIT', '退会を申し込む');
 define('TEXT_REORDER2_MUST_INPUT','<font color="red">必須項目</font>');
 define('TEXT_REORDER2_TORIHIKI_ERROR','<br><font color="red">【取引日時】を選択してください。</font>');
+define('OPTION_CHARACTER_NAME', 'お客様のキャラクター名');
 ?>

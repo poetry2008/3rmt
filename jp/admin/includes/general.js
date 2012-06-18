@@ -1177,10 +1177,7 @@ document.edit_order.notify_comments.checked = false;
 
 function show_text(id,ele,type,sort,flag,title,name,comment){
 
-      //$("div#show").load("show.php", {id:id});
-    if(ele != ''){
-      ele = ele.parentNode;
-    }
+    ele = ele.parentNode;
     $.ajax({
        url: 'ajax_address.php',
        data: {id:id,type:type,sort:sort,flag:flag,title:title,name:name,comment:comment},
@@ -1189,27 +1186,28 @@ function show_text(id,ele,type,sort,flag,title,name,comment){
        async : false,
        success: function(data){
          $("div#show").html(data);
-        
-       if(ele != ''){
-         if(document.documentElement.clientHeight < document.body.scrollHeight){
-                   if(ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight+$('#show').height() > document.body.scrollHeight){
-                          offset = ele.offsetTop+$('#group_list_box').position().top-$('#show').height()-$('#offsetHeight').height();
-                          $('#show').css('top', offset).show(); 
-                      }else{
-                          offset = ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight;
-                          $('#show').css('top', offset).show(); 
-                      }
-          }else{
-                    if(ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight+$('#show').height() > document.documentElement.clientHeight){
-                          offset = ele.offsetTop+$('#group_list_box').position().top-$('#show').height()-$('#offsetHeight').height()-ele.offsetHeight;
-                          $('#show').css('top', offset).show(); 
-                    }else{
-                          offset = ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight;
-                          $('#show').css('top', offset).show(); 
-                    }
-         }
-      }
-         $("div#show").show();
+      
+       if(document.documentElement.clientHeight < document.body.scrollHeight){
+	if((document.documentElement.clientHeight-ele.offsetTop) < ele.offsetTop){
+	    if(ele.offsetTop < $('#show').height()){
+	       offset = ele.offsetTop+$("#group_list_box").position().top+ele.offsetHeight;	
+	    }else{
+	       offset = ele.offsetTop+$("#group_list_box").position().top-1-$('#show').height()-$('#offsetHeight').height();
+            }
+	}else{
+          offset = ele.offsetTop+$("#group_list_box").position().top+ele.offsetHeight;	
+	}
+        $('#show').css('top',offset).show();
+      }else{
+        if((document.documentElement.clientHeight-ele.offsetTop) < ele.offsetTop){
+	   offset = ele.offsetTop+$("#group_list_box").position().top-1-$('#show').height()-$('#offsetHeight').height();
+	}else{
+           offset = ele.offsetTop+$("#group_list_box").position().top+ele.offsetHeight;	
+        }
+        $('#show').css('top',offset).show();
+     } 
+     
+       $("div#show").show();
        }
     }); 
             
@@ -1217,9 +1215,7 @@ function show_text(id,ele,type,sort,flag,title,name,comment){
 
 function show_text_fee(id,ele,flag){
     
-    if(ele != ''){
-      ele = ele.parentNode;
-    } 
+    ele = ele.parentNode;
     $.ajax({
        url: 'ajax_country_fee.php',
        data: {id:id,flag:flag},
@@ -1228,27 +1224,27 @@ function show_text_fee(id,ele,flag){
        async : false,
        success: function(data){
          $("div#show").html(data);
-         
-         if(ele != ''){
-         if(document.documentElement.clientHeight < document.body.scrollHeight){
-                   if(ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight+$('#show').height() > document.body.scrollHeight){
-                          offset = ele.offsetTop+$('#group_list_box').position().top-$('#show').height()-$('#offsetHeight').height();
-                          $('#show').css('top', offset).show(); 
-                      }else{
-                          offset = ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight;
-                          $('#show').css('top', offset).show(); 
-                      }
-          }else{
-                    if(ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight+$('#show').height() > document.documentElement.clientHeight){
-                          offset = ele.offsetTop+$('#group_list_box').position().top-$('#show').height()-$('#offsetHeight').height()-ele.offsetHeight;
-                          $('#show').css('top', offset).show(); 
-                    }else{
-                          offset = ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight;
-                          $('#show').css('top', offset).show(); 
-                    }
-         }
-      }
-
+     
+       if(document.documentElement.clientHeight < document.body.scrollHeight){
+	if((document.documentElement.clientHeight-ele.offsetTop) < ele.offsetTop){
+	    if(ele.offsetTop < $('#show').height()){
+	       offset = ele.offsetTop+$("#group_list_box").position().top+ele.offsetHeight;	
+	    }else{
+	       offset = ele.offsetTop+$("#group_list_box").position().top-1-$('#show').height()-$('#offsetHeight').height();
+            }
+	}else{
+          offset = ele.offsetTop+$("#group_list_box").position().top+ele.offsetHeight;	
+	}
+        $('#show').css('top',offset).show();
+      }else{
+        if((document.documentElement.clientHeight-ele.offsetTop) < ele.offsetTop){
+	   offset = ele.offsetTop+$("#group_list_box").position().top-1-$('#show').height()-$('#offsetHeight').height();
+	}else{
+           offset = ele.offsetTop+$("#group_list_box").position().top+ele.offsetHeight;	
+        }
+        $('#show').css('top',offset).show();
+     }
+  
          $("div#show").show();
        }
     }); 
@@ -1257,9 +1253,7 @@ function show_text_fee(id,ele,flag){
 
 function show_text_area(id,ele,fid,sort,flag){
     
-    if(ele != ''){
-      ele = ele.parentNode;
-    }
+    ele = ele.parentNode;
     $.ajax({
        url: 'ajax_country_area.php',
        data: {id:id,fid:fid,sort:sort,flag:flag},
@@ -1268,26 +1262,26 @@ function show_text_area(id,ele,fid,sort,flag){
        async : false,
        success: function(data){
          $("div#show").html(data);
-     
-         if(ele != ''){
-         if(document.documentElement.clientHeight < document.body.scrollHeight){
-                   if(ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight+$('#show').height() > document.body.scrollHeight){
-                          offset = ele.offsetTop+$('#group_list_box').position().top-$('#show').height()-$('#offsetHeight').height();
-                          $('#show').css('top', offset).show(); 
-                      }else{
-                          offset = ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight;
-                          $('#show').css('top', offset).show(); 
-                      }
-          }else{
-                    if(ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight+$('#show').height() > document.documentElement.clientHeight){
-                          offset = ele.offsetTop+$('#group_list_box').position().top-$('#show').height()-$('#offsetHeight').height()-ele.offsetHeight;
-                          $('#show').css('top', offset).show(); 
-                    }else{
-                          offset = ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight;
-                          $('#show').css('top', offset).show(); 
-                    }
-         }
-      }
+   
+       if(document.documentElement.clientHeight < document.body.scrollHeight){
+	if((document.documentElement.clientHeight-ele.offsetTop) < ele.offsetTop){
+	    if(ele.offsetTop < $('#show').height()){
+	       offset = ele.offsetTop+$("#group_list_box").position().top+ele.offsetHeight;	
+	    }else{
+	       offset = ele.offsetTop+$("#group_list_box").position().top-1-$('#show').height()-$('#offsetHeight').height();
+            }
+	}else{
+          offset = ele.offsetTop+$("#group_list_box").position().top+ele.offsetHeight;	
+	}
+        $('#show').css('top',offset).show();
+      }else{
+        if((document.documentElement.clientHeight-ele.offsetTop) < ele.offsetTop){
+	   offset = ele.offsetTop+$("#group_list_box").position().top-1-$('#show').height()-$('#offsetHeight').height();
+	}else{
+           offset = ele.offsetTop+$("#group_list_box").position().top+ele.offsetHeight;	
+        }
+        $('#show').css('top',offset).show();
+     } 
 
          $("div#show").show();
        }
@@ -1298,9 +1292,7 @@ function show_text_area(id,ele,fid,sort,flag){
 //城市配送费用设置
 function show_text_city(id,ele,fid,sort,flag){
     
-    if(ele != ''){
-      ele = ele.parentNode;
-    }
+    ele = ele.parentNode;
     $.ajax({
        url: 'ajax_country_city.php',
        data: {id:id,fid:fid,sort:sort,flag:flag},
@@ -1309,27 +1301,27 @@ function show_text_city(id,ele,fid,sort,flag){
        async : false,
        success: function(data){
          $("div#show").html(data);
-     
-         if(ele != ''){
-         if(document.documentElement.clientHeight < document.body.scrollHeight){
-                   if(ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight+$('#show').height() > document.body.scrollHeight){
-                          offset = ele.offsetTop+$('#group_list_box').position().top-$('#show').height()-$('#offsetHeight').height();
-                          $('#show').css('top', offset).show(); 
-                      }else{
-                          offset = ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight;
-                          $('#show').css('top', offset).show(); 
-                      }
-          }else{
-                    if(ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight+$('#show').height() > document.documentElement.clientHeight){
-                          offset = ele.offsetTop+$('#group_list_box').position().top-$('#show').height()-$('#offsetHeight').height()-ele.offsetHeight;
-                          $('#show').css('top', offset).show(); 
-                    }else{
-                          offset = ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight;
-                          $('#show').css('top', offset).show(); 
-                    }
-         }
-      }
-
+   
+       if(document.documentElement.clientHeight < document.body.scrollHeight){
+	if((document.documentElement.clientHeight-ele.offsetTop) < ele.offsetTop){
+	    if(ele.offsetTop < $('#show').height()){
+	       offset = ele.offsetTop+$("#group_list_box").position().top+ele.offsetHeight;	
+	    }else{
+	       offset = ele.offsetTop+$("#group_list_box").position().top-1-$('#show').height()-$('#offsetHeight').height();
+            }
+	}else{
+          offset = ele.offsetTop+$("#group_list_box").position().top+ele.offsetHeight;	
+	}
+        $('#show').css('top',offset).show();
+      }else{
+        if((document.documentElement.clientHeight-ele.offsetTop) < ele.offsetTop){
+	   offset = ele.offsetTop+$("#group_list_box").position().top-1-$('#show').height()-$('#offsetHeight').height();
+	}else{
+           offset = ele.offsetTop+$("#group_list_box").position().top+ele.offsetHeight;	
+        }
+        $('#show').css('top',offset).show();
+     }
+ 
          $("div#show").show();
        }
     }); 
@@ -1339,9 +1331,7 @@ function show_text_city(id,ele,fid,sort,flag){
 //商品配送时间
 function show_text_products(id,ele,sort,flag){
      
-    if(ele != ''){
-      ele = ele.parentNode;
-    }
+    ele = ele.parentNode;
     $.ajax({
        url: 'ajax_products_shipping_time.php',
        data: {id:id,sort:sort,flag:flag},
@@ -1351,26 +1341,26 @@ function show_text_products(id,ele,sort,flag){
        success: function(data){
          $("div#show").html(data);
 
-         if(ele != ''){
-         if(document.documentElement.clientHeight < document.body.scrollHeight){
-                   if(ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight+$('#show').height() > document.body.scrollHeight){
-                          offset = ele.offsetTop+$('#group_list_box').position().top-$('#show').height()-$('#offsetHeight').height();
-                          $('#show').css('top', offset).show(); 
-                      }else{
-                          offset = ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight;
-                          $('#show').css('top', offset).show(); 
-                      }
-          }else{
-                    if(ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight+$('#show').height() > document.documentElement.clientHeight){
-                          offset = ele.offsetTop+$('#group_list_box').position().top-$('#show').height()-$('#offsetHeight').height()-ele.offsetHeight;
-                          $('#show').css('top', offset).show(); 
-                    }else{
-                          offset = ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight;
-                          $('#show').css('top', offset).show(); 
-                    }
-         }
-      }
-
+      if(document.documentElement.clientHeight < document.body.scrollHeight){
+	if((document.documentElement.clientHeight-ele.offsetTop) < ele.offsetTop){
+	    if(ele.offsetTop < $('#show').height()){
+	       offset = ele.offsetTop+$("#group_list_box").position().top+ele.offsetHeight;	
+	    }else{
+	       offset = ele.offsetTop+$("#group_list_box").position().top-1-$('#show').height()-$('#offsetHeight').height();
+            }
+	}else{
+          offset = ele.offsetTop+$("#group_list_box").position().top+ele.offsetHeight;	
+	}
+        $('#show').css('top',offset).show();
+      }else{
+        if((document.documentElement.clientHeight-ele.offsetTop) < ele.offsetTop){
+	   offset = ele.offsetTop+$("#group_list_box").position().top-1-$('#show').height()-$('#offsetHeight').height();
+	}else{
+           offset = ele.offsetTop+$("#group_list_box").position().top+ele.offsetHeight;	
+        }
+        $('#show').css('top',offset).show();
+     }
+ 
          $("div#show").show();
        }
     }); 

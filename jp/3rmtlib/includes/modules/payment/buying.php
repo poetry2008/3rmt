@@ -369,48 +369,75 @@ class buying extends basePayment  implements paymentInterface  {
     $res_arr = array('comment'=>$comment,'payment_bank_info'=>$payment_bank_info); 
     return $res_arr;
   }
-  function specialOutput()
+  function specialOutput($session_paymentinfo_name, $is_show = false)
   {
-    $bank_name = tep_db_prepare_input($_POST['bank_name']);
-    $bank_shiten = tep_db_prepare_input($_POST['bank_shiten']);
-    $bank_kamoku = tep_db_prepare_input($_POST['bank_kamoku']);
-    $bank_kouza_num = tep_db_prepare_input($_POST['bank_kouza_num']);
-    $bank_kouza_name = tep_db_prepare_input($_POST['bank_kouza_name']);
+    $bank_name = tep_db_prepare_input($_SESSION[$session_paymentinfo_name]['bank_name']);
+    $bank_shiten = tep_db_prepare_input($_SESSION[$session_paymentinfo_name]['bank_shiten']);
+    $bank_kamoku = tep_db_prepare_input($_SESSION[$session_paymentinfo_name]['bank_kamoku']);
+    $bank_kouza_num = tep_db_prepare_input($_SESSION[$session_paymentinfo_name]['bank_kouza_num']);
+    $bank_kouza_name = tep_db_prepare_input($_SESSION[$session_paymentinfo_name]['bank_kouza_name']);
 
     ?>
     <tr> 
-       <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
+       <td>
+       <?php if ($is_show) {?>
+       <table border="0" width="100%" cellspacing="1" cellpadding="2" class="formArea"> 
+       <tr> 
+       <td>
+       <table width="100%" class="table_ie" border="0" cellspacing="1" cellpadding="2">
+       <?php } else {?>
+       <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
        <tr class="infoBoxContents"> 
        <td>
        <table width="100%" class="table_ie" border="0" cellspacing="0" cellpadding="2">
+       <?php } ?>
        <tr>
+       <?php if ($is_show) {?>
+       <td class="main" colspan="2"><b>
+       <?php } else {?>
        <td class="main" colspan="3"><b>
+       <?php } ?>
        <?php 
        echo TS_TABLE_HEADING_BANK; ?></b><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; 
     ?></td>
     </tr>
         <tr>
+        <?php if (!$is_show) {?>
         <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+        <?php } ?>
+       <?php if ($is_show) {?>
+                                                                                          <td class="main" width="150"><?php echo TS_TEXT_BANK_NAME; ?></td>
+                                                                                                                                                           <td class="main"><?php echo $bank_name; ?></td>
+       <?php } else {?>
                                                                                           <td class="main" width="30%"><?php echo TS_TEXT_BANK_NAME; ?></td>
                                                                                                                                                            <td class="main" width="70%"><?php echo $bank_name; ?></td>
+       <?php } ?>
                                                                                                                                                                                                                      </tr>
                                                                                                                                                                                                                      <tr>
+       <?php if (!$is_show) {?>
                                                                                                                                                                                                                      <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+        <?php } ?>
                                                                                                                                                                                                                                                                                                        <td class="main"><?php echo TS_TEXT_BANK_SHITEN; ?></td>
                                                                                                                                                                                                                                                                                                                                                               <td class="main"><?php echo $bank_shiten; ?></td>
                                                                                                                                                                                                                                                                                                                                                                                                               </tr>
                                                                                                                                                                                                                                                                                                                                                                                                               <tr>
+       <?php if (!$is_show) {?>
                                                                                                                                                                                                                                                                                                                                                                                                               <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+        <?php } ?>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 <td class="main"><?php echo TS_TEXT_BANK_KAMOKU; ?></td>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <td class="main"><?php echo $bank_kamoku; ?></td>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </tr>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <tr>
+       <?php if (!$is_show) {?>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+        <?php } ?>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          <td class="main"><?php echo TS_TEXT_BANK_KOUZA_NUM; ?></td>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <td class="main"><?php echo $bank_kouza_num; ?></td>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       </tr>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       <tr>
+       <?php if (!$is_show) {?>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+        <?php } ?>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         <td class="main"><?php echo TS_TEXT_BANK_KOUZA_NAME; ?></td>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <td class="main"><?php echo $bank_kouza_name; ?></td>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </tr>
@@ -421,7 +448,9 @@ class buying extends basePayment  implements paymentInterface  {
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </table></td> 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        </tr> 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <tr> 
+       <?php if (!$is_show) {?>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+        <?php } ?>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  </tr> 
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  <?php
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  }
@@ -441,11 +470,11 @@ class buying extends basePayment  implements paymentInterface  {
   
   function deal_preorder_additional($pInfo, &$sql_data_array)
   {
-    $bbbank = TS_TEXT_BANK_NAME . '：' . $pInfo['bank_name'] . "\n";
-    $bbbank .= TS_TEXT_BANK_SHITEN . '：' . $pInfo['bank_shiten'] . "\n";
-    $bbbank .= TS_TEXT_BANK_KAMOKU . '：' . $pInfo['bank_kamoku'] . "\n";
-    $bbbank .= TS_TEXT_BANK_KOUZA_NUM . '：' . $pInfo['bank_kouza_num'] . "\n";
-    $bbbank .= TS_TEXT_BANK_KOUZA_NAME . '：' . $pInfo['bank_kouza_name'];
+    $bbbank = TS_TEXT_BANK_NAME . $pInfo['bank_name'] . "\n";
+    $bbbank .= TS_TEXT_BANK_SHITEN . $pInfo['bank_shiten'] . "\n";
+    $bbbank .= TS_TEXT_BANK_KAMOKU . $pInfo['bank_kamoku'] . "\n";
+    $bbbank .= TS_TEXT_BANK_KOUZA_NUM . $pInfo['bank_kouza_num'] . "\n";
+    $bbbank .= TS_TEXT_BANK_KOUZA_NAME . $pInfo['bank_kouza_name'];
     
     $comment = $bbbank ."\n".$pInfo['yourmessage'];
     return $comment;
@@ -489,11 +518,11 @@ class buying extends basePayment  implements paymentInterface  {
   function get_preorder_add_info($order_info)
   {
     $buying_info = explode('<<<|||', $order_info['bank_info']); 
-    $bbbank = TS_TEXT_BANK_NAME . '：' . $buying_info[0] . "\n";
-    $bbbank .= TS_TEXT_BANK_SHITEN . '：' . $buying_info[1] . "\n";
-    $bbbank .= TS_TEXT_BANK_KAMOKU . '：' . $buying_info[2] . "\n";
-    $bbbank .= TS_TEXT_BANK_KOUZA_NUM . '：' . $buying_info[3] . "\n";
-    $bbbank .= TS_TEXT_BANK_KOUZA_NAME . '：' . $buying_info[4];
+    $bbbank = TS_TEXT_BANK_NAME . $buying_info[0] . "\n";
+    $bbbank .= TS_TEXT_BANK_SHITEN . $buying_info[1] . "\n";
+    $bbbank .= TS_TEXT_BANK_KAMOKU . $buying_info[2] . "\n";
+    $bbbank .= TS_TEXT_BANK_KOUZA_NUM . $buying_info[3] . "\n";
+    $bbbank .= TS_TEXT_BANK_KOUZA_NAME . $buying_info[4];
     
     $comment = $bbbank ."\n".$order_info['comment_msg'];
     return $comment;

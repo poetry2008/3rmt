@@ -5,14 +5,19 @@ class AD_Option_Item_Option extends AD_Option_Item_Basic
   var $hasSelect = true; 
   var $hasComment = true;
 
-  function render($option_error_array)
+  function render($option_error_array,$is_space = false)
   {
      if (strlen($this->front_title)) {
        echo '<td class="main" width="120">&nbsp;'; 
        echo $this->front_title.':';
        echo '</td>';
      }
-     echo '<td class="main" style="padding-left:10px;">'; 
+     if(!$is_space){
+       echo '<td class="main" style="padding-left:10px;">'; 
+     }else{
+         
+       echo '<td class="main">&nbsp;'; 
+     }
      echo '<input type="hidden" name="'.$this->formname.'" value="'.$this->front_title.'">';
     if($this->fixed_option == 0){
      if (!empty($this->option)) {

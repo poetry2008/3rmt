@@ -249,7 +249,7 @@ function check_option_show(value){
     }
 
 
-    echo 'arr_set["'. $show_key .'"][0] = "'. $show_value['select_value'] .'";';
+    echo 'arr_set["'. $show_key .'"][0] = "'. mb_convert_encoding($show_value['select_value'],"UTF-8","GBK") .'";';
 
   }  
    
@@ -519,7 +519,7 @@ if($fixed_option == 0){
   $country_fee_query = tep_db_query("select name from ". TABLE_COUNTRY_FEE ." where status='0' order by id asc");
   while($country_fee_array = tep_db_fetch_array($country_fee_query)){
 
-    echo '<tr><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;'. TABLE_LIST_13 .'</td><td>'. $country_fee_array['name'] .'</td></tr>';
+    echo '<tr><td width="30%" align="left" height="20">&nbsp;&nbsp;&nbsp;&nbsp;'. TABLE_LIST_13 .'</td><td>'. $country_fee_array['name'] .'</td></tr>';
   }
   tep_db_free_result($country_fee_query);
 }elseif($fixed_option == 2){

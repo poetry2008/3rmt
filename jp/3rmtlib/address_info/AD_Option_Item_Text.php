@@ -9,15 +9,23 @@ class AD_Option_Item_Text extends AD_Option_Item_Basic
   var $has_text_check_type = true;
   var $has_text_max_num = true; 
 
-  function render($option_error_array)
+  function render($option_error_array,$is_space = false)
   {
      if (strlen($this->front_title)) {
        echo '<td class="main" width="120" valign="top">&nbsp;';
        echo $this->front_title.':';
        echo '</td>';
      }
-     echo '<td class="main" style="padding-left:10px;">';
-     echo $this->comment; 
+     if(!$is_space){
+       echo '<td class="main" style="padding-left:10px;">';
+     }else{
+       echo '<td class="main">';
+     }
+     if(!$is_space){
+       echo $this->comment; 
+     } else {
+       echo '<div style="margin-left:4px;">'.$this->comment.'</div>'; 
+     }
      //echo '</pre>';
      echo '<span id="error_'.$this->formname.'" class="option_error">';
      if (isset($option_error_array[$this->formname])) {

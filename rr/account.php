@@ -54,7 +54,7 @@
       FROM " . TABLE_CUSTOMERS . " c, " .  TABLE_ADDRESS_BOOK . " a 
       WHERE c.customers_id = '" . $customer_id . "' AND a.customers_id = c.customers_id AND a.address_book_id = '" .  $customer_default_address_id . "' AND  c.site_id = ".SITE_ID);
   $account = tep_db_fetch_array($account_query);
-
+  $check_ac_single = 1;
   require(DIR_WS_MODULES . 'account_details.php');
 ?>
           </td>
@@ -80,7 +80,7 @@
                 <tr>
                   <td class="main"><table border="0" cellspacing="0" cellpadding="2" summary="table">
                     <tr>
-                      <td class="main">&nbsp;<?php echo TEXT_POINT_ADD; ?></td>
+                      <td class="main" width="120">&nbsp;<?php echo TEXT_POINT_ADD; ?></td>
                       <td class="main">&nbsp;<?php echo $point['point'] . " P"; ?></td>
                     </tr>
                   </table></td>

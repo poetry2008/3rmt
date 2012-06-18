@@ -8,17 +8,18 @@
 
     case '1':
       echo 'var country_fee_id = "op_'. $address_fixed_array['name_flag'] .'";'."\n";
+      echo 'var country_fee_id_one = "'. $address_fixed_array['name_flag'] .'";'."\n";
       $country_fee_id = 'op_'.$address_fixed_array['name_flag'];
       break;
     case '2':
       echo 'var country_area_id = "op_'. $address_fixed_array['name_flag'] .'";'."\n";
+      echo 'var country_area_id_one = "'. $address_fixed_array['name_flag'] .'";'."\n";
       $country_area_id = 'op_'.$address_fixed_array['name_flag'];
-      break;
       break;
     case '3':
       echo 'var country_city_id = "op_'. $address_fixed_array['name_flag'] .'";'."\n";
+      echo 'var country_city_id_one = "'. $address_fixed_array['name_flag'] .'";'."\n";
       $country_city_id = 'op_'.$address_fixed_array['name_flag'];
-      break;
       break;
     }
   }
@@ -37,9 +38,20 @@ function check(select_value){
   ?>
     var country_fee = document.getElementById(country_fee_id);
     country_fee.options.length = 0;
+    var i = 0;
     for(x in arr){
 
-      country_fee.options[country_fee.options.length]=new Option(arr[x], x,x==select_value);
+      country_fee.options[country_fee.options.length]=new Option(arr[x], x,x==select_value,x==select_value);
+      i++;
+    }
+
+    if(i == 0){
+
+      $("#td_"+country_fee_id_one).hide();
+    }else{
+     
+      $("#td_"+country_fee_id_one).show();
+
     }
 }
 function country_check(value,select_value){
@@ -70,9 +82,20 @@ function country_check(value,select_value){
   ?>
     var country_area = document.getElementById(country_area_id);
     country_area.options.length = 0;
+    var i = 0;
     for(x in arr[value]){
 
-      country_area.options[country_area.options.length]=new Option(arr[value][x], x,x==select_value);
+      country_area.options[country_area.options.length]=new Option(arr[value][x], x,x==select_value,x==select_value);
+      i++;
+    }
+
+    if(i == 0){
+
+      $("#td_"+country_area_id_one).hide();
+    }else{
+     
+      $("#td_"+country_area_id_one).show();
+
     }
 
 }
@@ -105,9 +128,20 @@ function country_area_check(value,select_value){
   ?>
     var country_city = document.getElementById(country_city_id);
     country_city.options.length = 0;
+    var i = 0;
     for(x in arr[value]){
 
-      country_city.options[country_city.options.length]=new Option(arr[value][x], x,x==select_value);
+      country_city.options[country_city.options.length]=new Option(arr[value][x], x,x==select_value,x==select_value);
+      i++;
+    }
+
+    if(i == 0){
+
+      $("#td_"+country_city_id_one).hide();
+    }else{
+     
+      $("#td_"+country_city_id_one).show();
+
     }
 
 }
@@ -162,6 +196,9 @@ function address_clear(){
   } 
   tep_db_free_result($address_new_query);
 ?>
+  check();
+  country_check($("#"+country_fee_id).val());
+  country_area_check($("#"+country_area_id).val());
   for(x in arr_new){
 
     $("#op_"+arr_new[x]).val(arr_comment[x]);
@@ -230,7 +267,6 @@ function address_list(){
   address_show_list.options.length = 0;
 
   len = arr_old.length;
-if(len > 0){
   for(i = 0;i < len;i++){
     arr_str = '';
     for(x in arr_old[i]){
@@ -243,13 +279,12 @@ if(len > 0){
     }
 
   }
-}else{
-
-  $("#address_histroy_id").hide();
-}
 }
 
 function address_option_list(value){
+  $("#td_"+country_fee_id_one).hide();
+  $("#td_"+country_area_id_one).hide();
+  $("#td_"+country_city_id_one).hide(); 
   var arr_list = new Array();
   var arr_flag = new Array();
 <?php
@@ -299,7 +334,7 @@ if(arr_list.length > 0){
       list_option.style.color = '#000';
       list_option.value = arr_list[value][x]; 
     }
-     
+ 
     if(document.getElementById("l_"+x)){
       if($("#l_"+x).val() == 'true'){
         $("#r_"+x).html("&nbsp;*必須");
@@ -340,6 +375,9 @@ $(document).ready(function(){
 });
 <?php 
   }
+  $address_histroy_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id='". $_SESSION['customer_id'] ."'"); 
+  $address_histroy_num = tep_db_num_rows($address_histroy_query);
+  tep_db_free_result($address_histroy_query);
 ?>
 $(document).ready(function(){
   $("#"+country_fee_id).change(function(){
@@ -354,10 +392,14 @@ $(document).ready(function(){
   ?>  
     check("<?php echo isset($_POST[$country_fee_id]) ? $_POST[$country_fee_id] : '';?>");
   <?php
-   }else{
+   }elseif($address_histroy_num > 0){
   ?>
     check();
     address_option_list(0);
+  <?php
+   }else{
+  ?>
+    check();
   <?php
   }
   ?>
@@ -370,10 +412,14 @@ $(document).ready(function(){
   ?>
    country_check($("#"+country_fee_id).val(),"<?php echo $_POST[$country_area_id];?>");
   <?php
-   }else{
+   }elseif($address_histroy_num > 0){
   ?>
     country_check($("#"+country_fee_id).val());
     address_option_list(0);
+  <?php
+   }else{
+  ?>
+    country_check($("#"+country_fee_id).val());
   <?php
   }
   ?>
@@ -387,10 +433,14 @@ $(document).ready(function(){
   ?>
      country_area_check($("#"+country_area_id).val(),"<?php echo $_POST[$country_city_id];?>"); 
   <?php
-   }else{
+   }elseif($address_histroy_num > 0){
   ?>
     country_area_check($("#"+country_area_id).val());
     address_option_list(0);
+  <?php
+   }else{
+  ?>
+    country_area_check($("#"+country_area_id).val());
   <?php
   }
   ?>   
@@ -497,9 +547,13 @@ $(document).ready(function(){
         <td class="main">
         <?php
           echo tep_draw_form('account_edit_address', tep_href_link(FILENAME_ACCOUNT_EDIT, '', 'SSL'), 'post', 'onSubmit=""') . tep_draw_hidden_field('action', 'address');
+          $address_orders_history_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where customers_id='". $_SESSION['customer_id'] ."'");
+          $address_orders_history_num = tep_db_num_rows($address_orders_history_query);
+          tep_db_free_result($address_orders_history_query);
+          $sylte_none = $address_orders_history_num > 0 ? '' : 'style="display:none;"';
         ?>
         <table border="0" cellspacing="0" cellpadding="2" summary="table">
-        <tr id="address_histroy_id"><td class="main" width="120">&nbsp;<?php echo TITLE_ADDRESS_OPTION;?></td><td style="padding-left:10px;"><input type="hidden" id="address_flag_id" name="address_flag_id" value="">
+        <tr id="address_histroy_id"<?php echo $sylte_none;?>><td class="main" width="120">&nbsp;<?php echo TITLE_ADDRESS_OPTION;?></td><td style="padding-left:10px;"><input type="hidden" id="address_flag_id" name="address_flag_id" value="">
         <!-- 隐藏信息-->
         <input type="hidden" id="first_name" name="lastname" value="">
         <input type="hidden" id="end_name" name="firstname" value="">
@@ -611,7 +665,7 @@ if (!isset($guestchk)) $guestchk = NULL;
           <table border="0" cellspacing="0" cellpadding="2" summary="table"> 
           <tr>
             <td class="main" width="120">&nbsp;<?php echo ENTRY_PASSWORD; ?></td>
-            <td class="main">&nbsp;
+            <td class="main" style="*width:385px;">&nbsp;
 <?php
     if ($error_pwd == true) {
       if ($entry_password_english_error == true) { 

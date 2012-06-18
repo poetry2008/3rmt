@@ -9,9 +9,11 @@ class AD_Option_Item_Text extends AD_Option_Item_Basic
   var $has_text_check_type = true;
   var $has_text_max_num = true; 
 
-  function render($option_error_array)
+  function render($option_error_array, $is_space = false)
   {
-     echo '<td width="10" height="30">'. tep_draw_separator('pixel_trans.gif', '10', '1') .'</td>';
+     if (!$is_space) {
+       echo '<td width="10" height="30">'. tep_draw_separator('pixel_trans.gif', '10', '1') .'</td>';
+     } 
      if (strlen($this->front_title)) {
        echo '<td class="main" width="30%" valign="top">';
        echo $this->front_title.':';

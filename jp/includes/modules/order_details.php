@@ -171,7 +171,7 @@
     $attributes_exist = ((isset($products[$i]['add_op_attributes'])) ? 1 : 0);
     if ($attributes_exist == 1) {
       foreach ($products[$i]['add_op_attributes'] as $ap_key => $ap_value) {
-        echo '<br><small><i> - ' . $ap_value['option_name'] . ': ' .  $ap_value['option_value'] . '</i></small>';
+        echo '<br><small><i> - ' . $ap_value['option_name'] . ': ' .  str_replace(array("<br>", "<BR>"), '', $ap_value['option_value']) . '</i></small>';
       }
     }
 

@@ -1,7 +1,7 @@
 /******************************************************************************/
 /*                            時間セレクトボックス                             /
 /******************************************************************************/
-function selectDate(start_time,end_time){
+function selectDate(start_time,end_time,value){
 	//var num    = document.order.date.selectedIndex; //'選択セレクトボックス番号
 	//var myD    = new Date();                        //'日付オブジェクト
 //	var myHour = myD.getHours();                    //'時間
@@ -58,7 +58,7 @@ function selectDate(start_time,end_time){
             }
           } 
           if(flag == true){
-            html_str += '<td id="hour'+j+'" bgcolor="#cccccc" style="color:#000000;cursor:pointer;" align="center" onclick="if((document.getElementById(\'shipping_list_min\').style.display == \'table-row\' && this.style.backgroundColor == \'rgb(245, 249, 252)\') || (document.getElementById(\'shipping_list_min\').style.display == \'block\' && this.style.backgroundColor == \'#f5f9fc\')){check_out('+j+');}else{this.style.background=\'#F5F9FC\';selectHour(\''+start_time+'\',\''+end_time+'\','+j+',\'\',this);}">'+j+'</td>';
+            html_str += '<td id="hour'+j+'" bgcolor="#cccccc" style="color:#000000;cursor:pointer;" align="center" onclick="if((document.getElementById(\'shipping_list_min\').style.display == \'table-row\' && this.style.backgroundColor == \'rgb(56, 56, 56)\') || (document.getElementById(\'shipping_list_min\').style.display == \'block\' && this.style.backgroundColor == \'#383838\')){check_out('+j+');}else{this.style.background=\'#383838\';selectHour(\''+start_time+'\',\''+end_time+'\','+j+',\'\',this);}">'+j+'</td>';
           }else{
             html_str += '<td id="hour'+j+'" bgcolor="#f1f0ef" style="color:#cccccc;" align="center">'+j+'</td>';
           }
@@ -70,7 +70,11 @@ function selectDate(start_time,end_time){
         
         html_str += '</tr></table>';
         $("#shipping_list_show").html('');
-        $("#shipping_list").show();
+        if(value != ''){
+          $("#shipping_list").show();
+        }else{
+          $("#shipping_list").hide();
+        }
         $("#shipping_list_show").html(html_str);
 
         $("#shipping_list_show_min").html('');
@@ -97,9 +101,9 @@ function selectHour(start_time,end_time,hour,min_num,ele){
         $("#jikan_error").remove(); 
         if(hour != ''){
           hour = parseInt(hour); 
-          document.getElementById("hour"+hour).style.color="#A9A9A9";
+          document.getElementById("hour"+hour).style.color="#ffffff";
           document.getElementById("hour"+hour).style.textDecoration ="underline";
-          $("#hour"+hour).css("background-color","#F5F9FC");
+          $("#hour"+hour).css("background-color","#383838");
         }
         var array_start = new Array();
         array_start = start_time.split('||'); 
@@ -167,9 +171,9 @@ function selectHour(start_time,end_time,hour,min_num,ele){
                   arr_time_m = arr_time_t[k].split(':');
              
                   if(k != arr_time_t.length-1){
-                    string +=  '<input type="radio" id="m'+m+'" name="min" value="'+m+'"'+checked+' onclick="change_time('+m+',\''+array_end[n]+'\');"><label for="m'+m+'">'+arr_time_m[0]+'時'+arr_time_m[1]+'分～';
+                    string +=  '<div class="time_radio"><input type="radio" id="m'+m+'" name="min" value="'+m+'"'+checked+' onclick="change_time('+m+',\''+array_end[n]+'\');"></div><div class="time_label"><label for="m'+m+'"><a href="javascript:void(0);"onclick="change_new_time('+m+',\''+array_end[n]+'\');" >'+arr_time_m[0]+'時'+arr_time_m[1]+'分～';
                   }else{
-                    string +=  arr_time_m[0]+'時'+arr_time_m[1]+'分</label>'; 
+                    string +=  arr_time_m[0]+'時'+arr_time_m[1]+'分</a></label></div>'; 
                   }
                 }
                 if(m % 2 == 1){
@@ -187,43 +191,55 @@ function selectHour(start_time,end_time,hour,min_num,ele){
         $("#shipping_list_show_min").html('');
         $("#shipping_list_show_min").html(html_str);
         $("#shipping_list_min").show();
-        if(ele != ''){
-         if(document.documentElement.clientHeight < document.body.scrollHeight){
-                   if(ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight+$('#shipping_time_id').height() > document.body.scrollHeight){
-                          offset = ele.offsetTop+$('#group_list_box').position().top-$('#shipping_time_id').height()-$('#offsetHeight').height();
-                          $('#shipping_time_id').css('top', offset).show(); 
-                      }else{
-                          offset = ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight;
-                          $('#shipping_time_id').css('top', offset).show(); 
-                      }
-          }else{
-                    if(ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight+$('#shipping_time_id').height() > document.documentElement.clientHeight){
-                          offset = ele.offsetTop+$('#group_list_box').position().top-$('#shipping_time_id').height()-$('#offsetHeight').height()-ele.offsetHeight;
-                          $('#shipping_time_id').css('top', offset).show(); 
-                    }else{
-                          offset = ele.offsetTop+$('#group_list_box').position().top+ele.offsetHeight;
-                          $('#shipping_time_id').css('top', offset).show(); 
-                    }
-         }
-      }
-      
+        
         var temp_value = 0;
         if(hour < 6){
-          temp_value = -85; 
+          if(navigator.userAgent.indexOf("MSIE 9.0")>0) {
+              temp_value = -77;
+          } else {
+            if(navigator.userAgent.indexOf("MSIE")>0) {
+              temp_value = -77;
+            } else {
+              temp_value = -76;
+            }
+          }
         }else if(hour >= 6 && hour <= 11){
         
-          temp_value = -60;
+          if(navigator.userAgent.indexOf("MSIE 9.0")>0) {
+              temp_value = -53;
+          } else {
+            if(navigator.userAgent.indexOf("MSIE")>0) {
+              temp_value = -54;
+            } else {
+              temp_value = -53;
+            }
+          }
         }else if(hour >= 12 && hour <= 17){
         
-          temp_value = -35;
+          if(navigator.userAgent.indexOf("MSIE 9.0")>0) {
+            temp_value = -32;
+          } else {
+          if(navigator.userAgent.indexOf("MSIE")>0) {
+            temp_value = -33;
+          } else {
+            temp_value = -32;
+          }
+          }
         }else{
-        
-          temp_value = -10;
+          if(navigator.userAgent.indexOf("MSIE 9.0")>0) {
+            temp_value = -11;
+          } else {
+          if(navigator.userAgent.indexOf("MSIE")>0) {
+            temp_value = -11;
+          } else {
+            temp_value = -10;
+          }
+          }
         }
         $('#shipping_time_id').css('top', temp_value).show();
         if(typeof(ele) != "object"){
         
-          $('#shipping_time_id').css('top', ele).show();
+          //$('#shipping_time_id').css('top', ele).show();
           $("#ele_id").val(ele);
         }else{
           
@@ -272,6 +288,36 @@ function change_time(value,end_time){
               }
 }
 
+function change_new_time(value,end_time){
+  var radio_list = document.getElementsByName("min");
+  for (var i=0; i<radio_list.length; i++) {
+      document.getElementById('m'+value).checked=false;   
+  } 
+  for (var i=0; i<radio_list.length; i++) {
+    if (radio_list[i].id == 'm'+value) {
+      document.getElementById('m'+value).checked=true;   
+    } 
+  }
+  var start_hour_num = new Array();
+              var start_min_num = new Array();
+              arr_time_d = end_time.split('|');
+              for(m in arr_time_d){
+                 if(m == value){
+                    arr_time_t = arr_time_d[m].split(',');
+                    for(x in arr_time_t){
+                      arr_time_temp = arr_time_t[x].split(':');
+                      if(x == 0){
+                        document.getElementById("start_hour").value = arr_time_temp[0];  
+                        document.getElementById("start_min").value = arr_time_temp[1];
+                      }
+                      if(x == 1){
+                        document.getElementById("end_hour").value = arr_time_temp[0];  
+                        document.getElementById("end_min").value = arr_time_temp[1];
+                      }
+                    }
+                }
+              }
+}
 function check_out(num){
       $("#shipping_time_id").hide();
       $("input[name='hour']").remove();

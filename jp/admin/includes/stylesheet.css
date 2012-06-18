@@ -1234,9 +1234,9 @@ a.s_column_bar {
 	display:block;
 }
 
-.option_show_border .option_conent:hover,.option_hide_border .option_conent:hover{
-	border:3px solid #FF6701;
-	margin:0;
+.option_hide_border .option_conent a:hover, .option_show_border .option_conent a:hover{
+	text-decoration:none;
+	cursor:pointer;	
 }
 .option_hide_border {
   float:left;
@@ -1337,7 +1337,21 @@ a.s_column_bar {
 .pro_option table{
 	width:100%;
 }
+.order_option_list{
+	overflow:hidden;
+	margin-bottom:5px;
+	margin-bottom:1px\9;
+}
 
+.order_option_info{
+	float:left;
+	width:60%;
+	line-height:21px;
+}
+.order_option_price{
+	float:left;
+}
+.order_option_price input{ text-align:right;}
 /*shipping*/
 .shipping_error{
 	color:#ff0000;

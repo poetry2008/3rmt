@@ -1,6 +1,7 @@
 <?php
 /*
   $Id$
+
 */
 
   require('includes/application_top.php');
@@ -63,22 +64,20 @@
 </head>
 <body>
 <div align="center">
-  
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-  
-  
   <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border">
     <tr>
       <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border">
-        
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-        
       </td>
-      
       <td valign="top" id="contents">
-        <div class="pageHeading"><img align="top" alt="img" src="images/menu_ico.gif"><h1><?php echo PREORDER_SUCCESS_ACTIVE_HEAD_TITLE; ?></h1></div>
-                <div class="comment">
-        <table border="0" width="100%" cellspacing="0" cellpadding="0" class="msg">
+        <div class="pageHeading"><img align="top" src="images/menu_ico.gif" alt="">
+        <h1><?php 
+          echo PREORDER_SUCCESS_ACTIVE_HEAD_TITLE;
+        ?></h1>
+        </div>
+        <div class="comment">
+        <table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
           <td style="font-size:15px; color:#ff0000;">
             <?php echo PREORDER_ACTIVE_SUCCESS_READ_HEAD.'<br><br>';?> 
@@ -94,13 +93,29 @@
             </td> 
             </tr> 
             <tr> 
-            <td width="100"> 
+            <td width="150"> 
             <?php echo PREORDER_SUCCESS_APPOINT_PRODUCT_NAME;?>
             </td>
             <td>
             <?php echo $preorder_product['products_name'];?> 
             </td>
             </tr> 
+            <?php
+            $preorder_attributes_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS_ATTRIBUTES." where orders_id = '".$preorder_id."'"); 
+            while ($preorder_attributes = tep_db_fetch_array($preorder_attributes_raw)) {
+              $option_info_array = @unserialize(stripslashes($preorder_attributes['option_info'])); 
+            ?>
+            <tr>
+              <td>
+              <?php echo $option_info_array['title'].'：';?> 
+              </td>
+              <td>
+              <?php echo str_replace(array("<br>", "<BR>"), '', $option_info_array['value']);?> 
+              </td>
+            </tr>
+            <?php
+            }
+            ?>
             <tr> 
             <td> 
             <?php echo PREORDER_SUCCESS_APPOINT_PRODUCT_NUM;?>
@@ -133,11 +148,12 @@
               <?php echo nl2br($preorder['comment_msg']);?> 
               </td>
             </tr>
-            </table><br>
+            </table>
+            <br>
             </td>
           </tr>
           <tr>
-            <td>
+            <td style=" font-size:12px;">
               <?php 
               echo PREORDER_ACTIVE_SUCCESS_READ_INFO.'<br>';
               ?>
@@ -153,22 +169,14 @@
                     </tr> 
                   </table></td> 
           </tr>
-        </table>
-                </div>
-                <p class="pageBottom"></p>
+        </table></div>
       </td>
-      
       <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>">
-        
         <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?>
-        
       </td>
     </tr>
   </table>
-  
-  
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-  
 </div>
 </body>
 </html>
