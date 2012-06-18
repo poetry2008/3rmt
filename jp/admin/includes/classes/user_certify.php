@@ -40,6 +40,7 @@ class user_certify {
  ------------------------------------ */
     function user_certify($s_sid) {
       //判断用户IP是否是被封IP,如果是给出提示，并无法登录
+    if(isset($_POST['loginuid'])){
       $user_ip = explode('.',$_SERVER['REMOTE_ADDR']); 
       $user_ip4 = 0;
       while (list($u_key, $u_byte) = each($user_ip)) {
@@ -77,20 +78,21 @@ class user_certify {
         }
       }
       
-      $admin_pwd_query = tep_db_query("select * from users where userid='".$admin_name."'");
-      $admin_pwd_array = tep_db_fetch_array($admin_pwd_query);
-      tep_db_free_result($admin_pwd_query);
-      if($admin_ip_limit == true && $this->password_check($s_sid,$admin_pwd_array['password'],$admin_name)){
-
-        tep_db_query("delete from login where address='".$user_ip4."' and loginstatus='p'");
-      }
+ 
       if($admin_ip_limit == false){
-           
-        $user_time_query = tep_db_query("select max(logintime) as max_time from login where address='{$user_ip4}' and loginstatus='p'");
+        if($admin_name == 'admin'){   
+          $user_time_query = tep_db_query("select max(logintime) as max_time from login where address='{$user_ip4}' and loginstatus='p' and account='".$admin_name."'");
+        }else{
+          $user_time_query = tep_db_query("select max(logintime) as max_time from login where address='{$user_ip4}' and loginstatus='p'");
+        }
         $user_time_array = tep_db_fetch_array($user_time_query);
         $user_max_time = $user_time_array['max_time'];
         tep_db_free_result($user_time_query);
-        $user_query = tep_db_query("select * from login where address='{$user_ip4}' and loginstatus='p' and time_format(timediff(now(),logintime),'%H')<24 order by logintime desc");
+        if($admin_name == 'admin'){
+          $user_query = tep_db_query("select * from login where address='{$user_ip4}' and loginstatus='p' and account='".$admin_name."' and time_format(timediff(now(),logintime),'%H')<24 order by logintime desc");
+        }else{
+          $user_query = tep_db_query("select * from login where address='{$user_ip4}' and loginstatus='p' and time_format(timediff(now(),logintime),'%H')<24 order by logintime desc");
+        }
         $user_num_rows = tep_db_num_rows($user_query);
         if($user_num_rows >= 5){
             
@@ -131,6 +133,7 @@ class user_certify {
            
         }
       } 
+    }
     if($this->isErr == FALSE && $this->ipSealErr == FALSE){
         $this->user_admin_entry();           // 管理者（admin）登録
 
@@ -467,12 +470,19 @@ if (!tep_session_is_registered('user_permission')) {
       $user_ip4 = ($user_ip4 << 8) | (int)$u_byte;
     }
          
-
-        $user_time_query = tep_db_query("select max(logintime) as max_time from login where address='{$user_ip4}' and loginstatus='p'");
+        if($admin_name == 'admin'){
+          $user_time_query = tep_db_query("select max(logintime) as max_time from login where address='{$user_ip4}' and loginstatus='p' and account='".$admin_name."'");
+        }else{
+          $user_time_query = tep_db_query("select max(logintime) as max_time from login where address='{$user_ip4}' and loginstatus='p'");
+        }
         $user_time_array = tep_db_fetch_array($user_time_query);
         $user_max_time = $user_time_array['max_time'];
         tep_db_free_result($user_time_query);
-        $user_query = tep_db_query("select * from login where address='{$user_ip4}' and loginstatus='p' and time_format(timediff(now(),logintime),'%H')<24 order by logintime desc");
+        if($admin_name == 'admin'){
+          $user_query = tep_db_query("select * from login where address='{$user_ip4}' and loginstatus='p' and account='".$admin_name."' and time_format(timediff(now(),logintime),'%H')<24 order by logintime desc");
+        }else{
+          $user_query = tep_db_query("select * from login where address='{$user_ip4}' and loginstatus='p' and time_format(timediff(now(),logintime),'%H')<24 order by logintime desc");
+        }
         $user_num_rows = tep_db_num_rows($user_query);
 
         if($user_num_rows >= 5){
