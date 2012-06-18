@@ -1543,6 +1543,7 @@ function in_array(value,arr){
 }
 // end in_array
 var first_num = 0;
+var address_first_num = 0;
 function address_option_show(action){
   switch(action){
 
@@ -1550,6 +1551,9 @@ function address_option_show(action){
     arr_new = new Array();
     arr_color = new Array();
     $("#address_list_id").hide();
+    check();
+    country_check($("#"+country_fee_id).val());
+    country_area_check($("#"+country_area_id).val());
     
 <?php 
   $address_new_query = tep_db_query("select * from ". TABLE_ADDRESS ." where type!='text' and status='0' order by sort");
@@ -1693,14 +1697,20 @@ function address_option_show(action){
         //$("#error_"+x).html('');
     }
     if(arr_str != ''){
+      if(arr_str==address_select){
+              address_first_num = i;
+      }
       ++j_num;
       if(j_num == 1){first_num = i;}
-
-      if(arr_str == address_str){
-        address_show_list.options[address_show_list.options.length]=new Option(arr_str,i,true);
-      }else{
-        address_show_list.options[address_show_list.options.length]=new Option(arr_str,i);
-      }
+        if('<?php echo $_POST['address_show_list'];?>' != ''){
+          address_show_list.options[address_show_list.options.length]=new Option(arr_str,i,i=='<?php echo $_POST['address_show_list'];?>',i=='<?php echo $_POST['address_show_list'];?>');
+        }else{
+          if(arr_str == address_str){
+            address_show_list.options[address_show_list.options.length]=new Option(arr_str,i,true,true);
+          }else{
+            address_show_list.options[address_show_list.options.length]=new Option(arr_str,i,arr_str==address_select,arr_str==address_select); 
+          }
+       }
     }
 
   }
@@ -1786,7 +1796,10 @@ function address_option_list(value){
 
 
 function check(select_value){
-
+  
+  $("#td_"+country_fee_id_one).hide();
+  $("#td_"+country_area_id_one).hide();
+  $("#td_"+country_city_id_one).hide();
   var arr = new Array();
   <?php 
     $country_fee_query = tep_db_query("select id,name from ". TABLE_COUNTRY_FEE ." where status='0' order by id");
@@ -1979,7 +1992,7 @@ foreach ($nomail as $oskey => $value){
   echo 'nomail['.$oskey.'] = "' . $value . '";' . "\n";
 }
 ?>
-
+var address_select = '';
   function address_show_list(){
   var address_list = new Array();
   <?php 
@@ -2012,6 +2025,9 @@ foreach ($nomail as $oskey => $value){
     while($address_show_array = tep_db_fetch_array($address_show_query)){
       
       echo 'address_list["'. $address_show_array['name'] .'"] = "'. $address_show_array['value'] .'";';
+      if(in_array($address_show_array['name'],$address_list_arr)){
+        echo 'address_select += "'.$address_show_array['value'].'";'."\n";
+      }
       $add_array[] = $address_show_array['value'];
 
     } 
@@ -2020,13 +2036,19 @@ foreach ($nomail as $oskey => $value){
    
     for(x in address_list){
      if(document.getElementById("ad_"+x)){ 
-      var address_id = document.getElementById("ad_"+x);
+       var address_id = document.getElementById("ad_"+x);
+    if('<?php echo $country_fee_id;?>' == 'ad_'+x){
+      check(address_list[x]);
+    }else if('<?php echo $country_area_id;?>' == 'ad_'+x){
+      country_check(document.getElementById(country_fee_id).value,address_list[x]);
+     
+    }else if('<?php echo $country_city_id;?>' == 'ad_'+x){
+      country_area_check(document.getElementById(country_area_id).value,address_list[x]);
+    }else{
       $("#ad_"+x).val(address_list[x]);
-      if('<?php echo $parent_flag_name;?>' == x){
-
-        check($("#ad_"+x).val());
-      }
       address_id.style.color = '#000';
+    }
+      
      }
     }
 
@@ -2271,7 +2293,7 @@ $(document).ready(function(){
      }
      if(!isset($_GET['action'])){
      ?>
-       address_option_list(first_num);
+       //address_option_list(first_num);
        address_clear_error();
     <?php
      }
@@ -2399,7 +2421,7 @@ $(document).ready(function(){
   <?php
   }else{
   ?>
-    check();
+    //check();
   <?php
   }
   ?>
@@ -2414,7 +2436,7 @@ $(document).ready(function(){
   <?php
    }else{
   ?>
-    country_check($("#"+country_fee_id).val());
+    //country_check($("#"+country_fee_id).val());
   <?php
   }
   ?>
@@ -2430,7 +2452,7 @@ $(document).ready(function(){
   <?php
   }else{
   ?>
-    country_area_check($("#"+country_area_id).val());
+    //country_area_check($("#"+country_area_id).val());
   <?php
   }
   ?> 
@@ -3121,7 +3143,7 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
             <tr><td colspan="2"><table width="100%" border="0" cellpadding="2" cellspacing="0" id="address_show_id" style="<?php echo $address_style;?>"><br>
         <tr>
         <td class="main" width="30%">
-        <input type="radio" name="address_option" value="old" onClick="address_option_show('old');address_option_list(first_num);address_clear_error();" <?php echo $old_checked;?>><?php echo TABLE_OPTION_OLD; ?>
+        <input type="radio" name="address_option" value="old" onClick="address_option_show('old');address_option_list(address_first_num);address_clear_error();" <?php echo $old_checked;?>><?php echo TABLE_OPTION_OLD; ?>
         <input type="radio" name="address_option" value="new" onClick="address_option_show('new');" <?php echo $new_checked;?>><?php echo TABLE_OPTION_NEW; ?> 
         </td>
         <td class="main" width="70%"></td>

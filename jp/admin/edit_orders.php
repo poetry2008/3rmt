@@ -1510,6 +1510,9 @@ function submit_check_con(){
 
 function check(select_value){
 
+  $("#td_"+country_fee_id_one).hide();
+  $("#td_"+country_area_id_one).hide();
+  $("#td_"+country_city_id_one).hide();
   var arr = new Array();
   <?php  
     $country_fee_query = tep_db_query("select id,name from ". TABLE_COUNTRY_FEE ." where status='0' order by id");
@@ -1865,6 +1868,9 @@ function address_option_show(action){
     arr_new = new Array();
     arr_color = new Array();
     $("#address_list_id").hide();
+    check();
+    country_check($('#'+country_fee_id).val());
+    country_area_check($('#'+country_area_id).val());
     
 <?php 
   $address_new_query = tep_db_query("select * from ". TABLE_ADDRESS ." where type!='text' and status='0' order by sort");
@@ -2013,10 +2019,14 @@ function address_option_show(action){
       ++j_num;
       if(j_num == 1){first_num = i;}
 
-      if(arr_str == address_str){
-        address_show_list.options[address_show_list.options.length]=new Option(arr_str,i,true);
+      if('<?php echo $_POST['address_show_list'];?>' != ''){
+        address_show_list.options[address_show_list.options.length]=new Option(arr_str,i,i=='<?php echo $_POST['address_show_list'];?>',i=='<?php echo $_POST['address_show_list'];?>');
       }else{
-        address_show_list.options[address_show_list.options.length]=new Option(arr_str,i);
+        if(arr_str == address_str){
+          address_show_list.options[address_show_list.options.length]=new Option(arr_str,i,true,true);
+        }else{
+          address_show_list.options[address_show_list.options.length]=new Option(arr_str,i);
+        }
       }
     }
 
@@ -2198,13 +2208,19 @@ function address_list(){
 ?>
   for(x in arr_list){
    if(document.getElementById("ad_"+x)){ 
-    var op_list = document.getElementById("ad_"+x);
-    $("#ad_"+x).val(arr_list[x]);
-    if('<?php echo $parent_flag_name;?>' == x){
-
-      check($("#ad_"+x).val());
+     var op_list = document.getElementById("ad_"+x);
+     if('<?php echo $country_fee_id;?>' == 'ad_'+x){
+      check(arr_list[x]);
+    }else if('<?php echo $country_area_id;?>' == 'ad_'+x){
+      country_check(document.getElementById(country_fee_id).value,arr_list[x]);
+     
+    }else if('<?php echo $country_city_id;?>' == 'ad_'+x){
+      country_area_check(document.getElementById(country_area_id).value,arr_list[x]);
+    }else{
+      op_list.style.color = '#000';
+      $("#ad_"+x).val(arr_list[x]);
     }
-    op_list.style.color = '#000';
+    
    }
   }
 }
