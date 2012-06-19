@@ -579,7 +579,7 @@
           for ($j=0; $j<sizeof($order->products[$i]['attributes']); $j++) {
             $orders_products_attributes_id = $order->products[$i]['attributes'][$j]['id'];
             $products_ordered_mail .=  "\t" .  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;")) . '　　　　　：';
-            $products_ordered_mail .= tep_parse_input_field_data(str_replace(array("<br>", "<BR>"), "\n", $order->products[$i]['attributes'][$j]['option_info']['value']), array("'"=>"&quot;")) . "\n";
+            $products_ordered_mail .= tep_parse_input_field_data(str_replace(array("<br>", "<BR>", "\r", "\n", "\r\n"), "", $order->products[$i]['attributes'][$j]['option_info']['value']), array("'"=>"&quot;")) . "\n";
           }
         }
 
