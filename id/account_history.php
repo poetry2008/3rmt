@@ -22,7 +22,8 @@
 ?>
 <?php page_head();?>
 </head>
-<body><div class="body_shadow" align="center"> 
+<body>
+<div class="body_shadow" align="center"> 
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
   <!-- header_eof //--> 
   <!-- body //--> 
@@ -51,7 +52,9 @@
           left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id) 
         where o.customers_id = '" . $customer_id . "' 
           and ot.class = 'ot_total' 
-          and o.site_id = ".SITE_ID." order by orders_id DESC
+          and o.site_id = ".SITE_ID." 
+	  and o.customer_is_quited = '0'
+    order by orders_id DESC
   ";
   $history_count_query_raw = "
         select count(o.orders_id) as count

@@ -29,7 +29,7 @@
             ((ACCOUNT_GENDER == 'true') ? array('gender') : array()),
             $name,
             ((ACCOUNT_DOB == 'true') ? array('dob') : array()),
-            array('email_address'));
+            array('email_address','quited_date'));
     }
 
     // private

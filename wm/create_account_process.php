@@ -18,7 +18,6 @@
   foreach ($an_cols as $col) {
     $_POST[$col] = tep_an_zen_to_han($_POST[$col]);
   }
-
   $gender = tep_db_prepare_input($_POST['gender']);
   $firstname = tep_db_prepare_input($_POST['firstname']);
   $lastname = tep_db_prepare_input($_POST['lastname']);
@@ -149,6 +148,8 @@
                                   'customers_password' => tep_encrypt_password($NewPass),
                                   'customers_default_address_id' => 1,
                                   'customers_guest_chk' => '0',
+				  'is_quited' => '0',
+                                  'quited_date' => '0000-00-00 00:00:00',
                                   'send_mail_time' => time(),
                                   'origin_password' => $NewPass, 
                                   'point' => '0');
@@ -192,8 +193,12 @@
         tep_session_register('me_cud');
         tep_redirect(tep_href_link('member_auth.php', '', 'SSL')); 
       }
+            if($check_email_res['is_quited']==1){
+      $entry_email_address_exists = false;
+           }else{
       $error = true;
       $entry_email_address_exists = true;
+      }
     } else {
       $entry_email_address_exists = false;
     }
@@ -505,6 +510,8 @@ function pass_hidd(){
                                 'customers_guest_chk' => '0',
                                 'is_active' => '1',
                                 'send_mail_time' => time(),
+                                'is_quited' => '0',
+				'quited_date' => '0000-00-00 00:00:00',
                                 'origin_password' => $NewPass,
                                 'point' => '0');
         if ($check['customers_guest_chk'] == '1' && $check['is_active'] == '0') {

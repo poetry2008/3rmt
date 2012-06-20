@@ -144,6 +144,8 @@
                                   'customers_password' => tep_encrypt_password($NewPass),
                                   'customers_default_address_id' => 1,
                                   'customers_guest_chk' => '0',
+				  'is_quited' => '0',
+                                  'quited_date' => '0000-00-00 00:00:00',
                                   'send_mail_time' => time(),
                                   'origin_password' => $NewPass, 
                                   'point' => '0');
@@ -187,8 +189,12 @@
         tep_session_register('me_cud');
         tep_redirect(tep_href_link('member_auth.php', '', 'SSL')); 
       }
+            if($check_email_res['is_quited']==1){
+      $entry_email_address_exists = false;
+           }else{
       $error = true;
       $entry_email_address_exists = true;
+      }
     } else {
       $entry_email_address_exists = false;
     }
@@ -427,7 +433,7 @@ function pass_hidd(){
     $NewPass = tep_create_random_value(ENTRY_PASSWORD_MIN_LENGTH);
       $sql_data_array = array('customers_firstname' => $firstname,
                                 'customers_lastname' => $lastname,
-                'customers_firstname_f' => $firstname_f,
+                                'customers_firstname_f' => $firstname_f,
                                 'customers_lastname_f' => $lastname_f,
                                 'customers_email_address' => $email_address,
                                 'customers_telephone' => $telephone,
@@ -439,7 +445,6 @@ function pass_hidd(){
                                 'send_mail_time' => time(),
                                 'site_id' => SITE_ID,
                                 'point' => '0');
-
         if (ACCOUNT_GENDER == 'true') $sql_data_array['customers_gender'] = $gender;
         if (ACCOUNT_DOB == 'true') $sql_data_array['customers_dob'] = tep_date_raw($dob);
 
@@ -452,7 +457,7 @@ function pass_hidd(){
                                 'address_book_id' => 1,
                                 'entry_firstname' => $firstname,
                                 'entry_lastname' => $lastname,
-                'entry_firstname_f' => $firstname_f,
+                                'entry_firstname_f' => $firstname_f,
                                 'entry_lastname_f' => $lastname_f,
                                 'entry_street_address' => $street_address,
                                 'entry_postcode' => $postcode,
@@ -491,7 +496,7 @@ function pass_hidd(){
     
       $sql_data_array = array('customers_firstname' => $firstname,
                                 'customers_lastname' => $lastname,
-                'customers_firstname_f' => $firstname_f,
+                                'customers_firstname_f' => $firstname_f,
                                 'customers_lastname_f' => $lastname_f,
                                 'customers_email_address' => $email_address,
                                 'customers_telephone' => $telephone,
@@ -502,6 +507,8 @@ function pass_hidd(){
                                 'customers_guest_chk' => '0',
                                 'is_active' => '1',
                                 'send_mail_time' => time(),
+                                'is_quited' => '0',
+				'quited_date' => '0000-00-00 00:00:00',
                                 'origin_password' => $NewPass,
                                 'point' => '0');
 

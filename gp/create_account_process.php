@@ -10,7 +10,6 @@
   if (!isset($_POST['action'])) {
     tep_redirect(tep_href_link(FILENAME_CREATE_ACCOUNT));
   }
-  
   $active_single = 0;
   // tamura 2002/12/30 「全角」英数字を「半角」に変換
   $an_cols = array('password','confirmation','email_address','postcode','telephone','fax');
@@ -150,6 +149,8 @@
                                   'customers_password' => tep_encrypt_password($NewPass),
                                   'customers_default_address_id' => 1,
                                   'customers_guest_chk' => '0',
+				  'is_quited' => '0',
+                                  'quited_date' => '0000-00-00 00:00:00',
                                   'send_mail_time' => time(),
                                   'origin_password' => $NewPass, 
                                   'point' => '0');
@@ -193,8 +194,12 @@
         tep_session_register('me_cud');
         tep_redirect(tep_href_link('member_auth.php', '', 'SSL')); 
       }
+            if($check_email_res['is_quited']==1){
+      $entry_email_address_exists = false;
+           }else{
       $error = true;
       $entry_email_address_exists = true;
+      }
     } else {
       $entry_email_address_exists = false;
     }
@@ -501,9 +506,11 @@ function pass_hidd(){
                                 'customers_guest_chk' => '0',
                                 'is_active' => '1',
                                 'send_mail_time' => time(),
+                                'is_quited' => '0',
+				'quited_date' => '0000-00-00 00:00:00',
                                 'origin_password' => $NewPass, 
                                 'point' => '0');
-      
+         
         if ($check['customers_guest_chk'] == '1' && $check['is_active'] == '0') {
           $sql_data_array['is_active'] = 0; 
         }

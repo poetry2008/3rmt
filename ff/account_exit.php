@@ -8,43 +8,10 @@
   require('includes/application_top.php');
 //如果没有登陆 则在历史中加上此页，并跳转到登录页
   if (!tep_session_is_registered('customer_id')) {
- //   $navigation->set_snapshot();
+ //$navigation->set_snapshot();
     tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
   }
 
-if(isset($_GET['action']) && $_GET['action']=="quit_success" && isset($_GET['check_flag']) && $_GET['check_flag']!=""){
-$cart->remove_all();
-   // $account_sql = "update customers set is_quited='1',quited_date=now() where customers_id='".$customer_id."'";
-$customers_info            = tep_db_query("select * from ".TABLE_CUSTOMERS." where customers_id='".$customer_id."'");
-$account_created_date      = tep_db_query("select customers_info_date_account_created from ".TABLE_CUSTOMERS_INFO." where customers_info_id='$customer_id'");
-$account_created_date_info = tep_db_fetch_array($account_created_date);
-$customers_info_array      = tep_db_fetch_array($customers_info);
-
-$customers_id              = $customers_info_array['customers_id'];
-$customers_firstname       = addslashes($customers_info_array['customers_firstname']);
-$customers_lastname        = addslashes($customers_info_array['customers_lastname']);
-$customers_firstname_f     = addslashes($customers_info_array['customers_firstname_f']);
-$customers_lastname_f      = addslashes($customers_info_array['customers_lastname_f']);
-$customers_email_address   = addslashes($customers_info_array['customers_email_address']);
-$site_id                   = $customers_info_array['site_id'];
-$customers_info_date_account_created = $account_created_date_info['customers_info_date_account_created'];
-$customers_quited_info = "insert into ".TABLE_CUSTOMERS_EXIT." (id,customers_id,customers_firstname,customers_lastname,customers_firstname_f,customers_lastname_f,customers_email_address,site_id,customers_info_date_account_created,quited_date) values (NULL,'".$customers_id."','".$customers_firstname."','".$customers_lastname."','".$customers_firstname_f."','".$customers_lastname_f."','".$customers_email_address."','".$site_id."','".$customers_info_date_account_created."',now())";
-tep_db_query($customers_quited_info);
-$account_del_sql = "delete from ".TABLE_CUSTOMERS." where customers_id='".$customer_id."'";
-tep_db_query($account_del_sql);
-$account_info_del_sql = "delete from ".TABLE_CUSTOMERS_INFO." where customers_info_id='".$customer_id."'";
-tep_db_query($account_info_del_sql);
-  tep_session_unregister('customer_id');
-  tep_session_unregister('customer_default_address_id');
-  tep_session_unregister('customer_first_name');
-  tep_session_unregister('customer_last_name'); //Add Japanese osCommerce
-  tep_session_unregister('customer_country_id');
-  tep_session_unregister('customer_zone_id');
-  tep_session_unregister('comments');
-  tep_session_unregister('comment_emailaddress');
-$navigation->clear_snapshot();
-
-}
 //如果是游客，则不在历史页中记录，仅是跳转 
   if($guestchk == '1') {
     tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
@@ -58,6 +25,23 @@ $breadcrumb->add(NAVBAR_TITLE_2, tep_href_link(FILENAME_ACCOUNT_EXIT, '', 'SSL')
   }else{
 $breadcrumb->add(NAVBAR_TITLE_1, tep_href_link(FILENAME_ACCOUNT_EXIT, '', 'SSL'));
   }
+if(isset($_GET['action']) && $_GET['action']=="quit_success" && isset($_GET['check_flag']) && $_GET['check_flag']!=""){
+$cart->remove_all();
+$update_customer_info = tep_db_query("update ".TABLE_CUSTOMERS." set is_quited='1',quited_date=now(),is_active='0',point='0' where customers_id ='".$customer_id."'");
+$account_info_del_sql = "delete from ".TABLE_CUSTOMERS_BASKET." where customers_id='".$customer_id."'";
+tep_db_query($account_info_del_sql);
+$update_customer_orders = tep_db_query("update ".TABLE_ORDERS." set customer_is_quited='1' where customers_id='".$customer_id."'");
+  tep_session_unregister('customer_id');
+  tep_session_unregister('customer_default_address_id');
+  tep_session_unregister('customer_first_name');
+  tep_session_unregister('customer_last_name'); //Add Japanese osCommerce
+  tep_session_unregister('customer_country_id');
+  tep_session_unregister('customer_zone_id');
+  tep_session_unregister('comments');
+  tep_session_unregister('comment_emailaddress');
+  $navigation->clear_snapshot();
+}
+
 
   
 ?>

@@ -43,18 +43,21 @@
             <tr> 
               <td><?php
   $history_query_raw = "
-    select o.orders_id, 
-          o.date_purchased, 
-          o.delivery_name, 
-          ot.text as order_total, 
-          ot.value as order_total_value, 
-          o.orders_status_name 
-    from " . TABLE_ORDERS . " o 
-      left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id) 
-    where o.customers_id = '" . $customer_id . "' 
-      and ot.class = 'ot_total' 
-      and o.site_id = ".SITE_ID." 
-    order by orders_id DESC";
+        select o.orders_id, 
+                o.date_purchased, 
+                o.delivery_name, 
+                ot.text as order_total, 
+                ot.value as order_total_value, 
+                o.orders_status_name 
+        from " . TABLE_ORDERS . " o 
+          left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id) 
+        where o.customers_id = '" . $customer_id . "' 
+          and ot.class = 'ot_total' 
+         and o.site_id = ".SITE_ID." 
+
+	  and o.customer_is_quited = '0' 
+    order by orders_id DESC
+  ";
   $history_count_query_raw = "
         select count(o.orders_id) as count
         from " . TABLE_ORDERS . " o 
