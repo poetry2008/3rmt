@@ -442,7 +442,7 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
       $products_ordered_attributes .= "\n" 
         . $op_value['front_title'] 
         . str_repeat('　',intval(($attribute_max_len-mb_strlen($op_value['front_title'], 'utf-8'))))
-        . '：' . str_replace("<br>", "\n", $op_value['value']);
+        . '：' . str_replace($replace_arr, "", $op_value['value']);
       
       if ($op_price != '0') {
         //$products_ordered_attributes .= '　('.$currencies->format($op_price*$order->products[$i]['qty']).')'; 
@@ -500,7 +500,7 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
       $products_ordered_attributes .= "\n" 
         . $ck_value['front_title'] 
         . str_repeat('　',intval(($attribute_max_len-mb_strlen($ck_value['front_title'], 'utf-8'))))
-        . '：' . str_replace("<br>", "\n", $ck_value['value']);
+        . '：' . str_replace($replace_arr, "", $ck_value['value']);
       
       if ($c_op_price != '0') {
         //$products_ordered_attributes .= '　('.$currencies->format($c_op_price*$order->products[$i]['qty']).')'; 

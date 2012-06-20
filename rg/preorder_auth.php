@@ -77,7 +77,7 @@
       }
       if (!empty($attr_list_array)) {
         foreach ($attr_list_array as $ar_key => $ar_value) {
-          $mail_option_str .= $ar_value['title'].str_repeat('　', intval($max_op_len - mb_strlen($ar_value['title'], 'utf-8'))).'：'.str_replace("<br>", "\n", stripslashes($ar_value['value']))."\n"; 
+          $mail_option_str .= $ar_value['title'].str_repeat('　', intval($max_op_len - mb_strlen($ar_value['title'], 'utf-8'))).'：'.str_replace(array("<br>", "<BR>", "\r", "\n", "\r\n"), "", stripslashes($ar_value['value']))."\n"; 
         }
       }
       $replace_info_arr = array('${PRODUCTS_NAME}', '${PRODUCTS_QUANTITY}', '${EFFECTIVE_TIME}', '${PAY}', '${NAME}', '${SITE_NAME}', '${SITE_URL}', '${PREORDER_N}', '${ORDER_COMMENT}', '${PRODUCTS_ATTRIBUTES}'); 
