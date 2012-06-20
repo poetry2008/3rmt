@@ -3265,7 +3265,7 @@ if (($action == 'edit') && ($order_exists == true)) {
 
             $ma_se = "select * from ".TABLE_ORDERS_MAIL." where ";
           if(!isset($_GET['status']) || $_GET['status'] == ""){
-            $ma_se .= " orders_status_id = '".$order->info['orders_status']."' ";
+            $ma_se .= " orders_status_id = '".$select_select."' ";
             //echo '<input type="hidden" name="status" value="' .$order->info['orders_status'].'">';
 
             // 用来判断是否选中 送信&通知，如果nomail==1则不选中

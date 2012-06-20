@@ -119,7 +119,7 @@ if (tep_not_null($action)) {
         break;
       }
     
-    $comment_arr = $payment_modules->dealComment($payment_method,$comment);
+    $comment_arr = $payment_modules->dealComment($payment_method,$comments_text);
 
     $order_updated = false;
     $check_status_query = tep_db_query("
@@ -1121,7 +1121,7 @@ if($address_error == false){
             $trade_time_1 = date('H時i分',strtotime($_POST['date_orders'].' '.$_POST['end_hour'].':'.$_POST['end_min'].':00'));
             $mailoption['ORDER_TTIME']      = $trade_time . '～' . $trade_time_1 .'　（24時間表記）';//d
             //$mailoption['ORDER_COMMENT']    = $notify_comments_mail;// = $comments;
-            $mailoption['ORDER_COMMENT']    = $_POST['comments_text'];// = $comments;
+            $mailoption['ORDER_COMMENT']    = isset($comment_arr['payment_bank_info']['add_info'])?$comment_arr['comment']:$_POST['comments_text'];// = $comments;
             $mailoption['ORDER_PRODUCTS']   = $products_ordered_mail;//?
             $mailoption['ORDER_TMETHOD']    = $insert_torihiki_date;
             $mailoption['SITE_NAME']        = get_configuration_by_site_id('STORE_NAME',$order->info['site_id']);//d
@@ -1169,7 +1169,7 @@ if($address_error == false){
           }
           tep_mail(get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), 'ご注文ありがとうございます【' . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);
           $customer_notified = '1';
-
+          
           // 支払方法がクレジットなら決済URLを送る
           $email_credit =  $payment_modules->admin_process_pay_email(
                   payment::changeRomaji($payment_method,PAYMENT_RETURN_TYPE_CODE),
