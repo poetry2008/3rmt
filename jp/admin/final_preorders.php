@@ -1747,11 +1747,11 @@ float:left;
       $op_info_str = implode('|||', $op_info_array); 
       for ($j=0; $j<sizeof($order->products[$i]['attributes']); $j++) {
         $orders_products_attributes_id = $order->products[$i]['attributes'][$j]['id'];
-        echo '<br><div><small>&nbsp;<i><div class="order_option_info"> - ' .str_replace(array("<br>", "<BR>"), '', tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;"))).  "<input type='hidden' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][option]' size='10' value='" .  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;")) . "'>" . 
-           ': ' . 
+        echo '<br><div><small>&nbsp;<i><div class="order_option_info"><div class="order_option_title"> - ' .str_replace(array("<br>", "<BR>"), '', tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;"))).  ": <input type='hidden' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][option]' size='10' value='" .  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;")) . "'>" . 
+           '</div><div class="order_option_value">' . 
            str_replace(array("<br>", "<BR>"), '', tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&quot;")))."<input type='hidden' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][value]' size='35' value='" .  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&quot;"));
         //if ($order->products[$i]['attributes'][$j]['price'] != '0') echo ' (' . $order->products[$i]['attributes'][$j]['prefix'] . $currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . ')';
-        echo "'></div>";
+        echo "'></div></div>";
         echo '<div class="order_option_price">';
         echo "<input type='text' size='9' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][price]' value='".(int)$order->products[$i]['attributes'][$j]['price']."' onkeyup=\"recalc_preorder_price('".$oID."', '".$orders_products_id."', '1', '".$op_info_str."');\">"; 
         echo TEXT_MONEY_SYMBOL; 
