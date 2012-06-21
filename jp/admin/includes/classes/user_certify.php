@@ -121,7 +121,9 @@ class user_certify {
               $mail_array = array('${TIME}','${IP}');
               $now_time = date('Y年m月d日H時i分',strtotime($user_max_time));
               $mail_replace = array($now_time,$_SERVER['REMOTE_ADDR']);
-              $mail_text = str_replace($mail_array,$mail_replace,IP_SEAL_EMAIL_TEXT);
+              $mail_str = IP_SEAL_EMAIL_TEXT;
+              $mail_str = str_replace("\r\n","\n",$mail_str); 
+              $mail_text = str_replace($mail_array,$mail_replace,$mail_str);
               $show_cols_num = 16; //定义显示最长密码16位
               $user_i = 1;
 
@@ -535,7 +537,9 @@ if (!tep_session_is_registered('user_permission')) {
               $mail_array = array('${TIME}','${IP}');
               $now_time = date('Y年m月d日H時i分',strtotime($user_max_time));
               $mail_replace = array($now_time,$_SERVER['REMOTE_ADDR']);
-              $mail_text = str_replace($mail_array,$mail_replace,IP_SEAL_EMAIL_TEXT);
+              $mail_str = IP_SEAL_EMAIL_TEXT;
+              $mail_str = str_replace("\r\n","\n",$mail_str); 
+              $mail_text = str_replace($mail_array,$mail_replace,$mail_str);
               $show_cols_num = 16; //定义显示最长密码16位
               $user_i = 1;
 
