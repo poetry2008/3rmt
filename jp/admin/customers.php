@@ -618,6 +618,7 @@ function check_form() {
              c.customers_email_address, 
              a.entry_country_id, 
              c.customers_guest_chk,
+	     c.is_quited,
 	     ci.user_update,
              ci.customers_info_date_account_created as date_account_created, 
              ci.customers_info_date_account_last_modified as date_account_last_modified, 
@@ -665,7 +666,7 @@ function check_form() {
         $cInfo = new objectInfo($cInfo_array);
       }
 
-    if($customers['customers_guest_chk'] == 1) {
+    if($customers['customers_guest_chk'] == 1 || $customers['is_quited'] == 1) {
       $type = TABLE_HEADING_MEMBER_TYPE_GUEST;
     } else {
       $type = TABLE_HEADING_MEMBER_TYPE_MEMBER;
