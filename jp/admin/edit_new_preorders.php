@@ -1314,18 +1314,18 @@ if (($action == 'edit') && ($order_exists == true)) {
     echo '    <tr class="dataTableRow">' . "\n" .
          '      <td class="' . $RowStyle . '" align="left" valign="top" width="20">'
          . "<input name='update_products[$pid][qty]' id='p_".$pid."' size='2' value='" . $orders_products_num . "' onkeyup='clearLibNum(this);' class='update_products_qty'>&nbsp;x</td>\n" . 
-         '      <td class="' . $RowStyle . '">' . $order_products[$pid]['name'] . "<input name='update_products[$pid][name]' size='64' type='hidden' value='" . $order_products[$pid]['name'] . "'>\n" . 
+         '      <td class="' . $RowStyle . '" width="35%">' . $order_products[$pid]['name'] . "<input name='update_products[$pid][name]' size='64' type='hidden' value='" . $order_products[$pid]['name'] . "'>\n" . 
        '      &nbsp;&nbsp;<input type="hidden" name="dummy" value="あいうえお眉幅">';
     // Has Attributes?
     if (sizeof($order_products_attributes[$pid]) > 0) {
       for ($j=0; $j<sizeof($order_products_attributes[$pid]); $j++) {
-        echo '<br><nobr><small>&nbsp;<i> - ' .str_replace(array("<br>", "<BR>"), '', tep_parse_input_field_data(stripslashes($order_products_attributes[$pid][$j]['option_info']['title']), array("'"=>"&quot;"))) . '<input type="hidden" name="update_products[' .  $pid . '][attributes]['.$j.'][option]" size="10" value=\'' .  tep_parse_input_field_data(stripslashes($order_products_attributes[$pid][$j]['option_info']['title']), array("'"=>"&quot;")) . '\'>' . 
-           ': ' . 
-           str_replace(array("<br>", "<BR>"), '', tep_parse_input_field_data(stripslashes($order_products_attributes[$pid][$j]['option_info']['value']), array("'"=>"&quot;"))).'<input type="hidden" name="update_products[' . $pid .  '][attributes]['.$j.'][value]" size="35" value=\'' .  tep_parse_input_field_data(stripslashes($order_products_attributes[$pid][$j]['option_info']['value']), array("'"=>"&quot;")).'\'>';
+        echo '<br><div><small>&nbsp;<i><div class="order_option_info"><div class="order_option_title"> - ' .str_replace(array("<br>", "<BR>"), '', tep_parse_input_field_data(stripslashes($order_products_attributes[$pid][$j]['option_info']['title']), array("'"=>"&quot;"))) . ': <input type="hidden" name="update_products[' .  $pid . '][attributes]['.$j.'][option]" size="10" value=\'' .  tep_parse_input_field_data(stripslashes($order_products_attributes[$pid][$j]['option_info']['title']), array("'"=>"&quot;")) . '\'>' . 
+           '</div><div class="order_option_value">' . 
+           str_replace(array("<br>", "<BR>"), '', tep_parse_input_field_data(stripslashes($order_products_attributes[$pid][$j]['option_info']['value']), array("'"=>"&quot;"))).'<input type="hidden" name="update_products[' . $pid .  '][attributes]['.$j.'][value]" size="35" value=\'' .  tep_parse_input_field_data(stripslashes($order_products_attributes[$pid][$j]['option_info']['value']), array("'"=>"&quot;")).'\'></div>';
         //if ($order_products_attributes[$pid][$j]['price'] != '0') {
           //echo ' ('.$currencies->format($order_products_attributes[$pid][$j]['price'] * $order_products[$pid]['qty']).')'; 
         //}
-        echo '</i></small></nobr>';
+        echo '</div></i></small></div>';
       }
     }
     

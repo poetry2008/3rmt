@@ -211,7 +211,7 @@ $GLOBALS['HTTP_POST_VARS'] = $_POST;
   define('TABLE_CURRENCIES', 'currencies');
   define('TABLE_CUSTOMERS', 'customers');
   define('TABLE_CUSTOMERS_BASKET', 'customers_basket');
-  //define('TABLE_CUSTOMERS_BASKET_ATTRIBUTES', 'customers_basket_attributes');
+  define('TABLE_CUSTOMERS_BASKET_ATTRIBUTES', 'customers_basket_attributes');
   define('TABLE_CUSTOMERS_INFO', 'customers_info');
   define('TABLE_LANGUAGES', 'languages');
   define('TABLE_MANUFACTURERS', 'manufacturers');
@@ -297,6 +297,7 @@ define('TABLE_PERMISSIONS','permissions');
 // email classes
   require(DIR_WS_CLASSES . 'mime.php');
   require(DIR_WS_CLASSES . 'email.php');
+  require(DIR_WS_CLASSES . 'encode_decode.php');
 // initialize the logger class
   require(DIR_WS_CLASSES . 'logger.php');
 

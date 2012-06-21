@@ -6,8 +6,25 @@
   require('includes/application_top.php');
   require('includes/step-by-step/new_application_top.php');
 
+  if (isset($_GET['Customer_mail'])) {
+    $_POST['site_id'] = isset($_GET['site_id']) ? $_GET['site_id']: 0;
+    $account_query = tep_db_query("select * from " . TABLE_CUSTOMERS . " where customers_email_address = '" . $_GET['Customer_mail'] . "' and site_id = '".$_POST['site_id']."' and is_active='1'");
+    $account = tep_db_fetch_array($account_query);
+    $_POST['customers_id'] = $account['customers_id'];
+    $_POST['firstname'] = $account['customers_firstname']; 
+    $_POST['lastname'] = $account['customers_lastname'];
+    $_POST['email_address'] = $account['customers_email_address'];
+    
+    $address_query = tep_db_query("select * from " . TABLE_ADDRESS_BOOK . " where customers_id = '" . (int)$account['customers_id'] . "'");
+    $address = tep_db_fetch_array($address_query);
+    if (tep_db_num_rows($account_query) == 0) {
+      tep_redirect(tep_href_link(FILENAME_CREATE_ACCOUNT, 'email_address=' . $_GET['Customer_mail'], 'SSL'));
+    }  
+  }
   require(DIR_WS_LANGUAGES . $language . '/step-by-step/create_preorder_process.php');
   $cpayment = payment::getInstance((int)$_POST['site_id']);
+
+
   
   $customer_id    = tep_db_prepare_input($_POST['customers_id']);
   $predate        = tep_db_prepare_input($_POST['predate']);
@@ -172,12 +189,108 @@
 <title><?php echo TITLE; ?></title>
 <link rel="stylesheet" type="text/css" href="includes/stylesheet.css">
 <link rel="stylesheet" type="text/css" href="includes/styles.css">
+<link rel="stylesheet" type="text/css" href="includes/jquery.autocomplete.css">
 <?php require('includes/step-by-step/form_check.js.php'); ?>
 <script language="javascript" src="includes/javascript/jquery_include.js"></script>
 <script language="javascript" src="includes/javascript/one_time_pwd.js"></script>
 <script language="javascript" src="includes/javascript/jquery.form.js"></script>
-<script language="javascript" src="includes/javascript/datePicker.js"></script>
+<script language="javascript" src="includes/javascript/jquery.autocomplete.js"></script>
+<script language="javascript" src="includes/3.4.1/build/yui/yui.js"></script>
 <script type="text/javascript">
+$(function() {
+      function format(group) {
+          return group.name;
+      }
+      $("#keyword").autocomplete('ajax_create_order.php?action=search_email', {
+        multipleSeparator: '',
+        dataType: "json",
+        parse: function(data) {
+        return $.map(data, function(row) {
+            return {
+             data: row,
+             value: row.name,
+             result: row.name
+            }
+          });
+        },
+        formatItem: function(item) {
+          return format(item);
+        }
+      }).result(function(e, item) {
+      });
+});
+
+function open_calendar()
+{
+  var is_open = $('#toggle_open').val(); 
+  if (is_open == 0) {
+    browser_str = navigator.userAgent.toLowerCase(); 
+    if (browser_str.indexOf("msie 9.0") > 0) {
+      $('#new_yui3').css('margin-left', '1px'); 
+    }
+    $('#toggle_open').val('1'); 
+    var rules = {
+           "all": {
+                  "all": {
+                           "all": {
+                                      "all": "current_s_day",
+                                }
+                     }
+            }};
+
+
+    if ($("#predate").val() != '') {
+      date_info = $("#predate").val().split('-'); 
+    } else {
+      date_info_str = '<?php echo date('Y-m-d', time())?>';  
+      date_info = date_info_str.split('-');  
+    }
+    new_date = new Date(date_info[0], date_info[1]-1, date_info[2]); 
+    
+    YUI().use('calendar', 'datatype-date',  function(Y) {
+        var calendar = new Y.Calendar({
+            contentBox: "#mycalendar",
+            width:'170px',
+            date: new_date
+        }).render();
+     
+     if (rules != '') {
+       month_tmp = date_info[1].substr(0, 1);
+       if (month_tmp == '0') {
+         month_tmp = date_info[1].substr(1);
+         month_tmp = month_tmp-1;
+       } else {
+         month_tmp = date_info[1]-1; 
+       }
+       day_tmp = date_info[2].substr(0, 1);
+       
+       if (day_tmp == '0') {
+         day_tmp = date_info[2].substr(1);
+       } else {
+         day_tmp = date_info[2];   
+       }
+       data_tmp_str = date_info[0]+'-'+month_tmp+'-'+day_tmp;
+       
+       calendar.set("customRenderer", {
+            rules: rules,
+               filterFunction: function (date, node, rules) {
+                 cmp_tmp_str = date.getFullYear()+'-'+date.getMonth()+'-'+date.getDate();
+                 if (cmp_tmp_str == data_tmp_str) {
+                   node.addClass("redtext"); 
+                 }
+               }
+       });
+     }
+        var dtdate = Y.DataType.Date;
+      calendar.on("selectionChange", function (ev) {
+        var newDate = ev.newSelection[0];
+        $("#predate").val(dtdate.format(newDate)); 
+        $('#toggle_open').val('0');
+        $('#toggle_open').next().html('<div id="mycalendar"></div>');
+      });
+    });
+  }
+}
 function hidden_payment()
 {
   var idx = document.create_order.elements['payment_method'].selectedIndex; 
@@ -191,16 +304,31 @@ $(function () {
     $(".rowHide_"+CI).show();
   }
 });
-
-$(function () {
-$.datePicker.setDateFormat('ymd', '-');
-$('#predate').datePicker();
-});
 </script>
 <style type="text/css">
-a.date-picker{
-display:block;
-float:none;
+.yui3-skin-sam .redtext {
+    color:#0066CC;
+}
+
+.yui3-skin-sam input {
+  float:left;
+}
+a.dpicker {
+	width: 16px;
+	height: 16px;
+	border: none;
+	color: #fff;
+	padding: 0;
+	margin: 0;
+	overflow: hidden;
+        display:block;	
+        cursor: pointer;
+	background: url(./includes/calendar.png) no-repeat; 
+	float:left;
+}
+#new_yui3{ 
+	position:absolute;
+	left:216px\9;
 }
 .popup-calendar {
 top:20px;
@@ -311,6 +439,15 @@ float:left;
         <td class="main"><font color="#ffffff"><b><?php echo TEXT_STEP_1 ?></b></font></td>
       </tr>
     </table>
+ <?php if (empty($customer_id)) {?> 
+    <p class="pageHeading"><?php echo CREATE_ORDER_TITLE_TEXT;?></p>
+<?php
+  echo '<form action="' . $PHP_SELF . '" method="GET">' . "\n";
+  echo '<p class=main>'.CREATE_ORDER_SEARCH_TEXT.'<br>';
+  echo CREATE_ORDER_EMAIL_TEXT.'&nbsp;<input type="text" id="keyword" name="Customer_mail" size="40" value="'.$_GET['Customer_mail'].'">'.tep_site_pull_down_menu('', false).'&nbsp;&nbsp;<input type="submit" value="  '.CREATE_ORDER_SEARCH_BUTTON_TEXT.'  "></p>' . "\n";
+  echo '</form>' . "\n";
+?>
+  <?php }?> 
   <?php echo tep_draw_form('create_order', 'create_preorder_process.php', '', 'post', '', '') . tep_draw_hidden_field('customers_id', $account->customers_id); ?>
   <table border="0" width="100%" cellspacing="0" cellpadding="0">
     <tr>

@@ -181,6 +181,7 @@ define('ENTRY_FIRST_NAME_F', '名(フリガナ):');
 define('ENTRY_LAST_NAME_F', '姓(フリガナ):');
 define('ENTRY_DATE_OF_BIRTH', '生年月日:');
 define('ENTRY_EMAIL_ADDRESS', 'E-Mail アドレス:');
+define('ENTRY_QUITED_DATE','退会日時:');
 define('ENTRY_COMPANY', '会社名:');
 define('ENTRY_STREET_ADDRESS', '住所1:');
 define('ENTRY_SUBURB', '住所2:');

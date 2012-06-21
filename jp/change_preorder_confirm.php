@@ -235,7 +235,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
               <?php echo CHANGE_PREORDER_CONFIRM_BUTTON_INFO;?> 
               </td>
               <td class="main" align="right">
-                <?php echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONTINUE);?> 
+                <?php echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER);?> 
               </td>
             </tr>
           </table>
@@ -254,7 +254,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                   <?php $preorder_product_res = tep_db_fetch_array($preorder_product_raw);?> 
                   <tr>
                     
-                    <td class="main" align="center" valign="top">
+                    <td class="main" align="center" valign="top" width="150">
                     <?php echo $preorder_product_res['products_quantity'].PRODUCT_UNIT_TEXT;?>
                     <?php echo '<br>'.tep_get_full_count2($preorder_product_res['products_quantity'], $preorder_product_res['products_id']);?> 
                     
@@ -359,7 +359,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                       if(substr($ad_key,0,3)=='ad_' && $_POST[substr($ad_key,3)] != ''){
 
                         echo '<tr>';
-                        echo '<td class="main">'. $_POST[substr($ad_key,3)] .':</td>';                  
+                        echo '<td class="main" width="150">'. $_POST[substr($ad_key,3)] .':</td>';                  
                         echo '<td class="main">';
                         echo $_POST[$ad_key];
                         //echo '<input type="hidden" name="'. $ad_key .'" value="'. $ad_value .'"></td>';
@@ -386,7 +386,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
               <td class="main">
                 <table width="100%">  
                   <tr>
-                    <td class="main"><?php echo PREORDER_CONFIRM_FETCH_TIME_DAY;?></td>                  
+                    <td class="main" width="150"><?php echo PREORDER_CONFIRM_FETCH_TIME_DAY;?></td>                  
                     <td class="main">
                     <?php
                       if (!empty($_POST['date'])) {
@@ -643,7 +643,7 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
                 <?php
                 $payment_modules->preorder_process_button($con_payment_code, $_POST['pid'], $total_param); 
                 ?>
-                <?php echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONTINUE);?> 
+                <?php echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER);?> 
               </td>
             </tr>
           </table> 

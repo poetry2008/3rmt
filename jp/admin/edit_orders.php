@@ -919,7 +919,7 @@ if($address_error == false){
               for ($j=0; $j<sizeof($order->products[$i]['attributes']); $j++) {
                 $orders_products_attributes_id = $order->products[$i]['attributes'][$j]['id'];
                 $products_ordered_mail .=  "\t" .  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;")) . str_repeat('　', intval($max_c_len - mb_strlen($order->products[$i]['attributes'][$j]['option_info']['title'], 'utf-8'))).'：';
-                $products_ordered_mail .= tep_parse_input_field_data(str_replace(array("<br>", "<BR>"), "\n", $order->products[$i]['attributes'][$j]['option_info']['value']), array("'"=>"&quot;"));
+                $products_ordered_mail .= tep_parse_input_field_data(str_replace(array("<br>", "<BR>", "\r", "\n", "\r\n"), "", $order->products[$i]['attributes'][$j]['option_info']['value']), array("'"=>"&quot;"));
                 if ($order->products[$i]['attributes'][$j]['price'] != '0') {
                   $products_ordered_mail .= '（'.$currencies->format($order->products[$i]['attributes'][$j]['price']).'）'; 
                 }
@@ -2576,12 +2576,14 @@ if (($action == 'edit') && ($order_exists == true)) {
             echo 'document.getElementsByName("bank_kouza_name")[0].value = "'.$bank_kouza_name[1].'";'."\n";
             break;
           case 'コンビニ決済':
-            $con_email = explode(":",trim($pay_comment));
+            $pay_array = explode("\n",trim($pay_comment));
+            $con_email = explode(":",trim($pay_array[0]));
             $con_email[1] = isset($_POST['con_email']) ? $_POST['con_email'] : $con_email[1];
             echo 'document.getElementsByName("con_email")[0].value = "'.$con_email[1].'";'."\n";
             break;
           case '楽天銀行':
-            $rak_tel = explode(":",trim($pay_comment));
+            $pay_array = explode("\n",trim($pay_comment));
+            $rak_tel = explode(":",trim($pay_array[0]));
             $rak_tel[1] = isset($_POST['rak_tel']) ? $_POST['rak_tel'] : $rak_tel[1];
             echo 'document.getElementsByName("rak_tel")[0].value = "'.$rak_tel[1].'";'."\n";
             break;
@@ -2863,11 +2865,11 @@ if (($action == 'edit') && ($order_exists == true)) {
 
         for ($j=0; $j<sizeof($order->products[$i]['attributes']); $j++) {
           $orders_products_attributes_id = $order->products[$i]['attributes'][$j]['id'];
-          echo '<br><div><small>&nbsp;<i><div class="order_option_info"> - ' .str_replace(array("<br>", "<BR>"), '', tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;"))) . "<input type='hidden' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][option]' size='10' value='" .  (isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['option'])?tep_parse_input_field_data($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['option'], array("'"=>"&quot;")):tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;"))) . "'>" . 
-            ': ' . 
+          echo '<br><div><small>&nbsp;<i><div class="order_option_info"><div class="order_option_title"> - ' .str_replace(array("<br>", "<BR>"), '', tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;"))) . ": <input type='hidden' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][option]' size='10' value='" .  (isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['option'])?tep_parse_input_field_data($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['option'], array("'"=>"&quot;")):tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;"))) . "'>" . 
+            '</div><div class="order_option_value">' . 
             str_replace(array("<br>", "<BR>"), '', tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&quot;")))."<input type='hidden' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][value]' size='35' value='" .  (isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['value'])?tep_parse_input_field_data($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['value'], array("'"=>"&quot;")):tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&quot;")));
           //if ($order->products[$i]['attributes'][$j]['price'] != '0') echo ' (' . $order->products[$i]['attributes'][$j]['prefix'] . $currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . ')';
-          echo "'></div>";
+          echo "'></div></div>";
           echo '<div class="order_option_price">'; 
           echo "<input type='text' size='9' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][price]' value='".(int)(isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price'])?$_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price']:$order->products[$i]['attributes'][$j]['price'])."' onkeyup=\"recalc_order_price('".$oID."', '".$orders_products_id."', '1', '".$op_info_str."');\">";   
           echo TEXT_MONEY_SYMBOL; 
@@ -3265,7 +3267,7 @@ if (($action == 'edit') && ($order_exists == true)) {
 
             $ma_se = "select * from ".TABLE_ORDERS_MAIL." where ";
           if(!isset($_GET['status']) || $_GET['status'] == ""){
-            $ma_se .= " orders_status_id = '".$order->info['orders_status']."' ";
+            $ma_se .= " orders_status_id = '".$select_select."' ";
             //echo '<input type="hidden" name="status" value="' .$order->info['orders_status'].'">';
 
             // 用来判断是否选中 送信&通知，如果nomail==1则不选中
