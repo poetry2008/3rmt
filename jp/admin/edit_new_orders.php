@@ -93,7 +93,11 @@ if (tep_not_null($action)) {
     $comments_text = tep_db_prepare_input($_POST['comments_text']);
     $payment_method = tep_db_prepare_input($_POST['payment_method']); 
     $site_id  = tep_get_site_id_by_orders_id($oID);
-    
+
+    $orders_email_query = tep_db_query("select payment_method from ". TABLE_ORDERS ." where orders_id='".$oID."'");
+    $orders_email_array = tep_db_fetch_array($orders_email_query);
+    tep_db_free_result($orders_email_query);    
+
     $error = false;
     $options_info_array = array(); 
       if (!$ad_option->check()) {
@@ -326,11 +330,13 @@ if (tep_not_null($action)) {
                 get_url_by_site_id($site_id),
                 get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
                 date('Y年n月j日',strtotime(tep_get_pay_day()))
-                ),$comments);
+              ),$comments);
+      if($check_status['payment_method'] != ''){
         if (!tep_is_oroshi($check_status['customers_id'])) {
           tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
         }
         tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS', $site_id), '送信済：'.$title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
+      }
         $customer_notified = '1';
       }
 
@@ -1164,10 +1170,15 @@ if($address_error == false){
               }
 
               //$email_order = $payment_class->getOrderMailString($mailoption);  
-              //bobhero end}}}
+            //bobhero end}}}
+            
+          if($orders_email_array['payment_method'] == ''){
             tep_mail($check_status['customers_name'], $check_status['customers_email_address'], 'ご注文ありがとうございます【' . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email, get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']),$order->info['site_id']);
           }
+          }
+        if($orders_email_array['payment_method'] == ''){
           tep_mail(get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), 'ご注文ありがとうございます【' . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);
+        }
           $customer_notified = '1';
 
           // 支払方法がクレジットなら決済URLを送る
@@ -1176,9 +1187,13 @@ if($address_error == false){
                 $order,$total_price_mail);
           if($email_credit){
             if ($customer_guest['customers_guest_chk'] != 9){
-              tep_mail($check_status['customers_name'], $check_status['customers_email_address'], 'クレジットカード決済について【' . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email_credit, get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']), $order->info['site_id']);
+              if($orders_email_array['payment_method'] == ''){
+                tep_mail($check_status['customers_name'], $check_status['customers_email_address'], 'クレジットカード決済について【' . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email_credit, get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']), $order->info['site_id']);
+              }
             }
-            tep_mail(get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), '送信済：クレジットカード決済について【' . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email_credit, $check_status['customers_name'], $check_status['customers_email_address'], $order->info['site_id']);
+            if($orders_email_array['payment_method'] == ''){
+              tep_mail(get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), '送信済：クレジットカード決済について【' . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email_credit, $check_status['customers_name'], $check_status['customers_email_address'], $order->info['site_id']);
+            }
           }
           }
           $order_updated_2 = true;

@@ -33,6 +33,7 @@ define('CREATE_ORDER_SEARCH_TEXT',
 define('CREATE_ORDER_EMAIL_TEXT', 'メールアドレス:');
 define('CREATE_ORDER_SEARCH_BUTTON_TEXT', '検索');
 define('CREATE_ORDER_NOTICE_ONE', '変更があれば修正してください');
+define('CREATE_ORDER_CUSTOMERS_ERROR','注文の顧客を指定してください');
 define('CREATE_ORDER_PAYMENT_TITLE', '支払方法');
 define('CREATE_ORDER_PRODUCTS_ADD_TITLE','商品の追加');
 define('ADDPRODUCT_TEXT_STEP', 'ステップ');

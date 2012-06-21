@@ -324,7 +324,7 @@ if(isset($_GET['site_id']) and isset($_GET['Customer_mail'] )){
 //}}
 //{{列出下一页面需要用的变量
 if(!isset($customerId)){
-  if(isset($_POST['customers_id'])){
+  if(isset($_POST['customers_id']) && $_POST['customers_id'] != ''){
     $customerId = $_POST['customers_id'];
   }
 }

@@ -8,44 +8,6 @@ require('includes/step-by-step/new_application_top.php');
 //此页能是POST过来 ，如果不是 则 跳转 到 CREATE_ORDER
 if(isGet()){
   tep_redirect(tep_redirect(tep_href_link(FILENAME_CREATE_ORDER, null, 'SSL')));
-}else{
-
-  if(!$_POST['email_address'] && !isset($_POST['update_products'])){
-     
-    tep_redirect(tep_redirect(tep_href_link(FILENAME_CREATE_ORDER.'?error=1', null, 'SSL')));
-  }
-
-  if(!$_POST['email_address']){
-
-    tep_redirect(tep_redirect(tep_href_link(FILENAME_CREATE_ORDER.'?oID='.tep_db_prepare_input($_POST['oID']), null, 'SSL')));
-  }
-
-  if(!isset($_POST['update_products'])){
-    
-    tep_redirect(tep_redirect(tep_href_link(FILENAME_CREATE_ORDER.'?Customer_mail='.tep_db_prepare_input($_POST['email_address']).'&site_id='.tep_db_prepare_input($_POST['site_id']).'&error=1', null, 'SSL')));
-  }else{
-    $qty = 0;
-    $weight_count = 0;
-    $products_qty = array();
-    foreach($_POST['update_products'] as $update_key=>$update_value){
-      $orders_products_query = tep_db_query("select products_id from ". TABLE_ORDERS_PRODUCTS ." where orders_products_id='". $update_key ."'");
-      $orders_products_array = tep_db_fetch_array($orders_products_query);
-      tep_db_free_result($orders_products_query);
-      $products_weight_query = tep_db_query("select products_weight from ". TABLE_PRODUCTS ." where products_id='". $orders_products_array['products_id'] ."'");
-      $products_weight_array = tep_db_fetch_array($products_weight_query);
-      $weight_count += $products_weight_array['products_weight'] * $update_value['qty'];
-      tep_db_free_result($products_weight_query);
-      $qty += $update_value['qty']; 
-      $products_qty[$update_key] = $update_value['qty']; 
-    }
-    $_SESSION['products_qty'] = $products_qty;
-
-    if($qty == 0){
-
-       
-      tep_redirect(tep_redirect(tep_href_link(FILENAME_CREATE_ORDER.'?oID='.tep_db_prepare_input($_POST['oID']).'&Customer_mail='.tep_db_prepare_input($_POST['email_address']).'&site_id='.tep_db_prepare_input($_POST['site_id']).'&error=1', null, 'SSL')));
-    } 
-  }
 }
 
 require(DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_CREATE_ORDER_PROCESS);
@@ -88,6 +50,45 @@ $temp_amount    = number_format($temp_amount, 2, '.', '');
   7.取引方法将不会被支持
 */
 
+if(!$_POST['email_address'] && !isset($_POST['update_products'])){
+
+  $error = true;
+  $products_error = true;
+  $customer_error = true;  
+}
+
+if(!$_POST['email_address']){
+
+  $error = true;
+  $customer_error = true;
+}
+
+if(!isset($_POST['update_products'])){
+  
+  $error = true;
+  $products_error = true;  
+}else{
+    $qty = 0;
+    $weight_count = 0;
+    $products_qty = array();
+    foreach($_POST['update_products'] as $update_key=>$update_value){
+      $orders_products_query = tep_db_query("select products_id from ". TABLE_ORDERS_PRODUCTS ." where orders_products_id='". $update_key ."'");
+      $orders_products_array = tep_db_fetch_array($orders_products_query);
+      tep_db_free_result($orders_products_query);
+      $products_weight_query = tep_db_query("select products_weight from ". TABLE_PRODUCTS ." where products_id='". $orders_products_array['products_id'] ."'");
+      $products_weight_array = tep_db_fetch_array($products_weight_query);
+      $weight_count += $products_weight_array['products_weight'] * $update_value['qty'];
+      tep_db_free_result($products_weight_query);
+      $qty += $update_value['qty']; 
+      $products_qty[$update_key] = $update_value['qty']; 
+    }
+    $_SESSION['products_qty'] = $products_qty;
+
+    if($qty == 0){
+      $error = true;
+      $products_error = true;   
+    } 
+  }
 
 //v customer_id
 if($customer_id == '') {
