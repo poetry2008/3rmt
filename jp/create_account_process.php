@@ -184,11 +184,32 @@
             }
           }
 
-          tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array, 'update', 'customers_id = ' . $check_email_res['customers_id']);
+         // tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array, 'update', 'customers_id = ' . $check_email_res['customers_id']);
           tep_db_query("update " . TABLE_CUSTOMERS_INFO . " set customers_info_date_of_last_logon = now(), customers_info_number_of_logons = customers_info_number_of_logons+1 where customers_info_id = '" . $customer_id . "'");
         
         $me_cud = $check_email_res['customers_id']; 
         tep_session_register('me_cud');
+//email_info==========
+      $mail_name = tep_get_fullname($firstname, $lastname);
+      tep_session_unregister('customer_id'); 
+      $ac_email_srandom = md5(time().$customer_id.$email_address); 
+       
+      $email_text = stripslashes($lastname.' '.$firstname).EMAIL_NAME_COMMENT_LINK . "\n\n"; 
+      
+      $old_str_array = array('${URL}', '${NAME}', '${SITE_NAME}', '${SITE_URL}'); 
+      $new_str_array = array(
+          HTTP_SERVER.'/m_token.php?aid='.$ac_email_srandom, 
+          $mail_name,
+          STORE_NAME,
+          HTTP_SERVER
+          ); 
+      $email_text .= str_replace($old_str_array, $new_str_array, ACTIVE_ACCOUNT_EMAIL_CONTENT);  
+      $ac_email_text = str_replace('${SITE_NAME}', STORE_NAME, ACTIVE_ACCOUNT_EMAIL_TITLE); 
+
+      tep_mail($mail_name, $email_address, $ac_email_text, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
+
+      tep_db_query("update `".TABLE_CUSTOMERS."` set `check_login_str` = '".$ac_email_srandom."' where `customers_id` = '".$customer_id."'"); 
+//===================
         tep_redirect(tep_href_link('member_auth.php', '', 'SSL')); 
       }
             if($check_email_res['is_quited']==1){
