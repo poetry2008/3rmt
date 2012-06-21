@@ -440,6 +440,7 @@ function pass_hidd(){
                                 'customers_default_address_id' => 1,
                                 'customers_guest_chk' => '1',
                                 'send_mail_time' => time(),
+                                'referer' => $referer,
                                 'site_id' => SITE_ID,
                                 'point' => '0');
         if (ACCOUNT_GENDER == 'true') $sql_data_array['customers_gender'] = $gender;

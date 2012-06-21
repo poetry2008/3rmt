@@ -41,6 +41,7 @@
   $state = tep_db_prepare_input($_POST['state']);
   $country = tep_db_prepare_input($_POST['country']);
   $guestchk = tep_db_prepare_input($_POST['guestchk']);
+  $referer        = tep_db_prepare_input($_SESSION['referer']);
 
   $error = false; // reset error flag
 
@@ -439,6 +440,7 @@ function pass_hidd(){
                                 'customers_default_address_id' => 1,
                                 'customers_guest_chk' => '1',
                                 'send_mail_time' => time(),
+                                'referer' => $referer,
                                 'site_id' => SITE_ID,
                                 'point' => '0');
 
@@ -569,6 +571,7 @@ function pass_hidd(){
                                 'send_mail_time' => time(),
                                 'site_id' => SITE_ID,
                                 'origin_password' => $NewPass,
+				'referer' => $referer,
                                 'point' => '0');
 
         if (ACCOUNT_GENDER == 'true') $sql_data_array['customers_gender'] = $gender;
