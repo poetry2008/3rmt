@@ -297,6 +297,7 @@ define('TABLE_PERMISSIONS','permissions');
 // email classes
   require(DIR_WS_CLASSES . 'mime.php');
   require(DIR_WS_CLASSES . 'email.php');
+  require(DIR_WS_CLASSES . 'encode_decode.php');
 // initialize the logger class
   require(DIR_WS_CLASSES . 'logger.php');
 
