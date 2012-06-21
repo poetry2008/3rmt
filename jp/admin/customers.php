@@ -321,6 +321,8 @@ function check_form() {
                c.customers_newsletter, 
                c.customers_default_address_id,
                c.is_seal,
+	       c.is_quited,
+	       c.quited_date,
                s.romaji,
                s.name as site_name
         from " . TABLE_CUSTOMERS . " c 
@@ -366,7 +368,12 @@ function check_form() {
     // email_address
     $a_value = tep_draw_input_field('customers_email_address', $cInfo->customers_email_address, 'maxlength="96"', false);
     $address_form->setFormLine('email_address',ENTRY_EMAIL_ADDRESS,$a_value);
+    //quited_date
+    if($cInfo->is_quited==1){
+    $a_value = date("Y/m/d H:i",strtotime($cInfo->quited_date));
 
+    $address_form->setFormLine('quited_date',ENTRY_QUITED_DATE,$a_value);
+    }
     // company
     $a_value = tep_draw_input_field('entry_company', $cInfo->entry_company, 'maxlength="32"');
     $address_form->setFormLine('company',ENTRY_COMPANY,$a_value);
@@ -434,6 +441,7 @@ function check_form() {
         <td class="formArea"><table border="0" cellspacing="2" cellpadding="2">
 <?php
     $address_form->printCategoryPersonal();
+    
 ?>
         </table></td>
       </tr>
@@ -610,6 +618,7 @@ function check_form() {
              c.customers_email_address, 
              a.entry_country_id, 
              c.customers_guest_chk,
+	     c.is_quited,
 	     ci.user_update,
              ci.customers_info_date_account_created as date_account_created, 
              ci.customers_info_date_account_last_modified as date_account_last_modified, 
@@ -657,7 +666,7 @@ function check_form() {
         $cInfo = new objectInfo($cInfo_array);
       }
 
-    if($customers['customers_guest_chk'] == 1) {
+    if($customers['customers_guest_chk'] == 1 || $customers['is_quited'] == 1) {
       $type = TABLE_HEADING_MEMBER_TYPE_GUEST;
     } else {
       $type = TABLE_HEADING_MEMBER_TYPE_MEMBER;

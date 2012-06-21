@@ -34,4 +34,5 @@ define('CATEGORY_ORDER_DETAILS','通貨設定');
 define('CATEGORY_CORRECT', '顧客情報');
 define('CREATE_ORDER_RED_TITLE_TEXT', '入力情報に誤りがあります');
 define('CREATE_PREORDER_PREDATE', '有効期限');
+define('CREATE_PREORDER_MUST_INPUT', '必須');
 ?>

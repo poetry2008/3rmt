@@ -7,7 +7,6 @@
 
     tep_draw_hidden_field($customer_id);    
 ?>
-
 <table border="0" width="100%" cellspacing="0" cellpadding="2">
   <tr>
     <td class="formAreaTitle"><?php echo CATEGORY_CORRECT; ?></td>
@@ -22,15 +21,16 @@
               </tr>
               <tr>
                 <td class="main">&nbsp;<?php echo ENTRY_LAST_NAME; ?></td>
-                <td class="main">&nbsp;<?php echo tep_draw_input_field('lastname', $lastname) . '&nbsp;' . ENTRY_LAST_NAME_TEXT; ?>&nbsp;&nbsp;<?php echo CREATE_ORDER_NOTICE_ONE;?><?php if (isset($entry_firstname_error) && $entry_firstname_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
+                <td class="main">&nbsp;<?php echo tep_draw_input_field('lastname', $lastname) . '&nbsp;' . ENTRY_LAST_NAME_TEXT; ?>&nbsp;&nbsp;<?php echo CREATE_ORDER_NOTICE_ONE;?><?php if (isset($entry_firstname_error) && $entry_firstname_error == true) { echo '&nbsp;&nbsp;<font color="red">'.CREATE_PREORDER_MUST_INPUT.'</font>'; }; ?></td>
               </tr>
               <tr>
                 <td class="main">&nbsp;<?php echo ENTRY_FIRST_NAME; ?></td>
-                <td class="main">&nbsp;<?php echo tep_draw_input_field('firstname', $firstname) . '&nbsp;' . ENTRY_FIRST_NAME_TEXT; ?>&nbsp;&nbsp;<?php echo CREATE_ORDER_NOTICE_ONE;?><?php if (isset($entry_lastname_error) && $entry_lastname_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
+                <td class="main">&nbsp;<?php echo tep_draw_input_field('firstname', $firstname) . '&nbsp;' . ENTRY_FIRST_NAME_TEXT; ?>&nbsp;&nbsp;<?php echo CREATE_ORDER_NOTICE_ONE;?><?php if (isset($entry_lastname_error) && $entry_lastname_error == true) { echo
+  '&nbsp;&nbsp;<font color="red">'.CREATE_PREORDER_MUST_INPUT.'</font>'; }; ?></td>
               </tr>
               <tr>
                 <td class="main">&nbsp;<?php echo ENTRY_EMAIL_ADDRESS; ?></td>
-                <td class="main">&nbsp;<?php echo tep_draw_hidden_field('email_address', $email_address) . '<font color="red"><b>' . $email_address . '</b></font>'; ?><?php if (isset($entry_email_address_error) && $entry_email_address_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; }; ?></td>
+                <td class="main">&nbsp;<?php echo tep_draw_hidden_field('email_address', $email_address) . '<font color="red"><b>' . $email_address . '</b></font>'; ?><?php if (isset($entry_email_address_error) && $entry_email_address_error == true) { echo '&nbsp;&nbsp;<font color="red">'.CREATE_PREORDER_MUST_INPUT.'</font>'; }; ?></td>
               </tr>
             </table></td>
         </tr>
@@ -102,7 +102,7 @@
                 //diff order and order2
                 echo tep_draw_pull_down_menu('payment_method', $payment_list, isset($payment_method)?$payment_method:'', 'onchange="hidden_payment()"'); 
                 if (isset($entry_payment_method_error ) && $entry_payment_method_error == true) { 
-                  echo '&nbsp;&nbsp;<font color="red">Error</font>'; 
+                  echo '&nbsp;&nbsp;<font color="red">'.CREATE_PREORDER_MUST_INPUT.'</font>'; 
                 } ?>
         </td>
               </tr>
@@ -117,7 +117,7 @@
                 </td>
                 <td class="main">
                 &nbsp;&nbsp;<?php echo $field['field'];?> 
-                <font color="#red"><?php echo $field['message'];?></font> 
+                <font color="#red"><?php echo str_replace('Error', CREATE_PREORDER_MUST_INPUT,$field['message']);?></font> 
                 </td>
               </tr>
               <?php }?> 
@@ -140,8 +140,22 @@
               &nbsp;<?php echo CREATE_PREORDER_PREDATE;?>: 
               </td>
               <td class="main">
+              <div class="yui3-skin-sam yui3-g">
               <?php echo tep_draw_input_field('predate', $predate, 'id="predate"');?> 
+              <a href="javascript:void(0);" onclick="open_calendar();" class="dpicker"></a>
+              <input type="hidden" name="toggle_open" value="0" id="toggle_open">
+              <div class="yui3-u" id="new_yui3">
+              <div id="mycalendar"></div> 
+              </div>
+              </div>
               </td>
+              <?php
+              echo '<td>'; 
+              if (empty($predate)) {
+                echo '&nbsp;<font color="red">'.CREATE_PREORDER_MUST_INPUT.'</font>'; 
+              }
+              echo '</td>'; 
+              ?>
               </tr>
               </table>
           </td>

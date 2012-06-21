@@ -10,7 +10,6 @@
   if (!isset($_POST['action'])) {
     tep_redirect(tep_href_link(FILENAME_CREATE_ACCOUNT));
   }
-  
   $active_single = 0;
   // tamura 2002/12/30 「全角」英数字を「半角」に変換
   $an_cols = array('password','confirmation','email_address','postcode','telephone','fax');
@@ -18,13 +17,12 @@
   foreach ($an_cols as $col) {
     $_POST[$col] = tep_an_zen_to_han($_POST[$col]);
   }
-
-  $gender = tep_db_prepare_input($_POST['gender']);
-  $firstname = tep_db_prepare_input($_POST['firstname']);
-  $lastname = tep_db_prepare_input($_POST['lastname']);
+  $gender         = tep_db_prepare_input($_POST['gender']);
+  $firstname      = tep_db_prepare_input($_POST['firstname']);
+  $lastname       = tep_db_prepare_input($_POST['lastname']);
   
-  $firstname_f = tep_db_prepare_input($_POST['firstname_f']);
-  $lastname_f = tep_db_prepare_input($_POST['lastname_f']);
+  $firstname_f    = tep_db_prepare_input($_POST['firstname_f']);
+  $lastname_f     = tep_db_prepare_input($_POST['lastname_f']);
   
   $dob = tep_db_prepare_input($_POST['dob']);
   $email_address = tep_db_prepare_input($_POST['email_address']);
@@ -43,6 +41,7 @@
   $state = tep_db_prepare_input($_POST['state']);
   $country = tep_db_prepare_input($_POST['country']);
   $guestchk = tep_db_prepare_input($_POST['guestchk']);
+  $referer        = tep_db_prepare_input($_SESSION['referer']);
 
   $error = false; // reset error flag
 
@@ -149,6 +148,8 @@
                                   'customers_password' => tep_encrypt_password($NewPass),
                                   'customers_default_address_id' => 1,
                                   'customers_guest_chk' => '0',
+                                  'is_quited' => '0',
+                                  'quited_date' => '0000-00-00 00:00:00',
                                   'send_mail_time' => time(),
                                   'origin_password' => $NewPass, 
                                   'point' => '0');
@@ -190,10 +191,36 @@
         
         $me_cud = $check_email_res['customers_id']; 
         tep_session_register('me_cud');
+//email_info==========
+      $mail_name = tep_get_fullname($firstname, $lastname);
+      tep_session_unregister('customer_id'); 
+      $ac_email_srandom = md5(time().$customer_id.$email_address); 
+       
+      $email_text = stripslashes($lastname.' '.$firstname).EMAIL_NAME_COMMENT_LINK . "\n\n"; 
+      
+      $old_str_array = array('${URL}', '${NAME}', '${SITE_NAME}', '${SITE_URL}'); 
+      $new_str_array = array(
+          HTTP_SERVER.'/m_token.php?aid='.$ac_email_srandom, 
+          $mail_name,
+          STORE_NAME,
+          HTTP_SERVER
+          ); 
+      $email_text .= str_replace($old_str_array, $new_str_array, ACTIVE_ACCOUNT_EMAIL_CONTENT);  
+      $ac_email_text = str_replace('${SITE_NAME}', STORE_NAME, ACTIVE_ACCOUNT_EMAIL_TITLE); 
+
+      tep_mail($mail_name, $email_address, $ac_email_text, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
+
+      tep_db_query("update `".TABLE_CUSTOMERS."` set `check_login_str` = '".$ac_email_srandom."' where `customers_id` = '".$customer_id."'"); 
+//===================
+
         tep_redirect(tep_href_link('member_auth.php', '', 'SSL')); 
       }
+            if($check_email_res['is_quited']==1){
+      $entry_email_address_exists = false;
+           }else{
       $error = true;
       $entry_email_address_exists = true;
+      }
     } else {
       $entry_email_address_exists = false;
     }
@@ -267,7 +294,7 @@
             HTTP_SERVER
             ); 
         $email_text .= str_replace($old_str_array, $new_str_array, GUEST_LOGIN_EMAIL_CONTENT);  
-        $gu_email_text = str_replace('${SITE_NAME}', STORE_NAME, GUEST_LOGIN_EMAIL_TITLE); 
+        $gu_email_text = str_replace('${SITE_NAME}', STORE_NAME, GUEST_LOGIN_EMAIL_TITLE);
         tep_mail($mail_name, $email_address, $gu_email_text, $email_text, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS);
         
         tep_db_query("update `".TABLE_CUSTOMERS."` set `check_login_str` = '".$gu_email_srandom."' where `customers_id` = '".$customer_id."'"); 
@@ -288,9 +315,7 @@
   } else {
     $entry_guest_not_active = false; 
   }
-
-
-
+  
   if ($error == true) {
     $processed = true;
 
@@ -437,6 +462,7 @@ function pass_hidd(){
                                 'customers_default_address_id' => 1,
                                 'customers_guest_chk' => '1',
                                 'send_mail_time' => time(),
+                                'referer' => $referer,
                                 'site_id' => SITE_ID,
                                 'point' => '0');
 
@@ -480,9 +506,9 @@ function pass_hidd(){
       tep_db_query("insert into " . TABLE_CUSTOMERS_INFO . " (customers_info_id, customers_info_number_of_logons, customers_info_date_account_created) values ('" . tep_db_input($customer_id) . "', '0', now())");
       }
   } else {
-    $active_single = 1; 
     # Member
     //ccdd
+    $active_single = 1; 
     $check_cid = tep_db_query("select * from " . TABLE_CUSTOMERS . " where customers_email_address = '" . tep_db_input($email_address) . "' and site_id = '".SITE_ID."'");
     if(tep_db_num_rows($check_cid)) {
       # Member & 2回目以上 //==============================================
@@ -502,6 +528,8 @@ function pass_hidd(){
                                 'customers_guest_chk' => '0',
                                 'is_active' => '1',
                                 'send_mail_time' => time(),
+                                'is_quited' => '0',
+				'quited_date' => '0000-00-00 00:00:00',
                                 'origin_password' => $NewPass,
                                 'point' => '0');
         if ($check['customers_guest_chk'] == '1' && $check['is_active'] == '0') {
@@ -565,6 +593,7 @@ function pass_hidd(){
                                 'send_mail_time' => time(),
                                 'site_id' => SITE_ID,
                                 'origin_password' => $NewPass,
+				'referer' => $referer,
                                 'point' => '0');
 
         if (ACCOUNT_GENDER == 'true') $sql_data_array['customers_gender'] = $gender;

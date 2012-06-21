@@ -198,9 +198,9 @@ function selectHour(start_time,end_time,hour,min_num,ele){
               temp_value = -79;
           } else {
             if(navigator.userAgent.indexOf("MSIE")>0) {
-              temp_value = -102;
+              temp_value = -79;
             } else {
-              temp_value = -101;
+              temp_value = -77;
             }
           }
         }else if(hour >= 6 && hour <= 11){
@@ -209,9 +209,9 @@ function selectHour(start_time,end_time,hour,min_num,ele){
               temp_value = -56;
           } else {
             if(navigator.userAgent.indexOf("MSIE")>0) {
-              temp_value = -81;
+              temp_value = -56;
             } else {
-              temp_value = -79;
+              temp_value = -55;
             }
           }
         }else if(hour >= 12 && hour <= 17){
@@ -220,9 +220,9 @@ function selectHour(start_time,end_time,hour,min_num,ele){
             temp_value = -34;
           } else {
           if(navigator.userAgent.indexOf("MSIE")>0) {
-            temp_value = -60;
+            temp_value = -34;
           } else {
-            temp_value = -57;
+            temp_value = -33;
           }
           }
         }else{
@@ -230,9 +230,9 @@ function selectHour(start_time,end_time,hour,min_num,ele){
             temp_value = -12;
           } else {
           if(navigator.userAgent.indexOf("MSIE")>0) {
-            temp_value = -37;
+            temp_value = -12;
           } else {
-            temp_value = -35;
+            temp_value = -11;
           }
           }
         }

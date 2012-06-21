@@ -30,6 +30,7 @@ if ($preorder) {
   $cpayment_code = payment::changeRomaji($preorder['payment_method'], PAYMENT_RETURN_TYPE_CODE);   
   
   $option_info_array = get_preorder_total_info($cpayment_code, $preorder['orders_id'], $preorder_option_info);
+  $replace_arr = array("<br>", "<br />", "<br/>", "\r", "\n", "\r\n", "<BR>");
   
   $torihikihouhou_date_str = $_SESSION['preorder_info_date'].' '. $_SESSION['preorder_info_start_hour'] .':'. $_SESSION['preorder_info_start_min'] .':00';
   $torihikihouhou_date_end_str = $_SESSION['preorder_info_date'].' '. $_SESSION['preorder_info_end_hour'] .':'. $_SESSION['preorder_info_end_min'] .':00';
@@ -375,7 +376,7 @@ while ($mold_attr_res = tep_db_fetch_array($mold_attr_raw)) {
   $products_ordered_attributes .= "\n"
         .$mold_attr_info['title']
         .str_repeat('　', intval(($cl_max_len-mb_strlen($mold_attr_info['title'],'utf-8'))))
-        .'：'.str_replace(array("<BR>", "<br>"), "\n", $mold_attr_info['value']);
+        .'：'.str_replace($replace_arr, "", $mold_attr_info['value']);
       if ($mold_attr_res['options_values_price'] != '0') {
         if ($preorder_product_res['products_price'] != '0') {
           //$products_ordered_attributes .= '　('.$currencies->format($mold_attr_res['options_values_price']*$preorder_product_res['products_quantity']).')';
@@ -385,7 +386,6 @@ while ($mold_attr_res = tep_db_fetch_array($mold_attr_raw)) {
 
 }
 
-$replace_arr = array("<br>", "<br />", "<br/>", "\r", "\n", "\r\n", "<BR>");
 if (isset($_SESSION['preorder_option_info'])) {
    foreach ($_SESSION['preorder_option_info'] as $op_key => $op_value) {
       $op_key_info = explode('_', $op_key);
@@ -429,7 +429,7 @@ if (isset($_SESSION['preorder_option_info'])) {
       }
       
       $products_ordered_attributes .= "\n"
-        .$option_attr_values['front_title'] .str_repeat('　', intval(($cl_max_len-mb_strlen($option_attr_values['front_title'],'utf-8')))) .'：'.str_replace(array("<BR>", "<br>"), "\n", $op_value);
+        .$option_attr_values['front_title'] .str_repeat('　', intval(($cl_max_len-mb_strlen($option_attr_values['front_title'],'utf-8')))) .'：'.str_replace($replace_arr, "", $op_value);
       if ($ao_price != '0') {
         //$products_ordered_attributes .= '　('.$currencies->format($ao_price*$preorder_product_res['products_quantity']).')';
         $products_ordered_attributes .= '　('.$currencies->format($ao_price).')';

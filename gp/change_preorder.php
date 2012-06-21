@@ -625,7 +625,7 @@ document.forms.order1.submit();
       <td valign="top" id="contents"> 
           <h1 class="pageHeading"><?php echo NAVBAR_CHANGE_PREORDER_TITLE;?></h1> 
           <div class="comment">
-          <table  class="preorder_info_box" border="0" cellpadding="0" cellspacing="0">
+          <table  class="preorder_info_box" border="0" cellpadding="0" cellspacing="0" width="100%">
           <tr><td>
          	 <table border="0" cellspacing="0" cellpadding="0" border="0" width="90%" align="center">
               <tr>
