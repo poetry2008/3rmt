@@ -196,6 +196,8 @@ page_head();?>
 }
 }
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+  unset($_SESSION['h_point']); 
+  unset($_SESSION['h_code_fee']); 
   if (isset($_POST['point'])) {
     $h_point = $_POST['point']; 
     tep_session_register('h_point');
