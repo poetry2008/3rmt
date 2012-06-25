@@ -70,7 +70,6 @@ if(!isset($_POST['update_products'])){
 }else{
     $qty = 0;
     $weight_count = 0;
-    $products_qty = array();
     foreach($_POST['update_products'] as $update_key=>$update_value){
       $orders_products_query = tep_db_query("select products_id from ". TABLE_ORDERS_PRODUCTS ." where orders_products_id='". $update_key ."'");
       $orders_products_array = tep_db_fetch_array($orders_products_query);
@@ -80,9 +79,12 @@ if(!isset($_POST['update_products'])){
       $weight_count += $products_weight_array['products_weight'] * $update_value['qty'];
       tep_db_free_result($products_weight_query);
       $qty += $update_value['qty']; 
-      $products_qty[$update_key] = $update_value['qty']; 
+
+      if($update_value['qty'] == 0){
+
+        tep_db_query("delete from ". TABLE_ORDERS_PRODUCTS ." where orders_products_id='". $update_key ."'");
+      }
     }
-    $_SESSION['products_qty'] = $products_qty;
 
     if($qty == 0){
       $error = true;

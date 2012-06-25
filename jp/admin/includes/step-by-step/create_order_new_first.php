@@ -92,7 +92,7 @@ if($order_exists == true){
       </tr>
     </table>
   <?php 
-  if ($_SERVER['PHP_SELF'] != '/admin/create_order_process.php') {
+  //if ($_SERVER['PHP_SELF'] != '/admin/create_order_process.php') {
   ?>
   <p class="pageHeading"><?php echo CREATE_ORDER_TITLE_TEXT;?></p>
 <?php
@@ -106,7 +106,7 @@ if($order_exists == true){
 ?>
   <br>
   <?php 
-  }
+  //}
 ?>
 
   <table border="0" width="100%" cellspacing="0" cellpadding="0">

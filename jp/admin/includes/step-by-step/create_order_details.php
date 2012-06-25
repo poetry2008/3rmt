@@ -529,7 +529,7 @@ if($index > 0){
             }
             $RowStyle = "dataTableContent";
             $porducts_qty = isset($products_error) && $products_error ? 0 : $order->products[$i]['qty'];
-            $porducts_qty = isset($_SESSION['products_qty'][$orders_products_id]) ? $_SESSION['products_qty'][$orders_products_id] : $order->products[$i]['qty'];
+            $porducts_qty = isset($_POST['update_products'][$orders_products_id]['qty']) ? $_POST['update_products'][$orders_products_id]['qty'] : $order->products[$i]['qty'];
             echo '    <tr>' . "\n" .
               '      <td class="' . $RowStyle . '" align="left" valign="top" width="20">'
               . "<input type='hidden' id='update_products_qty_$orders_products_id' value='" . $order->products[$i]['qty'] . "'><input class='update_products_qty' id='update_products_new_qty_$orders_products_id' name='update_products[$orders_products_id][qty]' size='2' value='" . $porducts_qty . "' onkeyup=\"clearLibNum(this);\">&nbsp;x</td>\n" . 
