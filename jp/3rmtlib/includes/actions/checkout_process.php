@@ -819,6 +819,8 @@ unset($_SESSION['campaign_fee']);
 unset($_SESSION['camp_id']); 
 unset($_SESSION['options']);
 unset($_SESSION['options_type_array']);
+unset($_SESSION['weight_fee']);
+unset($_SESSION['free_value']);
 //$pr = '?SID=' . $convenience_sid;
   
 /*

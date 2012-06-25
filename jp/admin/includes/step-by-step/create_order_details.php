@@ -267,8 +267,37 @@ function check_hour_1(value){
   }
 }
 </script>
+<?php
+$orders_get = isset($_GET['oID']) ? '?oID='.$_GET['oID'] : '';
+
+if(isset($_GET['Customer_mail']) && isset($_GET['oID'])){
+  $Customer_mail_get = '&Customer_mail='.$_GET['Customer_mail']; 
+}elseif(isset($_GET['Customer_mail'])){
+  $Customer_mail_get = '?Customer_mail='.$_GET['Customer_mail']; 
+}else{
+  $Customer_mail_get = '';
+}
+
+if(isset($_GET['oID']) && isset($_GET['site_id'])){
+  $site_get = '&site_id='.$_GET['site_id'];
+}elseif(isset($_GET['site_id']) && isset($_GET['Customer_mail'])){
+
+  $site_get = '&site_id='.$_GET['site_id'];
+}elseif(isset($_GET['site_id'])){
+  $site_get = '?site_id='.$_GET['site_id'];
+}else{
+  $site_get = '';
+}
+
+if(isset($_GET['action']) && $_GET['action'] == 'add_product'){
+
+  $add_product_get = '&action=add_product';
+}else{
+  $add_product_get = '';
+}
+?>
 <table border="0" width="100%" cellspacing="0" cellpadding="2">
-<form id="create_order_form_1" name="create_order_form_1" method="post" action="create_order_process.php">
+<form id="create_order_form_1" name="create_order_form_1" method="post" action="create_order_process.php<?php echo $orders_get.$add_product_get.$Customer_mail_get.$site_get;?>">
 <input type="hidden" id="fax_value" name="fax" value="">
   <tr>
   <td class="formAreaTitle">
@@ -292,11 +321,19 @@ function check_hour_1(value){
   <td class="main">&nbsp;<?php echo ENTRY_LAST_NAME;?></td>
   <td class="main">
      &nbsp;
-     <?php echo tep_draw_input_field('lastname', $lastname) . '&nbsp;' . 
-     ENTRY_LAST_NAME_TEXT;?>&nbsp;&nbsp;<?php echo CREATE_ORDER_NOTICE_ONE;
-     if (isset($entry_firstname_error) && $entry_firstname_error == true) { 
-       echo '&nbsp;&nbsp;<font color="red">Error</font>'; 
-     }
+     <?php 
+      $lastname = isset($_POST['lastname']) ? $_POST['lastname'] : $lastname;
+      echo tep_draw_input_field('lastname', $lastname) . '&nbsp;' . 
+       ENTRY_LAST_NAME_TEXT;?>&nbsp;&nbsp;<?php 
+     if (isset($customer_error) && $customer_error == true) { 
+       echo '<font color="red">'. CREATE_ORDER_CUSTOMERS_ERROR .'</font>'; 
+     }else{
+       if (isset($entry_lastname_error) && $entry_lastname_error == true) { 
+         echo '<font color="red">'. CREATE_ORDER_CUSTOMERS_ERROR .'</font>'; 
+       }else{
+         echo CREATE_ORDER_NOTICE_ONE;
+       }
+     } 
      ?>
    </td>
 </tr>
@@ -306,13 +343,21 @@ echo ENTRY_FIRST_NAME;
 ?></td>
 <td class="main">&nbsp;
 <?php
+$firstname = isset($_POST['firstname']) ? $_POST['firstname'] : $firstname;
 echo tep_draw_input_field('firstname', $firstname) . '&nbsp;' . ENTRY_FIRST_NAME_TEXT;
 ?>&nbsp;&nbsp;<?php
-echo CREATE_ORDER_NOTICE_ONE;?>
-  
-<?php
-if (isset($entry_lastname_error) && $entry_lastname_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; };
-?></td>
+if (isset($customer_error) && $customer_error == true) { 
+  echo '<font color="red">'. CREATE_ORDER_CUSTOMERS_ERROR .'</font>'; 
+}else{
+  if (isset($entry_firstname_error) && $entry_firstname_error == true && !isset($customer_error)){
+    echo '<font color="red">'. CREATE_ORDER_CUSTOMERS_ERROR .'</font>'; 
+  }else{
+    echo CREATE_ORDER_NOTICE_ONE;
+  }
+}
+?>
+
+</td>
 </tr>
 <tr>
 <td class="main">&nbsp;<?php
@@ -324,7 +369,7 @@ echo tep_draw_hidden_field('email_address', $email_address) . '<font color="red"
 ?>
   
 <?php
-if (isset($entry_email_address_error) && $entry_email_address_error == true) { echo '&nbsp;&nbsp;<font color="red">Error</font>'; };
+if (isset($entry_email_address_error) && $entry_email_address_error == true) { echo '&nbsp;&nbsp;<font color="red">必須</font>'; };
 ?></td>
 </tr>
 </table></td>
@@ -483,8 +528,8 @@ if($index > 0){
               $only_buy= false;
             }
             $RowStyle = "dataTableContent";
-            $porducts_qty = isset($_GET['error']) && $_GET['error'] == 1 ? 0 : $order->products[$i]['qty'];
-            $porducts_qty = isset($_SESSION['products_qty'][$orders_products_id]) ? $_SESSION['products_qty'][$orders_products_id] : $order->products[$i]['qty'];
+            $porducts_qty = isset($products_error) && $products_error ? 0 : $order->products[$i]['qty'];
+            $porducts_qty = isset($_POST['update_products'][$orders_products_id]['qty']) ? $_POST['update_products'][$orders_products_id]['qty'] : $order->products[$i]['qty'];
             echo '    <tr>' . "\n" .
               '      <td class="' . $RowStyle . '" align="left" valign="top" width="20">'
               . "<input type='hidden' id='update_products_qty_$orders_products_id' value='" . $order->products[$i]['qty'] . "'><input class='update_products_qty' id='update_products_new_qty_$orders_products_id' name='update_products[$orders_products_id][qty]' size='2' value='" . $porducts_qty . "' onkeyup=\"clearLibNum(this);\">&nbsp;x</td>\n" . 
@@ -633,10 +678,11 @@ if($index > 0){
           $add_product_products_id = 0;
 
         // Step 1: Choose Category
-        $product_error = isset($_GET['error']) && $_GET['error']==1 ? PRODUCT_ERROR : '';
+        $product_error = isset($products_error) && $products_error == true ? PRODUCT_ERROR : '';
         //if($_GET['error']){
           //$product_error = $index > 0 ? '' : PRODUCT_ERROR;
         //}
+        $PHP_SELF = 'create_order.php';
         print "<tr>\n";
         print "<td class='dataTableContent' width='70'><b>" . ADDPRODUCT_TEXT_STEP . " 1:</b></td>\n";
         print "<td class='dataTableContent'>";

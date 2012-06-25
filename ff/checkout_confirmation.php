@@ -326,6 +326,8 @@ if($city_free_value != ''){
   $free_value = $address_free_value != '' ? $address_free_value : $country_free_value;
 }
 
+$_SESSION['weight_fee'] = $weight_fee;
+$_SESSION['free_value'] = $free_value;
 $shipping_fee = $cart->total > $free_value ? 0 : $weight_fee;
 //echo $flag;
 //echo '<br />';

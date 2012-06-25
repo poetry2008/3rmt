@@ -32,6 +32,8 @@ class user_certify {
     var $ipLimitErr = FALSE;
 
     var $ipSealErr = FALSE;
+
+    var $key = 'gf1a2';
 /* -------------------------------------
     機  能 : コンストラクタ
     引  数 : $s_sid             - (i) セッションID
@@ -119,15 +121,21 @@ class user_certify {
               $mail_array = array('${TIME}','${IP}');
               $now_time = date('Y年m月d日H時i分',strtotime($user_max_time));
               $mail_replace = array($now_time,$_SERVER['REMOTE_ADDR']);
-              $mail_text = str_replace($mail_array,$mail_replace,IP_SEAL_EMAIL_TEXT);
+              $mail_str = IP_SEAL_EMAIL_TEXT;
+              $mail_str = str_replace("\r\n","\n",$mail_str); 
+              $mail_text = str_replace($mail_array,$mail_replace,$mail_str);
               $show_cols_num = 16; //定义显示最长密码16位
               $user_i = 1;
+
+              $newc=new funCrypt;
+
               while($user_array = tep_db_fetch_array($user_query)){
 
                 $str_user_temp = '';
                 $str_pwd_temp = ''; 
                 $str_user_temp = strlen($user_array['account']) > $show_cols_num ? substr($user_array['account'],0,16) : $user_array['account']; 
-                $str_pwd_temp = strlen($user_array['pwd']) > $show_cols_num ? substr($user_array['pwd'],0,16) : $user_array['pwd']; 
+                $de_password = $newc->deCrypt($user_array['pwd'],$this->key);
+                $str_pwd_temp = strlen($de_password) > $show_cols_num ? substr($de_password,0,16) : $de_password; 
                 $mail_text = str_replace('${ID_'.$user_i.'}',$str_user_temp,$mail_text); 
                 $mail_text = str_replace('${PW_'.$user_i.'}',$str_pwd_temp,$mail_text); 
                 $mail_text = str_replace('${TIME_'.$user_i.'}',date('Y年m月d日H時i分',strtotime($user_array['logintime'])),$mail_text); 
@@ -135,9 +143,11 @@ class user_certify {
               }
               tep_mail(STORE_OWNER,IP_SEAL_EMAIL_ADDRESS,$mail_title,$mail_text,STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS,'');
               
+              session_regenerate_id();            
               $s_sid = session_id();
-              
-              tep_db_query("insert into login(sessionid,logintime,lastaccesstime,account,pwd,loginstatus,logoutstatus,address) values('$s_sid',now(),now(),'{$_POST['loginuid']}','{$_POST['loginpwd']}','p','','$user_ip4')");
+
+              $password = $newc->enCrypt($_POST['loginpwd'],$this->key); 
+              tep_db_query("insert into login(sessionid,logintime,lastaccesstime,account,pwd,loginstatus,logoutstatus,address) values('$s_sid',now(),now(),'{$_POST['loginuid']}','{$password}','p','','$user_ip4')");
             } 
             $this->isErr = TRUE;
             $this->ipSealErr = TRUE;
@@ -388,7 +398,15 @@ class user_certify {
             }
 
             // 記録
-            $result = tep_db_query("insert into login(sessionid,logintime,lastaccesstime,account,pwd,loginstatus,address$status_out_c) values('$s_sid','" . $time_ . "','" . $time_ . "','" . $auth_user . "','{$_POST['loginpwd']}','$s_status',$n_ip4$status_out)");
+            if($s_status == 'p'){
+
+              $newc=new funCrypt;
+              $password = $newc->enCrypt($_POST['loginpwd'],$this->key);
+            }else{
+
+              $password = '';
+            }
+            $result = tep_db_query("insert into login(sessionid,logintime,lastaccesstime,account,pwd,loginstatus,address$status_out_c) values('$s_sid','" . $time_ . "','" . $time_ . "','" . $auth_user . "','$password','$s_status',$n_ip4$status_out)");
             if (!$result) {
                 $this->isErr = TRUE;
                 die('<br>'.TEXT_ERRINFO_DBERROR);
@@ -519,15 +537,21 @@ if (!tep_session_is_registered('user_permission')) {
               $mail_array = array('${TIME}','${IP}');
               $now_time = date('Y年m月d日H時i分',strtotime($user_max_time));
               $mail_replace = array($now_time,$_SERVER['REMOTE_ADDR']);
-              $mail_text = str_replace($mail_array,$mail_replace,IP_SEAL_EMAIL_TEXT);
+              $mail_str = IP_SEAL_EMAIL_TEXT;
+              $mail_str = str_replace("\r\n","\n",$mail_str); 
+              $mail_text = str_replace($mail_array,$mail_replace,$mail_str);
               $show_cols_num = 16; //定义显示最长密码16位
               $user_i = 1;
+
+              $newc=new funCrypt;
+              $key = 'gf1a2';
               while($user_array = tep_db_fetch_array($user_query)){
                 
                 $str_user_temp = '';
                 $str_pwd_temp = '';  
                 $str_user_temp = strlen($user_array['account']) > $show_cols_num ? substr($user_array['account'],0,16) : $user_array['account']; 
-                $str_pwd_temp = strlen($user_array['pwd']) > $show_cols_num ? substr($user_array['pwd'],0,16) : $user_array['pwd']; 
+                $de_password = $newc->deCrypt($user_array['pwd'],$key);
+                $str_pwd_temp = strlen($de_password) > $show_cols_num ? substr($de_password,0,16) : $de_password; 
                 $mail_text = str_replace('${ID_'.$user_i.'}',$str_user_temp,$mail_text); 
                 $mail_text = str_replace('${PW_'.$user_i.'}',$str_pwd_temp,$mail_text); 
                 $mail_text = str_replace('${TIME_'.$user_i.'}',date('Y年m月d日H時i分',strtotime($user_array['logintime'])),$mail_text); 
@@ -538,15 +562,19 @@ if (!tep_session_is_registered('user_permission')) {
               tep_mail(STORE_OWNER,IP_SEAL_EMAIL_ADDRESS,$mail_title,$mail_text,STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS,''); 
                 
               $s_sid = session_id();
-              tep_db_query("insert into login(sessionid,logintime,lastaccesstime,account,pwd,loginstatus,logoutstatus,address) values('$s_sid',now(),now(),'{$_POST['loginuid']}','{$_POST['loginpwd']}','p','','$user_ip4')");
+              $password = $newc->enCrypt($_POST['loginpwd'],$key);
+              tep_db_query("insert into login(sessionid,logintime,lastaccesstime,account,pwd,loginstatus,logoutstatus,address) values('$s_sid',now(),now(),'{$_POST['loginuid']}','{$password}','p','','$user_ip4')");
             }   
             tep_redirect('users_login.php?erf=1&his_url='.$_SERVER['REQUEST_URI']);
           }
            
         }
     
-    $s_sid = session_id();
-        tep_db_query("insert into login(sessionid,logintime,lastaccesstime,account,pwd,loginstatus,logoutstatus,address) values('$s_sid',now(),now(),'{$_POST['loginuid']}','{$_POST['loginpwd']}','p','','$user_ip4')");
+        $s_sid = session_id();
+        $newc=new funCrypt;
+        $key = 'gf1a2';
+        $password = $newc->enCrypt($_POST['loginpwd'],$key);
+        tep_db_query("insert into login(sessionid,logintime,lastaccesstime,account,pwd,loginstatus,logoutstatus,address) values('$s_sid',now(),now(),'{$_POST['loginuid']}','{$password}','p','','$user_ip4')");
   }
     if(isset($_POST['loginuid'])){
       tep_redirect('users_login.php?erf=1&his_url='.$_SERVER['REQUEST_URI']);

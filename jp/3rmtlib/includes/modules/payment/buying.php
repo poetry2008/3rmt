@@ -398,7 +398,7 @@ class buying extends basePayment  implements paymentInterface  {
        <td class="main" colspan="3"><b>
        <?php } ?>
        <?php 
-       echo TS_TABLE_HEADING_BANK; ?></b><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; 
+       echo TS_TABLE_HEADING_BANK; ?></b>&nbsp;<?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; 
     ?></td>
     </tr>
         <tr>
