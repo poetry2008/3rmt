@@ -1560,7 +1560,7 @@ function work_add(){
   num = work_num.value;
   num = parseInt(num);
   work_num.value = num+1; 
-  var work_str = '<tr id="workid'+num+'"><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;お届け可能時間'+num+'</td><td><input type="text" name="work_start_hour[]" size="3" maxlength="2" value="">&nbsp;:&nbsp;<input type="text" name="work_start_min[]" size="3" maxlength="2" value="">&nbsp;～&nbsp;<input type="text" name="work_end_hour[]" size="3" maxlength="2" value="">&nbsp;:&nbsp;<input type="text" name="work_end_min[]" size="3" maxlength="2" value="">&nbsp;<input type="button" value="削除" onclick="work_del('+num+');"><br><span id="work_error'+num+'"></span></td></tr>';
+  var work_str = '<tr id="workid'+num+'"><td width="30%" align="left">お届け可能時間'+num+'</td><td><input type="text" name="work_start_hour[]" size="3" maxlength="2" value="">&nbsp;:&nbsp;<input type="text" name="work_start_min[]" size="3" maxlength="2" value="">&nbsp;～&nbsp;<input type="text" name="work_end_hour[]" size="3" maxlength="2" value="">&nbsp;:&nbsp;<input type="text" name="work_end_min[]" size="3" maxlength="2" value="">&nbsp;<input type="button" value="削除" onclick="work_del('+num+');"><br><span id="work_error'+num+'"></span></td></tr>';
 
  $("#work_list").append(work_str); 
 }
