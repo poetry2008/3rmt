@@ -194,8 +194,11 @@ function session_value(){
   ?>
   
     for(x in session_array){
-
-      $("#"+x).val(session_array[x]);
+      if(document.getElementById(x)){
+        var pre_id = document.getElementById(x); 
+        pre_id.style.color = '#000';
+        $("#"+x).val(session_array[x]);
+      }
     }
 
 }
@@ -937,7 +940,7 @@ document.forms.order1.submit();
             $address_history_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where customers_id='". $_SESSION['customer_id'] ."'");
             $address_history_num = tep_db_num_rows($address_history_query);
             tep_db_free_result($address_history_query);
-            if($address_history_num == 0 && !isset($_POST['address_option'])){
+            if($address_history_num == 0 && !isset($_POST['address_option']) && !isset($_SESSION['preorder_information'])){
               $checked_str_old = '';
               $checked_str_new = 'checked';
         ?>

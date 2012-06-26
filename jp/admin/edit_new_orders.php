@@ -89,8 +89,8 @@ if (tep_not_null($action)) {
     $oID      = tep_db_prepare_input($_GET['oID']);
     $status   = tep_db_prepare_input($_POST['s_status']);
     $title    = tep_db_prepare_input($_POST['title']);
-    $comments = tep_db_prepare_input($_POST['comments']);
-    $comments_text = tep_db_prepare_input($_POST['comments_text']);
+    $comments = tep_db_input($_POST['comments']);
+    $comments_text = tep_db_input($_POST['comments_text']);
     $payment_method = tep_db_prepare_input($_POST['payment_method']); 
     $site_id  = tep_get_site_id_by_orders_id($oID);
 
@@ -346,7 +346,8 @@ if (tep_not_null($action)) {
       //} else {
         //$customer_notified = '0';
       //}
-      tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . $customer_notified . "', '".$comment_arr['comment']."\n".$comments_text."')");
+      $comment_str = is_array($comment_arr) ? $comment_arr['comment'] : $comments_text;
+      tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . $customer_notified . "', '".$comment_str."')");
       // 同步问答
       //    orders_status_updated_for_question($oID,tep_db_input($status),$_POST['notify_comments'] == 'on', $_POST['qu_type']);
       $order_updated = true;
@@ -1134,7 +1135,7 @@ if($address_error == false){
             $mailoption['SITE_MAIL']        = get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS',$order->info['site_id']);//d
             $mailoption['SITE_URL']         = get_url_by_site_id($order->info['site_id']);
 
-            if(isset($comment_arr) && !empty($comment_arr)){
+            if(is_array($comment_arr) && !empty($comment_arr)){
                $mailoption['BANK_NAME']        = $comment_arr['payment_bank_info']['bank_name'];      //?
                $mailoption['BANK_SHITEN']      = $comment_arr['payment_bank_info']['bank_shiten'] ;   //?
                $mailoption['BANK_KAMOKU']      = $comment_arr['payment_bank_info']['bank_kamoku'];    //?
@@ -2674,12 +2675,14 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
             echo 'document.getElementsByName("bank_kouza_name")[0].value = "'.$bank_kouza_name[1].'";'."\n";
             break;
           case 'コンビニ決済':
-            $con_email = explode(":",trim($pay_comment));
+            $pay_array = explode("\n",trim($pay_comment));
+            $con_email = explode(":",trim($pay_array[0]));
             $con_email[1] = isset($_POST['con_email']) ? $_POST['con_email'] : $con_email[1];
             echo 'document.getElementsByName("con_email")[0].value = "'.$con_email[1].'";'."\n";
             break;
           case '楽天銀行':
-            $rak_tel = explode(":",trim($pay_comment));
+            $pay_array = explode("\n",trim($pay_comment));
+            $rak_tel = explode(":",trim($pay_array[0]));
             $rak_tel[1] = isset($_POST['rak_tel']) ? $_POST['rak_tel'] : $rak_tel[1];
             echo 'document.getElementsByName("rak_tel")[0].value = "'.$rak_tel[1].'";'."\n";
             break;
