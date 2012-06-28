@@ -674,12 +674,21 @@ if (tep_not_null($action)) {
   }
   tep_db_free_result($address_sh_his_query);
 if($address_error == false){
+  $address_history_search_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where orders_id='".$oID."'");
+  $address_history_num_rows = tep_db_num_rows($address_history_search_query);
+  tep_db_free_result($address_history_search_query);
+
+  if($address_history_num_rows > 0){
+    $orders_id_flag = date("Ymd") . '-' . date("His") . tep_get_order_end_num();
+  }else{
+    $orders_id_flag = $oID;
+  }
   foreach($options_info_array as $address_history_key=>$address_history_value){
       $address_history_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where name_flag='". substr($address_history_key,3) ."'");
       $address_history_array = tep_db_fetch_array($address_history_query);
       tep_db_free_result($address_history_query);
       $address_history_id = $address_history_array['id'];
-      $address_history_add_query = tep_db_query("insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'$oID',{$check_status['customers_id']},$address_history_id,'{$address_history_array['name_flag']}','$address_history_value')");
+      $address_history_add_query = tep_db_query("insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'$orders_id_flag',{$check_status['customers_id']},$address_history_id,'{$address_history_array['name_flag']}','$address_history_value')");
       tep_db_free_result($address_history_add_query);
   }
 }
@@ -1169,7 +1178,36 @@ if($address_error == false){
             foreach ($mailoption as $key=>$value){
               $email = str_replace('${'.strtoupper($key).'}',$value,$email);
               }
+            
+            $email_temp = '▼ポイント割引';
+            $email_temp_str = '▼ ポイント割引';
+            $email_shipping_fee = '▼お届け料金　　　：'.$shipping_fee.'円'.$email_temp;
+            $email = str_replace($email_temp,$email_shipping_fee,$email);
+            $email = str_replace($email_temp_str,$email_shipping_fee,$email);
+            $email_address = '▼注文商品';
+            //zhusuo
+            if(isset($options_info_array) && !empty($options_info_array)){
+              $address_len_array = array();
+              foreach($options_info_array as $address_value){
 
+                $address_len_array[] = strlen($address_value);
+              }
+              $maxlen = max($address_len_array);
+              $email_address_str = '▼住所情報'."\n";
+              $email_address_str .= '------------------------------------------'."\n";
+              $maxlen = 9;
+              foreach($options_info_array as $ad_key=>$ad_value){
+                $ad_name_query = tep_db_query("select name from ". TABLE_ADDRESS ." where name_flag='". substr($ad_key,3) ."'");
+                $ad_name_array = tep_db_fetch_array($ad_name_query);
+                tep_db_free_result($ad_name_query);
+                $ad_len = mb_strlen($ad_name_array['name'],'utf8');
+                $temp_str = str_repeat('　',$maxlen-$ad_len);
+                $email_address_str .= $ad_name_array['name'].$temp_str.'：'.$ad_value."\n";
+              }
+              $email_address_str .= '------------------------------------------'."\n";
+              $email_address_str .= $email_address;
+              $email = str_replace($email_address,$email_address_str,$email);
+          }
               //$email_order = $payment_class->getOrderMailString($mailoption);  
             //bobhero end}}}
             
