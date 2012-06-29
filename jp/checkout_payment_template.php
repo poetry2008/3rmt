@@ -98,8 +98,7 @@
   </td> 
   </tr> 
   <?php
-
-                                            //点数处理
+  //点数处理
   if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() > 0) {//point --  
     if($guestchk == '1') {
       echo '<input type="hidden" name="point" value="0">';

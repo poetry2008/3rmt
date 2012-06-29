@@ -226,8 +226,6 @@
                );
   }
   
-  //print_r($_SESSION);
-  //print_r($_SESSION['cart']->contents);
   $keys = array_keys($_SESSION['cart']->contents);
   $product_ids = array();
   foreach($keys as $akey){
@@ -236,7 +234,6 @@
       $product_ids[] = $arr[0];
     }
   }
-  //print_r($_COOKIES);
 ?>
 <?php page_head();?>
 <script type="text/javascript"><!--
@@ -477,7 +474,7 @@ function address_option_show(action){
       $("#error_"+x).html('');
       if(document.getElementById("l_"+x)){
         if($("#l_"+x).val() == 'true'){
-          $("#r_"+x).html('&nbsp;*必須');
+          $("#r_"+x).html('&nbsp;*<?php echo TEXT_REQUIRED;?>');
         }
       }
    }
@@ -567,7 +564,7 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
         ?> 
         if(document.getElementById("l_"+x)){
         if($("#l_"+x).val() == 'true'){
-          $("#r_"+x).html('&nbsp;*必須');
+          $("#r_"+x).html('&nbsp;*<?php echo TEXT_REQUIRED;?>');
         }
         }
         <?php
@@ -1139,9 +1136,7 @@ $(document).ready(function(){
 </td></tr>
 <?php
                             }
-    //print_r($_SESSION);
     $hm_option->render('', false, true);
-    //echo '<tr><td width="10">'. tep_draw_separator('pixel_trans.gif', '10', '1') .'</td><td class="main" width="100%" height="30" colspan="2" style="word-break:break-all;"><span id="address_fee"></span></td></tr>'; 
 ?>
                           </table>
                         </td>
@@ -1160,13 +1155,6 @@ $(document).ready(function(){
                   <td>
           
 <table width="100%" border="0" cellspacing="0" cellpadding="2">
-<!--
-  <tr>
-    <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-  <td class="main"><?php echo TEXT_TORIHIKIHOUHOU; ?></td>
-    <td class="main"><?php echo tep_get_torihiki_select_by_products($product_ids);//tep_draw_pull_down_menu('torihikihouhou', $torihiki_list, $torihikihouhou); ?></td>
-  </tr>
--->
 <?php
 if (!isset($torihikihouhou_error)) $torihikihouhou_error = NULL ; //del notice
   if($torihikihouhou_error != '') {
@@ -1180,7 +1168,6 @@ if (!isset($torihikihouhou_error)) $torihikihouhou_error = NULL ; //del notice
   }
 ?>
   <tr>
-   <!-- <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> -->
   <td class="main" width="30%"><?php echo TEXT_TORIHIKIKIBOUBI; ?></td>
     <td class="main" width="70%">
 <?php
@@ -1193,10 +1180,10 @@ if (!isset($torihikihouhou_error)) $torihikihouhou_error = NULL ; //del notice
     $mimutes = date('i');
 ?>
   <select name="date" onChange="selectDate('<?php echo $work_start; ?>', '<?php echo $work_end; ?>',this.value);$('#date_error').remove();">
-    <option value="">希望日を選択してください</option>
+    <option value=""><?php echo EXPECT_DATE_SELECT;?></option>
     <?php
           $oarr = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
-    $newarr = array('月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日', '日曜日');
+          $newarr = array(CHECKOUT_SHIPPING_MONDAY_TEXT, CHECKOUT_SHIPPING_TUESDAY_TEXT, CHECKOUT_SHIPPING_WENSDAY_TEXT, CHECKOUT_SHIPPING_THIRSDAY_TEXT, CHECKOUT_SHIPPING_FRIDAY_TEXT, CHECKOUT_SHIPPING_STATURDAY_TEXT, CHECKOUT_SHIPPING_SUNDAY_TEXT);
     $date_session_flag = false; 
     for($j = 0;$j < $shipping_time;$j++){
       if(isset($_POST['date']) && $_POST['date'] != ""){
@@ -1208,15 +1195,9 @@ if (!isset($torihikihouhou_error)) $torihikihouhou_error = NULL ; //del notice
 
         $date_session_flag = true;
       }
-      echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'" '. $selected_str .'>'.str_replace($oarr, $newarr, date("Y年m月d日（l）", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
+      echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'" '. $selected_str .'>'.str_replace($oarr, $newarr, date("Y".CHECKOUT_SHIPPING_YEAR_TEXT."m".CHECKOUT_SHIPPING_MONTH_TEXT."d".CHECKOUT_SHIPPING_DAY_TEXT."（l）", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
 
     }
-    /*
-    for($i=0; $i<7; $i++) {
-      //echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$i,$year)).'">'.strftime("%Y年%m月%d日（%a）", mktime(0,0,0,$m_num,$d_num+$i,$year)).'</option>' . "\n";
-      echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$i,$year)).'">'.str_replace($oarr, $newarr,date("Y年m月d日（l）", mktime(0,0,0,$m_num,$d_num+$i,$year))).'</option>' . "\n";
-    }
-     */
     ?>
   </select>
   </td>
@@ -1236,24 +1217,12 @@ if (!isset($date_error)) $date_error= NULL ; //del notice
    
   <td class="main"><?php echo TEXT_TORIHIKIKIBOUJIKAN; ?></td>
     <td class="main" id="shipping_list_show">
-<!--
-  <select name="hour" onChange="selectHour('<?php //echo $hours; ?>', '<?php echo $mimutes; ?>')">
-    <option value="">--</option>
-  </select>
-  &nbsp;時&nbsp;
-  <select name="min">
-    <option value="">--</option>
-  </select>
-  &nbsp;分&nbsp;
-  <?php //echo TEXT_CHECK_24JI; ?>
--->
   </td>
   </tr>
 </table>
 <table border="0" cellpadding="2" cellspacing="0" style=" position:absolute; width:488px;">
 <tr id="shipping_list_min" style="display:none;">
-<!-- <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?><input type="hidden" id="ele_id" name="ele" value=""></td> 
---> <td class="main" width="136">&nbsp;</td>
+<td class="main" width="136">&nbsp;</td>
  <td class="main" id="shipping_list_show_min">
  </td>
  </tr>
@@ -1287,9 +1256,7 @@ if (!isset($date_error)) $date_error= NULL ; //del notice
           <tr> 
             <td class="main">
         <br>
-          「指定した時間より早くできるなら早く来てほしい」をご指定いただきましたお客様へ<br>
-          ご入金確認後、最短にて目的地へお届けにまいります。<br>
-          お客様がいらっしゃらない場合は、ご指定いただきました日時へ変更させていただきます。<br>
+        <?php echo TEXT_CHECKOUT_SHIPPING_READ;?> 
         <br>
       </td> 
           </tr> 
