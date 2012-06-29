@@ -41,4 +41,8 @@ define('TEXT_HANDLE_FEE_CONFIRMATION', '手数料:');
 define('TEXT_SHIPPING_FEE','配送料:');
 define('TEXT_SHIPPING_FREE','無料');
 define('TEXT_OPTIONS_TITLE','住所&nbsp;');
+define('TEXT_CONFIRMATION_READ', 'ご注文内容をご確認の上「注文する」をクリックしてください。');
+define('TEXT_CONFIRMATION_NUM_UNIT', '個');
+define('TEXT_CONFIRMATION_HOUR_TEXT', '時');
+define('TEXT_CONFIRMATION_MINUTE_TEXT', '分');
 

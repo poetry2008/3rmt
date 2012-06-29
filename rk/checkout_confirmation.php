@@ -59,7 +59,7 @@ require(DIR_WS_ACTIONS.'checkout_confirmation.php');
         <td align="right">
         <table border="0" width="100%" cellspacing="0" cellpadding="0" class="c_pay_info">
         <tr>
-        <td class="main"><b>ご注文内容をご確認の上「注文する」をクリックしてください。</b></td>
+        <td class="main"><b><?php echo TEXT_CONFIRMATION_READ;?></b></td>
         <td class="main" align="right"><?php echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER);?></td>
         </tr>
         </table>
@@ -122,7 +122,7 @@ require(DIR_WS_ACTIONS.'checkout_confirmation.php');
     $product_info = tep_get_product_by_id((int)$order->products[$i]['id'], SITE_ID, $languages_id);
     
     echo '          <tr>' . "\n" .
-         '            <td class="main" align="center" valign="top" width="150">' . $order->products[$i]['qty'] . '&nbsp;個' . (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($order->products[$i]['qty'], $order->products[$i]['id']) ? '<br><span style="font-size:10px">'. tep_get_full_count_in_order2($order->products[$i]['qty'], $order->products[$i]['id']) .'</span>': '') . '</td>' . "\n" .
+         '            <td class="main" align="center" valign="top" width="150">' .  $order->products[$i]['qty'] . '&nbsp;'.TEXT_CONFIRMATION_NUM_UNIT . (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($order->products[$i]['qty'], $order->products[$i]['id']) ? '<br><span style="font-size:10px">'. tep_get_full_count_in_order2($order->products[$i]['qty'], $order->products[$i]['id']) .'</span>': '') . '</td>' . "\n" .
          '            <td class="main" valign="top">' . $order->products[$i]['name'];
     
   if ($order->products[$i]['price'] < 0) {
@@ -180,9 +180,6 @@ require(DIR_WS_ACTIONS.'checkout_confirmation.php');
         <tr> 
           <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
         </tr> 
-    
- <!-- 住所信息生成 -->
-
 <?php
 if(!empty($_SESSION['options'])){
 ?>  
@@ -213,7 +210,6 @@ if(!empty($_SESSION['options'])){
   </table>
   <?php }?>
 </td></tr>
-<!-- 配送费用计算-->
 <?php
 /*
  * 计算配送费用
@@ -337,13 +333,6 @@ if($city_free_value != ''){
 $_SESSION['weight_fee'] = $weight_fee;
 $_SESSION['free_value'] = $free_value;
 $shipping_fee = $cart->total > $free_value ? 0 : $weight_fee;
-//echo $flag;
-//echo '<br />';
-//echo '<input type="hidden" name="weight_fee" value="'. $weight_fee .'">今回のお届け料金は<font color="red"><b>'. $shipping_fee .'</b></font>円です。';
-//echo '<br />';
-//echo '<input type="hidden" name="free_value" value="'. $free_value .'">※お買い物の総額は<font color="red"><b>'. $free_value .'</b></font>円以上にお買いいただければ、お届け料金は無料になります。';
-//echo '<br />';
-//tep_db_close();
 ?>
    </table>
 </td>
@@ -357,12 +346,8 @@ $shipping_fee = $cart->total > $free_value ? 0 : $weight_fee;
 <?php
 }
 ?>
-<!-- 住所信息生成结束 -->
 <tr> 
 <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="formArea"> 
-  <!--<tr> 
-  <td>
-  <table width="100%" border="0" cellspacing="0" cellpadding="2">-->
   <tr>
   <td class="main" colspan="3"><b><?php echo TEXT_TORIHIKI_TITLE; ?></b><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
   </tr>
@@ -377,16 +362,13 @@ $shipping_fee = $cart->total > $free_value ? 0 : $weight_fee;
       <td class="main"><?php echo TEXT_TORIHIKIKIBOUJIKAN; ?></td>
         <td class="main">
       <?php echo $start_hour; ?>
-  時
+<?php echo TEXT_CONFIRMATION_HOUR_TEXT;?>
 <?php echo $start_min; ?>
- 分&nbsp;～
+ <?php echo TEXT_CONFIRMATION_MINUTE_TEXT;?>&nbsp;～
 <?php echo $end_hour; ?>
- 時
+<?php echo TEXT_CONFIRMATION_HOUR_TEXT;?>
 <?php echo $end_min; ?>
- 分
-      <!--</td>
-      </tr>
-      </table>-->
+<?php echo TEXT_CONFIRMATION_MINUTE_TEXT;?>
     </td>
   </tr>
 </table>
@@ -620,19 +602,20 @@ if (is_array($payment_modules->modules)) {
 ?> 
         <tr> 
           <td><table border="0" width="100%" cellspacing="0" cellpadding="0" class="c_pay_info"> 
-          <tr><td class="main"><b>ご注文内容をご確認の上「注文する」をクリックしてください。</b></td>
+          <tr><td class="main"><b><?php echo TEXT_CONFIRMATION_READ;?></b></td>
                 <td align="right" class="main"> <?php
   if (is_array($payment_modules->modules)) {
     echo $payment_modules->process_button($payment);
   }
 
   //character  
+  /* 
   if(isset($_SESSION['character'])){
     foreach($_SESSION['character'] as $ck => $cv){
     echo tep_draw_hidden_field("character[$ck]", $cv);
   }
   }
-  
+  */ 
   echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER) . "\n";
 ?> </td> 
               </tr> 

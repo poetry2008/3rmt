@@ -94,9 +94,6 @@
         <tr>
           <td><table border="0" width="100%" cellspacing="0" cellpadding="2">
             <tr>
-<!--
-              <td align="center" class="main"><?php echo '<a href="' . tep_href_link(FILENAME_ADDRESS_BOOK, '', 'SSL') . '">' . tep_image_button('button_address_book.gif', IMAGE_BUTTON_ADDRESS_BOOK) . '</a>'; ?></td>
--->       
               <td align="center" class="main"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT_HISTORY, '', 'SSL') . '">' . tep_image_button('button_history.gif', IMAGE_BUTTON_HISTORY) . '</a>'; ?></td>
               <td align="center" class="main"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT_EXIT, 'check_from='.time(), 'SSL') . '">' . tep_image_button('button_exit01.gif', IMAGE_BUTTON_CUSTOMERS_EXIT) . '</a>'; ?></td>
 
