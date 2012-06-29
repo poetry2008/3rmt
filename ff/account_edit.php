@@ -167,7 +167,6 @@ case 'per':
 
       // ccdd
         tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array, 'update', "customers_id = '" . tep_db_input($customer_id) . "' and address_book_id = '" . tep_db_input($customer_default_address_id) . "'");
-        //echo '<script>alert("保存成功");location.href="'. FILENAME_ACCOUNT_EDIT .'";</script>';
         $save_flag = true;
         //tep_redirect(tep_href_link(FILENAME_ACCOUNT_EDIT, '', 'SSL'));
       }else{
@@ -468,7 +467,6 @@ if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
         $address_sql = "insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'{$rand_num}',{$_SESSION['customer_id']},{$add_list_array[substr($address_key,3)]},'". substr($address_key,3) ."','{$address_value}')";
         tep_db_query($address_sql);
       }
-      //echo '<script>alert("保存成功");location.href="'. FILENAME_ACCOUNT_EDIT .'";</script>';
       $save_flag = true; 
     }else{
       foreach($option_info_array as $address_key=>$address_value){
@@ -477,7 +475,6 @@ if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
         tep_db_query($address_sql);
       }
     }
-    //echo '<script>alert("保存成功");location.href="'. FILENAME_ACCOUNT_EDIT .'";</script>'; 
     $save_flag = true;
   }
 }
@@ -487,7 +484,6 @@ if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
     tep_db_query("update ". TABLE_CUSTOMERS ." set new_customers_newsletter='". $newsletter ."' where customers_id='". $_SESSION['customer_id'] ."'");
     tep_db_query("update ". TABLE_CUSTOMERS ." set customers_newsletter='". $newsletter ."' where customers_id='". $_SESSION['customer_id'] ."'");
     tep_db_query("update " . TABLE_CUSTOMERS_INFO . " set customers_info_date_account_last_modified = now() where customers_info_id = '" . tep_db_input($customer_id) . "'");
-    //echo '<script>alert("保存成功");location.href="'. FILENAME_ACCOUNT_EDIT .'";</script>'; 
     $save_flag = true;
   break;
   case 'pwd': 
@@ -527,7 +523,6 @@ if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
     if($error_pwd == false){
 
       tep_db_query("update ". TABLE_CUSTOMERS ." set new_customers_password='".tep_encrypt_password($password) ."',customers_password='". tep_encrypt_password($password) ."' where customers_id='". $_SESSION['customer_id'] ."'");  
-      //echo '<script>alert("保存成功");location.href="'. FILENAME_ACCOUNT_EDIT .'";</script>';
       $save_flag = true;
     }
   break;
@@ -605,12 +600,10 @@ if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
 $(document).ready(function(){ 
 <?php
   if($save_flag == true){
-
-    echo 'alert("保存しました。");location.href="'. FILENAME_ACCOUNT_EDIT .'";';  
+    echo 'alert("'.NOTICE_SAVE_ACCOUNT_SUCCESS.'");location.href="'.  FILENAME_ACCOUNT_EDIT .'";';
   }
   if($del_flag == true){
- 
-    echo 'alert("削除成功");location.href="'. FILENAME_ACCOUNT_EDIT .'";';
+    echo 'alert("'.NOTICE_DELETE_ACCOUNT.'");location.href="'. FILENAME_ACCOUNT_EDIT .'";'; 
   }
 ?>
 });
