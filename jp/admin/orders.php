@@ -82,7 +82,7 @@ function tep_show_orders_products_info($orders_id) {
   if ($orders['confirm_payment_time'] != '0000-00-00 00:00:00') {
     $time_str = date(TEXT_FUNCTION_DATE_STRING, strtotime($orders['confirm_payment_time'])); 
   }else if(tep_check_order_type($orders['orders_id'])!=2){
-    $time_str = '入金まだ'; 
+    $time_str = TEXT_NO_RECEIVABLES; 
   }
   if($time_str){
     $str .= '<tr><td class="main"><b>'.TEXT_FUNCTION_UN_GIVE_MONY_DAY.'</b></td><td class="main" style="color:red;"><b>'.$time_str.'</b></td></tr>';
@@ -567,7 +567,7 @@ switch ($_GET['action']) {
                 $get_point . " where customers_id = '" . $result1['customers_id']."'
                 and customers_guest_chk = '0' ");
           } else {
-            if ($check_status['payment_method'] == 'ポイント(買い取り)') {
+            if ($check_status['payment_method'] == TEXT_PAYMENT_BUY_POINT) {
               $get_point = abs($result3['value']);
             } else {
               $get_point = 0;
@@ -588,7 +588,7 @@ switch ($_GET['action']) {
 
           $ot_query = tep_db_query("select value from " . TABLE_ORDERS_TOTAL . " where orders_id = '".$oID."' and class = 'ot_total'");
           $ot_result = tep_db_fetch_array($ot_query);
-          $otm = (int)$ot_result['value'] . '円';
+          $otm = (int)$ot_result['value'] . TEXT_YEN;
 
           $os_query = tep_db_query("select orders_status_name from " . TABLE_ORDERS_STATUS . " where orders_status_id = '".$status."'");
           $os_result = tep_db_fetch_array($os_query);
@@ -612,11 +612,11 @@ switch ($_GET['action']) {
                   $oID,
                   $check_status['payment_method'],
                   $otm,
-                  tep_torihiki($check_status['torihiki_date']).'～'.date('H時i分',strtotime($check_status['torihiki_date_end'])).'　（24時間表記）',
+                  tep_torihiki($check_status['torihiki_date']).'～'.date('H'.TEXT_HOUR.'i'.TEXT_MIN,strtotime($check_status['torihiki_date_end'])).TEXT_TWENTY_FOUR_HOUR,
                   $os_result['orders_status_name'],
                   get_configuration_by_site_id('STORE_NAME', $site_id),
                   get_url_by_site_id($site_id),
-                  date('Y年n月j日',strtotime(tep_get_pay_day()))
+                  date('Y'.TEXT_ORDER_YEAR.'n'.TEXT_ORDER_MONTH.'j'.TEXT_ORDER_DAY,strtotime(tep_get_pay_day()))
                   ),$title
                 );
           $comments = str_replace(array(
@@ -639,19 +639,19 @@ switch ($_GET['action']) {
                   $oID,
                   $check_status['payment_method'],
                   $otm,
-                  tep_torihiki($check_status['torihiki_date']).'～'.date('H時i分',strtotime($check_status['torihiki_date_end'])).'　（24時間表記）',
+                  tep_torihiki($check_status['torihiki_date']).'～'.date('H'.TEXT_HOUR.'i'.TEXT_MIN,strtotime($check_status['torihiki_date_end'])).TEXT_TWENTY_FOUR_HOUR,
                   $os_result['orders_status_name'],
                   get_configuration_by_site_id('STORE_NAME', $site_id),
                   get_url_by_site_id($site_id),
                   get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
-                  date('Y年n月j日',strtotime(tep_get_pay_day()))
+                  date('Y'.TEXT_ORDER_YEAR.'n'.TEXT_ORDER_MONTH.'j'.TEXT_ORDER_DAY,strtotime(tep_get_pay_day()))
                   ),$comments
                 );
 
           if (!tep_is_oroshi($check_status['customers_id'])) {
             tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
           } 
-          tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS', $site_id), '送信済：'.$title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
+          tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS', $site_id), TEXT_SEND_MAIL.$title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
           $customer_notified = '1';
         }
 
@@ -668,9 +668,9 @@ switch ($_GET['action']) {
       }
 
       if ($order_updated) {
-        $messageStack->add_session('注文ID' . $oID . 'の' . SUCCESS_ORDER_UPDATED, 'success');
+        $messageStack->add_session(TEXT_ORDERS_ID . $oID . TEXT_OF . SUCCESS_ORDER_UPDATED, 'success');
       } else {
-        $messageStack->add_session('注文ID' . $oID . 'の' . WARNING_ORDER_NOT_UPDATED, 'warning');
+        $messageStack->add_session(TEXT_ORDERS_ID . $oID . TEXT_OF . WARNING_ORDER_NOT_UPDATED, 'warning');
       }
       tep_order_status_change($oID,$status);
     }
@@ -778,7 +778,7 @@ switch ($_GET['action']) {
           $get_point = ($result3['value'] - (int)$result2['value']) * $point_rate;
         } else {
           if ($result3['value'] > -200) {
-            if ($check_status['payment_method'] == '来店支払い') {
+            if ($check_status['payment_method'] == TEXT_PAYMENT_VISIT) {
               $get_point = 0;
             } else {
               $get_point = abs($result3['value']);
@@ -789,7 +789,7 @@ switch ($_GET['action']) {
         }
         //$plus = $result4['point'] + $get_point;
 
-        if($check_status['payment_method'] != 'ポイント(買い取り)'){
+        if($check_status['payment_method'] != TEXT_PAYMENT_BUY_POINT){
           tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " . $get_point . 
               " where customers_id = '" . $result1['customers_id']."' 
               and customers_guest_chk = '0' ");
@@ -797,10 +797,10 @@ switch ($_GET['action']) {
       }else{
         $os_query = tep_db_query("select orders_status_name from " . TABLE_ORDERS_STATUS . " where orders_status_id = '".$status."'");
         $os_result = tep_db_fetch_array($os_query);
-        if($os_result['orders_status_name']=='支払通知*'){
+        if($os_result['orders_status_name']==TEXT_PAYMENT_NOTICE){
           $query1 = tep_db_query("select customers_id from " . TABLE_ORDERS . " where orders_id = '".$oID."'");
           $result1 = tep_db_fetch_array($query1);
-          if ($check_status['payment_method'] == 'ポイント(買い取り)') {
+          if ($check_status['payment_method'] == TEXT_PAYMENT_BUY_POINT) {
             $query_t = tep_db_query("select value from ".TABLE_ORDERS_TOTAL." where class = 'ot_total' and orders_id = '".tep_db_input($oID)."'");
             $result_t = tep_db_fetch_array($query_t);
             $get_point = abs(intval($result_t['value']));
@@ -830,7 +830,7 @@ switch ($_GET['action']) {
 
         $ot_query = tep_db_query("select value from " . TABLE_ORDERS_TOTAL . " where orders_id = '".$oID."' and class = 'ot_total'");
         $ot_result = tep_db_fetch_array($ot_query);
-        $otm = (int)$ot_result['value'] . '円';
+        $otm = (int)$ot_result['value'] . TEXT_YEN;
 
         $os_query = tep_db_query("select orders_status_name from " . TABLE_ORDERS_STATUS . " where orders_status_id = '".$status."'");
         $os_result = tep_db_fetch_array($os_query);
@@ -855,12 +855,12 @@ switch ($_GET['action']) {
                 $oID,
                 $check_status['payment_method'],
                 $otm,
-                tep_torihiki($check_status['torihiki_date']).'～'.date('H時i分',strtotime($check_status['torihiki_date_end'])).'　（24時間表記）',
+                tep_torihiki($check_status['torihiki_date']).'～'.date('H'.TEXT_HOUR.'i'.TEXT_MIN,strtotime($check_status['torihiki_date_end'])).TEXT_TWENTY_FOUR_HOUR,
                 $os_result['orders_status_name'],
                 get_configuration_by_site_id('STORE_NAME', $site_id),
                 get_url_by_site_id($site_id),
                 get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
-                date('Y年n月j日',strtotime(tep_get_pay_day()))
+                date('Y'.TEXT_ORDER_YEAR.'n'.TEXT_ORDER_MONTH.'j'.TEXT_ORDER_DAY,strtotime(tep_get_pay_day()))
                 ),$title);
 
         $comments = str_replace(array(
@@ -883,17 +883,17 @@ switch ($_GET['action']) {
                 $oID,
                 $check_status['payment_method'],
                 $otm,
-                tep_torihiki($check_status['torihiki_date']).'～'.date('H時i分',strtotime($check_status['torihiki_date_end'])).'　（24時間表記）',
+                tep_torihiki($check_status['torihiki_date']).'～'.date('H'.TEXT_HOUR.'i'.TEXT_MIN,strtotime($check_status['torihiki_date_end'])).TEXT_TWENTY_FOUR_HOUR,
                 $os_result['orders_status_name'],
                 get_configuration_by_site_id('STORE_NAME', $site_id),
                 get_url_by_site_id($site_id),
                 get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
-                date('Y年n月j日',strtotime(tep_get_pay_day()))
+                date('Y'.TEXT_ORDER_YEAR.'n'.TEXT_ORDER_MONTH.'j'.TEXT_ORDER_DAY,strtotime(tep_get_pay_day()))
                 ),$comments);
         if (!tep_is_oroshi($check_status['customers_id'])) {
           tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
         }
-        tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS', $site_id), '送信済：'.$title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
+        tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS', $site_id), TEXT_SEND_MAIL.$title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
         $customer_notified = '1';
       }
 
@@ -1796,7 +1796,7 @@ dataType: 'text',
 async : false,
 success: function(data) {
 var pwd_arr = data.split(",");
-var pwd =  window.prompt("ワンタイムパスワードを入力してください\r\n","");
+var pwd =  window.prompt("<?php echo TEXT_INPUT_ONE_TIME_PASSWORD;?>\r\n","");
 if(in_array(pwd, pwd_arr)){
 if (window.confirm('<?php echo NOTICE_DEL_CONFIRM_PAYEMENT_TIME;?>')) {
 $.ajax({
@@ -1811,7 +1811,7 @@ window.location.reload;
 }); 
 }
 } else {
-  window.alert("パスワードが違います"); 
+  window.alert("<?php echo TEXT_INPUT_PASSWORD_ERROR;?>"); 
 }
 }
 });
@@ -1952,9 +1952,9 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
         <?php 
 
         /* <!--<td width="100" align="center" class='<?php echo $order->info['orders_important_flag'] ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_flag(this, 'important')">重要</td>--> */ ?>
-        <td width="100" align="center" class='<?php echo $order->info['orders_care_flag'] ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_flag(this, 'care', '<?php echo $order->info['orders_id'];?>')">取り扱い注意</td>
-        <td width="100" align="center" class='<?php echo $order->info['orders_wait_flag'] ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_flag(this, 'wait', '<?php echo $order->info['orders_id'];?>')">取引待ち</td>
-        <td width="100" align="center" class='<?php echo $order->info['orders_inputed_flag'] ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_flag(this, 'inputed', '<?php echo $order->info['orders_id'];?>')">入力済み</td>
+          <td width="100" align="center" class='<?php echo $order->info['orders_care_flag'] ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_flag(this, 'care', '<?php echo $order->info['orders_id'];?>')"><?php echo TEXT_STATUS_HANDLING_WARNING;?></td>
+          <td width="100" align="center" class='<?php echo $order->info['orders_wait_flag'] ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_flag(this, 'wait', '<?php echo $order->info['orders_id'];?>')"><?php echo TEXT_STATUS_WAIT_TRADE;?></td>
+          <td width="100" align="center" class='<?php echo $order->info['orders_inputed_flag'] ? 'orders_flag_checked' : 'orders_flag_unchecked'; ?>' onclick="orders_flag(this, 'inputed', '<?php echo $order->info['orders_id'];?>')"><?php echo TEXT_STATUS_READY_ENTER;?></td>
         <td>&nbsp;</td>
         <tr>
         </table>
@@ -1983,24 +1983,24 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
         <h3>Order Info</h3>
         <table width="100%" border="0" cellspacing="0" cellpadding="2">
         <tr>
-        <td class="main" valign="top" width="30%"><b>注文書サイト:</b></td>
+        <td class="main" valign="top" width="30%"><b><?php echo TEXT_SITE_ORDER_FORM;?></b></td>
         <td class="main"><b style=" color:#FF0000"><?php echo tep_get_site_name_by_order_id($oID);?></b></td>
         </tr>
         <tr>
-        <td class="main" valign="top" width="30%"><b>取引日時:</b></td>
+        <td class="main" valign="top" width="30%"><b><?php echo TEXT_TRADE_DATE;?></b></td>
         <td class="main"><b style=" color:#0000FF"><?php echo $order->tori['date'];?></b></td>
         </tr>
         <tr>
-        <td class="main" valign="top"><b>ご注文番号:</b></td>
+        <td class="main" valign="top"><b><?php echo TEXT_ORDERS_OID;?></b></td>
         <td class="main"><?php echo $_GET['oID'] ?></td>
         </tr>
         <tr>
-        <td class="main" valign="top"><b>注文日:</b></td>
+        <td class="main" valign="top"><b><?php echo TEXT_ORDERS_DATE;?></b></td>
         <td class="main"><?php echo tep_date_long($order->customer['date']); ?></td>
         </tr>
         <tr>
-        <td class="main" valign="top"><b>顧客種別:</b></td>
-        <td class="main"><?php echo get_guest_chk($order->customer['id'])?'ゲスト':'会員';?></td>
+        <td class="main" valign="top"><b><?php echo TEXT_CUSTOMER_CLASS;?></b></td>
+        <td class="main"><?php echo get_guest_chk($order->customer['id'])?TEXT_GUEST:TEXT_MEMBER;?></td>
         </tr>
         <tr>
         <td class="main" valign="top"><b><?php echo ENTRY_CUSTOMER; ?></b></td>
@@ -2026,7 +2026,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
       }
       $remoteurl = (defined('OST_SERVER')?OST_SERVER:'scp')."/tickets.php?a=open2".$parmStr."";
       ?>
-        <?php echo '<a class="order_link" href="javascript:void(0);" onclick="copyToClipboard(\'' . tep_output_string_protected($order->customer['email_address']) . '\')">' . tep_output_string_protected($order->customer['email_address']) . '</a>&nbsp;&nbsp;&nbsp;&nbsp;<a title="問合番号を新規作成します" href="'.$remoteurl.'" target="_blank">メール</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="telecom_unknow.php?keywords='.tep_output_string_protected($order->customer['email_address']).'">クレカ</a>'; 
+        <?php echo '<a class="order_link" href="javascript:void(0);" onclick="copyToClipboard(\'' . tep_output_string_protected($order->customer['email_address']) . '\')">' . tep_output_string_protected($order->customer['email_address']) . '</a>&nbsp;&nbsp;&nbsp;&nbsp;<a title="'.TEXT_CREATE_NEW_NUMBER_SEARCH.'" href="'.$remoteurl.'" target="_blank">'.TEXT_EMAIL_ADDRESS.'</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href="telecom_unknow.php?keywords='.tep_output_string_protected($order->customer['email_address']).'">'.TEXT_TEL_UNKNOW.'</a>'; 
       ?></td>
         </tr>
         <tr>
@@ -2059,7 +2059,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
             if($count_num > 0){
             ?>
             <tr>
-            <td class="main"><font color="blue"><b>住所情報</b></font></td>
+            <td class="main"><font color="blue"><b><?php echo TEXT_ADDRESS_INFO;?></b></font></td>
             <td class="main">&nbsp;</td>
             </tr>
             <?php
@@ -2085,15 +2085,15 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
         <h3>Customer Info</h3>
         <table width="100%" border="0" cellspacing="0" cellpadding="2">
         <tr>
-        <td class="main" valign="top" width="30%"><b>IPアドレス:</b></td>
+        <td class="main" valign="top" width="30%"><b><?php echo TEXT_IP_ADDRESS;?></b></td>
         <td class="main"><?php echo tep_high_light_by_keywords($order->info['orders_ip'] ? $order->info['orders_ip'] : 'UNKNOW',IP_LIGHT_KEYWORDS);?></td>
         </tr>
         <tr>
-        <td class="main" valign="top" width="30%"><b>ホスト名:</b></td>
+        <td class="main" valign="top" width="30%"><b><?php echo TEXT_HOST_NAME;?></b></td>
         <td class="main"><?php echo tep_high_light_by_keywords($order->info['orders_host_name']?'<font'.($order->info['orders_host_name'] == $order->info['orders_ip'] ? ' color="red"':'').'>'.$order->info['orders_host_name'].'</font>':'UNKNOW',HOST_NAME_LIGHT_KEYWORDS);?></td>
         </tr>
         <tr>
-        <td class="main" valign="top" width="30%"><b>ユーザーエージェント:</b></td>
+        <td class="main" valign="top" width="30%"><b><?php echo TEXT_USER_AGENT;?></b></td>
         <td class="main" style="word-break:break-all;width:250px;word-wrap:break-word;overflow:hidden;display:block;"><?php echo tep_high_light_by_keywords($order->info['orders_user_agent'] ? $order->info['orders_user_agent'] : 'UNKNOW',USER_AGENT_LIGHT_KEYWORDS);?></td>
         </tr>
         <?php if ($order->info['orders_user_agent']) {?>
@@ -2102,7 +2102,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
             <td class="main"><?php echo tep_high_light_by_keywords(getOS($order->info['orders_user_agent']),OS_LIGHT_KEYWORDS);?></td>
             </tr>
             <tr>
-            <td class="main" valign="top" width="30%"><b>ブラウザの種類:</b></td>
+            <td class="main" valign="top" width="30%"><b><?php echo TEXT_BROWSER_TYPE;?></b></td>
             <td class="main">
             <?php $browser_info = getBrowserInfo($order->info['orders_user_agent']);?>
             <?php echo tep_high_light_by_keywords($browser_info['longName'] . ' ' . $browser_info['version'],BROWSER_LIGHT_KEYWORDS); ?>
@@ -2110,23 +2110,23 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
             </tr>
             <?php }?>
             <tr>
-            <td class="main" valign="top" width="30%"><b>ブラウザの言語:</b></td>
+            <td class="main" valign="top" width="30%"><b><?php echo TEXT_BROWSER_LANGUAGE;?></b></td>
             <td class="main"><?php echo tep_high_light_by_keywords($order->info['orders_http_accept_language'] ? $order->info['orders_http_accept_language'] : 'UNKNOW',HTTP_ACCEPT_LANGUAGE_LIGHT_KEYWORDS);?></td>
             </tr>
             <tr>
-            <td class="main" valign="top" width="30%"><b>パソコンの言語環境:</b></td>
+            <td class="main" valign="top" width="30%"><b><?php echo TEXT_PC_LANGUAGE;?></b></td>
             <td class="main"><?php echo tep_high_light_by_keywords($order->info['orders_system_language'] ? $order->info['orders_system_language'] : 'UNKNOW',SYSTEM_LANGUAGE_LIGHT_KEYWORDS);?></td>
             </tr>
             <tr>
-            <td class="main" valign="top" width="30%"><b>ユーザーの言語環境:</b></td>
+            <td class="main" valign="top" width="30%"><b><?php echo TEXT_USERS_LANGUAGE;?></b></td>
             <td class="main"><?php echo tep_high_light_by_keywords($order->info['orders_user_language'] ? $order->info['orders_user_language'] : 'UNKNOW',USER_LANGUAGE_LIGHT_KEYWORDS);?></td>
             </tr>
             <tr>
-            <td class="main" valign="top" width="30%"><b>画面の解像度:</b></td>
+            <td class="main" valign="top" width="30%"><b><?php echo TEXT_SCREEN_RESOLUTION;?></b></td>
             <td class="main"><?php echo tep_high_light_by_keywords($order->info['orders_screen_resolution'] ? $order->info['orders_screen_resolution'] : 'UNKNOW',SCREEN_RESOLUTION_LIGHT_KEYWORDS);?></td>
             </tr>
             <tr>
-            <td class="main" valign="top" width="30%"><b>画面の色:</b></td>
+            <td class="main" valign="top" width="30%"><b><?php echo TEXT_SCREEN_COLOR;?></b></td>
             <td class="main"><?php echo tep_high_light_by_keywords($order->info['orders_color_depth'] ? $order->info['orders_color_depth'] : 'UNKNOW',COLOR_DEPTH_LIGHT_KEYWORDS);?></td>
             </tr>
             <tr>
@@ -2139,7 +2139,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
             if ($order->info['orders_flash_enable']) {
               ?>
                 <tr>
-                <td class="main" valign="top" width="30%"><b>Flashのバージョン:</b></td>
+                <td class="main" valign="top" width="30%"><b><?php echo TEXT_FLASH_VERSION;?></b></td>
                 <td class="main"><?php echo tep_high_light_by_keywords($order->info['orders_flash_version'],FLASH_VERSION_LIGHT_KEYWORDS);?></td>
                 </tr>
                 <?php } ?>
@@ -2199,55 +2199,55 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                     </table>
                     </div>
 
-                    <?php if ($order->info['payment_method'] == 'クレジットカード決済') { ?>
+                    <?php if ($order->info['payment_method'] == TEXT_ORDER_CREDIT_CARD) { ?>
                       <!-- 信用卡信息 -->
 
                         <div id="orders_telecom">
-                        <h3>クレジットカード情報</h3>
+                        <h3><?php echo TEXT_CART_INFO;?></h3>
                         <table width="100%" border="0" cellspacing="0" cellpadding="2" class="order02_link">
                         <tr>
-                        <td class="main" valign="top" width="20%"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_name']);?>&search_type=username">カード名義:</a></b></td>
+                        <td class="main" valign="top" width="20%"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_name']);?>&search_type=username"><?php echo TEXT_CART_HOLDER;?></a></b></td>
                         <td class="main" width="30%"><?php echo $order->info['telecom_name'];?></td>
-                        <td class="main" valign="top"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_tel']);?>&search_type=telno">電話番号:</a></b></td>
+                        <td class="main" valign="top"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_tel']);?>&search_type=telno"><?php echo TEXT_TEL_NUMBER;?></a></b></td>
                         <td class="main"><?php echo tep_high_light_by_keywords($order->info['telecom_tel'],TELNO_KEYWORDS);?></a></td>
                         </tr>
                         <tr>
-                        <td class="main" valign="top"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_email']);?>&search_type=email">メールアドレス:</a></b></td>
+                        <td class="main" valign="top"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_email']);?>&search_type=email"><?php echo TEXT_EMAIL_ADDRESS_INFO;?></a></b></td>
                         <td class="main"><?php echo $order->info['telecom_email'];?></a></td>
-                        <td class="main" valign="top"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_money']);?>&search_type=money">金額:</a></b></td>
+                        <td class="main" valign="top"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_money']);?>&search_type=money"><?php echo TEXT_PRICE;?></a></b></td>
                         <td class="main"><?php echo $order->info['telecom_money'];?></a></td>
                         </tr>
                         </table>
                         </div>
 
-                        <?php }else if ($order->info['payment_method'] == 'ペイパル決済') {?>
+                        <?php }else if ($order->info['payment_method'] == TEXT_PAYMENT_PAYPAL) {?>
                           <!-- PAYPAL信息 -->
 
                             <div id="orders_paypal">
-                            <h3>クレジットカード情報</h3>
+                            <h3><?php echo TEXT_CART_INFO;?></h3>
                             <table width="100%" border="0" cellspacing="0" cellpadding="2" class="order02_link">
                             <tr>
-                            <td class="main" valign="top" width="20%"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_name']);?>">カード名義:</a></b></td>
+                            <td class="main" valign="top" width="20%"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_name']);?>"><?php echo TEXT_CART_HOLDER;?></a></b></td>
                             <td class="main" width="30%"><?php echo $order->info['telecom_name'];?></td>
-                            <td class="main" valign="top"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_tel']);?>">電話番号:</a></b></td>
+                            <td class="main" valign="top"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_tel']);?>"><?php echo TEXT_TEL_NUMBER;?></a></b></td>
                             <td class="main"><?php echo tep_high_light_by_keywords($order->info['telecom_tel'],TELNO_KEYWORDS);?></a></td>
                             </tr>
                             <tr>
-                            <td class="main" valign="top"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_email']);?>">メールアドレス:</a></b></td>
+                            <td class="main" valign="top"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_email']);?>"><?php echo TEXT_EMAIL_ADDRESS_INFO;?></a></b></td>
                             <td class="main"><?php echo $order->info['telecom_email'];?></a></td>
-                            <td class="main" valign="top"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_money']);?>">金額:</a></b></td>
+                            <td class="main" valign="top"><b><a href="telecom_unknow.php?keywords=<?php echo tep_output_string_protected($order->info['telecom_money']);?>"><?php echo TEXT_PRICE;?></a></b></td>
                             <td class="main"><?php echo $order->info['telecom_money'];?></a></td>
                             </tr>
                             <tr>
-                            <td class="main" valign="top" width="20%"><b>居住国:</b></td>
+                            <td class="main" valign="top" width="20%"><b><?php echo TEXT_COUNTRY_CODE?></b></td>
                             <td class="main" width="30%"><?php echo $order->info['paypal_countrycode'];?></td>
-                            <td class="main" valign="top"><b>認証:</b></td>
+                            <td class="main" valign="top"><b><?php echo TEXT_PAYER_STATUS;?></b></td>
                             <td class="main"><?php echo $order->info['paypal_payerstatus'];?></a></td>
                             </tr>
                             <tr>
-                            <td class="main" valign="top"><b>支払ステータス:</b></td>
+                            <td class="main" valign="top"><b><?php echo TEXT_PAYMENT_STATUS;?></b></td>
                             <td class="main"><?php echo $order->info['paypal_paymentstatus'];?></a></td>
-                            <td class="main" valign="top"><b>支払タイプ:</b></td>
+                            <td class="main" valign="top"><b><?php echo TEXT_PAYMENT_TYPE;?></b></td>
                             <td class="main"><?php echo $order->info['paypal_paymenttype'];?></a></td>
                             </tr>
                             </table>
@@ -2356,7 +2356,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
         <input type="hidden" name="orders_id" value="<?php echo $order->info['orders_id'];?>">
         <input type="hidden" name="orders_comment_flag" value="">
         <input type="hidden" name="page" value="<?php echo $_GET['page'];?>">
-        <div align="right" style="clear:both;"><input type="Submit" value="保存"></div>
+        <div align="right" style="clear:both;"><input type="Submit" value="<?php echo TEXT_SAVE;?>"></div>
         </form>
         </div>
         <div id="orders_answer">
