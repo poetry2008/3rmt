@@ -253,7 +253,7 @@ function address_option_show(action){
       $("#error_"+x).html('');
       if(document.getElementById("l_"+x)){
         if($("#l_"+x).val() == 'true'){
-          $("#r_"+x).html('&nbsp;*必須');
+          $("#r_"+x).html('&nbsp;*<?php echo TEXT_REQUIRED;?>');
         }
       }
     }
@@ -343,7 +343,7 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
         ?>
         if(document.getElementById("l_"+x)){
         if($("#l_"+x).val() == 'true'){
-          $("#r_"+x).html('&nbsp;*必須');
+          $("#r_"+x).html('&nbsp;*<?php echo TEXT_REQUIRED;?>');
         }
         }
         <?php
@@ -751,7 +751,6 @@ document.forms.order1.submit();
             </tr>
         </table> 
         <br>
-        <!-- 住所 -->
         <?php
         //计算商品的总价格及总重量
         $shipping_preorders_query = tep_db_query("select * from ".TABLE_PREORDERS." where check_preorder_str = '".$_GET['pid']."'");
@@ -989,7 +988,6 @@ document.forms.order1.submit();
         }
         ?>
         
-        <!-- 住所结束 -->
         <div class="formAreaTitle" style="font-size:12px;"><?php echo CHANGE_ORDER_FETCH_TIME_TITLE;?></div> 
         <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
 <!--
@@ -1034,7 +1032,7 @@ document.forms.order1.submit();
       if(!isset($_POST['date'])){
         $selected_str = date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == $_SESSION['preorder_information']['date'] ? 'selected' : ''; 
       }
-      echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'" '. $selected_str .'>'.str_replace($oarr, $newarr, date("Y年m月d日（l）", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
+      echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'" '. $selected_str .'>'.str_replace($oarr, $newarr, date("Y".PREORDER_YEAR_TEXT."m".PREORDER_MONTH_TEXT."d".PREORDER_DAY_TEXT."（l）", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
 
     }
     ?>
