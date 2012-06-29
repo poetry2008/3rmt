@@ -83,34 +83,6 @@
             <tr> 
               <td><table border="0" width="100%" cellspacing="0" cellpadding="2"  class="formArea" > 
                   <tr> 
-                    <?php
-  if (false) {
-?> 
-                    <td width="30%" valign="top">
-                    <table border="0" width="100%" cellspacing="0" cellpadding="2"> 
-                        <tr> 
-                          <td class="main"><b><?php echo HEADING_DELIVERY_ADDRESS; ?></b></td> 
-                        </tr> 
-                        <tr>
-                          <td class="main"><?php echo tep_address_format($order->delivery['format_id'], $order->delivery, 1, ' ', '<br>'); ?></td> 
-                        </tr> 
-                        <?php
-    if ($order->info['shipping_method']) {
-?> 
-                        <tr> 
-                          <td class="main"><b><?php echo HEADING_SHIPPING_METHOD; ?></b></td> 
-                        </tr> 
-                        <tr> 
-                          <td class="main"><?php echo $order->info['shipping_method']; ?></td> 
-                        </tr> 
-                        <?php
-    }
-?> 
-                      </table>
-                      </td> 
-                    <?php
-  }
-?> 
                     <td width="<?php echo (($order->delivery != false) ? '70%' : '100%'); ?>" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                        
                               <?php
