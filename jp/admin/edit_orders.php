@@ -263,7 +263,7 @@ if (tep_not_null($action)) {
         $viladate = true;
       }else if($viladate=='_false'){
         $viladate = false;
-        $messageStack->add_session('更新をキャンセルしました。', 'error');
+        $messageStack->add_session(TEXT_CANCEL_UPDATE, 'error');
         tep_redirect(tep_href_link("edit_orders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
         break;
       }
@@ -274,32 +274,32 @@ if (tep_not_null($action)) {
       $update_tori_torihiki_end_date = $update_tori_torihiki_date.' '.$update_tori_torihiki_end_date; 
       if (isset($update_tori_torihiki_start_date)) { //日時が有効かチェック
         if (!preg_match('/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/', $update_tori_torihiki_start_date, $m)) { // check the date format
-          $messageStack->add('日時フォーマットが間違っています。 "2008-01-01 10:30:00"', 'error');
+          $messageStack->add(TEXT_DATE_ERROR.'"2008-01-01 10:30:00"', 'error');
           $action = 'edit';
           break;
         } elseif (!checkdate($m[2], $m[3], $m[1]) || $m[4] >= 24 || $m[5] >= 60 || $m[6] >= 60) { // make sure the date provided is a validate date
-          $messageStack->add('無効な日付または右記の数字を超えています。 "23:59:59"', 'error');
+          $messageStack->add(TEXT_DATE_NUM_ERROR.'"23:59:59"', 'error');
           $action = 'edit';
           break;
         }
       } else {
-        $messageStack->add('日時が入力されていません。', 'error');
+        $messageStack->add(TEXT_INPUT_DATE_ERROR, 'error');
         $action = 'edit';
         break;
       }
 
       if (isset($update_tori_torihiki_end_date)) { //日時が有効かチェック
         if (!preg_match('/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/', $update_tori_torihiki_end_date, $m)) { // check the date format
-          $messageStack->add('日時フォーマットが間違っています。 "2008-01-01 10:30:00"', 'error');
+          $messageStack->add(TEXT_DATE_ERROR.'"2008-01-01 10:30:00"', 'error');
           $action = 'edit';
           break;
         } elseif (!checkdate($m[2], $m[3], $m[1]) || $m[4] >= 24 || $m[5] >= 60 || $m[6] >= 60) { // make sure the date provided is a validate date
-          $messageStack->add('無効な日付または右記の数字を超えています。 "23:59:59"', 'error');
+          $messageStack->add(TEXT_DATE_NUM_ERROR.'"23:59:59"', 'error');
           $action = 'edit';
           break;
         }
       } else {
-        $messageStack->add('日時が入力されていません。', 'error');
+        $messageStack->add(TEXT_INPUT_DATE_ERROR, 'error');
         $action = 'edit';
         break;
       }
@@ -345,7 +345,7 @@ if (tep_not_null($action)) {
         if ($ot_class == "ot_point" && (int)$ot_value > 0) {
           $current_point = $customer_point['point'] + $before_point;
           if ((int)$ot_value > $current_point) {
-            $messageStack->add('ポイントが足りません。入力可能なポイントは <b>' . $current_point . '</b> です。', 'error');
+            $messageStack->add(TEXT_NO_ENOUGH_POINT.'<b>' . $current_point . '</b>'.TEXT_LS, 'error');
             $action = 'edit';
             break 2;
           }
@@ -843,12 +843,12 @@ if($address_error == false){
                 $oID,
                 $check_status['payment_method'],
                 $otm,
-                tep_torihiki($check_status['torihiki_date']).'～'.date('H時i分',strtotime($check_status['torihiki_date_end'])).'　（24時間表記）',
+                tep_torihiki($check_status['torihiki_date']).'～'.date('H'.TEXT_HOUR.'i'.TEXT_MIN,strtotime($check_status['torihiki_date_end'])).TEXT_TWENTY_FOUR_HOUR,
                 $os_result['orders_status_name'],
                 get_configuration_by_site_id('STORE_NAME', $order->info['site_id']),
                 get_url_by_site_id($order->info['site_id']),
                 get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $order->info['site_id']),
-                date('Y年n月j日',strtotime(tep_get_pay_day()))
+                date('Y'.TEXT_DATE_YEAR.'n'.TEXT_DATE_MONTH.'j'.TEXT_DATE_DAY,strtotime(tep_get_pay_day()))
                 ),$title);
 
         $comments = str_replace(array(
@@ -871,12 +871,12 @@ if($address_error == false){
                 $oID,
                 $check_status['payment_method'],
                 $otm,
-                tep_torihiki($check_status['torihiki_date']).'～'.date('H時i分',strtotime($check_status['torihiki_date_end'])).'　（24時間表記）',
+                tep_torihiki($check_status['torihiki_date']).'～'.date('H'.TEXT_HOUR.'i'.TEXT_MIN,strtotime($check_status['torihiki_date_end'])).TEXT_TWENTY_FOUR_HOUR,
                 $os_result['orders_status_name'],
                 get_configuration_by_site_id('STORE_NAME', $order->info['site_id']),
                 get_url_by_site_id($order->info['site_id']),
                 get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $order->info['site_id']),
-                date('Y年n月j日',strtotime(tep_get_pay_day()))
+                date('Y'.TEXT_DATE_YEAR.'n'.TEXT_DATE_MONTH.'j'.TEXT_DATE_DAY,strtotime(tep_get_pay_day()))
                 ),$comments);
         tep_order_status_change($oID,$status);
         tep_db_query("update " . TABLE_ORDERS . " set orders_status = '" . tep_db_input($status) . "', last_modified = now() where orders_id = '" . tep_db_input($oID) . "'");
@@ -909,7 +909,7 @@ if($address_error == false){
           }
           for ($i=0; $i<sizeof($order->products); $i++) {
             //$orders_products_id = $order->products[$i]['orders_products_id'];
-            $products_ordered_mail .= "\t" . '注文商品'.str_repeat('　', intval($max_c_len - mb_strlen('注文商品', 'utf-8'))).'：' . $order->products[$i]['name'] . '（' . $order->products[$i]['model'] . '）';
+            $products_ordered_mail .= "\t" . ORDERS_PRODUCTS.str_repeat('　', intval($max_c_len - mb_strlen(ORDERS_PRODUCTS, 'utf-8'))).'：' . $order->products[$i]['name'] . '（' . $order->products[$i]['model'] . '）';
             if ($order->products[$i]['price'] != '0') {
               $products_ordered_mail .= '（'.$currencies->display_price($order->products[$i]['price'], $order->products[$i]['tax']).'）'; 
             }
@@ -927,16 +927,16 @@ if($address_error == false){
               }
             }
 
-            $products_ordered_mail .= "\t" . '個数'.str_repeat('　', intval($max_c_len - mb_strlen('個数', 'utf-8'))).'：' . $order->products[$i]['qty'] . '個' . tep_get_full_count2($order->products[$i]['qty'], $order->products[$i]['id']) . "\n";
-            $products_ordered_mail .= "\t" . '単価'.str_repeat('　', intval($max_c_len - mb_strlen('単価', 'utf-8'))).'：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax']) . "\n";
-            $products_ordered_mail .= "\t" . '小計'.str_repeat('　', intval($max_c_len - mb_strlen('小計', 'utf-8'))).'：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty']) . "\n";
+            $products_ordered_mail .= "\t" . QTY_NUM.str_repeat('　', intval($max_c_len - mb_strlen(QTY_NUM, 'utf-8'))).'：' . $order->products[$i]['qty'] . EDIT_ORDERS_NUM_UNIT . tep_get_full_count2($order->products[$i]['qty'], $order->products[$i]['id']) . "\n";
+            $products_ordered_mail .= "\t" . TABLE_HEADING_UNIT_PRICE.str_repeat('　', intval($max_c_len - mb_strlen(TABLE_HEADING_UNIT_PRICE, 'utf-8'))).'：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax']) . "\n";
+            $products_ordered_mail .= "\t" . ENTRY_SUB_TOTAL.str_repeat('　', intval($max_c_len - mb_strlen(ENTRY_SUB_TOTAL, 'utf-8'))).'：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty']) . "\n";
             //$products_ordered_mail .= "\t" . 'キャラクター名　　：' . (EMAIL_USE_HTML === 'true' ? htmlspecialchars($order->products[$i]['character']) : $order->products[$i]['character']) . "\n";
             $products_ordered_mail .= "\t" . '------------------------------------------' . "\n";
             if (tep_get_cflag_by_product_id($order->products[$i]['id'])) {
               if (tep_get_bflag_by_product_id($order->products[$i]['id'])) {
-                $products_ordered_mail .= "※ 当社キャラクター名は、お取引10分前までに電子メールにてお知らせいたします。\n\n";
+                $products_ordered_mail .= TEXT_CHARACTER_NAME_SEND_MAIL."\n\n";
               } else {
-                $products_ordered_mail .= "※ 当社キャラクター名は、お支払い確認後に電子メールにてお知らせいたします。\n\n";
+                $products_ordered_mail .= TEXT_CHARACTER_NAME_CONFIRM_SEND_MAIL."\n\n";
               }
             }
           }
@@ -949,24 +949,24 @@ if($address_error == false){
               if ($totals['class'] == "ot_point") {
                 $camp_exists_query = tep_db_query("select * from ".TABLE_CUSTOMER_TO_CAMPAIGN." where orders_id = '".$oID."' and site_id = '".$order->info['site_id']."'"); 
                 if (tep_db_num_rows($camp_exists_query)) {
-                  $total_details_mail .= "\t" . '割引　　　　　　：-' . $currencies->format(abs($campaign_fee)) . "\n";
+                  $total_details_mail .= "\t" . TEXT_POINT . $currencies->format(abs($campaign_fee)) . "\n";
                 } else {
                   if ((int)$totals['value'] >= 1 && $totals['class'] != "ot_subtotal") {
-                    $total_details_mail .= "\t" . '割引　　　　　　：-' .  $currencies->format($totals['value']) . "\n";
+                    $total_details_mail .= "\t" . TEXT_POINT .  $currencies->format($totals['value']) . "\n";
                   }
                 }
               } else {
                 if ((int)$totals['value'] >= 1 && $totals['class'] != "ot_subtotal") {
-                  $total_details_mail .= "\t" . '割引　　　　　　：-' .  $currencies->format($totals['value']) . "\n";
+                  $total_details_mail .= "\t" . TEXT_POINT .  $currencies->format($totals['value']) . "\n";
                 }
               }
             } elseif ($totals['class'] == "ot_total") {
               if($handle_fee)
-                $total_details_mail .= "\t".'手数料　　　　　：'.$currencies->format($handle_fee)."\n";
-              $total_details_mail .= "\t" . 'お支払金額　　　：' . $currencies->format($totals['value']) . "\n";
+                $total_details_mail .= "\t".TEXT_HANDLE_FEE.$currencies->format($handle_fee)."\n";
+              $total_details_mail .= "\t" . TEXT_PAYMENT_AMOUNT . $currencies->format($totals['value']) . "\n";
             } else {
               // 去掉 決済手数料 消費税
-              $totals['title'] = str_replace('決済手数料', '手数料', $totals['title']);
+              $totals['title'] = str_replace(TEXT_TRANSACTION_FEE, TEXT_HANDLE_FEE_ONE, $totals['title']);
               $total_details_mail .= "\t" . $totals['title'] . str_repeat('　', intval((16 -
                       strlen($totals['title']))/2)) . '：' . $currencies->format($totals['value']) . "\n";
             }
@@ -999,9 +999,9 @@ if($address_error == false){
           //$email .= get_url_by_site_id($order->info['site_id']) . "\n";
           //$email .= '━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
           if ($customer_guest['customers_guest_chk'] != 9)
-            tep_mail($check_status['customers_name'], $check_status['customers_email_address'], '注文内容の変更を承りました【' . get_configuration_by_site_id('STORE_NAME', $order->info['site_id']) . '】', $email, get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $order->info['site_id']),$order->info['site_id']);
+            tep_mail($check_status['customers_name'], $check_status['customers_email_address'], TEXT_ORDERS_UPDATE . get_configuration_by_site_id('STORE_NAME', $order->info['site_id']) . '】', $email, get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $order->info['site_id']),$order->info['site_id']);
 
-          tep_mail(get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS', $order->info['site_id']), '送信済：注文内容の変更を承りました【' . get_configuration_by_site_id('STORE_NAME', $order->info['site_id']) . '】', $email, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);
+          tep_mail(get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS', $order->info['site_id']), TEXT_EMAIL_ORDERS_UPDATE . get_configuration_by_site_id('STORE_NAME', $order->info['site_id']) . '】', $email, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);
           $customer_notified = '1';
         }
         tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . tep_db_input($customer_notified) . "', '" . mysql_real_escape_string($comment_arr['comment']."\n".$comments_text) . "')");
@@ -1011,9 +1011,9 @@ if($address_error == false){
       if ($order_updated && !$products_delete && $order_updated_2) {
         $messageStack->add_session(SUCCESS_ORDER_UPDATED, 'success');
       } elseif ($order_updated && $products_delete) {
-        $messageStack->add_session('商品を削除しました。<font color="red">メールは送信されていません。</font>', 'success');
+        $messageStack->add_session(TEXT_PRODUCTS_DELETE, 'success');
       } else {
-        $messageStack->add_session('エラーが発生しました。正常に処理が行われていない可能性があります。', 'error');
+        $messageStack->add_session(TEXT_ERROR_NO_SUCCESS, 'error');
       }
 
       tep_redirect(tep_href_link("edit_orders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
@@ -1908,7 +1908,7 @@ function address_option_show(action){
       ?>
         if(document.getElementById("l_"+x)){
           if($("#l_"+x).val() == 'true'){
-            $("#r_"+x).html("&nbsp;*必須");
+            $("#r_"+x).html("&nbsp;<?php echo TEXT_REQUIRE;?>");
           }
         }
       <?php
@@ -2007,7 +2007,7 @@ function address_option_show(action){
         ?>
         if(document.getElementById("l_"+x)){
           if($("#l_"+x).val() == 'true'){
-            $("#r_"+x).html("&nbsp;*必須");
+            $("#r_"+x).html("&nbsp;<?php echo TEXT_REQUIRE;?>");
           }
         }
         <?php
@@ -2015,6 +2015,7 @@ function address_option_show(action){
         ?>
         //$("#error_"+x).html('');
     }
+  if(document.getElementById("address_show_list")){
     if(arr_str != ''){
       ++j_num;
       if(j_num == 1){first_num = i;}
@@ -2029,6 +2030,7 @@ function address_option_show(action){
         }
       }
     }
+  }
 
   }
     //address_list();  
@@ -2105,7 +2107,7 @@ function address_option_list(value){
     }
      
     $("#error_"+x).html('');
-    $("#r_"+x).html("&nbsp;*必須");
+    $("#r_"+x).html("&nbsp;<?php echo TEXT_REQUIRE;?>");
     ii++; 
    }
   }
@@ -2185,12 +2187,12 @@ function address_show(){
   var style = $("#address_show_id").attr("style");
   if(style == 'display: none;' || style == 'display: none'){
     $("#address_show_id").show(); 
-    $("#address_font").html("住所情報▲");
+    $("#address_font").html("<?php echo TEXT_ADDRESS_INFO_HIDE;?>");
  
   }else{
 
     $("#address_show_id").hide();
-    $("#address_font").html("住所情報▼");
+    $("#address_font").html("<?php echo TEXT_ADDRESS_INFO_SHOW;?>");
   }
 }
 
@@ -2553,7 +2555,7 @@ if (($action == 'edit') && ($order_exists == true)) {
           echo '$(document).ready(function(){'."\n";
           switch($pay_method){
 
-          case '銀行振込(買い取り)':
+          case TEXT_BANK_TRANSFER:
             $pay_array = explode("\n",trim($pay_comment));
             $bank_name = explode(':',$pay_array[0]);
             $bank_name[1] = isset($_POST['bank_name']) ? $_POST['bank_name'] : $bank_name[1]; 
@@ -2563,7 +2565,7 @@ if (($action == 'edit') && ($order_exists == true)) {
             echo 'document.getElementsByName("bank_shiten")[0].value = "'. $bank_shiten[1] .'";'."\n"; 
             $bank_kamoku = explode(':',$pay_array[2]);
             $bank_kamoku[1] = isset($_POST['bank_kamoku']) ? $_POST['bank_kamoku'] : $bank_kamoku[1];
-            if($bank_kamoku[1] == '普通'){
+            if($bank_kamoku[1] == TEXT_USUALLY){
                echo 'document.getElementsByName("bank_kamoku")[0].checked = true;'."\n"; 
             }else{
                echo 'document.getElementsByName("bank_kamoku")[1].checked = true;'."\n"; 
@@ -2575,13 +2577,13 @@ if (($action == 'edit') && ($order_exists == true)) {
             $bank_kouza_name[1] = isset($_POST['"bank_kouza_name']) ? $_POST['"bank_kouza_name'] : $bank_kouza_name[1];
             echo 'document.getElementsByName("bank_kouza_name")[0].value = "'.$bank_kouza_name[1].'";'."\n";
             break;
-          case 'コンビニ決済':
+          case TEXT_CONVERIENCE_PAYMENT:
             $pay_array = explode("\n",trim($pay_comment));
             $con_email = explode(":",trim($pay_array[0]));
             $con_email[1] = isset($_POST['con_email']) ? $_POST['con_email'] : $con_email[1];
             echo 'document.getElementsByName("con_email")[0].value = "'.$con_email[1].'";'."\n";
             break;
-          case '楽天銀行':
+          case TEXT_RAKUTEN_BANK:
             $pay_array = explode("\n",trim($pay_comment));
             $rak_tel = explode(":",trim($pay_array[0]));
             $rak_tel[1] = isset($_POST['rak_tel']) ? $_POST['rak_tel'] : $rak_tel[1];
@@ -2607,13 +2609,13 @@ if (($action == 'edit') && ($order_exists == true)) {
                 $pay_arr = array();
                 preg_match_all('/name="(.*?)"/',$field['field'],$pay_arr);
                 if(trim($_POST[$pay_arr[1][0]]) == ''){
-                  $field['message'] = $field['message'] != '' ? '必須項目' : ''; 
+                  $field['message'] = $field['message'] != '' ? ADDRESS_ERROR_OPTION_ITEM_TEXT_NULL : ''; 
                 }else{
-                  $field['message'] = $field['message'] != '' ? '正しく入力してください' : ''; 
+                  $field['message'] = $field['message'] != '' ? ADDRESS_ERROR_OPTION_ITEM_TEXT_TYPE_WRONG : ''; 
                 }
               }else{
-                if($field['title'] != '口座種別:'){
-                  $field['message'] = '*必須';
+                if($field['title'] != TEXT_ACCOUNT_TYPE){
+                  $field['message'] = TEXT_REQUIRE;
                 }
               }
               echo "<font color='red'>&nbsp;".$field['message']."</font>";
@@ -2654,7 +2656,7 @@ if (($action == 'edit') && ($order_exists == true)) {
         $hour_str .= '<option value="'.$h_str.'"'.$selected.'>'.$h_str.'</option>';
 
       }
-      $hour_str .= '</select>&nbsp;時';
+      $hour_str .= '</select>&nbsp;'.TEXT_HOUR;
       echo $hour_str;
       $min_str_1 = '&nbsp;<select name="start_min_1" id="min" onchange="check_min(this.value);">';
       for($m_1 = 0;$m_1 <= 5;$m_1++){
@@ -2672,7 +2674,7 @@ if (($action == 'edit') && ($order_exists == true)) {
         $min_str_2 .= '<option value="'.$m_2.'"'.$selected.'>'.$m_2.'</option>';
 
       }
-      $min_str_2 .= '</select>&nbsp;分&nbsp;～';
+      $min_str_2 .= '</select>&nbsp;'.TEXT_MIN.'&nbsp;～';
       echo $min_str_2;
       $date_array[1] = str_replace('&nbsp;','',$date_array[1]);
       $end_temp = explode(":",$date_array[1]);
@@ -2684,7 +2686,7 @@ if (($action == 'edit') && ($order_exists == true)) {
         $hour_str_1 .= '<option value="'.$h_str_1.'"'.$selected.'>'.$h_str_1.'</option>';
 
       }
-      $hour_str_1 .= '</select>&nbsp;時';
+      $hour_str_1 .= '</select>&nbsp;'.TEXT_HOUR;
       echo $hour_str_1;
       $min_str_1_end = '&nbsp;<select name="end_min_1" id="min_end" onchange="check_end_min(this.value);">';
       $min_start = (int)substr((int)$end_temp[1],0,1); 
@@ -2704,7 +2706,7 @@ if (($action == 'edit') && ($order_exists == true)) {
         $min_str_2_end .= '<option value="'.$m_2_end.'"'.$selected.'>'.$m_2_end.'</option>';
 
       }
-      $min_str_2_end .= '</select>&nbsp;分&nbsp;';
+      $min_str_2_end .= '</select>&nbsp;'.TEXT_MIN.'&nbsp;';
       echo $min_str_2_end;
     ?>
     <input type="hidden" name='update_tori_torihiki_start_date' size='10' value='<?php echo str_replace('&nbsp;','',$date_start_array[1]); ?>'>
@@ -2854,7 +2856,7 @@ if (($action == 'edit') && ($order_exists == true)) {
         type='hidden' id='update_products_qty_$orders_products_id' value='" .
         $order->products[$i]['qty'] . "'><input type='text' class='update_products_qty' id='update_products_new_qty_$orders_products_id' name='update_products[$orders_products_id][qty]' size='2' value='" .  (isset($_POST['update_products'][$orders_products_id]['qty'])?$_POST['update_products'][$orders_products_id]['qty']:$order->products[$i]['qty']) . "' onkeyup='clearLibNum(this);'>&nbsp;x</td>\n" . 
         '      <td class="' . $RowStyle . '">' . $order->products[$i]['name'] . "<input name='update_products[$orders_products_id][name]' size='64' id='update_products_name_$orders_products_id' type='hidden' value='" . $order->products[$i]['name'] . "'>\n" . 
-        '      &nbsp;&nbsp;'."<input type='hidden' name='dummy' value='あいうえお眉幅'>";
+        '      &nbsp;&nbsp;'."<input type='hidden' name='dummy' value='".TEXT_DUMMY."'>";
       // Has Attributes?
       if ($order->products[$i]['attributes'] && sizeof($order->products[$i]['attributes']) > 0) {
         $op_info_array = array();
@@ -3102,7 +3104,7 @@ if (($action == 'edit') && ($order_exists == true)) {
       if ($customer_guest['customers_guest_chk'] == 0) { //会員
         $current_point = $customer_point['point'] + $TotalDetails["Price"];
         echo '  <tr>' . "\n" .
-          '    <td align="left" class="' . $TotalStyle . '">このお客様は会員です。入力可能ポイントは <font color="red"><b>残り' . $customer_point['point'] . '（合計' . $current_point . '）</b></font> です。−（マイナス）符号の入力は必要ありません。必ず正数を入力するように！</td>' . 
+          '    <td align="left" class="' . $TotalStyle . '">'.TEXT_CUSTOMER_INPUT.'<font color="red"><b>'.TEXT_REMAINING . $customer_point['point'] . TEXT_SUBTOTAL . $current_point . TEXT_RIGHT_BRACKETS.'</b></font>'.TEXT_INPUT_POSITIVE_NUM.'</td>' . 
           '    <td align="right" class="' . $TotalStyle . '">' .
           trim($TotalDetails["Name"]) . '</td>' . "\n";
         
