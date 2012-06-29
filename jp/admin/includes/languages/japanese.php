@@ -563,7 +563,7 @@ define('TEXT_PAYMENT_NULL_TXT','支払方法を選択してください');
 define('TEXT_TORIHIKI_LIST_DEFAULT_TXT','選択してください');
 define('BOX_TOOLS_CAMPAIGN', 'キャンペーンコード設置');
 define('TEXT_CURRENT_CHARACTER_NAME', '当社のキャラクター名：');
-define('BOX_CATALOG_SHOW_SHOW_USELESS_OPTION','未使用オプション削除');
+define('BOX_CATALOG_SHOW_USELESS_OPTION','未使用オプション削除');
 define('TEXT_ORDER_ALARM_LINK', 'アラーム');
 define('HOUR_TEXT', '時');
 define('MINUTE_TEXT', '分');

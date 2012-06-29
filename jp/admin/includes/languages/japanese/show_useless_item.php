@@ -20,4 +20,14 @@ define('SHOW_USELESS_OPTION_ITEM_TYPE_TEXTAREA','テキストボックス');
 define('SHOW_USELESS_OPTION_ITEM_STATUS_YES','開く');
 define('SHOW_USELESS_OPTION_ITEM_STATUS_NO','閉じる');
 define('SHOW_USELESS_OPTION_ITEM_SELECTED','選択');
+define('SHOW_USELESS_OPTION_ITEM_ALL_CONFIRM','全部削除しますか？');
+define('SHOW_USELESS_OPTION_ITEM_ALERT','選択してください!');
+define('SHOW_USELESS_OPTION_ITEM_CONFIRM','削除しますか？');
+
+
+
+
+
+
+
 ?>

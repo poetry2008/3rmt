@@ -1,7 +1,4 @@
 <?php
-/*
- *未使用オプション削除页面 
- */
 require('includes/application_top.php');
 $action = $_GET['action'];
 switch($action){
@@ -51,9 +48,9 @@ for(i=0;i<get_id.length;i++){
 	}
 }
 if(flag==false){
-alert('選択してください!');
+	alert('<?php echo SHOW_USELESS_OPTION_GROUP_ALERT;?>');
 }else{
-	if(confirm('削除しますか？')){
+	if(confirm('<?php echo SHOW_USELESS_OPTION_GROUP_CONFIRM;?>')){
 get_action('del');
 }
 }
@@ -206,7 +203,6 @@ function show_option_group_ajax( id, pos , end)
 
 <form name="del_option" method="post" action="show_useless_option.php" id="del_option">
 <?php
-//echo tep_draw_form('del_option','show_useless_option.php','post','id=\"del_option\"');
 $use_id=array();
 $use_id_sql="select belong_to_option from ".TABLE_PRODUCTS;
 $use_id_query=tep_db_query($use_id_sql);
@@ -248,7 +244,6 @@ echo "<tr class='dataTableRowSelected'>";
 <td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_SHOW_USELESS_OPTION, 'page='.$_GET['page'].'&group_id=' .  $option_group_array['id']);?>'"><?php echo $option_group_array['title'];?></td>
 <td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_SHOW_USELESS_OPTION, 'page='.$_GET['page'].'&group_id=' .  $option_group_array['id']);?>'"><?php echo $option_group_array['is_preorder'] == 0 ? SHOW_USELESS_OPTION_GROUP_IS_NOT_PREORDER : SHOW_USELESS_OPTION_GROUP_IS_PREORDER;?></td>
 <td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_SHOW_USELESS_OPTION, 'page='.$_GET['page'].'&group_id=' .  $option_group_array['id']);?>'"><?php echo $option_group_array['sort_num'];?></td>
-<!--<td class="dataTableContent" align="right" ><a onclick="edit_text('<?php echo $option_group_id;?>','<?php echo $class_check;?>','<?php echo $now_num_row;?>')"><?php echo tep_image(DIR_WS_IMAGES.'icon_info.gif',IMAGE_ICON_INFO);?></a>&nbsp;&nbsp;&nbsp;&nbsp;</td>-->
 <td class="dataTableContent" align="right" ><a onclick="show_option_group(this,'<?php echo $option_group_id;?>','<?php echo $class_check;?>','<?php echo $now_num_row;?>')"><?php echo tep_image(DIR_WS_IMAGES.'icon_info.gif',IMAGE_ICON_INFO);?></a>&nbsp;&nbsp;&nbsp;&nbsp;</td>
 </tr>
 <tr  style="display:none" class="ajax_show_useless_option1">

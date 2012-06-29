@@ -14,6 +14,7 @@ case 'del':
  $item_id=$_POST['option_item_id'];
 foreach($item_id as $id){
 $item_sql="delete  from ".TABLE_OPTION_ITEM." where id='".$id."'";
+$option_group_id = $_POST['option_group_id'];
 tep_db_query($item_sql);
 }
 header("location:show_useless_item.php?option_group_id=$option_group_id");
@@ -57,15 +58,13 @@ line-height:170%;
 	  getform.submit();
   }
 function del_all(){
-	if(confirm("全部削除しますか？")){
 var get_id=document.getElementsByName('option_item_id[]');
 for(i=0;i<get_id.length;i++){
 get_id[i].checked=true;
 }
 }
-}
 function del(){
-var get_id=document.getElementsByName('option_group_id[]');
+var get_id=document.getElementsByName('option_item_id[]');
 var flag=false;
 for(i=0;i<get_id.length;i++){
 	if(get_id[i].checked==true){
@@ -73,9 +72,9 @@ for(i=0;i<get_id.length;i++){
 	}
 }
 if(flag==false){
-alert('選択してください!');
+	alert('<?php echo SHOW_USELESS_OPTION_ITEM_ALERT;?>');
 }else{
-	if(confirm('削除しますか？')){
+	if(confirm('<?php echo SHOW_USELESS_OPTION_ITEM_CONFIRM;?>')){
 get_action('del');
 }
 }
@@ -257,7 +256,9 @@ echo "<tr class='dataTableRowSelected'>";
 <?php 
 	}
 ?>
-<td><input type="checkbox" name="option_item_id[]" value="<?php echo $option_item_id;?>"></td>
+<td><input type="checkbox" name="option_item_id[]" value="<?php echo $option_item_id;?>">
+<input type='hidden' name='option_group_id' value="<?php echo $_GET['option_group_id']?>">
+</td>
 <td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_SHOW_USELESS_ITEM, 'option_group_id='.$option_group_id.'&page='.$_GET['page'].'&item_id='.$option_item_array['id']);?>'"><?php echo $option_item_array['title'];?></td>
 <td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_SHOW_USELESS_ITEM, 'option_group_id='.$option_group_id.'&page='.$_GET['page'].'&item_id='.$option_item_array['id']);?>'"><?php echo $option_item_array['front_title'];?></td>
 <td class="dataTableContent" onclick="document.location.href='<?php echo tep_href_link(FILENAME_SHOW_USELESS_ITEM, 'option_group_id='.$option_group_id.'&page='.$_GET['page'].'&item_id='.$option_item_array['id']);?>'"><?php 

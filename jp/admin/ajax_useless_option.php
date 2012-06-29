@@ -3,7 +3,6 @@ require("includes/application_top.php");
 $id=tep_db_prepare_input($_POST['id']);
 $pos=$_POST['pos'];
 $end=$_POST['end'];
-//print_r($_POST);exit;
 
 
 
