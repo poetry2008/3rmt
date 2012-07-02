@@ -1,0 +1,244 @@
+<!--{include file=header.html }-->
+<div id="left">
+<!--{include file=menu.html   }-->
+</div>
+<div id="right">
+<div id="content">
+<ul>
+<li class="content-bg">	
+<div id="title">
+<h3><!--{_t key="seoplink_linkcheck_title"}--></h3>
+</div> 
+<form method="POST" action="<!--{url controller="seoplink" action="batchdo"}-->"
+id="batchdo_form">
+<table id="table-row">
+<tr class="tr1">
+<td></td>
+<td><!--{_t key="seoplink_site_name"}--></td>
+<td><!--{_t key="seoplink_site_url"}--></td>
+<td><!--{_t key="seoplink_site_linkpage_url"}--></td>
+<td><!--{_t key="seoplink_created"}--></td>
+<td><!--{_t key="seoplink_site_linkcheck"}--></td>
+<td><!--{_t key="seoplink_site_class"}--></td>
+<td><!--{_t key="seoplink_show_state"}--></td>
+<td><!--{_t key="seoplink_is_king"}--></td>
+<td><!--{_t key="seoplink_is_recommend"}--></td>
+<td><!--{_t key="seoplink_site_operate"}--></td>
+</tr>
+<!--{section name=loopSite loop=$sites}-->
+<tr class="tr2">
+<td>
+<!--{if $sites[loopSite].state eq '1'}-->
+<!--{assign var="input_id" value="state_on_"|cat:$sites[loopSite].id}-->
+<!--{else}-->
+<!--{assign var="input_id" value="state_off_"|cat:$sites[loopSite].id}-->
+<!--{/if}-->
+<input type="checkbox" name="ids[]"
+value="<!--{$sites[loopSite].id}-->" id="<!--{$input_id}-->"></td>
+<td><!--{$sites[loopSite].name}--></td>
+<td>
+<a href="<!--{$sites[loopSite].url}-->" target="_balnk">
+<!--{$sites[loopSite].url}-->
+</a>
+</td>
+<td>
+<a href="<!--{url controller=seoplink action=linkcheck
+link=$sites[loopSite].linkpage_url}-->" target="_blank">
+<!--{$sites[loopSite].linkpage_url}-->
+</a>
+</td>
+<td>
+<!--{if $sites[loopSite].is_custom != 1}-->
+<!--{$sites[loopSite].created|date_format:'%Y-%m-%d %H:%M'}-->
+<!--{/if}-->
+</td>
+<td>
+<!--{if $sites[loopSite].is_recommend eq '1'}-->
+<img src="images/img/is_king.gif" alt="search">
+<!--{else}-->
+<!--{if $sites[loopSite].state eq '1'}-->
+<img src="images/img/success.png" alt="search">  
+<!--{else}-->
+<img src="images/img/fail.png" alt="search">  
+<!--{/if}-->
+<!--{/if}-->
+</td>
+<td>
+<a href="<!--{url controller=class action=index parent_id=$sites[loopSite].class_id}-->" >
+<!--{$sites[loopSite].class_name}-->
+</a>
+</td>
+<td align="center">
+<!--{if $sites[loopSite].show_state eq '1'}-->
+<img src="images/icon_status_green.gif">
+<a href="<!--{url controller=seoplink
+action=linkcheckupdate id=$sites[loopSite].id show=0}-->" >
+<img src="images/icon_status_red_light.gif">
+</a>
+<!--{else}-->
+<a href="<!--{url controller=seoplink
+action=linkcheckupdate id=$sites[loopSite].id show=1}-->" >
+<img src="images/icon_status_green_light.gif">
+</a>
+<img src="images/icon_status_red.gif">
+<!--{/if}-->
+</td>
+<td align="center">
+<!--{if $sites[loopSite].is_king eq '1'}-->
+<img src="images/icon_status_green.gif">
+<a href="<!--{url controller=seoplink
+action=linkcheckupdate id=$sites[loopSite].id king=0}-->" >
+<img src="images/icon_status_red_light.gif">
+</a>
+<!--{else}-->
+<a href="<!--{url controller=seoplink
+action=linkcheckupdate id=$sites[loopSite].id king=1}-->" >
+<img src="images/icon_status_green_light.gif">
+</a>
+<img src="images/icon_status_red.gif">
+<!--{/if}-->
+</td>
+<td align="center">
+<!--{if $sites[loopSite].is_recommend eq '1'}-->
+<img src="images/icon_status_green.gif">
+<a href="<!--{url controller=seoplink
+action=linkcheckupdate id=$sites[loopSite].id recommend=0}-->" >
+<img src="images/icon_status_red_light.gif">
+</a>
+<!--{else}-->
+<a href="<!--{url controller=seoplink
+action=linkcheckupdate id=$sites[loopSite].id recommend=1}-->" >
+<img src="images/icon_status_green_light.gif">
+</a>
+<img src="images/icon_status_red.gif">
+<!--{/if}-->
+</td>
+<td>
+<a href="<!--{url controller=seoplink
+action=linkcheckshow id=$sites[loopSite].id}-->" >
+<!--{_t key="seoplink_linkcheck_show_this"}-->
+</a>
+|
+<a href="<!--{url controller=seoplink
+action=linkcheckupdate id=$sites[loopSite].id}-->" >
+<!--{_t key="seoplink_linkcheck_update_this"}-->
+</a>
+|
+<a href="<!--{url controller=seoplink
+action=linkcheckdelete id=$sites[loopSite].id}-->" >
+<!--{_t key="seoplink_linkcheck_delete_this"}-->
+</a>
+|
+<a href="<!--{url controller=seoplink
+action=linkcheckedit id=$sites[loopSite].id}-->" >
+<!--{_t key="seoplink_linkcheck_edit_this"}-->
+</a>
+</td>
+</tr>
+<!--{if $smarty.section.loopSite.last}-->
+<tr><td colspan="6">
+<div class="linkcheck_operation">
+<span id="all"><!--{_t key="seoplink_all"}--></span>
+<span id="none"><!--{_t key="seoplink_none"}--></span>
+<span id="checked"><!--{_t key="seoplink_checked"}--></span>
+<span id="unchecked"><!--{_t key="seoplink_unchecked"}--></span>
+<span>
+<select name="batchdo_action" id="batchdo_action">
+<option value="" selected="selected"><!--{_t key="seoplink_select_action"}--></option>
+<option value="delete"><!--{_t key="seoplink_delete"}--></option>
+<!--<option value="update">[>{_t key="seoplink_update"}<]</option>-->
+</select>
+<input type="submit" value="<!--{_t key="seoplink_submit"}-->">
+
+  <script>
+  <!--
+  //select Site
+  $("#all").click(function(){
+      selectAll();
+      });
+  $("#none").click(function(){
+      selectNone();
+      });
+  $("#checked").click(function(){
+      selectChecked();
+      });
+  $("#unchecked").click(function(){
+      selectUnchecked();
+      });
+  $("#batchdo_form").submit(function(){
+      return batchdo_check();
+      });
+function batchdo_check()
+{
+  var batchdo_action = $("#batchdo_action");
+  if (batchdo_action.val() == '')
+  { 
+    return false;
+  }
+  else
+  {
+    switch (batchdo_action.val())
+    {
+      case 'delete':
+        var c = confirm("<!--{_t key="seoplink_confirm_delete"}-->");
+        if (!c)
+        {
+          return false;
+        }
+        break;
+      case 'update':
+        //alert('update');
+        break;
+    }
+    return true;
+  }
+}
+
+function selectAll()
+{
+  $("input[id^='state']").attr('checked', 'checked');
+}
+
+function selectNone()
+{
+  $("input[id^='state']").attr('checked', '');
+}
+
+function selectChecked()
+{
+  $("input[id^='state_on']").attr('checked', 'checked');
+  $("input[id^='state_off']").removeAttr('checked');
+}
+
+function selectUnchecked()
+{
+  $("input[id^='state_on']").removeAttr('checked');
+  $("input[id^='state_off']").attr('checked', 'checked');
+}
+
+
+-->
+  </script>
+  </div> 
+  </td></tr>
+  <!--{/if}-->
+  <!--{sectionelse}-->
+  <tr>
+  <td>
+  <!--{_t key="seoplink_there_is_no_site"}-->
+  </td>
+  </tr>
+  <!--{/section}-->
+  </table>
+  </form>
+  <div>
+  <a href="<!--{url controller="seoplink" action="linkcheckupdateall"}-->" >
+  <!--{_t key="seoplink_linkcheck_update_all"}-->
+  </a>
+  </div>
+  </li>
+  </ul>
+  </div>
+  </div>
+  </body>
+  </html>
