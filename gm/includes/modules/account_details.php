@@ -25,7 +25,8 @@
       }
   } else {
       $a_value = tep_draw_input_field('firstname',
-                                      $account['customers_firstname'], "class='input_text'") . '&nbsp;' . ENTRY_FIRST_NAME_TEXT;
+                                      $account['customers_firstname'],
+                                      "class='input_text' style='width:40%'") . '&nbsp;' . ENTRY_FIRST_NAME_TEXT;
   }
   $address_form->setFormLine('firstname',ENTRY_FIRST_NAME,$a_value);
 
@@ -40,7 +41,8 @@
       }
   } else {
       $a_value = tep_draw_input_field('lastname',
-                                      $account['customers_lastname'],"class='input_text'") . '&nbsp;' . ENTRY_LAST_NAME_TEXT;
+                                      $account['customers_lastname'],"class='input_text'
+                                      style='width:40%'") . '&nbsp;' . ENTRY_LAST_NAME_TEXT;
   }
   $address_form->setFormLine('lastname',ENTRY_LAST_NAME,$a_value);
 
@@ -60,7 +62,8 @@
           $a_value = $email_address . tep_draw_hidden_field('email_address');
       }
   } else {
-      $a_value = tep_draw_input_field('email_address', $account['customers_email_address'],"class='input_text'") . '&nbsp;' . ENTRY_EMAIL_ADDRESS_TEXT;
+      $a_value = tep_draw_input_field('email_address',
+          $account['customers_email_address'],"class='input_text' style='width:40%'") . '&nbsp;' . ENTRY_EMAIL_ADDRESS_TEXT;
   }
   $address_form->setFormLine('email_address',ENTRY_EMAIL_ADDRESS,$a_value);
 ?>
