@@ -40,11 +40,11 @@
 <div id="title">
 <?php
   if (isset($_GET['cPath']) && $_GET['cPath']) {
-    echo $seo_category['seo_name'] . ' RMT ジャックポットは安全で安心・信頼できる取り引きを目指していきます。' . "\n";
+    echo $seo_category['seo_name'] . ' '.TEXT_HEADER_CATEGORY_TITLE. "\n";
   } elseif (isset($_GET['products_id']) && $_GET['products_id']) {
-    echo ds_tep_get_categories((int)$_GET['products_id'],1) . ' ジャックポットは安全で安心・信頼できる取り引きを目指していきます。' . "\n";
+    echo ds_tep_get_categories((int)$_GET['products_id'],1) . ' ' .TEXT_HEADER_PRODUCT_TITLE. "\n";
   } else {
-    echo 'RMT専門店！ '.STORE_NAME.'は安全で安心・信頼できる取り引きを目指していきます。' . "\n";
+    echo sprintf(TEXT_HEADER_OTHER_TITLE,STORE_NAME). "\n";
   } 
 ?>
 </div>
@@ -64,7 +64,7 @@ echo tep_draw_form('quick_find', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, 
 ?>
           <table>
             <tr>
-              <td><img class="middle" src="images/design/button/search_text.jpg" width="53" height="12" alt="RMT検索"></td>
+              <td><img class="middle" src="images/design/button/search_text.jpg" width="53" height="12" alt="<?php echo TEXT_HEADER_SEARCH_IMAGE_ALT;?>"></td>
               <td>
 <?php
 // --- get categoris list ( parent_id = 0 ) --- //
@@ -118,8 +118,8 @@ if (!isset($cat0[0])) $cat0[0] = NULL;
 // --- end add--- //
 ?>
               </td>
-              <td><?php echo tep_draw_input_field('keywords', '入力して下さい', 'size="30" maxlength="40" id="skeywords" onclick="document.getElementById(\'skeywords\').value = \'\';"'); ?></td>
-              <td><input name="imageField" type="image" src="images/design/button/search.jpg" alt="検索"></td>
+              <td><?php echo tep_draw_input_field('keywords', TEXT_HEADER_SEARCH_MUST_INPUT, 'size="30" maxlength="40" id="skeywords" onclick="document.getElementById(\'skeywords\').value = \'\';"'); ?></td>
+              <td><input name="imageField" type="image" src="images/design/button/search.jpg" alt="<?php echo TEXT_SEARCH_ALT;?>"></td>
             </tr>
           </table>
 <?php 

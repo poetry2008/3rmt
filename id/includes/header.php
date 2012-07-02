@@ -44,11 +44,11 @@
 <div id="title">
   <?php
   if ($_GET['cPath']) {
-    echo $seo_category['seo_name'] . ' <strong style="font-weight:400;">RMT</strong> <a href="javascript:void(0);" onkeypress="SomeJavaScriptCode" style="cursor:hand" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">RMT総合サイト アイテムデポをお気に入りに追加して下さい！</a>' . "\n";
+    echo $seo_category['seo_name'] . ' <strong style="font-weight:400;">RMT</strong> <a href="javascript:void(0);" onkeypress="SomeJavaScriptCode" style="cursor:hand" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">'.TEXT_HEADER_CATEGORY_TITLE.'</a>' . "\n";
   } elseif ($_GET['products_id']) {
-    echo ds_tep_get_categories((int)$_GET['products_id'],1) . '<strong style="font-weight:400;">RMT</strong> <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">総合サイト アイテムデポをお気に入りに追加して下さい！</a>' . "\n";
+    echo ds_tep_get_categories((int)$_GET['products_id'],1) . '<strong style="font-weight:400;">RMT</strong> <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">'.TEXT_HEADER_PRODUCT_TITLE.'</a>' . "\n";
   } else {
-    echo '<strong style="font-weight:400;">RMT</strong> <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">RMT総合サイト アイテムデポをお気に入りに追加して下さい！</a>' . "\n";
+    echo '<strong style="font-weight:400;">RMT</strong> <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">'.TEXT_HEADER_CATEGORY_TITLE.'</a>' . "\n";
   }  
 ?>
 </div>
@@ -99,7 +99,7 @@ echo tep_draw_form('quick_find', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, 
 ?>
                 <table style="margin-top: 3px;" cellpadding="2" cellspacing="2" summary="search">
                   <tr>
-                    <td><img class="middle" src="images/design/button/search_text.gif" width="66" height="25" alt="RMT検索"></td>
+                    <td><img class="middle" src="images/design/button/search_text.gif" width="66" height="25" alt="<?php echo TEXT_HEADER_SEARCH_IMAGE_ALT;?>"></td>
                     <td>
                       <?php
 // --- get categoris list ( parent_id = 0 ) --- //
@@ -135,7 +135,7 @@ echo tep_draw_form('quick_find', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, 
   if($cat1 == '') {
     $categories_array .= ' selected';
   }
-  $categories_array .= '>全てのゲーム</option>'."\n";
+  $categories_array .= '>'.TEXT_HEADER_ALL_CATEGORY.'</option>'."\n";
   while($categories_parent0 = tep_db_fetch_array($categories_parent0_query)) {
     $categories_array .= '<option value="'.$categories_parent0['categories_id'].'"';
     if($cat1 == $categories_parent0['categories_id']) {
@@ -150,7 +150,7 @@ echo tep_draw_form('quick_find', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, 
                     </td>
                     <td><?php echo tep_draw_input_field('keywords', 'RMT', 'class="header_search_input"'); ?></td>
                     <td>
-                      <input name="imageField" type="submit" class="header_search_submit" value="" alt="検索">
+                      <input name="imageField" type="submit" class="header_search_submit" value="" alt="<?php echo TEXT_SEARCH_ALT;?>">
                     </td>
                   </tr>
                 </table>
