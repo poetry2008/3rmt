@@ -203,7 +203,6 @@ function session_value(){
     }
 
 }
-//js 判断某值是否存在某数组中
   function in_array(value,arr){
 
     for(vx in arr){

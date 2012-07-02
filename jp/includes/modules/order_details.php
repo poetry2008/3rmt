@@ -81,7 +81,7 @@
       echo '<a onclick="change_num(\'quantity_'.$products[$i]['id'].'\',\'up\',1,'.  $product_info['products_quantity'].',  \''.$products[$i]['quantity'].'\', \''.$origin_small.'\')" style="display:block"><img src="images/nup.gif" style="vertical-align:bottom;"></a>';
       echo '<a onclick="change_num(\'quantity_'.$products[$i]['id'].'\',\'down\',1,'.  $product_info['products_quantity'].',  \''.$products[$i]['quantity'].'\', \''.$origin_small.'\')" style="display:block"><img src="images/ndown.gif" style="vertical-align:top;"></a>';
       echo '</div></td><td>';
-      echo ' <font style="font-size:10px">個</font>';
+      echo ' <font style="font-size:10px">'.NUM_UNIT_TEXT.'</font>';
       echo '</td></tr></table></td></tr><tr><td colspan="3" width="90">';
       echo (!empty($product_info['products_attention_1_3']) &&
           tep_get_full_count_in_order2($products[$i]['quantity'],
@@ -95,7 +95,7 @@
       echo '</td></tr></table>';
       echo  '</td>' . "\n";
     } else {
-      echo '    <td align="center" class ="main" style=" background:#FFFFFF;padding-left:10px;padding-right:20px;">' . $products[$i]['quantity'] . '個' ;
+      echo '    <td align="center" class ="main" style=" background:#FFFFFF;padding-left:10px;padding-right:20px;">' . $products[$i]['quantity'] . NUM_UNIT_TEXT;
       echo (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($products[$i]['quantity'], $products[$i]['id']) ? '<span style="font-size:10px">'. tep_get_full_count_in_order2($products[$i]['quantity'], $products[$i]['id']) .'</span>' : '');
       echo '</td>' . "\n";
     }

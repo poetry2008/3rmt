@@ -473,4 +473,6 @@ define('TEXT_HEADER_OTHER_TITLE', 'RMT専門店！ %sは安全で安心・信頼
 define('TEXT_HEADER_SEARCH_IMAGE_ALT', 'RMT検索');
 define('TEXT_HEADER_SEARCH_MUST_INPUT', '入力して下さい');
 define('TEXT_SEARCH_ALT', '検索');
+define('TEXT_ACCOUNT_GUEST_INFO', '会員登録をしないで購入することもできます。');
+define('NUM_UNIT_TEXT', '個');
 ?>
