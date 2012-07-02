@@ -1,6 +1,5 @@
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript">
-//判断数组中是否含有某值
 function in_array(value,arr){
   
   for(vx in arr){
@@ -310,7 +309,7 @@ $(document).ready(function(){
 ?>      
       <tr>
         <td class="main"><?php echo ENTRY_GUEST; ?></td>
-        <td class="main"><?php echo tep_draw_pull_down_menu('guestchk', $guestchk_array, $guestchk, 'onchange="pass_hidd()"'); ?>&nbsp;&nbsp;<small><span class="red">※</span>&nbsp;会員登録をしないで購入することもできます。</small></td>
+        <td class="main"><?php echo tep_draw_pull_down_menu('guestchk', $guestchk_array, $guestchk, 'onchange="pass_hidd()"'); ?>&nbsp;&nbsp;<small><span class="red">※</span>&nbsp;<?php echo TEXT_ACCOUNT_GUEST_INFO;?></small></td>
       </tr>
 <?php
     } else {

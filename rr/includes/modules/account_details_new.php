@@ -206,14 +206,13 @@ function address_clear(){
     op_comment.style.color = '#999';
     if(document.getElementById("l_"+arr_new[x])){
       if($("#l_"+arr_new[x]).val() == 'true'){
-        $("#r_"+arr_new[x]).html("&nbsp;*必須");
+        $("#r_"+arr_new[x]).html("&nbsp;*<?php echo TEXT_REQUIRED;?>");
       }
     }
     $("#error_"+arr_new[x]).html("");
   }
   $("#address_flag_id").val("");
 }
-//判断数组中是否含有某值
 function in_array(value,arr){
   
   for(vx in arr){
@@ -228,7 +227,6 @@ function address_list(){
   var arr_old = new Array();
   var arr_name = new Array();
 <?php
-//根据后台的设置来显示相应的地址列表
   $address_i = 0;
   $address_list_query = tep_db_query("select name_flag from ". TABLE_ADDRESS ." where status='0' and show_title='1'");
   while($address_list_array = tep_db_fetch_array($address_list_query)){
@@ -288,7 +286,6 @@ function address_option_list(value){
   var arr_list = new Array();
   var arr_flag = new Array();
 <?php
-  //根据后台的设置来显示相应的地址列表
   $address_list_arr = array();
   $address_list_query = tep_db_query("select name_flag from ". TABLE_ADDRESS ." where status='0' and show_title='1'");
   while($address_list_array = tep_db_fetch_array($address_list_query)){
@@ -337,7 +334,7 @@ if(arr_list.length > 0){
      
     if(document.getElementById("l_"+x)){
       if($("#l_"+x).val() == 'true'){
-        $("#r_"+x).html("&nbsp;*必須");
+        $("#r_"+x).html("&nbsp;*<?php echo TEXT_REQUIRED;?>");
       }
     }
     $("#error_"+x).html("");
@@ -568,7 +565,7 @@ $(document).ready(function(){
         <?php       
           $hm_option->render('','',true); 
         ?> 
-          <tr><td class="main" align="right" colspan="2"><a href="javascript:void(0);" onclick="if(confirm('このレコードを削除してもよろしいですか？')){location.href='<?php echo FILENAME_ACCOUNT_EDIT;?>?act='+document.getElementById('address_flag_id').value;}else{return false;}"><img src="includes/languages/japanese/images/buttons/button_delete02.gif"></a>&nbsp;<a href="javascript:void(0);" onclick="address_clear();"><img src="images/design/button/new_found.gif"></a>&nbsp;<a href="javascript:void(0);" onclick="check_form_address();document.account_edit_address.submit();"><img src="images/design/button/save.gif"></a></form>&nbsp;&nbsp;</td></tr>
+          <tr><td class="main" align="right" colspan="2"><a href="javascript:void(0);" onclick="if(confirm('<?php echo NOTICE_DELETE_CONFIRM_TEXT;?>')){location.href='<?php echo FILENAME_ACCOUNT_EDIT;?>?act='+document.getElementById('address_flag_id').value;}else{return false;}"><img src="includes/languages/japanese/images/buttons/button_delete02.gif"></a>&nbsp;<a href="javascript:void(0);" onclick="address_clear();"><img src="images/design/button/new_found.gif"></a>&nbsp;<a href="javascript:void(0);" onclick="check_form_address();document.account_edit_address.submit();"><img src="images/design/button/save.gif"></a></form>&nbsp;&nbsp;</td></tr>
         </table></form>
         </td>
       </tr>
@@ -623,7 +620,7 @@ $(document).ready(function(){
       <tr>
         <td class="main">&nbsp;<?php echo ENTRY_GUEST; ?></td>
 <?php if (!isset($guestchk)) $guestchk = NULL;?>
-        <td class="main">&nbsp;<?php echo tep_draw_pull_down_menu('guestchk', $guestchk_array, $guestchk, 'onchange="pass_hidd()"'); ?>&nbsp;&nbsp;<span class="red">※</span>&nbsp;会員登録をしないで購入することもできます。</td>
+        <td class="main">&nbsp;<?php echo tep_draw_pull_down_menu('guestchk', $guestchk_array, $guestchk, 'onchange="pass_hidd()"'); ?>&nbsp;&nbsp;<span class="red">※</span>&nbsp;<?php echo TEXT_ACCOUNT_GUEST_INFO;?></td>
       </tr>
 <?php
     } else {
@@ -706,9 +703,9 @@ if (!isset($guestchk)) $guestchk = NULL;
       } else if($entry_password_error == true) {
         echo ENTRY_PASSWORD_ERROR;
       } else if($entry_password_confirmation_error == true){
-        echo '<font color="red">ご入力されたパスワードが一致しておりません</font>';
+        echo '<font color="red">'.NOTICE_PASSWORD_NOT_SAME.'</font>';
       } else if($entry_password_old_error == true){
-         echo '<font color="red">安全のため、古いパスワードと違うパスワードを設定してください。</font>';
+         echo '<font color="red">'.NOTICE_SET_NEW_PASSWORD.'</font>';
       }     
     }  
   ?> 
