@@ -48,7 +48,7 @@
                 </div>
                   <li><?php echo '<a href="' . tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL') . '">' . PAGE_SHOPPING_CART . '</a>'; ?></li>
                   <li><?php echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_ATTRIBUTES, '', 'SSL') . '">' . PAGE_CHECKOUT_SHIPPING . '</a>'; ?></li>
-                  <li><?php echo '<a href="' . tep_href_link('reorder.php') . '">再配達フォーム</a>'; ?></li>
+                  <li><?php echo '<a href="' . tep_href_link('reorder.php') .  '">'.PAGE_REORDER.'</a>'; ?></li>
                   <li><?php echo '<a href="' . tep_href_link(FILENAME_ADVANCED_SEARCH) . '">' . PAGE_ADVANCED_SEARCH . '</a>'; ?></li>
                   <li><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCTS_NEW) . '">' . PAGE_PRODUCTS_NEW . '</a>'; ?></li>
                   <li><?php echo '<a href="' . tep_href_link(FILENAME_SPECIALS) . '">' . PAGE_SPECIALS . '</a>'; ?></li>
@@ -59,7 +59,7 @@
                   <li><?php echo '<a href="' . tep_href_link(FILENAME_SEND_MAIL) . '">' . PAGE_SEND_MAIL . '</a>'; ?></li>
                   <li><?php echo '<a href="' . tep_href_link(FILENAME_EMAIL_TROUBLE) . '">' . PAGE_EMAIL_TROUBLE . '</a>'; ?></li>
                   <li><?php echo '<a href="' . tep_href_link(FILENAME_BROWSER_IE6X) . '">' . PAGE_BROWSER_IE6X. '</a>'; ?></li>
-                  <li><?php echo '<a href="/link/">相互リンク</a>'; ?></li>
+                  <li><?php echo '<a href="/link/">'.PAGE_LINK.'</a>'; ?></li>
                   <li><?php echo BOX_HEADING_INFORMATION; ?></li>
         <ul>
 <?php
