@@ -1,0 +1,198 @@
+<!--{php}-->
+echo '
+<?xml version="1.0" encoding="UTF-8"?>
+';
+    <!--{/php}-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  lang="ja-JP">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+
+    <link href="/css/cssbase-min.css" type="text/css" rel="stylesheet">
+    <link href="/css/cssfonts-min.css" type="text/css" rel="stylesheet">
+    <link href="/css/cssreset.css" type="text/css" rel="stylesheet">
+    <link href="/css/grids-min.css" type="text/css" rel="stylesheet">
+    <link href="images/class/hm-gm.css" type="text/css" rel="stylesheet">
+    <link href="/css/hm.css" type="text/css" rel="stylesheet">
+ 
+
+ <!--{if $seo}-->
+<title><!--{$seo.title}--></title>
+<meta name="keywords" content="<!--{$seo.keywords}-->" />
+<meta name="description" content="<!--{$seo.description}-->" />
+<meta name="robots" content="<!--{$seo.robots}-->" />
+<meta name="copyright" content="<!--{$seo.copyright}-->" />
+<!--{else}-->
+<title>相互リンク集｜RMTジャックポット</title>
+<!--{/if}-->
+</head>
+<body id='body'>
+<div id="header">
+<div id="header-top" class="yui3-g">
+     <div class="yui3-u-1-3">
+     <div id="business-hour">
+     <img src="image/header_time.gif">
+     <h1>RMT 最安値-アイテムの激安販売</h1>
+     <span>営業時間10：00～24：00 365日年中無休</span>
+     </div>
+     </div>
+     <div id="logo" class="yui3-u-1-3">
+     <a href="">
+     <img alt="logo" onmouseout="this.src='/image/logo.gif'" onmouseover="this.src='/image/logo_hover.gif'" src="/image/logo.gif">
+     </a>
+     </div>
+     <div id="header-payment" class="yui3-u-1-3">
+     <img width="368" height="46" alt="payment" src="/image/header_payment.gif">
+     </div>
+     </div>
+     <div id="header-nav" class="yui3-u">
+     <ul>
+     <li class="space-1-7">
+     <a href="http://gm.hm1002.200.com/shopping_cart.php">
+     <img onmouseout="this.src='/image/shopping.png'" onmouseover="this.src='/image/shopping_hover.png'" alt="shopping" src="/image/shopping.png">
+     </a>
+     </li>
+     <li class="space-2-7">
+     <a href="http://gm.hm1002.200.com/info/guide.html">
+     <img onmouseout="this.src='/image/space.png'" onmouseover="this.src='/image/space_hover.png'" alt="space" src="/image/space.png">
+     </a>
+     </li>
+     <li class="space-3-7">
+     <a href="/info/starting_rmt.html">
+     <img onmouseout="this.src='/image/getin.png'" onmouseover="this.src='/image/getin_hover.png'" alt="qetin" src="/image/getin.png">
+     </a>
+     </li>
+     <li class="space-4-7">&nbsp;</li>
+     <li class="space-5-7">
+     <a href="/contact_us.php">
+     <img onmouseout="this.src='/image/quick.png'" onmouseover="this.src='/image/quick_hover.png'" alt="quick" src="/image/quick.png">
+     </a>
+     </li>
+     <li class="space-6-7">
+     <a href="http://gm.hm1002.200.com/create_account.php">
+     <img onmouseout="this.src='/image/login.png'" onmouseover="this.src='/image/login_hover.png'" alt="login" src="/image/login.png">
+     </a>
+     </li>
+     <li class="space-7-7">
+     <img id="login_click" onclick="lg()" onmouseout="this.src='/image/MENBERS_after.png'" onmouseover="this.src='/image/MENBERS_after_hover.png'" src="/image/MENBERS_after.png">
+     </li>
+     </ul>
+     </div>
+     </div>
+
+
+<!-- <script type="text/javascript">-->
+<!--
+fflag=0;
+if (document.layers || document.all || document.getElementById) {
+ if (!fflag && document.all && !window.opera && navigator.userAgent.indexOf('Win')>-1) {
+ document.write('<scr' + 'ipt type="text/vbscript"\> \n');
+ document.write('on error resume next \n');
+ document.write('fflag=( IsObject(CreateObject("ShockwaveFlash.ShockwaveFlash.6")))\n');
+ document.write('<' + '/scr' + 'ipt> \n');
+ }
+ else if (navigator.plugins['Shockwave Flash']) fflag=1;
+ }
+
+if (fflag==0)
+{
+ document.write('<a href="index.php"><img alt="RMT" src="../images/design/oc/header.jpg" width="790" height="185" border="0"><'+'/a>');
+}else {
+ if (document.all && !window.opera)
+ document.write('<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="https://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" width="790" height="185">'+
+ '<param name="movie" value="../images/design/header/header.swf" />'+
+ '<param name="wmode" value="transparent" />'+
+ '<param name="quality" value="high" />'+
+ '<'+'/object>'+
+ '');
+ else
+ document.write('<object type="application/x-shockwave-flash" data="../images/design/header/header.swf" width="790" height="185">'+
+ '<param name="wmode" value="transparent" />'+
+ '<param name="quality" value="high" />'+
+ '<'+'/object>'+
+ '');
+ }
+-->
+<!--</script>-->
+</div>
+<!--end header-->
+<div id="main">
+  <div id="layout" class="yui3-u"> 
+  <div id="current">
+  <!--{$bread}-->
+        <span class="x-bg"><b class="x7">&nbsp;</b><b class="x6">&nbsp;</b><b class="x5">&nbsp;</b><b class="x4">&nbsp;</b><b class="x3">&nbsp;</b><b class="x2">&nbsp;</b><b class="x1">&nbsp;</b></span>
+  </div>
+   <div id="main-content">
+        <div id="sitemap">
+      <!--{section name=loopClass loop=$class}-->
+      <!--{assign var='top' value=$class[loopClass]}-->
+      <div class="web-box">
+            <div class="web-tit"><span>
+              <a href='<!--{url controller=site action=class id=$class[loopClass].class_id}-->'>
+                <!--{$class[loopClass].name}-->
+              </a></span>
+            </div>
+            <!--{section name=loopTop loop=$top.children step=5}-->
+            <!--{assign var='index' value=$smarty.section.loopTop.index}-->
+            <!--{assign var='index2' value=$smarty.section.loopTop.index+1}-->
+            <!--{assign var='index3' value=$smarty.section.loopTop.index+2}-->
+            <!--{assign var='index4' value=$smarty.section.loopTop.index+3}-->
+            <!--{assign var='index5' value=$smarty.section.loopTop.index+4}-->
+            <!--{if $smarty.section.loopTop.first}-->
+             <table class="web"  width="100%" border="0">
+          <!--{/if}-->
+          <tr>
+                <td><!--{if $top.children[$index].name != ''}-->
+                <span class="web-ico">&nbsp;</span>
+              <a href='<!--{url controller=site action=class id=$top.children[$index].class_id}-->'>
+                  <!--{$top.children[$index].name}-->
+                  </a>
+              <!--{/if}-->
+            </td>
+                <td><!--{if $top.children[$index2].name != ''}-->
+               <span class="web-ico">&nbsp;</span>
+              <a href='<!--{url controller=site action=class id=$top.children[$index2].class_id}-->'>
+                  <!--{$top.children[$index2].name}-->
+                  </a>
+              <!--{/if}-->
+            </td>
+                <td><!--{if $top.children[$index3].name != ''}-->
+               <span class="web-ico">&nbsp;</span>
+              <a href='<!--{url controller=site action=class id=$top.children[$index3].class_id}-->'>
+                  <!--{$top.children[$index3].name}-->
+                  </a>
+              <!--{/if}-->
+            </td>
+                <td><!--{if $top.children[$index4].name != ''}-->
+               <span class="web-ico">&nbsp;</span>
+              <a href='<!--{url controller=site action=class id=$top.children[$index4].class_id}-->'>
+                  <!--{$top.children[$index4].name}-->
+                  </a>
+              <!--{/if}-->
+            </td>
+                <td><!--{if $top.children[$index5].name != ''}-->
+               <span class="web-ico">&nbsp;</span>
+              <a href='<!--{url controller=site action=class id=$top.children[$index5].class_id}-->'>
+                  <!--{$top.children[$index5].name}-->
+                  </a>
+              <!--{/if}-->
+            </td>
+              </tr>
+          <!--{if $smarty.section.loopTop.last}-->
+        </table>
+           <!--{/if}-->
+            <!--{/section}-->
+          </div>
+      <!--{/section}-->
+        </div>
+
+  </div>
+
+
+
+</div>
+
+    <!--{include file=Site/footer.html}-->
+    </div> 

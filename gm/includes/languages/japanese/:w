@@ -1,0 +1,21 @@
+<?php
+/*
+  $Id$
+
+  osCommerce, Open Source E-Commerce Solutions
+  http://www.oscommerce.com
+
+  Copyright (c) 2002 osCommerce
+
+  Released under the GNU General Public License
+*/
+
+define('HEADING_TITLE', 'Internet Explorer6の設定について');
+define('NAVBAR_TITLE', 'ブラウザの設定');
+define('IE6_TEXT_ONE','当ショッピングシステムは、ブラウザの初期設定のままで動作するように作られております。<br>ショッピングができない場合は、以下の手順で設定内容をお確かめください。');
+define('IE6_TEXT_TWO','Explorerの上段メニューから［ツール］を選択し、次に［インターネットオプション］を選択してください。');
+define('IE6_TEXT_THREE','インターネットオプション画面が開きますので［プライバシー］をクリックしプライバシー設定画面を開きます。<br>スライダのつまみを移動して［中］を選択し、［適用］をクリックします。<br><span class="red">※</span>&nbsp;青枠内の［既定］ボタンが押せるようでしたらクリックして、［適用］をクリックしてください。');
+define('IE6_TEXT_FOUR','上記の設定でも解決しない場合は、続けて下記の設定を行ってください。');
+define('IE6_TEXT_FIVE','次に［詳細設定］をクリックし、プライバシー設定の詳細画面を開きます。');
+define('IE6_TEXT_SIX','［自動Cookie処理を上書きする］と［常にセッションCookieを許可する］にチェックしてCookieを有効にします。その後［OK］ボタンをクリックしてください。');
+?>

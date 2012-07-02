@@ -1,0 +1,429 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 4.0 Strict//EN">
+ 
+<html dir="ltr" lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>44-1GM店名RMTゲームマネー　パンクズRMT ショッピングカートページタイトルショッピングカート</title>
+<meta name="keywords" content="44-2GM店名RMTゲームマネー　パンクズRMT ショッピングカートページタイトルショッピングカート">
+<meta name="description" content="44-3GM店名RMTゲームマネー　パンクズRMT ショッピングカートページタイトルショッピングカート">
+<meta name="robots" content="INDEX,FOLLOW">
+<meta name="copyright" content="44-4GM店名RMTゲームマネー　パンクズRMT ショッピングカートページタイトルショッピングカート">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<meta http-equiv="Content-Script-Type" content="text/javascript">
+<base href="http://gm.hm1002.200.com/">
+ 
+<link rel="stylesheet" type="text/css" href="css/cssbase-min.css"> 
+<link rel="stylesheet" type="text/css" href="css/cssfonts-min.css"> 
+<link rel="stylesheet" type="text/css" href="css/cssreset.css">
+<link rel="stylesheet" type="text/css" href="css/grids-min.css">
+<link rel="stylesheet" type="text/css" href="css/hm-gm.css">
+<link rel="stylesheet" type="text/css" href="css/hm.css">
+<script type="text/javascript"> 
+function key(e)
+{
+  if(window.event) {
+    if(e.keyCode<48   ||   e.keyCode>57||e.keyCode==8) {
+      return false;
+    } else {
+      return true;
+    }
+  } else if(e.which) {
+    if((e.which>47)   &&   (e.which<58)||(e.which==8)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+}
+</script>
+<script type="text/javascript"> 
+<!--
+function money_update(objid)
+{
+  var obj = document.getElementById(objid);
+  var product_id = obj.id.substr(9);
+  var unit_price = document.getElementById("unit_price_" + product_id);
+  var attr_prices = document.getElementsByName("attr_" + product_id);
+  var attr_prices_option = document.getElementsByName("attr_option_" + product_id);
+  var sub_total = document.getElementById('sub_total_hidden');
+ 
+ 
+  var new_unit_price_total = Number(unit_price.value) * Number(obj.value);
+  new_unit_price_total = Math.round(new_unit_price_total);
+  
+  
+  var old_price_total  = document.getElementById("pri_" + product_id);
+  var monetary_unit_pri = old_price_total.innerHTML.slice(-1);
+  if (new_unit_price_total < 0) {
+    old_price_total.innerHTML = '<font color="#ff0000">'+Math.abs(new_unit_price_total).toString() +'</font>' +monetary_unit_pri;
+  } else {
+    old_price_total.innerHTML = Math.abs(new_unit_price_total).toString() + monetary_unit_pri;
+  }
+ 
+  for (var i = 0; i < attr_prices.length; i++)
+  {
+    var new_attr_price = Number(attr_prices[i].value) * Number(obj.value);
+    var old_price_attr = document.getElementById("attr_" + product_id + "_attr_" + attr_prices_option[i].value);
+    var prefix_attr = old_price_attr.innerHTML.slice(0,1);
+    var monetary_unit_attr = old_price_attr.innerHTML.slice(-1);
+    old_price_attr.innerHTML = prefix_attr + new_attr_price.toString() + monetary_unit_attr;
+ 
+  }
+ 
+ 
+  set_sub_total();
+  //alert(old_sub_total);
+  //alert(new_sub_total);
+}
+ 
+function set_sub_total()
+{
+  var final_prices = document.getElementsByName('final_price');
+  var sub_total = 0;
+  for (var i=0; i<final_prices.length; i++)
+  {
+    sub_total = sub_total + Number(final_prices[i].value)*Number(document.getElementById('quantity_' +
+            final_prices[i].id.substr(3)).value);
+  }
+ 
+  sub_total = Math.round(sub_total);
+ 
+  var sub_total_text = document.getElementById("sub_total");
+  var monetary_sub_total = sub_total_text.innerHTML.slice(-1);
+  if (sub_total >= 0) {
+    sub_total_text.innerHTML = Math.abs(sub_total).toString() + monetary_sub_total;
+  } else {
+    sub_total_text.innerHTML = '<font color="#ff0000">' + Math.abs(sub_total).toString() + '</font>' + monetary_sub_total;
+  }
+}
+  
+function update_cart(objid)
+{
+    money_update(objid);
+}
+ 
+function change_num(ob,targ, quan,a_quan)
+{
+  var product_quantity = document.getElementById(ob);
+  var product_quantity_num = parseInt(product_quantity.value);
+  if (targ == 'up')
+  { 
+    if (product_quantity_num >= a_quan)
+    {
+      num_value = product_quantity_num;
+    }
+    else
+    {
+      num_value = product_quantity_num + quan; 
+    }
+  }
+  else
+  {
+    if (product_quantity_num <= 1)
+    {
+      num_value = product_quantity_num;
+    }
+    else
+    { 
+      num_value = product_quantity_num - quan;
+    }
+  }
+ 
+  product_quantity.value = num_value;
+  if (product_quantity_num != num_value)
+  { 
+    update_cart(product_quantity.id);
+  }
+}
+-->
+</script>
+</head>
+<body>
+<!-- header //--> 
+ 
+<div id="header">
+<div class="yui3-g" id="header-top">
+ 
+<div class="yui3-u-1-3"><div id="business-hour"><img src="image/header_time.gif"><span>RMT 最安値-アイテムの激安販売<br>営業時間10：00～24：00  365日年中無休</span></div></div>
+	<div class="yui3-u-1-3" id="logo"><img src="image/logo.gif" alt="logo"></div>
+	<div class="yui3-u-1-3" id="header-payment"><img src="image/header_payment.gif" width="368" height="46" alt="payment"></div>
+</div>
+<div class="yui3-u" id="header-nav">
+  <ul>										  
+   <!-- <li><a href="/sitemap.php">サイトマップ</a>|</li>-->
+    <li class="space-1-7"><a href="http://gm.hm1002.200.com/shopping_cart.php"><img src="image/shopping.png" alt="shopping"onmouseOver="this.src='image/shopping_hover.png'"onmouseOut="this.src='image/shopping.png'" ><span>ショッピング<br>カート</span></a></li>
+    <li class="space-2-7">
+        <a href="http://gm.hm1002.200.com/info/guide.html?cmd=ujb2ab26vpf8hkujhfle1311i4"><img src="image/space.png" alt="space" onmouseOver="this.src='image/space_hover.png'" onmouseOut="this.src='image/space.png'"><br><span>ご利用方法</span></a></li>
+        </li>
+	<li class="space-3-7"><a href="/info/starting_rmt.html"><img src="image/getin.png" alt="qetin"onmouseOver="this.src='image/getin_hover.png'"onmouseOut="this.src='image/getin.png'"><br><Span>はじめての<br>ＲＭＴ</Span></a></li>
+	<li class="space-4-7">&nbsp;</li>
+   <!-- <li>
+        <a href="http://gm.hm1002.200.com/info/profile.html?cmd=ujb2ab26vpf8hkujhfle1311i4">会社概要</a>|
+        </li>-->
+  <li class="space-5-7"><a href="/contact_us.php"><img src="image/quick.png" alt="quick"onmouseOver="this.src='image/quick_hover.png'"onmouseOut="this.src='image/quick.png'"><br><span>お問い合わせ</span></a></li>
+  <li class="space-6-7">
+     <a href="http://gm.hm1002.200.com/create_account.php"><img src="image/login.png" alt="login"onmouseOver="this.src='image/login_hover.png'"onmouseOut="this.src='image/login.png'"><br><span>会員登録</span></a></li>
+      <li class="space-7-7">
+      <a href="http://gm.hm1002.200.com/login.php"><img src="image/MENBERS.png" alt="menbers"onmouseOver="this.src='image/MENBERS_hover.png'"onmouseOut="this.src='image/MENBERS.png'"><br><span>ログイン</span></a> 
+    </li>
+       
+            
+      </ul>
+</div>
+</div>
+<script type="text/JavaScript"> 
+<!--
+function popupWindow(url) {
+  window.open(url,'','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,copyhistory=no,width=750,height=300,screenX=150,screenY=150,top=150,left=150');
+}
+//-->
+</script>
+ 
+<!-- header_eof //--> 
+<!-- body //--> 
+<div id="main">
+<div class="yui3-g">
+    <div class="yui3-u-1-4">
+        <div class="content">1/4</div>
+    </div>
+    <div class="yui3-u-1-4">
+        <div class="content">1/4</div>
+    </div>
+
+    <div class="yui3-u-1-4">
+        <div class="content">1/4</div>
+    </div>
+    <div class="yui3-u-1-4">
+        <div class="content">1/4</div>
+    </div>
+</div>
+<!-- body_text //-->
+<div class="yui3-u" id="layout">
+             <div id="current" ><a href="http://gm.hm1002.200.com" class="headerNavigation">RMT</a> &raquo; ショッピングカート</div>
+             <div id="main-seach" style="text-align:center;">
+                  <!-- <form name="form1" method="get"
+                  action="seach.php?action=seach">-->
+                <form name="quock_find" action="/advanced_search_result.php" method="get">
+                         <input type="text" name="keywords" value="入力して下さい" size="30" maxlength="40" id="seach-content" onclick="document.getElementById('skeywords').value = '';">						<!--<input id="seach-content"
+                                                name="search_text" type="text">-->
+                                  
+                        <div id="seach-bottom" name="imageField"
+                        onClick="document.quock_find.submit();"><a href="javascript:void(0);"></a></div>
+ 
+                        <input type="hidden" name="search_in_description"
+                        value="1"><input type="hidden" name="inc_subcat" value="1">				        <div id="game-preview"><a href="#"></a></div>
+			 </form>
+			</div>
+ 
+         <div id="main-content">
+      <div id="cart-shopping-h2"><b>ショッピングカート</b></div>
+            
+        <form name="cart_quantity" action="http://gm.hm1002.200.com/shopping_cart.php?action=update_product" method="post"> 
+         <table id="detail-table" border="0" width="95%" cellspacing="0" cellpadding="0"> 
+ 
+                     <!-- order_details -->
+  <tr>
+    <td align="center" width="6%">数量</td>
+    <td align="center" width="10%">画像</td>
+    <td>商品名</td>
+    <td align="center" width="10%">合計</td>
+    <td align="center" width="5%">削除</td>
+  </tr>
+ 
+  <tr>
+<input type="hidden" name="31735_unit_price" value="-1" id="unit_price_31735"><input type="hidden" name="final_price" value="-1" id="id_31735"><td><div class="roll_warp"><input type="text" name="cart_quantity[]" value="1" size="4" maxlength="4"
+               class="input_text_short" id="quantity_31735"
+               onblur="update_cart(this);"  onkeypress="return key(event);"><div class="roll_add">      <a style="display:block;" href="javascript:void(0)" onclick="change_num('quantity_31735', 'up',1,100); return false;"> 
+      <img src="images/ico/nup.gif" style="vertical-align:bottom;"> 
+      </a> 
+      <a style="display:block;" href="javascript:void(0)" onclick="change_num('quantity_31735', 'down',1,100); return false;"> 
+      <img src="images/ico/ndown.gif" style="vertical-align:top;"> 
+      </a> 
+      </div><div class="roll_company"><font size="2">個</font></div><div class="roll_price"><font size="2"><span>100,000</span></font>
+</div></div></td></td><td><img src="images/products/sell.png" alt="統合 Remoraのギル買取" width="50" height="50"></td>    <td><a href="http://gm.hm1002.200.com/item/p-31735.html">FF11-RMT-S307</a><br><a href="http://gm.hm1002.200.com/item/p-31735.html"><b>統合 Remoraのギル買取</b></a></td>
+    <td align="center"><span id="pri_31735"><font color="#ff0000">1</font>円</span><td align="center"><a class="button_delete02"
+        href="http://gm.hm1002.200.com/shopping_cart.php?products_id=31735&action=delete"><img
+          src="image/close.png"></a></td></tr><!-- order_details_eof -->
+ 
+          </table> 
+        
+ 
+ 
+ 
+       <div style=" clear:both; text-align:right;"> 
+         <b>小計:          <span id="sub_total"><font color="#ff0000">1</font>円</span></b>        </div> 
+          <div class="3">         
+               <table border="0" width="100%" cellspacing="0" cellpadding="2">
+              	<tr>
+                	<td colspan="2">
+【重要】<br>
+小計金額が赤色の場合は「買取」となり、表示された金額をお客様へお支払いいたします。<br>
+買取金額が200円未満の場合は手数料の関係上、支払方法にて銀行振込を選択することができません。<br>
+<br>
+選択できる支払方法は以下となります。<br>
+A:来店による支払い<br>
+B:ポイントの加算（RMTゲームマネー会員でなければ表示されません）<br>
+</td>
+                </tr>
+                <tr>
+                  <td width="33" height="35"><img src="images/icons/hinto.jpg" align="absmiddle" /></td>
+                  <td align="left" valign="middle">200円未満になる場合は商品名「ウェブマネーの販売」をカートに入れてみてはどうでしょう。</td>
+                </tr>
+              </table>
+            
+          </div>
+           
+        <div class="8">  
+           
+          <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2"> 
+            <tr> 
+              <td width="50%" align="right">
+                    <button  class="shopping_cart_continue" onClick="history.back(); return false;"></button>
+              </td> 
+              <td align="left">
+  <input type="submit" name="checkout" value="" class="shopping_cart_checkout">
+  </td> 
+            </tr> 
+            <tr> 
+              <td colspan="2"><b><font color="#ff0000">※</font> 数量をご確認の上「レジへ進む」ボタンをクリックしてください。</b></td> 
+            </tr> 
+          </table> 
+  <div style="text-align:center;padding:10px 0;">
+  </div>
+       <p class="box_des"><b><i>ショッピングカート</i></b><br>初めて RMTゲームマネー をご利用いただくお客様も、メンバー（登録されたお客様）と同様に [ショッピングカート] へ商品を入れていただくことができますが、メンバー登録されずに RMTゲームマネー から離れると、 [ショッピングカート] 内の商品は、保存されずに消えてしまいます。</p>
+<p class="box_des"><b><i>メンバーズ・ショッピングカート</i></b><br>RMTゲームマネー へ [ログイン] されたメンバーの方には、[メンバーズ・ショッピングカート] がご利用いただけます。[メンバーズ・ショッピングカート] はメンバー別の専用ショッピングカートとなっており、一度ショッピングカートへ入れた商品は RMTゲームマネー から離れても消えません。※ご自分で削除するかご注文が完了するまで保存されます。</p>
+<p class="box_des"><b><i>補足</i></b><br>メンバーの方が RMTゲームマネー へ [ログイン] せずに商品をショッピングカートへ入れた場合、そのまま [ログイン] していただくことで自動的に [メンバーズ・ショッピングカート] へ商品が移動されます。</p>
+          </form>
+          
+       </div> 
+         
+        </table></div>
+        <div id="float-box">
+				<div id="l-box"><img src="image/header_left_flower_bg.png" alt="img"></div>
+				<div id="r-box"><img src="image/header_right_flower_bg.png" alt="img"></div>
+		    </div>
+ 
+        </div>
+      <!-- body_text_eof //--> 
+ 
+  <!-- body_eof //--> 
+  <!-- footer //--> 
+   <!-- footer_eof //-->
+  </div>
+ <div class="yui3-g main-columns">
+			<div class="yui3-u-1-4">
+				 <div class="content">
+				<div id="main-columns-img"><img src="image/detail.png" alt="detail"></div>
+				<h2>ゲーム通貨販売</h2>
+				<div class="hm-detail">FF11、リネージュ2、アイオン、レッドストーンなどのゲーム通貨(ギル・アデナ・ゴールドなど)を購入(RMT)できます。
+RMT業界の先駆者として培ってきた経験を生かし、どこよりもより安い、どこよりも早いをモットーにお客様に安心して購入いただけるよう努めております。
+インターネット銀行振込、クレジットカード決済、コンビニ決済に対応し、金融機関の営業時間外のお取引もスムーズに行えます。</div>
+			</div>
+			</div>
+			<div class="yui3-u-1-4">
+			 <div class="content">
+				<div id="main-columns-img"><img src="image/detail.png" alt="detail"></div>
+				<h2>ゲーム通貨買取</h2>
+				<div class="hm-detail">F11、リネージュ2、アイオン、レッドストーンなど引退や解約等により不要になったゲーム通貨(ギル・アデナ・ゴールドなど)を買取(RMT)しております。
+またFF11やリネージュ2などにおきましてはアカウントの買取も行っております。
+現在、各ゲーム通貨の高価買取キャンペーンを実施中! </div>
+			</div>
+			</div>
+			<div class="yui3-u-1-4">
+			 <div class="content">
+				<div id="main-columns-img"><img src="image/detail.png" alt="detail"></div>
+				<h2>RMT ナビ</h2>
+				<div class="hm-detail">お支払い方法について<a href="#">はクレジットカード決済について、銀行振込について、コンビニ決済について</a>をお読みください。
+携帯電話メールアドレスにて、各ゲーム通貨のRMTをご注文のお客 様は<a href="#">携帯電話の設定方法</a>をお読みください。</div>
+			</div>
+			</div>
+			<div class="yui3-u-1-4">
+			 <div class="content">
+				<div id="main-columns-img"><img src="image/detail.png" alt="detail"></div>
+				<h2>RMTとは?</h2>
+				<div class="hm-detail-last">MMORPGをプレイする中で、長年憧れていた武器や防具などの装備やアイテムがゲーム内で販売されていた。けれども、キャラクターの手持ち通貨が不足していて泣く泣く購入を諦めた。このような経験一度は経験したことがありませんか?
+高価なアイテムを購入するために、ゲーム通貨を稼ぐには、非常に膨大な時間を要します。
+RMT(リアルマネートレード)は、ギルやアデナ</div>
+			</div></div>
+ 
+ 
+</div>
+<!-- best_sellers //-->
+<div class="yui3-g main-columns">
+<h3><span>RMT ランキング</span></h3>
+ 
+ 
+<div class="yui3-u-1-6 hm-hot">
+<a href="http://gm.hm1002.200.com/item/p-31708.html">
+</a>
+<br>1位&nbsp;
+<a href="http://gm.hm1002.200.com/item/p-31708.html">バーツのアデナ販売</a>
+</div>
+ 
+  
+<div class="yui3-u-1-6 hm-hot">
+<a href="http://gm.hm1002.200.com/item/p-31684.html">
+<img src="images/products/stock.png" alt="Odinのギル販売" width="89" height="93"></a>
+<br>2位&nbsp;
+<a href="http://gm.hm1002.200.com/item/p-31684.html">Odinのギル販売</a>
+</div>
+ 
+  
+<div class="yui3-u-1-6 hm-hot">
+<a href="http://gm.hm1002.200.com/item/p-31693.html">
+<img src="images/products/stock.png" alt="Alexanderのギル販売" width="89" height="93"></a>
+<br>3位&nbsp;
+<a href="http://gm.hm1002.200.com/item/p-31693.html">Alexanderのギル販売</a>
+</div>
+ 
+  
+<div class="yui3-u-1-6 hm-hot">
+<a href="http://gm.hm1002.200.com/item/p-31672.html">
+<img src="images/products/stock.png" alt="Bahamutのギル販売///" width="89" height="93"></a>
+<br>4位&nbsp;
+<a href="http://gm.hm1002.200.com/item/p-31672.html">Bahamutのギル販売///</a>
+</div>
+ 
+  
+<div class="yui3-u-1-6 hm-hot">
+<a href="http://gm.hm1002.200.com/item/p-31688.html">
+<img src="images/products/stock.png" alt="Carbuncleのギル販売" width="89" height="93"></a>
+<br>5位&nbsp;
+<a href="http://gm.hm1002.200.com/item/p-31688.html">Carbuncleのギル販売</a>
+</div>
+ 
+  </div>
+<div class="sep" style="display:none;">&nbsp;</div>
+<!-- best_sellers_eof //-->
+ 
+<div id="footer">
+		<div id="footer-nav">
+		<a href="/reorder.php">再配達依頼</a>&nbsp;| 
+		<a href="http://gm.hm1002.200.com/info/profile.html?cmd=ujb2ab26vpf8hkujhfle1311i4">会社概要</a>&nbsp;| 
+		<a href="/info/salespolicies.html">特定商取引に基づく表記</a>&nbsp;| 
+		<a href="/link/">相互リンク</a>&nbsp;
+		</div>
+		<p>当ホームページに記載されている会社名・製品名・システム名などは、各社の登録商標、もしくは商標です。COPYRIGHT (C) GameMoney</p>
+  <div class="footer_links" align="center"><a href="http://www.iimy.co.jp/" target="_blank"><strong>RMT</strong></a> : 
+<a href="http://www.iimy.co.jp/rmt/c-168.html" target="_blank">FFXI RMT</a> | 
+<a href="http://www.iimy.co.jp/rmt/c-195.html" target="_blank">レッドストーン RMT</a> | 
+<a href="http://www.iimy.co.jp/rmt/c-231.html" target="_blank">SUN RMT</a> | 
+<a href="http://www.iimy.co.jp/rmt/c-169.html" target="_blank">リネージュ2 RMT</a> | 
+<a href="http://www.iimy.co.jp/rmt/c-200.html" target="_blank">CABAL RMT</a> | 
+<a href="http://www.iimy.co.jp/rmt/c-190.html" target="_blank">テイルズウィーバー RMT</a> | 
+<a href="http://www.iimy.co.jp/rmt/c-396.html" target="_blank">アイオン RMT</a> | 
+<a href="http://www.iimy.co.jp/rmt/c-178.html" target="_blank">信長の野望 RMT</a> | 
+<a href="http://www.iimy.co.jp/rmt/c-325.html" target="_blank">ラテール RMT</a> | 
+<a href="http://www.iimy.co.jp/rmt/c-319.html" target="_blank">女神転生 RMT</a> | 
+<a href="http://www.iimy.co.jp/rmt/c-253.html" target="_blank">大航海時代 RMT</a> | 
+<a href="http://www.iimy.co.jp/rmt/c-247.html" target="_blank">ウェブマネー RMT</a> | 
+<a href="http://37109.jp/" class="blank">香川 クーポン</a> | 
+<a href="http://www.orangere.com/" class="blank">香川県高松市の不動産</a><br><a href="http://gm.hm1002.200.com">RMTゲームマネー</a></div><script type="text/javascript" src="js/access.js"></script>
+<noscript><img src="axs/dsw.cgi?pg=RMT&amp;&amp;p=g&amp;&amp;md=nj" alt="img" height="1" width="1" border="0"></noscript>
+            </div>
+ 
+ 
+</body>
+</html>
+

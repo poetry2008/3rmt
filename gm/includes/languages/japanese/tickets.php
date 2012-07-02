@@ -1,0 +1,13 @@
+<?php
+define('TEXT_ALL','全部');
+define('TEXT_SORT','昇順');
+define('TEXT_DESC_SORT','降順');
+define('TEXT_OPEN','オープン');
+define('TEXT_CLOSED','クローズ');
+define('TEXT_LOGOUT','ログアウト');
+define('TEXT_NUM_QUERY','問合番号');
+define('TEXT_CREAT_DATE','作成日');
+define('TEXT_TITLE_NUM_QUERY','番号順に表示');
+define('TEXT_TITLE_CREAT_DATE','作成日順に表示');
+define('TEXT_SUBJECT','件名');
+define('TEXT_CANNOT_FIND','該当するものはありません。');
