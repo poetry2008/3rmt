@@ -25,7 +25,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
             <?}else {?>
                 <input id="input_text" type="text" name="name" value="<?=$info['name']?>">
           <?}?>
-            &nbsp;<font class="error" color="red">*&nbsp;<?=$errors['name']?></font>
+            &nbsp;<div class="error">*&nbsp;<?=$errors['name']?></div>
         </td>
     </tr>
     <tr>
@@ -37,7 +37,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
             <?}else {?>             
                 <input id="input_text" type="text" name="email" value="<?=$info['email']?>">
             <?}?>
-            &nbsp;<font class="error" color="red">*&nbsp;<?=$errors['email']?></font>
+            &nbsp;<div class="error">*&nbsp;<?=$errors['email']?></div>
         </td>
     </tr>
     <tr>
@@ -45,14 +45,15 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
         <td>
             <input id="input_text" type="text" name="subject"
             value="<?=isset($info['subject'])?$info['subject']:(isset($_GET['products'])?$_GET['products'].TEXT_OPEN_PART1:(isset($_GET['pname'])?$_GET['pname'].TEXT_OPEN_PART2:''))?>">
-            &nbsp;<font class="error" color="red">*&nbsp;<?=$errors['subject']?></font>
+            &nbsp;<div class="error">*&nbsp;<?=$errors['subject']?></div>
         </td>
     </tr>
     <tr>
         <td align="left" valign="top"><?php echo TEXT_OPEN_YOUR_QUESTION;?></td>
         <td>
             <textarea id="input_text" name="message" cols="35" rows="8" wrap="soft" style="width:85%"><?=$info['message']?></textarea>
-            <? if($errors['message']) {?> <font class="error" color="red">*&nbsp;<?=$errors['message']?></font><?}?>
+            <? if($errors['message']) {?> <div
+              class="error">*&nbsp;<?=$errors['message']?></div><?}?>
         </td>
     </tr>
     <?
@@ -81,11 +82,11 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
         <td valign="top" align="left"><?php echo  TEXT_OPEN_ATTACHMENT;?></td>
         <td>
             <input id="input_text" type="file" name="attachment">
-            <br><font color="#ffffff" size="2"><?php echo
+            <br><div class="open_info"><?php echo
             TEXT_OPEN_DES_PART1.$allow_file_show.TEXT_OPEN_DES_PART2;?><br><?php
-            echo TEXT_OPEN_DES_PART3;?></font>
+            echo TEXT_OPEN_DES_PART3;?></div>
             <?php if(isset($errors['attachment'])&&$errors['attachment']){ ?>
-            <br><font class="error"><?php echo $errors['attachment']?></font>
+            <div class="error"><?php echo $errors['attachment']?></div>
             <?php } ?>
         </td>
     </tr>
@@ -103,7 +104,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
         TEXT_OPEN_ENTER_CONTENTS;?></i></span>
         <?php if($errors['captcha']){ ?>
           <br />
-                <font class="error" color="red">&nbsp;<?=$errors['captcha']?></font>
+                <div class="error_information">&nbsp;<?=$errors['captcha']?></div>
         <?php } ?>
         </td>
     </tr>

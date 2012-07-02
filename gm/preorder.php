@@ -208,7 +208,7 @@ if (!isset($_GET['firstname'])) $_GET['firstname'] = NULL; //del notice
         if ($lastname_error == true) $last_name_prompt .= '&nbsp;<font color="red">' . TEXT_REQUIRED . '</font>';
         if ($firstname_error == true) $first_name_prompt .= '&nbsp;<font color="red">' . TEXT_REQUIRED . '</font>';
 if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
-        $your_email_address_prompt = tep_draw_input_field('from', (($fromemail_error == true) ? $_POST['from'] : $_GET['from']) , 'size="30" id="input_text"') . '&nbsp;&nbsp;'.INTRODUCE_MOBILE_MAIL_TEXT.'<br>';
+        $your_email_address_prompt = tep_draw_input_field('from', (($fromemail_error == true) ? $_POST['from'] : $_GET['from']) , 'size="30" id="input_text"') . '&nbsp;&nbsp;'.INTRODUCE_MOBILE_MAIL_TEXT.'';
         if ($fromemail_error == true) $your_email_address_prompt .= "<br>".ENTRY_EMAIL_ADDRESS_CHECK_ERROR;
       }
 ?>
@@ -239,7 +239,7 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
 <?php
       echo PREORDER_PRODUCT_NUM_READ; 
       if($error == true) {
-        echo '<font color="red"><b>'.PREORDER_PRODUCT_MUST_INPUT_TEXT.'</font></b><br><br>';
+        echo '<font color="red"><b>'.PREORDER_PRODUCT_MUST_INPUT_TEXT.'</font></b><br>';
       }
 ?>
 <br>
@@ -254,7 +254,7 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
           <td><?php echo $first_name_prompt; ?></td>
         </tr>
         <tr>
-          <td width="20%">&nbsp;<?php echo FORM_FIELD_CUSTOMER_EMAIL; ?></td>
+          <td width="20%" valign="top">&nbsp;<?php echo FORM_FIELD_CUSTOMER_EMAIL; ?></td>
           <td><?php echo $your_email_address_prompt; ?></td>
         </tr>
         <tr> 

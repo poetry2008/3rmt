@@ -5096,10 +5096,10 @@ function tep_replace_product_des($string){
   if(preg_match('|<td>(([^<]*)(<b>)*[^<]*(</b>)*[^<]*)</td><td>([^<]*)</td><td>([^<]*(<b>)*[^<]*(</b>)*[^<]*)</td>|',
   $string)){
   $string = preg_replace('|<td>(([^<]*)(<b>)*[^<]*(</b>)*[^<]*)</td><td>([^<]*)</td><td>([^<]*(<b>)*[^<]*(</b>)*[^<]*)</td>|',
-"<td width='20%'>\$1</td><td width='5%'>\$5</td><td width='25%'>\$6</td>"
+"<td width='10%'>\$1</td><td width='3%'>\$5</td><td width='15%'>\$6</td>"
 ,$string);
   }
-  return $string;
+  return str_replace('<td','<td valign="top" ',$string);
 }
 function tep_replace_all_full_character($c_str)
 {
