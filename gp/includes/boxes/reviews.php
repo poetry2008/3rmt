@@ -6,7 +6,7 @@
 <!-- reviews //-->
 <?php
     // ccdd
-      echo  '<div class="pageHeading_long"><h3>レビュー</h3></div>'."\n" . '<div class="comment_long"><div class="comment_long_text">'."\n" ;
+      echo  '<div class="pageHeading_long"><h3>'.BOX_HEADING_REVIEWS.'</h3></div>'."\n" . '<div class="comment_long"><div class="comment_long_text">'."\n" ;
 ?>
     <?php
 // display random review box

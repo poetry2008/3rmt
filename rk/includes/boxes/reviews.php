@@ -26,7 +26,7 @@ if (
           and r.site_id = ".SITE_ID
         );
     if(tep_db_num_rows($reviews_query)) {
-      echo  '<div class="pageHeading_long">'.$product_info['products_name'] .'のレビュー</div>'."\n" . '<div class="comment_long">'."\n" ;
+      echo  '<div class="pageHeading_long">'.$product_info['products_name'] .BOX_REVIEWS_LINK_TEXT.'</div>'."\n" . '<div class="comment_long">'."\n" ;
       while ($reviews = tep_db_fetch_array($reviews_query)) {
         $reviews_des_query = tep_db_query("select reviews_text from ".TABLE_REVIEWS_DESCRIPTION." where reviews_id = '".$reviews['reviews_id']."' and languages_id = '".$languages_id."'"); 
         $reviews_des_res = tep_db_fetch_array($reviews_des_query); 
@@ -45,7 +45,7 @@ if (
 ?>
   <div class="reviews_box">
   <div class="menu_top_reviews">
-  <a href="<?php echo tep_href_link(FILENAME_REVIEWS); ?>"><img src="images/menu_ico.gif" alt="" align="top">&nbsp;レビュー
+  <a href="<?php echo tep_href_link(FILENAME_REVIEWS); ?>"><img src="images/menu_ico.gif" alt="" align="top">&nbsp;<?php echo BOX_HEADING_REVIEWS;?>
   <?php //echo tep_image(DIR_WS_IMAGES.'design/box/reviews.gif',BOX_HEADING_REVIEWS,171,44); ?></a>
   </div>
     <div class="boxText" align="center">
