@@ -226,7 +226,7 @@ define('ENTRY_DATE_OF_BIRTH_ERROR', '&nbsp;<small><font color="#FF0000">(例. 19
 define('ENTRY_DATE_OF_BIRTH_TEXT', '&nbsp;<small>(例. 1970/05/21) <font color="red">*必須</font></small>');
 define('ENTRY_EMAIL_ADDRESS', 'メールアドレス:');
 define('ENTRY_EMAIL_ADDRESS_ERROR', '&nbsp;<small><font color="#FF0000">少なくても ' . ENTRY_EMAIL_ADDRESS_MIN_LENGTH . ' 文字</font></small>');
-define('ENTRY_EMAIL_ADDRESS_CHECK_ERROR', '<font color="#FF0000">入力されたメールアドレスは不正です!</font>');
+define('ENTRY_EMAIL_ADDRESS_CHECK_ERROR', '<div class="error_information">入力されたメールアドレスは不正です!</div>');
 define('ENTRY_EMAIL_ADDRESS_ERROR_EXISTS', '&nbsp;<small><font color="#FF0000">メールアドレスはすでに存在しています!</font></small>');
 define('ENTRY_EMAIL_ADDRESS_TEXT', '&nbsp;<span style="font-size:14px">(例.sample@example.com) <font  color="RED">*必須</font></span>');
 define('ENTRY_STREET_ADDRESS', '住所１:');

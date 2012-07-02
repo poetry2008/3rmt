@@ -66,7 +66,13 @@ echo '</form>';
                 </table> 
               </td>
              <td width="33%">
-              <?php echo tep_draw_separator('pixel_silver.gif', '100%', '1');?>
+                <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+                  <tr>
+                    <td width="50%">
+             <?php echo tep_draw_separator('pixel_silver.gif', '100%', '1');?>
+                    </td>
+                  </tr>
+                </table>   
               </td>
               <td width="33%">
                 <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
@@ -207,16 +213,10 @@ echo '</form>';
 ?>
   <select name="date" onChange="selectDate('<?php echo $hours; ?>', '<?php echo $mimutes; ?>')">
         <?php
-           if($_SESSION['date_array']){
-              echo "<option value='".$_SESSION['date']."'>".$_SESSION['date_array']."</option>";
-           }else{
-             echo "<option value=''>".PREORDER_SELECT_EMPTY_OPTION."</option>";
-           }
+           echo "<option value=''>".PREORDER_SELECT_EMPTY_OPTION."</option>";
            $_SESSION['date_array'] = null;
            $_SESSION['date'] = null;
         ?>
-  
-    <option value=""><?php echo PREORDER_SELECT_EMPTY_OPTION;?></option>
     <?php
           $oarr = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
           $newarr = array(PREORDER_MONDAY_TEXT, PREORDER_TUESDAY_TEXT, PREORDER_WENSDAY_TEXT, PREORDER_THIRSDAY_TEXT, PREORDER_FRIDAY_TEXT, PREORDER_STATURDAY_TEXT, PREORDER_SUNDAY_TEXT);
@@ -258,12 +258,12 @@ echo '</form>';
    
   </select>
   &nbsp;<?php echo PREORDER_MIN_TEXT;?>&nbsp;
+  <?php echo TEXT_CHECK_24JI; ?>
              <?php  
              if (isset($jikan_error)) {
                 echo '<font color="#ff0000">'.$jikan_error.'</font>'; 
               }
  ?> 
-  <?php echo TEXT_CHECK_24JI; ?>
               </td> 
             </tr>
           </table> 

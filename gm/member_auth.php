@@ -100,12 +100,13 @@
           <table  border="0" width="100%" cellspacing="0" cellpadding="0" align="center"> 
             <tr>
               <td>
-              <table border="0" cellpadding="0" cellspacing="0" width="100%">
+              <table border="0" cellpadding="0" cellspacing="0" width="100%"
+              class="content_account">
                 <tr>
                   <td colspan="3" align="center"><img src="images/design/mail_top.gif" alt=""></td> 
                 </tr>
                 <tr>
-                  <td colspan="3">
+                  <td colspan="3"  style="padding-bottom:10px">
                   <?php echo sprintf(NOTICE_SEND_TO_EMAIL_TEXT, (isset($_POST['cemail'])?$_POST['cemail']:$cus_email)); ?>
                   </td> 
                 </tr>
@@ -133,7 +134,7 @@
               <td align="center"><img src="images/design/mail_bottom.gif" alt=""></td>
             </tr>
             <tr>
-              <td>
+              <td style="padding-top:10px">
               <?php echo ACTIVE_INFO_EMAIL_READ;?> 
               </td>
             </tr>

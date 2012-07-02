@@ -122,7 +122,7 @@ border="0">
               </tr>
               <tr>
                 <td>&nbsp;</td>
-                <td><font color="#fff"><span class="redtext">※</span>&nbsp;<?php echo TEXT_SPAN_TITLE;?></font></td>
+                <td><font color="#ffffff"><span class="redtext">※</span>&nbsp;<?php echo TEXT_SPAN_TITLE;?></font></td>
               </tr>
   </table>
 
