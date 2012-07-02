@@ -50,6 +50,8 @@
   define('WARN_DOWNLOAD_DIRECTORY_NOT_READABLE', 'true');
 
 // define the filenames used in the project
+  define('FILENAME_OPEN','open.php');
+  define('FILENAME_CREATE_INDEX', 'index.php');
   define('FILENAME_CHECKOUT_ATTRIBUTES', 'checkout_attributes.php'); 
   define('FILENAME_CHECKOUT_OPTION', 'checkout_option.php');
   define('FILENAME_PREORDER_PAYMENT', 'preorder_payment.php');
