@@ -466,4 +466,5 @@ define('ENTRY_PASSWORD_INFORM_READ_TEXT', '半角の英字、数字を組み合�
 define('TEXT_REORDER2_MUST_INPUT','<font color="red">必須項目</font>');
 define('TEXT_REORDER2_TORIHIKI_ERROR','<br><font color="red">【取引日時】を選択してください。</font>');
 define('OPTION_CHARACTER_NAME', 'お客様のキャラクター名');
+define('BOX_REVIEWS_LINK_TEXT', 'のレビュー');
 ?>

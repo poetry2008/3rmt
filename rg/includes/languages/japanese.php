@@ -471,4 +471,5 @@ define('IMAGE_BUTTON_CUSTOMERS_EXIT', '退会を申し込む');
 define('TEXT_REORDER2_MUST_INPUT','<font color="red">必須項目</font>');
 define('TEXT_REORDER2_TORIHIKI_ERROR','<br><font color="red">【取引日時】を選択してください。</font>');
 define('OPTION_CHARACTER_NAME', 'お客様のキャラクター名');
+define('BOX_REVIEWS_LINK_TEXT', 'のレビュー');
 ?>
