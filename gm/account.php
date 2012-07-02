@@ -70,11 +70,11 @@
     $point = tep_db_fetch_array($point_query);
     ?>    
          <tr>
-            <td colspan="2"><h3><?php echo  TEXT_POINT_NOW;?></h3></td>
+            <td colspan="2" align="left"><h3><?php echo  TEXT_POINT_NOW;?></h3></td>
          </tr>
           <tr>
-             <td>&nbsp;<?php echo TEXT_POINT_ADD; ?></td>
-             <td>&nbsp;<?php echo $point['point'] . " P"; ?></td>
+             <td align="left">&nbsp;<?php echo TEXT_POINT_ADD; ?></td>
+             <td align="left">&nbsp;<?php echo $point['point'] . " P"; ?></td>
           </tr>
         <?php } ?>
         

@@ -386,7 +386,6 @@ if (!empty($_SESSION['history_url'])) {
 ?>
   <h3><?php echo TEXT_SHOPPING_CART_PICKUP_PRODUCTS;?></h3>
 <?php } ?>
-  <div style="text-align:center;padding:10px 0;">
 <?php
       foreach($cart_products as $cp){
         $cp = tep_get_product_by_id($cp, SITE_ID, 4, true, 'shopping_cart', true);
@@ -394,14 +393,14 @@ if (!empty($_SESSION['history_url'])) {
         $cp_status_res = tep_db_fetch_array($cp_status_raw);
         if ($cp_status_res['products_status'] == 0) {
         } else {
-          echo "<a href='".tep_href_link(FILENAME_PRODUCT_INFO, "products_id=".$cp['products_id'])."'>";
+         echo "<div style='text-align:center;padding:10px 0;'>";
+         echo "<a href='".tep_href_link(FILENAME_PRODUCT_INFO, "products_id=".$cp['products_id'])."'>";
           echo "<img src='".DIR_WS_IMAGES . 'carttags/'. $cp['products_cart_image']."' alt='".$cp['products_name']."' title='".$cp['products_name']."'>";
-          echo "</a>";
+          echo "</a></div>";
         }
    
       }
 ?>
-  </div>
 <?php
     }
   ?>

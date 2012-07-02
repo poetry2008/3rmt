@@ -22,10 +22,9 @@
 <!-- body_text //-->
 <div id="layout" class="yui3-u">
         <div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
+		<div id="main-content">
     <h2><?php echo HEADING_TITLE_FINISH; ?></h2> 
-        
-        <div> 
-          <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="0"> 
+	<table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="0"> 
         <tr>
           <td>
           <?php echo CHECK_FINISH_TEXT;?> 
@@ -42,15 +41,16 @@
                 </table></td> 
             </tr> 
           </table> 
-        </div></div>
+       </div> 
+</div>
+<?php include('includes/float-box.php');?>
+</div>
       <!-- body_text_eof //--> 
 <?php //require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-
   <!-- body_eof //--> 
   <!-- footer //--> 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
   <!-- footer_eof //--> 
-</div> 
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

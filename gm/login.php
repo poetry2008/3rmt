@@ -470,7 +470,8 @@ if(isset($_GET['login']) && ($_GET['login'] == 'ip_error')){
                           onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_login.gif\'"'); ?></td>
                     </tr>
 					</table>
-					<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+					<table width="100%" border="0"
+                                        align="center" class="login_box_spacing" cellpadding="0" cellspacing="0">
             <tr>
               <td colspan="2" valign="top">
               <?php if (!isset($_GET['pid'])) {?> 
