@@ -35,7 +35,11 @@
   define('TS_MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_ERROR_MESSAGE_NOM', 'ご入力されたメールアドレスは登録できません。PCメールをご入力ください。');
   define('TS_MODULE_PAYMENT_CONVENIENCE_EMAIL_TEXT', 'PCメールアドレス:');
   define('TS_MODULE_PAYMENT_CONVENIENCE_EMAIL_CONFIRMATION_TEXT', 'PCメールアドレス(確認用):');
-  define('TS_MODULE_PAYMENT_CONVENIENCE_MUST_INPUT', '<small><font color="#AE0E30">(必須)</font></small>');
+  if(NEW_STYLE_WEB===true){
+  define('TS_MODULE_PAYMENT_CONVENIENCE_MUST_INPUT', '<span><font color="red">*必須</font></span>');
+  }else{
+  define('TS_MODULE_PAYMENT_CONVENIENCE_MUST_INPUT', '<small><font color="#AE0E30">(*必須)</font></small>');
+  }
   define('TS_MODULE_PAYMENT_CONVENIENCE_STORE_FIELDS_DESCRIPTION', '携帯メールアドレスはご利用いただけません。下記入力欄にPCメールアドレスをご記入ください。<br>');
   define('TS_MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_CONFIRMATION',"
 コンビニ決済
