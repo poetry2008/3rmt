@@ -43,11 +43,11 @@
   if (!isset($_GET['cPath'])) $_GET['cPath'] = NULL; //del notice
   if (!isset($_GET['products_id'])) $_GET['products_id'] = NULL; //del notice
   if ($_GET['cPath']) {
-    echo $seo_category['seo_name'] . ' RMT <a href="javascript:void(0);" onkeypress="SomeJavaScriptCode" style="cursor:hand" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">RMT総合サイト カメズをお気に入りに追加して下さい！</a>' . "\n";
+    echo $seo_category['seo_name'] . ' RMT <a href="javascript:void(0);" onkeypress="SomeJavaScriptCode" style="cursor:hand" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">'.TEXT_HEADER_CATEGORY_TITLE.'</a>' . "\n";
   } elseif ($_GET['products_id']) {
-    echo ds_tep_get_categories((int)$_GET['products_id'],1) . 'RMT <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">総合サイト カメズをお気に入りに追加して下さい！</a>' . "\n";
+    echo ds_tep_get_categories((int)$_GET['products_id'],1) . 'RMT <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">'.TEXT_HEADER_PRODUCT_TITLE.'</a>' . "\n";
   } else {
-    echo 'RMT <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">RMT総合サイト カメズをお気に入りに追加して下さい！</a>' . "\n";
+    echo 'RMT <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all) {window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">'.TEXT_HEADER_CATEGORY_TITLE.'</a>' . "\n";
   }  
 ?>
   </div>
@@ -64,7 +64,7 @@ echo tep_draw_form('quick_find', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, 
 ?>
                 <table cellpadding="0" cellspacing="0" summary="search">
                   <tr>
-                    <td><img src="images/design/button/search_text.gif" width="85" height="28" alt="RMT検索"></td>
+                    <td><img src="images/design/button/search_text.gif" width="85" height="28" alt="<?php echo TEXT_HEADER_SEARCH_IMAGE_ALT;?>"></td>
                     <td>
                       <?php
 // --- get categoris list ( parent_id = 0 ) --- //
@@ -103,7 +103,7 @@ echo tep_draw_form('quick_find', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, 
   if($cat1 == '') {
     $categories_array .= ' selected';
   }
-  $categories_array .= '>全てのゲーム</option>'."\n";
+  $categories_array .= '>'.TEXT_HEADER_ALL_CATEGORY.'</option>'."\n";
   while($categories_parent0 = tep_db_fetch_array($categories_parent0_query)) {
     $categories_array .= '<option value="'.$categories_parent0['categories_id'].'"';
     if($cat1 == $categories_parent0['categories_id']) {
@@ -118,7 +118,7 @@ echo tep_draw_form('quick_find', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, 
                     </td>
                     <td><?php echo tep_draw_input_field('keywords', 'RMT', 'class="header_search_input"'); ?></td>
                     <td>
-                      <input name="imageField" type="submit" class="header_search_submit" value="" alt="検索">
+                      <input name="imageField" type="submit" class="header_search_submit" value="" alt="<?php echo TEXT_SEARCH_ALT;?>">
                     </td>
                   </tr>
                 </table>
@@ -130,10 +130,10 @@ echo tep_draw_form('quick_find', tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, 
                 </form>
             </td>
             <td class="header_m_login" align="right">     
-                <a href="<?php echo tep_href_link(FILENAME_SHOPPING_CART,'','SSL') ; ?>" class="header_menu_2">ショッピングカート<?php //echo tep_image(DIR_WS_IMAGES.'design/button/shopping_cart.gif',HEADER_TITLE_CART_CONTENTS);?></a>
+                <a href="<?php echo tep_href_link(FILENAME_SHOPPING_CART,'','SSL') ; ?>" class="header_menu_2"><?php echo BOX_HEADING_SHOPPING_CART;?><?php //echo tep_image(DIR_WS_IMAGES.'design/button/shopping_cart.gif',HEADER_TITLE_CART_CONTENTS);?></a>
             </td>
             <td>          
-                <a href="<?php echo tep_href_link(FILENAME_CHECKOUT_ATTRIBUTES,'','SSL') ; ?>" class="header_menu_3">レジへ進む<?php //echo tep_image(DIR_WS_IMAGES.'design/button/checkout.gif',HEADER_TITLE_CHECKOUT);?></a>
+                <a href="<?php echo tep_href_link(FILENAME_CHECKOUT_ATTRIBUTES,'','SSL') ; ?>" class="header_menu_3"><?php echo TEXT_CHECKOUT_LINK;?><?php //echo tep_image(DIR_WS_IMAGES.'design/button/checkout.gif',HEADER_TITLE_CHECKOUT);?></a>
             </td>
             <td align="right">
                 <div class="header_menu_4"><span id="jk-shoppingcart" style="font-size:12px"><?php echo $currencies->format($cart->show_total());?></span></div>

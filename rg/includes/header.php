@@ -44,11 +44,11 @@
   if (!isset($_GET['cPath'])) $_GET['cPath'] = NULL; //del notice
   if (!isset($_GET['products_id'])) $_GET['products_id'] = NULL; //del notice
   if ($_GET['cPath']) {
-    echo $seo_category['seo_name'] . ' RMT <a href="javascript:void(0);" onkeypress="SomeJavaScriptCode" style="cursor:hand" onclick="if (document.all){window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">RMT総合サイト '.STORE_NAME.'をお気に入りに追加して下さい！</a>' . "\n";
+    echo $seo_category['seo_name'] . ' RMT <a href="javascript:void(0);" onkeypress="SomeJavaScriptCode" style="cursor:hand" onclick="if (document.all){window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">'.TEXT_HEADER_CATEGORY_TITLE.'</a>' . "\n";
   } elseif ($_GET['products_id']) {
-    echo ds_tep_get_categories((int)$_GET['products_id'],1) . 'RMT <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all) {window.external.AddFavorite(location.href,document.title)} else {window.sidebar.addPanel(document.title, location.href,null)}">総合サイト '.STORE_NAME.'をお気に入りに追加して下さい！</a>' . "\n";
+    echo ds_tep_get_categories((int)$_GET['products_id'],1) . 'RMT <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all) {window.external.AddFavorite(location.href,document.title)} else {window.sidebar.addPanel(document.title, location.href,null)}">'.TEXT_HEADER_PRODUCT_TITLE.'</a>' . "\n";
   } else {
-    echo 'RMT <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all){window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">RMT総合サイト '.STORE_NAME.'をお気に入りに追加して下さい！</a>' . "\n";
+    echo 'RMT <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all){window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">'.TEXT_HEADER_CATEGORY_TITLE.'</a>' . "\n";
   }  
 ?>
   </div>
@@ -60,16 +60,15 @@ if (tep_session_is_registered('customer_id')) {
   <table cellpadding="0" cellspacing="0" border="0" class="top_right">
   <tr><td>
   	 <ul>
-<li><a href="<?php echo tep_href_link(FILENAME_CONTACT_US);?>">お問い合わせ</a></li>
+<li><a href="<?php echo tep_href_link(FILENAME_CONTACT_US);?>"><?php echo BOX_INFORMATION_CONTACT;?></a></li>
         <li>|</li>
-        <li><a href="<?php echo tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL');?>">カートを見る</a></li>
+        <li><a href="<?php echo tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL');?>"><?php echo HEADER_TITLE_CART_CONTENTS;?></a></li>
         <li>|</li>
-        <li><a href="<?php echo  tep_href_link(FILENAME_CHECKOUT_ATTRIBUTES, '', 'SSL');?>">レジへ進む
-  </a></li>
+        <li><a href="<?php echo  tep_href_link(FILENAME_CHECKOUT_ATTRIBUTES, '', 'SSL');?>"><?php echo TEXT_CHECKOUT_LINK;;?></a></li>
 </ul>
 </td></tr>
   <tr><td>
-  <div class="header_list"><div class="header_list_title">小計</div><span><?php echo $currencies->format($cart->show_total());?></span></div>
+  <div class="header_list"><div class="header_list_title"><?php echo TEXT_HEADER_SUBTOTAL;?></div><span><?php echo $currencies->format($cart->show_total());?></span></div>
   	 </td></tr></table>
     </div>
   </div>
@@ -80,23 +79,23 @@ if (tep_session_is_registered('customer_id')) {
   <table cellpadding="0" cellspacing="0" border="0" class="top_right">
   <tr><td>
   	 <ul>
-     	<li><a href="<?php echo tep_href_link(FILENAME_CREATE_ACCOUNT,'', 'SSL');?>">無料会員登録</a></li>
+     	<li><a href="<?php echo tep_href_link(FILENAME_CREATE_ACCOUNT,'', 'SSL');?>"><?php echo TEXT_HEADER_CREATE_ACCOUNT;?></a></li>
         <li>|</li>
         <?php /*
         <li><a href="#">ヘルプ</a></li>
         <li>|</li>
         */?>
-        <li><a href="<?php echo tep_href_link(FILENAME_CONTACT_US);?>">お問い合わせ</a></li>
+        <li><a href="<?php echo tep_href_link(FILENAME_CONTACT_US);?>"><?php echo BOX_INFORMATION_CONTACT;?></a></li>
         <li>|</li>
-        <li><a href="<?php echo tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL');?>">カートを見る</a></li>
+        <li><a href="<?php echo tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL');?>"><?php echo HEADER_TITLE_CART_CONTENTS;?></a></li>
         <li>|</li>
-        <li><a href="<?php echo  tep_href_link(FILENAME_CHECKOUT_ATTRIBUTES, '', 'SSL');?>">レジへ進む  </a></li>
+        <li><a href="<?php echo  tep_href_link(FILENAME_CHECKOUT_ATTRIBUTES, '', 'SSL');?>"><?php echo TEXT_CHECKOUT_LINK;?></a></li>
         <li>|</li>
-        <li><a href="<?php echo tep_href_link(FILENAME_LOGIN, '', 'SSL');?>">ログイン</a></li>
+        <li><a href="<?php echo tep_href_link(FILENAME_LOGIN, '', 'SSL');?>"><?php echo HEADER_TITLE_LOGIN;?></a></li>
  </ul>
  </td></tr>
  <tr><td>
-  <div class="header_list"><div class="header_list_title">小計</div><span><?php echo $currencies->format($cart->show_total());?></span></div>
+  <div class="header_list"><div class="header_list_title"><?php echo TEXT_HEADER_SUBTOTAL;;?></div><span><?php echo $currencies->format($cart->show_total());?></span></div>
   </td></tr>
   </table>
   </div>

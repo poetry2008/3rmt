@@ -491,4 +491,11 @@ define('IMAGE_BUTTON_CUSTOMERS_EXIT', '退会を申し込む');
 define('TEXT_REORDER2_MUST_INPUT','<font color="red">必須項目</font>');
 define('TEXT_REORDER2_TORIHIKI_ERROR','<br><font color="red">【取引日時】を選択してください。</font>');
 define('OPTION_CHARACTER_NAME', 'お客様のキャラクター名');
+define('TEXT_HEADER_CATEGORY_TITLE', 'RMT総合サイト '.STORE_NAME.'をお気に入りに追加して下さい！');
+define('TEXT_HEADER_PRODUCT_TITLE', '総合サイト '.STORE_NAME.'をお気に入りに追加して下さい！');
+define('TEXT_CHECKOUT_LINK', 'レジへ進む');
+define('TEXT_HEADER_WORK_PIC_ALT', '３６５日年中無休');
+define('TEXT_HEADER_OTHER_WORK_PIC_ALT', 'ご注文は24時間受付');
+define('TEXT_HEADER_CREATE_ACCOUNT', '無料会員登録');
+define('TEXT_HEADER_INDEX_LINK', '総合TOP');
 ?>

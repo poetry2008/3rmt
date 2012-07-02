@@ -44,11 +44,11 @@
   if (!isset($_GET['cPath'])) $_GET['cPath'] = NULL; //del notice
   if (!isset($_GET['products_id'])) $_GET['products_id'] = NULL; //del notice
   if ($_GET['cPath']) {
-    echo $seo_category['seo_name'] . ' RMT <a href="javascript:void(0);" onkeypress="SomeJavaScriptCode" style="cursor:hand" onclick="if (document.all){window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">RMT総合サイト '.STORE_NAME.'をお気に入りに追加して下さい！</a>' . "\n";
+    echo $seo_category['seo_name'] . ' RMT <a href="javascript:void(0);" onkeypress="SomeJavaScriptCode" style="cursor:hand" onclick="if (document.all){window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">'.TEXT_HEADER_CATEGORY_TITLE.'</a>' . "\n";
   } elseif ($_GET['products_id']) {
-    echo ds_tep_get_categories((int)$_GET['products_id'],1) . 'RMT <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all) {window.external.AddFavorite(location.href,document.title)} else {window.sidebar.addPanel(document.title, location.href,null)}">総合サイト '.STORE_NAME.'をお気に入りに追加して下さい！</a>' . "\n";
+    echo ds_tep_get_categories((int)$_GET['products_id'],1) . 'RMT <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all) {window.external.AddFavorite(location.href,document.title)} else {window.sidebar.addPanel(document.title, location.href,null)}">'.TEXT_HEADER_PRODUCT_TITLE.'</a>' . "\n";
   } else {
-    echo 'RMT <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all){window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">RMT総合サイト '.STORE_NAME.'をお気に入りに追加して下さい！</a>' . "\n";
+    echo 'RMT <a href="javascript:void(0);" style="cursor:hand" onkeypress="SomeJavaScriptCode" onclick="if (document.all){window.external.AddFavorite(location.href, document.title)} else {window.sidebar.addPanel(document.title, location.href, null)}">'.TEXT_HEADER_CATEGORY_TITLE.'</a>' . "\n";
   }  
 ?>
   </div>
@@ -61,16 +61,15 @@ if (tep_session_is_registered('customer_id')) {
   <table cellpadding="0" cellspacing="0" border="0" class="top_right">
   <tr><td>
   	 <ul>
-<li><a href="<?php echo tep_href_link(FILENAME_CONTACT_US);?>">お問い合わせ</a></li>
+<li><a href="<?php echo tep_href_link(FILENAME_CONTACT_US);?>"><?php echo BOX_INFORMATION_CONTACT;?></a></li>
         <li>|</li>
-        <li><a href="<?php echo tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL');?>">カートを見る</a></li>
+        <li><a href="<?php echo tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL');?>"><?php echo HEADER_TITLE_CART_CONTENTS;?></a></li>
         <li>|</li>
-        <li><a href="<?php echo  tep_href_link(FILENAME_CHECKOUT_ATTRIBUTES, '', 'SSL');?>">レジへ進む
-  </a></li>
+        <li><a href="<?php echo  tep_href_link(FILENAME_CHECKOUT_ATTRIBUTES, '', 'SSL');?>"><?php echo TEXT_CHECKOUT_LINK;?></a></li>
 </ul>
 </td></tr>
 <tr><td align="right" class="header_w_time"><img src="images/design/header_worktime.gif" alt="worktime"></td></tr>
-<tr><td align="right" class="header_w_time02"><img src="images/design/work_img01.gif" alt="３６５日年中無休"><img src="images/design/work_img02.gif" alt="ご注文は24時間受付"></td></tr>
+<tr><td align="right" class="header_w_time02"><img src="images/design/work_img01.gif" alt="<?php echo TEXT_HEADER_WORK_PIC_ALT;?>"><img src="images/design/work_img02.gif" alt="<?php echo TEXT_HEADER_OTHER_WORK_PIC_ALT;?>"></td></tr>
          </table>
     </div>
   </div>
@@ -94,7 +93,7 @@ if (tep_session_is_registered('customer_id')) {
 </td>
 </tr>
 <tr><td align="right" class="header_w_time"><img src="images/design/header_worktime.gif" alt="worktime"></td></tr>
-<tr><td align="right" class="header_w_time02"><img src="images/design/work_img01.gif" alt="３６５日年中無休"><img src="images/design/work_img02.gif" alt="ご注文は24時間受付"></td></tr>
+<tr><td align="right" class="header_w_time02"><img src="images/design/work_img01.gif" alt="<?php echo TEXT_HEADER_WORK_PIC_ALT;?>"><img src="images/design/work_img02.gif" alt="<?php echo TEXT_HEADER_OTHER_WORK_PIC_ALT;?>"></td></tr>
    </table> 
            </div>
            </div>
@@ -105,18 +104,19 @@ if (tep_session_is_registered('customer_id')) {
 <div id="title">
   <table cellpadding="0" cellspacing="0" border="0" class="top_right">
   <tr><td class="top_right_01">
-        <div class="top_right_02"><a href="<?php echo tep_href_link(FILENAME_LOGIN, '', 'SSL');?>"><!--<img src="images/design/login_02.gif" alt="ログイン">-->ログイン</a></div>
-     	<div class="top_right_03"><a href="<?php echo tep_href_link(FILENAME_CREATE_ACCOUNT,'', 'SSL');?>"><!--<img src="images/design/login_01.gif" alt="無料会員登録">-->無料会員登録</a></div>
+        <div class="top_right_02"><a href="<?php echo tep_href_link(FILENAME_LOGIN, '', 'SSL');?>"><?php echo HEADER_TITLE_LOGIN;;?></a></div>
+     	<div class="top_right_03"><a href="<?php echo tep_href_link(FILENAME_CREATE_ACCOUNT,'', 'SSL');?>"><?php echo TEXT_HEADER_CREATE_ACCOUNT;?></a></div>
  </td></tr>
 <tr><td align="right" class="header_w_time"><img src="images/design/header_worktime.gif" alt="worktime"></td></tr>
-<tr><td align="right" class="header_w_time02"><img src="images/design/work_img01.gif" alt="３６５日年中無休"><img src="images/design/work_img02.gif" alt="ご注文は24時間受付"></td></tr>
+<tr><td align="right" class="header_w_time02"><img
+src="images/design/work_img01.gif" alt="<?php echo TEXT_HEADER_WORK_PIC_ALT;?>"><img src="images/design/work_img02.gif" alt="<?php echo TEXT_HEADER_OTHER_WORK_PIC_ALT;?>"></td></tr>
   </table>
   </div>
   </div>
 <?php  } ?>
   <div class="header_Navigation">
   		<ul>
-        	<li><a href="<?php echo tep_href_link(FILENAME_DEFAULT)?>">総合TOP</a></li>
+        	<li><a href="<?php echo tep_href_link(FILENAME_DEFAULT)?>"><?php echo TEXT_HEADER_INDEX_LINK;?></a></li>
             <li>|</li>
             <?php
             $summary_query = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where status = 1 and site_id = ".SITE_ID." and romaji = 'companyprofile'"); 

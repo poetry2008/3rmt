@@ -469,4 +469,9 @@ define('TEXT_REORDER2_TORIHIKI_ERROR','<br><font color="red">【取引日時】�
 define('OPTION_CHARACTER_NAME', 'お客様のキャラクター名');
 define('BOX_REVIEWS_LINK_TEXT', 'のレビュー');
 define('BOX_REVIEWS_SHOW_TITLE', 'RMTレビュー掲示板');
+define('TEXT_HEADER_CATEGORY_TITLE', 'RMT総合サイト アイテムデポをお気に入りに追加して下さい！');
+define('TEXT_HEADER_PRODUCT_TITLE', '総合サイト アイテムデポをお気に入りに追加して下さい！');
+define('TEXT_HEADER_SEARCH_IMAGE_ALT', 'RMT検索');
+define('TEXT_HEADER_ALL_CATEGORY', '全てのゲーム');
+define('TEXT_SEARCH_ALT', '検索');
 ?>
