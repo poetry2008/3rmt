@@ -1,0 +1,22 @@
+# Prevent directory listing
+IndexIgnore *
+Options All -Indexes
+
+# Secure directory by disabling script execution
+AddHandler cgi-script .php .php2 .php3 .php4 .php5 .php6 .php7 .php8 .pl .py .jsp .asp .htm .html .shtml .sh .cgi
+Options -ExecCGI
+<Files ~ "\.(php*|s?p?html|cgi|pl)$">
+deny from all
+</Files>
+
+# Don't show this file
+<Files .htaccess>
+order allow,deny
+deny from all
+</Files>
+
+# Force download
+<Files *.*>
+  ForceType application/octet-stream
+  Header set Content-Disposition attachment
+</Files>

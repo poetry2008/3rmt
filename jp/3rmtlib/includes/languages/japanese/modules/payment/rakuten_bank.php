@@ -36,7 +36,11 @@
   define('TS_MODULE_PAYMENT_RAKUTEN_BANK_TEXT_ERROR_MESSAGE_NOM', '入力エラー、電話番号の形式が間違っているか使用できない文字が含まれています。入力内容を確認し、再度入力してください。');
   define('TS_MODULE_PAYMENT_RAKUTEN_TELNUMBER_TEXT', '電話番号:');
   define('TS_MODULE_PAYMENT_RAKUTEN_TELNUMBER_CONFIRMATION_TEXT', '電話番号(確認用):');
-  define('TS_MODULE_PAYMENT_RAKUTEN_MUST_INPUT', '<small><font color="#AE0E30">(必須)</font></small>');
+  if(NEW_STYLE_WEB===true){
+  define('TS_MODULE_PAYMENT_RAKUTEN_MUST_INPUT', '<span><font color="red">*必須</font></span>');
+  }else{
+   define('TS_MODULE_PAYMENT_RAKUTEN_MUST_INPUT', '<small><font color="#AE0E30">(*必須)</font></small>');
+  }
 
   define('TS_MODULE_PAYMENT_RAKUTEN_BANK_TEXT_CONFIRMATION', '
 電話番号:#TELNUMBER#

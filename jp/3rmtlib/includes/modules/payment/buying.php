@@ -53,11 +53,16 @@ class buying extends basePayment  implements paymentInterface  {
                        ),
                  );
     } else {
+     if(NEW_STYLE_WEB===true){
+       $input_text_id = ' class="input_text" ';
+     }else{
+       $input_text_id = '';
+     }
     return array(
                  array(
                        "code"=>'bank_name',
                        "title"=>TS_TEXT_BANK_NAME,
-                       "field"=>tep_draw_input_field('bank_name', $theData['bank_name']),
+                       "field"=>tep_draw_input_field('bank_name', $theData['bank_name'],''.$input_text_id.''),
                        "rule"=>basePayment::RULE_NOT_NULL,
                        "error_msg" => TS_TEXT_BANK_ERROR_NAME 
                        ),
@@ -80,14 +85,14 @@ class buying extends basePayment  implements paymentInterface  {
                  array(
                        "code"=>'bank_kouza_num',
                        "title"=>TS_TEXT_BANK_KOUZA_NUM,
-                       "field"=>tep_draw_input_field('bank_kouza_num', $theData['bank_kouza_num']),
+                       "field"=>tep_draw_input_field('bank_kouza_num', $theData['bank_kouza_num'],''.$input_text_id.''),
                        "rule"=>array(basePayment::RULE_NOT_NULL,basePayment::RULE_IS_NUMBER),
                        "error_msg" => array(TS_TEXT_BANK_ERROR_KOUZA_NUM, TS_TEXT_BANK_ERROR_KOUZA_NUM2) 
                        ),
                  array(
                        "code"=>'bank_kouza_name',
                        "title"=>TS_TEXT_BANK_KOUZA_NAME,
-                       "field"=>tep_draw_input_field('bank_kouza_name', $theData['bank_kouza_name']).((!$back)?'<br>'.TS_TEXT_BANK_KOUZA_NAME_READ:''),
+                       "field"=>tep_draw_input_field('bank_kouza_name', $theData['bank_kouza_name'],''.$input_text_id.'').((!$back)?'<br>'.TS_TEXT_BANK_KOUZA_NAME_READ:''),
                        "rule"=>basePayment::RULE_NOT_NULL,
                        "error_msg" => TS_TEXT_BANK_ERROR_KOUZA_NAME 
                        ),
@@ -377,9 +382,14 @@ class buying extends basePayment  implements paymentInterface  {
     $bank_kouza_num = tep_db_prepare_input($_SESSION[$session_paymentinfo_name]['bank_kouza_num']);
     $bank_kouza_name = tep_db_prepare_input($_SESSION[$session_paymentinfo_name]['bank_kouza_name']);
 
+     if(NEW_STYLE_WEB===true){
+       $colspan = ' colspan="4" ';
+     }else{
+       $colspan = '';
+     }
     ?>
     <tr> 
-       <td>
+       <td   <?php echo $colspan; ?> ><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
        <?php if ($is_show) {?>
        <table border="0" width="100%" cellspacing="1" cellpadding="2" class="formArea"> 
        <tr> 

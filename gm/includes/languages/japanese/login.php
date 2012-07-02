@@ -1,0 +1,79 @@
+<?php
+/*
+  $Id$
+
+  osCommerce, Open Source E-Commerce Solutions
+  http://www.oscommerce.com
+
+  Copyright (c) 2002 osCommerce
+
+  Released under the GNU General Public License
+*/
+if(!isset($_GET['origin'])) $_GET['origin']=NULL;
+if ($_GET['origin'] == FILENAME_CHECKOUT_PAYMENT) {
+  define('NAVBAR_TITLE', 'ご注文');
+  define('HEADING_TITLE', 'ご注文は簡単');
+  define('TEXT_STEP_BY_STEP', '注文手続きを１ステップごとにお手伝いいたします');
+} else {
+  define('NAVBAR_TITLE', 'ログイン');
+  define('HEADING_TITLE', 'ようこそ!');
+  define('TEXT_STEP_BY_STEP', ''); // should be empty
+}
+
+
+define('TEXT_MAIL','メールアドレスを入力してください。');
+define('TEXT_FIRST_BUY','以前、お買物をされたことがありますか?');
+define('HEADING_NEW_CUSTOMER', 'はじめての方。');
+define('TEXT_NEW_CUSTOMER', '<b>［次へ進む］</b>をクリックしてください。');
+define('TEXT_NEW_CUSTOMER_INTRODUCTION', '<font color="red"><b>会員登録をしないで注文するお客様もこちらからお手続きください。</b></font><br>会員登録をすると… メールアドレスとパスワードを入力するだけで簡単にログインができて、 '.STORE_NAME.' で便利にお買物ができます。');
+
+define('HEADING_RETURNING_CUSTOMER', STORE_NAME.'会員の方。');
+define('TEXT_RETURNING_CUSTOMER', 'メールアドレスとパスワードを入力して、ログインしてください。');
+//define('ENTRY_EMAIL_ADDRESS', 'メールアドレス:');
+//define('ENTRY_PASSWORD', 'パスワード:');
+
+define('TEXT_PASSWORD_FORGOTTEN', 'パスワードをお忘れの場合はこちらをクリック!');
+
+define('TEXT_LOGIN_ERROR', '<font color="#ff0000"><b>エラー:</b>"メールアドレス" または "パスワード" が一致しませんでした。</font>');
+define('TEXT_LOGIN_IP_ERROR','<font color="#ff0000">一定の回数以上ログインに失敗されますと、セキュリティ上の配慮から、しばらくログインができなくなります。</font><br>お急ぎの場合は、<a href="'. tep_href_link(FILENAME_CONTACT_US, '', 'SSL') .'">サポートセンター</a>へご連絡ください。また、「<a href="'. tep_href_link(FILENAME_PASSWORD_FORGOTTEN, '', 'SSL') .'">パスワード再発行手続き</a>」ページよりお手続きいただくことでロックが自動的に解除されます。');
+define('TEXT_VISITORS_CART', '<font color="#ff0000"><b>ご注意:</b></font> ログインすると、[ショッピングカート] の商品は [メンバーズ・ショッピングカート] へ自動的に移動します。 <a href="javascript:session_win();"> [詳細情報]</a>');
+
+if(MODULE_ORDER_TOTAL_POINT_STATUS == "true"){
+   //通常のポイントシステム
+   if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL != "true") {
+      $point_text_1 = MODULE_ORDER_TOTAL_POINT_FEE*100 ;
+        if(MODULE_ORDER_TOTAL_POINT_LIMIT != "0"){
+          $point_text_2 = '最終購入日より'.MODULE_ORDER_TOTAL_POINT_LIMIT.'日間有効です' ;
+        }else{
+          $point_text_2 = 'ありません' ;
+        }
+		define('TEXT_POINT','<p class="main"><i><strong>ポイントシステム</strong></i><br>ポイントサービスは、当店でお買い物をされた場合、購入金額の'.$point_text_1.'%をポイントとして還元しております。<br>
+              溜まったポイントは次回のお買い物に1ポイント＝1円で使えます。ポイントの有効期限は'.$point_text_2.'。</p>');
+   }else{
+   //カスタマーレベル連動型ポイントシステム
+    $customer_level_array = explode("||",MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK);
+	if(!empty($customer_level_array)) {
+	   $customer_lebel_string = '<ul>'."\n";
+	    for($i=0,$n=sizeof($customer_level_array); $i < $n; $i++){
+      	   $customer_lebel_detail = explode(",",$customer_level_array[$i]);
+		   $customer_lebel_string .= '<li>今までの当店での購入金額が'.$customer_lebel_detail[2].'円以下のお客様:'.$customer_lebel_detail[0].'  <b>'.(int)($customer_lebel_detail[1]*100).'</b>ポイント</li>'."\n" ;
+	    }
+	   $customer_lebel_string .= '</ul>'."\n";
+	   define('TEXT_POINT','<p class="main"><i><strong>ポイントシステム</strong></i><br>ポイントサービスは、当店でお買い物をされた場合、過去'.MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL_KIKAN.'日間における購入金額に応じて還元されるポイントレベルが異なります。ポイント還元率は以下の通りです。</p>
+              '.$customer_lebel_string.'<p class="main">次回のお買い物に1ポイント＝1円で使えます。ポイントの有効期限は'.MODULE_ORDER_TOTAL_POINT_LIMIT.'日です。</p>');
+	 }
+  }
+//ポイントシステム不採用 		  
+ }else{
+  define('TEXT_POINT','');
+ }  
+  		
+define('TEXT_PREORDER_LOGIN_ERROR', '<font color="#ff0000">予約時の会員情報でログインしてください</font>');
+define('PREORDER_HEADING_TITLE', '注文移行手続き');
+define('PREORDER_LOGIN_HEAD_TEXT', '<font color="#ff0000" style="font-size:14px;">注文移行手続きを行うにはログインしていただく必要がございます。<br>予約時の会員情報にてログインしてください。</font>');
+
+define('TEXT_TEST_MAIL', 'メール受信テストをする');
+define('TEXT_LOGIN_SSL_READ', ' <h3>SSL認証</h3></i><p> 当サイトでは、実在性の証明とプライバシー保護のため、グローバルサインのSSLサーバ証明書を使用し、SSL暗号化通信を実現しています。 ブラウザのURLが「'.HTTPS_SERVER.'～」で始まるURLであることを確認ください。 以下に掲載するグローバルサイン発行済みサイトシールのクリックにより、サーバ証明書の検証結果をご確認ください。 </p>');
+define('TEXT_BODY_TEXT',STORE_NAME.'が、会員登録をご利用予定のメールアドレスへ、'."\n".'受信確認のためにお送りしています。'."\n\n".'このメールを、無事に受信ボックスで確認できましたら、'."\n".'こちらのメールアドレスは'.STORE_NAME.'で問題なくご利用いただけます。'."\n\n".'以下のURLにアクセスして会員登録を行ってください。'."\n".  HTTP_SERVER.'/create_account.php'."\n\n".'ご不明な点がありましたら、'.STORE_NAME.'までお問い合わせください。'."\n\n\n".'[ご連絡・お問い合わせ先]━━━━━━━━━━━━'."\n".'株式会社 iimy'."\n".HTTP_SERVER."\n".STORE_OWNER_EMAIL_ADDRESS."\n"."━━━━━━━━━━━━━━━━━━━━━━━");
+define('TEXT_SEAL_GLOBALSIGN_COM_IMG_ALT','SSL　グローバルサインのサイトシール');
+?>

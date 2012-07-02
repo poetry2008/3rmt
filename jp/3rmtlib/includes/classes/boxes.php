@@ -86,7 +86,11 @@
       $this->table_cellpadding = '3';
       $this->table_parameters = 'class="infoBoxContents"';
       $info_box_contents = array();
-      $info_box_contents[] = array(array('text' => tep_draw_separator('pixel_trans.gif', '100%', '1')));
+      if(NEW_STYLE_WEB===true){
+        $info_box_contents[] = array(array('text' => ''));
+      }else{
+        $info_box_contents[] = array(array('text' => tep_draw_separator('pixel_trans.gif', '100%', '1')));
+      }
       for ($i=0, $n=sizeof($contents); $i<$n; $i++) {
   if (!isset($contents[$i]['align'])) $contents[$i]['align']=NULL;
   if (!isset($contents[$i]['form'])) $contents[$i]['form']=NULL;
@@ -95,7 +99,13 @@
                                            'params' => 'class="boxText"',
                                            'text' => $contents[$i]['text']));
       }
+
+      if(NEW_STYLE_WEB===true){
+           $info_box_contents[] = array(array('text' => ''));
+
+      }else{
       $info_box_contents[] = array(array('text' => tep_draw_separator('pixel_trans.gif', '100%', '1')));
+      }
       return $this->tableBox($info_box_contents);
     }
   }
