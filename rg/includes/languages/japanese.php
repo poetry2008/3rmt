@@ -481,4 +481,5 @@ define('TEXT_CHECKOUT_LINK', 'レジへ進む');
 define('TEXT_HEADER_SUBTOTAL', '小計');
 define('TEXT_HEADER_CREATE_ACCOUNT', '無料会員登録');
 define('TEXT_ACCOUNT_GUEST_INFO', '会員登録をしないで購入することもできます。');
+define('NUM_UNIT_TEXT', '個');
 ?>

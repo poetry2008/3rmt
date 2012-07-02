@@ -499,4 +499,5 @@ define('TEXT_HEADER_OTHER_WORK_PIC_ALT', 'ご注文は24時間受付');
 define('TEXT_HEADER_CREATE_ACCOUNT', '無料会員登録');
 define('TEXT_HEADER_INDEX_LINK', '総合TOP');
 define('TEXT_ACCOUNT_GUEST_INFO', '会員登録をしないで購入することもできます。');
+define('NUM_UNIT_TEXT', '個');
 ?>

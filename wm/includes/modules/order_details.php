@@ -92,7 +92,7 @@
       </a> 
       <?php
       echo '</td>';
-      echo '<td><font style="font-size:10px">個</font></td>';
+      echo '<td><font style="font-size:10px">'.NUM_UNIT_TEXT.'</font></td>';
       echo '</tr>'; 
       echo '</table>'; 
       echo (!empty($product_info['products_attention_1_3']) &&
@@ -105,7 +105,7 @@
           tep_get_full_count_in_order2($products[$i]['quantity'],
             $products[$i]['id'],true) .'</span>': '') . '</td>' . "\n";
     } else {
-      echo '    <td align="center" class ="main" style=" background:#dbfdff;padding-left:10px;padding-right:20px;">' . $products[$i]['quantity'] . '個' ;
+      echo '    <td align="center" class ="main" style=" background:#dbfdff;padding-left:10px;padding-right:20px;">' . $products[$i]['quantity'] . NUM_UNIT_TEXT;
       echo (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($products[$i]['quantity'], $products[$i]['id']) ? '<span style="font-size:10px">'. tep_get_full_count_in_order2($products[$i]['quantity'], $products[$i]['id']) .'</span>' : '') ;
       echo '</td>' . "\n";
     }

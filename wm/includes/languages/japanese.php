@@ -475,4 +475,5 @@ define('TEXT_HEADER_SEARCH_IMAGE_ALT', 'RMT検索');
 define('TEXT_HEADER_ALL_CATEGORY', '全てのゲーム');
 define('TEXT_SEARCH_ALT', '検索');
 define('TEXT_ACCOUNT_GUEST_INFO', '会員登録をしないで購入することもできます。');
+define('NUM_UNIT_TEXT', '個');
 ?>
