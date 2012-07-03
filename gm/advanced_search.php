@@ -124,7 +124,7 @@ function popupWindow(url) {
 <h2><?php echo HEADING_TITLE ; ?></h2> 
 
 
-<div> 
+<div style="margin-top:13px;"> 
 <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
 <tr> 
 <td> <table border="0" width="100%" cellspacing="0" cellpadding="2"> 

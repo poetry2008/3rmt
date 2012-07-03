@@ -74,9 +74,7 @@
 <?php include('includes/search_include.php');?>
 <div id="main-content">
 <h2><?php echo HEADING_TITLE; ?></h2>
- 
-        
-        <div> 
+        <div style="margin-top:13px;"> 
           <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
             <tr> 
               <td><?php echo tep_draw_form('password_forgotten', tep_href_link(FILENAME_PASSWORD_FORGOTTEN, 'action=process', 'SSL')); ?>

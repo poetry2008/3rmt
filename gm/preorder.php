@@ -242,7 +242,7 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
         echo '<font color="red"><b>'.PREORDER_PRODUCT_MUST_INPUT_TEXT.'</font></b><br>';
       }
 ?>
-      <h3 style="margin-top:15px"><?php echo FORM_TITLE_CUSTOMER_DETAILS; ?></h3>
+      <h3 style="margin-top:20px"><?php echo FORM_TITLE_CUSTOMER_DETAILS; ?></h3>
       <table width="100%" cellpadding="2" cellspacing="2" border="0">
         <tr>  
           <td width="20%"><?php echo FORM_FIELD_CUSTOMER_LASTNAME; ?></td>
@@ -260,7 +260,7 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
           <td colspan="2"><?php echo PREORDER_PROCESS_EXPIRE_TEXT;?></td>
         </tr>
       </table>
-      <h3><?php echo FORM_TITLE_FRIEND_DETAILS; ?></h3>
+      <h3 style="margin-top:20px"><?php echo FORM_TITLE_FRIEND_DETAILS; ?></h3>
       <table width="100%" cellpadding="2" cellspacing="2" border="0">
         <tr>
           <td valign="top"><?php echo PREORDER_PRODUCTS_NAME_TEXT;?></td>

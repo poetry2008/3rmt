@@ -2,18 +2,15 @@
 a:link{ 
 	color:#66DFFF;
 	text-decoration: underline;
-	font-size:14px;
 }
 a:active{ 
 	color:#fe9002;
 	text-decoration: underline;
-	font-size:14px;
 }
-a:visited{ color:#ce04e0; font-size:14px;}
+a:visited{ color:#ce04e0;}
 a:hover{
 	color:#fe9002;
 	text-decoration: underline;
-	font-size:14px;
 }
 body{ background-color:#0E3E68;}
 td,th{ border:0; padding:3px; vertical-align:top;}
@@ -188,7 +185,7 @@ td,th{ border:0; padding:3px; vertical-align:top;}
 	padding-left:5px;
 	margin-bottom:15px;
 	line-height:25px;
-	font-size:14px;
+	font-size:18px;
 }
 /*Decoration*/
 #float-box{
@@ -310,6 +307,7 @@ td,th{ border:0; padding:3px; vertical-align:top;}
 	font-weight:bold;
 	margin-bottom:8px;
 }
+.web-tit a{ font-size:16px;}
 .web-ico {
     background: url(../images/more_img.gif) left 6px no-repeat;
     display: block;
@@ -326,7 +324,9 @@ td,th{ border:0; padding:3px; vertical-align:top;}
 #search_txt{ width:40%;}
 .web_3{ width:100%; font-size:14px; line-height:22px;}
 .web_title{ line-height:28px;}
+.web_title a{ line-height:28px; font-size:16px;}
 .search_head{ *margin:25px 0; clear:both; overflow:hidden;}
 #fornt_pager{ line-height:25px; margin-top:15px;}
 .web-box-middle{ margin-top:10px;}
 .lc_attention{ line-height:22px;}
+.web a{ font-size:14px;}

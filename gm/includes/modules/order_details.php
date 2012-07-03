@@ -32,7 +32,7 @@
   echo '    <td align="right" class="tableHeading">' . TABLE_HEADING_TOTAL . '</td>' . "\n" .
        '    <td align="center" class="tableHeading">' . TABLE_HEADING_OPERATE . '</td>' . "\n" .
        '  </tr>' . "\n" .
-       '  <tr>' . "\n";
+       '  ' . "";
 
   for ($i=0, $n=sizeof($products); $i<$n; $i++) {
     echo '  <tr>' . "\n";

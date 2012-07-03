@@ -277,7 +277,7 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
               VALUES('". session_id() ."',now(),now(),'{$_POST['email_address']}','p','','{$user_ip4}','0','". SITE_ID ."') 
               ");
       } else {
-          if($check_customer['reset_flag'] and $check_customer['reset_success']!=1 ){
+  if($check_customer['reset_flag'] and $check_customer['reset_success']!=1 ){
 	       $_SESSION['reset_flag'] = true;
                $_SESSION['reset_customers_id'] = $check_customer['customers_id'];
        	       tep_redirect(tep_href_link(FILENAME_DEFAULT));	    
@@ -410,7 +410,7 @@ if (!isset($_GET['pid'])) {
 ?> 
 </h2>
 <?php echo tep_draw_form('login', tep_href_link(FILENAME_LOGIN, 'action=process'.(isset($_GET['pid'])?'&pid='.$_GET['pid']:''), 'SSL')); ?>
-      <table  width="100%" border="0"  cellpadding="0" cellspacing="0">
+      <table  width="100%" border="0"  cellpadding="0" cellspacing="0" class="login_spacing">
 
 <?php
 if(isset($_GET['login']) && ($_GET['login'] == 'ip_error')){

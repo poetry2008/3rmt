@@ -47,7 +47,7 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder2.php'));
             $email_error = true;
           } else {
             echo '<div><div class="comment"
-              style="width:100%">'.TEXT_CHANGE_ORDER_CONFIRM_EMAIL.'
+              style="width:100%; margin-top:15px; padding-left:6px;">'.TEXT_CHANGE_ORDER_CONFIRM_EMAIL.'
               <div align="right" class="botton-continue"><a href="/"><img
               src="includes/languages/japanese/images/buttons/button_back_home.gif"
                onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_back_home.gif\'"
@@ -185,7 +185,7 @@ if(!isset($email_error)||$email_error == true){?>
           <tr>
             <td valign="top"><?php echo TEXT_REORDER_COMMENT_TITLE;?></td>
             <td>
-              <textarea name='comment' id='comment' style="width:42.5%;" rows="10"><?php
+              <textarea name='comment' id='comment' style="width:80%;" rows="10"><?php
               if(isset($comment)&&$comment){
                   echo $comment;
               }?></textarea>

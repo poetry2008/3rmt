@@ -75,8 +75,8 @@
                        '  <tr>' . "\n" .
                        '    <td><b>' . TEXT_ORDER_NUMBER . '</b> ' . $history['orders_id'] . '</td>' . "\n" .
                        '    <td align="right" style="padding-right:15px;">' .
-                       '<table><tr><td width="50%"><b>'.
-                       TEXT_ORDER_STATUS.'</b></td><td width="50%"
+                       '<table width="150"><tr><td width="50%"><b>'.
+                       TEXT_ORDER_STATUS.'</b></td><td align="left" width="50%"
                        > ' .  $history['orders_status_name']
 . ' </td></tr></table>'.'</td>'."\n".
                        '  </tr>' . "\n" .

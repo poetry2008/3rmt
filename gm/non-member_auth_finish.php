@@ -24,23 +24,9 @@
         <div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
 		<div id="main-content">
     <h2><?php echo HEADING_TITLE_FINISH; ?></h2> 
-	<table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="0"> 
-        <tr>
-          <td>
-          <?php echo CHECK_FINISH_TEXT;?> 
-          </td>
-        </tr>
-            <tr> 
-              <td><br> 
-                <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="0"> 
-                  <tr> 
-                    <td align="right"><?php echo '<a href="' .  tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL') . '">' .  tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></td> 
-                    <td align="right">
-                    </td> 
-                  </tr> 
-                </table></td> 
-            </tr> 
-          </table> 
+
+         <div class="auth_finish_left"><?php echo CHECK_FINISH_TEXT;?></div>
+		<div class="auth_finish_right"><?php echo '<a href="' .  tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL') . '">' .  tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></div>
        </div> 
 </div>
 <?php include('includes/float-box.php');?>

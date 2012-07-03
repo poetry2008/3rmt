@@ -1,18 +1,15 @@
 a:link{ 
 	color:#66DFFF;
 	text-decoration: underline;
-	font-size:14px;
 }
 a:active{ 
 	color:#fe9002;
 	text-decoration: underline;
-	font-size:14px;
 }
-a:visited{ color:#ce04e0; font-size:14px;}
+a:visited{ color:#ce04e0;}
 a:hover{
 	color:#fe9002;
 	text-decoration: underline;
-	font-size:14px;
 }
 .hm_line{
 	background:url(../image/line.gif) repeat-y 0 top;

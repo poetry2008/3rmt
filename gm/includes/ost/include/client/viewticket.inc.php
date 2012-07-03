@@ -60,11 +60,11 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
     </td>
   </tr>
 </table>
-<div>
+<div class="prompt">
     <?if($errors['err']) {?>
-        <p align="center" id="errormessage"><font class="error"><?=$errors['err']?></font></p>
+        <?=$errors['err']?>
     <?}elseif($msg) {?>
-        <p align="center" id="infomessage"><?=$msg?></p>
+       <?=$msg?>
     <?}?>
 </div>
 <div align="left">
@@ -118,21 +118,23 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
     </div>
 </div>
 <div>
-    <div align="center">
+    <div align="center" class="prompt">
         <?if($_POST && $errors['err']) {?>
-            <p align="center" id="errormessage"><font class="error"><?=$errors['err']?></font></p>
+            <?=$errors['err']?>
         <?}elseif($msg) {?>
-            <p align="center" id="infomessage"><?=$msg?></p>
+            <?=$msg?>
         <?}?>
     </div> 
     <div id="reply">
-        <form action="view.php?id=<?=$id?>#reply" name="reply" method="post" enctype="multipart/form-data">
+        <form action="view.php?id=<?=$id?>" name="reply" method="post" enctype="multipart/form-data">
             <input type="hidden" name="id" value="<?=$ticket->getExtId()?>">
             <input type="hidden" name="respid" value="<?=$respID?>">
             <input type="hidden" name="a" value="postmessage">
             <div align="left">
-               <?php echo TEXT_VIEW_RETURN;?><font class="error">&nbsp;<?=$errors['message']?></font><br/>
-                <textarea name="message" id="message" style="width:80%;" rows="10" wrap="soft"><?=$info['message']?></textarea>
+              <div style="float:left;"> <?php echo
+              TEXT_VIEW_RETURN;?></div><div style="float:left;color:#FF0000">&nbsp;<?=$errors['message']?></div><br/>
+                <textarea name="message" id="message" style="width:80%;
+                margin-top:5px" rows="10" wrap="soft"><?=$info['message']?></textarea>
             </div>
             <? if($cfg->allowOnlineAttachments()) {?>
             <div align="left">

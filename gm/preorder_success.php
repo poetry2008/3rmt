@@ -88,9 +88,9 @@
           <td>
           <table border="0" cellpadding="0" cellspacing="0" width="100%" style="font-size:14px;"> 
           <tr> 
-          <td colspan="2"><b>
+          <td colspan="2" ><div style="font-size:18px"><b>
           <?php echo PREORDER_SUCCESS_APPOINT_CONTENT;?></b>
-          <br><br>
+            </div><br><br>
           </td> 
           </tr> 
           <tr> 

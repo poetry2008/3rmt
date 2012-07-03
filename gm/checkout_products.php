@@ -202,7 +202,7 @@ foreach($cart as $key => $val){
           }
         ?>  
           <p><?php echo TEXT_ORDERS_PROMPT_ONE;?></p>
-          <h3 style="margin:15px 0;"><b><?php echo TEXT_ORDERS_PROMPT_TWO;?></b></h3>
+          <h3 style="margin:15px 0 6px 0;"><b><?php echo TEXT_ORDERS_PROMPT_TWO;?></b></h3>
         <ul>
           <li>
           <?php echo TEXT_ORDERS_PROMPT_THREE;?> 

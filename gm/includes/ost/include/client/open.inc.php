@@ -104,7 +104,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
         TEXT_OPEN_ENTER_CONTENTS;?></i></span>
         <?php if($errors['captcha']){ ?>
           <br />
-                <div class="error_information">&nbsp;<?=$errors['captcha']?></div>
+                <div class="error_information" style="margin-top:5px">&nbsp;<?=$errors['captcha']?></div>
         <?php } ?>
         </td>
     </tr>

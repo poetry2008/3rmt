@@ -44,8 +44,7 @@
  <div id="main-content">
 <h2><?php echo HEADING_TITLE ; ?></h2>
       <table width="100%" border="0" cellpadding="0" cellspacing="0" id="detail-table-noframe">
-        <tr>
-          <td><?php
+      <?php
   $is_read_only = true;
 
 //ccdd
@@ -54,11 +53,9 @@
       FROM " . TABLE_CUSTOMERS . " c, " .  TABLE_ADDRESS_BOOK . " a 
       WHERE c.customers_id = '" . $customer_id . "' AND a.customers_id = c.customers_id AND a.address_book_id = '" .  $customer_default_address_id . "' AND  c.site_id = ".SITE_ID);
   $account = tep_db_fetch_array($account_query);
-
+  $account_single = true;
   require(DIR_WS_MODULES . 'account_details.php');
 ?>
-          </td>
-        </tr>
         <?php 
     //Point
     if (MODULE_ORDER_TOTAL_POINT_STATUS == 'true') { 
@@ -77,9 +74,8 @@
              <td align="left">&nbsp;<?php echo $point['point'] . " P"; ?></td>
           </tr>
         <?php } ?>
-        
-        <tr>
-          <td colspan="2"><table border="0" width="100%" cellspacing="0" cellpadding="0" class="botton-continue">
+      </table>
+      <table border="0" width="100%" cellspacing="0" cellpadding="0" class="botton-continue">
             <tr>
 <!--
               <td align="center"><?php echo '<a href="' . tep_href_link(FILENAME_ADDRESS_BOOK, '', 'SSL') . '">' . tep_image_button('button_address_book.gif', IMAGE_BUTTON_ADDRESS_BOOK) . '</a>'; ?></td>
@@ -99,9 +95,8 @@
                   IMAGE_BUTTON_EDIT_ACCOUNT,'onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_edit_account.gif\'"
                   onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_edit_account_hover.gif\'"') . '</a>'; ?></td>
             </tr>
-          </table></td>
-        </tr>
-      </table></div></div>
+          </table>
+      </div></div>
     
       <?php include('includes/float-box.php');?>
 </div>

@@ -25,7 +25,7 @@
         $products_price = $currencies->display_price($products_new_array[$i]['price'], tep_get_tax_rate($products_new_array[$i]['tax_class_id']));
       }*/
 ?>
-<table width="100%">
+<table width="100%" style="margin-bottom:35px;">
   <tr>
     <td width="<?php echo SMALL_IMAGE_WIDTH + 10; ?>" valign="top" rowspan="2"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $products_new_array[$i]['id']) . '">' . tep_image(DIR_WS_IMAGES . 'products/'. $products_new_array[$i]['image'], $products_new_array[$i]['name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a>'; ?></td>
     <td valign="top"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $products_new_array[$i]['id']) . '"><b><u>' . $products_new_array[$i]['name'] . '</u></b></a>';?>
@@ -37,7 +37,7 @@
   <td><?php echo TEXT_MANUFACTURER . ' ' . $products_new_array[$i]['manufacturer'];?></td>
   <td align="right"><?php echo TEXT_PRICE . ' ' . $products_price; ?></td>
   </tr>
- </table><br /><br />
+ </table>
 <?php
       if (($i+1) != $n) {
 ?>

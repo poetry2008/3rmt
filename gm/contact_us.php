@@ -51,7 +51,7 @@ require_once(CLIENTINC_DIR.'header.inc.php');
   <td>
     <form class="status_form" action="contact_us_login.php" method="post"> 
    <table border="0" width="100%" cellspacing="0" cellpadding="0" >
-   <tr><td colspan="2"><?php echo TEXT_PROMPT_CONFIRM;?></td></tr>
+   <tr><td colspan="2" style="font-size:18px"><?php echo TEXT_PROMPT_CONFIRM;?></td></tr>
    <tr><td width="30%">&#12513;&#12540;&#12523;&#12450;&#12489;&#12524;&#12473;&#65306;</td>
    <td width="70%"><input id="input_text" type="text" name="lemail" style="width:300px;"></td></tr>
    <tr><td width="30%">&#12362;&#21839;&#12356;&#21512;&#12431;&#12379;&#30058;&#21495;&#65306;</td>

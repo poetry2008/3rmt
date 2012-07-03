@@ -36,7 +36,7 @@ if (isset($body_option)) {
     <h2><?php echo $parent_info['title'].TEXT_QUESTION_TITLE;?></h2>
     <?php }else {?>
     <h2 class="pageHeading"><?php echo
-      TEXT_FAQ_TITLE.'</h2><font style="line-height:21px;">'.TEXT_FAQ_TITLE_END.'</font>';?>
+      TEXT_FAQ_TITLE.'</h2><div style="line-height:21px; margin-top:13px; padding-left:6px;">'.TEXT_FAQ_TITLE_END.'</div>';?>
     <?php } ?>
     <div class="comment_faq">
     <table class="faq_question_row">

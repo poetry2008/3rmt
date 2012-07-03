@@ -68,7 +68,8 @@
   $address_form->setFormLine('email_address',ENTRY_EMAIL_ADDRESS,$a_value);
 ?>
   <tr>
-    <td colspan="2" width="20%" align="left"><h3><?php echo CATEGORY_PERSONAL; ?></h3></td>
+    <td colspan="2" align="left"><h3><?php echo CATEGORY_PERSONAL; ?></h3>
+    </td>
   </tr>
                                           <?php
   $address_form->printCategoryPersonal();
@@ -76,9 +77,20 @@
  
 <!--start-->
 </table>
+<?php
+if (isset($account_single)) {
+?>
+<table id="detail-table-noframe" width="100%" cellspacing="0" cellpadding="0" border="0">
+<?php
+} else {
+?>
 <table id="content_account" width="100%" cellspacing="0" cellpadding="0" border="0">
+<?php
+}
+?>
 <tr>
-    <td align="left" width="20%" colspan="2"><h3><?php echo CATEGORY_OPTIONS; ?></h3></td>
+    <td align="left" colspan="2"><h3><?php echo CATEGORY_OPTIONS; ?></h3>
+    </td>
 </tr>
 <tr>
 	<td width="20%" align="left"><?php echo ENTRY_NEWSLETTER; ?></td>
@@ -102,6 +114,14 @@
 ?>
                 </td>
                               </tr>
+<?php
+if (isset($account_single)) {
+?>
+                              </table>
+<?php
+}
+?>
+                                              <table id="detail-table-noframe" width="100%" cellspacing="0" cellpadding="0" border="0">
        <?php
   if ($is_read_only == true) {
     //Not View
@@ -114,7 +134,7 @@
   
 ?>
               <tr>
-                <td align="left"><?php echo ENTRY_GUEST; ?></td>
+                <td align="left" width="20%"><?php echo ENTRY_GUEST; ?></td>
                 <td align="left">&nbsp;<?php echo tep_draw_pull_down_menu('guestchk', $guestchk_array, $guestchk, 'onchange="pass_hidd()"'); ?></td>
               </tr>
               <tr>
