@@ -9,6 +9,7 @@
 <?php  
   if (isset($cPath_array)) {
        echo '<div id="current">'.$breadcrumb->trail(' <img src="images/point.gif"> ').'</div>';
+       include('includes/search_include.php');
        //include('includes/search_include.php');
        echo "<div id='main-content'>";
       if ($category['categories_status'] != '0') {
@@ -17,6 +18,7 @@
        echo '<h1 class="pageHeading">'.$seo_category['categories_name'].'</h1>'; 
     } elseif ($_GET['manufacturers_id']) {
        echo '<div id="current">'.$breadcrumb->trail(' <img src="images/point.gif"> ').'</div>';
+       include('includes/search_include.php');
       if ($category['categories_status'] != '0') {
         echo '<div class="waring_category">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
       }
@@ -24,7 +26,8 @@
     }
 ?> 
       <!-- heading title eof-->
-    <p><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_header_text']);?></p>
+    <div class="list_spacing"><?php echo str_replace('#STORE_NAME#', STORE_NAME,
+        $seo_category['categories_header_text']);?></div>
       <div id="product_list"> 
         <ul> 
           <?php
@@ -110,7 +113,6 @@
 ?> 
         </ul> 
       </div>
-      <br>
       <?php 
       $new_products_category_id = $current_category_id; 
       $exone_single = false; 
@@ -124,7 +126,6 @@
         include(DIR_WS_MODULES .'new_products.php'); 
       }
       ?>
-           <br>
       <?php
       if (isset($cPath) && !ereg('_', $cPath)) { 
       $all_game_news = tep_get_categories_rss($current_category_id);

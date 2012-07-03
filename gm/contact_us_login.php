@@ -16,7 +16,7 @@
 **********************************************************************/
 $_noemailclass = true;
   require_once('includes/application_top.php');
-$breadcrumb->add('お問い合わせ', tep_href_link(FILENAME_CONTACT_US));
+$breadcrumb->add(TEXT_CONTACT_US, tep_href_link(FILENAME_CONTACT_US));
 
 
 require_once('includes/ost/client.inc.php');
@@ -27,7 +27,7 @@ define('OSTCLIENTINC',TRUE); //make includes happy
 require_once(INCLUDE_DIR.'class.client.php');
 require_once(INCLUDE_DIR.'class.ticket.php');
 //We are ready baby
-$loginmsg='情報を入力し「送信」ボタンをクリックしてください。';
+$loginmsg=TEXT_CONTACT_US_LOGINMSG_DEFAULT;
 if($_POST && (!empty($_POST['lemail']) && !empty($_POST['lticket']))):
     $loginmsg='Authentication Required';
     $email=trim($_POST['lemail']);
@@ -36,7 +36,7 @@ if($_POST && (!empty($_POST['lemail']) && !empty($_POST['lticket']))):
     //$_SESSION['_client']=array(); #Uncomment to disable login strikes.
     
     //Check time for last max failed login attempt strike.
-    $loginmsg='"メールアドレス" または "問合番号" が一致しませんでした。';
+    $loginmsg=TEXT_CONTACT_US_LOGINMSG_NEW;
     if($_SESSION['_client']['laststrike']) {
         if((time()-$_SESSION['_client']['laststrike'])<$cfg->getClientLoginTimeout()) {
             $loginmsg='Excessive failed login attempts';

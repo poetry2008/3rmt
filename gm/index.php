@@ -60,6 +60,7 @@ if ($category_depth == 'nested') {
           ?> 
           <div id="layout" class="yui3-u">
           <div id="current"><?php echo $breadcrumb->trail('<img  src="images/point.gif" alt="img"> '); ?></div>
+          <?php include('includes/search_include.php');?>
 
 
                 <div id="main-content" >

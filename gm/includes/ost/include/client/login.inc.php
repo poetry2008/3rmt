@@ -11,22 +11,22 @@ $t=Format::input($_POST['lticket']?$_POST['lticket']:$_GET['t']);
         <p class="warnmessage"><?=$warn?></p>
     <?}?>
 </div>
-<div>
+<div style="margin-top:15px;margin-left:6px">
 
-    <p class="login_inc">お問い合わせが初めてのお客様、または問合番号を忘れた場合は、<a href="open.php">新規お問い合わせ</a>をクリックしてください。</p>
+
+    <p class="login_inc"><?php 
+    echo sprintf(TEXT_OST_LOGIN_INC_LOGIN_INC_INFO,'<a href="open.php">'.TEXT_OST_LOGIN_INC_NEW_CONTACT.'</a>');?></p>
     <span class="error"><font color="red"><?=Format::htmlchars($loginmsg)?></font></span>
     <form action="contact_us_login.php" method="post">
     <table cellspacing="1" cellpadding="0" border="0" width="100%" class="open_login">
         <tr> 
-            <th width="30%">メールアドレス</th>
-            <td width="70%"><input id="input_text" type="text" name="lemail" size="25" value="<?=$e?>"></td>
-        </tr>
+            <th width="30%"><?php echo TEXT_OST_LOGIN_INC_MAILL_ADDRESS;?></th>
+            <td width="70%"><input id="input_text" type="text" name="lemail" size="25" value="<?=$e?>" style="width:300px;"></td>
+             <td rowspan="2"valign="bottom" align="left"><input class="button" type="image" value="送信" src="includes/languages/japanese/images/buttons/button_send_mail.gif"></td>
+            </tr>
         <tr>
-            <th width="30%">お問い合わせ番号</th>
-            <td width="70%"><input id="input_text" type="text" name="lticket" size="10" value="<?=$t?>"></td>
-        </tr>
-        <tr>
-            <td colspan="2" align="right"  style="padding-top:40px;"><input class="button" type="image" value="送信" src="includes/languages/japanese/images/buttons/button_send_mail.gif"></td>
+            <th width="30%"><?php echo TEXT_OST_LOGIN_INC_CONTACT_NUM;?></th>
+            <td width="70%"><input id="input_text" type="text" name="lticket" size="10" value="<?=$t?>" style="width:300px;"></td>
         </tr>
     </table>
     </form>

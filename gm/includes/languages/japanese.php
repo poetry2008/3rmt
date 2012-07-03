@@ -490,3 +490,17 @@ define('TEXT_TITLE_ONE','からのお知らせ');
 define('TEXT_TITLE_NEWS','過去のRMTニュースを見る');
 define('TEXT_CONTACT_US','お問い合わせ');
 define('TEXT_REVIEWS_TITLE_END','%s のレビュー');
+define('TEXT_CONTACT_US_LOGINMSG_DEFAULT','情報を入力し「送信」ボタンをクリックしてください。');
+define('TEXT_CONTACT_US_LOGINMSG_NEW','"メールアドレス" または "問合番号" が一致しませんでした。');
+define('TEXT_OST_LOGIN_INC_LOGIN_INC_INFO', 'お問い合わせが初めてのお客様、または問合番号を忘れた場合は、%sをクリックしてください。');
+define('TEXT_OST_LOGIN_INC_NEW_CONTACT','新規お問い合わせ');
+define('TEXT_OST_LOGIN_INC_MAILL_ADDRESS','メールアドレス：');
+define('TEXT_OST_LOGIN_INC_CONTACT_NUM','お問い合わせ番号：');
+define('TEXT_OST_THANKYOU_INFO_TEXT',
+'24時間経過しても返答が届かない場合は、以下のことを必ずご確認ください。<br>
+＜迷惑メールフォルダの確認＞<br>
+弊社のメールが 「迷惑メールフォルダ」や「ゴミ箱」に振り分けされ見落としていませんか？<br>
+＜メールドメインの受信制限を設定している＞<br>
+%sのメールドメインを受信するように設定をお願いいたします。<br>
+＜それでも届かないときは、メールアドレス変更＞<br>
+別のメールアドレスをご入力いただき、お問い合わせをお願いいたします。');

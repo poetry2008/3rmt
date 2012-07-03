@@ -43,7 +43,15 @@
                 </table> 
               </td>
               <td width="33%">
+                <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+                  <tr>
+                    <td width="50%">
               <?php echo tep_draw_separator('pixel_silver.gif', '100%', '1');?>
+                    </td>
+                  </tr>
+                </table>  
+ 
+              
               </td>
               <td width="33%">
                 <table border="0" width="100%" cellspacing="0" cellpadding="0"> 

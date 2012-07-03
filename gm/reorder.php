@@ -375,7 +375,8 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
         <input type='hidden' name='email' value='<?php echo $order['customers_email_address']?>' >
         <div id="form_error" style="display:none">
         </div>
-       <table summary="table" cellpadding="0" cellspacing="0" border="0" width="100%">
+       <table summary="table" cellpadding="0" cellspacing="0" border="0"
+       width="100%" class="reorder_spacing">
           <tr>
             <td width="20%"><?php echo TEXT_REORDER_OID_TITLE;?></td>
             <td><?php echo $order['orders_id']?></td>
@@ -419,7 +420,7 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
   // for multi products
   ?>
         
-        <table  id='product_<?php echo $value['id'];?>' summary="table" width="100%">
+        <table class="reorder_spacing"  id='product_<?php echo $value['id'];?>'  summary="table" width="100%">
           <tr>
             <td width="20%"><?php echo TEXT_REORDER_P_PRODUCT_NAME;?></td>
             <td name='products_names'><?php echo $value['name'];?></td>

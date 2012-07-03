@@ -32,8 +32,22 @@ require(DIR_WS_ACTIONS.'checkout_confirmation.php');
             </tr>
           </table>
         </td>
-        <td width="20%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td>
-        <td width="20%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td>
+        <td width="20%">
+          <table border="0" width="100%" cellspacing="0" cellpadding="0">
+            <tr>
+           <td> 
+        <?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td>
+            </tr>
+          </table>
+        </td>
+        <td width="20%">
+            <table border="0" width="100%" cellspacing="0" cellpadding="0">
+            <tr>
+           <td> 
+        <?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td>
+            </tr>
+          </table>
+        </td>
         <td width="20%">
           <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr>

@@ -52,9 +52,6 @@
             <?php /* <td align="center" class="tableHeading"><?php echo TABLE_HEADING_READ; ?></td>*/ ?>
             <?php /*<td align="right" class="tableHeading"><?php echo TABLE_HEADING_DATE_ADDED; ?></td>*/ ?>
           </tr>
-          <tr>
-            <td colspan="3"><?php echo tep_draw_separator(); ?></td>
-          </tr>
 <?php
 // ccdd
   $reviews_query = tep_db_query("
@@ -96,9 +93,6 @@
 <?php
   }
 ?>
-          <tr>
-            <td colspan="3"><?php echo tep_draw_separator(); ?></td>
-          </tr>
           <tr>
             <td colspan="3"><table class="botton-continue" border="0" width="100%" cellspacing="0" cellpadding="2">
               <tr>

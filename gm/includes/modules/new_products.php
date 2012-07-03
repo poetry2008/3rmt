@@ -132,10 +132,10 @@ if (0 < $num_products) {
         $p =
           $currencies->display_price(tep_get_price($new_products['products_price'], $new_products['products_price_offset'], $new_products['products_small_sum'], $new_products['products_bflag']), tep_get_tax_rate($new_products['products_tax_class_id']));
       }
-      $info_box_contents[$row][$col] = array('align' => 'center', 'params' => 'class="smallText" width="33%" valign="top"', 'text' => '<a href="' .  tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .  $new_products['products_id']) . '">' . tep_image(DIR_WS_IMAGES . 'products/' . $new_products['products_image'], $new_products['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a><br><a href="' .  tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .  $new_products['products_id']) . '">' . $new_products['products_name'] .  '</a>');
+      $info_box_contents[$row][$col] = array('align' => 'center', 'params' => 'class="smallText" width="25%" valign="top"', 'text' => '<a href="' .  tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .  $new_products['products_id']) . '">' . tep_image(DIR_WS_IMAGES . 'products/' . $new_products['products_image'], $new_products['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a><br><a href="' .  tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .  $new_products['products_id']) . '">' . $new_products['products_name'] .  '</a>');
 
       $col ++;
-      if ($col > 2) {
+      if ($col > 3) {
         $col = 0;
         $row ++;
       }

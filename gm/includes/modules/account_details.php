@@ -68,8 +68,7 @@
   $address_form->setFormLine('email_address',ENTRY_EMAIL_ADDRESS,$a_value);
 ?>
   <tr>
-    <td width="20%"><h3><?php echo CATEGORY_PERSONAL; ?></h3></td>
-    <td></td>
+    <td colspan="2" width="20%" align="left"><h3><?php echo CATEGORY_PERSONAL; ?></h3></td>
   </tr>
                                           <?php
   $address_form->printCategoryPersonal();
@@ -77,15 +76,13 @@
  
 <!--start-->
 </table>
-<table class="content_account" width="100%" cellspacing="0" cellpadding="0"
-border="0">
+<table id="content_account" width="100%" cellspacing="0" cellpadding="0" border="0">
 <tr>
-    <td><h3><?php echo CATEGORY_OPTIONS; ?></h3></td>
-      <td></td>
-       </tr>
-             <tr>
-                <td width="20%"><?php echo ENTRY_NEWSLETTER; ?></td>
-                <td>&nbsp;<?php
+    <td align="left" width="20%" colspan="2"><h3><?php echo CATEGORY_OPTIONS; ?></h3></td>
+</tr>
+<tr>
+	<td width="20%" align="left"><?php echo ENTRY_NEWSLETTER; ?></td>
+    <td align="left">&nbsp;<?php
   if ($is_read_only == true) {
     if ($account['customers_newsletter'] == '1') {
       echo ENTRY_NEWSLETTER_YES;
@@ -117,8 +114,8 @@ border="0">
   
 ?>
               <tr>
-                <td><?php echo ENTRY_GUEST; ?></td>
-                <td>&nbsp;<?php echo tep_draw_pull_down_menu('guestchk', $guestchk_array, $guestchk, 'onchange="pass_hidd()"'); ?></td>
+                <td align="left"><?php echo ENTRY_GUEST; ?></td>
+                <td align="left">&nbsp;<?php echo tep_draw_pull_down_menu('guestchk', $guestchk_array, $guestchk, 'onchange="pass_hidd()"'); ?></td>
               </tr>
               <tr>
                 <td>&nbsp;</td>
@@ -144,7 +141,7 @@ border="0">
   if ($is_read_only == false) {
 ?>
   <tr id="trpass1">
-    <td width="20%">
+    <td width="20%" align="left">
       <h3><?php echo CATEGORY_PASSWORD; ?></h3></td>
       <td></td>
   </tr>
@@ -153,7 +150,7 @@ border="0">
        <table width="100%">
              
        <tr>
-                <td width="20%"><?php echo ENTRY_PASSWORD; ?></td>
+                <td width="20%" align="left"><?php echo ENTRY_PASSWORD; ?></td>
                 <td>&nbsp;<?php
  if(preg_match("/[a-zA-Z]/",$_POST['password']) ||
      preg_match("/[0-9]/",$_POST['password'])){
@@ -260,7 +257,7 @@ else{
 </table> 
 <table width="100%" cellspacing="0" cellpadding="2" border="0" class="content_account"> 
   <tr>
-     <td colspan="2" width="20%"><h3><?php echo CATEGORY_AGREEMENT; ?></h3></td>
+     <td colspan="2" width="20%" align="left"><h3><?php echo CATEGORY_AGREEMENT; ?></h3></td>
   </tr>
 <tr>
                 <td colspan="2" width="100%">

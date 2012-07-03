@@ -1,14 +1,22 @@
 /*body*/
-a{
-	color:#00A2E8;
-	text-decoration: underline;	
+a:link{ 
+	color:#66DFFF;
+	text-decoration: underline;
+	font-size:14px;
 }
+a:active{ 
+	color:#fe9002;
+	text-decoration: underline;
+	font-size:14px;
+}
+a:visited{ color:#ce04e0; font-size:14px;}
 a:hover{
-	color:#00FFFF;
-	text-decoration: underline;	
+	color:#fe9002;
+	text-decoration: underline;
+	font-size:14px;
 }
 body{ background-color:#0E3E68;}
-td,th{ border:0; padding:3px;}
+td,th{ border:0; padding:3px; vertical-align:top;}
 /*header*/
 #header{
 	background:#0E3E68 url(../images/header_bg.gif) repeat-y center 0;
@@ -124,9 +132,14 @@ td,th{ border:0; padding:3px;}
 	position:relative;
 	z-index:110;
 	line-height:24px;
+	font-size:14px;
 }
 #current img{ text-align:center; vertical-align:middle; margin:0 10px;}
-#current a{ line-height:24px;}
+#current a:link{ line-height:24px; font-size:14px; color:#66DFFF;}
+#current a:active{color:#fe9002; line-height:24px;}
+#current a:visited{ color:#ce04e0; line-height:24px;}
+#current a:hover{ color:#fe9002; line-height:24px;}
+
 /*main*/
 #main{
 	width:100%;
@@ -173,7 +186,7 @@ td,th{ border:0; padding:3px;}
     letter-spacing: 0;
     word-spacing: 0;
 	padding-left:5px;
-	margin-bottom:10px;
+	margin-bottom:15px;
 	line-height:25px;
 	font-size:14px;
 }
@@ -230,7 +243,7 @@ td,th{ border:0; padding:3px;}
 /*gamelist*/
 
 .box_title{ font-weight:bold; color:#fff; text-align:left; padding:10px 0; margin:0 5px;}
-#box ul{margin:0; padding:8px 0; overflow:hidden;}
+#box ul{margin:0; padding:0 0 15px 0; overflow:hidden;}
 #box li{ 
 	width:16%; 
 	float:left; 
@@ -239,13 +252,20 @@ td,th{ border:0; padding:3px;}
 	font-size:14px;
 	margin-left:0.8%;
 }
-#box li a{
+#box li a:link{
 	text-decoration:none;
-	color:#FFFFFF;
+	color:#66DFFF;
+}
+#box li a:active{
+	color:#fe9002;
+}
+#box li a:visited{
+	text-decoration:underline;
+	color:#66009;
 }
 #box li a:hover{
 	text-decoration:underline;
-	color:#00FFFF;
+	color:#fe9002;
 }
 #input_text{ 
 	width:40%;
@@ -276,17 +296,19 @@ td,th{ border:0; padding:3px;}
 }
 
 .product_listing a{
-	color:#ffffff;
+	color:#66DFFF;
 }
 .web-box{
-	margin-bottom:20px;
+	margin-bottom:25px;
 }
-.web-box table{ margin-left:10px;}
+#web-box .web{ line-height:22px;}
+.web-box table{ margin-left:10px; line-height:22px;}
 .web-box table td{ width:20%;}
 .web-tit{
 	font-size:14px;
 	line-height:25px;
 	font-weight:bold;
+	margin-bottom:8px;
 }
 .web-ico {
     background: url(../images/more_img.gif) left 6px no-repeat;
@@ -294,8 +316,7 @@ td,th{ border:0; padding:3px;}
     float: left;
 	width:16px;
 }
-.text_out{ font-size:14px;
-}
+.text_out{ font-size:14px; line-height:22px;}
 .search_header{
 	margin:20px 0;
 }
@@ -303,5 +324,9 @@ td,th{ border:0; padding:3px;}
 	width:100%;
 }
 #search_txt{ width:40%;}
-.web_3{ width:100%; font-size:14px;}
+.web_3{ width:100%; font-size:14px; line-height:22px;}
+.web_title{ line-height:28px;}
 .search_head{ *margin:25px 0; clear:both; overflow:hidden;}
+#fornt_pager{ line-height:25px; margin-top:15px;}
+.web-box-middle{ margin-top:10px;}
+.lc_attention{ line-height:22px;}

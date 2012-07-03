@@ -13,9 +13,9 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
         <p id="warnmessage"><?=$warn?></p>
     <?}?>
 </div>
-<div><?php echo TEXT_OPEN_REQUIRED_INFORMATION; ?></div>
+<div class="open_spacing"><?php echo TEXT_OPEN_REQUIRED_INFORMATION; ?></div>
 <form action="open.php" method="POST" enctype="multipart/form-data" name="form_2">
-<table width="100%" cellspacing="0" cellpadding="0" border="0" >
+<table width="100%" cellspacing="0" cellpadding="0" border="0" class="open_spacing">
     <tr>
         <td width="20%" align="left"><?php echo TEXT_OPEN_YOUR_NAME;?></td>
         <td>
@@ -25,7 +25,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
             <?}else {?>
                 <input id="input_text" type="text" name="name" value="<?=$info['name']?>">
           <?}?>
-            &nbsp;<div class="error">*&nbsp;<?=$errors['name']?></div>
+            &nbsp;<div class="error">&nbsp;*&nbsp;<?=$errors['name']?></div>
         </td>
     </tr>
     <tr>
@@ -37,7 +37,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
             <?}else {?>             
                 <input id="input_text" type="text" name="email" value="<?=$info['email']?>">
             <?}?>
-            &nbsp;<div class="error">*&nbsp;<?=$errors['email']?></div>
+            &nbsp;<div class="error">&nbsp;*&nbsp;<?=$errors['email']?></div>
         </td>
     </tr>
     <tr>
@@ -45,7 +45,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
         <td>
             <input id="input_text" type="text" name="subject"
             value="<?=isset($info['subject'])?$info['subject']:(isset($_GET['products'])?$_GET['products'].TEXT_OPEN_PART1:(isset($_GET['pname'])?$_GET['pname'].TEXT_OPEN_PART2:''))?>">
-            &nbsp;<div class="error">*&nbsp;<?=$errors['subject']?></div>
+            &nbsp;<div class="error">&nbsp;*&nbsp;<?=$errors['subject']?></div>
         </td>
     </tr>
     <tr>
@@ -53,7 +53,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
         <td>
             <textarea id="input_text" name="message" cols="35" rows="8" wrap="soft" style="width:85%"><?=$info['message']?></textarea>
             <? if($errors['message']) {?> <div
-              class="error">*&nbsp;<?=$errors['message']?></div><?}?>
+              class="error" >&nbsp;*&nbsp;<?=$errors['message']?></div><?}?>
         </td>
     </tr>
     <?
@@ -111,7 +111,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
     <?}?>
     <tr>
         <td></td>
-        <td style="padding-top:40px;">
+        <td style="padding-top:35px;">
            <a <?php echo $void_href;?> onclick="document.form_2.submit();" class="button"
                  style="padding:0;background:none;border:none;" value="<?php echo
                  TEXT_OPEN_SEND_EMAIL?>">

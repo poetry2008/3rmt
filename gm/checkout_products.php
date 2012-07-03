@@ -106,7 +106,6 @@ foreach($cart as $key => $val){
 
 
 ?>
-<?php include('includes/search_include.php');?>
 <div id="main-content">
 <form action="<?php echo tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL'); ?>" method="post" onSubmit="return chara_mess();">
 
@@ -127,9 +126,32 @@ foreach($cart as $key => $val){
             </tr> 
           </table>
         </td> 
-        <td width="20%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td>
-        <td width="20%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td>
-        <td width="20%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td>
+        <td width="20%">
+               <table border="0" width="100%" cellspacing="0" cellpadding="0">
+            <tr>
+              <td width="50%">  
+        <?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td>
+            </tr>
+          </table>
+        </td>
+        <td width="20%">
+            <table border="0" width="100%" cellspacing="0" cellpadding="0">
+            <tr>
+              <td width="50%">  
+            
+        <?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td>
+            </tr>
+          </table>
+
+       </td> 
+        <td width="20%">
+            <table border="0" width="100%" cellspacing="0" cellpadding="0">
+            <tr>
+              <td width="50%">  
+        <?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td>
+            </tr>
+          </table>
+        </td>
         <td width="20%">
           <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr>
@@ -180,7 +202,7 @@ foreach($cart as $key => $val){
           }
         ?>  
           <p><?php echo TEXT_ORDERS_PROMPT_ONE;?></p>
-          <h3 style="margin-top:10px;"><b><?php echo TEXT_ORDERS_PROMPT_TWO;?></b></h3>
+          <h3 style="margin:15px 0;"><b><?php echo TEXT_ORDERS_PROMPT_TWO;?></b></h3>
         <ul>
           <li>
           <?php echo TEXT_ORDERS_PROMPT_THREE;?> 

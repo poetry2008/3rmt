@@ -208,7 +208,7 @@ if (!isset($_GET['firstname'])) $_GET['firstname'] = NULL; //del notice
         if ($lastname_error == true) $last_name_prompt .= '&nbsp;<font color="red">' . TEXT_REQUIRED . '</font>';
         if ($firstname_error == true) $first_name_prompt .= '&nbsp;<font color="red">' . TEXT_REQUIRED . '</font>';
 if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
-        $your_email_address_prompt = tep_draw_input_field('from', (($fromemail_error == true) ? $_POST['from'] : $_GET['from']) , 'size="30" id="input_text"') . '&nbsp;&nbsp;'.INTRODUCE_MOBILE_MAIL_TEXT.'';
+        $your_email_address_prompt = tep_draw_input_field('from', (($fromemail_error == true) ? $_POST['from'] : $_GET['from']) , 'size="30" id="input_text"') . '&nbsp;&nbsp;'.INTRODUCE_MOBILE_MAIL_TEXT;
         if ($fromemail_error == true) $your_email_address_prompt .= "<br>".ENTRY_EMAIL_ADDRESS_CHECK_ERROR;
       }
 ?>
@@ -242,29 +242,28 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
         echo '<font color="red"><b>'.PREORDER_PRODUCT_MUST_INPUT_TEXT.'</font></b><br>';
       }
 ?>
-<br>
-      <h3><?php echo FORM_TITLE_CUSTOMER_DETAILS; ?></h3>
+      <h3 style="margin-top:15px"><?php echo FORM_TITLE_CUSTOMER_DETAILS; ?></h3>
       <table width="100%" cellpadding="2" cellspacing="2" border="0">
         <tr>  
-          <td width="20%">&nbsp;<?php echo FORM_FIELD_CUSTOMER_LASTNAME; ?></td>
+          <td width="20%"><?php echo FORM_FIELD_CUSTOMER_LASTNAME; ?></td>
           <td><?php echo $last_name_prompt; ?></td>
         </tr>
         <tr>  
-          <td width="20%">&nbsp;<?php echo FORM_FIELD_CUSTOMER_FIRSTNAME; ?></td>
+          <td width="20%"><?php echo FORM_FIELD_CUSTOMER_FIRSTNAME; ?></td>
           <td><?php echo $first_name_prompt; ?></td>
         </tr>
         <tr>
-          <td width="20%" valign="top">&nbsp;<?php echo FORM_FIELD_CUSTOMER_EMAIL; ?></td>
+          <td width="20%" valign="top"><?php echo FORM_FIELD_CUSTOMER_EMAIL; ?></td>
           <td><?php echo $your_email_address_prompt; ?></td>
         </tr>
         <tr> 
           <td colspan="2"><?php echo PREORDER_PROCESS_EXPIRE_TEXT;?></td>
         </tr>
-      </table><br>
+      </table>
       <h3><?php echo FORM_TITLE_FRIEND_DETAILS; ?></h3>
       <table width="100%" cellpadding="2" cellspacing="2" border="0">
         <tr>
-          <td valign="top">&nbsp;<?php echo PREORDER_PRODUCTS_NAME_TEXT;?></td>
+          <td valign="top"><?php echo PREORDER_PRODUCTS_NAME_TEXT;?></td>
           <td>
           <strong>
           <?php 
@@ -279,7 +278,7 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
           </td>
         </tr>
         <tr>
-		  <td width="20%">&nbsp;<?php echo FORM_FIELD_FRIEND_NAME; ?></td>
+		  <td width="20%"><?php echo FORM_FIELD_FRIEND_NAME; ?></td>
           <td>
 <?php
 if (!isset($_POST['quantity'])) $_POST['quantity'] = NULL; //del notice
@@ -297,7 +296,7 @@ if ($num_error == true){echo '<span id="preorder_info_message" class="errorText"
         if (false) { 
         ?>
         <tr>
-          <td width="120">&nbsp;<?php echo FORM_FIELD_PREORDER_FIXTIME; ?></td>
+          <td width="120"><?php echo FORM_FIELD_PREORDER_FIXTIME; ?></td>
           <td>
 <?php
 //echo tep_get_torihiki_select_by_pre_products($product_info['products_id']);
@@ -306,7 +305,7 @@ if ($num_error == true){echo '<span id="preorder_info_message" class="errorText"
         </tr>
         <?php }?> 
         <tr>
-          <td>&nbsp;<?php echo FORM_FIELD_PREORDER_FIXDAY; ?></td>
+          <td><?php echo FORM_FIELD_PREORDER_FIXDAY; ?></td>
           <td>
 <?php
     $today = getdate();

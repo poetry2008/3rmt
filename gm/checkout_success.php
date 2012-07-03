@@ -84,9 +84,30 @@
                           <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
                         </tr> 
                       </table></td> 
-                    <td width="20%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
-                    <td width="20%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
-                    <td width="20%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
+                    <td width="20%">
+                    <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+                        <tr> 
+                       <td> 
+                    <?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
+                        </tr> 
+                      </table>
+                    </td> 
+                    <td width="20%">
+                      <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+                        <tr> 
+                       <td> 
+                    <?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
+                       </tr> 
+                      </table>
+                    </td> 
+                    <td width="20%">
+                      <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+                        <tr> 
+                       <td> 
+                    <?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
+                       </tr> 
+                      </table>
+                    </td> 
                     <td width="20%"><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                         <tr> 
                           <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
@@ -109,7 +130,8 @@
                                     IMAGE_BUTTON_CONTINUE,'onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_continue.gif\'" onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_continue_hover.gif\'"'); ?></div>
 				</div>
 				<div class="checkout-conent">
-<table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+<table border="0" width="100%" cellspacing="0" cellpadding="0"
+class="success_spacing"> 
             <?php
       #convenience_store
             if (!isset($_POST['SID'])) $_POST['SID']=NULL;
@@ -130,9 +152,8 @@
         ?>
          
                   <tr> 
-                    <td valign="top"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?> 
-                      <br> 
-                      <?php echo TEXT_SUCCESS; ?><br> 
+                    <td valign="top"> 
+                      <?php echo TEXT_SUCCESS; ?> 
                       <br> 
                       <?php
   if ($global['global_product_notifications'] != '1') {

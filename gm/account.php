@@ -73,7 +73,7 @@
             <td colspan="2" align="left"><h3><?php echo  TEXT_POINT_NOW;?></h3></td>
          </tr>
           <tr>
-             <td align="left">&nbsp;<?php echo TEXT_POINT_ADD; ?></td>
+             <td align="left" width="20%"><?php echo TEXT_POINT_ADD; ?></td>
              <td align="left">&nbsp;<?php echo $point['point'] . " P"; ?></td>
           </tr>
         <?php } ?>
@@ -107,7 +107,6 @@
 </div>
 <?php echo DEFAULT_PAGE_TOP_CONTENTS;?>
  <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

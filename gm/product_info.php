@@ -55,6 +55,7 @@ $(document).ready(function() {
 <div id="main">
 <div class="yui3-u" id="layout">
 <div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
+<?php include('includes/search_include.php');?>
 <div id="product-switching">
 <?php
 if (!$product_info) { // product not found in database
@@ -106,8 +107,8 @@ if (!$product_info) { // product not found in database
     <div id="main-content">
     <table width="100%" cellspacing="0" cellpadding="0" border="0" > 
     <tr>
-    <td width="20%"><font color="#66DFFF" size="2"><b><?php 
-    echo TEXT_PRODUCT_MODEL;?></b></font></td>
+    <td width="20%"><b><?php 
+    echo TEXT_PRODUCT_MODEL;?></b></td>
     <td>
     <?php if (PRODUCT_LIST_MODEL > 0){ echo $product_info['products_model'] ; }else{ echo '-' ; } ?>
     </td>
@@ -116,7 +117,7 @@ if (!$product_info) { // product not found in database
     if(!empty($product_info['products_attention_1_1']) && !empty($product_info['products_attention_1_3'])){
       ?>
         <tr>
-        <td><font color="#66DFFF" size="2"><b><?php echo $product_info['products_attention_1_1'] ; ?></b></font></td>
+        <td><b><?php echo $product_info['products_attention_1_1'] ; ?></b></td>
         <td><?php echo $product_info['products_attention_1_2'] .'&nbsp;&nbsp;'.tep_display_attention_1_3($product_info['products_attention_1_3']) . $product_info['products_attention_1_4'] ; ?></td>
         </tr>
         <?php } ?>
@@ -124,7 +125,7 @@ if (!$product_info) { // product not found in database
         if(!empty($data1[0])){
           ?>
             <tr>
-            <td><font color="#66DFFF" size="2"><b><?php echo $data1[0] ; ?></b></font></td>
+            <td><b><?php echo $data1[0] ; ?></b></td>
             <td><?php echo $data1[1] ; ?></td>
             </tr>
             <?php } ?>
@@ -132,20 +133,20 @@ if (!$product_info) { // product not found in database
             if(!empty($data2[0])){
               ?>
                 <tr>
-                <td><font color="#66DFFF" size="2"><b><?php echo $data2[0] ; ?></b></font></td>
+                <td><b><?php echo $data2[0] ; ?></b></td>
                 <td><?php echo $data2[1] ; ?></td>
                 </tr>
                 <?php } ?>
                 <tr>
-                <td><font color="#66DFFF" size="2"><b><?php 
-                echo TEXT_PRODUCT_INFO_MAKER_NAME;?></b></font></td>
+                <td><b><?php 
+                echo TEXT_PRODUCT_INFO_MAKER_NAME;?></b></td>
                 <td>
                 <?php include(DIR_WS_BOXES.'manufacturer_info.php') ; ?>
                 </td>
                 </tr>
                 <tr>
-                <td valign="top"><font color="#66DFFF" size="2"><b><?php echo
-                TEXT_PRODUCT_INFO_PRICE;?></b></font></td>
+                <td valign="top"><b><?php echo
+                TEXT_PRODUCT_INFO_PRICE;?></b></td>
                 <td>
                 <?php
 //# 追加スタート ---------------------------------------
@@ -174,8 +175,8 @@ if (!$product_info) { // product not found in database
     </td>
     </tr>
     <tr>
-    <td><font color="#66DFFF" size="2"><b><?php echo
-    TEXT_PRODUCT_INFO_ORDER_QTY;?></b></font></td>
+    <td><b><?php echo
+    TEXT_PRODUCT_INFO_ORDER_QTY;?></b></td>
     <td><?php echo
     sprintf(TEXT_PRODUCT_INFO_QTY_TEXT,tep_show_quantity($product_info['products_quantity'])); ?></td>
     </tr>
@@ -183,7 +184,7 @@ if (!$product_info) { // product not found in database
     if(!empty($data3[0])){
       ?>
         <tr>
-        <td><font color="#66DFFF" size="2"><b><?php echo $data3[0] ; ?></b></font></td>
+        <td><b><?php echo $data3[0] ; ?></b></td>
         <td><?php echo $data3[1] ; ?></td>
         </tr>
         <?php } ?>
@@ -191,14 +192,14 @@ if (!$product_info) { // product not found in database
         if(!empty($data4[0])){
           ?>
             <tr>
-            <td valign="top"><font color="#66DFFF" size="2"><b><?php echo $data4[0] ; ?></b></font></td>
+            <td valign="top"><b><?php echo $data4[0] ; ?></b></td>
             <td><?php echo $data4[1] ; ?></td>
             </tr>
             <?php } ?>
             <?php if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && !$product_info['products_bflag']) { ?>
               <tr>
-                <td><font color="#66DFFF" size="2"><b><?php echo 
-                TEXT_PRODUCT_INFO_POINT;?></b></font></td>
+                <td><b><?php echo 
+                TEXT_PRODUCT_INFO_POINT;?></b></td>
                 <td><?php echo
                 sprintf(TEXT_PRODUCT_INFO_POINT_INFO,ds_tep_get_point_value($_GET['products_id'])) ; ?></td>
                 </tr>
@@ -217,7 +218,7 @@ if (!$product_info) { // product not found in database
                   if (tep_db_num_rows($tag_query)) { 
                     ?>
                       <tr> 
-                      <td><font color="#66DFFF"><b><?php echo TEXT_PRODUCT_INFO_TAG;?></b></font></td> 
+                      <td><b><?php echo TEXT_PRODUCT_INFO_TAG;?></b></td> 
                       <td>
                       <ul class="show_tags01"> 
                       <?php

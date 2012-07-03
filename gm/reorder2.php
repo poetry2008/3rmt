@@ -107,7 +107,7 @@ if(!isset($email_error)||$email_error == true){?>
               <input type='text'  name='name' value='<?php
   if(isset($name)&&$name){
     echo $name;
-  }?>' id='new_name' class="input_text" style="width:40%; margin-bottom:5px;">
+  }?>' id='new_name' class="input_text" style="width:42.5%; margin-bottom:5px;">
               <span id='name_error'><?php
   if(isset($name)&&$name==''){
     echo TEXT_REORDER2_MUST_INPUT;
@@ -123,7 +123,8 @@ if(!isset($email_error)||$email_error == true){?>
     }else{
       echo ' value=\''.$email.'\' ';
     }
-  }?> id='new_email' class="input_text" style="width:40%; margin-bottom:5px;"><span id='email_error'><?php 
+  }?> id='new_email' class="input_text" style="width:42.5%;
+          margin-bottom:5px;"><span id='email_error'>&nbsp;<?php 
  if(isset($email)&&$email==''){
    echo TEXT_REORDER2_MUST_INPUT;
  }?></span><?php
@@ -139,7 +140,8 @@ if(!isset($email_error)||$email_error == true){?>
               <input type='text'  name='product' value='<?php
   if(isset($product)&&$product){
     echo $product;
-  }?>' id='new_product' class="input_text" style="width:40%; margin-bottom:5px;"><span id='product_error'><?php
+  }?>' id='new_product' class="input_text" style="width:42.5%;
+          margin-bottom:5px;"><span id='product_error'>&nbsp;<?php
  if(isset($product)&&$product==''){
    echo TEXT_REORDER2_MUST_INPUT;
  }?></span></td>
@@ -150,7 +152,7 @@ if(!isset($email_error)||$email_error == true){?>
               <input type='text'  name='character' value='<?php
   if(isset($character)&&$character){
     echo $character;
-  }?>' id='new_character' class="input_text" style="width:40%; margin-bottom:5px;">
+  }?>' id='new_character' class="input_text" style="width:42.5%; margin-bottom:5px;">
               <span id='character_error'><?php
  if(isset($character)&&$character==''){
    echo TEXT_REORDER2_MUST_INPUT;
@@ -172,7 +174,7 @@ if(!isset($email_error)||$email_error == true){?>
               <select name='minute' id='new_minute'>
                 <option value=''>--</option>
               </select>
-              <span id='date_error'><?php
+              <span class='date_error'><?php
    if($hour==''||$date==''||$minute==''){
      echo TEXT_REORDER2_TRADE_TIME_ERROR;
    }?></span>
@@ -183,7 +185,7 @@ if(!isset($email_error)||$email_error == true){?>
           <tr>
             <td valign="top"><?php echo TEXT_REORDER_COMMENT_TITLE;?></td>
             <td>
-              <textarea name='comment' id='comment' style="width:80%;" rows="10"><?php
+              <textarea name='comment' id='comment' style="width:42.5%;" rows="10"><?php
               if(isset($comment)&&$comment){
                   echo $comment;
               }?></textarea>

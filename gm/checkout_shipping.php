@@ -227,7 +227,6 @@ function rowOutEffect(object) {
 <!-- body_text //-->
 <div id="layout" class="yui3-u">
 <div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
- <?php include('includes/search_include.php');?>
 <div id="main-content">
 <?php echo tep_draw_form('order', tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL')) . tep_draw_hidden_field('action', 'process'); ?> 
 
@@ -250,8 +249,24 @@ function rowOutEffect(object) {
               <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td>
             </tr>
           </table></td> 
-        <td width="20%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
-        <td width="20%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
+        <td width="20%">
+       <table border="0" width="100%" cellspacing="0" cellpadding="0">
+            <tr>
+              <td width="50%">
+      <?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?>
+              </td>
+            </tr>
+          </table> 
+      </td> 
+        <td width="20%">
+       <table border="0" width="100%" cellspacing="0" cellpadding="0">
+            <tr>
+              <td width="50%">
+        <?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?>
+              </td>
+            </tr>
+          </table> 
+        </td> 
         <td width="20%"><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
             <tr> 
               <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
@@ -312,19 +327,19 @@ if (!isset($torihikihouhou_error)) $torihikihouhou_error=NULL;
     }
     ?>
   </select>
-     </td>
-	 </tr>
-	 <tr>
   <?php
 if (!isset($date_error)) $date_error=NULL;
   if($date_error != '') {
 ?>
-<div><font color="red"><?php echo $date_error; ?></font></div>
-   </div>
+<font color="red"><?php echo $date_error; ?></font>
     <?php
   }
 ?>
-<div>
+   
+  </td>
+	 </tr>
+	 <tr>
+  <div>
 	 <td><?php echo TEXT_EXPECT_TRADE_TIME; ?></td>
 <td> 
   <select name="hour" onChange="selectHour('<?php echo $hours; ?>', '<?php echo $mimutes; ?>')">
@@ -342,19 +357,17 @@ if (!isset($date_error)) $date_error=NULL;
   </select>
   &nbsp;<?php echo TEXT_DATE_MIN;?>&nbsp;
   <?php echo TEXT_CHECK_24JI; ?>
-</td>
-</tr>
 <?php
 if (!isset($jikan_error)) $jikan_error=NULL;
   if($jikan_error != '') {
 ?>
  
-  <div>
-  <div><font color="red"><?php echo $jikan_error; ?></font></div>
-    </div>
+  <font color="red"><?php echo $jikan_error; ?></font>
  <?php
   }
 ?>
+</td>
+</tr>
 </table>
 <!--end-->
 </div>

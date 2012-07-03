@@ -203,6 +203,7 @@ function change_num(ob,targ, quan,a_quan)
 <!-- body_text //-->
 <div class="yui3-u" id="layout">
              <div id="current" ><?php echo $breadcrumb->trail(' <img  src="images/point.gif"> '); ?></div>
+ <?php include('includes/search_include.php');?>
             
                     <div id="main-content">
       <h2><?php echo HEADING_TITLE; ?></h2>

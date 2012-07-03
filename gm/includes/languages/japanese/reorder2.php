@@ -35,6 +35,6 @@ define('TEXT_REORDER_INFO4_EMAIL','株式会社 iimy');
 define('TEXT_REORDER_THANK_TO_CONTACT','この度は、ご連絡いただき誠にありがとうございます。');
 define('TEXT_REORDER_RE_DELIVERY','お客様から、下記の注文内容にて再配達を承りました。');
 define('TEXT_REORDER_LIKE','様');
-define('TEXT_REORDER_TREADE_TEXT', 'ご希望のお時間に添えない場合は、弊社より「取引時間」をご連絡させていただきます。');
+define('TEXT_REORDER_TREADE_TEXT', 'ご希望のお時間に添えない場合は、弊社より「取引日時」をご連絡させていただきます。');
 define('TEXT_REORDER2_TRADE_TIME_ERROR', '【取引日時】を選択してください。');
 define('TEXT_REORDER_COMMENT_TITLE_EMAIL','▼備考 :');

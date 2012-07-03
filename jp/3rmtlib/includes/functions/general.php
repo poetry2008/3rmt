@@ -207,7 +207,7 @@ function forward404Unless($condition)
 // Return a product's stock
 // TABLES: products
   function tep_get_products_stock($products_id) {
-    //$products_id = tep_get_prid($products_id);
+    $products_id = tep_get_prid($products_id);
     //ccdd
     $stock_query = tep_db_query("
     select * from (
@@ -2239,19 +2239,22 @@ if ($oconfig_res) {
 }
 ?>
 <?php if(NEW_STYLE_WEB===true){?>
-<link rel="stylesheet" type="text/css" href="<?php echo 
+<?php /*
+*/
+?>
+<link rel="stylesheet" type="text/css" href="<?php echo
   'css/cssbase-min.css?v='.$css_random_str;?>"> 
-<link rel="stylesheet" type="text/css" href="<?php echo 
+<link rel="stylesheet" type="text/css" href="<?php echo
 'css/cssfonts-min.css?v='.$css_random_str;?>"> 
-<link rel="stylesheet" type="text/css" href="<?php echo 
+<link rel="stylesheet" type="text/css" href="<?php echo
 'css/cssreset.css?v='.$css_random_str;?>">
-<link rel="stylesheet" type="text/css" href="<?php echo 
+<link rel="stylesheet" type="text/css" href="<?php echo
 'css/grids-min.css?v='.$css_random_str;?>">
 <link href="<?php echo
 'banner/css/webwidget_slideshow_dot.css?v='.$css_random_str;?>" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="js/search_include.js"></script>
 <?php } ?>
-<link rel="stylesheet" type="text/css" href="<?php echo 'css/'.$site_romaji.'.css?v='.$css_random_str;?>"> 
+<link rel="stylesheet" type="text/css" href="<?php echo 'css/'.$site_romaji.'.css?v='.$css_random_str;?>">
 <?php
     switch (str_replace('/', '', $_SERVER['SCRIPT_NAME'])) {
       case FILENAME_CATEGORY:
@@ -2654,7 +2657,6 @@ function tep_unlink_temp_dir($dir)
                p.products_cart_image,
                p.products_cartorder,
                p.products_cartflag,
-               p.belong_to_option,
                pd.language_id,
                pd.products_name, 
                pd.products_description,
@@ -3700,7 +3702,7 @@ function tep_get_cart_products($pid){
 function tep_get_products_by_shopiing_cart($products){
   $arr = array();
   foreach ($products as $p) {
-    $arr[] = (int)$p['id'];
+    $arr[] = tep_get_prid($p['id']);
   }
   return $arr;
 }
@@ -4368,49 +4370,7 @@ function tep_create_preorder_info($pInfo, $preorder_id, $cid, $tmp_cid = null, $
                           'site_id' => SITE_ID
                           );
    tep_db_perform(TABLE_PREORDERS_PRODUCTS, $sql_data_array);
-   $preorder_products_id = tep_db_insert_id();
-
-   $replace_arr = array("<br>", "<br />", "<br/>", "\r", "\n", "\r\n", "<BR>");
-   foreach ($pInfo as $op_key => $op_value) {
-     $op_single_str = substr($op_key, 0, 3);
-     if ($op_single_str == 'op_') {
-       $op_tmp_value = str_replace(' ', '', $op_value);
-       $op_tmp_value = str_replace('　', '', $op_value);
-       if ($op_tmp_value == '') {
-         continue; 
-       }
-       $op_info_array = explode('_', $op_key);
-       $item_raw = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name = '".$op_info_array[1]."' and id = '".$op_info_array[3]."'");
-       $item_res = tep_db_fetch_array($item_raw); 
-       if ($item_res) {
-         $item_price = 0; 
-         $input_option_array = array('title' => $item_res['front_title'], 'value' => str_replace("<BR>", "<br>", stripslashes($op_value))); 
-         if ($item_res['type'] == 'radio') {
-           $ro_array = @unserialize($item_res['option']);
-           if (!empty($ro_array)) {
-             foreach ($ro_array['radio_image'] as $ro_key => $ro_value) {
-               if (trim(str_replace($replace_arr, '', nl2br(stripslashes($ro_value['title'])))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($op_value))))) {
-                 $item_price = $ro_value['money'];
-                 break; 
-               }
-             }
-           }
-         } else {
-           $item_price = $item_res['price']; 
-         }
-         $sql_data_array = array(
-           'orders_id' => $order_id,
-           'orders_products_id' => $preorder_products_id, 
-           'options_values_price' => $item_price, 
-           'option_info' => tep_db_input(serialize($input_option_array)), 
-           'option_group_id' => $item_res['group_id'], 
-           'option_item_id' => $item_res['id'], 
-         );
-         tep_db_perform(TABLE_PREORDERS_PRODUCTS_ATTRIBUTES, $sql_data_array);
-       }
-     }
-     
-   }
+   
    preorders_updated($order_id);  
    
    if ($is_active == 1) {
@@ -4777,7 +4737,7 @@ function check_money_limit() {
 
 
 //统一的输出 
-function tep_payment_out_selection($is_show = false){
+function tep_payment_out_selection(){
 global $selection;
 global $payment_modules;
 global $order;
@@ -4787,14 +4747,10 @@ global $order;
   <?php
    //如果大于1个支付方法需要用户选择 ，如果小于则不需要选择了
     if (sizeof($selection) > 1) {
-      if (!$is_show) {
-        echo "<div>";
-      }
+      echo "<div>";
       echo '<div class="float_left">'.TEXT_SELECT_PAYMENT_METHOD."</div>";
       echo '<div class="txt_right"><b>'.TITLE_PLEASE_SELECT.'</b><br>'.tep_image(DIR_WS_IMAGES . 'arrow_east_south.gif').'</div> ';
-      if (!$is_show) {
-        echo "</div> ";
-      } 
+      echo "</div> ";
     }else {
       echo "<div>";
       echo '<div class="float_left">';
@@ -4915,132 +4871,6 @@ function get_strip_campaign_info($c_str)
   return $c_str;
 }
 
-function get_preorder_total_info($payment, $pid, $option_info_array) 
-{
-  global $payment_modules;
-
-  $preorder_total_info = array();    
-  
-  $preorder_product_info_raw = tep_db_query("select final_price, products_quantity, products_tax from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$pid."'");
-  $preorder_product_info = tep_db_fetch_array($preorder_product_info_raw);  
-  
-  $replace_arr = array("<br>", "<br />", "<br/>", "\r", "\n", "\r\n", "<BR>");
-  if (!empty($option_info_array)) {
-    $attr_total = 0; 
-    foreach ($option_info_array as $tp_key => $tp_value) {
-      $tp_key_array = explode('_', $tp_key); 
-      $option_item_raw = tep_db_query("select * from ".TABLE_OPTION_ITEM." where id = '".$tp_key_array[3]."' and name = '".$tp_key_array[1]."'"); 
-      $option_item_res = tep_db_fetch_array($option_item_raw); 
-      if ($option_item_res) {
-        if ($option_item_res['type'] == 'radio') {
-          $o_option_array = @unserialize($option_item_res['option']);
-          if (!empty($o_option_array['radio_image'])) {
-            foreach ($o_option_array['radio_image'] as $or_key => $or_value) {
-              if (trim(str_replace($replace_arr, '', nl2br(stripslashes($or_value['title'])))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($tp_value))))) {
-                $attr_total += $or_value['money']; 
-                break; 
-              }
-            }
-          }
-        } else {
-          $attr_total += $option_item_res['price']; 
-        }
-      }
-    }
-    
-    if ($attr_total == 0) {
-      return $preorder_total_info; 
-    }
-    
-    if (DISPLAY_PRICE_WITH_TAX == 'true') {
-      $p_show_price = tep_add_tax(($preorder_product_info['final_price']+$attr_total)*$preorder_product_info['products_quantity'], $preorder_product_info['products_tax']); 
-    } else {
-      $p_show_price = ($preorder_product_info['final_price']+$attr_total)*$preorder_product_info['products_quantity']; 
-    }
-    
-    $preorder_total_info['final_price'] = $preorder_product_info['final_price']+$attr_total;
-    $preorder_subtotal = $p_show_price;
-    $preorder_total_info['subtotal'] = $preorder_subtotal;
-    
-    $new_tax = 0;
-
-    $plustax_query = tep_db_query("select count(*) as cnt from ".TABLE_PREORDERS_TOTAL." where class = 'ot_tax' and orders_id = '".$pid."'");
-    $plustax = tep_db_fetch_array($plustax_query);
-    
-    if ($plustax['cnt'] > 0) {
-      $new_tax = (($preorder_product_info['products_tax']/100)*($preorder_products_info['products_quantity']*($preorder_products_info['final_price']+$attr_total)));
-      $preorder_total_info['tax'] = $new_tax; 
-    }
-    
-    $total_query = tep_db_query("select sum(value) as total_value from ".TABLE_PREORDERS_TOTAL." where class != 'ot_total' and class != 'ot_point' and class != 'ot_tax' and class != 'ot_subtotal' and orders_id = '".$pid."'");
-    $total_value = tep_db_fetch_array($total_query);
-    if ($plustax['cnt'] == 0) {
-      $preorder_newtotal = $total_value['total_value']+$new_tax+$preorder_subtotal; 
-    } else {
-      if (DISPLAY_PRICE_WITH_TAX == 'true') {
-        $preorder_newtotal = $total_value['total_value']-$new_tax+$preorder_subtotal; 
-      } else {
-        $preorder_newtotal = $total_value['total_value']+$preorder_subtotal; 
-      }
-    }
-   
-    $preorder_calc_fee = $payment_modules->handle_calc_fee($payment, $preorder_newtotal);
-    $preorder_total_info['total'] = $preorder_newtotal+$preorder_calc_fee;
-    $preorder_total_info['fee'] = $preorder_calc_fee;
-  }
-  
-  return $preorder_total_info;
-}
-
-function tep_get_show_attributes_price($item_id, $group_id, $att_value) 
-{
-  $item_raw = tep_db_query("select * from ".TABLE_OPTION_ITEM." where id = '".$item_id."' and group_id = '".$group_id."'"); 
-  $item_res = tep_db_fetch_array($item_raw);
-  
-  $replace_arr = array("<br>", "<br />", "<br/>", "\r", "\n", "\r\n", "<BR>");
-  if ($item_res) {
-    if ($item_res['type'] == 'radio') {
-      $option_array = @unserialize($item_res['option']);
-      if (!empty($option_array)) {
-        foreach ($option_array['radio_image'] as $key => $value) {
-          if (trim(str_replace($replace_arr, '', nl2br(stripslashes($value['title'])))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($att_value))))) {
-            return $value['money']; 
-          }
-        }
-      }
-    } else {
-      return $item_res['price']; 
-    }
-  }
-  
-  return 0;
-}
-
-function tep_check_also_products_attr()
-{
-   global $cart, $hm_option;
-   $return_single = true; 
-
-   $list_products = $cart->get_products();
-   $c_array = array();
-
-   for ($j=0, $k=sizeof($list_products); $j<$k; $j++) {
-     $belong_option_raw = tep_db_query("select belong_to_option from ".TABLE_PRODUCTS." where products_id = '".(int)$list_products[$j]['id']."'"); 
-     $belong_option = tep_db_fetch_array($belong_option_raw); 
-     
-     if ($belong_option) {
-       if ($hm_option->check_old_symbol_show($belong_option['belong_to_option'])) {
-         $c_array[] = (int)$list_products[$j]['id']; 
-       }
-     }
-   }
-   
-   if (!empty($c_array)) {
-     $return_single = false; 
-   }
-   return $return_single;
-}
-
 function tep_customer_in_reset_range($id){
   $sql = "select reset_flag from ".TABLE_CUSTOMERS_INFO." 
     where customers_Info_Id ='".$id."'";
@@ -5092,6 +4922,7 @@ function tep_get_popup_url(){
     return '';
   }
 }
+
 function tep_replace_product_des($string){
   if(preg_match('|<td>(([^<]*)(<b>)*[^<]*(</b>)*[^<]*)</td><td>([^<]*)</td><td>([^<]*(<b>)*[^<]*(</b>)*[^<]*)</td>|',
   $string)){
@@ -5100,24 +4931,6 @@ function tep_replace_product_des($string){
 ,$string);
   }
   return str_replace('<td','<td valign="top" ',$string);
-}
-function tep_replace_all_full_character($c_str)
-{
-  $arr = array(
-      'Ａ','Ｂ','Ｃ','Ｄ','Ｅ','Ｆ','Ｇ','Ｈ','Ｉ','Ｊ','Ｋ','Ｌ','Ｍ','Ｎ','Ｏ','Ｐ','Ｑ','Ｒ','Ｓ','Ｔ','Ｕ','Ｖ','Ｗ','Ｘ','Ｙ','Ｚ',
-      'ａ','ｂ','ｃ','ｄ','ｅ','ｆ','ｇ','ｈ','ｉ','ｊ','ｋ','ｌ','ｍ','ｎ','ｏ','ｐ','ｑ','ｒ','ｓ','ｔ','ｕ','ｖ','ｗ','ｘ','ｙ','ｚ',
-      '１','２','３','４','５','６','７','８','９','０',
-      '　'
-    );
-  $arr2 = array(
-      'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',
-      'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',
-      '1','2','3','4','5','6','7','8','9','0',
-      ' '
-  );
-  
-  $c_str = str_replace($arr, $arr2, $c_str);
-  return $c_str;
 }
 function file_exists3($src) {
   if(substr(DIR_FS_CATALOG,-1)=='/'){
@@ -5132,12 +4945,6 @@ function file_exists3($src) {
    }
   return file_exists($src);
   }
-
-
-function new_nl2br($string) {
-  $string = str_replace(array("\r\n", "\r", "\n"), "<br>", $string);
-  return $string;
-} 
 
   function tep_cache_also_purchaseds($auto_expire = false, $refresh = false) {
     global $_GET, $language, $languages_id;
@@ -5177,8 +4984,12 @@ global $order;
   <!-- loop start  -->
 <?php  
      if(isset($_SESSION['payment_error'])){
-	 ?>
+?>
+     <?php if (NEW_STYLE_WEB === true) {?>
+     <div class="box_new_waring">
+     <?php } else {?>
      <div class="box_waring">
+     <?php }?>
      <?php
      if(is_array($_SESSION['payment_error'])){
            foreach($_SESSION['payment_error'] as $key=>$value){
@@ -5195,7 +5006,10 @@ global $order;
          }
          unset($_SESSION['payment_error']);
      ?>
-     </div><br>
+     </div>
+     <?php if (NEW_STYLE_WEB !== true) {?>
+     <br>
+     <?php }?>
      <?php
 	 }
     foreach ($selection as $key=>$singleSelection){

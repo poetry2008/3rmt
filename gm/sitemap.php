@@ -23,7 +23,7 @@
  <?php include('includes/search_include.php');?>
  <div id="main-content">
 <h2><?php echo HEADING_TITLE; ?></h2>
-     <table border="0" width="100%" cellspacing="0" cellpadding="0">
+     <table border="0" width="100%" cellspacing="0" cellpadding="0" style="margin-top:5px;">
       <tr>
         <td>
            <table border="0" width="100%" cellspacing="1" cellpadding="2">

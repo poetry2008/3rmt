@@ -108,13 +108,17 @@ td,th{ border:0; padding:2px; font-size:14px;}
 	text-decoration: none;
 	display:inline;
 }
-#out_id a:active{color:#fe9002;}
+#out_id a:active{color:#fe9002; background:url(../images/login_list.gif) no-repeat 0 5px; padding-left:10px}
 #out_id a:visited{
 	color: #ce04e0;
+	background:url(../images/login_list.gif) no-repeat 0 5px;
+	padding-left:10px
 }
 #out_id a:hover{
 	color: #fe9002;
     text-decoration: underline;
+	background:url(../images/login_list.gif) no-repeat 0 5px;
+	padding-left:10px
 }
 #out_id li{
 	background:url(../images/logo-out.gif) no-repeat;
@@ -260,7 +264,7 @@ td,th{ border:0; padding:2px; font-size:14px;}
 }
 .main-columns h2{
 	color:#fff;
-	padding:10px 0;
+	padding:10px 0 4px 0;
 	text-align:center;
 	margin-top:-45px;
 	font-size:18px;
@@ -280,6 +284,7 @@ td,th{ border:0; padding:2px; font-size:14px;}
 	height:41px;
 	padding:0 20px;
 	line-height:27px;
+	font-size:18px;
 }
 .main-columns ul{
 	overflow:hidden;
@@ -324,7 +329,7 @@ td,th{ border:0; padding:2px; font-size:14px;}
 }
 .no-title-class{ margin-top:-36px;}
 .hm-product-title{
-	font-size:14px;
+	font-size:18px;
 	color:#00A2E8;
 	text-align:left;
 	line-height:24px;
@@ -367,12 +372,12 @@ td,th{ border:0; padding:2px; font-size:14px;}
 	font-size:14px;
 }
 #main-content p{
- 	margin:5px 0;
-	font:12px;
+	font-size:14px;
 }
 #main-content table{
 	color:#fff;
 	overflow:hidden;
+	margin-bottom:10px;
 }
 
 #main-content h2,#main-content h1{
@@ -384,16 +389,17 @@ td,th{ border:0; padding:2px; font-size:14px;}
 	padding-left:5px;
 	margin-bottom:3px;
 	line-height:18px;
-	font-size:16px;
+	font-size:18px;
 }
 #main-content h3{
 	color: #fff;
-	font-size:16px;
+	font-size:18px;
 	/*padding:2px 5px;*/
 	position:relative;
 	z-index:103;
 /*	background:url(../image/main_conten_h3.gif) no-repeat 0 15px;*/
 	padding:9px 0 8px 0;
+	overflow:hidden;
 }
 #main-content h4{
 	color:#fff;
@@ -478,10 +484,9 @@ td,th{ border:0; padding:2px; font-size:14px;}
 #detail-table{
 	width:100%;
 	background-color:#466886;
-	margin:5px 0;
+	margin:15px 0 5px 0;
 }
 #detail-table td{
-	border:1px solid #466886;
 	background-color:#16375E;
 	color:#fff;
 	letter-spacing:0;
@@ -499,7 +504,7 @@ td,th{ border:0; padding:2px; font-size:14px;}
 }
 #detail-table-noframe{
 	width:100%;
-	margin: 0 15px 20px 5px;
+	/*margin: 0 15px 20px 5px;*/
 }
 #detail-table-noframe td{
 	color:#fff;
@@ -514,8 +519,8 @@ td,th{ border:0; padding:2px; font-size:14px;}
 }
 #detail-div{
 	width:99%;
-	margin:5px auto;
-	padding:5px;
+	margin:0 auto;
+	padding:0 5px;
 	overflow:hidden;
 }
 #detail-div table{ margin:10px 0;}
@@ -538,7 +543,7 @@ td,th{ border:0; padding:2px; font-size:14px;}
 #detail-div{ color:#fff;}
 .botton-continue{ 
 	/*float:right; */
-	margin-top:23px;
+	margin-top:21px;
 }
 /*seach*/
 
@@ -621,7 +626,7 @@ td,th{ border:0; padding:2px; font-size:14px;}
 .roll_company{ float:left;}
 .roll_price{ float:left;}
 .roll_warp{ padding:5px;}
-.checkout_s_link{ margin-top:22px;}
+.checkout_s_link{ margin-top:10px;}
 .checkout_s_link table{ margin:0;}
 .checkout_s_link td{ padding:0;}
 .checkout_s_link img{ vertical-align:middle;}
@@ -632,16 +637,16 @@ td,th{ border:0; padding:2px; font-size:14px;}
 	margin-bottom:5px;
 }
 .checkout-conent{ clear:both; margin:0 7% 15px 7%;}
-.checkout-conent ul{ padding:5px 0 0 20px;}
+.checkout-conent ul{ padding:0 0 0 20px;}
 .checkout-conent li{
 	list-style-type: square;
 	margin-left:15px;
 }
 .checkout-conent table{ line-height:25px;}
-.checkout-list{ clear:both; margin:8px 0; overflow:hidden;}
+.checkout-list{ clear:both; margin:15px 0; overflow:hidden;}
 .checkout-list img{ float:left; margin-right:5px;}
 .frame_w70{ float:left; display:block;}
-.box_content_title{ margin:20px 0 8px 0; clear:both; overflow:hidden;}
+.box_content_title{ margin:35px 0 8px 0; clear:both; overflow:hidden;}
 .box_content_text{ padding-left:10px; width:90%;}
 .payment-content input{ float:left; margin-right:8px;}
 .txt_input_box{ clear:both;}
@@ -706,7 +711,7 @@ td,th{ border:0; padding:2px; font-size:14px;}
 .waring_product{ border:3px solid #ff0000; padding:5px;}
 .waring_category{ margin-bottom:10px; border:3px solid #ff0000; padding:5px;}
 #product-switching h1{ font-size:14px;}
-#product-switching div{ font-size:14px;}
+#product-switching div{ font-size:18px;}
 #product-switching h2{ font-size:16px;}
 /*gamelist*/
 
@@ -803,7 +808,7 @@ td,th{ border:0; padding:2px; font-size:14px;}
 #hm-account-history table{ margin:0;}
 #hm-notifications{ margin-top:10px;}
 
-.subcategory_tree{margin:0 0 0 20px}
+.subcategory_tree{margin:10px 0 25px 20px}
 
 /*banner-index.css*/
 #dHomePageCarousel { 
@@ -1040,7 +1045,6 @@ img {
 	text-align:center;
     background: url(../images/design/box/product_listing_sort_02.gif) !important;
 }
-
 .product_listing a:link{
 	color:#66DFFF;
 }
@@ -1056,7 +1060,7 @@ img {
 .productSpecialPrice{ color:#FF0000;}
 
 #product_list ul{ overflow:hidden; margin:10px;}
-#product_list ul li{ float:left; text-align:center; padding-top:10px; padding-bottom:10px; height:134px; width:200px;}
+#product_list ul li{ float:left; text-align:center; padding-top:10px; padding-bottom:10px; width:200px;}
 .error{
 	color:#FF0000;
 	float:left;
@@ -1074,7 +1078,7 @@ img {
 #product-carousel img{ border:3px solid #fff;}
 .preorder_title td{ padding:0; margin:0;}
 .preorder_title img{ vertical-align:middle;}
-.sub_menu{ margin-left:2px; margin-top:10px;}
+.sub_menu{ margin-left:2px;}
 .sub_menu dt{ line-height:15px; padding:3px; font-size:14px;}
 .sub_menu dd{ line-height:15px; padding:3px; margin-bottom:10px;}
 ul,li { padding:0; margin:0}
@@ -1106,9 +1110,14 @@ top:70px;
 	color:#ffffff;
 	word-spacing:0;
 }
-.content_account{
-	margin:0 15px 20px 5px;
+#content_account{
+	margin:5px 15px 20px 0;
+	width:100%;
+}
 
+.content_account{
+	margin:5px 15px 20px 0;
+	width:100%;
 }
 .content_account td{
 	padding:0;
@@ -1157,3 +1166,32 @@ top:70px;
 .popup_notice_button a{
 	margin:0 20px;
 }
+.contact_us_spacing{
+	overflow:hidden;
+	margin-top:9px;
+}
+.login_spacing{
+	margin-top:12px;
+	margin-bottom:25px;
+}
+.open_spacing{
+	margin-left:5px;
+	margin-top:10px;
+}
+.open_login{ clear:both;}
+.login_inc{ margin-bottom:15px;}
+.comment_preoder{
+	margin-left:6px;
+	margin-top:15px;
+}
+.reorder_spacing,.information_table{
+	margin-left:6px;
+	margin-top:10px;
+}
+.success_spacing{ margin-top:8px;}
+.box_new_waring{
+	color:#ff0000;
+	position:relative;
+	top:20px;
+}
+.date_error{ color:#FF0000;}
