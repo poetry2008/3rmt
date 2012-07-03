@@ -16,7 +16,7 @@ define('TABLE_HEADING_REMOVE', '削除');
 define('TABLE_HEADING_QUANTITY', '数量');
 define('TABLE_HEADING_MODEL', '型番');
 define('TABLE_HEADING_PRODUCTS', '商品名');
-define('TABLE_HEADING_TOTAL', '合計');
+define('TABLE_HEADING_TOTAL', '金額');
 define('TEXT_CART_EMPTY', '<p class="red"><b>ショッピングカートには何も入っていません。</b></p>
 当ショッピングシステムは、<b>JavaScript</b>と<b>Cookie</b>を利用しています。ショッピングをご利用いただくためにはブラウザのJavaScriptとCookieの設定が有効になっている必要があります。通常、特に設定を変える必要はございませんが、ご注文がうまくいかない場合は<a href="' . tep_href_link(FILENAME_CONTACT_US) . '">コチラ</a>よりお問い合わせください。<br>
 <div class="pageHeading">ブラウザの設定方法</div>
@@ -35,5 +35,5 @@ define('OUT_OF_STOCK_CAN_CHECKOUT', STOCK_MARK_PRODUCT_OUT_OF_STOCK . ' 印の�
 define('TEXT_UPDATE_CART_INFO', '<b><font color="#ff0000">※</font> 数量をご確認の上「レジへ進む」ボタンをクリックしてください。</b>'); //Add Japanese osCommerce
   
 define('TABLE_HEADING_IMAGE', '画像');
-define('TABLE_HEADING_OPERATE', '削除');
+define('TABLE_HEADING_OPERATE', '操作');
 define('TEXT_DEL_LINK', '削除');
