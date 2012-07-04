@@ -491,8 +491,8 @@ td,th{ border:0; padding:2px; font-size:14px;}
 	color:#fff;
 	letter-spacing:0;
     word-spacing:0;
-	padding:8px;
 	font-size:14px;
+	padding:0 8px;
 }
 #detail-table th{
 	background-color:#466886;
@@ -711,7 +711,7 @@ td,th{ border:0; padding:2px; font-size:14px;}
 .waring_product{ border:3px solid #ff0000; padding:5px;}
 .waring_category{ margin-bottom:10px; border:3px solid #ff0000; padding:5px;}
 #product-switching h1{ font-size:14px;}
-#product-switching div{ font-size:18px;}
+#product-switching div{ font-size:14px;}
 #product-switching h2{ font-size:16px;}
 /*gamelist*/
 
@@ -795,7 +795,7 @@ td,th{ border:0; padding:2px; font-size:14px;}
 /*checkout*/
 .hm-hot-product{ height:93px; overflow:hidden;}
 #hm-hot-category{height:50px; overflow:hidden;}
-#hm-payment{background-color:#577C9D; overflow:hidden; padding:5px; font-size:18px;}
+#hm-payment{background-color:#577C9D; overflow:hidden; padding:5px;}
 #hm-checkout-warp{ border:2px #577C9D solid; overflow:hidden; padding:5px; margin:5px 7%;}
 .hm-payment-top-left{ float:left;}
 .hm-payment-left{ 
@@ -1198,7 +1198,7 @@ top:70px;
 .date_error{ color:#FF0000;}
 .auth_finish_left{ padding:10px 0; line-height:25x;}
 .auth_finish_right{ padding:25px 0; float:right;}
-.shopping_cart_total{ clear:both; padding-right:8px;text-align:right;}
+.shopping_cart_total{ clear:both; padding-right:8px;text-align:right; margin-right:10%;}
 #wrapper_kiyaku{ margin-top:15px;}
 .send_box01{ margin-top:15px; padding-bottom:35px;}
 .prompt{ clear:both; color:#ff0000; font-size:14px; width:100%; font-weight:bold; text-align:center; margin:15px 0;}

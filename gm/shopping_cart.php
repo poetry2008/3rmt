@@ -124,7 +124,7 @@ function set_sub_total()
   for (var i=0; i<final_prices.length; i++)
   {
 
-    var p_l_html = document.getElementById('pri_' + final_prices[i].id.substr(3)).innerHTML.split('円')[0].replace(/,/g,'');
+    var p_l_html = document.getElementById('pri_' + final_prices[i].id.substr(3)).innerHTML.split('<?php echo JPMONEY_UNIT_TEXT;?>')[0].replace(/,/g,'');
     if(document.getElementById('one_price_show_'+ final_prices[i].id.substr(3))){
     var one_price_money = document.getElementById('one_price_'+ final_prices[i].id.substr(3)).innerHTML.replace(/,/g,'');
     var one_p_quantity = document.getElementById('quantity_'+ final_prices[i].id.substr(3)).value;
@@ -260,15 +260,15 @@ function change_num(ob,targ, quan,a_quan)
 <?php   
     if($cart->show_total() < 0 && $cart->show_total() > -200) {
 ?>
-          <div>      
-               <table border="0" width="100%" cellspacing="0" cellpadding="2" style="border: 3px solid #FF0000; padding:5px;">
+          <div>  
+               <table border="0" width="100%" cellspacing="0" cellpadding="2" style="border: 3px solid #FF0000; padding:5px; margin-top:10px;">
               <tr>
                <td colspan="2">
                <?php echo TEXT_SHOPPING_CART_READ_INFO;?>
                </td>
                 </tr>
                 <tr>
-                  <td width="33" height="35"><img src="images/icons/hinto.jpg" align="absmiddle" /></td>
+                  <td width="33" height="35"><img src="images/design/hinto.jpg" align="absmiddle" /></td>
                   <td align="left" valign="middle">
                   <?php echo TEXT_SHOPPING_CART_READ_NOTICE_MONEY;?>
                   </td>
@@ -415,7 +415,7 @@ if (!empty($_SESSION['history_url'])) {
         <?php
   } else {
 ?> 
-      <div> 
+      <div style="margin-top:13px;"> 
          <?php echo TEXT_CART_EMPTY; ?>
          </div> 
        <div class="botton-continue" align="right">

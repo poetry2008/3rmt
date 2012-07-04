@@ -65,8 +65,8 @@ $query="$qselect $qfrom $qwhere $qgroup ORDER BY $order_by $order LIMIT ".$pageN
 $tickets_res = db_query($query);
 $showing=db_num_rows($tickets_res)?$pageNav->showing():"";
 $_status = '_'.$status;
-$_open = 'オープン';
-$_closed = 'クローズ';
+$_open = TEXT_OPEN;
+$_closed = TEXT_CLOSED;
 
 $results_type=($status)?($$_status).'':TEXT_ALL;
 $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
@@ -82,27 +82,52 @@ $_negorder=$negorder=="DESC"?TEXT_SORT:TEXT_DESC_SORT;
     <?}?>
 </div>
 <div class="tickets_contents">
- <table border="0" cellspacing="1" cellpadding="0" align="center" class="tickets_lout">
+ <table border="0" cellspacing="1" cellpadding="0" align="center" class="tickets_lout" width="100%">
     <tr>
-        <td width="60%" class="msg"><?=$showing?>&nbsp;&nbsp;<?=$results_type?></td>
+        <td width="60%" class="msg"><?=$showing?>&nbsp;&nbsp;</td>
         <td nowrap align="right">
-            <a href="view.php?status=open"><?php echo TEXT_OPEN;?></a>            
-            <a href="view.php?status=closed"><?php echo TEXT_CLOSED?></a>            
-            <a class="log_out" href="logout.php"><?php echo TEXT_LOGOUT?></a>
+            <!--<a href="view.php?status=open"><?php echo TEXT_OPEN;?></a>            
+            <a href="view.php?status=closed"><?php echo TEXT_CLOSED?></a>-->    
+            <a class="log_out" href="logout.php"><img src="images/door_out.gif"><?php echo TEXT_LOGOUT?></a>
         </td>
     </tr>
  </table>
+<table width="100%" cellspacing="0" cellpadding="0" border="0" align="center" class="product_listing">
+	<tr>
+        <?php
+        if($_GET['status'] == 'open' || !isset($_GET['status'])){
+        
+          $products_image_one = 'product_listing_sort_02.gif';
+        }else{
+          $products_image_one = 'product_listing_sort_01.gif';
+        } 
+        ?>
+        <td width="50%"><a class="product_listing_link"
+        style="background:url(images/design/box/<?php echo $products_image_one;?>)"  href="view.php?status=open"><?php echo TEXT_OPEN;?></a></td>
+        <?php
+        if($_GET['status'] == 'closed'){
+        
+          $products_image = 'product_listing_sort_02.gif';
+        }else{
+          $products_image = 'product_listing_sort_01.gif';
+        } 
+        ?>
+        <td width="50%" style="border-right:1px solid #666666;"><a id="jingyi"
+        class="product_listing_link" style="background: url(images/design/box/<?php
+        echo $products_image;?>)" href="view.php?status=closed"><?php echo TEXT_CLOSED?></a></td>
+    </tr>
+</table>
  <table width="100%" border="0" cellspacing=0 cellpadding=2>
     <tr><td>
      <table width="100%" border="0" cellspacing="1" cellpadding="0" class="tickets" align="center">
         <tr>
-          <th align="left" width="80">&nbsp;<a
+          <td align="left" width="80">&nbsp;<a
           href="view.php?sort=ID&order=<?=$negorder?><?=$qstr?>" title="<?php echo TEXT_TITLE_NUM_QUERY;?>
-          <?=$_negorder?>"><?php echo TEXT_NUM_QUERY;?></a></th>
-          <th width="80" align="left">&nbsp;<a
+          <?=$_negorder?>"><?php echo TEXT_NUM_QUERY;?></a></td>
+          <td width="80" align="left">&nbsp;<a
           href="view.php?sort=date&order=<?=$negorder?><?=$qstr?>"
-          title=" <?=TEXT_TITLE_CREAT_DATE.$_negorder?>"><?php echo TEXT_CREAT_DATE?></a></th>
-          <th align="left">&nbsp;<?php echo TEXT_SUBJECT;?></th>
+          title=" <?=TEXT_TITLE_CREAT_DATE.$_negorder?>"><?php echo TEXT_CREAT_DATE?></a></td>
+          <td align="left">&nbsp;<?php echo TEXT_SUBJECT;?></td>
         </tr>
         <?
         $class = "row1";
@@ -145,7 +170,7 @@ $_negorder=$negorder=="DESC"?TEXT_SORT:TEXT_DESC_SORT;
     <tr><td>
     <?
     if($num>0 && $pageNav->getNumPages()>1){ //if we actually had any tickets returned?>
-     <tr><td style="text-align:left;padding-left:20px; font-size:14px;">ページ:<?=$pageNav->getPageLinks()?>&nbsp;</td></tr>
+     <tr><td style="text-align:left;padding-left:20px; font-size:14px;"><?php echo TEXT_PAGE;?><?=$pageNav->getPageLinks()?>&nbsp;</td></tr>
     <?}?>
  </table>
 </div>

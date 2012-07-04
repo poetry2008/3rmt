@@ -11,3 +11,4 @@ define('TEXT_TITLE_NUM_QUERY','番号順に表示');
 define('TEXT_TITLE_CREAT_DATE','作成日順に表示');
 define('TEXT_SUBJECT','件名');
 define('TEXT_CANNOT_FIND','該当するものはありません。');
+define('TEXT_PAGE','ページ:');
