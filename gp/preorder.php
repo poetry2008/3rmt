@@ -359,7 +359,7 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
           <td class="main"><?php echo $your_email_address_prompt; ?></td>
         </tr>
         <tr> 
-        <td colspan="2" class="main"><?php ehco PREORDER_FINAL_EAMIL;?></td>
+        <td colspan="2" class="main"><?php echo PREORDER_FINAL_EAMIL;?></td>
         </tr>
       </table><br>
       <div class="formAreaTitle"><?php echo FORM_TITLE_FRIEND_DETAILS; ?></div>
