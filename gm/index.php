@@ -83,7 +83,8 @@ if ($category_depth == 'nested') {
     echo '<div class="waring_category">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
   }
 ?>
-<p style="margin-top:13px"><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_header_text']);?></p>
+<div class="list_spacing"><?php echo str_replace('#STORE_NAME#', STORE_NAME,
+    $seo_category['categories_header_text']);?></div>
       <?php
       $has_ca_single = false; 
       ?>

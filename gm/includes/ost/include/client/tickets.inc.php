@@ -17,6 +17,7 @@ if($_REQUEST['status']) { //Query string status has nothing to do with the real 
      case 'closed':
         $status=$_REQUEST['status'];
         break;
+     case 'all':
      default:
         $status=''; //ignore
     }
@@ -93,16 +94,26 @@ $_negorder=$negorder=="DESC"?TEXT_SORT:TEXT_DESC_SORT;
     </tr>
  </table>
 <table width="100%" cellspacing="0" cellpadding="0" border="0" align="center" class="product_listing">
-	<tr>
+        <tr>
         <?php
-        if($_GET['status'] == 'open' || !isset($_GET['status'])){
+        if($_GET['status'] == 'all' || !isset($_GET['status'])){
+        
+          $products_image_all = 'product_listing_sort_02.gif';
+        }else{
+          $products_image_all = 'product_listing_sort_01.gif';
+        } 
+        ?>
+        <td width="33%"><a class="product_listing_link"
+        style="background:url(images/design/box/<?php echo $products_image_all;?>)"  href="view.php?status=all"><?php echo TEXT_ALL;?></a></td>
+        <?php
+        if($_GET['status'] == 'open'){
         
           $products_image_one = 'product_listing_sort_02.gif';
         }else{
           $products_image_one = 'product_listing_sort_01.gif';
         } 
         ?>
-        <td width="50%"><a class="product_listing_link"
+        <td width="33%"><a class="product_listing_link"
         style="background:url(images/design/box/<?php echo $products_image_one;?>)"  href="view.php?status=open"><?php echo TEXT_OPEN;?></a></td>
         <?php
         if($_GET['status'] == 'closed'){
@@ -112,7 +123,7 @@ $_negorder=$negorder=="DESC"?TEXT_SORT:TEXT_DESC_SORT;
           $products_image = 'product_listing_sort_01.gif';
         } 
         ?>
-        <td width="50%" style="border-right:1px solid #666666;"><a id="jingyi"
+        <td width="33%" style="border-right:1px solid #666666;"><a id="jingyi"
         class="product_listing_link" style="background: url(images/design/box/<?php
         echo $products_image;?>)" href="view.php?status=closed"><?php echo TEXT_CLOSED?></a></td>
     </tr>
@@ -121,10 +132,10 @@ $_negorder=$negorder=="DESC"?TEXT_SORT:TEXT_DESC_SORT;
     <tr><td>
      <table width="100%" border="0" cellspacing="1" cellpadding="0" class="tickets" align="center">
         <tr>
-          <td align="left" width="80">&nbsp;<a
+          <td align="left" width="15%">&nbsp;<a
           href="view.php?sort=ID&order=<?=$negorder?><?=$qstr?>" title="<?php echo TEXT_TITLE_NUM_QUERY;?>
           <?=$_negorder?>"><?php echo TEXT_NUM_QUERY;?></a></td>
-          <td width="80" align="left">&nbsp;<a
+          <td width="15%" align="left">&nbsp;<a
           href="view.php?sort=date&order=<?=$negorder?><?=$qstr?>"
           title=" <?=TEXT_TITLE_CREAT_DATE.$_negorder?>"><?php echo TEXT_CREAT_DATE?></a></td>
           <td align="left">&nbsp;<?php echo TEXT_SUBJECT;?></td>
@@ -162,7 +173,7 @@ $_negorder=$negorder=="DESC"?TEXT_SORT:TEXT_DESC_SORT;
             $class = ($class =='row2') ?'row1':'row2';
             } //end of while.
         else: //not tickets found!! ?> 
-            <tr class="<?=$class?>"><td colspan=7><b><?php echo TEXT_CANNOT_FIND;?></b></td></tr>
+            <tr class="<?=$class?>"><td colspan=7><br /><b><?php echo TEXT_CANNOT_FIND;?></b></td></tr>
         <?
         endif; ?>
      </table>

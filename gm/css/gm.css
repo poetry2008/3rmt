@@ -795,7 +795,8 @@ td,th{ border:0; padding:2px; font-size:14px;}
 /*checkout*/
 .hm-hot-product{ height:93px; overflow:hidden;}
 #hm-hot-category{height:50px; overflow:hidden;}
-#hm-payment{background-color:#577C9D; overflow:hidden; padding:5px;}
+#hm-payment{background-color:#577C9D; overflow:hidden; padding:0 5px; height:20px;}
+#preorder_payment{background-color:#577C9D; overflow:hidden; padding:0 5px; height:20px; font-size:18px;}
 #hm-checkout-warp{ border:2px #577C9D solid; overflow:hidden; padding:5px; margin:5px 7%;}
 .hm-payment-top-left{ float:left;}
 .hm-payment-left{ 
@@ -1079,7 +1080,7 @@ img {
 #product-carousel img{ border:3px solid #fff;}
 .preorder_title td{ padding:0; margin:0;}
 .preorder_title img{ vertical-align:middle;}
-.sub_menu{margin:13px 0 15px 2px;}
+.sub_menu{margin:3px 0 23px 2px;}
 .sub_menu dt{ line-height:15px; padding:3px; font-size:14px;}
 .sub_menu dd{ line-height:15px; padding:3px; margin-bottom:10px;}
 ul,li { padding:0; margin:0}
@@ -1202,3 +1203,7 @@ top:70px;
 #wrapper_kiyaku{ margin-top:15px;}
 .send_box01{ margin-top:15px; padding-bottom:35px;}
 .prompt{ clear:both; color:#ff0000; font-size:14px; width:100%; font-weight:bold; text-align:center; margin:15px 0;}
+.tickets_contents{ margin-top:10px;}
+.shopping_waring{border: 3px solid #FF0000; padding:5px; margin:10px 0;}
+.message td {padding-bottom:25px;}
+.list_spacing{ margin:13px 0 0 6px;}

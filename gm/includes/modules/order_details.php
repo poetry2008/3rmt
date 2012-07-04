@@ -6,7 +6,7 @@
 ?>
 <!-- order_details -->
 <?php
-  echo '  <tr>' . "\n";
+ echo '  <tr>' . "\n";
 
   $colspan = 4;
 
@@ -14,27 +14,31 @@
     $colspan++;
   }
 
-  echo '    <td align="center" class="tableHeading">' . TABLE_HEADING_QUANTITY . '</td>' . "\n";
-  echo '    <td align="center" class="tableHeading">' . TABLE_HEADING_IMAGE . '</td>' . "\n";
+  echo '    <td align="center" class="tableHeading" width="20%">' . TABLE_HEADING_QUANTITY . '</td>' . "\n";
+  echo '    <td align="center" class="tableHeading" width="10%">' . TABLE_HEADING_IMAGE . '</td>' . "\n";
 
   if ((PRODUCT_LIST_MODEL > 0) && strstr($PHP_SELF, FILENAME_SHOPPING_CART)) {
     //$colspan++;
     //echo '    <td class="tableHeading">' . TABLE_HEADING_MODEL . '</td>' . "\n";
   }
 
-  echo '    <td width="60%">' . TABLE_HEADING_PRODUCTS . '</td>' . "\n";
+  echo '    <td width="50%">' . TABLE_HEADING_PRODUCTS . '</td>' . "\n";
 
   if (!strstr($PHP_SELF, FILENAME_SHOPPING_CART)) {
     $colspan++;
     echo '    <td align="center" class="tableHeading">' . TABLE_HEADING_TAX . '</td>' . "\n";
   }
 
-  echo '    <td align="right" class="tableHeading">' . TABLE_HEADING_TOTAL . '</td>' . "\n" .
-       '    <td align="center" class="tableHeading">' . TABLE_HEADING_OPERATE . '</td>' . "\n" .
+  echo '    <td align="right" class="tableHeading" width="10%">' . TABLE_HEADING_TOTAL . '</td>' . "\n" .
+       '    <td align="center" class="tableHeading" width="10%">' . TABLE_HEADING_OPERATE . '</td>' . "\n" .
        '  </tr>' . "\n" .
        '  ' . "";
 
   for ($i=0, $n=sizeof($products); $i<$n; $i++) {
+     echo '<tr><td colspan="5"><hr width="100%" style="border-bottom:1px dashed #ccc;
+height:2px; border-top:none; border-left:none; border-right:none; margin:10px
+         0;"></td> </tr>'."\n"; 
+ 
     echo '  <tr>' . "\n";
 
 // Delete box only for shopping cart
@@ -196,6 +200,6 @@
   
     
    '  </tr>' . "\n";
-  }
+   }
 ?>
 <!-- order_details_eof -->

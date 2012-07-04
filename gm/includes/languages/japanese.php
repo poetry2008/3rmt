@@ -504,3 +504,4 @@ define('TEXT_OST_THANKYOU_INFO_TEXT',
 %sのメールドメインを受信するように設定をお願いいたします。<br>
 ＜それでも届かないときは、メールアドレス変更＞<br>
 別のメールアドレスをご入力いただき、お問い合わせをお願いいたします。');
+define('TEXT_DISPLAY_NUMBER_OF_CONTACT', '番目を表示（%sある問合番号のうち）');

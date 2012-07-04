@@ -253,15 +253,15 @@ function change_num(ob,targ, quan,a_quan)
   
 
 
-
+	   <hr width="100%" style="border-bottom:1px dashed #ccc; height:2px; border-top:none; border-left:none; border-right:none; margin:10px 0;">
        <div class="shopping_cart_total"> 
          <b><?php echo SUB_TITLE_SUB_TOTAL; ?>
           <span id="sub_total"><?php echo $currencies->format_total($cart->show_total()); ?></span></b>        </div> 
 <?php   
     if($cart->show_total() < 0 && $cart->show_total() > -200) {
 ?>
-          <div>  
-               <table border="0" width="100%" cellspacing="0" cellpadding="2" style="border: 3px solid #FF0000; padding:5px; margin-top:10px;">
+          <div class="shopping_waring">  
+               <table border="0" width="100%" cellspacing="0" cellpadding="2" style="margin-bottom:0;">
               <tr>
                <td colspan="2">
                <?php echo TEXT_SHOPPING_CART_READ_INFO;?>
