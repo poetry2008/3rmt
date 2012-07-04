@@ -188,7 +188,7 @@ function showimage($1) {
                 <tr>
                   <td><table width="100%" border="0" cellpadding="3" cellspacing="1">
                       <tr class="infoBoxContents">
-                        <td class="main" width="85"><font color="#0070AF">商品コード</font></td>
+                      <td class="main" width="85"><font color="#0070AF"><?php echo TEXT_PRODUCTS_CODE?></font></td>
                         <td class="main"><?php if (PRODUCT_LIST_MODEL > 0){ echo $product_info['products_model'] ; }else{ echo '-' ; } ?></td>
                       </tr>
                       <?php 
@@ -218,18 +218,18 @@ function showimage($1) {
                       <?php } ?>
 
                       <tr class="infoBoxContents">
-                        <td class="main"><font color="#0070AF">メーカー名</font></td>
+                      <td class="main"><font color="#0070AF"><?php echo TEXT_STUDIO_NAME;?></font></td>
                         <td class="main"><?php include(DIR_WS_BOXES.'manufacturer_info.php') ; ?></td>
                       </tr>
                       <tr class="infoBoxContents">
-                        <td class="main" width="85"><font color="#0070AF">価格</font></td>
+                      <td class="main" width="85"><font color="#0070AF"><?php echo TEXT_PRODUCTS_PRICE;?></font></td>
                         <td class="main">
               <?php
                 # 追加スタート ---------------------------------------
                 # -- 注文数量と単価のリスト --------------------------
                 if(tep_not_null($product_info['products_small_sum'])) {
                 $wari_array = array();
-                echo '<span class="smallText">単位は1個あたりの価格となります</span><table border="0" cellpadding="0" cellspacing="0" class="infoBox">';
+                echo '<span class="smallText">'.TEXT_ONE_UNIT_PRICE.'</span><table border="0" cellpadding="0" cellspacing="0" class="infoBox">';
                 $parray = explode(",", $product_info['products_small_sum']);
                 for($i=0; $i<sizeof($parray); $i++) {
                   $tt = explode(':', $parray[$i]);
@@ -240,7 +240,7 @@ function showimage($1) {
                 
                 foreach($wari_array as $key => $val) {
                   echo '<tr class="infoBoxContents">';
-                  echo '<td class="main" align="right">'.$key.'個以上&nbsp;注文すると&nbsp;</td>';
+                  echo '<td class="main" align="right">'.$key.TEXT_MORE_UNIT_PRICE.'</td>';
                   echo '<td class="main"><b>'.$currencies->display_price(round($pricedef + $val),0).'</b></td>';
                   echo '</tr>'."\n";
                 }
@@ -256,8 +256,8 @@ function showimage($1) {
             </td>
                       </tr>
                       <tr class="infoBoxContents">
-                        <td class="main"><font color="#0070AF">注文可能数</font></td>
-                        <td class="main">残り<strong>&nbsp;<?php echo tep_show_quantity($product_info['products_quantity']); ?></strong>&nbsp;個</td>
+                      <td class="main"><font color="#0070AF"><?php echo TEXT_ORDERS_NUM;?></font></td>
+                      <td class="main"><?php echo TEXT_REMAINING;?><strong>&nbsp;<?php echo tep_show_quantity($product_info['products_quantity']); ?></strong>&nbsp;<?php echo TEXT_UNIT;?></td>
                       </tr>
 <?php 
 // ccdd
@@ -321,8 +321,8 @@ while($tag = tep_db_fetch_array($tag_query)) {
                       <?php } ?>
                       <?php if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && !$product_info['products_bflag']) { ;?>
                       <tr class="infoBoxContents">
-                        <td class="main"><font color="#0070AF">ポイント</font></td>
-                        <td class="main"><?php echo ds_tep_get_point_value($_GET['products_id']) ; ?>&nbsp;ポイント</td>
+                        <td class="main"><font color="#0070AF"><?php echo TEXT_POINT;?></font></td>
+                        <td class="main"><?php echo ds_tep_get_point_value($_GET['products_id']) ; ?>&nbsp;<?php echo TEXT_POINT;?></td>
                       </tr>
                       <?php } ?>
                     </table></td>
@@ -374,15 +374,15 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
   if($product_info['products_quantity'] < 1) {
     if($product_info['products_bflag'] == '1') {
       # 買い取り商品
-      echo '<span class="markProductOutOfStock">一時停止';
+      echo '<span class="markProductOutOfStock">'.TEXT_PAUSE;
     } elseif ($product_info['products_cflag'] == '0') {
-      echo '<span class="markProductOutOfStock">売り切れ';
+      echo '<span class="markProductOutOfStock">'.TEXT_SOLD_OUT;
     } else {
       # 通常商品
-      echo '<span class="markProductOutOfStock">在庫切れ';
+      echo '<span class="markProductOutOfStock">'.TEXT_OUT_OF_STOCK;
     }
     if ($product_info['preorder_status'] == '1') {
-      echo '<br><img src="images/design/box/arrow_2.gif" width="5" height="5" hspace="5" border="0" align="absmiddle" alt=""><a href=' .  tep_preorder_href_link($product_info['products_id'],$product_info['romaji']) . '>' . $product_info['products_name'] . 'を予約する</a>';
+      echo '<br><img src="images/design/box/arrow_2.gif" width="5" height="5" hspace="5" border="0" align="absmiddle" alt=""><a href=' .  tep_preorder_href_link($product_info['products_id'],$product_info['romaji']) . '>' . $product_info['products_name'] . TEXT_PREORDER_BOOK.'</a>';
     }
     echo '</span>'; 
   }else{  
@@ -393,7 +393,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
     ?>
                     <table align="right" width="100%" cellspacing="0" cellpadding="6" border="0">
                       <tr>
-                        <td class="main" width="85">数量:</td>
+                      <td class="main" width="85"><?php echo TEXT_PRODUCTS_QTY;?></td>
                         <td class="main" colspan="2">
                         <table cellspacing="0" cellpadding="0" border="0">
                         <tr>
@@ -410,14 +410,14 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
    </div>
         </td>
         <td class="main">
-  &nbsp;個&nbsp;
+        &nbsp;<?php echo TEXT_UNIT;?>&nbsp;
       </td>
   </tr>
   </table>
                       </tr>
                       <tr>
                         <td class="main" width="85">
-                        <div class="calc_show_price">価格:</div>
+                        <div class="calc_show_price"><?php echo TEXT_PRODUCTS_PRICE;?>:</div>
                         </td>
                         <td width="325">
                         <div id="show_price"></div>
@@ -502,7 +502,7 @@ document.write('<?php //echo '<td class="smallText" align="center"><a href="java
         <div class="underline">&nbsp;</div>
      <?php if($description){?>
     <br>
-    <h3 class="pageHeading_long"><?php echo $product_info['products_name']; ?>について</h3>
+    <h3 class="pageHeading_long"><?php echo $product_info['products_name'].TEXT_ABOUT; ?></h3>
         <!-- 説明文　-->
         <p> <?php echo $description; ?> </p>
      <?php }?>
@@ -552,7 +552,7 @@ $tag_query = tep_db_query("
 ");
 if(tep_db_num_rows($tag_query)){
 ?>
-<h3 class="pageHeading_long"><?php echo $product_info['products_name'].'に関するキーワード';?></h3>        
+<h3 class="pageHeading_long"><?php echo $product_info['products_name'].TEXT_KEYWORD;?></h3>        
 <div class="products_tags">
 <?php
 $tnum = 0;

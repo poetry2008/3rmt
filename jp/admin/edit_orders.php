@@ -1026,14 +1026,7 @@ if($address_error == false){
       if($step == 5)
       {
         // 2.1 GET ORDER INFO #####
-        /**
-          echo "<pre>";
-          print_r($_GET);
-          print_r($_POST);
-          echo "</pre>";
-          exit;
-        /**/
-
+        
         $oID = tep_db_prepare_input($_GET['oID']);
         $order = new order($oID);
 

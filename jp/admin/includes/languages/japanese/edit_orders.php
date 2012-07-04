@@ -235,4 +235,18 @@ define('TEXT_REMAINING','残り');
 define('TEXT_SUBTOTAL','（合計');
 define('TEXT_RIGHT_BRACKETS','）');
 define('TEXT_INPUT_POSITIVE_NUM',' です。−（マイナス）符号の入力は必要ありません。必ず正数を入力するように！');
+define('TEXT_VISIT_PAYMENT','来店支払い');
+define('TEXT_POINT_PAYMENT','ポイント(買い取り)');
+define('TEXT_NOTICE_PAYMENT','支払通知*');
+define('TEXT_POINT_ONE','▼割引　　　　　　：-');
+define('TEXT_HANDLE_FEE_ONE','▼手数料　　　　　：');
+define('TEXT_PAYMENT_AMOUNT_ONE','▼お支払金額　　　：');
+define('TEXT_POINT_DISCOUNT','▼ポイント割引');
+define('TEXT_POINT_DISCOUNT_ONE','▼ ポイント割引');
+define('TEXT_SHIPPING_FEE_ONE','▼お届け料金　　　：');
+define('ORDERS_PRODUCTS_ONE','▼注文商品');
+define('TEXT_ADDRESS_INFO_LEFT','▼住所情報');
+define('TEXT_ORDERS_SEND_MAIL','ご注文ありがとうございます【');
+define('TEXT_CARD_PAYMENT','クレジットカード決済について【');
+define('TEXT_SEND_MAIL_CARD_PAYMENT','送信済：クレジットカード決済について【');
 ?>

@@ -300,7 +300,7 @@ if (!isset($_GET['firstname'])) $_GET['firstname'] = NULL; //del notice
         if ($lastname_error == true) $last_name_prompt .= '&nbsp;<span class="errorText">' . PREORDER_TEXT_REQUIRED . '</span>';
         if ($firstname_error == true) $first_name_prompt .= '&nbsp;<span class="errorText">' . PREORDER_TEXT_REQUIRED . '</span>';
 if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
-        $your_email_address_prompt = tep_draw_input_field('from', (($fromemail_error == true) ? $_POST['from'] : $_GET['from']) , 'size="30" class="input_text"') . '&nbsp;&nbsp;携帯電話メールアドレス推奨';
+        $your_email_address_prompt = tep_draw_input_field('from', (($fromemail_error == true) ? $_POST['from'] : $_GET['from']) , 'size="30" class="input_text"') . TEXT_PHONE_EMAIL_ADDRESS;
         if ($fromemail_error == true) $your_email_address_prompt .="<br>".ENTRY_EMAIL_ADDRESS_CHECK_ERROR;
       }
 ?>
@@ -317,29 +317,28 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
     </td>
     <!-- body_text //-->
     <td valign="top" id="contents">
-      <div class="pageHeading"><img align="top" src="images/menu_ico.gif" alt=""><h1><?php echo $po_game_c . '&nbsp;' . $product_info['products_name']; ?>を予約する</h1></div>
+      <div class="pageHeading"><img align="top" src="images/menu_ico.gif" alt=""><h1><?php echo $po_game_c . '&nbsp;' . $product_info['products_name'].TEXT_PREORDER_BOOK; ?></h1></div>
             <div class="comment">
       <p>
-        <?php echo STORE_NAME;?>では、<?php echo $po_game_c; ?>の予約サービスを行っております。<br> ご希望する数量が弊社在庫にある場合は「
+        <?php echo STORE_NAME.TEXT_PREORDER_IN;?><?php echo $po_game_c.TEXT_PREORDER_BOOK_INFO; ?>
         <?php 
         if ($product_info['products_status'] == 0 || $product_info['products_status'] == 3)  {
           echo $product_info['products_name']; 
         } else {
           echo '<a href="' .  tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .  $product_info['products_id']) . '">' .  $product_info['products_name'].'</a>';
         }
+        echo TEXT_PREORDER_BOOK_INFO_END;
         ?>
-        」をクリックしてお手続きください。
       </p>
       <?php echo tep_draw_form('preorder_product', tep_preorder_href_link($product_info['products_id'], $product_info['romaji'])) .  tep_draw_hidden_field('products_id', $product_info['products_id']).tep_draw_hidden_field('action', 'process'); ?>
 
       <p>
-        弊社在庫にお客様がご希望する数量がない場合は、下記の必要事項をご入力の上お申し込みください。<br>
-        予約手続きが完了いたしますと、入荷次第、お客様へ優先的にご案内いたします。
+        <?php echo TEXT_PREORDER_BOOK_TEXT;?>
       </p>
-      <p class="red"><b>ご予約・お見積りは無料ですので、お気軽にお問い合わせください。</b></p>
+        <p class="red"><b><?php echo TEXT_PREORDER_BOOK_TEXT_END;?></b></p>
 <?php
       if($error == true) {
-        echo '<span class="errorText"><b>入力した内容に誤りがございます。正しく入力してください。</span></b><br><br>';
+        echo '<span class="errorText"><b>'.TEXT_INPUT_ERROR_INFO.'</span></b><br><br>';
       }
 ?>
       <div class="formAreaTitle"><?php echo FORM_TITLE_CUSTOMER_DETAILS; ?></div>
@@ -357,13 +356,13 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
           <td class="main"><?php echo $your_email_address_prompt; ?></td>
         </tr>
         <tr> 
-          <td colspan="2" class="main">お取り置き期限がございます。いつも使用しているメールアドレスをご入力ください。</td>
+        <td colspan="2" class="main"><?php echo PREORDER_FINAL_EAMIL;?></td>
         </tr>
       </table><br>
       <div class="formAreaTitle"><?php echo FORM_TITLE_FRIEND_DETAILS; ?></div>
       <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
         <tr>
-          <td class="main" valign="top" width="120">商品名:</td>
+        <td class="main" valign="top" width="120"><?php echo PREORDER_PRODUCTS_NAME;?></td>
           <td class="formArea_td_info">
           <strong>
           <?php 
@@ -392,12 +391,12 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
 if (!isset($_POST['quantity'])) $_POST['quantity'] = NULL; //del notice
 if (!isset($_GET['quantity'])) $_GET['quantity'] = NULL; //del notice
             echo tep_draw_input_field('quantity', (($quantity_error == true) ? $_POST['quantity'] : $_GET['quantity']) , 'size="7" maxlength="15" class="input_text_short"');
-            echo '&nbsp;&nbsp;個&nbsp;';
+            echo '&nbsp;&nbsp;'.PREORDER_QTY.'&nbsp;';
             if($products_weight_error == true){ 
               echo '<span class="markProductOutOfStock"><a style="color:#CC0033" href="'.tep_href_link('open.php', 'products_name='.urlencode($product_info['products_name'])).'">' . STOCK_MARK_PRODUCT_OUT_OF_STOCK . '</a></span>';
             }
       if ($quantity_error == true) echo '&nbsp;<span class="errorText">' . PREORDER_TEXT_REQUIRED . '</span>';
-      if ($num_error == true){echo '<span id="preorder_info_message" class="errorText"><br>予約の必要がございません。<br>'.(int)$_POST['quantity'].'個は注文可能です。<a href='.tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $products_id) .'>コチラ</a> からお手続きください。 </span>' ;}
+      if ($num_error == true){echo '<span id="preorder_info_message" class="errorText"><br>'.TEXT_NEED_RETENTION.'<br>'.(int)$_POST['quantity'].TEXT_ORDERS_QTY.'<a href='.tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $products_id) .'>'.TEXT_PREORDER_HERE.'</a>'.TEXT_PREORDER_FROM.'</span>' ;}
       if (!isset($_GET['send_to'])) $_GET['send_to'] = NULL; //del notice
 ?>
           </td>

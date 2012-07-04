@@ -801,14 +801,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
     if($step == 5)
     {
       // 2.1 GET ORDER INFO #####
-      /**
-      echo "<pre>";
-      print_r($_GET);
-      print_r($_POST);
-      echo "</pre>";
-      exit;
-      /**/
-      
+       
       $oID = tep_db_prepare_input($_GET['oID']);
       $order = new preorder($oID);
       

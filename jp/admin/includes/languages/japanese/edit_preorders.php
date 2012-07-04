@@ -181,4 +181,5 @@ define('ERROR_NEW_PREORDERS_POINT', 'ポイントが足りません。入力可�
 define('NOTICE_NEW_PRERODERS_PRODUCTS_DEL', '商品を削除しました。<font color="red">メールは送信されていません。</font>');
 define('ERROR_NEW_PREORDERS_UPDATE', 'エラーが発生しました。正常に処理が行われていない可能性があります。');
 define('NEW_PREORDERS_CHARACTER_TEXT', '当社のキャラクター名:');
+define('TEXT_EMAIL_TITLE','メールタイトル：');
 ?>

@@ -140,18 +140,18 @@ $(document).ready(function(){
 <?php
   } else {
 ?>
-      <div class="pageHeading"><img align="top" src="images/menu_ico.gif" alt=""><h1><?php echo $po_game_c . '&nbsp;' . $product_info['products_name']; ?>を予約する</h1></div>
+      <div class="pageHeading"><img align="top" src="images/menu_ico.gif" alt=""><h1><?php echo $po_game_c . '&nbsp;' . $product_info['products_name'].TEXT_PREORDER_BOOK; ?></h1></div>
             <div class="comment">
       <p>
-        <?php echo STORE_NAME;?>では、<?php echo $po_game_c; ?>の予約サービスを行っております。<br> ご希望する数量が弊社在庫にある場合は「
+        <?php echo STORE_NAME.TEXT_PREORDER_IN;?><?php echo $po_game_c.TEXT_PREORDER_BOOK_INFO; ?>
         <?php 
         if ($product_info['products_status'] == 0 || $product_info['products_status'] == 3)  {
           echo $product_info['products_name']; 
         } else {
           echo '<a href="' .  tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .  $product_info['products_id']) . '">' .  $product_info['products_name'].'</a>';
         }
+        echo TEXT_PREORDER_BOOK_INFO_END;
         ?>
-        」をクリックしてお手続きください。
       </p>
 <?php
     $error = false;
@@ -377,13 +377,12 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
       <?php echo tep_draw_form('preorder_product', tep_href_link(FILENAME_PREORDER_PAYMENT, 'action=process')) .  tep_draw_hidden_field('products_id', $product_info['products_id']).tep_draw_hidden_field('products_name', $product_info['products_name']); ?>
 
       <p>
-        弊社在庫にお客様がご希望する数量がない場合は、下記の必要事項をご入力の上お申し込みください。<br>
-        予約手続きが完了いたしますと、入荷次第、お客様へ優先的にご案内いたします。
+        <?php echo TEXT_PREORDER_BOOK_TEXT;?>
       </p>
-      <p class="red"><b>ご予約・お見積りは無料ですので、お気軽にお問い合わせください。</b></p>
+        <p class="red"><b><?php echo TEXT_PREORDER_BOOK_TEXT_END;?></b></p>
 <?php
       if($error == true) {
-        echo '<span class="errorText"><b>入力した内容に誤りがございます。正しく入力してください。</span></b><br><br>';
+        echo '<span class="errorText"><b>'.TEXT_INPUT_ERROR_INFO.'</span></b><br><br>';
       }
 ?>
     <?php

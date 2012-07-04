@@ -15,4 +15,20 @@ define('TEXT_PDF_DOWNLOAD', 'PDFカタログ');
 
 define('TEXT_PRODUCT_TAGS', '商品タグ');
 define('WARN_PRODUCT_STATUS_TEXT', '当商品は、当サイトの都合または運営会社のサービス終了などの理由により現在取り扱いを行っておりません。<br>取り扱いの再開、その他ご意見ご要望などありましたら、お気軽にお問い合わせください。');
+define('TEXT_PRODUCTS_CODE','商品コード');
+define('TEXT_STUDIO_NAME','メーカー名');
+define('TEXT_PRODUCTS_PRICE','価格');
+define('TEXT_ONE_UNIT_PRICE','単位は1個あたりの価格となります');
+define('TEXT_MORE_UNIT_PRICE','個以上&nbsp;注文すると&nbsp;');
+define('TEXT_ORDERS_NUM','注文可能数');
+define('TEXT_REMAINING','残り');
+define('TEXT_UNIT','個');
+define('TEXT_POINT','ポイント');
+define('TEXT_PAUSE','一時停止');
+define('TEXT_SOLD_OUT','売り切れ');
+define('TEXT_OUT_OF_STOCK','在庫切れ');
+define('TEXT_PREORDER_BOOK','を予約する');
+define('TEXT_PRODUCTS_QTY','数量:');
+define('TEXT_ABOUT','について');
+define('TEXT_KEYWORD','に関するキーワード');
 

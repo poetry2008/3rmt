@@ -534,7 +534,7 @@ if($index > 0){
               '      <td class="' . $RowStyle . '" align="left" valign="top" width="20">'
               . "<input type='hidden' id='update_products_qty_$orders_products_id' value='" . $order->products[$i]['qty'] . "'><input class='update_products_qty' id='update_products_new_qty_$orders_products_id' name='update_products[$orders_products_id][qty]' size='2' value='" . $porducts_qty . "' onkeyup=\"clearLibNum(this);\">&nbsp;x</td>\n" . 
               '      <td class="' . $RowStyle . '">' . $order->products[$i]['name'] . "<input id='update_products_name_$orders_products_id' name='update_products[$orders_products_id][name]' size='64' type='hidden' value='" . $order->products[$i]['name'] . "'>\n" . 
-              '      &nbsp;&nbsp:<input type="hidden" name="dummy" value="あいうえお眉幅">';
+              '      &nbsp;&nbsp:<input type="hidden" name="dummy" value="'.TEXT_DUMMY.'">';
             // Has Attributes?
             if (sizeof($order->products[$i]['attributes']) > 0) {
               $op_info_array = array();

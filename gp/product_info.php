@@ -190,7 +190,7 @@ function showimage($1) {
                       <div class="product_info_box">
                       <table summary="info_box_contents"  border="0" cellpadding="0" cellspacing="1" class="info_box_contents" >
                           <tr class="infoBoxContents">
-                            <td class="main p_i_b_title">商品コード</td>
+                          <td class="main p_i_b_title"><?php echo TEXT_PRODUCTS_CODE;?></td>
                             <td class="main"><?php if (PRODUCT_LIST_MODEL > 0){ echo $product_info['products_model'] ; }else{ echo '-' ; } ?></td>
                           </tr>
                           <?php 
@@ -218,18 +218,18 @@ function showimage($1) {
                           </tr>
                           <?php } ?>
                           <tr class="infoBoxContents">
-                            <td class="main p_i_b_title">メーカー名</td>
+                          <td class="main p_i_b_title"><?php echo TEXT_STUDIO_NAME;?></td>
                             <td class="main"><?php include(DIR_WS_BOXES.'manufacturer_info.php') ; ?></td>
                           </tr>
                           <tr class="infoBoxContents">
-                            <td class="main p_i_b_title">価格</td>
+                          <td class="main p_i_b_title"><?php echo TEXT_PRODUCTS_PRICE;?></td>
                             <td class="main">
                                 <?php
                                   # 追加スタート ---------------------------------------
                                   # -- 注文数量と単価のリスト --------------------------
                                   if(tep_not_null($product_info['products_small_sum'])) {
                                     $wari_array = array();
-                                    echo '<span class="smallText">単位は1個あたりの価格となります</span><table border="0" cellpadding="0" cellspacing="0" class="small_table">';
+                                    echo '<span class="smallText">'.TEXT_ONE_UNIT_PRICE.'</span><table border="0" cellpadding="0" cellspacing="0" class="small_table">';
                                     $parray = explode(",", $product_info['products_small_sum']);
                                     for($i=0; $i<sizeof($parray); $i++) {
                                       $tt = explode(':', $parray[$i]);
@@ -240,7 +240,7 @@ function showimage($1) {
                                   
                                     foreach($wari_array as $key => $val) {
                                       echo '<tr>';
-                                      echo '<td class="main" align="left">'.$key.'個以上&nbsp;注文すると&nbsp;</td>';                                      echo '<td class="main"><b>'.$currencies->display_price(round($pricedef + $val),0).'</b></td>';
+                                      echo '<td class="main" align="left">'.$key.TEXT_MORE_UNIT_PRICE.'</td>';                                      echo '<td class="main"><b>'.$currencies->display_price(round($pricedef + $val),0).'</b></td>';
                                       echo '</tr>'."\n";
                                     }
                                     echo '</table>'."\n";
@@ -255,8 +255,8 @@ function showimage($1) {
                             </td>
                           </tr>
                           <tr class="infoBoxContents">
-                            <td class="main p_i_b_title">注文可能数</td>
-                            <td class="main">残り<strong>&nbsp;<?php echo tep_show_quantity($product_info['products_quantity']); ?></strong>&nbsp;個</td>
+                          <td class="main p_i_b_title"><?php echo TEXT_ORDERS_NUM;?></td>
+                          <td class="main"><?php echo TEXT_REMAINING;?><strong>&nbsp;<?php echo tep_show_quantity($product_info['products_quantity']); ?></strong>&nbsp;<?php echo TEXT_UNIT;?></td>
                           </tr>
                           <?php 
                       if(!empty($data3[0])){
@@ -276,8 +276,8 @@ function showimage($1) {
                           <?php } ?>
                           <?php if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && !$product_info['products_bflag']) { ?>
                           <tr class="infoBoxContents">
-                            <td class="main p_i_b_title">ポイント</td>
-                            <td class="main"><?php echo ds_tep_get_point_value($_GET['products_id']) ; ?>&nbsp;ポイント</td>
+                          <td class="main p_i_b_title"><?php echo TEXT_POINT;?></td>
+                          <td class="main"><?php echo ds_tep_get_point_value($_GET['products_id']) ; ?>&nbsp;<?php echo TEXT_POINT;?></td>
                           </tr>
                           <?php } ?> 
                         <?php 
@@ -295,7 +295,7 @@ $tag_query = tep_db_query("
                           if (tep_db_num_rows($tag_query)) {
                         ?>
                         <tr class="infoBoxContents"> 
-                          <td class="main p_i_b_title">タグ</td> 
+                        <td class="main p_i_b_title"><?php echo TEXT_TAG;?></td> 
                           <td class="main">
                           <ul class="show_tags01"> 
                       <?php
@@ -385,15 +385,15 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
       if($product_info['products_quantity'] < 1) {
         if($product_info['products_bflag'] == '1') {
           # 買い取り商品
-          echo '<span class="markProductOutOfStock">一時停止';
+          echo '<span class="markProductOutOfStock">'.TEXT_PAUSE;
         } elseif ($product_info['products_cflag'] == '0') {
-          echo '<span class="markProductOutOfStock">売り切れ';
+          echo '<span class="markProductOutOfStock">'.TEXT_SOLD_OUT;
         } else {
           # 通常商品
-          echo '<br><span class="markProductOutOfStock">在庫切れ';
+          echo '<br><span class="markProductOutOfStock">'.TEXT_OUT_OF_STOCK;
         }
         if ($product_info['preorder_status'] == '1') {
-          echo '<br><img src="images/design/box/arrow_2.gif" width="5" height="5" hspace="5" border="0" align="absmiddle" alt=""><a href=' .  tep_preorder_href_link($product_info['products_id'], $product_info['romaji']) . '>' . $product_info['products_name'] . 'を予約する</a>';
+          echo '<br><img src="images/design/box/arrow_2.gif" width="5" height="5" hspace="5" border="0" align="absmiddle" alt=""><a href=' .  tep_preorder_href_link($product_info['products_id'], $product_info['romaji']) . '>' . $product_info['products_name'] . TEXT_PREORDER_BOOK .'</a>';
         }
         echo '</span>'; 
       }else{    
@@ -404,7 +404,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
     ?>
                         <table width="100%"  border="0" cellpadding="0" cellspacing="0" summary="rmt_text">
                           <tr>
-                            <td class="main" valign="middle" style="padding-left:12px;" width="73">数量:</td>
+                          <td class="main" valign="middle" style="padding-left:12px;" width="73"><?php echo TEXT_PRODUCTS_QTY;?></td>
                             <td colspan="2"><table><tr>
                             <td class="main" valign="middle"><input name="quantity" type="text" id="quantity" value="<?php echo (isset($_POST['quantity'])?$_POST['quantity']:1)?>" class="input_text_short"></td>
                             <td valign="middle">
@@ -414,12 +414,12 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                                 <a style="display:block;" href="javascript:void(0)" onClick="change_num('quantity','down', 1,<?php echo $p_a_quan;?>);return false;"><img src="images/ico/ndown.gif" alt="-"></a>
                               </div>
                             </td>
-                            <td class="main">&nbsp;個&nbsp;</td>
+                            <td class="main">&nbsp;<?php echo TEXT_UNIT;?>&nbsp;</td>
                             </tr></table></td>
                           </tr>
                           <tr>
                             <td class="main" style="padding-left:12px;" width="73">
-                              <div class="calc_show_price">価格:</div>
+                            <div class="calc_show_price"><?php echo TEXT_PRODUCTS_PRICE;?>:</div>
                             </td>
                             <td width="325">
                               <div id="show_price"></div>
@@ -500,7 +500,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
  </div>
  </div>
          <?php if($description){?>
-            <div class="pageHeading_long"><h3><?php echo $product_info['products_name']; ?>について</h3></div>
+            <div class="pageHeading_long"><h3><?php echo $product_info['products_name'].TEXT_ABOUT; ?></h3></div>
             <!-- 説明文　-->
             <div class="comment_long">
             <div class="comment_long_text"> 
@@ -555,7 +555,7 @@ $tag_query = tep_db_query("
 ");
 if(tep_db_num_rows($tag_query)){
 ?>
-<div class="pageHeading_long"><h3><?php echo $product_info['products_name'].'に関するキーワード';?></h3></div>        
+<div class="pageHeading_long"><h3><?php echo $product_info['products_name'].TEXT_KEYWORD;?></h3></div>        
 <div class="comment_long">
 <div class="comment_long_text">
 <?php
@@ -589,12 +589,12 @@ $tnum++;
         <?php
       if (tep_session_is_registered('affiliate_id')) {
 ?>
-        <div class="pageHeading_long"><h1><?php echo 'アフィリエイト広告用タグ' ; ?></h1></div>
-        <p class="comment_long"><b>この商品の広告を登録することができます！！</b><br>
-          あなたのホームページにこの商品を表示させるには以下のソースコードをコピーしてホームページにペースとしてください。この商品の画像が表示されます。</p>
+        <div class="pageHeading_long"><h1><?php echo TEXT_TAGS_ADVERTISING; ?></h1></div>
+        <p class="comment_long"><b><?php echo TEXT_REGISTER_AD_PRODUCTS;?></b><br>
+        <?php echo TEXT_COPY_CODE;?></p>
 
         <textarea class="boxText" style="width:95%; height:90px; "><a href="<?php echo HTTP_SERVER.DIR_WS_CATALOG.FILENAME_PRODUCT_INFO.'?products_id='.(int)$_GET['products_id'].'&ref='.$affiliate_id ; ?>" class="blank"><?php echo tep_image(DIR_WS_IMAGES . 'products/' . $product_info['products_image'], $product_info['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"');?><br><?php echo $product_info['products_name'] ; ?> </a></textarea>
-        <p align="center">実際に表示されるイメージ<br>
+        <p align="center"><?php echo TEXT_IMAGES_DISPLAY;?><br>
          <a href="<?php echo HTTP_SERVER.DIR_WS_CATALOG.FILENAME_PRODUCT_INFO.'?products_id='.(int)$_GET['products_id'].'&ref='.$affiliate_id ; ?>" class="blank"><?php echo tep_image(DIR_WS_IMAGES . 'products/' . $product_info['products_image'], $product_info['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"'); ?><br>
           <?php echo $product_info['products_name'] ; ?> </a></p>
         <?php
