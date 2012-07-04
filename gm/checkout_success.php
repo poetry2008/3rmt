@@ -154,7 +154,6 @@ class="success_spacing">
                   <tr> 
                     <td valign="top"> 
                       <?php echo TEXT_SUCCESS; ?> 
-                      <br> 
                       <?php
   if ($global['global_product_notifications'] != '1') {
     echo TEXT_NOTIFY_PRODUCTS . '<br><p class="productsNotifications">';

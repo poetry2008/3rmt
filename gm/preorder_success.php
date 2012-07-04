@@ -81,16 +81,16 @@
         <table border="0" width="100%" cellspacing="0" cellpadding="0">
         <tr>
         <td style="font-size:15px; color:#ff0000;">
-          <?php echo PREORDER_ACTIVE_SUCCESS_READ_HEAD.'<br><br>';?> 
+          <div style="margin:7px 0;"><?php echo PREORDER_ACTIVE_SUCCESS_READ_HEAD;?></div>
         </td>
         </tr>
         <tr>
           <td>
           <table border="0" cellpadding="0" cellspacing="0" width="100%" style="font-size:14px;"> 
           <tr> 
-          <td colspan="2" ><div style="font-size:18px"><b>
+          <td colspan="2" ><div style="font-size:18px; margin-bottom:7px;"><b>
           <?php echo PREORDER_SUCCESS_APPOINT_CONTENT;?></b>
-            </div><br><br>
+            </div>
           </td> 
           </tr> 
           <tr> 
@@ -139,7 +139,7 @@
         <tr>
           <td style="font-size:14px;">
             <?php 
-            echo PREORDER_ACTIVE_SUCCESS_READ_INFO.'<br>';
+            echo PREORDER_ACTIVE_SUCCESS_READ_INFO;
             ?>
           </td>
         </tr>

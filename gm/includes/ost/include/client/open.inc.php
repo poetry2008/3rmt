@@ -21,9 +21,11 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
         <td>
             <?if ($thisclient && ($name=$thisclient->getName())) {
                 ?>
-                <input id="input_text" type="hidden" name="name" value="<?php echo $name; ?>"><?php echo $name ;?>
+               <div style="float:left"><input id="input_text" type="hidden" name="name" value="<?php
+               echo $name; ?>"><?php echo $name ;?></div>
             <?}else {?>
-                <input id="input_text" type="text" name="name" value="<?=$info['name']?>">
+              <div><input id="input_text" type="text" name="name"
+                value="<?=$info['name']?>"></div>
           <?}?>
             &nbsp;<div class="error">&nbsp;*&nbsp;<?=$errors['name']?></div>
         </td>
@@ -33,9 +35,11 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
         <td>
             <?if ($thisclient && ($email=$thisclient->getEmail())) {
                 ?>
-                <input id="input_text" type="hidden" name="email" value="<?=$email?>"><?=$email?>
+               <div style="float:left"><input id="input_text" type="hidden" name="email"
+               value="<?=$email?>"><?=$email?></div>
             <?}else {?>             
-                <input id="input_text" type="text" name="email" value="<?=$info['email']?>">
+              <div><input id="input_text" type="text" name="email"
+                value="<?=$info['email']?>"></div>
             <?}?>
             &nbsp;<div class="error">&nbsp;*&nbsp;<?=$errors['email']?></div>
         </td>
