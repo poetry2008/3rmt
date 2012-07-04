@@ -1,6 +1,7 @@
 <?php
 /*
   $Id$
+  ファイルコードを確認
 */
 
   require('includes/application_top.php');
@@ -79,11 +80,10 @@ foreach($cart as $key => $val){
       $cid = 'cname_' . $key2;
     
     echo 'if(document.getElementById(\'' . $cid . '\').value == ""){'."\n";
-    echo 'alert("キャラクター名を入力して下さい。");'."\n";
+    echo 'alert("'.TEXT_ALERT.'");'."\n";
     echo "document.getElementById('$cid').focus();"."\n";
     echo 'return false;'."\n";
     echo '}'."\n";
-    
     }
   }
   }
@@ -98,35 +98,60 @@ foreach($cart as $key => $val){
 <!-- header_eof //--> 
 <!-- body //--> 
 <div id="main">
-<!-- left_navigation //-->
-<div id="l_menu">
-<?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-</div>
-<!-- left_navigation_eof //-->
+<?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
 <!-- body_text //-->
-<div id="content">
+<div id="layout" class="yui3-u">
+<div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
+<?php
+
+
+?>
+<div id="main-content">
 <form action="<?php echo tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL'); ?>" method="post" onSubmit="return chara_mess();">
-<input type="hidden" name="dummy" value="あいうえお眉幅">
+
+<input type="hidden" name="dummy" value="<?php echo TEXT_DUMMY;?>">
 <input type="hidden" name="act" value="chk">
-<div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
-<h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1> 
-<table class="box_des" border="0" width="95%" cellspacing="0" cellpadding="0"> 
-<?php if($error == 'T'){ ?><tr><td class="main" align="center" style="color:#FF0000">入力漏れがあります。キャラクター名は、全て入力して下さい。</td></tr><?php } ?>
-<tr>
-  <td>
-    <table border="0" width="100%" cellspacing="0" cellpadding="0" class="checkout_s_link">
+
+<h2><?php echo HEADING_TITLE ; ?></h2> 
+
+<?php if($error == 'T'){ ?><tr><td align="center" style="color:#FF0000"><?php echo TEXT_ERROR_ONE;?></td></tr><?php } ?>
+<table border="0" width="100%" cellspacing="0" cellpadding="0" class="checkout_s_link">
       <tr>
         <td width="20%">
           <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
             <tr> 
-              <td width="50%" align="right"><?php echo tep_image(DIR_WS_IMAGES . 'checkout_bullet.gif'); ?></td> 
+              <td width="50%" align="right"><?php echo tep_image(DIR_WS_IMAGES .
+                  'checkout_bullet.gif',''); ?></td> 
               <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
             </tr> 
           </table>
         </td> 
-        <td width="20%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td>
-        <td width="20%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td>
-        <td width="20%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td>
+        <td width="20%">
+               <table border="0" width="100%" cellspacing="0" cellpadding="0">
+            <tr>
+              <td width="50%">  
+        <?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td>
+            </tr>
+          </table>
+        </td>
+        <td width="20%">
+            <table border="0" width="100%" cellspacing="0" cellpadding="0">
+            <tr>
+              <td width="50%">  
+            
+        <?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td>
+            </tr>
+          </table>
+
+       </td> 
+        <td width="20%">
+            <table border="0" width="100%" cellspacing="0" cellpadding="0">
+            <tr>
+              <td width="50%">  
+        <?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td>
+            </tr>
+          </table>
+        </td>
         <td width="20%">
           <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr>
@@ -144,93 +169,76 @@ foreach($cart as $key => $val){
         <td align="center" nowrap="nowrap" class="checkoutBarTo"><?php echo CHECKOUT_BAR_FINISHED; ?></td>
       </tr>
     </table>
-  </td>
-</tr>
-<tr>
-  <td>
-    <table border="0" width="100%" cellspacing="0" cellpadding="2" class="c_pay_info"> 
-      <tr> 
-        <td class="main"><b>ご注文の手続きを進めてください。</b><div style="margin-top:5px;">「次へ進む」をクリックして取引日時の選択へ。</div></td> 
-        <td class="main" align="right"><?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
-      </tr> 
-    </table>
-  </td>
-</tr>
-      <tr>
-        <td>
-        <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2">
-        <?php
+	<div id="hm-checkout-warp">
+        <div class="checkout-title"><?php echo TEXT_ORDERS_SUBMIT_THREE;?></div>
+  <div class="checkout-bottom"> <?php echo
+  tep_image_submit('button_continue_02.gif',IMAGE_BUTTON_CONTINUE,' onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_continue_02.gif\'"  onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_continue_02_hover.gif\'"'); ?></div>  
+  </div>
+      <div class="checkout-conent">
+           <?php
           foreach($cart as $key => $val){
             if($key == 'contents'){
             foreach($val as $key2 => $val2){
             //ccdd
             $cp_result = tep_get_product_by_id($key2, SITE_ID, $languages_id);
         ?>
-          <tr>
-            <td width="<?php echo SMALL_IMAGE_WIDTH + 10; ?>" valign="top" class="main"><?php echo '<a href="' .  tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .  $cp_result['products_id']) . '">' . tep_image(DIR_WS_IMAGES . 'products/' . $cp_result['products_image'], $cp_result['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a>'; ?></td>
-          <td class="main">
-          <?php
-            echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .  $cp_result['products_id']) . '"><b><u>' . $cp_result['products_name'] . '</u></b></a><br>';
-            if($cp_result['products_cflag'] == 1){
-              echo TEXT_CHARACTER . tep_draw_input_field('cname_' . $key2,'','id="cname_' . $key2 . '"');
-            }
-          ?>
-          </td>
-          </tr>
-          <tr>
-            <td colspan="2" class="main">&nbsp;</td>
-          </tr>
-        <?php         
+          <div class="checkout-list"><?php echo '<a href="' .  tep_href_link(FILENAME_PRODUCT_INFO,
+          'products_id=' .  $cp_result['products_id']) . '">' .
+            tep_image(DIR_WS_IMAGES . 'products/' . $cp_result['products_image'],
+                $cp_result['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT)
+            . '</a>'; ?>
+		   <div class="checkout-title" style="width:80%;">
+			 <?php
+				echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .  $cp_result['products_id']) . '"><b><u>' . $cp_result['products_name'] . '</u></b></a><br>';
+				if($cp_result['products_cflag'] == 1){
+				  echo TEXT_CHARACTER . tep_draw_input_field('cname_' . $key2,'','id="cname_' . $key2 . '" style="width:40%;"');
+				}
+			  ?>
+           </div>
+			</div>
+           <?php         
             }
           }
           }
         ?>  
-        </table>
-        <p class="redtext">ご入力されましたキャラクター名にお間違えはございませんか？</p>
-        <h3>よくある間違い</h3>
+          <p><?php echo TEXT_ORDERS_PROMPT_ONE;?></p>
+          <h3 style="margin:15px 0 6px 0;"><b><?php echo TEXT_ORDERS_PROMPT_TWO;?></b></h3>
         <ul>
           <li>
-            スペル間違い。記号や数字の有無。
+          <?php echo TEXT_ORDERS_PROMPT_THREE;?> 
           </li>
           <li>
-            -　（ハイフン）と　_　（アンダーバー）の入力間違い。
+          <?php echo TEXT_ORDERS_PROMPT_FOUR;?> 
           </li>
           <li>
-            ・　（中点）と　.　（ドット）の入力間違い。
+          <?php echo TEXT_ORDERS_PROMPT_FIVE;?> 
           </li>
         </ul>
         <p>
-    <span class="redtext">※</span>&nbsp;キャラクター名の入力不要な商品が一部ございます。「入力フォーム」が表示されない場合は「次へ進む」をクリックしてください。
+        <span class="redtext">※</span>&nbsp;<?php echo TEXT_ORDERS_PROMPT_SIX;?>
   </p>
-  </td>
-</tr>
-<tr>
-  <td>
-    <table border="0" width="100%" cellspacing="0" cellpadding="2" class="c_pay_info"> 
-      <tr> 
-        <td class="main"><b>ご注文の手続きを進めてください。</b><div style="margin-top:5px;">「次へ進む」をクリックして取引日時の選択へ。</div></td> 
-        <td class="main" align="right"><?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
-      </tr> 
-    </table>
-  </td>
-</tr>
-<tr> 
-  <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-</tr> 
-</table>
+</div>
+<div id="hm-checkout-warp">
+  <div class="checkout-title">
+  <?php echo TEXT_ORDERS_SUBMIT_THREE;?> 
+  </div>
+  <div class="checkout-bottom"> <?php echo
+  tep_image_submit('button_continue_02.gif',IMAGE_BUTTON_CONTINUE,'onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_continue_02.gif\'"  onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_continue_02_hover.gif\'"'); ?></div>  
+  </div>
 </form>
+  </div>
+
+
+</div>
+<?php include('includes/float-box.php');?>
 </div>
 <!-- body_text_eof //--> 
-<!-- right_navigation //--> 
-<div id="r_menu">
-<?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-</div>
-<!-- right_navigation_eof //-->
+<?php //require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
   <!-- body_eof //--> 
   <!-- footer //--> 
-  <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
-  <!-- footer_eof //--> 
-</div> 
+   <!-- footer_eof //--> 
+ <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
+
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

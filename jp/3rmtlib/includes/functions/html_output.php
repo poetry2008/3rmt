@@ -791,4 +791,55 @@ function tep_preorder_href_link($pid, $romaji, $param = null)
   return $returnstr;
 }
 
+function tep_image_new($src, $alt = '', $width = '', $height = '', $parameters = '') {
+    if($alt==''){
+      $alt='img';
+    }
+  if(substr(DIR_FS_CATALOG,-1)=='/'){
+    $fs_catalog = DIR_FS_CATALOG;
+  }else{
+    $fs_catalog = DIR_FS_CATALOG.'/';
+  }
+  if(!file_exists($fs_catalog .  $src)
+       && file_exists($fs_catalog .  str_replace('images/', 'default_images/', $src))
+       ){
+     $src = str_replace('images/', 'default_images/', $src);
+   }
+
+    if ( (empty($src) || ($src == DIR_WS_IMAGES)) && (IMAGE_REQUIRED == 'false') ) {
+      return false;
+    }
+   if ($image_size = @getimagesize($src)) {
+      if ((CONFIG_CALCULATE_IMAGE_SIZE == 'true' && $src != DIR_WS_IMAGES . 'pixel_black.gif' && $src != DIR_WS_IMAGES . 'pixel_trans.gif' && $src != DIR_WS_IMAGES . 'pixel_silver.gif' )) {
+if ( ($width) || ($height) ) {
+if ( $width=="100%" ) {
+  $width = $image_size[0];
+} elseif ( $height=="100%" ) {
+  $height = $image_size[1];
+} elseif ( $width==0 ) {
+  unset($width);
+} elseif ( $height==0 ) {
+  unset($height);
+}
+if ($height>0 && $width>0 && (($image_size[1]/$height) > ($image_size[0]/$width) )){
+ $width=ceil(($image_size[0]/$image_size[1])* $height);
+} elseif ($width>0) {
+ $height=ceil($width/($image_size[0]/$image_size[1]));
+}
+}
+  }
+      } elseif (IMAGE_REQUIRED == 'false') {
+        return '';
+      }
+    $image = '<img src="' . tep_output_string($src) . '" alt="' . tep_output_string($alt) . '"';
+    if (tep_not_null($alt)) {
+      $image .= ' title=" ' . tep_output_string($alt) . ' "';
+    }
+    if (tep_not_null($width) && tep_not_null($height)) {
+      $image .= ' width="' . tep_output_string($width) . '" height="' . tep_output_string($height) . '"';
+    }
+    if (tep_not_null($parameters)) $image .= ' ' . $parameters;
+    $image .= '>';
+    return $image;
+  }
 

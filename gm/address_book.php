@@ -28,18 +28,14 @@
 <!-- header_eof //--> 
 <!-- body //--> 
 <div id="main">
-<!-- left_navigation //-->
-<div id="l_menu">
-<?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-</div>
-<!-- left_navigation_eof //-->
+<?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
 <!-- body_text //-->
-<div id="content">
-<div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
-<h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1> 
+<div id="layout" class="yui3-u">
+<div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
+<h2"><?php echo HEADING_TITLE ; ?></h2> 
         
         <div> 
-          <table border="0" width="95%" cellspacing="0" cellpadding="0"> 
+          <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
             <tr> 
               <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                   <tr> 
@@ -111,11 +107,7 @@
           </table> 
         </div></div>
       <!-- body_text_eof //--> 
-<!-- right_navigation //--> 
-<div id="r_menu">
-<?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-</div>
-<!-- right_navigation_eof //--> 
+<?php //require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
   <!-- body_eof //--> 
   <!-- footer //--> 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 

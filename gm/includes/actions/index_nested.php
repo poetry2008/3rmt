@@ -1,29 +1,35 @@
 <?php
 /*
   $Id$
+  ファイルコードを確認
 */
   $category = tep_get_category_by_id($current_category_id, SITE_ID, $languages_id);
 ?> 
-<div id="content">
+<div class="yui3-u" id="layout">
 <?php  
   if (isset($cPath_array)) {
-       echo '<div class="headerNavigation">'.$breadcrumb->trail(' &raquo; ').'</div>'; 
+       echo '<div id="current">'.$breadcrumb->trail(' <img src="images/point.gif"> ').'</div>';
+       include('includes/search_include.php');
+       //include('includes/search_include.php');
+       echo "<div id='main-content'>";
       if ($category['categories_status'] != '0') {
         echo '<div class="waring_category">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
       }
        echo '<h1 class="pageHeading">'.$seo_category['categories_name'].'</h1>'; 
     } elseif ($_GET['manufacturers_id']) {
-       echo '<div class="headerNavigation">'.$breadcrumb->trail(' &raquo; ').'</div>';
+       echo '<div id="current">'.$breadcrumb->trail(' <img src="images/point.gif"> ').'</div>';
+       include('includes/search_include.php');
       if ($category['categories_status'] != '0') {
         echo '<div class="waring_category">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
       }
       echo '<h1 class="pageHeading">'.$seo_manufacturers['manufacturers_name'].'</h1>';
     }
 ?> 
-      <!-- heading title eof//-->
-    <p><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_header_text']); //seoフレーズ ?></p>
-      <table border="0" width="95%" cellspacing="3" cellpadding="3"> 
-        <tr> 
+      <!-- heading title eof-->
+    <div class="list_spacing"><?php echo str_replace('#STORE_NAME#', STORE_NAME,
+        $seo_category['categories_header_text']);?></div>
+      <div id="product_list"> 
+        <ul> 
           <?php
     if (isset($cPath) && ereg('_', $cPath)) {
 // check to see if there are deeper categories within the current category
@@ -86,31 +92,27 @@
 
     $rows = 0;
     while ($categories = tep_db_fetch_array($categories_query)) {
+      if($rows%MAX_DISPLAY_CATEGORIES_PER_ROW
+          ==0&&$rows!=0&&MAX_DISPLAY_CATEGORIES_PER_ROW!=0){
+        echo '</ul><ul>';
+      }
       $rows++;
       $cPath_new = tep_get_path($categories['categories_id']);
       $width = (int)(100 / MAX_DISPLAY_CATEGORIES_PER_ROW) . '%';
-      echo '                <td class="smallText" style="width:'.$width.'" align="center"><h3 class="Tlist"><a href="' . tep_href_link(FILENAME_DEFAULT, $cPath_new) . '">' . tep_image(DIR_WS_IMAGES . 'categories/' . $categories['categories_image'], $categories['categories_name'], SUBCATEGORY_IMAGE_WIDTH, SUBCATEGORY_IMAGE_HEIGHT) ;
+      if(MAX_DISPLAY_CATEGORIES_PER_ROW!=0){
+        $c_li_list_style = 'style="width:'.$width.'"';
+      }else{
+        $c_li_list_style = 'style="padding-left:11px;padding-right:11px"';
+      }
+      echo '<li '.$c_li_list_style.' ><h3 class="Tlist"><a href="' . tep_href_link(FILENAME_DEFAULT, $cPath_new) . '">' . tep_image(DIR_WS_IMAGES . 'categories/' . $categories['categories_image'], $categories['categories_name'], SUBCATEGORY_IMAGE_WIDTH, SUBCATEGORY_IMAGE_HEIGHT) ;
                            if(tep_not_null($categories['categories_image'])) { echo '<br>' ; } 
-                 echo $categories['categories_name'] . '</a></h3></td>' . "\n";
+                 echo $categories['categories_name'] . '</a></h3></li>' . "\n";
       if ((($rows / MAX_DISPLAY_CATEGORIES_PER_ROW) == floor($rows / MAX_DISPLAY_CATEGORIES_PER_ROW)) && ($rows != tep_db_num_rows($categories_query))) {
-        echo '              </tr>' . "\n";
-        echo '              <tr>' . "\n";
       }
   }
 ?> 
-        </tr> 
-      </table>
-    <br>
-    <?php
-    if (!empty($seo_category['categories_footer_text'])) { 
-    ?>
-    <div id="information">
-    <p><?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_footer_text']); //seoフレーズ ?></p>
-    </div>
-    <?php
-    } 
-    ?>
-    <br>
+        </ul> 
+      </div>
       <?php 
       $new_products_category_id = $current_category_id; 
       $exone_single = false; 
@@ -124,57 +126,32 @@
         include(DIR_WS_MODULES .'new_products.php'); 
       }
       ?>
-    <br>
-    <?php
-      if (!empty($seo_category['seo_description'])) {
-    ?>
-    <div id="information02"> 
-    <div class="seo_small_top"></div>
-    <p> 
-    <?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['seo_description']); 
-    ?>
-    </p> 
-    <div class="seo_small_bottom"></div>
-    </div> 
-    <?php
-      }
-    ?>
-    <br>
       <?php
       if (isset($cPath) && !ereg('_', $cPath)) { 
       $all_game_news = tep_get_categories_rss($current_category_id);
       if ($all_game_news) {
       ?>
 <div class="background_news01" style="margin-top:10px;">
-  <table width="95%" style="border-top:#444 dotted 3px;" class="news_title_03">
-  <tr>
-    <td>
-      <h3 style="border-bottom:none; font-size:14px; color:#fff; padding-left:10px; margin-top:2px;font-weight:bold;">ONLINE GAME NEWS for 4Gamer.net</h3>
-    </td>
-    <td align="left" width="70">
+  <table width="100%" style="border-top:#444 dashed 1px;" class="news_title_03">
+    <tr>
+  <td align="left" width="70">
+       <?php echo str_replace('#STORE_NAME#', STORE_NAME, $seo_category['categories_footer_text']);?>
+
+    
     </td>
   </tr>
   </table>
-  <div class="game_news_index01">
-    <ul> 
-      <?php
-        foreach ($all_game_news as $cgmkey => $cgame_news_rss) {
-          if ($cgmkey == CATEGORIES_GAME_NEWS_MAX_DISPLAY)  break;
-          echo '<li class="news_list">';
-          echo '<a  class="latest_news_link01" href="'.$cgame_news_rss['url'].'" rel="nofollow" target="_blank">'.mb_strimwidth($cgame_news_rss['headline'],0,95,'...').'</a>'; 
-          echo '</li>'; 
-        }
-      ?>
-    </ul> 
-  </div>
-</div>
+ </div>
       <?php
       #echo '</div>'; 
       } 
 ?>
+
+
+  </div>
 <!--</div>-->
 <?php } ?>
 </div>
-<div id="r_menu">
-      <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
+<?php include('includes/float-box.php');?>
 </div>
+<?php include('includes/rmt_shopping.php');?>

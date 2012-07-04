@@ -12,25 +12,25 @@ $dept = $ticket->getDept();
 $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
 //We roll like that...
 ?>
-<table  class="view_contents" cellpadding="1" cellspacing="0" border="0">
+<table  class="view_contents" width="100%">
   <tr>
-    <td class="msg">問合番号<?=$ticket->getExtId()?>&nbsp;<a href="view.php?id=<?=$ticket->getExtId()?>" title="Reload"><img style="vertical-align:middle;" src="images/icons/refresh.gif" /></a></td>
+    <td class="msg"><h3><?=TEXT_VIEW_NUM_QUERY.$ticket->getExtId()?>&nbsp;<a href="view.php?id=<?=$ticket->getExtId()?>" title="Reload"><img style="vertical-align:middle;" src="images/icons/refresh.gif" /></a></h3></td>
   </tr> 
   <tr>
     <td>  
-        <table class="infotable" cellspacing="1" cellpadding="3" width="100%" border=0>
+        <table class="infotable" width="100%">
           <tr>
-            <th width="150" >ステータス</th>
+            <th width="20%"><?php echo TEXT_VIEW_STATUS;?></th>
             <td><?php
             $_status = '_'.$ticket->getStatus();
-            $_open = 'オープン';
-            $_closed = 'クローズ'; 
+            $_open = TEXT_VIEW_OPEN;
+            $_closed = TEXT_VIEW_CLOSED; 
             echo $$_status;
         ?>
             </td>
           </tr>
           <tr>
-            <th>作成日時</th>
+            <th><?php echo TEXT_VIEW_CREATE_DATE?></th>
             <td><?=$ticket->getCreateDate()?></td>
           </tr>
         </table>
@@ -38,13 +38,13 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
   </tr>
   <tr>
     <td>
-        <table align="center" class="infotable" cellspacing="1" cellpadding="3" width="100%" border=0>
+        <table width="100%">
             <tr>
-                <th width="150">お名前</th>
+                <th width="20%"><?php echo TEXT_VIEW_YOUR_NAME;?></th>
                 <td><?=Format::htmlchars($ticket->getName())?></td>
             </tr>
             <tr>
-                <th width="150">メールアドレス</th>
+                <th width="20%"><?php echo TEXT_VIEW_EMAIL?></th>
                 <td><?=$ticket->getEmail()?></td>
             </tr>
         </table>
@@ -52,23 +52,23 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
   </tr>
   <tr>
     <td>
-      <table class="infotable" cellspacing="1" cellpadding="3" width="100%" border=0>
+      <table width="100%">
           <tr>
-             <td width="150">件名</td><td><?=Format::htmlchars($ticket->getSubject())?></td>
+             <td width="20%"><?php echo TEXT_VIEW_SUBJECT?></td><td><?=Format::htmlchars($ticket->getSubject())?></td>
           </tr>
         </table>
     </td>
   </tr>
 </table>
-<div>
+<div class="prompt">
     <?if($errors['err']) {?>
-        <p align="center" id="errormessage"><?=$errors['err']?></p>
+        <?=$errors['err']?>
     <?}elseif($msg) {?>
-        <p align="center" id="infomessage"><?=$msg?></p>
+       <?=$msg?>
     <?}?>
 </div>
 <div align="left">
-    <span class="Icon thread">回答一覧</span>
+    <span class="Icon thread"><h3><?php echo TEXT_VIEW_ANSWER;?></h3></span>
     <div id="ticketthread">
         <?
       //get messages
@@ -118,38 +118,43 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
     </div>
 </div>
 <div>
-    <div align="center">
+    <div align="center" class="prompt">
         <?if($_POST && $errors['err']) {?>
-            <p align="center" id="errormessage"><?=$errors['err']?></p>
+            <?=$errors['err']?>
         <?}elseif($msg) {?>
-            <p align="center" id="infomessage"><?=$msg?></p>
+            <?=$msg?>
         <?}?>
     </div> 
     <div id="reply">
-        <form action="view.php?id=<?=$id?>#reply" name="reply" method="post" enctype="multipart/form-data">
+        <form action="view.php?id=<?=$id?>" name="reply" method="post" enctype="multipart/form-data">
             <input type="hidden" name="id" value="<?=$ticket->getExtId()?>">
             <input type="hidden" name="respid" value="<?=$respID?>">
             <input type="hidden" name="a" value="postmessage">
             <div align="left">
-               返信する場合は、内容を入力し「送信」ボタンをクリックしてください。 <font class="error">*&nbsp;<?=$errors['message']?></font><br/>
-                <textarea name="message" id="message" cols="60" rows="7" wrap="soft"><?=$info['message']?></textarea>
+              <div style="float:left;"> <?php echo
+              TEXT_VIEW_RETURN;?></div><div style="float:left;color:#FF0000">&nbsp;<?=$errors['message']?></div><br/>
+                <textarea name="message" id="message" style="width:80%;
+                margin-top:5px" rows="10" wrap="soft"><?=$info['message']?></textarea>
             </div>
             <? if($cfg->allowOnlineAttachments()) {?>
             <div align="left">
-                添付ファイル<br><input type="file" name="attachment" id="attachment" size=30px value="<?=$info['attachment']?>" /> 
-                <br><font color="#ffffff">許可されているファイル形式は、拡張子が<?php echo $allow_file_show;?>のいずれかとなるものです。<br>ファイル名に「.(ドット)」を2つ以上含むファイルは添付できません。</font>
+                <?php echo TEXT_VIEW_ATTACHMENT;?><br><input type="file" name="attachment" id="attachment" value="<?=$info['attachment']?>" /> 
+                <br><font color="#ffffff"><?php echo
+                TEXT_VIEW_DES_PART1.$allow_file_show.TEXT_VIEW_DES_PART2;?><br><?php echo TEXT_VIEW_DES_PART3?></font>
                 <?php if(isset($errors['attachment'])&&$errors['attachment']){?>
                     <br><font class="error"><?php echo $errors['attachment']?></font>
                 <?php } ?>
             </div>
             <?}?>
-            <div align="left"  style="padding:10px 0 10px 0;">
-                <button type="submit" class="button" style="padding:0;background:none;border:none;" value="送信"><img src="includes/languages/japanese/images/buttons/button_send_mail.gif" /></button>
-                <button type="reset"  class="button" style="padding:0;background:none;border:none;" value="リセット"><img src="includes/languages/japanese/images/buttons/open_users01.gif" /></button>
-                <button type="button" class="button" style="padding:0;background:none;border:none;" value="キャンセル" onClick='window.location.href="view.php";'><img src="includes/languages/japanese/images/buttons/open_users02.gif" /></button>
-
+            <div class="botton-continue">
+               <a value="<?php echo TEXT_VIEW_SEND_EMAIL;?>" style="padding:0;background:none;border:none;"
+               class="button" onclick="document.forms.reply.submit();" href="javascript:vold(0)">
+                 <img src="includes/languages/japanese/images/buttons/button_send_mail.gif" onmouseover="this.src='includes/languages/japanese/images/buttons/button_send_mail_hover.gif'" onmouseout="this.src='includes/languages/japanese/images/buttons/button_send_mail.gif'"></a>
+           <a onclick="document.forms.reply.reset()" style="padding:0;background:none;border:none;" value="<?php echo TEXT_VIEW_RESET;?>" class="button">
+                  <img src="includes/languages/japanese/images/buttons/open_users01.gif" onmouseover="this.src='includes/languages/japanese/images/buttons/open_users01_hover.gif'" onmouseout="this.src='includes/languages/japanese/images/buttons/open_users01.gif'"></a>
+            <a onclick="window.location.href='view.php'" value="<?php echo TEXT_VIEW_CANCELED?>" style="padding:0;background:none;border:none;" class="button" href="javascript:vold(0)"><img src="includes/languages/japanese/images/buttons/open_users02.gif" onmouseover="this.src='includes/languages/japanese/images/buttons/open_users02_hover.gif'" onmouseout="this.src='includes/languages/japanese/images/buttons/open_users02.gif'"></a>
             </div>
         </form>
     </div>
 </div>
-<br><br>
+

@@ -13,22 +13,20 @@
 <!-- header_eof //--> 
 <!-- body //--> 
 <div id="main">
-<!-- left_navigation //-->
-<div id="l_menu">
-<?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-</div>
-<!-- left_navigation_eof //-->
+<?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
 <!-- body_text //-->
-<div id="content">
-<div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
-<h1 class="pageHeading"><?php echo HEADING_TITLE; ?></h1>
+<div class="yui3-u" id="layout">
+<div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
+      <?php include('includes/search_include.php');?>
+	  	  <div id="main-content">
+<h2><?php echo HEADING_TITLE; ?></h2>
         <div> 
-          <table class="box_des" border="0" width="95%" cellspacing="0" cellpadding="0"> 
+          <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="0"> 
 <?php if (($reviews_numrows > 0) && ((PREV_NEXT_BAR_LOCATION == '1') || (PREV_NEXT_BAR_LOCATION == '3'))) { ?>
       <tr>
-        <td><br><table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2">
+        <td><br><table border="0" width="100%" cellspacing="0" cellpadding="2">
           <tr>
-            <td class="smallText"><?php echo $reviews_split->display_count($reviews_numrows, MAX_DISPLAY_NEW_REVIEWS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_REVIEWS); ?></td>
+            <td><?php echo $reviews_split->display_count($reviews_numrows, MAX_DISPLAY_NEW_REVIEWS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_REVIEWS); ?></td>
             <td align="right" class="smallText"><?php echo TEXT_RESULT_PAGE; ?> <?php echo $reviews_split->display_links($reviews_numrows, MAX_DISPLAY_NEW_REVIEWS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
           </tr>
         </table></td>
@@ -41,24 +39,25 @@
       </tr>
 <?php if (($reviews_numrows > 0) && ((PREV_NEXT_BAR_LOCATION == '2') || (PREV_NEXT_BAR_LOCATION == '3'))) { ?>
       <tr>
-        <td><br><table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2">
+        <td><br><table border="0" width="100%" cellspacing="0" cellpadding="2">
           <tr>
-            <td class="smallText"><?php echo $reviews_split->display_count($reviews_numrows, MAX_DISPLAY_NEW_REVIEWS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_REVIEWS); ?></td>
+            <td><?php echo $reviews_split->display_count($reviews_numrows, MAX_DISPLAY_NEW_REVIEWS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_REVIEWS); ?></td>
             <td align="right" class="smallText"><?php echo TEXT_RESULT_PAGE; ?> <?php echo $reviews_split->display_links($reviews_numrows, MAX_DISPLAY_NEW_REVIEWS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
           </tr>
         </table></td>
       </tr>
 <?php } ?>
-    </table></div></div>
+    </table></div></div></div>
+	<?php include('includes/float-box.php');?>
+      </div>
       <!-- body_text_eof //--> 
-<div id="r_menu">
-<?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-</div> 
+<?php //require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
   <!-- body_eof //--> 
   <!-- footer //--> 
-  <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
   <!-- footer_eof //--> 
-</div> 
+</div>
+  <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
+
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

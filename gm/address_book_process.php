@@ -383,18 +383,14 @@ function check_form() {
 <!-- header_eof //--> 
 <!-- body //--> 
 <div id="main">
-<!-- left_navigation //-->
-<div id="l_menu">
-<?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-</div>
-<!-- left_navigation_eof //-->
+<?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
 <!-- body_text //-->
-<div id="content"><?php echo tep_draw_form('add_entry', tep_href_link(FILENAME_ADDRESS_BOOK_PROCESS, '', 'SSL'), 'post', 'onSubmit="return check_form();"'); ?> 
-        <div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
-    <h1 class="pageHeading"><?php echo (isset($_GET['action']) && $_GET['action'] == 'modify') ? HEADING_TITLE_MODIFY_ENTRY : HEADING_TITLE_ADD_ENTRY; ?></h1> 
+<div id="layout" class="yui3-u"><?php echo tep_draw_form('add_entry', tep_href_link(FILENAME_ADDRESS_BOOK_PROCESS, '', 'SSL'), 'post', 'onSubmit="return check_form();"'); ?> 
+        <div id="current"><?php echo $breadcrumb->trail(' <img  src="images/point.gif"> '); ?></div>
+    <h2><?php echo (isset($_GET['action']) && $_GET['action'] == 'modify') ? HEADING_TITLE_MODIFY_ENTRY : HEADING_TITLE_ADD_ENTRY; ?></h2> 
         
         <div> 
-          <table class="box_des" border="0" width="95%" cellspacing="0" cellpadding="0"> 
+          <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="0"> 
             <tr> 
               <td> <?php include(DIR_WS_MODULES . 'address_book_details.php'); ?></td> 
             </tr> 
@@ -407,9 +403,9 @@ function check_form() {
             <tr> 
               <td><table border="0" width="100%" cellspacing="2" cellpadding="0"> 
                   <tr> 
-                    <td class="main"><?php echo tep_draw_hidden_field('action', 'update') . tep_draw_hidden_field('entry_id', $_GET['entry_id']) . '<a href="' . tep_href_link(FILENAME_ADDRESS_BOOK, '', 'SSL') . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td> 
-                    <td class="main" align="center"><?php echo '<a href="' . tep_href_link(FILENAME_ADDRESS_BOOK_PROCESS, 'action=remove&entry_id=' . $_GET['entry_id'], 'SSL') . '">' . tep_image_button('button_delete.gif', IMAGE_BUTTON_DELETE) . '</a>'; ?></td> 
-                    <td class="main" align="right"><?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
+                    <td><?php echo tep_draw_hidden_field('action', 'update') . tep_draw_hidden_field('entry_id', $_GET['entry_id']) . '<a href="' . tep_href_link(FILENAME_ADDRESS_BOOK, '', 'SSL') . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td> 
+                    <td align="center"><?php echo '<a href="' . tep_href_link(FILENAME_ADDRESS_BOOK_PROCESS, 'action=remove&entry_id=' . $_GET['entry_id'], 'SSL') . '">' . tep_image_button('button_delete.gif', IMAGE_BUTTON_DELETE) . '</a>'; ?></td> 
+                    <td align="right"><?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
                   </tr> 
                 </table></td> 
             </tr> 
@@ -419,8 +415,8 @@ function check_form() {
             <tr> 
               <td><table border="0" width="100%" cellspacing="2" cellpadding="0"> 
                   <tr> 
-                    <td class="main"><?php echo tep_draw_hidden_field('action', 'update') . tep_draw_hidden_field('entry_id', $entry_id) . '<a href="' . tep_href_link(FILENAME_ADDRESS_BOOK, '', 'SSL') . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td> 
-                    <td class="main" align="right"><?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
+                    <td><?php echo tep_draw_hidden_field('action', 'update') . tep_draw_hidden_field('entry_id', $entry_id) . '<a href="' . tep_href_link(FILENAME_ADDRESS_BOOK, '', 'SSL') . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td> 
+                    <td align="right"><?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
                   </tr> 
                 </table></td> 
             </tr> 
@@ -435,8 +431,8 @@ function check_form() {
             <tr> 
               <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                   <tr> 
-                    <td class="main"><?php echo '<a href="' . $back_link . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td> 
-                    <td align="right" class="main"><?php echo tep_draw_hidden_field('entry_id', (isset($_GET['entry_id']) ? $_GET['entry_id'] : $entry_id)) . tep_draw_hidden_field('action', 'process') . tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
+                    <td><?php echo '<a href="' . $back_link . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td> 
+                    <td align="right"><?php echo tep_draw_hidden_field('entry_id', (isset($_GET['entry_id']) ? $_GET['entry_id'] : $entry_id)) . tep_draw_hidden_field('action', 'process') . tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
                   </tr> 
                 </table></td> 
             </tr> 
@@ -447,11 +443,7 @@ function check_form() {
           </form> 
         </div></div>
       <!-- body_text_eof //--> 
-<!-- right_navigation //--> 
-<div id="r_menu">
-<?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-</div>
-<!-- right_navigation_eof //--> 
+<?php //require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
   <!-- body_eof //--> 
   <!-- footer //--> 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 

@@ -31,16 +31,13 @@ function popupWindow(url) {
 <!-- header_eof //--> 
 <!-- body //--> 
 <div id="main">
-<!-- left_navigation //-->
-<div id="l_menu">
-<?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-</div>
-<!-- left_navigation_eof //-->
+<?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
 <!-- body_text //-->
-<div id="content">
-<div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
-<h1 class="pageHeading"><?php echo ($_GET['goods_id'] && $_GET['goods_id'] != '' ) ? $present['title'] : HEADING_TITLE ; ?></h1>
-      <table class="box_des" border="0" width="95%" cellspacing="0" cellpadding="0">
+<div id="layout" class="yui3-u">
+<div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
+<div id="main-content">
+<h2><?php echo ($_GET['goods_id'] && $_GET['goods_id'] != '' ) ? $present['title'] : HEADING_TITLE ; ?></h2>
+      <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="0">
         <tr>
           <td><?php
       ######################
@@ -57,11 +54,15 @@ function popupWindow(url) {
       $present = tep_db_fetch_array($present_query) ;
       forward404Unless($present);
       ?>
-          <p align="right" class="box_des">応募期間 <?php echo tep_date_long($present['start_date']) . '&nbsp;&nbsp;&nbsp;～&nbsp;&nbsp;&nbsp;' . tep_date_long($present['limit_date']) ; ?></p>
+          <p align="right" class="box_des"> <?php echo TEXT_PRESENT_ORDER_DATE1.tep_date_long($present['start_date']) . '&nbsp;&nbsp;&nbsp;～&nbsp;&nbsp;&nbsp;' . tep_date_long($present['limit_date']) ; ?></p>
           <table class="box_des" border="0" cellspacing="0" cellpadding="2" align="right">
             <tr>
               <td align="center" class="smallText"><script type="text/javascript"><!--
-      document.write('<?php echo '<a href="javascript:popupWindow(\\\'' . tep_href_link('present_popup_image.php', 'pID=' . (int)$_GET['goods_id']) . '\\\')">' . tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT, 'hspace="5" vspace="5"') . '<br>イメージを拡大</a>'; ?>');
+      document.write('<?php echo '<a href="javascript:popupWindow(\\\'' .
+      tep_href_link('present_popup_image.php', 'pID=' . (int)$_GET['goods_id']) .
+      '\\\')">' .
+          tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT,
+            'hspace="5" vspace="5"') . '<br>'.TEXT_PRESENT_ENLARGE.'</a>'; ?>');
       //--></script>
               <noscript>
               <?php echo tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT, 'align="right"'); ?>
@@ -129,9 +130,9 @@ function popupWindow(url) {
         */  
         ?>
             <tr class="<?php //echo $_class ; ?>">
-              <td class="main" width="<?php echo SMALL_IMAGE_WIDTH ; ?>"><?php echo '<a href="'.tep_href_link(FILENAME_PRESENT , 'goods_id='.$present['goods_id'],'NONSSL').'">' . tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT,'class="image_border"') . '</a>'; ?></td>
-              <td class="main"><b><?php echo '<a href="'.tep_href_link(FILENAME_PRESENT , 'goods_id='.$present['goods_id'],'NONSSL').'">'. $present['title'].'</a>' ; ?></b> <br>
-              応募期間:<?php echo tep_date_long($present['start_date']) .'～'. tep_date_long($present['limit_date']); ?>
+              <td width="<?php echo SMALL_IMAGE_WIDTH ; ?>"><?php echo '<a href="'.tep_href_link(FILENAME_PRESENT , 'goods_id='.$present['goods_id'],'NONSSL').'">' . tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT,'class="image_border"') . '</a>'; ?></td>
+              <td><b><?php echo '<a href="'.tep_href_link(FILENAME_PRESENT , 'goods_id='.$present['goods_id'],'NONSSL').'">'. $present['title'].'</a>' ; ?></b> <br>
+              <?php echo TEXT_PRESENT_ORDER_DATE.tep_date_long($present['start_date']) .'～'. tep_date_long($present['limit_date']); ?>
               <p class="smallText"><?php echo substr(strip_tags($present['text']),0,100) ; ?>..</p></td>
             </tr>
             <?php
@@ -159,12 +160,11 @@ function popupWindow(url) {
     }
     ?>
       </table></div>
-      <!-- body_text_eof //--> 
-<!-- right_navigation //--> 
-<div id="r_menu">
-<?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
+      </div>
+      <?php include('includes/float-box.php');?>
 </div>
-<!-- right_navigation_eof //-->
+      <!-- body_text_eof //--> 
+<?php //require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
   <!-- body_eof //--> 
   <!-- footer //-->
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>

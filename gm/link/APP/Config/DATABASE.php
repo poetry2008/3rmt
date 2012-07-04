@@ -7,7 +7,7 @@ return array(
         'port'          => '',
         'login'         => 'root',
         'password'      => '123456',
-        'database'      => 'maker_3rmt',   
+        'database'      => 'maker_3rmt_back_20110719',   
 
     ),
 );

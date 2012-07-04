@@ -31,18 +31,16 @@
 <!-- header_eof //--> 
 <!-- body //--> 
 <div id="main">
-<!-- left_navigation //-->
-<div id="l_menu">
-<?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-</div>
-<!-- left_navigation_eof //-->
+<?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
 <!-- body_text //-->
-<div id="content">
-<div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
-<h1 class="pageHeading"><?php echo sprintf(HEADING_TITLE, $product_info['products_name']); ?></h1> 
+<div class="yui3-u" id="layout">
+<div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
+		      <?php include('includes/search_include.php');?>
+	  	  <div id="main-content">
+<h2><?php echo sprintf(HEADING_TITLE, $product_info['products_name']); ?></h2> 
         
         <div> 
-          <table class="box_des" border="0" width="95%" cellspacing="0" cellpadding="0"> 
+          <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="0"> 
             <tr> 
               <td>
 
@@ -53,9 +51,6 @@
             <td align="center" class="tableHeading"><?php echo TABLE_HEADING_RATING; ?></td>
             <?php /* <td align="center" class="tableHeading"><?php echo TABLE_HEADING_READ; ?></td>*/ ?>
             <?php /*<td align="right" class="tableHeading"><?php echo TABLE_HEADING_DATE_ADDED; ?></td>*/ ?>
-          </tr>
-          <tr>
-            <td colspan="3"><?php echo tep_draw_separator(); ?></td>
           </tr>
 <?php
 // ccdd
@@ -99,30 +94,32 @@
   }
 ?>
           <tr>
-            <td colspan="3"><?php echo tep_draw_separator(); ?></td>
-          </tr>
-          <tr>
-            <td class="main" colspan="3"><br><table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2">
+            <td colspan="3"><table class="botton-continue" border="0" width="100%" cellspacing="0" cellpadding="2">
               <tr>
-                <td class="main"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, $get_params_back) . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td>
-                <td align="right" class="main"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS_WRITE, $get_params) . '">' . tep_image_button('button_write_review.gif', IMAGE_BUTTON_WRITE_REVIEW) . '</a>'; ?></td>
+                <td><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO,
+                $get_params_back) . '">' . tep_image_button('button_back.gif',
+                IMAGE_BUTTON_BACK,'onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_back.gif\'"  onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_back_hover.gif\'"') . '</a>'; ?></td>
+                <td align="right"><?php echo '<a href="' .
+                tep_href_link(FILENAME_PRODUCT_REVIEWS_WRITE, $get_params) . '">' .
+                tep_image_button('button_write_review.gif',
+                    IMAGE_BUTTON_WRITE_REVIEW,'onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_write_review.gif\'" onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_write_review_hover.gif\'"') . '</a>'; ?></td>
               </tr>
             </table></td>
           </tr>
         </table></td>
       </tr>
     </table></div></div>
+			</div>
+	<?php include('includes/float-box.php');?>
+      </div>
       <!-- body_text_eof //--> 
-<!-- right_navigation //--> 
-<div id="r_menu">
-<?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-</div>
-<!-- right_navigation_eof //--> 
+<?php //require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
   <!-- body_eof //-->  
   <!-- footer //--> 
-  <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
-  <!-- footer_eof //--> 
-</div> 
+   <!-- footer_eof //--> 
+</div>
+ <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
+
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

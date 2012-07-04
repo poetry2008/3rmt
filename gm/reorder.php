@@ -1,13 +1,13 @@
 <?php
 /*
  $Id$
+  ファイルコードを確認
 */
 require('includes/application_top.php');
+require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_REORDER);
 
-define('HEADING_TITLE', '再配達依頼');
-define('MINUTES', 20);
 
-$breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
+$breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
 ?>
 <?php page_head();?>
 </head>
@@ -16,14 +16,14 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
 <!-- header_eof //-->
 <!-- body //-->
-<div id="l_menu">
-  <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-</div>
+  <?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
 <!-- body_text //-->
 <!--left-->
-<div id="content">
-<div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; ');?></div>
-  <h1 class="pageHeading"><?php echo HEADING_TITLE; ?></h1>
+<div id="layout" class="yui3-u">
+<div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> ');?></div>
+<?php include('includes/search_include.php');?>
+<div id="main-content">
+  <h2><?php echo HEADING_TITLE; ?></h2>
   <?php if ($_POST) {
   include(DIR_WS_CLASSES . 'admin_order.php');
 
@@ -60,49 +60,17 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
       //if (in_array($order['orders_status'], array(2,5,6,7,8))) {
       if (tep_orders_status_finished($order['orders_status'])) {
         // status can not change
-        echo '<div class="comment">ご入力いただきました登録情報は、既に発送が完了している、または、ご注文がキャンセルとなっております。 <div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" width="74" height="25" alt="前に戻る" title="前に戻る"></a></div></div>';
+        echo '<div class="comment">'.TEXT_DELETE_ORDER_SUCCESS
+          .'<div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" alt="'.IMAGE_BUTTON_BACK.'" title="'.IMAGE_BUTTON_BACK.'"></a></div></div>';
       } else if ($date && $hour && $minute && ($time < (time() - MINUTES * 60) or $time > (time() + (7*86400)))) {
         // time error
-        echo '<div class="comment">取引時間は前もって一時間以上に設定してください <div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back_home.gif" alt="TOPに戻る" title="TOPに戻る"></a></div></div><div>';
+        echo '<div class="comment">'.TEXT_INFO_FOR_TRADE
+          .'<div align="right"><a href="javascript:void(0);"
+          onclick="history.go(-1)"><img
+          src="includes/languages/japanese/images/buttons/button_back_home.gif"
+          alt="'.TEXT_BACK_TO_TOP.'" title="'.TEXT_BACK_TO_TOP.'"></a></div></div><div>';
       } else {
         // update time
-        if ($date && $hour && $minute) {
-          /*
-          // ccdd
-          tep_db_query("
-              update `".TABLE_ORDERS."` 
-              set `orders_status`='17' ,
-                  `torihiki_date` = '".$datetime."' ,
-                  `last_modified` = now()
-              WHERE `orders_id`='".$order_id."' 
-                and site_id = '" . SITE_ID . "'
-          ");
-          orders_updated($order_id);
-          last_customer_action();
-        tep_order_status_change($order_id,17);
-          // insert a history
-          $sql = "
-            INSERT INTO `".TABLE_ORDERS_STATUS_HISTORY."` (
-                `orders_status_history_id`,
-                `orders_id` ,
-                `orders_status_id` ,
-                `date_added` ,
-                `customer_notified` ,
-                `comments`
-              ) VALUES (
-                NULL ,
-                '".$order_id."', 
-                '17', 
-                '".date("Y-m-d H:i:s")."', 
-                '1', 
-                '".mysql_real_escape_string($comment)."'
-              )
-          ";
-          // ccdd
-          tep_db_query($sql);
-          */
-        }
-
         // update character
         if (isset($_POST['character']) && is_array($_POST['character'])){
           foreach($_POST['character'] as $pid=>$character){
@@ -212,7 +180,12 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
           ";
           // ccdd
           tep_db_query($sql);
-        echo '<div class="comment">注文内容の変更を承りました。電子メールをご確認ください。 <div align="right"><a href="/"><img src="includes/languages/japanese/images/buttons/button_back_home.gif" alt="TOPに戻る" title="TOPに戻る"></a></div></div><div>';
+        echo '<div class="comment">'.TEXT_CHANGE_ORDER_CONFIRM_EMAIL.'
+          <div align="right" class="botton-continue"><a href="/"><img
+          src="includes/languages/japanese/images/buttons/button_back_home.gif"
+           onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_back_home.gif\'"
+           onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_back_home_hover.gif\'"
+           alt="'.TEXT_BACK_TO_TOP.'" title="'.TEXT_BACK_TO_TOP.'"></a></div></div><div>';
         // sent mail to customer
         // ccdd
         $mail    = tep_db_fetch_array(tep_db_query("
@@ -222,7 +195,6 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
                 and (site_id='0' or site_id = '" . SITE_ID . "')
               order by site_id DESC
         "));
-        // $mail_title = "注文内容の変更を承りました";
         $mail_title   = $mail['orders_status_title'];
         $mail_content = $mail['orders_status_mail'];
 
@@ -246,22 +218,6 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
   ");
   $NewOid = tep_db_fetch_array($NewOidQuery);
   
-  # load the selected shipping module(convenience_store)
-  /*if ($_SESSION['payment'] == 'convenience_store') {
-    $convenience_sid = str_replace('-', "", $insert_id);
-  
-    $pay_comments = '取引コード' . $convenience_sid ."\n";
-  $pay_comments .= '郵便番号:' . $_POST['convenience_store_zip_code'] ."\n";
-  $pay_comments .= '住所1:' . $_POST['convenience_store_address1'] ."\n";
-  $pay_comments .= '住所2:' . $_POST['convenience_store_address2'] ."\n";
-  $pay_comments .= '氏:' . $_POST['convenience_store_l_name'] ."\n";
-  $pay_comments .= '名:' . $_POST['convenience_store_f_name'] ."\n";
-  $pay_comments .= '電話番号:' . $_POST['convenience_store_tel'] ."\n";
-  $pay_comments .= '接続URL:' . tep_href_link('convenience_store_chk.php', 'sid=' . $convenience_sid, 'SSL');
-  
-  $comments = $pay_comments ."\n".$comments;
-  }
-  */
 
 // load the before_process function from the payment modules
   $payment_modules->before_process($payment_code);
@@ -322,7 +278,6 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
       }
     }
 //------insert customer choosen option eof ----
-   
     if(isset($o->products[$i]['weight']) && isset($o->products[$i]['qty'])){
       $total_weight += ($o->products[$i]['qty'] * $o->products[$i]['weight']);
     }
@@ -337,8 +292,8 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
     } else {
       $total_cost = 0;
     }
-
-    $products_ordered .= '注文商品　　　　　：' . $o->products[$i]['name'];
+    
+    $products_ordered .= TEXT_REORDER_ORDER_PRODUCT . $o->products[$i]['name'];
     if(tep_not_null($o->products[$i]['model'])) {
     $products_ordered .= ' (' . $o->products[$i]['model'] . ')';
     }
@@ -347,9 +302,10 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
     $product_info = tep_get_product_by_id($o->products[$i]['id'], SITE_ID ,$languages_id);
     
     $products_ordered .= $products_ordered_attributes . "\n";
-    $products_ordered .= '個数　　　　　　　：' . $o->products[$i]['qty'] . '個' . tep_get_full_count2($o->products[$i]['qty'], $o->products[$i]['id']) . "\n";
+    $products_ordered .= TEXT_REORDER_QTY_SUM . $o->products[$i]['qty'] .
+    TEXT_REORDER_QTY . tep_get_full_count2($o->products[$i]['qty'], $o->products[$i]['id']) . "\n";
     if(tep_not_null($o->products[$i]['character'])) {
-      $products_ordered .= 'キャラクター名　　：' . (EMAIL_USE_HTML === 'true' ? htmlspecialchars($o->products[$i]['character']) : $o->products[$i]['character']) . "\n";
+      $products_ordered .= TEXT_REORDER_CHARACTER . (EMAIL_USE_HTML === 'true' ? htmlspecialchars($o->products[$i]['character']) : $o->products[$i]['character']) . "\n";
     }
 
     $products_ordered .= '------------------------------------------' . "\n";
@@ -374,22 +330,23 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
   $_minute = $_time[1];
 
   $email_order .= '━━━━━━━━━━━━━━━━━━━━━' . "\n";
-  $email_order .= '▼注文番号　　　　：' . $insert_id . "\n";
-  $email_order .= '▼注文日　　　　　：' . tep_date_long(time()) . "\n";
-  $email_order .= '▼お名前　　　　　：' . $o->customer['name'] . "\n";
-  $email_order .= '▼メールアドレス　：' . $o->customer['email_address'] . "\n";
+  $email_order .= TEXT_REORDER_OID_EMAIL . $insert_id . "\n";
+  $email_order .= TEXT_REORDER_TDATE_EMAIL . tep_date_long(time()) . "\n";
+  $email_order .= TEXT_REORDER_NAME_EMAIL . $o->customer['name'] . "\n";
+  $email_order .= TEXT_REORDER_EMAIL_EMAIL . $o->customer['email_address'] . "\n";
   $email_order .= '━━━━━━━━━━━━━━━━━━━━━' . "\n\n";
-  $email_order .= '▼注文商品' . "\n";
+  $email_order .= TEXT_REORDER_PRODUCT_EMAIL . "\n";
   $email_order .= '------------------------------------------' . "\n";
   $email_order .= $products_ordered . "\n";
-  $email_order .= '▼取引日時　　　　：' . str_string($_date) . $_hour . '時' . $_minute . '分　（24時間表記）' . "\n";
+  $email_order .= TEXT_REORDER_TRADE_DATE . str_string($_date) . $_hour
+    .PREORDER_HOUR_TEXT . $_minute . PREORDER_MIN_TEXT.TEXT_REORDER_TWENTY_FOUR_HOUR . "\n";
 
   if ($comment) {
-    $email_order .= '▼備考　　　　　　：' . "\n";
+    $email_order .= TEXT_REORDER_COMMERN_EMAIL . "\n";
     $email_order .= $comment . "\n";
   }
   
-  $mail_title = "[" . $order['orders_id'] . "]再配達確認メール【" . STORE_NAME . "】";
+  $mail_title = sprintf(TEXT_REORDER_TITLE_EMAIL, $order['orders_id']);
   $email_order = str_replace(array('${NAME}', '${TIME}', '${CONTENT}', '${SITE_NAME}', '${SITE_URL}', '${SUPPORT_EMAIL}'), array($o->customer['name'], date('Y-m-d H:i:s'), $email_order, STORE_NAME, HTTP_SERVER, SUPPORT_EMAIL_ADDRESS), $mail_content);
 
   # メール本文整形 --------------------------------------
@@ -401,38 +358,44 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
       }
     } else if (tep_orders_status_finished($order['orders_status'])) {
         // status can not change
-        echo '<div class="comment">ご指定の注文番号は受付できません。 <div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" width="74" height="25" alt="前に戻る" title="前に戻る"></a></div></div><div>';
+        echo '<div class="comment">'.TEXT_REORDER_COMMERN_STATUS.'<div
+          align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img
+          src="includes/languages/japanese/images/buttons/button_back.gif"
+          onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_back.gif\'"
+          onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_back_hover.gif\'"
+          alt="'.IMAGE_BUTTON_BACK.'" title="'.IMAGE_BUTTON_BACK.'"></a></div></div><div>';
     } else {
         // edit order
 ?>
   <div class="comment">
     <div id='form'>
       <form action="reorder.php" method="post" name="order">
-        <input type="hidden" name="dummy" value="あいうえお眉幅">
+        <input type="hidden" name="dummy" value="<?php echo TEXT_REORDER_DUMMY_WIDTH;?>">
         <input type='hidden' name='order_id' value='<?php echo $order['orders_id']?>' >
         <input type='hidden' name='email' value='<?php echo $order['customers_email_address']?>' >
         <div id="form_error" style="display:none">
         </div>
-        <table class="information_table" summary="table">
+       <table summary="table" cellpadding="0" cellspacing="0" border="0"
+       width="100%" class="reorder_spacing">
           <tr>
-            <td width="130">注文番号</td>
+            <td width="20%"><?php echo TEXT_REORDER_OID_TITLE;?></td>
             <td><?php echo $order['orders_id']?></td>
           </tr>
           <tr>
-            <td>お名前</td>
+            <td><?php echo TEXT_REORDER_OID_NAME;?></td>
             <td><?php echo $order['customers_name']?></td>
           </tr>
           <tr>
-            <td>メールアドレス</td>
+            <td><?php echo TEXT_REORDER_EMAIL_TITLE;?></td>
             <td><?php echo $order['customers_email_address']?></td>
           </tr>
           <tr>
-            <td>取引日時（変更前）</td>
+            <td><?php echo TEXT_REORDER_TRADE_NO_CHANGE;?></td>
             <td id='old_time'><?php echo tep_date_long(strtotime($order['torihiki_date']))?>
               <?php echo date('H:i', strtotime($order['torihiki_date']));?></td>
           </tr>
           <tr>
-            <td>取引日時（変更後）</td>
+            <td valign="top"><?php echo TEXT_REORDER_TRADE_CHANGE;?></td>
             <td>
               <select name='date' id='new_date' onChange="selectDate('<?php echo date('H');?>', '<?php echo date('i');?>')">
                 <option value=''>--</option>
@@ -448,30 +411,31 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
                 <option value=''>--</option>
               </select>
               <span id="date_error"></span>
-              <div>ご希望のお時間に添えない場合は、弊社より「取引時間」をご連絡させていただきます。</div>
+              <br>
+              <font color="red"><?php echo TEXT_REORDER_TREADE_TEXT;?></font>
             </td>
           </tr>
         </table>
         <?php foreach($o->products as $key => $value){
   // for multi products
   ?>
-        <br>
-        <table class="information_table" id='product_<?php echo $value['id'];?>' summary="table">
+        
+        <table class="reorder_spacing"  id='product_<?php echo $value['id'];?>'  summary="table" width="100%">
           <tr>
-            <td width="130">商品名</td>
+            <td width="20%"><?php echo TEXT_REORDER_P_PRODUCT_NAME;?></td>
             <td name='products_names'><?php echo $value['name'];?></td>
           </tr>
           <?php if($value['character']) {?>
           <tr>
-            <td>キャラクター名</td>
+            <td><?php echo TEXT_REORDER_P_PRODUCT_CHARACTER;?></td>
             <td>
-              <input type='text' id='character_<?php echo $value['id'];?>' name='character[<?php echo $value['id'];?>]' value="<?php echo htmlspecialchars($value['character'])?>" class="input_text" >
+              <input style="width:40%;" type='text' id='character_<?php echo $value['id'];?>' name='character[<?php echo $value['id'];?>]' value="<?php echo htmlspecialchars($value['character'])?>" id="input_text" >
             </td>
           </tr>
           <?php }?>
-          <?php if(isset($value['attributes']) && $value['attributes'])foreach ($value['attributes'] as $att) {?>
+          <?php if($value['attributes'])foreach ($value['attributes'] as $att) {?>
           <tr>
-            <td><?php echo $att['option'];?>(変更前)</td>
+            <td><?php echo $att['option'].TEXT_REORDER_NO_CHANGE;?></td>
             <td><?php echo $att['value'];?></td>
           </tr>
           <?php }?>
@@ -498,7 +462,8 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
           while ($products_options_name = tep_db_fetch_array($products_options_name_query)) {
             $selected = 0;
             $products_options_array = array();
-            echo '<tr><td>' . $products_options_name['products_options_name'] . '(変更後)</td><td>' . "\n";
+            echo '<tr><td>' . $products_options_name['products_options_name'] .
+              TEXT_REORDER_CHANGE.'</td><td>' . "\n";
             // ccdd
             $products_options_query = tep_db_query("
                 select pov.products_options_values_id, 
@@ -523,10 +488,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
               }
             }
             $products_options_array = array_merge(array(array('id' => '', 'text' => '--')), $products_options_array);
-            echo tep_draw_pull_down_menu(
-                'id['.$value['id'].'][' . $products_options_name['products_options_id'] . ']', 
-                $products_options_array, 
-                isset($cart->contents[$value['id']]['attributes'][$products_options_name['products_options_id']])?  $cart->contents[$value['id']]['attributes'][$products_options_name['products_options_id']]:'');
+            echo tep_draw_pull_down_menu( 'id['.$value['id'].'][' . $products_options_name['products_options_id'] . ']', $products_options_array, isset($cart->contents[$value['id']]['attributes'][$products_options_name['products_options_id']])?  $cart->contents[$value['id']]['attributes'][$products_options_name['products_options_id']]:'');
             echo '</td></tr>';
           }
           //echo '</table>';
@@ -534,28 +496,42 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
     ?>
         </table>
         <?php }?>
-        <br>
-        <table class="information_table" summary="table" style="width:100%">
+        
+        <table class="information_table" summary="table" width="100%">
           <tr>
-            <td width="130">備考</td>
+            <td width="20%" valign="top"><?php echo TEXT_REORDER_COMMENT_TITLE;?></td>
             <td>
-              <textarea name='comment' id='comment' rows="5" style="width:100%"></textarea>
+              <textarea style="width:80%;" rows="10" name='comment' id='comment'></textarea>
             </td>
           </tr>
         </table>
-        <br>
-        <p align="center">
-          <input type='image' src="includes/languages/japanese/images/buttons/button_submit.gif" alt="確認する" title="確認する" onClick="return orderConfirmPage();" >
-          <input type='image' src="includes/languages/japanese/images/buttons/button_reset.gif" alt="クリア" title="クリア" onClick="javascript:document.order.reset();return false;" >
-        </p>
+        
+        <div align="center" class="botton-continue">
+          <input type='image'   onmouseout="this.src='includes/languages/japanese/images/buttons/button_submit.gif'"  onmouseover="this.src='includes/languages/japanese/images/buttons/button_submit_hover.gif'"  src="includes/languages/japanese/images/buttons/button_submit.gif" 
+          alt="<?php echo TEXT_REORDER_CONFRIM;?>" title="<?php echo
+          TEXT_REORDER_CONFRIM;?>" onClick="return orderConfirmPage();" >
+          <input type='image'
+          onmouseout="this.src='includes/languages/japanese/images/buttons/button_reset.gif'"
+          onmouseover="this.src='includes/languages/japanese/images/buttons/button_reset_hover.gif'"  src="includes/languages/japanese/images/buttons/button_reset.gif" 
+          alt="<?php echo TEXT_REORDER_CLEAR;?>" title="<?php echo
+          TEXT_REORDER_CLEAR;?>" onClick="javascript:document.order.reset();return false;" >
+        </div>
       </form>
     </div>
     <div id='confirm' style='display:none; text-align:center;'>
       <div id='confirm_content' style='text-align:left;'>
       </div>
-      <input type='image' src="includes/languages/japanese/images/buttons/button_submit2.gif" alt="確定する" title="確定する" onClick="document.order.submit()" >
-      <input type='image' src="includes/languages/japanese/images/buttons/button_back.gif" alt="前に戻る" title="前に戻る" onClick="document.getElementById('confirm').style.display='none';document.getElementById('form').style.display='block'" >
-    </div>
+      <div class="botton-continue">
+      <input type='image'
+      src="includes/languages/japanese/images/buttons/button_submit2.gif"
+       onmouseout="this.src='includes/languages/japanese/images/buttons/button_submit2.gif'"  onmouseover="this.src='includes/languages/japanese/images/buttons/button_submit2_hover.gif'" 
+       alt="<?php echo TEXT_REORDER_CONFRIM;?>" title="<?php echo
+       TEXT_REORDER_CONFRIM;?>" onClick="document.order.submit()" >
+      <input type='image'
+      src="includes/languages/japanese/images/buttons/button_back.gif"
+        onmouseout="this.src='includes/languages/japanese/images/buttons/button_back.gif'"  onmouseover="this.src='includes/languages/japanese/images/buttons/button_back_hover.gif'" 
+        alt="<?php IMAGE_BUTTON_BACK;?>" title="<?php echo IMAGE_BUTTON_BACK;?>" onClick="document.getElementById('confirm').style.display='none';document.getElementById('form').style.display='block'" >
+    </div></div>
     <script type="text/javascript" src='./js/order.js'></script>
     <script type="text/javascript">
 <!---
@@ -591,9 +567,9 @@ function orderConfirmPage(){
         }
 ?>
 <?php }?>
-  text += "<table class='information_table' summary='table'>\n";
-  text += "<tr><td width='130'>\n";
-  text += "取引日時（変更前）";
+  text += "<table class='information_table' width='100%' summary='table'>\n";
+  text += "<tr><td width='20%'>\n";
+  text += "<?php echo TEXT_REORDER_TRADE_NO_CHANGE;?>";
   text += "</td><td>\n";
   text += oldTime + "\n";
   text += "</td></tr><tr><td>\n";
@@ -604,11 +580,11 @@ function orderConfirmPage(){
   
   orderChanged = orderChanged || dateChanged;
 
-  text += "取引日時（変更後）</td><td>";
+  text += "<?php echo TEXT_REORDER_TRADE_CHANGE;?></td><td>";
   
   if((document.getElementById('new_date').selectedIndex != 0 || document.getElementById('new_hour').selectedIndex != 0 || document.getElementById('new_minute').selectedIndex != 0) && !(document.getElementById('new_date').selectedIndex != 0 && document.getElementById('new_hour').selectedIndex != 0 && document.getElementById('new_minute').selectedIndex != 0)){
-      document.getElementById('date_error').innerHTML = "<font color='red'>【取引日時（変更後）】を選択してください。</font>";
-      document.getElementById('date_error').style.display = 'block';
+      document.getElementById('date_error').innerHTML = "<br> <font color='red'><?php echo TEXT_REORDER_CHANGE_TRADE_SELECT;?></font>";
+      document.getElementById('date_error').style.display = 'inline';
       return false;
   }
 
@@ -622,8 +598,9 @@ function orderConfirmPage(){
       && ((document.getElementById('new_hour').options[document.getElementById('new_hour').selectedIndex].value * 60) + parseInt(document.getElementById('new_minute').options[document.getElementById('new_minute').selectedIndex].value)) < (nowMinutes + <?php echo MINUTES;?>)) 
     {
       // time error
-      document.getElementById('date_error').innerHTML = "<font color='red'>取引時間は現在時刻より20分後以降を選択してください。</font>";
-      document.getElementById('date_error').style.display = 'block';
+      document.getElementById('date_error').innerHTML = "<br><font color='red'><?php
+        echo TEXT_REORDER_JS_DATE_ERROR;?></font>";
+      document.getElementById('date_error').style.display = 'inline';
       return false;
     }
     text += newTime + "</td></tr></table><br >\n";
@@ -632,19 +609,19 @@ function orderConfirmPage(){
   }
   
   for(i in productName){
-    text += "<table class='information_table' summary='table'>\n";
-    text += "<tr><td width='130'>商品名</td><td>\n";
+    text += "<table class='information_table' width='100%' summary='table'>\n";
+    text += "<tr><td width='20%'><?php echo TEXT_REORDER_P_PRODUCT_NAME;?></td><td>\n";
     text += productName[i] + "\n";
     text += "</td></tr>";
 
     if(oldCharacter[i] != ''){
-      text += "<tr><td width='130'>\n";
-      text += "キャラクター名(変更前)";
+      text += "<tr><td width='20%'>\n";
+      text += "<?php echo TEXT_REORDER_P_PRODUCT_CHARACTER.TEXT_REORDER_NO_CHANGE;?>";
       text += "</td><td>\n";
       text += oldCharacter[i] + "\n";
       text += "</td></tr>";
       text += "<tr><td>\n";
-      text += "キャラクター名(変更後)";
+      text += "<?php echo TEXT_REORDER_P_PRODUCT_CHARACTER.TEXT_REORDER_CHANGE;?>";
       text += "</td><td>\n";
       if(document.getElementById('character_'+i)){
       text += document.getElementById('character_'+i).value.replace(/\</ig,"&lt;").replace(/\>/ig,"&gt;") + "\n";
@@ -658,12 +635,12 @@ function orderConfirmPage(){
 
     for(j in oldAttribute[i]){
       text += "<tr><td>\n";
-      text += oldAttribute[i][j][0] + "(変更前)\n"
+      text += oldAttribute[i][j][0] + "<?php echo TEXT_REORDER_NO_CHANGE;?>\n"
       text += "</td><td>\n";
       text += oldAttribute[i][j][1] + "\n";
       text += "</td></tr><tr><td>\n";
       text += oldAttribute[i][j][0];
-      text += "(変更後)</td><td>\n";
+      text += "<?php echo TEXT_REORDER_CHANGE;?></td><td>\n";
       if(document.getElementById('id[' + i + '][' + j + ']')){
       if (document.getElementById('id[' + i + '][' + j + ']').selectedIndex != 0) {
         text += document.getElementById('id[' + i + '][' + j + ']').options[document.getElementById('id[' + i + '][' + j + ']').selectedIndex].innerHTML + "\n";
@@ -677,17 +654,16 @@ function orderConfirmPage(){
     text += "</table><br >\n";
   }
 
-  text += "<table class='information_table' summary='table'>\n"
-  text += "<tr><td width='130' align='left' style='wdith:130px; text-align:left;'>";
-  text += "備考";
-  text += "</td><td align='left' style='wdith:130px; text-align:left;'>\n";
+  text += "<table class='information_table' width='100%' summary='table'>\n"
+  text += "<tr><td width='20%' align='left' style='wdith:20%; text-align:left;' valign='top'>";
+  text += "<?php echo TEXT_REORDER_COMMENT_TITLE;?>";
+  text += "</td><td align='left' style='wdith:20%; text-align:left;'>\n";
   text += document.getElementById('comment').value.replace(/\</ig,"&lt;").replace(/\>/ig,"&gt;");
   text += "</td></tr>\n";
   text += "</table><br >\n"
   
   orderChanged = (orderChanged || document.getElementById('comment').value);
-
-
+  
    var time_error = false;
    var new_date = document.getElementById("new_date");
    if(new_date.value == ''){
@@ -698,12 +674,14 @@ function orderConfirmPage(){
   // if order unchanged , does not commit
   if(!orderChanged){
     //alert('no change');
-    document.getElementById('form_error').innerHTML = "<font color='red'>変更箇所がございません。</font>";
+    document.getElementById('form_error').innerHTML = "<font color='red'><?php echo 
+      TEXT_REORDER_UNCHANGE_QTY;?></font>";
     document.getElementById('form_error').style.display = 'block';
   }
 
   if(time_error){
-    document.getElementById('date_error').innerHTML = "<font color='red'>【取引日時（変更後）】を選択してください。</font>";
+    document.getElementById('date_error').innerHTML = "<font color='red'><?php echo 
+      TEXT_REORDER_CHANGE_TRADE_SELECT;?></font>";
     document.getElementById('date_error').style.display = 'block';
   }
   if(!orderChanged || time_error){
@@ -720,7 +698,13 @@ function orderConfirmPage(){
     }
   } else {
     // has no order or info error
-    echo '<div class="comment">"注文番号" または"メールアドレス" が一致しませんでした。<div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" width="74" height="25" alt="前に戻る" title="前に戻る"></a></div></div><div>';
+    echo '<div class="comment"><font color="red">'.TEXT_REORDER_NO_ORDER_ERROR
+      .'</font><div align="left" class="botton-continue"><a href="javascript:void(0);"
+      onclick="history.go(-1)"><img
+      src="includes/languages/japanese/images/buttons/button_back.gif"
+        onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_back.gif\'"
+        onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_back_hover.gif\'"
+        alt="'.IMAGE_BUTTON_BACK.'" title="'.IMAGE_BUTTON_BACK.'"></a></div></div><div>';
   }
 ?>
     <?php } else {
@@ -728,50 +712,49 @@ function orderConfirmPage(){
   ?>
     <div class="comment">
       <form action="reorder.php" method="post" name='order'>
-        <input type="hidden" name="dummy" value="あいうえお眉幅">
-        <table class="information_table" summary="table">
+               <table summary="table" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top:10px;">
+ <input type="hidden" name="dummy" value="<?php echo TEXT_REORDER_DUMMY_WIDTH;?>">
           <tr>
-            <td align="left">注文番号</td>
-          </tr>
-          <tr>
+            <td valign="top" width="20%"><?php echo TEXT_REORDER_OID_TITLE;?></td>
             <td>
-              <input type='text' name='order_id_1' class="input_text" maxlength='8' style='width:80px' >
+              <input type='text' name='order_id_1' id="input_text_short" maxlength='8' >
               -
-              <input type='text' name='order_id_2' class="input_text" maxlength='8' style='width:80px' >
-              <a href="/reorder2.php">注文番号忘れた?</a>
+              <input type='text' name='order_id_2' id="input_text_short" maxlength='8' >
+              <a href="/reorder2.php"><?php echo TEXT_REORDER_OID_FORGET;?></a>
               <br >
-              <font color='red' style='font-size:12px'>例：20******-********<br >
-              注文書に記載された20から始まる8桁の数字-8桁の数字をご入力ください。</font>
+              <font color='red' style='font-size:14px'><?php echo
+              TEXT_REORDER_OID_TEXT_INFO;?></font>
             </td>
           </tr>
           <tr>
-            <td align="left">メールアドレス</td>
-          </tr>
-          <tr>
+            <td align="left"><?php echo TEXT_REORDER_EMAIL_TITLE;?></td>
             <td>
-              <input type='text' name='email' class="input_text" >
+              <input type='text' name='email' id="input_text" >
             </td>
           </tr>
           <tr>
-            <td colspan='2' align="center" style="text-align:center;">
-              <input type='image' src="includes/languages/japanese/images/buttons/button_continue.gif" alt="次へ進む" title="次へ進む" >
-              <input type='image' src="includes/languages/japanese/images/buttons/button_reset_01.gif" alt="クリア" title="クリア" onClick="javascript:document.order.reset();return false;" >
+            <td colspan='2' align="center" style="text-align:center; padding-top:40px;">
+              <input type='image'
+                onmouseout="this.src='includes/languages/japanese/images/buttons/button_continue.gif'"
+                onmouseover="this.src='includes/languages/japanese/images/buttons/button_continue_hover.gif'" src="includes/languages/japanese/images/buttons/button_continue.gif" alt="<?php echo TEXT_REORDER_NEXT;?>" title="<?php echo TEXT_REORDER_NEXT;?>" >
+              <input type='image'
+              onmouseout="this.src='includes/languages/japanese/images/buttons/button_reset_01.gif'"
+              onmouseover="this.src='includes/languages/japanese/images/buttons/button_reset_01_hover.gif'" src="includes/languages/japanese/images/buttons/button_reset_01.gif" alt="<?php echo TEXT_REORDER_CLEAR;?>" title="<?php echo
+              TEXT_REORDER_CLEAR;?>" onClick="javascript:document.order.reset();return false;" >
             </td>
           </tr>
         </table>
       </form>
       <?php }?>
     </div>
-    <p class="pageBottom"></p>
-  </div>
-  <!--right-->
-  <div id="r_menu">
-    <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?>
-  </div>
-  <!-- body_eof //-->
-  <!-- footer //-->
-  <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-  <!-- footer_eof //-->
+	</div>
+     </div>
+      <?php include('includes/float-box.php');?>
+
 </div>
+<?php echo DEFAULT_PAGE_TOP_CONTENTS;?>
+ </div>
+ <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
+
 </body>
 </html><?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

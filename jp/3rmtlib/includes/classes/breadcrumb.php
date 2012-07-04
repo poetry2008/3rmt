@@ -20,7 +20,9 @@
 
     function trail($separator = ' - ') {
       $trail_string = '';
-
+      if(NEW_STYLE_WEB===true){
+      $trail_string = "<img src='images/navbar_img.png' alt='picture' >";
+      }
       for ($i=0, $n=sizeof($this->_trail); $i<$n; $i++) {
         
         if (isset($this->_trail[$i]['link']) && tep_not_null($this->_trail[$i]['link']) && $i != sizeof($this->_trail)-1) {

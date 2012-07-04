@@ -65,8 +65,8 @@ A {
 </head>
 
 <body oncontextmenu="alert('Copy Right <?php echo STORE_NAME ; ?>'); return false;" leftmargin="0" topmargin="0" onLoad="window.resizeTo(document.featImage.width+150,document.featImage.height+265);">
-<div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
-<h1 class="pageHeading"><?php echo $products_values['products_name'] ; ?></h1>
+<div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
+<h2><?php echo $products_values['products_name'] ; ?></h2>
       <table border="0" cellspacing="6" cellpadding="0">
 <tr>
         <?php echo (tep_not_null($products_values['products_image'])) ?  '<td align="center" class="image_border"><a href="popup_image.php?image='.$products_values['products_image'] .'&pIID='.$_GET['pIID'].' ">'. tep_image2(DIR_WS_IMAGES . $products_values['products_image'], $products_values['products_name'], 60, 60, 'name="prod_thum_1"').'</a></td>' : '' ; ?>
@@ -86,7 +86,7 @@ A {
   }
   
   ?></div>
-<p class="main" align="right"><?php echo '<a href="javascript:window.close()">' . TEXT_CLOSE_WINDOW . '</a>'; ?></p>
+<p align="right"><?php echo '<a href="javascript:window.close()">' . TEXT_CLOSE_WINDOW . '</a>'; ?></p>
 </body>
 </html>
 <?php require('includes/application_bottom.php'); ?>

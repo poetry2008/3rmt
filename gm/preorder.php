@@ -1,6 +1,7 @@
 <?php
 /*
   $Id$
+  ファイルコードを確認
 */
 
   require('includes/application_top.php');
@@ -81,22 +82,6 @@
 ?>
 <?php page_head();?>
 <script type="text/javascript" src="./js/jquery-1.3.2.min.js"></script>
-<script type="text/javascript">
-  function check_products_num(pid)  {
- var products_num = document.getElementById('quantity').value;
- $.ajax({
-	 url:'ajax_check_products_num.php',
-         type:'POST',
-	 dataType: 'text',
-	 data: 'pid='+pid+'&quantity='+products_num,
-	 async:false,
-	 success:function(data){
-	$('#preorder_info_message').html(data);
-	 }
- })
-  }
-</script>
-
 </head>
 <body>
 <?php
@@ -106,15 +91,11 @@
 <!-- header_eof //-->
 <!-- body //-->
 <div id="main">
-    <div id="l_menu">
-      <!-- left_navigation //-->
-      <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-      <!-- left_navigation_eof //-->
-    </div>
+      <?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
     <!-- body_text //-->
-    <div id="content">
+    <div id="layout" class="yui3-u">
 
-      <p class="main">
+      <p>
         <?php echo HEADING_TITLE_ERROR; ?><br><?php echo ERROR_INVALID_PRODUCT; ?>
       </p>
 <?php
@@ -123,11 +104,9 @@
 ?>
 	<?php
     $error = false;
-    $products_num_query = mysql_query("select products_real_quantity,products_virtual_quantity from products where products_id='".$_POST['products_id']."'");
-$products_num_array = mysql_fetch_array($products_num_query);
-//$products_num = $products_num_array['products_real_quantity'];
- $products_num = $products_num_array['products_real_quantity'] + $products_num_array['products_virtual_quantity'];
-
+$products_num_query = tep_db_query("select products_real_quantity,products_virtual_quantity from products where products_id='".$_POST['products_id']."'");
+$products_num_array = tep_db_fetch_array($products_num_query);
+$products_num = $products_num_array['products_real_quantity'] + $products_num_array['products_virtual_quantity'];
     if (isset($_POST['action']) && ($_POST['action'] == 'process') && empty($_POST['quantity'])) {
       $quantity_error = true;
       $error = true;
@@ -140,17 +119,12 @@ $products_num_array = mysql_fetch_array($products_num_query);
         $quantity_error = true;
         $error = true;
        } else {
-	       if (isset($_POST['action']) && ($_POST['action'] == 'process') && ($products_num >= $_POST['quantity'])){
- $num_error = true;
-
-//	 $quantity_error = true;
+if (isset($_POST['action']) && ($_POST['action'] == 'process') && ($products_num >= $_POST['quantity'])){
+        $num_error = true;
         $error = true;
-      
 	       }else{
         $quantity_error = false;
 	       }
-
-    //    $quantity_error = false;
        }
       }
     }
@@ -229,12 +203,12 @@ if (!isset($_POST['lastname'])) $_POST['lastname'] = NULL; //del notice
 if (!isset($_POST['firstname'])) $_POST['firstname'] = NULL; //del notice
 if (!isset($_GET['lastname'])) $_GET['lastname'] = NULL; //del notice
 if (!isset($_GET['firstname'])) $_GET['firstname'] = NULL; //del notice
-        $last_name_prompt = tep_draw_input_field('lastname', (($lastname_error == true) ? $_POST['lastname'] : $_GET['lastname']), 'class="input_text"');
-        $first_name_prompt = tep_draw_input_field('firstname', (($firstname_error == true) ? $_POST['firstname'] : $_GET['firstname']), 'class="input_text"');
-        if ($lastname_error == true) $last_name_prompt .= '&nbsp;<span class="errorText">' . TEXT_REQUIRED . '</span>';
-        if ($firstname_error == true) $first_name_prompt .= '&nbsp;<span class="errorText">' . TEXT_REQUIRED . '</span>';
+        $last_name_prompt = tep_draw_input_field('lastname', (($lastname_error == true) ? $_POST['lastname'] : $_GET['lastname']), 'id="input_text"');
+        $first_name_prompt = tep_draw_input_field('firstname', (($firstname_error == true) ? $_POST['firstname'] : $_GET['firstname']), 'id="input_text"');
+        if ($lastname_error == true) $last_name_prompt .= '&nbsp;<font color="red">' . TEXT_REQUIRED . '</font>';
+        if ($firstname_error == true) $first_name_prompt .= '&nbsp;<font color="red">' . TEXT_REQUIRED . '</font>';
 if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
-        $your_email_address_prompt = tep_draw_input_field('from', (($fromemail_error == true) ? $_POST['from'] : $_GET['from']) , 'size="30" class="input_text"') . '&nbsp;&nbsp;携帯電話メールアドレス推奨';
+        $your_email_address_prompt = tep_draw_input_field('from', (($fromemail_error == true) ? $_POST['from'] : $_GET['from']) , 'size="30" id="input_text"') . '&nbsp;&nbsp;'.INTRODUCE_MOBILE_MAIL_TEXT;
         if ($fromemail_error == true) $your_email_address_prompt .= "<br>".ENTRY_EMAIL_ADDRESS_CHECK_ERROR;
       }
 ?>
@@ -242,19 +216,15 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
 <!-- header_eof //-->
 <!-- body //-->
 <div id="main">
-    <div id="l_menu">
-      <!-- left_navigation //-->
-      <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-      <!-- left_navigation_eof //-->
-    </div>
     <!-- body_text //-->
-    <div id="content">
+    <div id="layout" class="yui3-u">
   
-      <div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
-      <h1 class="pageHeading"><?php echo $po_game_c . '&nbsp;' . $product_info['products_name']; ?>を予約する</h1>
+      <div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
+      	<div id="main-content">
+	  		<h2><?php echo $po_game_c . '&nbsp;' .  $product_info['products_name'].PREORDER_PRODUCT_NAME_END_TEXT; ?></h2>
             <div class="comment_preoder">
       <p>
-        <?php echo STORE_NAME;?>では、<?php echo $po_game_c; ?>の予約サービスを行っております。<br> ご希望する数量が弊社在庫にある場合は「
+        <?php echo sprintf(PREORDER_PRODUCT_NUM_FRONT_TEXT, STORE_NAME, $po_game_c);?>  
         <?php 
         if ($product_info['products_status'] == 0 || $product_info['products_status'] == 3)  {
           echo $product_info['products_name']; 
@@ -262,43 +232,39 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
           echo '<a href="' .  tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .  $product_info['products_id']) . '">' .  $product_info['products_name'].'</a>';
         }
         ?>
-        」をクリックしてお手続きください。
+       <?php echo PREORDER_PRODUCT_NUM_END_TEXT;?> 
       </p>
 
       <?php echo tep_draw_form('preorder_product', tep_preorder_href_link($product_info['products_id'], $product_info['romaji'])) .  tep_draw_hidden_field('products_id', $product_info['products_id']).tep_draw_hidden_field('action', 'process'); ?>
-      <p>
-        弊社在庫にお客様がご希望する数量がない場合は、下記の必要事項をご入力の上お申し込みください。<br>
-        予約手続きが完了いたしますと、入荷次第、お客様へ優先的にご案内いたします。
-      </p>
-      <p class="red"><b>ご予約・お見積りは無料ですので、お気軽にお問い合わせください。</b></p>
 <?php
+      echo PREORDER_PRODUCT_NUM_READ; 
       if($error == true) {
-        echo '<span class="errorText"><b>入力した内容に誤りがございます。正しく入力してください。</span></b><br><br>';
+        echo '<font color="red"><b>'.PREORDER_PRODUCT_MUST_INPUT_TEXT.'</font></b><br>';
       }
 ?>
-      <div class="formAreaTitle"><?php echo FORM_TITLE_CUSTOMER_DETAILS; ?></div>
-      <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
+      <h3 style="margin-top:20px"><?php echo FORM_TITLE_CUSTOMER_DETAILS; ?></h3>
+      <table width="100%" cellpadding="2" cellspacing="2" border="0">
         <tr>  
-          <td class="main" width="120"><?php echo FORM_FIELD_CUSTOMER_LASTNAME; ?></td>
-          <td class="formArea_td_info"><?php echo $last_name_prompt; ?></td>
+          <td width="20%"><?php echo FORM_FIELD_CUSTOMER_LASTNAME; ?></td>
+          <td><?php echo $last_name_prompt; ?></td>
         </tr>
         <tr>  
-          <td class="main" width="120"><?php echo FORM_FIELD_CUSTOMER_FIRSTNAME; ?></td>
-          <td class="main"><?php echo $first_name_prompt; ?></td>
+          <td width="20%"><?php echo FORM_FIELD_CUSTOMER_FIRSTNAME; ?></td>
+          <td><?php echo $first_name_prompt; ?></td>
         </tr>
         <tr>
-          <td class="main" width="120"><?php echo FORM_FIELD_CUSTOMER_EMAIL; ?></td>
-          <td class="main"><?php echo $your_email_address_prompt; ?></td>
+          <td width="20%" valign="top"><?php echo FORM_FIELD_CUSTOMER_EMAIL; ?></td>
+          <td><?php echo $your_email_address_prompt; ?></td>
         </tr>
         <tr> 
-          <td colspan="2" class="main">お取り置き期限がございます。いつも使用しているメールアドレスをご入力ください。</td>
+          <td colspan="2"><?php echo PREORDER_PROCESS_EXPIRE_TEXT;?></td>
         </tr>
-      </table><br>
-      <div class="formAreaTitle"><?php echo FORM_TITLE_FRIEND_DETAILS; ?></div>
-      <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
+      </table>
+      <h3 style="margin-top:20px"><?php echo FORM_TITLE_FRIEND_DETAILS; ?></h3>
+      <table width="100%" cellpadding="2" cellspacing="2" border="0">
         <tr>
-          <td class="formArea_td" valign="top">商品名:</td>
-          <td class="main">
+          <td valign="top"><?php echo PREORDER_PRODUCTS_NAME_TEXT;?></td>
+          <td>
           <strong>
           <?php 
           if ($product_info['products_status'] == 0 || $product_info['products_status'] == 3)  {
@@ -312,19 +278,17 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
           </td>
         </tr>
         <tr>
-          <td class="main" width="120"><?php echo FORM_FIELD_FRIEND_NAME; ?></td>
-          <td class="main">
+		  <td width="20%"><?php echo FORM_FIELD_FRIEND_NAME; ?></td>
+          <td>
 <?php
 if (!isset($_POST['quantity'])) $_POST['quantity'] = NULL; //del notice
-//echo tep_draw_input_field('quantity', (($quantity_error == true) ? $_POST['quantity'] : $_GET['quantity']) , 'size="7" maxlength="15" id="quantity" class="input_text_short" onblur="check_products_num('.$product_info['products_id'].');"');
+if (!isset($_GET['quantity'])) $_GET['quantity'] = NULL; //del notice
 echo tep_draw_input_field('quantity', (($quantity_error == true) ? $_POST['quantity'] : $_GET['quantity']) , 'size="7" maxlength="15" id="quantity" class="input_text_short" ');
 
-            echo '&nbsp;&nbsp;個';
+            echo '&nbsp;&nbsp;'.PREORDER_PRODUCTS_NUM_SYMBOL;
 if ($quantity_error == true) { echo '&nbsp;<span class="errorText">' . TEXT_REQUIRED . '</span>';}
-if ($num_error == true){echo '<span id="preorder_info_message" class="errorText"><br>予約の必要がございません。<br>'.(int)$_POST['quantity'].'個は注文可能です。<a href='.tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $products_id) .'>コチラ</a> からお手続きください。 </span>' ;}
- 
-
-       if (!isset($_GET['send_to'])) $_GET['send_to'] = NULL; //del notice
+if ($num_error == true){echo '<span id="preorder_info_message" class="errorText"><br>'.sprintf(PREORDER_PRODUCTS_NUM_NOTICE_TEXT, (int)$_POST['quantity']).'<a href='.tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $products_id) .'>'.PREORDER_PRODUCTS_CLICK_FRONT_TEXT.'</a> '.PREORDER_PRODUCTS_CLICK_END_TEXT.'</span>' ;}
+      if (!isset($_GET['send_to'])) $_GET['send_to'] = NULL; //del notice
 ?>
           </td>
         </tr>
@@ -332,8 +296,8 @@ if ($num_error == true){echo '<span id="preorder_info_message" class="errorText"
         if (false) { 
         ?>
         <tr>
-          <td class="main" width="120"><?php echo FORM_FIELD_PREORDER_FIXTIME; ?></td>
-          <td class="main">
+          <td width="120"><?php echo FORM_FIELD_PREORDER_FIXTIME; ?></td>
+          <td>
 <?php
 //echo tep_get_torihiki_select_by_pre_products($product_info['products_id']);
 ?>
@@ -341,8 +305,8 @@ if ($num_error == true){echo '<span id="preorder_info_message" class="errorText"
         </tr>
         <?php }?> 
         <tr>
-          <td class="main"><?php echo FORM_FIELD_PREORDER_FIXDAY; ?></td>
-          <td class="main">
+          <td><?php echo FORM_FIELD_PREORDER_FIXDAY; ?></td>
+          <td>
 <?php
     $today = getdate();
       $m_num = $today['mon'];
@@ -368,19 +332,23 @@ if ($num_error == true){echo '<span id="preorder_info_message" class="errorText"
     ?>
   </select>
           <?php
-          if ($predate_error == true) echo '&nbsp;<span class="errorText">' . TEXT_REQUIRED . '</span>';
+          if ($predate_error == true) echo '&nbsp;<font color="red">' . TEXT_REQUIRED . '</font>';
           ?>
           </td>
         </tr>
       </table>
-      <br> 
-      <table border="0" width="100%" cellspacing="0" cellpadding="0">
+      <table border="0" width="100%" cellspacing="0" cellpadding="0" class="botton-continue">
         <tr>
-          <td class="main">
-            <?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $product_info['products_id']) . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?>
+          <td>
+            <?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO,
+        'products_id=' . $product_info['products_id']) . '">' .
+          tep_image_button('button_back.gif',
+              IMAGE_BUTTON_BACK,'onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_back.gif\'"  onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_back_hover.gif\'"') . '</a>'; ?>
           </td>
-          <td align="right" class="main">
-            <?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?>
+          <td align="right">
+            <?php echo tep_image_submit('button_continue.gif',
+                IMAGE_BUTTON_CONTINUE,'onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_continue_hover.gif\'"
+                onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_continue.gif\'"'); ?>
           </td>
         </tr>
       </table>
@@ -390,20 +358,13 @@ if ($num_error == true){echo '<span id="preorder_info_message" class="errorText"
   }
 ?>
     </div>
-        <p class="pageBottom"></p>
-    </div>      
-    <!-- body_text_eof //-->
-    <div id="r_menu">
-      <!-- right_navigation //-->
-      <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?>
-      <!-- right_navigation_eof //-->
-    </div>
-<!-- body_eof //-->
-<!-- footer //-->
+     </div>
+    </div>     
+    <?php include('includes/float-box.php');?>
+  </div>
+</div>
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-<!-- footer_eof //-->
-</div>
-</div>
+
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

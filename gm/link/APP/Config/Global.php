@@ -16,5 +16,5 @@ return array(
   //'site_url' => 'http://' . $_SERVER['SERVER_NAME'] . '/',
   'site_url' => 'http://www.gamemoney.cc/',
   'host_word' => 'RMTゲームマネー',
-  'p_name' => 'RMTゲームマネー',
+  'p_name' => 'RMT',
 );

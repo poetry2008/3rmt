@@ -11,17 +11,7 @@
   $success_single = false; 
   $subject = STORE_NAME;
   $body_text = '';
-  $body_text = STORE_NAME.'が、会員登録をご利用予定のメールアドレスへ、'."\n".
-  '受信確認のためにお送りしています。'."\n\n".
-  'このメールを、無事に受信ボックスで確認できましたら、'."\n".
-  'こちらのメールアドレスは'.STORE_NAME.'で問題なくご利用いただけます。'."\n\n".
-  '以下のURLにアクセスして会員登録を行ってください。'."\n".
-  HTTP_SERVER.'/create_account.php' ."\n\n".
-  'ご不明な点がありましたら、'.STORE_NAME.'までお問い合わせください。'."\n\n\n".
-  '[ご連絡・お問い合わせ先]━━━━━━━━━━━━'."\n".
-  '株式会社 iimy'."\n".
-  HTTP_SERVER."\n".  
-  STORE_OWNER_EMAIL_ADDRESS."\n"."━━━━━━━━━━━━━━━━━━━━━━━";
+  $body_text = TEXT_BODY_TEXT;
   
   if (isset($_POST['email_address'])) {
     if (empty($_POST['email_address'])) {
@@ -44,15 +34,13 @@
 <!-- header_eof //--> 
 <!-- body //--> 
 <div id="main">
-<!-- left_navigation //-->
-<div id="l_menu">
-<?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-</div>
-<!-- left_navigation_eof //-->
+<?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
 <!-- body_text //-->
-<div id="content">
-<div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
-<h1 class="pageHeading"><?php echo SEND_MAIL_HEADING_TITLE; ?></h1>
+<div class="yui3-u" id="layout">
+<div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
+ <?php include('includes/search_include.php');?>
+<div id="main-content">
+<h2><?php echo SEND_MAIL_HEADING_TITLE; ?></h2>
 <div class="send_box01">
       <div class="send_mail">
 <?php
@@ -64,12 +52,13 @@
 ?>
       <table class="login" width="100%">
         <tr>
-          <td valign="top"><b><?php echo INPUT_SEND_MAIL; ?>:</b></td>
-          <td class="login_text" valign="top">
-            <input type="text" name="email_address">
+          <td valign="top" width="20%"><b><?php echo INPUT_SEND_MAIL; ?>:</b></td>
+          <td class="login_text" valign="top" width="70%">
+            <input type="text" name="email_address" id="input_text">
           </td>
-          <td class="td_submit" align="right" style="padding:0 10px 25px 0;">
-            <?php echo tep_image_submit('button_send_mail.gif', SENDMAIL_BUTTON); ?>
+          <td width="10%" class="td_submit" align="right" style="padding:0 10px 25px 0;">
+            <?php echo tep_image_submit('button_send_mail.gif',
+                SENDMAIL_BUTTON,' onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_send_mail.gif\'"  onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_send_mail_hover.gif\'"'); ?>
           </td>
         </tr>
       </table>
@@ -106,18 +95,19 @@
         <?php }?> 
         <?php 
       if ($success_single == true) {  
-         echo '<div style="width:100%;text-align:left;padding:10px 0 0 0;"><a href="'.tep_href_link(FILENAME_DEFAULT).'"><img src="includes/languages/japanese/images/buttons/button_back.gif"></a></div>';
+          echo '<div class="botton-continue"><a
+            href="'.tep_href_link(FILENAME_DEFAULT).'"><img
+              onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_back.gif\'"   onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_back_hover.gif\'"  src="includes/languages/japanese/images/buttons/button_back.gif"></a></div>';
          }
     ?>
         </div>
 
   </div></div>
+  </div>
+    <?php include('includes/float-box.php');?>
+	</div>
       <!-- body_text_eof //--> 
-<!-- right_navigation //--> 
-<div id="r_menu">
-<?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-</div>
-<!-- right_navigation_eof //-->
+<?php //require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
   <!-- body_eof //-->
   <!-- footer //-->
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>

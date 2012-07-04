@@ -26,20 +26,13 @@
 <!-- header_eof //--> 
 <!-- body //--> 
 <div id="main">
-<!-- left_navigation //-->
-<div id="l_menu">
-<?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-</div>
-<!-- left_navigation_eof //-->
 <!-- body_text //-->
-<div id="content">
-<div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
-<h1 class="pageHeading"><?php echo HEADING_TITLE; ?></h1>
+<div id="layout" class="yui3-u">
+<div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
+<div id="main-content">
+<h2><?php echo HEADING_TITLE; ?></h2>
  
-        
-        <table border="0" width="95%" cellspacing="0" cellpadding="0"> 
-          <tr> 
-            <td><table border="0" width="100%" cellspacing="0" cellpadding="0">
+        <table border="0" width="100%" cellspacing="0" cellpadding="0" class="checkout_s_link">
                   <tr>
                     <td width="33%"><table border="0" width="100%" cellspacing="0" cellpadding="0">
                         <tr>
@@ -50,7 +43,6 @@
                     <td width="33%" align="center"><table width="100%"  border="0" cellspacing="0" cellpadding="0">
                         <tr>
                           <td><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td>
-                          <td width="1"><?php echo tep_draw_separator('pixel_silver.gif', '1', '5'); ?></td>
                           <td><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td>
                         </tr>
                       </table></td>
@@ -62,20 +54,21 @@
                       </table></td>
                   </tr>
                   <tr class="box_des">
-                    <td align="center" width="33%" class="checkoutBarFrom">応募者情報</td>
-                    <td align="center" width="33%" class="checkoutBarFrom">確認画面</td>
-                    <td align="center" width="33%" class="checkoutBarCurrent">応募完了</td>
+                    <td align="center" width="33%" class="checkoutBarFrom"><?php echo TEXT_PRESENT_BAR_INFORMATION;?></td>
+                    <td align="center" width="33%" class="checkoutBarFrom"><?php echo TEXT_PRESENT_BAR_CONFIRMATION;?></td>
+                    <td align="center" width="33%" class="checkoutBarCurrent"><?php echo TEXT_PRESENT_BAR_SUCCESS;?></td>
                   </tr>
-                </table></td>
-            </tr>
+        </table>
+         <div class="checkout-conent">
+        <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
             <tr>
               <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
             </tr>
             <tr>
-              <td class="main"><table class="box_des" width="95%" border="0" align="center" cellpadding="2" cellspacing="4">
+              <td><table class="box_des" width="100%" border="0" align="center" cellpadding="2" cellspacing="4">
                   <tr>
                     <td valign="top"><?php echo tep_image(DIR_WS_IMAGES . 'table_background_man_on_board.gif', HEADING_TITLE); ?></td>
-                    <td valign="top" class="main"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?>
+                    <td valign="top"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?>
                       
                       <br>
                       <?php echo TEXT_SUCCESS; ?><br>
@@ -91,17 +84,16 @@
               <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
             </tr>
             <tr>
-              <td align="right" class="main"><br>
+              <td align="right"><br>
                 <?php echo '<a href="' . tep_href_link(FILENAME_DEFAULT) . '">' . tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></td>
             </tr>
           </table>
+          </div>
         </div>
-      <!-- body_text_eof //--> 
-<!-- right_navigation //--> 
-<div id="r_menu">
-<?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
+         </div>
+      <?php include('includes/float-box.php');?>
 </div>
-<!-- right_navigation_eof //-->
+      <!-- body_text_eof //--> 
   <!-- body_eof //-->   
   <!-- footer //--> 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 

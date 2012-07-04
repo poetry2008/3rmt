@@ -14,9 +14,9 @@
 
 // set the level of error reporting
   //error_reporting(0);
-  //ini_set("display_errors", "On");
+  ini_set("display_errors", "On");
   //error_reporting(E_ALL);
-  ini_set("display_errors", "Off");
+  //ini_set("display_errors", "Off");
 
 // check if register_globals is enabled.
 // since this is a temporary measure this message is hardcoded. The requirement will be removed before 2.2 is finalized.
@@ -50,6 +50,8 @@
   define('WARN_DOWNLOAD_DIRECTORY_NOT_READABLE', 'true');
 
 // define the filenames used in the project
+  define('FILENAME_OPEN','open.php');
+  define('FILENAME_CREATE_INDEX', 'index.php');
   define('FILENAME_CHECKOUT_ATTRIBUTES', 'checkout_attributes.php'); 
   define('FILENAME_CHECKOUT_OPTION', 'checkout_option.php');
   define('FILENAME_PREORDER_PAYMENT', 'preorder_payment.php');
@@ -942,3 +944,15 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
       }
     }
   }
+// this word for ie 6 7 javascript:viod()
+$has_a_link = true;
+if(strpos($_SERVER['HTTP_USER_AGENT'],'MSIE 6.0')){
+  $has_a_link = false;
+}
+if(strpos($_SERVER['HTTP_USER_AGENT'],'MSIE 7.0')){
+  $has_a_link = false;
+}
+$void_href = '';
+if($has_a_link){
+  $void_href = ' href="javascript:void(0)" ';
+}

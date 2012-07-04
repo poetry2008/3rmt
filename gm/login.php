@@ -3,7 +3,6 @@
   $Id$
 */
   require('includes/application_top.php');
-  
   if (isset($_GET['pid'])) {
     $link_customer_email = ''; 
     $preorder_info_raw = tep_db_query("select orders_id, customers_id, customers_email_address from ".TABLE_PREORDERS." where check_preorder_str = '".$_GET['pid']."' and site_id = '".SITE_ID."'");    
@@ -27,7 +26,7 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
   if (isset($_GET['action']) && ($_GET['action'] == 'process')) {
     // tamura 2002/12/30 「全角」英数字を「半角」に変換
     $_POST['email_address'] = tep_an_zen_to_han($_POST['email_address']);
-    
+
     $flag_error = false;
     $user_ip = explode('.',$_SERVER['REMOTE_ADDR']);
     $user_ip4 = 0;
@@ -188,7 +187,6 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
     $email_address = tep_db_prepare_input($_POST['email_address']);
     $email_address  = str_replace("\xe2\x80\x8b", '', $email_address);
     $password = tep_db_prepare_input($_POST['password']);
-  
     if (isset($_GET['pid'])) {
       if ($link_customer_email == '') {
         $_GET['login'] = 'failture';
@@ -226,7 +224,6 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
             tep_session_register('customer_zone_id');
             $customer_emailaddress = $email_address;
             tep_session_register('customer_emailaddress');
-
             $guestchk = $link_customer_res['customers_guest_chk'];
             tep_session_register('guestchk');
 
@@ -278,17 +275,16 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
             tep_db_query("
               INSERT INTO ". TABLE_USER_LOGIN ." 
               VALUES('". session_id() ."',now(),now(),'{$_POST['email_address']}','p','','{$user_ip4}','0','". SITE_ID ."') 
-              ");        
+              ");
       } else {
-	  if($check_customer['reset_flag'] and $check_customer['reset_success']!=1 ){
+  if($check_customer['reset_flag'] and $check_customer['reset_success']!=1 ){
 	       $_SESSION['reset_flag'] = true;
                $_SESSION['reset_customers_id'] = $check_customer['customers_id'];
        	       tep_redirect(tep_href_link(FILENAME_DEFAULT));	    
 	  }
-        if (SESSION_RECREATE == 'True') { // 2004/04/25 Add session management
+        if (SESSION_RECREATE == 'True') {
           tep_session_recreate();
         }
-
 //ccdd
         $check_country_query = tep_db_query("
             SELECT entry_country_id, 
@@ -324,7 +320,7 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
                 customers_info_number_of_logons   = customers_info_number_of_logons+1 
             WHERE customers_info_id = '" . $customer_id . "'
         ");
-            
+    
     //POINT_LIMIT CHECK ポイントの有効期限チェック ds-style
     if(MODULE_ORDER_TOTAL_POINT_LIMIT != '0') {
 //ccdd
@@ -389,34 +385,32 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
 function session_win() {
   window.open("<?php echo tep_href_link(FILENAME_INFO_SHOPPING_CART, '', 'SSL'); ?>","info_shopping_cart","height=460,width=430,toolbar=no,statusbar=no,scrollbars=yes").focus();
 }
-//--></script>
+--></script>
 </head>
 <body>
-<!-- header //--> 
+<!-- header --> 
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
-<!-- header_eof //--> 
-<!-- body //--> 
+<!-- header_eof --> 
+<!-- body --> 
 <div id="main">
-<!-- left_navigation //-->
-<div id="l_menu">
-<?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-</div>
-<!-- left_navigation_eof //-->
-<!-- body_text //-->
-<div id="content">
-<div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
-<h2 class="pageHeading">
+
+<?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
+<!-- body_text -->
+<div id="layout" class="yui3-u">
+<div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif" alt="picture"> '); ?></div>
+<?php include('includes/search_include.php');?>
+<div id="main-content">
+<h2>
 <?php 
 if (!isset($_GET['pid'])) {
-  echo HEADING_TITLE;
+  echo  HEADING_TITLE;
 } else {
   echo PREORDER_HEADING_TITLE; 
 }
 ?> 
 </h2>
-<div class="box">
 <?php echo tep_draw_form('login', tep_href_link(FILENAME_LOGIN, 'action=process'.(isset($_GET['pid'])?'&pid='.$_GET['pid']:''), 'SSL')); ?>
-      <table class="box_des" width="95%" border="0" align="center" cellpadding="0" cellspacing="0">
+      <table  width="100%" border="0"  cellpadding="0" cellspacing="0" class="login_spacing">
 
 <?php
 if(isset($_GET['login']) && ($_GET['login'] == 'ip_error')){
@@ -434,10 +428,8 @@ if(isset($_GET['login']) && ($_GET['login'] == 'ip_error')){
   if (isset($info_message)) {
 ?>
         <tr>
-          <td class="smallText"><?php echo $info_message; ?></td>
-        </tr>
-        <tr>
-          <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
+
+          <td colspan="2"><?php echo $info_message; ?></td>
         </tr>
         <?php
   }
@@ -446,161 +438,104 @@ if(isset($_GET['login']) && ($_GET['login'] == 'ip_error')){
       if (isset($_GET['pid'])) {
       ?>
         <tr>
-          <td> 
-          <table border="0" width="100%" cellspacing="0" cellpadding="2" summary="table">
-          <tr>     
-          <td colspan="2" valign="top" class="main">
-            <table border="0" class="infoBox" summary="table" cellpadding="1" cellspacing="0" width="100%">
-              <tr>
-                <td>
-                  <table border="0" width="100%" cellspacing="0" cellpadding="2" class="infoBoxContents" summary="table">
-                    <tr>
-                      <td class="main" colspan="2">
+                      <td colspan="2">
                       <?php echo PREORDER_LOGIN_HEAD_TEXT;?> 
-                      </td>
-                    </tr>
-                  </table> 
-                </td>
-              </tr>
-            </table> 
           </td>
-          </tr>
-          </table> 
-        </td>
-        </tr>
+       
       <?php }?> 
-        <tr>
-          <td><!--<?php echo tep_draw_form('login', tep_href_link(FILENAME_LOGIN, 'action=process', 'SSL')); ?>-->
-          <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2">
-            <tr>
-              <td colspan="2" valign="top" class="main">
-              <?php if (!isset($_GET['pid'])) {?> 
-              <b><?php echo HEADING_RETURNING_CUSTOMER; ?></b>
+                      <?php if (!isset($_GET['pid'])) {?> 
+                     
+              <tr>  <td colspan="2"> <?php echo HEADING_RETURNING_CUSTOMER; ?></td></tr>
               <?php }?> 
-              <table border="0" width="100%" cellspacing="0" cellpadding="1" class="formArea">
-                <tr>
-                  <td><table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2">
                     <tr>
-                      <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
+                      <td colspan="2"><?php echo TEXT_RETURNING_CUSTOMER; ?></td>
                     </tr>
                     <tr>
-                      <td class="main" colspan="2"><?php echo TEXT_RETURNING_CUSTOMER; ?></td>
+                      <td width="20%"><b><?php echo ENTRY_EMAIL_ADDRESS; ?></b></td>
+                      <td><?php echo
+                      tep_draw_input_field('email_address','','style="width:40%;"'); ?></td>
                     </tr>
                     <tr>
-                      <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
-                    </tr>
-                    <tr>
-                      <td class="main"><b><?php echo ENTRY_EMAIL_ADDRESS; ?></b></td>
-                      <td class="main main_input"><?php echo tep_draw_input_field('email_address'); ?></td>
-                    </tr>
-                    <tr>
-                      <td class="main"><b><?php echo ENTRY_PASSWORD; ?></b></td>
-                      <td class="main main_input"><?php echo tep_draw_password_field('password'); ?></td>
-                    </tr>
-                    <tr>
-                      <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
+                      <td><b><?php echo ENTRY_PASSWORD; ?></b></td>
+                      <td><?php echo
+                      tep_draw_password_field('password','','style="width:40%;"'); ?></td>
                     </tr>
                     <tr>
                       <td class="smallText" colspan="2"><?php echo '<a href="' . tep_href_link(FILENAME_PASSWORD_FORGOTTEN, '', 'SSL') . '">' . TEXT_PASSWORD_FORGOTTEN . '</a>'; ?></td>
                     </tr>
                     <tr align="right">
-                      <td colspan="2"><?php echo tep_image_submit('button_login.gif', IMAGE_BUTTON_LOGIN); ?></td>
+                      <td colspan="2"><?php echo
+                      tep_image_submit('button_login.gif',
+                          IMAGE_BUTTON_LOGIN,'onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_login_hover.gif\'"
+                          onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_login.gif\'"'); ?></td>
                     </tr>
-                  </table></td>
-                </tr>
-              </table></td>
-            </tr>
-      <tr>
-        <td colspan="2"><div class="sep">&nbsp;</div></td>
-      </tr>
+					</table>
+					<table width="100%" border="0"
+                                        align="center" class="login_box_spacing" cellpadding="0" cellspacing="0">
             <tr>
-              <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
-            </tr>
-            <tr>
-              <td colspan="2" valign="top" class="main">
+              <td colspan="2" valign="top">
               <?php if (!isset($_GET['pid'])) {?> 
               <b><?php echo HEADING_NEW_CUSTOMER; ?></b>
               <?php }?> 
               </td>
             </tr>
             <?php if (!isset($_GET['pid'])) {?> 
-            <tr>
-              <td height="50%" colspan="2" valign="top"><table class="formArea" border="0" width="100%" cellspacing="0" cellpadding="1">
-                <tr>
-                  <td><table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2">
                     <tr>
-                      <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
+                      <td valign="top" colspan="2"><?php echo TEXT_NEW_CUSTOMER . '<br><br>' . TEXT_NEW_CUSTOMER_INTRODUCTION; ?></td>
                     </tr>
                     <tr>
-                      <td class="main" valign="top"><?php echo TEXT_NEW_CUSTOMER . '<br><br>' . TEXT_NEW_CUSTOMER_INTRODUCTION; ?></td>
+                      <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
                     </tr>
                     <tr>
-                      <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
-                    </tr>
-                    <tr>
-                      <td align="right">
+                      <td align="right" colspan="2">
                       <?php 
                       if ($cart->count_contents() > 0) {
-                        echo '<a href="' . tep_href_link(FILENAME_CREATE_ACCOUNT, '', 'SSL') . '">' . tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; 
+                       echo '<a href="' . tep_href_link(FILENAME_CREATE_ACCOUNT, '',
+                            'SSL') . '">' . tep_image_button('button_continue.gif',
+                            IMAGE_BUTTON_CONTINUE,'onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_continue.gif\'"  onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_continue_hover.gif\'"') . '</a>'; 
                       } else {
-                        echo '<a href="javascript:void(0);" onclick="alert(\''.NOTICE_MUST_BUY_TEXT.'\');"><img src="includes/languages/japanese/images/buttons/button_continue.gif" alt="'.IMAGE_BUTTON_CONTINUE.'"></a>'; 
+                        echo '<a href="javascript:void(0);"
+                          onclick="alert(\''.NOTICE_MUST_BUY_TEXT.'\');"><img
+                          onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_continue.gif\'"
+                          onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_continue_hover.gif\'"src="includes/languages/japanese/images/buttons/button_continue.gif" alt="'.IMAGE_BUTTON_CONTINUE.'"></a>'; 
                       }
                       ?>
                       </td>
                     </tr>
                    <tr>
-                      <td align="right">
-                      <a href="<?php echo tep_href_link('send_mail.php', '', 'SSL');?>">メール受信テストをする</a> 
+                      <td align="right" colspan="2">
+                      <a href="<?php echo tep_href_link('send_mail.php', '', 'SSL');?>"><?php TEXT_TEST_MAIL;?></a> 
                       </td>
                    </tr>
-                  </table></td>
-                </tr>
-              </table>
-              </td>
-            </tr>
-            <?php }?> 
-            <tr>
-              <td width="50%" align="right" valign="top"></td>
-              <td width="50%" align="right" valign="top"></td>
-            </tr>
-            <tr>
-              <td align="right" valign="top"></td>
-              <td align="right" valign="top"></td>
-            </tr>
+                             <?php }?> 
+
           </table>
-          </td>
-        </tr>
+         <table width="100%" border="0"  cellpadding="0" cellspacing="0">
         <tr>
-          <td class="smallText"><!--<?php echo tep_draw_form('login', tep_href_link(FILENAME_LOGIN, 'action=process', 'SSL')); ?>-->
-         
-          </td>
+          <td class="smallText"><!--<?php echo tep_draw_form('login', tep_href_link(FILENAME_LOGIN, 'action=process', 'SSL')); ?>--></td>
         </tr>
       </table>
-  <p class="box_des" style="margin-right:5px;">
-    <i><strong>SSL認証</strong></i><br>
-    当サイトでは、実在性の証明とプライバシー保護のため、日本ジオトラストのSSLサーバ証明書を使用し、SSL暗号化通信を実現しています。
-    ブラウザのURLが「<?php echo HTTPS_SERVER;?>～」で始まるURLであることを確認ください。
-    以下に掲載するジオトラスト発行済み スマートシールのクリックにより、サーバ証明書の検証結果をご確認ください。
-  </p>
+	  <table  width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+	  <tr><td>
+  <?php echo TEXT_LOGIN_SSL_READ;?> 
   <p align="center">
-    <!-- GeoTrust Smart Icon tag. Do not edit. -->
-    <script type="text/javascript" src="//smarticon.geotrust.com/si.js"></script>
-    <!-- END of GeoTrust Smart Icon tag -->
+    <!-- GlobalSign SiteSeal tag. Do not edit. -->
+    <span id="ss_img_wrapper_130-66_flash_ja"><a href="http://jp.globalsign.com/" target="_blank"><img alt="<?php echo TEXT_SEAL_GLOBALSIGN_COM_IMG_ALT;?>" border="0" id="ss_img" src="//seal.globalsign.com/SiteSeal/images/gs_noscript_130-66_ja.gif"></a></span><script type="text/javascript" src="//seal.globalsign.com/SiteSeal/gs_flash_130-66_ja.js"></script>
+    <!-- End of GlobalSign SiteSeal Tag -->
   </p>
-<div class="sep" style="margin-right:20px;">&nbsp;</div>
-<?php echo TEXT_POINT ; ?>
-      </form></div></div>
-      <!-- body_text_eof //--> 
-<!-- right_navigation //--> 
-<div id="r_menu">
-<?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
+  <?php echo TEXT_POINT ; ?>
+  </td>
+  </tr>
+  </table>
+      </form></div>
+            </div>
+<?php include('includes/float-box.php');?>
+
+  </div>
+<?php echo DEFAULT_PAGE_TOP_CONTENTS;?>
 </div>
-<!-- right_navigation_eof //-->
-  <!-- body_eof //-->
-  <!-- footer //-->
-  <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-  <!-- footer_eof //-->
-</div>
+ <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
+
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

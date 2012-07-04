@@ -7,9 +7,9 @@
 
   //require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_MANUFAXTURERS);
 
-  define('NAVBAR_TITLE', 'メーカー一覧');
-  define('HEADING_TITLE', 'メーカー一覧');
-  define('TEXT_MORE', 'このメーカー一覧の商品一覧へ');
+  define('NAVBAR_TITLE', MENU_MU);
+  define('HEADING_TITLE', MENU_MU);
+  define('TEXT_MORE', TEXT_MANUFACTURERS_PRODUCT_LIST);
   $breadcrumb->add(NAVBAR_TITLE, tep_href_link('manufacturers.php'));
 ?>
 <?php page_head();?>
@@ -20,20 +20,12 @@
 <!-- header_eof //--> 
 <!-- body //--> 
 <div id="main">
-<!-- left_navigation //-->
-<div id="l_menu">
-<?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-</div>
-<!-- left_navigation_eof //-->
 <!-- body_text //-->
-<div id="content">
-<div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
-<h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1> 
-
-        <table class="box_des" border="0" width="95%" cellspacing="0" cellpadding="0"> 
-          <tr> 
-            <td>
-            <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2">
+<div id="layout" class="yui3-u">
+<div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
+<div id="main-content">
+<h2><?php echo HEADING_TITLE ; ?></h2> 
+            <table border="0" width="100%" cellspacing="0" cellpadding="0">
 <?php 
   //$manufacturer_query_raw = "select m.manufacturers_id, m.manufacturers_name, m.manufacturers_image, mi.manufacturers_url from " . TABLE_MANUFACTURERS . " m, " . TABLE_MANUFACTURERS_INFO . " mi  where  m.manufacturers_id = mi.manufacturers_id and languages_id = '" . $languages_id . "' order by manufacturers_name" ;
   $manufacturer_query_raw = "select * from (select pd.products_id, pd.products_status, pd.site_id, m.manufacturers_id, m.manufacturers_name, m.manufacturers_image, mi.manufacturers_url from " . TABLE_MANUFACTURERS . " m, " . TABLE_MANUFACTURERS_INFO . " mi, ".TABLE_PRODUCTS." p, ".TABLE_PRODUCTS_DESCRIPTION." pd where p.products_id not in".tep_not_in_disabled_products()." and p.manufacturers_id  = m.manufacturers_id and p.products_id = pd.products_id and m.manufacturers_id = mi.manufacturers_id and languages_id = '" . $languages_id . "' order by pd.site_id DESC) p where site_id = '".SITE_ID."' or site_id = '0' group by manufacturers_id having p.products_status != '0' and p.products_status != '3' order by manufacturers_name" ;
@@ -55,7 +47,7 @@
   }
 ?>
               <tr>
-                <td class="main">
+                <td>
 <?php
   while($manufacturer = tep_db_fetch_array($manufacturer_query)){
     //ccdd
@@ -65,7 +57,7 @@
 echo '
 <table class="box_des" width="100%" border="0" cellspacing="0" cellpadding="0">'."\n".
   '<tr>'."\n".
-  '<td width="120" class="smallText" valign="top">'.tep_image(DIR_WS_IMAGES . $manufacturer['manufacturers_image'],$manufacturer['manufacturers_name']).'</b><br><b style="text-align:center">'.$manufacturer['manufacturers_name'].'</b><!--<br>'.substr(strip_tags($manufacturer['manufacturers_url']),0,100) .'...--></td>'."\n".
+  '<td width="120" class="smallText" valign="top">'.tep_image(DIR_WS_IMAGES . $manufacturer['manufacturers_image'],$manufacturer['manufacturers_name']).'</b><br><b style="text-align:center">'.$manufacturer['manufacturers_name'].'</b></td>'."\n".
     '<td>'."\n"
   ;
      echo '<table class="box_des" width="100%" border="0" cellspacing="2" cellpadding="0">'."\n".'<tr>'."\n";
@@ -78,7 +70,7 @@ echo '
        } else {
          $products_price = $currencies->display_price(tep_get_price($products['products_price'], $products['products_price_offset'], $products['products_small_sum'], $products['products_bflag']), tep_get_tax_rate($products['products_tax_class_id']));
        }
-     echo '<td align="center" valign="top" class="smallText" width="30%"><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .  $products['products_id']) . '">'.tep_image2(DIR_WS_IMAGES.'products/'.$products['products_image'],$products['products_name'],60, 60,'class="image_border"').'<br>' .$products['products_name'] . '</a><br>'.$products_price.'<!--<div class="s_smallText">'.strip_tags(substr(replace_store_name($products['products_description']),0,50)).'</div>--></td>'."\n";
+     echo '<td align="center" valign="top" class="smallText" width="20%"><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .  $products['products_id']) . '">'.tep_image2(DIR_WS_IMAGES.'products/'.$products['products_image'],$products['products_name'],60, 60,'class="image_border"').'<br>' .$products['products_name'] . '</a><br>'.$products_price.'</td>'."\n";
          //$col ++;
      /*     if ($col > 2) {
          echo '</tr>'."\n".'<tr>';
@@ -94,9 +86,9 @@ echo '
   '<tr>'."\n".
     '<td colspan="2" align="right" class="smallText">'."\n".
   '<a href="'.tep_href_link(FILENAME_DEFAULT,'manufacturers_id=' . $manufacturer['manufacturers_id']).'">'.TEXT_MORE.'</a>'."\n"
-    . tep_draw_separator('pixel_trans.gif', '100%', '25').'</td>'."\n".
+	.'</td>'."\n".
   '</tr>'."\n".
-'</table><div class="dot">&nbsp;</div>'."\n" ;
+'</table><hr width="100%" style="border-bottom:1px dashed #ccc; height:2px; border-top:none; border-left:none; border-right:none; margin:10px 0;">'."\n" ;
 }
 
 }
@@ -115,20 +107,14 @@ echo '
                     <?php
   }
 ?>
-                    <tr>
-                      <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
-                    </tr>
+                    
                   </table></td>
               </tr>
-            </table></td>
-        </tr>
-      </table></div>
-      <!-- body_text_eof //--> 
-<!-- right_navigation //--> 
-<div id="r_menu">
-<?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
+            </table></div>
+      </div>
+      <?php include('includes/float-box.php');?>
 </div>
-<!-- right_navigation_eof //-->
+      <!-- body_text_eof //--> 
   <!-- body_eof //-->
   <!-- footer //-->
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>

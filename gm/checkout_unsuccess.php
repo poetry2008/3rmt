@@ -1,12 +1,10 @@
 <?php
 /*
   $Id$
-  订制订单完成页
 */
 
  require('includes/application_top.php');
 
-// 以下是动作
 // if the customer is not logged on, redirect them to the shopping cart page
   if (!tep_session_is_registered('customer_id')) {
     if (!isset($_GET['pre_type'])) {
@@ -23,7 +21,6 @@
 
 
 
-// 以下是页面
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_CHECKOUT_UNSUCCESS);
 
   $breadcrumb->add(NAVBAR_TITLE_1, tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
@@ -38,14 +35,11 @@
   <!-- header_eof //--> 
   <!-- body //--> 
   <div id="main">
-  <!-- left_navigation //-->
-<div id="l_menu">
-<?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-</div>
-<div id="content">
+<div id="layout" class="yui3-u">
 <?php echo tep_draw_form('order', tep_href_link(FILENAME_CHECKOUT_UNSUCCESS, 'action=checkout_payment', 'SSL')); ?> 
-<div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
-<h1 class="pageHeading"><?php echo TEXT_UNSUCCESS; ?></h1>
+<div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
+<div id="main-content">
+<h2><?php echo TEXT_UNSUCCESS; ?></h2>
  <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr> 
               <td><p>
@@ -56,31 +50,33 @@
               <?php } ?>
               <br />
               <?php echo TEXT_PAY_UNSUCCESS;?></p>
-              <p>
+              <div class="botton-continue">
               <?php 
               if (isset($_GET['pre_type'])) {
               ?>
               <a href="<?php echo tep_href_link(FILENAME_DEFAULT);?>"><?php echo tep_image_button('button_continue.gif', '');?></a> 
               <?php
               } else {
-                echo tep_image_submit('button_back_payment.jpg', IMAGE_BUTTON_CONTINUE); 
+                echo tep_image_submit('button_back_payment.jpg',
+                    IMAGE_BUTTON_CONTINUE,'onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_back_payment_hover.jpg\'"
+                    onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_back_payment.jpg\'"'); 
               } 
               ?>
-              </p>
+           	  </div>
               </td> 
             </tr> 
-          </table> 
+          </table>
+          </div>
        </form> 
   </div>
-  <div id="r_menu">
-<?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-</div>
+  <?php   include("includes/float-box.php");?>
   <!-- body_eof //--> 
   <!-- footer //--> 
-  <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
-  <!-- footer_eof //--> 
+    <!-- footer_eof //--> 
   </div>
-</div> 
+</div>
+<?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
+
 </body>
 </html>
 <?php 

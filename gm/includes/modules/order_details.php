@@ -1,6 +1,7 @@
 <?php
 /*
   $Id$
+  ファイルコードを確認
 */
 ?>
 <!-- order_details -->
@@ -21,7 +22,7 @@
     //echo '    <td class="tableHeading">' . TABLE_HEADING_MODEL . '</td>' . "\n";
   }
 
-  echo '    <td class="tableHeading">' . TABLE_HEADING_PRODUCTS . '</td>' . "\n";
+  echo '    <td width="60%">' . TABLE_HEADING_PRODUCTS . '</td>' . "\n";
 
   if (!strstr($PHP_SELF, FILENAME_SHOPPING_CART)) {
     $colspan++;
@@ -31,9 +32,7 @@
   echo '    <td align="right" class="tableHeading">' . TABLE_HEADING_TOTAL . '</td>' . "\n" .
        '    <td align="center" class="tableHeading">' . TABLE_HEADING_OPERATE . '</td>' . "\n" .
        '  </tr>' . "\n" .
-       '  <tr>' . "\n" .
-       '    <td height="1" colspan="' . $colspan . '" bgcolor="#BDCED5">' . '</td>' . "\n" .
-       '  </tr>' . "\n";
+       '  ' . "";
 
   for ($i=0, $n=sizeof($products); $i<$n; $i++) {
     echo '  <tr>' . "\n";
@@ -56,42 +55,31 @@
           $product_info['products_price'], 'id="unit_price_'.$products[$i]['id'].'"');
       echo tep_draw_hidden_field('small_sum_' . $products[$i]['id'], $product_info['products_small_sum'], ' id="small_sum_'.$products[$i]['id'].'"');
       echo tep_draw_hidden_field('final_price', tep_add_tax($products[$i]['final_price'], tep_get_tax_rate($products[$i]['tax_class_id'])), 'id="id_'.$products[$i]['id'].'"');
-      echo '    <td align="center">';
-      echo '<table>'; 
-      echo '<tr>'; 
-      echo '<td>' . tep_draw_input_field('cart_quantity[]', $products[$i]['quantity'], 'size="4" maxlength="4" class="input_text_short" id="quantity_'.$products[$i]['id'].'" onblur="update_cart(this);"
+      echo '    <td>';
+           echo '<div style="float:left;margin:5px 0 0 10px">' . tep_draw_input_field('cart_quantity[]', $products[$i]['quantity'], 'size="4" maxlength="4" class="input_text_short" id="quantity_'.$products[$i]['id'].'" onblur="update_cart(this);"
           onkeypress="return key(event);"') ;
       echo tep_draw_hidden_field('products_id[]', $products[$i]['id']);
-      echo '</td>'; 
-      echo '<td><div>'; 
+      echo '</div>'; 
+      echo '<div class="calculation-add">'; 
       ?>
-      <a style="display:block;" href="javascript:void(0)" onclick="change_num('<?php echo $p_id;?>', 'up',1,<?php echo $p_a_quan;?>); return false;"> 
-      <img src="images/ico/nup.gif" style="vertical-align:bottom;"> 
-      </a> 
-      <a style="display:block;" href="javascript:void(0)" onclick="change_num('<?php echo $p_id;?>', 'down',1,<?php echo $p_a_quan;?>); return false;"> 
-      <img src="images/ico/ndown.gif" style="vertical-align:top;"> 
-      </a> 
+    
+      <a style="display:block; margin-left:4px;" href="javascript:void(0)" onclick="change_num('<?php echo $p_id;?>', 'up',1,<?php echo $p_a_quan;?>); return false;"><img src="images/ico/nup.gif" style="vertical-align:bottom;">       </a> 
+      <a style="display:block;" href="javascript:void(0)" onclick="change_num('<?php echo $p_id;?>', 'down',1,<?php echo $p_a_quan;?>); return false;">       <img src="images/ico/ndown.gif" style="vertical-align:top;">       </a> 
       <?php
-      echo '</td></div>'; 
-      echo '<td><font style="font-size:10px">個</font></td>';
-      echo  '</tr>'; 
-      echo '</table>'; 
-      echo ' <font style="font-size:10px">'.
-        (!empty($product_info['products_attention_1_3']) &&
-         tep_get_full_count_in_order2($products[$i]['quantity'],
-           $products[$i]['id']) ? '<span id="one_price_show_'. $products[$i]['id'].'" style="font-size:10px">'. tep_get_full_count_in_order2($products[$i]['quantity'], $products[$i]['id']) .'</span>': '') . "\n";
-      echo ' <font style="font-size:10px">'.
-        (!empty($product_info['products_attention_1_3']) &&
-         tep_get_full_count_in_order2($products[$i]['quantity'],
-           $products[$i]['id']) ? '<span id="one_price_'. $products[$i]['id'].'" style="display:none">'.
-         tep_get_full_count_in_order2($products[$i]['quantity'],
-           $products[$i]['id'],true) .'</span>': '') .'</td>' ."\n";
+      echo '</div>'; 
+      echo '<div style="float:left;margin:5px auto"><font style="font-size:14px">'.NUM_UNIT_SYMBOL.'</font></div>';
+           echo '<div style="clear:both; margin-left:10px;">'.
+             (!empty($product_info['products_attention_1_3']) &&
+              tep_get_full_count_in_order2($products[$i]['quantity'],
+                $products[$i]['id']) ? '<span style="font-size:14px">'.
+              tep_get_full_count_in_order2($products[$i]['quantity'],
+                $products[$i]['id']) .'</span>': '') . "\n"."</div>";
     } else {
-      echo '    <td align="center" class ="main" style=" padding-left:10px;padding-right:20px;">' . $products[$i]['quantity'] . '個' ;
-      echo (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($products[$i]['quantity'], $products[$i]['id']) ? '<span style="font-size:10px">'. tep_get_full_count_in_order2($products[$i]['quantity'], $products[$i]['id']) .'</span>' : '');
+      echo '    <td align="center" class ="main" style=" padding-left:10px;padding-right:20px;">' . $products[$i]['quantity'] . NUM_UNIT_SYMBOL ;
+      echo (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($products[$i]['quantity'], $products[$i]['id']) ? '<span style="font-size:14px">'. tep_get_full_count_in_order2($products[$i]['quantity'], $products[$i]['id']) .'</span>' : '');
       echo '</td>' . "\n";
     }
-    echo '<td>'; 
+       echo '<td align="center">'; 
     $pimage_query = tep_db_query("select * from ".TABLE_PRODUCTS." where products_id = '".intval($products[$i]['id'])."'"); 
     $pimage_res = tep_db_fetch_array($pimage_query); 
 
@@ -115,12 +103,12 @@
         $stock_link_single = true; 
         echo '    <td class="main" style=" ">'.(((PRODUCT_LIST_MODEL > 0) && strstr($PHP_SELF, FILENAME_SHOPPING_CART))?$products[$i]['model'] . '<br>':'').'<b>' . $products[$i]['name'] . '</b>';
       } else {
-        echo '    <td class="main" style=" ">'.(((PRODUCT_LIST_MODEL > 0) && strstr($PHP_SELF, FILENAME_SHOPPING_CART))?'<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . tep_get_prid($products[$i]['id'])) . '">' . $products[$i]['model'] . '</a><br>':'').'<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . tep_get_prid($products[$i]['id'])) . '"><b>' . $products[$i]['name'] . '</b></a>';
+        echo '    <td class="main" >'.(((PRODUCT_LIST_MODEL > 0) && strstr($PHP_SELF, FILENAME_SHOPPING_CART))?'<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . tep_get_prid($products[$i]['id'])) . '">' . $products[$i]['model'] . '</a><br>':'').'<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . tep_get_prid($products[$i]['id'])) . '"><b>' . $products[$i]['name'] . '</b></a>';
       }
       //echo '    <td class="main"><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $products[$i]['id']) . '"><b>' . $products[$i]['name'] . '</b></a>';
     } else {
-      echo '    <td class="main" style=" ">'.(((PRODUCT_LIST_MODEL > 0) && strstr($PHP_SELF, FILENAME_SHOPPING_CART))?'<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . tep_get_prid($products[$i]['id'])) . '">' . $products[$i]['model'] . '</a><br>':'').'<b>' . $products[$i]['name'] . '</b>';
-      //echo '    <td class="main"><b>' . $products[$i]['name'] . '</b>';
+      echo '    <td class="main">'.(((PRODUCT_LIST_MODEL > 0) && strstr($PHP_SELF, FILENAME_SHOPPING_CART))?'<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . tep_get_prid($products[$i]['id'])) . '">' . $products[$i]['model'] . '</a><br>':'').'<b>' . $products[$i]['name'] . '</b>';
+     //echo '    <td class="main"><b>' . $products[$i]['name'] . '</b>';
     }
 
 // Display marker if stock quantity insufficient
@@ -198,19 +186,16 @@
       }
     }
     if (strstr($PHP_SELF, FILENAME_SHOPPING_CART)) {
-      echo '<td align="center"><a class="button_delete02" href="'.tep_href_link(FILENAME_SHOPPING_CART, 'products_id='.$products[$i]['id'].'&action=delete', 'SSL').'">'.TEXT_DEL_LINK.'</a><td>';
+      echo '<td align="center" ><a class="button_delete02"
+        href="'.tep_href_link(FILENAME_SHOPPING_CART,
+        'products_id='.$products[$i]['id'].'&action=delete',
+        'SSL').'">'.TEXT_DEL_LINK.'</a></td>';
     }
     echo '</tr>'; 
-    echo
-       '  <tr>' . "\n" .
-       '    <td height="1" colspan="' . $colspan . '" bgcolor="#BDCED5">' . '</td>' . "\n" .
-       '  </tr>' . "\n";
+     
   
-  
-    echo '</td>' . "\n" .
-  
-  
-         '  </tr>' . "\n";
+    
+   '  </tr>' . "\n";
   }
 ?>
 <!-- order_details_eof -->

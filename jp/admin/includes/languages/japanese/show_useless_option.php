@@ -14,4 +14,7 @@ define('SHOW_USELESS_TEXT_GROUP_NEXT', '次へ>');
 define('SHOW_USELESS_DEL','削除');
 define('SHOW_USELESS_ALL_DEL','全て削除');
 define('SHOW_USELESS_OPTION_GROUP_SELECT','選択');
+define('SHOW_USELESS_OPTION_GROUP_ALERT','選択してください!');
+define('SHOW_USELESS_OPTION_GROUP_CONFIRM','削除しますか？');
+
 ?>

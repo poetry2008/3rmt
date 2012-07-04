@@ -12,20 +12,17 @@ require(DIR_WS_ACTIONS.'checkout_confirmation.php');
 <!-- header_eof //-->
 <!-- body //-->
 <div id="main">
-<!-- left_navigation //-->
-<div id="l_menu">
-<?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-</div>
-<!-- left_navigation_eof //-->
+<?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
 <!-- body_text //-->
-<div id="content">
+<div id="layout" class="yui3-u">
 <?php echo tep_draw_form('checkout_confirmation', $form_action_url, 'post', 'onSubmit="return check_confirm_payment(\''.$payment.'\')"');?>
-<div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
-<h1 class="pageHeading"><?php echo HEADING_TITLE; ?></h1>
-<table class="box_des" border="0" width="95%" cellspacing="0" cellpadding="0"> 
-<tr>
-  <td>
-    <table border="0" width="100%" cellspacing="0" cellpadding="0" class="checkout_s_link">
+<div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
+
+
+<div id="main-content">
+<?php echo tep_draw_form('checkout_confirmation', $form_action_url, 'post', 'onSubmit="return check_confirm_payment(\''.$payment.'\')"');?>
+<h2><?php echo HEADING_TITLE; ?></h2>
+<table border="0" width="100%" cellspacing="0" cellpadding="0" class="checkout_s_link">
       <tr>
         <td width="20%">
           <table border="0" width="100%" cellspacing="0" cellpadding="0">
@@ -35,8 +32,22 @@ require(DIR_WS_ACTIONS.'checkout_confirmation.php');
             </tr>
           </table>
         </td>
-        <td width="20%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td>
-        <td width="20%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td>
+        <td width="20%">
+          <table border="0" width="100%" cellspacing="0" cellpadding="0">
+            <tr>
+           <td> 
+        <?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td>
+            </tr>
+          </table>
+        </td>
+        <td width="20%">
+            <table border="0" width="100%" cellspacing="0" cellpadding="0">
+            <tr>
+           <td> 
+        <?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td>
+            </tr>
+          </table>
+        </td>
         <td width="20%">
           <table border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr>
@@ -63,69 +74,52 @@ require(DIR_WS_ACTIONS.'checkout_confirmation.php');
         <td align="center" nowrap="nowrap" width="20%" class="checkoutBarTo"><?php echo CHECKOUT_BAR_FINISHED; ?></td>
       </tr>
     </table>
-  </td>
-</tr>
-<tr>
-  <td>
-    <table border="0" width="100%" cellspacing="0" cellpadding="0" class="c_pay_info">
-      <tr>
-        <td class="main"><b>ご注文内容をご確認の上「注文する」をクリックしてください。</b></td>
-        <td class="main" align="right"><?php echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER);?></td>
-      </tr>
-    </table>
-  </td> 
-</tr>
-  
-<tr>
-  <td>
-    <table border="0" width="100%" cellspacing="1" cellpadding="2" class="formArea">
-      <tr>
-        <?php
+	
+    <div id="hm-checkout-warp"><div class="checkout-title"><b><?php  echo TEXT_ORDERS_SUBMIT_TWO;?></b></div>
+  <div class="checkout-bottom"> <?php echo
+  tep_image_submit('button_confirm_order.gif',
+      IMAGE_BUTTON_CONFIRM_ORDER,' onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_confirm_order.gif\'" onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_confirm_order_hover.gif\'"');?></div>  
+  </div>
+  <div class="checkout-conent">
+<table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+    
+      <?php
   if ($sendto != false) {
 ?>
-        <td width="30%" valign="top">
-          <table border="0" width="100%" cellspacing="0" cellpadding="2" class="box_des">
-            <tr>
-              <td class="main"><?php echo '<b>' . HEADING_DELIVERY_ADDRESS . '</b> <a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING_ADDRESS, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
+                <tr>
+              <td><?php echo '<b>' . HEADING_DELIVERY_ADDRESS . '</b> <a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING_ADDRESS, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
             </tr>
             <tr>
-              <td class="main"><?php echo tep_address_format($order->delivery['format_id'], $order->delivery, 1, ' ', '<br>'); ?></td>
+              <td><?php echo tep_address_format($order->delivery['format_id'], $order->delivery, 1, ' ', '<br>'); ?></td>
             </tr>
             <?php
     if ($order->info['shipping_method']) {
 ?>
             <tr>
-              <td class="main"><?php echo '<b>' . HEADING_SHIPPING_METHOD . '</b> <a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
+              <td><?php echo '<b>' . HEADING_SHIPPING_METHOD . '</b> <a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
             </tr>
             <tr>
-              <td class="main"><?php echo $order->info['shipping_method']; ?></td>
+              <td><?php echo $order->info['shipping_method']; ?></td>
             </tr>
             <?php
     }
 ?>
-          </table>
-        </td>
-        <?php
+                <?php
   }
 ?>
-              <td width="<?php echo (($sendto != false) ? '70%' : '100%'); ?>" valign="top">
-                <table border="0" width="100%" cellspacing="0" cellpadding="0" class="box_des">
-                  <tr>
-                    <td>
-                      <table border="0" width="100%" cellspacing="0" cellpadding="2" class="box_des">
-                        <?php
+                                    <?php
   if (sizeof($order->info['tax_groups']) > 1) {
 ?>
                         <tr>
-                          <td class="main" colspan="2"><?php echo '<b>' . HEADING_PRODUCTS . '</b> <a href="' . tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
-                          <td class="smallText" align="right"><b><?php echo HEADING_TAX; ?></b></td>
-                          <td class="smallText" align="right"><b><?php echo HEADING_TOTAL; ?></b></td>
+                          <td colspan="2"><?php echo '<b>' . HEADING_PRODUCTS . '</b> <a href="' . tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
+                          <td align="right"><b><?php echo HEADING_TAX; ?></b></td>
+                          <td align="right"><b><?php echo HEADING_TOTAL; ?></b></td>
                         </tr>
                         <?php
   } else {
 ?>
                         <tr>
-                          <td class="main" colspan="3"><?php echo '<b>' . HEADING_PRODUCTS . '</b> <a href="' . tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
+                          <td colspan="4"><?php echo '<b>' . HEADING_PRODUCTS . '</b> <a href="' . tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
                         </tr>
                         <?php
   }
@@ -135,8 +129,13 @@ require(DIR_WS_ACTIONS.'checkout_confirmation.php');
     $product_info = tep_get_product_by_id($order->products[$i]['id'], SITE_ID, $languages_id);
     
     echo '          <tr>' . "\n" .
-         '            <td class="main" align="center" valign="top" width="150">' . $order->products[$i]['qty'] . '&nbsp;個' . (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($order->products[$i]['qty'], $order->products[$i]['id']) ? '<br><span style="font-size:10px">'. tep_get_full_count_in_order2($order->products[$i]['qty'], $order->products[$i]['id']) .'</span>': '') . '</td>' . "\n" .
-         '            <td class="main" valign="top">' . $order->products[$i]['name'];
+         '          <td width="10"></td>  
+		 			<td align="left" valign="top" width="30%">' .
+         $order->products[$i]['qty'] . '&nbsp;' . TEXT_ORDERS_OPTION_QTY .
+         (!empty($product_info['products_attention_1_3']) &&
+          tep_get_full_count_in_order2($order->products[$i]['qty'],
+            $order->products[$i]['id']) ? '<br/><span style="font-size:14px">'. tep_get_full_count_in_order2($order->products[$i]['qty'], $order->products[$i]['id']) .'</span>': '') . '</td>' . "\n" .
+         '            <td valign="top" width="50%">' . $order->products[$i]['name'];
 
     if (STOCK_CHECK == 'true') {
       echo tep_check_stock($order->products[$i]['id'], $order->products[$i]['qty']);
@@ -150,9 +149,10 @@ require(DIR_WS_ACTIONS.'checkout_confirmation.php');
 
     echo '</td>' . "\n";
 
-    if (sizeof($order->info['tax_groups']) > 1) echo '            <td class="main" valign="top" align="right">' . tep_display_tax_value($order->products[$i]['tax']) . '%</td>' . "\n";
+    if (sizeof($order->info['tax_groups']) > 1) echo '            <td
+      valign="top" align="right" >' . tep_display_tax_value($order->products[$i]['tax']) . '%</td>' . "\n";
 
-    echo '            <td class="main" align="right" valign="top">';
+    echo '            <td align="right" valign="top" width="20%">';
     if ($order->products[$i]['final_price'] < 0) {
       echo '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty'])).'</font>'.JPMONEY_UNIT_TEXT;
     } else {
@@ -162,71 +162,51 @@ require(DIR_WS_ACTIONS.'checkout_confirmation.php');
          '          </tr>' . "\n";
   }
 ?>
-                      </table>
+           
+                                    <tr>
+                    <td colspan="4"><br><b><?php echo TEXT_TRADE_DATE; ?></b><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
+                  </tr>
+                  <tr>
+                  	 <td width="10"></td>
+                     <td align="left"><?php echo TEXT_OPTION; ?></td>
+                    <td colspan="2"><?php echo $torihikihouhou; ?></td>
+                  </tr>
+                  <tr>
+                  	 <td width="10"></td>
+                     <td align="left"><?php echo TEXT_EXPECT_TRADE_DATE; ?></td>
+                    <td colspan="2"><?php echo str_string($date); ?>
+                       <?php
+                         $_SESSION['date1']=str_string($date);
+                       ?> 
+                     </td>
+                  </tr>
+                  <tr>
+                  	 <td width="10"></td>
+                     <td align="left"><?php echo TEXT_EXPECT_TRADE_TIME; ?></td>
+                     <td colspan="2"><?php echo $hour; ?> &nbsp;<?php echo TEXT_ORDERS_OPTION_HOUR;?>&nbsp; <?php echo $min; ?> &nbsp;<?php echo TEXT_ORDERS_OPTION_MIN;?>&nbsp;
+                     <?php
+                      $_SESSION['hour'] = $hour;
+                      $_SESSION['min'] = $min;
+                     ?>
                     </td>
                   </tr>
-                </table>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <table border="0" width="100%" cellspacing="1" cellpadding="2" class="formArea">
-            <tr>
-              <td>
-                <table width="100%" border="0" cellspacing="0" cellpadding="2" class="box_des">
-                  <tr>
-                    <td class="main" colspan="3"><b><?php echo TEXT_TORIHIKI_TITLE; ?></b><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
-                  </tr>
-                  <tr>
-                  <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td>
-                    <td class="main"><?php echo TEXT_TORIHIKIHOUHOU; ?></td>
-                    <td class="main"><?php echo $torihikihouhou; ?></td>
-                  </tr>
-                  <tr>
-                    <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td>
-                    <td class="main" width="30%"><?php echo TEXT_TORIHIKIKIBOUBI; ?></td>
-                    <td class="main" width="70%"><?php echo str_string($date); ?></td>
-                  </tr>
-                  <tr>
-                    <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td>
-                    <td class="main"><?php echo TEXT_TORIHIKIKIBOUJIKAN; ?></td>
-                    <td class="main"> <?php echo $hour; ?> &nbsp;時&nbsp; <?php echo $min; ?> &nbsp;分&nbsp; </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-          </table>
-          <br> 
-          </td>
-      </tr>
-      <?php
+
+
+                  <?php
 	      $payment_modules->specialOutput($payment);
 ?>
       <tr>
-        <td class="main03"><b><?php echo HEADING_BILLING_INFORMATION; ?></b></td>
+        <td colspan="4"><br><b><?php echo HEADING_BILLING_INFORMATION; ?></b></td>
       </tr>
-      <tr>
-        <td>
-          <table border="0" width="100%" cellspacing="1" cellpadding="2" class="formArea">
+    
             <tr>
-              <td width="30%" valign="top">
-                <table border="0" width="100%" cellspacing="0" cellpadding="2" class="box_des">
-                  <tr>
-                    <td class="main"><?php echo '<b>' . HEADING_PAYMENT_METHOD . '</b> <a href="' . tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
+                    <td colspan="4"><?php echo '<b>' . HEADING_PAYMENT_METHOD . '</b> <a href="' . tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
                   </tr>
                   <tr>
-                    <td class="main"><?php echo payment::changeRomaji($order->info['payment_method']); ?></td>
+                  	 <td width="10"></td>
+                    <td colspan="3"><?php echo payment::changeRomaji($order->info['payment_method']); ?></td>
                   </tr>
-                </table>
-              </td>
-            </tr>
-            <tr>
-              <td width="70%" valign="top" align="right">
-                <table border="0" cellspacing="0" cellpadding="2" class="box_des">
-                  <?php
+                                  <?php
   if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
     if(@$_SESSION['h_point'] < $order->info['subtotal']) {
       $point = isset($_SESSION['h_point'])?$_SESSION['h_point']:0;
@@ -243,10 +223,8 @@ require(DIR_WS_ACTIONS.'checkout_confirmation.php');
     echo $order_total_modules->output();
   }
   if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
-  // ここからカスタマーレベルに応じたポイント還元率算出============================================================
   // 2005.11.17 K.Kaneko
   if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
-    //設定した期間内の注文合計金額を算出------------
     $ptoday = date("Y-m-d H:i:s", time());
     $pstday_array = getdate();
     $pstday = date("Y-m-d H:i:s", mktime($pstday_array[hours],$pstday_array[mimutes],$pstday_array[second],$pstday_array[mon],($pstday_array[mday] - MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL_KIKAN),$pstday_array[year]));
@@ -267,7 +245,6 @@ require(DIR_WS_ACTIONS.'checkout_confirmation.php');
     }
     //----------------------------------------------
     
-    //還元率を計算----------------------------------
     if(mb_ereg("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK)) {
       $back_rate_array = explode("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK);
     $back_rate = MODULE_ORDER_TOTAL_POINT_FEE;
@@ -290,7 +267,6 @@ require(DIR_WS_ACTIONS.'checkout_confirmation.php');
   } else {
     $point_rate = MODULE_ORDER_TOTAL_POINT_FEE;
   }
-  // ここまでカスタマーレベルに応じたポイント還元率算出============================================================
   if ($order->info['subtotal'] > 0) {
     if (isset($_SESSION['campaign_fee'])) {
       $get_point = ($order->info['subtotal'] + $_SESSION['campaign_fee']) * $point_rate;
@@ -315,49 +291,40 @@ require(DIR_WS_ACTIONS.'checkout_confirmation.php');
   if(isset($customer_id)&&tep_is_member_customer($customer_id)){
   echo '<tr>' . "\n";
   if (!tep_only_buy_product()) {
-    echo '<td align="right" class="main"><br>'.TEXT_POINT_NOW.'</td>' . "\n";
+    echo '<td align="right" colspan="3"><br>'.TEXT_POINT_NOW.'</td>' . "\n";
   } else {
     if ($get_point == 0) {
-      echo '<td align="right" class="main"><br>'.TS_TEXT_POINT_NOW_TWO.'</td>' . "\n";
+      echo '<td align="right" colspan="3"><br>'.TS_TEXT_POINT_NOW_TWO.'</td>' . "\n";
     } else {
-      echo '<td align="right" class="main"><br>'.TEXT_POINT_NOW.'</td>' . "\n";
+      echo '<td align="right" colspan="3"><br>'.TEXT_POINT_NOW.'</td>' . "\n";
     }
   }
-  echo '<td align="right" class="main"><br>'.(int)$get_point.'&nbsp;P</td>' . "\n";
+  echo '<td align="right"><br>'.(int)$get_point.'P</td>' . "\n";
   echo '</tr>' . "\n";
   }
   }
 ?>
-                </table>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <?php
+              <?php
   if (is_array($payment_modules->modules)) {
     if ($confirmation = $payment_modules->confirmation($payment)) {
 ?>
       <tr>
-        <td class="main03"><b><?php echo HEADING_PAYMENT_INFORMATION; ?></b></td>
+        <td colspan="4"><br><b><?php echo HEADING_PAYMENT_INFORMATION; ?></b></td>
       </tr>
-      <tr>
-        <td>
-          <table border="0" width="100%" cellspacing="1" cellpadding="2" class="formArea">
-            <tr>
-              <td>
-                <table border="0" cellspacing="0" cellpadding="2" class="box_des">
-                  <tr>
-                    <td class="main" colspan="4"><?php echo str_replace(' />','>',$confirmation['title']); ?></td>
+
+
+              <tr>
+              		<td width="10"></td>
+                    <td colspan="3"><?php echo str_replace(' />','>',$confirmation['title']); ?></td>
                   </tr>
                   <?php
       for ($i=0, $n=sizeof($confirmation['fields']); $i<$n; $i++) {
 ?>
                   <tr>
                     <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td>
-                    <td class="main"><?php echo $confirmation['fields'][$i]['title']; ?></td>
+                    <td><?php echo $confirmation['fields'][$i]['title']; ?></td>
                     <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td>
-                    <td class="main"><?php echo $confirmation['fields'][$i]['field']; ?></td>
+                    <td><?php echo $confirmation['fields'][$i]['field']; ?></td>
                   </tr>
                   <?php
       }
@@ -368,24 +335,18 @@ require(DIR_WS_ACTIONS.'checkout_confirmation.php');
                     if ($con_show_fee != 0) { 
                 ?>
                     <tr> 
-                      <td class="main" colspan="4"><?php echo CONFIRMATION_BUYING_TEXT_TITLE; ?></td> </tr> 
+                      <td colspan="4"><?php echo CONFIRMATION_BUYING_TEXT_TITLE; ?></td> </tr> 
                     <tr> 
                       <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-                      <td class="main"><?php echo CONFIRMATION_BUYING_TEXT_FEE.$currencies->format($con_show_fee); ?></td> 
+                      <td><?php echo CONFIRMATION_BUYING_TEXT_FEE.$currencies->format($con_show_fee); ?></td> 
                       <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-                      <td class="main">&nbsp;</td> 
+                      <td>&nbsp;</td> 
                     </tr> 
                 <?php
                     }
                   }
                 ?>
-                </table>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <?php
+             <?php
     }
   }
 ?>
@@ -393,36 +354,24 @@ require(DIR_WS_ACTIONS.'checkout_confirmation.php');
   if (tep_not_null($order->info['comments'])) {
 ?>
       <tr>
-        <td class="main"><br><?php echo '<b>' . HEADING_ORDER_COMMENTS . '</b> <a href="' . tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
+        <td colspan="4"><br><b><?php echo '<b>' . HEADING_ORDER_COMMENTS . '</b> <a href="' . tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
       </tr>
-      <tr>
-        <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
-      </tr>
-      <tr>
-        <td>
-          <table border="0" width="100%" cellspacing="1" cellpadding="2" class="formArea">
-            <tr>
-              <td>
-                <table border="0" width="100%" cellspacing="0" cellpadding="2" class="box_des">
-                  <tr>
-                    <td class="main"><div class="payment_comment"><?php echo nl2br(htmlspecialchars($order->info['comments'])) . tep_draw_hidden_field('comments', $order->info['comments']); ?></div></td>
+                <tr>
+                	<td width="10"></td>
+                   <td colspan="3"><div class="payment_comment"><?php echo
+                   nl2br(htmlspecialchars($order->info['comments'])) .
+                   tep_draw_hidden_field('comments', $order->info['comments']); ?>
+                 </div></td>
                   </tr>
-                </table>
-              </td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <?php
+            <?php
   }
 ?>
-  <tr>
-    <td>
-      <table border="0" width="100%" cellspacing="0" cellpadding="0" class="c_pay_info">
-        <tr>
-          <td class="main"><b>ご注文内容をご確認の上「注文する」をクリックしてください。</b></td>
-          <td align="right" class="main">
-<?php
+    </table>
+
+	</div>
+	<div id="hm-checkout-warp">
+        <div class="checkout-title"><b><?php echo TEXT_ORDERS_SUBMIT_TWO;?></b></div>
+  <div class="checkout-bottom"><?php
   if (is_array($payment_modules->modules)) {
     echo $payment_modules->process_button($payment);
   }
@@ -432,27 +381,14 @@ require(DIR_WS_ACTIONS.'checkout_confirmation.php');
       echo tep_draw_hidden_field("character[$ck]", $cv);
     }
   }
-  echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER) . "\n";
-?>
-          </td>
-        </tr>
-      </table>
-    </td>
-  </tr>
-</table>
+  echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER,' onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_confirm_order.gif\'" onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_confirm_order_hover.gif\'"') . "\n";
+?></div></div></div>
 </form>
 </div>
-<!-- body_text_eof //-->
-<!-- right_navigation //-->
-<div id="r_menu">
-<?php require(DIR_WS_INCLUDES . 'column_right.php'); ?>
+<?php include('includes/float-box.php');?>
 </div>
-<!-- right_navigation_eof //-->
-<!-- body_eof //-->
-<!-- footer //-->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-<!-- footer_eof //-->
-</div>
+
 <!-- visites --> 
 <object><noscript><img src="visites.php" alt="Statistics" style="border:0" /></noscript></object>
 <!-- /visites -->

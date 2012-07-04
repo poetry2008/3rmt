@@ -5,49 +5,49 @@
 <form action="<!--{url controller=site action=mailadminsubmit}-->"
 name="mailtoadmin" method="post"  onsubmit="return checkForm()">
 <input type="hidden" value="<!--{$id}-->" name="id" />
-<table>
+<table width="100%">
 <tr><td>
 [<!--{_t key="event_type"}-->]
 </td></tr>
-<tr><td>
+<tr><td>&nbsp;
 <input type="checkbox" name="no_link" value="<!--{_t key=no_link}-->" />
 <!--{_t key="no_link"}-->
 </td></tr>
-<tr><td>
+<tr><td>&nbsp;
 <input type="checkbox" name="move" value="<!--{_t key=type_move}-->" />
 <!--{_t key="type_move"}-->
 </td></tr>
-<tr><td>
+<tr><td>&nbsp;
 <input type="checkbox" name="bana_no_link" value="<!--{_t key=bana_no_link}-->" />
 <!--{_t key="bana_no_link"}-->
 </td></tr>
-<tr><td>
+<tr><td>&nbsp;
 <input type="checkbox" name="ill" value="<!--{_t key=type_ill}-->" />
 <!--{_t key="type_ill"}-->
 </td></tr>
-<tr><td>
+<tr><td>&nbsp;
 <input type="checkbox" name="other" value="<!--{_t key=type_other}-->" />
 <!--{_t key="type_other"}-->
 </td></tr>
-<tr><td>
+<tr><td>&nbsp;
 <!--{_t key="comment_title"}-->
 </td></tr>
-<tr><td>
-<textarea name="com" id="com" rows='4' cols='20'></textarea>
+<tr><td>&nbsp;
+<textarea name="com" id="com" rows='6' cols='20' style="width:80%;" ></textarea>
 </td></tr>
-<tr><td>
+<tr><td>&nbsp;
 <!--{_t key="type_fname"}-->
 </td></tr>
-<tr><td>
-<input type="text" name="fname" />
+<tr><td>&nbsp;
+<input type="text" name="fname" class="input_text" />
 </td></tr>
-<tr><td>
+<tr><td>&nbsp;
 <!--{_t key="type_femail"}-->
 </td></tr>
-<tr><td>
-<input type="text" name="femail" id="to_admin_femail"/>
+<tr><td>&nbsp;
+<input type="text" class="input_text" name="femail" id="to_admin_femail"/>
 </td></tr>
-<tr><td>
+<tr><td>&nbsp;
 <input class="button02" type="submit" value="<!--{_t key=send_email}-->" />
 </td></tr>
 </table>
@@ -82,6 +82,9 @@ function checkForm()
       error = error || true;
       error_message += '\n<!--{_t key="femail_error3"}-->';
     }
+  }else{
+    error = error || true;
+    error_message += '\n<!--{_t key="femail_error1"}-->';
   }
   if(!error){
     return true;

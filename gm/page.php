@@ -43,25 +43,23 @@
 <?php page_head();?>
 </head>
 <body>
-<!-- header //--> 
-<?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
-<!-- header_eof //--> 
-<!-- body //--> 
+<?php require(DIR_WS_INCLUDES . 'header.php'); ?>
 <div id="main">
-<!-- left_navigation //-->
-<div id="l_menu">
-<?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-</div>
-<!-- left_navigation_eof //-->
-<!-- body_text //-->
-<div id="content">
+<div id="layout" class="yui3-u">
+<div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
+
+<?php include('includes/search_include.php');?>
+
+
+<div id="main-content">
+
         <?php
     if (isset($error)) { 
             if($error == true) {//No page result
     ?>
-    <table class="box_des" width="95%" border="0" cellpadding="0">
+    <table width="100%" border="0" cellpadding="0">
       <tr>
-      <td><p class="box_des"><?php echo PAGE_TEXT_NOT_FOUND; ?></p></td>
+      <td><p><?php echo PAGE_TEXT_NOT_FOUND; ?></p></td>
     </tr>
     <tr>
       <td><div align="right"><a href="<?php echo tep_href_link(FILENAME_DEFAULT); ?>"><?php echo tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></a></div></td>
@@ -70,13 +68,12 @@
         <?php
       } else {
     ?>
-<div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
-<h2 class="pageHeading"><?php echo PAGE_HEADING_TITLE ; ?></h2> 
+<h2><?php echo PAGE_HEADING_TITLE ; ?></h2> 
         
-        <div id="contents"> 
-          <?php echo PAGE_TEXT_INFORMATION; ?>
-    </div>
-        <?php
+        <div id="detail-div"> 
+          <?php  echo PAGE_TEXT_INFORMATION; ?>
+        </div>
+           <?php
       }
           }else {
          ?>
@@ -91,16 +88,23 @@
          <?php
           }
     ?>
+
+        <div align="left" class="botton-continue">
+          <?php echo '<a href="javascript:history.back()">' .
+          tep_image_button('button_back.gif',
+              IMAGE_BUTTON_BACK,'onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_back.gif\'" onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_back_hover.gif\'"') . '</a>'; ?>
+        </div>
+
       </div>
       <!-- body_text_eof //--> 
-<div id="r_menu">
-<?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
+
 </div>
-  <!-- body_eof //--> 
-  <!-- footer //--> 
-  <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
-  <!-- footer_eof //--> 
-</div> 
+<?php include('includes/float-box.php');?>
+   </div>
+<?php echo DEFAULT_PAGE_TOP_CONTENTS;?>
+</div>
+ <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
+
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

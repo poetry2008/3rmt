@@ -3,12 +3,9 @@
  $Id$
 */
 require('includes/application_top.php');
-//require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_MANUFAXTURERS);
+require(DIR_WS_LANGUAGES . $language . '/' . 'reorder2.php');
 
-define('HEADING_TITLE', '再配達依頼');
-define('MINUTES', 30);
-
-$breadcrumb->add('再配達フォーム', tep_href_link('reorder2.php'));
+$breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder2.php'));
 ?>
 <?php page_head();?>
 <script src='./js/order.js'></script>
@@ -18,13 +15,13 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder2.php'));
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
   <!-- header_eof //-->
   <!-- body //-->
-  <div id="l_menu">
-    <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-  </div>
+    <?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
   <!-- body_text //-->
-  <div id="content">
-    <div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; ');?></div>
-    <h1 class="pageHeading"><?php echo HEADING_TITLE; ?></h1>
+  <div class="yui3-u" id="layout">
+    <div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> ');?></div>
+	 <?php include('includes/search_include.php');?>
+	 <div id="main-content">
+    <h2><?php echo HEADING_TITLE; ?></h2>
     <?php if($_POST){
           $date     = tep_db_prepare_input($_POST['date']);
           $hour     = tep_db_prepare_input($_POST['hour']);
@@ -41,7 +38,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder2.php'));
           $time     = strtotime($datetime);
           if ($date && $hour && $minute && ($time < (time() - MINUTES * 60) or $time > (time() + (7*86400)))) {
             // time error
-            echo '<div><div class="comment">取引時間は前もって一時間以上に設定してください <div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" alt=""></a></div></div>';
+            echo '<div><div class="comment">'.TEXT_INFO_FOR_TRADE.' <div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" alt=""></a></div></div>';
             $email_error = false;
           } else if($name==''||$date==''||$minute==''||$hour==''||
               $character==''||$product==''){
@@ -49,41 +46,45 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder2.php'));
           } else if(!tep_validate_email($email)){
             $email_error = true;
           } else {
-            echo '<div><div class="comment" style="width:95%">注文内容の変更を承りました。電子メールをご確認ください。 <div align="right"><a href="/"><img src="includes/languages/japanese/images/buttons/button_back_home.gif" alt="TOPに戻る" title="TOPに戻る"></a></div></div>';
+            echo '<div><div class="comment"
+              style="width:100%; margin-top:15px; padding-left:6px;">'.TEXT_CHANGE_ORDER_CONFIRM_EMAIL.'
+              <div align="right" class="botton-continue"><a href="/"><img
+              src="includes/languages/japanese/images/buttons/button_back_home.gif"
+               onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_back_home.gif\'"
+               onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_back_home_hover.gif\'"
+               alt="'.TEXT_TOP_CON.'" title="'.TEXT_TOP_CON.'"></a></div></div>';
 
             $email_order = '';
-            $email_order .= $name . "様\n";
+            $email_order .= $name . TEXT_REORDER_LIKE."\n";
             $email_order .= "\n";
-            $email_order .= "この度は、ご連絡いただき誠にありがとうございます。\n";
-            $email_order .= "お客様から、下記の注文内容にて再配達を承りました。\n";
+            $email_order .= TEXT_REORDER_THANK_TO_CONTACT."\n";
+            $email_order .= TEXT_REORDER_RE_DELIVERY."\n";
             $email_order .= "\n";
             $email_order .= "=====================================\n";
             $email_order .= "\n";
             $email_order .= '━━━━━━━━━━━━━━━━━━━━━' . "\n";
-            $email_order .= '▼お名前 : ' . $name . "\n";
-            $email_order .= '▼メールアドレス : ' . $email . "\n";
-            $email_order .= '▼ゲームタイトル : ' . $product . "\n";
-            $email_order .= '▼キャラクター名 : ' . $character . "\n";
-            $email_order .= '▼変更希望の日時 : ' . $datetime . "\n";
-            $email_order .= "▼備考 : \n";
+            $email_order .= TEXT_REORDER_NAME_EMAIL . $name . "\n";
+            $email_order .= TEXT_REORDER_EMAIL_EMAIL . $email . "\n";
+            $email_order .= TEXT_REORDER_PRODUCT_EMAIL. $product . "\n";
+            $email_order .= TEXT_REORDER_CHARACTER_EMAIL. $character . "\n";
+            $email_order .= TEXT_REORDER_DATETIME_EMAIL. $datetime . "\n";
+            $email_order .= TEXT_REORDER_COMMENT_TITLE_EMAIL. "\n";
             $email_order .= $comment . "\n";
             $email_order .= '━━━━━━━━━━━━━━━━━━━━━' . "\n";
             $email_order .= "\n";
             $email_order .= "=====================================\n\n\n\n";
             
-            $email_order .= "ご不明な点がございましたら、注文番号をご確認の上、\n";
-            $email_order .= "お問い合わせください。\n\n";
+            $email_order .= TEXT_REORDER_INFO1_EMAIL."\n";
+            $email_order .= TEXT_REORDER_INFO2_EMAIL."\n\n";
 
-            $email_order .= "[ご連絡・お問い合わせ先]━━━━━━━━━━━━\n";
-            $email_order .= "株式会社 iimy\n";
+            $email_order .= TEXT_REORDER_INFO3_EMAIL."━━━━━━━━━━━━\n";
+            $email_order .= TEXT_REORDER_INFO4_EMAIL."\n";
             $email_order .= SUPPORT_EMAIL_ADDRESS . "\n";
             $email_order .= HTTP_SERVER . "\n";
-            //$email_order .= "〒761-0445 香川県高松市西植田町2925番地\n";
-            //$email_order .= "電話番号： 087-862-1173\n";
             $email_order .= "━━━━━━━━━━━━━━━━━━━━━━━\n";
             
             //$email_title = str_replace(array(), array(), $email_title);
-            $mail_title = "再配達確認メール【" . STORE_NAME . "】";
+            $mail_title = TEXT_REORDER_TITLE_EMAIL;
             //$email_order = str_replace(array('${NAME}', '${TIME}', '${CONTENT}'), array($name, date('Y-m-d H:i:s'), $email_order), $mail_content);
             
             tep_mail($name, $email, $mail_title, $email_order, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
@@ -98,22 +99,22 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder2.php'));
 if(!isset($email_error)||$email_error == true){?>
     <div class="comment">
       <form action="reorder2.php" method="post" name="order">
-        <input type="hidden" name="dummy" value="あいうえお眉幅">
-        <table class="information_table">
+        <input type="hidden" name="dummy" value="<?php echo TEXT_REORDER_EYEBROW;?>">
+        <table class="information_table" width="100%">
           <tr>
-            <td width='120'>お名前</td>
+            <td width="20%"><?php echo TEXT_REORDER_OID_NAME;?></td>
             <td>
               <input type='text'  name='name' value='<?php
   if(isset($name)&&$name){
     echo $name;
-  }?>' id='new_name' class="input_text" >
+  }?>' id='new_name' class="input_text" style="width:42.5%; margin-bottom:5px;">
               <span id='name_error'><?php
   if(isset($name)&&$name==''){
     echo TEXT_REORDER2_MUST_INPUT;
   }?></span></td>
           </tr>
           <tr>
-            <td>メールアドレス</td>
+            <td><?php echo TEXT_REORDER_EMAIL_TITLE;?></td>
             <td>
               <input type='text'  name='email' <?php
   if(isset($email)&&$email){
@@ -122,40 +123,43 @@ if(!isset($email_error)||$email_error == true){?>
     }else{
       echo ' value=\''.$email.'\' ';
     }
-  }?> id='new_email' class="input_text" ><span id='email_error'><?php 
+  }?> id='new_email' class="input_text" style="width:42.5%;
+          margin-bottom:5px;"><span id='email_error'>&nbsp;<?php 
  if(isset($email)&&$email==''){
    echo TEXT_REORDER2_MUST_INPUT;
  }?></span><?php
  if(isset($email_error)&&$email_error&&$email!=''&&!tep_validate_email($email)){
    echo "<br>";
-   echo "<font color='red'>入力されたメールアドレスは不正です!</font>";
+   echo "<font color='red'>".TEXT_REORDER_EMAIL_ERROR."</font>";
  }?></td>
+
           </tr>
           <tr>
-            <td>ゲームタイトル</td>
+            <td><?php echo TEXT_REORDER_GAME_TITLE?></td>
             <td>
               <input type='text'  name='product' value='<?php
   if(isset($product)&&$product){
     echo $product;
-  }?>' id='new_product' class="input_text" ><span id='product_error'><?php
+  }?>' id='new_product' class="input_text" style="width:42.5%;
+          margin-bottom:5px;"><span id='product_error'>&nbsp;<?php
  if(isset($product)&&$product==''){
    echo TEXT_REORDER2_MUST_INPUT;
  }?></span></td>
           </tr>
           <tr>
-            <td>キャラクター名</td>
+            <td><?php echo TEXT_REORDER_P_PRODUCT_CHARACTER;?></td>
             <td>
               <input type='text'  name='character' value='<?php
   if(isset($character)&&$character){
     echo $character;
-  }?>' id='new_character' class="input_text" >
+  }?>' id='new_character' class="input_text" style="width:42.5%; margin-bottom:5px;">
               <span id='character_error'><?php
  if(isset($character)&&$character==''){
    echo TEXT_REORDER2_MUST_INPUT;
  }?></span></td>
           </tr>
           <tr>
-            <td>取引日時</td>
+            <td valign="top"><?php echo TEXT_REORDER_TRADE_DATE;?></td>
             <td>
               <select name='date' id='new_date' onChange="selectDate('<?php echo date('H');?>', '<?php echo date('i');?>')">
                 <option value=''>--</option>
@@ -170,39 +174,48 @@ if(!isset($email_error)||$email_error == true){?>
               <select name='minute' id='new_minute'>
                 <option value=''>--</option>
               </select>
-              <span id='date_error'><?php
+              <span class='date_error'><?php
    if($hour==''||$date==''||$minute==''){
-     echo TEXT_REORDER2_TORIHIKI_ERROR;
+     echo TEXT_REORDER2_TRADE_TIME_ERROR;
    }?></span>
               <br >
-              <font color="red">ご希望のお時間に添えない場合は、弊社より「取引時間」をご連絡させていただきます。</font>
+              <font color="red"><?php echo TEXT_REORDER_TREADE_TEXT;?></font>
             </td>
           </tr>
           <tr>
-            <td>備考</td>
+            <td valign="top"><?php echo TEXT_REORDER_COMMENT_TITLE;?></td>
             <td>
-              <textarea name='comment' id='comment'><?php
+              <textarea name='comment' id='comment' style="width:80%;" rows="10"><?php
               if(isset($comment)&&$comment){
                   echo $comment;
               }?></textarea>
             </td>
           </tr>
         </table>
-        <br>
-        <p align="center">
-          <input type='image' src="includes/languages/japanese/images/buttons/button_submit2.gif" alt="確定する" title="確定する" >
-          <input type='image' src="includes/languages/japanese/images/buttons/button_reset.gif" alt="クリア" title="クリア" onclick='javascript:document.order.reset();return false;' >
-        </p>
+        <div align="center" class="botton-continue">
+          <input type='image'
+          src="includes/languages/japanese/images/buttons/button_submit2.gif"
+            onmouseout="this.src='includes/languages/japanese/images/buttons/button_submit2.gif'"
+            onmouseover="this.src='includes/languages/japanese/images/buttons/button_submit2_hover.gif'"
+            alt="<?php echo TEXT_REORDER_CONFIRE;?>" title="<?php echo
+            TEXT_REORDER_CONFIRE;?>" onclick='return check()' >
+          <input type='image'
+            onmouseout="this.src='includes/languages/japanese/images/buttons/button_reset.gif'"
+            onmouseover="this.src='includes/languages/japanese/images/buttons/button_reset_hover.gif'"
+            src="includes/languages/japanese/images/buttons/button_reset.gif"
+            alt="<?php echo TEXT_REORDER_CLEAR;?>" title="<?php echo
+            TEXT_REORDER_CLEAR;?>" onclick='javascript:document.order.reset();return false;' >
+        </div>
       </form>
       <?php }?>
     </div>
     <p class="pageBottom"></p>
   </div>
+	</div>
+	      <?php include('includes/float-box.php');?>
+		  </div>
   <!-- body_text_eof //-->
-  <div id="r_menu">
-    <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?>
-    <!-- right_navigation_eof //-->
-  </div>
+    <?php //require(DIR_WS_INCLUDES . 'column_right.php'); ?>
   <!-- body_eof //-->
   <!-- footer //-->
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>

@@ -19,6 +19,8 @@ define('TEXT_SUCCESS', '応募されましたプレゼント商品は応募者�
 当選された方には、電子メールにてお知らせいたしいます。');
 define('TEXT_CONTACT_STORE_OWNER', 'プレゼント応募についてご質問がございましたら、<a href="' . tep_href_link(FILENAME_CONTACT_US) . '">株式会社iimy</a>までお問い合わせください。');
 define('TEXT_THANKS_FOR_SHOPPING', 'プレゼント応募ありがとうございました。');
-
+define('TEXT_PRESENT_BAR_INFORMATION', '応募者情報');
+define('TEXT_PRESENT_BAR_CONFIRMATION', '確認画面');
+define('TEXT_PRESENT_BAR_SUCCESS', '応募完了');
 
 ?>

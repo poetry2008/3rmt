@@ -78,8 +78,8 @@
                     $title = '<b>'.$title.'</b>';
                 }
                 echo '<tr>'
-                  .'<td class="main" width="120">&nbsp;'.$title.'</td>'
-                  .'<td class="main">&nbsp;'.$this->formlines[$name]['value'].'</td>'
+                  .'<td class="main"'.((NEW_STYLE_WEB === true)?' width="20%" align="left">':'width="120">&nbsp;').$title.'</td>'
+                  .'<td class="main" '.((NEW_STYLE_WEB === true)?' align="left"':'').'>&nbsp;'.$this->formlines[$name]['value'].'</td>'
                   .'</tr>'."\n";
             }
         }

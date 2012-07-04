@@ -11,7 +11,6 @@
   
 ?>
 <?php page_head();?>
-<script type="text/javascript" src="js/emailProtector.js"></script>
 <script type="text/javascript"><!--
 function popupWindow(url) {
   window.open(url,'popupWindow','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,copyhistory=no,width=100,height=100,screenX=150,screenY=150,top=150,left=150')
@@ -24,16 +23,12 @@ function popupWindow(url) {
 <!-- header_eof //-->
 <!-- body //-->
 <div id="main">
-<!-- left_navigation //-->
-<div id="l_menu">
-<?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-</div>
-<!-- left_navigation_eof //-->
+<?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
 <!-- body_text //-->
-<div id="content">
-<div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
-<h2 class="pageHeading"><?php if (isset($HTTP_GET_VARS['news_id'])) { echo HEADING_TITLE; } else { echo HEADING_TITLE; } ?></h2>
-<table class="box_des" border="0" width="95%" cellspacing="0" cellpadding="0">
+<div id="layout" class="yui3-u">
+<div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
+<div id="main-content">
+<table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="0">
   <tr>
     <td>
       <div id="contents">
@@ -69,17 +64,12 @@ function popupWindow(url) {
   </tr>
 </table>
 </div>
-<!-- body_text_eof //-->
-<!-- right_navigation //-->
-<div id="r_menu">
-  <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?>
 </div>
-<!-- right_navigation_eof //-->
-<!-- body_eof //-->
-<!-- footer //-->
-<?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
+<?php include('includes/float-box.php');?>
 <!-- footer_eof //-->
 </div>
+<?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
+
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

@@ -2208,7 +2208,11 @@ function forward404Unless($condition)
     $copyright = str_replace(' &raquo; ', ' ', $copyright); 
     }
   ?>
+<?php if(NEW_STYLE_WEB!==true){?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<?php } else { ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1 Strict//EN">
+<?php } ?>
 <html <?php echo HTML_PARAMS; ?>>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo CHARSET; ?>">
@@ -2234,6 +2238,19 @@ if ($oconfig_res) {
   $css_random_str = date('YmdHi', time());
 }
 ?>
+<?php if(NEW_STYLE_WEB===true){?>
+<link rel="stylesheet" type="text/css" href="<?php echo 
+  'css/cssbase-min.css?v='.$css_random_str;?>"> 
+<link rel="stylesheet" type="text/css" href="<?php echo 
+'css/cssfonts-min.css?v='.$css_random_str;?>"> 
+<link rel="stylesheet" type="text/css" href="<?php echo 
+'css/cssreset.css?v='.$css_random_str;?>">
+<link rel="stylesheet" type="text/css" href="<?php echo 
+'css/grids-min.css?v='.$css_random_str;?>">
+<link href="<?php echo
+'banner/css/webwidget_slideshow_dot.css?v='.$css_random_str;?>" rel="stylesheet" type="text/css">
+<script type="text/javascript" src="js/search_include.js"></script>
+<?php } ?>
 <link rel="stylesheet" type="text/css" href="<?php echo 'css/'.$site_romaji.'.css?v='.$css_random_str;?>"> 
 <?php
     switch (str_replace('/', '', $_SERVER['SCRIPT_NAME'])) {
@@ -5075,11 +5092,15 @@ function tep_get_popup_url(){
     return '';
   }
 }
-
-function new_nl2br($string) {
-  $string = str_replace(array("\r\n", "\r", "\n"), "<br>", $string);
-  return $string;
-} 
+function tep_replace_product_des($string){
+  if(preg_match('|<td>(([^<]*)(<b>)*[^<]*(</b>)*[^<]*)</td><td>([^<]*)</td><td>([^<]*(<b>)*[^<]*(</b>)*[^<]*)</td>|',
+  $string)){
+  $string = preg_replace('|<td>(([^<]*)(<b>)*[^<]*(</b>)*[^<]*)</td><td>([^<]*)</td><td>([^<]*(<b>)*[^<]*(</b>)*[^<]*)</td>|',
+"<td width='10%'>\$1</td><td width='3%'>\$5</td><td width='15%'>\$6</td>"
+,$string);
+  }
+  return str_replace('<td','<td valign="top" ',$string);
+}
 function tep_replace_all_full_character($c_str)
 {
   $arr = array(
@@ -5098,4 +5119,402 @@ function tep_replace_all_full_character($c_str)
   $c_str = str_replace($arr, $arr2, $c_str);
   return $c_str;
 }
+function file_exists3($src) {
+  if(substr(DIR_FS_CATALOG,-1)=='/'){
+    $fs_catalog = DIR_FS_CATALOG;
+  }else{
+    $fs_catalog = DIR_FS_CATALOG.'/';
+  }
+  if(!file_exists($fs_catalog .  $src)
+       && file_exists($fs_catalog .  str_replace('images/', 'default_images/', $src))
+       ){
+     $src = str_replace('images/', 'default_images/', $src);
+   }
+  return file_exists($src);
+  }
+
+
+function new_nl2br($string) {
+  $string = str_replace(array("\r\n", "\r", "\n"), "<br>", $string);
+  return $string;
+} 
+
+  function tep_cache_also_purchaseds($auto_expire = false, $refresh = false) {
+    global $_GET, $language, $languages_id;
+
+    if (($refresh == true) || !read_cache($cache_output, 'also_purchased-' . $language . '.cache' . $_GET['products_id'], $auto_expire)) {
+      ob_start();
+      include(DIR_WS_MODULES . FILENAME_ALSO_PURCHASED_PRODUCT);
+      $cache_output = ob_get_contents();
+      ob_end_clean();
+      write_cache($cache_output, 'also_purchased-' . $language . '.cache' . $_GET['products_id']);
+    }
+
+    return $cache_output;
+  }
+function tep_payment_out_selections(){
+global $selection;
+global $payment_modules;
+global $order;
+?>
+<!-- selection start -->
+<div class="checkout_payment_info">
+  <?php
+   //如果大于1个支付方法需要用户选择 ，如果小于则不需要选择了
+    if (sizeof($selection) > 1) {
+      echo "<div id='hm-payment'>";
+      echo '<div class="hm-payment-top-left">'.TEXT_SELECT_PAYMENT_METHOD."</div>";
+      echo '<div class="hm-payment-right"><b>'.TITLE_PLEASE_SELECT.'</b></div> ';
+      echo "</div> ";
+    }else {
+      echo "<div id='hm-payment'>";
+      echo '<div class="hm-payment-left">';
+      echo TEXT_ENTER_PAYMENT_INFORMATION;
+      echo '</div><div></div>';
+      echo "</div>";
+    }
+  ?>
+  <!-- loop start  -->
+<?php  
+     if(isset($_SESSION['payment_error'])){
+	 ?>
+    <?php if (NEW_STYLE_WEB === true) {?>
+    <div class="box_new_waring">
+    <?php } else {?>
+    <div class="box_waring">
+    <?php }?>
+     <?php
+     if(is_array($_SESSION['payment_error'])){
+           foreach($_SESSION['payment_error'] as $key=>$value){
+               if (is_array($value)) {
+                 echo $value[0]; 
+               } else {
+                 echo $selection[strtoupper($key)]['module'];
+                 echo TEXT_ERROR_PAYMENT_SUPPLY;
+                 echo $value;
+               }
+           }
+         }else{
+           echo $_SESSION['payment_error'];
+         }
+         unset($_SESSION['payment_error']);
+     ?>
+     </div>
+     <?php if (NEW_STYLE_WEB !== true) {?>
+     <br>
+     <?php }?>
+     <?php
+	 }
+    foreach ($selection as $key=>$singleSelection){
+      //判断支付范围 
+      if($payment_modules->moneyInRange($singleSelection['id'],$order->info['total'])){
+	continue;
+      }
+      if(!$payment_modules->showToUser($singleSelection['id'],$_SESSION['guestchk'])){
+        continue;
+      }
+?>
+	<div>
+       
+		<div class="box_content_title <?php if($_SESSION['payment']==$singleSelection['id']) { echo 'box_content_title_selected';}?> "  >
+			<div class="hm-payment-left"><b><?php echo
+                        $singleSelection['module'];?><br></b></div>
+			<div class="hm-payment-right">
+            	<?php echo tep_draw_radio_field('payment',$singleSelection['id'] ,$_SESSION['payment']==$singleSelection['id']); ?>
+			</div>
+		</div>
+		<div class="box_content_text">
+                <p class="cp_description"> <?php  echo $singleSelection['description'];?></p>
+				<div class="cp_content">
+                	<div style="display: none;"  class="rowHide rowHide_<?php echo $singleSelection['id'];?>">
+                    <?php echo $singleSelection['fields_description']; 
+                    foreach ($singleSelection['fields'] as $key2=>$field){
+					?>
+                                                                                  
+                        <div class="txt_input_box">
+                        <?php if($field['title']){ ?>
+                            <div class="frame_title"><?php echo $field['title'];?></div>
+                            <?php }?>
+                            <div class="input_title"><?php echo $field['field'];?><small><font color="#AE0E30"><?php echo $field['message'];?></font></small></div>
+                        </div>
+					<?php 
+                                      }
+                                         echo $singleSelection['footer'];
+					?>
+					</div>
+					<div><?php echo $singleSelection['codefee'];?></div>
+				</div>
+		</div>
+	</div>
+<?
+    }
+?>
+<!-- loop end  -->
+</div>
+
+<!-- selection end -->
+<?php
+
+  }
+?>
+<?php
+function outputs() {
+      global $order;
+      global $cart;
+      global $payment, $currencies;
+      //先使用global 等支付方法修改 完毕 修改成使用POST 
+      global $_POST;
+
+      $show_handle_fee = 0;
+
+      if(isset($_POST['code_fee'])){
+      $show_handle_fee = intval($_POST['code_fee']); 
+      }
+      $buying_fee = 0; 
+      if (isset($cart)) { 
+        $bflag_single = $this->ds_count_bflags();
+        if ($bflag_single == 'View') {
+          $buy_table_fee = split("[:,]", MODULE_PAYMENT_BUYING_COST);
+          for ($i = 0; $i < count($buy_table_fee); $i+=2) {
+            if ($order->info['total'] <= $buy_table_fee[$i]) {
+              $buy_add_fee = $order->info['total'].$buy_table_fee[$i+1];
+              @eval("\$buy_add_fee = $buy_add_fee;");
+              if (is_numeric($buy_add_fee)) {
+                $buying_fee = $buy_add_fee; 
+              }
+              break; 
+            }
+          }
+        }
+      }
+      $total_handle_fee = $show_handle_fee + $buying_fee;
+      
+      $output_string = '';
+      if (is_array($this->modules)) {
+        reset($this->modules);
+        while (list(, $value) = each($this->modules)) {
+          $class = substr($value, 0, strrpos($value, '.'));
+          if ($GLOBALS[$class]->enabled) {
+            $size = sizeof($GLOBALS[$class]->output);
+            for ($i=0; $i<$size; $i++) {
+              if ($class == 'ot_point') {
+                if (isset($_SESSION['campaign_fee'])) {
+                  if ($_SESSION['campaign_fee'] == 0) {
+                    continue; 
+                  }
+                } else {
+                  if ($GLOBALS[$class]->output[$i]['value'] == 0) {
+                    continue; 
+                  }
+                }
+              }
+              $colspan = SITE_ID == 2 ? ' colspan="2"' : '';
+              $output_string .= '              <tr>' . "\n" .
+                                '                <td align="right" class="main">' . $GLOBALS[$class]->output[$i]['title'] . '</td>' . "\n" .
+                                '                <td align="right" class="main"'.
+                                $colspan .'>';
+              if ($class == 'ot_point') {
+                if (isset($_SESSION['campaign_fee'])) {
+                 
+                  $output_string .= '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format_total(abs($_SESSION['campaign_fee']))) .  '</font>'.JPMONEY_UNIT_TEXT.'</td>' . "\n" .  '              </tr>';
+                } else {
+                  $output_string .= '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format_total($GLOBALS[$class]->output[$i]['value'])) . '</font>'.JPMONEY_UNIT_TEXT.'</td>' . "\n" .  '              </tr>';
+                }
+              } else {
+                $output_string .= $currencies->format_total($GLOBALS[$class]->output[$i]['value']) . '</td>' . "\n" .  '              </tr>';
+              }
+            }
+            $_SESSION['mailfee'] = $currencies->format($total_handle_fee);   
+            if ($class == 'ot_subtotal') {
+              if (!empty($total_handle_fee)) {
+                $output_string .= '              <tr>' . "\n" .
+                                  '                <td align="right" class="main">'
+                                  . TEXT_HANDLE_FEE_CONFIRMATION . '</td>' . "\n" .
+                                  '                <td align="right" class="main">'
+                                  . $currencies->format($total_handle_fee) . '</td>' . "\n" .
+                                  '              </tr>';
+              }
+            }
+          }
+        }
+      }
+
+      return $output_string;
+    }
+
+
+function tep_get_all_get_param($exclude_array = '') {
+    global $_GET;
+
+    if (!is_array($exclude_array)) $exclude_array = array();
+
+    $get_url = '';
+    if (is_array($_GET) && (sizeof($_GET) > 0)) {
+      reset($_GET);
+      while (list($key, $value) = each($_GET)) {
+        if ( (strlen($value) > 0) && ($key != tep_session_name()) && ($key != 'error') && (!in_array($key, $exclude_array)) && ($key != 'x') && ($key != 'y') ) {
+          $get_url .= $key . '=' . rawurlencode(stripslashes($value)) . '&';
+        }
+      }
+    }
+
+    return $get_url;
+  }
+
+
+ function display_linkst($query_numrows, $max_rows_per_page, $max_page_links, $current_page_number, $parameters = '') {
+      global $PHP_SELF;
+      $class = 'class="pageResults"';
+      if ( tep_not_null($parameters) && (substr($parameters, -1) != '&') ) $parameters .= '&';
+      
+      $total_pg = ceil($query_numrows / $max_rows_per_page);
+      $calc_num = 0;
+        
+      $jump_page_name = $_SERVER['SCRIPT_NAME']; 
+      $cu_self = basename($PHP_SELF);
+      $tag_page_single = 1;
+      if (preg_match('/^tags_id=([0-9]*)(.*)/', $_SERVER['QUERY_STRING'])) {
+        $tag_page_single = 0;
+      }
+      $jump_query_str = urlencode($_SERVER['QUERY_STRING']);
+
+      if ($current_page_number > 1) {
+        if ($current_page_number == 2) {
+                if (preg_match('/^tags_id=([0-9]*)(.*)/', $_SERVER['QUERY_STRING'])) {
+                  echo '<a href="' . str_replace('index/', '', tep_href_link(basename($PHP_SELF), $parameters.'page=1')) . '" ' . $class . ' title=" ' . PREVNEXT_TITLE_PREVIOUS_PAGE . ' "><u>' . PREVNEXT_BUTTON_PREV . '</u></a>&nbsp;&nbsp;';
+                } else {
+                  echo '<a href="' . tep_href_link(basename($PHP_SELF), $parameters.'page=1') . '" ' . $class . ' title=" ' . PREVNEXT_TITLE_PREVIOUS_PAGE . ' "><u>' . PREVNEXT_BUTTON_PREV . '</u></a>&nbsp;&nbsp;';
+                }
+          } else {
+                if (preg_match('/^tags_id=([0-9]*)(.*)/', $_SERVER['QUERY_STRING'])) {
+                  echo '<a href="' . str_replace('index/', '', tep_href_link(basename($PHP_SELF), $parameters . 'page=' .  ($current_page_number - 1))) . '" ' . $class . ' title=" ' . PREVNEXT_TITLE_PREVIOUS_PAGE . ' "><u>' . PREVNEXT_BUTTON_PREV . '</u></a>&nbsp;&nbsp;';
+                } else {
+                  echo '<a href="' . tep_href_link(basename($PHP_SELF), $parameters . 'page=' . ($current_page_number - 1)) . '" ' . $class . ' title=" ' . PREVNEXT_TITLE_PREVIOUS_PAGE . ' "><u>' . PREVNEXT_BUTTON_PREV . '</u></a>&nbsp;&nbsp;';
+                }
+        }
+      }
+      if ($total_pg <= 11) {
+        for ($i = 1; $i <= $total_pg; $i++) {
+          if ($i == $current_page_number) {
+            if ($total_pg > 1) {
+              echo '&nbsp;<b>'.$i.'</b>&nbsp;'; 
+            }
+          } else {
+            if (preg_match('/^tags_id=([0-9]*)(.*)/', $_SERVER['QUERY_STRING'])) {
+              echo '&nbsp;<a href="' . str_replace('index/', '', tep_href_link(basename($PHP_SELF), $parameters . 'page=' .  $i)) . '" ' . $class . ' title=" ' .  sprintf(PREVNEXT_TITLE_PAGE_NO, $i) . ' "><u>' .  $i . '</u></a>&nbsp;';
+            } else {
+              echo '&nbsp;<a href="' . tep_href_link(basename($PHP_SELF), $parameters . 'page=' . $i) . '" ' . $class . ' title=" ' .  sprintf(PREVNEXT_TITLE_PAGE_NO, $i) . ' "><u>' . $i . '</u></a>&nbsp;';
+            }
+          }
+        }
+      } else if (($current_page_number + 5) >= $total_pg) {
+        $diff_num = $total_pg - $current_page_number;
+        if (($current_page_number - (10 - $diff_num)) > 1) {
+                  if (preg_match('/^tags_id=([0-9]*)(.*)/', $_SERVER['QUERY_STRING'])) {
+                    echo '<a href="' . str_replace('index/', '', tep_href_link(basename($PHP_SELF), $parameters.'page=1')) .  '" ' . $class . ' title=" ' .  PREVNEXT_TITLE_PREVIOUS_PAGE . ' "><u>1...</u></a>&nbsp;&nbsp;';
+                  } else {
+                    echo '<a href="' . tep_href_link(basename($PHP_SELF), $parameters.'page=1') . '" ' . $class . ' title=" ' .  PREVNEXT_TITLE_PREVIOUS_PAGE . ' "><u>1...</u></a>&nbsp;&nbsp;';
+                  }
+        }
+        for ($i = 10-$diff_num; $i > 0; $i--) {
+          $front_start = $current_page_number - $i; 
+              if (preg_match('/^tags_id=([0-9]*)(.*)/', $_SERVER['QUERY_STRING'])) {
+                echo '&nbsp;<a href="' . str_replace('index/', '', tep_href_link(basename($PHP_SELF), $parameters . 'page=' .  $front_start)) . '" ' . $class . ' title=" ' .  sprintf(PREVNEXT_TITLE_PAGE_NO, $front_start) . ' "><u>' .  $front_start . '</u></a>&nbsp;';
+              } else {
+                echo '&nbsp;<a href="' . tep_href_link(basename($PHP_SELF), $parameters . 'page=' . $front_start) . '" ' . $class . ' title=" ' .  sprintf(PREVNEXT_TITLE_PAGE_NO, $front_start) . ' "><u>' . $front_start . '</u></a>&nbsp;';
+              }
+        }
+        echo '&nbsp;<b>'.$current_page_number.'</b>&nbsp;'; 
+        for ($j = 1; $j <= $diff_num; $j++) {
+          $end_start = $current_page_number + $j; 
+                if (preg_match('/^tags_id=([0-9]*)(.*)/', $_SERVER['QUERY_STRING'])) {
+                  echo '&nbsp;<a href="' . str_replace('index/', '', tep_href_link(basename($PHP_SELF), $parameters . 'page=' .  $end_start)) . '" ' . $class . ' title=" ' .  sprintf(PREVNEXT_TITLE_PAGE_NO, $end_start) . ' "><u>' .  $end_start . '</u></a>&nbsp;';
+                } else {
+                  echo '&nbsp;<a href="' . tep_href_link(basename($PHP_SELF), $parameters . 'page=' . $end_start) . '" ' . $class . ' title=" ' .  sprintf(PREVNEXT_TITLE_PAGE_NO, $end_start) .  ' "><u>' . $end_start . '</u></a>&nbsp;';
+                }
+        }
+      } else if (($current_page_number - 5) <= 1) {
+        $diff_num = $current_page_number - 1;
+        for ($i = ($current_page_number-1); $i > 0; $i--) {
+          $front_start = $current_page_number - $i; 
+                if (preg_match('/^tags_id=([0-9]*)(.*)/', $_SERVER['QUERY_STRING'])) {
+                  echo '&nbsp;<a href="' . str_replace('index/', '', tep_href_link(basename($PHP_SELF), $parameters . 'page=' .  $front_start)) . '" ' . $class . ' title=" ' .  sprintf(PREVNEXT_TITLE_PAGE_NO, $front_start) . ' "><u>' .  $front_start . '</u></a>&nbsp;';
+                } else {
+                  echo '&nbsp;<a href="' . tep_href_link(basename($PHP_SELF), $parameters . 'page=' . $front_start) . '" ' . $class . ' title=" ' .  sprintf(PREVNEXT_TITLE_PAGE_NO, $front_start) . ' "><u>' . $front_start . '</u></a>&nbsp;';
+                }
+        }
+        echo '&nbsp;<b>'.$current_page_number.'</b>&nbsp;'; 
+        for ($j = 1; $j <= (10-$diff_num); $j++) {
+          $end_start = $current_page_number + $j; 
+                if (preg_match('/^tags_id=([0-9]*)(.*)/', $_SERVER['QUERY_STRING'])) {
+                  echo '&nbsp;<a href="' . str_replace('index/', '', tep_href_link(basename($PHP_SELF), $parameters . 'page=' .  $end_start)) . '" ' . $class . ' title=" ' .  sprintf(PREVNEXT_TITLE_PAGE_NO, $end_start) . ' "><u>' .  $end_start . '</u></a>&nbsp;';
+                } else {
+                  echo '&nbsp;<a href="' . tep_href_link(basename($PHP_SELF), $parameters . 'page=' . $end_start) . '" ' . $class . ' title=" ' .  sprintf(PREVNEXT_TITLE_PAGE_NO, $end_start) .  ' "><u>' . $end_start . '</u></a>&nbsp;';
+                }
+        }
+        if ($end_start < $total_pg) {
+              if (preg_match('/^tags_id=([0-9]*)(.*)/', $_SERVER['QUERY_STRING'])) {
+                echo '&nbsp;<a href="' . str_replace('index/', '', tep_href_link(basename($PHP_SELF), $parameters . 'page=' .  $total_pg)) . '" ' . $class . ' title=" ' .  PREVNEXT_TITLE_NEXT_PAGE . ' "><u>...' . $total_pg . '</u></a>&nbsp;';
+              } else {
+                echo '&nbsp;<a href="' . tep_href_link(basename($PHP_SELF), $parameters . 'page=' . $total_pg) . '" ' . $class . ' title=" ' . PREVNEXT_TITLE_NEXT_PAGE . ' "><u>...' . $total_pg . '</u></a>&nbsp;';
+              }
+        }
+      } else {
+        $front_start = 1;
+        if ($current_page_number > 5) {
+          $front_start = $current_page_number - 5; 
+        }
+        
+        if ($front_start > 1) {
+                    if (preg_match('/^tags_id=([0-9]*)(.*)/', $_SERVER['QUERY_STRING'])) {
+                      echo '<a href="' . str_replace('index/', '', tep_href_link(basename($PHP_SELF), $parameters.'page=1')) .  '" ' . $class . ' title=" ' .  PREVNEXT_TITLE_PREVIOUS_PAGE . ' "><u>1...</u></a>&nbsp;&nbsp;';
+                    } else {
+                      echo '<a href="' . tep_href_link(basename($PHP_SELF), $parameters.'page=1') . '" ' . $class . ' title=" ' .  PREVNEXT_TITLE_PREVIOUS_PAGE . ' "><u>1...</u></a>&nbsp;&nbsp;';
+                    }
+        }
+        for ($i=$front_start; $i<$current_page_number; $i++) {
+            if (preg_match('/^tags_id=([0-9]*)(.*)/', $_SERVER['QUERY_STRING'])) {
+              echo '&nbsp;<a href="' . str_replace('index/', '', tep_href_link(basename($PHP_SELF), $parameters . 'page=' .  $i)) . '" ' . $class . ' title=" ' .  sprintf(PREVNEXT_TITLE_PAGE_NO, $i) . ' "><u>' .  $i . '</u></a>&nbsp;';
+            } else {
+              echo '&nbsp;<a href="' . tep_href_link(basename($PHP_SELF), $parameters . 'page=' . $i) . '" ' . $class . ' title=" ' .  sprintf(PREVNEXT_TITLE_PAGE_NO, $i) . ' "><u>' . $i . '</u></a>&nbsp;';
+            }
+        }
+        
+        echo '&nbsp;<b>'.$current_page_number.'</b>&nbsp;';
+        
+        $end_start = 5;
+        if ($total_pg > $end_start && ($current_page_number+$end_start) < $total_pg) {
+          $end_start = $current_page_number + $end_start; 
+        } else {
+          $end_start = $total_pg; 
+        }
+        for ($j=$current_page_number+1; $j<=$end_start; $j++) {
+            if (preg_match('/^tags_id=([0-9]*)(.*)/', $_SERVER['QUERY_STRING'])) {
+              echo '&nbsp;<a href="' . str_replace('index/', '', tep_href_link(basename($PHP_SELF), $parameters . 'page=' .  $j)) . '" ' . $class . ' title=" ' .  sprintf(PREVNEXT_TITLE_PAGE_NO, $j) . ' "><u>' .  $j . '</u></a>&nbsp;';
+            } else {
+              echo '&nbsp;<a href="' . tep_href_link(basename($PHP_SELF), $parameters . 'page=' . $j) . '" ' . $class . ' title=" ' .  sprintf(PREVNEXT_TITLE_PAGE_NO, $j) . ' "><u>' . $j . '</u></a>&nbsp;';
+            }
+        }
+        
+        if ($end_start < $total_pg) {
+                if (preg_match('/^tags_id=([0-9]*)(.*)/', $_SERVER['QUERY_STRING'])) {
+                  echo '&nbsp;<a href="' . str_replace('index/', '', tep_href_link(basename($PHP_SELF), $parameters . 'page=' .  $total_pg)) . '" ' . $class . ' title=" ' .  PREVNEXT_TITLE_NEXT_PAGE . ' "><u>...' . $total_pg . '</u></a>&nbsp;';
+                } else {
+                  echo '&nbsp;<a href="' . tep_href_link(basename($PHP_SELF), $parameters . 'page=' . $total_pg) . '" ' . $class . ' title=" ' . PREVNEXT_TITLE_NEXT_PAGE . ' "><u>...' . $total_pg . '</u></a>&nbsp;';
+                }
+        }
+      }
+     
+      if ($current_page_number < $total_pg) {
+              if (preg_match('/^tags_id=([0-9]*)(.*)/', $_SERVER['QUERY_STRING'])) {
+                echo '&nbsp;<a href="' . str_replace('index/', '', tep_href_link(basename($PHP_SELF), $parameters . 'page=' .  ($current_page_number + 1))) . '" ' . $class . ' title=" ' . PREVNEXT_TITLE_NEXT_PAGE . ' "><u>' . PREVNEXT_BUTTON_NEXT . '</u></a>&nbsp;';
+              } else {
+                echo '&nbsp;<a href="' . tep_href_link(basename($PHP_SELF), $parameters . 'page=' . ($current_page_number + 1)) . '" ' . $class . ' title=" ' . PREVNEXT_TITLE_NEXT_PAGE . ' "><u>' . PREVNEXT_BUTTON_NEXT . '</u></a>&nbsp;';
+              }
+      }
+      echo '&nbsp;<input type="text" name="spage" id="spage" size="2">&nbsp;'.JUMP_PAGE_TEXT.'&nbsp;';
+      echo '<input type="button" onclick="jump_page(\''.$jump_page_name.'\', \''.$cu_self.'\', \''.urlencode($parameters).'\', \''.$jump_query_str.'\', '.$tag_page_single.', '.$total_pg.');" value="'.JUMP_PAGE_BUTTON_TEXT.'">';
+    }
+
+
 

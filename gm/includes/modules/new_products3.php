@@ -130,25 +130,15 @@ if (0 < $num_products) {
         $p = $currencies->display_price(tep_get_price($new_products['products_price'], $new_products['products_price_offset'], $new_products['products_small_sum'], $new_products['products_bflag']), tep_get_tax_rate($new_products['products_tax_class_id']));
       }
       $info_box_contents[$row][$col] = array('align' => 'center',
-                                             'params' => 'class="smallText" width="33%" valign="top"',
-                                             'text' => '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) . '">' . tep_image(DIR_WS_IMAGES . 'products/' . $new_products['products_image'], $new_products['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a><br><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) . '">' . $new_products['products_name'] . '</a><br>残り&nbsp;' . $new_products['products_quantity'] . '個<br>' . $p);
-
+                                             'params' => 'class="smallText" width="25%" valign="top"',
+                                             'text' => '<a href="' .  tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .  $new_products['products_id']) . '">' . tep_image(DIR_WS_IMAGES . 'products/' . $new_products['products_image'], $new_products['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT) . '</a><br><a href="' .  tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .  $new_products['products_id']) . '">' . $new_products['products_name'] .  '</a><br>' .  sprintf(TEXT_INDEX_NEW_PRODUCT_QUANTITY,$new_products['products_quantity'] ). '<br>' . $p);
       $col ++;
-      if ($col > 2) {
+      if ($col > 3) {
         $col = 0;
         $row ++;
       }
     }
     new contentBox($info_box_contents);
-    /*
-    if ($num_products && 0) {?>
-<div align="right" style="padding: 5px 20px 0px 0px;">
-      <a href="/pl-<?php echo $categories_path[count($categories_path)-1];?>.html">more</a>
-</div>
-<?php 
-    }*/
-  } else if (BOX_NEW_PRODUCTS_DAY_LIMIT) {
-    //echo "<p style='padding-left:10px;'>".BOX_NEW_PRODUCTS_DAY_LIMIT."日以内に登録された商品はありません。</p>";
   }
   }
 ?>

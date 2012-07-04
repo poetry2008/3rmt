@@ -1,8 +1,5 @@
-<div class="top">
-<!--{$bread}-->
-</div>
 <!--{if $top_info}-->
-<h1 class="link_h1"><!--{_t key=$top_info.h1}--></h1>
+<h2 ><!--{_t key=$top_info.h1}--></h2>
 <div class="middle">
 <div class="text_out">
 <!--{if $top_info.time}-->
@@ -34,7 +31,7 @@
 <div class = 'search_header'>
 <form action="<!--{url controller=site action=sitesearch}-->" method="post" 
 onsubmit="return valsearch()" name="form1" id="form1">
-<table><tr><td align="center">
+<table align="center"><tr><td align="center">
 ▼ホームページ検索 
 <input type="text" id="search_txt" class="sh-txt" name='word' />
 

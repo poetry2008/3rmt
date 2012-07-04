@@ -3,7 +3,6 @@
 /*
   $Id$
 
-  商品隸・ｮｺ隸ｦ扈・｡ｵ
 */
   require('includes/application_top.php');
   
@@ -14,21 +13,22 @@
 </head>
 <body>  
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
-  <!-- header_eof //--> 
-  <!-- body //--> 
+  <!-- header_eof --> 
+  <!-- body --> 
   <div id="main"> 
-      <div id="l_menu"> <!-- left_navigation //--> 
-        <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
-        <!-- left_navigation_eof //--> </div> 
-      <!-- body_text //--> 
-      <div id="content"> 
-        <div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
-        <h1 class="pageHeading"><?php echo HEADING_TITLE; ?></h1> 
+<div id="layout" class="yui3-u">        <div id="current"><?php echo
+$breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
+		<?php include('includes/search_include.php');?>
+
+
+	<div id="main-content">
+    <h2><?php echo HEADING_TITLE ; ?></h2>
         <div> 
-          <table border="0" cellspacing="0" cellpadding="0" class="box_des" width="95%"> 
+        <?php echo tep_draw_form('account_edit', tep_href_link(FILENAME_ACCOUNT_EDIT_PROCESS, '', 'SSL'), 'post', 'onSubmit="return check_form();"') . tep_draw_hidden_field('action', 'process'); ?> 
+          <table border="0" cellspacing="0" cellpadding="0" width="100%" align="center"> 
           <tr>
             <td>
-            <table class="box_des">
+            <table width="100%">
               <?php
               if (!isset($_GET['show'])) { 
               ?>
@@ -37,7 +37,7 @@
               </tr>
               <?php }?> 
               <tr>
-                <td colspan="3"><img src="images/design/send_mail_top.gif" alt="" width="444" height="194"></td>
+                <td colspan="3"  align="center"><img src="images/design/send_mail_top.gif" alt=""></td>
               </tr>
               <tr>
                 <td colspan="3"  class="information_color">
@@ -73,16 +73,13 @@
                   </tr> 
                 </table></td> 
             </tr> 
-          </table> 
-        </div></div> 
-      <!-- body_text_eof //--> 
-      <div id="r_menu"> <!-- right_navigation //--> 
-      <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-      <!-- right_navigation_eof //--> </div> 
-  <!-- body_eof //--> 
-  <!-- footer //--> 
-  <?php require(DIR_WS_INCLUDES . 'footer.php'); ?></div>
-  <!-- footer_eof //--> 
+          </table></form>
+        </div></div> </div>
+ <?php include('includes/float-box.php');?>
+        </div>
+        <?php include('includes/new.php');?>
+ <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
+</div> 
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

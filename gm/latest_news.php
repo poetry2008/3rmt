@@ -8,7 +8,6 @@
   require(DIR_WS_ACTIONS.'latest_news.php');
 ?>
 <?php page_head();?>
-<script type="text/javascript" src="js/emailProtector.js"></script>
 <script type="text/javascript"><!--
 function popupWindow(url) {
   window.open(url,'popupWindow','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,copyhistory=no,width=100,height=100,screenX=150,screenY=150,top=150,left=150')
@@ -21,19 +20,14 @@ function popupWindow(url) {
 <!-- header_eof //-->
 <!-- body //-->
 <div id="main">
-<!-- left_navigation //-->
-<div id="l_menu">
-<?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-</div>
-<!-- left_navigation_eof //-->
+<?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
 <!-- body_text //-->
-<div id="content">
-<div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
-<h1 class="pageHeading"><?php if ($_GET['news_id']) { echo replace_store_name($latest_news['headline']); } else { echo HEADING_TITLE; } ?></h1>
-<table class="box_des" border="0" width="95%" cellspacing="0" cellpadding="0">
-  <tr>
-    <td>
-      <div id="contents">
+<div class="yui3-u" id="layout">
+<div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
+<?php include('includes/search_include.php');?>
+<div id="main-content">
+<h2><?php if ($_GET['news_id']) { echo replace_store_name($latest_news['headline']); } else { echo HEADING_TITLE; } ?></h2>
+      <div id="detail-div">
 <?php
   if ($_GET['news_id']) {  
     if($latest_news['news_image']) {
@@ -57,18 +51,18 @@ function popupWindow(url) {
 <?php
     }
 ?>
-        <p class="main"><?php echo nl2br(replace_store_name($latest_news['content'])); ?></p>
+        <p><?php echo nl2br(replace_store_name($latest_news['content'])); ?></p>
 <?php
   } else {
     if (($latest_news_numrows > 0) && ((PREV_NEXT_BAR_LOCATION == '1') || (PREV_NEXT_BAR_LOCATION == '3'))) {
 ?>
         <table border="0" width="100%" cellspacing="0" cellpadding="2">
           <tr>
-            <td class="smallText"><?php echo $latest_news_split->display_count($latest_news_numrows, MAX_DISPLAY_LATEST_NEWS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_LATEST_NEWS); ?></td>
-                     </tr>   
-                     <tr>
-            <td class="smallText"><?php echo TEXT_RESULT_PAGE; ?> <?php echo $latest_news_split->display_links($latest_news_numrows, MAX_DISPLAY_LATEST_NEWS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
-          </tr>
+              <td class="smallText"><?php echo TEXT_RESULT_PAGE; ?> <?php echo $latest_news_split->display_links($latest_news_numrows, MAX_DISPLAY_LATEST_NEWS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
+
+            <td class="smallText" align="right"><?php echo $latest_news_split->display_count($latest_news_numrows, MAX_DISPLAY_LATEST_NEWS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_LATEST_NEWS); ?></td>
+                  
+                                </tr>
         </table>
 <?php
     }
@@ -96,42 +90,39 @@ function popupWindow(url) {
 ?>
         <table border="0" width="100%" cellspacing="0" cellpadding="2">
           <tr>
-            <td class="smallText"><?php echo $latest_news_split->display_count($latest_news_numrows, MAX_DISPLAY_LATEST_NEWS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_LATEST_NEWS); ?></td>
-                    </tr>
-                    <tr>
-            <td class="smallText"><?php echo TEXT_RESULT_PAGE; ?> <?php echo $latest_news_split->display_links($latest_news_numrows, MAX_DISPLAY_LATEST_NEWS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
-          </tr>
+              <td class="smallText"><?php echo TEXT_RESULT_PAGE; ?> <?php echo $latest_news_split->display_links($latest_news_numrows, MAX_DISPLAY_LATEST_NEWS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
+
+            <td class="smallText" align="right"><?php echo $latest_news_split->display_count($latest_news_numrows, MAX_DISPLAY_LATEST_NEWS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_LATEST_NEWS); ?></td>
+                              </tr>
         </table>
 <?php
     }
   }
   if ($_GET['news_id']) { 
 ?>
-                <p align="right" class="smallText">
+        <p>
           [ <?php echo tep_date_long($latest_news['date_added']); ?> ]
         </p>
-                <div style="text-align:right; margin:5px 0;">
-          <?php echo '<a href="' . tep_href_link(FILENAME_LATEST_NEWS) . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?>
+                <div align="left" class="botton-continue">
+          <?php echo '<a href="javascript:history.back()">' .
+          tep_image_button('button_back.gif',
+              IMAGE_BUTTON_BACK,'onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_back.gif\'" onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_back_hover.gif\'"') . '</a>'; ?>
         </div>
 <?php
   }
 ?>
       </div>
-    </td>
-  </tr>
-</table>
 </div>
-<!-- body_text_eof //-->
-<!-- right_navigation //-->
-<div id="r_menu">
-  <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?>
 </div>
-<!-- right_navigation_eof //-->
-<!-- body_eof //-->
-<!-- footer //-->
+<?php include('includes/float-box.php');?>
+
+</div>
+<?php echo DEFAULT_PAGE_TOP_CONTENTS;?>
+</div>
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-<!-- footer_eof //-->
-</div>
+
+
+
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

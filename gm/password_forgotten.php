@@ -33,7 +33,6 @@
         } else {
           tep_db_query("insert into `customers_password_info` values('".$check_customer['customers_id']."', '".$_POST['email_address']."', '".$_SERVER["REMOTE_ADDR"]."', '".$random_str."', '".date('Y-m-d H:i:s',time())."', '0')");
         }
-        
         $email_body = SEND_PASSWORLD_EMAIL_CONTENT;
         $email_body = str_replace('${URL}', $send_url, $email_body);
         $email_body = str_replace('${SITE_NAME}', STORE_NAME, $email_body);
@@ -68,30 +67,31 @@
 <!-- header_eof //--> 
 <!-- body //--> 
 <div id="main">
-<!-- left_navigation //-->
-<div id="l_menu">
-<?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-</div>
-<!-- left_navigation_eof //-->
+<?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
 <!-- body_text //-->
-<div id="content">
-<div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
-<h2 class="pageHeading"><?php echo HEADING_TITLE; ?></h2>
- 
-        
-        <div> 
-          <table class="box_des" border="0" width="95%" cellspacing="0" cellpadding="0"> 
+<div id="layout" class="yui3-u">
+<div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
+<?php include('includes/search_include.php');?>
+<div id="main-content">
+<h2><?php echo HEADING_TITLE; ?></h2>
+        <div style="margin-top:13px;"> 
+          <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
             <tr> 
               <td><?php echo tep_draw_form('password_forgotten', tep_href_link(FILENAME_PASSWORD_FORGOTTEN, 'action=process', 'SSL')); ?>
           <tr>
-            <td align="right" class="main"><?php echo ENTRY_FORGOTTEN_EMAIL_ADDRESS; // 2003.03.06 nagata Edit Japanese osCommerce ?></td>
-            <td class="main"><?php echo tep_draw_input_field('email_address', '', 'maxlength="96"'); ?></td>
+            <td align="right"><?php echo ENTRY_FORGOTTEN_EMAIL_ADDRESS; // 2003.03.06 nagata Edit Japanese osCommerce ?></td>
+            <td><?php echo tep_draw_input_field('email_address', '',
+                'id="input_text" maxlength="96"'); ?></td>
           </tr>
           <tr>
-            <td colspan="2"><br><table class="box_des" border="0" cellpadding="0" cellspacing="0" width="100%">
+            <td colspan="2"><table class="botton-continue" border="0" cellpadding="0" cellspacing="0" width="100%">
               <tr>
-                <td valign="top"><a href="<?php echo tep_href_link(FILENAME_LOGIN, '', 'SSL') ;?>"><?php echo tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) ; ?></a></td>
-                <td align="right" valign="top"><?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></td>
+                <td valign="top"><a href="<?php echo tep_href_link(FILENAME_LOGIN,
+            '', 'SSL') ;?>"><?php echo tep_image_button('button_back.gif',
+            IMAGE_BUTTON_BACK,' onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_back.gif\'"  onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_back_hover.gif\'"') ; ?></a></td>
+                <td align="right" valign="top"><?php echo
+                tep_image_submit('button_continue.gif',
+                    IMAGE_BUTTON_CONTINUE,' onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_continue.gif\'"  onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_continue_hover.gif\'"'); ?></td>
               </tr>
             </table></td>
           </tr>
@@ -106,18 +106,21 @@
     echo '</tr>';
   }
 ?>
-        </table></form></div></div>
+        </table></form></div>
+        
+        
+        </div>
+		</div>
+        <?php include('includes/float-box.php');?>
       <!-- body_text_eof //--> 
-<!-- right_navigation //--> 
-<div id="r_menu">
-<?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-</div>
-<!-- right_navigation_eof //--> 
+<?php //require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
   <!-- body_eof //-->  
   <!-- footer //--> 
-  <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
-  <!-- footer_eof //--> 
-</div> 
+    <!-- footer_eof //-->
+
+</div>
+<?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
+
 </body>
 </html>
 <?php

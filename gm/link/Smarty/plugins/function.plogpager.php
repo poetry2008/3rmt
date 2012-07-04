@@ -53,7 +53,7 @@ function _plogpager_generate_links_list( $params, &$smarty )
 	
 	if( $numPages > 0 ) {
 	   if( $currentPage < $numPages )
-	       $result .= "<a class=\"pagerLink\" href=\"".$links[$currentPage+1]."\">Next&raquo;</a>&nbsp;";
+	       $result .= "<a class=\"pagerLink\" href=\"".$links[$currentPage+1]."\">Next<img src="images/point.gif"></a>&nbsp;";
 	}	
 	
 	return $result;

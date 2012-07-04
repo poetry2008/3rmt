@@ -4,7 +4,7 @@
 */
 
   require('includes/application_top.php');
-  
+  require(DIR_WS_LANGUAGES . $language . '/present_confirmation.php');
 // if the customer is not logged on, redirect them to the present page
   if (!tep_session_is_registered('pc_id')) {
    $navigation->set_snapshot();
@@ -22,14 +22,13 @@
     ") ;
     $present = tep_db_fetch_array($present_query) ;
   }else{
-    tep_redirect(tep_href_link(FILENAME_PRESENT, 'error_message='.urlencode('プレゼント商品が選択されていません'), 'SSL'));  
+    tep_redirect(tep_href_link(FILENAME_PRESENT, 'error_message='.urlencode(TEXT_NO_SELECT_PRESENT), 'SSL'));  
   }
   
   //process
   switch($_GET['action']) {
-    case 'process'://申し込みプロセス
-    //現在の日時
-    $now = date("Y/m/d H:i:s", time());
+    case 'process':
+      $now = date("Y/m/d H:i:s", time());
     
     //insert present_aplicant
     $sql_data_array = array('goods_id' => tep_db_prepare_input($_GET['goods_id']),
@@ -98,7 +97,7 @@
     tep_redirect(tep_href_link(FILENAME_PRESENT_SUCCESS,'goods_id='.$_GET['goods_id']));
     break;
   
-  case 'update'://申込者情報変更
+  case 'update':
     $firstname = tep_db_prepare_input($_POST['firstname']);
     $lastname = tep_db_prepare_input($_POST['lastname']);
     $email_address = tep_db_prepare_input($_POST['email_address']);
@@ -152,7 +151,6 @@
     }
     
     if($error == false) {
-      //セッションを一時的に開放
       tep_session_unregister('firstname');
       tep_session_unregister('lastname');
       tep_session_unregister('email_address');
@@ -163,7 +161,6 @@
       tep_session_unregister('city');
       tep_session_unregister('zone_id');
     
-      //セッション更新
       tep_session_register('firstname');
       tep_session_register('lastname');
       tep_session_register('email_address');
@@ -246,31 +243,25 @@
 <!-- header_eof //--> 
 <!-- body //--> 
 <div id="main">
-<!-- left_navigation //-->
-<div id="l_menu">
-<?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-</div>
-<!-- left_navigation_eof //-->
+<?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
 <!-- body_text //-->
-<div id="content">
-<div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
-<h1 class="pageHeading"><?php if ($_GET['news_id']) { echo $latest_news['headline']; } else { echo HEADING_TITLE; } ?></h1> 
+<div id="layout" class="yui3-u">
+<div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
+<div id="main-content">
+<h2><?php if ($_GET['news_id']) { echo $latest_news['headline']; } else { echo HEADING_TITLE; } ?></h2> 
         
-        <table border="0" width="95%" cellspacing="0" cellpadding="0"> 
-          <tr> 
-            <td>
-              <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+         <table border="0" width="100%" cellspacing="0" cellpadding="0" class="checkout_s_link"> 
                 <tr> 
                   <td width="33%"><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
-                      <tr> 
-                        <td width="50%" align="right"><?php echo tep_draw_separator('pixel_silver.gif', '1', '5'); ?></td> 
+                      <tr>
+                         <td width="50%" align="right"><?php echo tep_draw_separator('pixel_silver.gif', '1', '5'); ?></td> 
                         <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
                       </tr> 
                     </table></td> 
                   <td width="33%" align="center"><table width="100%"  border="0" cellspacing="0" cellpadding="0"> 
                       <tr> 
                         <td><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
-                        <td width="11"><?php echo tep_image(DIR_WS_IMAGES . 'checkout_bullet.gif'); ?></td> 
+                         <td align="center" width="11"><?php echo tep_image(DIR_WS_IMAGES . 'checkout_bullet.gif'); ?></td>
                         <td><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
                       </tr> 
                     </table></td> 
@@ -282,17 +273,18 @@
                     </table></td> 
                 </tr> 
                 <tr class="box_des"> 
-                  <td align="center" width="33%" class="checkoutBarFrom">応募者情報</td> 
-                  <td align="center" width="33%" class="checkoutBarCurrent">確認画面</td> 
-                  <td align="center" width="33%" class="checkoutBarFrom">応募完了</td> 
+                  <td align="center" width="33%" class="checkoutBarFrom"><?php echo TEXT_EPRESNT_BAR_INFORMATION;?></td> 
+                  <td align="center" width="33%" class="checkoutBarCurrent"><?php echo TEXT_PRESENT_BAR_CONFIRMATION;?></td> 
+                  <td align="center" width="33%" class="checkoutBarFrom"><?php echo TEXT_PRESENT_BAR_SUCCESS;?></td> 
                 </tr> 
-              </table></td> 
-          </tr> 
+              </table>
+        <div class="checkout-conent">
+        <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
           <tr> 
             <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
           </tr> 
           <tr> 
-            <td class="main"><?php
+            <td><?php
       
       $name = tep_get_fullname($firstname, $lastname);
       $email = $email_address;
@@ -307,9 +299,9 @@
                 <tr> 
                   <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="box_des"> 
                       <tr class="<?php echo $_class ; ?>"> 
-                        <td class="main" width="<?php echo SMALL_IMAGE_WIDTH ; ?>"><?php echo '<a href="'.tep_href_link(FILENAME_PRESENT , 'goods_id='.$present['goods_id'],NONSSL).'">' . tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT) . '</a>'; ?></td> 
-                        <td class="main"><b><?php echo $present['title'] ; ?></b><br> 
-                          応募期間:<?php echo tep_date_long($present['start_date']) .'～'. tep_date_long($present['limit_date']); ?> </td> 
+                        <td width="<?php echo SMALL_IMAGE_WIDTH ; ?>"><?php echo '<a href="'.tep_href_link(FILENAME_PRESENT , 'goods_id='.$present['goods_id'],NONSSL).'">' . tep_image(DIR_WS_IMAGES.'present/'.$present['image'],$present['title'],SMALL_IMAGE_WIDTH,SMALL_IMAGE_HEIGHT) . '</a>'; ?></td> 
+                        <td><b><?php echo $present['title'] ; ?></b><br> 
+                          <?php echo TEXT_PRESENT_CON_TIME.tep_date_long($present['start_date']) .'～'. tep_date_long($present['limit_date']); ?> </td> 
                       </tr> 
                     </table></td> 
                 </tr> 
@@ -322,9 +314,9 @@
     if(!$_GET['action'] || $_GET['action'] != 'update') {
     echo tep_draw_form('process', tep_href_link(FILENAME_PRESENT_CONFIRMATION, 'goods_id='.$_GET['goods_id'].'&action=process', 'SSL')); ?> 
           <tr> 
-            <td class="main"><table class="box_des" width="100%"  border="0" cellspacing="0" cellpadding="2"> 
+            <td><table class="box_des" width="100%"  border="0" cellspacing="0" cellpadding="2"> 
                 <tr> 
-                  <td class="main"><b>応募者情報の確認</b> 
+                  <td><b><?php echo TEXT_PRESENT_CON_CONFIRM;?></b> 
                     <table border="0" width="100%" height="100%" cellspacing="0" cellpadding="1" class="formArea"> 
                       <tr> 
                         <td><table border="0" width="100%" height="100%" cellspacing="0" cellpadding="2" class="box_des"> 
@@ -332,34 +324,34 @@
                               <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
                             </tr> 
                             <tr> 
-                              <td class="main">お名前</td> 
-                              <td class="main"><?php echo $name; ?></td> 
+                              <td><?php echo TEXT_PRESENT_CON_FONT_NAME;?></td> 
+                              <td><?php echo $name; ?></td> 
                             </tr> 
                             <tr> 
-                              <td>メールアドレス</td> 
+                              <td><?php echo TEXT_PRESENT_CON_EMAIL;?></td> 
                               <td><?php echo $email; ?></td> 
                             </tr> 
                             <tr> 
-                              <td class="main">郵便番号</td> 
-                              <td class="main"><?php echo $postcode; ?></td> 
+                              <td><?php echo TEXT_PRESENT_CON_MAIL; ?></td> 
+                              <td><?php echo $postcode; ?></td> 
                             </tr> 
                             <tr> 
-                              <td class="main">都道府県</td> 
-                              <td class="main"><?php echo tep_get_zone_name('107',$state, $zone); ?></td> 
+                              <td><?php echo TEXT_PRESENT_CON_STR;?></td> 
+                              <td><?php echo tep_get_zone_name('107',$state, $zone); ?></td> 
                             </tr> 
                             <tr> 
-                              <td class="main">住所１</td> 
-                              <td class="main"><?php echo $address1; ?></td> 
+                              <td><?php echo TEXT_PRESENT_CON_ADDRESS1;?></td> 
+                              <td><?php echo $address1; ?></td> 
                             </tr> 
                             <?php if(!empty($address2)) { ?> 
                             <tr> 
-                              <td class="main">住所2</td> 
-                              <td class="main"><?php echo $address2; ?></td> 
+                              <td><?php echo TEXT_PRESENT_CON_ADDRESS2;?></td> 
+                              <td><?php echo $address2; ?></td> 
                             </tr> 
                             <?php } ?> 
                             <tr> 
-                              <td class="main">電話番号</td> 
-                              <td class="main"><?php echo $tel; ?></td> 
+                              <td><?php echo TEXT_PRESENT_CON_PHO_NUM;?></td> 
+                              <td><?php echo $tel; ?></td> 
                             </tr> 
                             <tr> 
                               <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
@@ -382,10 +374,10 @@
     }
     echo tep_draw_form('process', tep_href_link(FILENAME_PRESENT_CONFIRMATION, 'goods_id='.$_GET['goods_id'].'&action=update', 'SSL')); ?> 
           <tr> 
-            <td class="main"><table class="box_des" width="100%"  border="0" cellspacing="0" cellpadding="2"> 
+            <td><table class="box_des" width="100%"  border="0" cellspacing="0" cellpadding="2"> 
                 <tr> 
-                  <td class="main"><b>応募者情報の編集</b><br> 
-                    登録情報の変更を行う場合は下記フォームより変更を行ってください
+                  <td><b><?php echo TEXT_PRESENT_CON_INFO_EDIT; ?></b><br> 
+                   <?php echo TEXT_PRESENT_CON_CHANGE_INFO;?> 
                     <table border="0" width="100%" height="100%" cellspacing="0" cellpadding="1" class="formArea"> 
                       <tr> 
                         <td><table border="0" width="100%" height="100%" cellspacing="0" cellpadding="2" class="box_des"> 
@@ -393,40 +385,56 @@
                               <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
                             </tr> 
                             <tr> 
-                              <td class="main">姓</td> 
-                              <td class="main"><?php echo tep_draw_input_field('lastname', $lastname); ?> <?php if(!$lastname) {?><font color="red">* 必須</font><?php }?></td> 
+                              <td><?php echo TEXT_PRESENT_CON_FAM; ?></td> 
+                              <td><?php echo tep_draw_input_field('lastname',
+                                  $lastname, 'style="margin:2px 0; width:40%;"'); ?> <?php if(!$lastname) {?><font
+                                color="red"><?php echo TEXT_PRESENT_CON_MUST;?></font><?php }?></td> 
                             </tr> 
                             <tr> 
-                              <td class="main">名</td> 
-                              <td class="main"><?php echo tep_draw_input_field('firstname', $firstname); ?> <?php if(!$firstname) {?><font color="red">* 必須</font><?php }?></td> 
+                              <td><?php echo TEXT_PRESENT_CON_NAME;?></td> 
+                              <td><?php echo tep_draw_input_field('firstname',
+                                  $firstname, 'style="margin:2px 0; width:40%;"'); ?> <?php if(!$firstname) {?><font
+                                color="red"><?php echo TEXT_PRESENT_CON_MUST;?></font><?php }?></td> 
                             </tr> 
                             <tr> 
-                              <td>メールアドレス</td> 
-                              <td><?php echo tep_draw_input_field('email_address', $email_address); ?> <?php if(!$email_address) {?><font color="red">* 必須</font><?php }?></td> 
+                              <td><?php echo TEXT_PRESENT_CON_EMAIL;?></td> 
+                              <td><?php echo tep_draw_input_field('email_address',
+                                  $email_address, 'style="margin:2px 0; width:40%;"'); ?> <?php if(!$email_address)
+{?><font color="red"><?php echo TEXT_PRESENT_CON_MUST; ?></font><?php }?></td> 
                             </tr> 
                             <tr> 
-                              <td class="main">郵便番号</td> 
-                              <td class="main"><?php echo tep_draw_input_field('postcode', $postcode); ?> <?php if(!$postcode) {?><font color="red">* 必須</font><?php }?></td> 
+                              <td><?php echo TEXT_PRESENT_CON_MAIL;?></td> 
+                              <td><?php echo tep_draw_input_field('postcode',
+                                  $postcode, 'style="margin:2px 0; width:40%;"'); ?> <?php if(!$postcode) {?><font
+                                color="red"><?php echo TEXT_PRESENT_CON_MUST;?></font><?php }?></td> 
                             </tr> 
                             <tr> 
-                              <td class="main">都道府県</td> 
-                              <td class="main"><?php echo tep_get_zone_list2('zone_id', $zone_id); ?> <?php if(!$zone_id) {?><font color="red">* 必須</font><?php }?></td> 
+                              <td><?php echo TEXT_PRESENT_CON_STR?></td> 
+                              <td><?php echo tep_get_zone_list2('zone_id',
+                                  $zone_id); ?> <?php if(!$zone_id) {?><font
+                                color="red"><?php echo TEXT_PRESENT_CON_MUST;?></font><?php }?></td> 
                             </tr> 
                             <tr> 
-                              <td class="main">市区町村</td> 
-                              <td class="main"><?php echo tep_draw_input_field('city', $city); ?> <?php if(!$city) {?><font color="red">* 必須</font><?php }?></td> 
+                              <td><?php echo TEXT_PRESENT_CON_CITY;?></td> 
+                              <td><?php echo tep_draw_input_field('city', $city, 'style="margin:2px 0; width:40%;"'); ?>
+                              <?php if(!$city) {?><font color="red"><?php echo
+                                TEXT_PRESENT_CON_MUST;?></font><?php }?></td> 
                             </tr> 
                             <tr> 
-                              <td class="main">住所1</td> 
-                              <td class="main"><?php echo tep_draw_input_field('street_address', $street_address); ?> <?php if(!$street_address) {?><font color="red">* 必須</font><?php }?></td> 
+                              <td><?php echo TEXT_PRESENT_CON_ADDRESS1?></td> 
+                              <td><?php echo tep_draw_input_field('street_address',
+                                  $street_address, 'style="margin:2px 0; width:40%;"'); ?> <?php if(!$street_address)
+{?><font color="red"><?php echo TEXT_PRESENT_CON_MUST;?></font><?php }?></td> 
                             </tr> 
                             <tr> 
-                              <td class="main">住所2</td> 
-                              <td class="main"><?php echo tep_draw_input_field('suburb', $suburb); ?></td> 
+                              <td><?php echo TEXT_PRESENT_CON_ADDRESS2;?></td> 
+                              <td><?php echo tep_draw_input_field('suburb', $suburb, 'style="margin:2px 0; width:40%;"'); ?></td> 
                             </tr> 
                             <tr> 
-                              <td class="main">電話番号</td> 
-                              <td class="main"><?php echo tep_draw_input_field('telephone', $telephone); ?> <?php if(!$telephone) {?><font color="red">* 必須</font><?php }?></td> 
+                              <td><?php echo TEXT_PRESENT_CON_PHO_NUM;?></td> 
+                              <td><?php echo tep_draw_input_field('telephone',
+                                  $telephone, 'style="margin:2px 0; width:40%;"'); ?> <?php if(!$telephone) {?><font
+                                color="red"><?php echo TEXT_PRESENT_CON_MUST;?></font><?php }?></td> 
                             </tr> 
                             <tr> 
                               <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
@@ -442,13 +450,12 @@
               </table></td> 
           </tr> 
           </form> 
-           </table></div>
-      <!-- body_text_eof //--> 
-<!-- right_navigation //--> 
-<div id="r_menu">
-<?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
+           </table></div></div>
+            </div>
+      <?php include('includes/float-box.php');?>
 </div>
-<!-- right_navigation_eof //-->
+      <!-- body_text_eof //--> 
+<?php //require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
   <!-- body_eof //-->  
   <!-- footer //--> 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 

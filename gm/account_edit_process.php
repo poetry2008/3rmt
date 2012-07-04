@@ -19,7 +19,6 @@
     tep_redirect(tep_href_link(FILENAME_ACCOUNT_EDIT, '', 'SSL'));
   }
 
-  // tamura 2002/12/30 「全角」英数字を「半角」に変換
   $an_cols = array('password','confirmation','email_address','postcode','telephone','fax');
   if (ACCOUNT_DOB) $an_cols[] = 'dob';
   foreach ($an_cols as $col) {
@@ -61,16 +60,7 @@
   $country = tep_db_prepare_input($_POST['country']);
  
   $error = false; // reset error flag
-/*
-  if (ACCOUNT_GENDER == 'true') {
-    if ( ($gender == 'm') || ($gender == 'f') ) {
-      $entry_gender_error = false;
-    } else {
-      $error = true;
-      $entry_gender_error = true;
-    }
-  }
-*/
+
   if (strlen($firstname) < ENTRY_FIRST_NAME_MIN_LENGTH) {
     $error = true;
     $entry_firstname_error = true;
@@ -169,23 +159,22 @@
 <?php require('includes/form_check.js.php'); ?>
 </head>
 <body>
-<!-- header --> 
+<!-- header //--> 
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
-<!-- header_eof --> 
-<!-- body --> 
+<!-- header_eof //--> 
+<!-- body //--> 
 <div id="main">
-<!-- left_navigation -->
-<div id="l_menu">
-<?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-</div>
-<!-- left_navigation_eof -->
-<!-- body_text -->
-<div id="content">
-  <?php echo tep_draw_form('account_edit', tep_href_link(FILENAME_ACCOUNT_EDIT_PROCESS, '', 'SSL'), 'post', 'onSubmit="return check_form();"') . tep_draw_hidden_field('action', 'process'); ?>
-  <div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
-  <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1>
+<?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
+<!-- body_text //-->
+<div id="layout" class="yui3-u">
+   <div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
+  		 <?php include('includes/search_include.php');?>
+<div id="main-content">
+  <h2><?php echo HEADING_TITLE ; ?></h2>
+ <?php echo tep_draw_form('account_edit', tep_href_link(FILENAME_ACCOUNT_EDIT_PROCESS, '', 'SSL'), 'post', 'onSubmit="return check_form();"') . tep_draw_hidden_field('action', 'process'); ?>
+
   <div> 
-    <table class="box_des" border="0" width="95%" cellspacing="0" cellpadding="0"> 
+    <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="0"> 
       <tr> 
         <td>
         <?php include(DIR_WS_MODULES . 'account_details.php'); ?>
@@ -196,29 +185,31 @@
         <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
       </tr> 
       <tr> 
-        <td>
-          <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2"> 
+        <td colspan="2">
+          <table class="botton-continue" border="0" width="100%" cellspacing="0" cellpadding="2"> 
             <tr> 
-              <td class="main"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td> 
-              <td class="main" align="right"><?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
+              <td><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT, '',
+  'SSL') . '">' . tep_image_button('button_back.gif',
+  IMAGE_BUTTON_BACK,' onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_back.gif\'" onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_back_hover.gif\'"') . '</a>'; ?></td> 
+              <td align="right"><?php echo tep_image_submit('button_continue.gif',
+                  IMAGE_BUTTON_CONTINUE,' onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_continue.gif\'" onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_continue_hover.gif\'"'); ?></td> 
             </tr> 
           </table>
         </td> 
       </tr> 
-    </table> 
+    </table>
+    </div>
     </form> 
-  </div>
 </div>
-<!-- body_text_eof --> 
-<!-- right_navigation --> 
-<div id="r_menu">
-<?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
 </div>
-<!-- right_navigation_eof -->
-  <!-- body_eof -->
-  <!-- footer -->
+        <?php include('includes/float-box.php');?>
+		</div>
+<!-- body_text_eof //--> 
+<?php //require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
+  <!-- body_eof //-->
+  <!-- footer //-->
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-  <!-- footer_eof -->
+  <!-- footer_eof //-->
 </div>
 </body>
 </html>

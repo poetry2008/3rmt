@@ -1,16 +1,13 @@
 <?php
 /*
   $Id$
-  
-  顾客详细信息页
+  ファイルコードを確認
 */
-//设置是否有新信息的多语言 
   $newsletter_array = array(array('id' => '1',
                                   'text' => ENTRY_NEWSLETTER_YES),
                             array('id' => '0',
                                   'text' => ENTRY_NEWSLETTER_NO));
 
-//如果没有设置 只读，则为否
   if (!isset($is_read_only)) $is_read_only = false;
   if (!isset($processed)) $processed = false;
 
@@ -28,7 +25,8 @@
       }
   } else {
       $a_value = tep_draw_input_field('firstname',
-                                      $account['customers_firstname'], "class='input_text'") . '&nbsp;' . ENTRY_FIRST_NAME_TEXT;
+                                      $account['customers_firstname'],
+                                      "class='input_text' style='width:40%'") . '&nbsp;' . ENTRY_FIRST_NAME_TEXT;
   }
   $address_form->setFormLine('firstname',ENTRY_FIRST_NAME,$a_value);
 
@@ -43,7 +41,8 @@
       }
   } else {
       $a_value = tep_draw_input_field('lastname',
-                                      $account['customers_lastname'],"class='input_text'") . '&nbsp;' . ENTRY_LAST_NAME_TEXT;
+                                      $account['customers_lastname'],"class='input_text'
+                                      style='width:40%'") . '&nbsp;' . ENTRY_LAST_NAME_TEXT;
   }
   $address_form->setFormLine('lastname',ENTRY_LAST_NAME,$a_value);
 
@@ -63,43 +62,39 @@
           $a_value = $email_address . tep_draw_hidden_field('email_address');
       }
   } else {
-      $a_value = tep_draw_input_field('email_address', $account['customers_email_address'],"class='input_text'") . '&nbsp;' . ENTRY_EMAIL_ADDRESS_TEXT;
+      $a_value = tep_draw_input_field('email_address',
+          $account['customers_email_address'],"class='input_text' style='width:40%'") . '&nbsp;' . ENTRY_EMAIL_ADDRESS_TEXT;
   }
   $address_form->setFormLine('email_address',ENTRY_EMAIL_ADDRESS,$a_value);
 ?>
-<table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2">
   <tr>
-    <td class="formAreaTitle"><?php echo CATEGORY_PERSONAL; ?></td>
-  </tr>
-  <tr>
-    <td class="main">
-      <table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">
-        <tr>
-          <td class="main">
-            <table class="box_des" border="0" cellspacing="0" cellpadding="2">
-              <?php
-  $address_form->printCategoryPersonal();
-?>
-            </table>
-          </td>
-        </tr>
-      </table>
+    <td colspan="2" align="left"><h3><?php echo CATEGORY_PERSONAL; ?></h3>
     </td>
   </tr>
-  <tr>
-    <td class="formAreaTitle"><br>
-      <?php echo CATEGORY_OPTIONS; ?></td>
-  </tr>
-  <tr>
-    <td class="main">
-      <table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">
-        <tr>
-          <td class="main">
-            <table class="box_des" border="0" cellspacing="0" cellpadding="2">
-              <tr>
-                <td class="main">&nbsp;<?php echo ENTRY_NEWSLETTER; ?></td>
-                <td class="main">
-                  <?php
+                                          <?php
+  $address_form->printCategoryPersonal();
+?>
+ 
+<!--start-->
+</table>
+<?php
+if (isset($account_single)) {
+?>
+<table id="detail-table-noframe" width="100%" cellspacing="0" cellpadding="0" border="0">
+<?php
+} else {
+?>
+<table id="content_account" width="100%" cellspacing="0" cellpadding="0" border="0">
+<?php
+}
+?>
+<tr>
+    <td align="left" colspan="2"><h3><?php echo CATEGORY_OPTIONS; ?></h3>
+    </td>
+</tr>
+<tr>
+	<td width="20%" align="left"><?php echo ENTRY_NEWSLETTER; ?></td>
+    <td align="left">&nbsp;<?php
   if ($is_read_only == true) {
     if ($account['customers_newsletter'] == '1') {
       echo ENTRY_NEWSLETTER_YES;
@@ -118,8 +113,16 @@
   }
 ?>
                 </td>
-              </tr>
-              <?php
+                              </tr>
+<?php
+if (isset($account_single)) {
+?>
+                              </table>
+<?php
+}
+?>
+                                              <table id="detail-table-noframe" width="100%" cellspacing="0" cellpadding="0" border="0">
+       <?php
   if ($is_read_only == true) {
     //Not View
   } else {
@@ -131,26 +134,25 @@
   
 ?>
               <tr>
-                <td class="main">&nbsp;<?php echo ENTRY_GUEST; ?></td>
-                <td class="main"><?php echo tep_draw_pull_down_menu('guestchk', $guestchk_array, $guestchk, 'onchange="pass_hidd()"'); ?></td>
+                <td align="left" width="20%"><?php echo ENTRY_GUEST; ?></td>
+                <td align="left">&nbsp;<?php echo tep_draw_pull_down_menu('guestchk', $guestchk_array, $guestchk, 'onchange="pass_hidd()"'); ?></td>
               </tr>
               <tr>
                 <td>&nbsp;</td>
-                <td><small><span class="redtext">※</span>&nbsp;会員登録をしないで購入することもできます。</small></td>
+                <td><font color="#ffffff"><span class="redtext">※</span>&nbsp;<?php echo TEXT_SPAN_TITLE;?></font></td>
               </tr>
+  </table>
+
+   <table width="100%" cellspacing="0" cellpadding="0" border="0" class="content_account"> 
               <?php
     } else {
     echo '<tr><td colspan="2"><input type="hidden" name="guestchk" value="0" ></td></tr>';
   }
   }
 ?>
-            </table>
-          </td>
-        </tr>
-      </table>
-    </td>
-  </tr>
-  <?php
+
+
+   <?php
   if($guestchk == '1') {
     $newpass = tep_create_random_value(ENTRY_PASSWORD_MIN_LENGTH);
     $password = $newpass;
@@ -159,81 +161,108 @@
   if ($is_read_only == false) {
 ?>
   <tr id="trpass1">
-    <td class="formAreaTitle"><br>
-      <?php echo CATEGORY_PASSWORD; ?></td>
+    <td width="20%" align="left">
+      <h3><?php echo CATEGORY_PASSWORD; ?></h3></td>
+      <td></td>
   </tr>
-  <tr id="trpass2">
-    <td class="main">
-      <table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">
-        <tr>
-          <td class="main">
-            <table class="box_des" border="0" cellspacing="0" cellpadding="2">
-              <tr>
-                <td class="main">&nbsp;<?php echo ENTRY_PASSWORD; ?></td>
-                <td class="main" style="font-size:10px;">&nbsp;
-                  <?php
-    $p_error_show_str = ''; 
+ <tr id="trpass2">
+     <td colspan="2">
+       <table width="100%">
+             
+       <tr>
+                <td width="20%" align="left"><?php echo ENTRY_PASSWORD; ?></td>
+                <td>&nbsp;<?php
+ if(preg_match("/[a-zA-Z]/",$_POST['password']) ||
+     preg_match("/[0-9]/",$_POST['password'])){
+
+      
+        $p_error_show_str = ''; 
     if ($error == true) {
-      if ($entry_password_confirm_same_error == true) { 
-        echo tep_draw_password_field('password','',"class='input_text'") . '&nbsp;' . ENTRY_PASSWORD_TEXT;
+              if ($entry_password_confirm_same_error == true) { 
+        echo tep_draw_password_field('password','',"id='input_text_short'") . '&nbsp;' . ENTRY_PASSWORD_TEXT;
         $p_error_show_str = ENTRY_NO_USE_OLD_PASSWORD;
       } else if ($entry_password_confirmation_error == true) { 
-        echo tep_draw_password_field('password','',"class='input_text'") . '&nbsp;' . ENTRY_PASSWORD_TEXT;
-        $p_error_show_str = '&nbsp;<font color="red">'.ENTRY_PASSWORD_IS_DIFFERENT.'</font>';
+       echo tep_draw_password_field('password','',"id='input_text_short'") . '&nbsp;' . ENTRY_PASSWORD_TEXT;
+        $p_error_show_str = '';
+      
       } else if($entry_password_error == true) {
-        echo tep_draw_password_field('password','',"class='input_text'") . '&nbsp;' . ENTRY_PASSWORD_TEXT;
+        echo tep_draw_password_field('password','',"id='input_text_short'") . '&nbsp;' . ENTRY_PASSWORD_TEXT;
+       
         if (isset($entry_password_error_msg)) {
           $p_error_show_str = $entry_password_error_msg; 
         } else {
           $p_error_show_str = ENTRY_PASSWORD_ERROR;
         }
-      } else {
+             } else {
         echo PASSWORD_HIDDEN . tep_draw_hidden_field('password') . tep_draw_hidden_field('confirmation');
       }
-    } else {
-        echo tep_draw_password_field('password','',"class='input_text'") . '&nbsp;' . ENTRY_PASSWORD_TEXT;
-    }
+
+        } else {
+                            echo tep_draw_password_field('password','',"id='input_text_short'") . '&nbsp;' . ENTRY_PASSWORD_TEXT;
+                    }
 ?>
-                </td>
-              </tr>
-              <?php
+
+       </td>
+     </tr>
+      
+               <?php
+ 
     if ( ($error == false) || ($entry_password_error == true) ) {
 ?>
               <tr>
-                <td class="main">&nbsp;<?php echo ENTRY_PASSWORD_CONFIRMATION; ?></td>
-                <td class="main" style="font-size:10px;">&nbsp;
-                  <?php
-      echo tep_draw_password_field('confirmation', '', "class='input_text'") . '&nbsp;' . ENTRY_PASSWORD_CONFIRMATION_TEXT;
-?>
-                </td>
+                <td><?php echo ENTRY_PASSWORD_CONFIRMATION; ?></td>
+                <td>&nbsp;<?php
+      echo tep_draw_password_field('confirmation', '', "id='input_text_short'") .
+      '&nbsp;' . ENTRY_PASSWORD_CONFIRMATION_TEXT;
+?>                </td>
               </tr>
               <?php
-    }
+    }  
 ?>
-  <?php
-  if ($p_error_show_str != '') {
-  ?>
-  <tr>
-    <td class="main">&nbsp;</td>
-    <td class="main" style="font-size:10px;">
-    <?php echo '&nbsp;'.$p_error_show_str;?> 
+<?php
+  } 
+else{
+                   echo tep_draw_password_field('password','',"id='input_text_short'") . '&nbsp;' . ENTRY_PASSWORD_TEXT;
+?>
+             <tr>
+                <td><?php echo ENTRY_PASSWORD_CONFIRMATION; ?></td>
+                <td>&nbsp;<?php
+      echo tep_draw_password_field('confirmation', '', "id='input_text_short'") .
+      '&nbsp;' . ENTRY_PASSWORD_CONFIRMATION_TEXT;
+?>                </td>
+              </tr>
+<?php
+}
+?>
+    </table>
     </td>
-  </tr>
-  <?php
-  }
+    </tr>
+         
+    <?php
+            if($_POST['password'] != $_POST['confirmation']){
+        echo "<tr><td></td><td style='font-size:14px'><font
+      color=\"red\">&nbsp;&nbsp;".ENTRY_PASSWORD_IS_DIFFERENT."</td></tr>";
+    }
+
+  if ($p_error_show_str != '') {
+   ?>  
+   <tr>
+     <td class="main">&nbsp;</td>
+     <td class="main" style="font-size:14px;">
+     <?php echo '&nbsp;'.$p_error_show_str;?> 
+     </td>
+   </tr>
+  <?php 
+  } 
   ?>
     <tr>
-      <td class="main" colspan="2"><?php echo ENTRY_PASSWORD_INFORM_READ_TEXT;?></td> 
+      <td class="main" colspan="2"><?php echo ENTRY_PASSWORD_INFORM_READ_TEXT;?></td>
     </tr>
-  </table>
-          </td>
-        </tr>
-      </table>
-    </td>
-  </tr>
   <?php
   }
 ?>
+
+<!--end-->
   <?php
   #agreement_for_use
   if(basename($PHP_SELF) == 'create_account.php'){
@@ -245,34 +274,27 @@
       $agreement_text .= $value;
     }
 ?>
+</table> 
+<table width="100%" cellspacing="0" cellpadding="2" border="0" class="content_account"> 
   <tr>
-    <td class="formAreaTitle"><br>
-      <?php echo CATEGORY_AGREEMENT; ?></td>
+     <td colspan="2" width="20%" align="left"><h3><?php echo CATEGORY_AGREEMENT; ?></h3></td>
   </tr>
-  <tr>
-    <td class="main">
-      <table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">
-        <tr>
-          <td class="main">
-            <table class="box_des" border="0" cellspacing="0" cellpadding="2">
-              <tr>
-                <td class="main">
-                  <?php
-  echo tep_draw_textarea_field('agreement', 'soft', '48', '5', mb_convert_encoding($agreement_text, 'UTF-8', 'ASCII, JIS, UTF-8, EUC-JP, SJIS'));
-  echo '<br>';
+<tr>
+                <td colspan="2" width="100%">
+                                                <?php
+  echo tep_draw_textarea_field('agreement', 'soft', '48', '20',
+      mb_convert_encoding($agreement_text, 'UTF-8', 'ASCII, JIS, UTF-8, EUC-JP,
+        SJIS'),'style="width:90%;"');
+  echo ' </td></tr>';
+  echo '<tr><td colspan="2" style=" padding:10px 0 5px 0;">';
   echo tep_draw_checkbox_field('agreement_chk', 'ok') . ENTRY_AGREEMENT_TEXT;
 ?>
-                </td>
+     </td>
               </tr>
-            </table>
-          </td>
-        </tr>
-      </table>
-    </td>
-  </tr>
-  <?php
+
+   <?php
     }
   }
+
 ?>
-</table>
 <input type="hidden" name="country" value="107">

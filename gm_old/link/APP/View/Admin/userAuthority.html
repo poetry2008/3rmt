@@ -1,0 +1,36 @@
+<!--{include file=header.html}-->
+<div id="left">
+<!--{include file=menu.html}-->
+</div>
+<div id="right">
+	<div id="content">
+		<ul>
+			<li class="content-bg">
+ 				<div id="title"><h3>
+  				<!--{if $class.class_id eq 0}-->
+  				<!--{_t key='ui_c_create'}-->
+  				<!--{else}-->
+ 				<!--{_t key='ui_c_edit'}-->
+  				<!--{/if}-->
+  				</h3></div>
+ 				<div id="menu-top"><!--{_t key='ui_c_edit_description'}--></div>
+				<form method="post" action="<!--{url controller=UserManager action=UserAuthorityDo}-->" name="form1">
+ 				<table id="table-line">
+				<!--{section name=loopRole loop=$roles}-->
+					<tr>
+						<td class="td1"><!--{webcontrol type="checkbox" name="roles[]" value=$roles[loopRole].role_id checked=$roles[loopRole].checked}--></td>
+						<td class="td2"><!--{$roles[loopRole].nickname}--> --<!--{$roles[loopRole].content}--></td>
+					<td>
+				<!--{/section}-->
+				<!--{webcontrol type="hidden" name="user_id" value=$user.user_id}-->
+					<tr>
+						<td colspan="2" class="td-submit"><input name="Submit" value='<!--{_t key=submit}-->' type="submit" id="submit"></td>
+					</tr>
+				</table>	
+				</form>
+			</li>
+		</ul>
+	</div>
+</div>
+</body>
+</html>

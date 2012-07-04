@@ -24,7 +24,6 @@
     }
   }
 ?>
-<?php //页面产品数量输入框 验证JS?>
 <script type="text/javascript">
 function key(e)
 {
@@ -61,7 +60,6 @@ function history_back(back_url){
       }
     });
   }
-  //history.back()
   window.location.href=back_url;
 }
 function fmoney(s)
@@ -117,8 +115,6 @@ function money_update(objid)
 
 
   set_sub_total();
-  //alert(old_sub_total);
-  //alert(new_sub_total);
 }
 
 function set_sub_total()
@@ -128,7 +124,7 @@ function set_sub_total()
   for (var i=0; i<final_prices.length; i++)
   {
 
-    var p_l_html = document.getElementById('pri_' + final_prices[i].id.substr(3)).innerHTML.split('円')[0].replace(/,/g,'');
+    var p_l_html = document.getElementById('pri_' + final_prices[i].id.substr(3)).innerHTML.split('<?php echo JPMONEY_UNIT_TEXT;?>')[0].replace(/,/g,'');
     if(document.getElementById('one_price_show_'+ final_prices[i].id.substr(3))){
     var one_price_money = document.getElementById('one_price_'+ final_prices[i].id.substr(3)).innerHTML.replace(/,/g,'');
     var one_p_quantity = document.getElementById('quantity_'+ final_prices[i].id.substr(3)).value;
@@ -198,28 +194,26 @@ function change_num(ob,targ, quan,a_quan)
 </script>
 </head>
 <body>
+   
 <!-- header //--> 
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
 <!-- header_eof //--> 
 <!-- body //--> 
 <div id="main">
-<!-- left_navigation //-->
-<div id="l_menu">
-<?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-</div>
-<!-- left_navigation_eof //-->
 <!-- body_text //-->
-<div id="content">
-<div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
-<h2 class="pageHeading"><?php echo HEADING_TITLE; ?></h2>
-<table class="box_des" border="0" width="95%" cellspacing="0" cellpadding="0"> 
+<div class="yui3-u" id="layout">
+             <div id="current" ><?php echo $breadcrumb->trail(' <img  src="images/point.gif"> '); ?></div>
+ <?php include('includes/search_include.php');?>
+            
+                    <div id="main-content">
+      <h2><?php echo HEADING_TITLE; ?></h2>
         <?php
   if ($cart->count_contents() > 0) {
-?> 
-        <tr> 
-          <td><?php echo tep_draw_form('cart_quantity', tep_href_link(FILENAME_SHOPPING_CART, 'action=update_product', 'SSL')); ?> 
-          <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="0"> 
-            <?php
+?>    
+        <?php echo tep_draw_form('cart_quantity', tep_href_link(FILENAME_SHOPPING_CART, 'action=update_product', 'SSL')); ?> 
+         <table id="detail-table" border="0" width="100%" cellspacing="0" cellpadding="0">
+
+                     <?php
     $any_out_of_stock = 0;
     $products = $cart->get_products();
     for ($i=0, $n=sizeof($products); $i<$n; $i++) {
@@ -252,76 +246,60 @@ function change_num(ob,targ, quan,a_quan)
         }
       }
     }
-
+   
     require(DIR_WS_MODULES. 'order_details.php');
 ?> 
-          </table></td> 
-        </tr> 
-        <tr> 
-          <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-        </tr> 
-        <tr> 
-          <td align="right" class="main"><b><?php echo SUB_TITLE_SUB_TOTAL; ?>
-          <span id="sub_total"><?php echo $currencies->format_total($cart->show_total()); ?></span></b></td> 
-        </tr> 
+          </table> 
+  
+
+
+
+       <div class="shopping_cart_total"> 
+         <b><?php echo SUB_TITLE_SUB_TOTAL; ?>
+          <span id="sub_total"><?php echo $currencies->format_total($cart->show_total()); ?></span></b>        </div> 
 <?php   
-    // 买取200以下提示
     if($cart->show_total() < 0 && $cart->show_total() > -200) {
 ?>
-          <tr>
-            <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
-          </tr>
-          <tr>
-            <td align="right" class="main">
-               <table border="0" width="100%" cellspacing="0" cellpadding="2" class="infoBoxNotice_01">
-              	<tr class="infoBoxNoticeContents_01">
-                	<td colspan="2" class="text">
-【重要】<br>
-小計金額が赤色の場合は「買取」となり、表示された金額をお客様へお支払いいたします。<br>
-買取金額が200円未満の場合は手数料の関係上、支払方法にて銀行振込を選択することができません。<br>
-<br>
-選択できる支払方法は以下となります。<br>
-A:来店による支払い<br>
-B:ポイントの加算（<?php echo STORE_NAME;?>会員でなければ表示されません）<br>
-</td>
+          <div>  
+               <table border="0" width="100%" cellspacing="0" cellpadding="2" style="border: 3px solid #FF0000; padding:5px; margin-top:10px;">
+              <tr>
+               <td colspan="2">
+               <?php echo TEXT_SHOPPING_CART_READ_INFO;?>
+               </td>
                 </tr>
-                <tr class="infoBoxNoticeContents_01">
-                  <td width="33" height="35"><img src="images/icons/hinto.jpg" align="absmiddle" /></td>
-                  <td align="left"
-                  valign="middle">200円未満になる場合は商品名「ウェブマネーの販売」をカートに入れてみてはどうでしょう。</td>
+                <tr>
+                  <td width="33" height="35"><img src="images/design/hinto.jpg" align="absmiddle" /></td>
+                  <td align="left" valign="middle">
+                  <?php echo TEXT_SHOPPING_CART_READ_NOTICE_MONEY;?>
+                  </td>
                 </tr>
               </table>
-            </td>
-          </tr>
+            
+          </div>
           <?php 
   }
 ?>
 <?php   
     if(isset($_GET['limit_error']) && $_GET['limit_error'] == 'true') {
 ?>
-        <tr> 
-          <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-        </tr> 
-        <tr> 
-          <td align="right" class="main"><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxNotice"> 
-                  <tr class="infoBoxNoticeContents"> 
+
+        <div class="4" >
+         <table border="0" width="100%" cellspacing="1" cellpadding="2"> 
+                  <tr> 
                     <td><?php echo sprintf(DS_LIMIT_PRICE_OVER_ERROR,$currencies->format(DS_LIMIT_PRICE),$currencies->format(DS_LIMIT_PRICE)); ?></td> 
                   </tr> 
-                </table></td> 
-        </tr> 
+                </table>
+             </div> 
 <?php 
   }
 ?>
 <?php   
     if(isset($_GET['limit_min_error']) && $_GET['limit_min_error'] == 'true') {
 ?>
-          <tr>
-            <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
-          </tr>
-          <tr>
-            <td align="right" class="main">
-              <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxNotice">
-                <tr class="infoBoxNoticeContents">
+
+          <div class="5">     
+              <table border="0" width="100%" cellspacing="1" cellpadding="2">
+                <tr>
                   <td>
                   <?php 
                   $limit_min_error_arr = explode(',', LIMIT_MIN_PRICE);
@@ -332,13 +310,13 @@ B:ポイントの加算（<?php echo STORE_NAME;?>会員でなければ表示さ
                   } else {
                     $limit_error_str .= $currencies->format($limit_min_error_arr[0]);
                   }
-                  echo sprintf("%s未満の注文はできません。合計金額を%s以上にしてから再度お申し込みください。",$limit_error_str,$limit_error_str); 
+                  echo sprintf(TEXT_SHOPPING_CART_NOTICE_TEXT,$limit_error_str,$limit_error_str); 
                   ?>
                   </td>
                 </tr>
               </table>
-            </td>
-          </tr>
+            
+         </div>
           <?php 
   }
 ?>
@@ -346,32 +324,31 @@ B:ポイントの加算（<?php echo STORE_NAME;?>会員でなければ表示さ
     if ($any_out_of_stock == 1) {
       if (STOCK_ALLOW_CHECKOUT == 'true') {
 ?> 
-        <tr> 
-          <td class="stockWarning" align="center"><br>
-          <?php echo OUT_OF_STOCK_CAN_CHECKOUT; ?></td> 
-        </tr> 
+       <div class="6"> 
+         
+          <?php echo OUT_OF_STOCK_CAN_CHECKOUT; ?> 
+        </div> 
         <?php
       } else {
 ?> 
-        <tr> 
-          <td class="stockWarning" align="center"><br> 
-          <?php echo OUT_OF_STOCK_CANT_CHECKOUT; ?></td> 
-        </tr> 
+        <div class="7"> 
+           
+          <?php echo OUT_OF_STOCK_CANT_CHECKOUT; ?> 
+        </div> 
         <?php
       }
     }
 ?> 
-        <tr> 
-          <td><br> 
-          <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2"> 
+        <div class="8">  
+           
+          <table border="0" width="100%" cellspacing="0" cellpadding="2"> 
             <tr> 
-              <td width="20%" align="left" class="main">
+              <td id="shopping_cart_continue" align="right">
 <?php
     $back = sizeof($navigation->path)-2;
     if (isset($navigation->path[$back]) and 0) {
 ?> 
-                    <input type="hidden" name="goto" value="<?php echo tep_href_link($navigation->path[$back]['page'], tep_array_to_string($navigation->path[$back]['get'], array('action')), $navigation->path[$back]['mode']);?>">
-                    <input type="submit" name="continue" value="" class="shopping_cart_continue">
+                    <input type="hidden" name="goto" value="<?php echo tep_href_link($navigation->path[$back]['page'], tep_array_to_string($navigation->path[$back]['get'], array('action')), $navigation->path[$back]['mode']);?>"></div>
 <?php } else { ?>
 <?php
 if (!empty($_SESSION['history_url'])) {
@@ -380,15 +357,18 @@ if (!empty($_SESSION['history_url'])) {
   $back_url = HTTP_SERVER;
 }
 ?>
+
                     <button  class="shopping_cart_continue" onClick="history_back('<?php echo $back_url;?>'); return false;"></button>
-<?php } ?>
-              </td> 
-              <td align="left" class="main">
+
+<?php } ?></td>
+<td id="shopping_cart_checkout" align="left">
+
   <input type="submit" name="checkout" value="" class="shopping_cart_checkout">
+
   </td> 
             </tr> 
             <tr> 
-              <td class="main" colspan="2"><?php echo TEXT_UPDATE_CART_INFO; // 2003.02.27 nagata Add Japanese osCommerce ?></td> 
+              <td  colspan="2"><?php echo TEXT_UPDATE_CART_INFO; // 2003.02.27 nagata Add Japanese osCommerce ?></td> 
             </tr> 
           </table> 
 <?php 
@@ -405,61 +385,63 @@ if (!empty($_SESSION['history_url'])) {
       }
       if($h3_show_flag){
 ?>
-  <h3 class="pageHeading">こちらの商品もオススメ！！</h3>
+  <h3><?php echo TEXT_SHOPPING_CART_PICKUP_PRODUCTS;?></h3>
 <?php } ?>
-  <div style="text-align:center;padding:10px 0;">
 <?php
       foreach($cart_products as $cp){
         $cp = tep_get_product_by_id($cp, SITE_ID, 4, true, 'shopping_cart', true);
         $cp_status_raw = tep_db_query("select products_status from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$cp['products_id']."' and (site_id = 0 or site_id = ".SITE_ID.") order by site_id desc limit 1"); 
         $cp_status_res = tep_db_fetch_array($cp_status_raw);
         if ($cp_status_res['products_status'] == 0) {
-          /*
-          echo "<img src='".DIR_WS_IMAGES . 'carttags/'. $cp['products_cart_image']."' alt='".$cp['products_name']."' title='".$cp['products_name']."'>";
-          */
         } else {
-          echo "<a href='".tep_href_link(FILENAME_PRODUCT_INFO, "products_id=".$cp['products_id'])."'>";
+         echo "<div style='text-align:center;padding:10px 0;'>";
+         echo "<a href='".tep_href_link(FILENAME_PRODUCT_INFO, "products_id=".$cp['products_id'])."'>";
           echo "<img src='".DIR_WS_IMAGES . 'carttags/'. $cp['products_cart_image']."' alt='".$cp['products_name']."' title='".$cp['products_name']."'>";
-          echo "</a>";
+          echo "</a></div>";
         }
-        echo "<br>";
+   
       }
 ?>
-  </div>
 <?php
     }
   ?>
        <?php require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_INFO_SHOPPING_CART);?>
-<p class="box_des"><b><i><?php echo SUB_HEADING_TITLE_1; ?></i></b><br><?php echo SUB_HEADING_TEXT_1; ?></p>
-<p class="box_des"><b><i><?php echo SUB_HEADING_TITLE_2; ?></i></b><br><?php echo SUB_HEADING_TEXT_2; ?></p>
-<p class="box_des"><b><i><?php echo SUB_HEADING_TITLE_3; ?></i></b><br><?php echo SUB_HEADING_TEXT_3; ?></p>
-          </form></td> 
-        </tr> 
+<p><b><i><?php echo SUB_HEADING_TITLE_1; ?></i></b><br><?php echo SUB_HEADING_TEXT_1; ?></p>
+<p><b><i><?php echo SUB_HEADING_TITLE_2; ?></i></b><br><?php echo SUB_HEADING_TEXT_2; ?></p>
+<p><b><i><?php echo SUB_HEADING_TITLE_3; ?></i></b><br><?php echo SUB_HEADING_TEXT_3; ?></p>
+          </form>
+          
+       </div> 
         <?php
   } else {
 ?> 
-        <tr> 
-          <td class="main"><?php echo TEXT_CART_EMPTY; ?></td> 
-        </tr> 
-        <tr> 
-          <td align="right" class="main"><br> 
-          <a href="<?php echo tep_href_link(FILENAME_DEFAULT); ?>"><?php echo tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></a></td> 
-        </tr> 
-        <?php
+      <div style="margin-top:13px;"> 
+         <?php echo TEXT_CART_EMPTY; ?>
+         </div> 
+       <div class="botton-continue" align="right">
+               <a href="<?php echo tep_href_link(FILENAME_DEFAULT); ?>" ><?php echo
+          tep_image_button('button_continue.gif',
+IMAGE_BUTTON_CONTINUE,'onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_continue_hover.gif\'"
+onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_continue.gif\'"'); ?></a>
+
+          </div>
+          <?php
   }
 ?> 
         </table></div>
+                </div>
+<?php include('includes/float-box.php');?>
+
       <!-- body_text_eof //--> 
-<!-- right_navigation //--> 
-<div id="r_menu">
-<?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-</div>
-<!-- right_navigation_eof //-->
   <!-- body_eof //--> 
   <!-- footer //--> 
-  <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
-  <!-- footer_eof //--> 
-</div> 
+   <!-- footer_eof //-->
+  </div>
+<?php echo DEFAULT_PAGE_TOP_CONTENTS;?>
+
+</div>
+<?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
+
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

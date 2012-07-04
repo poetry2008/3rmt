@@ -149,7 +149,6 @@ define('BOX_INFORMATION_PAYMENT', 'お支払いについて');
 define('BOX_INFORMATION_FAQ', 'よくある質問');
 define('BOX_INFORMATION_CONTACT', 'お問い合わせ');
 
-
 // tell a friend box text in includes/boxes/tell_a_friend.php
 define('BOX_HEADING_TELL_A_FRIEND', '友達に知らせる');
 define('BOX_TELL_A_FRIEND_TEXT', 'この商品のURLを友達にメールする');
@@ -207,50 +206,50 @@ define('ENTRY_COMPANY_ERROR', '');
 define('ENTRY_COMPANY_TEXT', '');
 define('ENTRY_GENDER', '性別:');
 define('ENTRY_GENDER_ERROR', '&nbsp;<small><font color="#AABBDD">が必要です。</font></small>');
-define('ENTRY_GENDER_TEXT', '&nbsp;<small><font color="#AABBDD">必須</font></small>');
+define('ENTRY_GENDER_TEXT', '&nbsp;<small><font color="RED">*必須</font></small>');
 define('ENTRY_FIRST_NAME', '名:');
 define('ENTRY_FIRST_NAME_ERROR', '&nbsp;<small><font color="#FF0000">少なくても ' . ENTRY_FIRST_NAME_MIN_LENGTH . ' 文字</font></small>');
-define('ENTRY_FIRST_NAME_TEXT', '&nbsp;<small>(例. 太郎) <font color="#AABBDD">必須</font></small>');
+define('ENTRY_FIRST_NAME_TEXT', '&nbsp;<span style="font-size:14px">(例. 太郎) <font color="red">*必須</font></span>');
 define('ENTRY_LAST_NAME', '姓:');
 define('ENTRY_LAST_NAME_ERROR', '&nbsp;<small><font color="#FF0000">少なくても ' . ENTRY_LAST_NAME_MIN_LENGTH . ' 文字</font></small>');
-define('ENTRY_LAST_NAME_TEXT', '&nbsp;<small>(例. 田中) <font color="#AABBDD">必須</font></small>');
+define('ENTRY_LAST_NAME_TEXT', '&nbsp;<span style="font-size:14px">(例. 田中) <font color="red">*必須</font></span>');
 
 define('ENTRY_FIRST_NAME_F', '名(フリガナ):');
 define('ENTRY_FIRST_NAME_F_ERROR', '&nbsp;<small><font color="#FF0000">少なくても ' . ENTRY_FIRST_NAME_MIN_LENGTH . ' 文字</font></small>');
-define('ENTRY_FIRST_NAME_F_TEXT', '&nbsp;<small>(例. タロウ) <font color="#AABBDD">必須</font></small>');
+define('ENTRY_FIRST_NAME_F_TEXT', '&nbsp;<small>(例. タロウ) <font color="red">*必須</font></small>');
 define('ENTRY_LAST_NAME_F', '姓(フリガナ):');
 define('ENTRY_LAST_NAME_F_ERROR', '&nbsp;<small><font color="#FF0000">少なくても ' . ENTRY_LAST_NAME_MIN_LENGTH . ' 文字</font></small>');
-define('ENTRY_LAST_NAME_F_TEXT', '&nbsp;<small>(例. タナカ) <font color="#AABBDD">必須</font></small>');
+define('ENTRY_LAST_NAME_F_TEXT', '&nbsp;<small>(例. タナカ) <font color="red">*必須</font></small>');
 
 define('ENTRY_DATE_OF_BIRTH', '生年月日:');
 define('ENTRY_DATE_OF_BIRTH_ERROR', '&nbsp;<small><font color="#FF0000">(例. 1970/05/21)</font></small>');
-define('ENTRY_DATE_OF_BIRTH_TEXT', '&nbsp;<small>(例. 1970/05/21) <font color="#AABBDD">必須</font></small>');
+define('ENTRY_DATE_OF_BIRTH_TEXT', '&nbsp;<small>(例. 1970/05/21) <font color="red">*必須</font></small>');
 define('ENTRY_EMAIL_ADDRESS', 'メールアドレス:');
 define('ENTRY_EMAIL_ADDRESS_ERROR', '&nbsp;<small><font color="#FF0000">少なくても ' . ENTRY_EMAIL_ADDRESS_MIN_LENGTH . ' 文字</font></small>');
-define('ENTRY_EMAIL_ADDRESS_CHECK_ERROR', '&nbsp;<small><font color="#FF0000">入力されたメールアドレスは不正です!</font></small>');
+define('ENTRY_EMAIL_ADDRESS_CHECK_ERROR', '<div class="error_information">入力されたメールアドレスは不正です!</div>');
 define('ENTRY_EMAIL_ADDRESS_ERROR_EXISTS', '&nbsp;<small><font color="#FF0000">メールアドレスはすでに存在しています!</font></small>');
-define('ENTRY_EMAIL_ADDRESS_TEXT', '&nbsp;<small>(例. sample@example.com) <font color="#AABBDD">必須</font></small>');
+define('ENTRY_EMAIL_ADDRESS_TEXT', '&nbsp;<span style="font-size:14px">(例.sample@example.com) <font  color="RED">*必須</font></span>');
 define('ENTRY_STREET_ADDRESS', '住所１:');
 define('ENTRY_STREET_ADDRESS_ERROR', '&nbsp;<small><font color="#FF0000">少なくても ' . ENTRY_STREET_ADDRESS_MIN_LENGTH . ' 文字</font></small>');
-define('ENTRY_STREET_ADDRESS_TEXT', '&nbsp;<small>(例. 1-15-6) <font color="#AABBDD">必須</font></small>');
+define('ENTRY_STREET_ADDRESS_TEXT', '&nbsp;<span>(例. 1-15-6) <font color="RED">*必須</font></span>');
 define('ENTRY_SUBURB', '住所２:');
 define('ENTRY_SUBURB_ERROR', '');
 define('ENTRY_SUBURB_TEXT', '');
 define('ENTRY_POST_CODE', '郵便番号:');
 define('ENTRY_POST_CODE_ERROR', '&nbsp;<small><font color="#FF0000">少なくても ' . ENTRY_POSTCODE_MIN_LENGTH . ' 文字</font></small>');
-define('ENTRY_POST_CODE_TEXT', '&nbsp;<small>(例. 331-0814) <font color="#AABBDD">必須</font></small>');
+define('ENTRY_POST_CODE_TEXT', '&nbsp;<span>(例. 331-0814) <font color="RED">*必須</font></span>');
 define('ENTRY_CITY', '市区町村:');
 define('ENTRY_CITY_ERROR', '&nbsp;<small><font color="#FF0000">少なくても ' . ENTRY_CITY_MIN_LENGTH . ' 文字</font></small>');
-define('ENTRY_CITY_TEXT', '&nbsp;<small>(例. さいたま市) <font color="#AABBDD">必須</font></small>');
+define('ENTRY_CITY_TEXT', '&nbsp;<span>(例. さいたま市) <font color="RED">*必須</font></span>');
 define('ENTRY_STATE', '都道府県:');
-define('ENTRY_STATE_ERROR', '&nbsp;<small><font color="#FF0000">必須</font></small>');
-define('ENTRY_STATE_TEXT', '&nbsp;<small>(例. 埼玉県) <font color="#AABBDD">必須</font></small>');
+define('ENTRY_STATE_ERROR', '&nbsp;<small><font color="#FF0000">*必須</font></small>');
+define('ENTRY_STATE_TEXT', '&nbsp;<span>(例. 埼玉県) <font color="RED">*必須</font></span>');
 define('ENTRY_COUNTRY', '国名:');
 define('ENTRY_COUNTRY_ERROR', '');
-define('ENTRY_COUNTRY_TEXT', '&nbsp;<small><font color="#AABBDD">必須</font></small>');
+define('ENTRY_COUNTRY_TEXT', '&nbsp;<small><font color="RED">*必須</font></small>');
 define('ENTRY_TELEPHONE_NUMBER', '電話番号:');
 define('ENTRY_TELEPHONE_NUMBER_ERROR', '&nbsp;<small><font color="#FF0000">少なくても ' . ENTRY_TELEPHONE_MIN_LENGTH . ' 文字</font></small>');
-define('ENTRY_TELEPHONE_NUMBER_TEXT', '&nbsp;<small>(例. 012-345-6789) <font color="#AABBDD">必須</font></small>');
+define('ENTRY_TELEPHONE_NUMBER_TEXT', '&nbsp;<span>(例. 012-345-6789) <font color="RED">*必須</font></span>');
 define('ENTRY_FAX_NUMBER', 'ファクス番号:');
 define('ENTRY_FAX_NUMBER_ERROR', '');
 define('ENTRY_FAX_NUMBER_TEXT', '');
@@ -261,11 +260,11 @@ define('ENTRY_NEWSLETTER_NO', '購読しない');
 define('ENTRY_NEWSLETTER_ERROR', '');
 define('ENTRY_PASSWORD', 'パスワード:');
 define('ENTRY_PASSWORD_CONFIRMATION', 'パスワードを再入力:');
-define('ENTRY_PASSWORD_CONFIRMATION_TEXT', '&nbsp;(例. abcd1234) <font color="#AABBDD">必須</font>');
-define('ENTRY_PASSWORD_ERROR', '&nbsp;<small><font color="#FF0000">少なくても ' . ENTRY_PASSWORD_MIN_LENGTH . ' 文字</font></small>');
-define('ENTRY_PASSWORD_TEXT', '&nbsp;(例. abcd1234) <font color="#AABBDD">必須</font>');
+define('ENTRY_PASSWORD_CONFIRMATION_TEXT', '&nbsp;<span style="font-size:14px">英数字' .  ENTRY_PASSWORD_MIN_LENGTH .  '文字以上&nbsp;(例. abcd1234) <font  color="RED">*必須</font></span>');
+define('ENTRY_PASSWORD_ERROR', '&nbsp;<font color="#FF0000">少なくても ' . ENTRY_PASSWORD_MIN_LENGTH . ' 文字</font>');
+define('ENTRY_PASSWORD_TEXT', '&nbsp;<span style="font-size:14px">英数字' .  ENTRY_PASSWORD_MIN_LENGTH .  '文字以上&nbsp;(例. abcd1234) <font color="RED">*必須</font></span>');
 define('PASSWORD_HIDDEN', '********');
-define('ENTRY_AGREEMENT_TEXT', '同意する');
+define('ENTRY_AGREEMENT_TEXT', '&nbsp;同意する');
 
 // constants for use in tep_prev_next_display function
 define('TEXT_RESULT_PAGE', 'ページ:');
@@ -294,7 +293,7 @@ define('IMAGE_BUTTON_BACK', '前に戻る');
 define('IMAGE_BUTTON_CHANGE_ADDRESS', 'アドレスを変更');
 define('IMAGE_BUTTON_CHECKOUT', 'レジに進む');
 define('IMAGE_BUTTON_CONFIRM_ORDER', '注文する!');
-define('IMAGE_BUTTON_CONTINUE', '次へ進む');
+define('IMAGE_BUTTON_CONTINUE', '次に進む');
 define('IMAGE_BUTTON_CONTINUE_SHOPPING', 'ショッピングを続ける');
 define('IMAGE_BUTTON_DELETE', '削除する');
 define('IMAGE_BUTTON_EDIT_ACCOUNT', 'お客様情報の編集');
@@ -338,7 +337,7 @@ define('TEXT_NO_NEW_PRODUCTS', '現在商品は登録されていません...');
 
 define('TEXT_UNKNOWN_TAX_RATE', '税率不明');
 
-define('TEXT_REQUIRED', '必須');
+define('TEXT_REQUIRED', '*必須');
 
 define('TEXT_TIME_SPECIFY', 'お届けする時間帯: '); // add for Japanese update
 
@@ -399,8 +398,8 @@ define('LISTING_TEXT', 'テキストのみ');
 
 // calender box text in includes/boxes/cl.php
 define('BOX_HEADING_CL', '&nbsp;の営業日');
-define('BOX_CL_COLOR01', '&nbsp;&raquo;&nbsp;店舗休業日');
-define('BOX_CL_COLOR02', '&nbsp;&raquo;&nbsp;メール返信休業日');
+define('BOX_CL_COLOR01', '&nbsp;<img src="images/point.gif">&nbsp;店舗休業日');
+define('BOX_CL_COLOR02', '&nbsp;<img src="images/point.gif">&nbsp;メール返信休業日');
 
 //add present
 define('BOX_HEADING_PRESENT','プレゼント商品！');
@@ -451,12 +450,57 @@ define('PREORDER_TRADER_LINE_TITLE', '取引情報');
 define('PREORDER_CONFIRM_LINE_TITLE', '最終確認');
 define('PREORDER_FINISH_LINE_TITLE', '手続き完了！');
 define('JPMONEY_UNIT_TEXT', '円');
-define('ENTRY_NO_USE_OLD_PASSWORD', '&nbsp;<font color="#FF0000">安全のため、古いパスワードと違うパスワードを設定してください。</font>');
+define('ENTRY_NO_USE_OLD_PASSWORD', '<font color="#FF0000">安全のため、古いパスワードと違うパスワードを設定してください。</font>');
 define('ENTRY_PASSWORD_IS_NUM', '&nbsp;<font color="#FF0000">英字（abcdef...z）が1文字以上必要です。<br>&nbsp;&nbsp;英字と数字を組み合わせて設定してください。</font>');
 define('ENTRY_PASSWORD_IS_ALPHA', '&nbsp;<font color="#FF0000">数字（0123456789）が1文字以上必要です。<br>&nbsp;&nbsp;英字と数字を組み合わせて設定してください。</font>');
 define('ENTRY_PASSWORD_IS_DIFFERENT', 'パスワードと再入力が違います。');
-define('ENTRY_PASSWORD_INFORM_READ_TEXT', '&nbsp;半角の英字、数字を組み合わせた'.ENTRY_PASSWORD_MIN_LENGTH.'文字以上を入力してください。<br>&nbsp;英字、数字がそれぞれ1文字以上を必要です。大文字と小文字は区別されます。記号は入力できません。');
-define('IMAGE_BUTTON_CUSTOMERS_EXIT', '退会を申し込む');
+define('ENTRY_PASSWORD_INFORM_READ_TEXT', '半角の英字、数字を組み合わせた'.ENTRY_PASSWORD_MIN_LENGTH.'文字以上を入力してください。<br>英字、数字がそれぞれ1文字以上を必要です。大文字と小文字は区別されます。<br>記号は入力できません。');
 define('TEXT_REORDER2_MUST_INPUT','<font color="red">必須項目</font>');
-define('TEXT_REORDER2_TORIHIKI_ERROR','<br><font color="red">【取引日時】を選択してください。</font>');
-
+define('TEXT_REORDER2_TREADE_TIME__ERROR','<br><font color="red">【取引日時】を選択してください。</font>');
+define('TEXT_REQUIRE_MSG', '*必須');
+define('TEXT_REQUIRE_FILE_TYPE_MSG', '無効なファイル形式です [ %s ]');
+define('TEXT_REQUIRE_FILE_SIZE_MSG', '添付ファイルの上限サイズ%s bytes を超えています。');
+define('TEXT_INPUT_AGAIN_AND_MAIL_MSG', '内容を入力しもう一度送信してください');
+define('TEXT_SENDMAIL_FINISH', '送信完了');
+define('TEXT_HEADER_SHOPPING_CART_LINK', 'ショッピングカート');
+define('TEXT_HEADER_TOP_TITLE', '<h1><strong>%s-RMT</strong> 安いが一番！最安値-ゲーム通貨の激安販売</h1><span>営業時間10：00～24：00 365日年中無休</span>');
+define('TEXT_HEADER_TOP_ANOTHER_TITLE', '<h1>RMT 最安値-アイテムの激安販売</h1><span>営業時間10：00～24：00 365日年中無休</span>');
+define('BESTSELLERS_TITLE_TEXT', 'RMT ランキング');
+define('BESTSELLERS_SORT_SYMBOL', '位');
+define('ABOUT_TEXT_LINK', 'について');
+define('INPUT_BELOW_MSG_TEXT', '入力して下さい');
+define('CATEGORY_SHOW_TEXT', 'RMT：ゲームマネー・アイテム・アカウント');
+define('TEXT_DATE_MONDAY','月曜日');
+define('TEXT_DATE_TUESDAY','火曜日');
+define('TEXT_DATE_WEDNESDAY','水曜日');
+define('TEXT_DATE_THURSDAY','木曜日');
+define('TEXT_DATE_FIRDAY','金曜日');
+define('TEXT_DATE_SATURDAY','土曜日');
+define('TEXT_DATE_SUNDAY','日曜日');
+define('TEXT_MANUFACTURERS_PRODUCT_LIST', 'このメーカー一覧の商品一覧へ');
+define('TEXT_SPAN_TITLE','&nbsp;会員登録をしないで購入することもできます。');
+define('TEXT_FOOTER_ONE','サイトマップ');
+define('TEXT_FOOTER_TWO','再配達依頼');
+define('TEXT_FOOTER_THREE','会社概要');
+define('TEXT_FOOTER_FOUR','特定商取引に基づく表記');
+define('TEXT_FOOTER_FIVE','相互リンク');
+define('TEXT_FOOTER_SIX','当ホームページに記載されている会社名・製品名・システム名などは、各社の登録商標、もしくは商標です。COPYRIGHT (C) GameMoney'); 
+define('NUM_UNIT_SYMBOL', '個');
+define('TEXT_TITLE_ONE','からのお知らせ');
+define('TEXT_TITLE_NEWS','過去のRMTニュースを見る');
+define('TEXT_CONTACT_US','お問い合わせ');
+define('TEXT_REVIEWS_TITLE_END','%s のレビュー');
+define('TEXT_CONTACT_US_LOGINMSG_DEFAULT','情報を入力し「送信」ボタンをクリックしてください。');
+define('TEXT_CONTACT_US_LOGINMSG_NEW','"メールアドレス" または "問合番号" が一致しませんでした。');
+define('TEXT_OST_LOGIN_INC_LOGIN_INC_INFO', 'お問い合わせが初めてのお客様、または問合番号を忘れた場合は、%sをクリックしてください。');
+define('TEXT_OST_LOGIN_INC_NEW_CONTACT','新規お問い合わせ');
+define('TEXT_OST_LOGIN_INC_MAILL_ADDRESS','メールアドレス：');
+define('TEXT_OST_LOGIN_INC_CONTACT_NUM','お問い合わせ番号：');
+define('TEXT_OST_THANKYOU_INFO_TEXT',
+'24時間経過しても返答が届かない場合は、以下のことを必ずご確認ください。<br>
+＜迷惑メールフォルダの確認＞<br>
+弊社のメールが 「迷惑メールフォルダ」や「ゴミ箱」に振り分けされ見落としていませんか？<br>
+＜メールドメインの受信制限を設定している＞<br>
+%sのメールドメインを受信するように設定をお願いいたします。<br>
+＜それでも届かないときは、メールアドレス変更＞<br>
+別のメールアドレスをご入力いただき、お問い合わせをお願いいたします。');

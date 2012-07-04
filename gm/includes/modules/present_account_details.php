@@ -188,45 +188,40 @@
     echo tep_draw_hidden_field('country', 107);
 // 2003-07-15 modi -e
 ?>
-<table border="0" width="100%" cellspacing="0" cellpadding="2" class="box_des">
+<table border="0" width="100%" cellspacing="0" cellpadding="2">
   <tr>
-    <td class="formAreaTitle"><?php echo CATEGORY_PERSONAL; ?></td>
+    <td><h3><?php echo CATEGORY_PERSONAL; ?></h3></td>
   </tr>
   <tr>
-    <td class="main"><table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">
-      <tr>
-        <td class="main"><table border="0" cellspacing="0" cellpadding="2" class="box_des">
+    <td><table border="0" width="100%" cellspacing="0" cellpadding="2">
+      
 <?php
   $address_form->printCategoryPersonal();
 ?>
-        </table></td>
-      </tr>
+       
     </table></td>
   </tr>
   <tr>
-    <td class="formAreaTitle"><br><?php echo CATEGORY_ADDRESS; ?></td>
+    <td><br><h3><?php echo CATEGORY_ADDRESS; ?></h3></td>
   </tr>
   <tr>
-    <td class="main"><table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">
-      <tr>
-        <td class="main"><table border="0" cellspacing="0" cellpadding="2" class="box_des">
+    <td><table border="0" width="100%" cellspacing="0" cellpadding="2">
+     
 <?php
   $address_form->printCategoryAddress();
 ?>
-        </table></td>
-      </tr>
+       
     </table></td>
   </tr>
   <tr>
-    <td class="formAreaTitle"><br><?php echo CATEGORY_CONTACT; ?></td>
+    <td><br><h3><?php echo CATEGORY_CONTACT; ?></h3></td>
   </tr>
   <tr>
-    <td class="main"><table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">
-      <tr>
-        <td class="main"><table border="0" cellspacing="0" cellpadding="2" class="box_des">
+    <td><table border="0" width="100%" cellspacing="0" cellpadding="2">
+      
           <tr>
-            <td class="main">&nbsp;<?php echo ENTRY_TELEPHONE_NUMBER; ?></td>
-            <td class="main">&nbsp;
+            <td width="20%">&nbsp;<?php echo ENTRY_TELEPHONE_NUMBER; ?></td>
+            <td>&nbsp;
 <?php
   if ($is_read_only == true) {
     echo tep_output_string($account['customers_telephone'],false,true);
@@ -242,8 +237,8 @@
 ?></td>
           </tr>
           <tr>
-            <td class="main">&nbsp;<?php echo ENTRY_FAX_NUMBER; ?></td>
-            <td class="main">&nbsp;
+            <td width="20%">&nbsp;<?php echo ENTRY_FAX_NUMBER; ?></td>
+            <td>&nbsp;
 <?php
   if ($is_read_only == true) {
     echo tep_output_string($account['customers_fax'],false,true);
@@ -262,18 +257,16 @@
   if ($is_read_only == false) {
 ?>
   <tr>
-    <td class="formAreaTitle"><br><?php echo CATEGORY_PASSWORD; ?></td>
+    <td><br><h3><?php echo CATEGORY_PASSWORD; ?></h3></td>
   </tr>
   <tr>
-    <td class="main">※このまま会員登録をご希望の場合はパスワードを入力してください。</td>
+    <td>&nbsp;&nbsp;※このまま会員登録をご希望の場合はパスワードを入力してください。</td>
   </tr>
   <tr>
-    <td class="main"><table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">
-      <tr>
-        <td class="main"><table border="0" cellspacing="0" cellpadding="2" class="box_des">
+    <td><table border="0" width="100%" cellspacing="0" cellpadding="2">
           <tr>
-            <td class="main">&nbsp;<?php echo ENTRY_PASSWORD; ?></td>
-            <td class="main">&nbsp;
+            <td width="20%">&nbsp;<?php echo ENTRY_PASSWORD; ?></td>
+            <td>&nbsp;
 <?php
 
     if ($error == true && !empty($password)) {
@@ -292,8 +285,8 @@
     if ( ($error == false) || ($entry_password_error == true) ) {
 ?>
           <tr>
-            <td class="main">&nbsp;<?php echo ENTRY_PASSWORD_CONFIRMATION; ?></td>
-            <td class="main">&nbsp;
+            <td width="20%">&nbsp;<?php echo ENTRY_PASSWORD_CONFIRMATION; ?></td>
+            <td>&nbsp;
 <?php
      echo tep_draw_password_field('confirmation') . '&nbsp;' . ENTRY_PASSWORD_CONFIRMATION_TEXT;
 ?></td>
@@ -301,8 +294,6 @@
 <?php
     }
 ?>
-        </table></td>
-      </tr>
     </table></td>
   </tr>
 <?php

@@ -26,22 +26,17 @@ if (isset($body_option)) {
 <!-- header_eof //--> 
 <!--body -->
 <div id="main">
-<!-- left_navigation //-->
-<div id="l_menu">
-<?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
-</div>
-<div class="m_menu">
-<div class="header_Navigation">
-   <?php echo $breadcrumb->trail(' &raquo; '); ?>
-</div>
-<div id="content">
+<div id="layout" class="yui3-u">
+<div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
+<?php include('includes/search_include.php');?>
+<div id="main-content">
     <?php //this show faq category ?>
     <?php if ($c_row = tep_db_fetch_array($faq_category_query)){?>
     <?php if (isset($parent_info)&&$parent_info!=null){ ?>
-    <h2 class="pageHeading"><?php echo $parent_info['title'].TEXT_QUESTION_TITLE;?></h2>
+    <h2><?php echo $parent_info['title'].TEXT_QUESTION_TITLE;?></h2>
     <?php }else {?>
     <h2 class="pageHeading"><?php echo
-      TEXT_FAQ_TITLE.'</h2><br><font style="margin-left:18px;">'.TEXT_FAQ_TITLE_END.'</font>';?>
+      TEXT_FAQ_TITLE.'</h2><div style="line-height:21px; margin-top:13px; padding-left:6px;">'.TEXT_FAQ_TITLE_END.'</div>';?>
     <?php } ?>
     <div class="comment_faq">
     <table class="faq_question_row">
@@ -98,8 +93,10 @@ if (isset($body_option)) {
     <?php } ?>
 
     <?php if($link_url != 'faq') { ?>
-    <div class="faq_back">
-      <a href="<?php echo HTTP_SERVER.'/'.implode('/',$link_arr).'/';?>"><img src="images/design/button/faq_back.gif" alt="<?php echo TEXT_BACK;?>">
+    <div class="botton-continue" style="margin-bottom:40px">
+      <a href="<?php echo HTTP_SERVER.'/'.implode('/',$link_arr).'/';?>"><img
+      src="images/design/button/faq_back.gif"
+      onmouseout="this.src='images/design/button/faq_back.gif'"    onmouseover="this.src='images/design/button/faq_back_hover.gif'" alt="<?php echo TEXT_BACK;?>">
       </a>
     </div>
     <?php } ?>
@@ -112,7 +109,6 @@ if (isset($body_option)) {
     <?php }else {?>
     <h2 class="pageHeading"><?php echo TEXT_FAQ_TITLE_LAST;?></h2>
     <?php } ?>
-    <div  style="border-bottom-style:dotted; width:94%; margin-top:10px; color:#444; margin-left:2px;"></div>
     <div class="comment_faq">
     <table class="faq_question_row">
     	<tr><td><div>
@@ -141,14 +137,17 @@ if (isset($body_option)) {
 
 
 
-</div></div>
-<div id='r_menu'>
-<?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
 </div>
+</div>
+<?php include('includes/float-box.php');?>
+
+</div>
+
 <div id='f_menu'>
-<?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
 <!-- footer_eof //--> 
 </div>
+<?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
+
 <!--body_EOF// -->
 </body>
 </html>

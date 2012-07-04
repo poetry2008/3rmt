@@ -28,8 +28,7 @@
 /* class functions */
 
 // display split-page-number-links
-    function display_links($query_numrows, $max_rows_per_page, $max_page_links,
-        $current_page_number, $parameters = '',$event = '') {
+    function display_links($query_numrows, $max_rows_per_page, $max_page_links, $current_page_number, $parameters = '',$event = '') {
       global $PHP_SELF;
 
       $class = 'class="pageResults"';

@@ -2,7 +2,7 @@
 <div id="linksite">
 <div class="custom-menu">
 </div>
-<h3><!--{_t key='seoplink_submit_title'}--></h3>
+<h2><!--{_t key='seoplink_submit_title'}--></h2>
 <div class="lc_attention">
 <div class="lc_at_title">
 <!--{_t key="seoplink_attention"}-->
@@ -21,7 +21,7 @@
 </b>
 <br />
 <br />
-<textarea rows="2" style="width: 500px;" cols='20'>
+<textarea rows="2" style="width:100%;" cols='20'>
 <!--{$link_url}-->
 </textarea>
 <br />
@@ -62,7 +62,7 @@ action=checkurl}-->','')">
 <td class="right">
 <!--{_t key="fname_attention}-->
 <br />
-<input id="content_fname" name='fname' value='<!--{$fname}-->' class="input-fname" /></td>
+<input id="content_fname" name='fname' value='<!--{$fname}-->' style="width:50%"/></td>
 </tr>
 <tr ><td colspan="2" height="20"></td></tr>
 <tr>
@@ -73,7 +73,7 @@ action=checkurl}-->','')">
 <td class="right">
 <!--{_t key="femail_attention}-->
 <br />
-<input id="content_femail" name='femail' value='<!--{$femail}-->' class="input-femail" /></td>
+<input id="content_femail" name='femail' value='<!--{$femail}-->' style="width:50%" /></td>
 </tr>
 <tr ><td colspan="2" height="20"></td></tr>
 <tr>
@@ -85,10 +85,10 @@ action=checkurl}-->','')">
 <!--{_t key="fpass_attention}-->
 <br />
 <input id="content_fpass" name='fpass' type="password"
-value='<!--{$fpass}-->' class="input-fpass" />
+value='<!--{$fpass}-->'  style="width:50%" />
 <br />
 <input id="content_fpass2" name='fpass2' type="password"
-value='<!--{$fpass}-->' class="input-fpass2" />
+value='<!--{$fpass}-->'  style="width:50%; margin:5px auto" />
 <br />
 <!--{_t key="fpass2_explanation"}-->
 </td>
@@ -101,7 +101,7 @@ value='<!--{$fpass}-->' class="input-fpass2" />
 <td class="right">
 <!--{_t key="name_attention}-->
 <br />
-<input id="content_name" name='name' value='<!--{$name}-->' class="input-name" /></td>
+<input id="content_name" name='name' value='<!--{$name}-->'  style="width:50%"  /></td>
 </tr>
 <tr ><td colspan="2" height="20"></td></tr>
 <tr>
@@ -111,7 +111,7 @@ value='<!--{$fpass}-->' class="input-fpass2" />
 <td class="right">
 <!--{_t key="url_attention}-->
 <br />
-<input name='url' id="content_url" value='<!--{$url}-->' class="input-url" /></td>
+<input name='url' id="content_url" value='<!--{$url}-->'  style="width:50%"  /></td>
 </tr>
 <tr ><td colspan="2" height="20"></td></tr>
 <tr>
@@ -122,7 +122,7 @@ value='<!--{$fpass}-->' class="input-fpass2" />
 <!--{_t key="comment_attention}-->
 <br />
 <textarea id="content_comment" name='comment'
-class="input-comment" cols="20" rows="5"><!--{$comment}--></textarea></td>
+ style="width:100%" cols="20" rows="5"><!--{$comment}--></textarea></td>
 </tr>
 <tr ><td colspan="2" height="20"></td></tr>
 <tr>
@@ -133,7 +133,7 @@ class="input-comment" cols="20" rows="5"><!--{$comment}--></textarea></td>
 <div class="category_selector">
 <!--{_t key="category_attention}-->
 <br />
-<select id="content_class" size="7" name='class'><!--{$classSelector}--></select>
+<select id="content_class"  style="width:100%" size="7" name='class'><!--{$classSelector}--></select>
 </div>
 </td>
 </tr>
@@ -146,15 +146,18 @@ class="input-comment" cols="20" rows="5"><!--{$comment}--></textarea></td>
 <!--{_t key="linkpage_url_attention}-->
 <br />
 <input id="content_linkpage_url" name='linkpage_url'
-value='<!--{$linkpage_url}-->' class="input-linkpage-url" /></td>
+value='<!--{$linkpage_url}-->' style="width:50%" /></td>
 </tr>
-<tr><td height="20" ></td><td height="20">
-<img src="<!--{url controller=Admin action=imgCode}-->" alt='imgcode'/>
-<input type="text" id="image_code" size='4' />
-</td></tr>
-<tr ><td colspan="2" height="20"></td></tr>
+<tr><td height="20" ></td>
+<td height="20">
+<div style="float:left; width:40%; margin-right:10px; line-height:22px;"><input type="text" id="image_code" size='4' style="width:100%" /></div>
+<div style="float:left;"><img src="<!--{url controller=Admin action=imgCode}-->" alt='imgcode'/></div>
+</td>
+</tr>
+<tr ><td olspan="2" height="20"></td></tr>
 <tr>
-<td colspan="2" class="button">
+<td></td>
+<td style="float:left;">
 <input type='submit' value='<!--{_t key=seoplink_site_submit}-->' class="input-submit" />
 &nbsp;
 <input type='reset' value='<!--{_t key=seoplink_site_reset}-->' class="input-submit" />

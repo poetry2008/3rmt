@@ -69,13 +69,9 @@ function showimage($1) {
 <!-- header_eof //--> 
 <!-- body //--> 
 <div id="main">
-<!-- left_navigation //-->
-<div id="l_menu">
-<?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-</div>
-<!-- left_navigation_eof //-->
+<?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
 <!-- body_text //-->
-<div id="content"><?php
+<div class="yui3-u" id="layout"><?php
       // ccdd
   tep_db_query("
       UPDATE " . TABLE_REVIEWS . " 
@@ -84,61 +80,66 @@ function showimage($1) {
   ");
   $reviews_text = tep_break_string(tep_output_string_protected($reviews['reviews_text']), 60, '-<br>');
 ?> 
-        <div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
-    <h1 class="pageHeading"><?php echo sprintf(HEADING_TITLE, $reviews['products_name']); ?></h1> 
+        <div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
+		      <?php include('includes/search_include.php');?>
+	  	  <div id="main-content">
+    <h2><?php echo sprintf(HEADING_TITLE, $reviews['products_name']); ?></h2> 
         
         <div> 
-          <table class="box_des" border="0" width="95%" cellspacing="0" cellpadding="0"> 
+          <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="0"> 
             <tr> 
               <td><table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="0"> 
                   <tr> 
-                    <td class="main"><b><?php echo SUB_TITLE_PRODUCT; ?></b> <?php echo $reviews['products_name']; ?></td> 
+                    <td><b><?php echo SUB_TITLE_PRODUCT; ?></b> <?php echo $reviews['products_name']; ?></td> 
                     <td class="smallText" rowspan="3" align="center">
           <a href="<?php echo DIR_WS_IMAGES . $reviews['products_image']; ?>" rel="lightbox[products]"><?php echo tep_image(DIR_WS_IMAGES . 'products/' . $reviews['products_image'], $reviews['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT, 'align="center" hspace="5" vspace="5"'); ?><br> </a></td> 
                   </tr> 
                   <tr> 
-                    <td class="main"><b><?php echo SUB_TITLE_FROM; ?></b> <?php echo tep_output_string_protected($reviews['customers_name']); ?></td> 
+                    <td><b><?php echo SUB_TITLE_FROM; ?></b> <?php echo tep_output_string_protected($reviews['customers_name']); ?></td> 
                   </tr> 
           <?php /*
                   <tr> 
-                    <td class="main"><b><?php echo SUB_TITLE_DATE; ?></b> <?php echo tep_date_long($reviews['date_added']); ?></td> 
+                    <td><b><?php echo SUB_TITLE_DATE; ?></b> <?php echo tep_date_long($reviews['date_added']); ?></td> 
                   </tr> 
                   */ ?>
                 </table></td> 
             </tr> 
             <tr> 
-              <td class="main"><b><?php echo SUB_TITLE_REVIEW; ?></b></td> 
-            </tr> 
-            <tr> 
-              <td class="main"><br> 
-                <?php echo str_replace('<br />', '<br>', nl2br($reviews_text)); ?></td>
-            </tr> 
-            <tr> 
-              <td class="main"><br> 
-                <b><?php echo SUB_TITLE_RATING; ?></b> <?php echo tep_image(DIR_WS_IMAGES . 'stars_' . $reviews['reviews_rating'] . '.gif', sprintf(TEXT_OF_5_STARS, $reviews['reviews_rating'])); ?> <small>[<?php echo sprintf(TEXT_OF_5_STARS, $reviews['reviews_rating']); ?>]</small></td> 
+              <td><b><?php echo SUB_TITLE_REVIEW; ?></b></td> 
             </tr> 
             <tr> 
               <td><br> 
-                <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="0"> 
+                <?php echo str_replace('<br />', '<br>', nl2br($reviews_text)); ?></td>
+            </tr> 
+            <tr> 
+              <td><br> 
+                <b><?php echo SUB_TITLE_RATING; ?></b> <?php echo tep_image(DIR_WS_IMAGES . 'stars_' . $reviews['reviews_rating'] . '.gif', sprintf(TEXT_OF_5_STARS, $reviews['reviews_rating'])); ?> <small>[<?php echo sprintf(TEXT_OF_5_STARS, $reviews['reviews_rating']); ?>]</small></td> 
+            </tr> 
+            <tr> 
+              <td>
+                <table class="botton-continue" border="0" width="100%" cellspacing="0" cellpadding="0"> 
                   <tr> 
-                    <td class="main"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_REVIEWS, $get_params) . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td> 
-                    <td align="right" class="main"><?php //echo '<a href="' . tep_href_link(FILENAME_DEFAULT, 'action=buy_now&products_id=' . $reviews['products_id']) . '">' . tep_image_button('button_in_cart.jpg', IMAGE_BUTTON_IN_CART); ?></a></td> 
+                    <td><?php echo '<a href="' .
+                    tep_href_link(FILENAME_PRODUCT_REVIEWS, $get_params) . '">' .
+                    tep_image_button('button_back.gif',
+                        IMAGE_BUTTON_BACK,' onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_back.gif\'"  onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_back_hover.gif\'"') . '</a>'; ?></td> 
+                    <td align="right"><?php //echo '<a href="' . tep_href_link(FILENAME_DEFAULT, 'action=buy_now&products_id=' . $reviews['products_id']) . '">' . tep_image_button('button_in_cart.jpg', IMAGE_BUTTON_IN_CART); ?></a></td> 
                   </tr> 
                 </table></td> 
             </tr> 
           </table> 
         </div></div>
+		</div>
+	<?php include('includes/float-box.php');?>
+      </div>
       <!-- body_text_eof //--> 
-<!-- right_navigation //--> 
-<div id="r_menu">
-<?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-</div>
-<!-- right_navigation_eof //--> 
+<?php //require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
   <!-- body_eof //--> 
   <!-- footer //--> 
-  <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
-  <!-- footer_eof //--> 
-</div> 
+    <!-- footer_eof //--> 
+</div>
+<?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
+
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

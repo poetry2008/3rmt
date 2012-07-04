@@ -17,19 +17,17 @@
 <!-- header_eof //--> 
 <!-- body //--> 
 <div id="main">
-<!-- left_navigation //-->
-<div id="l_menu">
-<?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-</div>
-<!-- left_navigation_eof //-->
+<?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
 <!-- body_text //-->
-<div id="content">
-<div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
-<h1 class="pageHeading"><?php echo HEADING_TITLE; ?></h1>
+<div class="yui3-u" id="layout">
+<div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
+<?php include('includes/search_include.php');?>
+				  <div id="main-content">
+<h2><?php echo HEADING_TITLE; ?></h2>
  
         
-        <div> 
-          <table border="0" width="95%" cellspacing="0" cellpadding="0"> 
+        <div style="margin-top:13px;"> 
+          <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
             <tr> 
               <td>
 <?php
@@ -82,10 +80,10 @@ order by products_date_added DESC, products_name
   if (($products_new_numrows > 0) && ((PREV_NEXT_BAR_LOCATION == '2') || (PREV_NEXT_BAR_LOCATION == '3'))) {
 ?>
       <tr>
-        <td><br><table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2">
+        <td><br><table border="0" width="100%" cellspacing="0" cellpadding="2">
           <tr>
-            <td class="smallText"><?php echo $products_new_split->display_count($products_new_numrows, MAX_DISPLAY_PRODUCTS_NEW, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS_NEW); ?></td>
-            <td align="right" class="smallText"><?php echo TEXT_RESULT_PAGE; ?> <?php echo $products_new_split->display_links($products_new_numrows, MAX_DISPLAY_PRODUCTS_NEW, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
+            <td><?php echo $products_new_split->display_count($products_new_numrows, MAX_DISPLAY_PRODUCTS_NEW, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS_NEW); ?></td>
+            <td align="right"><?php echo TEXT_RESULT_PAGE; ?> <?php echo $products_new_split->display_links($products_new_numrows, MAX_DISPLAY_PRODUCTS_NEW, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
           </tr>
         </table></td>
       </tr>
@@ -93,12 +91,11 @@ order by products_date_added DESC, products_name
   }
 ?>
     </table></div></div>
+	</div>
+        <?php include('includes/float-box.php');?>
+		</div>
       <!-- body_text_eof //--> 
-<!-- right_navigation //--> 
-<div id="r_menu">
-<?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-</div>
-<!-- right_navigation_eof //--> 
+<?php //require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
   <!-- body_eof //--> 
   <!-- footer //--> 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 

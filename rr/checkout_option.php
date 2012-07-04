@@ -25,7 +25,7 @@
       <td valign="top" id="contents"> <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1>
         <div class="comment"> 
         <form action="<?php echo tep_href_link(FILENAME_CHECKOUT_OPTION, '', 'SSL'); ?>" method="post" >
-          <input type="hidden" name="dummy" value="あいうえお眉幅">
+          <input type="hidden" name="dummy" value="<?php echo TEXT_DUMMY;?>">
           <table border="0" width="100%" cellspacing="0" cellpadding="0" class="product_info_box"> 
           <tr> 
             <td>

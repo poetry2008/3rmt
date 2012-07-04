@@ -1,5 +1,6 @@
 <?php
 /*********************************************************************
+    ファイルコードを確認
     tickets.php
 
     Main client/user interface.
@@ -20,7 +21,9 @@ $_noemailclass = true;
 
 require_once('includes/application_top.php');
 require_once('includes/ost/secure.inc.php');
-$breadcrumb->add('お問い合わせ', tep_href_link(FILENAME_CONTACT_US));
+require(DIR_WS_LANGUAGES . $language . '/tickets.php');
+require(DIR_WS_LANGUAGES . $language . '/viewticket.php');
+$breadcrumb->add(BOX_INFORMATION_CONTACT, tep_href_link(FILENAME_CONTACT_US));
 
 if(!is_object($thisclient) || !$thisclient->isValid()) die('Access denied'); //Double check again.
 
@@ -57,17 +60,15 @@ if($_POST && is_object($ticket) && $ticket->getId()):
         }
 
         if(!$_POST['message'])
-            $errors['message']='必須';
+            $errors['message']=TEXT_REQUIRE_MSG;
         //check attachment..if any is set
         if($_FILES['attachment']['name']) {
             if(!$cfg->allowOnlineAttachments()) //Something wrong with the form...user shouldn't have an option to attach
                 $errors['attachment']='File [ '.$_FILES['attachment']['name'].' ] rejected';
             elseif(!$cfg->canUploadFileType($_FILES['attachment']['name']))
-              //$errors['attachment']='Invalid file type [ '.$_FILES['attachment']['name'].' ]';
-                $errors['attachment']='無効なファイル形式です [ '.Format::htmlchars($_FILES['attachment']['name']).' ]';
+                $errors['attachment']= sprintf(TEXT_REQUIRE_FILE_TYPE_MSG, Format::htmlchars($_FILES['attachment']['name']));
             elseif($_FILES['attachment']['size']>$cfg->getMaxFileSize())
-                $errors['attachment']='添付ファイルの上限サイズ'.$cfg->getMaxFileSize().' bytes  を超えています。';
-            // $errors['attachment']='File is too big. Max '.$cfg->getMaxFileSize().' bytes allowed';
+                $errors['attachment']= sprintf(TEXT_REQUIRE_FILE_SIZE_MSG, $cfg->getMaxFileSize());
         }
                     
         if(!$errors){
@@ -75,14 +76,13 @@ if($_POST && is_object($ticket) && $ticket->getId()):
             if(($msgid=$ticket->postMessage($_POST['message'],'Web'))) {
                 if($_FILES['attachment']['name'] && $cfg->canUploadFiles() && $cfg->allowOnlineAttachments())
                     $ticket->uploadAttachment($_FILES['attachment'],$msgid,'M');
-                $msg='送信完了';
-                // 跳转之后就不显示信息了
+                $msg= TEXT_SENDMAIL_FINISH;
                 tep_redirect($_SERVER['REQUEST_URI']);
             }else{
                 $errors['err']='Unable to post the message. Try again';
             }
         }else{
-            $errors['err']=$errors['err']?$errors['err']:'内容を入力しもう一度送信してください';
+            $errors['err']=$errors['err']?$errors['err']:TEXT_INPUT_AGAIN_AND_MAIL_MSG;
         }
         break;
     default:
@@ -90,7 +90,6 @@ if($_POST && is_object($ticket) && $ticket->getId()):
     }
     $ticket->reload();
 endif;
-
 mysql_select_db(DB_DATABASE);
 include(CLIENTINC_DIR.'header.inc.php');
 mysql_select_db(DBNAME);

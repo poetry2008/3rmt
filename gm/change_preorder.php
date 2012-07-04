@@ -1,6 +1,7 @@
 <?php
 /*
   $Id$
+  ファイルコードを確認
 
   osCommerce, Open Source E-Commerce Solutions
   http://www.oscommerce.com
@@ -47,34 +48,39 @@ echo '</form>';
   <!-- header_eof //--> 
   <!-- body //--> 
   <div id="main"> 
-      <div id="l_menu"> <!-- left_navigation //--> 
-        <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
-        <!-- left_navigation_eof //--> </div> 
-      <!-- body_text //--> 
-      <div id="content">
-          <div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div> 
-          <h1 class="pageHeading"><?php echo NAVBAR_CHANGE_PREORDER_TITLE;?></h1> 
-          <div class="comment_change_preorder">
-          <table border="0" cellspacing="0" cellpadding="0" border="0" width="90%" align="center">
+        <?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
+      <!-- body_text //-->
+     
+      <div id="layout" class="yui3-u">
+          <div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div> 
+          <div id="main-content">
+                 <h2><?php echo NAVBAR_CHANGE_PREORDER_TITLE; ?></h2> 
+          <table border="0" cellspacing="0" cellpadding="0" border="0" width="100%" align="center" class="preorder_title">
             <tr>
-              <td width="20%">
+              <td width="33%">
                 <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                   <tr>
-                    <td width="30%" align="right"><?php echo tep_image(DIR_WS_IMAGES.'checkout_bullet.gif');?></td> 
-                    <td width="70%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1');?></td> 
+                    <td width="50%" align="right"><?php echo tep_image(DIR_WS_IMAGES.'checkout_bullet.gif');?></td> 
+                    <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1');?></td> 
                   </tr>
                 </table> 
               </td>
-              <td width="58%">
-              <?php echo tep_draw_separator('pixel_silver.gif', '100%', '1');?>
-              </td>
-              <td width="22%">
+             <td width="33%">
                 <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                   <tr>
-                    <td width="70%">
+                    <td width="50%">
+             <?php echo tep_draw_separator('pixel_silver.gif', '100%', '1');?>
+                    </td>
+                  </tr>
+                </table>   
+              </td>
+              <td width="33%">
+                <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+                  <tr>
+                    <td width="50%">
                     <?php echo tep_draw_separator('pixel_silver.gif', '100%', '1');?>
                     </td>
-                    <td width="30%">
+                    <td width="50%">
                     <?php echo tep_draw_separator('pixel_silver.gif', '1', '5');?>
                     </td>
                   </tr>
@@ -82,39 +88,35 @@ echo '</form>';
               </td>
             </tr>
             <tr>
-              <td align="left" width="20%" class="preorderBarcurrent"><?php echo PREORDER_TRADER_LINE_TITLE;?></td> 
-              <td align="center" width="58%" class="preorderBarTo"><?php echo PREORDER_CONFIRM_LINE_TITLE;?></td> 
-              <td align="right" width="22%" class="preorderBarTo"><?php echo PREORDER_FINISH_LINE_TITLE;?></td> 
+              <td align="center" width="33%" class="preorderBarcurrent"><?php echo PREORDER_TRADER_LINE_TITLE;?></td> 
+              <td align="center" width="33%" class="preorderBarTo"><?php echo PREORDER_CONFIRM_LINE_TITLE;?></td> 
+              <td align="center" width="33%" class="preorderBarTo"><?php echo PREORDER_FINISH_LINE_TITLE;?></td> 
             </tr>
           </table>
           <?php
           echo tep_draw_form('order', tep_href_link('change_preorder.php', 'pid='.$_GET['pid'])).tep_draw_hidden_field('action', 'process'); 
           ?>
-          <table width="100%" cellpadding="0" cellspacing="0" border="0" class="c_pay_info">
-            <tr>
-              <td class="main">
-              <?php echo TEXT_PREORDER_FETCH_BUTTON_INFO;?> 
-              </td>
-              <td class="main" align="right">
-                <?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE);?> 
-              </td>
-            </tr>
-          </table> 
+          
+          <div id="hm-checkout-warp">
+          <div class="checkout-title"><?php echo TEXT_ORDERS_COMMENT_ONE;?></div>
+  			 <div class="checkout-bottom"> <?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE);?></div>  
+ 		 </div>
+         <div class="checkout-conent">
           <h3 class="formAreaTitle"><?php echo CHANGE_ORDER_CUSTOMER_DETAILS?></h3> 
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
-              <td class="main" width="150">
+              <td width="20%">
               <?php echo CHANGE_ORDER_CUSTOMER_NAME;?> 
               </td>
-              <td class="main">
+              <td>
               <?php echo $preorder_res['customers_name'];?> 
               </td>
             </tr>
             <tr>
-              <td class="main">
+              <td>
               <?php echo CHANGE_ORDER_CUSTOMER_EMAIL;?> 
               </td>
-              <td class="main">
+              <td>
               <?php echo $preorder_res['customers_email_address'];?> 
               </td>
             </tr>
@@ -127,10 +129,10 @@ echo '</form>';
           <h3 class="formAreaTitle"><?php echo CHANGE_ORDER_PRODUCT_DETAILS;?></h3> 
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
-              <td class="main" width="150">
+              <td width="20%">
               <?php echo CHANGE_ORDER_PRODUCT_NAME;?> 
               </td>
-              <td class="main">
+              <td>
               <?php
                 $product_status_raw = tep_db_query("select products_status from ".TABLE_PRODUCTS_DESCRIPTION." where products_id = '".$preorder_product_res['products_id']."' and (site_id = 0 or site_id = ".SITE_ID.") order by site_id desc limit 1"); 
                 $product_status_res = tep_db_fetch_array($product_status_raw); 
@@ -151,8 +153,8 @@ echo '</form>';
               if ($product_info_res['products_cflag'] == 1) {
             ?>
             <tr>
-              <td class="main"><?php echo CHANGE_ORDER_PRODUCT_CHARACTER;?></td> 
-              <td class="main">
+              <td><?php echo CHANGE_ORDER_PRODUCT_CHARACTER;?></td> 
+              <td>
               <?php 
               $p_character_name = $preorder_product_res['products_character']; 
               echo tep_draw_input_field('p_character', isset($_POST['p_character'])?$_POST['p_character']:$p_character_name);
@@ -166,10 +168,10 @@ echo '</form>';
             }  
             ?>
             <tr>
-              <td class="main">
+              <td>
               <?php echo CHANGE_ORDER_PRODUCT_NUM;?> 
               </td>
-              <td class="main">
+              <td>
               <?php echo $preorder_product_res['products_quantity'].PRODUCT_UNIT_TEXT;?> 
               <?php echo
               tep_get_full_count2($preorder_product_res['products_quantity'],
@@ -178,13 +180,13 @@ echo '</form>';
             </tr>
         </table> 
         <br> 
-        <h3 class="formAreaTitle"><?php echo CHANGE_ORDER_FETCH_TIME_TITLE;?></h3> 
+        <h3><?php echo CHANGE_ORDER_FETCH_TIME_TITLE;?></h3> 
         <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
         <tr>
-              <td class="main" width="150">
+              <td width="20%">
               <?php echo CHANGE_ORDER_FETCH_TIME_READ;?> 
               </td>
-              <td class="main">
+              <td>
               <?php 
               $ids[] = $preorder_product_res['products_id']; 
               echo tep_get_torihiki_select_by_products($ids);
@@ -196,10 +198,10 @@ echo '</form>';
               </td>
         </tr>
         <tr>
-          <td class="main">
+          <td>
           <?php echo CHANGE_ORDER_FETCH_DAY;?> 
           </td>
-          <td class="main">
+          <td>
             <?php
     $today = getdate();
       $m_num = $today['mon'];
@@ -210,7 +212,11 @@ echo '</form>';
     $mimutes = date('i');
 ?>
   <select name="date" onChange="selectDate('<?php echo $hours; ?>', '<?php echo $mimutes; ?>')">
-    <option value=""><?php echo PREORDER_SELECT_EMPTY_OPTION;?></option>
+        <?php
+           echo "<option value=''>".PREORDER_SELECT_EMPTY_OPTION."</option>";
+           $_SESSION['date_array'] = null;
+           $_SESSION['date'] = null;
+        ?>
     <?php
           $oarr = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
           $newarr = array(PREORDER_MONDAY_TEXT, PREORDER_TUESDAY_TEXT, PREORDER_WENSDAY_TEXT, PREORDER_THIRSDAY_TEXT, PREORDER_FRIDAY_TEXT, PREORDER_STATURDAY_TEXT, PREORDER_SUNDAY_TEXT);
@@ -227,22 +233,37 @@ echo '</form>';
               </td>
             </tr>
             <tr>
-              <td class="main"><?php echo CHANGE_ORDER_FETCH_DATE;?></td> 
-              <td class="main">
+              <td><?php echo CHANGE_ORDER_FETCH_DATE;?></td> 
+              <td>
   <select name="hour" onChange="selectHour('<?php echo $hours; ?>', '<?php echo $mimutes; ?>')">
-    <option value="">--</option>
+     <?php
+        if($_SESSION['hour']){
+             echo "<option value='".$_SESSION['hour']."'>".$_SESSION['hour']."</option>";
+        }else{
+           echo "<option value=''>--</option>";
+        }
+        $_SESSION['hour'] = null;
+     ?>
   </select>
   &nbsp;<?php echo PREORDER_HOUR_TEXT;?>&nbsp;
   <select name="min">
-    <option value="">--</option>
+       <?php
+        if($_SESSION['min']){
+             echo "<option value='".$_SESSION['min']."'>".$_SESSION['min']."</option>";
+        }else{
+           echo "<option value=''>--</option>";
+        }
+        $_SESSION['min'] = null;
+     ?>
+   
   </select>
   &nbsp;<?php echo PREORDER_MIN_TEXT;?>&nbsp;
+  <?php echo TEXT_CHECK_24JI; ?>
              <?php  
              if (isset($jikan_error)) {
                 echo '<font color="#ff0000">'.$jikan_error.'</font>'; 
               }
  ?> 
-  <?php echo TEXT_CHECK_24JI; ?>
               </td> 
             </tr>
           </table> 
@@ -263,7 +284,7 @@ echo '</form>';
         while ($products_options_name = tep_db_fetch_array($products_options_name_query)) {
             $selected = 0;
             $products_options_array = array();
-            echo '<tr><td class="main" width="150">' . $products_options_name['products_options_name'] . ':</td><td>' . "\n";
+            echo '<tr><td width="20%">' . $products_options_name['products_options_name'] . ':</td><td>' . "\n";
         $products_options_query = tep_db_query("
             SELECT pov.products_options_values_id, 
                    pov.products_options_values_name, 
@@ -301,8 +322,8 @@ echo '</form>';
             ?>
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
-              <td class="main" width="150"><?php echo TEXT_PREORDER_POINT_TEXT;?></td> 
-              <td class="main">
+              <td width="20%"><?php echo TEXT_PREORDER_POINT_TEXT;?></td> 
+              <td>
               <input type="text" name="preorder_point" size="24" value="<?php echo isset($_POST['preorder_campaign_info'])?$_POST['preorder_campaign_info']:(isset($_POST['preorder_point'])?$_POST['preorder_point']:'0');?>" style="text-align:right;">&nbsp;&nbsp;<?php echo $preorder_point;?> 
               <?php 
               echo TEXT_PREORDER_POINT_READ; 
@@ -318,49 +339,45 @@ echo '</form>';
           ?>
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
-              <td class="main" width="150"><?php echo TEXT_PREORDER_POINT_TEXT;?></td> 
-              <td class="main">
+              <td width="20%"><?php echo TEXT_PREORDER_POINT_TEXT;?></td> 
+              <td>
               <input type="text" name="camp_preorder_point" size="24" value="<?php echo isset($_POST['preorder_campaign_info'])?$_POST['preorder_campaign_info']:(isset($_POST['camp_preorder_point'])?$_POST['camp_preorder_point']:'0');?>" style="text-align:right;">
               <?php 
               if (isset($point_error)) {
                 echo '<br><font color="#ff0000">'.$point_error.'</font>'; 
               }
+
+              if (!$is_member_single && MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
+                                    echo '<input type="hidden" name="preorder_point" value="0">';    
+                             }
+
               ?>
               </td> 
             </tr>
           </table>
+          </div>
           <br>
           <?php
           }?> 
-          <table width="100%" cellpadding="0" cellspacing="0" border="0" class="c_pay_info">
-            <tr>
-              <td class="main">
-              <?php echo TEXT_PREORDER_FETCH_BUTTON_INFO;?> 
-              </td>
-              <td class="main" align="right">
-                <?php
-                 if (!$is_member_single && MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && ($preorder_total > 0)) { 
-                   echo '<input type="hidden" name="preorder_point" value="0">'; 
-                 }
-                ?>
-                <?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE);?> 
-              </td>
-            </tr>
-          </table> 
-          </form> 
+         
           </div>
+          <div id="hm-checkout-warp">
+          <div class="checkout-title"><?php echo TEXT_ORDERS_COMMENT_ONE;?></div>
+  			 <div class="checkout-bottom"> <?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE);?></div>  
+ 		 </div>
           <p class="pageBottom"></p>
-      </div> 
+      </div>
+ </form> 
       <!-- body_text_eof //--> 
-      <div id="r_menu"> <!-- right_navigation //--> 
-        <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-        <!-- right_navigation_eof //--> </div> 
+        <?php //require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
   <!-- body_eof //--> 
   <!-- footer //--> 
-  <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
+ 
+  <?php include("includes/float-box.php");?>
   <!-- footer_eof //--> 
 </div>
-</div> 
+</div>
+ <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

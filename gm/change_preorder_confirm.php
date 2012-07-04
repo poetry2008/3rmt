@@ -36,33 +36,31 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
   <!-- header_eof //--> 
   <!-- body //--> 
   <div id="main"> 
-      <div id="l_menu"> <!-- left_navigation //--> 
-        <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
-        <!-- left_navigation_eof //--> </div> 
+        <?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
       <!-- body_text //--> 
-      <div id="content"> 
-          <div class="headerNavigation">
+      <div id="layout" class="yui3-u"> 
+          <div id="current">
           <?php   
             echo '<a href="'.HTTP_SERVER.'" class="headerNavigation">'.HEADER_TITLE_TOP.'</a>'; 
-            echo ' &raquo; ';
+            echo ' <img src="images/point.gif"> ';
             echo '<a href="javascript:void(0);" class="headerNavigation" onclick="document.forms.order1.submit();">'.CHANGE_PREORDER_BREADCRUMB_FETCH.'</a>';
-            echo ' &raquo; ';
+            echo ' <img src="images/point.gif"> ';
             echo NAVBAR_CHANGE_PREORDER_TITLE; 
           ?> 
           </div>
-          <h1 class="pageHeading"><?php echo NAVBAR_CHANGE_PREORDER_TITLE;?></h1> 
-          <div class="comment">
-          <table border="0" cellspacing="0" cellpadding="0" border="0" width="90%" align="center">
+          <div id="main-content">
+          <h2><?php echo NAVBAR_CHANGE_PREORDER_TITLE;?></h2> 
+          <table border="0" cellspacing="0" cellpadding="0" border="0" width="100%" class="preorder_title" align="center">
             <tr>
-              <td width="20%">
+              <td width="33%">
                 <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                   <tr>
-                    <td width="30%" align="right"><?php echo tep_draw_separator('pixel_silver.gif', '1', '5');?></td> 
-                    <td width="70%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1');?></td> 
+                    <td width="50%" align="right"><?php echo tep_draw_separator('pixel_silver.gif', '1', '5');?></td> 
+                    <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1');?></td> 
                   </tr>
                 </table> 
               </td>
-              <td width="58%">
+              <td width="33%">
                 <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                   <tr>
                     <td width="50%">
@@ -73,13 +71,13 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                   </tr>
                 </table> 
               </td>
-              <td width="22%">
+              <td width="33%">
                 <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                   <tr>
-                    <td width="70%">
+                    <td width="50%">
                     <?php echo tep_draw_separator('pixel_silver.gif', '100%', '1');?>
                     </td>
-                    <td width="30%">
+                    <td width="50%">
                     <?php echo tep_draw_separator('pixel_silver.gif', '1', '5');?>
                     </td>
                   </tr>
@@ -87,43 +85,51 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
               </td>
             </tr>
             <tr>
-              <td align="left" width="20%" class="preorderBarFrom"><?php echo '<a href="javascript:void(0);" onclick="document.forms.order1.submit();">'.PREORDER_TRADER_LINE_TITLE.'</a>';?></td> 
-              <td align="center" width="58%" class="preorderBarcurrent"><?php echo PREORDER_CONFIRM_LINE_TITLE;?></td> 
-              <td align="right" width="22%" class="preorderBarTo"><?php echo PREORDER_FINISH_LINE_TITLE;?></td> 
+              <td align="center" width="33%" class="preorderBarFrom"><?php echo '<a href="javascript:void(0);" onclick="document.forms.order1.submit();">'.PREORDER_TRADER_LINE_TITLE.'</a>';?></td> 
+              <td align="center" width="33%" class="preorderBarcurrent"><?php echo PREORDER_CONFIRM_LINE_TITLE;?></td> 
+              <td align="center" width="33%" class="preorderBarTo"><?php echo PREORDER_FINISH_LINE_TITLE;?></td> 
             </tr>
           </table>
           <?php
           echo tep_draw_form('order', $form_action_url, 'post'); 
           ?>
-          <table width="100%" cellpadding="0" cellspacing="0" border="0" class="c_pay_info">
+            <div id="hm-checkout-warp"><div class="checkout-title"><b><?php echo TEXT_ORDERS_SUBMIT_ONE;?></b></div>
+  <div class="checkout-bottom">
+      
+      <?php
+                     if (isset($con_payment)) {
+                           if (method_exists($con_payment,
+              'preorder_process_button')) {
+          
+            $con_payment->preorder_process_button($_POST['pid'], $total_param);
+                             }
+                       }
+                  ?>
+
+                    <input type="image" onMouseOver="this.src='includes/languages/japanese/images/buttons/button_confirm_order_hover.gif'" onMouseOut="this.src='includes/languages/japanese/images/buttons/button_confirm_order.gif'" alt="<?php echo TEXT_IMAGE_ALT_ONE;?>" src="includes/languages/japanese/images/buttons/button_confirm_order.gif"></div>  
+  </div>
+  	<div class="checkout-conent">
+          <table width="100%" cellpadding="2" cellspacing="2" border="0">
             <tr>
-              <td class="main">
-              <?php echo CHANGE_PREORDER_CONFIRM_BUTTON_INFO;?> 
-              </td>
-              <td class="main" align="right">
-                <?php echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONTINUE);?> 
-              </td>
-            </tr>
-          </table>
-          <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
-            <tr>
-              <td class="main">
+              <td><b>
                 <?php echo PRORDER_CONFIRM_PRODUCT_INFO;?> 
+                </b>
               </td>
             </tr>
             <?php
               $preorder_product_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$_POST['pid']."'"); 
             ?>
             <tr>
-              <td class="main">
+              <td>
                 <table width="100%" style="font-size:14px;"> 
                   <?php $preorder_product_res = tep_db_fetch_array($preorder_product_raw);?> 
                   <tr>
-                    <td class="main" align="center">
-                    <?php echo $preorder_product_res['products_quantity'].PRODUCT_UNIT_TEXT;?>
-                    <?php echo '<br>'.tep_get_full_count2($preorder_product_res['products_quantity'], $preorder_product_res['products_id']);?> 
-                    </td>                  
-                    <td class="main">
+                   <!-- <td> <?php //echo $preorder_product_res['products_quantity'].PRODUCT_UNIT_TEXT;?>
+</td>-->
+<td width="20%">     <?php echo $preorder_product_res['products_quantity'].PRODUCT_UNIT_TEXT;?>  <?php echo '<br>'.tep_get_full_count2($preorder_product_res['products_quantity'], $preorder_product_res['products_id']);?> 
+</td>
+                               
+                    <td style="padding-left:5px;">
                     <?php 
                     echo $preorder_product_res['products_name'];
                     if (isset($_POST['op_id'])) {
@@ -140,7 +146,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                     }
                     ?>
                     </td>                  
-                    <td class="main">
+                    <td align="right">
                     <?php 
                     if ($preorder_product_res['final_price'] < 0) {
                       echo '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->display_price($preorder_product_res['final_price'], $preorder_product_res['products_tax'], $preorder_product_res['products_quantity'])).'</font>'.JPMONEY_UNIT_TEXT; 
@@ -155,37 +161,42 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
             </tr>
           </table>
           <br> 
-          <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
+          <table width="100%" cellpadding="2" cellspacing="2" border="0">
             <tr>
-              <td class="main">
-                <?php echo PRORDER_CONFIRM_FETCH_INFO;?> 
+              <td><b>
+                <?php echo PRORDER_CONFIRM_FETCH_INFO;?>
+                </b> 
               </td>
             </tr>
             <tr>
-              <td class="main">
+              <td>
                 <table width="100%" style="font-size:14px;"> 
                   <tr>
-                    <td class="main"><?php echo PREORDER_CONFIRM_FETCH_TIME_READ;?></td>                  
-                    <td class="main">
+                    <td width="20%"><?php echo PREORDER_CONFIRM_FETCH_TIME_READ;?></td>                  
+                    <td>
                     <?php echo $_POST['torihikihouhou'];?> 
                     </td>                  
                   </tr>
                   <tr>
-                    <td class="main"><?php echo PREORDER_CONFIRM_FETCH_TIME_DAY;?></td>                  
-                    <td class="main">
+                    <td><?php echo PREORDER_CONFIRM_FETCH_TIME_DAY;?></td>                  
+                    <td>
                     <?php
                       if (!empty($_POST['date'])) {
                         $date_arr = explode('-', $_POST['date']); 
                         echo $date_arr[0].PREORDER_YEAR_TEXT.$date_arr[1].PREORDER_MONTH_TEXT.$date_arr[2].PREORDER_DAY_TEXT; 
+                        $_SESSION['date'] = $_POST['date'];
+                        $_SESSION['date_array'] =  $date_arr[0].PREORDER_YEAR_TEXT.$date_arr[1].PREORDER_MONTH_TEXT.$date_arr[2].PREORDER_DAY_TEXT; 
                       }
                     ?>
                     </td>                  
                   </tr>
                   <tr>
-                    <td class="main"><?php echo PREORDER_CONFIRM_FETCH_TIME_DATE;?></td>                  
-                    <td class="main">
+                    <td><?php echo PREORDER_CONFIRM_FETCH_TIME_DATE;?></td>                  
+                    <td>
                     <?php
-                    echo $_POST['hour'].PREORDER_HOUR_TEXT.$_POST['min'].PREORDER_MIN_TEXT; 
+                    echo $_POST['hour'].PREORDER_HOUR_TEXT.$_POST['min'].PREORDER_MIN_TEXT;
+                         $_SESSION['hour'] = $_POST['hour'];
+                         $_SESSION['min'] = $_POST['min'];
                     ?>
                     </td>                  
                   </tr>
@@ -193,17 +204,23 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
               </td>
             </tr>
           </table>
-          <br> 
-          <?php echo PREORDER_CONFIRM_CHARACTER.$_POST['p_character'];?> 
-          <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
-            <tr>
-              <td class="main" width="30%" valign="top">
-                <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea_td" style="font-size:14px;"> 
+           <table width="100%" cellpadding="2" cellspacing="2" border="0">
                   <tr>
-                    <td class="main"><?php echo CHANGE_ORDER_CONFIRM_PAYMENT;?></td>                  
+                    <td width="20%">
+          <?php echo PREORDER_CONFIRM_CHARACTER;?>
+                     </td>
+                     <td style="padding-left:6px;"><?php echo $_POST['p_character'];?></td>
+                   </tr>
+            </table>
+          <table width="100%" cellpadding="2" cellspacing="2" border="0">
+            <tr>
+              <td width="30%" valign="top">
+                <table width="100%" cellpadding="2" cellspacing="2" border="0" style="font-size:14px;"> 
+                  <tr>
+                    <td><b><?php echo CHANGE_ORDER_CONFIRM_PAYMENT;?></b></td>                  
                   </tr>
                   <tr>
-                    <td class="main">
+                    <td>
                     <?php echo $preorder_res['payment_method'];?> 
                     </td>                  
                   </tr>
@@ -215,8 +232,8 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                   if ($preorder_res['code_fee']) {
                   ?>
                   <tr>
-                    <td class="main" align="right"><?php echo CHANGE_PREORDER_HANDLE_FEE_TEXT;?></td> 
-                    <td class="main" align="right"><?php echo $currencies->format_total($preorder_res['code_fee']);?></td> 
+                    <td align="right"><?php echo CHANGE_PREORDER_HANDLE_FEE_TEXT;?></td> 
+                    <td align="right"><?php echo $currencies->format_total($preorder_res['code_fee']);?></td> 
                   </tr>
                   <?php
                   }
@@ -246,8 +263,8 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                     }
                   ?>
                   <tr>
-                    <td class="main" align="right"><?php echo $preorder_total_res['title'];?></td>                  
-                    <td class="main" align="right">
+                    <td align="right"><?php echo $preorder_total_res['title'];?></td>                  
+                    <td align="right">
                     <?php 
                     if ($preorder_total_res['class'] == 'ot_point') {
                       if (isset($_SESSION['preorder_campaign_fee'])) {
@@ -292,7 +309,6 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
   }
   //----------------------------------------------
   
-  //還元率を計算----------------------------------
   if(mb_ereg("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK)) {
     $back_rate_array = explode("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK);
   $back_rate = MODULE_ORDER_TOTAL_POINT_FEE;
@@ -315,7 +331,6 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
 } else {
   $point_rate = MODULE_ORDER_TOTAL_POINT_FEE;
 }
-// ここまでカスタマーレベルに応じたポイント還元率算出============================================================
   if ($preorder_subtotal > 0) {
     if (isset($_SESSION['preorder_campaign_fee'])) {
       $preorder_get_point = ($preorder_subtotal + $_SESSION['preorder_campaign_fee']) * $point_rate;
@@ -345,7 +360,7 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
 }
                   ?>
                   <tr>
-                    <td class="main" align="right">
+                    <td align="right">
                     <?php 
                     if (isset($show_point_single)) {
                       if ($preorder_get_point == 0) {
@@ -358,26 +373,18 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
                     }
                     ?>
                     </td> 
-                    <td class="main" align="right"><?php echo (int)$preorder_get_point.'&nbsp;P';?></td> 
+                    <td align="right"><?php echo (int)$preorder_get_point.'&nbsp;P';?></td> 
                   </tr>
                 </table> 
               </td>
             </tr>
           </table>
-          <br> 
-          <table width="100%" cellpadding="0" cellspacing="0" border="0" class="c_pay_info">
-            <tr>
-              <td class="main">
-              <?php echo CHANGE_PREORDER_CONFIRM_BUTTON_INFO;?> 
-              </td>
-              <td class="main" align="right">
-                <?php
-                $payment_modules->preorder_process_button($con_payment_code, $_POST['pid'], $total_param); 
-                ?>
-                <?php echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONTINUE);?> 
-              </td>
-            </tr>
-          </table> 
+            </div>
+            <div id="hm-checkout-warp">
+            <div class="checkout-title"><b><?php echo TEXT_ORDERS_SUBMIT_ONE;?></b></div>
+            <div class="checkout-bottom"><input type="hidden" name="money_order_message"><input type="hidden" name="code_fee"><input type="hidden" value="fgg" name="character[31684{1}8]"><input type="image" onMouseOver="this.src='includes/languages/japanese/images/buttons/button_confirm_order_hover.gif'" onMouseOut="this.src='includes/languages/japanese/images/buttons/button_confirm_order.gif'" alt="<?php echo TEXT_IMAGE_ALT_ONE;?>" src="includes/languages/japanese/images/buttons/button_confirm_order.gif">
+</div>
+</div>
           </form> 
           <?php 
           echo tep_draw_form('order1', tep_href_link('change_preorder.php?pid='.$check_preorder_str));
@@ -395,19 +402,18 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
           }
           echo '</form>';
           ?> 
-          </div>
-          <p class="pageBottom"></p>
+        
       </div> 
       <!-- body_text_eof //--> 
-      <div id="r_menu"> <!-- right_navigation //--> 
-        <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-        <!-- right_navigation_eof //--> </div> 
+        <?php //require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
   <!-- body_eof //--> 
   <!-- footer //--> 
-  <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
+
   <!-- footer_eof //--> 
 </div>
+<?php include("includes/float-box.php");?>
 </div>
+<?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
 <object>
 <noscript>
 <img src="visites.php" alt="Statistics" style="border:0">

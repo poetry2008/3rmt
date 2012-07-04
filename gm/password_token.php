@@ -14,13 +14,11 @@
   <!-- header_eof //--> 
   <!-- body //--> 
   <div id="main"> 
-      <div id="l_menu"> <!-- left_navigation //--> 
-        <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
-        <!-- left_navigation_eof //--> </div> 
-      <!-- body_text //--> 
-      <div id="content"> 
-      <div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
-      <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1> 
+<div id="layout" class="yui3-u">        <div id="current"><?php echo
+$breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
+		<?php include('includes/search_include.php');?>
+	<div id="main-content">
+    <h2><?php echo HEADING_TITLE ; ?></h2>
         
         <?php echo tep_draw_form('password_forgotten', tep_href_link('password_token.php', 'action=process&pud='.$_GET['pud'])); ?>
           <table border="0" width="95%" cellspacing="0" cellpadding="2" class="box_des"> 
@@ -35,11 +33,11 @@
             <?php }?> 
             <tr>
 				<td class="main"><?php echo UPDATE_ENTRY_PASSWORD_TEXT;?></td>
-				<td class="main"><?php echo tep_draw_password_field('u_password', '', 'class="input_text"'); ?>&nbsp;&nbsp;<small><?php echo UPDATE_ENTRY_PASSWORD_READ;?></small></td>
+				<td class="main"><?php echo tep_draw_password_field('u_password', '', 'class="input_text"'); ?>&nbsp;&nbsp;<?php echo UPDATE_ENTRY_PASSWORD_READ;?></td>
 			  </tr>
 			  <tr>
 				<td class="main"><?php echo UPDATE_ENTRY_PASSWORD_AGAINTEXT;?></td>
-				<td class="main"><?php echo tep_draw_password_field('up_password', '', 'class="input_text"'); ?>&nbsp;&nbsp;<small><?php echo UPDATE_ENTRY_PASSWORD_READ;?></small></td>
+				<td class="main"><?php echo tep_draw_password_field('up_password', '', 'class="input_text"'); ?>&nbsp;&nbsp;<?php echo UPDATE_ENTRY_PASSWORD_READ;?></td>
 			  </tr>
           <tr>
             <td colspan="2">
@@ -56,15 +54,11 @@
           </tr>
 
         </table></form></div> 
-      <!-- body_text_eof //--> 
-      <div id="r_menu"> <!-- right_navigation //--> 
-        <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-        <!-- right_navigation_eof //--> </div> 
-  <!-- body_eof //--> 
-  <!-- footer //--> 
-  <?php require(DIR_WS_INCLUDES . 'footer.php'); ?></div> 
-
-  <!-- footer_eof //--> 
+ <?php include('includes/float-box.php');?>
+        </div>
+        <?php include('includes/new.php');?>
+ <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
+</div> 
 </body>
 </html>
 <?php

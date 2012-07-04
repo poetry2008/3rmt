@@ -12,25 +12,23 @@
 <body>
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
 <div id="main">
-<div id="l_menu">
-<?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-</div>
-<div id="content">
-<div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
-<h1 class="pageHeading">
+<?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
+<div id="layout" class="yui3-u">
+<div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
+<h2>
 <?php echo EXTEND_PREORDER_TIME_SUCCESS_TEXT;?>
-</h1>
-<table class="box_des" border="0" width="95%" cellspacing="0" cellpadding="0">
+</h2>
+<table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="0">
   <tr>
     <td>
       <div id="contents">
-                <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size:11px;">
+                <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size:14px;">
                   <tr>
                     <td>
                           <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                             <tr> 
-                              <td class="main" align="right"><?php echo '<a href="' .tep_href_link(FILENAME_DEFAULT). '">' .  tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></td> 
-                              <td align="right" class="main">
+                              <td align="right"><?php echo '<a href="' .tep_href_link(FILENAME_DEFAULT). '">' .  tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></td> 
+                              <td align="right">
                               </td> 
                             </tr> 
                           </table></td> 
@@ -41,9 +39,7 @@
   </tr>
 </table>
 </div>
-<div id="r_menu">
-  <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?>
-</div>
+  <?php //require(DIR_WS_INCLUDES . 'column_right.php'); ?>
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
 </div>
 </body>

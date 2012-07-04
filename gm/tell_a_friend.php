@@ -49,26 +49,24 @@
 <!-- header_eof //-->
 <!-- body //-->
 <div id="main">
-  <!-- left_navigation //-->
-  <div id="l_menu">
-    <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-  </div>
-  <!-- left_navigation_eof //-->
+    <?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
   <!-- body_text //-->
-  <div id="content">
+     <div id="layout" class="yui3-u" >
+
+      <div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
+        <?php include('includes/search_include.php');?>
+      <div id="main-content">
+
     <?php
   if ($valid_product == false) {
 ?>
-    <p class="main"><?php echo HEADING_TITLE_ERROR; ?><br>
+    <p><?php echo HEADING_TITLE_ERROR; ?><br>
       <?php echo ERROR_INVALID_PRODUCT; ?> </p>
     <?php
   } else {
     $product_info = tep_db_fetch_array($product_info_query);
 ?>
-    <div class="headerNavigation">
-      <?php echo $breadcrumb->trail(' &raquo; '); ?>
-    </div>
-    <h1 class="pageHeading"><?php echo sprintf(HEADING_TITLE, $product_info['products_name']); ?></h1>
+    <h2><?php echo sprintf(HEADING_TITLE, $product_info['products_name']); ?></h2>
     <?php
     $error = false;
 
@@ -126,9 +124,11 @@
       tep_mail($_POST['friendname'], $_POST['friendemail'], $email_subject, stripslashes($email_body), '', $from_email_address);
 ?>
     <div class="tell_msg">
-      <p class="main"><?php echo sprintf(TEXT_EMAIL_SUCCESSFUL_SENT, stripslashes($_POST['products_name']), $_POST['friendemail']); ?></p>
-      <div align="right">
-        <?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $_GET['products_id']) . '">' . tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?>
+      <p><?php echo sprintf(TEXT_EMAIL_SUCCESSFUL_SENT, stripslashes($_POST['products_name']), $_POST['friendemail']); ?></p>
+      <div align="right" style="margin-top:20px;">
+        <?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id='
+        . $_GET['products_id']) . '">' . tep_image_button('button_continue.gif',
+  IMAGE_BUTTON_CONTINUE,' onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_continue.gif\'"  onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_continue_hover.gif\'"') . '</a>'; ?>
       </div>
     </div>
     <?php
@@ -146,43 +146,25 @@
       }
 ?>
     <?php echo tep_draw_form('email_friend', tep_href_link(FILENAME_TELL_A_FRIEND, 'action=process&products_id=' . $_GET['products_id'])) . tep_draw_hidden_field('products_name', $product_info['products_name']); ?>
-    <table class="box_des" width="95%" cellpadding="0" cellspacing="0" border="0">
+    <table id="detail-table-noframe" width="100%" cellpadding="0" cellspacing="0" border="0">
       <tr>
-        <td class="formAreaTitle"><?php echo FORM_TITLE_CUSTOMER_DETAILS; ?></td>
+        <td><h3><?php echo FORM_TITLE_CUSTOMER_DETAILS; ?></h3></td>
       </tr>
       <tr>
-        <td class="main">
-          <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2">
-            <tr>
-              <td class="main">
-                <table border="0" cellspacing="0" cellpadding="2">
-                  <tr>
-                    <td class="main"><?php echo FORM_FIELD_CUSTOMER_NAME; ?></td>
-                    <td class="main"><?php echo $your_name_prompt; ?></td>
+                    <td width="40%">&nbsp;<?php echo FORM_FIELD_CUSTOMER_NAME; ?></td>
+                    <td><?php echo $your_name_prompt; ?></td>
                   </tr>
                   <tr>
-                    <td class="main"><?php echo FORM_FIELD_CUSTOMER_EMAIL; ?></td>
-                    <td class="main"><?php echo $your_email_address_prompt; ?></td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-          </table>
-        </td>
+                    <td width="30%">&nbsp;<?php echo FORM_FIELD_CUSTOMER_EMAIL; ?></td>
+                    <td><?php echo $your_email_address_prompt; ?></td>
+                     </tr>
+      <tr>
+        <td>
+          <h3><?php echo FORM_TITLE_FRIEND_DETAILS; ?></h3></td>
       </tr>
       <tr>
-        <td class="formAreaTitle"><br>
-          <?php echo FORM_TITLE_FRIEND_DETAILS; ?></td>
-      </tr>
-      <tr>
-        <td class="main">
-          <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2">
-            <tr>
-              <td class="main">
-                <table class="box_des" border="0" cellspacing="0" cellpadding="2">
-                  <tr>
-                    <td class="main"><?php echo FORM_FIELD_FRIEND_NAME; ?></td>
-                    <td class="main">
+                           <td>&nbsp;<?php echo FORM_FIELD_FRIEND_NAME; ?></td>
+                    <td>
                     <?php 
                     if (!isset($_GET['friendname'])) $_GET['friendname'] = NULL; 
                     echo tep_draw_input_field('friendname', (($friendname_error == true) ? $_POST['friendname'] : $_GET['friendname'])); if ($friendname_error == true) echo '&nbsp;<span class="errorText">' . TEXT_REQUIRED . '</span>';
@@ -190,43 +172,31 @@
                     </td>
                   </tr>
                   <tr>
-                    <td class="main"><?php echo FORM_FIELD_FRIEND_EMAIL; ?></td>
-                    <td class="main">
+                    <td>&nbsp;<?php echo FORM_FIELD_FRIEND_EMAIL; ?></td>
+                    <td>
                     <?php 
                     if (!isset($_GET['send_to'])) $_GET['send_to'] = NULL; 
                     echo tep_draw_input_field('friendemail', (($friendemail_error == true) ? $_POST['friendemail'] : $_GET['send_to'])); if ($friendemail_error == true) echo ENTRY_EMAIL_ADDRESS_CHECK_ERROR; 
                     ?>
                     </td>
-                  </tr>
-                </table>
-              </td>
-            </tr>
-          </table>
-        </td>
+                       </tr>
+      <tr>
+        <td>
+          <h3><?php echo FORM_TITLE_FRIEND_MESSAGE; ?></h3></td>
       </tr>
       <tr>
-        <td class="formAreaTitle"><br>
-          <?php echo FORM_TITLE_FRIEND_MESSAGE; ?></td>
-      </tr>
+                      <td width="100%" colspan="2"><?php echo tep_draw_textarea_field('yourmessage',
+                  'soft', 40,8,'','style="width:100%"')?></td>
+                 </tr>
       <tr>
-        <td class="main">
-          <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2">
-            <tr>
-              <td><?php echo tep_draw_textarea_field('yourmessage', 'soft', 40, 8);?></td>
-            </tr>
-          </table>
-        </td>
-      </tr>
-      <tr>
-        <td><br>
-          <table border="0" width="100%" cellspacing="0" cellpadding="0">
-            <tr>
-              <td class="main"><?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $_GET['products_id']) . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td>
-              <td align="right" class="main"><?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></td>
-            </tr>
-          </table>
-        </td>
-      </tr>
+                      <td ><br><?php echo '<a href="' .
+                      tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .
+                          $_GET['products_id']) . '">' .
+                      tep_image_button('button_back.gif',
+                          IMAGE_BUTTON_BACK,' onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_back.gif\'"  onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_back_hover.gif\'"') . '</a>'; ?></td>
+              <td align="right"><br><?php echo tep_image_submit('button_continue.gif',
+                  IMAGE_BUTTON_CONTINUE,'  onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_continue.gif\'"  onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_continue_hover.gif\'"'); ?></td>
+                 </tr>
     </table>
     </form>
     <?php
@@ -234,16 +204,16 @@
 }
 ?>
   </div>
+
+</div>
+  <?php include('includes/float-box.php');?>
   <!-- body_text_eof //-->
-  <!-- right_navigation //-->
-  <div id="r_menu">
-    <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?>
-  </div>
-  <!-- right_navigation_eof //-->
+    <?php //require(DIR_WS_INCLUDES . 'column_right.php'); ?>
   <!-- body_eof //-->
   <!-- footer //-->
-  <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-  <!-- footer_eof //-->
+   <!-- footer_eof //-->
 </div>
+ <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
+
 </body>
 </html><?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

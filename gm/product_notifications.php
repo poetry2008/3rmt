@@ -92,23 +92,21 @@
 <!-- header_eof //--> 
 <!-- body //--> 
 <div id="main">
-<!-- left_navigation //-->
-<div id="l_menu">
-<?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-</div>
-<!-- left_navigation_eof //-->
 <!-- body_text //-->
-<div id="content">
-<div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
-<h1 class="pageHeading"><?php echo HEADING_TITLE; ?></h1>
- 
-        
-        <div> 
-          <table class="box_des" border="0" width="95%" cellspacing="0" cellpadding="0"> 
+<div class="yui3-u" id="layout">
+<div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
+<?php include('includes/search_include.php');?>
+<div id="main-content">
+<h2><?php echo HEADING_TITLE; ?></h2>
+        <div id="hm-notifications"> 
+          <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="0"> 
             <tr> 
-              <td><table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="0">
+              <td>
+              
+             
+              <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
-            <td class="main"><?php echo TEXT_PRODUCT_NOTIFICATIONS_INTRODUCTION; ?></td>
+            <td><?php echo TEXT_PRODUCT_NOTIFICATIONS_INTRODUCTION; ?></td>
           </tr>
           <tr>
             <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
@@ -117,53 +115,66 @@
   if ($global_status['global_product_notifications'] == '1') {
 ?>
           <tr>
-            <td class="main"><b><?php echo HEADING_GLOBAL_PRODUCT_NOTIFICATIONS; ?></b></td>
+            <td><b><?php echo HEADING_GLOBAL_PRODUCT_NOTIFICATIONS; ?></b></td>
           </tr>
           <tr>
             <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
           </tr>
           <tr>
-            <td class="main"><?php echo TEXT_GLOBAL_PRODUCT_NOTIFICATIONS_ENABLED; ?></td>
+            <td><?php echo TEXT_GLOBAL_PRODUCT_NOTIFICATIONS_ENABLED; ?></td>
           </tr>
           <tr>
             <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
           </tr>
           <tr>
-            <td class="main"><?php echo TEXT_GLOBAL_PRODUCT_NOTIFICATIONS_DESCRIPTION_ENABLED; ?></td>
+            <td><?php echo TEXT_GLOBAL_PRODUCT_NOTIFICATIONS_DESCRIPTION_ENABLED; ?></td>
           </tr>
           <tr>
             <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
           </tr>
-          <?php echo tep_draw_form('global', tep_href_link(FILENAME_PRODUCT_NOTIFICATIONS, 'action=global_notify', 'SSL')); ?>
           <tr>
-            <td class="main"><?php echo tep_draw_checkbox_field('global', 'enable', true) . '&nbsp;' . TEXT_ENABLE_GLOBAL_NOTIFICATIONS; ?></td>
-          </tr>
-          <tr>
+
+            <td><?php echo tep_draw_checkbox_field('global', 'enable', true) . '&nbsp;' . TEXT_ENABLE_GLOBAL_NOTIFICATIONS; ?></td>
+    
+            </tr>
+
+       
+           <tr>
             <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '20'); ?></td>
           </tr>
+          
           <tr>
-            <td class="main"><?php echo tep_image_submit('button_update.gif', IMAGE_BUTTON_UPDATE); ?></td>
+
+            <td>
+  <?php echo tep_draw_form('global', tep_href_link(FILENAME_PRODUCT_NOTIFICATIONS, 'action=global_notify', 'SSL')); ?>
+
+            <div>
+            <?php echo tep_image_submit('button_update.gif',
+                IMAGE_BUTTON_UPDATE,' onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_update.gif\'" onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_update_hover.gif\'"'); ?>           </div>
+</form>  </td>
           </tr>
+
           </table>
-          </form>
-          <table width="100%">
+
+
+                    <table width="100%">
 <?php
   } else {
 ?>
           <tr>
-            <td class="main"><b><?php echo HEADING_GLOBAL_PRODUCT_NOTIFICATIONS; ?></b></td>
+            <td><b><?php echo HEADING_GLOBAL_PRODUCT_NOTIFICATIONS; ?></b></td>
           </tr>
           <tr>
             <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
           </tr>
           <tr>
-            <td class="main"><?php echo TEXT_GLOBAL_PRODUCT_NOTIFICATIONS_DISABLED; ?></td>
+            <td><?php echo TEXT_GLOBAL_PRODUCT_NOTIFICATIONS_DISABLED; ?></td>
           </tr>
           <tr>
             <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
           </tr>
           <tr>
-            <td class="main"><?php echo TEXT_GLOBAL_PRODUCT_NOTIFICATIONS_DESCRIPTION_DISABLED; ?></td>
+            <td><?php echo TEXT_GLOBAL_PRODUCT_NOTIFICATIONS_DESCRIPTION_DISABLED; ?></td>
           </tr>
           <tr>
             <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
@@ -172,13 +183,14 @@
           <?php echo tep_draw_form('global', tep_href_link(FILENAME_PRODUCT_NOTIFICATIONS, 'action=global_notify', 'SSL')); ?>
           <table width="100%">
           <tr>
-            <td class="main"><?php echo tep_draw_checkbox_field('global', 'enable') . '&nbsp;' . TEXT_ENABLE_GLOBAL_NOTIFICATIONS; ?></td>
+            <td><?php echo tep_draw_checkbox_field('global', 'enable') . '&nbsp;' . TEXT_ENABLE_GLOBAL_NOTIFICATIONS; ?></td>
           </tr>
           <tr>
             <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '20'); ?></td>
           </tr>
           <tr>
-            <td class="main"><?php echo tep_image_submit('button_update.gif', IMAGE_BUTTON_UPDATE); ?></td>
+            <td><?php echo tep_image_submit('button_update.gif',
+                IMAGE_BUTTON_UPDATE,'onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_update.gif\'"  onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_update_hover.gif\'"'); ?></td>
           </tr>
           </table>
           </form>
@@ -187,20 +199,17 @@
             <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '20'); ?></td>
           </tr>
           <tr>
-            <td class="main"><b><?php echo HEADING_PRODUCT_NOTIFICATIONS; ?></b></td>
+            <td><b><?php echo HEADING_PRODUCT_NOTIFICATIONS; ?></b></td>
           </tr>
           <tr>
             <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
           </tr>
           <tr>
-            <td class="main"><?php echo TEXT_PRODUCT_NOTIFICATIONS_LIST; ?></td>
-          </tr>
-          <tr>
-            <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
+            <td><?php echo TEXT_PRODUCT_NOTIFICATIONS_LIST; ?></td>
           </tr>
           </table>
           <?php echo tep_draw_form('notifications', tep_href_link(FILENAME_PRODUCT_NOTIFICATIONS, 'action=update_notifications', 'SSL')); ?>
-          <table width="100%">
+          <table width="100%" class="botton-continue">
 <?php
     // ccdd
     $products_query = tep_db_query("
@@ -223,35 +232,36 @@
     ");
     while ($products = tep_db_fetch_array($products_query)) {
       echo '          <tr>' . "\n" .
-           '            <td class="main">' . tep_draw_checkbox_field('products[]', $products['products_id']) . '&nbsp;' . $products['products_name'] . '</td>' . "\n" .
+           '            <td>' . tep_draw_checkbox_field('products[]', $products['products_id']) . '&nbsp;' . $products['products_name'] . '</td>' . "\n" .
            '          </tr>' . "\n";
     }
 ?>
+          
           <tr>
-            <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
-          </tr>
-          <tr>
-            <td class="main"><?php echo tep_image_submit('button_remove_notifications.gif', IMAGE_BUTTON_REMOVE_NOTIFICATIONS); ?></td>
-            <td class="main">      <table width="100%">
-<?php
+           <td align="left"><?php echo '<a href="' .
+            tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">' .
+            tep_image_button('button_back.gif',
+                IMAGE_BUTTON_BACK,' onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_back.gif\'"   onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_back_hover.gif\'"') . '</a>'; ?></td>
+            <td align="right"><?php echo tep_image_submit('button_remove_notifications.gif',
+                IMAGE_BUTTON_REMOVE_NOTIFICATIONS,'  onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_remove_notifications.gif\'"  onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_remove_notifications_hover.gif\'"'); ?></td>
+            <td>     
+            </tr>
+     <?php
   }
 ?>
-          <tr>
-            <td align="right" class="smallText"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td>
-          </tr>
-        </table></td>
+</table>
+         </form>
+
+        </td>
              </tr>
           </table>
-          </form>
-    </td>
+             </td>
       </tr>
-    </table></div></div>
+    </table></div></div></div>
+	<?php include('includes/float-box.php');?>
+		  </div>
       <!-- body_text_eof //--> 
-<!-- right_navigation //--> 
-<div id="r_menu">
-<?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-</div>
-<!-- right_navigation_eof //-->  
+<?php //require(DIR_WS_INCLUDES . 'column_right.php'); ?>   
   <!-- body_eof //--> 
   <!-- footer //--> 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 

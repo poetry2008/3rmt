@@ -24,36 +24,30 @@
 <!-- body //--> 
 <div id="main">
 <!-- left_navigation //-->
-<div id="l_menu">
-<?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-</div>
-<!-- left_navigation_eof //-->
-<!-- body_text //-->
-<div id="content">
-<div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
-<h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1> 
-<div class="box"> 
-<?php 
+<div id="layout" class="yui3-u">        <div id="current"><?php echo
+$breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
+		<?php include('includes/search_include.php');?>
+
+
+	<div id="main-content">
+    <h2><?php echo HEADING_TITLE ; ?></h2>
+    <?php echo tep_draw_form('account_edit', tep_href_link(FILENAME_ACCOUNT_EDIT_PROCESS, '', 'SSL'), 'post', 'onSubmit="return check_form();"') . tep_draw_hidden_field('action', 'process'); ?> 
+    <div style="font-size:14px;"><?php 
           echo UPDATE_PASSWORD_SUCCESS_TEXT;
-        ?>
- <table class="box_des" border="0" width="95%" cellspacing="0" cellpadding="0"> 
+        ?></div>
+ <table class="botton-continue" border="0" width="100%" cellspacing="0" cellpadding="0"> 
             <tr> 
-              <td align="right"> <br> 
+              <td align="right">
                 <?php echo '<a href="' . tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL') . '">' . tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?> </td> 
             </tr> 
-          </table> 
+          </table></form>
         </div></div>
-      <!-- body_text_eof //--> 
-<!-- right_navigation //--> 
-<div id="r_menu">
-<?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-</div>
-<!-- right_navigation_eof //--> 
-  <!-- body_eof //--> 
-  <!-- footer //--> 
-  <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
-  <!-- footer_eof //--> 
+ <?php include('includes/float-box.php');?>
+        </div>
+        <?php include('includes/new.php');?>
 </div> 
+ <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
+
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

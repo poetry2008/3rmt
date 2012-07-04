@@ -26,7 +26,7 @@ if (
           and r.site_id = ".SITE_ID
         );
     if(tep_db_num_rows($reviews_query)) {
-      echo  '<div class="pageHeading_long">'.$product_info['products_name'] .'のレビュー</div>'."\n" . '<div class="comment_long">'."\n" ;
+      echo  '<div class="pageHeading_long">'.$product_info['products_name'] .BOX_REVIEWS_LINK_TEXT.'</div>'."\n" . '<div class="comment_long">'."\n" ;
       while ($reviews = tep_db_fetch_array($reviews_query)) {
         $reviews_des_query = tep_db_query("select reviews_text from ".TABLE_REVIEWS_DESCRIPTION." where reviews_id = '".$reviews['reviews_id']."' and languages_id = '".$languages_id."'"); 
         $reviews_des_res = tep_db_fetch_array($reviews_des_query); 
@@ -46,7 +46,7 @@ if (
     }
 ?>
 <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 10px;" summary="reviews">
-  <tr><td height="44"><a href="<?php echo tep_href_link(FILENAME_REVIEWS); ?>"><img width="171" height="44" alt="RMTレビュー掲示板" src="images/design/box/reviews.gif" ><?php //echo tep_image(DIR_WS_IMAGES.'design/box/reviews.gif',BOX_HEADING_REVIEWS,171,44); ?></a></td></tr>
+  <tr><td height="44"><a href="<?php echo tep_href_link(FILENAME_REVIEWS); ?>"><img width="171" height="44" alt="<?php echo BOX_REVIEWS_SHOW_TITLE;?>" src="images/design/box/reviews.gif" ><?php //echo tep_image(DIR_WS_IMAGES.'design/box/reviews.gif',BOX_HEADING_REVIEWS,171,44); ?></a></td></tr>
   <tr>
     <td class="boxText" align="center" style="padding: 3px 14px 0px 14px; background: url(images/design/box/reviews_content_bg.gif) repeat-y;">
     <?php

@@ -628,8 +628,8 @@ Game List
 	vertical-align: top;
 }
 h3.game_list{
-	font-size:10px;
-	*+font-size:10px;
+	font-size:14px;
+	*+font-size:14px;
 	margin-bottom: 15px;
 }
 h3.game_list br{

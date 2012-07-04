@@ -84,14 +84,10 @@
 <!-- header_eof //--> 
 <!-- body //--> 
 <div id="main">
-<!-- left_navigation //-->
-<div id="l_menu">
-<?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-</div>
-<!-- left_navigation_eof //-->
+<?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
 <!-- body_text //-->
-<div id="content">
-<div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
+<div id="layout" class="yui3-u">
+<div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
   <table width="100%" border="0" align="center" cellpadding="0" cellspacing="0"> 
           <tr> 
             <td> <br> 
@@ -107,7 +103,7 @@
                   	<div class="table_border">
                     <table width="100%" border="0" cellspacing="0" cellpadding="2"> 
                       <tr> 
-                        <td colspan="2" valign="top" class="main"><?php echo HEADING_MAGAZINE_TITLE_ACCOUNT; ?></td> 
+                        <td colspan="2" valign="top"><?php echo HEADING_MAGAZINE_TITLE_ACCOUNT; ?></td> 
                       </tr> 
                       <tr> 
                         <td valign="top"><table width="100%" height="100%" border="0" cellpadding="1" cellspacing="0" class="box_des"> 
@@ -117,7 +113,7 @@
                                     <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
                                   </tr> 
                                   <tr> 
-                                    <td class="main"><?php echo TEXT_TITLE_ACCOUNT ; ?></td> 
+                                    <td><?php echo TEXT_TITLE_ACCOUNT ; ?></td> 
                                   </tr> 
                                   <tr> 
                                     <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
@@ -135,7 +131,7 @@
                         <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
                       </tr> 
                       <tr> 
-                        <td colspan="2" valign="top" class="main"><?php echo HEADING_MAGAZINE_TITLE_REG; ?></td> 
+                        <td colspan="2" valign="top"><?php echo HEADING_MAGAZINE_TITLE_REG; ?></td> 
                       </tr> 
                       <form method="post" action="<?php echo tep_href_link(FILENAME_MAGAZINE, 'action=regist', 'NONSSL'); ?>"> 
                         <tr> 
@@ -146,18 +142,18 @@
                                       <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
                                     </tr> 
                                     <tr> 
-                                      <td colspan="2" class="main"><?php echo TEXT_TITLE_REG; ?></td> 
+                                      <td colspan="2"><?php echo TEXT_TITLE_REG; ?></td> 
                                     </tr> 
                                     <tr> 
-                                      <td colspan="2" class="main"><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+                                      <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
                                     </tr> 
                                     <tr> 
-                                      <td class="main"><?php echo TEXT_MAGAZINE_TITLE_NAME_REG; ?></td> 
-                                      <td class="main"><input type="text" name="name" value="<?php echo $mag_name; ?>"></td> 
+                                      <td><?php echo TEXT_MAGAZINE_TITLE_NAME_REG; ?></td> 
+                                      <td><input type="text" name="name" value="<?php echo $mag_name; ?>"></td> 
                                     </tr> 
                                     <tr> 
-                                      <td class="main"><?php echo TEXT_MAGAZINE_TITLE_MAIL_REG; ?></td> 
-                                      <td class="main"><input type="text" name="email" value="<?php echo $mag_mail; ?>"></td> 
+                                      <td><?php echo TEXT_MAGAZINE_TITLE_MAIL_REG; ?></td> 
+                                      <td><input type="text" name="email" value="<?php echo $mag_mail; ?>"></td> 
                                     </tr> 
                                     <tr> 
                                       <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
@@ -176,7 +172,7 @@
                         <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
                       </tr> 
                       <tr> 
-                        <td colspan="2" class="main"><?php echo HEADING_MAGAZINE_TITLE_STP; ?></td> 
+                        <td colspan="2"><?php echo HEADING_MAGAZINE_TITLE_STP; ?></td> 
                       </tr> 
                       <form method="post" action="<?php echo tep_href_link(FILENAME_MAGAZINE, 'action=stop', 'NONSSL'); ?>"> 
                         <tr> 
@@ -187,14 +183,14 @@
                                       <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
                                     </tr> 
                                     <tr> 
-                                      <td colspan="2" class="main"><?php echo TEXT_TITLE_STP; ?></td> 
+                                      <td colspan="2"><?php echo TEXT_TITLE_STP; ?></td> 
                                     </tr> 
                                     <tr> 
                                       <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
                                     </tr> 
                                     <tr> 
-                                      <td class="main"><?php echo TEXT_MAGAZINE_TITLE_MAIL_STP; ?></td> 
-                                      <td class="main"><input type="text" name="email" value="<?php echo $mag_mail; ?>"></td> 
+                                      <td><?php echo TEXT_MAGAZINE_TITLE_MAIL_STP; ?></td> 
+                                      <td><input type="text" name="email" value="<?php echo $mag_mail; ?>"></td> 
                                     </tr> 
                                     <tr> 
                                       <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
@@ -218,11 +214,7 @@
           </tr> 
         </table></div>
       <!-- body_text_eof //--> 
-<!-- right_navigation //--> 
-<div id="r_menu">
-<?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-</div>
-<!-- right_navigation_eof //-->
+<?php //require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
   <!-- body_eof //-->  
   <!-- footer //--> 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 

@@ -73,15 +73,12 @@
 <!-- header_eof //--> 
 <!-- body //--> 
 <div id="main">
-<!-- left_navigation //-->
-<div id="l_menu">
-<?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-</div>
-<!-- left_navigation_eof //-->
 <!-- body_text //-->
-<div id="content">
-        <div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
-    <h1 class="pageHeading"><?php echo HEADING_TITLE; ?></h1> 
+<div id="layout" class="yui3-u">
+        <div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
+        <?php include('includes/search_include.php');?>
+    <div id="main-content">
+	<h2><?php echo HEADING_TITLE; ?></h2> 
         
         <div> 
         <?php
@@ -106,7 +103,7 @@
           echo tep_draw_form('form', tep_href_link('non-member_auth.php', 'action=send'.(isset($_GET['cu'])?'&cu='.$_GET['cu']:''), 'SSL')); 
         ?>
           
-         <table class="box_des" border="0" width="95%" cellspacing="0" cellpadding="0"> 
+         <table align="center" border="0" width="100%" cellspacing="0" cellpadding="0"> 
         <?php
         if ($_GET['cu'] == 1) {
         ?>
@@ -120,9 +117,9 @@
         ?>
         <tr>
           <td>
-          <table class="box_des">
+          <table class="box_des" width="100%">
             <tr>
-              <td colspan="3"><img src="images/design/mail_top.gif" alt=""></td> 
+              <td colspan="3" align="center"><img src="images/design/mail_top.gif" alt=""></td> 
             </tr>
             <tr>
               <td colspan="3" class="information_color">
@@ -137,14 +134,15 @@
               </td>
             </tr>
             <tr>
-              <td width="100">
+              <td width="20%">
               <b><?php echo INPUT_SEND_MAIL;?>:</b> 
               </td>
-              <td width="285">
-              <?php echo tep_draw_input_field('cemail', (isset($_POST['cemail'])?$_POST['cemail']:$cus_email),'size="37"');?> 
+              <td width="70%">
+              <?php echo tep_draw_input_field('cemail', (isset($_POST['cemail'])?$_POST['cemail']:$cus_email),' style=" width:80%;" ');?> 
               </td>
-              <td>
-              <?php echo tep_image_submit('button_send_mail.gif', SENDMAIL_BUTTON);?> 
+              <td align="right" width="10%">
+              <?php echo tep_image_submit('button_send_mail.gif',
+                  SENDMAIL_BUTTON,' onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_send_mail.gif\'"  onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_send_mail_hover.gif\'"');?> 
               </td>
             </tr>
             <tr>
@@ -156,7 +154,7 @@
           </td>
         </tr>
         <tr>
-          <td>
+          <td align="center">
           <img src="images/design/mail_bottom.gif" alt=""> 
           </td>
         </tr>
@@ -168,34 +166,33 @@
         <?php }?> 
            <tr> 
               <td><br> 
-                <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="0"> 
+                <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                   <tr> 
-                    <td class="main" align="right">
+                    <td align="right">
           <?php 
           if ($_GET['cu'] == 1) {
             echo '<a href="'.tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL').'">' .  tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; 
           }
           ?>
                     </td> 
-                    <td align="right" class="main">
+                    <td align="right">
                     </td> 
                   </tr> 
                 </table></td> 
             </tr> 
           </table> 
           </form> 
-        </div></div>
-      <!-- body_text_eof //--> 
-<!-- right_navigation //--> 
-<div id="r_menu">
-<?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-</div>
-<!-- right_navigation_eof //--> 
-  <!-- body_eof //--> 
-  <!-- footer //--> 
-  <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
-  <!-- footer_eof //--> 
-</div> 
+        </div>
+              </div>
+               
+        
+        </div>
+   <?php include('includes/float-box.php');?>
+
+
+  </div>
+ <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
+
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

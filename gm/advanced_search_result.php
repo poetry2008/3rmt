@@ -76,8 +76,8 @@
   if ($error == 1) {
     tep_redirect(tep_href_link(FILENAME_ADVANCED_SEARCH, 'errorno=' . $errorno . '&' . tep_get_all_get_params(array('x', 'y'))));
   } else {
-    $breadcrumb->add(NAVBAR_TITLE1, tep_href_link(FILENAME_ADVANCED_SEARCH));
-    $breadcrumb->add(NAVBAR_TITLE2, tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, 'keywords=' . $_GET['keywords'] . '&search_in_description=' .  isset($_GET['search_in_description'])?  $_GET['search_in_description']:''. '&categories_id=' .  $_GET['categories_id'] . '&inc_subcat=' .  isset($_GET['inc_subcat'])?$_GET['inc_subcat']:'' . '&manufacturers_id=' . $_GET['manufacturers_id'] . '&pfrom=' . $_GET['pfrom'] . '&pto=' . $_GET['pto'] . '&dfrom=' . $_GET['dfrom'] . '&dto=' . $_GET['dto']));
+   // $breadcrumb->add(NAVBAR_TITLE1, tep_href_link(FILENAME_ADVANCED_SEARCH));
+   // $breadcrumb->add(NAVBAR_TITLE2, tep_href_link(FILENAME_ADVANCED_SEARCH_RESULT, 'keywords=' . $_GET['keywords'] . '&search_in_description=' .  isset($_GET['search_in_description'])?  $_GET['search_in_description']:''. '&categories_id=' .  $_GET['categories_id'] . '&inc_subcat=' .  isset($_GET['inc_subcat'])?$_GET['inc_subcat']:'' . '&manufacturers_id=' . $_GET['manufacturers_id'] . '&pfrom=' . $_GET['pfrom'] . '&pto=' . $_GET['pto'] . '&dfrom=' . $_GET['dfrom'] . '&dto=' . $_GET['dto']));
 ?>
 <?php page_head();?>
 <?php
@@ -94,24 +94,20 @@
 <!-- header_eof //--> 
 <!-- body //--> 
 <div id="main">
-<!-- left_navigation //-->
-<div id="l_menu">
-<?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-</div>
-<!-- left_navigation_eof //-->
+<?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
 <!-- body_text //-->
-<div id="cgi">
-<div id="body_text">
-  <div class="headerNavigation">
-    <?php echo $breadcrumb->trail(' &raquo; '); ?>
-  </div>
-  <h1 class="pageHeading_long"><?php echo HEADING_TITLE ; ?></h1> 
-       
-        <div> 
-          <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
-            <tr> 
-              <td>
-
+      <div class="yui3-u" id="layout">
+             <div id="current">
+                 <?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?>
+                 <a class="headerNavigation" href="/advanced_search.php"><?php echo
+                 NAVBAR_TITLE1;?></a>
+                 <img src="images/point.gif">
+                <?php echo NAVBAR_TITLE2;?>
+             </div>
+           <?php include('includes/search_include.php');?>
+               <div id="main-content">
+                    <h2><?php echo HEADING_TITLE ; ?></h2> 
+                     <div style="margin-top:10px;"> 
 <?php
   // create column list
   $define_list = array('PRODUCT_LIST_MODEL' => PRODUCT_LIST_MODEL,
@@ -289,23 +285,27 @@
   
   require(DIR_WS_MODULES . FILENAME_PRODUCT_LISTING);
 ?>
-<br>
-<br>
+<div class="botton-continue">
+<?php echo '<a href="' . tep_href_link(FILENAME_ADVANCED_SEARCH,
+  tep_get_all_get_params(array('sort', 'page', 'x', 'y')), 'NONSSL', true, false) .
+    '">' . tep_image_button('button_back.gif',
+  IMAGE_BUTTON_BACK,' onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_back.gif\'" onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_back_hover.gif\'"') . '</a>'; ?>
+</div>
+          </div>
+	</div>
 
-<?php echo '<a href="' . tep_href_link(FILENAME_ADVANCED_SEARCH, tep_get_all_get_params(array('sort', 'page', 'x', 'y')), 'NONSSL', true, false) . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?>
-</td> 
-            </tr> 
-          </table> 
-        </div></div></div>
-      <!-- body_text_eof //--> 
+                     <!-- body_text_eof //--> 
   <!-- body_eof //--> 
   <!-- footer //--> 
-  <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
-  <!-- footer_eof //--> 
-</div> 
+   <!-- footer_eof //--> 
+</div>
+ <?php include('includes/float-box.php');?>
+</div>
+ <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
+
 </body>
 </html>
-<?php
+       <?php
   }
 
   require(DIR_WS_INCLUDES . 'application_bottom.php');

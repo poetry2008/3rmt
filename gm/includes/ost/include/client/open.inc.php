@@ -13,45 +13,47 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
         <p id="warnmessage"><?=$warn?></p>
     <?}?>
 </div>
-<div>必要な情報をご入力ください.</div>
-<form action="open.php" method="POST" enctype="multipart/form-data">
-<table class="open_table" align="left" cellpadding=2 cellspacing=1 width="100%">
+<div class="open_spacing"><?php echo TEXT_OPEN_REQUIRED_INFORMATION; ?></div>
+<form action="open.php" method="POST" enctype="multipart/form-data" name="form_2">
+<table width="100%" cellspacing="0" cellpadding="0" border="0" class="open_spacing">
     <tr>
-        <th width="27%" align="left">お名前</th>
+        <td width="20%" align="left"><?php echo TEXT_OPEN_YOUR_NAME;?></td>
         <td>
             <?if ($thisclient && ($name=$thisclient->getName())) {
                 ?>
-                <input type="hidden" name="name" value="<?=$name?>"><?=$name?>
+                <input id="input_text" type="hidden" name="name" value="<?php echo $name; ?>"><?php echo $name ;?>
             <?}else {?>
-                <input type="text" name="name" size="25" value="<?=$info['name']?>">
+                <input id="input_text" type="text" name="name" value="<?=$info['name']?>">
           <?}?>
-            &nbsp;<font class="error">*&nbsp;<?=$errors['name']?></font>
+            &nbsp;<div class="error">&nbsp;*&nbsp;<?=$errors['name']?></div>
         </td>
     </tr>
     <tr>
-        <th align="left" >メールアドレス</th>
+        <td align="left" ><?php echo TEXT_OPEN_EMAIL_ADDRESS;?></td>
         <td>
             <?if ($thisclient && ($email=$thisclient->getEmail())) {
                 ?>
-                <input type="hidden" name="email" size="25" value="<?=$email?>"><?=$email?>
+                <input id="input_text" type="hidden" name="email" value="<?=$email?>"><?=$email?>
             <?}else {?>             
-                <input type="text" name="email" size="25" value="<?=$info['email']?>">
+                <input id="input_text" type="text" name="email" value="<?=$info['email']?>">
             <?}?>
-            &nbsp;<font class="error">*&nbsp;<?=$errors['email']?></font>
+            &nbsp;<div class="error">&nbsp;*&nbsp;<?=$errors['email']?></div>
         </td>
     </tr>
     <tr>
-        <th align="left">件名</th>
+        <td align="left"><?php echo TEXT_OPEN_SUBJECT;?></td>
         <td>
-            <input type="text" name="subject" size="35" value="<?=isset($info['subject'])?$info['subject']:(isset($_GET['products'])?$_GET['products'].'について':(isset($_GET['pname'])?$_GET['pname'].'の確保期限について':''))?>">
-            &nbsp;<font class="error">*&nbsp;<?=$errors['subject']?></font>
+            <input id="input_text" type="text" name="subject"
+            value="<?=isset($info['subject'])?$info['subject']:(isset($_GET['products'])?$_GET['products'].TEXT_OPEN_PART1:(isset($_GET['pname'])?$_GET['pname'].TEXT_OPEN_PART2:''))?>">
+            &nbsp;<div class="error">&nbsp;*&nbsp;<?=$errors['subject']?></div>
         </td>
     </tr>
     <tr>
-        <th align="left" valign="top">ご質問内容</th>
+        <td align="left" valign="top"><?php echo TEXT_OPEN_YOUR_QUESTION;?></td>
         <td>
-            <textarea name="message" cols="35" rows="8" wrap="soft" style="width:85%"><?=$info['message']?></textarea>
-            <? if($errors['message']) {?> <font class="error">*&nbsp;<?=$errors['message']?></font><br/><?}?>
+            <textarea id="input_text" name="message" cols="35" rows="8" wrap="soft" style="width:85%"><?=$info['message']?></textarea>
+            <? if($errors['message']) {?> <div
+              class="error" >&nbsp;*&nbsp;<?=$errors['message']?></div><?}?>
         </td>
     </tr>
     <?
@@ -59,7 +61,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
       $sql='SELECT priority_id,priority_desc FROM '.TICKET_PRIORITY_TABLE.' WHERE ispublic=1 ORDER BY priority_urgency DESC';
       if(($priorities=db_query($sql)) && db_num_rows($priorities)){ ?>
       <tr>
-        <td>重要度</td>
+        <td><?php echo TEXT_OPEN_SEVERITY;?></td>
         <td>
             <select name="pri">
               <?
@@ -73,17 +75,18 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
     <? }
     }?>
 
-    <?if(($cfg->allowOnlineAttachments() && !$cfg->allowAttachmentsOnlogin())  
-                || ($cfg->allowAttachmentsOnlogin() && ($thisclient && $thisclient->isValid()))){
+    <?if(($cfg->allowOnlineAttachments() && !$cfg->allowAttachmentsOnlogin()) || ($cfg->allowAttachmentsOnlogin() && ($thisclient && $thisclient->isValid()))){
         
         ?>
     <tr>
-        <th valign="top" align="left">添付ファイル</th>
+        <td valign="top" align="left"><?php echo  TEXT_OPEN_ATTACHMENT;?></td>
         <td>
-            <input type="file" name="attachment">
-            <br><font color="#ffffff" size="2">許可されているファイル形式は、拡張子が<?php echo $allow_file_show;?>のいずれかとなるものです。<br>ファイル名に「.(ドット)」を2つ以上含むファイルは添付できません。</font>
+            <input id="input_text" type="file" name="attachment">
+            <br><div class="open_info"><?php echo
+            TEXT_OPEN_DES_PART1.$allow_file_show.TEXT_OPEN_DES_PART2;?><br><?php
+            echo TEXT_OPEN_DES_PART3;?></div>
             <?php if(isset($errors['attachment'])&&$errors['attachment']){ ?>
-            <br><font class="error"><?php echo $errors['attachment']?></font>
+            <div class="error"><?php echo $errors['attachment']?></div>
             <?php } ?>
         </td>
     </tr>
@@ -91,25 +94,42 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
     <?if($cfg && $cfg->enableCaptcha()/* && (!$thisclient ||
                                          !$thisclient->isValid())*/) {
         if($_POST && $errors && !$errors['captcha'])
-            $errors['captcha']='必須項目エラー';
+            $errors['captcha']=TEXT_OPEN_MANDATORY_ERROR;
         ?>
     <tr>
-        <th valign="top" align="left">認証コード</th>
-        <td style="line-height: 21px;">
-        <img src="captcha.php" border="0" align="left">&nbsp;&nbsp;<input type="text" name="captcha" size="7" value="">&nbsp;<i class="captcha_comment">認証画像の内容をご入力ください.</i>
+        <td valign="top" align="left"><?php echo TEXT_OPEN_CODE;?></td>
+        <td><img src="captcha.php" border="0" align="left">
+        <span>&nbsp;&nbsp;<input id="input_text" type="text" name="captcha"
+        value="">&nbsp;<i class="captcha_comment"><?php echo
+        TEXT_OPEN_ENTER_CONTENTS;?></i></span>
         <?php if($errors['captcha']){ ?>
           <br />
-                <font class="error"><?=$errors['captcha']?></font>
+                <div class="error_information" style="margin-top:5px">&nbsp;<?=$errors['captcha']?></div>
         <?php } ?>
         </td>
     </tr>
     <?}?>
     <tr>
         <td></td>
-        <td>
-            <button type="submit" class="button" style="padding:0;background:none;border:none;" value="送信"><img src="includes/languages/japanese/images/buttons/button_send_mail.gif" /></button>
-            <button type="reset"  class="button" style="padding:0;background:none;border:none;" value="リセット"><img src="includes/languages/japanese/images/buttons/open_users01.gif" /></button>
-            <button type="button" class="button" style="padding:0;background:none;border:none;" value="キャンセル" onClick='window.location.href="<?php echo FILENAME_CONTACT_US;?>";'><img src="includes/languages/japanese/images/buttons/open_users02.gif" /></button>
+        <td style="padding-top:35px;">
+           <a <?php echo $void_href;?> onclick="document.form_2.submit();" class="button"
+                 style="padding:0;background:none;border:none;" value="<?php echo
+                 TEXT_OPEN_SEND_EMAIL?>">
+                 <img onmouseout="this.src='includes/languages/japanese/images/buttons/button_send_mail.gif'"
+                 onmouseover="this.src='includes/languages/japanese/images/buttons/button_send_mail_hover.gif'"
+                 src="includes/languages/japanese/images/buttons/button_send_mail.gif"
+                 /></a>
+           <a <?php echo $void_href;?> class="button" value="<?php echo
+           TEXT_OPEN_RESET;?>"style="padding:0;background:none;border:none;"
+                     onclick="document.form_2.reset()">
+                  <img onmouseout="this.src='includes/languages/japanese/images/buttons/open_users01.gif'"  onmouseover="this.src='includes/languages/japanese/images/buttons/open_users01_hover.gif'" src="includes/languages/japanese/images/buttons/open_users01.gif"></a>
+            <a <?php echo $void_href;?> class="button"
+            style="padding:0;background:none;border:none;" value="<?php echo
+            TEXT_OPEN_CANCELED;?>"
+            onClick='window.location.href="<?php echo FILENAME_CONTACT_US;?>";'><img
+            onmouseout="this.src='includes/languages/japanese/images/buttons/open_users02.gif'"
+            onmouseover="this.src='includes/languages/japanese/images/buttons/open_users02_hover.gif'"
+            src="includes/languages/japanese/images/buttons/open_users02.gif" /></a>
       
         </td>
     </tr>

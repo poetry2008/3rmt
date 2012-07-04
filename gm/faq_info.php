@@ -8,7 +8,7 @@ require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_FAQ_INFO);
 require(DIR_WS_ACTIONS.'faq_question.php');
 check_uri('/faq_info\.php/');
 define('FAQ_HTML_REPLACE','</td></tr><tr><td valign="top" style="float:left;"><img
-    src="./images/a.gif" alt="" width="23" height="15"></td><td
+    src="images/design/answer.gif" alt="" width="23" height="15"></td><td
     class="faq_answer_row">');
 ?>
 <?php page_head();?>
@@ -24,35 +24,28 @@ if (isset($body_option)) {
 <?php
 }
 ?>
-<!-- header //--> 
+<!-- header --> 
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
-<!-- header_eof //--> 
+<!-- header_eof --> 
 <!--body -->
 <div id="main">
-
-<!-- left_navigation //-->
-<div id="l_menu">
-<?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
-</div>
-<div class="m_menu">
-<div class="header_Navigation">
-   <?php echo $breadcrumb->trail(' &raquo; '); ?>
-</div>
-<div id="content">
-    <div class="pageHeading"><?php echo TEXT_QUESTION_TITLE;?></div>
+<div id="layout" class="yui3-u">
+<div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
+<?php include('includes/search_include.php');?>
+<div id="main-content">
+    <h2><?php echo TEXT_QUESTION_TITLE;?></h2>
     <div class="comment_faq">
     <?php 
     if(isset($faq_question_id)&&$faq_question_id!=''){
       $faq_question_info = tep_get_faq_question_info($faq_question_id);
     ?>
-      <table class="redtext"><tr>
-        <td style="float:left; padding-left:5px;"><img src="images/design/ask.gif" alt="question"></td>
-        <td style="float:left; width:400px;"><?php echo
+      <table class="redtext" width="100%"><tr>
+        <td><img src="images/design/ask.gif" alt="question"></td>
+        <td width="90%"><?php echo
         $faq_question_info['ask'];?></td>
       </tr></table>
-      <div style=" border-bottom-style:dotted; width:98%; margin-top:10px; color:#444; margin-left:2px;"></div>
-      <table class="faq_answer"><tr>
-      <td valign="top" style="float:left;">
+      <table class="faq_answer" width="100%"><tr>
+      <td valign="top">
        <img src="images/design/answer.gif" alt="ask"></td><td class="faq_answer_row"><span>
        <?php 
         $question_answer =
@@ -69,16 +62,14 @@ if (isset($body_option)) {
     <p class="pageBottom"></p>
 
 
-    <div class="faq_back">
-      <a href="<?php echo HTTP_SERVER.'/'.implode('/',$link_url_arr).'/';?>"><img src="images/design/button/faq_back.gif" alt="<?php echo TEXT_BACK;?>">
+    <div class="botton-continue" style="margin-bottom:40px">
+      <a href="<?php echo HTTP_SERVER.'/'.implode('/',$link_url_arr).'/';?>"><img
+        onmouseout="this.src='images/design/button/faq_back.gif'"  onmouseover="this.src='images/design/button/faq_back_hover.gif'" src="images/design/button/faq_back.gif" alt="<?php echo TEXT_BACK;?>">
       </a>
     </div>
-
-
     <?php //question list ?>
     <?php if($q_row = tep_db_fetch_array($last_faq_question_query)){ ?>
     <h2 class="pageHeading"><?php echo $temp_category_info['title'].TEXT_CATEGORY_TITLE;?></h2>
-    <div  style="border-bottom-style:dotted; width:94%; margin-top:10px; color:#444; margin-left:2px;"></div>
     <div class="comment_faq">
     <table class="faq_question_row"><tr><td>
     <div>
@@ -109,15 +100,16 @@ if (isset($body_option)) {
 
 
 </div>
+
 </div>
-<div id='r_menu'>
-<?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
+<?php include("includes/float-box.php");?>
 </div>
 <div id='f_menu'>
-<?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
-<!-- footer_eof //--> 
+<!-- footer_eof --> 
 </div>
-<!--body_EOF// -->
+<?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
+
+<!--body_EOF -->
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

@@ -7,7 +7,7 @@
     $best_sellers_query = tep_db_query("
       select *
       from (
-        select p.products_id,
+        select distinct p.products_id,
                         p.products_image,
                         p.products_ordered,
                         pd.products_viewed,
@@ -67,7 +67,7 @@
     $best_sellers_query = tep_db_query("
       select *
       from (
-        select  p.products_id,
+        select distinct p.products_id,
                         p.products_image,
                         p.products_ordered,
                         pd.products_viewed,
@@ -99,56 +99,50 @@
   ) {
 ?>
 <!-- best_sellers //-->
-<div class="best_sellers_main">
-<div class="top"></div>
-<div class="best_sellers_title">RMT ランキング</div>
+<div class="yui3-g main-columns">
+<h3><span><?php echo BESTSELLERS_TITLE_TEXT;?></span></h3>
 
 <?php
   $info_box_contents = array();
   $info_box_contents[] = array('text' => BOX_HEADING_BESTSELLERS);
-
-  // new infoBoxHeading($info_box_contents, false, false);
+  $num_rows = tep_db_num_rows($best_sellers_query);
+  $style_class = $num_rows == 1 ? 'yui3-u-one-1 hm-hot' : 'yui3-u-1-'.$num_rows.' hm-hot'; 
   $rows = 0;
-  //$bestsellers_list = '<table border="0" width="100%" cellspacing="0" cellpadding="1">';
   while ($best_sellers = tep_db_fetch_array($best_sellers_query)) {
     $rows++;
-    // $bestsellers_list .= '<tr><td class="infoBoxContents" valign="top">' . tep_row_number_format($rows) . '.</td><td class="infoBoxContents"><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $best_sellers['products_id']) . '">' . $best_sellers['products_name'] . '</a></td></tr>';
 ?>
 
-<table class="best_table">
-  <tr>
-    <td rowspan="3">
-
+<div class="<?php echo $style_class?>">
+<div class="hm-hot-product">
 <a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $best_sellers['products_id']) ; ?>">
 <?php
 if (!empty($best_sellers['products_image'])) {
   if (file_exists(DIR_FS_CATALOG.DIR_WS_IMAGES.'products/'.$best_sellers['products_image'])) {
-    echo tep_image2(DIR_WS_IMAGES.'products/'.$best_sellers['products_image'], $best_sellers['products_name'], 71, 71);
+    echo tep_image_new(DIR_WS_IMAGES.'products/'.$best_sellers['products_image'], $best_sellers['products_name'], 89, 93);
   } else {
-    echo tep_image2(DIR_WS_IMAGES.'new_products_blank_small.gif', $best_sellers['products_name'], 71, 71);
+    echo tep_image2(DIR_WS_IMAGES.'new_products_blank_small.gif', $best_sellers['products_name'], 89, 93);
   }
 } else {
-  echo tep_image2(DIR_WS_IMAGES.'new_products_blank_small.gif', $best_sellers['products_name'], 71, 71);
+  echo tep_image2(DIR_WS_IMAGES.'new_products_blank_small.gif', $best_sellers['products_name'], 89, 93);
 }
 ?>
 </a>
-    </td>
-    <td class="best_table_number"><?php echo $rows.'位';?></td>
-  </tr>
-  <tr>
-    <td>
+</div>
+<br><?php echo $rows.BESTSELLERS_SORT_SYMBOL;?>&nbsp;
 <a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $best_sellers['products_id']) ; ?>"><?php echo $best_sellers['products_name'] ; ?></a>
-    </td>
-  </tr>
-</table>
- 
-  <?php
+
+<?php
+$special_query = tep_db_query("select * from ".TABLE_SPECIALS." where products_id = '".$best_sellers['products_id']."'");
+$special_res = tep_db_fetch_array($special_query);
+?>
+</div>
+<?php
   }
 ?>
-<div class="bottom"></div>
 </div>
 <div class="sep" style="display:none;">&nbsp;</div>
 <!-- best_sellers_eof //-->
 <?php
   }
 ?>
+

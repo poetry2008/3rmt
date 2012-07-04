@@ -14,7 +14,7 @@ define('TEXT_MAIN', 'このページは、オンラインショップのデモ�
 define('TABLE_HEADING_NEW_PRODUCTS', '新着商品-'.STORE_NAME);
 define('TABLE_HEADING_UPCOMING_PRODUCTS', '入荷予定の商品');
 define('TABLE_HEADING_DATE_EXPECTED', '入荷予定日');
-
+define('NAVBAR_TITLE', 'トップ');
 define('HEADING_COLOR_TITLE', 'カラーから選択: ');
 if ( ($category_depth == 'products') || ($_GET['manufacturers_id']) ||  ($_GET['colors'])) {
   define('HEADING_TITLE', '取扱い商品');
@@ -40,4 +40,6 @@ if ( ($category_depth == 'products') || ($_GET['manufacturers_id']) ||  ($_GET['
   define('HEADING_TITLE', 'カテゴリー');
 }
 define('WARN_PRODUCT_STATUS_TEXT', '当商品は、当サイトの都合または運営会社のサービス終了などの理由により現在取り扱いを行っておりません。<br>取り扱いの再開、その他ご意見ご要望などありましたら、お気軽にお問い合わせください。');
-
+define('TEXT_INDEX_NEW_PRODUCT_QUANTITY','残り&nbsp;%s個');
+define('TEXT_INDEX_PWD_NOCHANGE','変更しません');
+define('TEXT_INDEX_PWD_CHANGED','変更します');

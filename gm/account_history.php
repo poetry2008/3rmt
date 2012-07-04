@@ -28,36 +28,30 @@
 <!-- header_eof //--> 
 <!-- body //--> 
 <div id="main">
-<!-- left_navigation //-->
-<div id="l_menu">
-<?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-</div>
-<!-- left_navigation_eof //-->
+<?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
 <!-- body_text //-->
-<div id="content">
-<div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
-<h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1> 
-        
-        <div> 
-          <table class="box_des" border="0" width="95%" cellspacing="0" cellpadding="0"> 
+<div id="layout" class="yui3-u">
+<div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
+<?php include('includes/search_include.php');?>
+<div id="main-content">
+<h2><?php echo HEADING_TITLE ; ?></h2> 
+         <table  border="0" width="100%" cellspacing="0" cellpadding="0" id="hm-account-history"> 
             <tr> 
               <td><?php
   $history_query_raw = "
-        select o.orders_id, 
-                o.date_purchased, 
-                o.delivery_name, 
-                ot.text as order_total, 
-                ot.value as order_total_value, 
-                o.orders_status_name 
-        from " . TABLE_ORDERS . " o 
-          left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id) 
-        where o.customers_id = '" . $customer_id . "' 
-          and ot.class = 'ot_total' 
-         and o.site_id = ".SITE_ID." 
-
-	  and o.customer_is_quited = '0' 
-    order by orders_id DESC
-  ";
+    select o.orders_id, 
+          o.date_purchased, 
+          o.delivery_name, 
+          o.customers_name,
+          ot.text as order_total, 
+          ot.value as order_total_value, 
+          o.orders_status_name 
+    from " . TABLE_ORDERS . " o 
+      left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id) 
+    where o.customers_id = '" . $customer_id . "' 
+      and ot.class = 'ot_total' 
+      and o.site_id = ".SITE_ID." 
+    order by orders_id DESC";
   $history_count_query_raw = "
         select count(o.orders_id) as count
         from " . TABLE_ORDERS . " o 
@@ -77,20 +71,27 @@
 ("select count(*) as count from " . TABLE_ORDERS_PRODUCTS . " where orders_id = '" . $history['orders_id'] . "'");
       $products = tep_db_fetch_array($products_query);
 
-      $order_heading = '<table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2">' . "\n" .
+      $order_heading = '<table border="0" width="100%" cellspacing="0" cellpadding="2">' . "\n" .
                        '  <tr>' . "\n" .
-                       '    <td class="main"><b>' . TEXT_ORDER_NUMBER . '</b> ' . $history['orders_id'] . '</td>' . "\n" .
-                       '    <td class="main" align="right" style="padding-right:15px;"><b>' . TEXT_ORDER_STATUS . '</b> ' . $history['orders_status_name'] . '</td>' . "\n" .
+                       '    <td><b>' . TEXT_ORDER_NUMBER . '</b> ' . $history['orders_id'] . '</td>' . "\n" .
+                       '    <td align="right" style="padding-right:15px;">' .
+                       '<table width="150"><tr><td width="50%"><b>'.
+                       TEXT_ORDER_STATUS.'</b></td><td align="left" width="50%"
+                       > ' .  $history['orders_status_name']
+. ' </td></tr></table>'.'</td>'."\n".
                        '  </tr>' . "\n" .
                        '</table>';
 
-      $order = '<table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2">' . "\n" .
+      $order = '<table  border="0" width="100%" cellspacing="0" cellpadding="2">' . "\n" .
                '  <tr>' . "\n" .
-               '    <td class="main" width="50%" valign="top"><b>' . TEXT_ORDER_DATE . '</b> ' . tep_date_long($history['date_purchased']) . '<br><b>' . TEXT_ORDER_SHIPPED_TO . '</b> ' . tep_output_string_protected($history['delivery_name']) . '</td>' . "\n" .
-               '    <td class="main" width="30%" valign="top"><b>' .
+               '    <td width="50%" valign="top"><b>' . TEXT_ORDER_DATE . '</b> ' .
+               tep_date_long($history['date_purchased']) . '<br><b>' .
+               TEXT_ORDER_SHIPPED_TO . '</b> ' .
+               tep_output_string_protected((isset($history['delivery_name'])&&trim($history['delivery_name'])!='')?$history['delivery_name']:$history['customers_name']) . '</td>' . "\n" .
+               '    <td width="30%" valign="top"><b>' .
                TEXT_ORDER_PRODUCTS . '</b> ' . $products['count'] . '<br><b>' .
                TEXT_ORDER_COST . '</b> ' .  $currencies->format_total($history['order_total_value']) . '</td>' . "\n" .
-               '    <td class="main" width="20%"><a href="' . tep_href_link(FILENAME_ACCOUNT_HISTORY_INFO, 'page=' . $_GET['page'] . '&order_id=' . $history['orders_id'], 'SSL') . '">' . TEXT_VIEW_ORDER . '</a></td>' . "\n" .
+               '    <div style="margin:3px 0 3px 0;"><a href="' . tep_href_link(FILENAME_ACCOUNT_HISTORY_INFO, 'page=' . $_GET['page'] . '&order_id=' . $history['orders_id'], 'SSL') . '">' . TEXT_VIEW_ORDER . '</a></div>' . "\n" .
                '  </tr>' . "\n" .
                '</table>';
 
@@ -100,43 +101,39 @@
       echo '<br>';
     }
   } else {
-    new infoBox(array(array('text' => TEXT_NO_PURCHASES)));
+  new infoBox(array(array('text' => TEXT_NO_PURCHASES)));
   }
 ?> </td> 
             </tr> 
             <tr> 
-              <td><table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2"> 
+              <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                   <?php
   if (tep_db_num_rows($history_query)) {
 ?> 
                   <tr> 
-                    <td class="smallText" valign="top"><?php echo $history_split->display_count($history_numrows, MAX_DISPLAY_ORDER_HISTORY, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_ORDERS); ?></td> 
-                    <td class="smallText" align="right"><?php echo TEXT_RESULT_PAGE; echo $history_split->display_links($history_numrows, MAX_DISPLAY_ORDER_HISTORY, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td> 
+                    <td valign="top"><?php echo $history_split->display_count($history_numrows, MAX_DISPLAY_ORDER_HISTORY, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_ORDERS); ?></td> 
+                    <td align="right"><?php echo TEXT_RESULT_PAGE; echo $history_split->display_links($history_numrows, MAX_DISPLAY_ORDER_HISTORY, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td> 
                   </tr> 
                   <?php
   }
 ?> 
                   <tr> 
-                    <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-                  </tr> 
-                  <tr> 
-                    <td class="smallText"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?></td> 
+                    <td style="padding-top:40px;" colspan="2"><?php echo '<a href="' . tep_href_link(FILENAME_ACCOUNT, '',
+                    'SSL') . '">' . tep_image_button('button_back.gif',
+                    IMAGE_BUTTON_BACK,'onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_back.gif\'" onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_back_hover.gif\'"') . '</a>'; ?></td> 
                   </tr> 
                 </table></td> 
             </tr> 
           </table> 
-        </div></div>
-      <!-- body_text_eof //--> 
-<!-- right_navigation //--> 
-<div id="r_menu">
-<?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-</div>
-<!-- right_navigation_eof //--> 
-  <!-- body_eof //--> 
-  <!-- footer //--> 
-  <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
-  <!-- footer_eof //--> 
-</div> 
+        </div>
+        </div>
+<?php include('includes/float-box.php');?>
+
+          </div>
+ 
+<?php echo DEFAULT_PAGE_TOP_CONTENTS;?>
+ <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
+
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

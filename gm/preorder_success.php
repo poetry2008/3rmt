@@ -1,6 +1,7 @@
 <?php
 /*
   $Id$
+  ファイルコードを確認
 */
 
   require('includes/application_top.php');
@@ -64,21 +65,20 @@
 <body>
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
 <div id="main">
-<div id="l_menu">
-<?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-</div>
-<div id="content">
-<div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; ');?></div>
-<h1 class="pageHeading">
+<?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
+<div id="layout" class="yui3-u">
+<div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> ');?></div>
+<div id="main-content">
+<h2>
 <?php 
   echo PREORDER_SUCCESS_ACTIVE_HEAD_TITLE;
 ?>
-</h1>
-<table class="box_des" border="0" width="95%" cellspacing="0" cellpadding="0">
+</h2>
+<table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="0">
   <tr>
     <td>
       <div id="contents">
-        <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size:12px;">
+        <table border="0" width="100%" cellspacing="0" cellpadding="0">
         <tr>
         <td style="font-size:15px; color:#ff0000;">
           <?php echo PREORDER_ACTIVE_SUCCESS_READ_HEAD.'<br><br>';?> 
@@ -86,15 +86,15 @@
         </tr>
         <tr>
           <td>
-          <table class="preorder_active_info" border="0" cellpadding="0" cellspacing="1" width="100%"> 
+          <table border="0" cellpadding="0" cellspacing="0" width="100%" style="font-size:14px;"> 
           <tr> 
-          <td colspan="2"> 
-          <?php echo PREORDER_SUCCESS_APPOINT_CONTENT;?>
-          <br>
+          <td colspan="2" ><div style="font-size:18px"><b>
+          <?php echo PREORDER_SUCCESS_APPOINT_CONTENT;?></b>
+            </div><br><br>
           </td> 
           </tr> 
           <tr> 
-          <td width="100"> 
+          <td width="20%"> 
           <?php echo PREORDER_SUCCESS_APPOINT_PRODUCT_NAME;?>
           </td>
           <td>
@@ -126,7 +126,7 @@
               </td>
             </tr>
             <tr>
-              <td>
+              <td valign="top">
               <?php echo PREORDER_SUCCESS_APPOINT_COMMENT;?>
               </td>
               <td>
@@ -137,19 +137,21 @@
           </td>
         </tr>
         <tr>
-          <td>
+          <td style="font-size:14px;">
             <?php 
             echo PREORDER_ACTIVE_SUCCESS_READ_INFO.'<br>';
             ?>
           </td>
         </tr>
         <tr>
-          <td><br>
-                <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+          <td>
+                <table border="0" width="100%" cellspacing="0" cellpadding="0" class="botton-continue"> 
                   <tr>
-                    <td class="main" align="right"><?php echo '<a href="' .tep_href_link(FILENAME_DEFAULT). '">' .  tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></td> 
-                    <td align="right" class="main">
-                    </td> 
+                    <td align="right"><?php echo '<a href="'
+                    .tep_href_link(FILENAME_DEFAULT). '">' .
+                    tep_image_button('button_continue.gif',
+                        IMAGE_BUTTON_CONTINUE,'onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_continue.gif\'"  onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_continue_hover.gif\'"') . '</a>'; ?></td> 
+                    
                   </tr> 
                 </table></td> 
         </tr>
@@ -157,13 +159,12 @@
       </div>
     </td>
   </tr>
-</table>
+</table></div>
 </div>
-<div id="r_menu">
-  <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?>
+<?php include('includes/float-box.php');?> 
 </div>
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-</div>
+
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

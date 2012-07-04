@@ -379,23 +379,20 @@ function check_form() {
 <!-- header_eof //--> 
 <!-- body //--> 
 <div id="main">
-<!-- left_navigation //-->
-<div id="l_menu">
-<?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-</div>
-<!-- left_navigation_eof //-->
+<?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
 <!-- body_text //-->
-<div id="content"><?php echo tep_draw_form('checkout_address', tep_href_link(FILENAME_CHECKOUT_PAYMENT_ADDRESS, '', 'SSL'), 'post', 'onSubmit="return check_form();"'); ?><div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
-<h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1>
+<div id="layout" class="yui3-u"><?php echo tep_draw_form('checkout_address', tep_href_link(FILENAME_CHECKOUT_PAYMENT_ADDRESS, '', 'SSL'), 'post', 'onSubmit="return check_form();"'); ?>
+<div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
+<h2><?php echo HEADING_TITLE ; ?></h2>
 <div> 
-          <table border="0" width="95%" cellspacing="0" cellpadding="0"> 
+          <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
             <?php
   if ($process == true) {
 ?> 
             <tr> 
               <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                   <tr> 
-                    <td class="main"><b><?php echo TABLE_HEADING_NEW_PAYMENT_ADDRESS_PROBLEM; ?></b></td> 
+                    <td><b><?php echo TABLE_HEADING_NEW_PAYMENT_ADDRESS_PROBLEM; ?></b></td> 
                   </tr> 
                 </table></td> 
             </tr> 
@@ -405,7 +402,7 @@ function check_form() {
                     <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                         <tr> 
                           <td><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-                          <td class="main" width="100%" valign="top"><?php echo TEXT_NEW_PAYMENT_ADDRESS_PROBLEM; ?></td> 
+                          <td width="100%" valign="top"><?php echo TEXT_NEW_PAYMENT_ADDRESS_PROBLEM; ?></td> 
                           <td><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
                         </tr> 
                       </table></td> 
@@ -423,7 +420,7 @@ function check_form() {
             <tr> 
               <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                   <tr> 
-                    <td class="main"><b><?php echo TABLE_HEADING_PAYMENT_ADDRESS; ?></b></td> 
+                    <td><b><?php echo TABLE_HEADING_PAYMENT_ADDRESS; ?></b></td> 
                   </tr> 
                 </table></td> 
             </tr> 
@@ -433,12 +430,12 @@ function check_form() {
                     <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                         <tr> 
                           <td><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-                          <td class="main" width="50%" valign="top"><?php echo TEXT_SELECTED_PAYMENT_DESTINATION; ?></td> 
+                          <td width="50%" valign="top"><?php echo TEXT_SELECTED_PAYMENT_DESTINATION; ?></td> 
                           <td align="right" width="50%" valign="top"><table border="0" cellspacing="0" cellpadding="2"> 
                               <tr> 
-                                <td class="main" align="center" valign="top"><?php echo '<b>' . TITLE_PAYMENT_ADDRESS . '</b><br>' . tep_image(DIR_WS_IMAGES . 'arrow_south_east.gif'); ?></td> 
+                                <td align="center" valign="top"><?php echo '<b>' . TITLE_PAYMENT_ADDRESS . '</b><br>' . tep_image(DIR_WS_IMAGES . 'arrow_south_east.gif'); ?></td> 
                                 <td><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-                                <td class="main" valign="top"><?php echo tep_address_label($customer_id, $billto, true, ' ', '<br>'); ?></td> 
+                                <td valign="top"><?php echo tep_address_label($customer_id, $billto, true, ' ', '<br>'); ?></td> 
                                 <td><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
                               </tr> 
                             </table></td> 
@@ -460,7 +457,7 @@ function check_form() {
             <tr> 
               <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                   <tr> 
-                    <td class="main"><b><?php echo TABLE_HEADING_ADDRESS_BOOK_ENTRIES; ?></b></td> 
+                    <td><b><?php echo TABLE_HEADING_ADDRESS_BOOK_ENTRIES; ?></b></td> 
                   </tr> 
                 </table></td> 
             </tr> 
@@ -470,8 +467,8 @@ function check_form() {
                     <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                         <tr> 
                           <td><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-                          <td class="main" width="50%" valign="top"><?php echo TEXT_SELECT_OTHER_PAYMENT_DESTINATION; ?></td> 
-                          <td class="main" width="50%" valign="top" align="right"><?php echo '<b>' . TITLE_PLEASE_SELECT . '</b><br>' . tep_image(DIR_WS_IMAGES . 'arrow_east_south.gif'); ?></td> 
+                          <td width="50%" valign="top"><?php echo TEXT_SELECT_OTHER_PAYMENT_DESTINATION; ?></td> 
+                          <td width="50%" valign="top" align="right"><?php echo '<b>' . TITLE_PLEASE_SELECT . '</b><br>' . tep_image(DIR_WS_IMAGES . 'arrow_east_south.gif'); ?></td> 
                           <td><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
                         </tr> 
                         <?php
@@ -494,15 +491,15 @@ function check_form() {
         }
 ?> 
                               <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-                                <td class="main" colspan="2"><b><?php echo tep_output_string_protected(tep_get_fullname($addresses['firstname'],$addresses['lastname'])); ?></b></td> 
-                                <td class="main" align="right"><?php echo tep_draw_radio_field('address', $addresses['address_book_id'], ($addresses['address_book_id'] == $billto)); ?></td> 
+                                <td colspan="2"><b><?php echo tep_output_string_protected(tep_get_fullname($addresses['firstname'],$addresses['lastname'])); ?></b></td> 
+                                <td align="right"><?php echo tep_draw_radio_field('address', $addresses['address_book_id'], ($addresses['address_book_id'] == $billto)); ?></td> 
                                 <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
                               </tr> <tr> 
                                 <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
                                 <td colspan="3"><table border="0" cellspacing="0" cellpadding="2"> 
                                     <tr> 
                                       <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-                                      <td class="main"><?php echo tep_address_format($format_id, $addresses, true, ' ', ', '); ?></td> 
+                                      <td><?php echo tep_address_format($format_id, $addresses, true, ' ', ', '); ?></td> 
                                       <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
                                     </tr> 
                                   </table></td> 
@@ -530,7 +527,7 @@ function check_form() {
             <tr> 
               <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                   <tr> 
-                    <td class="main"><b><?php echo TABLE_HEADING_NEW_PAYMENT_ADDRESS; ?></b></td> 
+                    <td><b><?php echo TABLE_HEADING_NEW_PAYMENT_ADDRESS; ?></b></td> 
                   </tr> 
                 </table></td> 
             </tr> 
@@ -540,7 +537,7 @@ function check_form() {
                     <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                         <tr> 
                           <td><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-                          <td class="main" width="100%" valign="top"><?php echo TEXT_CREATE_NEW_PAYMENT_ADDRESS; ?></td> 
+                          <td width="100%" valign="top"><?php echo TEXT_CREATE_NEW_PAYMENT_ADDRESS; ?></td> 
                           <td><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
                         </tr> 
                         <tr> 
@@ -570,8 +567,8 @@ function check_form() {
                     <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                         <tr> 
                           <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-                          <td class="main"><?php echo '<b>' . TITLE_CONTINUE_CHECKOUT_PROCEDURE . '</b><br>' . TEXT_CONTINUE_CHECKOUT_PROCEDURE; ?></td> 
-                          <td class="main" align="right"><?php echo tep_draw_hidden_field('action', 'submit') . tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
+                          <td><?php echo '<b>' . TITLE_CONTINUE_CHECKOUT_PROCEDURE . '</b><br>' . TEXT_CONTINUE_CHECKOUT_PROCEDURE; ?></td> 
+                          <td align="right"><?php echo tep_draw_hidden_field('action', 'submit') . tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
                           <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
                         </tr> 
                       </table></td> 
@@ -629,11 +626,7 @@ function check_form() {
           </form> 
         </div></div>
       <!-- body_text_eof //--> 
-<!-- right_navigation //--> 
-<div id="r_menu">
-<?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-</div>
-<!-- right_navigation_eof //-->
+<?php //require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
   <!-- body_eof //--> 
   <!-- footer //--> 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 

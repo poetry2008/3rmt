@@ -8,10 +8,11 @@
 
  // if (tep_session_is_registered('customer_id')) include(DIR_WS_BOXES . 'order_history.php');
 
-  include(DIR_WS_BOXES . 'login.php');
-  include(DIR_WS_BOXES . 'banners.php');
+  //include(DIR_WS_INCLUDES . 'header.php');
+  
+ // include(DIR_WS_BOXES . 'banners.php');
   include(DIR_WS_BOXES . 'best_sellers.php');
-  include(DIR_WS_BOXES . 'faq.php');
+ // include(DIR_WS_BOXES . 'faq.php');
 
 /*
   if (isset($_GET['products_id'])) {
@@ -46,6 +47,6 @@
   }
 */
 //include(DIR_WS_BOXES . 'pickup.php');
-  include(DIR_WS_BOXES . 'right_banner.php') ;
+ // include(DIR_WS_BOXES . 'right_banner.php') ;
 
 ?>

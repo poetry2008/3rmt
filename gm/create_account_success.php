@@ -36,43 +36,33 @@
 <!-- header_eof //--> 
 <!-- body //--> 
 <div id="main">
-<!-- left_navigation //-->
-<div id="l_menu">
-<?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-</div>
-<!-- left_navigation_eof //-->
 <!-- body_text //-->
-<div id="content">
-<div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
-<h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1> 
-<div> 
-          <table class="box_des" border="0" width="95%" cellspacing="0" cellpadding="0"> 
+<div id="layout" class="yui3-u">
+<div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
+<div id="main-content"> 
+<h2><?php echo HEADING_TITLE ; ?></h2> 
+          <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="0"> 
         <tr>
-          <td align="right"><?php echo '<a href="' . $origin_href . '">' . tep_image_button('button_continue_02.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></td>
+          <td align="right"><?php echo '<a href="' . $origin_href . '">' .
+          tep_image_button('button_continue_02.gif',
+              IMAGE_BUTTON_CONTINUE,' onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_continue_02.gif\'" onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_continue_02_hover.gif\'"') . '</a>'; ?></td>
         </tr>
             <tr> 
               <td><table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="0">
             <tr>
               <td><?php echo tep_image(DIR_WS_IMAGES . 'table_background_man_on_board.gif', HEADING_TITLE); ?></td>
-              <td valign="top" class="main"><br><?php echo TEXT_ACCOUNT_CREATED; ?></td>
+              <td valign="top"><br><?php echo TEXT_ACCOUNT_CREATED; ?></td>
             </tr>
           </table></td>
         </tr>
         <tr>
-          <td align="right"><br><?php echo '<a href="' . $origin_href . '">' . tep_image_button('button_continue_02.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></td>
+          <td align="right"><br><?php echo '<a href="' . $origin_href . '">' .
+          tep_image_button('button_continue_02.gif', IMAGE_BUTTON_CONTINUE,'onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_continue_02.gif\'" onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_continue_02_hover.gif\'"') . '</a>'; ?></td>
         </tr>
       </table></div></div>
-      <!-- body_text_eof //--> 
-<!-- right_navigation //--> 
-<div id="r_menu">
-<?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-</div>
-<!-- right_navigation_eof //-->
-  <!-- body_eof //-->
-  <!-- footer //--> 
+      <?php  include('includes/float-box.php');?>
+      </div>
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
-  <!-- footer_eof //--> 
-</div> 
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

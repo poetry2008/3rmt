@@ -29,4 +29,5 @@ define('EMAIL_SUBJECT', STORE_NAME . ' への問い合わせ');
 define('ENTRY_NAME', 'お名前:');
 define('ENTRY_EMAIL', 'メールアドレス:');
 define('ENTRY_ENQUIRY', 'ご質問内容:');
+define('TEXT_PROMPT_CONFIRM','お問い合わせへの返事を確認');
 ?>

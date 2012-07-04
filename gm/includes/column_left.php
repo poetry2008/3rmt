@@ -6,7 +6,7 @@
   //require(DIR_WS_BOXES . 'quick_link.php');
 
   if ( (USE_CACHE == 'true') && !SID ) {
-    echo tep_cache_categories_box();
+   echo tep_cache_categories_box();
   } else {
     include(DIR_WS_BOXES . 'categories.php');
   }

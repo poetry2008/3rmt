@@ -19,17 +19,13 @@
 <!-- header_eof //-->
 <!-- body //-->
 <div id="main">
-                <!-- left_navigation //-->
-<div id="l_menu">
-                <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-</div>
-                <!-- left_navigation_eof //-->
 <!-- body_text //-->
-<div id="content">
-<div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
-<h1 class="pageHeading"><?php echo HEADING_TITLE; ?></h1>
- 
-             <table border="0" width="95%" cellspacing="0" cellpadding="0"> 
+<div class="yui3-u" id="layout">
+<div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
+<?php include('includes/search_include.php');?>
+  <div id="main-content">
+  <h2><?php echo HEADING_TITLE; ?></h2>
+             <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
   <?php
   $specials_query_raw = "
   select * 
@@ -71,10 +67,8 @@
               <table border="0" width="100%" cellspacing="0" cellpadding="2">
               <tr>
             <td class="smallText"><?php echo $specials_split->display_count($specials_numrows, MAX_DISPLAY_SPECIAL_PRODUCTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_SPECIALS); ?></td>
+            <td class="smallText" align="right"><?php echo TEXT_RESULT_PAGE; ?> <?php echo $specials_split->display_links($specials_numrows, MAX_DISPLAY_SPECIAL_PRODUCTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
             </tr>
-            <tr>
-          <td class="smallText"><?php echo TEXT_RESULT_PAGE; ?> <?php echo $specials_split->display_links($specials_numrows, MAX_DISPLAY_SPECIAL_PRODUCTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
-        </tr>
                             </table>
                         </td>
                     </tr>
@@ -91,7 +85,12 @@
         $row++;
         echo '<td align="center" width="33%" class="smallText"><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $specials['products_id']) . '">' . tep_image(DIR_WS_IMAGES .  'products/' .$specials['products_image'], $specials['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT,'class="image_border"') . '</a><br><a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $specials['products_id']) . '">' . $specials['products_name'] . '</a><br>';
         
-        echo '<span id="' . $specials['products_id'] . '"><a href="'.tep_href_link(FILENAME_PRODUCT_INFO,'products_id='.$specials['products_id']).'" onClick="sendData(\'' . tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('action')) . 'action=buy_now&products_id=' . $specials['products_id']) . '\',\'' . displaychange . '\',\'' . $specials['products_id'] . '\'); return false;"><img src="images/design/button/button_order.gif" border="0"></a></span><br>';
+        echo '<span id="' . $specials['products_id'] . '"><a
+          href="'.tep_href_link(FILENAME_PRODUCT_INFO,'products_id='.$specials['products_id']).'"
+          onClick="sendData(\'' . tep_href_link(basename($PHP_SELF),
+          tep_get_all_get_params(array('action')) . 'action=buy_now&products_id=' .
+            $specials['products_id']) . '\',\'' . displaychange . '\',\'' .
+            $specials['products_id'] . '\'); return false;">'.TEXT_BUY_ORDERS_LINK.'</a></span><br>';
         
         echo '<s>' .
           $currencies->display_price(tep_get_price($specials['products_price'], $specials['products_price_offset'], $specials['products_small_sum'], $specials['products_bflag']), tep_get_tax_rate($specials['products_tax_class_id'])) . '</s><br><span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($specials['products_price'], $specials['products_price_offset'], $specials['products_small_sum']), tep_get_tax_rate($specials['products_tax_class_id'])) . '</span></td>' . "\n";
@@ -119,10 +118,8 @@
                             <table border="0" width="100%" cellspacing="0" cellpadding="2">
                                 <tr>
                                     <td class="smallText"><?php echo $specials_split->display_count($specials_numrows, MAX_DISPLAY_SPECIAL_PRODUCTS, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_SPECIALS); ?></td>
+                                    <td class="smallText" align="right"><?php echo TEXT_RESULT_PAGE; ?> <?php echo $specials_split->display_links($specials_numrows, MAX_DISPLAY_SPECIAL_PRODUCTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
                                     </tr>
-                                    <tr>
-                                    <td class="smallText"><?php echo TEXT_RESULT_PAGE; ?> <?php echo $specials_split->display_links($specials_numrows, MAX_DISPLAY_SPECIAL_PRODUCTS, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
-                                </tr>
                             </table>
                         </td>
                     </tr>
@@ -131,17 +128,11 @@
 ?>
                 </table>
                 </div>
-<!-- body_text_eof //-->
-<!-- right_navigation //-->
-<div id="r_menu">
-<?php require(DIR_WS_INCLUDES . 'column_right.php'); ?>
-</div>
-<!-- right_navigation_eof //-->
-<!-- body_eof //-->
-<!-- footer //-->
+                               </div>
+ <?php include('includes/float-box.php');?>
+
+                                </div>
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-<!-- footer_eof //-->
-</div>
 
 <div id="dis_clist"></div>
 

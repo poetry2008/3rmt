@@ -1,6 +1,7 @@
 <?php
 /*
   $Id$
+  ファイルコードを確認
 */
 
   require('includes/application_top.php');
@@ -98,6 +99,12 @@ function triggerHide(radio)
       
       $(radio).parent().parent().removeClass(); 
       $(radio).parent().parent().addClass("box_content_title box_content_title_selected"); 
+      var headID = document.getElementsByTagName("head")[0];
+      var newCss = document.createElement('link');
+      newCss.type = 'text/css';
+      newCss.rel = "stylesheet";
+      newCss.href = "css/gm.css";
+      headID.appendChild(newCss);
  }
 }
 $(document).ready(function(){
@@ -123,35 +130,34 @@ $(document).ready(function(){
 <!-- header_eof //-->
 <!-- body //-->
 <div id="main">
-    <div id="l_menu">
-      <!-- left_navigation //-->
-      <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-      <!-- left_navigation_eof //-->
-    </div>
+      <?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
     <!-- body_text //-->
-    <div id="content">
+    <div id="layout" class="yui3-u">
+<div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> ');?></div>
+
 <?php
   if ($valid_product == false) {
 ?>
-      <p class="main">
+      <p>
         <?php echo HEADING_TITLE_ERROR; ?><br><?php echo ERROR_INVALID_PRODUCT; ?>
       </p>
 <?php
   } else {
 ?>
-      <h1 class="pageHeading"><?php echo $po_game_c . '&nbsp;' . $product_info['products_name']; ?>を予約する</h1>
+	<div id="main-content">
+      <h2><?php echo $po_game_c . '&nbsp;' .  $product_info['products_name'].TEXT_PRE_PAY_BOOK; ?></h2>
             <div class="comment_preoder">
       <p>
-        <?php echo STORE_NAME;?>では、<?php echo $po_game_c; ?>の予約サービスを行っております。<br> ご希望する数量が弊社在庫にある場合は「
-        <?php 
+        <?php echo STORE_NAME.TEXT_PRE_PAY_IN;?><?php echo
+        $po_game_c.TEXT_PRE_PAY_RESERVATION; ?><br> <?php echo TEXT_PRE_PAY_HOP1;?>        <?php 
         if ($product_info['products_status'] == 0 || $product_info['products_status'] == 3)  {
           echo $product_info['products_name']; 
         } else {
           echo '<a href="' .  tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .  $product_info['products_id']) . '">' .  $product_info['products_name'].'</a>';
         }
         ?>
-        」をクリックしてお手続きください。
-      </p>
+        <?php echo TEXT_PRE_PAY_HOP2;?>
+        </p>
 <?php
     $error = false;
   
@@ -347,13 +353,12 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
       <?php echo tep_draw_form('preorder_product', tep_href_link(FILENAME_PREORDER_PAYMENT, 'action=process')) .  tep_draw_hidden_field('products_id', $product_info['products_id']).tep_draw_hidden_field('products_name', $product_info['products_name']); ?>
 
       <p>
-        弊社在庫にお客様がご希望する数量がない場合は、下記の必要事項をご入力の上お申し込みください。<br>
-        予約手続きが完了いたしますと、入荷次第、お客様へ優先的にご案内いたします。
+     <?php echo TEXT_PRE_PAY_PROMPT;?>   
       </p>
-      <p class="red"><b>ご予約・お見積りは無料ですので、お気軽にお問い合わせください。</b></p>
+      <p class="red"><h3><?php echo TEXT_PRE_PAY_PROMPT1;?></h3></p>
 <?php
       if($error == true) {
-        echo '<span class="errorText"><b>入力した内容に誤りがございます。正しく入力してください。</span></b><br><br>';
+        echo '<span class="errorText"><b>'.TEXT_PRE_PAY_INPUT_ERROR.'</span></b><br><br>';
       }
 ?>
     <?php
@@ -371,8 +376,8 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
       }
     ?>
      
-    <div class="formAreaTitle"><?php echo FORM_FIELD_PREORDER_PAYMENT; ?></div>
-    <div class="checkout_payment_info">  
+    <div id="hm-payment"><?php echo FORM_FIELD_PREORDER_PAYMENT; ?></div>
+    <div>  
     <?php
     if (sizeof($selection) > 1) { 
       ?>
@@ -395,15 +400,15 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
           }
         ?>
         <div>
-          <div class="box_content_title <?php if ($_POST['pre_payment'] == $singleSelection['id']) {echo 'box_content_title_selected';};?>"> 
-            <div class="frame_w70"><b><?php echo $singleSelection['module'];?></b></div> 
-            <div class="float_right">
+          <div class="box_content_title   <?php if ($_POST['pre_payment'] == $singleSelection['id']) {echo 'box_content_title_selected';};?>"> 
+            <div class="hm-payment-left"><b><?php echo $singleSelection['module'];?></b></div> 
+            <div class="hm-payment-right">
             <?php echo tep_draw_radio_field('pre_payment', $singleSelection['id'], $_POST['pre_payment'] == $singleSelection['id']);?> 
             </div>
           </div>
-          <div>
-            <p class="cp_description"><?php echo $singleSelection['description'];?></p>
-            <div class="cp_content">
+          <div class="box_content_text">
+            <p><?php echo $singleSelection['description'];?></p>
+            <div>
               <div style="display:none;" class="rowHide rowHide_<?php echo $singleSelection['id'];?>">
               <?php 
                 echo $singleSelection['fields_description']; 
@@ -413,7 +418,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
                   <?php if ($field['title']) {?>
                   <div class="frame_title"><?php echo $field['title'];?></div> 
                   <?php }?>
-                  <div class="float_left"><?php echo $field['field']?><small><font color="#AEOE30"><?php echo $field['message'];?></font></small></div> 
+                  <div class="float_left"><?php echo $field['field']?><font  color="#AEOE30"><?php echo $field['message'];?></font></div> 
                 </div>
               <?php
                 }
@@ -429,17 +434,19 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
       <?php }?>
        </div> 
       <br>
-      <div class="formAreaTitle"><?php echo $product_info['products_name'].PREORDER_EXPECT_CTITLE; ?></div>
-      <table width="100%" cellpadding="2" cellspacing="0" border="0" class="formArea">
-        <tr><td class="main"><?php echo tep_draw_textarea_field('yourmessage', 'soft', 40, 8);?></td></tr>
-      </table>
-      <br>
-      <table border="0" width="100%" cellspacing="0" cellpadding="0">
+      <h3><?php echo $product_info['products_name'].PREORDER_EXPECT_CTITLE; ?></h3>
+      <div>
+	  <?php echo tep_draw_textarea_field('yourmessage', 'soft', 40, 8, '',' style="width:100%;" ' );?>
+	  </div>
+      <table border="0" width="100%" cellspacing="0" cellpadding="0" class="botton-continue">
         <tr>
-          <td class="main">
-           <?php echo '<a href="javascript:void(0);" onclick="document.forms.form1.submit(0);">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?>
+          <td>
+           <?php echo '<a href="javascript:void(0);"
+           onclick="document.forms.form1.submit(0);">' .
+           tep_image_button('button_back.gif',
+               IMAGE_BUTTON_BACK,'onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_back.gif\'"   onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_back_hover.gif\'"') . '</a>'; ?>
           </td>
-          <td align="right" class="main">
+          <td align="right">
             <?php
               if (!tep_session_is_registered('customer_id')) {
                 echo tep_draw_hidden_field('lastname', $_POST['lastname']); 
@@ -450,7 +457,8 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
               echo tep_draw_hidden_field('predate', $_POST['predate']); 
               echo tep_draw_hidden_field('preorder_subtotal', $_POST['preorder_subtotal']); 
             ?>
-            <?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?>
+            <?php echo tep_image_submit('button_continue.gif',
+                IMAGE_BUTTON_CONTINUE,'onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_continue.gif\'" onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_continue_hover.gif\'"'); ?>
           </td>
         </tr>
       </table>
@@ -471,22 +479,15 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
   }
 ?>
    
-        <p class="pageBottom"></p>
+    </div>
     </div>      
     <!-- body_text_eof //-->
 	</div>
-    <div id="r_menu">
-      <!-- right_navigation //-->
-      <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?>
-      <!-- right_navigation_eof //-->
-    </div>
-   
-<!-- body_eof //-->
-<!-- footer //-->
-<?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-<!-- footer_eof //-->
-</div> 
+      <?php include('includes/float-box.php');?>
+        </div> 
 </div>
+<?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
+
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

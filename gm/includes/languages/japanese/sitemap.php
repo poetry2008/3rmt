@@ -23,4 +23,7 @@ define('PAGE_PASSWORD_FORGOTTEN', 'パスワード再発行手続き');
 define('PAGE_SEND_MAIL', 'メール受信テスト');
 define('PAGE_EMAIL_TROUBLE', 'フリーメールでメールが受け取れない方へ');
 define('PAGE_BROWSER_IE6X', 'Internet Explorer6の設定について');
+define('PAGE_REORDER_LINK', '再配達フォーム');
+define('PAGE_LINK_TEXT', '相互リンク');
+define('PAGE_FAQ_LINK', 'よくある質問');
 ?>

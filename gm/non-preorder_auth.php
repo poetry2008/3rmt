@@ -100,20 +100,19 @@
 <body>
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
 <div id="main">
-<div id="l_menu">
-<?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-</div>
-<div id="content">
-<div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
-<h1 class="pageHeading">
+<?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
+<div id="layout" class="yui3-u">
+<div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
+<div id="main-content">
+<h2>
 <?php 
   echo PREORDER_SUCCESS_UNACTIVE_HEAD_TITLE;
 ?>
-</h1>
-<table class="box_des" border="0" width="95%" cellspacing="0" cellpadding="0">
+</h2>
+<table align="center" border="0" width="100%" cellspacing="0" cellpadding="0">
   <tr>
     <td>
-      <div id="contents">
+     
       <?php
       if ($error == true) {
         if (isset($error_msg)) {
@@ -132,12 +131,12 @@
       echo tep_draw_form('form', tep_href_link('non-preorder_auth.php')); 
       echo tep_draw_hidden_field('action', 'send'); 
       ?>
-      <table border="0" width="95%" cellspacing="0" cellpadding="0" class="box_des">
+      <table border="0" width="100%" cellspacing="0" cellpadding="0" class="box_des">
         <tr>
           <td>
-            <table class="box_des">
+            <table class="box_des" width="100%">
               <tr>
-                <td colspan="3"><img src="images/design/mail_top.gif" alt=""></td> 
+                <td colspan="3" align="center"><img src="images/design/mail_top.gif" alt=""></td> 
               </tr>
               <tr>
                 <td colspan="3" class="information_color">
@@ -150,12 +149,13 @@
                 </td>
               </tr>
               <tr>
-                <td width="100"><?php echo INPUT_PREORDER_SEND_MAIL;?></td> 
-                <td width="285">
-                <?php echo tep_draw_input_field('pemail', (isset($_POST['pemail'])?$_POST['pemail']:$pe_email),'size="37"');?> 
+                <td width="20%"><?php echo INPUT_PREORDER_SEND_MAIL;?></td> 
+                <td width="70%">
+                <?php echo tep_draw_input_field('pemail', (isset($_POST['pemail'])?$_POST['pemail']:$pe_email),' style=" width:80%;" ');?> 
                 </td>
-                <td>
-                <?php echo tep_image_submit('button_send_mail.gif', 'mail');?> 
+                <td align="right" width="10%">
+                <?php echo tep_image_submit('button_send_mail.gif',
+                    'mail','onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_send_mail.gif\'"   onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_send_mail_hover.gif\'"');?> 
                 </td>
               </tr>
               <tr>
@@ -167,7 +167,7 @@
           </td>
         </tr>
         <tr>
-          <td>
+          <td align="center">
           <img src="images/design/mail_bottom.gif" alt=""> 
           </td>
         </tr>
@@ -178,16 +178,16 @@
         </tr>
       </table>
       </form> 
-      </div>
     </td>
   </tr>
 </table>
 </div>
-<div id="r_menu">
-  <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?>
 </div>
+<?php include('includes/float-box.php');?>
+</div>
+  <?php //require(DIR_WS_INCLUDES . 'column_right.php'); ?>
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-</div>
+
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

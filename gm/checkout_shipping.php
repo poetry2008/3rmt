@@ -1,6 +1,7 @@
 <?php
 /*
   $Id$
+  ファイルコードを確認
 */
 
   require('includes/application_top.php');
@@ -117,7 +118,7 @@
   
   if($torihikihouhou == '') {
     $error = true;
-    $torihikihouhou_error = TEXT_ERROR_TORIHIKIHOUHOU;
+    $torihikihouhou_error = TEXT_ERROR_OPTION;
   }
   
   if($date == '') {
@@ -222,20 +223,15 @@ function rowOutEffect(object) {
 <!-- header_eof //--> 
 <!-- body //--> 
 <div id="main">
-<!-- left_navigation //-->
-<div id="l_menu">
-<?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-</div>
-<!-- left_navigation_eof //-->
+<?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
 <!-- body_text //-->
-<div id="content">
+<div id="layout" class="yui3-u">
+<div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
+<div id="main-content">
 <?php echo tep_draw_form('order', tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL')) . tep_draw_hidden_field('action', 'process'); ?> 
-<div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
-<h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1>
-<table class="box_des" border="0" width="95%" cellspacing="0" cellpadding="0"> 
-<tr> 
-  <td>
-    <table border="0" width="100%" cellspacing="0" cellpadding="0" class="checkout_s_link"> 
+
+<h2><?php echo HEADING_TITLE ; ?></h2>
+<table border="0" width="100%" cellspacing="0" cellpadding="0" class="checkout_s_link"> 
       <tr> 
         <td width="20%">
           <table border="0" width="100%" cellspacing="0" cellpadding="0">
@@ -253,8 +249,24 @@ function rowOutEffect(object) {
               <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td>
             </tr>
           </table></td> 
-        <td width="20%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
-        <td width="20%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
+        <td width="20%">
+       <table border="0" width="100%" cellspacing="0" cellpadding="0">
+            <tr>
+              <td width="50%">
+      <?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?>
+              </td>
+            </tr>
+          </table> 
+      </td> 
+        <td width="20%">
+       <table border="0" width="100%" cellspacing="0" cellpadding="0">
+            <tr>
+              <td width="50%">
+        <?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?>
+              </td>
+            </tr>
+          </table> 
+        </td> 
         <td width="20%"><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
             <tr> 
               <td width="50%"><?php echo tep_draw_separator('pixel_silver.gif', '100%', '1'); ?></td> 
@@ -262,7 +274,7 @@ function rowOutEffect(object) {
             </tr> 
           </table></td> 
       </tr> 
-      <tr class="box_des"> 
+      <tr> 
         <td align="center" nowrap="nowrap" width="20%" class="checkoutBarFrom"><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL') . '" class="checkoutBarFrom">' . CHECKOUT_BAR_PRODUCTS . '</a>'; ?></td>
         <td align="center" nowrap="nowrap" width="20%" class="checkoutBarCurrent"><?php echo CHECKOUT_BAR_DELIVERY; ?></td> 
         <td align="center" nowrap="nowrap" width="20%" class="checkoutBarTo"><?php echo CHECKOUT_BAR_PAYMENT; ?></td> 
@@ -270,48 +282,31 @@ function rowOutEffect(object) {
         <td align="center" nowrap="nowrap" width="20%" class="checkoutBarTo"><?php echo CHECKOUT_BAR_FINISHED; ?></td> 
       </tr> 
     </table>
-  </td> 
-</tr> 
-<tr> 
-  <td>
-    <table border="0" width="100%" cellspacing="0" cellpadding="2" class="c_pay_info"> 
-      <tr>
-        <td class="main"><?php echo '<b>' . TITLE_CONTINUE_CHECKOUT_PROCEDURE . '</b><div style="margin-top:5px;">' . TEXT_CONTINUE_CHECKOUT_PROCEDURE; ?></div></td> 
-        <td class="main" align="right"><?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
-      </tr> 
-    </table>
-  </td> 
-</tr>
-          <tr> 
-            <td>
-            <table><tr><td class="main"><b><?php echo TABLE_HEADING_SHIPPING_ADDRESS; ?></b></td></tr></table>
-            <table class="formArea" border="0" width="100%" cellspacing="1"> 
-                <tr> 
-                  <td>
-          
-<table width="100%" border="0" cellspacing="0" cellpadding="2" class="box_des">
-  <tr>
-    <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-  <td class="main"><?php echo TEXT_TORIHIKIHOUHOU; ?></td>
-    <td class="main"><?php echo tep_get_torihiki_select_by_products($product_ids);//tep_draw_pull_down_menu('torihikihouhou', $torihiki_list, $torihikihouhou); ?></td>
-  </tr>
-<?php
+	<div id="hm-checkout-warp">
+  <div class="checkout-title"><p><?php echo '<b>' .
+  TITLE_CONTINUE_CHECKOUT_PROCEDURE . '</b></p><p>'. TEXT_CONTINUE_CHECKOUT_PROCEDURE; ?></p></div>
+  <div class="checkout-bottom"><?php echo
+  tep_image_submit('button_continue_02.gif',IMAGE_BUTTON_CONTINUE,' onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_continue_02.gif\'" onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_continue_02_hover.gif\'"'); ?></div>  
+  </div>
+  <div class="checkout-conent">   
+      <h3><b><?php echo TABLE_HEADING_SHIPPING_ADDRESS; ?></b></h3>
+     <!--start-->
+	 <table width="100%">
+	 <tr>
+	 <td width="20%"><?php echo TEXT_OPTION; ?></td>
+     <td><?php echo tep_get_torihiki_select_by_products($product_ids);//tep_draw_pull_down_menu('torihikihouhou', $torihiki_list, $torihikihouhou); ?>  <?php
 if (!isset($torihikihouhou_error)) $torihikihouhou_error=NULL;
 
   if($torihikihouhou_error != '') {
-?>
-  <tr>
-    <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-  <td class="main">&nbsp;</td>
-    <td class="main"><?php echo $torihikihouhou_error; ?></td>
-  </tr>
-<?php
+?><p><?php echo $torihikihouhou_error; ?></p>
+  <?php
   }
 ?>
-  <tr>
-    <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-  <td class="main" width="30%"><?php echo TEXT_TORIHIKIKIBOUBI; ?></td>
-    <td class="main" width="70%">
+</td>
+</tr>
+<tr>
+<td><?php echo TEXT_EXPECT_TRADE_DATE; ?></td>
+<td>
 <?php
     $today = getdate();
       $m_num = $today['mon'];
@@ -322,101 +317,91 @@ if (!isset($torihikihouhou_error)) $torihikihouhou_error=NULL;
     $mimutes = date('i');
 ?>
   <select name="date" onChange="selectDate('<?php echo $hours; ?>', '<?php echo $mimutes; ?>')">
-    <option value="">希望日を選択してください</option>
+  <option value=''><?php echo TEXT_DATE_OPTIONS;?></option>
     <?php
           $oarr = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
-          $newarr = array('月曜日', '火曜日', '水曜日', '木曜日', '金曜日', '土曜日', '日曜日');
+          $newarr = array(TEXT_DATE_MONDAY, TEXT_DATE_TUESDAY, TEXT_DATE_WEDNESDAY, TEXT_DATE_THURSDAY, TEXT_DATE_FIRDAY, TEXT_DATE_SATURDAY, TEXT_DATE_SUNDAY);
     for($i=0; $i<7; $i++) {
       //echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$i,$year)).'">'.strftime("%Y年%m月%d日（%a）", mktime(0,0,0,$m_num,$d_num+$i,$year)).'</option>' . "\n";
-      echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$i,$year)).'">'.str_replace($oarr, $newarr, date("Y年m月d日（l）", mktime(0,0,0,$m_num,$d_num+$i,$year))).'</option>' . "\n";
+      echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$i,$year)).'">'.str_replace($oarr, $newarr, date("Y".TEXT_DATE_YEAR."m".TEXT_DATE_MON."d".TEXT_DATE_DAY."（l）", mktime(0,0,0,$m_num,$d_num+$i,$year))).'</option>' . "\n";
     }
     ?>
   </select>
-  </td>
-  </tr>
-<?php
+  <?php
 if (!isset($date_error)) $date_error=NULL;
   if($date_error != '') {
 ?>
-  <tr>
-    <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-  <td class="main">&nbsp;</td>
-    <td class="main"><?php echo $date_error; ?></td>
-  </tr>
-<?php
+<font color="red"><?php echo $date_error; ?></font>
+    <?php
   }
 ?>
-  <tr>
-    <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-  <td class="main"><?php echo TEXT_TORIHIKIKIBOUJIKAN; ?></td>
-    <td class="main">
-  <select name="hour" onChange="selectHour('<?php echo $hours; ?>', '<?php echo $mimutes; ?>')">
-    <option value="">--</option>
-  </select>
-  &nbsp;時&nbsp;
-  <select name="min">
-    <option value="">--</option>
-  </select>
-  &nbsp;分&nbsp;
-  <?php echo TEXT_CHECK_24JI; ?>
+   
   </td>
-  </tr>
+	 </tr>
+	 <tr>
+  <div>
+	 <td><?php echo TEXT_EXPECT_TRADE_TIME; ?></td>
+<td> 
+  <select name="hour" onChange="selectHour('<?php echo $hours; ?>', '<?php echo $mimutes; ?>')">
+   <?php
+         echo "<option value=''>--</option>";
+     ?>  
+       </select>   &nbsp;<?php echo TEXT_DATE_HOUR;?>&nbsp;
+  <select name="min">
+     <?php
+         echo "<option value=''>--</option>";
+     ?>  
+
+
+  
+  </select>
+  &nbsp;<?php echo TEXT_DATE_MIN;?>&nbsp;
+  <?php echo TEXT_CHECK_24JI; ?>
 <?php
 if (!isset($jikan_error)) $jikan_error=NULL;
   if($jikan_error != '') {
 ?>
-  <tr>
-    <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-  <td class="main">&nbsp;</td>
-    <td class="main"><?php echo $jikan_error; ?></td>
-  </tr>
-<?php
+ 
+  <font color="red"><?php echo $jikan_error; ?></font>
+ <?php
   }
 ?>
+</td>
+</tr>
 </table>
-        </td> 
-      </tr> 
-    </table>
-  </td> 
-</tr> 
-<tr> 
-  <td>
-    <?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?>
+<!--end-->
+</div>
+<div class="checkout-conent">  
+
+<?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?>
     <p class="smalltext">
-      「指定した時間より早くできるなら早く来てほしい」をご指定いただきましたお客様へ<br>
-      ご入金確認後、最短にて目的地へお届けにまいります。<br>
-      お客様がいらっしゃらない場合は、ご指定いただきました日時へ変更させていただきます。
+      <?php echo TEXT_PROMPT_COMMENT;?> 
     </p>
     <?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?>
-  </td> 
-</tr>
-<tr> 
-  <td>
-    <table border="0" width="100%" cellspacing="0" cellpadding="2" class="c_pay_info"> 
-      <tr> 
-        <td class="main"><?php echo '<b>' . TITLE_CONTINUE_CHECKOUT_PROCEDURE . '</b><div style="margin-top:5px;">' . TEXT_CONTINUE_CHECKOUT_PROCEDURE; ?></div></td> 
-        <td class="main" align="right"><?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
-      </tr> 
-    </table>
-  </td> 
-</tr> 
-<tr> 
-  <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-</tr> 
-</table>      
+  </div>
+  <div id="hm-checkout-warp">
+  <div class="checkout-title">
+     <p><?php echo '<b>' . TITLE_CONTINUE_CHECKOUT_PROCEDURE . '</b></p>'. TEXT_CONTINUE_CHECKOUT_PROCEDURE; ?></p>
+  </div>
+  <div class="checkout-bottom"><?php echo
+  tep_image_submit('button_continue_02.gif',IMAGE_BUTTON_CONTINUE,' onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_continue_02.gif\'" onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_continue_02_hover.gif\'"'); ?></div> 
+  </div> 
+     
 </form>
 </div>
-<!-- body_text_eof //--> 
-<!-- right_navigation //--> 
-<div id="r_menu">
-<?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
+
+
+</div><!-- body_text_eof //-->
+<?php include('includes/float-box.php');?>
+
 </div>
-<!-- right_navigation_eof //-->
+
+<?php //require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
   <!-- body_eof //--> 
   <!-- footer //--> 
-  <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
-  <!-- footer_eof //--> 
-</div> 
+    <!-- footer_eof //--> 
+<?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
+
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

@@ -14,6 +14,12 @@ function triggerHide(radio)
       $(radio).parent().parent().removeClass();
       $(radio).parent().parent().addClass('box_content_title box_content_title_selected');
  }
+ var headID = document.getElementsByTagName("head")[0];
+ var newCss = document.createElement('link');
+ newCss.type = 'text/css';
+ newCss.rel = "stylesheet";
+ newCss.href = "css/gm.css";
+ headID.appendChild(newCss);
 }
 $(document).ready(function(){
     if($("input[name=payment]").length == 1){

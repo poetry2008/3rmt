@@ -9,3 +9,5 @@ window.onload = function() { //Open blank window
     }
   }
 };
+
+  
