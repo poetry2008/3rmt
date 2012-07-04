@@ -221,7 +221,7 @@ function showimage($1) {
                             <td class="main"><?php include(DIR_WS_BOXES.'manufacturer_info.php') ; ?></td>
                           </tr>
                           <tr class="infoBoxContents">
-                          <td class="main p_i_b_title"><?php ehco TEXT_PRODUCTS_PRICE;?></td>
+                          <td class="main p_i_b_title"><?php echo TEXT_PRODUCTS_PRICE;?></td>
                             <td class="main">
                                 <?php
                                   # 追加スタート ---------------------------------------
