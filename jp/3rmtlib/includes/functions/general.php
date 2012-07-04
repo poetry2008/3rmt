@@ -5178,7 +5178,11 @@ global $order;
 <?php  
      if(isset($_SESSION['payment_error'])){
 	 ?>
-     <div class="box_waring">
+    <?php if (NEW_STYLE_WEB === true) {?>
+    <div class="box_new_waring">
+    <?php } else {?>
+    <div class="box_waring">
+    <?php }?>
      <?php
      if(is_array($_SESSION['payment_error'])){
            foreach($_SESSION['payment_error'] as $key=>$value){
@@ -5195,7 +5199,10 @@ global $order;
          }
          unset($_SESSION['payment_error']);
      ?>
-     </div><br>
+     </div>
+     <?php if (NEW_STYLE_WEB !== true) {?>
+     <br>
+     <?php }?>
      <?php
 	 }
     foreach ($selection as $key=>$singleSelection){
