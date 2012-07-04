@@ -363,19 +363,13 @@ function change_num(ob,targ, quan,a_quan, origin_qty, origin_small)
               <table border="0" width="100%" cellspacing="0" cellpadding="2" class="infoBoxNotice_01">
               	<tr class="infoBoxNoticeContents">
                 	<td colspan="2" class="text">
-【重要】<br>
-小計金額が赤色の場合は「買取」となり、表示された金額をお客様へお支払いいたします。<br>
-買取金額が200円未満の場合は手数料の関係上、支払方法にて銀行振込を選択することができません。<br>
-<br>
-選択できる支払方法は以下となります。<br>
-A:来店による支払い<br>
-B:ポイントの加算（<?php echo STORE_NAME;?>会員でなければ表示されません）<br>
+                        <?php echo TEXT_SHOPPING_CART_READ_INFO;?>
 </td>
                 </tr>
                 <tr class="infoBoxNoticeContents">
                   <td width="33" height="35"><img src="default_images/icons/hinto.jpg" alt="img"></td>
                   <td align="left"
-                  valign="middle">200円未満になる場合は商品名「ウェブマネーの販売」をカートに入れてみてはどうでしょう。</td>
+                  valign="middle"><?php echo TEXT_SHOPPING_CART_READ_NOTICE_MONEY;?></td>
                 </tr>
               </table>
             </td>
@@ -421,7 +415,7 @@ B:ポイントの加算（<?php echo STORE_NAME;?>会員でなければ表示さ
                   } else {
                     $limit_error_str .= $currencies->format($limit_min_error_arr[0]);
                   }
-                  echo sprintf("%s未満の注文はできません。合計金額を%s以上にしてから再度お申し込みください。",$limit_error_str,$limit_error_str); 
+                  echo sprintf(TEXT_SHOPPING_CART_NOTICE_TEXT,$limit_error_str,$limit_error_str); 
                   ?>
                   </td>
                 </tr>
@@ -506,7 +500,7 @@ if (!empty($_SESSION['history_url'])) {
       }
   if($h2_show_flag){
 ?>
-  <h2>こちらの商品もオススメ！！</h2>
+  <h2><?php echo TEXT_SHOPPING_CART_PICKUP_PRODUCTS;?></h2>
 <?php } ?>
   <div style="text-align:center;padding:10px 0;">
 <?php
