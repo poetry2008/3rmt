@@ -411,7 +411,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
                                 <a style="display:block;" href="javascript:void(0)" onClick="change_num('quantity','down', 1,<?php echo $p_a_quan;?>);return false;"><img src="images/ico/ndown.gif" alt="-"></a>
                               </div>
                             </td>
-                            <td class="main">&nbsp;<?php ehco TEXT_UNIT;?>&nbsp;</td>
+                            <td class="main">&nbsp;<?php echo TEXT_UNIT;?>&nbsp;</td>
                           </tr>
                           </table></td></tr>
                           <tr>

@@ -380,7 +380,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
       <p>
         <?php echo TEXT_PREORDER_BOOK_TEXT;?>
       </p>
-        <p class="red"><b><?php ehco TEXT_PREORDER_BOOK_TEXT_END;?></b></p>
+        <p class="red"><b><?php echo TEXT_PREORDER_BOOK_TEXT_END;?></b></p>
 <?php
       if($error == true) {
         echo '<span class="errorText"><b>'.TEXT_INPUT_ERROR_INFO.'</span></b><br><br>';
