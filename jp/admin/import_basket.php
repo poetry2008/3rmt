@@ -6,6 +6,16 @@ mysql_select_db(DB_DATABASE);
 mysql_query("set names utf8");
 
 echo "Start!<br>";
+$check_form_basket = mysql_query("select customers_basket_id from customers_basket where products_id=''");
+if(mysql_num_rows($check_form_basket) > 0){
+mysql_query("delete from customers_basket where products_id = ''");
+}
+
+
+$check_form_basket_attr = mysql_query("select customers_basket_attributes_id from customers_basket_attributes where products_id = ''");
+if(mysql_num_rows($check_form_basket_attr) > 0){
+mysql_query("delete from customers_basket_attributes where products_id = ''");
+}
 
 $sql = "select distinct(customers_id) from customers_basket";
 $query = mysql_query($sql);
