@@ -19,6 +19,9 @@
       if (is_array($this->contents)) {
         reset($this->contents);
         while (list($products_id, ) = each($this->contents)) {
+          if (!preg_match('/^\d+_\d+$/', $products_id)) {
+            continue; 
+          }
           $qty = $this->contents[$products_id]['qty'];
 //ccd     d
           $product_query = tep_db_query("select products_id from " . TABLE_CUSTOMERS_BASKET . " where customers_id = '" . $customer_id . "' and products_id = '" . $products_id . "'");
