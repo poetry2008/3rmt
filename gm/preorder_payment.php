@@ -376,7 +376,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
       }
     ?>
      
-    <div id="hm-payment"><?php echo FORM_FIELD_PREORDER_PAYMENT; ?></div>
+    <div id="preorder_payment"><?php echo FORM_FIELD_PREORDER_PAYMENT; ?></div>
     <div>  
     <?php
     if (sizeof($selection) > 1) { 

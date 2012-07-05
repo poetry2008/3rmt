@@ -14,7 +14,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
 ?>
 <table  class="view_contents" width="100%">
   <tr>
-    <td class="msg"><h3><?=TEXT_VIEW_NUM_QUERY.$ticket->getExtId()?>&nbsp;<a href="view.php?id=<?=$ticket->getExtId()?>" title="Reload"><img style="vertical-align:middle;" src="images/icons/refresh.gif" /></a></h3></td>
+    <td class="msg"><h3><?=TEXT_VIEW_NUM_QUERY.$ticket->getExtId()?>&nbsp;<a href="view.php?id=<?=$ticket->getExtId()?>" title="Reload"><img style="vertical-align:middle;" src="images/ico/refresh.gif" /></a></h3></td>
   </tr> 
   <tr>
     <td>  
@@ -80,7 +80,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
       while ($msg_row = db_fetch_array($msgres)):
         ?>
         <table class="message" cellspacing="0" cellpadding="1" width="100%" border=0>
-            <tr><th><?=$msg_row['created']?></th></tr>
+            <tr><th><?=$msg_row['created']?><hr width="100%" style="border-bottom:1px dashed #ccc; height:2px; border-top:none; border-left:none; border-right:none; margin:10px 0;"></th></tr>
                 <?if($msg_row['attachments']>0){ ?>
         <tr class="header"><td><?=$ticket->getAttachmentStr($msg_row['msg_id'],'M',0)?></td></tr> 
                 <?}?>

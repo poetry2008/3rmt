@@ -96,15 +96,6 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
             <div id="hm-checkout-warp"><div class="checkout-title"><b><?php echo TEXT_ORDERS_SUBMIT_ONE;?></b></div>
   <div class="checkout-bottom">
       
-      <?php
-                     if (isset($con_payment)) {
-                           if (method_exists($con_payment,
-              'preorder_process_button')) {
-          
-            $con_payment->preorder_process_button($_POST['pid'], $total_param);
-                             }
-                       }
-                  ?>
 
                     <input type="image" onMouseOver="this.src='includes/languages/japanese/images/buttons/button_confirm_order_hover.gif'" onMouseOut="this.src='includes/languages/japanese/images/buttons/button_confirm_order.gif'" alt="<?php echo TEXT_IMAGE_ALT_ONE;?>" src="includes/languages/japanese/images/buttons/button_confirm_order.gif"></div>  
   </div>
@@ -382,7 +373,11 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
             </div>
             <div id="hm-checkout-warp">
             <div class="checkout-title"><b><?php echo TEXT_ORDERS_SUBMIT_ONE;?></b></div>
-            <div class="checkout-bottom"><input type="hidden" name="money_order_message"><input type="hidden" name="code_fee"><input type="hidden" value="fgg" name="character[31684{1}8]"><input type="image" onMouseOver="this.src='includes/languages/japanese/images/buttons/button_confirm_order_hover.gif'" onMouseOut="this.src='includes/languages/japanese/images/buttons/button_confirm_order.gif'" alt="<?php echo TEXT_IMAGE_ALT_ONE;?>" src="includes/languages/japanese/images/buttons/button_confirm_order.gif">
+            <div class="checkout-bottom">
+      <?php
+      $payment_modules->preorder_process_button($con_payment_code, $_POST['pid'], $total_param);
+                  ?>
+      <input type="image" onMouseOver="this.src='includes/languages/japanese/images/buttons/button_confirm_order_hover.gif'" onMouseOut="this.src='includes/languages/japanese/images/buttons/button_confirm_order.gif'" alt="<?php echo TEXT_IMAGE_ALT_ONE;?>" src="includes/languages/japanese/images/buttons/button_confirm_order.gif">
 </div>
 </div>
           </form> 
