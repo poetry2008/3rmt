@@ -50,3 +50,4 @@ define('CUSTOMER_RESET', 'パスワード変更依頼');
 define('TEXT_USER_ADDED','アカウント作成者:');
 define('TEXT_USER_UPDATE','アカウント更新者:');
 define('CUSTOMER_IS_SEAL','注文禁止');
+define('TEXT_REORDER_DUMMY_WIDTH','あいうえお眉幅');

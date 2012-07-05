@@ -85,7 +85,7 @@ $fid = $area_fee_array['fid'] !='' ? $area_fee_array['fid'] : $fid;
 <?php
 if($id == 0 || $maxid == $minid){
 ?>
- <tr><td><?php echo tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO); ?>&nbsp;<?php echo TABLE_NEW.TABLE_TITLE_1;?></td><td align="right"><a href="javascript:hide_text();"><font color="#FFFFFF">X</font></a></td></tr>
+  <tr><td><?php echo tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO); ?>&nbsp;<?php echo TABLE_NEW.TABLE_TITLE_1;?></td><td align="right"><a href="javascript:hide_text();"><font color="#FFFFFF"><?php echo TEXT_CLOSE;?></font></a></td></tr>
 <?php
 }else{
   $prev_str = '';
@@ -173,7 +173,7 @@ if($id != 0){
 <?php
 if($id != 0){
 ?>
-<input type="button" name="del" value="<?php echo TABLE_BUTTON_DEL;?>" onclick="if(confirm('このレコードを削除してもよろしいですか？')){check_area('del');}else{return false;}">
+  <input type="button" name="del" value="<?php echo TABLE_BUTTON_DEL;?>" onclick="if(confirm('<?php echo TEXT_WANT_DELETE;?>')){check_area('del');}else{return false;}">
 <?php
 }else{
 ?>

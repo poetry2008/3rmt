@@ -12,4 +12,8 @@ define('TABLE_TITLE_5','整列順');
 define('TABLE_TITLE_6','ステータス');
 define('TABLE_TITLE_7','操作');
 define('TABLE_BUTTON','新規作成');
+define('TEXT_ENABLE','有効');
+define('TEXT_DISABLE','無効にする');
+define('TEXT_WANT_DISABLE','無効にしますか？');
+define('TEXT_WANT_ENABLE','有効にしますか？');
 ?>

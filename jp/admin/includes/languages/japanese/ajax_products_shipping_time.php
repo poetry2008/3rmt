@@ -22,4 +22,6 @@ define('TABLE_BUTTON_UNSET','取り消し');
 define('TABLE_REQUIRED','*必須');
 define('TABLE_ADD','追加');
 define('TABLE_BUTTON_DEL','削除');
+define('TEXT_CLOSE','X');
+define('TEXT_WANT_DELETE','このレコードを削除してもよろしいですか？');
 ?>

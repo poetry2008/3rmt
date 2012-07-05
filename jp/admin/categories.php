@@ -14,7 +14,7 @@
   if (isset($_GET['action']) && $_GET['action']) {
     switch ($_GET['action']) {
       case 'get_products':
-        echo tep_draw_pull_down_menu('xxx',array_merge(array(array('id' => '0','text' => '関連付けなし')),tep_get_products_tree($_GET['cid'])),$_GET['rid'],'onchange=\'$("#relate_products_id").val(this.options[this.selectedIndex].value)\'');
+        echo tep_draw_pull_down_menu('xxx',array_merge(array(array('id' => '0','text' => TEXT_NO_ASSOCIATION)),tep_get_products_tree($_GET['cid'])),$_GET['rid'],'onchange=\'$("#relate_products_id").val(this.options[this.selectedIndex].value)\'');
         exit;
         break;
       case 'get_cart_products':
@@ -515,11 +515,7 @@ tep_db_query($update_sql);
         break;
       case 'insert_product':
       case 'update_product':
-        /*
-        echo "<pre>";
-        print_r($_POST);
-        exit;
-        */
+        
         $site_id = isset($_POST['site_id'])?$_POST['site_id']:0;
          if(isset($_SESSION['site_permission'])) $site_arr=$_SESSION['site_permission'];
          else $site_arr="";
@@ -692,7 +688,6 @@ tep_db_query($update_sql);
             $update_sql_data = array('products_last_modified' => 'now()');
             $sql_data_array = tep_array_merge($sql_data_array, $update_sql_data);
             tep_db_perform(TABLE_PRODUCTS, $sql_data_array, 'update', 'products_id = \'' . tep_db_input($products_id) . '\'');
-//print_r($_POST);exit;
 if($site_id=="" || $site_id==0){
 $update_sql = "update ".TABLE_PRODUCTS_DESCRIPTION." set products_last_modified=now(),products_user_update='".$_POST['products_user_update']."' where products_id='".$products_id."'";
 tep_db_query($update_sql);
@@ -1718,7 +1713,7 @@ $products_shipping_time .= '</select>';
   <?php echo tep_draw_separator('pixel_trans.gif', '24', '15');?>
   <?php echo tep_draw_pull_down_menu('relate_categories', tep_get_category_tree('&npsp;'), ($pInfo->relate_products_id?tep_get_products_parent_id($pInfo->relate_products_id):$current_category_id), ($site_id ? 'class="readonly"  onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : '').' onchange="relate_products1(this.options[this.selectedIndex].value, \''.$pInfo->relate_products_id.'\')"');?>
   <span id="relate_products">
-  <?php echo tep_draw_pull_down_menu('relate_products', array_merge(array(array('id' => '0','text' => '関連付けなし')),tep_get_products_tree($pInfo->relate_products_id?tep_get_products_parent_id($pInfo->relate_products_id):$current_category_id)),$pInfo->relate_products_id,($site_id ? 'class="readonly"  onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : '').'onchange="$(\'#relate_products_id\').val(this.options[this.selectedIndex].value)"');?>
+  <?php echo tep_draw_pull_down_menu('relate_products', array_merge(array(array('id' => '0','text' => TEXT_NO_ASSOCIATION)),tep_get_products_tree($pInfo->relate_products_id?tep_get_products_parent_id($pInfo->relate_products_id):$current_category_id)),$pInfo->relate_products_id,($site_id ? 'class="readonly"  onfocus="this.lastIndex=this.selectedIndex" onchange="this.selectedIndex=this.lastIndex"' : '').'onchange="$(\'#relate_products_id\').val(this.options[this.selectedIndex].value)"');?>
   </span>
                         <input type="hidden" name="relate_products_id" id="relate_products_id" value="<?php echo $pInfo->relate_products_id;?>">
                         <input type="hidden" name="products_price_def" value="">
@@ -1954,9 +1949,9 @@ $products_shipping_time .= '</select>';
                       <td width="50" align="center" class="main">→</td>
             <td class="main"><?php echo TEXT_PRODUCT_LAN_TEXT;?>
                         <select name="select">
-                          <option selected>日本語</option>
-                          <option>中国語(+400円)</option>
-                          <option>韓国語(-100円)</option>
+                          <option selected><?php echo TEXT_LANGUAGE_JAPAN;?></option>
+                          <option><?php echo TEXT_LANGUAGE_CHINA;?></option>
+                          <option><?php echo TEXT_LANGUAGE_KOREA;?></option>
                           </select></td>
                     </tr>
                   </table>
@@ -2026,7 +2021,7 @@ $products_shipping_time .= '</select>';
             echo '<td bgcolor="'.$color['color_tag'].'">';
             echo '<table border="0" cellpadding="0" cellspacing="5" width="100%" bgcolor="#FFFFFF">';
             echo '<tr>';
-            echo '<td class="main" width="33%">テキスト：&nbsp;'.tep_draw_input_field('colorname_'.$color['color_id'], $ctp['color_to_products_name']).'<br>'.$color['color_name'].': '.tep_draw_file_field('image_'.$color['color_id']).'<br>&nbsp;&nbsp;&nbsp;' . $ctp['color_image'].tep_draw_hidden_field('image_pre_'.$color['color_id'], $ctp['color_image']).'</td>';
+            echo '<td class="main" width="33%">'.TEXT_TEXT.'&nbsp;'.tep_draw_input_field('colorname_'.$color['color_id'], $ctp['color_to_products_name']).'<br>'.$color['color_name'].': '.tep_draw_file_field('image_'.$color['color_id']).'<br>&nbsp;&nbsp;&nbsp;' . $ctp['color_image'].tep_draw_hidden_field('image_pre_'.$color['color_id'], $ctp['color_image']).'</td>';
             echo '</tr>';
             echo '</table>';
             echo '</td>';
@@ -3972,7 +3967,7 @@ tep_display_google_results(FILENAME_CATEGORIES);
             $heading[] = array('text' => '<b>' . tep_get_products_name($pInfo->products_id, $languages_id) . '</b>');
             
             // 关联商品
-            $contents[] = array('align' => 'left', 'text' => '関連付け: '.tep_get_relate_products_name($pInfo->products_id));
+            $contents[] = array('align' => 'left', 'text' => TEXT_WITH.tep_get_relate_products_name($pInfo->products_id));
           if ($ocertify->npermission >= 10) { //表示制限
             if (empty($_GET['site_id'])) {
             $contents[] = array('align' => 'left', 'text' => '<a href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' .  $pInfo->products_id .  '&action=new_product'.'&page='.$_GET['page'].($_GET['search']?'&search='.$_GET['search']:'')) . '">' .  tep_html_element_button(IMAGE_EDIT) . '</a>' .  ($ocertify->npermission == 15 ? (' <a href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' .  $pInfo->products_id .  '&action=delete_product'.'&page='.$_GET['page'].($_GET['search']?'&search='.$_GET['search']:'')) . '">' .  tep_html_element_button(IMAGE_DELETE) . '</a>'):'') . ' <a href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' .  $cPath . '&pID=' .  $pInfo->products_id .  '&action=move_product'.'&page='.$_GET['page'].($_GET['search']?'&search='.$_GET['search']:'')) . '">' .  tep_html_element_button(IMAGE_MOVE) . '</a> <a href="' .  tep_href_link(FILENAME_CATEGORIES, 'cPath=' . $cPath . '&pID=' .  $pInfo->products_id .  '&action=copy_to'.($_GET['search']?'&search='.$_GET['search']:'')) . '">' . tep_html_element_button(IMAGE_COPY_TO) . '</a>' . ' <a href="' . tep_href_link(FILENAME_REVIEWS, 'cPath=' . $cPath .  '&products_id=' . $pInfo->products_id . '&action=new'.($_GET['search']?'&search='.$_GET['search']:'')) . '">' .  tep_html_element_button(IMAGE_REVIEWS) . '</a>'.'<a href="' .  tep_href_link(FILENAME_PRODUCTS_MANUAL, 'cPath=' . $cPath . '&pID=' .  $pInfo->products_id . '&action=show_products_manual'. '&site_id='.  $site['id'].'&page='.$_GET['page'])  .'">' . tep_html_element_button(IMAGE_MANUAL) . '</a>' );
@@ -4025,7 +4020,7 @@ if ($product_price['sprice']) {
 } else {
   $contents[] = array('text' => '<br><b>' . TEXT_PRODUCTS_PRICE_INFO . ' ' . $currencies->format($product_price['price']) . '</b>');
 }
-$contents[] = array('text' => '<br><b>' . TEXT_PRODUCTS_QUANTITY_INFO . ' ' . $pInfo->products_quantity . '個</b>');
+$contents[] = array('text' => '<br><b>' . TEXT_PRODUCTS_QUANTITY_INFO . ' ' . $pInfo->products_quantity . CATEGORY_GE_UNIT_TEXT .'</b>');
 $contents[] = array('text' => '<br>' . TEXT_PRODUCTS_AVERAGE_RATING . ' ' . number_format($pInfo->average_rating, 2) . '%');
           }
         } else { // create category/product info

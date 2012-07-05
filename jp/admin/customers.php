@@ -420,7 +420,7 @@ function check_form() {
       </tr>
       <tr>
       <?php echo tep_draw_form('customers', FILENAME_CUSTOMERS, tep_get_all_get_params(array('action')) . 'action=update', 'post', 'onSubmit="return check_form();"') .  tep_draw_hidden_field('default_address_id', $cInfo->customers_default_address_id) .  tep_draw_hidden_field('entry_country_id', $cInfo->entry_country_id)."\n"; ?>
-      <input type="hidden" name="dummy" value="あいうえお眉幅">
+    <input type="hidden" name="dummy" value="<?php echo TEXT_REORDER_DUMMY_WIDTH;?>">
         <td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
       </tr>
       <tr>

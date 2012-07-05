@@ -786,8 +786,7 @@ $(document).ready(function(){
   <?php
   }else{
   ?>
-    check();
-    address_option_list(first_num); 
+    check();    
   <?php
   }
   ?>
@@ -821,6 +820,13 @@ $(document).ready(function(){
     country_area_check($("#"+country_area_id).val());
   <?php
   }
+  ?>
+  <?php
+    if(!isset($_POST[$country_area_id]) && !isset($_SESSION['options'])){
+  ?>    
+    address_option_list(first_num); 
+  <?php
+    }
   ?>
 });
 //--></script>

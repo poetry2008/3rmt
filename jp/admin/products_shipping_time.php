@@ -206,14 +206,14 @@ while($products_array = tep_db_fetch_array($products_query)){
   echo '<td>';
   if($products_array['status'] == 0){
 ?>
-  <img border="0" src="images/icon_status_green.gif" alt="" title="有効">
-  <a title="無効にする" onclick="if(confirm('無効にしますか？')){check_on_products('del',<?php echo $products_array['id'];?>);}else{return false;}" href="javascript:void(0);"><img border="0" alt="" src="images/icon_status_red_light.gif"></a>
+  <img border="0" src="images/icon_status_green.gif" alt="" title="<?php echo TEXT_ENABLE;?>">
+  <a title="<?php echo TEXT_DISABLE;?>" onclick="if(confirm('<?php echo TEXT_WANT_DISABLE;?>')){check_on_products('del',<?php echo $products_array['id'];?>);}else{return false;}" href="javascript:void(0);"><img border="0" alt="" src="images/icon_status_red_light.gif"></a>
 
 <?php
 }else{
 ?>
-  <a title="有効" onclick="if(confirm('有効にしますか？')){check_on_products('res',<?php echo $products_array['id'];?>);}else{return false;}" href="javascript:void(0);"><img border="0" alt="" src="images/icon_status_green_light.gif"></a>
-<img border="0" alt="" src="images/icon_status_red.gif" title="無効にする">
+  <a title="<?php echo TEXT_ENABLE;?>" onclick="if(confirm('<?php echo TEXT_WANT_ENABLE;?>')){check_on_products('res',<?php echo $products_array['id'];?>);}else{return false;}" href="javascript:void(0);"><img border="0" alt="" src="images/icon_status_green_light.gif"></a>
+  <img border="0" alt="" src="images/icon_status_red.gif" title="<?php echo TEXT_DISABLE;?>">
 
 <?php
 }

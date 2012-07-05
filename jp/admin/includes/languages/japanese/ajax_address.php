@@ -30,4 +30,11 @@ define('TABLE_TEXT','テキストボックス');
 define('TABLE_TEXTAREA','テキストエリア');
 define('TABLE_SELECT','プルダウンメニュー');
 define('TABLE_SHOW_TITLE','項目タイトル');
+define('TEXT_CLOSE','X');
+define('TEXT_OPTION_ALL','全て');
+define('TEXT_OPTION_FALSE_NAME','カナ');
+define('TEXT_OPTION_ENGLISH_NUM','英数');
+define('TEXT_OPTION_ENGLISH','英');
+define('TEXT_OPTION_NUM','数');
+define('TEXT_WANT_DELETE','このレコードを削除してもよろしいですか？');
 ?>

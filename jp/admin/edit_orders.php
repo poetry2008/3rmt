@@ -2193,7 +2193,7 @@ function address_list(){
 
   var arr_list = new Array();
 <?php
-  $address_list_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."'");
+  $address_list_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."' order by id");
   while($address_list_array = tep_db_fetch_array($address_list_query)){
  
     echo 'arr_list["'. $address_list_array['name'] .'"] = "'. $address_list_array['value'] .'";';

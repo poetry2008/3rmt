@@ -26,4 +26,6 @@ define('TABLE_PROMPT_3','注文完了メールのテンプレート');
 define('TABLE_PROMPT_4','プリントメールのテンプレート');
 define('TABLE_BUTTON_UNSET','取り消し');
 define('TABLE_REQUIRED','*必須');
+define('TEXT_CLOSE','X');
+define('TEXT_WANT_DELETE','このレコードを削除してもよろしいですか？');
 ?>

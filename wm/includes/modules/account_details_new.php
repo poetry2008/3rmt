@@ -273,7 +273,7 @@ function address_list(){
         }
     }
     if(arr_str != ''){
-      address_show_list.options[address_show_list.options.length]=new Option(arr_str,i);
+      address_show_list.options[address_show_list.options.length]=new Option(arr_str,i,i==<?php echo isset($_POST['address_show_list']) ? $_POST['address_show_list'] : 0;?>,i==<?php echo isset($_POST['address_show_list']) ? $_POST['address_show_list'] : 0;?>);
     }
 
   }
@@ -559,7 +559,7 @@ $(document).ready(function(){
         <input type="hidden" id="pwd" name="password" value="">
         <input type="hidden" id="pwd_1" name="confirmation" value="">
         <input type="hidden" id="action_flag" name="action_flag" value="0">
-        <select id="address_show_list" onchange="address_option_list(this.value);">
+        <select id="address_show_list" name="address_show_list" onchange="address_option_list(this.value);">
         </select>
         </td></tr>
         <?php       
