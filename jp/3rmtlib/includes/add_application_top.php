@@ -225,6 +225,10 @@
   define('TABLE_LATEST_NEWS', 'latest_news'); //latest_news
   define('TABLE_COLOR', 'color');//Color setting
   define('TABLE_COLOR_TO_PRODUCTS', 'color_to_products');//products_id <-> color_id
+  define("LATEST_NEWS_CACHETIME",20);
+  define("TELL_A_FRIEND_CACHETIME",20);
+  define("SITEMAP_CACHETIME",20);
+  define("MANUFACTURERS_CACHETIME",20);
 
 // customization for the design layout
   define('BOX_WIDTH', 171); // how wide the boxes should be in pixels (default: 125)

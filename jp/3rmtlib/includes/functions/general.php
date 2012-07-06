@@ -1705,6 +1705,18 @@ function forward404Unless($condition)
       $script_name = substr($_SERVER['SCRIPT_NAME'], $ssl_pos);
       $_SERVER['SCRIPT_NAME'] = $script_name;
     }
+if(defined(strtoupper(str_replace('.php', '', str_replace('/', '', $_SERVER['SCRIPT_NAME'])))._CACHETIME)){
+$num = constant(strtoupper(str_replace('.php', '', str_replace('/', '', $_SERVER['SCRIPT_NAME'])))._CACHETIME);
+
+header("Cache-Control:");
+header("Pragma:");
+header("Last-Modified:".date("D, d M Y H:i:s",time())." GMT"); 
+header("Expires:".date("D, d M Y H:i:s",time()+60*$num)." GMT");
+    }else{
+header("Cache-Control:");
+header("Pragma:");
+header("Expires:".date("D, d M Y H:i:s",0)." GMT");
+    }
     switch (str_replace('/', '', $_SERVER['SCRIPT_NAME'])) {
       case FILENAME_FAQ:
         global $current_faq_category_id;
