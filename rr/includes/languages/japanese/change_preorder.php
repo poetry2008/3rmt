@@ -38,3 +38,7 @@ define('PRODUCTS_WEIGHT_ERROR_ONE','※要問合※総重量が（');
 define('PRODUCTS_WEIGHT_ERROR_TWO','）の規定の重量を超えました。');
 define('PRODUCTS_WEIGHT_ERROR_THREE','商品を削除するか、または個数を変更して（');
 define('PRODUCTS_WEIGHT_ERROR_FOUR','）kg以内にしてください。');
+define('PREORDER_SELECT_EMPTY_OPTION', '希望日を選択してください');
+define('PREORDER_TRADER_LINE_TITLE', '取引情報');
+define('PREORDER_CONFIRM_LINE_TITLE', '最終確認');
+define('PREORDER_FINISH_LINE_TITLE', '手続き完了！');
