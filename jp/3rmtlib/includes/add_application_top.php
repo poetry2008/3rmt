@@ -513,7 +513,7 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
                                   $hide_option_info = array(); 
                                   if (isset($_POST['option_info'][$i])) {
                                     $hide_option_info = @unserialize($_POST['option_info'][$i]); 
-                                    if ($hide_option_info == false) {
+                                    if ($hide_option_info === false) {
                                       $hide_option_info = @unserialize(stripslashes($_POST['option_info'][$i])); 
                                     }
                                   }
