@@ -50,5 +50,5 @@ define('TEXT_DATE_MON','月');
 define('TEXT_DATE_DAY','日');
 define('TEXT_DATE_HOUR','時');
 define('TEXT_DATE_MIN','分');
-define('TEXT_PROMPT_COMMENT','「指定した時間より早くできるなら早く来てほしい」をご指定いただきましたお客様へ<br>ご入金確認後、最短にて目的地へお届けにまいります。<br>お客様がいらっしゃらない場合は、ご指定いただきました日時へ変更させていただきます。');
+define('TEXT_CHECKOUT_SHIPPING_READ','「指定した時間より早くできるなら早く来てほしい」をご指定いただきましたお客様へ<br>ご入金確認後、最短にて目的地へお届けにまいります。<br>お客様がいらっしゃらない場合は、ご指定いただきました日時へ変更させていただきます。');
 ?>

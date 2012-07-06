@@ -47,7 +47,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == "true"){
         }else{
           $point_text_2 = 'ありません' ;
         }
-		define('TEXT_POINT','<p class="main"><i><strong>ポイントシステム</strong></i><br>ポイントサービスは、当店でお買い物をされた場合、購入金額の'.$point_text_1.'%をポイントとして還元しております。<br>
+		define('TEXT_POINT','<p class="main"><h3>ポイントシステム</h3>ポイントサービスは、当店でお買い物をされた場合、購入金額の'.$point_text_1.'%をポイントとして還元しております。<br />
               溜まったポイントは次回のお買い物に1ポイント＝1円で使えます。ポイントの有効期限は'.$point_text_2.'。</p>');
    }else{
    //カスタマーレベル連動型ポイントシステム
