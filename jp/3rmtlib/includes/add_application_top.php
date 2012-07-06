@@ -14,7 +14,7 @@
 
 // set the level of error reporting
   //error_reporting(0);
-  ini_set("display_errors", "On");
+  ini_set("display_errors", "Off");
   //error_reporting(E_ALL);
   //ini_set("display_errors", "Off");
 
@@ -513,6 +513,9 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
                                   $hide_option_info = array(); 
                                   if (isset($_POST['option_info'][$i])) {
                                     $hide_option_info = @unserialize($_POST['option_info'][$i]); 
+                                    if ($hide_option_info == false) {
+                                      $hide_option_info = @unserialize(stripslashes($_POST['option_info'][$i])); 
+                                    }
                                   }
                                   // tamura 2002/12/30 「全角」英数字を「半角」に変換
                                   $_POST['cart_quantity'][$i] = tep_an_zen_to_han($_POST['cart_quantity'][$i]);                 
