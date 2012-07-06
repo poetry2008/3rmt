@@ -391,7 +391,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                     <?php
                       if (!empty($_POST['date'])) {
                         $date_arr = explode('-', $_POST['date']); 
-                        echo $date_arr[0].PREORDER_YEAR_TEXT.$date_arr[1].PREORDER_MONTH_TEXT.$date_arr[2].PREORDER_DAY_TEXT; 
+                        echo $date_arr[0].DATE_YEAR_TEXT.$date_arr[1].DATE_MONTH_TEXT.$date_arr[2].DATE_DAY_TEXT; 
                       }
                     ?>
                     </td>                  
@@ -401,7 +401,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                     <td class="main">
                     <?php
                     echo
-                    $_POST['start_hour'].PREORDER_HOUR_TEXT.$_POST['start_min'].PREORDER_MIN_TEXT.TEXT_TIME_LINK.$_POST['end_hour'].PREORDER_HOUR_TEXT.$_POST['end_min'].PREORDER_MIN_TEXT; 
+                    $_POST['start_hour'].TIME_HOUR_TEXT.$_POST['start_min'].TIME_MIN_TEXT.TEXT_TIME_LINK.$_POST['end_hour'].TIME_HOUR_TEXT.$_POST['end_min'].TIME_MIN_TEXT; 
                     ?>
                     </td>                  
                   </tr>
