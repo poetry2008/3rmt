@@ -574,3 +574,11 @@ define('TEXT_DISPLAY_NUMBER_OF_MANUAL', '<b>%d</b> &sim; <b>%d</b> 番目を表�
 define('FILENAME_FILENAME_RESET_PWD_TEXT','一括パスワードリセット');
 define('FILENAME_CUSTOMERS_EXIT_TEXT','退会顧客管理');
 define('OPTION_CHARACTER_NAME', 'お客様のキャラクター名');
+define('NEXT_ORDER_TEXT', '次の注文');
+define('BEFORE_ORDER_TEXT', '過去の注文');
+define('CUSTOMER_INFO_TEXT', '顧客情報');
+define('BOX_CREATE_ADDRESS', '住所作成');
+define('BOX_COUNTRY_FEE', '料金設定');
+define('BOX_SHIPPING_TIME', '商品届け時間');
+define('TEXT_REQUIRED', '必須');
+define('DUMMY_TEXT', 'あいうえお眉幅');

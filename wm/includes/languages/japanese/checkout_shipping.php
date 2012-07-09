@@ -75,15 +75,5 @@ define('PRODUCTS_WEIGHT_ERROR_TWO','）の規定の重量を超えました。')
 define('PRODUCTS_WEIGHT_ERROR_THREE','商品を削除するか、または個数を変更して（');
 define('PRODUCTS_WEIGHT_ERROR_FOUR','）kg以内にしてください。');
 define('EXPECT_DATE_SELECT', '希望日を選択してください');
-define('CHECKOUT_SHIPPING_YEAR_TEXT', '年');
-define('CHECKOUT_SHIPPING_MONTH_TEXT', '月');
-define('CHECKOUT_SHIPPING_DAY_TEXT', '日');
-define('CHECKOUT_SHIPPING_MONDAY_TEXT', '月曜日');
-define('CHECKOUT_SHIPPING_TUESDAY_TEXT', '火曜日');
-define('CHECKOUT_SHIPPING_WENSDAY_TEXT', '水曜日');
-define('CHECKOUT_SHIPPING_THIRSDAY_TEXT', '木曜日');
-define('CHECKOUT_SHIPPING_FRIDAY_TEXT', '金曜日');
-define('CHECKOUT_SHIPPING_STATURDAY_TEXT', '土曜日');
-define('CHECKOUT_SHIPPING_SUNDAY_TEXT', '日曜日');
 define('TEXT_CHECKOUT_SHIPPING_READ', '「指定した時間より早くできるなら早く来てほしい」をご指定いただきましたお客様へ<br>ご入金確認後、最短にて目的地へお届けにまいります。<br>お客様がいらっしゃらない場合は、ご指定いただきました日時へ変更させていただきます。<br>');
 ?>

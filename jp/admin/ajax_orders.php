@@ -57,7 +57,7 @@ if ($_POST['orders_id'] &&
   tep_db_perform('orders', array('orders_comment' => $_POST['orders_comment']), 'update', "orders_id='".$_POST['orders_id']."'");
   tep_redirect(tep_href_link(FILENAME_ORDERS,'page='.$_POST['page'].'&oID='.$_POST['orders_id'].'&action=edit'));
 } else if ($_GET['action'] == 'paydate') {
-  echo date('Y年n月j日',strtotime(tep_get_pay_day()));
+  echo date('Y'.YEAR_TEXT.'n'.MONTH_TEXT.'j'.DAY_TEXT,strtotime(tep_get_pay_day()));
 } else if ($_GET['action'] == 'set_quantity' && $_GET['products_id'] && $_GET['count']) {
   $p  = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS." where products_id='".$_GET['products_id']."'"));
   $rp = tep_db_fetch_array(tep_db_query("select * from ".TABLE_PRODUCTS." where products_id='".$p['relate_products_id']."'"));
@@ -130,7 +130,7 @@ if ($_POST['orders_id'] &&
     if ($trade_array["year"] == $today_array["year"] && $trade_array["mon"] == $today_array["mon"] && $trade_array["mday"] == $today_array["mday"]) {
       $today_color = 'red';
       if ($trade_array["hours"] >= $today_array["hours"]) {
-        $next_mark = tep_image(DIR_WS_ICONS . 'arrow_blinking.gif', '次の注文'); //次の注文に目印をつける
+        $next_mark = tep_image(DIR_WS_ICONS . 'arrow_blinking.gif', NEXT_ORDER_TEXT); //次の注文に目印をつける
       } else {
         $next_mark = '';
       }
@@ -170,10 +170,10 @@ if ($_POST['orders_id'] &&
 			tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action'))
 					. 'oID='.$orders['orders_id']);?>';">
                                                                                                                         <a href="<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID=' . $orders['orders_id'] . '&action=edit');?>"><?php echo tep_image(DIR_WS_ICONS . 'preview.gif', ICON_PREVIEW);?></a>&nbsp;
-    <a href="<?php echo tep_href_link('orders.php', 'cEmail=' . tep_output_string_protected($orders['customers_email_address']));?>"><?php echo tep_image(DIR_WS_ICONS . 'search.gif', '過去の注文');?></a>
+    <a href="<?php echo tep_href_link('orders.php', 'cEmail=' .  tep_output_string_protected($orders['customers_email_address']));?>"><?php echo tep_image(DIR_WS_ICONS . 'search.gif', BEFORE_ORDER_TEXT);?></a>
                                                                                                                                                                                                            <?php
                                                                                                                                                                                                            if (false) {?>
-                                                                                                                                                                                                           &nbsp;<a href="<?php echo tep_href_link('customers.php', 'page=1&cID=' . tep_output_string_protected($orders['customers_id']) . '&action=edit');?>"><?php echo tep_image(DIR_WS_ICONS . 'arrow_r_red.gif', '顧客情報');?></a>&nbsp;&nbsp;
+                                                                                                                                                                                                           &nbsp;<a href="<?php echo tep_href_link('customers.php', 'page=1&cID=' .  tep_output_string_protected($orders['customers_id']) .  '&action=edit');?>"><?php echo tep_image(DIR_WS_ICONS .  'arrow_r_red.gif', CUSTOMER_INFO_TEXT);?></a>&nbsp;&nbsp;
                                                                                                                                                                                                            <?php }?>
                                                                                                                                                                                                            <?php if (!$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)) {?>
                                                                                                                                                                                                            <font color="#999">
@@ -211,7 +211,7 @@ if ($_POST['orders_id'] &&
 				window.location.href='<?php echo
 					tep_href_link(FILENAME_ORDERS,
 							tep_get_all_get_params(array('oID', 'action')) .
-							'oID='.$orders['orders_id']);?>';"><?php if ($orders['orders_wait_flag']) { echo tep_image(DIR_WS_IMAGES . 'icon_hand.gif', '取引待ち'); } else { echo '&nbsp;'; } ?></td>
+							'oID='.$orders['orders_id']);?>';"><?php if ($orders['orders_wait_flag']) { echo tep_image(DIR_WS_IMAGES . 'icon_hand.gif', RIGHT_ORDER_INFO_TRANS_WAIT); } else { echo '&nbsp;'; } ?></td>
     <td style="border-bottom:1px solid
 #000000;background-color: darkred;" class="dataTableContent" align="left"
                                                                                                                                                                                                      onClick="chg_td_color(<?php echo $orders['orders_id']; ?>);

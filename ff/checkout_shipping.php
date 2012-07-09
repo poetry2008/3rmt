@@ -1188,7 +1188,7 @@ if (!isset($torihikihouhou_error)) $torihikihouhou_error = NULL ; //del notice
     <option value=""><?php echo EXPECT_DATE_SELECT;?></option>
     <?php
           $oarr = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
-          $newarr = array(CHECKOUT_SHIPPING_MONDAY_TEXT, CHECKOUT_SHIPPING_TUESDAY_TEXT, CHECKOUT_SHIPPING_WENSDAY_TEXT, CHECKOUT_SHIPPING_THIRSDAY_TEXT, CHECKOUT_SHIPPING_FRIDAY_TEXT, CHECKOUT_SHIPPING_STATURDAY_TEXT, CHECKOUT_SHIPPING_SUNDAY_TEXT);
+          $newarr = array(TEXT_DATE_MONDAY, TEXT_DATE_TUESDAY, TEXT_DATE_WENSDAY, TEXT_DATE_THIRSDAY, TEXT_DATE_FRIDAY, TEXT_DATE_STATURDAY, TEXT_DATE_SUNDAY);
     $date_session_flag = false; 
     for($j = 0;$j < $shipping_time;$j++){
       if(isset($_POST['date']) && $_POST['date'] != ""){
@@ -1200,7 +1200,7 @@ if (!isset($torihikihouhou_error)) $torihikihouhou_error = NULL ; //del notice
 
         $date_session_flag = true;
       }
-      echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'" '. $selected_str .'>'.str_replace($oarr, $newarr, date("Y".CHECKOUT_SHIPPING_YEAR_TEXT."m".CHECKOUT_SHIPPING_MONTH_TEXT."d".CHECKOUT_SHIPPING_DAY_TEXT."（l）", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
+      echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'" '. $selected_str .'>'.str_replace($oarr, $newarr, date("Y".DATE_YEAR_TEXT."m".DATE_MONTH_TEXT."d".DATE_DAY_TEXT."（l）", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
 
     }
     ?>

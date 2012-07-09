@@ -91,11 +91,11 @@
                                    class="menuBoxContent_Link">'.FILENAME_CATEGORIES_ADMIN_TEXT.
                                      '</a><br>'.
                                    '<a href="'.tep_href_link('address.php','','NONSSL').'"
-                                   class="menuBoxContent_Link">住所作成<br>
+                                   class="menuBoxContent_Link">'.BOX_CREATE_ADDRESS.'</a><br>
                                    <a href="'.tep_href_link('country_fee.php','','NONSSL').'"
-                                   class="menuBoxContent_Link">料金設定<br>
+                                   class="menuBoxContent_Link">'.BOX_COUNTRY_FEE.'</a><br>
                                    <a href="'.tep_href_link('products_shipping_time.php','','NONSSL').'"
-                                   class="menuBoxContent_Link">商品届け時間';
+                                   class="menuBoxContent_Link">'.BOX_SHIPPING_TIME.'</a>';
 
 ?>
                 </td>
