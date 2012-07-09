@@ -1,7 +1,8 @@
 <?php
 // if the customer is not logged on, redirect them to the login page
 if (!tep_session_is_registered('customer_id')) {
-  $navigation->set_snapshot(array('mode' => 'SSL', 'page' => FILENAME_CHECKOUT_PAYMENT));
+  $navigation->set_snapshot(array('mode' => 'SSL', 'page' => FILENAME_CHECKOUT_PRODUCTS));
+  //$navigation->set_snapshot(array('mode' => 'SSL', 'page' => FILENAME_CHECKOUT_PAYMENT));
   tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
 }
 
@@ -262,4 +263,5 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
 ?>
 //-->
 </script>
+<script type="text/javascript" src="./js/confirm_session_error.js"></script>
 </head>

@@ -76,14 +76,15 @@ require(DIR_WS_ACTIONS.'checkout_confirmation.php');
     </table>
 	
     <div id="hm-checkout-warp"><div class="checkout-title"><b><?php  echo TEXT_ORDERS_SUBMIT_TWO;?></b></div>
-  <div class="checkout-bottom"> <?php echo
-  tep_image_submit('button_confirm_order.gif',
-      IMAGE_BUTTON_CONFIRM_ORDER,' onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_confirm_order.gif\'" onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_confirm_order_hover.gif\'"');?></div>  
+    <div class="checkout-bottom"> 
+    <a href="javascript:void(0);" onclick="confirm_session_error();">
+<?php echo
+  tep_image_button('button_confirm_order.gif',
+      IMAGE_BUTTON_CONFIRM_ORDER,' onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_confirm_order.gif\'" onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_confirm_order_hover.gif\'"');?></a></div>  
   </div>
   <div class="checkout-conent">
 <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
-    
-      <?php
+<?php
   if ($sendto != false) {
 ?>
                 <tr>
@@ -381,7 +382,8 @@ require(DIR_WS_ACTIONS.'checkout_confirmation.php');
       echo tep_draw_hidden_field("character[$ck]", $cv);
     }
   }
-  echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER,' onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_confirm_order.gif\'" onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_confirm_order_hover.gif\'"') . "\n";
+  echo '<a href="javascript:void(0);" onclick="confirm_session_error();">';
+  echo tep_image_button('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER,' onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_confirm_order.gif\'" onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_confirm_order_hover.gif\'"') . "</a>\n";
 ?></div></div></div>
 </form>
 </div>

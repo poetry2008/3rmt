@@ -59,7 +59,7 @@ require(DIR_WS_ACTIONS.'checkout_confirmation.php');
         <table border="0" width="100%" cellspacing="0" cellpadding="0" class="rg_pay_info">
         <tr>
         <td class="main"><b><?php echo TEXT_CONFIRMATION_READ;?></b></td>
-        <td class="main" align="right"><?php echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER);?></td>
+        <td class="main" align="right"><a href="javascript:void(0);" onclick="confirm_session_error();"><?php echo tep_image_button('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER);?></a></td>
         </tr>
         </table>
 </td></tr>
@@ -616,7 +616,8 @@ $payment_modules->specialOutput($payment, true);
   }
   */ 
   //echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER) . '</form>' . "\n";
-  echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER) . "\n";
+  echo '<a href="javascript:void(0);" onclick="confirm_session_error();">';
+  echo tep_image_button('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER) . "</a>\n";
 ?> </td> 
               </tr> 
             </table></td> 
