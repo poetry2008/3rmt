@@ -1180,7 +1180,7 @@ $(document).ready(function(){
 ?>
   <tr>
     <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1');?></td> 
-  <td class="main" width="30%"><?php echo TEXT_TORIHIKIKIBOUBI; ?></td>
+  <td class="main" width="30%"><?php echo TEXT_EXPECT_TRADE_DATE; ?></td>
     <td class="main">
 <?php
     $today = getdate();
@@ -1228,7 +1228,7 @@ $(document).ready(function(){
 ?>
   <tr id="shipping_list" style="display:none;">
     <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-  <td class="main"><?php echo TEXT_TORIHIKIKIBOUJIKAN; ?></td>
+  <td class="main"><?php echo TEXT_EXPECT_TRADE_TIME; ?></td>
     <td class="main" id="shipping_list_show">
     </td>
   </tr>
@@ -1273,7 +1273,7 @@ if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) 
           <tr> 
             <td class="main">
         <br>
-         <?php echo TEXT_CHECKOUT_SHIPPING_READ;?>   
+         <?php echo TEXT_PROMPT_COMMENT;?>   
         <br>
       </td> 
           </tr> 

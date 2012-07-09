@@ -1174,7 +1174,7 @@ if (!isset($torihikihouhou_error)) $torihikihouhou_error = NULL ; //del notice
   }
 ?>
   <tr>
-  <td class="main" width="30%"><?php echo TEXT_TORIHIKIKIBOUBI; ?></td>
+  <td class="main" width="30%"><?php echo TEXT_EXPECT_TRADE_DATE; ?></td>
     <td class="main" width="70%">
 <?php
     $today = getdate();
@@ -1221,7 +1221,7 @@ if (!isset($date_error)) $date_error= NULL ; //del notice
 ?>
   <tr id="shipping_list" style="display:none;">
    
-  <td class="main"><?php echo TEXT_TORIHIKIKIBOUJIKAN; ?></td>
+  <td class="main"><?php echo TEXT_EXPECT_TRADE_TIME; ?></td>
     <td class="main" id="shipping_list_show">
   </td>
   </tr>
@@ -1262,7 +1262,7 @@ if (!isset($date_error)) $date_error= NULL ; //del notice
           <tr> 
             <td class="main">
         <br>
-        <?php echo TEXT_CHECKOUT_SHIPPING_READ;?> 
+        <?php echo TEXT_PROMPT_COMMENT;?> 
         <br>
       </td> 
           </tr> 

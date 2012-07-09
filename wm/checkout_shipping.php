@@ -1181,7 +1181,7 @@ if (!isset($torihikihouhou_error)) $torihikihouhou_error = NULL ; //del notice
 ?>
   <tr>
     <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-  <td class="main" width="30%"><?php echo TEXT_TORIHIKIKIBOUBI; ?></td>
+  <td class="main" width="30%"><?php echo TEXT_EXPECT_TRADE_DATE; ?></td>
     <td class="main" width="70%">
 <?php
     $today = getdate();
@@ -1273,7 +1273,7 @@ if (!isset($date_error)) $date_error= NULL ; //del notice
           <tr> 
             <td class="main">
         <br>
-        <?php echo TEXT_CHECKOUT_SHIPPING_READ;?> 
+        <?php echo TEXT_PROMPT_COMMENT;?> 
         <br>
       </td> 
           </tr> 
