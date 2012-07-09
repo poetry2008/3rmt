@@ -646,7 +646,7 @@ td,th{ border:0; padding:2px; font-size:14px;}
 .checkout-list{ clear:both; margin:15px 0; overflow:hidden;}
 .checkout-list img{ float:left; margin-right:5px;}
 .frame_w70{ float:left; display:block;}
-.box_content_title{ margin:35px 0 8px 0; clear:both; overflow:hidden;}
+.box_content_title{ margin:35px 0 8px 0; clear:both; overflow:hidden; _height:22px;}
 .box_content_text{ padding-left:10px; width:90%;}
 .payment-content input{ float:left; margin-right:8px;}
 .txt_input_box{ clear:both;}
@@ -797,7 +797,7 @@ td,th{ border:0; padding:2px; font-size:14px;}
 #hm-hot-category{height:50px; overflow:hidden;}
 #hm-payment{background-color:#577C9D; overflow:hidden; padding:0 5px; height:20px;}
 #preorder_payment{background-color:#577C9D; overflow:hidden; padding:0 5px; height:20px; font-size:18px;}
-#hm-checkout-warp{ border:2px #577C9D solid; overflow:hidden; padding:5px; margin:5px 7%;}
+#hm-checkout-warp{ border:2px #577C9D solid; overflow:hidden; padding:5px; margin:5px 7%; _height:60px;}
 .hm-payment-top-left{ float:left;}
 .hm-payment-left{ 
 	float:left;
@@ -1083,6 +1083,7 @@ img {
 .sub_menu{margin:3px 0 23px 2px;}
 .sub_menu dt{ line-height:15px; padding:3px; font-size:14px;}
 .sub_menu dd{ line-height:15px; padding:3px; margin-bottom:10px;}
+.sub_menu_box{margin:9px 0 23px 2px;}
 ul,li { padding:0; margin:0}
 ul,li { list-style:none}
  .img-scroll { position:relative; margin:20px auto; width:780px; z-index:90;}
@@ -1173,7 +1174,6 @@ top:70px;
 	margin-top:9px;
 }
 .login_spacing{
-	margin-top:12px;
 	margin-bottom:25px;
 }
 .open_spacing{
@@ -1207,3 +1207,6 @@ top:70px;
 .shopping_waring{border: 3px solid #FF0000; padding:5px; margin:10px 0;}
 .message td {padding-bottom:25px;}
 .list_spacing{ margin:13px 0 0 6px;}
+/*ie6*/
+.checkout_payment_info input{ _position:relative; _z-index:200; _top:0;}
+.payment-content{ _height:24px;}
