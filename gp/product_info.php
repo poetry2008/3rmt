@@ -190,7 +190,7 @@ function showimage($1) {
                       <div class="product_info_box">
                       <table summary="info_box_contents"  border="0" cellpadding="0" cellspacing="1" class="info_box_contents" >
                           <tr class="infoBoxContents">
-                          <td class="main p_i_b_title"><?php echo TEXT_PRODUCTS_CODE;?></td>
+                          <td class="main p_i_b_title"><?php echo TEXT_PRODUCT_MODEL;?></td>
                             <td class="main"><?php if (PRODUCT_LIST_MODEL > 0){ echo $product_info['products_model'] ; }else{ echo '-' ; } ?></td>
                           </tr>
                           <?php 
@@ -218,11 +218,11 @@ function showimage($1) {
                           </tr>
                           <?php } ?>
                           <tr class="infoBoxContents">
-                          <td class="main p_i_b_title"><?php echo TEXT_STUDIO_NAME;?></td>
+                          <td class="main p_i_b_title"><?php echo TEXT_PRODUCT_MANUFACTURER_NAME;?></td>
                             <td class="main"><?php include(DIR_WS_BOXES.'manufacturer_info.php') ; ?></td>
                           </tr>
                           <tr class="infoBoxContents">
-                          <td class="main p_i_b_title"><?php echo TEXT_PRODUCTS_PRICE;?></td>
+                          <td class="main p_i_b_title"><?php echo TEXT_PRODUCT_PRICE;?></td>
                             <td class="main">
                                 <?php
                                   # 追加スタート ---------------------------------------
@@ -419,7 +419,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                           </tr>
                           <tr>
                             <td class="main" style="padding-left:12px;" width="73">
-                            <div class="calc_show_price"><?php echo TEXT_PRODUCTS_PRICE;?>:</div>
+                            <div class="calc_show_price"><?php echo TEXT_PRODUCT_PRICE;?>:</div>
                             </td>
                             <td width="325">
                               <div id="show_price"></div>
