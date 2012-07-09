@@ -16,9 +16,9 @@ define('NAVBAR_TITLE_2', '手続完了');
 define('HEADING_TITLE', 'ご注文の手続きが完了しました!!');
 define('TEXT_SUCCESS_TITLE', '「注文受付」メールをお送りしましたのでご確認ください。');
 define('TEXT_SUCCESS', '
-<div style="margin-bottom:35px"><h3><b>10分経過してもメールが届かない場合は、再送いたしますのでご連絡ください。</b></h3>
-注意：メールが届かないときは、以下のことを必ずご確認ください。</div>
-<div style="margin-bottom:35px">
+<div style="margin-bottom:35px"><h3><b>'.TEXT_SUCCESS_TITLE.'</b></h3>
+10分経過してもメールが届かない場合は、再送いたしますのでご連絡ください。<br />
+注意：メールが届かないときは、以下のことを必ずご確認ください。<br />
 ＜迷惑メールフォルダの確認＞<br />
 弊社のメールが 「迷惑メールフォルダ」や「ゴミ箱」に振り分けされ見落としていませんか？<br />
 ＜メールドメインの受信制限を設定している＞<br />

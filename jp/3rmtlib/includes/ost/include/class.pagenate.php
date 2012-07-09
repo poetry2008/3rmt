@@ -73,9 +73,17 @@ class PageNate {
 		} else {
 			$to= $this->total;
 		}
+        if(NEW_STYLE_WEB === true){
+        $html="&nbsp;";
+        }else{
         $html="&nbsp;Showing&nbsp;&nbsp;";
+        }
 		if ($this->total > 0) {
+            if(NEW_STYLE_WEB === true){
+            $html .= $from." - ".$to.sprintf(TEXT_DISPLAY_NUMBER_OF_CONTACT,$this->total);
+            }else{
             $html .= "$from - $to of " .$this->total;
+            }
 		}else{
 			$html .= " 0 ";
 		}
