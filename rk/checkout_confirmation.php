@@ -167,7 +167,7 @@ require(DIR_WS_ACTIONS.'checkout_confirmation.php');
     } else {
       echo $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty']);
     }
-    '</td>' . "\n" .
+    echo '</td>' . "\n" .
          '          </tr>' . "\n";
   }
 ?> 
