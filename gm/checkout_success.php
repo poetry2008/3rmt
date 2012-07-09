@@ -124,7 +124,6 @@
                   </tr> 
                 </table>
 				<div id="hm-checkout-warp">
-				<div class="checkout-title"><?php echo TEXT_SUCCESS_TITLE;?></div>
 				<div class="checkout-bottom"><?php echo
                                 tep_image_submit('button_continue.gif',
                                     IMAGE_BUTTON_CONTINUE,'onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_continue.gif\'" onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_continue_hover.gif\'"'); ?></div>
@@ -133,7 +132,6 @@
 <table border="0" width="100%" cellspacing="0" cellpadding="0"
 class="success_spacing"> 
             <?php
-      #convenience_store
             if (!isset($_POST['SID'])) $_POST['SID']=NULL;
             if (!isset($_GET['SID'])) $_GET['SID']=NULL;
       if($_GET['SID'] != "" || $_POST['SID'] != ""){
@@ -171,14 +169,13 @@ class="success_spacing">
     echo TEXT_SEE_ORDERS . '<br><br>' . TEXT_CONTACT_STORE_OWNER;
   }
 ?> 
+<h3><b><?php echo TEXT_THANKS_FOR_SHOPPING; ?></b></h3>
 </td> 
                   </tr> 
                       <?php if (DOWNLOAD_ENABLED == 'true') include(DIR_WS_MODULES . 'downloads.php'); ?> 
           </table> 
 		  </div>
 		  <div id="hm-checkout-warp">
-		  <div class="checkout-title"><?php echo
-                  TEXT_THANKS_FOR_SHOPPING; ?></div>
 		  <div class="checkout-bottom"><?php echo
                   tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE,'onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_continue.gif\'" onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_continue_hover.gif\'"'); ?></div>
 		  </div></div>

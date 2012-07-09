@@ -213,7 +213,7 @@ function set_sub_total()
   for (var i=0; i<final_prices.length; i++)
   {
 
-    var p_l_html = document.getElementById('pri_' + final_prices[i].id.substr(3)).innerHTML.split('円')[0].replace(/,/g,'');
+    var p_l_html = document.getElementById('pri_' + final_prices[i].id.substr(3)).innerHTML.split('<?php echo JPMONEY_UNIT_TEXT;?>')[0].replace(/,/g,'');
     var one_p_quantity = document.getElementById('quantity_'+ final_prices[i].id.substr(3)).value;
     if(document.getElementById('one_price_show_'+ final_prices[i].id.substr(3))){
     var one_price_money = document.getElementById('one_price_'+ final_prices[i].id.substr(3)).innerHTML.replace(/,/g,'');

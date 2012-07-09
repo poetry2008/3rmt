@@ -216,6 +216,12 @@ function rowOutEffect(object) {
 }
 //--></script>
 <script type="text/javascript" src="js/data.js"></script>
+<script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
+<script type="text/javascript"><!--
+$(document).ready(function() {
+  $("#date").val('');    
+});
+//--></script>
 </head>
 <body>
 <!-- header //--> 
@@ -316,8 +322,8 @@ if (!isset($torihikihouhou_error)) $torihikihouhou_error=NULL;
     $hours = date('H');
     $mimutes = date('i');
 ?>
-  <select name="date" onChange="selectDate('<?php echo $hours; ?>', '<?php echo $mimutes; ?>')">
-  <option value=''><?php echo TEXT_DATE_OPTIONS;?></option>
+  <select id="date" name="date" onChange="selectDate('<?php echo $hours; ?>', '<?php echo $mimutes; ?>')">
+  <option value=''><?php echo EXPECT_DATE_SELECT;?></option>
     <?php
           $oarr = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
           $newarr = array(TEXT_DATE_MONDAY, TEXT_DATE_TUESDAY, TEXT_DATE_WEDNESDAY, TEXT_DATE_THURSDAY, TEXT_DATE_FIRDAY, TEXT_DATE_SATURDAY, TEXT_DATE_SUNDAY);
@@ -375,7 +381,7 @@ if (!isset($jikan_error)) $jikan_error=NULL;
 
 <?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?>
     <p class="smalltext">
-      <?php echo TEXT_PROMPT_COMMENT;?> 
+      <?php echo TEXT_CHECKOUT_SHIPPING_READ;?> 
     </p>
     <?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?>
   </div>

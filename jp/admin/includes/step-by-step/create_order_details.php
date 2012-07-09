@@ -4,7 +4,6 @@
 */
 ?>
 <script type="text/javascript">
-  //todo:修改通性用
   function hidden_payment(){
   //var idx = document.create_order.elements["payment_method"].selectedIndex;
   //var CI = document.create_order.elements["payment_method"].options[idx].value;
@@ -369,7 +368,7 @@ echo tep_draw_hidden_field('email_address', $email_address) . '<font color="red"
 ?>
   
 <?php
-if (isset($entry_email_address_error) && $entry_email_address_error == true) { echo '&nbsp;&nbsp;<font color="red">必須</font>'; };
+if (isset($entry_email_address_error) && $entry_email_address_error == true) { echo '&nbsp;&nbsp;<font color="red">'.TEXT_REQUIRED.'</font>'; };
 ?></td>
 </tr>
 </table></td>
@@ -791,7 +790,8 @@ if($index > 0){
           tep_db_free_result($products_query);  
           echo "<tr><form action='$PHP_SELF?oID=$oID&action=$action$param_str' method='POST'>\n";
           echo "<td class='dataTableContent'><b>" . ADDPRODUCT_TEXT_STEP . " 4: </b></td>";
-          echo '<td class="dataTableContent" valign="top">' .  ADDPRODUCT_TEXT_CONFIRM_QUANTITY . '<input name="add_product_quantity" size="2" value="1" onkeyup="clearLibNum(this);">&nbsp;'.EDIT_ORDERS_NUM_UNIT.'&nbsp;&nbsp;&nbsp;&nbsp;<input type="hidden" name="dummy" value="あいうえお眉幅">';
+          echo '<td class="dataTableContent" valign="top">' .
+            ADDPRODUCT_TEXT_CONFIRM_QUANTITY . '<input name="add_product_quantity" size="2" value="1" onkeyup="clearLibNum(this);">&nbsp;'.EDIT_ORDERS_NUM_UNIT.'&nbsp;&nbsp;&nbsp;&nbsp;<input type="hidden" name="dummy" value="'.DUMMY_TEXT.'">';
           echo TABLE_HEADING_UNIT_PRICE.'<input style="text-align:right;" class="once_pwd" onkeyup="clearNoNum_1(this);" value="'. (int)$products_array['products_price'] .'" size="9" name="add_product_price">&nbsp;'. EDIT_ORDERS_PRICE_UNIT .'</td>';
           echo "<td class='dataTableContent' align='center'><input type='submit' value='" . ADDPRODUCT_TEXT_CONFIRM_ADDNOW . "'>";
 

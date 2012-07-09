@@ -693,7 +693,7 @@ function orderConfirmPage(){
 
   text += "<table class='information_table' summary='table'>\n"
   text += "<tr><td bgcolor='#eeeeee' width='130'>";
-  text += "備考";
+  text += "<?php echo TEXT_REORDER_COMMENT_TITLE;?>";
   text += "</td><td>\n";
   text += document.getElementById('comment').value.replace(/\</ig,"&lt;").replace(/\>/ig,"&gt;");
   text += "</td></tr>\n";

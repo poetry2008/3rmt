@@ -445,7 +445,7 @@ if(isset($_GET['login']) && ($_GET['login'] == 'ip_error')){
       <?php }?> 
                       <?php if (!isset($_GET['pid'])) {?> 
                      
-              <tr>  <td colspan="2"> <?php echo HEADING_RETURNING_CUSTOMER; ?></td></tr>
+              <tr>  <td colspan="2"><h3><?php echo HEADING_RETURNING_CUSTOMER; ?></h3></td></tr>
               <?php }?> 
                     <tr>
                       <td colspan="2"><?php echo TEXT_RETURNING_CUSTOMER; ?></td>
@@ -475,7 +475,7 @@ if(isset($_GET['login']) && ($_GET['login'] == 'ip_error')){
             <tr>
               <td colspan="2" valign="top">
               <?php if (!isset($_GET['pid'])) {?> 
-              <b><?php echo HEADING_NEW_CUSTOMER; ?></b>
+              <h3><?php echo HEADING_NEW_CUSTOMER; ?></h3>
               <?php }?> 
               </td>
             </tr>

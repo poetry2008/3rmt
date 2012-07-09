@@ -1166,7 +1166,7 @@ if (!isset($torihikihouhou_error)) $torihikihouhou_error = NULL ; //del notice
   }
 ?>
   <tr>
-  <td class="main" width="30%"><?php echo TEXT_TORIHIKIKIBOUBI; ?></td>
+  <td class="main" width="30%"><?php echo TEXT_EXPECT_TRADE_DATE; ?></td>
     <td class="main" width="70%">
 <?php
     $today = getdate();
@@ -1181,7 +1181,7 @@ if (!isset($torihikihouhou_error)) $torihikihouhou_error = NULL ; //del notice
     <option value=""><?php echo EXPECT_DATE_SELECT;?></option>
     <?php
           $oarr = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
-          $newarr = array(TEXT_DATE_MONDAY, TEXT_DATE_TUESDAY, TEXT_DATE_WENSDAY, TEXT_DATE_THIRSDAY, TEXT_DATE_FRIDAY, TEXT_DATE_STATURDAY, TEXT_DATE_SUNDAY);
+          $newarr = array(TEXT_DATE_MONDAY, TEXT_DATE_TUESDAY, TEXT_DATE_WEDNESDAY, TEXT_DATE_THURSDAY, TEXT_DATE_FRIDAY, TEXT_DATE_STATURDAY, TEXT_DATE_SUNDAY);
     $date_session_flag = false; 
     for($j = 0;$j < $shipping_time;$j++){
       if(isset($_POST['date']) && $_POST['date'] != ""){
@@ -1212,7 +1212,7 @@ if (!isset($date_error)) $date_error= NULL ; //del notice
   }
 ?>
   <tr id="shipping_list" style="display:none;">
-  <td class="main"><?php echo TEXT_TORIHIKIKIBOUJIKAN; ?></td>
+  <td class="main"><?php echo TEXT_EXPECT_TRADE_TIME; ?></td>
     <td class="main" id="shipping_list_show">
   </td>
   </tr>
@@ -1253,7 +1253,7 @@ if (!isset($date_error)) $date_error= NULL ; //del notice
           <tr> 
             <td class="main">
         <br>
-        <?php echo TEXT_CHECKOUT_SHIPPING_READ;?> 
+        <?php echo TEXT_PROMPT_COMMENT;?> 
         <br>
       </td> 
           </tr> 

@@ -44,11 +44,11 @@ define('TEXT_ERROR_BAHAMUTO_EIJI', '<span class="errorText">【お届け先キ�
 define('TEXT_ERROR_OPTION', '<span class="errorText">【オプション】を選択してください。</span>');
 define('TEXT_ERROR_DATE', '<span class="errorText">【取引希望日】を選択してください。</span>');
 define('TEXT_ERROR_JIKAN', '<span class="errorText">【取引希望時間】を選択してください。</span>');
-define('TEXT_DATE_OPTIONS','希望日を選択してください');
+define('EXPECT_DATE_SELECT','希望日を選択してください');
 define('TEXT_DATE_YEAR','年');
 define('TEXT_DATE_MON','月');
 define('TEXT_DATE_DAY','日');
 define('TEXT_DATE_HOUR','時');
 define('TEXT_DATE_MIN','分');
-define('TEXT_PROMPT_COMMENT','「指定した時間より早くできるなら早く来てほしい」をご指定いただきましたお客様へ<br>ご入金確認後、最短にて目的地へお届けにまいります。<br>お客様がいらっしゃらない場合は、ご指定いただきました日時へ変更させていただきます。');
+define('TEXT_CHECKOUT_SHIPPING_READ','「指定した時間より早くできるなら早く来てほしい」をご指定いただきましたお客様へ<br>ご入金確認後、最短にて目的地へお届けにまいります。<br>お客様がいらっしゃらない場合は、ご指定いただきました日時へ変更させていただきます。');
 ?>
