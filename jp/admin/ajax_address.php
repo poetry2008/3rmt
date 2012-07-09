@@ -133,7 +133,7 @@ $options_str_temp = '';
       }
     ?>
       for(x in arr[value]){
-          str += '<tr><td width="30%" height="20" align="left">&nbsp;&nbsp;&nbsp;&nbsp;選択肢</td><td>'+arr[value][x]+'</td></tr>';
+        str += '<tr><td width="30%" height="20" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_13;?></td><td>'+arr[value][x]+'</td></tr>';
       }
       str += '</table>';
       
@@ -205,7 +205,7 @@ $options_str_temp = '';
       }
       ?> 
       for(x in arr[value]){
-          str += '<tr><td width="30%" height="20" align="left">&nbsp;&nbsp;&nbsp;&nbsp;選択肢</td><td>'+arr[value][x]+'</td></tr>';
+        str += '<tr><td width="30%" height="20" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_13;?></td><td>'+arr[value][x]+'</td></tr>';
       }
       str += '</table>';
       
@@ -259,10 +259,10 @@ function check_option_show(value){
   var sel = '';
 
 if(!arr[value]){
-    html_str = '<tr id="o0"><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;初期選択肢</td><td><input type="text" name="option_comment[]" value=""><input type="radio" name="option_value" value="0" checked><input type="button" value="削除" onclick="check_del(\'0\');"></td></tr>';
+  html_str = '<tr id="o0"><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_12;?></td><td><input type="text" name="option_comment[]" value=""><input type="radio" name="option_value" value="0" checked><input type="button" value="<?php echo TABLE_BUTTON_DEL;?>" onclick="check_del(\'0\');"></td></tr>';
     for(j=1;j<5;j++){
      
-      html_str += '<tr id="o'+j+'"><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;選択肢</td><td><input type="text" name="option_comment[]" value=""><input type="radio" name="option_value" value="'+j+'"><input type="button" value="削除" onclick="check_del('+j+');"></td></tr>';
+      html_str += '<tr id="o'+j+'"><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;<?php echo TABLE_LIST_13;?></td><td><input type="text" name="option_comment[]" value=""><input type="radio" name="option_value" value="'+j+'"><input type="button" value="<?php echo TABLE_BUTTON_DEL;?>" onclick="check_del('+j+');"></td></tr>';
 
     }
     document.getElementById('num').value = 5;
@@ -270,7 +270,7 @@ if(!arr[value]){
 
   for(x in arr[value]){
     if(arr_set[value][0] == arr[value][x]){ sel = 'checked';
-      show_title = '初期選択肢';
+    show_title = '<?php echo TABLE_LIST_12;?>';
     
       html_str += '<tr id="o0"><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;'+show_title+'</td><td><input type="text" name="option_comment[]" value="'+arr[value][x]+'"><input type="radio" name="option_value" value="0" '+sel+'></td></tr>';
       i++;
@@ -279,9 +279,9 @@ if(!arr[value]){
   }
   for(x in arr[value]){
     if(arr_set[value][0] == arr[value][x]){continue;}
-    show_title = '選択肢';
+      show_title = '<?php echo TABLE_LIST_13;?>';
      
-    html_str += '<tr id="o'+i+'"><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;'+show_title+'</td><td><input type="text" name="option_comment[]" value="'+arr[value][x]+'"><input type="radio" name="option_value" value="'+i+'" '+sel+'><input type="button" value="削除" onclick="check_del('+i+');"></td></tr>';
+    html_str += '<tr id="o'+i+'"><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;'+show_title+'</td><td><input type="text" name="option_comment[]" value="'+arr[value][x]+'"><input type="radio" name="option_value" value="'+i+'" '+sel+'><input type="button" value="<?php echo TABLE_BUTTON_DEL;?>" onclick="check_del('+i+');"></td></tr>';
     i++;
     sel = '';
   }
@@ -318,7 +318,7 @@ $(document).ready(function(){
 <?php
 if($id == 0 || $maxid == $minid){
 ?>
- <tr><td width="20"><?php echo tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO); ?></td><td><b><?php echo TABLE_NEW.TABLE_TITLE_1;?></b></td><td align="right"><a href="javascript:hide_text();">X</a></td></tr>
+  <tr><td width="20"><?php echo tep_image(DIR_WS_IMAGES . 'icon_info.gif', IMAGE_ICON_INFO); ?></td><td><b><?php echo TABLE_NEW.TABLE_TITLE_1;?></b></td><td align="right"><a href="javascript:hide_text();"><?php echo TEXT_CLOSE;?></a></td></tr>
 <?php
 }else{
   $prev_str = '';
@@ -397,11 +397,11 @@ if($type == 'text'){
   echo '<tr><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;'. TABLE_LIST_7 .'</td><td><input type="text" name="option_comment[]" value="'. $rows .'" style="text-align: right;"></td></tr>';
   echo '<tr><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;'. TABLE_LIST_8 .'</td><td>
     <select name="text_type">
-    <option value="all" '. $select_all .'>全て</option>
-    <option value="false_name" '. $select_false_name .'>カナ</option>
-    <option value="english_num" '. $select_english_num .'>英数</option>
-    <option value="english" '. $select_english .'>英</option>
-    <option value="num" '. $select_num .'>数</option>
+    <option value="all" '. $select_all .'>'.TEXT_OPTION_ALL.'</option>
+    <option value="false_name" '. $select_false_name .'>'.TEXT_OPTION_FALSE_NAME.'</option>
+    <option value="english_num" '. $select_english_num .'>'.TEXT_OPTION_ENGLISH_NUM.'</option>
+    <option value="english" '. $select_english .'>'.TEXT_OPTION_ENGLISH.'</option>
+    <option value="num" '. $select_num .'>'.TEXT_OPTION_NUM.'</option>
     <option value="email" '. $select_email .'>Email</option>
     </select><br>'. TABLE_PROMPT_1 .'</td></tr>';
   echo '<tr><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;'. TABLE_LIST_9 .'</td><td><input type="text" name="limit" value="'. $limit.'" style="text-align: right;"><br>'. TABLE_PROMPT_2 .'</td></tr>';
@@ -594,7 +594,7 @@ if($type != 'text'){
 <?php
 if($id != 0 && $fixed_option == '0'){
 ?>
-<input type="button" name="del" value="<?php echo TABLE_BUTTON_DEL;?>" onclick="if(confirm('このレコードを削除してもよろしいですか？')){check('del');}else{return false;}">
+  <input type="button" name="del" value="<?php echo TABLE_BUTTON_DEL;?>" onclick="if(confirm('<?php echo TEXT_WANT_DELETE;?>')){check('del');}else{return false;}">
 <?php
 }
 ?>

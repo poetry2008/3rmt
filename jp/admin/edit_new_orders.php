@@ -2074,7 +2074,7 @@ var address_select = '';
 
       $oID_id = $oID;
     }
-    $address_show_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID_id ."'");
+    $address_show_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID_id ."' order by id");
     $add_count = tep_db_num_rows($address_show_query);
     while($address_show_array = tep_db_fetch_array($address_show_query)){
       

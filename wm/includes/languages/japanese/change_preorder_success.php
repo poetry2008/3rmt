@@ -39,3 +39,6 @@ define('CPREORDER_SUCCESS_TEXT', '<span class="red"><b>「注文受付」メー�
 お客様ご指定の取引日時にログインをお願いいたします。10分経過しましても弊社キャラクターが現れない場合は、サポートセンターへお問い合わせください。
 <br><br>
 <div class="dot">&nbsp;</div>');
+define('PREORDER_TRADER_LINE_TITLE', '取引情報');
+define('PREORDER_CONFIRM_LINE_TITLE', '最終確認');
+define('PREORDER_FINISH_LINE_TITLE', '手続き完了！');

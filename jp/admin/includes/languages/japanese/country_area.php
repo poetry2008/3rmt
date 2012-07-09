@@ -13,4 +13,9 @@ define('TABLE_TITLE_6','操作');
 define('TABLE_BUTTON','新規作成');
 define('TABLE_HISTROY','戻る');
 define('TABLE_SORT','整列順');
+define('TEXT_ENABLE','有効');
+define('TEXT_DISABLE','無効にする');
+define('TEXT_WANT_DISABLE','無効にしますか？');
+define('TEXT_WANT_ENABLE','有効にしますか？');
+define('TEXT_FOLDER','フォルダ');
 ?>

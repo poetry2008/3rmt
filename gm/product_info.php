@@ -139,14 +139,14 @@ if (!$product_info) { // product not found in database
                 <?php } ?>
                 <tr>
                 <td><b><?php 
-                echo TEXT_PRODUCT_INFO_MAKER_NAME;?></b></td>
+                echo TEXT_PRODUCT_MANUFACTURER_NAME;?></b></td>
                 <td>
                 <?php include(DIR_WS_BOXES.'manufacturer_info.php') ; ?>
                 </td>
                 </tr>
                 <tr>
                 <td valign="top"><b><?php echo
-                TEXT_PRODUCT_INFO_PRICE;?></b></td>
+                TEXT_PRODUCT_PRICE;?></b></td>
                 <td>
                 <?php
 //# 追加スタート ---------------------------------------
@@ -176,7 +176,7 @@ if (!$product_info) { // product not found in database
     </tr>
     <tr>
     <td><b><?php echo
-    TEXT_PRODUCT_INFO_ORDER_QTY;?></b></td>
+    TEXT_ORDERS_NUM;?></b></td>
     <td><?php echo
     sprintf(TEXT_PRODUCT_INFO_QTY_TEXT,tep_show_quantity($product_info['products_quantity'])); ?></td>
     </tr>
@@ -199,7 +199,7 @@ if (!$product_info) { // product not found in database
             <?php if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && !$product_info['products_bflag']) { ?>
               <tr>
                 <td><b><?php echo 
-                TEXT_PRODUCT_INFO_POINT;?></b></td>
+                TEXT_POINT;?></b></td>
                 <td><?php echo
                 sprintf(TEXT_PRODUCT_INFO_POINT_INFO,ds_tep_get_point_value($_GET['products_id'])) ; ?></td>
                 </tr>
@@ -258,19 +258,19 @@ if (!$product_info) { // product not found in database
     if($product_info['products_quantity'] < 1) {
       if($product_info['products_bflag'] == '1') {
 # 買い取り商品
-        echo '<span class="markProductOutOfStock">'.TEXT_PRODUCT_INFO_STOP;
+        echo '<span class="markProductOutOfStock">'.TEXT_PAUSE;
       } elseif ($product_info['products_cflag'] == '0') {
-        echo '<span class="markProductOutOfStock">'.TEXT_PRODUCT_INFO_SELL_EMPTY;
+        echo '<span class="markProductOutOfStock">'.TEXT_SOLD_OUT;
       } else {
 # 通常商品
-        echo '<span class="markProductOutOfStock">'.TEXT_PRODUCT_INFO_INVENTORY_EMPTY;
+        echo '<span class="markProductOutOfStock">'.TEXT_OUT_OF_STOCK;
       }
       if ($product_info['preorder_status'] == '1') {
         echo '<img src="images/design/box/arrow_2.gif" width="5" height="5"
           hspace="5" border="0" align="absmiddle" alt=""><a href=' .
           tep_preorder_href_link($product_info['products_id'],
               $product_info['romaji']) . '>' . $product_info['products_name'] . 
-          TEXT_PRODUCT_INFO_PREORDER.'</a>';
+          TEXT_PREORDER_BOOK.'</a>';
       }
       echo '</span>'; 
     }else{    
@@ -386,14 +386,14 @@ if (!$product_info) { // product not found in database
       }
       ?>
         <div id="calculation">
-        <span><?php echo TEXT_PRODUCT_INFO_SUM;?></span>
+        <span><?php echo TEXT_PRODUCTS_QTY;?></span>
         <input name="quantity" type="text" id="quantity" style="text-align:right;"
         value="1" size="4" maxlength="4">                  <?php $p_a_quan = $product_info['products_quantity'];?>
         <div id="calculation-add">
         <a style="display:block;" <?php echo $void_href;?> onClick="change_num('quantity','up',1,<?php echo $p_a_quan;?>);return false;"><img src="images/ico/nup.gif" alt="+"></a>
         <a style="display:block;" <?php echo $void_href;?> onClick="change_num('quantity','down', 1,<?php echo $p_a_quan;?>);return false;"><img src="images/ico/ndown.gif" alt="-"></a>
         </div>
-        <span> <?php echo TEXT_PRODUCT_INFO_ROW;?></span>
+        <span> <?php echo TEXT_UNIT;?></span>
         <div id="calculation-bottom"><?php echo tep_image_submit('button_in_cart.gif', IMAGE_BUTTON_IN_CART); ?></div>
         </div>
         <?php
@@ -406,14 +406,14 @@ if (!$product_info) { // product not found in database
     <li onClick="document.open_ost.submit();">      
     <?php echo   tep_draw_form('open_ost',tep_href_link('open.php'),'get');?>
     <?php echo tep_draw_hidden_field('products', $product_info['products_name']) ;?>
-    <a <?php echo $void_href;?> ><img src="images/ask01.gif"><?php echo TEXT_PRODUCT_CONTACT;?></a>
+    <a <?php echo $void_href;?> ><img src="images/ask01.gif"><?php echo TEXT_CONTACT_US;?></a>
     </li>
     <li> <a href="<?php echo tep_href_link(FILENAME_PRODUCT_REVIEWS_WRITE,'products_id='.(int)$_GET['products_id'])
-    ; ?>"><img src="images/Record.gif"><?php echo TEXT_PRODUCT_WRITE_REVIEWS;?></a>
+    ; ?>"><img src="images/Record.gif"><?php echo BOX_REVIEWS_WRITE_REVIEW;?></a>
     </li>
     <li>                  <a href="<?php echo
     tep_href_link(FILENAME_TELL_A_FRIEND,'products_id='.(int)$_GET['products_id']);
-  ?>"><img src="images/Collection.gif"><?php echo TEXT_TELL_A_FRIEND;?></a></li>                   
+  ?>"><img src="images/Collection.gif"><?php echo BOX_HEADING_TELL_A_FRIEND;?></a></li>                   
     </ul>
     </form>
     </div>

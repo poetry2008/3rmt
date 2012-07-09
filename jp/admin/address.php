@@ -9,12 +9,11 @@ function rand_str(){
   
   $rand_string = '';
   $rand_array = range('a','z');
-  $rand_arr = array_rand($rand_array,16);
-  foreach($rand_arr as $rand_value){
+  $rand_count = count($rand_array);
+  for($rand_i = 0;$rand_i < 16;$rand_i++){
 
-    $rand_string .= $rand_array[$rand_value];
+    $rand_string .= $rand_array[mt_rand(0,$rand_count-1)]; 
   }
-
   return $rand_string;
 }
 $action = $_GET['action'];
@@ -314,14 +313,14 @@ while($address_array = tep_db_fetch_array($address_query)){
   echo '<td >';
   if($address_array['status'] == 0){
 ?>
-  <img border="0" src="images/icon_status_green.gif" alt="有効" title="有効">
-<a title="無効にする" onclick="if(confirm('無効にしますか？')){check_on('del',<?php echo $address_array['id'];?>);}else{return false;}" href="javascript:void(0);"><img border="0" alt="" src="images/icon_status_red_light.gif"></a>
+  <img border="0" src="images/icon_status_green.gif" alt="<?php echo TEXT_ENABLE;?>" title="<?php echo TEXT_ENABLE;?>">
+  <a title="<?php echo TEXT_DISABLE;?>" onclick="if(confirm('<?php echo TEXT_WANT_DISABLE;?>')){check_on('del',<?php echo $address_array['id'];?>);}else{return false;}" href="javascript:void(0);"><img border="0" alt="" src="images/icon_status_red_light.gif"></a>
 
 <?php
 }else{
 ?>
-<a title="有効" onclick="if(confirm('有効にしますか？')){check_on('res',<?php echo $address_array['id'];?>);}else{return false;}" href="javascript:void(0);"><img border="0" alt="" src="images/icon_status_green_light.gif"></a>
-<img border="0" alt="無効にする" src="images/icon_status_red.gif" title="無効にする">
+<a title="<?php echo TEXT_ENABLE;?>" onclick="if(confirm('<?php echo TEXT_WANT_ENABLE;?>')){check_on('res',<?php echo $address_array['id'];?>);}else{return false;}" href="javascript:void(0);"><img border="0" alt="" src="images/icon_status_green_light.gif"></a>
+<img border="0" alt="<?php echo TEXT_DISABLE;?>" src="images/icon_status_red.gif" title="<?php echo TEXT_DISABLE;?>">
 
 <?php
 }

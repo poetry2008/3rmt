@@ -32,4 +32,5 @@ define('TEXT_NEED_RETENTION','予約の必要がございません。');
 define('TEXT_ORDERS_QTY','個は注文可能です。');
 define('TEXT_PREORDER_HERE','コチラ');
 define('TEXT_PREORDER_FROM',' からお手続きください。 ');
+define('PREORDER_SELECT_EMPTY_OPTION', '希望日を選択してください');
 ?>

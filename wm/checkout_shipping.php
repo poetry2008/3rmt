@@ -790,8 +790,7 @@ $(document).ready(function(){
   <?php
   }else{
   ?>
-    check();
-    address_option_list(first_num); 
+    check();     
   <?php
   }
   ?>
@@ -825,6 +824,13 @@ $(document).ready(function(){
     country_area_check($("#"+country_area_id).val());
   <?php
   }
+  ?>
+  <?php
+    if(!isset($_POST[$country_area_id]) && !isset($_SESSION['options'])){
+  ?>    
+    address_option_list(first_num); 
+  <?php
+    }
   ?>
 });
 </script>
@@ -1175,7 +1181,7 @@ if (!isset($torihikihouhou_error)) $torihikihouhou_error = NULL ; //del notice
 ?>
   <tr>
     <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-  <td class="main" width="30%"><?php echo TEXT_TORIHIKIKIBOUBI; ?></td>
+  <td class="main" width="30%"><?php echo TEXT_EXPECT_TRADE_DATE; ?></td>
     <td class="main" width="70%">
 <?php
     $today = getdate();
@@ -1190,7 +1196,7 @@ if (!isset($torihikihouhou_error)) $torihikihouhou_error = NULL ; //del notice
     <option value=""><?php echo EXPECT_DATE_SELECT;?></option>
     <?php
           $oarr = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
-          $newarr = array(CHECKOUT_SHIPPING_MONDAY_TEXT, CHECKOUT_SHIPPING_TUESDAY_TEXT, CHECKOUT_SHIPPING_WENSDAY_TEXT, CHECKOUT_SHIPPING_THIRSDAY_TEXT, CHECKOUT_SHIPPING_FRIDAY_TEXT, CHECKOUT_SHIPPING_STATURDAY_TEXT, CHECKOUT_SHIPPING_SUNDAY_TEXT);
+          $newarr = array(TEXT_DATE_MONDAY, TEXT_DATE_TUESDAY, TEXT_DATE_WENSDAY, TEXT_DATE_THURSDAY, TEXT_DATE_FRIDAY, TEXT_DATE_STATURDAY, TEXT_DATE_SUNDAY);
     $date_session_flag = false; 
     for($j = 0;$j < $shipping_time;$j++){
       if(isset($_POST['date']) && $_POST['date'] != ""){
@@ -1203,7 +1209,7 @@ if (!isset($torihikihouhou_error)) $torihikihouhou_error = NULL ; //del notice
         $date_session_flag = true;
       }
       echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'"
-        '. $selected_str .'>'.str_replace($oarr, $newarr, date("Y".CHECKOUT_SHIPPING_YEAR_TEXT."m".CHECKOUT_SHIPPING_MONTH_TEXT."d".CHECKOUT_SHIPPING_DAY_TEXT."（l）", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
+        '. $selected_str .'>'.str_replace($oarr, $newarr, date("Y".DATE_YEAR_TEXT."m".DATE_MONTH_TEXT."d".DATE_DAY_TEXT."（l）", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
 
     }
     ?>
@@ -1267,7 +1273,7 @@ if (!isset($date_error)) $date_error= NULL ; //del notice
           <tr> 
             <td class="main">
         <br>
-        <?php echo TEXT_CHECKOUT_SHIPPING_READ;?> 
+        <?php echo TEXT_PROMPT_COMMENT;?> 
         <br>
       </td> 
           </tr> 

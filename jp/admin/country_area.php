@@ -211,7 +211,7 @@ while($area_fee_array = tep_db_fetch_array($area_fee_query)){
 
   $fee = current($area_fee_option_array);
   echo '<tr class="'.$nowColor.'" '. $onmouseover .'>' . "\n";
-  echo '<td onclick="document.location.href=\'?fid='. $area_fee_array['fid'] .'&page='. $_GET['page'] .'&id='. $area_fee_array['id'] .'\'"><a href="country_city.php?fid='. $area_fee_array['id'] .'"><img border="0" title=" フォルダ " alt="フォルダ" src="images/icons/folder.gif"></a>&nbsp;&nbsp;'.$area_fee_array['title'].'</td>';
+  echo '<td onclick="document.location.href=\'?fid='. $area_fee_array['fid'] .'&page='. $_GET['page'] .'&id='. $area_fee_array['id'] .'\'"><a href="country_city.php?fid='. $area_fee_array['id'] .'"><img border="0" title="'.TEXT_FOLDER.'" alt="'.TEXT_FOLDER.'" src="images/icons/folder.gif"></a>&nbsp;&nbsp;'.$area_fee_array['title'].'</td>';
   echo '<td onclick="document.location.href=\'?fid='. $area_fee_array['fid'] .'&page='. $_GET['page'] .'&id='. $area_fee_array['id'] .'\'">'.$area_fee_array['name'].'</td>';
   echo '<td onclick="document.location.href=\'?fid='. $area_fee_array['fid'] .'&page='. $_GET['page'] .'&id='. $area_fee_array['id'] .'\'">'. $fee .'</td>';
   echo '<td onclick="document.location.href=\'?fid='. $area_fee_array['fid'] .'&page='. $_GET['page'] .'&id='. $area_fee_array['id'] .'\'">'. $area_fee_array['date'] .'</td>';
@@ -219,14 +219,14 @@ while($area_fee_array = tep_db_fetch_array($area_fee_query)){
   echo '<td>';
   if($area_fee_array['status'] == 0){
 ?>
-  <img border="0" src="images/icon_status_green.gif" alt="" title="有効">
-  <a title="無効にする" onclick="if(confirm('無効にしますか？')){check_on_area('del',<?php echo $area_fee_array['id'];?>,<?php echo $_GET['fid'];?>);}else{return false;}" href="javascript:void(0);"><img border="0" alt="" src="images/icon_status_red_light.gif"></a>
+  <img border="0" src="images/icon_status_green.gif" alt="" title="<?php echo TEXT_ENABLE;?>">
+  <a title="<?php echo TEXT_DISABLE;?>" onclick="if(confirm('<?php echo TEXT_WANT_DISABLE;?>')){check_on_area('del',<?php echo $area_fee_array['id'];?>,<?php echo $_GET['fid'];?>);}else{return false;}" href="javascript:void(0);"><img border="0" alt="" src="images/icon_status_red_light.gif"></a>
 
 <?php
 }else{
 ?>
-  <a title="有効" onclick="if(confirm('有効にしますか？')){check_on_area('res',<?php echo $area_fee_array['id'];?>,<?php echo $_GET['fid'];?>);}else{return false;}" href="javascript:void(0);"><img border="0" alt="" src="images/icon_status_green_light.gif"></a>
-<img border="0" alt="" src="images/icon_status_red.gif" title="無効にする">
+  <a title="<?php echo TEXT_ENABLE;?>" onclick="if(confirm('<?php echo TEXT_WANT_ENABLE;?>')){check_on_area('res',<?php echo $area_fee_array['id'];?>,<?php echo $_GET['fid'];?>);}else{return false;}" href="javascript:void(0);"><img border="0" alt="" src="images/icon_status_green_light.gif"></a>
+  <img border="0" alt="" src="images/icon_status_red.gif" title="<?php echo TEXT_DISABLE;?>">
 
 <?php
 }

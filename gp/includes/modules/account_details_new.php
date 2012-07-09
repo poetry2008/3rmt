@@ -273,7 +273,7 @@ function address_list(){
         }
     }
     if(arr_str != ''){
-      address_show_list.options[address_show_list.options.length]=new Option(arr_str,i);
+      address_show_list.options[address_show_list.options.length]=new Option(arr_str,i,i==<?php echo isset($_POST['address_show_list']) ? $_POST['address_show_list'] : 0;?>,i==<?php echo isset($_POST['address_show_list']) ? $_POST['address_show_list'] : 0;?>);
     }
 
   }
@@ -551,7 +551,7 @@ $(document).ready(function(){
         ?>
         <table border="0" cellspacing="0" cellpadding="2" summary="table" class="formArea">
         <tr id="address_histroy_id"<?php echo $sylte_none;?>><td class="main" width="120">&nbsp;<?php echo
-        TITLE_ADDRESS_OPTION;?></td><td class="main">&nbsp;<select id="address_show_list" onchange="address_option_list(this.value);"></select>
+        TITLE_ADDRESS_OPTION;?></td><td class="main">&nbsp;<select id="address_show_list" name="address_show_list" onchange="address_option_list(this.value);"></select>
         <input type="hidden" id="address_flag_id" name="address_flag_id" value="">
         <input type="hidden" id="first_name" name="lastname" value="">
         <input type="hidden" id="end_name" name="firstname" value="">

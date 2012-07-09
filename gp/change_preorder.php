@@ -993,23 +993,6 @@ document.forms.order1.submit();
         
         <div class="formAreaTitle" style="font-size:12px;"><?php echo CHANGE_ORDER_FETCH_TIME_TITLE;?></div> 
         <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
-<!--
-        <tr>
-              <td class="main" width="150">
-              <?php echo CHANGE_ORDER_FETCH_TIME_READ;?> 
-              </td>
-              <td class="main">
-              <?php 
-              $ids[] = $preorder_product_res['products_id']; 
-              echo tep_get_torihiki_select_by_products($ids);
-              if (isset($torihikihouhou_error)) {
-                echo '<font color="#ff0000">'.$torihikihouhou_error.'</font>'; 
-              }
-              ?> 
-               
-              </td>
-        </tr>
--->
         <tr>
           <td class="main" width="150">
           <?php echo CHANGE_ORDER_FETCH_DAY;?> 
@@ -1028,14 +1011,14 @@ document.forms.order1.submit();
     <option value=""><?php echo PREORDER_SELECT_EMPTY_OPTION;?></option>
     <?php
           $oarr = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
-          $newarr = array(PREORDER_MONDAY_TEXT, PREORDER_TUESDAY_TEXT, PREORDER_WENSDAY_TEXT, PREORDER_THIRSDAY_TEXT, PREORDER_FRIDAY_TEXT, PREORDER_STATURDAY_TEXT, PREORDER_SUNDAY_TEXT); 
+          $newarr = array(TEXT_DATE_MONDAY, TEXT_DATE_TUESDAY, TEXT_DATE_WENSDAY, TEXT_DATE_THURSDAY, TEXT_DATE_FRIDAY, TEXT_DATE_STATURDAY, TEXT_DATE_SUNDAY); 
     for($j = 0;$j < $shipping_time;$j++){
 
       $selected_str = date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == $_POST['date'] ? 'selected' : ''; 
       if(!isset($_POST['date'])){
         $selected_str = date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == $_SESSION['preorder_information']['date'] ? 'selected' : ''; 
       }
-      echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'" '. $selected_str .'>'.str_replace($oarr, $newarr, date("Y".PREORDER_YEAR_TEXT."m".PREORDER_MONTH_TEXT."d".PREORDER_DAY_TEXT."（l）", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
+      echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'" '. $selected_str .'>'.str_replace($oarr, $newarr, date("Y".DATE_YEAR_TEXT."m".DATE_MONTH_TEXT."d".DATE_DAY_TEXT."（l）", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
 
     }
     ?>
@@ -1050,16 +1033,6 @@ document.forms.order1.submit();
             <tr id="shipping_list" style="display:none;">
               <td class="main"><?php echo CHANGE_ORDER_FETCH_DATE;?></td> 
               <td class="main" id="shipping_list_show">
-<!--
-  <select name="hour" onChange="selectHour('<?php echo $hours; ?>', '<?php echo $mimutes; ?>')">
-    <option value="">--</option>
-  </select>
-  &nbsp;<?php echo PREORDER_HOUR_TEXT;?>&nbsp;
-  <select name="min">
-    <option value="">--</option>
-  </select>
-  &nbsp;<?php echo PREORDER_MIN_TEXT;?>&nbsp;
--->
 </td>
 </tr>
 <tr><td class="main">&nbsp;</td><td class="main">

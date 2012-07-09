@@ -270,7 +270,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
           
           $replace_info_arr = array('${PRODUCTS_NAME}', '${PRODUCTS_QUANTITY}', '${EFFECTIVE_TIME}', '${PAY}', '${NAME}', '${SITE_NAME}', '${SITE_URL}', '${PREORDER_N}', '${ORDER_COMMENT}', '${PRODUCTS_ATTRIBUTES}'); 
           $predate_str_arr = explode('-', $_POST['predate']);
-          $predate_str = $predate_str_arr[0].PREORDER_YEAR_TEXT.$predate_str_arr[1].PREORDER_MONTH_TEXT.$predate_str_arr[2].PREORDER_MONTH_TEXT;
+          $predate_str = $predate_str_arr[0].DATE_YEAR_TEXT.$predate_str_arr[1].DATE_MONTH_TEXT.$predate_str_arr[2].DATE_MONTH_TEXT;
         
           $payment_name_class = new $_POST['pre_payment'];
           $payment_name_str = $payment_name_class->title;
@@ -309,7 +309,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
             
             $replace_info_arr = array('${PRODUCTS_NAME}', '${PRODUCTS_QUANTITY}', '${EFFECTIVE_TIME}', '${PAY}', '${NAME}', '${SITE_NAME}', '${SITE_URL}', '${PREORDER_N}', '${ORDER_COMMENT}', '${PRODUCTS_ATTRIBUTES}'); 
             $predate_str_arr = explode('-', $_POST['predate']);
-            $predate_str = $predate_str_arr[0].PREORDER_YEAR_TEXT.$predate_str_arr[1].PREORDER_MONTH_TEXT.$predate_str_arr[2].PREORDER_MONTH_TEXT;
+            $predate_str = $predate_str_arr[0].DATE_YEAR_TEXT.$predate_str_arr[1].DATE_MONTH_TEXT.$predate_str_arr[2].DATE_MONTH_TEXT;
             
             $payment_name_class = new $_POST['pre_payment'];
             $payment_name_str = $payment_name_class->title;

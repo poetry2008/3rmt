@@ -188,7 +188,7 @@ function showimage($1) {
                 <tr>
                   <td><table width="100%" border="0" cellpadding="3" cellspacing="1">
                       <tr class="infoBoxContents">
-                      <td class="main" width="85"><font color="#0070AF"><?php echo TEXT_PRODUCTS_CODE?></font></td>
+                      <td class="main" width="85"><font color="#0070AF"><?php echo TEXT_PRODUCT_MODEL;?></font></td>
                         <td class="main"><?php if (PRODUCT_LIST_MODEL > 0){ echo $product_info['products_model'] ; }else{ echo '-' ; } ?></td>
                       </tr>
                       <?php 
@@ -218,11 +218,11 @@ function showimage($1) {
                       <?php } ?>
 
                       <tr class="infoBoxContents">
-                      <td class="main"><font color="#0070AF"><?php echo TEXT_STUDIO_NAME;?></font></td>
+                      <td class="main"><font color="#0070AF"><?php echo TEXT_PRODUCT_MANUFACTURER_NAME;?></font></td>
                         <td class="main"><?php include(DIR_WS_BOXES.'manufacturer_info.php') ; ?></td>
                       </tr>
                       <tr class="infoBoxContents">
-                      <td class="main" width="85"><font color="#0070AF"><?php echo TEXT_PRODUCTS_PRICE;?></font></td>
+                      <td class="main" width="85"><font color="#0070AF"><?php echo TEXT_PRODUCT_PRICE;?></font></td>
                         <td class="main">
               <?php
                 # 追加スタート ---------------------------------------
@@ -417,7 +417,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                       </tr>
                       <tr>
                         <td class="main" width="85">
-                        <div class="calc_show_price"><?php echo TEXT_PRODUCTS_PRICE;?>:</div>
+                        <div class="calc_show_price"><?php echo TEXT_PRODUCT_PRICE;?>:</div>
                         </td>
                         <td width="325">
                         <div id="show_price"></div>

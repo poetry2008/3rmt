@@ -83,7 +83,7 @@
       $replace_info_arr = array('${PRODUCTS_NAME}', '${PRODUCTS_QUANTITY}', '${EFFECTIVE_TIME}', '${PAY}', '${NAME}', '${SITE_NAME}', '${SITE_URL}', '${PREORDER_N}', '${ORDER_COMMENT}', '${PRODUCTS_ATTRIBUTES}'); 
       
       $pre_date_str = strtotime($preorder_res['predate']); 
-      $pre_date = date('Y', $pre_date_str).PREORDER_YEAR_TEXT.date('m', $pre_date_str).PREORDER_MONTH_TEXT.date('d', $pre_date_str).PREORDER_DAY_TEXT; 
+      $pre_date = date('Y', $pre_date_str).DATE_YEAR_TEXT.date('m', $pre_date_str).DATE_MONTH_TEXT.date('d', $pre_date_str).DATE_DAY_TEXT; 
 
       $preorder_products_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$pid."'");
       $preorder_products_res = tep_db_fetch_array($preorder_products_raw);

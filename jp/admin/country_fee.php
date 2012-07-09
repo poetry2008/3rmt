@@ -196,20 +196,20 @@ while($country_fee_array = tep_db_fetch_array($country_fee_query)){
 
   $fee = current($country_fee_option_array);
   echo '<tr class="'.$nowColor.'" '. $onmouseover .'>' . "\n";
-  echo '<td onclick="document.location.href=\'?page='. $_GET['page'] .'&id='. $country_fee_array['id'] .'\'"><a href="country_area.php?fid='. $country_fee_array['id'] .'"><img border="0" title=" フォルダ " alt="フォルダ" src="images/icons/folder.gif"></a>&nbsp;&nbsp;'.$country_fee_array['title'].'</td>';
+  echo '<td onclick="document.location.href=\'?page='. $_GET['page'] .'&id='. $country_fee_array['id'] .'\'"><a href="country_area.php?fid='. $country_fee_array['id'] .'"><img border="0" title="'.TEXT_FOLDER.'" alt="'.TEXT_FOLDER.'" src="images/icons/folder.gif"></a>&nbsp;&nbsp;'.$country_fee_array['title'].'</td>';
   echo '<td onclick="document.location.href=\'?page='. $_GET['page'] .'&id='. $country_fee_array['id'] .'\'">'.$country_fee_array['name'].'</td>';
   echo '<td onclick="document.location.href=\'?page='. $_GET['page'] .'&id='. $country_fee_array['id'] .'\'">'. $fee .'</td>';
   echo '<td>';
   if($country_fee_array['status'] == 0){
 ?>
-  <img border="0" src="images/icon_status_green.gif" alt="" title="有効">
-<a title="無効にする" onclick="if(confirm('無効にしますか？')){check_on_fee('del',<?php echo $country_fee_array['id'];?>);}else{return false;}" href="javascript:void(0);"><img border="0" alt="" src="images/icon_status_red_light.gif"></a>
+  <img border="0" src="images/icon_status_green.gif" alt="" title="<?php echo TEXT_ENABLE;?>">
+  <a title="<?php echo TEXT_DISABLE;?>" onclick="if(confirm('<?php echo TEXT_WANT_DISABLE;?>')){check_on_fee('del',<?php echo $country_fee_array['id'];?>);}else{return false;}" href="javascript:void(0);"><img border="0" alt="" src="images/icon_status_red_light.gif"></a>
 
 <?php
 }else{
 ?>
-<a title="有効" onclick="if(confirm('有効にしますか？')){check_on_fee('res',<?php echo $country_fee_array['id'];?>);}else{return false;}" href="javascript:void(0);"><img border="0" alt="" src="images/icon_status_green_light.gif"></a>
-<img border="0" alt="" src="images/icon_status_red.gif" title="無効にする">
+<a title="<?php echo TEXT_ENABLE;?>" onclick="if(confirm('<?php echo TEXT_WANT_ENABLE;?>')){check_on_fee('res',<?php echo $country_fee_array['id'];?>);}else{return false;}" href="javascript:void(0);"><img border="0" alt="" src="images/icon_status_green_light.gif"></a>
+<img border="0" alt="" src="images/icon_status_red.gif" title="<?php echo TEXT_DISABLE;?>">
 
 <?php
 }

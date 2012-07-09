@@ -322,8 +322,13 @@ if (!isset($torihikihouhou_error)) $torihikihouhou_error=NULL;
     $hours = date('H');
     $mimutes = date('i');
 ?>
+<<<<<<< HEAD
   <select id="date" name="date" onChange="selectDate('<?php echo $hours; ?>', '<?php echo $mimutes; ?>')">
   <option value=''><?php echo TEXT_DATE_OPTIONS;?></option>
+=======
+  <select name="date" onChange="selectDate('<?php echo $hours; ?>', '<?php echo $mimutes; ?>')">
+  <option value=''><?php echo EXPECT_DATE_SELECT;?></option>
+>>>>>>> 056296bb4cae57d2ebae927da5cbef57abee3584
     <?php
           $oarr = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
           $newarr = array(TEXT_DATE_MONDAY, TEXT_DATE_TUESDAY, TEXT_DATE_WEDNESDAY, TEXT_DATE_THURSDAY, TEXT_DATE_FIRDAY, TEXT_DATE_SATURDAY, TEXT_DATE_SUNDAY);
