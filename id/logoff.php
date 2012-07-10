@@ -20,6 +20,41 @@
   tep_session_unregister('comments');
   tep_session_unregister('customer_emailaddress');
 
+  // products session destroy
+  tep_session_unregister('shipping');
+  tep_session_unregister('payment');
+  tep_session_unregister('comments');
+  tep_session_unregister('point');
+  tep_session_unregister('get_point');
+  tep_session_unregister('real_point');
+  tep_session_unregister('torihikihouhou');
+  tep_session_unregister('date');
+  tep_session_unregister('hour');
+  tep_session_unregister('min');
+  tep_session_unregister('insert_torihiki_date');
+  unset($_SESSION['character']);
+  unset($_SESSION['option']);
+  unset($_SESSION['referer_adurl']);
+  unset($_SESSION['campaign_fee']);
+  unset($_SESSION['camp_id']);
+  tep_session_unregister('h_code_fee');
+  tep_session_unregister('h_point');
+  // shipping session
+  tep_session_unregister('start_hour');
+  tep_session_unregister('start_min');
+  tep_session_unregister('end_hour');
+  tep_session_unregister('end_min');
+  tep_session_unregister('ele');
+  tep_session_unregister('address_option');
+  tep_session_unregister('insert_torihiki_date_end');
+  tep_session_unregister('address_show_list');
+  unset($_SESSION['options']);
+  unset($_SESSION['options_type_array']);
+  unset($_SESSION['weight_fee']);
+  unset($_SESSION['free_value']);
+  tep_session_unregister('hc_point');
+  tep_session_unregister('hc_camp_point');
+
   $cart->reset();
 
 ?>
