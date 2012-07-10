@@ -215,6 +215,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   $payment_modules->deal_other_info($payment, $_POST); 
   header('Location:'.tep_href_link(FILENAME_CHECKOUT_CONFIRMATION, 'is_finish=1', 'SSL'));
 }
+
+$payment_selection = $payment_modules->selection();
+$allow_payment_list = array();
+foreach ($payment_selection as $pay_key => $pay_single) {
+  if ($payment_modules->moneyInRange($pay_single['id'], $order->info['total'])) {
+    continue; 
+  }
+  if (!$payment_modules->showToUser($pay_single['id'], $_SESSION['guestchk'])) {
+    continue; 
+  }
+  $allow_payment_list[] = $pay_single['id'];
+}
+if (!in_array($payment, $allow_payment_list)) {
+  tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL'));
+}
+
 require(DIR_WS_CLASSES . 'order_total.php');
 $order_total_modules = new order_total;
 
