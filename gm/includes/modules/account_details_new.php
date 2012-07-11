@@ -525,7 +525,9 @@ $(document).ready(function(){
 ?>
         </table>
 <table border="0" width="100%" cellspacing="0" cellpadding="0">
-<tr><td class="main" align="right" colspan="2"><input type="hidden" name="old_email" value="<?php echo $account['customers_email_address'];?>"><input type="image" src="images/design/button/save.gif"></td></tr>
+<tr><td class="main" align="right" colspan="2"><input type="hidden" name="old_email" value="<?php echo $account['customers_email_address'];?>">
+<a href="javascript:void(0);" onclick="document.account_edit_per.submit();"><img onmouseover="this.src='images/design/button/save_hover.gif'" onmouseout="this.src='images/design/button/save.gif'" src="images/design/button/save.gif" alt="save">
+</td></tr>
 </table>
 </form>
 </td>
@@ -559,7 +561,7 @@ $(document).ready(function(){
         <?php       
           $hm_option->render('','',true); 
         ?> 
-          <tr><td class="main" align="right" colspan="2"><a href="javascript:void(0);" onclick="if(confirm('<?php echo NOTICE_DELETE_CONFIRM_TEXT;?>')){location.href='<?php echo FILENAME_ACCOUNT_EDIT;?>?act='+document.getElementById('address_flag_id').value;}else{return false;}"><img src="includes/languages/japanese/images/buttons/button_delete02.gif"></a>&nbsp;<a href="javascript:void(0);" onclick="address_clear();"><img src="images/design/button/new_found.gif"></a>&nbsp;<a href="javascript:void(0);" onclick="check_form_address();document.account_edit_address.submit();"><img src="images/design/button/save.gif"></a></form></td></tr>
+          <tr><td class="main" align="right" colspan="2"><a href="javascript:void(0);" onclick="if(confirm('<?php echo NOTICE_DELETE_CONFIRM_TEXT;?>')){location.href='<?php echo FILENAME_ACCOUNT_EDIT;?>?act='+document.getElementById('address_flag_id').value;}else{return false;}"><img onmouseover="this.src='includes/languages/japanese/images/buttons/button_delete02_hover.gif'" onmouseout="this.src='includes/languages/japanese/images/buttons/button_delete02.gif'" src="includes/languages/japanese/images/buttons/button_delete02.gif"></a>&nbsp;<a href="javascript:void(0);" onclick="address_clear();"><img onmouseover="this.src='images/design/button/new_found_hover.gif'" onmouseout="this.src='images/design/button/new_found.gif'"src="images/design/button/new_found.gif"></a>&nbsp;<a href="javascript:void(0);" onclick="check_form_address();document.account_edit_address.submit();"><img onmouseover="this.src='images/design/button/save_hover.gif'" onmouseout="this.src='images/design/button/save.gif'" alt ="save" src="images/design/button/save.gif"></a></form></td></tr>
         </table></form>
     </td>
  </tr>
@@ -616,11 +618,11 @@ $(document).ready(function(){
   }
   }
 ?>
+<tr><td class="main" colspan="2" align="right"><a href="javascript:void(0);" onclick="document.account_edit_options.submit();"><img onmouseover="this.src='images/design/button/save_hover.gif'" onmouseout="this.src='images/design/button/save.gif'"alt="save" src="images/design/button/save.gif"></a></td></tr>
 </table>
+</form>
 </td>
 </tr>
-<tr><td class="main" align="right"><input type="image" src="images/design/button/save.gif"></td></tr>
-</form>
 
 
 <?php
@@ -697,11 +699,12 @@ if (!isset($guestchk)) $guestchk = NULL;
         <tr>
         <td class="main" colspan="2"><?php echo ENTRY_PASSWORD_INFORM_READ_TEXT;?></td>
         </tr>
+      <tr><td class="main" colspan="2" align="right"><a href="javascript:void(0);" onclick="document.account_edit_pwd.submit();"><img onmouseover="this.src='images/design/button/save_hover.gif'" onmouseout="this.src='images/design/button/save.gif'"alt="save" src="images/design/button/save.gif"></a></td></tr>
     </table>
+      </form> 
       </td>
       </tr> 
-      <tr><td class="main" align="right"><input type="image" src="images/design/button/save.gif"></td></tr>
-    </table></form></td>
+    </table></td>
   </tr>  
 <?php
   }
