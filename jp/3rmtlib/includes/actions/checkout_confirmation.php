@@ -2,8 +2,13 @@
 // if the customer is not logged on, redirect them to the login page
 if (!tep_session_is_registered('customer_id')) {
   $navigation->set_snapshot(array('mode' => 'SSL', 'page' => FILENAME_CHECKOUT_PRODUCTS));
-  //$navigation->set_snapshot(array('mode' => 'SSL', 'page' => FILENAME_CHECKOUT_PAYMENT));
   tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
+}else{
+
+  if(!isset($_SESSION['insert_torihiki_date'])){
+      $navigation->set_snapshot(array('mode' => 'SSL', 'page' => FILENAME_CHECKOUT_PRODUCTS));
+      tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
+  }
 }
 
 // if there is nothing in the customers cart, redirect them to the shopping cart page
@@ -14,7 +19,7 @@ if ($cart->count_contents() < 1) {
 // avoid hack attempts during the checkout procedure by checking the internal cartID
 if (isset($cart->cartID) && tep_session_is_registered('cartID')) {
   if ($cart->cartID != $cartID) {
-    tep_redirect(tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL'));
+    tep_redirect(tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL'));
   }
 }
 $sendto = false;
@@ -210,6 +215,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   $payment_modules->deal_other_info($payment, $_POST); 
   header('Location:'.tep_href_link(FILENAME_CHECKOUT_CONFIRMATION, 'is_finish=1', 'SSL'));
 }
+
+$payment_selection = $payment_modules->selection();
+$allow_payment_list = array();
+foreach ($payment_selection as $pay_key => $pay_single) {
+  if ($payment_modules->moneyInRange($pay_single['id'], $order->info['total'])) {
+    continue; 
+  }
+  if (!$payment_modules->showToUser($pay_single['id'], $_SESSION['guestchk'])) {
+    continue; 
+  }
+  $allow_payment_list[] = $pay_single['id'];
+}
+if (!in_array($payment, $allow_payment_list)) {
+  tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL'));
+}
+
 require(DIR_WS_CLASSES . 'order_total.php');
 $order_total_modules = new order_total;
 
