@@ -231,7 +231,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
               <?php echo CHANGE_PREORDER_CONFIRM_BUTTON_INFO;?> 
               </div>
               <div class="checkout-bottom" align="right">
-                <?php echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER);?> 
+                <?php echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER, 'onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_confirm_order_hover.gif\'" onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_confirm_order.gif\'"');?> 
               </div>
           </div>
            <div class="checkout-conent">
@@ -639,7 +639,7 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
                 <?php
                 $payment_modules->preorder_process_button($con_payment_code, $_POST['pid'], $total_param); 
                 ?>
-                <?php echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER);?> 
+                <?php echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER, 'onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_confirm_order_hover.gif\'" onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_confirm_order.gif\'"');?> 
               </div>
            </div>
           </form> 

@@ -461,7 +461,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
       <table border="0" width="100%" cellspacing="0" cellpadding="0">
         <tr>
           <td>
-           <?php echo '<a href="javascript:void(0);" onclick="document.forms.form1.submit(0);">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?>
+           <?php echo '<a href="javascript:void(0);" onclick="document.forms.form1.submit(0);">' .  tep_image_button('button_back.gif', IMAGE_BUTTON_BACK, 'onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_back_hover.gif\'" onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_back.gif\'"') . '</a>'; ?>
           </td>
           <td align="right">
             <?php
@@ -480,7 +480,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
                 }
               }
             ?>
-            <?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?>
+            <?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE, 'onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_continue_02_hover.gif\'" onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_continue_02.gif\'"'); ?>
           </td>
         </tr>
       </table>

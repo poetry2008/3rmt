@@ -21,7 +21,7 @@
  	<div id="main-content"> 
  		<h2><?php echo HEADING_TITLE ; ?></h2>
         <div> 
-        <form action="<?php echo tep_href_link(FILENAME_CHECKOUT_OPTION, '', 'SSL'); ?>" method="post" >
+        <form name="option_form" action="<?php echo tep_href_link(FILENAME_CHECKOUT_OPTION, '', 'SSL'); ?>" method="post" >
           <input type="hidden" name="dummy" value="<?php echo TEXT_DUMMY;?>">
           <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
           <tr> 
@@ -70,7 +70,11 @@
               <td>
               <div id="hm-checkout-warp"> 
                   <div class="checkout-title"><?php echo CHECKOUT_OPTION_BUTTON_TEXT;?></div> 
-                  <div class="checkout-bottom" align="right"><?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE); ?></div> 
+                  <div class="checkout-bottom" align="right">
+                  <a href="javascript:void(0);" onclick="document.option_form.submit();">
+                  <?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE, 'onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_continue_02_hover.gif\'" onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_continue_02.gif\'"'); ?>
+                  </a> 
+                  </div> 
               </div>
               </td> 
             </tr> 
@@ -103,7 +107,11 @@
          <td>
               <div id="hm-checkout-warp"> 
                   <div class="checkout-title"><?php echo CHECKOUT_OPTION_BUTTON_TEXT;?></div> 
-                  <div class="checkout-bottom" align="right"><?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE); ?></div> 
+                  <div class="checkout-bottom" align="right">
+                  <a href="javascript:void(0);" onclick="document.option_form.submit();">
+                  <?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE, 'onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_continue_02_hover.gif\'" onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_continue_02.gif\'"'); ?>
+                  </a> 
+                  </div> 
               </div>
               </td> 
       </tr>

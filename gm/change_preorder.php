@@ -671,7 +671,7 @@ document.forms.order1.submit();
               <?php echo TEXT_PREORDER_FETCH_BUTTON_INFO;?> 
               </div>
               <div class="checkout-bottom" align="right">
-                <?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE);?> 
+                <?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE, 'onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_continue_02_hover.gif\'" onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_continue_02.gif\'"');?> 
               </div>
           </div> 
           <div class="checkout-conent">
@@ -1146,7 +1146,7 @@ if (isset($jikan_error)) {
                    echo '<input type="hidden" name="preorder_point" value="0">'; 
                  }
                 ?>
-                <?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE);?> 
+                <?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE, 'onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_continue_02_hover.gif\'" onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_continue_02.gif\'"');?> 
               </div>
           </div>   
           </form>

@@ -449,10 +449,10 @@ if (!isset($_GET['quantity'])) $_GET['quantity'] = NULL; //del notice
       <table border="0" width="100%" cellspacing="0" cellpadding="0">
         <tr>
           <td>
-            <?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $product_info['products_id']) . '">' . tep_image_button('button_back.gif', IMAGE_BUTTON_BACK) . '</a>'; ?>
+            <?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $product_info['products_id']) . '">' .  tep_image_button('button_back.gif', IMAGE_BUTTON_BACK, 'onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_back_hover.gif\'" onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_back.gif\'"') . '</a>'; ?>
           </td>
           <td align="right">
-            <?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?>
+            <?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE, 'onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_continue_02_hover.gif\'" onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_continue_02.gif\'"'); ?>
           </td>
         </tr>
       </table>
