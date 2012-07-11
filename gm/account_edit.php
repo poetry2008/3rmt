@@ -571,7 +571,7 @@ $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
                     tep_href_link(FILENAME_ACCOUNT, '', 'SSL') . '">' .
                     tep_image_button('button_back.gif',
                         IMAGE_BUTTON_BACK,'onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_back.gif\'"  onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_back_hover.gif\'"') . '</a>'; ?></td> 
-                    <td class="main" align="right"><a href="javascript:void(0);" onClick="check_form();"><img src="images/design/button/all_save.gif"></a></td> 
+                    <td class="main" align="right"><a href="javascript:void(0);" onClick="check_form();"><img onmouseover="this.src='images/design/button/all_save_hover.gif'" onmouseout="this.src='images/design/button/all_save.gif'"src="images/design/button/all_save.gif"></a></td> 
                   </tr> 
                 </table>
           </div>
