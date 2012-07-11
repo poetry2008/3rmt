@@ -1,7 +1,7 @@
 <?php
 /*
   $Id$
-  ファイルコードを確認
+
 */
 
   require('includes/application_top.php');
@@ -63,61 +63,74 @@
 <?php page_head();?>
 </head>
 <body>
-<?php require(DIR_WS_INCLUDES . 'header.php'); ?>
+  <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
 <div id="main">
-<?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-<div id="layout" class="yui3-u">
-<div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> ');?></div>
-<div id="main-content">
-<h2>
-<?php 
-  echo PREORDER_SUCCESS_ACTIVE_HEAD_TITLE;
-?>
-</h2>
-<table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="0">
-  <tr>
-    <td>
-      <div id="contents">
-        <table border="0" width="100%" cellspacing="0" cellpadding="0">
-        <tr>
-        <td style="font-size:15px; color:#ff0000;">
-          <div style="margin:7px 0;"><?php echo PREORDER_ACTIVE_SUCCESS_READ_HEAD;?></div>
-        </td>
-        </tr>
-        <tr>
-          <td>
-          <table border="0" cellpadding="0" cellspacing="0" width="100%" style="font-size:14px;"> 
-          <tr> 
-          <td colspan="2" ><div style="font-size:18px; margin-bottom:7px;"><b>
-          <?php echo PREORDER_SUCCESS_APPOINT_CONTENT;?></b>
-            </div>
-          </td> 
-          </tr> 
-          <tr> 
-          <td width="20%"> 
-          <?php echo PREORDER_SUCCESS_APPOINT_PRODUCT_NAME;?>
-          </td>
-          <td>
-          <?php echo $preorder_product['products_name'];?> 
-          </td>
-          </tr> 
-          <tr> 
-          <td> 
-          <?php echo PREORDER_SUCCESS_APPOINT_PRODUCT_NUM;?>
-          </td>
-          <td>
-          <?php echo $preorder_product['products_quantity'].PREORDER_SUCCESS_UNIT_TEXT;?> 
+  <div class="yui3-u" id="layout">
+  <div id="current" ><?php echo $breadcrumb->trail(' <img  src="images/point.gif"> '); ?></div>
+ <?php include('includes/search_include.php');?>
+ 	<div id="main-content">
+     <h2>
+        <?php 
+          echo PREORDER_SUCCESS_ACTIVE_HEAD_TITLE;
+        ?>
+        </h2>
+ 	      
+        <table border="0" width="100%" cellspacing="0" cellpadding="0" class="frame_content">
+          <tr>
+          <td style="font-size:15px; color:#ff0000;">
+            <?php echo PREORDER_ACTIVE_SUCCESS_READ_HEAD.'<br><br>';?> 
           </td>
           </tr>
           <tr>
-          <td>
-          <?php echo PREORDER_SUCCESS_APPOINT_PRODUCT_DATE;?>
-          </td>
-          <td>
-          <?php echo date('Y'.PREORDER_SUCCESS_YEAR_TEXT.'m'.PREORDER_SUCCESS_MONTH_TEXT.'d'.PREORDER_SUCCESS_DAY_TEXT, strtotime($preorder['predate']));?>
-          </td>
-          </tr>
-          <tr>
+            <td>
+            <table class="preorder_active_info" border="0" cellpadding="0" cellspacing="1" width="100%"> 
+            <tr> 
+            <td colspan="2"> 
+            <?php echo PREORDER_SUCCESS_APPOINT_CONTENT;?>
+            <br>
+            </td> 
+            </tr> 
+            <tr> 
+            <td width="20%"> 
+            <?php echo PREORDER_SUCCESS_APPOINT_PRODUCT_NAME;?>
+            </td>
+            <td>
+            <?php echo $preorder_product['products_name'];?> 
+            </td>
+            </tr> 
+            <?php
+            $preorder_attributes_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS_ATTRIBUTES." where orders_id = '".$preorder_id."'"); 
+            while ($preorder_attributes = tep_db_fetch_array($preorder_attributes_raw)) {
+              $option_info_array = @unserialize(stripslashes($preorder_attributes['option_info'])); 
+            ?>
+            <tr>
+              <td>
+              <?php echo $option_info_array['title'].'：';?> 
+              </td>
+              <td>
+              <?php echo str_replace(array("<br>", "<BR>"), '', $option_info_array['value']);?> 
+              </td>
+            </tr>
+            <?php
+            }
+            ?>
+            <tr> 
+            <td> 
+            <?php echo PREORDER_SUCCESS_APPOINT_PRODUCT_NUM;?>
+            </td>
+            <td>
+            <?php echo $preorder_product['products_quantity'].PREORDER_SUCCESS_UNIT_TEXT;?> 
+            </td>
+            </tr>
+            <tr>
+            <td>
+            <?php echo PREORDER_SUCCESS_APPOINT_PRODUCT_DATE;?>
+            </td>
+            <td>
+            <?php echo date('Y'.PREORDER_SUCCESS_YEAR_TEXT.'m'.PREORDER_SUCCESS_MONTH_TEXT.'d'.PREORDER_SUCCESS_DAY_TEXT, strtotime($preorder['predate']));?>
+            </td>
+            </tr>
+            <tr>
               <td>
               <?php echo PREORDER_SUCCESS_APPOINT_PAYMENT_NAME;?>
               </td>
@@ -133,38 +146,33 @@
               <?php echo nl2br($preorder['comment_msg']);?> 
               </td>
             </tr>
-          </table><br>
-          </td>
-        </tr>
-        <tr>
-          <td style="font-size:14px;">
-            <?php 
-            echo PREORDER_ACTIVE_SUCCESS_READ_INFO;
-            ?>
-          </td>
-        </tr>
-        <tr>
-          <td>
-                <table border="0" width="100%" cellspacing="0" cellpadding="0" class="botton-continue"> 
-                  <tr>
-                    <td align="right"><?php echo '<a href="'
-                    .tep_href_link(FILENAME_DEFAULT). '">' .
-                    tep_image_button('button_continue.gif',
-                        IMAGE_BUTTON_CONTINUE,'onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_continue.gif\'"  onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_continue_hover.gif\'"') . '</a>'; ?></td> 
-                    
-                  </tr> 
-                </table></td> 
-        </tr>
-        </table> 
-      </div>
-    </td>
-  </tr>
-</table></div>
-</div>
-<?php include('includes/float-box.php');?> 
-</div>
-<?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-
+            </table>
+            <br>
+            </td>
+          </tr>
+          <tr>
+            <td style=" font-size:12px;">
+              <?php 
+              echo PREORDER_ACTIVE_SUCCESS_READ_INFO.'<br>';
+              ?>
+            </td>
+          </tr>
+          <tr>
+            <td><br>
+                  <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
+                    <tr> 
+                      <td class="main" align="right"><?php echo '<a href="' .tep_href_link(FILENAME_DEFAULT). '">' .  tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></td> 
+                      <td align="right" class="main">
+                      </td> 
+                    </tr> 
+                  </table></td> 
+          </tr>
+        </table>
+    </div>
+    </div>
+    <?php include('includes/float-box.php');?>
+  </div>
+  <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

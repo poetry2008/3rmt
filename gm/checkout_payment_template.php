@@ -111,7 +111,7 @@ require_once DIR_WS_INCLUDES . 'header.php';
 <tr class="box_des"> 
    <td align="center" nowrap="nowrap" width="20%" class="checkoutBarFrom">
    <?php
-   echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL') . '" class="checkoutBarFrom">' . CHECKOUT_BAR_PRODUCTS . '</a>'; 
+   echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_OPTION, '', 'SSL') . '" class="checkoutBarFrom">' . CHECKOUT_BAR_OPTION . '</a>'; 
 ?>
 </td>
 <td align="center" nowrap="nowrap" width="20%" class="checkoutBarFrom">
@@ -180,7 +180,15 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() > 0) {//poin
          
     ?> 
       <h3><b><?php echo TEXT_POINT_OR_CAMPAION; ?></b></h3>
-  <div class="payment-content"><input type="text" value="<?php echo $campaign_error?$campaign_error_str:0;?>" name="point" id="input_text_short" style="text-align:right"> 
+  <div class="payment-content">
+      <?php
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+          $default_point_value = $campaign_error?$campaign_error_str:$_POST['point']; 
+        } else {
+          $default_point_value = (isset($_SESSION['hc_point']))?$_SESSION['hc_point']:((isset($_SESSION['h_point']))?$_SESSION['h_point']:($campaign_error?$campaign_error_str:0)); 
+        }
+      ?>
+      <input type="text" value="<?php echo $default_point_value;?>" name="point" id="input_text_short" style="text-align:right"> 
                                         <div> <?php echo isset($current_point['point'])?$current_point['point']:$point['point']; ?><?php echo TEXT_POINT_READ;?> 
                     <?php
                     if ($campaign_error) {
@@ -197,7 +205,14 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() > 0) {//poin
 ?>
    <h3><b><?php echo TEXT_POINT_OR_CAMPAION; ?></b></h3>
    <div>
-<input type="text" value="<?php echo $campaign_error?$campaign_error_str:0;?>" name="camp_point" id="input_text_short" style="text-align:right">
+     <?php
+      if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $default_point_value = $campaign_error?$campaign_error_str:0; 
+      } else {
+        $default_point_value = (isset($_SESSION['hc_camp_point']))?$_SESSION['hc_camp_point']:($campaign_error?$campaign_error_str:0); 
+      }
+      ?>
+      <input type="text" value="<?php echo $default_point_value;?>" name="camp_point" id="input_text_short" style="text-align:right"> 
                     <?php
                     if ($campaign_error) {
                       echo '<font color="#ff0000">'.CAMPAIGN_ERROR_TEXT.'</font>'; 

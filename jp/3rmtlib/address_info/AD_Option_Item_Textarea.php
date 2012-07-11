@@ -7,7 +7,10 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
   function render($option_error_array,$is_space = false)
   {
     if (strlen($this->front_title)) {
-      echo '<td class="main" width="120" valign="top">&nbsp;'; 
+      echo '<td class="main" width="120" valign="top">';
+      if (NEW_STYLE_WEB !== true) {
+        echo '&nbsp;'; 
+      }
       echo $this->front_title.':'; 
       echo '</td>'; 
     }
@@ -16,7 +19,11 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
     $style_color = isset($_POST['op_'.$this->formname]) && $_POST['op_'.$this->formname] != $this->comment ?'color:#000;':'color:#999;';
     if($options['rows'] == 1){
       
-      $style_size = $type_limit == 'num' ? 'size="25" ' : 'style="width:75%;" ';
+      if (NEW_STYLE_WEB === true) {
+        $style_size = $type_limit == 'num' ? 'size="25" ' : ' ';
+      } else {
+        $style_size = $type_limit == 'num' ? 'size="25" ' : 'style="width:75%;" ';
+      }
       if(!$is_space){
         echo '<td class="main" style="padding-left:10px;">';
       }else{

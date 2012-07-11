@@ -61,12 +61,11 @@ define('TEXT_EMAIL_SIGNATURE', '[ご連絡・お問い合わせ先]━━━━�
 . SUPPORT_EMAIL_ADDRESS . "\n"
 . HTTP_SERVER . "\n"
 . '━━━━━━━━━━━━━━━━━━━━━━━');
-define('TEXT_PRE_PAY_BOOK','を予約する');
-define('TEXT_PRE_PAY_IN','では、');
-define('TEXT_PRE_PAY_RESERVATION','の予約サービスを行っております。');
-define('TEXT_PRE_PAY_HOP1','ご希望する数量が弊社在庫にある場合は「');
-define('TEXT_PRE_PAY_HOP2','」をクリックしてお手続きください。');
-define('TEXT_PRE_PAY_PROMPT','弊社在庫にお客様がご希望する数量がない場合は、下記の必要事項をご入力の上お申し込みください。<br> 予約手続きが完了いたしますと、入荷次第、お客様へ優先的にご案内いたします');
-define('TEXT_PRE_PAY_PROMPT1','ご予約・お見積りは無料ですので、お気軽にお問い合わせください。');
-define('TEXT_PRE_PAY_INPUT_ERROR','入力した内容に誤りがございます。正しく入力してください。');
+define('TEXT_PREORDER_BOOK','を予約する');
+define('TEXT_PREORDER_IN','では、');
+define('TEXT_PREORDER_BOOK_INFO','の予約サービスを行っております。<br> ご希望する数量が弊社在庫にある場合は「');
+define('TEXT_PREORDER_BOOK_INFO_END','」をクリックしてお手続きください。');
+define('TEXT_PREORDER_BOOK_TEXT','弊社在庫にお客様がご希望する数量がない場合は、下記の必要事項をご入力の上お申し込みください。<br>予約手続きが完了いたしますと、入荷次第、お客様へ優先的にご案内いたします。');
+define('TEXT_PREORDER_BOOK_TEXT_END','ご予約・お見積りは無料ですので、お気軽にお問い合わせください。');
+define('TEXT_INPUT_ERROR_INFO','入力した内容に誤りがございます。正しく入力してください。');
 ?>

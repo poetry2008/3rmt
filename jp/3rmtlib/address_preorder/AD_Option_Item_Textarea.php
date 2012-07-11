@@ -7,7 +7,11 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
   function render($option_error_array)
   {
     if (strlen($this->front_title)) {
-      echo '<td class="main" width="150" valign="top"> '; 
+      if (NEW_STYLE_WEB === true) {
+        echo '<td class="main" width="20%" valign="top"> '; 
+      } else {
+        echo '<td class="main" width="150" valign="top"> '; 
+      }
       echo $this->front_title.':'; 
       echo ' </td>'; 
     }
@@ -37,8 +41,7 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
     echo '<td class="main">'; 
     echo '<input type="hidden" name="'.$this->formname.'" value="'.$this->front_title.'">';
     echo '<input type="hidden" id="l_'.$this->formname.'" value="'.$this->required.'">';
-    echo '<textarea
-      name="ad_'.$this->formname.'" id="ad_'.$this->formname.'" rows="'. $options['rows'] .'" onfocus="this.style.color=\'#001\';if(this.value==\''. $this->comment.'\')this.value=\'\'" onblur="if(this.value==\'\'){this.value=\''. $this->comment .'\';this.style.color=\'#999\'}">'.(isset($_POST['ad_'.$this->formname])?$_POST['ad_'.$this->formname]:'').'</textarea>'; 
+    echo '<textarea '.((NEW_STYLE_WEB === true)?'style="width:100%;" ':'').'name="ad_'.$this->formname.'" id="ad_'.$this->formname.'" rows="'. $options['rows'] .'" onfocus="this.style.color=\'#001\';if(this.value==\''. $this->comment.'\')this.value=\'\'" onblur="if(this.value==\'\'){this.value=\''. $this->comment .'\';this.style.color=\'#999\'}">'.(isset($_POST['ad_'.$this->formname])?$_POST['ad_'.$this->formname]:'').'</textarea>'; 
      echo '<font id="r_'.$this->formname.'" color="red">';
      if($this->required == 'true' && !isset($option_error_array[$this->formname]) && !isset($_POST['ad_'.$this->formname])){
 

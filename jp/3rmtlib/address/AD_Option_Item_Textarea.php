@@ -7,10 +7,16 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
   function render($option_error_array, $is_space = false)
   {
     if (!$is_space) {
-       echo '<td width="10">'. tep_draw_separator('pixel_trans.gif', '10', '1') .'</td>';
-     } 
+       if (NEW_STYLE_WEB !== true) {
+         echo '<td width="10">'. tep_draw_separator('pixel_trans.gif', '10', '1') .'</td>';
+       } 
+    } 
     if (strlen($this->front_title)) {
-      echo '<td class="main" width="30%" valign="top">'; 
+      if (NEW_STYLE_WEB === true) {
+        echo '<td class="main" width="20%" valign="top">'; 
+      } else {
+        echo '<td class="main" width="30%" valign="top">'; 
+      }
       echo $this->front_title.':'; 
       echo '</td>'; 
     }
@@ -21,7 +27,11 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
     if($options['rows'] == 1){
       
       $style_size = $type_limit == 'num' ? 'size="25" ' : 'class="width:75%;" ';
-      echo '<td class="main" width="70%">';
+      if (NEW_STYLE_WEB === true) {
+        echo '<td class="main">';
+      } else {
+        echo '<td class="main" width="70%">';
+      }
       echo '<input type="hidden" name="'.$this->formname.'" value="'.$this->front_title.'">';
       echo '<input type="hidden" name="type_'.$this->formname.'" value="'.$type_limit.'">';
       echo '<input type="hidden" id="l_'.$this->formname.'" value="'.$this->required.'">';
@@ -39,7 +49,11 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
      echo '</font></span>'; 
      echo '</td>';  
     }else{
-    echo '<td class="main" width="70%">'; 
+    if (NEW_STYLE_WEB === true) {
+      echo '<td class="main">'; 
+    } else {
+      echo '<td class="main" width="70%">'; 
+    }
     echo '<input type="hidden" name="'.$this->formname.'" value="'.$this->front_title.'">';
     echo '<input type="hidden" name="type_'.$this->formname.'" value="'.$type_limit.'">';
     echo '<input type="hidden" id="l_'.$this->formname.'" value="'.$this->required.'">';

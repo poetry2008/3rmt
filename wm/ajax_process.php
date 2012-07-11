@@ -12,7 +12,7 @@ if ($_GET['action'] == 'calc_price') {
   $final_price = $products_price + $attributes_price;
   $price_array = array();
   if ($final_price < 0) {
-    $price_array['price'] = '<font color="ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->display_price($final_price, tep_get_tax_rate($products_info['products_tax_class_id']), $_GET['qty'])).JPMONEY_UNIT_TEXT.'</font>'; 
+    $price_array['price'] = '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->display_price($final_price, tep_get_tax_rate($products_info['products_tax_class_id']), $_GET['qty'])).JPMONEY_UNIT_TEXT.'</font>'; 
   } else {
     $price_array['price'] = $currencies->display_price($final_price, tep_get_tax_rate($products_info['products_tax_class_id']), $_GET['qty']); 
   }
