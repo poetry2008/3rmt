@@ -58,6 +58,11 @@ class buying extends basePayment  implements paymentInterface  {
      }else{
        $input_text_id = '';
      }
+     if(NEW_STYLE_WEB===true){
+       $style_width = 'style="width: 10px;"';
+     }else{
+       $style_width = '';
+     }
     return array(
                  array(
                        "code"=>'bank_name',
@@ -69,15 +74,19 @@ class buying extends basePayment  implements paymentInterface  {
                  array(
                        "code"=>'bank_shiten',
                        "title"=>TS_TEXT_BANK_SHITEN,
-                       "field"=>tep_draw_input_field('bank_shiten', $theData['bank_shiten']),
+                       "field"=>tep_draw_input_field('bank_shiten',
+                         $theData['bank_shiten'],'',input_text_id),
                        "rule"=>basePayment::RULE_NOT_NULL,
                        "error_msg" => TS_TEXT_BANK_ERROR_SHITEN 
                        ),
                  array(
                        "code"=>'bank_kamoku',
                        "title"=>TS_TEXT_BANK_KAMOKU,
-                       "field"=> tep_draw_radio_field('bank_kamoku',TS_TEXT_BANK_SELECT_KAMOKU_F ,(($back==false)?($theData['bank_kamoku']==TS_TEXT_BANK_SELECT_KAMOKU_F):(!isset($theData['bank_kamoku'])?true:($theData['bank_kamoku']==TS_TEXT_BANK_SELECT_KAMOKU_F)))) . '&nbsp;' . TS_TEXT_BANK_SELECT_KAMOKU_F.
-                       tep_draw_radio_field('bank_kamoku',TS_TEXT_BANK_SELECT_KAMOKU_T ,$theData['bank_kamoku']==TS_TEXT_BANK_SELECT_KAMOKU_T) . '&nbsp;' . TS_TEXT_BANK_SELECT_KAMOKU_T,
+                       "field"=>
+                       tep_draw_radio_field('bank_kamoku',TS_TEXT_BANK_SELECT_KAMOKU_F
+                         ,(($back==false)?($theData['bank_kamoku']==TS_TEXT_BANK_SELECT_KAMOKU_F):(!isset($theData['bank_kamoku'])?true:($theData['bank_kamoku']==TS_TEXT_BANK_SELECT_KAMOKU_F))),'',$style_width) . '&nbsp;' . TS_TEXT_BANK_SELECT_KAMOKU_F.
+                       tep_draw_radio_field('bank_kamoku',TS_TEXT_BANK_SELECT_KAMOKU_T
+                         ,$theData['bank_kamoku']==TS_TEXT_BANK_SELECT_KAMOKU_T,'',$style_width) . '&nbsp;' . TS_TEXT_BANK_SELECT_KAMOKU_T,
                        "rule"=>basePayment::RULE_NOT_NULL,
                        "error_msg" => TS_TEXT_BANK_ERROR_KAMOKU 
 
