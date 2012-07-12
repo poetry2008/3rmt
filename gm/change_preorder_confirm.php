@@ -218,7 +218,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
               </td>
             </tr>
             <tr>
-              <td align="center" width="33%" class="preorderBarFrom"><?php echo '<a href="'.tep_href_link('change_preorder.php', 'pid='.$preorder_res['check_preorder_str'], 'SSL').'" onclick="document.forms.order1.submit();" class="preorderBarFrom">'.PREORDER_TRADER_LINE_TITLE.'</a>';?></td> 
+              <td align="center" width="33%" class="preorderBarFrom"><?php echo '<a href="'.tep_href_link('change_preorder.php', 'pid='.$preorder_res['check_preorder_str']).'" class="preorderBarFrom">'.PREORDER_TRADER_LINE_TITLE.'</a>';?></td> 
               <td align="center" width="33%" class="preorderBarcurrent"><?php echo PREORDER_CONFIRM_LINE_TITLE;?></td> 
               <td align="center" width="33%" class="preorderBarTo"><?php echo PREORDER_FINISH_LINE_TITLE;?></td> 
             </tr>
