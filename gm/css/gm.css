@@ -71,13 +71,24 @@ td,th{ border:0; padding:2px; font-size:14px;}
 	float:left;
 }
 #logo{
-	position: absolute;
+	position:absolute;
+	*position:relative!important;
 	z-index:121;
 	top:0;
 	text-align:center;
 	width:33.3333%;
 	min-width:300px;
 	width: expression(document.body.clientWidth < 342? "342px": "33.3333%" );
+}
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+#logo{
+	position:relative;
+	z-index:121;
+	top:0;
+	text-align:center;
+	width:33.3333%;
+	min-width:300px;
+	width: expression(document.body.clientWidth < 342? "342px": "33.3333%" );}
 }
 #logo a{
 	display:block;
@@ -1142,7 +1153,7 @@ top:70px;
 #popup_notice{
 	width:80%;
 	background:#fff;
-	z-index:120;
+	z-index:200;
 	position:absolute;
 	padding:10px 15px;
 	font-size:14px;
