@@ -60,7 +60,7 @@ require(DIR_WS_ACTIONS.'checkout_confirmation.php');
               <table border="0" width="100%" cellspacing="0" cellpadding="0" class="c_pay_info"> 
                   <tr>
                       <td class="main"><b><?php echo TEXT_CONFIRMATION_READ;?></b></td>
-                        <td class="main" align="right"><a href="javascript:void(0);" onclick="confirm_session_error();"><?php echo tep_image_button('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER);?></a></td>
+                        <td class="main" align="right"><a href="javascript:void(0);" onClick="confirm_session_error();"><?php echo tep_image_button('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER);?></a></td>
                     </tr>
                 </table>
             </td>
@@ -161,9 +161,9 @@ require(DIR_WS_ACTIONS.'checkout_confirmation.php');
 
   echo '</td>' . "\n";
 
-    if (sizeof($order->info['tax_groups']) > 1) echo '            <td class="main" valign="top" align="right">' . tep_display_tax_value($order->products[$i]['tax']) . '%</td>' . "\n";
+    if (sizeof($order->info['tax_groups']) > 1) echo '            <td class="main" valign="top" align="right" width="55">' . tep_display_tax_value($order->products[$i]['tax']) . '%</td>' . "\n";
 
-    echo '            <td class="main" align="right" valign="top">';
+    echo '            <td class="main" align="right" valign="top" width="55">';
     if ($order->products[$i]['final_price'] < 0) {
       echo '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty'])).'</font>'.JPMONEY_UNIT_TEXT;
     } else {
@@ -583,7 +583,7 @@ $shipping_fee = $cart->total > $free_value ? 0 : $weight_fee;
               <tr> 
                 <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                     <tr> 
-                      <td class="main"><div class="payment_comment"><?php echo nl2br(htmlspecialchars($order->info['comments'])) . tep_draw_hidden_field('comments', $order->info['comments']); ?></div></td> 
+                      <td class="main"><?php echo nl2br(htmlspecialchars($order->info['comments'])) . tep_draw_hidden_field('comments', $order->info['comments']); ?></td> 
                     </tr> 
                   </table></td> 
               </tr> 

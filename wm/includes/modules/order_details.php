@@ -28,7 +28,7 @@
     echo '    <td align="center" class="tableHeading">' . TABLE_HEADING_TAX . '</td>' . "\n";
   }
 
-  echo '    <td align="right" class="tableHeading">' . TABLE_HEADING_TOTAL . '</td>' . "\n" .
+  echo '    <td align="right" class="tableHeading" width="45">' . TABLE_HEADING_TOTAL . '</td>' . "\n" .
        '    <td align="center" class="tableHeading">' . TABLE_HEADING_OPERATE . '</td>' . "\n" .
        '  </tr>' . "\n" .
        '  <tr>' . "\n" .
