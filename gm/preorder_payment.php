@@ -1,7 +1,6 @@
 <?php
 /*
   $Id$
-  ファイルコードを確認
 */
 
   require('includes/application_top.php');
@@ -99,12 +98,6 @@ function triggerHide(radio)
       
       $(radio).parent().parent().removeClass(); 
       $(radio).parent().parent().addClass("box_content_title box_content_title_selected"); 
-      var headID = document.getElementsByTagName("head")[0];
-      var newCss = document.createElement('link');
-      newCss.type = 'text/css';
-      newCss.rel = "stylesheet";
-      newCss.href = "css/gm.css";
-      headID.appendChild(newCss);
  }
 }
 $(document).ready(function(){
@@ -125,39 +118,36 @@ $(document).ready(function(){
 </script>
 </head>
 <body>
-
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
 <!-- header_eof //-->
 <!-- body //-->
 <div id="main">
-      <?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-    <!-- body_text //-->
-    <div id="layout" class="yui3-u">
-<div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> ');?></div>
-
+  <div class="yui3-u" id="layout">
+  <div id="current" ><?php echo $breadcrumb->trail(' <img  src="images/point.gif"> '); ?></div>
+ <?php include('includes/search_include.php');?>
+ 	<div id="main-content">
+      <h2><?php echo $po_game_c . '&nbsp;' . $product_info['products_name'].TEXT_PREORDER_BOOK; ?></h2>
+            <div class="frame_content">
 <?php
   if ($valid_product == false) {
 ?>
-      <p>
+      <p class="main">
         <?php echo HEADING_TITLE_ERROR; ?><br><?php echo ERROR_INVALID_PRODUCT; ?>
       </p>
 <?php
   } else {
 ?>
-	<div id="main-content">
-      <h2><?php echo $po_game_c . '&nbsp;' .  $product_info['products_name'].TEXT_PRE_PAY_BOOK; ?></h2>
-            <div class="comment_preoder">
       <p>
-        <?php echo STORE_NAME.TEXT_PRE_PAY_IN;?><?php echo
-        $po_game_c.TEXT_PRE_PAY_RESERVATION; ?><br> <?php echo TEXT_PRE_PAY_HOP1;?>        <?php 
+        <?php echo STORE_NAME.TEXT_PREORDER_IN;?><?php echo $po_game_c.TEXT_PREORDER_BOOK_INFO; ?>
+        <?php 
         if ($product_info['products_status'] == 0 || $product_info['products_status'] == 3)  {
           echo $product_info['products_name']; 
         } else {
           echo '<a href="' .  tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .  $product_info['products_id']) . '">' .  $product_info['products_name'].'</a>';
         }
+        echo TEXT_PREORDER_BOOK_INFO_END;
         ?>
-        <?php echo TEXT_PRE_PAY_HOP2;?>
-        </p>
+      </p>
 <?php
     $error = false;
   
@@ -244,22 +234,51 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
       $_POST['quantity'] = tep_an_zen_to_han($_POST['quantity']); 
       $preorder_id = date('Ymd').'-'.date('His').tep_get_preorder_end_num(); 
       $redirect_single = 0; 
+      $max_op_len = 0;
+      $max_op_array = array();
+      $mail_option_str = '';
+      foreach ($_POST as $mo_key => $mo_value) {
+        $m_op_str = substr($mo_key, 0, 3);
+        if ($m_op_str == 'op_') {
+          $m_op_info = explode('_', $mo_key); 
+          $item_m_raw = tep_db_query("select front_title from ".TABLE_OPTION_ITEM." where name = '".$m_op_info['1']."' and id = '".$m_op_info[3]."'"); 
+          $item_m_res = tep_db_fetch_array($item_m_raw);
+          if ($item_m_res) {
+            $max_op_array[] = mb_strlen($item_m_res['front_title'], 'utf-8'); 
+          }
+        }
+      }
+      
+      if (!empty($max_op_array)) {
+        $max_op_len = max($max_op_array);
+      }
+      foreach ($_POST as $mao_key => $mao_value) {
+        $ma_op_str = substr($mao_key, 0, 3);
+        if ($ma_op_str == 'op_') {
+          $ma_op_info = explode('_', $mao_key); 
+          $item_f_raw = tep_db_query("select front_title from ".TABLE_OPTION_ITEM." where name = '".$ma_op_info['1']."' and id = '".$ma_op_info[3]."'"); 
+          $item_f_res = tep_db_fetch_array($item_f_raw);
+          if ($item_f_res) {
+            $mail_option_str .= $item_f_res['front_title'].str_repeat('　', intval($max_op_len - mb_strlen($item_f_res['front_title'], 'utf-8'))).'：'.str_replace(array("<br>", "<BR>", "\r", "\n", "\r\n"), "", stripslashes($mao_value))."\n"; 
+          }
+        }
+      }
+      
       if (tep_session_is_registered('customer_id')) {
           $preorder_email_text = PREORDER_MAIL_CONTENT; 
           
-          $replace_info_arr = array('${PRODUCTS_NAME}', '${PRODUCTS_QUANTITY}', '${EFFECTIVE_TIME}', '${PAY}', '${NAME}', '${SITE_NAME}', '${SITE_URL}', '${PREORDER_N}', '${ORDER_COMMENT}'); 
+          $replace_info_arr = array('${PRODUCTS_NAME}', '${PRODUCTS_QUANTITY}', '${EFFECTIVE_TIME}', '${PAY}', '${NAME}', '${SITE_NAME}', '${SITE_URL}', '${PREORDER_N}', '${ORDER_COMMENT}', '${PRODUCTS_ATTRIBUTES}'); 
           $predate_str_arr = explode('-', $_POST['predate']);
-          $predate_str = $predate_str_arr[0].PREORDER_YEAR_TEXT.$predate_str_arr[1].PREORDER_MONTH_TEXT.$predate_str_arr[2].PREORDER_MONTH_TEXT;
+          $predate_str = $predate_str_arr[0].DATE_YEAR_TEXT.$predate_str_arr[1].DATE_MONTH_TEXT.$predate_str_arr[2].DATE_MONTH_TEXT;
         
           $payment_name_class = new $_POST['pre_payment'];
           $payment_name_str = $payment_name_class->title;
           
-          $pre_replace_info_arr = array($_POST['products_name'], $_POST['quantity'], $predate_str, $payment_name_str, tep_get_fullname($account_values['customers_firstname'],$account_values['customers_lastname']), STORE_NAME, HTTP_SERVER, $preorder_id, $_POST['yourmessage']);
+          $pre_replace_info_arr = array($_POST['products_name'], $_POST['quantity'], $predate_str, $payment_name_str, tep_get_fullname($account_values['customers_firstname'],$account_values['customers_lastname']), STORE_NAME, HTTP_SERVER, $preorder_id, $_POST['yourmessage'], $mail_option_str);
           
           $preorder_email_text = str_replace($replace_info_arr, $pre_replace_info_arr, $preorder_email_text);
           
           $preorder_email_subject = str_replace('${SITE_NAME}', STORE_NAME, PREORDER_MAIL_SUBJECT); 
-          
           tep_mail(tep_get_fullname($account_values['customers_firstname'],$account_values['customers_lastname']), $account_values['customers_email_address'], $preorder_email_subject, $preorder_email_text, STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS); 
           tep_mail('', SENTMAIL_ADDRESS, $preorder_email_subject, $preorder_email_text, tep_get_fullname($account_values['customers_firstname'],$account_values['customers_lastname']), $account_values['customers_email_address']); 
       } else {
@@ -287,14 +306,14 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
           } else {
             $preorder_email_text = PREORDER_MAIL_CONTENT; 
             
-            $replace_info_arr = array('${PRODUCTS_NAME}', '${PRODUCTS_QUANTITY}', '${EFFECTIVE_TIME}', '${PAY}', '${NAME}', '${SITE_NAME}', '${SITE_URL}', '${PREORDER_N}', '${ORDER_COMMENT}'); 
+            $replace_info_arr = array('${PRODUCTS_NAME}', '${PRODUCTS_QUANTITY}', '${EFFECTIVE_TIME}', '${PAY}', '${NAME}', '${SITE_NAME}', '${SITE_URL}', '${PREORDER_N}', '${ORDER_COMMENT}', '${PRODUCTS_ATTRIBUTES}'); 
             $predate_str_arr = explode('-', $_POST['predate']);
-            $predate_str = $predate_str_arr[0].PREORDER_YEAR_TEXT.$predate_str_arr[1].PREORDER_MONTH_TEXT.$predate_str_arr[2].PREORDER_MONTH_TEXT;
+            $predate_str = $predate_str_arr[0].DATE_YEAR_TEXT.$predate_str_arr[1].DATE_MONTH_TEXT.$predate_str_arr[2].DATE_MONTH_TEXT;
             
             $payment_name_class = new $_POST['pre_payment'];
             $payment_name_str = $payment_name_class->title;
               
-            $pre_replace_info_arr = array($_POST['products_name'], $_POST['quantity'], $predate_str, $payment_name_str, $from_name, STORE_NAME, HTTP_SERVER, $preorder_id, $_POST['yourmessage']);
+            $pre_replace_info_arr = array($_POST['products_name'], $_POST['quantity'], $predate_str, $payment_name_str, $from_name, STORE_NAME, HTTP_SERVER, $preorder_id, $_POST['yourmessage'], $mail_option_str);
             
             $preorder_email_text = str_replace($replace_info_arr, $pre_replace_info_arr, $preorder_email_text);
             
@@ -353,12 +372,12 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
       <?php echo tep_draw_form('preorder_product', tep_href_link(FILENAME_PREORDER_PAYMENT, 'action=process')) .  tep_draw_hidden_field('products_id', $product_info['products_id']).tep_draw_hidden_field('products_name', $product_info['products_name']); ?>
 
       <p>
-     <?php echo TEXT_PRE_PAY_PROMPT;?>   
+        <?php echo TEXT_PREORDER_BOOK_TEXT;?>
       </p>
-      <p class="red"><h3><?php echo TEXT_PRE_PAY_PROMPT1;?></h3></p>
+        <p class="red"><b><?php echo TEXT_PREORDER_BOOK_TEXT_END;?></b></p>
 <?php
       if($error == true) {
-        echo '<span class="errorText"><b>'.TEXT_PRE_PAY_INPUT_ERROR.'</span></b><br><br>';
+        echo '<span class="errorText"><b>'.TEXT_INPUT_ERROR_INFO.'</span></b><br><br>';
       }
 ?>
     <?php
@@ -376,8 +395,8 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
       }
     ?>
      
-    <div id="preorder_payment"><?php echo FORM_FIELD_PREORDER_PAYMENT; ?></div>
-    <div>  
+    <h3><b><?php echo FORM_FIELD_PREORDER_PAYMENT; ?></b></h3>
+    <div class="checkout_payment_info">  
     <?php
     if (sizeof($selection) > 1) { 
       ?>
@@ -400,15 +419,15 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
           }
         ?>
         <div>
-          <div class="box_content_title   <?php if ($_POST['pre_payment'] == $singleSelection['id']) {echo 'box_content_title_selected';};?>"> 
+          <div class="box_content_title <?php if ($_POST['pre_payment'] == $singleSelection['id']) {echo 'box_content_title_selected';};?>"> 
             <div class="hm-payment-left"><b><?php echo $singleSelection['module'];?></b></div> 
             <div class="hm-payment-right">
             <?php echo tep_draw_radio_field('pre_payment', $singleSelection['id'], $_POST['pre_payment'] == $singleSelection['id']);?> 
             </div>
           </div>
           <div class="box_content_text">
-            <p><?php echo $singleSelection['description'];?></p>
-            <div>
+            <p class="cp_description"><?php echo $singleSelection['description'];?></p>
+            <div class="cp_content">
               <div style="display:none;" class="rowHide rowHide_<?php echo $singleSelection['id'];?>">
               <?php 
                 echo $singleSelection['fields_description']; 
@@ -418,7 +437,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
                   <?php if ($field['title']) {?>
                   <div class="frame_title"><?php echo $field['title'];?></div> 
                   <?php }?>
-                  <div class="float_left"><?php echo $field['field']?><font  color="#AEOE30"><?php echo $field['message'];?></font></div> 
+                  <div class="float_left"><?php echo $field['field']?><small><font color="#AEOE30"><?php echo $field['message'];?></font></small></div> 
                 </div>
               <?php
                 }
@@ -431,20 +450,18 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
         <?php 
         }
         ?>
-      <?php }?>
-       </div> 
+      <?php }?> 
+      </div>
+	  <br>
+      <h3><b><?php echo $product_info['products_name'].PREORDER_EXPECT_CTITLE; ?></b></h3>
+      <table width="100%" cellpadding="2" cellspacing="0" border="0">
+        <tr><td><?php echo tep_draw_textarea_field('yourmessage', 'soft', 40, 8, '', 'style="width:100%;"');?></td></tr>
+      </table>
       <br>
-      <h3><?php echo $product_info['products_name'].PREORDER_EXPECT_CTITLE; ?></h3>
-      <div>
-	  <?php echo tep_draw_textarea_field('yourmessage', 'soft', 40, 8, '',' style="width:100%;" ' );?>
-	  </div>
-      <table border="0" width="100%" cellspacing="0" cellpadding="0" class="botton-continue">
+      <table border="0" width="100%" cellspacing="0" cellpadding="0">
         <tr>
           <td>
-           <?php echo '<a href="javascript:void(0);"
-           onclick="document.forms.form1.submit(0);">' .
-           tep_image_button('button_back.gif',
-               IMAGE_BUTTON_BACK,'onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_back.gif\'"   onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_back_hover.gif\'"') . '</a>'; ?>
+           <?php echo '<a href="javascript:void(0);" onclick="document.forms.form1.submit(0);">' .  tep_image_button('button_back.gif', IMAGE_BUTTON_BACK, 'onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_back_hover.gif\'" onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_back.gif\'"') . '</a>'; ?>
           </td>
           <td align="right">
             <?php
@@ -456,9 +473,14 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
               echo tep_draw_hidden_field('quantity', $_POST['quantity']); 
               echo tep_draw_hidden_field('predate', $_POST['predate']); 
               echo tep_draw_hidden_field('preorder_subtotal', $_POST['preorder_subtotal']); 
+              foreach ($_POST as $op_s_key => $op_s_value) {
+                $ops_single_str = substr($op_s_key, 0, 3);
+                if ($ops_single_str == 'op_') {
+                  echo tep_draw_hidden_field($op_s_key, stripslashes($op_s_value)); 
+                }
+              }
             ?>
-            <?php echo tep_image_submit('button_continue.gif',
-                IMAGE_BUTTON_CONTINUE,'onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_continue.gif\'" onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_continue_hover.gif\'"'); ?>
+            <?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE, 'onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_continue_02_hover.gif\'" onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_continue_02.gif\'"'); ?>
           </td>
         </tr>
       </table>
@@ -472,22 +494,29 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
        }
        echo tep_draw_hidden_field('quantity', $_POST['quantity']); 
        echo tep_draw_hidden_field('predate', $_POST['predate']); 
+       foreach ($_POST as $op_key => $op_value) {
+         $op_single_str = substr($op_key, 0, 3);
+         if ($op_single_str == 'op_') {
+           echo tep_draw_hidden_field($op_key, stripslashes($op_value)); 
+         }
+       }
     ?>
     </form>
 <?php
     }
   }
-?>
-   
-    </div>
-    </div>      
+?>    
     <!-- body_text_eof //-->
-	</div>
-      <?php include('includes/float-box.php');?>
-        </div> 
+  </div>
+  </div>
+  </div>
+  <?php include('includes/float-box.php');?>
 </div>
+<!-- body_eof //-->
+<!-- footer //-->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-
+<!-- footer_eof //-->
+</div>
 </body>
 </html>
 <?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

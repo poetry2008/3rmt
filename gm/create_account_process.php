@@ -42,7 +42,7 @@
   $state = tep_db_prepare_input($_POST['state']);
   $country = tep_db_prepare_input($_POST['country']);
   $guestchk = tep_db_prepare_input($_POST['guestchk']);
-
+  $referer        = tep_db_prepare_input($_SESSION['referer']);
   $error = false; // reset error flag
 
   if (strlen($firstname) < ENTRY_FIRST_NAME_MIN_LENGTH) {
@@ -75,6 +75,12 @@
 
   if($guestchk == '0') {
     $passlen = strlen($password);
+    if(!(preg_match('/[a-zA-Z]/',$password) && preg_match('/[0-9]/',$password))){
+      $error = true;
+      $entry_password_english_error = true;
+    }else{
+      $entry_password_english_error = false; 
+    }
     if ($passlen < ENTRY_PASSWORD_MIN_LENGTH) {
       $error = true;
       $entry_password_error = true;
@@ -691,7 +697,7 @@ function pass_hidd(){
 
     if($guestchk == '1') {
     # For Guest
-    tep_redirect(tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL'));
+    tep_redirect(tep_href_link(FILENAME_CHECKOUT_ATTRIBUTES, '', 'SSL'));
   } else {
     # For Member
     $email_text .= C_CREAT_ACCOUNT ;

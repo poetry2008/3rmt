@@ -7,7 +7,10 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
   function render($option_error_array,$is_space = false)
   {
     if (strlen($this->front_title)) {
-      echo '<td class="main" width="120" valign="top">&nbsp;'; 
+      echo '<td class="main" width="120" valign="top">';
+      if (NEW_STYLE_WEB !== true) {
+        echo '&nbsp;'; 
+      }
       echo $this->front_title.':'; 
       echo '</td>'; 
     }
@@ -16,7 +19,11 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
     $style_color = isset($_POST['op_'.$this->formname]) && $_POST['op_'.$this->formname] != $this->comment ?'color:#000;':'color:#999;';
     if($options['rows'] == 1){
       
-      $style_size = $type_limit == 'num' ? 'size="25" ' : 'style="width:75%;" ';
+      if (NEW_STYLE_WEB === true) {
+        $style_size = $type_limit == 'num' ? 'size="25" ' : ' ';
+      } else {
+        $style_size = $type_limit == 'num' ? 'size="25" ' : 'style="width:75%;" ';
+      }
       if(!$is_space){
         echo '<td class="main" style="padding-left:10px;">';
       }else{
@@ -80,20 +87,14 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
      $input_text_str = $_POST['op_'.$this->formname]; 
      $input_text_str = str_replace(' ', '', $input_text_str); 
      $input_text_str = str_replace('　', '', $input_text_str); 
+     $input_text_len = mb_strlen($input_text_str, 'UTF-8');
      
      if ($this->required == 'true') {
        if ($input_text_str == '' || $input_text_str == $this->comment) {
          $option_error_array[$this->formname] = ADDRESS_ERROR_OPTION_ITEM_TEXT_NULL;  
          return true; 
        }
-       $input_text_len = mb_strlen($input_text_str, 'UTF-8');
-       
-       if($this->num_limit != 0){
-         if ($input_text_len > $this->num_limit) {
-           $option_error_array[$this->formname] = sprintf(ADDRESS_ERROR_OPTION_ITEM_TEXT_NUM_MAX, $this->num_limit);  
-           return true; 
-         } 
-       }
+        
        if($this->num_limit_min != 0){
          if ($input_text_len < $this->num_limit_min) {
            $option_error_array[$this->formname] = "'$this->front_title'".ADDRESS_ERROR_OPTION_ITEM_TEXT_NUM_MIN.$this->num_limit_min.ADDRESS_ERROR_OPTION_ITEM_TEXT_NUM_MIN_1;  
@@ -101,6 +102,13 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
          } 
        }
        
+     }
+
+     if($this->num_limit != 0){
+         if ($input_text_len > $this->num_limit) {
+           $option_error_array[$this->formname] = sprintf(ADDRESS_ERROR_OPTION_ITEM_TEXT_NUM_MAX, $this->num_limit);  
+           return true; 
+         } 
      }
     
      if ($input_text_str != '') {

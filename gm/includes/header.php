@@ -100,13 +100,13 @@ if (!isset($_GET['products_id'])) $_GET['products_id']= NULL;
       }
     ?>
    
-	<li class="space-3-7"><a href="/info/starting_rmt.html"><img src="images/getin.png" alt="qetin"onmouseOver="this.src='images/getin_hover.png'"onmouseOut="this.src='images/getin.png'"></a></li>
+	<li class="space-3-7"><a href="<?php echo HTTP_SERVER;?>/info/starting_rmt.html"><img src="images/getin.png" alt="qetin"onmouseOver="this.src='images/getin_hover.png'"onmouseOut="this.src='images/getin.png'"></a></li>
 	<li class="space-4-7">&nbsp;</li>
   <li class="space-5-7"><a href="<?php echo tep_href_link(FILENAME_CONTACT_US,'','NONSSL');?>"><img src="images/quick.png" alt="quick"onmouseOver="this.src='images/quick_hover.png'"onmouseOut="this.src='images/quick.png'"></a></li>
   <li class="space-6-7">
      <a href="<?php echo tep_href_link(FILENAME_CREATE_ACCOUNT,'','SSL'); ?>"><img src="images/login.png" alt="login"onmouseOver="this.src='images/login_hover.png'"onmouseOut="this.src='images/login.png'"></a></li>
     <?php
-   if(tep_session_is_registered('customer_id')){
+   if(tep_session_is_registered('customer_id') && $guestchk != '1'){
     ?>
     <li class="space-7-7" >
      <?php echo '<img id="login_click"
@@ -119,21 +119,9 @@ if (!isset($_GET['products_id'])) $_GET['products_id']= NULL;
 
 
    <?php
-   }
-  else{
-   if($guestchk == '1'){
-   
-?>
- <li class="space-7-7">
-     <?php echo '<a href="'. tep_href_link(FILENAME_LOGOFF, '', 'SSL').'"><img
-     src="images/MENBERS_after.png"  onmouseOver="document.getElementById(\'out_id\').style.display=\'block\';" ></a>'; ?>
-  
-        </li>
-
- <?php    
-   }
-   else{
-  ?>
+   }else{
+   ?>
+ 
   <li class="space-7-7">
       <a href="<?php echo tep_href_link(FILENAME_LOGIN,'','SSL'); ?>"><img
       src="images/MENBERS.png"
@@ -141,7 +129,7 @@ if (!isset($_GET['products_id'])) $_GET['products_id']= NULL;
             
       </li>
        
-      <?php }}?>
+      <?php }?>
       
       </ul>
 

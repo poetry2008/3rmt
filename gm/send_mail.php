@@ -56,7 +56,9 @@
           <td class="login_text" valign="top" width="70%">
             <input type="text" name="email_address" id="input_text">
           </td>
-          <td width="10%" class="td_submit" align="right" style="padding:0 10px 25px 0;">
+        </tr>
+        <tr>
+        <td align="right" style="padding-top:25px;" colspan="2">
             <?php echo tep_image_submit('button_send_mail.gif',
                 SENDMAIL_BUTTON,' onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_send_mail.gif\'"  onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_send_mail_hover.gif\'"'); ?>
           </td>
