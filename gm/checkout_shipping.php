@@ -1223,7 +1223,15 @@ if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) 
     $post_hour = isset($_SESSION['hour']) && $_SESSION['hour'] != '' ? $_SESSION['hour'] : $_POST['hour'];
     $post_min = isset($_SESSION['min']) && $_SESSION['min'] != '' ? $_SESSION['min'] : $_POST['min'];
     $ele = isset($_SESSION['ele']) && $_SESSION['ele'] != '' ? $_SESSION['ele'] : $_POST['ele'];
-    echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\',\''. $post_hour .'\','. $post_min .',\''.$ele.'\');$("#shipping_list_min").show();</script>';
+    $hour_show_flag = false;
+    $hour_show_array = explode('||',$work_start);
+    if(!in_array($post_hour,$hour_show_array)){
+
+      $hour_show_flag = true;
+    }
+    if($hour_show_flag == false){
+      echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\',\''. $post_hour .'\','. $post_min .',\''.$ele.'\');$("#shipping_list_min").show();</script>';
+    }
   }
 ?>
 <?php

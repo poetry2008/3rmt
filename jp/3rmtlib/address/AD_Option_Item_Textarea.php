@@ -65,7 +65,7 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
         echo '&nbsp;*必須';
      }
      echo '</font>';
-     echo '<span id="error_'.$this->formname.'" class="shipping_error"><font color="red">';
+     echo '<br><span id="error_'.$this->formname.'" class="shipping_error"><font color="red">';
      if (isset($option_error_array[$this->formname])) {
        echo $option_error_array[$this->formname]; 
      }
@@ -89,32 +89,31 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
      $input_text_str = $_POST['op_'.$this->formname]; 
      $input_text_str = str_replace(' ', '', $input_text_str); 
      $input_text_str = str_replace('　', '', $input_text_str); 
+     $input_text_len = mb_strlen($input_text_str, 'UTF-8');
      
      if ($this->required == 'true') {
        if ($input_text_str == '' || $input_text_str == $this->comment) {
          $option_error_array[$this->formname] = ADDRESS_ERROR_OPTION_ITEM_TEXT_NULL;  
          return true; 
-       }
-       $input_text_len = mb_strlen($input_text_str, 'UTF-8');
+       } 
        
-       if($this->num_limit != 0){
-
-         if($input_text_len > $this->num_limit){
-           $option_error_array[$this->formname] = sprintf(ADDRESS_ERROR_OPTION_ITEM_TEXT_NUM_MAX, $this->num_limit);  
-           return true;   
-         }
-       }
-        
        if($this->num_limit_min != 0){
 
          if($input_text_len < $this->num_limit_min){
            $option_error_array[$this->formname] = "'$this->front_title'".ADDRESS_ERROR_OPTION_ITEM_TEXT_NUM_MIN.$this->num_limit_min.ADDRESS_ERROR_OPTION_ITEM_TEXT_NUM_MIN_1;  
            return true;   
          }
-       }
-       
+       }  
      }
-    
+
+       if($this->num_limit != 0){
+
+         if($input_text_len > $this->num_limit){
+           $option_error_array[$this->formname] = sprintf(ADDRESS_ERROR_OPTION_ITEM_TEXT_NUM_MAX, $this->num_limit);  
+           return true;   
+         }
+       } 
+        
      if ($input_text_str != '') {
        $item_type_error = false;
        $type_limit_array = unserialize($this->option);

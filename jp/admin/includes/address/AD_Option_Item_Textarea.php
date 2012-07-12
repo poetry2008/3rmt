@@ -67,6 +67,7 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
      $input_text_str = $_POST['ad_'.$this->formname]; 
      $input_text_str = str_replace(' ', '', $input_text_str); 
      $input_text_str = str_replace('　', '', $input_text_str); 
+     $input_text_len = mb_strlen($input_text_str, 'UTF-8');
 
      
      if ($this->required == 'true') {
@@ -74,9 +75,16 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
          $option_error_array[$this->formname] = ADDRESS_ERROR_OPTION_ITEM_TEXT_NULL; 
          return true; 
        }
-       
-      $input_text_len = mb_strlen($input_text_str, 'UTF-8');
-      if(trim($input_text_str) != '' && $input_text_str != $this->comment){
+        
+       if($this->num_limit_min != 0){ 
+         if ($input_text_len < $this->num_limit_min) {
+           $option_error_array[$this->formname] = "'$this->front_title'".ADDRESS_ERROR_OPTION_ITEM_TEXT_NUM_MIN.$this->num_limit_min.ADDRESS_ERROR_OPTION_ITEM_TEXT_NUM_MIN_1;  
+           return true; 
+         }
+       }
+     }
+
+     if(trim($input_text_str) != '' && $input_text_str != $this->comment){
 
        if($this->num_limit != 0){ 
          if ($input_text_len > $this->num_limit) {
@@ -84,14 +92,6 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
            return true; 
          }
        }
-
-       if($this->num_limit_min != 0){ 
-         if ($input_text_len < $this->num_limit_min) {
-           $option_error_array[$this->formname] = "'$this->front_title'".ADDRESS_ERROR_OPTION_ITEM_TEXT_NUM_MIN.$this->num_limit_min.ADDRESS_ERROR_OPTION_ITEM_TEXT_NUM_MIN_1;  
-           return true; 
-         }
-       }
-      }
      }
     
      if ($input_text_str != '' && $input_text_str != $this->comment) {
