@@ -116,7 +116,7 @@
                       </table></td> 
                   </tr> 
                   <tr class="box_des"> 
-                    <td align="center" nowrap="nowrap" width="20%" class="checkoutBarFrom"><?php echo CHECKOUT_BAR_PRODUCTS; ?></td>
+                    <td align="center" nowrap="nowrap" width="20%" class="checkoutBarFrom"><?php echo CHECKOUT_BAR_OPTION; ?></td>
                     <td align="center" nowrap="nowrap" width="20%" class="checkoutBarFrom"><?php echo CHECKOUT_BAR_DELIVERY; ?></td> 
                     <td align="center" nowrap="nowrap" width="20%" class="checkoutBarFrom"><?php echo CHECKOUT_BAR_PAYMENT; ?></td> 
                     <td align="center" nowrap="nowrap" width="20%" class="checkoutBarFrom"><?php echo CHECKOUT_BAR_CONFIRMATION; ?></td> 

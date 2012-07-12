@@ -164,7 +164,7 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
              echo '</div>'; 
            } else {
              if (isset($a_old_single) || isset($old_sel_single)) {
-               if (trim(nl2br($default_value)) == trim(nl2br($this->default_radio))) {
+               if (trim($default_value) == '') {
                  echo '<div class="option_show_border">'; 
                } else {
                  echo '<div class="option_hide_border">'; 
@@ -185,7 +185,8 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
            }
          } else {
            if (isset($a_old_single) || isset($old_sel_single)) {
-             if (trim(nl2br($default_value)) == trim(nl2br(stripslashes($this->default_radio)))) {
+             //if (trim(nl2br($default_value)) == trim(nl2br(stripslashes($this->default_radio)))) {
+             if (trim($default_value) == '') {
                echo '<div class="option_show_border">'; 
              } else {
                echo '<div class="option_hide_border">'; 

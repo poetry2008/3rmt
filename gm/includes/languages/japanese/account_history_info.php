@@ -33,3 +33,4 @@ define('TABLE_HEADING_DOWNLOAD_COUNT', ' 回ダウンロードできます');
 define('HEADING_DOWNLOAD', 'ダウンロード・リンク');
 define('TEXT_FEE_HANDLE', '手数料:');
 define('MONEY_UNIT_ATEXT', '円');
+define('TEXT_SHIPPING_FEE','配送料:');

@@ -119,7 +119,7 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
     
   echo '          <tr>' . "\n" .
     '            <td class="main" align="center" valign="top" width="150">' .
-    $order->products[$i]['qty'] . '&nbsp;'.TEXT_CONFIRMATION_NUM_UNIT .  (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($order->products[$i]['qty'], (int)$order->products[$i]['id']) ? '<br><span style="font-size:10px">'.  tep_get_full_count_in_order2($order->products[$i]['qty'], (int)$order->products[$i]['id']) .'</span>': '') . '</td>' . "\n" .
+    $order->products[$i]['qty'] . '&nbsp;'. NUM_UNIT_TEXT.  (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($order->products[$i]['qty'], (int)$order->products[$i]['id']) ? '<br><span style="font-size:10px">'.  tep_get_full_count_in_order2($order->products[$i]['qty'], (int)$order->products[$i]['id']) .'</span>': '') . '</td>' . "\n" .
     '            <td class="main" valign="top">' . $order->products[$i]['name'];
   if ($order->products[$i]['price'] < 0) {
     echo ' (<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->display_price($order->products[$i]['price'], $order->products[$i]['tax'])).'</font>'.JPMONEY_UNIT_TEXT.')';
@@ -340,25 +340,25 @@ $shipping_fee = $cart->total > $free_value ? 0 : $weight_fee;
   <td>
   <table width="100%" border="0" cellspacing="0" cellpadding="2">
   <tr>
-  <td class="main" colspan="3"><b><?php echo TEXT_TORIHIKI_TITLE; ?></b><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
+  <td class="main" colspan="3"><b><?php echo TEXT_TRADE_DATE; ?></b><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
   </tr>
   <tr>
   <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-  <td class="main" width="30%"><?php echo TEXT_TORIHIKIKIBOUBI; ?></td>
+  <td class="main" width="30%"><?php echo TEXT_EXPECT_TRADE_DATE; ?></td>
   <td class="main" width="70%"><?php echo str_string($date); ?></td>
   </tr>
   <tr>
   <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-  <td class="main"><?php echo TEXT_TORIHIKIKIBOUJIKAN; ?></td>
+  <td class="main"><?php echo TEXT_EXPECT_TRADE_TIME; ?></td>
   <td class="main">
   <?php echo $start_hour; ?>
-<?php echo TEXT_CONFIRMATION_HOUR_TEXT;?>
+<?php echo TIME_HOUR_TEXT;?>
 <?php echo $start_min; ?>
- <?php echo TEXT_CONFIRMATION_MINUTE_TEXT;?>&nbsp;～
+ <?php echo TIME_MIN_TEXT;?>&nbsp;～
 <?php echo $end_hour; ?>
-<?php echo TEXT_CONFIRMATION_HOUR_TEXT;?>
+<?php echo TIME_HOUR_TEXT;?>
 <?php echo $end_min; ?>
-<?php echo TEXT_CONFIRMATION_MINUTE_TEXT;?>
+<?php echo TIME_MIN_TEXT;?>
 </td>
 </tr>
 </table>

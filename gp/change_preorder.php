@@ -604,7 +604,7 @@ $preorder_information['pid'] = $preorder_id;
 if (!tep_session_is_registered('preorder_information')) {
    tep_session_register('preorder_information');
 }
-tep_redirect(tep_href_link('change_preorder_confirm.php', '', 'SSL'));
+tep_redirect(tep_href_link('change_preorder_confirm.php'));
 //echo '<input type="hidden" name="pid" value="'.$preorder_id.'">'; 
 //echo '</form>';
 ?>

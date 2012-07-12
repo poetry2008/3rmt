@@ -278,6 +278,27 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
       }
     }
 //------insert customer choosen option eof ----
+    $attribute_len_array = array();
+    $attribute_max_len = 0;
+
+    if (isset($o->products[$i]['op_attributes'])) {
+      foreach ($o->products[$i]['op_attributes'] as $opa_l_order) {
+        $attribute_len_array[] = mb_strlen($opa_l_order['option_info']['title'], 'utf-8'); 
+      }
+    }
+    
+    if (!empty($attribute_len_array)) {
+      $attribute_max_len = max($attribute_len_array); 
+    }
+   
+    if ($attribute_max_len < 4) {
+      $attribute_max_len = 4; 
+    }
+    if (isset($o->products[$i]['op_attributes'])) {
+      foreach ($o->products[$i]['op_attributes'] as $opa_order) {
+        $products_ordered_attributes .= "\n" .$opa_order['option_info']['title'] .  str_repeat('　',intval(($attribute_max_len - mb_strlen($opa_order['option_info']['title'], 'utf-8')))) . '：' .  str_replace("<br>", "\n", $opa_order['option_info']['value']);
+      }
+    }
     if(isset($o->products[$i]['weight']) && isset($o->products[$i]['qty'])){
       $total_weight += ($o->products[$i]['qty'] * $o->products[$i]['weight']);
     }
@@ -339,7 +360,7 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
   $email_order .= '------------------------------------------' . "\n";
   $email_order .= $products_ordered . "\n";
   $email_order .= TEXT_REORDER_TRADE_DATE . str_string($_date) . $_hour
-    .PREORDER_HOUR_TEXT . $_minute . PREORDER_MIN_TEXT.TEXT_REORDER_TWENTY_FOUR_HOUR . "\n";
+    .TIME_HOUR_TEXT . $_minute . TIME_MIN_TEXT.TEXT_REORDER_TWENTY_FOUR_HOUR . "\n";
 
   if ($comment) {
     $email_order .= TEXT_REORDER_COMMERN_EMAIL . "\n";
@@ -449,7 +470,7 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
               and popt.language_id = '" . $languages_id . "'
         ");
         $products_attributes = tep_db_fetch_array($products_attributes_query);
-        if ($products_attributes['total'] > 0) {
+        if (false) {
           //ccdd
           $products_options_name_query = tep_db_query("
               select distinct popt.products_options_id, 

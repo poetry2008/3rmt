@@ -2248,7 +2248,6 @@ border:1px solid #CAC6BE;
     position:relative;
 	color:#FFFFFF;
 	*height:25px;
-	overflow:hidden;
 }
 .time_radio{
 	float:left;

@@ -155,7 +155,7 @@ define('BOX_TELL_A_FRIEND_TEXT', 'この商品のURLを友達にメールする'
 
 // checkout procedure text
 define('CHECKOUT_BAR_PRODUCTS',    'キャラクター名');
-define('CHECKOUT_BAR_DELIVERY',    '取引日時');
+define('CHECKOUT_BAR_DELIVERY',    '配送方法');
 define('CHECKOUT_BAR_PAYMENT',     '支払方法');
 define('CHECKOUT_BAR_CONFIRMATION','最終確認');
 define('CHECKOUT_BAR_FINISHED',    '手続完了!');
@@ -237,7 +237,7 @@ define('ENTRY_SUBURB_ERROR', '');
 define('ENTRY_SUBURB_TEXT', '');
 define('ENTRY_POST_CODE', '郵便番号:');
 define('ENTRY_POST_CODE_ERROR', '&nbsp;<small><font color="#FF0000">少なくても ' . ENTRY_POSTCODE_MIN_LENGTH . ' 文字</font></small>');
-define('ENTRY_POST_CODE_TEXT', '&nbsp;<span>(例. 331-0814) <font color="RED">*必須</font></span>');
+define('ENTRY_POST_CODE_TEXT', '&nbsp;<span>(例. 0010000) <font color="RED">*必須</font></span>');
 define('ENTRY_CITY', '市区町村:');
 define('ENTRY_CITY_ERROR', '&nbsp;<small><font color="#FF0000">少なくても ' . ENTRY_CITY_MIN_LENGTH . ' 文字</font></small>');
 define('ENTRY_CITY_TEXT', '&nbsp;<span>(例. さいたま市) <font color="RED">*必須</font></span>');
@@ -338,6 +338,8 @@ define('TEXT_NO_NEW_PRODUCTS', '現在商品は登録されていません...');
 define('TEXT_UNKNOWN_TAX_RATE', '税率不明');
 
 define('TEXT_REQUIRED', '*必須');
+define('TEXT_WEIGHT_ERROR','※要問合※&nbsp;総重量が規定の範囲を超えました。');
+define('TEXT_WEIGHT_ERROR_ONE','個以内に個数を変更してください。<br><b>予約注文を承っておりますので、お問い合わせをお願いいたします。</b>');
 
 define('TEXT_TIME_SPECIFY', 'お届けする時間帯: '); // add for Japanese update
 
@@ -433,23 +435,22 @@ define('CHECK_EMAIL_EXISTS_ERROR', 'エラーが発生しました。<br>お手�
 define('SENDMAIL_SUCCESS_COMMENT_TEXT', '正常に受信できる場合：「送信」後5分以内で'.STORE_NAME.'からの確認メールが届きます。<br>受信できない場合：「送信」後5分以上経過しても受信できない場合は、スパムフィルター等で受け取りを拒否されている可能性が高いです。');
 define('ALREADY_SEND_MAIL_TEXT', 'エラーが発生しました。\nお手数をお掛けいたしますが、トップページに戻り再度やり直してください');
 
-define('PREORDER_SELECT_EMPTY_OPTION', '希望日を選択してください');
-define('PREORDER_YEAR_TEXT', '年');
-define('PREORDER_MONTH_TEXT', '月');
-define('PREORDER_DAY_TEXT', '日');
-define('PREORDER_MONDAY_TEXT', '月曜日');
-define('PREORDER_TUESDAY_TEXT', '火曜日');
-define('PREORDER_WENSDAY_TEXT', '水曜日');
-define('PREORDER_THIRSDAY_TEXT', '木曜日');
-define('PREORDER_FRIDAY_TEXT', '金曜日');
-define('PREORDER_STATURDAY_TEXT', '土曜日');
-define('PREORDER_SUNDAY_TEXT', '日曜日');
-define('PREORDER_HOUR_TEXT', '時');
-define('PREORDER_MIN_TEXT', '分');
-define('PREORDER_TRADER_LINE_TITLE', '取引情報');
-define('PREORDER_CONFIRM_LINE_TITLE', '最終確認');
-define('PREORDER_FINISH_LINE_TITLE', '手続き完了！');
+define('DATE_YEAR_TEXT', '年');
+define('DATE_MONTH_TEXT', '月');
+define('DATE_DAY_TEXT', '日');
+define('TEXT_DATE_MONDAY', '月曜日');
+define('TEXT_DATE_TUESDAY', '火曜日');
+define('TEXT_DATE_WEDNESDAY', '水曜日');
+define('TEXT_DATE_THURSDAY', '木曜日');
+define('TEXT_DATE_FRIDAY', '金曜日');
+define('TEXT_DATE_STATURDAY', '土曜日');
+define('TEXT_DATE_SUNDAY', '日曜日');
+define('TIME_HOUR_TEXT', '時');
+define('TIME_MIN_TEXT', '分');
 define('JPMONEY_UNIT_TEXT', '円');
+define('TEXT_CHARACTER','お客様のキャラクター名：');
+define('CHECKOUT_BAR_OPTION', '商品オプション');
+define('TEXT_RIDE_RSS','×');
 define('ENTRY_NO_USE_OLD_PASSWORD', '<font color="#FF0000">安全のため、古いパスワードと違うパスワードを設定してください。</font>');
 define('ENTRY_PASSWORD_IS_NUM', '&nbsp;<font color="#FF0000">英字（abcdef...z）が1文字以上必要です。<br>&nbsp;&nbsp;英字と数字を組み合わせて設定してください。</font>');
 define('ENTRY_PASSWORD_IS_ALPHA', '&nbsp;<font color="#FF0000">数字（0123456789）が1文字以上必要です。<br>&nbsp;&nbsp;英字と数字を組み合わせて設定してください。</font>');
@@ -470,13 +471,6 @@ define('BESTSELLERS_SORT_SYMBOL', '位');
 define('ABOUT_TEXT_LINK', 'について');
 define('INPUT_BELOW_MSG_TEXT', '入力して下さい');
 define('CATEGORY_SHOW_TEXT', 'RMT：ゲームマネー・アイテム・アカウント');
-define('TEXT_DATE_MONDAY','月曜日');
-define('TEXT_DATE_TUESDAY','火曜日');
-define('TEXT_DATE_WEDNESDAY','水曜日');
-define('TEXT_DATE_THURSDAY','木曜日');
-define('TEXT_DATE_FIRDAY','金曜日');
-define('TEXT_DATE_SATURDAY','土曜日');
-define('TEXT_DATE_SUNDAY','日曜日');
 define('TEXT_MANUFACTURERS_PRODUCT_LIST', 'このメーカー一覧の商品一覧へ');
 define('TEXT_SPAN_TITLE','&nbsp;会員登録をしないで購入することもできます。');
 define('TEXT_FOOTER_ONE','サイトマップ');

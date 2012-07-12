@@ -22,7 +22,7 @@
     $navigation->clear_snapshot();
   } else {
     if ($cart->count_contents() > 0) {
-      $origin_href = tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL'); 
+      $origin_href = tep_href_link(FILENAME_CHECKOUT_ATTRIBUTES, '', 'SSL'); 
     } else {
       $origin_href = tep_href_link(FILENAME_DEFAULT);
     } 

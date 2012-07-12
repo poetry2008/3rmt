@@ -8,7 +8,11 @@ class AD_Option_Item_Option extends AD_Option_Item_Basic
   function render($option_error_array)
   {
      if (strlen($this->front_title)) {
-       echo '<td class="main" width="150">'; 
+       if (NEW_STYLE_WEB === true) {
+         echo '<td class="main" width="20%">'; 
+       } else {
+         echo '<td class="main" width="150">'; 
+       }
        echo $this->front_title.':';
        echo '</td>';
      }

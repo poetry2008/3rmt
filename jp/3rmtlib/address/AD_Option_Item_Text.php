@@ -12,14 +12,24 @@ class AD_Option_Item_Text extends AD_Option_Item_Basic
   function render($option_error_array, $is_space = false)
   {
      if (!$is_space) {
-       echo '<td width="10" height="30">'. tep_draw_separator('pixel_trans.gif', '10', '1') .'</td>';
+       if (NEW_STYLE_WEB !== true) {
+         echo '<td width="10" height="30">'. tep_draw_separator('pixel_trans.gif', '10', '1') .'</td>';
+       } 
      } 
      if (strlen($this->front_title)) {
-       echo '<td class="main" width="30%" valign="top">';
+       if (NEW_STYLE_WEB === true) {
+        echo '<td class="main" width="20%" valign="top">';
+       } else {
+        echo '<td class="main" width="30%" valign="top">';
+       }
        echo $this->front_title.':';
        echo '</td>';
      }
-     echo '<td class="main" width="70%">';
+     if (NEW_STYLE_WEB === true) {
+       echo '<td class="main">';
+     } else {
+       echo '<td class="main" width="70%">';
+     }
      echo $this->comment; 
      //echo '</pre>';
      echo '<span id="error_'.$this->formname.'" class="option_error">';

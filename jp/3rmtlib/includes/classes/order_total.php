@@ -161,8 +161,10 @@
 
                 $sub_total = $GLOBALS[$class]->output[$i]['value'];
               }
+              $colspan = NEW_STYLE_WEB===true ? ' colspan="2"' : ''; 
               $output_string .= '              <tr>' . "\n" .
-                                '                <td align="right" class="main">' . $GLOBALS[$class]->output[$i]['title'] . '</td>' . "\n" .
+                                '                <td align="right" class="main"
+                                '.$colspan.'>' . $GLOBALS[$class]->output[$i]['title'] . '</td>' . "\n" .
                                 '                <td align="right" class="main">';
               if ($class == 'ot_point') {
                 if (isset($_SESSION['campaign_fee'])) {
@@ -179,7 +181,7 @@
             if ($class == 'ot_subtotal') {
               if (!empty($total_handle_fee)) {
                 $output_string .= '              <tr>' . "\n" .
-                                  '                <td align="right" class="main">'
+                                  '                <td align="right" class="main" '.$colspan.'>'
                                   . TEXT_HANDLE_FEE_CONFIRMATION . '</td>' . "\n" .
                                   '                <td align="right" class="main">'
                                   . $currencies->format($total_handle_fee) . '</td>' . "\n" .
@@ -190,7 +192,7 @@
               if (!empty($_SESSION['weight_fee'])) {
                 $shipping_fee = $sub_total > $_SESSION['free_value'] ? TEXT_SHIPPING_FREE : '<input type="hidden" name="shipping_fee" value="'. $_SESSION['weight_fee'].'">'.$currencies->format($_SESSION['weight_fee']);
                 $output_string .= '              <tr>' . "\n" .
-                                  '                <td align="right" class="main">'
+                                  '                <td align="right" class="main" '.$colspan.'>'
                                   . TEXT_SHIPPING_FEE . '</td>' . "\n" .
                                   '                <td align="right" class="main">'
                                   . $shipping_fee . '</td>' . "\n" .

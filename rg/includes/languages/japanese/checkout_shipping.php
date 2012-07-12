@@ -45,23 +45,6 @@ define('TEXT_ERROR_OPTION', '<span class="errorText">【オプション】を選
 define('TEXT_ERROR_DATE', '<span class="errorText">【お届け希望日】を選択してください。</span>');
 define('TEXT_ERROR_JIKAN', '<span class="errorText">【お届け希望時間】を選択してください。</span>');
 
-
-// from checkout product
-
-define('NAVBAR_TITLE', 'キャラクター名の入力');
-define('NAVBAR_TITLE_1', 'ショッピングカート');
-define('HEADING_TITLE', 'お客様のキャラクター名を入力してください。');
-
-define('TEXT_DATE_ADDED', '登録日:');
-define('TEXT_MANUFACTURER', 'メーカー:');
-define('TEXT_PRICE', '価格:');
-define('TEXT_CHARACTER', 'お客様のキャラクター名：');
-define('TEXT_TORIHIKIBOUBI_DEFAULT_SELECT','ご希望のお届け日時を指定してください');
-define('TEXT_CREATE_ADDRESS_BOOK','お届け先を選択する');
-define('TEXT_USE_ADDRESS_BOOK','新しいお届け先を入力する');
-define('TEXT_SHIPPING_INFO_ERROR','重要なお知らせ<br>内容に不備があります<br>必要な情報を正しく入力してください。');
-define('TEXT_OPTIONS_ERROR','を入力してください。');
-define('TEXT_OPTIONS_ERROR_SELECT','を選択してください。');
 define('TABLE_ADDRESS_TITLE','住所');
 define('TABLE_OPTION_NEW','登録先に届ける');
 define('TABLE_OPTION_OLD','過去のお届け先を指定する');

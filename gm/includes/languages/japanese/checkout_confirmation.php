@@ -32,14 +32,14 @@ define('TEXT_EDIT', '変更する');
 //Add Point System
 define('TEXT_POINT_NOW', '今回の獲得予定ポイント:');
 
-define('TEXT_TRADE_DATE', '取引時間&nbsp;');
+define('TEXT_TRADE_DATE', '届け時間&nbsp;');
 
 define('TEXT_CARACTOR', 'お届け先キャラクター名:');
 define('TEXT_OPTION', 'オプション:');
-define('TEXT_EXPECT_TRADE_DATE', '取引希望日:');
-define('TEXT_EXPECT_TRADE_TIME', '取引希望時間:');
+define('TEXT_EXPECT_TRADE_DATE', 'お届け希望日:');
+define('TEXT_EXPECT_TRADE_TIME', 'お届け希望時間:');
 define('TEXT_HANDLE_FEE_CONFIRMATION', '手数料:');
-define('TEXT_ORDERS_SUBMIT_TWO','ご注文内容をご確認の上「注文する」をクリックしてください。');
-define('TEXT_ORDERS_OPTION_QTY','個');
-define('TEXT_ORDERS_OPTION_HOUR','時');
-define('TEXT_ORDERS_OPTION_MIN','分');
+define('TEXT_SHIPPING_FEE','配送料:');
+define('TEXT_SHIPPING_FREE','無料');
+define('TEXT_OPTIONS_TITLE','住所&nbsp;');
+define('TEXT_CONFIRMATION_READ', 'ご注文内容をご確認の上「注文する」をクリックしてください。');

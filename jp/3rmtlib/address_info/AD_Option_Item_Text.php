@@ -12,7 +12,10 @@ class AD_Option_Item_Text extends AD_Option_Item_Basic
   function render($option_error_array,$is_space = false)
   {
      if (strlen($this->front_title)) {
-       echo '<td class="main" width="120" valign="top">&nbsp;';
+       echo '<td class="main" width="120" valign="top">';
+       if (NEW_STYLE_WEB !== true) {
+         echo '&nbsp;';
+       } 
        echo $this->front_title.':';
        echo '</td>';
      }
