@@ -437,7 +437,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
                   <?php if ($field['title']) {?>
                   <div class="frame_title"><?php echo $field['title'];?></div> 
                   <?php }?>
-                  <div class="float_left"><?php echo $field['field']?><small><font color="#AEOE30"><?php echo $field['message'];?></font></small></div> 
+                  <div class="input_title"><?php echo $field['field']?><small><font color="#AEOE30"><?php echo $field['message'];?></font></small></div> 
                 </div>
               <?php
                 }

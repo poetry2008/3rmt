@@ -1220,10 +1220,10 @@ top:70px;
 /*ie6*/
 .checkout_payment_info input{ _position:relative; _z-index:200; _top:0;}
 .payment-content{ _height:24px;}
+
 /*option*/
 .option_table{
 	width:100%;
-	font-size:12px;
 }
 .option_name{
 	width:20%;
@@ -1235,12 +1235,10 @@ top:70px;
 }
 .option_error{
 	color:#ff0000;
-	font-size:12px;
 	/*padding-left:10px;*/
 	line-height:1.5;
 }
 .option_product_title{
-	font-size:12px;
 	line-height:25px;
 	
 }
@@ -1389,13 +1387,10 @@ top:70px;
 /*shipping*/
 .shipping_error{
 	color:#ff0000;
-	font-size:12px;
 	line-height:1.5;
 }
 .shipping_time{
-/*    width: 338px;
-	*width:358px;
-*/	font-size:12px;
+
 	background:#383838;
 	line-height:25px;
     position:relative;
@@ -1447,7 +1442,6 @@ top:70px;
 	z-index:101;
 	position:absolute;
 	padding:10px 15px;
-	font-size:12px;
 	text-align:left;
 	line-height:21px;
 
@@ -1473,6 +1467,10 @@ top:70px;
 .frame_content{
 	margin-top:9px;
 }
+.frame_content table{
+	line-height:25px;
+}
+
 #shipping_list_show table{
 	margin:0;
 	border-collapse:separate;
@@ -1486,3 +1484,4 @@ top:70px;
     overflow: hidden;
     width: 100%;
 }
+.markProductOutOfStock a{ font-weight:bold;}
