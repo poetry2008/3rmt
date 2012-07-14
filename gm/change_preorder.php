@@ -1035,7 +1035,7 @@ document.forms.order1.submit();
 </td>
 </tr>
           </table>  
-<table border="0" cellpadding="0" cellspacing="0" style=" position:absolute;" width="84%">
+<table border="0" cellpadding="0" cellspacing="0" style=" position:absolute;" width="100%">
 <tr id="shipping_list_min" style="display:none;">
               <td class="main" width="20%">&nbsp;<input type="hidden" id="ele_id" name="ele" value=""></td> 
               <td class="main" id="shipping_list_show_min"> 

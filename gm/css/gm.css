@@ -646,7 +646,7 @@ td,th{ border:0; font-size:14px; padding:2px;}
 	border:1px solid #577C9D;
 	margin-bottom:5px;
 }
-.checkout-conent{ clear:both; margin:0 7% 35px 7%;}
+.checkout-conent{ clear:both; margin:0 7% 35px 7%; position:relative;}
 .checkout-conent ul{ padding:0 0 0 20px;}
 .checkout-conent li{
 	list-style-type: square;

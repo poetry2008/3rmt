@@ -1215,7 +1215,7 @@ unset($_SESSION['shipping_session_flag']);
     </td>
   </tr>
 </table>
-<table border="0" cellpadding="0" cellspacing="0" style=" position:absolute; width:84%;">
+<table border="0" cellpadding="0" cellspacing="0" style=" position:absolute; width:100%;">
 <tr id="shipping_list_min" style="display:none;">
  <td width="20%">&nbsp;</td>
  <td id="shipping_list_show_min">
