@@ -1925,3 +1925,5 @@ searching
 }
 .time_label a{ color:#FFFFFF; cursor:pointer;}
 .time_label a:hover{ color:#FFFFFF; cursor:pointer;}
+#table_td_p0{ padding:15px 0 0 0; }
+.shipping_box td{ padding:0 5px;}

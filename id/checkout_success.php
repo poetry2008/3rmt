@@ -8,6 +8,17 @@
 // if the customer is not logged on, redirect them to the shopping cart page
   if (!tep_session_is_registered('customer_id')) {
     tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
+  }else{
+
+    $url_array = explode('/',$_SERVER['HTTP_REFERER']);
+    $url_str = end($url_array);
+    $url_str_one = explode('?',$url_str);
+    if(isset($_SESSION['cart']) && $url_str_one[0] != 'checkout_confirmation.php' && !isset($_GET['action'])){
+      if(!isset($_SESSION['shipping_session_flag'])){
+        $_SESSION['shipping_session_flag'] = true;
+      }
+      tep_redirect(tep_href_link($_SESSION['shipping_page_str'], '', 'SSL'));
+   }
   }
 
   if (isset($_GET['action']) && ($_GET['action'] == 'update')) {

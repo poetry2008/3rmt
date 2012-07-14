@@ -419,30 +419,8 @@ if($fixed_option == 0){
   $type_comment_array = unserialize($type_comment);
   if($type_start == 'option'){ 
     if(!isset($type_comment_array['select_value']) && $type_comment_array['select_value'] == ''){ 
-      $n = 0; 
-      foreach($type_comment_array as $key=>$value){
-        if($n == 0){ 
-          //$select_value = $type_comment_array[$key]['select_value'];
-          //$option_list = $type_comment_array[$key]['option_list'];
-          $parents_id = $type_comment_array[$key]['parent_id'];
-          //$parent_name = $type_comment_array[$key]['parent_name'];
-        }else{
-          break;
-        }
-        $n++;
-      }
-      $parents_query = tep_db_query("select * from ". TABLE_ADDRESS ." where id=".$parents_id);
-      $parents_row = tep_db_fetch_array($parents_query);
-      tep_db_free_result($parents_query);
-      $parents_type_comment = unserialize($parents_row['type_comment']);
-      foreach($type_comment_array as $key=>$value){
-        if($parents_type_comment['select_value'] == $key){ 
-          $select_value = $type_comment_array[$key]['select_value'];
-          $option_list = $type_comment_array[$key]['option_list'];
-          $parent_id = $type_comment_array[$key]['parent_id'];
-          $parent_name = $type_comment_array[$key]['parent_name'];
-        }
-      }
+      $select_value = '';
+      $option_list = $type_comment_array['option_list']; 
     }else{
       $select_value = $type_comment_array['select_value'];
       $option_list = $type_comment_array['option_list']; 
@@ -480,9 +458,9 @@ if($fixed_option == 0){
   echo '<tr><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;'. TABLE_LIST_6     .'</td><td><input type="text" id="comment" name="comment" class="option_text" value="'. $comment .'"></td></tr>';
   //option 所属上一级
 
-  if($parent_id != '' || $id == 0){
-    echo '<tr><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;'. TABLE_LIST_12_1 .'</td><td>'. $options_str .'&nbsp;<select name="parent_option[]" id="parent" onchange="check_option_show(this.value);">'. $options_string .'</select></td></tr>';
-  }
+  //if($parent_id != '' || $id == 0){
+    //echo '<tr><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;'. TABLE_LIST_12_1 .'</td><td>'. $options_str .'&nbsp;<select name="parent_option[]" id="parent" onchange="check_option_show(this.value);">'. $options_string .'</select></td></tr>';
+  //}
   echo '<tr><td colspan="2"><table border="0" width="100%" cellspacing="0" cellpadding="0" id="show_id">';
   $select_value = $type_start == 'option' ? $select_value : '';
   echo '<tr><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;'. TABLE_LIST_12 .'</td><td><input type="text" name="option_comment[]" value="'. $select_value .'"><input type="radio" name="option_value" value="0" checked></td></tr>';

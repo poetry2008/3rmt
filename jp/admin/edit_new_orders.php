@@ -491,7 +491,8 @@ if (tep_not_null($action)) {
       $free_value = $address_free_value != '' ? $address_free_value : $country_free_value;
     }
 
-  $shipping_fee = $shipping_money_total > $free_value ? 0 : $weight_fee;
+    $shipping_fee = $shipping_money_total > $free_value ? 0 : $weight_fee;
+    $shipping_fee = $products_weight_total == 0 ? 0 : $shipping_fee; 
       // end
 
       //更新订单

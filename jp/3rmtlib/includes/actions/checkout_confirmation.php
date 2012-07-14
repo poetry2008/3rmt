@@ -5,9 +5,13 @@ if (!tep_session_is_registered('customer_id')) {
   tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
 }else{
 
-  if(!isset($_SESSION['insert_torihiki_date'])){
-      $navigation->set_snapshot(array('mode' => 'SSL', 'page' => FILENAME_CHECKOUT_PRODUCTS));
-      tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
+  $url_array = explode('/',$_SERVER['HTTP_REFERER']);
+  $url_str = end($url_array);
+  if(!isset($_SESSION['payment']) && $url_str != 'checkout_payment.php'){
+    if(!isset($_SESSION['shipping_session_flag'])){
+      $_SESSION['shipping_session_flag'] = true;
+    }
+    tep_redirect(tep_href_link($_SESSION['shipping_page_str'], '', 'SSL'));
   }
 }
 

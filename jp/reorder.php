@@ -8,6 +8,8 @@ require_once(DIR_WS_LANGUAGES.$language.'/'.FILENAME_REORDER);
 $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
 ?>
 <?php page_head();?>
+<script type="text/javascript" src="./js/jquery-1.3.2.min.js"></script>
+<script type="text/javascript" src="./js/date_time_reorder.js"></script>
 </head>
 <body>
 <div align="center">
@@ -50,58 +52,28 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
     if (isset($_POST['hour'])){
       $date   = tep_db_prepare_input($_POST['date']);
       $hour   = tep_db_prepare_input($_POST['hour']);
-      $minute = tep_db_prepare_input($_POST['minute']);
+      $minute = tep_db_prepare_input($_POST['min']);
+      $start_hour = tep_db_prepare_input($_POST['start_hour']);
+      $start_min = tep_db_prepare_input($_POST['start_min']);
+      $end_hour = tep_db_prepare_input($_POST['end_hour']);
+      $end_min = tep_db_prepare_input($_POST['end_min']);
       
       $comment = tep_db_prepare_input($_POST['comment']);
 
-      $datetime = $date.' '.$hour.':'.$minute;
+      $datetime = $date.' '.$start_hour.':'.$start_min;
+      $datetime_end = $date.' '.$end_hour.':'.$end_min;
       $time     = strtotime($datetime);
 
       //if (in_array($order['orders_status'], array(2,5,6,7,8))) {
       if (tep_orders_status_finished($order['orders_status'])) {
         // status can not change
         echo '<div class="comment">'.TEXT_DELETE_ORDER_SUCCESS.'<div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" alt="'.TEXT_BACK_TO_HISTORY.'"></a></div></div>';
-      } else if ($date && $hour && $minute && ($time < (time() - MINUTES * 60) or $time > (time() + (7*86400)))) {
+      //} else if ($date && $hour && $minute && ($time < (time() - MINUTES * 60) or $time > (time() + (7*86400)))) {
         // time error
-        echo '<div class="comment">'.TEXT_INFO_FOR_TRADE.'<div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back_home.gif" alt="'.TEXT_BACK_TO_TOP.'"></a></div></div>';
+        //echo '<div class="comment">'.TEXT_INFO_FOR_TRADE.'<div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back_home.gif" alt="'.TEXT_BACK_TO_TOP.'"></a></div></div>';
       } else {
         // update time
-        if ($date && $hour && $minute) {
-          // ccdd
-          /*
-          tep_db_query("
-              update `".TABLE_ORDERS."` 
-              set `orders_status`='17' ,
-                  `torihiki_date` = '".$datetime."' ,
-                  `last_modified` = now()
-              WHERE `orders_id`='".$order_id."' 
-                and site_id = '".SITE_ID."'
-          ");
-          orders_updated($order_id);
-          last_customer_action();
-          // insert a history
-          $sql = "
-            INSERT INTO `".TABLE_ORDERS_STATUS_HISTORY."` (
-                `orders_status_history_id`,
-                `orders_id` ,
-                `orders_status_id` ,
-                `date_added` ,
-                `customer_notified` ,
-                `comments`
-              ) VALUES (
-                NULL ,
-                '".$order_id."', 
-                '17', 
-                '".date("Y-m-d H:i:s")."', 
-                '1', 
-                '".mysql_real_escape_string($comment)."'
-              )
-          ";
-          // ccdd
-          tep_db_query($sql);
-          */
-        }
-
+        
         // update character
         if (isset($_POST['character']) && is_array($_POST['character'])){
           foreach($_POST['character'] as $pid=>$character){
@@ -168,11 +140,12 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
           }
         }
         //change order status and insert order status history
-        if ($date && $hour && $minute) {
+        if ($date && $hour && $start_min) {
           tep_db_query("
               update `".TABLE_ORDERS."` 
               set `orders_status`='17' ,
                   `torihiki_date` = '".$datetime."' ,
+                  `torihiki_date_end` = '".$datetime_end."' ,
                   `last_modified` = now()
               WHERE `orders_id`='".$order_id."' 
                 and site_id = '".SITE_ID."'
@@ -409,7 +382,7 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
   $email_order .= TEXT_REORDER_PRODUCT_EMAIL . "\n";
   $email_order .= '------------------------------------------' . "\n";
   $email_order .= $products_ordered . "\n";
-  $email_order .= TEXT_REORDER_TRADE_DATE . str_string($_date) . $_hour . TEXT_PRORDER_HOUR . $_minute . TEXT_REORDER_TWENTY_FOUR_HOUR . "\n";
+  $email_order .= TEXT_REORDER_TRADE_DATE . str_string($_date) . $_hour . TEXT_PRORDER_HOUR . $_minute . TIME_MIN_TEXT . "～" . $end_hour.TEXT_PRORDER_HOUR.$end_min.TEXT_REORDER_TWENTY_FOUR_HOUR."\n";
 
   if ($comment) {
     $email_order .= TEXT_REORDER_COMMERN_EMAIL . "\n";
@@ -441,7 +414,7 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
 <div id="form_error" style="display:none"></div>
 <table class="information_table" summary="table">
  <tr>
- <td width="130" bgcolor="#eeeeee"><?php echo TEXT_REORDER_OID_TITLE;?></td>
+ <td width="30%" bgcolor="#eeeeee"><?php echo TEXT_REORDER_OID_TITLE;?></td>
   <td><?php echo $order['orders_id']?></td>
  </tr>
  <tr>
@@ -454,25 +427,202 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
  </tr>
  <tr>
  <td bgcolor="#eeeeee"><?php echo TEXT_REORDER_TRADE_NO_CHANGE;?></td>
-  <td id='old_time'><?php echo tep_date_long(strtotime($order['torihiki_date']))?> <?php echo date('H:i', strtotime($order['torihiki_date']));?></td>
+  <td id='old_time'><?php echo tep_date_long(strtotime($order['torihiki_date']))?> <?php echo date('H:i', strtotime($order['torihiki_date']));?>～<?php echo date('H:i', strtotime($order['torihiki_date_end']));?></td>
  </tr>
+<?php
+//根据订单中的商品来生成取引时间
+  $cart_products_id = array();
+  
+  $orders_products_shipping_query = tep_db_query("select products_id from ". TABLE_ORDERS_PRODUCTS ." where orders_id='". $order['orders_id'] ."'");
+  while($orders_products_shipping_array = tep_db_fetch_array($orders_products_shipping_query)){
+
+    $cart_products_id[] = $orders_products_shipping_array["products_id"];
+  }
+  tep_db_free_result($orders_products_shipping_query);
+
+  //根据$cart_products_id数组中的商品ID来获取每个商品的取引时间
+  $cart_shipping_time = array();
+  foreach($cart_products_id as $cart_products_value){
+    
+    $shipping_time_query = tep_db_query("select * from ". TABLE_PRODUCTS ." where products_id=".(int)$cart_products_value);
+    $shipping_time_array = tep_db_fetch_array($shipping_time_query);
+    tep_db_free_result($shipping_time_query);
+    $cart_shipping_time[] = $shipping_time_array['products_shipping_time'];
+  }
+   
+  $cart_shipping_time = array_unique($cart_shipping_time); 
+  
+  $products_num = count($cart_shipping_time); 
+  $shipping_time_array = array();
+  foreach($cart_shipping_time as $cart_shipping_value){
+
+    $shipping_query = tep_db_query("select * from ". TABLE_PRODUCTS_SHIPPING_TIME ." where id=".$cart_shipping_value);
+    $shipping_array = tep_db_fetch_array($shipping_query);
+    $shipping_time_array['work'][] = unserialize($shipping_array['work']);
+    $shipping_time_array['db_set_day'][] = $shipping_array['db_set_day'];
+    $shipping_time_array['shipping_time'][] = $shipping_array['shipping_time'];
+
+  }
+  
+  //work
+  $shipping_time_start = array();
+  $shipping_time_end = array();
+  foreach($shipping_time_array['work'] as $shipping_time_key=>$shipping_time_value){
+
+    foreach($shipping_time_value as $k=>$val){
+
+      $shipping_time_start[$shipping_time_key][] = $val[0]; 
+      $shipping_time_end[$shipping_time_key][] = $val[1];
+    } 
+  }
+   
+  
+  $ship_array = array();
+  $ship_time_array = array();
+  $j = 0;
+  foreach($shipping_time_start as $shipping_key=>$shipping_value){
+    foreach($shipping_value as $sh_key=>$sh_value){
+      
+      $sh_start_array = explode(':',$sh_value);
+      $sh_end_array = explode(':', $shipping_time_end[$shipping_key][$sh_key]);
+      for($i = (int)$sh_start_array[0];$i <= (int)$sh_end_array[0];$i++){
+        if(isset($ship_time_array[$i]) && $ship_time_array[$i] != ''){
+          if($ship_temp_array[$i] != $j){$ship_array[$i]++;}
+          $ship_time_array[$i] .= '|'.$sh_value.','.$shipping_time_end[$shipping_key][$sh_key];
+        }else{
+          $ship_time_array[$i] = $sh_value.','.$shipping_time_end[$shipping_key][$sh_key]; 
+          $ship_temp_array[$i] = $j;
+        }
+      } 
+    }
+    
+    $j++;  
+  }
+
+  $s_array = array();
+  foreach($ship_array as $ship_k=>$ship_v){
+    if($ship_v >= $products_num-1){
+      $s_array[$ship_k] = $ship_v;
+    } 
+  } 
+  $ship_array = $s_array;
+  $shipp_array = array_keys($ship_array);
+  sort($shipp_array);
+  $ship_new_array = array();
+  foreach($shipp_array as $shipp_key=>$shipp_value){
+  
+    $ship_1_array = explode('|',$ship_time_array[$shipp_value]);
+    foreach($ship_1_array as $ship_1_value){
+
+      $ship_2_array = explode(',',$ship_1_value);
+      $ship_3_array[$shipp_key][] = $ship_2_array[0];
+      $ship_4_array[$shipp_key][] = $ship_2_array[1];
+    } 
+  }
+
+  foreach($ship_3_array as $ship_3_key=>$ship_3_value){
+
+    natsort($ship_3_array[$ship_3_key]); 
+    natsort($ship_4_array[$ship_3_key]);
+    $ship_new_array[] = end($ship_3_array[$ship_3_key]).','.current($ship_4_array[$ship_3_key]);
+  }
+
+  foreach($ship_new_array as $_s_key=>$_s_value){
+      $s_temp_array = explode('|',$_s_value);    
+      sort($s_temp_array);
+      $ship_new_array[$_s_key] = implode('|',$s_temp_array); 
+  } 
+  $max_time_str = implode('||',$shipp_array);
+  $min_time_str = implode('||',$ship_new_array);
+  //----------
+  if(count($shipping_time_array['work']) == 1){
+    
+    $shi_time_array = array();
+    foreach($shipping_time_start[0] as $shi_key=>$shi_value){
+
+      $shi_start_array = explode(':',$shi_value);
+      $shi_end_array = explode(':',$shipping_time_end[0][$shi_key]);
+
+      for($shi_i = (int)$shi_start_array[0];$shi_i <= (int)$shi_end_array[0];$shi_i++){
+
+        if(isset($shi_time_array[$shi_i]) && $shi_time_array[$shi_i] != ''){
+
+          
+          $shi_time_array[$shi_i] .= '|'.$shi_value.','.$shipping_time_end[0][$shi_key]; 
+        }else{
+
+          $shi_time_array[$shi_i] = $shi_value.','.$shipping_time_end[0][$shi_key]; 
+        }
+      }
+    }
+
+    foreach($shi_time_array as $_s_key=>$_s_value){
+      $s_temp_array = explode('|',$_s_value);    
+      sort($s_temp_array);
+      $shi_time_array[$_s_key] = implode('|',$s_temp_array); 
+    }
+
+    $max_time_str = implode('||',array_keys($shi_time_array));
+    $min_time_str = implode('||',$shi_time_array);
+  }
+  
+
+  //可配送时间区域
+  $work_start = $max_time_str;
+  $work_end = $min_time_str;
+
+  //当日起几日后可以收货
+  $db_set_day = max($shipping_time_array['db_set_day']);
+  //可选收货期限
+  $shipping_time = max($shipping_time_array['shipping_time']);
+
+  $today = getdate();
+  $m_num = $today['mon'];
+  $d_num = $today['mday']+$db_set_day;
+  $year = $today['year'];
+    
+  $hours = date('H');
+  $mimutes = date('i');
+?>
  <tr>
  <td bgcolor="#eeeeee"><?php echo TEXT_REORDER_TRADE_CHANGE;?></td>
   <td>
-   <select name='date' id='new_date' onChange="selectDate('<?php echo date('H');?>', '<?php echo date('i');?>')">
-    <option value=''>--</option>
-<?php for($i=0;$i<7;$i++){?>
-    <option value='<?php echo date('Y-m-d', time()+($i*86400));?>'><?php echo tep_date_long(time()+($i*86400));?></option>
-<?php }?>
-   </select>
-   <select name='hour' id='new_hour' onChange="selectHour('<?php echo date('H');?>', '<?php echo date('i');?>')">
-    <option value=''>--</option>
-   </select>:
-   <select name='minute' id='new_minute'>
-    <option value=''>--</option>
-   </select>
+  <select name="date" id="new_date" onChange="selectDate('<?php echo $work_start; ?>', '<?php echo $work_end; ?>',this.value);$('#date_error').html('');$('#hour_error').html('');">
+  <option value=""><?php echo EXPECT_DATE_SELECT;?></option>
+    <?php
+          $oarr = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
+          $newarr = array(TEXT_DATE_MONDAY, TEXT_DATE_TUESDAY, TEXT_DATE_WEDNESDAY, TEXT_DATE_THURSDAY, TEXT_DATE_FRIDAY, TEXT_DATE_STATURDAY, TEXT_DATE_SUNDAY);
+    for($j = 0;$j < $shipping_time;$j++){
+      
+      echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'">'.str_replace($oarr, $newarr, date("Y".DATE_YEAR_TEXT."m".DATE_MONTH_TEXT."d".DATE_DAY_TEXT."（l）", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
+
+    }
+    ?> 
+   </select><br>
    <span id="date_error"></span>
-   <div><?php echo TEXT_REORDER_TRADE_TEXT;?></div>
+</td></tr>
+<tr>
+<td colspan="2">
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+  <tr id="shipping_list" style="display:none;">
+  <td  valign="top" width="30%" class="main" bgcolor="#eeeeee"><?php echo TEXT_EXPECT_TRADE_TIME; ?></td>
+  <td class="main" id="shipping_list_show"></td>
+  </tr>
+</table>
+<table border="0" cellpadding="0" cellspacing="0" style=" position:absolute; width:502px;">
+<tr id="shipping_list_min" style="display:none;">
+ <td class="main" width="30%">&nbsp;<input type="hidden" id="ele_id" name="ele" value=""></td>
+ <td class="main" id="shipping_list_show_min">
+ </td>
+ </tr>
+</table>
+</td></tr>
+<tr>
+<td></td>
+<td><span id="hour_error"></span></td>
+</tr>
+<tr><td colspan="2">
+  <div><?php echo TEXT_REORDER_TRADE_TEXT;?></div>
   </td>
  </tr>
 </table>
@@ -482,7 +632,7 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
 <br>
 <table class="information_table" id='product_<?php echo $value['id'];?>' summary="table">
  <tr>
- <td width="130" bgcolor="#eeeeee"><?php echo TEXT_REORDER_P_PRODUCT_NAME;?></td>
+ <td width="30%" bgcolor="#eeeeee"><?php echo TEXT_REORDER_P_PRODUCT_NAME;?></td>
   <td name='products_names'><?php echo $value['name'];?></td>
  </tr>
 <?php if($value['character']) {?>
@@ -560,7 +710,7 @@ foreach ($value['attributes'] as $att) {?>
 <br>
 <table class="information_table" summary="table">
 <tr>
-<td width="130" bgcolor="#eeeeee"><?php echo TEXT_REORDER_COMMENT_TITLE;?></td>
+<td width="30%" bgcolor="#eeeeee"><?php echo TEXT_REORDER_COMMENT_TITLE;?></td>
 <td><textarea name='comment' id='comment' rows="5"></textarea></td>
 </tr>
 </table>
@@ -576,14 +726,13 @@ foreach ($value['attributes'] as $att) {?>
   <input type='image' src="includes/languages/japanese/images/buttons/button_submit2.gif" alt="<?php echo TEXT_REORDER_CONFRIM;?>" onClick="document.order.submit()" >
   <input type='image' src="includes/languages/japanese/images/buttons/button_back.gif" alt="<?php echo TEXT_BACK_TO_HISTORY;?>" onClick="document.getElementById('confirm').style.display='none';document.getElementById('form').style.display='block'" >
 </div>
-<script type="text/javascript" src='./js/order.js'></script>
 <script type="text/javascript">
 <!---
 function orderConfirmPage(){
+  document.getElementById('form_error').innerHTML = "";
   document.getElementById('form_error').style.display = 'none';
-  document.getElementById('date_error').style.display = 'none';
-  document.getElementById('form_error').innerHTML = '';
-  document.getElementById('date_error').innerHTML = '';
+  document.getElementById('date_error').innerHTML = "";
+  document.getElementById('hour_error').innerHTML = "";
   // init
   productName  = new Array();
   oldCharacter = new Array();
@@ -593,7 +742,7 @@ function orderConfirmPage(){
   now          = new Date();
   nowMinutes   = now.getHours() * 60 + now.getMinutes();
 
-  oldTime = '<?php echo tep_date_long(strtotime($order['torihiki_date']));?> <?php echo date('H:i', strtotime($order['torihiki_date']));?>';
+  oldTime = '<?php echo tep_date_long(strtotime($order['torihiki_date']));?> <?php echo date('H:i', strtotime($order['torihiki_date']));?>～<?php echo date('H:i', strtotime($order['torihiki_date_end']));?>';
   oldTime_value = '<?php echo strtotime($order['torihiki_date']);?>';
   today   = '<?php echo tep_date_long(time());?>';
   today_value = '<?php echo time();?>';
@@ -618,34 +767,38 @@ function orderConfirmPage(){
   text += oldTime + "\n";
   text += "</td></tr><tr><td bgcolor='#eeeeee'>\n";
   
-  dateChanged = (document.getElementById('new_date').options[document.getElementById('new_date').selectedIndex].value != ''
-    && document.getElementById('new_hour').options[document.getElementById('new_hour').selectedIndex].value != ''
-    && document.getElementById('new_minute').options[document.getElementById('new_minute').selectedIndex].value != '');
+  dateChanged = (document.getElementById('new_date').selectedIndex != 0);
   
   orderChanged = orderChanged || dateChanged;
 
   text += "<?php echo TEXT_REORDER_TRADE_CHANGE;?></td><td>";
-  
-  if((document.getElementById('new_date').selectedIndex != 0 || document.getElementById('new_hour').selectedIndex != 0 || document.getElementById('new_minute').selectedIndex != 0) && !(document.getElementById('new_date').selectedIndex != 0 && document.getElementById('new_hour').selectedIndex != 0 && document.getElementById('new_minute').selectedIndex != 0)){
-    document.getElementById('date_error').innerHTML = "<font color='red'><?php echo TEXT_REORDER_CHANGE_TRADE_SELECT;?></font>";
-      document.getElementById('date_error').style.display = 'block';
+
+  if(document.getElementById('new_date').selectedIndex == 0 && document.getElementById('comment').value == ''){
+      document.getElementById('form_error').innerHTML = "<font color='red'><?php echo TEXT_REORDER_UNCHANGE_QTY;?></font>";
+      document.getElementById('form_error').style.display = 'block';
+      return false;
+  }
+
+  if(document.getElementById('new_date').selectedIndex == 0 && oldTime_value <= today_value){
+      document.getElementById('date_error').innerHTML = "<font color='red'><?php echo TEXT_REORDER_CHANGE_TRADE_SELECT;?></font>";
+      return false;
+  }
+
+  if(document.getElementById('shipping_time_id')){
+    var shipping_time_str = $("#shipping_time_id").attr("style");
+    var shippint_time_num = shipping_time_str.indexOf("none");
+    shippint_time_num = parseInt(shippint_time_num);
+    var shipping_time_flag = shippint_time_num > 0 ;
+  }else{
+    var shipping_time_flag = !document.getElementById('m0');
+  } 
+  if(shipping_time_flag && document.getElementById('new_date').selectedIndex != 0){
+      document.getElementById('hour_error').innerHTML = "<font color='red'><?php echo TEXT_REORDER_CHANGE_TRADE_SELECT;?></font>";
       return false;
   }
 
   if(dateChanged){
-    newTime = document.getElementById('new_date').options[document.getElementById('new_date').selectedIndex].innerHTML + " "
-     + document.getElementById('new_hour').options[document.getElementById('new_hour').selectedIndex].innerHTML + ":"
-     + document.getElementById('new_minute').options[document.getElementById('new_minute').selectedIndex].innerHTML 
-     //+ ":00"
-
-    if(document.getElementById('new_date').selectedIndex == 1 
-      && ((document.getElementById('new_hour').options[document.getElementById('new_hour').selectedIndex].value * 60) + parseInt(document.getElementById('new_minute').options[document.getElementById('new_minute').selectedIndex].value)) < (nowMinutes + <?php echo MINUTES;?>)) 
-    {
-      // time error
-      document.getElementById('date_error').innerHTML = "<font color='red'><?php echo TEXT_REORDER_JS_DATE_ERROR;?></font>";
-      document.getElementById('date_error').style.display = 'block';
-      return false;
-    }
+    newTime = document.getElementById('new_date').options[document.getElementById('new_date').selectedIndex].innerHTML + " " +document.getElementById('start_hour').value + ":" + document.getElementById('start_min').value + "～" +document.getElementById('end_hour').value + ":" + document.getElementById('end_min').value;
     text += newTime + "</td></tr></table><br >\n";
   } else {
     text += oldTime + "</td></tr></table><br >\n";
@@ -705,30 +858,6 @@ function orderConfirmPage(){
   text += "</td></tr>\n";
   text += "</table><br >\n"
   
-  orderChanged = (orderChanged || document.getElementById('comment').value);
-  
-
-  var time_error = false;
-  var new_date = document.getElementById("new_date");
-  if(new_date.value == ''){
-     if(oldTime_value <= today_value){
-       time_error = true; 
-     }
-  } 
-  // if order unchanged , does not commit
-  if(!orderChanged){
-    //alert('no change');
-    document.getElementById('form_error').innerHTML = "<font color='red'><?php echo TEXT_REORDER_UNCHANGE_QTY;?></font>";
-    document.getElementById('form_error').style.display = 'block';
-  }
-
-  if(time_error){
-    document.getElementById('date_error').innerHTML = "<font color='red'><?php echo TEXT_REORDER_CHANGE_TRADE_SELECT;?></font>";
-    document.getElementById('date_error').style.display = 'block';
-  }
-  if(!orderChanged || time_error){
-    return false; 
-  }
   document.getElementById('form').style.display = 'none';
   document.getElementById('confirm').style.display = 'block';
   document.getElementById('confirm_content').innerHTML = text;

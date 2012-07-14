@@ -1200,6 +1200,7 @@ top:70px;
 	margin-left:6px;
 	margin-top:10px;
 }
+.reorder_spacing{ position:relative;}
 .success_spacing{ margin-top:8px;}
 .box_new_waring{
 	color:#ff0000;
@@ -1485,4 +1486,11 @@ top:70px;
     margin: 0 auto;
     overflow: hidden;
     width: 100%;
+}
+.shipping_time_box{
+	position: absolute; 
+	right: 0px; 
+	z-index: 300; 
+	width:79.7%;
+	margin:0 3px;
 }

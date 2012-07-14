@@ -2450,3 +2450,4 @@ border:2px solid #FF8080;
 .time_label a:hover{ color:#FFFFFF; cursor:pointer;}
 .product_open{ overflow:hidden; line-height:20px; height:20px;}
 .product_open a{ *float:left;}
+#shipping_box{ padding:0;}
