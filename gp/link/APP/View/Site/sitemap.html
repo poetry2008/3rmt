@@ -166,11 +166,59 @@ echo '
     </div>
 
     </div>
-  </div>
+    <div class="search_and_tools">
+    <div class="search_head boxes">
+      <div class="top">
+      <h1 class="link_h1">サイトマップ</h1></div>
+      <div class="middle search_head_text">
+      <div class="text_out">
+       <p> <!--{_t key=text_out_p1}-->
+       </p>   
+       <p>
+       <!--{_t key=text_out_p2}-->
+       </p>   
+       <p>
+       <!--{_t key=text_out_p3}-->
+      </p> 
+       </div>
+       
+      </div>
+      <div class="bottom"></div>
+
+      <div class="search_header">
+      <form id="form1" name="form1" onsubmit="return valsearch()" method="post" action="http://www.gameplanet.jp/link/sitesearch.html">
+      <table width="100%"><tbody><tr><td align="center">
+      ▼ホームページ検索 
+      <input type="text" name="word" class="sh-txt" id="search_txt">
+
+        <select name="method">
+            <option selected="selected" value="and">AND</option>
+                <option value="or">OR</option>
+                  </select>
+                     <input type="submit" value=" 検 索 "> 
+                     </td></tr>
+                     </tbody></table>
+                     </form>
+                     </div>
+                     </div>
+                     <div class="tools boxes">
+                     <h2 class="link_h2">メニュー</h2>
+                     <div class="middle tools_link">
+                     <a href="/link/">相互リンク集TOP</a>
+                     <a href="http://www.gameplanet.jp/link/regist.html">新規登録</a>
+                     <a href="http://www.gameplanet.jp/link/renew.html">更新されたサイト</a>
+                     <a href="http://www.gameplanet.jp/link/new.html">新着サイト</a>
+                     <a href="http://www.gameplanet.jp/link/recommend.html">おすすめサイト</a>
+                     <a href="http://www.gameplanet.jp/link/sitemap.html">サイトマップ</a>
+                     </div>
+                     <div class="bottom"></div>
+                     </div>
+                     </div>
+    </div>
   <!--end header-->
   <div id="content">
     <div class="category_h3">
-      <h1 class="link_sitmap_h1">サイトマップ</h1>
+      <h1 class="link_sitmap_h1">相互リンク集のサイトマップ</h1>
     </div>
     <div class="middle02">
       <!--{section name=loopClass loop=$class}-->
@@ -182,12 +230,13 @@ echo '
           <!--{$class[loopClass].name}-->
           </a>
           </strong></div>
-        <!--{section name=loopTop loop=$top.children step=5}-->
+        <!--{section name=loopTop loop=$top.children step=6}-->
         <!--{assign var='index' value=$smarty.section.loopTop.index}-->
         <!--{assign var='index2' value=$smarty.section.loopTop.index+1}-->
         <!--{assign var='index3' value=$smarty.section.loopTop.index+2}-->
         <!--{assign var='index4' value=$smarty.section.loopTop.index+3}-->
         <!--{assign var='index5' value=$smarty.section.loopTop.index+4}-->
+        <!--{assign var='index6' value=$smarty.section.loopTop.index+5}-->
         <!--{if $smarty.section.loopTop.first}-->
         <table class="web_3" width="100%">
           <!--{/if}-->
@@ -227,6 +276,14 @@ echo '
               </a>
               <!--{/if}-->
             </td>
+               <td><!--{if $top.children[$index6].name != ''}-->
+              <span class="web-ico">&nbsp;</span>
+              <a href='<!--{url controller=site action=class id=$top.children[$index6].class_id}-->'>
+              <!--{$top.children[$index6].name}-->
+              </a>
+              <!--{/if}-->
+            </td>
+
           </tr>
           <!--{if $smarty.section.loopTop.last}-->
         </table>

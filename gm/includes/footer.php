@@ -1,7 +1,7 @@
 <?php include(DIR_WS_BOXES . 'best_sellers.php');?>
 <div id="footer">
 		<div id="footer-nav">
-                <a href="sitemap.php"><?php echo TEXT_FOOTER_ONE;?></a>&nbsp;| 
+                <a href="<?php echo HTTP_SERVER;?>/sitemap.php"><?php echo TEXT_FOOTER_ONE;?></a>&nbsp;| 
                 <a href="<?php echo tep_href_link(FILENAME_REORDER,'','NONSSL');?>"><?php echo TEXT_FOOTER_TWO;?></a>&nbsp;| 
                 <a href="<?php echo HTTP_SERVER;?>/info/profile.html"><?php echo TEXT_FOOTER_THREE;?></a>&nbsp;| 
                 <a href="<?php echo HTTP_SERVER;?>/info/salespolicies.html"><?php echo TEXT_FOOTER_FOUR;?></a>&nbsp;| 

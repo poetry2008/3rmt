@@ -84,9 +84,9 @@ class buying extends basePayment  implements paymentInterface  {
                        "title"=>TS_TEXT_BANK_KAMOKU,
                        "field"=>
                        tep_draw_radio_field('bank_kamoku',TS_TEXT_BANK_SELECT_KAMOKU_F
-                         ,(($back==false)?($theData['bank_kamoku']==TS_TEXT_BANK_SELECT_KAMOKU_F):(!isset($theData['bank_kamoku'])?true:($theData['bank_kamoku']==TS_TEXT_BANK_SELECT_KAMOKU_F))),'',$style_width) . '&nbsp;' . TS_TEXT_BANK_SELECT_KAMOKU_F.
+                         ,(($back==false)?($theData['bank_kamoku']==TS_TEXT_BANK_SELECT_KAMOKU_F):(!isset($theData['bank_kamoku'])?true:($theData['bank_kamoku']==TS_TEXT_BANK_SELECT_KAMOKU_F))), $style_width) . '&nbsp;' . TS_TEXT_BANK_SELECT_KAMOKU_F.
                        tep_draw_radio_field('bank_kamoku',TS_TEXT_BANK_SELECT_KAMOKU_T
-                         ,$theData['bank_kamoku']==TS_TEXT_BANK_SELECT_KAMOKU_T,'',$style_width) . '&nbsp;' . TS_TEXT_BANK_SELECT_KAMOKU_T,
+                         ,$theData['bank_kamoku']==TS_TEXT_BANK_SELECT_KAMOKU_T, $style_width) . '&nbsp;' . TS_TEXT_BANK_SELECT_KAMOKU_T,
                        "rule"=>basePayment::RULE_NOT_NULL,
                        "error_msg" => TS_TEXT_BANK_ERROR_KAMOKU 
 

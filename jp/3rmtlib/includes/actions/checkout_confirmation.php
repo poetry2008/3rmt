@@ -222,8 +222,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 $payment_selection = $payment_modules->selection();
 $allow_payment_list = array();
+$pay_total = $order->info['total'] + $h_shipping_fee;
 foreach ($payment_selection as $pay_key => $pay_single) {
-  if ($payment_modules->moneyInRange($pay_single['id'], $order->info['total'])) {
+  if ($payment_modules->moneyInRange($pay_single['id'], $pay_total)) {
     continue; 
   }
   if (!$payment_modules->showToUser($pay_single['id'], $_SESSION['guestchk'])) {

@@ -50,7 +50,7 @@
 </td>
 <!-- left_navigation_eof //-->
 <td id="contents" valign="top">
-<table width="100%">
+<table width="100%" cellspacing="0" cellpadding="0" border="0">
 <tr>
 <td>
 <h1 class="pageHeading"><?php echo SEND_MAIL_HEADING_TITLE; ?></h1>
@@ -74,8 +74,10 @@
           <td class="login_text" valign="top">
             <input type="text" name="email_address">
           </td>
-          <td class="td_submit" align="right" style="padding:0 10px 25px 0;">
-            <?php echo tep_image_submit('button_send_mail.gif', SENDMAIL_BUTTON); ?>
+        </tr>
+        <tr>
+        	<td class="td_submit" align="right" colspan="2">
+            <br><?php echo tep_image_submit('button_send_mail.gif', SENDMAIL_BUTTON); ?>
           </td>
         </tr>
       </table>

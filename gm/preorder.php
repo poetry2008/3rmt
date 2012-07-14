@@ -382,7 +382,7 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
 <?php
 if (!isset($_POST['quantity'])) $_POST['quantity'] = NULL; //del notice
 if (!isset($_GET['quantity'])) $_GET['quantity'] = NULL; //del notice
-            echo tep_draw_input_field('quantity', (($quantity_error == true) ? $_POST['quantity'] : $_GET['quantity']) , 'size="7" maxlength="15" id="text_input"');
+            echo tep_draw_input_field('quantity', (($quantity_error == true) ?  $_POST['quantity'] : $_GET['quantity']) , 'size="7" maxlength="15" id="text_input" style="text-align:right;"');
             echo '&nbsp;&nbsp;'.PREORDER_QTY.'&nbsp;';
             if($products_weight_error == true){ 
               echo '<span class="markProductOutOfStock"><a style="color:#CC0033" href="'.tep_href_link('open.php', 'products='.urlencode($product_info['products_name'])).'">' . STOCK_MARK_PRODUCT_OUT_OF_STOCK . '</a></span>';
@@ -440,7 +440,7 @@ if (!isset($_GET['quantity'])) $_GET['quantity'] = NULL; //del notice
         <?php
         if($products_weight_error == true){
         ?>
-        <tr><td colspan="2" align="center"><?php echo '<span class="stockWarning">' . TEXT_WEIGHT_ERROR . $products_num . TEXT_WEIGHT_ERROR_ONE .'</span>';?></td></tr>
+        <tr><td colspan="2" align="center"><?php echo '<span class="red">' . TEXT_WEIGHT_ERROR . $products_num . TEXT_WEIGHT_ERROR_ONE .'</span>';?></td></tr>
         <?php
         }
         ?>

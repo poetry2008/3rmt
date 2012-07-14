@@ -203,6 +203,12 @@ $selection = $payment_modules->selection();
 
 
 $order->info['total'] = $order->info['total'] + $shipping_fee;
+
+$h_shipping_fee = $shipping_fee;
+
+if (!tep_session_is_registered('h_shipping_fee')) {
+  tep_session_register('h_shipping_fee');
+}
 //统一的头输出 
 
 page_head();?>

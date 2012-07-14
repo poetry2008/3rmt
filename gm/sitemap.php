@@ -53,8 +53,8 @@
                   <li><?php echo '<a href="' . tep_href_link(FILENAME_SEND_MAIL) . '">' . PAGE_SEND_MAIL . '</a>'; ?></li>
                   <li><?php echo '<a href="' . tep_href_link(FILENAME_EMAIL_TROUBLE) . '">' . PAGE_EMAIL_TROUBLE . '</a>'; ?></li>
                   <li><?php echo '<a href="' . tep_href_link(FILENAME_BROWSER_IE6X) . '">' . PAGE_BROWSER_IE6X. '</a>'; ?></li>
-                  <li><?php echo '<a href="/link/">'.PAGE_LINK_TEXT.'</a>'; ?></li>
-                  <li><?php echo '<a href="/faq/">'.PAGE_FAQ_LINK.'</a>'; ?></li>
+                  <li><?php echo '<a href="'.HTTP_SERVER.'/link/">'.PAGE_LINK_TEXT.'</a>'; ?></li>
+                  <li><?php echo '<a href="'.HTTP_SERVER.'/faq/">'.PAGE_FAQ_LINK.'</a>'; ?></li>
                   <li style="font-size:18px;margin-top:28px"><?php echo BOX_HEADING_INFORMATION; ?></li>
         <li class="subcategory_tree">
                 <ul>

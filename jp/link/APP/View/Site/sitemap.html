@@ -29,7 +29,6 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
     <img src="images/rmt.gif" width="185" height="65" alt="RMT" >
     </a>
     </noscript>
-
     <div id="header_Menu">
           <table class="menu_table" width="100%" border="0" cellpadding="0" cellspacing="0" summary="menu box">
             <tr>
@@ -141,16 +140,64 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
             </tr>
           </table>
     </div>
-</div>
-<!--end header-->
 <div id="search-box">
   <div  class="header_Navigation sitemap_nav">
      <p class="header_Navigation_p">
 <!--{$bread}-->
      </p>
   </div>
-<div id="content">
-<h1 class="link_sitmap_h1">サイトマップ</h1>
+
+</div>
+<!--end header-->
+ <div class="search_head">
+ <div class="top"></div>
+ <div class="middle">
+ <h1 class="link_h1">サイトマップ </h1>
+ <div class="text_out">
+<p><!--{_t key=text_out_p1}--></p>
+<p>
+<!--{_t key=text_out_p2}-->
+</p>
+<p>
+<!--{_t key=text_out_p3}-->
+</p>
+                        </div>
+                         </div>
+                         <div class="bottom"></div>
+
+                         <div class="search_header">
+                         <form id="form1" name="form1" onsubmit="return valsearch()" method="post" action="http://jp_rmt.hm1002.200.com/link/sitesearch.html">
+                         <table><tbody><tr><td align="center">
+                         ▼ホームページ検索 
+                         <input type="text" name="word" class="sh-txt" id="search_txt">
+
+                           <select name="method">
+                               <option selected="selected" value="and">AND</option>
+                                   <option value="or">OR</option>
+                                     </select>
+                                       <input type="submit" value=" 検 索 "> 
+                                     </td></tr>
+                       </tbody></table>
+                         </form>
+                     </div>
+                 </div>
+  
+  <div class="tools">
+        <h2>メニュー</h2>
+        <ul class="l_m_category_ul">
+        <li class="l_m_category_li"><a href="/link/">相互リンク集TOP</a></li>
+        <li class="l_m_category_li"><a href="http://jp_rmt.hm1002.200.com/link/regist.html">新規登録</a></li>
+        <li class="l_m_category_li"><a href="http://jp_rmt.hm1002.200.com/link/renew.html">更新されたサイト</a></li>
+        <li class="l_m_category_li"><a href="http://jp_rmt.hm1002.200.com/link/new.html">新着サイト</a></li>
+        <li class="l_m_category_li"><a href="http://jp_rmt.hm1002.200.com/link/recommend.html">おすすめサイト</a></li>
+        <li class="l_m_category_li"><a href="http://jp_rmt.hm1002.200.com/link/sitemap.html">サイトマップ</a></li>
+        </ul>
+        </div>
+</div>
+
+  <div id="content">
+  <div class="top"></div>
+<h1 class="link_sitmap_h1">相互リンク集のサイトマップ</h1>
    <div class="middle">
     <div id="sitemap">
     <!--{section name=loopClass loop=$class}-->
@@ -161,12 +208,13 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
     
     
     
-    <!--{section name=loopTop loop=$top.children step=5}-->
+    <!--{section name=loopTop loop=$top.children step=6}-->
     <!--{assign var='index' value=$smarty.section.loopTop.index}-->
     <!--{assign var='index2' value=$smarty.section.loopTop.index+1}-->
     <!--{assign var='index3' value=$smarty.section.loopTop.index+2}-->
     <!--{assign var='index4' value=$smarty.section.loopTop.index+3}-->
     <!--{assign var='index5' value=$smarty.section.loopTop.index+4}-->
+    <!--{assign var='index6' value=$smarty.section.loopTop.index+5}-->
     <!--{if $smarty.section.loopTop.first}-->
     <table class="web" width="100%">
     <!--{/if}-->
@@ -211,14 +259,20 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
     </a>
     <!--{/if}-->
     </td>
+     <td>
+    <!--{if $top.children[$index6].name != ''}-->
+    <span class="web-ico">&nbsp;</span>
+    <a href='<!--{url controller=site action=class id=$top.children[$index6].class_id}-->'>
+    <!--{$top.children[$index6].name}-->
+    </a>
+    <!--{/if}-->
+    </td>
+ 
     </tr>
     <!--{if $smarty.section.loopTop.last}-->
     </table>
-    <br />
     <!--{/if}-->
-    <!--{/section}-->
-    
-    
+    <!--{/section}--> 
     </div>
     <!--{/section}-->
     
