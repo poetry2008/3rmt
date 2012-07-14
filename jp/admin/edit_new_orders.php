@@ -3197,7 +3197,7 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
             <td class="main">
             </td>
             </tr> 
-            <tr><td colspan="2"><table width="100%" border="0" cellpadding="2" cellspacing="0" id="address_show_id" style="<?php echo $address_style;?>"><br>
+            <tr><td colspan="2"><table width="100%" border="0" cellpadding="2" cellspacing="0" id="address_show_id" style="<?php echo $address_style;?>">
         <tr>
         <td class="main" width="30%">
         <input type="radio" name="address_option" value="old" onClick="address_option_show('old');address_option_list(address_first_num);address_clear_error();" <?php echo $old_checked;?>><?php echo TABLE_OPTION_OLD; ?>

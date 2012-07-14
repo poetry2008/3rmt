@@ -1399,6 +1399,7 @@ top:70px;
 	*height:25px;
 	overflow:hidden;
 	*overflow:none;
+	z-index:200;
 }
 .shipping_time input{
 /*	margin-left:32px;

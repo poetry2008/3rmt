@@ -167,7 +167,8 @@
             </tr>  
             <tr> 
               <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="formArea"> 
-                 
+              	<tr>
+                 	<td><table border="0" cellpadding="2" cellspacing="0" width="100%">
                       <tr><td class="main"><b><?php echo HEADING_DELIVERY_ADDRESS; ?></b></td></tr>
                       <?php
                             $address_list_query = tep_db_query("select id,name from ". TABLE_ADDRESS ." where status='0' order by sort");
@@ -190,16 +191,21 @@
                     
               </table></td>
             </tr>
+            </table>
+            </td></tr>
             <?php
             }
             ?>
             <tr> 
-              <td class="main"><b><?php echo HEADING_BILLING_INFORMATION; ?></b></td> 
+              <td class="main">&nbsp;</td> 
             </tr> 
             <tr> 
-              <td><table class="formArea" width="100%"> 
+              <td><table class="formArea" border="0" width="100%" cellspacing="1" cellpadding="2"> 
                   <tr>
                     <td width="30%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+                        <tr> 
+                          <td class="main" colspan="2"><b><?php echo HEADING_BILLING_INFORMATION; ?></b></td> 
+                        </tr> 
                         <tr> 
                           <td class="main"><b><?php echo HEADING_BILLING_ADDRESS; ?></b></td> 
                         </tr> 
@@ -214,6 +220,7 @@
                         </tr> 
                       </table></td> 
                     <td width="70%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+                    	<tr><td class="main">&nbsp;</td></tr>
                         <?php
   for ($i=0, $n=sizeof($order->totals); $i<$n; $i++) {
     if ($order->totals[$i]['class'] == 'ot_point') {
@@ -267,12 +274,15 @@
                 </table></td> 
             </tr> 
             <tr> 
-              <td class="main"><b><?php echo HEADING_ORDER_HISTORY; ?></b></td> 
+              <td class="main">&nbsp;</td> 
             </tr> 
             <tr> 
-              <td><table class="formArea" width="100%"> 
+              <td><table class="formArea" border="0" width="100%" cellspacing="1" cellpadding="2"> 
                   <tr> 
                     <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+                        <tr> 
+                          <td class="main"><b><?php echo HEADING_ORDER_HISTORY; ?></b></td> 
+                        </tr> 
                         <?php
 //ccdd
 //todo: need filter

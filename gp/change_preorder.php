@@ -676,7 +676,7 @@ document.forms.order1.submit();
             </tr>
           </table>
           <br> 
-          <div class="formAreaTitle" style="font-size:12px;"><?php echo CHANGE_ORDER_CUSTOMER_DETAILS?></div>
+          <p><b><?php echo CHANGE_ORDER_CUSTOMER_DETAILS?></b></p>
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
               <td class="main" width="150">
@@ -700,7 +700,7 @@ document.forms.order1.submit();
             $preorder_product_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$preorder_id."'"); 
             $preorder_product_res = tep_db_fetch_array($preorder_product_raw); 
           ?> 
-          <div class="formAreaTitle" style="font-size:12px;"><?php echo CHANGE_ORDER_PRODUCT_DETAILS;?></div> 
+          <p><b><?php echo CHANGE_ORDER_PRODUCT_DETAILS;?></b></p> 
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
               <td class="main" width="150">
@@ -933,7 +933,7 @@ document.forms.order1.submit();
           $quest_array = tep_db_fetch_array($quest_query);
           tep_db_free_result($quest_query);
         ?>
-        <div class="formAreaTitle" style="font-size:12px;"><?php echo TEXT_ADDRESS;?></div>
+        <p><b><?php echo TEXT_ADDRESS;?></b></p>
         <table border="0" width="100%" cellspacing="2" cellpadding="2" class="formArea"> 
         <?php
           if($quest_array['customers_guest_chk'] == 0){
@@ -991,7 +991,7 @@ document.forms.order1.submit();
         }
         ?>
         
-        <div class="formAreaTitle" style="font-size:12px;"><?php echo CHANGE_ORDER_FETCH_TIME_TITLE;?></div> 
+        <p><b><?php echo CHANGE_ORDER_FETCH_TIME_TITLE;?></b></p> 
         <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
         <tr>
           <td class="main" width="150">
@@ -1102,12 +1102,21 @@ document.forms.order1.submit();
               <input type="text" name="preorder_point" size="24" value="<?php echo isset($_POST['preorder_campaign_info'])?$_POST['preorder_campaign_info']:(isset($_POST['preorder_point'])?$_POST['preorder_point']:(isset($_SESSION['preorder_information']['preorder_point'])?$_SESSION['preorder_information']['preorder_point']:'0'));?>" style="text-align:right; float:left;"><div style="float:right; width:150px;"><?php echo $preorder_point;?>
               <?php 
               echo TEXT_PREORDER_POINT_READ.'</div>'; 
-              if (isset($point_error)) {
-                echo '<br><font color="#ff0000">'.$point_error.'</font>'; 
-              }
               ?> 
               </td> 
             </tr>
+            <?php              
+            if (isset($point_error)) {
+            ?> 
+              <tr>
+              <td class="main"></td> 
+              <td class="main">
+                <?php echo '<font color="#ff0000">'.$point_error.'</font>'; ?>   
+              </td> 
+            </tr>
+            <?php   
+            }
+            ?> 
           </table>
           <br>
           <?php } else if ($is_member_single && MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && ($preorder_total < 0)) { 
@@ -1117,13 +1126,20 @@ document.forms.order1.submit();
               <td class="main" width="150"><?php echo TEXT_PREORDER_POINT_TEXT;?></td> 
               <td class="main">
               <input type="text" name="camp_preorder_point" size="24" value="<?php echo isset($_POST['preorder_campaign_info'])?$_POST['preorder_campaign_info']:(isset($_POST['camp_preorder_point'])?$_POST['camp_preorder_point']:(isset($_SESSION['preorder_information']['preorder_campaign_point'])?$_SESSION['preorder_information']['preorder_campaign_point']:'0'));?>" style="text-align:right;">
-              <?php 
-              if (isset($point_error)) {
-                echo '<br><font color="#ff0000">'.$point_error.'</font>'; 
-              }
-              ?>
               </td> 
             </tr>
+            <?php              
+            if (isset($point_error)) {
+            ?> 
+              <tr>
+              <td class="main"></td> 
+              <td class="main">
+                <?php echo '<font color="#ff0000">'.$point_error.'</font>'; ?>   
+              </td> 
+            </tr>
+            <?php   
+            }
+            ?>
           </table>
           <br>
           <?php
