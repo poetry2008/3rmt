@@ -2050,6 +2050,7 @@ border:2px solid #FF8080;
 	color:#FFFFFF;
 	*height:25px;
 	overflow:hidden;
+	*overflow:inherit;
 }
 .time_radio{
 	float:left;

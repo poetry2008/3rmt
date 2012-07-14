@@ -69,7 +69,7 @@ unset($_SESSION['shipping_session_flag']);
         <table border="0" width="100%" cellspacing="0" cellpadding="2" class="c_pay_info"> 
         <tr> 
             <td class="main"><b><?php echo TEXT_CONFIRMATION_READ;?></b></td> 
-            <td class="main" align="right"><a href="javascript:void(0);" onclick="confirm_session_error();"><?php echo tep_image_button('button_confirm_order02.gif', IMAGE_BUTTON_CONFIRM_ORDER);?></a></td> 
+            <td class="main" align="right"><a href="javascript:void(0);" onClick="confirm_session_error();"><?php echo tep_image_button('button_confirm_order02.gif', IMAGE_BUTTON_CONFIRM_ORDER);?></a></td> 
             </tr></table>
 </td></tr>
           <tr> 
@@ -168,9 +168,9 @@ unset($_SESSION['shipping_session_flag']);
 
   echo '</td>' . "\n";
 
-    if (sizeof($order->info['tax_groups']) > 1) echo '            <td class="main" valign="top" align="right">' . tep_display_tax_value($order->products[$i]['tax']) . '%</td>' . "\n";
+    if (sizeof($order->info['tax_groups']) > 1) echo '            <td class="main" valign="top" align="right" width="50">' . tep_display_tax_value($order->products[$i]['tax']) . '%</td>' . "\n";
 
-    echo '            <td class="main" align="right" valign="top">';
+    echo '            <td class="main" align="right" valign="top" width="50">';
     if ($order->products[$i]['final_price'] < 0) {
       echo '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty'])).'</font>'.JPMONEY_UNIT_TEXT;
     } else {

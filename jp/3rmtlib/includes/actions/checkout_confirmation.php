@@ -176,6 +176,7 @@ if (is_array($payment_modules->modules) ){
       $current_point = tep_db_fetch_array($point_query);
   }
   if ($validateModule['validated']===false or $validateModule == false or $campaign_error == true){
+    $order->info['total'] = $order->info['total'] + $h_shipping_fee; 
     $selection = $payment_modules->selection();
     if($validateModule !=false){
     $selection[strtoupper($payment)] = $validateModule;
