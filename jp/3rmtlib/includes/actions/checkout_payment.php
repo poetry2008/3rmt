@@ -8,7 +8,7 @@ if (!tep_session_is_registered('customer_id')) {
 
   $url_array = explode('/',$_SERVER['HTTP_REFERER']);
   $url_str = end($url_array);
-  if(!isset($_SESSION['insert_torihiki_date']) && $url_str != 'checkout_shipping.php'){
+  if(!isset($_SESSION['insert_torihiki_date']) && $url_str != 'checkout_shipping.php' && $url_str != 'login.php'){
     if(!isset($_SESSION['shipping_session_flag'])){
       $_SESSION['shipping_session_flag'] = true;
     }

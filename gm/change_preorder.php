@@ -19,6 +19,12 @@
   $shi_preorders_array = tep_db_fetch_array($shi_preorders_query);
   $shi_pid = $shi_preorders_array['orders_id'];
   tep_db_free_result($shi_preorders_query);
+
+  $customers_guest_query = tep_db_query("select customers_guest_chk from ". TABLE_CUSTOMERS ." where customers_id='".$shi_preorders_array['customers_id']."'");
+  $customers_guest_array = tep_db_fetch_array($customers_guest_query);
+  tep_db_free_result($customers_guest_query);
+  $customers_guest_flag = $customers_guest_array['customers_guest_chk'];
+
   $weight_count = 0; 
   $shi_products_query = tep_db_query("select * from ". TABLE_PREORDERS_PRODUCTS ." where orders_id='". $shi_pid ."'");
   while($shi_products_array = tep_db_fetch_array($shi_products_query)){
@@ -387,7 +393,7 @@ function address_option_list(value){
     $address_list_arr[] = $address_list_array['name_flag'];
   }
   tep_db_free_result($address_list_query);  
-  $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id=". $_SESSION['customer_id'] ." group by orders_id order by orders_id desc");
+  $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id=". $shi_preorders_array['customers_id']." group by orders_id order by orders_id desc");
   
    
   $address_num = 0;
@@ -459,7 +465,7 @@ function address_option_list(value){
 }
 
 <?php
-if (!isset($_POST['address_option'])) {
+if (!isset($_POST['address_option']) && $customers_guest_flag == 0) {
 ?>
   $(document).ready(function(){
     
@@ -497,7 +503,7 @@ $(document).ready(function(){
     $("#prompt_"+country_city_id_one).html('');
   });
   <?php
-    $address_histroy_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id='". $_SESSION['customer_id'] ."'"); 
+    $address_histroy_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id='". $shi_preorders_array['customers_id'] ."'"); 
     $address_histroy_num = tep_db_num_rows($address_histroy_query);
     tep_db_free_result($address_histroy_query); 
     if(isset($_POST[$country_fee_id])){
@@ -507,7 +513,7 @@ $(document).ready(function(){
    }elseif(!isset($_SESSION['preorder_information'])){
   ?>
   <?php
-    if($address_histroy_num > 0){
+    if($address_histroy_num > 0 && $customers_guest_flag == 0){
   ?>
     check();
     address_option_list(first_num);
@@ -534,7 +540,7 @@ $(document).ready(function(){
    }elseif(!isset($_SESSION['preorder_information'])){
   ?>
   <?php
-    if($address_histroy_num > 0){
+    if($address_histroy_num > 0 && $customers_guest_flag == 0){
   ?>
     country_check($("#"+country_fee_id).val());
     address_option_list(first_num);  
@@ -561,7 +567,7 @@ $(document).ready(function(){
    }elseif(!isset($_SESSION['preorder_information'])){
   ?>
   <?php
-    if($address_histroy_num > 0){
+    if($address_histroy_num > 0 && $customers_guest_flag == 0){
   ?>
     country_area_check($("#"+country_area_id).val());
     address_option_list(first_num);
@@ -928,7 +934,7 @@ document.forms.order1.submit();
           }
 
           //判断用户是否是会员
-          $quest_query = tep_db_query("select customers_guest_chk from ". TABLE_CUSTOMERS ." where customers_id={$_SESSION['customer_id']}");
+          $quest_query = tep_db_query("select customers_guest_chk from ". TABLE_CUSTOMERS ." where customers_id={$shi_preorders_array['customers_id']}");
           $quest_array = tep_db_fetch_array($quest_query);
           tep_db_free_result($quest_query);
         ?>
@@ -936,7 +942,7 @@ document.forms.order1.submit();
         <table border="0" width="100%" cellspacing="2" cellpadding="2" class="formArea"> 
         <?php
           if($quest_array['customers_guest_chk'] == 0){
-            $address_history_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where customers_id='". $_SESSION['customer_id'] ."'");
+            $address_history_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where customers_id='". $shi_preorders_array['customers_id'] ."'");
             $address_history_num = tep_db_num_rows($address_history_query);
             tep_db_free_result($address_history_query);
             if($address_history_num == 0 && !isset($_POST['address_option']) && !isset($_SESSION['preorder_information'])){
