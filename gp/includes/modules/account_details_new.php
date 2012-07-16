@@ -695,7 +695,7 @@ if (!isset($guestchk)) $guestchk = NULL;
 ?> 
           <tr>
            <td class="main">&nbsp;</td>
-           <td class="main">&nbsp;
+           <td class="main" style="padding-left:6px;">
   <?php
     if ($error_pwd == true) {
       if ($entry_password_english_error == true) { 

@@ -61,8 +61,7 @@
       <?php include('includes/search_include.php');?>
 	  	  <div id="main-content">
 <h2><?php echo HEADING_TITLE ; ?></h2> 
-        
-        <div style="margin-top:10px"> 
+        <div class="frame_content"> 
           <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
             <tr> 
               <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
@@ -84,7 +83,7 @@
                 </table></td> 
             </tr> 
             <tr> 
-              <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
+              <td><table border="0" width="100%" cellspacing="1" cellpadding="2"> 
                   <tr> 
                     <td width="<?php echo (($order->delivery != false) ? '70%' : '100%'); ?>" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                         <tr> 
@@ -294,7 +293,7 @@
     echo '              <tr>' . "\n" .
          '                <td valign="top" width="20%">' . tep_date_short($statuses['date_added']) . '</td>' . "\n" .
          '                <td valign="top" width="70">' . $statuses['orders_status_name'] . '</td>' . "\n" .
-         '                <td valign="top">' . (empty($statuses['comments']) ? '&nbsp;' : nl2br(htmlspecialchars($statuses['comments']))) . '</td>' . "\n" .
+         '                <td valign="top">' . (empty($statuses['comments']) ?  '&nbsp;' : nl2br(htmlspecialchars(ltrim($statuses['comments'])))) . '</td>' . "\n" .
          '              </tr>' . "\n";
   }
 ?> 

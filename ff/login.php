@@ -207,6 +207,11 @@ if($flag_error == false){
           if (!tep_validate_password($password, $link_customer_res['customers_password'])) {
             $_GET['login'] = 'failture';
           } else {
+            if($link_customer_res['reset_flag'] and $link_customer_res['reset_success']!=1 ){
+	       $_SESSION['reset_flag'] = true;
+               $_SESSION['reset_customers_id'] = $link_customer_res['customers_id'];
+       	       tep_redirect(tep_href_link(FILENAME_DEFAULT));	    
+	    }
             if (SESSION_RECREATE == 'True') {
               tep_session_recreate();
             }

@@ -430,7 +430,7 @@ function change_num(ob,targ, quan,a_quan, origin_qty, origin_small)
         <?php
       } else {
 ?> 
-        <div class="7"> 
+        <div class="red"> 
            
           <?php echo OUT_OF_STOCK_CANT_CHECKOUT; ?> 
         </div> 

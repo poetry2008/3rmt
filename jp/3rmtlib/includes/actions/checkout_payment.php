@@ -4,8 +4,19 @@ require_once DIR_WS_LANGUAGES . $language . '/' . FILENAME_CHECKOUT_PAYMENT;
 if (!tep_session_is_registered('customer_id')) {
   $navigation->set_snapshot();
   tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
+}else{
+
+  $url_array = explode('/',$_SERVER['HTTP_REFERER']);
+  $url_str = end($url_array);
+  if(!isset($_SESSION['insert_torihiki_date']) && $url_str != 'checkout_shipping.php' && $url_str != 'login.php'){
+    if(!isset($_SESSION['shipping_session_flag'])){
+      $_SESSION['shipping_session_flag'] = true;
+    }
+    tep_redirect(tep_href_link($_SESSION['shipping_page_str'], '', 'SSL'));
+  }
 }
 
+$_SESSION['shipping_page_str'] = substr($_SERVER['REQUEST_URI'],1);
 // if there is nothing in the customers cart, redirect them to the shopping cart page
 if ($cart->count_contents() < 1) {
   tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
@@ -192,6 +203,12 @@ $selection = $payment_modules->selection();
 
 
 $order->info['total'] = $order->info['total'] + $shipping_fee;
+
+$h_shipping_fee = $shipping_fee;
+
+if (!tep_session_is_registered('h_shipping_fee')) {
+  tep_session_register('h_shipping_fee');
+}
 //统一的头输出 
 
 page_head();?>
@@ -205,5 +222,17 @@ page_head();?>
     {
       echo $payment_modules->javascript_validation($point['point']); 
     }
+?>
+<?php
+if(isset($_SESSION['shipping_session_flag']) && $_SESSION['shipping_session_flag'] == true){
+?>
+<script type="text/javascript">
+$(document).ready(function(){
+  alert("<?php echo TEXT_SESSION_ERROR_ALERT;?>");
+});  
+</script>
+<?php
+unset($_SESSION['shipping_session_flag']);
+}
 ?>
 </head>

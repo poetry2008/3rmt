@@ -16,10 +16,20 @@ if (isset($preorder_real_point)) {
 
 include(DIR_WS_LANGUAGES . $language . '/change_preorder_process.php');
 
+
+
 $preorder_raw = tep_db_query("select * from ".TABLE_PREORDERS." where orders_id = '".$_SESSION['preorder_info_id']."' and site_id = '".SITE_ID."'");
 $preorder = tep_db_fetch_array($preorder_raw);
 
 if ($preorder) {
+  $seal_user_sql = "select is_seal from ".TABLE_CUSTOMERS." where customers_id ='".$preorder['customers_id']."' limit 1";
+  $seal_user_query = tep_db_query($seal_user_sql);
+  if ($seal_user_row = tep_db_fetch_array($seal_user_query)){
+    if($seal_user_row['is_seal']){
+      tep_redirect(tep_href_link('change_preorder_confirm.php')); 
+      exit;
+    }
+  }
   //$order_query = tep_db_query("select * from ".TABLE_ORDERS." where orders_id = '".$_SESSION['preorder_info_id']."'"); 
   //$orders_id = $_SESSION['preorder_info_id'];
   

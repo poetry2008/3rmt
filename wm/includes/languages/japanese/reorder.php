@@ -48,3 +48,5 @@ define('TEXT_REORDER_JS_DATE_ERROR','取引時間は現在時刻より20分後�
 define('TEXT_REORDER_TREADE_TEXT', 'ご希望のお時間に添えない場合は、弊社より「取引時間」をご連絡させていただきます。');
 define('TEXT_REORDER_BEFORE_CHANGE','キャラクター名(変更前)');
 define('TEXT_REORDER_AFTER_CHANGE','キャラクター名(変更後)');
+define('EXPECT_DATE_SELECT', '希望日を選択してください');
+define('TEXT_EXPECT_TRADE_TIME', 'お届け希望時間:');

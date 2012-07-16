@@ -821,6 +821,7 @@ unset($_SESSION['options']);
 unset($_SESSION['options_type_array']);
 unset($_SESSION['weight_fee']);
 unset($_SESSION['free_value']);
+unset($_SESSION['shipping_page_str']);
 //$pr = '?SID=' . $convenience_sid;
   
 /*
@@ -835,6 +836,7 @@ tep_session_unregister('h_code_fee');
 tep_session_unregister('h_point');
 tep_session_unregister('hc_point');
 tep_session_unregister('hc_camp_point');
+tep_session_unregister('h_shipping_fee');
 
 tep_redirect(tep_href_link(FILENAME_CHECKOUT_SUCCESS,'','SSL'),'T');
     

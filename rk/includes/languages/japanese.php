@@ -472,4 +472,5 @@ define('TEXT_SEARCH_ALT', '検索');
 define('TEXT_CHECKOUT_LINK', 'レジへ進む');
 define('TEXT_ACCOUNT_GUEST_INFO', '会員登録をしないで購入することもできます。');
 define('NUM_UNIT_TEXT', '個');
+define('TEXT_SESSION_ERROR_ALERT','不正なページ移動です。ご確認の上、再度入力してください。');
 ?>

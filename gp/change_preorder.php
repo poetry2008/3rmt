@@ -19,6 +19,12 @@
   $shi_preorders_array = tep_db_fetch_array($shi_preorders_query);
   $shi_pid = $shi_preorders_array['orders_id'];
   tep_db_free_result($shi_preorders_query);
+
+  $customers_guest_query = tep_db_query("select customers_guest_chk from ". TABLE_CUSTOMERS ." where customers_id='".$shi_preorders_array['customers_id']."'");
+  $customers_guest_array = tep_db_fetch_array($customers_guest_query);
+  tep_db_free_result($customers_guest_query);
+  $customers_guest_flag = $customers_guest_array['customers_guest_chk'];
+
   $weight_count = 0; 
   $shi_products_query = tep_db_query("select * from ". TABLE_PREORDERS_PRODUCTS ." where orders_id='". $shi_pid ."'");
   while($shi_products_array = tep_db_fetch_array($shi_products_query)){
@@ -386,7 +392,7 @@ function address_option_list(value){
     $address_list_arr[] = $address_list_array['name_flag'];
   }
   tep_db_free_result($address_list_query);  
-  $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id=". $_SESSION['customer_id'] ." group by orders_id order by orders_id desc");
+  $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id=". $shi_preorders_array['customers_id']." group by orders_id order by orders_id desc");
   
    
   $address_num = 0;
@@ -458,7 +464,7 @@ function address_option_list(value){
 }
 
 <?php
-if (!isset($_POST['address_option'])) {
+if (!isset($_POST['address_option']) && $customers_guest_flag == 0) {
 ?>
   $(document).ready(function(){
     
@@ -496,7 +502,7 @@ $(document).ready(function(){
     $("#prompt_"+country_city_id_one).html('');
   });
   <?php
-    $address_histroy_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id='". $_SESSION['customer_id'] ."'"); 
+    $address_histroy_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id='". $shi_preorders_array['customers_id'] ."'"); 
     $address_histroy_num = tep_db_num_rows($address_histroy_query);
     tep_db_free_result($address_histroy_query); 
     if(isset($_POST[$country_fee_id])){
@@ -506,7 +512,7 @@ $(document).ready(function(){
    }elseif(!isset($_SESSION['preorder_information'])){
   ?>
   <?php
-    if($address_histroy_num > 0){
+    if($address_histroy_num > 0 && $customers_guest_flag == 0){
   ?>
     check();
     address_option_list(first_num);
@@ -533,7 +539,7 @@ $(document).ready(function(){
    }elseif(!isset($_SESSION['preorder_information'])){
   ?>
   <?php
-    if($address_histroy_num > 0){
+    if($address_histroy_num > 0 && $customers_guest_flag == 0){
   ?>
     country_check($("#"+country_fee_id).val());
     address_option_list(first_num);  
@@ -560,7 +566,7 @@ $(document).ready(function(){
    }elseif(!isset($_SESSION['preorder_information'])){
   ?>
   <?php
-    if($address_histroy_num > 0){
+    if($address_histroy_num > 0 && $customers_guest_flag == 0){
   ?>
     country_area_check($("#"+country_area_id).val());
     address_option_list(first_num);
@@ -676,7 +682,7 @@ document.forms.order1.submit();
             </tr>
           </table>
           <br> 
-          <div class="formAreaTitle" style="font-size:12px;"><?php echo CHANGE_ORDER_CUSTOMER_DETAILS?></div>
+          <p><b><?php echo CHANGE_ORDER_CUSTOMER_DETAILS?></b></p>
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
               <td class="main" width="150">
@@ -700,7 +706,7 @@ document.forms.order1.submit();
             $preorder_product_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$preorder_id."'"); 
             $preorder_product_res = tep_db_fetch_array($preorder_product_raw); 
           ?> 
-          <div class="formAreaTitle" style="font-size:12px;"><?php echo CHANGE_ORDER_PRODUCT_DETAILS;?></div> 
+          <p><b><?php echo CHANGE_ORDER_PRODUCT_DETAILS;?></b></p> 
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
               <td class="main" width="150">
@@ -929,15 +935,15 @@ document.forms.order1.submit();
           }
 
           //判断用户是否是会员
-          $quest_query = tep_db_query("select customers_guest_chk from ". TABLE_CUSTOMERS ." where customers_id={$_SESSION['customer_id']}");
+          $quest_query = tep_db_query("select customers_guest_chk from ". TABLE_CUSTOMERS ." where customers_id={$shi_preorders_array['customers_id']}");
           $quest_array = tep_db_fetch_array($quest_query);
           tep_db_free_result($quest_query);
         ?>
-        <div class="formAreaTitle" style="font-size:12px;"><?php echo TEXT_ADDRESS;?></div>
+        <p><b><?php echo TEXT_ADDRESS;?></b></p>
         <table border="0" width="100%" cellspacing="2" cellpadding="2" class="formArea"> 
         <?php
           if($quest_array['customers_guest_chk'] == 0){
-            $address_history_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where customers_id='". $_SESSION['customer_id'] ."'");
+            $address_history_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where customers_id='". $shi_preorders_array['customers_id'] ."'");
             $address_history_num = tep_db_num_rows($address_history_query);
             tep_db_free_result($address_history_query);
             if($address_history_num == 0 && !isset($_POST['address_option']) && !isset($_SESSION['preorder_information'])){
@@ -991,7 +997,7 @@ document.forms.order1.submit();
         }
         ?>
         
-        <div class="formAreaTitle" style="font-size:12px;"><?php echo CHANGE_ORDER_FETCH_TIME_TITLE;?></div> 
+        <p><b><?php echo CHANGE_ORDER_FETCH_TIME_TITLE;?></b></p> 
         <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
         <tr>
           <td class="main" width="150">
@@ -1102,12 +1108,21 @@ document.forms.order1.submit();
               <input type="text" name="preorder_point" size="24" value="<?php echo isset($_POST['preorder_campaign_info'])?$_POST['preorder_campaign_info']:(isset($_POST['preorder_point'])?$_POST['preorder_point']:(isset($_SESSION['preorder_information']['preorder_point'])?$_SESSION['preorder_information']['preorder_point']:'0'));?>" style="text-align:right; float:left;"><div style="float:right; width:150px;"><?php echo $preorder_point;?>
               <?php 
               echo TEXT_PREORDER_POINT_READ.'</div>'; 
-              if (isset($point_error)) {
-                echo '<br><font color="#ff0000">'.$point_error.'</font>'; 
-              }
               ?> 
               </td> 
             </tr>
+            <?php              
+            if (isset($point_error)) {
+            ?> 
+              <tr>
+              <td class="main"></td> 
+              <td class="main">
+                <?php echo '<font color="#ff0000">'.$point_error.'</font>'; ?>   
+              </td> 
+            </tr>
+            <?php   
+            }
+            ?> 
           </table>
           <br>
           <?php } else if ($is_member_single && MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && ($preorder_total < 0)) { 
@@ -1117,13 +1132,20 @@ document.forms.order1.submit();
               <td class="main" width="150"><?php echo TEXT_PREORDER_POINT_TEXT;?></td> 
               <td class="main">
               <input type="text" name="camp_preorder_point" size="24" value="<?php echo isset($_POST['preorder_campaign_info'])?$_POST['preorder_campaign_info']:(isset($_POST['camp_preorder_point'])?$_POST['camp_preorder_point']:(isset($_SESSION['preorder_information']['preorder_campaign_point'])?$_SESSION['preorder_information']['preorder_campaign_point']:'0'));?>" style="text-align:right;">
-              <?php 
-              if (isset($point_error)) {
-                echo '<br><font color="#ff0000">'.$point_error.'</font>'; 
-              }
-              ?>
               </td> 
             </tr>
+            <?php              
+            if (isset($point_error)) {
+            ?> 
+              <tr>
+              <td class="main"></td> 
+              <td class="main">
+                <?php echo '<font color="#ff0000">'.$point_error.'</font>'; ?>   
+              </td> 
+            </tr>
+            <?php   
+            }
+            ?>
           </table>
           <br>
           <?php
