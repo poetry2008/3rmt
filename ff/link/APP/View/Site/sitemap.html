@@ -88,20 +88,23 @@ echo '
      <div class="bottom"></div>
 
      <div class="search_header">
-     <form id="form1" name="form1" onsubmit="return valsearch()" method="post" action="http://www.rmtgakuen.jp/link/sitesearch.html">
-     <table width="100%"><tbody><tr><td align="center">
-     ▼ホームページ検索 
-     <input type="text" name="word" class="sh-txt" id="search_txt">
+    <form action="<!--{url controller=site action=sitesearch}-->" method="post" 
+onsubmit="return valsearch()" name="form1" id="form1">
+<table width="100%"><tr><td align="center" style="color:#ffffff;">
+▼ホームページ検索 
+<input type="text" id="search_txt" class="sh-txt" name='word' />
 
-       <select name="method">
-           <option selected="selected" value="and">AND</option>
-               <option value="or">OR</option>
-                 </select>
-                    <input type="submit" value=" 検 索 "> 
-                    </td></tr>
-                    </tbody></table>
-                    </form>
-                    </div>
+  <select name="method">
+    <option value="and" selected="selected">AND</option>
+    <option value="or">OR</option>
+  </select>
+   <input type="submit" value=" 検 索 " /> 
+</td></tr>
+</table>
+</form>
+ 
+     
+     </div>
                     </div>
                     <div class="tools boxes">
                     <span><h2 class="link_h2">メニュー</h2></span>
