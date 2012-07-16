@@ -166,9 +166,16 @@ $options_str_temp = '';
      ?>
       var country_area_id = document.getElementById("country_area_id");
       country_area_id.options.length = 0;
+      var i = 0;
       for(x in arr[value]){
 
         country_area_id.options[country_area_id.options.length]=new Option(arr[value][x], x);
+        i++;
+      }
+
+      if(i == 0){
+
+        $("#country_area_id_show").hide();
       }
 
      <?php
@@ -541,7 +548,7 @@ if($fixed_option == 0){
   echo '</select></td></tr>';
   tep_db_free_result($country_fee_query);
   $country_area_query = tep_db_query("select id,name from ". TABLE_COUNTRY_AREA ." where status='0' and fid='". $country_fid ."' order by id asc");
-  echo '<tr><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;'.$country_area_name_array['name'].'</td><td><select id="country_area_id" onchange="country_option_city(this.value);">';
+  echo '<tr id="country_area_id_show"><td width="30%" align="left">&nbsp;&nbsp;&nbsp;&nbsp;'.$country_area_name_array['name'].'</td><td><select id="country_area_id" onchange="country_option_city(this.value);">';
   while($country_area_array = tep_db_fetch_array($country_area_query)){
 
     echo '<option value="'. $country_area_array['id'] .'">'. $country_area_array['name'] .'</option>';
