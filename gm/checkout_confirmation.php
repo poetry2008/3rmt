@@ -87,10 +87,34 @@ unset($_SESSION['shipping_session_flag']);
         <td align="center" nowrap="nowrap" width="20%" class="checkoutBarTo"><?php echo CHECKOUT_BAR_FINISHED; ?></td>
       </tr>
     </table>
-	
+<?php
+$fixed_option_list_array = array();
+$fixed_option_query = tep_db_query("select name_flag,fixed_option from ". TABLE_ADDRESS ." where status='0' and fixed_option!='0'");
+ while($fixed_option_array = tep_db_fetch_array($fixed_option_query)){
+ 
+  $fixed_option_list_array[$fixed_option_array['fixed_option']] = $fixed_option_array['name_flag'];
+}
+tep_db_free_result($fixed_option_query);
+
+$ad_post = '';
+$ad_num = 0;
+$ad_array = $_SESSION['options'];
+if(array_key_exists($fixed_option_list_array[3],$ad_array)){
+
+    $ad_post = $ad_array[$fixed_option_list_array[3]][1];
+    $ad_num = 3;
+}elseif(array_key_exists($fixed_option_list_array[2],$ad_array)){
+
+    $ad_post = $ad_array[$fixed_option_list_array[2]][1];
+    $ad_num = 2; 
+}elseif(array_key_exists($fixed_option_list_array[1],$ad_array)){
+    $ad_post = $ad_array[$fixed_option_list_array[1]][1];
+    $ad_num = 1;
+}  
+?>
     <div id="hm-checkout-warp"><div class="checkout-title"><b><?php  echo TEXT_CONFIRMATION_READ;?></b></div>
     <div class="checkout-bottom"> 
-    <a href="javascript:void(0);" onClick="confirm_session_error();">
+    <a href="javascript:void(0);" onClick="confirm_session_error(<?php echo $ad_num;?>,'<?php echo $ad_post;?>');">
 <?php echo
   tep_image_button('button_confirm_order.gif',
       IMAGE_BUTTON_CONFIRM_ORDER,' onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_confirm_order.gif\'" onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_confirm_order_hover.gif\'"');?></a></div>  
@@ -208,7 +232,7 @@ if(!empty($_SESSION['options'])){
 
 <tr> 
   <td width="20%" valign="top"><?php echo $value[0]; ?>:</td>
-  <td colspan="2"><?php echo $value[1]; ?></td>
+  <td colspan="2"><?php echo $value[1]; ?><span id="<?php echo $key;?>"></span></td>
 </tr>
 <?php
   }
@@ -555,7 +579,7 @@ $shipping_fee = $cart->total > $free_value ? 0 : $weight_fee;
       echo tep_draw_hidden_field("character[$ck]", $cv);
     }
   }
-  echo '<a href="javascript:void(0);" onclick="confirm_session_error();">';
+  echo '<a href="javascript:void(0);" onclick="confirm_session_error('.$ad_num.',\''.$ad_post.'\');">';
   echo tep_image_button('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER,' onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_confirm_order.gif\'" onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_confirm_order_hover.gif\'"') . "</a>\n";
 ?></div></div></div>
 </form>
