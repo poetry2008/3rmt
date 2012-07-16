@@ -297,7 +297,7 @@
     echo '              <tr>' . "\n" .
          '                <td class="main" valign="top" width="75">' . tep_date_short($statuses['date_added']) . '</td>' . "\n" .
          '                <td class="main" valign="top" width="70">' . $statuses['orders_status_name'] . '</td>' . "\n" .
-         '                <td class="main" valign="top">' . (empty($statuses['comments']) ? '&nbsp;' : nl2br(htmlspecialchars($statuses['comments']))) . '</td>' . "\n" .
+         '                <td class="main" valign="top">' .  (empty($statuses['comments']) ? '&nbsp;' : nl2br(htmlspecialchars(ltrim($statuses['comments'])))) . '</td>' . "\n" .
          '              </tr>' . "\n";
   }
 ?> 
