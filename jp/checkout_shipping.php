@@ -701,6 +701,13 @@ function session_value(){
 --></script>
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript" src="js/date_time.js"></script>
+<?php
+//判断用户是否是会员
+    $address_quest_query = tep_db_query("select customers_guest_chk from ". TABLE_CUSTOMERS ." where customers_id={$_SESSION['customer_id']}");
+    $address_quest_array = tep_db_fetch_array($address_quest_query);
+    tep_db_free_result($address_quest_query);
+    $address_quest_flag = $address_quest_array['customers_guest_chk'];
+?>
 <script type="text/javascript"> 
 <?php
   if(isset($_POST['address_option'])){
@@ -739,9 +746,15 @@ function session_value(){
   }else{
 ?>
     $(document).ready(function(){
-
+    
+     <?php 
+     if($address_quest_flag == 0){
+     ?>
      address_option_show('old'); 
      address_option_list(first_num); 
+     <?php
+     }
+     ?>
      <?php
      if($_SESSION['options']){ 
      ?>
@@ -828,7 +841,7 @@ unset($_SESSION['shipping_session_flag']);
   }
   ?>
   <?php
-    if(!isset($_POST[$country_area_id]) && !isset($_SESSION['options'])){
+    if(!isset($_POST[$country_area_id]) && !isset($_SESSION['options']) && $address_quest_flag == 0){
   ?>    
     address_option_list(first_num); 
   <?php
