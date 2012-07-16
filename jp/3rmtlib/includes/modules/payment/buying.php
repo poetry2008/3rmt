@@ -398,7 +398,7 @@ class buying extends basePayment  implements paymentInterface  {
      }
     ?>
     <tr> 
-       <td   <?php echo $colspan; ?> ><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
+       <td   <?php echo $colspan; ?> >
        <?php if ($is_show) {?>
        <table border="0" width="100%" cellspacing="1" cellpadding="2" class="formArea"> 
        <tr> 

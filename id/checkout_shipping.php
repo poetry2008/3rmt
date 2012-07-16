@@ -1243,7 +1243,7 @@ if (!isset($date_error)) $date_error= NULL ; //del notice
  </td>
  </tr>
 </table>
-<table border="0" width="100%" cellspacing="0" cellpadding="0" class="infoBox">
+<table border="0" width="100%" cellspacing="0" cellpadding="0" >
 <?php
   if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) && $_SESSION['date'] != '' && $date_session_flag == true)){
 

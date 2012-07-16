@@ -195,13 +195,10 @@
               <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
             </tr> 
             <tr> 
-              <td class="main"><b><?php echo HEADING_BILLING_INFORMATION; ?></b></td> 
-            </tr> 
-            <tr> 
-              <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-            </tr> 
-            <tr> 
-              <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
+              <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox">
+                    	 <tr class="infoBoxContents"> 
+                          <td class="main" colspan="2"><b><?php echo HEADING_BILLING_INFORMATION; ?></b></td> 
+                        </tr> 
                   <tr class="infoBoxContents"> 
                     <td width="30%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                         <tr> 
@@ -275,15 +272,12 @@
               <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
             </tr> 
             <tr> 
-              <td class="main"><b><?php echo HEADING_ORDER_HISTORY; ?></b></td> 
-            </tr> 
-            <tr> 
-              <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-            </tr> 
-            <tr> 
               <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
                   <tr class="infoBoxContents"> 
                     <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+            <tr> 
+              <td class="main"><b><?php echo HEADING_ORDER_HISTORY; ?></b></td> 
+            </tr> 
 <?php
 //ccdd
 //todo: need filter
@@ -292,7 +286,8 @@
     echo '              <tr>' . "\n" .
          '                <td class="main" valign="top" width="75">' . tep_date_short($statuses['date_added']) . '</td>' . "\n" .
          '                <td class="main" valign="top" width="70">' . $statuses['orders_status_name'] . '</td>' . "\n" .
-         '                <td class="main" valign="top">' . (empty($statuses['comments']) ? '&nbsp;' : nl2br(htmlspecialchars($statuses['comments']))) . '</td>' . "\n" .
+         '                <td class="main" valign="top">' .
+         (empty($statuses['comments']) ? '&nbsp;' : nl2br(htmlspecialchars(ltrim($statuses['comments'])))) . '</td>' . "\n" .
          '              </tr>' . "\n";
   }
 ?> 

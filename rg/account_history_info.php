@@ -200,15 +200,12 @@
               <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
             </tr> 
             <tr> 
-              <td class="main"><b><?php echo HEADING_BILLING_INFORMATION; ?></b></td> 
-            </tr> 
-            <tr> 
-              <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-            </tr> 
-            <tr> 
               <td><table class="formArea" width="100%"> 
                   <tr> 
                     <td width="30%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+                        <tr> 
+                          <td class="main"><b><?php echo HEADING_BILLING_INFORMATION; ?></b></td> 
+                        </tr> 
                         <tr> 
                           <td class="main"><b><?php echo HEADING_BILLING_ADDRESS; ?></b></td> 
                         </tr> 
@@ -223,6 +220,9 @@
                         </tr> 
                       </table></td> 
                     <td width="70%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+                        <tr> 
+                          <td class="main">&nbsp;</td> 
+                        </tr> 
                         <?php
   for ($i=0, $n=sizeof($order->totals); $i<$n; $i++) {
     if ($order->totals[$i]['class'] == 'ot_point') {
@@ -279,15 +279,12 @@
               <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
             </tr> 
             <tr> 
-              <td class="main"><b><?php echo HEADING_ORDER_HISTORY; ?></b></td> 
-            </tr> 
-            <tr> 
-              <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-            </tr> 
-            <tr> 
               <td><table class="formArea" width="100%"> 
                   <tr> 
                     <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+                    <tr> 
+                      <td class="main"><b><?php echo HEADING_ORDER_HISTORY; ?></b></td> 
+                    </tr> 
                         <?php
 //ccdd
 //todo: need filter
@@ -297,8 +294,7 @@
          '                <td class="main" valign="top" width="75">' . tep_date_short($statuses['date_added']) . '</td>' . "\n" .
          '                <td class="main" valign="top" width="70">' . $statuses['orders_status_name'] . '</td>' . "\n" .
          '                <td class="main" valign="top">' .
-         (empty($statuses['comments']) ? '&nbsp;' :
-          str_replace('<br />', '<br>', nl2br(htmlspecialchars($statuses['comments'])))) . '</td>' . "\n" .
+         (empty($statuses['comments']) ? '&nbsp;' : nl2br(htmlspecialchars(ltrim($statuses['comments'])))) . '</td>' . "\n" .
          '              </tr>' . "\n";
   }
 ?> 
