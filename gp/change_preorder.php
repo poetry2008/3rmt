@@ -682,7 +682,7 @@ document.forms.order1.submit();
             </tr>
           </table>
           <br> 
-          <p><b><?php echo CHANGE_ORDER_CUSTOMER_DETAILS?></b></p>
+          <p class="formAreaTitle" style="font-size:12px;"><?php echo CHANGE_ORDER_CUSTOMER_DETAILS?></p>
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
               <td class="main" width="150">
@@ -706,7 +706,7 @@ document.forms.order1.submit();
             $preorder_product_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$preorder_id."'"); 
             $preorder_product_res = tep_db_fetch_array($preorder_product_raw); 
           ?> 
-          <p><b><?php echo CHANGE_ORDER_PRODUCT_DETAILS;?></b></p> 
+          <p class="formAreaTitle" style="font-size:12px;"><?php echo CHANGE_ORDER_PRODUCT_DETAILS;?></p> 
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
               <td class="main" width="150">
@@ -939,7 +939,7 @@ document.forms.order1.submit();
           $quest_array = tep_db_fetch_array($quest_query);
           tep_db_free_result($quest_query);
         ?>
-        <p><b><?php echo TEXT_ADDRESS;?></b></p>
+        <p class="formAreaTitle" style="font-size:12px;"><?php echo TEXT_ADDRESS;?></p>
         <table border="0" width="100%" cellspacing="2" cellpadding="2" class="formArea"> 
         <?php
           if($quest_array['customers_guest_chk'] == 0){
@@ -997,7 +997,7 @@ document.forms.order1.submit();
         }
         ?>
         
-        <p><b><?php echo CHANGE_ORDER_FETCH_TIME_TITLE;?></b></p> 
+        <p class="formAreaTitle" style="font-size:12px;"><?php echo CHANGE_ORDER_FETCH_TIME_TITLE;?></p> 
         <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
         <tr>
           <td class="main" width="150">

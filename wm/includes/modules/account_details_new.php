@@ -550,7 +550,7 @@ $(document).ready(function(){
           $sylte_none = $address_orders_history_num > 0 ? '' : 'style="display:none;"';
         ?>
         <table border="0" cellspacing="0" cellpadding="2" summary="table">
-        <tr id="address_histroy_id"<?php echo $sylte_none;?>><td class="main" width="120">&nbsp;<?php echo TITLE_ADDRESS_OPTION;?></td><td style="padding-left:10px;"><input type="hidden" id="address_flag_id" name="address_flag_id" value="">
+        <tr id="address_histroy_id"<?php echo $sylte_none;?>><td class="main" width="120">&nbsp;<?php echo TITLE_ADDRESS_OPTION;?></td><td style="<?php echo ((strpos($_SERVER["HTTP_USER_AGENT"],"Chrome"))?'padding-left:9px;':'padding-left:10px;');?>"><input type="hidden" id="address_flag_id" name="address_flag_id" value="">
         <input type="hidden" id="first_name" name="lastname" value="">
         <input type="hidden" id="end_name" name="firstname" value="">
         <input type="hidden" id="email" name="email_address" value="">

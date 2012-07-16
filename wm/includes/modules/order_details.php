@@ -132,9 +132,9 @@
       $cart_pro_status = tep_db_fetch_array($cart_pro_status_raw);
       if ($cart_pro_status['products_status'] == 0 || $cart_pro_status['products_status'] == 3) {
         $stock_link_single = true; 
-        echo '    <td class="main" style=" background:#dbfdff">'.(((PRODUCT_LIST_MODEL > 0) && strstr($PHP_SELF, FILENAME_SHOPPING_CART))?$products[$i]['model'] . '<br>':'').'<b>' . $products[$i]['name'] . '</b>';
+        echo '    <td class="main" style=" background:#dbfdff">'.(((PRODUCT_LIST_MODEL > 0) && strstr($PHP_SELF, FILENAME_SHOPPING_CART) && !empty($products[$i]['model']))?$products[$i]['model'] . '<br>':'').'<b>' . $products[$i]['name'] . '</b>';
       } else {
-        echo '    <td class="main" style=" background:#dbfdff">'.(((PRODUCT_LIST_MODEL > 0) && strstr($PHP_SELF, FILENAME_SHOPPING_CART))?'<a href="' .  tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .  (int)$products[$i]['id']) . '">' . $products[$i]['model'] .  '</a><br>':'').'<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . (int)$products[$i]['id']) . '"><b>' . $products[$i]['name'] . '</b></a>';
+        echo '    <td class="main" style=" background:#dbfdff">'.(((PRODUCT_LIST_MODEL > 0) && strstr($PHP_SELF, FILENAME_SHOPPING_CART) && !empty($products[$i]['model']))?'<a href="' .  tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .  (int)$products[$i]['id']) . '">' . $products[$i]['model'] .  '</a><br>':'').'<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . (int)$products[$i]['id']) . '"><b>' . $products[$i]['name'] . '</b></a>';
       }
     } else {
       echo '    <td class="main" style=" background:#dbfdff">'.(((PRODUCT_LIST_MODEL > 0) && strstr($PHP_SELF, FILENAME_SHOPPING_CART))?'<a href="' .  tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . (int)$products[$i]['id']) . '">' . $products[$i]['model'] . '</a><br>':'').'<b>' . $products[$i]['name'] . '</b>';
@@ -183,7 +183,11 @@
     if (!strstr($PHP_SELF, FILENAME_ACCOUNT_HISTORY_INFO)) {
       //echo '    <td align="right" class="main" style=" background:#dbfdff"><span id="pri_'.$products[$i]['id'] .'"><b>' .  $currencies->display_price($products[$i]['price'], tep_get_tax_rate($products[$i]['tax_class_id']), $products[$i]['quantity']) . '</b></span>';
       // edit total 
-      echo '    <td align="right" class="main" style="background:#dbfdff"><br><span id="pri_'.$products[$i]['id'] .'">';
+      echo '    <td align="right" class="main" style="background:#dbfdff">';
+      if ((PRODUCT_LIST_MODEL > 0) && strstr($PHP_SELF, FILENAME_SHOPPING_CART) && !empty($products[$i]['model'])) {
+        echo '<br>';
+      }
+      echo '<span id="pri_'.$products[$i]['id'] .'">';
       if ($products[$i]['price'] < 0) {
         echo '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->display_price($products[$i]['price'], tep_get_tax_rate($products[$i]['tax_class_id']), $products[$i]['quantity'])).'</font>'.JPMONEY_UNIT_TEXT;
       } else {
