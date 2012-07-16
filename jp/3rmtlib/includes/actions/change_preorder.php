@@ -2,6 +2,8 @@
   require(DIR_WS_LANGUAGES . $language . '/change_preorder.php');
   require('address_preorder/AD_Option.php');
   require('address_preorder/AD_Option_Group.php');
+  require(DIR_WS_CLASSES.'payment.php'); 
+  $payment_modules = payment::getInstance(SITE_ID); 
   $error = false;  
 
   $ad_option = new AD_Option();

@@ -404,7 +404,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
     ?>
                         <table width="100%"  border="0" cellpadding="0" cellspacing="0" summary="rmt_text">
                           <tr>
-                          <td class="main" valign="middle" style="padding-left:12px;" width="73"><?php echo TEXT_PRODUCTS_QTY;?></td>
+                          <td class="main" valign="middle" style="padding-left:13px;" width="73"><?php echo TEXT_PRODUCTS_QTY;?></td>
                             <td colspan="2"><table><tr>
                             <td class="main" valign="middle"><input name="quantity" type="text" id="quantity" value="<?php echo (isset($_POST['quantity'])?$_POST['quantity']:1)?>" class="input_text_short"></td>
                             <td valign="middle">

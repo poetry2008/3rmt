@@ -2248,6 +2248,8 @@ border:1px solid #CAC6BE;
     position:relative;
 	color:#FFFFFF;
 	*height:25px;
+	overflow:hidden;
+	*overflow:inherit;
 }
 .time_radio{
 	float:left;
@@ -2263,3 +2265,4 @@ border:1px solid #CAC6BE;
 .time_label a:hover{ color:#FFFFFF; cursor:pointer;}
 .product_open{ overflow:hidden; line-height:20px; height:20px;}
 .product_open a{ *float:left;}
+#shipping_box{ padding:0;}

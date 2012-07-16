@@ -2059,7 +2059,12 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
             if($count_num > 0){
             ?>
             <tr>
-            <td class="main"><font color="blue"><b><?php echo TEXT_ADDRESS_INFO;?></b></font></td>
+              <td colspan="2">
+              <hr width="100%" style="border-width: medium medium 1px; border-style: none none dashed; height: 2px; margin: 5px 0px; border-color: -moz-use-text-color -moz-use-text-color rgb(204, 204, 204);">
+              </td> 
+            </tr>
+            <tr>
+            <td class="main"><b><?php echo TEXT_ADDRESS_INFO;?></b></td>
             <td class="main">&nbsp;</td>
             </tr>
             <?php

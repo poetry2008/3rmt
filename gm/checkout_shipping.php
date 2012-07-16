@@ -7,6 +7,7 @@
   require('includes/application_top.php');
   require('includes/classes/http_client.php');
   require(DIR_WS_ACTIONS.'checkout_shipping.php');
+  $_SESSION['shipping_page_str'] = substr($_SERVER['REQUEST_URI'],1);
 
 // if the customer is not logged on, redirect them to the login page
   if (!tep_session_is_registered('customer_id')) {
@@ -760,6 +761,14 @@ function session_value(){
   }
 ?>
 $(document).ready(function(){
+<?php
+if(isset($_SESSION['shipping_session_flag']) && $_SESSION['shipping_session_flag'] == true){
+?>
+  alert("<?php echo TEXT_SESSION_ERROR_ALERT;?>");
+<?php
+unset($_SESSION['shipping_session_flag']);
+}
+?>
   $("#"+country_fee_id).change(function(){
     country_check($("#"+country_fee_id).val());
     country_area_check($("#"+country_area_id).val());
@@ -1206,7 +1215,7 @@ $(document).ready(function(){
     </td>
   </tr>
 </table>
-<table border="0" cellpadding="0" cellspacing="0" style=" position:absolute; width:84%;">
+<table border="0" cellpadding="0" cellspacing="0" style=" position:absolute; width:100%;">
 <tr id="shipping_list_min" style="display:none;">
  <td width="20%">&nbsp;</td>
  <td id="shipping_list_show_min">

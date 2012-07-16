@@ -17,7 +17,7 @@ _gaq.push(['_trackPageview']);
  s.parentNode.insertBefore(ga, s);
  })();
 </script>
-<table class="footer_top"> 
+<table class="footer_top" width="900"> 
 <tr>
 <td colspan="3">
 <?php include(DIR_WS_BOXES.'information.php');?> 

@@ -821,6 +821,7 @@ unset($_SESSION['options']);
 unset($_SESSION['options_type_array']);
 unset($_SESSION['weight_fee']);
 unset($_SESSION['free_value']);
+unset($_SESSION['shipping_page_str']);
 //$pr = '?SID=' . $convenience_sid;
   
 /*

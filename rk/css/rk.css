@@ -2243,6 +2243,7 @@ display:block;
 	*height:25px;
 	overflow:hidden;
 	margin:0 2px;
+	*overflow:inherit;
 }
 .time_radio{
 	float:left;
@@ -2273,3 +2274,4 @@ display:block;
 	padding:0;
 }
 .address_item_info{ margin-left:4px;}
+#shiping_box{ padding:0;}

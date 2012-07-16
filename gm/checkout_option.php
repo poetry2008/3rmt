@@ -5,11 +5,23 @@
 
   require('includes/application_top.php');
   require(DIR_WS_ACTIONS.'checkout_option.php'); 
-    
+  $_SESSION['shipping_page_str'] = substr($_SERVER['REQUEST_URI'],1);   
 ?>
 <?php page_head();?>
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript" src="js/option.js"></script>
+<?php
+if(isset($_SESSION['shipping_session_flag']) && $_SESSION['shipping_session_flag'] == true){
+?>
+<script type="text/javascript">
+$(document).ready(function(){
+  alert("<?php echo TEXT_SESSION_ERROR_ALERT;?>");
+});  
+</script>
+<?php
+unset($_SESSION['shipping_session_flag']);
+}
+?>
 </head>
 <body> 
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 

@@ -2050,6 +2050,7 @@ border:2px solid #FF8080;
 	color:#FFFFFF;
 	*height:25px;
 	overflow:hidden;
+	*overflow:inherit;
 }
 .time_radio{
 	float:left;
@@ -2063,3 +2064,4 @@ border:2px solid #FF8080;
 }
 .time_label a{ color:#FFFFFF; cursor:pointer;}
 .time_label a:hover{ color:#FFFFFF; cursor:pointer;}
+#shipping_box{ padding:0;}
