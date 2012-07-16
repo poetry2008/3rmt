@@ -2177,8 +2177,8 @@ foreach ($nomail as $oskey => $value){
 ?>
 function address_show(){
   
-  var style = $("#address_show_id").attr("style");
-  if(style == 'display: none;' || style == 'display: none'){
+  var style = $("#address_show_id").css("display");
+  if(style == 'none'){
     $("#address_show_id").show(); 
     $("#address_font").html("<?php echo TEXT_ADDRESS_INFO_HIDE;?>");
  
