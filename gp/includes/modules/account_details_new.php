@@ -285,6 +285,7 @@ function address_option_list(value){
   $("#td_"+country_city_id_one).hide();
   var arr_list = new Array();
   var arr_flag = new Array();
+  var arr_address = new Array();
 <?php
   $address_list_arr = array();
   $address_list_query = tep_db_query("select name_flag from ". TABLE_ADDRESS ." where status='0' and show_title='1'");
@@ -293,6 +294,16 @@ function address_option_list(value){
     $address_list_arr[] = $address_list_array['name_flag'];
   }
   tep_db_free_result($address_list_query);
+
+  // address list
+  $address_list_name_query = tep_db_query("select name_flag from ". TABLE_ADDRESS ." where status='0'");
+  $address_k = 0;
+  while($address_list_name_array = tep_db_fetch_array($address_list_name_query)){
+
+    echo 'arr_address['.$address_k.'] = "'. $address_list_name_array['name_flag'].'"'."\n";
+    $address_k++;
+  }
+  tep_db_free_result($address_list_name_query);
   $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id=". $_SESSION['customer_id'] ." group by orders_id order by orders_id desc");
   
    
@@ -316,6 +327,10 @@ function address_option_list(value){
   }
   tep_db_free_result($address_orders_group_query); 
 ?>
+  for(k in arr_address){
+
+    $("#op_"+arr_address[k]).val("");
+  }
 if(arr_list.length > 0){
   for(x in arr_list[value]){
    if(document.getElementById("op_"+x)){
