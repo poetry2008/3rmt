@@ -717,7 +717,7 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
           onmouseout="this.src='includes/languages/japanese/images/buttons/button_reset.gif'"
           onmouseover="this.src='includes/languages/japanese/images/buttons/button_reset_hover.gif'"  src="includes/languages/japanese/images/buttons/button_reset.gif" 
           alt="<?php echo TEXT_REORDER_CLEAR;?>" title="<?php echo
-          TEXT_REORDER_CLEAR;?>" onClick="javascript:document.order.reset();return false;" >
+          TEXT_REORDER_CLEAR;?>" onClick="javascript:document.order.reset();selectDate('','','');return false;" >
         </div>
       </form>
     </div>

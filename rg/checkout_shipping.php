@@ -1269,7 +1269,7 @@ if (!isset($date_error)) $date_error= NULL ; //del notice
       $hour_show_flag = true;
     }
     if($hour_show_flag == false){
-      echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\',\''. $post_hour .'\','. $post_min .',\''.$ele.'\');$("#shipping_list_min").show();</script>';
+      echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\',\''. $post_hour .'\','. $post_min .',\''.$ele.'\');$("#shipping_list_min").show();$("#h_c_'.$post_hour.'").val('.$post_min.');</script>';
     }
   }
   if(isset($jikan_error) && $jikan_error != '') {

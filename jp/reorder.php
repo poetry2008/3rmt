@@ -717,7 +717,7 @@ foreach ($value['attributes'] as $att) {?>
 <br>
 <p align="center">
 <input type='image' src="includes/languages/japanese/images/buttons/button_submit.gif" alt="<?php echo TEXT_REORDER_CONFRIM;?>" onClick="return orderConfirmPage();" >
-<input type='image' src="includes/languages/japanese/images/buttons/button_reset.gif" alt="<?php echo TEXT_REORDER_CLEAR;?>" onClick="javascript:document.order.reset();return false;" >
+<input type='image' src="includes/languages/japanese/images/buttons/button_reset.gif" alt="<?php echo TEXT_REORDER_CLEAR;?>" onClick="javascript:document.order.reset();selectDate('','','');return false;" >
 </p>
 </form>
 </div>

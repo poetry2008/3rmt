@@ -1069,12 +1069,12 @@ document.forms.order1.submit();
              }
              if(isset($_POST['min']) && $_POST['min'] != ''){
 
-                echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\',\''. $_POST['hour'] .'\','. $_POST['min'] .','. $_POST['ele'] .');$("#shipping_list_min").show();</script>';
+                echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\',\''. $_POST['hour'] .'\','. $_POST['min'] .','. $_POST['ele'] .');$("#shipping_list_min").show();$("#h_c_'.$_POST['hour'].'").val('.$_POST['min'].');</script>';
              }else{
 
                 if(isset($_SESSION['preorder_information']['min']) && $_SESSION['preorder_information']['min'] != ''){
 
-                  echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\',\''. $_SESSION['preorder_information']['hour'] .'\','. $_SESSION['preorder_information']['min'] .','. $_SESSION['preorder_information']['ele'] .');$("#shipping_list_min").show();</script>';
+                  echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\',\''. $_SESSION['preorder_information']['hour'] .'\','. $_SESSION['preorder_information']['min'] .','. $_SESSION['preorder_information']['ele'] .');$("#shipping_list_min").show();$("#h_c_'.$_SESSION['preorder_information']['hour'].'").val('.$_SESSION['preorder_information']['min'].');</script>';
                 }
              }
           if ($hm_option->preorder_whether_show($product_info_res['belong_to_option'])) { 
