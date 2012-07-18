@@ -592,6 +592,15 @@ $(document).ready(function(){
 <body>
 <?php 
 if ($error == false && $_POST['action'] == 'process') { 
+
+  $options_comment = array();
+  $address_query = tep_db_query("select * from ". TABLE_ADDRESS ." where type!='text' and status='0' order by sort");
+  while($address_required = tep_db_fetch_array($address_query)){
+    
+    $options_comment[$address_required['name_flag']] = $address_required['comment'];
+  }
+  tep_db_free_result($address_query);
+
 //echo tep_draw_form('order1', tep_href_link('change_preorder_confirm.php'));
 $preorder_information = array();
 foreach ($_POST as $post_key => $post_value) {
@@ -603,6 +612,13 @@ foreach ($_POST as $post_key => $post_value) {
     }
   } else {
     //echo '<input type="hidden" name="'.$post_key.'" value="'.stripslashes($post_value).'">'; 
+    if(substr($post_key,0,3) == 'ad_'){
+
+      if($options_comment[substr($post_key,3)] == $post_value){
+
+        $post_value = '';
+      }
+    }
       $preorder_information[$post_key] = stripslashes($post_value); 
   }
 }

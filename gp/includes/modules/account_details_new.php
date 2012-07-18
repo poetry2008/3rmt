@@ -407,7 +407,6 @@ $(document).ready(function(){
    }elseif($address_histroy_num > 0){
   ?>
     check();
-    address_option_list(0);
   <?php
    }else{
   ?>
@@ -427,7 +426,6 @@ $(document).ready(function(){
    }elseif($address_histroy_num > 0){
   ?>
     country_check($("#"+country_fee_id).val());
-    address_option_list(0);
   <?php
    }else{
   ?>
@@ -448,7 +446,6 @@ $(document).ready(function(){
    }elseif($address_histroy_num > 0){
   ?>
     country_area_check($("#"+country_area_id).val());
-    address_option_list(0);
   <?php
    }else{
   ?>
@@ -456,6 +453,14 @@ $(document).ready(function(){
   <?php
   }
   ?>   
+  <?php
+   if(!isset($_POST[$country_fee_id])){
+  ?>
+   
+    address_option_list(0);
+  <?php
+  }
+  ?>
 });
 </script>
 <?php
