@@ -164,59 +164,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
   <div class="top">
   <h1 class="link_h1">サイトマップ</h1>
   </div>
-  <div class="middle">
-  <div class="text_out">
-  <p> <!--{_t key=text_out_p1}-->
-   </p>   
-   <p>
-  <!--{_t key=text_out_p2}-->
-  </p>  
-  <p>
-  <!--{_t key=text_out_p3}-->
-  </p> 
-  </div>
-  </div>
-  <div class="bottom"></div>
-
-  <div class="search_header">
- 
- <form action="<!--{url controller=site action=sitesearch}-->" method="post" 
-onsubmit="return valsearch()" name="form1" id="form1">
-<table><tr><td align="center">
-▼ホームページ検索 
-<input type="text" id="search_txt" class="sh-txt" name='word' />
-
-  <select name="method">
-    <option value="and" selected="selected">AND</option>
-    <option value="or">OR</option>
-  </select>
-   <input type="submit" value=" 検 索 " /> 
-</td></tr>
-</table>
-</form>
- 
-  
-  </div>
-                 </div>
-<div class="tools">
-<h2>メニュー</h2>
-<div class="middle">
-<a href="/link/">相互リンク集TOP</a>
-<a href="http://id_rmt.hm1002.200.com/link/regist.html">新規登録</a>
-<a href="http://id_rmt.hm1002.200.com/link/renew.html">更新されたサイト</a>
-<a href="http://id_rmt.hm1002.200.com/link/new.html">新着サイト</a>
-<a href="http://id_rmt.hm1002.200.com/link/recommend.html">おすすめサイト</a>
-<a href="http://id_rmt.hm1002.200.com/link/sitemap.html">サイトマップ</a>
-</div>
-<div class="bottom"></div>
-</div> 
-    
-    </div>
-  <!--end header-->
-
-                 <div id="content">
-        <div class="top"><h1 class="link_sitmap_h1">相互リンク集のサイトマップ</h1></div>
-        <div class="middle">
+  <div class="sitemap">
       <!--{section name=loopClass loop=$class}-->
       <!--{assign var='top' value=$class[loopClass]}-->
       <div class="web-box">
@@ -237,46 +185,46 @@ onsubmit="return valsearch()" name="form1" id="form1">
             <table class="web_3" width="100%">
           <!--{/if}-->
              <tr>
-                <td><!--{if $top.children[$index].name != ''}-->
+                <td valign="top"><!--{if $top.children[$index].name != ''}-->
               <span class="web-ico">&nbsp;</span>
-              <a href='<!--{url controller=site action=class id=$top.children[$index].class_id}-->'>
+              <span class="web-link"><a href='<!--{url controller=site action=class id=$top.children[$index].class_id}-->'>
                   <!--{$top.children[$index].name}-->
-                  </a>
+                  </a></span>
               <!--{/if}-->
             </td>
-                <td><!--{if $top.children[$index2].name != ''}-->
+                <td valign="top"><!--{if $top.children[$index2].name != ''}-->
               <span class="web-ico">&nbsp;</span>
-              <a href='<!--{url controller=site action=class id=$top.children[$index2].class_id}-->'>
+              <span class="web-link"><a href='<!--{url controller=site action=class id=$top.children[$index2].class_id}-->'>
                   <!--{$top.children[$index2].name}-->
-                  </a>
+                  </a></span>
               <!--{/if}-->
             </td>
-                <td><!--{if $top.children[$index3].name != ''}-->
+                <td valign="top"><!--{if $top.children[$index3].name != ''}-->
               <span class="web-ico">&nbsp;</span>
-              <a href='<!--{url controller=site action=class id=$top.children[$index3].class_id}-->'>
+              <span class="web-link"><a href='<!--{url controller=site action=class id=$top.children[$index3].class_id}-->'>
                   <!--{$top.children[$index3].name}-->
-                  </a>
+                  </a></span>
               <!--{/if}-->
             </td>
-                <td><!--{if $top.children[$index4].name != ''}-->
+                <td valign="top"><!--{if $top.children[$index4].name != ''}-->
               <span class="web-ico">&nbsp;</span>
-              <a href='<!--{url controller=site action=class id=$top.children[$index4].class_id}-->'>
+              <span class="web-link"><a href='<!--{url controller=site action=class id=$top.children[$index4].class_id}-->'>
                   <!--{$top.children[$index4].name}-->
-                  </a>
+                  </a></span>
               <!--{/if}-->
             </td>
-                <td><!--{if $top.children[$index5].name != ''}-->
+                <td valign="top"><!--{if $top.children[$index5].name != ''}-->
               <span class="web-ico">&nbsp;</span>
-              <a href='<!--{url controller=site action=class id=$top.children[$index5].class_id}-->'>
+              <span class="web-link"><a href='<!--{url controller=site action=class id=$top.children[$index5].class_id}-->'>
                   <!--{$top.children[$index5].name}-->
-                  </a>
+                  </a></span>
               <!--{/if}-->
             </td>
-             <td><!--{if $top.children[$index6].name != ''}-->
+             <td valign="top"><!--{if $top.children[$index6].name != ''}-->
               <span class="web-ico">&nbsp;</span>
-              <a href='<!--{url controller=site action=class id=$top.children[$index6].class_id}-->'>
+              <span class="web-link"><a href='<!--{url controller=site action=class id=$top.children[$index6].class_id}-->'>
                   <!--{$top.children[$index6].name}-->
-                  </a>
+                  </a></span>
               <!--{/if}-->
             </td>
 
@@ -288,7 +236,22 @@ onsubmit="return valsearch()" name="form1" id="form1">
           </div>
       <!--{/section}-->
     </div>
-    <div class="bottom"></div>
-      </div>
+  <div class="bottom"></div>
+</div>
+<div class="tools">
+<h2>メニュー</h2>
+<div class="middle">
+<a href="/link/">相互リンク集TOP</a>
+<a href="http://id_rmt.hm1002.200.com/link/regist.html">新規登録</a>
+<a href="http://id_rmt.hm1002.200.com/link/renew.html">更新されたサイト</a>
+<a href="http://id_rmt.hm1002.200.com/link/new.html">新着サイト</a>
+<a href="http://id_rmt.hm1002.200.com/link/recommend.html">おすすめサイト</a>
+<a href="http://id_rmt.hm1002.200.com/link/sitemap.html">サイトマップ</a>
+</div>
+<div class="bottom"></div>
+</div> 
+    
+    </div>
+  <!--end header-->
     <!--{include file=Site/footer.html}-->
     

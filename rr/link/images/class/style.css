@@ -28,9 +28,7 @@ width:16%;
 	background:url(../../../images/design/box/arrow_2.gif) no-repeat left center;
 }
 .web_3 a{
-	padding-left:10px;
 	font-size:10px;
-	background:url(../../../images/design/box/arrow_2.gif) no-repeat left center;
 }
 .search_and_tools{
 	overflow:hidden;
@@ -248,3 +246,11 @@ background:url(images/button02.gif) no-repeat;
     width: 884px;
 }
 .text_out{ color:#fff;}
+.web-ico {
+	width:5px;
+	display:inline-block;
+	background:url(../../../images/design/box/arrow_2.gif) no-repeat left center;
+	float:left;
+	margin-left:5px;
+}
+.web-link{ padding-left:5px; float:left; width:95px;} 
