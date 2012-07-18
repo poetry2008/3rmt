@@ -153,37 +153,91 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
  <div class="top"></div>
  <div class="middle">
  <h1 class="link_h1">サイトマップ </h1>
- <div class="text_out">
-<p><!--{_t key=text_out_p1}--></p>
-<p>
-<!--{_t key=text_out_p2}-->
-</p>
-<p>
-<!--{_t key=text_out_p3}-->
-</p>
+ 
+						 <!--sitemap-->
+                        <div id="sitemap">
+                        <!--{section name=loopClass loop=$class}-->
+                        <!--{assign var='top' value=$class[loopClass]}-->
+                        <div class="web-box_sitmap">
+                        <span class="web-line"><b class="x1">&nbsp;</b><b class="x2">&nbsp;</b><b class="x3">&nbsp;</b><b class="x4">&nbsp;</b><b class="x5">&nbsp;</b><b class="x6">&nbsp;</b><b class="x7">&nbsp;</b></span>
+                        <div class="web-tit"><span><a href='<!--{url controller=site action=class id=$class[loopClass].class_id}-->'><!--{$class[loopClass].name}--></a></span></div>
+                        
+                        
+                        
+                        <!--{section name=loopTop loop=$top.children step=6}-->
+                        <!--{assign var='index' value=$smarty.section.loopTop.index}-->
+                        <!--{assign var='index2' value=$smarty.section.loopTop.index+1}-->
+                        <!--{assign var='index3' value=$smarty.section.loopTop.index+2}-->
+                        <!--{assign var='index4' value=$smarty.section.loopTop.index+3}-->
+                        <!--{assign var='index5' value=$smarty.section.loopTop.index+4}-->
+                        <!--{assign var='index6' value=$smarty.section.loopTop.index+5}-->
+                        <!--{if $smarty.section.loopTop.first}-->
+                        <table class="web" width="100%">
+                        <!--{/if}-->
+                        <tr class="t1">
+                        <td>
+                        <!--{if $top.children[$index].name != ''}-->
+                        <span class="web-ico">&nbsp;</span>
+                        <a href='<!--{url controller=site action=class id=$top.children[$index].class_id}-->'>
+                        <!--{$top.children[$index].name}-->
+                        </a>
+                        <!--{/if}-->
+                        </td>
+                        <td>
+                        <!--{if $top.children[$index2].name != ''}-->
+                        <span class="web-ico">&nbsp;</span>
+                        <a href='<!--{url controller=site action=class id=$top.children[$index2].class_id}-->'>
+                        <!--{$top.children[$index2].name}-->
+                        </a>
+                        <!--{/if}-->
+                        </td>
+                        <td>
+                        <!--{if $top.children[$index3].name != ''}-->
+                        <span class="web-ico">&nbsp;</span>
+                        <a href='<!--{url controller=site action=class id=$top.children[$index3].class_id}-->'>
+                        <!--{$top.children[$index3].name}-->
+                        </a>
+                        <!--{/if}-->
+                        </td>
+                        <td>
+                        <!--{if $top.children[$index4].name != ''}-->
+                        <span class="web-ico">&nbsp;</span>
+                        <a href='<!--{url controller=site action=class id=$top.children[$index4].class_id}-->'>
+                        <!--{$top.children[$index4].name}-->
+                        </a>
+                        <!--{/if}-->
+                        </td>
+                        <td>
+                        <!--{if $top.children[$index5].name != ''}-->
+                        <span class="web-ico">&nbsp;</span>
+                        <a href='<!--{url controller=site action=class id=$top.children[$index5].class_id}-->'>
+                        <!--{$top.children[$index5].name}-->
+                        </a>
+                        <!--{/if}-->
+                        </td>
+                         <td>
+                        <!--{if $top.children[$index6].name != ''}-->
+                        <span class="web-ico">&nbsp;</span>
+                        <a href='<!--{url controller=site action=class id=$top.children[$index6].class_id}-->'>
+                        <!--{$top.children[$index6].name}-->
+                        </a>
+                        <!--{/if}-->
+                        </td>
+                     
+                        </tr>
+                        <!--{if $smarty.section.loopTop.last}-->
+                        </table>
+                        <!--{/if}-->
+                        <!--{/section}--> 
                         </div>
+                        <!--{/section}-->
+                        
+                        </div>
+						  <!--sitemap-->
+
                          </div>
                          <div class="bottom"></div>
 
-                         <div class="search_header">
-                        
-                         <form action="<!--{url controller=site action=sitesearch}-->" method="post" 
-onsubmit="return valsearch()" name="form1" id="form1">
-<table><tr><td align="center">
-▼ホームページ検索 
-<input type="text" id="search_txt" class="sh-txt" name='word' />
-
-  <select name="method">
-    <option value="and" selected="selected">AND</option>
-    <option value="or">OR</option>
-  </select>
-   <input type="submit" value=" 検 索 " /> 
-</td></tr>
-</table>
-</form>
- 
-                         
-                         </div>
                  </div>
   
   <div class="tools">
@@ -198,90 +252,6 @@ onsubmit="return valsearch()" name="form1" id="form1">
         </ul>
         </div>
 </div>
-
-  <div id="content">
-  <div class="top"></div>
-<h1 class="link_sitmap_h1">相互リンク集のサイトマップ</h1>
-   <div class="middle">
-    <div id="sitemap">
-    <!--{section name=loopClass loop=$class}-->
-    <!--{assign var='top' value=$class[loopClass]}-->
-    <div class="web-box_sitmap">
-    <span class="web-line"><b class="x1">&nbsp;</b><b class="x2">&nbsp;</b><b class="x3">&nbsp;</b><b class="x4">&nbsp;</b><b class="x5">&nbsp;</b><b class="x6">&nbsp;</b><b class="x7">&nbsp;</b></span>
-    <div class="web-tit"><span><a href='<!--{url controller=site action=class id=$class[loopClass].class_id}-->'><!--{$class[loopClass].name}--></a></span></div>
-    
-    
-    
-    <!--{section name=loopTop loop=$top.children step=6}-->
-    <!--{assign var='index' value=$smarty.section.loopTop.index}-->
-    <!--{assign var='index2' value=$smarty.section.loopTop.index+1}-->
-    <!--{assign var='index3' value=$smarty.section.loopTop.index+2}-->
-    <!--{assign var='index4' value=$smarty.section.loopTop.index+3}-->
-    <!--{assign var='index5' value=$smarty.section.loopTop.index+4}-->
-    <!--{assign var='index6' value=$smarty.section.loopTop.index+5}-->
-    <!--{if $smarty.section.loopTop.first}-->
-    <table class="web" width="100%">
-    <!--{/if}-->
-    <tr class="t1">
-    <td>
-    <!--{if $top.children[$index].name != ''}-->
-    <span class="web-ico">&nbsp;</span>
-    <a href='<!--{url controller=site action=class id=$top.children[$index].class_id}-->'>
-    <!--{$top.children[$index].name}-->
-    </a>
-    <!--{/if}-->
-    </td>
-    <td>
-    <!--{if $top.children[$index2].name != ''}-->
-    <span class="web-ico">&nbsp;</span>
-    <a href='<!--{url controller=site action=class id=$top.children[$index2].class_id}-->'>
-    <!--{$top.children[$index2].name}-->
-    </a>
-    <!--{/if}-->
-    </td>
-    <td>
-    <!--{if $top.children[$index3].name != ''}-->
-    <span class="web-ico">&nbsp;</span>
-    <a href='<!--{url controller=site action=class id=$top.children[$index3].class_id}-->'>
-    <!--{$top.children[$index3].name}-->
-    </a>
-    <!--{/if}-->
-    </td>
-    <td>
-    <!--{if $top.children[$index4].name != ''}-->
-    <span class="web-ico">&nbsp;</span>
-    <a href='<!--{url controller=site action=class id=$top.children[$index4].class_id}-->'>
-    <!--{$top.children[$index4].name}-->
-    </a>
-    <!--{/if}-->
-    </td>
-    <td>
-    <!--{if $top.children[$index5].name != ''}-->
-    <span class="web-ico">&nbsp;</span>
-    <a href='<!--{url controller=site action=class id=$top.children[$index5].class_id}-->'>
-    <!--{$top.children[$index5].name}-->
-    </a>
-    <!--{/if}-->
-    </td>
-     <td>
-    <!--{if $top.children[$index6].name != ''}-->
-    <span class="web-ico">&nbsp;</span>
-    <a href='<!--{url controller=site action=class id=$top.children[$index6].class_id}-->'>
-    <!--{$top.children[$index6].name}-->
-    </a>
-    <!--{/if}-->
-    </td>
- 
-    </tr>
-    <!--{if $smarty.section.loopTop.last}-->
-    </table>
-    <!--{/if}-->
-    <!--{/section}--> 
-    </div>
-    <!--{/section}-->
-    
-    </div>
-   </div>
    <!--middle-->
 </div>
 <!--content end-->

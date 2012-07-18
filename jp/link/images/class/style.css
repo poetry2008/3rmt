@@ -1096,6 +1096,12 @@ a img {
 	width: 711px;
 	background: url(../../../images/design/box/search_head_bottom.gif) no-repeat;
 }
+.text_out_sitemap{
+ height: 120px;
+ line-height: 20px;
+ overflow: hidden;
+ padding: 5px 15px 0;
+}
 .text_out {
 	font-size:12px;
 	overflow:hidden;
@@ -1174,8 +1180,6 @@ a img {
 }
 #sitemap {
 	margin-top:10px;
-	margin-left:20px;
-	margin-right:20px;
 }
 .category_h2 h2 {
 	font-size:12px;
