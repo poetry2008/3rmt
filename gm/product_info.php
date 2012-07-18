@@ -347,7 +347,7 @@ if (!$product_info) { // product not found in database
     </table> 
     <hr width="100%" style="border-bottom:1px dashed #ccc; height:2px; border-top:none; border-left:none; border-right:none; margin:20px 0 25px 0;">
     <div id="option-detail">  <?php echo tep_draw_form('cart_quantity', tep_href_link(FILENAME_PRODUCT_INFO, tep_get_all_get_params(array('action')) . 'action=process')); ?>
-    <div id="detail-div-number"> 
+    <div> 
     <?php
     if($product_info['products_quantity'] < 1) {
       if($product_info['products_bflag'] == '1') {
@@ -376,8 +376,8 @@ if (!$product_info) { // product not found in database
         <tr>
         <td width="20%"><?php echo TEXT_PRODUCTS_QTY;?></td>
         <td colspan="2">
-        <input name="quantity" type="text" id="quantity" style="text-align:right;"
-        value="1" size="4" maxlength="4">                  <?php $p_a_quan = $product_info['products_quantity'];?>
+        <input name="quantity" type="text" id="quantity" style="text-align:right;" value="<?php echo (isset($_POST['quantity'])?$_POST['quantity']:1);?>" size="4" maxlength="4">                  
+        <?php $p_a_quan = $product_info['products_quantity'];?>
         <div id="calculation-add">
         <a style="display:block;" <?php echo $void_href;?> onClick="change_num('quantity','up',1,<?php echo $p_a_quan;?>);return false;"><img src="images/ico/nup.gif" alt="+"></a>
         <a style="display:block;" <?php echo $void_href;?> onClick="change_num('quantity','down', 1,<?php echo $p_a_quan;?>);return false;"><img src="images/ico/ndown.gif" alt="-"></a>

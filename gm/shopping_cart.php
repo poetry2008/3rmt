@@ -415,7 +415,7 @@ function change_num(ob,targ, quan,a_quan, origin_qty, origin_small)
 <?php
     if($products_error == true){
 ?>
-    <div><font color="#FF0000"><?php echo PRODUCTS_WEIGHT_ERROR; ?></font></div>
+    <div><font color="#FF0000"><?php echo PRODUCTS_WEIGHT_ERROR; ?></font><br><br></div>
 <?php
     }
 ?>
