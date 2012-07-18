@@ -7,7 +7,8 @@
   require('includes/application_top.php');
   require('includes/classes/http_client.php');
   require(DIR_WS_ACTIONS.'checkout_shipping.php');
-  $_SESSION['shipping_page_str'] = substr($_SERVER['REQUEST_URI'],1);
+  $page_url_array = explode('/',$_SERVER['REQUEST_URI']);
+  $_SESSION['shipping_page_str'] = end($page_url_array);
 
 // if the customer is not logged on, redirect them to the login page
   if (!tep_session_is_registered('customer_id')) {
@@ -1249,7 +1250,7 @@ if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) 
       $hour_show_flag = true;
     }
     if($hour_show_flag == false){
-      echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\',\''. $post_hour .'\','. $post_min .',\''.$ele.'\');$("#shipping_list_min").show();</script>';
+      echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\',\''. $post_hour .'\','. $post_min .',\''.$ele.'\');$("#shipping_list_min").show();$("#h_c_'.$post_hour.'").val('.$post_min.');</script>';
     }
   }
 ?>

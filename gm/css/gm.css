@@ -387,7 +387,6 @@ td,th{ border:0; padding:2px; font-size:14px;}
 }
 #main-content table{
 	color:#fff;
-	overflow:hidden;
 	margin-bottom:10px;
 }
 
@@ -535,7 +534,7 @@ td,th{ border:0; padding:2px; font-size:14px;}
 	overflow:hidden;
 }
 #detail-div table{ margin:10px 0;}
-#detail-div-number{float:right;}
+#detail-div-number{float:right; width:100%;}
 #detail-div-number select ,#detail-div-number input ,#calculation{ float:left; margin-right:3px;}
 #detail-div-number span{ float:left; /*margin:7px 5px 0 0;*/}
 #detail-div-number p{margin:10px 0;font-weight:bold;}
@@ -1495,3 +1494,4 @@ top:70px;
 	margin:0 3px;
 }
 .markProductOutOfStock a{ font-weight:bold;}
+.table_p10{ padding-left:20px;}

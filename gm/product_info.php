@@ -376,8 +376,8 @@ if (!$product_info) { // product not found in database
         <tr>
         <td width="20%"><?php echo TEXT_PRODUCTS_QTY;?></td>
         <td colspan="2">
-        <input name="quantity" type="text" id="quantity" style="text-align:right;"
-        value="1" size="4" maxlength="4">                  <?php $p_a_quan = $product_info['products_quantity'];?>
+        <input name="quantity" type="text" id="quantity" style="text-align:right;" value="<?php echo (isset($_POST['quantity'])?$_POST['quantity']:1);?>" size="4" maxlength="4">                  
+        <?php $p_a_quan = $product_info['products_quantity'];?>
         <div id="calculation-add">
         <a style="display:block;" <?php echo $void_href;?> onClick="change_num('quantity','up',1,<?php echo $p_a_quan;?>);return false;"><img src="images/ico/nup.gif" alt="+"></a>
         <a style="display:block;" <?php echo $void_href;?> onClick="change_num('quantity','down', 1,<?php echo $p_a_quan;?>);return false;"><img src="images/ico/ndown.gif" alt="-"></a>

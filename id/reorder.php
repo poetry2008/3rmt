@@ -746,7 +746,7 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
 <p align="center">
 <input type='image' src="includes/languages/japanese/images/buttons/button_submit.gif" alt="<?php echo TEXT_REORDER_CONFRIM;?>" title="<?php echo TEXT_REORDER_CONFRIM;?>" onClick="return orderConfirmPage();" >
 <input type='image'
-src="includes/languages/japanese/images/buttons/button_reset.gif" alt="<?php echo TEXT_REORDER_CLEAR;?>" title="<?php echo TEXT_REORDER_CLEAR;?>" onClick="javascript:document.order.reset();return false;" >
+src="includes/languages/japanese/images/buttons/button_reset.gif" alt="<?php echo TEXT_REORDER_CLEAR;?>" title="<?php echo TEXT_REORDER_CLEAR;?>" onClick="javascript:document.order.reset();selectDate('','','');return false;" >
 </p>
 </form>
 </div>
