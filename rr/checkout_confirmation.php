@@ -2,7 +2,8 @@
 require('includes/application_top.php');
 require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_CHECKOUT_CONFIRMATION);
 require(DIR_WS_ACTIONS.'checkout_confirmation.php');
-$_SESSION['shipping_page_str'] = substr($_SERVER['REQUEST_URI'],1);
+$page_url_array = explode('/',$_SERVER['REQUEST_URI']);
+$_SESSION['shipping_page_str'] = end($page_url_array);
 ?>
 <?php
 if(isset($_SESSION['shipping_session_flag']) && $_SESSION['shipping_session_flag'] == true){

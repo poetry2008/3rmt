@@ -5,8 +5,8 @@
   require('includes/application_top.php');
   require('includes/classes/http_client.php');
   require(DIR_WS_ACTIONS.'checkout_shipping.php');
-  $_SESSION['shipping_page_str'] = substr($_SERVER['REQUEST_URI'],1);
-
+  $page_url_array = explode('/',$_SERVER['REQUEST_URI']);
+  $_SESSION['shipping_page_str'] = end($page_url_array); 
 // if the customer is not logged on, redirect them to the login page
   if (!tep_session_is_registered('customer_id')) {
     $navigation->set_snapshot();
