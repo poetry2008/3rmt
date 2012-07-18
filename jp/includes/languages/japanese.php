@@ -451,7 +451,6 @@ define('TEXT_DATE_SUNDAY', '日曜日');
 define('TIME_HOUR_TEXT', '時');
 define('TIME_MIN_TEXT', '分');
 define('JPMONEY_UNIT_TEXT', '円');
-define('TEXT_CHARACTER','お客様のキャラクター名：');
 define('CHECKOUT_BAR_OPTION', '商品オプション');
 define('TEXT_RIDE_RSS','×');
 define('ENTRY_NO_USE_OLD_PASSWORD', '<font color="#FF0000">安全のため、古いパスワードと違うパスワードを設定してください。</font>');
