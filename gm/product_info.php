@@ -347,7 +347,7 @@ if (!$product_info) { // product not found in database
     </table> 
     <hr width="100%" style="border-bottom:1px dashed #ccc; height:2px; border-top:none; border-left:none; border-right:none; margin:20px 0 25px 0;">
     <div id="option-detail">  <?php echo tep_draw_form('cart_quantity', tep_href_link(FILENAME_PRODUCT_INFO, tep_get_all_get_params(array('action')) . 'action=process')); ?>
-    <div> 
+    <div id="detail-div-number"> 
     <?php
     if($product_info['products_quantity'] < 1) {
       if($product_info['products_bflag'] == '1') {
