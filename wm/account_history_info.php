@@ -101,17 +101,16 @@
   } else {
 ?> 
                               <tr> 
-                                <td class="main" colspan="3"><b><?php echo HEADING_PRODUCTS; ?></b></td> 
+                                <td class="main" colspan="4"><b><?php echo HEADING_PRODUCTS; ?></b></td> 
                               </tr>
-                  <tr>
-                  <td colspan="3">
-                    <table width="100%"> 
+                
                               <?php
   }
 
   for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
     echo '          <tr>' . "\n" .
-         '            <td class="main" align="right" valign="top" width="30">' . $order->products[$i]['qty'] . '&nbsp;x</td>' . "\n" .
+         '            <td width="10"></td>
+		 			  <td class="main" valign="top" width="30">' . $order->products[$i]['qty'] . '&nbsp;x</td>' . "\n" .
          '            <td class="main" valign="top">' . $order->products[$i]['name'];
 
     if ($order->products[$i]['price'] != '0') {
@@ -141,7 +140,7 @@
 
     if (sizeof($order->info['tax_groups']) > 1) echo '            <td class="main" valign="top" align="right">' . tep_display_tax_value($order->products[$i]['tax']) . '%</td>' . "\n";
 
-    echo '            <td class="main" align="right" valign="top">';
+    echo '            <td class="main" align="right" valign="top" width="50">';
     if ($order->products[$i]['final_price'] < 0) {
       echo '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value'])).'</font>'.JPMONEY_UNIT_TEXT;
     } else {
@@ -151,7 +150,7 @@
          '          </tr>' . "\n";
   }
 ?> 
-                            </table></td></tr></table></td> 
+                           </table></td> 
                         </tr> 
                       </table></td> 
                   
@@ -169,7 +168,7 @@
               <td><table border="0" width="100%" cellspacing="1" cellpadding="2"  class="infoBoxContents"> 
                   <tr class="infoBoxContents"> 
                     <td width="30%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
-                      <tr><td class="main"><b><?php echo HEADING_DELIVERY_ADDRESS; ?></b></td></tr>
+                      <tr><td class="main" colspan="2"><b><?php echo HEADING_DELIVERY_ADDRESS; ?></b></td></tr>
                       <?php
                             $address_list_query = tep_db_query("select id,name from ". TABLE_ADDRESS ." where status='0' order by sort");
                             $address_array = array();
@@ -180,7 +179,7 @@
                             tep_db_free_result($address_list_query);
                             $address_shipping_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $_GET['order_id'] ."' order by id");
                             while($address_shipping_array = tep_db_fetch_array($address_shipping_query)){
-                                echo '<tr><td class="main" width="30%" valign="top">';
+                                echo '<tr><td width="10"></td><td class="main" width="30%" valign="top">';
                                 echo $address_array[$address_shipping_array['address_id']];
                                 echo ':</td><td class="main">';
                                 echo $address_shipping_array['value']; 
@@ -201,22 +200,27 @@
             <tr> 
               <td>
               	<table class="infoBoxContents"> 
-                  <tr> 
+                  <tr>
+                   
             		<td width="30%" valign="top">
                                 	<table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                                        <tr> 
-              								<td class="main"><b><?php echo HEADING_BILLING_INFORMATION; ?></b></td> 
+                                            <td class="main" colspan="2"><b><?php echo HEADING_BILLING_INFORMATION; ?></b></td> 
             							</tr> 
                                         <tr> 
+                                          <td width="10"></td>
                                           <td class="main"><b><?php echo HEADING_BILLING_ADDRESS; ?></b></td> 
                                         </tr> 
                                         <tr> 
+                                          <td width="10"></td>
                                           <td class="main"><?php echo tep_address_format($order->billing['format_id'], $order->billing, 1, ' ', '<br>'); ?></td> 
                                         </tr> 
                                         <tr> 
+                                          <td width="10"></td>
                                           <td class="main"><b><?php echo HEADING_PAYMENT_METHOD; ?></b></td> 
                                         </tr> 
                                         <tr> 
+                                          <td width="10"></td>
                                           <td class="main"><?php echo $order->info['payment_method']; ?></td> 
                                         </tr> 
                       				</table>
@@ -286,7 +290,7 @@
                   <tr> 
                     <td valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2">
                     <tr> 
-                        <td class="main"><b><?php echo HEADING_ORDER_HISTORY; ?></b></td> 
+                        <td class="main" colspan="4"><b><?php echo HEADING_ORDER_HISTORY; ?></b></td> 
                     </tr>  
  
                         <?php
@@ -295,7 +299,8 @@
   $statuses_query = tep_db_query("select os.orders_status_name, osh.date_added, osh.comments from " . TABLE_ORDERS_STATUS . " os, " . TABLE_ORDERS_STATUS_HISTORY . " osh where osh.orders_id = '" . $_GET['order_id'] . "' and osh.orders_status_id = os.orders_status_id and os.language_id = '" . $languages_id . "' and osh.customer_notified = '1' order by osh.date_added");
   while ($statuses = tep_db_fetch_array($statuses_query)) {
     echo '              <tr>' . "\n" .
-         '                <td class="main" valign="top" width="75">' . tep_date_short($statuses['date_added']) . '</td>' . "\n" .
+         '                <td width="10"></td>
+		 				  <td class="main" valign="top" width="75">' . tep_date_short($statuses['date_added']) . '</td>' . "\n" .
          '                <td class="main" valign="top" width="70">' . $statuses['orders_status_name'] . '</td>' . "\n" .
          '                <td class="main" valign="top">' .  (empty($statuses['comments']) ? '&nbsp;' : nl2br(htmlspecialchars(ltrim($statuses['comments'])))) . '</td>' . "\n" .
          '              </tr>' . "\n";

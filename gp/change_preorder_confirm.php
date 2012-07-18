@@ -245,7 +245,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
               <td class="main">
-                <?php echo PRORDER_CONFIRM_PRODUCT_INFO;?> 
+                <b><?php echo PRORDER_CONFIRM_PRODUCT_INFO;?></b> 
               </td>
             </tr>
             <?php
@@ -350,7 +350,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
               <td class="main">
-                <?php echo TEXT_ADDRESS;?> 
+                <b><?php echo TEXT_ADDRESS;?></b> 
               </td>
             </tr>
             <tr>
@@ -382,7 +382,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
               <td class="main">
-                <?php echo PRORDER_CONFIRM_FETCH_INFO;?> 
+                <b><?php echo PRORDER_CONFIRM_FETCH_INFO;?></b> 
               </td>
             </tr>
             <tr>
@@ -417,7 +417,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
               <td class="main" width="30%" valign="top">
                 <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea_td"> 
                   <tr>
-                    <td class="main"><?php echo CHANGE_ORDER_CONFIRM_PAYMENT;?></td>                  
+                    <td class="main"><b><?php echo CHANGE_ORDER_CONFIRM_PAYMENT;?></b></td>                  
                   </tr>
                   <tr>
                     <td class="main">
