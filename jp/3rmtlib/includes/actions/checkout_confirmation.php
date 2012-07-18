@@ -7,11 +7,13 @@ if (!tep_session_is_registered('customer_id')) {
 
   $url_array = explode('/',$_SERVER['HTTP_REFERER']);
   $url_str = end($url_array);
-  if(!isset($_SESSION['payment']) && $url_str != 'checkout_payment.php' && $url_str != 'login.php'){
-    if(!isset($_SESSION['shipping_session_flag'])){
-      $_SESSION['shipping_session_flag'] = true;
+  if(isset($_GET['is_finish'])){
+    if(!isset($_SESSION['payment']) && $url_str != 'checkout_payment.php' && $url_str != 'login.php'){
+      if(!isset($_SESSION['shipping_session_flag'])){
+        $_SESSION['shipping_session_flag'] = true;
+      }
+      tep_redirect(tep_href_link($_SESSION['shipping_page_str'], '', 'SSL'));
     }
-    tep_redirect(tep_href_link($_SESSION['shipping_page_str'], '', 'SSL'));
   }
 }
 
