@@ -172,10 +172,10 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
                         <!--{assign var='index5' value=$smarty.section.loopTop.index+4}-->
                         <!--{assign var='index6' value=$smarty.section.loopTop.index+5}-->
                         <!--{if $smarty.section.loopTop.first}-->
-                        <table class="web" width="100%">
+                        <table width="100%">
                         <!--{/if}-->
                         <tr class="t1">
-                        <td>
+                        <td valign="top" width="16%">
                         <!--{if $top.children[$index].name != ''}-->
                         <span class="web-ico">&nbsp;</span>
                         <a href='<!--{url controller=site action=class id=$top.children[$index].class_id}-->'>
@@ -183,44 +183,44 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
                         </a>
                         <!--{/if}-->
                         </td>
-                        <td>
+                        <td valign="top" width="16%">
                         <!--{if $top.children[$index2].name != ''}-->
                         <span class="web-ico">&nbsp;</span>
-                        <a href='<!--{url controller=site action=class id=$top.children[$index2].class_id}-->'>
+                        <span class="web-link"><a href='<!--{url controller=site action=class id=$top.children[$index2].class_id}-->'>
                         <!--{$top.children[$index2].name}-->
-                        </a>
+                        </a></span>
                         <!--{/if}-->
                         </td>
-                        <td>
+                        <td valign="top" width="16%">
                         <!--{if $top.children[$index3].name != ''}-->
                         <span class="web-ico">&nbsp;</span>
-                        <a href='<!--{url controller=site action=class id=$top.children[$index3].class_id}-->'>
+                        <span class="web-link"><a href='<!--{url controller=site action=class id=$top.children[$index3].class_id}-->'>
                         <!--{$top.children[$index3].name}-->
-                        </a>
+                        </a></span>
                         <!--{/if}-->
                         </td>
-                        <td>
+                        <td valign="top" width="16%">
                         <!--{if $top.children[$index4].name != ''}-->
                         <span class="web-ico">&nbsp;</span>
-                        <a href='<!--{url controller=site action=class id=$top.children[$index4].class_id}-->'>
+                        <span class="web-link"><a href='<!--{url controller=site action=class id=$top.children[$index4].class_id}-->'>
                         <!--{$top.children[$index4].name}-->
-                        </a>
+                        </a></span>
                         <!--{/if}-->
                         </td>
-                        <td>
+                        <td valign="top" width="16%">
                         <!--{if $top.children[$index5].name != ''}-->
                         <span class="web-ico">&nbsp;</span>
-                        <a href='<!--{url controller=site action=class id=$top.children[$index5].class_id}-->'>
+                        <span class="web-link"><a href='<!--{url controller=site action=class id=$top.children[$index5].class_id}-->'>
                         <!--{$top.children[$index5].name}-->
-                        </a>
+                        </a></span>
                         <!--{/if}-->
                         </td>
-                         <td>
+                         <td valign="top" width="16%">
                         <!--{if $top.children[$index6].name != ''}-->
                         <span class="web-ico">&nbsp;</span>
-                        <a href='<!--{url controller=site action=class id=$top.children[$index6].class_id}-->'>
+                        <span class="web-link"><a href='<!--{url controller=site action=class id=$top.children[$index6].class_id}-->'>
                         <!--{$top.children[$index6].name}-->
-                        </a>
+                        </a></span>
                         <!--{/if}-->
                         </td>
                      
