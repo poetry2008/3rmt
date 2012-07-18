@@ -239,18 +239,19 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
                          <div class="bottom"></div>
 
                  </div>
-  
-  <div class="tools">
-        <h2>メニュー</h2>
-        <ul class="l_m_category_ul">
-        <li class="l_m_category_li"><a href="/link/">相互リンク集TOP</a></li>
-        <li class="l_m_category_li"><a href="http://jp_rmt.hm1002.200.com/link/regist.html">新規登録</a></li>
-        <li class="l_m_category_li"><a href="http://jp_rmt.hm1002.200.com/link/renew.html">更新されたサイト</a></li>
-        <li class="l_m_category_li"><a href="http://jp_rmt.hm1002.200.com/link/new.html">新着サイト</a></li>
-        <li class="l_m_category_li"><a href="http://jp_rmt.hm1002.200.com/link/recommend.html">おすすめサイト</a></li>
-        <li class="l_m_category_li"><a href="http://jp_rmt.hm1002.200.com/link/sitemap.html">サイトマップ</a></li>
-        </ul>
-        </div>
+ 
+
+<div class='tools'>
+<h2>メニュー</h2>
+<ul class="l_m_category_ul">
+<li class="l_m_category_li"><a href="/<!--{$hostlink}-->/">相互リンク集TOP</a></li>
+<li class="l_m_category_li"><a href="<!--{url controller=site action=regist}-->">新規登録</a></li>
+<li class="l_m_category_li"><a href="<!--{url controller=site action=renew}-->">更新されたサイト</a></li>
+<li class="l_m_category_li"><a href="<!--{url controller=site action=new}-->">新着サイト</a></li>
+<li class="l_m_category_li"><a href="<!--{url controller=site action=recommend}-->">おすすめサイト</a></li>
+<li class="l_m_category_li"><a href="<!--{url controller=site action=sitemap}-->">サイトマップ</a></li>
+</ul>
+</div>
 </div>
    <!--middle-->
 </div>

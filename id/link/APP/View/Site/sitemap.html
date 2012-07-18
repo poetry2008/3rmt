@@ -238,20 +238,23 @@ echo '<?xml version="1.0" encoding="UTF-8"?>';
     </div>
   <div class="bottom"></div>
 </div>
-<div class="tools">
+
+<div class='tools'>
 <h2>メニュー</h2>
 <div class="middle">
-<a href="/link/">相互リンク集TOP</a>
-<a href="http://id_rmt.hm1002.200.com/link/regist.html">新規登録</a>
-<a href="http://id_rmt.hm1002.200.com/link/renew.html">更新されたサイト</a>
-<a href="http://id_rmt.hm1002.200.com/link/new.html">新着サイト</a>
-<a href="http://id_rmt.hm1002.200.com/link/recommend.html">おすすめサイト</a>
-<a href="http://id_rmt.hm1002.200.com/link/sitemap.html">サイトマップ</a>
+<a href="/<!--{$hostlink}-->/">相互リンク集TOP</a>
+<a href="<!--{url controller=site action=regist}-->">新規登録</a>
+<a href="<!--{url controller=site action=renew}-->">更新されたサイト</a>
+<a href="<!--{url controller=site action=new}-->">新着サイト</a>
+<a href="<!--{url controller=site action=recommend}-->">おすすめサイト</a>
+<a href="<!--{url controller=site action=sitemap}-->">サイトマップ</a>
 </div>
 <div class="bottom"></div>
-</div> 
-    
-    </div>
+</div>
+
+
+
+</div>
   <!--end header-->
     <!--{include file=Site/footer.html}-->
     
