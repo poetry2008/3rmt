@@ -5,7 +5,8 @@
 
   require('includes/application_top.php');
   require(DIR_WS_ACTIONS.'checkout_option.php'); 
-  $_SESSION['shipping_page_str'] = substr($_SERVER['REQUEST_URI'],1);   
+  $page_url_array = explode('/',$_SERVER['REQUEST_URI']);
+  $_SESSION['shipping_page_str'] = end($page_url_array); 
 ?>
 <?php page_head();?>
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
