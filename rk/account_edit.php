@@ -574,7 +574,6 @@ if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
   <!-- header_eof //--> 
   <!-- body //--> 
-  <?php //echo tep_draw_form('account_edit', tep_href_link(FILENAME_ACCOUNT_EDIT_PROCESS, '', 'SSL'), 'post', 'onSubmit="return check_form();"') . tep_draw_hidden_field('action', 'process'); ?> 
   <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border" summary="table"> 
     <tr> 
       <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"> <!-- left_navigation //--> 
