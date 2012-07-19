@@ -110,7 +110,7 @@
   $options_required = array();
   $options_type_limit = array();
   $options_type_len = array();
-  $address_query = tep_db_query("select * from ". TABLE_ADDRESS ." where type!='text' and status='0' order by sort");
+  $address_query = tep_db_query("select * from ". TABLE_ADDRESS ." where type='textarea' and status='0' order by sort");
   while($address_required = tep_db_fetch_array($address_query)){
     
     $options_type[] = $address_required['type'];
