@@ -546,7 +546,7 @@ $(document).ready(function(){
         </table>
 <table border="0" width="100%" cellspacing="0" cellpadding="0">
 <tr><td class="main" align="right" colspan="2"><input type="hidden" name="old_email" value="<?php echo $account['customers_email_address'];?>">
-<a href="javascript:void(0);" onclick="document.account_edit_per.submit();"><img onmouseover="this.src='images/design/button/save_hover.gif'" onmouseout="this.src='images/design/button/save.gif'" src="images/design/button/save.gif" alt="save">
+<a href="javascript:void(0);" onclick="document.account_edit_per.submit();"><img onmouseover="this.src='images/design/button/save_hover.gif'" onmouseout="this.src='images/design/button/save.gif'" src="images/design/button/save.gif" alt="save"></a>
 </td></tr>
 </table>
 </form>

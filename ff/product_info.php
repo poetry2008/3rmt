@@ -208,7 +208,6 @@ function showimage($1) {
          <table width="684"  border="0" cellpadding="0" cellspacing="0" summary="rmt" bgcolor="#f2f2f2">
           <tr>
             
-<!--             <td><img src="images/design/spacer.gif" width="15" height="1" alt=""></td>-->
                 <td valign="top" style="padding-right:10px;">
                     <table border="0" cellpadding="0" cellspacing="0" summary="info_box" class="infoBox">
                     <tr>
@@ -530,7 +529,6 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
  </div>
          <?php if($description){?>
             <h3 class="pageHeading_long"><?php echo $product_info['products_name'].TEXT_ABOUT; ?></h3>
-            <!-- 説明文　-->
             <div class="comment_long">
               <div  class="reviews_area"><p><?php 
             //Edit ds-style 2005.11.29
@@ -545,8 +543,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
 //    if ($reviews_values['count'] > 0) {
     include(DIR_WS_BOXES.'reviews.php') ;
 ?>
-<!--         <p><a href="<?php echo tep_href_link(FILENAME_PRODUCT_REVIEWS,'product_id='.(int)$_GET['products_id']) ; ?>"><?php echo TEXT_CURRENT_REVIEWS . ' ' . $reviews_values['count']; ?></a></p>
- -->
+
 <?php
 //    }
 
@@ -569,8 +566,6 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
         <br>
         <table border="0" width="100%" cellspacing="0" cellpadding="0" summary="rmt">
           <tr>
-<!--             <td class="main"><a href="<?php echo tep_href_link(FILENAME_PRODUCT_REVIEWS, substr(tep_get_all_get_params(), 0, -1)); ?>"><?php echo tep_image_button('button_reviews.gif', IMAGE_BUTTON_REVIEWS); ?></a></td>
- -->
             <td align="right" class="main"></td>
           </tr>
         </table>
