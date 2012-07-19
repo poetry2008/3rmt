@@ -364,11 +364,7 @@ $shipping_fee = $cart->total > $free_value ? 0 : $weight_fee;
            
                                     <tr>
                     <td colspan="3"><br><h3><b><?php echo TEXT_TRADE_DATE; ?></b><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></h3></td>
-                  </tr>
-                  <tr>
-                     <td width="20%" align="left"><?php echo TEXT_OPTION; ?></td>
-                    <td colspan="2"><?php echo $torihikihouhou; ?></td>
-                  </tr>
+                  </tr> 
                   <tr>
                      <td align="left"><?php echo TEXT_EXPECT_TRADE_DATE; ?></td>
                     <td colspan="2"><?php echo str_string($date); ?>
