@@ -242,3 +242,10 @@ background:url(images/button02.gif) no-repeat;
 	margin-left:5px;
 }
 .web-link{ padding-left:5px; float:left; width:95px;} 
+.sitemap{
+	background:none repeat scroll 0 0 #FFFFFF;
+	border:1px solid #DDDDDD;
+	padding:5px;
+	margin-top:5px;
+}
+
