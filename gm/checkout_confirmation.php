@@ -552,8 +552,7 @@ $shipping_fee = $cart->total > $free_value ? 0 : $weight_fee;
         <td colspan="3"><br><h3><b><?php echo '<b>' . HEADING_ORDER_COMMENTS . '</b> <a href="' . tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></h3></td>
       </tr>
                 <tr>
-                	<td width="20%"></td>
-                   <td colspan="2"><div class="payment_comment"><?php echo
+                   <td colspan="3"><div class="payment_comment"><?php echo
                    nl2br(htmlspecialchars($order->info['comments'])) .
                    tep_draw_hidden_field('comments', $order->info['comments']); ?>
                  </div></td>
