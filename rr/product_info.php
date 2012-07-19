@@ -545,8 +545,6 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
 //    if ($reviews_values['count'] > 0) {
     include(DIR_WS_BOXES.'reviews.php') ;
 ?>
-<!--         <p><a href="<?php echo tep_href_link(FILENAME_PRODUCT_REVIEWS,'product_id='.(int)$_GET['products_id']) ; ?>"><?php echo TEXT_CURRENT_REVIEWS . ' ' . $reviews_values['count']; ?></a></p>
- -->
 <?php
 //    }
 
