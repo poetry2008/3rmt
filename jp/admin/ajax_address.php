@@ -163,7 +163,8 @@ $options_str_temp = '';
         }
         $country_num++;
       }
-     ?>
+    ?>
+      $("#country_area_id_show").show();
       var country_area_id = document.getElementById("country_area_id");
       country_area_id.options.length = 0;
       var i = 0;
