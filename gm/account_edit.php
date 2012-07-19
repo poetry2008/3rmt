@@ -318,7 +318,7 @@ if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
   }
 
   $options_comment = array();
-  $address_query = tep_db_query("select * from ". TABLE_ADDRESS ." where type!='text' and status='0' order by sort");
+  $address_query = tep_db_query("select * from ". TABLE_ADDRESS ." where type='textarea' and status='0' order by sort");
   while($address_required = tep_db_fetch_array($address_query)){
     
     $options_comment[$address_required['name_flag']] = $address_required['comment'];
@@ -454,7 +454,7 @@ if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
  }  
 }else{
   $options_comment = array();
-  $address_query = tep_db_query("select * from ". TABLE_ADDRESS ." where type!='text' and status='0' order by sort");
+  $address_query = tep_db_query("select * from ". TABLE_ADDRESS ." where type='textarea' and status='0' order by sort");
   while($address_required = tep_db_fetch_array($address_query)){
     
     $options_comment[$address_required['name_flag']] = $address_required['comment'];

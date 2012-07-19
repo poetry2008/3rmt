@@ -59,7 +59,7 @@ if(!isset($_SESSION['cart']) || !isset($_SESSION['date']) || !isset($_SESSION['h
     }
   }elseif(isset($_POST['ad_num']) && $_POST['ad_num'] == 1){
 
-    $country_fee_search_query = tep_db_query("select weight_limit from ". TABLE_COUNTRY_FEE ." where name='".$_POST['op_'.$fixed_option_list_array[1]]."' and status='0'");
+    $country_fee_search_query = tep_db_query("select weight_limit from ". TABLE_COUNTRY_FEE ." where name='".$_POST['ad_str']."' and status='0'");
     $country_fee_search_array = tep_db_fetch_array($country_fee_search_query);
     tep_db_free_result($country_fee_search_query);
     $weight_limit = $country_fee_search_array['weight_limit'];

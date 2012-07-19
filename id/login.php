@@ -539,7 +539,7 @@ if(isset($_GET['login']) && ($_GET['login'] == 'ip_error')){
                       </td></tr>
                    <tr>
                       <td align="right">
-                      <a href="<?php echo tep_href_link('send_mail.php', '', 'SSL');?>">メール受信テストをする</a> 
+                      <a href="<?php echo tep_href_link('send_mail.php', '', 'SSL');?>"><?php echo TEXT_TEST_MAIL;?></a> 
                       </td>
                    </tr>
                     </table>
@@ -567,13 +567,8 @@ if(isset($_GET['login']) && ($_GET['login'] == 'ip_error')){
           </td>
         </tr>
       </table>
-<p>
-<i><strong>SSL認証</strong></i><br>
-当サイトでは、実在性の証明とプライバシー保護のため、日本ジオトラストのSSLサーバ証明書を使用し、SSL暗号化通信を実現しています。
-ブラウザのURLが「https://www.secureservice.jp/～」で始まるURLであることを確認ください。
-以下に掲載するジオトラスト発行済み スマートシールのクリックにより、サーバ証明書の検証結果をご確認ください。
-</p>
-<p align="center"> 
+     <?php echo TEXT_LOGIN_SSL_READ;?>
+     <p align="center"> 
 <!-- GeoTrust Smart Icon tag. Do not edit. -->
 <script type="text/javascript" src="//smarticon.geotrust.com/si.js"></script>
 <!-- END of GeoTrust Smart Icon tag -->

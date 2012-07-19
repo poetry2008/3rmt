@@ -502,7 +502,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
  </div>
         <div class="pageBottom_long">&nbsp;</div>
          <?php if($description){?>
-            <h3 class="pageHeading_long"><?php echo $product_info['products_name']; ?>について</h3>
+            <h3 class="pageHeading_long"><?php echo $product_info['products_name'].TEXT_ABOUT; ?></h3>
             <!-- 説明文　-->
             <p class="comment_long">
               <?php 
