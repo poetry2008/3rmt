@@ -499,7 +499,6 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
  </div>
          <?php if($description){?>
             <div class="pageHeading_long"><img align="top" alt="" src="images/menu_ico.gif"><h3><?php echo $product_info['products_name'].TEXT_ABOUT; ?></h3></div>
-            <!-- 説明文　-->
             <p class="comment_long">
               <?php 
             //Edit ds-style 2005.11.29
