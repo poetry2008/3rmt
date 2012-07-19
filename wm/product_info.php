@@ -402,7 +402,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
     ?>
                         <table width="100%" cellpadding="6" cellspacing="0" border="0">
                           <tr>
-                          <td class="main" style="padding-left:12px"><?php echo TEXT_PRODUCTS_QTY;?></td>
+                          <td class="main" style="padding-left:12px" width="60"><?php echo TEXT_PRODUCTS_QTY;?></td>
                             <td colspan="2" class="main">
                             	<table cellpadding="0" cellspacing="0" border="0">
                                 	<tr>

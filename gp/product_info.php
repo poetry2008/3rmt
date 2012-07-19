@@ -404,11 +404,11 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
     ?>
                         <table width="100%"  border="0" cellpadding="0" cellspacing="0" summary="rmt_text">
                           <tr>
-                          <td class="main" valign="middle" style="padding-left:13px;" width="73"><?php echo TEXT_PRODUCTS_QTY;?></td>
+                          <td class="main" valign="middle" style="padding-left:13px;" width="70"><?php echo TEXT_PRODUCTS_QTY;?></td>
                             <td colspan="2"><table><tr>
                             <td class="main" valign="middle"><input name="quantity" type="text" id="quantity" value="<?php echo (isset($_POST['quantity'])?$_POST['quantity']:1)?>" class="input_text_short"></td>
                             <td valign="middle">
-                              <div style="*margin-top:-5px;">
+                              <div style="*margin-top:-3px;">
               <?php $p_a_quan = $product_info['products_quantity'];?>
                                 <a style="display:block;" href="javascript:void(0)" onClick="change_num('quantity','up',1,<?php echo $p_a_quan;?>);return false;"><img src="images/ico/nup.gif" alt="+"></a>
                                 <a style="display:block;" href="javascript:void(0)" onClick="change_num('quantity','down', 1,<?php echo $p_a_quan;?>);return false;"><img src="images/ico/ndown.gif" alt="-"></a>
@@ -418,7 +418,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                             </tr></table></td>
                           </tr>
                           <tr>
-                            <td class="main" style="padding-left:12px;" width="73">
+                            <td class="main" style="padding-left:12px;" width="70">
                             <div class="calc_show_price"><?php echo TEXT_PRODUCT_PRICE;?>:</div>
                             </td>
                             <td width="325">

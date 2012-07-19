@@ -397,7 +397,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                         <td class="main" colspan="2">
                         <table cellspacing="0" cellpadding="0" border="0">
                         <tr>
-                        <td><input name="quantity" type="text" id="quantity" value="<?php echo (isset($_POST['quantity'])?$_POST['quantity']:1)?>" size="20" maxlength="4">
+                        <td><input style="text-align:right;" name="quantity" type="text" id="quantity" value="<?php echo (isset($_POST['quantity'])?$_POST['quantity']:1)?>" size="20" maxlength="4">
 </td>
   <td>
   <div class="top_and_bottom">
