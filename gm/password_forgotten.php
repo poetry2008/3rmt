@@ -81,7 +81,7 @@
           <tr>
             <td width="20%"><?php echo ENTRY_FORGOTTEN_EMAIL_ADDRESS; // 2003.03.06 nagata Edit Japanese osCommerce ?></td>
             <td><?php echo tep_draw_input_field('email_address', '',
-                'id="input_text" maxlength="96"'); ?></td>
+                'id="send_input_text" maxlength="96"'); ?></td>
           </tr>
           <tr>
             <td colspan="2"><table class="botton-continue" border="0" cellpadding="0" cellspacing="0" width="100%">
