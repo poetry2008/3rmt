@@ -372,7 +372,7 @@ if (!$product_info) { // product not found in database
     $p_cflag = tep_get_cflag_by_product_id($product_info['products_id']); 
     $hm_option->render($product_info['belong_to_option'], false, 0, '', '', $p_cflag);
     ?>
-        <table width="100%" border="0" id="calculation">
+        <table width="100%" border="0" id="calculation" cellpadding="6" cellspacing="0">
         <tr>
         <td width="20%"><?php echo TEXT_PRODUCTS_QTY;?></td>
         <td colspan="2">
