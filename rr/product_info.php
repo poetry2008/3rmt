@@ -530,7 +530,6 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
  </div>
          <?php if($description){?>
             <h3 class="pageHeading"><span><?php echo $product_info['products_name'].TEXT_ABOUT; ?></span></h3>
-            <!-- 説明文　-->
             <div class="comment">
               <div  class="reviews_area"><p><?php 
             //Edit ds-style 2005.11.29
