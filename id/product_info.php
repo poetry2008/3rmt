@@ -244,7 +244,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                           </tr>
                           <?php } ?>
                           <?php 
-                      if(!empty($data1[0])){
+                      if(!empty($data1[0]) && !empty($data1[1])){
                       ?>
                           <tr class="infoBoxContents">
                             <td class="main p_i_b_title"><?php echo $data1[0] ; ?></td>
@@ -252,7 +252,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                           </tr>
                           <?php } ?>
                           <?php 
-                      if(!empty($data2[0])){
+                      if(!empty($data2[0]) && !empty($data2[1])){
                       ?>
                           <tr class="infoBoxContents">
                             <td class="main p_i_b_title"><?php echo $data2[0] ; ?></td>
@@ -302,7 +302,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                           <td class="main"><?php echo TEXT_REMAINING;?><strong>&nbsp;<?php echo tep_show_quantity($product_info['products_quantity']); ?></strong>&nbsp;<?php echo TEXT_UNIT;?></td>
                           </tr>
                           <?php 
-                      if(!empty($data3[0])){
+                      if(!empty($data3[0]) && !empty($data3[1])){
                       ?>
                           <tr class="infoBoxContents">
                             <td class="main p_i_b_title"><?php echo $data3[0] ; ?></td>
@@ -310,7 +310,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                           </tr>
                           <?php } ?>
                           <?php 
-                      if(!empty($data4[0])){
+                      if(!empty($data4[0]) && !empty($data4[1])){
                       ?>
                           <tr class="infoBoxContents">
                             <td class="main p_i_b_title red"><?php echo $data4[0] ; ?></td>
