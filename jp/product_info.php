@@ -157,7 +157,6 @@ function showimage($1) {
           AND language_id = '" . $languages_id . "' 
           AND site_id     = '".SITE_ID."'
     ");
-//print_r($product_info);
     if (tep_get_special_price($product_info['products_price'], $product_info['products_price_offset'], $product_info['products_small_sum'])) {
       $pricedef = $product_info['products_price'];
       $products_price = '<s>' .
