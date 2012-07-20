@@ -163,8 +163,7 @@ function showimage($1) {
     } else {
       
       $pricedef = $product_info['products_price'];
-      $products_price =
-        $currencies->display_price(tep_get_price($product_info['products_price'], $product_info['products_price_offset'], tep_get_price($product_info['products_price'],$product_info['products_small_sum'], '', $product_info['products_bflag']), $product_info['products_bflag']), tep_get_tax_rate($product_info['products_tax_class_id']));
+      $products_price = $currencies->display_price(tep_get_price($product_info['products_price'], $product_info['products_price_offset'], tep_get_price($product_info['products_price'],$product_info['products_small_sum'], '', $product_info['products_bflag']), $product_info['products_bflag']), tep_get_tax_rate($product_info['products_tax_class_id']));
     }
      
     $description = replace_store_name($product_info['products_description']);
@@ -452,7 +451,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
         ");
                     $cnt=0;
                    if(tep_db_num_rows($sub_colors_query) >= 1) {
-    ?> 
+    ?>
             <!-- //color image -->
             <table border="0" width="100%" cellspacing="0" cellpadding="0" summary="rmt">
               <tr>
