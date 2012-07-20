@@ -257,6 +257,28 @@ function showimage($1) {
                       <td class="main"><font color="#0070AF"><?php echo TEXT_ORDERS_NUM;?></font></td>
                       <td class="main"><?php echo TEXT_REMAINING;?><strong>&nbsp;<?php echo tep_show_quantity($product_info['products_quantity']); ?></strong>&nbsp;<?php echo TEXT_UNIT;?></td>
                       </tr>
+                      <?php
+          if(!empty($data3[0]) && !empty($data3[1])){
+          ?>
+                      <tr class="infoBoxContents">
+                        <td class="main"><font color="#0070AF"><?php echo $data3[0] ; ?></font></td>
+                        <td class="main"><?php echo $data3[1] ; ?></td>
+                      </tr>
+                      <?php } ?>
+                      <?php 
+          if(!empty($data4[0]) && !empty($data4[1])){
+          ?>
+                      <tr class="infoBoxContents">
+                        <td class="main"><font color="#0070AF"><?php echo $data4[0] ; ?></font></td>
+                        <td class="main"><?php echo $data4[1] ; ?></td>
+                      </tr>
+                      <?php } ?>
+                      <?php if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && !$product_info['products_bflag']) { ;?>
+                      <tr class="infoBoxContents">
+                        <td class="main"><font color="#0070AF"><?php echo TEXT_POINT;?></font></td>
+                        <td class="main"><?php echo ds_tep_get_point_value($_GET['products_id']) ; ?>&nbsp;<?php echo TEXT_POINT;?></td>
+                      </tr>
+                      <?php } ?>
 <?php 
 // ccdd
 if (false) {
@@ -302,27 +324,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
                       <?php 
 }
 }
-          if(!empty($data3[0]) && !empty($data3[1])){
-          ?>
-                      <tr class="infoBoxContents">
-                        <td class="main"><font color="#0070AF"><?php echo $data3[0] ; ?></font></td>
-                        <td class="main"><?php echo $data3[1] ; ?></td>
-                      </tr>
-                      <?php } ?>
-                      <?php 
-          if(!empty($data4[0]) && !empty($data4[1])){
-          ?>
-                      <tr class="infoBoxContents">
-                        <td class="main"><font color="#0070AF"><?php echo $data4[0] ; ?></font></td>
-                        <td class="main"><?php echo $data4[1] ; ?></td>
-                      </tr>
-                      <?php } ?>
-                      <?php if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && !$product_info['products_bflag']) { ;?>
-                      <tr class="infoBoxContents">
-                        <td class="main"><font color="#0070AF"><?php echo TEXT_POINT;?></font></td>
-                        <td class="main"><?php echo ds_tep_get_point_value($_GET['products_id']) ; ?>&nbsp;<?php echo TEXT_POINT;?></td>
-                      </tr>
-                      <?php } ?>
+?>
                     </table></td>
                 </tr>
                 
@@ -397,21 +399,21 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                         <tr>
                         <td><input style="text-align:right;" name="quantity" type="text" id="quantity" value="<?php echo (isset($_POST['quantity'])?$_POST['quantity']:1)?>" size="20" maxlength="4">
 </td>
-  <td>
-  <div class="top_and_bottom">
-  <?php
-      echo '<a onclick="change_num(\'quantity\',\'up\',1,'.
-        $product_info['products_quantity'].')" style="display:block"><img src="images/nup.gif" style="vertical-align:bottom;"></a>';
-      echo '<a onclick="change_num(\'quantity\',\'down\',1,'.
-        $product_info['products_quantity'].')" style="display:block"><img src="images/ndown.gif" style="vertical-align:top;"></a>';
-      ?>
-   </div>
-        </td>
-        <td class="main">
-        &nbsp;<?php echo TEXT_UNIT;?>&nbsp;
-      </td>
-  </tr>
-  </table>
+                        <td>
+                        <div class="top_and_bottom">
+                        <?php
+                            echo '<a onclick="change_num(\'quantity\',\'up\',1,'.
+                              $product_info['products_quantity'].')" style="display:block"><img src="images/nup.gif" style="vertical-align:bottom;"></a>';
+                            echo '<a onclick="change_num(\'quantity\',\'down\',1,'.
+                              $product_info['products_quantity'].')" style="display:block"><img src="images/ndown.gif" style="vertical-align:top;"></a>';
+                            ?>
+                         </div>
+                              </td>
+                              <td class="main">
+                              &nbsp;<?php echo TEXT_UNIT;?>&nbsp;
+                            </td>
+                        </tr>
+                        </table>
                       </tr>
                       <tr>
                         <td class="main" width="85">
