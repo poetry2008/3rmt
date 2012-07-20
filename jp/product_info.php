@@ -397,7 +397,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                         <td class="main" colspan="2">
                         <table cellspacing="0" cellpadding="0" border="0">
                         <tr>
-                        <td><input name="quantity" type="text" id="quantity" value="<?php echo (isset($_POST['quantity'])?$_POST['quantity']:1)?>" size="20" maxlength="4">
+                        <td><input style="text-align:right;" name="quantity" type="text" id="quantity" value="<?php echo (isset($_POST['quantity'])?$_POST['quantity']:1)?>" size="20" maxlength="4">
 </td>
   <td>
   <div class="top_and_bottom">
@@ -503,12 +503,10 @@ document.write('<?php //echo '<td class="smallText" align="center"><a href="java
      <?php if($description){?>
     <br>
     <h3 class="pageHeading_long"><?php echo $product_info['products_name'].TEXT_ABOUT; ?></h3>
-        <!-- 説明文　-->
         <p> <?php echo $description; ?> </p>
      <?php }?>
         <?php include(DIR_WS_BOXES.'reviews.php') ; ?>
-        <!--    <p><a href="<?php echo tep_href_link(FILENAME_PRODUCT_REVIEWS,'product_id='.(int)$_GET['products_id']) ; ?>"><?php echo TEXT_CURRENT_REVIEWS . ' ' . $reviews_values['count']; ?></a></p>
- -->
+        
         <?php
 //    }
 
@@ -526,14 +524,6 @@ document.write('<?php //echo '<td class="smallText" align="center"><a href="java
     } else {
     }
 ?>
-        <br>
-        <table border="0" width="100%" cellspacing="0" cellpadding="0">
-          <tr>
-            <!--             <td class="main"><a href="<?php echo tep_href_link(FILENAME_PRODUCT_REVIEWS, substr(tep_get_all_get_params(), 0, -1)); ?>"><?php echo tep_image_button('button_reviews.gif', IMAGE_BUTTON_REVIEWS); ?></a></td>
- -->
-            <td align="right" class="main"></td>
-          </tr>
-        </table>
         <?php
     if ( (USE_CACHE == 'true') && !SID ) {
       echo tep_cache_also_purchased(3600);

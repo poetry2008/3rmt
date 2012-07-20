@@ -577,7 +577,6 @@ if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
 <div id="layout" class="yui3-u">        <div id="current"><?php echo
 $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
 		<?php include('includes/search_include.php');?>
-<?php //echo tep_draw_form('account_edit', tep_href_link(FILENAME_ACCOUNT_EDIT_PROCESS, '', 'SSL'), 'post', 'onSubmit="return check_form();"') . tep_draw_hidden_field('action', 'process'); ?> 
 
 	<div id="main-content">
     <h2><?php echo HEADING_TITLE ; ?></h2> 

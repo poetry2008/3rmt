@@ -399,7 +399,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
     ?>
                         <table align="right" summary="rmt_text" width="100%" cellpadding="6" cellspacing="0" border="0">
                           <tr> 
-                          <td class="main" valign="middle" width="105" style="padding-left:12px;"><?php echo TEXT_PRODUCTS_QTY;?></td>
+                          <td class="main" valign="middle" width="105" style="padding-left:12px; *width:112px;"><?php echo TEXT_PRODUCTS_QTY;?></td>
                             <td class="main" valign="middle" colspan="2">
                             <table cellpadding="0" cellspacing="0" border="0">
                             <tr>
@@ -415,7 +415,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
                           </tr>
                           </table></td></tr>
                           <tr>
-                            <td class="main" width="105" style="padding-left:12px;">
+                            <td class="main" width="105" style="padding-left:12px; *width:112px;">
                             <div class="calc_show_price"><?php echo TEXT_PRODUCT_PRICE;?>:</div> 
                             </td>
                             <td width="325">
@@ -503,7 +503,6 @@ while($tag = tep_db_fetch_array($tag_query)) {
             
             <?php echo $product_info['products_name'].TEXT_ABOUT; ?></span>
             </h2>
-            <!-- 説明文　-->
             <div class="comment_long02">
               <?php 
             //Edit ds-style 2005.11.29
@@ -518,8 +517,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
 //    if ($reviews_values['count'] > 0) {
     include(DIR_WS_BOXES.'reviews.php') ;
 ?>
-<!--         <p><a href="<?php echo tep_href_link(FILENAME_PRODUCT_REVIEWS,'product_id='.(int)$_GET['products_id']) ; ?>"><?php echo TEXT_CURRENT_REVIEWS . ' ' . $reviews_values['count']; ?></a></p>
- -->
+
 <?php
 //    }
 
@@ -539,13 +537,6 @@ while($tag = tep_db_fetch_array($tag_query)) {
         <?php
     }
 ?>
-        <table border="0" width="100%" cellspacing="0" cellpadding="0" summary="rmt">
-          <tr>
-<!--             <td class="main"><a href="<?php echo tep_href_link(FILENAME_PRODUCT_REVIEWS, substr(tep_get_all_get_params(), 0, -1)); ?>"><?php echo tep_image_button('button_reviews.gif', IMAGE_BUTTON_REVIEWS); ?></a></td>
- -->
-            <td align="right" class="main"></td>
-          </tr>
-        </table>
         <?php
     if ( (USE_CACHE == 'true') && !SID ) {
       echo tep_cache_also_purchased(3600);

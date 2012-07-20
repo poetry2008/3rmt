@@ -1327,6 +1327,7 @@ TABLE：Info Box
 	color: #CC0000;
 	font-weight: bold;
 	background: #fff url(../images/design/box/product_info_box_td.gif) bottom repeat-x;
+	width:60px;
 }
 /* ---------------------------
 TABLE：Info box (content)

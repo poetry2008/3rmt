@@ -575,7 +575,7 @@ if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
   <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border" summary="table"> 
     <tr> 
       <!-- body_text //--> 
-      <td valign="top" id="contents"> <?php //echo tep_draw_form('account_edit', tep_href_link(FILENAME_ACCOUNT_EDIT_PROCESS, '', 'SSL'), 'post', 'onSubmit="return check_form();"') . tep_draw_hidden_field('action', 'process'); ?> 
+      <td valign="top" id="contents"> 
         <h1 class="pageHeading">
           <span class="game_t">
             <?php echo HEADING_TITLE ; ?>

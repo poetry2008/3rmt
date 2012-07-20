@@ -409,7 +409,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                             <tr>
                             <td class="main" valign="middle"><input name="quantity" type="text" id="quantity" value="<?php echo (isset($_POST['quantity'])?$_POST['quantity']:1)?>" class="input_text_short"></td>
                             <td valign="middle">
-                              <div style="*margin-top:-5px;">
+                              <div style="margin-top:-3px\9;">
               <?php $p_a_quan = $product_info['products_quantity'];?>
                                 <a style="display:block;" href="javascript:void(0)" onClick="change_num('quantity','up',1,<?php echo $p_a_quan;?>);return false;"><img src="images/ico/nup.gif" alt="+"></a>
                                 <a style="display:block;" href="javascript:void(0)" onClick="change_num('quantity','down', 1,<?php echo $p_a_quan;?>);return false;"><img src="images/ico/ndown.gif" alt="-"></a>
@@ -503,7 +503,6 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
         <div class="pageBottom_long">&nbsp;</div>
          <?php if($description){?>
             <h3 class="pageHeading_long"><?php echo $product_info['products_name'].TEXT_ABOUT; ?></h3>
-            <!-- 説明文　-->
             <p class="comment_long">
               <?php 
             //Edit ds-style 2005.11.29
@@ -538,12 +537,6 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
         <?php
     }
 ?>
-        <br>
-        <table border="0" width="100%" cellspacing="0" cellpadding="0" summary="rmt">
-          <tr>
-            <td align="right" class="main"></td>
-          </tr>
-        </table>
         <?php
     if ( (USE_CACHE == 'true') && !SID ) {
       echo tep_cache_also_purchased(3600);

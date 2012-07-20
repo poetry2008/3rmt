@@ -432,7 +432,6 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
 ?>
 <div class="comment">
 <div id='form'>
-<!--<form action="reorder.php" method="post" name="order">-->
 <?php 
 echo tep_draw_form('order', tep_href_link('reorder.php'));
 ?>
@@ -910,7 +909,6 @@ function orderConfirmPage(){
 <?php
 echo tep_draw_form('order', tep_href_link('reorder.php'));
 ?>
-<!--<form action="reorder.php" method="post" name='order'>-->
 <input type="hidden" name="dummy" value="<?php echo TEXT_REORDER_DUMMY_WIDTH;?>">   
 <table class="information_table" summary="table" cellpadding="0" cellspacing="1">
  <tr>

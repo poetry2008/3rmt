@@ -1189,6 +1189,7 @@ TD.headerInfo {
 	color: #00474b;
 	font-weight: bold;
 	background: #fff url(../images/design/box/product_info_box_td.gif) bottom repeat-x;
+	width:60px;
 }
 /*TABLE：infoBoxContents*/
 .infoBoxContents {
@@ -1735,7 +1736,7 @@ searching
 	line-height:1.5;
 }
 .option_name{
-	width:50px;
+	width:60px;
 	vertical-align:top;
 	padding-left:12px;
 }
