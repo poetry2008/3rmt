@@ -25,7 +25,7 @@
 <?php page_head();?>
 <script type="text/javascript" src="js/prototype.js"></script>
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
-<script>
+<script type="text/javascript">
 var jq = jQuery.noConflict();
 </script>
 <script type="text/javascript" src="js/scriptaculous.js?load=effects"></script>

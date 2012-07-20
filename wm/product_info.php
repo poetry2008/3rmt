@@ -13,13 +13,13 @@
 <?php page_head();?>
 <script type="text/javascript" src="js/prototype.js"></script>
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
-<script>
+<script type="text/javascript">
 var jq = jQuery.noConflict();
 </script>
 <script type="text/javascript" src="js/scriptaculous.js?load=effects"></script>
 <script type="text/javascript" src="js/lightbox.js"></script>
 <link rel="stylesheet" href="css/lightbox.css" type="text/css" media="screen">
-<script language="javascript" type="text/javascript"><!--
+<script type="text/javascript">
 jq(document).ready(function () {
    calc_product_final_price("<?php echo (int)$_GET['products_id'];?>"); 
 });
@@ -112,7 +112,6 @@ function change_num(ob,targ, quan, a_quan)
   product_quantity.value = num_value;
   calc_product_final_price("<?php echo (int)$_GET['products_id'];?>");
 }
--->
 </script>
 <script language="javascript" type="text/javascript"><!--
 function popupWindow(url) {

@@ -48,7 +48,7 @@ $(document).ready(function() {
 <?php
 }
 ?>
-<script type="text/javascript"><!--
+<script type="text/javascript">
 $(document).ready(function () {
    calc_product_final_price("<?php echo (int)$_GET['products_id'];?>"); 
 });
@@ -141,7 +141,6 @@ function change_num(ob,targ, quan, a_quan)
   product_quantity.value = num_value;
   calc_product_final_price("<?php echo (int)$_GET['products_id'];?>");
 }
--->
 </script>
 </head><body>
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
