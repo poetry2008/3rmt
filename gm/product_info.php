@@ -215,7 +215,7 @@ if (!$product_info) { // product not found in database
         </tr>
         <?php } ?>
         <?php
-        if(!empty($data1[0])){
+        if(!empty($data1[0]) && !empty($data1[1])){
           ?>
             <tr>
             <td><b><?php echo $data1[0] ; ?></b></td>
@@ -223,7 +223,7 @@ if (!$product_info) { // product not found in database
             </tr>
             <?php } ?>
             <?php 
-            if(!empty($data2[0])){
+            if(!empty($data2[0]) && !empty($data2[1])){
               ?>
                 <tr>
                 <td><b><?php echo $data2[0] ; ?></b></td>
@@ -274,7 +274,7 @@ if (!$product_info) { // product not found in database
     sprintf(TEXT_PRODUCT_INFO_QTY_TEXT,tep_show_quantity($product_info['products_quantity'])); ?></td>
     </tr>
     <?php 
-    if(!empty($data3[0])){
+    if(!empty($data3[0]) && !empty($data3[1])){
       ?>
         <tr>
         <td><b><?php echo $data3[0] ; ?></b></td>
@@ -282,7 +282,7 @@ if (!$product_info) { // product not found in database
         </tr>
         <?php } ?>
         <?php 
-        if(!empty($data4[0])){
+        if(!empty($data4[0]) && !empty($data4[1])){
           ?>
             <tr>
             <td valign="top"><b><?php echo $data4[0] ; ?></b></td>

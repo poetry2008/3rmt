@@ -149,22 +149,14 @@ function selectHour(start_time,end_time,hour,min_num,ele){
               arr_time_d = array_end[n].split('|');
               for(m in arr_time_d){
                 arr_time_t = arr_time_d[m].split(',');
-                if(m == 0){
+                if(m == h_c_value && min_num == ''){
                     checked = ' checked';
                     arr_time_temp_1 = arr_time_t[0].split(':');
                     arr_time_temp_2 = arr_time_t[1].split(':');
                     start_hour_num = arr_time_temp_1[0];
                     start_min_num = arr_time_temp_1[1];
                     end_hour_num = arr_time_temp_2[0];
-                    end_min_num = arr_time_temp_2[1];
-                }else if(m == h_c_value){
-                    checked = ' checked';
-                    arr_time_temp_1 = arr_time_t[0].split(':');
-                    arr_time_temp_2 = arr_time_t[1].split(':');
-                    start_hour_num = arr_time_temp_1[0];
-                    start_min_num = arr_time_temp_1[1];
-                    end_hour_num = arr_time_temp_2[0];
-                    end_min_num = arr_time_temp_2[1];
+                    end_min_num = arr_time_temp_2[1]; 
                 }else{
                     if(min_num != '' && min_num == m){
                       checked = ' checked';
