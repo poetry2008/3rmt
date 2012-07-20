@@ -57,7 +57,7 @@
           </table></td>
         </tr>
         <tr>
-          <td align="right">aaa<br><?php echo '<a href="' . $origin_href . '">' . tep_image_button('button_continue_02.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></td>
+          <td align="right"><br><?php echo '<a href="' . $origin_href . '">' . tep_image_button('button_continue_02.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></td>
         </tr>
       </table></div></td> 
       <!-- body_text_eof //--> 
