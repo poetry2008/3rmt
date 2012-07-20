@@ -48,7 +48,7 @@ $(document).ready(function() {
 <?php
 }
 ?>
-<script type="text/javascript">
+<script type="text/javascript"><!--
 $(document).ready(function () {
    calc_product_final_price("<?php echo (int)$_GET['products_id'];?>"); 
 });
