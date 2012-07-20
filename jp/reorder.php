@@ -649,7 +649,8 @@ foreach ($value['attributes'] as $att) {?>
  </tr>
 <?php }?>
  <?php
- // ccdd
+  // ccdd
+        /*
         $products_attributes_query = tep_db_query("
             select count(*) as total 
             from " . TABLE_PRODUCTS_OPTIONS . " popt, " . TABLE_PRODUCTS_ATTRIBUTES . " patrib 
@@ -658,6 +659,7 @@ foreach ($value['attributes'] as $att) {?>
               and popt.language_id = '" . $languages_id . "'
         ");
         $products_attributes = tep_db_fetch_array($products_attributes_query);
+        */
         if (false) {
           //ccdd
           $products_options_name_query = tep_db_query("
