@@ -507,7 +507,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
               <?php 
             //Edit ds-style 2005.11.29
             //echo stripslashes($product_info['products_description']);
-            echo replace_store_name( $description);
+            echo $description;
             ?>
             </p>
          <div class="pageBottom_long">&nbsp;</div>
