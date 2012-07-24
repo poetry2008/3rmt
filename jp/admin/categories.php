@@ -1681,7 +1681,7 @@ $products_shipping_time .= '</select>';
               </tr>
               <tr>
               <td class="main"><?php echo TEXT_PRODUCTS_SHIPPING_WEIGHT; ?></td>
-              <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;<input type="text" name="products_shipping_weight" value="'. ($pInfo->products_weight == '' ? 0 : $pInfo->products_weight) .'">'; ?></td><tr>
+              <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;<input type="text" id="products_weight" name="products_shipping_weight" value="'. ($pInfo->products_weight == '' ? 0 : $pInfo->products_weight) .'">'; ?></td><tr>
             <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
 <!--
           </tr>
@@ -1740,7 +1740,7 @@ $products_shipping_time .= '</select>';
                     </tr>
                     <tr bgcolor="#CCCCCC">
                       <td class="main"><?php echo '<font color="blue"><b>'.TEXT_PRODUCT_ADDORSUB_VALUE.'</b></font>'; ?></td>
-                      <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_price_offset', $pInfo->products_price_offset, ($site_id ? 'class="readonly" readonly' : '')); ?></td>
+                      <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_price_offset', $pInfo->products_price_offset, ($site_id ? 'class="readonly" readonly' : 'id="products_add_del"')); ?></td>
                     </tr>
                     <tr>
                       <td class="main">&nbsp;</td>
@@ -1773,7 +1773,7 @@ $products_shipping_time .= '</select>';
         </tr>
         <tr bgcolor="#CCCCCC">
           <td class="main"><?php echo '<font color="blue"><b>' . TEXT_PRODUCTS_REAL_QUANTITY . '</b></font>'; ?></td>
-          <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_real_quantity', isset($pInfo->products_real_quantity)?$pInfo->products_real_quantity:'', ($site_id ? 'class="readonly" readonly' : 'onkeyup="clearLibNum(this);"')); ?></td>
+          <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_input_field('products_real_quantity', isset($pInfo->products_real_quantity)?$pInfo->products_real_quantity:'', ($site_id ? 'class="readonly" readonly' : 'id="products_real_quantity" onkeyup="clearLibNum(this);"')); ?></td>
         </tr>
         <tr>
           <td>&nbsp;</td>
@@ -1796,7 +1796,7 @@ $products_shipping_time .= '</select>';
             . '&nbsp;&nbsp;&nbsp;'.TEXT_PRODUCT_ATTONE_TEXT.'&nbsp;' .
             tep_draw_input_field('products_attention_1_2', isset($pInfo->products_attention_1_2)?$pInfo->products_attention_1_2:(isset($des_result['products_attention_1_2'])?$des_result['products_attention_1_2']:''), 'style="width:100px;" '.($site_id ? 'class="readonly" readonly' : ''))
             . '&nbsp;&nbsp;&nbsp;'.TEXT_PRODUCT_SHUZHI_TEXT.'&nbsp;' .
-            tep_draw_input_field('products_attention_1_3', isset($pInfo->products_attention_1_3)?$pInfo->products_attention_1_3:(isset($des_result['products_attention_1_3'])?$des_result['products_attention_1_3']:''), 'style="width:100px;" '.($site_id ? 'class="readonly" readonly' : 'onkeyup="clearLibNum(this);"'))
+            tep_draw_input_field('products_attention_1_3', isset($pInfo->products_attention_1_3)?$pInfo->products_attention_1_3:(isset($des_result['products_attention_1_3'])?$des_result['products_attention_1_3']:''), 'style="width:100px;" '.($site_id ? 'class="readonly" readonly' : 'id="products_attention_1_3" onkeyup="clearLibNum(this);"'))
             . '&nbsp;&nbsp;&nbsp;'.TEXT_PRODUCT_ATTTWO_TEXT.'&nbsp;' .
             tep_draw_input_field('products_attention_1_4', isset($pInfo->products_attention_1_4)?$pInfo->products_attention_1_4:(isset($des_result['products_attention_1_4'])?$des_result['products_attention_1_4']:''), 'style="width:100px;" '.($site_id ? 'class="readonly" readonly' : ''))
             .'</span>'; ?>
@@ -2126,11 +2126,11 @@ $products_shipping_time .= '</select>';
                     
                     <table width="100%">
                     <td></tr>
-                    <tr><td width="150"><?php echo TEXT_PRODUCT_CART_MIN_TEXT;?></td> <td><input name="products_cart_min" type="text" value="<?php echo $pInfo->products_cart_min?$pInfo->products_cart_min:0;?>" onkeyup="clearLibNum(this);">
+                    <tr><td width="150"><?php echo TEXT_PRODUCT_CART_MIN_TEXT;?></td> <td><input id="products_cart_min" name="products_cart_min" type="text" value="<?php echo $pInfo->products_cart_min?$pInfo->products_cart_min:0;?>" onkeyup="clearLibNum(this);">
                     </td></tr>
                     <tr>
                     <td><?php echo TEXT_PRODUCT_CARTORDER_TEXT;?></td>
-                    <td><input name="products_cartorder" type="text" value="<?php echo $pInfo->products_cartorder?$pInfo->products_cartorder:1000;?>" onkeyup="clearLibNum(this);">
+                    <td><input id="products_cartorder" name="products_cartorder" type="text" value="<?php echo $pInfo->products_cartorder?$pInfo->products_cartorder:1000;?>" onkeyup="clearLibNum(this);">
                     </td></tr>
  <?php if ($pInfo->products_cart_image) {?>
                     <tr>
