@@ -5137,7 +5137,7 @@ function file_exists3($src) {
   }else{
     $fs_catalog = DIR_FS_CATALOG.'/';
   }
-  if(!file_exists($fs_catalog .  $src)
+  if(!file_exists($fs_catalog .'images/' . $src)
        && file_exists($fs_catalog .  str_replace('images/', 'default_images/', $src))
        ){
      $src = str_replace('images/', 'default_images/', $src);
