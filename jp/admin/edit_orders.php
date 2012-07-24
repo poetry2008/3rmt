@@ -426,7 +426,7 @@ if (tep_not_null($action)) {
         
         $address_list_query = tep_db_query("select * from ". TABLE_ADDRESS ." where name_flag='". substr($ad_key,3) ."'");
         $address_list_array = tep_db_fetch_array($address_list_query);
-        $ad_value = $address_list_array['comment'] == $ad_value ? '' : $ad_value;
+        $ad_value = $address_list_array['comment'] == $ad_value && $address_list_array['type'] == 'textarea' ? '' : $ad_value;
    
         $ad_sql = "insert into ". TABLE_ADDRESS_ORDERS ." values(NULL,'".$oID."','{$check_status['customers_id']}','{$address_list_array['id']}','". substr($ad_key,3) ."','$ad_value')";
         $ad_query = tep_db_query($ad_sql);
