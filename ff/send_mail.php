@@ -10,18 +10,8 @@
   $error_single = false; 
   $success_single = false; 
   $subject = STORE_NAME;
-  $body_text = ''; 
-  $body_text = STORE_NAME.'が、会員登録をご利用予定のメールアドレスへ、'."\n".
-  '受信確認のためにお送りしています。'."\n\n".
-  'このメールを、無事に受信ボックスで確認できましたら、'."\n".
-  'こちらのメールアドレスは'.STORE_NAME.'で問題なくご利用いただけます。'."\n\n".
-  '以下のURLにアクセスして会員登録を行ってください。'."\n".
-  HTTP_SERVER.'/create_account.php' ."\n\n".
-  'ご不明な点がありましたら、'.STORE_NAME.'までお問い合わせください。'."\n\n\n".
-  '[ご連絡・お問い合わせ先]━━━━━━━━━━━━'."\n".
-  '株式会社 iimy'."\n".
-  HTTP_SERVER."\n".  
-  STORE_OWNER_EMAIL_ADDRESS."\n"."━━━━━━━━━━━━━━━━━━━━━━━";
+  $body_text = '';
+  $body_text = TEXT_BODY_TEXT;
   
   if (isset($_POST['email_address'])) {
     if (empty($_POST['email_address'])) {
@@ -69,7 +59,7 @@
         <tr>
           <td valign="middle" style="font-size:11px;" width="20%"><b><?php echo INPUT_SEND_MAIL; ?>:</b></td>
           <td class="login_text" valign="middle">
-            <input type="text" name="email_address">
+            <input type="text" name="email_address" size="45">
           </td>
         </tr>
         <tr>
