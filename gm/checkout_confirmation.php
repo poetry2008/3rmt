@@ -387,10 +387,64 @@ $shipping_fee = $cart->total > $free_value ? 0 : $weight_fee;
 <?php echo TIME_MIN_TEXT;?>
       </td>
       </tr>            
+<?php
 
+$pay_info_array = $payment_modules->specialOutput($payment);
 
-                  <?php
-	      $payment_modules->specialOutput($payment);
+if (!empty($pay_info_array)) {
+?>
+  <tr>
+  <td colspan="3">
+  <br>
+  <h3><b><?php echo $pay_info_array[0];?></b>
+
+<?php
+echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>';
+?></h3>
+</td></tr>
+<tr>
+<td width="20%">
+<?php echo $pay_info_array[1][0];?>
+</td>
+<td>
+<?php echo $pay_info_array[1][1];?>
+</td>
+</tr>
+<tr>
+<td>
+<?php echo $pay_info_array[2][0];?>
+</td>
+<td>
+<?php echo $pay_info_array[2][1];?>
+</td>
+</tr>
+<tr>
+<td>
+<?php echo $pay_info_array[3][0];?>
+</td>
+<td>
+<?php echo $pay_info_array[3][1];?>
+</td>
+</tr>
+<tr>
+<td>
+<?php echo $pay_info_array[4][0];?>
+</td>
+<td>
+<?php echo $pay_info_array[4][1];?>
+</td>
+</tr>
+<tr>
+<td>
+<?php echo $pay_info_array[5][0];?>
+</td>
+<td>
+<?php echo $pay_info_array[5][1];?>
+</td>
+</tr>
+
+<?php
+}
 ?>
       <tr>
         <td colspan="3"><br><h3><b><?php echo HEADING_BILLING_INFORMATION; ?></b></h3></td>

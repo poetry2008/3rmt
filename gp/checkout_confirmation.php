@@ -387,14 +387,13 @@ $shipping_fee = $cart->total > $free_value ? 0 : $weight_fee;
 <tr>
 <td>
 <table border="0" width="100%" cellspacing="1" cellpadding="2" class="formArea">
-
-  <tr>
+    <td>
+      <table width="100%">
+        <tr>
   <td class="main" colspan="3"><b><?php echo TEXT_TRADE_DATE; ?></b><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
   </tr>
   <tr>
-    <td>
-      <table width="100%">
-      
+
       <tr>
       <td class="main" width="150"><?php echo TEXT_EXPECT_TRADE_DATE; ?></td>
         <td class="main"><?php echo str_string($date); ?></td>
@@ -422,9 +421,74 @@ $shipping_fee = $cart->total > $free_value ? 0 : $weight_fee;
             <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
           </tr> 
 <?php
-$payment_modules->specialOutput($payment, true); 
+
+$pay_info_array = $payment_modules->specialOutput($payment);
+
+if (!empty($pay_info_array)) {
 ?>
-    
+<tr>
+<td>
+<table border="0" width="100%" cellspacing="1" cellpadding="2" class="formArea"> 
+  <tr> 
+  <td>
+  <table width="100%" cellspacing="0" cellpadding="2" border="0">
+  <tr>
+  <td class="main" colspan="2">
+  <b><?php echo $pay_info_array[0];?></b>
+
+<?php
+echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>';
+?>
+</td></tr>
+<tr>
+<td class="main" width="150">
+<?php echo $pay_info_array[1][0];?>
+</td>
+<td class="main">
+<?php echo $pay_info_array[1][1];?>
+</td>
+</tr>
+<tr>
+<td class="main">
+<?php echo $pay_info_array[2][0];?>
+</td>
+<td class="main">
+<?php echo $pay_info_array[2][1];?>
+</td>
+</tr>
+<tr>
+<td class="main">
+<?php echo $pay_info_array[3][0];?>
+</td>
+<td class="main">
+<?php echo $pay_info_array[3][1];?>
+</td>
+</tr>
+<tr>
+<td class="main">
+<?php echo $pay_info_array[4][0];?>
+</td>
+<td class="main">
+<?php echo $pay_info_array[4][1];?>
+</td>
+</tr>
+<tr>
+<td class="main">
+<?php echo $pay_info_array[5][0];?>
+</td>
+<td class="main">
+<?php echo $pay_info_array[5][1];?>
+</td></tr></table>
+</td></tr></table>
+</td>
+</tr>
+<tr>
+<td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+</tr> 
+
+<?php
+}
+?>    
         <tr> 
           <td  style="color: #000; font-size: 12px; padding: 10px; background: url(images/design/box/dot.gif) bottom repeat-x;">
             <b><?php echo HEADING_BILLING_INFORMATION; ?></b>

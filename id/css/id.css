@@ -2526,6 +2526,7 @@ searching
 	color:#FFFFFF;
 	*height:25px;
 	overflow:hidden;
+	*overflow:inherit;
 }
 .time_radio{
 	float:left;

@@ -95,7 +95,7 @@ if(array_key_exists($fixed_option_list_array[3],$ad_array)){
 ?>
         <tr> 
             <td class="main"><b><?php echo TEXT_CONFIRMATION_READ;?></b></td> 
-            <td class="main" align="right"><a href="javascript:void(0);" onclick="confirm_session_error(<?php echo $ad_num;?>,'<?php echo $ad_post;?>');"><?php echo tep_image_button('button_confirm_order02.gif', IMAGE_BUTTON_CONFIRM_ORDER);?></a></td> 
+            <td class="main" align="right"><a href="javascript:void(0);" onClick="confirm_session_error(<?php echo $ad_num;?>,'<?php echo $ad_post;?>');"><?php echo tep_image_button('button_confirm_order02.gif', IMAGE_BUTTON_CONFIRM_ORDER);?></a></td> 
             </tr></table>
 </td></tr>
           <tr> 
@@ -412,9 +412,67 @@ $shipping_fee = $cart->total > $free_value ? 0 : $weight_fee;
             <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
           </tr> 
 <?php
-$payment_modules->specialOutput($payment, true);
+
+$pay_info_array = $payment_modules->specialOutput($payment);
+
+if (!empty($pay_info_array)) {
 ?>
-    
+<tr>
+<td>
+<table border="0" width="100%" cellspacing="1" cellpadding="2" class="formArea"> 
+  <tr>
+  <td class="main" colspan="2">
+  <b><?php echo $pay_info_array[0];?></b>
+
+<?php
+echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>';
+?>
+</td></tr>
+<tr>
+<td class="main" width="150">
+<?php echo $pay_info_array[1][0];?>
+</td>
+<td class="main">
+<?php echo $pay_info_array[1][1];?>
+</td>
+</tr>
+<tr>
+<td class="main">
+<?php echo $pay_info_array[2][0];?>
+</td>
+<td class="main">
+<?php echo $pay_info_array[2][1];?>
+</td>
+</tr>
+<tr>
+<td class="main">
+<?php echo $pay_info_array[3][0];?>
+</td>
+<td class="main">
+<?php echo $pay_info_array[3][1];?>
+</td>
+</tr>
+<tr>
+<td class="main">
+<?php echo $pay_info_array[4][0];?>
+</td>
+<td class="main">
+<?php echo $pay_info_array[4][1];?>
+</td>
+</tr>
+<tr>
+<td class="main">
+<?php echo $pay_info_array[5][0];?>
+</td>
+<td class="main">
+<?php echo $pay_info_array[5][1];?>
+</td></tr></table>
+</td>
+</tr>
+
+<?php
+}
+?>    
         <tr> 
           <td  style="color: #000; font-size: 12px; padding: 10px; background: url(images/design/box/dot.gif) bottom repeat-x;">
             <b><?php echo HEADING_BILLING_INFORMATION; ?></b>
