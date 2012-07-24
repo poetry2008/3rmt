@@ -7,7 +7,7 @@
 
   //forward 404
   if (isset($_GET['order_id']))
-      {
+{
 //ccdd
   $_404_query = tep_db_query("select * from " .TABLE_ORDERS . " where site_id = '".SITE_ID."' and orders_id = '"
       . $_GET['order_id'] . "'");
@@ -137,7 +137,7 @@
 
     echo '            <td class="main" align="right" valign="top" width="50">';
     if ($order->products[$i]['final_price'] < 0) {
-      echo '<font color="ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value'])).'</font>'.JPMONEY_UNIT_TEXT;
+      echo '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value'])).'</font>'.JPMONEY_UNIT_TEXT;
     } else {
       echo $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']);
     }
@@ -151,7 +151,6 @@
                   </tr> 
                 </table></td> 
             </tr> 
-            <!-- start -->        
             <?php
             $address_shipping_num_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $_GET['order_id'] ."'");
             $address_num = tep_db_num_rows($address_shipping_num_query);
@@ -191,7 +190,6 @@
             <?php
             }
             ?>
-            <!-- end -->
             <tr> 
               <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
             </tr> 

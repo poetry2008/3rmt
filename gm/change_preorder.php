@@ -259,7 +259,7 @@ function address_option_show(action){
       $("#error_"+x).html('');
       if(document.getElementById("l_"+x)){
         if($("#l_"+x).val() == 'true'){
-          $("#r_"+x).html('&nbsp;<?php echo TEXT_REQUIRED;?>');
+          $("#r_"+x).html('&nbsp;*<?php echo TEXT_REQUIRED;?>');
         }
       }
     }
@@ -349,7 +349,7 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
         ?>
         if(document.getElementById("l_"+x)){
         if($("#l_"+x).val() == 'true'){
-          $("#r_"+x).html('&nbsp;<?php echo TEXT_REQUIRED;?>');
+          $("#r_"+x).html('&nbsp;*<?php echo TEXT_REQUIRED;?>');
         }
         }
         <?php

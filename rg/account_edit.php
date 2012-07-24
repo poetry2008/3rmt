@@ -11,8 +11,8 @@
 */
 
   require('includes/application_top.php');
-  require('../jp/3rmtlib/address_info/AD_Option.php');
-  require('../jp/3rmtlib/address_info/AD_Option_Group.php');
+  require(DIR_FS_3RMTLIB.'address_info/AD_Option.php');
+  require(DIR_FS_3RMTLIB.'address_info/AD_Option_Group.php');
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_ACCOUNT_EDIT);
   $hm_option = new AD_Option();
 
