@@ -54,7 +54,7 @@
         <tr>
           <td valign="top" width="20%"><b><?php echo INPUT_SEND_MAIL; ?>:</b></td>
           <td class="login_text" valign="top" width="70%">
-            <input type="text" name="email_address" id="input_text">
+            <input type="text" name="email_address" id="send_input_text">
           </td>
         </tr>
         <tr>

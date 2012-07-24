@@ -199,7 +199,9 @@ function showimage($1) {
             //  }
     //bobhero <?php if (tep_show_warning(tep_get_products_categories_id($product_info['products_id'])) or $products_info['products_status'] != '1') {
              ?>
-    <?php if (tep_show_warning(tep_get_products_categories_id($product_info['products_id'])) or $product_info['products_status'] != '1') {
+    <?php if
+    (tep_show_warning(tep_get_products_categories_id($product_info['products_id']))
+     or $product_info['products_status'] != '1' ) {
       echo '<div class="waring_product">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
     } ?>
          <h1 class="pageHeading_long"><?php echo $product_info['products_name']; ?></h1>

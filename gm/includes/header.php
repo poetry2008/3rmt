@@ -77,7 +77,7 @@ if (!isset($_GET['products_id'])) $_GET['products_id']= NULL;
     echo '<div class="yui3-u-1-3"><div id="business-hour"><img src="images/header_time.gif" alt="time">'.TEXT_HEADER_TOP_ANOTHER_TITLE.'</div></div>' . "\n";
   }
 ?>
-	<div class="yui3-u-1-3" id="logo"><a href=""><img src="images/logo.gif"
+	<div class="yui3-u-1-3" id="logo"><a href="<?php echo HTTP_SERVER;?>"><img src="images/logo.gif"
         onmouseover="this.src='images/logo_hover.gif'"
         onmouseout="this.src='images/logo.gif'"  alt="logo"></a></div>
 	<div class="yui3-u-1-3" id="header-payment"><img src="images/header_payment.gif" width="368" height="46" alt="payment"></div>

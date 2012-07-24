@@ -136,7 +136,7 @@
       return false;
     }
 ##########
-   if(!file_exists(DIR_FS_CATALOG . '/' . $src)
+   if(!file_exists(DIR_FS_CATALOG . '/images/' . $src)
        && file_exists(DIR_FS_CATALOG . '/' . str_replace('images/', 'default_images/', $src))
        ){
      $src = str_replace('images/', 'default_images/', $src);
