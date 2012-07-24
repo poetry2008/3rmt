@@ -60,7 +60,7 @@ function selectDate(start_time,end_time,value){
             }
           } 
           if(flag == true){
-            html_str += '<td id="hour'+j+'" bgcolor="#cccccc" style="color:#000000;cursor:pointer;" align="center" onclick="if((document.getElementById(\'shipping_list_min\').style.display == \'table-row\' && this.style.backgroundColor == \'rgb(56, 56, 56)\') || (document.getElementById(\'shipping_list_min\').style.display == \'block\' && this.style.backgroundColor == \'#383838\')){check_out('+j+');}else{this.style.background=\'#383838\';selectHour(\''+start_time+'\',\''+end_time+'\','+j+',\'\',this);}">'+j+'</td>';
+            html_str += '<td id="hour'+j+'" bgcolor="#cccccc" style="color:#000000;cursor:pointer;" align="center" onclick="if((document.getElementById(\'shipping_list_min\').style.display == \'table-row\' && this.style.backgroundColor == \'rgb(56, 56, 56)\') || (document.getElementById(\'shipping_list_min\').style.display == \'block\' && this.style.backgroundColor == \'#383838\')){check_out('+j+');}else{this.style.background=\'#383838\';selectHour(\''+start_time+'\',\''+end_time+'\','+j+',\'\',this);}">'+j+'<input type="hidden" id="h_c_'+j+'" value="0"></td>';
           }else{
             html_str += '<td id="hour'+j+'" bgcolor="#f1f0ef" style="color:#cccccc;" align="center">'+j+'</td>';
           }
@@ -141,6 +141,7 @@ function selectHour(start_time,end_time,hour,min_num,ele){
         var start_min_num = '';
         var end_hour_num = '';
         var end_min_num = '';
+        var h_c_value = $("#h_c_"+hour).val();
         for(n in array_start){
           
             if(hour == array_start[n]){
@@ -148,14 +149,14 @@ function selectHour(start_time,end_time,hour,min_num,ele){
               arr_time_d = array_end[n].split('|');
               for(m in arr_time_d){
                 arr_time_t = arr_time_d[m].split(',');
-                if(m == 0){
+                if(m == h_c_value && min_num == ''){
                     checked = ' checked';
                     arr_time_temp_1 = arr_time_t[0].split(':');
                     arr_time_temp_2 = arr_time_t[1].split(':');
                     start_hour_num = arr_time_temp_1[0];
                     start_min_num = arr_time_temp_1[1];
                     end_hour_num = arr_time_temp_2[0];
-                    end_min_num = arr_time_temp_2[1];
+                    end_min_num = arr_time_temp_2[1]; 
                 }else{
                     if(min_num != '' && min_num == m){
                       checked = ' checked';
@@ -175,7 +176,7 @@ function selectHour(start_time,end_time,hour,min_num,ele){
                   arr_time_m = arr_time_t[k].split(':');
              
                   if(k != arr_time_t.length-1){
-                    string +=  '<div class="time_radio"><input type="radio" id="m'+m+'" name="min" value="'+m+'"'+checked+' onclick="change_time('+m+',\''+array_end[n]+'\');"></div><div class="time_label"><label for="m'+m+'"><a href="javascript:void(0);"onclick="change_new_time('+m+',\''+array_end[n]+'\');" >'+arr_time_m[0]+'時'+arr_time_m[1]+'分～';
+                    string +=  '<div class="time_radio"><input type="radio" id="m'+m+'" name="min" value="'+m+'"'+checked+' onclick="change_time('+m+',\''+array_end[n]+'\','+array_start[n]+');"></div><div class="time_label"><label for="m'+m+'"><a href="javascript:void(0);"onclick="change_new_time('+m+',\''+array_end[n]+'\','+array_start[n]+');" >'+arr_time_m[0]+'時'+arr_time_m[1]+'分～';
                   }else{
                     string +=  arr_time_m[0]+'時'+arr_time_m[1]+'分</a></label></div>'; 
                   }
@@ -270,9 +271,10 @@ function selectHour(start_time,end_time,hour,min_num,ele){
 }
 
 
-function change_time(value,end_time){
+function change_time(value,end_time,h_num){
               var start_hour_num = new Array();
               var start_min_num = new Array();
+              $("#h_c_"+h_num).val(value);
               arr_time_d = end_time.split('|');
               for(m in arr_time_d){
                  if(m == value){
@@ -292,8 +294,9 @@ function change_time(value,end_time){
               }
 }
 
-function change_new_time(value,end_time){
+function change_new_time(value,end_time,h_num){
   var radio_list = document.getElementsByName("min");
+  $("#h_c_"+h_num).val(value);
   for (var i=0; i<radio_list.length; i++) {
       document.getElementById('m'+value).checked=false;   
   } 

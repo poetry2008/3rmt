@@ -389,11 +389,12 @@ class payment {
     }
   }
     
-  function specialOutput($payment, $is_show = false) {
+  function specialOutput($payment) {
     $p = $this->getModule($payment);
     if(method_exists($p,'specialOutput')){
-      return $p->specialOutput($this->session_paymentvalue_name, $is_show);
+      return $p->specialOutput($this->session_paymentvalue_name);
     }
+    return ''; 
   }
   function process_button($payment) {
     $p = $this->getModule($payment);

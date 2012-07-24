@@ -5,7 +5,8 @@
 require('includes/application_top.php');
 require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_CHECKOUT_CONFIRMATION);
 require(DIR_WS_ACTIONS.'checkout_confirmation.php');
-$_SESSION['shipping_page_str'] = substr($_SERVER['REQUEST_URI'],1);
+$page_url_array = explode('/',$_SERVER['REQUEST_URI']);
+$_SESSION['shipping_page_str'] = end($page_url_array);
 ?>
 <?php
 if(isset($_SESSION['shipping_session_flag']) && $_SESSION['shipping_session_flag'] == true){
@@ -72,8 +73,33 @@ unset($_SESSION['shipping_session_flag']);
             <td align="right">
               <table border="0" width="100%" cellspacing="0" cellpadding="0" class="c_pay_info"> 
                   <tr>
+<?php
+$fixed_option_list_array = array();
+$fixed_option_query = tep_db_query("select name_flag,fixed_option from ". TABLE_ADDRESS ." where status='0' and fixed_option!='0'");
+ while($fixed_option_array = tep_db_fetch_array($fixed_option_query)){
+ 
+  $fixed_option_list_array[$fixed_option_array['fixed_option']] = $fixed_option_array['name_flag'];
+}
+tep_db_free_result($fixed_option_query);
+
+$ad_post = '';
+$ad_num = 0;
+$ad_array = $_SESSION['options'];
+if(array_key_exists($fixed_option_list_array[3],$ad_array)){
+
+    $ad_post = $ad_array[$fixed_option_list_array[3]][1];
+    $ad_num = 3;
+}elseif(array_key_exists($fixed_option_list_array[2],$ad_array)){
+
+    $ad_post = $ad_array[$fixed_option_list_array[2]][1];
+    $ad_num = 2; 
+}elseif(array_key_exists($fixed_option_list_array[1],$ad_array)){
+    $ad_post = $ad_array[$fixed_option_list_array[1]][1];
+    $ad_num = 1;
+}  
+?>
                       <td class="main"><b><?php echo TEXT_CONFIRMATION_READ;?></b></td>
-                        <td class="main" align="right"><a href="javascript:void(0);" onClick="confirm_session_error();"><?php echo tep_image_button('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER);?></a></td>
+                        <td class="main" align="right"><a href="javascript:void(0);" onClick="confirm_session_error(<?php echo $ad_num;?>,'<?php echo $ad_post;?>');"><?php echo tep_image_button('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER);?></a></td>
                     </tr>
                 </table>
             </td>
@@ -82,7 +108,7 @@ unset($_SESSION['shipping_session_flag']);
             <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
           </tr> 
         <tr> 
-          <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
+          <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxContents"> 
               <tr> 
                 <?php
   if ($sendto != false) {
@@ -111,9 +137,7 @@ unset($_SESSION['shipping_session_flag']);
   }
 ?> 
                 <td width="<?php echo (($sendto != false) ? '70%' : '100%'); ?>" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="0"> 
-                    <tr> 
-                      <td>
-                      <table class="infoBoxContents"> 
+                   
                           <?php
   if (sizeof($order->info['tax_groups']) > 1) {
 ?> 
@@ -137,7 +161,7 @@ unset($_SESSION['shipping_session_flag']);
     $product_info = tep_get_product_by_id((int)$order->products[$i]['id'], SITE_ID, $languages_id);
     
     echo '          <tr>' . "\n" .
-         '            <td class="main" align="center" valign="top" width="150">' .  $order->products[$i]['qty'] . '&nbsp;'.NUM_UNIT_TEXT . (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($order->products[$i]['qty'], $order->products[$i]['id']) ? '<br><span style="font-size:10px">'. tep_get_full_count_in_order2($order->products[$i]['qty'], $order->products[$i]['id']) .'</span>': '') . '</td>' . "\n" .
+         '            <td class="main" align="center" valign="top" width="160">' .  $order->products[$i]['qty'] . '&nbsp;'.NUM_UNIT_TEXT . (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($order->products[$i]['qty'], $order->products[$i]['id']) ? '<br><span style="font-size:10px">'. tep_get_full_count_in_order2($order->products[$i]['qty'], $order->products[$i]['id']) .'</span>': '') . '</td>' . "\n" .
          '            <td class="main" valign="top">' . $order->products[$i]['name'];
     
   if ($order->products[$i]['price'] < 0) {
@@ -186,7 +210,7 @@ unset($_SESSION['shipping_session_flag']);
          '          </tr>' . "\n";
   }
 ?> 
-                        </table></td></tr></table></td> 
+                        </table></td> 
                     </tr> 
                   </table></td> 
               </tr> 
@@ -199,20 +223,20 @@ unset($_SESSION['shipping_session_flag']);
 if(!empty($_SESSION['options'])){
 ?>
           <tr> 
-            <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
+            <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxContents"> 
                 <tr> 
                   <td>
-<table class="infoBoxContents">
+<table border="0" cellpadding="0" cellspacing="0" width="100%">
   <tr>
-  <td class="main" colspan="3"><b><?php echo TEXT_OPTIONS_TITLE; ?></b><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
+  <td class="main" colspan="3"><b>11<?php echo TEXT_OPTIONS_TITLE; ?></b><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
   </tr>
 <?php
   foreach($_SESSION['options'] as $key=>$value){
 ?>
 <tr>
   <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-  <td class="main" width="30%" valign="top"><?php echo $value[0]; ?>:</td>
-  <td class="main" width="70%"><?php echo $value[1]; ?></td>
+  <td class="main" width="150" valign="top"><?php echo $value[0]; ?>:</td>
+  <td class="main"><?php echo $value[1]; ?><span id="<?php echo $key;?>"></span></td>
   </tr>
 <?php
   }
@@ -354,17 +378,18 @@ $shipping_fee = $cart->total > $free_value ? 0 : $weight_fee;
 }
 ?>
 <tr> 
-<td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
-  <tr> 
-  <td>
+<td>
   <table width="100%" border="0" cellspacing="0" cellpadding="2"  class="infoBoxContents">
+  <tr>
+  <td>
+  <table cellpadding="0" cellspacing="0" border="0">
   <tr>
   <td class="main" colspan="3"><b><?php echo TEXT_TRADE_DATE; ?></b><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
   </tr>
   <tr>
   <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-  <td class="main" width="30%"><?php echo TEXT_EXPECT_TRADE_DATE; ?></td>
-  <td class="main" width="70%"><?php echo str_string($date); ?></td>
+  <td class="main" width="150"><?php echo TEXT_EXPECT_TRADE_DATE; ?></td>
+  <td class="main"><?php echo str_string($date); ?></td>
   </tr>
   <tr>
   <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
@@ -383,15 +408,86 @@ $shipping_fee = $cart->total > $free_value ? 0 : $weight_fee;
 </table>
 </td>
 </tr>
-</table></td>
+</table>
+</td>
 </tr> 
 <tr>
 <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-</tr>  
+</tr> 
 <?php
- $payment_modules->specialOutput($payment);
+
+$pay_info_array = $payment_modules->specialOutput($payment);
+
+if (!empty($pay_info_array)) {
 ?>
-    
+<tr>
+<td>
+<table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBoxContents"> 
+  <tr> 
+  <td>
+  <table width="100%" cellspacing="0" cellpadding="2" border="0">
+  <tr>
+  <td class="main" colspan="3">
+  <b><?php echo $pay_info_array[0];?></b>
+
+<?php
+echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>';
+?>
+</td></tr>
+<tr>
+<td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+<td class="main" width="150">
+<?php echo $pay_info_array[1][0];?>
+</td>
+<td class="main">
+<?php echo $pay_info_array[1][1];?>
+</td>
+</tr>
+<tr>
+<td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+<td class="main">
+<?php echo $pay_info_array[2][0];?>
+</td>
+<td class="main">
+<?php echo $pay_info_array[2][1];?>
+</td>
+</tr>
+<tr>
+<td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+<td class="main">
+<?php echo $pay_info_array[3][0];?>
+</td>
+<td class="main">
+<?php echo $pay_info_array[3][1];?>
+</td>
+</tr>
+<tr>
+<td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+<td class="main">
+<?php echo $pay_info_array[4][0];?>
+</td>
+<td class="main">
+<?php echo $pay_info_array[4][1];?>
+</td>
+</tr>
+<tr>
+<td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
+<td class="main">
+<?php echo $pay_info_array[5][0];?>
+</td>
+<td class="main">
+<?php echo $pay_info_array[5][1];?>
+</td></tr></table>
+</td></tr></table>
+</td>
+</tr>
+<tr>
+<td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
+</tr> 
+
+<?php
+}
+?>
         <tr> 
           <td  style="color: #000; font-size: 12px; padding: 10px; background: url(images/design/box/dot.gif) bottom repeat-x;">
             <b><?php echo HEADING_BILLING_INFORMATION; ?></b>
@@ -402,14 +498,14 @@ $shipping_fee = $cart->total > $free_value ? 0 : $weight_fee;
         </tr> 
         <tr> 
           <td>
-          <table class="infoBoxContents"> 
-              <tr> 
-                <td width="30%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+          <table class="infoBoxContents" width="100%" border="0" cellspacing="0" cellpadding="2"> 
+              <tr>
+                <td width="30%" valign="top"><table border="0" cellspacing="0" cellpadding="2"> 
                     <tr> 
                       <td class="main"><?php echo '<b>' . HEADING_PAYMENT_METHOD . '</b> <a href="' . tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td> 
                     </tr> 
                     <tr> 
-                      <td class="main"><?php echo payment::changeRomaji($order->info['payment_method']); ?></td> 
+                      <td class="table_p10"><?php echo payment::changeRomaji($order->info['payment_method']); ?></td> 
                     </tr> 
                   </table></td> 
                 <td width="70%" valign="top" align="right"><table border="0" cellspacing="0" cellpadding="2"> 
@@ -629,7 +725,7 @@ $shipping_fee = $cart->total > $free_value ? 0 : $weight_fee;
   }
   }
    */ 
-  echo '<a href="javascript:void(0);" onclick="confirm_session_error();">';
+  echo '<a href="javascript:void(0);" onclick="confirm_session_error('.$ad_num.',\''.$ad_post.'\');">';
   echo tep_image_button('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER) . '</a></form>' . "\n";
 ?> </td> 
               </tr> 

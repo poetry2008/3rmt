@@ -818,7 +818,7 @@ if($address_error == false){
         
         $ot_query = tep_db_query("select value from " . TABLE_ORDERS_TOTAL . " where orders_id = '".$oID."' and class = 'ot_total'");
         $ot_result = tep_db_fetch_array($ot_query);
-        $otm = (int)$ot_result['value'] . '円';
+        $otm = (int)$ot_result['value'] . EDIT_ORDERS_PRICE_UNIT;
 
         $os_query = tep_db_query("select orders_status_name from " . TABLE_ORDERS_STATUS . " where orders_status_id = '".$status."'");
         $os_result = tep_db_fetch_array($os_query);
@@ -1004,7 +1004,7 @@ if($address_error == false){
           tep_mail(get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS', $order->info['site_id']), TEXT_EMAIL_ORDERS_UPDATE . get_configuration_by_site_id('STORE_NAME', $order->info['site_id']) . '】', $email, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);
           $customer_notified = '1';
         }
-        tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . tep_db_input($customer_notified) . "', '" . mysql_real_escape_string($comment_arr['comment']."\n".$comments_text) . "')");
+        tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . tep_db_input($customer_notified) . "', '" . mysql_real_escape_string($comment_arr['comment'].$comments_text) . "')");
         $order_updated_2 = true;
       }
 
@@ -2177,8 +2177,8 @@ foreach ($nomail as $oskey => $value){
 ?>
 function address_show(){
   
-  var style = $("#address_show_id").attr("style");
-  if(style == 'display: none;' || style == 'display: none'){
+  var style = $("#address_show_id").css("display");
+  if(style == 'none'){
     $("#address_show_id").show(); 
     $("#address_font").html("<?php echo TEXT_ADDRESS_INFO_HIDE;?>");
  
@@ -3515,7 +3515,7 @@ if($action == "add_product")
   {
     print "<tr class=\"dataTableRow\"><form action='$PHP_SELF?oID=$oID&action=$action' method='POST'>\n";
     print "<td class='dataTableContent' align='right'><b>" . ADDPRODUCT_TEXT_STEP . " 4: </b></td>";
-    print "<td class='dataTableContent' valign='top'>" .  ADDPRODUCT_TEXT_CONFIRM_QUANTITY . "<input name='add_product_quantity' size='2' value='1' onkeyup='clearLibNum(this);'>&nbsp;個&nbsp;&nbsp;&nbsp;&nbsp;<input type='hidden' name='dummy' value='あいうえお眉幅'></td>";
+    print "<td class='dataTableContent' valign='top'>" .  ADDPRODUCT_TEXT_CONFIRM_QUANTITY . "<input name='add_product_quantity' size='2' value='1' onkeyup='clearLibNum(this);'>&nbsp;".EDIT_ORDERS_NUM_UNIT."&nbsp;&nbsp;&nbsp;&nbsp;<input type='hidden' name='dummy' value='".TEXT_DUMMY."'></td>";
     print "<td class='dataTableContent' align='center'><input type='submit' value='" . ADDPRODUCT_TEXT_CONFIRM_ADDNOW . "'>";
 
     foreach ($_POST as $op_key => $op_value)

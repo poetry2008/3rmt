@@ -640,7 +640,8 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
  </tr>
 <?php }?>
  <?php
- // ccdd
+  // ccdd
+        /*
         $products_attributes_query = tep_db_query("
             select count(*) as total 
             from " . TABLE_PRODUCTS_OPTIONS . " popt, " . TABLE_PRODUCTS_ATTRIBUTES . " patrib 
@@ -649,6 +650,7 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
               and popt.language_id = '" . $languages_id . "'
         ");
         $products_attributes = tep_db_fetch_array($products_attributes_query);
+         */
         if (false) {
           //ccdd
           $products_options_name_query = tep_db_query("
@@ -708,7 +710,7 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
 <br>
 <p align="center">
 <input type='image' src="includes/languages/japanese/images/buttons/button_submit.gif" alt="<?php echo TEXT_REORDER_CONFRIM;?>" title="<?php echo TEXT_REORDER_CONFRIM;?>" onClick="return orderConfirmPage();" >
-<input type='image' src="includes/languages/japanese/images/buttons/button_reset.gif" alt="<?php echo TEXT_REORDER_CLEAR;?>" title="<?php echo TEXT_REORDER_CLEAR;?>" onClick="javascript:document.order.reset();return false;" >
+<input type='image' src="includes/languages/japanese/images/buttons/button_reset.gif" alt="<?php echo TEXT_REORDER_CLEAR;?>" title="<?php echo TEXT_REORDER_CLEAR;?>" onClick="javascript:document.order.reset();selectDate('','','');return false;" >
 </p>
 </form>
 </div>

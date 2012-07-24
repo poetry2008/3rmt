@@ -27,7 +27,7 @@
 <?php page_head();?>
 <script type="text/javascript" src="js/prototype.js"></script>
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
-<script>
+<script type="text/javascript">
 var jq = jQuery.noConflict();
 </script>
 <script type="text/javascript" src="js/scriptaculous.js?load=effects"></script>
@@ -226,7 +226,7 @@ function showimage($1) {
                           </tr>
                           <?php } ?>
                           <?php 
-                      if(!empty($data1[0])){
+                      if(!empty($data1[0]) && !empty($data1[1])){
                       ?>
                           <tr class="infoBoxContents">
                             <td class="main p_i_b_title"><?php echo $data1[0] ; ?></td>
@@ -234,7 +234,7 @@ function showimage($1) {
                           </tr>
                           <?php } ?>
                           <?php 
-                      if(!empty($data2[0])){
+                      if(!empty($data2[0]) && !empty($data2[1])){
                       ?>
                           <tr class="infoBoxContents">
                             <td class="main p_i_b_title"><?php echo $data2[0] ; ?></td>
@@ -284,7 +284,7 @@ function showimage($1) {
                           <td class="main"><div class="product_num1"><?php echo TEXT_REMAINING;?></div><div class="product_num">&nbsp;<?php echo tep_show_quantity($product_info['products_quantity']); ?></div><div>&nbsp;<?php echo TEXT_UNIT;?></div></td>
                           </tr>
                           <?php 
-                      if(!empty($data3[0])){
+                      if(!empty($data3[0]) && !empty($data3[1])){
                       ?>
                           <tr class="infoBoxContents">
                             <td class="main p_i_b_title"><?php echo $data3[0] ; ?></td>
@@ -292,7 +292,7 @@ function showimage($1) {
                           </tr>
                           <?php } ?>
                           <?php 
-                      if(!empty($data4[0])){
+                      if(!empty($data4[0]) && !empty($data4[1])){
                       ?>
                           <tr class="infoBoxContents">
                             <td class="main p_i_b_title red"><?php echo $data4[0] ; ?></td>
@@ -530,7 +530,6 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
  </div>
          <?php if($description){?>
             <h3 class="pageHeading"><span><?php echo $product_info['products_name'].TEXT_ABOUT; ?></span></h3>
-            <!-- 説明文　-->
             <div class="comment">
               <div  class="reviews_area"><p><?php 
             //Edit ds-style 2005.11.29
@@ -545,8 +544,6 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
 //    if ($reviews_values['count'] > 0) {
     include(DIR_WS_BOXES.'reviews.php') ;
 ?>
-<!--         <p><a href="<?php echo tep_href_link(FILENAME_PRODUCT_REVIEWS,'product_id='.(int)$_GET['products_id']) ; ?>"><?php echo TEXT_CURRENT_REVIEWS . ' ' . $reviews_values['count']; ?></a></p>
- -->
 <?php
 //    }
 
@@ -566,12 +563,6 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
         <?php
     }
 ?>
-        <br>
-        <table border="0" width="100%" cellspacing="0" cellpadding="0" summary="rmt">
-          <tr>
-            <td align="right" class="main"></td>
-          </tr>
-        </table>
         <?php
     if ( (USE_CACHE == 'true') && !SID ) {
       echo tep_cache_also_purchased(3600);

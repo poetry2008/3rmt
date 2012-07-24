@@ -591,6 +591,16 @@ $(document).ready(function(){
 <body>
 <?php 
 if ($error == false && $_POST['action'] == 'process') { 
+
+  $options_comment = array();
+  $address_query = tep_db_query("select * from ". TABLE_ADDRESS ." where type='textarea' and status='0' order by sort");
+  while($address_required = tep_db_fetch_array($address_query)){
+    
+    $options_comment[$address_required['name_flag']] = $address_required['comment'];
+  }
+  tep_db_free_result($address_query);
+
+
 //echo tep_draw_form('order1', tep_href_link('change_preorder_confirm.php'));
 $preorder_information = array();
 foreach ($_POST as $post_key => $post_value) {
@@ -602,6 +612,13 @@ foreach ($_POST as $post_key => $post_value) {
     }
   } else {
     //echo '<input type="hidden" name="'.$post_key.'" value="'.stripslashes($post_value).'">'; 
+    if(substr($post_key,0,3) == 'ad_'){
+
+      if($options_comment[substr($post_key,3)] == $post_value){
+
+        $post_value = '';
+      }
+    }
       $preorder_information[$post_key] = stripslashes($post_value); 
   }
 }
@@ -678,7 +695,7 @@ document.forms.order1.submit();
               </td>
             </tr>
           </table> 
-          <div class="formAreaTitle" style="font-size:12px;"><?php echo CHANGE_ORDER_CUSTOMER_DETAILS?></div> 
+          <p class="formAreaTitle" style="font-size:12px;"><?php echo CHANGE_ORDER_CUSTOMER_DETAILS?></p> 
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
               <td class="main" width="150">
@@ -702,7 +719,7 @@ document.forms.order1.submit();
             $preorder_product_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$preorder_id."'"); 
             $preorder_product_res = tep_db_fetch_array($preorder_product_raw); 
           ?> 
-          <div class="formAreaTitle" style="font-size:12px;"><?php echo CHANGE_ORDER_PRODUCT_DETAILS;?></div> 
+          <p class="formAreaTitle" style="font-size:12px;"><?php echo CHANGE_ORDER_PRODUCT_DETAILS;?></p> 
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
               <td class="main" width="150">
@@ -935,7 +952,7 @@ document.forms.order1.submit();
           $quest_array = tep_db_fetch_array($quest_query);
           tep_db_free_result($quest_query);
         ?>
-        <div class="formAreaTitle" style="font-size:12px;"><?php echo TEXT_ADDRESS;?></div>
+        <p class="formAreaTitle" style="font-size:12px;"><?php echo TEXT_ADDRESS;?></p>
         <table border="0" width="100%" cellspacing="2" cellpadding="2" class="formArea"> 
         <?php
           if($quest_array['customers_guest_chk'] == 0){
@@ -993,7 +1010,7 @@ document.forms.order1.submit();
         }
         ?>
         
-        <div class="formAreaTitle" style="font-size:12px;"><?php echo CHANGE_ORDER_FETCH_TIME_TITLE;?></div> 
+        <p class="formAreaTitle" style="font-size:12px;"><?php echo CHANGE_ORDER_FETCH_TIME_TITLE;?></p> 
         <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
         <tr>
           <td class="main" width="150">
@@ -1065,12 +1082,12 @@ document.forms.order1.submit();
              }
              if(isset($_POST['min']) && $_POST['min'] != ''){
 
-                echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\',\''. $_POST['hour'] .'\','. $_POST['min'] .','. $_POST['ele'] .');$("#shipping_list_min").show();</script>';
+                echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\',\''. $_POST['hour'] .'\','. $_POST['min'] .','. $_POST['ele'] .');$("#shipping_list_min").show();$("#h_c_'.$_POST['hour'].'").val('.$_POST['min'].');</script>';
              }else{
 
                 if(isset($_SESSION['preorder_information']['min']) && $_SESSION['preorder_information']['min'] != ''){
 
-                  echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\',\''. $_SESSION['preorder_information']['hour'] .'\','. $_SESSION['preorder_information']['min'] .','. $_SESSION['preorder_information']['ele'] .');$("#shipping_list_min").show();</script>';
+                  echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\',\''. $_SESSION['preorder_information']['hour'] .'\','. $_SESSION['preorder_information']['min'] .','. $_SESSION['preorder_information']['ele'] .');$("#shipping_list_min").show();$("#h_c_'.$_SESSION['preorder_information']['hour'].'").val('.$_SESSION['preorder_information']['min'].');</script>';
                 }
              }
           if ($hm_option->preorder_whether_show($product_info_res['belong_to_option'])) { 

@@ -515,11 +515,6 @@ if(isset($_GET['login']) && ($_GET['login'] == 'ip_error')){
                              <?php }?> 
 
           </table>
-         <table width="100%" border="0"  cellpadding="0" cellspacing="0">
-        <tr>
-          <td class="smallText"><!--<?php echo tep_draw_form('login', tep_href_link(FILENAME_LOGIN, 'action=process', 'SSL')); ?>--></td>
-        </tr>
-      </table>
 	  <table  width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
 	  <tr><td>
   <?php echo TEXT_LOGIN_SSL_READ;?> 

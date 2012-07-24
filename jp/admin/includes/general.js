@@ -747,6 +747,87 @@ function p_is_set_romaji(cid,qid,site_id){
 function products_form_validator(cid,qid,site_id){
   flag1 = p_is_set_romaji(cid,qid,site_id);
   flag2 = p_is_set_error_char(); 
+
+  var flag = false;
+  var op1 = false;
+  var op = $("#op").val();
+  var pw1 = false;
+  var pw = $("#products_weight").val();
+  var pp1 = false;
+  var pp = $("#pp").val();
+  var pad1 = false;
+  var pad = $("#products_add_del").val();
+  var prq1 = false;
+  var prq = $("#products_real_quantity").val();
+  var pa1 = false;
+  var pa = $("#products_attention_1_3").val();
+  var pcm1 = false;
+  var pcm = $("#products_cart_min").val();
+  var pc1 = false;
+  var pc = $("#products_cartorder").val();
+  
+  if(op.length > 15){
+ 
+    op1 = true;
+    flag = true;  
+  }
+
+  if(pw.length > 15){
+ 
+    pw1 = true;
+    flag = true;  
+  }
+
+  if(pp.length > 15){
+ 
+    pp1 = true;
+    flag = true;  
+  }
+
+  if(pad.length > 15){
+ 
+    pad1 = true;
+    flag = true;  
+  }
+
+  if(prq.length > 15){
+ 
+    prq1 = true;
+    flag = true;  
+  }
+
+  if(pa.length > 15){
+ 
+    pa1 = true;
+    flag = true;  
+  }
+
+  if(pcm.length > 15){
+ 
+    pcm1 = true;
+    flag = true;  
+  }
+
+  if(pc.length > 15){
+ 
+    pc1 = true;
+    flag = true;  
+  }
+
+  if(flag == true){
+
+    var error_str = '入力フォームでエラーが起きています!'+"\n"+'次の項目を修正してください:'+"\n\n\n";
+    if(op1 == true){error_str += '*（オススメ商品並び順）は規定の値を超えました。（999999999999999）以内にしてください。'+"\n";}
+    if(pw1 == true){error_str += '*（重量）は規定の値を超えました。（999999999999999）以内にしてください。'+"\n";}
+    if(pp1 == true){error_str += '*（商品の価格）は規定の値を超えました。（999999999999999）以内にしてください。'+"\n";}
+    if(pad1 == true){error_str += '*（増減の値）は規定の値を超えました。（999999999999999）以内にしてください。'+"\n";}
+    if(prq1 == true){error_str += '*（実在庫）は規定の値を超えました。（999999999999999）以内にしてください。'+"\n";}
+    if(pa1 == true){error_str += '*（数値）は規定の値を超えました。（999999999999999）以内にしてください。'+"\n";}
+    if(pcm1 == true){error_str += '*（買い忘れバナー最小在庫数）は規定の値を超えました。（999999999999999）以内にしてください。'+"\n";} 
+    if(pc1 == true){error_str += '*（表示順）は規定の値を超えました。（999999999999999）以内にしてください。'+"\n";} 
+    alert(error_str);
+    return false;
+  }
   if(flag1&&flag2){
     return true;
   }else{

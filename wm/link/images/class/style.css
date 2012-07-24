@@ -710,12 +710,6 @@ a img {
 	border: 1px #eee solid;
 	overflow: hidden;
 }
-.web-ico {
-	display: block;
-	float: left;
-	width: 16px;
-	height: 16px;
-}
 .t2 p {
 	background: #fff;
 }
@@ -1162,12 +1156,11 @@ overflow:hidden;
 font-size:12px;
 }
 .web_3{
-margin:0 10px;
+margin:0 20px;
 width:100%;
 }
 .web_3 td{
-padding:5px 0 0 10px;
-width:150px;
+width:16%;
 }
 .web_3_top{
 margin:0 10px;
@@ -1256,3 +1249,12 @@ padding-right:10px;
 .siteupdate_list{
 padding-left:10px;
 }
+.web-ico {
+	display: block;
+	float: left;
+	width: 16px;
+	height: 16px;
+	margin-left:5px;
+	margin-top:-2px;
+}
+.web-link{ float:left; width:95px;}

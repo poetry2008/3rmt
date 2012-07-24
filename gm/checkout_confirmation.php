@@ -5,7 +5,8 @@
 require('includes/application_top.php');
 require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_CHECKOUT_CONFIRMATION);
 require(DIR_WS_ACTIONS.'checkout_confirmation.php');
-$_SESSION['shipping_page_str'] = substr($_SERVER['REQUEST_URI'],1);
+$page_url_array = explode('/',$_SERVER['REQUEST_URI']);
+$_SESSION['shipping_page_str'] = end($page_url_array);
 ?>
 <?php
 if(isset($_SESSION['shipping_session_flag']) && $_SESSION['shipping_session_flag'] == true){
@@ -87,10 +88,34 @@ unset($_SESSION['shipping_session_flag']);
         <td align="center" nowrap="nowrap" width="20%" class="checkoutBarTo"><?php echo CHECKOUT_BAR_FINISHED; ?></td>
       </tr>
     </table>
-	
+<?php
+$fixed_option_list_array = array();
+$fixed_option_query = tep_db_query("select name_flag,fixed_option from ". TABLE_ADDRESS ." where status='0' and fixed_option!='0'");
+ while($fixed_option_array = tep_db_fetch_array($fixed_option_query)){
+ 
+  $fixed_option_list_array[$fixed_option_array['fixed_option']] = $fixed_option_array['name_flag'];
+}
+tep_db_free_result($fixed_option_query);
+
+$ad_post = '';
+$ad_num = 0;
+$ad_array = $_SESSION['options'];
+if(array_key_exists($fixed_option_list_array[3],$ad_array)){
+
+    $ad_post = $ad_array[$fixed_option_list_array[3]][1];
+    $ad_num = 3;
+}elseif(array_key_exists($fixed_option_list_array[2],$ad_array)){
+
+    $ad_post = $ad_array[$fixed_option_list_array[2]][1];
+    $ad_num = 2; 
+}elseif(array_key_exists($fixed_option_list_array[1],$ad_array)){
+    $ad_post = $ad_array[$fixed_option_list_array[1]][1];
+    $ad_num = 1;
+}  
+?>
     <div id="hm-checkout-warp"><div class="checkout-title"><b><?php  echo TEXT_CONFIRMATION_READ;?></b></div>
     <div class="checkout-bottom"> 
-    <a href="javascript:void(0);" onClick="confirm_session_error();">
+    <a href="javascript:void(0);" onClick="confirm_session_error(<?php echo $ad_num;?>,'<?php echo $ad_post;?>');">
 <?php echo
   tep_image_button('button_confirm_order.gif',
       IMAGE_BUTTON_CONFIRM_ORDER,' onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_confirm_order.gif\'" onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_confirm_order_hover.gif\'"');?></a></div>  
@@ -208,7 +233,7 @@ if(!empty($_SESSION['options'])){
 
 <tr> 
   <td width="20%" valign="top"><?php echo $value[0]; ?>:</td>
-  <td colspan="2"><?php echo $value[1]; ?></td>
+  <td colspan="2"><?php echo $value[1]; ?><span id="<?php echo $key;?>"></span></td>
 </tr>
 <?php
   }
@@ -339,11 +364,7 @@ $shipping_fee = $cart->total > $free_value ? 0 : $weight_fee;
            
                                     <tr>
                     <td colspan="3"><br><h3><b><?php echo TEXT_TRADE_DATE; ?></b><?php echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></h3></td>
-                  </tr>
-                  <tr>
-                     <td width="20%" align="left"><?php echo TEXT_OPTION; ?></td>
-                    <td colspan="2"><?php echo $torihikihouhou; ?></td>
-                  </tr>
+                  </tr> 
                   <tr>
                      <td align="left"><?php echo TEXT_EXPECT_TRADE_DATE; ?></td>
                     <td colspan="2"><?php echo str_string($date); ?>
@@ -366,10 +387,64 @@ $shipping_fee = $cart->total > $free_value ? 0 : $weight_fee;
 <?php echo TIME_MIN_TEXT;?>
       </td>
       </tr>            
+<?php
 
+$pay_info_array = $payment_modules->specialOutput($payment);
 
-                  <?php
-	      $payment_modules->specialOutput($payment);
+if (!empty($pay_info_array)) {
+?>
+  <tr>
+  <td colspan="3">
+  <br>
+  <h3><b><?php echo $pay_info_array[0];?></b>
+
+<?php
+echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>';
+?></h3>
+</td></tr>
+<tr>
+<td width="20%">
+<?php echo $pay_info_array[1][0];?>
+</td>
+<td>
+<?php echo $pay_info_array[1][1];?>
+</td>
+</tr>
+<tr>
+<td>
+<?php echo $pay_info_array[2][0];?>
+</td>
+<td>
+<?php echo $pay_info_array[2][1];?>
+</td>
+</tr>
+<tr>
+<td>
+<?php echo $pay_info_array[3][0];?>
+</td>
+<td>
+<?php echo $pay_info_array[3][1];?>
+</td>
+</tr>
+<tr>
+<td>
+<?php echo $pay_info_array[4][0];?>
+</td>
+<td>
+<?php echo $pay_info_array[4][1];?>
+</td>
+</tr>
+<tr>
+<td>
+<?php echo $pay_info_array[5][0];?>
+</td>
+<td>
+<?php echo $pay_info_array[5][1];?>
+</td>
+</tr>
+
+<?php
+}
 ?>
       <tr>
         <td colspan="3"><br><h3><b><?php echo HEADING_BILLING_INFORMATION; ?></b></h3></td>
@@ -531,8 +606,7 @@ $shipping_fee = $cart->total > $free_value ? 0 : $weight_fee;
         <td colspan="3"><br><h3><b><?php echo '<b>' . HEADING_ORDER_COMMENTS . '</b> <a href="' . tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></h3></td>
       </tr>
                 <tr>
-                	<td width="20%"></td>
-                   <td colspan="2"><div class="payment_comment"><?php echo
+                   <td colspan="3"><div class="payment_comment"><?php echo
                    nl2br(htmlspecialchars($order->info['comments'])) .
                    tep_draw_hidden_field('comments', $order->info['comments']); ?>
                  </div></td>
@@ -555,7 +629,7 @@ $shipping_fee = $cart->total > $free_value ? 0 : $weight_fee;
       echo tep_draw_hidden_field("character[$ck]", $cv);
     }
   }
-  echo '<a href="javascript:void(0);" onclick="confirm_session_error();">';
+  echo '<a href="javascript:void(0);" onclick="confirm_session_error('.$ad_num.',\''.$ad_post.'\');">';
   echo tep_image_button('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER,' onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_confirm_order.gif\'" onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_confirm_order_hover.gif\'"') . "</a>\n";
 ?></div></div></div>
 </form>

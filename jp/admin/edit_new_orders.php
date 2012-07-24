@@ -2314,8 +2314,8 @@ function check_end_min(value){
 ?>
   });
   function address_show(){
-    var style = $("#address_show_id").attr("style");
-  if(style == 'display: none;' || style == "display: none"){
+    var style = $("#address_show_id").css("display");
+  if(style == 'none'){
     
     $("#address_show_id").show(); 
     $("#address_font").html("<?php echo TEXT_ADDRESS_INFO_HIDE;?>");
@@ -3921,7 +3921,7 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
         {
           echo "<tr class=\"dataTableRow\"><form action='$PHP_SELF?oID=$oID&action=$action' method='POST'>\n";
           echo "<td class='dataTableContent' align='right'><b>" . ADDPRODUCT_TEXT_STEP . " 4: </b></td>";
-          echo '<td class="dataTableContent" valign="top">' .  ADDPRODUCT_TEXT_CONFIRM_QUANTITY . '<input name="add_product_quantity" size="2" value="1" onkeyup="clearLibNum(this);">&nbsp;'.EDIT_ORDERS_NUM_UNIT.'&nbsp;&nbsp;&nbsp;&nbsp;<input type="hidden" name="dummy" value="あいうえお眉幅"></td>';
+          echo '<td class="dataTableContent" valign="top">' .  ADDPRODUCT_TEXT_CONFIRM_QUANTITY . '<input name="add_product_quantity" size="2" value="1" onkeyup="clearLibNum(this);">&nbsp;'.EDIT_ORDERS_NUM_UNIT.'&nbsp;&nbsp;&nbsp;&nbsp;<input type="hidden" name="dummy" value="'.TEXT_DUMMY.'"></td>';
           echo "<td class='dataTableContent' align='center'><input type='submit' value='" . ADDPRODUCT_TEXT_CONFIRM_ADDNOW . "'>";
 
           foreach ($_POST as $op_key => $op_value) {

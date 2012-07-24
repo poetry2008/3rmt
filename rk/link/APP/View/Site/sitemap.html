@@ -133,10 +133,10 @@ echo '
             </form>
           </td>
         <td class="header_m_login" align="right">
-        	<a href="http://3rk.maker.200.com/shopping_cart.php" class="header_menu_2">ショッピングカート</a>
+        	<a href="/shopping_cart.php" class="header_menu_2">ショッピングカート</a>
         </td>
         <td>
-        	<a href="http://3rk.maker.200.com/checkout_products.php" class="header_menu_3">レジへ進む</a>
+        	<a href="/checkout_products.php" class="header_menu_3">レジへ進む</a>
         </td>
         <td align="right">
             <div class="header_menu_4"><span id="jk-shoppingcart" style="font-size:12px">0円</span></div>
@@ -152,56 +152,7 @@ echo '
 <div class="search_and_tools">
 <div class="search_head boxes">
   <div class="top"><h1 class="link_h1">サイトマップ</h1></div>
-  <div class="middle search_head_text">
-  <div class="text_out">
- <p>  <!--{_t key=text_out_p1}-->
- </p>   
-<p> <!--{_t key=text_out_p2}-->
-</p>   
-<p>
-<!--{_t key=text_out_p3}-->
-</p>  
-</div>
-  </div>
-  <div class="bottom"></div>
-
-  <div class="search_header">
-  <form id="form1" name="form1" onsubmit="return valsearch()" method="post" action="http://rk_rmt.hm1002.200.com/link/sitesearch.html">
-  <table width="100%"><tbody><tr><td align="center">
-  ▼ホームページ検索 
-  <input type="text" name="word" class="sh-txt" id="search_txt">
-
-    <select name="method">
-        <option selected="selected" value="and">AND</option>
-            <option value="or">OR</option>
-              </select>
-                 <input type="submit" value=" 検 索 "> 
-                 </td></tr>
-                 </tbody></table>
-                 </form>
-                 </div>
-                 </div>
-                 <div class="tools boxes">
-                 <h2>メニュー</h2>
-                 <div class="middle tools_link">
-                 <a href="/link/">相互リンク集TOP</a>
-                 <a href="http://rk_rmt.hm1002.200.com/link/regist.html">新規登録</a>
-                 <a href="http://rk_rmt.hm1002.200.com/link/renew.html">更新されたサイト</a>
-                 <a href="http://rk_rmt.hm1002.200.com/link/new.html">新着サイト</a>
-                 <a href="http://rk_rmt.hm1002.200.com/link/recommend.html">おすすめサイト</a>
-                 <a href="http://rk_rmt.hm1002.200.com/link/sitemap.html">サイトマップ</a>
-                 </div>
-                 <div class="bottom"></div>
-                 </div>
-                 </div>
-    </div>
-    </div>
-  <!--end header-->
-  <div id="content" class="boxes">
-    <div class="top">
-      <h1 class="link_sitmap_h1">相互リンク集のサイトマップ</h1>
-    </div>
-    <div class="middle">
+   <div class="middle">
       <!--{section name=loopClass loop=$class}-->
       <!--{assign var='top' value=$class[loopClass]}-->
       <div class="web-box">
@@ -222,46 +173,47 @@ echo '
         <table class="web_3" width="100%">
           <!--{/if}-->
           <tr>
-            <td><!--{if $top.children[$index].name != ''}-->
+          	<td valign="top"><!--{if $top.children[$index].name != ''}-->
               <span class="web-ico">&nbsp;</span>
-              <a href='<!--{url controller=site action=class id=$top.children[$index].class_id}-->'>
+              <span class="web-link"><a href='<!--{url controller=site action=class id=$top.children[$index].class_id}-->'>
               <!--{$top.children[$index].name}-->
               </a>
+              </span>
               <!--{/if}-->
             </td>
-            <td><!--{if $top.children[$index2].name != ''}-->
+            <td valign="top"><!--{if $top.children[$index2].name != ''}-->
               <span class="web-ico">&nbsp;</span>
-              <a href='<!--{url controller=site action=class id=$top.children[$index2].class_id}-->'>
+              <span class="web-link"><a href='<!--{url controller=site action=class id=$top.children[$index2].class_id}-->'>
               <!--{$top.children[$index2].name}-->
-              </a>
+              </a></span>
               <!--{/if}-->
             </td>
-            <td><!--{if $top.children[$index3].name != ''}-->
+            <td valign="top"><!--{if $top.children[$index3].name != ''}-->
               <span class="web-ico">&nbsp;</span>
-              <a href='<!--{url controller=site action=class id=$top.children[$index3].class_id}-->'>
+              <span class="web-link"><a href='<!--{url controller=site action=class id=$top.children[$index3].class_id}-->'>
               <!--{$top.children[$index3].name}-->
-              </a>
+              </a></span>
               <!--{/if}-->
             </td>
-            <td><!--{if $top.children[$index4].name != ''}-->
+            <td valign="top"><!--{if $top.children[$index4].name != ''}-->
               <span class="web-ico">&nbsp;</span>
-              <a href='<!--{url controller=site action=class id=$top.children[$index4].class_id}-->'>
+              <span class="web-link"><a href='<!--{url controller=site action=class id=$top.children[$index4].class_id}-->'>
               <!--{$top.children[$index4].name}-->
-              </a>
+              </a></span>
               <!--{/if}-->
             </td>
-            <td><!--{if $top.children[$index5].name != ''}-->
+            <td valign="top"><!--{if $top.children[$index5].name != ''}-->
               <span class="web-ico">&nbsp;</span>
-              <a href='<!--{url controller=site action=class id=$top.children[$index5].class_id}-->'>
+              <span class="web-link"><a href='<!--{url controller=site action=class id=$top.children[$index5].class_id}-->'>
               <!--{$top.children[$index5].name}-->
-              </a>
+              </a></span>
               <!--{/if}-->
             </td>
-            <td><!--{if $top.children[$index6].name != ''}-->
+            <td valign="top"><!--{if $top.children[$index6].name != ''}-->
               <span class="web-ico">&nbsp;</span>
-              <a href='<!--{url controller=site action=class id=$top.children[$index6].class_id}-->'>
+              <span class="web-link"><a href='<!--{url controller=site action=class id=$top.children[$index6].class_id}-->'>
               <!--{$top.children[$index6].name}-->
-              </a>
+              </a></span>
               <!--{/if}-->
             </td>
 
@@ -273,7 +225,31 @@ echo '
       </div>
       <!--{/section}-->
     </div>
-    <div class="bottom"></div>
-  </div>
+  <div class="bottom"></div>
+
+ 
+                 </div>
+                
+                 
+                <div class='tools boxes'>
+<h2>メニュー</h2>
+<div class="middle tools_link">
+<a href="/<!--{$hostlink}-->/">相互リンク集TOP</a></li>
+<a href="<!--{url controller=site action=regist}-->">新規登録</a></li>
+<a href="<!--{url controller=site action=renew}-->">更新されたサイト</a></li>
+<a href="<!--{url controller=site action=new}-->">新着サイト</a></li>
+<a href="<!--{url controller=site action=recommend}-->">おすすめサイト</a></li>
+<a href="<!--{url controller=site action=sitemap}-->">サイトマップ</a></li>
+</div>
+<div class="bottom"></div>
+</div>
+ 
+                 
+                 
+                 </div>
+    </div>
+    </div>
+  <!--end header-->
+ 
 <!--{include file=Site/footer.html}-->
 </div>

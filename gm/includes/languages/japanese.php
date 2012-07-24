@@ -337,7 +337,7 @@ define('TEXT_NO_NEW_PRODUCTS', '現在商品は登録されていません...');
 
 define('TEXT_UNKNOWN_TAX_RATE', '税率不明');
 
-define('TEXT_REQUIRED', '*必須');
+define('TEXT_REQUIRED', '必須');
 define('TEXT_WEIGHT_ERROR','※要問合※&nbsp;総重量が規定の範囲を超えました。');
 define('TEXT_WEIGHT_ERROR_ONE','個以内に個数を変更してください。<br><b>予約注文を承っておりますので、お問い合わせをお願いいたします。</b>');
 
@@ -448,7 +448,6 @@ define('TEXT_DATE_SUNDAY', '日曜日');
 define('TIME_HOUR_TEXT', '時');
 define('TIME_MIN_TEXT', '分');
 define('JPMONEY_UNIT_TEXT', '円');
-define('TEXT_CHARACTER','お客様のキャラクター名：');
 define('CHECKOUT_BAR_OPTION', '商品オプション');
 define('TEXT_RIDE_RSS','×');
 define('ENTRY_NO_USE_OLD_PASSWORD', '<font color="#FF0000">安全のため、古いパスワードと違うパスワードを設定してください。</font>');

@@ -432,7 +432,6 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
 ?>
 <div class="comment">
 <div id='form'>
-<!--<form action="reorder.php" method="post" name="order">-->
 <?php 
 echo tep_draw_form('order', tep_href_link('reorder.php'));
 ?>
@@ -676,7 +675,8 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
  </tr>
 <?php }?>
  <?php
- // ccdd
+  // ccdd
+        /*
         $products_attributes_query = tep_db_query("
             select count(*) as total 
             from " . TABLE_PRODUCTS_OPTIONS . " popt, " . TABLE_PRODUCTS_ATTRIBUTES . " patrib 
@@ -685,6 +685,7 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
               and popt.language_id = '" . $languages_id . "'
         ");
         $products_attributes = tep_db_fetch_array($products_attributes_query);
+         */
         if (false) {
           //ccdd
           $products_options_name_query = tep_db_query("
@@ -746,7 +747,7 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
 <p align="center">
 <input type='image' src="includes/languages/japanese/images/buttons/button_submit.gif" alt="<?php echo TEXT_REORDER_CONFRIM;?>" title="<?php echo TEXT_REORDER_CONFRIM;?>" onClick="return orderConfirmPage();" >
 <input type='image'
-src="includes/languages/japanese/images/buttons/button_reset.gif" alt="<?php echo TEXT_REORDER_CLEAR;?>" title="<?php echo TEXT_REORDER_CLEAR;?>" onClick="javascript:document.order.reset();return false;" >
+src="includes/languages/japanese/images/buttons/button_reset.gif" alt="<?php echo TEXT_REORDER_CLEAR;?>" title="<?php echo TEXT_REORDER_CLEAR;?>" onClick="javascript:document.order.reset();selectDate('','','');return false;" >
 </p>
 </form>
 </div>
@@ -910,7 +911,6 @@ function orderConfirmPage(){
 <?php
 echo tep_draw_form('order', tep_href_link('reorder.php'));
 ?>
-<!--<form action="reorder.php" method="post" name='order'>-->
 <input type="hidden" name="dummy" value="<?php echo TEXT_REORDER_DUMMY_WIDTH;?>">   
 <table class="information_table" summary="table" cellpadding="0" cellspacing="1">
  <tr>

@@ -141,7 +141,6 @@ function change_num(ob,targ, quan, a_quan)
   product_quantity.value = num_value;
   calc_product_final_price("<?php echo (int)$_GET['products_id'];?>");
 }
--->
 </script>
 </head><body>
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
@@ -215,7 +214,7 @@ if (!$product_info) { // product not found in database
         </tr>
         <?php } ?>
         <?php
-        if(!empty($data1[0])){
+        if(!empty($data1[0]) && !empty($data1[1])){
           ?>
             <tr>
             <td><b><?php echo $data1[0] ; ?></b></td>
@@ -223,7 +222,7 @@ if (!$product_info) { // product not found in database
             </tr>
             <?php } ?>
             <?php 
-            if(!empty($data2[0])){
+            if(!empty($data2[0]) && !empty($data2[1])){
               ?>
                 <tr>
                 <td><b><?php echo $data2[0] ; ?></b></td>
@@ -274,7 +273,7 @@ if (!$product_info) { // product not found in database
     sprintf(TEXT_PRODUCT_INFO_QTY_TEXT,tep_show_quantity($product_info['products_quantity'])); ?></td>
     </tr>
     <?php 
-    if(!empty($data3[0])){
+    if(!empty($data3[0]) && !empty($data3[1])){
       ?>
         <tr>
         <td><b><?php echo $data3[0] ; ?></b></td>
@@ -282,7 +281,7 @@ if (!$product_info) { // product not found in database
         </tr>
         <?php } ?>
         <?php 
-        if(!empty($data4[0])){
+        if(!empty($data4[0]) && !empty($data4[1])){
           ?>
             <tr>
             <td valign="top"><b><?php echo $data4[0] ; ?></b></td>
@@ -372,12 +371,12 @@ if (!$product_info) { // product not found in database
     $p_cflag = tep_get_cflag_by_product_id($product_info['products_id']); 
     $hm_option->render($product_info['belong_to_option'], false, 0, '', '', $p_cflag);
     ?>
-        <table width="100%" border="0" id="calculation">
+        <table width="100%" border="0" id="calculation" cellpadding="6" cellspacing="0">
         <tr>
         <td width="20%"><?php echo TEXT_PRODUCTS_QTY;?></td>
         <td colspan="2">
-        <input name="quantity" type="text" id="quantity" style="text-align:right;"
-        value="1" size="4" maxlength="4">                  <?php $p_a_quan = $product_info['products_quantity'];?>
+        <input name="quantity" type="text" id="quantity" style="text-align:right;" value="<?php echo (isset($_POST['quantity'])?$_POST['quantity']:1);?>" size="4" maxlength="4">                  
+        <?php $p_a_quan = $product_info['products_quantity'];?>
         <div id="calculation-add">
         <a style="display:block;" <?php echo $void_href;?> onClick="change_num('quantity','up',1,<?php echo $p_a_quan;?>);return false;"><img src="images/ico/nup.gif" alt="+"></a>
         <a style="display:block;" <?php echo $void_href;?> onClick="change_num('quantity','down', 1,<?php echo $p_a_quan;?>);return false;"><img src="images/ico/ndown.gif" alt="-"></a>

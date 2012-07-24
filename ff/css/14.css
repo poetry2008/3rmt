@@ -2113,7 +2113,7 @@ line-height:16px;
 }
 .option_product_radio_list{
 	overflow:hidden;
-	width:85%;
+	width:100%;
 }
 
 .option_product_radio_img_list{
@@ -2179,6 +2179,7 @@ line-height:16px;
 	color:#FFFFFF;
 	*height:25px;
 	overflow:hidden;
+	*overflow:inherit;
 }
 .time_radio{
 	float:left;

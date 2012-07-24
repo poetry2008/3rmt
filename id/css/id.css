@@ -1742,7 +1742,7 @@ TABLE：Information box
 	color: #555;
 	font-weight: bold;
 	background: #fff url(../images/design/box/product_info_box_td.gif) bottom repeat-x;
-	width:20%;
+	width:107px;
 }
 /* ---------------------------
 TABLE：Information box
@@ -2360,7 +2360,6 @@ searching
 .option_error{
 	color:#ff0000;
 	font-size:12px;
-	*font-size:10px;
 	/*padding-left:10px;*/
 	line-height:1.5;
 }
@@ -2527,6 +2526,7 @@ searching
 	color:#FFFFFF;
 	*height:25px;
 	overflow:hidden;
+	*overflow:inherit;
 }
 .time_radio{
 	float:left;

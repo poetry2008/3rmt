@@ -308,12 +308,25 @@ if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
   } else {
     $entry_email_address_exists = false;
   }
+
+  $options_comment = array();
+  $address_query = tep_db_query("select * from ". TABLE_ADDRESS ." where type='textarea' and status='0' order by sort");
+  while($address_required = tep_db_fetch_array($address_query)){
+    
+    $options_comment[$address_required['name_flag']] = $address_required['comment'];
+  }
+  tep_db_free_result($address_query);
+
   //住所信息验证
   $option_info_array = array(); 
   if (!$hm_option->check()) {
     foreach ($_POST as $p_key => $p_value) {
       $op_single_str = substr($p_key, 0, 3);
       if ($op_single_str == 'op_') {
+        if($options_comment[substr($p_key,3)] == $p_value){
+
+          $p_value = '';
+        }
         $option_info_array[$p_key] = tep_db_input($p_value); 
       } 
     }
@@ -324,23 +337,26 @@ if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
   if($error == false){
     //住所信息入库
     $address_flag_id = tep_db_prepare_input($_POST['address_flag_id']);
-    if($address_flag_id == ''){
-      $add_list_array = array();
-      $add_show_list_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where status='0'");
-      while($add_show_list_array = tep_db_fetch_array($add_show_list_query)){
+    $add_list_array = array();
+    $add_show_list_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where status='0'");
+    while($add_show_list_array = tep_db_fetch_array($add_show_list_query)){
 
         $add_list_array[$add_show_list_array['name_flag']] = $add_show_list_array['id'];
-      }
-      tep_db_free_result($add_show_list_query);
+    }
+    tep_db_free_result($add_show_list_query);
+    if($address_flag_id == ''){
+      
       $rand_num = date('Ymd-His',time()).floor(microtime()*1000);
       foreach($option_info_array as $address_key=>$address_value){
         $address_sql = "insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'{$rand_num}',{$_SESSION['customer_id']},{$add_list_array[substr($address_key,3)]},'". substr($address_key,3) ."','{$address_value}')";
         tep_db_query($address_sql);
       }
     }else{
+      tep_db_query("delete from ". TABLE_ADDRESS_HISTORY ." where customers_id={$_SESSION['customer_id']} and orders_id='". $address_flag_id ."'");
       foreach($option_info_array as $address_key=>$address_value){
 
-        $address_sql = "update ". TABLE_ADDRESS_HISTORY ." set value='". $address_value ."' where customers_id={$_SESSION['customer_id']} and orders_id='". $address_flag_id ."' and name='". substr($address_key,3) ."'";
+         $address_sql = "insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'{$address_flag_id}',{$_SESSION['customer_id']},{$add_list_array[substr($address_key,3)]},'". substr($address_key,3) ."','{$address_value}')";
+        //$address_sql = "update ". TABLE_ADDRESS_HISTORY ." set value='". $address_value ."' where customers_id={$_SESSION['customer_id']} and orders_id='". $address_flag_id ."' and name='". substr($address_key,3) ."'";
         tep_db_query($address_sql);
       }
     }
@@ -430,12 +446,24 @@ if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
    } 
  }  
 }else{
+  $options_comment = array();
+  $address_query = tep_db_query("select * from ". TABLE_ADDRESS ." where type='textarea' and status='0' order by sort");
+  while($address_required = tep_db_fetch_array($address_query)){
+    
+    $options_comment[$address_required['name_flag']] = $address_required['comment'];
+  }
+  tep_db_free_result($address_query);
+
   $error_str = false;
   $option_info_array = array(); 
   if (!$hm_option->check()) {
     foreach ($_POST as $p_key => $p_value) {
       $op_single_str = substr($p_key, 0, 3);
       if ($op_single_str == 'op_') {
+        if($options_comment[substr($p_key,3)] == $p_value){
+
+          $p_value = '';
+        }
         $option_info_array[$p_key] = tep_db_input($p_value); 
       } 
     }
@@ -446,14 +474,15 @@ if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
   //住所信息入库
   if($error_str == false){
     $address_flag_id = tep_db_prepare_input($_POST['address_flag_id']);
-    if($address_flag_id == ''){
-      $add_list_array = array();
-      $add_show_list_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where status='0'");
-      while($add_show_list_array = tep_db_fetch_array($add_show_list_query)){
+    $add_list_array = array();
+    $add_show_list_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where status='0'");
+    while($add_show_list_array = tep_db_fetch_array($add_show_list_query)){
 
         $add_list_array[$add_show_list_array['name_flag']] = $add_show_list_array['id'];
-      }
-      tep_db_free_result($add_show_list_query);
+    }
+    tep_db_free_result($add_show_list_query);
+    if($address_flag_id == ''){
+      
       $rand_num = date('Ymd-His',time()).floor(microtime()*1000);
       foreach($option_info_array as $address_key=>$address_value){
         $address_sql = "insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'{$rand_num}',{$_SESSION['customer_id']},{$add_list_array[substr($address_key,3)]},'". substr($address_key,3) ."','{$address_value}')";
@@ -461,9 +490,11 @@ if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
       }
       $save_flag = true; 
     }else{
+      tep_db_query("delete from ". TABLE_ADDRESS_HISTORY ." where customers_id={$_SESSION['customer_id']} and orders_id='". $address_flag_id ."'");
       foreach($option_info_array as $address_key=>$address_value){
 
-        $address_sql = "update ". TABLE_ADDRESS_HISTORY ." set value='". $address_value ."' where customers_id={$_SESSION['customer_id']} and orders_id='". $address_flag_id ."' and name='". substr($address_key,3) ."'";
+         $address_sql = "insert into ". TABLE_ADDRESS_HISTORY ." values(NULL,'{$address_flag_id}',{$_SESSION['customer_id']},{$add_list_array[substr($address_key,3)]},'". substr($address_key,3) ."','{$address_value}')";
+        //$address_sql = "update ". TABLE_ADDRESS_HISTORY ." set value='". $address_value ."' where customers_id={$_SESSION['customer_id']} and orders_id='". $address_flag_id ."' and name='". substr($address_key,3) ."'";
         tep_db_query($address_sql);
       }
     }
@@ -539,7 +570,7 @@ if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
         <!-- left_navigation_eof //--> </td> 
       <!-- body_text //--> 
-      <td valign="top" id="contents"> <?php //echo tep_draw_form('account_edit', tep_href_link(FILENAME_ACCOUNT_EDIT_PROCESS, '', 'SSL'), 'post', 'onSubmit="return check_form();"') . tep_draw_hidden_field('action', 'process'); ?> 
+      <td valign="top" id="contents"> 
         <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1> 
         
         <div> 

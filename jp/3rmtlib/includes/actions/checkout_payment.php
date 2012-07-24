@@ -16,7 +16,8 @@ if (!tep_session_is_registered('customer_id')) {
   }
 }
 
-$_SESSION['shipping_page_str'] = substr($_SERVER['REQUEST_URI'],1);
+$page_url_array = explode('/',$_SERVER['REQUEST_URI']);
+$_SESSION['shipping_page_str'] = end($page_url_array);
 // if there is nothing in the customers cart, redirect them to the shopping cart page
 if ($cart->count_contents() < 1) {
   tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));

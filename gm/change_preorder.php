@@ -259,7 +259,7 @@ function address_option_show(action){
       $("#error_"+x).html('');
       if(document.getElementById("l_"+x)){
         if($("#l_"+x).val() == 'true'){
-          $("#r_"+x).html('&nbsp;<?php echo TEXT_REQUIRED;?>');
+          $("#r_"+x).html('&nbsp;*<?php echo TEXT_REQUIRED;?>');
         }
       }
     }
@@ -349,7 +349,7 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
         ?>
         if(document.getElementById("l_"+x)){
         if($("#l_"+x).val() == 'true'){
-          $("#r_"+x).html('&nbsp;<?php echo TEXT_REQUIRED;?>');
+          $("#r_"+x).html('&nbsp;*<?php echo TEXT_REQUIRED;?>');
         }
         }
         <?php
@@ -592,6 +592,14 @@ $(document).ready(function(){
 <body>
 <?php 
 if ($error == false && $_POST['action'] == 'process') { 
+
+  $options_comment = array();
+  $address_query = tep_db_query("select * from ". TABLE_ADDRESS ." where type='textarea' and status='0' order by sort");
+  while($address_required = tep_db_fetch_array($address_query)){
+    
+    $options_comment[$address_required['name_flag']] = $address_required['comment'];
+  }
+  tep_db_free_result($address_query);
 //echo tep_draw_form('order1', tep_href_link('change_preorder_confirm.php'));
 $preorder_information = array();
 foreach ($_POST as $post_key => $post_value) {
@@ -603,6 +611,13 @@ foreach ($_POST as $post_key => $post_value) {
     }
   } else {
     //echo '<input type="hidden" name="'.$post_key.'" value="'.stripslashes($post_value).'">'; 
+    if(substr($post_key,0,3) == 'ad_'){
+
+      if($options_comment[substr($post_key,3)] == $post_value){
+
+        $post_value = '';
+      }
+    }
       $preorder_information[$post_key] = stripslashes($post_value); 
   }
 }
@@ -1062,12 +1077,12 @@ document.forms.order1.submit();
              }
              if(isset($_POST['min']) && $_POST['min'] != ''){
 
-                echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\',\''. $_POST['hour'] .'\','. $_POST['min'] .','. $_POST['ele'] .');$("#shipping_list_min").show();</script>';
+                echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\',\''. $_POST['hour'] .'\','. $_POST['min'] .','. $_POST['ele'] .');$("#shipping_list_min").show();$("#h_c_'.$_POST['hour'].'").val('.$_POST['min'].');</script>';
              }else{
 
                 if(isset($_SESSION['preorder_information']['min']) && $_SESSION['preorder_information']['min'] != ''){
 
-                  echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\',\''. $_SESSION['preorder_information']['hour'] .'\','. $_SESSION['preorder_information']['min'] .','. $_SESSION['preorder_information']['ele'] .');$("#shipping_list_min").show();</script>';
+                  echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\',\''. $_SESSION['preorder_information']['hour'] .'\','. $_SESSION['preorder_information']['min'] .','. $_SESSION['preorder_information']['ele'] .');$("#shipping_list_min").show();$("#h_c_'.$_SESSION['preorder_information']['hour'].'").val('.$_SESSION['preorder_information']['min'].');</script>';
                 }
              } 
 ?> 

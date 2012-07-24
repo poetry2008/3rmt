@@ -387,7 +387,6 @@ td,th{ border:0; padding:2px; font-size:14px;}
 }
 #main-content table{
 	color:#fff;
-	overflow:hidden;
 	margin-bottom:10px;
 }
 
@@ -535,11 +534,10 @@ td,th{ border:0; padding:2px; font-size:14px;}
 	overflow:hidden;
 }
 #detail-div table{ margin:10px 0;}
-#detail-div-number{float:right;}
+#detail-div-number{float:right; width:100%;}
 #detail-div-number select ,#detail-div-number input ,#calculation{ float:left; margin-right:3px;}
-#detail-div-number span{ float:left; /*margin:7px 5px 0 0;*/}
 #detail-div-number p{margin:10px 0;font-weight:bold;}
-#calculation{ padding:0; /*margin:-4px 0 5px 0;*/ margin:8px 0 2px 0; width:400px\9;}
+#calculation{ padding:0; /*margin:-4px 0 5px 0;*/ margin:8px 0 2px 0;}
 #calculation span{ float:left;margin:12px 0 0 0;}
 .calculation-add{ float:left; margin-top:5px;}
 .calculation-add a{ float:left; margin-right:3px;}
@@ -1495,3 +1493,4 @@ top:70px;
 	margin:0 3px;
 }
 .markProductOutOfStock a{ font-weight:bold;}
+.table_p10{ padding-left:20px;}

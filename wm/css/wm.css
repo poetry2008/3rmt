@@ -1189,6 +1189,7 @@ TD.headerInfo {
 	color: #00474b;
 	font-weight: bold;
 	background: #fff url(../images/design/box/product_info_box_td.gif) bottom repeat-x;
+	width:60px;
 }
 /*TABLE：infoBoxContents*/
 .infoBoxContents {
@@ -1342,6 +1343,8 @@ SPAN.productSpecialPrice {
 /*SPAN：error*/
 SPAN.errorText {
 	color: #ff0000;
+	font-size:11px;
+	*font-size:10px;
 }
 /*register checkbox・mouse over*/
 .moduleRow, .moduleRow td {
@@ -1735,7 +1738,7 @@ searching
 	line-height:1.5;
 }
 .option_name{
-	width:50px;
+	width:60px;
 	vertical-align:top;
 	padding-left:12px;
 }
@@ -1871,7 +1874,7 @@ searching
 }
 .preorder_option{ padding:0;}
 .preorder_option .option_name{
-	width:123px;
+	width:25%;
 	padding:0;
 }
 .option_money{
@@ -1901,7 +1904,8 @@ searching
 
 .shipping_error{
 	color:#ff0000;
-	font-size:12px;
+	font-size:11px;
+	*font-size:10px;
 	line-height:1.5;
 }
 .shipping_time{
@@ -1912,6 +1916,7 @@ searching
 	color:#FFFFFF;
 	*height:25px;
 	overflow:hidden;
+	*overflow:inherit;
 }
 .time_radio{
 	float:left;
@@ -1927,3 +1932,9 @@ searching
 .time_label a:hover{ color:#FFFFFF; cursor:pointer;}
 #table_td_p0{ padding:15px 0 0 0; }
 .shipping_box td{ padding:0 5px;}
+.infoBoxContents .table_p10{ 
+	padding-left:25px; 
+	font-size:11px;
+	*font-size:10px; 
+	line-height:1.5;
+}
