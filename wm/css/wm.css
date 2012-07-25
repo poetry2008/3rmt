@@ -1930,7 +1930,7 @@ searching
 }
 .time_label a{ color:#FFFFFF; cursor:pointer;}
 .time_label a:hover{ color:#FFFFFF; cursor:pointer;}
-#table_td_p0{ padding:15px 0 0 0; }
+#table_td_p0{ padding:0; }
 .shipping_box td{ padding:0 5px;}
 .infoBoxContents .table_p10{ 
 	padding-left:25px; 
