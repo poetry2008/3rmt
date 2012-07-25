@@ -605,6 +605,18 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
 }
 
 function address_option_list(value){
+  $("#td_"+country_fee_id_one).hide();
+  $("#td_"+country_area_id_one).hide();
+  $("#td_"+country_city_id_one).hide();
+
+  //clear
+  var country_fee = document.getElementById(country_fee_id);
+  country_fee.options.length = 0;   
+  var country_area = document.getElementById(country_area_id);
+  country_area.options.length = 0;
+  var country_city = document.getElementById(country_city_id);
+  country_city.options.length = 0;
+
   var arr_list = new Array();
 <?php
   //根据后台的设置来显示相应的地址列表
