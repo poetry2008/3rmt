@@ -135,9 +135,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
             <div align="left"  style="padding:10px 0 10px 0;">
                 <input class="button" type='submit' value='送信' />
                 <input class="button" type='reset' value='リセット' />
-                <input class="button" type='button' value='キャンセル'
-                onClick='window.location.href="<?php echo 
-                tep_href_link('view.php','','SSL');?>"' />
+                <input class="button" type='button' value='キャンセル' onClick='window.location.href="<?php echo tep_href_link('view.php','','SSL');?>"' />
             </div>
         </form>
     </div>
