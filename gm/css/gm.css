@@ -590,7 +590,7 @@ td,th{ border:0; padding:2px; font-size:14px;}
 }
 #game-preview{
 	margin-left:40px;
-	background:url(../images/seach_bottom03_visit.png) no-repeat;
+	background:url(../images/seach_right.png) no-repeat;
 	width:295px;
 	height:75px;
 	float:left;
@@ -620,7 +620,7 @@ td,th{ border:0; padding:2px; font-size:14px;}
 	margin-right:5%;
 }
 .shopping_cart_checkout {
-    background: url(../includes/languages/japanese/images/buttons/button_checkout02.gif) no-repeat;
+    background: url(../includes/languages/japanese/images/buttons/button_shipping_checkout.gif) no-repeat;
     border: 0 none;
     cursor: pointer;
     height: 39px;
