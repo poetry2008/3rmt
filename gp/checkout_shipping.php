@@ -1041,6 +1041,19 @@ unset($_SESSION['shipping_session_flag']);
       sort($s_temp_array);
       $ship_new_array[$_s_key] = implode('|',$s_temp_array); 
   } 
+
+  foreach($ship_new_array as $s_k=>$s_v){
+    $ss_array = array();
+    $ss_array = explode(',',$s_v);
+    $ss_start = str_replace(':','',$ss_array[0]);
+    $ss_end = str_replace(':','',$ss_array[1]);
+    if($ss_start > $ss_end){
+
+      unset($ship_new_array[$s_k]);
+      unset($shipp_array[$s_k]);
+    }
+  }
+
   $max_time_str = implode('||',$shipp_array);
   $min_time_str = implode('||',$ship_new_array);
   //----------
