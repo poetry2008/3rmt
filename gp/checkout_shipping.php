@@ -603,6 +603,18 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
 }
 
 function address_option_list(value){
+  $("#td_"+country_fee_id_one).hide();
+  $("#td_"+country_area_id_one).hide();
+  $("#td_"+country_city_id_one).hide();
+
+  //clear
+  var country_fee = document.getElementById(country_fee_id);
+  country_fee.options.length = 0;   
+  var country_area = document.getElementById(country_area_id);
+  country_area.options.length = 0;
+  var country_city = document.getElementById(country_city_id);
+  country_city.options.length = 0;
+
   var arr_list = new Array();
 <?php
   //根据后台的设置来显示相应的地址列表
@@ -1029,6 +1041,19 @@ unset($_SESSION['shipping_session_flag']);
       sort($s_temp_array);
       $ship_new_array[$_s_key] = implode('|',$s_temp_array); 
   } 
+
+  foreach($ship_new_array as $s_k=>$s_v){
+    $ss_array = array();
+    $ss_array = explode(',',$s_v);
+    $ss_start = str_replace(':','',$ss_array[0]);
+    $ss_end = str_replace(':','',$ss_array[1]);
+    if($ss_start > $ss_end){
+
+      unset($ship_new_array[$s_k]);
+      unset($shipp_array[$s_k]);
+    }
+  }
+
   $max_time_str = implode('||',$shipp_array);
   $min_time_str = implode('||',$ship_new_array);
   //----------

@@ -283,6 +283,15 @@ function address_option_list(value){
   $("#td_"+country_fee_id_one).hide();
   $("#td_"+country_area_id_one).hide();
   $("#td_"+country_city_id_one).hide(); 
+
+  //clear
+  var country_fee = document.getElementById(country_fee_id);
+  country_fee.options.length = 0;   
+  var country_area = document.getElementById(country_area_id);
+  country_area.options.length = 0;
+  var country_city = document.getElementById(country_city_id);
+  country_city.options.length = 0; 
+
   var arr_list = new Array();
   var arr_flag = new Array();
   var arr_address = new Array();
