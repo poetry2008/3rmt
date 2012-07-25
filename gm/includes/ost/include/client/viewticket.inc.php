@@ -14,8 +14,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
 ?>
 <table  class="view_contents" width="100%">
   <tr>
-    <td class="msg"><h3><?=TEXT_VIEW_NUM_QUERY.$ticket->getExtId()?>&nbsp;<a
-    href="<?php echo tep_href_link('view.php','id='.$ticket->getExtId(),'SSL');?>" title="Reload"><img style="vertical-align:middle;" src="images/ico/refresh.gif" /></a></h3></td>
+    <td class="msg"><h3><?=TEXT_VIEW_NUM_QUERY.$ticket->getExtId()?>&nbsp;<a href="<?php echo tep_href_link('view.php','id='.$ticket->getExtId(),'SSL');?>" title="Reload"><img style="vertical-align:middle;" src="images/ico/refresh.gif" /></a></h3></td>
   </tr> 
   <tr>
     <td>  
@@ -153,8 +152,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
                  <img src="includes/languages/japanese/images/buttons/button_send_mail.gif" onmouseover="this.src='includes/languages/japanese/images/buttons/button_send_mail_hover.gif'" onmouseout="this.src='includes/languages/japanese/images/buttons/button_send_mail.gif'"></a>
            <a onclick="document.forms.reply.reset()" style="padding:0;background:none;border:none;" value="<?php echo TEXT_VIEW_RESET;?>" class="button">
                   <img src="includes/languages/japanese/images/buttons/open_users01.gif" onmouseover="this.src='includes/languages/japanese/images/buttons/open_users01_hover.gif'" onmouseout="this.src='includes/languages/japanese/images/buttons/open_users01.gif'"></a>
-            <a onclick="window.location.href='<?php echo
-            tep_href_link('view.php','','SSL');?>'" value="<?php echo TEXT_VIEW_CANCELED?>" style="padding:0;background:none;border:none;" class="button" href="javascript:vold(0)"><img src="includes/languages/japanese/images/buttons/open_users02.gif" onmouseover="this.src='includes/languages/japanese/images/buttons/open_users02_hover.gif'" onmouseout="this.src='includes/languages/japanese/images/buttons/open_users02.gif'"></a>
+            <a onclick="window.location.href='<?php echo tep_href_link('view.php','','SSL');?>'" value="<?php echo TEXT_VIEW_CANCELED?>" style="padding:0;background:none;border:none;" class="button" href="javascript:vold(0)"><img src="includes/languages/japanese/images/buttons/open_users02.gif" onmouseover="this.src='includes/languages/japanese/images/buttons/open_users02_hover.gif'" onmouseout="this.src='includes/languages/japanese/images/buttons/open_users02.gif'"></a>
             </div>
         </form>
     </div>
