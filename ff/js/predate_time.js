@@ -128,7 +128,7 @@ function selectHour(start_time,end_time,hour,min_num,ele){
         }
         
         html_str = '';
-        html_str = '<table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><input type="hidden" name="hour" value="'+hour+'">';
+        html_str = '<table width="100%" border="0" cellspacing="0" cellpadding="2"><tr>';
         
         
 
@@ -184,7 +184,7 @@ function selectHour(start_time,end_time,hour,min_num,ele){
             }
         }
          
-          html_str += '<td><input type="hidden" id="start_hour" name="start_hour" value="'+start_hour_num+'"><input type="hidden" id="start_min" name="start_min" value="'+start_min_num+'"><input type="hidden" id="end_hour"name="end_hour" value="'+end_hour_num+'"><input type="hidden" id="end_min" name="end_min" value="'+end_min_num+'"><div id="shipping_time_id" class="shipping_time">'+string+'</div></td>';
+          html_str += '<td><input type="hidden" name="hour" value="'+hour+'"><input type="hidden" id="start_hour" name="start_hour" value="'+start_hour_num+'"><input type="hidden" id="start_min" name="start_min" value="'+start_min_num+'"><input type="hidden" id="end_hour"name="end_hour" value="'+end_hour_num+'"><input type="hidden" id="end_min" name="end_min" value="'+end_min_num+'"><div id="shipping_time_id" class="shipping_time">'+string+'</div></td>';
           
 
           html_str += '</tr><tr></table>'; 
@@ -323,7 +323,7 @@ function change_new_time(value,end_time,h_num){
 }
 function check_out(num){
       $("#shipping_time_id").hide();
-      $("input[name='hour']").remove();
+      $("input[name='hour']").val("");
       var shipping_list_min = document.getElementById("shipping_list_min");
       var hour = document.getElementById("hour"+num);
       shipping_list_min.style.display = 'none';

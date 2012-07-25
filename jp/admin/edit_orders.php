@@ -426,7 +426,7 @@ if (tep_not_null($action)) {
         
         $address_list_query = tep_db_query("select * from ". TABLE_ADDRESS ." where name_flag='". substr($ad_key,3) ."'");
         $address_list_array = tep_db_fetch_array($address_list_query);
-        $ad_value = $address_list_array['comment'] == $ad_value ? '' : $ad_value;
+        $ad_value = $address_list_array['comment'] == $ad_value && $address_list_array['type'] == 'textarea' ? '' : $ad_value;
    
         $ad_sql = "insert into ". TABLE_ADDRESS_ORDERS ." values(NULL,'".$oID."','{$check_status['customers_id']}','{$address_list_array['id']}','". substr($ad_key,3) ."','$ad_value')";
         $ad_query = tep_db_query($ad_sql);
@@ -3037,10 +3037,10 @@ if (($action == 'edit') && ($order_exists == true)) {
         '    <td align="left" class="' . $TotalStyle .  '">'.EDIT_ORDERS_OTTOTAL_READ.'</td>' . 
         '    <td align="right" class="' . $TotalStyle . '"><b>' . $TotalDetails["Name"] . '</b></td>' . 
         '    <td align="right" class="' . $TotalStyle . '"><b>';
-      if($TotalDetails["Price"]+$shipping_fee_total >= 0 ){
-        echo $currencies->ot_total_format(($TotalDetails["Price"]+$shipping_fee_total), true, $order->info['currency'], $order->info['currency_value']);
+      if($TotalDetails["Price"] >= 0 ){
+        echo $currencies->ot_total_format(($TotalDetails["Price"]), true, $order->info['currency'], $order->info['currency_value']);
       }else{
-        echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->ot_total_format(($TotalDetails["Price"]+$shipping_fee_total), true, $order->info['currency'], $order->info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
+        echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->ot_total_format(($TotalDetails["Price"]), true, $order->info['currency'], $order->info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
       }
       echo '</b>' . 
         "<input name='update_totals[$TotalIndex][title]' type='hidden' value='" . trim($TotalDetails["Name"]) . "' size='" . strlen($TotalDetails["Name"]) . "' >" . 
