@@ -54,7 +54,7 @@ $qfrom=' FROM '.TICKET_TABLE.' ticket LEFT JOIN '.DEPT_TABLE.' dept ON ticket.de
 //Pagenation stuff....wish MYSQL could auto pagenate (something better than limit)
 $total=db_count('SELECT count(*) '.$qfrom.' '.$qwhere);
 $pageNav=new Pagenate($total,$page,$pagelimit);
-$pageNav->setURL('view.php',$qstr.'&sort='.urlencode($_REQUEST['sort']).'&order='.urlencode($_REQUEST['order']));
+$pageNav->setURL(tep_href_link('view.php',$qstr.'&sort='.urlencode($_REQUEST['sort']).'&order='.urlencode($_REQUEST['order']),'SSL'));
 
 //Ok..lets roll...create the actual query
 $qselect.=' ,count(attach_id) as attachments ';
@@ -69,7 +69,6 @@ $_open = 'オープン';
 $_closed = 'クローズ';
 
 $results_type=($status)?($$_status).'':' 全部';
-//$results_type=($status)?ucfirst($status).' 問合番号':' 全部';
 $negorder=$order=='DESC'?'ASC':'DESC'; //Negate the sorting..
 $_negorder=$negorder=="DESC"?'昇順':'降順';
 ?>
@@ -87,10 +86,9 @@ $_negorder=$negorder=="DESC"?'昇順':'降順';
     <tr>
         <td width="60%" class="msg"><?=$showing?>&nbsp;&nbsp;<?=$results_type?></td>
         <td nowrap align="right">
-            <a href="view.php?status=open">オープン</a> |           
-            <a href="view.php?status=closed">クローズ</a> |           
-            
-            <a class="log_out" href="logout.php">ログアウト</a>
+            <a href="<?php echo tep_href_link('view.php','status=open','SSL');?>">オープン</a> |     
+            <a href="<?php echo tep_href_link('view.php','status=closed','SSL');?>">クローズ</a> | 
+            <a class="log_out" href="<?php echo tep_href_link('logout.php','','SSL');?>">ログアウト</a>
         </td>
     </tr>
  </table>
@@ -99,12 +97,10 @@ $_negorder=$negorder=="DESC"?'昇順':'降順';
      <table border="0" cellspacing="1" cellpadding="2" class="tickets" align="center" width="100%">
         <tr>
           <th width="60" nowrap>
-                <a href="view.php?sort=ID&order=<?=$negorder?><?=$qstr?>" title="番号順に表示 <?=$_negorder?>">問合番号</a></th>
+                <a href="<?php echo tep_href_link('view.php','sort=ID&order='.$negorder.$qstr,'SSL');?>" title="番号順に表示 <?=$_negorder?>">問合番号</a></th>
           <th width="70">
-                <a href="view.php?sort=date&order=<?=$negorder?><?=$qstr?>" title="作成日順に表示 <?=$_negorder?>">作成日</a></th>
-            <?php /* <th width="154">ステータス</th> */ ?>
+                <a href="<?php echo tep_href_link('view.php','sort=date&order='.$negorder.$qstr,'SSL');?>" title="作成日順に表示 <?=$_negorder?>">作成日</a></th>
             <th>件名</th>
-            <?php /* <th width="150">メールアドレス</th> */ ?>
         </tr>
         <?
         $class = "row1";
@@ -126,18 +122,14 @@ $_negorder=$negorder=="DESC"?'昇順':'降順';
                 ?>
             <tr class="<?=$class?> " id="<?=$row['ticketID']?>">
                 <td align="left" title="<?=$row['email']?>" nowrap>
-                    <a class="Icon <?=strtolower($row['source'])?>Ticket" title="<?=$row['email']?>" href="view.php?id=<?=$row['ticketID']?>">
-                        <?=$ticketID?></a></td>
+                    <a class="Icon <?=strtolower($row['source'])?>Ticket" title="<?=$row['email']?>" href="<?php echo tep_href_link('view.php','id='.$row['ticketID'],'SSL');?>"><?=$ticketID?></a></td>
                 <td nowrap>&nbsp;<?=Format::db_date($row['created'])?></td>
                                 <?php 
                       $_status = '_'.$row['status'];
             $_open = 'オープン';
             $_closed = 'クローズ';
                   ?>
-                   <?php /* <td>&nbsp;<?=$$_status?></td> */ ?>
-                <td>&nbsp;<a href="view.php?id=<?=$row['ticketID']?>"><?=$subject?></a>
-                    &nbsp;<?=$row['attachments']?"<span class='Icon file'>&nbsp;</span>":''?></td>
-                <?php /* <td>&nbsp;<?=Format::truncate($row['email'],40)?></td> */ ?>
+                <td>&nbsp;<a href="<?php echo tep_href_link('view.php','id='.$row['ticketID'],'SSL');?>"><?=$subject?></a>&nbsp;<?=$row['attachments']?"<span class='Icon file'>&nbsp;</span>":''?></td>
             </tr>
             <?
             $class = ($class =='row2') ?'row1':'row2';

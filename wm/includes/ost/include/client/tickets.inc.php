@@ -52,7 +52,7 @@ $qfrom=' FROM '.TICKET_TABLE.' ticket LEFT JOIN '.DEPT_TABLE.' dept ON ticket.de
 //Pagenation stuff....wish MYSQL could auto pagenate (something better than limit)
 $total=db_count('SELECT count(*) '.$qfrom.' '.$qwhere);
 $pageNav=new Pagenate($total,$page,$pagelimit);
-$pageNav->setURL('view.php',$qstr.'&sort='.urlencode($_REQUEST['sort']).'&order='.urlencode($_REQUEST['order']));
+$pageNav->setURL(tep_href_link('view.php',$qstr.'&sort='.urlencode($_REQUEST['sort']).'&order='.urlencode($_REQUEST['order']),'SSL'));
 
 //Ok..lets roll...create the actual query
 $qselect.=' ,count(attach_id) as attachments ';
@@ -85,9 +85,9 @@ $_negorder=$negorder=="DESC"?'昇順':'降順';
     <tr>
         <td width="60%" class="msg"><?=$showing?>&nbsp;&nbsp;<?=$results_type?></td>
         <td style="padding-right:10px;" nowrap="nowrap" valign="middle" align="right">
-            <a href="view.php?status=open">オープン</a> |           
-            <a href="view.php?status=closed">クローズ</a> |           
-            <a class="log_out" href="logout.php">ログアウト</a>
+            <a href="<?php echo tep_href_link('view.php','status=open','SSL');?>">オープン</a> | 
+            <a href="<?php echo tep_href_link('view.php','status=closed','SSL');?>">クローズ</a> | 
+            <a class="log_out" href="<?php echo tep_href_link('logout.php','','SSL');?>">ログアウト</a>
         </td>
     </tr>
  </table>
@@ -95,8 +95,8 @@ $_negorder=$negorder=="DESC"?'昇順':'降順';
     <tr><td>
      <table width="100%" border="0" cellspacing="1" cellpadding="2" class="tickets" align="center">
         <tr>
-          <th nowrap width="80"><a href="view.php?sort=ID&order=<?=$negorder?><?=$qstr?>" title="番号順に表示 <?=$_negorder?>">問合番号</a></th>
-          <th width="80"><a href="view.php?sort=date&order=<?=$negorder?><?=$qstr?>" title="作成日順に表示 <?=$_negorder?>">作成日</a></th>
+          <th nowrap width="80"><a href="<?php echo tep_href_link('view.php','sort=ID&order='.$negorder.$qstr,'SSL');?>" title="番号順に表示 <?=$_negorder?>">問合番号</a></th>
+          <th width="80"><a href="<?php echo tep_href_link('view.php','sort=date&order='.$negorder.$qstr,'SSL');?>" title="作成日順に表示 <?=$_negorder?>">作成日</a></th>
           <th>件名</th>
         </tr>
         <?
@@ -119,7 +119,7 @@ $_negorder=$negorder=="DESC"?'昇順':'降順';
                 ?>
         <tr class="<?=$class?> " id="<?=$row['ticketID']?>">
           <td align="left" title="<?=$row['email']?>" nowrap>
-          	<a class="Icon <?=strtolower($row['source'])?>Ticket" title="<?=$row['email']?>" href="view.php?id=<?=$row['ticketID']?>"><?=$ticketID?></a>
+          	<a class="Icon <?=strtolower($row['source'])?>Ticket" title="<?=$row['email']?>" href="<?php echo tep_href_link('view.php','id='.$row['ticketID'],'SSL');?>"><?=$ticketID?></a>
           </td>
           <td nowrap><?=Format::db_date($row['created'])?></td>
                                 <?php 
@@ -127,14 +127,14 @@ $_negorder=$negorder=="DESC"?'昇順':'降順';
             $_open = 'オープン';
             $_closed = 'クローズ';
                   ?>
-          <td><a href="view.php?id=<?=$row['ticketID']?>"><?=$subject?></a><?=$row['attachments']?"<span class='Icon file'>&nbsp;</span>":''?></td>
+          <td><a href="<?php echo tep_href_link('view.php','id='.$row['ticketID'],'SSL');?>"><?=$subject?></a><?=$row['attachments']?"<span class='Icon file'>&nbsp;</span>":''?></td>
         </tr>
-            <?
+            <?php
             $class = ($class =='row2') ?'row1':'row2';
             } //end of while.
         else: //not tickets found!! ?> 
             <tr class="<?=$class?>"><td colspan=7><b>該当するものはありません。</b></td></tr>
-        <?
+        <?php
         endif; ?>
      </table>
     </td></tr>
