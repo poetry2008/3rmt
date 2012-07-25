@@ -1,10 +1,25 @@
+function search_over()
+{
+       var gameid = document.getElementById("gameid");
+       if(gameid.style.display == 'none'){ 
+       document.getElementById("game-preview").style.background='url("../images/seach_bottom03_hover.png")';
+       }
+}
+function search_out()
+{     
+       var gameid = document.getElementById("gameid");
+       if(gameid.style.display == 'none')
+        {
+          document.getElementById("game-preview").style.background='url("../images/seach_bottom03_visit.png")';
+        }
+  }
 function fn(value){
   var gameid = document.getElementById("gameid");
   if(gameid.style.display == 'none'){  
-  $(value).css("background","url('../images/seach_bottom04_visit.png') no-repeat scroll 0 0 transparent");
+   $(value).css("background","url('../images/seach_bottom04_visit.png') no-repeat scroll 0 0 transparent");
    $(value).css("height","75px");
    $("#gameid").slideDown("slow");
-         $("#out_id").slideUp("slow");
+   $("#out_id").slideUp("slow");
    }else{
     $(value).css("background","url('../images/seach_bottom03_visit.png') no-repeat scroll 0 0 transparent");
       $("#gameid").slideUp("slow");               
