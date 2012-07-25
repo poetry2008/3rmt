@@ -115,7 +115,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
         <?}?>
     </div> 
     <div id="reply">
-        <form action="<?php echo tep_href_link('view.php','id='.$id'.#reply','SSL');?>" name="reply" method="post" enctype="multipart/form-data">
+        <form action="<?php echo tep_href_link('view.php','id='.$id.'#reply','SSL');?>" name="reply" method="post" enctype="multipart/form-data">
             <input type="hidden" name="id" value="<?=$ticket->getExtId()?>">
             <input type="hidden" name="respid" value="<?=$respID?>">
             <input type="hidden" name="a" value="postmessage">
@@ -136,7 +136,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
                 <input class="button" type='submit' value='送信' />
                 <input class="button" type='reset' value='リセット' />
                 <input class="button" type='button' value='キャンセル'
-                onClick='window.location.href="<?php
+                onClick='window.location.href="<?php echo 
                 tep_href_link('view.php','','SSL');?>"' />
             </div>
         </form>

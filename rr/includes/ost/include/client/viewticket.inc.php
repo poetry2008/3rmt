@@ -14,7 +14,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
 ?>
 <table width="100%" cellpadding="1" cellspacing="0" border="0" class="viewticket_warpper">
     <tr><td colspan=2 width=100% class="msg">問合番号<?=$ticket->getExtId()?> 
-        &nbsp;<a href="<?php echo tep_href_link('view.php','id='.$ticket->getExtId());?>" title="Reload"><span class="Icon refresh">&nbsp;</span></a></td></tr> 
+        &nbsp;<a href="<?php echo tep_href_link('view.php','id='.$ticket->getExtId(),'SSL');?>" title="Reload"><span class="Icon refresh">&nbsp;</span></a></td></tr> 
     <tr>
        <td width=43%> 
         <table align="center" class="infotable" cellspacing="1" cellpadding="3" width="100%" border=0>

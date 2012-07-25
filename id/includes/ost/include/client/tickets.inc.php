@@ -86,7 +86,7 @@ $_negorder=$negorder=="DESC"?'昇順':'降順';
         <td width="60%" class="msg"><?=$showing?>&nbsp;&nbsp;<?=$results_type?></td>
         <td  class="msg_list" nowrap="nowrap" valign="middle" align="right">
             <a href="<?php echo tep_href_link('view.php','status=open','SSL');?>">オープン</a> | 
-            <a href="<?php echo tep_href_link('view.php','status=closed"','SSL');?>">クローズ</a> | 
+            <a href="<?php echo tep_href_link('view.php','status=closed','SSL');?>">クローズ</a> | 
             <a class="log_out" href="<?php echo tep_href_link('logout.php','','SSL');?>">ログアウト</a>
         </td>
     </tr>
@@ -117,7 +117,7 @@ $_negorder=$negorder=="DESC"?'昇順':'降順';
                 ?>
         <tr class="<?=$class?> " id="<?=$row['ticketID']?>">
           <td width="80" title="<?=$row['email']?>" nowrap>
-          	<a class="Icon <?=strtolower($row['source'])?>Ticket" title="<?=$row['email']?>" href="<?php echo tep_href_link('view.php','id=',$row['ticketID'],'SSL');?>"><?=$ticketID?></a></td>
+          	<a class="Icon <?=strtolower($row['source'])?>Ticket" title="<?=$row['email']?>" href="<?php echo tep_href_link('view.php','id='.$row['ticketID'],'SSL');?>"><?=$ticketID?></a></td>
           <td width="80" nowrap><?=Format::db_date($row['created'])?></td>
                                 <?php 
                       $_status = '_'.$row['status'];
@@ -133,13 +133,13 @@ $_negorder=$negorder=="DESC"?'昇順':'降順';
             <tr class="<?=$class?>"><td colspan=7><b>該当するものはありません。</b></td></tr>
         <?
         endif; ?>
+    <?
+    if($num>0 && $pageNav->getNumPages()>1){ //if we actually had any tickets returned?>
+     <tr><td colspan="7" style="text-align:left;padding-left:20px; font-size:12px;">ページ:<?=$pageNav->getPageLinks()?>&nbsp;</td></tr>
+    <?}?>
      </table>
     <!-- </td></tr>
     <tr><td>
-    <?
-    if($num>0 && $pageNav->getNumPages()>1){ //if we actually had any tickets returned?>
-     <tr><td style="text-align:left;padding-left:20px; font-size:12px;">ページ:<?=$pageNav->getPageLinks()?>&nbsp;</td></tr>
-    <?}?>
  </table>-->
 </div>
 <?

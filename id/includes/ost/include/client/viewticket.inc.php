@@ -14,7 +14,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
 ?>
 <div class="login_inc02">
   <span>問合番号<?=$ticket->getExtId()?></span><a href="<?php echo
-  tep_href_link('view.php'.'id='.$ticket->getExtId(),'SSL');?>" title="Reload"><span class="Icon refresh">&nbsp;</span></a>
+  tep_href_link('view.php','id='.$ticket->getExtId(),'SSL');?>" title="Reload"><span class="Icon refresh">&nbsp;</span></a>
 </div>
 <table width="100%" cellpadding="1" cellspacing="0" border="0">
     <tr>
