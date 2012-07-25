@@ -14,7 +14,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
 ?>
 <table width="100%" cellpadding="1" cellspacing="0" border="0">
     <tr><td colspan=2 width=100% class="msg">問合番号 <?=$ticket->getExtId()?> 
-        &nbsp;<a href="view.php?id=<?=$ticket->getExtId()?>" title="Reload"><img style="vertical-align:middle;" src="images/icons/refresh.gif" /></a></td></tr> 
+        &nbsp;<a href="<?php echo tep_href_link('view.php','id='.$ticket->getExtId(),'SSL');?>" title="Reload"><img style="vertical-align:middle;" src="images/icons/refresh.gif" /></a></td></tr> 
     <tr>
        <td width=45%> 
         <table align="center" class="infotable" cellspacing="1" cellpadding="3" width="100%" border=0>
@@ -114,7 +114,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
         <?}?>
     </div> 
     <div id="reply">
-        <form action="view.php?id=<?=$id?>#reply" name="reply" method="post" enctype="multipart/form-data">
+        <form action="<?php echo tep_href_link('view.php','id='.$id.'#reply','SSL');?>" name="reply" method="post" enctype="multipart/form-data">
             <input type="hidden" name="id" value="<?=$ticket->getExtId()?>">
             <input type="hidden" name="respid" value="<?=$respID?>">
             <input type="hidden" name="a" value="postmessage">
@@ -134,7 +134,9 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
             <div align="left"  style="padding:10px 0 10px 0;">
                 <button type="submit" class="button" style="padding:0;background:none;border:none;" value="送信"><img src="includes/languages/japanese/images/buttons/button_send_mail.gif" /></button>
                 <button type="reset"  class="button" style="padding:0;background:none;border:none;" value="リセット"><img src="includes/languages/japanese/images/buttons/open_users01.gif" /></button>
-                <button type="button" class="button" style="padding:0;background:none;border:none;" value="キャンセル" onClick='window.location.href="view.php";'><img src="includes/languages/japanese/images/buttons/open_users02.gif" /></button>
+                <button type="button" class="button"
+                style="padding:0;background:none;border:none;" value="キャンセル"
+                onClick='window.location.href="<?php echo tep_href_link('view.php','','SSL');?>";'><img src="includes/languages/japanese/images/buttons/open_users02.gif" /></button>
             </div>
         </form>
     </div>

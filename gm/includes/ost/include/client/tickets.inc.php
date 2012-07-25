@@ -55,7 +55,7 @@ $qfrom=' FROM '.TICKET_TABLE.' ticket LEFT JOIN '.DEPT_TABLE.' dept ON ticket.de
 //Pagenation stuff....wish MYSQL could auto pagenate (something better than limit)
 $total=db_count('SELECT count(*) '.$qfrom.' '.$qwhere);
 $pageNav=new Pagenate($total,$page,$pagelimit);
-$pageNav->setURL('view.php',$qstr.'&sort='.urlencode($_REQUEST['sort']).'&order='.urlencode($_REQUEST['order']));
+$pageNav->setURL(tep_href_link('view.php',$qstr.'&sort='.urlencode($_REQUEST['sort']).'&order='.urlencode($_REQUEST['order']),'SSL'));
 
 //Ok..lets roll...create the actual query
 $qselect.=' ,count(attach_id) as attachments ';
@@ -87,9 +87,7 @@ $_negorder=$negorder=="DESC"?TEXT_SORT:TEXT_DESC_SORT;
     <tr>
         <td width="60%" class="msg"><?=$showing?>&nbsp;&nbsp;</td>
         <td nowrap align="right">
-            <!--<a href="view.php?status=open"><?php echo TEXT_OPEN;?></a>            
-            <a href="view.php?status=closed"><?php echo TEXT_CLOSED?></a>-->    
-            <a class="log_out" href="logout.php"><img src="images/door_out.gif"><?php echo TEXT_LOGOUT?></a>
+            <a class="log_out" href="<?php echo tep_href_link('logout.php','','SSL');?>"><img src="images/door_out.gif"><?php echo TEXT_LOGOUT?></a>
         </td>
     </tr>
  </table>
@@ -104,7 +102,7 @@ $_negorder=$negorder=="DESC"?TEXT_SORT:TEXT_DESC_SORT;
         } 
         ?>
         <td width="33%"><a class="product_listing_link"
-        style="background:url(images/design/box/<?php echo $products_image_all;?>)"  href="view.php?status=all"><?php echo TEXT_ALL;?></a></td>
+        style="background:url(images/design/box/<?php echo $products_image_all;?>)" href="<?php echo tep_href_link('view.php','status=all','SSL');?>;"><?php echo TEXT_ALL;?></a></td>
         <?php
         if($_GET['status'] == 'open'){
         
@@ -114,7 +112,7 @@ $_negorder=$negorder=="DESC"?TEXT_SORT:TEXT_DESC_SORT;
         } 
         ?>
         <td width="33%"><a class="product_listing_link"
-        style="background:url(images/design/box/<?php echo $products_image_one;?>)"  href="view.php?status=open"><?php echo TEXT_OPEN;?></a></td>
+        style="background:url(images/design/box/<?php echo $products_image_one;?>)" href="<?php echo tep_href_link('view.php','status=open','SSL');?>"><?php echo TEXT_OPEN;?></a></td>
         <?php
         if($_GET['status'] == 'closed'){
         
@@ -124,20 +122,15 @@ $_negorder=$negorder=="DESC"?TEXT_SORT:TEXT_DESC_SORT;
         } 
         ?>
         <td width="33%" style="border-right:1px solid #666666;"><a id="jingyi"
-        class="product_listing_link" style="background: url(images/design/box/<?php
-        echo $products_image;?>)" href="view.php?status=closed"><?php echo TEXT_CLOSED?></a></td>
+        class="product_listing_link" style="background: url(images/design/box/<?php echo $products_image;?>)" href="<?php echo tep_href_link('view.php','status=closed','SSL');?>"><?php echo TEXT_CLOSED?></a></td>
     </tr>
 </table>
  <table width="100%" border="0" cellspacing=0 cellpadding=2>
     <tr><td>
      <table width="100%" border="0" cellspacing="1" cellpadding="0" class="tickets" align="center">
         <tr>
-          <td align="left" width="15%">&nbsp;<a
-          href="view.php?sort=ID&order=<?=$negorder?><?=$qstr?>" title="<?php echo TEXT_TITLE_NUM_QUERY;?>
-          <?=$_negorder?>"><?php echo TEXT_NUM_QUERY;?></a></td>
-          <td width="15%" align="left">&nbsp;<a
-          href="view.php?sort=date&order=<?=$negorder?><?=$qstr?>"
-          title=" <?=TEXT_TITLE_CREAT_DATE.$_negorder?>"><?php echo TEXT_CREAT_DATE?></a></td>
+          <td align="left" width="15%">&nbsp;<a href="<?php echo tep_href_link('view.php','sort=ID&order='.$negorder.$qstr,'SSL');?>" title="<?php echo TEXT_TITLE_NUM_QUERY;?><?=$_negorder?>"><?php echo TEXT_NUM_QUERY;?></a></td>
+          <td width="15%" align="left">&nbsp;<a href="<?php echo tep_href_link('view.php','sort=date&order='.$negorder.$qstr,'SSL');?>" title=" <?=TEXT_TITLE_CREAT_DATE.$_negorder?>"><?php echo TEXT_CREAT_DATE?></a></td>
           <td align="left">&nbsp;<?php echo TEXT_SUBJECT;?></td>
         </tr>
         <?
@@ -159,7 +152,7 @@ $_negorder=$negorder=="DESC"?TEXT_SORT:TEXT_DESC_SORT;
                 }
                 ?>
         <tr class="<?=$class?> " id="<?=$row['ticketID']?>">
-          <td align="left" title="<?=$row['email']?>" nowrap><a class="Icon <?=strtolower($row['source'])?>Ticket" title="<?=$row['email']?>" href="view.php?id=<?=$row['ticketID']?>"><?=$ticketID?></a>
+          <td align="left" title="<?=$row['email']?>" nowrap><a class="Icon <?=strtolower($row['source'])?>Ticket" title="<?=$row['email']?>" href="<?php echo tep_href_link('view.php','id='.$row['ticketID'],'SSL');?>"><?=$ticketID?></a>
           </td>
           <td nowrap><?=Format::db_date($row['created'])?></td>
                                     <?php 
@@ -167,7 +160,7 @@ $_negorder=$negorder=="DESC"?TEXT_SORT:TEXT_DESC_SORT;
             $_open = TEXT_OPEN;
             $_closed = TEXT_CLOSED;
                   ?>
-          <td><a href="view.php?id=<?=$row['ticketID']?>"><?=$subject?></a><?=$row['attachments']?"<span class='Icon file'>&nbsp;</span>":''?></td>
+          <td><a href="<?php echo tep_href_link('view.php','id='.$row['ticketID'],'SSL');?>"><?=$subject?></a><?=$row['attachments']?"<span class='Icon file'>&nbsp;</span>":''?></td>
         </tr>
             <?
             $class = ($class =='row2') ?'row1':'row2';
