@@ -690,15 +690,6 @@ if (tep_not_null($order->info['comments'])) {
 if (is_array($payment_modules->modules)) {
   echo $payment_modules->process_button($payment);
 }
-//character  
-
-/*
-if(isset($_SESSION['character'])){
-  foreach($_SESSION['character'] as $ck => $cv){
-    echo tep_draw_hidden_field("character[$ck]", $cv);
-  }
-}
-*/
 echo '<a href="javascript:void(0);" onclick="confirm_session_error('.$ad_num.',\''.$ad_post.'\');">';
 echo tep_image_button('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER) . '</a></form>' . "\n";
 ?> </td> 
