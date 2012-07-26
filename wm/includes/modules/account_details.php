@@ -215,7 +215,6 @@ $(document).ready(function(){
       </tr>
     </table></td>
   </tr>
-  <!-- zhusuo -->
 <?php
   $address_history_query = tep_db_query("select customers_id from ". TABLE_ADDRESS_HISTORY ." where customers_id='".$_SESSION['customer_id']."'");
   $address_history_num = tep_db_num_rows($address_history_query);
@@ -388,7 +387,7 @@ $(document).ready(function(){
   <tr>
     <td class="main" width="22%">&nbsp;</td>
     <td class="main" style="font-size:10px;">
-    <?php echo $p_error_show_str?> 
+    <?php echo $p_error_show_str;?> 
     </td>
   </tr>
   <?php
