@@ -404,7 +404,7 @@ if (!$product_info) { // product not found in database
     <ul id="detail-ul">
     <hr width="100%" style="border-bottom:1px dashed #ccc; height:2px; border-top:none; border-left:none; border-right:none;">
     <li onClick="document.open_ost.submit();">      
-    <?php echo   tep_draw_form('open_ost',tep_href_link('open.php'),'get');?>
+    <?php echo   tep_draw_form('open_ost',tep_href_link('open.php', '', 'SSL'),'get');?>
     <?php echo tep_draw_hidden_field('products', $product_info['products_name']) ;?>
     <a <?php echo $void_href;?> ><img src="images/ask01.gif"><?php echo TEXT_CONTACT_US;?></a>
     </li>

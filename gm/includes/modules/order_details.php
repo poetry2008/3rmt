@@ -153,7 +153,7 @@ height:2px; border-top:none; border-left:none; border-right:none; margin:10px
 
     if($products_error == true && $stock_check == ''){
 
-      echo '&nbsp;<span class="markProductOutOfStock"><a style="color:#CC0033" href="'.tep_href_link('open.php', 'products='.urlencode($products[$i]['name'])).'">' . STOCK_MARK_PRODUCT_OUT_OF_STOCK . '</a></span>';
+      echo '&nbsp;<span class="markProductOutOfStock"><a style="color:#CC0033" href="'.tep_href_link('open.php', 'products='.urlencode($products[$i]['name']), 'SSL').'">' . STOCK_MARK_PRODUCT_OUT_OF_STOCK . '</a></span>';
     }
 // Product options names
     $attributes_exist = ((isset($products[$i]['add_op_attributes'])) ? 1 : 0);
