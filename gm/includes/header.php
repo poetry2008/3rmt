@@ -102,7 +102,7 @@ if (!isset($_GET['products_id'])) $_GET['products_id']= NULL;
    
 	<li class="space-3-7"><a href="<?php echo HTTP_SERVER;?>/info/starting_rmt.html"><img src="images/getin.png" alt="qetin"onmouseOver="this.src='images/getin_hover.png'"onmouseOut="this.src='images/getin.png'"></a></li>
 	<li class="space-4-7">&nbsp;</li>
-  <li class="space-5-7"><a href="<?php echo tep_href_link(FILENAME_CONTACT_US,'','NONSSL');?>"><img src="images/quick.png" alt="quick"onmouseOver="this.src='images/quick_hover.png'"onmouseOut="this.src='images/quick.png'"></a></li>
+  <li class="space-5-7"><a href="<?php echo tep_href_link(FILENAME_CONTACT_US,'','SSL');?>"><img src="images/quick.png" alt="quick"onmouseOver="this.src='images/quick_hover.png'"onmouseOut="this.src='images/quick.png'"></a></li>
   <li class="space-6-7">
      <a href="<?php echo tep_href_link(FILENAME_CREATE_ACCOUNT,'','SSL'); ?>"><img src="images/login.png" alt="login"onmouseOver="this.src='images/login_hover.png'"onmouseOut="this.src='images/login.png'"></a></li>
     <?php
