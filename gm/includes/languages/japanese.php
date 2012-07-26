@@ -103,7 +103,7 @@ define('BOX_SEARCH_TEXT', 'キーワードを入力して商品を探せます')
 define('BOX_SEARCH_ADVANCED_SEARCH', '詳細検索');
 
 // specials box text in includes/boxes/specials.php
-define('BOX_HEADING_SPECIALS', '特価販売');
+define('BOX_HEADING_SPECIALS', '特価商品');
 
 // reviews box text in includes/boxes/reviews.php
 define('BOX_HEADING_REVIEWS', 'レビュー');
@@ -123,7 +123,7 @@ define('BOX_HEADING_BESTSELLERS', 'ランキング');
 define('BOX_HEADING_BESTSELLERS_IN', '&nbsp;&nbsp;<br>のランキング');
 
 // notifications box text in includes/boxes/products_notifications.php
-define('BOX_HEADING_NOTIFICATIONS', '電子メールでお知らせ');
+define('BOX_HEADING_NOTIFICATIONS', 'メールでお知らせ');
 define('BOX_NOTIFICATIONS_NOTIFY', '<b>%s</b>の最新情報を知らせて!');
 define('BOX_NOTIFICATIONS_NOTIFY_REMOVE', '<b>%s</b>の最新情報を知らせないで');
 
