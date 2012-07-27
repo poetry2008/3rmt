@@ -76,7 +76,7 @@ define('MENU_MU','メーカー一覧');
 
 // footer text in includes/footer.php
 define('FOOTER_TEXT_REQUESTS_SINCE', 'リクエスト ('); // 'requests since'
-define('FOOTER_TEXT_REQUESTS_SINCE_ADD', ' より)'); // 'requests since' Add Japanese osCommerce
+define('FOOTER_TEXT_REQUESTS_SINCE_ADD', ' より)');
 
 // text for gender
 define('MALE', '男性');
@@ -357,25 +357,10 @@ define('TEXT_CCVAL_ERROR_INVALID_DATE', 'クレジットカード有効期限が
 define('TEXT_CCVAL_ERROR_INVALID_NUMBER', 'クレジットカードナンバーが正しくありません。<br>ご確認後もう一度入力してください。');
 define('TEXT_CCVAL_ERROR_UNKNOWN_CARD', '入力したクレジットカードナンバーの最初の4桁は: %s です。<br>ナンバーが正しい場合このカードの取扱いがありません。<br>間違っている場合はご確認後もう一度入力してください。');
 
-/*
-  The following copyright announcement can only be
-  appropriately modified or removed if the layout of
-  the site theme has been modified to distinguish
-  itself from the default osCommerce-copyrighted
-  theme.
 
-  For more information please read the following
-  Frequently Asked Questions entry on the osCommerce
-  support site:
-
-  http://www.oscommerce.com/community.php/faq,26/q,50
-
-  Please leave this comment intact together with the
-  following copyright announcement.
-*/
 define('FOOTER_TEXT_BODY', C_FOOTER_COPY_RIGHT);
 
-define('EMAIL_SIGNATURE',C_EMAIL_FOOTER);  //Add Japanese osCommerce
+define('EMAIL_SIGNATURE',C_EMAIL_FOOTER); 
 
 // Include OSC-AFFILIATE 
 //include("affiliate_japanese.php");
