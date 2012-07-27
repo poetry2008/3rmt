@@ -20,7 +20,7 @@
   } 
 // Extra Pages ADDED END
 ?>
-<li><?php echo '<a href="' . tep_href_link(FILENAME_CONTACT_US) . '">' . BOX_INFORMATION_CONTACT . '</a>';?></li> 
+<li><?php echo '<a href="' . tep_href_link(FILENAME_CONTACT_US,'','SSL') . '">' . BOX_INFORMATION_CONTACT . '</a>';?></li> 
 <li><?php echo '<a href="' . tep_href_link('reorder.php') . '">' . '再配達フォーム' . '</a>'; ?></li> 
 </ul>
 <!-- information_eof //-->

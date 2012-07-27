@@ -33,7 +33,7 @@ require(CLIENTINC_DIR.'header.inc.php');
   <div class="contact_right">
   <h3>新規お問い合わせ</h3>
   　<br>
-  <form method="get" action="open.php">
+  <form method="get" action="<?php echo tep_href_link('open.php','','SSL')?>">
   <input type="submit" class="button2" value="お問い合わせ">
   </form>
     </div>
@@ -44,7 +44,7 @@ require(CLIENTINC_DIR.'header.inc.php');
   <h3>過去のお問い合わせへの返事を確認</h3>
  
   <br>
-    <form class="status_form" action="contact_us_login.php" method="post">
+  <form class="status_form" action="<?php echo tep_href_link('contact_us_login.php','','SSL')?>" method="post">
     <div class="status_warpper">
       <label>メールアドレス：</label>
       <input type="text" name="lemail">
