@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2002 osCommerce
-
-  Released under the GNU General Public License
 */
 
 define('NAVBAR_TITLE_1', 'ショッピングカート');
@@ -15,7 +8,7 @@ define('NAVBAR_TITLE_2', '取引日時の指定');
 
 define('HEADING_TITLE', '配送方法');
 
-define('TABLE_HEADING_SHIPPING_ADDRESS', 'ご希望の取引日時を指定してください');
+define('TABLE_HEADING_SHIPPING_ADDRESS', 'ご希望のお届け日時を指定してください');
 define('TEXT_CHOOSE_SHIPPING_DESTINATION', 'お届け先のご住所をご確認ください。<br>（下のボタンをクリックして、お届け先を変更することもできます。）');
 define('TITLE_SHIPPING_ADDRESS', 'お届け先:');
 

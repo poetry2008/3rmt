@@ -14,7 +14,6 @@ define('CHANGE_ORDER_FETCH_TIME_TITLE', '取引時間:');
 define('CHANGE_ORDER_FETCH_TIME_READ', 'オプション:');
 define('CHANGE_ORDER_FETCH_DAY', 'お届け希望日:');
 define('CHANGE_ORDER_FETCH_DATE', 'お届け希望時間:');
-define('CHANGE_ORDER_PRODUCT_CHARACTER', 'お客様のキャラクター名：');
 define('TEXT_CHECK_24JI', '(24時間表記)');
 define('TEXT_PREORDER_ERROR_TORIHIKIHOUHOU', '<span class="errorText">【オプション】を選択してください。</span>');
 define('TEXT_PREORDER_ERROR_DATE', '<span class="errorText">【取引希望日】を選択してください。</span>');

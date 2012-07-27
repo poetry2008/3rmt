@@ -1,14 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2002 osCommerce
-
-  Released under the GNU General Public License
-  
 */
 define('HEADING_TITLE', '手動予約手続き');
 define('HEADING_CREATE', '手動予約する顧客の詳細を確認:'); 

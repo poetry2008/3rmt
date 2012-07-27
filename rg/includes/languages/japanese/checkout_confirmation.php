@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
 define('NAVBAR_TITLE_1', 'ショッピングカート');
@@ -31,7 +24,7 @@ define('TEXT_EDIT', '変更する');
 //Add Point System
 define('TEXT_POINT_NOW', '今回の獲得予定ポイント:');
 
-define('TEXT_TRADE_DATE', '届け時間&nbsp;');
+define('TEXT_TRADE_DATE', 'お届け日時&nbsp;');
 
 define('TEXT_CARACTOR', 'お届け先キャラクター名:');
 define('TEXT_OPTION', 'オプション:');
