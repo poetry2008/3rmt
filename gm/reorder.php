@@ -324,7 +324,7 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
       $total_cost = 0;
     }
     
-    $products_ordered .= TEXT_REORDER_ORDER_PRODUCT . $o->products[$i]['name'];
+    $products_ordered .= TEXT_REORDER_ORDER_PRODUCT.str_repeat('　',intval(($attribute_max_len - mb_strlen(TEXT_REORDER_ORDER_PRODUCT, 'utf-8')))).'：' . $o->products[$i]['name'];
     if(tep_not_null($o->products[$i]['model'])) {
     $products_ordered .= ' (' . $o->products[$i]['model'] . ')';
     }
@@ -333,7 +333,7 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
     $product_info = tep_get_product_by_id($o->products[$i]['id'], SITE_ID ,$languages_id);
     
     $products_ordered .= $products_ordered_attributes . "\n";
-    $products_ordered .= TEXT_REORDER_QTY_SUM . $o->products[$i]['qty'] .
+    $products_ordered .= TEXT_REORDER_QTY_SUM.str_repeat('　',intval(($attribute_max_len - mb_strlen(TEXT_REORDER_QTY_SUM, 'utf-8')))).'：' . $o->products[$i]['qty'] . TEXT_REORDER_QTY . tep_get_full_count2($o->products[$i]['qty'], $o->products[$i]['id']) . "\n";
     TEXT_REORDER_QTY . tep_get_full_count2($o->products[$i]['qty'], $o->products[$i]['id']) . "\n";
     if(tep_not_null($o->products[$i]['character'])) {
       $products_ordered .= TEXT_REORDER_CHARACTER . (EMAIL_USE_HTML === 'true' ? htmlspecialchars($o->products[$i]['character']) : $o->products[$i]['character']) . "\n";
@@ -370,14 +370,14 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
   $email_order .= '------------------------------------------' . "\n";
   $email_order .= $products_ordered . "\n";
   $email_order .= TEXT_REORDER_TRADE_DATE . str_string($_date) . $_hour
-    .TIME_HOUR_TEXT . $_minute . TIME_MIN_TEXT. "～" . $end_hour.TEXT_PRORDER_HOUR.$end_min.TEXT_REORDER_TWENTY_FOUR_HOUR. "\n";
+    .TIME_HOUR_TEXT . $_minute . TIME_MIN_TEXT. "～" . $end_hour.TIME_HOUR_TEXT.$end_min.TEXT_REORDER_TWENTY_FOUR_HOUR. "\n";
 
   if ($comment) {
     $email_order .= TEXT_REORDER_COMMERN_EMAIL . "\n";
     $email_order .= $comment . "\n";
   }
   
-  $mail_title = sprintf(TEXT_REORDER_TITLE_EMAIL, $order['orders_id']);
+  $mail_title = "[" . $order['orders_id'] . "]".TEXT_REORDER_TITLE_EMAIL;
   $email_order = str_replace(array('${NAME}', '${TIME}', '${CONTENT}', '${SITE_NAME}', '${SITE_URL}', '${SUPPORT_EMAIL}'), array($o->customer['name'], date('Y-m-d H:i:s'), $email_order, STORE_NAME, HTTP_SERVER, SUPPORT_EMAIL_ADDRESS), $mail_content);
 
   # メール本文整形 --------------------------------------

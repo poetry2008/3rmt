@@ -16,7 +16,7 @@ define('TABLE_HEADING_REMOVE', '削除');
 define('TABLE_HEADING_QUANTITY', '数量');
 define('TABLE_HEADING_MODEL', '型番');
 define('TABLE_HEADING_PRODUCTS', '商品名');
-define('TABLE_HEADING_TOTAL', '合計');
+define('TABLE_HEADING_TOTAL', '金額');
 define('TEXT_CART_EMPTY', '<p class="red"><b>ショッピングカートには何も入っていません。</b></p>
 当ショッピングシステムは、<b>JavaScript</b>と<b>Cookie</b>を利用しています。ショッピングをご利用いただくためにはブラウザのJavaScriptとCookieの設定が有効になっている必要があります。通常、特に設定を変える必要はございませんが、ご注文がうまくいかない場合は<a href="' . tep_href_link(FILENAME_CONTACT_US) . '">コチラ</a>よりお問い合わせください。<br><br>
 <div class="dot"></div>
@@ -36,7 +36,7 @@ define('OUT_OF_STOCK_CAN_CHECKOUT', STOCK_MARK_PRODUCT_OUT_OF_STOCK . ' 印の�
 //define('TEXT_UPDATE_CART_INFO', '<b><font color="#ff0000">※</font> 数量を変更したり削除する場合は更新してください!</b>');   //Add Japanese osCommerce
 define('TEXT_UPDATE_CART_INFO', '<b><font color="#ff0000">※</font> 数量をご確認の上「レジへ進む」ボタンをクリックしてください。</b>'); //Add Japanese osCommerce
 define('TABLE_HEADING_IMAGE', '画像');
-define('TABLE_HEADING_OPERATE', '削除');
+define('TABLE_HEADING_OPERATE', '操作');
 define('TEXT_DEL_LINK', '削除');
 define('TEXT_SHOPPING_CART_READ_INFO', '【重要】<br> 小計金額が赤色の場合は「買取」となり、表示された金額をお客様へお支払いいたします。<br> 買取金額が200円未満の場合は手数料の関係上、支払方法にて銀行振込を選択することができません。<br> <br> 選択できる支払方法は以下となります。<br> A:来店による支払い<br> B:ポイントの加算（'.STORE_NAME.'会員でなければ表示されません）<br>');
 define('TEXT_SHOPPING_CART_NOTICE_TEXT', '"%s未満の注文はできません。合計金額を%s以上にしてから再度お申し込みください。');

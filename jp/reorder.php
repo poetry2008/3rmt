@@ -382,7 +382,7 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
   $email_order .= TEXT_REORDER_PRODUCT_EMAIL . "\n";
   $email_order .= '------------------------------------------' . "\n";
   $email_order .= $products_ordered . "\n";
-  $email_order .= TEXT_REORDER_TRADE_DATE . str_string($_date) . $_hour . TEXT_PRORDER_HOUR . $_minute . TIME_MIN_TEXT . "～" . $end_hour.TEXT_PRORDER_HOUR.$end_min.TEXT_REORDER_TWENTY_FOUR_HOUR."\n";
+  $email_order .= TEXT_REORDER_TRADE_DATE . str_string($_date) . $_hour . TIME_HOUR_TEXT . $_minute . TIME_MIN_TEXT . "～" . $end_hour.TIME_HOUR_TEXT.$end_min.TEXT_REORDER_TWENTY_FOUR_HOUR."\n";
 
   if ($comment) {
     $email_order .= TEXT_REORDER_COMMERN_EMAIL . "\n";
@@ -814,12 +814,12 @@ function orderConfirmPage(){
 
     if(oldCharacter[i] != ''){
       text += "<tr><td bgcolor='#eeeeee' width='130'>\n";
-      text += "<?php echo TEXT_REORDER_BEFORE_CHANGE;?>";
+      text += "<?php echo TEXT_REORDER_P_PRODUCT_CHARACTER.TEXT_REORDER_NO_CHANGE;?>";
       text += "</td><td>\n";
       text += oldCharacter[i] + "\n";
       text += "</td></tr>";
       text += "<tr><td bgcolor='#eeeeee'>\n";
-      text += "<?php echo TEXT_REORDER_AFTER_CHANGE;?>";
+      text += "<?php echo TEXT_REORDER_P_PRODUCT_CHARACTER.TEXT_REORDER_CHANGE;?>";
       text += "</td><td>\n";
       if(document.getElementById('character_'+i)){
       text += document.getElementById('character_'+i).value.replace(/\</ig,"&lt;").replace(/\>/ig,"&gt;") + "\n";
