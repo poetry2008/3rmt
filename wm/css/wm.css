@@ -1932,7 +1932,7 @@ searching
 .time_label a:hover{ color:#FFFFFF; cursor:pointer;}
 #table_td_p0{ padding:0; }
 .shipping_box td{ padding:0 5px;}
-.infoBoxContents .table_p10{ 
+.infoBoxContents .table_spacing{ 
 	padding-left:25px; 
 	font-size:11px;
 	*font-size:10px; 

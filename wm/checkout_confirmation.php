@@ -505,7 +505,7 @@ echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><sp
                       <td class="main"><?php echo '<b>' . HEADING_PAYMENT_METHOD . '</b> <a href="' . tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td> 
                     </tr> 
                     <tr> 
-                      <td class="table_p10"><?php echo payment::changeRomaji($order->info['payment_method']); ?></td> 
+                      <td class="table_spacing"><?php echo payment::changeRomaji($order->info['payment_method']); ?></td> 
                     </tr> 
                   </table></td> 
                 <td width="70%" valign="top" align="right"><table border="0" cellspacing="0" cellpadding="2"> 
