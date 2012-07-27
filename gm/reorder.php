@@ -324,7 +324,7 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
       $total_cost = 0;
     }
     
-    $products_ordered .= TEXT_REORDER_ORDER_PRODUCT . $o->products[$i]['name'];
+    $products_ordered .= TEXT_REORDER_ORDER_PRODUCT.str_repeat('　',intval(($attribute_max_len - mb_strlen(TEXT_REORDER_ORDER_PRODUCT, 'utf-8')))).'：' . $o->products[$i]['name'];
     if(tep_not_null($o->products[$i]['model'])) {
     $products_ordered .= ' (' . $o->products[$i]['model'] . ')';
     }
@@ -333,7 +333,7 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
     $product_info = tep_get_product_by_id($o->products[$i]['id'], SITE_ID ,$languages_id);
     
     $products_ordered .= $products_ordered_attributes . "\n";
-    $products_ordered .= TEXT_REORDER_QTY_SUM . $o->products[$i]['qty'] .
+    $products_ordered .= TEXT_REORDER_QTY_SUM.str_repeat('　',intval(($attribute_max_len - mb_strlen(TEXT_REORDER_QTY_SUM, 'utf-8')))).'：' . $o->products[$i]['qty'] . TEXT_REORDER_QTY . tep_get_full_count2($o->products[$i]['qty'], $o->products[$i]['id']) . "\n";
     TEXT_REORDER_QTY . tep_get_full_count2($o->products[$i]['qty'], $o->products[$i]['id']) . "\n";
     if(tep_not_null($o->products[$i]['character'])) {
       $products_ordered .= TEXT_REORDER_CHARACTER . (EMAIL_USE_HTML === 'true' ? htmlspecialchars($o->products[$i]['character']) : $o->products[$i]['character']) . "\n";

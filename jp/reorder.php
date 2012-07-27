@@ -814,12 +814,12 @@ function orderConfirmPage(){
 
     if(oldCharacter[i] != ''){
       text += "<tr><td bgcolor='#eeeeee' width='130'>\n";
-      text += "<?php echo TEXT_REORDER_BEFORE_CHANGE;?>";
+      text += "<?php echo TEXT_REORDER_P_PRODUCT_CHARACTER.TEXT_REORDER_NO_CHANGE;?>";
       text += "</td><td>\n";
       text += oldCharacter[i] + "\n";
       text += "</td></tr>";
       text += "<tr><td bgcolor='#eeeeee'>\n";
-      text += "<?php echo TEXT_REORDER_AFTER_CHANGE;?>";
+      text += "<?php echo TEXT_REORDER_P_PRODUCT_CHARACTER.TEXT_REORDER_CHANGE;?>";
       text += "</td><td>\n";
       if(document.getElementById('character_'+i)){
       text += document.getElementById('character_'+i).value.replace(/\</ig,"&lt;").replace(/\>/ig,"&gt;") + "\n";

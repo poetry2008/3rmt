@@ -6,9 +6,9 @@ define('TEXT_DELETE_ORDER_SUCCESS','ご入力いただきました登録情報�
 define('TEXT_BACK_TO_TOP','TOPに戻る');
 define('TEXT_INFO_FOR_TRADE','取引時間は前もって一時間以上に設定してください');
 define('TEXT_CHANGE_ORDER_CONFIRM_EMAIL','注文内容の変更を承りました。電子メールをご確認ください。');
-define('TEXT_REORDER_ORDER_PRODUCT','注文商品　　　　　：');
+define('TEXT_REORDER_ORDER_PRODUCT','注文商品');
 define('TEXT_REORDER_QTY','個');
-define('TEXT_REORDER_QTY_SUM','個数　　　　　　　：');
+define('TEXT_REORDER_QTY_SUM','個数');
 define('TEXT_REORDER_CHARACTER','キャラクター名　　：');
 define('TEXT_REORDER_NEXT','次へ進む');
 define('TEXT_REORDER_CLEAR','クリア');
