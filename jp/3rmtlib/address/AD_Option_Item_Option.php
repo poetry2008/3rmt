@@ -91,7 +91,7 @@ class AD_Option_Item_Option extends AD_Option_Item_Basic
     global $_POST;
     global $weight_count;
     global $weight_limit;
-    $prompt_str = '<a style="color:#CC0033" href="'.tep_href_link('open.php','products='.urlencode($product_info['products_name'])).'">' . STOCK_MARK_PRODUCT_OUT_OF_STOCK . '</a>'; 
+    $prompt_str = '<a style="color:#CC0033" href="'.tep_href_link('open.php','products='.urlencode($product_info['products_name']), 'SSL').'">' . STOCK_MARK_PRODUCT_OUT_OF_STOCK . '</a>'; 
     $weight_prompt_str = '<br>'.PRODUCTS_WEIGHT_ERROR_THREE . $weight_limit . PRODUCTS_WEIGHT_ERROR_FOUR;
   //products shipping fee  
   $fixed_option_list_array = array();

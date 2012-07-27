@@ -25,7 +25,7 @@
   tep_session_unregister('customer_country_id');
   tep_session_unregister('customer_zone_id');
   tep_session_unregister('comments');
-  tep_session_unregister('comment_emailaddress');
+  tep_session_unregister('customer_emailaddress');
 
   // products session destroy
   tep_session_unregister('shipping');

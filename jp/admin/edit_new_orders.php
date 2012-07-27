@@ -519,26 +519,6 @@ if (tep_not_null($action)) {
         break;
       }
 
-      //  错误信息处理
-      //暂时关闭 日期错误处理
-         /*
-         if (isset($update_tori_torihiki_date)) { //日時が有効かチェック
-         if (!preg_match('/^(\d\d\d\d)-(\d\d)-(\d\d) (\d\d):(\d\d):(\d\d)$/', $update_tori_torihiki_date, $m)) { // check the date format
-         $messageStack->add('日時フォーマットが間違っています。 "2008-01-01 10:30:00"', 'error');
-         $action = 'edit';
-         break;
-         } elseif (!checkdate($m[2], $m[3], $m[1]) || $m[4] >= 24 || $m[5] >= 60 || $m[6] >= 60) { // make sure the date provided is a validate date
-         $messageStack->add('無効な日付または右記の数字を超えています。 "23:59:59"', 'error');
-         $action = 'edit';
-         break;
-         }
-         } else {
-         $messageStack->add('日時が入力されていません。', 'error');
-         $action = 'edit';
-         break;
-         }
-         */
-
       foreach ($update_totals as $total_index => $total_details) {    
         extract($total_details,EXTR_PREFIX_ALL,"ot");
         if ($ot_class == "ot_point" && (int)$ot_value > 0) {

@@ -60,7 +60,7 @@ if (tep_session_is_registered('customer_id')) {
   <table cellpadding="0" cellspacing="0" border="0" class="top_right">
   <tr><td>
   	 <ul>
-<li><a href="<?php echo tep_href_link(FILENAME_CONTACT_US);?>"><?php echo BOX_INFORMATION_CONTACT;?></a></li>
+<li><a href="<?php echo tep_href_link(FILENAME_CONTACT_US, '', 'SSL');?>"><?php echo BOX_INFORMATION_CONTACT;?></a></li>
         <li>|</li>
         <li><a href="<?php echo tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL');?>"><?php echo HEADER_TITLE_CART_CONTENTS;?></a></li>
         <li>|</li>
@@ -85,7 +85,7 @@ if (tep_session_is_registered('customer_id')) {
         <li><a href="#">ヘルプ</a></li>
         <li>|</li>
         */?>
-        <li><a href="<?php echo tep_href_link(FILENAME_CONTACT_US);?>"><?php echo BOX_INFORMATION_CONTACT;?></a></li>
+        <li><a href="<?php echo tep_href_link(FILENAME_CONTACT_US, '', 'SSL');?>"><?php echo BOX_INFORMATION_CONTACT;?></a></li>
         <li>|</li>
         <li><a href="<?php echo tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL');?>"><?php echo HEADER_TITLE_CART_CONTENTS;?></a></li>
         <li>|</li>

@@ -406,13 +406,10 @@ if (!isset($ocertify->npermission) || $ocertify->npermission >= 7) {
       href="'.tep_href_link('create_order.php', '',
     'NONSSL').'">'.HEADER_TEXT_CREATE_ORDER.'</a></td>
       </tr>
-      <!--<tr>
-      <td class="menu01"><a class="t_link01" href="'.tep_href_link('create_order2.php',
-    '', 'NONSSL').'">'.HEADER_TEXT_CREATE_ORDER2.'</a></td>
-      </tr>-->
       <tr>
       <td class="menu01"><a class="t_link01" href="'.tep_href_link('create_preorder.php',
     '', 'NONSSL').'">'.HEADER_TEXT_CREATE_PREORDER.'</a></td>
+      </tr> 
       </table>
       </td>
       <td><a href="' . tep_href_link(FILENAME_CUSTOMERS, '', 'NONSSL') . '" 
@@ -469,7 +466,7 @@ if ($_SERVER['PHP_SELF'] != '/admin/orders.php') {
     echo '<a href="'.$site_link['url'].'" target="_blank" class="t_link01">'.$site_link['name'].'</a>'; 
     echo '</td></tr>'; 
   }
-  echo '</table>';
+  echo '</table></td>';
   echo ' 
     <td>&nbsp;
   <a href="' . tep_href_link(basename($GLOBALS['PHP_SELF']), '', 'NONSSL') .

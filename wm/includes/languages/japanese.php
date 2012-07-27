@@ -73,7 +73,7 @@ define('MYACCOUNT_EDIT', 'お客様情報の編集');
 define('MYACCOUNT_ADDRESS', 'アドレス帳');
 define('MYACCOUNT_HISTORY', '注文履歴');
 define('MYACCOUNT_NOTIFICATION', 'ショップからのお知らせ');
-define('MENU_MU','メーカー別一覧');
+define('MENU_MU','メーカー一覧');
 
 // footer text in includes/footer.php
 define('FOOTER_TEXT_REQUESTS_SINCE', 'リクエスト ('); // 'requests since'
@@ -103,7 +103,7 @@ define('BOX_SEARCH_TEXT', 'キーワードを入力して商品を探せます')
 define('BOX_SEARCH_ADVANCED_SEARCH', '詳細検索');
 
 // specials box text in includes/boxes/specials.php
-define('BOX_HEADING_SPECIALS', '特価商品一覧');
+define('BOX_HEADING_SPECIALS', '特価商品');
 
 // reviews box text in includes/boxes/reviews.php
 define('BOX_HEADING_REVIEWS', 'レビュー');
@@ -464,8 +464,8 @@ define('TEXT_REORDER2_TORIHIKI_ERROR','<br><font color="red">【取引日時】�
 define('OPTION_CHARACTER_NAME', 'お客様のキャラクター名');
 define('BOX_REVIEWS_LINK_TEXT', 'のレビュー');
 define('BOX_REVIEWS_SHOW_TITLE', 'RMTレビュー掲示板');
-define('TEXT_HEADER_CATEGORY_TITLE', 'RMT総合サイト ワールドマネーをお気に入りに追加して下さい！');
-define('TEXT_HEADER_PRODUCT_TITLE', '総合サイト ワールドマネーをお気に入りに追加して下さい！');
+define('TEXT_HEADER_CATEGORY_TITLE', 'RMT総合サイト '.STORE_NAME.'お気に入りに追加して下さい！');
+define('TEXT_HEADER_PRODUCT_TITLE', '総合サイト '.STORE_NAME.'をお気に入りに追加して下さい！');
 define('TEXT_HEADER_SEARCH_IMAGE_ALT', 'RMT検索');
 define('TEXT_HEADER_ALL_CATEGORY', '全てのゲーム');
 define('TEXT_SEARCH_ALT', '検索');

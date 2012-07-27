@@ -209,8 +209,6 @@ $(document).ready(function(){
                                           <?php
   $address_form->printCategoryPersonal();
 ?>
-
-  <!-- zhusuo -->
 <?php
   $address_history_query = tep_db_query("select customers_id from ". TABLE_ADDRESS_HISTORY ." where customers_id='".$_SESSION['customer_id']."'");
   $address_history_num = tep_db_num_rows($address_history_query);

@@ -1974,11 +1974,7 @@ float:left;
               <td class="main" bgcolor="#FFCC99" width="10">&nbsp;</td>
               <td class="main" bgcolor="#F8B061" width="10">&nbsp;</td>
               <td class="main" bgcolor="#FF9933" width="120" align="center">
-<?php if (false) { ?>
-                <INPUT type="button" value="<?php echo EDIT_ORDERS_CONFIRM_BUTTON;?>" onClick="pre_update_price()">
-<?php } else { ?>
-<INPUT type="button" value="<?php echo EDIT_ORDERS_CONFIRM_BUTTON;?>" onClick="submit_order_check(<?php echo $order->products[0]['products_id'];?>,<?php echo $order->products[0]['orders_products_id'];?>);">
-<?php } ?>
+                <INPUT type="button" value="<?php echo EDIT_ORDERS_CONFIRM_BUTTON;?>" onClick="submit_order_check(<?php echo $order->products[0]['products_id'];?>,<?php echo $order->products[0]['orders_products_id'];?>);">
               </td>
             </tr>
           </table>
