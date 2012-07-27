@@ -95,7 +95,6 @@ define('ADDPRODUCT_TEXT_OPTIONS_NOTEXIST', 'オプションはありません: �
 define('ADDPRODUCT_TEXT_CONFIRM_QUANTITY', '数量');
 define('ADDPRODUCT_TEXT_CONFIRM_ADDNOW', '追加');
 
-// Add Japanese osCommerce
 define('EMAIL_TEXT_STORE_CONFIRMATION', ' へのご注文、誠にありがとうございます。' . "\n" . 
 'ご注文の受付状況及びご連絡事項を、下記にご案内申し上げます。');
 define('TABLE_HEADING_COMMENTS_ADMIN', '[ご連絡事項]');

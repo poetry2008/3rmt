@@ -321,7 +321,7 @@ define('TEXT_CACHE_ALSO_PURCHASED', '関連の商品モジュール');
 define('TEXT_NONE', '--なし--');
 define('TEXT_TOP', 'トップ');
 
-define('EMAIL_SIGNATURE',C_EMAIL_FOOTER);  //Add Japanese osCommerce
+define('EMAIL_SIGNATURE',C_EMAIL_FOOTER);
 
 //Add languages
 //------------------------

@@ -99,7 +99,6 @@ define('PRODUCTS_WEIGHT_ERROR_TWO','）の規定の重量を超えました。')
 define('PRODUCTS_WEIGHT_ERROR_THREE','商品を削除するか、または個数を変更して（');
 define('PRODUCTS_WEIGHT_ERROR_FOUR','）kg以内にしてください。');
 
-// Add Japanese osCommerce
 define('EMAIL_TEXT_STORE_CONFIRMATION', ' へのご予約、誠にありがとうございます。' . "\n" . 
 'ご予約の受付状況及びご連絡事項を、下記にご案内申し上げます。');
 define('TABLE_HEADING_COMMENTS_ADMIN', '[ご連絡事項]');

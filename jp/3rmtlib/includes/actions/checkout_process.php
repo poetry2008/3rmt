@@ -653,7 +653,6 @@ if(isset($_SESSION['options']) && !empty($_SESSION['options'])){
   $email_address_str .= $email_address;
   $email_order = str_replace($email_address,$email_address_str,$email_order);
 }
-// 2003.03.08 Edit Japanese osCommerce
 tep_mail(tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], EMAIL_TEXT_SUBJECT, $email_order, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
   
 if (SENTMAIL_ADDRESS != '') {

@@ -36,9 +36,6 @@
 // Set lib path
   ini_set('include_path',ini_get('include_path').':'.DIR_FS_3RMTLIB);
 
-// define the project version
-  define('PROJECT_VERSION', 'osCommerce 2.2-MS1');
-
 // set the type of request (secure or not)
   $request_type = (getenv('HTTPS') == 'on') ? 'SSL' : 'NONSSL';
 

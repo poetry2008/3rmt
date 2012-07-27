@@ -81,7 +81,6 @@ define('ERROR_ORDER_DOES_NOT_EXIST', 'エラー: 注文が存在しません。'
 define('SUCCESS_ORDER_UPDATED', '成功: 注文状態が更新されました。');
 define('WARNING_ORDER_NOT_UPDATED', '警告: 注文状態はなにも変更されませんでした。');
 
-// Add Japanese osCommerce
 define('EMAIL_TEXT_STORE_CONFIRMATION', ' へのご注文、誠にありがとうございます。' . "\n\n"
 .'ご注文の受付状況及びご連絡事項を、下記にご案内申し上げます。');
 define('EMAIL_TEXT_STORE_CONFIRMATION_FOOTER', 
