@@ -465,7 +465,7 @@ define('TEXT_REORDER2_MUST_INPUT','<font color="red">必須項目</font>');
 define('TEXT_REORDER2_TORIHIKI_ERROR','<br><font color="red">【取引日時】を選択してください。</font>');
 define('OPTION_CHARACTER_NAME', 'お客様のキャラクター名');
 define('BOX_REVIEWS_LINK_TEXT', 'のレビュー');
-define('TEXT_HEADER_OTHER_TITLE', 'RMT総合サイト '.STORE_NAME.'お気に入りに追加して下さい！');
+define('TEXT_HEADER_CATEGORY_TITLE', 'RMT総合サイト '.STORE_NAME.'お気に入りに追加して下さい！');
 define('TEXT_HEADER_SEARCH_IMAGE_ALT', 'RMT検索');
 define('TEXT_HEADER_ALL_CATEGORY', '全てのゲーム');
 define('TEXT_SEARCH_ALT', '検索');
