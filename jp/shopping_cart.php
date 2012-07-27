@@ -563,6 +563,7 @@ if (!empty($_SESSION['history_url'])) {
         <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?>
         <!-- right_navigation_eof //-->
       </td>
+    </tr>
   </table>
   
   <!-- body_eof //-->

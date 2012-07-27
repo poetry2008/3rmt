@@ -1341,7 +1341,9 @@ if (!isset($date_error)) $date_error= NULL ; //del notice
       <!-- body_text_eof //--> 
       <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation //--> 
         <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-        <!-- right_navigation_eof //--> </td> 
+        <!-- right_navigation_eof //--> 
+      </td> 
+    </tr>
   </table> 
   <!-- body_eof //--> 
   <!-- footer //--> 

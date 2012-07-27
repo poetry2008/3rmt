@@ -606,6 +606,7 @@ function session_win() {
       <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?>
       <!-- right_navigation_eof //-->
       </td>
+    </tr>
   </table>
   <!-- body_eof //-->
   <!-- footer //-->
