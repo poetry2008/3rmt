@@ -375,7 +375,7 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
   $email_order .= TEXT_REORDER_PRODUCT_EMAIL . "\n";
   $email_order .= '------------------------------------------' . "\n";
   $email_order .= $products_ordered . "\n";
-  $email_order .= TEXT_REORDER_TRADE_DATE . str_string($_date) . $_hour . TEXT_PRORDER_HOUR . $_minute .TIME_MIN_TEXT . "～" . $end_hour.TEXT_PRORDER_HOUR.$end_min.TEXT_REORDER_TWENTY_FOUR_HOUR. "\n";
+  $email_order .= TEXT_REORDER_TRADE_DATE . str_string($_date) . $_hour . TIME_HOUR_TEXT . $_minute .TIME_MIN_TEXT . "～" . $end_hour.TIME_HOUR_TEXT.$end_min.TEXT_REORDER_TWENTY_FOUR_HOUR. "\n";
 
   if ($comment) {
     $email_order .= TEXT_REORDER_COMMERN_EMAIL . "\n";
@@ -720,7 +720,7 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
 </div>
 <div id='confirm' style='display:none; text-align: center;'>
   <div id='confirm_content'></div>
-  <input type='image' src="includes/languages/japanese/images/buttons/button_submit2.gif" alt="<?php echo TEXT_REORDER_CONFRIM_ONE;?>" title="<?php echo TEXT_REORDER_CONFRIM_ONE;?>" onClick="document.order.submit()" >
+  <input type='image' src="includes/languages/japanese/images/buttons/button_submit2.gif" alt="<?php echo TEXT_REORDER_CONFRIM_INFO;?>" title="<?php echo TEXT_REORDER_CONFRIM_INFO;?>" onClick="document.order.submit()" >
   <input type='image' src="includes/languages/japanese/images/buttons/button_back.gif" alt="<?php echo TEXT_BACK_TO_HISTORY;?>" title="<?php echo TEXT_BACK_TO_HISTORY;?>" onClick="document.getElementById('confirm').style.display='none';document.getElementById('form').style.display='block'" >
 </div>
 <script type="text/javascript">

@@ -370,14 +370,14 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
   $email_order .= '------------------------------------------' . "\n";
   $email_order .= $products_ordered . "\n";
   $email_order .= TEXT_REORDER_TRADE_DATE . str_string($_date) . $_hour
-    .TIME_HOUR_TEXT . $_minute . TIME_MIN_TEXT. "～" . $end_hour.TEXT_PRORDER_HOUR.$end_min.TEXT_REORDER_TWENTY_FOUR_HOUR. "\n";
+    .TIME_HOUR_TEXT . $_minute . TIME_MIN_TEXT. "～" . $end_hour.TIME_HOUR_TEXT.$end_min.TEXT_REORDER_TWENTY_FOUR_HOUR. "\n";
 
   if ($comment) {
     $email_order .= TEXT_REORDER_COMMERN_EMAIL . "\n";
     $email_order .= $comment . "\n";
   }
   
-  $mail_title = sprintf(TEXT_REORDER_TITLE_EMAIL, $order['orders_id']);
+  $mail_title = "[" . $order['orders_id'] . "]".TEXT_REORDER_TITLE_EMAIL;
   $email_order = str_replace(array('${NAME}', '${TIME}', '${CONTENT}', '${SITE_NAME}', '${SITE_URL}', '${SUPPORT_EMAIL}'), array($o->customer['name'], date('Y-m-d H:i:s'), $email_order, STORE_NAME, HTTP_SERVER, SUPPORT_EMAIL_ADDRESS), $mail_content);
 
   # メール本文整形 --------------------------------------
