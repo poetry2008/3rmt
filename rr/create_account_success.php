@@ -46,7 +46,7 @@
         <div class="comment"> 
           <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
         <tr>
-          <td align="right"><?php echo '<a href="' . $origin_href . '">' . tep_image_button('button_continue02.gif', IMAGE_BUTTON_CONTINUE1) . '</a>'; ?></td>
+          <td align="right"><?php echo '<a href="' . $origin_href . '">' . tep_image_button('button_continue02.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></td>
         </tr>
          <tr> 
               <td><table border="0" width="100%" cellspacing="0" cellpadding="0" class="game_list_content">
@@ -56,7 +56,7 @@
           </table></td>
         </tr>
         <tr>
-          <td align="right"><?php echo '<a href="' . $origin_href . '">' . tep_image_button('button_continue02.gif', IMAGE_BUTTON_CONTINUE1) . '</a>'; ?></td>
+          <td align="right"><?php echo '<a href="' . $origin_href . '">' . tep_image_button('button_continue02.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></td>
         </tr>
       </table>
       </div>

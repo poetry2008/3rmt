@@ -42,8 +42,7 @@
                         echo '<input type="hidden" name="inc_subcat" value="1">';
                         echo tep_hide_session_id();
                         ?>  
-                        <div><a href="javascript:void(0);"id="game-preview"
-                        onmouseover="search_over()" onmouseout="search_out()" onClick="fn(this);" ></a></div>
+ <div><a href="javascript:void(0);"id="game-preview" onmouseover="search_over()" onmouseout="search_out()" onClick="fn(this);" ></a></div>
 
 
                                         			 </form>
