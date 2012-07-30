@@ -175,7 +175,7 @@
   define('TABLE_CURRENCIES', 'currencies');
   define('TABLE_CUSTOMERS', 'customers');
   define('TABLE_CUSTOMERS_BASKET', 'customers_basket');
-  //define('TABLE_CUSTOMERS_BASKET_ATTRIBUTES', 'customers_basket_attributes');
+  define('TABLE_CUSTOMERS_BASKET_ATTRIBUTES', 'customers_basket_attributes');
   define('TABLE_CUSTOMERS_INFO', 'customers_info');
   define('TABLE_USER_LOGIN','user_login');
   define('TABLE_LANGUAGES', 'languages');
@@ -909,7 +909,6 @@ if(!preg_match ("#".HTTP_SERVER."#", $_SERVER["HTTP_REFERER"]) && !preg_match ("
   define('TABLE_OA_FORM_GROUP', 'oa_form_group'); 
   define('TABLE_OA_ITEM', 'oa_item'); 
   define('TABLE_OA_FORMVALUE', 'oa_formvalue');
-  define('TABLE_OA_FORMVALUE', 'oa_formvalue'); 
   define('TABLE_ADDRESS','address');
   define('TABLE_OPTION_GROUP','option_group');
   define('TABLE_OPTION_ITEM','option_item');
