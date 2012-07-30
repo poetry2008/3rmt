@@ -484,3 +484,5 @@ define('TEXT_OST_THANKYOU_INFO_TEXT',
 別のメールアドレスをご入力いただき、お問い合わせをお願いいたします。');
 define('TEXT_DISPLAY_NUMBER_OF_CONTACT', '番目を表示（%sある問合番号のうち）');
 define('TEXT_SESSION_ERROR_ALERT','不正なページ移動です。ご確認の上、再度入力してください。');
+define('TEXT_ORDERS_EMPTY','一定時間が経過したか、複数のブラウザによって操作された為、接続が切断されました。お手数ではございますが、再度ご入力いただく必要がございます。');
+?>

@@ -3,8 +3,11 @@
   $Id$
 */
 
+header("Content-type:text/html;charset=utf-8");
 ini_set("display_errors","Off");
 require(DIR_WS_FUNCTIONS . 'visites.php');
+// load selected payment module
+require(DIR_WS_CLASSES . 'payment.php');
 
 // user new point value it from checkout_confirmation.php 
 if(isset($real_point)){
@@ -14,6 +17,30 @@ if(isset($real_point)){
 if (!tep_session_is_registered('customer_id')) {
   $navigation->set_snapshot(array('mode' => 'SSL', 'page' => FILENAME_CHECKOUT_PAYMENT));
   tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
+}
+
+if(!isset($_SESSION['cart'])){
+
+  ob_start();
+  phpinfo();
+  $phpinfo = ob_get_contents();
+  ob_end_clean();
+  $orders_mail_title = ORDERS_EMPTY_EMAIL_TITLE.'　'.date('Y-m-d H:i:s');
+  $orders_mail_text = ORDERS_EMPTY_EMAIL_TEXT;
+  $orders_mail_text = str_replace('{$IP}',$_SERVER['REMOTE_ADDR'],$orders_mail_text);
+  $orders_mail_text = str_replace('{$NAME}',$_SESSION['customer_emailaddress'],$orders_mail_text);
+  $orders_payment = $_SESSION['payment'];
+  $orders_payment = payment::changeRomaji($_SESSION['payment'], PAYMENT_RETURN_TYPE_TITLE);
+  $orders_mail_text = str_replace('{$PAYMENT}',$orders_payment,$orders_mail_text); 
+  $orders_mail_text = str_replace('{$BROWSER}',$_SERVER["HTTP_USER_AGENT"],$orders_mail_text);
+  $orders_mail_text = str_replace('{$PHPINFO}',$phpinfo,$orders_mail_text);
+  $message = new email(array('X-Mailer: iimy Mailer'));
+  $text = $orders_mail_text;
+  $message->add_html(nl2br($orders_mail_text), $text);
+  $message->build_message();
+  $message->send(STORE_OWNER,IP_SEAL_EMAIL_ADDRESS,STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS,$orders_mail_title);
+  echo '<script type="text/javascript">alert("'.TEXT_ORDERS_EMPTY.'");document.location.href="shopping_cart.php"</script>';
+  exit;
 }
 $seal_user_sql = "select is_seal from ".TABLE_CUSTOMERS." where customers_id
 ='".$customer_id."' limit 1";
