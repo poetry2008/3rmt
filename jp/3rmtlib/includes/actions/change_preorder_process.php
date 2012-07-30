@@ -570,7 +570,7 @@ $email_printing_order = '';
 $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
 $email_printing_order .= 'サイト名　　　　：' . STORE_NAME . "\n";
 $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-$email_printing_order .= '取引日時　　　　：' .  str_string($_SESSION['preorder_info_date']) . $_SESSION['preorder_info_start_hour'] . '時' .  $_SESSION['preorder_info_start_min'] . '分~'. $_SESSION['preorder_info_end_hour'] .'時'. $_SESSION['preorder_info_end_min'] .'分　（24時間表記）' . "\n";
+$email_printing_order .= 'お届け日時　　　　：' .  str_string($_SESSION['preorder_info_date']) . $_SESSION['preorder_info_start_hour'] . '時' .  $_SESSION['preorder_info_start_min'] . '分~'. $_SESSION['preorder_info_end_hour'] .'時'. $_SESSION['preorder_info_end_min'] .'分　（24時間表記）' . "\n";
 $email_printing_order .= 'オプション　　　：' . $_SESSION['preorder_info_tori'] . "\n";
 $email_printing_order .=
 '------------------------------------------------------------------------' . "\n";

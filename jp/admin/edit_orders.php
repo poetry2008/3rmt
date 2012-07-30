@@ -982,7 +982,7 @@ if($address_error == false){
           //$email .= '▼お名前　　　　　：' . $order->customer['name'] . '様' . "\n";
           //$email .= '▼メールアドレス　：' . $order->customer['email_address'] . "\n";
           //$email .= '▼支払方法　　　　：' . $order->info['payment_method'] . "\n";
-          //$email .= '▼取引日時　　　　：' . str_replace('&nbsp;',' ',$order->tori['date']) . '（24時間表記）' . "\n";
+          //$email .= '▼お届け日時　　　　：' . str_replace('&nbsp;',' ',$order->tori['date']) . '（24時間表記）' . "\n";
           //$email .= '▼オプション　　　：' . $order->tori['houhou'] . "\n";
           //$email .= '━━━━━━━━━━━━━━━━━━━━━' . "\n\n";
           //$email .= '▼注文商品' . "\n";

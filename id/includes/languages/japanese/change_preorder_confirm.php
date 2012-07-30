@@ -19,7 +19,7 @@ define('CHANGE_PREORDER_BREADCRUMB_FETCH', '注文');
 define('CHANGE_PREORDER_POINT_TEXT_BUY','<b>買取はポイントがつきません</b>&nbsp;&nbsp;今回の獲得予定ポイント:');
 define('TEXT_ADDRESS','住所:');
 define('TEXT_SHIPPING_FEE','配送料:');
-define('TEXT_SHIPPING_FEE_NOT','無料');
+define('TEXT_SHIPPING_FEE_FREE','無料');
 define('TEXT_TIME_LINK', '～');
 define('PREORDER_TRADER_LINE_TITLE', '取引情報');
 define('PREORDER_CONFIRM_LINE_TITLE', '最終確認');

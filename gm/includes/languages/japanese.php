@@ -441,7 +441,7 @@ define('ENTRY_PASSWORD_IS_ALPHA', '&nbsp;<font color="#FF0000">数字（01234567
 define('ENTRY_PASSWORD_IS_DIFFERENT', 'パスワードと再入力が違います。');
 define('ENTRY_PASSWORD_INFORM_READ_TEXT', '半角の英字、数字を組み合わせた'.ENTRY_PASSWORD_MIN_LENGTH.'文字以上を入力してください。<br>英字、数字がそれぞれ1文字以上を必要です。大文字と小文字は区別されます。<br>記号は入力できません。');
 define('TEXT_REORDER2_MUST_INPUT','<font color="red">必須項目</font>');
-define('TEXT_REORDER2_TREADE_TIME__ERROR','<br><font color="red">【取引日時】を選択してください。</font>');
+define('TEXT_REORDER2_TREADE_TIME__ERROR','<br><font color="red">【お届け日時】を選択してください。</font>');
 define('TEXT_REQUIRE_MSG', '*必須');
 define('TEXT_REQUIRE_FILE_TYPE_MSG', '無効なファイル形式です [ %s ]');
 define('TEXT_REQUIRE_FILE_SIZE_MSG', '添付ファイルの上限サイズ%s bytes を超えています。');

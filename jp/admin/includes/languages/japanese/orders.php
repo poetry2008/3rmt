@@ -221,7 +221,7 @@ define('TEXT_STATUS_HANDLING_WARNING','取り扱い注意');
 define('TEXT_STATUS_WAIT_TRADE','取引待ち');
 define('TEXT_STATUS_READY_ENTER','入力済み');
 define('TEXT_SITE_ORDER_FORM','注文書サイト:');
-define('TEXT_TRADE_DATE','取引日時:');
+define('TEXT_TRADE_DATE','お届け日時:');
 define('TEXT_ORDERS_OID','ご注文番号:');
 define('TEXT_ORDERS_DATE','注文日:');
 define('TEXT_CUSTOMER_CLASS','顧客種別:');

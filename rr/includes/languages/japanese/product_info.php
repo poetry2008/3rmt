@@ -30,7 +30,6 @@ define('TEXT_PREORDER_BOOK','を予約する');
 define('TEXT_PRODUCTS_QTY','数量:');
 define('TEXT_ABOUT','について');
 define('TEXT_KEYWORD','に関するキーワード');
-define('TEXT_TAGS_ADVERTISING','アフィリエイト広告用タグ');
 define('TEXT_REGISTER_AD_PRODUCTS','この商品の広告を登録することができます！！');
 define('TEXT_COPY_CODE','あなたのホームページにこの商品を表示させるには以下のソースコードをコピーしてホームページにペースとしてください。この商品の画像が表示されます。');
 define('TEXT_IMAGES_DISPLAY','実際に表示されるイメージ');

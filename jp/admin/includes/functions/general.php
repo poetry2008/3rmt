@@ -2006,7 +2006,7 @@ function tep_parse_search_string($search_str = '', &$objects) {
   }
 }
 
-// 取引日時
+// お届け日時
 function tep_torihiki($raw_datetime) {
   if ( ($raw_datetime == '0000-00-00 00:00:00') || ($raw_datetime == '') ) return false;
 

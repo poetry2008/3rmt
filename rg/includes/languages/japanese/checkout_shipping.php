@@ -4,7 +4,7 @@
 */
 
 define('NAVBAR_TITLE_1', 'ショッピングカート');
-define('NAVBAR_TITLE_2', '取引日時の指定');
+define('NAVBAR_TITLE_2', 'お届け日時の指定');
 
 define('HEADING_TITLE', '配送方法');
 
@@ -36,7 +36,7 @@ define('TEXT_ERROR_BAHAMUTO', '<span class="errorText">【お届け先キャラ�
 define('TEXT_ERROR_BAHAMUTO_EIJI', '<span class="errorText">【お届け先キャラクター名】で使用できる文字は半角英字のみです</span>');
 define('TEXT_ERROR_OPTION', '<span class="errorText">【オプション】を選択してください。</span>');
 define('TEXT_ERROR_DATE', '<span class="errorText">【お届け希望日】を選択してください。</span>');
-define('TEXT_ERROR_JIKAN', '<span class="errorText">【お届け希望時間】を選択してください。</span>');
+define('TEXT_ERROR_TIME', '<span class="errorText">【お届け希望時間】を選択してください。</span>');
 
 define('TABLE_ADDRESS_TITLE','住所');
 define('TABLE_OPTION_NEW','登録先に届ける');

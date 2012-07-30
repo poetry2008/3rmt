@@ -144,8 +144,8 @@ class telecom  extends basePayment  implements paymentInterface  {
     */    
     $mail_body .= "\t" . '------------------------------------------'."\n";
     
-    # 取引日時----------------------------
-      $mail_body .= '▼取引日時　　　　：' . $_SESSION["insert_torihiki_date"] . "\n";
+    # お届け日時----------------------------
+      $mail_body .= '▼お届け日時　　　　：' . $_SESSION["insert_torihiki_date"] . "\n";
     $mail_body .= '　　　　　　　　　：' . $_SESSION["torihikihouhou"] . "\n";
     
     # ユーザーエージェントなど----------------------------
@@ -356,7 +356,7 @@ class telecom  extends basePayment  implements paymentInterface  {
 
     $mail_body .= "\t" . '------------------------------------------'."\n";
     
-    $mail_body .= '▼取引日時　　　　：' .  $_SESSION["preorder_info_date"].' '.$_SESSION["preorder_info_hour"].':'.$_SESSION["preroder_info_min"] .":00". "\n";
+    $mail_body .= '▼お届け日時　　　　：' .  $_SESSION["preorder_info_date"].' '.$_SESSION["preorder_info_hour"].':'.$_SESSION["preroder_info_min"] .":00". "\n";
     $mail_body .= '　　　　　　　　　：' . $_SESSION["preorder_info_tori"] . "\n";
     
     $mail_body .= "\n\n";
