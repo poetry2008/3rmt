@@ -527,7 +527,6 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
         . '：' . str_replace($replace_arr, "", $ck_value['value']);
       
       if ($c_op_price != '0') {
-        //$products_ordered_attributes .= '　('.$currencies->format($c_op_price*$order->products[$i]['qty']).')'; 
         $products_ordered_attributes .= '　('.$currencies->format($c_op_price).')'; 
       }
     }
