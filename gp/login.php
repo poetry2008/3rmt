@@ -366,7 +366,10 @@ if($flag_error == false){
 
 // restore cart contents
         $cart->restore_contents();
-
+	if($_SESSION['referer']!=""){
+		  tep_db_query("update customers set referer='".tep_db_prepare_input($_SESSION['referer'])."'   where customers_id='".$customer_id."'");
+		  unset($_SESSION['referer']);
+		                 }
         if (sizeof($navigation->snapshot) > 0) {
           if ($navigation->snapshot['page'] != 'change_preorder.php') {
             $origin_href = tep_href_link($navigation->snapshot['page'], tep_array_to_string($navigation->snapshot['get'], array(tep_session_name())), $navigation->snapshot['mode']);
