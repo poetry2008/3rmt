@@ -72,8 +72,6 @@ if ( (STOCK_CHECK == 'true') && (STOCK_ALLOW_CHECKOUT != 'true') ) {
 }
 
 include(DIR_WS_LANGUAGES . $language . '/' . FILENAME_CHECKOUT_PROCESS);
-// load selected payment module
-require(DIR_WS_CLASSES . 'payment.php');
 $payment_modules = payment::getInstance(SITE_ID);
 $insert_id = date("Ymd") . '-' . date("His") . tep_get_order_end_num();
 # Check
