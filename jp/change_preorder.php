@@ -1027,7 +1027,7 @@ document.forms.order1.submit();
     $hours = date('H');
     $mimutes = date('i');
 ?>
-  <select name="date" onChange="selectDate('<?php echo $work_start; ?>', '<?php echo $work_end; ?>',this.value);$('#date_error').remove();$('#jikan_error_id').hide();$('#jikan_error').html('');">
+  <select name="date" onChange="selectDate('<?php echo $work_start; ?>', '<?php echo $work_end; ?>',this.value);$('#date_error').remove();$('#time_error_id').hide();$('#time_error').html('');">
     <option value=""><?php echo PREORDER_SELECT_EMPTY_OPTION;?></option>
     <?php
           $oarr = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
@@ -1056,11 +1056,11 @@ document.forms.order1.submit();
 </td>
 </tr>
 <?php
-if (isset($jikan_error)) {
+if (isset($time_error)) {
 ?>
-<tr id="jikan_error_id"><td class="main">&nbsp;</td><td class="main">
+<tr id="time_error_id"><td class="main">&nbsp;</td><td class="main">
 <?php
-  echo '<font id="jikan_error" color="#ff0000">'.$jikan_error.'</font>'; 
+  echo '<font id="time_error" color="#ff0000">'.$time_error.'</font>'; 
 ?>
 </td></tr>
 <?php

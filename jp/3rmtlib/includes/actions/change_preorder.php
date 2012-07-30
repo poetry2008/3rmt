@@ -125,12 +125,12 @@
     
       if ($preorder_hour == '') {
         $error = true;
-        $jikan_error = TEXT_PREORDER_ERROR_TIME;
+        $time_error = TEXT_PREORDER_ERROR_TIME;
       }
     
       if ($preorder_min == '') {
         $error = true;
-        $jikan_error = TEXT_PREORDER_ERROR_TIME;
+        $time_error = TEXT_PREORDER_ERROR_TIME;
       }
     }
    
