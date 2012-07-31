@@ -359,8 +359,6 @@ define('FOOTER_TEXT_BODY', C_FOOTER_COPY_RIGHT);
 
 define('EMAIL_SIGNATURE',C_EMAIL_FOOTER);
 
-// Include OSC-AFFILIATE 
-//include("affiliate_japanese.php");
 
 //Add languages
 //------------------------
