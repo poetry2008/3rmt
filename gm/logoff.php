@@ -39,6 +39,21 @@
   unset($_SESSION['camp_id']);
   tep_session_unregister('h_code_fee');
   tep_session_unregister('h_point');
+  // shipping session
+  tep_session_unregister('start_hour');
+  tep_session_unregister('start_min');
+  tep_session_unregister('end_hour');
+  tep_session_unregister('end_min');
+  tep_session_unregister('ele');
+  tep_session_unregister('address_option');
+  tep_session_unregister('insert_torihiki_date_end');
+  tep_session_unregister('address_show_list');
+  unset($_SESSION['options']);
+  unset($_SESSION['options_type_array']);
+  unset($_SESSION['weight_fee']);
+  unset($_SESSION['free_value']);
+  tep_session_unregister('hc_point');
+  tep_session_unregister('hc_camp_point');
 
   $cart->reset();
 
