@@ -375,7 +375,7 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
   $email_order .= TEXT_REORDER_PRODUCT_EMAIL . "\n";
   $email_order .= '------------------------------------------' . "\n";
   $email_order .= $products_ordered . "\n";
-  $email_order .= TEXT_REORDER_TRADE_DATE . str_string($_date) . $_hour . TEXT_PRORDER_HOUR . $_minute . TIME_MIN_TEXT . "～" . $end_hour.TEXT_PRORDER_HOUR.$end_min.TEXT_REORDER_TWENTY_FOUR_HOUR."\n";
+  $email_order .= TEXT_REORDER_TRADE_DATE . str_string($_date) . $_hour .  TIME_HOUR_TEXT . $_minute . TIME_MIN_TEXT . "～" . $end_hour.TIME_HOUR_TEXT.$end_min.TEXT_REORDER_TWENTY_FOUR_HOUR."\n";
 
   if ($comment) {
     $email_order .= TEXT_REORDER_COMMERN_EMAIL . "\n";
@@ -386,7 +386,6 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
   $email_order = str_replace(array('${NAME}', '${TIME}', '${CONTENT}', '${SITE_NAME}', '${SITE_URL}', '${SUPPORT_EMAIL}'), array($o->customer['name'], date('Y-m-d H:i:s'), $email_order, STORE_NAME, HTTP_SERVER, SUPPORT_EMAIL_ADDRESS), $mail_content);
 
   # メール本文整形 --------------------------------------
-  // 2003.03.08 Edit Japanese osCommerce
   tep_mail($o->customer['name'], $o->customer['email_address'], $mail_title, $email_order, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
   if (SEND_EXTRA_ORDER_EMAILS_TO != '') {
     tep_mail('', SEND_EXTRA_ORDER_EMAILS_TO, $mail_title, $email_order, $o->customer['name'], $o->customer['email_address'], '');
@@ -720,7 +719,7 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
 </div>
 <div id='confirm' style='display:none; text-align: center;' class="product_info_box">
   <div id='confirm_content'></div>
-  <input type='image' src="includes/languages/japanese/images/buttons/button_submit2.gif" alt="<?php echo TEXT_REORDER_CONFRIM_ONE;?>" title="<?php echo TEXT_REORDER_CONFRIM_ONE;?>" onClick="document.order.submit()" >
+  <input type='image' src="includes/languages/japanese/images/buttons/button_submit2.gif" alt="<?php echo TEXT_REORDER_CONFRIM_INFO;?>" title="<?php echo TEXT_REORDER_CONFRIM_INFO;?>" onClick="document.order.submit()" >
   <input type='image' src="includes/languages/japanese/images/buttons/button_back.gif" alt="<?php echo TEXT_BACK_TO_HISTORY;?>" title="<?php echo TEXT_BACK_TO_HISTORY;?>" onClick="document.getElementById('confirm').style.display='none';document.getElementById('form').style.display='block'" >
 </div>
 <script type="text/javascript">
@@ -811,12 +810,12 @@ function orderConfirmPage(){
 
     if(oldCharacter[i] != ''){
       text += "<tr><td bgcolor='#333333' width='130'>\n";
-      text += "<?php echo TEXT_REORDER_BEFORE_CHANGE;?>";
+      text += "<?php echo TEXT_REORDER_P_PRODUCT_CHARACTER.TEXT_REORDER_NO_CHANGE;?>";
       text += "</td><td>\n";
       text += oldCharacter[i] + "\n";
       text += "</td></tr>";
       text += "<tr><td bgcolor='#333333'>\n";
-      text += "<?php echo TEXT_REORDER_AFTER_CHANGE;?>";
+      text += "<?php echo TEXT_REORDER_P_PRODUCT_CHARACTER.TEXT_REORDER_NO_CHANGE;?>";
       text += "</td><td>\n";
       if(document.getElementById('character_'+i)){
       text += document.getElementById('character_'+i).value.replace(/\</ig,"&lt;").replace(/\>/ig,"&gt;") + "\n";

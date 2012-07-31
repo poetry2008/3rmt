@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
   require('includes/application_top.php');
@@ -1064,8 +1057,8 @@ document.forms.order1.submit();
 </tr>
 <tr><td class="main">&nbsp;</td><td class="main">
              <?php  
-             if (isset($jikan_error)) {
-                echo '<font id="jikan_error" color="#ff0000">'.$jikan_error.'</font>'; 
+             if (isset($time_error)) {
+                echo '<font id="time_error" color="#ff0000">'.$time_error.'</font>'; 
              } 
              ?> 
 </td></tr>

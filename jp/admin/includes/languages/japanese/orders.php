@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2002 osCommerce
-
-  Released under the GNU General Public License
 */
 
 define('HEADING_TITLE', '注文管理');
@@ -88,7 +81,6 @@ define('ERROR_ORDER_DOES_NOT_EXIST', 'エラー: 注文が存在しません。'
 define('SUCCESS_ORDER_UPDATED', '成功: 注文状態が更新されました。');
 define('WARNING_ORDER_NOT_UPDATED', '警告: 注文状態はなにも変更されませんでした。');
 
-// Add Japanese osCommerce
 define('EMAIL_TEXT_STORE_CONFIRMATION', ' へのご注文、誠にありがとうございます。' . "\n\n"
 .'ご注文の受付状況及びご連絡事項を、下記にご案内申し上げます。');
 define('EMAIL_TEXT_STORE_CONFIRMATION_FOOTER', 
@@ -229,7 +221,7 @@ define('TEXT_STATUS_HANDLING_WARNING','取り扱い注意');
 define('TEXT_STATUS_WAIT_TRADE','取引待ち');
 define('TEXT_STATUS_READY_ENTER','入力済み');
 define('TEXT_SITE_ORDER_FORM','注文書サイト:');
-define('TEXT_TRADE_DATE','取引日時:');
+define('TEXT_TRADE_DATE','お届け日時:');
 define('TEXT_ORDERS_OID','ご注文番号:');
 define('TEXT_ORDERS_DATE','注文日:');
 define('TEXT_CUSTOMER_CLASS','顧客種別:');

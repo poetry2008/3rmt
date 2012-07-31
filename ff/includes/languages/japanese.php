@@ -77,7 +77,7 @@ define('MENU_MU','メーカー一覧');
 
 // footer text in includes/footer.php
 define('FOOTER_TEXT_REQUESTS_SINCE', 'リクエスト ('); // 'requests since'
-define('FOOTER_TEXT_REQUESTS_SINCE_ADD', ' より)'); // 'requests since' Add Japanese osCommerce
+define('FOOTER_TEXT_REQUESTS_SINCE_ADD', ' より)');
 
 // text for gender
 define('MALE', '男性');
@@ -357,25 +357,10 @@ define('TEXT_CCVAL_ERROR_INVALID_DATE', 'クレジットカード有効期限が
 define('TEXT_CCVAL_ERROR_INVALID_NUMBER', 'クレジットカードナンバーが正しくありません。<br>ご確認後もう一度入力してください。');
 define('TEXT_CCVAL_ERROR_UNKNOWN_CARD', '入力したクレジットカードナンバーの最初の4桁は: %s です。<br>ナンバーが正しい場合このカードの取扱いがありません。<br>間違っている場合はご確認後もう一度入力してください。');
 
-/*
-  The following copyright announcement can only be
-  appropriately modified or removed if the layout of
-  the site theme has been modified to distinguish
-  itself from the default osCommerce-copyrighted
-  theme.
 
-  For more information please read the following
-  Frequently Asked Questions entry on the osCommerce
-  support site:
-
-  http://www.oscommerce.com/community.php/faq,26/q,50
-
-  Please leave this comment intact together with the
-  following copyright announcement.
-*/
 define('FOOTER_TEXT_BODY', C_FOOTER_COPY_RIGHT);
 
-define('EMAIL_SIGNATURE',C_EMAIL_FOOTER);  //Add Japanese osCommerce
+define('EMAIL_SIGNATURE',C_EMAIL_FOOTER); 
 
 // Include OSC-AFFILIATE 
 //include("affiliate_japanese.php");
@@ -434,7 +419,7 @@ define('SEND_MAIL_HEADING_TITLE', 'メール受信テスト');
 define('TEXT_NO_LATEST_NEWS', 'お知らせはありません');
 define('NOTICE_MUST_BUY_TEXT', 'ショッピングカートに商品が有りません、商品を入れてから押してください。');
 define('LEFT_REORDER_TEXT', '再配達フォーム');
-define('LEFT_REORDER_TITLE', '取引日時変更');
+define('LEFT_REORDER_TITLE', 'お届け日時変更');
 define('ENTRY_GUEST_EMAIL_NOT_ACTIVE', '&nbsp;<small><font color="#FF0000">認証手続きはまだ完了していません。</font></small>');
 define('CHECK_EMAIL_EXISTS_ERROR', 'エラーが発生しました。<br>お手数をお掛けいたしますが、こちらから<a href="'.HTTP_SERVER.'?'.tep_session_name().'='.tep_session_id().'">トップページ</a>に戻り再度やり直してください。');
 define('SENDMAIL_SUCCESS_COMMENT_TEXT', '正常に受信できる場合：「送信」後5分以内で'.STORE_NAME.'からの確認メールが届きます。<br>受信できない場合：「送信」後5分以上経過しても受信できない場合は、スパムフィルター等で受け取りを拒否されている可能性が高いです。');
@@ -462,10 +447,10 @@ define('ENTRY_PASSWORD_IS_DIFFERENT', 'パスワードと再入力が違いま�
 define('ENTRY_PASSWORD_INFORM_READ_TEXT', '半角の英字、数字を組み合わせた'.ENTRY_PASSWORD_MIN_LENGTH.'文字以上を入力してください。<br>英字、数字がそれぞれ1文字以上を必要です。大文字と小文字は区別されます。記号は入力できません。');
 define('IMAGE_BUTTON_CUSTOMERS_EXIT', '退会を申し込む');
 define('TEXT_REORDER2_MUST_INPUT','<font color="red">必須項目</font>');
-define('TEXT_REORDER2_TORIHIKI_ERROR','<br><font color="red">【取引日時】を選択してください。</font>');
+define('TEXT_REORDER2_TORIHIKI_ERROR','<br><font color="red">【お届け日時】を選択してください。</font>');
 define('OPTION_CHARACTER_NAME', 'お客様のキャラクター名');
 define('BOX_REVIEWS_LINK_TEXT', 'のレビュー');
-define('TEXT_HEADER_OTHER_TITLE', 'RMT総合サイト '.STORE_NAME.'お気に入りに追加して下さい！');
+define('TEXT_HEADER_CATEGORY_TITLE', 'RMT総合サイト '.STORE_NAME.'お気に入りに追加して下さい！');
 define('TEXT_HEADER_SEARCH_IMAGE_ALT', 'RMT検索');
 define('TEXT_HEADER_ALL_CATEGORY', '全てのゲーム');
 define('TEXT_SEARCH_ALT', '検索');
@@ -473,4 +458,5 @@ define('TEXT_CHECKOUT_LINK', 'レジへ進む');
 define('TEXT_ACCOUNT_GUEST_INFO', '会員登録をしないで購入することもできます。');
 define('NUM_UNIT_TEXT', '個');
 define('TEXT_SESSION_ERROR_ALERT','不正なページ移動です。ご確認の上、再度入力してください。');
+define('TEXT_ORDERS_EMPTY','一定時間が経過したか、複数のブラウザによって操作された為、接続が切断されました。お手数ではございますが、再度ご入力いただく必要がございます。');
 ?>

@@ -488,7 +488,7 @@ if (!empty($_SESSION['history_url'])) {
                   </td>
                 </tr>
                 <tr>
-                  <td class="main" colspan="3"><?php echo TEXT_UPDATE_CART_INFO; // 2003.02.27 nagata Add Japanese osCommerce ?></td>
+                  <td class="main" colspan="3"><?php echo TEXT_UPDATE_CART_INFO;?></td>
                 </tr>
               </table>
   
@@ -563,6 +563,7 @@ if (!empty($_SESSION['history_url'])) {
         <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?>
         <!-- right_navigation_eof //-->
       </td>
+    </tr>
   </table>
   
   <!-- body_eof //-->

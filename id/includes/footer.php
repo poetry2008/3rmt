@@ -17,7 +17,7 @@
             echo '|'; 
           }
         ?>
-          <?php echo '<a href="'.tep_href_link(FILENAME_CONTACT_US).'">'.BOX_INFORMATION_CONTACT.'</a>';?>
+          <?php echo '<a href="'.tep_href_link(FILENAME_CONTACT_US,'','SSL').'">'.BOX_INFORMATION_CONTACT.'</a>';?>
           <?php echo '|';?> 
           <a href="<?php echo HTTP_SERVER.'/link/';?>">相互リンク</a></div>
           <address class="footer_contacts">

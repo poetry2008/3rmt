@@ -59,7 +59,7 @@
         <table cellpadding="0" cellspacing="0" border="0" summary="logo">
           <tr>
             <td>
-              <a href="http://rmt.worldmoney.jp/"><img src="images/design/logo.jpg" width="200" height="103" alt="RMT" ></a>
+              <a href="<?php echo HTTP_SERVER;?>"><img src="images/design/logo.jpg" width="200" height="103" alt="RMT" ></a>
             </td>
             <td>
   <script type='text/javascript' src="js/flash_rmt.js"></script>

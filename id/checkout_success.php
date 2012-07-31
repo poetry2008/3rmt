@@ -191,7 +191,9 @@
       <!-- body_text_eof //--> 
       <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation //--> 
         <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-        <!-- right_navigation_eof //--> </td> 
+        <!-- right_navigation_eof //--> 
+      </td> 
+    </tr>
   </table> 
   <!-- body_eof //--> 
   <!-- footer //--> 
@@ -206,7 +208,7 @@ if($guestchk == '1') {
   tep_session_unregister('customer_id');
   tep_session_unregister('customer_default_address_id');
   tep_session_unregister('customer_first_name');
-  tep_session_unregister('customer_last_name'); //Add Japanese osCommerce
+  tep_session_unregister('customer_last_name');
   tep_session_unregister('customer_country_id');
   tep_session_unregister('customer_zone_id');
   tep_session_unregister('comments');

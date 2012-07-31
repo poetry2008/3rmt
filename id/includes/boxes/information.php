@@ -25,7 +25,7 @@
 
 ?>
     <li class="l_m_category_li">
-      <?php echo '<a href="' . tep_href_link(FILENAME_CONTACT_US) . '">' . BOX_INFORMATION_CONTACT . '</a>' . "\n"; ?>
+      <?php echo '<a href="' . tep_href_link(FILENAME_CONTACT_US,'','SSL') . '">' . BOX_INFORMATION_CONTACT . '</a>' . "\n"; ?>
     </li>
     <li class="l_m_category_li">
       <?php echo '<a href="' . tep_href_link('reorder.php') . '">' . '再配達フォーム' . '</a>' . "\n"; ?>

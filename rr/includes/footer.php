@@ -21,7 +21,7 @@
       echo '|'; 
     }
   ?>
-<?php echo '<a href="'.tep_href_link(FILENAME_CONTACT_US).'">'.BOX_INFORMATION_CONTACT.'</a>|<a
+<?php echo '<a href="'.tep_href_link(FILENAME_CONTACT_US,'','SSL').'">'.BOX_INFORMATION_CONTACT.'</a>|<a
 href="'.HTTP_SERVER.'/link/">'.FOOTER_LINK_TEXT.'</a>';?>
 <?php echo '<br>';?> 
 </div>

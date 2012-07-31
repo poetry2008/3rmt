@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
   require('includes/application_top.php');
@@ -116,6 +109,7 @@
       <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?>
       <!-- right_navigation_eof //-->
       </td>
+    </tr>
   </table>
   <!-- body_eof //-->
   <!-- footer //-->

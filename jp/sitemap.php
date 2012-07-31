@@ -55,7 +55,7 @@
                         <li><?php echo '<a href="' . tep_href_link(FILENAME_SPECIALS) . '">' . PAGE_SPECIALS . '</a>'; ?></li>
                         <li><?php echo '<a href="' . tep_href_link(FILENAME_REVIEWS) . '">' . PAGE_REVIEWS . '</a>'; ?></li>
                         <li><?php echo '<a href="' . tep_href_link(FILENAME_LATEST_NEWS) . '">' . PAGE_NEWS . '</a>'; ?></li>
-                        <li><?php echo '<a href="' . tep_href_link(FILENAME_CONTACT_US) . '">' . BOX_INFORMATION_CONTACT . '</a>'; ?></li>
+                        <li><?php echo '<a href="' . tep_href_link(FILENAME_CONTACT_US,'','SSL') . '">' . BOX_INFORMATION_CONTACT . '</a>'; ?></li>
                         <li><?php echo '<a href="' . tep_href_link(FILENAME_PASSWORD_FORGOTTEN) . '">' . PAGE_PASSWORD_FORGOTTEN . '</a>'; ?></li>
                         <li><?php echo '<a href="' . tep_href_link(FILENAME_SEND_MAIL) . '">' . PAGE_SEND_MAIL . '</a>'; ?></li>
                         <li><?php echo '<a href="' . tep_href_link(FILENAME_EMAIL_TROUBLE) . '">' . PAGE_EMAIL_TROUBLE . '</a>'; ?></li>
@@ -95,6 +95,7 @@
         <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?>
         <!-- right_navigation_eof //-->
       </td>
+    </tr>
   </table>
   <!-- body_eof //-->
   <!-- footer //-->

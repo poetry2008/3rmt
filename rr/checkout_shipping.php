@@ -161,12 +161,12 @@
   
     if($hour == '') {
       $error = true;
-      $jikan_error = TEXT_ERROR_JIKAN;
+      $time_error = TEXT_ERROR_TIME;
     }
   
     if($min == '') {
       $error = true;
-      $jikan_error = TEXT_ERROR_JIKAN;
+      $time_error = TEXT_ERROR_TIME;
     }
   }
     
@@ -1266,11 +1266,11 @@ if (!isset($date_error)) $date_error= NULL ; //del notice
   </tr>
 <?php
 
-  if(isset($jikan_error) && $jikan_error != '') {
+  if(isset($time_error) && $time_error != '') {
 ?>
-<tr id="jikan_error">
+<tr id="time_error">
   <td class="main" width="153">&nbsp;</td>
-    <td class="main"><?php echo $jikan_error; ?></td>
+    <td class="main"><?php echo $time_error; ?></td>
   </tr>
 <?php
   }

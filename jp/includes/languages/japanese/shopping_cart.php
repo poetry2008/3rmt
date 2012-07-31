@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2002 osCommerce
-
-  Released under the GNU General Public License
 */
 
 define('NAVBAR_TITLE', 'ショッピングカート');
@@ -32,7 +25,7 @@ define('OUT_OF_STOCK_CAN_CHECKOUT', STOCK_MARK_PRODUCT_OUT_OF_STOCK . ' 印の�
 
 // '... Make any changes above? Click.' (tamura 2002/03/28 追加)
 //define('TEXT_UPDATE_CART_INFO', '<b><font color="#ff0000">※</font> 数量を変更したり削除する場合は更新してください!</b>');
-define('TEXT_UPDATE_CART_INFO', '<b><font color="#ff0000">※</font> 数量をご確認の上「レジへ進む」ボタンをクリックしてください。</b>'); //Add Japanese osCommerce
+define('TEXT_UPDATE_CART_INFO', '<b><font color="#ff0000">※</font> 数量をご確認の上「レジへ進む」ボタンをクリックしてください。</b>');
   
 define('TABLE_HEADING_IMAGE', '画像');
 define('TABLE_HEADING_OPERATE', '操作');

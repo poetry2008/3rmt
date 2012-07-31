@@ -98,7 +98,7 @@ function selectDate(start_time,end_time,value){
 /*                            分セレクトボックス                               /
 /******************************************************************************/
 function selectHour(start_time,end_time,hour,min_num,ele){
-        $("#jikan_error").remove(); 
+        $("#time_error").remove(); 
         if(hour != ''){
           hour = parseInt(hour); 
           document.getElementById("hour"+hour).style.color="#ffffff";

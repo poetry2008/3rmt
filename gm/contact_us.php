@@ -37,7 +37,7 @@ require_once(CLIENTINC_DIR.'header.inc.php');
   <h3>&#26032;&#35215;&#12362;&#21839;&#12356;&#21512;&#12431;&#12379;</h3>
   </td>
   <td align="left" valign="bottom">
-  <form method="link" action="open.php">
+  <form method="link" action="<?php echo tep_href_link('open.php','','SSL')?>">
   <input type="image" class="button2" value="&#12362;&#21839;&#12356;&#21512;&#12431;&#12379;" src="includes/languages/japanese/images/buttons/lemail.gif"
    onmouseover="this.src='includes/languages/japanese/images/buttons/lemail_hover.gif'"
    onmouseout="this.src='includes/languages/japanese/images/buttons/lemail.gif'"
@@ -49,7 +49,7 @@ require_once(CLIENTINC_DIR.'header.inc.php');
 <tr>
   <td height="100" width="5%" valign="top"><img src="./images/ticket_status_icon.gif" width="48" height="48"></td>
   <td>
-    <form class="status_form" action="contact_us_login.php" method="post"> 
+  <form class="status_form" action="<?php echo tep_href_link('contact_us_login.php','','SSL')?>" method="post"> 
    <table border="0" width="100%" cellspacing="0" cellpadding="0" >
    <tr><td colspan="2" style="font-size:18px"><?php echo TEXT_PROMPT_CONFIRM;?></td></tr>
    <tr><td width="30%">&#12513;&#12540;&#12523;&#12450;&#12489;&#12524;&#12473;&#65306;</td>

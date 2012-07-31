@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2002 osCommerce
-  
-  Released under the GNU General Public License
 */
 
 //define('HEADING_TITLE', '注文の編集・詳細');
@@ -102,7 +95,6 @@ define('ENTRY_CUSTOMER_EMAIL', 'Eメールアドレス');
 //define('SUCCESS_ORDER_UPDATED', '成功: 注文状態が更新されました。');
 //define('WARNING_ORDER_NOT_UPDATED', '警告: 注文状態はなにも変更されませんでした。');
 
-// Add Japanese osCommerce
 //define('EMAIL_TEXT_STORE_CONFIRMATION', ' へのご注文、誠にありがとうございます。' . "\n\n"
 //.'ご注文の受付状況及びご連絡事項を、下記にご案内申し上げます。');
 //define('EMAIL_TEXT_STORE_CONFIRMATION_FOOTER', 

@@ -161,12 +161,12 @@
   
     if($hour == '') {
       $error = true;
-      $jikan_error = TEXT_ERROR_JIKAN;
+      $time_error = TEXT_ERROR_TIME;
     }
   
     if($min == '') {
       $error = true;
-      $jikan_error = TEXT_ERROR_JIKAN;
+      $time_error = TEXT_ERROR_TIME;
     }
   }
     
@@ -1295,11 +1295,11 @@ if (!isset($date_error)) $date_error= NULL ; //del notice
       echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\',\''. $post_hour .'\','. $post_min .',\''.$ele.'\');$("#shipping_list_min").show();$("#h_c_'.$post_hour.'").val('.$post_min.');</script>';
     }
   }
-  if(isset($jikan_error) && $jikan_error != '') {
+  if(isset($time_error) && $time_error != '') {
 ?>
-  <tr id="jikan_error">
+  <tr id="time_error">
   <td class="main" width="146">&nbsp;</td>
-    <td class="main"><?php echo $jikan_error; ?></td>
+    <td class="main"><?php echo $time_error; ?></td>
   </tr>
 <?php
   }
@@ -1335,7 +1335,9 @@ if (!isset($date_error)) $date_error= NULL ; //del notice
       <!-- body_text_eof //--> 
       <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation //--> 
         <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-        <!-- right_navigation_eof //--> </td> 
+        <!-- right_navigation_eof //--> 
+      </td> 
+    </tr>
   </table> 
   <!-- body_eof //--> 
   <!-- footer //--> 

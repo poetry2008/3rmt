@@ -467,7 +467,7 @@ if (!empty($_SESSION['history_url'])) {
   </td> 
             </tr> 
             <tr> 
-              <td  colspan="2"><?php echo TEXT_UPDATE_CART_INFO; // 2003.02.27 nagata Add Japanese osCommerce ?></td> 
+              <td  colspan="2"><?php echo TEXT_UPDATE_CART_INFO;?></td> 
             </tr> 
           </table> 
 <?php 

@@ -17,7 +17,7 @@ $t=Format::input($_POST['lticket']?$_POST['lticket']:$_GET['t']);
     <p class="login_inc"><?php 
     echo sprintf(TEXT_OST_LOGIN_INC_LOGIN_INC_INFO,'<a href="open.php">'.TEXT_OST_LOGIN_INC_NEW_CONTACT.'</a>');?></p>
     <span class="error"><font color="red"><?=Format::htmlchars($loginmsg)?></font></span>
-    <form action="contact_us_login.php" method="post">
+    <form action="<?php echo tep_href_link('contact_us_login.php','','SSL')?>" method="post">
     <table cellspacing="1" cellpadding="0" border="0" width="100%" class="open_login">
         <tr> 
             <th width="30%"><?php echo TEXT_OST_LOGIN_INC_MAILL_ADDRESS;?></th>

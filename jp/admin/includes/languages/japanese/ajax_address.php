@@ -36,5 +36,5 @@ define('TEXT_OPTION_FALSE_NAME','カナ');
 define('TEXT_OPTION_ENGLISH_NUM','英数');
 define('TEXT_OPTION_ENGLISH','英');
 define('TEXT_OPTION_NUM','数');
-define('TEXT_WANT_DELETE','このレコードを削除してもよろしいですか？');
+define('TEXT_WANT_DELETE','このデータを削除してもよろしいですか？');
 ?>

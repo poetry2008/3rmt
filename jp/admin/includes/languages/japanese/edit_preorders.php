@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2002 osCommerce
-
-  Released under the GNU General Public License
 */
 
 define('HEADING_TITLE', '予約内容編集');
@@ -106,7 +99,6 @@ define('PRODUCTS_WEIGHT_ERROR_TWO','）の規定の重量を超えました。')
 define('PRODUCTS_WEIGHT_ERROR_THREE','商品を削除するか、または個数を変更して（');
 define('PRODUCTS_WEIGHT_ERROR_FOUR','）kg以内にしてください。');
 
-// Add Japanese osCommerce
 define('EMAIL_TEXT_STORE_CONFIRMATION', ' へのご予約、誠にありがとうございます。' . "\n" . 
 'ご予約の受付状況及びご連絡事項を、下記にご案内申し上げます。');
 define('TABLE_HEADING_COMMENTS_ADMIN', '[ご連絡事項]');
@@ -134,7 +126,7 @@ define('EDIT_ORDERS_DATE_TEXT', '予約日:');
 define('EDIT_ORDERS_CUSTOMER_NAME', '顧客名:');
 define('EDIT_ORDERS_EMAIL', 'メールアドレス:');
 define('EDIT_ORDERS_PAYMENT_METHOD', '支払方法:');
-define('EDIT_ORDERS_FETCHTIME', '取引日時:');
+define('EDIT_ORDERS_FETCHTIME', 'お届け日時:');
 define('EDIT_ORDERS_TORI_TEXT', 'オプション:');
 define('EDIT_ORDERS_CUSTOMER_NAME_READ', '<font color="red">※</font>&nbsp;姓と名の間には<font color="red">半角スペース</font>を入力してください。');
 define('EDIT_ORDERS_PAYMENT_METHOD_READ', '<table><tr class="smalltext"><td><font color="red">※</font>&nbsp;コピペ用:</td><td>銀行振込</td><td>クレジットカード決済</td><td>銀行振込(買い取り)</td><td>ゆうちょ銀行（郵便局）</td><td>コンビニ決済</td></tr></table>');
@@ -166,7 +158,7 @@ define('EDIT_ORDERS_RECORD_READ', '←ここはチェックしないように');
 define('EDIT_ORDERS_RECORD_ARTICLE', 'こちらに入力した文章はメール本文に挿入されます。');
 define('EDIT_ORDERS_ITEM_FIVE_TITLE', '5. データを更新');
 define('EDIT_ORDERS_FINAL_CONFIRM_TEXT', '最終確認はしましたか？');
-define('EDIT_ORDERS_FINAL_CONFIRM_TEMPLATE', '<table cellspacing="0" cellpadding="2" width="100%"><tr class="smalltext"><td valign="top" colspan="3"><font color="red">※</font>&nbsp;コピペ用フレーズです。トリプルクリックをすると全選択できます。</td></tr> <tr bgcolor="#999999" class="smalltext"><td>商品の変更</td><td>支払方法の変更（販売用）</td><td>支払方法の変更（販売用）</td></tr> <tr bgcolor="#cccccc" class="smalltext"> <td valign="top">弊社のキャラクター名は【】となります。</td> <td valign="top"> 下記の金融機関へお振り込みください。<br> ------------------------------------------<br> 銀行名　　：　ジャパンネット銀行<br> 支店名　　：　本店営業部<br> 口座種別　：　普通<br> 口座名　　：　カ）アイアイエムワイ<br> 口座番号　：　1164394<br> ------------------------------------------<br> 銀行名　　：　イーバンク銀行<br> 支店名　　：　ワルツ支店<br> 支店番号　：　204<br> 口座名　　：　カ）アイアイエムワイ<br> 口座番号　：　7003965<br> ------------------------------------------<br> ※ 必ずご予約時に入力したお名前でお振り込みください。<br> ※ 振込手数料はお客様のご負担となります。<br> ※ お振り込みはご予約から７日以内にお願いいたします。<br> ※ ご入金を株式会社iimyが確認した時点でご契約の成立となります。 </td> <td valign="top"> 10分程度でお客様専用のクレジットカード決済URLを電子メールにてご連絡い<br> たします。<br> メール本文に記載していますURLをクリックし、クレジットカード決済を完了<br> してください。 </td> </tr> </table>');
+define('EDIT_ORDERS_FINAL_CONFIRM_TEMPLATE', '<table cellspacing="0" cellpadding="2" width="100%"><tr class="smalltext"><td valign="top" colspan="3"><font color="red">※</font>&nbsp;コピペ用フレーズです。トリプルクリックをすると全選択できます。</td></tr> <tr bgcolor="#999999" class="smalltext"><td>商品の変更</td><td>支払方法の変更（販売用）</td><td>支払方法の変更（販売用）</td></tr> <tr bgcolor="#cccccc" class="smalltext"> <td valign="top">弊社のキャラクター名は【】となります。</td> <td valign="top"> 下記の金融機関へお振り込みください。<br> ------------------------------------------<br> 銀行名　　：　ジャパンネット銀行<br> 支店名　　：　本店営業部<br> 口座種別　：　普通<br> 口座名　　：　カ）アイアイエムワイ<br> 口座番号　：　1164394<br> ------------------------------------------<br> 銀行名　　：　イーバンク銀行<br> 支店名　　：　ワルツ支店<br> 支店番号　：　204<br> 口座名　　：　カ）アイアイエムワイ<br> 口座番号　：　7003965<br> ------------------------------------------<br> ※ 必ずご予約時に入力したお名前でお振り込みください。<br> ※ 振込手数料はお客様のご負担となります。<br> ※ お振り込みはご予約から７日以内にお願いいたします。<br> ※ ご入金を'.COMPANY_NAME.'が確認した時点でご契約の成立となります。 </td> <td valign="top"> 10分程度でお客様専用のクレジットカード決済URLを電子メールにてご連絡い<br> たします。<br> メール本文に記載していますURLをクリックし、クレジットカード決済を完了<br> してください。 </td> </tr> </table>');
 define('EDIT_ORDERS_PRO_DUMMY_NAME', 'キャラクター名:');
 define('EDIT_NEW_ORDERS_CREATE_TITLE', '予約書の作成');
 define('EDIT_NEW_ORDERS_CREATE_READ', '【重要】予約編集ではありません。新規予約作成システムです。');

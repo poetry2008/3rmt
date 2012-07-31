@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
   require('includes/application_top.php');
@@ -509,7 +502,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                         echo $currencies->format_total($preorder_total_res['value']);
                       }
                       
-                      $shipping_fee_str = $shipping_fee == 0 ? TEXT_SHIPPING_FEE_NOT : $currencies->format_total($shipping_fee);
+                      $shipping_fee_str = $shipping_fee == 0 ? TEXT_SHIPPING_FEE_FREE : $currencies->format_total($shipping_fee);
                       $preorder_shipping_fee = (int)$shipping_fee;
                       if (!tep_session_is_registered('preorder_shipping_fee')) {
                         tep_session_register('preorder_shipping_fee'); 
@@ -666,7 +659,9 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
       <!-- body_text_eof //--> 
       <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation //--> 
         <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-        <!-- right_navigation_eof //--> </td> 
+        <!-- right_navigation_eof //--> 
+      </td> 
+    </tr>
   </table> 
   <!-- body_eof //--> 
   <!-- footer //--> 

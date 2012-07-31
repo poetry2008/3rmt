@@ -66,7 +66,7 @@ if($_POST && (!empty($_POST['lemail']) && !empty($_POST['lticket']))):
             //Redirect tickets.php
             session_write_close();
             session_regenerate_id();
-            @header("Location: tickets.php");
+            @header("Location: ".tep_href_link('tickets.php','','SSL'));
             require_once('tickets.php'); //Just incase. of header already sent error.
             exit;
         }

@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
   require('includes/application_top.php');
@@ -21,7 +14,7 @@
   tep_session_unregister('customer_id');
   tep_session_unregister('customer_default_address_id');
   tep_session_unregister('customer_first_name');
-  tep_session_unregister('customer_last_name'); //Add Japanese osCommerce
+  tep_session_unregister('customer_last_name');
   tep_session_unregister('customer_country_id');
   tep_session_unregister('customer_zone_id');
   tep_session_unregister('comments');

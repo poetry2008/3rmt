@@ -321,7 +321,7 @@ define('TEXT_CACHE_ALSO_PURCHASED', '関連の商品モジュール');
 define('TEXT_NONE', '--なし--');
 define('TEXT_TOP', 'トップ');
 
-define('EMAIL_SIGNATURE',C_EMAIL_FOOTER);  //Add Japanese osCommerce
+define('EMAIL_SIGNATURE',C_EMAIL_FOOTER);
 
 //Add languages
 //------------------------
@@ -449,7 +449,7 @@ define('FILENAME_MAG_UP_TEXT','メールマガジン一括登録');
 define('FILENAME_MAG_DL_TEXT','メールマガジンデータDL');
 
 //header language
-define('HEADER_TEXT_SITE_NAME','株式会社iimy');
+define('HEADER_TEXT_SITE_NAME',COMPANY_NAME);
 define('HEADER_TEXT_LOGINED','でログインしています。');
 define('HEADER_TEXT_ORDERS','注文一覧');
 define('HEADER_TEXT_TELECOM_UNKNOW','決算履歴');

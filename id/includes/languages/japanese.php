@@ -77,7 +77,7 @@ define('MENU_MU','メーカー一覧');
 
 // footer text in includes/footer.php
 define('FOOTER_TEXT_REQUESTS_SINCE', 'リクエスト ('); // 'requests since'
-define('FOOTER_TEXT_REQUESTS_SINCE_ADD', ' より)'); // 'requests since' Add Japanese osCommerce
+define('FOOTER_TEXT_REQUESTS_SINCE_ADD', ' より)');
 
 // text for gender
 define('MALE', '男性');
@@ -356,25 +356,10 @@ define('TEXT_CCVAL_ERROR_INVALID_DATE', 'クレジットカード有効期限が
 define('TEXT_CCVAL_ERROR_INVALID_NUMBER', 'クレジットカードナンバーが正しくありません。<br>ご確認後もう一度入力してください。');
 define('TEXT_CCVAL_ERROR_UNKNOWN_CARD', '入力したクレジットカードナンバーの最初の4桁は: %s です。<br>ナンバーが正しい場合このカードの取扱いがありません。<br>間違っている場合はご確認後もう一度入力してください。');
 
-/*
-  The following copyright announcement can only be
-  appropriately modified or removed if the layout of
-  the site theme has been modified to distinguish
-  itself from the default osCommerce-copyrighted
-  theme.
 
-  For more information please read the following
-  Frequently Asked Questions entry on the osCommerce
-  support site:
-
-  http://www.oscommerce.com/community.php/faq,26/q,50
-
-  Please leave this comment intact together with the
-  following copyright announcement.
-*/
 define('FOOTER_TEXT_BODY', C_FOOTER_COPY_RIGHT);
 
-define('EMAIL_SIGNATURE',C_EMAIL_FOOTER);  //Add Japanese osCommerce
+define('EMAIL_SIGNATURE',C_EMAIL_FOOTER); 
 
 // Include OSC-AFFILIATE 
 //include("affiliate_japanese.php");
@@ -459,7 +444,7 @@ define('ENTRY_PASSWORD_IS_DIFFERENT', 'パスワードと再入力が違いま�
 define('ENTRY_PASSWORD_INFORM_READ_TEXT', '半角の英字、数字を組み合わせた'.ENTRY_PASSWORD_MIN_LENGTH.'文字以上を入力してください。<br>英字、数字がそれぞれ1文字以上を必要です。大文字と小文字は区別されます。記号は入力できません。');
 define('IMAGE_BUTTON_CUSTOMERS_EXIT', '退会を申し込む');
 define('TEXT_REORDER2_MUST_INPUT','<font color="red">必須項目</font>');
-define('TEXT_REORDER2_TORIHIKI_ERROR','<br><font color="red">【取引日時】を選択してください。</font>');
+define('TEXT_REORDER2_TORIHIKI_ERROR','<br><font color="red">【お届け日時】を選択してください。</font>');
 define('OPTION_CHARACTER_NAME', 'お客様のキャラクター名');
 define('BOX_REVIEWS_LINK_TEXT', 'のレビュー');
 define('BOX_REVIEWS_SHOW_TITLE', 'RMTレビュー掲示板');
@@ -471,4 +456,5 @@ define('TEXT_SEARCH_ALT', '検索');
 define('TEXT_ACCOUNT_GUEST_INFO', '会員登録をしないで購入することもできます。');
 define('NUM_UNIT_TEXT', '個');
 define('TEXT_SESSION_ERROR_ALERT','不正なページ移動です。ご確認の上、再度入力してください。');
+define('TEXT_ORDERS_EMPTY','一定時間が経過したか、複数のブラウザによって操作された為、接続が切断されました。お手数ではございますが、再度ご入力いただく必要がございます。');
 ?>

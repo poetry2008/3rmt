@@ -1872,7 +1872,7 @@ header("Expires:".date("D, d M Y H:i:s",0)." GMT");
         global $breadcrumb;
         $title       = "RMT &raquo; 再配達フォーム｜" . TITLE;
         $keywords    = "RMT,再配達," . TITLE;
-        $description = "再配達依頼。取引日時やお届け先を変更するページです。";
+        $description = "再配達依頼。お届け日時やお届け先を変更するページです。";
         break;
       case FILENAME_SITEMAP:
       case FILENAME_PRESENT_SUCCESS:

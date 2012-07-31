@@ -25,7 +25,7 @@
   } 
 // Extra Pages ADDED END
 ?>
-    <li class="l_m_category_li_infomation"><a href="<?php echo tep_href_link(FILENAME_CONTACT_US);?>"><?php echo BOX_INFORMATION_CONTACT;?></a></li>
+    <li class="l_m_category_li_infomation"><a href="<?php echo tep_href_link(FILENAME_CONTACT_US,'','SSL');?>"><?php echo BOX_INFORMATION_CONTACT;?></a></li>
     <?php if (false) {?> 
     <li class="l_m_category_li_infomation"><a href="<?php echo HTTP_SERVER.'/link/';?>">相互リンク</a></li>
     <?php }?> 

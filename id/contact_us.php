@@ -33,7 +33,7 @@ require(CLIENTINC_DIR.'header.inc.php');
   <div class="contact_right">
   <h3>新規お問い合わせ</h3>
     </div>
-<form method="link" action="open.php">
+    <form method="link" action="<?php echo tep_href_link('open.php','','SSL')?>">
   <input type="image" class="button2" value="お問い合わせ" src="includes/languages/japanese/images/buttons/lemail.gif">
   </form>
 </div>
@@ -41,7 +41,7 @@ require(CLIENTINC_DIR.'header.inc.php');
   <div class="contact_left"><img src="./images/ticket_status_icon.jpg" width="60" height="60" alt="img"></div>
   <div class="contact_right">
   <h3>お問い合わせへの返事を確認</h3> 
-    <form class="status_form" action="contact_us_login.php" method="post">
+  <form class="status_form" action="<?php echo tep_href_link('contact_us_login.php','','SSL')?>" method="post">
     <div class="status_warpper">
       <label>メールアドレス：</label>
       <input type="text" name="lemail">

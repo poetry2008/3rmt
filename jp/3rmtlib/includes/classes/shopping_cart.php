@@ -23,7 +23,7 @@
             continue; 
           }
           $qty = $this->contents[$products_id]['qty'];
-//ccd     d
+//ccdd
           $product_query = tep_db_query("select products_id from " . TABLE_CUSTOMERS_BASKET . " where customers_id = '" . $customer_id . "' and products_id = '" . $products_id . "'");
           if (!tep_db_num_rows($product_query)) {
 //ccdd

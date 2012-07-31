@@ -58,7 +58,7 @@ function selectDate(start_time,end_time,value){
             }
           } 
           if(flag == true){
-            html_str += '<td id="hour'+j+'" bgcolor="#cccccc" style="color:#000000;cursor:pointer;" align="center" onclick="if((document.getElementById(\'shipping_list_min\').style.display == \'table-row\' && this.style.backgroundColor == \'rgb(56, 56, 56)\') || (document.getElementById(\'shipping_list_min\').style.display == \'block\' && this.style.backgroundColor == \'#383838\')){check_out('+j+');}else{this.style.background=\'#383838\';selectHour(\''+start_time+'\',\''+end_time+'\','+j+',\'\',this);}$(\'#jikan_error_id\').hide();$(\'#jikan_error\').html(\'\');">'+j+'<input type="hidden" id="h_c_'+j+'" value="0"></td>';
+            html_str += '<td id="hour'+j+'" bgcolor="#cccccc" style="color:#000000;cursor:pointer;" align="center" onclick="if((document.getElementById(\'shipping_list_min\').style.display == \'table-row\' && this.style.backgroundColor == \'rgb(56, 56, 56)\') || (document.getElementById(\'shipping_list_min\').style.display == \'block\' && this.style.backgroundColor == \'#383838\')){check_out('+j+');}else{this.style.background=\'#383838\';selectHour(\''+start_time+'\',\''+end_time+'\','+j+',\'\',this);}$(\'#time_error_id\').hide();$(\'#time_error\').html(\'\');">'+j+'<input type="hidden" id="h_c_'+j+'" value="0"></td>';
           }else{
             html_str += '<td id="hour'+j+'" bgcolor="#f1f0ef" style="color:#cccccc;" align="center">'+j+'</td>';
           }

@@ -36,9 +36,6 @@
 // Set lib path
   ini_set('include_path',ini_get('include_path').':'.DIR_FS_3RMTLIB);
 
-// define the project version
-  define('PROJECT_VERSION', 'osCommerce 2.2-MS1');
-
 // set the type of request (secure or not)
   $request_type = (getenv('HTTPS') == 'on') ? 'SSL' : 'NONSSL';
 
@@ -178,7 +175,7 @@
   define('TABLE_CURRENCIES', 'currencies');
   define('TABLE_CUSTOMERS', 'customers');
   define('TABLE_CUSTOMERS_BASKET', 'customers_basket');
-  //define('TABLE_CUSTOMERS_BASKET_ATTRIBUTES', 'customers_basket_attributes');
+  define('TABLE_CUSTOMERS_BASKET_ATTRIBUTES', 'customers_basket_attributes');
   define('TABLE_CUSTOMERS_INFO', 'customers_info');
   define('TABLE_USER_LOGIN','user_login');
   define('TABLE_LANGUAGES', 'languages');
@@ -683,7 +680,9 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
   
   // 统计 REFERER
   if (!isset($_SESSION['referer']) && $_SERVER["HTTP_REFERER"]) {
+if(!preg_match ("#".HTTP_SERVER."#", $_SERVER["HTTP_REFERER"]) && !preg_match ("#".HTTPS_SERVER."#", $_SERVER["HTTP_REFERER"])){
     $_SESSION['referer'] = $_SERVER["HTTP_REFERER"];
+	  }
     // 统计 Google Adsense
     // $adurl = tep_get_google_adsense_adurl($_SERVER['HTTP_REFERER']);
     if (isset($_GET['from']) && $_GET['from'] == 'adwords') {
@@ -910,7 +909,6 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
   define('TABLE_OA_FORM_GROUP', 'oa_form_group'); 
   define('TABLE_OA_ITEM', 'oa_item'); 
   define('TABLE_OA_FORMVALUE', 'oa_formvalue');
-  define('TABLE_OA_FORMVALUE', 'oa_formvalue'); 
   define('TABLE_ADDRESS','address');
   define('TABLE_OPTION_GROUP','option_group');
   define('TABLE_OPTION_ITEM','option_item');

@@ -155,12 +155,12 @@
   
     if($hour == '') {
       $error = true;
-      $jikan_error = TEXT_ERROR_JIKAN;
+      $time_error = TEXT_ERROR_TIME;
     }
   
     if($min == '') {
       $error = true;
-      $jikan_error = TEXT_ERROR_JIKAN;
+      $time_error = TEXT_ERROR_TIME;
     }
   }
 
@@ -1243,7 +1243,7 @@ unset($_SESSION['shipping_session_flag']);
     $mimutes = date('i');
 ?>
   <select name="date" onChange="selectDate('<?php echo $work_start; ?>', '<?php echo
-  $work_end; ?>',this.value);$('#date_error').remove();$('#jikan_error').remove();">
+  $work_end; ?>',this.value);$('#date_error').remove();$('#time_error').remove();">
     <option value=""><?php echo EXPECT_DATE_SELECT;?></option>
     <?php
           $oarr = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
@@ -1315,12 +1315,12 @@ if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) 
   }
 ?>
 <?php
-  if(isset($jikan_error) && $jikan_error != '') {
+  if(isset($time_error) && $time_error != '') {
 ?>
-  <tr id="jikan_error">
+  <tr id="time_error">
     <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
   <td class="main" width="153">&nbsp;</td>
-    <td class="main"><?php echo $jikan_error; ?></td>
+    <td class="main"><?php echo $time_error; ?></td>
   </tr>
 <?php
   }
@@ -1355,7 +1355,9 @@ if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) 
       <!-- body_text_eof --> 
       <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation --> 
         <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-        <!-- right_navigation_eof --> </td> 
+        <!-- right_navigation_eof --> 
+      </td> 
+    </tr>
   </table> 
   <!-- body_eof --> 
   <!-- footer --> 

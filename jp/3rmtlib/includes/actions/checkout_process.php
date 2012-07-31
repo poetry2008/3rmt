@@ -3,8 +3,11 @@
   $Id$
 */
 
+header("Content-type:text/html;charset=utf-8");
 ini_set("display_errors","Off");
 require(DIR_WS_FUNCTIONS . 'visites.php');
+// load selected payment module
+require(DIR_WS_CLASSES . 'payment.php');
 
 // user new point value it from checkout_confirmation.php 
 if(isset($real_point)){
@@ -14,6 +17,30 @@ if(isset($real_point)){
 if (!tep_session_is_registered('customer_id')) {
   $navigation->set_snapshot(array('mode' => 'SSL', 'page' => FILENAME_CHECKOUT_PAYMENT));
   tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
+}
+
+if(!isset($_SESSION['cart'])){
+
+  ob_start();
+  phpinfo();
+  $phpinfo = ob_get_contents();
+  ob_end_clean();
+  $orders_mail_title = ORDERS_EMPTY_EMAIL_TITLE.'　'.date('Y-m-d H:i:s');
+  $orders_mail_text = ORDERS_EMPTY_EMAIL_TEXT;
+  $orders_mail_text = str_replace('{$IP}',$_SERVER['REMOTE_ADDR'],$orders_mail_text);
+  $orders_mail_text = str_replace('{$NAME}',$_SESSION['customer_emailaddress'],$orders_mail_text);
+  $orders_payment = $_SESSION['payment'];
+  $orders_payment = payment::changeRomaji($_SESSION['payment'], PAYMENT_RETURN_TYPE_TITLE);
+  $orders_mail_text = str_replace('{$PAYMENT}',$orders_payment,$orders_mail_text); 
+  $orders_mail_text = str_replace('{$BROWSER}',$_SERVER["HTTP_USER_AGENT"],$orders_mail_text);
+  $orders_mail_text = str_replace('{$PHPINFO}',$phpinfo,$orders_mail_text);
+  $message = new email(array('X-Mailer: iimy Mailer'));
+  $text = $orders_mail_text;
+  $message->add_html(nl2br($orders_mail_text), $text);
+  $message->build_message();
+  $message->send(STORE_OWNER,IP_SEAL_EMAIL_ADDRESS,STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS,$orders_mail_title);
+  echo '<script type="text/javascript">alert("'.TEXT_ORDERS_EMPTY.'");document.location.href="shopping_cart.php"</script>';
+  exit;
 }
 $seal_user_sql = "select is_seal from ".TABLE_CUSTOMERS." where customers_id
 ='".$customer_id."' limit 1";
@@ -45,8 +72,6 @@ if ( (STOCK_CHECK == 'true') && (STOCK_ALLOW_CHECKOUT != 'true') ) {
 }
 
 include(DIR_WS_LANGUAGES . $language . '/' . FILENAME_CHECKOUT_PROCESS);
-// load selected payment module
-require(DIR_WS_CLASSES . 'payment.php');
 $payment_modules = payment::getInstance(SITE_ID);
 $insert_id = date("Ymd") . '-' . date("His") . tep_get_order_end_num();
 # Check
@@ -313,7 +338,6 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
     if (tep_db_num_rows($stock_query) > 0) {
       $stock_values = tep_db_fetch_array($stock_query);
       if ($order->products[$i]['qty'] > $stock_values['products_real_quantity']) {
-        // 荵ｰ取商品大于螳梵髏
         tep_db_perform(
                        'products',
                        array(
@@ -503,7 +527,6 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
         . '：' . str_replace($replace_arr, "", $ck_value['value']);
       
       if ($c_op_price != '0') {
-        //$products_ordered_attributes .= '　('.$currencies->format($c_op_price*$order->products[$i]['qty']).')'; 
         $products_ordered_attributes .= '　('.$currencies->format($c_op_price).')'; 
       }
     }
@@ -653,7 +676,6 @@ if(isset($_SESSION['options']) && !empty($_SESSION['options'])){
   $email_address_str .= $email_address;
   $email_order = str_replace($email_address,$email_address_str,$email_order);
 }
-// 2003.03.08 Edit Japanese osCommerce
 tep_mail(tep_get_fullname($order->customer['firstname'],$order->customer['lastname']), $order->customer['email_address'], EMAIL_TEXT_SUBJECT, $email_order, STORE_OWNER, STORE_OWNER_EMAIL_ADDRESS, '');
   
 if (SENTMAIL_ADDRESS != '') {
@@ -667,7 +689,7 @@ $email_printing_order = '';
 $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
 $email_printing_order .= 'サイト名　　　　：' . STORE_NAME . "\n";
 $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-$email_printing_order .= '取引日時　　　　：' . str_string($date) . $start_hour . '時' . $start_min . '分~'. $end_hour .'時'. $end_min .'分　（24時間表記）' . "\n";
+$email_printing_order .= 'お届け日時　　　　：' . str_string($date) . $start_hour . '時' . $start_min . '分~'. $end_hour .'時'. $end_min .'分　（24時間表記）' . "\n";
 $email_printing_order .= 'オプション　　　：' . $torihikihouhou . "\n";
 $email_printing_order .= '------------------------------------------------------------------------' . "\n";
 $email_printing_order .= '日時変更　　　　：' . date('Y') . ' 年  月  日  時  分' . "\n";

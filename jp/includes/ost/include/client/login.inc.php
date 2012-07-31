@@ -13,7 +13,7 @@ $t=Format::input($_POST['lticket']?$_POST['lticket']:$_GET['t']);
 </div>
 <div>
     <p class="login_inc">お問い合わせが初めてのお客様、または問合番号を忘れた場合は、<a href="open.php">新規お問い合わせ</a>をクリックしてください。</p>
-    <form action="contact_us_login.php" method="post">
+    <form action="<?php echo tep_href_link('contact_us_login.php','','SSL')?>" method="post">
            <div style="font-size:11px;text-align:center;color:red;"><?=Format::htmlchars($loginmsg)?></span>
     <table cellspacing="1" cellpadding="0" align="center" width="100%" class="open_login">
         <tr> 

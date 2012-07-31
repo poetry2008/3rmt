@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
   require('includes/application_top.php');
@@ -224,13 +217,13 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
             $customer_id = $link_customer_res['customers_id'];
             $customer_default_address_id = $link_customer_res['customers_default_address_id'];
             $customer_first_name = $link_customer_res['customers_firstname'];
-            $customer_last_name = $link_customer_res['customers_lastname']; // 2003.03.08 Add Japanese osCommerce
+            $customer_last_name = $link_customer_res['customers_lastname'];
             $customer_country_id = $check_country['entry_country_id'];
             $customer_zone_id = $check_country['entry_zone_id'];
             tep_session_register('customer_id');
             tep_session_register('customer_default_address_id');
             tep_session_register('customer_first_name');
-            tep_session_register('customer_last_name'); // 2003.03.08 Add Japanese osCommerce
+            tep_session_register('customer_last_name');
             tep_session_register('customer_country_id');
             tep_session_register('customer_zone_id');
             $customer_emailaddress = $email_address;
@@ -316,7 +309,7 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
         $customer_id = $check_customer['customers_id'];
         $customer_default_address_id = $check_customer['customers_default_address_id'];
         $customer_first_name = $check_customer['customers_firstname'];
-        $customer_last_name = $check_customer['customers_lastname']; // 2003.03.08 Add Japanese osCommerce
+        $customer_last_name = $check_customer['customers_lastname'];
         $customer_country_id = $check_country['entry_country_id'];
         $customer_zone_id = $check_country['entry_zone_id'];
         $customer_emailaddress = $email_address; 
@@ -324,7 +317,7 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
         tep_session_register('customer_id');
         tep_session_register('customer_default_address_id');
         tep_session_register('customer_first_name');
-        tep_session_register('customer_last_name'); // 2003.03.08 Add Japanese osCommerce
+        tep_session_register('customer_last_name');
         tep_session_register('customer_country_id');
         tep_session_register('customer_zone_id');
         tep_session_register('customer_emailaddress');
@@ -381,7 +374,10 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
 
 // restore cart contents
         $cart->restore_contents();
-
+	if($_SESSION['referer']!=""){
+		  tep_db_query("update customers set referer='".tep_db_prepare_input($_SESSION['referer'])."'   where customers_id='".$customer_id."'");
+		  unset($_SESSION['referer']);
+		                 }
         if (sizeof($navigation->snapshot) > 0) {
           if ($navigation->snapshot['page'] != 'change_preorder.php') {
             $origin_href = tep_href_link($navigation->snapshot['page'], tep_array_to_string($navigation->snapshot['get'], array(tep_session_name())), $navigation->snapshot['mode']);
@@ -606,6 +602,7 @@ function session_win() {
       <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?>
       <!-- right_navigation_eof //-->
       </td>
+    </tr>
   </table>
   <!-- body_eof //-->
   <!-- footer //-->

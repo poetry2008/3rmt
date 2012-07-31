@@ -1,14 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2002 osCommerce
-
-  Released under the GNU General Public License
-  
 */
 define('HEADING_TITLE', '手動予約手続き');
 define('HEADING_CREATE', '手動予約する顧客の詳細を確認:'); 
@@ -42,7 +34,7 @@ define('CREATE_ORDER_BANK_KOUZA_NUM_TEXT', '口座番号:');
 define('CREATE_ORDER_BANK_KOUZA_NAME_TEXT', '口座名義:');
 define('CREATE_ORDER_SELECT_COMMON_TEXT', '普通');
 define('CREATE_ORDER_SELECT_COMMON_ONE_TEXT', '当座');
-define('CREATE_ORDER_FETCH_TIME_TITLE_TEXT', '取引日時');
+define('CREATE_ORDER_FETCH_TIME_TITLE_TEXT', 'お届け日時');
 define('CREATE_ORDER_FETCH_DATE_TEXT', '取引日:');
 define('CREATE_ORDER_FETCH_TIME_TEXT', '届け時間:');
 define('CREATE_ORDER_FETCH_ALLTIME_TEXT', '（24時間表記）');
