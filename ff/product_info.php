@@ -143,10 +143,10 @@ function showimage($1) {
   <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border" summary="box">
     <tr>
       <td valign="top" class="left_colum_border"><!-- left_navigation //-->
-<?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-<!-- left_navigation_eof //-->
+        <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
+        <!-- left_navigation_eof //-->
       </td>
-<!-- body_text //-->
+      <!-- body_text //-->
       <td valign="top" id="contents">
 <?php
   $product_info = tep_get_product_by_id((int)$_GET['products_id'], SITE_ID,
