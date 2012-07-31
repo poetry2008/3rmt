@@ -193,7 +193,7 @@ define('FORDERS_MAIL_CONFIRM_ALL_DAY', '（24時間表記）');
 define('FORDERS_MAIL_CONFIRM_OID_TEXT', 'ご不明な点がございましたら、予約番号をご確認の上、');
 define('FORDERS_MAIL_CONTACT_SITE_TEXT', 'までお問い合わせください。');
 define('FORDERS_MAIL_CONTACT_NEXT_TEXT', 'ご連絡・お問い合わせ先');
-define('FORDERS_MAIL_CONTACT_NAME', '株式会社 iimy');
+define('FORDERS_MAIL_CONTACT_NAME', COMPANY_NAME);
 define('FORDERS_MAIL_UPDATE_CONTENT_FINISH', '予約内容の変更を承りました');
 define('FORDERS_MAIL_UPDATE_CONTENT_MAIL', '送信済：予約内容の変更を承りました');
 define('FORDERS_MAIL_REPLACE_TRAN_HANDLE_FEE', '決済手数料');

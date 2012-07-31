@@ -391,10 +391,10 @@ $(document).ready(function(){
     if ($p_error_show_str != '') {
     ?>
     <tr>
-      <td class="main" width="22%">&nbsp;</td>  
+      <td class="main" width="22%">&nbsp;</td>
       <td class="main" style="font-size:10px;">
       <?php echo $p_error_show_str;?> 
-      </td> 
+      </td>
     </tr>
     <?php
     }
@@ -446,4 +446,4 @@ $(document).ready(function(){
   }
 ?>
 </table>
-<input type="hidden" name="country" value="107" >
+<input type="hidden" name="country" value="107">

@@ -20,7 +20,7 @@
         $tp_info = explode('||', $p_value);
         $cart->update_quantity($tp_info[0], $tp_info[1]);
       }
-      exit; 
+      exit;
     }
   }
   $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
@@ -63,17 +63,6 @@ function history_back(back_url){
     $.getJSON('http://<?php echo $_SERVER['HTTP_HOST'].'/'.FILENAME_SHOPPING_CART.'?action=save_quantity&sp_info=';?>'+url_param_str, function (data) {
     }); 
     window.location.href=back_url;
-    /* 
-    $.ajax({
-        url: '<?php echo FILENAME_SHOPPING_CART;?>?action=save_quantity',
-        type: 'POST',
-        async: false,
-        data: 'sp_info='+url_param_str,
-        success: function(msg){
-          window.location.href=back_url;
-        }
-    });
-    */
   } else {
     window.location.href=back_url;
   }

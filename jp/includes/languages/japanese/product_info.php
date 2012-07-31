@@ -12,8 +12,6 @@ define('TEXT_ALSO_PURCHASED_PRODUCTS', 'を買った人は、こんな商品も�
 define('TEXT_PRODUCT_OPTIONS', '選択できるオプション:');
 define('TEXT_CLICK_TO_ENLARGE', '【イメージを拡大】');
 define('TEXT_PDF_DOWNLOAD', 'PDFカタログ');
-
-define('TEXT_PRODUCT_TAGS', '商品タグ');
 define('WARN_PRODUCT_STATUS_TEXT', '当商品は、当サイトの都合または運営会社のサービス終了などの理由により現在取り扱いを行っておりません。<br>取り扱いの再開、その他ご意見ご要望などありましたら、お気軽にお問い合わせください。');
 define('TEXT_PRODUCT_MODEL','商品コード');
 define('TEXT_PRODUCT_MANUFACTURER_NAME','メーカー名');
@@ -31,4 +29,3 @@ define('TEXT_PREORDER_BOOK','を予約する');
 define('TEXT_PRODUCTS_QTY','数量:');
 define('TEXT_ABOUT','について');
 define('TEXT_KEYWORD','に関するキーワード');
-

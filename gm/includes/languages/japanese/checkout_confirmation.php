@@ -26,7 +26,6 @@ define('TEXT_POINT_NOW', '今回の獲得予定ポイント:');
 
 define('TEXT_TRADE_DATE', 'お届け日時&nbsp;');
 
-define('TEXT_CARACTOR', 'お届け先キャラクター名:');
 define('TEXT_OPTION', 'オプション:');
 define('TEXT_EXPECT_TRADE_DATE', 'お届け希望日:');
 define('TEXT_EXPECT_TRADE_TIME', 'お届け希望時間:');

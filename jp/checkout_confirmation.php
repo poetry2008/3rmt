@@ -589,12 +589,12 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
   if(isset($customer_id)&&tep_is_member_customer($customer_id)){
   echo '<tr>' . "\n";
   if (!tep_only_buy_product()) {
-    echo '<td align="right" class="main"><br>'.TS_TEXT_POINT_NOW.'</td>' . "\n";
+    echo '<td align="right" class="main"><br>'.TEXT_POINT_NOW.'</td>' . "\n";
   } else {
     if ($get_point == 0) {
       echo '<td align="right" class="main"><br>'.TS_TEXT_POINT_NOW_TWO.'</td>' . "\n";
     } else {
-      echo '<td align="right" class="main"><br>'.TS_TEXT_POINT_NOW.'</td>' . "\n";
+      echo '<td align="right" class="main"><br>'.TEXT_POINT_NOW.'</td>' . "\n";
     }
   } 
 

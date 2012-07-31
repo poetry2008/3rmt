@@ -8,7 +8,7 @@
   check_uri('/page=\d+/');
 
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_SHOPPING_CART);
-  
+
   if (isset($_GET['action'])) {
     if ($_GET['action'] == 'delete') {
       $cart->remove($_GET['products_id']); 
@@ -22,7 +22,7 @@
         $tp_info = explode('||', $p_value);
         $cart->update_quantity($tp_info[0], $tp_info[1]);
       }
-      exit; 
+      exit;
     }
   }
   

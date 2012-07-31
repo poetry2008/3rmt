@@ -114,7 +114,7 @@ function address_option_list(value){
 ?>
   for(y in arr_address){
 
-   $("#tr_"+arr_address[y]).hide();
+    $("#tr_"+arr_address[y]).hide();
   }
   for(x in arr_list[value]){
     $("#op_"+x).html(arr_list[value][x]);
@@ -342,7 +342,7 @@ $(document).ready(function(){
             <td class="main">
 <?php
   $p_error_show_str = '';   
-    if ($error == true) {
+  if ($error == true) {
       if ($entry_password_confirm_same_error == true) { 
         echo tep_draw_password_field('password', '', "class='input_text'") . '&nbsp;' .  ENTRY_PASSWORD_TEXT;
         $p_error_show_str = ENTRY_NO_USE_OLD_PASSWORD;
@@ -377,22 +377,22 @@ $(document).ready(function(){
 <?php
     }
 ?>  
-  <?php
-  if ($p_error_show_str != '') {
-  ?>
-  <tr>
-    <td class="main" width="22%">&nbsp;</td>  
-    <td class="main" style="font-size:10px;">
-    <?php echo $p_error_show_str;?> 
-    </td> 
-  </tr>
-  <?php
-  }
-  ?>
+    <?php
+    if ($p_error_show_str != '') {
+    ?>
+    <tr>
+      <td class="main" width="22%">&nbsp;</td>
+      <td class="main" style="font-size:10px;">
+      <?php echo $p_error_show_str;?> 
+      </td>
+    </tr>
+    <?php
+    }
+    ?>
     <tr>
       <td class="main" colspan="2"><?php echo ENTRY_PASSWORD_INFORM_READ_TEXT;?></td> 
     </tr>
-  </table></td>
+    </table></td>
       </tr>
     </table></td>
   </tr>
@@ -421,7 +421,6 @@ $(document).ready(function(){
       <tr>
         <td class="main">
 <?php
-  //echo tep_draw_textarea_field('agreement', 'soft', '98', '5', mb_convert_encoding($agreement_text, 'UTF-8', 'ASCII, JIS, UTF-8, EUC-JP, SJIS'));
   echo '<textarea name="agreement" rows="6" cols="15">'.mb_convert_encoding($agreement_text, 'UTF-8', 'ASCII, JIS, UTF-8, EUC-JP, SJIS').'</textarea>';
   echo '<br>';
   echo tep_draw_checkbox_field('agreement_chk', 'ok') . ENTRY_AGREEMENT_TEXT;
@@ -437,4 +436,4 @@ $(document).ready(function(){
   }
 ?>
 </table>
-<input type="hidden" name="country" value="107" >
+<input type="hidden" name="country" value="107">

@@ -19,7 +19,7 @@ define('EMAIL_WARNING',
 '[ご連絡・お問い合わせ先]━━━━━━━━━━━━' . "\n"
 . COMPANY_NAME . "\n"
 . SUPPORT_EMAIL_ADDRESS."\n"
-. HTTP_SERVER . "\n"
+. HTTP_SERVER. "\n"
 . '━━━━━━━━━━━━━━━━━━━━━━━' . "\n");
 
 define('EMAIL_NAME_COMMENT_LINK', ' 様 ');

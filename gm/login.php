@@ -513,7 +513,7 @@ if(isset($_GET['login']) && ($_GET['login'] == 'ip_error')){
                     </tr>
                    <tr>
                       <td align="right" colspan="2">
-                      <a href="<?php echo tep_href_link('send_mail.php', '', 'SSL');?>"><?php TEXT_TEST_MAIL;?></a> 
+                      <a href="<?php echo tep_href_link('send_mail.php', '', 'SSL');?>"><?php echo SEND_MAIL_TEST;?></a> 
                       </td>
                    </tr>
                              <?php }?> 

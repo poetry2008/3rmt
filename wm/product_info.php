@@ -131,10 +131,10 @@ function showimage($1) {
   <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border" summary="box">
     <tr>
       <td width="<?php echo BOX_WIDTH; ?>" valign="top" class="left_colum_border"><!-- left_navigation //-->
-<?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-<!-- left_navigation_eof //-->
+        <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
+        <!-- left_navigation_eof //-->
       </td>
-<!-- body_text //-->
+      <!-- body_text //-->
       <td valign="top" id="contents">
 <?php
   $product_info = tep_get_product_by_id((int)$_GET['products_id'], SITE_ID,
@@ -165,7 +165,7 @@ function showimage($1) {
       $pricedef = $product_info['products_price'];
       $products_price = $currencies->display_price(tep_get_price($product_info['products_price'], $product_info['products_price_offset'], tep_get_price($product_info['products_price'],$product_info['products_small_sum'], '', $product_info['products_bflag']), $product_info['products_bflag']), tep_get_tax_rate($product_info['products_tax_class_id']));
     }
-     
+  
     $description = replace_store_name($product_info['products_description']);
     $data1 = explode("//", $product_info['products_attention_1']);
     $data2 = explode("//", $product_info['products_attention_2']);
@@ -371,8 +371,8 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                       </td>
                     </tr>
                   </table>
-                </td>        
-                  </tr>
+                </td>
+              </tr>
             </table>
             <table width="100%"  border="0" cellpadding="0" cellspacing="0" summary="rmt">
             <tr class="header2">
