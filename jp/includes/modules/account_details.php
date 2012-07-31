@@ -308,19 +308,16 @@ $(document).ready(function(){
   }
   }
 ?>
-</table>
-</td>
-</tr>
-</table>
-</td>
-</tr>
-
+        </table></td>
+      </tr>
+    </table></td>
+  </tr>
 <?php
 if (!isset($guestchk)) $guestchk = NULL;
   if($guestchk == '1') {
-  $newpass = tep_create_random_value(ENTRY_PASSWORD_MIN_LENGTH);
-  $password = $newpass;
-  $confirmation = $newpass;
+    $newpass = tep_create_random_value(ENTRY_PASSWORD_MIN_LENGTH);
+    $password = $newpass;
+    $confirmation = $newpass;
   }
   if ($is_read_only == false) {
 ?>
@@ -335,8 +332,8 @@ if (!isset($guestchk)) $guestchk = NULL;
             <td class="main" width="22%"><?php echo ENTRY_PASSWORD; ?></td>
             <td class="main">
 <?php
-    $p_error_show_str = ''; 
-    if ($error == true) {
+  $p_error_show_str = '';   
+  if ($error == true) {
       if ($entry_password_confirm_same_error == true) { 
         $p_error_show_str = ENTRY_NO_USE_OLD_PASSWORD;
         echo tep_draw_password_field('password') . '&nbsp;' .  ENTRY_PASSWORD_TEXT;
@@ -359,7 +356,7 @@ if (!isset($guestchk)) $guestchk = NULL;
 ?></td>
           </tr>
 <?php
-    if ( ($error == false) || ($entry_password_error == true) || ($entry_password_english_error == true)|| ($entry_password_confirmation_error == true)) {
+    if ( ($error == false) || ($entry_password_error == true) ) {
 ?>
           <tr>
             <td class="main" width="22%"><?php echo ENTRY_PASSWORD_CONFIRMATION; ?></td>
@@ -372,15 +369,17 @@ if (!isset($guestchk)) $guestchk = NULL;
     }
 ?>  
     <?php
-    if ($p_error_show_str != '') { 
+    if ($p_error_show_str != '') {
     ?>
     <tr>
-      <td class="main" width="22%">&nbsp;</td>  
+      <td class="main" width="22%">&nbsp;</td>
       <td class="main" style="font-size:10px;">
       <?php echo $p_error_show_str;?> 
-      </td>  
+      </td>
     </tr>
-    <?php }?> 
+    <?php
+    }
+    ?>
     <tr>
       <td class="main" colspan="2"><?php echo ENTRY_PASSWORD_INFORM_READ_TEXT;?></td> 
     </tr>
