@@ -309,8 +309,8 @@ function change_num(ob,targ, quan,a_quan, origin_qty, origin_small)
   $replace_arr = array("<br>", "<br />", "<br/>", "\r", "\n", "\r\n", "<BR>");
   if ($cart->count_contents() > 0) {
 ?>
-            <tr>
-              <td>
+          <tr>
+            <td>
                 <?php
     $any_out_of_stock = 0;
     $products = $cart->get_products();

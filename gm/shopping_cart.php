@@ -4,7 +4,7 @@
 */
 
   require("includes/application_top.php");
-  
+
   check_uri('/page=\d+/');
 
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_SHOPPING_CART);
@@ -22,7 +22,7 @@
         $tp_info = explode('||', $p_value);
         $cart->update_quantity($tp_info[0], $tp_info[1]);
       }
-      exit; 
+      exit;
     }
   }
   
