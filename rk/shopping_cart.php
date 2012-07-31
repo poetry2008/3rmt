@@ -470,7 +470,8 @@ function change_num(ob,targ, quan,a_quan, origin_qty, origin_small)
 ?> 
                     <input type="hidden" name="goto" value="<?php echo tep_href_link($navigation->path[$back]['page'], tep_array_to_string($navigation->path[$back]['get'], array('action')), $navigation->path[$back]['mode']);?>">
                     <input type="submit" name="continue" value="" class="shopping_cart_continue">
-<?php } else { ?><?php
+<?php } else { ?>
+<?php
 if (!empty($_SESSION['history_url'])) {
   $back_url = $_SESSION['history_url'];
 } else {

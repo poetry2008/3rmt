@@ -317,28 +317,28 @@ function change_num(ob,targ, quan,a_quan, origin_qty, origin_small)
     for ($i=0, $n=sizeof($products); $i<$n; $i++) {
 // Push all attributes information in an array
       if (isset($products[$i]['op_attributes'])) {
-              foreach ($products[$i]['op_attributes'] as $op_key => $op_value) {
-                $op_key_array = explode('_', $op_key); 
-                $option_item_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name='".$op_key_array[1]."' and id= '".$op_key_array[3]."'");
-                $option_item_res = tep_db_fetch_array($option_item_query);
-                if ($option_item_res) {
-                  $products[$i]['add_op_attributes'][$op_key]['option_name'] = $option_item_res['front_title'];
-                  $products[$i]['add_op_attributes'][$op_key]['option_value'] = $op_value;
-                  if ($option_item_res['type'] == 'radio') {
-                    $c_option = @unserialize($option_item_res['option']);
-                    if (!empty($c_option)) {
-                      foreach ($c_option['radio_image'] as $cr_key => $cr_value) {
-                        if (trim(str_replace($replace_arr, '', nl2br(stripslashes($cr_value['title'])))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($op_value))))) {
-                          $products[$i]['add_op_attributes'][$op_key]['price'] = $cr_value['money'];
-                          break;
-                        }
-                      }
-                    }
-                  } else {
-                    $products[$i]['add_op_attributes'][$op_key]['price'] = $option_item_res['price'];
+        foreach ($products[$i]['op_attributes'] as $op_key => $op_value) {
+          $op_key_array = explode('_', $op_key); 
+          $option_item_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where name='".$op_key_array[1]."' and id= '".$op_key_array[3]."'");
+          $option_item_res = tep_db_fetch_array($option_item_query);
+          if ($option_item_res) {
+            $products[$i]['add_op_attributes'][$op_key]['option_name'] = $option_item_res['front_title'];
+            $products[$i]['add_op_attributes'][$op_key]['option_value'] = $op_value;
+            if ($option_item_res['type'] == 'radio') {
+              $c_option = @unserialize($option_item_res['option']);
+              if (!empty($c_option)) {
+                foreach ($c_option['radio_image'] as $cr_key => $cr_value) {
+                  if (trim(str_replace($replace_arr, '', nl2br(stripslashes($cr_value['title'])))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($op_value))))) {
+                    $products[$i]['add_op_attributes'][$op_key]['price'] = $cr_value['money'];
+                    break;
                   }
                 }
               }
+            } else {
+              $products[$i]['add_op_attributes'][$op_key]['price'] = $option_item_res['price'];
+            }
+          }
+        }
       }
     }?>
                 <table border="0" width="100%" cellspacing="0" cellpadding="0" summary="rmt">
@@ -429,7 +429,7 @@ function change_num(ob,targ, quan,a_quan, origin_qty, origin_small)
           <?php 
   }
 ?>
-     <?php
+<?php
     if($products_error == true){
 ?>
           <tr>
@@ -438,8 +438,8 @@ function change_num(ob,targ, quan,a_quan, origin_qty, origin_small)
           </tr>
 <?php
     }
-?>       
-     <?php
+?>
+<?php
     if ($any_out_of_stock == 1) {
       if (STOCK_ALLOW_CHECKOUT == 'true') {
 ?>
