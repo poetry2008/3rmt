@@ -14,13 +14,12 @@ if (extension_loaded('mbstring')) {
   include_once(DIR_WS_LANGUAGES . $language . '/jcode.phps');
   include_once(DIR_WS_LANGUAGES . $language . '/mbstring_wrapper.php');
 }
-
 // look in your $PATH_LOCALE/locale directory for available locales..
 // on RedHat try 'en_US'
 // on FreeBSD try 'en_US.ISO_8859-1'
 // on Windows try 'en', or 'English'
 //@setlocale(LC_TIME, 'ja_JP');
-@setlocale(LC_TIME, 'en_US');
+//@setlocale(LC_TIME, 'en_US');
 define('DATE_FORMAT_SHORT', '%Y/%m/%d');  // this is used for strftime()
 define('DATE_FORMAT_LONG', '%Y年%m月%d日 %A'); // this is used for strftime()
 define('DATE_FORMAT', 'Y/m/d'); // this is used for date()
@@ -148,7 +147,6 @@ define('BOX_INFORMATION_SHIPPING', '配送と返品について');
 define('BOX_INFORMATION_PAYMENT', 'お支払いについて');
 define('BOX_INFORMATION_FAQ', 'よくある質問');
 define('BOX_INFORMATION_CONTACT', 'お問い合わせ');
-
 
 // tell a friend box text in includes/boxes/tell_a_friend.php
 define('BOX_HEADING_TELL_A_FRIEND', '友達に知らせる');
@@ -400,7 +398,6 @@ define('ENTRY_ACCOUNT_GUEST', '会員登録をしない');
 # 注文状現金額を超えたときのメッセージ
 define('DS_LIMIT_PRICE_OVER_ERROR', '一度に%s以上を注文することはできません。<br>合計金額を%s以下にしてから再度お申し込みください。');
 
-
 define('INPUT_SEND_MAIL', 'メールアドレス');
 define('EMAIL_PATTERN_WRONG', 'メールアドレスを正しくご入力下さい。');
 define('SENDMAIL_BUTTON', '送信');
@@ -415,11 +412,11 @@ define('PAGE_NEW_TITLE', 'インフォメーション');
 !defined('TEXT_NO_PRODUCTS')&&define('TEXT_NO_PRODUCTS', '現在商品は登録されていません...');
 define('SEND_MAIL_HEADING_TITLE', 'メール受信テスト');
 
+define('TEXT_TAGS', 'タグ一覧');
 define('TEXT_NO_LATEST_NEWS', 'お知らせはありません');
 define('NOTICE_MUST_BUY_TEXT', 'ショッピングカートに商品が有りません、商品を入れてから押してください。');
 define('LEFT_SEARCH_TITLE', '商品検索');
 define('RIGHT_ORDER_TEXT', '再配達依頼');
-define('TEXT_TAGS', 'タグ一覧');
 define('COLUMNLEFT_SEARCH_DEFAULT_VALUE', '入力して下さい');
 define('COLUMNRIGHT_BEST_GOODS_TITLE', 'お勧めゲーム');
 define('ENTRY_GUEST_EMAIL_NOT_ACTIVE', '&nbsp;<small><font color="#FF0000">認証手続きはまだ完了していません。</font></small>');

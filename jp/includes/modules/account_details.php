@@ -318,17 +318,15 @@ $(document).ready(function(){
 <?php
 if (!isset($guestchk)) $guestchk = NULL;
   if($guestchk == '1') {
-    $newpass = tep_create_random_value(ENTRY_PASSWORD_MIN_LENGTH);
+  $newpass = tep_create_random_value(ENTRY_PASSWORD_MIN_LENGTH);
   $password = $newpass;
   $confirmation = $newpass;
   }
   if ($is_read_only == false) {
 ?>
-
   <tr id="trpass1">
     <td class="formAreaTitle"><br><?php echo CATEGORY_PASSWORD; ?></td>
   </tr>
-
   <tr id="trpass2">
     <td class="main"><table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea" summary="table">
       <tr>
@@ -405,11 +403,9 @@ if (!isset($guestchk)) $guestchk = NULL;
       $agreement_text .= $value;
     }
 ?>
-
   <tr>
     <td class="formAreaTitle"><br><?php echo CATEGORY_AGREEMENT; ?></td>
   </tr>
-
   <tr>
     <td class="main"><table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea" summary="table">
       <tr>

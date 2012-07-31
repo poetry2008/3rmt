@@ -22,7 +22,6 @@ define('TEXT_ORDERS_NUM','注文可能数');
 define('TEXT_PRODUCT_INFO_QTY_TEXT','残り&nbsp;<b>%s</b>&nbsp;個');
 define('TEXT_POINT','ポイント');
 define('TEXT_PRODUCT_INFO_POINT_INFO','%s&nbsp;ポイント');
-define('TEXT_PRODUCT_INFO_TAG','タグ');
 define('TEXT_PAUSE','一時停止');
 define('TEXT_SOLD_OUT','売り切れ');
 define('TEXT_OUT_OF_STOCK','在庫切れ');

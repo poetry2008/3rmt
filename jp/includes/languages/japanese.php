@@ -50,10 +50,10 @@ define('CHARSET', 'UTF-8');    // Shift_JIS / euc-jp / iso-2022-jp
 define('TITLE', STORE_NAME);  //ショップ名等を記述してください。ブラウザの表示タイトルになります。
 
 define('META_TAGS',
- '<meta name="keywords" content="'.C_KEYWORDS.'">'."\n"
-.'<meta name="description" content="'.C_DESCRIPTION.'">'."\n"
-.'<meta name="robots" content="'.C_ROBOTS.'">'."\n"
-.'<meta name="copyright" content="'.C_AUTHER.'">'
+ '<meta name = "keywords" content ="'.C_KEYWORDS.'">'."\n"
+.'<meta name = "description" content ="'.C_DESCRIPTION.'">'."\n"
+.'<meta name = "robots" content ="'.C_ROBOTS.'">'."\n"
+.'<meta name = "copyright" content ="'.C_AUTHER.'">'
 );
 
 // header text in includes/header.php
@@ -147,7 +147,6 @@ define('BOX_INFORMATION_SHIPPING', '配送と返品について');
 define('BOX_INFORMATION_PAYMENT', 'お支払いについて');
 define('BOX_INFORMATION_FAQ', 'よくある質問');
 define('BOX_INFORMATION_CONTACT', 'お問い合わせ');
-
 
 // tell a friend box text in includes/boxes/tell_a_friend.php
 define('BOX_HEADING_TELL_A_FRIEND', '友達に知らせる');
@@ -360,7 +359,7 @@ define('TEXT_CCVAL_ERROR_UNKNOWN_CARD', '入力したクレジットカードナ
 
 define('FOOTER_TEXT_BODY', C_FOOTER_COPY_RIGHT);
 
-define('EMAIL_SIGNATURE',C_EMAIL_FOOTER); 
+define('EMAIL_SIGNATURE',C_EMAIL_FOOTER);
 
 // Include OSC-AFFILIATE 
 //include("affiliate_japanese.php");

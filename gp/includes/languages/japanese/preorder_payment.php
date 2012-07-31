@@ -57,7 +57,7 @@ define('TEXT_EMAIL_INTRO', '%s 様' . "\n\n"
 define('TEXT_EMAIL_LINK', 'この商品の詳細は、下記のリンクをクリックするか、リンクをブラウザに' . "\n"
 . 'コピー＆ペーストしてください。' . "\n\n" . '%s' . "\n\n");
 define('TEXT_EMAIL_SIGNATURE', '[ご連絡・お問い合わせ先]━━━━━━━━━━━━' . "\n"
-. '株式会社 iimy' . "\n"
+. COMPANY_NAME . "\n"
 . SUPPORT_EMAIL_ADDRESS . "\n"
 . HTTP_SERVER . "\n"
 . '━━━━━━━━━━━━━━━━━━━━━━━');

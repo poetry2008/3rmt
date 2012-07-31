@@ -22,7 +22,7 @@ define('HEADING_ORDER_COMMENTS', 'ご注文についてのコメント');
 define('TEXT_EDIT', '変更する');
 
 //Add Point System
-define('TS_TEXT_POINT_NOW', '今回の獲得予定ポイント:');
+define('TEXT_POINT_NOW', '今回の獲得予定ポイント:');
 
 define('TEXT_TRADE_DATE', 'お届け日時&nbsp;');
 

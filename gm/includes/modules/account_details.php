@@ -114,7 +114,7 @@ function address_option_list(value){
 ?>
   for(y in arr_address){
 
-   $("#tr_"+arr_address[y]).hide();
+    $("#tr_"+arr_address[y]).hide();
   }
   for(x in arr_list[value]){
     $("#op_"+x).html(arr_list[value][x]);

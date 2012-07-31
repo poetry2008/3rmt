@@ -282,7 +282,7 @@ function address_list(){
 function address_option_list(value){
   $("#td_"+country_fee_id_one).hide();
   $("#td_"+country_area_id_one).hide();
-  $("#td_"+country_city_id_one).hide(); 
+  $("#td_"+country_city_id_one).hide();
 
   //clear
   var country_fee = document.getElementById(country_fee_id);
@@ -290,7 +290,7 @@ function address_option_list(value){
   var country_area = document.getElementById(country_area_id);
   country_area.options.length = 0;
   var country_city = document.getElementById(country_city_id);
-  country_city.options.length = 0; 
+  country_city.options.length = 0;
 
   var arr_list = new Array();
   var arr_flag = new Array();
@@ -313,7 +313,6 @@ function address_option_list(value){
     $address_k++;
   }
   tep_db_free_result($address_list_name_query);
-
   $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id=". $_SESSION['customer_id'] ." group by orders_id order by orders_id desc");
   
    
@@ -341,7 +340,6 @@ function address_option_list(value){
 
     $("#op_"+arr_address[k]).val("");
   }
-
 if(arr_list.length > 0){
   for(x in arr_list[value]){
    if(document.getElementById("op_"+x)){
@@ -463,15 +461,14 @@ $(document).ready(function(){
     country_area_check($("#"+country_area_id).val());
   <?php
   }
- ?>   
-   <?php
+  ?>   
+  <?php
   if(!isset($_POST[$country_fee_id])){
   ?>
   address_option_list(0);
   <?php
    }
   ?>
-
 });
 </script>
 <?php

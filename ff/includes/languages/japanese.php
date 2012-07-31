@@ -14,7 +14,6 @@ if (extension_loaded('mbstring')) {
   include_once(DIR_WS_LANGUAGES . $language . '/jcode.phps');
   include_once(DIR_WS_LANGUAGES . $language . '/mbstring_wrapper.php');
 }
-
 // look in your $PATH_LOCALE/locale directory for available locales..
 // on RedHat try 'en_US'
 // on FreeBSD try 'en_US.ISO_8859-1'
@@ -148,7 +147,6 @@ define('BOX_INFORMATION_SHIPPING', '配送と返品について');
 define('BOX_INFORMATION_PAYMENT', 'お支払いについて');
 define('BOX_INFORMATION_FAQ', 'よくある質問');
 define('BOX_INFORMATION_CONTACT', 'お問い合わせ');
-
 
 // tell a friend box text in includes/boxes/tell_a_friend.php
 define('BOX_HEADING_TELL_A_FRIEND', '友達に知らせる');
@@ -360,7 +358,7 @@ define('TEXT_CCVAL_ERROR_UNKNOWN_CARD', '入力したクレジットカードナ
 
 define('FOOTER_TEXT_BODY', C_FOOTER_COPY_RIGHT);
 
-define('EMAIL_SIGNATURE',C_EMAIL_FOOTER); 
+define('EMAIL_SIGNATURE',C_EMAIL_FOOTER);
 
 // Include OSC-AFFILIATE 
 //include("affiliate_japanese.php");
@@ -400,7 +398,6 @@ define('ENTRY_ACCOUNT_GUEST', '会員登録をしない');
 
 # 注文状現金額を超えたときのメッセージ
 define('DS_LIMIT_PRICE_OVER_ERROR', '一度に%s以上を注文することはできません。<br>合計金額を%s以下にしてから再度お申し込みください。');
-
 
 define('INPUT_SEND_MAIL', 'メールアドレス');
 define('EMAIL_PATTERN_WRONG', 'メールアドレスを正しくご入力下さい。');
