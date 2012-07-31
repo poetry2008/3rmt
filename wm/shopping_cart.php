@@ -4,14 +4,11 @@
 */
 
   require("includes/application_top.php");
-  
+
   check_uri('/page=\d+/');
 
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_SHOPPING_CART);
 
-  $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
-?>
-<?php
   if (isset($_GET['action'])) {
     if ($_GET['action'] == 'delete') {
       $cart->remove($_GET['products_id']); 
@@ -28,9 +25,10 @@
       exit;
     }
   }
+  
+  $breadcrumb->add(NAVBAR_TITLE, tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
 ?>
 <?php page_head();?>
-<?php //页面产品数量输入框 验证JS?>
 <script type="text/javascript">
 function key(e)
 {
