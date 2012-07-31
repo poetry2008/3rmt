@@ -65,7 +65,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == "true"){
 define('TEXT_PREORDER_LOGIN_ERROR', '<font color="#ff0000">予約時の会員情報でログインしてください</font>');
 define('PREORDER_HEADING_TITLE', '注文移行手続き');
 define('PREORDER_LOGIN_HEAD_TEXT', '<font color="#ff0000" style="font-size:14px;">注文移行手続きを行うにはログインしていただく必要がございます。<br>予約時の会員情報にてログインしてください。</font>');
-define('TEXT_TEST_MAIL', 'メール受信テストをする');
+define('SEND_MAIL_TEST', 'メール受信テストをする');
 define('TEXT_LOGIN_SSL_READ', '<p><i><strong>SSL認証</strong></i><br> 当サイトでは、実在性の証明とプライバシー保護のため、日本ジオトラストのSSLサーバ証明書を使用し、SSL暗号化通信を実現しています。 ブラウザのURLが「https://www.secureservice.jp/～」で始まるURLであることを確認ください。 以下に掲載するジオトラスト発行済み スマートシールのクリックにより、サーバ証明書の検証結果をご確認ください。 </p>');
 define('TEXT_BODY_TEXT',STORE_NAME.'が、会員登録をご利用予定のメールアドレスへ、'."\n".'受信確認のためにお送りしています。'."\n\n".'このメールを、無事に受信ボックスで確認できましたら、'."\n".'こちらのメールアドレスは'.STORE_NAME.'で問題なくご利用いただけます。'."\n\n".'以下のURLにアクセスして会員登録を行ってください。'."\n".  HTTP_SERVER.'/create_account.php'."\n\n".'ご不明な点がありましたら、'.STORE_NAME.'までお問い合わせください。'."\n\n\n".'[ご連絡・お問い合わせ先]━━━━━━━━━━━━'."\n".COMPANY_NAME."\n".HTTP_SERVER."\n".STORE_OWNER_EMAIL_ADDRESS."\n"."━━━━━━━━━━━━━━━━━━━━━━━");
 ?>
