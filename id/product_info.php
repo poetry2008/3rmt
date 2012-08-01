@@ -114,7 +114,7 @@ function change_num(ob,targ, quan, a_quan)
   calc_product_final_price("<?php echo (int)$_GET['products_id'];?>");
 }
 </script>
-<script type="text/javascript"><!--
+<script language="javascript" type="text/javascript"><!--
 function popupWindow(url) {
   window.open(url,'popupImageWindow','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,copyhistory=no,width=100,height=100,screenX=150,screenY=150,top=150,left=150')
 }

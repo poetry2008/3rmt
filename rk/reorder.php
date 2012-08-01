@@ -712,14 +712,14 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
 </table>
 <br>
 <p align="center">
-<input type='image' src="includes/languages/japanese/images/buttons/button_submit.gif" alt="<?php echo TEXT_REORDER_CONFRIM;?>" title="<?php echo TEXT_REORDER_CONFRIM;?>" onClick="return orderConfirmPage();" >
+<input type='image' src="includes/languages/japanese/images/buttons/button_submit.gif" alt="<?php echo TEXT_REORDER_CONFIRM;?>" title="<?php echo TEXT_REORDER_CONFIRM;?>" onClick="return orderConfirmPage();" >
 <input type='image' src="includes/languages/japanese/images/buttons/button_reset.gif" alt="<?php echo TEXT_REORDER_CLEAR;?>" title="<?php echo TEXT_REORDER_CLEAR;?>" onClick="javascript:document.order.reset();selectDate('','','');return false;" >
 </p>
 </form>
 </div>
 <div id='confirm' style='display:none; text-align: center;'>
   <div id='confirm_content'></div>
-  <input type='image' src="includes/languages/japanese/images/buttons/button_submit2.gif" alt="<?php echo TEXT_REORDER_CONFRIM_INFO;?>" title="<?php echo TEXT_REORDER_CONFRIM_INFO;?>" onClick="document.order.submit()" >
+  <input type='image' src="includes/languages/japanese/images/buttons/button_submit.gif" alt="<?php echo TEXT_REORDER_CONFIRM;?>" title="<?php echo TEXT_REORDER_CONFIRM;?>" onClick="document.order.submit()" >
   <input type='image' src="includes/languages/japanese/images/buttons/button_back.gif" alt="<?php echo TEXT_BACK_TO_HISTORY;?>" title="<?php echo TEXT_BACK_TO_HISTORY;?>" onClick="document.getElementById('confirm').style.display='none';document.getElementById('form').style.display='block'" >
 </div>
 <script type="text/javascript">

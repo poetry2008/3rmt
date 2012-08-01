@@ -450,6 +450,10 @@ function pass_hidd(){
 
       //ccdd
       tep_db_perform(TABLE_ADDRESS_BOOK, $sql_data_array, 'update', 'customers_id = ' . $check['customers_id']);
+	if($_SESSION['referer']!=""){
+		  tep_db_query("update ".TABLE_CUSTOMERS." set referer='".tep_db_prepare_input($_SESSION['referer'])."'   where customers_id='".$customer_id."'");
+unset($_SESSION['referer']);
+		                 }
       # //Guest & 2回目以上 ==============================================
       //ccdd
       tep_db_query("update " . TABLE_CUSTOMERS_INFO . " set customers_info_date_of_last_logon = now(), customers_info_number_of_logons = customers_info_number_of_logons+1 where customers_info_id = '" . $customer_id . "'");

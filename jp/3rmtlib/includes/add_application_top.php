@@ -175,7 +175,7 @@
   define('TABLE_CURRENCIES', 'currencies');
   define('TABLE_CUSTOMERS', 'customers');
   define('TABLE_CUSTOMERS_BASKET', 'customers_basket');
-  //define('TABLE_CUSTOMERS_BASKET_ATTRIBUTES', 'customers_basket_attributes');
+  define('TABLE_CUSTOMERS_BASKET_ATTRIBUTES', 'customers_basket_attributes');
   define('TABLE_CUSTOMERS_INFO', 'customers_info');
   define('TABLE_USER_LOGIN','user_login');
   define('TABLE_LANGUAGES', 'languages');
@@ -523,56 +523,55 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
                                     $cart->add_cart((int)$_POST['products_id'][$i], $_POST['cart_quantity'][$i], '', false, $hide_option_info);
                                   }
                                 }
-                               }
-      $weight_count = 0;                        
-      foreach($_POST['products_id'] as $p_key=>$p_value){
-
-        $p_array = explode("_",$p_value);
-        $products_id_query = tep_db_query("select products_weight from ". TABLE_PRODUCTS ." where products_id='". $p_array[0] ."'");
-        $products_id_array = tep_db_fetch_array($products_id_query);
-        tep_db_free_result($products_id_query);
-        $weight_count += $products_id_array['products_weight']*$_POST['cart_quantity'][$p_key];
-      }
-
-      $max_weight_array  = array();
-      $products_error = false;
-      $country_fee_query = tep_db_query("select weight_limit from ". TABLE_COUNTRY_FEE ." where status='0'");
-      while($country_fee_array = tep_db_fetch_array($country_fee_query)){ 
-        $max_weight_array[] = $country_fee_array['weight_limit'];
-      }
-
-      $max_area_weight_array = array();
-      $country_area_query = tep_db_query("select weight_limit from ". TABLE_COUNTRY_AREA ." where status='0'");
-      while($country_area_array = tep_db_fetch_array($country_area_query)){ 
-        $max_area_weight_array[] = $country_area_array['weight_limit'];
-      }
-
-      $max_city_weight_array = array();
-      $country_city_query = tep_db_query("select weight_limit from ". TABLE_COUNTRY_CITY ." where status='0'");
-      while($country_city_array = tep_db_fetch_array($country_city_query)){ 
-        $max_city_weight_array[] = $country_city_array['weight_limit'];
-      } 
-
-      $max_weight = max($max_weight_array);
-      $max_area_weight = max($max_area_weight_array);
-      $max_city_weight = max($max_city_weight_array);
-
-      $max_weight_count = 0;
-      $max_weight_count = max($max_weight,$max_area_weight,$max_city_weight);
-      if($weight_count > $max_weight_count){
-
-        $products_error = true;
-      }
-                           if($products_error == false){
-
-                              if (isset($_POST['continue']) && $_POST['goto']) {
-                                tep_redirect($_POST['goto']);
-                              } else if (isset($_POST['checkout'])) {
-                                tep_redirect(tep_href_link(FILENAME_CHECKOUT_ATTRIBUTES, '', 'SSL'));
-                              } else {
-                                tep_redirect(tep_href_link($goto, tep_get_all_get_params($parameters)));
                               }
-                            }
+                              $weight_count = 0;                        
+                              foreach($_POST['products_id'] as $p_key=>$p_value){
+
+                                $p_array = explode("_",$p_value);
+                                $products_id_query = tep_db_query("select products_weight from ". TABLE_PRODUCTS ." where products_id='". $p_array[0] ."'");
+                                $products_id_array = tep_db_fetch_array($products_id_query);
+                                tep_db_free_result($products_id_query);
+                                $weight_count += $products_id_array['products_weight']*$_POST['cart_quantity'][$p_key];
+                              }
+
+                              $max_weight_array  = array();
+                              $products_error = false;
+                              $country_fee_query = tep_db_query("select weight_limit from ". TABLE_COUNTRY_FEE ." where status='0'");
+                              while($country_fee_array = tep_db_fetch_array($country_fee_query)){ 
+                                $max_weight_array[] = $country_fee_array['weight_limit'];
+                              }
+
+                              $max_area_weight_array = array();
+                              $country_area_query = tep_db_query("select weight_limit from ". TABLE_COUNTRY_AREA ." where status='0'");
+                              while($country_area_array = tep_db_fetch_array($country_area_query)){ 
+                                $max_area_weight_array[] = $country_area_array['weight_limit'];
+                              }
+
+                              $max_city_weight_array = array();
+                              $country_city_query = tep_db_query("select weight_limit from ". TABLE_COUNTRY_CITY ." where status='0'");
+                              while($country_city_array = tep_db_fetch_array($country_city_query)){ 
+                                $max_city_weight_array[] = $country_city_array['weight_limit'];
+                              } 
+
+                              $max_weight = max($max_weight_array);
+                              $max_area_weight = max($max_area_weight_array);
+                              $max_city_weight = max($max_city_weight_array);
+
+                              $max_weight_count = 0;
+                              $max_weight_count = max($max_weight,$max_area_weight,$max_city_weight);
+                              if($weight_count > $max_weight_count){
+
+                                $products_error = true;
+                              }
+                              if($products_error == false){
+                                if (isset($_POST['continue']) && $_POST['goto']) {
+                                  tep_redirect($_POST['goto']);
+                                } else if (isset($_POST['checkout'])) {
+                                  tep_redirect(tep_href_link(FILENAME_CHECKOUT_ATTRIBUTES, '', 'SSL'));
+                                } else {
+                                  tep_redirect(tep_href_link($goto, tep_get_all_get_params($parameters)));
+                                }
+                              }
                               break;
       // customer adds a product from the products page
       /*case 'add_product' :    if (isset($_POST['products_id']) && is_numeric($_POST['products_id'])) {
@@ -680,7 +679,9 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
   
   // 统计 REFERER
   if (!isset($_SESSION['referer']) && $_SERVER["HTTP_REFERER"]) {
+if(!preg_match ("#".HTTP_SERVER."#", $_SERVER["HTTP_REFERER"]) && !preg_match ("#".HTTPS_SERVER."#", $_SERVER["HTTP_REFERER"])){
     $_SESSION['referer'] = $_SERVER["HTTP_REFERER"];
+	  }
     // 统计 Google Adsense
     // $adurl = tep_get_google_adsense_adurl($_SERVER['HTTP_REFERER']);
     if (isset($_GET['from']) && $_GET['from'] == 'adwords') {
@@ -907,7 +908,6 @@ if(!isset($_noemailclass)){require(DIR_WS_CLASSES . 'email.php');};
   define('TABLE_OA_FORM_GROUP', 'oa_form_group'); 
   define('TABLE_OA_ITEM', 'oa_item'); 
   define('TABLE_OA_FORMVALUE', 'oa_formvalue');
-  define('TABLE_OA_FORMVALUE', 'oa_formvalue'); 
   define('TABLE_ADDRESS','address');
   define('TABLE_OPTION_GROUP','option_group');
   define('TABLE_OPTION_ITEM','option_item');

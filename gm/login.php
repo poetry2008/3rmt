@@ -363,6 +363,10 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
 
 // restore cart contents
         $cart->restore_contents();
+	if($_SESSION['referer']!=""){
+		  tep_db_query("update customers set referer='".tep_db_prepare_input($_SESSION['referer'])."'   where customers_id='".$customer_id."'");
+		  unset($_SESSION['referer']);
+		                 }
 
         if (sizeof($navigation->snapshot) > 0) {
           if ($navigation->snapshot['page'] != 'change_preorder.php') {
@@ -509,7 +513,7 @@ if(isset($_GET['login']) && ($_GET['login'] == 'ip_error')){
                     </tr>
                    <tr>
                       <td align="right" colspan="2">
-                      <a href="<?php echo tep_href_link('send_mail.php', '', 'SSL');?>"><?php TEXT_TEST_MAIL;?></a> 
+                      <a href="<?php echo tep_href_link('send_mail.php', '', 'SSL');?>"><?php echo SEND_MAIL_TEST;?></a> 
                       </td>
                    </tr>
                              <?php }?> 

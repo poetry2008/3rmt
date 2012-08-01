@@ -468,9 +468,6 @@ $products_ordered_text .= "\n".'個数'.str_repeat('　', intval(($cl_max_len-mb
 $products_ordered_text .= '単価'.str_repeat('　', intval(($cl_max_len-mb_strlen('単価','utf-8')))).'：' .  $currencies->display_price(isset($option_info_array['final_price'])?$option_info_array['final_price']:$preorder_product_res['final_price'], $preorder_product_res['products_tax']) . "\n";
 $products_ordered_text .= '小計'.str_repeat('　', intval(($cl_max_len-mb_strlen('小計','utf-8')))).'：' .  $currencies->display_price(isset($option_info_array['final_price'])?$option_info_array['final_price']:$preorder_product_res['final_price'], $preorder_product_res['products_tax'], $preorder_product_res['products_quantity']) . "\n";
 
-//if (tep_not_null($_SESSION['preorder_info_character'])) {
-  //$products_ordered_text .= 'キャラクター名　　：' .$_SESSION['preorder_info_character']."\n";
-//}
 
 $products_ordered_text .= "------------------------------------------\n";
 if (tep_get_cflag_by_product_id($preorder_prodct_res['products_id'])) {
@@ -503,7 +500,7 @@ $payment_modules->preorder_deal_mailoption($mailoption, $cpayment_code, $preorde
 
 $mailoption['ORDER_COUNT'] = $preorder_product_res['products_quantity'];
 $mailoption['ORDER_LTOTAL'] = number_format((isset($option_info_array['final_price'])?$option_info_array['final_price']:$preorder_product_res['final_price'])*$preorder_product_res['products_quantity'], 0, '.', '');
-//$mailoption['ORDER_ACTORNAME'] = $_SESSION['preorder_info_character'];
+
 $mailoption['ORDER_ACTORNAME'] = '';
 if ($preorder_point){
   $mailoption['POINT']            = str_replace('円', '', $currencies->format(abs($preorder_point)));
@@ -718,7 +715,6 @@ tep_session_unregister('preorder_info_tori');
 tep_session_unregister('preorder_info_date');
 tep_session_unregister('preorder_info_hour');
 tep_session_unregister('preorder_info_min');
-tep_session_unregister('preorder_info_character');
 tep_session_unregister('preorder_info_id');
 tep_session_unregister('preorder_info_pay');
 tep_session_unregister('preorder_option_info');

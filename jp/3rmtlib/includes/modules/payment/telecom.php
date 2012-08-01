@@ -410,7 +410,7 @@ class telecom  extends basePayment  implements paymentInterface  {
     $email_credit .= 'ご不明な点がございましたら、注文番号をご確認の上、' . "\n";
     $email_credit .= '「' . STORE_NAME . '」までお問い合わせください。' . "\n\n";
     $email_credit .= '[ご連絡・お問い合わせ先]━━━━━━━━━━━━' . "\n";
-    $email_credit .= '株式会社 iimy' . "\n";
+    $email_credit .= COMPANY_NAME . "\n";
     $email_credit .= get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS',$order->info['site_id']) . "\n";
     $email_credit .= get_url_by_site_id($order->info['site_id']) . "\n";
     $email_credit .= '━━━━━━━━━━━━━━━━━━━━━━━' . "\n";

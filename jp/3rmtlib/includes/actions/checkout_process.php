@@ -427,7 +427,6 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
     if (tep_db_num_rows($stock_query) > 0) {
       $stock_values = tep_db_fetch_array($stock_query);
       if ($order->products[$i]['qty'] > $stock_values['products_real_quantity']) {
-        // 荵ｰ取商品大于螳梵髏
         tep_db_perform(
                        'products',
                        array(
@@ -617,7 +616,6 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
         . '：' . str_replace($replace_arr, "", $ck_value['value']);
       
       if ($c_op_price != '0') {
-        //$products_ordered_attributes .= '　('.$currencies->format($c_op_price*$order->products[$i]['qty']).')'; 
         $products_ordered_attributes .= '　('.$currencies->format($c_op_price).')'; 
       }
     }

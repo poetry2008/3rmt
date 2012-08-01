@@ -120,7 +120,7 @@ function popupWindow(url) {
   window.open(url,'popupImageWindow','toolbar=no,location=no,directories=no,status=no,menubar=no,scrollbars=no,resizable=yes,copyhistory=no,width=100,height=100,screenX=150,screenY=150,top=150,left=150')
 }
 function showimage($1) {
-  document.images.lrgproduct.src = $1;
+    document.images.lrgproduct.src = $1;
 }
 
 //--></script>
@@ -148,7 +148,7 @@ function showimage($1) {
         <div align="right"><a href="<?php echo tep_href_link(FILENAME_DEFAULT); ?>"><?php echo tep_image_button('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?></a></div>
         <?php
   } else {
-    // ccdd 
+    // ccdd
     $product_info['site_id'] == SITE_ID && tep_db_query("
         UPDATE " . TABLE_PRODUCTS_DESCRIPTION . " 
         SET products_viewed = products_viewed+1 
@@ -168,11 +168,11 @@ function showimage($1) {
       $products_price = $currencies->display_price(tep_get_price($product_info['products_price'], $product_info['products_price_offset'], tep_get_price($product_info['products_price'],$product_info['products_small_sum'], '', $product_info['products_bflag']), $product_info['products_bflag']), tep_get_tax_rate($product_info['products_tax_class_id']));
     }
   
-  $description = replace_store_name($product_info['products_description']);
-  $data1 = explode("//", $product_info['products_attention_1']);
-  $data2 = explode("//", $product_info['products_attention_2']);
-  $data3 = explode("//", $product_info['products_attention_3']);
-  $data4 = explode("//", $product_info['products_attention_4']);
+    $description = replace_store_name($product_info['products_description']);
+    $data1 = explode("//", $product_info['products_attention_1']);
+    $data2 = explode("//", $product_info['products_attention_2']);
+    $data3 = explode("//", $product_info['products_attention_3']);
+    $data4 = explode("//", $product_info['products_attention_4']);
 ?>
     <?php if (tep_show_warning(tep_get_products_categories_id($product_info['products_id'])) or $product_info['products_status'] != '1') {
       echo '<div class="waring_product">'.WARN_PRODUCT_STATUS_TEXT.'</div>'; 
@@ -190,25 +190,25 @@ function showimage($1) {
                         <td class="main"><?php if (PRODUCT_LIST_MODEL > 0){ echo $product_info['products_model'] ; }else{ echo '-' ; } ?></td>
                       </tr>
                       <?php 
-          if(!empty($product_info['products_attention_1_1']) && !empty($product_info['products_attention_1_3'])){
-          ?>
+                      if(!empty($product_info['products_attention_1_1']) && !empty($product_info['products_attention_1_3'])){
+                      ?>
                       <tr class="infoBoxContents">
                         <td class="main"><font color="#0070AF"><?php echo $product_info['products_attention_1_1'] ; ?></font></td>
                         <td class="main"><?php echo $product_info['products_attention_1_2'] .'&nbsp;&nbsp;'.tep_display_attention_1_3($product_info['products_attention_1_3']) . $product_info['products_attention_1_4'] ; ?></td>
                       </tr>
                       <?php } ?>
 
-                        <?php
-          if(!empty($data1[0]) && !empty($data1[1])){
-          ?>
+                      <?php
+                      if(!empty($data1[0]) && !empty($data1[1])){
+                      ?>
                       <tr class="infoBoxContents">
                         <td class="main"><font color="#0070AF"><?php echo $data1[0] ; ?></font></td>
                         <td class="main"><?php print($data1[1]) ; ?></td>
                       </tr>
                       <?php } ?>
                       <?php 
-          if(!empty($data2[0]) && !empty($data2[1])){
-          ?>
+                      if(!empty($data2[0]) && !empty($data2[1])){
+                      ?>
                       <tr class="infoBoxContents">
                         <td class="main"><font color="#0070AF"><?php print($data2[0]) ; ?></font></td>
                         <td class="main"><?php print( $data2[1]) ; ?></td>
@@ -222,52 +222,52 @@ function showimage($1) {
                       <tr class="infoBoxContents">
                       <td class="main" width="85"><font color="#0070AF"><?php echo TEXT_PRODUCT_PRICE;?></font></td>
                         <td class="main">
-              <?php
-                # 追加スタート ---------------------------------------
-                # -- 注文数量と単価のリスト --------------------------
-                if(tep_not_null($product_info['products_small_sum'])) {
-                $wari_array = array();
-                echo '<span class="smallText">'.TEXT_ONE_UNIT_PRICE.'</span><table border="0" cellpadding="0" cellspacing="0" class="infoBox">';
-                $parray = explode(",", $product_info['products_small_sum']);
-                for($i=0; $i<sizeof($parray); $i++) {
-                  $tt = explode(':', $parray[$i]);
-                  $wari_array[$tt[0]] = $tt[1];
-                }
-                
-                @ksort($wari_array);
-                
-                foreach($wari_array as $key => $val) {
-                  echo '<tr class="infoBoxContents">';
-                  echo '<td class="main" align="right">'.$key.TEXT_MORE_UNIT_PRICE.'</td>';
-                  echo '<td class="main"><b>'.$currencies->display_price(round($pricedef + $val),0).'</b></td>';
-                  echo '</tr>'."\n";
-                }
-                echo '</table>'."\n";
-                } else {
-                  echo '<strong>'.$products_price.'</strong>';
-                }
-                
-                # -- 注文数量と単価のリスト --------------------------
-                # 追加エンド -------------------------------------------
-              
-              ?>
-            </td>
+                        <?php
+                          # 追加スタート ---------------------------------------
+                          # -- 注文数量と単価のリスト --------------------------
+                          if(tep_not_null($product_info['products_small_sum'])) {
+                          $wari_array = array();
+                          echo '<span class="smallText">'.TEXT_ONE_UNIT_PRICE.'</span><table border="0" cellpadding="0" cellspacing="0" class="infoBox">';
+                          $parray = explode(",", $product_info['products_small_sum']);
+                          for($i=0; $i<sizeof($parray); $i++) {
+                            $tt = explode(':', $parray[$i]);
+                            $wari_array[$tt[0]] = $tt[1];
+                          }
+                          
+                          @ksort($wari_array);
+                          
+                          foreach($wari_array as $key => $val) {
+                            echo '<tr class="infoBoxContents">';
+                            echo '<td class="main" align="right">'.$key.TEXT_MORE_UNIT_PRICE.'</td>';
+                            echo '<td class="main"><b>'.$currencies->display_price(round($pricedef + $val),0).'</b></td>';
+                            echo '</tr>'."\n";
+                          }
+                          echo '</table>'."\n";
+                          } else {
+                            echo '<strong>'.$products_price.'</strong>';
+                          }
+                          
+                          # -- 注文数量と単価のリスト --------------------------
+                          # 追加エンド -------------------------------------------
+                        
+                        ?>
+                      </td>
                       </tr>
                       <tr class="infoBoxContents">
                       <td class="main"><font color="#0070AF"><?php echo TEXT_ORDERS_NUM;?></font></td>
                       <td class="main"><?php echo TEXT_REMAINING;?><strong>&nbsp;<?php echo tep_show_quantity($product_info['products_quantity']); ?></strong>&nbsp;<?php echo TEXT_UNIT;?></td>
                       </tr>
                       <?php
-          if(!empty($data3[0]) && !empty($data3[1])){
-          ?>
+                      if(!empty($data3[0]) && !empty($data3[1])){
+                      ?>
                       <tr class="infoBoxContents">
                         <td class="main"><font color="#0070AF"><?php echo $data3[0] ; ?></font></td>
                         <td class="main"><?php echo $data3[1] ; ?></td>
                       </tr>
                       <?php } ?>
                       <?php 
-          if(!empty($data4[0]) && !empty($data4[1])){
-          ?>
+                      if(!empty($data4[0]) && !empty($data4[1])){
+                      ?>
                       <tr class="infoBoxContents">
                         <td class="main"><font color="#0070AF"><?php echo $data4[0] ; ?></font></td>
                         <td class="main"><?php echo $data4[1] ; ?></td>

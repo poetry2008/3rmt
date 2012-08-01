@@ -381,22 +381,22 @@ $(document).ready(function(){
 <?php
     }
 ?>  
-  <?php
-  if ($p_error_show_str != '') {
-  ?>
-  <tr>
-    <td class="main" width="22%">&nbsp;</td>
-    <td class="main" style="font-size:10px;">
-    <?php echo $p_error_show_str;?> 
-    </td>
-  </tr>
-  <?php
-  }
-  ?>
+    <?php
+    if ($p_error_show_str != '') {
+    ?>
+    <tr>
+      <td class="main" width="22%">&nbsp;</td>
+      <td class="main" style="font-size:10px;">
+      <?php echo $p_error_show_str;?> 
+      </td>
+    </tr>
+    <?php
+    }
+    ?>
     <tr>
       <td class="main" colspan="2"><?php echo ENTRY_PASSWORD_INFORM_READ_TEXT;?></td> 
     </tr>
-  </table></td>
+    </table></td>
       </tr>
     </table></td>
   </tr>
@@ -440,4 +440,4 @@ $(document).ready(function(){
   }
 ?>
 </table>
-<input type="hidden" name="country" value="107" >
+<input type="hidden" name="country" value="107">

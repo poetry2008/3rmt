@@ -711,14 +711,8 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
         </table>
         
         <div align="center" class="botton-continue">
-          <input type='image'   onmouseout="this.src='includes/languages/japanese/images/buttons/button_submit.gif'"  onmouseover="this.src='includes/languages/japanese/images/buttons/button_submit_hover.gif'"  src="includes/languages/japanese/images/buttons/button_submit.gif" 
-          alt="<?php echo TEXT_REORDER_CONFRIM;?>" title="<?php echo
-          TEXT_REORDER_CONFRIM;?>" onClick="return orderConfirmPage();" >
-          <input type='image'
-          onmouseout="this.src='includes/languages/japanese/images/buttons/button_reset.gif'"
-          onmouseover="this.src='includes/languages/japanese/images/buttons/button_reset_hover.gif'"  src="includes/languages/japanese/images/buttons/button_reset.gif" 
-          alt="<?php echo TEXT_REORDER_CLEAR;?>" title="<?php echo
-          TEXT_REORDER_CLEAR;?>" onClick="javascript:document.order.reset();selectDate('','','');return false;" >
+          <input type='image' onmouseout="this.src='includes/languages/japanese/images/buttons/button_submit.gif'" onmouseover="this.src='includes/languages/japanese/images/buttons/button_submit_hover.gif'" src="includes/languages/japanese/images/buttons/button_submit.gif" alt="<?php echo TEXT_REORDER_CONFIRM;?>" title="<?php echo TEXT_REORDER_CONFIRM;?>" onClick="return orderConfirmPage();" >
+          <input type='image' onmouseout="this.src='includes/languages/japanese/images/buttons/button_reset.gif'" onmouseover="this.src='includes/languages/japanese/images/buttons/button_reset_hover.gif'"  src="includes/languages/japanese/images/buttons/button_reset.gif" alt="<?php echo TEXT_REORDER_CLEAR;?>" title="<?php echo TEXT_REORDER_CLEAR;?>" onClick="javascript:document.order.reset();selectDate('','','');return false;" >
         </div>
       </form>
     </div>
@@ -726,11 +720,7 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
       <div id='confirm_content' style='text-align:left;'>
       </div>
       <div class="botton-continue">
-      <input type='image'
-      src="includes/languages/japanese/images/buttons/button_submit2.gif"
-       onmouseout="this.src='includes/languages/japanese/images/buttons/button_submit2.gif'"  onmouseover="this.src='includes/languages/japanese/images/buttons/button_submit2_hover.gif'" 
-       alt="<?php echo TEXT_REORDER_CONFRIM;?>" title="<?php echo
-       TEXT_REORDER_CONFRIM;?>" onClick="document.order.submit()" >
+      <input type='image' src="includes/languages/japanese/images/buttons/button_submit.gif" onmouseout="this.src='includes/languages/japanese/images/buttons/button_submit2.gif'" onmouseover="this.src='includes/languages/japanese/images/buttons/button_submit.gif'" alt="<?php echo TEXT_REORDER_CONFIRM;?>" title="<?php echo TEXT_REORDER_CONFIRM;?>" onClick="document.order.submit()" >
       <input type='image'
       src="includes/languages/japanese/images/buttons/button_back.gif"
         onmouseout="this.src='includes/languages/japanese/images/buttons/button_back.gif'"  onmouseover="this.src='includes/languages/japanese/images/buttons/button_back_hover.gif'" 

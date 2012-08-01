@@ -374,7 +374,10 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
 
 // restore cart contents
         $cart->restore_contents();
-
+	if($_SESSION['referer']!=""){
+		  tep_db_query("update customers set referer='".tep_db_prepare_input($_SESSION['referer'])."'   where customers_id='".$customer_id."'");
+		  unset($_SESSION['referer']);
+		                 }
         if (sizeof($navigation->snapshot) > 0) {
           if ($navigation->snapshot['page'] != 'change_preorder.php') {
             $origin_href = tep_href_link($navigation->snapshot['page'], tep_array_to_string($navigation->snapshot['get'], array(tep_session_name())), $navigation->snapshot['mode']);
@@ -557,8 +560,7 @@ function session_win() {
                     </tr>
                     <tr>
                     <td align="right">
-                    <?php echo '<a href="' . tep_href_link(FILENAME_SEND_MAIL, '', 'SSL') .
-                    '">' . TEXT_TEST_MAIL. '</a>';?>
+                    <?php echo '<a href="' . tep_href_link(FILENAME_SEND_MAIL, '', 'SSL') .  '">' . SEND_MAIL_TEST . '</a>';?>
                     </td>
                     </tr>
                   </table></td>

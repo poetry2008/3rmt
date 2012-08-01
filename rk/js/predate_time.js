@@ -121,8 +121,8 @@ function selectHour(start_time,end_time,hour,min_num,ele){
             }
           } 
           if(flag == true && h != hour){
-              $("#hour"+h).css("background-color","#ccc"); 
-              document.getElementById("hour"+h).style.color="#000";
+              $("#hour"+h).css("background-color","#cccccc"); 
+              document.getElementById("hour"+h).style.color="#000000";
               document.getElementById("hour"+h).style.textDecoration ="";
           }
         }
