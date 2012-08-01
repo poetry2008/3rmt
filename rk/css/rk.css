@@ -2062,9 +2062,9 @@ display:block;
 	line-height:1.5;
 }
 .option_name{
-	width:60px;
+	width:65px;
 	vertical-align:top;
-	padding-left:10px;
+	padding-left:11px;
 }
 .option_input{
 	width:75%;

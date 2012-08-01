@@ -401,9 +401,9 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
     $p_cflag = tep_get_cflag_by_product_id($product_info['products_id']); 
     $hm_option->render($product_info['belong_to_option'], false, 0, '', '', $p_cflag);
     ?>
-                        <table width="100%" summary="rmt_text">
+                        <table width="100%" summary="rmt_text" cellspacing="1" cellpadding="3" border="0">
                           <tr>
-                          <td class="main" valign="middle" width="58" style="padding:0 10px;"><?php echo TEXT_PRODUCTS_QTY;?></td>
+                          <td class="main" valign="middle" width="64" style="padding-left:10px;"><?php echo TEXT_PRODUCTS_QTY;?></td>
                             <td colspan="2">
                             <table cellpadding="0" cellspacing="0" border="0">
                             <tr>
@@ -420,13 +420,13 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                             </td>
                           </tr>
                           <tr>
-                            <td class="main" width="58" style="padding-left:10px;">
+                            <td class="main" width="64" style="padding-left:10px;">
                             <div class="calc_show_price"><?php echo TEXT_PRODUCT_PRICE;?>:</div>
                             </td>
                             <td width="325">
                             <div id="show_price"></div>
                             </td> 
-                            <td valign="middle"><?php echo tep_image_submit('button_in_cart.gif', IMAGE_BUTTON_IN_CART); ?></td>
+                            <td align="right"><?php echo tep_image_submit('button_in_cart.gif', IMAGE_BUTTON_IN_CART); ?></td>
                           </tr>
                         </table>
                         <?php

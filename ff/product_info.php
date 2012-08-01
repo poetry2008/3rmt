@@ -433,7 +433,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
     ?>
                         <table width="100%" summary="rmt_text" cellpadding="0" cellspacing="0" border="0">
                           <tr>
-                          <td class="main" valign="middle" width="100"><?php echo TEXT_PRODUCTS_QTY;?></td>
+                          <td class="main" valign="middle" width="98"><?php echo TEXT_PRODUCTS_QTY;?></td>
                             <td colspan="2" style="padding-left:10px;">
                             <table><tr>
                             <td class="main" valign="middle"><input name="quantity" type="text" id="quantity" value="<?php echo (isset($_POST['quantity'])?$_POST['quantity']:1)?>" class="input_text_short"></td>
@@ -448,13 +448,13 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                             </tr></table>
                           </tr> 
                           <tr>   
-                          <td class="main" width="100">
+                          <td class="main" width="98">
                           <div class="calc_show_price"><?php echo TEXT_PRODUCT_PRICE;?>:</div>
                           </td>
                           <td width="325" style="padding-left:13px;">
                             <div id="show_price"></div>
                           </td>
-                          <td valign="middle"><?php echo tep_image_submit('button_in_cart.gif', IMAGE_BUTTON_IN_CART); ?></td>
+                          <td align="right"><?php echo tep_image_submit('button_in_cart.gif', IMAGE_BUTTON_IN_CART); ?></td>
                           </tr>
                         </table>
                         <?php

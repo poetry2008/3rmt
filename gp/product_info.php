@@ -401,9 +401,9 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
     $p_cflag = tep_get_cflag_by_product_id($product_info['products_id']); 
     $hm_option->render($product_info['belong_to_option'], false, 0, '', '', $p_cflag);
     ?>
-                        <table width="100%"  border="0" cellpadding="0" cellspacing="0" summary="rmt_text">
+                        <table width="100%"  border="0" cellpadding="3" cellspacing="1" summary="rmt_text">
                           <tr>
-                          <td class="main" valign="middle" style="padding-left:13px;" width="70"><?php echo TEXT_PRODUCTS_QTY;?></td>
+                          <td class="main" valign="middle" style="padding-left:10px;" width="62"><?php echo TEXT_PRODUCTS_QTY;?></td>
                             <td colspan="2"><table><tr>
                             <td class="main" valign="middle"><input name="quantity" type="text" id="quantity" value="<?php echo (isset($_POST['quantity'])?$_POST['quantity']:1)?>" class="input_text_short"></td>
                             <td valign="middle">
@@ -417,13 +417,13 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                             </tr></table></td>
                           </tr>
                           <tr>
-                            <td class="main" style="padding-left:12px;" width="70">
+                            <td class="main" style="padding-left:10px;" width="62">
                             <div class="calc_show_price"><?php echo TEXT_PRODUCT_PRICE;?>:</div>
                             </td>
-                            <td width="325">
+                            <td width="325" style="padding-left:8px;">
                               <div id="show_price"></div>
                             </td>  
-                            <td valign="middle"><?php echo tep_image_submit('button_in_cart.jpg', IMAGE_BUTTON_IN_CART); ?></td>
+                            <td align="right"><?php echo tep_image_submit('button_in_cart.jpg', IMAGE_BUTTON_IN_CART); ?></td>
                           </tr>
                         </table>
                         <?php

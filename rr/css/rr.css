@@ -2067,9 +2067,10 @@ border:1px solid #CAC6BE;
 	color:#fff;
 }
 .option_name{
-	width:100px;
+	width:104px;
 	vertical-align:top;
 	color:#FFFFFF;
+	padding-left:5px;
 }
 .option_name td{ padding:3px 5px;}
 .option_input{
