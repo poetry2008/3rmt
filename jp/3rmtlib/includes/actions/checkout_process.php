@@ -1,8 +1,8 @@
 <?php
 /*
   $Id$
-*/
-
+ */
+//unset($_SESSION['cart']);
 header("Content-type:text/html;charset=utf-8");
 ini_set("display_errors","Off");
 require(DIR_WS_FUNCTIONS . 'visites.php');
@@ -19,27 +19,116 @@ if (!tep_session_is_registered('customer_id')) {
   tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
 }
 
-if(!isset($_SESSION['cart'])){
+if(!isset($_SESSION['cart']) || !isset($_SESSION['date']) || !isset($_SESSION['hour']) || !isset($_SESSION['min'])){
 
-  ob_start();
-  phpinfo();
-  $phpinfo = ob_get_contents();
-  ob_end_clean();
+  function tep_high_light_by_keywords($str, $keywords){ 
+      $k = $rk= explode('|',$keywords);
+      foreach($k as $key => $value){
+           $rk[$key] = '<font style="background:red;">'.$value.'</font>';
+      }
+      return str_replace($k, $rk, $str);
+  }
+
   $orders_mail_title = ORDERS_EMPTY_EMAIL_TITLE.'　'.date('Y-m-d H:i:s');
   $orders_mail_text = ORDERS_EMPTY_EMAIL_TEXT;
-  $orders_mail_text = str_replace('{$IP}',$_SERVER['REMOTE_ADDR'],$orders_mail_text);
-  $orders_mail_text = str_replace('{$NAME}',$_SESSION['customer_emailaddress'],$orders_mail_text);
+  $orders_mail_text = str_replace('${ERROR_NUMBER}','001',$orders_mail_text);
+  $orders_mail_text = str_replace('${ERROR_TIME}',date('Y-m-d H:i:s'),$orders_mail_text); 
+
+  $orders_error_contents = "\n\n";
+  $orders_error_contents .= ORDERS_SITE." ".STORE_NAME."\n";
+  $orders_error_contents .= ORDERS_TIME." ".$_SESSION['insert_torihiki_date']."\n";
+  $orders_error_contents .= ORDERS_OPTION." ".$_SESSION['torihikihouhou']."\n";
+  $orders_error_contents .= CREATE_ORDERS_DATE." ".date('Y-m-d H:i:s')."\n";
+  $customer_query = tep_db_query("select customers_guest_chk from " . TABLE_CUSTOMERS . " where customers_id = '" . $_SESSION['customer_id'] . "'");
+  $customer_array = tep_db_fetch_array($customer_query);
+  tep_db_free_result($customer_query);
+  $customer_type = $customer_array['customers_guest_chk'] == 1 ? TABLE_HEADING_MEMBER_TYPE_GUEST : TEXT_MEMBER;
+  $orders_error_contents .= CUSTOMER_TYPE." ".$customer_type."\n";
+  $customer_name = tep_get_fullname($_SESSION['customer_first_name'],$_SESSION['customer_last_name']);
+  $orders_error_contents .= CUSTOMER_NAME." ".$customer_name."\n";
+  $orders_error_contents .= ORDERS_EMAIL." ".$_SESSION['customer_emailaddress']."\n";
   $orders_payment = $_SESSION['payment'];
   $orders_payment = payment::changeRomaji($_SESSION['payment'], PAYMENT_RETURN_TYPE_TITLE);
-  $orders_mail_text = str_replace('{$PAYMENT}',$orders_payment,$orders_mail_text); 
-  $orders_mail_text = str_replace('{$BROWSER}',$_SERVER["HTTP_USER_AGENT"],$orders_mail_text);
-  $orders_mail_text = str_replace('{$PHPINFO}',$phpinfo,$orders_mail_text);
+  $orders_error_contents .= ORDERS_PAYMENT." ".$orders_payment."\n";
+  $orders_error_contents .= CUSTOMER_IP." ".$_SERVER['REMOTE_ADDR']."\n";
+  $orders_error_contents .= HOST_NAME." ".trim(strtolower(@gethostbyaddr($_SERVER['REMOTE_ADDR'])))."\n";
+  $orders_error_contents .= USER_AGENT." ".$_SERVER["HTTP_USER_AGENT"]."\n";
+  $orders_error_contents .= CUSTOMER_OS." ".tep_high_light_by_keywords(getOS($_SERVER["HTTP_USER_AGENT"]),OS_LIGHT_KEYWORDS)."\n";
+  $browser_info = getBrowserInfo($_SERVER["HTTP_USER_AGENT"]);
+  $browser_type = tep_high_light_by_keywords($browser_info['longName'] . ' ' . $browser_info['version'],BROWSER_LIGHT_KEYWORDS);
+  $orders_error_contents .= BROWSER_TYPE." ".$browser_type."\n";
+  $browser_language = tep_high_light_by_keywords($_SERVER['HTTP_ACCEPT_LANGUAGE'] ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : 'UNKNOW',HTTP_ACCEPT_LANGUAGE_LIGHT_KEYWORDS);
+  $orders_error_contents .= BROWSER_LANGUAGE." ".$browser_language."\n";
+  $browser_pc = tep_high_light_by_keywords($_SESSION['systemLanguage'] ? $_SESSION['systemLanguage'] : 'UNKNOW',SYSTEM_LANGUAGE_LIGHT_KEYWORDS);
+  $orders_error_contents .= BROWSER_PC_LANGUAGE." ".$browser_pc."\n";
+  $browser_user = tep_high_light_by_keywords($_SESSION['userLanguage'] ? $_SESSION['userLanguage'] : 'UNKNOW',USER_LANGUAGE_LIGHT_KEYWORDS);
+  $orders_error_contents .= BROWSER_USER_LANGUAGE." ".$browser_user."\n";
+
+  $orders_mail_text = str_replace('${ERROR_CONTENTS}',$orders_error_contents,$orders_mail_text);
+ 
   $message = new email(array('X-Mailer: iimy Mailer'));
   $text = $orders_mail_text;
   $message->add_html(nl2br($orders_mail_text), $text);
   $message->build_message();
   $message->send(STORE_OWNER,IP_SEAL_EMAIL_ADDRESS,STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS,$orders_mail_title);
-  echo '<script type="text/javascript">alert("'.TEXT_ORDERS_EMPTY.'");document.location.href="shopping_cart.php"</script>';
+
+  $site_romaji = tep_get_site_romaji_by_id(SITE_ID);
+  $oconfig_raw = tep_db_query("select value from ".TABLE_OTHER_CONFIG." where keyword = 'css_random_string' and site_id = '".SITE_ID."'");
+  $oconfig_res = tep_db_fetch_array($oconfig_raw);
+  tep_db_free_result($oconfig_raw);
+  if($oconfig_res){
+     $css_random_str = substr($oconfig_res['value'], 0, 4);
+  }else{
+     $css_random_str = date('YmdHi', time());
+  }
+?>
+<link rel="stylesheet" type="text/css" href="<?php echo 'css/'.$site_romaji.'.css?v='.$css_random_str;?>">
+<script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
+<script type="text/javascript" src="js/notice.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+var docheight = $(document).height();
+var screenwidth, screenheight, mytop, getPosLeft, getPosTop
+screenwidth = $(window).width();
+screenheight = $(window).height();
+mytop = $(document).scrollTop();
+getPosLeft = screenwidth / 2 - 276;
+getPosTop = 50;
+
+$("#popup_notice").css('display', 'block');
+$("#popup_notice").css({ "left": getPosLeft, "top": getPosTop })
+
+$(window).resize(function() {
+           screenwidth = $(window).width();
+           screenheight = $(window).height();
+           mytop = $(document).scrollTop();
+           getPosLeft = screenwidth / 2 - 276;
+           getPosTop = 50;
+           $("#popup_notice").css({ "left": getPosLeft, "top": getPosTop + mytop });
+
+});
+
+
+$("body").append("<div id='greybackground'></div>");
+$("#greybackground").css({ "opacity": "0.5", "height": docheight });
+});
+</script>
+<div id="popup_notice" style="display:none;">
+<div class="popup_notice_text">
+<?php echo TEXT_ORDERS_ERROR;?>
+</div>
+<div class="popup_notice_middle">
+<?php 
+echo TEXT_ORDERS_EMPTY_COMMENT;
+?>
+</div>
+<div align="center" class="popup_notice_button">
+<a href="javascript:void(0);" onClick="update_notice('index.php')"><img alt="<?php echo LOCATION_HREF_INDEX;?>" src="images/design/href_home.gif"></a>&nbsp;&nbsp;
+<a href="javascript:void(0);" onClick="update_notice('contact_us.php')"><img alt="<?php echo CONTACT_US;?>" src="images/design/contact_us.gif"></a>
+</div>
+</div>
+
+<?php
   exit;
 }
 $seal_user_sql = "select is_seal from ".TABLE_CUSTOMERS." where customers_id
