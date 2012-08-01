@@ -179,7 +179,7 @@ function showimage($1) {
          <div class="comment_long">
          <div class="comment_long_text01"> 
          <h2 class="line"><?php echo ds_tep_get_categories((int)$_GET['products_id'],1); ?> <?php echo ds_tep_get_categories((int)$_GET['products_id'],2); ?></h2>
-         <table width="100%"  border="0" cellpadding="0" cellspacing="0" summary="rmt">
+         <table width="690"  border="0" cellpadding="0" cellspacing="0" summary="rmt">
           <tr>
             
                 <td valign="top">
@@ -375,7 +375,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                 </td>
               </tr>
             </table>
-            <table width="100%"  border="0" cellpadding="0" cellspacing="0" summary="rmt">
+            <table width="690"  border="0" cellpadding="0" cellspacing="0" summary="rmt">
             <tr class="header2">
                       <td height="30" class="main" style="padding-bottom:4px; " align="right">
                        <div class="option_dot">
@@ -423,7 +423,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                             <td width="325" style="padding-left:8px;">
                               <div id="show_price"></div>
                             </td>  
-                            <td align="right"><?php echo tep_image_submit('button_in_cart.jpg', IMAGE_BUTTON_IN_CART); ?></td>
+                            <td align="right" style="padding:0;"><?php echo tep_image_submit('button_in_cart.jpg', IMAGE_BUTTON_IN_CART); ?></td>
                           </tr>
                         </table>
                         <?php

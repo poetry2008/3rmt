@@ -44,7 +44,7 @@ H4 {
 	color: #C85050!important;
 }
 .line {
-	width: 672px;
+	width: 690px;
 	background:url(../images/design/box/dot.gif) repeat-x 0 15px;
 	font-weight: bold;
 	text-align: right;
@@ -2418,6 +2418,7 @@ line-height:21px;
 	color:#2864B4;
 	font-size:20px;
 	font-weight:bold;
+	margin-left:-1px;
 }
 .formArea_td_info{
 	*width:75%;

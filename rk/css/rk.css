@@ -2221,6 +2221,7 @@ display:block;
 	color:#2864B4;
 	font-size:20px;
 	font-weight:bold;
+	margin-left:-1px;
 }
 .formArea_td_info{
 	*width:325px;

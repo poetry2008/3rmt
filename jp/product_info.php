@@ -365,7 +365,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
 
               </tr>
         </table>
-		<table border="0" cellpadding="0" cellspacing="0" width="100%">
+		<table border="0" cellpadding="0" cellspacing="0" width="689">
 		   <tr class="header2">
              <td class="main" align="right">
 <div class="option_dot">
@@ -422,7 +422,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                         <td width="325">
                         <div id="show_price"></div>
                         </td>
-                        <td align="right"><?php echo tep_image_submit('button_in_cart.gif', IMAGE_BUTTON_IN_CART); ?></td>
+                        <td align="right" style="padding:0;"><?php echo tep_image_submit('button_in_cart.gif', IMAGE_BUTTON_IN_CART); ?></td>
                       </tr>
                     </table>
         <?php echo tep_draw_hidden_field('products_id', $product_info['products_id']) ; ?>

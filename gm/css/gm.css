@@ -543,11 +543,11 @@ td,th{ border:0; padding:2px; font-size:14px;}
 .calculation-add a{ float:left; margin-right:3px;}
 #calculation-add{ float:left; margin-top:11px;}
 #calculation-add a{ float:left; margin-right:2px;}
-#calculation-bottom{ float:right; margin-left:15px;}
+#calculation-bottom{ float:right; margin-left:15px; margin-right:-5px;}
 #quantity{padding-top:2px;margin-top:10px; text-align:right;}
 #detail-ul{clear:both; float:right; width:100%; width: expression(document.body.clientWidth < 900? "900px": "100%" ); display:block;}
 
-#detail-ul li{ float:right; margin-right:10px;}
+#detail-ul li{ float:right; margin-left:10px;}
 #detail-ul li img{ margin-right:5px;}
 #detail-div{ color:#fff;}
 .botton-continue{ 
@@ -1391,6 +1391,7 @@ top:70px;
 	color:#66DFFF;
 	font-size:20px;
 	font-weight:bold;
+	margin-left:-1px;
 }
 #group_list_box td{ height:20px; padding:0;}
 

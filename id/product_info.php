@@ -399,7 +399,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
     ?>
                         <table align="right" summary="rmt_text" width="100%" cellpadding="3" cellspacing="1" border="0">
                           <tr> 
-                          <td class="main" valign="middle" width="110" style="padding-left:12px; *width:112px;"><?php echo TEXT_PRODUCTS_QTY;?></td>
+                          <td class="main" valign="middle" width="110" style="padding-left:11px; *width:112px;"><?php echo TEXT_PRODUCTS_QTY;?></td>
                             <td class="main" valign="middle" colspan="2">
                             <table cellpadding="0" cellspacing="0" border="0">
                             <tr>
@@ -421,7 +421,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
                             <td width="325">
                             <div id="show_price"></div> 
                             </td>
-                            <td align="right"><?php echo tep_image_submit('button_in_cart.gif', IMAGE_BUTTON_IN_CART); ?></td>
+                            <td align="right" style="padding:0;"><?php echo tep_image_submit('button_in_cart.gif', IMAGE_BUTTON_IN_CART); ?></td>
                           </tr>
                         </table>
                         <?php

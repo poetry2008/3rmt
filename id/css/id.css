@@ -101,6 +101,7 @@ table.comment {
 }
 .comment_long02 {
 	width: 869px;
+	*width:898px;
 	margin-left: 1px;
 	padding: 10px 15px;
 	margin-bottom:5px;
@@ -2507,6 +2508,7 @@ searching
 	color:#2864B4;
 	font-size:20px;
 	font-weight:bold;
+	margin-left:-2px;
 }
 #group_list_box td{ height:20px; padding:0;}
 .address_item_info{ padding-left:4px;}

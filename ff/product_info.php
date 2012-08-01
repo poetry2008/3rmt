@@ -405,7 +405,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                 </td>
               </tr>
             </table>
-            <table width="684"  border="0" cellpadding="0" cellspacing="0" summary="rmt" bgcolor="#f2f2f2" style="padding:0 10px;">
+            <table width="684"  border="0" cellpadding="0" cellspacing="0" summary="rmt" bgcolor="#f2f2f2">
             <tr class="header2">
                       <td height="30" class="main" style="padding-bottom:4px; " align="right">
                       <div class="option_dot">
@@ -433,7 +433,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
     ?>
                         <table width="100%" summary="rmt_text" cellpadding="0" cellspacing="0" border="0">
                           <tr>
-                          <td class="main" valign="middle" width="98"><?php echo TEXT_PRODUCTS_QTY;?></td>
+                          <td class="main" valign="middle" width="98" style="padding-left:11px;"><?php echo TEXT_PRODUCTS_QTY;?></td>
                             <td colspan="2" style="padding-left:10px;">
                             <table><tr>
                             <td class="main" valign="middle"><input name="quantity" type="text" id="quantity" value="<?php echo (isset($_POST['quantity'])?$_POST['quantity']:1)?>" class="input_text_short"></td>
@@ -448,13 +448,13 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                             </tr></table>
                           </tr> 
                           <tr>   
-                          <td class="main" width="98">
+                          <td class="main" width="98" style="padding-left:11px;">
                           <div class="calc_show_price"><?php echo TEXT_PRODUCT_PRICE;?>:</div>
                           </td>
                           <td width="325" style="padding-left:13px;">
                             <div id="show_price"></div>
                           </td>
-                          <td align="right"><?php echo tep_image_submit('button_in_cart.gif', IMAGE_BUTTON_IN_CART); ?></td>
+                          <td align="right" style="padding-right:5px;"><?php echo tep_image_submit('button_in_cart.gif', IMAGE_BUTTON_IN_CART); ?></td>
                           </tr>
                         </table>
                         <?php
@@ -467,7 +467,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
             <tr class="header2">
                       <td align="right" valign="bottom" class="smallText">
                           <div class="option_dot">
-                        <a href="<?php echo tep_href_link(FILENAME_TELL_A_FRIEND,'products_id='.(int)$_GET['products_id']) ;  ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_tellafriend.jpg',BOX_HEADING_TELL_A_FRIEND);?></a>&nbsp; <a href="<?php echo tep_href_link(FILENAME_PRODUCT_REVIEWS_WRITE,'products_id='.(int)$_GET['products_id']) ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_review.jpg',BOX_REVIEWS_WRITE_REVIEW);?></a>&nbsp; <?php echo tep_draw_form('open',tep_href_link('open.php', '', 'SSL'),'get');?><input type="image" style="vertical-align:bottom;" src="<?php echo DIR_WS_IMAGES;?>design/button/botton_question.jpg"><?php echo tep_draw_hidden_field('products_name', $product_info['products_name']) ; ?></form><br><br></div></td>
+                        <a href="<?php echo tep_href_link(FILENAME_TELL_A_FRIEND,'products_id='.(int)$_GET['products_id']) ;  ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_tellafriend.jpg',BOX_HEADING_TELL_A_FRIEND);?></a>&nbsp; <a href="<?php echo tep_href_link(FILENAME_PRODUCT_REVIEWS_WRITE,'products_id='.(int)$_GET['products_id']) ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_review.jpg',BOX_REVIEWS_WRITE_REVIEW);?></a>&nbsp; <?php echo tep_draw_form('open',tep_href_link('open.php', '', 'SSL'),'get');?><input type="image" style="vertical-align:bottom; padding-right:5px;" src="<?php echo DIR_WS_IMAGES;?>design/button/botton_question.jpg"><?php echo tep_draw_hidden_field('products_name', $product_info['products_name']) ; ?></form><br><br></div></td>
                     </tr>
             </table>
             <p>&nbsp;</p>
