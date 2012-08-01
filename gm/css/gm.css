@@ -1183,7 +1183,7 @@ top:70px;
 }
 .popup_notice_button{
 	vertical-align:bottom;
-	padding:10px 0;
+        padding:20px 0 10px 0;
 }
 .popup_notice_button a{
 	margin:0 20px;
