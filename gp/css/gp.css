@@ -2458,3 +2458,4 @@ line-height:21px;
 .product_open{ overflow:hidden; line-height:20px; height:20px;}
 .product_open a{ *float:left;}
 #shipping_box{ padding:0;}
+.input_width{ width:310px; *width:295px;}
