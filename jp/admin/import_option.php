@@ -76,7 +76,7 @@ while($array = mysql_fetch_array($query)){
 
     $item_t_name = rand_name();
 
-    $sql_item_add = "INSERT INTO `option_item` (`id`, `group_id`, `title`, `front_title`, `name`, `comment`, `option`, `type`, `price`, `status`, `sort_num`, `place_type`, `created_at`) VALUES (NULL, '".$last_id."', 'お客様のキャラクター名', 'お客様のキャラクター名', '".$item_t_name."', '', '".addslashes($string)."', 'textarea', '0.0000', '1', '1000', '0', '".date('Y-m-d H:i:s',$past_time+$i_num+1)."')";
+    $sql_item_add = "INSERT INTO `option_item` (`id`, `group_id`, `title`, `front_title`, `name`, `comment`, `option`, `type`, `price`, `status`, `sort_num`, `place_type`, `created_at`) VALUES (NULL, '".$last_id."', 'お客様のキャラクター名', 'お客様のキャラクター名', '".$item_t_name."', '', '".addslashes($string)."', 'textarea', '0.0000', '1', '1000', '1', '".date('Y-m-d H:i:s',$past_time+$i_num+1)."')";
     mysql_query($sql_item_add);
     
     $sql_products = "UPDATE `products` SET `belong_to_option` = '".$last_id."' WHERE `products_id` =".$array['products_id']."";

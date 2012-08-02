@@ -47,8 +47,8 @@ H4 {
 	font-size:11px;
 }
 .line {
-	width: 672px;
-	background:url(../images/design/box/dot.gif) repeat-x 0 15px;
+	width: 685px;
+	background:url(../images/design/box/dot.gif) repeat-x 0 13px;
 	font-weight: bold;
 	text-align: right;
 	padding-bottom: 5px;
@@ -1657,7 +1657,7 @@ TD：main
 --------------------------- */
 TD.main, P.main {
 	font-size: 11px;
- *font-size: 10px;
+	*font-size:10px;
 	line-height: 1.5;
 }
 .button_delete02 {
@@ -2036,7 +2036,7 @@ display:block;
 }
 .popup_notice_button{
 	vertical-align:bottom;
-	padding:10px 0;
+        padding:20px 0 10px 0;
 }
 .popup_notice_button a{
 	margin:0 20px;
@@ -2057,14 +2057,13 @@ display:block;
 }
 .option_table{
 	width:100%;
-	font-size:11px;
-	*font-size:10px;
+	font-size:12px;
 	line-height:1.5;
 }
 .option_name{
-	width:60px;
+	width:85px;
 	vertical-align:top;
-	padding-left:10px;
+	font-weight:bold;
 }
 .option_input{
 	width:75%;
@@ -2192,7 +2191,7 @@ display:block;
 	margin-bottom:5px;
 }
 .option_dot{
-	margin-top:20px;
+	margin-top:18px;
 	padding-top:20px;
 	background:url(../images/design/box/dot.gif) repeat-x;
 	overflow:hidden; 
@@ -2221,6 +2220,7 @@ display:block;
 	color:#2864B4;
 	font-size:20px;
 	font-weight:bold;
+	margin-left:-1px;
 }
 .formArea_td_info{
 	*width:325px;
@@ -2276,3 +2276,6 @@ display:block;
 .address_item_info{ margin-left:4px;}
 #shiping_box{ padding:0;}
 .input_width{ width:310px;}
+.product_info_table td{ font-size:12px; line-height:1.5;}
+.table_a_spacing{ margin-bottom:13px;}
+.table_a_spacing img{ vertical-align:top;}

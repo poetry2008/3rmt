@@ -3470,10 +3470,10 @@ if($action == "add_product")
   // Step 3: Choose Options
   if(($step > 2) && ($add_product_products_id > 0))
   {
-    $option_product_raw = tep_db_query("select belong_to_option from ".TABLE_PRODUCTS." where products_id = '".$add_product_products_id."'"); 
+    $option_product_raw = tep_db_query("select products_cflag, belong_to_option from ".TABLE_PRODUCTS." where products_id = '".$add_product_products_id."'"); 
     $option_product = tep_db_fetch_array($option_product_raw); 
     // Skip to Step 4 if no Options
-    if(!$hm_option->admin_whether_show($option_product['belong_to_option']))
+    if(!$hm_option->admin_whether_show($option_product['belong_to_option'], 0, $option_product['products_cflag']))
     {
       print "<tr class=\"dataTableRow\">\n";
       print "<td class='dataTableContent' align='right'><b>" . ADDPRODUCT_TEXT_STEP . " 3: </b></td>\n";

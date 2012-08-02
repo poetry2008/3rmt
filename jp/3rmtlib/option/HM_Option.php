@@ -76,7 +76,7 @@ class HM_Option extends Option_DbRecord
      return false; 
   }
 
-  function admin_whether_show($belong_option_str, $atype = 0)
+  function admin_whether_show($belong_option_str, $atype = 0, $ad_c_flag = 1)
   {
     if (empty($belong_option_str)) {
       return false; 
@@ -84,7 +84,11 @@ class HM_Option extends Option_DbRecord
     $exists_group_raw = tep_db_query("select id from ".TABLE_OPTION_GROUP." where id in ('".$belong_option_str."')");  
      if (tep_db_num_rows($exists_group_raw)) {
        while ($exists_group = tep_db_fetch_array($exists_group_raw)) {
-         $item_exists_raw = tep_db_query("select id from ".TABLE_OPTION_ITEM." where group_id = '".$exists_group['id']."' and status = '1'".(($atype == 1)?" and place_type = '0'":"")); 
+         if ($ad_c_flag) {
+           $item_exists_raw = tep_db_query("select id from ".TABLE_OPTION_ITEM." where group_id = '".$exists_group['id']."' and status = '1'".(($atype == 1)?" and place_type = '0'":"")); 
+         } else {
+           $item_exists_raw = tep_db_query("select id from ".TABLE_OPTION_ITEM." where group_id = '".$exists_group['id']."' and status = '1' and front_title != '".OPTION_CHARACTER_NAME."'".(($atype == 1)?" and place_type = '0'":"")); 
+         }
          if (tep_db_num_rows($item_exists_raw)) {
            return true; 
          }
@@ -93,7 +97,7 @@ class HM_Option extends Option_DbRecord
      return false; 
   }
   
-  function check_old_symbol_show($belong_option)
+  function check_old_symbol_show($belong_option, $p_cflag)
   {
     if (empty($belong_option)) {
       return false; 
@@ -101,7 +105,11 @@ class HM_Option extends Option_DbRecord
     $exists_group_raw = tep_db_query("select id from ".TABLE_OPTION_GROUP." where id ='".$belong_option."'");  
     $exists_group_res = tep_db_fetch_array($exists_group_raw);
     if ($exists_group_res) {
-      $item_raw = tep_db_query("select id from ".TABLE_OPTION_ITEM." where group_id = '".$exists_group_res['id']."' and place_type = '1'");   
+      if ($p_cflag) {
+        $item_raw = tep_db_query("select id from ".TABLE_OPTION_ITEM." where group_id = '".$exists_group_res['id']."' and place_type = '1'");   
+      } else {
+        $item_raw = tep_db_query("select id from ".TABLE_OPTION_ITEM." where group_id = '".$exists_group_res['id']."' and place_type = '1' and front_title != '".OPTION_CHARACTER_NAME."'");   
+      }
       if (!tep_db_num_rows($item_raw)) {
         return false; 
       }

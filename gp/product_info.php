@@ -179,49 +179,48 @@ function showimage($1) {
          <div class="comment_long">
          <div class="comment_long_text01"> 
          <h2 class="line"><?php echo ds_tep_get_categories((int)$_GET['products_id'],1); ?> <?php echo ds_tep_get_categories((int)$_GET['products_id'],2); ?></h2>
-         <table width="100%"  border="0" cellpadding="0" cellspacing="0" summary="rmt">
+         <table width="690"  border="0" cellpadding="0" cellspacing="0" summary="rmt">
           <tr>
             
                 <td valign="top">
-                    <table border="0" cellpadding="0" cellspacing="0" summary="info_box" class="info_box01">
+                    <table border="0" cellpadding="0" cellspacing="0" summary="info_box">
                     <tr>
                       <td>
-                      <div class="product_info_box">
-                      <table summary="info_box_contents"  border="0" cellpadding="0" cellspacing="1" class="info_box_contents" >
-                          <tr class="infoBoxContents">
-                          <td class="main p_i_b_title"><?php echo TEXT_PRODUCT_MODEL;?></td>
+                      <table summary="info_box_contents"  border="0" cellpadding="3" cellspacing="1">
+                          <tr>
+                          <td class="main" width="85"><b><font color="#2864B4"><?php echo TEXT_PRODUCT_MODEL;?></font></b></td>
                             <td class="main"><?php if (PRODUCT_LIST_MODEL > 0){ echo $product_info['products_model'] ; }else{ echo '-' ; } ?></td>
                           </tr>
                           <?php 
                       if(!empty($product_info['products_attention_1_1']) && !empty($product_info['products_attention_1_3'])){
                       ?>
-                          <tr class="infoBoxContents">
-                            <td class="main p_i_b_title"><?php echo $product_info['products_attention_1_1'] ; ?></td>
+                          <tr>
+                            <td class="main"><b><font color="#2864B4"><?php echo $product_info['products_attention_1_1'] ; ?></font></b></td>
                             <td class="main"><?php echo $product_info['products_attention_1_2'] .'&nbsp;&nbsp;'.tep_display_attention_1_3($product_info['products_attention_1_3']) . $product_info['products_attention_1_4'] ; ?></td>
                           </tr>
                           <?php } ?>
                           <?php 
                       if(!empty($data1[0]) && !empty($data1[1])){
                       ?>
-                          <tr class="infoBoxContents">
-                            <td class="main p_i_b_title"><?php echo $data1[0] ; ?></td>
+                          <tr>
+                            <td class="main"><b><font color="#2864B4"><?php echo $data1[0] ; ?></font></b></td>
                             <td class="main"><?php echo $data1[1] ; ?></td>
                           </tr>
                           <?php } ?>
                           <?php 
                       if(!empty($data2[0]) && !empty($data2[1])){
                       ?>
-                          <tr class="infoBoxContents">
-                            <td class="main p_i_b_title"><?php echo $data2[0] ; ?></td>
+                          <tr>
+                            <td class="main"><b><font color="#2864B4"><?php echo $data2[0] ; ?></font></b></td>
                             <td class="main"><?php echo $data2[1] ; ?></td>
                           </tr>
                           <?php } ?>
-                          <tr class="infoBoxContents">
-                          <td class="main p_i_b_title"><?php echo TEXT_PRODUCT_MANUFACTURER_NAME;?></td>
+                          <tr>
+                          <td class="main"><b><font color="#2864B4"><?php echo TEXT_PRODUCT_MANUFACTURER_NAME;?></font></b></td>
                             <td class="main"><?php include(DIR_WS_BOXES.'manufacturer_info.php') ; ?></td>
                           </tr>
-                          <tr class="infoBoxContents">
-                          <td class="main p_i_b_title"><?php echo TEXT_PRODUCT_PRICE;?></td>
+                          <tr>
+                          <td class="main"><b><font color="#2864B4"><?php echo TEXT_PRODUCT_PRICE;?></font></b></td>
                             <td class="main">
                                 <?php
                                   # 追加スタート ---------------------------------------
@@ -253,29 +252,29 @@ function showimage($1) {
                                 ?>
                             </td>
                           </tr>
-                          <tr class="infoBoxContents">
-                          <td class="main p_i_b_title"><?php echo TEXT_ORDERS_NUM;?></td>
+                          <tr>
+                          <td class="main"><b><font color="#2864B4"><?php echo TEXT_ORDERS_NUM;?></font></b></td>
                           <td class="main"><?php echo TEXT_REMAINING;?><strong>&nbsp;<?php echo tep_show_quantity($product_info['products_quantity']); ?></strong>&nbsp;<?php echo TEXT_UNIT;?></td>
                           </tr>
                           <?php 
                       if(!empty($data3[0]) && !empty($data3[1])){
                       ?>
-                          <tr class="infoBoxContents">
-                            <td class="main p_i_b_title"><?php echo $data3[0] ; ?></td>
+                          <tr>
+                            <td class="main"><b><font color="#2864B4"><?php echo $data3[0] ; ?></font></b></td>
                             <td class="main"><?php echo $data3[1] ; ?></td>
                           </tr>
                           <?php } ?>
                           <?php 
                       if(!empty($data4[0]) && !empty($data4[1])){
                       ?>
-                          <tr class="infoBoxContents">
-                            <td class="main p_i_b_title red"><?php echo $data4[0] ; ?></td>
+                          <tr>
+                            <td class="main red"><b><?php echo $data4[0] ; ?></b></td>
                             <td class="main"><?php echo $data4[1] ; ?></td>
                           </tr>
                           <?php } ?>
                           <?php if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && !$product_info['products_bflag']) { ?>
-                          <tr class="infoBoxContents">
-                          <td class="main p_i_b_title"><?php echo TEXT_POINT;?></td>
+                          <tr>
+                          <td class="main"><b><font color="#2864B4"><?php echo TEXT_POINT;?></font></b></td>
                           <td class="main"><?php echo ds_tep_get_point_value($_GET['products_id']) ; ?>&nbsp;<?php echo TEXT_POINT;?></td>
                           </tr>
                           <?php } ?> 
@@ -293,8 +292,8 @@ $tag_query = tep_db_query("
 ");
                           if (tep_db_num_rows($tag_query)) {
                         ?>
-                        <tr class="infoBoxContents"> 
-                        <td class="main p_i_b_title"><?php echo TEXT_TAG;?></td> 
+                        <tr> 
+                        <td class="main"><?php echo TEXT_TAG;?></td> 
                           <td class="main">
                           <ul class="show_tags01"> 
                       <?php
@@ -328,7 +327,6 @@ while($tag = tep_db_fetch_array($tag_query)) {
                           }
                         ?> 
                           </table>
-                        </div>
                         </td>
                     </tr>
                     
@@ -375,7 +373,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                 </td>
               </tr>
             </table>
-            <table width="100%"  border="0" cellpadding="0" cellspacing="0" summary="rmt">
+            <table width="690"  border="0" cellpadding="0" cellspacing="0" summary="rmt">
             <tr class="header2">
                       <td height="30" class="main" style="padding-bottom:4px; " align="right">
                        <div class="option_dot">
@@ -401,10 +399,10 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
     $p_cflag = tep_get_cflag_by_product_id($product_info['products_id']); 
     $hm_option->render($product_info['belong_to_option'], false, 0, '', '', $p_cflag);
     ?>
-                        <table width="100%"  border="0" cellpadding="0" cellspacing="0" summary="rmt_text">
+                        <table width="100%"  border="0" cellpadding="3" cellspacing="1" summary="rmt_text">
                           <tr>
-                          <td class="main" valign="middle" style="padding-left:13px;" width="70"><?php echo TEXT_PRODUCTS_QTY;?></td>
-                            <td colspan="2"><table><tr>
+                          <td class="main" valign="middle" width="85"><b><?php echo TEXT_PRODUCTS_QTY;?></b></td>
+                            <td colspan="2"><table background="0" cellpadding="0" cellspacing="0"><tr>
                             <td class="main" valign="middle"><input name="quantity" type="text" id="quantity" value="<?php echo (isset($_POST['quantity'])?$_POST['quantity']:1)?>" class="input_text_short"></td>
                             <td valign="middle">
                               <div style="*margin-top:-3px;">
@@ -417,13 +415,13 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                             </tr></table></td>
                           </tr>
                           <tr>
-                            <td class="main" style="padding-left:12px;" width="70">
+                            <td class="main" width="85">
                             <div class="calc_show_price"><?php echo TEXT_PRODUCT_PRICE;?>:</div>
                             </td>
                             <td width="325">
                               <div id="show_price"></div>
                             </td>  
-                            <td valign="middle"><?php echo tep_image_submit('button_in_cart.jpg', IMAGE_BUTTON_IN_CART); ?></td>
+                            <td align="right" style="padding:0;"><?php echo tep_image_submit('button_in_cart.jpg', IMAGE_BUTTON_IN_CART); ?></td>
                           </tr>
                         </table>
                         <?php
@@ -436,7 +434,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
             <tr class="header2">
                       <td align="right" valign="bottom" class="smallText">
                           <div class="option_dot">
-                        <a href="<?php echo tep_href_link(FILENAME_TELL_A_FRIEND,'products_id='.(int)$_GET['products_id']) ;  ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_tellafriend.jpg',BOX_HEADING_TELL_A_FRIEND);?></a>&nbsp; <a href="<?php echo tep_href_link(FILENAME_PRODUCT_REVIEWS_WRITE,'products_id='.(int)$_GET['products_id']) ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_review.jpg',BOX_REVIEWS_WRITE_REVIEW);?></a>&nbsp; <?php echo tep_draw_form('open',tep_href_link('open.php', '', 'SSL'),'get');?><input type="image" style="vertical-align:bottom;" src="<?php echo DIR_WS_IMAGES;?>design/button/botton_question.jpg"><?php echo tep_draw_hidden_field('products_name', $product_info['products_name']) ; ?></form></div> </td>
+                        <a class="table_a_spacing" href="<?php echo tep_href_link(FILENAME_TELL_A_FRIEND,'products_id='.(int)$_GET['products_id']) ;  ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_tellafriend.jpg',BOX_HEADING_TELL_A_FRIEND);?></a>&nbsp; <a class="table_a_spacing" href="<?php echo tep_href_link(FILENAME_PRODUCT_REVIEWS_WRITE,'products_id='.(int)$_GET['products_id']) ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_review.jpg',BOX_REVIEWS_WRITE_REVIEW);?></a>&nbsp; <?php echo tep_draw_form('open',tep_href_link('open.php', '', 'SSL'),'get');?><input class="table_a_spacing" type="image" style="vertical-align:bottom;" src="<?php echo DIR_WS_IMAGES;?>design/button/botton_question.jpg"><?php echo tep_draw_hidden_field('products_name', $product_info['products_name']) ; ?></form></div> </td>
                     </tr>
             </table>
             <?php

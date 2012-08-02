@@ -2681,6 +2681,7 @@ searching
 	color:#2864B4;
 	font-size:20px;
 	font-weight:bold;
+	margin-left:-1px;
 }
 #group_list_box td{ height:20px; padding:0;}
 
@@ -2752,7 +2753,7 @@ searching
 }
 .popup_notice_button{
 	vertical-align:bottom;
-	padding:10px 0;
+	padding:20px 0 10px 0;
 }
 .popup_notice_button a{
 	margin:0 20px;
