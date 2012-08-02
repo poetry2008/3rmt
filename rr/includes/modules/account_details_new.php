@@ -561,11 +561,24 @@ $(document).ready(function(){
       </tr>
     </table></td>
   </tr>
+<?php
+  $address_orders_history = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where customers_id='". $_SESSION['customer_id'] ."'");
+  $address_orders_num_rows = tep_db_num_rows($address_orders_history);
+  tep_db_free_result($address_orders_history);
+
+  if($address_orders_num_rows > 0){
+
+    $style_display = 'block';
+  }else{
+
+    $style_display = 'none'; 
+  }
+?>
 <!-- start -->
-  <tr>
+  <tr style="display:<?php echo $style_display;?>">
     <td class="formAreaTitle"><br><?php echo TITLE_ADDRESS; ?></td>
   </tr>
-  <tr>
+  <tr style="display:<?php echo $style_display;?>">
     <td class="main">
     <table border="0" width="100%" summary="table" cellspacing="0" cellpadding="2" class="preorder_shipping">
       <tr>
@@ -589,6 +602,7 @@ $(document).ready(function(){
         <input type="hidden" id="pwd" name="password" value="">
         <input type="hidden" id="pwd_1" name="confirmation" value="">
         <input type="hidden" id="action_flag" name="action_flag" value="0"> 
+        <input type="hidden" name="num_rows" value="<?php echo $address_orders_num_rows;?>">
         </td></tr>
         <?php       
           $hm_option->render('','',true); 

@@ -1040,13 +1040,55 @@ unset($_SESSION['shipping_session_flag']);
       sort($s_temp_array);
       $ship_new_array[$_s_key] = implode('|',$s_temp_array); 
   } 
+  foreach($ship_new_array as $s_key=>$s_val){
+    $ss_array = array();
+    $ss_array = explode(',',$s_val);
+    $ss_start = str_replace(':','',$ss_array[0]);
+    $ss_end = str_replace(':','',$ss_array[1]);
+    if($ss_start > $ss_end){
+
+      unset($ship_new_array[$s_key]);
+      unset($shipp_array[$s_key]);
+    }
+  }
+
+  $max_time_str_old = implode('||',$shipp_array);
+  $min_time_str_old = implode('||',$ship_new_array);
+  //当日起几日后可以收货
+  $db_set_day = max($shipping_time_array['db_set_day']);
+  //可选收货期限
+  $shipping_time = max($shipping_time_array['shipping_time']);
+
+  $now_time_date = date('Y-m-d',strtotime("+".$shipping_time." minutes"));
+  $now_time_hour = date('Hi',strtotime("+".$shipping_time." minutes"));
+  $now_time = date('H:i',strtotime("+".$db_set_day." minutes"));
+  $now_time = str_replace(':','',$now_time); 
+  $now_flag = false;
+  if(date('Ymd') == date('Ymd',strtotime("+".$shipping_time." minutes"))){
+    $now_time_end = date('H:i',strtotime("+".$shipping_time." minutes"));
+    $now_time_end = str_replace(':','',$now_time_end);
+    $now_flag = true;
+  }
+
+  $ship_new_end_array = array();
+  $ship_new_end_array = $ship_new_array;
+  $shipp_end_array = array();
+  $shipp_end_array = $shipp_array;
+
+
 
   foreach($ship_new_array as $s_k=>$s_v){
     $ss_array = array();
     $ss_array = explode(',',$s_v);
     $ss_start = str_replace(':','',$ss_array[0]);
     $ss_end = str_replace(':','',$ss_array[1]);
-    if($ss_start > $ss_end){
+
+    if($ss_end > $now_time_hour){
+
+      unset($ship_new_end_array[$s_k]);
+      unset($shipp_end_array[$s_k]);
+    }
+    if($ss_start > $ss_end || $ss_start < $now_time || ($now_flag == true && $ss_end > $now_time_end)){
 
       unset($ship_new_array[$s_k]);
       unset($shipp_array[$s_k]);
@@ -1055,6 +1097,8 @@ unset($_SESSION['shipping_session_flag']);
 
   $max_time_str = implode('||',$shipp_array);
   $min_time_str = implode('||',$ship_new_array);
+  $max_time_end_str = implode('||',$shipp_end_array);
+  $min_time_end_str = implode('||',$ship_new_end_array);
   //----------
   if(count($shipping_time_array['work']) == 1){
     
@@ -1082,20 +1126,93 @@ unset($_SESSION['shipping_session_flag']);
       sort($s_temp_array);
       $shi_time_array[$_s_key] = implode('|',$s_temp_array); 
     }
+   $max_time_str_old = implode('||',array_keys($shi_time_array));
+    $min_time_str_old = implode('||',$shi_time_array);
+
+
+    $now_time_date = date('Y-m-d',strtotime("+".$shipping_time." minutes"));
+    $now_time_hour = date('Hi',strtotime("+".$shipping_time." minutes"));
+    $now_time = date('H:i',strtotime("+".$db_set_day." minutes"));
+    $now_time = str_replace(':','',$now_time);
+    $now_flag = false;
+    if(date('Ymd') == date('Ymd',strtotime("+".$shipping_time." minutes"))){
+      $now_time_end = date('H:i',strtotime("+".$shipping_time." minutes"));
+      $now_time_end = str_replace(':','',$now_time_end);
+      $now_flag = true;
+    }
+
+    $shi_time_end_array = array();
+    $shi_time_end_array = $shi_time_array;
+
+    foreach($shi_time_array as $s_k=>$s_v){
+      $ss_array = array();
+      $ss_end_array = array();
+      $ss_str = '';
+      $ss_array = explode('|',$s_v);
+      $ss_end_array = explode('|',$s_v);
+
+      foreach($ss_array as $ss_k=>$ss_v){
+
+        $now_array = array();
+        $now_array = explode(',',$ss_v);
+        $ss_start = str_replace(':','',$now_array[0]);
+        $ss_end = str_replace(':','',$now_array[1]); 
+
+        if($ss_end > $now_time_hour){
+           
+            unset($ss_end_array[$ss_k]);
+        }
+
+        if($ss_start < $now_time || ($now_flag == true && $ss_end > $now_time_end)){
+ 
+          unset($ss_array[$ss_k]);
+        }else{
+          $now_hour = date('H');
+          if($s_k <  $now_hour){
+
+            unset($ss_array[$ss_k]);
+          }
+
+        }
+      }
+      $ss_str = implode('|',$ss_array);
+      $ss_end_str = implode('|',$ss_end_array);
+      $shi_time_array[$s_k] = $ss_str; 
+      $shi_time_end_array[$s_k] = $ss_end_str;
+    }    
+
+    foreach($shi_time_array as $shi_k=>$shi_v){
+
+      if($shi_v == ''){
+
+        unset($shi_time_array[$shi_k]);
+      }
+
+    }
+
+    foreach($shi_time_end_array as $shi_end_k=>$shi_end_v){
+     
+       if($shi_end_v == ''){
+     
+           unset($shi_time_end_array[$shi_end_k]);
+       }
+     
+    }
 
     $max_time_str = implode('||',array_keys($shi_time_array));
     $min_time_str = implode('||',$shi_time_array);
+    $max_time_end_str = implode('||',array_keys($shi_time_end_array));
+    $min_time_end_str = implode('||',$shi_time_end_array); 
   }
   
 
   //可配送时间区域
   $work_start = $max_time_str;
   $work_end = $min_time_str;
-
-  //当日起几日后可以收货
-  $db_set_day = max($shipping_time_array['db_set_day']);
-  //可选收货期限
-  $shipping_time = max($shipping_time_array['shipping_time']);
+  $work_start_old = $max_time_str_old;
+  $work_end_old = $min_time_str_old;
+  $work_start_exit = $max_time_end_str;
+  $work_end_exit = $min_time_end_str;
 
   $weight = $cart->weight;
   if($weight > 0){
@@ -1231,19 +1348,25 @@ if (!isset($torihikihouhou_error)) $torihikihouhou_error = NULL ; //del notice
 <?php
     $today = getdate();
       $m_num = $today['mon'];
-      $d_num = $today['mday']+$db_set_day;
+      $d_num = date('d',strtotime("+".$db_set_day." minutes"));
+      $shipping_time = strtotime("+".$shipping_time." minutes");
       $year = $today['year'];
     
     $hours = date('H');
     $mimutes = date('i');
 ?>
-  <select name="date" onChange="selectDate('<?php echo $work_start; ?>', '<?php echo $work_end; ?>',this.value);$('#date_error').remove();">
+  <select name="date" onChange="selectDate('<?php echo $work_start; ?>', '<?php echo $work_end; ?>',this.value,'<?php echo $work_start_old; ?>','<?php echo $work_end_old; ?>','<?php echo date('Y-m-d');?>','<?php echo $work_start_exit; ?>','<?php echo $work_end_exit; ?>','<?php echo $now_time_date;?>');$('#date_error').remove();">
     <option value=""><?php echo EXPECT_DATE_SELECT;?></option>
     <?php
           $oarr = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
           $newarr = array(TEXT_DATE_MONDAY, TEXT_DATE_TUESDAY, TEXT_DATE_WEDNESDAY, TEXT_DATE_THURSDAY, TEXT_DATE_FRIDAY, TEXT_DATE_STATURDAY, TEXT_DATE_SUNDAY);
-    $date_session_flag = false; 
-    for($j = 0;$j < $shipping_time;$j++){
+          $date_session_flag = false; 
+          $j = 0;
+          $j_shipping = time();
+  while($j_shipping <= $shipping_time){
+    if(!($work_start == '' && $work_end == '' && date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == date("Y-m-d"))){
+     
+     if(!(date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year))== $now_time_date && date('Hi') >= $now_time_hour)){
       if(isset($_POST['date']) && $_POST['date'] != ""){
         $selected_str = date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == $_POST['date'] ? 'selected' : ''; 
       }elseif(isset($_SESSION['date']) && $_SESSION['date'] != ''){
@@ -1254,6 +1377,10 @@ if (!isset($torihikihouhou_error)) $torihikihouhou_error = NULL ; //del notice
         $date_session_flag = true;
       }
       echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'" '. $selected_str .'>'.str_replace($oarr, $newarr, date("Y".DATE_YEAR_TEXT."m".DATE_MONTH_TEXT."d".DATE_DAY_TEXT."（l）", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
+      }
+    }
+     $j_shipping += 86400;
+     $j++;
 
     }
     ?>
@@ -1287,13 +1414,17 @@ if (!isset($date_error)) $date_error= NULL ; //del notice
 <table>
 <?php
   if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) && $_SESSION['date'] != '' && $date_session_flag == true)){
-
-    echo '<script>selectDate(\''. $work_start .' \', \''. $work_end .'\');$("#shipping_list").show();</script>';
+    $post_date = isset($_POST['date']) ? $_POST['date'] : $_SESSION['date'];
+    echo '<script>selectDate(\''. $work_start .' \', \''. $work_end .'\',\''.$post_date.'\',\''. $work_start_old .' \', \''. $work_end_old .'\',\''.date('Y-m-d').'\',\''.$work_start_exit.'\',\''.$work_end_exit.'\',\''.$now_time_date.'\');$("#shipping_list").show();</script>';
   }
   if((isset($_POST['min']) && $_POST['min'] != '') || (isset($_SESSION['min']) && $_SESSION['min'] != '' && $date_session_flag == true)){
     $post_hour = isset($_SESSION['hour']) && $_SESSION['hour'] != '' ? $_SESSION['hour'] : $_POST['hour'];
     $post_min = isset($_SESSION['min']) && $_SESSION['min'] != '' ? $_SESSION['min'] : $_POST['min'];
     $ele = isset($_SESSION['ele']) && $_SESSION['ele'] != '' ? $_SESSION['ele'] : $_POST['ele'];
+    if(!(date("Y-m-d", strtotime("+".$db_set_day." minutes")) == $post_date)){  
+        $work_start = $work_start_old;
+        $work_end = $work_end_old;
+    }
     $hour_show_flag = false;
     $hour_show_array = explode('||',$work_start);
     if(!in_array($post_hour,$hour_show_array)){

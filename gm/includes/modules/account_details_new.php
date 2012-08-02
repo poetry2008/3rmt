@@ -560,11 +560,24 @@ $(document).ready(function(){
 </form>
 </td>
   </tr>
+<?php
+  $address_orders_history = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where customers_id='". $_SESSION['customer_id'] ."'");
+  $address_orders_num_rows = tep_db_num_rows($address_orders_history);
+  tep_db_free_result($address_orders_history);
+
+  if($address_orders_num_rows > 0){
+
+    $style_display = 'block';
+  }else{
+
+    $style_display = 'none'; 
+  }
+?>
 <!-- start -->
-  <tr>
+  <tr  style="display:<?php echo $style_display;?>">
     <td><h3><?php echo TITLE_ADDRESS; ?></h3></td>
   </tr>
-  <tr>
+  <tr style="display:<?php echo $style_display;?>">
     <td class="main">
         <?php
           echo tep_draw_form('account_edit_address', tep_href_link(FILENAME_ACCOUNT_EDIT, '', 'SSL'), 'post', 'onSubmit=""') . tep_draw_hidden_field('action', 'address');
@@ -585,6 +598,7 @@ $(document).ready(function(){
         <input type="hidden" id="pwd" name="password" value="">
         <input type="hidden" id="pwd_1" name="confirmation" value="">
         <input type="hidden" id="action_flag" name="action_flag" value="0"> 
+        <input type="hidden" name="num_rows" value="<?php echo $address_orders_num_rows;?>">
         </td></tr>
         <?php       
           $hm_option->render('','',true); 

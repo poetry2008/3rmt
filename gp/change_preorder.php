@@ -893,6 +893,10 @@ document.forms.order1.submit();
   $max_time_str = implode('||',$shipp_array);
   $min_time_str = implode('||',$ship_new_array);
   //----------
+  //当日起几日后可以收货
+  $db_set_day = max($shipping_time_array['db_set_day']);
+  //可选收货期限
+  $shipping_time = max($shipping_time_array['shipping_time']);
   if(count($shipping_time_array['work']) == 1){
     
     $shi_time_array = array();
@@ -919,17 +923,92 @@ document.forms.order1.submit();
         sort($s_temp_array);
         $shi_time_array[$_s_key] = implode('|',$s_temp_array);
     }
+ 
+    $max_time_str_old = implode('||',array_keys($shi_time_array));
+    $min_time_str_old = implode('||',$shi_time_array);
+
+
+    $now_time_date = date('Y-m-d',strtotime("+".$shipping_time." minutes"));
+    $now_time_hour = date('Hi',strtotime("+".$shipping_time." minutes"));
+    $now_time = date('H:i',strtotime("+".$db_set_day." minutes"));
+    $now_time = str_replace(':','',$now_time);
+    $now_flag = false;
+    if(date('Ymd') == date('Ymd',strtotime("+".$shipping_time." minutes"))){
+      $now_time_end = date('H:i',strtotime("+".$shipping_time." minutes"));
+      $now_time_end = str_replace(':','',$now_time_end);
+      $now_flag = true;
+    }
+
+    $shi_time_end_array = array(); 
+    $shi_time_end_array = $shi_time_array;
+
+    foreach($shi_time_array as $s_k=>$s_v){
+      $ss_array = array();
+      $ss_end_array = array();
+      $ss_str = '';
+      $ss_array = explode('|',$s_v);
+      $ss_end_array = explode('|',$s_v);
+
+      foreach($ss_array as $ss_k=>$ss_v){
+
+        $now_array = array();
+        $now_array = explode(',',$ss_v);
+        $ss_start = str_replace(':','',$now_array[0]);
+        $ss_end = str_replace(':','',$now_array[1]); 
+
+        if($ss_end > $now_time_hour){
+
+          unset($ss_end_array[$ss_k]);
+        }
+
+        if($ss_start < $now_time || ($now_flag == true && $ss_end > $now_time_end)){
+ 
+          unset($ss_array[$ss_k]);
+        }else{
+          $now_hour = date('H');
+          if($s_k <  $now_hour){
+
+            unset($ss_array[$ss_k]);
+          }
+
+        }
+      }
+      $ss_str = implode('|',$ss_array);
+      $ss_end_str = implode('|',$ss_end_array);
+      $shi_time_array[$s_k] = $ss_str; 
+      $shi_time_end_array[$s_k] = $ss_end_str;
+    }    
+
+    foreach($shi_time_array as $shi_k=>$shi_v){
+
+      if($shi_v == ''){
+
+        unset($shi_time_array[$shi_k]);
+      }
+
+    }
+
+    foreach($shi_time_end_array as $shi_end_k=>$shi_end_v){
+
+      if($shi_end_v == ''){
+
+        unset($shi_time_end_array[$shi_end_k]);
+      }
+
+    }
     $max_time_str = implode('||',array_keys($shi_time_array));
     $min_time_str = implode('||',$shi_time_array);
+    $max_time_end_str = implode('||',array_keys($shi_time_end_array));
+    $min_time_end_str = implode('||',$shi_time_end_array);
   }
      
   //可配送时间区域
   $work_start = $max_time_str;
   $work_end = $min_time_str;
-  //当日起几日后可以收货
-  $db_set_day = max($shipping_time_array['db_set_day']);
-  //可选收货期限
-  $shipping_time = max($shipping_time_array['shipping_time']);
+  $work_start_old = $max_time_str_old;
+  $work_end_old = $min_time_str_old; 
+  $work_start_exit = $max_time_end_str;
+  $work_end_exit = $min_time_end_str; 
 
         if($weight_total > 0){
           $checked_str_old = '';
@@ -1022,27 +1101,36 @@ document.forms.order1.submit();
           </td>
           <td class="main">
             <?php
-    $today = getdate();
+      $today = getdate();
       $m_num = $today['mon'];
-      $d_num = $today['mday']+$db_set_day;;
+      $d_num = date('d',strtotime("+".$db_set_day." minutes"));
+      $shipping_time = strtotime("+".$shipping_time." minutes");
       $year = $today['year'];
     
     $hours = date('H');
     $mimutes = date('i');
 ?>
-  <select name="date" onChange="selectDate('<?php echo $work_start; ?>', '<?php echo $work_end; ?>',this.value);$('#date_error').remove();">
+  <select name="date" onChange="selectDate('<?php echo $work_start; ?>', '<?php echo $work_end; ?>',this.value,'<?php echo $work_start_old; ?>','<?php echo $work_end_old; ?>','<?php echo date('Y-m-d');?>','<?php echo $work_start_exit; ?>','<?php echo $work_end_exit; ?>','<?php echo $now_time_date;?>');$('#date_error').remove();">
     <option value=""><?php echo PREORDER_SELECT_EMPTY_OPTION;?></option>
     <?php
-          $oarr = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
-          $newarr = array(TEXT_DATE_MONDAY, TEXT_DATE_TUESDAY, TEXT_DATE_WEDNESDAY, TEXT_DATE_THURSDAY, TEXT_DATE_FRIDAY, TEXT_DATE_STATURDAY, TEXT_DATE_SUNDAY); 
-    for($j = 0;$j < $shipping_time;$j++){
+    $oarr = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
+    $newarr = array(TEXT_DATE_MONDAY, TEXT_DATE_TUESDAY, TEXT_DATE_WEDNESDAY, TEXT_DATE_THURSDAY, TEXT_DATE_FRIDAY, TEXT_DATE_STATURDAY, TEXT_DATE_SUNDAY); 
+    $j = 0;
+    $j_shipping = time();
+  while($j_shipping <= $shipping_time){
+    if(!($work_start == '' && $work_end == '' && date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == date("Y-m-d"))){
+
+     if(!(date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year))== $now_time_date && date('Hi') >= $now_time_hour)){
 
       $selected_str = date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == $_POST['date'] ? 'selected' : ''; 
       if(!isset($_POST['date'])){
         $selected_str = date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == $_SESSION['preorder_information']['date'] ? 'selected' : ''; 
       }
       echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'" '. $selected_str .'>'.str_replace($oarr, $newarr, date("Y".DATE_YEAR_TEXT."m".DATE_MONTH_TEXT."d".DATE_DAY_TEXT."（l）", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
-
+     }
+    }
+      $j_shipping += 86400;
+      $j++;
     }
     ?>
   </select>
@@ -1076,21 +1164,29 @@ document.forms.order1.submit();
           <?php
           if(isset($_POST['date']) && $_POST['date'] != ''){
 
-                echo '<script>selectDate(\''. $work_start .' \', \''. $work_end .'\');$("#shipping_list").show();</script>';
+                echo '<script>selectDate(\''. $work_start .' \', \''. $work_end .'\',\''.$_POST['date'].'\',\''. $work_start_old .' \', \''. $work_end_old .'\',\''.date('Y-m-d').'\',\''.$work_start_exit.'\',\''.$work_end_exit.'\',\''.$now_time_date.'\');$("#shipping_list").show();</script>';
              }else{
 
                 if(isset($_SESSION['preorder_information']['date']) && $_SESSION['preorder_information']['date'] != ''){
 
-                  echo '<script>selectDate(\''. $work_start .' \', \''. $work_end .'\');$("#shipping_list").show();</script>';
+                  echo '<script>selectDate(\''. $work_start .' \', \''. $work_end .'\',\''.$_SESSION['preorder_information']['date'].'\',\''. $work_start_old .' \', \''. $work_end_old .'\',\''.date('Y-m-d').'\',\''.$work_start_exit.'\',\''.$work_end_exit.'\',\''.$now_time_date.'\');$("#shipping_list").show();</script>';
                 }
              }
              if(isset($_POST['hour']) && $_POST['hour'] != ''){
 
+                if(!(date("Y-m-d", strtotime("+".$db_set_day." minutes")) == $_POST['date'])){
+                  $work_start = $work_start_old;
+                  $work_end = $work_end_old;
+                }
                 echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\',\''. $_POST['hour'] .'\','. $_POST['min'] .','. $_POST['ele'] .');$("#shipping_list_min").show();$("#h_c_'.$_POST['hour'].'").val('.$_POST['min'].');</script>';
              }else{
 
                 if(isset($_SESSION['preorder_information']['hour']) && $_SESSION['preorder_information']['hour'] != ''){
 
+                  if(!(date("Y-m-d", strtotime("+".$db_set_day." minutes")) == $_SESSION['preorder_information']['date'])){
+                    $work_start = $work_start_old;
+                    $work_end = $work_end_old;
+                  }
                   echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\',\''. $_SESSION['preorder_information']['hour'] .'\','. $_SESSION['preorder_information']['min'] .','. $_SESSION['preorder_information']['ele'] .');$("#shipping_list_min").show();$("#h_c_'.$_SESSION['preorder_information']['hour'].'").val('.$_SESSION['preorder_information']['min'].');</script>';
                 }
              }

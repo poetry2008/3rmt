@@ -147,7 +147,7 @@ $work_num_value = !empty($work_array) ? count($work_array)+1 : 2;
 
 
 <tr><td width="30%" align="left"><?php echo TABLE_LIST_5;?></td><td>
-<input type="text" name="shipping_time" id="shipping_time" value="<?php echo $shipping_time;?>" style="text-align: right;">&nbsp;<?php echo TABLE_DAY;?>
+<input type="text" name="shipping_time" id="shipping_time" value="<?php echo $shipping_time;?>" style="text-align: right;">&nbsp;<?php echo TABLE_DAY_END;?>
 
 </td></tr>
 
