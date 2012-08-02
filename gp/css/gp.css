@@ -2254,13 +2254,12 @@ line-height:21px;
 .option_table{
 	width:100%;
 	font-size:12px;
-	*font-size:10px;
 	line-height:1.5;
 }
 .option_name{
-	width:65px;
+	width:85px;
 	vertical-align:top;
-	padding-left:10px;
+	font-weight:bold;
 }
 .option_input{
 	width:75%;
@@ -2389,7 +2388,7 @@ line-height:21px;
 	margin-bottom:5px;
 }
 .option_dot{
-	margin-top:20px;
+	margin-top:18px;
 	padding-top:20px;
 	background:url(../images/design/box/dot.gif) repeat-x;
 	overflow:hidden; 
@@ -2459,3 +2458,5 @@ line-height:21px;
 .product_open{ overflow:hidden; line-height:20px; height:20px;}
 .product_open a{ *float:left;}
 #shipping_box{ padding:0;}
+.table_a_spacing{ margin-bottom:15px;}
+.table_a_spacing img{ vertical-align:top;}

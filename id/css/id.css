@@ -2350,9 +2350,9 @@ searching
 	line-height:1.5;
 }
 .option_name{
-	width:112px;
+	width:100px;
 	vertical-align:top;
-	padding-left:10px;
+	font-weight:bold;
 }
 .option_input{
 	width:75%;
@@ -2479,7 +2479,7 @@ searching
 	margin-bottom:5px;
 }
 .option_dot{
-	margin-top:20px;
+	margin-top:18px;
 	padding-top:20px;
 	background:url(../images/design/box/dot.gif) repeat-x;
 	overflow:hidden; 
@@ -2575,3 +2575,5 @@ searching
 	background-color:#DEDEDD;
 	font-size:12px;
 }
+.table_a_spacing{ margin-bottom:10px;}
+.table_a_spacing img{ vertical-align:top;}

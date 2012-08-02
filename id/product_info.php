@@ -183,7 +183,157 @@ function showimage($1) {
          <h2 class="line"><?php echo ds_tep_get_categories((int)$_GET['products_id'],1); ?> <?php echo ds_tep_get_categories((int)$_GET['products_id'],2); ?></h2>
          <table width="100%"  border="0" cellpadding="0" cellspacing="0" summary="rmt">
           <tr>
-            <td width="250" valign="top">
+             <td valign="top">
+                    <table border="0" cellpadding="0" cellspacing="0" summary="info_box">
+                    <tr>
+                      <td>
+                      <table summary="info_box_contents" border="0" cellpadding="3" cellspacing="1">
+                          <tr>
+                          <td class="main" width="100"><b><font color="#A85E5E"><?php echo TEXT_PRODUCT_MODEL;?></font></b></td>
+                            <td class="main"><?php if (PRODUCT_LIST_MODEL > 0){ echo $product_info['products_model'] ; }else{ echo '-' ; } ?></td>
+                          </tr>
+                          <?php 
+                      if(!empty($product_info['products_attention_1_1']) && !empty($product_info['products_attention_1_3'])){
+                      ?>
+                          <tr>
+                            <td class="main"><b><font color="#A85E5E"><?php echo $product_info['products_attention_1_1'] ; ?></font></b></td>
+                            <td class="main"><?php echo $product_info['products_attention_1_2'] .'&nbsp;&nbsp;'.tep_display_attention_1_3($product_info['products_attention_1_3']) . $product_info['products_attention_1_4'] ; ?></td>
+                          </tr>
+                          <?php } ?>
+                          <?php 
+                      if(!empty($data1[0]) && !empty($data1[1])){
+                      ?>
+                          <tr>
+                            <td class="main"><b><font color="#A85E5E"><?php echo $data1[0] ; ?></font></b></td>
+                            <td class="main"><?php echo $data1[1] ; ?></td>
+                          </tr>
+                          <?php } ?>
+                          <?php 
+                      if(!empty($data2[0]) && !empty($data2[1])){
+                      ?>
+                          <tr>
+                            <td class="main"><b><font color="#A85E5E"><?php echo $data2[0] ; ?></font></b></td>
+                            <td class="main"><?php echo $data2[1] ; ?></td>
+                          </tr>
+                          <?php } ?>
+                          <tr>
+                          <td class="main"><b><font color="#A85E5E"><?php echo TEXT_PRODUCT_MANUFACTURER_NAME;?></font></b></td>
+                            <td class="main"><?php include(DIR_WS_BOXES.'manufacturer_info.php') ; ?></td>
+                          </tr>
+                          <tr>
+                          <td class="main"><b><font color="#A85E5E"><?php echo TEXT_PRODUCT_PRICE;?></font></b></td>
+                            <td class="main">
+                                <?php
+                                  # 追加スタート ---------------------------------------
+                                  # -- 注文数量と単価のリスト --------------------------
+                                  if(tep_not_null($product_info['products_small_sum'])) {
+                                    $wari_array = array();
+                                    echo '<span class="smallText">'.TEXT_ONE_UNIT_PRICE.'</span><table border="0" cellpadding="0" cellspacing="0" class="small_table">';
+                                    $parray = explode(",", $product_info['products_small_sum']);
+                                    for($i=0; $i<sizeof($parray); $i++) {
+                                      $tt = explode(':', $parray[$i]);
+                                      $wari_array[$tt[0]] = $tt[1];
+                                    }
+
+                                    @ksort($wari_array);
+                                  
+                                    foreach($wari_array as $key => $val) {
+                                      echo '<tr>';
+                                      echo '<td class="main" align="left">'.$key.TEXT_MORE_UNIT_PRICE.'</td>';
+                                      echo '<td class="main" align="right"><b>'.$currencies->display_price(round($pricedef + $val),0).'</b></td>';
+                                      echo '</tr>'."\n";
+                                    }
+                                    echo '</table>'."\n";
+                                  } else {
+                                    echo '<strong>'.$products_price.'</strong>';
+                                  }
+                                  
+                                  # -- 注文数量と単価のリスト --------------------------
+                                  # 追加エンド -------------------------------------------
+                                
+                                ?>
+                            </td>
+                          </tr>
+                          <tr>
+                          <td class="main"><b><font color="#A85E5E"><?php echo TEXT_ORDERS_NUM;?></font></b></td>
+                          <td class="main"><?php echo TEXT_REMAINING;?><strong>&nbsp;<?php echo tep_show_quantity($product_info['products_quantity']); ?></strong>&nbsp;<?php echo TEXT_UNIT;?></td>
+                          </tr>
+                          <?php 
+                      if(!empty($data3[0]) && !empty($data3[1])){
+                      ?>
+                          <tr>
+                            <td class="main"><b><font color="#A85E5E"><?php echo $data3[0] ; ?></font></b></td>
+                            <td class="main"><?php echo $data3[1] ; ?></td>
+                          </tr>
+                          <?php } ?>
+                          <?php 
+                      if(!empty($data4[0]) && !empty($data4[1])){
+                      ?>
+                          <tr>
+                            <td class="main red"><b><?php echo $data4[0] ; ?></b></td>
+                            <td class="main"><?php echo $data4[1] ; ?></td>
+                          </tr>
+                          <?php } ?>
+                          <?php if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && !$product_info['products_bflag']) { ?>
+                          <tr>
+                          <td class="main"><b><font color="#A85E5E"><?php echo TEXT_POINT;?></font></b></td>
+                          <td class="main"><?php echo ds_tep_get_point_value($_GET['products_id']) ; ?>&nbsp;<?php echo TEXT_POINT;?></td>
+                          </tr>
+                          <?php } ?> 
+                        <?php 
+                          //show products tags 
+// ccdd
+if (false) {
+$tag_query = tep_db_query("
+    SELECT t.tags_id, 
+           t.tags_images, 
+           t.tags_name 
+    FROM " . TABLE_PRODUCTS_TO_TAGS . " pt, " . TABLE_TAGS . " t 
+    WHERE t.tags_id = pt.tags_id 
+      AND pt.products_id='" . $product_info['products_id'] . "'
+");
+                          if (tep_db_num_rows($tag_query)) {
+                        ?>
+                        <tr> 
+                        <td class="main"><b><font color="#A85E5E"><?php echo TEXT_TAG;?></font></b></td> 
+                          <td class="main">
+                          <ul class="show_tags01"> 
+                      <?php
+while($tag = tep_db_fetch_array($tag_query)) {
+  ?>
+ <li><a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'tags_id=' .  $tag['tags_id']);?>">
+<?php if (
+    (
+    (file_exists(DIR_FS_CATALOG . DIR_WS_IMAGES . $tag['tags_images']) && !is_dir(DIR_FS_CATALOG . DIR_WS_IMAGES . $tag['tags_images'])) 
+    || 
+    (file_exists(DIR_FS_CATALOG . 'default_images/' . $tag['tags_images']) && !is_dir(DIR_FS_CATALOG . 'default_images/' . $tag['tags_images']))
+    )
+    && $tag['tags_images']
+    )
+ {
+   echo tep_image(DIR_WS_IMAGES . $tag['tags_images'], $tag['tags_name'] , 20, 15);
+ } else { 
+   echo $tag['tags_name'];
+  }
+  ?>
+</a></li>
+ &nbsp;&nbsp;
+ <?php
+}
+?>
+                          </ul> 
+                          </td> 
+                        </tr> 
+                        <?php
+                          }
+                          }
+                        ?> 
+                          </table>
+                        </td>
+                    </tr>
+                  </table>
+                  </td>   
+             <td width="250" valign="top">
                 
                     <?php
         if (tep_not_null($product_info['products_image'])) {
@@ -224,158 +374,10 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
     ?>
 
                 </td>
-             <td><img src="images/design/spacer.gif" width="15" height="1" alt=""></td>
-                <td valign="top">
-                    <table border="0" cellpadding="0" cellspacing="0" summary="info_box" class="infoBox">
-                    <tr>
-                      <td>
-                      <div class="product_info_box">
-                      <table summary="info_box_contents">
-                          <tr class="infoBoxContents">
-                          <td class="main p_i_b_title"><?php echo TEXT_PRODUCT_MODEL;?></td>
-                            <td class="main"><?php if (PRODUCT_LIST_MODEL > 0){ echo $product_info['products_model'] ; }else{ echo '-' ; } ?></td>
-                          </tr>
-                          <?php 
-                      if(!empty($product_info['products_attention_1_1']) && !empty($product_info['products_attention_1_3'])){
-                      ?>
-                          <tr class="infoBoxContents">
-                            <td class="main p_i_b_title"><?php echo $product_info['products_attention_1_1'] ; ?></td>
-                            <td class="main"><?php echo $product_info['products_attention_1_2'] .'&nbsp;&nbsp;'.tep_display_attention_1_3($product_info['products_attention_1_3']) . $product_info['products_attention_1_4'] ; ?></td>
-                          </tr>
-                          <?php } ?>
-                          <?php 
-                      if(!empty($data1[0]) && !empty($data1[1])){
-                      ?>
-                          <tr class="infoBoxContents">
-                            <td class="main p_i_b_title"><?php echo $data1[0] ; ?></td>
-                            <td class="main"><?php echo $data1[1] ; ?></td>
-                          </tr>
-                          <?php } ?>
-                          <?php 
-                      if(!empty($data2[0]) && !empty($data2[1])){
-                      ?>
-                          <tr class="infoBoxContents">
-                            <td class="main p_i_b_title"><?php echo $data2[0] ; ?></td>
-                            <td class="main"><?php echo $data2[1] ; ?></td>
-                          </tr>
-                          <?php } ?>
-                          <tr class="infoBoxContents">
-                          <td class="main p_i_b_title"><?php echo TEXT_PRODUCT_MANUFACTURER_NAME;?></td>
-                            <td class="main"><?php include(DIR_WS_BOXES.'manufacturer_info.php') ; ?></td>
-                          </tr>
-                          <tr class="infoBoxContents">
-                          <td class="main p_i_b_title"><?php echo TEXT_PRODUCT_PRICE;?></td>
-                            <td class="main">
-                                <?php
-                                  # 追加スタート ---------------------------------------
-                                  # -- 注文数量と単価のリスト --------------------------
-                                  if(tep_not_null($product_info['products_small_sum'])) {
-                                    $wari_array = array();
-                                    echo '<span class="smallText">'.TEXT_ONE_UNIT_PRICE.'</span><table border="0" cellpadding="0" cellspacing="0" class="small_table">';
-                                    $parray = explode(",", $product_info['products_small_sum']);
-                                    for($i=0; $i<sizeof($parray); $i++) {
-                                      $tt = explode(':', $parray[$i]);
-                                      $wari_array[$tt[0]] = $tt[1];
-                                    }
-
-                                    @ksort($wari_array);
-                                  
-                                    foreach($wari_array as $key => $val) {
-                                      echo '<tr>';
-                                      echo '<td class="main" align="left">'.$key.TEXT_MORE_UNIT_PRICE.'</td>';
-                                      echo '<td class="main" align="right"><b>'.$currencies->display_price(round($pricedef + $val),0).'</b></td>';
-                                      echo '</tr>'."\n";
-                                    }
-                                    echo '</table>'."\n";
-                                  } else {
-                                    echo '<strong>'.$products_price.'</strong>';
-                                  }
-                                  
-                                  # -- 注文数量と単価のリスト --------------------------
-                                  # 追加エンド -------------------------------------------
-                                
-                                ?>
-                            </td>
-                          </tr>
-                          <tr class="infoBoxContents">
-                          <td class="main p_i_b_title"><?php echo TEXT_ORDERS_NUM;?></td>
-                          <td class="main"><?php echo TEXT_REMAINING;?><strong>&nbsp;<?php echo tep_show_quantity($product_info['products_quantity']); ?></strong>&nbsp;<?php echo TEXT_UNIT;?></td>
-                          </tr>
-                          <?php 
-                      if(!empty($data3[0]) && !empty($data3[1])){
-                      ?>
-                          <tr class="infoBoxContents">
-                            <td class="main p_i_b_title"><?php echo $data3[0] ; ?></td>
-                            <td class="main"><?php echo $data3[1] ; ?></td>
-                          </tr>
-                          <?php } ?>
-                          <?php 
-                      if(!empty($data4[0]) && !empty($data4[1])){
-                      ?>
-                          <tr class="infoBoxContents">
-                            <td class="main p_i_b_title red"><?php echo $data4[0] ; ?></td>
-                            <td class="main"><?php echo $data4[1] ; ?></td>
-                          </tr>
-                          <?php } ?>
-                          <?php if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && !$product_info['products_bflag']) { ?>
-                          <tr class="infoBoxContents">
-                          <td class="main p_i_b_title"><?php echo TEXT_POINT;?></td>
-                          <td class="main"><?php echo ds_tep_get_point_value($_GET['products_id']) ; ?>&nbsp;<?php echo TEXT_POINT;?></td>
-                          </tr>
-                          <?php } ?> 
-                        <?php 
-                          //show products tags 
-// ccdd
-if (false) {
-$tag_query = tep_db_query("
-    SELECT t.tags_id, 
-           t.tags_images, 
-           t.tags_name 
-    FROM " . TABLE_PRODUCTS_TO_TAGS . " pt, " . TABLE_TAGS . " t 
-    WHERE t.tags_id = pt.tags_id 
-      AND pt.products_id='" . $product_info['products_id'] . "'
-");
-                          if (tep_db_num_rows($tag_query)) {
-                        ?>
-                        <tr class="infoBoxContents"> 
-                        <td class="main p_i_b_title"><?php echo TEXT_TAG;?></td> 
-                          <td class="main">
-                          <ul class="show_tags01"> 
-                      <?php
-while($tag = tep_db_fetch_array($tag_query)) {
-  ?>
- <li><a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'tags_id=' .  $tag['tags_id']);?>">
-<?php if (
-    (
-    (file_exists(DIR_FS_CATALOG . DIR_WS_IMAGES . $tag['tags_images']) && !is_dir(DIR_FS_CATALOG . DIR_WS_IMAGES . $tag['tags_images'])) 
-    || 
-    (file_exists(DIR_FS_CATALOG . 'default_images/' . $tag['tags_images']) && !is_dir(DIR_FS_CATALOG . 'default_images/' . $tag['tags_images']))
-    )
-    && $tag['tags_images']
-    )
- {
-   echo tep_image(DIR_WS_IMAGES . $tag['tags_images'], $tag['tags_name'] , 20, 15);
- } else { 
-   echo $tag['tags_name'];
-  }
-  ?>
-</a></li>
- &nbsp;&nbsp;
- <?php
-}
-?>
-                          </ul> 
-                          </td> 
-                        </tr> 
-                        <?php
-                          }
-                          }
-                        ?> 
-                          </table>
-                        </div>
-                        </td>
-                    </tr>
-                    <tr class="header2">
+              </tr>
+            </table>
+            <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                 <tr class="header2">
                       <td height="30" class="main" align="right"><div class="option_dot">
 <?php echo tep_draw_form('cart_quantity', tep_href_link(FILENAME_PRODUCT_INFO, tep_get_all_get_params(array('action')) . 'action=process')) . "\n"; ?>
 <?php
@@ -399,7 +401,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
     ?>
                         <table align="right" summary="rmt_text" width="100%" cellpadding="3" cellspacing="1" border="0">
                           <tr> 
-                          <td class="main" valign="middle" width="110" style="padding-left:11px; *width:112px;"><?php echo TEXT_PRODUCTS_QTY;?></td>
+                          <td class="main" valign="middle" width="100"><b><?php echo TEXT_PRODUCTS_QTY;?></b></td>
                             <td class="main" valign="middle" colspan="2">
                             <table cellpadding="0" cellspacing="0" border="0">
                             <tr>
@@ -415,7 +417,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
                           </tr>
                           </table></td></tr>
                           <tr>
-                            <td class="main" width="110" style="padding-left:12px; *width:112px;">
+                            <td class="main" width="100">
                             <div class="calc_show_price"><?php echo TEXT_PRODUCT_PRICE;?>:</div> 
                             </td>
                             <td width="325">
@@ -434,11 +436,11 @@ while($tag = tep_db_fetch_array($tag_query)) {
                       <td align="right" valign="bottom" class="smallText">
                           <div class="option_dot">
                        
-                        <a href="<?php echo tep_href_link(FILENAME_TELL_A_FRIEND,'products_id='.(int)$_GET['products_id']) ;  ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_tellafriend.jpg',BOX_HEADING_TELL_A_FRIEND);?></a>&nbsp; <a href="<?php echo tep_href_link(FILENAME_PRODUCT_REVIEWS_WRITE,'products_id='.(int)$_GET['products_id']) ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_review.jpg',BOX_REVIEWS_WRITE_REVIEW);?></a>&nbsp; <?php echo tep_draw_form('open',tep_href_link('open.php', '', 'SSL'),'get');?><input type="image" style="vertical-align:bottom;" src="<?php echo DIR_WS_IMAGES;?>design/button/botton_question.jpg"><?php echo tep_draw_hidden_field('products', $product_info['products_name']) ; ?></form></div> </td>
+                        <a class="table_a_spacing" href="<?php echo tep_href_link(FILENAME_TELL_A_FRIEND,'products_id='.(int)$_GET['products_id']) ;  ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_tellafriend.jpg',BOX_HEADING_TELL_A_FRIEND);?></a>&nbsp; <a class="table_a_spacing" href="<?php echo tep_href_link(FILENAME_PRODUCT_REVIEWS_WRITE,'products_id='.(int)$_GET['products_id']) ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_review.jpg',BOX_REVIEWS_WRITE_REVIEW);?></a>&nbsp; <?php echo tep_draw_form('open',tep_href_link('open.php', '', 'SSL'),'get');?><input class="table_a_spacing" type="image" style="vertical-align:bottom;" src="<?php echo DIR_WS_IMAGES;?>design/button/botton_question.jpg"><?php echo tep_draw_hidden_field('products', $product_info['products_name']) ; ?></form></div> </td>
                     </tr>
-                  </table></td>
-              </tr>
-            </table>
+
+                  </table>
+
             <?php
                     //サブ画像
         // ccdd
@@ -491,7 +493,6 @@ while($tag = tep_db_fetch_array($tag_query)) {
     ?>
               </tr>
             </table>
-
         <!-- //color image -->
         <?php
         }
