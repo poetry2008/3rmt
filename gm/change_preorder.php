@@ -1130,6 +1130,11 @@ document.forms.order1.submit();
     }
       $j_shipping += 86400;
       $j++;
+      if(date('Y-m-d',$j_shipping) == $now_time_date){
+
+        echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'" '. $selected_str .'>'.str_replace($oarr, $newarr, date("Y".DATE_YEAR_TEXT."m".DATE_MONTH_TEXT."d".DATE_DAY_TEXT."（l）", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
+        break;
+     }
     }
     ?>
   </select>
