@@ -1733,14 +1733,13 @@ searching
 /*option*/
 .option_table{
 	width:100%;
-	font-size:11px;
-	*font-size:10px;
+	font-size:12px;
 	line-height:1.5;
 }
 .option_name{
-	width:60px;
+	width:85px;
 	vertical-align:top;
-	padding-left:12px;
+	font-weight:bold;
 }
 .option_input{
 	width:75%;
@@ -1867,7 +1866,7 @@ searching
 	margin-bottom:5px;
 }
 .option_dot{
-	margin-top:20px;
+	margin-top:18px;
 	padding-top:20px;
 	background:url(../images/design/box/dot.gif) repeat-x;
 	overflow:hidden; 
@@ -1939,3 +1938,6 @@ searching
 	line-height:1.5;
 }
 .input_width{ width:295px;}
+.table_a_spacing{ margin-bottom:8px;}
+.table_a_spacing img{ vertical-align:top;}
+.product_info_table td{ font-size:12px; line-height:1.5;}

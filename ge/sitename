@@ -1,0 +1,24 @@
+./includes/agreement_for_use.txt:3:「RMTゲームマネー」http://www.gamemoney.cc（以下「当サイト」といいます）は、株式会社iimy（以下「当社」といいます）が、お客様（以下「ご利用者」といいます）に対して、本規約の条件に従い、インターネットにより日本国内向けに提供するショッピングサービス（以下「本サービス」といいます）です。ご利用者が、本サービスにおいて、商品をお取引いただく場合は、ご利用に先立ち、本規約をよくお読みになり、内容をご承諾いただいたうえで、ご利用ください。ご利用者が本規約に同意されない場合は、当サイトをご利用になることはできません。
+./includes/modules/latest_news.php:19:    font-weight:bold;">RMTゲームマネーからのお知らせ</div></td> 
+./includes/actions/index_default.php:7:   <!-- <h2 class="index_h2">はじめてRMTゲームマネーをご利用いただくお客様へ</h2>  -->
+./includes/languages/japanese/checkout_process.php:13:define('EMAIL_TEXT_SUBJECT', 'ご注文ありがとうございます【RMTゲームマネー】　');
+./includes/languages/japanese/checkout_process.php:14:define('EMAIL_TEXT_SUBJECT2','ご注文ありがとうございます【RMTゲームマネー】　');
+./includes/languages/japanese/index.php:14:define('TABLE_HEADING_NEW_PRODUCTS', '新着商品-RMTゲームマネー');
+./includes/footer.php:21:  echo  '<div class="footer_links" align="center">' .tep_display_banner('static', $banner) . '<br><a href="'.HTTP_SERVER.'">RMTゲームマネー</a></div>'; 
+./includes/::48:    echo '<p class="header2">' . $seo_category['seo_name'] . 'を激安販売-RMT-ゲームマネー</p>' . "\n";
+./includes/::51:    echo '<p class="header2">' . ds_tep_get_categories((int)$_GET['products_id'],1) . 'を激安販売-RMT-ゲームマネー</p>' . "\n";
+./includes/::54:    echo '<p class="header2">FF11、リネージュ2、レッドストーン、AIONを激安販売 - RMTゲームマネー</p>' . "\n";
+./includes/header.php:48:    echo '<p class="header2">' . $seo_category['seo_name'] . 'を激安販売-RMT-ゲームマネー</p>' . "\n";
+./includes/header.php:51:    echo '<p class="header2">' . ds_tep_get_categories((int)$_GET['products_id'],1) . 'を激安販売-RMT-ゲームマネー</p>' . "\n";
+./includes/header.php:54:    echo '<p class="header2">FF11、リネージュ2、レッドストーン、AIONを激安販売 - RMTゲームマネー</p>' . "\n";
+./index.php:71:    echo 'RMT：ゲームマネー・アイテム・アカウント';
+./link/APP/View/Site/header.html:22:    <title>相互リンク集｜RMTゲームマネー</title>
+./link/APP/View/Site/header.html:29:<p class="header2">FF11、リネージュ2、レッドストーン、AIONを激安販売 - RMTゲームマネー</p>
+./link/APP/View/Site/sitemap.html:28:<p class="header2">FF11、リネージュ2、レッドストーン、AIONを激安販売 - RMTゲームマネー</p>
+./link/APP/View/Site/footer.html:6:      <address class="footer_contacts"> COPYRIGHT © 2010 <strong>RMTゲームマネー</strong> All rights reserved</address>
+./link/APP/View/View_c/%%A9^A91^A9148E2E%%header.html.php:31:    <title>相互リンク集｜RMTゲームマネー</title>
+./link/APP/View/View_c/%%A9^A91^A9148E2E%%header.html.php:38:<p class="header2">FF11、リネージュ2、レッドストーン、AIONを激安販売 - RMTゲームマネー</p>
+./link/APP/View/View_c/%%58^583^5839DF58%%footer.html.php:8:      <address class="footer_contacts"> COPYRIGHT © 2010 <strong>RMTゲームマネー</strong> All rights reserved</address>
+./link/APP/Config/Global.php:18:  'host_word' => 'RMTゲームマネー',
+./link/APP/Config/Global.php:19:  'p_name' => 'RMTゲームマネー',
+./link/APP/Languages/japaness-utf8/ui.php:552:    '<p>RMTゲームマネーがオススメするリンク集です。</p>

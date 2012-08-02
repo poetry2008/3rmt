@@ -44,7 +44,7 @@ H4 {
 	color: #C85050!important;
 }
 .line {
-	width: 672px;
+	width: 682px;
 	background:url(../images/design/box/dot.gif) repeat-x 0 15px;
 	font-weight: bold;
 	text-align: right;
@@ -1443,8 +1443,7 @@ TD.subBar {
 TD：Main
 --------------------------- */
 TD.main, P.main {
-	font-size: 11px;
-	*+font-size: 10px;
+	font-size: 12px;
 	line-height: 1.5;
 }
 /* ---------------------------
@@ -1868,13 +1867,13 @@ border:2px solid #FF8080;
 
 .option_table{
 	width:100%;
-	font-size:11px;
+	font-size:12px;
 	line-height:1.5;
 }
 .option_name{
-	width:58px;
+	width:85px;
 	vertical-align:top;
-	padding-left:12px;
+	font-weight:bold;
 }
 .option_input{
 	width:75%;
@@ -2000,7 +1999,7 @@ border:2px solid #FF8080;
 	margin-bottom:5px;
 }
 .option_dot{
-	margin-top:20px;
+	margin-top:18px;
 	padding-top:20px;
 	background:url(../images/design/box/dot.gif) repeat-x;
 	overflow:hidden; 
@@ -2066,3 +2065,6 @@ border:2px solid #FF8080;
 .time_label a{ color:#FFFFFF; cursor:pointer;}
 .time_label a:hover{ color:#FFFFFF; cursor:pointer;}
 #shipping_box{ padding:0;}
+.input_width{ width:300px;}
+.table_a_spacing{ margin-bottom:15px;}
+.table_a_spacing img{ vertical-align:top;}

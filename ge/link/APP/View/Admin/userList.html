@@ -1,0 +1,35 @@
+<!--{include file=header.html}-->
+<div id="left">
+<!--{include file=menu.html}-->
+</div>
+<div id="right">
+	<div id="content">
+		<ul>
+			<li class="content-bg">
+ 				<div id="title"> <h3><!--{_t key='menu_UserManager}--></h3></div>
+ 				<div id="menu-top">[<a href="<!--{url controller=UserManager action=create}-->"><img src="images/backpic/user_add.gif" width="16" height="16" alt="add">  <!--{_t key='menu_AddOperator}--></a>]<span><!--{_t key='menu_UserManager_des'}--></span></div>
+  				<table id="table-row">
+  					<tr class="tr1">
+  						<td>ID</td>
+  						<td><!--{_t key='ui_g_username}--></td>
+  						<td><!--{_t key='ui_g_operation}--></td>  
+  					</tr>
+  					<!--{section name=loopUser loop=$users}-->
+  					<tr class="tr2">
+  						<td class="td-center"><!--{$users[loopUser].user_id}--></td>
+  						<td><!--{$users[loopUser].username}--></td>
+  						<td class="td-center">
+  							<a href ="<!--{url controller='UserManager' action='UserAuthority' user_id=$users[loopUser].user_id}-->"><img src="images/backpic/manage.gif" width="16" height="16" alt="add">  <!--{_t key='auth'}--></a>
+ 							<a href ="<!--{url controller='UserManager' action='UserRemove' user_id=$users[loopUser].user_id}-->" onclick="return confirm('<!--{_t key='confirm_del'}-->');" ><img src="images/img/del.gif" width="13" height="13" alt="del"> <!--{_t key=del}--></a>
+  							<a href ="<!--{url controller='UserManager' action='UserEdit'  user_id=$users[loopUser].user_id }-->"><img src="images/backpic/edit.gif" width="16" height="16" alt="edit">  <!--{_t key='edit'}--></a>
+  							<a href ="<!--{url controller='UserManager' action='ResetPassword'  user_id=$users[loopUser].user_id }-->" onclick="return confirm('您确定要重置密码吗？');" ><img src="images/backpic/password.gif" width="16" height="16" alt="password">  <!--{_t key='reset_password'}--></a>
+  						</td>     
+ 					 </tr>
+  					 <!--{/section}-->
+  				</table>
+			</li>
+		</ul>
+	</div>
+</div>
+</body>
+</html>

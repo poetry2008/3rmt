@@ -101,6 +101,7 @@ table.comment {
 }
 .comment_long02 {
 	width: 869px;
+	*width:898px;
 	margin-left: 1px;
 	padding: 10px 15px;
 	margin-bottom:5px;
@@ -2349,9 +2350,9 @@ searching
 	line-height:1.5;
 }
 .option_name{
-	width:105px;
+	width:100px;
 	vertical-align:top;
-	padding-left:12px;
+	font-weight:bold;
 }
 .option_input{
 	width:75%;
@@ -2478,7 +2479,7 @@ searching
 	margin-bottom:5px;
 }
 .option_dot{
-	margin-top:20px;
+	margin-top:18px;
 	padding-top:20px;
 	background:url(../images/design/box/dot.gif) repeat-x;
 	overflow:hidden; 
@@ -2507,6 +2508,7 @@ searching
 	color:#2864B4;
 	font-size:20px;
 	font-weight:bold;
+	margin-left:-2px;
 }
 #group_list_box td{ height:20px; padding:0;}
 .address_item_info{ padding-left:4px;}
@@ -2573,3 +2575,6 @@ searching
 	background-color:#DEDEDD;
 	font-size:12px;
 }
+.input_width{ width:480px;}
+.table_a_spacing{ margin-bottom:10px;}
+.table_a_spacing img{ vertical-align:top;}

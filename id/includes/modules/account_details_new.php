@@ -590,7 +590,7 @@ $(document).ready(function(){
           tep_db_free_result($address_orders_history_query);
           $sylte_none = $address_orders_history_num > 0 ? '' : 'style="display:none;"';
         ?>
-        <table border="0" cellspacing="0" cellpadding="2" summary="table">
+        <table border="0" cellspacing="0" cellpadding="2" summary="table" width="100%">
         <tr id="address_histroy_id"<?php echo $sylte_none;?>><td class="main" width="120">&nbsp;<?php echo
         TITLE_ADDRESS_OPTION;?></td><td class="main">&nbsp;<select id="address_show_list" name="address_show_list" onchange="address_option_list(this.value);"></select>
         <input type="hidden" id="address_flag_id" name="address_flag_id" value="">

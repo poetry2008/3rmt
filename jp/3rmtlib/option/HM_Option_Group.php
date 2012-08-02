@@ -22,7 +22,7 @@ class HM_Option_Group extends Option_DbRecord
   {
     $pro_pos  = strpos($_SERVER['PHP_SELF'], 'product_info.php');
     if ($pro_pos !== false) {
-      echo "<table class='option_table' cellspacing='0' cellpadding='6' border='0'>";
+      echo "<table class='option_table' cellspacing='1' cellpadding='3' border='0'>";
     } else {
       echo "<table class='option_table'>";
     }

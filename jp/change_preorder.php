@@ -1195,7 +1195,7 @@ if (isset($time_error)) {
              } 
              ?> 
           <?php
-          if ($hm_option->preorder_whether_show($product_info_res['belong_to_option'])) { 
+          if ($hm_option->preorder_whether_show($product_info_res['belong_to_option'], (int)$product_info_res['products_cflag'])) { 
           ?>
           <br>
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">

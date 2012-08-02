@@ -1,0 +1,37 @@
+<div id="pager">
+<!--{if $pagestr}-->
+<!--{$pagestr}-->
+<!--{else}-->
+9 - 16 
+<!--{/if}-->
+番目を表示 (<!--{$pager.count}--> ある新着物件のうち)
+ページ:
+<!--{if $pagenum eq $pager.firstPageNumber}-->
+<!--{else}-->
+<a href="<!--{url controller=$controller action=$action  parent_id=$parent.class_id
+id=$class.class_id page=$pager.prevPageNumber}-->" title='前のページ'>
+前のページ 
+</a> 
+<!--{/if}-->
+<!--{section name=page loop=$Navbar}-->
+<!--{if $Navbar[page].index == $pager.currentPage}-->
+<strong>[<!--{$Navbar[page].number}-->]</strong>
+<!--{else}-->
+<a href="<!--{url controller=$controller action=$action parent_id=$parent.class_id id=$class.class_id page=$Navbar[page].index }-->">
+<!--{$Navbar[page].number}-->
+</a>
+<!--{/if}-->
+<!--{/section}-->
+<!--{if $pagenum eq $pager.lastPageNumber}-->
+<!--{else}-->
+<a href="<!--{url controller=$controller action=$action parent_id=$parent.class_id
+id=$class.class_id page=$pager.nextPageNumber}-->" title='次のページ'>
+次のページ
+</a>  
+<!--{/if}-->
+<!--{if $pagenum==null}-->
+<!--{_t key=total}--> <strong><!--{$pager.count}--></strong> <!--{_t key=one}-->，
+<!--{_t key=total}--> <strong><!--{$pager.pageCount}--></strong> <!--{_t key=page}-->，
+<!--{_t key=per_page}--> <strong><!--{$pager.pageSize}--></strong> <!--{_t key=one}-->
+<!--{/if}-->
+</div>

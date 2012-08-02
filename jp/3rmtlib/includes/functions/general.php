@@ -5037,11 +5037,11 @@ function tep_check_also_products_attr()
    $c_array = array();
 
    for ($j=0, $k=sizeof($list_products); $j<$k; $j++) {
-     $belong_option_raw = tep_db_query("select belong_to_option from ".TABLE_PRODUCTS." where products_id = '".(int)$list_products[$j]['id']."'"); 
+     $belong_option_raw = tep_db_query("select products_cflag, belong_to_option from ".TABLE_PRODUCTS." where products_id = '".(int)$list_products[$j]['id']."'"); 
      $belong_option = tep_db_fetch_array($belong_option_raw); 
      
      if ($belong_option) {
-       if ($hm_option->check_old_symbol_show($belong_option['belong_to_option'])) {
+       if ($hm_option->check_old_symbol_show($belong_option['belong_to_option'], $belong_option['products_cflag'])) {
          $c_array[] = (int)$list_products[$j]['id']; 
        }
      }

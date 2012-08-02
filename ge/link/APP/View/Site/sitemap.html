@@ -1,0 +1,152 @@
+<!--{php}-->
+echo '
+<?xml version="1.0" encoding="UTF-8"?>
+';
+    <!--{/php}-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"  lang="ja-JP">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+    <link type="text/css" rel="stylesheet" id='blueStyle' href="../stylesheet.css" />
+    <link type="text/css" rel="stylesheet" id='blueStyle' href="images/class/style.css" />
+<!--{if $seo}-->
+<title><!--{$seo.title}--></title>
+<meta name="keywords" content="<!--{$seo.keywords}-->" />
+<meta name="description" content="<!--{$seo.description}-->" />
+<meta name="robots" content="<!--{$seo.robots}-->" />
+<meta name="copyright" content="<!--{$seo.copyright}-->" />
+<!--{else}-->
+<title>相互リンク集｜RMTジャックポット</title>
+<!--{/if}-->
+    </head>
+<body id='body'>
+<div id="header">
+<div class="header_div01">
+<h1 class="header1">RMT 最安値-アイテムの激安販売</h1>
+<p class="header2">FF11、リネージュ2、レッドストーン、AIONを激安販売 - RMT GM-Exchange</p>
+</div>
+  <script type="text/javascript">
+<!--
+fflag=0;
+if (document.layers || document.all || document.getElementById) {
+ if (!fflag && document.all && !window.opera && navigator.userAgent.indexOf('Win')>-1) {
+ document.write('<scr' + 'ipt type="text/vbscript"\> \n');
+ document.write('on error resume next \n');
+ document.write('fflag=( IsObject(CreateObject("ShockwaveFlash.ShockwaveFlash.6")))\n');
+ document.write('<' + '/scr' + 'ipt> \n');
+ }
+ else if (navigator.plugins['Shockwave Flash']) fflag=1;
+ }
+
+if (fflag==0)
+{
+ document.write('<a href="index.php"><img alt="RMT" src="../images/design/oc/header.jpg" width="790" height="185" border="0"><'+'/a>');
+}else {
+ if (document.all && !window.opera)
+ document.write('<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="https://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" width="790" height="185">'+
+ '<param name="movie" value="../images/design/header/header.swf" />'+
+ '<param name="wmode" value="transparent" />'+
+ '<param name="quality" value="high" />'+
+ '<'+'/object>'+
+ '');
+ else
+ document.write('<object type="application/x-shockwave-flash" data="../images/design/header/header.swf" width="790" height="185">'+
+ '<param name="wmode" value="transparent" />'+
+ '<param name="quality" value="high" />'+
+ '<'+'/object>'+
+ '');
+ }
+-->
+</script>
+</div>
+<!--end header-->
+<div class="h_menubar h_menubar02">
+        <ul>
+          <li><a href="/sitemap.php">サイトマップ</a>|</li>
+          <li><a href="/" class="headerNavigation">RMT</a>|</li>
+        </ul>
+</div>
+<div class="main">
+  <div id="l_menu">
+    <div class="box_title">メニュー</div>
+    <div id="box">
+      <ul class="l_m_category_ul">
+        <li class="l_m_category_li"><a class="l_m_category_a" href="<!--{url controller=site action=index}-->">相互リンク集TOP</a></li>
+        <li class="l_m_category_li"><a class="l_m_category_a" href="<!--{url controller=site action=regist}-->">新規登録</a></li>
+        <li class="l_m_category_li"><a class="l_m_category_a" href="<!--{url controller=site action=renew}-->">更新・削除</a></li>
+        <li class="l_m_category_li"><a class="l_m_category_a" href="<!--{url controller=site action=new}-->">新着サイト</a></li>
+        <li class="l_m_category_li"><a class="l_m_category_a" href="<!--{url controller=site action=recommend}-->">おすすめサイト</a></li>
+        <li class="l_m_category_li"><a class="l_m_category_a" href="<!--{url controller=site action=sitemap}-->">サイトマップ</a></li>
+      </ul>
+    </div>
+  </div>
+  
+  <div id="bread_crumb">
+  <!--{$bread}-->
+        <span class="x-bg"><b class="x7">&nbsp;</b><b class="x6">&nbsp;</b><b class="x5">&nbsp;</b><b class="x4">&nbsp;</b><b class="x3">&nbsp;</b><b class="x2">&nbsp;</b><b class="x1">&nbsp;</b></span>
+  </div>
+  <h1 class="link_h1">サイトマップ</h1>
+  <div class="content">
+        <div id="sitemap">
+      <!--{section name=loopClass loop=$class}-->
+      <!--{assign var='top' value=$class[loopClass]}-->
+      <div class="web-box">
+            <div class="web-tit">
+              <a href='<!--{url controller=site action=class id=$class[loopClass].class_id}-->'>
+                <!--{$class[loopClass].name}-->
+              </a>
+            </div>
+            <!--{section name=loopTop loop=$top.children step=5}-->
+            <!--{assign var='index' value=$smarty.section.loopTop.index}-->
+            <!--{assign var='index2' value=$smarty.section.loopTop.index+1}-->
+            <!--{assign var='index3' value=$smarty.section.loopTop.index+2}-->
+            <!--{assign var='index4' value=$smarty.section.loopTop.index+3}-->
+            <!--{assign var='index5' value=$smarty.section.loopTop.index+4}-->
+            <!--{if $smarty.section.loopTop.first}-->
+            <table class="web" width="100%">
+          <!--{/if}-->
+          <tr class="t1">
+                <td><!--{if $top.children[$index].name != ''}-->
+              <a href='<!--{url controller=site action=class id=$top.children[$index].class_id}-->'>
+                  <!--{$top.children[$index].name}-->
+                  </a>
+              <!--{/if}-->
+            </td>
+                <td><!--{if $top.children[$index2].name != ''}-->
+              <a href='<!--{url controller=site action=class id=$top.children[$index2].class_id}-->'>
+                  <!--{$top.children[$index2].name}-->
+                  </a>
+              <!--{/if}-->
+            </td>
+                <td><!--{if $top.children[$index3].name != ''}-->
+              <a href='<!--{url controller=site action=class id=$top.children[$index3].class_id}-->'>
+                  <!--{$top.children[$index3].name}-->
+                  </a>
+              <!--{/if}-->
+            </td>
+                <td><!--{if $top.children[$index4].name != ''}-->
+              <a href='<!--{url controller=site action=class id=$top.children[$index4].class_id}-->'>
+                  <!--{$top.children[$index4].name}-->
+                  </a>
+              <!--{/if}-->
+            </td>
+                <td><!--{if $top.children[$index5].name != ''}-->
+              <a href='<!--{url controller=site action=class id=$top.children[$index5].class_id}-->'>
+                  <!--{$top.children[$index5].name}-->
+                  </a>
+              <!--{/if}-->
+            </td>
+              </tr>
+          <!--{if $smarty.section.loopTop.last}-->
+        </table>
+            <!--{/if}-->
+            <!--{/section}-->
+          </div>
+      <!--{/section}-->
+        </div>
+  </div>
+</div>
+    <!--{include file=Site/footer.html}-->
+    

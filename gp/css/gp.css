@@ -44,7 +44,7 @@ H4 {
 	color: #C85050!important;
 }
 .line {
-	width: 672px;
+	width: 690px;
 	background:url(../images/design/box/dot.gif) repeat-x 0 15px;
 	font-weight: bold;
 	text-align: right;
@@ -2254,13 +2254,12 @@ line-height:21px;
 .option_table{
 	width:100%;
 	font-size:12px;
-	*font-size:10px;
 	line-height:1.5;
 }
 .option_name{
-	width:60px;
+	width:85px;
 	vertical-align:top;
-	padding-left:12px;
+	font-weight:bold;
 }
 .option_input{
 	width:75%;
@@ -2389,7 +2388,7 @@ line-height:21px;
 	margin-bottom:5px;
 }
 .option_dot{
-	margin-top:20px;
+	margin-top:18px;
 	padding-top:20px;
 	background:url(../images/design/box/dot.gif) repeat-x;
 	overflow:hidden; 
@@ -2418,6 +2417,7 @@ line-height:21px;
 	color:#2864B4;
 	font-size:20px;
 	font-weight:bold;
+	margin-left:-1px;
 }
 .formArea_td_info{
 	*width:75%;
@@ -2458,3 +2458,6 @@ line-height:21px;
 .product_open{ overflow:hidden; line-height:20px; height:20px;}
 .product_open a{ *float:left;}
 #shipping_box{ padding:0;}
+.input_width{ width:310px; *width:295px;}
+.table_a_spacing{ margin-bottom:15px;}
+.table_a_spacing img{ vertical-align:top;}

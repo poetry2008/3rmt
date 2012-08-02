@@ -1,0 +1,119 @@
+<!--{include file=header.html }-->
+<div id="left">
+<!--{include file=menu.html   }-->
+</div>
+<div id="right">
+<div id="content">
+<div class="custom-menu">
+<a href='<!--{url controller=seoplink action=admin_top}-->'><img
+src="public/images/backpic/custom-door.gif" alt="door" width="16"
+height="16" /> <!--{_t key='back_window'}--></a>
+</div>
+<div class="submit_form_div">
+  <table class="linkcheck-ct">
+  <!--{if $consumer.consumer_name}-->
+  <tr>
+  <td class="left" align="right" valign="top">
+  <!--{_t key='seoplink_fname'}-->
+  :
+  </td>
+  <td class="right">
+  <!--{$consumer.consumer_name}-->
+  </td>
+  </tr>
+  <!--{/if}-->
+  <!--{if $consumer.consumer_email}-->
+  <tr height="20"><td colspan="2"></td></tr>
+  <tr>
+  <td class="left" align="right" valign="top">
+  <!--{_t key='seoplink_femail'}-->
+  :
+  </td>
+  <td class="right">
+  <!--{$consumer.consumer_email}-->
+  </td>
+  </tr>
+  <!--{/if}-->
+  <!--{if $site.name}-->
+  <tr height="20"><td colspan="2"></td></tr>
+  <tr>
+  <td class="left" align="right" valign="top">
+  <!--{_t key='seoplink_site_name'}-->
+  :
+  </td>
+  <td class="right">
+  <!--{$site.name}-->
+  </td>
+  </tr>
+  <!--{/if}-->
+  <!--{if $site.url}-->
+  <tr height="20"><td colspan="2"></td></tr>
+  <tr>
+  <td class="left" align="right" valign="top"><!--{_t key='seoplink_site_url'}-->
+  :
+  </td>
+  <td class="right">
+  <!--{$site.url}-->
+  </td>
+  </tr>
+  <!--{/if}-->
+  <!--{if $site.comment}-->
+  <tr height="20"><td colspan="2"></td></tr>
+  <tr>
+  <td class="left" align="right" valign="top"><!--{_t key='seoplink_site_comment'}-->
+  :
+  </td>
+  <td colspan="3" class="right">
+  <!--{$site.comment}-->
+  </td>
+  </tr>
+  <!--{/if}-->
+  <!--{if $class.name}-->
+  <tr height="20"><td colspan="2"></td></tr>
+  <tr>
+  <td class="left" align="right" valign="top"><!--{_t key='seoplink_site_category'}-->
+  :
+  </td>
+  <td class="right" valign="top">
+  <!--{$class.name}-->
+  </td>
+  </tr>
+  <!--{/if}-->
+  <!--{if $site.linkpage_url}-->
+  <tr height="20"><td colspan="2"></td></tr>
+  <tr>
+  <td class="left" align="right" valign="top"><!--{_t key='seoplink_site_linkpage_url'}-->
+  :
+  </td>
+  <td class="right">
+  <!--{$site.linkpage_url}-->
+  </tr>
+  <!--{/if}-->
+  <!--{if $site.created}-->
+  <tr height="20"><td colspan="2"></td></tr>
+  <td class="left" align="right" valign="top"><!--{_t key='created_at'}-->
+  :
+  </td>
+  <td class="right">
+  <!--{$created}-->
+  </tr>
+  <!--{/if}-->
+  <!--{if $site.created}-->
+  <tr height="20"><td colspan="2"></td></tr>
+  <td class="left" align="right" valign="top"><!--{_t key='new_web'}-->
+  :
+  </td>
+  <td class="right">
+  <!--{if $flag_new}-->
+  yes
+  <!--{else}-->
+  no
+  <!--{/if}-->
+  </tr>
+  <!--{/if}-->
+  </table>
+</div>
+</div> 
+</div>
+</body>
+</html>

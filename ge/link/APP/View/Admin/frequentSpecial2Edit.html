@@ -1,0 +1,38 @@
+<!--{include file=Admin/header.html}-->
+<div id="left">
+<!--{include file=Admin/menu.html}-->
+</div>
+<div id="right">
+	<div id="content">
+		<ul>
+			<li class="content-bg">
+ 				<div id="title"><h3><!--{_t key='frequentspecial_edit'}--></h3></div>
+				<form action="<!--{url controller='FrequentSpecial2' action='EditDo'}-->" method='post'>
+				<table id="table-line">
+					<tr>
+						<td class="td1"><!--{_t key='class_id'}-->:</td>
+						<td class="td2"><!--{$class.class.class_id}--></td>
+					</tr>
+					<tr>
+						<td class="td1"><!--{_t key='name'    }-->:</td>
+						<td class="td2"><!--{$class.class.name    }--></td>
+					</tr>
+					<tr>
+						<td class="td1"><!--{_t key='order'   }-->:</td>
+						<td class="td2"><input name='order' maxlength='4' value='<!--{$class.order}-->' /></td>
+					</tr>
+					<tr>
+						<td class="td1"><!--{_t key='show'    }-->:</td>
+						<td class="td2"><input name='show'  maxlength='2' value='<!--{$class.show }-->' /></td>
+					</tr>
+					<tr>
+						<td colspan="2" class="td-submit"><input type='submit' value='<!--{_t key=submit}-->' id="submit" /><input type='hidden' name='id' value='<!--{$class.class_id}-->' /></td>
+					</tr>
+				</table>
+				</form>
+			</li>
+		</ul>
+	</div>
+</div>
+</body>
+</html>

@@ -2070,6 +2070,7 @@ border:1px solid #CAC6BE;
 	width:100px;
 	vertical-align:top;
 	color:#FFFFFF;
+	font-weight:bold;
 }
 .option_name td{ padding:3px 5px;}
 .option_input{
@@ -2195,7 +2196,7 @@ border:1px solid #CAC6BE;
 	margin-bottom:5px;
 }
 .option_dot{
-	margin-top:20px;
+	margin-top:18px;
 	padding-top:20px;
 	background:url(../images/design/box/dot.gif) repeat-x;
 	overflow:hidden; 
@@ -2266,3 +2267,8 @@ border:1px solid #CAC6BE;
 .product_open{ overflow:hidden; line-height:20px; height:20px;}
 .product_open a{ *float:left;}
 #shipping_box{ padding:0;}
+.input_width{
+	width:475px;
+}
+.table_a_spacing{ margin-bottom:13px;}
+.table_a_spacing img{ vertical-align:top;}

@@ -365,7 +365,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
 
               </tr>
         </table>
-		<table border="0" cellpadding="0" cellspacing="0" width="100%">
+		<table border="0" cellpadding="0" cellspacing="0" width="689">
 		   <tr class="header2">
              <td class="main" align="right">
 <div class="option_dot">
@@ -391,7 +391,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
     $p_cflag = tep_get_cflag_by_product_id($product_info['products_id']); 
     $hm_option->render($product_info['belong_to_option'], false, 0, '', '', $p_cflag);
     ?>
-                    <table align="right" width="100%" cellspacing="0" cellpadding="6" border="0">
+                    <table align="right" width="100%" cellspacing="1" cellpadding="3" border="0">
                       <tr>
                       <td class="main" width="85"><?php echo TEXT_PRODUCTS_QTY;?></td>
                         <td class="main" colspan="2">
@@ -422,7 +422,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
                         <td width="325">
                         <div id="show_price"></div>
                         </td>
-                        <td><?php echo tep_image_submit('button_in_cart.gif', IMAGE_BUTTON_IN_CART); ?></td>
+                        <td align="right" style="padding:0;"><?php echo tep_image_submit('button_in_cart.gif', IMAGE_BUTTON_IN_CART); ?></td>
                       </tr>
                     </table>
         <?php echo tep_draw_hidden_field('products_id', $product_info['products_id']) ; ?>
