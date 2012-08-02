@@ -1089,7 +1089,7 @@ document.forms.order1.submit();
                   echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\',\''. $_SESSION['preorder_information']['hour'] .'\','. $_SESSION['preorder_information']['min'] .','. $_SESSION['preorder_information']['ele'] .');$("#shipping_list_min").show();$("#h_c_'.$_SESSION['preorder_information']['hour'].'").val('.$_SESSION['preorder_information']['min'].');</script>';
                 }
              }
-          if ($hm_option->whether_show($product_info_res['belong_to_option'])) { 
+          if ($hm_option->preorder_whether_show($product_info_res['belong_to_option'], (int)$product_info_res['products_cflag'])) { 
           ?>
           <br>
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
