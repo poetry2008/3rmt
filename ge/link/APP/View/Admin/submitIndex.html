@@ -1,0 +1,41 @@
+<!--{include file=Admin/header.html}-->
+<div id="left">
+<!--{include file=Admin/menu.html}-->
+</div>
+<div id="right">
+	<div id="content">
+		<ul>
+			<li class="content-bg">
+				<div id="title"><h3><!--{_t key='submit_manage'}--></h3></div>
+				<!--{section name=loopSubmits loop=$submits}-->
+				<!--{if $smarty.section.loopSubmits.first  }-->
+				<table id="table-row">
+					<tr class="tr1">
+						<td>ID</td>
+						<td><!--{_t key='name'   }--></td>
+						<td><!--{_t key='url'    }--></td>
+						<td><!--{_t key='comment'}--></td>
+						<td><!--{_t key='operate'}--></td>
+					</tr>
+				<!--{/if}-->
+					<tr class="tr2">
+						<td class="td-center"><!--{$submits[loopSubmits].id     }--></td>
+						<td><!--{$submits[loopSubmits].name   }--></td>
+						<td><!--{$submits[loopSubmits].url    }--></td>
+						<td><!--{$submits[loopSubmits].comment}--></td>
+						<td class="td-center">
+							<a href='<!--{url controller=submit action=edit id=$submits[loopSubmits].id}-->'><img src="images/backpic/add.gif" width="16" height="16" alt="add">表示させる</a>
+							<a href='<!--{url controller=submit action=del id=$submits[loopSubmits].id }-->'><img src="images/img/del.gif" width="13" height="13" alt="del">  <!--{_t key='del'}--></a>
+						</td>
+					</tr>
+				<!--{if $smarty.section.loopSubmits.last}-->
+				</table>
+				<!--{include file=Admin/pager.html}-->
+				<!--{/if}-->
+				<!--{/section}-->
+			</li>
+		</ul>
+	</div>
+</div>
+</body>
+</html>

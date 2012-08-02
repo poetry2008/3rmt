@@ -1,0 +1,60 @@
+<!--{include file=Admin/header.html}-->
+<div id="left">
+<!--{include file=Admin/menu.html}-->
+</div>
+<div id="right"> <div id="content">
+<ul>
+<li class="content-bg">
+<div id="title"><h3><!--{_t key='site_edit'}--></h3></div>
+<form action='<!--{url controller=Setseo action=addDo}-->' method='post'>
+<!--{if $site.id}-->
+<input type='hidden' name='id' value='<!--{$site.id}-->' />
+<!--{/if}-->
+<table id="table-line">
+<tr>
+<td class="td1">action_name:</td>
+<td class="td2"><input maxlength='50' name='name' value='<!--{$site.name}-->' /></td>
+</tr>
+<tr>
+<td class="td1">action:</td>
+<td class="td2"><input maxlength='50' name='action' value='<!--{$site.name}-->' /></td>
+</tr>
+
+<tr>
+<td class="td1">title:</td>
+<td class="td2"><input maxlength='50' name='title' value='<!--{$site.name}-->' /></td>
+</tr>
+<tr>
+<td class="td1">keywords:</td>
+<td class="td2"><input maxlength='999' name='keywords' value='<!--{$site.url}-->' /></td>
+</tr>
+<tr>
+<td class="td1">description:</td>
+<td class="td2"><textarea name='description'><!--{$site.comment}--></textarea></td>
+</tr>
+<tr>
+<td class="td1">robots:</td>
+<td class="td2">
+<input type="radio" name="robots" value="index,follow"
+checked="checked">
+index,follow
+<br>
+<input type="radio" name="robots" value="noindex"> 
+noindex
+</td>
+</tr>
+<tr>
+<td class="td1">copyright:</td>
+<td class="td2"><input maxlength='50' name='copyright' value='<!--{$site.order}-->' /></td>
+</tr>
+<tr>
+<td class="td-submit" colspan="2"><input type='submit' value="<!--{_t key='submit'}-->" id="submit" /></td>
+</tr>
+</table>
+</form>
+</li>
+</ul>
+</div>
+</div>
+</body>
+</html>
