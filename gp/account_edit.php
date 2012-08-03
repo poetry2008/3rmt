@@ -318,7 +318,7 @@ if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
   }
   tep_db_free_result($address_query);
 
-
+if($_POST['num_rows'] > 0){
   //住所信息验证
   $option_info_array = array(); 
   if (!$hm_option->check()) {
@@ -336,9 +336,11 @@ if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
   }else{
     $error = true;
   }
+}
   if($error == true){ break; }  
   if($error == false){
     //住所信息入库
+    if($_POST['num_rows'] > 0){
       $address_flag_id = tep_db_prepare_input($_POST['address_flag_id']);
       $add_list_array = array();
       $add_show_list_query = tep_db_query("select id,name_flag from ". TABLE_ADDRESS ." where status='0'");
@@ -362,6 +364,7 @@ if(isset($_POST['action_flag']) && $_POST['action_flag'] == 1){
         //$address_sql = "update ". TABLE_ADDRESS_HISTORY ." set value='". $address_value ."' where customers_id={$_SESSION['customer_id']} and orders_id='". $address_flag_id ."' and name='". substr($address_key,3) ."'";
         tep_db_query($address_sql);
       }
+    }
     }
     $sql_data_array = array('new_customers_firstname' => $firstname,
                             'new_customers_lastname' => $lastname,

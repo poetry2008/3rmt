@@ -1,7 +1,7 @@
 /******************************************************************************/
 /*                            時間セレクトボックス                             /
 /******************************************************************************/
-function selectDate(start_time,end_time,value){
+function selectDate(start_time,end_time,value,start_time_old,end_time_old,now_time,start_time_exit,end_time_exit,exit_time){
 	//var num    = document.order.date.selectedIndex; //'選択セレクトボックス番号
 	//var myD    = new Date();                        //'日付オブジェクト
 //	var myHour = myD.getHours();                    //'時間
@@ -41,7 +41,20 @@ function selectDate(start_time,end_time,value){
 	}
 	hour = (hour < 10)? 10 : hour;
         */
-       
+
+        
+
+        if(now_time != value){
+      
+          if(exit_time == value){
+         
+            start_time = start_time_exit;
+            end_time = end_time_exit;
+          }else{
+            start_time = start_time_old;
+            end_time = end_time_old;
+          }
+        }       
         var array_start = Array();
         array_start = start_time.split('||'); 
 
