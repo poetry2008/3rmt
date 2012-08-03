@@ -1497,14 +1497,7 @@ $post_date = isset($_POST['date']) ? $_POST['date'] : $_SESSION['date'];
           </td> 
                 </tr> 
               </table></td> 
-          </tr> 
-          <tr> 
-            <td class="main">
-        <br>
-        <?php echo TEXT_PROMPT_COMMENT;?> 
-        <br>
-      </td> 
-          </tr> 
+          </tr>  
           <tr> 
             <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
                 <tr> 

@@ -1499,14 +1499,7 @@ if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) 
           </td> 
                 </tr> 
               </table></td> 
-          </tr> 
-          <tr> 
-            <td class="main">
-        <br>
-         <?php echo TEXT_PROMPT_COMMENT;?>   
-        <br>
-      </td> 
-          </tr> 
+          </tr>  
           <tr> 
             <td>
             <table border="0" width="100%" cellspacing="0" cellpadding="0" class="c_pay_info"> 

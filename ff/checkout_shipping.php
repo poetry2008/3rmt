@@ -1483,14 +1483,7 @@ if (!isset($date_error)) $date_error= NULL ; //del notice
           </td> 
                 </tr> 
               </table></td> 
-          </tr> 
-          <tr> 
-            <td class="main">
-        <br>
-        <?php echo TEXT_PROMPT_COMMENT;?> 
-        <br>
-      </td> 
-          </tr> 
+          </tr>  
           <tr> 
             <td><table border="0" width="100%" cellspacing="0" cellpadding="2" class="cg_pay_info"> 
                       <tr> 

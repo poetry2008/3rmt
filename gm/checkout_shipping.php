@@ -1464,14 +1464,6 @@ if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) 
 </table>
 <!--end-->
 </div>
-<div class="checkout-conent">  
-
-<?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?>
-    <p class="smalltext">
-      <?php echo TEXT_PROMPT_COMMENT;?> 
-    </p>
-    <?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?>
-  </div>
   <div id="hm-checkout-warp">
   <div class="checkout-title">
      <p><?php echo '<b>' . TITLE_CONTINUE_CHECKOUT_PROCEDURE . '</b></p>'. TEXT_CONTINUE_CHECKOUT_PROCEDURE; ?></p>
