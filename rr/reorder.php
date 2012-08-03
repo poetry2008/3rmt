@@ -473,53 +473,86 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
   
   $ship_array = array();
   $ship_time_array = array();
-  $j = 0;
   foreach($shipping_time_start as $shipping_key=>$shipping_value){
     foreach($shipping_value as $sh_key=>$sh_value){
       
       $sh_start_array = explode(':',$sh_value);
       $sh_end_array = explode(':', $shipping_time_end[$shipping_key][$sh_key]);
       for($i = (int)$sh_start_array[0];$i <= (int)$sh_end_array[0];$i++){
-        if(isset($ship_time_array[$i]) && $ship_time_array[$i] != ''){
-          if($ship_temp_array[$i] != $j){$ship_array[$i]++;}
-          $ship_time_array[$i] .= '|'.$sh_value.','.$shipping_time_end[$shipping_key][$sh_key];
+        if(isset($ship_time_array[$shipping_key][$i]) && $ship_time_array[$shipping_key][$i] != ''){
+          $ship_time_array[$shipping_key][$i] .= '|'.$sh_value.','.$shipping_time_end[$shipping_key][$sh_key];
         }else{
-          $ship_time_array[$i] = $sh_value.','.$shipping_time_end[$shipping_key][$sh_key]; 
-          $ship_temp_array[$i] = $j;
+          $ship_time_array[$shipping_key][$i] = $sh_value.','.$shipping_time_end[$shipping_key][$sh_key]; 
         }
       } 
+    }  
+  }
+
+
+  $ship_count_array = array();
+  foreach($ship_time_array as $ship_key=>$ship_value){
+
+    foreach($ship_value as $ship_k=>$ship_v){
+      $ship_temp_array = array();
+      $ship_temp_array = explode('|',$ship_v);
+      $ship_time_array[$ship_key][$ship_k] = $ship_temp_array;
     }
-    
-    $j++;  
-  }
-
-  $s_array = array();
-  foreach($ship_array as $ship_k=>$ship_v){
-    if($ship_v >= $products_num-1){
-      $s_array[$ship_k] = $ship_v;
-    } 
+    $ship_count_array[$ship_key] = count($ship_value);
   } 
-  $ship_array = $s_array;
-  $shipp_array = array_keys($ship_array);
-  sort($shipp_array);
-  $ship_new_array = array();
-  foreach($shipp_array as $shipp_key=>$shipp_value){
+
+  $ship_min_value = array_search(min($ship_count_array),$ship_count_array);
+  $shipp_time_array = array();
+  $shipp_num_array = array();
+  foreach($ship_time_array[$ship_min_value] as $ship_hour_key=>$ship_hour_value){
+
+    foreach($ship_hour_value as $ship_hour_k=>$ship_hour_v){
+
+      $ship_hour_array = explode(',',$ship_hour_v);
+      foreach($ship_time_array as $ship_t_k=>$ship_t_v){
+
+          if($ship_t_k == $ship_min_value){continue;}
+            if(isset($ship_t_v[$ship_hour_key])){
+   
+            $shipp_num_array[$ship_hour_key]++;
+            foreach($ship_t_v[$ship_hour_key] as $ship_tt_k=>$ship_tt_v){
+
+               $ship_hour_temp_array = array();
+               $ship_hour_temp_array = explode(',',$ship_tt_v); 
+               if($ship_hour_array[0] <= $ship_hour_temp_array[1]){
+
+                 $ship_start_time = max($ship_hour_array[0],$ship_hour_temp_array[0]); 
+                 $ship_end_time = min($ship_hour_array[1],$ship_hour_temp_array[1]);
+                 $ship_start_time_value = str_replace(':','',$ship_start_time);
+                 $ship_end_time_value = str_replace(':','',$ship_end_time);
+                 if(!in_array($ship_start_time.','.$ship_end_time,$shipp_time_array[$ship_hour_key]) && (int)$ship_start_time_value < (int)$ship_end_time_value){
+                   $shipp_time_array[$ship_hour_key][] = $ship_start_time.','.$ship_end_time;
+                 }
+               }
+            }
+          }
+      }
+    }
+  }
+
+  foreach($shipp_num_array as $shipp_num_k=>$ship_num_v){
+
+    if($ship_num_v < count($shipping_time_array['work'])){
+
+      unset($shipp_time_array[$shipp_num_k]);
+    }
+
+  }
+
   
-    $ship_1_array = explode('|',$ship_time_array[$shipp_value]);
-    foreach($ship_1_array as $ship_1_value){
+  $ship_new_array = array(); 
+  $shipp_array = array();
+  foreach($shipp_time_array as $shipp_time_k=>$shpp_time_v){
 
-      $ship_2_array = explode(',',$ship_1_value);
-      $ship_3_array[$shipp_key][] = $ship_2_array[0];
-      $ship_4_array[$shipp_key][] = $ship_2_array[1];
-    } 
-  }
+      $ship_new_str = implode('|',$shpp_time_v);
+      $ship_new_array[] = $ship_new_str;
+      $shipp_array[] = $shipp_time_k;
 
-  foreach($ship_3_array as $ship_3_key=>$ship_3_value){
-
-    natsort($ship_3_array[$ship_3_key]); 
-    natsort($ship_4_array[$ship_3_key]);
-    $ship_new_array[] = end($ship_3_array[$ship_3_key]).','.current($ship_4_array[$ship_3_key]);
-  }
+  } 
 
   foreach($ship_new_array as $_s_key=>$_s_value){
       $s_temp_array = explode('|',$_s_value);    
@@ -733,7 +766,7 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
     }
     $j_shipping += 86400;
     $j++;
-    if(date('Y-m-d',$j_shipping) == $now_time_date){
+    if(date('Y-m-d',$j_shipping) == $now_time_date && $min_time_end_str != ''){
 
       echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'" '. $selected_str .'>'.str_replace($oarr, $newarr, date("Y".DATE_YEAR_TEXT."m".DATE_MONTH_TEXT."d".DATE_DAY_TEXT."（l）", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
       break;
