@@ -504,7 +504,6 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
 
   $ship_min_value = array_search(min($ship_count_array),$ship_count_array);
   $shipp_time_array = array();
-  $shipp_num_array = array();
   foreach($ship_time_array[$ship_min_value] as $ship_hour_key=>$ship_hour_value){
 
     foreach($ship_hour_value as $ship_hour_k=>$ship_hour_v){
@@ -515,7 +514,6 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
           if($ship_t_k == $ship_min_value){continue;}
             if(isset($ship_t_v[$ship_hour_key])){
    
-            $shipp_num_array[$ship_hour_key]++;
             foreach($ship_t_v[$ship_hour_key] as $ship_tt_k=>$ship_tt_v){
 
                $ship_hour_temp_array = array();
@@ -536,14 +534,45 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
     }
   }
 
-  foreach($shipp_num_array as $shipp_num_k=>$ship_num_v){
+  
+  $shipp_flag_array = $ship_time_array[$ship_min_value];
 
-    if($ship_num_v < count($shipping_time_array['work'])){
+  foreach($shipp_time_array as $shipp_flag_k=>$shipp_flag_v){
 
-      unset($shipp_time_array[$shipp_num_k]);
+    $shipp_temp_start_array = array();
+    $shipp_temp_end_array = array(); 
+   if(isset($shipp_flag_array[$shipp_flag_k])){
+    foreach($shipp_flag_array[$shipp_flag_k] as $shipp_flag_key=>$shipp_flag_value){
+ 
+      $shipp_temp_all_array = array();
+      $shipp_temp_all_array = explode(',',$shipp_flag_value);
+      $shipp_temp_start_array[] = $shipp_temp_all_array[0];
+      $shipp_temp_end_array[] = $shipp_temp_all_array[1];
     }
+    $shipp_temp_start_num = str_replace(':','',min($shipp_temp_start_array));
+    $shipp_temp_end_num = str_replace(':','',max($shipp_temp_end_array));
+    foreach($shipp_flag_v as $shipp_f_k=>$shipp_f_v){
+
+      $shipp_t_all_array = array();
+      $shipp_t_all_array = explode(',',$shipp_f_v);
+      $shipp_t_start_num = str_replace(':','',$shipp_t_all_array[0]);
+      $shipp_t_end_num = str_replace(':','',$shipp_t_all_array[1]);
+
+      if(!($shipp_t_start_num >= $shipp_temp_start_num && $shipp_t_end_num <= $shipp_temp_end_num)){
+
+        unset($shipp_time_array[$shipp_flag_k][$shipp_f_k]);
+      }
+    }
+   }else{
+
+     unset($shipp_time_array[$shipp_flag_k]);
+   }
 
   }
+ 
+
+
+
 
   
   $ship_new_array = array(); 
