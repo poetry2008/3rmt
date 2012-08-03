@@ -14,7 +14,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
     <?}?>
 </div>
 <div>必要な情報をご入力ください.</div>
-<form action="open.php" method="POST" enctype="multipart/form-data">
+<form action="<?php echo tep_href_link('open.php','','SSL')?>" method="POST" enctype="multipart/form-data">
 <table class="open_table" align="left" cellpadding=2 cellspacing=1 width="100%">
     <tr>
         <th width="27%" align="left">お名前</th>

@@ -89,7 +89,7 @@ if (!isset($_GET['products_id'])) $_GET['products_id']= NULL;
       }
     ?>
     </li>
-  <li><a href="<?php echo tep_href_link(FILENAME_CONTACT_US,'','NONSSL');?>">お問い合わせ</a></li>
+  <li><a href="<?php echo tep_href_link(FILENAME_CONTACT_US,'','SSL');?>">お問い合わせ</a></li>
   </ul>
 </div>
 <script type="text/JavaScript">

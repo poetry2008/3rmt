@@ -500,7 +500,7 @@ while($tag = tep_db_fetch_array($tag_query)) {
                   &nbsp;</td><td>
                   <a href="<?php echo tep_href_link(FILENAME_PRODUCT_REVIEWS_WRITE,'products_id='.(int)$_GET['products_id']) ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_review.jpg',BOX_REVIEWS_WRITE_REVIEW);?></a>
                   &nbsp;</td><td>
-                  <?php echo tep_draw_form('open',tep_href_link('open.php'),'get');?><input type="image" style="padding-bottom:3px;" src="<?php echo DIR_WS_IMAGES;?>design/button/botton_question.jpg"><?php echo tep_draw_hidden_field('products', $product_info['products_name']) ; ?></form>
+                  <?php echo tep_draw_form('open',tep_href_link('open.php','','SSL'),'get');?><input type="image" style="padding-bottom:3px;" src="<?php echo DIR_WS_IMAGES;?>design/button/botton_question.jpg"><?php echo tep_draw_hidden_field('products', $product_info['products_name']) ; ?></form>
                   </td></tr></table>
                 </td>
               </tr>
