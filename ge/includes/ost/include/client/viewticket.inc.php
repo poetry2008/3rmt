@@ -14,7 +14,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
 ?>
 <table  class="view_contents" cellpadding="1" cellspacing="0" border="0">
   <tr>
-    <td class="msg">問合番号<?=$ticket->getExtId()?>&nbsp;<a href="view.php?id=<?=$ticket->getExtId()?>" title="Reload"><img style="vertical-align:middle;" src="images/icons/refresh.gif" /></a></td>
+    <td class="msg">問合番号<?=$ticket->getExtId()?>&nbsp;<a href="<?php echo tep_href_link('view.php','id='.$ticket->getExtId(),'SSL');?>" title="Reload"><img style="vertical-align:middle;" src="images/icons/refresh.gif" /></a></td>
   </tr> 
   <tr>
     <td>  
@@ -126,7 +126,7 @@ $dept=($dept && $dept->isPublic())?$dept:$cfg->getDefaultDept();
         <?}?>
     </div> 
     <div id="reply">
-        <form action="view.php?id=<?=$id?>#reply" name="reply" method="post" enctype="multipart/form-data">
+        <form action="<?php echo tep_href_link('view.php','id='.$id.'#reply','SSL');?>" name="reply" method="post" enctype="multipart/form-data">
             <input type="hidden" name="id" value="<?=$ticket->getExtId()?>">
             <input type="hidden" name="respid" value="<?=$respID?>">
             <input type="hidden" name="a" value="postmessage">

@@ -24,16 +24,15 @@ if($thisclient && is_object($thisclient) && $thisclient->isValid()) {
     require_once('tickets.php');
     exit;
 }
-
 mysql_select_db(DB_DATABASE);
-require_once(CLIENTINC_DIR.'header.inc.php');
+require(CLIENTINC_DIR.'header.inc.php');
 ?>
 <div id="contact_us_warpper">
 <div class="lcol">
   <div class="contact_left"><img src="./images/new_ticket_icon.gif" width="48" height="48"></div>
   <div class="contact_right">
   <h3>&#26032;&#35215;&#12362;&#21839;&#12356;&#21512;&#12431;&#12379;</h3>
-  <form method="link" action="open.php">
+  <form method="link" action="<?php echo tep_href_link('open.php','','SSL')?>">
   <input type="image" class="button2" value="&#12362;&#21839;&#12356;&#21512;&#12431;&#12379;" src="includes/languages/japanese/images/buttons/lemail.gif">
   </form>
 </div>
@@ -41,9 +40,9 @@ require_once(CLIENTINC_DIR.'header.inc.php');
 <div class="rcol">
   <div class="contact_left"><img src="./images/ticket_status_icon.gif" width="48" height="48"></div>
   <div class="contact_right">
-  <h3>お問い合わせへの返事を確認</h3> 
+  <h3>過去のお問い合わせへの返事を確認</h3>
   </div>
-  <form class="status_form" action="contact_us_login.php" method="post">
+  <form class="status_form" action="<?php echo tep_href_link('contact_us_login.php','','SSL')?>" method="post">
     <div class="status_warpper">
       <label>&#12513;&#12540;&#12523;&#12450;&#12489;&#12524;&#12473;&#65306;</label>
       <input type="text" name="lemail">
