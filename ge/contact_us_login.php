@@ -68,7 +68,7 @@ if(!$errors && is_numeric($ticketID) && Validator::is_email($email) && ($tid=Tic
             //Redirect tickets.php
             session_write_close();
             session_regenerate_id();
-            @header("Location: tickets.php");
+            @header("Location: ".tep_href_link('tickets.php','','SSL')."");
             require_once('tickets.php'); //Just incase. of header already sent error.
             exit;
         }
