@@ -6,18 +6,25 @@ mysql_select_db(DB_DATABASE);
 mysql_query("set names utf8");
 
 echo "start!<br>";
-
 $sql = "select products_id from products_attributes group by products_id";
 $query = mysql_query($sql);
 $all_options = array();
 $i_num = 1;
-$now_time = time()-3600*24*15;
-$past_time = time()-3600*24*7;
+$i_num_tmp = 1;
+$now_time = time()-3600*24*25;
+$past_time = time()-3600*24*20;
+$exists_group_query = mysql_query("select name from option_group order by id desc limit 1");
+$exists_group_res = mysql_fetch_array($exists_group_query);
+if ($exists_group_res) {
+  $eg_info = explode('_', $exists_group_res['name']); 
+  $eg_info_count = count($eg_info); 
+  $i_num_tmp = $eg_info[$eg_info_count-1]+1;
+}
 while($array = mysql_fetch_array($query)){
   $cflag_query = mysql_query("select products_cflag from products where products_id = '".$array['products_id']."'"); 
   $cflag_res = mysql_fetch_array($cflag_query);
   if ($cflag_res) {
-    if (!$cflag_res['products_cflag']) {
+    if ($cflag_res['products_cflag']) {
       continue; 
     }
   } else {
@@ -64,7 +71,7 @@ while($array = mysql_fetch_array($query)){
   }
   
   if($new == 0){
-    $sql_group = "INSERT INTO `option_group` (`id`, `name`, `title`, `option`, `comment`, `is_preorder`, `sort_num`, `created_at`) VALUES (NULL, '".$options_array_one['name']."_".(count($all_options)+1)."', '".$options_array_one['name']."', '', '', '1', '1000', '".date('Y-m-d H:i:s', $now_time+$i_num)."')";
+    $sql_group = "INSERT INTO `option_group` (`id`, `name`, `title`, `option`, `comment`, `is_preorder`, `sort_num`, `created_at`) VALUES (NULL, '".$options_array_one['name']."_".$i_num_tmp."', '".$options_array_one['name']."', '', '', '1', '1000', '".date('Y-m-d H:i:s', $now_time+$i_num)."')";
     mysql_query($sql_group);
     $last_id = mysql_insert_id();
     
@@ -77,29 +84,16 @@ while($array = mysql_fetch_array($query)){
     $sql_item = "INSERT INTO `option_item` (`id` , `group_id` , `title` , `front_title` , `name` , `comment` , `option` , `type` , `price` , `status` , `sort_num` , `place_type`, `created_at`) VALUES (NULL, '".$last_id."', '".$options_array_one['name']."', '".$options_array_one['name']."', '".$item_name."', '', '".addslashes($options_array_one['value'])."', 'select', '0.0000', '1', '1000', '0', '".date('Y-m-d H:i:s', $now_time+$i_num)."')";
     mysql_query($sql_item);
 
-    $string_array = 'a:7:{s:5:"itext";s:0:"";s:7:"require";s:1:"1";s:8:"icomment";s:0:"";s:5:"iline";s:1:"1";s:6:"ictype";s:1:"0";s:8:"imax_num";s:3:"100";s:3:"eid";i:0;}';
-    $string_array_show = @unserialize($string_array);
-    $string_array_show['eid'] = $last_id;
-
-    $string = serialize($string_array_show);
-
-    $item_t_name = rand_name();
-
-    $sql_item_add = "INSERT INTO `option_item` (`id`, `group_id`, `title`, `front_title`, `name`, `comment`, `option`, `type`, `price`, `status`, `sort_num`, `place_type`, `created_at`) VALUES (NULL, '".$last_id."', 'お客様のキャラクター名', 'お客様のキャラクター名', '".$item_t_name."', '', '".addslashes($string)."', 'textarea', '0.0000', '1', '1000', '1', '".date('Y-m-d H:i:s',$past_time+$i_num+1)."')";
-    mysql_query($sql_item_add);
-    
     $sql_products = "UPDATE `products` SET `belong_to_option` = '".$last_id."' WHERE `products_id` =".$array['products_id']."";
     mysql_query($sql_products);
-
+    $i_num_tmp++;
   }else{
     $sql_products = "UPDATE `products` SET `belong_to_option` = '".$new."' WHERE `products_id` =".$array['products_id']."";
     mysql_query($sql_products);
   }
-
   $i_num++;
 }
 echo "Complete!";
-
 
 
 
