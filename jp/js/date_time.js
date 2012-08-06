@@ -185,7 +185,7 @@ function selectHour(start_time,end_time,hour,min_num,ele){
                   arr_time_m = arr_time_t[k].split(':');
              
                   if(k != arr_time_t.length-1){
-                    string +=  '<div class="time_radio"><input type="radio" id="m'+m+'" name="min" value="'+m+'"'+checked+' onclick="change_time('+m+',\''+array_end[n]+'\','+array_start[n]+');"></div><div class="time_label"><label for="m'+m+'"><a href="javascript:void(0);"onclick="change_new_time('+m+',\''+array_end[n]+'\','+array_start[n]+');" >'+arr_time_m[0]+'時'+arr_time_m[1]+'分～';
+                    string +=  '<div class="time_radio"><input type="radio" id="m'+m+'" name="min" value="'+m+'"'+checked+' onclick="change_time('+m+',\''+array_end[n]+'\','+array_start[n]+');"></div><div class="time_label"><label for="m'+m+'"><a href="javascript:void(0);"onclick="change_new_time('+m+',\''+array_end[n]+'\','+array_start[n]+');" >'+arr_time_m[0]+'時'+arr_time_m[1]+'分から';
                   }else{
                     string +=  arr_time_m[0]+'時'+arr_time_m[1]+'分</a></label></div>'; 
                   }
