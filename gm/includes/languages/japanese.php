@@ -236,7 +236,7 @@ define('ENTRY_SUBURB_ERROR', '');
 define('ENTRY_SUBURB_TEXT', '');
 define('ENTRY_POST_CODE', '郵便番号:');
 define('ENTRY_POST_CODE_ERROR', '&nbsp;<small><font color="#FF0000">少なくても ' . ENTRY_POSTCODE_MIN_LENGTH . ' 文字</font></small>');
-define('ENTRY_POST_CODE_TEXT', '&nbsp;<span>(例. 0010000) <font color="RED">*必須</font></span>');
+define('ENTRY_POST_CODE_TEXT', '&nbsp;<span>(例. 331-0814) <font color="RED">*必須</font></span>');
 define('ENTRY_CITY', '市区町村:');
 define('ENTRY_CITY_ERROR', '&nbsp;<small><font color="#FF0000">少なくても ' . ENTRY_CITY_MIN_LENGTH . ' 文字</font></small>');
 define('ENTRY_CITY_TEXT', '&nbsp;<span>(例. さいたま市) <font color="RED">*必須</font></span>');

@@ -36,11 +36,6 @@ class HM_Option_Group extends Option_DbRecord
           continue; 
         }
       }
-      if ($item->front_title == OPTION_CHARACTER_NAME) {
-        if ($cflag == 0) {
-          continue; 
-        }
-      }
       echo "<tr>";
       $item->render($option_error_array, $pre_item_str, $cart_obj, $ptype);
       echo "</tr>";
