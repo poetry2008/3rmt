@@ -172,7 +172,6 @@ define('CREATE_ORDER_FETCH_DATE_TEXT', 'お届け希望日:');
 define('CREATE_ORDER_FETCH_TIME_TEXT', 'お届け希望時間:');
 
 
-define('MODULE_ORDER_TOTAL_SHIPPING_TITLE', '送料:');
 define('TEXT_SHIPPING_FEE','配送料:');
 define('TEXT_SHIPPING_ADDRESS','住所情報▼');
 define('ADDRESS_ERROR_OPTION_ITEM_TEXT_NULL','必須項目');
@@ -216,10 +215,7 @@ define('TEXT_ERROR_NO_SUCCESS','エラーが発生しました。正常に処理
 define('TEXT_REQUIRE','*必須');
 define('TEXT_ADDRESS_INFO_HIDE','住所情報▲');
 define('TEXT_ADDRESS_INFO_SHOW','住所情報▼');
-define('TEXT_BANK_TRANSFER','銀行振込(買い取り)');
 define('TEXT_USUALLY','普通');
-define('TEXT_CONVERIENCE_PAYMENT','コンビニ決済');
-define('TEXT_RAKUTEN_BANK','楽天銀行');
 define('TEXT_ACCOUNT_TYPE','口座種別:');
 define('TEXT_DUMMY','あいうえお眉幅');
 define('TEXT_CUSTOMER_INPUT','このお客様は会員です。入力可能ポイントは ');
@@ -227,8 +223,6 @@ define('TEXT_REMAINING','残り');
 define('TEXT_SUBTOTAL','（合計');
 define('TEXT_RIGHT_BRACKETS','）');
 define('TEXT_INPUT_POSITIVE_NUM',' です。−（マイナス）符号の入力は必要ありません。必ず正数を入力するように！');
-define('TEXT_VISIT_PAYMENT','来店支払い');
-define('TEXT_POINT_PAYMENT','ポイント(買い取り)');
 define('TEXT_NOTICE_PAYMENT','支払通知*');
 define('TEXT_POINT_ONE','▼割引　　　　　　：-');
 define('TEXT_HANDLE_FEE_ONE','▼手数料　　　　　：');

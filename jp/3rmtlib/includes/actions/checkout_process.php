@@ -707,7 +707,7 @@ $mailoption['ORDER_TOTAL']      = $currencies->format(abs($ot['value']));
 
 $mailoption['TORIHIKIHOUHOU']   = $torihikihouhou;
 $mailoption['ORDER_PAYMENT']    = $payment_class->title ;
-$mailoption['ORDER_TTIME']      =  str_string($date) . $start_hour . '時' . $start_min . '分~'. $end_hour .'時'. $end_min .'分　（24時間表記）' ;
+$mailoption['ORDER_TTIME']      =  str_string($date) . $start_hour . '時' . $start_min . '分から'. $end_hour .'時'. $end_min .'分　（24時間表記）' ;
 $mailoption['ORDER_COMMENT']    = $_SESSION['mailcomments'];//
 unset($_SESSION['comments']);
 $mailoption['ADD_INFO']    = str_replace("\n".$mailoption['ORDER_COMMENT'],'',trim($order->info['comments']));
@@ -778,7 +778,7 @@ $email_printing_order = '';
 $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
 $email_printing_order .= 'サイト名　　　　：' . STORE_NAME . "\n";
 $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-$email_printing_order .= 'お届け日時　　　　：' . str_string($date) . $start_hour . '時' . $start_min . '分~'. $end_hour .'時'. $end_min .'分　（24時間表記）' . "\n";
+$email_printing_order .= 'お届け日時　　　　：' . str_string($date) . $start_hour . '時' . $start_min . '分から'. $end_hour .'時'. $end_min .'分　（24時間表記）' . "\n";
 $email_printing_order .= 'オプション　　　：' . $torihikihouhou . "\n";
 $email_printing_order .= '------------------------------------------------------------------------' . "\n";
 $email_printing_order .= '日時変更　　　　：' . date('Y') . ' 年  月  日  時  分' . "\n";

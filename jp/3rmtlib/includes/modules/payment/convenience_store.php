@@ -489,5 +489,13 @@ class convenience_store extends basePayment  implements paymentInterface  {
     {
       return $order_info['cemail_text'] ."\n".$order_info['comment_msg'];
     }
+
+    function admin_show_payment_list($pay_comment){
+      global $_POST;
+      $pay_array = explode("\n",trim($pay_comment));
+      $con_email = explode(":",trim($pay_array[0]));
+      $con_email[1] = isset($_POST['con_email']) ? $_POST['con_email'] : $con_email[1];
+      echo 'document.getElementsByName("con_email")[0].value = "'.$con_email[1].'";'."\n";
+    }
   }
   ?>

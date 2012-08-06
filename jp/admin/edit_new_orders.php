@@ -296,7 +296,7 @@ if (tep_not_null($action)) {
                 $oID,
                 $check_status['payment_method'],
                 $otm,
-                tep_torihiki($check_status['torihiki_date']).'～'.date('H'.TEXT_HOUR.'i'.TEXT_MIN,strtotime($check_status['torihiki_date_end'])).TEXT_TWENTY_FOUR_HOUR,
+                tep_torihiki($check_status['torihiki_date']).TEXT_TIME_LINK.date('H'.TEXT_HOUR.'i'.TEXT_MIN,strtotime($check_status['torihiki_date_end'])).TEXT_TWENTY_FOUR_HOUR,
                 $os_result['orders_status_name'],
                 get_configuration_by_site_id('STORE_NAME', $site_id),
                 get_url_by_site_id($site_id),
@@ -324,7 +324,7 @@ if (tep_not_null($action)) {
                 $oID,
                 $check_status['payment_method'],
                 $otm,
-                tep_torihiki($check_status['torihiki_date']).'～'.date('H'.TEXT_HOUR.'i'.TEXT_MIN,strtotime($check_status['torihiki_date_end'])).TEXT_TWENTY_FOUR_HOUR,
+                tep_torihiki($check_status['torihiki_date']).TEXT_TIME_LINK.date('H'.TEXT_HOUR.'i'.TEXT_MIN,strtotime($check_status['torihiki_date_end'])).TEXT_TWENTY_FOUR_HOUR,
                 $os_result['orders_status_name'],
                 get_configuration_by_site_id('STORE_NAME', $site_id),
                 get_url_by_site_id($site_id),
@@ -1116,7 +1116,7 @@ if($address_error == false){
             $mailoption['ORDER_PAYMENT']    = $order->info['payment_method'] ;  //d
             $trade_time = date('Y'.TEXT_DATE_YEAR.'m'.TEXT_DATE_MONTH.'d'.TEXT_DATE_DAY.'H'.TEXT_HOUR.'i'.TEXT_MIN, strtotime($_POST['date_orders'].' '.$_POST['start_hour'].':'.$_POST['start_min'].':00')); 
             $trade_time_1 = date('H時i分',strtotime($_POST['date_orders'].' '.$_POST['end_hour'].':'.$_POST['end_min'].':00'));
-            $mailoption['ORDER_TTIME']      = $trade_time . '～' . $trade_time_1 .TEXT_TWENTY_FOUR_HOUR;//d
+            $mailoption['ORDER_TTIME']      = $trade_time . TEXT_TIME_LINK . $trade_time_1 .TEXT_TWENTY_FOUR_HOUR;//d
             //$mailoption['ORDER_COMMENT']    = $notify_comments_mail;// = $comments;
             $mailoption['ORDER_COMMENT']    = isset($comment_arr['payment_bank_info']['add_info'])?$comment_arr['comment']:$_POST['comments_text'];// = $comments;
             $mailoption['ORDER_PRODUCTS']   = $products_ordered_mail;//?
@@ -3144,8 +3144,7 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
               <div id="mycalendar"></div> 
               </div>
             </div>
-            <?php
-              echo '&nbsp;'.$hour_str.'&nbsp;'.TEXT_HOUR.'&nbsp;'.$min_str.$min_str_start.'&nbsp;'.TEXT_MIN.'&nbsp;～&nbsp;'.$hour_str_1.'&nbsp;'.TEXT_HOUR.'&nbsp;'.$min_str_1.$min_str_end.'&nbsp;'.TEXT_MIN.'&nbsp;';
+            <?php echo '&nbsp;'.$hour_str.'&nbsp;'.TEXT_HOUR.'&nbsp;'.$min_str.$min_str_start.'&nbsp;'.TEXT_MIN.'&nbsp;'.TEXT_TIME_LINK.'&nbsp;'.$hour_str_1.'&nbsp;'.TEXT_HOUR.'&nbsp;'.$min_str_1.$min_str_end.'&nbsp;'.TEXT_MIN.'&nbsp;';
             ?>
             </td>
             </tr>

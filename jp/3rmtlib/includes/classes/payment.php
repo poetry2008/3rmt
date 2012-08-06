@@ -681,5 +681,15 @@ class payment {
     }
     return $order_info['comment_msg']; 
   }
+
+  function admin_show_payment_list($payment,$pay_comment){
+
+    $module = $this->getModule($payment);
+    if ($module) {
+      if (method_exists($module, 'admin_show_payment_list')) {
+         $module->admin_show_payment_list($pay_comment); 
+      }
+    }    
+  }
 }
 ?>

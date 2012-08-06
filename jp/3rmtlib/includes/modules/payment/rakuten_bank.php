@@ -448,5 +448,13 @@ function getMailString($option=''){
   {
     return $order_info['raku_text'] ."\n".$order_info['comment_msg'];
   }
+
+  function admin_show_payment_list($pay_comment){
+   global $_POST;
+   $pay_array = explode("\n",trim($pay_comment));
+   $rak_tel = explode(":",trim($pay_array[0]));
+   $rak_tel[1] = isset($_POST['rak_tel']) ? $_POST['rak_tel'] : $rak_tel[1];
+   echo 'document.getElementsByName("rak_tel")[0].value = "'.$rak_tel[1].'";'."\n";
+  }
 }
 ?>

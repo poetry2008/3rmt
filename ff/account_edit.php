@@ -589,7 +589,7 @@ if($_POST['num_rows'] > 0){
   $account = tep_db_fetch_array($account_query);
   $email_address = isset($_POST['email_address']) && isset($_POST['action']) && ($_POST['action'] == 'per' ||($_POST['action'] == 'address' && $_POST['action_flag'] == 1 ))? $_POST['email_address'] : $account['customers_email_address'];
 
-  require(DIR_WS_MODULES . 'account_details_new.php');
+  require(DIR_WS_MODULES . 'account_details_info.php');
 ?> 
 <input type="hidden" name="old_email_1" value="<?php echo $account['customers_email_address'];?>">
 </td> 

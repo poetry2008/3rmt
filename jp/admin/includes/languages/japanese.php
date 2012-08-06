@@ -580,4 +580,4 @@ define('BOX_CREATE_ADDRESS', '住所作成');
 define('BOX_COUNTRY_FEE', '料金設定');
 define('BOX_SHIPPING_TIME', '商品届け時間');
 define('TEXT_REQUIRED', '必須');
-define('DUMMY_TEXT', 'あいうえお眉幅');
+define('TEXT_TIME_LINK', 'から');

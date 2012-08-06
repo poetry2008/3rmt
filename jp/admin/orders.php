@@ -612,7 +612,7 @@ switch ($_GET['action']) {
                   $oID,
                   $check_status['payment_method'],
                   $otm,
-                  tep_torihiki($check_status['torihiki_date']).'～'.date('H'.TEXT_HOUR.'i'.TEXT_MIN,strtotime($check_status['torihiki_date_end'])).TEXT_TWENTY_FOUR_HOUR,
+                  tep_torihiki($check_status['torihiki_date']).TEXT_TIME_LINK.date('H'.TEXT_HOUR.'i'.TEXT_MIN,strtotime($check_status['torihiki_date_end'])).TEXT_TWENTY_FOUR_HOUR,
                   $os_result['orders_status_name'],
                   get_configuration_by_site_id('STORE_NAME', $site_id),
                   get_url_by_site_id($site_id),
@@ -639,7 +639,7 @@ switch ($_GET['action']) {
                   $oID,
                   $check_status['payment_method'],
                   $otm,
-                  tep_torihiki($check_status['torihiki_date']).'～'.date('H'.TEXT_HOUR.'i'.TEXT_MIN,strtotime($check_status['torihiki_date_end'])).TEXT_TWENTY_FOUR_HOUR,
+                  tep_torihiki($check_status['torihiki_date']).TEXT_TIME_LINK.date('H'.TEXT_HOUR.'i'.TEXT_MIN,strtotime($check_status['torihiki_date_end'])).TEXT_TWENTY_FOUR_HOUR,
                   $os_result['orders_status_name'],
                   get_configuration_by_site_id('STORE_NAME', $site_id),
                   get_url_by_site_id($site_id),
@@ -855,7 +855,7 @@ switch ($_GET['action']) {
                 $oID,
                 $check_status['payment_method'],
                 $otm,
-                tep_torihiki($check_status['torihiki_date']).'～'.date('H'.TEXT_HOUR.'i'.TEXT_MIN,strtotime($check_status['torihiki_date_end'])).TEXT_TWENTY_FOUR_HOUR,
+                tep_torihiki($check_status['torihiki_date']).TEXT_TIME_LINK.date('H'.TEXT_HOUR.'i'.TEXT_MIN,strtotime($check_status['torihiki_date_end'])).TEXT_TWENTY_FOUR_HOUR,
                 $os_result['orders_status_name'],
                 get_configuration_by_site_id('STORE_NAME', $site_id),
                 get_url_by_site_id($site_id),
@@ -883,7 +883,7 @@ switch ($_GET['action']) {
                 $oID,
                 $check_status['payment_method'],
                 $otm,
-                tep_torihiki($check_status['torihiki_date']).'～'.date('H'.TEXT_HOUR.'i'.TEXT_MIN,strtotime($check_status['torihiki_date_end'])).TEXT_TWENTY_FOUR_HOUR,
+                tep_torihiki($check_status['torihiki_date']).TEXT_TIME_LINK.date('H'.TEXT_HOUR.'i'.TEXT_MIN,strtotime($check_status['torihiki_date_end'])).TEXT_TWENTY_FOUR_HOUR,
                 $os_result['orders_status_name'],
                 get_configuration_by_site_id('STORE_NAME', $site_id),
                 get_url_by_site_id($site_id),
@@ -1988,7 +1988,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
         </tr>
         <tr>
         <td class="main" valign="top" width="30%"><b><?php echo TEXT_TRADE_DATE;?></b></td>
-        <td class="main"><b style=" color:#0000FF"><?php echo $order->tori['date'];?></b></td>
+        <td class="main"><b style=" color:#0000FF"><?php echo str_replace('～', TEXT_TIME_LINK, $order->tori['date']);?></b></td>
         </tr>
         <tr>
         <td class="main" valign="top"><b><?php echo TEXT_ORDERS_OID;?></b></td>
