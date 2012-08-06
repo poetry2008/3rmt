@@ -236,7 +236,7 @@ define('ENTRY_SUBURB_ERROR', '');
 define('ENTRY_SUBURB_TEXT', '');
 define('ENTRY_POST_CODE', '郵便番号:');
 define('ENTRY_POST_CODE_ERROR', '&nbsp;<small><font color="#FF0000">少なくても ' . ENTRY_POSTCODE_MIN_LENGTH . ' 文字</font></small>');
-define('ENTRY_POST_CODE_TEXT', '&nbsp;<small>(例. 0010000) <font color="#AABBDD">必須</font></small>');
+define('ENTRY_POST_CODE_TEXT', '&nbsp;<small>(例. 331-0814) <font color="#AABBDD">必須</font></small>');
 define('ENTRY_CITY', '市区町村:');
 define('ENTRY_CITY_ERROR', '&nbsp;<small><font color="#FF0000">少なくても ' . ENTRY_CITY_MIN_LENGTH . ' 文字</font></small>');
 define('ENTRY_CITY_TEXT', '&nbsp;<small>(例. さいたま市) <font color="#AABBDD">必須</font></small>');
@@ -442,7 +442,6 @@ define('ENTRY_PASSWORD_IS_DIFFERENT', 'パスワードと再入力が違いま�
 define('ENTRY_PASSWORD_INFORM_READ_TEXT', '半角の英字、数字を組み合わせた'.ENTRY_PASSWORD_MIN_LENGTH.'文字以上を入力してください。<br>英字、数字がそれぞれ1文字以上を必要です。大文字と小文字は区別されます。記号は入力できません。');
 define('TEXT_REORDER2_MUST_INPUT','<font color="red">必須項目</font>');
 define('TEXT_REORDER2_TORIHIKI_ERROR','<br><font color="red">【お届け日時】を選択してください。</font>');
-define('OPTION_CHARACTER_NAME', 'お客様のキャラクター名');
 define('BOX_REVIEWS_LINK_TEXT', 'のレビュー');
 define('TEXT_HEADER_CATEGORY_TITLE', STORE_NAME.'は安全で安心・信頼できる取り引きを目指していきます。');
 define('TEXT_HEADER_PRODUCT_TITLE', STORE_NAME.'は安全で安心・信頼できる取り引きを目指していきます。');

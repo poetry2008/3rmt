@@ -635,7 +635,6 @@ tep_db_query($update_sql);
                                   'products_tax_class_id' => tep_db_prepare_input($_POST['products_tax_class_id']),
                                   'manufacturers_id' => tep_db_prepare_input($_POST['manufacturers_id']),
                                   'products_bflag' => tep_db_prepare_input($_POST['products_bflag']),
-                                  'products_cflag' => tep_db_prepare_input($_POST['products_cflag']),
                                   'option_type' => tep_db_prepare_input($_POST['option_type']),
                                   'sort_order' => tep_db_prepare_input($_POST['sort_order']),
                                   'relate_products_id' => tep_db_prepare_input($_POST['relate_products_id']),
@@ -1592,19 +1591,6 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
             ?>
             </td>
           </tr>
-          <tr>
-            <td class="main"><?php echo TEXT_PRODUCTS_CHARACTER; ?></td>
-            <td class="main"><?php echo tep_draw_separator('pixel_trans.gif', '24', '15') . '&nbsp;' . tep_draw_radio_field('products_cflag', '0', $in_cflag, '', ($site_id?'disabled':'')) . '&nbsp;' .  TEXT_PRODUCT_NOT_INDISPENSABILITY . '&nbsp;' .  tep_draw_radio_field('products_cflag', '1', $out_cflag, '', ($site_id?'disabled':'')) . '&nbsp;' . TEXT_PRODUCT_INDISPENSABILITY; ?>
-            <?php 
-            if ($site_id) {
-              echo tep_draw_hidden_field('products_cflag', $pInfo->products_cflag); 
-            }
-            ?>
-            </td>
-            <td class="main">&nbsp;</td>
-          </tr>   
-            
-
           <tr>
             <td colspan="3"><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td>
           </tr>
