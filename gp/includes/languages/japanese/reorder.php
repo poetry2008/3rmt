@@ -28,7 +28,7 @@ define('TEXT_REORDER_NAME_EMAIL','▼お名前　　　　　：');
 define('TEXT_REORDER_EMAIL_EMAIL','▼メールアドレス　：');
 define('TEXT_REORDER_PRODUCT_EMAIL','▼注文商品');
 define('TEXT_REORDER_TRADE_DATE','▼お届け日時　　　　：');
-define('TEXT_REORDER_TWENTY_FOUR_HOUR','分  （24時間表記）');
+define('TEXT_REORDER_TWENTY_FOUR_HOUR','  （24時間表記）');
 define('TEXT_REORDER_COMMERN_EMAIL','▼備考　　　　　　：');
 define('TEXT_REORDER_TITLE_EMAIL','再配達確認メール【'.  STORE_NAME . '】');
 define('TEXT_REORDER_COMMERN_STATUS','ご指定の注文番号は受付できません。 ');
