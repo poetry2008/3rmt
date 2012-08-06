@@ -6,7 +6,6 @@
 require('includes/application_top.php');
 require_once(DIR_WS_CLASSES . 'payment.php');
 
-
 // action ajax order 
 if ($_POST['orders_id'] && ($_POST['orders_comment']||$_POST['orders_comment_flag']=='true') && $_POST['action']=='ajax_orders') {
   // update orders_comment
@@ -494,9 +493,11 @@ switch ($_GET['action']) {
       $site_id  = tep_get_site_id_by_orders_id($value);
 
       $order_updated = false;
-      $check_status_query = tep_db_query("select customers_name, customers_id, customers_email_address, orders_status, date_purchased, payment_method, torihiki_date from " . TABLE_ORDERS . " where orders_id = '" . tep_db_input($oID) . "'");
+      $check_status_query = tep_db_query("select customers_name, customers_id, customers_email_address, orders_status, date_purchased, site_id,payment_method, torihiki_date from " . TABLE_ORDERS . " where orders_id = '" . tep_db_input($oID) . "'");
       $check_status = tep_db_fetch_array($check_status_query);
 
+       
+      $cpayment = payment::getInstance($check_status['site_id']);
       //Add Point System
       if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && MODULE_ORDER_TOTAL_POINT_ADD_STATUS != '0') {
         $pcount_query = tep_db_query("select count(*) as cnt from ".TABLE_ORDERS_STATUS_HISTORY." where orders_status_id = '".MODULE_ORDER_TOTAL_POINT_ADD_STATUS."' and orders_id = '".$oID."'");
@@ -567,11 +568,7 @@ switch ($_GET['action']) {
                 $get_point . " where customers_id = '" . $result1['customers_id']."'
                 and customers_guest_chk = '0' ");
           } else {
-            if ($check_status['payment_method'] == TEXT_PAYMENT_BUY_POINT) {
-              $get_point = abs($result3['value']);
-            } else {
-              $get_point = 0;
-            }
+            $get_point = $cpayment->admin_get_point(payment::changeRomaji($check_status['payment_method'],'code'),$result3); 
           }
 
         }
@@ -687,7 +684,7 @@ switch ($_GET['action']) {
     $site_id  = tep_get_site_id_by_orders_id($oID);
     $order_updated = false;
     $check_status_query = tep_db_query("
-        select orders_id, 
+        select site_id, orders_id, 
         customers_name, 
         customers_id,
         customers_email_address, 
@@ -699,6 +696,7 @@ switch ($_GET['action']) {
         from " . TABLE_ORDERS . " 
         where orders_id = '" . tep_db_input($oID) . "'");
     $check_status = tep_db_fetch_array($check_status_query);
+    $cpayment = payment::getInstance($check_status['site_id']);
     //oa start 如果状态发生改变，找到当前的订单的
     //if ($check_status['orders_status']!=$status){
     tep_order_status_change($oID,$status);
@@ -778,35 +776,26 @@ switch ($_GET['action']) {
           $get_point = ($result3['value'] - (int)$result2['value']) * $point_rate;
         } else {
           if ($result3['value'] > -200) {
-            if ($check_status['payment_method'] == TEXT_PAYMENT_VISIT) {
-              $get_point = 0;
-            } else {
-              $get_point = abs($result3['value']);
-            }
+
+            $get_point = $cpayment->admin_get_fetch_point(payment::changeRomaji($check_status['payment_method'],'code'),$result3['value']);
+            
           } else {
             $get_point = 0;
           }
         }
         //$plus = $result4['point'] + $get_point;
 
-        if($check_status['payment_method'] != TEXT_PAYMENT_BUY_POINT){
-          tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " . $get_point . 
-              " where customers_id = '" . $result1['customers_id']."' 
-              and customers_guest_chk = '0' ");
-        }
+        $cpayment->admin_get_customer_point(payment::changeRomaji($check_status['payment_method'],'code'),$get_point,$result1['customers_id']); 
+
       }else{
         $os_query = tep_db_query("select orders_status_name from " . TABLE_ORDERS_STATUS . " where orders_status_id = '".$status."'");
         $os_result = tep_db_fetch_array($os_query);
         if($os_result['orders_status_name']==TEXT_PAYMENT_NOTICE){
           $query1 = tep_db_query("select customers_id from " . TABLE_ORDERS . " where orders_id = '".$oID."'");
           $result1 = tep_db_fetch_array($query1);
-          if ($check_status['payment_method'] == TEXT_PAYMENT_BUY_POINT) {
-            $query_t = tep_db_query("select value from ".TABLE_ORDERS_TOTAL." where class = 'ot_total' and orders_id = '".tep_db_input($oID)."'");
-            $result_t = tep_db_fetch_array($query_t);
-            $get_point = abs(intval($result_t['value']));
-          } else {
-            $get_point = 0;
-          }
+
+          $get_point = $cpayment->admin_get_orders_point(payment::changeRomaji($check_status['payment_method'],'code'),$oID);
+          
           $point_done_query =tep_db_query("select count(orders_status_history_id) cnt from
               ".TABLE_ORDERS_STATUS_HISTORY." where orders_status_id = '".$status."' and 
               orders_id = '".tep_db_input($oID)."'");
@@ -2204,7 +2193,9 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                     </table>
                     </div>
 
-                    <?php if ($order->info['payment_method'] == TEXT_ORDER_CREDIT_CARD) { ?>
+                    <?php 
+                       $payment_show = payment::getInstance($order->info['site_id']);
+                       if ($payment_show->admin_get_payment_symbol(payment::changeRomaji($order->info['payment_method'],'code')) == 1) { ?>
                       <!-- 信用卡信息 -->
 
                         <div id="orders_telecom">
@@ -2225,7 +2216,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                         </table>
                         </div>
 
-                        <?php }else if ($order->info['payment_method'] == TEXT_PAYMENT_PAYPAL) {?>
+                        <?php }else if ($payment_show->admin_get_payment_symbol(payment::changeRomaji($order->info['payment_method'],'code')) == 2) {?>
                           <!-- PAYPAL信息 -->
 
                             <div id="orders_paypal">

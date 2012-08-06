@@ -201,6 +201,11 @@ function getMailString($option=''){
     $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
       
     return $email_printing_order;
-  }
+}
+
+    function admin_get_fetch_point(){
+
+      return 0;
+    }
 }
 ?>

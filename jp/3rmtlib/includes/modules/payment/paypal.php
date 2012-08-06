@@ -662,7 +662,12 @@ function getpreexpress($pre_value, $pre_pid){
     $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
   return $email_printing_order;
   }
-  
+
+
+  function admin_get_payment_symbol(){
+
+    return 2;
+  }
   }
 function PPHttpPost($methodName_, $nvpStr_) {
   //  global $environment;

@@ -499,5 +499,15 @@ class buying extends basePayment  implements paymentInterface  {
    $bank_kouza_name[1] = isset($_POST['"bank_kouza_name']) ? $_POST['"bank_kouza_name'] : $bank_kouza_name[1];
    echo 'document.getElementsByName("bank_kouza_name")[0].value = "'.$bank_kouza_name[1].'";'."\n";
   }
+
+  function admin_get_payment_buying(&$mailoption,$comment_arr){
+
+    $mailoption['BANK_NAME']        = $comment_arr['payment_bank_info']['bank_name'];      
+    $mailoption['BANK_SHITEN']      = $comment_arr['payment_bank_info']['bank_shiten'] ;   
+    $mailoption['BANK_KAMOKU']      = $comment_arr['payment_bank_info']['bank_kamoku'];    
+    $mailoption['BANK_KOUZA_NUM']   = $comment_arr['payment_bank_info']['bank_kouza_num'] ;
+    $mailoption['BANK_KOUZA_NAME']  = $comment_arr['payment_bank_info']['bank_kouza_name'];
+    $mailoption['ADD_INFO']         = $comment_arr['add_info'];
+  }
 }
 ?>

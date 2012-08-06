@@ -417,5 +417,10 @@ class telecom  extends basePayment  implements paymentInterface  {
     return $email_credit;
   }
 
+  function admin_get_payment_symbol(){
+
+    return 1;
+  }
+
 }
 ?>
