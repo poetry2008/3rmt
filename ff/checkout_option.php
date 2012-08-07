@@ -39,7 +39,6 @@ unset($_SESSION['shipping_session_flag']);
         <div class="comment">
         <table class="product_info_box" width="100%"><tr><td>
         <form action="<?php echo tep_href_link(FILENAME_CHECKOUT_OPTION, '', 'SSL'); ?>" method="post" >
-          <input type="hidden" name="dummy" value="<?php echo TEXT_DUMMY;?>">
           <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
           <tr> 
             <td>

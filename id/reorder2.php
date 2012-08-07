@@ -33,7 +33,6 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder2.php'));
           $minute   = tep_db_prepare_input($_POST['minute']);
 
           $name      = tep_db_prepare_input($_POST['name']);
-          $character = tep_db_prepare_input($_POST['character']);
           $product   = tep_db_prepare_input($_POST['product']);
           $comment   = tep_db_prepare_input($_POST['comment']);
           $email = tep_db_prepare_input($_POST['email']);
@@ -45,8 +44,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder2.php'));
             // time error
             echo '<div class="comment">【お届け希望日】を選択してください。<div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" width="70" height="25" alt=""></a></div></div>';
             $email_error = false;
-          } else if($name==''||$date==''||$minute==''||$hour==''||
-              $character==''||$product==''){
+          } else if($name==''||$date==''||$minute==''||$hour==''|| $product==''){
             $email_error = true;
           }  else if(!tep_validate_email($email)){
             $email_error = true;
@@ -65,7 +63,6 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder2.php'));
             $email_order .= '▼お名前 : ' . $name . "\n";
             $email_order .= '▼メールアドレス : ' . $email . "\n";
             $email_order .= '▼ゲームタイトル : ' . $product . "\n";
-            $email_order .= '▼キャラクター名 : ' . $character . "\n";
             $email_order .= '▼変更希望の日時 : ' . $datetime . "\n";
             $email_order .= "▼備考 : \n";
             $email_order .= $comment . "\n";
@@ -100,7 +97,6 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder2.php'));
 if(!isset($email_error)||$email_error == true){?>
 <div class="comment">
 <form action="reorder2.php" method="post" name="order">
-<input type="hidden" name="dummy" value="あいうえお眉幅">
 <table class="information_table">
  <tr>
   <td bgcolor="#eeeeee" width='120'>お名前</td>
@@ -141,16 +137,6 @@ if(isset($product)&&$product){
  }?></span></td>
 </tr>
 <tr>
-<td bgcolor="#eeeeee">キャラクター名</td>
-<td><input type='text'  name='character' value='<?php
-  if(isset($character)&&$character){
-    echo $character;
-  }?>' id='new_character' class="input_text" ><span id='character_error'><?php
- if(isset($character)&&$character==''){
-   echo TEXT_REORDER2_MUST_INPUT;
- }?></span></td>
- </tr>
- <tr>
   <td bgcolor="#eeeeee">お届け日時</td>
   <td>
    <select name='date' id='new_date' onChange="selectDate('<?php echo date('H');?>', '<?php echo date('i');?>')">

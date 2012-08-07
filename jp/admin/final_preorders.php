@@ -1730,7 +1730,7 @@ float:left;
          '      <td class="' . $RowStyle . '" align="left" valign="top" width="20">'
          . "<input type='hidden' name='update_products_real_quantity[$orders_products_id]' id='update_products_real_quantity_$orders_products_id' value='1'><input type='hidden' id='update_products_qty_$orders_products_id' value='" .  $order->products[$i]['qty'] . "'><input type='text' class='update_products_qty' id='update_products_new_qty_$orders_products_id' name='update_products[$orders_products_id][qty]' size='2' value='" . $order->products[$i]['qty'] . "'>&nbsp;x</td>\n" . 
          '      <td class="' . $RowStyle . '">' . $order->products[$i]['name'] . "<input name='update_products[$orders_products_id][name]' size='64' id='update_products_name_$orders_products_id' type='hidden' value='" . $order->products[$i]['name'] . "'>\n" . 
-       '      &nbsp;&nbsp;'."<input type='hidden' name='dummy' value='".TEXT_DUMMY."'>";
+       '      &nbsp;&nbsp;';
     // Has Attributes?
     if ($order->products[$i]['attributes'] && sizeof($order->products[$i]['attributes']) > 0) {
       $op_info_array = array();
@@ -2298,7 +2298,7 @@ if($action == "add_product")
     {
       print "<tr class=\"dataTableRow\"><form action='$PHP_SELF?oID=$oID&action=$action' method='POST'>\n";
       print "<td class='dataTableContent' align='right'><b>" . ADDPRODUCT_TEXT_STEP . " 4: </b></td>";
-      print "<td class='dataTableContent' valign='top'>" .  ADDPRODUCT_TEXT_CONFIRM_QUANTITY . "<input name='add_product_quantity' size='2' value='1'>&nbsp;".EDIT_ORDERS_NUM_UNIT."&nbsp;&nbsp;&nbsp;".EDIT_ORDERS_PRO_DUMMY_NAME."&nbsp;<input type='hidden' name='dummy' value='".TEXT_DUMMY."'><input name='add_product_character' size='20' value=''></td>";
+      print "<td class='dataTableContent' valign='top'>" .  ADDPRODUCT_TEXT_CONFIRM_QUANTITY . "<input name='add_product_quantity' size='2' value='1'>&nbsp;".EDIT_ORDERS_NUM_UNIT."&nbsp;&nbsp;&nbsp;".EDIT_ORDERS_PRO_DUMMY_NAME."&nbsp;<input name='add_product_character' size='20' value=''></td>";
       print "<td class='dataTableContent' align='center'><input type='submit' value='" . ADDPRODUCT_TEXT_CONFIRM_ADDNOW . "'>";
 
       if(IsSet($add_product_options))

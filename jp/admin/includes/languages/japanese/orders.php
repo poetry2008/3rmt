@@ -16,7 +16,6 @@ define('TABLE_HEADING_ACTION', '操作');
 define('TABLE_HEADING_QUANTITY', '数量');
 define('TABLE_HEADING_PRODUCTS_MODEL', '型番');
 define('TABLE_HEADING_PRODUCTS', '数量 / 商品名');
-define('TABLE_HEADING_CHARACTER', 'キャラクター名');
 define('TABLE_HEADING_TAX', '税率');
 define('TABLE_HEADING_TOTAL', '合計');
 define('TABLE_HEADING_PRICE_EXCLUDING_TAX', '価格(税別)');

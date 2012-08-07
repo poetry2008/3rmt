@@ -63,7 +63,6 @@ define('TEXT_CATEGORIES_IMAGE', 'カテゴリー画像:');
 define('TEXT_SORT_ORDER', '整列順:');
 
 define('TEXT_PRODUCTS_STATUS', '商品ステータス:');
-define('TEXT_PRODUCTS_CHARACTER', 'キャラクター名:');
 define('TEXT_PRODUCTS_BUY_AND_SELL', '売買ステータス:');
 define('TEXT_PRODUCTS_SMALL_SUM', '小口割:');
 define('TEXT_PRODUCTS_DATE_AVAILABLE', '発売日:');

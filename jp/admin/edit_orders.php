@@ -2816,7 +2816,7 @@ if (($action == 'edit') && ($order_exists == true)) {
         type='hidden' id='update_products_qty_$orders_products_id' value='" .
         $order->products[$i]['qty'] . "'><input type='text' class='update_products_qty' id='update_products_new_qty_$orders_products_id' name='update_products[$orders_products_id][qty]' size='2' value='" .  (isset($_POST['update_products'][$orders_products_id]['qty'])?$_POST['update_products'][$orders_products_id]['qty']:$order->products[$i]['qty']) . "' onkeyup='clearLibNum(this);'>&nbsp;x</td>\n" . 
         '      <td class="' . $RowStyle . '">' . $order->products[$i]['name'] . "<input name='update_products[$orders_products_id][name]' size='64' id='update_products_name_$orders_products_id' type='hidden' value='" . $order->products[$i]['name'] . "'>\n" . 
-        '      &nbsp;&nbsp;'."<input type='hidden' name='dummy' value='".TEXT_DUMMY."'>";
+        '      &nbsp;&nbsp;';
       // Has Attributes?
       if ($order->products[$i]['attributes'] && sizeof($order->products[$i]['attributes']) > 0) {
         $op_info_array = array();
@@ -3479,7 +3479,7 @@ if($action == "add_product")
   {
     print "<tr class=\"dataTableRow\"><form action='$PHP_SELF?oID=$oID&action=$action' method='POST'>\n";
     print "<td class='dataTableContent' align='right'><b>" . ADDPRODUCT_TEXT_STEP . " 4: </b></td>";
-    print "<td class='dataTableContent' valign='top'>" .  ADDPRODUCT_TEXT_CONFIRM_QUANTITY . "<input name='add_product_quantity' size='2' value='1' onkeyup='clearLibNum(this);'>&nbsp;".EDIT_ORDERS_NUM_UNIT."&nbsp;&nbsp;&nbsp;&nbsp;<input type='hidden' name='dummy' value='".TEXT_DUMMY."'></td>";
+    print "<td class='dataTableContent' valign='top'>" .  ADDPRODUCT_TEXT_CONFIRM_QUANTITY . "<input name='add_product_quantity' size='2' value='1' onkeyup='clearLibNum(this);'>&nbsp;".EDIT_ORDERS_NUM_UNIT."&nbsp;&nbsp;&nbsp;&nbsp;</td>";
     print "<td class='dataTableContent' align='center'><input type='submit' value='" . ADDPRODUCT_TEXT_CONFIRM_ADDNOW . "'>";
 
     foreach ($_POST as $op_key => $op_value)
