@@ -35,7 +35,6 @@ unset($_SESSION['shipping_session_flag']);
  		<h2><?php echo HEADING_TITLE ; ?></h2>
         <div> 
         <form name="option_form" action="<?php echo tep_href_link(FILENAME_CHECKOUT_OPTION, '', 'SSL'); ?>" method="post" >
-          <input type="hidden" name="dummy" value="<?php echo TEXT_DUMMY;?>">
           <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
           <tr> 
             <td>

@@ -28,7 +28,6 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder2.php'));
           $minute   = tep_db_prepare_input($_POST['minute']);
 
           $name      = tep_db_prepare_input($_POST['name']);
-          $character = tep_db_prepare_input($_POST['character']);
           $product   = tep_db_prepare_input($_POST['product']);
           $comment   = tep_db_prepare_input($_POST['comment']);
           $email = tep_db_prepare_input($_POST['email']);
@@ -40,8 +39,7 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder2.php'));
             // time error
             echo '<div><div class="comment">'.TEXT_INFO_FOR_TRADE.' <div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" alt=""></a></div></div>';
             $email_error = false;
-          } else if($name==''||$date==''||$minute==''||$hour==''||
-              $character==''||$product==''){
+          } else if($name==''||$date==''||$minute==''||$hour==''|| $product==''){
             $email_error = true;
           } else if(!tep_validate_email($email)){
             $email_error = true;
@@ -66,7 +64,6 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder2.php'));
             $email_order .= TEXT_REORDER_NAME_EMAIL . $name . "\n";
             $email_order .= TEXT_REORDER_EMAIL_EMAIL . $email . "\n";
             $email_order .= TEXT_REORDER_PRODUCT_EMAIL. $product . "\n";
-            $email_order .= TEXT_REORDER_CHARACTER_EMAIL. $character . "\n";
             $email_order .= TEXT_REORDER_DATETIME_EMAIL. $datetime . "\n";
             $email_order .= TEXT_REORDER_COMMENT_TITLE_EMAIL. "\n";
             $email_order .= $comment . "\n";
@@ -99,7 +96,6 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder2.php'));
 if(!isset($email_error)||$email_error == true){?>
     <div class="comment">
       <form action="reorder2.php" method="post" name="order">
-        <input type="hidden" name="dummy" value="<?php echo TEXT_REORDER_EYEBROW;?>">
         <table class="information_table" width="100%">
           <tr>
             <td width="20%"><?php echo TEXT_REORDER_OID_NAME;?></td>
@@ -143,18 +139,6 @@ if(!isset($email_error)||$email_error == true){?>
   }?>' id='new_product' class="input_text" style="width:42.5%;
           margin-bottom:5px;"><span id='product_error'>&nbsp;<?php
  if(isset($product)&&$product==''){
-   echo TEXT_REORDER2_MUST_INPUT;
- }?></span></td>
-          </tr>
-          <tr>
-            <td><?php echo TEXT_REORDER_P_PRODUCT_CHARACTER;?></td>
-            <td>
-              <input type='text'  name='character' value='<?php
-  if(isset($character)&&$character){
-    echo $character;
-  }?>' id='new_character' class="input_text" style="width:42.5%; margin-bottom:5px;">
-              <span id='character_error'><?php
- if(isset($character)&&$character==''){
    echo TEXT_REORDER2_MUST_INPUT;
  }?></span></td>
           </tr>

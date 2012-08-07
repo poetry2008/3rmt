@@ -35,7 +35,6 @@ unset($_SESSION['shipping_session_flag']);
       <td valign="top" id="contents_long"> <h1 class="pageHeading_long"><span class="game_t"><?php echo HEADING_TITLE ; ?></span></h1>
         <div class="comment"> 
         <form action="<?php echo tep_href_link(FILENAME_CHECKOUT_OPTION, '', 'SSL'); ?>" method="post" >
-          <input type="hidden" name="dummy" value="<?php echo TEXT_DUMMY;?>">
           <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
           <tr> 
             <td>

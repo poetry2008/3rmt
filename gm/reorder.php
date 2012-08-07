@@ -18,7 +18,6 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
 <!-- header_eof //-->
 <!-- body //-->
-  <?php //require(DIR_WS_INCLUDES . 'column_left.php'); ?>
 <!-- body_text //-->
 <!--left-->
 <div id="layout" class="yui3-u">
@@ -64,87 +63,13 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
       $datetime_end = $date.' '.$end_hour.':'.$end_min;
       $time     = strtotime($datetime);
 
-      //if (in_array($order['orders_status'], array(2,5,6,7,8))) {
       if (tep_orders_status_finished($order['orders_status'])) {
         // status can not change
         echo '<div class="comment">'.TEXT_DELETE_ORDER_SUCCESS
           .'<div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" alt="'.IMAGE_BUTTON_BACK.'" title="'.IMAGE_BUTTON_BACK.'"></a></div></div>';
-      //} else if ($date && $hour && $minute && ($time < (time() - MINUTES * 60) or $time > (time() + (7*86400)))) {
         // time error
-        /*
-        echo '<div class="comment">'.TEXT_INFO_FOR_TRADE
-          .'<div align="right"><a href="javascript:void(0);"
-          onclick="history.go(-1)"><img
-          src="includes/languages/japanese/images/buttons/button_back_home.gif"
-          alt="'.TEXT_BACK_TO_TOP.'" title="'.TEXT_BACK_TO_TOP.'"></a></div></div><div>';
-         */
       } else {
         // update time
-        // update character
-        if (isset($_POST['character']) && is_array($_POST['character'])){
-          foreach($_POST['character'] as $pid=>$character){
-            // ccdd
-            tep_db_query("
-                update `".TABLE_ORDERS_PRODUCTS."` 
-                set `products_character`='".mysql_real_escape_string($character)."' 
-                where `orders_id`='".$oID."' 
-                  and `products_id`='".$pid."'
-            ");
-          }
-        }
-        // update attributes
-        if($o->products){
-          foreach($o->products as $p){
-            if(isset($p['attributes']) && $p['attributes']){
-              foreach($p['attributes'] as $a) {
-                if(isset($_POST['id'][$p['id']])) {
-                  // old attribute
-                  // ccdd
-                  $attributes = tep_db_fetch_array(tep_db_query("
-                        select * 
-                        from `".TABLE_PRODUCTS_ATTRIBUTES."` 
-                        where `products_attributes_id`='".$a['attributes_id']."'
-                  "));
-                  if(isset($_POST['id'][(int)$p['id']][(int)$attributes['options_id']]) && $_POST['id'][(int)$p['id']][(int)$attributes['options_id']]){
-                    // new option
-                    // ccdd
-                    $option = tep_db_fetch_array(tep_db_query("
-                          select * 
-                          from `".TABLE_PRODUCTS_OPTIONS."` 
-                          where `products_options_id`='".$attributes['options_id']."'
-                    "));
-                    // new attribute
-                    // ccdd
-                    $nattribute = tep_db_fetch_array(tep_db_query("
-                          select * 
-                          from `".TABLE_PRODUCTS_ATTRIBUTES."` 
-                          where `products_id`='".$p['id']."' 
-                            and `options_id`='".$attributes['options_id']."' 
-                            and `options_values_id`='".$_POST['id'][(int)$p['id']][(int)$attributes['options_id']]."'
-                    "));
-                    // new option value
-                    // ccdd
-                    $value = tep_db_fetch_array(tep_db_query("
-                          select * 
-                          from `".TABLE_PRODUCTS_OPTIONS_VALUES."` 
-                          where `products_options_values_id`='".$_POST['id'][(int)$p['id']][(int)$attributes['options_id']]."'
-                    "));
-                    // execute update`
-                    // ccdd
-                    $update_query = tep_db_query("
-                        update `".TABLE_ORDERS_PRODUCTS_ATTRIBUTES."` 
-                        set `products_options_values`='".$value['products_options_values_name']."',
-                            `attributes_id`='".$nattribute['products_attributes_id']."' 
-                        where `orders_id`='".$oID."' 
-                          and `products_options`='".$option['products_options_name']."' 
-                          and `attributes_id`='".$a['attributes_id']."'
-                    ");
-                  }
-                }
-              }
-            }
-          }
-        }
         //change order status and insert order status history
         if ($date && $hour && $start_min) {
           tep_db_query("
@@ -241,7 +166,6 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
 
   
   # Select
-  //$cnt = strlen($NewOid);
 
   // initialized for the email confirmation
   $products_ordered = '';
@@ -252,41 +176,6 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
   //------insert customer choosen option to order--------
     $attributes_exist = '0';
     $products_ordered_attributes = '';
-    if (isset($o->products[$i]['attributes'])) {
-      for ($j=0, $n2=sizeof($o->products[$i]['attributes']); $j<$n2; $j++) {
-        if (DOWNLOAD_ENABLED == 'true') {
-          $attributes_query = "select popt.products_options_name, poval.products_options_values_name, pa.options_values_price, pa.price_prefix, pa.products_at_quantity, pa.products_attributes_id, pad.products_attributes_maxdays, pad.products_attributes_maxcount , pad.products_attributes_filename 
-                               from " . TABLE_PRODUCTS_OPTIONS . " popt, " . TABLE_PRODUCTS_OPTIONS_VALUES . " poval, " . TABLE_PRODUCTS_ATTRIBUTES . " pa 
-                               left join " . TABLE_PRODUCTS_ATTRIBUTES_DOWNLOAD . " pad
-                                on pa.products_attributes_id=pad.products_attributes_id
-                               where pa.products_id = '" . $o->products[$i]['id'] . "' 
-                                and pa.options_id = '" . $o->products[$i]['attributes'][$j]['option_id'] . "' 
-                                and pa.options_id = popt.products_options_id 
-                                and pa.options_values_id = '" . $o->products[$i]['attributes'][$j]['value_id'] . "' 
-                                and pa.options_values_id = poval.products_options_values_id 
-                                and popt.language_id = '" . $languages_id . "' 
-                                and poval.language_id = '" . $languages_id . "'";
-          //ccdd
-          $attributes = tep_db_query($attributes_query);
-        } else {
-          $sql = "select popt.products_options_name, poval.products_options_values_name, pa.options_values_price, pa.price_prefix, pa.products_at_quantity, pa.products_attributes_id from " . TABLE_PRODUCTS_OPTIONS . " popt, " . TABLE_PRODUCTS_OPTIONS_VALUES . " poval, " . TABLE_PRODUCTS_ATTRIBUTES . " pa 
-          where pa.products_id = '" . $o->products[$i]['id'] . "' 
-          and pa.options_id = '" . $o->products[$i]['attributes'][$j]['option_id'] . "' 
-          and pa.options_id = popt.products_options_id 
-          and pa.options_values_id = '" . $o->products[$i]['attributes'][$j]['value_id'] . "' 
-          and pa.options_values_id = poval.products_options_values_id 
-          and popt.language_id = '" . $languages_id . "' 
-          and poval.language_id = '" . $languages_id . "'";
-
-          //ccdd
-          $attributes = tep_db_query($sql);
-        }
-        $attributes_values = tep_db_fetch_array($attributes);
-        $products_ordered_attributes .= "\n" . $attributes_values['products_options_name'] 
-        . str_repeat('　',intval((18-strlen($attributes_values['products_options_name']))/2))
-        . '：' . $attributes_values['products_options_values_name'];
-      }
-    }
 //------insert customer choosen option eof ----
     $attribute_len_array = array();
     $attribute_max_len = 0;
@@ -335,9 +224,6 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
     $products_ordered .= $products_ordered_attributes . "\n";
     $products_ordered .= TEXT_REORDER_QTY_SUM.str_repeat('　',intval(($attribute_max_len - mb_strlen(TEXT_REORDER_QTY_SUM, 'utf-8')))).'：' . $o->products[$i]['qty'] . TEXT_REORDER_QTY . tep_get_full_count2($o->products[$i]['qty'], $o->products[$i]['id']) . "\n";
     TEXT_REORDER_QTY . tep_get_full_count2($o->products[$i]['qty'], $o->products[$i]['id']) . "\n";
-    if(tep_not_null($o->products[$i]['character'])) {
-      $products_ordered .= TEXT_REORDER_CHARACTER . (EMAIL_USE_HTML === 'true' ? htmlspecialchars($o->products[$i]['character']) : $o->products[$i]['character']) . "\n";
-    }
 
     $products_ordered .= '------------------------------------------' . "\n";
   }
@@ -837,77 +723,12 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
             <td width="20%"><?php echo TEXT_REORDER_P_PRODUCT_NAME;?></td>
             <td name='products_names'><?php echo $value['name'];?></td>
           </tr>
-          <?php if($value['character']) {?>
-          <tr>
-            <td><?php echo TEXT_REORDER_P_PRODUCT_CHARACTER;?></td>
-            <td>
-              <input style="width:40%;" type='text' id='character_<?php echo $value['id'];?>' name='character[<?php echo $value['id'];?>]' value="<?php echo htmlspecialchars($value['character'])?>" id="input_text" >
-            </td>
-          </tr>
-          <?php }?>
           <?php if($value['attributes'])foreach ($value['attributes'] as $att) {?>
           <tr>
             <td><?php echo $att['option'].TEXT_REORDER_NO_CHANGE;?></td>
             <td><?php echo $att['value'];?></td>
           </tr>
           <?php }?>
-          <?php
-          // ccdd
-        /*
-        $products_attributes_query = tep_db_query("
-            select count(*) as total 
-            from " . TABLE_PRODUCTS_OPTIONS . " popt, " . TABLE_PRODUCTS_ATTRIBUTES . " patrib 
-            where patrib.products_id='" . $value['id'] . "' 
-              and patrib.options_id = popt.products_options_id 
-              and popt.language_id = '" . $languages_id . "'
-        ");
-        $products_attributes = tep_db_fetch_array($products_attributes_query);
-         */
-        if (false) {
-          //ccdd
-          $products_options_name_query = tep_db_query("
-              select distinct popt.products_options_id, 
-                              popt.products_options_name 
-              from " . TABLE_PRODUCTS_OPTIONS . " popt, " . TABLE_PRODUCTS_ATTRIBUTES . " patrib 
-              where patrib.products_id='" . $value['id'] . "' 
-                and patrib.options_id = popt.products_options_id 
-                and popt.language_id = '" . $languages_id . "'
-              ");
-          while ($products_options_name = tep_db_fetch_array($products_options_name_query)) {
-            $selected = 0;
-            $products_options_array = array();
-            echo '<tr><td>' . $products_options_name['products_options_name'] .
-              TEXT_REORDER_CHANGE.'</td><td>' . "\n";
-            // ccdd
-            $products_options_query = tep_db_query("
-                select pov.products_options_values_id, 
-                       pov.products_options_values_name, 
-                       pa.options_values_price, 
-                       pa.price_prefix, 
-                       pa.products_at_quantity, 
-                       pa.products_at_quantity 
-                from " . TABLE_PRODUCTS_ATTRIBUTES . " pa, " . TABLE_PRODUCTS_OPTIONS_VALUES . " pov 
-                where pa.products_id = '" . $value['id'] . "' 
-                  and pa.options_id = '" . $products_options_name['products_options_id'] . "' 
-                  and pa.options_values_id = pov.products_options_values_id 
-                  and pov.language_id = '" . $languages_id . "' 
-                order by pa.products_attributes_id
-            ");
-            while ($products_options = tep_db_fetch_array($products_options_query)) {
-              if($products_options['products_at_quantity'] > 0) {
-                $products_options_array[] = array('id' => $products_options['products_options_values_id'], 'text' => $products_options['products_options_values_name']);
-                if ($products_options['options_values_price'] != '0') {
-                  $products_options_array[sizeof($products_options_array)-1]['text'] .= ' (' . $products_options['price_prefix'] . $currencies->display_price($products_options['options_values_price'], tep_get_tax_rate($product_info['products_tax_class_id'])) .') ';
-                }
-              }
-            }
-            $products_options_array = array_merge(array(array('id' => '', 'text' => '--')), $products_options_array);
-            echo tep_draw_pull_down_menu( 'id['.$value['id'].'][' . $products_options_name['products_options_id'] . ']', $products_options_array, isset($cart->contents[$value['id']]['attributes'][$products_options_name['products_options_id']])?  $cart->contents[$value['id']]['attributes'][$products_options_name['products_options_id']]:'');
-            echo '</td></tr>';
-          }
-          //echo '</table>';
-        }
-    ?>
         </table>
         <?php }?>
         
@@ -945,7 +766,6 @@ function orderConfirmPage(){
   document.getElementById('hour_error').innerHTML = "";
     // init
   productName  = new Array();
-  oldCharacter = new Array();
   oldAttribute = new Array();
   text         = "";
   orderChanged = false;
@@ -959,7 +779,6 @@ function orderConfirmPage(){
   
 <?php foreach($o->products as $p){?>
   productName[<?php echo $p['id'];?>] = '<?php echo $p['name'];?>';
-  oldCharacter[<?php echo $p['id'];?>] = "<?php echo htmlspecialchars(addslashes($p['character']));?>";
   oldAttribute[<?php echo $p['id'];?>] = new Array();
 <?php   if($p['attributes'])foreach($p['attributes'] as $a){
           if($a['option_id'] != ''){
@@ -1019,25 +838,6 @@ function orderConfirmPage(){
     text += "<tr><td width='20%'><?php echo TEXT_REORDER_P_PRODUCT_NAME;?></td><td>\n";
     text += productName[i] + "\n";
     text += "</td></tr>";
-
-    if(oldCharacter[i] != ''){
-      text += "<tr><td width='20%'>\n";
-      text += "<?php echo TEXT_REORDER_P_PRODUCT_CHARACTER.TEXT_REORDER_NO_CHANGE;?>";
-      text += "</td><td>\n";
-      text += oldCharacter[i] + "\n";
-      text += "</td></tr>";
-      text += "<tr><td>\n";
-      text += "<?php echo TEXT_REORDER_P_PRODUCT_CHARACTER.TEXT_REORDER_CHANGE;?>";
-      text += "</td><td>\n";
-      if(document.getElementById('character_'+i)){
-      text += document.getElementById('character_'+i).value.replace(/\</ig,"&lt;").replace(/\>/ig,"&gt;") + "\n";
-      text += "</td></tr>";
-      orderChanged = orderChanged || (oldCharacter[i] != document.getElementById('character_'+i).value);
-      }
-    }
-
-    
-    
 
     for(j in oldAttribute[i]){
       text += "<tr><td>\n";
