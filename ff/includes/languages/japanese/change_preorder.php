@@ -18,7 +18,6 @@ define('TEXT_CHECK_24JI', '(24時間表記)');
 define('TEXT_PREORDER_ERROR_OPTION', '<span class="errorText">【オプション】を選択してください。</span>');
 define('TEXT_PREORDER_ERROR_DATE', '<span class="errorText">【お届け希望日】を選択してください。</span>');
 define('TEXT_PREORDER_ERROR_TIME', '<span class="errorText">【お届け希望時間】を選択してください。</span>');
-define('TEXT_PREORDER_ERROR_CHARACTER', '<span class="errorText">入力してください</span>');
 define('TEXT_PREORDER_FETCH_BUTTON_INFO', '<b>ご注文の手続きを進めてください。</b><br>「次へ進む」をクリックして支払方法の選択へ。');
 define('TEXT_PREORDER_POINT_TEXT', 'ポイント/キャンペーンコード:');
 define('TEXT_PREORDER_ERROR_POINT', '獲得ポイントより多くのポイントを指定しているか、マイナスの値を指定しています。');

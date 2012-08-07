@@ -168,7 +168,6 @@ define('TEXT_FUNCTION_FINISH','「入」');
 define('TEXT_FUNCTION_UNFINISH','「未」');
 define('TEXT_FUNCTION_NUMBER','個数：');
 define('TEXT_FUNCTION_NUM','個');
-define('TEXT_FUNCTION_GAME_NAME','キャラ名：');
 define('TEXT_FUNCTION_PC','PC：');
 define('ORDERS_STATUS_SELECT_PRE', 'ステータス「');
 define('ORDERS_STATUS_SELECT_LAST', '」から検索');

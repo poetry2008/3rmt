@@ -140,7 +140,6 @@ define('TABLE_HEADING_PRICE_BEFORE', '価格(税別)');
 define('TABLE_HEADING_PRICE_AFTER', '価格(税込)');
 define('TABLE_HEADING_TOTAL_BEFORE', '合計(税別)');
 define('TABLE_HEADING_TOTAL_AFTER', '合計(税込)');
-define('EDIT_ORDERS_DUMMY_TITLE', 'キャラ名：');
 define('EDIT_ORDERS_ADD_PRO_READ', '商品追加と他の項目は同時に変更できません。<b>「 商品の追加 」は単体で行ってください。</b>');
 define('EDIT_ORDERS_FEE_TITLE_TEXT', '3. ポイント割引、手数料、値引き');
 define('TABLE_HEADING_FEE_MUST', '注意事項');
