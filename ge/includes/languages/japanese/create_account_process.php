@@ -27,9 +27,9 @@ define('EMAIL_TEXT',
 . 'ユーザーID：　お客様のメールアドレスがIDとなります。' . "\n"
 . 'パスワード：　*****' . "\n\n"
 . 'ログインページ：' . "\n"
-. '→ http://www.gamemoney.cc/login.php' . "\n\n"
+. '→ http://www.gm-exchange.jp/login.php' . "\n\n"
 . 'パスワードの再発行は、コチラからできます。' . "\n"
-. '→ http://www.gamemoney.cc/password_forgotten.php' . "\n\n"
+. '→ http://www.gm-exchange.jp/password_forgotten.php' . "\n\n"
 . 'セキュリティ上、ご登録時のパスワードを記載しておりません。' . "\n"
 . 'パスワードを忘れた場合は、上記URLから再発行してください。' . "\n\n"
 . '-----------------------------------------------------------------------' . "\n"
@@ -53,7 +53,7 @@ define('EMAIL_WARNING',
 '[ご連絡・お問い合わせ先]━━━━━━━━━━━━' . "\n"
 . '株式会社iimy' . "\n"
 . SUPPORT_EMAIL_ADDRESS."\n"
-. 'http://www.gamemoney.cc/' . "\n"
+. 'http://www.gm-exchange.jp/' . "\n"
 . '━━━━━━━━━━━━━━━━━━━━━━━' . "\n");
 
 define('EMAIL_NAME_COMMENT_LINK', ' 様 ');

@@ -580,15 +580,12 @@ if(isset($_GET['login']) && ($_GET['login'] == 'ip_error')){
         </tr>
       </table>
   <p class="box_des" style="margin-right:5px;">
-    <i><strong>SSL認証</strong></i><br>
-    当サイトでは、実在性の証明とプライバシー保護のため、グローバルサインのSSLサーバ証明書を使用し、SSL暗号化通信を実現しています。
-    ブラウザのURLが「<?php echo HTTPS_SERVER;?>～」で始まるURLであることを確認ください。
-    以下に掲載するグローバルサイン発行済みサイトシールのクリックにより、サーバ証明書の検証結果をご確認ください。
+  <?php echo TEXT_LOGIN_SSL_READ;?>
   </p>
   <p align="center">
-    <!-- GlobalSign SiteSeal tag. Do not edit. -->
-    <span id="ss_img_wrapper_130-66_flash_ja"><a href="http://jp.globalsign.com/" target="_blank"><img alt="SSL　グローバルサインのサイトシール" border="0" id="ss_img" src="//seal.globalsign.com/SiteSeal/images/gs_noscript_130-66_ja.gif"></a></span><script type="text/javascript" src="//seal.globalsign.com/SiteSeal/gs_flash_130-66_ja.js"></script>
-    <!-- End of GlobalSign SiteSeal Tag -->
+  <!-- GeoTrust Smart Icon tag. Do not edit. -->
+  <SCRIPT LANGUAGE="JavaScript" TYPE="text/javascript" SRC="//smarticon.geotrust.com/si.js"></SCRIPT>
+  <!-- END of GeoTrust Smart Icon tag -->
   </p>
 <div class="sep" style="margin-right:20px;">&nbsp;</div>
 <?php echo TEXT_POINT ; ?>

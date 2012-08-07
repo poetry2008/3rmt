@@ -6,7 +6,7 @@ class Model_Consumer extends FLEA_Rbac_UsersManager
     parent::FLEA_Db_TableDataGateway();
   }
 
-  var $tableName = 'gm_consumer';
+  var $tableName = 'ge_consumer';
   var $primaryKey = 'consumer_id'; 
 
 

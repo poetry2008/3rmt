@@ -12,7 +12,7 @@
         </div> 
         <!-- body_text --> 
         <div id="content">
-        <div class="headerNavigation"><a class="headerNavigation" href="http://www.gamemoney.cc">RMT</a> » お問い合わせ</div>
+        <div class="headerNavigation"><a class="headerNavigation" href="http://www.gm-exchange.jp">RMT</a> » お問い合わせ</div>
           <h2 class="pageHeading">お問い合わせ</h2> 
           <div>
             <table border="0" width="100%" cellspacing="0" cellpadding="0">

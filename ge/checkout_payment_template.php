@@ -196,7 +196,7 @@ if(true) {
   <tr> 
   <td>
   <?php
-  echo tep_draw_textarea_field('comments', 'soft', '50', '5', '','style="width:405px"') . tep_draw_hidden_field('comments_added', 'YES'); 
+  echo tep_draw_textarea_field('comments', 'soft', '50', '5', '','style="width:100%"') . tep_draw_hidden_field('comments_added', 'YES'); 
 ?>
 </td> 
 </tr> 

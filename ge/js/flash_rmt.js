@@ -37,7 +37,7 @@ fls = flashChecker()
 
 
 if (fls.v < 9){
-	document.write('<a href="index.php"><img src="images/gm_picture.gif" width="790" height="185" alt="RMT" ></a>');
+	document.write('<a href="index.php"><img src="images/ge_picture.jpg" width="790" height="185" alt="RMT" ></a>');
 }else {
 
 fflag=0;
@@ -56,17 +56,23 @@ if (fflag==0)
  document.write('<a href="index.php"><img alt="RMT" src="images/design/oc/header.jpg" width="790" height="185" border="0"><'+'/a>');
 }else {
  if (document.all && !window.opera)
+      document.write('<a href="index.php"><img src="images/ge_picture.jpg" width="790" height="185" alt="RMT" ></a>');
+ /*
  document.write('<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="https://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,0,0" width="790" height="185">'+
  '<param name="movie" value="images/design/header/header.swf" />'+
  '<param name="wmode" value="transparent" />'+
  '<param name="quality" value="high" />'+
  '<'+'/object>'+
  '');
+ */
  else
+      document.write('<a href="index.php"><img src="images/ge_picture.jpg" width="790" height="185" alt="RMT" ></a>');
+ /*
  document.write('<object type="application/x-shockwave-flash" data="images/design/header/header.swf" width="790" height="185">'+
  '<param name="wmode" value="transparent" />'+
  '<param name="quality" value="high" />'+
  '<'+'/object>'+
  '');
+ */
  }
 	}

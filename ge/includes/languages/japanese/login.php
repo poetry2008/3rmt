@@ -71,5 +71,5 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == "true"){
 define('TEXT_PREORDER_LOGIN_ERROR', '<font color="#ff0000">予約時の会員情報でログインしてください</font>');
 define('PREORDER_HEADING_TITLE', '注文移行手続き');
 define('PREORDER_LOGIN_HEAD_TEXT', '<font color="#ff0000" style="font-size:14px;">注文移行手続きを行うにはログインしていただく必要がございます。<br>予約時の会員情報にてログインしてください。</font>');
-
+define('TEXT_LOGIN_SSL_READ', '<i><strong>SSL認証</strong></i><br>当サイトでは、実在性の証明とプライバシー保護のため、日本ジオトラストのSSLサーバ証明書を使用し、SSL暗号化通信を実現しています。 ブラウザのURLが「'.HTTPS_SERVER.'/～」で始まるURLであることを確認ください。 以下に掲載するジオトラスト発行済み スマートシールのクリックにより、サーバ証明書の検証結果をご確認ください。 ');
 ?>

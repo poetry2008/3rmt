@@ -70,7 +70,8 @@ require(DIR_WS_ACTIONS.'checkout_confirmation.php');
     <table border="0" width="100%" cellspacing="0" cellpadding="0" class="c_pay_info">
       <tr>
         <td class="main"><b>ご注文内容をご確認の上「注文する」をクリックしてください。</b></td>
-        <td class="main" align="right"><?php echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER);?></td>
+        <td class="main" align="right"><?php echo
+        tep_image_submit('button_confirm_order.gif',IMAGE_BUTTON_CONFIRM_ORDER,' onclick="confirm_session_error();" ');?></td>
       </tr>
     </table>
   </td> 
@@ -150,9 +151,9 @@ require(DIR_WS_ACTIONS.'checkout_confirmation.php');
 
     echo '</td>' . "\n";
 
-    if (sizeof($order->info['tax_groups']) > 1) echo '            <td class="main" valign="top" align="right">' . tep_display_tax_value($order->products[$i]['tax']) . '%</td>' . "\n";
+    if (sizeof($order->info['tax_groups']) > 1) echo '            <td class="main" valign="top" align="right" width="50">' . tep_display_tax_value($order->products[$i]['tax']) . '%</td>' . "\n";
 
-    echo '            <td class="main" align="right" valign="top">';
+    echo '            <td class="main" align="right" valign="top" width="50">';
     if ($order->products[$i]['final_price'] < 0) {
       echo '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty'])).'</font>'.JPMONEY_UNIT_TEXT;
     } else {
@@ -432,7 +433,7 @@ require(DIR_WS_ACTIONS.'checkout_confirmation.php');
       echo tep_draw_hidden_field("character[$ck]", $cv);
     }
   }
-  echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER) . "\n";
+  echo tep_image_submit('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER,' onclick="confirm_session_error();" ') . "\n";
 ?>
           </td>
         </tr>

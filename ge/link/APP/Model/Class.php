@@ -11,7 +11,7 @@ class Model_Class extends Model_Nodes
      *
      * @var string
      */
-  var $tableName = 'gm_classes';
+  var $tableName = 'ge_classes';
 
   /**
      * 主键字段名

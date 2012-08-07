@@ -1,6 +1,6 @@
 <?php
 error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);
-ini_set("display_errors", "On");
+ini_set("display_errors", "Off");
 
 // 定义应用程序设置
 // 更多设置参考 FleaPHP 文档

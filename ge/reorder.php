@@ -729,12 +729,10 @@ function orderConfirmPage(){
     <div class="comment">
       <form action="reorder.php" method="post" name='order'>
         <input type="hidden" name="dummy" value="あいうえお眉幅">
-        <table class="information_table" summary="table">
+        <table class="box_des" summary="table">
           <tr>
-            <td align="left">注文番号</td>
-          </tr>
-          <tr>
-            <td>
+            <td align="left" valign="top" width="110">注文番号</td>
+             <td>
               <input type='text' name='order_id_1' class="input_text" maxlength='8' style='width:80px' >
               -
               <input type='text' name='order_id_2' class="input_text" maxlength='8' style='width:80px' >
@@ -745,10 +743,8 @@ function orderConfirmPage(){
             </td>
           </tr>
           <tr>
-            <td align="left">メールアドレス</td>
-          </tr>
-          <tr>
-            <td>
+            <td align="left" valign="top">メールアドレス</td>
+             <td>
               <input type='text' name='email' class="input_text" >
             </td>
           </tr>
