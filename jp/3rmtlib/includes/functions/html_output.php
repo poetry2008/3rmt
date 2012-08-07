@@ -136,9 +136,16 @@
       return false;
     }
 ##########
-   if(!file_exists(DIR_FS_CATALOG . '/images/' . $src)
-       && file_exists(DIR_FS_CATALOG . '/' . str_replace('images/', 'default_images/', $src))
+   $real_src = '';
+   if(substr(DIR_FS_CATALOG,-1)=='/'){
+     $fs_catalog = DIR_FS_CATALOG;
+   }else{
+    $fs_catalog = DIR_FS_CATALOG.'/';
+   }
+   if(!file_exists( $fs_catalog . 'images/' . $src)
+       && file_exists($fs_catalog . str_replace('images/', 'default_images/', $src))
        ){
+     $real_src = $src;
      $src = str_replace('images/', 'default_images/', $src);
      }
 ##########
@@ -154,7 +161,7 @@
       } elseif ( $height==0 ) {
         unset($height);
       }
-      $src=thumbimage3(DIR_FS_CATALOG . '/' .$src, $width, $height, 1, 1, DIR_FS_CATALOG . '/' . DIR_WS_IMAGES . 'imagecache3');
+      $src=thumbimage3($fs_catalog .$src, $width, $height, 1, 1,$fs_catalog . DIR_WS_IMAGES . 'imagecache3');
       if ((($image_size[1]/$height) > ($image_size[0]/$width) ) && $height>0){
          $width=ceil(($image_size[0]/$image_size[1])* $height);
       } elseif ($width>0) {
@@ -169,7 +176,11 @@
 
 // alt is added to the img tag even if it is null to prevent browsers from outputting
 // the image filename as default
+    if($real_src!=''){
+    $image = '<img src="' . tep_output_string($real_src) . '" border="0" alt="' . tep_output_string($alt) . '"';
+    }else{
     $image = '<img src="' . tep_output_string($src) . '" border="0" alt="' . tep_output_string($alt) . '"';
+    }
 
     /*if (tep_not_null($alt)) {
       $image .= ' title=" ' . tep_output_string($alt) . ' "';
