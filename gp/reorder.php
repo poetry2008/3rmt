@@ -403,7 +403,6 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
 <?php
 echo tep_draw_form('order', tep_href_link('reorder.php'));
 ?>
-  <input type="hidden" name="dummy" value="<?php echo TEXT_REORDER_DUMMY_WIDTH;?>">
 <input type='hidden' name='order_id' value='<?php echo $order['orders_id']?>' >
 <input type='hidden' name='email' value='<?php echo $order['customers_email_address']?>' >
 <div id="form_error" style="display:none"></div>
@@ -1089,7 +1088,6 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
 <?php
 echo tep_draw_form('order', tep_href_link('reorder.php'));
 ?>
-  <input type="hidden" name="dummy" value="<?php echo TEXT_REORDER_DUMMY_WIDTH;?>">   
 <table class="information_table03" summary="table" border="0" cellpadding="0" cellspacing="1">
  <tr>
  <th align="left"><?php echo TEXT_REORDER_OID_TITLE;?></th>

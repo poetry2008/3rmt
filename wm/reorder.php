@@ -399,7 +399,6 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
 <div class="comment">
 <div id='form'>
 <form action="reorder.php" method="post" name="order">
-<input type="hidden" name="dummy" value="<?php echo TEXT_REORDER_DUMMY_WIDTH;?>">
 <input type='hidden' name='order_id' value='<?php echo $order['orders_id']?>' >
 <input type='hidden' name='email' value='<?php echo $order['customers_email_address']?>' >
 <div id="form_error" style="display:none"></div>
@@ -1082,7 +1081,6 @@ function orderConfirmPage(){
   ?>
 <div class="comment">
 <form action="reorder.php" method="post" name='order'>
-<input type="hidden" name="dummy" value="<?php echo TEXT_REORDER_DUMMY_WIDTH;?>">   
 <table class="information_table" summary="table">
  <tr>
  <td align="left" bgcolor='#eeeeee'><?php echo TEXT_REORDER_OID_TITLE;?></td>

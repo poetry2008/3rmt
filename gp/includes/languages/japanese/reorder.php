@@ -18,7 +18,6 @@ define('TEXT_REORDER_EMAIL_TITLE','メールアドレス');
 define('TEXT_REORDER_OID_FORGET','注文番号忘れた?');
 define('TEXT_REORDER_OID_TITLE','注文番号');
 define('TEXT_REORDER_OID_NAME','お名前');
-define('TEXT_REORDER_DUMMY_WIDTH','あいうえお眉幅');
 define('TEXT_REORDER_NO_ORDER_ERROR','"注文番号" または"メールアドレス" が一致しませんでした。');
 define('TEXT_REORDER_CHANGE_TRADE_SELECT','【お届け日時（変更後）】を選択してください。');
 define('TEXT_REORDER_UNCHANGE_QTY','変更箇所がございません。');
