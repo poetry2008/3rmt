@@ -23,7 +23,6 @@ define('TITLE_CONTINUE_CHECKOUT_PROCEDURE', 'ご注文の手続きを進めて�
 define('TEXT_CONTINUE_CHECKOUT_PROCEDURE', '「次へ進む」をクリックして支払方法の選択へ。');
 
 # Add ds-style
-define('TEXT_CARACTOR', 'お届け先キャラクター名:');
 define('TEXT_OPTION', 'オプション:');
 define('TEXT_EXPECT_TRADE_DATE', 'お届け希望日:');
 define('TEXT_EXPECT_TRADE_TIME', 'お届け希望時間:');
@@ -32,8 +31,6 @@ define('TEXT_CHECK_EIJI', '(英字)');
 define('TEXT_CHECK_24JI', '<b>(24時間表記)</b>');
 define('TEXT_PRESE_SELECT', '選択してください');
 
-define('TEXT_ERROR_BAHAMUTO', '<span class="errorText">【お届け先キャラクター名】が入力されていません</span>');
-define('TEXT_ERROR_BAHAMUTO_EIJI', '<span class="errorText">【お届け先キャラクター名】で使用できる文字は半角英字のみです</span>');
 define('TEXT_ERROR_OPTION', '<span class="errorText">【オプション】を選択してください。</span>');
 define('TEXT_ERROR_DATE', '<span class="errorText">【お届け希望日】を選択してください。</span>');
 define('TEXT_ERROR_TIME', '<span class="errorText">【お届け希望時間】を選択してください。</span>');

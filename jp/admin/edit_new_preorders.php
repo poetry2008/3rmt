@@ -1315,7 +1315,7 @@ if (($action == 'edit') && ($order_exists == true)) {
          '      <td class="' . $RowStyle . '" align="left" valign="top" width="20">'
          . "<input name='update_products[$pid][qty]' id='p_".$pid."' size='2' value='" . $orders_products_num . "' onkeyup='clearLibNum(this);' class='update_products_qty'>&nbsp;x</td>\n" . 
          '      <td class="' . $RowStyle . '" width="35%">' . $order_products[$pid]['name'] . "<input name='update_products[$pid][name]' size='64' type='hidden' value='" . $order_products[$pid]['name'] . "'>\n" . 
-       '      &nbsp;&nbsp;<input type="hidden" name="dummy" value="'.TEXT_DUMMY.'">';
+       '      &nbsp;&nbsp;';
     // Has Attributes?
     if (sizeof($order_products_attributes[$pid]) > 0) {
       for ($j=0; $j<sizeof($order_products_attributes[$pid]); $j++) {
@@ -1820,7 +1820,7 @@ if (($action == 'edit') && ($order_exists == true)) {
       $products_num = isset($_POST['add_product_quantity']) ? $_POST['add_product_quantity'] : 1;
       $products_price = isset($_POST['add_product_price']) ? $_POST['add_product_price'] : 0;
       echo '<td class="dataTableContent" valign="top">' .
-        ADDPRODUCT_TEXT_CONFIRM_QUANTITY . '<input id="add_product_quantity" name="add_product_quantity" size="2" value="'.$products_num.'" onkeyup="clearLibNum(this);">&nbsp;'.EDIT_ORDERS_NUM_UNIT.'&nbsp;&nbsp;'.TABLE_HEADING_UNIT_PRICE.'<input name="add_product_price" id="add_product_price" size="4" value="'.$products_price.'" onkeyup="clearNoNum(this);">&nbsp;'.EDIT_ORDERS_PRICE_UNIT.'&nbsp;&nbsp;&nbsp;<input type="hidden" name="dummy" value="'.TEXT_DUMMY.'">'; 
+        ADDPRODUCT_TEXT_CONFIRM_QUANTITY . '<input id="add_product_quantity" name="add_product_quantity" size="2" value="'.$products_num.'" onkeyup="clearLibNum(this);">&nbsp;'.EDIT_ORDERS_NUM_UNIT.'&nbsp;&nbsp;'.TABLE_HEADING_UNIT_PRICE.'<input name="add_product_price" id="add_product_price" size="4" value="'.$products_price.'" onkeyup="clearNoNum(this);">&nbsp;'.EDIT_ORDERS_PRICE_UNIT.'&nbsp;&nbsp;&nbsp;'; 
       echo '</td>';
       echo '<td class="dataTableContent" align="center"><input type="button" value="' . ADDPRODUCT_TEXT_CONFIRM_ADDNOW . '" onclick="submit_check();">';
        
