@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2002 osCommerce
-
-  Released under the GNU General Public License
 */
 
 define('NAVBAR_TITLE_1', '会員登録');
@@ -57,4 +50,5 @@ define('EMAIL_WARNING',
 . '━━━━━━━━━━━━━━━━━━━━━━━' . "\n");
 
 define('EMAIL_NAME_COMMENT_LINK', ' 様 ');
+define('ENTRY_PASSWORD_ENGLISH','英字（abcdef...z）が1文字以上必要です。英字と数字を組み合わせて設定してください。');
 ?>

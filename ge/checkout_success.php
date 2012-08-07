@@ -8,6 +8,17 @@
 // if the customer is not logged on, redirect them to the shopping cart page
   if (!tep_session_is_registered('customer_id')) {
     tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
+  }else{
+
+    $url_array = explode('/',$_SERVER['HTTP_REFERER']);
+    $url_str = end($url_array);
+    $url_str_one = explode('?',$url_str);
+    if(isset($_SESSION['cart']) && $url_str_one[0] != 'checkout_confirmation.php' && !isset($_GET['action'])){
+      if(!isset($_SESSION['shipping_session_flag'])){
+        $_SESSION['shipping_session_flag'] = true;
+      }
+      tep_redirect(tep_href_link($_SESSION['shipping_page_str'], '', 'SSL'));
+   }
   }
 
   if (isset($_GET['action']) && ($_GET['action'] == 'update')) {
@@ -119,7 +130,7 @@
                       </table></td> 
                   </tr> 
                   <tr class="box_des"> 
-                    <td align="center" nowrap="nowrap" width="20%" class="checkoutBarFrom"><?php echo CHECKOUT_BAR_PRODUCTS; ?></td>
+                    <td align="center" nowrap="nowrap" width="20%" class="checkoutBarFrom"><?php echo CHECKOUT_BAR_OPTION; ?></td>
                     <td align="center" nowrap="nowrap" width="20%" class="checkoutBarFrom"><?php echo CHECKOUT_BAR_DELIVERY; ?></td> 
                     <td align="center" nowrap="nowrap" width="20%" class="checkoutBarFrom"><?php echo CHECKOUT_BAR_PAYMENT; ?></td> 
                     <td align="center" nowrap="nowrap" width="20%" class="checkoutBarFrom"><?php echo CHECKOUT_BAR_CONFIRMATION; ?></td> 
@@ -186,7 +197,6 @@
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
   <!-- footer_eof -->
 
-<!-- Google Code for &#27880;&#25991;-&#23436;&#20102; Conversion Page -->
 <script type="text/javascript">
 /* <![CDATA[ */
 var google_conversion_id = 1014240534;
@@ -214,7 +224,7 @@ if($guestchk == '1') {
   tep_session_unregister('customer_id');
   tep_session_unregister('customer_default_address_id');
   tep_session_unregister('customer_first_name');
-  tep_session_unregister('customer_last_name'); //Add Japanese osCommerce
+  tep_session_unregister('customer_last_name');
   tep_session_unregister('customer_country_id');
   tep_session_unregister('customer_zone_id');
   tep_session_unregister('comments');

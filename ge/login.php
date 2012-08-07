@@ -199,6 +199,11 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
           if (!tep_validate_password($password, $link_customer_res['customers_password'])) {
             $_GET['login'] = 'failture';
           } else {
+            if($link_customer_res['reset_flag'] and $link_customer_res['reset_success']!=1 ){
+	       $_SESSION['reset_flag'] = true;
+               $_SESSION['reset_customers_id'] = $link_customer_res['customers_id'];
+       	       tep_redirect(tep_href_link(FILENAME_DEFAULT));	    
+	    }
             if (SESSION_RECREATE == 'True') {
               tep_session_recreate();
             }
@@ -215,13 +220,13 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
             $customer_id = $link_customer_res['customers_id'];
             $customer_default_address_id = $link_customer_res['customers_default_address_id'];
             $customer_first_name = $link_customer_res['customers_firstname'];
-            $customer_last_name = $link_customer_res['customers_lastname']; // 2003.03.08 Add Japanese osCommerce
+            $customer_last_name = $link_customer_res['customers_lastname'];
             $customer_country_id = $check_country['entry_country_id'];
             $customer_zone_id = $check_country['entry_zone_id'];
             tep_session_register('customer_id');
             tep_session_register('customer_default_address_id');
             tep_session_register('customer_first_name');
-            tep_session_register('customer_last_name'); // 2003.03.08 Add Japanese osCommerce
+            tep_session_register('customer_last_name'); 
             tep_session_register('customer_country_id');
             tep_session_register('customer_zone_id');
             $customer_emailaddress = $email_address;
@@ -302,7 +307,7 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
         $customer_id = $check_customer['customers_id'];
         $customer_default_address_id = $check_customer['customers_default_address_id'];
         $customer_first_name = $check_customer['customers_firstname'];
-        $customer_last_name = $check_customer['customers_lastname']; // 2003.03.08 Add Japanese osCommerce
+        $customer_last_name = $check_customer['customers_lastname'];
         $customer_country_id = $check_country['entry_country_id'];
         $customer_zone_id = $check_country['entry_zone_id'];
         $customer_emailaddress = $email_address;
@@ -310,7 +315,7 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
         tep_session_register('customer_id');
         tep_session_register('customer_default_address_id');
         tep_session_register('customer_first_name');
-        tep_session_register('customer_last_name'); // 2003.03.08 Add Japanese osCommerce
+        tep_session_register('customer_last_name');
         tep_session_register('customer_country_id');
         tep_session_register('customer_zone_id');
         tep_session_register('customer_emailaddress');
@@ -363,7 +368,7 @@ if(isset($_POST['login_type']) && $_POST['login_type'] == 'new') {
 // restore cart contents
         $cart->restore_contents();
 	if($_SESSION['referer']!=""){
-		  tep_db_query("update customers set referer='".tep_db_prepare_input($_SESSION['referer'])."'   where customers_id='".$customer_id."'");
+		  tep_db_query("update ".TABLE_CUSTOMERS." set referer='".tep_db_prepare_input($_SESSION['referer'])."'   where customers_id='".$customer_id."'");
 		  unset($_SESSION['referer']);
 		                 }
         if (sizeof($navigation->snapshot) > 0) {
@@ -473,7 +478,7 @@ if(isset($_GET['login']) && ($_GET['login'] == 'ip_error')){
         </tr>
       <?php }?> 
         <tr>
-          <td><!--<?php echo tep_draw_form('login', tep_href_link(FILENAME_LOGIN, 'action=process', 'SSL')); ?>-->
+          <td>
           <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2">
             <tr>
               <td colspan="2" valign="top" class="main">
@@ -571,11 +576,6 @@ if(isset($_GET['login']) && ($_GET['login'] == 'ip_error')){
               <td align="right" valign="top"></td>
             </tr>
           </table>
-          </td>
-        </tr>
-        <tr>
-          <td class="smallText"><!--<?php echo tep_draw_form('login', tep_href_link(FILENAME_LOGIN, 'action=process', 'SSL')); ?>-->
-         
           </td>
         </tr>
       </table>

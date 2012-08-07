@@ -118,17 +118,16 @@ $(document).ready(function(){
 </script>
 </head>
 <body>
-
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-<!-- header_eof -->
-<!-- body -->
+<!-- header_eof //-->
+<!-- body //-->
 <div id="main">
     <div id="l_menu">
-      <!-- left_navigation -->
+      <!-- left_navigation //-->
       <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-      <!-- left_navigation_eof -->
+      <!-- left_navigation_eof //-->
     </div>
-    <!-- body_text -->
+    <!-- body_text //-->
     <div id="content">
 <?php
   if ($valid_product == false) {
@@ -139,18 +138,18 @@ $(document).ready(function(){
 <?php
   } else {
 ?>
-      <h1 class="pageHeading"><?php echo $po_game_c . '&nbsp;' . $product_info['products_name']; ?>を予約する</h1>
-            <div class="comment_preoder">
+      <h1 class="pageHeading"><?php echo $po_game_c . '&nbsp;' . $product_info['products_name'].TEXT_PREORDER_BOOK; ?></h1>
+            <div class="comment">
       <p>
-        <?php echo STORE_NAME;?>では、<?php echo $po_game_c; ?>の予約サービスを行っております。<br> ご希望する数量が弊社在庫にある場合は「
+        <?php echo STORE_NAME.TEXT_PREORDER_IN;?><?php echo $po_game_c.TEXT_PREORDER_BOOK_INFO; ?>
         <?php 
         if ($product_info['products_status'] == 0 || $product_info['products_status'] == 3)  {
           echo $product_info['products_name']; 
         } else {
           echo '<a href="' .  tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' .  $product_info['products_id']) . '">' .  $product_info['products_name'].'</a>';
         }
+        echo TEXT_PREORDER_BOOK_INFO_END;
         ?>
-        」をクリックしてお手続きください。
       </p>
 <?php
     $error = false;
@@ -238,22 +237,51 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
       $_POST['quantity'] = tep_an_zen_to_han($_POST['quantity']); 
       $preorder_id = date('Ymd').'-'.date('His').tep_get_preorder_end_num(); 
       $redirect_single = 0; 
+      $max_op_len = 0;
+      $max_op_array = array();
+      $mail_option_str = '';
+      foreach ($_POST as $mo_key => $mo_value) {
+        $m_op_str = substr($mo_key, 0, 3);
+        if ($m_op_str == 'op_') {
+          $m_op_info = explode('_', $mo_key); 
+          $item_m_raw = tep_db_query("select front_title from ".TABLE_OPTION_ITEM." where name = '".$m_op_info['1']."' and id = '".$m_op_info[3]."'"); 
+          $item_m_res = tep_db_fetch_array($item_m_raw);
+          if ($item_m_res) {
+            $max_op_array[] = mb_strlen($item_m_res['front_title'], 'utf-8'); 
+          }
+        }
+      }
+      
+      if (!empty($max_op_array)) {
+        $max_op_len = max($max_op_array);
+      }
+      foreach ($_POST as $mao_key => $mao_value) {
+        $ma_op_str = substr($mao_key, 0, 3);
+        if ($ma_op_str == 'op_') {
+          $ma_op_info = explode('_', $mao_key); 
+          $item_f_raw = tep_db_query("select front_title from ".TABLE_OPTION_ITEM." where name = '".$ma_op_info['1']."' and id = '".$ma_op_info[3]."'"); 
+          $item_f_res = tep_db_fetch_array($item_f_raw);
+          if ($item_f_res) {
+            $mail_option_str .= $item_f_res['front_title'].str_repeat('　', intval($max_op_len - mb_strlen($item_f_res['front_title'], 'utf-8'))).'：'.str_replace(array("<br>", "<BR>", "\r", "\n", "\r\n"), "", stripslashes($mao_value))."\n"; 
+          }
+        }
+      }
+      
       if (tep_session_is_registered('customer_id')) {
           $preorder_email_text = PREORDER_MAIL_CONTENT; 
           
-          $replace_info_arr = array('${PRODUCTS_NAME}', '${PRODUCTS_QUANTITY}', '${EFFECTIVE_TIME}', '${PAY}', '${NAME}', '${SITE_NAME}', '${SITE_URL}', '${PREORDER_N}', '${ORDER_COMMENT}'); 
+          $replace_info_arr = array('${PRODUCTS_NAME}', '${PRODUCTS_QUANTITY}', '${EFFECTIVE_TIME}', '${PAY}', '${NAME}', '${SITE_NAME}', '${SITE_URL}', '${PREORDER_N}', '${ORDER_COMMENT}', '${PRODUCTS_ATTRIBUTES}'); 
           $predate_str_arr = explode('-', $_POST['predate']);
-          $predate_str = $predate_str_arr[0].PREORDER_YEAR_TEXT.$predate_str_arr[1].PREORDER_MONTH_TEXT.$predate_str_arr[2].PREORDER_MONTH_TEXT;
+          $predate_str = $predate_str_arr[0].DATE_YEAR_TEXT.$predate_str_arr[1].DATE_MONTH_TEXT.$predate_str_arr[2].DATE_MONTH_TEXT;
         
           $payment_name_class = new $_POST['pre_payment'];
           $payment_name_str = $payment_name_class->title;
           
-          $pre_replace_info_arr = array($_POST['products_name'], $_POST['quantity'], $predate_str, $payment_name_str, tep_get_fullname($account_values['customers_firstname'],$account_values['customers_lastname']), STORE_NAME, HTTP_SERVER, $preorder_id, $_POST['yourmessage']);
+          $pre_replace_info_arr = array($_POST['products_name'], $_POST['quantity'], $predate_str, $payment_name_str, tep_get_fullname($account_values['customers_firstname'],$account_values['customers_lastname']), STORE_NAME, HTTP_SERVER, $preorder_id, $_POST['yourmessage'], $mail_option_str);
           
           $preorder_email_text = str_replace($replace_info_arr, $pre_replace_info_arr, $preorder_email_text);
           
           $preorder_email_subject = str_replace('${SITE_NAME}', STORE_NAME, PREORDER_MAIL_SUBJECT); 
-          
           tep_mail(tep_get_fullname($account_values['customers_firstname'],$account_values['customers_lastname']), $account_values['customers_email_address'], $preorder_email_subject, $preorder_email_text, STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS); 
           tep_mail('', SENTMAIL_ADDRESS, $preorder_email_subject, $preorder_email_text, tep_get_fullname($account_values['customers_firstname'],$account_values['customers_lastname']), $account_values['customers_email_address']); 
       } else {
@@ -281,14 +309,14 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
           } else {
             $preorder_email_text = PREORDER_MAIL_CONTENT; 
             
-            $replace_info_arr = array('${PRODUCTS_NAME}', '${PRODUCTS_QUANTITY}', '${EFFECTIVE_TIME}', '${PAY}', '${NAME}', '${SITE_NAME}', '${SITE_URL}', '${PREORDER_N}', '${ORDER_COMMENT}'); 
+            $replace_info_arr = array('${PRODUCTS_NAME}', '${PRODUCTS_QUANTITY}', '${EFFECTIVE_TIME}', '${PAY}', '${NAME}', '${SITE_NAME}', '${SITE_URL}', '${PREORDER_N}', '${ORDER_COMMENT}', '${PRODUCTS_ATTRIBUTES}'); 
             $predate_str_arr = explode('-', $_POST['predate']);
-            $predate_str = $predate_str_arr[0].PREORDER_YEAR_TEXT.$predate_str_arr[1].PREORDER_MONTH_TEXT.$predate_str_arr[2].PREORDER_MONTH_TEXT;
+            $predate_str = $predate_str_arr[0].DATE_YEAR_TEXT.$predate_str_arr[1].DATE_MONTH_TEXT.$predate_str_arr[2].DATE_MONTH_TEXT;
             
             $payment_name_class = new $_POST['pre_payment'];
             $payment_name_str = $payment_name_class->title;
               
-            $pre_replace_info_arr = array($_POST['products_name'], $_POST['quantity'], $predate_str, $payment_name_str, $from_name, STORE_NAME, HTTP_SERVER, $preorder_id, $_POST['yourmessage']);
+            $pre_replace_info_arr = array($_POST['products_name'], $_POST['quantity'], $predate_str, $payment_name_str, $from_name, STORE_NAME, HTTP_SERVER, $preorder_id, $_POST['yourmessage'], $mail_option_str);
             
             $preorder_email_text = str_replace($replace_info_arr, $pre_replace_info_arr, $preorder_email_text);
             
@@ -347,13 +375,12 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
       <?php echo tep_draw_form('preorder_product', tep_href_link(FILENAME_PREORDER_PAYMENT, 'action=process')) .  tep_draw_hidden_field('products_id', $product_info['products_id']).tep_draw_hidden_field('products_name', $product_info['products_name']); ?>
 
       <p>
-        弊社在庫にお客様がご希望する数量がない場合は、下記の必要事項をご入力の上お申し込みください。<br>
-        予約手続きが完了いたしますと、入荷次第、お客様へ優先的にご案内いたします。
+        <?php echo TEXT_PREORDER_BOOK_TEXT;?>
       </p>
-      <p class="red"><b>ご予約・お見積りは無料ですので、お気軽にお問い合わせください。</b></p>
+        <p class="red"><b><?php echo TEXT_PREORDER_BOOK_TEXT_END;?></b></p>
 <?php
       if($error == true) {
-        echo '<span class="errorText"><b>入力した内容に誤りがございます。正しく入力してください。</span></b><br><br>';
+        echo '<span class="errorText"><b>'.TEXT_INPUT_ERROR_INFO.'</span></b><br><br>';
       }
 ?>
     <?php
@@ -426,8 +453,8 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
         <?php 
         }
         ?>
-      <?php }?>
-       </div> 
+      <?php }?> 
+      </div>
       <br>
       <div class="formAreaTitle"><?php echo $product_info['products_name'].PREORDER_EXPECT_CTITLE; ?></div>
       <table width="100%" cellpadding="2" cellspacing="0" border="0" class="formArea">
@@ -449,6 +476,12 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
               echo tep_draw_hidden_field('quantity', $_POST['quantity']); 
               echo tep_draw_hidden_field('predate', $_POST['predate']); 
               echo tep_draw_hidden_field('preorder_subtotal', $_POST['preorder_subtotal']); 
+              foreach ($_POST as $op_s_key => $op_s_value) {
+                $ops_single_str = substr($op_s_key, 0, 3);
+                if ($ops_single_str == 'op_') {
+                  echo tep_draw_hidden_field($op_s_key, stripslashes($op_s_value)); 
+                }
+              }
             ?>
             <?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?>
           </td>
@@ -464,28 +497,31 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
        }
        echo tep_draw_hidden_field('quantity', $_POST['quantity']); 
        echo tep_draw_hidden_field('predate', $_POST['predate']); 
+       foreach ($_POST as $op_key => $op_value) {
+         $op_single_str = substr($op_key, 0, 3);
+         if ($op_single_str == 'op_') {
+           echo tep_draw_hidden_field($op_key, stripslashes($op_value)); 
+         }
+       }
     ?>
     </form>
 <?php
     }
   }
-?>
-   
+?></div>
         <p class="pageBottom"></p>
-    </div>      
-    <!-- body_text_eof -->
-	</div>
-    <div id="r_menu">
-      <!-- right_navigation -->
-      <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?>
-      <!-- right_navigation_eof -->
     </div>
-   
-<!-- body_eof -->
-<!-- footer -->
+    <!-- body_text_eof //-->
+    <div id="r_menu">
+      <!-- right_navigation //-->
+      <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?>
+      <!-- right_navigation_eof //-->
+    </div>
+
+<!-- body_eof //-->
+<!-- footer //-->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-<!-- footer_eof -->
-</div> 
+<!-- footer_eof //-->
 </div>
 </body>
 </html>

@@ -8,7 +8,7 @@ define('CPREORDER_SUCCESS_NAVBAR_TITLE_FETCH', '注文');
 define('CPREORDER_SUCCESS_NAVBAR_TITLE_CONFIRM', '最終確認');
 
 define('CPREORDER_SUCCESS_TEXT', '<span class="red"><b>「注文受付」メールをお送りしましたのでご確認ください。</b></span><br>
-<b>10分経過してもメールが届かない場合は、再送いたしますのでご連絡ください。</b><br>
+<p><b>10分経過してもメールが届かない場合は、再送いたしますのでご連絡ください。</b></p>
 注意：メールが届かないときは、以下のことを必ずご確認ください。<br>
 ＜迷惑メールフォルダの確認＞<br>
 弊社のメールが 「迷惑メールフォルダ」や「ゴミ箱」に振り分けされ見落としていませんか？<br>
@@ -26,7 +26,7 @@ define('CPREORDER_SUCCESS_TEXT', '<span class="red"><b>「注文受付」メー�
 トレードの際は、キャラクター名を十分ご確認いただきますようお願い申し上げます。弊社キャラクター以外へトレードされた場合、弊社では一切の保障をいたしかねます。
 <div class="underline">&nbsp;</div>
 <img src="images/stock.gif" alt="販売アイコン" width="50" height="50"><b>「販売」商品について</b><br>
-お客様ご指定の取引日時にログインをお願いいたします。10分経過しましても弊社キャラクターが現れない場合は、サポートセンターへお問い合わせください。
+お客様ご指定のお届け日時にログインをお願いいたします。10分経過しましても弊社キャラクターが現れない場合は、サポートセンターへお問い合わせください。
 <br><br>
 <div class="dot">&nbsp;</div>
 <br>
@@ -36,6 +36,9 @@ define('CPREORDER_SUCCESS_TEXT', '<span class="red"><b>「注文受付」メー�
 <div class="dot">&nbsp;</div>
 <br>
 <img src="images/sell.gif" alt="買取アイコン" width="50" height="50"><b>「買取」商品について</b><br>
-お客様ご指定の取引日時にログインをお願いいたします。10分経過しましても弊社キャラクターが現れない場合は、サポートセンターへお問い合わせください。
+お客様ご指定のお届け日時にログインをお願いいたします。10分経過しましても弊社キャラクターが現れない場合は、サポートセンターへお問い合わせください。
 <br><br>
 <div class="dot">&nbsp;</div>');
+define('PREORDER_TRADER_LINE_TITLE', '取引情報');
+define('PREORDER_CONFIRM_LINE_TITLE', '最終確認');
+define('PREORDER_FINISH_LINE_TITLE', '手続き完了！');

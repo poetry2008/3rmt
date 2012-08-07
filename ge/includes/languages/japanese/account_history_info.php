@@ -9,7 +9,7 @@ define('NAVBAR_TITLE_3', '注文情報');
 
 define('HEADING_TITLE', '注文情報');
 
-define('HEADING_ORDER_NUMBER', 'ご注文番号 #%s');
+define('HEADING_ORDER_NUMBER', '注文番号 #%s');
 define('HEADING_ORDER_DATE', '注文日:');
 define('HEADING_ORDER_TOTAL', '注文総額:');
 
@@ -20,7 +20,7 @@ define('HEADING_PRODUCTS', '数量 / 商品名');
 define('HEADING_TAX', '消費税');
 define('HEADING_TOTAL', '合計');
 
-define('HEADING_BILLING_INFORMATION', 'ご請求先情報');
+define('HEADING_BILLING_INFORMATION', 'ご請求情報');
 define('HEADING_BILLING_ADDRESS', 'お名前');
 define('HEADING_PAYMENT_METHOD', '支払方法');
 
@@ -33,3 +33,4 @@ define('TABLE_HEADING_DOWNLOAD_COUNT', ' 回ダウンロードできます');
 define('HEADING_DOWNLOAD', 'ダウンロード・リンク');
 define('TEXT_FEE_HANDLE', '手数料:');
 define('MONEY_UNIT_ATEXT', '円');
+define('TEXT_SHIPPING_FEE','配送料:');

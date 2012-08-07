@@ -41,7 +41,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder2.php'));
           $time     = strtotime($datetime);
           if ($date && $hour && $minute && ($time < (time() - MINUTES * 60) or $time > (time() + (7*86400)))) {
             // time error
-            echo '<div><div class="comment">取引時間は前もって一時間以上に設定してください <div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" alt=""></a></div></div>';
+            echo '<div><div class="comment">お届け時間は前もって一時間以上に設定してください <div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" alt=""></a></div></div>';
             $email_error = false;
           } else if($name==''||$date==''||$minute==''||$hour==''||
               $character==''||$product==''){
@@ -98,7 +98,6 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder2.php'));
 if(!isset($email_error)||$email_error == true){?>
     <div class="comment">
       <form action="reorder2.php" method="post" name="order">
-        <input type="hidden" name="dummy" value="あいうえお眉幅">
         <table class="information_table">
           <tr>
             <td width='120'>お名前</td>
@@ -155,7 +154,7 @@ if(!isset($email_error)||$email_error == true){?>
  }?></span></td>
           </tr>
           <tr>
-            <td>取引日時</td>
+            <td>お届け日時</td>
             <td>
               <select name='date' id='new_date' onChange="selectDate('<?php echo date('H');?>', '<?php echo date('i');?>')">
                 <option value=''>--</option>
@@ -175,7 +174,7 @@ if(!isset($email_error)||$email_error == true){?>
      echo TEXT_REORDER2_TORIHIKI_ERROR;
    }?></span>
               <br >
-              <font color="red">ご希望のお時間に添えない場合は、弊社より「取引時間」をご連絡させていただきます。</font>
+              <font color="red">ご希望のお時間に添えない場合は、弊社より「お届け時間」をご連絡させていただきます。</font>
             </td>
           </tr>
           <tr>

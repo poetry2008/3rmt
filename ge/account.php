@@ -2,12 +2,6 @@
 /*
   $Id$
 
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
   require('includes/application_top.php');
@@ -69,9 +63,7 @@
     ");
     $point = tep_db_fetch_array($point_query);
     ?>
-        <tr>
-          <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
-        </tr>
+        
         <tr>
           <td><table class="box_des" border="0" cellpadding="2" cellspacing="0" width="100%">
             <tr>

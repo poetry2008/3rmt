@@ -99,7 +99,7 @@ echo tep_image(DIR_WS_IMAGES . 'checkout_bullet.gif');
 <tr class="box_des"> 
    <td align="center" nowrap="nowrap" width="20%" class="checkoutBarFrom">
    <?php
-   echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_PRODUCTS, '', 'SSL') . '" class="checkoutBarFrom">' . CHECKOUT_BAR_PRODUCTS . '</a>'; 
+   echo '<a href="' . tep_href_link(FILENAME_CHECKOUT_OPTION, '', 'SSL') . '" class="checkoutBarFrom">' . CHECKOUT_BAR_OPTION . '</a>'; 
 ?>
 </td>
 <td align="center" nowrap="nowrap" width="20%" class="checkoutBarFrom">
@@ -232,7 +232,15 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() > 0) {//poin
         <tr> 
         <td><table border="0" width="100%" cellspacing="0" cellpadding="2" class="box_des"> 
         <tr> 
-        <td class="main"><input type="text" value="<?php echo $campaign_error?$campaign_error_str:0;?>" name="point" size="24" style="text-align:right"> 
+        <td class="main">
+        <?php
+          if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+            $default_point_value = $campaign_error?$campaign_error_str:$_POST['point']; 
+          } else {
+            $default_point_value = (isset($_SESSION['hc_point']))?$_SESSION['hc_point']:((isset($_SESSION['h_point']))?$_SESSION['h_point']:($campaign_error?$campaign_error_str:0)); 
+          }
+        ?>
+        <input type="text" value="<?php echo $default_point_value;?>" name="point" size="24" style="text-align:right"> 
         </td> 
         <td class="main" align="right"> 
         <?php echo isset($current_point['point'])?$current_point['point']:$point['point']; ?><?php echo TEXT_POINT_READ;?>
@@ -259,22 +267,30 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() > 0) {//poin
                       echo '<font color="#ff0000">'.CAMPAIGN_ERROR_TEXT.'</font>'; 
                     }
                     ?>
-    </td> 
-        </tr> 
-        </table></td> 
-        </tr> 
-        <tr> 
-        <td><table border="0" width="95%" cellspacing="1" cellpadding="2" class="formArea"> 
-        <tr> 
-        <td><table border="0" width="100%" cellspacing="0" cellpadding="2" class="box_des"> 
-        <tr> 
-        <td class="main"><input type="text" value="<?php echo $campaign_error?$campaign_error_str:0;?>" name="camp_point" size="24" style="text-align:right"> 
-        </td> 
-        </tr> 
-        </table></td> 
-        </tr> 
-        </table></td> 
-        </tr>
+      </td> 
+      </tr> 
+      </table></td> 
+      </tr> 
+      <tr> 
+      <td><table border="0" width="95%" cellspacing="1" cellpadding="2" class="formArea"> 
+      <tr> 
+      <td><table border="0" width="100%" cellspacing="0" cellpadding="2" class="box_des"> 
+      <tr> 
+      <td class="main">
+      <?php
+      if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $default_point_value = $campaign_error?$campaign_error_str:0; 
+      } else {
+        $default_point_value = (isset($_SESSION['hc_camp_point']))?$_SESSION['hc_camp_point']:($campaign_error?$campaign_error_str:0); 
+      }
+      ?>
+      <input type="text" value="<?php echo $default_point_value;?>" name="camp_point" size="24" style="text-align:right"> 
+      </td> 
+      </tr> 
+      </table></td> 
+      </tr> 
+      </table></td> 
+      </tr>
 <?php
   }
 }

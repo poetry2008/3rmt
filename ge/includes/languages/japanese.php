@@ -20,7 +20,7 @@ if (extension_loaded('mbstring')) {
 // on FreeBSD try 'en_US.ISO_8859-1'
 // on Windows try 'en', or 'English'
 //@setlocale(LC_TIME, 'ja_JP');
-//@setlocale(LC_TIME, 'en_US)');
+//@setlocale(LC_TIME, 'en_US');
 define('DATE_FORMAT_SHORT', '%Y/%m/%d');  // this is used for strftime()
 define('DATE_FORMAT_LONG', '%Y年%m月%d日 %A'); // this is used for strftime()
 define('DATE_FORMAT', 'Y/m/d'); // this is used for date()
@@ -77,7 +77,7 @@ define('MENU_MU','メーカー一覧');
 
 // footer text in includes/footer.php
 define('FOOTER_TEXT_REQUESTS_SINCE', 'リクエスト ('); // 'requests since'
-define('FOOTER_TEXT_REQUESTS_SINCE_ADD', ' より)'); // 'requests since' Add Japanese osCommerce
+define('FOOTER_TEXT_REQUESTS_SINCE_ADD', ' より)');
 
 // text for gender
 define('MALE', '男性');
@@ -103,7 +103,7 @@ define('BOX_SEARCH_TEXT', 'キーワードを入力して商品を探せます')
 define('BOX_SEARCH_ADVANCED_SEARCH', '詳細検索');
 
 // specials box text in includes/boxes/specials.php
-define('BOX_HEADING_SPECIALS', '特価販売');
+define('BOX_HEADING_SPECIALS', '特価商品');
 
 // reviews box text in includes/boxes/reviews.php
 define('BOX_HEADING_REVIEWS', 'レビュー');
@@ -123,7 +123,7 @@ define('BOX_HEADING_BESTSELLERS', 'ランキング');
 define('BOX_HEADING_BESTSELLERS_IN', '&nbsp;&nbsp;<br>のランキング');
 
 // notifications box text in includes/boxes/products_notifications.php
-define('BOX_HEADING_NOTIFICATIONS', '電子メールでお知らせ');
+define('BOX_HEADING_NOTIFICATIONS', 'メールでお知らせ');
 define('BOX_NOTIFICATIONS_NOTIFY', '<b>%s</b>の最新情報を知らせて!');
 define('BOX_NOTIFICATIONS_NOTIFY_REMOVE', '<b>%s</b>の最新情報を知らせないで');
 
@@ -155,8 +155,7 @@ define('BOX_HEADING_TELL_A_FRIEND', '友達に知らせる');
 define('BOX_TELL_A_FRIEND_TEXT', 'この商品のURLを友達にメールする');
 
 // checkout procedure text
-define('CHECKOUT_BAR_PRODUCTS',    'キャラクター名');
-define('CHECKOUT_BAR_DELIVERY',    '取引日時');
+define('CHECKOUT_BAR_DELIVERY',    '配送方法');
 define('CHECKOUT_BAR_PAYMENT',     '支払方法');
 define('CHECKOUT_BAR_CONFIRMATION','最終確認');
 define('CHECKOUT_BAR_FINISHED',    '手続完了!');
@@ -220,7 +219,7 @@ define('ENTRY_FIRST_NAME_F_ERROR', '&nbsp;<small><font color="#FF0000">少なく
 define('ENTRY_FIRST_NAME_F_TEXT', '&nbsp;<small>(例. タロウ) <font color="#AABBDD">必須</font></small>');
 define('ENTRY_LAST_NAME_F', '姓(フリガナ):');
 define('ENTRY_LAST_NAME_F_ERROR', '&nbsp;<small><font color="#FF0000">少なくても ' . ENTRY_LAST_NAME_MIN_LENGTH . ' 文字</font></small>');
-define('ENTRY_LAST_NAME_F_TEXT', '&nbsp;<small>(例. タナカ) <font color="#AABBDD">必須</font></small>');
+define('ENTRY_LAST_NAME_F_TEXT', '&nbsp;<small>(例. ヤマダ) <font color="#AABBDD">必須</font></small>');
 
 define('ENTRY_DATE_OF_BIRTH', '生年月日:');
 define('ENTRY_DATE_OF_BIRTH_ERROR', '&nbsp;<small><font color="#FF0000">(例. 1970/05/21)</font></small>');
@@ -294,7 +293,7 @@ define('IMAGE_BUTTON_BACK', '前に戻る');
 define('IMAGE_BUTTON_CHANGE_ADDRESS', 'アドレスを変更');
 define('IMAGE_BUTTON_CHECKOUT', 'レジに進む');
 define('IMAGE_BUTTON_CONFIRM_ORDER', '注文する!');
-define('IMAGE_BUTTON_CONTINUE', '次に進む');
+define('IMAGE_BUTTON_CONTINUE', '次へ進む');
 define('IMAGE_BUTTON_CONTINUE_SHOPPING', 'ショッピングを続ける');
 define('IMAGE_BUTTON_DELETE', '削除する');
 define('IMAGE_BUTTON_EDIT_ACCOUNT', 'お客様情報の編集');
@@ -328,7 +327,7 @@ define('TEXT_DESCENDINGLY', '降順');
 define('TEXT_ASCENDINGLY', '昇順');
 define('TEXT_BY', ' &sim; ');   //by
 
-define('TEXT_REVIEW_BY', '投稿者 %s');
+define('TEXT_REVIEW_BY', '投稿者： %s');
 define('TEXT_REVIEW_WORD_COUNT', '%s 文字');
 define('TEXT_REVIEW_RATING', '評価: %s [%s]');
 define('TEXT_REVIEW_DATE_ADDED', '投稿日: %s');
@@ -339,6 +338,8 @@ define('TEXT_NO_NEW_PRODUCTS', '現在商品は登録されていません...');
 define('TEXT_UNKNOWN_TAX_RATE', '税率不明');
 
 define('TEXT_REQUIRED', '必須');
+define('TEXT_WEIGHT_ERROR','※要問合※&nbsp;総重量が規定の範囲を超えました。');
+define('TEXT_WEIGHT_ERROR_ONE','個以内に個数を変更してください。');
 
 define('TEXT_TIME_SPECIFY', 'お届けする時間帯: '); // add for Japanese update
 
@@ -354,28 +355,10 @@ define('TEXT_CCVAL_ERROR_INVALID_DATE', 'クレジットカード有効期限が
 define('TEXT_CCVAL_ERROR_INVALID_NUMBER', 'クレジットカードナンバーが正しくありません。<br>ご確認後もう一度入力してください。');
 define('TEXT_CCVAL_ERROR_UNKNOWN_CARD', '入力したクレジットカードナンバーの最初の4桁は: %s です。<br>ナンバーが正しい場合このカードの取扱いがありません。<br>間違っている場合はご確認後もう一度入力してください。');
 
-/*
-  The following copyright announcement can only be
-  appropriately modified or removed if the layout of
-  the site theme has been modified to distinguish
-  itself from the default osCommerce-copyrighted
-  theme.
-
-  For more information please read the following
-  Frequently Asked Questions entry on the osCommerce
-  support site:
-
-  http://www.oscommerce.com/community.php/faq,26/q,50
-
-  Please leave this comment intact together with the
-  following copyright announcement.
-*/
 define('FOOTER_TEXT_BODY', C_FOOTER_COPY_RIGHT);
 
-define('EMAIL_SIGNATURE',C_EMAIL_FOOTER);  //Add Japanese osCommerce
+define('EMAIL_SIGNATURE',C_EMAIL_FOOTER);
 
-// Include OSC-AFFILIATE 
-//include("affiliate_japanese.php");
 
 //Add languages
 //------------------------
@@ -434,28 +417,51 @@ define('CHECK_EMAIL_EXISTS_ERROR', 'エラーが発生しました。<br>お手�
 define('SENDMAIL_SUCCESS_COMMENT_TEXT', '正常に受信できる場合：「送信」後5分以内で'.STORE_NAME.'からの確認メールが届きます。<br>受信できない場合：「送信」後5分以上経過しても受信できない場合は、スパムフィルター等で受け取りを拒否されている可能性が高いです。');
 define('ALREADY_SEND_MAIL_TEXT', 'エラーが発生しました。\nお手数をお掛けいたしますが、トップページに戻り再度やり直してください');
 
-define('PREORDER_SELECT_EMPTY_OPTION', '希望日を選択してください');
-define('PREORDER_YEAR_TEXT', '年');
-define('PREORDER_MONTH_TEXT', '月');
-define('PREORDER_DAY_TEXT', '日');
-define('PREORDER_MONDAY_TEXT', '月曜日');
-define('PREORDER_TUESDAY_TEXT', '火曜日');
-define('PREORDER_WENSDAY_TEXT', '水曜日');
-define('PREORDER_THIRSDAY_TEXT', '木曜日');
-define('PREORDER_FRIDAY_TEXT', '金曜日');
-define('PREORDER_STATURDAY_TEXT', '土曜日');
-define('PREORDER_SUNDAY_TEXT', '日曜日');
-define('PREORDER_HOUR_TEXT', '時');
-define('PREORDER_MIN_TEXT', '分');
-define('PREORDER_TRADER_LINE_TITLE', '取引情報');
-define('PREORDER_CONFIRM_LINE_TITLE', '最終確認');
-define('PREORDER_FINISH_LINE_TITLE', '手続き完了！');
+define('DATE_YEAR_TEXT', '年');
+define('DATE_MONTH_TEXT', '月');
+define('DATE_DAY_TEXT', '日');
+define('TEXT_DATE_MONDAY', '月曜日');
+define('TEXT_DATE_TUESDAY', '火曜日');
+define('TEXT_DATE_WEDNESDAY', '水曜日');
+define('TEXT_DATE_THURSDAY', '木曜日');
+define('TEXT_DATE_FRIDAY', '金曜日');
+define('TEXT_DATE_STATURDAY', '土曜日');
+define('TEXT_DATE_SUNDAY', '日曜日');
+define('TIME_HOUR_TEXT', '時');
+define('TIME_MIN_TEXT', '分');
 define('JPMONEY_UNIT_TEXT', '円');
+define('CHECKOUT_BAR_OPTION', '商品オプション');
+define('TEXT_RIDE_RSS','×');
 define('ENTRY_NO_USE_OLD_PASSWORD', '&nbsp;<font color="#FF0000">安全のため、古いパスワードと違うパスワードを設定してください。</font>');
 define('ENTRY_PASSWORD_IS_NUM', '&nbsp;<font color="#FF0000">英字（abcdef...z）が1文字以上必要です。<br>&nbsp;&nbsp;英字と数字を組み合わせて設定してください。</font>');
 define('ENTRY_PASSWORD_IS_ALPHA', '&nbsp;<font color="#FF0000">数字（0123456789）が1文字以上必要です。<br>&nbsp;&nbsp;英字と数字を組み合わせて設定してください。</font>');
 define('ENTRY_PASSWORD_IS_DIFFERENT', 'パスワードと再入力が違います。');
 define('ENTRY_PASSWORD_INFORM_READ_TEXT', '&nbsp;半角の英字、数字を組み合わせた'.ENTRY_PASSWORD_MIN_LENGTH.'文字以上を入力してください。<br>&nbsp;英字、数字がそれぞれ1文字以上を必要です。大文字と小文字は区別されます。<br>&nbsp;記号は入力できません。');
 define('TEXT_REORDER2_MUST_INPUT','<font color="red">必須項目</font>');
-define('TEXT_REORDER2_TORIHIKI_ERROR','<br><font color="red">【取引日時】を選択してください。</font>');
-
+define('TEXT_REORDER2_TORIHIKI_ERROR','<br><font color="red">【お届け日時】を選択してください。</font>');
+define('NUM_UNIT_TEXT', '個');
+define('TEXT_SESSION_ERROR_ALERT','不正なページ移動です。ご確認の上、再度入力してください。');
+define('TABLE_HEADING_MEMBER_TYPE_GUEST','ゲスト');
+define('TEXT_MEMBER','会員');
+define('TEXT_ORDERS_ERROR','エラー');
+define('TEXT_ORDERS_EMPTY_COMMENT','注文が失敗しました。再度、最初からご注文ください。<br>クレジットカード決済等、既に支払いが完了しているものに関してはサポートセンターへご連絡ください。');
+define('LOCATION_HREF_INDEX','トップページへ戻る');
+define('CONTACT_US','問い合わせする');
+define('ORDERS_SITE','注文書サイト:');
+define('ORDERS_TIME','取引日時:');
+define('ORDERS_OPTION','オプション:');
+define('CREATE_ORDERS_DATE','注文日:');
+define('CUSTOMER_TYPE','顧客種別:');
+define('CUSTOMER_NAME','顧客名:');
+define('ORDERS_EMAIL','E-Mail アドレス:');
+define('ORDERS_PAYMENT','支払方法:');
+define('CUSTOMER_IP','IPアドレス:');
+define('HOST_NAME','ホスト名:');
+define('USER_AGENT','ユーザーエージェント:');
+define('CUSTOMER_OS','OS:');
+define('BROWSER_TYPE','ブラウザの種類:');
+define('BROWSER_LANGUAGE','ブラウザの言語:');
+define('BROWSER_PC_LANGUAGE','パソコンの言語環境:');
+define('BROWSER_USER_LANGUAGE','ユーザーの言語環境:');
+define('TEXT_TIME_LINK', 'から');
+?>
