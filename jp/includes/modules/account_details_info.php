@@ -1,6 +1,12 @@
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
+<?php
+  $address_histroy_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id='". $_SESSION['customer_id'] ."'"); 
+  $address_histroy_num = tep_db_num_rows($address_histroy_query);
+  tep_db_free_result($address_histroy_query);
+?>
 <script type="text/javascript">
 <?php
+if($address_histroy_num > 0){
   $address_fixed_query = tep_db_query("select name_flag,fixed_option from ". TABLE_ADDRESS ." where fixed_option!='0' and status='0'");
   while($address_fixed_array = tep_db_fetch_array($address_fixed_query)){
 
@@ -145,6 +151,9 @@ function country_area_check(value,select_value){
     }
 
 }
+<?php
+  }
+?>
 
 function check_form(){
   var lastname = document.getElementsByName("lastname");
@@ -182,6 +191,9 @@ function check_form_address(){
   end_name.value = firstname[0].value;
 }
 
+<?php
+if($address_histroy_num > 0){
+?>
 function address_clear(){
   var arr_new = Array();
   var arr_comment = Array();
@@ -395,10 +407,7 @@ $(document).ready(function(){
   address_option_list(0);
 });
 <?php 
-  }
-  $address_histroy_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id='". $_SESSION['customer_id'] ."'"); 
-  $address_histroy_num = tep_db_num_rows($address_histroy_query);
-  tep_db_free_result($address_histroy_query);
+  } 
 ?>
 $(document).ready(function(){
   $("#"+country_fee_id).change(function(){
@@ -470,6 +479,9 @@ $(document).ready(function(){
    }
   ?>
 });
+<?php
+}
+?>
 </script>
 <?php
 /*
