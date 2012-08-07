@@ -153,7 +153,6 @@ define('BOX_HEADING_TELL_A_FRIEND', '友達に知らせる');
 define('BOX_TELL_A_FRIEND_TEXT', 'この商品のURLを友達にメールする');
 
 // checkout procedure text
-define('CHECKOUT_BAR_PRODUCTS',    'キャラクター名');
 define('CHECKOUT_BAR_DELIVERY',    '配送方法');
 define('CHECKOUT_BAR_PAYMENT',     '支払方法');
 define('CHECKOUT_BAR_CONFIRMATION','最終確認');
@@ -338,7 +337,7 @@ define('TEXT_UNKNOWN_TAX_RATE', '税率不明');
 
 define('TEXT_REQUIRED', '必須');
 define('TEXT_WEIGHT_ERROR','※要問合※&nbsp;総重量が規定の範囲を超えました。');
-define('TEXT_WEIGHT_ERROR_ONE','個以内に個数を変更してください。<br><b>予約注文を承っておりますので、お問い合わせをお願いいたします。</b>');
+define('TEXT_WEIGHT_ERROR_ONE','個以内に個数を変更してください。');
 
 define('TEXT_TIME_SPECIFY', 'お届けする時間帯: '); // add for Japanese update
 
@@ -472,4 +471,5 @@ define('BROWSER_TYPE','ブラウザの種類:');
 define('BROWSER_LANGUAGE','ブラウザの言語:');
 define('BROWSER_PC_LANGUAGE','パソコンの言語環境:');
 define('BROWSER_USER_LANGUAGE','ユーザーの言語環境:');
+define('TEXT_TIME_LINK', 'から');
 ?>

@@ -486,7 +486,7 @@ $mailoption['ORDER_TOTAL']      = $currencies->format(abs($preorder_total_print_
 
 $mailoption['TORIHIKIHOUHOU']   = $_SESSION['preorder_info_tori'];
 $mailoption['ORDER_PAYMENT']    = $preorder['payment_method'];
-$mailoption['ORDER_TTIME']      =  str_string($_SESSION['preorder_info_date']) .  $_SESSION['preorder_info_start_hour'] . '時' . $_SESSION['preorder_info_start_min'] .  '分~'. $_SESSION['preorder_info_end_hour'].'時'. $_SESSION['preorder_info_end_min'].'分　（24時間表記）';
+$mailoption['ORDER_TTIME']      =  str_string($_SESSION['preorder_info_date']) .  $_SESSION['preorder_info_start_hour'] . '時' . $_SESSION['preorder_info_start_min'] .  '分から'. $_SESSION['preorder_info_end_hour'].'時'. $_SESSION['preorder_info_end_min'].'分　（24時間表記）';
 
 $mailoption['EXTRA_COMMENT']   = '';
 $mailoption['ORDER_PRODUCTS']   = $products_ordered_text;
@@ -567,7 +567,7 @@ $email_printing_order = '';
 $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
 $email_printing_order .= 'サイト名　　　　：' . STORE_NAME . "\n";
 $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-$email_printing_order .= 'お届け日時　　　　：' .  str_string($_SESSION['preorder_info_date']) . $_SESSION['preorder_info_start_hour'] . '時' .  $_SESSION['preorder_info_start_min'] . '分~'. $_SESSION['preorder_info_end_hour'] .'時'. $_SESSION['preorder_info_end_min'] .'分　（24時間表記）' . "\n";
+$email_printing_order .= 'お届け日時　　　　：' .  str_string($_SESSION['preorder_info_date']) . $_SESSION['preorder_info_start_hour'] . '時' .  $_SESSION['preorder_info_start_min'] . '分から'. $_SESSION['preorder_info_end_hour'] .'時'. $_SESSION['preorder_info_end_min'] .'分　（24時間表記）' . "\n";
 $email_printing_order .= 'オプション　　　：' . $_SESSION['preorder_info_tori'] . "\n";
 $email_printing_order .=
 '------------------------------------------------------------------------' . "\n";

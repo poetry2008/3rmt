@@ -370,7 +370,7 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
   $email_order .= '------------------------------------------' . "\n";
   $email_order .= $products_ordered . "\n";
   $email_order .= TEXT_REORDER_TRADE_DATE . str_string($_date) . $_hour
-    .TIME_HOUR_TEXT . $_minute . TIME_MIN_TEXT. "～" . $end_hour.TIME_HOUR_TEXT.$end_min.TIME_MIN_TEXT.TEXT_REORDER_TWENTY_FOUR_HOUR. "\n";
+    .TIME_HOUR_TEXT . $_minute . TIME_MIN_TEXT. TEXT_TIME_LINK . $end_hour.TIME_HOUR_TEXT.$end_min.TIME_MIN_TEXT.TEXT_REORDER_TWENTY_FOUR_HOUR. "\n";
 
   if ($comment) {
     $email_order .= TEXT_REORDER_COMMERN_EMAIL . "\n";
@@ -400,7 +400,6 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
   <div class="comment">
     <div id='form'>
       <form action="reorder.php" method="post" name="order">
-        <input type="hidden" name="dummy" value="<?php echo TEXT_REORDER_DUMMY_WIDTH;?>">
         <input type='hidden' name='order_id' value='<?php echo $order['orders_id']?>' >
         <input type='hidden' name='email' value='<?php echo $order['customers_email_address']?>' >
         <div id="form_error" style="display:none">
@@ -422,7 +421,7 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
           <tr>
             <td><?php echo TEXT_REORDER_TRADE_NO_CHANGE;?></td>
             <td id='old_time'><?php echo tep_date_long(strtotime($order['torihiki_date']))?>
-              <?php echo date('H:i', strtotime($order['torihiki_date']));?>～<?php echo date('H:i', strtotime($order['torihiki_date_end']));?></td>
+              <?php echo date('H:i', strtotime($order['torihiki_date']));?><?php echo TEXT_TIME_LINK;?><?php echo date('H:i', strtotime($order['torihiki_date_end']));?></td>
           </tr>
 <?php
 //根据订单中的商品来生成取引时间
@@ -953,7 +952,7 @@ function orderConfirmPage(){
   now          = new Date();
   nowMinutes   = now.getHours() * 60 + now.getMinutes();
 
-  oldTime = '<?php echo tep_date_long(strtotime($order['torihiki_date']));?> <?php echo date('H:i', strtotime($order['torihiki_date']));?>～<?php echo date('H:i', strtotime($order['torihiki_date_end']));?>';
+  oldTime = '<?php echo tep_date_long(strtotime($order['torihiki_date']));?> <?php echo date('H:i', strtotime($order['torihiki_date']));?><?php echo TEXT_TIME_LINK;?><?php echo date('H:i', strtotime($order['torihiki_date_end']));?>';
   oldTime_value = '<?php echo strtotime($order['torihiki_date']);?>';
   today   = '<?php echo tep_date_long(time());?>';
   today_value = '<?php echo time();?>';
@@ -1009,7 +1008,7 @@ function orderConfirmPage(){
   }
 
   if(dateChanged){
-    newTime = document.getElementById('new_date').options[document.getElementById('new_date').selectedIndex].innerHTML + " " +document.getElementById('start_hour').value + ":" + document.getElementById('start_min').value + "～" +document.getElementById('end_hour').value + ":" + document.getElementById('end_min').value;
+    newTime = document.getElementById('new_date').options[document.getElementById('new_date').selectedIndex].innerHTML + " " +document.getElementById('start_hour').value + ":" + document.getElementById('start_min').value + "<?php echo TEXT_TIME_LINK;?>" +document.getElementById('end_hour').value + ":" + document.getElementById('end_min').value;
     text += newTime + "</td></tr></table><br >\n";
   } else {
     text += oldTime + "</td></tr></table><br >\n";
@@ -1095,7 +1094,6 @@ function orderConfirmPage(){
     <div class="comment">
       <form action="reorder.php" method="post" name='order'>
                <table summary="table" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top:10px;">
- <input type="hidden" name="dummy" value="<?php echo TEXT_REORDER_DUMMY_WIDTH;?>">
           <tr>
             <td valign="top" width="20%"><?php echo TEXT_REORDER_OID_TITLE;?></td>
             <td>

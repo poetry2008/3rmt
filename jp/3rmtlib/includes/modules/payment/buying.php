@@ -474,6 +474,40 @@ class buying extends basePayment  implements paymentInterface  {
     $comment = $bbbank ."\n".$order_info['comment_msg'];
     return $comment;
   }
+  
+  function admin_show_payment_list($pay_comment){
 
+   global $_POST;
+   $pay_array = explode("\n",trim($pay_comment));
+   $bank_name = explode(':',$pay_array[0]);
+   $bank_name[1] = isset($_POST['bank_name']) ? $_POST['bank_name'] : $bank_name[1]; 
+   echo 'document.getElementsByName("bank_name")[0].value = "'. $bank_name[1] .'";'."\n"; 
+   $bank_shiten = explode(':',$pay_array[1]); 
+   $bank_shiten[1] = isset($_POST['bank_shiten']) ? $_POST['bank_shiten'] : $bank_shiten[1];
+   echo 'document.getElementsByName("bank_shiten")[0].value = "'. $bank_shiten[1] .'";'."\n"; 
+   $bank_kamoku = explode(':',$pay_array[2]);
+   $bank_kamoku[1] = isset($_POST['bank_kamoku']) ? $_POST['bank_kamoku'] : $bank_kamoku[1];
+   if($bank_kamoku[1] == TEXT_USUALLY){
+     echo 'document.getElementsByName("bank_kamoku")[0].checked = true;'."\n"; 
+   }else{
+     echo 'document.getElementsByName("bank_kamoku")[1].checked = true;'."\n"; 
+   }
+   $bank_kouza_num = explode(':',$pay_array[3]);
+   $bank_kouza_num[1] = isset($_POST['bank_kouza_num']) ? $_POST['bank_kouza_num'] : $bank_kouza_num[1];
+   echo 'document.getElementsByName("bank_kouza_num")[0].value = "'.$bank_kouza_num[1].'";'."\n";
+   $bank_kouza_name = explode(':',$pay_array[4]);
+   $bank_kouza_name[1] = isset($_POST['"bank_kouza_name']) ? $_POST['"bank_kouza_name'] : $bank_kouza_name[1];
+   echo 'document.getElementsByName("bank_kouza_name")[0].value = "'.$bank_kouza_name[1].'";'."\n";
+  }
+
+  function admin_get_payment_buying(&$mailoption,$comment_arr){
+
+    $mailoption['BANK_NAME']        = $comment_arr['payment_bank_info']['bank_name'];      
+    $mailoption['BANK_SHITEN']      = $comment_arr['payment_bank_info']['bank_shiten'] ;   
+    $mailoption['BANK_KAMOKU']      = $comment_arr['payment_bank_info']['bank_kamoku'];    
+    $mailoption['BANK_KOUZA_NUM']   = $comment_arr['payment_bank_info']['bank_kouza_num'] ;
+    $mailoption['BANK_KOUZA_NAME']  = $comment_arr['payment_bank_info']['bank_kouza_name'];
+    $mailoption['ADD_INFO']         = $comment_arr['add_info'];
+  }
 }
 ?>

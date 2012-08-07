@@ -143,5 +143,25 @@ class buyingpoint extends basePayment  implements paymentInterface  {
     return $email_printing_order;
   }
 
+  function admin_get_point($point_value){
+    
+    return abs($point_value['value']);
+         
+  }
+
+  function admin_get_customer_point($point_value,$customer_id){
+
+    tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " . $point_value . 
+              " where customers_id = '" .$customer_id."' 
+              and customers_guest_chk = '0' ");
+  }
+
+  function admin_get_orders_point($orders_id){
+
+    $query_t = tep_db_query("select value from ".TABLE_ORDERS_TOTAL." where class = 'ot_total' and orders_id = '".tep_db_input($orders_id)."'");
+    $result_t = tep_db_fetch_array($query_t);
+    $get_point = abs(intval($result_t['value']));
+    return $get_point;
+  }
 }
 ?>

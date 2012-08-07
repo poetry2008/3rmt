@@ -681,5 +681,82 @@ class payment {
     }
     return $order_info['comment_msg']; 
   }
+
+  function admin_show_payment_list($payment,$pay_comment){
+
+    $module = $this->getModule($payment);
+    if ($module) {
+      if (method_exists($module, 'admin_show_payment_list')) {
+         $module->admin_show_payment_list($pay_comment); 
+      }
+    }    
+  }
+
+  function admin_get_point($payment,$point_value){
+
+    $module = $this->getModule($payment);
+    if ($module) {
+      if (method_exists($module, 'admin_get_point')) {
+         return $module->admin_get_point($point_value); 
+      }
+    }    
+
+    return 0;
+  }
+
+  function admin_get_customer_point($payment,$point_value,$customer_id){
+
+    $module = $this->getModule($payment);
+    if ($module) {
+      if (method_exists($module, 'admin_get_customer_point')) {
+         $module->admin_get_customer_point($point_value,$customer_id); 
+      }
+    }    
+  }
+
+  function admin_get_orders_point($payment,$orders_id){
+
+    $module = $this->getModule($payment);
+    if ($module) {
+      if (method_exists($module, 'admin_get_orders_point')) {
+         return $module->admin_get_orders_point($orders_id); 
+      }
+    }    
+    return 0;
+  }
+
+  function admin_get_fetch_point($payment,$point_value){
+
+    $module = $this->getModule($payment);
+    if ($module) {
+      if (method_exists($module, 'admin_get_fetch_point')) {
+         return 0; 
+      }
+    }    
+
+    return abs($point_value);
+  }
+
+  function admin_get_payment_symbol($payment){
+
+    $module = $this->getModule($payment);
+    if ($module) {
+      if (method_exists($module, 'admin_get_payment_symbol')) {
+         return $module->admin_get_payment_symbol();; 
+      }
+    }    
+
+    return 0;
+  }
+
+  function admin_get_payment_buying($payment,&$mailoption,$comment_arr){
+
+    $module = $this->getModule($payment);
+    if ($module) {
+      if (method_exists($module, 'admin_get_payment_buying')) {
+         $module->admin_get_payment_buying(&$mailoption,$comment_arr); 
+      }
+    } 
+  }
 }
 ?>

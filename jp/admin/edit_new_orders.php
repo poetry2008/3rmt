@@ -296,7 +296,7 @@ if (tep_not_null($action)) {
                 $oID,
                 $check_status['payment_method'],
                 $otm,
-                tep_torihiki($check_status['torihiki_date']).'～'.date('H'.TEXT_HOUR.'i'.TEXT_MIN,strtotime($check_status['torihiki_date_end'])).TEXT_TWENTY_FOUR_HOUR,
+                tep_torihiki($check_status['torihiki_date']).TEXT_TIME_LINK.date('H'.TEXT_HOUR.'i'.TEXT_MIN,strtotime($check_status['torihiki_date_end'])).TEXT_TWENTY_FOUR_HOUR,
                 $os_result['orders_status_name'],
                 get_configuration_by_site_id('STORE_NAME', $site_id),
                 get_url_by_site_id($site_id),
@@ -324,7 +324,7 @@ if (tep_not_null($action)) {
                 $oID,
                 $check_status['payment_method'],
                 $otm,
-                tep_torihiki($check_status['torihiki_date']).'～'.date('H'.TEXT_HOUR.'i'.TEXT_MIN,strtotime($check_status['torihiki_date_end'])).TEXT_TWENTY_FOUR_HOUR,
+                tep_torihiki($check_status['torihiki_date']).TEXT_TIME_LINK.date('H'.TEXT_HOUR.'i'.TEXT_MIN,strtotime($check_status['torihiki_date_end'])).TEXT_TWENTY_FOUR_HOUR,
                 $os_result['orders_status_name'],
                 get_configuration_by_site_id('STORE_NAME', $site_id),
                 get_url_by_site_id($site_id),
@@ -1116,7 +1116,7 @@ if($address_error == false){
             $mailoption['ORDER_PAYMENT']    = $order->info['payment_method'] ;  //d
             $trade_time = date('Y'.TEXT_DATE_YEAR.'m'.TEXT_DATE_MONTH.'d'.TEXT_DATE_DAY.'H'.TEXT_HOUR.'i'.TEXT_MIN, strtotime($_POST['date_orders'].' '.$_POST['start_hour'].':'.$_POST['start_min'].':00')); 
             $trade_time_1 = date('H時i分',strtotime($_POST['date_orders'].' '.$_POST['end_hour'].':'.$_POST['end_min'].':00'));
-            $mailoption['ORDER_TTIME']      = $trade_time . '～' . $trade_time_1 .TEXT_TWENTY_FOUR_HOUR;//d
+            $mailoption['ORDER_TTIME']      = $trade_time . TEXT_TIME_LINK . $trade_time_1 .TEXT_TWENTY_FOUR_HOUR;//d
             //$mailoption['ORDER_COMMENT']    = $notify_comments_mail;// = $comments;
             $mailoption['ORDER_COMMENT']    = isset($comment_arr['payment_bank_info']['add_info'])?$comment_arr['comment']:$_POST['comments_text'];// = $comments;
             $mailoption['ORDER_PRODUCTS']   = $products_ordered_mail;//?
@@ -1125,15 +1125,11 @@ if($address_error == false){
             $mailoption['SITE_MAIL']        = get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS',$order->info['site_id']);//d
             $mailoption['SITE_URL']         = get_url_by_site_id($order->info['site_id']);
 
+            $payment_show = payment::getInstance($order->info['site_id']);
             if(is_array($comment_arr) && !empty($comment_arr)){
-               $mailoption['BANK_NAME']        = $comment_arr['payment_bank_info']['bank_name'];      //?
-               $mailoption['BANK_SHITEN']      = $comment_arr['payment_bank_info']['bank_shiten'] ;   //?
-               $mailoption['BANK_KAMOKU']      = $comment_arr['payment_bank_info']['bank_kamoku'];    //?
-               $mailoption['BANK_KOUZA_NUM']   = $comment_arr['payment_bank_info']['bank_kouza_num'] ;//?
-               $mailoption['BANK_KOUZA_NAME']  = $comment_arr['payment_bank_info']['bank_kouza_name'];//?
-               $mailoption['ADD_INFO']  = $comment_arr['add_info'];//?
+              $payment_show->admin_get_payment_buying(payment::changeRomaji($order->info['payment_method'],PAYMENT_RETURN_TYPE_CODE),$mailoption,$comment_arr); 
             }
-            
+
             $payment_modules->admin_deal_mailoption($mailoption, $oID, payment::changeRomaji($order->info['payment_method'], PAYMENT_RETURN_TYPE_CODE)); 
             $mailoption['ADD_INFO'] = isset($_SESSION['payment_bank_info'][$oID]['add_info'])?$_SESSION['payment_bank_info'][$oID]['add_info']:'';
             unset($_SESSION['orderinfo_mail_use']);
@@ -2648,68 +2644,35 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
           tep_db_free_result($orders_payment_query);
           
           $orders_status_history_query = tep_db_query("select comments from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='".$pay_orders_id."' order by date_added desc limit 0,1"); 
-    $orders_status_history_array = tep_db_fetch_array($orders_status_history_query);
-    $pay_comment = $orders_status_history_array['comments']; 
-    tep_db_free_result($orders_status_history_query);
+          $orders_status_history_array = tep_db_fetch_array($orders_status_history_query);
+          $pay_comment = $orders_status_history_array['comments']; 
+          tep_db_free_result($orders_status_history_query);
           $code_payment_method = $payment_array[0][$payment_num];
           if($order->info['payment_method'] != ''){
           $code_payment_method =
             payment::changeRomaji($order->info['payment_method'],'code');
-            $pay_method = $order->info['payment_method'];
+            $pay_method = payment::changeRomaji($order->info['payment_method'],'code');
             $pay_comment = $order->info['orders_comment']; 
           }
 
           if(isset($_POST['payment_method'])){
             $code_payment_method = payment::changeRomaji($_POST['payment_method'],'code');
-            $pay_method = $_POST['payment_method'];
+            $pay_method = payment::changeRomaji($_POST['payment_method'],'code');
           }
 
+          $cpayment = payment::getInstance((int)SITE_ID);
           echo payment::makePaymentListPullDownMenu($code_payment_method);
           
           
           echo "\n".'<script language="javascript">'."\n"; 
           echo '$(document).ready(function(){'."\n";
-          switch($pay_method){
 
-          case TEXT_BANK_TRANSFER:
-            $pay_array = explode("\n",trim($pay_comment));
-            $bank_name = explode(':',$pay_array[0]);
-            $bank_name[1] = isset($_POST['bank_name']) ? $_POST['bank_name'] : $bank_name[1]; 
-            echo 'document.getElementsByName("bank_name")[0].value = "'. $bank_name[1] .'";'."\n"; 
-            $bank_shiten = explode(':',$pay_array[1]); 
-            $bank_shiten[1] = isset($_POST['bank_shiten']) ? $_POST['bank_shiten'] : $bank_shiten[1];
-            echo 'document.getElementsByName("bank_shiten")[0].value = "'. $bank_shiten[1] .'";'."\n"; 
-            $bank_kamoku = explode(':',$pay_array[2]);
-            $bank_kamoku[1] = isset($_POST['bank_kamoku']) ? $_POST['bank_kamoku'] : $bank_kamoku[1];
-            if($bank_kamoku[1] == TEXT_USUALLY){
-               echo 'document.getElementsByName("bank_kamoku")[0].checked = true;'."\n"; 
-            }else{
-               echo 'document.getElementsByName("bank_kamoku")[1].checked = true;'."\n"; 
-            }
-            $bank_kouza_num = explode(':',$pay_array[3]);
-            $bank_kouza_num[1] = isset($_POST['bank_kouza_num']) ? $_POST['bank_kouza_num'] : $bank_kouza_num[1];
-            echo 'document.getElementsByName("bank_kouza_num")[0].value = "'.$bank_kouza_num[1].'";'."\n";
-            $bank_kouza_name = explode(':',$pay_array[4]);
-            $bank_kouza_name[1] = isset($_POST['"bank_kouza_name']) ? $_POST['"bank_kouza_name'] : $bank_kouza_name[1];
-            echo 'document.getElementsByName("bank_kouza_name")[0].value = "'.$bank_kouza_name[1].'";'."\n";
-            break;
-          case TEXT_CONVERIENCE_PAYMENT:
-            $pay_array = explode("\n",trim($pay_comment));
-            $con_email = explode(":",trim($pay_array[0]));
-            $con_email[1] = isset($_POST['con_email']) ? $_POST['con_email'] : $con_email[1];
-            echo 'document.getElementsByName("con_email")[0].value = "'.$con_email[1].'";'."\n";
-            break;
-          case TEXT_RAKUTEN_BANK:
-            $pay_array = explode("\n",trim($pay_comment));
-            $rak_tel = explode(":",trim($pay_array[0]));
-            $rak_tel[1] = isset($_POST['rak_tel']) ? $_POST['rak_tel'] : $rak_tel[1];
-            echo 'document.getElementsByName("rak_tel")[0].value = "'.$rak_tel[1].'";'."\n";
-            break;
-          }
+          $cpayment->admin_show_payment_list($pay_method,$pay_comment);
+          
           echo '});'."\n";
           echo '</script>'."\n";
       
-          $cpayment = payment::getInstance((int)SITE_ID);
+          
           if(!isset($selections)){
             $selections = $cpayment->admin_selection();
           } 
@@ -3144,8 +3107,7 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
               <div id="mycalendar"></div> 
               </div>
             </div>
-            <?php
-              echo '&nbsp;'.$hour_str.'&nbsp;'.TEXT_HOUR.'&nbsp;'.$min_str.$min_str_start.'&nbsp;'.TEXT_MIN.'&nbsp;～&nbsp;'.$hour_str_1.'&nbsp;'.TEXT_HOUR.'&nbsp;'.$min_str_1.$min_str_end.'&nbsp;'.TEXT_MIN.'&nbsp;';
+            <?php echo '&nbsp;'.$hour_str.'&nbsp;'.TEXT_HOUR.'&nbsp;'.$min_str.$min_str_start.'&nbsp;'.TEXT_MIN.'&nbsp;'.TEXT_TIME_LINK.'&nbsp;'.$hour_str_1.'&nbsp;'.TEXT_HOUR.'&nbsp;'.$min_str_1.$min_str_end.'&nbsp;'.TEXT_MIN.'&nbsp;';
             ?>
             </td>
             </tr>
