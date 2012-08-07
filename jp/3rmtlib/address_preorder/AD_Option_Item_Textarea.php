@@ -21,7 +21,7 @@ class AD_Option_Item_Textarea extends AD_Option_Item_Basic
 
       echo '<td class="main">';
       $style_color = isset($_POST['ad_'.$this->formname]) && $_POST['ad_'.$this->formname] != $this->comment ?'color:#000;':'color:#999;';
-      $style_size = $type_limit == 'num' ? 'size="25" ' : 'class="width:75%;" '; 
+      $style_size = $type_limit == 'num' ? 'size="25" ' : 'style="width:75%;" '; 
       echo '<input type="hidden" name="'.$this->formname.'" value="'.$this->front_title.'">';
       echo '<input type="hidden" id="l_'.$this->formname.'" value="'.$this->required.'">';
       echo '<input type="text" name="ad_'.$this->formname.'" id="ad_'.$this->formname.'" '. $style_size .' value="'. (isset($_POST['ad_'.$this->formname])?$_POST['ad_'.$this->formname]:$this->comment) .'" style="'. $style_color .'" onfocus="this.style.color=\'#001\';if(this.value==\''. $this->comment.'\')this.value=\'\'" onblur="if(this.value==\'\'){this.value=\''. $this->comment .'\';this.style.color=\'#999\'}">';
