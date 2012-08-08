@@ -740,7 +740,7 @@ $email_order = $payment_modules->getOrderMailString($payment,$mailoption);
 $shipping_fee_value = isset($_POST['shipping_fee']) ? $_POST['shipping_fee'] : 0; 
 $email_temp = '▼ポイント割引';
 $email_temp_str = '▼ ポイント割引';
-$email_shipping_fee = '▼お届け料金　　　：'.$shipping_fee_value.'円
+$email_shipping_fee = '▼配送料　　　　　：'.$shipping_fee_value.'円
 '.$email_temp;
 $email_order = str_replace($email_temp,$email_shipping_fee,$email_order);
 $email_order = str_replace($email_temp_str,$email_shipping_fee,$email_order);
@@ -790,7 +790,7 @@ $email_printing_order .= '注文日　　　　　：' . tep_date_long(time()) .
 $email_printing_order .= 'メールアドレス　：' . $order->customer['email_address'] . "\n";
 $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
 if (!empty($_POST['shipping_fee'])) {
-  $email_printing_order .= 'お届け料金　　　　　：'.$_POST['shipping_fee'].'円'."\n"; 
+  $email_printing_order .= '配送料　　　　　　　：'.$_POST['shipping_fee'].'円'."\n"; 
 }
 if (isset($_SESSION['campaign_fee'])) {
   if (abs($_SESSION['campaign_fee']) > 0) {

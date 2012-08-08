@@ -531,7 +531,7 @@ $email_order_text = $payment_modules->getOrderMailString($cpayment_code, $mailop
 $shipping_fee_value = !empty($_SESSION['preorder_shipping_fee']) ? $_SESSION['preorder_shipping_fee'] : 0; 
 $email_temp = '▼ポイント割引';
 $email_temp_str = '▼ ポイント割引';
-$email_shipping_fee = '▼お届け料金　　　：'.$shipping_fee_value.'円
+$email_shipping_fee = '▼配送料　　　　　：'.$shipping_fee_value.'円
 '.$email_temp;
 $email_order_text = str_replace($email_temp,$email_shipping_fee,$email_order_text);
 $email_order_text = str_replace($email_temp_str,$email_shipping_fee,$email_order_text);
