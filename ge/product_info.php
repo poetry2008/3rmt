@@ -409,7 +409,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
               <td colspan="2"><table border="0" cellpadding="0" cellspacing="0">
               <tr>
               <td>
-                <input name="quantity" type="text" id="quantity" value="1" size="10" maxlength="4">
+                <input name="quantity" type="text" id="quantity" value="1" size="10" maxlength="4" style="text-align:right;">
               </td>
               <td width="15">
                 <div>

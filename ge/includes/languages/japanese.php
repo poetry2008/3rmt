@@ -260,9 +260,9 @@ define('ENTRY_NEWSLETTER_NO', '購読しない');
 define('ENTRY_NEWSLETTER_ERROR', '');
 define('ENTRY_PASSWORD', 'パスワード:');
 define('ENTRY_PASSWORD_CONFIRMATION', 'パスワードを再入力:');
-define('ENTRY_PASSWORD_CONFIRMATION_TEXT', '&nbsp;(例. abcd1234) <font color="#AABBDD">必須</font>');
+define('ENTRY_PASSWORD_CONFIRMATION_TEXT', '<small>&nbsp;(例. abcd1234) <font color="#AABBDD">必須</font></small>');
 define('ENTRY_PASSWORD_ERROR', '&nbsp;<small><font color="#FF0000">少なくても ' . ENTRY_PASSWORD_MIN_LENGTH . ' 文字</font></small>');
-define('ENTRY_PASSWORD_TEXT', '&nbsp;(例. abcd1234) <font color="#AABBDD">必須</font>');
+define('ENTRY_PASSWORD_TEXT', '<small>&nbsp;(例. abcd1234) <font color="#AABBDD">必須</font></small>');
 define('PASSWORD_HIDDEN', '********');
 define('ENTRY_AGREEMENT_TEXT', '同意する');
 
@@ -276,8 +276,8 @@ define('TEXT_DISPLAY_NUMBER_OF_SPECIALS', '<b>%d</b> - <b>%d</b> 番目を表示
 define('TEXT_DISPLAY_NUMBER_OF_LATEST_NEWS', '<b>%d</b> - <b>%d</b> 番目を表示 (<b>%d</b> あるお知らせのうち)');
 
 define('PREVNEXT_TITLE_FIRST_PAGE', '最初のページ');
-define('PREVNEXT_TITLE_PREVIOUS_PAGE', '前ページ');
-define('PREVNEXT_TITLE_NEXT_PAGE', '次ページ');
+define('PREVNEXT_TITLE_PREVIOUS_PAGE', '前のページ');
+define('PREVNEXT_TITLE_NEXT_PAGE', '次のページ');
 define('PREVNEXT_TITLE_LAST_PAGE', '最後のページ');
 define('PREVNEXT_TITLE_PAGE_NO', 'ページ %d');
 define('PREVNEXT_TITLE_PREV_SET_OF_NO_PAGE', '前 %d ページ');
@@ -296,11 +296,11 @@ define('IMAGE_BUTTON_CONFIRM_ORDER', '注文する!');
 define('IMAGE_BUTTON_CONTINUE', '次へ進む');
 define('IMAGE_BUTTON_CONTINUE_SHOPPING', 'ショッピングを続ける');
 define('IMAGE_BUTTON_DELETE', '削除する');
-define('IMAGE_BUTTON_EDIT_ACCOUNT', 'お客様情報の編集');
+define('IMAGE_BUTTON_EDIT_ACCOUNT', 'お客様情報編集');
 define('IMAGE_BUTTON_HISTORY', 'ご注文履歴');
 define('IMAGE_BUTTON_LOGIN', 'ログイン');
 define('IMAGE_BUTTON_IN_CART', 'カートに入れる');
-define('IMAGE_BUTTON_NOTIFICATIONS', 'お知らせの設定');
+define('IMAGE_BUTTON_NOTIFICATIONS', 'お知らせ通知');
 define('IMAGE_BUTTON_QUICK_FIND', '商品検索');
 define('IMAGE_BUTTON_REMOVE_NOTIFICATIONS', 'お知らせを取消す');
 define('IMAGE_BUTTON_REVIEWS', 'レビューを読む');

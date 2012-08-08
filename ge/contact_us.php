@@ -32,10 +32,11 @@ require(CLIENTINC_DIR.'header.inc.php');
   <div class="contact_left"><img src="./images/new_ticket_icon.gif" width="48" height="48"></div>
   <div class="contact_right">
   <h3>&#26032;&#35215;&#12362;&#21839;&#12356;&#21512;&#12431;&#12379;</h3>
-  <form method="link" action="<?php echo tep_href_link('open.php','','SSL')?>">
+  
+</div>
+<form method="link" action="<?php echo tep_href_link('open.php','','SSL')?>">
   <input type="image" class="button2" value="&#12362;&#21839;&#12356;&#21512;&#12431;&#12379;" src="includes/languages/japanese/images/buttons/lemail.gif">
   </form>
-</div>
 </div>
 <div class="rcol">
   <div class="contact_left"><img src="./images/ticket_status_icon.gif" width="48" height="48"></div>

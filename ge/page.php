@@ -73,7 +73,7 @@
 <div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
 <h2 class="pageHeading"><?php echo PAGE_HEADING_TITLE ; ?></h2> 
         
-        <div id="contents"> 
+        <div class="sub_menu">
           <?php echo PAGE_TEXT_INFORMATION; ?>
     </div>
         <?php

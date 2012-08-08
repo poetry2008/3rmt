@@ -8,8 +8,8 @@ define('CPREORDER_SUCCESS_NAVBAR_TITLE_FETCH', '注文');
 define('CPREORDER_SUCCESS_NAVBAR_TITLE_CONFIRM', '最終確認');
 
 define('CPREORDER_SUCCESS_TEXT', '<span class="red"><b>「注文受付」メールをお送りしましたのでご確認ください。</b></span><br>
-<p><b>10分経過してもメールが届かない場合は、再送いたしますのでご連絡ください。</b></p>
-注意：メールが届かないときは、以下のことを必ずご確認ください。<br>
+<br><b>10分経過してもメールが届かない場合は、再送いたしますのでご連絡ください。</b>
+<br><br>注意：メールが届かないときは、以下のことを必ずご確認ください。<br>
 ＜迷惑メールフォルダの確認＞<br>
 弊社のメールが 「迷惑メールフォルダ」や「ゴミ箱」に振り分けされ見落としていませんか？<br>
 ＜メールドメインの受信制限を設定している＞<br>

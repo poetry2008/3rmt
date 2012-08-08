@@ -484,19 +484,19 @@ echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><sp
 </td>
 </tr>
 
-
 <?php
 }
 ?>
+     <tr><td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td></tr>             
+      <tr>
+        <td><b><?php echo HEADING_BILLING_INFORMATION; ?></b></td>
+      </tr>
       <tr>
         <td>
           <table border="0" width="100%" cellspacing="1" cellpadding="2" class="formArea">
             <tr>
               <td width="30%" valign="top">
                 <table border="0" width="100%" cellspacing="0" cellpadding="2" class="box_des">
-      <tr>
-        <td><b><?php echo HEADING_BILLING_INFORMATION; ?></b></td>
-      </tr>
                   <tr>
                     <td class="main"><?php echo '<b>' . HEADING_PAYMENT_METHOD . '</b> <a href="' . tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
                   </tr>
@@ -621,15 +621,16 @@ echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><sp
   if (is_array($payment_modules->modules)) {
     if ($confirmation = $payment_modules->confirmation($payment)) {
 ?>
+     <tr><td><?php echo tep_draw_separator('pixel_trans.gif', '1', '10'); ?></td></tr>             
+     <tr>
+        <td><b><?php echo HEADING_PAYMENT_INFORMATION; ?></b></td>
+      </tr>
       <tr>
         <td>
           <table border="0" width="100%" cellspacing="1" cellpadding="2" class="formArea">
             <tr>
               <td>
                 <table border="0" cellspacing="0" cellpadding="2" class="box_des">
-                  <tr>
-                    <td colspan="4"><b><?php echo HEADING_PAYMENT_INFORMATION; ?></b></td>
-                  </tr>
                   <tr>
                     <td class="main" colspan="4"><?php echo str_replace(' />','>',$confirmation['title']); ?></td>
                   </tr>

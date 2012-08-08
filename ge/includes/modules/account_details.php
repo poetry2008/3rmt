@@ -202,7 +202,7 @@ $(document).ready(function(){
   }
   $address_form->setFormLine('email_address',ENTRY_EMAIL_ADDRESS,$a_value);
 ?>
-<table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2">
+<table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2" >
   <tr>
     <td class="formAreaTitle"><?php echo CATEGORY_PERSONAL; ?></td>
   </tr>
@@ -274,7 +274,7 @@ $(document).ready(function(){
             <table class="box_des" border="0" cellspacing="0" cellpadding="2" width="100%">
               <tr>
                 <td class="main" width="120">&nbsp;<?php echo ENTRY_NEWSLETTER; ?></td>
-                <td class="main" style="padding-left:6px;">
+                <td class="main" style="padding-left:10px;">
                   <?php
   if ($is_read_only == true) {
     if ($account['customers_newsletter'] == '1') {
@@ -307,8 +307,8 @@ $(document).ready(function(){
   
 ?>
               <tr>
-                <td class="main">&nbsp;<?php echo ENTRY_GUEST; ?></td>
-                <td class="main"><?php echo tep_draw_pull_down_menu('guestchk', $guestchk_array, $guestchk, 'onchange="pass_hidd()"'); ?></td>
+                <td class="main" width="120">&nbsp;<?php echo ENTRY_GUEST; ?></td>
+                <td class="main" style="padding-left:10px; *padding-left:14px;"><?php echo tep_draw_pull_down_menu('guestchk', $guestchk_array, $guestchk, 'onchange="pass_hidd()"'); ?></td>
               </tr>
               <tr>
                 <td>&nbsp;</td>
@@ -346,7 +346,7 @@ $(document).ready(function(){
             <table class="box_des" border="0" cellspacing="0" cellpadding="2" width="100%">
               <tr>
                 <td class="main" width="120">&nbsp;<?php echo ENTRY_PASSWORD; ?></td>
-                <td class="main" style="font-size:10px;">&nbsp;
+                <td class="main" width="320">&nbsp;
                   <?php
     $p_error_show_str = ''; 
     if ($error == true) {
@@ -376,8 +376,8 @@ $(document).ready(function(){
     if ( ($error == false) || ($entry_password_error == true) ) {
 ?>
               <tr>
-                <td class="main">&nbsp;<?php echo ENTRY_PASSWORD_CONFIRMATION; ?></td>
-                <td class="main" style="font-size:10px;">&nbsp;
+                <td class="main" style="padding-left:6px;"><?php echo ENTRY_PASSWORD_CONFIRMATION; ?></td>
+                <td class="main">&nbsp;
                   <?php
       echo tep_draw_password_field('confirmation', '', "class='input_text'") . '&nbsp;' . ENTRY_PASSWORD_CONFIRMATION_TEXT;
 ?>
@@ -427,10 +427,7 @@ $(document).ready(function(){
   </tr>
   <tr>
     <td class="main">
-      <table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">
-        <tr>
-          <td class="main">
-            <table class="box_des" border="0" cellspacing="0" cellpadding="2">
+            <table class="box_des" border="0" cellspacing="0" cellpadding="2" width="100%">
               <tr>
                 <td class="main">
                   <?php
@@ -438,9 +435,6 @@ $(document).ready(function(){
   echo '<br>';
   echo tep_draw_checkbox_field('agreement_chk', 'ok') . ENTRY_AGREEMENT_TEXT;
 ?>
-                </td>
-              </tr>
-            </table>
           </td>
         </tr>
       </table>

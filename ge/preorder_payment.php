@@ -398,7 +398,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
       }
     ?>
      
-    <div class="formAreaTitle"><?php echo FORM_FIELD_PREORDER_PAYMENT; ?></div>
+    <div class="formAreaTitle"><b><?php echo FORM_FIELD_PREORDER_PAYMENT; ?></b></div>
     <div class="checkout_payment_info">  
     <?php
     if (sizeof($selection) > 1) { 
@@ -456,7 +456,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
       <?php }?> 
       </div>
       <br>
-      <div class="formAreaTitle"><?php echo $product_info['products_name'].PREORDER_EXPECT_CTITLE; ?></div>
+      <div class="formAreaTitle"><b><?php echo $product_info['products_name'].PREORDER_EXPECT_CTITLE; ?></b></div>
       <table width="100%" cellpadding="2" cellspacing="0" border="0" class="formArea">
         <tr><td class="main"><?php echo tep_draw_textarea_field('yourmessage', 'soft', 53, 8);?></td></tr>
       </table>

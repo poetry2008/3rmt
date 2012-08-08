@@ -531,7 +531,7 @@ p.box_des{
     font-size:10px;
     width:790px;
     height:95px;
-    background-image:url("images/design/oc/footer.jpg");
+    background-image:url(images/design/oc/footer.jpg);
     background-repeat:no-repeat;
     text-align:center;
     margin:0px;

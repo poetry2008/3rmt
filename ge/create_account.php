@@ -50,8 +50,8 @@ function pass_hidd(){
 <div id="content"><?php echo tep_draw_form('account_edit', tep_href_link(FILENAME_CREATE_ACCOUNT_PROCESS, '', 'SSL'), 'post', 'onSubmit="return check_form();"') . tep_draw_hidden_field('action', 'process'); ?> 
         <div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
 <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1>
-<div> 
-          <table border="0" width="95%" cellspacing="0" cellpadding="0"> 
+<div class="comment"> 
+          <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
             <?php
   if (sizeof($navigation->snapshot) > 0) {
 ?> 

@@ -142,7 +142,7 @@
         if ($fromname_error == true) $your_name_prompt .= '&nbsp;<span class="errorText">' . TEXT_REQUIRED . '</span>';
       if (!isset($_GET['from'])) $_GET['from'] = NULL; 
         $your_email_address_prompt = tep_draw_input_field('from', (($fromemail_error == true) ? $_POST['from'] : $_GET['from']));
-        if ($fromemail_error == true) $your_email_address_prompt .= ENTRY_EMAIL_ADDRESS_CHECK_ERROR;
+        if ($fromemail_error == true) $your_email_address_prompt .= '<br>'.ENTRY_EMAIL_ADDRESS_CHECK_ERROR;
       }
 ?>
     <?php echo tep_draw_form('email_friend', tep_href_link(FILENAME_TELL_A_FRIEND, 'action=process&products_id=' . $_GET['products_id'])) . tep_draw_hidden_field('products_name', $product_info['products_name']); ?>
@@ -155,9 +155,9 @@
           <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2">
             <tr>
               <td class="main">
-                <table border="0" cellspacing="0" cellpadding="2">
+                <table border="0" cellspacing="0" cellpadding="2" class="box_des">
                   <tr>
-                    <td class="main"><?php echo FORM_FIELD_CUSTOMER_NAME; ?></td>
+                    <td class="main" width="150"><?php echo FORM_FIELD_CUSTOMER_NAME; ?></td>
                     <td class="main"><?php echo $your_name_prompt; ?></td>
                   </tr>
                   <tr>
@@ -181,7 +181,7 @@
               <td class="main">
                 <table class="box_des" border="0" cellspacing="0" cellpadding="2">
                   <tr>
-                    <td class="main"><?php echo FORM_FIELD_FRIEND_NAME; ?></td>
+                    <td class="main" width="150"><?php echo FORM_FIELD_FRIEND_NAME; ?></td>
                     <td class="main">
                     <?php 
                     if (!isset($_GET['friendname'])) $_GET['friendname'] = NULL; 
@@ -194,7 +194,9 @@
                     <td class="main">
                     <?php 
                     if (!isset($_GET['send_to'])) $_GET['send_to'] = NULL; 
-                    echo tep_draw_input_field('friendemail', (($friendemail_error == true) ? $_POST['friendemail'] : $_GET['send_to'])); if ($friendemail_error == true) echo ENTRY_EMAIL_ADDRESS_CHECK_ERROR; 
+                    echo tep_draw_input_field('friendemail', (($friendemail_error ==
+                            true) ? $_POST['friendemail'] : $_GET['send_to'])); if
+                      ($friendemail_error == true) echo '<br>'.ENTRY_EMAIL_ADDRESS_CHECK_ERROR; 
                     ?>
                     </td>
                   </tr>
