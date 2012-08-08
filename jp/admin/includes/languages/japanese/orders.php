@@ -115,7 +115,6 @@ define('TEXT_ORDER_FIND','検索 :');
 define('TEXT_ORDER_FIND_PRODUCT_NAME','商品名から検索');
 define('TEXT_ORDER_FIND_MAIL_ADD','メールアドレスから検索');
 define('TEXT_ORDER_QUERYER_NAME','確認者名:');
-define('TEXT_ORDER_OK_ORDER_NIMBER','済 受付番号:');
 define('TEXT_EDIT_MAIL_TEXT','メール本文編集');
 define('TEXT_SELECT_MORE','複数の選択はできません。');
 define('TEXT_ORDER_SELECT','注文書はまだ選択していません。');
