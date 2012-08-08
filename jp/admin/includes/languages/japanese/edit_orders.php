@@ -213,8 +213,6 @@ define('TEXT_ERROR_NO_SUCCESS','エラーが発生しました。正常に処理
 define('TEXT_REQUIRE','*必須');
 define('TEXT_ADDRESS_INFO_HIDE','住所情報▲');
 define('TEXT_ADDRESS_INFO_SHOW','住所情報▼');
-define('TEXT_USUALLY','普通');
-define('TEXT_ACCOUNT_TYPE','口座種別:');
 define('TEXT_CUSTOMER_INPUT','このお客様は会員です。入力可能ポイントは ');
 define('TEXT_REMAINING','残り');
 define('TEXT_SUBTOTAL','（合計');

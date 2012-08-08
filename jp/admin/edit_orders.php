@@ -2553,7 +2553,6 @@ if (($action == 'edit') && ($order_exists == true)) {
           echo '});'."\n";
           echo '</script>'."\n";
       
-          $cpayment = payment::getInstance((int)SITE_ID);
           if(!isset($selections)){
             $selections = $cpayment->admin_selection();
           } 
@@ -2574,7 +2573,7 @@ if (($action == 'edit') && ($order_exists == true)) {
                   $field['message'] = $field['message'] != '' ? ADDRESS_ERROR_OPTION_ITEM_TEXT_TYPE_WRONG : ''; 
                 }
               }else{
-                if($field['title'] != TEXT_ACCOUNT_TYPE){
+                if(!$cpayment->admin_get_payment_buying_type($pay_method,$field['title'])){
                   $field['message'] = TEXT_REQUIRE;
                 }
               }
@@ -2592,7 +2591,7 @@ if (($action == 'edit') && ($order_exists == true)) {
     <td class="main" valign="top"><b><?php echo EDIT_ORDERS_FETCHTIME;?></b></td>
     <td class="main">
     <?php
-      $date_array = explode('～',$order->tori['date']);
+      $date_array = explode('_',$order->tori['date']);
       $date_start_array = explode(' ',$date_array[0]);
     ?>
     <div class="yui3-skin-sam yui3-g">

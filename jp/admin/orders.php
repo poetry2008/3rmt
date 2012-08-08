@@ -1977,7 +1977,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
         </tr>
         <tr>
         <td class="main" valign="top" width="30%"><b><?php echo TEXT_TRADE_DATE;?></b></td>
-        <td class="main"><b style=" color:#0000FF"><?php echo str_replace('～', TEXT_TIME_LINK, $order->tori['date']);?></b></td>
+        <td class="main"><b style=" color:#0000FF"><?php echo str_replace('_', TEXT_TIME_LINK, $order->tori['date']);?></b></td>
         </tr>
         <tr>
         <td class="main" valign="top"><b><?php echo TEXT_ORDERS_OID;?></b></td>
