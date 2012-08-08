@@ -62,8 +62,8 @@
 <div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
 <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1> 
         
-        <div> 
-          <table class="box_des" border="0" width="95%" cellspacing="0" cellpadding="0"> 
+        <div class="comment"> 
+          <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="0"> 
             <tr> 
               <td><table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2"> 
                   <tr> 
@@ -108,7 +108,7 @@
 
   for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
     echo '          <tr>' . "\n" .
-         '            <td width="10"></td><td class="main" valign="top" width="30%">' . $order->products[$i]['qty'] . '&nbsp;x</td>' . "\n" .
+         '            <td width="10"></td><td class="main" valign="top" width="30">' . $order->products[$i]['qty'] . '&nbsp;x</td>' . "\n" .
          '            <td class="main" valign="top">' . $order->products[$i]['name'];
 
     if ($order->products[$i]['price'] != '0') {
