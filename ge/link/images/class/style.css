@@ -79,7 +79,7 @@ body .main {
 }
 .web_title a{ color:#339966;}
 #bread_crumb{
-padding-left:170px;
+padding-left:163px;
 padding-right:20px;
 padding-top:10px;
 color:#339966;
@@ -141,9 +141,15 @@ color:#fff;
 text-decoration:none;
 }
 .footer {
-	height:95px;
-	width:790px;
-	background:url(images/footer.jpg) no-repeat;
+	background:url(/images/design/oc/footer.jpg) no-repeat;
+    clear: both;
+    font-size: 10px;
+    height: 95px;
+    margin: 0;
+    padding: 0;
+    text-align: center;
+    width: 790px;
+}
 }
 .footer_games {
 	text-align:center;
@@ -183,7 +189,10 @@ padding-right:10px;
 width:200px;
 }
 .search_head .top{
-color:#339966;
+	color: #339966;
+    padding-left: 163px;
+    padding-right: 20px;
+    padding-top: 10px;
 }
 .headerNavigation{
 color:#339966;
@@ -228,4 +237,11 @@ display:block;
 width:68px;
 height:24px;
 background:url(images/button02.gif) no-repeat;
+}
+.footer_links{ width:780px;}
+#f_m{
+	width:780px;
+	text-align:center;
+	position:absolute;
+	font-size:10px;
 }

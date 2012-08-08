@@ -112,7 +112,7 @@ if(!isset($email_error)||$email_error == true){?>
   }?></span></td>
           </tr>
           <tr>
-            <td>メールアドレス</td>
+            <td width='120'>メールアドレス</td>
             <td>
               <input type='text'  name='email' <?php
   if(isset($email)&&$email){
@@ -121,7 +121,7 @@ if(!isset($email_error)||$email_error == true){?>
     }else{
       echo ' value=\''.$email.'\' ';
     }
-  }?> id='new_email' class="input_text" ><span id='email_error'><?php 
+  }?> id='new_email' class="input_text" ><span id='email_error'>&nbsp;<?php 
  if(isset($email)&&$email==''){
    echo TEXT_REORDER2_MUST_INPUT;
  }?></span><?php
@@ -131,18 +131,18 @@ if(!isset($email_error)||$email_error == true){?>
  }?></td>
           </tr>
           <tr>
-            <td>ゲームタイトル</td>
+            <td width='120'>ゲームタイトル</td>
             <td>
               <input type='text'  name='product' value='<?php
   if(isset($product)&&$product){
     echo $product;
-  }?>' id='new_product' class="input_text" ><span id='product_error'><?php
+  }?>' id='new_product' class="input_text" ><span id='product_error'>&nbsp;<?php
  if(isset($product)&&$product==''){
    echo TEXT_REORDER2_MUST_INPUT;
  }?></span></td>
           </tr>
           <tr>
-            <td>キャラクター名</td>
+            <td width='120'>キャラクター名</td>
             <td>
               <input type='text'  name='character' value='<?php
   if(isset($character)&&$character){
@@ -154,7 +154,7 @@ if(!isset($email_error)||$email_error == true){?>
  }?></span></td>
           </tr>
           <tr>
-            <td>お届け日時</td>
+            <td width='120'>お届け日時</td>
             <td>
               <select name='date' id='new_date' onChange="selectDate('<?php echo date('H');?>', '<?php echo date('i');?>')">
                 <option value=''>--</option>
@@ -169,29 +169,30 @@ if(!isset($email_error)||$email_error == true){?>
               <select name='minute' id='new_minute'>
                 <option value=''>--</option>
               </select>
-              <span id='date_error'><?php
+              <div class="clear_box"><span id='date_error'><?php
    if($hour==''||$date==''||$minute==''){
      echo TEXT_REORDER2_TORIHIKI_ERROR;
    }?></span>
-              <br >
-              <font color="red">ご希望のお時間に添えない場合は、弊社より「お届け時間」をご連絡させていただきます。</font>
+              <font color="red">ご希望のお時間に添えない場合は、弊社より「お届け時間」をご連絡させていただきます。</font></div>
             </td>
           </tr>
           <tr>
             <td>備考</td>
             <td>
-              <textarea name='comment' id='comment'><?php
+              <textarea name='comment' id='comment' class="clear_box"><?php
               if(isset($comment)&&$comment){
                   echo $comment;
               }?></textarea>
             </td>
           </tr>
         </table>
-        <br>
-        <p align="center">
-          <input type='image' src="includes/languages/japanese/images/buttons/button_submit2.gif" alt="確定する" title="確定する" >
+        <table width="100%">
+		<td width="120">&nbsp;</td>
+        <td>
+          <input class="clear_box" type='image' src="includes/languages/japanese/images/buttons/button_submit2.gif" alt="確定" title="確定" >
           <input type='image' src="includes/languages/japanese/images/buttons/button_reset.gif" alt="クリア" title="クリア" onclick='javascript:document.order.reset();return false;' >
-        </p>
+        </td>
+		</table>
       </form>
       <?php }?>
     </div>

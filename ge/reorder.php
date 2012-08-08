@@ -739,7 +739,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
     <div id='confirm' style='display:none; text-align:center;'>
       <div id='confirm_content' style='text-align:left;'>
       </div>
-      <input type='image' src="includes/languages/japanese/images/buttons/button_submit2.gif" alt="確定する" title="確定する" onClick="document.order.submit()" >
+      <input type='image' src="includes/languages/japanese/images/buttons/button_submit2.gif" alt="確定" title="確定" onClick="document.order.submit()" >
       <input type='image' src="includes/languages/japanese/images/buttons/button_back.gif" alt="前に戻る" title="前に戻る" onClick="document.getElementById('confirm').style.display='none';document.getElementById('form').style.display='block'" >
     </div>
 <script type="text/javascript">

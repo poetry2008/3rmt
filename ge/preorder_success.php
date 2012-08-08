@@ -78,7 +78,7 @@
         <table border="0" width="100%" cellspacing="0" cellpadding="0">
           <tr>
           <td style="font-size:15px; color:#ff0000;">
-            <?php echo PREORDER_ACTIVE_SUCCESS_READ_HEAD.'<br><br>';?> 
+            <br><?php echo PREORDER_ACTIVE_SUCCESS_READ_HEAD.'<br><br>';?> 
           </td>
           </tr>
           <tr>

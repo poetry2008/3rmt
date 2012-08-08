@@ -422,9 +422,9 @@ if (!isset($_GET['pid'])) {
 }
 ?> 
 </h2>
-<div class="box">
+<div class="comment">
 <?php echo tep_draw_form('login', tep_href_link(FILENAME_LOGIN, 'action=process'.(isset($_GET['pid'])?'&pid='.$_GET['pid']:''), 'SSL')); ?>
-      <table class="box_des" width="95%" border="0" align="center" cellpadding="0" cellspacing="0">
+      <table class="box_des" width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
 
 <?php
 if(isset($_GET['login']) && ($_GET['login'] == 'ip_error')){

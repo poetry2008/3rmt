@@ -26,13 +26,13 @@
   define('DIR_FS_DOWNLOAD', DIR_FS_CATALOG . 'download/');
   define('DIR_FS_DOWNLOAD_PUBLIC', DIR_FS_CATALOG . 'pub/');
   
-  define('DIR_FS_3RMTLIB', '/home/szn/project/new_3rmt/jp/3rmtlib/');
+  define('DIR_FS_3RMTLIB', '/home/szn/project/3rmt/jp/3rmtlib/');
 
 // define our database connection
   define('DB_SERVER', 'localhost'); // eg, localhost - should not be empty for productive servers
   define('DB_SERVER_USERNAME', 'root');
   define('DB_SERVER_PASSWORD', '123456');
-  define('DB_DATABASE', 'maker_rmt_20120801');
+  define('DB_DATABASE', 'maker_3rmt');
   define('USE_PCONNECT', 'false'); // use persistent connections?
   define('STORE_SESSIONS', ''); // leave empty '' for default handler or set to 'mysql'
 

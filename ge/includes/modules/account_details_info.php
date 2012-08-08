@@ -672,7 +672,7 @@ $(document).ready(function(){
       <tr>
         <td class="main">&nbsp;<?php echo ENTRY_GUEST; ?></td>
 <?php if (!isset($guestchk)) $guestchk = NULL;?>
-        <td class="main">&nbsp;<?php echo tep_draw_pull_down_menu('guestchk', $guestchk_array, $guestchk, 'onchange="pass_hidd()"'); ?>&nbsp;&nbsp;<span class="red">※</span>&nbsp;<?php echo TEXT_ACCOUNT_GUEST_INFO;?></td>
+        <td class="main" width="120">&nbsp;<?php echo tep_draw_pull_down_menu('guestchk', $guestchk_array, $guestchk, 'onchange="pass_hidd()"'); ?>&nbsp;&nbsp;<span class="red">※</span>&nbsp;<?php echo TEXT_ACCOUNT_GUEST_INFO;?></td>
       </tr>
 <?php
     } else {
@@ -712,7 +712,7 @@ if (!isset($guestchk)) $guestchk = NULL;
         <td class="main"> 
           <table border="0" cellspacing="0" cellpadding="2" summary="table" class="box_des"> 
           <tr>
-            <td class="main" width="125">&nbsp;<?php echo ENTRY_PASSWORD; ?></td>
+            <td class="main" width="120">&nbsp;<?php echo ENTRY_PASSWORD; ?></td>
             <td class="main" style="*width:290px;">&nbsp;
 <?php
     if ($error_pwd == true) {

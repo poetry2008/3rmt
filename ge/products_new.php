@@ -82,10 +82,10 @@ order by products_date_added DESC, products_name
   if (($products_new_numrows > 0) && ((PREV_NEXT_BAR_LOCATION == '2') || (PREV_NEXT_BAR_LOCATION == '3'))) {
 ?>
       <tr>
-        <td><br><table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2">
+        <td><br><table border="0" width="100%" cellspacing="0" cellpadding="2">
           <tr>
-            <td class="smallText"><?php echo $products_new_split->display_count($products_new_numrows, MAX_DISPLAY_PRODUCTS_NEW, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS_NEW); ?></td>
-            <td align="right" class="smallText"><?php echo TEXT_RESULT_PAGE; ?> <?php echo $products_new_split->display_links($products_new_numrows, MAX_DISPLAY_PRODUCTS_NEW, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
+            <td class="smallText"><?php echo $products_new_split->display_count($products_new_numrows, MAX_DISPLAY_PRODUCTS_NEW, $_GET['page'], TEXT_DISPLAY_NUMBER_OF_PRODUCTS_NEW); ?></td></tr><tr>
+            <td class="smallText" align="right"><?php echo TEXT_RESULT_PAGE; ?> <?php echo $products_new_split->display_links($products_new_numrows, MAX_DISPLAY_PRODUCTS_NEW, MAX_DISPLAY_PAGE_LINKS, $_GET['page'], tep_get_all_get_params(array('page', 'info', 'x', 'y'))); ?></td>
           </tr>
         </table></td>
       </tr>

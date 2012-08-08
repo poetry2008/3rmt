@@ -123,25 +123,33 @@ function popupWindow(url) {
         <div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
 		<h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1> 
         
-        <div> 
-          <table class="box_des" border="0" width="95%" cellspacing="0" cellpadding="0"> 
+        <div class="comment"> 
+          <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="0"> 
             <tr> 
-              <td> <table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2"> 
-                  <tr> 
-                    <td> <?php
-  $info_box_contents = array();
-  $info_box_contents[] = array('text' => HEADING_SEARCH_CRITERIA);
+              <td>
+ <table cellspacing="0" cellpadding="0" border="0" summary="table">
+  <tr>
+    <td height="20"><img alt="" src="images/pixel_trans.gif"></td>
+    <td><?php echo HEADING_SEARCH_CRITERIA;?></td>
+    <td nowrap="" height="20"><img alt="" src="images/pixel_trans.gif"></td>
+  </tr>
+</table>
+<table cellspacing="0" cellpadding="3" border="0" summary="table" width="100%">
+ <tr>
+    <td><img width="100%" height="1" alt="" src="images/pixel_trans.gif"></td>
+  </tr>
+  <tr>
+    <td class="boxText"><?php echo tep_draw_input_field('keywords', '', 'style="width: 100%"');?></td>
+  </tr>
+  <tr>
+    <td align="right" class="boxText"><?php echo tep_draw_checkbox_field('search_in_description', '1').' '.TEXT_SEARCH_IN_DESCRIPTION;?></td>
+  </tr>
+  <tr>
+    <td><img width="100%" height="1" alt="" src="images/pixel_trans.gif"></td>
+  </tr>
+</table>
 
-  new infoBoxHeading($info_box_contents, true, true);
-
-  $info_box_contents = array();
-  $info_box_contents[] = array('text' => tep_draw_input_field('keywords', '', 'style="width: 100%"'));
-  $info_box_contents[] = array('align' => 'right', 'text' => tep_draw_checkbox_field('search_in_description', '1') . ' ' . TEXT_SEARCH_IN_DESCRIPTION);
-
-  new infoBox($info_box_contents);
-?> </td> 
-                  </tr> 
-                </table></td> 
+</td> 
             </tr> 
             <tr> 
               <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
@@ -241,7 +249,7 @@ function popupWindow(url) {
           </div>
           </form> 
          	<h2 class="pageHeading"><?php echo HEADING_SEARCH_HELP; ?></h2>
-            <div class="search_help"><?php echo TEXT_SEARCH_HELP;?></div>
+            <p><?php echo TEXT_SEARCH_HELP;?></p>
         </div>
       <!-- body_text_eof --> 
 <!-- right_navigation --> 

@@ -84,8 +84,8 @@
             <tr> 
               <td><?php echo tep_draw_form('password_forgotten', tep_href_link(FILENAME_PASSWORD_FORGOTTEN, 'action=process', 'SSL')); ?>
           <tr>
-            <td align="right" class="main"><?php echo ENTRY_FORGOTTEN_EMAIL_ADDRESS; // 2003.03.06 nagata Edit Japanese osCommerce ?></td>
-            <td class="main"><?php echo tep_draw_input_field('email_address', '', 'maxlength="96"'); ?></td>
+            <td width="150" class="main"><?php echo ENTRY_FORGOTTEN_EMAIL_ADDRESS; // 2003.03.06 nagata Edit Japanese osCommerce ?></td>
+            <td class="main"><?php echo tep_draw_input_field('email_address', '', 'maxlength="96" size="32"'); ?></td>
           </tr>
           <tr>
             <td colspan="2"><br><table class="box_des" border="0" cellpadding="0" cellspacing="0" width="100%">

@@ -13,7 +13,7 @@ img {
 }
 h1 {
     font-weight:normal;
-    font-size:10px;
+    font-size:14px;
     margin-bottom:0px;
     padding-left:10px;
     color:#fff;
@@ -197,7 +197,7 @@ TABLE.formArea {
 TD：form eria（title）
 --------------------------- */
 TD.formAreaTitle {
-    font-size: 12px;                             
+    font-size: 14px;                             
     font-weight: bold;                             
 }
 /* ---------------------------
@@ -218,12 +218,12 @@ SPAN.smallText, P.smallText {
     padding: 0;
 }
 .smallText {
-    font-size: 10px;
+    font-size: 14px;
     line-height: 1.5;
 }
 div.headerNavigation {
     margin-top: 10px;
-    font-size: 10px;                                 
+    font-size: 14px;                                 
     color: #339966;                              
 }
 /* ---------------------------
@@ -333,9 +333,6 @@ SPAN.errorText {
     line-height:120%;
     margin:0px 0px 5px 7px;
     padding:0px;
-}
-#r_links a {
-    text-decoration:none;
 }
 #r_links a:link ,#r_links a:visited {
     color:#fff;
@@ -972,7 +969,7 @@ margin-left:7px;
 }
 .login_online01 ul{
 background:url(../images/design/oc/r_links.jpg) no-repeat left bottom;
-padding:0 0 35px 10px;
+padding:0 0 35px 6px;
 margin-top:5px;
 *margin-left:0;
 margin-bottom:0;
@@ -1172,7 +1169,7 @@ padding:10px;
 background:#000;
 width:418px;
 }
-.c_pay_info {padding:3px; border:1px solid #fff; font-size:12px; margin:15px 0 5px 0;*margin-bottom:0;}
+.c_pay_info {padding:3px; border:1px solid #fff; font-size:14px; margin:15px 0 5px 0;*margin-bottom:0;}
 .main03{ padding:20px 0 0 0;*padding:15px 0 0 8px; }
 .checkout_s_link{ margin:13px 0 8px 0; *margin:13px 0 5px 0;}
 .c_shipping{ margin-left:10px; margin-top:3px;}
@@ -1206,8 +1203,10 @@ searching
 .text { color:#000; font-size:12px; line-height:18px;}
 .input_text {
     height: 20px;
-    width: 110px;
-	width:90px\9;
+    width: 112px;
+	*width:105px;
+	margin-left:3px;
+	*margin-left:8px;
 }
 .payment_comment{ 
  word-wrap:break-word;
@@ -1624,3 +1623,12 @@ TEXTAREA {
     width: 100%;
 }
 .font_size14{ font-size:14px;}
+#newsletter{ *margin-left:4px;}
+#new_hour,#new_date,#new_date,#new_minute{
+	margin-bottom:5px;
+}
+#new_date{ margin-left:3px; *margin-left:7px;}
+.clear_box{*margin-left:7px;}
+.table_black{ font-size:12px;}
+#wrapper_kiyaku p{ padding:0; margin:10px 5px;}
+#wrapper_kiyaku ul{ padding:0; margin:10px 0 10px 20px;}

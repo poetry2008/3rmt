@@ -659,10 +659,10 @@ document.forms.order1.submit();
                   </tr>
                 </table> 
               </td>
-              <td width="60%">
+              <td width="50%">
               <?php echo tep_draw_separator('pixel_silver.gif', '100%', '1');?>
               </td>
-              <td width="20%">
+              <td width="30%">
                 <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                   <tr>
                     <td width="70%">
@@ -677,8 +677,8 @@ document.forms.order1.submit();
             </tr>
             <tr>
               <td align="left" width="20%" class="preorderBarcurrent"><?php echo PREORDER_TRADER_LINE_TITLE;?></td> 
-              <td align="center" width="60%" class="preorderBarTo"><?php echo PREORDER_CONFIRM_LINE_TITLE;?></td> 
-              <td align="right" width="20%" class="preorderBarTo"><?php echo PREORDER_FINISH_LINE_TITLE;?></td> 
+              <td align="center" width="50%" class="preorderBarTo"><?php echo PREORDER_CONFIRM_LINE_TITLE;?></td> 
+              <td align="right" width="30%" class="preorderBarTo"><?php echo PREORDER_FINISH_LINE_TITLE;?></td> 
             </tr>
           </table>
           <?php
@@ -694,7 +694,7 @@ document.forms.order1.submit();
               </td>
             </tr>
           </table> 
-          <p class="formAreaTitle" style="font-size:12px;"><?php echo CHANGE_ORDER_CUSTOMER_DETAILS?></p> 
+          <p class="formAreaTitle" style="font-size:14px;"><b><?php echo CHANGE_ORDER_CUSTOMER_DETAILS?></b></p> 
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
               <td class="main" width="150">
@@ -718,7 +718,7 @@ document.forms.order1.submit();
             $preorder_product_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS." where orders_id = '".$preorder_id."'"); 
             $preorder_product_res = tep_db_fetch_array($preorder_product_raw); 
           ?> 
-          <p class="formAreaTitle" style="font-size:12px;"><?php echo CHANGE_ORDER_PRODUCT_DETAILS;?></p> 
+          <p class="formAreaTitle" style="font-size:14px;"><b><?php echo CHANGE_ORDER_PRODUCT_DETAILS;?></b></p> 
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
               <td class="main" width="150">
@@ -1031,7 +1031,7 @@ document.forms.order1.submit();
           $quest_array = tep_db_fetch_array($quest_query);
           tep_db_free_result($quest_query);
         ?>
-        <p class="formAreaTitle" style="font-size:12px;"><?php echo TEXT_ADDRESS;?></p>
+        <p class="formAreaTitle" style="font-size:14px;"><b><?php echo TEXT_ADDRESS;?></b></p>
         <table border="0" width="100%" cellspacing="2" cellpadding="2" class="formArea"> 
         <?php
           if($quest_array['customers_guest_chk'] == 0){
@@ -1089,7 +1089,7 @@ document.forms.order1.submit();
         }
         ?>
         
-        <p class="formAreaTitle" style="font-size:12px;"><?php echo CHANGE_ORDER_FETCH_TIME_TITLE;?></p> 
+        <p class="formAreaTitle" style="font-size:14px;"><b><?php echo CHANGE_ORDER_FETCH_TIME_TITLE;?></b></p> 
         <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
         <tr>
           <td class="main" width="150">
