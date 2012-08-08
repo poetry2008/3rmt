@@ -727,6 +727,12 @@ function session_value(){
     $address_quest_array = tep_db_fetch_array($address_quest_query);
     tep_db_free_result($address_quest_query);
     $address_quest_flag = $address_quest_array['customers_guest_chk'];
+    if($address_quest_flag == 0){
+
+      $address_history_flag_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where customers_id='". $_SESSION['customer_id'] ."'");
+      $address_history_flag_num = tep_db_num_rows($address_history_flag_query);
+      tep_db_free_result($address_history_flag_query);
+    }
 ?>
 <script type="text/javascript"> 
 <?php
@@ -861,7 +867,7 @@ unset($_SESSION['shipping_session_flag']);
   }
   ?>
   <?php
-    if(!isset($_POST[$country_fee_id]) && !isset($_SESSION['options']) && $address_quest_flag == 0 && $address_history_num > 0){
+    if(!isset($_POST[$country_fee_id]) && !isset($_SESSION['options']) && $address_quest_flag == 0 && $address_history_flag_num > 0){
   ?>    
     address_option_list(first_num); 
   <?php
@@ -1313,7 +1319,7 @@ unset($_SESSION['shipping_session_flag']);
     //判断用户是否是会员
     $quest_query = tep_db_query("select customers_guest_chk from ". TABLE_CUSTOMERS ." where customers_id={$_SESSION['customer_id']}");
     $quest_array = tep_db_fetch_array($quest_query);
-    tep_db_free_result($quest_query);
+    tep_db_free_result($quest_query);    
 ?>
   <tr><td width="70%"><b><?php echo TABLE_ADDRESS_TITLE; ?></b></td></tr> 
   <?php
@@ -1321,6 +1327,10 @@ unset($_SESSION['shipping_session_flag']);
       $address_history_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where customers_id='". $_SESSION['customer_id'] ."'");
       $address_history_num = tep_db_num_rows($address_history_query);
       tep_db_free_result($address_history_query);
+      if($address_history_num > 0){
+
+        $address_option_list_flag = 'address_option_list(first_num);';
+      }
       if($address_history_num == 0 && !isset($_POST['address_option'])){
         $checked_str_old = '';
         $checked_str_new = 'checked';
@@ -1340,7 +1350,7 @@ unset($_SESSION['shipping_session_flag']);
      <tr>
        <td><?php tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td>
        <td class="main">
-         <input type="radio" name="address_option" value="old" onClick="address_option_show('old');address_option_list(first_num);" <?php echo $checked_str_old;?>><?php echo TABLE_OPTION_OLD; ?>
+         <input type="radio" name="address_option" value="old" onClick="address_option_show('old');<?php echo $address_option_list_flag;?>" <?php echo $checked_str_old;?>><?php echo TABLE_OPTION_OLD; ?>
          <input type="radio" name="address_option" value="new" onClick="address_option_show('new');" <?php echo $checked_str_new;?>><?php echo TABLE_OPTION_NEW; ?> 
         </td></tr>
         </table>
