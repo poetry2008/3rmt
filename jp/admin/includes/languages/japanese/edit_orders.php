@@ -226,7 +226,7 @@ define('TEXT_HANDLE_FEE_ONE','▼手数料　　　　　：');
 define('TEXT_PAYMENT_AMOUNT_ONE','▼お支払金額　　　：');
 define('TEXT_POINT_DISCOUNT','▼ポイント割引');
 define('TEXT_POINT_DISCOUNT_ONE','▼ ポイント割引');
-define('TEXT_SHIPPING_FEE_ONE','▼お届け料金　　　：');
+define('TEXT_SHIPPING_FEE_ONE','▼配送料　　　　　：');
 define('ORDERS_PRODUCTS_ONE','▼注文商品');
 define('TEXT_ADDRESS_INFO_LEFT','▼住所情報');
 define('TEXT_ORDERS_SEND_MAIL','ご注文ありがとうございます【');
