@@ -6,7 +6,7 @@ define('NAVBAR_CHANGE_PREORDER_TITLE', '最終確認');
 define('PRORDER_CONFIRM_PRODUCT_INFO', '数量 / 商品名');
 define('PRODUCT_UNIT_TEXT', '個');
 define('MONEY_UNIT_TEXT', '円');
-define('PRORDER_CONFIRM_FETCH_INFO', '届け時間:');
+define('PRORDER_CONFIRM_FETCH_INFO', 'お届け時間');
 define('PREORDER_CONFIRM_FETCH_TIME_READ', 'オプション:');
 define('PREORDER_CONFIRM_FETCH_TIME_DAY', 'お届け希望日:');
 define('PREORDER_CONFIRM_FETCH_TIME_DATE', 'お届け希望時間:');
