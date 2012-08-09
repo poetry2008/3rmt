@@ -57,10 +57,11 @@ H4 {
 }
 .comment {
 	width: 500px;
- *width: 530px;
+ 	*width: 530px;
 	margin: 0px;
 	padding: 5px 15px 0px 15px;
 	overflow: hidden;
+	*overflow:inherit;
 	font-size:12px;
 	background: url(../images/design/contents/headding_content.gif) repeat-y;
 }
@@ -2247,9 +2248,9 @@ display:block;
 }
 .time_radio{
 	float:left;
-	margin-left:23px;
+	margin-left:16px;
 	margin-top:2px;
-	margin-left:28px\9;
+	margin-left:18px\9;
 }
 .time_label{
 	float:left;

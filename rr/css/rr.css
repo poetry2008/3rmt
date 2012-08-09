@@ -71,6 +71,7 @@ H4 {
 	width:708px\9;
 	background:url(../images/design/comment_middle.gif) repeat-y;
 	overflow:hidden;
+	*overflow:inherit;
 	margin-top:3px;
 	margin-bottom:5px;
 	border-bottom:1px solid #373737;
