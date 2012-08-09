@@ -45,13 +45,14 @@ if (!isset($_GET['cPath'])) $_GET['cPath']= NULL;
 if (!isset($_GET['products_id'])) $_GET['products_id']= NULL;
   if ($_GET['cPath']) {
     echo '<p class="header1"><strong>' . $seo_category['seo_name'] . '-RMT</strong> 安いが一番！最安値-ゲーム通貨の激安販売</p>' . "\n";
-    echo '<p class="header2">' . $seo_category['seo_name'] . 'を激安販売-RMT- GM-Exchange</p>' . "\n";
+    echo '<p class="header2">' . $seo_category['seo_name'] . 'を激安販売-'.STORE_NAME.'</p>' . "\n";
   } elseif ($_GET['products_id']) {
     echo '<p class="header1"><strong>' . ds_tep_get_categories((int)$_GET['products_id'],1) . '</strong> 安いが一番！最安値-ゲーム通貨の激安販売</p>' . "\n";
-    echo '<p class="header2">' . ds_tep_get_categories((int)$_GET['products_id'],1) . 'を激安販売-RMT- GM-Exchange</p>' . "\n";
+    echo '<p class="header2">' . ds_tep_get_categories((int)$_GET['products_id'],1)
+      . 'を激安販売-'.STORE_NAME.'</p>' . "\n";
   } else {
     echo '<h1 class="header1">RMT 最安値-アイテムの激安販売</h1>' . "\n";
-    echo '<p class="header2">FF11、リネージュ2、レッドストーン、AIONを激安販売 - RMT GM-Exchange</p>' . "\n";
+    echo '<p class="header2">FF11、リネージュ2、レッドストーン、AIONを激安販売 - '.STORE_NAME.'</p>' . "\n";
   }
 ?>
 </div>

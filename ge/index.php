@@ -68,7 +68,7 @@ if ($category_depth == 'nested') {
     $_categories = tep_get_category_by_id($categories_path[0], SITE_ID, $languages_id);
     echo $_categories['categories_name'];
   } else {
-    echo 'RMT： GM-Exchange・アイテム・アカウント';
+    echo STORE_NAME.'・アイテム・アカウント';
   }
 ?>      
 </h1>

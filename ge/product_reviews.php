@@ -55,7 +55,7 @@
             <?php /*<td align="right" class="tableHeading"><?php echo TABLE_HEADING_DATE_ADDED; ?></td>*/ ?>
           </tr>
           <tr>
-            <td colspan="3"><?php echo tep_draw_separator(); ?></td>
+            <td colspan="3"><hr></td>
           </tr>
 <?php
 // ccdd
@@ -99,7 +99,7 @@
   }
 ?>
           <tr>
-            <td colspan="3"><?php echo tep_draw_separator(); ?></td>
+            <td colspan="3"><hr></td>
           </tr>
           <tr>
             <td class="main" colspan="3"><br><table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2">

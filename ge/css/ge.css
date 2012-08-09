@@ -1062,7 +1062,7 @@ checkbox・mouse over
 checkbox select row
 --------------------------- */
 .moduleRowSelected {background-color: #666;}
-.bold {font-weight:bold;}
+.bold {font-weight:bold; margin:0; padding:0 0 0 20px;}
 .contact_us_warpper{ clear:both;}
 .tcol{ clear:both; border-bottom:1px dotted #444; width:96%;}
 .lcol{ clear:both; padding:10px 0; overflow:hidden; border-bottom:1px dotted #444; width:96%;}
@@ -1104,7 +1104,7 @@ background-color:#E0E0E0;
 	font-size:12px; 
 }
 .open_tele{ color: #3399CC;}
-.error{ color:#FF0000;}
+.error{ color:#FF0000; font-size:14px;}
 #infomessage{
 	font-weight: bold;
 }
@@ -1632,3 +1632,13 @@ TEXTAREA {
 .table_black{ font-size:12px;}
 #wrapper_kiyaku p{ padding:0; margin:10px 5px;}
 #wrapper_kiyaku ul{ padding:0; margin:10px 0 10px 20px;}
+
+/*info*/
+.sub_clear td{
+	padding:0 5px 10px 5px;
+	font-size:14px;
+	 border-bottom:1px dashed #ffffff;
+	
+}
+.sub_clear th{ padding:10px 0 10px 5px;}
+.red{ color:#FF0000;}

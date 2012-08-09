@@ -4,7 +4,6 @@
 */
 ?>
  <div id="content">
-   <!-- <h2 class="index_h2">はじめてRMT GM-Exchangeをご利用いただくお客様へ</h2>  -->
 <?php 
   // @TODO 改成设置
   #$contents = tep_db_query("select * from ".TABLE_INFORMATION_PAGE." where pID = '11' and site_id = '" . SITE_ID . "'");//top
