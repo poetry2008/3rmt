@@ -2659,8 +2659,7 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
             $code_payment_method = payment::changeRomaji($_POST['payment_method'],'code');
             $pay_method = payment::changeRomaji($_POST['payment_method'],'code');
           }
-
-          $cpayment = payment::getInstance((int)SITE_ID);
+          $cpayment = payment::getInstance();
           echo payment::makePaymentListPullDownMenu($code_payment_method);
           
           
@@ -2693,7 +2692,7 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
                   $field['message'] = $field['message'] != '' ? ADDRESS_ERROR_OPTION_ITEM_TEXT_TYPE_WRONG : ''; 
                 }
               }else{
-                if($field['title'] != TEXT_ACCOUNT_TYPE){
+                if(!$cpayment->admin_get_payment_buying_type(payment::changeRomaji($pay_method, 'code'),$field['title'])){
                   $field['message'] = TEXT_REQUIRE;
                 }
               }

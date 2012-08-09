@@ -758,5 +758,17 @@ class payment {
       }
     } 
   }
+
+  function admin_get_payment_buying_type($payment,$buying_type){
+
+    $module = $this->getModule($payment);
+    if ($module) {
+      if (method_exists($module, 'admin_get_payment_buying_type')) {
+         return $module->admin_get_payment_buying_type($buying_type); 
+      }
+    } 
+
+    return false;
+  }
 }
 ?>

@@ -487,7 +487,7 @@ class buying extends basePayment  implements paymentInterface  {
    echo 'document.getElementsByName("bank_shiten")[0].value = "'. $bank_shiten[1] .'";'."\n"; 
    $bank_kamoku = explode(':',$pay_array[2]);
    $bank_kamoku[1] = isset($_POST['bank_kamoku']) ? $_POST['bank_kamoku'] : $bank_kamoku[1];
-   if($bank_kamoku[1] == TEXT_USUALLY){
+   if($bank_kamoku[1] == TS_TEXT_BANK_SELECT_KAMOKU_F){
      echo 'document.getElementsByName("bank_kamoku")[0].checked = true;'."\n"; 
    }else{
      echo 'document.getElementsByName("bank_kamoku")[1].checked = true;'."\n"; 
@@ -508,6 +508,16 @@ class buying extends basePayment  implements paymentInterface  {
     $mailoption['BANK_KOUZA_NUM']   = $comment_arr['payment_bank_info']['bank_kouza_num'] ;
     $mailoption['BANK_KOUZA_NAME']  = $comment_arr['payment_bank_info']['bank_kouza_name'];
     $mailoption['ADD_INFO']         = $comment_arr['add_info'];
+  }
+
+  function admin_get_payment_buying_type($buying_type){
+
+    if($buying_type == TS_TEXT_BANK_KAMOKU){
+
+      return true;
+    } 
+
+    return false;
   }
 }
 ?>

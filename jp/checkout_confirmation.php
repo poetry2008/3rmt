@@ -393,7 +393,7 @@ $shipping_fee = $cart->total > $free_value ? 0 : $weight_fee;
   <?php echo $start_hour; ?>
 <?php echo TIME_HOUR_TEXT;?>
 <?php echo $start_min; ?>
-<?php echo TIME_MIN_TEXT;?>&nbsp;
+<?php echo TIME_MIN_TEXT;?>
 <?php echo TEXT_TIME_LINK;?>
 <?php echo $end_hour; ?>
 <?php echo TIME_HOUR_TEXT;?>
