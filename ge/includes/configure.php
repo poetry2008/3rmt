@@ -7,7 +7,7 @@
 // * DIR_FS_* = Filesystem directories (local/physical)
 // * DIR_WS_* = Webserver directories (virtual/URL)
   define('HTTP_SERVER', 'http://hmtest9.3322.org'); // eg, http://localhost - should not be empty for productive servers
-  define('HTTPS_SERVER', 'https://hmtest9.3322.org'); // eg, https://localhost - should not be empty for productive servers
+  define('HTTPS_SERVER', 'https://www.secureservice.jp/www.gm-exchange.jp'); // eg, https://localhost - should not be empty for productive servers
   define('ENABLE_SSL', false); // secure webserver for checkout procedure?
   define('DIR_WS_CATALOG', '/'); // absolute path required
   define('DIR_WS_IMAGES', 'images/');

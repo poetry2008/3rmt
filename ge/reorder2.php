@@ -49,7 +49,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder2.php'));
           } else if(!tep_validate_email($email)){
             $email_error = true;
           } else {
-            echo '<div><div class="comment" style="width:95%">注文内容の変更を承りました。電子メールをご確認ください。 <div align="right"><a href="/"><img src="includes/languages/japanese/images/buttons/button_back_home.gif" alt="TOPに戻る" title="TOPに戻る"></a></div></div>';
+            echo '<div><div class="comment" style="width:95%; margin-top:10px;">注文内容の変更を承りました。電子メールをご確認ください。 <div align="right"><a href="/"><img src="includes/languages/japanese/images/buttons/button_back_home.gif" alt="TOPに戻る" title="TOPに戻る"></a></div></div>';
 
             $email_order = '';
             $email_order .= $name . "様\n";
