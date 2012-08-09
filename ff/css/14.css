@@ -67,6 +67,7 @@ H4 {
 	font-size:12px;
 	background:url(../images/design/comment_bg_long.gif) repeat-y scroll 0 0 transparent;
 	margin:0 0 5px;
+	*overflow:inherit;
 }
 .comment img { vertical-align:middle\9;}
 .comment_index02 , .comment_index01{
@@ -2180,12 +2181,13 @@ line-height:16px;
 	*height:25px;
 	overflow:hidden;
 	*overflow:inherit;
+	z-index:200;
 }
 .time_radio{
 	float:left;
-	margin-left:32px;
+	margin-left:25px;
 	margin-top:2px;
-	margin-left:28px\9;
+	margin-left:23px\9;
 }
 .time_label{
 	float:left;
