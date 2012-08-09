@@ -1477,6 +1477,7 @@ function submit_check_con(){
   $('#edit_order_id').ajaxSubmit(options);
 }
 <?php
+if($weight > 0){
   $address_fixed_query = tep_db_query("select name_flag,fixed_option from ". TABLE_ADDRESS ." where fixed_option!='0' and status='0'");
   while($address_fixed_array = tep_db_fetch_array($address_fixed_query)){
 
@@ -1627,7 +1628,9 @@ function country_area_check(value,select_value){
   }
 
 }
-
+<?php
+}
+?>
 function check_hour(value){
   var hour_1 = document.getElementById('hour_1');
   var hour_1_value = hour_1.value;
@@ -1821,7 +1824,9 @@ function check_end_min(value){
 }
 
 
-
+<?php
+if($weight > 0){
+?>
 function address_clear_error(){
   
   var list_error = new Array();
@@ -2108,6 +2113,7 @@ function address_option_list(value){
 }
 
 <?php 
+}
 //------------------------------------------------
 $suu = 0;
 $text_suu = 0;  
@@ -2174,6 +2180,8 @@ echo 'var nomail = new Array();'."\n";
 foreach ($nomail as $oskey => $value){
   echo 'nomail['.$oskey.'] = "' . $value . '";' . "\n";
 }
+
+if($weight > 0){
 ?>
 function address_show(){
   
@@ -2260,6 +2268,7 @@ $(document).ready(function(){
 });
 <?php
   }
+}
 ?>
   //todo:修改通性用
   function hidden_payment(){
@@ -2275,6 +2284,9 @@ $(document).ready(function(){hidden_payment()});
 $(document).ready(function(){
   //$.datePicker.setDateFormat('ymd', '-');
   //$('#date_orders').datePicker();
+<?php
+if($weight > 0){
+?>
   $("#"+country_fee_id).change(function(){
     country_check($("#"+country_fee_id).val());
     country_area_check($("#"+country_area_id).val());
@@ -2333,7 +2345,8 @@ $(document).ready(function(){
   ?>
     country_area_check($("#"+country_area_id).val());
   <?php
-  }
+   }
+}
   ?>   
   $("select[name='payment_method']").change(function(){
     hidden_payment();
@@ -2573,7 +2586,7 @@ if (($action == 'edit') && ($order_exists == true)) {
                   $field['message'] = $field['message'] != '' ? ADDRESS_ERROR_OPTION_ITEM_TEXT_TYPE_WRONG : ''; 
                 }
               }else{
-                if(!$cpayment->admin_get_payment_buying_type($pay_method,$field['title'])){
+                if(!$cpayment->admin_get_payment_buying_type(payment::changeRomaji($pay_method, 'code'),$field['title'])){
                   $field['message'] = TEXT_REQUIRE;
                 }
               }
