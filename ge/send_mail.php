@@ -19,7 +19,7 @@
   HTTP_SERVER.'/create_account.php' ."\n\n".
   'ご不明な点がありましたら、'.STORE_NAME.'までお問い合わせください。'."\n\n\n".
   '[ご連絡・お問い合わせ先]━━━━━━━━━━━━'."\n".
-  '株式会社 iimy'."\n".
+  COMPANY_NAME."\n".
   HTTP_SERVER."\n".  
   STORE_OWNER_EMAIL_ADDRESS."\n"."━━━━━━━━━━━━━━━━━━━━━━━";
   
