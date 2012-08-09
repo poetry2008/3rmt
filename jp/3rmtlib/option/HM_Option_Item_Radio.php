@@ -140,9 +140,9 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
        if (!empty($_POST[$pre_item_str.'op_'.$this->formname])) {
          echo '<div class="option_hide_border">'; 
          if (file_exists(DIR_FS_CATALOG.'default_images/design/checkmark.png')) {
-           echo '<div class="option_tick"><img src="default_images/design/checkmark.png" alt=""></div>'; 
+           echo '<div class="option_checkmark"><img src="default_images/design/checkmark.png" alt=""></div>'; 
          } else {
-           echo '<div class="option_tick"><img src="upload_images/0/design/checkmark.png" alt=""></div>'; 
+           echo '<div class="option_checkmark"><img src="upload_images/0/design/checkmark.png" alt=""></div>'; 
          }
          echo '<div class="option_conent">'; 
          echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'1\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\', \'0\');"><span>'.stripslashes($this->default_radio).'</span></a>';
@@ -154,9 +154,9 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
            if (isset($cart_obj->contents[$pre_item_tmp_str]['ck_attributes'][$this->formname]) && (!isset($_POST[$pre_item_str.'op_'.$this->formname]))) {
              echo '<div class="option_hide_border">'; 
              if (file_exists(DIR_FS_CATALOG.'default_images/design/checkmark.png')) {
-               echo '<div class="option_tick"><img src="default_images/design/checkmark.png" alt=""></div>'; 
+               echo '<div class="option_checkmark"><img src="default_images/design/checkmark.png" alt=""></div>'; 
              } else {
-               echo '<div class="option_tick"><img src="upload_images/0/design/checkmark.png" alt=""></div>'; 
+               echo '<div class="option_checkmark"><img src="upload_images/0/design/checkmark.png" alt=""></div>'; 
              }
              echo '<div class="option_conent">'; 
              echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'1\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\', \'0\');"><span>'.stripslashes($this->default_radio).'</span></a>';
@@ -174,9 +174,9 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
              }
              
              if (file_exists(DIR_FS_CATALOG.'default_images/design/checkmark.png')) {
-               echo '<div class="option_tick"><img src="default_images/design/checkmark.png" alt=""></div>'; 
+               echo '<div class="option_checkmark"><img src="default_images/design/checkmark.png" alt=""></div>'; 
              } else {
-               echo '<div class="option_tick"><img src="upload_images/0/design/checkmark.png" alt=""></div>'; 
+               echo '<div class="option_checkmark"><img src="upload_images/0/design/checkmark.png" alt=""></div>'; 
              }
              echo '<div class="option_conent">'; 
              echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'1\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\', \'0\');"><span>'.stripslashes($this->default_radio).'</span></a>';
@@ -195,9 +195,9 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
              echo '<div class="option_show_border">'; 
            }
            if (file_exists(DIR_FS_CATALOG.'default_images/design/checkmark.png')) {
-             echo '<div class="option_tick"><img src="default_images/design/checkmark.png" alt=""></div>'; 
+             echo '<div class="option_checkmark"><img src="default_images/design/checkmark.png" alt=""></div>'; 
            } else {
-             echo '<div class="option_tick"><img src="upload_images/0/design/checkmark.png" alt=""></div>'; 
+             echo '<div class="option_checkmark"><img src="upload_images/0/design/checkmark.png" alt=""></div>'; 
            }
            echo '<div class="option_conent">'; 
            echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'1\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\', \'0\');"><span>'.stripslashes($this->default_radio).'</span></a>';
@@ -218,9 +218,9 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
              if (trim(str_replace($replace_arr, '', nl2br(stripslashes($value['title'])))) == trim(str_replace($replace_arr, '', nl2br($default_value)))) {
                echo '<div class="option_show_border">'; 
                if (file_exists(DIR_FS_CATALOG.'default_images/design/checkmark.png')) {
-                 echo '<div class="option_tick"><img src="default_images/design/checkmark.png" alt=""></div>'; 
+                 echo '<div class="option_checkmark"><img src="default_images/design/checkmark.png" alt=""></div>'; 
                } else {
-                 echo '<div class="option_tick"><img src="upload_images/0/design/checkmark.png" alt=""></div>'; 
+                 echo '<div class="option_checkmark"><img src="upload_images/0/design/checkmark.png" alt=""></div>'; 
                }
                echo '<div class="option_conent">'; 
                echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\', \''.number_format($value['money']).'\');">';
@@ -228,9 +228,9 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
              } else {
                echo '<div class="option_hide_border">'; 
                if (file_exists(DIR_FS_CATALOG.'default_images/design/checkmark.png')) {
-                 echo '<div class="option_tick"><img src="default_images/design/checkmark.png" alt=""></div>'; 
+                 echo '<div class="option_checkmark"><img src="default_images/design/checkmark.png" alt=""></div>'; 
                } else {
-                 echo '<div class="option_tick"><img src="upload_images/0/design/checkmark.png" alt=""></div>'; 
+                 echo '<div class="option_checkmark"><img src="upload_images/0/design/checkmark.png" alt=""></div>'; 
                }
                echo '<div class="option_conent">'; 
                echo '<a href="javascript:void(0);" onclick="select_item_radio(this,\'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\', \''.number_format($value['money']).'\');">'; 
@@ -243,9 +243,9 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
                  if (trim(str_replace($replace_arr, '', nl2br($cart_obj->contents[$pre_item_tmp_str]['ck_attributes'][$this->formname]))) == trim(str_replace($replace_arr, '',nl2br(stripslashes($value['title']))))) {
                    echo '<div class="option_show_border">'; 
                    if (file_exists(DIR_FS_CATALOG.'default_images/design/checkmark.png')) {
-                     echo '<div class="option_tick"><img src="default_images/design/checkmark.png" alt=""></div>'; 
+                     echo '<div class="option_checkmark"><img src="default_images/design/checkmark.png" alt=""></div>'; 
                    } else {
-                     echo '<div class="option_tick"><img src="upload_images/0/design/checkmark.png" alt=""></div>'; 
+                     echo '<div class="option_checkmark"><img src="upload_images/0/design/checkmark.png" alt=""></div>'; 
                    }
                    echo '<div class="option_conent">'; 
                    echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\', \''.number_format($value['money']).'\');">';
@@ -253,9 +253,9 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
                  } else {
                    echo '<div class="option_hide_border">'; 
                    if (file_exists(DIR_FS_CATALOG.'default_images/design/checkmark.png')) {
-                     echo '<div class="option_tick"><img src="default_images/design/checkmark.png" alt=""></div>'; 
+                     echo '<div class="option_checkmark"><img src="default_images/design/checkmark.png" alt=""></div>'; 
                    } else {
-                     echo '<div class="option_tick"><img src="upload_images/0/design/checkmark.png" alt=""></div>'; 
+                     echo '<div class="option_checkmark"><img src="upload_images/0/design/checkmark.png" alt=""></div>'; 
                    }
                    echo '<div class="option_conent">'; 
                    echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\', \''.number_format($value['money']).'\');">';
@@ -269,9 +269,9 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
                    echo '<div class="option_hide_border">'; 
                  }
                  if (file_exists(DIR_FS_CATALOG.'default_images/design/checkmark.png')) {
-                   echo '<div class="option_tick"><img src="default_images/design/checkmark.png" alt=""></div>'; 
+                   echo '<div class="option_checkmark"><img src="default_images/design/checkmark.png" alt=""></div>'; 
                  } else {
-                   echo '<div class="option_tick"><img src="upload_images/0/design/checkmark.png" alt=""></div>'; 
+                   echo '<div class="option_checkmark"><img src="upload_images/0/design/checkmark.png" alt=""></div>'; 
                  }
                  echo '<div class="option_conent">'; 
                  echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\', \''.number_format($value['money']).'\');">';
@@ -288,9 +288,9 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
                  echo '<div class="option_hide_border">'; 
                }
                if (file_exists(DIR_FS_CATALOG.'default_images/design/checkmark.png')) {
-                 echo '<div class="option_tick"><img src="default_images/design/checkmark.png" alt=""></div>'; 
+                 echo '<div class="option_checkmark"><img src="default_images/design/checkmark.png" alt=""></div>'; 
                } else {
-                 echo '<div class="option_tick"><img src="upload_images/0/design/checkmark.png" alt=""></div>'; 
+                 echo '<div class="option_checkmark"><img src="upload_images/0/design/checkmark.png" alt=""></div>'; 
                }
                echo '<div class="option_conent">'; 
                echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\', \''.number_format($value['money']).'\');">';
@@ -303,9 +303,9 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
              if (trim(str_replace($replace_arr, '', nl2br(stripslashes($value['title'])))) == trim(str_replace($replace_arr, '', nl2br($default_value)))) {
                echo '<div class="option_show_border">'; 
                if (file_exists(DIR_FS_CATALOG.'default_images/design/checkmark.png')) {
-                 echo '<div class="option_tick"><img src="default_images/design/checkmark.png" alt=""></div>'; 
+                 echo '<div class="option_checkmark"><img src="default_images/design/checkmark.png" alt=""></div>'; 
                } else {
-                 echo '<div class="option_tick"><img src="upload_images/0/design/checkmark.png" alt=""></div>'; 
+                 echo '<div class="option_checkmark"><img src="upload_images/0/design/checkmark.png" alt=""></div>'; 
                }
                echo '<div class="option_conent">'; 
                echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\', \''.number_format($value['money']).'\');">';
@@ -313,9 +313,9 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
              } else {
                echo '<div class="option_hide_border">'; 
                if (file_exists(DIR_FS_CATALOG.'default_images/design/checkmark.png')) {
-                 echo '<div class="option_tick"><img src="default_images/design/checkmark.png" alt=""></div>'; 
+                 echo '<div class="option_checkmark"><img src="default_images/design/checkmark.png" alt=""></div>'; 
                } else {
-                 echo '<div class="option_tick"><img src="upload_images/0/design/checkmark.png" alt=""></div>'; 
+                 echo '<div class="option_checkmark"><img src="upload_images/0/design/checkmark.png" alt=""></div>'; 
                }
                echo '<div class="option_conent">'; 
                echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\', \''.number_format($value['money']).'\');">';
@@ -328,9 +328,9 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
                  if (trim(str_replace($replace_arr, '', nl2br($cart_obj->contents[$pre_item_tmp_str]['ck_attributes'][$this->formname]))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($value['title']))))) {
                    echo '<div class="option_show_border">'; 
                    if (file_exists(DIR_FS_CATALOG.'default_images/design/checkmark.png')) {
-                     echo '<div class="option_tick"><img src="default_images/design/checkmark.png" alt=""></div>'; 
+                     echo '<div class="option_checkmark"><img src="default_images/design/checkmark.png" alt=""></div>'; 
                    } else {
-                     echo '<div class="option_tick"><img src="upload_images/0/design/checkmark.png" alt=""></div>'; 
+                     echo '<div class="option_checkmark"><img src="upload_images/0/design/checkmark.png" alt=""></div>'; 
                    }
                    echo '<div class="option_conent">'; 
                    echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\', \''.number_format($value['money']).'\');">';
@@ -338,9 +338,9 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
                  } else {
                    echo '<div class="option_hide_border">'; 
                    if (file_exists(DIR_FS_CATALOG.'default_images/design/checkmark.png')) {
-                     echo '<div class="option_tick"><img src="default_images/design/checkmark.png" alt=""></div>'; 
+                     echo '<div class="option_checkmark"><img src="default_images/design/checkmark.png" alt=""></div>'; 
                    } else {
-                     echo '<div class="option_tick"><img src="upload_images/0/design/checkmark.png" alt=""></div>'; 
+                     echo '<div class="option_checkmark"><img src="upload_images/0/design/checkmark.png" alt=""></div>'; 
                    }
                    echo '<div class="option_conent">'; 
                    echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\', \''.number_format($value['money']).'\');">';
@@ -351,9 +351,9 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
                    if (trim(str_replace($replace_arr, '', nl2br($_POST[$pre_item_str.'op_'.$this->formname]))) == trim(str_replace($replace_arr, '', nl2br(stripslashes($value['title']))))) {
                      echo '<div class="option_show_border">'; 
                      if (file_exists(DIR_FS_CATALOG.'default_images/design/checkmark.png')) {
-                       echo '<div class="option_tick"><img src="default_images/design/checkmark.png" alt=""></div>'; 
+                       echo '<div class="option_checkmark"><img src="default_images/design/checkmark.png" alt=""></div>'; 
                      } else {
-                       echo '<div class="option_tick"><img src="upload_images/0/design/checkmark.png" alt=""></div>'; 
+                       echo '<div class="option_checkmark"><img src="upload_images/0/design/checkmark.png" alt=""></div>'; 
                      }
                      echo '<div class="option_conent">'; 
                      echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\', \''.number_format($value['money']).'\');">';
@@ -361,9 +361,9 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
                    } else {
                      echo '<div class="option_hide_border">'; 
                      if (file_exists(DIR_FS_CATALOG.'default_images/design/checkmark.png')) {
-                       echo '<div class="option_tick"><img src="default_images/design/checkmark.png" alt=""></div>'; 
+                       echo '<div class="option_checkmark"><img src="default_images/design/checkmark.png" alt=""></div>'; 
                      } else {
-                       echo '<div class="option_tick"><img src="upload_images/0/design/checkmark.png" alt=""></div>'; 
+                       echo '<div class="option_checkmark"><img src="upload_images/0/design/checkmark.png" alt=""></div>'; 
                      }
                      echo '<div class="option_conent">'; 
                      echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\', \''.number_format($value['money']).'\');">';
@@ -374,9 +374,9 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
                      if (trim(str_replace($replace_arr, '', nl2br(stripslashes($value['title'])))) == trim(str_replace($replace_arr, '', nl2br($default_value)))) {
                        echo '<div class="option_show_border">'; 
                        if (file_exists(DIR_FS_CATALOG.'default_images/design/checkmark.png')) {
-                         echo '<div class="option_tick"><img src="default_images/design/checkmark.png" alt=""></div>'; 
+                         echo '<div class="option_checkmark"><img src="default_images/design/checkmark.png" alt=""></div>'; 
                        } else {
-                         echo '<div class="option_tick"><img src="upload_images/0/design/checkmark.png" alt=""></div>'; 
+                         echo '<div class="option_checkmark"><img src="upload_images/0/design/checkmark.png" alt=""></div>'; 
                        }
                        echo '<div class="option_conent">'; 
                        echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\', \''.number_format($value['money']).'\');">';
@@ -384,9 +384,9 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
                      } else {
                        echo '<div class="option_hide_border">'; 
                        if (file_exists(DIR_FS_CATALOG.'default_images/design/checkmark.png')) {
-                         echo '<div class="option_tick"><img src="default_images/design/checkmark.png" alt=""></div>'; 
+                         echo '<div class="option_checkmark"><img src="default_images/design/checkmark.png" alt=""></div>'; 
                        } else {
-                         echo '<div class="option_tick"><img src="upload_images/0/design/checkmark.png" alt=""></div>'; 
+                         echo '<div class="option_checkmark"><img src="upload_images/0/design/checkmark.png" alt=""></div>'; 
                        }
                        echo '<div class="option_conent">'; 
                        echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\', \''.number_format($value['money']).'\');">';
@@ -397,9 +397,9 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
                        $default_i_value = new_nl2br($value['title']); 
                        echo '<div class="option_show_border">'; 
                        if (file_exists(DIR_FS_CATALOG.'default_images/design/checkmark.png')) {
-                         echo '<div class="option_tick"><img src="default_images/design/checkmark.png" alt=""></div>'; 
+                         echo '<div class="option_checkmark"><img src="default_images/design/checkmark.png" alt=""></div>'; 
                        } else {
-                         echo '<div class="option_tick"><img src="upload_images/0/design/checkmark.png" alt=""></div>'; 
+                         echo '<div class="option_checkmark"><img src="upload_images/0/design/checkmark.png" alt=""></div>'; 
                        }
                        echo '<div class="option_conent">'; 
                        echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\', \''.number_format($value['money']).'\');">';
@@ -407,9 +407,9 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
                      } else {
                        echo '<div class="option_hide_border">'; 
                        if (file_exists(DIR_FS_CATALOG.'default_images/design/checkmark.png')) {
-                         echo '<div class="option_tick"><img src="default_images/design/checkmark.png" alt=""></div>'; 
+                         echo '<div class="option_checkmark"><img src="default_images/design/checkmark.png" alt=""></div>'; 
                        } else {
-                         echo '<div class="option_tick"><img src="upload_images/0/design/checkmark.png" alt=""></div>'; 
+                         echo '<div class="option_checkmark"><img src="upload_images/0/design/checkmark.png" alt=""></div>'; 
                        }
                        echo '<div class="option_conent">'; 
                        echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\', \''.number_format($value['money']).'\');">';
@@ -431,9 +431,9 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
                    $default_i_value = new_nl2br($value['title']); 
                  }
                  if (file_exists(DIR_FS_CATALOG.'default_images/design/checkmark.png')) {
-                   echo '<div class="option_tick"><img src="default_images/design/checkmark.png" alt=""></div>'; 
+                   echo '<div class="option_checkmark"><img src="default_images/design/checkmark.png" alt=""></div>'; 
                  } else {
-                   echo '<div class="option_tick"><img src="upload_images/0/design/checkmark.png" alt=""></div>'; 
+                   echo '<div class="option_checkmark"><img src="upload_images/0/design/checkmark.png" alt=""></div>'; 
                  }
                  echo '<div class="option_conent">'; 
                  echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\', \''.number_format($value['money']).'\');">';
@@ -449,9 +449,9 @@ class HM_Option_Item_Radio extends HM_Option_Item_Basic
                    echo '<div class="option_hide_border">'; 
                  }
                  if (file_exists(DIR_FS_CATALOG.'default_images/design/checkmark.png')) {
-                   echo '<div class="option_tick"><img src="default_images/design/checkmark.png" alt=""></div>'; 
+                   echo '<div class="option_checkmark"><img src="default_images/design/checkmark.png" alt=""></div>'; 
                  } else {
-                   echo '<div class="option_tick"><img src="upload_images/0/design/checkmark.png" alt=""></div>'; 
+                   echo '<div class="option_checkmark"><img src="upload_images/0/design/checkmark.png" alt=""></div>'; 
                  }
                  echo '<div class="option_conent">'; 
                  echo '<a href="javascript:void(0);" onclick="select_item_radio(this, \'\', \''.$pre_item_str.'h_'.$this->formname.'\', \''.$pre_item_str.'op_'.$this->formname.'\', \''.number_format($value['money']).'\');">';
