@@ -16,7 +16,7 @@
   'このメールを、無事に受信ボックスで確認できましたら、'."\n".
   'こちらのメールアドレスは'.STORE_NAME.'で問題なくご利用いただけます。'."\n\n".
   '以下のURLにアクセスして会員登録を行ってください。'."\n".
-  HTTP_SERVER.'/create_account.php' ."\n\n".
+  HTTPS_SERVER.'/create_account.php' ."\n\n".
   'ご不明な点がありましたら、'.STORE_NAME.'までお問い合わせください。'."\n\n\n".
   '[ご連絡・お問い合わせ先]━━━━━━━━━━━━'."\n".
   COMPANY_NAME."\n".
@@ -60,7 +60,7 @@
   if ($error_single == true) {
      echo '<div style="color:#ff0000;">'.$error_msg.'</div>'; 
    }
-   echo tep_draw_form('login', tep_href_link('send_mail.php'), 'post') . "\n";
+   echo tep_draw_form('login', tep_href_link('send_mail.php','','SSL'), 'post') . "\n";
 ?>
       <table class="login" width="100%">
         <tr>

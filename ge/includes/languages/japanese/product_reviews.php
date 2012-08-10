@@ -11,5 +11,5 @@ define('TABLE_HEADING_RATING', '採点');
 define('TABLE_HEADING_READ', '読まれた回数');
 define('TABLE_HEADING_DATE_ADDED', '投稿された日付');
 define('TEXT_OF_5_STARS', '5点中の %s点!');
-define('TEXT_NO_REVIEWS', 'この商品についてのレビューは、まだ書かれていません...');
+//define('TEXT_NO_REVIEWS', 'この商品についてのレビューは、まだ書かれていません...');
 ?>
