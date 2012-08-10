@@ -63,7 +63,7 @@ function calc_product_final_price(pid)
          }
          var reg_rstr = /^tp0_(.*)$/g;
          if (reg_rstr.exec($(this).attr('name'))) {
-           var o_name = 4(this).attr('name').substr(4);
+           var o_name = $(this).attr('name').substr(4);
            i_data = document.getElementsByName('op_'+o_name)[0].value;
            i_data = i_data.replace(/\s/g, '');
            if (i_data != '') {

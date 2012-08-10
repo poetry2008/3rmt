@@ -33,7 +33,7 @@ if($cPath){
   $id = split('_', $cPath);
 }
 ?>
-<div class="box_title">カテゴリ</div>
+<div class="box_title">カテゴリー</div>
 <div id='box'>
   <ul class='l_m_category_ul'>
     <?php foreach($categories as $key => $category) {?>
@@ -78,21 +78,9 @@ if($cPath){
           <?php foreach($subcategories as $skey =>  $subcategory){?>
             <?php if($cPath && in_array($subcategory['categories_id'], $id)) {?>
               <li class='l_m_categories_tree'>
-                <?php if($skey == (count($subcategories)-1)){?>
-                  <!-- <img class="middle" src="images/design/tree_end.gif" width="7" height="8" alt="">-->
-                <?php } else {?>
-                  <!-- <img class="middle" src="images/design/tree_icon.gif" width="7" height="8" alt="">-->
-                <?php }?>
-                <?php if (in_array($subcategory['categories_id'], $id)) {?>
-                <?php }?>
                 <a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id'].'_'.$subcategory['categories_id']);?>">
                   <?php echo $subcategory['categories_name'];?>
                 </a>
-                <?php if (in_array($subcategory['categories_id'], $id)) {?>
-                <?php }?>
-
-
-
         <?php
             $_subcategories = array();
             $_subcategories_query = tep_db_query("
@@ -124,11 +112,6 @@ if($cPath){
             <ul class='l_m_category_ul3'>
             <?php foreach($_subcategories as $_skey => $_subcategory){?>
                 <li class='l_m_categories_tree3'>
-                  <?php if($_skey == (count($_subcategories)-1)){?>
-                    <!-- <img class="middle" src="images/design/tree_end.gif" width="7" height="8" alt="">-->
-                  <?php } else {?>
-                    <!-- <img class="middle" src="images/design/tree_icon.gif" width="7" height="8" alt="">-->
-                  <?php }?>
                   <a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id'].'_'.$subcategory['categories_id'].'_'.$_subcategory['categories_id']);?>">
                     <?php if (in_array($_subcategory['categories_id'], $id)) {?>
                       <strong>
@@ -146,11 +129,6 @@ if($cPath){
 
             <?php } else {?>
               <li class='l_m_categories_tree'>
-                <?php if($skey == (count($subcategories)-1)){?>
-                  <!-- <img class="middle" src="images/design/tree_end.gif" width="7" height="8" alt="">-->
-                <?php } else {?>
-                  <!-- <img class="middle" src="images/design/tree_icon.gif" width="7" height="8" alt="">-->
-                <?php }?>
                 <a href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id'].'_'.$subcategory['categories_id']);?>"><?php echo $subcategory['categories_name'];?></a>
               </li>
             <?php }?>
@@ -160,34 +138,6 @@ if($cPath){
         <li class='l_m_category_li'><a  class='l_m_category_a' href="<?php echo tep_href_link(FILENAME_DEFAULT, 'cPath='.$category['categories_id']);?>"><?php echo $category['categories_name'];?></a></li>
       <?php }?>
     <?php }?>
-
-<?php /*    <li class="l_m_category_li">
-      
-      <a href="<?php echo tep_href_link('manufacturers.php'); ?>"><?php echo MENU_MU; ?></a>
-    </li>
-    <li class="l_m_category_li">
-      
-      <a href="<?php echo tep_href_link(FILENAME_SPECIALS); ?>"><?php echo BOX_HEADING_SPECIALS; ?></a>
-    </li>
-*? ?>
-<?php
-/*
-// ccdd
-  $present_query = tep_db_query("
-      select count(*) as cnt 
-      from " . TABLE_PRESENT_GOODS . "
-      where site_id = '".SITE_ID."'
-  ");
-  $present_result = tep_db_fetch_array($present_query);
-  if($present_result['cnt'] > 0) {
-    echo '    <li class="l_m_category_li">
-      
-      <a href="' . tep_href_link(FILENAME_PRESENT) . '">' . BOX_HEADING_PRESENT . '</a>
-    </li>' . "\n";
-  }
-*/
-?>
-
   <li class="l_m_category_li">
     <a class='l_m_category_a' href="<?php echo tep_href_link('reorder.php');?>">再配達フォーム</a>
   </li>

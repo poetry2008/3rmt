@@ -65,6 +65,8 @@ if (isset($body_option)) {
     </div>
     <p class="pageBottom"></p>
     <?php 
+    }else{
+      $empty_faq_category = true;
     }
     //this show faq question 
     ?>
@@ -95,7 +97,10 @@ if (isset($body_option)) {
     ?>
     </div>
     <p class="pageBottom"></p>
-    <?php } ?>
+    <?php }else {
+      $empty_faq_question = true;
+    }
+    ?>
 
     <?php if($link_url != 'faq') { ?>
     <div class="faq_back">
@@ -104,6 +109,13 @@ if (isset($body_option)) {
     </div>
     <?php } ?>
 
+    <?php 
+    if($empty_faq_question&&$empty_faq_category){
+      echo '<div class="comment">';
+      echo TEXT_EMPTY_FAQ;
+      echo '</div>';
+    }
+    ?>
     <?php //this last  show faq category ?>
     <?php if ($last_row = tep_db_fetch_array($last_faq_category_query)){?>
     <?php if (isset($last_parent_info)&&$last_parent_info!=null){ ?>

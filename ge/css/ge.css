@@ -1423,7 +1423,7 @@ searching
 	overflow:hidden;
 	position:relative;
 }
-.option_show_border .option_tick{
+.option_show_border .option_checkmark{
 	position:absolute;
 	*position: absolute;
 	right:0px;
@@ -1455,7 +1455,7 @@ searching
 	margin-right:5px;
 	position:relative;
 }
-.option_hide_border .option_tick{
+.option_hide_border .option_checkmark{
 	position:absolute;
 	*position: absolute;
 	right:0px;

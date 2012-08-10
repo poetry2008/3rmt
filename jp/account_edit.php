@@ -4,8 +4,8 @@
 */
 
   require('includes/application_top.php');
-  require('3rmtlib/address_info/AD_Option.php');
-  require('3rmtlib/address_info/AD_Option_Group.php');
+  require(DIR_FS_3RMTLIB.'address_info/AD_Option.php');
+  require(DIR_FS_3RMTLIB.'address_info/AD_Option_Group.php');
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_ACCOUNT_EDIT);
   $hm_option = new AD_Option();
   if (!tep_session_is_registered('customer_id')) {
@@ -381,7 +381,7 @@ if($_POST['num_rows'] > 0){
                                 'customers_lastname' => $lastname,
                                 'customers_firstname_f' => $firstname_f,
                                 'customers_lastname_f' => $lastname_f,
-                                'customers_email_address' => $email_address,
+                                'customers_email_address' => $old_email_address,
                                 'customers_telephone' => $telephone,
                                 'customers_newsletter' => $newsletter,
                                 'new_email_address' => $email_address,
