@@ -141,6 +141,10 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
     if (isset($_SESSION['campaign_fee'])) {
       $total += $_SESSION['campaign_fee']; 
     }
+
+    if(isset($_SESSION['h_shipping_fee'])){
+      $total += $_SESSION['h_shipping_fee']; 
+    }
     #mail送信
     $mail_body = '仮クレジットカード注文です。'."\n\n";
     

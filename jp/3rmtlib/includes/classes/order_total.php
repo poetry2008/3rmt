@@ -183,7 +183,7 @@
               //配送费用
             if (isset($_SESSION['free_value'])) {
               if (!empty($_SESSION['weight_fee'])) {
-                $shipping_fee = $sub_total > $_SESSION['free_value'] ? TEXT_SHIPPING_FREE : '<input type="hidden" name="shipping_fee" value="'. $_SESSION['weight_fee'].'">'.$currencies->format($_SESSION['weight_fee']);
+                $shipping_fee = $sub_total > $_SESSION['free_value'] ? TEXT_SHIPPING_FREE : $currencies->format($_SESSION['weight_fee']);
                 $output_string .= '              <tr>' . "\n" .
                                   '                <td align="right" class="main" '.$colspan.'>'
                                   . TEXT_SHIPPING_FEE . '</td>' . "\n" .

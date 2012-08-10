@@ -350,9 +350,9 @@ if (isset($_POST['code_fee'])) {
   $sql_data_array['code_fee'] = 0;
 }
 //配送费用
-if(isset($_POST['shipping_fee'])){
+if(isset($_SESSION['h_shipping_fee'])){
 
-  $sql_data_array['shipping_fee'] = intval($_POST['shipping_fee']);
+  $sql_data_array['shipping_fee'] = intval($_SESSION['h_shipping_fee']);
 }else{
   $sql_data_array['shipping_fee'] = 0;
 }
@@ -737,7 +737,7 @@ $mailoption['MAILFEE']          = str_replace('円','',$total_mail_fee);
 $email_order = '';
 $email_order = $payment_modules->getOrderMailString($payment,$mailoption);
 
-$shipping_fee_value = isset($_POST['shipping_fee']) ? $_POST['shipping_fee'] : 0; 
+$shipping_fee_value = isset($_SESSION['h_shipping_fee']) ? $_SESSION['h_shipping_fee'] : 0; 
 $email_temp = '▼ポイント割引';
 $email_temp_str = '▼ ポイント割引';
 $email_shipping_fee = '▼配送料　　　　　：'.$shipping_fee_value.'円
@@ -789,8 +789,8 @@ $email_printing_order .= '注文番号　　　　：' . $insert_id . "\n";
 $email_printing_order .= '注文日　　　　　：' . tep_date_long(time()) . "\n";
 $email_printing_order .= 'メールアドレス　：' . $order->customer['email_address'] . "\n";
 $email_printing_order .= '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
-if (!empty($_POST['shipping_fee'])) {
-  $email_printing_order .= '配送料　　　　　　　：'.$_POST['shipping_fee'].'円'."\n"; 
+if (!empty($_SESSION['h_shipping_fee'])) {
+  $email_printing_order .= '配送料　　　　　　　：'.$_SESSION['h_shipping_fee'].'円'."\n"; 
 }
 if (isset($_SESSION['campaign_fee'])) {
   if (abs($_SESSION['campaign_fee']) > 0) {
