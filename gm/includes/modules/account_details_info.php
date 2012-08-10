@@ -218,7 +218,7 @@ function address_clear(){
     op_comment.style.color = '#999';
     if(document.getElementById("l_"+arr_new[x])){
       if($("#l_"+arr_new[x]).val() == 'true'){
-        $("#r_"+arr_new[x]).html("&nbsp;<?php echo TEXT_REQUIRED;?>");
+        $("#r_"+arr_new[x]).html("&nbsp;*<?php echo TEXT_REQUIRED;?>");
       }
     }
     $("#error_"+arr_new[x]).html("");
@@ -370,7 +370,7 @@ if(arr_list.length > 0){
      
     if(document.getElementById("l_"+x)){
       if($("#l_"+x).val() == 'true'){
-        $("#r_"+x).html("&nbsp;<?php echo TEXT_REQUIRED;?>");
+        $("#r_"+x).html("&nbsp;*<?php echo TEXT_REQUIRED;?>");
       }
     }
     $("#error_"+x).html("");
