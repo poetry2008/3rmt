@@ -1,7 +1,6 @@
 <?php
 /*
   $Id$
-  Released under the GNU General Public License
 */
   $categories_path = explode('_', $_GET['cPath']);
   $_categories_query = tep_db_query("select categories_name from categories_description where categories_id = '".$categories_path[0]."' and language_id = '".$languages_id."' and site_id = '".SITE_ID."' order by site_id DESC");

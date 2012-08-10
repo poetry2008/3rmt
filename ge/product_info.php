@@ -430,7 +430,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
             <td colspan="4" align="left">
             <div id="show_price"></div> 
             </td> 
-            <td align="right"><?php echo tep_image_submit('button_in_cart.gif', IMAGE_BUTTON_IN_CART); ?></td>
+            <td align="right" style="padding:0;"><?php echo tep_image_submit('button_in_cart.gif', IMAGE_BUTTON_IN_CART); ?></td>
           </tr>
         </table>
         <?php

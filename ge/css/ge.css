@@ -1041,7 +1041,7 @@ border:2px solid #FF8080;
 }
 .waring_product{
 color:#fff;
-margin:5px 17px 2px 0;
+margin:5px 11px 2px 0;
 overflow:hidden;
 padding:5px 7px;
 border:2px solid #FF8080;
@@ -1062,7 +1062,7 @@ checkbox・mouse over
 checkbox select row
 --------------------------- */
 .moduleRowSelected {background-color: #666;}
-.bold {font-weight:bold; margin:0; padding:0 0 0 20px;}
+.bold {font-weight:bold; margin:0; padding:0 0 5px 20px;}
 .contact_us_warpper{ clear:both;}
 .tcol{ clear:both; border-bottom:1px dotted #444; width:96%;}
 .lcol{ clear:both; padding:10px 0; overflow:hidden; border-bottom:1px dotted #444; width:96%;}
@@ -1515,6 +1515,7 @@ searching
 }
 .option_dot{
 	margin-top:18px;
+	margin-right:3px;
 	padding-top:20px;
 	background:url(../images/design/box/dot.gif) repeat-x;
 	overflow:hidden; 
@@ -1637,8 +1638,13 @@ TEXTAREA {
 .sub_clear td{
 	padding:0 5px 10px 5px;
 	font-size:14px;
-	 border-bottom:1px dashed #ffffff;
+	 border-bottom:1px solid #6B6B6B;
 	
 }
-.sub_clear th{ padding:10px 0 10px 5px;}
+.sub_clear th,.sub_clear_none th{ padding:10px 0 10px 5px;}
+.sub_clear_none td{
+	padding:0 5px 10px 5px;
+	font-size:14px;	
+}
 .red{ color:#FF0000;}
+.line{ margin-top:10px; font-size:14px;}

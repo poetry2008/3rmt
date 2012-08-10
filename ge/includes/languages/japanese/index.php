@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2003 osCommerce
-
-  Released under the GNU General Public License
 */
 
 define('TEXT_MAIN', 'このページは、オンラインショップのデモンストレーションです。<b>ご購入になった商品は、配送も請求もされません。</b>商品その他についての情報は全て架空のものです。<br><br>もし、あなたがこのオンラインショップ・デモをダウンロードして使ってみたいと思ったり、このプロジェクトに貢献しようと思ったなら、ぜひ<a href="http://oscommerce.com"><u> サポートサイト </u></a>を訪れてください。このオンラインショップは、<font color="#f0000"><b>' . PROJECT_VERSION . '</b></font>で構築されています。<br><br>今表示されている（読んでいる）テキストは、次のファイルに記述されています。例:[catalogディレクトリ]/includes/languages/[japanese]/default.php.<br><br>これは、管理メニュー経由、各種ツール-言語定義->[language]->Defineオプション、または各種ツール->ファイル管理機能を使うことによって手動で編集することができます。');

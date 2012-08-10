@@ -1,13 +1,6 @@
 <?php
 /*
   $Id$
-
-  osCommerce, Open Source E-Commerce Solutions
-  http://www.oscommerce.com
-
-  Copyright (c) 2002 osCommerce
-
-  Released under the GNU General Public License
 */
 
 define('NAVBAR_TITLE', '詳細検索');
@@ -17,7 +10,7 @@ define('HEADING_SEARCH_CRITERIA', '検索条件 (キーワード) を入力し�
 
 define('TEXT_SEARCH_IN_DESCRIPTION', '商品説明からも探す');
 define('ENTRY_CATEGORIES', 'カテゴリー:');
-define('ENTRY_INCLUDE_SUBCATEGORIES', 'サブカテゴリーもふくむ');
+define('ENTRY_INCLUDE_SUBCATEGORIES', 'サブカテゴリーも含む');
 define('ENTRY_MANUFACTURERS', 'メーカー:');
 define('ENTRY_PRICE_FROM', '価格（最低）:');
 define('ENTRY_PRICE_TO', '価格（最高）:');
