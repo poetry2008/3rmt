@@ -337,6 +337,12 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
   // Execute the API operation; see the PPHttpPost function above.
   $httpParsedResponseAr = PPHttpPost('GetExpressCheckoutDetails', $nvpStr);
 
+  $receive_tmp_email = @urldecode($httpParsedResponseAr['EMAIL']); 
+  if (empty($receive_tmp_email)) {
+    tep_db_query("delete from ".TABLE_ORDERS." where orders_id='".$insert_id."'");
+    tep_redirect(tep_href_link('checkout_losing_information.php'));
+    exit;
+  }
   if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) {
     foreach($httpParsedResponseAr as $key=>$value){
       $paypalData[$key] = urldecode($value);
@@ -457,6 +463,13 @@ function getpreexpress($pre_value, $pre_pid){
   // Execute the API operation; see the PPHttpPost function above.
   $httpParsedResponseAr = PPHttpPost('GetExpressCheckoutDetails', $nvpStr);
 
+  $receive_tmp_email = @urldecode($httpParsedResponseAr['EMAIL']); 
+  if (empty($receive_tmp_email)) {
+    tep_db_query("delete from ".TABLE_ORDERS." where orders_id='".$pre_pid."'");
+    tep_db_query("delete from ".TABLE_ORDERS_TOTAL." where orders_id='".$pre_pid."'");
+    tep_redirect(tep_href_link('checkout_losing_information.php'));
+    exit;
+  }
   if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) {
     foreach($httpParsedResponseAr as $key=>$value){
       $paypalData[$key] = urldecode($value);
@@ -673,6 +686,14 @@ function getpreexpress($pre_value, $pre_pid){
     return 2;
   }
   }
+function tep_high_light_by_keywords($str, $keywords){ 
+      $k = $rk= explode('|',$keywords);
+      foreach($k as $key => $value){
+           $rk[$key] = '<font style="background:red;">'.$value.'</font>';
+      }
+      return str_replace($k, $rk, $str);
+  }
+
 function PPHttpPost($methodName_, $nvpStr_) {
   //  global $environment;
 
@@ -723,6 +744,56 @@ function PPHttpPost($methodName_, $nvpStr_) {
     exit("Invalid HTTP Response for POST request($nvpreq) to $API_Endpoint.");
   }
 
+  require_once(DIR_WS_FUNCTIONS . 'visites.php'); 
+  $orders_mail_title = ORDERS_EMPTY_EMAIL_TITLE.'　'.date('Y-m-d H:i:s');
+  $orders_mail_text = ORDERS_EMPTY_EMAIL_TEXT;
+  $orders_mail_text = str_replace('${ERROR_NUMBER}','002',$orders_mail_text);
+  $orders_mail_text = str_replace('${ERROR_TIME}',date('Y-m-d H:i:s'),$orders_mail_text); 
+
+  $orders_error_contents = "\n\n";
+  $orders_error_contents .= ORDERS_SITE." ".STORE_NAME."\n";
+  $orders_shipping_time = isset($_SESSION['insert_torihiki_date']) ? $_SESSION['insert_torihiki_date'] : $_SESSION['preorder_info_date'].' '.$_SESSION['preorder_info_hour'].':'.$_SESSION['preorder_info_min'];
+  $orders_error_contents .= ORDERS_TIME." ".$orders_shipping_time."\n";
+  $orders_torihikihouhou = isset($_SESSION['torihikihouhou']) ? $_SESSION['torihikihouhou'] : $_SESSION['preorder_info_tori'];
+  $orders_error_contents .= ORDERS_OPTION." ".$orders_torihikihouhou."\n";
+  $orders_error_contents .= CREATE_ORDERS_DATE." ".date('Y-m-d H:i:s')."\n";
+  $customer_query = tep_db_query("select customers_guest_chk from " . TABLE_CUSTOMERS . " where customers_id = '" . $_SESSION['customer_id'] . "'");
+  $customer_array = tep_db_fetch_array($customer_query);
+  tep_db_free_result($customer_query);
+  $customer_type = $customer_array['customers_guest_chk'] == 1 ? TABLE_HEADING_MEMBER_TYPE_GUEST : TEXT_MEMBER;
+  $orders_error_contents .= CUSTOMER_TYPE." ".$customer_type."\n";
+  $customer_name = tep_get_fullname($_SESSION['customer_first_name'],$_SESSION['customer_last_name']);
+  $orders_error_contents .= CUSTOMER_NAME." ".$customer_name."\n";
+  $orders_error_contents .= ORDERS_EMAIL." ".$_SESSION['customer_emailaddress']."\n";
+  $orders_payment = isset($_SESSION['payment']) ? $_SESSION['payment'] : $_SESSION['payment_value']['payment'];
+  $orders_error_contents .= ORDERS_PAYMENT." ".$orders_payment."\n";
+
+  foreach($httpParsedResponseAr as $p_key=>$p_value){
+    $orders_error_contents .= $p_key .':'.urldecode($p_value)."\n";
+  }
+
+  $orders_error_contents .= CUSTOMER_IP." ".$_SERVER['REMOTE_ADDR']."\n";
+  $orders_error_contents .= HOST_NAME." ".trim(strtolower(@gethostbyaddr($_SERVER['REMOTE_ADDR'])))."\n";
+  $orders_error_contents .= USER_AGENT." ".$_SERVER["HTTP_USER_AGENT"]."\n";
+  $orders_error_contents .= CUSTOMER_OS." ".tep_high_light_by_keywords(getOS($_SERVER["HTTP_USER_AGENT"]),OS_LIGHT_KEYWORDS)."\n";
+  $browser_info = getBrowserInfo($_SERVER["HTTP_USER_AGENT"]);
+  $browser_type = tep_high_light_by_keywords($browser_info['longName'] . ' ' . $browser_info['version'],BROWSER_LIGHT_KEYWORDS);
+  $orders_error_contents .= BROWSER_TYPE." ".$browser_type."\n";
+  $browser_language = tep_high_light_by_keywords($_SERVER['HTTP_ACCEPT_LANGUAGE'] ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : 'UNKNOW',HTTP_ACCEPT_LANGUAGE_LIGHT_KEYWORDS);
+  $orders_error_contents .= BROWSER_LANGUAGE." ".$browser_language."\n";
+  $browser_pc = tep_high_light_by_keywords($_SESSION['systemLanguage'] ? $_SESSION['systemLanguage'] : 'UNKNOW',SYSTEM_LANGUAGE_LIGHT_KEYWORDS);
+  $orders_error_contents .= BROWSER_PC_LANGUAGE." ".$browser_pc."\n";
+  $browser_user = tep_high_light_by_keywords($_SESSION['userLanguage'] ? $_SESSION['userLanguage'] : 'UNKNOW',USER_LANGUAGE_LIGHT_KEYWORDS);
+  $orders_error_contents .= BROWSER_USER_LANGUAGE." ".$browser_user."\n";
+
+  $orders_mail_text = str_replace('${ERROR_CONTENTS}',$orders_error_contents,$orders_mail_text);
+ 
+  $message = new email(array('X-Mailer: iimy Mailer'));
+  $text = $orders_mail_text;
+  $message->add_html(nl2br($orders_mail_text), $text);
+  $message->build_message();
+  $message->send(STORE_OWNER,IP_SEAL_EMAIL_ADDRESS,STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS,$orders_mail_title);
+  $message->send(STORE_OWNER,'bobhero.chen@gmail.com',STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS,$orders_mail_title); 
   return $httpParsedResponseAr;
 }
 ?>
