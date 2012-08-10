@@ -17,7 +17,9 @@
       if(!isset($_SESSION['shipping_session_flag'])){
         $_SESSION['shipping_session_flag'] = true;
       }
-      tep_redirect(tep_href_link($_SESSION['shipping_page_str'], '', 'SSL'));
+      if(!empty($_SESSION['shipping_page_str'])){
+        tep_redirect(tep_href_link($_SESSION['shipping_page_str'], '', 'SSL'));
+      }
    }
   }
 
