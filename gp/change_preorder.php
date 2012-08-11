@@ -35,6 +35,7 @@
 <script type="text/javascript">
 
 <?php
+if($weight_count > 0){
   $address_fixed_query = tep_db_query("select name_flag,fixed_option from ". TABLE_ADDRESS ." where fixed_option!='0' and status='0'");
   while($address_fixed_array = tep_db_fetch_array($address_fixed_query)){
 
@@ -481,8 +482,31 @@ if (!isset($_POST['address_option']) && $customers_guest_flag == 0) {
   });
 <?php
 }
+}
 ?>
 $(document).ready(function(){
+document.onclick=function(e){  
+  var shipping_hour = $("input[name='hour']").val();
+  var e=e?e:window.event;  
+  var tar = e.srcElement||e.target;  
+  if(tar.id!="hour"+shipping_hour){  
+    if($(tar).attr("id")!="shipping_time_id"){  
+      if($(tar).attr("class")!="time_radio"){
+        if($(tar).attr("class")!="time_label"){
+          if($(tar).attr("name")!="min"){
+            if($(tar).attr("href")!="javascript:void(0);"){
+              check_out(shipping_hour); 
+            }
+          }
+        }
+      }
+    }  
+  }  
+}
+
+<?php
+if($weight_count > 0){
+?>
   $("#"+country_fee_id).change(function(){
     country_check($("#"+country_fee_id).val());
     country_area_check($("#"+country_area_id).val());
@@ -584,6 +608,7 @@ $(document).ready(function(){
     country_area_check($("#"+country_area_id).val(),"<?php echo $_SESSION['preorder_information'][$country_city_id]?>");
   <?php
   }
+}
   ?>
 });
 </script>

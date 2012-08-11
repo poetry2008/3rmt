@@ -10,53 +10,68 @@
     tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
   }
 
-  require(DIR_WS_LANGUAGES . $language . '/checkout_losing_information.php');
-
   $breadcrumb->add(NAVBAR_TITLE_1, tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
   $breadcrumb->add(NAVBAR_TITLE_2);
 //ccdd
 ?>
 <?php page_head();?>
+<?php
+  $site_romaji = tep_get_site_romaji_by_id(SITE_ID);
+  $oconfig_raw = tep_db_query("select value from ".TABLE_OTHER_CONFIG." where keyword = 'css_random_string' and site_id = '".SITE_ID."'");
+  $oconfig_res = tep_db_fetch_array($oconfig_raw);
+  tep_db_free_result($oconfig_raw);
+  if($oconfig_res){
+     $css_random_str = substr($oconfig_res['value'], 0, 4);
+  }else{
+     $css_random_str = date('YmdHi', time());
+  }
+?>
+<link rel="stylesheet" type="text/css" href="<?php echo 'css/'.$site_romaji.'.css?v='.$css_random_str;?>">
+<script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
+<script type="text/javascript" src="js/notice.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+var docheight = $(document).height();
+var screenwidth, screenheight, mytop, getPosLeft, getPosTop
+screenwidth = $(window).width();
+screenheight = $(window).height();
+mytop = $(document).scrollTop();
+getPosLeft = screenwidth / 2 - 276;
+getPosTop = 50;
+
+$("#popup_notice").css('display', 'block');
+$("#popup_notice").css({ "left": getPosLeft, "top": getPosTop })
+
+$(window).resize(function() {
+           screenwidth = $(window).width();
+           screenheight = $(window).height();
+           mytop = $(document).scrollTop();
+           getPosLeft = screenwidth / 2 - 276;
+           getPosTop = 50;
+           $("#popup_notice").css({ "left": getPosLeft, "top": getPosTop + mytop });
+
+});
+
+
+$("body").append("<div id='greybackground'></div>");
+$("#greybackground").css({ "opacity": "0.5", "height": docheight });
+});
+</script>
+<div id="popup_notice" style="display:none;">
+<div class="popup_notice_text">
+<?php echo TEXT_ORDERS_ERROR;?>
+</div>
+<div class="popup_notice_middle">
+<?php 
+echo TEXT_ORDERS_EMPTY_COMMENT;
+?>
+</div>
+<div align="center" class="popup_notice_button">
+<a href="javascript:void(0);" onClick="update_notice('index.php')"><img alt="<?php echo LOCATION_HREF_INDEX;?>" src="images/design/href_home.gif"></a>&nbsp;&nbsp;
+<a href="javascript:void(0);" onClick="update_notice('contact_us.php')"><img alt="<?php echo CONTACT_US;?>" src="images/design/contact_us.gif"></a>
+</div>
+</div>
 </head>
-<body> 
-<div class="body_shadow"> 
-  <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
-  <!-- header_eof --> 
-  <!-- body --> 
-  <div id="main">
-  <!-- left_navigation -->
-<div id="l_menu">
-<?php require(DIR_WS_INCLUDES . 'column_left.php'); ?>
-</div>
-<div id="content">
-<div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
-<h1 class="pageHeading"><?php echo TEXT_UNSUCCESS; ?></h1>
- <table border="0" width="100%" cellspacing="0" cellpadding="0">
-            <tr> 
-              <td><p>
-              <font color='red'>
-              <?php echo TEXT_PAYPAL_ERROR;?>
-              </font>
-              <br />
-              <?php echo TEXT_PAY_UNSUCCESS;?></p>
-              <p>
-              <a href="<?php echo tep_href_link(FILENAME_DEFAULT);?>"><?php echo tep_image_button('button_continue.gif', '');?></a>  
-              </p>
-              </td> 
-            </tr> 
-          </table> 
-       </form> 
-  </div>
-  <div id="r_menu">
-<?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-</div>
-  <!-- body_eof --> 
-  <!-- footer --> 
-  <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
-  <!-- footer_eof --> 
-  </div>
-</div> 
-</body>
 </html>
 <?php 
 # For Guest - LogOff
@@ -72,6 +87,4 @@ if($guestchk == '1') {
 
   $cart->reset();  
 }
-
-require(DIR_WS_INCLUDES . 'application_bottom.php'); 
 ?>

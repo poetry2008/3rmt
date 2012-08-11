@@ -333,12 +333,14 @@ function change_new_time(value,end_time,h_num){
               }
 }
 function check_out(num){
+  var style = $("#shipping_time_id").css("display");
+  if(style != 'none' && document.getElementById('shipping_time_id')){
       $("#shipping_time_id").hide();
-      $("input[name='hour']").remove();
       var shipping_list_min = document.getElementById("shipping_list_min");
       var hour = document.getElementById("hour"+num);
       shipping_list_min.style.display = 'none';
       hour.style.backgroundColor = '#cccccc';
       document.getElementById("hour"+num).style.color="#000000";
       document.getElementById("hour"+num).style.textDecoration ="";
+  }
 }

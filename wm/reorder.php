@@ -10,6 +10,28 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
 <?php page_head();?>
 <script type="text/javascript" src="./js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript" src="./js/date_time_reorder.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+document.onclick=function(e){  
+  var shipping_hour = $("input[name='hour']").val();
+  var e=e?e:window.event;  
+  var tar = e.srcElement||e.target;  
+  if(tar.id!="hour"+shipping_hour){  
+    if($(tar).attr("id")!="shipping_time_id"){  
+      if($(tar).attr("class")!="time_radio"){
+        if($(tar).attr("class")!="time_label"){
+          if($(tar).attr("name")!="min"){
+            if($(tar).attr("href")!="javascript:void(0);"){
+              check_out(shipping_hour); 
+            }
+          }
+        }
+      }
+    }  
+  }  
+}
+});
+</script>
 </head>
 <body>
 <div align="center">
@@ -247,9 +269,6 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
   $email_order .= TEXT_REORDER_NAME_EMAIL . $o->customer['name'] . "\n";
   $email_order .= TEXT_REORDER_EMAIL_EMAIL . $o->customer['email_address'] . "\n";
   $email_order .= TEXT_REORDER_LINE . "\n\n";
-  $email_order .= TEXT_REORDER_PRODUCT_EMAIL . "\n";
-  $email_order .= '------------------------------------------' . "\n";
-  $email_order .= $products_ordered . "\n";
   $email_order .= TEXT_REORDER_TRADE_DATE . str_string($_date) . $_hour . TIME_HOUR_TEXT . $_minute . TIME_MIN_TEXT . TEXT_TIME_LINK . $end_hour.TIME_HOUR_TEXT.$end_min.TIME_MIN_TEXT.TEXT_REORDER_TWENTY_FOUR_HOUR . "\n";
 
   if ($comment) {
@@ -702,23 +721,6 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
   </td>
  </tr>
 </table>
-<?php foreach($o->products as $key => $value){
-  // for multi products
-  ?>
-<br>
-<table class="information_table" id='product_<?php echo $value['id'];?>' summary="table">
- <tr>
- <td width="30%" bgcolor="#eeeeee"><?php echo TEXT_REORDER_P_PRODUCT_NAME;?></td>
-  <td name='products_names'><?php echo $value['name'];?></td>
- </tr>
-<?php if(isset($value['attributes']) && $value['attributes'])foreach ($value['attributes'] as $att) {?>
- <tr>
-  <td bgcolor="#eeeeee"><?php echo $att['option'].TEXT_REORDER_NO_CHANGE;?></td>
-  <td><?php echo $att['value'];?></td>
- </tr>
-<?php }?>
-</table>
-<?php }?>
 <br>
 <table class="information_table" summary="table">
 <tr>
@@ -729,7 +731,7 @@ $breadcrumb->add(TEXT_BREADCRUMB_TITLE, tep_href_link('reorder.php'));
 <br>
 <p align="center">
 <input type='image' src="includes/languages/japanese/images/buttons/button_submit.gif" alt="<?php echo TEXT_REORDER_CONFIRM;?>" title="<?php echo TEXT_REORDER_CONFIRM;?>" onClick="return orderConfirmPage();" >
-<input type='image' src="includes/languages/japanese/images/buttons/button_reset.gif" alt="<?php echo TEXT_REORDER_CLEAR;?>" title="<?php echo TEXT_REORDER_CLEAR;?>" onClick="javascript:document.order.reset();selectDate('','','');return false;" >
+<input type='image' src="includes/languages/japanese/images/buttons/button_reset.gif" alt="<?php echo TEXT_REORDER_CLEAR;?>" title="<?php echo TEXT_REORDER_CLEAR;?>" onClick="javascript:document.order.reset();$('#shipping_list').hide();$('#shipping_list_show').html('');$('#shipping_list_show_min').html('');$('#shipping_list_min').hide();return false;" >
 </p>
 </form>
 </div>
@@ -799,7 +801,6 @@ function orderConfirmPage(){
     var shipping_time_str = $("#shipping_time_id").attr("style");
     var shippint_time_num = shipping_time_str.indexOf("none");
     shippint_time_num = parseInt(shippint_time_num);
-    var shipping_time_flag = shippint_time_num > 0 ;
   }else{
     var shipping_time_flag = !document.getElementById('m0');
   } 
@@ -815,33 +816,6 @@ function orderConfirmPage(){
     text += oldTime + "</td></tr></table><br >\n";
   }
   
-  for(i in productName){
-    text += "<table class='information_table' summary='table'>\n";
-    text += "<tr><td width='130' bgcolor='#eeeeee'><?php echo TEXT_REORDER_P_PRODUCT_NAME;?></td><td>\n";
-    text += productName[i] + "\n";
-    text += "</td></tr>";
-
-    for(j in oldAttribute[i]){
-      text += "<tr><td bgcolor='#eeeeee'>\n";
-      text += oldAttribute[i][j][0] + "<?php echo TEXT_REORDER_NO_CHANGE;?>\n"
-      text += "</td><td>\n";
-      text += oldAttribute[i][j][1] + "\n";
-      text += "</td></tr><tr><td bgcolor='#eeeeee'>\n";
-      text += oldAttribute[i][j][0];
-      text += "<?php echo TEXT_REORDER_CHANGE;?></td><td>\n";
-      if(document.getElementById('id[' + i + '][' + j + ']')){
-      if (document.getElementById('id[' + i + '][' + j + ']').selectedIndex != 0) {
-        text += document.getElementById('id[' + i + '][' + j + ']').options[document.getElementById('id[' + i + '][' + j + ']').selectedIndex].innerHTML + "\n";
-      } else {
-        text += oldAttribute[i][j][1] + "\n";
-      }
-      text += "</td></tr>\n";
-      orderChanged = orderChanged || (document.getElementById('id[' + i + '][' + j + ']').selectedIndex != 0);
-      }
-    }
-    text += "</table><br >\n";
-  }
-
   text += "<table class='information_table' summary='table'>\n"
   text += "<tr><td bgcolor='#eeeeee' width='130'>";
   text += "<?php echo TEXT_REORDER_COMMENT_TITLE;?>";

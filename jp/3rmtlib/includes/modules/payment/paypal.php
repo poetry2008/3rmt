@@ -686,7 +686,7 @@ function getpreexpress($pre_value, $pre_pid){
     return 2;
   }
   }
-function tep_high_light_by_keywords($str, $keywords){ 
+function tep_high_light_by_keywords_flag($str, $keywords){ 
       $k = $rk= explode('|',$keywords);
       foreach($k as $key => $value){
            $rk[$key] = '<font style="background:red;">'.$value.'</font>';
@@ -775,15 +775,15 @@ function PPHttpPost($methodName_, $nvpStr_) {
   $orders_error_contents .= CUSTOMER_IP." ".$_SERVER['REMOTE_ADDR']."\n";
   $orders_error_contents .= HOST_NAME." ".trim(strtolower(@gethostbyaddr($_SERVER['REMOTE_ADDR'])))."\n";
   $orders_error_contents .= USER_AGENT." ".$_SERVER["HTTP_USER_AGENT"]."\n";
-  $orders_error_contents .= CUSTOMER_OS." ".tep_high_light_by_keywords(getOS($_SERVER["HTTP_USER_AGENT"]),OS_LIGHT_KEYWORDS)."\n";
+  $orders_error_contents .= CUSTOMER_OS." ".tep_high_light_by_keywords_flag(getOS($_SERVER["HTTP_USER_AGENT"]),OS_LIGHT_KEYWORDS)."\n";
   $browser_info = getBrowserInfo($_SERVER["HTTP_USER_AGENT"]);
-  $browser_type = tep_high_light_by_keywords($browser_info['longName'] . ' ' . $browser_info['version'],BROWSER_LIGHT_KEYWORDS);
+  $browser_type = tep_high_light_by_keywords_flag($browser_info['longName'] . ' ' . $browser_info['version'],BROWSER_LIGHT_KEYWORDS);
   $orders_error_contents .= BROWSER_TYPE." ".$browser_type."\n";
-  $browser_language = tep_high_light_by_keywords($_SERVER['HTTP_ACCEPT_LANGUAGE'] ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : 'UNKNOW',HTTP_ACCEPT_LANGUAGE_LIGHT_KEYWORDS);
+  $browser_language = tep_high_light_by_keywords_flag($_SERVER['HTTP_ACCEPT_LANGUAGE'] ? $_SERVER['HTTP_ACCEPT_LANGUAGE'] : 'UNKNOW',HTTP_ACCEPT_LANGUAGE_LIGHT_KEYWORDS);
   $orders_error_contents .= BROWSER_LANGUAGE." ".$browser_language."\n";
-  $browser_pc = tep_high_light_by_keywords($_SESSION['systemLanguage'] ? $_SESSION['systemLanguage'] : 'UNKNOW',SYSTEM_LANGUAGE_LIGHT_KEYWORDS);
+  $browser_pc = tep_high_light_by_keywords_flag($_SESSION['systemLanguage'] ? $_SESSION['systemLanguage'] : 'UNKNOW',SYSTEM_LANGUAGE_LIGHT_KEYWORDS);
   $orders_error_contents .= BROWSER_PC_LANGUAGE." ".$browser_pc."\n";
-  $browser_user = tep_high_light_by_keywords($_SESSION['userLanguage'] ? $_SESSION['userLanguage'] : 'UNKNOW',USER_LANGUAGE_LIGHT_KEYWORDS);
+  $browser_user = tep_high_light_by_keywords_flag($_SESSION['userLanguage'] ? $_SESSION['userLanguage'] : 'UNKNOW',USER_LANGUAGE_LIGHT_KEYWORDS);
   $orders_error_contents .= BROWSER_USER_LANGUAGE." ".$browser_user."\n";
 
   $orders_mail_text = str_replace('${ERROR_CONTENTS}',$orders_error_contents,$orders_mail_text);

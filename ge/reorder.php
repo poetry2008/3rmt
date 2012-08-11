@@ -12,6 +12,28 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
 <?php page_head();?>
 <script type="text/javascript" src="./js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript" src="./js/date_time_reorder.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+document.onclick=function(e){  
+  var shipping_hour = $("input[name='hour']").val();
+  var e=e?e:window.event;  
+  var tar = e.srcElement||e.target;  
+  if(tar.id!="hour"+shipping_hour){  
+    if($(tar).attr("id")!="shipping_time_id"){  
+      if($(tar).attr("class")!="time_radio"){
+        if($(tar).attr("class")!="time_label"){
+          if($(tar).attr("name")!="min"){
+            if($(tar).attr("href")!="javascript:void(0);"){
+              check_out(shipping_hour); 
+            }
+          }
+        }
+      }
+    }  
+  }  
+}
+});
+</script>
 </head>
 <body>
 <div id="main">
@@ -249,9 +271,6 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
   $email_order .= '▼お名前　　　　　：' . $o->customer['name'] . "\n";
   $email_order .= '▼メールアドレス　：' . $o->customer['email_address'] . "\n";
   $email_order .= '━━━━━━━━━━━━━━━━━━━━━' . "\n\n";
-  $email_order .= '▼注文商品' . "\n";
-  $email_order .= '------------------------------------------' . "\n";
-  $email_order .= $products_ordered . "\n";
   $email_order .= '▼お届け日時　　　　：' . str_string($_date) . $_hour . '時' . $_minute . '分'.TEXT_TIME_LINK.$end_hour.'時'.$end_min.'分　（24時間表記）' . "\n";
 
   if ($comment) {
@@ -703,23 +722,6 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
   </td>
  </tr>
 </table>
-        <?php foreach($o->products as $key => $value){
-  // for multi products
-  ?>
-        <br>
-        <table class="box_des" id='product_<?php echo $value['id'];?>' summary="table" width="100%">
-          <tr>
-            <td width="30%">商品名</td>
-            <td name='products_names'><?php echo $value['name'];?></td>
-          </tr>
-          <?php if(isset($value['attributes']) && $value['attributes'])foreach ($value['attributes'] as $att) {?>
-          <tr>
-            <td><?php echo $att['option'];?>(変更前)</td>
-            <td><?php echo $att['value'];?></td>
-          </tr>
-          <?php }?>
-        </table>
-        <?php }?>
         <br>
         <table class="box_des" summary="table"  width="100%">
           <tr>
@@ -732,7 +734,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder.php'));
         <br>
         <p align="center">
           <input type='image' src="includes/languages/japanese/images/buttons/button_submit.gif" alt="確認する" title="確認する" onClick="return orderConfirmPage();" >
-          <input type='image' src="includes/languages/japanese/images/buttons/button_reset.gif" alt="クリア" title="クリア" onClick="javascript:document.order.reset();return false;" >
+          <input type='image' src="includes/languages/japanese/images/buttons/button_reset.gif" alt="クリア" title="クリア" onClick="javascript:document.order.reset();$('#shipping_list').hide();$('#shipping_list_show').html('');$('#shipping_list_show_min').html('');$('#shipping_list_min').hide();return false;" >
         </p>
       </form>
     </div>
@@ -803,7 +805,6 @@ function orderConfirmPage(){
     var shipping_time_str = $("#shipping_time_id").attr("style");
     var shippint_time_num = shipping_time_str.indexOf("none");
     shippint_time_num = parseInt(shippint_time_num);
-    var shipping_time_flag = shippint_time_num > 0 ;
   }else{
     var shipping_time_flag = !document.getElementById('m0');
   } 
@@ -819,33 +820,6 @@ function orderConfirmPage(){
     text += oldTime + "</td></tr></table><br >\n";
   }
   
-  for(i in productName){
-    text += "<table class='box_des' summary='table'>\n";
-    text += "<tr><td width='130'>商品名</td><td>\n";
-    text += productName[i] + "\n";
-    text += "</td></tr>";
-
-    for(j in oldAttribute[i]){
-      text += "<tr><td>\n";
-      text += oldAttribute[i][j][0] + "(変更前)\n"
-      text += "</td><td>\n";
-      text += oldAttribute[i][j][1] + "\n";
-      text += "</td></tr><tr><td>\n";
-      text += oldAttribute[i][j][0];
-      text += "(変更後)</td><td>\n";
-      if(document.getElementById('id[' + i + '][' + j + ']')){
-      if (document.getElementById('id[' + i + '][' + j + ']').selectedIndex != 0) {
-        text += document.getElementById('id[' + i + '][' + j + ']').options[document.getElementById('id[' + i + '][' + j + ']').selectedIndex].innerHTML + "\n";
-      } else {
-        text += oldAttribute[i][j][1] + "\n";
-      }
-      text += "</td></tr>\n";
-      orderChanged = orderChanged || (document.getElementById('id[' + i + '][' + j + ']').selectedIndex != 0);
-      }
-    }
-    text += "</table><br >\n";
-  }
-
   text += "<table class='box_des' summary='table'>\n"
   text += "<tr><td width='130' align='left' style='wdith:130px; text-align:left;' valign='top'>";
   text += "備考";

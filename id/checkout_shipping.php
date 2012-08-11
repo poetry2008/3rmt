@@ -245,6 +245,7 @@
 <?php page_head();?>
 <script type="text/javascript"><!--
 <?php
+if($cart->weight > 0){
   $address_fixed_query = tep_db_query("select name_flag,fixed_option from ". TABLE_ADDRESS ." where fixed_option!='0' and status='0'");
   while($address_fixed_array = tep_db_fetch_array($address_fixed_query)){
 
@@ -269,6 +270,7 @@
       break;
     }
   }
+}
 ?>
 var selected;
 
@@ -300,6 +302,10 @@ function rowOverEffect(object) {
 function rowOutEffect(object) {
   if (object.className == 'moduleRowOver') object.className = 'moduleRow';
 }
+
+<?php
+if($cart->weight > 0){
+?>
 function check(select_value){
 
   var arr = new Array();
@@ -719,10 +725,14 @@ function session_value(){
    }
   }
 }
+<?php
+}
+?>
 --></script>
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript" src="js/date_time.js"></script>
 <?php
+if($cart->weight > 0){
 //判断用户是否是会员
     $address_quest_query = tep_db_query("select customers_guest_chk from ". TABLE_CUSTOMERS ." where customers_id={$_SESSION['customer_id']}");
     $address_quest_array = tep_db_fetch_array($address_quest_query);
@@ -734,9 +744,11 @@ function session_value(){
       $address_history_flag_num = tep_db_num_rows($address_history_flag_query);
       tep_db_free_result($address_history_flag_query);
     }
+}
 ?>
 <script type="text/javascript">
 <?php
+if($cart->weight > 0){
   if(isset($_POST['address_option'])){
     if($_POST['address_option'] == 'old'){
 ?>
@@ -790,9 +802,30 @@ function session_value(){
     });
 <?php
   }
+}
 ?>
 $(document).ready(function(){
+document.onclick=function(e){  
+  var shipping_hour = $("input[name='hour']").val();
+  var e=e?e:window.event;  
+  var tar = e.srcElement||e.target;  
+  if(tar.id!="hour"+shipping_hour){  
+    if($(tar).attr("id")!="shipping_time_id"){  
+      if($(tar).attr("class")!="time_radio"){
+        if($(tar).attr("class")!="time_label"){
+          if($(tar).attr("name")!="min"){
+            if($(tar).attr("href")!="javascript:void(0);"){
+              check_out(shipping_hour); 
+            }
+          }
+        }
+      }
+    }  
+  }  
+}
+
 <?php
+if($cart->weight > 0){
 if(isset($_SESSION['shipping_session_flag']) && $_SESSION['shipping_session_flag'] == true){
 ?>
   alert("<?php echo TEXT_SESSION_ERROR_ALERT;?>");
@@ -871,6 +904,7 @@ unset($_SESSION['shipping_session_flag']);
     address_option_list(first_num); 
   <?php
     }
+}
   ?>
 });
 //--></script>
