@@ -592,9 +592,6 @@ if($index > 0){
             </table>
 
             </td>
-            </tr>
-            <tr>
-            <td valign="top"><?php echo "<span class='smalltext'>" .  HINT_DELETE_POSITION . "</span>"; ?></td> <td align="right"></td>
             </tr>     
 </table>
 </td>
