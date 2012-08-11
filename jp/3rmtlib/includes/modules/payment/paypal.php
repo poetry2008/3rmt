@@ -538,20 +538,20 @@ function getpreexpress($pre_value, $pre_pid){
       ));
               tep_db_query("delete from ".TABLE_ORDERS." where
             orders_id='".$pre_pid."'");
-            tep_redirect(tep_href_link(FILENAME_PREORDER_UNSUCCESS));
+            tep_redirect(tep_href_link('checkout_unsuccess.php'));
             exit;
       }
 
     }else{
         tep_db_query("delete from ".TABLE_ORDERS." where
             orders_id='".$pre_pid."'");
-            tep_redirect(tep_href_link(FILENAME_PREORDER_UNSUCCESS));
+            tep_redirect(tep_href_link('checkout_unsuccess.php'));
             exit;
     }
   }else{
         tep_db_query("delete from ".TABLE_ORDERS." where
             orders_id='".$pre_pid."'");
-            tep_redirect(tep_href_link(FILENAME_PREORDER_UNSUCCESS));
+            tep_redirect(tep_href_link('checkout_unsuccess.php'));
             exit;
     // 不正
     //エラーコード発行予定
