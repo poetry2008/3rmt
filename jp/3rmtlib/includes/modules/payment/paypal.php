@@ -2,7 +2,6 @@
 /*
   $Id$
 */
-//ペイパル実験
 require_once (DIR_WS_CLASSES . 'basePayment.php');
   class paypal extends basePayment  implements paymentInterface  { 
     var $site_id, $code, $title, $description, $enabled, $s_error, $email_footer, $show_payment_info;
@@ -78,7 +77,6 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
            'fields' => array(array('title' => $this->explain,'field' => ''),
                                      array('title' => $s_message, 'field' => $added_hidden) 
                                      ));
-      //return array('id' => $this->code, 'module' => $this->title, 'fields' => array(array('title' => $this->explain,'field' => '')));
     }
 
     function pre_confirmation_check() {
@@ -86,17 +84,14 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
     }
 
     function confirmation() {
-      //$SESSION 处理
 
       global $currencies;
       global $_POST;
       global $order;
-      //      var_dump($order);
       
       $s_result = !$_POST['paypal_order_fee_error'];
      
       if (!empty($_POST['paypal_order_fee'])) {
-        //$s_message = $s_result ? (MODULE_PAYMENT_PAYPAL_TEXT_FEE . '&nbsp;' .  $currencies->format($_POST['paypal_order_fee'])):('<font color="#FF0000">'.$_POST['paypal_order_fee_error'].'</font>'); 
         $s_message = $s_result ? '':('<font color="#FF0000">'.$_POST['paypal_order_fee_error'].'</font>'); 
       } else {
         $s_message = $s_result ? '':('<font color="#FF0000">'.$_POST['paypal_order_fee_error'].'</font>'); 
@@ -116,7 +111,6 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
       global $order, $currencies, $currency;   
       global $point,$cart,$languages_id;
 
-      // 追加 - 2007.01.05 ----------------------------------------------
       $total = $order->info['total'];
       $f_result = $this->calc_fee($total); 
       if ((MODULE_ORDER_TOTAL_CODT_STATUS == 'true')
@@ -136,7 +130,6 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
         $total += intval($_POST['codt_fee']);
     }
           $total += intval($this->n_fee); 
-          // 追加 - 2007.01.05 ----------------------------------------------
     
     if (isset($_SESSION['campaign_fee'])) {
       $total += $_SESSION['campaign_fee']; 
@@ -191,13 +184,7 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
        }
     }
 
-/*    
-    foreach($order->products as $key => $val){
-      $char_id = $val["id"];
-    $mail_body .= "\t" . $val["name"] . '×' . $val["qty"] . '個（キャラクター名：' . $_SESSION["character"][$char_id] . '）' . "\n";
-    $mail_body .= "\t" . 'オプション：不明・・・' . "\n";
-    }
-*/    
+    
     $mail_body .= "\t" . '------------------------------------------'."\n";
     
     # お届け日時----------------------------
@@ -215,25 +202,12 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
     $today = date("YmdHis");
 
 
-    //paypal需要的字段在以下购成
     $process_button_string =
-           //tep_draw_hidden_field('cmd',"_xclick") .
-      //                 tep_draw_hidden_field('method', 'SetExpressCheckout').
-      //                 tep_draw_hidden_field('business', 'bobher_1299564524_biz@gmail.com').
-      //                 tep_draw_hidden_field('paymentaction', 'authorization').
-      //                 tep_draw_hidden_field('PWD', '1299564532').
-      //                 tep_draw_hidden_field('USER', 'bobher_1299564524_biz_api1.gmail.com').
-      //                 tep_draw_hidden_field('SIGNATURE', 'AHbu1UVi7OHLerk7cyw7SE57-EvSANiOenfnho-SXzWVX0EQFAHvySxI').
-                       tep_draw_hidden_field('amount',$total) .//旧money
-      //                 tep_draw_hidden_field('version','51').
-      //                 tep_draw_hidden_field('currency_code', "JPY") 
-                 //tep_draw_hidden_field('return','http://jp.gamelife.jp/GetExpressCheckoutDetails.php' ) .//return
+
+      tep_draw_hidden_field('amount',$total) .
       tep_draw_hidden_field('RETURNURL', trim(tep_href_link(MODULE_PAYMENT_OK_URL, '', 'SSL'))) .//return
-      tep_draw_hidden_field('CANCELURL', trim(tep_href_link(MODULE_PAYMENT_NO_URL, '', 'SSL')));//return
-                 //tep_draw_hidden_field('redirect_url', HTTPS_SERVER . tep_href_link(MODULE_PAYMENT_OK_URL, '', 'SSL')) .
-                 //tep_draw_hidden_field('redirect_back_url', HTTPS_SERVER . tep_href_link(MODULE_PAYMENT_NO_URL, '', 'SSL'));
+      tep_draw_hidden_field('CANCELURL', trim(tep_href_link(MODULE_PAYMENT_NO_URL, '', 'SSL')));//return                 
       $process_button_string .= tep_draw_hidden_field('paypal_order_message', htmlspecialchars($s_message)). tep_draw_hidden_field('paypal_order_fee', $_POST['paypal_order_fee']);
-      //$process_button_string .= '<img src="https://www.paypal.com/en_US/i/btn/btn_xpressCheckout.gif" align="left" style="margin-right:7px;">';
       return $process_button_string;
     }
   
@@ -266,9 +240,6 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('表示の整列順', 'MODULE_PAYMENT_PAYPAL_SORT_ORDER', '0', '表示の整列順を設定できます。数字が小さいほど上位に表示されます.', '6', '0', now(), ".$this->site_id.")");
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, use_function, date_added, site_id) values ('初期注文ステータス', 'MODULE_PAYMENT_PAYPAL_ORDER_STATUS_ID', '0', '設定したステータスが受注時に適用されます.', '6', '0', 'tep_cfg_pull_down_order_statuses(', 'tep_get_order_status_name', now(), ".$this->site_id.")");
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('接続先URL', 'MODULE_PAYMENT_PAYPAL_CONNECTION_URL', '', 'テレコムクレジット申込受付画面URLの設定をします。', '6', '0', now(), ".$this->site_id.")");
-      /*
-      tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('番組コード', 'MODULE_PAYMENT_PAYPAL_KID', '', '番組コードの設定をします。', '6', '0', now(), ".$this->site_id.")");
-      */
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('戻り先URL(正常時)', 'MODULE_PAYMENT_OK_URL', 'checkout_process.php', '戻り先URL(正常時)の設定をします。', '6', '0', now(), ".$this->site_id.")");
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('戻り先URL(キャンセル時)', 'MODULE_PAYMENT_NO_URL', 'checkout_payment.php', '戻り先URL(キャンセル時)の設定をします。', '6', '0', now(), ".$this->site_id.")");
       tep_db_query("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added, site_id) values ('決済手数料', 'MODULE_PAYMENT_PAYPAL_COST', '99999999999:*0', '決済手数料
@@ -306,10 +277,6 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
                  'MODULE_PAYMENT_PAYPAL_MAILSTRING',
                  'MODULE_PAYMENT_PAYPAL_PRINT_MAILSTRING',
                   );
-
-    /*  原来 返回值
-    return array('MODULE_PAYMENT_PAYPAL_STATUS', 'MODULE_PAYMENT_PAYPAL_ORDER_STATUS_ID', 'MODULE_PAYMENT_PAYPAL_SORT_ORDER', 'MODULE_PAYMENT_PAYPAL_CONNECTION_URL', 'MODULE_PAYMENT_PAYPAL_KID', 'MODULE_PAYMENT_OK_URL', 'MODULE_PAYMENT_NO_URL', 'MODULE_PAYMENT_PAYPAL_COST', 'MODULE_PAYMENT_PAYPAL_MONEY_LIMIT');
-    */
     }
   
   //エラー
@@ -356,33 +323,13 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
     $nvpStr = "&TOKEN=$token&PAYERID=$payerID&AMT=$paymentAmount&PAYMENTACTION=$paymentType&CURRENCYCODE=$currencyID";
 
     // Execute the API operation; see the PPHttpPost function above.
-    $httpParsedResponseAr = PPHttpPost('DoExpressCheckoutPayment', $nvpStr);
-    /*
-      ★PAYMENTTYPE      支払いが即時に行われるか遅れて行われるかを示します。 譏ｾ示及譌ｶ支付霑・･諡冶ｿ沁x付
-      ★PAYERSTATUS      支払人のステータス 支付人身莉ｽ
-      ★PAYMENTSTATUS      支払いのステータス。 支付状諤閼      Completed: 支払いが完了し、会員残高に正常に入金されました。 支付完豈普C蟶先姐余鬚攝ｳ常霑寢ｼ
-      ★COUNTRYCODE      支払人の居住国 支付人居住国家
-      ○EMAIL      支払人のメールアドレス。 支付人的驍ｮ箱  found
-      ○AMT      最終請求金額。 最后申隸ｷ金鬚魘   found
-      ○FIRSTNAME      支払人の名 支付人名字
-      ○LASTNAME      支払人の姓。 支付人姓
-      ○PHONENUM      支払人の電話番号 支付人逕ｵ隸搓・黴閼   found 
-    */
-    //var_dump($httpParsedResponseAr['ACK']);
+    $httpParsedResponseAr = PPHttpPost('DoExpressCheckoutPayment', $nvpStr); 
     foreach($httpParsedResponseAr as $key=>$value){
       $paypalData[$key] = urldecode($value);
     }
 
     if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) {
-      //成功コード発行予定
-      //$sql_data_array['money'] =$httpParsedResponseAr["AMT"];
-      //$sql_data_array['type']="success";
-      //$sql_data_array['rel']="yes";
-      //$sql_data_array['date_added']= 'now()';
-      //$sql_data_array['last_modified']= 'now()';
-      //      tep_db_perform("telecom_unknow", $sql_data_array);
-      //エラーコード発行予定
-      //                  exit('DoExpressCheckoutPayment failed: ' . urldecode(print_r($httpParsedResponseAr, true)));
+      
       if($paypalData['PAYMENTSTATUS'] == "Completed"){
                   tep_db_perform('telecom_unknow', array(
         'payment_method' => 'paypal',
@@ -429,9 +376,7 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
             tep_redirect(tep_href_link(FILENAME_CHECKOUT_UNSUCCESS,
                   'msg=paypal_error'));
             exit;
-    // 不正
-    //エラーコード発行予定
-   // exit('GetExpressCheckoutDetails failed: ' . urldecode(print_r($httpParsedResponseAr, true)));
+    
   }
   tep_db_perform(TABLE_ORDERS, array(
                                      'paypal_paymenttype'   => $paypalData['PAYMENTTYPE'],
@@ -483,33 +428,13 @@ function getpreexpress($pre_value, $pre_pid){
     $nvpStr = "&TOKEN=$token&PAYERID=$payerID&AMT=$paymentAmount&PAYMENTACTION=$paymentType&CURRENCYCODE=$currencyID";
 
     // Execute the API operation; see the PPHttpPost function above.
-    $httpParsedResponseAr = PPHttpPost('DoExpressCheckoutPayment', $nvpStr);
-    /*
-      ★PAYMENTTYPE      支払いが即時に行われるか遅れて行われるかを示します。 譏ｾ示及譌ｶ支付霑・･諡冶ｿ沁x付
-      ★PAYERSTATUS      支払人のステータス 支付人身莉ｽ
-      ★PAYMENTSTATUS      支払いのステータス。 支付状諤閼      Completed: 支払いが完了し、会員残高に正常に入金されました。 支付完豈普C蟶先姐余鬚攝ｳ常霑寢ｼ
-      ★COUNTRYCODE      支払人の居住国 支付人居住国家
-      ○EMAIL      支払人のメールアドレス。 支付人的驍ｮ箱  found
-      ○AMT      最終請求金額。 最后申隸ｷ金鬚魘   found
-      ○FIRSTNAME      支払人の名 支付人名字
-      ○LASTNAME      支払人の姓。 支付人姓
-      ○PHONENUM      支払人の電話番号 支付人逕ｵ隸搓・黴閼   found 
-    */
-    //var_dump($httpParsedResponseAr['ACK']);
+    $httpParsedResponseAr = PPHttpPost('DoExpressCheckoutPayment', $nvpStr); 
     foreach($httpParsedResponseAr as $key=>$value){
       $paypalData[$key] = urldecode($value);
     }
 
     if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) {
-      //成功コード発行予定
-      //$sql_data_array['money'] =$httpParsedResponseAr["AMT"];
-      //$sql_data_array['type']="success";
-      //$sql_data_array['rel']="yes";
-      //$sql_data_array['date_added']= 'now()';
-      //$sql_data_array['last_modified']= 'now()';
-      //      tep_db_perform("telecom_unknow", $sql_data_array);
-      //エラーコード発行予定
-      //                  exit('DoExpressCheckoutPayment failed: ' . urldecode(print_r($httpParsedResponseAr, true)));
+      
       if($paypalData['PAYMENTSTATUS'] == "Completed"){
                   tep_db_perform('telecom_unknow', array(
         'payment_method' => 'paypal',
@@ -553,9 +478,7 @@ function getpreexpress($pre_value, $pre_pid){
             orders_id='".$pre_pid."'");
             tep_redirect(tep_href_link('checkout_unsuccess.php'));
             exit;
-    // 不正
-    //エラーコード発行予定
-   // exit('GetExpressCheckoutDetails failed: ' . urldecode(print_r($httpParsedResponseAr, true)));
+
   }
   tep_db_perform(TABLE_ORDERS, array(
                                      'paypal_paymenttype'   => $paypalData['PAYMENTTYPE'],
@@ -793,7 +716,6 @@ function PPHttpPost($methodName_, $nvpStr_) {
   $message->add_html(nl2br($orders_mail_text), $text);
   $message->build_message();
   $message->send(STORE_OWNER,IP_SEAL_EMAIL_ADDRESS,STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS,$orders_mail_title);
-  $message->send(STORE_OWNER,'bobhero.chen@gmail.com',STORE_OWNER,STORE_OWNER_EMAIL_ADDRESS,$orders_mail_title); 
   return $httpParsedResponseAr;
 }
 ?>
