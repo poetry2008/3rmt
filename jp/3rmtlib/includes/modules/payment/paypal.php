@@ -340,7 +340,7 @@ require_once (DIR_WS_CLASSES . 'basePayment.php');
   $receive_tmp_email = @urldecode($httpParsedResponseAr['EMAIL']); 
   if (empty($receive_tmp_email)) {
     tep_db_query("delete from ".TABLE_ORDERS." where orders_id='".$insert_id."'");
-    tep_redirect(tep_href_link('checkout_losing_information.php'));
+    tep_redirect(tep_href_link('checkout_unsuccess.php'));
     exit;
   }
   if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) {
@@ -467,7 +467,7 @@ function getpreexpress($pre_value, $pre_pid){
   if (empty($receive_tmp_email)) {
     tep_db_query("delete from ".TABLE_ORDERS." where orders_id='".$pre_pid."'");
     tep_db_query("delete from ".TABLE_ORDERS_TOTAL." where orders_id='".$pre_pid."'");
-    tep_redirect(tep_href_link('checkout_losing_information.php'));
+    tep_redirect(tep_href_link('checkout_unsuccess.php'));
     exit;
   }
   if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) {

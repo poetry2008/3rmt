@@ -7,77 +7,71 @@
 
 // if the customer is not logged on, redirect them to the shopping cart page
   if (!tep_session_is_registered('customer_id')) {
-    if (!isset($_GET['pre_type'])) {
       tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
-    }
   }
-
-  if (isset($_GET['action']) && ($_GET['action'] == 'checkout_payment')) {
-    tep_redirect(tep_href_link(FILENAME_CHECKOUT_PAYMENT, ''));
-  }
-  if (!isset($_GET['msg'])||$_GET['msg']!='paypal_error'){
-    //forward404();
-  }
-
-
-
-  require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_CHECKOUT_UNSUCCESS);
 
   $breadcrumb->add(NAVBAR_TITLE_1, tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
   $breadcrumb->add(NAVBAR_TITLE_2);
 //ccdd
 ?>
 <?php page_head();?>
-</head>
-<body> 
-<div class="body_shadow"> 
-  <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
-  <!-- header_eof //--> 
-  <!-- body //--> 
-  <div id="main">
-<div id="layout" class="yui3-u">
-<?php echo tep_draw_form('order', tep_href_link(FILENAME_CHECKOUT_UNSUCCESS, 'action=checkout_payment', 'SSL')); ?> 
-<div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
-<div id="main-content">
-<h2><?php echo TEXT_UNSUCCESS; ?></h2>
- <table border="0" width="100%" cellspacing="0" cellpadding="0">
-            <tr> 
-              <td><p>
-              <?php if(isset($_GET['msg'])&&$_GET['msg']=='paypal_error'){ ?>
-              <font color='red'>
-              <?php echo TEXT_PAYPAL_ERROR;?>
-              </font>
-              <?php } ?>
-              <br />
-              <?php echo TEXT_PAY_UNSUCCESS;?></p>
-              <div class="botton-continue">
-              <?php 
-              if (isset($_GET['pre_type'])) {
-              ?>
-              <a href="<?php echo tep_href_link(FILENAME_DEFAULT);?>"><?php echo tep_image_button('button_continue.gif', '');?></a> 
-              <?php
-              } else {
-                echo tep_image_submit('button_back_payment.jpg',
-                    IMAGE_BUTTON_CONTINUE,'onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_back_payment_hover.jpg\'"
-                    onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_back_payment.jpg\'"'); 
-              } 
-              ?>
-           	  </div>
-              </td> 
-            </tr> 
-          </table>
-          </div>
-       </form> 
-  </div>
-  <?php   include("includes/float-box.php");?>
-  <!-- body_eof //--> 
-  <!-- footer //--> 
-    <!-- footer_eof //--> 
-  </div>
-</div>
-<?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
+<?php
+  $site_romaji = tep_get_site_romaji_by_id(SITE_ID);
+  $oconfig_raw = tep_db_query("select value from ".TABLE_OTHER_CONFIG." where keyword = 'css_random_string' and site_id = '".SITE_ID."'");
+  $oconfig_res = tep_db_fetch_array($oconfig_raw);
+  tep_db_free_result($oconfig_raw);
+  if($oconfig_res){
+     $css_random_str = substr($oconfig_res['value'], 0, 4);
+  }else{
+     $css_random_str = date('YmdHi', time());
+  }
+?>
+<link rel="stylesheet" type="text/css" href="<?php echo 'css/'.$site_romaji.'.css?v='.$css_random_str;?>">
+<script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
+<script type="text/javascript" src="js/notice.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+var docheight = $(document).height();
+var screenwidth, screenheight, mytop, getPosLeft, getPosTop
+screenwidth = $(window).width();
+screenheight = $(window).height();
+mytop = $(document).scrollTop();
+getPosLeft = screenwidth / 2 - 276;
+getPosTop = 50;
 
-</body>
+$("#popup_notice").css('display', 'block');
+$("#popup_notice").css({ "left": getPosLeft, "top": getPosTop })
+
+$(window).resize(function() {
+           screenwidth = $(window).width();
+           screenheight = $(window).height();
+           mytop = $(document).scrollTop();
+           getPosLeft = screenwidth / 2 - 276;
+           getPosTop = 50;
+           $("#popup_notice").css({ "left": getPosLeft, "top": getPosTop + mytop });
+
+});
+
+
+$("body").append("<div id='greybackground'></div>");
+$("#greybackground").css({ "opacity": "0.5", "height": docheight });
+});
+</script>
+<div id="popup_notice" style="display:none;">
+<div class="popup_notice_text">
+<?php echo TEXT_ORDERS_ERROR;?>
+</div>
+<div class="popup_notice_middle">
+<?php 
+echo TEXT_ORDERS_EMPTY_COMMENT;
+?>
+</div>
+<div align="center" class="popup_notice_button">
+<a href="javascript:void(0);" onClick="update_notice('index.php')"><img alt="<?php echo LOCATION_HREF_INDEX;?>" src="images/design/href_home.gif"></a>&nbsp;&nbsp;
+<a href="javascript:void(0);" onClick="update_notice('contact_us.php')"><img alt="<?php echo CONTACT_US;?>" src="images/design/contact_us.gif"></a>
+</div>
+</div>
+</head>
 </html>
 <?php 
 # For Guest - LogOff
@@ -85,7 +79,7 @@ if($guestchk == '1') {
   tep_session_unregister('customer_id');
   tep_session_unregister('customer_default_address_id');
   tep_session_unregister('customer_first_name');
-  tep_session_unregister('customer_last_name'); //Add Japanese osCommerce
+  tep_session_unregister('customer_last_name');
   tep_session_unregister('customer_country_id');
   tep_session_unregister('customer_zone_id');
   tep_session_unregister('comments');
@@ -93,6 +87,4 @@ if($guestchk == '1') {
 
   $cart->reset();  
 }
-
-require(DIR_WS_INCLUDES . 'application_bottom.php'); 
 ?>
