@@ -36,6 +36,10 @@ while ($option_group = mysql_fetch_array($option_group_raw)) {
           }
         }
         mysql_query("update `option_group` set `name` = '".$group_name."' where id = '".$option_group['id']."'"); 
+        $option_item_raw = mysql_query("select title, id from option_item where title != 'お客様のキャラクター名' and type = 'select' and group_id = '".$option_group['id']."'");  
+        while ($option_item_res = mysql_fetch_array($option_item_raw)) {
+            mysql_query("update `option_item` set title = '".$option_item_res['title'].'･'.$category_name."' where id = '".$option_item_res['id']."'");  
+        }
       }
     }
   }

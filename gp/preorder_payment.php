@@ -487,7 +487,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
                 }
               }
             ?>
-            <?php echo tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE); ?>
+            <?php echo tep_image_submit('button_continue02.gif', IMAGE_BUTTON_CONTINUE); ?>
           </td>
         </tr>
       </table>
