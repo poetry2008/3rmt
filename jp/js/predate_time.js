@@ -111,6 +111,7 @@ function selectDate(start_time,end_time,value,start_time_old,end_time_old,now_ti
 /*                            分セレクトボックス                               /
 /******************************************************************************/
 function selectHour(start_time,end_time,hour,min_num,ele){ 
+        $("#time_error").remove();
         if(hour != ''){
           hour = parseInt(hour); 
           document.getElementById("hour"+hour).style.color="#ffffff";
