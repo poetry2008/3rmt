@@ -795,7 +795,7 @@ if($cart->weight > 0){
      address_option_list(first_num);      
      <?php
      }
-     if($_SESSION['options']){ 
+     if(isset($_SESSION['options'])){ 
      ?>
      session_value();
      <?php
