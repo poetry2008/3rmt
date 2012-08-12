@@ -330,9 +330,27 @@
       if (IsSet($products_details[attributes])) {
         foreach ($products_details["attributes"] as $orders_products_attributes_id => $attributes_details) {
           $input_option = array('title' => $attributes_details['option'], 'value' => $attributes_details['value']); 
-          //$Query = "update " . TABLE_PREORDERS_PRODUCTS_ATTRIBUTES . " set option_info = '" . tep_db_input(serialize($input_option)) . "' , options_values_price = '".$attributes_details['price']."' where orders_products_attributes_id = '$orders_products_attributes_id';";
-          $Query = "update " . TABLE_PREORDERS_PRODUCTS_ATTRIBUTES . " set options_values_price = '".$attributes_details['price']."' where orders_products_attributes_id = '$orders_products_attributes_id';";
+          $Query = "update " . TABLE_PREORDERS_PRODUCTS_ATTRIBUTES . " set option_info = '" . tep_db_input(serialize($input_option)) . "' , options_values_price = '".$attributes_details['price']."' where orders_products_attributes_id = '$orders_products_attributes_id';";
           tep_db_query($Query);
+        }
+      }
+      if (IsSet($_POST['new_update_products_op_title'])) {
+        if (!empty($_POST['new_update_products_op_title'])) {
+          $check_new_op_query = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS_ATTRIBUTES." where orders_id = '".$oID."'"); 
+          if (tep_db_num_rows($check_new_op_query)) {
+            $check_new_op_res = tep_db_query($check_new_op_query); 
+            $tmp_new_op_array = array('title' => $_POST['new_update_products_op_title'], 'value' => $_POST['new_update_products_op_value']);  
+            $Query = "update " . TABLE_PREORDERS_PRODUCTS_ATTRIBUTES . " set option_info = '" . tep_db_input(serialize($tmp_new_op_array)) . "' , options_values_price = '".$_POST['new_update_products_op_price']."' where orders_products_attributes_id = '".$check_new_op_res['orders_products_attributes_id']."';";
+          } else {
+            $tmp_new_op_array = array('title' => $_POST['new_update_products_op_title'], 'value' => $_POST['new_update_products_op_value']);  
+            $new_op_data_array = array(
+                 'orders_id' => $oID,
+                 'orders_products_id' => $orders_products_id,
+                 'options_values_price' => $_POST['new_update_products_op_price'],
+                 'option_info' => tep_db_input(serialize($tmp_new_op_array)),
+                 ); 
+             tep_db_perform(TABLE_PREORDERS_PRODUCTS_ATTRIBUTES, $new_op_data_array); 
+          }
         }
       }
     } else { // b.) null quantity found --> delete
@@ -1202,7 +1220,13 @@ function recalc_preorder_price(oid, opd, o_str, op_str)
   }
   pro_num = document.getElementById('update_products_new_qty_'+opd).value;
   p_price = document.getElementsByName('update_products['+opd+'][p_price]')[0].value;
-  
+  new_op_price = 0; 
+  if (op_str == '') {
+    if (document.getElementsByName('new_update_products_op_price')) {
+      new_op_price = parseInt(document.getElementsByName('new_update_products_op_price')[0].value);
+    }
+  }
+  p_op_info += new_op_price;  
   $.ajax({
     type: "POST",
     data:'oid='+oid+'&opd='+opd+'&o_str='+o_str+'&op_price='+p_op_info+'&p_num='+pro_num+'&p_price='+p_price,
@@ -1727,7 +1751,7 @@ float:left;
     $orders_products_id = $order->products[$i]['orders_products_id'];
     $RowStyle = "dataTableContent";
     echo '    <tr class="dataTableRow">' . "\n" .
-         '      <td class="' . $RowStyle . '" align="left" valign="top" width="20">'
+         '      <td class="' . $RowStyle . '" align="left" valign="top" width="6%">'
          . "<input type='hidden' name='update_products_real_quantity[$orders_products_id]' id='update_products_real_quantity_$orders_products_id' value='1'><input type='hidden' id='update_products_qty_$orders_products_id' value='" .  $order->products[$i]['qty'] . "'><input type='text' class='update_products_qty' id='update_products_new_qty_$orders_products_id' name='update_products[$orders_products_id][qty]' size='2' value='" . $order->products[$i]['qty'] . "'>&nbsp;x</td>\n" . 
          '      <td class="' . $RowStyle . '">' . $order->products[$i]['name'] . "<input name='update_products[$orders_products_id][name]' size='64' id='update_products_name_$orders_products_id' type='hidden' value='" . $order->products[$i]['name'] . "'>\n" . 
        '      &nbsp;&nbsp;';
@@ -1740,9 +1764,9 @@ float:left;
       $op_info_str = implode('|||', $op_info_array); 
       for ($j=0; $j<sizeof($order->products[$i]['attributes']); $j++) {
         $orders_products_attributes_id = $order->products[$i]['attributes'][$j]['id'];
-        echo '<br><div><small>&nbsp;<i><div class="order_option_info"><div class="order_option_title"> - ' .str_replace(array("<br>", "<BR>"), '', tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;"))).  ": <input type='hidden' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][option]' size='10' value='" .  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;")) . "'>" . 
+        echo '<br><div><small>&nbsp;<i><div class="order_option_info"><div class="order_option_title"> - ' ."<input type='text' class='option_input_width' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][option]' value='" .  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;")) . "'>: " . 
            '</div><div class="order_option_value">' . 
-           str_replace(array("<br>", "<BR>"), '', tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&quot;")))."<input type='hidden' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][value]' size='35' value='" .  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&quot;"));
+           "<input type='text' class='option_input_width' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][value]' value='" .  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&quot;"));
         //if ($order->products[$i]['attributes'][$j]['price'] != '0') echo ' (' . $order->products[$i]['attributes'][$j]['prefix'] . $currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . ')';
         echo "'></div></div>";
         echo '<div class="order_option_price">';
@@ -1754,8 +1778,19 @@ float:left;
         echo '</div>'; 
         echo '</i></small></div>';
       }
+      
+    } else {
+       echo '<br><div><small>&nbsp;<i><div class="order_option_info"><div class="order_option_title"> - ' ."<input name='new_update_products_op_title' type='text'  class='option_input_width' value=''>: " . 
+           '</div><div class="order_option_value">' . 
+           "<input name='new_update_products_op_value' type='text' class='option_input_width' value=''>";
+        echo "</div></div>";
+        echo '<div class="order_option_price">';
+        echo "<input name='new_update_products_op_price' type='text' size='9' value='' onkeyup=\"recalc_preorder_price('".$oID."', '".$orders_products_id."', '1', '')\">";; 
+        echo TEXT_MONEY_SYMBOL; 
+        echo '</div>'; 
+        echo '</i></small></div>';   
+      
     }
-    
     echo '      </td>' . "\n" .
          '      <td class="' . $RowStyle . '">' . $order->products[$i]['model'] . "<input name='update_products[$orders_products_id][model]' size='12' type='hidden' value='" . $order->products[$i]['model'] . "'>" . '</td>' . "\n" .
          '      <td class="' . $RowStyle . '" align="right">' .  tep_display_tax_value($order->products[$i]['tax']) . "<input name='update_products[$orders_products_id][tax]' size='2' type='hidden' value='" . tep_display_tax_value($order->products[$i]['tax']) . "'>" .  '%</td>' . "\n";
