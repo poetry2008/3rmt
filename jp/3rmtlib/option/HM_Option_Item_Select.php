@@ -45,12 +45,14 @@ class HM_Option_Item_Select extends HM_Option_Item_Basic
        }
      }
      if ($sp_pos !== false) {
-         if (!isset($cart_obj->contents[$pre_item_tmp_str]['ck_attributes'][$this->formname]) && !isset($_POST[$pre_item_str.'op_'.$this->formname])) {
-           $o_attributes_raw = tep_db_query("select opa.* from ".TABLE_ORDERS_PRODUCTS_ATTRIBUTES." opa, ".TABLE_ORDERS." o where opa.orders_id = o.orders_id and o.customers_id = '".(int)$_SESSION['customer_id']."' and opa.option_group_id = '".$this->group_id."' and opa.option_item_id = '".$this->id."' order by opa.orders_id desc limit 1"); 
-           $o_attributes_res = tep_db_fetch_array($o_attributes_raw); 
-           if ($o_attributes_res) {
-             $old_option_info = @unserialize(stripslashes($o_attributes_res['option_info']));  
-             $default_value = $old_option_info['value']; 
+         if ($_SESSION['guestchk'] != '1') {
+           if (!isset($cart_obj->contents[$pre_item_tmp_str]['ck_attributes'][$this->formname]) && !isset($_POST[$pre_item_str.'op_'.$this->formname])) {
+             $o_attributes_raw = tep_db_query("select opa.* from ".TABLE_ORDERS_PRODUCTS_ATTRIBUTES." opa, ".TABLE_ORDERS." o where opa.orders_id = o.orders_id and o.customers_id = '".(int)$_SESSION['customer_id']."' and opa.option_group_id = '".$this->group_id."' and opa.option_item_id = '".$this->id."' order by opa.orders_id desc limit 1"); 
+             $o_attributes_res = tep_db_fetch_array($o_attributes_raw); 
+             if ($o_attributes_res) {
+               $old_option_info = @unserialize(stripslashes($o_attributes_res['option_info']));  
+               $default_value = $old_option_info['value']; 
+             }
            }
          }
        
