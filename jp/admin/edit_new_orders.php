@@ -3180,7 +3180,9 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
   }else{
 
   if(count($shipping_time_array['work']) == 1){
-    $shipping_time_now = current($shi_time_array);  
+    $shipping_time_array_key = array_keys($shi_time_array);
+    $shipping_time_array_min = min($shipping_time_array_key);
+    $shipping_time_now = $shi_time_array[$shipping_time_array_min];  
     $shipping_time_now_array = explode('|',$shipping_time_now);
     $shipping_time_hour = min($shipping_time_now_array);
     $shipping_time_hour_array = explode(',',$shipping_time_hour);
