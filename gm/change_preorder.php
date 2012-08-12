@@ -1195,7 +1195,7 @@ document.forms.order1.submit();
                   echo '<script>selectDate(\''. $work_start .' \', \''. $work_end .'\',\''.$_SESSION['preorder_information']['date'].'\',\''. $work_start_old .' \', \''. $work_end_old .'\',\''.date('Y-m-d').'\',\''.$work_start_exit.'\',\''.$work_end_exit.'\',\''.$now_time_date.'\');$("#shipping_list").show();</script>';
                 }
              }
-             if(isset($_POST['min']) && $_POST['min'] != ''){
+             if(isset($_POST['hour']) && $_POST['hour'] != ''){
 
                 if(!(date("Y-m-d", strtotime("+".$db_set_day." minutes")) == $_POST['date'])){
                   $work_start = $work_start_old;
@@ -1204,7 +1204,7 @@ document.forms.order1.submit();
                 echo '<script>selectHour(\''. $work_start .' \', \''. $work_end .'\',\''. $_POST['hour'] .'\','. $_POST['min'] .','. $_POST['ele'] .');$("#shipping_list_min").show();$("#h_c_'.$_POST['hour'].'").val('.$_POST['min'].');</script>';
              }else{
 
-               if(isset($_SESSION['preorder_information']['min']) && $_SESSION['preorder_information']['min'] != ''){
+               if(isset($_SESSION['preorder_information']['hour']) && $_SESSION['preorder_information']['hour'] != ''){
                 if(!(date("Y-m-d", strtotime("+".$db_set_day." minutes")) == $_SESSION['preorder_information']['date'])){
                     $work_start = $work_start_old;
                     $work_end = $work_end_old;
