@@ -248,6 +248,9 @@ document.edit_order.notify_comments.checked = false;
 }
 function update_price2() {
 
+  var date_orders = document.getElementById("date_orders");
+  var date_order = document.getElementById("date_order");
+  date_order.value = date_orders.value;
   if (window.confirm("注文内容を確認しますか？")) {
     document.edit_order.notify.checked = false;
     document.edit_order.notify_comments.checked = false;
