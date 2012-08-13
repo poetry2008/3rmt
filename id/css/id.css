@@ -2579,3 +2579,9 @@ searching
 .input_width{ width:480px;}
 .table_a_spacing{ margin-bottom:10px;}
 .table_a_spacing img{ vertical-align:top;}
+.confirmation_product_num_info{ 
+	padding-right:72px;
+	line-height:1.5;
+	font-size:12px;
+	width:80px;
+}

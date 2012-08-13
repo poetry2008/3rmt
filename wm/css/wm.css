@@ -1943,3 +1943,9 @@ searching
 .table_a_spacing{ margin-bottom:8px;}
 .table_a_spacing img{ vertical-align:top;}
 .product_info_table td{ font-size:12px; line-height:1.5;}
+#confirmation_product_num_info{ 
+	padding-right:82px;
+	line-height:1.5;
+	font-size:12px;
+	width:85px;
+}

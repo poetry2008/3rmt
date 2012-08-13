@@ -2273,3 +2273,9 @@ border:1px solid #CAC6BE;
 }
 .table_a_spacing{ margin-bottom:13px;}
 .table_a_spacing img{ vertical-align:top;}
+.confirmation_product_num_info{ 
+	padding-right:67px;
+	line-height:1.5;
+	font-size:12px;
+	width:80px;
+}

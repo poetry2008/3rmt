@@ -157,7 +157,7 @@ if(array_key_exists($fixed_option_list_array[3],$ad_array)){
     $product_info = tep_get_product_by_id((int)$order->products[$i]['id'], SITE_ID, $languages_id);
     
     echo '          <tr>' . "\n" .
-         '            <td class="main" align="center" valign="top" width="150">' .  $order->products[$i]['qty'] . '&nbsp;' .NUM_UNIT_TEXT. (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($order->products[$i]['qty'], $order->products[$i]['id']) ? '<br><span style="font-size:10px">'. tep_get_full_count_in_order2($order->products[$i]['qty'], $order->products[$i]['id']) .'</span>': '') . '</td>' . "\n" .
+         '            <td class="confirmation_product_num_info" align="right" valign="top">' .  $order->products[$i]['qty'] . '&nbsp;' .NUM_UNIT_TEXT. (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($order->products[$i]['qty'], $order->products[$i]['id']) ? '<br><span style="font-size:10px">'. tep_get_full_count_in_order2($order->products[$i]['qty'], $order->products[$i]['id']) .'</span>': '') . '</td>' . "\n" .
          '            <td class="main" valign="top">' . $order->products[$i]['name'];
 
   if ($order->products[$i]['price'] < 0) {

@@ -2280,3 +2280,10 @@ display:block;
 .product_info_table td{ font-size:12px; line-height:1.5;}
 .table_a_spacing{ margin-bottom:13px;}
 .table_a_spacing img{ vertical-align:top;}
+.confirmation_product_num_info{ 
+	padding-right:70px;
+	line-height:1.5;
+	font-size:11px;
+	*font-size:10px;
+	width:80px;
+}

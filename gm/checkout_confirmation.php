@@ -168,7 +168,7 @@ if(array_key_exists($fixed_option_list_array[3],$ad_array)){
     $product_info = tep_get_product_by_id((int)$order->products[$i]['id'], SITE_ID, $languages_id);
     
     echo '          <tr>' . "\n" .
-		 			'<td align="left" valign="top" width="20%">' .
+		 			'<td align="right" valign="top" class="confirmation_product_num_info">' .
          $order->products[$i]['qty'] . '&nbsp;' . NUM_UNIT_SYMBOL .
          (!empty($product_info['products_attention_1_3']) &&
           tep_get_full_count_in_order2($order->products[$i]['qty'],
