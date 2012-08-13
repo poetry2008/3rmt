@@ -210,15 +210,15 @@ getPosLeft = 155;
 getPosTop = 50;
 
 $("#popup_notice").css('display', 'block');
-$("#popup_notice").css({ "left": "9%", "top": getPosTop })
+$("#popup_notice").css({ "top": getPosTop })
 
 $(window).resize(function() {
-            screenwidth = $(window).width();
+           screenwidth = $(window).width();
            screenheight = $(window).height();
            mytop = $(document).scrollTop();
            getPosLeft = 155;
            getPosTop = 50;
-           $("#popup_notice").css({ "left": "9%", "top": getPosTop + mytop });
+           $("#popup_notice").css({ "top": getPosTop + mytop });
 
 });
 $("body").append("<div id='greybackground'></div>");
