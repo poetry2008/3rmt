@@ -1377,6 +1377,7 @@ TABLE：Info Box
 .product_info_box{
 	background: #f4f4f4;
 	padding:5px;
+	font-size:12px;
 }
 .product_info_box table{
 	width: 100%;
@@ -1995,6 +1996,7 @@ line-height:16px;
 .option_table{
 	width:100%;
 	font-size:12px;
+	*font-size:10px;
 	line-height:1.5;
 }
 .option_name{
@@ -2138,6 +2140,7 @@ line-height:16px;
 .preorder_option .option_name{
 	width:123px;
 	padding:0;
+	font-weight:normal;
 }
 .option_money{
 	float:right;
