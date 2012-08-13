@@ -3226,7 +3226,7 @@ if (($action == 'edit') && ($order_exists == true)) {
           $customer_notified = $order_status_array['customer_notified'];           
           $customer_notified = isset($customer_notified) ? $customer_notified : true;
           $customer_notified = $select_status == 31 ? 0 : $customer_notified;
-          $select_select = $order_status_num == 1 ? 16 : $select_status;
+          $select_select = 16;
 ?>
     <tr>
     <td class="main"><b><?php echo ENTRY_STATUS; ?></b></td>
