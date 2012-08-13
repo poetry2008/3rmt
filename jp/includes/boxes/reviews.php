@@ -13,13 +13,13 @@ if (
 ) {
 ?>
 <!-- reviews //-->
-<?php 
+<?php
   if(basename($PHP_SELF) == FILENAME_PRODUCT_INFO){
     // ccdd
     $reviews_query = tep_db_query("
-        select r.customers_name,
-               r.reviews_rating, 
-               r.reviews_id 
+        select r.reviews_rating, 
+               r.reviews_id, 
+               r.customers_name 
         from " .  TABLE_REVIEWS . " r 
         where r.products_id = '" .  (int)$_GET['products_id'] . "' 
           and r.reviews_status = '1' 
@@ -33,14 +33,10 @@ if (
         echo '<p class="main">
 <b>' . sprintf(TEXT_REVIEW_BY, tep_output_string_protected($reviews['customers_name'])) . '</b>&nbsp;&nbsp;' . tep_image(DIR_WS_IMAGES . 'stars_' . $reviews['reviews_rating'] . '.gif' , sprintf(BOX_REVIEWS_TEXT_OF_5_STARS, $reviews['reviews_rating'])) . '[' . sprintf(BOX_REVIEWS_TEXT_OF_5_STARS, $reviews['reviews_rating']) . ']
 <br>' . nl2br($reviews_des_res['reviews_text']) . "\n" . '</p>';
-//<div align="right"><i>' . sprintf(TEXT_REVIEW_DATE_ADDED, tep_date_long($reviews['date_added'])) . '</i></div>' . "\n";
       }
-      //if(MAX_RANDOM_SELECT_REVIEWS > tep_db_num_rows($reviews_query)){
-      //  echo '<div align="right"><a href="'tep_href_link(FILENAME_PRODUCT_REVIEWS,'products_id='.(int)$_GET['products_id']).'">レビュー一覧へ</a></div>' ;
-      //}  
       echo '</div>' . "\n";
-    } 
-  } else {
+   } 
+} else {
     
     if (isset($_GET['cPath']) && $cPath_array) {
       $subcid = tep_get_categories_id_by_parent_id($cPath_array[count($cPath_array) - 1]);
