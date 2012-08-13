@@ -169,7 +169,6 @@ UL UL UL {
 .l_m_categories_tree a {
 	display:inline-block;
 	width:130px;
-	height:10px;
 	margin-left:-5px;
 }
 .l_m_categories_tree3 {
@@ -1351,7 +1350,6 @@ UL UL UL {
 .l_m_categories_tree a {
 	display:inline-block;
 	width:130px;
-	height:10px;
 	margin-left:-5px;
 }
 .l_m_categories_tree3 {
@@ -2761,4 +2759,10 @@ searching
 .input_width{
 	width:290px;
 	*width:310px;
+}
+.confirmation_product_num_info{ 
+	padding-right:84px;
+	line-height:1.5;
+	font-size:12px;
+	width:80px;
 }

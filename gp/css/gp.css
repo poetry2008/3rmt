@@ -2462,3 +2462,9 @@ line-height:21px;
 .input_width{ width:310px; *width:295px;}
 .table_a_spacing{ margin-bottom:15px;}
 .table_a_spacing img{ vertical-align:top;}
+.confirmation_product_num_info{ 
+	padding-right:67px;
+	line-height:1.5;
+	font-size:12px;
+	width:80px;
+}
