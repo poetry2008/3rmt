@@ -2666,7 +2666,7 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
           echo "\n".'<script language="javascript">'."\n"; 
           echo '$(document).ready(function(){'."\n";
 
-          $cpayment->admin_show_payment_list($pay_method,$pay_comment);
+          $cpayment->admin_show_payment_list(payment::changeRomaji($pay_method,'code'),$pay_comment);
           
           echo '});'."\n";
           echo '</script>'."\n";
