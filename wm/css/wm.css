@@ -207,6 +207,8 @@ UL {
 	line-height: 10px;
 	background: none;
 	height:100%;
+	width:90%;
+	*width:auto;
 }
 .l_m_categories_tree3 strong{ height:100%;}
 .l_m_categories_tree a:hover, .l_m_categories_tree3 a:hover {
@@ -1735,6 +1737,7 @@ searching
 .option_table{
 	width:100%;
 	font-size:12px;
+	*font-size:10px;
 	line-height:1.5;
 }
 .option_name{
@@ -1876,6 +1879,7 @@ searching
 .preorder_option .option_name{
 	width:25%;
 	padding:0;
+	font-weight:normal;
 }
 .option_money{
 	float:right;
