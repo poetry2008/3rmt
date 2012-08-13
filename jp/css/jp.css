@@ -159,7 +159,6 @@ UL UL UL {
 }
 .l_m_categories_tree strong {
 	display:inline-block;
-	height:10px;
 	margin:0 0 0 -5px;
 	padding:0 0 0 5px;
 	height:100%;
@@ -1341,7 +1340,6 @@ UL UL UL {
 }
 .l_m_categories_tree strong {
 	display:inline-block;
-	height:10px;
 	margin:0 0 0 -5px;
 	padding:0 0 0 5px;
 }
