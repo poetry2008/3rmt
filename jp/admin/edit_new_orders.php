@@ -755,8 +755,7 @@ if($address_error == false){
           if (IsSet($products_details[attributes])) {
             foreach ($products_details["attributes"] as $orders_products_attributes_id => $attributes_details) {
               $input_option = array('title' => $attributes_details['option'], 'value'=> $attributes_details['value']); 
-              //$Query = "update " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " set option_info = '" .tep_db_input(serialize($input_option)) . "',options_values_price = '".$attributes_details['price']."' where orders_products_attributes_id = '$orders_products_attributes_id';";
-              $Query = "update " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " set options_values_price = '".$attributes_details['price']."' where orders_products_attributes_id = '$orders_products_attributes_id';";
+              $Query = "update " . TABLE_ORDERS_PRODUCTS_ATTRIBUTES . " set option_info = '" .tep_db_input(serialize($input_option)) . "',options_values_price = '".$attributes_details['price']."' where orders_products_attributes_id = '$orders_products_attributes_id';";
               tep_db_query($Query);
             }
           }
@@ -3477,7 +3476,7 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
             }
             $RowStyle = "dataTableContent";
             echo '    <tr class="dataTableRow">' . "\n" .
-              '      <td class="' . $RowStyle . '" align="left" valign="top" width="20">'
+              '      <td class="' . $RowStyle . '" align="left" valign="top" width="6%">'
               . "<input type='hidden' id='update_products_qty_$orders_products_id' value='" . $products_qty_num . "'><input class='update_products_qty' id='update_products_new_qty_$orders_products_id' name='update_products[$orders_products_id][qty]' size='2' value='" . $products_qty_num . "' onkeyup=\"clearLibNum(this);\">&nbsp;x</td>\n" . 
               '      <td class="' . $RowStyle . '">' . $order->products[$i]['name'] . "<input id='update_products_name_$orders_products_id' name='update_products[$orders_products_id][name]' size='64' type='hidden' value='" . $order->products[$i]['name'] . "'>\n" . 
               '      &nbsp;&nbsp;';
@@ -3490,9 +3489,9 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
               $op_info_str = implode('|||', $op_info_array);
               for ($j=0; $j<sizeof($order->products[$i]['attributes']); $j++) {
                 $orders_products_attributes_id = $order->products[$i]['attributes'][$j]['id'];
-                echo '<br><div><small>&nbsp;<i><div class="order_option_info"><div class="order_option_title"> - ' . str_replace(array("<br>", "<BR>"), '', tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;"))). ': <input type="hidden" name="update_products[' . $orders_products_id .  '][attributes][' . $orders_products_attributes_id . '][option]" size="10" value="' .  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;")) . '">' . 
+                echo '<br><div><small>&nbsp;<i><div class="order_option_info"><div class="order_option_title"> - ' . '<input type="text" class="option_input_width" name="update_products[' . $orders_products_id .  '][attributes][' . $orders_products_attributes_id . '][option]" value="' .  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;")) . '">: ' . 
                   '</div><div class="order_option_value">' . 
-                  str_replace(array("<br>", "<BR>"), '', tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&quot;"))).'<input type="hidden" name="update_products[' . $orders_products_id .  '][attributes][' . $orders_products_attributes_id . '][value]" size="35" value="' .  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&quot;"));
+                  '<input type="text" class="option_input_width" name="update_products[' . $orders_products_id .  '][attributes][' . $orders_products_attributes_id . '][value]" value="' .  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&quot;"));
                 //if ($order->products[$i]['attributes'][$j]['price'] != '0') echo ' (' . $order->products[$i]['attributes'][$j]['prefix'] . $currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . ')';
                 echo '"></div></div>';
                 echo '<div class="order_option_price">';

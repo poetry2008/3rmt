@@ -1345,7 +1345,7 @@ a.s_column_bar {
 
 .order_option_info{
 	float:left;
-	width:60%;
+	width:70%;
 	line-height:21px;
 }
 .order_option_price{
@@ -1388,4 +1388,4 @@ a.s_column_bar {
 .dataTableContent nobr {
 font-size:14px;
 }
-
+.option_input_width{ width:75%;}
