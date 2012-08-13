@@ -3443,7 +3443,7 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
     }
     $str .= '<tr><td class="main">個数：</td><td class="main">'.$p['products_quantity'].'個'.tep_get_full_count2($p['products_quantity'], $p['products_id'], $p['products_rate']).'</td></tr>';
     while($pa = tep_db_fetch_array($products_attributes_query)){
-      $input_option = @unserialize($pa['option_info']);
+      $input_option = @unserialize(stripslashes($pa['option_info']));
       if ($input_option) {
         if (isset($input_option['title'])) {
           $str .= '<tr><td class="main">'.$input_option['title'].'：</td><td class="main">'.$input_option['value'].'</td></tr>';
