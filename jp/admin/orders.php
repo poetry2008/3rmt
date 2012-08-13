@@ -1062,7 +1062,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
              o.confirm_payment_time, 
              o.site_id
                from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
-               where (payment_method != '' and torihiki_date != '0000-00-00 00:00:00') and ".$sort_where." o.customers_email_address = '" . tep_db_input($cEmail) . "' 
+               where ".$sort_where." o.customers_email_address = '" . tep_db_input($cEmail) . "' 
                " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
                " . $where_payment . $where_type . " order by ".$order_str;
     //torihiki_date_error DESC,o.torihiki_date DESC";
@@ -1095,7 +1095,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
              o.confirm_payment_time, 
              o.site_id
                from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
-               where (payment_method != '' and torihiki_date != '0000-00-00 00:00:00') and ".$sort_where." o.customers_id = '" . tep_db_input($cID) . "' 
+               where ".$sort_where." o.customers_id = '" . tep_db_input($cID) . "' 
                " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
                " . $where_payment . $where_type . " order by ".$order_str;
     //torihiki_date_error DESC,o.torihiki_date DESC";
@@ -1128,14 +1128,14 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
              o.confirm_payment_time, 
              o.site_id
                from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
-               where (payment_method != '' and torihiki_date != '0000-00-00 00:00:00') and ".$sort_where."
+               where ".$sort_where."
                o.orders_status = '" . tep_db_input($status) . "' 
                " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
                " . $where_payment . $where_type . " order by ".$order_str;
     //torihiki_date_error DESC,o.torihiki_date DESC";
   }  elseif (isset($_GET['keywords']) && isset($_GET['search_type']) && $_GET['search_type'] == 'products_name' && !$_GET['type'] && !$payment) {
     $orders_query_raw = " select distinct op.orders_id from " . TABLE_ORDERS_PRODUCTS . " op 
-      ".$sort_table." where (payment_method != '' and torihiki_date != '0000-00-00 00:00:00') and ".$sort_where." op.products_name ";
+      ".$sort_table." where ".$sort_where." op.products_name ";
     if(isset($_GET['real_name'])&&$_GET['real_name']){
       $orders_query_raw .=  "= '".$_GET['keywords']."' " ;
     }else{
@@ -1251,7 +1251,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                      o.confirm_payment_time, 
                      o.site_id
                        from " . TABLE_ORDERS . " o " . $from_payment .$sort_table ."
-                       where (payment_method != '' and torihiki_date != '0000-00-00 00:00:00') and " . $sort_where.
+                       where " . $sort_where.
                        (isset($_GET['site_id']) &&
                         intval($_GET['site_id']) ? " o.site_id = '" . intval($_GET['site_id']) .
                         "' and " : '') . " o.orders_id like '%".$_GET['keywords']."%'" .
@@ -1287,7 +1287,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                 o.site_id
                                   from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
                                   where   
-                                  (payment_method != '' and torihiki_date != '0000-00-00 00:00:00') and " .$sort_where . " 1=1 ".
+                                  " .$sort_where . " 1=1 ".
                                   (isset($_GET['site_id']) && intval($_GET['site_id']
                                 ) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
                                   " . $where_payment . $where_type ;
@@ -1370,7 +1370,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
 	     o.confirm_payment_time, 
 	     o.site_id
 	       from " . TABLE_ORDERS . " o " . $from_payment .$sort_table ."
-	       where (payment_method != '' and torihiki_date != '0000-00-00 00:00:00') and " . $sort_where.
+	       where " . $sort_where.
 	       (isset($_GET['site_id']) &&
 		intval($_GET['site_id']) ? " o.site_id = '" . intval($_GET['site_id']) .
 		"' and " : '') . " o.orders_id" .$orders_str.
@@ -1448,7 +1448,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                      o.confirm_payment_time, 
                                      o.site_id
                                        from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
-                                       where (payment_method != '' and torihiki_date != '0000-00-00 00:00:00') and ".$sort_where.(isset($_GET['site_id']) && intval($_GET['site_id']) ? " o.site_id =
+                                       where ".$sort_where.(isset($_GET['site_id']) && intval($_GET['site_id']) ? " o.site_id =
                                        '" . intval($_GET['site_id']) . "' and " : '') ." o.payment_method like '".$payment_m[1]."'";
                                     $orders_query_raw .= "order by ".$order_str;
                                      }
@@ -1494,7 +1494,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                   o.confirm_payment_time, 
                                   o.site_id
                                     from " . TABLE_ORDERS . " o, " .TABLE_ORDERS_PRODUCTS." op ". $f_payment . $sort_table."
-                                    where (payment_method != '' and torihiki_date != '0000-00-00 00:00:00') and ".$sort_where.(isset($_GET['site_id']) && intval($_GET['site_id']) ? " o.site_id =
+                                    where ".$sort_where.(isset($_GET['site_id']) && intval($_GET['site_id']) ? " o.site_id =
                                     '" . intval($_GET['site_id']) . "' and " : '') ." ".$w_type. " and o.orders_id = op.orders_id and (o.orders_id like '%".$_GET['keywords']."%' or o.customers_name like '%".$_GET['keywords']."%' or o.customers_email_address like '%".$_GET['keywords']."%' or op.products_name like '%".$_GET['keywords']."%') ";
                          $orders_query_raw .= " order by ".$order_str;
                        } else {
@@ -1525,7 +1525,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                   o.confirm_payment_time, 
                                   o.site_id
                                     from " . TABLE_ORDERS . " o " . $f_payment . $sort_table."
-                                    where (payment_method != '' and torihiki_date != '0000-00-00 00:00:00') and ".$sort_where.(isset($_GET['site_id']) && intval($_GET['site_id']) ? " o.site_id =
+                                    where ".$sort_where.(isset($_GET['site_id']) && intval($_GET['site_id']) ? " o.site_id =
                                     '" . intval($_GET['site_id']) . "' and " : '') ." ".$w_type;
                          $orders_query_raw .= " order by ".$order_str;
                        }
@@ -1558,7 +1558,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                 o.site_id
                                   from " . TABLE_ORDERS . " o " . $from_payment . ", " . TABLE_ORDERS_PRODUCTS . " op 
                                   ".$sort_table."
-                                  where (payment_method != '' and torihiki_date != '0000-00-00 00:00:00') and ".$sort_where." o.orders_id = op.orders_id
+                                  where ".$sort_where." o.orders_id = op.orders_id
                                   " . (isset($_GET['site_id']) && intval($_GET['site_id']) ? " and o.site_id = '" . intval($_GET['site_id']) . "' " : '') . "
                                   " . $where_payment . $where_type ;
                        $keywords = str_replace('　', ' ', $_GET['keywords']);
@@ -1622,7 +1622,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                 o.site_id
                                   from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
                                   where 
-                                  (payment_method != '' and torihiki_date != '0000-00-00 00:00:00') and ".$sort_where."
+                                  ".$sort_where."
                                   o.flag_qaf = 0 
                                   -- and o.orders_status != '6'
                                   -- and o.orders_status != '8'
