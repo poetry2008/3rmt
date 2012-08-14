@@ -151,7 +151,7 @@
             </td>
           </tr>
           <tr>
-            <td style=" font-size:12px;">
+            <td>
               <?php 
               echo PREORDER_ACTIVE_SUCCESS_READ_INFO.'<br>';
               ?>

@@ -367,10 +367,37 @@ $shipping_fee = $cart->total > $free_value ? 0 : $weight_fee;
                   </tr> 
                   <tr>
                      <td align="left"><?php echo TEXT_EXPECT_TRADE_DATE; ?></td>
-                    <td colspan="2"><?php echo str_string($date); ?>
-                       <?php
-                         $_SESSION['date1']=str_string($date);
-                       ?> 
+                     <td colspan="2">
+                     <?php 
+                       echo str_string($date); 
+                       $date_info_array = explode('-', $date); 
+                       $tmp_date = date('D', mktime(0, 0, 0, $date_info_array[1], $date_info_array[2], $date_info_array[0]));  
+                       switch(strtolower($tmp_date)) {
+                         case 'mon':
+                           echo '（'.TEXT_DATE_MONDAY.'）'; 
+                           break;
+                         case 'tue':
+                           echo '（'.TEXT_DATE_TUESDAY.'）'; 
+                           break;
+                         case 'wed':
+                           echo '（'.TEXT_DATE_WEDNESDAY.'）'; 
+                           break;
+                         case 'thu':
+                           echo '（'.TEXT_DATE_THURSDAY.'）'; 
+                           break;
+                         case 'fri':
+                           echo '（'.TEXT_DATE_FRIDAY.'）'; 
+                           break;
+                         case 'sat':
+                           echo '（'.TEXT_DATE_STATURDAY.'）'; 
+                           break;
+                         case 'sun':
+                           echo '（'.TEXT_DATE_SUNDAY.'）'; 
+                           break;
+                         default:
+                           break;
+                       }
+                     ?>
                      </td>
                   </tr>
                   <tr>

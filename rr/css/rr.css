@@ -1396,7 +1396,7 @@ TABLE：Info Box
 }
 .product_info_box table{ color:#fff;}
 .order_details{
-	width:98%;
+	width:100%;
 	margin:5px auto;
 	margin-left:6px\9;
 	border:1px solid #4B4A4A;
@@ -2090,8 +2090,8 @@ border:1px solid #CAC6BE;
 	
 }
 .option_render{
-	border:1px solid #ccc;
 	padding:5px;
+	margin-bottom:10px;
 }
 .option_render table{
 	*width:98%;
@@ -2279,4 +2279,5 @@ border:1px solid #CAC6BE;
 	line-height:1.5;
 	font-size:12px;
 	width:80px;
+	color:#FFFFFF;
 }

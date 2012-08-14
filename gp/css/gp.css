@@ -2280,9 +2280,8 @@ line-height:21px;
 	
 }
 .option_render{
-	border:1px solid #ccc;
 	padding:5px;
-	background-color:#FFFFFF;
+	margin-bottom:10px;
 }
 .option_render table{
 	*width:98%;

@@ -493,7 +493,7 @@ switch ($_GET['action']) {
       $site_id  = tep_get_site_id_by_orders_id($value);
 
       $order_updated = false;
-      $check_status_query = tep_db_query("select customers_name, customers_id, customers_email_address, orders_status, date_purchased, site_id,payment_method, torihiki_date from " . TABLE_ORDERS . " where orders_id = '" . tep_db_input($oID) . "'");
+      $check_status_query = tep_db_query("select customers_name, customers_id, customers_email_address, orders_status, date_purchased, site_id,payment_method, torihiki_date,  torihiki_date_end from " . TABLE_ORDERS . " where orders_id = '" . tep_db_input($oID) . "'");
       $check_status = tep_db_fetch_array($check_status_query);
 
        
@@ -644,10 +644,101 @@ switch ($_GET['action']) {
                   date('Y'.TEXT_ORDER_YEAR.'n'.TEXT_ORDER_MONTH.'j'.TEXT_ORDER_DAY,strtotime(tep_get_pay_day()))
                   ),$comments
                 );
-
-          if (!tep_is_oroshi($check_status['customers_id'])) {
+        $products_ordered_mail = '';
+        $order_pro_array = array(); 
+        $order_pro_list_query = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS.  " where orders_id = '".$oID."'"); 
+        while ($order_pro_list_res = tep_db_fetch_array($order_pro_list_query)) {
+           $order_pro_attr_list_raw = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS_ATTRIBUTES." where orders_id = '".$oID."' and orders_products_id = '".$order_pro_list_res['orders_products_id']."'"); 
+           $max_c_len = 0;
+           $max_len_array = array();
+           $attr_list_array = array(); 
+           while ($order_pro_attr_list_res = tep_db_fetch_array($order_pro_attr_list_raw)) {
+             $attr_info_str = @unserialize($order_pro_attr_list_res['option_info']); 
+             $max_len_array[] = mb_strlen($attr_info_str['title'], 'utf-8'); 
+             $attr_list_array[] = $order_pro_attr_list_res; 
+           }
+           if (!empty($max_len_array)) {
+             $max_c_len = max($max_len_array); 
+           }
+           if ($max_c_len < 4) {
+             $max_c_len = 4; 
+           }
+           
+           $products_ordered_mail .= "\t" . ORDERS_PRODUCTS.str_repeat('　', intval($max_c_len - mb_strlen(ORDERS_PRODUCTS, 'utf-8'))).'：' .  $order_pro_list_res['products_name'] . '（' .  $order_pro_list_res['products_model'] . '）';
+           if ($order_pro_list_res['products_price'] != '0') {
+             $products_ordered_mail .= '（'.$currencies->display_price($order_pro_list_res['products_price'], $order_pro_list_res['products_tax']).'）'; 
+           }
+           
+           $products_ordered_mail .= "\n"; 
+           if (!empty($attr_list_array)) {
+             foreach ($attr_list_array as $at_key => $at_value) {
+               $em_attr_info = @unserialize($at_value['option_info']); 
+               $products_ordered_mail .=  "\t" .  tep_parse_input_field_data($em_attr_info['title'], array("'"=>"&quot;")) . str_repeat('　', intval($max_c_len - mb_strlen($em_attr_info['title'], 'utf-8'))).'：';
+               $products_ordered_mail .= tep_parse_input_field_data(str_replace(array("<br>", "<BR>", "\r", "\n", "\r\n"), "", $em_attr_info['value']), array("'"=>"&quot;"));
+               if ($at_value['options_values_price'] != '0') {
+                $products_ordered_mail .= '（'.$currencies->format($at_value['options_values_price']).'）'; 
+               }
+               $products_ordered_mail .= "\n"; 
+             }
+           }
+           $products_ordered_mail .= "\t" . QTY_NUM.str_repeat('　', intval($max_c_len - mb_strlen(QTY_NUM, 'utf-8'))).'：' .  $order_pro_list_res['products_quantity']. ORDERS_NUM_UNIT .  tep_get_full_count2($order_pro_list_res['products_quantity'], $order_pro_list_res['products_id']) . "\n";
+           $products_ordered_mail .= "\t" . PRODUCT_SINGLE_PRICE.str_repeat('　', intval($max_c_len - mb_strlen(PRODUCT_SINGLE_PRICE, 'utf-8'))).'：' .  $currencies->display_price($order_pro_list_res['final_price'], $order_pro_list_res['products_tax']) . "\n";
+           $products_ordered_mail .= "\t" . str_replace(':', '', ENTRY_SUB_TOTAL).str_repeat('　', intval($max_c_len - mb_strlen(str_replace(':', '', ENTRY_SUB_TOTAL), 'utf-8'))).'：' .  $currencies->display_price($order_pro_list_res['final_price'], $order_pro_list_res['products_tax'], $order_pro_list_res['products_quantity']) . "\n";
+           $products_ordered_mail .= "\t" . '------------------------------------------' . "\n";
+           if (tep_get_cflag_by_product_id($order_pro_list_res['products_id'])) {
+             if (tep_get_bflag_by_product_id($order_pro_list_res['products_id'])) {
+               $products_ordered_mail .= TEXT_CHARACTER_NAME_SEND_MAIL."\n\n";
+             } else {
+               $products_ordered_mail .= TEXT_CHARACTER_NAME_CONFIRM_SEND_MAIL."\n\n";
+             }
+           }
+        }
+        
+        $total_details_mail = '';
+        $totals_query = tep_db_query("select * from " . TABLE_ORDERS_TOTAL . " where orders_id = '" . tep_db_input($oID) . "' order by sort_order");
+        $order->totals = array();
+        while ($totals = tep_db_fetch_array($totals_query)) {
+          if ($totals['class'] == "ot_point" || $totals['class'] == "ot_subtotal") {
+            if ($totals['class'] == "ot_point") {
+              $camp_exists_query = tep_db_query("select * from ".TABLE_CUSTOMER_TO_CAMPAIGN." where orders_id = '".$oID."' and site_id = '".$site_id."'"); 
+              if (tep_db_num_rows($camp_exists_query)) {
+                $total_details_mail .= "\t" . TEXT_POINT . $currencies->format(abs($campaign_fee)) . "\n";
+              } else {
+                if ((int)$totals['value'] >= 1 && $totals['class'] != "ot_subtotal") {
+                  $total_details_mail .= "\t" . TEXT_POINT .  $currencies->format($totals['value']) . "\n";
+                }
+              }
+            } else {
+              if ((int)$totals['value'] >= 1 && $totals['class'] != "ot_subtotal") {
+                $total_details_mail .= "\t" . TEXT_POINT .  $currencies->format($totals['value']) . "\n";
+              }
+            }
+          } elseif ($totals['class'] == "ot_total") {
+            if($handle_fee)
+              $total_details_mail .= "\t".TEXT_HANDLE_FEE.$currencies->format($handle_fee)."\n";
+            $total_details_mail .= "\t" . TEXT_PAYMENT_AMOUNT . $currencies->format($totals['value']) . "\n";
+          } else {
+            $totals['title'] = str_replace(TEXT_TRANSACTION_FEE, TEXT_REPLACE_HANDLE_FEE, $totals['title']);
+            $total_details_mail .= "\t" . $totals['title'] . str_repeat('　', intval((16 - strlen($totals['title']))/2)) . '：' . $currencies->format($totals['value']) . "\n";
+          }
+        }
+        
+        
+        $email_content = '━━━━━━━━━━━━━━━━━━━━━' . "\n";
+        $email_content .= TEXT_MAIL_ORDERS_ID_TITLE.'　　　　：' . $oID . "\n";
+        $email_content .= TEXT_MAIL_NAME_TITLE.'　　　　　：' .  $check_status['customers_name'] . '様' . "\n";
+        $email_content .= TEXT_MAIL_EMAIL_TITLE.'　：' . $check_status['customers_email_address'] . "\n";
+        $email_content .= TEXT_MAIL_PAYMENT_TITLE.'　　　　：' . $check_status['payment_method'] . "\n";
+        $fetch_time_array = explode(' ', $check_status['torihiki_date_end']); $email_content .= TEXT_MAIL_FETCH_TIME_TITLE.'　　　：' .  $check_status['torihiki_date'].' '.TEXT_TIME_LINK.' '.$fetch_time_array[1] .  TEXT_TWENTY_FOUR_HOUR . "\n";
+        $email_content .= '━━━━━━━━━━━━━━━━━━━━━' . "\n\n";
+        $email_content .= TEXT_MAIL_PRODUCTS_TITLE . "\n";
+        $email_content .= "\t" . '------------------------------------------' . "\n";
+        $email_content .= $products_ordered_mail;
+        $email_content .= $total_details_mail;
+        $comments = str_replace('${CONTENT}', $email_content, $comments);
+        if (!tep_is_oroshi($check_status['customers_id'])) {
             tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
-          } 
+        } 
           tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS', $site_id), TEXT_SEND_MAIL.$title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
           $customer_notified = '1';
         }
@@ -879,6 +970,101 @@ switch ($_GET['action']) {
                 get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
                 date('Y'.TEXT_ORDER_YEAR.'n'.TEXT_ORDER_MONTH.'j'.TEXT_ORDER_DAY,strtotime(tep_get_pay_day()))
                 ),$comments);
+          
+        $products_ordered_mail = '';
+        $order_pro_array = array(); 
+        $order_pro_list_query = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS.  " where orders_id = '".$oID."'"); 
+        while ($order_pro_list_res = tep_db_fetch_array($order_pro_list_query)) {
+           $order_pro_attr_list_raw = tep_db_query("select * from ".TABLE_ORDERS_PRODUCTS_ATTRIBUTES." where orders_id = '".$oID."' and orders_products_id = '".$order_pro_list_res['orders_products_id']."'"); 
+           $max_c_len = 0;
+           $max_len_array = array();
+           $attr_list_array = array(); 
+           while ($order_pro_attr_list_res = tep_db_fetch_array($order_pro_attr_list_raw)) {
+             $attr_info_str = @unserialize($order_pro_attr_list_res['option_info']); 
+             $max_len_array[] = mb_strlen($attr_info_str['title'], 'utf-8'); 
+             $attr_list_array[] = $order_pro_attr_list_res; 
+           }
+           if (!empty($max_len_array)) {
+             $max_c_len = max($max_len_array); 
+           }
+           if ($max_c_len < 4) {
+             $max_c_len = 4; 
+           }
+           
+           $products_ordered_mail .= "\t" . ORDERS_PRODUCTS.str_repeat('　', intval($max_c_len - mb_strlen(ORDERS_PRODUCTS, 'utf-8'))).'：' .  $order_pro_list_res['products_name'] . '（' .  $order_pro_list_res['products_model'] . '）';
+           if ($order_pro_list_res['products_price'] != '0') {
+             $products_ordered_mail .= '（'.$currencies->display_price($order_pro_list_res['products_price'], $order_pro_list_res['products_tax']).'）'; 
+           }
+           
+           $products_ordered_mail .= "\n"; 
+           if (!empty($attr_list_array)) {
+             foreach ($attr_list_array as $at_key => $at_value) {
+               $em_attr_info = @unserialize($at_value['option_info']); 
+               $products_ordered_mail .=  "\t" .  tep_parse_input_field_data($em_attr_info['title'], array("'"=>"&quot;")) . str_repeat('　', intval($max_c_len - mb_strlen($em_attr_info['title'], 'utf-8'))).'：';
+               $products_ordered_mail .= tep_parse_input_field_data(str_replace(array("<br>", "<BR>", "\r", "\n", "\r\n"), "", $em_attr_info['value']), array("'"=>"&quot;"));
+               if ($at_value['options_values_price'] != '0') {
+                $products_ordered_mail .= '（'.$currencies->format($at_value['options_values_price']).'）'; 
+               }
+               $products_ordered_mail .= "\n"; 
+             }
+           }
+          
+           $products_ordered_mail .= "\t" . QTY_NUM.str_repeat('　', intval($max_c_len - mb_strlen(QTY_NUM, 'utf-8'))).'：' .  $order_pro_list_res['products_quantity']. ORDERS_NUM_UNIT .  tep_get_full_count2($order_pro_list_res['products_quantity'], $order_pro_list_res['products_id']) . "\n";
+           $products_ordered_mail .= "\t" . PRODUCT_SINGLE_PRICE.str_repeat('　', intval($max_c_len - mb_strlen(PRODUCT_SINGLE_PRICE, 'utf-8'))).'：' .  $currencies->display_price($order_pro_list_res['final_price'], $order_pro_list_res['products_tax']) . "\n";
+           $products_ordered_mail .= "\t" . str_replace(':', '', ENTRY_SUB_TOTAL).str_repeat('　', intval($max_c_len - mb_strlen(str_replace(':', '', ENTRY_SUB_TOTAL), 'utf-8'))).'：' .  $currencies->display_price($order_pro_list_res['final_price'], $order_pro_list_res['products_tax'], $order_pro_list_res['products_quantity']) . "\n";
+           $products_ordered_mail .= "\t" . '------------------------------------------' . "\n";
+           if (tep_get_cflag_by_product_id($order_pro_list_res['products_id'])) {
+             if (tep_get_bflag_by_product_id($order_pro_list_res['products_id'])) {
+               $products_ordered_mail .= TEXT_CHARACTER_NAME_SEND_MAIL."\n\n";
+             } else {
+               $products_ordered_mail .= TEXT_CHARACTER_NAME_CONFIRM_SEND_MAIL."\n\n";
+             }
+           }
+        }
+        
+        $total_details_mail = '';
+        $totals_query = tep_db_query("select * from " . TABLE_ORDERS_TOTAL . " where orders_id = '" . tep_db_input($oID) . "' order by sort_order");
+        $order->totals = array();
+        while ($totals = tep_db_fetch_array($totals_query)) {
+          if ($totals['class'] == "ot_point" || $totals['class'] == "ot_subtotal") {
+            if ($totals['class'] == "ot_point") {
+              $camp_exists_query = tep_db_query("select * from ".TABLE_CUSTOMER_TO_CAMPAIGN." where orders_id = '".$oID."' and site_id = '".$site_id."'"); 
+              if (tep_db_num_rows($camp_exists_query)) {
+                $total_details_mail .= "\t" . TEXT_POINT . $currencies->format(abs($campaign_fee)) . "\n";
+              } else {
+                if ((int)$totals['value'] >= 1 && $totals['class'] != "ot_subtotal") {
+                  $total_details_mail .= "\t" . TEXT_POINT .  $currencies->format($totals['value']) . "\n";
+                }
+              }
+            } else {
+              if ((int)$totals['value'] >= 1 && $totals['class'] != "ot_subtotal") {
+                $total_details_mail .= "\t" . TEXT_POINT .  $currencies->format($totals['value']) . "\n";
+              }
+            }
+          } elseif ($totals['class'] == "ot_total") {
+            if($handle_fee)
+              $total_details_mail .= "\t".TEXT_HANDLE_FEE.$currencies->format($handle_fee)."\n";
+            $total_details_mail .= "\t" . TEXT_PAYMENT_AMOUNT . $currencies->format($totals['value']) . "\n";
+          } else {
+            $totals['title'] = str_replace(TEXT_TRANSACTION_FEE, TEXT_REPLACE_HANDLE_FEE, $totals['title']);
+            $total_details_mail .= "\t" . $totals['title'] . str_repeat('　', intval((16 - strlen($totals['title']))/2)) . '：' . $currencies->format($totals['value']) . "\n";
+          }
+        }
+        
+        
+        $email_content = '━━━━━━━━━━━━━━━━━━━━━' . "\n";
+        $email_content .= TEXT_MAIL_ORDERS_ID_TITLE.'　　　　：' . $oID . "\n";
+        $email_content .= TEXT_MAIL_NAME_TITLE.'　　　　　：' .  $check_status['customers_name'] . '様' . "\n";
+        $email_content .= TEXT_MAIL_EMAIL_TITLE.'　：' . $check_status['customers_email_address'] . "\n";
+        $email_content .= TEXT_MAIL_PAYMENT_TITLE.'　　　　：' . $check_status['payment_method'] . "\n";
+        $fetch_time_array = explode(' ', $check_status['torihiki_date_end']); $email_content .= TEXT_MAIL_FETCH_TIME_TITLE.'　　　：' .  $check_status['torihiki_date'].' '.TEXT_TIME_LINK.' '.$fetch_time_array[1] .  TEXT_TWENTY_FOUR_HOUR . "\n";
+        $email_content .= '━━━━━━━━━━━━━━━━━━━━━' . "\n\n";
+        $email_content .= TEXT_MAIL_PRODUCTS_TITLE . "\n";
+        $email_content .= "\t" . '------------------------------------------' . "\n";
+        $email_content .= $products_ordered_mail;
+        $email_content .= $total_details_mail;
+        $comments = str_replace('${CONTENT}', $email_content, $comments);  
+        
         if (!tep_is_oroshi($check_status['customers_id'])) {
           tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
         }
@@ -1060,6 +1246,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
              o.orders_comment,
              o.torihiki_houhou,
              o.confirm_payment_time, 
+             o.torihiki_date_end, 
              o.site_id
                from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
                where ".$sort_where." o.customers_email_address = '" . tep_db_input($cEmail) . "' 
@@ -1093,6 +1280,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
              o.torihiki_houhou,
              o.orders_comment,
              o.confirm_payment_time, 
+             o.torihiki_date_end, 
              o.site_id
                from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
                where ".$sort_where." o.customers_id = '" . tep_db_input($cID) . "' 
@@ -1126,6 +1314,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
              o.customers_email_address,
              o.orders_comment,
              o.confirm_payment_time, 
+             o.torihiki_date_end, 
              o.site_id
                from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
                where ".$sort_where."
@@ -1176,6 +1365,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                o.torihiki_houhou,
                o.orders_comment,
                o.confirm_payment_time, 
+               o.torihiki_date_end, 
                o.site_id
                  from " . TABLE_ORDERS . " o " . $from_payment . " ,
                ".TABLE_ORDERS_PRODUCTS." op ".$sort_table." where ".$sort_where .
@@ -1214,6 +1404,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                   o.torihiki_houhou,
                   o.orders_comment,
                   o.confirm_payment_time, 
+                  o.torihiki_date_end, 
                   o.site_id
                     from " . TABLE_ORDERS . " o " . $from_payment . $sort_table." where 
                     ".$sort_where .
@@ -1249,6 +1440,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                      o.torihiki_houhou,
                      o.orders_comment,
                      o.confirm_payment_time, 
+                     o.torihiki_date_end, 
                      o.site_id
                        from " . TABLE_ORDERS . " o " . $from_payment .$sort_table ."
                        where " . $sort_where.
@@ -1284,6 +1476,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                 o.torihiki_houhou,
                                 o.orders_comment,
                                 o.confirm_payment_time, 
+                                o.torihiki_date_end, 
                                 o.site_id
                                   from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
                                   where   
@@ -1368,6 +1561,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
 	     o.torihiki_houhou,
 	     o.orders_comment,
 	     o.confirm_payment_time, 
+             o.torihiki_date_end, 
 	     o.site_id
 	       from " . TABLE_ORDERS . " o " . $from_payment .$sort_table ."
 	       where " . $sort_where.
@@ -1409,6 +1603,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                   o.torihiki_houhou,
                                   o.orders_comment,
                                   o.confirm_payment_time, 
+                                  o.torihiki_date_end, 
                                   o.site_id
                                     from " . TABLE_ORDERS . " o " . $from_payment . " ,
                                   ".TABLE_ORDERS_PRODUCTS." op ".$sort_table." where ".$sort_where .
@@ -1446,6 +1641,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                      o.torihiki_houhou,
                                      o.orders_comment,
                                      o.confirm_payment_time, 
+                                     o.torihiki_date_end, 
                                      o.site_id
                                        from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
                                        where ".$sort_where.(isset($_GET['site_id']) && intval($_GET['site_id']) ? " o.site_id =
@@ -1492,6 +1688,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                   o.torihiki_houhou,
                                   o.orders_comment,
                                   o.confirm_payment_time, 
+                                  o.torihiki_date_end, 
                                   o.site_id
                                     from " . TABLE_ORDERS . " o, " .TABLE_ORDERS_PRODUCTS." op ". $f_payment . $sort_table."
                                     where ".$sort_where.(isset($_GET['site_id']) && intval($_GET['site_id']) ? " o.site_id =
@@ -1523,6 +1720,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                   o.torihiki_houhou,
                                   o.orders_comment,
                                   o.confirm_payment_time, 
+                                  o.torihiki_date_end, 
                                   o.site_id
                                     from " . TABLE_ORDERS . " o " . $f_payment . $sort_table."
                                     where ".$sort_where.(isset($_GET['site_id']) && intval($_GET['site_id']) ? " o.site_id =
@@ -1555,6 +1753,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                 o.torihiki_houhou,
                                 o.orders_comment,
                                 o.confirm_payment_time, 
+                                o.torihiki_date_end, 
                                 o.site_id
                                   from " . TABLE_ORDERS . " o " . $from_payment . ", " . TABLE_ORDERS_PRODUCTS . " op 
                                   ".$sort_table."
@@ -1619,6 +1818,7 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
                                 o.orders_comment,
                                 o.torihiki_houhou,
                                 o.confirm_payment_time, 
+                                o.torihiki_date_end, 
                                 o.site_id
                                   from " . TABLE_ORDERS . " o " . $from_payment . $sort_table."
                                   where 
@@ -4301,7 +4501,13 @@ if($c_parent_array['parent_id'] == 0){
                                   <?php echo tep_get_ot_total_by_orders_id_no_abs($orders['orders_id'], true);?>
                                     <?php }?>
                                     </td>
-                                    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';"><?php echo $next_mark; ?><font color="<?php echo !$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)?'#999':$today_color; ?>" id="tori_<?php echo $orders['orders_id']; ?>"><?php echo tep_datetime_short_torihiki($orders['torihiki_date']); ?></font></td>
+                                    <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="right" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';"><?php echo $next_mark; ?><font color="<?php echo !$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)?'#999':$today_color; ?>" id="tori_<?php echo $orders['orders_id']; ?>">
+                                    <?php 
+                                    echo tep_datetime_short_torihiki($orders['torihiki_date']); 
+                                    $tmp_date_end = explode(' ', $orders['torihiki_date_end']); 
+                                    echo TEXT_TIME_LINK.$tmp_date_end[1]; 
+                                    ?>
+                                    </font></td>
                                     <td style="border-bottom:1px solid #000000;" class="dataTableContent" align="left" onClick="chg_td_color(<?php echo $orders['orders_id']; ?>); window.location.href='<?php echo tep_href_link(FILENAME_ORDERS, tep_get_all_get_params(array('oID', 'action')) . 'oID='.$orders['orders_id']);?>';"><?php
                                     if ($orders['orders_wait_flag']) { echo tep_image(DIR_WS_IMAGES .
                                         'icon_hand.gif', TEXT_ORDER_WAIT); } else { echo '&nbsp;'; } ?></td>

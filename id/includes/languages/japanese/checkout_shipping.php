@@ -4,7 +4,6 @@
 */
 
 define('NAVBAR_TITLE_1', 'ショッピングカート');
-define('NAVBAR_TITLE_2', 'お届け日時の指定');
 
 define('HEADING_TITLE', '配送方法');
 

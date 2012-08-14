@@ -122,11 +122,7 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
          } else {
            if (!isset($option_error_array[$pre_item_str.$this->formname])) {
              if ($_SERVER['REQUEST_METHOD'] != 'POST') {
-               if ($pro_pos !== false) {
-                 echo '<font color="#ff0000" style="float:left; line-height: 20px;">&nbsp;'.OPTION_ITEM_TEXT_REQUIRE.'</font>'; 
-               } else {
-                 echo '<font color="#ff0000" style="float:left">'.OPTION_ITEM_TEXT_REQUIRE.'</font>'; 
-               }
+               echo '<font color="#ff0000" style="float:left; line-height: 20px;">&nbsp;'.OPTION_ITEM_TEXT_REQUIRE.'</font>'; 
              }
            } 
          }
@@ -174,11 +170,7 @@ class HM_Option_Item_Textarea extends HM_Option_Item_Basic
          } else {
            if (!isset($option_error_array[$pre_item_str.$this->formname])) {
              if ($_SERVER['REQUEST_METHOD'] != 'POST') {
-               if ($pro_pos !== false) {
-                 echo '<font color="#ff0000" style="float:left; line-height: 20px;">&nbsp;'.OPTION_ITEM_TEXT_REQUIRE.'</font>'; 
-               } else {
-                 echo '<font color="#ff0000" style="float:left">'.OPTION_ITEM_TEXT_REQUIRE.'</font>'; 
-               }
+               echo '<font color="#ff0000" style="float:left; line-height: 20px;">&nbsp;'.OPTION_ITEM_TEXT_REQUIRE.'</font>'; 
              }
            } 
          }
