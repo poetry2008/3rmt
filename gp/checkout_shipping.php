@@ -224,7 +224,7 @@
 
 
   $breadcrumb->add(NAVBAR_TITLE_1, tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
-  $breadcrumb->add(NAVBAR_TITLE_2, tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL'));
+  $breadcrumb->add(HEADING_TITLE, tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL'));
   
   $torihiki_array = explode("\n", DS_TORIHIKI_HOUHOU);
   $torihiki_list[] = array('id' => '', 'text' => TEXT_PRESE_SELECT);

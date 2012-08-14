@@ -3471,7 +3471,8 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
     $str .= '<tr>'; 
     $str .= '<td class="main">'.RIGHT_ORDER_INFO_ORDER_FETCH_TIME.'</td>';
     $str .= '<td class="main">';
-    $str .= $orders['torihiki_date']; 
+    $tmp_date_end = explode(' ', $orders['torihiki_date_end']); 
+    $str .= $orders['torihiki_date'].TEXT_TIME_LINK.$tmp_date_end[1]; 
     $str .= '</td>'; 
     $str .= '</tr>'; 
     
@@ -3490,7 +3491,7 @@ function tep_get_orders_products_string($orders, $single = false, $popup = false
     $str .= '</tr>'; 
   
     $str .= '<tr>'; 
-    $str .= '<td class="main">'.TEXT_FUNCTION_ORDER_ORDER_DATE.'</td>';
+    $str .= '<td class="main">'.TEXT_FUNCTION_HEADING_DATE_PURCHASED.'</td>';
     $str .= '<td class="main">';
     $str .= tep_date_long($orders['date_purchased']); 
     $str .= '</td>'; 

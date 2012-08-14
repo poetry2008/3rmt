@@ -1763,8 +1763,8 @@ searching
 	
 }
 .option_render{
-	border:1px solid #ccc;
 	padding:5px;
+	margin-bottom:5px;
 }
 .option_render table{
 	*width:98%;
@@ -1953,3 +1953,4 @@ searching
 	font-size:12px;
 	width:85px;
 }
+.font-size12{ font-size:12px;}

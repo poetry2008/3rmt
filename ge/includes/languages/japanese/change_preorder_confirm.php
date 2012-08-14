@@ -19,6 +19,6 @@ define('CHANGE_PREORDER_POINT_TEXT_BUY','<b>買取はポイントがつきませ
 define('TEXT_ADDRESS','住所:');
 define('TEXT_SHIPPING_FEE','配送料:');
 define('TEXT_SHIPPING_FEE_FREE','無料');
-define('PREORDER_TRADER_LINE_TITLE', '取引情報');
+define('PREORDER_TRADER_LINE_TITLE', 'お届け日時');
 define('PREORDER_CONFIRM_LINE_TITLE', '最終確認');
 define('PREORDER_FINISH_LINE_TITLE', '手続き完了！');

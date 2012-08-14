@@ -1247,10 +1247,6 @@ top:70px;
 	line-height:25px;
 	
 }
-.option_render{
-	border:1px solid #ccc;
-	padding:5px;
-}
 .option_render table{
 	*width:98%;
 }
@@ -1493,5 +1489,5 @@ top:70px;
 .table_spacing{ padding-left:20px;}
 .confirmation_product_num_info{ 
 	padding-right:80px;
-	width:15%;
+	width:20%;
 }

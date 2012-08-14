@@ -1889,12 +1889,10 @@ border:2px solid #FF8080;
 .option_product_title{
 	font-size:11px;
 	line-height:25px;
-	
 }
 .option_render{
-	border:1px solid #ccc;
 	padding:5px;
-	background-color:#FFFFFF;
+	margin-bottom:10px;
 }
 .option_render table{
 	*width:98%;

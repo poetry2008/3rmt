@@ -250,7 +250,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                   <?php $preorder_product_res = tep_db_fetch_array($preorder_product_raw);?> 
                   <tr>
                     
-                    <td class="main" align="center" valign="top">
+                    <td class="confirmation_product_num_info" align="right" valign="top">
                     <?php echo $preorder_product_res['products_quantity'].PRODUCT_UNIT_TEXT;?>
                     <?php echo '<br>'.tep_get_full_count2($preorder_product_res['products_quantity'], $preorder_product_res['products_id']);?> 
                     
@@ -314,7 +314,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                     }
                     ?>
                     </td>                  
-                    <td class="main" align="right" valign="top">
+                    <td class="main" align="right" valign="top" width="60">
                     <?php 
                     if (isset($preorder_total_info_array['final_price'])) {
                       if ($preorder_total_info_array['final_price'] < 0) {
@@ -513,14 +513,13 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                         tep_session_register('preorder_shipping_fee'); 
                       }
                       ?>
+                    <?php if ($shipping_fee != 0) {?> 
                     <tr>
                     <td class="main" align="right">
-                    <?php if (false) {?> 
-                    <input type="hidden" name="shipping_fee" value="<?php echo $shipping_fee;?>">
-                    <?php }?> 
                     <?php echo TEXT_SHIPPING_FEE;?></td> 
                     <td class="main" align="right"><?php echo $shipping_fee_str;?></td> 
                     </tr>
+                    <?php }?> 
                     <?php
                     } else {
                       echo $currencies->format_total($preorder_total_res['value']);

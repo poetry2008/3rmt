@@ -2,7 +2,7 @@
 /*
   $Id$
 */
-define('NAVBAR_CHANGE_PREORDER_TITLE', '注文');
+define('NAVBAR_CHANGE_PREORDER_TITLE', 'お届け日時');
 define('CHANGE_ORDER_CUSTOMER_DETAILS', 'お客様について');
 define('CHANGE_ORDER_CUSTOMER_NAME', 'お名前:');
 define('CHANGE_ORDER_CUSTOMER_EMAIL', 'メールアドレス:');
@@ -10,7 +10,7 @@ define('CHANGE_ORDER_PRODUCT_DETAILS', '予約商品について');
 define('CHANGE_ORDER_PRODUCT_NAME', '商品名:');
 define('CHANGE_ORDER_PRODUCT_NUM', 'ご希望個数:');
 define('PRODUCT_UNIT_TEXT', '個');
-define('CHANGE_ORDER_FETCH_TIME_TITLE', 'お届け時間');
+define('CHANGE_ORDER_FETCH_TIME_TITLE', 'お届け日時');
 define('CHANGE_ORDER_FETCH_TIME_READ', 'オプション:');
 define('CHANGE_ORDER_FETCH_DAY', 'お届け希望日:');
 define('CHANGE_ORDER_FETCH_DATE', 'お届け希望時間:');
@@ -37,7 +37,6 @@ define('PRODUCTS_WEIGHT_ERROR_TWO','）の規定の重量を超えました。')
 define('PRODUCTS_WEIGHT_ERROR_THREE','商品を削除するか、または個数を変更して（');
 define('PRODUCTS_WEIGHT_ERROR_FOUR','）kg以内にしてください。');
 define('PREORDER_SELECT_EMPTY_OPTION', '希望日を選択してください');
-define('PREORDER_TRADER_LINE_TITLE', '取引情報');
 define('PREORDER_CONFIRM_LINE_TITLE', '最終確認');
 define('PREORDER_FINISH_LINE_TITLE', '手続き完了！');
 
