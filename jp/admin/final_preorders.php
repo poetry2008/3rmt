@@ -84,11 +84,13 @@
   $customer_guest = tep_db_fetch_array($customer_guest_query);
 
   if (tep_not_null($action)) {
+    $payment_modules = payment::getInstance($order->info['site_id']);
     switch ($action) {
       
   // 1. UPDATE ORDER ###############################################################################################
   case 'update_order':
     $oID = tep_db_prepare_input($_GET['oID']);
+    $comments_text = tep_db_prepare_input($_POST['comments_text']);
     $order = new preorder($oID);
     $status = tep_db_prepare_input($_POST['status']);
     $goods_check = $order_query;
@@ -127,12 +129,7 @@
       break;
     }
     */
-    //valadate email
-  if (!tep_validate_email($_POST['update_customer_email_address'])){
-        $messageStack->add(EDIT_ORDERS_NOTICE_EMAIL_MATCH_TEXT, 'error');
-        $action = 'edit';
-        break;
-  }
+    //valadate email 
   if (isset($_POST['h_predate'])) { //日時が有効かチェック
       if (!preg_match('/^(\d\d\d\d)-(\d\d)-(\d\d)$/', $_POST['h_predate'], $m)) { // check the date format
         $messageStack->add(EDIT_ORDERS_NOTICE_DATE_WRONG_TEXT, 'error');
@@ -178,7 +175,9 @@
           break 2;
         }
       }
-    }
+    } 
+
+    $comment_arr = $payment_modules->dealComment($payment_method,$comment);
 
     // 1.1 UPDATE ORDER INFO #####
     $UpdateOrders = "update " . TABLE_PREORDERS . " set 
@@ -223,7 +222,11 @@
       ensure_deadline = '" . tep_db_input($_POST['h_deadline']) . " 00:00:00',
       cc_type = '" . tep_db_input($update_info_cc_type) . "',
       cc_owner = '" . tep_db_input($update_info_cc_owner) . "',";
-      
+
+    if(isset($comment_arr['comment']) && !empty($comment_arr['comment'])){
+        $UpdateOrders .= "orders_comment = '{$comment_arr['comment']}',";
+    }
+
     if(substr($update_info_cc_number,0,8) != "(Last 4)") {
       $UpdateOrders .= "cc_number = '$update_info_cc_number',";
     }   
@@ -797,7 +800,7 @@ while ($totals = tep_db_fetch_array($totals_query)) {
       //tep_mail(get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS', $order->info['site_id']), FORDERS_MAIL_UPDATE_CONTENT_MAIL.'【' . get_configuration_by_site_id('STORE_NAME', $order->info['site_id']) . '】', $email, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);
       $customer_notified = '1';
     }
-    tep_db_query("insert into " . TABLE_PREORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments) values ('" .  tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" .  tep_db_input($customer_notified) . "', '" .  mysql_real_escape_string(tep_db_prepare_input($_POST['comments_text'])) . "')");
+    tep_db_query("insert into " . TABLE_PREORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments) values ('" .  tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" .  tep_db_input($customer_notified) . "', '" .  mysql_real_escape_string($comment_arr['comment'].$comments_text) . "')");
     $order_updated_2 = true;
   }
 
@@ -1078,7 +1081,21 @@ function submit_order_check_one(products_id,op_id){
   });
     
 }
-
+//todo:修改通性用
+  function hidden_payment(){
+     var idx = document.edit_order.elements["payment_method"].selectedIndex;
+     var CI =  document.edit_order.elements["payment_method"].options[idx].value;
+     $(".rowHide").hide();
+     $(".rowHide").find("input").attr("disabled","true");
+     $(".rowHide_"+CI).show();
+     $(".rowHide_"+CI).find("input").removeAttr("disabled");
+  }
+$(document).ready(function(){
+  hidden_payment();
+  $("select[name='payment_method']").change(function(){
+    hidden_payment();
+  });
+});
 $(document).ready(function() {
    var se_status = document.getElementById('status').value;  
   $.ajax({
@@ -1611,7 +1628,49 @@ float:left;
                 <td class="main">
                   <?php 
                   $payment_code = payment::changeRomaji($order->info['payment_method'], PAYMENT_RETURN_TYPE_CODE); 
+                  $payment_code = isset($_POST['payment_method']) ? $_POST['payment_method'] : $payment_code;
                   echo payment::makePaymentListPullDownMenu($payment_code); 
+                  $orders_status_history_query = tep_db_query("select comments from ". TABLE_PREORDERS_STATUS_HISTORY ." where orders_id='".$oID."' order by date_added desc limit 0,1"); 
+                  $orders_status_history_array = tep_db_fetch_array($orders_status_history_query);
+                  $pay_comment = $orders_status_history_array['comments']; 
+                  tep_db_free_result($orders_status_history_query);
+                  echo "\n".'<script language="javascript">'."\n"; 
+                  echo '$(document).ready(function(){'."\n";
+
+                  $cpayment->admin_show_payment_list($payment_code,$pay_comment); 
+                  echo '});'."\n";
+                  echo '</script>'."\n";
+      
+                  if(!isset($selections)){
+                    $selections = $cpayment->admin_selection();
+                  } 
+                  echo '<table>';
+                  foreach ($selections as $se){
+                    foreach($se['fields'] as $field ){
+                      echo '<tr class="rowHide rowHide_'.$se['id'].'">';
+                      echo '<td class="main">';
+                      echo $field['title']."</td>";
+                      echo "<td class='main'>";
+                      echo "&nbsp;&nbsp;".$field['field'];
+                      if(isset($_POST['payment_method'])){
+                        $pay_arr = array();
+                        preg_match_all('/name="(.*?)"/',$field['field'],$pay_arr);
+                        if(trim($_POST[$pay_arr[1][0]]) == ''){
+                          $field['message'] = ''; 
+                        }else{
+                          $field['message'] = ''; 
+                        }
+                     }else{
+                        if(!$cpayment->admin_get_payment_buying_type(payment::changeRomaji($payment_code, 'code'),$field['title'])){
+                          $field['message'] = '';
+                        }
+                     }
+                     echo "<font color='red'>&nbsp;".$field['message']."</font>";
+                     echo "</td>";
+                     echo "</tr>";
+                 } 
+               }
+               echo '</table>'; 
                   ?>
                   <?php echo EDIT_ORDERS_PAYMENT_METHOD_READ;?> 
                 </td>

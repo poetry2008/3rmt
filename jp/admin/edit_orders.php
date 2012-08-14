@@ -318,13 +318,9 @@ if (tep_not_null($action)) {
         $address_style = 'display: block;';
       }      
 
-      $payment_method_romaji = payment::changeRomaji($payment_method,PAYMENT_RETURN_TYPE_CODE);
-      $validateModule = $payment_modules->admin_confirmation_check($payment_method);
 
-      if ($validateModule['validated']===false || $error_str == true){
+      if ($error_str == true){
 
-        $selections = $payment_modules->admin_selection();
-        $selections[strtoupper($payment_method)] = $validateModule;
         $action = 'edit';
         break;
       } 
@@ -2579,13 +2575,13 @@ if (($action == 'edit') && ($order_exists == true)) {
                 $pay_arr = array();
                 preg_match_all('/name="(.*?)"/',$field['field'],$pay_arr);
                 if(trim($_POST[$pay_arr[1][0]]) == ''){
-                  $field['message'] = $field['message'] != '' ? ADDRESS_ERROR_OPTION_ITEM_TEXT_NULL : ''; 
+                  $field['message'] = ''; 
                 }else{
-                  $field['message'] = $field['message'] != '' ? ADDRESS_ERROR_OPTION_ITEM_TEXT_TYPE_WRONG : ''; 
+                  $field['message'] = ''; 
                 }
               }else{
                 if(!$cpayment->admin_get_payment_buying_type(payment::changeRomaji($pay_method, 'code'),$field['title'])){
-                  $field['message'] = TEXT_REQUIRE;
+                  $field['message'] = '';
                 }
               }
               echo "<font color='red'>&nbsp;".$field['message']."</font>";
