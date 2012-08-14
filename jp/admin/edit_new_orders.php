@@ -575,10 +575,15 @@ if (tep_not_null($action)) {
         cc_type = '" . tep_db_input($update_info_cc_type) . "',
         cc_owner = '" . tep_db_input($update_info_cc_owner) . "',";
 
-      
+    $payment_array = payment::getPaymentList();
+    if($_POST['payment_method'] != $payment_array[0][0]){ 
       if(isset($comment_arr['comment']) && !empty($comment_arr['comment'])){
          $UpdateOrders .= "orders_comment = '{$comment_arr['comment']}',";
       }
+    }else{
+
+      $UpdateOrders .= "orders_comment = '{$comments_text}',";
+    }
 
       if(substr($update_info_cc_number,0,8) != "(Last 4)") {
         $UpdateOrders .= "cc_number = '$update_info_cc_number',";
@@ -2627,30 +2632,76 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
                echo tep_draw_pull_down_menu('payment_method', $payment_list,
                    $order->info['payment_method'],'onchange="hidden_payment()"');
  */        //获取用户最近一次使用的支付方式
-          $payment_array = payment::getPaymentList(); //支付方式列表
+          //这里判断 订单商品是否有配送 如果有用自己的配送 如果没有用session的
+              $products_weight_total = 0; //商品总重量
+              $products_money_total = 0; //商品总价
+              $cart_shipping_time = array(); //商品取引时间
+              $products_address_query = tep_db_query("select * from ". TABLE_ORDERS_PRODUCTS ." where orders_id='". tep_db_input($oID) ."'");
+              while($products_address_array = tep_db_fetch_array($products_address_query)){
+
+                $products_weight_query = tep_db_query("select * from ". TABLE_PRODUCTS ." where products_id='". $products_address_array['products_id'] ."'");
+                $products_weight_array = tep_db_fetch_array($products_weight_query);
+                
+                $cart_shipping_time[] = $products_weight_array['products_shipping_time'];
+                $products_weight_total += $products_weight_array['products_weight']*$products_address_array['products_quantity'];
+                $products_money_total += $products_address_array['final_price']*$products_address_array['products_quantity'];
+                tep_db_free_result($products_weight_query);
+              }
+              tep_db_free_result($products_address_query);
+          
+              $payment_array = payment::getPaymentList(); //支付方式列表
+              $payment_positive_array = array();
+              $payment_negative_array = array(); 
+              $payment_zero = $payment_array[1][4];
+              foreach($payment_array[1] as $payment_key=>$payment_value){
+
+                if($payment_key == 0 || $payment_key == 1 || $payment_key == 3){
+
+                  $payment_negative_array[] = $payment_value; 
+                }else{
+
+                  if($payment_zero != $payment_value){
+                    $payment_positive_array[] = $payment_value;
+                  }
+                }
+              }
+      if($products_money_total != 0){
           $orders_payment_query = tep_db_query("select payment_method,orders_id from ". TABLE_ORDERS ." where customers_email_address='". $order->customer['email_address'] ."' and site_id='".$order->info['site_id']."' order by orders_id desc"); 
           while($orders_payment_array = tep_db_fetch_array($orders_payment_query)){
 
             if($orders_payment_array['payment_method'] != ''){
-
-              $payment_num = array_search($orders_payment_array['payment_method'],$payment_array[1]);
-              $pay_orders_id = $orders_payment_array['orders_id'];
-              $pay_method = $orders_payment_array['payment_method'];
-              break;
+              if($products_money_total > 0 && in_array($orders_payment_array['payment_method'],$payment_positive_array)){
+                $payment_num = array_search($orders_payment_array['payment_method'],$payment_array[1]);
+                $pay_orders_id = $orders_payment_array['orders_id'];
+                $pay_method = $orders_payment_array['payment_method'];
+                break;
+              }
+              if($products_money_total < 0 && in_array($orders_payment_array['payment_method'],$payment_negative_array)){
+                $payment_num = array_search($orders_payment_array['payment_method'],$payment_array[1]);
+                $pay_orders_id = $orders_payment_array['orders_id'];
+                $pay_method = $orders_payment_array['payment_method'];
+                break;
+              }
             }
           }
           tep_db_free_result($orders_payment_query);
-          
-          $orders_status_history_query = tep_db_query("select comments from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='".$pay_orders_id."' order by date_added desc limit 0,1"); 
-          $orders_status_history_array = tep_db_fetch_array($orders_status_history_query);
-          $pay_comment = $orders_status_history_array['comments']; 
-          tep_db_free_result($orders_status_history_query);
+      }
+
+          if($pay_orders_id != ''){ 
+            $orders_status_history_query = tep_db_query("select comments from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='".$pay_orders_id."' order by date_added desc limit 0,1"); 
+            $orders_status_history_array = tep_db_fetch_array($orders_status_history_query);
+            $pay_comment = $orders_status_history_array['comments']; 
+            tep_db_free_result($orders_status_history_query);
+          }
           $code_payment_method = $payment_array[0][$payment_num];
           if($order->info['payment_method'] != ''){
-          $code_payment_method =
+            $code_payment_method =
             payment::changeRomaji($order->info['payment_method'],'code');
             $pay_method = payment::changeRomaji($order->info['payment_method'],'code');
-            $pay_comment = $order->info['orders_comment']; 
+            $orders_status_history_query = tep_db_query("select comments from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='".$order->info['orders_id']."' order by date_added desc limit 0,1"); 
+            $orders_status_history_array = tep_db_fetch_array($orders_status_history_query);
+            $pay_comment = $orders_status_history_array['comments']; 
+            tep_db_free_result($orders_status_history_query); 
           }
 
           if(isset($_POST['payment_method'])){
@@ -2658,9 +2709,25 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
             $pay_method = payment::changeRomaji($_POST['payment_method'],'code');
           }
 
-          $pay_method = $pay_method == '' ? $payment_array[0][0] : $pay_method;
+          if($pay_method == ''){
+            if($products_money_total > 0){
+
+              $pay_method = $payment_array[0][6];
+            }
+            if($products_money_total < 0){
+
+              $pay_method = $payment_array[0][0];
+            }
+            if($products_money_total == 0){
+
+              $pay_method = $payment_array[0][4];
+            }
+          }else{
+
+            $pay_method = $pay_method;
+          }
           $cpayment = payment::getInstance();
-          echo payment::makePaymentListPullDownMenu($code_payment_method);
+          echo payment::makePaymentListPullDownMenu(payment::changeRomaji($pay_method,'code'));
           
           
           echo "\n".'<script language="javascript">'."\n"; 
@@ -2708,24 +2775,7 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
             </tr>
             <!-- End Payment Block -->
             <!-- Begin Trade Date Block -->
-            <?php 
-
-            //这里判断 订单商品是否有配送 如果有用自己的配送 如果没有用session的
-              $products_weight_total = 0; //商品总重量
-              $products_money_total = 0; //商品总价
-              $cart_shipping_time = array(); //商品取引时间
-              $products_address_query = tep_db_query("select * from ". TABLE_ORDERS_PRODUCTS ." where orders_id='". tep_db_input($oID) ."'");
-              while($products_address_array = tep_db_fetch_array($products_address_query)){
-
-                $products_weight_query = tep_db_query("select * from ". TABLE_PRODUCTS ." where products_id='". $products_address_array['products_id'] ."'");
-                $products_weight_array = tep_db_fetch_array($products_weight_query);
-                
-                $cart_shipping_time[] = $products_weight_array['products_shipping_time'];
-                $products_weight_total += $products_weight_array['products_weight']*$products_address_array['products_quantity'];
-                $products_money_total += $products_address_array['final_price']*$products_address_array['products_quantity'];
-                tep_db_free_result($products_weight_query);
-              }
-              tep_db_free_result($products_address_query);
+            <?php  
       // start
     //计算配送费用 
     $country_fee_array = array();
