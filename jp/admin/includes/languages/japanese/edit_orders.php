@@ -230,4 +230,9 @@ define('TEXT_ADDRESS_INFO_LEFT','▼住所情報');
 define('TEXT_ORDERS_SEND_MAIL','ご注文ありがとうございます【');
 define('TEXT_CARD_PAYMENT','クレジットカード決済について【');
 define('TEXT_SEND_MAIL_CARD_PAYMENT','送信済：クレジットカード決済について【');
+define('TEXT_MAIL_ORDERS_ID_TITLE', '▼注文番号');
+define('TEXT_MAIL_NAME_TITLE', '▼お名前');
+define('TEXT_MAIL_EMAIL_TITLE', '▼メールアドレス');
+define('TEXT_MAIL_PAYMENT_TITLE', '▼支払方法');
+define('TEXT_MAIL_FETCH_TIME_TITLE', '▼お届け日時');
 ?>
