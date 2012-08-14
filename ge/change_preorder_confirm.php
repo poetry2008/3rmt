@@ -510,14 +510,13 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                         tep_session_register('preorder_shipping_fee'); 
                       }
                       ?>
+                    <?php if ($shipping_fee != 0) {?> 
                     <tr>
                     <td class="main" align="right">
-                    <?php if (false) {?> 
-                    <input type="hidden" name="shipping_fee" value="<?php echo $shipping_fee;?>">
-                    <?php }?> 
                     <?php echo TEXT_SHIPPING_FEE;?></td> 
                     <td class="main" align="right"><?php echo $shipping_fee_str;?></td> 
                     </tr>
+                    <?php }?> 
                     <?php
                     } else {
                       echo $currencies->format_total($preorder_total_res['value']);

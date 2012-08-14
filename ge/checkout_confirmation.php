@@ -392,7 +392,38 @@ $shipping_fee = $cart->total > $free_value ? 0 : $weight_fee;
   <tr>
   <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
   <td class="main" width="150"><?php echo TEXT_EXPECT_TRADE_DATE; ?></td>
-  <td class="main"><?php echo str_string($date); ?></td>
+  <td class="main">
+    <?php 
+      echo str_string($date); 
+      $date_info_array = explode('-', $date); 
+      $tmp_date = date('D', mktime(0, 0, 0, $date_info_array[1], $date_info_array[2], $date_info_array[0]));  
+      switch(strtolower($tmp_date)) {
+         case 'mon':
+           echo '（'.TEXT_DATE_MONDAY.'）'; 
+           break;
+         case 'tue':
+           echo '（'.TEXT_DATE_TUESDAY.'）'; 
+           break;
+         case 'wed':
+           echo '（'.TEXT_DATE_WEDNESDAY.'）'; 
+           break;
+         case 'thu':
+           echo '（'.TEXT_DATE_THURSDAY.'）'; 
+           break;
+         case 'fri':
+           echo '（'.TEXT_DATE_FRIDAY.'）'; 
+           break;
+         case 'sat':
+           echo '（'.TEXT_DATE_STATURDAY.'）'; 
+           break;
+         case 'sun':
+           echo '（'.TEXT_DATE_SUNDAY.'）'; 
+           break;
+         default:
+           break;
+      }
+    ?>
+  </td>
   </tr>
   <tr>
   <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 

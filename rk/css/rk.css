@@ -2085,8 +2085,8 @@ display:block;
 	
 }
 .option_render{
-	border:1px solid #ccc;
 	padding:5px;
+	margin-bottom:10px;
 }
 .option_render table{
 	*width:98%;

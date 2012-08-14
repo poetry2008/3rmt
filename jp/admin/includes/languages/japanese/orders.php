@@ -124,7 +124,7 @@ define('TEXT_ORDER_OROSHI','卸業者');
 define('TEXT_ORDER_CUSTOMER_INFO','顧客情報');
 define('TEXT_ORDER_HISTORY_ORDER','過去の注文');
 define('TEXT_ORDER_NEXT_ORDER','次の注文');
-define('TEXT_ORDER_ORDER_DATE','取引日');
+define('TEXT_ORDER_ORDER_DATE','お届け日時');
 define('TEXT_ORDER_MIX','混');
 define('TEXT_ORDER_BUY','買');
 define('TEXT_ORDER_SELL','売');
