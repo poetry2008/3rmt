@@ -824,7 +824,6 @@ if($address_error == false){
               '${ORDER_N}',
               '${PAY}',
               '${ORDER_M}',
-              '${TRADING}',
               '${ORDER_S}',
               '${SITE_NAME}',
               '${SITE_URL}',
@@ -837,7 +836,6 @@ if($address_error == false){
                 $oID,
                 $check_status['payment_method'],
                 $otm,
-                tep_torihiki($check_status['torihiki_date']).TEXT_TIME_LINK.date('H'.TEXT_HOUR.'i'.TEXT_MIN,strtotime($check_status['torihiki_date_end'])).TEXT_TWENTY_FOUR_HOUR,
                 $os_result['orders_status_name'],
                 get_configuration_by_site_id('STORE_NAME', $order->info['site_id']),
                 get_url_by_site_id($order->info['site_id']),
@@ -852,7 +850,6 @@ if($address_error == false){
               '${ORDER_N}',
               '${PAY}',
               '${ORDER_M}',
-              '${TRADING}',
               '${ORDER_S}',
               '${SITE_NAME}',
               '${SITE_URL}',
@@ -865,7 +862,6 @@ if($address_error == false){
                 $oID,
                 $check_status['payment_method'],
                 $otm,
-                tep_torihiki($check_status['torihiki_date']).TEXT_TIME_LINK.date('H'.TEXT_HOUR.'i'.TEXT_MIN,strtotime($check_status['torihiki_date_end'])).TEXT_TWENTY_FOUR_HOUR,
                 $os_result['orders_status_name'],
                 get_configuration_by_site_id('STORE_NAME', $order->info['site_id']),
                 get_url_by_site_id($order->info['site_id']),
@@ -973,6 +969,7 @@ if($address_error == false){
           $email_content .= $total_details_mail;
           $email = str_replace('${CONTENT}', $email_content, $email); 
           $email = str_replace('${SHIPPING_TIME}', str_replace('_',TEXT_TIME_LINK,$order->tori['date']), $email); 
+          $title = str_replace('${SHIPPING_TIME}', str_replace('_',TEXT_TIME_LINK,$order->tori['date']), $title); 
           if ($customer_guest['customers_guest_chk'] != 9)
             tep_mail($check_status['customers_name'], $check_status['customers_email_address'], TEXT_ORDERS_UPDATE . get_configuration_by_site_id('STORE_NAME', $order->info['site_id']) . '】', $email, get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $order->info['site_id']),$order->info['site_id']);
 
