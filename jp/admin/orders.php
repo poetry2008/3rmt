@@ -681,13 +681,6 @@ switch ($_GET['action']) {
            $products_ordered_mail .= "\t" . PRODUCT_SINGLE_PRICE.str_repeat('　', intval($max_c_len - mb_strlen(PRODUCT_SINGLE_PRICE, 'utf-8'))).'：' .  $currencies->display_price($order_pro_list_res['final_price'], $order_pro_list_res['products_tax']) . "\n";
            $products_ordered_mail .= "\t" . str_replace(':', '', ENTRY_SUB_TOTAL).str_repeat('　', intval($max_c_len - mb_strlen(str_replace(':', '', ENTRY_SUB_TOTAL), 'utf-8'))).'：' .  $currencies->display_price($order_pro_list_res['final_price'], $order_pro_list_res['products_tax'], $order_pro_list_res['products_quantity']) . "\n";
            $products_ordered_mail .= "\t" . '------------------------------------------' . "\n";
-           if (tep_get_cflag_by_product_id($order_pro_list_res['products_id'])) {
-             if (tep_get_bflag_by_product_id($order_pro_list_res['products_id'])) {
-               $products_ordered_mail .= TEXT_CHARACTER_NAME_SEND_MAIL."\n\n";
-             } else {
-               $products_ordered_mail .= TEXT_CHARACTER_NAME_CONFIRM_SEND_MAIL."\n\n";
-             }
-           }
         }
         
         $total_details_mail = '';
@@ -724,13 +717,43 @@ switch ($_GET['action']) {
         $email_content .= $products_ordered_mail;
         $email_content .= $total_details_mail;
         $comments = str_replace('${CONTENT}', $email_content, $comments);
-        $fetch_time_array = explode(' ', $check_status['torihiki_date_end']); 
-        $comments = str_replace('${SHIPPING_TIME}', $check_status['torihiki_date'].' '.TEXT_TIME_LINK.' '.$fetch_time_array[1], $comments); 
-        $title = str_replace('${SHIPPING_TIME}', $check_status['torihiki_date'].' '.TEXT_TIME_LINK.' '.$fetch_time_array[1], $title); 
+        
+        $fetch_time_start_array = explode(' ', $check_status['torihiki_date']); 
+        $fetch_time_end_array = explode(' ', $check_status['torihiki_date_end']); 
+        $tmp_date = date('D', strtotime($check_status['torihiki_date'])); 
+        switch(strtolower($tmp_date)) {
+          case 'mon':
+           $week_str = '（'.TEXT_DATE_MONDAY.'）'; 
+           break;
+          case 'tue':
+           $week_str =  '（'.TEXT_DATE_TUESDAY.'）'; 
+           break;
+          case 'wed':
+           $week_str =  '（'.TEXT_DATE_WEDNESDAY.'）'; 
+           break;
+         case 'thu':
+           $week_str =  '（'.TEXT_DATE_THURSDAY.'）'; 
+           break;
+         case 'fri':
+           $week_str =  '（'.TEXT_DATE_FRIDAY.'）'; 
+           break;
+         case 'sat':
+           $week_str =  '（'.TEXT_DATE_STATURDAY.'）'; 
+           break;
+         case 'sun':
+           $week_str =  '（'.TEXT_DATE_SUNDAY.'）'; 
+           break;
+         default:
+           break;
+        }
+        $fetch_time_str = date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT, strtotime($check_status['torihiki_date'])).$week_str.$fetch_time_start_array[1].' '.TEXT_TIME_LINK.' '.$fetch_time_end_array[1];
+        
+        $comments = str_replace('${SHIPPING_TIME}', $fetch_time_str, $comments); 
+        $title = str_replace('${SHIPPING_TIME}', $fetch_time_str, $title); 
         if (!tep_is_oroshi($check_status['customers_id'])) {
             tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
         } 
-          tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS', $site_id), TEXT_SEND_MAIL.$title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
+          tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS', $site_id), $title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
           $customer_notified = '1';
         }
 
@@ -1000,13 +1023,6 @@ switch ($_GET['action']) {
            $products_ordered_mail .= "\t" . PRODUCT_SINGLE_PRICE.str_repeat('　', intval($max_c_len - mb_strlen(PRODUCT_SINGLE_PRICE, 'utf-8'))).'：' .  $currencies->display_price($order_pro_list_res['final_price'], $order_pro_list_res['products_tax']) . "\n";
            $products_ordered_mail .= "\t" . str_replace(':', '', ENTRY_SUB_TOTAL).str_repeat('　', intval($max_c_len - mb_strlen(str_replace(':', '', ENTRY_SUB_TOTAL), 'utf-8'))).'：' .  $currencies->display_price($order_pro_list_res['final_price'], $order_pro_list_res['products_tax'], $order_pro_list_res['products_quantity']) . "\n";
            $products_ordered_mail .= "\t" . '------------------------------------------' . "\n";
-           if (tep_get_cflag_by_product_id($order_pro_list_res['products_id'])) {
-             if (tep_get_bflag_by_product_id($order_pro_list_res['products_id'])) {
-               $products_ordered_mail .= TEXT_CHARACTER_NAME_SEND_MAIL."\n\n";
-             } else {
-               $products_ordered_mail .= TEXT_CHARACTER_NAME_CONFIRM_SEND_MAIL."\n\n";
-             }
-           }
         }
         
         $total_details_mail = '';
@@ -1043,13 +1059,43 @@ switch ($_GET['action']) {
         $email_content .= $products_ordered_mail;
         $email_content .= $total_details_mail;
         $comments = str_replace('${CONTENT}', $email_content, $comments);  
-        $fetch_time_array = explode(' ', $check_status['torihiki_date_end']); 
-        $comments = str_replace('${SHIPPING_TIME}', $check_status['torihiki_date'].' '.TEXT_TIME_LINK.' '.$fetch_time_array[1], $comments); 
-        $title = str_replace('${SHIPPING_TIME}', $check_status['torihiki_date'].' '.TEXT_TIME_LINK.' '.$fetch_time_array[1], $title); 
+        
+        $fetch_time_start_array = explode(' ', $check_status['torihiki_date']); 
+        $fetch_time_end_array = explode(' ', $check_status['torihiki_date_end']); 
+        $tmp_date = date('D', strtotime($check_status['torihiki_date'])); 
+        switch(strtolower($tmp_date)) {
+          case 'mon':
+           $week_str = '（'.TEXT_DATE_MONDAY.'）'; 
+           break;
+          case 'tue':
+           $week_str =  '（'.TEXT_DATE_TUESDAY.'）'; 
+           break;
+          case 'wed':
+           $week_str =  '（'.TEXT_DATE_WEDNESDAY.'）'; 
+           break;
+         case 'thu':
+           $week_str =  '（'.TEXT_DATE_THURSDAY.'）'; 
+           break;
+         case 'fri':
+           $week_str =  '（'.TEXT_DATE_FRIDAY.'）'; 
+           break;
+         case 'sat':
+           $week_str =  '（'.TEXT_DATE_STATURDAY.'）'; 
+           break;
+         case 'sun':
+           $week_str =  '（'.TEXT_DATE_SUNDAY.'）'; 
+           break;
+         default:
+           break;
+        }
+        $fetch_time_str = date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT, strtotime($check_status['torihiki_date'])).$week_str.$fetch_time_start_array[1].' '.TEXT_TIME_LINK.' '.$fetch_time_end_array[1];
+        
+        $comments = str_replace('${SHIPPING_TIME}', $fetch_time_str, $comments); 
+        $title = str_replace('${SHIPPING_TIME}', $fetch_time_str, $title); 
         if (!tep_is_oroshi($check_status['customers_id'])) {
           tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
         }
-        tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS', $site_id), TEXT_SEND_MAIL.$title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
+        tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS', $site_id), $title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
         $customer_notified = '1';
       }
 
