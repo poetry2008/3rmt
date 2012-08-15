@@ -34,6 +34,7 @@ var jq = jQuery.noConflict();
 <script type="text/javascript">
 jq(document).ready(function () {
    calc_product_final_price("<?php echo (int)$_GET['products_id'];?>"); 
+   var actiontime =new Date().getTime();  
 });
 function calc_product_final_price(pid)
 {
@@ -122,7 +123,24 @@ function change_num(ob,targ, quan, a_quan)
   }
 
   product_quantity.value = num_value;
-  calc_product_final_price("<?php echo (int)$_GET['products_id'];?>");
+actiontime =new Date().getTime();  
+   setTimeout( function() {
+      timeline_action("<?php echo (int)$_GET['products_id'];?>"); 
+       }, 300);   
+
+}
+function get_current_ts(){
+
+   return new Date().getTime();  
+
+}
+
+function timeline_action(p){
+
+  if (get_current_ts()-actiontime>=290){
+  calc_product_final_price(p);
+  };
+//  calc_product_final_price("<?php echo (int)$_GET['products_id'];?>");
 }
 </script>
 <script language="javascript" type="text/javascript"><!--
