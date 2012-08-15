@@ -54,6 +54,8 @@
   unset($_SESSION['free_value']);
   tep_session_unregister('hc_point');
   tep_session_unregister('hc_camp_point');
+  unset($_SESSION['shipping_page_str']);
+  unset($_SESSION['shipping_session_flag']);
 
   $cart->reset();
 

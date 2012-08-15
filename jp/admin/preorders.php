@@ -160,7 +160,6 @@
           '${PREORDER_N}',
           '${PAY}',
           '${ORDER_M}',
-          '${TRADING}',
           '${ORDER_S}',
           '${SITE_NAME}',
           '${SITE_URL}',
@@ -178,7 +177,6 @@
           $oID,
           $check_status['payment_method'],
           $otm,
-          tep_torihiki($check_status['torihiki_date']),
           $os_result['orders_status_name'],
           get_configuration_by_site_id('STORE_NAME', $site_id),
           get_url_by_site_id($site_id),
@@ -198,7 +196,6 @@
           '${PREORDER_N}',
           '${PAY}',
           '${ORDER_M}',
-          '${TRADING}',
           '${ORDER_S}',
           '${SITE_NAME}',
           '${SITE_URL}',
@@ -217,7 +214,6 @@
           $oID,
           $check_status['payment_method'],
           $otm,
-          tep_torihiki($check_status['torihiki_date']),
           $os_result['orders_status_name'],
           get_configuration_by_site_id('STORE_NAME', $site_id),
           get_url_by_site_id($site_id),
@@ -456,7 +452,6 @@
         '${PREORDER_N}',
         '${PAY}',
         '${ORDER_M}',
-        '${TRADING}',
         '${ORDER_S}',
         '${SITE_NAME}',
         '${SITE_URL}',
@@ -475,7 +470,6 @@
         $oID,
         $check_status['payment_method'],
         $otm,
-        tep_torihiki($check_status['torihiki_date']),
         $os_result['orders_status_name'],
         get_configuration_by_site_id('STORE_NAME', $site_id),
         get_url_by_site_id($site_id),
@@ -496,7 +490,6 @@
         '${PREORDER_N}',
         '${PAY}',
         '${ORDER_M}',
-        '${TRADING}',
         '${ORDER_S}',
         '${SITE_NAME}',
         '${SITE_URL}',
@@ -515,7 +508,6 @@
         $oID,
         $check_status['payment_method'],
         $otm,
-        tep_torihiki($check_status['torihiki_date']),
         $os_result['orders_status_name'],
         get_configuration_by_site_id('STORE_NAME', $site_id),
         get_url_by_site_id($site_id),
@@ -2585,7 +2577,7 @@ elseif (isset($_GET['keywords']) && ((isset($_GET['search_type']) && $_GET['sear
           <?php
             }
           ?>
-          <a href="<?php echo tep_href_link('orders.php', 'cEmail=' .  tep_output_string_protected(urlencode($orders['customers_email_address'])));?>"><?php echo tep_image(DIR_WS_ICONS . 'search.gif', TEXT_ORDER_HISTORY_ORDER);?></a>
+          <a href="<?php echo tep_href_link('preorders.php', 'cEmail=' .  tep_output_string_protected(urlencode($orders['customers_email_address'])));?>"><?php echo tep_image(DIR_WS_ICONS . 'search.gif', TEXT_ORDER_HISTORY_ORDER);?></a>
           
            
           <?php 

@@ -238,4 +238,15 @@ define('TEXT_PAYER_STATUS','認証:');
 define('TEXT_PAYMENT_STATUS','支払ステータス:');
 define('TEXT_PAYMENT_TYPE','支払タイプ:');
 define('TEXT_SAVE','保存');
+define('TEXT_POINT','割引　　　　　　：-');
+define('TEXT_HANDLE_FEE','手数料　　　　　：');
+define('TEXT_PAYMENT_AMOUNT','お支払金額　　　：');
+define('TEXT_TRANSACTION_FEE','決済手数料');
+define('TEXT_REPLACE_HANDLE_FEE','手数料');
+define('ORDERS_PRODUCTS', '注文商品');
+define('QTY_NUM', '個数');
+define('ORDERS_NUM_UNIT', '個');
+define('PRODUCT_SINGLE_PRICE', '単価');
+define('TEXT_CHARACTER_NAME_SEND_MAIL','※ 当社キャラクター名は、お取引10分前までに電子メールにてお知らせいたします。');
+define('TEXT_CHARACTER_NAME_CONFIRM_SEND_MAIL','※ 当社キャラクター名は、お支払い確認後に電子メールにてお知らせいたします。');
 ?>
