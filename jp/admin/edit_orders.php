@@ -967,32 +967,12 @@ if($address_error == false){
           }
 
           $email = '';
-          //$email .= $order->customer['name'] . '様' . "\n\n";
-          //$email .= 'いつも' . get_configuration_by_site_id('STORE_NAME', $order->info['site_id']) . 'をご利用いただき、誠にありがとうございます。' . "\n";
-          //$email .= '下記の内容にて変更を承りましたので、ご確認ください。' . "\n\n";
           $email .= $notify_comments_mail;
-          $email_content = '━━━━━━━━━━━━━━━━━━━━━' . "\n";
-          $email_content .= TEXT_MAIL_ORDERS_ID_TITLE.'　　　　：' . $oID . "\n";
-          $email_content .= TEXT_MAIL_NAME_TITLE.'　　　　　：' . $order->customer['name'] . '様' . "\n";
-          $email_content .= TEXT_MAIL_EMAIL_TITLE.'　：' . $order->customer['email_address'] . "\n";
-          $email_content .= TEXT_MAIL_PAYMENT_TITLE.'　　　　：' . $order->info['payment_method'] . "\n";
-          $email_content .= TEXT_MAIL_FETCH_TIME_TITLE.'　　　：' .  str_replace('_',TEXT_TIME_LINK,$order->tori['date']) .  TEXT_TWENTY_FOUR_HOUR. "\n";
-          //$email_content .= '▼オプション　　　：' . $order->tori['houhou'] . "\n";
-          $email_content .= '━━━━━━━━━━━━━━━━━━━━━' . "\n\n";
-          $email_content .= ORDERS_PRODUCTS_ONE . "\n";
-          $email_content .= "\t" . '------------------------------------------' . "\n";
+          $email_content == "\t" . '------------------------------------------' . "\n";
           $email_content .= $products_ordered_mail;
           $email_content .= $total_details_mail;
-          //$email .= "\n\n\n\n";
-          //      $email .= '会員のお客様は' . EMAIL_TEXT_INVOICE_URL . ' ' . tep_catalog_href_link(FILENAME_CATALOG_ACCOUNT_HISTORY_INFO, 'order_id=' . $oID, 'SSL') . "\n\n\n\n";
-          //$email .= 'ご不明な点がございましたら、注文番号をご確認の上、' . "\n";
-          //$email .= '「' . get_configuration_by_site_id('STORE_NAME', $order->info['site_id']) . '」までお問い合わせください。' . "\n\n";
-          //$email .= '[ご連絡・お問い合わせ先]━━━━━━━━━━━━' . "\n";
-          //$email .= '株式会社 iimy' . "\n";
-          //$email .= get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $order->info['site_id']) . "\n";
-          //$email .= get_url_by_site_id($order->info['site_id']) . "\n";
-          //$email .= '━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
           $email = str_replace('${CONTENT}', $email_content, $email); 
+          $email = str_replace('${SHIPPING_TIME}', str_replace('_',TEXT_TIME_LINK,$order->tori['date']), $email); 
           if ($customer_guest['customers_guest_chk'] != 9)
             tep_mail($check_status['customers_name'], $check_status['customers_email_address'], TEXT_ORDERS_UPDATE . get_configuration_by_site_id('STORE_NAME', $order->info['site_id']) . '】', $email, get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $order->info['site_id']),$order->info['site_id']);
 
