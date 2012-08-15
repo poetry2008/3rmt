@@ -1520,7 +1520,8 @@ if($address_error == false){
   };
   $('#edit_order_id').ajaxSubmit(options);
   }
-  <?php
+<?php
+if($p_weight_total > 0){
   $address_fixed_query = tep_db_query("select name_flag,fixed_option from ". TABLE_ADDRESS ." where fixed_option!='0' and status='0'");
   while($address_fixed_array = tep_db_fetch_array($address_fixed_query)){
 
@@ -1960,6 +1961,7 @@ function country_area_check(value,select_value){
 }
 
 <?php 
+}
 //------------------------------------------------
 $suu = 0;
 $text_suu = 0;  
@@ -2026,6 +2028,7 @@ echo 'var nomail = new Array();'."\n";
 foreach ($nomail as $oskey => $value){
   echo 'nomail['.$oskey.'] = "' . $value . '";' . "\n";
 }
+if($p_weight_total > 0){
 ?>
 var address_select = '';
   function address_show_list(){
@@ -2089,6 +2092,9 @@ var address_select = '';
 
   
   }
+<?php
+}
+?>
   function check_hour(value){
   var hour_1 = document.getElementById('hour_1');
   var hour_1_value = hour_1.value;
@@ -2284,6 +2290,7 @@ function check_end_min(value){
     //$.datePicker.setDateFormat('ymd', '-');
     //$('#date_orders').datePicker();
 <?php
+if($p_weight_total > 0){
     if($add_count > 0 && $products_weight_sum > 0){
       if(!(isset($_GET['action']) && $_GET['action'] == 'update_order')){
 ?>
@@ -2304,7 +2311,10 @@ function check_end_min(value){
     $("#address_show_id").hide();
     $("#address_font").html("<?php echo TEXT_ADDRESS_INFO_SHOW;?>");
   }
- }
+  }
+<?php
+  }
+?>
   //todo:修改通性用
   function hidden_payment(){
   var idx = document.edit_order.elements["payment_method"].selectedIndex;
@@ -2315,7 +2325,9 @@ function check_end_min(value){
   $(".rowHide_"+CI).find("input").removeAttr("disabled");
  }
    $(document).ready(function(){hidden_payment()});
-
+<?php
+if($p_weight_total > 0){
+?>
 $(document).ready(function(){            
      
    var address_show_list = document.getElementById("address_show_list");
@@ -2354,6 +2366,7 @@ $(document).ready(function(){
 });
 <?php
   }
+}
 ?>
 function open_calendar()
 {
@@ -2429,6 +2442,9 @@ function open_calendar()
   }
 }
 
+<?php
+if($p_weight_total > 0){
+?>
 $(document).ready(function(){
   $("#"+country_fee_id).change(function(){
     country_check($("#"+country_fee_id).val());
@@ -2490,6 +2506,7 @@ $(document).ready(function(){
     //country_area_check($("#"+country_area_id).val());
   <?php
   }
+}
   ?> 
   $("select[name='payment_method']").change(function(){
     hidden_payment();
