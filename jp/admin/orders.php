@@ -596,7 +596,6 @@ switch ($_GET['action']) {
                 '${ORDER_N}',
                 '${PAY}',
                 '${ORDER_M}',
-                '${TRADING}',
                 '${ORDER_S}',
                 '${SITE_NAME}',
                 '${SITE_URL}',
@@ -609,7 +608,6 @@ switch ($_GET['action']) {
                   $oID,
                   $check_status['payment_method'],
                   $otm,
-                  tep_torihiki($check_status['torihiki_date']).TEXT_TIME_LINK.date('H'.TEXT_HOUR.'i'.TEXT_MIN,strtotime($check_status['torihiki_date_end'])).TEXT_TWENTY_FOUR_HOUR,
                   $os_result['orders_status_name'],
                   get_configuration_by_site_id('STORE_NAME', $site_id),
                   get_url_by_site_id($site_id),
@@ -623,7 +621,6 @@ switch ($_GET['action']) {
                 '${ORDER_N}',
                 '${PAY}',
                 '${ORDER_M}',
-                '${TRADING}',
                 '${ORDER_S}',
                 '${SITE_NAME}',
                 '${SITE_URL}',
@@ -636,7 +633,6 @@ switch ($_GET['action']) {
                   $oID,
                   $check_status['payment_method'],
                   $otm,
-                  tep_torihiki($check_status['torihiki_date']).TEXT_TIME_LINK.date('H'.TEXT_HOUR.'i'.TEXT_MIN,strtotime($check_status['torihiki_date_end'])).TEXT_TWENTY_FOUR_HOUR,
                   $os_result['orders_status_name'],
                   get_configuration_by_site_id('STORE_NAME', $site_id),
                   get_url_by_site_id($site_id),
@@ -724,18 +720,13 @@ switch ($_GET['action']) {
         }
         
         
-        $email_content = '━━━━━━━━━━━━━━━━━━━━━' . "\n";
-        $email_content .= TEXT_MAIL_ORDERS_ID_TITLE.'　　　　：' . $oID . "\n";
-        $email_content .= TEXT_MAIL_NAME_TITLE.'　　　　　：' .  $check_status['customers_name'] . '様' . "\n";
-        $email_content .= TEXT_MAIL_EMAIL_TITLE.'　：' . $check_status['customers_email_address'] . "\n";
-        $email_content .= TEXT_MAIL_PAYMENT_TITLE.'　　　　：' . $check_status['payment_method'] . "\n";
-        $fetch_time_array = explode(' ', $check_status['torihiki_date_end']); $email_content .= TEXT_MAIL_FETCH_TIME_TITLE.'　　　：' .  $check_status['torihiki_date'].' '.TEXT_TIME_LINK.' '.$fetch_time_array[1] .  TEXT_TWENTY_FOUR_HOUR . "\n";
-        $email_content .= '━━━━━━━━━━━━━━━━━━━━━' . "\n\n";
-        $email_content .= TEXT_MAIL_PRODUCTS_TITLE . "\n";
-        $email_content .= "\t" . '------------------------------------------' . "\n";
+        $email_content  = "\t" . '------------------------------------------' . "\n";
         $email_content .= $products_ordered_mail;
         $email_content .= $total_details_mail;
         $comments = str_replace('${CONTENT}', $email_content, $comments);
+        $fetch_time_array = explode(' ', $check_status['torihiki_date_end']); 
+        $comments = str_replace('${SHIPPING_TIME}', $check_status['torihiki_date'].' '.TEXT_TIME_LINK.' '.$fetch_time_array[1], $comments); 
+        $title = str_replace('${SHIPPING_TIME}', $check_status['torihiki_date'].' '.TEXT_TIME_LINK.' '.$fetch_time_array[1], $title); 
         if (!tep_is_oroshi($check_status['customers_id'])) {
             tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
         } 
@@ -922,7 +913,6 @@ switch ($_GET['action']) {
               '${ORDER_N}',
               '${PAY}',
               '${ORDER_M}',
-              '${TRADING}',
               '${ORDER_S}',
               '${SITE_NAME}',
               '${SITE_URL}',
@@ -935,7 +925,6 @@ switch ($_GET['action']) {
                 $oID,
                 $check_status['payment_method'],
                 $otm,
-                tep_torihiki($check_status['torihiki_date']).TEXT_TIME_LINK.date('H'.TEXT_HOUR.'i'.TEXT_MIN,strtotime($check_status['torihiki_date_end'])).TEXT_TWENTY_FOUR_HOUR,
                 $os_result['orders_status_name'],
                 get_configuration_by_site_id('STORE_NAME', $site_id),
                 get_url_by_site_id($site_id),
@@ -950,7 +939,6 @@ switch ($_GET['action']) {
               '${ORDER_N}',
               '${PAY}',
               '${ORDER_M}',
-              '${TRADING}',
               '${ORDER_S}',
               '${SITE_NAME}',
               '${SITE_URL}',
@@ -963,7 +951,6 @@ switch ($_GET['action']) {
                 $oID,
                 $check_status['payment_method'],
                 $otm,
-                tep_torihiki($check_status['torihiki_date']).TEXT_TIME_LINK.date('H'.TEXT_HOUR.'i'.TEXT_MIN,strtotime($check_status['torihiki_date_end'])).TEXT_TWENTY_FOUR_HOUR,
                 $os_result['orders_status_name'],
                 get_configuration_by_site_id('STORE_NAME', $site_id),
                 get_url_by_site_id($site_id),
@@ -1052,19 +1039,13 @@ switch ($_GET['action']) {
         }
         
         
-        $email_content = '━━━━━━━━━━━━━━━━━━━━━' . "\n";
-        $email_content .= TEXT_MAIL_ORDERS_ID_TITLE.'　　　　：' . $oID . "\n";
-        $email_content .= TEXT_MAIL_NAME_TITLE.'　　　　　：' .  $check_status['customers_name'] . '様' . "\n";
-        $email_content .= TEXT_MAIL_EMAIL_TITLE.'　：' . $check_status['customers_email_address'] . "\n";
-        $email_content .= TEXT_MAIL_PAYMENT_TITLE.'　　　　：' . $check_status['payment_method'] . "\n";
-        $fetch_time_array = explode(' ', $check_status['torihiki_date_end']); $email_content .= TEXT_MAIL_FETCH_TIME_TITLE.'　　　：' .  $check_status['torihiki_date'].' '.TEXT_TIME_LINK.' '.$fetch_time_array[1] .  TEXT_TWENTY_FOUR_HOUR . "\n";
-        $email_content .= '━━━━━━━━━━━━━━━━━━━━━' . "\n\n";
-        $email_content .= TEXT_MAIL_PRODUCTS_TITLE . "\n";
-        $email_content .= "\t" . '------------------------------------------' . "\n";
+        $email_content  = "\t" . '------------------------------------------' . "\n";
         $email_content .= $products_ordered_mail;
         $email_content .= $total_details_mail;
         $comments = str_replace('${CONTENT}', $email_content, $comments);  
-        
+        $fetch_time_array = explode(' ', $check_status['torihiki_date_end']); 
+        $comments = str_replace('${SHIPPING_TIME}', $check_status['torihiki_date'].' '.TEXT_TIME_LINK.' '.$fetch_time_array[1], $comments); 
+        $title = str_replace('${SHIPPING_TIME}', $check_status['torihiki_date'].' '.TEXT_TIME_LINK.' '.$fetch_time_array[1], $title); 
         if (!tep_is_oroshi($check_status['customers_id'])) {
           tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
         }
