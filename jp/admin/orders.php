@@ -660,7 +660,7 @@ switch ($_GET['action']) {
                $max_c_len = 4; 
              }
              
-             $products_ordered_mail .= "\t" . ORDERS_PRODUCTS.str_repeat('　', intval($max_c_len - mb_strlen(ORDERS_PRODUCTS, 'utf-8'))).'：' .  $order_pro_list_res['products_name'] . '（' .  $order_pro_list_res['products_model'] . '）';
+             $products_ordered_mail .= ORDERS_PRODUCTS.str_repeat('　', intval($max_c_len - mb_strlen(ORDERS_PRODUCTS, 'utf-8'))).'：' .  $order_pro_list_res['products_name'] . '（' .  $order_pro_list_res['products_model'] . '）';
              if ($order_pro_list_res['products_price'] != '0') {
                $products_ordered_mail .= '（'.$currencies->display_price($order_pro_list_res['products_price'], $order_pro_list_res['products_tax']).'）'; 
              }
@@ -669,7 +669,7 @@ switch ($_GET['action']) {
              if (!empty($attr_list_array)) {
                foreach ($attr_list_array as $at_key => $at_value) {
                  $em_attr_info = @unserialize(stripslashes($at_value['option_info'])); 
-                 $products_ordered_mail .=  "\t" .  tep_parse_input_field_data($em_attr_info['title'], array("'"=>"&quot;")) . str_repeat('　', intval($max_c_len - mb_strlen($em_attr_info['title'], 'utf-8'))).'：';
+                 $products_ordered_mail .=  tep_parse_input_field_data($em_attr_info['title'], array("'"=>"&quot;")) . str_repeat('　', intval($max_c_len - mb_strlen($em_attr_info['title'], 'utf-8'))).'：';
                  $products_ordered_mail .= tep_parse_input_field_data(str_replace(array("<br>", "<BR>", "\r", "\n", "\r\n"), "", $em_attr_info['value']), array("'"=>"&quot;"));
                  if ($at_value['options_values_price'] != '0') {
                   $products_ordered_mail .= '（'.$currencies->format($at_value['options_values_price']).'）'; 
@@ -677,10 +677,10 @@ switch ($_GET['action']) {
                  $products_ordered_mail .= "\n"; 
                }
              }
-             $products_ordered_mail .= "\t" . QTY_NUM.str_repeat('　', intval($max_c_len - mb_strlen(QTY_NUM, 'utf-8'))).'：' .  $order_pro_list_res['products_quantity']. ORDERS_NUM_UNIT .  tep_get_full_count2($order_pro_list_res['products_quantity'], $order_pro_list_res['products_id']) . "\n";
-             $products_ordered_mail .= "\t" . PRODUCT_SINGLE_PRICE.str_repeat('　', intval($max_c_len - mb_strlen(PRODUCT_SINGLE_PRICE, 'utf-8'))).'：' .  $currencies->display_price($order_pro_list_res['final_price'], $order_pro_list_res['products_tax']) . "\n";
-             $products_ordered_mail .= "\t" . str_replace(':', '', ENTRY_SUB_TOTAL).str_repeat('　', intval($max_c_len - mb_strlen(str_replace(':', '', ENTRY_SUB_TOTAL), 'utf-8'))).'：' .  $currencies->display_price($order_pro_list_res['final_price'], $order_pro_list_res['products_tax'], $order_pro_list_res['products_quantity']) . "\n";
-             $products_ordered_mail .= "\t" . '------------------------------------------' . "\n";
+             $products_ordered_mail .= QTY_NUM.str_repeat('　', intval($max_c_len - mb_strlen(QTY_NUM, 'utf-8'))).'：' .  $order_pro_list_res['products_quantity']. ORDERS_NUM_UNIT .  tep_get_full_count2($order_pro_list_res['products_quantity'], $order_pro_list_res['products_id']) . "\n";
+             $products_ordered_mail .= PRODUCT_SINGLE_PRICE.str_repeat('　', intval($max_c_len - mb_strlen(PRODUCT_SINGLE_PRICE, 'utf-8'))).'：' .  $currencies->display_price($order_pro_list_res['final_price'], $order_pro_list_res['products_tax']) . "\n";
+             $products_ordered_mail .= str_replace(':', '', ENTRY_SUB_TOTAL).str_repeat('　', intval($max_c_len - mb_strlen(str_replace(':', '', ENTRY_SUB_TOTAL), 'utf-8'))).'：' .  $currencies->display_price($order_pro_list_res['final_price'], $order_pro_list_res['products_tax'], $order_pro_list_res['products_quantity']) . "\n";
+             $products_ordered_mail .= '------------------------------------------' . "\n";
           }
           
           $total_details_mail = '';
@@ -691,30 +691,29 @@ switch ($_GET['action']) {
               if ($totals['class'] == "ot_point") {
                 $camp_exists_query = tep_db_query("select * from ".TABLE_CUSTOMER_TO_CAMPAIGN." where orders_id = '".$oID."' and site_id = '".$site_id."'"); 
                 if (tep_db_num_rows($camp_exists_query)) {
-                  $total_details_mail .= "\t" . TEXT_POINT . $currencies->format(abs($campaign_fee)) . "\n";
+                  $total_details_mail .= TEXT_POINT . $currencies->format(abs($campaign_fee)) . "\n";
                 } else {
                   if ((int)$totals['value'] >= 1 && $totals['class'] != "ot_subtotal") {
-                    $total_details_mail .= "\t" . TEXT_POINT .  $currencies->format($totals['value']) . "\n";
+                    $total_details_mail .= TEXT_POINT .  $currencies->format($totals['value']) . "\n";
                   }
                 }
               } else {
                 if ((int)$totals['value'] >= 1 && $totals['class'] != "ot_subtotal") {
-                  $total_details_mail .= "\t" . TEXT_POINT .  $currencies->format($totals['value']) . "\n";
+                  $total_details_mail .= TEXT_POINT .  $currencies->format($totals['value']) . "\n";
                 }
               }
             } elseif ($totals['class'] == "ot_total") {
               if($handle_fee)
-                $total_details_mail .= "\t".TEXT_HANDLE_FEE.$currencies->format($handle_fee)."\n";
-              $total_details_mail .= "\t" . TEXT_PAYMENT_AMOUNT . $currencies->format($totals['value']) . "\n";
+                $total_details_mail .= TEXT_HANDLE_FEE.$currencies->format($handle_fee)."\n";
+              $total_details_mail .= TEXT_PAYMENT_AMOUNT . $currencies->format($totals['value']) . "\n";
             } else {
               $totals['title'] = str_replace(TEXT_TRANSACTION_FEE, TEXT_REPLACE_HANDLE_FEE, $totals['title']);
-              $total_details_mail .= "\t" . $totals['title'] . str_repeat('　', intval((16 - strlen($totals['title']))/2)) . '：' . $currencies->format($totals['value']) . "\n";
+              $total_details_mail .= $totals['title'] . str_repeat('　', intval((16 - strlen($totals['title']))/2)) . '：' . $currencies->format($totals['value']) . "\n";
             }
           }
           
           
-          $email_content  = "\t" . '------------------------------------------' . "\n";
-          $email_content .= $products_ordered_mail;
+          $email_content = $products_ordered_mail;
           $email_content .= $total_details_mail;
           $comments = str_replace('${CONTENT}', $email_content, $comments);
           
@@ -1001,7 +1000,7 @@ switch ($_GET['action']) {
              $max_c_len = 4; 
            }
            
-           $products_ordered_mail .= "\t" . ORDERS_PRODUCTS.str_repeat('　', intval($max_c_len - mb_strlen(ORDERS_PRODUCTS, 'utf-8'))).'：' .  $order_pro_list_res['products_name'] . '（' .  $order_pro_list_res['products_model'] . '）';
+           $products_ordered_mail .= ORDERS_PRODUCTS.str_repeat('　', intval($max_c_len - mb_strlen(ORDERS_PRODUCTS, 'utf-8'))).'：' .  $order_pro_list_res['products_name'] . '（' .  $order_pro_list_res['products_model'] . '）';
            if ($order_pro_list_res['products_price'] != '0') {
              $products_ordered_mail .= '（'.$currencies->display_price($order_pro_list_res['products_price'], $order_pro_list_res['products_tax']).'）'; 
            }
@@ -1010,7 +1009,7 @@ switch ($_GET['action']) {
            if (!empty($attr_list_array)) {
              foreach ($attr_list_array as $at_key => $at_value) {
                $em_attr_info = @unserialize(stripslashes($at_value['option_info'])); 
-               $products_ordered_mail .=  "\t" .  tep_parse_input_field_data($em_attr_info['title'], array("'"=>"&quot;")) . str_repeat('　', intval($max_c_len - mb_strlen($em_attr_info['title'], 'utf-8'))).'：';
+               $products_ordered_mail .=  tep_parse_input_field_data($em_attr_info['title'], array("'"=>"&quot;")) . str_repeat('　', intval($max_c_len - mb_strlen($em_attr_info['title'], 'utf-8'))).'：';
                $products_ordered_mail .= tep_parse_input_field_data(str_replace(array("<br>", "<BR>", "\r", "\n", "\r\n"), "", $em_attr_info['value']), array("'"=>"&quot;"));
                if ($at_value['options_values_price'] != '0') {
                 $products_ordered_mail .= '（'.$currencies->format($at_value['options_values_price']).'）'; 
@@ -1019,10 +1018,10 @@ switch ($_GET['action']) {
              }
            }
           
-           $products_ordered_mail .= "\t" . QTY_NUM.str_repeat('　', intval($max_c_len - mb_strlen(QTY_NUM, 'utf-8'))).'：' .  $order_pro_list_res['products_quantity']. ORDERS_NUM_UNIT .  tep_get_full_count2($order_pro_list_res['products_quantity'], $order_pro_list_res['products_id']) . "\n";
-           $products_ordered_mail .= "\t" . PRODUCT_SINGLE_PRICE.str_repeat('　', intval($max_c_len - mb_strlen(PRODUCT_SINGLE_PRICE, 'utf-8'))).'：' .  $currencies->display_price($order_pro_list_res['final_price'], $order_pro_list_res['products_tax']) . "\n";
-           $products_ordered_mail .= "\t" . str_replace(':', '', ENTRY_SUB_TOTAL).str_repeat('　', intval($max_c_len - mb_strlen(str_replace(':', '', ENTRY_SUB_TOTAL), 'utf-8'))).'：' .  $currencies->display_price($order_pro_list_res['final_price'], $order_pro_list_res['products_tax'], $order_pro_list_res['products_quantity']) . "\n";
-           $products_ordered_mail .= "\t" . '------------------------------------------' . "\n";
+           $products_ordered_mail .= QTY_NUM.str_repeat('　', intval($max_c_len - mb_strlen(QTY_NUM, 'utf-8'))).'：' .  $order_pro_list_res['products_quantity']. ORDERS_NUM_UNIT .  tep_get_full_count2($order_pro_list_res['products_quantity'], $order_pro_list_res['products_id']) . "\n";
+           $products_ordered_mail .= PRODUCT_SINGLE_PRICE.str_repeat('　', intval($max_c_len - mb_strlen(PRODUCT_SINGLE_PRICE, 'utf-8'))).'：' .  $currencies->display_price($order_pro_list_res['final_price'], $order_pro_list_res['products_tax']) . "\n";
+           $products_ordered_mail .= str_replace(':', '', ENTRY_SUB_TOTAL).str_repeat('　', intval($max_c_len - mb_strlen(str_replace(':', '', ENTRY_SUB_TOTAL), 'utf-8'))).'：' .  $currencies->display_price($order_pro_list_res['final_price'], $order_pro_list_res['products_tax'], $order_pro_list_res['products_quantity']) . "\n";
+           $products_ordered_mail .= '------------------------------------------' . "\n";
         }
         
         $total_details_mail = '';
@@ -1033,30 +1032,29 @@ switch ($_GET['action']) {
             if ($totals['class'] == "ot_point") {
               $camp_exists_query = tep_db_query("select * from ".TABLE_CUSTOMER_TO_CAMPAIGN." where orders_id = '".$oID."' and site_id = '".$site_id."'"); 
               if (tep_db_num_rows($camp_exists_query)) {
-                $total_details_mail .= "\t" . TEXT_POINT . $currencies->format(abs($campaign_fee)) . "\n";
+                $total_details_mail .= TEXT_POINT . $currencies->format(abs($campaign_fee)) . "\n";
               } else {
                 if ((int)$totals['value'] >= 1 && $totals['class'] != "ot_subtotal") {
-                  $total_details_mail .= "\t" . TEXT_POINT .  $currencies->format($totals['value']) . "\n";
+                  $total_details_mail .= TEXT_POINT .  $currencies->format($totals['value']) . "\n";
                 }
               }
             } else {
               if ((int)$totals['value'] >= 1 && $totals['class'] != "ot_subtotal") {
-                $total_details_mail .= "\t" . TEXT_POINT .  $currencies->format($totals['value']) . "\n";
+                $total_details_mail .= TEXT_POINT .  $currencies->format($totals['value']) . "\n";
               }
             }
           } elseif ($totals['class'] == "ot_total") {
             if($handle_fee)
-              $total_details_mail .= "\t".TEXT_HANDLE_FEE.$currencies->format($handle_fee)."\n";
-            $total_details_mail .= "\t" . TEXT_PAYMENT_AMOUNT . $currencies->format($totals['value']) . "\n";
+              $total_details_mail .= TEXT_HANDLE_FEE.$currencies->format($handle_fee)."\n";
+            $total_details_mail .= TEXT_PAYMENT_AMOUNT . $currencies->format($totals['value']) . "\n";
           } else {
             $totals['title'] = str_replace(TEXT_TRANSACTION_FEE, TEXT_REPLACE_HANDLE_FEE, $totals['title']);
-            $total_details_mail .= "\t" . $totals['title'] . str_repeat('　', intval((16 - strlen($totals['title']))/2)) . '：' . $currencies->format($totals['value']) . "\n";
+            $total_details_mail .= $totals['title'] . str_repeat('　', intval((16 - strlen($totals['title']))/2)) . '：' . $currencies->format($totals['value']) . "\n";
           }
         }
         
         
-        $email_content  = "\t" . '------------------------------------------' . "\n";
-        $email_content .= $products_ordered_mail;
+        $email_content  = $products_ordered_mail;
         $email_content .= $total_details_mail;
         $comments = str_replace('${CONTENT}', $email_content, $comments);  
         
