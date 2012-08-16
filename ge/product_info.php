@@ -190,7 +190,7 @@ function showimage($1) {
       <table class="box_des" width="98%"  border="0" cellpadding="0" cellspacing="0">
         <tr>
           <td valign="top">
-                  <table width="100%" border="0" cellpadding="3" cellspacing="1" class="font_size14">
+                  <table width="100%" border="0" cellpadding="3" cellspacing="1" class="box_des_size">
                     <tr>
                       <td class="main" width="85"><b><font color="#0070AF">商品コード</font></b></td>
                       <td class="main">
@@ -403,7 +403,7 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
       $p_cflag = tep_get_cflag_by_product_id($product_info['products_id']); 
       $hm_option->render($product_info['belong_to_option'], false, 0, '', '', $p_cflag);
       ?>
-         <table class="font_size14" width="100%" border="0" cellpadding="3" cellspacing="1">
+         <table class="box_des_size" width="100%" border="0" cellpadding="3" cellspacing="1">
             <tr>
               <td width="85">数量:</td>
               <td colspan="2"><table border="0" cellpadding="0" cellspacing="0">
