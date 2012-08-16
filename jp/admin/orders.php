@@ -649,7 +649,7 @@ switch ($_GET['action']) {
              $max_len_array = array();
              $attr_list_array = array(); 
              while ($order_pro_attr_list_res = tep_db_fetch_array($order_pro_attr_list_raw)) {
-               $attr_info_str = @unserialize($order_pro_attr_list_res['option_info']); 
+               $attr_info_str = @unserialize(stripslashes($order_pro_attr_list_res['option_info'])); 
                $max_len_array[] = mb_strlen($attr_info_str['title'], 'utf-8'); 
                $attr_list_array[] = $order_pro_attr_list_res; 
              }
@@ -668,7 +668,7 @@ switch ($_GET['action']) {
              $products_ordered_mail .= "\n"; 
              if (!empty($attr_list_array)) {
                foreach ($attr_list_array as $at_key => $at_value) {
-                 $em_attr_info = @unserialize($at_value['option_info']); 
+                 $em_attr_info = @unserialize(stripslashes($at_value['option_info'])); 
                  $products_ordered_mail .=  "\t" .  tep_parse_input_field_data($em_attr_info['title'], array("'"=>"&quot;")) . str_repeat('　', intval($max_c_len - mb_strlen($em_attr_info['title'], 'utf-8'))).'：';
                  $products_ordered_mail .= tep_parse_input_field_data(str_replace(array("<br>", "<BR>", "\r", "\n", "\r\n"), "", $em_attr_info['value']), array("'"=>"&quot;"));
                  if ($at_value['options_values_price'] != '0') {
@@ -990,7 +990,7 @@ switch ($_GET['action']) {
            $max_len_array = array();
            $attr_list_array = array(); 
            while ($order_pro_attr_list_res = tep_db_fetch_array($order_pro_attr_list_raw)) {
-             $attr_info_str = @unserialize($order_pro_attr_list_res['option_info']); 
+             $attr_info_str = @unserialize(stripslashes($order_pro_attr_list_res['option_info'])); 
              $max_len_array[] = mb_strlen($attr_info_str['title'], 'utf-8'); 
              $attr_list_array[] = $order_pro_attr_list_res; 
            }
@@ -1009,7 +1009,7 @@ switch ($_GET['action']) {
            $products_ordered_mail .= "\n"; 
            if (!empty($attr_list_array)) {
              foreach ($attr_list_array as $at_key => $at_value) {
-               $em_attr_info = @unserialize($at_value['option_info']); 
+               $em_attr_info = @unserialize(stripslashes($at_value['option_info'])); 
                $products_ordered_mail .=  "\t" .  tep_parse_input_field_data($em_attr_info['title'], array("'"=>"&quot;")) . str_repeat('　', intval($max_c_len - mb_strlen($em_attr_info['title'], 'utf-8'))).'：';
                $products_ordered_mail .= tep_parse_input_field_data(str_replace(array("<br>", "<BR>", "\r", "\n", "\r\n"), "", $em_attr_info['value']), array("'"=>"&quot;"));
                if ($at_value['options_values_price'] != '0') {
