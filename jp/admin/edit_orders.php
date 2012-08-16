@@ -824,7 +824,6 @@ if($address_error == false){
               '${ORDER_N}',
               '${PAY}',
               '${ORDER_M}',
-              '${TRADING}',
               '${ORDER_S}',
               '${SITE_NAME}',
               '${SITE_URL}',
@@ -837,7 +836,6 @@ if($address_error == false){
                 $oID,
                 $check_status['payment_method'],
                 $otm,
-                tep_torihiki($check_status['torihiki_date']).TEXT_TIME_LINK.date('H'.TEXT_HOUR.'i'.TEXT_MIN,strtotime($check_status['torihiki_date_end'])).TEXT_TWENTY_FOUR_HOUR,
                 $os_result['orders_status_name'],
                 get_configuration_by_site_id('STORE_NAME', $order->info['site_id']),
                 get_url_by_site_id($order->info['site_id']),
@@ -852,7 +850,6 @@ if($address_error == false){
               '${ORDER_N}',
               '${PAY}',
               '${ORDER_M}',
-              '${TRADING}',
               '${ORDER_S}',
               '${SITE_NAME}',
               '${SITE_URL}',
@@ -865,7 +862,6 @@ if($address_error == false){
                 $oID,
                 $check_status['payment_method'],
                 $otm,
-                tep_torihiki($check_status['torihiki_date']).TEXT_TIME_LINK.date('H'.TEXT_HOUR.'i'.TEXT_MIN,strtotime($check_status['torihiki_date_end'])).TEXT_TWENTY_FOUR_HOUR,
                 $os_result['orders_status_name'],
                 get_configuration_by_site_id('STORE_NAME', $order->info['site_id']),
                 get_url_by_site_id($order->info['site_id']),
@@ -926,13 +922,6 @@ if($address_error == false){
             $products_ordered_mail .= "\t" . str_replace(':', '', ENTRY_SUB_TOTAL).str_repeat('　', intval($max_c_len - mb_strlen(str_replace(':', '', ENTRY_SUB_TOTAL), 'utf-8'))).'：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty']) . "\n";
             //$products_ordered_mail .= "\t" . 'キャラクター名　　：' . (EMAIL_USE_HTML === 'true' ? htmlspecialchars($order->products[$i]['character']) : $order->products[$i]['character']) . "\n";
             $products_ordered_mail .= "\t" . '------------------------------------------' . "\n";
-            if (tep_get_cflag_by_product_id($order->products[$i]['id'])) {
-              if (tep_get_bflag_by_product_id($order->products[$i]['id'])) {
-                $products_ordered_mail .= TEXT_CHARACTER_NAME_SEND_MAIL."\n\n";
-              } else {
-                $products_ordered_mail .= TEXT_CHARACTER_NAME_CONFIRM_SEND_MAIL."\n\n";
-              }
-            }
           }
 
           $total_details_mail = '';
@@ -967,36 +956,50 @@ if($address_error == false){
           }
 
           $email = '';
-          //$email .= $order->customer['name'] . '様' . "\n\n";
-          //$email .= 'いつも' . get_configuration_by_site_id('STORE_NAME', $order->info['site_id']) . 'をご利用いただき、誠にありがとうございます。' . "\n";
-          //$email .= '下記の内容にて変更を承りましたので、ご確認ください。' . "\n\n";
           $email .= $notify_comments_mail;
-          $email_content = '━━━━━━━━━━━━━━━━━━━━━' . "\n";
-          $email_content .= TEXT_MAIL_ORDERS_ID_TITLE.'　　　　：' . $oID . "\n";
-          $email_content .= TEXT_MAIL_NAME_TITLE.'　　　　　：' . $order->customer['name'] . '様' . "\n";
-          $email_content .= TEXT_MAIL_EMAIL_TITLE.'　：' . $order->customer['email_address'] . "\n";
-          $email_content .= TEXT_MAIL_PAYMENT_TITLE.'　　　　：' . $order->info['payment_method'] . "\n";
-          $email_content .= TEXT_MAIL_FETCH_TIME_TITLE.'　　　：' .  str_replace('_',TEXT_TIME_LINK,$order->tori['date']) .  TEXT_TWENTY_FOUR_HOUR. "\n";
-          //$email_content .= '▼オプション　　　：' . $order->tori['houhou'] . "\n";
-          $email_content .= '━━━━━━━━━━━━━━━━━━━━━' . "\n\n";
-          $email_content .= ORDERS_PRODUCTS_ONE . "\n";
-          $email_content .= "\t" . '------------------------------------------' . "\n";
+          $email_content == "\t" . '------------------------------------------' . "\n";
           $email_content .= $products_ordered_mail;
           $email_content .= $total_details_mail;
-          //$email .= "\n\n\n\n";
-          //      $email .= '会員のお客様は' . EMAIL_TEXT_INVOICE_URL . ' ' . tep_catalog_href_link(FILENAME_CATALOG_ACCOUNT_HISTORY_INFO, 'order_id=' . $oID, 'SSL') . "\n\n\n\n";
-          //$email .= 'ご不明な点がございましたら、注文番号をご確認の上、' . "\n";
-          //$email .= '「' . get_configuration_by_site_id('STORE_NAME', $order->info['site_id']) . '」までお問い合わせください。' . "\n\n";
-          //$email .= '[ご連絡・お問い合わせ先]━━━━━━━━━━━━' . "\n";
-          //$email .= '株式会社 iimy' . "\n";
-          //$email .= get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $order->info['site_id']) . "\n";
-          //$email .= get_url_by_site_id($order->info['site_id']) . "\n";
-          //$email .= '━━━━━━━━━━━━━━━━━━━━━━━' . "\n";
           $email = str_replace('${CONTENT}', $email_content, $email); 
+          $fetch_time_start_array = explode(' ', $check_status['torihiki_date']); 
+          $fetch_time_end_array = explode(' ', $check_status['torihiki_date_end']); 
+          
+          $tmp_date = date('D', strtotime($check_status['torihiki_date'])); 
+          switch(strtolower($tmp_date)) {
+            case 'mon':
+             $week_str = '（'.TEXT_DATE_MONDAY.'）'; 
+             break;
+            case 'tue':
+             $week_str =  '（'.TEXT_DATE_TUESDAY.'）'; 
+             break;
+            case 'wed':
+             $week_str =  '（'.TEXT_DATE_WEDNESDAY.'）'; 
+             break;
+           case 'thu':
+             $week_str =  '（'.TEXT_DATE_THURSDAY.'）'; 
+             break;
+           case 'fri':
+             $week_str =  '（'.TEXT_DATE_FRIDAY.'）'; 
+             break;
+           case 'sat':
+             $week_str =  '（'.TEXT_DATE_STATURDAY.'）'; 
+             break;
+           case 'sun':
+             $week_str =  '（'.TEXT_DATE_SUNDAY.'）'; 
+             break;
+           default:
+             break;
+          }
+          
+          $fetch_time_str = date('Y'.YEAR_TEXT.'m'.MONTH_TEXT.'d'.DAY_TEXT, strtotime($check_status['torihiki_date'])).$week_str.$fetch_time_start_array[1].' '.TEXT_TIME_LINK.' '.$fetch_time_end_array[1];
+          
+          $email = str_replace('${SHIPPING_TIME}', $fetch_time_str, $email); 
+          $title = str_replace('${SHIPPING_TIME}', $fetch_time_str, $title); 
+          
           if ($customer_guest['customers_guest_chk'] != 9)
-            tep_mail($check_status['customers_name'], $check_status['customers_email_address'], TEXT_ORDERS_UPDATE . get_configuration_by_site_id('STORE_NAME', $order->info['site_id']) . '】', $email, get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $order->info['site_id']),$order->info['site_id']);
+            tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $email, get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $order->info['site_id']),$order->info['site_id']);
 
-          tep_mail(get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS', $order->info['site_id']), TEXT_EMAIL_ORDERS_UPDATE . get_configuration_by_site_id('STORE_NAME', $order->info['site_id']) . '】', $email, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);
+          tep_mail(get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS', $order->info['site_id']), $title, $email, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);
           $customer_notified = '1';
         }
         tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . tep_db_input($customer_notified) . "', '" . mysql_real_escape_string($comment_arr['comment'].$comments_text) . "')");

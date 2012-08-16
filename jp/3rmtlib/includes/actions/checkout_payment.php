@@ -5,14 +5,47 @@ if (!tep_session_is_registered('customer_id')) {
   $navigation->set_snapshot();
   tep_redirect(tep_href_link(FILENAME_LOGIN, '', 'SSL'));
 }else{
-
+  $check_before_pos = strpos($_SERVER['HTTP_REFERER'], 'login.php');
+  if ($check_before_pos !== false) {
+    if ($cart->count_contents() > 0) {
+      $c_products_list = $cart->get_products();  
+      $check_op_single = false; 
+      require('option/HM_Option.php'); 
+      require('option/HM_Option_Group.php');
+      $hm_option = new HM_Option(); 
+      foreach ($c_products_list as $ch_key => $ch_value) {
+        $op_pro_raw = tep_db_query("select belong_to_option from ".TABLE_PRODUCTS." where products_id = '".(int)$ch_value['id']."'"); 
+         $op_pro_res = tep_db_fetch_array($op_pro_raw);
+         if ($op_pro_res) {
+           if (!empty($op_pro_res['belong_to_option'])) {
+             if ($hm_option->check_old_symbol_show($op_pro_res['belong_to_option'], true)) {
+               $check_op_single = true;
+               break;
+             }
+           }
+         }
+      }
+      if ($check_op_single) {
+        tep_redirect(tep_href_link(FILENAME_CHECKOUT_OPTION, '', 'SSL'));
+      } 
+      if (!isset($_SESSION['insert_torihiki_date']) || !isset($_SESSION['insert_torihiki_date_end'])) {
+        tep_redirect(tep_href_link(FILENAME_CHECKOUT_OPTION, '', 'SSL'));
+      }
+    }
+  }
+  
   $url_array = explode('/',$_SERVER['HTTP_REFERER']);
   $url_str = end($url_array);
   if(!isset($_SESSION['insert_torihiki_date']) && $url_str != 'checkout_shipping.php' && $url_str != 'login.php'){
     if(!isset($_SESSION['shipping_session_flag'])){
       $_SESSION['shipping_session_flag'] = true;
     }
-    tep_redirect(tep_href_link($_SESSION['shipping_page_str'], '', 'SSL'));
+    if (!empty($_SESSION['shipping_page_str'])) {
+      tep_redirect(tep_href_link($_SESSION['shipping_page_str'], '', 'SSL'));
+    } else {
+      unset($_SESSION['shipping_session_flag']); 
+      tep_redirect(tep_href_link(FILENAME_CHECKOUT_OPTION, '', 'SSL'));
+    }
   }
 }
 
