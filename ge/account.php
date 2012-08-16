@@ -64,16 +64,18 @@
     $point = tep_db_fetch_array($point_query);
     ?>
         
-        <tr>
-          <td><table class="box_des" border="0" cellpadding="2" cellspacing="0" width="100%">
+       <tr>
+          <td>
+		  <table border="0" cellpadding="0" cellspacing="0" width="100%">
             <tr>
-              <td class="formAreaTitle"><br>
+              <td class="formAreaTitle_both">
               <?php echo TEXT_POINT_NOW; ?></td>
             </tr>
-            <tr>
-              <td class="main"><table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">
+			<tr>
+           <td class="main"><table border="0" width="100%" cellspacing="0" cellpadding="0" class="formArea">
                 <tr>
-                  <td class="main"><table class="box_des" border="0" cellspacing="0" cellpadding="2">
+                  <td class="main">
+				  <table border="0" cellspacing="0" cellpadding="2">
                     <tr>
                       <td class="main">&nbsp;<?php echo TEXT_POINT_ADD; ?></td>
                       <td class="main">&nbsp;<?php echo $point['point'] . " P"; ?></td>
@@ -81,7 +83,7 @@
                   </table></td>
                 </tr>
               </table></td>
-            </tr>
+			</tr>
           </table></td>
         </tr>
         <?php } ?>

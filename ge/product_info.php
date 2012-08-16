@@ -10,6 +10,8 @@
   }
   require(DIR_WS_ACTIONS . 'product_info.php');
 ?>
+
+
 <?php page_head();?>
 <script type="text/javascript" src="js/prototype.js"></script>
 <script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
@@ -111,7 +113,7 @@ function change_num(ob,targ, quan, a_quan)
   }
 
   product_quantity.value = num_value;
-actiontime =new Date().getTime();  
+   actiontime =new Date().getTime();  
    setTimeout( function() {
       timeline_action("<?php echo (int)$_GET['products_id'];?>"); 
        }, 300);   
@@ -128,7 +130,6 @@ function timeline_action(p){
   if (get_current_ts()-actiontime>=290){
   calc_product_final_price(p);
   };
-//  calc_product_final_price("<?php echo (int)$_GET['products_id'];?>");
 }
 </script>
 <script language="javascript" type="text/javascript"><!--
@@ -172,7 +173,6 @@ function showimage($1) {
           AND language_id = '" . $languages_id . "' 
           AND site_id     = '".SITE_ID."'
     ");
-
     if (tep_get_special_price($product_info['products_price'], $product_info['products_price_offset'], $product_info['products_small_sum'])) {
       $pricedef = $product_info['products_price'];
       $products_price = '<s>' .
@@ -184,11 +184,9 @@ function showimage($1) {
       $pricedef = $product_info['products_price'];
       $products_price = $currencies->display_price(tep_get_price($product_info['products_price'], $product_info['products_price_offset'], tep_get_price($product_info['products_price'],$product_info['products_small_sum'], '', $product_info['products_bflag']), $product_info['products_bflag']), tep_get_tax_rate($product_info['products_tax_class_id']));
     }
-     
+  
     $description = replace_store_name($product_info['products_description']);
-
     $data1 = explode("//", $product_info['products_attention_1']);
-
     $data2 = explode("//", $product_info['products_attention_2']);
     $data3 = explode("//", $product_info['products_attention_3']);
     $data4 = explode("//", $product_info['products_attention_4']);
@@ -223,6 +221,7 @@ function showimage($1) {
                       <td class="main"><?php echo $product_info['products_attention_1_2'] .'&nbsp;&nbsp;'.tep_display_attention_1_3($product_info['products_attention_1_3']) . $product_info['products_attention_1_4'] ; ?></td>
                     </tr>
                     <?php } ?>
+
                       <?php
                       if(!empty($data1[0])){
                       ?>
@@ -316,9 +315,9 @@ $tag_query = tep_db_query("
     WHERE t.tags_id = pt.tags_id 
       AND pt.products_id='" . $product_info['products_id'] . "'
 ");
-                    if (tep_db_num_rows($tag_query)) { 
-                    ?>
-                    <tr> 
+if(tep_db_num_rows($tag_query)){
+?>
+                      <tr> 
                       <td class="main"><b><font color="#0070AF">タグ</font></b></td> 
                       <td class="main">
                       <ul class="show_tags01"> 
@@ -592,4 +591,5 @@ document.write('<?php echo '<a href="'.DIR_WS_IMAGES . 'products/' . $product_in
   <!-- footer_eof -->
 </div>
 </body>
-</html><?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>
+</html>
+<?php require(DIR_WS_INCLUDES . 'application_bottom.php'); ?>

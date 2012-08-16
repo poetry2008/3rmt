@@ -43,14 +43,14 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
     <tr>
         <th align="left">件名</th>
         <td>
-            <input type="text" name="subject" size="35" value="<?=isset($info['subject'])?$info['subject']:(isset($_GET['products'])?$_GET['products'].'について':(isset($_GET['pname'])?$_GET['pname'].'の確保期限について':''))?>">
+            <input type="text" name="subject" size="25" value="<?=isset($info['subject'])?$info['subject']:(isset($_GET['products'])?$_GET['products'].'について':(isset($_GET['pname'])?$_GET['pname'].'の確保期限について':''))?>">
             &nbsp;<font class="error">*&nbsp;<?=$errors['subject']?></font>
         </td>
     </tr>
     <tr>
         <th align="left" valign="top">ご質問内容</th>
         <td>
-            <textarea name="message" cols="35" rows="8" wrap="soft" style="width:85%"><?=$info['message']?></textarea>
+            <textarea name="message" cols="35" rows="8" wrap="soft" style="width:80%"><?=$info['message']?></textarea>
             <? if($errors['message']) {?> <font class="error">*&nbsp;<?=$errors['message']?></font><br/><?}?>
         </td>
     </tr>

@@ -187,22 +187,22 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
     for ($j=0, $n2=sizeof($order->products[$i]['op_attributes']); $j<$n2; $j++) {  
       $op_price = tep_get_show_attributes_price($order->products[$i]['op_attributes'][$j]['item_id'], $order->products[$i]['op_attributes'][$j]['group_id'], $order->products[$i]['op_attributes'][$j]['value']); 
        
-      echo '<br><small>&nbsp;<i> - ' .  $order->products[$i]['op_attributes'][$j]['front_title'] . ': ' .  str_replace(array("<br>", "<BR>"), '', $order->products[$i]['op_attributes'][$j]['value']);
+      echo '<br>&nbsp;<i> - ' .  $order->products[$i]['op_attributes'][$j]['front_title'] . ': ' .  str_replace(array("<br>", "<BR>"), '', $order->products[$i]['op_attributes'][$j]['value']);
       if ($op_price != '0') {
         echo ' ('.$currencies->format($op_price).')'; 
       }
-      echo '</i></small>';
+      echo '</i>';
     }
   }
   
   if ( (isset($order->products[$i]['ck_attributes'])) && (sizeof($order->products[$i]['ck_attributes']) > 0) ) {
     for ($jk=0, $n3=sizeof($order->products[$i]['ck_attributes']); $jk<$n3; $jk++) {
       $cop_price = tep_get_show_attributes_price($order->products[$i]['ck_attributes'][$jk]['item_id'], $order->products[$i]['ck_attributes'][$jk]['group_id'], $order->products[$i]['ck_attributes'][$jk]['value']); 
-      echo '<br><small>&nbsp;<i> - ' .  $order->products[$i]['ck_attributes'][$jk]['front_title'] . ': ' .  str_replace(array("<br>", "<BR>"), '', $order->products[$i]['ck_attributes'][$jk]['value']);
+      echo '<br>&nbsp;<i> - ' .  $order->products[$i]['ck_attributes'][$jk]['front_title'] . ': ' .  str_replace(array("<br>", "<BR>"), '', $order->products[$i]['ck_attributes'][$jk]['value']);
       if ($cop_price != '0') {
         echo ' ('.$currencies->format($cop_price).')'; 
       }
-      echo '</i></small>';
+      echo '</i>';
     }
   }
   echo '</td>' . "\n";
@@ -526,7 +526,7 @@ echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><sp
         <td>
           <table border="0" width="100%" cellspacing="1" cellpadding="2" class="formArea">
             <tr>
-              <td width="30%" valign="top">
+              <td width="50%" valign="top">
                 <table border="0" width="100%" cellspacing="0" cellpadding="2" class="box_des">
                   <tr>
                     <td class="main"><?php echo '<b>' . HEADING_PAYMENT_METHOD . '</b> <a href="' . tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
@@ -536,9 +536,7 @@ echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><sp
                   </tr>
                 </table>
               </td>
-            </tr>
-            <tr>
-              <td width="70%" valign="top" align="right">
+              <td width="50%" valign="top" align="right">
                 <table border="0" cellspacing="0" cellpadding="2" class="box_des">
                   <?php
   if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {

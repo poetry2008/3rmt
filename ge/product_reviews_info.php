@@ -1,8 +1,10 @@
 <?php
+// 3rmt over
 /*
   $Id$
-*/
 
+  商品评论详细页
+*/
   require('includes/application_top.php');
 
 // lets retrieve all $_GET keys and values..
@@ -42,6 +44,7 @@
     group by reviews_id
     having p.products_status != '0' and p.products_status != '3'  
   ");
+  //forward if no reviews
   if (!tep_db_num_rows($reviews_query)) tep_redirect(tep_href_link(FILENAME_REVIEWS));
   $reviews = tep_db_fetch_array($reviews_query);
 
@@ -82,6 +85,7 @@ function showimage($1) {
       SET reviews_read = reviews_read+1 
       WHERE reviews_id = '" . $reviews['reviews_id'] . "'
   ");
+
   $reviews_text = tep_break_string(tep_output_string_protected($reviews['reviews_text']), 60, '-<br>');
 ?> 
         <div class="headerNavigation"><?php echo $breadcrumb->trail(' &raquo; '); ?></div>
@@ -103,7 +107,7 @@ function showimage($1) {
                   <tr> 
                     <td class="main"><b><?php echo SUB_TITLE_DATE; ?></b> <?php echo tep_date_long($reviews['date_added']); ?></td> 
                   </tr> 
-                  */ ?>
+          */ ?>
                 </table></td> 
             </tr> 
             <tr> 
@@ -115,7 +119,7 @@ function showimage($1) {
             </tr> 
             <tr> 
               <td class="main"><br> 
-                <b><?php echo SUB_TITLE_RATING; ?></b> <?php echo tep_image(DIR_WS_IMAGES . 'stars_' . $reviews['reviews_rating'] . '.gif', sprintf(TEXT_OF_5_STARS, $reviews['reviews_rating'])); ?> <small>[<?php echo sprintf(TEXT_OF_5_STARS, $reviews['reviews_rating']); ?>]</small></td> 
+                <b><?php echo SUB_TITLE_RATING; ?></b> <?php echo tep_image(DIR_WS_IMAGES . 'stars_' . $reviews['reviews_rating'] . '.gif', sprintf(TEXT_OF_5_STARS, $reviews['reviews_rating'])); ?> [<?php echo sprintf(TEXT_OF_5_STARS, $reviews['reviews_rating']); ?>]</td> 
             </tr> 
             <tr> 
               <td><br> 

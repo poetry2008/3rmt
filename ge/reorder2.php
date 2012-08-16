@@ -31,7 +31,6 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder2.php'));
           $minute   = tep_db_prepare_input($_POST['minute']);
 
           $name      = tep_db_prepare_input($_POST['name']);
-          $character = tep_db_prepare_input($_POST['character']);
           $product   = tep_db_prepare_input($_POST['product']);
           $comment   = tep_db_prepare_input($_POST['comment']);
           $email = tep_db_prepare_input($_POST['email']);
@@ -43,8 +42,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder2.php'));
             // time error
             echo '<div><div class="comment">お届け時間は前もって一時間以上に設定してください <div align="right"><a href="javascript:void(0);" onclick="history.go(-1)"><img src="includes/languages/japanese/images/buttons/button_back.gif" alt=""></a></div></div>';
             $email_error = false;
-          } else if($name==''||$date==''||$minute==''||$hour==''||
-              $character==''||$product==''){
+          } else if($name==''||$date==''||$minute==''||$hour==''|| $product==''){
             $email_error = true;
           } else if(!tep_validate_email($email)){
             $email_error = true;
@@ -63,7 +61,6 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder2.php'));
             $email_order .= '▼お名前 : ' . $name . "\n";
             $email_order .= '▼メールアドレス : ' . $email . "\n";
             $email_order .= '▼ゲームタイトル : ' . $product . "\n";
-            $email_order .= '▼キャラクター名 : ' . $character . "\n";
             $email_order .= '▼変更希望の日時 : ' . $datetime . "\n";
             $email_order .= "▼備考 : \n";
             $email_order .= $comment . "\n";
@@ -98,7 +95,7 @@ $breadcrumb->add('再配達フォーム', tep_href_link('reorder2.php'));
 if(!isset($email_error)||$email_error == true){?>
     <div class="comment">
       <form action="reorder2.php" method="post" name="order">
-        <table class="information_table">
+        <table class="size_body">
           <tr>
             <td width='120'>お名前</td>
             <td>
@@ -140,36 +137,23 @@ if(!isset($email_error)||$email_error == true){?>
  if(isset($product)&&$product==''){
    echo TEXT_REORDER2_MUST_INPUT;
  }?></span></td>
-          </tr>
-          <tr>
-            <td width='120'>キャラクター名</td>
-            <td>
-              <input type='text'  name='character' value='<?php
-  if(isset($character)&&$character){
-    echo $character;
-  }?>' id='new_character' class="input_text" >
-              <span id='character_error'><?php
- if(isset($character)&&$character==''){
-   echo TEXT_REORDER2_MUST_INPUT;
- }?></span></td>
-          </tr>
-          <tr>
-            <td width='120'>お届け日時</td>
-            <td>
-              <select name='date' id='new_date' onChange="selectDate('<?php echo date('H');?>', '<?php echo date('i');?>')">
-                <option value=''>--</option>
-                <?php for($i=0;$i<7;$i++){?>
-                <option value='<?php echo date('Y-m-d', time()+($i*86400));?>'><?php echo tep_date_long(time()+($i*86400));?></option>
-                <?php }?>
-              </select>
-              <select name='hour' id='new_hour' onChange="selectHour('<?php echo date('H');?>', '<?php echo date('i');?>')">
-                <option value=''>--</option>
-              </select>
-              :
-              <select name='minute' id='new_minute'>
-                <option value=''>--</option>
-              </select>
-              <div class="clear_box"><span id='date_error'><?php
+ </tr>
+ <tr>
+  <td width='120'>お届け日時</td>
+  <td>
+   <select name='date' id='new_date' onChange="selectDate('<?php echo date('H');?>', '<?php echo date('i');?>')">
+    <option value=''>--</option>
+<?php for($i=0;$i<7;$i++){?>
+    <option value='<?php echo date('Y-m-d', time()+($i*86400));?>'><?php echo tep_date_long(time()+($i*86400));?></option>
+<?php }?>
+   </select>
+   <select name='hour' id='new_hour' onChange="selectHour('<?php echo date('H');?>', '<?php echo date('i');?>')">
+    <option value=''>--</option>
+   </select>:
+   <select name='minute' id='new_minute'>
+    <option value=''>--</option>
+   </select>
+   <div class="clear_box"><span id='date_error'><?php
    if($hour==''||$date==''||$minute==''){
      echo TEXT_REORDER2_TORIHIKI_ERROR;
    }?></span>
@@ -187,12 +171,12 @@ if(!isset($email_error)||$email_error == true){?>
           </tr>
         </table>
         <table width="100%">
-		<td width="120">&nbsp;</td>
+<td width="120">&nbsp;</td>
         <td>
           <input class="clear_box" type='image' src="includes/languages/japanese/images/buttons/button_submit2.gif" alt="確定" title="確定" >
           <input type='image' src="includes/languages/japanese/images/buttons/button_reset.gif" alt="クリア" title="クリア" onclick='javascript:document.order.reset();return false;' >
         </td>
-		</table>
+</table>
       </form>
       <?php }?>
     </div>

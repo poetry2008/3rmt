@@ -14,6 +14,7 @@
   }
 
   echo '    <td align="center" class="tableHeading">' . TABLE_HEADING_QUANTITY . '</td>' . "\n";
+
   echo '    <td align="center" class="tableHeading">' . TABLE_HEADING_IMAGE . '</td>' . "\n";
 
   if ((PRODUCT_LIST_MODEL > 0) && strstr($PHP_SELF, FILENAME_SHOPPING_CART)) {
@@ -42,7 +43,7 @@
     if (strstr($PHP_SELF, FILENAME_SHOPPING_CART)) {
       //echo '    <td align="center" height="25">' . tep_draw_checkbox_field('cart_delete[]', $products[$i]['id']) . '</td>' . "\n";
     }
-
+    // ccdd
     $product_info = tep_get_product_by_id((int)$products[$i]['id'], SITE_ID, $languages_id,true,'shopping_cart');
 
 // Quantity box or information as an input box or text
@@ -162,16 +163,17 @@
 
       echo '<span class="markProductOutOfStock"><a style="color:#CC0033" href="'.tep_href_link('open.php', 'products='.urlencode($products[$i]['name']), 'SSL').'">' . STOCK_MARK_PRODUCT_OUT_OF_STOCK . '</a></span>';
     }
+
 // Product options names
     $attributes_exist = ((isset($products[$i]['add_op_attributes'])) ? 1 : 0);
-
     if ($attributes_exist == 1) {
       foreach ($products[$i]['add_op_attributes'] as $ap_key => $ap_value) {
-        echo '<br><small><i> - ' . $ap_value['option_name'] . ': ' .  str_replace(array("<br>", "<BR>"), '', $ap_value['option_value']) . '</i></small>';
+        echo '<br><i> - ' . $ap_value['option_name'] . ': ' .  str_replace(array("<br>", "<BR>"), '', $ap_value['option_value']) . '</i>';
       }
     }
 
     echo '</td>' . "\n";
+
 // Tax (not in shopping cart, tax rate may be unknown)
     if (!strstr($PHP_SELF, FILENAME_SHOPPING_CART)) {
       echo '    <td align="center" class="main">' . number_format($products[$i]['tax'], TAX_DECIMAL_PLACES) . '%</td>' . "\n";
@@ -193,7 +195,6 @@
       //echo '    <td align="right" class="main"><b>' . $currencies->display_price($products[$i]['price'], tep_get_tax_rate($products[$i]['tax_class_id']), $products[$i]['quantity']) . '</b>';
     } else {
       echo '    <td align="right" class="main" style="width:60px;"><b>' . $currencies->display_price($products[$i]['price'], $products[$i]['tax'], $products[$i]['quantity']) . '</b>';
-      //echo '    <td align="right" class="main"><b>' . $currencies->display_price($products[$i]['price'], $products[$i]['tax'], $products[$i]['quantity']) . '</b>';
     }
 
 // Product options prices
@@ -203,19 +204,19 @@
         if (!strstr($PHP_SELF, FILENAME_ACCOUNT_HISTORY_INFO)) {
           if (STOCK_CHECK == 'true') {
           //echo $stock_check = tep_check_opstock($products[$i][$option]['products_at_quantity'], $products[$i]['quantity']);
-            if ($stock_check) $any_out_of_stock = 1;
-          }
+      if ($stock_check) $any_out_of_stock = 1;
+        }
         }
     
     if ($opa_value['price'] != 0) {
           if (!strstr($PHP_SELF, FILENAME_ACCOUNT_HISTORY_INFO)) {
-            echo '<br><small><i>' . $currencies->display_price($opa_value['price'], tep_get_tax_rate($products[$i]['tax_class_id']), $products[$i]['quantity']) . '</i></small>';
+            echo '<br><i>' . $currencies->display_price($opa_value['price'], tep_get_tax_rate($products[$i]['tax_class_id']), $products[$i]['quantity']) . '</i>';
           } else {
-            echo '<br><small><i>' . $currencies->display_price($opa_value['price'], $products[$i]['tax'], $products[$i]['quantity']) . '</i></small>';
+            echo '<br><i>' . $currencies->display_price($opa_value['price'], $products[$i]['tax'], $products[$i]['quantity']) . '</i>';
           }
         } else {
 // Keep price aligned with corresponding option
-          echo '<br><small><i>&nbsp;</i></small>';
+          echo '<br><i>&nbsp;</i>';
         }
       }
     }
