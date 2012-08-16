@@ -24,7 +24,7 @@ if ($check_before_pos !== false || !isset($_SERVER['HTTP_REFERER'])) {
        }
     }
     if ($check_op_single) {
-      tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
+      tep_redirect(tep_href_link(CHECKOUT_OPTION, '', 'SSL'));
     } 
   }
 }

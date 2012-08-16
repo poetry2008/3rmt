@@ -26,10 +26,10 @@ if (!tep_session_is_registered('customer_id')) {
          }
       }
       if ($check_op_single) {
-        tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
+        tep_redirect(tep_href_link(FILENAME_CHECKOUT_OPTION, '', 'SSL'));
       } 
       if (!isset($_SESSION['insert_torihiki_date']) || !isset($_SESSION['insert_torihiki_date_end'])) {
-        tep_redirect(tep_href_link(FILENAME_SHOPPING_CART, '', 'SSL'));
+        tep_redirect(tep_href_link(FILENAME_CHECKOUT_OPTION, '', 'SSL'));
       }
     }
   }
