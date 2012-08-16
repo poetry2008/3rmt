@@ -899,7 +899,7 @@ if($address_error == false){
           }
           for ($i=0; $i<sizeof($order->products); $i++) {
             //$orders_products_id = $order->products[$i]['orders_products_id'];
-            $products_ordered_mail .= "\t" . ORDERS_PRODUCTS.str_repeat('　', intval($max_c_len - mb_strlen(ORDERS_PRODUCTS, 'utf-8'))).'：' . $order->products[$i]['name'] . '（' . $order->products[$i]['model'] . '）';
+            $products_ordered_mail .= ORDERS_PRODUCTS.str_repeat('　', intval($max_c_len - mb_strlen(ORDERS_PRODUCTS, 'utf-8'))).'：' . $order->products[$i]['name'] . '（' . $order->products[$i]['model'] . '）';
             if ($order->products[$i]['price'] != '0') {
               $products_ordered_mail .= '（'.$currencies->display_price($order->products[$i]['price'], $order->products[$i]['tax']).'）'; 
             }
@@ -908,7 +908,7 @@ if($address_error == false){
             if (sizeof($order->products[$i]['attributes']) > 0) {
               for ($j=0; $j<sizeof($order->products[$i]['attributes']); $j++) {
                 $orders_products_attributes_id = $order->products[$i]['attributes'][$j]['id'];
-                $products_ordered_mail .=  "\t" .  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;")) . str_repeat('　', intval($max_c_len - mb_strlen($order->products[$i]['attributes'][$j]['option_info']['title'], 'utf-8'))).'：';
+                $products_ordered_mail .=  tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;")) . str_repeat('　', intval($max_c_len - mb_strlen($order->products[$i]['attributes'][$j]['option_info']['title'], 'utf-8'))).'：';
                 $products_ordered_mail .= tep_parse_input_field_data(str_replace(array("<br>", "<BR>", "\r", "\n", "\r\n"), "", $order->products[$i]['attributes'][$j]['option_info']['value']), array("'"=>"&quot;"));
                 if ($order->products[$i]['attributes'][$j]['price'] != '0') {
                   $products_ordered_mail .= '（'.$currencies->format($order->products[$i]['attributes'][$j]['price']).'）'; 
@@ -917,11 +917,11 @@ if($address_error == false){
               }
             }
 
-            $products_ordered_mail .= "\t" . QTY_NUM.str_repeat('　', intval($max_c_len - mb_strlen(QTY_NUM, 'utf-8'))).'：' . $order->products[$i]['qty'] . EDIT_ORDERS_NUM_UNIT . tep_get_full_count2($order->products[$i]['qty'], $order->products[$i]['id']) . "\n";
-            $products_ordered_mail .= "\t" . TABLE_HEADING_UNIT_PRICE.str_repeat('　', intval($max_c_len - mb_strlen(TABLE_HEADING_UNIT_PRICE, 'utf-8'))).'：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax']) . "\n";
-            $products_ordered_mail .= "\t" . str_replace(':', '', ENTRY_SUB_TOTAL).str_repeat('　', intval($max_c_len - mb_strlen(str_replace(':', '', ENTRY_SUB_TOTAL), 'utf-8'))).'：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty']) . "\n";
+            $products_ordered_mail .= QTY_NUM.str_repeat('　', intval($max_c_len - mb_strlen(QTY_NUM, 'utf-8'))).'：' . $order->products[$i]['qty'] . EDIT_ORDERS_NUM_UNIT . tep_get_full_count2($order->products[$i]['qty'], $order->products[$i]['id']) . "\n";
+            $products_ordered_mail .= TABLE_HEADING_UNIT_PRICE.str_repeat('　', intval($max_c_len - mb_strlen(TABLE_HEADING_UNIT_PRICE, 'utf-8'))).'：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax']) . "\n";
+            $products_ordered_mail .= str_replace(':', '', ENTRY_SUB_TOTAL).str_repeat('　', intval($max_c_len - mb_strlen(str_replace(':', '', ENTRY_SUB_TOTAL), 'utf-8'))).'：' . $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty']) . "\n";
             //$products_ordered_mail .= "\t" . 'キャラクター名　　：' . (EMAIL_USE_HTML === 'true' ? htmlspecialchars($order->products[$i]['character']) : $order->products[$i]['character']) . "\n";
-            $products_ordered_mail .= "\t" . '------------------------------------------' . "\n";
+            $products_ordered_mail .= '------------------------------------------' . "\n";
           }
 
           $total_details_mail = '';
@@ -932,33 +932,31 @@ if($address_error == false){
               if ($totals['class'] == "ot_point") {
                 $camp_exists_query = tep_db_query("select * from ".TABLE_CUSTOMER_TO_CAMPAIGN." where orders_id = '".$oID."' and site_id = '".$order->info['site_id']."'"); 
                 if (tep_db_num_rows($camp_exists_query)) {
-                  $total_details_mail .= "\t" . TEXT_POINT . $currencies->format(abs($campaign_fee)) . "\n";
+                  $total_details_mail .= TEXT_POINT . $currencies->format(abs($campaign_fee)) . "\n";
                 } else {
                   if ((int)$totals['value'] >= 1 && $totals['class'] != "ot_subtotal") {
-                    $total_details_mail .= "\t" . TEXT_POINT .  $currencies->format($totals['value']) . "\n";
+                    $total_details_mail .= TEXT_POINT .  $currencies->format($totals['value']) . "\n";
                   }
                 }
               } else {
                 if ((int)$totals['value'] >= 1 && $totals['class'] != "ot_subtotal") {
-                  $total_details_mail .= "\t" . TEXT_POINT .  $currencies->format($totals['value']) . "\n";
+                  $total_details_mail .= TEXT_POINT .  $currencies->format($totals['value']) . "\n";
                 }
               }
             } elseif ($totals['class'] == "ot_total") {
               if($handle_fee)
-                $total_details_mail .= "\t".TEXT_HANDLE_FEE.$currencies->format($handle_fee)."\n";
-              $total_details_mail .= "\t" . TEXT_PAYMENT_AMOUNT . $currencies->format($totals['value']) . "\n";
+                $total_details_mail .= TEXT_HANDLE_FEE.$currencies->format($handle_fee)."\n";
+              $total_details_mail .= TEXT_PAYMENT_AMOUNT . $currencies->format($totals['value']) . "\n";
             } else {
               // 去掉 決済手数料 消費税
               $totals['title'] = str_replace(TEXT_TRANSACTION_FEE, TEXT_HANDLE_FEE_ONE, $totals['title']);
-              $total_details_mail .= "\t" . $totals['title'] . str_repeat('　', intval((16 -
-                      strlen($totals['title']))/2)) . '：' . $currencies->format($totals['value']) . "\n";
+              $total_details_mail .= $totals['title'] . str_repeat('　', intval((16 - strlen($totals['title']))/2)) . '：' . $currencies->format($totals['value']) . "\n";
             }
           }
 
           $email = '';
           $email .= $notify_comments_mail;
-          $email_content == "\t" . '------------------------------------------' . "\n";
-          $email_content .= $products_ordered_mail;
+          $email_content = $products_ordered_mail;
           $email_content .= $total_details_mail;
           $email = str_replace('${CONTENT}', $email_content, $email); 
           $fetch_time_start_array = explode(' ', $check_status['torihiki_date']); 
@@ -995,7 +993,6 @@ if($address_error == false){
           
           $email = str_replace('${SHIPPING_TIME}', $fetch_time_str, $email); 
           $title = str_replace('${SHIPPING_TIME}', $fetch_time_str, $title); 
-          
           if ($customer_guest['customers_guest_chk'] != 9)
             tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $email, get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $order->info['site_id']),$order->info['site_id']);
 

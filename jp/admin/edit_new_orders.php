@@ -14,6 +14,14 @@ require(DIR_FS_ADMIN . DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAM
 require(DIR_WS_CLASSES . 'currencies.php');
 $currencies = new currencies(2);
 $oID = tep_db_input($_GET['oID']);
+$orders_oid_query = tep_db_query("select orders_id from ". TABLE_ORDERS ." where orders_id='".$oID."'");
+$ordres_oid_num_rows = tep_db_num_rows($orders_oid_query);
+tep_db_free_result($orders_oid_query);
+$orders_exit_flag = false;
+if($ordres_oid_num_rows > 0){
+
+  $orders_exit_flag = true;
+}
 include(DIR_WS_CLASSES . 'order.php');
 require_once('includes/address/AD_Option.php');
 require_once('includes/address/AD_Option_Group.php');
@@ -62,42 +70,32 @@ $order_query = tep_db_query("
 
 // 最新の注文情報取得
 // 获取最新 订单情报
-$order = new order($oID);
+if($orders_exit_flag == true){
+  $order = new order($oID);
+}
 // ポイントを取得する
 // 获得客户信息
+$customer_id_flag = $orders_exit_flag == true ? $order->customer['id'] : $_SESSION['customer_id'];
 $customer_point_query = tep_db_query("
     select point 
     from " . TABLE_CUSTOMERS . " 
-    where customers_id = '" . $order->customer['id'] . "'");
+    where customers_id = '" . $customer_id_flag . "'");
 $customer_point = tep_db_fetch_array($customer_point_query);
 // ゲストチェック
 // 获取客户 是否为注册用户
 $customer_guest_query = tep_db_query("
     select customers_guest_chk 
     from " . TABLE_CUSTOMERS . " 
-    where customers_id = '" . $order->customer['id'] . "'");
+    where customers_id = '" . $customer_id_flag . "'");
 $customer_guest = tep_db_fetch_array($customer_guest_query);
 
+$site_id_flag = $orders_exit_flag == true ? $order->info['site_id'] : $_SESSION['site_id'];
 if (tep_not_null($action)) {
 
-  $payment_modules = payment::getInstance($order->info['site_id']);
+  $payment_modules = payment::getInstance($site_id_flag);
   switch ($action) {
     // 1. UPDATE ORDER ###############################################################################################
-      case 'update_order':
-
-      //订单状态更新
-    $oID      = tep_db_prepare_input($_GET['oID']);
-    $status   = tep_db_prepare_input($_POST['s_status']);
-    $title    = tep_db_prepare_input($_POST['title']);
-    $comments = tep_db_input($_POST['comments']);
-    $comments_text = tep_db_input($_POST['comments_text']);
-    $payment_method = tep_db_prepare_input($_POST['payment_method']); 
-    $site_id  = tep_get_site_id_by_orders_id($oID);
-
-    $orders_email_query = tep_db_query("select payment_method from ". TABLE_ORDERS ." where orders_id='".$oID."'");
-    $orders_email_array = tep_db_fetch_array($orders_email_query);
-    tep_db_free_result($orders_email_query);    
-
+  case 'update_order':
     $error = false;
     $options_info_array = array(); 
       if (!$ad_option->check()) {
@@ -122,7 +120,119 @@ if (tep_not_null($action)) {
         $action = 'edit';
         break;
       }
-    
+     
+      $viladate = tep_db_input($_POST['update_viladate']);//viladate pwd 
+      if($viladate!='_false'&&$viladate!=''){
+        tep_insert_pwd_log($viladate,$ocertify->auth_user);
+        $viladate = true;
+      }else if($viladate=='_false'){
+        $viladate = false;
+        $messageStack->add_session(TEXT_CANCEL_UPDATE, 'error');
+        tep_redirect(tep_href_link("edit_new_orders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
+        break;
+      }
+
+      foreach ($update_totals as $total_index => $total_details) {    
+        extract($total_details,EXTR_PREFIX_ALL,"ot");
+        if ($ot_class == "ot_point" && (int)$ot_value > 0) {
+          $current_point = $customer_point['point'] + $before_point;
+          if ((int)$ot_value > $current_point) {
+            $messageStack->add(TEXT_NO_ENOUGH_POINT.'<b>' . $current_point . '</b>'.TEXT_LS, 'error');
+            $action = 'edit';
+            break 2;
+          }
+        }
+      }
+
+    //创建订单
+    $orders_query = tep_db_query("select orders_id from " . TABLE_ORDERS . " where orders_id = '" . tep_db_input($oID) . "'");
+    if (!tep_db_num_rows($orders_query)) {
+      $currency_text  = DEFAULT_CURRENCY . ",1";
+      if(isset($_SESSION['Currency']) && !empty($_SESSION['Currency']))  {
+        $currency_text = tep_db_prepare_input($_SESSION['Currency']);
+      }
+
+
+     //开始生成订单
+     $currency_array = explode(",", $currency_text);
+     $currency = $currency_array[0];
+     $currency_value = $currency_array[1];
+     $insert_id = $oID;
+     $sql_data_array = array('orders_id'              => $insert_id,
+			'customers_id'                => $_SESSION['customer_id'],	
+			'date_purchased'              => 'now()', 
+			'orders_status'               => DEFAULT_ORDERS_STATUS_ID,
+			'currency'                    => $currency,
+			'currency_value'              => $currency_value,
+			'orders_wait_flag'            => '1'
+			); 
+     //创建订单
+     tep_db_perform(TABLE_ORDERS, $sql_data_array);
+
+    //开始更新订单
+
+    $sql_data_array = array('customers_id'            => $_SESSION['customer_id'],
+			'customers_name'              => tep_get_fullname($_SESSION['firstname'],$_SESSION['lastname']),
+			'customers_company'           => $_SESSION['company'],
+			'customers_street_address'    => $_SESSION['street_address'],
+			'customers_suburb'            => $_SESSION['suburb'],
+			'customers_city'              => $_SESSION['city'],
+			'customers_postcode'          => $_SESSION['postcode'],
+			'customers_state'             => $_SESSION['state'],
+			'customers_country'           => $_SESSION['country'],
+			'customers_telephone'         => $_SESSION['telephone'],
+			'customers_email_address'     => $_SESSION['email_address'],
+			'customers_address_format_id' => $_SESSION['format_id'],
+			'delivery_company'            => $_SESSION['company'],
+			'delivery_street_address'     => $_SESSION['street_address'],
+			'delivery_suburb'             => $_SESSION['suburb'],
+			'delivery_city'               => $_SESSION['city'],
+			'delivery_postcode'           => $_SESSION['postcode'],
+			'delivery_state'              => $_SESSION['state'],
+			'delivery_country'            => $_SESSION['country'],
+			'delivery_address_format_id'  => $_SESSION['format_id'],
+			'billing_name'                => tep_get_fullname($_SESSION['firstname'],$_SESSION['lastname']),
+			'billing_company'             => $_SESSION['company'],
+			'billing_street_address'      => $_SESSION['street_address'],
+			'billing_suburb'              => $_SESSION['suburb'],
+			'billing_city'                => $_SESSION['city'],
+			'billing_postcode'            => $_SESSION['postcode'],
+			'billing_state'               => $_SESSION['state'],
+			'billing_country'             => $_SESSION['country'],
+			'billing_address_format_id'   => $_SESSION['format_id'],
+			'orders_status'               => DEFAULT_ORDERS_STATUS_ID,
+			'site_id'                     => $_SESSION['site_id'],
+			'orders_wait_flag'            => '1'
+			); 
+       $_SESSION['payment_bank_info'][$insert_id] = $comment_arr['payment_bank_info'];
+       if(isset($comment_arr['payment_bank_info']['add_info'])&&
+         $comment_arr['payment_bank_info']['add_info']){
+         $sql_data_array['orders_comment'] = $comment_arr['comment'];
+       }
+       //更新订单
+       tep_db_perform(TABLE_ORDERS, $sql_data_array,'update','orders_id=\''.$oID.'\'');
+
+       last_customer_action();
+       orders_updated($insert_id);
+       $orders_type_str = tep_get_order_type_info($oID);
+       tep_db_query("update `".TABLE_ORDERS."` set `orders_type` = '".$orders_type_str."' where orders_id = '".tep_db_input($oID)."'");
+ 
+    }
+    tep_db_free_result($orders_query);
+ 
+    //订单状态更新
+    $oID      = tep_db_prepare_input($_GET['oID']);
+    $status   = tep_db_prepare_input($_POST['s_status']);
+    $title    = tep_db_prepare_input($_POST['title']);
+    $comments = tep_db_input($_POST['comments']);
+    $comments_text = tep_db_input($_POST['comments_text']);
+    $payment_method = tep_db_prepare_input($_POST['payment_method']); 
+    $site_id  = tep_get_site_id_by_orders_id($oID);
+
+    $orders_email_query = tep_db_query("select payment_method from ". TABLE_ORDERS ." where orders_id='".$oID."'");
+    $orders_email_array = tep_db_fetch_array($orders_email_query);
+    tep_db_free_result($orders_email_query);    
+ 
     $comment_arr = $payment_modules->dealComment($payment_method,$comments_text);
 
     $order_updated = false;
@@ -261,7 +371,7 @@ if (tep_not_null($action)) {
       }
     }
 
-    if ($check_status['orders_status'] != $status || $comments != '') {
+    if ($check_status['orders_status'] != $status || $comments != '' || $orders_exit_flag == false) {
       tep_db_query("update " . TABLE_ORDERS . " set orders_status = '" . tep_db_input($status) . "', last_modified = now() where orders_id = '" . tep_db_input($oID) . "'");
       orders_updated(tep_db_input($oID));
       orders_wait_flag(tep_db_input($oID));
@@ -356,7 +466,9 @@ if (tep_not_null($action)) {
     if ($order_updated) {
       $messageStack->add_session(SUCCESS_ORDER_UPDATED, 'success');
     } else {
-      $messageStack->add_session(WARNING_ORDER_NOT_UPDATED, 'warning');
+      if($orders_exit_flag == true){
+        $messageStack->add_session(WARNING_ORDER_NOT_UPDATED, 'warning');
+      }
     }
       //订单状态更新结束  
       $products_weight_total = 0; //商品总重量
@@ -508,29 +620,7 @@ if (tep_not_null($action)) {
          break;
          }
        */
-      $viladate = tep_db_input($_POST['update_viladate']);//viladate pwd 
-      if($viladate!='_false'&&$viladate!=''){
-        tep_insert_pwd_log($viladate,$ocertify->auth_user);
-        $viladate = true;
-      }else if($viladate=='_false'){
-        $viladate = false;
-        $messageStack->add_session(TEXT_CANCEL_UPDATE, 'error');
-        tep_redirect(tep_href_link("edit_new_orders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
-        break;
-      }
-
-      foreach ($update_totals as $total_index => $total_details) {    
-        extract($total_details,EXTR_PREFIX_ALL,"ot");
-        if ($ot_class == "ot_point" && (int)$ot_value > 0) {
-          $current_point = $customer_point['point'] + $before_point;
-          if ((int)$ot_value > $current_point) {
-            $messageStack->add(TEXT_NO_ENOUGH_POINT.'<b>' . $current_point . '</b>'.TEXT_LS, 'error');
-            $action = 'edit';
-            break 2;
-          }
-        }
-      }
-
+      
       // 1.1 UPDATE ORDER INFO #####
       $UpdateOrders = "update " . TABLE_ORDERS . " set 
         customers_name = '" . tep_db_input(stripslashes($update_customer_name)) . "',
@@ -1226,6 +1316,29 @@ if($address_error == false){
         } else {
           $messageStack->add_session(TEXT_ERROR_NO_SUCCESS, 'error');
         }
+       //session unset
+       unset($_SESSION['$oID']);
+       unset($_SESSION['customer_id']);
+       unset($_SESSION['firstname']);
+       unset($_SESSION['lastname']);
+       unset($_SESSION['email_address']);
+       unset($_SESSION['telephone']);
+       unset($_SESSION['fax']);
+       unset($_SESSION['street_address']);
+       unset($_SESSION['company']);
+       unset($_SESSION['suburb']);
+       unset($_SESSION['postcode']);
+       unset($_SESSION['city']);
+       unset($_SESSION['zone_id']);
+       unset($_SESSION['state']);
+       unset($_SESSION['country']);
+       unset($_SESSION['site_id']);
+       unset($_SESSION['format_id']);
+       unset($_SESSION['size']);
+       unset($_SESSION['new_value']);
+       unset($_SESSION['temp_amount']);
+       unset($_SESSION['currency']); 
+       unset($_SESSION['currency_value']);
 
         tep_redirect(tep_href_link("edit_new_orders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
 
@@ -1445,11 +1558,13 @@ if($address_error == false){
   if (isset($_GET['oID'])) {
     $oID = tep_db_prepare_input($_GET['oID']);
 
-    $orders_query = tep_db_query("select orders_id from " . TABLE_ORDERS . " where orders_id = '" . tep_db_input($oID) . "'");
-    $order_exists = true;
-    if (!tep_db_num_rows($orders_query)) {
-      $order_exists = false;
-      $messageStack->add(sprintf(ERROR_ORDER_DOES_NOT_EXIST, $oID), 'error');
+    if($orders_exit_flag == true){
+      $orders_query = tep_db_query("select orders_id from " . TABLE_ORDERS . " where orders_id = '" . tep_db_input($oID) . "'");
+      $order_exists = true;
+      if (!tep_db_num_rows($orders_query)) {
+        $order_exists = false;
+        $messageStack->add(sprintf(ERROR_ORDER_DOES_NOT_EXIST, $oID), 'error');
+      }
     }
     $p_weight_total = 0; //商品总重量
     $p_address_query = tep_db_query("select * from ". TABLE_ORDERS_PRODUCTS ." where orders_id='". tep_db_input($oID) ."'");
@@ -1653,7 +1768,7 @@ function address_option_show(action){
     $address_i++;
   }
   tep_db_free_result($address_list_query);
-  $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id=". $order->customer['id'] ." group by orders_id order by orders_id desc");
+  $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id=". $customer_id_flag ." group by orders_id order by orders_id desc");
   
    
   $address_num = 0;
@@ -1766,7 +1881,7 @@ function address_option_list(value){
     $address_list_arr[] = $address_list_array['name_flag'];
   }
   tep_db_free_result($address_list_query);
-  $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id=". $order->customer['id'] ." group by orders_id order by orders_id desc");
+  $address_orders_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_HISTORY ." where customers_id=".$customer_id_flag ." group by orders_id order by orders_id desc");
   
    
   $address_num = 0;
@@ -2044,7 +2159,7 @@ var address_select = '';
     }
     tep_db_free_result($products_weight_query);
     $add_array = array();
-    $add_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_ORDERS ." where customers_id={$order->customer['id']} group by orders_id order by orders_id desc limit 0,1");
+    $add_group_query = tep_db_query("select orders_id from ". TABLE_ADDRESS_ORDERS ." where customers_id={$customer_id_flag} group by orders_id order by orders_id desc limit 0,1");
     $add_group_array = tep_db_fetch_array($add_group_query);
     tep_db_free_result($add_group_query);
     $add_query = tep_db_query("select * from ". TABLE_ADDRESS_ORDERS ." where orders_id='". $oID ."'");
@@ -2286,11 +2401,11 @@ function check_end_min(value){
     }    
   }
 }
-  $(function() {
-    //$.datePicker.setDateFormat('ymd', '-');
-    //$('#date_orders').datePicker();
 <?php
 if($p_weight_total > 0){
+?>
+$(function() {
+<?php
     if($add_count > 0 && $products_weight_sum > 0){
       if(!(isset($_GET['action']) && $_GET['action'] == 'update_order')){
 ?>
@@ -2442,10 +2557,10 @@ function open_calendar()
   }
 }
 
+$(document).ready(function(){
 <?php
 if($p_weight_total > 0){
 ?>
-$(document).ready(function(){
   $("#"+country_fee_id).change(function(){
     country_check($("#"+country_fee_id).val());
     country_area_check($("#"+country_area_id).val());
@@ -2570,8 +2685,10 @@ a.dpicker {
         <td width="100%" valign="top">
         <table border="0" width="96%" cellspacing="0" cellpadding="2">
         <?php
-        if (($action == 'edit') && ($order_exists == true)) {
-          $order = new order($oID);
+        if ($action == 'edit') {
+          if($orders_exit_flag == true){
+            $order = new order($oID);
+          }
           ?>
             <tr>
             <td width="100%">
@@ -2608,7 +2725,15 @@ a.dpicker {
             <table width="100%" border="0" class="dataTableRow" cellpadding="2" cellspacing="0">
             <tr>
             <td class="main" valign="top" width="30%"><b><?php echo ENTRY_SITE;?>:</b></td>
-            <td class="main" width="70%"><font color='#FF0000'><b><?php echo tep_get_site_name_by_order_id($oID)?></b></font></td>
+            <?php
+              if(isset($_SESSION['site_id'])){
+                $orders_site_name_query = tep_db_query("select name from ". TABLE_SITES ." where id='". $_SESSION['site_id'] ."'");
+                $orders_site_name_array = tep_db_fetch_array($orders_site_name_query);
+                $orders_site_name = $orders_site_name_array['name'];
+                tep_db_free_result($orders_site_name_query);
+              }
+            ?>
+            <td class="main" width="70%"><font color='#FF0000'><b><?php echo $orders_exit_flag == true ? tep_get_site_name_by_order_id($oID) : $orders_site_name;?></b></font></td>
             </tr>
             <tr>
             <td class="main" valign="top" width="30%"><b><?php echo EDIT_ORDERS_ID_TEXT;?></b></td>
@@ -2616,15 +2741,15 @@ a.dpicker {
             </tr>
             <tr>
             <td class="main" valign="top"><b><?php echo EDIT_ORDERS_DATE_TEXT;?></b></td>
-            <td class="main"><?php echo tep_date_long($order->info['date_purchased']);?></td>
+            <td class="main"><?php echo $orders_exit_flag == true ? tep_date_long($order->info['date_purchased']) : tep_date_long(date('Y-m-d H:i:s'));?></td>
             </tr>
             <tr>
             <td class="main" valign="top"><b><?php echo EDIT_ORDERS_CUSTOMER_NAME;?></b></td>
-            <td class="main"><?php echo tep_html_quotes($order->customer['name']); ?></td>
+            <td class="main"><?php echo $orders_exit_flag == true ? tep_html_quotes($order->customer['name']) : tep_html_quotes($_SESSION['lastname'].' '.$_SESSION['firstname']); ?></td>
             </tr>
             <tr>
             <td class="main" valign="top"><b><?php echo EDIT_ORDERS_EMAIL;?></b></td>
-            <td class="main"><font color="red"><b><?php echo $order->customer['email_address']; ?></b></font></td>
+            <td class="main"><font color="red"><b><?php echo $orders_exit_flag == true ? $order->customer['email_address'] : $_SESSION['email_address'];?></b></font></td>
             </tr>
             <!-- End Addresses Block -->
             <!-- Begin Payment Block -->
@@ -2682,8 +2807,9 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
                   }
                 }
               }
+      $email_address_flag = $orders_exit_flag == true ? $order->customer['email_address'] : $_SESSION['email_address'];
       if($products_money_total != 0){
-          $orders_payment_query = tep_db_query("select payment_method,orders_id from ". TABLE_ORDERS ." where customers_email_address='". $order->customer['email_address'] ."' and site_id='".$order->info['site_id']."' order by orders_id desc"); 
+          $orders_payment_query = tep_db_query("select payment_method,orders_id from ". TABLE_ORDERS ." where customers_email_address='". $email_address_flag ."' and site_id='".$site_id_flag."' order by orders_id desc"); 
           while($orders_payment_array = tep_db_fetch_array($orders_payment_query)){
 
             if($orders_payment_array['payment_method'] != ''){
@@ -3234,10 +3360,12 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
  
   //可配送时间区域
   //获取更新后订单的取引时间
+if($orders_exit_flag == true){
   $orders_time_query = tep_db_query("select torihiki_date,torihiki_date_end from ". TABLE_ORDERS ." where orders_id='". $oID ."'");
   $orders_time_array = tep_db_fetch_array($orders_time_query);
   tep_db_free_result($orders_time_query);
-  if($orders_time_array['torihiki_date'] != '0000-00-00 00:00:00' && $orders_time_array['torihiki_date_end'] != '0000-00-00 00:00:00'){
+}
+  if($orders_time_array['torihiki_date'] != '0000-00-00 00:00:00' && $orders_time_array['torihiki_date_end'] != '0000-00-00 00:00:00' && $orders_exit_flag == true){
     $orders_temp_time_start = explode(' ',$orders_time_array['torihiki_date']);
     $work_start = substr($orders_temp_time_start[1],0,5);
     $orders_temp_time_end = explode(' ',$orders_time_array['torihiki_date_end']);
@@ -3393,7 +3521,7 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
                 $address_style = isset($address_style) && $address_style != '' ? $address_style : 'display: none;';
                 $old_checked = !isset($_POST['address_option']) || $_POST['address_option'] == 'old' ? 'checked' : '';
                 $new_checked = isset($_POST['address_option']) && $_POST['address_option'] == 'new' ? 'checked' : '';
-                $address_historys_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where customers_id='". $order->customer['id'] ."'");
+                $address_historys_query = tep_db_query("select * from ". TABLE_ADDRESS_HISTORY ." where customers_id='".$customer_id_flag ."'");
                 $address_historys_num = tep_db_num_rows($address_historys_query);
                 tep_db_free_result($address_historys_query);
                 if($address_historys_num == 0 && !isset($_POST['address_option'])){
@@ -3441,32 +3569,32 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
             ?> 
             <tr>
             <td class="main">
-            <?php echo $order->tori['houhou'];?>             
+            <?php echo $orders_exit_flag == true ? $order->tori['houhou'] : '';?>             
             <input type="hidden" name="update_viladate" value="true">
-            <input type="hidden" name="update_customer_name" size="25" value="<?php echo tep_html_quotes($order->customer['name']); ?>">
-            <input type="hidden" name="update_customer_email_address" size="45" value="<?php echo $order->customer['email_address']; ?>">
-            <input type="hidden" name='update_info_payment_method' size='25' value='<?php echo $order->info['payment_method']; ?>'>
-            <input type="hidden" name='update_tori_torihiki_date' size='25' value='<?php echo $order->tori['date']; ?>'>
-            <input type="hidden" name='update_tori_torihiki_houhou' size='45' value='<?php echo $order->tori['houhou']; ?>'>
+            <input type="hidden" name="update_customer_name" size="25" value="<?php echo $orders_exit_flag == true ? tep_html_quotes($order->customer['name']) : tep_html_quotes($_SESSION['lastname'].' '.$_SESSION['firstname']); ?>">
+            <input type="hidden" name="update_customer_email_address" size="45" value="<?php echo $orders_exit_flag == true ? $order->customer['email_address'] : $_SESSION['email_address']; ?>">
+            <input type="hidden" name='update_info_payment_method' size='25' value='<?php echo $orders_exit_flag == true ? $order->info['payment_method'] : payment::changeRomaji($pay_method,'code'); ?>'>
+            <input type="hidden" name='update_tori_torihiki_date' size='25' value='<?php echo $orders_exit_flag == true ? $order->tori['date'] : $date_orders.' '.$work_start_hour.':'.$work_start_min.':00&nbsp;_&nbsp;'.$work_end_hour.':'.$work_end_min.':00'; ?>'>
+            <input type="hidden" name='update_tori_torihiki_houhou' size='45' value='<?php echo $orders_exit_flag == true ? $order->tori['houhou'] : ''; ?>'>
 
-            <input name="update_customer_company" size="25" type='hidden' value="<?php echo tep_html_quotes($order->customer['company']); ?>">
-            <input name="update_delivery_company" size="25" type='hidden' value="<?php echo tep_html_quotes($order->delivery['company']); ?>">
-            <input name="update_delivery_name" size="25" type='hidden' value="<?php echo tep_html_quotes($order->delivery['name']); ?>">
-            <input name="update_customer_name_f" size="25" type='hidden' value="<?php echo tep_html_quotes($order->customer['name_f']); ?>">
+            <input name="update_customer_company" size="25" type='hidden' value="<?php echo $orders_exit_flag == true ? tep_html_quotes($order->customer['company']) : tep_html_quotes($_SESSION['company']); ?>">
+            <input name="update_delivery_company" size="25" type='hidden' value="<?php echo $orders_exit_flag == true ? tep_html_quotes($order->delivery['company']) : tep_html_quotes($_SESSION['company']); ?>">
+            <input name="update_delivery_name" size="25" type='hidden' value="<?php echo $orders_exit_flag == true ? tep_html_quotes($order->delivery['name']) : ''; ?>">
+            <input name="update_customer_name_f" size="25" type='hidden' value="<?php echo $orders_exit_flag == true ? tep_html_quotes($order->customer['name_f']) : ''; ?>">
             <input name="update_delivery_name_f" size="25" type='hidden' value="<?php echo tep_html_quotes($order->delivery['name_f']); ?>">
-            <input name="update_customer_street_address" size="25" type='hidden' value="<?php echo tep_html_quotes($order->customer['street_address']); ?>">
-            <input name="update_delivery_street_address" size="25" type='hidden' value="<?php echo tep_html_quotes($order->delivery['street_address']); ?>">
-            <input name="update_customer_suburb" size="25" type='hidden' value="<?php echo tep_html_quotes($order->customer['suburb']); ?>">
-            <input name="update_delivery_suburb" size="25" type='hidden' value="<?php echo tep_html_quotes($order->delivery['suburb']); ?>">
-            <input name="update_customer_city" size="25" type='hidden' value="<?php echo tep_html_quotes($order->customer['city']); ?>">
-            <input name="update_delivery_city" size="25" type='hidden' value="<?php echo tep_html_quotes($order->delivery['city']); ?>">
-            <input name="update_customer_state" size="25" type='hidden' value="<?php echo tep_html_quotes($order->customer['state']); ?>">
-            <input name="update_delivery_state" size="25" type='hidden' value="<?php echo tep_html_quotes($order->delivery['state']); ?>">
-            <input name="update_customer_postcode" size="25" type='hidden' value="<?php echo $order->customer['postcode']; ?>">
-            <input name="update_delivery_postcode" size="25" type='hidden' value="<?php echo $order->delivery['postcode']; ?>">
-            <input name="update_customer_country" size="25" type='hidden' value="<?php echo tep_html_quotes($order->customer['country']); ?>">
-            <input name="update_delivery_country" size="25" type='hidden' value="<?php echo tep_html_quotes($order->delivery['country']); ?>">
-            <input name="update_customer_telephone" size="25" type='hidden' value="<?php echo $order->customer['telephone']; ?>">
+            <input name="update_customer_street_address" size="25" type='hidden' value="<?php echo $orders_exit_flag == true ? tep_html_quotes($order->customer['street_address']) : tep_html_quotes($_SESSION['street_address']); ?>">
+            <input name="update_delivery_street_address" size="25" type='hidden' value="<?php echo $orders_exit_flag == true ? tep_html_quotes($order->delivery['street_address']) : tep_html_quotes($_SESSION['street_address']); ?>">
+            <input name="update_customer_suburb" size="25" type='hidden' value="<?php echo $orders_exit_flag == true ? tep_html_quotes($order->customer['suburb']) : tep_html_quotes($_SESSION['suburb']); ?>">
+            <input name="update_delivery_suburb" size="25" type='hidden' value="<?php echo $orders_exit_flag == true ? tep_html_quotes($order->delivery['suburb']) : tep_html_quotes($_SESSION['suburb']); ?>">
+            <input name="update_customer_city" size="25" type='hidden' value="<?php echo $orders_exit_flag == true ? tep_html_quotes($order->customer['city']) : tep_html_quotes($_SESSION['city']); ?>">
+            <input name="update_delivery_city" size="25" type='hidden' value="<?php echo $orders_exit_flag == true ? tep_html_quotes($order->delivery['city']) : tep_html_quotes($_SESSION['city']); ?>">
+            <input name="update_customer_state" size="25" type='hidden' value="<?php echo $orders_exit_flag == true ? tep_html_quotes($order->customer['state']) : tep_html_quotes($_SESSION['state']); ?>">
+            <input name="update_delivery_state" size="25" type='hidden' value="<?php echo $orders_exit_flag == true ? tep_html_quotes($order->delivery['state']) : tep_html_quotes($_SESSION['state']); ?>">
+            <input name="update_customer_postcode" size="25" type='hidden' value="<?php echo $orders_exit_flag == true ? $order->customer['postcode'] : $_SESSION['postcode']; ?>">
+            <input name="update_delivery_postcode" size="25" type='hidden' value="<?php echo $orders_exit_flag == true ? $order->delivery['postcode'] : $_SESSION['postcode']; ?>">
+            <input name="update_customer_country" size="25" type='hidden' value="<?php echo $orders_exit_flag == true ? tep_html_quotes($order->customer['country']) : tep_html_quotes($_SESSION['country']); ?>">
+            <input name="update_delivery_country" size="25" type='hidden' value="<?php echo $orders_exit_flag == true ? tep_html_quotes($order->delivery['country']) : tep_html_quotes($_SESSION['country']); ?>">
+            <input name="update_customer_telephone" size="25" type='hidden' value="<?php echo $orders_exit_flag == true ? $order->customer['telephone'] : $_SESSION['telephone']; ?>">
             </td>
             </tr>
             </table>
@@ -3583,23 +3711,23 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
               value="'.tep_get_product_by_op_id($orders_products_id).'">' .TEXT_MONEY_SYMBOL. "\n" . '</td>' . "\n" . 
               '      <td class="' . $RowStyle . '" align="right"><div id="update_products['.$orders_products_id.'][a_price]">';
             if ($order->products[$i]['final_price'] < 0) {
-              echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']), true, $order->info['currency'], $order->info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
+              echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']), true, $orders_exit_flag == true ? $order->info['currency'] : $_SESSION['currency'], $orders_exit_flag == true ? $order->info['currency_value'] : $_SESSION['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
             } else {
-              echo $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']), true, $order->info['currency'], $order->info['currency_value']);
+              echo $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']), true, $orders_exit_flag == true ? $order->info['currency'] : $_SESSION['currency'], $orders_exit_flag == true ? $order->info['currency_value'] : $_SESSION['currency_value']);
             }
             echo '</div></td>' . "\n" . 
               '      <td class="' . $RowStyle . '" align="right"><div id="update_products['.$orders_products_id.'][b_price]">';
             if ($order->products[$i]['final_price'] < 0) {
-              echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($order->products[$i]['final_price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
+              echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($order->products[$i]['final_price'] * $order->products[$i]['qty'], true, $orders_exit_flag == true ? $order->info['currency'] : $_SESSION['currency'], $orders_exit_flag == true ? $order->info['currency_value'] : $_SESSION['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
             } else {
-              echo $currencies->format($order->products[$i]['final_price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']);
+              echo $currencies->format($order->products[$i]['final_price'] * $order->products[$i]['qty'], true, $orders_exit_flag == true ? $order->info['currency'] : $_SESSION['currency'], $orders_exit_flag == true ? $order->info['currency_value'] : $_SESSION['currency_value']);
             }
             echo '</div></td>' . "\n" . 
               '      <td class="' . $RowStyle . '" align="right"><div id="update_products['.$orders_products_id.'][c_price]"><b>';
             if ($order->products[$i]['final_price'] < 0) {
-              echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
+              echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'], true, $orders_exit_flag == true ? $order->info['currency'] : $_SESSION['currency'], $orders_exit_flag == true ? $order->info['currency_value'] : $_SESSION['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
             } else {
-              echo $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']);
+              echo $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'], true, $orders_exit_flag == true ? $order->info['currency'] : $_SESSION['currency'], $orders_exit_flag == true ? $order->info['currency_value'] : $_SESSION['currency_value']);
             }
             echo '</b></div></td>' . "\n" . 
               '    </tr>' . "\n";
@@ -3612,7 +3740,7 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
             <td>
             <table width="100%" cellpadding="0" cellspacing="0">
             <tr>
-            <td valign="top"><?php echo "<span class='smalltext'>" .  HINT_DELETE_POSITION . "</span>"; ?></td> <td align="right"><?php echo '<a href="create_order.php?oID=' . $oID . '&Customer_mail='.$order->customer['email_address'].'&site_id=1">' . tep_html_element_button(ADDING_TITLE) . '</a>'; ?></td>
+            <td valign="top"><?php echo "<span class='smalltext'>" .  HINT_DELETE_POSITION . "</span>"; ?></td> <td align="right"><?php echo '<a href="create_order.php?oID=' . $oID . '&Customer_mail='.$email_address_flag.'&site_id=1">' . tep_html_element_button(ADDING_TITLE) . '</a>'; ?></td>
             <!--
             <td valign="top"><?php echo "<span class='smalltext'>" .  HINT_DELETE_POSITION . EDIT_ORDERS_ADD_PRO_READ . "</span>"; ?></td> <td align="right"><?php echo '<a href="' . $PHP_SELF . '?oID=' . $oID . '&action=add_product&step=1">' . tep_html_element_button(ADDING_TITLE) . '</a>'; ?></td>
             -->
@@ -3680,9 +3808,9 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
                 '    <td align="right" class="' . $TotalStyle . '"><b>' ;
               if (($TotalDetails["Price"]+$shipping_fee_total) >= 0){
                 echo $currencies->ot_total_format($TotalDetails["Price"]+$shipping_fee_total, true,
-                    $order->info['currency'], $order->info['currency_value']);
+                    $orders_exit_flag == true ? $order->info['currency'] : $_SESSION['currency'], $orders_exit_flag == true ? $order->info['currency_value'] : $_SESSION['currency_value']);
               }else{
-                echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->ot_total_format($TotalDetails["Price"]+$shipping_fee_total, true, $order->info['currency'], $order->info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
+                echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->ot_total_format($TotalDetails["Price"]+$shipping_fee_total, true, $orders_exit_flag == true ? $order->info['currency'] : $_SESSION['currency'], $orders_exit_flag == true ? $order->info['currency_value'] : $_SESSION['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
               }
               echo '</b>' . 
                 "<input name='update_totals[$TotalIndex][title]' type='hidden' value='" . trim($TotalDetails["Name"]) . "' size='" . strlen($TotalDetails["Name"]) . "' >" . 
@@ -3699,9 +3827,9 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
                 '    <td align="right" class="' . $TotalStyle . '"><b>';
               if($TotalDetails["Price"] >= 0){
                 echo $currencies->format($TotalDetails["Price"], true,
-                    $order->info['currency'], $order->info['currency_value']);
+                    $orders_exit_flag == true ? $order->info['currency'] : $_SESSION['currency'], $orders_exit_flag == true ? $order->info['currency_value'] : $_SESSION['currency_value']);
               }else{
-                echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($TotalDetails["Price"], true, $order->info['currency'], $order->info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
+                echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($TotalDetails["Price"], true, $orders_exit_flag == true ? $order->info['currency'] : $_SESSION['currency'], $orders_exit_flag == true ? $order->info['currency_value'] : $_SESSION['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
               }
               echo '</b>' . 
                 "<input name='update_totals[$TotalIndex][title]' type='hidden' value='" . trim($TotalDetails["Name"]) . "' size='" . strlen($TotalDetails["Name"]) . "' >" . 
@@ -3729,7 +3857,7 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
               echo '  <tr>' . "\n" . 
                 '    <td align="left" class="' . $TotalStyle . '">&nbsp;</td>' . 
                 '    <td align="right" class="' . $TotalStyle . '"><b>' . trim($TotalDetails["Name"]) . "</b><input name='update_totals[$TotalIndex][title]' type='hidden' size='" . $max_length . "' value='" . trim($TotalDetails["Name"]) . "'>" . '</td>' . "\n" .
-                '    <td align="right" class="' . $TotalStyle . '"><b>' . $currencies->format($TotalDetails["Price"], true, $order->info['currency'], $order->info['currency_value']) . '</b>' . 
+                '    <td align="right" class="' . $TotalStyle . '"><b>' . $currencies->format($TotalDetails["Price"], true, $orders_exit_flag == true ? $order->info['currency'] : $_SESSION['currency'], $orders_exit_flag == true ? $order->info['currency_value'] : $_SESSION['currency_value']) . '</b>' . 
                 "<input name='update_totals[$TotalIndex][value]' type='hidden' value='" . $TotalDetails["Price"] . "' size='6' >" . 
                 "<input name='update_totals[$TotalIndex][class]' type='hidden' value='" . $TotalDetails["Class"] . "'>\n" . 
                 "<input type='hidden' name='update_totals[$TotalIndex][total_id]' value='" . $TotalDetails["TotalID"] . "'>" . '</b></td>' . 

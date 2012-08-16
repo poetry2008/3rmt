@@ -16,35 +16,6 @@ if(isset($Customer_mail) && $Customer_mail != '' && isset($site_id) && $site_id 
 }
 switch($action){
 case 'add_product':
-  if($step == 2){
-    //创建订单
-    $orders_query = tep_db_query("select orders_id from " . TABLE_ORDERS . " where orders_id = '" . tep_db_input($oID) . "'");
-    if (!tep_db_num_rows($orders_query)) {
-      $currency_text  = DEFAULT_CURRENCY . ",1";
-      if(isset($_POST['Currency']) && !empty($_POST['Currency']))  {
-        $currency_text = tep_db_prepare_input($_POST['Currency']);
-      }
-
-
-     //开始生成订单
-     $currency_array = explode(",", $currency_text);
-     $currency = $currency_array[0];
-     $currency_value = $currency_array[1];
-     $insert_id = $oID;
-     $sql_data_array = array('orders_id'     => $insert_id,
-			'customers_id'                => $customer_id,	
-			'date_purchased'              => 'now()', 
-			'orders_status'               => DEFAULT_ORDERS_STATUS_ID,
-			'currency'                    => $currency,
-			'currency_value'              => $currency_value,
-			'orders_wait_flag'            => '1'
-			); 
-     //创建订单
-     tep_db_perform(TABLE_ORDERS, $sql_data_array);
-
-    }
-    tep_db_free_result($orders_query); 
-  }
         if($step == 5)
         {
           // 2.1 GET ORDER INFO #####
@@ -297,6 +268,7 @@ case 'add_product':
       }
 
 $order_exists = true;
+/*
 if (isset($_GET['oID'])) {
     $oID = tep_db_prepare_input($_GET['oID']);
 
@@ -305,7 +277,8 @@ if (isset($_GET['oID'])) {
       $order_exists = false;
       $messageStack->add(sprintf(ERROR_ORDER_DOES_NOT_EXIST, $oID), 'error');
     }
-  }
+}
+*/
 if(isset($_SESSION['payment_bank_info'])){
   unset($_SESSION['payment_bank_info']); 
 }

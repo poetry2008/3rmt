@@ -13,29 +13,49 @@ if(isGet()){
 require(DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_CREATE_ORDER_PROCESS);
 
 $oID = tep_db_prepare_input($_POST['oID']);
+$_SESSION['$oID'] = $oID;
 $customer_id    = tep_db_prepare_input($_POST['customers_id']);
+$_SESSION['customer_id'] = $customer_id;
 $firstname      = tep_db_prepare_input($_POST['firstname']);
+$_SESSION['firstname'] = $firstname;
 $lastname       = tep_db_prepare_input($_POST['lastname']);
+$_SESSION['lastname'] = $lastname;
 $email_address  = tep_db_prepare_input($_POST['email_address']);
-
+$_SESSION['email_address'] = $email_address;
 $telephone      = isset($_POST['telephone']) ? tep_db_prepare_input($_POST['telephone']) : '';
+$_SESSION['telephone'] = $telephone;
 $fax            = tep_db_prepare_input($_POST['fax']);
+$_SESSION['fax'] = $fax;
 $street_address = isset($_POST['street_address']) ? tep_db_prepare_input($_POST['street_address']) : '';
+$_SESSION['street_address'] = $street_address;
 $company        = isset($_POST['company']) ? tep_db_prepare_input($_POST['company']) : '';
+$_SESSION['company'] = $company;
 $suburb         = isset($_POST['suburb']) ? tep_db_prepare_input($_POST['suburb']) : '';
+$_SESSION['suburb'] = $suburb;
 $postcode       = isset($_POST['postcode']) ? tep_db_prepare_input($_POST['postcode']) : '';
+$_SESSION['postcode'] = $postcode;
 $city           = isset($_POST['city']) ? tep_db_prepare_input($_POST['city']) : '';
+$_SESSION['city'] = $city;
 $zone_id        = isset($_POST['zone_id']) ? tep_db_prepare_input($_POST['zone_id']) : '';
+$_SESSION['zone_id'] = $zone_id;
 $state          = isset($_POST['state']) ? tep_db_prepare_input($_POST['state']) : '';
+$_SESSION['state'] = $state;
 $country        = isset($_POST['country']) ? tep_db_prepare_input($_POST['country']) : '';
-
+$_SESSION['country'] = $country;
 $site_id        = tep_db_prepare_input($_POST['site_id']);
+$_SESSION['site_id'] = $site_id;
 $format_id      = "1";
+$_SESSION['format_id'] = $format_id;
 $size           = "1";
+$_SESSION['size'] = $size;
 $new_value      = "1";
+$_SESSION['new_value'] = $new_value;
 $error          = false; // reset error flag
 $temp_amount    = "0";
 $temp_amount    = number_format($temp_amount, 2, '.', '');
+$_SESSION['temp_amount'] = $temp_amount;
+$currency = $_POST['Currency'];
+$_SESSION['currency'] = $currency;
 
 
 //{{检查信息是否全
@@ -132,61 +152,7 @@ if (!tep_validate_email($email_address)) {
 if ($error){
   require_once 'create_order.php';
   exit(); }
-
-//开始更新订单
-
 $insert_id = $oID;
-$sql_data_array = array('customers_id'                => $customer_id,
-			'customers_name'              => tep_get_fullname($firstname,$lastname),
-			'customers_company'           => $company,
-			'customers_street_address'    => $street_address,
-			'customers_suburb'            => $suburb,
-			'customers_city'              => $city,
-			'customers_postcode'          => $postcode,
-			'customers_state'             => $state,
-			'customers_country'           => $country,
-			'customers_telephone'         => $telephone,
-			'customers_email_address'     => $email_address,
-			'customers_address_format_id' => $format_id,
-			'delivery_company'            => $company,
-			'delivery_street_address'     => $street_address,
-			'delivery_suburb'             => $suburb,
-			'delivery_city'               => $city,
-			'delivery_postcode'           => $postcode,
-			'delivery_state'              => $state,
-			'delivery_country'            => $country,
-			'delivery_address_format_id'  => $format_id,
-			'billing_name'                => tep_get_fullname($firstname,$lastname),
-			'billing_company'             => $company,
-			'billing_street_address'      => $street_address,
-			'billing_suburb'              => $suburb,
-			'billing_city'                => $city,
-			'billing_postcode'            => $postcode,
-			'billing_state'               => $state,
-			'billing_country'             => $country,
-			'billing_address_format_id'   => $format_id,
-			'orders_status'               => DEFAULT_ORDERS_STATUS_ID,
-			'site_id'                     => $site_id,
-			'orders_wait_flag'            => '1'
-			); 
-$_SESSION['payment_bank_info'][$insert_id] = $comment_arr['payment_bank_info'];
-if(isset($comment_arr['payment_bank_info']['add_info'])&&
-    $comment_arr['payment_bank_info']['add_info']){
-$sql_data_array['orders_comment'] = $comment_arr['comment'];
-}
-//更新订单
-tep_db_perform(TABLE_ORDERS, $sql_data_array,'update','orders_id=\''.$oID.'\'');
-
-last_customer_action();
-orders_updated($insert_id);
-
-//$sql_data_array = array('orders_id' => $insert_id, 
-              //'orders_status_id' => $new_value, 
-              //'date_added' => 'now()', 
-              //'customer_notified' => '1',
-              //'comments' => $comment_arr['comment']);
-//tep_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
-
 $payment_bank_info = array(); 
 
 // 1.3.1 Update orders_products Table
@@ -264,9 +230,6 @@ $payment_bank_info = array();
           $products_delete = true;
         }
       }
-
-      $orders_type_str = tep_get_order_type_info($oID);
-      tep_db_query("update `".TABLE_ORDERS."` set `orders_type` = '".$orders_type_str."' where orders_id = '".tep_db_input($oID)."'");
 
       //更新 orders_total 
       $orders_price_total = 0;

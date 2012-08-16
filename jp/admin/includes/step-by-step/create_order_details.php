@@ -441,10 +441,18 @@ if(isset($_GET['oID']) && $_GET['oID'] != ''){
 }else{
   $oID = date("Ymd") . '-' . date("His") . tep_get_order_end_num();
 }
+$orders_oid_query = tep_db_query("select orders_id from ". TABLE_ORDERS ." where orders_id='".$oID."'");
+$ordres_oid_num_rows = tep_db_num_rows($orders_oid_query);
+tep_db_free_result($orders_oid_query);
+$orders_exit_flag = false;
+if($ordres_oid_num_rows > 0){
+
+  $orders_exit_flag = true;
+}
 ?>
 
 <!-- Begin Products Listing Block --> 
-            <?php
+          <?php
             $order = new order($oID);
             // Override order.php Class's Field Limitations
             $index = 0;
@@ -519,8 +527,16 @@ if($index > 0){
             <td class="dataTableContent" align="right"><?php echo TABLE_HEADING_TOTAL_AFTER;?></td>
             </tr>
 
-            <?php
-            $only_buy= true;
+          <?php
+          $currency_text  = DEFAULT_CURRENCY . ",1";
+          if(isset($_SESSION['Currency']) && !empty($_SESSION['Currency']))  {
+            $currency_text = tep_db_prepare_input($_SESSION['Currency']);
+          }
+          $currency_array = explode(",", $currency_text);
+          $currency = $currency_array[0];
+          $currency_value = $currency_array[1];
+          $_SESSION['currency_value'] = $currency_value;
+          $only_buy= true;
           for ($i=0; $i<sizeof($order->products); $i++) {
             $orders_products_id = $order->products[$i]['orders_products_id'];
             if(!tep_get_bflag_by_product_id($orders_products_id)){
@@ -567,23 +583,23 @@ if($index > 0){
               value="'.tep_get_product_by_op_id($orders_products_id).'">' .tep_display_currency(number_format(abs($order->products[$i]['final_price']),2)).TEXT_MONEY_SYMBOL ."\n" . '</td>' . "\n" . 
               '      <td class="' . $RowStyle . '" align="right"><div id="update_products['.$orders_products_id.'][a_price]">';
             if ($order->products[$i]['final_price'] < 0) {
-              echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']), true, $order->info['currency'], $order->info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
+              echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']), true, $orders_exit_flag == true ? $order->info['currency'] : $_SESSION['currency'], $orders_exit_flag == true ? $order->info['currency_value'] : $currency_value)).'</font>'.TEXT_MONEY_SYMBOL;
             } else {
-              echo $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']), true, $order->info['currency'], $order->info['currency_value']);
+              echo $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']), true, $orders_exit_flag == true ? $order->info['currency'] : $_SESSION['currency'], $orders_exit_flag == true ? $order->info['currency_value'] : $currency_value);
             }
             echo '</div></td>' . "\n" . 
               '<td class="' . $RowStyle . '" align="right"><div id="update_products['.$orders_products_id.'][b_price]">';
             if ($order->products[$i]['final_price'] < 0) {
-              echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($order->products[$i]['final_price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
+              echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format($order->products[$i]['final_price'] * $order->products[$i]['qty'], true, $orders_exit_flag == true ? $order->info['currency'] : $_SESSION['currency'], $orders_exit_flag == true ? $order->info['currency_value'] : $currency_value)).'</font>'.TEXT_MONEY_SYMBOL;
             } else {
-              echo $currencies->format($order->products[$i]['final_price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']);
+              echo $currencies->format($order->products[$i]['final_price'] * $order->products[$i]['qty'], true, $orders_exit_flag == true ? $order->info['currency'] : $_SESSION['currency'], $orders_exit_flag == true ? $order->info['currency_value'] : $currency_value);
             }
             echo '</div></td>' . "\n" . 
               '      <td class="' . $RowStyle . '" align="right"><div id="update_products['.$orders_products_id.'][c_price]"><b>';
             if ($order->products[$i]['final_price'] < 0) {
-              echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value'])).'</font>'.TEXT_MONEY_SYMBOL;
+              echo '<font color="#ff0000">'.str_replace(TEXT_MONEY_SYMBOL, '', $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'], true, $orders_exit_flag == true ? $order->info['currency'] : $_SESSION['currency'], $orders_exit_flag == true ? $order->info['currency_value'] : $currency_value)).'</font>'.TEXT_MONEY_SYMBOL;
             } else {
-              echo $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']);
+              echo $currencies->format(tep_add_tax($order->products[$i]['final_price'], $order->products[$i]['tax']) * $order->products[$i]['qty'], true, $orders_exit_flag == true ? $order->info['currency'] : $_SESSION['currency'], $orders_exit_flag == true ? $order->info['currency_value'] : $currency_value);
             }
             echo '</b></div></td>' . "\n" . 
               '    </tr>' . "\n";
