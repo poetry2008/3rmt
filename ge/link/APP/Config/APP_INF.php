@@ -1,5 +1,5 @@
 <?php
-error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);
+error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE & ~E_WARNING);
 ini_set("display_errors", "On");
 
 // 定义应用程序设置
