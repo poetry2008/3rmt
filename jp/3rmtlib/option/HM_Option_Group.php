@@ -10,7 +10,7 @@ class HM_Option_Group extends Option_DbRecord
   }
   function getItems()
   {
-    $sql = "select * from ".TABLE_OPTION_ITEM." where group_id = ".$this->id  ." and status = '1' order by sort_num";
+    $sql = "select * from ".TABLE_OPTION_ITEM." where group_id = ".$this->id  ." and status = '1' order by sort_num,title";
     $items =  $this->getResultObjects($sql,'HM_Option_Item');
     foreach($items as $key=>$item){
       $item->init();

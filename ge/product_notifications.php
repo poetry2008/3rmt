@@ -124,7 +124,7 @@
           </tr>
           </table>
           </form>
-          <table width="100%">
+          <table width="100%" class="box_des_size">
 <?php
   } else {
 ?>
@@ -139,7 +139,7 @@
           </tr>
           </table>
           <?php echo tep_draw_form('global', tep_href_link(FILENAME_PRODUCT_NOTIFICATIONS, 'action=global_notify', 'SSL')); ?>
-          <table width="100%">
+          <table width="100%" class="box_des_size">
           <tr>
             <td class="main"><?php echo tep_draw_checkbox_field('global', 'enable') . '&nbsp;' . TEXT_ENABLE_GLOBAL_NOTIFICATIONS; ?></td>
           </tr>
@@ -148,7 +148,7 @@
           </tr>
           </table>
           </form>
-          <table>
+          <table class="box_des_size">
           <tr>
             <td class="main"><b><?php echo HEADING_PRODUCT_NOTIFICATIONS; ?></b></td>
           </tr>
@@ -157,7 +157,7 @@
           </tr>
           </table>
           <?php echo tep_draw_form('notifications', tep_href_link(FILENAME_PRODUCT_NOTIFICATIONS, 'action=update_notifications', 'SSL')); ?>
-          <table width="100%">
+          <table width="100%" class="box_des_size">
 <?php
     // ccdd
     $products_query = tep_db_query("

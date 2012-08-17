@@ -2,7 +2,6 @@
 /*
   $Id$
 */
-
   require('includes/application_top.php');
   require('includes/classes/http_client.php');
   require(DIR_WS_ACTIONS.'checkout_shipping.php');
@@ -1379,12 +1378,12 @@ unset($_SESSION['shipping_session_flag']);
       }
   ?>
   <tr><td> 
-   <table border="0" width="100%" cellspacing="0" cellpadding="2" class="font_size14">
+   <table border="0" width="100%" cellspacing="0" cellpadding="2" class="size_body">
      <tr>
        <td><?php tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td>
        <td class="main">
          <input type="radio" name="address_option" value="old" onClick="address_option_show('old');<?php echo $address_option_list_flag;?>" <?php echo $checked_str_old;?>><?php echo TABLE_OPTION_OLD; ?>
-         <input type="radio" name="address_option" value="new" onClick="address_option_show('new');" <?php echo $checked_str_new;?>><?php echo TABLE_OPTION_NEW; ?> 
+         <input type="radio" name="address_option" value="new" onClick="address_option_show('new');" <?php echo $checked_str_new;?>><?php echo TABLE_OPTION_NEW; ?>
         </td></tr>
         </table>
 </td>
@@ -1396,7 +1395,7 @@ unset($_SESSION['shipping_session_flag']);
   <tr><td height="6"></td></tr>
                       <tr>
                         <td>
-                          <table border="0" width="100%" cellspacing="0" cellpadding="2" id="address_show" class="font_size14">
+                          <table border="0" width="100%" cellspacing="0" cellpadding="2" id="address_show" class="size_body">
                           <?php
                             if($quest_array['customers_guest_chk'] == 0){
                           ?>
@@ -1420,7 +1419,7 @@ unset($_SESSION['shipping_session_flag']);
 ?>
           <tr> 
             <td>
-            <table><tr><td class="main"><b><?php echo TABLE_HEADING_SHIPPING_ADDRESS; ?></b></td></tr></table>
+            <table class="box_des_size"><tr><td class="main"><b><?php echo TABLE_HEADING_SHIPPING_ADDRESS; ?></b></td></tr></table>
             <table class="formArea" border="0" width="100%" cellspacing="1"> 
                 <tr> 
                   <td>
@@ -1520,7 +1519,7 @@ if (!isset($torihikihouhou_error)) $torihikihouhou_error=NULL;
  </td>
  </tr>
 </table>
-<table>
+<table class="box_des_size">
 <?php
 if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) && $_SESSION['date'] != '' && $date_session_flag == true)){
 

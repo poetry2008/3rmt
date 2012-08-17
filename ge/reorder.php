@@ -171,9 +171,8 @@ document.onclick=function(e){
         and site_id = '".SITE_ID."'
   ");
   $NewOid = tep_db_fetch_array($NewOidQuery);
-  
-  # load the selected shipping module(convenience_store)
-  // load the before_process function from the payment modules
+
+// load the before_process function from the payment modules
   $payment_modules->before_process($payment_code);
 
   require(DIR_WS_CLASSES . 'order_total.php');
@@ -196,7 +195,6 @@ document.onclick=function(e){
     $attributes_exist = '0';
     $products_ordered_attributes = '';
 //------insert customer choosen option eof ----
-   
     $attribute_len_array = array();
     $attribute_max_len = 0;
 
@@ -235,7 +233,7 @@ document.onclick=function(e){
 
     $products_ordered .= '注文商品' .  str_repeat('　',intval(($attribute_max_len - mb_strlen('注文商品', 'utf-8')))).'：'.$o->products[$i]['name'];
     if(tep_not_null($o->products[$i]['model'])) {
-    $products_ordered .= ' (' . $o->products[$i]['model'] . ')';
+      $products_ordered .= ' (' . $o->products[$i]['model'] . ')';
     }
     
     // ccdd
@@ -858,8 +856,10 @@ function orderConfirmPage(){
               <input type='text' name='order_id_2' class="input_text" maxlength='8' style='width:80px' >
               <a href="/reorder2.php">注文番号忘れた?</a>
               <br >
-              <font color='red' style='font-size:12px'>例：20******-********<br >
+			  <div class="reorder_clear">
+              <font color='red'>例：20******-********<br >
               注文書に記載された20から始まる8桁の数字-8桁の数字をご入力ください。</font>
+			  </div>
             </td>
           </tr>
           <tr>
@@ -869,7 +869,8 @@ function orderConfirmPage(){
             </td>
           </tr>
           <tr>
-            <td colspan='2' align="center" style="text-align:center;">
+		  <td width="110">&nbsp;</td>
+            <td align="left">
               <input type='image' src="includes/languages/japanese/images/buttons/button_continue.gif" alt="次へ進む" title="次へ進む" >
               <input type='image' src="includes/languages/japanese/images/buttons/button_reset_01.gif" alt="クリア" title="クリア" onClick="javascript:document.order.reset();return false;" >
             </td>

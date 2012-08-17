@@ -19,7 +19,7 @@ h1 {
     color:#fff;
 }
 h2 {
-    font-size:14px;
+    font-size:12px;
     margin:0px;
     padding:0px;
     color:#99CC00;
@@ -36,13 +36,13 @@ h3 {
 }
 h4 {
     font-weight:normal;
-    font-size:14px;
+    font-size:12px;
     margin:0px;
     padding:0px;
     color:#ffffff;
 }
 p {
-    font-size:14px;
+    font-size:12px;
     color:#ffffff;
     line-height:120%;
     margin:0px;
@@ -90,14 +90,14 @@ dd {
 }
 #header .header_div01{
 	position:absolute;
-	font-size:10px;
+	font-size:12px;
 	width:770px;
 }
 .header1 {
 	float:left;
 	display: inline;
     font-weight:normal;
-    font-size:10px;
+    font-size:12px;
     margin:0px 0px 15px 0px;
     padding:0px 0px 0px 10px;
     *padding:1px 0 0 10px;
@@ -105,7 +105,7 @@ dd {
 }
 .header2 {
 	float:right;
-    font-size:10px;
+    font-size:12px;
 	padding:0;
 	*line-height:13px;
 }
@@ -129,7 +129,7 @@ dd {
     padding-left: 10px;
 }
 #l_menu #box .categories_tree {
-    font-size: 10px;
+    font-size: 12px;
     color: #FFF;
     margin:0px;
     padding-left:6px;
@@ -191,20 +191,20 @@ TABLE.formArea {
 	border:1px solid #ccc;
 	margin-top:15px;   
 	*margin-top:5px;
-	font-size:14px;                        
+	font-size:12px;                        
 }
 /* ---------------------------
 TD：form eria（title）
 --------------------------- */
 TD.formAreaTitle {
-    font-size: 14px;                             
+    font-size: 12px;                             
     font-weight: bold;                             
 }
 /* ---------------------------
 TD：main
 --------------------------- */
 P.main {
-    font-size: 14px;                                
+    font-size: 12px;                                
     line-height: 1.5;                               
     padding: 0;
 }
@@ -213,12 +213,12 @@ P.main {
 TD,SPAN：small text（message）
 --------------------------- */
 SPAN.smallText, P.smallText {
-    font-size: 10px;
+    font-size: 12px;
     line-height: 1.5;
     padding: 0;
 }
 .smallText {
-    font-size: 14px;
+    font-size: 12px;
     line-height: 1.5;
 }
 div.headerNavigation {
@@ -251,14 +251,14 @@ searching
 --------------------------- */
 .infoBoxNoticeContents {
     background: #FFE6E6;                        
-    font-size: 10px;                             
+    font-size: 12px;                             
     color:#000;
 }
 /* ---------------------------
 TD：information box（title）
 --------------------------- */
 TD.infoBoxHeading {
-    font-size: 11px;                              
+    font-size: 12px;                              
     font-weight: bold;                            
     background: #bbc3d3;                            
     color: #fff;                              
@@ -278,7 +278,7 @@ SPAN.errorText {
 /* left menu
 */
 #l_menu {
-    font-size:10px;
+    font-size:12px;
     width:163px;
     margin:0;
     padding:0;
@@ -310,7 +310,7 @@ SPAN.errorText {
     color:#FFF;
 }
 #r_menu td, #r_menu ol {
-    font-size:10px;
+    font-size:12px;
 }
 #r_menu img {
     margin:3px 0px 0px 7px;
@@ -328,7 +328,7 @@ SPAN.errorText {
 }
 #r_links p {
     width:115px;
-    font-size:13px;
+    font-size:14px;
     color:#fff;
     line-height:120%;
     margin:0px 0px 5px 7px;
@@ -347,7 +347,7 @@ SPAN.errorText {
 /* content
 */
 #content {
-    font-size:14px;
+    font-size:12px;
     width:474px;
     color:#fff;
     margin:0;
@@ -414,7 +414,7 @@ padding:0 15px 0 35px;
 .sub_menu {
     font-size:14px;
     color:#fff;
-    width:435px;
+    width:450px;
     margin:10px 0px 10px 0px;
     padding:0;
     line-height:120%;
@@ -431,15 +431,19 @@ padding-left:21px;
 .p_list {
     margin:0px;
     padding:10px 0px;
-    font-size:10px;
+    font-size:12px;
     text-align:left;
 }
 .box_des {
-    font-size:14px;
+    font-size:12px;
     color: #FFF;
     padding-bottom: 5px;
     padding-left: 0px;
     padding-top: 5px;
+}
+.box_des_size {
+    font-size:12px;
+    color: #FFF;
 }
 .box_des01 {
     font-size:12px;
@@ -464,7 +468,7 @@ p.box_des{
 */
 #f_menu {
     clear:both;
-    font-size:10px;
+    font-size:12px;
     width:790px;
     text-align:center;
     margin:0px;
@@ -472,7 +476,7 @@ p.box_des{
 }
 #footer {
     clear:both;
-    font-size:10px;
+    font-size:12px;
     width:790px;
     height:95px;
     background:url(../images/design/oc/footer.jpg) no-repeat;
@@ -527,10 +531,10 @@ form {
 /* mail magazine
 */
 .magazine {
-    font-size:10px;
+    font-size:12px;
 }
 .pageHeading {
-    font-size: 20px;
+    font-size:14px;
     color: #FFFFFF;
     font-weight:bold;
     margin-top:10px;
@@ -559,7 +563,7 @@ form {
 }
 .product_listing_content02 {
     width:100%;
-	font-size:13px;
+	font-size:14px;
 }
 .l_m_categories_tree a {
     color:#fff;
@@ -590,6 +594,7 @@ form {
 .comment {
     width:95%;
 }
+.comment table{ font-size:12px;}
 .main h3 {
     height:12px;
 *+height:26px;
@@ -735,8 +740,8 @@ width:150px;
 display:block;
 overflow:hidden;
 text-indent:-2000px;
-width:55px;
-height:25px;
+width:52px;
+height:22px;
 background-image: url(../includes/languages/japanese/images/buttons/button_delete02.gif);
 }
 .shopping_cart_continue{
@@ -987,7 +992,7 @@ list-style-type:disc;
 margin-left:8px;
 }
 .best_sellers_main{
-font-size:10px;
+font-size:12px;
 overflow:hidden;
 width:131px;
 margin:3px 0 0 7px;
@@ -1062,7 +1067,7 @@ checkbox・mouse over
 checkbox select row
 --------------------------- */
 .moduleRowSelected {background-color: #666;}
-.bold {font-weight:bold; margin:0; padding:0 0 5px 20px;}
+.bold {font-weight:bold; margin:0; padding:0 0 5px 20px; font-size:12px;}
 .contact_us_warpper{ clear:both;}
 .tcol{ clear:both; border-bottom:1px dotted #444; width:96%;}
 .lcol{ clear:both; padding:10px 0; overflow:hidden; border-bottom:1px dotted #444; width:96%;}
@@ -1081,9 +1086,9 @@ checkbox select row
 	clear:both;
 	overflow:hidden;
 	height:100%;
-	padding:0 10px 5px 10px; 
+	padding:0 10px 5px 16px; 
 	margin-left:1px;
-	font-size:16px;
+	font-size:12px;
 }
 .status_warpper label{width:140px;float:left; padding:3px;}
 .status_warpper input{ float:left;}
@@ -1104,7 +1109,7 @@ background-color:#E0E0E0;
 	font-size:12px; 
 }
 .open_tele{ color: #3399CC;}
-.error{ color:#FF0000; font-size:14px;}
+.error{ color:#FF0000; font-size:12px;}
 #infomessage{
 	font-weight: bold;
 }
@@ -1169,7 +1174,7 @@ padding:10px;
 background:#000;
 width:418px;
 }
-.c_pay_info {padding:3px; border:1px solid #fff; font-size:14px; margin:15px 0 5px 0;*margin-bottom:0;}
+.c_pay_info {padding:3px; border:1px solid #fff; font-size:12px; margin:15px 0 5px 0;*margin-bottom:0;}
 .main03{ padding:20px 0 0 0;*padding:15px 0 0 8px; }
 .checkout_s_link{ margin:13px 0 8px 0; *margin:13px 0 5px 0;}
 .c_shipping{ margin-left:10px; margin-top:3px;}
@@ -1216,7 +1221,7 @@ searching
  table-layout:fixed;
  width:440px;
 }
-.active_email_name{ font-size:11px; width:80px;}
+.active_email_name{ font-size:12px; width:80px;}
 .active_email input{ width:300px; width:220px\9;}
 .comment_faq {
     font-size: 14px;
@@ -1236,11 +1241,11 @@ searching
 .faq_answer { padding:5px;}
 .faq_answer div { float:left;}
 .faq_answer_row { width:400px;  word-wrap:break-word; word-break:break-all; overflow:hidden; display:block; float:left;}
-.header_Navigation { margin:5px; color:#339966; padding-top:10px; width:450px; line-height:20px; font-size:10px; float:left; word-wrap:break-word;}
+.header_Navigation { margin:5px; color:#339966; padding-top:10px; width:450px; line-height:20px; font-size:14px; float:left; word-wrap:break-word;}
 .header_Navigation a { color:#339966;}
 .cemail_input_01 { float:left; width:150px;}
 .comment_preoder { width:95%;}
-.preorder_active_info{ background-color:#ccc; line-height:20px; font-size:13px;}
+.preorder_active_info{ background-color:#ccc; line-height:20px; font-size:14px;}
 .preorder_active_info td{ background-color:#000; padding-left:2px;}
 .preorder_active_line { border-bottom:1px dashed #fff; margin:0 0 15px 0;}
 .preorderBarcurrent{ font-size:14px; color:#fff;}
@@ -1253,7 +1258,7 @@ searching
 }
 .comment_change_preorder{ width:96%;}
 .comment img, .comment_change_preorder img { vertical-align:middle\9;}
-.preorser_formArea{ background-color:#fff; font-size:13px; line-height:20px;}
+.preorser_formArea{ background-color:#fff; font-size:14px; line-height:20px;}
 .preorser_formArea td{ background-color:#000; padding-left:2px;}
 .formArea_td{
 	width:120px;
@@ -1299,7 +1304,7 @@ searching
 	float:right;
 }
 .cp_description{ 
-	font-size: 14px; 
+	font-size: 12px; 
 	padding:0 20px;
 	margin:5px 0;
 }
@@ -1375,12 +1380,12 @@ searching
 .popup_notice_button a{
 	margin:0 20px;
 }
-.footer_links{ width:780px;}
-.checkoutBarCurrent, .checkoutBarTo{ font-size:14px;}
+.footer_links{ width:780px; font-size:12px;}
+.checkoutBarCurrent, .checkoutBarTo{ font-size:12px;}
 /*option*/
 .option_table{
 	width:100%;
-	font-size:14px;
+	font-size:12px;
 }
 .option_name{
 	width:85px;
@@ -1393,8 +1398,7 @@ searching
 }
 .option_error{
 	color:#ff0000;
-	font-size:14px;
-	/*padding-left:10px;*/
+	font-size:12px;
 	line-height:1.5;
 }
 .option_product_title{
@@ -1403,7 +1407,6 @@ searching
 	
 }
 .option_render{
-	border:1px solid #ccc;
 	padding:5px;
 }
 .option_render table{
@@ -1646,5 +1649,24 @@ TEXTAREA {
 	padding:0 5px 10px 5px;
 	font-size:14px;	
 }
-.red{ color:#FF0000;}
+.red{ color:#FF0000; font-size:12px;}
 .line{ margin-top:10px; font-size:14px;}
+.des_both{ line-height:20px;}
+.reorder_clear{
+	font-size:12px;
+	margin-left:5px;
+	*margin-left:7px;
+}
+.formAreaTitle_both{
+	font-size: 14px;                             
+    font-weight: bold;
+	padding:10px 0 3px 0;
+	*padding:7px 0 13px 0;
+}
+.formAreaTitle_both_top{
+	font-size: 14px;                             
+    font-weight: bold;
+	padding:15px 0 0 0;
+	*padding:17px 0 10px 0;
+}
+.size_body{ font-size:12px;}

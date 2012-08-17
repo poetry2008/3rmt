@@ -608,7 +608,7 @@ $(function() {
 <?php
     $rows = 0;
 
-    $item_query_raw = 'select * from '.TABLE_OPTION_ITEM.' where group_id = \''.$_GET['group_id'].'\' order by created_at desc';
+    $item_query_raw = 'select * from '.TABLE_OPTION_ITEM.' where group_id = \''.$_GET['group_id'].'\' order by sort_num,title asc';
     
     $item_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $item_query_raw, $item_query_numrows);
     $item_query = tep_db_query($item_query_raw);

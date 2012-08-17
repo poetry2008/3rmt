@@ -35,11 +35,11 @@
             <?php }?> 
             <tr>
 				<td class="main"><?php echo UPDATE_ENTRY_PASSWORD_TEXT;?></td>
-				<td class="main"><?php echo tep_draw_password_field('u_password', '', 'class="input_text"'); ?>&nbsp;&nbsp;<small><?php echo UPDATE_ENTRY_PASSWORD_READ;?></small></td>
+				<td class="main"><?php echo tep_draw_password_field('u_password', '', 'class="input_text"'); ?>&nbsp;&nbsp;<?php echo UPDATE_ENTRY_PASSWORD_READ;?></td>
 			  </tr>
 			  <tr>
 				<td class="main"><?php echo UPDATE_ENTRY_PASSWORD_AGAINTEXT;?></td>
-				<td class="main"><?php echo tep_draw_password_field('up_password', '', 'class="input_text"'); ?>&nbsp;&nbsp;<small><?php echo UPDATE_ENTRY_PASSWORD_READ;?></small></td>
+				<td class="main"><?php echo tep_draw_password_field('up_password', '', 'class="input_text"'); ?>&nbsp;&nbsp;<?php echo UPDATE_ENTRY_PASSWORD_READ;?></td>
 			  </tr>
           <tr>
             <td colspan="2">

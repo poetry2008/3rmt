@@ -136,7 +136,7 @@ $(document).ready(function(){
 <?php
 /*
   $Id$
-  
+
   顾客详细信息页
 */
 //设置是否有新信息的多语言 
@@ -162,8 +162,7 @@ $(document).ready(function(){
           $a_value = $firstname . tep_draw_hidden_field('firstname');
       }
   } else {
-      $a_value = tep_draw_input_field('firstname',
-                                      $account['customers_firstname'], "class='input_text'") . '&nbsp;' . ENTRY_FIRST_NAME_TEXT;
+      $a_value = tep_draw_input_field('firstname', $account['customers_firstname'], "class='input_text'") . '&nbsp;' . ENTRY_FIRST_NAME_TEXT;
   }
   $address_form->setFormLine('firstname',ENTRY_FIRST_NAME,$a_value);
 
@@ -177,8 +176,7 @@ $(document).ready(function(){
           $a_value = $lastname . tep_draw_hidden_field('lastname');
       }
   } else {
-      $a_value = tep_draw_input_field('lastname',
-                                      $account['customers_lastname'],"class='input_text'") . '&nbsp;' . ENTRY_LAST_NAME_TEXT;
+      $a_value = tep_draw_input_field('lastname', $account['customers_lastname'],"class='input_text'") . '&nbsp;' . ENTRY_LAST_NAME_TEXT;
   }
   $address_form->setFormLine('lastname',ENTRY_LAST_NAME,$a_value);
 
@@ -187,13 +185,13 @@ $(document).ready(function(){
       $a_value = tep_output_string($account['customers_email_address'],false,true);
   } elseif ($error == true) {
       if ($entry_email_address_error == true) {
-          $a_value = tep_draw_input_field('email_address') . '&nbsp;' . ENTRY_EMAIL_ADDRESS_ERROR;
+          $a_value = tep_draw_input_field('email_address') . '&nbsp;<br>' . ENTRY_EMAIL_ADDRESS_ERROR;
       } elseif ($entry_email_address_check_error == true) {
-          $a_value = tep_draw_input_field('email_address') . '&nbsp;' . ENTRY_EMAIL_ADDRESS_CHECK_ERROR;
+          $a_value = tep_draw_input_field('email_address') . '&nbsp;<br>' . ENTRY_EMAIL_ADDRESS_CHECK_ERROR;
       } elseif ($entry_email_address_exists == true) {
-          $a_value = tep_draw_input_field('email_address') . '&nbsp;' . ENTRY_EMAIL_ADDRESS_ERROR_EXISTS;
+          $a_value = tep_draw_input_field('email_address') . '&nbsp;<br>' . ENTRY_EMAIL_ADDRESS_ERROR_EXISTS;
       } elseif ($entry_guest_not_active == true) {
-          $a_value = tep_draw_input_field('email_address') . '&nbsp;' . ENTRY_GUEST_EMAIL_NOT_ACTIVE;
+          $a_value = tep_draw_input_field('email_address') . '&nbsp;<br>' . ENTRY_GUEST_EMAIL_NOT_ACTIVE;
       } else {
           $a_value = $email_address . tep_draw_hidden_field('email_address');
       }
@@ -263,12 +261,12 @@ $(document).ready(function(){
   }
 ?>
   <tr>
-    <td class="formAreaTitle"><br>
+    <td class="formAreaTitle_both_top">
       <?php echo CATEGORY_OPTIONS; ?></td>
   </tr>
   <tr>
     <td class="main">
-      <table border="0" width="100%" cellspacing="0" cellpadding="2" class="formArea">
+      <table border="0" width="100%" cellspacing="0" cellpadding="0" class="formArea">
         <tr>
           <td class="main">
             <table class="box_des" border="0" cellspacing="0" cellpadding="2" width="100%">
@@ -292,27 +290,24 @@ $(document).ready(function(){
   } else {
     echo tep_draw_pull_down_menu('newsletter', $newsletter_array, $account['customers_newsletter']) . '&nbsp;' . ENTRY_NEWSLETTER_TEXT;
   }
-?>
-                </td>
-              </tr>
-              <?php
-  if ($is_read_only == true) {
-    //Not View
-  } else {
+?></td>
+          </tr>
+<?php
+  if ($is_read_only != true) {
     if(substr(basename($PHP_SELF),0,7) == 'create_') {
     $guestchk_array = array(array('id' => '0',
                                    'text' => ENTRY_ACCOUNT_MEMBER),
                               array('id' => '1',
                                    'text' => ENTRY_ACCOUNT_GUEST));
   
-?>
+?>      
               <tr>
                 <td class="main" width="120">&nbsp;<?php echo ENTRY_GUEST; ?></td>
                 <td class="main" style="padding-left:10px; *padding-left:14px;"><?php echo tep_draw_pull_down_menu('guestchk', $guestchk_array, $guestchk, 'onchange="pass_hidd()"'); ?></td>
               </tr>
               <tr>
                 <td>&nbsp;</td>
-                <td><small><span class="redtext">※</span>&nbsp;会員登録をしないで購入することもできます。</small></td>
+                <td><span class="redtext">※</span>&nbsp;会員登録をしないで購入することもできます。</td>
               </tr>
               <?php
     } else {
@@ -391,7 +386,7 @@ $(document).ready(function(){
   ?>
   <tr>
     <td class="main">&nbsp;</td>
-    <td class="main" style="font-size:10px;">
+    <td class="main" >
     <?php echo '&nbsp;'.$p_error_show_str;?> 
     </td>
   </tr>

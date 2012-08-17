@@ -28,7 +28,7 @@
   if (!isset($_GET['order_id'])) {
     tep_redirect(tep_href_link(FILENAME_ACCOUNT_HISTORY, '', 'SSL'));
   }
-  //ccdd
+//ccdd
   $customer_number_query = tep_db_query("select customers_id from " . TABLE_ORDERS .  " where orders_id = '".  tep_db_input(tep_db_prepare_input($_GET['order_id'])) . "' and site_id = ".SITE_ID);
   $customer_number = tep_db_fetch_array($customer_number_query);
   if ($customer_number['customers_id'] != $customer_id) {
@@ -67,7 +67,7 @@
             <tr> 
               <td><table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2"> 
                   <tr> 
-                    <td class="main" colspan="2"><b><?php echo sprintf(HEADING_ORDER_NUMBER, $_GET['order_id']) . ' <small>(' . $order->info['orders_status'] . ')</small>'; ?></b></td> 
+                    <td class="main" colspan="2"><b><?php echo sprintf(HEADING_ORDER_NUMBER, $_GET['order_id']) . ' (' . $order->info['orders_status'] . ')'; ?></b></td> 
                   </tr> 
                   <tr> 
                     <td class="smallText"><?php echo HEADING_ORDER_DATE . ' ' . tep_date_long($order->info['date_purchased']); ?></td> 
@@ -126,11 +126,11 @@
     }
     if ( (isset($order->products[$i]['op_attributes'])) && (sizeof($order->products[$i]['op_attributes']) > 0) ) {
       for ($j=0, $n2=sizeof($order->products[$i]['op_attributes']); $j<$n2; $j++) {
-        echo '<br><small>&nbsp;<i> - ' .  $order->products[$i]['op_attributes'][$j]['option_info']['title'] . ': ' .  str_replace(array("<br>", "<BR>"), '', $order->products[$i]['op_attributes'][$j]['option_info']['value']);
+        echo '<br>&nbsp;<i> - ' .  $order->products[$i]['op_attributes'][$j]['option_info']['title'] . ': ' .  str_replace(array("<br>", "<BR>"), '', $order->products[$i]['op_attributes'][$j]['option_info']['value']);
         if ($order->products[$i]['op_attributes'][$j]['price'] != '0') {
           echo ' ('.$currencies->format($order->products[$i]['op_attributes'][$j]['price']).')';        
         }
-        echo '</i></small>';
+        echo '</i>';
       }
     }
 
@@ -219,7 +219,7 @@
                     <td width="70%" valign="top"><table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2"> 
                         <?php
   for ($i=0, $n=sizeof($order->totals); $i<$n; $i++) {
-    if ($order->totals[$i]['class'] == 'ot_point') {
+   if ($order->totals[$i]['class'] == 'ot_point') {
       $campaign_info_query = tep_db_query("select * from ".TABLE_CUSTOMER_TO_CAMPAIGN." where orders_id = '".$_GET['order_id']."' and site_id = '".SITE_ID."'"); 
       $campaign_info = tep_db_fetch_array($campaign_info_query);
       if ($campaign_info) {
@@ -235,19 +235,20 @@
     echo '              <tr>' . "\n" .
          '                <td class="main" align="right" width="100%">' . $order->totals[$i]['title'] . '</td>' . "\n" .
          '                <td class="main" align="right" nowrap>';
-         if ($order->totals[$i]['class'] == 'ot_point') {
-           $campaign_info_query = tep_db_query("select * from ".TABLE_CUSTOMER_TO_CAMPAIGN." where orders_id = '".$_GET['order_id']."' and site_id = '".SITE_ID."'"); 
-           $campaign_info = tep_db_fetch_array($campaign_info_query);
-           if ($campaign_info) {
-             echo '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format_total(abs($campaign_info['campaign_fee']))).'</font>'.JPMONEY_UNIT_TEXT; 
-           } else {
-             echo '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format_total($order->totals[$i]['value'])).'</font>'.JPMONEY_UNIT_TEXT; 
-           }
-         } else {
-           echo $currencies->format_total($order->totals[$i]['value']); 
-         }
-         echo '</td>' . "\n" .
-         '              </tr>' . "\n";
+    if ($order->totals[$i]['class'] == 'ot_point') {
+      $campaign_info_query = tep_db_query("select * from ".TABLE_CUSTOMER_TO_CAMPAIGN." where orders_id = '".$_GET['order_id']."' and site_id = '".SITE_ID."'"); 
+      $campaign_info = tep_db_fetch_array($campaign_info_query);
+      if ($campaign_info) {
+        echo '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format_total(abs($campaign_info['campaign_fee']))).'</font>'.JPMONEY_UNIT_TEXT; 
+      } else {
+        echo '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->format_total($order->totals[$i]['value'])).'</font>'.JPMONEY_UNIT_TEXT; 
+      }
+    } else {
+      echo $currencies->format_total($order->totals[$i]['value']); 
+    }
+    echo '</td>' . "\n" .
+      '              </tr>' . "\n";
+
     if ($i == 0) {
       echo '              <tr>' . "\n" .
            '                <td class="main" align="right" width="100%">' . TEXT_FEE_HANDLE . '</td>' . "\n" .
@@ -255,7 +256,7 @@
            '              </tr>' . "\n";
     
     }
-    
+
     if ($i == 0) {
       echo '              <tr>' . "\n" .
            '                <td class="main" align="right" width="100%">' . TEXT_SHIPPING_FEE . '</td>' . "\n" .
@@ -276,10 +277,10 @@
               <td><table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
                   <tr class="infoBoxContents"> 
                     <td valign="top"><table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2"> 
-                       <tr> 
+            <tr> 
               <td class="main"><b><?php echo HEADING_ORDER_HISTORY; ?></b></td> 
             </tr> 
-                        <?php
+<?php
 //ccdd
 //todo: need filter
   $statuses_query = tep_db_query("select os.orders_status_name, osh.date_added, osh.comments from " . TABLE_ORDERS_STATUS . " os, " . TABLE_ORDERS_STATUS_HISTORY . " osh where osh.orders_id = '" . $_GET['order_id'] . "' and osh.orders_status_id = os.orders_status_id and os.language_id = '" . $languages_id . "' and osh.customer_notified = '1' order by osh.date_added");

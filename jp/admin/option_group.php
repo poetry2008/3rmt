@@ -239,12 +239,12 @@ $(function() {
 
     if (isset($_GET['search'])) {
       if ($_GET['search'] == '2') {
-        $group_query_raw = 'select * from '.TABLE_OPTION_GROUP.' where name = \''.tep_replace_full_character($_GET['keyword']).'\' order by created_at desc';
+        $group_query_raw = 'select * from '.TABLE_OPTION_GROUP.' where name = \''.tep_replace_full_character($_GET['keyword']).'\' order by sort_num,name asc';
       } else {
-        $group_query_raw = 'select * from '.TABLE_OPTION_GROUP.' where name like \'%'.tep_replace_full_character($_GET['keyword']).'%\' order by created_at desc';
+        $group_query_raw = 'select * from '.TABLE_OPTION_GROUP.' where name like \'%'.tep_replace_full_character($_GET['keyword']).'%\' order by sort_num,name asc';
       }
     } else {
-      $group_query_raw = 'select * from '.TABLE_OPTION_GROUP.' order by created_at desc';
+      $group_query_raw = 'select * from '.TABLE_OPTION_GROUP.' order by sort_num,name asc';
     }
     
     $group_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $group_query_raw, $group_query_numrows);
