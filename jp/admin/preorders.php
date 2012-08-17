@@ -1387,7 +1387,6 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
           while($show_option_row_item = tep_db_fetch_array($option_item_order_query)){
             $all_show_option_id[] = $show_option_row_item['id'];
           }
-          var_dump($all_show_option_id);
           for ($j = 0; $j < $k; $j++) {
             if (is_array($order->products[$i]['attributes'][$j]['option_info'])) {
             $all_show_option[$order->products[$i]['attributes'][$j]['option_item_id']] =
