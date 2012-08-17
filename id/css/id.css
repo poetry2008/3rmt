@@ -948,16 +948,17 @@ Information
 }
 .information_table td {
 	line-height: 20px;
-	padding: 8px;
+	padding: 3px;
 	vertical-align: top;
 	background-color:#fff;
 }
 .information_table td a { font-size:12px;}
 .information_table th {
 	line-height: 20px;
-	padding: 8px;
+	padding: 3px;
 	vertical-align: top;
 	background-color:#DEDEDD;
+	text-align:left;
 }
 /* ---------------------------
 page title
@@ -1901,7 +1902,7 @@ SPAN.newItemInCart {
 CHECKBOX, INPUT, RADIO, SELECT：FORM's input・select item
 --------------------------- */
 CHECKBOX, INPUT, RADIO, SELECT {
-	font-size: 10px;
+	font-size: 12px;
 }
 
 /* ---------------------------
@@ -2566,16 +2567,17 @@ searching
 }
 .information_box td {
 	line-height: 20px;
-	padding: 8px;
+	padding: 3px;
 	vertical-align: top;
 }
 .information_box td a { font-size:12px;}
 .information_box th {
 	line-height: 20px;
-	padding: 8px;
+	padding: 3px;
 	vertical-align: top;
 	background-color:#DEDEDD;
 	font-size:12px;
+	text-align:left;
 }
 .input_width{ width:480px;}
 .table_a_spacing{ margin-bottom:10px;}
@@ -2585,4 +2587,8 @@ searching
 	line-height:1.5;
 	font-size:12px;
 	width:80px;
+}
+#form_error{ 
+	line-height:20px;
+	margin-bottom:5px;
 }

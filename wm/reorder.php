@@ -683,14 +683,14 @@ document.onclick=function(e){
        if(date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == $now_time_date && $min_time_end_str == ''){
           break;
         } 
-       echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'">'.str_replace($oarr, $newarr, date("Y".DATE_YEAR_TEXT."m".DATE_MONTH_TEXT."d".DATE_DAY_TEXT."（l）", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
+       echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'">'.str_replace($oarr, $newarr, date("Y".DATE_YEAR_TEXT."m".DATE_MONTH_TEXT."d".DATE_DAY_TEXT." l ", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
       }
     }
     $j_shipping += 86400;
     $j++;
     if(date('Y-m-d',$j_shipping) == $now_time_date && $min_time_end_str != ''){
 
-      echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'" '. $selected_str .'>'.str_replace($oarr, $newarr, date("Y".DATE_YEAR_TEXT."m".DATE_MONTH_TEXT."d".DATE_DAY_TEXT."（l）", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
+      echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'" '. $selected_str .'>'.str_replace($oarr, $newarr, date("Y".DATE_YEAR_TEXT."m".DATE_MONTH_TEXT."d".DATE_DAY_TEXT." l ", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
       break;
      }
     }
@@ -848,7 +848,7 @@ function orderConfirmPage(){
 <form action="reorder.php" method="post" name='order'>
 <table class="information_table" summary="table">
  <tr>
- <td align="left" bgcolor='#eeeeee'><?php echo TEXT_REORDER_OID_TITLE;?></td>
+ <td align="left" bgcolor='#eeeeee' width="30%"><?php echo TEXT_REORDER_OID_TITLE;?></td>
   <td><input type='text' name='order_id_1' class="input_text" maxlength='8' style='width:80px' >-<input type='text' name='order_id_2' class="input_text" maxlength='8' style='width:80px' >
   <a href="/reorder2.php"><?php echo TEXT_REORDER_OID_FORGET;?></a><br >
   <font color='red' style='font-size:12px'><?php echo TEXT_REORDER_OID_TEXT_INFO;?></font>

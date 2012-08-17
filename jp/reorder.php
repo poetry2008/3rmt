@@ -294,7 +294,7 @@ document.onclick=function(e){
 <input type='hidden' name='order_id' value='<?php echo $order['orders_id']?>' >
 <input type='hidden' name='email' value='<?php echo $order['customers_email_address']?>' >
 <div id="form_error" style="display:none"></div>
-<table class="information_table" summary="table">
+<table class="information_box" summary="table" width="100%" cellpadding="0" cellspacing="2" border="0">
  <tr>
  <td width="30%" bgcolor="#eeeeee"><?php echo TEXT_REORDER_OID_TITLE;?></td>
   <td><?php echo $order['orders_id']?></td>
@@ -677,14 +677,14 @@ document.onclick=function(e){
         if(date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == $now_time_date && $min_time_end_str == ''){
           break;
         } 
-       echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'">'.str_replace($oarr, $newarr, date("Y".DATE_YEAR_TEXT."m".DATE_MONTH_TEXT."d".DATE_DAY_TEXT."（l）", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
+       echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'">'.str_replace($oarr, $newarr, date("Y".DATE_YEAR_TEXT."m".DATE_MONTH_TEXT."d".DATE_DAY_TEXT." l ", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
       }
     }
     $j_shipping += 86400;
     $j++;
     if(date('Y-m-d',$j_shipping) == $now_time_date && $min_time_end_str != ''){
 
-      echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'" '. $selected_str .'>'.str_replace($oarr, $newarr, date("Y".DATE_YEAR_TEXT."m".DATE_MONTH_TEXT."d".DATE_DAY_TEXT."（l）", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
+      echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'" '. $selected_str .'>'.str_replace($oarr, $newarr, date("Y".DATE_YEAR_TEXT."m".DATE_MONTH_TEXT."d".DATE_DAY_TEXT." l ", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
       break;
      }
     }
@@ -693,16 +693,16 @@ document.onclick=function(e){
    <span id="date_error"></span>
 </td></tr>
 <tr>
-<td colspan="2">
+<td colspan="2" id="table_td_p0">
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
   <tr id="shipping_list" style="display:none;">
   <td  valign="top" width="30%" class="main" bgcolor="#eeeeee"><?php echo TEXT_EXPECT_TRADE_TIME; ?></td>
   <td class="main" id="shipping_list_show"></td>
   </tr>
 </table>
-<table border="0" cellpadding="0" cellspacing="0" style=" position:absolute; width:502px;">
+<table border="0" cellpadding="0" cellspacing="0" style=" position:absolute; width:507px;">
 <tr id="shipping_list_min" style="display:none;">
- <td class="main" width="30%">&nbsp;<input type="hidden" id="ele_id" name="ele" value=""></td>
+ <td class="main" width="29%">&nbsp;<input type="hidden" id="ele_id" name="ele" value=""></td>
  <td class="main" id="shipping_list_show_min">
  </td>
  </tr>
@@ -718,7 +718,7 @@ document.onclick=function(e){
  </tr>
 </table>
 <br>
-<table class="information_table" summary="table">
+<table class="information_box" summary="table" width="100%" cellpadding="0" cellspacing="2" border="0">
 <tr>
 <td width="30%" bgcolor="#eeeeee"><?php echo TEXT_REORDER_COMMENT_TITLE;?></td>
 <td><textarea name='comment' id='comment' rows="5"></textarea></td>
@@ -768,7 +768,7 @@ function orderConfirmPage(){
         }
 ?>
 <?php }?>
-  text += "<table class='information_table' summary='table'>\n";
+  text += "<table class='information_box' summary='table' width='100%' cellpadding='0' cellspacing='2' border='0'>\n";
   text += "<tr><td bgcolor='#eeeeee' width='130'>\n";
   text += "<?php echo TEXT_REORDER_TRADE_NO_CHANGE;?>";
   text += "</td><td>\n";
@@ -811,7 +811,7 @@ function orderConfirmPage(){
     text += oldTime + "</td></tr></table><br >\n";
   }
   
-  text += "<table class='information_table' summary='table'>\n"
+  text += "<table class='information_box' summary='table' width='100%' cellpadding='0' cellspacing='2' border='0'>\n"
   text += "<tr><td bgcolor='#eeeeee' width='130'>";
   text += "<?php echo TEXT_REORDER_COMMENT_TITLE;?>";
   text += "</td><td>\n";
@@ -838,7 +838,7 @@ function orderConfirmPage(){
   ?>
 <div class="comment">
 <form action="reorder.php" method="post" name='order'>
-<table class="information_table" summary="table">
+<table class="information_box" summary="table" width="100%" cellpadding="0" cellspacing="2" border="0">
  <tr>
  <td align="left" bgcolor='#eeeeee'><?php echo TEXT_REORDER_OID_TITLE;?></td>
   <td><input type='text' name='order_id_1' class="input_text" maxlength='8' style='width:80px' >-<input type='text' name='order_id_2' class="input_text" maxlength='8' style='width:80px' >

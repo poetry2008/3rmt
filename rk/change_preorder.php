@@ -1253,7 +1253,7 @@ document.forms.order1.submit();
               <?php 
               echo TEXT_PREORDER_POINT_READ.'</div>'; 
               if (isset($point_error)) {
-                echo '<br><font color="#ff0000">'.$point_error.'</font>'; 
+                echo '<div class="clear_both"><font color="#ff0000">'.$point_error.'</font></div>'; 
               }
               ?>
               </td> 
