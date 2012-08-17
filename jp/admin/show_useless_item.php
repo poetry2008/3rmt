@@ -234,7 +234,7 @@ $not_in.=$val.",";
 }
 $not_in=substr($not_in,0,-1);
 $option_group_id=$_GET['option_group_id'];
-$option_item_sql="SELECT *  FROM ".TABLE_OPTION_ITEM." WHERE `group_id`=".$_GET['option_group_id']."  ORDER BY sort_num asc";
+$option_item_sql="SELECT *  FROM ".TABLE_OPTION_ITEM." WHERE `group_id`=".$_GET['option_group_id']."  ORDER BY sort_num,title asc";
 
 //$num_rows=tep_db_num_rows($option_item_query);
 
