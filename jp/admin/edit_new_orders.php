@@ -148,9 +148,9 @@ if (tep_not_null($action)) {
     $orders_query = tep_db_query("select orders_id from " . TABLE_ORDERS . " where orders_id = '" . tep_db_input($oID) . "'");
     if (!tep_db_num_rows($orders_query)) {
       $currency_text  = DEFAULT_CURRENCY . ",1";
-      if(isset($_SESSION['Currency']) && !empty($_SESSION['Currency']))  {
-        $currency_text = tep_db_prepare_input($_SESSION['Currency']);
-      }
+      //if(isset($_SESSION['Currency']) && !empty($_SESSION['Currency']))  {
+        //$currency_text = tep_db_prepare_input($_SESSION['Currency']);
+      //}
 
 
      //开始生成订单
@@ -441,12 +441,10 @@ if (tep_not_null($action)) {
                 get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
                 date('Y'.TEXT_DATE_YEAR.'n'.TEXT_DATE_MONTH.'j'.TEXT_DATE_DAY,strtotime(tep_get_pay_day()))
               ),$comments);
-      if($check_status['payment_method'] != ''){
         if (!tep_is_oroshi($check_status['customers_id'])) {
           tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
         }
         tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS', $site_id), '送信済：'.$title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
-      }
         $customer_notified = '1';
       }
 
@@ -463,8 +461,10 @@ if (tep_not_null($action)) {
       $order_updated = true;
     }
 
+    $message_success = false;
     if ($order_updated) {
       $messageStack->add_session(SUCCESS_ORDER_UPDATED, 'success');
+      $message_success = true;  
     } else {
       if($orders_exit_flag == true){
         $messageStack->add_session(WARNING_ORDER_NOT_UPDATED, 'warning');
@@ -478,13 +478,14 @@ if (tep_not_null($action)) {
       //while($products_address_array = tep_db_fetch_array($products_address_query)){
       foreach($update_products as $update_key=>$update_value){
         
-        $update_weight_query = tep_db_query("select products_id from ". TABLE_ORDERS_PRODUCTS ." where orders_products_id='". $update_key ."'");
+        $update_weight_query = tep_db_query("select products_id,final_price from ". TABLE_ORDERS_PRODUCTS ." where orders_products_id='". $update_key ."'");
         $update_weight_array = tep_db_fetch_array($update_weight_query);
         tep_db_free_result($update_weight_query);
         $products_weight_query = tep_db_query("select * from ". TABLE_PRODUCTS ." where products_id='". $update_weight_array['products_id'] ."'");
         $products_weight_array = tep_db_fetch_array($products_weight_query);
         $cart_shipping_time[] = $products_weight_array['products_shipping_time'];
         $products_weight_total += $products_weight_array['products_weight']*$update_value['qty'];
+        $update_value['final_price'] = $update_weight_array['final_price'] < 0 ? -$update_value['final_price'] : $update_value['final_price'];
         $products_money_total += $update_value['final_price']*$update_value['qty'];
         tep_db_free_result($products_weight_query);
       }
@@ -1252,7 +1253,7 @@ if($address_error == false){
             
             $email_temp = TEXT_POINT_DISCOUNT;
             $email_temp_str = TEXT_POINT_DISCOUNT_ONE;
-            $email_shipping_fee = TEXT_SHIPPING_FEE_ONE.$shipping_fee.EDIT_ORDERS_PRICE_UNIT.$email_temp;
+            $email_shipping_fee = TEXT_SHIPPING_FEE_ONE.$shipping_fee.EDIT_ORDERS_PRICE_UNIT."\n".$email_temp;
             $email = str_replace($email_temp,$email_shipping_fee,$email);
             $email = str_replace($email_temp_str,$email_shipping_fee,$email);
             $email_address = ORDERS_PRODUCTS_ONE;
@@ -1280,15 +1281,10 @@ if($address_error == false){
               $email = str_replace($email_address,$email_address_str,$email);
           }
               //$email_order = $payment_class->getOrderMailString($mailoption);  
-            //bobhero end}}}
-            
-          if($orders_email_array['payment_method'] == ''){
+            //bobhero end}}}  
             tep_mail($check_status['customers_name'], $check_status['customers_email_address'], TEXT_ORDERS_SEND_MAIL . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email, get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']),$order->info['site_id']);
           }
-          }
-        if($orders_email_array['payment_method'] == ''){
           tep_mail(get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), TEXT_ORDERS_SEND_MAIL . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);
-        }
           $customer_notified = '1';
           
           // 支払方法がクレジットなら決済URLを送る
@@ -1297,20 +1293,18 @@ if($address_error == false){
                 $order,$total_price_mail);
           if($email_credit){
             if ($customer_guest['customers_guest_chk'] != 9){
-              if($orders_email_array['payment_method'] == ''){
                 tep_mail($check_status['customers_name'], $check_status['customers_email_address'], TEXT_CARD_PAYMENT . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email_credit, get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']), $order->info['site_id']);
-              }
             }
-            if($orders_email_array['payment_method'] == ''){
               tep_mail(get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), TEXT_SEND_MAIL_CARD_PAYMENT . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email_credit, $check_status['customers_name'], $check_status['customers_email_address'], $order->info['site_id']);
-            }
           }
           }
           $order_updated_2 = true;
         }
 
         if ($order_updated && !$products_delete && $order_updated_2) {
-          $messageStack->add_session(SUCCESS_ORDER_UPDATED, 'success');
+          if($message_success == false){
+            $messageStack->add_session(SUCCESS_ORDER_UPDATED, 'success');
+          }
         } elseif ($order_updated && $products_delete) {
           $messageStack->add_session(TEXT_PRODUCTS_DELETE, 'success');
         } else {

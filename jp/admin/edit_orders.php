@@ -95,6 +95,7 @@ if (tep_not_null($action)) {
       $shipping_products_query = tep_db_query("select * from ". TABLE_ORDERS_PRODUCTS ." where orders_products_id='". $products_key."'");
       $shipping_products_array = tep_db_fetch_array($shipping_products_query);
       tep_db_free_result($shipping_products_query);
+      $products_value['final_price'] = $shipping_products_array['final_price'] < 0 ? -$products_value['final_price'] : $products_value['final_price'];
       $shipping_array[] = array('id'=>$shipping_products_array['products_id'],'qty'=>$products_value['qty'],'final_price'=>$products_value['final_price']);
     }
     //计算配送费用
@@ -392,7 +393,14 @@ if (tep_not_null($action)) {
         cc_type = '" . tep_db_input($update_info_cc_type) . "',
         cc_owner = '" . tep_db_input($update_info_cc_owner) . "',";
 
-      if(isset($comment_arr['comment']) && !empty($comment_arr['comment'])){
+      $orders_comment_array  = explode("\n",$comment_arr['comment']);
+      $orders_comment_explode = explode(':',$orders_comment_array[0]);    
+      $orders_comment_flag = false;
+      if(count($orders_comment_explode) > 1 && strlen(trim($orders_comment_explode[1])) == 0){
+
+         $orders_comment_flag = true; 
+      }
+      if(isset($comment_arr['comment']) && !empty($comment_arr['comment']) && $orders_comment_flag == false){
         $UpdateOrders .= "orders_comment = '{$comment_arr['comment']}',";
       }
 
