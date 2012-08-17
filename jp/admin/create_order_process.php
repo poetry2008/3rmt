@@ -54,8 +54,12 @@ $error          = false; // reset error flag
 $temp_amount    = "0";
 $temp_amount    = number_format($temp_amount, 2, '.', '');
 $_SESSION['temp_amount'] = $temp_amount;
-$currency = $_POST['Currency'];
+$currency_text  = DEFAULT_CURRENCY . ",1";
+$currency_array = explode(",", $currency_text);
+$currency = $currency_array[0];
+$currency_value = $currency_array[1];
 $_SESSION['currency'] = $currency;
+$_SESSION['currency_value'] = $currency_value;
 
 
 //{{检查信息是否全
