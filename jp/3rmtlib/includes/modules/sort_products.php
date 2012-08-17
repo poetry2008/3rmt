@@ -12,7 +12,8 @@
         break;
       }
     }*/
-    $listing_sql .= "order by sort_order " . ($sort_order == 'd' ? 'desc' : '') . ", products_name, products_id";
+  //  $listing_sql .= "order by sort_order " . ($sort_order == 'd' ? 'desc' : '') . ", products_name, products_id";
+  $listing_sql .= "order by products_name " . ($sort_order == 'd' ? 'desc' : '') . " , products_id";
   } else {
     $sort_col = substr($_COOKIE['sort'], 0 , -1);
     $sort_order = substr($_COOKIE['sort'], -1);
