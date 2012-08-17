@@ -12,11 +12,11 @@
         break;
       }
     }*/
-  //  $listing_sql .= "order by sort_order " . ($sort_order == 'd' ? 'desc' : '') . ", products_name, products_id";
-  $listing_sql .= "order by products_name " . ($sort_order == 'd' ? 'desc' : '') . " , products_id";
+    $listing_sql .= "order by sort_order " . ($sort_order == 'd' ? 'desc' : '') . ", products_name, products_id";
   } else {
     $sort_col = substr($_COOKIE['sort'], 0 , -1);
     $sort_order = substr($_COOKIE['sort'], -1);
+    setcookie('sort','');
     $listing_sql .= ' order by ';
     switch ($column_list[$sort_col-1]) {
       case 'PRODUCT_LIST_MODEL':
