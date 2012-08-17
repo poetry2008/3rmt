@@ -218,7 +218,7 @@ $not_in.=$val.",";
 $not_in=substr($not_in,0,-1);
 
 
-$option_group_sql="SELECT *  FROM ".TABLE_OPTION_GROUP." WHERE `id` NOT IN (".$not_in.") ORDER BY `created_at` DESC";
+$option_group_sql="SELECT *  FROM ".TABLE_OPTION_GROUP." WHERE `id` NOT IN (".$not_in.") ORDER BY sort_num asc,`created_at` DESC";
 $group_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $option_group_sql, $num_rows);
 $option_group_query=tep_db_query($option_group_sql);
 $now_num_row=tep_db_num_rows($option_group_query);
