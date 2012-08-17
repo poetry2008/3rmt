@@ -1387,13 +1387,14 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
           while($show_option_row_item = tep_db_fetch_array($option_item_order_query)){
             $all_show_option_id[] = $show_option_row_item['id'];
           }
+          var_dump($all_show_option_id);
           for ($j = 0; $j < $k; $j++) {
             if (is_array($order->products[$i]['attributes'][$j]['option_info'])) {
-            $all_show_option[$order->products[$i]['attributes'][$j]['option_item_id'] =
+            $all_show_option[$order->products[$i]['attributes'][$j]['option_item_id']] =
               $order->products[$i]['attributes'][$j];
-            /*
+              /*
               echo '<br><nobr>&nbsp; - ' .  $order->products[$i]['attributes'][$j]['option_info']['title'] . ': ' . str_replace(array("<br>", "<BR>"), "",$order->products[$i]['attributes'][$j]['option_info']['value']);
-             */
+              */
             }
             //if ($order->products[$i]['attributes'][$j]['price'] != '0') echo ' (' . $order->products[$i]['attributes'][$j]['prefix'] . $currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . ')';
           }
@@ -1402,6 +1403,7 @@ if(!(isset($_SESSION[$page_name])&&$_SESSION[$page_name])&&$_SESSION['onetime_pw
             if (is_array($all_show_option[$t_item_id]['option_info'])) {
             echo '<br><nobr>&nbsp; - ' .  $all_show_option[$t_item_id]['option_info']['title'] . ': ' .  str_replace(array("<br>", "<BR>"), "",$all_show_option[$t_item_id]['option_info']['value']);
             echo '</nobr>';
+            }
           }
 
         }
