@@ -1714,6 +1714,7 @@ SPAN.newItemInCart {
 CHECKBOX, INPUT, RADIO, SELECT：FORM
 --------------------------- */
 CHECKBOX, INPUT, RADIO, SELECT {
+	font-size:11px;
 }
 
 /* ---------------------------
@@ -2058,7 +2059,7 @@ display:block;
 }
 .option_table{
 	width:100%;
-	font-size:12px;
+	font-size:11px;
 	*font-size:10px;
 	line-height:1.5;
 }
@@ -2288,4 +2289,7 @@ display:block;
 	font-size:11px;
 	*font-size:10px;
 	width:80px;
+}
+.clear_both{
+	clear:both;
 }

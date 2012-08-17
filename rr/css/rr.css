@@ -1592,6 +1592,7 @@ SPAN.newItemInCart {
 CHECKBOX, INPUT, RADIO, SELECT：FORM
 --------------------------- */
 CHECKBOX, INPUT, RADIO, SELECT {
+	font-size:12px;
 }
 
 /* ---------------------------

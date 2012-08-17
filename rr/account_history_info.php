@@ -205,7 +205,8 @@
                  <tr>
                     <td width="30%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
                         <tr> 
-                          <td class="main" colspan="2"><b><?php echo HEADING_BILLING_ADDRESS; ?></b></td> 
+                          <td width="10"></td>
+                          <td class="main"><b><?php echo HEADING_BILLING_ADDRESS; ?></b></td> 
                         </tr> 
                         <tr> 
                           <td width="10"></td>

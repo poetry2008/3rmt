@@ -690,14 +690,14 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
        if(date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == $now_time_date && $min_time_end_str == ''){
           break;
         } 
-       echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'">'.str_replace($oarr, $newarr, date("Y".DATE_YEAR_TEXT."m".DATE_MONTH_TEXT."d".DATE_DAY_TEXT."（l）", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
+       echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'">'.str_replace($oarr, $newarr, date("Y".DATE_YEAR_TEXT."m".DATE_MONTH_TEXT."d".DATE_DAY_TEXT." l ", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
       }
     }
     $j_shipping += 86400;
     $j++;
     if(date('Y-m-d',$j_shipping) == $now_time_date && $min_time_end_str != ''){
 
-      echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'" '. $selected_str .'>'.str_replace($oarr, $newarr, date("Y".DATE_YEAR_TEXT."m".DATE_MONTH_TEXT."d".DATE_DAY_TEXT."（l）", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
+      echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'" '. $selected_str .'>'.str_replace($oarr, $newarr, date("Y".DATE_YEAR_TEXT."m".DATE_MONTH_TEXT."d".DATE_DAY_TEXT." l ", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
       break;
      }  
 
@@ -714,9 +714,9 @@ echo tep_draw_form('order', tep_href_link('reorder.php'));
   <td class="main" id="shipping_list_show"></td>
   </tr>
 </table>
-<table border="0" cellpadding="0" cellspacing="0" style=" position:absolute; width:693px;" class="shipping_box">
+<table border="0" cellpadding="0" cellspacing="0" style=" position:absolute; width:688px;" class="shipping_box">
 <tr id="shipping_list_min" style="display:none;">
- <td class="main" width="29%">&nbsp;<input type="hidden" id="ele_id" name="ele" value=""></td>
+ <td class="main" width="30%">&nbsp;<input type="hidden" id="ele_id" name="ele" value=""></td>
  <td class="main" id="shipping_list_show_min">
  </td>
  </tr>
@@ -782,18 +782,18 @@ function orderConfirmPage(){
         }
 ?>
 <?php }?>
-  text += "<table class='information_table' summary='table'>\n";
-  text += "<tr><td bgcolor='#eeeeee' width='130'>\n";
+  text += "<table class='information_table' summary='table' cellspacing='1' cellpadding='0' background='0'>\n";
+  text += "<tr><th bgcolor='#eeeeee' width='30%'>\n";
   text += "<?php echo TEXT_REORDER_TRADE_NO_CHANGE;?>";
-  text += "</td><td>\n";
+  text += "</th><td>\n";
   text += oldTime + "\n";
-  text += "</td></tr><tr><td bgcolor='#eeeeee'>\n";
+  text += "</td></tr><tr><th bgcolor='#eeeeee'>\n";
   
   dateChanged = (document.getElementById('new_date').selectedIndex != 0);
   
   orderChanged = orderChanged || dateChanged;
 
-  text += "<?php echo TEXT_REORDER_TRADE_CHANGE;?></td><td>";
+  text += "<?php echo TEXT_REORDER_TRADE_CHANGE;?></th><td>";
 
   if(document.getElementById('new_date').selectedIndex == 0 && document.getElementById('comment').value == ''){
       document.getElementById('form_error').innerHTML = "<font color='red'><?php echo TEXT_REORDER_UNCHANGE_QTY;?></font>";
@@ -826,10 +826,10 @@ function orderConfirmPage(){
     text += oldTime + "</td></tr></table><br >\n";
   }
   
-  text += "<table class='information_table' summary='table'>\n"
-  text += "<tr><td bgcolor='#eeeeee' width='130'>";
+  text += "<table class='information_table' summary='table' cellspacing='1' cellpadding='0' background='0'>\n"
+  text += "<tr><th bgcolor='#eeeeee' width='30%'>";
   text += "<?php echo TEXT_REORDER_COMMENT_TITLE;?>";
-  text += "</td><td>\n";
+  text += "</th><td>\n";
   text += document.getElementById('comment').value.replace(/\</ig,"&lt;").replace(/\>/ig,"&gt;");
   text += "</td></tr>\n";
   text += "</table><br >\n"

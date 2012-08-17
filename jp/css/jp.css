@@ -766,7 +766,7 @@ SPAN.newItemInCart {
 CHECKBOX, INPUT, RADIO, SELECT：FORM's input・select item
 --------------------------- */
 CHECKBOX, INPUT, RADIO, SELECT {
-	font-size: 11px;
+	font-size: 12px;
 }
 /* ---------------------------
 TEXTAREA：FORM's input item
@@ -1945,7 +1945,7 @@ SPAN.newItemInCart {
 CHECKBOX, INPUT, RADIO, SELECT：FORM's input・select item
 --------------------------- */
 CHECKBOX, INPUT, RADIO, SELECT {
-	font-size: 11px;
+	font-size: 12px;
 }
 /* ---------------------------
 TEXTAREA：FORM's input item
@@ -2764,4 +2764,19 @@ searching
 	line-height:1.5;
 	font-size:12px;
 	width:80px;
+}
+.information_box{
+	font-size:12px;
+}
+.information_box th{
+	padding:3px 5px;
+	text-align:left;
+	line-height:20px;
+}
+.information_box td{
+	padding:3px 5px;
+	line-height:20px;
+}
+#table_td_p0{ 
+	padding:0;
 }
