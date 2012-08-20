@@ -2674,7 +2674,7 @@ if (isset($order->products[$i]['attributes']) && $order->products[$i]['attribute
     $all_show_option_id[] = $show_option_row_item['id'];
   }
   for ($j = 0; $j < $k; $j++) {
-      $all_show_option[$order->products[$i]['op_attributes'][$j]['item_id']]
+      $all_show_option[$order->products[$i]['attributes'][$j]['item_id']]
       = $order->products[$i]['attributes'][$j];
       /*
             if (is_array($order->products[$i]['attributes'][$j]['option_info'])) {
