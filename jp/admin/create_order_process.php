@@ -13,7 +13,7 @@ if(isGet()){
 require(DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_CREATE_ORDER_PROCESS);
 
 $oID = tep_db_prepare_input($_POST['oID']);
-$_SESSION['$oID'] = $oID;
+$_SESSION['oID'] = $oID;
 $customer_id    = tep_db_prepare_input($_POST['customers_id']);
 $_SESSION['customer_id'] = $customer_id;
 $firstname      = tep_db_prepare_input($_POST['firstname']);
@@ -43,7 +43,7 @@ $_SESSION['state'] = $state;
 $country        = isset($_POST['country']) ? tep_db_prepare_input($_POST['country']) : '';
 $_SESSION['country'] = $country;
 $site_id        = tep_db_prepare_input($_POST['site_id']);
-$_SESSION['site_id'] = $site_id;
+$_SESSION['sites_id_flag'] = $site_id;
 $format_id      = "1";
 $_SESSION['format_id'] = $format_id;
 $size           = "1";
