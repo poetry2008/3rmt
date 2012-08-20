@@ -88,14 +88,29 @@ $customer_guest_query = tep_db_query("
     from " . TABLE_CUSTOMERS . " 
     where customers_id = '" . $customer_id_flag . "'");
 $customer_guest = tep_db_fetch_array($customer_guest_query);
-
-$site_id_flag = $orders_exit_flag == true ? $order->info['site_id'] : $_SESSION['site_id'];
+$site_id_flag = $orders_exit_flag == true ? $order->info['site_id'] : $_SESSION['sites_id_flag'];
 if (tep_not_null($action)) {
 
   $payment_modules = payment::getInstance($site_id_flag);
   switch ($action) {
     // 1. UPDATE ORDER ###############################################################################################
   case 'update_order':
+    //订单状态更新
+    $oID      = tep_db_prepare_input($_GET['oID']);
+    $status   = tep_db_prepare_input($_POST['s_status']);
+    $title    = tep_db_prepare_input($_POST['title']);
+    $comments = tep_db_input($_POST['comments']);
+    $comments_text = tep_db_input($_POST['comments_text']);
+    $payment_method = tep_db_prepare_input($_POST['payment_method']); 
+    
+    if($save_flag == 1){
+      $comment_array = $payment_modules->dealComment($payment_method,$comments_text);
+      $_SESSION['payment_method_flag'] = $payment_method;
+      $_SESSION['pay_comment_flag'] = $comment_array['comment'];
+      $_SESSION['torihiki_date_flag'] = tep_db_input($_POST['date_orders'].' '.$_POST['start_hour'].':'.$_POST['start_min'].$_POST['start_min_1'].':00');
+      $_SESSION['torihiki_date_end_flag'] = tep_db_input($_POST['date_orders'].' '.$_POST['end_hour'].':'.$_POST['end_min'].$_POST['end_min_1'].':00');
+    }
+    $save_flag = $_POST['save_flag'];
     $error = false;
     $options_info_array = array(); 
       if (!$ad_option->check()) {
@@ -146,7 +161,7 @@ if (tep_not_null($action)) {
 
     //创建订单
     $orders_query = tep_db_query("select orders_id from " . TABLE_ORDERS . " where orders_id = '" . tep_db_input($oID) . "'");
-    if (!tep_db_num_rows($orders_query)) {
+    if (!tep_db_num_rows($orders_query) && $save_flag == 0) {
       $currency_text  = DEFAULT_CURRENCY . ",1";
       //if(isset($_SESSION['Currency']) && !empty($_SESSION['Currency']))  {
         //$currency_text = tep_db_prepare_input($_SESSION['Currency']);
@@ -201,7 +216,7 @@ if (tep_not_null($action)) {
 			'billing_country'             => $_SESSION['country'],
 			'billing_address_format_id'   => $_SESSION['format_id'],
 			'orders_status'               => DEFAULT_ORDERS_STATUS_ID,
-			'site_id'                     => $_SESSION['site_id'],
+			'site_id'                     => $_SESSION['sites_id_flag'],
 			'orders_wait_flag'            => '1'
 			); 
        
@@ -215,16 +230,10 @@ if (tep_not_null($action)) {
  
     }
     tep_db_free_result($orders_query);
- 
-    //订单状态更新
-    $oID      = tep_db_prepare_input($_GET['oID']);
-    $status   = tep_db_prepare_input($_POST['s_status']);
-    $title    = tep_db_prepare_input($_POST['title']);
-    $comments = tep_db_input($_POST['comments']);
-    $comments_text = tep_db_input($_POST['comments_text']);
-    $payment_method = tep_db_prepare_input($_POST['payment_method']); 
+  
     $site_id  = tep_get_site_id_by_orders_id($oID);
 
+if($save_flag == 0 || $orders_exit_flag == true){
     $orders_email_query = tep_db_query("select payment_method from ". TABLE_ORDERS ." where orders_id='".$oID."'");
     $orders_email_array = tep_db_fetch_array($orders_email_query);
     tep_db_free_result($orders_email_query);    
@@ -245,6 +254,17 @@ if (tep_not_null($action)) {
         from " . TABLE_ORDERS . " 
         where orders_id = '" . tep_db_input($oID) . "'");
     $check_status = tep_db_fetch_array($check_status_query);
+}else{
+    $check_status['orders_id'] = $oID;
+    $check_status['customers_name'] = tep_get_fullname($_SESSION['firstname'],$_SESSION['lastname']);
+    $check_status['customers_id'] = $customer_id_flag;
+    $check_status['customers_email_address'] = $_SESSION['email_address'];
+    $check_status['orders_status'] = 1;
+    $check_status['date_purchased'] = '';
+    $check_status['payment_method'] = payment::changeRomaji(tep_db_input($_POST['payment_method']),'title' );
+    $check_status['torihiki_date'] = '';
+    $check_status['torihiki_date_end'] = '';
+}
     //oa start 如果状态发生改变，找到当前的订单的
     //if ($check_status['orders_status']!=$status){
     tep_order_status_change($oID,$status);
@@ -261,8 +281,12 @@ if (tep_not_null($action)) {
       $pcount_query = tep_db_query("select count(*) as cnt from ".TABLE_ORDERS_STATUS_HISTORY." where orders_status_id = '".MODULE_ORDER_TOTAL_POINT_ADD_STATUS."' and orders_id = '".$oID."'");
       $pcount = tep_db_fetch_array($pcount_query);
       if($pcount['cnt'] == 0 && $status == MODULE_ORDER_TOTAL_POINT_ADD_STATUS) {
-        $query1 = tep_db_query("select customers_id from " . TABLE_ORDERS . " where orders_id = '".$oID."'");
-        $result1 = tep_db_fetch_array($query1);
+        if($save_flag == 0 || $orders_exit_flag == true){
+          $query1 = tep_db_query("select customers_id from " . TABLE_ORDERS . " where orders_id = '".$oID."'");
+          $result1 = tep_db_fetch_array($query1);
+        }else{
+          $result1['customers_id'] = $customer_id_flag; 
+        }
         $query2 = tep_db_query("select value from ".TABLE_ORDERS_TOTAL." where class = 'ot_point' and orders_id = '".tep_db_input($oID)."'");
         $result2 = tep_db_fetch_array($query2);
         $query3 = tep_db_query("select value from ".TABLE_ORDERS_TOTAL." where class = 'ot_subtotal' and orders_id = '".tep_db_input($oID)."'");
@@ -345,8 +369,13 @@ if (tep_not_null($action)) {
         $os_query = tep_db_query("select orders_status_name,nomail from " . TABLE_ORDERS_STATUS . " where orders_status_id = '".$status."'");
         $os_result = tep_db_fetch_array($os_query);
         if($os_result['orders_status_name']==TEXT_NOTICE_PAYMENT){
-          $query1 = tep_db_query("select customers_id from " . TABLE_ORDERS . " where orders_id = '".$oID."'");
-          $result1 = tep_db_fetch_array($query1);
+          if($save_flag == 0 || $orders_exit_flag == true){
+            $query1 = tep_db_query("select customers_id from " . TABLE_ORDERS . " where orders_id = '".$oID."'");
+            $result1 = tep_db_fetch_array($query1);
+          }else{
+
+            $result1['customers_id'] = $customer_id_flag;
+          }
           if ($check_status['payment_method'] == TEXT_POINT_PAYMENT) {
             $query_t = tep_db_query("select value from ".TABLE_ORDERS_TOTAL." where class = 'ot_total' and orders_id = '".tep_db_input($oID)."'");
             $result_t = tep_db_fetch_array($query_t);
@@ -368,9 +397,11 @@ if (tep_not_null($action)) {
     }
 
     if ($check_status['orders_status'] != $status || $comments != '' || $orders_exit_flag == false) {
-      tep_db_query("update " . TABLE_ORDERS . " set orders_status = '" . tep_db_input($status) . "', last_modified = now() where orders_id = '" . tep_db_input($oID) . "'");
-      orders_updated(tep_db_input($oID));
-      orders_wait_flag(tep_db_input($oID));
+      if($save_flag == 0){
+        tep_db_query("update " . TABLE_ORDERS . " set orders_status = '" . tep_db_input($status) . "', last_modified = now() where orders_id = '" . tep_db_input($oID) . "'");
+        orders_updated(tep_db_input($oID));
+        orders_wait_flag(tep_db_input($oID));
+      }
       $customer_notified = '0';
 
       if ($_POST['notify'] == 'on' && $os_result['nomail'] == 0) {
@@ -437,10 +468,12 @@ if (tep_not_null($action)) {
                 get_configuration_by_site_id('SUPPORT_EMAIL_ADDRESS', $site_id),
                 date('Y'.TEXT_DATE_YEAR.'n'.TEXT_DATE_MONTH.'j'.TEXT_DATE_DAY,strtotime(tep_get_pay_day()))
               ),$comments);
+      if($save_flag == 0){
         if (!tep_is_oroshi($check_status['customers_id'])) {
           tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
         }
         tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS', $site_id), '送信済：'.$title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
+      }
         $customer_notified = '1';
       }
 
@@ -450,13 +483,15 @@ if (tep_not_null($action)) {
       //} else {
         //$customer_notified = '0';
       //}
-      $comment_str = is_array($comment_arr) ? $comment_arr['comment'] : $comments_text;
-      tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . $customer_notified . "', '".$comment_str."')");
+      if($save_flag == 0){
+        $comment_str = is_array($comment_arr) ? $comment_arr['comment'] : $comments_text;
+        tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . $customer_notified . "', '".$comment_str."')");
+      }
       // 同步问答
       //    orders_status_updated_for_question($oID,tep_db_input($status),$_POST['notify_comments'] == 'on', $_POST['qu_type']);
       $order_updated = true;
     }
-
+    
     $message_success = false;
     if ($order_updated) {
       $messageStack->add_session(SUCCESS_ORDER_UPDATED, 'success');
@@ -602,6 +637,9 @@ if (tep_not_null($action)) {
 
     $shipping_fee = $shipping_money_total > $free_value ? 0 : $weight_fee;
     $shipping_fee = $products_weight_total == 0 ? 0 : $shipping_fee; 
+    if($save_flag == 1){
+      $shipping_fee = 0; 
+    }
       // end
 
       //更新订单
@@ -619,6 +657,7 @@ if (tep_not_null($action)) {
        */
       
       // 1.1 UPDATE ORDER INFO #####
+  if($save_flag == 0){
       $UpdateOrders = "update " . TABLE_ORDERS . " set 
         customers_name = '" . tep_db_input(stripslashes($update_customer_name)) . "',
                        customers_name_f = '" . tep_db_input(stripslashes($update_customer_name_f)) . "',
@@ -755,6 +794,7 @@ if($address_error == false){
       tep_db_free_result($address_history_add_query);
   }
 }
+ }
 
 
      //作所信息入库结束
@@ -852,8 +892,10 @@ if($address_error == false){
         }
       }
 
-      $orders_type_str = tep_get_order_type_info($oID);
-      tep_db_query("update `".TABLE_ORDERS."` set `orders_type` = '".$orders_type_str."' where orders_id = '".tep_db_input($oID)."'"); 
+      if($save_flag == 0){
+        $orders_type_str = tep_get_order_type_info($oID);
+        tep_db_query("update `".TABLE_ORDERS."` set `orders_type` = '".$orders_type_str."' where orders_id = '".tep_db_input($oID)."'"); 
+      }
 
       // 1.4. UPDATE SHIPPING, DISCOUNT & CUSTOM TAXES #####
 
@@ -1045,7 +1087,7 @@ if($address_error == false){
       }
 
       $handle_fee = $payment_modules->handle_calc_fee(
-          payment::changeRomaji($order->info['payment_method'],PAYMENT_RETURN_TYPE_CODE), $newtotal);
+          payment::changeRomaji($_POST['payment_method'],PAYMENT_RETURN_TYPE_CODE), $newtotal);
 
       $newtotal = $newtotal+$handle_fee+$shipping_fee;
 
@@ -1055,13 +1097,17 @@ if($address_error == false){
       $totals = "update " . TABLE_ORDERS_TOTAL . " set value = '" . intval(floor($newtotal)) . "' where class='ot_total' and orders_id = '" . $oID . "'";
       tep_db_query($totals);
 
-      $update_orders_sql = "update ".TABLE_ORDERS." set code_fee = '".$handle_fee."' where orders_id = '".$oID."'";
-      tep_db_query($update_orders_sql);
+      if($save_flag == 0){
+        $update_orders_sql = "update ".TABLE_ORDERS." set code_fee = '".$handle_fee."' where orders_id = '".$oID."'";
+        tep_db_query($update_orders_sql);
+      }
 
       // 最終処理（更新およびメール送信）
       if ($products_delete == false) {
-        tep_db_query("update " . TABLE_ORDERS . " set orders_status = '" . tep_db_input($status) . "', last_modified = now() where orders_id = '" . tep_db_input($oID) . "'");
-        orders_updated(tep_db_input($oID));
+        if($save_flag == 0){
+          tep_db_query("update " . TABLE_ORDERS . " set orders_status = '" . tep_db_input($status) . "', last_modified = now() where orders_id = '" . tep_db_input($oID) . "'");
+          orders_updated(tep_db_input($oID));
+        }
         $notify_comments = '';
         $notify_comments_mail = $comments;
         $customer_notified = '0';
@@ -1268,16 +1314,20 @@ if($address_error == false){
           }
               //$email_order = $payment_class->getOrderMailString($mailoption);  
             //bobhero end}}}  
+          if($save_flag == 0){
             tep_mail($check_status['customers_name'], $check_status['customers_email_address'], TEXT_ORDERS_SEND_MAIL . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email, get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']),$order->info['site_id']);
           }
-          tep_mail(get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), TEXT_ORDERS_SEND_MAIL . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);
+          }
+          if($save_flag == 0){
+            tep_mail(get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), TEXT_ORDERS_SEND_MAIL . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);
+          }
           $customer_notified = '1';
           
           // 支払方法がクレジットなら決済URLを送る
           $email_credit =  $payment_modules->admin_process_pay_email(
                   payment::changeRomaji($payment_method,PAYMENT_RETURN_TYPE_CODE),
                 $order,$total_price_mail);
-          if($email_credit){
+          if($email_credit && $save_flag == 0){
             if ($customer_guest['customers_guest_chk'] != 9){
                 tep_mail($check_status['customers_name'], $check_status['customers_email_address'], TEXT_CARD_PAYMENT . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email_credit, get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS',$order->info['site_id']), $order->info['site_id']);
             }
@@ -1297,6 +1347,7 @@ if($address_error == false){
           $messageStack->add_session(TEXT_ERROR_NO_SUCCESS, 'error');
         }
 
+if($save_flag == 0){
   //start print 
   # 印刷用メール本文 ----------------------------
   $date_arr = explode(" ",tep_db_input($_POST['date_orders'].' '.$_POST['start_hour'].':'.$_POST['start_min'].$_POST['start_min_1'].':00'));
@@ -1439,16 +1490,21 @@ if($address_error == false){
        unset($_SESSION['zone_id']);
        unset($_SESSION['state']);
        unset($_SESSION['country']);
-       unset($_SESSION['site_id']);
+       unset($_SESSION['sites_id_flag']);
        unset($_SESSION['format_id']);
        unset($_SESSION['size']);
        unset($_SESSION['new_value']);
        unset($_SESSION['temp_amount']);
        unset($_SESSION['currency']); 
        unset($_SESSION['currency_value']);
+       unset($_SESSION['payment_method_flag']);
+       unset($_SESSION['pay_comment_flag']);
+       unset($_SESSION['torihiki_date_flag']);
+       unset($_SESSION['torihiki_date_end_flag']);
+}
 
         tep_redirect(tep_href_link("edit_new_orders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
-
+        
         break;
 
         // 2. ADD A PRODUCT ###############################################################################################
@@ -1705,6 +1761,8 @@ if($address_error == false){
   <script type="text/javascript"> 
   function submit_check(){
 
+    var save_flag = document.getElementById("save_flag");
+    save_flag.value = 1;
     var options = {
     url: 'ajax_orders_weight.php?action=create_new_orders',
     type:  'POST',
@@ -1725,6 +1783,8 @@ if($address_error == false){
 
   function submit_check_con(){
 
+    var save_flag = document.getElementById("save_flag");
+    save_flag.value = 0;
     var options = {
     url: 'ajax_orders_weight.php?action=create_new_orders',
     type:  'POST',
@@ -2833,8 +2893,8 @@ a.dpicker {
             <tr>
             <td class="main" valign="top" width="30%"><b><?php echo ENTRY_SITE;?>:</b></td>
             <?php
-              if(isset($_SESSION['site_id'])){
-                $orders_site_name_query = tep_db_query("select name from ". TABLE_SITES ." where id='". $_SESSION['site_id'] ."'");
+              if(isset($_SESSION['sites_id_flag'])){
+                $orders_site_name_query = tep_db_query("select name from ". TABLE_SITES ." where id='". $_SESSION['sites_id_flag'] ."'");
                 $orders_site_name_array = tep_db_fetch_array($orders_site_name_query);
                 $orders_site_name = $orders_site_name_array['name'];
                 tep_db_free_result($orders_site_name_query);
@@ -2954,9 +3014,10 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
             tep_db_free_result($orders_status_history_query); 
           }
 
-          if(isset($_POST['payment_method'])){
-            $code_payment_method = payment::changeRomaji($_POST['payment_method'],'code');
-            $pay_method = payment::changeRomaji($_POST['payment_method'],'code');
+          if(isset($_SESSION['payment_method_flag'])){
+            $code_payment_method = payment::changeRomaji($_SESSION['payment_method_flag'],'code');
+            $pay_method = payment::changeRomaji($_SESSION['payment_method_flag'],'code');
+            $pay_comment = $_SESSION['pay_comment_flag'];
           }
 
           if($pay_method == ''){
@@ -3499,6 +3560,14 @@ if($orders_exit_flag == true){
     $date_orders = date('Y-m-d',strtotime("+ ".$db_set_day."minute"));
 
   }
+
+  if(isset($_SESSION['torihiki_date_flag']) && isset($_SESSION['torihiki_date_end_flag'])){
+    $orders_temp_time_start = explode(' ',$_SESSION['torihiki_date_flag']);
+    $work_start = substr($orders_temp_time_start[1],0,5);
+    $orders_temp_time_end = explode(' ',$_SESSION['torihiki_date_end_flag']);
+    $work_end = substr($orders_temp_time_end[1],0,5);
+    $date_orders = date('Y-m-d',strtotime($_SESSION['torihiki_date_flag'])); 
+  }
   
   $work_start_array = explode(':',$work_start);
   $work_end_array = explode(':',$work_end);
@@ -3677,6 +3746,7 @@ if($orders_exit_flag == true){
             <tr>
             <td class="main">
             <?php echo $orders_exit_flag == true ? $order->tori['houhou'] : '';?>             
+            <input type="hidden" name="save_flag" id="save_flag" value="0">
             <input type="hidden" name="update_viladate" value="true">
             <input type="hidden" name="update_customer_name" size="25" value="<?php echo $orders_exit_flag == true ? tep_html_quotes($order->customer['name']) : tep_html_quotes($_SESSION['lastname'].' '.$_SESSION['firstname']); ?>">
             <input type="hidden" name="update_customer_email_address" size="45" value="<?php echo $orders_exit_flag == true ? $order->customer['email_address'] : $_SESSION['email_address']; ?>">
