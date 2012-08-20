@@ -270,6 +270,12 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                       }
                     }
                     $old_attr_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS_ATTRIBUTES." where orders_id = '".$_POST['pid']."'"); 
+                    $old_attr_raw = tep_db_query("select prea.* from ".
+                      TABLE_PREORDERS_PRODUCTS_ATTRIBUTES." prea left join ".
+                      TABLE_OPTION_ITEM." it 
+                      on prea.option_item_id = it.id
+                      where prea.orders_id = '".$_POST['pid']."'
+                      order by it.sort_num,it.title");
                     while ($old_attr_res = tep_db_fetch_array($old_attr_raw)) {
                       echo '<br>';  
                       $old_attr_info = @unserialize(stripslashes($old_attr_res['option_info'])); 
