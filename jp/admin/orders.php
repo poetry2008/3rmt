@@ -705,7 +705,7 @@ switch ($_GET['action']) {
             } elseif ($totals['class'] == "ot_total") {
               if($handle_fee)
                 $total_details_mail .= TEXT_HANDLE_FEE.$currencies->format($handle_fee)."\n";
-              $total_details_mail .= TEXT_PAYMENT_AMOUNT . $currencies->format($totals['value']) . "\n";
+              $total_details_mail .= TEXT_PAYMENT_AMOUNT . $currencies->format($totals['value']);
             } else {
               $totals['title'] = str_replace(TEXT_TRANSACTION_FEE, TEXT_REPLACE_HANDLE_FEE, $totals['title']);
               $total_details_mail .= $totals['title'] . str_repeat('　', intval((16 - strlen($totals['title']))/2)) . '：' . $currencies->format($totals['value']) . "\n";
@@ -1046,7 +1046,7 @@ switch ($_GET['action']) {
           } elseif ($totals['class'] == "ot_total") {
             if($handle_fee)
               $total_details_mail .= TEXT_HANDLE_FEE.$currencies->format($handle_fee)."\n";
-            $total_details_mail .= TEXT_PAYMENT_AMOUNT . $currencies->format($totals['value']) . "\n";
+            $total_details_mail .= TEXT_PAYMENT_AMOUNT . $currencies->format($totals['value']);
           } else {
             $totals['title'] = str_replace(TEXT_TRANSACTION_FEE, TEXT_REPLACE_HANDLE_FEE, $totals['title']);
             $total_details_mail .= $totals['title'] . str_repeat('　', intval((16 - strlen($totals['title']))/2)) . '：' . $currencies->format($totals['value']) . "\n";
@@ -2660,15 +2660,42 @@ if ( isset($_GET['action']) && ($_GET['action'] == 'edit') && ($order_exists) ) 
             echo ' ('.$currencies->format($order->products[$i]['final_price'], true, $order->info['currency'], $order->info['currency_value']).')';
           }
         }
-        if (isset($order->products[$i]['attributes']) && $order->products[$i]['attributes'] && ($k = sizeof($order->products[$i]['attributes'])) > 0) {
-          for ($j = 0; $j < $k; $j++) {
+if (isset($order->products[$i]['attributes']) && $order->products[$i]['attributes'] && ($k = sizeof($order->products[$i]['attributes'])) > 0) {
+  $all_show_option_id = array();
+  $all_show_option = array();
+  $option_item_order_sql = "select it.id from ".TABLE_PRODUCTS."
+  p,".TABLE_OPTION_ITEM." it 
+  where p.products_id = '".(int)$order->products[$i]['id']."' 
+  and p.belong_to_option = it.group_id 
+  and it.status = 1
+  order by it.sort_num,it.title";
+  $option_item_order_query = tep_db_query($option_item_order_sql);
+  while($show_option_row_item = tep_db_fetch_array($option_item_order_query)){
+    $all_show_option_id[] = $show_option_row_item['id'];
+  }
+  for ($j = 0; $j < $k; $j++) {
+      $all_show_option[$order->products[$i]['attributes'][$j]['option_item_id']]
+      = $order->products[$i]['attributes'][$j];
+      /*
             if (is_array($order->products[$i]['attributes'][$j]['option_info'])) {
               echo '<br><nobr>&nbsp; - ' .  $order->products[$i]['attributes'][$j]['option_info']['title'] . ': ' . str_replace(array("<br>", "<BR>"), "",$order->products[$i]['attributes'][$j]['option_info']['value']);
             }
             if ($order->products[$i]['attributes'][$j]['price'] != '0') echo ' (' .$currencies->format($order->products[$i]['attributes'][$j]['price'], true, $order->info['currency'], $order->info['currency_value']) . ')';
               echo '</nobr>';
+       */
           }
-        }
+      foreach($all_show_option_id as $t_item_id){
+            if (is_array($all_show_option[$t_item_id]['option_info'])) {
+              echo '<br><nobr>&nbsp; - ' .  $all_show_option[$t_item_id]['option_info']['title'] . ': ' .  str_replace(array("<br>", "<BR>"), "",$all_show_option[$t_item_id]['option_info']['value']);
+            }
+            if ($all_show_option[$t_item_id]['price'] != '0'){
+              echo ' (' .$currencies->format($all_show_option[$t_item_id]['price'], true, $order->info['currency'], $order->info['currency_value']) . ')';
+            }
+            if (is_array($all_show_option[$t_item_id]['option_info'])) {
+              echo '</nobr>';
+            }
+      }
+}
               
               if ( DISPLAY_PRICE_WITH_TAX == 'true' ) {
                 $price_with_tax = $currencies->format(

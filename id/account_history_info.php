@@ -127,15 +127,41 @@
       }
     }
     if ( (isset($order->products[$i]['op_attributes'])) && (sizeof($order->products[$i]['op_attributes']) > 0) ) {
+      $all_show_option_id = array();
+      $all_show_option = array();
+      $option_item_order_sql = "select it.id from ".TABLE_PRODUCTS."
+      p,".TABLE_OPTION_ITEM." it 
+      where p.products_id = '".(int)$order->products[$i]['id']."' 
+      and p.belong_to_option = it.group_id 
+      and it.status = 1
+      order by it.sort_num,it.title";
+      $option_item_order_query = tep_db_query($option_item_order_sql);
+      while($show_option_row_item = tep_db_fetch_array($option_item_order_query)){
+       $all_show_option_id[] = $show_option_row_item['id'];
+      }
       for ($j=0, $n2=sizeof($order->products[$i]['op_attributes']); $j<$n2; $j++) {
+        $all_show_option[$order->products[$i]['op_attributes'][$j]['option_item_id']]
+             = $order->products[$i]['op_attributes'][$j];
+        /*
         echo '<br><small>&nbsp;<i> - ' .  $order->products[$i]['op_attributes'][$j]['option_info']['title'] . ': ' .  str_replace(array("<br>", "<BR>"), '', $order->products[$i]['op_attributes'][$j]['option_info']['value']);
         if ($order->products[$i]['op_attributes'][$j]['price'] != '0') {
           echo ' ('.$currencies->format($order->products[$i]['op_attributes'][$j]['price']).')';        
         }
         echo '</i></small>';
-      }
+        */
+     }
+     foreach($all_show_option_id as $t_item_id){
+       $op_price = tep_get_show_attributes_price( $all_show_option[$t_item_id]['item_id'],
+       $all_show_option[$t_item_id]['group_id'], $all_show_option[$t_item_id]['value']);
+       if(is_array($all_show_option[$t_item_id]['option_info'])){
+         echo '<br><small>&nbsp;<i> - ' .  $all_show_option[$t_item_id]['option_info']['title'] . ': ' .  str_replace(array("<br>", "<BR>"), '', $all_show_option[$t_item_id]['option_info']['value']);
+         if ((int)$all_show_option[$t_item_id]['price'] != '0') {
+          echo ' ('.$currencies->format($all_show_option[$t_item_id]['price']).')';        
+         }
+         echo '</i></small>';
+       }
+     }
     }
-    
 
     echo '</td>' . "\n";
 

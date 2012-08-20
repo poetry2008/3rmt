@@ -392,18 +392,7 @@ if (tep_not_null($action)) {
         torihiki_houhou = '" . tep_db_input($update_tori_torihiki_houhou) . "',
         cc_type = '" . tep_db_input($update_info_cc_type) . "',
         cc_owner = '" . tep_db_input($update_info_cc_owner) . "',";
-
-      $orders_comment_array  = explode("\n",$comment_arr['comment']);
-      $orders_comment_explode = explode(':',$orders_comment_array[0]);    
-      $orders_comment_flag = false;
-      if(count($orders_comment_explode) > 1 && strlen(trim($orders_comment_explode[1])) == 0){
-
-         $orders_comment_flag = true; 
-      }
-      if(isset($comment_arr['comment']) && !empty($comment_arr['comment']) && $orders_comment_flag == false){
-        $UpdateOrders .= "orders_comment = '{$comment_arr['comment']}',";
-      }
-
+ 
       if(substr($update_info_cc_number,0,8) != "(Last 4)") {
         $UpdateOrders .= "cc_number = '$update_info_cc_number',";
       }   
@@ -954,7 +943,7 @@ if($address_error == false){
             } elseif ($totals['class'] == "ot_total") {
               if($handle_fee)
                 $total_details_mail .= TEXT_HANDLE_FEE.$currencies->format($handle_fee)."\n";
-              $total_details_mail .= TEXT_PAYMENT_AMOUNT . $currencies->format($totals['value']) . "\n";
+              $total_details_mail .= TEXT_PAYMENT_AMOUNT . $currencies->format($totals['value']);
             } else {
               // 去掉 決済手数料 消費税
               $totals['title'] = str_replace(TEXT_TRANSACTION_FEE, TEXT_HANDLE_FEE_ONE, $totals['title']);
@@ -2779,7 +2768,9 @@ if (($action == 'edit') && ($order_exists == true)) {
   $order->products = array();
   $orders_products_query = tep_db_query("select * from " . TABLE_ORDERS_PRODUCTS . " where orders_id = '" . tep_db_input($oID) . "'");
   while ($orders_products = tep_db_fetch_array($orders_products_query)) {
-    $order->products[$index] = array('qty' => $orders_products['products_quantity'],
+    $order->products[$index] = array(
+        'id' => $orders_products['products_id'],
+        'qty' => $orders_products['products_quantity'],
         'name' => str_replace("'", "&#39;", $orders_products['products_name']),
         'model' => $orders_products['products_model'],
         'tax' => $orders_products['products_tax'],
@@ -2839,12 +2830,30 @@ if (($action == 'edit') && ($order_exists == true)) {
           $op_info_array[] = $order->products[$i]['attributes'][$i_num]['id']; 
         }
         $op_info_str = implode('|||', $op_info_array);
-
-        for ($j=0; $j<sizeof($order->products[$i]['attributes']); $j++) {
-          $orders_products_attributes_id = $order->products[$i]['attributes'][$j]['id'];
-          echo '<br><div><small>&nbsp;<i><div class="order_option_info"><div class="order_option_title"> - ' ."<input type='text' class='option_input_width' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][option]' value='" .  (isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['option'])?tep_parse_input_field_data($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['option'], array("'"=>"&quot;")):tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;"))) . "'>" . 
-            '</div><div class="order_option_value">: ' . 
-            "<input type='text' class='option_input_width' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][value]' value='" .  (isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['value'])?tep_parse_input_field_data($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['value'], array("'"=>"&quot;")):tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&quot;")));
+              // new option list
+      $all_show_option_id = array();
+      $all_show_option = array();
+      $option_item_order_sql = "select it.id from ".TABLE_PRODUCTS."
+      p,".TABLE_OPTION_ITEM." it 
+      where p.products_id = '".(int)$order->products[$i]['id']."' 
+      and p.belong_to_option = it.group_id 
+      and it.status = 1
+      order by it.sort_num,it.title";
+      $option_item_order_query = tep_db_query($option_item_order_sql);
+      while($show_option_row_item = tep_db_fetch_array($option_item_order_query)){
+        $all_show_option_id[] = $show_option_row_item['id'];
+      } 
+      for ($j=0; $j<sizeof($order->products[$i]['attributes']); $j++) {
+        $all_show_option[$order->products[$i]['attributes'][$j]['option_item_id']] =
+          $order->products[$i]['attributes'][$j];
+      }
+      foreach($all_show_option_id as $t_item_id){
+        $orders_products_attributes_id = $order->products[$i]['attributes'][$j]['id'];
+        if(is_array($all_show_option[$t_item_id]['option_info'])){
+        echo '<br><div><small>&nbsp;<i><div class="order_option_info"><div class="order_option_title"> - ' 
+          ."<input type='text' class='option_input_width' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][option]' value='" .  (isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['option'])?tep_parse_input_field_data($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['option'], array("'"=>"&quot;")):tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['title'], array("'"=>"&quot;"))) . "'>" .
+          '</div><div class="order_option_value">: ' .  
+          "<input type='text' class='option_input_width' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][value]' value='" .  (isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['value'])?tep_parse_input_field_data($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['value'], array("'"=>"&quot;")):tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['value'], array("'"=>"&quot;")));
           //if ($order->products[$i]['attributes'][$j]['price'] != '0') echo ' (' . $order->products[$i]['attributes'][$j]['prefix'] . $currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . ')';
           echo "'></div></div>";
           echo '<div class="order_option_price">'; 
@@ -2852,6 +2861,7 @@ if (($action == 'edit') && ($order_exists == true)) {
           echo TEXT_MONEY_SYMBOL; 
           echo '</div>'; 
           echo '</i></small></div>';
+          }
         }
       }
 
