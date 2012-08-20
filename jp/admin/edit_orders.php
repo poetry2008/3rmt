@@ -943,7 +943,7 @@ if($address_error == false){
             } elseif ($totals['class'] == "ot_total") {
               if($handle_fee)
                 $total_details_mail .= TEXT_HANDLE_FEE.$currencies->format($handle_fee)."\n";
-              $total_details_mail .= TEXT_PAYMENT_AMOUNT . $currencies->format($totals['value']) . "\n";
+              $total_details_mail .= TEXT_PAYMENT_AMOUNT . $currencies->format($totals['value']);
             } else {
               // 去掉 決済手数料 消費税
               $totals['title'] = str_replace(TEXT_TRANSACTION_FEE, TEXT_HANDLE_FEE_ONE, $totals['title']);

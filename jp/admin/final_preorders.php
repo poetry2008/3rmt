@@ -1776,11 +1776,12 @@ float:left;
 
     if (tep_db_num_rows($attributes_query)) {
     while ($attributes = tep_db_fetch_array($attributes_query)) {
-      $order->products[$index]['attributes'][$subindex] = array('id' => $attributes['orders_products_attributes_id'],
-                                                                'option_info' => @unserialize(stripslashes($attributes['option_info'])),
-                                                                'price' => $attributes['options_values_price'],
-                                                                'option_item_id' => $attributes['options_item_id'],
-                                                                'option_group_id' => $attributes['option_group_id']);
+      $order->products[$index]['attributes'][$subindex] = array(
+          'id'              => $attributes['orders_products_attributes_id'],
+          'option_info'     => @unserialize(stripslashes($attributes['option_info'])),
+          'price'           => $attributes['options_values_price'],
+          'option_item_id'  => $attributes['option_item_id'],
+          'option_group_id' => $attributes['option_group_id']);
       $subindex++;
       }
     }
@@ -1822,7 +1823,7 @@ float:left;
       $all_show_option = array();
       $option_item_order_sql = "select it.id from ".TABLE_PRODUCTS."
       p,".TABLE_OPTION_ITEM." it 
-      where p.products_id = '".(int)$order->products[$i]['id']."' 
+      where p.products_id = '".(int)$order->products[$i]['products_id']."' 
       and p.belong_to_option = it.group_id 
       and it.status = 1
       order by it.sort_num,it.title";
@@ -1836,6 +1837,7 @@ float:left;
       }
       foreach($all_show_option_id as $t_item_id){
         $orders_products_attributes_id = $order->products[$i]['attributes'][$j]['id'];
+        if(is_array($all_show_option[$t_item_id]['option_info'])){
         echo '<br><div><small>&nbsp;<i><div class="order_option_info"><div class="order_option_title"> - ' .  "<input type='text' class='option_input_width' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][option]' value='" .  tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['title'], array("'"=>"&quot;")) . "'>: " . 
            '</div><div class="order_option_value">' . 
            "<input type='text' class='option_input_width' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][value]' value='" .  tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['value'], array("'"=>"&quot;"));
@@ -1849,6 +1851,7 @@ float:left;
         //}
         echo '</div>'; 
         echo '</i></small></div>';
+        }
 
       }
       
