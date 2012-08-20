@@ -706,7 +706,7 @@ document.onclick=function(e){
   <td id="shipping_list_show"></td>
   </tr>
 </table>
-<table border="0" cellpadding="0" cellspacing="0" style=" position:absolute; width:504px;">
+<table border="0" cellpadding="0" cellspacing="0" style=" position:absolute; width:500px;">
 <tr id="shipping_list_min" style="display:none;">
  <td width="29%">&nbsp;<input type="hidden" id="ele_id" name="ele" value=""></td>
  <td id="shipping_list_show_min">

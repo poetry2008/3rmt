@@ -164,11 +164,26 @@ if(array_key_exists($fixed_option_list_array[3],$ad_array)){
     echo ' ('.$currencies->display_price($order->products[$i]['price'], $order->products[$i]['tax']).')';
   }
 
-    if (STOCK_CHECK == 'true') {
-      echo tep_check_stock((int)$order->products[$i]['id'], $order->products[$i]['qty']);
-    }
+  if (STOCK_CHECK == 'true') {
+    echo tep_check_stock((int)$order->products[$i]['id'], $order->products[$i]['qty']);
+  }
+  $all_show_option_id = array();
+  $all_show_option = array();
+  $option_item_order_sql = "select it.id from ".TABLE_PRODUCTS."
+  p,".TABLE_OPTION_ITEM." it 
+  where p.products_id = '".(int)$order->products[$i]['id']."' 
+  and p.belong_to_option = it.group_id 
+  and it.status = 1
+  order by it.sort_num,it.title";
+  $option_item_order_query = tep_db_query($option_item_order_sql);
+  while($show_option_row_item = tep_db_fetch_array($option_item_order_query)){
+    $all_show_option_id[] = $show_option_row_item['id'];
+  }
   if ( (isset($order->products[$i]['op_attributes'])) && (sizeof($order->products[$i]['op_attributes']) > 0) ) {
     for ($j=0, $n2=sizeof($order->products[$i]['op_attributes']); $j<$n2; $j++) {  
+      $all_show_option[$order->products[$i]['op_attributes'][$j]['item_id']] 
+      = $order->products[$i]['op_attributes'][$j];
+      /*
       $op_price = tep_get_show_attributes_price($order->products[$i]['op_attributes'][$j]['item_id'], $order->products[$i]['op_attributes'][$j]['group_id'], $order->products[$i]['op_attributes'][$j]['value']); 
        
       echo '<br><small>&nbsp;<i> - ' .  $order->products[$i]['op_attributes'][$j]['front_title'] . ': ' .  str_replace(array("<br>", "<BR>"), '', $order->products[$i]['op_attributes'][$j]['value']);
@@ -176,29 +191,46 @@ if(array_key_exists($fixed_option_list_array[3],$ad_array)){
         echo ' ('.$currencies->format($op_price).')'; 
       }
       echo '</i></small>';
+      */
     }
   }
-
+  
   if ( (isset($order->products[$i]['ck_attributes'])) && (sizeof($order->products[$i]['ck_attributes']) > 0) ) {
-    for ($jk=0, $n3=sizeof($order->products[$i]['ck_attributes']); $jk<$n3; $jk++) {
+   for ($jk=0, $n3=sizeof($order->products[$i]['ck_attributes']); $jk<$n3; $jk++) {
+      $all_show_option[$order->products[$i]['ck_attributes'][$jk]['item_id']] 
+      = $order->products[$i]['ck_attributes'][$jk];
+      /*
       $cop_price = tep_get_show_attributes_price($order->products[$i]['ck_attributes'][$jk]['item_id'], $order->products[$i]['ck_attributes'][$jk]['group_id'], $order->products[$i]['ck_attributes'][$jk]['value']); 
       echo '<br><small>&nbsp;<i> - ' .  $order->products[$i]['ck_attributes'][$jk]['front_title'] . ': ' .  str_replace(array("<br>", "<BR>"), '', $order->products[$i]['ck_attributes'][$jk]['value']);
       if ($cop_price != '0') {
         echo ' ('.$currencies->format($cop_price).')'; 
       }
       echo '</i></small>';
+      */
     }
+  }
+  // new option list 
+  foreach($all_show_option_id as $t_item_id){
+      $op_price = tep_get_show_attributes_price( $all_show_option[$t_item_id]['item_id'],
+        $all_show_option[$t_item_id]['group_id'], $all_show_option[$t_item_id]['value']); 
+      echo '<br><small>&nbsp;<i> - ' . $all_show_option[$t_item_id]['front_title'] .
+      ': ' .  str_replace(array("<br>", "<BR>"), '', $all_show_option[$t_item_id]['value']);
+      if ($op_price != '0') {
+        echo ' ('.$currencies->format($op_price).')'; 
+      }
+      echo '</i></small>';
+
   }
 
   echo '</td>' . "\n";
 
-    if (sizeof($order->info['tax_groups']) > 1) echo '            <td class="main" valign="top" align="right">' . tep_display_tax_value($order->products[$i]['tax']) . '%</td>' . "\n";
+  if (sizeof($order->info['tax_groups']) > 1) echo '            <td class="main" valign="top" align="right">' . tep_display_tax_value($order->products[$i]['tax']) . '%</td>' . "\n";
 
-    echo '            <td class="main" align="right" valign="top">';
-    if ($order->products[$i]['final_price'] < 0) {
-      echo '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty'])).'</font>'.JPMONEY_UNIT_TEXT;
-    } else {
-      echo $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty']);
+  echo '            <td class="main" align="right" valign="top">';
+  if ($order->products[$i]['final_price'] < 0) {
+    echo '<font color="#ff0000">'.str_replace(JPMONEY_UNIT_TEXT, '', $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty'])).'</font>'.JPMONEY_UNIT_TEXT;
+  } else {
+    echo $currencies->display_price($order->products[$i]['final_price'], $order->products[$i]['tax'], $order->products[$i]['qty']);
     }
     echo '</td>' . "\n" .
          '          </tr>' . "\n";
@@ -614,15 +646,15 @@ echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><sp
   if(isset($customer_id)&&tep_is_member_customer($customer_id)){
   echo '<tr>' . "\n";
   if (!tep_only_buy_product()) {
-    echo '<td align="right" class="main"><br>'.TEXT_POINT_NOW.'</td>' . "\n";
+    echo '<td align="right" class="main">'.TEXT_POINT_NOW.'</td>' . "\n";
   } else {
     if ($get_point == 0) {
-      echo '<td align="right" class="main"><br>'.TS_TEXT_POINT_NOW_TWO.'</td>' . "\n";
+      echo '<td align="right" class="main">'.TS_TEXT_POINT_NOW_TWO.'</td>' . "\n";
     } else {
-      echo '<td align="right" class="main"><br>'.TEXT_POINT_NOW.'</td>' . "\n";
+      echo '<td align="right" class="main">'.TEXT_POINT_NOW.'</td>' . "\n";
     }
   }
-  echo '<td align="right" class="main"><br>'.(int)$get_point.'&nbsp;P</td>' . "\n";
+  echo '<td align="right" class="main">'.(int)$get_point.'&nbsp;P</td>' . "\n";
   echo '</tr>' . "\n";
   }
   }

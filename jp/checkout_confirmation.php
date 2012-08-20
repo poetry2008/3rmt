@@ -559,10 +559,11 @@ echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><sp
 <tr class="infoBoxContents"> 
 <td width="30%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
 <tr> 
-<td class="main"><?php echo '<b>' . HEADING_PAYMENT_METHOD . '</b> <a href="' . tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td> 
+<td class="main" colspan="2"><?php echo '<b>' . HEADING_PAYMENT_METHOD . '</b> <a href="' . tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td> 
 </tr> 
 <tr> 
-<td class="main"><?php echo payment::changeRomaji($order->info['payment_method']); ?></td> 
+<td width="10"></td>
+<td class="main" width="125"><?php echo payment::changeRomaji($order->info['payment_method']); ?></td> 
 </tr> 
 </table></td> 
 <td width="70%" valign="top" align="right"><table width="100%" border="0" cellspacing="0" cellpadding="2"> 
@@ -653,16 +654,16 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
   if(isset($customer_id)&&tep_is_member_customer($customer_id)){
   echo '<tr>' . "\n";
   if (!tep_only_buy_product()) {
-    echo '<td align="right" class="main"><br>'.TEXT_POINT_NOW.'</td>' . "\n";
+    echo '<td align="right" class="main">'.TEXT_POINT_NOW.'</td>' . "\n";
   } else {
     if ($get_point == 0) {
-      echo '<td align="right" class="main"><br>'.TS_TEXT_POINT_NOW_TWO.'</td>' . "\n";
+      echo '<td align="right" class="main">'.TS_TEXT_POINT_NOW_TWO.'</td>' . "\n";
     } else {
-      echo '<td align="right" class="main"><br>'.TEXT_POINT_NOW.'</td>' . "\n";
+      echo '<td align="right" class="main">'.TEXT_POINT_NOW.'</td>' . "\n";
     }
   } 
 
-  echo '<td align="right" class="main"><br>'.(int)$get_point.'&nbsp;P</td>' . "\n";
+  echo '<td align="right" class="main">'.(int)$get_point.'&nbsp;P</td>' . "\n";
   echo '</tr>' . "\n";
   }
 }

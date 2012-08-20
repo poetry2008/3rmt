@@ -2680,7 +2680,7 @@ searching
 	font-weight:bold;
 	margin-left:-1px;
 }
-#group_list_box td{ height:20px; padding:0;}
+#group_list_box td{ height:20px; padding:0; font-size:14px;}
 
 /*shipping*/
 .shipping_error{
@@ -2779,4 +2779,7 @@ searching
 }
 #table_td_p0{ 
 	padding:0;
+}
+.formArea_td_info input, .formArea_td_info select{
+	margin-bottom:5px;
 }

@@ -8,7 +8,7 @@
   
   $breadcrumb->add(NAVBAR_CHANGE_PREORDER_TITLE, '');
   /*
- * 计算配送费用
+ * ???????头???
  */
   foreach($_POST as $shipping_key=>$shipping_value){
 
@@ -17,7 +17,7 @@
       $shipping_fee_array[substr($shipping_key,3)] = $shipping_value;
     }
   }
-  //计算商品的总价格及总重量
+  //??????品???芗鄹???????量
   $weight_total = 0;
   $money_total = 0;
   $shipping_products_query = tep_db_query("select * from ". TABLE_PREORDERS_PRODUCTS ." where orders_id='". $_POST['pid'] ."'");
@@ -63,7 +63,7 @@ if($city_num > 0 && $op_key == $country_fee_array[3]){
   $city_free_value = $city_array['free_value'];
   $city_weight_fee_array = unserialize($city_array['weight_fee']);
 
-  //根据重量来获取相应的配送费用
+  //??????量来??取??应?????头???
   foreach($city_weight_fee_array as $key=>$value){
     
     if(strpos($key,'-') > 0){
@@ -86,7 +86,7 @@ if($city_num > 0 && $op_key == $country_fee_array[3]){
   $address_free_value = $address_array['free_value'];
   $address_weight_fee_array = unserialize($address_array['weight_fee']);
 
-  //根据重量来获取相应的配送费用
+  //??????量来??取??应?????头???
   foreach($address_weight_fee_array as $key=>$value){
     
     if(strpos($key,'-') > 0){
@@ -110,7 +110,7 @@ if($city_num > 0 && $op_key == $country_fee_array[3]){
   $country_free_value = $country_array['free_value'];
   $country_weight_fee_array = unserialize($country_array['weight_fee']);
 
-  //根据重量来获取相应的配送费用
+  //??????量来??取??应?????头???
   foreach($country_weight_fee_array as $key=>$value){
     
     if(strpos($key,'-') > 0){
@@ -269,14 +269,29 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                         echo ' ('.$currencies->display_price($preorder_product_res['final_price'], $preorder_product_res['products_tax']).')'; 
                       }
                     }
+  // new item list
+  $all_show_option_id = array();
+  $all_show_option = array();
+  $option_item_order_sql = "select it.id from ".TABLE_PRODUCTS."
+  p,".TABLE_OPTION_ITEM." it 
+  where p.products_id = '".(int)$preorder_product_res['products_id']."' 
+  and p.belong_to_option = it.group_id 
+  and it.status = 1
+  order by it.sort_num,it.title";
+  $option_item_order_query = tep_db_query($option_item_order_sql);
+  while($show_option_row_item = tep_db_fetch_array($option_item_order_query)){
+    $all_show_option_id[] = $show_option_row_item['id'];
+  }
                     $old_attr_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS_ATTRIBUTES." where orders_id = '".$_POST['pid']."'"); 
-                    $old_attr_raw = tep_db_query("select prea.* from ".
+                    $old_attr_raw = tep_db_query("select prea.*,it.id as item_id from ".
                       TABLE_PREORDERS_PRODUCTS_ATTRIBUTES." prea left join ".
                       TABLE_OPTION_ITEM." it 
                       on prea.option_item_id = it.id
                       where prea.orders_id = '".$_POST['pid']."'
                       order by it.sort_num,it.title");
                     while ($old_attr_res = tep_db_fetch_array($old_attr_raw)) {
+                      $all_show_option[$old_attr_res['item_id']] = $old_attr_res; 
+                      /*
                       echo '<br>';  
                       $old_attr_info = @unserialize(stripslashes($old_attr_res['option_info'])); 
                       echo $old_attr_info['title'].':'.str_replace(array("<br>", "<BR>"), '', $old_attr_info['value']);
@@ -285,14 +300,18 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                           echo ' ('.$currencies->format($old_attr_res['options_values_price']).')'; 
                         } 
                       }
+                      */
                     }
                     if (!empty($option_info_array)) {
-                      echo '<br>';  
+                      //echo '<br>';  
                       foreach ($option_info_array as $of_key => $of_value) {
                         $of_key_array = explode('_', $of_key); 
                         $option_item_query = tep_db_query("select * from ".TABLE_OPTION_ITEM." where id = '".$of_key_array[3]."' and name = '".$of_key_array[1]."'");  
                         $option_item = tep_db_fetch_array($option_item_query); 
                         if ($option_item) {
+                          $all_show_option[$option_item['id']] = $option_item; 
+                          $all_show_option[$option_item['id']]['of_value'] = $of_value; 
+                          /*
                           echo $option_item['front_title'].':'.str_replace(array("<br>", "<BR>"), '', $of_value); 
                           if ($option_item['type'] == 'radio') {
                             $r_option_array = @unserialize($option_item['option']);
@@ -312,10 +331,55 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                             }
                           }
                           echo '<br>'; 
+                        */
                         }
                       }
                     }
-                    ?>
+echo '<br>';
+foreach($all_show_option_id as $t_item_id){
+  if(isset($all_show_option[$t_item_id]['option_info'])&&
+    $all_show_option[$t_item_id]['option_info']!=''){
+    $all_attr_info = @unserialize(stripslashes($all_show_option[$t_item_id]['option_info'])); 
+    if(is_array($all_attr_info)){
+    echo $all_attr_info['title'].':'.str_replace(array("<br>", "<BR>"), '', $all_attr_info['value']);
+    if ($all_show_option[$t_item_id]['options_values_price'] != '0') {
+      if ((int)$preorder_product_res['products_price'] != '0') {
+        echo ' ('.$currencies->format($all_show_option[$t_item_id]['options_values_price']).')'; 
+      } 
+    }
+        echo '<br>';
+    }
+  }else{
+    if($all_show_option[$t_item_id]['front_title']){
+    echo $all_show_option[$t_item_id]['front_title'].':'.str_replace(array("<br>", "<BR>"),
+      '', $all_show_option[$t_item_id]['of_value']); 
+    }
+    if ($all_show_option[$t_item_id]['type'] == 'radio') {
+      $r_option_array = @unserialize($all_show_option[$t_item_id]['option']);
+      if (!empty($r_option_array['radio_image'])) {
+        foreach ($r_option_array['radio_image'] as $ro_key => $ro_value) {
+          if (trim(str_replace($replace_arr, '', 
+                nl2br(stripslashes($ro_value['title'])))) == 
+            trim(str_replace($replace_arr, '', 
+                nl2br(stripslashes($all_show_option[$t_item_id]['of_value']))))) {
+            if ($ro_value['money'] != '') {
+              echo ' ('.$currencies->format($ro_value['money']).')'; 
+            }
+            break; 
+          }
+        }
+      }
+    } else {
+      if ((int)$all_show_option[$t_item_id]['price'] != '0') {
+        echo ' ('.$currencies->format($all_show_option[$t_item_id]['price']).')'; 
+      }
+    }
+    if($all_show_option[$t_item_id]['front_title']){
+        echo '<br>';
+    }
+  }
+}
+?>
                     </td>                  
                     <td class="main" align="right" valign="top" width="60">
                     <?php 
@@ -358,7 +422,9 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                       if(substr($ad_key,0,3)=='ad_' && $_POST[substr($ad_key,3)] != ''){
 
                         echo '<tr>';
+						echo '<td width="10"></td>';
 						echo '<td class="main" width="150">'. $_POST[substr($ad_key,3)] .':</td>';                  
+
                         echo '<td class="main">';
                         echo $_POST[$ad_key];
                         //echo '<input type="hidden" name="'. $ad_key .'" value="'. $ad_value .'"></td>';
@@ -414,7 +480,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
               <td class="main" width="30%" valign="top">
-                <table width="100%"  cellpadding="2" cellspacing="2" border="0" class="formArea_td"> 
+                <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea_td"> 
                   <tr>
                     <td class="main" colspan="2"><b><?php echo CHANGE_ORDER_CONFIRM_PAYMENT;?></b></td>                  
                   </tr>
@@ -514,7 +580,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                         echo $currencies->format_total($preorder_total_res['value']);
                       }
                       
-                      $shipping_fee_str = $shipping_fee == 0 ?  TEXT_SHIPPING_FEE_FREE : $currencies->format_total($shipping_fee);
+                      $shipping_fee_str = $shipping_fee == 0 ? TEXT_SHIPPING_FEE_FREE : $currencies->format_total($shipping_fee);
                       $preorder_shipping_fee = (int)$shipping_fee;
                       if (!tep_session_is_registered('preorder_shipping_fee')) {
                         tep_session_register('preorder_shipping_fee'); 
@@ -562,7 +628,7 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
   }
   //----------------------------------------------
   
-  //丛傅唯を纷换----------------------------------
+  //?愿?唯???谆?----------------------------------
   if(mb_ereg("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK)) {
     $back_rate_array = explode("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK);
   $back_rate = MODULE_ORDER_TOTAL_POINT_FEE;
@@ -585,7 +651,7 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
 } else {
   $point_rate = MODULE_ORDER_TOTAL_POINT_FEE;
 }
-// ここまでカスタマ〖レベルに炳じたポイント丛傅唯换叫============================================================
+// ?????蓼钎??????蕖????佶??吮??????荪????却愿?唯????============================================================
   if ($preorder_subtotal > 0) {
     if (isset($_SESSION['preorder_campaign_fee'])) {
       $preorder_get_point = ($preorder_subtotal + $_SESSION['preorder_campaign_fee']) * $point_rate;

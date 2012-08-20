@@ -1715,6 +1715,7 @@ CHECKBOX, INPUT, RADIO, SELECT：FORM
 --------------------------- */
 CHECKBOX, INPUT, RADIO, SELECT {
 	font-size:11px;
+	*font-size:10px;
 }
 
 /* ---------------------------
@@ -2230,6 +2231,9 @@ display:block;
 	*width:325px;
 	font-size:11px;
 }
+.formArea_td_info input, .formArea_td_info select{
+	margin-bottom:5px;
+}
 .errorText{ font-size:11px;}
 /*配送*/
 
@@ -2276,6 +2280,7 @@ display:block;
 #group_list_box td{
 	height:20px;
 	padding:0;
+	font-size:12px;
 }
 .address_item_info{ margin-left:4px;}
 #shiping_box{ padding:0;}
@@ -2289,6 +2294,7 @@ display:block;
 	font-size:11px;
 	*font-size:10px;
 	width:80px;
+	display:block;
 }
 .clear_both{
 	clear:both;
