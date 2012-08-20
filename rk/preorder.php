@@ -349,11 +349,11 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
         </tr>
         <tr>  
           <td class="main"><?php echo FORM_FIELD_CUSTOMER_FIRSTNAME; ?></td>
-          <td class="main"><?php echo $first_name_prompt; ?></td>
+          <td class="formArea_td_info"><?php echo $first_name_prompt; ?></td>
         </tr>
         <tr>
           <td class="main"><?php echo FORM_FIELD_CUSTOMER_EMAIL; ?></td>
-          <td class="main"><?php echo $your_email_address_prompt; ?></td>
+          <td class="formArea_td_info"><?php echo $your_email_address_prompt; ?></td>
         </tr>
         <tr> 
         <td colspan="2" class="main"><?php echo PREORDER_FINAL_EAMIL;?></td>
@@ -386,7 +386,7 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
         </tr>
         <tr>
           <td class="main"><?php echo FORM_FIELD_FRIEND_NAME; ?></td>
-          <td class="main">
+          <td class="formArea_td_info">
 <?php
 if (!isset($_POST['quantity'])) $_POST['quantity'] = NULL; //del notice
 if (!isset($_GET['quantity'])) $_GET['quantity'] = NULL; //del notice

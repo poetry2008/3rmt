@@ -2350,10 +2350,7 @@ function open_calendar()
 {
   var is_open = $('#toggle_open').val(); 
   if (is_open == 0) {
-    browser_str = navigator.userAgent.toLowerCase(); 
-    if (browser_str.indexOf("msie 9.0") > 0) {
-      $('#new_yui3').css('margin-left', '-90px'); 
-    }
+    //mm-dd-yyyy || mm/dd/yyyy
     $('#toggle_open').val('1'); 
     
     var rules = {
@@ -2372,6 +2369,7 @@ function open_calendar()
         date_info = $("#date_orders").val().split('-'); 
       }
     } else {
+                      //mm-dd-yyyy || mm/dd/yyyy
       date_info_str = '<?php echo date('Y-m-d', time())?>';  
       date_info = date_info_str.split('-');  
     }
@@ -2413,11 +2411,58 @@ function open_calendar()
       var dtdate = Y.DataType.Date;
       calendar.on("selectionChange", function (ev) {
         var newDate = ev.newSelection[0];
-        $("#date_orders").val(dtdate.format(newDate)); 
+        tmp_show_date = dtdate.format(newDate); 
+        tmp_show_date_array = tmp_show_date.split('-');
+        $("#fetch_year").val(tmp_show_date_array[0]); 
+        $("#fetch_month").val(tmp_show_date_array[1]); 
+        $("#fetch_day").val(tmp_show_date_array[2]); 
+        $("#date_orders").val(tmp_show_date); 
         $('#toggle_open').val('0');
         $('#toggle_open').next().html('<div id="mycalendar"></div>');
       });
     });
+  }
+}
+
+function is_date(dateval)
+{
+  var arr = new Array();
+  if(dateval.indexOf("-") != -1){
+    arr = dateval.toString().split("-");
+  }else if(dateval.indexOf("/") != -1){
+    arr = dateval.toString().split("/");
+  }else{
+    return false;
+  }
+  if(arr[0].length==4){
+    var date = new Date(arr[0],arr[1]-1,arr[2]);
+    if(date.getFullYear()==arr[0] && date.getMonth()==arr[1]-1 && date.getDate()==arr[2]) {
+      return true;
+    }
+  }
+  
+  if(arr[2].length==4){
+    var date = new Date(arr[2],arr[1]-1,arr[0]);
+    if(date.getFullYear()==arr[2] && date.getMonth()==arr[1]-1 && date.getDate()==arr[0]) {
+      return true;
+    }
+  }
+  
+  if(arr[2].length==4){
+    var date = new Date(arr[2],arr[0]-1,arr[1]);
+    if(date.getFullYear()==arr[2] && date.getMonth()==arr[0]-1 && date.getDate()==arr[1]) {
+      return true;
+    }
+  }
+ 
+  return false;
+}
+function change_fetch_date() {
+  fetch_date_str = $("#fetch_year").val()+"-"+$("#fetch_month").val()+"-"+$("#fetch_day").val(); 
+  if (!is_date(fetch_date_str)) {
+    alert('<?php echo ERROR_INPUT_RIGHT_DATE;?>'); 
+  } else {
+    $("#date_orders").val(fetch_date_str); 
   }
 }
 </script>
@@ -2460,7 +2505,7 @@ a.dpicker {
 }
 #new_yui3{
 	position:absolute;
-	left:580px\9;
+	
 }
 </style>
 <!-- header_eof //-->
@@ -2598,9 +2643,38 @@ if (($action == 'edit') && ($order_exists == true)) {
     <?php
       $date_array = explode('_',$order->tori['date']);
       $date_start_array = explode(' ',$date_array[0]);
+      $fetch_date_array = explode('-', $date_start_array[0]); 
     ?>
+    <div style="float:left;"> 
+    <select name="fetch_year" id="fetch_year" onchange="change_fetch_date();">
+    <?php
+      $default_fetch_year = (isset($_POST['fetch_year']))?$_POST['fetch_year']:$fetch_date_array[0]; 
+      for ($f_num = 2006; $f_num <= 2050; $f_num++) {
+        echo '<option value="'.$f_num.'"'.(($default_fetch_year == $f_num)?' selected':'').'>'.$f_num.'</option>'; 
+      }
+    ?>
+    </select>
+    <select name="fetch_month" id="fetch_month" onchange="change_fetch_date();">
+    <?php
+      for ($f_num = 1; $f_num <= 12; $f_num++) {
+        $default_fetch_month = (isset($_POST['fetch_month']))?$_POST['fetch_month']:$fetch_date_array[1]; 
+        $tmp_fetch_month = sprintf('%02d', $f_num); 
+        echo '<option value="'.$tmp_fetch_month.'"'.(($default_fetch_month == $tmp_fetch_month)?' selected':'').'>'.$tmp_fetch_month.'</option>'; 
+      }
+    ?>
+    </select>
+    <select name="fetch_day" id="fetch_day" onchange="change_fetch_date();">
+    <?php
+      for ($f_num = 1; $f_num <= 31; $f_num++) {
+        $default_fetch_day = (isset($_POST['fetch_day']))?$_POST['fetch_day']:$fetch_date_array[2]; 
+        $tmp_fetch_day = sprintf('%02d', $f_num); 
+        echo '<option value="'.$tmp_fetch_day.'"'.(($default_fetch_day == $tmp_fetch_day)?' selected':'').'>'.$tmp_fetch_day.'</option>'; 
+      }
+    ?>
+    </select>
+    </div>
     <div class="yui3-skin-sam yui3-g">
-    <input id="date_orders" name='date_orders' size='15' value='<?php echo str_replace('&nbsp;','',$date_start_array[0]); ?>'>
+    <input id="date_orders" type="hidden" name='date_orders' size='15' value='<?php echo str_replace('&nbsp;','',$date_start_array[0]); ?>'>
     <a href="javascript:void(0);" onclick="open_calendar();" class="dpicker"></a> 
     <input type="hidden" id="date_order" name="update_tori_torihiki_date" value="<?php echo str_replace('&nbsp;','',$date_start_array[0]); ?>">
     <input type="hidden" name="toggle_open" value="0" id="toggle_open"> 
@@ -2768,7 +2842,9 @@ if (($action == 'edit') && ($order_exists == true)) {
   $order->products = array();
   $orders_products_query = tep_db_query("select * from " . TABLE_ORDERS_PRODUCTS . " where orders_id = '" . tep_db_input($oID) . "'");
   while ($orders_products = tep_db_fetch_array($orders_products_query)) {
-    $order->products[$index] = array('qty' => $orders_products['products_quantity'],
+    $order->products[$index] = array(
+        'id' => $orders_products['products_id'],
+        'qty' => $orders_products['products_quantity'],
         'name' => str_replace("'", "&#39;", $orders_products['products_name']),
         'model' => $orders_products['products_model'],
         'tax' => $orders_products['products_tax'],
@@ -2828,12 +2904,30 @@ if (($action == 'edit') && ($order_exists == true)) {
           $op_info_array[] = $order->products[$i]['attributes'][$i_num]['id']; 
         }
         $op_info_str = implode('|||', $op_info_array);
-
-        for ($j=0; $j<sizeof($order->products[$i]['attributes']); $j++) {
-          $orders_products_attributes_id = $order->products[$i]['attributes'][$j]['id'];
-          echo '<br><div><small>&nbsp;<i><div class="order_option_info"><div class="order_option_title"> - ' ."<input type='text' class='option_input_width' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][option]' value='" .  (isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['option'])?tep_parse_input_field_data($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['option'], array("'"=>"&quot;")):tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['title'], array("'"=>"&quot;"))) . "'>" . 
-            '</div><div class="order_option_value">: ' . 
-            "<input type='text' class='option_input_width' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][value]' value='" .  (isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['value'])?tep_parse_input_field_data($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['value'], array("'"=>"&quot;")):tep_parse_input_field_data($order->products[$i]['attributes'][$j]['option_info']['value'], array("'"=>"&quot;")));
+              // new option list
+      $all_show_option_id = array();
+      $all_show_option = array();
+      $option_item_order_sql = "select it.id from ".TABLE_PRODUCTS."
+      p,".TABLE_OPTION_ITEM." it 
+      where p.products_id = '".(int)$order->products[$i]['id']."' 
+      and p.belong_to_option = it.group_id 
+      and it.status = 1
+      order by it.sort_num,it.title";
+      $option_item_order_query = tep_db_query($option_item_order_sql);
+      while($show_option_row_item = tep_db_fetch_array($option_item_order_query)){
+        $all_show_option_id[] = $show_option_row_item['id'];
+      } 
+      for ($j=0; $j<sizeof($order->products[$i]['attributes']); $j++) {
+        $all_show_option[$order->products[$i]['attributes'][$j]['option_item_id']] =
+          $order->products[$i]['attributes'][$j];
+      }
+      foreach($all_show_option_id as $t_item_id){
+        $orders_products_attributes_id = $order->products[$i]['attributes'][$j]['id'];
+        if(is_array($all_show_option[$t_item_id]['option_info'])){
+        echo '<br><div><small>&nbsp;<i><div class="order_option_info"><div class="order_option_title"> - ' 
+          ."<input type='text' class='option_input_width' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][option]' value='" .  (isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['option'])?tep_parse_input_field_data($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['option'], array("'"=>"&quot;")):tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['title'], array("'"=>"&quot;"))) . "'>" .
+          '</div><div class="order_option_value">: ' .  
+          "<input type='text' class='option_input_width' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][value]' value='" .  (isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['value'])?tep_parse_input_field_data($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['value'], array("'"=>"&quot;")):tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['value'], array("'"=>"&quot;")));
           //if ($order->products[$i]['attributes'][$j]['price'] != '0') echo ' (' . $order->products[$i]['attributes'][$j]['prefix'] . $currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . ')';
           echo "'></div></div>";
           echo '<div class="order_option_price">'; 
@@ -2841,6 +2935,7 @@ if (($action == 'edit') && ($order_exists == true)) {
           echo TEXT_MONEY_SYMBOL; 
           echo '</div>'; 
           echo '</i></small></div>';
+          }
         }
       }
 

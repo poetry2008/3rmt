@@ -2233,7 +2233,10 @@ border:1px solid #CAC6BE;
 .formArea_td_info{
 	*width:82%;
 }
-#group_list_box td{ height:20px; padding:0;}
+.formArea_td_info input, .formArea_td_info select{
+	margin-bottom:5px;
+}
+#group_list_box td{ height:20px; padding:0; font-size:14px;}
 .address_item_info{ padding-left:4px;}
 /*配送*/
 .preorder_shipping{

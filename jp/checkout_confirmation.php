@@ -169,8 +169,23 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
   if (STOCK_CHECK == 'true') {
     echo tep_check_stock((int)$order->products[$i]['id'], $order->products[$i]['qty']);
   }
+  $all_show_option_id = array();
+  $all_show_option = array();
+  $option_item_order_sql = "select it.id from ".TABLE_PRODUCTS."
+  p,".TABLE_OPTION_ITEM." it 
+  where p.products_id = '".(int)$order->products[$i]['id']."' 
+  and p.belong_to_option = it.group_id 
+  and it.status = 1
+  order by it.sort_num,it.title";
+  $option_item_order_query = tep_db_query($option_item_order_sql);
+  while($show_option_row_item = tep_db_fetch_array($option_item_order_query)){
+    $all_show_option_id[] = $show_option_row_item['id'];
+  }
   if ( (isset($order->products[$i]['op_attributes'])) && (sizeof($order->products[$i]['op_attributes']) > 0) ) {
     for ($j=0, $n2=sizeof($order->products[$i]['op_attributes']); $j<$n2; $j++) {  
+      $all_show_option[$order->products[$i]['op_attributes'][$j]['item_id']] 
+      = $order->products[$i]['op_attributes'][$j];
+      /*
       $op_price = tep_get_show_attributes_price($order->products[$i]['op_attributes'][$j]['item_id'], $order->products[$i]['op_attributes'][$j]['group_id'], $order->products[$i]['op_attributes'][$j]['value']); 
        
       echo '<br><small>&nbsp;<i> - ' .  $order->products[$i]['op_attributes'][$j]['front_title'] . ': ' .  str_replace(array("<br>", "<BR>"), '', $order->products[$i]['op_attributes'][$j]['value']);
@@ -178,18 +193,35 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
         echo ' ('.$currencies->format($op_price).')'; 
       }
       echo '</i></small>';
+      */
     }
   }
   
   if ( (isset($order->products[$i]['ck_attributes'])) && (sizeof($order->products[$i]['ck_attributes']) > 0) ) {
-    for ($jk=0, $n3=sizeof($order->products[$i]['ck_attributes']); $jk<$n3; $jk++) {
+   for ($jk=0, $n3=sizeof($order->products[$i]['ck_attributes']); $jk<$n3; $jk++) {
+      $all_show_option[$order->products[$i]['ck_attributes'][$jk]['item_id']] 
+      = $order->products[$i]['ck_attributes'][$jk];
+      /*
       $cop_price = tep_get_show_attributes_price($order->products[$i]['ck_attributes'][$jk]['item_id'], $order->products[$i]['ck_attributes'][$jk]['group_id'], $order->products[$i]['ck_attributes'][$jk]['value']); 
       echo '<br><small>&nbsp;<i> - ' .  $order->products[$i]['ck_attributes'][$jk]['front_title'] . ': ' .  str_replace(array("<br>", "<BR>"), '', $order->products[$i]['ck_attributes'][$jk]['value']);
       if ($cop_price != '0') {
         echo ' ('.$currencies->format($cop_price).')'; 
       }
       echo '</i></small>';
+      */
     }
+  }
+  // new option list 
+  foreach($all_show_option_id as $t_item_id){
+      $op_price = tep_get_show_attributes_price( $all_show_option[$t_item_id]['item_id'],
+        $all_show_option[$t_item_id]['group_id'], $all_show_option[$t_item_id]['value']); 
+      echo '<br><small>&nbsp;<i> - ' . $all_show_option[$t_item_id]['front_title'] .
+      ': ' .  str_replace(array("<br>", "<BR>"), '', $all_show_option[$t_item_id]['value']);
+      if ($op_price != '0') {
+        echo ' ('.$currencies->format($op_price).')'; 
+      }
+      echo '</i></small>';
+
   }
   echo '</td>' . "\n";
 
@@ -527,10 +559,11 @@ echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><sp
 <tr class="infoBoxContents"> 
 <td width="30%" valign="top"><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
 <tr> 
-<td class="main"><?php echo '<b>' . HEADING_PAYMENT_METHOD . '</b> <a href="' . tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td> 
+<td class="main" colspan="2"><?php echo '<b>' . HEADING_PAYMENT_METHOD . '</b> <a href="' . tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td> 
 </tr> 
 <tr> 
-<td class="main"><?php echo payment::changeRomaji($order->info['payment_method']); ?></td> 
+<td width="10"></td>
+<td class="main" width="125"><?php echo payment::changeRomaji($order->info['payment_method']); ?></td> 
 </tr> 
 </table></td> 
 <td width="70%" valign="top" align="right"><table width="100%" border="0" cellspacing="0" cellpadding="2"> 
@@ -621,16 +654,16 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
   if(isset($customer_id)&&tep_is_member_customer($customer_id)){
   echo '<tr>' . "\n";
   if (!tep_only_buy_product()) {
-    echo '<td align="right" class="main"><br>'.TEXT_POINT_NOW.'</td>' . "\n";
+    echo '<td align="right" class="main">'.TEXT_POINT_NOW.'</td>' . "\n";
   } else {
     if ($get_point == 0) {
-      echo '<td align="right" class="main"><br>'.TS_TEXT_POINT_NOW_TWO.'</td>' . "\n";
+      echo '<td align="right" class="main">'.TS_TEXT_POINT_NOW_TWO.'</td>' . "\n";
     } else {
-      echo '<td align="right" class="main"><br>'.TEXT_POINT_NOW.'</td>' . "\n";
+      echo '<td align="right" class="main">'.TEXT_POINT_NOW.'</td>' . "\n";
     }
   } 
 
-  echo '<td align="right" class="main"><br>'.(int)$get_point.'&nbsp;P</td>' . "\n";
+  echo '<td align="right" class="main">'.(int)$get_point.'&nbsp;P</td>' . "\n";
   echo '</tr>' . "\n";
   }
 }

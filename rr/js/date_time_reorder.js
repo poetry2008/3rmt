@@ -118,7 +118,7 @@ function selectHour(start_time,end_time,hour,min_num,ele){
           hour = parseInt(hour); 
           document.getElementById("hour"+hour).style.color="#ffffff";
           document.getElementById("hour"+hour).style.textDecoration ="underline";
-          $("#hour"+hour).css("background-color","#383838");
+          $("#hour"+hour).css("background-color","#666666");
         }
         var array_start = new Array();
         array_start = start_time.split('||'); 

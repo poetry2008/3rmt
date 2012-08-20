@@ -587,3 +587,4 @@ define('TEXT_DATE_THURSDAY', '木曜日');
 define('TEXT_DATE_FRIDAY', '金曜日');
 define('TEXT_DATE_STATURDAY', '土曜日');
 define('TEXT_DATE_SUNDAY', '日曜日');
+define('ERROR_INPUT_RIGHT_DATE', '正しく日付を入力してください。');
