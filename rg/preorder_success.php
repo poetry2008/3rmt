@@ -101,7 +101,12 @@
             </td>
             </tr> 
             <?php
-            $preorder_attributes_raw = tep_db_query("select * from ".TABLE_PREORDERS_PRODUCTS_ATTRIBUTES." where orders_id = '".$preorder_id."'"); 
+            $preorder_attributes_raw = tep_db_query("select prea.* from ".
+                TABLE_PREORDERS_PRODUCTS_ATTRIBUTES." prea left join ".
+                TABLE_OPTION_ITEM." it 
+                on prea.option_item_id = it.id
+                where prea.orders_id = '".$preorder_id."' 
+                order by it.sort_num,it.title"); 
             while ($preorder_attributes = tep_db_fetch_array($preorder_attributes_raw)) {
               $option_info_array = @unserialize(stripslashes($preorder_attributes['option_info'])); 
             ?>
