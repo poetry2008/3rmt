@@ -352,6 +352,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                       if(substr($ad_key,0,3)=='ad_' && $_POST[substr($ad_key,3)] != ''){
 
                         echo '<tr>';
+						echo '<td width="10"></td>';
 						echo '<td class="main" width="150">'. $_POST[substr($ad_key,3)] .':</td>';                  
                         echo '<td class="main">';
                         echo $_POST[$ad_key];

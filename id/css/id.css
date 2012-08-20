@@ -2220,6 +2220,7 @@ searching
 .preorser_formArea{ background-color:#ccc; font-size:13px; line-height:25px;}
 .preorser_formArea td{ background-color:#FFFFFF; padding-left:2px; font-size:13px;}
 .formArea_td_info { width:530px\9; line-height:1.5; font-size:11px;}
+.formArea_td_info input, .formArea_td_info select{ margin-bottom:5px;}
 .con_telnumber_input input, .con_telnumber_input_validate input { width:150px; height:20px;}
 .information_color {
     background-color: #FDEBAC;
@@ -2513,7 +2514,7 @@ searching
 	font-weight:bold;
 	margin-left:-2px;
 }
-#group_list_box td{ height:20px; padding:0;}
+#group_list_box td{ height:20px; padding:0; font-size:14px;}
 .address_item_info{ padding-left:4px;}
 
 /*配送*/
@@ -2587,6 +2588,7 @@ searching
 	line-height:1.5;
 	font-size:12px;
 	width:80px;
+	display:block;
 }
 #form_error{ 
 	line-height:20px;

@@ -732,12 +732,12 @@ h3.game_list a {
 	width: 100%;
 	font-size: 11px;
 	border-collapse: separate;
-	border-spacing: 0;
 }
 .information_table td {
 	line-height: 20px;
 	padding: 3px 5px;
 	vertical-align: top;
+	font-size:12px;
 }
 /*header title*/
 .pageHeading, .pageHeading_gameList {
@@ -1613,6 +1613,7 @@ searching
 .preorser_formArea{ background-color:#ccc; font-size:13px; line-height:20px;}
 .preorser_formArea td{ background-color:#FFFFFF; padding-left:2px;}
 .formArea_td_info{ width:340px\9; font-size: 11px; line-height: 1.5;}
+.formArea_td_info input, .formArea_td_info select{ margin-bottom:5px;}
 .information_color {
     background-color: #FDEBAC;
     color: #000000;
@@ -1880,6 +1881,8 @@ searching
 	width:25%;
 	padding:0;
 	font-weight:normal;
+	font-size:11px;
+	*font-size:10px;
 }
 .option_money{
 	float:right;
@@ -1901,7 +1904,7 @@ searching
 	font-size:20px;
 	font-weight:bold;
 }
-#group_list_box td{ height:20px; padding:0;}
+#group_list_box td{ height:20px; padding:0; font-size:14px;}
 .address_item_info{ padding-left:4px;}
 
 /*配送*/
@@ -1925,7 +1928,7 @@ searching
 .time_radio{
 	float:left;
 	margin-left:15px;
-	margin-top:5px;
+	margin-top:3px;
 	margin-top:2px\9;
 	margin-left:18px\9;
 }
@@ -1952,5 +1955,6 @@ searching
 	line-height:1.5;
 	font-size:11px;
 	width:85px;
+	display:block;
 }
 .font-size12{ font-size:12px;}

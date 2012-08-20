@@ -352,7 +352,8 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                       if(substr($ad_key,0,3)=='ad_' && $_POST[substr($ad_key,3)] != ''){
 
                         echo '<tr>';
-                        echo '<td class="main" width="150">'. $_POST[substr($ad_key,3)] .':</td>';                  
+                        echo '<td width="10"></td>';
+						echo '<td class="main" width="150">'. $_POST[substr($ad_key,3)] .':</td>';                  
                         echo '<td class="main">';
                         echo $_POST[$ad_key];
                         //echo '<input type="hidden" name="'. $ad_key .'" value="'. $ad_value .'"></td>';
@@ -407,11 +408,12 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
           <br> 
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
+              <td class="main" colspan="2"><b><?php echo CHANGE_ORDER_CONFIRM_PAYMENT;?></b></td>                  
+            </tr>
+            <tr>
               <td class="main" width="30%" valign="top">
                 <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea_td"> 
-                  <tr>
-                    <td class="main" colspan="2"><b><?php echo CHANGE_ORDER_CONFIRM_PAYMENT;?></b></td>                  
-                  </tr>
+                  
                   <tr>
                     <td width="10"></td>
                     <td class="main" width="150">
