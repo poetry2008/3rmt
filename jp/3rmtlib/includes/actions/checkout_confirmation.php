@@ -15,7 +15,7 @@ if (!tep_session_is_registered('customer_id')) {
       if (!empty($_SESSION['shipping_page_str'])) {
         tep_redirect(tep_href_link($_SESSION['shipping_page_str'], '', 'SSL'));
       } else {
-        $_SESSION['shipping_session_flag'];
+        unset($_SESSION['shipping_session_flag']);
         tep_redirect(tep_href_link(FILENAME_CHECKOUT_OPTION, '', 'SSL'));
       }
     }
