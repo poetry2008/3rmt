@@ -4,7 +4,7 @@
 */
 
 
-  if ( (!$_COOKIE['sort']) || (!ereg('1?[0-9][ad]', $_COOKIE['sort'])) || (substr($_COOKIE['sort'],0,1) > sizeof($column_list)) ) {
+  if ( ((!$_COOKIE['sort']) || (!ereg('1?[0-9][ad]', $_COOKIE['sort'])) || (substr($_COOKIE['sort'],0,1) > sizeof($column_list))) && $_SESSION['sort']=="" ) {
     /*for ($col=0, $n=sizeof($column_list); $col<$n; $col++) {
       if ($column_list[$col] == 'PRODUCT_LIST_NAME') {
         $_COOKIE['sort'] = $col+1 . 'a';
@@ -13,10 +13,29 @@
       }
     }*/
     $listing_sql .= "order by sort_order " . ($sort_order == 'd' ? 'desc' : '') . ", products_name, products_id";
+    
   } else {
+
+$cookie_tmp = $_SESSION['sort'];
     $sort_col = substr($_COOKIE['sort'], 0 , -1);
     $sort_order = substr($_COOKIE['sort'], -1);
-    setcookie('sort','');
+    if(isset($_GET['page']) && $_GET['page'] !=""){
+   $_SESSION['have_page_flag'] = true;
+    }else{
+	    if($_SESSION['have_page_flag'] == true) {
+	    $_SESSION['have_page_flag'] =  false;
+            unset($_SESSION['sort']);
+            tep_redirect($_SERVER["REQUEST_URI"]);
+	    }else{
+
+            if($_SESSION['sort'] == $_COOKIE['sort']){
+            setcookie('sort','');
+            tep_redirect($_SERVER["REQUEST_URI"]);
+	    }else{
+	    $_SESSION['sort'] = $_COOKIE['sort'];
+	    }
+	    }
+    }
     $listing_sql .= ' order by ';
     switch ($column_list[$sort_col-1]) {
       case 'PRODUCT_LIST_MODEL':
@@ -48,6 +67,11 @@
         break;
     }
   }
+if($sort_order == 'a'){
+$sort_type = 'd';
+}else{
+$sort_type = 'a';
+}
   //define('PRODUCT_SORT_BY_CHARACTER', 'アルファベット順');
   //define('PRODUCT_SORT_BY_PRICE', '価格順');
   //define('PRODUCT_SORT_BY_POPULAR', '人気順');

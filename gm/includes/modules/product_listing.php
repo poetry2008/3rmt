@@ -10,14 +10,13 @@
 <!--select searach -->
 <table cellspacing="0" cellpadding="0" border="0" class="product_listing" width="100%">
 	<tr>
-<td><a class="product_listing_link" <?php echo ($_COOKIE['sort'] == '4a' or
-    !isset($_COOKIE['sort'])) ? 'style="background:url(images/design/box/product_listing_sort_02.gif)"' : 'style="background:url(images/design/box/product_listing_sort_01.gif)"' ; ?> href="javascript:void(0)"
-    <?php echo $onmouse; ?>onclick="change_sort_type('4a');"><?php echo PRE_SORT_A;?></a></td>
-    <td><a class="product_listing_link" <?php echo ($_COOKIE['sort'] == '4d') ? 'style="background: url(images/design/box/product_listing_sort_02.gif)"' : 'style="background: url(images/design/box/product_listing_sort_01.gif)"' ; ?> href="javascript:void(0)"  onclick="change_sort_type('4d');"><?php echo PRE_SORT_Z;?></a></td>
-    <td><a id="jingyi" class="product_listing_link" <?php echo ($_COOKIE['sort'] == '5a') ? 'style="background: url(images/design/box/product_listing_sort_02.gif)"' : 'style="background: url(images/design/box/product_listing_sort_01.gif)"' ; ?> href="javascript:void(0)" onclick="change_sort_type('5a');"><?php echo PRE_SORT_PRICE;?></a></td>
-    <td><a class="product_listing_link" <?php echo ($_COOKIE['sort'] == '5d') ? 'style="background: url(images/design/box/product_listing_sort_02.gif)"' : 'style="background: url(images/design/box/product_listing_sort_01.gif)"' ; ?> href="javascript:void(0)" onclick="change_sort_type('5d');"><?php echo PRE_SORT_PRICE_HIGHT;?></a></td>
-    <td style="border-right:1px solid #666666;"><a class="product_listing_link" <?php echo ($_COOKIE['sort'] == '9d') ? 'style="background: url(images/design/box/product_listing_sort_02.gif)"' : 'style="background: url(images/design/box/product_listing_sort_01.gif)"' ; ?> href="javascript:void(0)" onclick="change_sort_type('9d');"><?php echo PRE_SORT_PEOPLE;?></a></td>
+<td><a class="product_listing_link" <?php echo (!isset($_COOKIE['sort']) or $_COOKIE['sort'] == '100a' or $_COOKIE['sort'] == '100d') ? 'style="background:url(images/design/box/product_listing_sort_02.gif)"' : 'style="background:url(images/design/box/product_listing_sort_01.gif)"' ; ?> href="javascript:void(0)"
+    <?php echo $onmouse; ?>onclick="change_sort_type('100<?php echo $sort_type == 'd' ? 'a':'d'?>');"><?php echo PRE_SORT_DEFAULT;?></a></td>
 
+    <td><a class="product_listing_link" <?php echo ($_COOKIE['sort'] == '4a' or $_COOKIE['sort'] == '4d') ? 'style="background:url(images/design/box/product_listing_sort_02.gif)"' : 'style="background:url(images/design/box/product_listing_sort_01.gif)"' ; ?> href="javascript:void(0)"
+    <?php echo $onmouse; ?>onclick="change_sort_type('4<?php echo $sort_type == 'd' ? 'd':'a'?>');"><?php echo PRE_SORT_A;?></a></td>
+    <td><a id="jingyi" class="product_listing_link" <?php echo ($_COOKIE['sort'] == '5a' or $_COOKIE['sort'] == '5d') ? 'style="background: url(images/design/box/product_listing_sort_02.gif)"' : 'style="background: url(images/design/box/product_listing_sort_01.gif)"' ; ?> href="javascript:void(0)" onclick="change_sort_type('5<?php echo $sort_type == 'd' ? 'd':'a'?>');"><?php echo PRE_SORT_PRICE;?></a></td>
+    <td style="border-right:1px solid #666666;"><a class="product_listing_link" <?php echo ($_COOKIE['sort'] == '9d' or $_COOKIE['sort'] == '9a') ? 'style="background: url(images/design/box/product_listing_sort_02.gif)"' : 'style="background: url(images/design/box/product_listing_sort_01.gif)"' ; ?> href="javascript:void(0)" onclick="change_sort_type('9<?php echo $sort_type == 'd' ? 'd':'a'?>');"><?php echo PRE_SORT_PEOPLE;?></a></td>
      </tr>
 </table>
 <table width="100%" border="0" cellpadding="1" cellspacing="0">
