@@ -335,6 +335,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                         }
                       }
                     }
+echo '<br>';
 foreach($all_show_option_id as $t_item_id){
   if(isset($all_show_option[$t_item_id]['option_info'])&&
     $all_show_option[$t_item_id]['option_info']!=''){
@@ -342,14 +343,17 @@ foreach($all_show_option_id as $t_item_id){
     if(is_array($all_attr_info)){
     echo $all_attr_info['title'].':'.str_replace(array("<br>", "<BR>"), '', $all_attr_info['value']);
     if ($all_show_option[$t_item_id]['options_values_price'] != '0') {
-      if ($preorder_product_res['products_price'] != '0') {
+      if ((int)$preorder_product_res['products_price'] != '0') {
         echo ' ('.$currencies->format($all_show_option[$t_item_id]['options_values_price']).')'; 
       } 
     }
+        echo '<br>';
     }
   }else{
+    if($all_show_option[$t_item_id]['front_title']){
     echo $all_show_option[$t_item_id]['front_title'].':'.str_replace(array("<br>", "<BR>"),
       '', $all_show_option[$t_item_id]['of_value']); 
+    }
     if ($all_show_option[$t_item_id]['type'] == 'radio') {
       $r_option_array = @unserialize($all_show_option[$t_item_id]['option']);
       if (!empty($r_option_array['radio_image'])) {
@@ -366,12 +370,14 @@ foreach($all_show_option_id as $t_item_id){
         }
       }
     } else {
-      if ($all_show_option[$t_item_id]['price'] != '0') {
+      if ((int)$all_show_option[$t_item_id]['price'] != '0') {
         echo ' ('.$currencies->format($all_show_option[$t_item_id]['price']).')'; 
       }
     }
+    if($all_show_option[$t_item_id]['front_title']){
+        echo '<br>';
+    }
   }
-  echo '<br>'; 
 }
 ?>
                     </td>                  
