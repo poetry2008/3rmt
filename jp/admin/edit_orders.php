@@ -392,18 +392,7 @@ if (tep_not_null($action)) {
         torihiki_houhou = '" . tep_db_input($update_tori_torihiki_houhou) . "',
         cc_type = '" . tep_db_input($update_info_cc_type) . "',
         cc_owner = '" . tep_db_input($update_info_cc_owner) . "',";
-
-      $orders_comment_array  = explode("\n",$comment_arr['comment']);
-      $orders_comment_explode = explode(':',$orders_comment_array[0]);    
-      $orders_comment_flag = false;
-      if(count($orders_comment_explode) > 1 && strlen(trim($orders_comment_explode[1])) == 0){
-
-         $orders_comment_flag = true; 
-      }
-      if(isset($comment_arr['comment']) && !empty($comment_arr['comment']) && $orders_comment_flag == false){
-        $UpdateOrders .= "orders_comment = '{$comment_arr['comment']}',";
-      }
-
+ 
       if(substr($update_info_cc_number,0,8) != "(Last 4)") {
         $UpdateOrders .= "cc_number = '$update_info_cc_number',";
       }   
