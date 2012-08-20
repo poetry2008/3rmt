@@ -422,7 +422,7 @@ foreach($all_show_option_id as $t_item_id){
                       if(substr($ad_key,0,3)=='ad_' && $_POST[substr($ad_key,3)] != ''){
 
                         echo '<tr>';
-						echo '<td class="main" width="150">'. $_POST[substr($ad_key,3)] .':</td>';                  
+                        echo '<td class="main" width="150">'. $_POST[substr($ad_key,3)] .':</td>';                  
                         echo '<td class="main">';
                         echo $_POST[$ad_key];
                         //echo '<input type="hidden" name="'. $ad_key .'" value="'. $ad_value .'"></td>';
@@ -478,7 +478,7 @@ foreach($all_show_option_id as $t_item_id){
           <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea">
             <tr>
               <td class="main" width="30%" valign="top">
-                <table width="100%"  cellpadding="2" cellspacing="2" border="0" class="formArea_td"> 
+                <table width="100%" cellpadding="2" cellspacing="2" border="0" class="formArea_td"> 
                   <tr>
                     <td class="main" colspan="2"><b><?php echo CHANGE_ORDER_CONFIRM_PAYMENT;?></b></td>                  
                   </tr>
@@ -578,7 +578,7 @@ foreach($all_show_option_id as $t_item_id){
                         echo $currencies->format_total($preorder_total_res['value']);
                       }
                       
-                      $shipping_fee_str = $shipping_fee == 0 ?  TEXT_SHIPPING_FEE_FREE : $currencies->format_total($shipping_fee);
+                      $shipping_fee_str = $shipping_fee == 0 ? TEXT_SHIPPING_FEE_FREE : $currencies->format_total($shipping_fee);
                       $preorder_shipping_fee = (int)$shipping_fee;
                       if (!tep_session_is_registered('preorder_shipping_fee')) {
                         tep_session_register('preorder_shipping_fee'); 
