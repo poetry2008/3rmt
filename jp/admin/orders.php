@@ -705,7 +705,7 @@ switch ($_GET['action']) {
             } elseif ($totals['class'] == "ot_total") {
               if($handle_fee)
                 $total_details_mail .= TEXT_HANDLE_FEE.$currencies->format($handle_fee)."\n";
-              $total_details_mail .= TEXT_PAYMENT_AMOUNT . $currencies->format($totals['value']) . "\n";
+              $total_details_mail .= TEXT_PAYMENT_AMOUNT . $currencies->format($totals['value']);
             } else {
               $totals['title'] = str_replace(TEXT_TRANSACTION_FEE, TEXT_REPLACE_HANDLE_FEE, $totals['title']);
               $total_details_mail .= $totals['title'] . str_repeat('　', intval((16 - strlen($totals['title']))/2)) . '：' . $currencies->format($totals['value']) . "\n";
@@ -1046,7 +1046,7 @@ switch ($_GET['action']) {
           } elseif ($totals['class'] == "ot_total") {
             if($handle_fee)
               $total_details_mail .= TEXT_HANDLE_FEE.$currencies->format($handle_fee)."\n";
-            $total_details_mail .= TEXT_PAYMENT_AMOUNT . $currencies->format($totals['value']) . "\n";
+            $total_details_mail .= TEXT_PAYMENT_AMOUNT . $currencies->format($totals['value']);
           } else {
             $totals['title'] = str_replace(TEXT_TRANSACTION_FEE, TEXT_REPLACE_HANDLE_FEE, $totals['title']);
             $total_details_mail .= $totals['title'] . str_repeat('　', intval((16 - strlen($totals['title']))/2)) . '：' . $currencies->format($totals['value']) . "\n";
