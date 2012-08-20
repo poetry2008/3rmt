@@ -150,8 +150,8 @@
        $all_show_option[$t_item_id]['group_id'], $all_show_option[$t_item_id]['value']);
        if(is_array($all_show_option[$t_item_id]['option_info'])){
          echo '<br><small>&nbsp;<i> - ' .  $all_show_option[$t_item_id]['option_info']['title'] . ': ' .  str_replace(array("<br>", "<BR>"), '', $all_show_option[$t_item_id]['option_info']['value']);
-         if ($op_price != '0') {
-           echo ' ('.$currencies->format($op_price).')';
+         if ((int)$all_show_option[$t_item_id]['price'] != '0') {
+          echo ' ('.$currencies->format($all_show_option[$t_item_id]['price']).')';        
          }
          echo '</i></small>';
        }
