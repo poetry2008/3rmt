@@ -4,15 +4,15 @@
 */
 
   require(DIR_WS_MODULES . 'sort_products.php');
+  require(DIR_WS_LANGUAGES . $language . '/product_listing.php');
 ?>
 <!--select searach -->
 <table width="100%"  border="0" cellpadding="0" cellspacing="1" bgcolor="#dddddd">
   <tr>
-    <td><a <?php echo ($_COOKIE['sort'] == '4a' or !isset($_COOKIE['sort'])) ? 'class="product_listing_link_01" style="background: url(images/design/box/product_listing_sort_02.gif)"' : 'class="product_listing_link" style="background: url(images/design/box/product_listing_sort_01.gif)"' ; ?> href="javascript:void(0)" onclick="change_sort_type('4a');">タイトル順(A～)に並べる</a></td>
-    <td><a <?php echo ($_COOKIE['sort'] == '4d') ? 'class="product_listing_link_01" style="background: url(images/design/box/product_listing_sort_02.gif)"' : 'class="product_listing_link" style="background: url(images/design/box/product_listing_sort_01.gif)"' ; ?> href="javascript:void(0)" onclick="change_sort_type('4d');">タイトル順(Z～)に並べる</a></td>
-    <td><a <?php echo ($_COOKIE['sort'] == '5a') ?  'class="product_listing_link_01" style="background: url(images/design/box/product_listing_sort_02.gif)"' : 'class="product_listing_link" style="background: url(images/design/box/product_listing_sort_01.gif)"' ; ?> href="javascript:void(0)" onclick="change_sort_type('5a');">価格順(安い)に並べる</a></td>
-    <td><a <?php echo ($_COOKIE['sort'] == '5d') ?  'class="product_listing_link_01" style="background: url(images/design/box/product_listing_sort_02.gif)"' : 'class="product_listing_link" style="background: url(images/design/box/product_listing_sort_01.gif)"' ; ?> href="javascript:void(0)" onclick="change_sort_type('5d');">価格順(高い)に並べる</a></td>
-    <td><a <?php echo ($_COOKIE['sort'] == '9d') ?  'class="product_listing_link_01" style="background: url(images/design/box/product_listing_sort_02.gif)"' : 'class="product_listing_link" style="background: url(images/design/box/product_listing_sort_01.gif)"' ; ?> href="javascript:void(0)" onclick="change_sort_type('9d');">人気順に並べる</a></td>
+  <td><a <?php echo ($_COOKIE['sort'] == '100a' or !isset($_COOKIE['sort']) or $_COOKIE['sort'] == '100d') ? 'class="product_listing_link_01" style="background: url(images/design/box/product_listing_sort_02.gif)"' : 'class="product_listing_link" style="background: url(images/design/box/product_listing_sort_01.gif)"' ; ?> href="javascript:void(0)" onclick="change_sort_type('100<?php echo $sort_type == 'd' ? 'a':'d'?>');"><?php echo PRE_SORT_DEFAULT?></a></td>
+  <td><a <?php echo ($_COOKIE['sort'] == '4a' or $_COOKIE['sort'] == '4d') ? 'class="product_listing_link_01" style="background: url(images/design/box/product_listing_sort_02.gif)"' : 'class="product_listing_link" style="background: url(images/design/box/product_listing_sort_01.gif)"' ; ?> href="javascript:void(0)" onclick="change_sort_type('4<?php echo $sort_type == 'd' ? 'd':'a'?>');"><?php echo PRE_SORT_A?></a></td>
+  <td><a <?php echo ($_COOKIE['sort'] == '5a' or $_COOKIE['sort'] == '5d') ?  'class="product_listing_link_01" style="background: url(images/design/box/product_listing_sort_02.gif)"' : 'class="product_listing_link" style="background: url(images/design/box/product_listing_sort_01.gif)"' ; ?> href="javascript:void(0)" onclick="change_sort_type('5<?php echo $sort_type == 'd' ? 'd':'a'?>');"><?php echo PRE_SORT_PRICE?></a></td>
+  <td><a <?php echo ($_COOKIE['sort'] == '9d' or $_COOKIE['sort'] == '9a') ?  'class="product_listing_link_01" style="background: url(images/design/box/product_listing_sort_02.gif)"' : 'class="product_listing_link" style="background: url(images/design/box/product_listing_sort_01.gif)"' ; ?> href="javascript:void(0)" onclick="change_sort_type('9<?php echo $sort_type == 'd' ? 'd':'a'?>');"><?php echo PRE_SORT_PEOPLE?></a></td>
   </tr>
 </table>
 <?php

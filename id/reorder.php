@@ -783,17 +783,17 @@ function orderConfirmPage(){
 ?>
 <?php }?>
   text += "<table class='information_table' summary='table' cellspacing='1' cellpadding='0' background='0'>\n";
-  text += "<tr><th bgcolor='#eeeeee' width='30%'>\n";
+  text += "<tr><td bgcolor='#eeeeee' width='30%'>\n";
   text += "<?php echo TEXT_REORDER_TRADE_NO_CHANGE;?>";
-  text += "</th><td>\n";
+  text += "</td><td>\n";
   text += oldTime + "\n";
-  text += "</td></tr><tr><th bgcolor='#eeeeee'>\n";
+  text += "</td></tr><tr><td bgcolor='#eeeeee'>\n";
   
   dateChanged = (document.getElementById('new_date').selectedIndex != 0);
   
   orderChanged = orderChanged || dateChanged;
 
-  text += "<?php echo TEXT_REORDER_TRADE_CHANGE;?></th><td>";
+  text += "<?php echo TEXT_REORDER_TRADE_CHANGE;?></td><td>";
 
   if(document.getElementById('new_date').selectedIndex == 0 && document.getElementById('comment').value == ''){
       document.getElementById('form_error').innerHTML = "<font color='red'><?php echo TEXT_REORDER_UNCHANGE_QTY;?></font>";
@@ -827,9 +827,9 @@ function orderConfirmPage(){
   }
   
   text += "<table class='information_table' summary='table' cellspacing='1' cellpadding='0' background='0'>\n"
-  text += "<tr><th bgcolor='#eeeeee' width='30%'>";
+  text += "<tr><td bgcolor='#eeeeee' width='30%'>";
   text += "<?php echo TEXT_REORDER_COMMENT_TITLE;?>";
-  text += "</th><td>\n";
+  text += "</td><td>\n";
   text += document.getElementById('comment').value.replace(/\</ig,"&lt;").replace(/\>/ig,"&gt;");
   text += "</td></tr>\n";
   text += "</table><br >\n"

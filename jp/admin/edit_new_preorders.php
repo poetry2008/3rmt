@@ -967,10 +967,6 @@ function open_calendar()
 {
   var is_open = $('#toggle_open').val(); 
   if (is_open == 0) {
-    browser_str = navigator.userAgent.toLowerCase(); 
-    if (browser_str.indexOf("msie 9.0") > 0) {
-      $('#new_yui3').css('margin-left', '-90px'); 
-    }
     $('#toggle_open').val('1'); 
     var rules = {
            "all": {
@@ -1028,11 +1024,57 @@ function open_calendar()
       var dtdate = Y.DataType.Date;
       calendar.on("selectionChange", function (ev) {
         var newDate = ev.newSelection[0];
-        $("#predate").val(dtdate.format(newDate)); 
+        tmp_show_date = dtdate.format(newDate); 
+        tmp_show_date_array = tmp_show_date.split('-');
+        $("#predate_year").val(tmp_show_date_array[0]); 
+        $("#predate_month").val(tmp_show_date_array[1]); 
+        $("#predate_day").val(tmp_show_date_array[2]); 
+        $("#predate").val(tmp_show_date); 
         $('#toggle_open').val('0');
         $('#toggle_open').next().html('<div id="mycalendar"></div>');
       });
     });
+  }
+}
+function is_date(dateval)
+{
+  var arr = new Array();
+  if(dateval.indexOf("-") != -1){
+    arr = dateval.toString().split("-");
+  }else if(dateval.indexOf("/") != -1){
+    arr = dateval.toString().split("/");
+  }else{
+    return false;
+  }
+  if(arr[0].length==4){
+    var date = new Date(arr[0],arr[1]-1,arr[2]);
+    if(date.getFullYear()==arr[0] && date.getMonth()==arr[1]-1 && date.getDate()==arr[2]) {
+      return true;
+    }
+  }
+  
+  if(arr[2].length==4){
+    var date = new Date(arr[2],arr[1]-1,arr[0]);
+    if(date.getFullYear()==arr[2] && date.getMonth()==arr[1]-1 && date.getDate()==arr[0]) {
+      return true;
+    }
+  }
+  
+  if(arr[2].length==4){
+    var date = new Date(arr[2],arr[0]-1,arr[1]);
+    if(date.getFullYear()==arr[2] && date.getMonth()==arr[0]-1 && date.getDate()==arr[1]) {
+      return true;
+    }
+  }
+ 
+  return false;
+}
+function change_predate_date() {
+  predate_str = $("#predate_year").val()+"-"+$("#predate_month").val()+"-"+$("#predate_day").val(); 
+  if (!is_date(predate_str)) {
+    alert('<?php echo ERROR_INPUT_RIGHT_DATE;?>'); 
+  } else {
+    $("#predate").val(predate_str); 
   }
 }
 </script>
@@ -1058,7 +1100,6 @@ a.dpicker {
 }
 #new_yui3{
 	position:absolute;
-	left:603px\9;
 }
 .popup-calendar {
 top:20px;
@@ -1244,8 +1285,39 @@ if (($action == 'edit') && ($order_exists == true)) {
               <tr>
                 <td class="main" valign="top"><b><?php echo EDIT_ORDERS_PREDATE_TEXT;?></b></td>
                 <td class="main">
+                <?php
+                  $predate_array = explode('-', $order['predate']); 
+                ?>
+                <div style="float:left;"> 
+                  <select name="predate_year" id="predate_year" onchange="change_predate_date();">
+                  <?php
+                    $default_predate_year = (isset($_POST['predate_year']))?$_POST['predate_year']:$predate_array[0]; 
+                    for ($f_num = 2006; $f_num <= 2050; $f_num++) {
+                      echo '<option value="'.$f_num.'"'.(($default_predate_year == $f_num)?' selected':'').'>'.$f_num.'</option>'; 
+                    }
+                  ?>
+                  </select>
+                  <select name="predate_month" id="predate_month" onchange="change_predate_date();">
+                  <?php
+                    for ($f_num = 1; $f_num <= 12; $f_num++) {
+                      $default_predate_month = (isset($_POST['predate_month']))?$_POST['predate_month']:$predate_array[1]; 
+                      $tmp_predate_month = sprintf('%02d', $f_num); 
+                      echo '<option value="'.$tmp_predate_month.'"'.(($default_predate_month == $tmp_predate_month)?' selected':'').'>'.$tmp_predate_month.'</option>'; 
+                    }
+                  ?>
+                  </select>
+                  <select name="predate_day" id="predate_day" onchange="change_predate_date();">
+                  <?php
+                    for ($f_num = 1; $f_num <= 31; $f_num++) {
+                      $default_predate_day = (isset($_POST['predate_day']))?$_POST['predate_day']:$predate_array[2]; 
+                      $tmp_predate_day = sprintf('%02d', $f_num); 
+                      echo '<option value="'.$tmp_predate_day.'"'.(($default_predate_day == $tmp_predate_day)?' selected':'').'>'.$tmp_predate_day.'</option>'; 
+                    }
+                  ?>
+                  </select>
+                </div>
                 <div class="yui3-skin-sam yui3-g">
-                <?php echo tep_draw_input_field('predate', $order['predate'], 'id="predate"'); ?>
+                <input type="hidden" id="predate" name="predate" value="<?php echo $order['predate']?>"> 
                 <input type="hidden" id="h_predate" name="h_predate"> 
                 <a href="javascript:void(0);" onclick="open_calendar();" class="dpicker"></a> 
                 <input type="hidden" name="toggle_open" value="0" id="toggle_open"> 
