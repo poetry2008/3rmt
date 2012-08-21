@@ -2270,13 +2270,11 @@ line-height:21px;
 .option_error{
 	color:#ff0000;
 	font-size:12px;
-	*font-size:10px;
 	/*padding-left:10px;*/
 	line-height:1.5;
 }
 .option_product_title{
 	font-size:12px;
-	*font-size:10px;
 	line-height:25px;
 	
 }
