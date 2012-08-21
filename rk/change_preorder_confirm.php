@@ -491,23 +491,6 @@ foreach($all_show_option_id as $t_item_id){
               <td width="70%" align="right" valign="top">
                 <table border="0" cellpadding="2" cellspacing="0"> 
                   <?php
-                  if (!empty($preorder_total_info_array['fee'])) {
-                  ?>
-                  <tr>
-                    <td class="main" align="right"><?php echo CHANGE_PREORDER_HANDLE_FEE_TEXT;?></td> 
-                    <td class="main" align="right"><?php echo $currencies->format_total($preorder_total_info_array['fee']);?></td> 
-                  </tr>
-                  <?php
-                  } else {
-                    if ($preorder_res['code_fee']) {
-                  ?>
-                  <tr>
-                    <td class="main" align="right"><?php echo CHANGE_PREORDER_HANDLE_FEE_TEXT;?></td> 
-                    <td class="main" align="right"><?php echo $currencies->format_total($preorder_res['code_fee']);?></td> 
-                  </tr>
-                  <?php
-                    }
-                  }
                   $total_param = '0'; 
                   $preorder_total_raw = tep_db_query("select * from ".TABLE_PREORDERS_TOTAL." where orders_id = '".$_POST['pid']."' order by sort_order asc"); 
                   while ($preorder_total_res = tep_db_fetch_array($preorder_total_raw)) { 
@@ -575,27 +558,47 @@ foreach($all_show_option_id as $t_item_id){
                       } else {
                         echo $currencies->format_total($preorder_total_res['value']);
                       }
-                      
-                      $shipping_fee_str = $shipping_fee == 0 ? TEXT_SHIPPING_FEE_FREE : $currencies->format_total($shipping_fee);
-                      $preorder_shipping_fee = (int)$shipping_fee;
-                      if (!tep_session_is_registered('preorder_shipping_fee')) {
-                        tep_session_register('preorder_shipping_fee'); 
-                      }
-                      ?>
-                    <?php if ($shipping_fee != 0) {?> 
-                    <tr>
-                    <td class="main" align="right">
-                    <?php echo TEXT_SHIPPING_FEE;?></td> 
-                    <td class="main" align="right"><?php echo $shipping_fee_str;?></td> 
-                    </tr>
-                    <?php }?> 
-                    <?php
                     } else {
                       echo $currencies->format_total($preorder_total_res['value']);
                     }
                     ?>
                     </td>                  
                   </tr>
+                  <?php
+                    if($preorder_total_res['class'] == 'ot_subtotal') {
+                      $shipping_fee_str = $shipping_fee == 0 ? TEXT_SHIPPING_FEE_FREE : $currencies->format_total($shipping_fee);
+                      $preorder_shipping_fee = (int)$shipping_fee;
+                      if (!tep_session_is_registered('preorder_shipping_fee')) {
+                        tep_session_register('preorder_shipping_fee'); 
+                      }  
+                      if (!empty($preorder_total_info_array['fee'])) {
+                  ?>
+                      <tr>
+                        <td class="main" align="right"><?php echo CHANGE_PREORDER_HANDLE_FEE_TEXT;?></td> 
+                        <td class="main" align="right"><?php echo $currencies->format_total($preorder_total_info_array['fee']);?></td> 
+                      </tr>
+                  <?php
+                      } else {
+                        if ($preorder_res['code_fee']) {
+                  ?>
+                      <tr>
+                        <td class="main" align="right"><?php echo CHANGE_PREORDER_HANDLE_FEE_TEXT;?></td> 
+                        <td class="main" align="right"><?php echo $currencies->format_total($preorder_res['code_fee']);?></td> 
+                      </tr>
+                      <?php
+                          }
+                        }
+                        if ($shipping_fee != 0) {
+                      ?>
+                      <tr>
+                        <td class="main" align="right">
+                          <?php echo TEXT_SHIPPING_FEE;?></td> 
+                        <td class="main" align="right"><?php echo $shipping_fee_str;?></td> 
+                      </tr>
+                      <?php
+                        }
+                      }
+                  ?>
                 <?php }?> 
                   <?php
 if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
