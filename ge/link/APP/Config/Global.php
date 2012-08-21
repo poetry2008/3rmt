@@ -16,5 +16,5 @@ return array(
   //'site_url' => 'http://' . $_SERVER['SERVER_NAME'] . '/',
   'site_url' => 'http://www.gm-exchange.jp/',
   'host_word' => 'RMT GM-Exchange',
-  'p_name' => 'RMT GM-Exchange',
+  'p_name' => 'RMT',
 );

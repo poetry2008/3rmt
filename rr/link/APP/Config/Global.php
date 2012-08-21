@@ -13,8 +13,8 @@ return array(
        *your site's url
        */
      //'site_url' => 'http://portal.h.200.com/',
-  'site_url' => 'http://' . $_SERVER['SERVER_NAME'] . '/',
-//  'site_url' => 'http://www.rmt-kames.jp/',
+  //'site_url' => 'http://' . $_SERVER['SERVER_NAME'] . '/',
+  'site_url' => 'http://www.redstone-rmt.com/',
   'host_word' => 'RedStone-RMT.com',
-  'p_name' => 'RedStone-RMT.com',
+  'p_name' => 'RMT',
 );

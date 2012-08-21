@@ -154,7 +154,7 @@ if ($listing_numrows > 0) {
             </p>
           </td>
           <td align="right">
-            <a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $listing['products_id']) ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_order.gif', '注文はこちら');?></a>
+            <a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $listing['products_id']) ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/order.gif', '注文はこちら');?></a>
           </td>
         </tr>
       </table>

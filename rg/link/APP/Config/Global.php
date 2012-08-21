@@ -16,5 +16,5 @@ return array(
   //'site_url' => 'http://' . $_SERVER['SERVER_NAME'] . '/',
   'site_url' => 'http://www.rmtgakuen.jp/',
   'host_word' => 'RMT学園',
-  'p_name' => 'RMT学園',
+  'p_name' => 'RMT',
 );

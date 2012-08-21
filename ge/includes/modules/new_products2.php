@@ -109,8 +109,8 @@
       }
 ?>                </td>
                 <td align="right">
-        <?php echo '<span id="' . $new_products['products_id'] . '"><a href="'.tep_href_link(FILENAME_PRODUCT_INFO,'products_id='.$new_products['products_id'].'&action=buy_now').'" onClick="sendData(\'' . tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('action')) . 'action=buy_now&products_id=' . $new_products['products_id']) . '\',\'' . displaychange . '\',\'' . $new_products['products_id'] . '\'); return false;"><img src="images/design/button/button_in_cart.jpg" border="0"></a></span>'; ?>        
-        &nbsp;&nbsp;&nbsp;<a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/button_description.jpg',IMAGE_BUTTON_DEC);?></a></td>
+        <?php echo '<span id="' . $new_products['products_id'] . '"><a href="'.tep_href_link(FILENAME_PRODUCT_INFO,'products_id='.$new_products['products_id'].'&action=buy_now').'" onClick="sendData(\'' . tep_href_link(basename($PHP_SELF), tep_get_all_get_params(array('action')) . 'action=buy_now&products_id=' . $new_products['products_id']) . '\',\'' . displaychange . '\',\'' . $new_products['products_id'] . '\'); return false;"><img src="images/design/button/in_cart.jpg" border="0"></a></span>'; ?>        
+        &nbsp;&nbsp;&nbsp;<a href="<?php echo tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $new_products['products_id']) ; ?>"><?php echo tep_image(DIR_WS_IMAGES.'design/button/description.jpg',IMAGE_BUTTON_DEC);?></a></td>
               </tr>
             </table>
             <br>

@@ -231,15 +231,19 @@
                   <tr class="infoBoxContents"> 
                     <td width="30%" valign="top"><table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2"> 
                         <tr> 
+                          <td width="10"></td>
                           <td class="main"><b><?php echo HEADING_BILLING_ADDRESS; ?></b></td> 
                         </tr> 
                         <tr> 
+                          <td width="10"></td>
                           <td class="main"><?php echo tep_address_format($order->billing['format_id'], $order->billing, 1, ' ', '<br>'); ?></td> 
                         </tr> 
                         <tr> 
+                          <td width="10"></td>
                           <td class="main"><b><?php echo HEADING_PAYMENT_METHOD; ?></b></td> 
                         </tr> 
                         <tr> 
+                          <td width="10"></td>
                           <td class="main"><?php echo $order->info['payment_method']; ?></td> 
                         </tr> 
                       </table></td> 
@@ -305,7 +309,7 @@
                   <tr class="infoBoxContents"> 
                     <td valign="top"><table class="box_des" border="0" width="100%" cellspacing="0" cellpadding="2"> 
             <tr> 
-              <td class="main"><b><?php echo HEADING_ORDER_HISTORY; ?></b></td> 
+              <td class="main" colspan="3"><b><?php echo HEADING_ORDER_HISTORY; ?></b></td> 
             </tr> 
 <?php
 //ccdd
@@ -313,7 +317,8 @@
   $statuses_query = tep_db_query("select os.orders_status_name, osh.date_added, osh.comments from " . TABLE_ORDERS_STATUS . " os, " . TABLE_ORDERS_STATUS_HISTORY . " osh where osh.orders_id = '" . $_GET['order_id'] . "' and osh.orders_status_id = os.orders_status_id and os.language_id = '" . $languages_id . "' and osh.customer_notified = '1' order by osh.date_added");
   while ($statuses = tep_db_fetch_array($statuses_query)) {
     echo '              <tr>' . "\n" .
-         '                <td class="main" valign="top" width="75">' . tep_date_short($statuses['date_added']) . '</td>' . "\n" .
+         '                <td width="10"></td>
+		 				  <td class="main" valign="top" width="75">' . tep_date_short($statuses['date_added']) . '</td>' . "\n" .
          '                <td class="main" valign="top" width="70">' . $statuses['orders_status_name'] . '</td>' . "\n" .
          '                <td class="main" valign="top">' . (empty($statuses['comments']) ? '&nbsp;' : nl2br(htmlspecialchars($statuses['comments']))) . '</td>' . "\n" .
          '              </tr>' . "\n";
