@@ -2216,3 +2216,6 @@ line-height:16px;
 	width:80px;
 	display:block;
 }
+.clear_both{
+	clear:both;
+}

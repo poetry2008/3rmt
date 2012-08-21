@@ -702,7 +702,7 @@ document.onclick=function(e){
 <td colspan="2" id="table_td_p0">
 <table width="100%" border="0" cellpadding="0" cellspacing="0" class="shipping_box">
   <tr id="shipping_list" style="display:none;">
-  <td width="30%" class="main" bgcolor="#eeeeee"><?php echo TEXT_EXPECT_TRADE_TIME; ?></td>
+  <td width="30%" bgcolor="#eeeeee"><?php echo TEXT_EXPECT_TRADE_TIME; ?></td>
   <td id="shipping_list_show"></td>
   </tr>
 </table>
