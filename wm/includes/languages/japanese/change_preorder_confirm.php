@@ -6,7 +6,7 @@ define('NAVBAR_CHANGE_PREORDER_TITLE', '最終確認');
 define('PRORDER_CONFIRM_PRODUCT_INFO', '数量 / 商品名');
 define('PRODUCT_UNIT_TEXT', '個');
 define('MONEY_UNIT_TEXT', '円');
-define('PRORDER_CONFIRM_FETCH_INFO', 'お届け時間');
+define('PRORDER_CONFIRM_FETCH_INFO', 'お届け日時');
 define('PREORDER_CONFIRM_FETCH_TIME_READ', 'オプション:');
 define('PREORDER_CONFIRM_FETCH_TIME_DAY', 'お届け希望日:');
 define('PREORDER_CONFIRM_FETCH_TIME_DATE', 'お届け希望時間:');
@@ -19,6 +19,6 @@ define('CHANGE_PREORDER_POINT_TEXT_BUY','<b>買取はポイントがつきませ
 define('TEXT_ADDRESS','住所:');
 define('TEXT_SHIPPING_FEE','配送料:');
 define('TEXT_SHIPPING_FEE_FREE','無料');
-define('PREORDER_TRADER_LINE_TITLE', 'お届け日時');
+define('PREORDER_TRADER_LINE_TITLE', '配送方法');
 define('PREORDER_CONFIRM_LINE_TITLE', '最終確認');
 define('PREORDER_FINISH_LINE_TITLE', '手続き完了！');

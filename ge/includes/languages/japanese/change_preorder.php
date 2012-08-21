@@ -2,7 +2,7 @@
 /*
   $Id$
 */
-define('NAVBAR_CHANGE_PREORDER_TITLE', 'お届け日時');
+define('NAVBAR_CHANGE_PREORDER_TITLE', '配送方法');
 define('CHANGE_ORDER_CUSTOMER_DETAILS', 'お客様について');
 define('CHANGE_ORDER_CUSTOMER_NAME', 'お名前:');
 define('CHANGE_ORDER_CUSTOMER_EMAIL', 'メールアドレス:');
