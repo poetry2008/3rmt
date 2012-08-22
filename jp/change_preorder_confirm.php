@@ -458,6 +458,32 @@ foreach($all_show_option_id as $t_item_id){
                       if (!empty($_POST['date'])) {
                         $date_arr = explode('-', $_POST['date']); 
                         echo $date_arr[0].DATE_YEAR_TEXT.$date_arr[1].DATE_MONTH_TEXT.$date_arr[2].DATE_DAY_TEXT; 
+                        $tmp_date = date('D', mktime(0, 0, 0, $date_arr[1], $date_arr[2], $date_arr[0]));  
+                        switch(strtolower($tmp_date)) {
+                           case 'mon':
+                             echo '（'.TEXT_DATE_MONDAY.'）'; 
+                             break;
+                           case 'tue':
+                             echo '（'.TEXT_DATE_TUESDAY.'）'; 
+                             break;
+                           case 'wed':
+                             echo '（'.TEXT_DATE_WEDNESDAY.'）'; 
+                             break;
+                           case 'thu':
+                             echo '（'.TEXT_DATE_THURSDAY.'）'; 
+                             break;
+                           case 'fri':
+                             echo '（'.TEXT_DATE_FRIDAY.'）'; 
+                             break;
+                           case 'sat':
+                             echo '（'.TEXT_DATE_STATURDAY.'）'; 
+                             break;
+                           case 'sun':
+                             echo '（'.TEXT_DATE_SUNDAY.'）'; 
+                             break;
+                           default:
+                             break;
+                        }
                       }
                     ?>
                     </td>                  
