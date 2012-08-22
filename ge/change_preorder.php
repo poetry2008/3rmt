@@ -664,13 +664,13 @@ document.forms.order1.submit();
 } 
 ?>
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
-  <!-- header_eof //--> 
-  <!-- body //--> 
+  <!-- header_eof --> 
+  <!-- body --> 
   <div id="main"> 
-      <div id="l_menu"> <!-- left_navigation //--> 
+      <div id="l_menu"> <!-- left_navigation --> 
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
-        <!-- left_navigation_eof //--> </div> 
-      <!-- body_text //--> 
+        <!-- left_navigation_eof --> </div> 
+      <!-- body_text --> 
       <div id="content"> 
           <h1 class="pageHeading"><?php echo NAVBAR_CHANGE_PREORDER_TITLE;?></h1> 
           <div class="comment">
@@ -1259,7 +1259,7 @@ if (isset($time_error)) {
             <tr>
               <td class="main" width="150" valign="top"><?php echo TEXT_PREORDER_POINT_TEXT;?></td> 
               <td class="main">
-              <input type="text" name="preorder_point" size="24" value="<?php echo isset($_POST['preorder_campaign_info'])?$_POST['preorder_campaign_info']:(isset($_POST['preorder_point'])?$_POST['preorder_point']:(isset($_SESSION['preorder_information']['preorder_point'])?$_SESSION['preorder_information']['preorder_point']:'0'));?>" style="text-align:right;">&nbsp;&nbsp;<?php echo $preorder_point;?> 
+              <input type="text" name="preorder_point" size="24" value="<?php echo isset($_POST['preorder_campaign_info'])?$_POST['preorder_campaign_info']:(isset($_POST['preorder_point'])?$_POST['preorder_point']:(isset($_SESSION['preorder_information']['preorder_point'])?$_SESSION['preorder_information']['preorder_point']:'0'));?>" style="text-align:right;"><br><?php echo $preorder_point;?> 
               <?php 
               echo TEXT_PREORDER_POINT_READ; 
               if (isset($point_error)) {
@@ -1307,15 +1307,15 @@ if (isset($time_error)) {
           </div>
           <p class="pageBottom"></p>
       </div> 
-      <!-- body_text_eof //--> 
-      <div id="r_menu"> <!-- right_navigation //--> 
+      <!-- body_text_eof --> 
+      <div id="r_menu"> <!-- right_navigation --> 
         <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-        <!-- right_navigation_eof //--> 
+        <!-- right_navigation_eof --> 
       </div>  
-  <!-- body_eof //--> 
-  <!-- footer //--> 
+  <!-- body_eof --> 
+  <!-- footer --> 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
-  <!-- footer_eof //--> 
+  <!-- footer_eof --> 
 </div>
 </body>
 </html>

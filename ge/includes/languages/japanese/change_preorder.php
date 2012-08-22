@@ -38,4 +38,4 @@ define('PRODUCTS_WEIGHT_ERROR_THREE','商品を削除するか、または個数
 define('PRODUCTS_WEIGHT_ERROR_FOUR','）kg以内にしてください。');
 define('PREORDER_SELECT_EMPTY_OPTION', '希望日を選択してください');
 define('PREORDER_CONFIRM_LINE_TITLE', '最終確認');
-define('PREORDER_FINISH_LINE_TITLE', '手続き完了！');
+define('PREORDER_FINISH_LINE_TITLE', '手続完了！');

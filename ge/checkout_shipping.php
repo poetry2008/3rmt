@@ -1439,8 +1439,7 @@ if (!isset($torihikihouhou_error)) $torihikihouhou_error=NULL;
   }
 ?>
   <tr>
-    <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1');?></td> 
-  <td class="main" width="30%"><?php echo TEXT_EXPECT_TRADE_DATE; ?></td>
+    <td class="main" width="30%" colspan="2"><?php echo TEXT_EXPECT_TRADE_DATE; ?></td>
     <td class="main" width="70%">
 <?php
       $today = getdate();
@@ -1505,8 +1504,7 @@ if (!isset($torihikihouhou_error)) $torihikihouhou_error=NULL;
   } 
 ?>
   <tr id="shipping_list" style="display:none;">
-    <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-  <td class="main"><?php echo TEXT_EXPECT_TRADE_TIME; ?></td>
+    <td class="main" colspan="2"><?php echo TEXT_EXPECT_TRADE_TIME; ?></td>
     <td class="main" id="shipping_list_show">
     </td>
   </tr>

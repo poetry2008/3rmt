@@ -163,18 +163,18 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
 <?php
   require(DIR_WS_ACTIONS.'visites.js');
 ?>
-//-->
+-->
 </script>
 </head>
 <body>
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
-  <!-- header_eof //--> 
-  <!-- body //--> 
+  <!-- header_eof --> 
+  <!-- body --> 
   <div id="main"> 
-      <div id="l_menu"> <!-- left_navigation //--> 
+      <div id="l_menu"> <!-- left_navigation --> 
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
-        <!-- left_navigation_eof //--> </div> 
-      <!-- body_text //--> 
+        <!-- left_navigation_eof --> </div> 
+      <!-- body_text --> 
       <div id="content"> 
           <h1 class="pageHeading"><?php echo NAVBAR_CHANGE_PREORDER_TITLE;?></h1> 
           <div class="comment">
@@ -761,15 +761,15 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
           </div>
           <p class="pageBottom"></p>
       </div> 
-      <!-- body_text_eof //--> 
-      <div id="r_menu"> <!-- right_navigation //--> 
+      <!-- body_text_eof --> 
+      <div id="r_menu"> <!-- right_navigation --> 
         <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-        <!-- right_navigation_eof //--> 
+        <!-- right_navigation_eof --> 
       </div>  
-  <!-- body_eof //--> 
-  <!-- footer //--> 
+  <!-- body_eof --> 
+  <!-- footer --> 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
-  <!-- footer_eof //--> 
+  <!-- footer_eof --> 
 </div>
 <object>
 <noscript>

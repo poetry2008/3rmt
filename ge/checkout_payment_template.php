@@ -144,15 +144,11 @@ echo tep_image(DIR_WS_IMAGES . 'checkout_bullet.gif');
 </td> 
 </tr> 
 <tr> 
-<td><table border="0" width="100%" cellspacing="0" cellpadding="2" class="box_des"> 
-   <tr> 
-   <td class="main03"><b>
+<td class="main03"><b>
    <?php
    echo TABLE_HEADING_PAYMENT_METHOD; 
 ?>
 </b></td> 
-</tr> 
-</table></td> 
 </tr> 
 <tr> 
 <td>
