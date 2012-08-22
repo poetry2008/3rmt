@@ -151,6 +151,7 @@ class postalmoneyorder extends basePayment  implements paymentInterface  {
                    'MODULE_PAYMENT_POSTALMONEYORDER_COST',
                    'MODULE_PAYMENT_POSTALMONEYORDER_MONEY_LIMIT',
                    'MODULE_PAYMENT_POSTALMONEYORDER_MAILSTRING',
+                   'MODULE_PAYMENT_POSTALMONEYORDER_PRINT_MAILSTRING_TITLE',
                    'MODULE_PAYMENT_POSTALMONEYORDER_PRINT_MAILSTRING',
 );
     }

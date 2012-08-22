@@ -199,6 +199,7 @@ class moneyorder extends basePayment implements paymentInterface {
                    'MODULE_PAYMENT_MONEYORDER_COST',
                    'MODULE_PAYMENT_MONEYORDER_MONEY_LIMIT',
                    'MODULE_PAYMENT_MONEYORDER_MAILSTRING',
+                   'MODULE_PAYMENT_MONEYORDER_PRINT_MAILSTRING_TITLE',
                    'MODULE_PAYMENT_MONEYORDER_PRINT_MAILSTRING',
                    );
     }
