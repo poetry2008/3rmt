@@ -1044,14 +1044,8 @@ img {
 	color:#FF0000;
 }
 .product_info{ padding:0 15px;}
-.product_listing td{
-	padding:0;
-/*	background: url(../image/seach_bottom04_bg.gif) repeat;
-	border:1px solid #CCCCCC;
-	text-align:center;
-	line-height:21px;
-	font-weight:bold;
-*/}
+.sort img{ margin-left:5px;}
+.sort td{ width:25%; padding:0;}
 .product_listing_link{
     display: block;
     height: 40px;
@@ -1066,16 +1060,16 @@ img {
 	text-align:center;
     background: url(../images/design/box/product_listing_sort_02.gif) !important;
 }
-.product_listing a:link{
+.sort a:link{
 	color:#66DFFF;
 }
-.product_listing a:ctive{
+.sort a:ctive{
 	color:#fe9002;
 }
-.product_listing a:visited{
+.sort a:visited{
 	color:#ce04e0;
 }
-.product_listing a:hover{
+.sort a:hover{
 	color:#fe9002;
 }
 .productSpecialPrice{ color:#FF0000;}

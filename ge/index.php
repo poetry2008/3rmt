@@ -2,7 +2,8 @@
 /*
   $Id$
 */
-
+// in ge MAX_DISPLAY_CATEGORIES_PER_ROW must be two 
+define('MAX_DISPLAY_CATEGORIES_PER_ROW','2');
   require('includes/application_top.php');
   require(DIR_WS_ACTIONS.'index_top.php');
   if (isset($_GET['tags_id'])) {

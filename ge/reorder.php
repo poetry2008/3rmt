@@ -269,7 +269,35 @@ document.onclick=function(e){
   $email_order .= '▼お名前　　　　　：' . $o->customer['name'] . "\n";
   $email_order .= '▼メールアドレス　：' . $o->customer['email_address'] . "\n";
   $email_order .= '━━━━━━━━━━━━━━━━━━━━━' . "\n\n";
-  $email_order .= '▼お届け日時　　　　：' . str_string($_date) . $_hour . '時' . $_minute . '分'.TEXT_TIME_LINK.$end_hour.'時'.$end_min.'分　（24時間表記）' . "\n";
+  $email_order .= '▼お届け日時　　　　：' . str_string($_date);
+  $date_arr = explode('-', $_date);  
+  $tmp_date = date('D', mktime(0, 0, 0, $date_arr[1], $date_arr[2], $date_arr[0]));  
+  switch(strtolower($tmp_date)) {
+     case 'mon':
+       $email_order .= '（'.TEXT_DATE_MONDAY.'）'; 
+       break;
+     case 'tue':
+       $email_order .= '（'.TEXT_DATE_TUESDAY.'）'; 
+       break;
+     case 'wed':
+       $email_order .= '（'.TEXT_DATE_WEDNESDAY.'）'; 
+       break;
+     case 'thu':
+       $email_order .= '（'.TEXT_DATE_THURSDAY.'）'; 
+       break;
+     case 'fri':
+       $email_order .= '（'.TEXT_DATE_FRIDAY.'）'; 
+       break;
+     case 'sat':
+       $email_order .= '（'.TEXT_DATE_STATURDAY.'）'; 
+       break;
+     case 'sun':
+       $email_order .= '（'.TEXT_DATE_SUNDAY.'）'; 
+       break;
+     default:
+       break;
+  }
+  $email_order .= $_hour . '時' . $_minute . '分'.TEXT_TIME_LINK.$end_hour.'時'.$end_min.'分　（24時間表記）' . "\n";
 
   if ($comment) {
     $email_order .= '▼備考　　　　　　：' . "\n";
@@ -301,19 +329,19 @@ document.onclick=function(e){
         <table class="box_des" summary="table" width="100%">
           <tr>
             <td width="30%">注文番号</td>
-            <td><?php echo $order['orders_id']?></td>
+            <td class="reorder_width"><?php echo $order['orders_id']?></td>
           </tr>
           <tr>
             <td>お名前</td>
-            <td><?php echo $order['customers_name']?></td>
+            <td class="reorder_width"><?php echo $order['customers_name']?></td>
           </tr>
           <tr>
             <td>メールアドレス</td>
-            <td><?php echo $order['customers_email_address']?></td>
+            <td class="reorder_width"><?php echo $order['customers_email_address']?></td>
           </tr>
           <tr>
             <td>お届け日時（変更前）</td>
-            <td id='old_time'><?php echo tep_date_long(strtotime($order['torihiki_date']))?>
+            <td class="reorder_width" id='old_time'><?php echo tep_date_long(strtotime($order['torihiki_date']))?>
               <?php echo date('H:i', strtotime($order['torihiki_date']));?></td>
           </tr>       
 <?php
@@ -726,7 +754,7 @@ document.onclick=function(e){
         <table class="box_des" summary="table"  width="100%">
           <tr>
             <td width="30%" valign="top">備考</td>
-            <td>
+            <td class="reorder_width">
               <textarea name='comment' id='comment' rows="5" style="width:100%"></textarea>
             </td>
           </tr>

@@ -599,7 +599,6 @@ Ranking
     font-size: 10px;
 /*	background: url(../images/design/box/ranking_title_bg.gif) no-repeat;
 */	padding-left: 5px;
-	padding-top:4px;
 /*	height:20px;
 	*height:24px;
 	height:24px\9;
@@ -612,10 +611,20 @@ border:1px solid #bdbcbd;
 /*	height: 16px;
 */	line-height: 16px;
 	overflow: hidden;
-	padding-left:5px;
+	padding-right:5px;
+	padding-top:3px;
+	*padding:2px 5px 2px 0;
 	color:#555;
+	width:125px;
+	*width:130px;
+
 }
-.bestseller_number{ float:left; margin:-2px 5px 0 5px;}
+.bestseller_number{ 
+	float:left; 
+	margin:2px 5px;
+	*margin:2px 2px 0 5px;
+	
+}
 .bestseller_link{ float:left;}
 .bestseller_text a:hover{
 	color:#990000;
@@ -701,7 +710,6 @@ product listing
 	display:block;
 	line-height:25px;
 	height:25px;
-	padding-left:25px;
 	background: url(../images/design/box/product_listing_sort_01.gif);
 	color:#000;
 	font-size:10px;
@@ -1883,7 +1891,7 @@ border:2px solid #FF8080;
 }
 .option_error{
 	color:#ff0000;
-	font-size:11px;
+	font-size:12px;
 	/*padding-left:10px;*/
 	line-height:1.5;
 }
@@ -2079,3 +2087,8 @@ border:2px solid #FF8080;
 	width:80px;
 	display:block;
 }
+.clear_both{
+	clear:both;
+}
+.sort img{ margin:-2px 0 0 5px;}
+.sort td{ width:25%;}

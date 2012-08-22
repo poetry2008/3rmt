@@ -8,7 +8,7 @@
   
   $breadcrumb->add(NAVBAR_CHANGE_PREORDER_TITLE, '');
   /*
- * ¼ÆËãÅäËÍ·ÑÓÃ
+ * è®¡ç®—é…é€è´¹ç”¨
  */
   foreach($_POST as $shipping_key=>$shipping_value){
 
@@ -17,7 +17,7 @@
       $shipping_fee_array[substr($shipping_key,3)] = $shipping_value;
     }
   }
-  //¼ÆËãÉÌÆ·µÄ×Ü¼Û¸ñ¼°×ÜÖØÁ¿
+  //è®¡ç®—å•†å“çš„æ€»ä»·æ ¼åŠæ€»é‡é‡
   $weight_total = 0;
   $money_total = 0;
   $shipping_products_query = tep_db_query("select * from ". TABLE_PREORDERS_PRODUCTS ." where orders_id='". $_POST['pid'] ."'");
@@ -63,7 +63,7 @@ if($city_num > 0 && $op_key == $country_fee_array[3]){
   $city_free_value = $city_array['free_value'];
   $city_weight_fee_array = unserialize($city_array['weight_fee']);
 
-  //¸ù¾ÝÖØÁ¿À´»ñÈ¡ÏàÓ¦µÄÅäËÍ·ÑÓÃ
+  //æ ¹æ®é‡é‡æ¥èŽ·å–ç›¸åº”çš„é…é€è´¹ç”¨
   foreach($city_weight_fee_array as $key=>$value){
     
     if(strpos($key,'-') > 0){
@@ -86,7 +86,7 @@ if($city_num > 0 && $op_key == $country_fee_array[3]){
   $address_free_value = $address_array['free_value'];
   $address_weight_fee_array = unserialize($address_array['weight_fee']);
 
-  //¸ù¾ÝÖØÁ¿À´»ñÈ¡ÏàÓ¦µÄÅäËÍ·ÑÓÃ
+  //æ ¹æ®é‡é‡æ¥èŽ·å–ç›¸åº”çš„é…é€è´¹ç”¨
   foreach($address_weight_fee_array as $key=>$value){
     
     if(strpos($key,'-') > 0){
@@ -110,7 +110,7 @@ if($city_num > 0 && $op_key == $country_fee_array[3]){
   $country_free_value = $country_array['free_value'];
   $country_weight_fee_array = unserialize($country_array['weight_fee']);
 
-  //¸ù¾ÝÖØÁ¿À´»ñÈ¡ÏàÓ¦µÄÅäËÍ·ÑÓÃ
+  //æ ¹æ®é‡é‡æ¥èŽ·å–ç›¸åº”çš„é…é€è´¹ç”¨
   foreach($country_weight_fee_array as $key=>$value){
     
     if(strpos($key,'-') > 0){
@@ -163,18 +163,18 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
 <?php
   require(DIR_WS_ACTIONS.'visites.js');
 ?>
-//-->
+-->
 </script>
 </head>
 <body>
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
-  <!-- header_eof //--> 
-  <!-- body //--> 
+  <!-- header_eof --> 
+  <!-- body --> 
   <div id="main"> 
-      <div id="l_menu"> <!-- left_navigation //--> 
+      <div id="l_menu"> <!-- left_navigation --> 
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
-        <!-- left_navigation_eof //--> </div> 
-      <!-- body_text //--> 
+        <!-- left_navigation_eof --> </div> 
+      <!-- body_text --> 
       <div id="content"> 
           <h1 class="pageHeading"><?php echo NAVBAR_CHANGE_PREORDER_TITLE;?></h1> 
           <div class="comment">
@@ -246,7 +246,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                   <?php $preorder_product_res = tep_db_fetch_array($preorder_product_raw);?> 
                   <tr>
                     
-                    <td class="main" align="center" valign="top" width="150">
+                    <td class="confirmation_product_num_info" align="right" valign="top">
                     <?php echo $preorder_product_res['products_quantity'].PRODUCT_UNIT_TEXT;?>
                     <?php echo '<br>'.tep_get_full_count2($preorder_product_res['products_quantity'], $preorder_product_res['products_id']);?> 
                     
@@ -421,7 +421,8 @@ foreach($all_show_option_id as $t_item_id){
                       if(substr($ad_key,0,3)=='ad_' && $_POST[substr($ad_key,3)] != ''){
 
                         echo '<tr>';
-                        echo '<td class="main" width="150">'. $_POST[substr($ad_key,3)] .':</td>';                  
+                        echo '<td width="10"></td>';
+						echo '<td class="main" width="150">'. $_POST[substr($ad_key,3)] .':</td>';                  
                         echo '<td class="main">';
                         echo $_POST[$ad_key];
                         //echo '<input type="hidden" name="'. $ad_key .'" value="'. $ad_value .'"></td>';
@@ -448,17 +449,45 @@ foreach($all_show_option_id as $t_item_id){
               <td class="main">
                 <table width="100%" class="font_size14">  
                   <tr>
+                    <td width="10"></td>
                     <td class="main" width="150"><?php echo PREORDER_CONFIRM_FETCH_TIME_DAY;?></td>                  
                     <td class="main">
                     <?php
                       if (!empty($_POST['date'])) {
                         $date_arr = explode('-', $_POST['date']); 
                         echo $date_arr[0].DATE_YEAR_TEXT.$date_arr[1].DATE_MONTH_TEXT.$date_arr[2].DATE_DAY_TEXT; 
+                        $tmp_date = date('D', mktime(0, 0, 0, $date_arr[1], $date_arr[2], $date_arr[0]));  
+                        switch(strtolower($tmp_date)) {
+                           case 'mon':
+                             echo 'ï¼ˆ'.TEXT_DATE_MONDAY.'ï¼‰'; 
+                             break;
+                           case 'tue':
+                             echo 'ï¼ˆ'.TEXT_DATE_TUESDAY.'ï¼‰'; 
+                             break;
+                           case 'wed':
+                             echo 'ï¼ˆ'.TEXT_DATE_WEDNESDAY.'ï¼‰'; 
+                             break;
+                           case 'thu':
+                             echo 'ï¼ˆ'.TEXT_DATE_THURSDAY.'ï¼‰'; 
+                             break;
+                           case 'fri':
+                             echo 'ï¼ˆ'.TEXT_DATE_FRIDAY.'ï¼‰'; 
+                             break;
+                           case 'sat':
+                             echo 'ï¼ˆ'.TEXT_DATE_STATURDAY.'ï¼‰'; 
+                             break;
+                           case 'sun':
+                             echo 'ï¼ˆ'.TEXT_DATE_SUNDAY.'ï¼‰'; 
+                             break;
+                           default:
+                             break;
+                        }
                       }
                     ?>
                     </td>                  
                   </tr>
                   <tr>
+                    <td width="10"></td>
                     <td class="main"><?php echo PREORDER_CONFIRM_FETCH_TIME_DATE;?></td>                  
                     <td class="main">
                     <?php
@@ -477,10 +506,11 @@ foreach($all_show_option_id as $t_item_id){
               <td class="main" width="30%" valign="top">
                 <table width="100%" cellpadding="2" cellspacing="2" border="0" class="font_size14"> 
                   <tr>
-                    <td class="main"><b><?php echo CHANGE_ORDER_CONFIRM_PAYMENT;?></b></td>                  
+                    <td class="main" colspan="2"><b><?php echo CHANGE_ORDER_CONFIRM_PAYMENT;?></b></td>                  
                   </tr>
                   <tr>
-                    <td class="main">
+                    <td width="10"></td>
+                    <td class="main" width="150">
                     <?php echo $preorder_res['payment_method'];?> 
                     </td>                  
                   </tr>
@@ -489,23 +519,6 @@ foreach($all_show_option_id as $t_item_id){
               <td width="70%" align="right" valign="top">
                 <table border="0" cellpadding="2" cellspacing="0" class="font_size14"> 
                   <?php
-                  if (!empty($preorder_total_info_array['fee'])) {
-                  ?>
-                  <tr>
-                    <td class="main" align="right"><?php echo CHANGE_PREORDER_HANDLE_FEE_TEXT;?></td> 
-                    <td class="main" align="right"><?php echo $currencies->format_total($preorder_total_info_array['fee']);?></td> 
-                  </tr>
-                  <?php
-                  } else {
-                    if ($preorder_res['code_fee']) {
-                  ?>
-                  <tr>
-                    <td class="main" align="right"><?php echo CHANGE_PREORDER_HANDLE_FEE_TEXT;?></td> 
-                    <td class="main" align="right"><?php echo $currencies->format_total($preorder_res['code_fee']);?></td> 
-                  </tr>
-                  <?php
-                    }
-                  }
                   $total_param = '0'; 
                   $preorder_total_raw = tep_db_query("select * from ".TABLE_PREORDERS_TOTAL." where orders_id = '".$_POST['pid']."' order by sort_order asc"); 
                   while ($preorder_total_res = tep_db_fetch_array($preorder_total_raw)) { 
@@ -573,27 +586,47 @@ foreach($all_show_option_id as $t_item_id){
                       } else {
                         echo $currencies->format_total($preorder_total_res['value']);
                       }
-                      
-                      $shipping_fee_str = $shipping_fee == 0 ?  TEXT_SHIPPING_FEE_FREE : $currencies->format_total($shipping_fee);
-                      $preorder_shipping_fee = (int)$shipping_fee;
-                      if (!tep_session_is_registered('preorder_shipping_fee')) {
-                        tep_session_register('preorder_shipping_fee'); 
-                      }
-                      ?>
-                    <?php if ($shipping_fee != 0) {?> 
-                    <tr>
-                    <td class="main" align="right">
-                    <?php echo TEXT_SHIPPING_FEE;?></td> 
-                    <td class="main" align="right"><?php echo $shipping_fee_str;?></td> 
-                    </tr>
-                    <?php }?> 
-                    <?php
                     } else {
                       echo $currencies->format_total($preorder_total_res['value']);
                     }
                     ?>
                     </td>                  
                   </tr>
+                  <?php
+                    if($preorder_total_res['class'] == 'ot_subtotal') {
+                      $shipping_fee_str = $shipping_fee == 0 ? TEXT_SHIPPING_FEE_FREE : $currencies->format_total($shipping_fee);
+                      $preorder_shipping_fee = (int)$shipping_fee;
+                      if (!tep_session_is_registered('preorder_shipping_fee')) {
+                        tep_session_register('preorder_shipping_fee'); 
+                      }  
+                      if (!empty($preorder_total_info_array['fee'])) {
+                  ?>
+                      <tr>
+                        <td class="main" align="right"><?php echo CHANGE_PREORDER_HANDLE_FEE_TEXT;?></td> 
+                        <td class="main" align="right"><?php echo $currencies->format_total($preorder_total_info_array['fee']);?></td> 
+                      </tr>
+                  <?php
+                      } else {
+                        if ($preorder_res['code_fee']) {
+                  ?>
+                      <tr>
+                        <td class="main" align="right"><?php echo CHANGE_PREORDER_HANDLE_FEE_TEXT;?></td> 
+                        <td class="main" align="right"><?php echo $currencies->format_total($preorder_res['code_fee']);?></td> 
+                      </tr>
+                      <?php
+                          }
+                        }
+                        if ($shipping_fee != 0) {
+                      ?>
+                      <tr>
+                        <td class="main" align="right">
+                          <?php echo TEXT_SHIPPING_FEE;?></td> 
+                        <td class="main" align="right"><?php echo $shipping_fee_str;?></td> 
+                      </tr>
+                      <?php
+                        }
+                      }
+                  ?>
                 <?php }?> 
                   <?php
 if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true') {
@@ -622,7 +655,7 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
   }
   //----------------------------------------------
   
-  //´Ô¸µÎ¨¤ò·×»»----------------------------------
+  //ä¸›å‚…å”¯ã‚’çº·æ¢----------------------------------
   if(mb_ereg("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK)) {
     $back_rate_array = explode("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK);
   $back_rate = MODULE_ORDER_TOTAL_POINT_FEE;
@@ -645,7 +678,7 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
 } else {
   $point_rate = MODULE_ORDER_TOTAL_POINT_FEE;
 }
-// ¤³¤³¤Þ¤Ç¥«¥¹¥¿¥Þ¡¼¥ì¥Ù¥ë¤Ë±þ¤¸¤¿¥Ý¥¤¥ó¥È´Ô¸µÎ¨»»½Ð============================================================
+// ã“ã“ã¾ã§ã‚«ã‚¹ã‚¿ãƒžã€–ãƒ¬ãƒ™ãƒ«ã«ç‚³ã˜ãŸãƒã‚¤ãƒ³ãƒˆä¸›å‚…å”¯æ¢å«============================================================
   if ($preorder_subtotal > 0) {
     if (isset($_SESSION['preorder_campaign_fee'])) {
       $preorder_get_point = ($preorder_subtotal + $_SESSION['preorder_campaign_fee']) * $point_rate;
@@ -728,15 +761,15 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
           </div>
           <p class="pageBottom"></p>
       </div> 
-      <!-- body_text_eof //--> 
-      <div id="r_menu"> <!-- right_navigation //--> 
+      <!-- body_text_eof --> 
+      <div id="r_menu"> <!-- right_navigation --> 
         <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-        <!-- right_navigation_eof //--> 
+        <!-- right_navigation_eof --> 
       </div>  
-  <!-- body_eof //--> 
-  <!-- footer //--> 
+  <!-- body_eof --> 
+  <!-- footer --> 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
-  <!-- footer_eof //--> 
+  <!-- footer_eof --> 
 </div>
 <object>
 <noscript>

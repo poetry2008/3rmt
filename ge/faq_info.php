@@ -68,7 +68,7 @@ if (isset($body_option)) {
 
 
     <div class="faq_back">
-      <a href="<?php echo HTTP_SERVER.'/'.implode('/',$link_url_arr).'/';?>"><img src="images/design/button/faq_back.gif" alt="<?php echo TEXT_BACK;?>">
+      <a href="<?php echo HTTP_SERVER.'/'.implode('/',$link_url_arr).'/';?>"><img src="images/design/button/back.gif" alt="<?php echo TEXT_BACK;?>">
       </a>
     </div>
 

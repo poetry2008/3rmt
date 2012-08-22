@@ -793,11 +793,9 @@ product listing
 	display:block;
 	line-height:25px;
 	height:25px;
-	padding-left:25px;
 	background: url(../images/design/box/product_listing_sort_01.gif);
 	color:#000;
 	font-size:12px;
-	padding-top:2px;
 }
 .product_listing_link:hover{
 	display:block;
@@ -812,8 +810,6 @@ product listing
     font-size: 12px;
     height: 25px;
     line-height: 25px;
-    padding-left: 25px;
-    padding-top: 2px;
 }
 .product_listing_link_01:hover{
 	display:block;
@@ -2270,13 +2266,11 @@ line-height:21px;
 .option_error{
 	color:#ff0000;
 	font-size:12px;
-	*font-size:10px;
 	/*padding-left:10px;*/
 	line-height:1.5;
 }
 .option_product_title{
 	font-size:12px;
-	*font-size:10px;
 	line-height:25px;
 	
 }
@@ -2473,3 +2467,5 @@ line-height:21px;
 	font-size:12px;
 	width:80px;
 }
+.sort img{ margin:-5px 0 0 5px;}
+.sort td{ width:25%;}

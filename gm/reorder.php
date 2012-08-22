@@ -273,8 +273,35 @@ document.onclick=function(e){
   $email_order .= TEXT_REORDER_NAME_EMAIL . $o->customer['name'] . "\n";
   $email_order .= TEXT_REORDER_EMAIL_EMAIL . $o->customer['email_address'] . "\n";
   $email_order .= '━━━━━━━━━━━━━━━━━━━━━' . "\n\n";
-  $email_order .= TEXT_REORDER_TRADE_DATE . str_string($_date) . $_hour
-    .TIME_HOUR_TEXT . $_minute . TIME_MIN_TEXT. TEXT_TIME_LINK . $end_hour.TIME_HOUR_TEXT.$end_min.TIME_MIN_TEXT.TEXT_REORDER_TWENTY_FOUR_HOUR. "\n";
+  $email_order .= TEXT_REORDER_TRADE_DATE . str_string($_date);
+  $date_arr = explode('-', $_date);  
+  $tmp_date = date('D', mktime(0, 0, 0, $date_arr[1], $date_arr[2], $date_arr[0]));  
+  switch(strtolower($tmp_date)) {
+     case 'mon':
+       $email_order .= '（'.TEXT_DATE_MONDAY.'）'; 
+       break;
+     case 'tue':
+       $email_order .= '（'.TEXT_DATE_TUESDAY.'）'; 
+       break;
+     case 'wed':
+       $email_order .= '（'.TEXT_DATE_WEDNESDAY.'）'; 
+       break;
+     case 'thu':
+       $email_order .= '（'.TEXT_DATE_THURSDAY.'）'; 
+       break;
+     case 'fri':
+       $email_order .= '（'.TEXT_DATE_FRIDAY.'）'; 
+       break;
+     case 'sat':
+       $email_order .= '（'.TEXT_DATE_STATURDAY.'）'; 
+       break;
+     case 'sun':
+       $email_order .= '（'.TEXT_DATE_SUNDAY.'）'; 
+       break;
+     default:
+       break;
+  }
+  $email_order .= $_hour .TIME_HOUR_TEXT . $_minute . TIME_MIN_TEXT. TEXT_TIME_LINK . $end_hour.TIME_HOUR_TEXT.$end_min.TIME_MIN_TEXT.TEXT_REORDER_TWENTY_FOUR_HOUR. "\n";
 
   if ($comment) {
     $email_order .= TEXT_REORDER_COMMERN_EMAIL . "\n";

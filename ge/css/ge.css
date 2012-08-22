@@ -412,7 +412,7 @@ padding:0 15px 0 35px;
 *padding:0 15px 0 0;
 }
 .sub_menu {
-    font-size:14px;
+    font-size:12px;
     color:#fff;
     width:450px;
     margin:10px 0px 10px 0px;
@@ -595,6 +595,7 @@ form {
     width:95%;
 }
 .comment table{ font-size:12px;}
+.main{ font-size:12px;}
 .main h3 {
     height:12px;
 *+height:26px;
@@ -1265,14 +1266,19 @@ searching
 	width:132px\9;
 }
 .formArea_td_info{ width:315px\9;}
+.formArea_td_info input, .formArea_td_info select{
+	margin-bottom:5px;
+}
 .information_color{background-color: #FDEBAC; color: #000000; padding:5px; margin:5px; width:100%;}
 .checkout_payment_info{
 	border:1px solid #ccc;
 	margin-top:15px;   
-	*margin-top:5px;
+	*margin-top:0px; 
 	font-size:14px;
 	padding:5px;
 	line-height:1.5;
+	overflow:hidden;
+	display:inline-block;
 }
 .float_left{
 	float:left;
@@ -1309,7 +1315,7 @@ searching
 	margin:5px 0;
 }
 .cp_content{
-	padding:0 20px;
+	padding-left:20px;
 }
 .cp_content p{ color:#FF0000;}
 .txt_input_box{
@@ -1670,3 +1676,17 @@ TEXTAREA {
 	*padding:17px 0 10px 0;
 }
 .size_body{ font-size:12px;}
+.confirmation_product_num_info{
+	font-size: 12px;
+    line-height: 1.5;
+    padding-right: 84px;
+    width: 80px;
+}
+.reorder_width{
+	padding-left:5px;
+	*padding-left:8px;
+}
+.img_clear img{
+	margin-top:-8px;
+}
+.img_clear input{ padding-top:5px;}

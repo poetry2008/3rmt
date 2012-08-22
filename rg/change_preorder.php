@@ -1259,7 +1259,7 @@ document.forms.order1.submit();
               <?php 
               echo TEXT_PREORDER_POINT_READ.'</div>'; 
               if (isset($point_error)) {
-                echo '<br><font color="#ff0000">'.$point_error.'</font>'; 
+                echo '<div class="clear_both"><font color="#ff0000">'.$point_error.'</font></div>'; 
               }
               ?>
               </td> 
@@ -1275,7 +1275,7 @@ document.forms.order1.submit();
               <input type="text" name="camp_preorder_point" size="24" value="<?php echo isset($_POST['preorder_campaign_info'])?$_POST['preorder_campaign_info']:(isset($_POST['camp_preorder_point'])?$_POST['camp_preorder_point']:(isset($_SESSION['preorder_information']['preorder_campaign_point'])?$_SESSION['preorder_information']['preorder_campaign_point']:'0'));?>" style="text-align:right;">
               <?php 
               if (isset($point_error)) {
-                echo '<br><font color="#ff0000">'.$point_error.'</font>'; 
+                echo '<div class="clear_both"><font color="#ff0000">'.$point_error.'</font></div>'; 
               }
               ?>
               </td> 

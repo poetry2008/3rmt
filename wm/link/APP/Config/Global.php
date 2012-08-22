@@ -16,5 +16,5 @@ return array(
   //'site_url' => 'http://' . $_SERVER['SERVER_NAME'] . '/',
   'site_url' => 'http://rmt.worldmoney.jp/',
   'host_word' => 'RMTワールドマネー',
-  'p_name' => 'RMTワールドマネー',
+  'p_name' => 'RMT',
 );

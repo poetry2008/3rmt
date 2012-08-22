@@ -2922,7 +2922,7 @@ if (($action == 'edit') && ($order_exists == true)) {
           $order->products[$i]['attributes'][$j];
       }
       foreach($all_show_option_id as $t_item_id){
-        $orders_products_attributes_id = $order->products[$i]['attributes'][$j]['id'];
+        $orders_products_attributes_id = $all_show_option[$t_item_id]['id'];
         if(is_array($all_show_option[$t_item_id]['option_info'])){
         echo '<br><div><small>&nbsp;<i><div class="order_option_info"><div class="order_option_title"> - ' 
           ."<input type='text' class='option_input_width' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][option]' value='" .  (isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['option'])?tep_parse_input_field_data($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['option'], array("'"=>"&quot;")):tep_parse_input_field_data($all_show_option[$t_item_id]['option_info']['title'], array("'"=>"&quot;"))) . "'>" .
@@ -2931,7 +2931,7 @@ if (($action == 'edit') && ($order_exists == true)) {
           //if ($order->products[$i]['attributes'][$j]['price'] != '0') echo ' (' . $order->products[$i]['attributes'][$j]['prefix'] . $currencies->format($order->products[$i]['attributes'][$j]['price'] * $order->products[$i]['qty'], true, $order->info['currency'], $order->info['currency_value']) . ')';
           echo "'></div></div>";
           echo '<div class="order_option_price">'; 
-          echo "<input type='text' size='9' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][price]' value='".(int)(isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price'])?$_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price']:$order->products[$i]['attributes'][$j]['price'])."' onkeyup=\"recalc_order_price('".$oID."', '".$orders_products_id."', '1', '".$op_info_str."');\">";   
+          echo "<input type='text' size='9' name='update_products[$orders_products_id][attributes][$orders_products_attributes_id][price]' value='".(int)(isset($_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price'])?$_POST['update_products'][$orders_products_id]['attributes'][$orders_products_attributes_id]['price']:$all_show_option[$t_item_id]['price'])."' onkeyup=\"recalc_order_price('".$oID."', '".$orders_products_id."', '1', '".$op_info_str."');\">";   
           echo TEXT_MONEY_SYMBOL; 
           echo '</div>'; 
           echo '</i></small></div>';

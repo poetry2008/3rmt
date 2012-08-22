@@ -2,7 +2,7 @@
 /*
   $Id$
 */
-define('NAVBAR_CHANGE_PREORDER_TITLE', 'お届け日時');
+define('NAVBAR_CHANGE_PREORDER_TITLE', '配送方法');
 define('CHANGE_ORDER_CUSTOMER_DETAILS', 'お客様について');
 define('CHANGE_ORDER_CUSTOMER_NAME', 'お名前:');
 define('CHANGE_ORDER_CUSTOMER_EMAIL', 'メールアドレス:');
@@ -38,4 +38,4 @@ define('PRODUCTS_WEIGHT_ERROR_THREE','商品を削除するか、または個数
 define('PRODUCTS_WEIGHT_ERROR_FOUR','）kg以内にしてください。');
 define('PREORDER_SELECT_EMPTY_OPTION', '希望日を選択してください');
 define('PREORDER_CONFIRM_LINE_TITLE', '最終確認');
-define('PREORDER_FINISH_LINE_TITLE', '手続き完了！');
+define('PREORDER_FINISH_LINE_TITLE', '手続完了！');

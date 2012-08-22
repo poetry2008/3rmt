@@ -17,7 +17,7 @@ define('CPREORDER_SUCCESS_TEXT', '<span class="red"><b>「注文受付」メー�
 ＜それでも届かないときは、メールアドレス変更＞<br>
 お客様情報から今すぐご登録メールアドレスの変更をお願いいたします。<br>
 <div class="underline">&nbsp;</div>
-<span class="red"><b>お取り引きの際の注意点</b></span><br>
+<span class="red"><b>お取り引きの際の注意点</b></span><br><br>
 電子メールに記載しておりますご注文内容および、弊社キャラクター名を事前にご確認ください。<br>
 弊社キャラクターが変更となる場合は、お取り引き前に電子メールにてご案内を差し上げます。
 <div class="underline">&nbsp;</div>
@@ -39,6 +39,6 @@ define('CPREORDER_SUCCESS_TEXT', '<span class="red"><b>「注文受付」メー�
 お客様ご指定のお届け日時にログインをお願いいたします。10分経過しましても弊社キャラクターが現れない場合は、サポートセンターへお問い合わせください。
 <br><br>
 <div class="dot">&nbsp;</div>');
-define('PREORDER_TRADER_LINE_TITLE', 'お届け日時');
+define('PREORDER_TRADER_LINE_TITLE', '配送方法');
 define('PREORDER_CONFIRM_LINE_TITLE', '最終確認');
-define('PREORDER_FINISH_LINE_TITLE', '手続き完了！');
+define('PREORDER_FINISH_LINE_TITLE', '手続完了！');

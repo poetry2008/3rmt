@@ -270,7 +270,35 @@ document.onclick=function(e){
   $email_order .= TEXT_REORDER_NAME_EMAIL . $o->customer['name'] . "\n";
   $email_order .= TEXT_REORDER_EMAIL_EMAIL . $o->customer['email_address'] . "\n";
   $email_order .= TEXT_REORDER_LINE . "\n\n";
-  $email_order .= TEXT_REORDER_TRADE_DATE . str_string($_date) . $_hour . TIME_HOUR_TEXT . $_minute . TIME_MIN_TEXT . TEXT_TIME_LINK . $end_hour.TIME_HOUR_TEXT.$end_min.TIME_MIN_TEXT.TEXT_REORDER_TWENTY_FOUR_HOUR. "\n";
+  $email_order .= TEXT_REORDER_TRADE_DATE . str_string($_date);
+  $date_arr = explode('-', $_date);  
+  $tmp_date = date('D', mktime(0, 0, 0, $date_arr[1], $date_arr[2], $date_arr[0]));  
+  switch(strtolower($tmp_date)) {
+     case 'mon':
+       $email_order .= '（'.TEXT_DATE_MONDAY.'）'; 
+       break;
+     case 'tue':
+       $email_order .= '（'.TEXT_DATE_TUESDAY.'）'; 
+       break;
+     case 'wed':
+       $email_order .= '（'.TEXT_DATE_WEDNESDAY.'）'; 
+       break;
+     case 'thu':
+       $email_order .= '（'.TEXT_DATE_THURSDAY.'）'; 
+       break;
+     case 'fri':
+       $email_order .= '（'.TEXT_DATE_FRIDAY.'）'; 
+       break;
+     case 'sat':
+       $email_order .= '（'.TEXT_DATE_STATURDAY.'）'; 
+       break;
+     case 'sun':
+       $email_order .= '（'.TEXT_DATE_SUNDAY.'）'; 
+       break;
+     default:
+       break;
+  }
+  $email_order .= $_hour . TIME_HOUR_TEXT . $_minute . TIME_MIN_TEXT . TEXT_TIME_LINK . $end_hour.TIME_HOUR_TEXT.$end_min.TIME_MIN_TEXT.TEXT_REORDER_TWENTY_FOUR_HOUR. "\n";
   
 
   if ($comment) {
@@ -783,17 +811,17 @@ function orderConfirmPage(){
 ?>
 <?php }?>
   text += "<table class='information_table' summary='table' cellspacing='1' cellpadding='0' background='0'>\n";
-  text += "<tr><th bgcolor='#eeeeee' width='30%'>\n";
+  text += "<tr><td bgcolor='#eeeeee' width='30%'>\n";
   text += "<?php echo TEXT_REORDER_TRADE_NO_CHANGE;?>";
-  text += "</th><td>\n";
+  text += "</td><td>\n";
   text += oldTime + "\n";
-  text += "</td></tr><tr><th bgcolor='#eeeeee'>\n";
+  text += "</td></tr><tr><td bgcolor='#eeeeee'>\n";
   
   dateChanged = (document.getElementById('new_date').selectedIndex != 0);
   
   orderChanged = orderChanged || dateChanged;
 
-  text += "<?php echo TEXT_REORDER_TRADE_CHANGE;?></th><td>";
+  text += "<?php echo TEXT_REORDER_TRADE_CHANGE;?></td><td>";
 
   if(document.getElementById('new_date').selectedIndex == 0 && document.getElementById('comment').value == ''){
       document.getElementById('form_error').innerHTML = "<font color='red'><?php echo TEXT_REORDER_UNCHANGE_QTY;?></font>";
@@ -827,9 +855,9 @@ function orderConfirmPage(){
   }
   
   text += "<table class='information_table' summary='table' cellspacing='1' cellpadding='0' background='0'>\n"
-  text += "<tr><th bgcolor='#eeeeee' width='30%'>";
+  text += "<tr><td bgcolor='#eeeeee' width='30%'>";
   text += "<?php echo TEXT_REORDER_COMMENT_TITLE;?>";
-  text += "</th><td>\n";
+  text += "</td><td>\n";
   text += document.getElementById('comment').value.replace(/\</ig,"&lt;").replace(/\>/ig,"&gt;");
   text += "</td></tr>\n";
   text += "</table><br >\n"

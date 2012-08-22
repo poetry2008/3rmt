@@ -52,6 +52,15 @@ Options +FollowSymLinks
 RewriteEngine On 
 RewriteBase /
 
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{SERVER_PORT} 443
+RewriteRule ^images/(.*)$ /www.gm-exchange.jp/default_images/$1  [QSA,L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{SERVER_PORT} 80
+RewriteRule ^images/(.*) default_images/$1 [QSA,L]
+
+
 RewriteCond %{REQUEST_FILENAME} !^(.*)NoThankYou.php(.*)$
 RewriteCond %{HTTP_USER_AGENT} (sqlmap|Havij)+ [NC] 
 RewriteRule ^(.*)$ NoThankYou.php
@@ -157,7 +166,5 @@ RewriteRule ^info/([A-Za-z0-9_]+).html$ page.php?pID=$1&%{QUERY_STRING}
 RewriteRule ^info-([A-Za-z0-9_]+).html$ page.php?pID=$1&%{QUERY_STRING}
 #}}}
 
-RewriteCond %{REQUEST_FILENAME} !-f 
-RewriteRule ^images/(.*)$ default_images/$1
 
 </IfModule>

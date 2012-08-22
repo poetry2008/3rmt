@@ -16,5 +16,5 @@ return array(
   //'site_url' => 'http://' . $_SERVER['SERVER_NAME'] . '/',
   'site_url' => 'http://www.iimy.co.jp/',
   'host_word' => 'RMTジャックポット',
-  'p_name' => 'RMTジャックポット',
+  'p_name' => 'RMT',
 );

@@ -1,34 +1,6 @@
 <?php
 define('URL_TYPE_CPATH',1);
 define('URL_TYPE_PRODUCT',2);
-/**
- * Ultimate SEO URLs Contribution - osCommerce MS-2.2
- *
- * Ultimate SEO URLs offers search engine optimized URLS for osCommerce
- * based applications. Other features include optimized performance and 
- * automatic redirect script.
- * @package Ultimate-SEO-URLs
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version 2.1
- * @link http://www.oscommerce-freelancers.com/ osCommerce-Freelancers
- * @copyright Copyright 2005, Bobby Easland 
- * @author Bobby Easland 
- * @filesource
- */
-
-/**
- * SEO_DataBase Class
- *
- * The SEO_DataBase class provides abstraction so the databaes can be accessed
- * without having to use tep API functions. This class has minimal error handling
- * so make sure your code is tight!
- * @package Ultimate-SEO-URLs
- * @license http://opensource.org/licenses/gpl-license.php GNU Public License
- * @version 1.1
- * @link http://www.oscommerce-freelancers.com/ osCommerce-Freelancers
- * @copyright Copyright 2005, Bobby Easland 
- * @author Bobby Easland 
- */
 class SEO_DataBase{
   /**
   * Database host (localhost, IP based, etc)
@@ -477,7 +449,7 @@ class SEO_URL{
     $link = $this->add_sid($link, $add_session_id, $connection, $separator); 
   
     // id 不显示 index.php
-    if ($page == 'index.php' && $parameters == '' && defined('SITE_ID') && (SITE_ID == 4 || SITE_ID == 5 || SITE_ID == 6 || SITE_ID == 7 || SITE_ID == 8 || SITE_ID == 9) && !isset($_sid)) {
+    if ($page == 'index.php' && $parameters == '' && defined('SITE_ID') && (SITE_ID == 4 || SITE_ID == 5 || SITE_ID == 6 || SITE_ID == 7 || SITE_ID == 8 || SITE_ID == 9 || SITE_ID == 10) && !isset($_sid)) {
       $link = HTTP_SERVER . DIR_WS_CATALOG;
     }
     
@@ -580,7 +552,7 @@ class SEO_URL{
       if (ENABLE_SSL && ($_SERVER['HTTP_HOST'] == substr(HTTPS_SERVER,8))) {
       } else {
         //cancel ssl to nossl session 
-        if (defined('SITE_ID') && (SITE_ID == 4 || SITE_ID == 5 || SITE_ID == 6 || SITE_ID == 7 || SITE_ID == 8 || SITE_ID == 9)) {
+        if (defined('SITE_ID') && (SITE_ID == 4 || SITE_ID == 5 || SITE_ID == 6 || SITE_ID == 7 || SITE_ID == 8 || SITE_ID == 9 || SITE_ID == 10)) {
           if (($request_type == 'NONSSL' && $connection == 'SSL') || ($request_type == 'SSL' && tep_session_is_registered('customer_id'))){
           // id 特殊处理，未登录丢弃sid
             $link .= $separator . $_sid;
@@ -597,7 +569,7 @@ class SEO_URL{
       }
     }
   // id 不显示 index.php
-  if ($page == 'index.php' && $parameters == '' && defined('SITE_ID') && (SITE_ID == 4  || SITE_ID == 5 || SITE_ID == 6 || SITE_ID == 7 || SITE_ID == 8 || SITE_ID == 9) && !isset($_sid)) {
+  if ($page == 'index.php' && $parameters == '' && defined('SITE_ID') && (SITE_ID == 4  || SITE_ID == 5 || SITE_ID == 6 || SITE_ID == 7 || SITE_ID == 8 || SITE_ID == 9 || SITE_ID ==10 ) && !isset($_sid)) {
     $link = HTTP_SERVER . DIR_WS_CATALOG;
   }
   $this->performance['NUMBER_STANDARD_URLS_GENERATED']++;
@@ -655,7 +627,7 @@ class SEO_URL{
         return $link; 
       } else {
         //cancel ssl to nossl session 
-        if (defined('SITE_ID') && (SITE_ID == 4 || SITE_ID == 5 || SITE_ID == 6 || SITE_ID == 7 || SITE_ID == 8 || SITE_ID == 9)) {
+        if (defined('SITE_ID') && (SITE_ID == 4 || SITE_ID == 5 || SITE_ID == 6 || SITE_ID == 7 || SITE_ID == 8 || SITE_ID == 9 || SITE_ID == 10)) {
           if (($request_type == 'NONSSL' && $connection == 'SSL') || ($request_type == 'SSL' && tep_session_is_registered('customer_id'))) {
             // id 特殊处理，未登录丢弃sid
             return $link . $separator . $_sid;
