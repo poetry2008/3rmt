@@ -595,6 +595,7 @@ form {
     width:95%;
 }
 .comment table{ font-size:12px;}
+.main{ font-size:12px;}
 .main h3 {
     height:12px;
 *+height:26px;
@@ -1272,10 +1273,12 @@ searching
 .checkout_payment_info{
 	border:1px solid #ccc;
 	margin-top:15px;   
-	*margin-top:5px;
+	*margin-top:0px; 
 	font-size:14px;
 	padding:5px;
 	line-height:1.5;
+	overflow:hidden;
+	display:inline-block;
 }
 .float_left{
 	float:left;
@@ -1683,3 +1686,7 @@ TEXTAREA {
 	padding-left:5px;
 	*padding-left:8px;
 }
+.img_clear img{
+	margin-top:-8px;
+}
+.img_clear input{ padding-top:5px;}

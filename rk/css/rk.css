@@ -734,6 +734,7 @@ product listing
 	display:block;
 	line-height:25px;
 	height:25px;
+	padding-left:25px;
 	background: url(../images/design/box/product_listing_sort_01.gif);
 }
 .product_listing_link:hover {
@@ -2239,6 +2240,7 @@ display:block;
 .shipping_error{
 	color:#ff0000;
 	font-size:12px;
+	*font-size:11px;
 	line-height:1.5;
 }
 .shipping_time{
@@ -2298,5 +2300,3 @@ display:block;
 .clear_both{
 	clear:both;
 }
-.sort img{ margin:-2px 0 0 5px;}
-.sort td{ width:25%;}

@@ -95,12 +95,13 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
         ?>
     <tr>
         <th valign="top" align="left">認証コード</th>
-        <td style="line-height: 21px;">
-        <img src="captcha.php" border="0" align="left">&nbsp;&nbsp;<input type="text" name="captcha" size="7" value="">&nbsp;<i class="captcha_comment">認証画像の内容をご入力ください.</i>
+        <td>
+        <div class="img_clear"><img src="captcha.php" border="0" align="left">&nbsp;&nbsp;<input type="text" name="captcha" size="7" value="">&nbsp;<i class="captcha_comment">認証画像の内容をご入力ください.</i>
         <?php if($errors['captcha']){ ?>
         
                 <font class="error"><?=$errors['captcha']?></font>
         <?php } ?>
+		</div>
         </td>
     </tr>
     <?}?>
