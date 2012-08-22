@@ -755,7 +755,6 @@ product listing
 	display:block;
 	line-height:25px;
 	height:25px;
-	padding-left:25px;
 	background: url(../images/design/box/product_listing_sort_01.gif);
 	color:#000;
 }
@@ -2285,3 +2284,5 @@ border:1px solid #CAC6BE;
 	width:80px;
 	color:#FFFFFF;
 }
+.sort img{ margin:-2px 0 0 5px;}
+.sort td{ width:25%;}

@@ -2783,3 +2783,5 @@ searching
 .formArea_td_info input, .formArea_td_info select{
 	margin-bottom:5px;
 }
+.sort img{ margin:-5px 0 0 5px;}
+.sort td{ width:25%;}

@@ -703,7 +703,6 @@ product listing
 	display:block;
 	line-height:25px;
 	height:25px;
-	padding-left:25px;
 	background: url(../images/design/box/product_listing_sort_01.gif);
 	color:#000;
 	font-size:10px;
@@ -2084,3 +2083,5 @@ border:2px solid #FF8080;
 .clear_both{
 	clear:both;
 }
+.sort img{ margin:-2px 0 0 5px;}
+.sort td{ width:25%;}

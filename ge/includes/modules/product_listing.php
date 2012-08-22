@@ -49,10 +49,16 @@ if(basename($PHP_SELF) == FILENAME_DEFAULT) {
       <td>&nbsp;</td>
       <td class="smallText" align="right"><b><?php echo LISTING_SORT_BY ; ?></b>
         <select name="select" onChange="if(options[selectedIndex].value) change_sort_type(options[selectedIndex].value)">
+          <option value="100a"  <?php if($_COOKIE['sort'] == '100a') {echo 'SELECTED' ;}else{ echo '';} ?>><?php echo LISTING_DEFAULT_UP ; ?></option>
+          <option value="100d"  <?php if($_COOKIE['sort'] == '100d') {echo 'SELECTED' ;}else{ echo '';} ?>><?php echo LISTING_DEFAULT_DOWN ; ?></option>
           <option value="4a"  <?php if($_COOKIE['sort'] == '4a') {echo 'SELECTED' ;}else{ echo '';} ?>><?php echo LISTING_TITLE_A_TO_Z ; ?></option>
           <option value="4d"  <?php if($_COOKIE['sort'] == '4d') {echo 'SELECTED' ;}else{ echo '';} ?>><?php echo LISTING_TITLE_Z_TO_A ; ?></option>
           <option value="5a"  <?php if($_COOKIE['sort'] == '5a') {echo 'SELECTED' ;}else{ echo '';} ?>><?php echo LISTING_PRICE_LOW ; ?></option>
           <option value="5d"  <?php if($_COOKIE['sort'] == '5d') {echo 'SELECTED' ;}else{ echo '';} ?>><?php echo LISTING_PRICE_HIGHT ; ?></option>
+          <option value="9a"  <?php if($_COOKIE['sort'] == '9a') {echo 'SELECTED' ;}else{ echo '';} ?>><?php echo LISTING_PEOPLE_UP ; ?></option>
+          <option value="9d"  <?php if($_COOKIE['sort'] == '9d') {echo 'SELECTED' ;}else{ echo '';} ?>><?php echo LISTING_PEOPLE_DOWN ; ?></option>
+
+
         </select></td>
     </tr>
   <?php
