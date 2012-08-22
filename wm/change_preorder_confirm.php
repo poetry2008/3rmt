@@ -8,7 +8,7 @@
   
   $breadcrumb->add(NAVBAR_CHANGE_PREORDER_TITLE, '');
   /*
- * ¼ÆËãÅäËÍ·ÑÓÃ
+ * è®¡ç®—é…é€è´¹ç”¨
  */
   foreach($_POST as $shipping_key=>$shipping_value){
 
@@ -17,7 +17,7 @@
       $shipping_fee_array[substr($shipping_key,3)] = $shipping_value;
     }
   }
-  //¼ÆËãÉÌÆ·µÄ×Ü¼Û¸ñ¼°×ÜÖØÁ¿
+  //è®¡ç®—å•†å“çš„æ€»ä»·æ ¼åŠæ€»é‡é‡
   $weight_total = 0;
   $money_total = 0;
   $shipping_products_query = tep_db_query("select * from ". TABLE_PREORDERS_PRODUCTS ." where orders_id='". $_POST['pid'] ."'");
@@ -63,7 +63,7 @@ if($city_num > 0 && $op_key == $country_fee_array[3]){
   $city_free_value = $city_array['free_value'];
   $city_weight_fee_array = unserialize($city_array['weight_fee']);
 
-  //¸ù¾ÝÖØÁ¿À´»ñÈ¡ÏàÓ¦µÄÅäËÍ·ÑÓÃ
+  //æ ¹æ®é‡é‡æ¥èŽ·å–ç›¸åº”çš„é…é€è´¹ç”¨
   foreach($city_weight_fee_array as $key=>$value){
     
     if(strpos($key,'-') > 0){
@@ -86,7 +86,7 @@ if($city_num > 0 && $op_key == $country_fee_array[3]){
   $address_free_value = $address_array['free_value'];
   $address_weight_fee_array = unserialize($address_array['weight_fee']);
 
-  //¸ù¾ÝÖØÁ¿À´»ñÈ¡ÏàÓ¦µÄÅäËÍ·ÑÓÃ
+  //æ ¹æ®é‡é‡æ¥èŽ·å–ç›¸åº”çš„é…é€è´¹ç”¨
   foreach($address_weight_fee_array as $key=>$value){
     
     if(strpos($key,'-') > 0){
@@ -110,7 +110,7 @@ if($city_num > 0 && $op_key == $country_fee_array[3]){
   $country_free_value = $country_array['free_value'];
   $country_weight_fee_array = unserialize($country_array['weight_fee']);
 
-  //¸ù¾ÝÖØÁ¿À´»ñÈ¡ÏàÓ¦µÄÅäËÍ·ÑÓÃ
+  //æ ¹æ®é‡é‡æ¥èŽ·å–ç›¸åº”çš„é…é€è´¹ç”¨
   foreach($country_weight_fee_array as $key=>$value){
     
     if(strpos($key,'-') > 0){
@@ -457,6 +457,32 @@ foreach($all_show_option_id as $t_item_id){
                       if (!empty($_POST['date'])) {
                         $date_arr = explode('-', $_POST['date']); 
                         echo $date_arr[0].DATE_YEAR_TEXT.$date_arr[1].DATE_MONTH_TEXT.$date_arr[2].DATE_DAY_TEXT; 
+                        $tmp_date = date('D', mktime(0, 0, 0, $date_arr[1], $date_arr[2], $date_arr[0]));  
+                        switch(strtolower($tmp_date)) {
+                           case 'mon':
+                             echo 'ï¼ˆ'.TEXT_DATE_MONDAY.'ï¼‰'; 
+                             break;
+                           case 'tue':
+                             echo 'ï¼ˆ'.TEXT_DATE_TUESDAY.'ï¼‰'; 
+                             break;
+                           case 'wed':
+                             echo 'ï¼ˆ'.TEXT_DATE_WEDNESDAY.'ï¼‰'; 
+                             break;
+                           case 'thu':
+                             echo 'ï¼ˆ'.TEXT_DATE_THURSDAY.'ï¼‰'; 
+                             break;
+                           case 'fri':
+                             echo 'ï¼ˆ'.TEXT_DATE_FRIDAY.'ï¼‰'; 
+                             break;
+                           case 'sat':
+                             echo 'ï¼ˆ'.TEXT_DATE_STATURDAY.'ï¼‰'; 
+                             break;
+                           case 'sun':
+                             echo 'ï¼ˆ'.TEXT_DATE_SUNDAY.'ï¼‰'; 
+                             break;
+                           default:
+                             break;
+                        }
                       }
                     ?>
                     </td>                  
@@ -631,7 +657,7 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
   }
   //----------------------------------------------
   
-  //´Ô¸µÎ¨¤ò·×»»----------------------------------
+  //ä¸›å‚…å”¯ã‚’çº·æ¢----------------------------------
   if(mb_ereg("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK)) {
     $back_rate_array = explode("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK);
   $back_rate = MODULE_ORDER_TOTAL_POINT_FEE;
@@ -654,7 +680,7 @@ if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
 } else {
   $point_rate = MODULE_ORDER_TOTAL_POINT_FEE;
 }
-// ¤³¤³¤Þ¤Ç¥«¥¹¥¿¥Þ¡¼¥ì¥Ù¥ë¤Ë±þ¤¸¤¿¥Ý¥¤¥ó¥È´Ô¸µÎ¨»»½Ð============================================================
+// ã“ã“ã¾ã§ã‚«ã‚¹ã‚¿ãƒžã€–ãƒ¬ãƒ™ãƒ«ã«ç‚³ã˜ãŸãƒã‚¤ãƒ³ãƒˆä¸›å‚…å”¯æ¢å«============================================================
   if ($preorder_subtotal > 0) {
     if (isset($_SESSION['preorder_campaign_fee'])) {
       $preorder_get_point = ($preorder_subtotal + $_SESSION['preorder_campaign_fee']) * $point_rate;
