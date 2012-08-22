@@ -246,7 +246,7 @@ var visitesURL = "<?php echo ($request_type == 'SSL') ? HTTPS_SERVER : HTTP_SERV
                   <?php $preorder_product_res = tep_db_fetch_array($preorder_product_raw);?> 
                   <tr>
                     
-                    <td class="main" align="center" valign="top" width="150">
+                    <td class="confirmation_product_num_info" align="right" valign="top">
                     <?php echo $preorder_product_res['products_quantity'].PRODUCT_UNIT_TEXT;?>
                     <?php echo '<br>'.tep_get_full_count2($preorder_product_res['products_quantity'], $preorder_product_res['products_id']);?> 
                     
@@ -421,7 +421,8 @@ foreach($all_show_option_id as $t_item_id){
                       if(substr($ad_key,0,3)=='ad_' && $_POST[substr($ad_key,3)] != ''){
 
                         echo '<tr>';
-                        echo '<td class="main" width="150">'. $_POST[substr($ad_key,3)] .':</td>';                  
+                        echo '<td width="10"></td>';
+						echo '<td class="main" width="150">'. $_POST[substr($ad_key,3)] .':</td>';                  
                         echo '<td class="main">';
                         echo $_POST[$ad_key];
                         //echo '<input type="hidden" name="'. $ad_key .'" value="'. $ad_value .'"></td>';
@@ -448,6 +449,7 @@ foreach($all_show_option_id as $t_item_id){
               <td class="main">
                 <table width="100%" class="font_size14">  
                   <tr>
+                    <td width="10"></td>
                     <td class="main" width="150"><?php echo PREORDER_CONFIRM_FETCH_TIME_DAY;?></td>                  
                     <td class="main">
                     <?php
@@ -485,6 +487,7 @@ foreach($all_show_option_id as $t_item_id){
                     </td>                  
                   </tr>
                   <tr>
+                    <td width="10"></td>
                     <td class="main"><?php echo PREORDER_CONFIRM_FETCH_TIME_DATE;?></td>                  
                     <td class="main">
                     <?php
@@ -503,10 +506,11 @@ foreach($all_show_option_id as $t_item_id){
               <td class="main" width="30%" valign="top">
                 <table width="100%" cellpadding="2" cellspacing="2" border="0" class="font_size14"> 
                   <tr>
-                    <td class="main"><b><?php echo CHANGE_ORDER_CONFIRM_PAYMENT;?></b></td>                  
+                    <td class="main" colspan="2"><b><?php echo CHANGE_ORDER_CONFIRM_PAYMENT;?></b></td>                  
                   </tr>
                   <tr>
-                    <td class="main">
+                    <td width="10"></td>
+                    <td class="main" width="150">
                     <?php echo $preorder_res['payment_method'];?> 
                     </td>                  
                   </tr>

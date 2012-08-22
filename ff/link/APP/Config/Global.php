@@ -16,5 +16,5 @@ return array(
   'site_url' => 'http://' . $_SERVER['SERVER_NAME'] . '/',
 //  'site_url' => 'http://www.rmt-kames.jp/',
   'host_word' => 'FF14-RMT.com',
-  'p_name' => 'FF14-RMT.com',
+  'p_name' => 'RMT',
 );

@@ -16,5 +16,5 @@ return array(
   //'site_url' => 'http://' . $_SERVER['SERVER_NAME'] . '/',
   'site_url' => 'http://www.itemdepot.jp/',
   'host_word' => 'RMTアイテムデポ',
-  'p_name' => 'RMTアイテムデポ',
+  'p_name' => 'RMT',
 );

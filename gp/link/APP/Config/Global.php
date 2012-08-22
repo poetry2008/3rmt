@@ -16,5 +16,5 @@ return array(
   //'site_url' => 'http://' . $_SERVER['SERVER_NAME'] . '/',
   'site_url' => 'http://www.gameplanet.jp/',
   'host_word' => 'RMT ゲームプラネット',
-  'p_name' => 'RMT ゲームプラネット',
+  'p_name' => 'RMT',
 );

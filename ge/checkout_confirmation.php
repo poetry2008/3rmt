@@ -170,8 +170,8 @@ for ($i=0, $n=sizeof($order->products); $i<$n; $i++) {
   $product_info = tep_get_product_by_id((int)$order->products[$i]['id'], SITE_ID, $languages_id);
     
   echo '          <tr>' . "\n" .
-    '            <td width="10"></td>
-				 <td class="main" align="center" valign="top" width="150">' .
+    '            
+				 <td class="confirmation_product_num_info" align="right" valign="top">' .
     $order->products[$i]['qty'] . '&nbsp;'. NUM_UNIT_TEXT.  (!empty($product_info['products_attention_1_3']) && tep_get_full_count_in_order2($order->products[$i]['qty'], (int)$order->products[$i]['id']) ? '<br><span style="font-size:10px">'.  tep_get_full_count_in_order2($order->products[$i]['qty'], (int)$order->products[$i]['id']) .'</span>': '') . '</td>' . "\n" .
     '            <td class="main" valign="top">' . $order->products[$i]['name'];
   if ($order->products[$i]['price'] < 0) {
@@ -561,10 +561,11 @@ echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><sp
               <td width="50%" valign="top">
                 <table border="0" width="100%" cellspacing="0" cellpadding="2" class="box_des">
                   <tr>
-                    <td class="main"><?php echo '<b>' . HEADING_PAYMENT_METHOD . '</b> <a href="' . tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
+                    <td class="main" colspan="2"><?php echo '<b>' . HEADING_PAYMENT_METHOD . '</b> <a href="' . tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><span class="orderEdit">(' . TEXT_EDIT . ')</span></a>'; ?></td>
                   </tr>
                   <tr>
-                    <td class="main"><?php echo payment::changeRomaji($order->info['payment_method']); ?></td>
+                    <td width="10"></td>
+                    <td class="main" width="180"><?php echo payment::changeRomaji($order->info['payment_method']); ?></td>
                   </tr>
                 </table>
               </td>
@@ -659,15 +660,15 @@ echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><sp
   if(isset($customer_id)&&tep_is_member_customer($customer_id)){
   echo '<tr>' . "\n";
   if (!tep_only_buy_product()) {
-    echo '<td align="right" class="main"><br>'.TEXT_POINT_NOW.'</td>' . "\n";
+    echo '<td align="right" class="main">'.TEXT_POINT_NOW.'</td>' . "\n";
   } else {
     if ($get_point == 0) {
-      echo '<td align="right" class="main"><br>'.TS_TEXT_POINT_NOW_TWO.'</td>' . "\n";
+      echo '<td align="right" class="main">'.TS_TEXT_POINT_NOW_TWO.'</td>' . "\n";
     } else {
-      echo '<td align="right" class="main"><br>'.TEXT_POINT_NOW.'</td>' . "\n";
+      echo '<td align="right" class="main">'.TEXT_POINT_NOW.'</td>' . "\n";
     }
   }
-  echo '<td align="right" class="main"><br>'.(int)$get_point.'&nbsp;P</td>' . "\n";
+  echo '<td align="right" class="main">'.(int)$get_point.'&nbsp;P</td>' . "\n";
   echo '</tr>' . "\n";
   }
   }
