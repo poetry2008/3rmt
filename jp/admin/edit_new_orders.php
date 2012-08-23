@@ -3104,9 +3104,13 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
       }
 
           if($pay_orders_id != ''){ 
-            $orders_status_history_query = tep_db_query("select comments from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='".$pay_orders_id."' order by date_added desc limit 0,1"); 
-            $orders_status_history_array = tep_db_fetch_array($orders_status_history_query);
-            $pay_comment = $orders_status_history_array['comments']; 
+            $orders_status_history_query = tep_db_query("select comments from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='".$pay_orders_id."' order by date_added desc"); 
+            while($orders_status_history_array = tep_db_fetch_array($orders_status_history_query)){
+              if($orders_status_history_array['comments']!=''){
+                $pay_comment = $orders_status_history_array['comments']; 
+                break;
+              }
+            }
             tep_db_free_result($orders_status_history_query);
           }
           $code_payment_method = $payment_array[0][$payment_num];
@@ -3115,8 +3119,12 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
             payment::changeRomaji($order->info['payment_method'],'code');
             $pay_method = payment::changeRomaji($order->info['payment_method'],'code');
             $orders_status_history_query = tep_db_query("select comments from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='".$order->info['orders_id']."' order by date_added desc limit 0,1"); 
-            $orders_status_history_array = tep_db_fetch_array($orders_status_history_query);
-            $pay_comment = $orders_status_history_array['comments']; 
+            while($orders_status_history_array = tep_db_fetch_array($orders_status_history_query)){
+              if($orders_status_history_array['comments']!=''){
+                $pay_comment = $orders_status_history_array['comments']; 
+                break;
+              }
+            }
             tep_db_free_result($orders_status_history_query); 
           }
 
