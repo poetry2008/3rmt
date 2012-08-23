@@ -708,15 +708,20 @@ product listing
 }
 .product_listing_link{
 	display:block;
-	line-height:25px;
-	height:25px;
+	height:17px;
+	*height:25px;
+	*padding-top:8px;
+	padding-top:8px;
 	background: url(../images/design/box/button_large.gif);
 	color:#000;
 	font-size:10px;
 }
 .product_listing_link:hover{
 	display:block;
-	height:25px;
+	height:17px;
+	*height:25px;
+	*padding-top:8px;
+	padding-top:8px;
 	color:#fff;
 	background: url(../images/design/box/button_large_hover.gif) !important;
 }

@@ -753,16 +753,21 @@ product listing
 }
 .product_listing_link{
 	display:block;
-	line-height:25px;
-	height:25px;
-	background: url(../images/design/box/button_large.gif);
+	height:19px;
+	*height:25px;
+	*padding-top:6px;
+	padding-top:6px;
+	background: url(../images/design/box/button_large.gif) no-repeat;
 	color:#000;
 }
 .product_listing_link:hover{
 	display:block;
-	height:25px;
+	height:19px;
+	*height:25px;
+	*padding-top:6px;
+	padding-top:6px;
 	color:#fff;
-	background: url(../images/design/box/button_large_hover.gif) !important;
+	background: url(../images/design/box/button_large_hover.gif) no-repeat !important;
 }
 .product_listing_sort_1, .product_listing_sort_2{
 	font-size: 11px;
