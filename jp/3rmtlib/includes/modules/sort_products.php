@@ -82,8 +82,8 @@ $sort_type = 'a';
   define('LISTING_TITLE_Z_TO_A','タイトル Z - A');
   define('LISTING_DEFAULT_UP','お勧め順(昇順)') ;
   define('LISTING_DEFAULT_DOWN','お勧め順(降順)') ;
-  define('LISTING_PEOPLE_DOWN','人気順に並べる高い') ;
-  define('LISTING_PEOPLE_UP','人気順に並べる安い') ;
+  define('LISTING_PEOPLE_DOWN','人気順に並べる(昇順)') ;
+  define('LISTING_PEOPLE_UP','人気順に並べる(降順)') ;
   
   $listing_numrows_sql = $listing_sql;
   $listing_split = new splitPageResults($_GET['page'], MAX_DISPLAY_SEARCH_RESULTS, $listing_sql, $listing_numrows);

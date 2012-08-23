@@ -4,33 +4,32 @@
 */
   require(DIR_WS_MODULES . 'sort_products.php');
   require(DIR_WS_LANGUAGES . $language . '/product_listing.php');
-  
   $sort_default_str = 'a';
-  $sort_name_str = 'a';
-  $sort_price_str = 'a';
-  $sort_best_str = 'a';
-  $tmp_sort_str = substr($_COOKIE['sort'], 0, -1); 
-  if ($tmp_sort_str == '4') {
-   $sort_name_str = $sort_type == 'd' ? 'd':'a';  
-  } else if ($tmp_sort_str == '5') {
-   $sort_price_str = $sort_type == 'd' ? 'd':'a';  
-  } else if ($tmp_sort_str == '9') {
-   $sort_best_str = $sort_type == 'd' ? 'd':'a';  
-  } else {
-    if (empty($_COOKIE['sort'])) {
-      $sort_default_str = 'd';
-    } else {
-      $sort_default_str = $sort_type == 'd' ? 'd':'a';  
-    } 
-  }
+  $sort_name_str = 'a'; 
+  $sort_price_str = 'a'; 
+$sort_best_str = 'a';
+$tmp_sort_str = substr($_COOKIE['sort'], 0, -1);
+if ($tmp_sort_str == '4') {
+	$sort_name_str = $sort_type == 'd' ? 'd':'a';  
+} else if ($tmp_sort_str == '5') {
+	$sort_price_str = $sort_type == 'd' ? 'd':'a';  
+} else if ($tmp_sort_str == '9') {   
+	  $sort_best_str = $sort_type == 'd' ? 'd':'a';
+	      } else {                                 
+		      if (empty($_COOKIE['sort'])) {
+			      $sort_default_str = 'd';
+		      } else {
+			      $sort_default_str = $sort_type == 'd' ? 'd':'a';
+		      }
+			       }                    
 ?>
 <!--select searach -->
 <table width=" 100%"  border="0" cellpadding="1" cellspacing="1" bgcolor="#C0CEDD" class="sort">
   <tr>
-  <td height="25" align="center" <?php echo ($_COOKIE['sort'] == '100a' or !isset($_COOKIE['sort']) or $_COOKIE['sort'] == '100d') ? 'bgcolor="#E2F8FD"' : 'bgcolor="#FFFFFF"' ; ?> class="main" onMouseOver="this.bgColor = '#E2F8FD';" onMouseOut ="this.bgColor = '<?php echo ($_COOKIE['sort'] == '100a' or $_COOKIE['sort'] == '100d') ? '#E2F8FD' : '#FFFFFF' ; ?>'"><a href="javascript:void(0)" onclick="change_sort_type('100<?php echo $sort_default_str;?>');"><?php echo PRE_SORT_DEFAULT?></a><img class="middle" src="images/design/box/sort<?php if(empty($_COOKIE['sort'])){ echo $sort_default_str=='d' ? '_link' : '_hover';} else {if($tmp_sort_str=='100'){echo $sort_default_str=='d' ? '_link' : '_hover';}else{echo  '_link';}}?>.png" hspace="3" alt=""></td>
-  <td height="25" align="center" <?php echo ($_COOKIE['sort'] == '4a' or $_COOKIE['sort'] == '4d') ? 'bgcolor="#E2F8FD"' : 'bgcolor="#FFFFFF"' ; ?> class="main" onMouseOver="this.bgColor = '#E2F8FD';" onMouseOut ="this.bgColor = '<?php echo ($_COOKIE['sort'] == '4a' or $_COOKIE['sort'] == '4d') ? '#E2F8FD' : '#FFFFFF' ; ?>'"><a href="javascript:void(0)" onclick="change_sort_type('4<?php echo $sort_name_str;?>');"><?php echo PRE_SORT_A?></a><img class="middle" src="images/design/box/sort<?php if($tmp_sort_str=='4'){echo $sort_name_str=='d' ? '_link' : '_hover';}else{echo '_link';}?>.png" hspace="3" alt=""></td>
-  <td height="25" align="center" <?php echo ($_COOKIE['sort'] == '5a' or $_COOKIE['sort'] == '5d') ? 'bgcolor="#E2F8FD"' : 'bgcolor="#FFFFFF"' ; ?> class="main" onMouseOver="this.bgColor = '#E2F8FD';" onMouseOut ="this.bgColor = '<?php echo ($_COOKIE['sort'] == '5a' or $_COOKIE['sort'] == '5d') ? '#E2F8FD' : '#FFFFFF' ; ?>'"><a href="javascript:void(0)" onclick="change_sort_type('5<?php echo $sort_price_str;?>');"><?php echo PRE_SORT_PRICE?></a><img class="middle" src="images/design/box/sort<?php if($tmp_sort_str=='5'){echo $sort_price_str=='d' ? '_link' : '_hover';}else{echo '_link';}?>.png" hspace="3" alt=""></td>
-  <td height="25" align="center" <?php echo ($_COOKIE['sort'] == '9d' or $_COOKIE['sort'] == '9a') ? 'bgcolor="#E2F8FD"' : 'bgcolor="#FFFFFF"' ; ?> class="main" onMouseOver="this.bgColor = '#E2F8FD';" onMouseOut ="this.bgColor = '<?php echo ($_COOKIE['sort'] == '9d' or $_COOKIE['sort'] == '9a') ? '#E2F8FD' : '#FFFFFF' ; ?>'"><a href="javascript:void(0)" onclick="change_sort_type('9<?php echo $sort_best_str;?>');"><?php echo PRE_SORT_PEOPLE?></a><img class="middle" src="images/design/box/sort<?php if($tmp_sort_str=='9'){echo $sort_best_str=='d' ? '_link' : '_hover';}else{echo '_link';}?>.png" hspace="3" alt=""></td>
+  <td height="25" align="center" <?php echo ($_COOKIE['sort'] == '100a' or !isset($_COOKIE['sort']) or $_COOKIE['sort'] == '100d') ? 'bgcolor="#E2F8FD"' : 'bgcolor="#FFFFFF"' ; ?> class="main" onMouseOver="this.bgColor = '#E2F8FD';" onMouseOut ="this.bgColor = '<?php echo ($_COOKIE['sort'] == '100a' or $_COOKIE['sort'] == '100d') ? '#E2F8FD' : '#FFFFFF' ; ?>'"><a href="javascript:void(0)" onclick="change_sort_type('100<?php echo $sort_default_str;?>');"><?php echo PRE_SORT_DEFAULT?></a><img class="middle" src="images/design/box/triangle<?php if(empty($_COOKIE['sort'])){ echo $sort_default_str=='d' ? '_upward' : '_downward';} else {if($tmp_sort_str=='100'){echo $sort_default_str=='d' ? '_upward' : '_downward';}else{echo  '_upward';}}?>.png" hspace="3" alt=""></td>
+  <td height="25" align="center" <?php echo ($_COOKIE['sort'] == '4a' or $_COOKIE['sort'] == '4d') ? 'bgcolor="#E2F8FD"' : 'bgcolor="#FFFFFF"' ; ?> class="main" onMouseOver="this.bgColor = '#E2F8FD';" onMouseOut ="this.bgColor = '<?php echo ($_COOKIE['sort'] == '4a' or $_COOKIE['sort'] == '4d') ? '#E2F8FD' : '#FFFFFF' ; ?>'"><a href="javascript:void(0)" onclick="change_sort_type('4<?php echo $sort_name_str;?>');"><?php echo PRE_SORT_A?></a><img class="middle" src="images/design/box/triangle<?php if($tmp_sort_str=='4'){echo $sort_name_str=='d' ? '_upward' : '_downward';}else{echo '_upward';}?>.png" hspace="3" alt=""></td>
+  <td height="25" align="center" <?php echo ($_COOKIE['sort'] == '5a' or $_COOKIE['sort'] == '5d') ? 'bgcolor="#E2F8FD"' : 'bgcolor="#FFFFFF"' ; ?> class="main" onMouseOver="this.bgColor = '#E2F8FD';" onMouseOut ="this.bgColor = '<?php echo ($_COOKIE['sort'] == '5a' or $_COOKIE['sort'] == '5d') ? '#E2F8FD' : '#FFFFFF' ; ?>'"><a href="javascript:void(0)" onclick="change_sort_type('5<?php echo $sort_price_str;?>');"><?php echo PRE_SORT_PRICE?></a><img class="middle" src="images/design/box/triangle<?php if($tmp_sort_str=='5'){echo $sort_price_str=='d' ? '_upward' : '_downward';}else{echo '_upward';}?>.png" hspace="3" alt=""></td>
+  <td height="25" align="center" <?php echo ($_COOKIE['sort'] == '9d' or $_COOKIE['sort'] == '9a') ? 'bgcolor="#E2F8FD"' : 'bgcolor="#FFFFFF"' ; ?> class="main" onMouseOver="this.bgColor = '#E2F8FD';" onMouseOut ="this.bgColor = '<?php echo ($_COOKIE['sort'] == '9d' or $_COOKIE['sort'] == '9a') ? '#E2F8FD' : '#FFFFFF' ; ?>'"><a href="javascript:void(0)" onclick="change_sort_type('9<?php echo $sort_best_str;?>');"><?php echo PRE_SORT_PEOPLE?></a><img class="middle" src="images/design/box/triangle<?php if($tmp_sort_str=='9'){echo $sort_best_str=='d' ? '_upward' : '_downward';}else{echo '_upward';}?>.png" hspace="3" alt=""></td>
   </tr>
 </table>
 <?php
@@ -56,12 +55,13 @@
     $listing_query = tep_db_query($listing_sql);
     $row = 0 ;
     $col = 0 ;
-    
-    while ($listing = tep_db_fetch_array($listing_query)) {
-      //price
+
+  while ($listing = tep_db_fetch_array($listing_query)) {
+  //price
       $p_bflag = tep_get_bflag_by_product_id($listing['products_id']); 
       if (tep_get_special_price($listing['products_price'], $listing['products_price_offset'], $listing['products_small_sum'])) {
-        $price = '<s>' .  $currencies->display_price(tep_get_price($listing['products_price'], $listing['products_price_offset'], $listing['products_small_sum'], $p_bflag), tep_get_tax_rate($listing['products_tax_class_id'])) . '</s>&nbsp;&nbsp;<span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($listing['products_price'], $listing['products_price_offset'], $listing['products_small_sum']), tep_get_tax_rate($listing['products_tax_class_id'])) . '</span>&nbsp;';
+        $price = '<s>' .
+          $currencies->display_price(tep_get_price($listing['products_price'], $listing['products_price_offset'], $listing['products_small_sum'], $p_bflag), tep_get_tax_rate($listing['products_tax_class_id'])) . '</s>&nbsp;&nbsp;<span class="productSpecialPrice">' . $currencies->display_price(tep_get_special_price($listing['products_price'], $listing['products_price_offset'], $listing['products_small_sum']), tep_get_tax_rate($listing['products_tax_class_id'])) . '</span>&nbsp;';
       } else {
         $price = $currencies->display_price(tep_get_price($listing['products_price'], $listing['products_price_offset'], $listing['products_small_sum'], $p_bflag), tep_get_tax_rate($listing['products_tax_class_id']));
       }
