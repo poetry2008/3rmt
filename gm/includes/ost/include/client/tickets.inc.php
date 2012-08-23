@@ -96,9 +96,9 @@ $_negorder=$negorder=="DESC"?TEXT_SORT:TEXT_DESC_SORT;
         <?php
         if($_GET['status'] == 'all' || !isset($_GET['status'])){
         
-          $products_image_all = 'product_listing_sort_02.gif';
+          $products_image_all = 'button_large_hover.gif';
         }else{
-          $products_image_all = 'product_listing_sort_01.gif';
+          $products_image_all = 'button_large.gif';
         } 
         ?>
         <td width="33%"><a class="product_listing_link"
@@ -106,9 +106,9 @@ $_negorder=$negorder=="DESC"?TEXT_SORT:TEXT_DESC_SORT;
         <?php
         if($_GET['status'] == 'open'){
         
-          $products_image_one = 'product_listing_sort_02.gif';
+          $products_image_one = 'button_large_hover.gif';
         }else{
-          $products_image_one = 'product_listing_sort_01.gif';
+          $products_image_one = 'button_large.gif';
         } 
         ?>
         <td width="33%"><a class="product_listing_link"
@@ -116,9 +116,9 @@ $_negorder=$negorder=="DESC"?TEXT_SORT:TEXT_DESC_SORT;
         <?php
         if($_GET['status'] == 'closed'){
         
-          $products_image = 'product_listing_sort_02.gif';
+          $products_image = 'button_large_hover.gif';
         }else{
-          $products_image = 'product_listing_sort_01.gif';
+          $products_image = 'button_large.gif';
         } 
         ?>
         <td width="33%" style="border-right:1px solid #666666;"><a id="jingyi"
