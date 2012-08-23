@@ -1375,18 +1375,6 @@ unset($_SESSION['shipping_session_flag']);
                   <td>
           
 <table width="100%" border="0" cellspacing="0" cellpadding="2">
-<?php
-if (!isset($torihikihouhou_error)) $torihikihouhou_error = NULL ; //del notice
-  if($torihikihouhou_error != '') {
-?>
-  <tr>
-   <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-  <td class="main">&nbsp;</td>
-    <td class="main"><?php echo $torihikihouhou_error; ?></td>
-  </tr>
-<?php
-  }
-?>
   <tr>
   <td class="main" width="30%"><?php echo TEXT_EXPECT_TRADE_DATE; ?></td>
     <td class="main" width="70%">
@@ -1440,15 +1428,14 @@ if (!isset($torihikihouhou_error)) $torihikihouhou_error = NULL ; //del notice
   </td>
   </tr>
 <?php
-if (!isset($date_error)) $date_error= NULL ; //del notice
-  if($date_error != '') {
+  if(isset($date_error) && $date_error != '') { //del notice
 ?>
   <tr id="date_error">
   <td class="main">&nbsp;</td>
     <td class="main"><?php echo $date_error; ?></td>
   </tr>
 <?php
-  }
+  } 
 ?>
   <tr id="shipping_list" style="display:none;">
   <td class="main"><?php echo TEXT_EXPECT_TRADE_TIME; ?></td>

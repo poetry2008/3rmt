@@ -1369,19 +1369,6 @@ unset($_SESSION['shipping_session_flag']);
                   <td>
           
 <table width="100%" border="0" cellspacing="0" cellpadding="2" class="box_des">
-<?php
-if (!isset($torihikihouhou_error)) $torihikihouhou_error=NULL;
-
-  if($torihikihouhou_error != '') {
-?>
-  <tr>
-    <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-  <td class="main">&nbsp;</td>
-    <td class="main"><?php echo $torihikihouhou_error; ?></td>
-  </tr>
-<?php
-  }
-?>
   <tr>
     <td class="main" width="30%" colspan="2"><?php echo TEXT_EXPECT_TRADE_DATE; ?></td>
     <td class="main" width="70%">
