@@ -1426,7 +1426,7 @@ if($save_flag == 0){
           }
         }
           
-        $products_ordered_mail .= '個数'.str_repeat('　', intval($max_c_len - mb_strlen('個数', 'utf-8'))).'：' . $order2->products[$i]['qty'] . '個' . tep_get_full_count2($order2->products[$i]['qty'], $order2->products[$i]['id']) . "\n";
+        $products_ordered_mail .= '個数'.str_repeat('　', intval($max_c_len - mb_strlen('個数', 'utf-8'))).'：' . $order2->products[$i]['qty'] . '個(' . tep_get_full_count_in_order2($order2->products[$i]['qty'], $order2->products[$i]['id']) . ")\n";
         $products_ordered_mail .= '単価'.str_repeat('　', intval($max_c_len - mb_strlen('単価', 'utf-8'))).'：' . $currencies->display_price($order2->products[$i]['final_price'], $order2->products[$i]['tax']) . "\n";
         $products_ordered_mail .= '小計'.str_repeat('　', intval($max_c_len - mb_strlen('小計', 'utf-8'))).'：' . $currencies->display_price($order2->products[$i]['final_price'], $order2->products[$i]['tax'], $order2->products[$i]['qty']) . "\n";
         //$products_ordered_mail .= 'キャラクター名　　：' . (EMAIL_USE_HTML === 'true' ? htmlspecialchars($order2->products[$i]['character']) : $order2->products[$i]['character']) . "\n";
@@ -1442,7 +1442,7 @@ if($save_flag == 0){
       //customer info
       $customer_printing_order .= 'IPアドレス　　　　　　：' . $_SERVER["REMOTE_ADDR"] . "\n";
       $customer_printing_order .= 'ホスト名　　　　　　　：' . @gethostbyaddr($_SERVER["REMOTE_ADDR"]) . "\n";
-      $customer_printing_order .= 'ユーザーエージェント　：' . $_SERVER["HTTP_USER_AGENT"];
+      $customer_printing_order .= 'ユーザーエージェント　：' . $_SERVER["HTTP_USER_AGENT"] . "\n";
   //credit research
   $credit_inquiry_query = tep_db_query("select customers_fax, customers_guest_chk from " . TABLE_CUSTOMERS . " where customers_id = '" . $customer_id_flag . "'");
   $credit_inquiry       = tep_db_fetch_array($credit_inquiry_query);

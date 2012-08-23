@@ -246,6 +246,7 @@
   }
 ?>
 <?php page_head();?>
+<script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript"><!--
 <?php
 if($cart->weight > 0){
@@ -275,36 +276,6 @@ if($cart->weight > 0){
   }
 }
 ?>
-var selected;
-
-function selectRowEffect(object, buttonSelect) {
-  if (!selected) {
-    if (document.getElementById) {
-      selected = document.getElementById('defaultSelected');
-    } else {
-      selected = document.all['defaultSelected'];
-    }
-  }
-
-  if (selected) selected.className = 'moduleRow';
-  object.className = 'moduleRowSelected';
-  selected = object;
-
-// one button is not an array
-  if (document.checkout_address.shipping[0]) {
-    document.checkout_address.shipping[buttonSelect].checked=true;
-  } else {
-    document.checkout_address.shipping.checked=true;
-  }
-}
-
-function rowOverEffect(object) {
-  if (object.className == 'moduleRow') object.className = 'moduleRowOver';
-}
-
-function rowOutEffect(object) {
-  if (object.className == 'moduleRowOver') object.className = 'moduleRow';
-}
 
 <?php
 if($cart->weight > 0){
@@ -319,24 +290,25 @@ function check(select_value){
       echo 'arr["'.$country_fee_array['name'].'"] = "'. $country_fee_array['name'] .'";'."\n";
     }
     tep_db_free_result($country_fee_query);
-   ?>
-  if(document.getElementById(country_fee_id)){
-    var country_fee = document.getElementById(country_fee_id);
-    country_fee.options.length = 0;
-
+  ?>
     var i = 0;
+    var selected_value = '';
+    $("#"+country_fee_id).empty();
     for(x in arr){
+      if(x==select_value){
 
-      country_fee.options[country_fee.options.length]=new Option(arr[x], x,x==select_value,x==select_value);
+        selected_value = ' selected';
+      } 
+      $("#"+country_fee_id).append( "<option value=\""+arr[x]+"\""+selected_value+">"+x+"</option>" );
+      selected_value = '';
       i++;
-    }
+    } 
     if(i == 0){ 
       $("#td_"+country_fee_id_one).hide();
     }else{
 
       $("#td_"+country_fee_id_one).show();
     }
-  }
 }
 function country_check(value,select_value){
    
@@ -363,26 +335,25 @@ function country_check(value,select_value){
       }
 
     }
-   ?>
- if(document.getElementById(country_area_id)){
-    var country_area = document.getElementById(country_area_id);
-    country_area.options.length = 0;
+?>
     var i = 0;
+    var selected_value = '';
+    $("#"+country_area_id).empty();
     for(x in arr[value]){
+      if(x==select_value){
 
-      country_area.options[country_area.options.length]=new Option(arr[value][x], x,x==select_value, x==select_value);
+        selected_value = ' selected';
+      }
+      $("#"+country_area_id).append( "<option value=\""+arr[value][x]+"\""+selected_value+">"+x+"</option>" );
+      selected_value = '';
       i++;
     }
-
     if(i == 0){ 
       $("#td_"+country_area_id_one).hide();
     }else{
       
       $("#td_"+country_area_id_one).show();
     }
-
- }
-
 }
 
 function country_area_check(value,select_value){
@@ -412,16 +383,18 @@ function country_area_check(value,select_value){
     }
   ?>
 
-  if(document.getElementById(country_city_id)){
-    var country_city = document.getElementById(country_city_id);
-    country_city.options.length = 0;
-    var i = 0;
+  var i = 0;
+    var selected_value = '';
+    $("#"+country_city_id).empty();
     for(x in arr[value]){
+      if(x==select_value){
 
-      country_city.options[country_city.options.length]=new Option(arr[value][x], x,x==select_value,x==select_value);
+        selected_value = ' selected';
+      }
+      $("#"+country_city_id).append( "<option value=\""+arr[value][x]+"\""+selected_value+">"+x+"</option>" );
+      selected_value = '';
       i++;
     }
-    
     if(i == 0){ 
       $("#td_"+country_city_id_one).hide();
     }else{
@@ -429,9 +402,6 @@ function country_area_check(value,select_value){
       $("#td_"+country_city_id_one).show();
 
     }
- 
-  }
-
 }
 
 // start in_array
@@ -482,14 +452,11 @@ function address_option_show(action){
 ?>
   for(x in arr_new){
      
-      var list_options = document.getElementById("op_"+x);
-      list_options.value = arr_new[x];
-      list_options.style.color = arr_color[x];
+      $("#op_"+x).val(arr_new[x]);
+      $("#op_"+x).css('color',arr_color[x]);
       $("#error_"+x).html('');
-      if(document.getElementById("l_"+x)){
-        if($("#l_"+x).val() == 'true'){
+      if($("#l_"+x).val() == 'true'){
           $("#r_"+x).html('&nbsp;*<?php echo TEXT_REQUIRED;?>');
-        }
       }
    }
     $("#error_"+country_fee_id_one).html('');
@@ -560,11 +527,9 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
   }
 }
 ?>
-  if(document.getElementById("address_show_list")){
-  var address_show_list = document.getElementById("address_show_list");
 
-  address_show_list.options.length = 0;
-
+  $("#address_show_list").empty();
+  var selected_value = '';
   len = arr_old.length;
   j_num = 0;
   for(i = 0;i < len;i++){
@@ -576,10 +541,8 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
         <?php 
          if(!isset($_POST['address_option']) || $_POST['address_option'] == 'new'){
         ?> 
-        if(document.getElementById("l_"+x)){
         if($("#l_"+x).val() == 'true'){
           $("#r_"+x).html('&nbsp;*<?php echo TEXT_REQUIRED;?>');
-        }
         }
         <?php
         }
@@ -598,11 +561,14 @@ if(isset($_SESSION['customer_id']) && $_SESSION['customer_id'] != ''){
   }else{
     echo 'var address_show_list_one = first_num;'."\n"; 
   }
-        ?>
-      address_show_list.options[address_show_list.options.length]=new Option(arr_str,i,i==address_show_list_one,i==address_show_list_one);
+  ?>
+     if(i==address_show_list_one){
+        selected_value = ' selected';
+      }
+      $("#address_show_list").append( "<option value=\""+i+"\""+selected_value+">"+arr_str+"</option>" ); 
+      selected_value = '';
     }
 
-  }
   }
     //address_option_list(first_num);  
     break;
@@ -615,13 +581,10 @@ function address_option_list(value){
   $("#td_"+country_city_id_one).hide();
 
   //clear
-  var country_fee = document.getElementById(country_fee_id);
-  country_fee.options.length = 0;   
-  var country_area = document.getElementById(country_area_id);
-  country_area.options.length = 0;
-  var country_city = document.getElementById(country_city_id);
-  country_city.options.length = 0;
-
+  $("#"+country_fee_id).empty();
+  $("#"+country_area_id).empty();
+  $("#"+country_city_id).empty();
+  
   var arr_list = new Array();
 <?php
   //根据后台的设置来显示相应的地址列表
@@ -674,23 +637,20 @@ function address_option_list(value){
 ?>
   ii = 0;
   for(x in arr_list[value]){
-   if(document.getElementById("op_"+x)){
-    var list_option = document.getElementById("op_"+x);
-    if('<?php echo $country_fee_id;?>' == 'op_'+x){
+    if(country_fee_id == 'op_'+x){
       check(arr_list[value][x]);
-    }else if('<?php echo $country_area_id;?>' == 'op_'+x){
-      country_check(document.getElementById(country_fee_id).value,arr_list[value][x]);
+    }else if(country_area_id == 'op_'+x){
+      country_check($("#"+country_fee_id).val(),arr_list[value][x]);
      
-    }else if('<?php echo $country_city_id;?>' == 'op_'+x){
-      country_area_check(document.getElementById(country_area_id).value,arr_list[value][x]);
+    }else if(country_city_id == 'op_'+x){
+      country_area_check($("#"+country_area_id).val(),arr_list[value][x]);
     }else{
-      list_option.style.color = '#000';
-      list_option.value = arr_list[value][x];
+      $("#op_"+x).css("color","#000000");
+      $("#op_"+x).val(arr_list[value][x]);
     }
      
     $("#error_"+x).html('');
     ii++; 
-   }
   }
     $("#error_"+country_fee_id_one).html('');
     $("#prompt_"+country_fee_id_one).html('');
@@ -710,29 +670,25 @@ function session_value(){
   }
 ?>
   for(x in session_array){
-   if(document.getElementById("op_"+x)){
-    var list_option = document.getElementById("op_"+x);
     
-    if('<?php echo $country_fee_id;?>' == 'op_'+x){
+    if(country_fee_id == 'op_'+x){
       check(session_array[x]);
-    }else if('<?php echo $country_area_id;?>' == 'op_'+x){
-      country_check(document.getElementById(country_fee_id).value,session_array[x]);
+    }else if(country_area_id == 'op_'+x){
+      country_check($("#"+country_fee_id).val(),session_array[x]);
      
-    }else if('<?php echo $country_city_id;?>' == 'op_'+x){
-      country_area_check(document.getElementById(country_area_id).value,session_array[x]);
+    }else if(country_city_id == 'op_'+x){
+      country_area_check($("#"+country_area_id).val(),session_array[x]);
     }else{
 
-      list_option.style.color = '#000'; 
-      list_option.value = session_array[x];
+      $("#op_"+x).css("color","#000000");
+      $("#op_"+x).val(session_array[x]);
     }
-   }
   }
 }
 <?php
 }
 ?>
 //--></script>
-<script type="text/javascript" src="js/jquery-1.3.2.min.js"></script>
 <script type="text/javascript" src="js/date_time.js"></script>
 <?php
 if($cart->weight > 0){
@@ -749,46 +705,38 @@ if($cart->weight > 0){
     }
 }
 ?>
-<script type="text/javascript">
+<script type="text/javascript"> 
+$(document).ready(function(){
 <?php
 if($cart->weight > 0){
   if(isset($_POST['address_option'])){
     if($_POST['address_option'] == 'old'){
 ?>
-      $(document).ready(function(){
     
         address_option_show('old'); 
-      }); 
 <?php
    }else{
 ?>
-      $(document).ready(function(){
         $("#address_show_id").hide(); 
-      });
 <?php
    }
   }elseif(isset($_SESSION['address_option'])){
     if($_SESSION['address_option'] == 'old'){
 ?>
-      $(document).ready(function(){
         address_option_show('old'); 
         session_value(); 
-      });    
 <?php
     }else{
 ?>
-      $(document).ready(function(){
         $("#address_show_id").hide(); 
         session_value();
-      });
 <?php
     }
 ?>
 <?php
   }else{
 ?>
-    $(document).ready(function(){
-     <?php
+    <?php
      if($address_quest_flag == 0){
      ?>
      address_option_show('old'); 
@@ -801,12 +749,10 @@ if($cart->weight > 0){
     <?php
      }
      ?>
-    });
 <?php
   }
 }
 ?>
-$(document).ready(function(){
 document.onclick=function(e){  
   var shipping_hour = $("input[name='hour']").val();
   var e=e?e:window.event;  
@@ -1367,11 +1313,9 @@ unset($_SESSION['shipping_session_flag']);
         $checked_str_new = 'checked';
   ?>
      <script type="text/javascript">
-     $(document).ready(function(){
 
        address_option_show('new'); 
        session_value();
-     }); 
      </script>
   <?php
       }
