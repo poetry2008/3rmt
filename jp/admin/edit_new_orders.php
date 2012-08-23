@@ -483,10 +483,7 @@ if($save_flag == 0 || $orders_exit_flag == true){
       //} else {
         //$customer_notified = '0';
       //}
-      if($save_flag == 0){
-        $comment_str = is_array($comment_arr) ? $comment_arr['comment'] : $comments_text;
-        tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . $customer_notified . "', '".$comment_str."')");
-      }
+      
       // 同步问答
       //    orders_status_updated_for_question($oID,tep_db_input($status),$_POST['notify_comments'] == 'on', $_POST['qu_type']);
       $order_updated = true;
@@ -818,6 +815,11 @@ if($address_error == false){
 
       // 1.3.1 Update orders_products Table
       $products_delete = false;
+      $is_history = false;
+      $exists_history_raw = tep_db_query("select * from ".TABLE_ORDERS_STATUS_HISTORY." where orders_id = '".tep_db_input($oID)."'");
+      if (tep_db_num_rows($is_history)) {
+        $is_history = true; 
+      }
       foreach ($update_products as $orders_products_id => $products_details) {
         // 1.3.1.1 Update Inventory Quantity
         $op_query = tep_db_query("
@@ -828,36 +830,59 @@ if($address_error == false){
             and orders_products_id='".$orders_products_id."'
             ");
         $order = tep_db_fetch_array($op_query);
-        if ($products_details["qty"] != $order['products_quantity'] ) {
-          $quantity_difference = ($products_details["qty"] - $order['products_quantity']);
+        if (!$is_history) {
+          $tmp_quantity = $order['products_quantity']; 
           $p = tep_db_fetch_array(tep_db_query("select * from products where products_id='".$order['products_id']."'"));
           $pr_quantity = $p['products_real_quantity'];
           $pv_quantity = $p['products_virtual_quantity'];
-          // 增加库存
-          if($quantity_difference < 0){
-            if ($_POST['update_products_real_quantity'][$orders_products_id]) {
-              // 增加实数
-              $pr_quantity = $pr_quantity - $quantity_difference;
-            } else {
-              // 增加架空
-              $pv_quantity = $pv_quantity - $quantity_difference;
-            }
-            // 减少库存
+            
+          if ($pr_quantity - $tmp_quantity < 0) {
+            $pr_quantity = 0;
+            $pv_quantity += ($pr_quantity - $tmp_quantity);
           } else {
-            // 实数卖空
-            if ($pr_quantity - $quantity_difference < 0) {
-              $pr_quantity = 0;
-              $pv_quantity += ($pr_quantity - $quantity_difference);
-            } else {
-              $pr_quantity -= $quantity_difference;
-            }
+            $pr_quantity -= $tmp_quantity;
+          } 
+          if ($save_flag == '0') {
+            if(!tep_is_oroshi($check_status['customers_id']))
+              tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = ".$pr_quantity.", products_virtual_quantity = ".$pv_quantity.", products_ordered = products_ordered + " . $tmp_quantity . " where products_id = '" . (int)$order['products_id'] . "'");
+            tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = 0 where products_real_quantity < 0 and products_id = '" . (int)$order['products_id'] . "'");
+            tep_db_query("update " . TABLE_PRODUCTS . " set products_virtual_quantity = 0 where products_virtual_quantity < 0 and products_id = '" . (int)$order['products_id'] . "'");
           }
-          // 如果是业者，不更新
-          if(!tep_is_oroshi($check_status['customers_id']))
-            tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = ".$pr_quantity.", products_virtual_quantity = ".$pv_quantity.", products_ordered = products_ordered + " . $quantity_difference . " where products_id = '" . (int)$order['products_id'] . "'");
-          tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = 0 where products_real_quantity < 0 and products_id = '" . (int)$order['products_id'] . "'");
-          tep_db_query("update " . TABLE_PRODUCTS . " set products_virtual_quantity = 0 where products_virtual_quantity < 0 and products_id = '" . (int)$order['products_id'] . "'");
+        } else {
+          if ($products_details["qty"] != $order['products_quantity'] ) {
+            $quantity_difference = ($products_details["qty"] - $order['products_quantity']);
+            $p = tep_db_fetch_array(tep_db_query("select * from products where products_id='".$order['products_id']."'"));
+            $pr_quantity = $p['products_real_quantity'];
+            $pv_quantity = $p['products_virtual_quantity'];
+            // 增加库存
+            if($quantity_difference < 0){
+              if ($_POST['update_products_real_quantity'][$orders_products_id]) {
+                // 增加实数
+                $pr_quantity = $pr_quantity - $quantity_difference;
+              } else {
+                // 增加架空
+                $pv_quantity = $pv_quantity - $quantity_difference;
+              }
+              // 减少库存
+            } else {
+              // 实数卖空
+              if ($pr_quantity - $quantity_difference < 0) {
+                $pr_quantity = 0;
+                $pv_quantity += ($pr_quantity - $quantity_difference);
+              } else {
+                $pr_quantity -= $quantity_difference;
+              }
+            }
+            // 如果是业者，不更新
+            if ($save_flag == '0') {
+              if(!tep_is_oroshi($check_status['customers_id']))
+                tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = ".$pr_quantity.", products_virtual_quantity = ".$pv_quantity.", products_ordered = products_ordered + " . $quantity_difference . " where products_id = '" . (int)$order['products_id'] . "'");
+              tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = 0 where products_real_quantity < 0 and products_id = '" . (int)$order['products_id'] . "'");
+              tep_db_query("update " . TABLE_PRODUCTS . " set products_virtual_quantity = 0 where products_virtual_quantity < 0 and products_id = '" . (int)$order['products_id'] . "'");
+            } 
+          }
         }
+        
 
         if($products_details["qty"] > 0) { // a.) quantity found --> add to list & sum    
           $Query = "update " . TABLE_ORDERS_PRODUCTS . " set
@@ -892,6 +917,12 @@ if($address_error == false){
         }
       }
 
+      if ($check_status['orders_status'] != $status || $comments != '' || $orders_exit_flag == false) {
+        if($save_flag == 0){
+          $comment_str = is_array($comment_arr) ? $comment_arr['comment'] : $comments_text;
+          tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . $customer_notified . "', '".$comment_str."')");
+        }
+      } 
       if($save_flag == 0){
         $orders_type_str = tep_get_order_type_info($oID);
         tep_db_query("update `".TABLE_ORDERS."` set `orders_type` = '".$orders_type_str."' where orders_id = '".tep_db_input($oID)."'"); 
@@ -1532,8 +1563,11 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
        unset($_SESSION['torihiki_date_flag']);
        unset($_SESSION['torihiki_date_end_flag']);
 }
-
-        tep_redirect(tep_href_link("edit_new_orders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
+        if ($save_flag == 0) {
+          tep_redirect(tep_href_link("orders.php", 'keywords='.$oID.'&search_type=orders_id'));
+        } else {
+          tep_redirect(tep_href_link("edit_new_orders.php", tep_get_all_get_params(array('action')) . 'action=edit'));
+        }
         
         break;
 

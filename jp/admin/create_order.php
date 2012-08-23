@@ -103,6 +103,7 @@ case 'add_product':
 
           // 2.2.1 Update inventory Quantity
           $p = tep_db_fetch_array(tep_db_query("select * from products where products_id='".$add_product_products_id."'"));
+          /* 
           if ((int)$add_product_quantity > $p['products_real_quantity']) {
             // 买取商品大于实数
             tep_db_perform('products',array(
@@ -128,6 +129,7 @@ case 'add_product':
           //tep_db_query("update " . TABLE_PRODUCTS . " set products_quantity = 0 where products_quantity < 0 and products_id = '" . $add_product_products_id . "'");
           tep_db_query("update " . TABLE_PRODUCTS . " set products_real_quantity = 0 where products_real_quantity < 0 and products_id = '" . $add_product_products_id . "'");
           tep_db_query("update " . TABLE_PRODUCTS . " set products_virtual_quantity = 0 where products_virtual_quantity < 0 and products_id = '" . $add_product_products_id . "'");
+          */ 
             foreach($_POST as $op_i_key => $op_i_value) {
               $op_pos = substr($op_i_key, 0, 3);
               if ($op_pos == 'op_') {
