@@ -112,8 +112,8 @@
   if ($valid_product == false) {
 ?>
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-<!-- header_eof //-->
-<!-- body //-->
+<!-- header_eof -->
+<!-- body -->
 <div id="main">
   <div class="yui3-u" id="layout">
              <div id="current" ><?php echo $breadcrumb->trail(' <img  src="images/point.gif"> '); ?></div>
@@ -302,8 +302,8 @@ if (!isset($_GET['from'])) $_GET['from'] = NULL; //del notice
       }
 ?>
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-<!-- header_eof //-->
-<!-- body //-->
+<!-- header_eof -->
+<!-- body -->
 <div id="main">
   <div class="yui3-u" id="layout">
   <div id="current" ><?php echo $breadcrumb->trail(' <img  src="images/point.gif"> '); ?></div>
@@ -452,7 +452,7 @@ if (!isset($_GET['quantity'])) $_GET['quantity'] = NULL; //del notice
             <?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $product_info['products_id']) . '">' .  tep_image_button('button_back.gif', IMAGE_BUTTON_BACK, 'onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_back_hover.gif\'" onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_back.gif\'"') . '</a>'; ?>
           </td>
           <td align="right">
-            <?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE, 'onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_continue_02_hover.gif\'" onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_continue_02.gif\'"'); ?>
+            <?php echo tep_image_submit('button_continue_02_hover.gif', IMAGE_BUTTON_CONTINUE); ?>
           </td>
         </tr>
       </table>
@@ -463,15 +463,15 @@ if (!isset($_GET['quantity'])) $_GET['quantity'] = NULL; //del notice
 ?>
     </div>
     </div>
-    <!-- body_text_eof //-->
+    <!-- body_text_eof -->
   
   </div>
   <?php include('includes/float-box.php');?>
 </div>
-<!-- body_eof //-->
-<!-- footer //-->
+<!-- body_eof -->
+<!-- footer -->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-<!-- footer_eof //-->
+<!-- footer_eof -->
 
 </div>
 </body>
