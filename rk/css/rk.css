@@ -732,13 +732,18 @@ product listing
 }
 .product_listing_link {
 	display:block;
-	line-height:25px;
-	height:25px;
+	height:17px;
+	*height:25px;
+	*padding-top:8px;
+	padding-top:8px;
 	background: url(../images/design/box/button_large.gif);
 }
 .product_listing_link:hover {
 	display:block;
-	height:25px;
+	height:17px;
+	*height:25px;
+	*padding-top:8px;
+	padding-top:8px;
 	background: url(../images/design/box/button_large_hover.gif) !important;
 }
 .product_listing_sort_1, .product_listing_sort_2 {

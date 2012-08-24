@@ -740,14 +740,19 @@ product listing
 }
 .product_listing_link{
 	display:block;
-	line-height:25px;
-	height:25px;
+	height:19px;
+	*height:25px;
+	*padding-top:6px;
+	padding-top:6px;
 	background: url(../images/design/box/button_large.gif);
 	color:#000;
 }
 .product_listing_link:hover{
 	display:block;
-	height:25px;
+	height:19px;
+	*height:25px;
+	*padding-top:6px;
+	padding-top:6px;
 	color:#fff;
 	background: url(../images/design/box/button_large_hover.gif) !important;
 }
@@ -2220,5 +2225,5 @@ line-height:16px;
 .clear_both{
 	clear:both;
 }
-.sort img{ margin:-5px 0 0 5px;}
+.sort img{ margin:-3px 0 0 5px;}
 .sort td{ width:25%;}
