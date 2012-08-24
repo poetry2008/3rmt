@@ -1484,6 +1484,10 @@ if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) 
         $work_start = $work_start_old;
         $work_end = $work_end_old;
     }
+    if($now_time_date == $post_date){
+        $work_start = $work_start_exit;
+        $work_end = $work_end_exit; 
+    }
     $hour_show_flag = false;
     $hour_show_array = explode('||',$work_start);
     if(!in_array($post_hour,$hour_show_array)){
