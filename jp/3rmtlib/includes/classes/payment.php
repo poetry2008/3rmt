@@ -198,7 +198,7 @@ class payment {
         '  var payment_value = null;' . "\n" .
         '  var gold_max = ' . $num . ';' . "\n" .
         '  var gold_value = null;' . "\n" .
-        '  gold_value = document.checkout_payment.point.value;' . "\n" .
+        '  if ("point" in document.checkout_payment) {gold_value = document.checkout_payment.point.value}' . "\n" .
         '  if (document.checkout_payment.payment.length) {' . "\n" .
         '    for (var i=0; i<document.checkout_payment.payment.length; i++) {' . "\n" .
         '      if (document.checkout_payment.payment[i].checked) {' . "\n" .

@@ -1413,6 +1413,15 @@ unset($_SESSION['shipping_session_flag']);
      $j_shipping += 86400;
      $j++;
      if(date('Y-m-d',$j_shipping) == $now_time_date && $min_time_end_str != ''){
+       if(isset($_POST['date']) && $_POST['date'] != ""){
+         $selected_str = date('Y-m-d',$j_shipping) == $_POST['date'] ? 'selected' : ''; 
+       }elseif(isset($_SESSION['date']) && $_SESSION['date'] != ''){
+         $selected_str = date('Y-m-d',$j_shipping) == $_SESSION['date'] ? 'selected' : '';
+       }
+       if(date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == $_SESSION['date']){
+
+         $date_session_flag = true;
+       }
 
        echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'" '. $selected_str .'>'.str_replace($oarr, $newarr, date("Y".DATE_YEAR_TEXT."m".DATE_MONTH_TEXT."d".DATE_DAY_TEXT."（l）", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
        break;
@@ -1427,9 +1436,8 @@ unset($_SESSION['shipping_session_flag']);
   if(isset($date_error) && $date_error != '') { //del notice
 ?>
   <tr id="date_error">
-    <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-  <td class="main">&nbsp;</td>
-    <td class="main"><?php echo $date_error; ?></td>
+    <td class="main" colspan="2" width="30%">&nbsp;</td>
+    <td class="main" width="70%"><?php echo $date_error; ?></td>
   </tr>
 <?php
   } 
@@ -1448,7 +1456,7 @@ unset($_SESSION['shipping_session_flag']);
  </td>
  </tr>
 </table>
-<table class="box_des_size">
+<table class="box_des_size" width="100%">
 <?php
 if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) && $_SESSION['date'] != '' && $date_session_flag == true)){
 
@@ -1480,9 +1488,8 @@ if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) 
   if(isset($time_error) && $time_error != '') {
 ?>
   <tr id="time_error">
-    <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-  <td class="main" width="153">&nbsp;</td>
-    <td class="main"><?php echo $time_error; ?></td>
+    <td class="main" width="30%">&nbsp;</td>
+    <td class="main" width="70%"><?php echo $time_error; ?></td>
   </tr>
 <?php
   }

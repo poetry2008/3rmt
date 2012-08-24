@@ -1690,3 +1690,6 @@ TEXTAREA {
 	margin-top:-8px;
 }
 .img_clear input{ padding-top:5px;}
+#shipping_list_show_min{
+  width:329px;
+}
