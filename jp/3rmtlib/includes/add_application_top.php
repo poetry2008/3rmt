@@ -917,11 +917,7 @@ if(!preg_match ("#".HTTP_SERVER."#", $_SERVER["HTTP_REFERER"]) && !preg_match ("
   define('TABLE_COUNTRY_CITY','country_city');
   define('TABLE_ADDRESS_ORDERS','address_orders');
   define('TABLE_ADDRESS_HISTORY','address_history');
- 
-  $checkout_is_cart_pos = strpos($_SERVER['PHP_SELF'], FILENAME_SHOPPING_CART);
-  if ($checkout_is_cart_pos !== false) { 
-    $cart->clean_checkout_attributes(); 
-  } 
+  
   if(!preg_match('/^\d+$/',trim($_GET['page']))&&trim($_GET['page'])){
     forward404();
   }
