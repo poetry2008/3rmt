@@ -117,8 +117,7 @@ if(array_key_exists($fixed_option_list_array[3],$ad_array)){
     <div class="checkout-bottom"> 
     <a href="javascript:void(0);" onClick="confirm_session_error(<?php echo $ad_num;?>,'<?php echo $ad_post;?>');">
 <?php echo
-  tep_image_button('button_confirm_order.gif',
-      IMAGE_BUTTON_CONFIRM_ORDER,' onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_confirm_order.gif\'" onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_confirm_order_hover.gif\'"');?></a></div>  
+  tep_image_button('button_confirm_order_hover.gif',IMAGE_BUTTON_CONFIRM_ORDER);?></a></div>  
   </div>
   <div class="checkout-conent">
 <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
@@ -682,7 +681,7 @@ echo '<a href="' .  tep_href_link(FILENAME_CHECKOUT_PAYMENT, '', 'SSL') . '"><sp
     echo $payment_modules->process_button($payment);
   }
   echo '<a href="javascript:void(0);" onclick="confirm_session_error('.$ad_num.',\''.$ad_post.'\');">';
-  echo tep_image_button('button_confirm_order.gif', IMAGE_BUTTON_CONFIRM_ORDER,' onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_confirm_order.gif\'" onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_confirm_order_hover.gif\'"') . "</a>\n";
+  echo tep_image_button('button_confirm_order_hover.gif', IMAGE_BUTTON_CONFIRM_ORDER) . "</a>\n";
 ?></div></div></div>
 </form>
 </div>

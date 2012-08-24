@@ -84,7 +84,7 @@ unset($_SESSION['shipping_session_flag']);
                   <div class="checkout-title"><?php echo CHECKOUT_OPTION_BUTTON_TEXT;?></div> 
                   <div class="checkout-bottom" align="right">
                   <a href="javascript:void(0);" onclick="document.option_form.submit();">
-                  <?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE, 'onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_continue_02_hover.gif\'" onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_continue_02.gif\'"'); ?>
+                  <?php echo tep_image_submit('button_continue_02_hover.gif', IMAGE_BUTTON_CONTINUE); ?>
                   </a> 
                   </div> 
               </div>
@@ -121,7 +121,7 @@ unset($_SESSION['shipping_session_flag']);
                   <div class="checkout-title"><?php echo CHECKOUT_OPTION_BUTTON_TEXT;?></div> 
                   <div class="checkout-bottom" align="right">
                   <a href="javascript:void(0);" onclick="document.option_form.submit();">
-                  <?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE, 'onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_continue_02_hover.gif\'" onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_continue_02.gif\'"'); ?>
+                  <?php echo tep_image_submit('button_continue_02_hover.gif', IMAGE_BUTTON_CONTINUE); ?>
                   </a> 
                   </div> 
               </div>

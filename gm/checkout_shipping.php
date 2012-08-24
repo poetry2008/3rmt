@@ -926,7 +926,7 @@ unset($_SESSION['shipping_session_flag']);
   <div class="checkout-title"><p><?php echo '<b>' .
   TITLE_CONTINUE_CHECKOUT_PROCEDURE . '</b></p><p>'. TEXT_CONTINUE_CHECKOUT_PROCEDURE; ?></p></div>
   <div class="checkout-bottom"><?php echo
-  tep_image_submit('button_continue_02.gif',IMAGE_BUTTON_CONTINUE,' onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_continue_02.gif\'" onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_continue_02_hover.gif\'"'); ?></div>  
+  tep_image_submit('button_continue_02_hover.gif',IMAGE_BUTTON_CONTINUE); ?></div>  
   </div>
   <div class="checkout-conent">   
 <?php
@@ -1485,7 +1485,7 @@ if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) 
      <p><?php echo '<b>' . TITLE_CONTINUE_CHECKOUT_PROCEDURE . '</b></p>'. TEXT_CONTINUE_CHECKOUT_PROCEDURE; ?></p>
   </div>
   <div class="checkout-bottom"><?php echo
-  tep_image_submit('button_continue_02.gif',IMAGE_BUTTON_CONTINUE,' onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_continue_02.gif\'" onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_continue_02_hover.gif\'"'); ?></div> 
+  tep_image_submit('button_continue_02_hover.gif',IMAGE_BUTTON_CONTINUE); ?></div> 
   </div> 
      
 </form>

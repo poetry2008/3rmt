@@ -139,8 +139,7 @@ require_once DIR_WS_INCLUDES . 'header.php';
 <div id="hm-checkout-warp">
       <div class="checkout-title"><p><?php echo TITLE_CONTINUE_CHECKOUT_PROCEDURE . '</p><p>' . TEXT_CONTINUE_CHECKOUT_PROCEDURE;  ?></p></div>
       <div class="checkout-bottom"><?php echo
-      tep_image_submit('button_continue_02.gif',
-          IMAGE_BUTTON_CONTINUE,'onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_continue_02.gif\'"  onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_continue_02_hover.gif\'"'); ?></div>
+      tep_image_submit('button_continue_02_hover.gif',IMAGE_BUTTON_CONTINUE); ?></div>
 </div>
 	  <div class="checkout-conent">
         <h3><b><?php echo TABLE_HEADING_PAYMENT_METHOD;?></b></h3>  
@@ -243,8 +242,7 @@ if(true) {
 ?>
 <div id="hm-checkout-warp">
 <div class="checkout-title"><p><?php echo TITLE_CONTINUE_CHECKOUT_PROCEDURE . '</p><p>' . TEXT_CONTINUE_CHECKOUT_PROCEDURE;  ?></p></div>
-<div class="checkout-bottom"><?php echo tep_image_submit('button_continue_02.gif',
-    IMAGE_BUTTON_CONTINUE,'onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_continue_02.gif\'"  onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_continue_02_hover.gif\'"'); ?></div>
+<div class="checkout-bottom"><?php echo tep_image_submit('button_continue_02_hover.gif',IMAGE_BUTTON_CONTINUE); ?></div>
 </div>
 </div>
 </div>
