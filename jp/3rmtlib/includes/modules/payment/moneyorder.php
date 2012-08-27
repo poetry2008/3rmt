@@ -250,5 +250,9 @@ class moneyorder extends basePayment implements paymentInterface {
   function get_email_configuration($site_id,$oid=0){
     return get_configuration_by_site_id('C_BANK',$site_id);
   }
+  
+  function admin_get_customer_point($point_value,$customer_id){
+    tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " . $point_value .  " where customers_id = '" .$customer_id."' and customers_guest_chk = '0' ");
+  } 
 }
 ?>

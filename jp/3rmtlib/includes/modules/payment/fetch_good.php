@@ -208,5 +208,9 @@ function getMailString($option=''){
 
       return 0;
     }
+    
+    function admin_get_customer_point($point_value,$customer_id){
+      tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " . $point_value .  " where customers_id = '" .$customer_id."' and customers_guest_chk = '0' ");
+    } 
 }
 ?>

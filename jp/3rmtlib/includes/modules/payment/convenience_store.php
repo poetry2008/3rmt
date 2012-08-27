@@ -499,5 +499,8 @@ class convenience_store extends basePayment  implements paymentInterface  {
       $con_email[1] = isset($_POST['con_email']) ? $_POST['con_email'] : $con_email[1];
       echo 'document.getElementsByName("con_email")[0].value = "'.$con_email[1].'";'."\n";
     }
+    function admin_get_customer_point($point_value,$customer_id){
+      tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " . $point_value .  " where customers_id = '" .$customer_id."' and customers_guest_chk = '0' ");
+    } 
   }
   ?>
