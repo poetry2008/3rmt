@@ -784,38 +784,49 @@ h3.game_list a:hover{
 product listing
 --------------------------- */
 .product_listing_link01{
-	background: url(../images/design/box/product_listing_sort_02.gif);
+	background: url(../images/design/box/button_large_hover
+.gif);
 }
 .product_listing_link02{
-	background: url(../images/design/box/product_listing_sort_01.gif);
+	background: url(../images/design/box/button_large.gif);
 }
 .product_listing_link{
 	display:block;
-	line-height:25px;
-	height:25px;
-	background: url(../images/design/box/product_listing_sort_01.gif);
+	height:17px;
+	*height:25px;
+	*padding-top:8px;
+	padding-top:8px;
+	background: url(../images/design/box/button_large.gif) no-repeat;
 	color:#000;
 	font-size:12px;
 }
 .product_listing_link:hover{
 	display:block;
-	height:25px;
+	height:17px;
+	*height:25px;
+	*padding-top:8px;
+	padding-top:8px;
 	color:#fff;
-	background: url(../images/design/box/product_listing_sort_02.gif) !important;
+	background: url(../images/design/box/button_large_hover.gif) no-repeat!important;
 }
 .product_listing_link_01 {
-    background: url(../images/design/box/product_listing_sort_01.gif) repeat scroll 0 0 transparent;
+    background: url(../images/design/box/button_large.gif) repeat scroll 0 0 transparent;
     color: #ffffff;
     display: block;
     font-size: 12px;
-    height: 25px;
-    line-height: 25px;
+	height:17px;
+	*height:25px;
+	*padding-top:8px;
+	padding-top:8px;
 }
 .product_listing_link_01:hover{
 	display:block;
-	height:25px;
+	height:17px;
+	*height:25px;
+	*padding-top:8px;
+	padding-top:8px;
 	color:#000;
-	background: url(../images/design/box/product_listing_sort_01.gif) !important;
+	background: url(../images/design/box/button_large_hover.gif) !important;
 }
 
 .product_listing_sort_1, .product_listing_sort_2{
@@ -823,10 +834,11 @@ product listing
 	line-height: 1.5;
 }
 .product_listing_sort_1{
-	background: url(../images/design/box/product_listing_sort_01.gif);
+	background: url(../images/design/box/button_large.gif);
 }
 .product_listing_sort_2{
-	background: url(../images/design/box/product_listing_sort_02.gif);
+	background: url(../images/design/box/button_large_hover
+.gif);
 }
 .product_listing_content{
 	width: 680px;

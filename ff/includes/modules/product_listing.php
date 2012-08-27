@@ -5,33 +5,32 @@
 
   require(DIR_WS_MODULES . 'sort_products.php');
   require(DIR_WS_LANGUAGES . $language . '/product_listing.php');
-  
   $sort_default_str = 'a';
-  $sort_name_str = 'a';
-  $sort_price_str = 'a';
-  $sort_best_str = 'a';
-  $tmp_sort_str = substr($_COOKIE['sort'], 0, -1); 
-  if ($tmp_sort_str == '4') {
-   $sort_name_str = $sort_type == 'd' ? 'd':'a';  
-  } else if ($tmp_sort_str == '5') {
-   $sort_price_str = $sort_type == 'd' ? 'd':'a';  
-  } else if ($tmp_sort_str == '9') {
-   $sort_best_str = $sort_type == 'd' ? 'd':'a';  
-  } else {
-if (empty($_COOKIE['sort'])) {
-      $sort_default_str = 'd';
-    } else {
-      $sort_default_str = $sort_type == 'd' ? 'd':'a';  
-    }
-  }
+  $sort_name_str = 'a'; 
+  $sort_price_str = 'a'; 
+$sort_best_str = 'a';
+$tmp_sort_str = substr($_COOKIE['sort'], 0, -1);
+if ($tmp_sort_str == '4') {
+	$sort_name_str = $sort_type == 'd' ? 'd':'a';  
+} else if ($tmp_sort_str == '5') {
+	$sort_price_str = $sort_type == 'd' ? 'd':'a';  
+} else if ($tmp_sort_str == '9') {   
+	  $sort_best_str = $sort_type == 'd' ? 'd':'a';
+	      } else {                                 
+		      if (empty($_COOKIE['sort'])) {
+			      $sort_default_str = 'd';
+		      } else {
+			      $sort_default_str = $sort_type == 'd' ? 'd':'a';
+		      }
+			       }                    
 ?>
 <!--select searach -->
 <table width="100%"  border="0" cellpadding="0" cellspacing="1" bgcolor="#dddddd" class="sort">
   <tr>
-   <td align="center"><a class="product_listing_link" <?php echo ($_COOKIE['sort'] == '100a' or !isset($_COOKIE['sort']) or $_COOKIE['sort'] == '100d') ? 'style="background: url(images/design/box/product_listing_sort_02.gif)"' : 'style="background: url(images/design/box/product_listing_sort_01.gif)"' ; ?> href="javascript:void(0)" onclick="change_sort_type('100<?php echo $sort_default_str?>');"><?php echo PRE_SORT_DEFAULT?><img class="middle" src="images/design/box/sort<?php if(empty($_COOKIE['sort'])){ echo $sort_default_str=='d' ? '_link' : '_hover';} else {if($tmp_sort_str=='100'){echo $sort_default_str=='d' ? '_link' : '_hover';}else{echo  '_link';}}?>.png" hspace="3" alt=""></a></td>
-   <td align="center"><a class="product_listing_link" <?php echo ($_COOKIE['sort'] == '4a' or $_COOKIE['sort'] == '4d' ) ? 'style="background: url(images/design/box/product_listing_sort_02.gif)"' : 'style="background: url(images/design/box/product_listing_sort_01.gif)"' ; ?> href="javascript:void(0)" onclick="change_sort_type('4<?php echo $sort_name_str ?>');"><?php echo PRE_SORT_A?><img class="middle" src="images/design/box/sort<?php if($tmp_sort_str=='4'){echo $sort_name_str=='d'  ? '_link' : '_hover';}else{echo '_link';}?>.png" hspace="3" alt=""></a></td>
-   <td align="center"><a class="product_listing_link" <?php echo ($_COOKIE['sort'] == '5a' or $_COOKIE['sort'] == '5d') ? 'style="background: url(images/design/box/product_listing_sort_02.gif)"' : 'style="background: url(images/design/box/product_listing_sort_01.gif)"' ; ?> href="javascript:void(0)" onclick="change_sort_type('5<?php echo $sort_price_str?>');"><?php echo PRE_SORT_PRICE?><img class="middle" src="images/design/box/sort<?php if($tmp_sort_str=='5'){echo $sort_price_str=='d' ? '_link' : '_hover';}else{echo '_link';}?>.png" hspace="3" alt=""></a></td>
-   <td align="center"><a class="product_listing_link" <?php echo ($_COOKIE['sort'] == '9d' or $_COOKIE['sort'] == '9a') ? 'style="background: url(images/design/box/product_listing_sort_02.gif)"' : 'style="background: url(images/design/box/product_listing_sort_01.gif)"' ; ?> href="javascript:void(0)" onclick="change_sort_type('9<?php echo $sort_best_str?>');"><?php echo PRE_SORT_PEOPLE?><img class="middle" src="images/design/box/sort<?php if($tmp_sort_str=='9'){echo $sort_best_str=='d' ? '_link' : '_hover';}else{echo '_link';}?>.png" hspace="3" alt=""></a></td>
+   <td align="center"><a class="product_listing_link" <?php echo ($_COOKIE['sort'] == '100a' or !isset($_COOKIE['sort']) or $_COOKIE['sort'] == '100d') ? 'style="background: url(images/design/box/button_large_hover.gif)"' : 'style="background: url(images/design/box/button_large.gif)"' ; ?> href="javascript:void(0)" onclick="change_sort_type('100<?php echo $sort_default_str?>');"><?php echo PRE_SORT_DEFAULT?><img class="middle" src="images/design/box/triangle<?php if(empty($_COOKIE['sort'])){ echo $sort_default_str=='d' ? '_upward' : '_downward';} else {if($tmp_sort_str=='100'){echo $sort_default_str=='d' ? '_upward' : '_downward';}else{echo  '_upward';}}?>.png" hspace="3" alt=""></a></td>
+   <td align="center"><a class="product_listing_link" <?php echo ($_COOKIE['sort'] == '4a' or $_COOKIE['sort'] == '4d' ) ? 'style="background: url(images/design/box/button_large_hover.gif)"' : 'style="background: url(images/design/box/button_large.gif)"' ; ?> href="javascript:void(0)" onclick="change_sort_type('4<?php echo $sort_name_str ?>');"><?php echo PRE_SORT_A?><img class="middle" src="images/design/box/triangle<?php if($tmp_sort_str=='4'){echo $sort_name_str=='d'  ? '_upward' : '_downward';}else{echo '_upward';}?>.png" hspace="3" alt=""></a></td>
+   <td align="center"><a class="product_listing_link" <?php echo ($_COOKIE['sort'] == '5a' or $_COOKIE['sort'] == '5d') ? 'style="background: url(images/design/box/button_large_hover.gif)"' : 'style="background: url(images/design/box/button_large.gif)"' ; ?> href="javascript:void(0)" onclick="change_sort_type('5<?php echo $sort_price_str?>');"><?php echo PRE_SORT_PRICE?><img class="middle" src="images/design/box/triangle<?php if($tmp_sort_str=='5'){echo $sort_price_str=='d' ? '_upward' : '_downward';}else{echo '_upward';}?>.png" hspace="3" alt=""></a></td>
+   <td align="center"><a class="product_listing_link" <?php echo ($_COOKIE['sort'] == '9d' or $_COOKIE['sort'] == '9a') ? 'style="background: url(images/design/box/button_large_hover.gif)"' : 'style="background: url(images/design/box/button_large.gif)"' ; ?> href="javascript:void(0)" onclick="change_sort_type('9<?php echo $sort_best_str?>');"><?php echo PRE_SORT_PEOPLE?><img class="middle" src="images/design/box/triangle<?php if($tmp_sort_str=='9'){echo $sort_best_str=='d' ? '_upward' : '_downward';}else{echo '_upward';}?>.png" hspace="3" alt=""></a></td>
   </tr>
 </table>
 <?php
@@ -98,7 +97,7 @@ if (empty($_COOKIE['sort'])) {
             <?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $listing['products_id']) . '">'.tep_image(DIR_WS_IMAGES . 'products/' . $listing['products_image'], $listing['products_name'], SMALL_IMAGE_WIDTH, SMALL_IMAGE_HEIGHT,'class="image_border"').'</a>' ; ?>
           </td>
           <td class="main" style="padding-left:5px; ">
-            <h3>
+           <h3>
               <img class="middle" src="images/design/box/arrow_2.gif" width="5" height="5" hspace="5" border="0" alt="">
               <?php echo '<a href="' . tep_href_link(FILENAME_PRODUCT_INFO, 'products_id=' . $listing['products_id']) . '">'.$products_name.$ten.'</a>'; ?>
             </h3>

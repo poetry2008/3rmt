@@ -66,7 +66,7 @@
             </tr>
           </table>
           <div id="hm-checkout-warp" align="right">
-            <?php echo '<a href="' .tep_href_link(FILENAME_DEFAULT). '">' .  tep_image_button('button_continue_02.gif', IMAGE_BUTTON_CONTINUE, 'onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_continue_02_hover.gif\'" onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_continue_02.gif\'"') . '</a>'; ?>
+            <?php echo '<a href="' .tep_href_link(FILENAME_DEFAULT). '">' .  tep_image_button('button_continue_02_hover.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?>
           </div>
           <div class="checkout-conent">
           <table border="0" width="100%" cellspacing="0" cellpadding="0" style="font-size:14px;">
@@ -85,7 +85,7 @@
         </table>
         </div>
         <div id="hm-checkout-warp" align="right">
-            <?php echo '<a href="' .tep_href_link(FILENAME_DEFAULT). '">' .  tep_image_button('button_continue_02.gif', IMAGE_BUTTON_CONTINUE, 'onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_continue_02_hover.gif\'" onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_continue_02.gif\'"') . '</a>'; ?>
+            <?php echo '<a href="' .tep_href_link(FILENAME_DEFAULT). '">' .  tep_image_button('button_continue_02_hover.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?>
         </div>
         </div>
        <p class="pageBottom"></p>

@@ -732,33 +732,39 @@ Game List
 product listing
 --------------------------- */
 .product_listing_link01{
-	background: url(../images/design/box/product_listing_sort_02.gif);
+	background: url(../images/design/box/button_large_hover
+.gif);
 }
 .product_listing_link02{
-	background: url(../images/design/box/product_listing_sort_01.gif);
+	background: url(../images/design/box/button_large.gif);
 }
 .product_listing_link{
 	display:block;
-	line-height:25px;
-	height:25px;
-	background: url(../images/design/box/product_listing_sort_01.gif);
+	height:19px;
+	*height:25px;
+	*padding-top:6px;
+	padding-top:6px;
+	background: url(../images/design/box/button_large.gif);
 	color:#000;
 }
 .product_listing_link:hover{
 	display:block;
-	height:25px;
+	height:19px;
+	*height:25px;
+	*padding-top:6px;
+	padding-top:6px;
 	color:#fff;
-	background: url(../images/design/box/product_listing_sort_02.gif) !important;
+	background: url(../images/design/box/button_large_hover.gif) !important;
 }
 .product_listing_sort_1, .product_listing_sort_2{
 	font-size: 11px;
 	line-height: 1.5;
 }
 .product_listing_sort_1{
-	background: url(../images/design/box/product_listing_sort_01.gif);
+	background: url(../images/design/box/button_large.gif);
 }
 .product_listing_sort_2{
-	background: url(../images/design/box/product_listing_sort_02.gif);
+	background: url(../images/design/box/button_large_hover.gif);
 }
 .product_listing_content{
 	width: 650px;
@@ -2219,5 +2225,5 @@ line-height:16px;
 .clear_both{
 	clear:both;
 }
-.sort img{ margin:-5px 0 0 5px;}
+.sort img{ margin:-3px 0 0 5px;}
 .sort td{ width:25%;}

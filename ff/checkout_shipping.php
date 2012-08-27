@@ -1416,18 +1416,6 @@ function check_point(point_num) {
                   <td>
           
 <table width="100%" border="0" cellspacing="0" cellpadding="2">
-<?php
-if (!isset($torihikihouhou_error)) $torihikihouhou_error = NULL ; //del notice
-  if($torihikihouhou_error != '') {
-?>
-  <tr>
-   <td width="10"><?php echo tep_draw_separator('pixel_trans.gif', '10', '1'); ?></td> 
-  <td class="main">&nbsp;</td>
-    <td class="main"><?php echo $torihikihouhou_error; ?></td>
-  </tr>
-<?php
-  }
-?>
   <tr>
   <td class="main" width="30%"><?php echo TEXT_EXPECT_TRADE_DATE; ?></td>
     <td class="main" width="70%">
@@ -1471,6 +1459,15 @@ if (!isset($torihikihouhou_error)) $torihikihouhou_error = NULL ; //del notice
      $j_shipping += 86400;
      $j++;
      if(date('Y-m-d',$j_shipping) == $now_time_date && $min_time_end_str != ''){
+       if(isset($_POST['date']) && $_POST['date'] != ""){
+         $selected_str = date('Y-m-d',$j_shipping) == $_POST['date'] ? 'selected' : ''; 
+       }elseif(isset($_SESSION['date']) && $_SESSION['date'] != ''){
+         $selected_str = date('Y-m-d',$j_shipping) == $_SESSION['date'] ? 'selected' : '';
+       }
+       if(date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == $_SESSION['date']){
+
+         $date_session_flag = true;
+       }
 
        echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'" '. $selected_str .'>'.str_replace($oarr, $newarr, date("Y".DATE_YEAR_TEXT."m".DATE_MONTH_TEXT."d".DATE_DAY_TEXT."（l）", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
        break;
@@ -1481,15 +1478,14 @@ if (!isset($torihikihouhou_error)) $torihikihouhou_error = NULL ; //del notice
   </td>
   </tr>
 <?php
-if (!isset($date_error)) $date_error= NULL ; //del notice
-  if($date_error != '') {
+  if(isset($date_error) && $date_error != '') { //del notice
 ?>
   <tr id="date_error">
   <td class="main">&nbsp;</td>
     <td class="main"><?php echo $date_error; ?></td>
   </tr>
 <?php
-  }
+  } 
 ?>
   <tr id="shipping_list" style="display:none;">
   <td class="main"><?php echo TEXT_EXPECT_TRADE_TIME; ?></td>
@@ -1517,6 +1513,10 @@ if (!isset($date_error)) $date_error= NULL ; //del notice
     if(!(date("Y-m-d", strtotime("+".$db_set_day." minutes")) == $post_date)){  
         $work_start = $work_start_old;
         $work_end = $work_end_old;
+    }
+    if($now_time_date == $post_date){
+        $work_start = $work_start_exit;
+        $work_end = $work_end_exit; 
     }
     $hour_show_flag = false;
     $hour_show_array = explode('||',$work_start);

@@ -965,7 +965,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() < 0) {
   <div class="checkout-title"><p><?php echo '<b>' .
   TITLE_CONTINUE_CHECKOUT_PROCEDURE . '</b></p><p>'. TEXT_CONTINUE_CHECKOUT_PROCEDURE; ?></p></div>
   <div class="checkout-bottom"><?php echo
-  tep_image_submit('button_continue_02.gif',IMAGE_BUTTON_CONTINUE,' onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_continue_02.gif\'" onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_continue_02_hover.gif\'"'); ?></div>  
+  tep_image_submit('button_continue_02_hover.gif',IMAGE_BUTTON_CONTINUE); ?></div>  
   </div>
   <div class="checkout-conent">   
 <?php
@@ -1449,6 +1449,15 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() < 0) {
      $j_shipping += 86400;
      $j++;
      if(date('Y-m-d',$j_shipping) == $now_time_date && $min_time_end_str != ''){
+       if(isset($_POST['date']) && $_POST['date'] != ""){
+         $selected_str = date('Y-m-d',$j_shipping) == $_POST['date'] ? 'selected' : ''; 
+       }elseif(isset($_SESSION['date']) && $_SESSION['date'] != ''){
+         $selected_str = date('Y-m-d',$j_shipping) == $_SESSION['date'] ? 'selected' : '';
+       }
+       if(date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == $_SESSION['date']){
+
+         $date_session_flag = true;
+       }
 
        echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'" '. $selected_str .'>'.str_replace($oarr, $newarr, date("Y".DATE_YEAR_TEXT."m".DATE_MONTH_TEXT."d".DATE_DAY_TEXT."（l）", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
        break;
@@ -1494,6 +1503,10 @@ if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) 
     if(!(date("Y-m-d", strtotime("+".$db_set_day." minutes")) == $post_date)){  
         $work_start = $work_start_old;
         $work_end = $work_end_old;
+    }
+    if($now_time_date == $post_date){
+        $work_start = $work_start_exit;
+        $work_end = $work_end_exit; 
     }
     $hour_show_flag = false;
     $hour_show_array = explode('||',$work_start);
@@ -1573,7 +1586,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() > 0) {
      <p><?php echo '<b>' . TITLE_CONTINUE_CHECKOUT_PROCEDURE . '</b></p>'. TEXT_CONTINUE_CHECKOUT_PROCEDURE; ?></p>
   </div>
   <div class="checkout-bottom"><?php echo
-  tep_image_submit('button_continue_02.gif',IMAGE_BUTTON_CONTINUE,' onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_continue_02.gif\'" onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_continue_02_hover.gif\'"'); ?></div> 
+  tep_image_submit('button_continue_02_hover.gif',IMAGE_BUTTON_CONTINUE); ?></div> 
   </div> 
      
 </form>

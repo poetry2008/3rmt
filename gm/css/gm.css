@@ -1051,14 +1051,14 @@ img {
     height: 40px;
     line-height: 40px;
 	text-align:center;
-    background: url(../images/design/box/product_listing_sort_01.gif);
+    background: url(../images/design/box/button_large.gif);
 }
 .product_listing_link:hover{
     display: block;
     height: 40px;
     line-height: 40px;
 	text-align:center;
-    background: url(../images/design/box/product_listing_sort_02.gif) !important;
+    background: url(../images/design/box/button_large_hover.gif) !important;
 }
 .sort a:link{
 	color:#66DFFF;
