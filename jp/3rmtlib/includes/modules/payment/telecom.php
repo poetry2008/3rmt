@@ -459,5 +459,8 @@ class telecom  extends basePayment  implements paymentInterface  {
    echo 'document.getElementsByName("rak_tel")[0].value = "'.$rak_tel[1].'";'."\n";
   }
 
+  function admin_get_customer_point($point_value,$customer_id){
+    tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " . $point_value .  " where customers_id = '" .$customer_id."' and customers_guest_chk = '0' ");
+  } 
 }
 ?>
