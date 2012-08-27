@@ -48,4 +48,7 @@ define('PRODUCTS_WEIGHT_ERROR_TWO','）の規定の重量を超えました。')
 define('PRODUCTS_WEIGHT_ERROR_THREE','商品を削除するか、または個数を変更して（');
 define('PRODUCTS_WEIGHT_ERROR_FOUR','）kg以内にしてください。');
 define('EXPECT_DATE_SELECT', '希望日を選択してください');
+define('CAMPAIGN_ERROR_TEXT', 'この値は無効です。');
+define('TEXT_POINT_OR_CAMPAION', 'ポイント/キャンペーンコード');
+define('TEXT_POINT_READ', 'ポイントまで利用可能です。');
 ?>

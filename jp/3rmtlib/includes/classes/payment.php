@@ -196,9 +196,6 @@ class payment {
         '  var error = 0;' . "\n" .
         '  var error_message = "' . JS_ERROR . '";' . "\n" .
         '  var payment_value = null;' . "\n" .
-        '  var gold_max = ' . $num . ';' . "\n" .
-        '  var gold_value = null;' . "\n" .
-        '  gold_value = document.checkout_payment.point.value;' . "\n" .
         '  if (document.checkout_payment.payment.length) {' . "\n" .
         '    for (var i=0; i<document.checkout_payment.payment.length; i++) {' . "\n" .
         '      if (document.checkout_payment.payment[i].checked) {' . "\n" .
@@ -226,11 +223,6 @@ class payment {
 
       $js .= "\n" . '  if (payment_value == null) {' . "\n" .
         '    error_message = error_message + "' . JS_ERROR_NO_PAYMENT_MODULE_SELECTED . '";' . "\n" .
-        '    error = 1;' . "\n" .
-        '  }' . "\n\n" .
-        '  if (gold_value > gold_max || gold_value < 0 ) {' . "\n" .
-        '    error_message = error_message + "' .
-            JS_ERROR_POINT . '";' . "\n" .
         '    error = 1;' . "\n" .
         '  }' . "\n\n" .
         '  if (error == 1) {' . "\n" .

@@ -6,6 +6,8 @@
 
   require('includes/application_top.php');
   require('includes/classes/http_client.php');
+  require(DIR_WS_CLASSES . 'order.php');
+  $order = new order;
   require(DIR_WS_ACTIONS.'checkout_shipping.php');
   $page_url_array = explode('/',$_SERVER['REQUEST_URI']);
   $_SESSION['shipping_page_str'] = end($page_url_array);
@@ -48,8 +50,6 @@
     }
   }
 
-  require(DIR_WS_CLASSES . 'order.php');
-  $order = new order;
 
 // register a random ID in the session to check throughout the checkout procedure
 // against alterations in the shopping cart contents
@@ -154,9 +154,6 @@
   
   
   
-  $error = false;
-  
-  
   if($date == '') {
     $error = true;
     $date_error = TEXT_ERROR_DATE;
@@ -180,6 +177,15 @@
 
   
   if($error == false) {
+    unset($_SESSION['h_point']);
+    if (isset($_POST['point'])) {
+      if (@$_POST['point'] < $order->info['subtotal']) {
+        $h_point = $_POST['point']; 
+      } else {
+        $h_point = $order->info['subtotal']; 
+      }
+      tep_session_register('h_point');
+    }
     tep_session_register('date');
     tep_session_register('hour');
     tep_session_register('min');
@@ -855,6 +861,33 @@ unset($_SESSION['shipping_session_flag']);
 }
   ?>
 });
+
+function check_point(point_num) {
+  var error = 0;
+  var error_message = "";
+  var payment_value = null;
+  var gold_max = parseInt(point_num);
+  var gold_value = null;
+  gold_value = document.order.point.value;
+  
+  re = /^\d+$/;
+  if (re.exec(gold_value)) {
+    gold_value = parseInt(gold_value); 
+  } else {
+    gold_value = 0; 
+  }
+  if (gold_value > gold_max || gold_value < 0 ) {
+    error_message = "<?php echo JS_ERROR.JS_ERROR_POINT;?>";
+    error = 1;
+  }
+  
+  if (error == 1) {
+    alert(error_message);
+    return false;
+  } else {
+    return true;
+  }
+}
 //--></script>
 </head>
 <body>
@@ -868,7 +901,13 @@ unset($_SESSION['shipping_session_flag']);
 <div id="layout" class="yui3-u">
 <div id="current"><?php echo $breadcrumb->trail(' <img src="images/point.gif"> '); ?></div>
 <div id="main-content">
-<?php echo tep_draw_form('order', tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL')) . tep_draw_hidden_field('action', 'process'); ?> 
+<?php 
+if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() < 0) {
+  echo tep_draw_form('order', tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL')) . tep_draw_hidden_field('action', 'process'); 
+} else {
+  echo tep_draw_form('order', tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL'), 'post', 'onsubmit="return check_point(\''.(int)$current_point_res['point'].'\');"') . tep_draw_hidden_field('action', 'process'); 
+}
+?> 
 
 <h2><?php echo HEADING_TITLE ; ?></h2>
 <table border="0" width="100%" cellspacing="0" cellpadding="0" class="checkout_s_link"> 
@@ -1478,6 +1517,55 @@ if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) 
   }
 ?> 
 </table>
+<?php
+if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() > 0) {
+  if($guestchk == '1') {
+    echo '<input type="hidden" name="point" value="0">';
+  } else {
+?> 
+  <h3><b><?php echo TEXT_POINT_OR_CAMPAION; ?></b></h3>
+    <div class="payment-content">
+      <?php
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+          $default_point_value = $campaign_error?$campaign_error_str:$_POST['point']; 
+        } else {
+          $default_point_value = (isset($_SESSION['hc_point']))?$_SESSION['hc_point']:((isset($_SESSION['h_point']))?$_SESSION['h_point']:($campaign_error?$campaign_error_str:0)); 
+        }
+      ?>
+      <input type="text" value="<?php echo $default_point_value;?>" name="point" id="input_text_short" style="text-align:right"> 
+      <div><?php echo isset($current_point['point'])?$current_point['point']:$point['point']; ?><?php echo TEXT_POINT_READ;?> 
+      <?php
+      if ($campaign_error) {
+        echo '&nbsp;<font color="#ff0000">'.CAMPAIGN_ERROR_TEXT.'</font>'; 
+      }
+      ?>
+      </div>
+    </div>
+<?php
+  }
+} else if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() < 0) { 
+  if($guestchk != '1') {
+?>
+   <h3><b><?php echo TEXT_POINT_OR_CAMPAION; ?></b></h3>
+     <div>
+     <?php
+      if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        $default_point_value = $campaign_error?$campaign_error_str:$_POST['camp_point']; 
+      } else {
+        $default_point_value = (isset($_SESSION['hc_camp_point']))?$_SESSION['hc_camp_point']:($campaign_error?$campaign_error_str:0); 
+      }
+      ?>
+      <input type="text" value="<?php echo $default_point_value;?>" name="camp_point" id="input_text_short" style="text-align:right"> 
+      <?php
+      if ($campaign_error) {
+        echo '<font color="#ff0000">'.CAMPAIGN_ERROR_TEXT.'</font>'; 
+      }
+      ?>  
+      </div>           
+<?php
+  }
+}
+?>
 <!--end-->
 </div>
   <div id="hm-checkout-warp">

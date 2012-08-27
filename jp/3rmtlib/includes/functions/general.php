@@ -4793,6 +4793,14 @@ function tep_payment_out_selection($is_show = false){
 global $selection;
 global $payment_modules;
 global $order;
+global $h_point;
+$total_info = $order->info['total'];
+if ((MODULE_ORDER_TOTAL_POINT_STATUS == 'true') && (intval($h_point) > 0)) {
+   $total_info -= intval($h_point);
+}
+if (isset($_SESSION['campaign_fee'])) {
+   $total_info += $_SESSION['campaign_fee'];
+}
 ?>
 <!-- selection start -->
 <div class="checkout_payment_info">
@@ -4841,7 +4849,7 @@ global $order;
 	 }
     foreach ($selection as $key=>$singleSelection){
       //判断支付范围 
-      if($payment_modules->moneyInRange($singleSelection['id'],$order->info['total'])){
+      if($payment_modules->moneyInRange($singleSelection['id'], $total_info)){
 	continue;
       }
       if(!$payment_modules->showToUser($singleSelection['id'],$_SESSION['guestchk'])){
@@ -5168,6 +5176,14 @@ function tep_payment_out_selections(){
 global $selection;
 global $payment_modules;
 global $order;
+global $h_point;
+$total_info = $order->info['total'];
+if ((MODULE_ORDER_TOTAL_POINT_STATUS == 'true') && (intval($h_point) > 0)) {
+   $total_info -= intval($h_point);
+}
+if (isset($_SESSION['campaign_fee'])) {
+   $total_info += $_SESSION['campaign_fee'];
+}
 ?>
 <!-- selection start -->
 <div class="checkout_payment_info">
@@ -5219,7 +5235,7 @@ global $order;
 	 }
     foreach ($selection as $key=>$singleSelection){
       //判断支付范围 
-      if($payment_modules->moneyInRange($singleSelection['id'],$order->info['total'])){
+      if($payment_modules->moneyInRange($singleSelection['id'],$total_info)){
 	continue;
       }
       if(!$payment_modules->showToUser($singleSelection['id'],$_SESSION['guestchk'])){
