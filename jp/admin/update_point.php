@@ -17,14 +17,13 @@ $configure_one_raw = mysql_query("select configuration_value from configuration 
 $configure_one_res = mysql_fetch_array($configure_one_raw);
 define('MODULE_ORDER_TOTAL_POINT_FEE', $configure_one_res['configuration_value']);
 
-$orders_list_raw = mysql_query("select orders_id, customers_id from orders where date_purchased >= '".$before_time."'");
+$orders_list_raw = mysql_query("select orders_id from orders_status_history where date_added >= '".$before_time."' and orders_status_id = '".MODULE_ORDER_TOTAL_POINT_ADD_STATUS."' group by orders_id");
 
 while ($orders_list_res = mysql_fetch_array($orders_list_raw)) {
-  if ($orders_list_res['payment_method'] != 'ポイント(買い取り)') {
-    $pcount_query = mysql_query("select orders_id from orders_status_history where orders_status_id = '".MODULE_ORDER_TOTAL_POINT_ADD_STATUS."' and orders_id = '".$orders_list_res['orders_id']."' limit 1");
-    $pcount = mysql_fetch_array($pcount_query);
-   
-    if ($pcount) {
+  $pcount_query = mysql_query("select customers_id, payment_method from orders where orders_id = '".$orders_list_res['orders_id']."'");
+  $pcount = mysql_fetch_array($pcount_query);
+  if ($pcount) {
+    if ($pcount['payment_method'] != 'ポイント(買い取り)') {
       $query2 = mysql_query("select value from orders_total where class = 'ot_point' and orders_id = '".$orders_list_res['orders_id']."'");
       $result2 = mysql_fetch_array($query2);
       
@@ -46,7 +45,7 @@ while ($orders_list_res = mysql_fetch_array($orders_list_raw)) {
           $get_point = 0;
         }
       }
-      mysql_query( "update customers set point = point + " . $get_point . " where customers_id = '" . $orders_list_res['customers_id'] . "'");
+      mysql_query( "update customers set point = point + " . $get_point . " where customers_id = '" . $pcount['customers_id'] . "'");
     }
   }
 }
