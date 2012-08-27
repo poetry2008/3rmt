@@ -300,7 +300,6 @@ document.onclick=function(e){
     $email_order .= TEXT_REORDER_COMMERN_EMAIL . "\n";
     $email_order .= $comment . "\n";
   }
-  
   $mail_title = "[" . $order['orders_id'] . "]".TEXT_REORDER_TITLE_EMAIL;
   $email_order = str_replace(array('${NAME}', '${TIME}', '${CONTENT}', '${SITE_NAME}', '${SITE_URL}', '${SUPPORT_EMAIL}'), array($o->customer['name'], date('Y-m-d H:i:s'), $email_order, STORE_NAME, HTTP_SERVER, SUPPORT_EMAIL_ADDRESS), $mail_content);
 
@@ -705,14 +704,14 @@ document.onclick=function(e){
         if(date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)) == $now_time_date && $min_time_end_str == ''){
           break;
         } 
-       echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'">'.str_replace($oarr, $newarr, date("Y".DATE_YEAR_TEXT."m".DATE_MONTH_TEXT."d".DATE_DAY_TEXT." l ", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
+       echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'">'.str_replace($oarr, $newarr, date("Y".DATE_YEAR_TEXT."m".DATE_MONTH_TEXT."d".DATE_DAY_TEXT." （l）", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
       }
     }
     $j_shipping += 86400;
     $j++;
     if(date('Y-m-d',$j_shipping) == $now_time_date && $min_time_end_str != ''){
 
-      echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'" '. $selected_str .'>'.str_replace($oarr, $newarr, date("Y".DATE_YEAR_TEXT."m".DATE_MONTH_TEXT."d".DATE_DAY_TEXT." l ", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
+      echo '<option value="'.date("Y-m-d", mktime(0,0,0,$m_num,$d_num+$j,$year)).'" '. $selected_str .'>'.str_replace($oarr, $newarr, date("Y".DATE_YEAR_TEXT."m".DATE_MONTH_TEXT."d".DATE_DAY_TEXT." （l）", mktime(0,0,0,$m_num,$d_num+$j,$year))).'</option>' . "\n";
       break;
      }
     }
