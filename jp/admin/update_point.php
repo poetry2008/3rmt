@@ -45,7 +45,7 @@ while ($orders_list_res = mysql_fetch_array($orders_list_raw)) {
           $get_point = 0;
         }
       }
-      mysql_query( "update customers set point = point + " . $get_point . " where customers_id = '" . $pcount['customers_id'] . "'");
+      mysql_query( "update customers set point = point + " . $get_point . " where customers_id = '" . $pcount['customers_id'] . "' and customers_guest_chk = '0'");
     }
   }
 }
