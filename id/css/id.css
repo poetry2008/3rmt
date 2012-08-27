@@ -2600,3 +2600,9 @@ searching
 }
 .sort img{ margin:-3px 0 0 5px;}
 .sort td{ width:25%;}
+.input_box{
+  font-size:13px;
+}
+.input_box input,.input_box span{
+  float:left;
+}

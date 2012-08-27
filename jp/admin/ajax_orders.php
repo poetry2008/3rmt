@@ -204,7 +204,10 @@ if ($_POST['orders_id'] &&
 				window.location.href='<?php echo
 					tep_href_link(FILENAME_ORDERS,
 							tep_get_all_get_params(array('oID', 'action')) .
-							'oID='.$orders['orders_id']);?>';"><?php echo $next_mark; ?><font color="<?php echo !$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)?'#999':$today_color; ?>"><?php echo tep_datetime_short($orders['torihiki_date']); ?></font></td>
+							'oID='.$orders['orders_id']);?>';"><?php echo $next_mark; ?><font color="<?php echo !$ocertify->npermission && (time() - strtotime($orders['date_purchased']) > 86400*7)?'#999':$today_color; ?>"><?php echo tep_datetime_short_torihiki($orders['torihiki_date']);
+$tmp_date_end = explode(' ',$orders['torihiki_date_end']); 
+echo TEXT_TIME_LINK.$tmp_date_end[1]; 
+?></font></td>
                                                                                                                                                                                                                                                                                              <td style="border-bottom:1px solid
 #000000;background-color: darkred;" class="dataTableContent" align="left"
                                                                                                                                                                                                                                                                                              onClick="chg_td_color(<?php echo $orders['orders_id'];?>);

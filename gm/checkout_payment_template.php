@@ -139,8 +139,7 @@ require_once DIR_WS_INCLUDES . 'header.php';
 <div id="hm-checkout-warp">
       <div class="checkout-title"><p><?php echo TITLE_CONTINUE_CHECKOUT_PROCEDURE . '</p><p>' . TEXT_CONTINUE_CHECKOUT_PROCEDURE;  ?></p></div>
       <div class="checkout-bottom"><?php echo
-      tep_image_submit('button_continue_02.gif',
-          IMAGE_BUTTON_CONTINUE,'onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_continue_02.gif\'"  onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_continue_02_hover.gif\'"'); ?></div>
+      tep_image_submit('button_continue_02_hover.gif',IMAGE_BUTTON_CONTINUE); ?></div>
 </div>
 	  <div class="checkout-conent">
         <h3><b><?php echo TABLE_HEADING_PAYMENT_METHOD;?></b></h3>  
@@ -169,60 +168,6 @@ if(true) {
   echo tep_draw_textarea_field('comments', 'soft', '50', '5', '','style="width:100%"') . tep_draw_hidden_field('comments_added', 'YES'); 
 ?>
 </div>
-
-
-<?php
-
-if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() > 0) {//point --  
-  if($guestchk == '1') {
-    echo '<input type="hidden" name="point" value="0">';
-  } else {
-         
-    ?> 
-      <h3><b><?php echo TEXT_POINT_OR_CAMPAION; ?></b></h3>
-  <div class="payment-content">
-      <?php
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-          $default_point_value = $campaign_error?$campaign_error_str:$_POST['point']; 
-        } else {
-          $default_point_value = (isset($_SESSION['hc_point']))?$_SESSION['hc_point']:((isset($_SESSION['h_point']))?$_SESSION['h_point']:($campaign_error?$campaign_error_str:0)); 
-        }
-      ?>
-      <input type="text" value="<?php echo $default_point_value;?>" name="point" id="input_text_short" style="text-align:right"> 
-                                        <div> <?php echo isset($current_point['point'])?$current_point['point']:$point['point']; ?><?php echo TEXT_POINT_READ;?> 
-                    <?php
-                    if ($campaign_error) {
-                      echo '&nbsp;<font color="#ff0000">'.CAMPAIGN_ERROR_TEXT.'</font>'; 
-                    }
-                    ?>
-                      </div>
-                                        </div>
-      <?php
- 
-        }
-} else if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() < 0) { 
-  if($guestchk != '1') {
-?>
-   <h3><b><?php echo TEXT_POINT_OR_CAMPAION; ?></b></h3>
-   <div>
-     <?php
-      if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $default_point_value = $campaign_error?$campaign_error_str:0; 
-      } else {
-        $default_point_value = (isset($_SESSION['hc_camp_point']))?$_SESSION['hc_camp_point']:($campaign_error?$campaign_error_str:0); 
-      }
-      ?>
-      <input type="text" value="<?php echo $default_point_value;?>" name="camp_point" id="input_text_short" style="text-align:right"> 
-                    <?php
-                    if ($campaign_error) {
-                      echo '<font color="#ff0000">'.CAMPAIGN_ERROR_TEXT.'</font>'; 
-                    }
-                    ?>  
-      </div>           
-<?php
-  }
-}
-?>
 <?php
 
 //if($cart->show_total() >= 0) {
@@ -243,8 +188,7 @@ if(true) {
 ?>
 <div id="hm-checkout-warp">
 <div class="checkout-title"><p><?php echo TITLE_CONTINUE_CHECKOUT_PROCEDURE . '</p><p>' . TEXT_CONTINUE_CHECKOUT_PROCEDURE;  ?></p></div>
-<div class="checkout-bottom"><?php echo tep_image_submit('button_continue_02.gif',
-    IMAGE_BUTTON_CONTINUE,'onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_continue_02.gif\'"  onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_continue_02_hover.gif\'"'); ?></div>
+<div class="checkout-bottom"><?php echo tep_image_submit('button_continue_02_hover.gif',IMAGE_BUTTON_CONTINUE); ?></div>
 </div>
 </div>
 </div>

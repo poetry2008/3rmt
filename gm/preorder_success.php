@@ -166,7 +166,7 @@
             <td><br>
                   <table border="0" width="100%" cellspacing="0" cellpadding="0"> 
                     <tr> 
-                      <td class="main" align="right"><?php echo '<a href="' .tep_href_link(FILENAME_DEFAULT). '">' .  tep_image_button('button_continue_02.gif', IMAGE_BUTTON_CONTINUE, 'onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_continue_02_hover.gif\'" onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_continue_02.gif\'"') . '</a>'; ?></td> 
+                      <td class="main" align="right"><?php echo '<a href="' .tep_href_link(FILENAME_DEFAULT). '">' .  tep_image_button('button_continue_02_hover.gif', IMAGE_BUTTON_CONTINUE) . '</a>'; ?></td> 
                       <td align="right" class="main">
                       </td> 
                     </tr> 

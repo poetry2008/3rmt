@@ -49,7 +49,7 @@
                 <td class="main">
                 <b><?php echo TABLE_HEADING_COMMENTS;?></b> 
                 </td> 
-            </tr>
+                </tr>
         	<tr><td><img height="10" width="100%" alt="" src="images/pixel_trans.gif"></td></tr>
           </table>
       </td>
@@ -70,113 +70,7 @@
               </tr> 
           </table>
       </td> 
-  </tr> 
-  <tr> 
-  <td>
-  </td> 
-  </tr> 
-  <?php
-  //点数处理
-  if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() > 0) {//point --  
-    if($guestchk == '1') {
-      echo '<input type="hidden" name="point" value="0">';
-    } else {
-      ?> 
-      <tr> 
-      <td>
-	  <table border="0" width="100%" cellspacing="0" cellpadding="2"> 
-      <tr> 
-        <td class="main">
-        <b><?php echo TEXT_POINT_OR_CAMPAION; ?></b>
-        &nbsp;&nbsp;
-        <?php
-        if ($campaign_error) {
-          echo '<font color="#ff0000">'.CAMPAIGN_ERROR_TEXT.'</font>'; 
-        }
-        ?>
-        </td> 
-      </tr> 
-      </table></td> 
-      </tr> 
-      <tr> 
-      <td>
-	  <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
-            <tr class="infoBoxContents"> 
-              <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
-                  <tr> 
-                    <td class="main">
-                    <?php
-                      if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                        $default_point_value = $campaign_error?$campaign_error_str:$_POST['point']; 
-                      } else {
-                        $default_point_value = (isset($_SESSION['hc_point']))?$_SESSION['hc_point']:((isset($_SESSION['h_point']))?$_SESSION['h_point']:($campaign_error?$campaign_error_str:0)); 
-                      }
-                    ?>
-                    <input type="text" value="<?php echo $default_point_value;?>" name="point" size="24" style="text-align:right"> 
-                    </td> 
-                    <td class="main" align="right">
-                    <?php echo isset($current_point['point'])?$current_point['point']:$point['point']; ?><?php echo TEXT_POINT_READ;?>
-                    </td> 
-                    </tr> 
-                  </table></td> 
-              </tr> 
-            </table></td> 
-        </tr> 
-      <tr> 
-      <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
-      </tr> 
-      <?php 
-    }
-  } else if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() < 0) { 
-    if($guestchk != '1') {
-  ?>
-  <tr> 
-      <td>
-	  <table border="0" width="100%" cellspacing="0" cellpadding="2"> 
-      <tr> 
-        <td class="main">
-        <b><?php echo TEXT_POINT_OR_CAMPAION; ?></b>
-        &nbsp;&nbsp;
-        <?php
-        if ($campaign_error) {
-          echo '<font color="#ff0000">'.CAMPAIGN_ERROR_TEXT.'</font>'; 
-        }
-        ?>
-        </td> 
-      </tr> 
-      </table></td> 
-      </tr> 
-      <tr> 
-      <td>
-	  <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
-            <tr class="infoBoxContents"> 
-              <td><table border="0" width="100%" cellspacing="0" cellpadding="2"> 
-                <tr> 
-                <td class="main">
-                <?php
-                if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-                  $default_point_value = $campaign_error?$campaign_error_str:0; 
-                } else {
-                  $default_point_value = (isset($_SESSION['hc_camp_point']))?$_SESSION['hc_camp_point']:($campaign_error?$campaign_error_str:0); 
-                }
-                ?>
-                <input type="text" value="<?php echo $default_point_value;?>" name="camp_point" size="24" style="text-align:right"> 
-                </td> 
-                </tr> 
-        </table></td> 
-      </tr> 
-      </table>
-      </td> 
-      </tr> 
-      <tr> 
-      <td>
-	  <?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?>
-      </td> 
-      </tr>
-  <?php
-    }
-  }
-?> 
+</tr> 
 <tr> 
 <td>
   <table border="0" width="100%" cellspacing="0" cellpadding="0" class="c_pay_info"> 
@@ -185,10 +79,6 @@
       <td class="main" align="right"><?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE); ?></td> 
     </tr> 
   </table>
-</td> 
-</tr> 
-<tr> 
-<td>
 </td> 
 </tr> 
 </table> 

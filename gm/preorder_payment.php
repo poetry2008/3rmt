@@ -125,8 +125,8 @@ $(document).ready(function(){
 </head>
 <body>
 <?php require(DIR_WS_INCLUDES . 'header.php'); ?>
-<!-- header_eof //-->
-<!-- body //-->
+<!-- header_eof -->
+<!-- body -->
 <div id="main">
   <div class="yui3-u" id="layout">
   <div id="current" ><?php echo $breadcrumb->trail(' <img  src="images/point.gif"> '); ?></div>
@@ -486,7 +486,7 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
                 }
               }
             ?>
-            <?php echo tep_image_submit('button_continue_02.gif', IMAGE_BUTTON_CONTINUE, 'onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_continue_02_hover.gif\'" onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_continue_02.gif\'"'); ?>
+            <?php echo tep_image_submit('button_continue_02_hover.gif', IMAGE_BUTTON_CONTINUE); ?>
           </td>
         </tr>
       </table>
@@ -512,16 +512,16 @@ if (!isset($_POST['from'])) $_POST['from'] = NULL; //del notice
     }
   }
 ?>    
-    <!-- body_text_eof //-->
+    <!-- body_text_eof -->
   </div>
   </div>
   </div>
   <?php include('includes/float-box.php');?>
 </div>
-<!-- body_eof //-->
-<!-- footer //-->
+<!-- body_eof -->
+<!-- footer -->
 <?php require(DIR_WS_INCLUDES . 'footer.php'); ?>
-<!-- footer_eof //-->
+<!-- footer_eof -->
 </div>
 </body>
 </html>
