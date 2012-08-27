@@ -470,6 +470,7 @@ if($save_flag == 0 || $orders_exit_flag == true){
               ),$comments);
       if($save_flag == 0){
         if (!tep_is_oroshi($check_status['customers_id'])) {
+
           tep_mail($check_status['customers_name'], $check_status['customers_email_address'], $title, $comments, get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('STORE_OWNER_EMAIL_ADDRESS', $site_id), $site_id);
         }
         tep_mail(get_configuration_by_site_id('STORE_OWNER', $site_id), get_configuration_by_site_id('SENTMAIL_ADDRESS', $site_id), '送信済：'.$title, $comments, $check_status['customers_name'], $check_status['customers_email_address'], $site_id);
@@ -1262,6 +1263,8 @@ if($address_error == false){
 
           if ($customer_guest['customers_guest_chk'] != 9)
           {
+          $oarr = array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday');
+          $newarr = array(TEXT_DATE_MONDAY, TEXT_DATE_TUESDAY, TEXT_DATE_WEDNESDAY, TEXT_DATE_THURSDAY, TEXT_DATE_FRIDAY, TEXT_DATE_STATURDAY, TEXT_DATE_SUNDAY);
             //bobhero start{{{
             $mailoption['ORDER_ID']         = $oID;                         //d
             $mailoption['ORDER_DATE']       = tep_date_long(time())  ;      //d 
@@ -1272,7 +1275,7 @@ if($address_error == false){
 
             $mailoption['TORIHIKIHOUHOU']   =  $order->tori['houhou'];      //?
             $mailoption['ORDER_PAYMENT']    = $order->info['payment_method'] ;  //d
-            $trade_time = date('Y'.TEXT_DATE_YEAR.'m'.TEXT_DATE_MONTH.'d'.TEXT_DATE_DAY.'H'.TEXT_HOUR.'i'.TEXT_MIN, strtotime($_POST['date_orders'].' '.$_POST['start_hour'].':'.$_POST['start_min'].':00')); 
+            $trade_time = str_replace($oarr, $newarr,date('Y'.TEXT_DATE_YEAR.'m'.TEXT_DATE_MONTH.'d'.TEXT_DATE_DAY.'（l） H'.TEXT_HOUR.'i'.TEXT_MIN, strtotime($_POST['date_orders'].' '.$_POST['start_hour'].':'.$_POST['start_min'].':00'))); 
             $trade_time_1 = date('H時i分',strtotime($_POST['date_orders'].' '.$_POST['end_hour'].':'.$_POST['end_min'].':00'));
             $mailoption['ORDER_TTIME']      = $trade_time . TEXT_TIME_LINK . $trade_time_1 .TEXT_TWENTY_FOUR_HOUR;//d
             //$mailoption['ORDER_COMMENT']    = $notify_comments_mail;// = $comments;
@@ -1350,7 +1353,7 @@ if($address_error == false){
           }
           }
           if($save_flag == 0){
-            tep_mail(get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), TEXT_ORDERS_SEND_MAIL . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);
+            tep_mail(get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), TEXT_ORDERS_SEND_MAIL . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $emaissl, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);
           }
           $customer_notified = '1';
           
@@ -1517,7 +1520,7 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
                           $handle_fee, 
                           abs($newtotal),
                           $products_ordered_mail,
-                          str_string($_POST['date_orders']) . $_POST['start_hour'] . '時' . $_POST['start_min'].$_POST['start_min_1'] . '分から'. $_POST     ['end_hour'] .'時'. $_POST['end_min'].$_POST['end_min_1'] .'分　（24時間表記）', 
+                          tep_date_long($_POST['date_orders']) . $_POST['start_hour'] . '時' . $_POST['start_min'].$_POST['start_min_1'] . '分から'. $_POST     ['end_hour'] .'時'. $_POST['end_min'].$_POST['end_min_1'] .'分　（24時間表記）', 
                           $orders_comments,
                           '',
                           $customer_printing_order,
