@@ -609,6 +609,9 @@ function getpreexpress($pre_value, $pre_pid){
 
     return 2;
   }
+  function admin_get_customer_point($point_value,$customer_id){
+    tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " . $point_value .  " where customers_id = '" .$customer_id."' and customers_guest_chk = '0' ");
+  } 
   }
 function tep_high_light_by_keywords_flag($str, $keywords){ 
       $k = $rk= explode('|',$keywords);
