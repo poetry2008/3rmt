@@ -36,7 +36,7 @@ while ($orders_list_res = mysql_fetch_array($orders_list_raw)) {
         $get_point = ($result3['value'] - (int)$result2['value']) * $point_rate;
       } else {
         if ($result3['value'] > -200) {
-          if ($check_status['payment_method'] == '来店支払い') {
+          if ($pcount['payment_method'] == '来店支払い') {
             $get_point = 0;
           } else {
             $get_point = abs($result3['value']);
