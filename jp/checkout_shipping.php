@@ -92,7 +92,11 @@
   require(DIR_WS_LANGUAGES . $language . '/' . FILENAME_CHECKOUT_SHIPPING);
 
 // process the selected shipping method
-  if ( isset($_POST['action']) && ($_POST['action'] == 'process') ) {
+  if ( (isset($_POST['action']) && ($_POST['action'] == 'process')) || (isset($_SESSION['ischeck']) && $_SESSION['ischeck'] == 1) ) {
+    if(isset($_SESSION['ischeck']) && $_SESSION['ischeck'] == 1){
+    
+      $_POST = $_SESSION['shipping_all'];
+    }
     if (!tep_session_is_registered('comments')) tep_session_register('comments');
 
     if (!tep_session_is_registered('shipping')) tep_session_register('shipping');
@@ -168,7 +172,15 @@
 
     $error = true;
   }
+  if($error == true && !isset($_SESSION['ischeck'])){
 
+    $_SESSION['shipping_all'] = $_POST;
+    $_SESSION['ischeck'] = 1;
+    tep_redirect(tep_href_link(FILENAME_CHECKOUT_SHIPPING, '', 'SSL'));
+  }else{
+    unset($_SESSION['shipping_all']);
+    unset($_SESSION['ischeck']);  
+  }
   if($error == false) {
     unset($_SESSION['h_point']);
     if (isset($_POST['point'])) {
