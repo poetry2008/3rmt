@@ -7,7 +7,7 @@ mysql_select_db(DB_DATABASE);
 mysql_query("set names utf8");
 
 echo 'start!<br>';
-$before_time = "2012-08-14 00:00:00";
+$before_time = "2012-08-13 04:00:00";
 
 $configure_raw = mysql_query("select configuration_value from configuration where configuration_key = 'MODULE_ORDER_TOTAL_POINT_ADD_STATUS' and site_id = '0'");
 $configure_res = mysql_fetch_array($configure_raw);
