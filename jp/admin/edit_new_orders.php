@@ -3088,13 +3088,13 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
             if($orders_payment_array['payment_method'] != ''){
               if($products_money_total > 0 && in_array($orders_payment_array['payment_method'],$payment_positive_array)){
                 $payment_num = array_search($orders_payment_array['payment_method'],$payment_array[1]);
-                $pay_orders_id = $orders_payment_array['orders_id'];
+                //$pay_orders_id = $orders_payment_array['orders_id'];
                 $pay_method = $orders_payment_array['payment_method'];
                 break;
               }
               if($products_money_total < 0 && in_array($orders_payment_array['payment_method'],$payment_negative_array)){
                 $payment_num = array_search($orders_payment_array['payment_method'],$payment_array[1]);
-                $pay_orders_id = $orders_payment_array['orders_id'];
+                //$pay_orders_id = $orders_payment_array['orders_id'];
                 $pay_method = $orders_payment_array['payment_method'];
                 break;
               }
@@ -3102,12 +3102,59 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
           }
           tep_db_free_result($orders_payment_query);
       }
+      $pay_buying_comment = '';
+      $pay_convenience_store_comment = '';
+      $pay_rakuten_bank_comment = '';
+      $pay_buying_orders_id = '';
+      $pay_convenience_store_orders_id = '';
+      $pay_rakuten_bank_orders_id = '';
+      $orders_status_history_query = tep_db_query("select payment_method,orders_id from ". TABLE_ORDERS ." where customers_email_address='". $email_address_flag ."' and site_id='".$site_id_flag."' order by orders_id desc");
+      while($ordres_status_history_array = tep_db_fetch_array($orders_status_history_query)){
+        if(payment::changeRomaji($payment_array[0][0],'title') == $ordres_status_history_array['payment_method'] && $pay_buying_orders_id == ''){
 
-          if($pay_orders_id != ''){ 
-            $orders_status_history_query = tep_db_query("select comments from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='".$pay_orders_id."' order by date_added desc"); 
+          $pay_buying_orders_id = $ordres_status_history_array['orders_id'];
+        } 
+        if(payment::changeRomaji($payment_array[0][2],'title') == $ordres_status_history_array['payment_method'] && $pay_convenience_store_orders_id == ''){
+
+          $pay_convenience_store_orders_id = $ordres_status_history_array['orders_id'];
+        }
+        if(payment::changeRomaji($payment_array[0][9],'title') == $ordres_status_history_array['payment_method'] && $pay_rakuten_bank_orders_id == ''){
+
+          $pay_rakuten_bank_orders_id = $ordres_status_history_array['orders_id'];
+        }
+        if($pay_buying_orders_id != '' && $pay_convenience_store_orders_id != '' && $pay_rakuten_bank_orders_id != ''){
+
+          break;
+        }
+      }
+      tep_db_free_result($orders_status_history_query);
+
+
+          if($pay_buying_orders_id != ''){ 
+            $orders_status_history_query = tep_db_query("select comments from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='".$pay_buying_orders_id."' order by date_added desc"); 
             while($orders_status_history_array = tep_db_fetch_array($orders_status_history_query)){
               if($orders_status_history_array['comments']!=''){
-                $pay_comment = $orders_status_history_array['comments']; 
+                $pay_buying_comment = $orders_status_history_array['comments']; 
+                break;
+              }
+            }
+            tep_db_free_result($orders_status_history_query);
+          }
+          if($pay_convenience_store_orders_id != ''){ 
+            $orders_status_history_query = tep_db_query("select comments from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='".$pay_convenience_store_orders_id."' order by date_added desc"); 
+            while($orders_status_history_array = tep_db_fetch_array($orders_status_history_query)){
+              if($orders_status_history_array['comments']!=''){
+                $pay_convenience_store_comment = $orders_status_history_array['comments']; 
+                break;
+              }
+            }
+            tep_db_free_result($orders_status_history_query);
+          }
+          if($pay_rakuten_bank_orders_id != ''){ 
+            $orders_status_history_query = tep_db_query("select comments from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='".$pay_rakuten_bank_orders_id."' order by date_added desc"); 
+            while($orders_status_history_array = tep_db_fetch_array($orders_status_history_query)){
+              if($orders_status_history_array['comments']!=''){
+                $pay_rakuten_bank_comment = $orders_status_history_array['comments']; 
                 break;
               }
             }
@@ -3127,13 +3174,12 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
             }
             tep_db_free_result($orders_status_history_query); 
           }
-
           if(isset($_SESSION['payment_method_flag'])){
             $code_payment_method = payment::changeRomaji($_SESSION['payment_method_flag'],'code');
             $pay_method = payment::changeRomaji($_SESSION['payment_method_flag'],'code');
             $pay_comment = $_SESSION['pay_comment_flag'];
           }
-
+          $pay_method = isset($_POST['payment_method']) ? $_POST['payment_method'] : $pay_method;
           if($pay_method == ''){
             if($products_money_total > 0){
 
@@ -3158,7 +3204,7 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
           echo "\n".'<script language="javascript">'."\n"; 
           echo '$(document).ready(function(){'."\n";
 
-          $cpayment->admin_show_payment_list(payment::changeRomaji($pay_method,'code'),$pay_comment);
+          $cpayment->admin_show_payment_list(payment::changeRomaji($pay_method,'code'),$pay_buying_comment,$pay_convenience_store_comment,$pay_rakuten_bank_comment);
           
           echo '});'."\n";
           echo '</script>'."\n";
