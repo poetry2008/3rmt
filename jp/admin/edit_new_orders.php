@@ -105,7 +105,8 @@ if (tep_not_null($action)) {
     $comments = tep_db_input($_POST['comments']);
     $comments_text = tep_db_input($_POST['comments_text']);
     $payment_method = tep_db_prepare_input($_POST['payment_method']); 
-    
+    $save_flag = $_POST['save_flag'];
+    $comment_arr = $payment_modules->dealComment($payment_method,$comments_text);    
     if($save_flag == 1){
       $comment_array = $payment_modules->dealComment($payment_method,$comments_text);
       $_SESSION['payment_method_flag'] = $payment_method;
@@ -113,7 +114,7 @@ if (tep_not_null($action)) {
       $_SESSION['torihiki_date_flag'] = tep_db_input($_POST['date_orders'].' '.$_POST['start_hour'].':'.$_POST['start_min'].$_POST['start_min_1'].':00');
       $_SESSION['torihiki_date_end_flag'] = tep_db_input($_POST['date_orders'].' '.$_POST['end_hour'].':'.$_POST['end_min'].$_POST['end_min_1'].':00');
     }
-    $save_flag = $_POST['save_flag'];
+    
     $error = false;
     $options_info_array = array(); 
       if (!$ad_option->check()) {
@@ -236,12 +237,10 @@ if (tep_not_null($action)) {
   
     $site_id  = tep_get_site_id_by_orders_id($oID);
 
-if($save_flag == 0 || $orders_exit_flag == true){
+if($orders_exit_flag == true){
     $orders_email_query = tep_db_query("select payment_method from ". TABLE_ORDERS ." where orders_id='".$oID."'");
     $orders_email_array = tep_db_fetch_array($orders_email_query);
     tep_db_free_result($orders_email_query);    
- 
-    $comment_arr = $payment_modules->dealComment($payment_method,$comments_text);
 
     $order_updated = false;
     $check_status_query = tep_db_query("
@@ -352,20 +351,18 @@ if($save_flag == 0 || $orders_exit_flag == true){
           $get_point = ($result3['value'] - (int)$result2['value']) * $point_rate;
         } else {
           if ($result3['value'] > -200) {
-            if ($check_status['payment_method'] == TEXT_VISIT_PAYMENT) {
-              $get_point = 0;
-            } else {
-              $get_point = abs($result3['value']);
-            }
+
+            $get_point = $payment_modules->admin_get_fetch_point(payment::changeRomaji($payment_method,'code'),$result3['value']);
+            
           } else {
             $get_point = 0;
           }
         }
         //$plus = $result4['point'] + $get_point;
-
-        if($check_status['payment_method'] != TEXT_POINT_PAYMENT){
-          tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " . $get_point .  " where customers_id = '" . $result1['customers_id']."' and customers_guest_chk = '0' ");
+        if($save_flag == 0){ 
+          $payment_modules->admin_get_customer_point(payment::changeRomaji($payment_method,'code'),(int)$get_point,$result1['customers_id']); 
         }
+        
       }else{
         $os_query = tep_db_query("select orders_status_name,nomail from " . TABLE_ORDERS_STATUS . " where orders_status_id = '".$status."'");
         $os_result = tep_db_fetch_array($os_query);
@@ -377,19 +374,13 @@ if($save_flag == 0 || $orders_exit_flag == true){
 
             $result1['customers_id'] = $customer_id_flag;
           }
-          if ($check_status['payment_method'] == TEXT_POINT_PAYMENT) {
-            $query_t = tep_db_query("select value from ".TABLE_ORDERS_TOTAL." where class = 'ot_total' and orders_id = '".tep_db_input($oID)."'");
-            $result_t = tep_db_fetch_array($query_t);
-            $get_point = abs(intval($result_t['value']));
-          } else {
-            $get_point = 0;
-          }
+          $get_point = $payment_modules->admin_get_orders_point(payment::changeRomaji($check_status['payment_method'],'code'),$oID); 
           $point_done_query =tep_db_query("select count(orders_status_history_id) cnt from
               ".TABLE_ORDERS_STATUS_HISTORY." where orders_status_id = '".$status."' and 
               orders_id = '".tep_db_input($oID)."'");
           $point_done_row  =  tep_db_fetch_array($point_done_query);
-          if($point_done_row['cnt'] <1 ){
-            tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " .  $get_point . " where customers_id = '" . $result1['customers_id']."' and customers_guest_chk = '0'");
+          if($point_done_row['cnt'] <1 && $save_flag == 0){
+            tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " .  (int)$get_point . " where customers_id = '" . $result1['customers_id']."' and customers_guest_chk = '0'");
           }
         }
       }
@@ -1011,7 +1002,9 @@ if($address_error == false){
 
           if ($customer_guest['customers_guest_chk'] == 0 && $ot_class == "ot_point" && $ot_value != $before_point) { //会員ならポントの増減
             $point_difference = ($ot_value - $before_point);
-            tep_db_query("update " . TABLE_CUSTOMERS . " set point = point - " . $point_difference . " where customers_id = '" . $order->customer['id'] . "'"); 
+            if($save_flag == 0){
+              tep_db_query("update " . TABLE_CUSTOMERS . " set point = point - " . $point_difference . " where customers_id = '" . $order->customer['id'] . "'"); 
+            }
           }
 
           $ot_text = $currencies->format($ot_value, true, $order->info['currency'], $order->info['currency_value']);
@@ -3199,6 +3192,9 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
 
             $pay_method = $pay_method;
           }
+          $pay_buying_comment = payment::changeRomaji($_SESSION['payment_method_flag'],'code') == $payment_array[0][0] ? $_SESSION['pay_comment_flag'] : $pay_buying_comment;
+          $pay_convenience_store_comment = payment::changeRomaji($_SESSION['payment_method_flag'],'code') == $payment_array[0][2] ? $_SESSION['pay_comment_flag'] : $pay_convenience_store_comment;
+          $pay_rakuten_bank_comment = payment::changeRomaji($_SESSION['payment_method_flag'],'code') == $payment_array[0][9] ? $_SESSION['pay_comment_flag'] : $pay_rakuten_bank_comment;
           $cpayment = payment::getInstance();
           echo payment::makePaymentListPullDownMenu(payment::changeRomaji($pay_method,'code'));
           
