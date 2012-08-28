@@ -360,7 +360,7 @@ if($orders_exit_flag == true){
         }
         //$plus = $result4['point'] + $get_point;
         if($save_flag == 0){ 
-          $payment_modules->admin_get_customer_point(payment::changeRomaji($payment_method,'code'),(int)$get_point,$result1['customers_id']); 
+          $payment_modules->admin_get_customer_point(payment::changeRomaji($payment_method,'code'),intval($get_point),$result1['customers_id']); 
         }
         
       }else{
@@ -380,7 +380,7 @@ if($orders_exit_flag == true){
               orders_id = '".tep_db_input($oID)."'");
           $point_done_row  =  tep_db_fetch_array($point_done_query);
           if($point_done_row['cnt'] <1 && $save_flag == 0){
-            tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " .  (int)$get_point . " where customers_id = '" . $result1['customers_id']."' and customers_guest_chk = '0'");
+            tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " .  intval($get_point) . " where customers_id = '" . $result1['customers_id']."' and customers_guest_chk = '0'");
           }
         }
       }
