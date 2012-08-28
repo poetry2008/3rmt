@@ -2588,18 +2588,79 @@ if (($action == 'edit') && ($order_exists == true)) {
     <td class="main">
     <?php 
       $pay_method = isset($_POST['payment_method']) ? $_POST['payment_method'] : payment::changeRomaji($order->info['payment_method'], PAYMENT_RETURN_TYPE_CODE);
+      $orders_status_history_query = tep_db_query("select comments from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='".$oID."' order by date_added desc limit 0,1"); 
+      $orders_status_history_array = tep_db_fetch_array($orders_status_history_query);
+      $pay_comment = $orders_status_history_array['comments']; 
+      tep_db_free_result($orders_status_history_query);
+      $payment_array = payment::getPaymentList(); //支付方式列表
+      $pay_buying_comment = '';
+      $pay_convenience_store_comment = '';
+      $pay_rakuten_bank_comment = '';
+      $pay_buying_orders_id = '';
+      $pay_convenience_store_orders_id = '';
+      $pay_rakuten_bank_orders_id = '';
+      $orders_status_history_query = tep_db_query("select payment_method,orders_id from ". TABLE_ORDERS ." where customers_email_address='". $order->customer['email_address'] ."' and site_id='". $order->info['site_id'] ."' order by orders_id desc");
+      while($ordres_status_history_array = tep_db_fetch_array($orders_status_history_query)){
+        if(payment::changeRomaji($payment_array[0][0],'title') == $ordres_status_history_array['payment_method'] && $pay_buying_orders_id == ''){
+
+          $pay_buying_orders_id = $ordres_status_history_array['orders_id'];
+        } 
+        if(payment::changeRomaji($payment_array[0][2],'title') == $ordres_status_history_array['payment_method'] && $pay_convenience_store_orders_id == ''){
+
+          $pay_convenience_store_orders_id = $ordres_status_history_array['orders_id'];
+        }
+        if(payment::changeRomaji($payment_array[0][9],'title') == $ordres_status_history_array['payment_method'] && $pay_rakuten_bank_orders_id == ''){
+
+          $pay_rakuten_bank_orders_id = $ordres_status_history_array['orders_id'];
+        }
+        if($pay_buying_orders_id != '' && $pay_convenience_store_orders_id != '' && $pay_rakuten_bank_orders_id != ''){
+
+          break;
+        }
+      }
+      tep_db_free_result($orders_status_history_query);
+
+
+          if($pay_buying_orders_id != '' && $pay_method != $payment_array[0][0]){ 
+            $orders_status_history_query = tep_db_query("select comments from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='".$pay_buying_orders_id."' order by date_added desc"); 
+            while($orders_status_history_array = tep_db_fetch_array($orders_status_history_query)){
+              if($orders_status_history_array['comments']!=''){
+                $pay_buying_comment = $orders_status_history_array['comments']; 
+                break;
+              }
+            }
+            tep_db_free_result($orders_status_history_query);
+          }
+          if($pay_convenience_store_orders_id != '' && $pay_method != $payment_array[0][2]){ 
+            $orders_status_history_query = tep_db_query("select comments from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='".$pay_convenience_store_orders_id."' order by date_added desc"); 
+            while($orders_status_history_array = tep_db_fetch_array($orders_status_history_query)){
+              if($orders_status_history_array['comments']!=''){
+                $pay_convenience_store_comment = $orders_status_history_array['comments']; 
+                break;
+              }
+            }
+            tep_db_free_result($orders_status_history_query);
+          }
+          if($pay_rakuten_bank_orders_id != '' && $pay_method != $payment_array[0][9]){ 
+            $orders_status_history_query = tep_db_query("select comments from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='".$pay_rakuten_bank_orders_id."' order by date_added desc"); 
+            while($orders_status_history_array = tep_db_fetch_array($orders_status_history_query)){
+              if($orders_status_history_array['comments']!=''){
+                $pay_rakuten_bank_comment = $orders_status_history_array['comments']; 
+                break;
+              }
+            }
+            tep_db_free_result($orders_status_history_query);
+          }
+          $pay_buying_comment = $pay_buying_comment == '' && $pay_method == $payment_array[0][0] ? $pay_comment : $pay_buying_comment;
+          $pay_convenience_store_comment = $pay_convenience_store_comment == '' && $pay_method == $payment_array[0][2] ? $pay_comment : $pay_convenience_store_comment;
+          $pay_rakuten_bank_comment = $pay_rakuten_bank_comment == '' && $pay_method == $payment_array[0][9] ?  $pay_comment : $pay_rakuten_bank_comment;
     ?>
     <?php echo payment::makePaymentListPullDownMenu(payment::changeRomaji($pay_method, PAYMENT_RETURN_TYPE_CODE));?> 
-    <?php 
-    //$pay_comment = $order->info['orders_comment'];
-    $orders_status_history_query = tep_db_query("select comments from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='".$oID."' order by date_added desc limit 0,1"); 
-    $orders_status_history_array = tep_db_fetch_array($orders_status_history_query);
-    $pay_comment = $orders_status_history_array['comments']; 
-    tep_db_free_result($orders_status_history_query);
+    <?php  
     echo "\n".'<script language="javascript">'."\n"; 
           echo '$(document).ready(function(){'."\n";
 
-          $cpayment->admin_show_payment_list($pay_method,$pay_comment); 
+          $cpayment->admin_show_payment_list($pay_method,$pay_buying_comment,$pay_convenience_store_comment,$pay_rakuten_bank_comment); 
           echo '});'."\n";
           echo '</script>'."\n";
       

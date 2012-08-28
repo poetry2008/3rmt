@@ -674,12 +674,12 @@ class payment {
     return $order_info['comment_msg']; 
   }
 
-  function admin_show_payment_list($payment,$pay_comment){
+  function admin_show_payment_list($payment,$pay_buying_comment,$pay_convenience_store_comment,$pay_rakuten_bank_comment){
 
     $module = $this->getModule($payment);
     if ($module) {
       if (method_exists($module, 'admin_show_payment_list')) {
-         $module->admin_show_payment_list($pay_comment); 
+         $module->admin_show_payment_list($pay_buying_comment,$pay_convenience_store_comment,$pay_rakuten_bank_comment); 
       }
     }    
   }

@@ -178,6 +178,26 @@
     } 
 
     $comment_arr = $payment_modules->dealComment($payment_method,$comment);
+    $payment_array = payment::getPaymentList();  
+    switch($_POST['payment_method']){
+    case $payment_array[0][0]: 
+      $bank_name = $_POST['bank_name'];
+      $bank_shiten = $_POST['bank_shiten'];
+      $bank_kamoku =$_POST['bank_kamoku'];
+      $bank_kouza_num = $_POST['bank_kouza_num'];
+      $bank_kouza_name = $_POST['bank_kouza_name'];
+      $bank_info_array = array($bank_name,$bank_shiten,$bank_kamoku,$bank_kouza_num,$bank_kouza_name);
+      $bank_info = implode('<<<|||',$bank_info_array);; 
+      break;
+    case $payment_array[0][2]:
+      $cemail_array = explode("\n",$comment_arr);
+      $cemail_text = $cemail_array[0]; 
+      break;
+    case $payment_array[0][9]:
+      $raku_text_array = explode("\n",$comment_arr);
+      $raku_text = $raku_text_array[0];
+      break;
+    } 
 
     // 1.1 UPDATE ORDER INFO #####
     $UpdateOrders = "update " . TABLE_PREORDERS . " set 
@@ -223,9 +243,21 @@
       cc_type = '" . tep_db_input($update_info_cc_type) . "',
       cc_owner = '" . tep_db_input($update_info_cc_owner) . "',";
 
-    if(isset($comment_arr['comment']) && !empty($comment_arr['comment'])){
-        $UpdateOrders .= "orders_comment = '{$comment_arr['comment']}',";
+    if(isset($cemail_text) && $cemail_text != ''){
+
+      $UpdateOrders .= "cemail_text = '{$cemail_text}',";
     }
+    if(isset($raku_text) && $raku_text != ''){
+
+      $UpdateOrders .= "raku_text = '{$raku_text}',";
+    }
+    if(isset($bank_info) && $bank_info != ''){
+
+      $UpdateOrders .= "bank_info = '{$bank_info}',";
+    }
+    //if(isset($comment_arr['comment']) && !empty($comment_arr['comment'])){
+        //$UpdateOrders .= "orders_comment = '{$comment_arr['comment']}',";
+    //}
 
     if(substr($update_info_cc_number,0,8) != "(Last 4)") {
       $UpdateOrders .= "cc_number = '$update_info_cc_number',";
@@ -1681,10 +1713,73 @@ float:left;
                   $orders_status_history_array = tep_db_fetch_array($orders_status_history_query);
                   $pay_comment = $orders_status_history_array['comments']; 
                   tep_db_free_result($orders_status_history_query);
+      //orders status
+      $payment_array = payment::getPaymentList(); //支付方式列表
+      $pay_buying_comment = '';
+      $pay_convenience_store_comment = '';
+      $pay_rakuten_bank_comment = '';
+      $pay_buying_orders_id = '';
+      $pay_convenience_store_orders_id = '';
+      $pay_rakuten_bank_orders_id = '';
+      $orders_status_history_query = tep_db_query("select payment_method,orders_id from ". TABLE_ORDERS ." where customers_email_address='". $order->customer['email_address'] ."' and site_id='". $order->info['site_id'] ."' order by orders_id desc");
+      while($ordres_status_history_array = tep_db_fetch_array($orders_status_history_query)){
+        if(payment::changeRomaji($payment_array[0][0],'title') == $ordres_status_history_array['payment_method'] && $pay_buying_orders_id == ''){
+
+          $pay_buying_orders_id = $ordres_status_history_array['orders_id'];
+        } 
+        if(payment::changeRomaji($payment_array[0][2],'title') == $ordres_status_history_array['payment_method'] && $pay_convenience_store_orders_id == ''){
+
+          $pay_convenience_store_orders_id = $ordres_status_history_array['orders_id'];
+        }
+        if(payment::changeRomaji($payment_array[0][9],'title') == $ordres_status_history_array['payment_method'] && $pay_rakuten_bank_orders_id == ''){
+
+          $pay_rakuten_bank_orders_id = $ordres_status_history_array['orders_id'];
+        }
+        if($pay_buying_orders_id != '' && $pay_convenience_store_orders_id != '' && $pay_rakuten_bank_orders_id != ''){
+
+          break;
+        }
+      }
+      tep_db_free_result($orders_status_history_query);
+
+
+          if($pay_buying_orders_id != '' && $payment_code != $payment_array[0][0]){ 
+            $orders_status_history_query = tep_db_query("select comments from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='".$pay_buying_orders_id."' order by date_added desc"); 
+            while($orders_status_history_array = tep_db_fetch_array($orders_status_history_query)){
+              if($orders_status_history_array['comments']!=''){
+                $pay_buying_comment = $orders_status_history_array['comments']; 
+                break;
+              }
+            }
+            tep_db_free_result($orders_status_history_query);
+          }
+          if($pay_convenience_store_orders_id != '' &&  $payment_code != $payment_array[0][2]){ 
+            $orders_status_history_query = tep_db_query("select comments from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='".$pay_convenience_store_orders_id."' order by date_added desc"); 
+            while($orders_status_history_array = tep_db_fetch_array($orders_status_history_query)){
+              if($orders_status_history_array['comments']!=''){
+                $pay_convenience_store_comment = $orders_status_history_array['comments']; 
+                break;
+              }
+            }
+            tep_db_free_result($orders_status_history_query);
+          }
+          if($pay_rakuten_bank_orders_id != '' &&  $payment_code != $payment_array[0][9]){ 
+            $orders_status_history_query = tep_db_query("select comments from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='".$pay_rakuten_bank_orders_id."' order by date_added desc"); 
+            while($orders_status_history_array = tep_db_fetch_array($orders_status_history_query)){
+              if($orders_status_history_array['comments']!=''){
+                $pay_rakuten_bank_comment = $orders_status_history_array['comments']; 
+                break;
+              }
+            }
+            tep_db_free_result($orders_status_history_query);
+          }
+          $pay_buying_comment = $pay_buying_comment == '' && $payment_code == $payment_array[0][0] ? $pay_comment : $pay_buying_comment;
+          $pay_convenience_store_comment = $pay_convenience_store_comment == '' && $payment_code == $payment_array[0][2] ? $pay_comment : $pay_convenience_store_comment;
+          $pay_rakuten_bank_comment = $pay_rakuten_bank_comment == '' && $payment_code == $payment_array[0][9] ?  $pay_comment : $pay_rakuten_bank_comment;
                   echo "\n".'<script language="javascript">'."\n"; 
                   echo '$(document).ready(function(){'."\n";
 
-                  $cpayment->admin_show_payment_list($payment_code,$pay_comment); 
+                  $cpayment->admin_show_payment_list($payment_code,$pay_buying_comment,$pay_convenience_store_comment,$pay_rakuten_bank_comment); 
                   echo '});'."\n";
                   echo '</script>'."\n";
       
