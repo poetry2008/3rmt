@@ -364,9 +364,7 @@ if($save_flag == 0 || $orders_exit_flag == true){
         //$plus = $result4['point'] + $get_point;
 
         if($check_status['payment_method'] != TEXT_POINT_PAYMENT){
-          tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " . $get_point . 
-              " where customers_id = '" . $result1['customers_id']."' 
-              and customers_guest_chk = '0' ");
+          tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " . $get_point .  " where customers_id = '" . $result1['customers_id']."' and customers_guest_chk = '0' ");
         }
       }else{
         $os_query = tep_db_query("select orders_status_name,nomail from " . TABLE_ORDERS_STATUS . " where orders_status_id = '".$status."'");
@@ -391,9 +389,7 @@ if($save_flag == 0 || $orders_exit_flag == true){
               orders_id = '".tep_db_input($oID)."'");
           $point_done_row  =  tep_db_fetch_array($point_done_query);
           if($point_done_row['cnt'] <1 ){
-            tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " .
-                $get_point . " where customers_id = '" . $result1['customers_id']."' 
-                and customers_guest_chk = '0'");
+            tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " .  $get_point . " where customers_id = '" . $result1['customers_id']."' and customers_guest_chk = '0'");
           }
         }
       }
@@ -1356,7 +1352,7 @@ if($address_error == false){
           }
           }
           if($save_flag == 0){
-            tep_mail(get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), TEXT_ORDERS_SEND_MAIL . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $emaissl, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);
+            tep_mail(get_configuration_by_site_id('STORE_OWNER',$order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS',$order->info['site_id']), TEXT_ORDERS_SEND_MAIL . get_configuration_by_site_id('STORE_NAME',$order->info['site_id']) . '】', $email, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);
           }
           $customer_notified = '1';
           

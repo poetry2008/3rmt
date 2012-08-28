@@ -98,10 +98,6 @@
 
 // process the selected shipping method
   if ( (isset($_POST['action']) && ($_POST['action'] == 'process')) || (isset($_SESSION['ischeck']) && $_SESSION['ischeck'] == 1) ) {
-    if(isset($_SESSION['ischeck']) && $_SESSION['ischeck'] == 1){
-    
-      $_POST = $_SESSION['shipping_all'];
-    }
     if (!tep_session_is_registered('comments')) tep_session_register('comments');
 
     if (!tep_session_is_registered('shipping')) tep_session_register('shipping');
@@ -1550,7 +1546,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() > 0) {
   <h3><b><?php echo TEXT_POINT_OR_CAMPAION; ?></b></h3>
     <div class="payment-content">
       <?php
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if (isset($_POST['point'])) {
           $default_point_value = $campaign_error?$campaign_error_str:$_POST['point']; 
         } else {
           $default_point_value = (isset($_SESSION['hc_point']))?$_SESSION['hc_point']:((isset($_SESSION['h_point']))?$_SESSION['h_point']:($campaign_error?$campaign_error_str:0)); 
@@ -1573,7 +1569,7 @@ if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() > 0) {
    <h3><b><?php echo TEXT_POINT_OR_CAMPAION; ?></b></h3>
      <div>
      <?php
-      if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+      if (isset($_POST['camp_point'])) {
         $default_point_value = $campaign_error?$campaign_error_str:$_POST['camp_point']; 
       } else {
         $default_point_value = (isset($_SESSION['hc_camp_point']))?$_SESSION['hc_camp_point']:($campaign_error?$campaign_error_str:0); 

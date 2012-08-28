@@ -45,6 +45,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
   tep_session_unregister('hc_camp_point');
 }
 
+if (isset($_SESSION['ischeck']) && $_SESSION['ischeck'] == 1) {
+  $_POST = $_SESSION['shipping_all'];
+}
+
 if (!empty($_POST['camp_point'])) {
   $_POST['camp_point'] = get_strip_campaign_info($_POST['camp_point']); 
   if ($cart->show_total() > 0) {
