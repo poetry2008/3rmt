@@ -31,21 +31,22 @@ while ($orders_list_res = mysql_fetch_array($orders_list_raw)) {
       $result3 = mysql_fetch_array($query3);
       
       $point_rate = MODULE_ORDER_TOTAL_POINT_FEE;
-        
-      if ($result3['value'] >= 0) {
-        $get_point = ($result3['value'] - (int)$result2['value']) * $point_rate;
-      } else {
-        if ($result3['value'] > -200) {
-          if ($pcount['payment_method'] == '来店支払い') {
-            $get_point = 0;
-          } else {
-            $get_point = abs($result3['value']);
-          }
+      if ($result2['value'] != '0.0000') {
+        if ($result3['value'] >= 0) {
+          $get_point = ($result3['value'] - (int)$result2['value']) * $point_rate;
         } else {
-          $get_point = 0;
+          if ($result3['value'] > -200) {
+            if ($pcount['payment_method'] == '来店支払い') {
+              $get_point = 0;
+            } else {
+              $get_point = abs($result3['value']);
+            }
+          } else {
+            $get_point = 0;
+          }
         }
+        mysql_query( "update customers set point = point + " . intval($get_point) . " where customers_id = '" . $pcount['customers_id'] . "' and customers_guest_chk = '0'");
       }
-      mysql_query( "update customers set point = point + " . $get_point . " where customers_id = '" . $pcount['customers_id'] . "' and customers_guest_chk = '0'");
     }
   }
 }
