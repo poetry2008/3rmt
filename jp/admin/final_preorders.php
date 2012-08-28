@@ -190,15 +190,12 @@
       $bank_info = implode('<<<|||',$bank_info_array);; 
       break;
     case $payment_array[0][2]:
-      $cemail_array = explode("\n",$comment_arr);
-      $cemail_text = $cemail_array[0]; 
+      $cemail_text = $comment_arr['payment_bank_info']['add_info']; 
       break;
     case $payment_array[0][9]:
-      $raku_text_array = explode("\n",$comment_arr);
-      $raku_text = $raku_text_array[0];
+      $raku_text = $comment_arr['payment_bank_info']['add_info'];
       break;
     } 
-
     // 1.1 UPDATE ORDER INFO #####
     $UpdateOrders = "update " . TABLE_PREORDERS . " set 
       customers_name = '" . tep_db_input(stripslashes($update_customer_name)) . "',

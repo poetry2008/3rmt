@@ -10,6 +10,9 @@ require('includes/step-by-step/new_application_top.php');
 ini_set("display_errors","Off");
 include(DIR_FS_ADMIN . DIR_WS_LANGUAGES . $language . '/' . FILENAME_EDIT_ORDERS);
 require(DIR_FS_ADMIN . DIR_WS_LANGUAGES . $language . '/step-by-step/' . FILENAME_EDIT_ORDERS);
+if(!isset($_SESSION['sites_id_flag']) || !isset($_SESSION['customer_id']) || !isset($_SESSION['email_address']) || !isset($_SESSION['firstname']) || !isset($_SESSION['lastname'])){
+  tep_redirect(tep_redirect(tep_href_link(FILENAME_CREATE_ORDER, null, 'SSL')));
+}
 
 require(DIR_WS_CLASSES . 'currencies.php');
 $currencies = new currencies(2);
