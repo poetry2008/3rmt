@@ -1267,7 +1267,7 @@ if($address_error == false){
 
             $mailoption['TORIHIKIHOUHOU']   =  $order->tori['houhou'];      //?
             $mailoption['ORDER_PAYMENT']    = $order->info['payment_method'] ;  //d
-            $trade_time = str_replace($oarr, $newarr,date('Y'.TEXT_DATE_YEAR.'m'.TEXT_DATE_MONTH.'d'.TEXT_DATE_DAY.'（l） H'.TEXT_HOUR.'i'.TEXT_MIN, strtotime($_POST['date_orders'].' '.$_POST['start_hour'].':'.$_POST['start_min'].':00'))); 
+            $trade_time = str_replace($oarr, $newarr,date('Y'.TEXT_DATE_YEAR.'m'.TEXT_DATE_MONTH.'d'.TEXT_DATE_DAY.'（l）H'.TEXT_HOUR.'i'.TEXT_MIN, strtotime($_POST['date_orders'].' '.$_POST['start_hour'].':'.$_POST['start_min'].':00'))); 
             $trade_time_1 = date('H時i分',strtotime($_POST['date_orders'].' '.$_POST['end_hour'].':'.$_POST['end_min'].':00'));
             $mailoption['ORDER_TTIME']      = $trade_time . TEXT_TIME_LINK . $trade_time_1 .TEXT_TWENTY_FOUR_HOUR;//d
             //$mailoption['ORDER_COMMENT']    = $notify_comments_mail;// = $comments;
