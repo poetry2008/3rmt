@@ -1064,7 +1064,7 @@ if($address_error == false){
         }else{
           $os_query = tep_db_query("select orders_status_name from " . TABLE_ORDERS_STATUS . " where orders_status_id = '".$status."'");
           $os_result = tep_db_fetch_array($os_query);
-          if($os_result['orders_status_name']==TEXT_PAYMENT_NOTICE){
+          if($os_result['orders_status_name']==TEXT_NOTICE_PAYMENT){
             $query1 = tep_db_query("select customers_id from " . TABLE_ORDERS . " where orders_id = '".$oID."'");
             $result1 = tep_db_fetch_array($query1);
 
