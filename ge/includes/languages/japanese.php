@@ -463,4 +463,21 @@ define('BROWSER_LANGUAGE','ブラウザの言語:');
 define('BROWSER_PC_LANGUAGE','パソコンの言語環境:');
 define('BROWSER_USER_LANGUAGE','ユーザーの言語環境:');
 define('TEXT_TIME_LINK', 'から');
+// header language
+define('TEXT_HEADER_DEFAULT_TITLE','RMT 価格を徹底追求！RMTランキングNO.1');
+define('TEXT_HEADER_DEFAULT_TITLE_CATEGORIES','ドラクエ10、ラグナロク、ウェブマネーを激安販売！高価買取！ - '.STORE_NAME);
+define('HEADER_TITLE_SHOPPING_CART','ショッピングカート');
+define('HEADER_TITLE_CONDITIONS','ご利用方法');
+define('HEADER_TITLE_CONTACT_US','お問い合わせ');
+define('TEXT_HEADER_TOP_TITLE_STRONG','<strong>%s-RMT</strong> 価格を徹底追求！RMTランキングNO.1');
+define('TEXT_HEADER_TOP_TITLE','%sを激安販売！高価買取！-'.STORE_NAME);
+//ost language 
+define('TEXT_OST_THANKYOU_INFO_TEXT',
+'24時間経過しても返答が届かない場合は、以下のことを必ずご確認ください。<br>
+＜迷惑メールフォルダの確認＞<br>
+弊社のメールが 「迷惑メールフォルダ」や「ゴミ箱」に振り分けされ見落としていませんか？<br>
+＜メールドメインの受信制限を設定している＞<br>
+%sのメールドメインを受信するように設定をお願いいたします。<br>
+＜それでも届かないときは、メールアドレス変更＞<br>
+別のメールアドレスをご入力いただき、お問い合わせをお願いいたします。');
 ?>
