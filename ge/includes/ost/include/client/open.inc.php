@@ -13,11 +13,11 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
         <p id="warnmessage"><?=$warn?></p>
     <?}?>
 </div>
-<div>必要な情報をご入力ください.</div>
+<div><?php echo TEXT_OPEN_REQUIRED_INFORMATION;?></div>
 <form action="<?php echo tep_href_link('open.php','','SSL')?>" method="POST" enctype="multipart/form-data">
 <table class="open_table" align="left" cellpadding=2 cellspacing=1 width="100%">
     <tr>
-        <th width="27%" align="left">お名前</th>
+        <th width="27%" align="left"><?php echo TEXT_OPEN_YOUR_NAME;?></th>
         <td>
             <?if ($thisclient && ($name=$thisclient->getName())) {
                 ?>
@@ -29,7 +29,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
         </td>
     </tr>
     <tr>
-        <th align="left" >メールアドレス</th>
+        <th align="left" ><?php echo TEXT_OPEN_EMAIL_ADDRESS;?></th>
         <td>
             <?if ($thisclient && ($email=$thisclient->getEmail())) {
                 ?>
@@ -41,14 +41,13 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
         </td>
     </tr>
     <tr>
-        <th align="left">件名</th>
+        <th align="left"><?php echo TEXT_OPEN_SUBJECT;?></th>
         <td>
-            <input type="text" name="subject" size="25" value="<?=isset($info['subject'])?$info['subject']:(isset($_GET['products'])?$_GET['products'].'について':(isset($_GET['pname'])?$_GET['pname'].'の確保期限について':''))?>">
-            &nbsp;<font class="error">*&nbsp;<?=$errors['subject']?></font>
+            <input type="text" name="subject" size="25" value="<?=isset($info['subject'])?$info['subject']:(isset($_GET['products'])?$_GET['products'].TEXT_OPEN_PART1:(isset($_GET['pname'])?$_GET['pname'].TEXT_OPEN_PART2:''))?>">&nbsp;<font class="error">*&nbsp;<?=$errors['subject']?></font>
         </td>
     </tr>
     <tr>
-        <th align="left" valign="top">ご質問内容</th>
+        <th align="left" valign="top"><?php echo TEXT_OPEN_YOUR_QUESTION;?></th>
         <td>
             <textarea name="message" cols="35" rows="8" wrap="soft" style="width:80%"><?=$info['message']?></textarea>
             <? if($errors['message']) {?> <font class="error">*&nbsp;<?=$errors['message']?></font><br/><?}?>
@@ -59,7 +58,7 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
       $sql='SELECT priority_id,priority_desc FROM '.TICKET_PRIORITY_TABLE.' WHERE ispublic=1 ORDER BY priority_urgency DESC';
       if(($priorities=db_query($sql)) && db_num_rows($priorities)){ ?>
       <tr>
-        <td>重要度</td>
+        <td><?php echo TEXT_OPEN_SEVERITY;?></td>
         <td>
             <select name="pri">
               <?
@@ -78,10 +77,10 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
         
         ?>
     <tr>
-        <th valign="top" align="left">添付ファイル</th>
+        <th valign="top" align="left"><?php echo TEXT_OPEN_ATTACHMENT;?></th>
         <td>
             <input type="file" name="attachment">
-            <br><font color="#ffffff" size="2">許可されているファイル形式は、拡張子が<?php echo $allow_file_show;?>のいずれかとなるものです。<br>ファイル名に「.(ドット)」を2つ以上含むファイルは添付できません。</font>
+            <br><font color="#ffffff" size="2"><?php echo sprintf(TEXT_OPEN_DES_PART,$allow_file_show);?></font>
             <?php if(isset($errors['attachment'])&&$errors['attachment']){ ?>
             <br><font class="error"><?php echo $errors['attachment']?></font>
             <?php } ?>
@@ -91,14 +90,15 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
     <?if($cfg && $cfg->enableCaptcha()/* && (!$thisclient ||
                                          !$thisclient->isValid())*/) {
         if($_POST && $errors && !$errors['captcha'])
-            $errors['captcha']='必須項目エラー';
+            $errors['captcha']=TEXT_OPEN_MANDATORY_ERROR;
         ?>
     <tr>
-        <th valign="top" align="left">認証コード</th>
+        <th valign="top" align="left"><?php echo TEXT_OPEN_CODE;?></th>
         <td>
-        <div class="img_clear"><img src="captcha.php" border="0" align="left">&nbsp;&nbsp;<input type="text" name="captcha" size="7" value="">&nbsp;<i class="captcha_comment">認証画像の内容をご入力ください.</i>
+        <div class="img_clear"><img src="captcha.php" border="0" align="left">&nbsp;&nbsp;<input type="text" name="captcha" size="7" value="">&nbsp;<i class="captcha_comment"><?php 
+        echo TEXT_OPEN_ENTER_CONTENTS;?></i>
         <?php if($errors['captcha']){ ?>
-        
+                <br>
                 <font class="error"><?=$errors['captcha']?></font>
         <?php } ?>
 		</div>
@@ -107,9 +107,9 @@ $info=($_POST && $errors)?Format::input($_POST):array(); //on error...use the po
     <?}?>
     <tr>
         <td colspan="2" align="center">
-            <button type="submit" class="button" style="padding:0;background:none;border:none;" value="送信"><img src="includes/languages/japanese/images/buttons/button_send_mail.gif" /></button>
-            <button type="reset"  class="button" style="padding:0;background:none;border:none;" value="リセット"><img src="includes/languages/japanese/images/buttons/open_users01.gif" /></button>
-            <button type="button" class="button" style="padding:0;background:none;border:none;" value="キャンセル" onClick='window.location.href="<?php echo FILENAME_CONTACT_US;?>";'><img src="includes/languages/japanese/images/buttons/open_users02.gif" /></button>
+            <button type="submit" class="button" style="padding:0;background:none;border:none;" value="<?php echo TEXT_OPEN_SEND_EMAIL;?>"><img src="includes/languages/japanese/images/buttons/button_send_mail.gif" /></button>
+            <button type="reset"  class="button" style="padding:0;background:none;border:none;" value="<?php echo TEXT_OPEN_RESET;?>"><img src="includes/languages/japanese/images/buttons/open_users01.gif" /></button>
+            <button type="button" class="button" style="padding:0;background:none;border:none;" value="<?php echo TEXT_OPEN_CANCELED;?>" onClick='window.location.href="<?php echo FILENAME_CONTACT_US;?>";'><img src="includes/languages/japanese/images/buttons/open_users02.gif" /></button>
         </td>
     </tr>
 </table>
