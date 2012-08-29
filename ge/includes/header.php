@@ -44,15 +44,14 @@
 if (!isset($_GET['cPath'])) $_GET['cPath']= NULL;
 if (!isset($_GET['products_id'])) $_GET['products_id']= NULL;
   if ($_GET['cPath']) {
-    echo '<p class="header1"><strong>' . $seo_category['seo_name'] . '-RMT</strong> 安いが一番！最安値-ゲーム通貨の激安販売</p>' . "\n";
-    echo '<p class="header2">' . $seo_category['seo_name'] . 'を激安販売-'.STORE_NAME.'</p>' . "\n";
+    echo '<p class="header1">'.sprintf(TEXT_HEADER_TOP_TITLE_STRONG,$seo_category['seo_name']) . '</p>' . "\n";
+    echo '<p class="header2">' .  sprintf(TEXT_HEADER_TOP_TITLE,$seo_category['seo_name']) . '</p>' . "\n";
   } elseif ($_GET['products_id']) {
-    echo '<p class="header1"><strong>' . ds_tep_get_categories((int)$_GET['products_id'],1) . '</strong> 安いが一番！最安値-ゲーム通貨の激安販売</p>' . "\n";
-    echo '<p class="header2">' . ds_tep_get_categories((int)$_GET['products_id'],1)
-      . 'を激安販売-'.STORE_NAME.'</p>' . "\n";
+    echo '<p class="header1">' .sprintf(TEXT_HEADER_TOP_TITLE_STRONG,ds_tep_get_categories((int)$_GET['products_id'],1)). '</p>' . "\n";
+    echo '<p class="header2">' . sprintf(TEXT_HEADER_TOP_TITLE,ds_tep_get_categories((int)$_GET['products_id'],1)). '</p>' . "\n";
   } else {
-    echo '<h1 class="header1">RMT 最安値-アイテムの激安販売</h1>' . "\n";
-    echo '<p class="header2">FF11、リネージュ2、レッドストーン、AIONを激安販売 - '.STORE_NAME.'</p>' . "\n";
+    echo '<h1 class="header1">'.TEXT_HEADER_DEFAULT_TITLE.'</h1>' . "\n";
+    echo '<p class="header2">'.TEXT_HEADER_DEFAULT_TITLE_CATEGORIES.'</p>' . "\n";
   }
 ?>
 </div>
@@ -64,8 +63,10 @@ if (!isset($_GET['products_id'])) $_GET['products_id']= NULL;
 </div>
 <div id="h_menubar">
   <ul>
-    <li><a href="<?php echo tep_href_link(FILENAME_SITEMAP,'','NONSSL');?>">サイトマップ</a>|</li>
-    <li><a href="<?php echo tep_href_link(FILENAME_SHOPPING_CART,'','SSL');?>">ショッピングカート</a>|</li>
+    <li><a href="<?php echo tep_href_link(FILENAME_SITEMAP,'','NONSSL');?>"><?php 
+    echo HEADER_TITLE_SITEMAP;?></a>|</li>
+    <li><a href="<?php echo tep_href_link(FILENAME_SHOPPING_CART,'','SSL');?>"><?php 
+    echo HEADER_TITLE_SHOPPING_CART;?></a>|</li>
     <li>
     <?php
       // add info romaji 
@@ -73,7 +74,8 @@ if (!isset($_GET['products_id'])) $_GET['products_id']= NULL;
       $co_res = tep_db_fetch_array($co_query); 
       if ($co_res) { 
     ?>
-    <a href="<?php echo info_tep_href_link($co_res['romaji']);?>">ご利用方法</a>|
+    <a href="<?php echo info_tep_href_link($co_res['romaji']);?>"><?php 
+    echo HEADER_TITLE_CONDITIONS;?></a>|
     <?php
       }
     ?>
@@ -85,12 +87,14 @@ if (!isset($_GET['products_id'])) $_GET['products_id']= NULL;
       $gu_res = tep_db_fetch_array($gu_query); 
       if ($gu_res) { 
     ?>
-    <a href="<?php echo info_tep_href_link($gu_res['romaji']);?>">会社概要</a>|
+    <a href="<?php echo info_tep_href_link($gu_res['romaji']);?>"><?php echo 
+    HEADER_TITLE_ABOUT_US;?></a>|
     <?php
       }
     ?>
     </li>
-  <li><a href="<?php echo tep_href_link(FILENAME_CONTACT_US,'','SSL');?>">お問い合わせ</a></li>
+  <li><a href="<?php echo tep_href_link(FILENAME_CONTACT_US,'','SSL');?>"><?php echo 
+  HEADER_TITLE_CONTACT_US;?></a></li>
   </ul>
 </div>
 <script type="text/JavaScript">

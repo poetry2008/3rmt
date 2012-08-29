@@ -8,6 +8,7 @@ mysql_query("set names utf8");
 
 echo 'start!<br>';
 $before_time = "2012-08-13 04:00:00";
+$end_time    = "2012-08-28 17:51:00";
 
 $configure_raw = mysql_query("select configuration_value from configuration where configuration_key = 'MODULE_ORDER_TOTAL_POINT_ADD_STATUS' and site_id = '0'");
 $configure_res = mysql_fetch_array($configure_raw);
@@ -17,7 +18,7 @@ $configure_one_raw = mysql_query("select configuration_value from configuration 
 $configure_one_res = mysql_fetch_array($configure_one_raw);
 define('MODULE_ORDER_TOTAL_POINT_FEE', $configure_one_res['configuration_value']);
 
-$orders_list_raw = mysql_query("select orders_id from orders_status_history where date_added >= '".$before_time."' and orders_status_id = '".MODULE_ORDER_TOTAL_POINT_ADD_STATUS."' group by orders_id");
+$orders_list_raw = mysql_query("select orders_id from orders_status_history where date_added >= '".$before_time."' and date_added <= '".$end_time."' and orders_status_id = '".MODULE_ORDER_TOTAL_POINT_ADD_STATUS."' group by orders_id");
 
 while ($orders_list_res = mysql_fetch_array($orders_list_raw)) {
   $pcount_query = mysql_query("select customers_id, payment_method from orders where orders_id = '".$orders_list_res['orders_id']."'");
@@ -34,15 +35,7 @@ while ($orders_list_res = mysql_fetch_array($orders_list_raw)) {
       if ($result3['value'] >= 0) {
         $get_point = ($result3['value'] - (int)$result2['value']) * $point_rate;
       } else {
-        if ($result3['value'] > -200) {
-          if ($pcount['payment_method'] == '来店支払い') {
-            $get_point = 0;
-          } else {
-            $get_point = abs($result3['value']);
-          }
-        } else {
-          $get_point = 0;
-        }
+        $get_point = 0;
       }
       mysql_query( "update customers set point = point + " . intval($get_point) . " where customers_id = '" . $pcount['customers_id'] . "' and customers_guest_chk = '0'");
     }
