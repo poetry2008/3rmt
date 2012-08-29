@@ -138,8 +138,7 @@
                 </table>
 				<div id="hm-checkout-warp">
 				<div class="checkout-bottom"><?php echo
-                                tep_image_submit('button_continue.gif',
-                                    IMAGE_BUTTON_CONTINUE,'onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_continue.gif\'" onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_continue_hover.gif\'"'); ?></div>
+                                tep_image_submit('button_continue_hover.gif', IMAGE_BUTTON_CONTINUE); ?></div>
 				</div>
 				<div class="checkout-conent">
 <table border="0" width="100%" cellspacing="0" cellpadding="0"
@@ -190,7 +189,7 @@ class="success_spacing">
 		  </div>
 		  <div id="hm-checkout-warp">
 		  <div class="checkout-bottom"><?php echo
-                  tep_image_submit('button_continue.gif', IMAGE_BUTTON_CONTINUE,'onmouseout="this.src=\'includes/languages/japanese/images/buttons/button_continue.gif\'" onmouseover="this.src=\'includes/languages/japanese/images/buttons/button_continue_hover.gif\'"'); ?></div>
+                  tep_image_submit('button_continue_hover.gif', IMAGE_BUTTON_CONTINUE); ?></div>
 		  </div></div>
           </form> 
         
