@@ -35,17 +35,7 @@ while ($orders_list_res = mysql_fetch_array($orders_list_raw)) {
       if ($result3['value'] >= 0) {
         $get_point = ($result3['value'] - (int)$result2['value']) * $point_rate;
       } else {
-        if ($result3['value'] > -200) {
-          if ($pcount['payment_method'] == '来店支払い') {
-            $get_point = 0;
-          } else if ($pcount['payment_method'] == '銀行振込(買い取り)') {
-            $get_point = 0;
-          } else {
-            $get_point = abs($result3['value']);
-          }
-        } else {
-          $get_point = 0;
-        }
+        $get_point = 0;
       }
       mysql_query( "update customers set point = point + " . intval($get_point) . " where customers_id = '" . $pcount['customers_id'] . "' and customers_guest_chk = '0'");
     }
