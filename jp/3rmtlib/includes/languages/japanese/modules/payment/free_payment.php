@@ -15,3 +15,4 @@
   define('TS_MODULE_PAYMENT_FREE_PAYMENT_TEXT_SHOW', '');
 //  define('TS_MODULE_PAYMENT_FREE_PAYMENT_TEXT_SHOW', '振込先口座情報に誤りがないかご確認ください。');
   define('TS_MODULE_PAYMENT_FREE_PAYMENT_TEXT_CONFIRMATION', '総額が0円なので支払いは発生しません。');
+  define('TS_MODULE_PAYMENT_FREE_PAYMENT_NORMAL', '普通');

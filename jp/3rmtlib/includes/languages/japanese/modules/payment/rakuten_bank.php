@@ -60,3 +60,4 @@
 ※ お振り込みはご注文から7日以内にお願いいたします。
 ※ ご入金を株式会社iimyが確認した時点でご契約の成立となります。
 ');
+define('TS_MODULE_PAYMENT_RAKUTEN_NORMAL', '普通');

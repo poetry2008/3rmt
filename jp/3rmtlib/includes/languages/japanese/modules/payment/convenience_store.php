@@ -48,4 +48,5 @@
 //define('TS_MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_DESCRIPTION',"LAWSON、スリーエフ、MINI STOP、サークルK、SUNKUSがご利用いただけます。
 //30,000円未満の決済の場合200円、30,000円以上の決済の場合は350円の手数料が別途必要となります。");
 
-define('TS_TEXT_HANDLE_FEE_CONFIRMATION', '手数料:');
+  define('TS_TEXT_HANDLE_FEE_CONFIRMATION', '手数料:');
+  define('TS_MODULE_PAYMENT_CONVENIENCE_STORE_NORMAL', '普通');

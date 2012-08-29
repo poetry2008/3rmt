@@ -250,10 +250,10 @@ class moneyorder extends basePayment implements paymentInterface {
   function get_email_configuration($site_id,$oid=0){
     return get_configuration_by_site_id('C_BANK',$site_id);
   }
-  function admin_show_payment_list($pay_buying_comment,$pay_convenience_store_comment,$pay_rakuten_bank_comment){
+  function admin_show_payment_list($pay_info_array){
 
    global $_POST;
-   $pay_array = explode("\n",trim($pay_buying_comment));
+   $pay_array = explode("\n",trim($pay_info_array[0]));
    $bank_name = explode(':',$pay_array[0]);
    $bank_name[1] = isset($_POST['bank_name']) ? $_POST['bank_name'] : $bank_name[1]; 
    echo 'document.getElementsByName("bank_name")[0].value = "'. $bank_name[1] .'";'."\n"; 
@@ -262,7 +262,7 @@ class moneyorder extends basePayment implements paymentInterface {
    echo 'document.getElementsByName("bank_shiten")[0].value = "'. $bank_shiten[1] .'";'."\n"; 
    $bank_kamoku = explode(':',$pay_array[2]);
    $bank_kamoku[1] = isset($_POST['bank_kamoku']) ? $_POST['bank_kamoku'] : $bank_kamoku[1];
-   if($bank_kamoku[1] == TS_TEXT_BANK_SELECT_KAMOKU_F){
+   if($bank_kamoku[1] == TS_MODULE_PAYMENT_MONEYORDER_NORMAL){
      echo 'document.getElementsByName("bank_kamoku")[0].checked = true;'."\n"; 
    }else{
      echo 'document.getElementsByName("bank_kamoku")[1].checked = true;'."\n"; 
@@ -273,11 +273,11 @@ class moneyorder extends basePayment implements paymentInterface {
    $bank_kouza_name = explode(':',$pay_array[4]);
    $bank_kouza_name[1] = isset($_POST['"bank_kouza_name']) ? $_POST['"bank_kouza_name'] : $bank_kouza_name[1];
    echo 'document.getElementsByName("bank_kouza_name")[0].value = "'.$bank_kouza_name[1].'";'."\n";
-   $pay_array = explode("\n",trim($pay_convenience_store_comment));
+   $pay_array = explode("\n",trim($pay_info_array[1]));
    $con_email = explode(":",trim($pay_array[0]));
    $con_email[1] = isset($_POST['con_email']) ? $_POST['con_email'] : $con_email[1];
    echo 'document.getElementsByName("con_email")[0].value = "'.$con_email[1].'";'."\n";
-   $pay_array = explode("\n",trim($pay_rakuten_bank_comment));
+   $pay_array = explode("\n",trim($pay_info_array[2]));
    $rak_tel = explode(":",trim($pay_array[0]));
    $rak_tel[1] = isset($_POST['rak_tel']) ? $_POST['rak_tel'] : $rak_tel[1];
    echo 'document.getElementsByName("rak_tel")[0].value = "'.$rak_tel[1].'";'."\n";
