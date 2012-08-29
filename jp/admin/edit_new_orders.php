@@ -278,114 +278,7 @@ if($orders_exit_flag == true){
        }
         var 
      */ 
-    //Add Point System
-    if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && MODULE_ORDER_TOTAL_POINT_ADD_STATUS != '0') {
-      $pcount_query = tep_db_query("select count(*) as cnt from ".TABLE_ORDERS_STATUS_HISTORY." where orders_status_id = '".MODULE_ORDER_TOTAL_POINT_ADD_STATUS."' and orders_id = '".$oID."'");
-      $pcount = tep_db_fetch_array($pcount_query);
-      if($pcount['cnt'] == 0 && $status == MODULE_ORDER_TOTAL_POINT_ADD_STATUS) {
-        if($save_flag == 0 || $orders_exit_flag == true){
-          $query1 = tep_db_query("select customers_id from " . TABLE_ORDERS . " where orders_id = '".$oID."'");
-          $result1 = tep_db_fetch_array($query1);
-        }else{
-          $result1['customers_id'] = $customer_id_flag; 
-        }
-        $query2 = tep_db_query("select value from ".TABLE_ORDERS_TOTAL." where class = 'ot_point' and orders_id = '".tep_db_input($oID)."'");
-        $result2 = tep_db_fetch_array($query2);
-        $query3 = tep_db_query("select value from ".TABLE_ORDERS_TOTAL." where class = 'ot_subtotal' and orders_id = '".tep_db_input($oID)."'");
-        $result3 = tep_db_fetch_array($query3);
-        $query4 = tep_db_query("select point from " . TABLE_CUSTOMERS . " where customers_id = '".$result1['customers_id']."'");
-        $result4 = tep_db_fetch_array($query4);
-
-
-
-        // ここからカスタマーレベルに応じたポイント還元率算出============================================================
-        if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
-          $customer_id = $result1['customers_id'];
-          //設定した期間内の注文合計金額を算出------------
-          $ptoday = date("Y-m-d H:i:s", time());
-          $pstday_array = getdate();
-          $pstday = date("Y-m-d H:i:s", mktime($pstday_array[hours],$pstday_array[mimutes],$pstday_array[second],$pstday_array[mon],($pstday_array[mday] - MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL_KIKAN),$pstday_array[year]));
-
-          $total_buyed_date = 0;
-          $customer_level_total_query = tep_db_query("select * from orders where customers_id = '".$customer_id."' and date_purchased >= '".$pstday."'");
-          if(tep_db_num_rows($customer_level_total_query)) {
-            while($customer_level_total = tep_db_fetch_array($customer_level_total_query)) {
-              $cltotal_subtotal_query = tep_db_query("select value from orders_total where orders_id = '".$customer_level_total['orders_id']."' and class = 'ot_subtotal'");
-              $cltotal_subtotal = tep_db_fetch_array($cltotal_subtotal_query);
-
-              $cltotal_point_query = tep_db_query("select value from orders_total where orders_id = '".$customer_level_total['orders_id']."' and class = 'ot_point'");
-              $cltotal_point = tep_db_fetch_array($cltotal_subtotal_query);
-
-              $total_buyed_date += ($cltotal_subtotal['value'] - $cltotal_point['value']);
-            }
-          }
-          //----------------------------------------------
-          //今回の注文額は除外
-          $total_buyed_date = $total_buyed_date - ($result3['value'] - (int)$result2['value']);
-
-          //還元率を計算----------------------------------
-          if(mb_ereg("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK)) {
-            $back_rate_array = explode("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK);
-            $back_rate = MODULE_ORDER_TOTAL_POINT_FEE;
-            for($j=0; $j<sizeof($back_rate_array); $j++) {
-              $back_rate_array2 = explode(",", $back_rate_array[$j]);
-              if($back_rate_array2[2] <= $total_buyed_date) {
-                $back_rate = $back_rate_array2[1];
-                $back_rate_name = $back_rate_array2[0];
-              }
-            }
-          } else {
-            $back_rate_array = explode(",", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK);
-            if($back_rate_array[2] <= $total_buyed_date) {
-              $back_rate = $back_rate_array[1];
-              $back_rate_name = $back_rate_array[0];
-            }
-          }
-          //----------------------------------------------
-          $point_rate = $back_rate;
-        } else {
-          $point_rate = MODULE_ORDER_TOTAL_POINT_FEE;
-        }
-        // ここまでカスタマーレベルに応じたポイント還元率算出============================================================
-        if ($result3['value'] >= 0) {
-          $get_point = ($result3['value'] - (int)$result2['value']) * $point_rate;
-        } else {
-          if ($result3['value'] > -200) {
-
-            $get_point = $payment_modules->admin_get_fetch_point(payment::changeRomaji($payment_method,'code'),$result3['value']);
-            
-          } else {
-            $get_point = 0;
-          }
-        }
-        //$plus = $result4['point'] + $get_point;
-        if($save_flag == 0){ 
-          $payment_modules->admin_get_customer_point(payment::changeRomaji($payment_method,'code'),intval($get_point),$result1['customers_id']); 
-        }
-        
-      }else{
-        $os_query = tep_db_query("select orders_status_name,nomail from " . TABLE_ORDERS_STATUS . " where orders_status_id = '".$status."'");
-        $os_result = tep_db_fetch_array($os_query);
-        if($os_result['orders_status_name']==TEXT_NOTICE_PAYMENT){
-          if($save_flag == 0 || $orders_exit_flag == true){
-            $query1 = tep_db_query("select customers_id from " . TABLE_ORDERS . " where orders_id = '".$oID."'");
-            $result1 = tep_db_fetch_array($query1);
-          }else{
-
-            $result1['customers_id'] = $customer_id_flag;
-          }
-          $get_point = $payment_modules->admin_get_orders_point(payment::changeRomaji($check_status['payment_method'],'code'),$oID); 
-          $point_done_query =tep_db_query("select count(orders_status_history_id) cnt from
-              ".TABLE_ORDERS_STATUS_HISTORY." where orders_status_id = '".$status."' and 
-              orders_id = '".tep_db_input($oID)."'");
-          $point_done_row  =  tep_db_fetch_array($point_done_query);
-          if($point_done_row['cnt'] <1 && $save_flag == 0){
-            tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " .  intval($get_point) . " where customers_id = '" . $result1['customers_id']."' and customers_guest_chk = '0'");
-          }
-        }
-      }
-    }
-
+    
     if ($check_status['orders_status'] != $status || $comments != '' || $orders_exit_flag == false) {
       if($save_flag == 0){
         tep_db_query("update " . TABLE_ORDERS . " set orders_status = '" . tep_db_input($status) . "', last_modified = now() where orders_id = '" . tep_db_input($oID) . "'");
@@ -907,13 +800,7 @@ if($address_error == false){
           $products_delete = true;
         }
       }
-
-      if ($check_status['orders_status'] != $status || $comments != '' || $orders_exit_flag == false) {
-        if($save_flag == 0){
-          $comment_str = is_array($comment_arr) ? $comment_arr['comment'] : $comments_text;
-          tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . $customer_notified . "', '".$comment_str."')");
-        }
-      } 
+ 
       if($save_flag == 0){
         $orders_type_str = tep_get_order_type_info($oID);
         tep_db_query("update `".TABLE_ORDERS."` set `orders_type` = '".$orders_type_str."' where orders_id = '".tep_db_input($oID)."'"); 
@@ -999,7 +886,7 @@ if($address_error == false){
           //      $ot_text = "\$" . number_format($ot_value, 2, ',', '');
 
           $order = new order($oID);
-
+          $before_point = 0;
           if ($customer_guest['customers_guest_chk'] == 0 && $ot_class == "ot_point" && $ot_value != $before_point) { //会員ならポントの増減
             $point_difference = ($ot_value - $before_point);
             if($save_flag == 0){
@@ -1363,6 +1250,119 @@ if($address_error == false){
           $order_updated_2 = true;
         }
 
+    //Add Point System
+    if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && MODULE_ORDER_TOTAL_POINT_ADD_STATUS != '0') {
+      $pcount_query = tep_db_query("select count(*) as cnt from ".TABLE_ORDERS_STATUS_HISTORY." where orders_status_id = '".MODULE_ORDER_TOTAL_POINT_ADD_STATUS."' and orders_id = '".$oID."'");
+      $pcount = tep_db_fetch_array($pcount_query);
+      if($pcount['cnt'] == 0 && $status == MODULE_ORDER_TOTAL_POINT_ADD_STATUS) {
+        if($save_flag == 0 || $orders_exit_flag == true){
+          $query1 = tep_db_query("select customers_id from " . TABLE_ORDERS . " where orders_id = '".$oID."'");
+          $result1 = tep_db_fetch_array($query1);
+        }else{
+          $result1['customers_id'] = $customer_id_flag; 
+        }
+        $query2 = tep_db_query("select value from ".TABLE_ORDERS_TOTAL." where class = 'ot_point' and orders_id = '".tep_db_input($oID)."'");
+        $result2 = tep_db_fetch_array($query2);
+        $query3 = tep_db_query("select value from ".TABLE_ORDERS_TOTAL." where class = 'ot_subtotal' and orders_id = '".tep_db_input($oID)."'");
+        $result3 = tep_db_fetch_array($query3);
+        $query4 = tep_db_query("select point from " . TABLE_CUSTOMERS . " where customers_id = '".$result1['customers_id']."'");
+        $result4 = tep_db_fetch_array($query4);
+
+
+
+        // ここからカスタマーレベルに応じたポイント還元率算出============================================================
+        if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
+          $customer_id = $result1['customers_id'];
+          //設定した期間内の注文合計金額を算出------------
+          $ptoday = date("Y-m-d H:i:s", time());
+          $pstday_array = getdate();
+          $pstday = date("Y-m-d H:i:s", mktime($pstday_array[hours],$pstday_array[mimutes],$pstday_array[second],$pstday_array[mon],($pstday_array[mday] - MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL_KIKAN),$pstday_array[year]));
+
+          $total_buyed_date = 0;
+          $customer_level_total_query = tep_db_query("select * from orders where customers_id = '".$customer_id."' and date_purchased >= '".$pstday."'");
+          if(tep_db_num_rows($customer_level_total_query)) {
+            while($customer_level_total = tep_db_fetch_array($customer_level_total_query)) {
+              $cltotal_subtotal_query = tep_db_query("select value from orders_total where orders_id = '".$customer_level_total['orders_id']."' and class = 'ot_subtotal'");
+              $cltotal_subtotal = tep_db_fetch_array($cltotal_subtotal_query);
+
+              $cltotal_point_query = tep_db_query("select value from orders_total where orders_id = '".$customer_level_total['orders_id']."' and class = 'ot_point'");
+              $cltotal_point = tep_db_fetch_array($cltotal_subtotal_query);
+
+              $total_buyed_date += ($cltotal_subtotal['value'] - $cltotal_point['value']);
+            }
+          }
+          //----------------------------------------------
+          //今回の注文額は除外
+          $total_buyed_date = $total_buyed_date - ($result3['value'] - (int)$result2['value']);
+
+          //還元率を計算----------------------------------
+          if(mb_ereg("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK)) {
+            $back_rate_array = explode("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK);
+            $back_rate = MODULE_ORDER_TOTAL_POINT_FEE;
+            for($j=0; $j<sizeof($back_rate_array); $j++) {
+              $back_rate_array2 = explode(",", $back_rate_array[$j]);
+              if($back_rate_array2[2] <= $total_buyed_date) {
+                $back_rate = $back_rate_array2[1];
+                $back_rate_name = $back_rate_array2[0];
+              }
+            }
+          } else {
+            $back_rate_array = explode(",", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK);
+            if($back_rate_array[2] <= $total_buyed_date) {
+              $back_rate = $back_rate_array[1];
+              $back_rate_name = $back_rate_array[0];
+            }
+          }
+          //----------------------------------------------
+          $point_rate = $back_rate;
+        } else {
+          $point_rate = MODULE_ORDER_TOTAL_POINT_FEE;
+        }
+        // ここまでカスタマーレベルに応じたポイント還元率算出============================================================
+        if ($result3['value'] >= 0) {
+          $get_point = ($result3['value'] - (int)$result2['value']) * $point_rate;
+        } else {
+          if ($result3['value'] > -200) {
+
+            $get_point = $payment_modules->admin_get_fetch_point(payment::changeRomaji($payment_method,'code'),$result3['value']);
+            
+          } else {
+            $get_point = 0;
+          }
+        }
+        //$plus = $result4['point'] + $get_point;
+        if($save_flag == 0){ 
+          $payment_modules->admin_get_customer_point(payment::changeRomaji($payment_method,'code'),intval($get_point),$result1['customers_id']); 
+        }
+        
+      }else{
+        $os_query = tep_db_query("select orders_status_name,nomail from " . TABLE_ORDERS_STATUS . " where orders_status_id = '".$status."'");
+        $os_result = tep_db_fetch_array($os_query);
+        if($os_result['orders_status_name']==TEXT_NOTICE_PAYMENT){
+          if($save_flag == 0 || $orders_exit_flag == true){
+            $query1 = tep_db_query("select customers_id from " . TABLE_ORDERS . " where orders_id = '".$oID."'");
+            $result1 = tep_db_fetch_array($query1);
+          }else{
+
+            $result1['customers_id'] = $customer_id_flag;
+          }
+          $get_point = $payment_modules->admin_get_orders_point(payment::changeRomaji($check_status['payment_method'],'code'),$oID); 
+          $point_done_query =tep_db_query("select count(orders_status_history_id) cnt from
+              ".TABLE_ORDERS_STATUS_HISTORY." where orders_status_id = '".$status."' and 
+              orders_id = '".tep_db_input($oID)."'");
+          $point_done_row  =  tep_db_fetch_array($point_done_query);
+          if($point_done_row['cnt'] <1 && $save_flag == 0){
+            tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " .  intval($get_point) . " where customers_id = '" . $result1['customers_id']."' and customers_guest_chk = '0'");
+          }
+        }
+      }
+    }
+      if ($check_status['orders_status'] != $status || $comments != '' || $orders_exit_flag == false) {
+        if($save_flag == 0){
+          $comment_str = is_array($comment_arr) ? $comment_arr['comment'] : $comments_text;
+          tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . $customer_notified . "', '".$comment_str."')");
+        }
+      }
         if ($order_updated && !$products_delete && $order_updated_2) {
           if($message_success == false){
             $messageStack->add_session(SUCCESS_ORDER_UPDATED, 'success');
