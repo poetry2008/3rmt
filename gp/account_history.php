@@ -22,8 +22,7 @@
 ?>
 <?php page_head();?>
 </head>
-<body>
-<div class="body_shadow" align="center"> 
+<body><div class="body_shadow" align="center"> 
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
   <!-- header_eof //--> 
   <!-- body //--> 
@@ -51,7 +50,7 @@
         where o.customers_id = '" . $customer_id . "' 
           and ot.class = 'ot_total' 
           and o.site_id = ".SITE_ID." 
-	  and o.customer_is_quited = '0'
+  and o.customer_is_quited = '0'
     order by orders_id DESC
   ";
   $history_count_query_raw = "
@@ -82,7 +81,7 @@
 
       $order = '<table border="0" width="100%" cellspacing="0" cellpadding="2">' . "\n" .
                '  <tr>' . "\n" .
-               '    <td class="main" width="50%" valign="top"><b>' . TEXT_ORDER_DATE . '</b> ' . tep_date_long($history['date_purchased']) . '<br><b>' . TEXT_ORDER_SHIPPED_TO . '</b> ' . tep_output_string_protected($history['delivery_name']) . '</td>' . "\n" .
+               '    <td class="main" width="50%" valign="top"><b>' . TEXT_ORDER_DATE . '</b> ' . tep_date_long($history['date_purchased']) . '<br><b>' .  TEXT_ORDER_SHIPPED_TO . '</b> ' .  tep_get_orders_address($history['orders_id'])  . '</td>' . "\n" .
                '    <td class="main" width="30%" valign="top"><b>' .
                TEXT_ORDER_PRODUCTS . '</b> ' . $products['count'] . '<br><b>' .
                TEXT_ORDER_COST . '</b> ' .  $currencies->format_total($history['order_total_value']) . '</td>' . "\n" .  '    <td class="main" width="20%"><a href="' .

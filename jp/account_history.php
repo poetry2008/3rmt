@@ -22,17 +22,17 @@
 ?>
 <?php page_head();?>
 </head>
-<body>
+<body> 
 <div class="body_shadow" align="center"> 
   <?php require(DIR_WS_INCLUDES . 'header.php'); ?> 
-  <!-- header_eof //--> 
-  <!-- body //--> 
+  <!-- header_eof --> 
+  <!-- body --> 
   <table width="900" border="0" cellpadding="0" cellspacing="0" class="side_border"> 
     <tr> 
-      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"> <!-- left_navigation //--> 
+      <td width="<?php echo BOX_WIDTH; ?>" align="right" valign="top" class="left_colum_border"> <!-- left_navigation --> 
         <?php require(DIR_WS_INCLUDES . 'column_left.php'); ?> 
-        <!-- left_navigation_eof //--> </td> 
-      <!-- body_text //--> 
+        <!-- left_navigation_eof --> </td> 
+      <!-- body_text --> 
       <td valign="top" id="contents"> <h1 class="pageHeading"><?php echo HEADING_TITLE ; ?></h1> 
         
         <div> 
@@ -50,9 +50,7 @@
           left join " . TABLE_ORDERS_TOTAL . " ot on (o.orders_id = ot.orders_id) 
         where o.customers_id = '" . $customer_id . "' 
           and ot.class = 'ot_total' 
-          and o.site_id = ".SITE_ID." 
-	  and o.customer_is_quited = '0'
-    order by orders_id DESC
+          and o.site_id = ".SITE_ID." order by orders_id DESC
   ";
   $history_count_query_raw = "
         select count(o.orders_id) as count
@@ -82,15 +80,7 @@
 
       $order = '<table border="0" width="100%" cellspacing="0" cellpadding="2">' . "\n" .
                '  <tr>' . "\n" .
-               '    <td class="main" width="50%" valign="top"><div><b>' . TEXT_ORDER_DATE
-               . '</b> ' . tep_date_long($history['date_purchased']) .
-               '</div><div><div><b>' .
-               TEXT_ORDER_PRODUCTS_LIST . '</b></div><div>';
-      $history_products_list = tep_get_products_list_by_order_id($history['orders_id']);
-      foreach($history_products_list as $history_products_info){
-        $order.= $history_products_info['products_name']."<br>";
-      }
-      $order .= '</div></div></td>' . "\n" .
+               '    <td class="main" width="50%" valign="top"><b>' . TEXT_ORDER_DATE . '</b> ' . tep_date_long($history['date_purchased']) . '<br><b>' . TEXT_ORDER_SHIPPED_TO . '</b> ' . tep_get_orders_address($history['orders_id']) . '</td>' . "\n" .
                '    <td class="main" width="30%" valign="top"><b>' .
                TEXT_ORDER_PRODUCTS . '</b> ' . $products['count'] . '<br><b>' .
                TEXT_ORDER_COST . '</b> ' .  $currencies->format_total($history['order_total_value']) . '</td>' . "\n" .
@@ -130,15 +120,15 @@
             </tr> 
           </table> 
         </div></td> 
-      <!-- body_text_eof //--> 
-      <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation //--> 
+      <!-- body_text_eof --> 
+      <td valign="top" class="right_colum_border" width="<?php echo BOX_WIDTH; ?>"> <!-- right_navigation --> 
         <?php require(DIR_WS_INCLUDES . 'column_right.php'); ?> 
-        <!-- right_navigation_eof //--> </td> 
+        <!-- right_navigation_eof --> </td> 
   </table> 
-  <!-- body_eof //--> 
-  <!-- footer //--> 
+  <!-- body_eof --> 
+  <!-- footer --> 
   <?php require(DIR_WS_INCLUDES . 'footer.php'); ?> 
-  <!-- footer_eof //--> 
+  <!-- footer_eof --> 
 </div> 
 </body>
 </html>
