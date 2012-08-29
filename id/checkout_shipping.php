@@ -360,7 +360,7 @@ function country_check(value,select_value){
       $("#"+country_area_id).append( "<option value=\""+arr[value][x]+"\""+selected_value+">"+x+"</option>" );
       selected_value = '';
       i++;
-
+    }
     if(i == 0){ 
       $("#td_"+country_area_id_one).hide();
     }else{
