@@ -38,6 +38,8 @@ while ($orders_list_res = mysql_fetch_array($orders_list_raw)) {
         if ($result3['value'] > -200) {
           if ($pcount['payment_method'] == '来店支払い') {
             $get_point = 0;
+          } else if ($pcount['payment_method'] == '銀行振込(買い取り)') {
+            $get_point = 0;
           } else {
             $get_point = abs($result3['value']);
           }
