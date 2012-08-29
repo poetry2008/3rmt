@@ -996,6 +996,87 @@ if($address_error == false){
           tep_mail(get_configuration_by_site_id('STORE_OWNER', $order->info['site_id']), get_configuration_by_site_id('SENTMAIL_ADDRESS', $order->info['site_id']), $title, $email, $check_status['customers_name'], $check_status['customers_email_address'],$order->info['site_id']);
           $customer_notified = '1';
         }
+        
+        if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && MODULE_ORDER_TOTAL_POINT_ADD_STATUS != '0') {
+          $pcount_query = tep_db_query("select count(*) as cnt from ".TABLE_ORDERS_STATUS_HISTORY." where orders_status_id = '".MODULE_ORDER_TOTAL_POINT_ADD_STATUS."' and orders_id = '".$oID."'");
+          $pcount = tep_db_fetch_array($pcount_query);
+          if($pcount['cnt'] == 0 && $status == MODULE_ORDER_TOTAL_POINT_ADD_STATUS) {
+            $query1 = tep_db_query("select customers_id from " . TABLE_ORDERS . " where orders_id = '".$oID."'");
+            $result1 = tep_db_fetch_array($query1);
+            $query2 = tep_db_query("select value from ".TABLE_ORDERS_TOTAL." where class = 'ot_point' and orders_id = '".tep_db_input($oID)."'");
+            $result2 = tep_db_fetch_array($query2);
+            $query3 = tep_db_query("select value from ".TABLE_ORDERS_TOTAL." where class = 'ot_subtotal' and orders_id = '".tep_db_input($oID)."'");
+            $result3 = tep_db_fetch_array($query3);
+            $query4 = tep_db_query("select point from " . TABLE_CUSTOMERS . " where customers_id = '".$result1['customers_id']."'");
+            $result4 = tep_db_fetch_array($query4);
+            if(MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL == 'true') {
+              $customer_id = $result1['customers_id'];
+              $ptoday = date("Y-m-d H:i:s", time());
+              $pstday_array = getdate();
+              $pstday = date("Y-m-d H:i:s", mktime($pstday_array[hours],$pstday_array[mimutes],$pstday_array[second],$pstday_array[mon],($pstday_array[mday] - MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVEL_KIKAN),$pstday_array[year]));
+              $total_buyed_date = 0;
+              $customer_level_total_query = tep_db_query("select * from orders where customers_id = '".$customer_id."' and date_purchased >= '".$pstday."'");
+              if(tep_db_num_rows($customer_level_total_query)) {
+                while($customer_level_total = tep_db_fetch_array($customer_level_total_query)) {
+                  $cltotal_subtotal_query = tep_db_query("select value from orders_total where orders_id = '".$customer_level_total['orders_id']."' and class = 'ot_subtotal'");
+                  $cltotal_subtotal = tep_db_fetch_array($cltotal_subtotal_query);
+
+                  $cltotal_point_query = tep_db_query("select value from orders_total where orders_id = '".$customer_level_total['orders_id']."' and class = 'ot_point'");
+                  $cltotal_point = tep_db_fetch_array($cltotal_subtotal_query);
+
+                  $total_buyed_date += ($cltotal_subtotal['value'] - $cltotal_point['value']);
+               }
+             }
+             $total_buyed_date = $total_buyed_date - ($result3['value'] - (int)$result2['value']);
+          
+             if(mb_ereg("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK)) {
+               $back_rate_array = explode("||", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK);
+               $back_rate = MODULE_ORDER_TOTAL_POINT_FEE;
+               for($j=0; $j<sizeof($back_rate_array); $j++) {
+                $back_rate_array2 = explode(",", $back_rate_array[$j]);
+                 if($back_rate_array2[2] <= $total_buyed_date) {
+                   $back_rate = $back_rate_array2[1];
+                   $back_rate_name = $back_rate_array2[0];
+                 }
+               }
+            } else {
+              $back_rate_array = explode(",", MODULE_ORDER_TOTAL_POINT_CUSTOMER_LEVER_BACK);
+              if($back_rate_array[2] <= $total_buyed_date) {
+                $back_rate = $back_rate_array[1];
+                $back_rate_name = $back_rate_array[0];
+              }
+            }
+            $point_rate = $back_rate;
+          } else {
+            $point_rate = MODULE_ORDER_TOTAL_POINT_FEE;
+          }
+        
+          if ($result3['value'] >= 0) {
+            $get_point = ($result3['value'] - (int)$result2['value']) * $point_rate;
+          } else {
+            if ($result3['value'] > -200) {
+              $get_point = $cpayment->admin_get_fetch_point(payment::changeRomaji($_POST['payment_method'],'code'),$result3['value']);
+            } else {
+              $get_point = 0;
+            }
+          }
+          $cpayment->admin_get_customer_point(payment::changeRomaji($_POST['payment_method'],'code'),intval($get_point),$result1['customers_id']); 
+        }else{
+          $os_query = tep_db_query("select orders_status_name from " . TABLE_ORDERS_STATUS . " where orders_status_id = '".$status."'");
+          $os_result = tep_db_fetch_array($os_query);
+          if($os_result['orders_status_name']==TEXT_PAYMENT_NOTICE){
+            $query1 = tep_db_query("select customers_id from " . TABLE_ORDERS . " where orders_id = '".$oID."'");
+            $result1 = tep_db_fetch_array($query1);
+
+            $get_point = $cpayment->admin_get_orders_point(payment::changeRomaji($_POST['payment_method'],'code'),$oID);
+            $point_done_query =tep_db_query("select count(orders_status_history_id) cnt from ".TABLE_ORDERS_STATUS_HISTORY." where orders_status_id = '".$status."' and orders_id = '".tep_db_input($oID)."'");
+            $point_done_row  =  tep_db_fetch_array($point_done_query);
+            if($point_done_row['cnt'] <1 ){
+              tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " .  intval($get_point) . " where customers_id = '" . $result1['customers_id']."' and customers_guest_chk = '0'");
+            }
+          }
+        }
+      }
         tep_db_query("insert into " . TABLE_ORDERS_STATUS_HISTORY . " (orders_id, orders_status_id, date_added, customer_notified, comments) values ('" . tep_db_input($oID) . "', '" . tep_db_input($status) . "', now(), '" . tep_db_input($customer_notified) . "', '" . mysql_real_escape_string($comment_arr['comment'].$comments_text) . "')");
         $order_updated_2 = true;
       }
