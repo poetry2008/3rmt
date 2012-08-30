@@ -86,8 +86,8 @@
                '  <tr>' . "\n" .
                '    <td width="50%" valign="top"><b>' . TEXT_ORDER_DATE . '</b> ' .
                tep_date_long($history['date_purchased']) . '<br><b>' .
-               TEXT_ORDER_SHIPPED_TO . '</b> ' .
-               tep_output_string_protected((isset($history['delivery_name'])&&trim($history['delivery_name'])!='')?$history['delivery_name']:$history['customers_name']) . '</td>' . "\n" .
+               TEXT_ORDER_SHIPPED_TO . '</b> ' .tep_get_orders_address($history['orders_id'])
+               . '</td>' . "\n" .
                '    <td width="30%" valign="top"><b>' .
                TEXT_ORDER_PRODUCTS . '</b> ' . $products['count'] . '<br><b>' .
                TEXT_ORDER_COST . '</b> ' .  $currencies->format_total($history['order_total_value']) . '</td>' . "\n" .

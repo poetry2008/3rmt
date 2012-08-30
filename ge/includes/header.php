@@ -44,10 +44,10 @@
 if (!isset($_GET['cPath'])) $_GET['cPath']= NULL;
 if (!isset($_GET['products_id'])) $_GET['products_id']= NULL;
   if ($_GET['cPath']) {
-    echo '<p class="header1">'.sprintf(TEXT_HEADER_TOP_TITLE_STRONG,$seo_category['seo_name']) . '</p>' . "\n";
+    echo '<h1 class="header1">'.sprintf(TEXT_HEADER_TOP_TITLE_STRONG,$seo_category['seo_name']) . '</h1>' . "\n";
     echo '<p class="header2">' .  sprintf(TEXT_HEADER_TOP_TITLE,$seo_category['seo_name']) . '</p>' . "\n";
   } elseif ($_GET['products_id']) {
-    echo '<p class="header1">' .sprintf(TEXT_HEADER_TOP_TITLE_STRONG,ds_tep_get_categories((int)$_GET['products_id'],1)). '</p>' . "\n";
+    echo '<h1 class="header1">' .sprintf(TEXT_HEADER_TOP_TITLE_STRONG,ds_tep_get_categories((int)$_GET['products_id'],1)). '</h1>' . "\n";
     echo '<p class="header2">' . sprintf(TEXT_HEADER_TOP_TITLE,ds_tep_get_categories((int)$_GET['products_id'],1)). '</p>' . "\n";
   } else {
     echo '<h1 class="header1">'.TEXT_HEADER_DEFAULT_TITLE.'</h1>' . "\n";

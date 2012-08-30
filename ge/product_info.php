@@ -208,7 +208,7 @@ function showimage($1) {
           <td valign="top">
                   <table width="100%" border="0" cellpadding="3" cellspacing="1" class="box_des_size">
                     <tr>
-                      <td class="main" width="85"><b><font color="#0070AF">商品コード</font></b></td>
+                      <td class="main" width="85">商品コード</td>
                       <td class="main">
                         <?php if (PRODUCT_LIST_MODEL > 0){ echo $product_info['products_model'] ; }else{ echo '-' ; } ?>
                       </td>
@@ -217,7 +217,7 @@ function showimage($1) {
                       if(!empty($product_info['products_attention_1_1']) && !empty($product_info['products_attention_1_3'])){
                       ?>
                     <tr>
-                      <td class="main"><b><font color="#0070AF"><?php echo $product_info['products_attention_1_1'] ; ?></font></b></td>
+                      <td class="main"><?php echo $product_info['products_attention_1_1'] ; ?></td>
                       <td class="main"><?php echo $product_info['products_attention_1_2'] .'&nbsp;&nbsp;'.tep_display_attention_1_3($product_info['products_attention_1_3']) . $product_info['products_attention_1_4'] ; ?></td>
                     </tr>
                     <?php } ?>
@@ -226,7 +226,7 @@ function showimage($1) {
                       if(!empty($data1[0])){
                       ?>
                     <tr>
-                      <td class="main"><b><font color="#0070AF"><?php echo $data1[0] ; ?></font></b></td>
+                      <td class="main"><?php echo $data1[0] ; ?></td>
                       <td class="main"><?php echo $data1[1] ; ?></td>
                     </tr>
                     <?php } ?>
@@ -234,18 +234,18 @@ function showimage($1) {
                       if(!empty($data2[0])){
                       ?>
                     <tr>
-                      <td class="main"><b><font color="#0070AF"><?php echo $data2[0] ; ?></font></b></td>
+                      <td class="main"><?php echo $data2[0] ; ?><</td>
                       <td class="main"><?php echo $data2[1] ; ?></td>
                     </tr>
                     <?php } ?>
                     <tr>
-                      <td class="main"><b><font color="#0070AF">メーカー名</font></b></td>
+                      <td class="main">メーカー名</td>
                       <td class="main">
                         <?php include(DIR_WS_BOXES.'manufacturer_info.php') ; ?>
                       </td>
                     </tr>
                     <tr>
-                      <td class="main"><b><font color="#0070AF">価格</font></b></td>
+                      <td class="main">価格</td>
                       <td class="main">
                         <?php
                                   # 追加スタート ---------------------------------------
@@ -279,14 +279,14 @@ function showimage($1) {
                       </td>
                     </tr>
                     <tr>
-                      <td class="main"><b><font color="#0070AF">注文可能数</font></b></td>
+                      <td class="main">注文可能数</td>
                       <td class="main">残り<b>&nbsp;<?php echo tep_show_quantity($product_info['products_quantity']); ?></b>&nbsp;個</td>
                     </tr>
                     <?php 
                       if(!empty($data3[0])){
                       ?>
                     <tr>
-                      <td class="main"><b><font color="#0070AF"><?php echo $data3[0] ; ?></font></b></td>
+                      <td class="main"><?php echo $data3[0] ; ?></td>
                       <td class="main"><?php echo $data3[1] ; ?></td>
                     </tr>
                     <?php } ?>
@@ -294,13 +294,13 @@ function showimage($1) {
                       if(!empty($data4[0])){
                       ?>
                     <tr>
-                      <td class="main"><b><font color="#0070AF"><?php echo $data4[0] ; ?></font><b></td>
+                      <td class="main"><?php echo $data4[0] ; ?><</td>
                       <td class="main"><?php echo $data4[1] ; ?></td>
                     </tr>
                     <?php } ?>
                     <?php if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && !$product_info['products_bflag']) { ?>
                     <tr>
-                      <td class="main"><b><font color="#0070AF">ポイント</font></b></td>
+                      <td class="main">ポイント</</td>
                       <td class="main"><?php echo ds_tep_get_point_value($_GET['products_id']) ; ?>&nbsp;ポイント</td>
                     </tr>
                     <?php } ?>
@@ -318,7 +318,7 @@ $tag_query = tep_db_query("
 if(tep_db_num_rows($tag_query)){
 ?>
                       <tr> 
-                      <td class="main"><b><font color="#0070AF">タグ</font></b></td> 
+                      <td class="main">タグ</td> 
                       <td class="main">
                       <ul class="show_tags01"> 
                       <?php

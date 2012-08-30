@@ -5545,4 +5545,22 @@ function tep_get_all_get_param($exclude_array = '') {
     }
 
 
+function tep_get_orders_address($oid){
+  $sql = "SELECT ao.value FROM ".TABLE_ADDRESS_ORDERS." ao 
+    right join ".TABLE_ADDRESS." a
+    on ao.address_id=a.id  
+    WHERE ao.orders_id='".$oid."' 
+    and a.fixed_option != '0'
+    order by a.fixed_option";
+  $query = tep_db_query($sql);
+  $address_str = '';
+  $address_arr = array();
+  while($row = tep_db_fetch_array($query)){
+    $address_arr[] = $row['value'];
+  }
+  if(!empty($address_arr)){
+    $address_str = implode(' ',$address_arr);
+  }
+  return mb_substr($address_str,0,17,'UTF-8');
+}
 

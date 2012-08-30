@@ -1563,8 +1563,10 @@ function check_point(point_num) {
             } else {
           ?> 
           <tr> 
+            <td><img width="100%" height="10" alt="" src="images/pixel_trans.gif"></td> 
+          </tr>
+          <tr> 
             <td>
-            <br> 
             <table border="0" width="100%" cellspacing="0" cellpadding="2"> 
               <tr> 
                 <td class="main">
@@ -1613,21 +1615,23 @@ function check_point(point_num) {
              if($guestchk != '1') {
            ?>
            <tr> 
+             <td><img width="100%" height="10" alt="" src="images/pixel_trans.gif"></td> 
+           </tr>
+           <tr> 
              <td>
-             <br> 
-             <table border="0" width="100%" cellspacing="0" cellpadding="2"> 
-               <tr> 
-                 <td class="main">
-                 <b><?php echo TEXT_POINT_OR_CAMPAION; ?></b>
-                 &nbsp;&nbsp;
-                 <?php
-                 if ($campaign_error) {
-                   echo '<font color="#ff0000">'.CAMPAIGN_ERROR_TEXT.'</font>'; 
-                 }
-                 ?>
-                 </td> 
-               </tr> 
-             </table>
+               <table border="0" width="100%" cellspacing="0" cellpadding="2"> 
+                 <tr> 
+                   <td class="main">
+                   <b><?php echo TEXT_POINT_OR_CAMPAION; ?></b>
+                   &nbsp;&nbsp;
+                   <?php
+                   if ($campaign_error) {
+                     echo '<font color="#ff0000">'.CAMPAIGN_ERROR_TEXT.'</font>'; 
+                   }
+                   ?>
+                   </td> 
+                 </tr> 
+               </table>
              </td> 
            </tr> 
            <tr> 

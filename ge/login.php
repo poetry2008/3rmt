@@ -504,11 +504,11 @@ if(isset($_GET['login']) && ($_GET['login'] == 'ip_error')){
                       <td colspan="2"><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td>
                     </tr>
                     <tr>
-                      <td class="main"><b><?php echo ENTRY_EMAIL_ADDRESS; ?></b></td>
+                      <td class="main"><?php echo ENTRY_EMAIL_ADDRESS; ?></td>
                       <td class="main main_input"><?php echo tep_draw_input_field('email_address'); ?></td>
                     </tr>
                     <tr>
-                      <td class="main"><b><?php echo ENTRY_PASSWORD; ?></b></td>
+                      <td class="main"><?php echo ENTRY_PASSWORD; ?></td>
                       <td class="main main_input"><?php echo tep_draw_password_field('password'); ?></td>
                     </tr>
                     <tr>
