@@ -1582,7 +1582,7 @@ if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) 
                   &nbsp;&nbsp;
                   <?php
                   if ($campaign_error) {
-                    echo '<font size="2" color="#ff0000">'.CAMPAIGN_ERROR_TEXT.'</font>'; 
+                    echo '<span class="shipping_error">'.CAMPAIGN_ERROR_TEXT.'</span>'; 
                   }
                   ?>
                   </td> 
@@ -1590,6 +1590,9 @@ if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) 
               </table>
             </td> 
           </tr> 
+          <tr>
+            <td width="10" height="5"><img width="10" height="1" alt="" src="images/pixel_trans.gif"></td> 
+          </tr>
           <tr> 
           <td>
              <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
@@ -1634,7 +1637,7 @@ if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) 
                   &nbsp;&nbsp;
                   <?php
                   if ($campaign_error) {
-                    echo '<font size="2" color="#ff0000">'.CAMPAIGN_ERROR_TEXT.'</font>'; 
+                    echo '<span class="shipping_error">'.CAMPAIGN_ERROR_TEXT.'</span>'; 
                   }
                   ?>
                   </td> 
@@ -1642,6 +1645,9 @@ if((isset($_POST['date']) && $_POST['date'] != '') || (isset($_SESSION['date']) 
               </table>
             </td> 
           </tr> 
+          <tr>
+            <td width="10" height="5"><img width="10" height="1" alt="" src="images/pixel_trans.gif"></td> 
+          </tr>
           <tr> 
           <td>
             <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
