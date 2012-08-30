@@ -1498,8 +1498,23 @@ while ($order_history = tep_db_fetch_array($order_history_query)) {
     abs(intval($order_history['order_total_value'])) . '円　　' . $order_history['orders_status_name'] . $br;
 }
   //orders comment
-  $payment_array = payment::getPaymentList();
-  $orders_comments = $payment_array[0][2] == $payment_method || $payment_array[0][9] == $payment_method ? $comment_arr['comment'] : $comments_text;  
+      $cpayment = payment::getInstance();
+      $payment_array = payment::getPaymentList();
+      foreach($payment_array[0] as $pay_key=>$pay_value){ 
+        $payment_info = $cpayment->admin_get_payment_info_comment($pay_value,$update_customer_email_address,$site_id_flag);
+        if(is_array($payment_info)){
+
+          switch($payment_info[0]){
+          case 0: 
+            $pay_type_array[0] = $pay_value;
+            break; 
+          case 2: 
+            $pay_type_array[2] = $pay_value;
+            break; 
+          }
+        } 
+      }
+  $orders_comments = $pay_type_array[0] == $payment_method || $pay_type_array[2] == $payment_method ? $comment_arr['comment'] : $comments_text;  
   $point = !isset($point) ? 0 : $point;
   $payment_replace = array(
                           tep_db_input(stripslashes($update_customer_name)),
@@ -3058,24 +3073,55 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
                 tep_db_free_result($products_weight_query);
               }
               tep_db_free_result($products_address_query);
-          
-              $payment_array = payment::getPaymentList(); //支付方式列表
-              $payment_positive_array = array();
-              $payment_negative_array = array(); 
-              $payment_zero = $payment_array[1][4];
-              foreach($payment_array[1] as $payment_key=>$payment_value){
-
-                if($payment_key == 0 || $payment_key == 1 || $payment_key == 3){
-
-                  $payment_negative_array[] = $payment_value; 
-                }else{
-
-                  if($payment_zero != $payment_value){
-                    $payment_positive_array[] = $payment_value;
-                  }
-                }
-              }
       $email_address_flag = $orders_exit_flag == true ? $order->customer['email_address'] : $_SESSION['email_address'];
+      $cpayment = payment::getInstance();
+      $payment_array = payment::getPaymentList();
+      $pay_info_array = array();
+      $pay_orders_id_array = array();
+      $pay_type_array = array();
+      $payment_negative_array = array();
+      $payment_positive_array = array();
+      foreach($payment_array[0] as $pay_key=>$pay_value){ 
+        $payment_info = $cpayment->admin_get_payment_info_comment($pay_value,$email_address_flag,$site_id_flag);
+        if(is_array($payment_info)){
+
+          switch($payment_info[0]){
+          case 0: 
+            $pay_orders_id_array[0] = $payment_info[1];
+            $pay_type_array[0] = $pay_value;
+            $payment_negative_array[] = $payment_array[1][$pay_key];
+            break;
+          case 1: 
+            $pay_orders_id_array[1] = $payment_info[1];
+            $pay_type_array[1] = $pay_value;
+            $payment_positive_array[] = $payment_array[1][$pay_key];
+            break;
+          case 2: 
+            $pay_orders_id_array[2] = $payment_info[1];
+            $pay_type_array[2] = $pay_value;
+            $payment_positive_array[] = $payment_array[1][$pay_key];
+            break;
+          case 3:
+            $payment_negative_array[] = $payment_array[1][$pay_key];
+            break;
+          case 4:
+            $payment_negative_array[] = $payment_array[1][$pay_key];
+            break;
+          case 5:
+            $payment_zero = $payment_array[0][$pay_key];
+            break;
+          case 6:
+            $payment_default = $payment_array[0][$pay_key];
+            break; 
+          }
+        }else{
+
+           $payment_positive_array[] = $payment_array[1][$pay_key];
+        }
+      }     
+      
+      $payment_negative_array = array_unique($payment_negative_array);       
+      $payment_positive_array = array_unique($payment_positive_array); 
       if($products_money_total != 0){
           $orders_payment_query = tep_db_query("select payment_method,orders_id from ". TABLE_ORDERS ." where customers_email_address='". $email_address_flag ."' and site_id='".$site_id_flag."' order by orders_id desc"); 
           while($orders_payment_array = tep_db_fetch_array($orders_payment_query)){
@@ -3083,13 +3129,11 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
             if($orders_payment_array['payment_method'] != ''){
               if($products_money_total > 0 && in_array($orders_payment_array['payment_method'],$payment_positive_array)){
                 $payment_num = array_search($orders_payment_array['payment_method'],$payment_array[1]);
-                //$pay_orders_id = $orders_payment_array['orders_id'];
                 $pay_method = $orders_payment_array['payment_method'];
                 break;
               }
               if($products_money_total < 0 && in_array($orders_payment_array['payment_method'],$payment_negative_array)){
                 $payment_num = array_search($orders_payment_array['payment_method'],$payment_array[1]);
-                //$pay_orders_id = $orders_payment_array['orders_id'];
                 $pay_method = $orders_payment_array['payment_method'];
                 break;
               }
@@ -3097,30 +3141,7 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
           }
           tep_db_free_result($orders_payment_query);
       }
-      $pay_info_array = array();
-      $pay_orders_id_array = array();
-      $orders_status_history_query = tep_db_query("select payment_method,orders_id from ". TABLE_ORDERS ." where customers_email_address='". $email_address_flag ."' and site_id='".$site_id_flag."' order by orders_id desc");
-      while($ordres_status_history_array = tep_db_fetch_array($orders_status_history_query)){
-        if(payment::changeRomaji($payment_array[0][0],'title') == $ordres_status_history_array['payment_method'] && $pay_orders_id_array[0] == ''){
-
-          $pay_orders_id_array[0] = $ordres_status_history_array['orders_id'];
-        } 
-        if(payment::changeRomaji($payment_array[0][2],'title') == $ordres_status_history_array['payment_method'] && $pay_orders_id_array[1] == ''){
-
-          $pay_orders_id_array[1] = $ordres_status_history_array['orders_id'];
-        }
-        if(payment::changeRomaji($payment_array[0][9],'title') == $ordres_status_history_array['payment_method'] && $pay_orders_id_array[2] == ''){
-
-          $pay_orders_id_array[2] = $ordres_status_history_array['orders_id'];
-        }
-        if($pay_orders_id_array[0] != '' && $pay_orders_id_array[1] != '' && $pay_orders_id_array[2] != ''){
-
-          break;
-        }
-      }
-      tep_db_free_result($orders_status_history_query);
-
-
+       
           if($pay_orders_id_array[0] != ''){ 
             $orders_status_history_query = tep_db_query("select comments from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='".$pay_orders_id_array[0]."' order by date_added desc"); 
             while($orders_status_history_array = tep_db_fetch_array($orders_status_history_query)){
@@ -3174,24 +3195,23 @@ $selections[strtoupper($payment_method_romaji)] = $validateModule;
           if($pay_method == ''){
             if($products_money_total > 0){
 
-              $pay_method = $payment_array[0][6];
+              $pay_method = $payment_default;
             }
             if($products_money_total < 0){
 
-              $pay_method = $payment_array[0][0];
+              $pay_method = $pay_type_array[0];
             }
             if($products_money_total == 0){
 
-              $pay_method = $payment_array[0][4];
+              $pay_method = $payment_zero;
             }
           }else{
 
             $pay_method = $pay_method;
           }
-          $pay_info_array[0] = payment::changeRomaji($_SESSION['payment_method_flag'],'code') == $payment_array[0][0] ? $_SESSION['pay_comment_flag'] : $pay_info_array[0];
-          $pay_info_array[1] = payment::changeRomaji($_SESSION['payment_method_flag'],'code') == $payment_array[0][2] ? $_SESSION['pay_comment_flag'] : $pay_info_array[1];
-          $pay_info_array[2] = payment::changeRomaji($_SESSION['payment_method_flag'],'code') == $payment_array[0][9] ? $_SESSION['pay_comment_flag'] : $pay_info_array[2];
-          $cpayment = payment::getInstance();
+          $pay_info_array[0] = payment::changeRomaji($_SESSION['payment_method_flag'],'code') == $pay_type_array[0] ? $_SESSION['pay_comment_flag'] : $pay_info_array[0];
+          $pay_info_array[1] = payment::changeRomaji($_SESSION['payment_method_flag'],'code') == $pay_type_array[1] ? $_SESSION['pay_comment_flag'] : $pay_info_array[1];
+          $pay_info_array[2] = payment::changeRomaji($_SESSION['payment_method_flag'],'code') == $pay_type_array[2] ? $_SESSION['pay_comment_flag'] : $pay_info_array[2]; 
           echo payment::makePaymentListPullDownMenu(payment::changeRomaji($pay_method,'code'));
           
           

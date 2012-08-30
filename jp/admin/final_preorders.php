@@ -178,24 +178,7 @@
     } 
 
     $comment_arr = $payment_modules->dealComment($payment_method,$comment);
-    $payment_array = payment::getPaymentList();  
-    switch($_POST['payment_method']){
-    case $payment_array[0][0]: 
-      $bank_name = $_POST['bank_name'];
-      $bank_shiten = $_POST['bank_shiten'];
-      $bank_kamoku =$_POST['bank_kamoku'];
-      $bank_kouza_num = $_POST['bank_kouza_num'];
-      $bank_kouza_name = $_POST['bank_kouza_name'];
-      $bank_info_array = array($bank_name,$bank_shiten,$bank_kamoku,$bank_kouza_num,$bank_kouza_name);
-      $bank_info = implode('<<<|||',$bank_info_array);; 
-      break;
-    case $payment_array[0][2]:
-      $cemail_text = $comment_arr['payment_bank_info']['add_info']; 
-      break;
-    case $payment_array[0][9]:
-      $raku_text = $comment_arr['payment_bank_info']['add_info'];
-      break;
-    } 
+      
     // 1.1 UPDATE ORDER INFO #####
     $UpdateOrders = "update " . TABLE_PREORDERS . " set 
       customers_name = '" . tep_db_input(stripslashes($update_customer_name)) . "',
@@ -240,18 +223,8 @@
       cc_type = '" . tep_db_input($update_info_cc_type) . "',
       cc_owner = '" . tep_db_input($update_info_cc_owner) . "',";
 
-    if(isset($cemail_text) && $cemail_text != ''){
-
-      $UpdateOrders .= "cemail_text = '{$cemail_text}',";
-    }
-    if(isset($raku_text) && $raku_text != ''){
-
-      $UpdateOrders .= "raku_text = '{$raku_text}',";
-    }
-    if(isset($bank_info) && $bank_info != ''){
-
-      $UpdateOrders .= "bank_info = '{$bank_info}',";
-    }
+    $UpdateOrders .= $payment_modules->admin_get_payment_info($payment_method,$comment_arr['payment_bank_info']['add_info']);
+    
     //if(isset($comment_arr['comment']) && !empty($comment_arr['comment'])){
         //$UpdateOrders .= "orders_comment = '{$comment_arr['comment']}',";
     //}
@@ -1711,32 +1684,32 @@ float:left;
                   $pay_comment = $orders_status_history_array['comments']; 
                   tep_db_free_result($orders_status_history_query);
       //orders status
-      $payment_array = payment::getPaymentList(); 
+      $payment_array = payment::getPaymentList();
       $pay_info_array = array();
       $pay_orders_id_array = array();
-      $orders_status_history_query = tep_db_query("select payment_method,orders_id from ". TABLE_ORDERS ." where customers_email_address='". $order->customer['email_address'] ."' and site_id='". $order->info['site_id'] ."' order by orders_id desc");
-      while($ordres_status_history_array = tep_db_fetch_array($orders_status_history_query)){
-        if(payment::changeRomaji($payment_array[0][0],'title') == $ordres_status_history_array['payment_method'] && $pay_orders_id_array[0] == ''){
+      $pay_type_array = array();
+      foreach($payment_array[0] as $pay_key=>$pay_value){ 
+        $payment_info = $cpayment->admin_get_payment_info_comment($pay_value,$order->customer['email_address'],$order->info['site_id']);
+        if(is_array($payment_info)){
 
-          $pay_orders_id_array[0] = $ordres_status_history_array['orders_id'];
+          switch($payment_info[0]){
+          case 0: 
+            $pay_orders_id_array[0] = $payment_info[1];
+            $pay_type_array[0] = $pay_value;
+            break;
+          case 1: 
+            $pay_orders_id_array[1] = $payment_info[1];
+            $pay_type_array[1] = $pay_value;
+            break;
+          case 2: 
+            $pay_orders_id_array[2] = $payment_info[1];
+            $pay_type_array[2] = $pay_value;
+            break;   
+          }
         } 
-        if(payment::changeRomaji($payment_array[0][2],'title') == $ordres_status_history_array['payment_method'] && $pay_orders_id_array[1] == ''){
+      } 
 
-          $pay_orders_id_array[1] = $ordres_status_history_array['orders_id'];
-        }
-        if(payment::changeRomaji($payment_array[0][9],'title') == $ordres_status_history_array['payment_method'] && $pay_orders_id_array[2] == ''){
-
-          $pay_orders_id_array[2] = $ordres_status_history_array['orders_id'];
-        }
-        if($pay_orders_id_array[0] != '' && $pay_orders_id_array[1] != '' && $pay_orders_id_array[2] != ''){
-
-          break;
-        }
-      }
-      tep_db_free_result($orders_status_history_query);
-
-
-          if($pay_orders_id_array[0] != '' && $payment_code != $payment_array[0][0]){ 
+          if($pay_orders_id_array[0] != '' && $payment_code != $pay_type_array[0]){ 
             $orders_status_history_query = tep_db_query("select comments from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='".$pay_orders_id_array[0]."' order by date_added desc"); 
             while($orders_status_history_array = tep_db_fetch_array($orders_status_history_query)){
               if($orders_status_history_array['comments']!=''){
@@ -1746,7 +1719,7 @@ float:left;
             }
             tep_db_free_result($orders_status_history_query);
           }
-          if($pay_orders_id_array[1] != '' &&  $payment_code != $payment_array[0][2]){ 
+          if($pay_orders_id_array[1] != '' &&  $payment_code != $pay_type_array[1]){ 
             $orders_status_history_query = tep_db_query("select comments from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='".$pay_orders_id_array[1]."' order by date_added desc"); 
             while($orders_status_history_array = tep_db_fetch_array($orders_status_history_query)){
               if($orders_status_history_array['comments']!=''){
@@ -1756,7 +1729,7 @@ float:left;
             }
             tep_db_free_result($orders_status_history_query);
           }
-          if($pay_orders_id_array[2] != '' &&  $payment_code != $payment_array[0][9]){ 
+          if($pay_orders_id_array[2] != '' &&  $payment_code != $pay_type_array[2]){ 
             $orders_status_history_query = tep_db_query("select comments from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='".$pay_orders_id_array[2]."' order by date_added desc"); 
             while($orders_status_history_array = tep_db_fetch_array($orders_status_history_query)){
               if($orders_status_history_array['comments']!=''){
@@ -1766,9 +1739,9 @@ float:left;
             }
             tep_db_free_result($orders_status_history_query);
           }
-          $pay_info_array[0] = $pay_info_array[0] == '' && $payment_code == $payment_array[0][0] ? $pay_comment : $pay_info_array[0];
-          $pay_info_array[1] = $pay_info_array[1] == '' && $payment_code == $payment_array[0][2] ? $pay_comment : $pay_info_array[1];
-          $pay_info_array[2] = $pay_info_array[2] == '' && $payment_code == $payment_array[0][9] ?  $pay_comment : $pay_info_array[2];
+          $pay_info_array[0] = $pay_info_array[0] == '' && $payment_code == $pay_type_array[0] ? $pay_comment : $pay_info_array[0];
+          $pay_info_array[1] = $pay_info_array[1] == '' && $payment_code == $pay_type_array[1] ? $pay_comment : $pay_info_array[1];
+          $pay_info_array[2] = $pay_info_array[2] == '' && $payment_code == $pay_type_array[2] ?  $pay_comment : $pay_info_array[2];
                   echo "\n".'<script language="javascript">'."\n"; 
                   echo '$(document).ready(function(){'."\n";
 

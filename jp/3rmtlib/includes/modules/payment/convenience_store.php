@@ -504,7 +504,7 @@ class convenience_store extends basePayment  implements paymentInterface  {
    echo 'document.getElementsByName("bank_shiten")[0].value = "'. $bank_shiten[1] .'";'."\n"; 
    $bank_kamoku = explode(':',$pay_array[2]);
    $bank_kamoku[1] = isset($_POST['bank_kamoku']) ? $_POST['bank_kamoku'] : $bank_kamoku[1];
-   if($bank_kamoku[1] == TS_MODULE_PAYMENT_CONVENIENCE_STORE_NORMAL){
+   if($bank_kamoku[1] == TS_MODULE_PAYMENT_CONVENIENCE_STORE_NORMAL || $bank_kamoku[1] == ''){
      echo 'document.getElementsByName("bank_kamoku")[0].checked = true;'."\n"; 
    }else{
      echo 'document.getElementsByName("bank_kamoku")[1].checked = true;'."\n"; 
@@ -528,5 +528,20 @@ class convenience_store extends basePayment  implements paymentInterface  {
   function admin_get_customer_point($point_value,$customer_id){
     tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " . $point_value .  " where customers_id = '" .$customer_id."' and customers_guest_chk = '0' ");
   } 
+
+  function admin_get_payment_info($payment_info){
+    $cemail_text = $payment_info;  
+    return "cemail_text = '{$cemail_text}',";
+  }
+
+  function admin_get_payment_info_comment($customers_email,$site_id){
+
+    $orders_status_history_query = tep_db_query("select payment_method,orders_id from ". TABLE_ORDERS ." where customers_email_address='". $customers_email ."' and site_id='".$site_id."' and payment_method='".TS_MODULE_PAYMENT_CONVENIENCE_STORE_TEXT_TITLE."' order by orders_id desc limit 0,1");
+    $ordres_status_history_array = tep_db_fetch_array($orders_status_history_query);
+    $orders_status_history_num_rows = tep_db_num_rows($orders_status_history_query);
+    tep_db_free_result($orders_status_history_query);
+    $orders_id = $orders_status_history_num_rows == 1 ? $ordres_status_history_array['orders_id'] : '';
+    return array(1,$orders_id);
+  }
   }
   ?>

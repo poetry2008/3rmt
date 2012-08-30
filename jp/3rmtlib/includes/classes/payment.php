@@ -762,5 +762,27 @@ class payment {
 
     return false;
   }
+
+  function admin_get_payment_info($payment,$payment_info){
+
+    $module = $this->getModule($payment);
+    if ($module) {
+      if (method_exists($module, 'admin_get_payment_info')) {
+         return $module->admin_get_payment_info($payment_info); 
+      }
+    }
+    return '';
+  }
+
+  function admin_get_payment_info_comment($payment,$customers_email,$site_id){
+
+    $module = $this->getModule($payment);
+    if ($module) {
+      if (method_exists($module, 'admin_get_payment_info_comment')) {
+         return $module->admin_get_payment_info_comment($customers_email,$site_id); 
+      }
+    }
+    return '';
+  }
 }
 ?>

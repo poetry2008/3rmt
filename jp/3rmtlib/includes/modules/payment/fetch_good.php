@@ -220,7 +220,7 @@ function getMailString($option=''){
    echo 'document.getElementsByName("bank_shiten")[0].value = "'. $bank_shiten[1] .'";'."\n"; 
    $bank_kamoku = explode(':',$pay_array[2]);
    $bank_kamoku[1] = isset($_POST['bank_kamoku']) ? $_POST['bank_kamoku'] : $bank_kamoku[1];
-   if($bank_kamoku[1] == TS_MODULE_PAYMENT_FETCH_GOOD_NORMAL){
+   if($bank_kamoku[1] == TS_MODULE_PAYMENT_FETCH_GOOD_NORMAL || $bank_kamoku[1] == ''){
      echo 'document.getElementsByName("bank_kamoku")[0].checked = true;'."\n"; 
    }else{
      echo 'document.getElementsByName("bank_kamoku")[1].checked = true;'."\n"; 
@@ -244,5 +244,10 @@ function getMailString($option=''){
     function admin_get_customer_point($point_value,$customer_id){
       tep_db_query( "update " . TABLE_CUSTOMERS . " set point = point + " . $point_value .  " where customers_id = '" .$customer_id."' and customers_guest_chk = '0' ");
     } 
+
+   function admin_get_payment_info_comment($customers_email,$site_id){
+ 
+    return array(4);
+   }
 }
 ?>

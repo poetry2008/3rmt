@@ -488,7 +488,7 @@ class buying extends basePayment  implements paymentInterface  {
    echo 'document.getElementsByName("bank_shiten")[0].value = "'. $bank_shiten[1] .'";'."\n"; 
    $bank_kamoku = explode(':',$pay_array[2]);
    $bank_kamoku[1] = isset($_POST['bank_kamoku']) ? $_POST['bank_kamoku'] : $bank_kamoku[1];
-   if($bank_kamoku[1] == TS_TEXT_BANK_SELECT_KAMOKU_F){
+   if($bank_kamoku[1] == TS_TEXT_BANK_SELECT_KAMOKU_F || $bank_kamoku[1] == ''){
      echo 'document.getElementsByName("bank_kamoku")[0].checked = true;'."\n"; 
    }else{
      echo 'document.getElementsByName("bank_kamoku")[1].checked = true;'."\n"; 
@@ -535,6 +535,27 @@ class buying extends basePayment  implements paymentInterface  {
   
   function admin_get_fetch_point(){
     return 0;
+  }
+  function admin_get_payment_info($payment_info){
+    global $_POST;
+    $bank_name = $_POST['bank_name'];
+    $bank_shiten = $_POST['bank_shiten'];
+    $bank_kamoku =$_POST['bank_kamoku'];
+    $bank_kouza_num = $_POST['bank_kouza_num'];
+    $bank_kouza_name = $_POST['bank_kouza_name'];
+    $bank_info_array = array($bank_name,$bank_shiten,$bank_kamoku,$bank_kouza_num,$bank_kouza_name);
+    $bank_info = implode('<<<|||',$bank_info_array);
+    return "bank_info = '{$bank_info}',";
+  }
+
+  function admin_get_payment_info_comment($customers_email,$site_id){
+
+    $orders_status_history_query = tep_db_query("select payment_method,orders_id from ". TABLE_ORDERS ." where customers_email_address='". $customers_email ."' and site_id='".$site_id."' and payment_method='".TS_MODULE_PAYMENT_BUYING_TEXT_TITLE."' order by orders_id desc limit 0,1");
+    $ordres_status_history_array = tep_db_fetch_array($orders_status_history_query);
+    $orders_status_history_num_rows = tep_db_num_rows($orders_status_history_query);
+    tep_db_free_result($orders_status_history_query);
+    $orders_id = $orders_status_history_num_rows == 1 ? $ordres_status_history_array['orders_id'] : '';
+    return array(0,$orders_id);
   }
 }
 ?>
