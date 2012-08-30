@@ -216,7 +216,7 @@ class postalmoneyorder extends basePayment  implements paymentInterface  {
    echo 'document.getElementsByName("bank_shiten")[0].value = "'. $bank_shiten[1] .'";'."\n"; 
    $bank_kamoku = explode(':',$pay_array[2]);
    $bank_kamoku[1] = isset($_POST['bank_kamoku']) ? $_POST['bank_kamoku'] : $bank_kamoku[1];
-   if($bank_kamoku[1] == TS_MODULE_PAYMENT_POSTALMONEYORDER_NORMAL){
+   if($bank_kamoku[1] == TS_MODULE_PAYMENT_POSTALMONEYORDER_NORMAL || $bank_kamoku[1] == ''){
      echo 'document.getElementsByName("bank_kamoku")[0].checked = true;'."\n"; 
    }else{
      echo 'document.getElementsByName("bank_kamoku")[1].checked = true;'."\n"; 

@@ -2673,32 +2673,32 @@ if (($action == 'edit') && ($order_exists == true)) {
       $orders_status_history_array = tep_db_fetch_array($orders_status_history_query);
       $pay_comment = $orders_status_history_array['comments']; 
       tep_db_free_result($orders_status_history_query);
-      $payment_array = payment::getPaymentList(); 
+      $payment_array = payment::getPaymentList();
       $pay_info_array = array();
       $pay_orders_id_array = array();
-      $orders_status_history_query = tep_db_query("select payment_method,orders_id from ". TABLE_ORDERS ." where customers_email_address='". $order->customer['email_address'] ."' and site_id='". $order->info['site_id'] ."' order by orders_id desc");
-      while($ordres_status_history_array = tep_db_fetch_array($orders_status_history_query)){
-        if(payment::changeRomaji($payment_array[0][0],'title') == $ordres_status_history_array['payment_method'] && $pay_orders_id_array[0] == ''){
+      $pay_type_array = array();
+      foreach($payment_array[0] as $pay_key=>$pay_value){ 
+        $payment_info = $cpayment->admin_get_payment_info_comment($pay_value,$order->customer['email_address'],$order->info['site_id']);
+        if(is_array($payment_info)){
 
-          $pay_orders_id_array[0] = $ordres_status_history_array['orders_id'];
+          switch($payment_info[0]){
+          case 0: 
+            $pay_orders_id_array[0] = $payment_info[1];
+            $pay_type_array[0] = $pay_value;
+            break;
+          case 1: 
+            $pay_orders_id_array[1] = $payment_info[1];
+            $pay_type_array[1] = $pay_value;
+            break;
+          case 2: 
+            $pay_orders_id_array[2] = $payment_info[1];
+            $pay_type_array[2] = $pay_value;
+            break;   
+          }
         } 
-        if(payment::changeRomaji($payment_array[0][2],'title') == $ordres_status_history_array['payment_method'] && $pay_orders_id_array[1] == ''){
-
-          $pay_orders_id_array[1] = $ordres_status_history_array['orders_id'];
-        }
-        if(payment::changeRomaji($payment_array[0][9],'title') == $ordres_status_history_array['payment_method'] && $pay_orders_id_array[2] == ''){
-
-          $pay_orders_id_array[2] = $ordres_status_history_array['orders_id'];
-        }
-        if($pay_orders_id_array[0] != '' && $pay_orders_id_array[1] != '' && $pay_orders_id_array[2] != ''){
-
-          break;
-        }
       }
-      tep_db_free_result($orders_status_history_query);
 
-
-          if($pay_orders_id_array[0] != '' && $pay_method != $payment_array[0][0]){ 
+          if($pay_orders_id_array[0] != '' && $pay_method != $pay_type_array[0]){ 
             $orders_status_history_query = tep_db_query("select comments from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='".$pay_orders_id_array[0]."' order by date_added desc"); 
             while($orders_status_history_array = tep_db_fetch_array($orders_status_history_query)){
               if($orders_status_history_array['comments']!=''){
@@ -2708,7 +2708,7 @@ if (($action == 'edit') && ($order_exists == true)) {
             }
             tep_db_free_result($orders_status_history_query);
           }
-          if($pay_orders_id_array[1] != '' && $pay_method != $payment_array[0][2]){ 
+          if($pay_orders_id_array[1] != '' && $pay_method != $pay_type_array[1]){ 
             $orders_status_history_query = tep_db_query("select comments from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='".$pay_orders_id_array[1]."' order by date_added desc"); 
             while($orders_status_history_array = tep_db_fetch_array($orders_status_history_query)){
               if($orders_status_history_array['comments']!=''){
@@ -2718,7 +2718,7 @@ if (($action == 'edit') && ($order_exists == true)) {
             }
             tep_db_free_result($orders_status_history_query);
           }
-          if($pay_orders_id_array[2] != '' && $pay_method != $payment_array[0][9]){ 
+          if($pay_orders_id_array[2] != '' && $pay_method != $pay_type_array[2]){ 
             $orders_status_history_query = tep_db_query("select comments from ". TABLE_ORDERS_STATUS_HISTORY ." where orders_id='".$pay_orders_id_array[2]."' order by date_added desc"); 
             while($orders_status_history_array = tep_db_fetch_array($orders_status_history_query)){
               if($orders_status_history_array['comments']!=''){
@@ -2728,9 +2728,9 @@ if (($action == 'edit') && ($order_exists == true)) {
             }
             tep_db_free_result($orders_status_history_query);
           }
-          $pay_info_array[0] = $pay_info_array[0] == '' && $pay_method == $payment_array[0][0] ? $pay_comment : $pay_info_array[0];
-          $pay_info_array[1] = $pay_info_array[1] == '' && $pay_method == $payment_array[0][2] ? $pay_comment : $pay_info_array[1];
-          $pay_info_array[2] = $pay_info_array[2] == '' && $pay_method == $payment_array[0][9] ?  $pay_comment : $pay_info_array[2];
+          $pay_info_array[0] = $pay_info_array[0] == '' && $pay_method == $pay_type_array[0] ? $pay_comment : $pay_info_array[0];
+          $pay_info_array[1] = $pay_info_array[1] == '' && $pay_method == $pay_type_array[1] ? $pay_comment : $pay_info_array[1];
+          $pay_info_array[2] = $pay_info_array[2] == '' && $pay_method == $pay_type_array[2] ?  $pay_comment : $pay_info_array[2];
     ?>
     <?php echo payment::makePaymentListPullDownMenu(payment::changeRomaji($pay_method, PAYMENT_RETURN_TYPE_CODE));?> 
     <?php  

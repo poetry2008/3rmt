@@ -169,7 +169,7 @@ class buyingpoint extends basePayment  implements paymentInterface  {
    echo 'document.getElementsByName("bank_shiten")[0].value = "'. $bank_shiten[1] .'";'."\n"; 
    $bank_kamoku = explode(':',$pay_array[2]);
    $bank_kamoku[1] = isset($_POST['bank_kamoku']) ? $_POST['bank_kamoku'] : $bank_kamoku[1];
-   if($bank_kamoku[1] == TS_MODULE_PAYMENT_BUYINGPOINT_NORMAL){
+   if($bank_kamoku[1] == TS_MODULE_PAYMENT_BUYINGPOINT_NORMAL || $bank_kamoku[1] == ''){
      echo 'document.getElementsByName("bank_kamoku")[0].checked = true;'."\n"; 
    }else{
      echo 'document.getElementsByName("bank_kamoku")[1].checked = true;'."\n"; 
@@ -188,6 +188,11 @@ class buyingpoint extends basePayment  implements paymentInterface  {
    $rak_tel = explode(":",trim($pay_array[0]));
    $rak_tel[1] = isset($_POST['rak_tel']) ? $_POST['rak_tel'] : $rak_tel[1];
    echo 'document.getElementsByName("rak_tel")[0].value = "'.$rak_tel[1].'";'."\n";
+  }
+  
+  function admin_get_payment_info_comment($customers_email,$site_id){
+ 
+    return array(3);
   }
 }
 ?>
