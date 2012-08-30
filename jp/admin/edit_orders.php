@@ -1054,11 +1054,7 @@ if($address_error == false){
           if ($result3['value'] >= 0) {
             $get_point = ($result3['value'] - (int)$result2['value']) * $point_rate;
           } else {
-            if ($result3['value'] > -200) {
-              $get_point = $cpayment->admin_get_fetch_point(payment::changeRomaji($_POST['payment_method'],'code'),$result3['value']);
-            } else {
-              $get_point = 0;
-            }
+            $get_point = $cpayment->admin_get_fetch_point(payment::changeRomaji($_POST['payment_method'],'code'),$result3['value']);
           }
           $cpayment->admin_get_customer_point(payment::changeRomaji($_POST['payment_method'],'code'),intval($get_point),$result1['customers_id']); 
         }else{
