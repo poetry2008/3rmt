@@ -1587,6 +1587,9 @@ $post_date = isset($_POST['date']) ? $_POST['date'] : $_SESSION['date'];
             </td> 
           </tr> 
           <tr> 
+            <td width="10" height="5"><img width="10" height="1" alt="" src="images/pixel_trans.gif"></td> 
+          </tr> 
+          <tr> 
             <td>
               <table border="0" width="100%" cellspacing="1" cellpadding="2" class="infoBox"> 
                 <tr class="infoBoxContents"> 
@@ -1616,7 +1619,7 @@ $post_date = isset($_POST['date']) ? $_POST['date'] : $_SESSION['date'];
           <tr> 
             <td><?php echo tep_draw_separator('pixel_trans.gif', '100%', '10'); ?></td> 
           </tr> 
-            <?php
+          <?php
             }
           } else if(MODULE_ORDER_TOTAL_POINT_STATUS == 'true' && $cart->show_total() < 0) {  
             if($guestchk != '1') {
@@ -1637,6 +1640,9 @@ $post_date = isset($_POST['date']) ? $_POST['date'] : $_SESSION['date'];
                  </tr> 
                </table>
              </td> 
+           </tr> 
+           <tr> 
+             <td width="10" height="5"><img width="10" height="1" alt="" src="images/pixel_trans.gif"></td> 
            </tr> 
            <tr> 
               <td>
