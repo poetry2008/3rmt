@@ -194,5 +194,9 @@ class buyingpoint extends basePayment  implements paymentInterface  {
  
     return array(3);
   }
+  
+  function admin_get_fetch_point(){
+    return 0;
+  }
 }
 ?>
