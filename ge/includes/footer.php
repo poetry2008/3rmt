@@ -4,13 +4,13 @@
 */
 ?>
 <div id="f_menu">
-<a href="/info/starting_rmt.html">はじめてのRMT</a>
+<a href="<?php echo HTTP_SERVER;?>/info/starting_rmt.html">はじめてのRMT</a>
 &nbsp;|&nbsp;
-<a href="/info/salespolicies.html">特定商取引に基づく表記</a>
+<a href="<?php echo HTTP_SERVER;?>/info/salespolicies.html">特定商取引に基づく表記</a>
 &nbsp;|&nbsp;
 <a href="<?php echo tep_href_link('rss.php'); ?>">RSS</a>
 &nbsp;|&nbsp;
-<a href="/link/">相互リンク</a>
+<a href="<?php echo HTTP_SERVER;?>/link/">相互リンク</a>
 </div>
 <div id="footer">
   <address class="copyright">
