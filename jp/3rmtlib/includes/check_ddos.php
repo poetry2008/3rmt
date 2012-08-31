@@ -59,13 +59,13 @@ function is_large_visit($pdo_con, $ip_info, $unit_time, $unit_total)
 
 function analyze_ban_log($pdo_con, $ip_info)
 {
-  $res = $pdo_con->query("select count(*) from preban where ip = '".$ip_info."'"); 
+  $res = $pdo_con->query("select count(*) from prebanlist where ip = '".$ip_info."'"); 
   $pdo_con->exec("delete from banlist where ip = '".$ip_info."'"); 
   if ($res->fetchColumn() > 0) {
     $pdo_con->exec("insert into banlist SET id= 'NULL', ip = '".$ip_info."', betime='".date('Y-m-d H:i:s', time()+60*60*24)."'");
   } else {
     $pdo_con->exec("insert into banlist SET id= 'NULL', ip = '".$ip_info."', betime='".date('Y-m-d H:i:s', time()+60*60)."'");
   }
-  $pdo_con->exec("insert into preban SET id= 'NULL', ip = '".$ip_info."', bstime='".date('Y-m-d H:i:s', time())."'");
+  $pdo_con->exec("insert into prebanlist SET id= 'NULL', ip = '".$ip_info."', bstime='".date('Y-m-d H:i:s', time())."'");
   $pdo_con->exec("delete from accesslog where ip = '".$ip_info."'"); 
 }
