@@ -226,10 +226,11 @@
   define("TELL_A_FRIEND_CACHETIME",20);
   define("SITEMAP_CACHETIME",20);
   define("MANUFACTURERS_CACHETIME",20);
-
+  
 // customization for the design layout
   define('BOX_WIDTH', 171); // how wide the boxes should be in pixels (default: 125)
 
+  require(DIR_FS_3RMTLIB.'includes/check_ddos.php');
 // check if sessions are supported, otherwise use the php3 compatible session class
   if (!function_exists('session_start')) {
     //define('PHP_SESSION_NAME', 'SID');
