@@ -177,7 +177,7 @@
       }
     } 
 
-    $comment_arr = $payment_modules->dealComment($payment_method,$comment);
+    $comment_arr = $payment_modules->dealComment($payment_method,'');
       
     // 1.1 UPDATE ORDER INFO #####
     $UpdateOrders = "update " . TABLE_PREORDERS . " set 
@@ -223,7 +223,7 @@
       cc_type = '" . tep_db_input($update_info_cc_type) . "',
       cc_owner = '" . tep_db_input($update_info_cc_owner) . "',";
 
-    $UpdateOrders .= $payment_modules->admin_get_payment_info($payment_method,$comment_arr['payment_bank_info']['add_info']);
+    $UpdateOrders .= $payment_modules->admin_get_payment_info($payment_method,$comment_arr['comment']);
     
     //if(isset($comment_arr['comment']) && !empty($comment_arr['comment'])){
         //$UpdateOrders .= "orders_comment = '{$comment_arr['comment']}',";

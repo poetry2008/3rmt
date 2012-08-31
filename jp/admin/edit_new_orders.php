@@ -1322,13 +1322,7 @@ if($address_error == false){
         if ($result3['value'] >= 0) {
           $get_point = ($result3['value'] - (int)$result2['value']) * $point_rate;
         } else {
-          if ($result3['value'] > -200) {
-
-            $get_point = $payment_modules->admin_get_fetch_point(payment::changeRomaji($payment_method,'code'),$result3['value']);
-            
-          } else {
-            $get_point = 0;
-          }
+          $get_point = $payment_modules->admin_get_fetch_point(payment::changeRomaji($payment_method,'code'),$result3['value']);
         }
         //$plus = $result4['point'] + $get_point;
         if($save_flag == 0){ 
