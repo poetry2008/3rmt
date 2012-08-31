@@ -5,8 +5,8 @@ $pdo_con = new PDO($dsn, DB_SERVER_USERNAME, DB_SERVER_PASSWORD);
 
 $source_ip = $_SERVER['REMOTE_ADDR'];
 $source_host = $_SERVER['HTTP_HOST'];
-$unit_time = 1;
-$unit_total = 5;
+$unit_time = 10;
+$unit_total = 3;
 if ($pdo_con) {
   if (is_at_ban_list($pdo_con, $source_ip)) {
     header('http/1.1 503 Service Unavailable');
@@ -63,9 +63,10 @@ function analyze_ban_log($pdo_con, $ip_info)
   $pdo_con->exec("delete from banlist where ip = '".$ip_info."'"); 
   if ($res->fetchColumn() > 0) {
     $pdo_con->exec("insert into banlist SET id= 'NULL', ip = '".$ip_info."', betime='".date('Y-m-d H:i:s', time()+60*60*24)."'");
+    $pdo_con->exec("insert into prebanlist SET id= 'NULL', ip = '".$ip_info."', bstime='".date('Y-m-d H:i:s', time())."',type='24'");
   } else {
     $pdo_con->exec("insert into banlist SET id= 'NULL', ip = '".$ip_info."', betime='".date('Y-m-d H:i:s', time()+60*60)."'");
+    $pdo_con->exec("insert into prebanlist SET id= 'NULL', ip = '".$ip_info."', bstime='".date('Y-m-d H:i:s', time())."',type='1'");
   }
-  $pdo_con->exec("insert into prebanlist SET id= 'NULL', ip = '".$ip_info."', bstime='".date('Y-m-d H:i:s', time())."'");
   $pdo_con->exec("delete from accesslog where ip = '".$ip_info."'"); 
 }
